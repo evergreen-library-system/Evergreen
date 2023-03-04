@@ -1,0 +1,56 @@
+<!-- how should we do i18n with eg-staff-banner? -->
+<div class="lead alert alert-primary text-center pt-1 pb-1">
+   <span class="align-middle">
+    {batches, plural, =0 {Attempts for All Batches} =1 {Attempts for Batch ID {{batches}}} other {Attempts for Batch IDs {{batches}}}}
+   </span>
+</div>
+
+<ng-template #bibIdTemplate let-r="row">
+  <ng-container *ngIf="r['url.item.target_biblio_record_entry.id']">
+    <a routerLink="/staff/catalog/record/{{r['url.item.target_biblio_record_entry.id']}}">{{r['url.item.target_biblio_record_entry.id']}}</a>
+  </ng-container>
+</ng-template>
+
+<ng-template #titleTemplate let-r="row">
+  <ng-container *ngIf="r['url.item.target_biblio_record_entry.simple_record.title']">
+    <a routerLink="/staff/catalog/record/{{r['url.item.target_biblio_record_entry.id']}}">{{r['url.item.target_biblio_record_entry.simple_record.title']}}</a>
+  </ng-container>
+</ng-template>
+
+<eg-title i18n-prefix prefix="Batch Attempts">
+</eg-title>
+
+<eg-grid #grid idlClass="uvuv"
+    persistKey="catalog.link_checker.attempt"
+    [dataSource]="dataSource"
+    (rowSelectionChange)="gridSelectionChange($event)"
+    ignoreFields="url"
+    [sortable]="true" [filterable]="true" [allowNamedFilterSets]="true"
+    [migrateLegacyFilterSets]="'url_verify'">
+
+    <eg-grid-column path="id" [index]="true" [required]="true"></eg-grid-column>
+    <eg-grid-column [required]="true" path="url.item.target_biblio_record_entry.id" [cellTemplate]="bibIdTemplate">
+        </eg-grid-column>
+    <eg-grid-column [required]="true" path="url.item.target_biblio_record_entry.simple_record.title" [cellTemplate]="titleTemplate">
+        </eg-grid-column>
+    <eg-grid-column [required]="true" path="url.item.target_biblio_record_entry.simple_record.author">
+        </eg-grid-column>
+    <eg-grid-column [required]="true" path="url.id">
+        </eg-grid-column>
+    <eg-grid-column [required]="true" path="url.full_url">
+        </eg-grid-column>
+    <eg-grid-column [required]="true" path="url.tag">
+        </eg-grid-column>
+    <eg-grid-column [required]="true" path="url.subfield">
+        </eg-grid-column>
+    <eg-grid-column [required]="true" path="url.ord">
+        </eg-grid-column>
+        <eg-grid-column [required]="true" path="attempt">
+        </eg-grid-column>
+        <eg-grid-column [required]="true" path="attempt"></eg-grid-column>
+        <eg-grid-column [required]="true" path="req_time"></eg-grid-column>
+        <eg-grid-column [required]="true" path="res_time"></eg-grid-column>
+        <eg-grid-column [required]="true" path="res_code"></eg-grid-column>
+        <eg-grid-column [required]="true" path="res_text"></eg-grid-column>
+        <eg-grid-column [required]="true" path="redirect_to"></eg-grid-column>
+</eg-grid>

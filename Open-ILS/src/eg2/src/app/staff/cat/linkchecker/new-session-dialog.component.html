@@ -1,0 +1,148 @@
+<eg-progress-dialog dialogTitle="{{progressText}}" #progress></eg-progress-dialog>
+<eg-alert-dialog #fail i18n-dialogBody
+  dialogBody="Could not create a new session.">
+</eg-alert-dialog>
+<ng-template #dialogContent>
+  <div class="modal-header bg-info">
+    <h4 class="modal-title">
+      <span i18n>New Link Checker Session</span>
+    </h4>
+    <button type="button" class="btn-close btn-close-white"
+    i18n-aria-label aria-label="Close" (click)="close(false)">
+  </button>
+</div>
+<div class="modal-body">
+    <form #newSessionForm="ngForm" role="form" class="form-validated common-form striped-odd">
+        <div class="form-group row">
+            <div class="col-lg-3">
+                <label for="session_name" i18n>Name</label>
+            </div>
+            <div class="col-lg-9">
+              <input
+                class="form-control"
+                id="session_name" name="session_name"
+                type="text" pattern="[\s\S]*\S[\s\S]*"
+                placeholder="Name..." i18n-placeholder
+                required="true"
+                (ngModelChange)="sessionNameModelChanged.next($event)"
+                [ngModel]="sessionName"/>
+                <div *ngIf="nameCollision" class="alert alert-warning" i18n>
+                    Session Name already in use for the Owning Library.
+                </div>
+            </div>
+        </div>
+        <div class="form-group row">
+            <div class="col-lg-3">
+                <label for="owning_lib" i18n>Owning Library</label>
+            </div>
+            <div class="col-lg-9">
+              <eg-org-select
+                placeholder="Owning Library..."
+                i18n-placeholder
+                domId="owningLibrary"
+                required="true"
+                (onChange)="applyOwningLibrary($event)"
+                [applyOrgId]="sessionOwningLibrary">
+              </eg-org-select>
+                <!--[limitPerms]="modePerms[mode]">-->
+            </div>
+        </div>
+        <div class="form-group row">
+            <div class="col-lg-3">
+                <label for="search_scope" i18n>Search Scope</label>
+            </div>
+            <div class="col-lg-9">
+              <eg-org-select
+                placeholder="Search Scope..."
+                i18n-placeholder
+                domId="searchScope"
+                (onChange)="applySearchScope($event)">
+              </eg-org-select>
+                <!--[limitPerms]="modePerms[mode]">-->
+            </div>
+        </div>
+        <div class="form-group row">
+            <div class="col-lg-3">
+                <label for="saved_searches" i18n>Saved Searches</label>
+            </div>
+            <div class="col-lg-9">
+              <eg-combobox #savedSearchSelector
+                domId="savedSearches" name="saved_searches"
+                placeholder="Saved Searches..." i18n-placeholder 
+                [entries]="savedSearchEntries"
+                (onChange)="applySavedSearch($event)">
+              </eg-combobox>
+            </div>
+        </div>
+        <div class="form-group row">
+            <div class="col-lg-3">
+                <label for="session_search" i18n>Search</label>
+            </div>
+            <div class="col-lg-9">
+              <input
+                class="form-control"
+                id="session_search" name="session_search"
+                type="text"
+                placeholder="Search..." i18n-placeholder
+                required="true"
+                (ngModelChange)="applySessionSearch($event)"
+                [(ngModel)]="sessionSearch"/>
+            </div>
+        </div>
+        <div class="form-group row">
+            <div class="col-lg-3">
+                <label i18n>URL Selectors</label>
+            </div>
+            <div class="col-lg-9">
+                <div class="row" *ngFor="let t of selectorModels['tag']; let idx = index; trackBy:trackByIdx">
+                    <div class="col-lg-2">
+                        <label for="selector_tag_{{idx}}" i18n>Tag</label>
+                    </div>
+                    <div class="col-lg-3">
+                        <input
+                            class="form-control"
+                            name="selector_tag_{{idx}}"
+                            type="text"
+                            required="true"
+                            [(ngModel)]="selectorModels['tag'][idx]"
+                            placeholder="856..." i18n-placeholder />
+                    </div>
+                    <div class="col-lg-2">
+                        <label for="selector_subfields_{{idx}}" i18n>Subfields</label>
+                    </div>
+                    <div class="col-lg-3">
+                        <input
+                            class="form-control"
+                            name="selector_subfields_{{idx}}"
+                            type="text"
+                            required="true"
+                            [(ngModel)]="selectorModels['subfields'][idx]"
+                            placeholder="u..." i18n-placeholder />
+                    </div>
+                    <div class="col-lg-2">
+                        <button class="btn btn-sm material-icon-button"
+                            (click)="addSelectorRow(idx + 1)"
+                            i18n-title title="Add Selector Row">
+                            <span class="material-icons">add_circle_outline</span>
+                        </button>
+                        <button class="btn btn-sm material-icon-button"
+                            [disabled]="selectorModels['tag'].length < 2"
+                            (click)="delSelectorRow(idx)"
+                            i18n-title title="Remove Selector Row">
+                            <span class="material-icons">remove_circle_outline</span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>
+<div class="modal-footer">
+  <button type="button" class="btn btn-success" [disabled]="nameCollision || newSessionForm.invalid"
+  (click)="createNewSession({'fullAuto':true})" i18n>Create Session and test all URLs</button>
+  <button type="button" class="btn btn-success" [disabled]="nameCollision || newSessionForm.invalid"
+  (click)="createNewSession({'viewURLs':true})" i18n>Create Session</button>
+  <button type="button" class="btn btn-secondary"
+  (click)="close(false)" i18n>Cancel</button>
+</div>
+</ng-template>
