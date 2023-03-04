@@ -77,13 +77,13 @@
             <span class="material-icons" aria-hidden="true">person_add</span>
             <span i18n>Register Patron</span>
           </a>
-          <a class="dropdown-item" href="/eg/staff/circ/patron/last"
+          <a *ngIf="maxRecentPatrons" class="dropdown-item" href="/eg/staff/circ/patron/last"
             egAccessKey keyCtx="navbar" i18n-keySpec i18n-keyDesc
             keySpec="f8" keyDesc="Retrieve Last Patron">
             <span class="material-icons" aria-hidden="true">redo</span>
             <span i18n>Retrieve Last Patron</span>
           </a>
-          <a class="dropdown-item" routerLink="/staff/circ/patron/search/recents">
+          <a *ngIf="maxRecentPatrons > 1" class="dropdown-item" href="/eg/staff/circ/patron/search?show_recent=1">
             <span class="material-icons" aria-hidden="true">redo</span>
             <span i18n>Retrieve Recent Patrons</span>
           </a>
@@ -194,13 +194,13 @@
             <span class="material-icons" aria-hidden="true">person_add</span>
             <span i18n>Register Patron</span>
           </a>
-          <a class="dropdown-item" routerLink="/staff/circ/patron/last"
+          <a *ngIf="maxRecentPatrons" class="dropdown-item" routerLink="/staff/circ/patron/last"
             egAccessKey keyCtx="navbar" i18n-keySpec i18n-keyDesc
             keySpec="f8" keyDesc="Retrieve Last Patron">
             <span class="material-icons" aria-hidden="true">redo</span>
             <span i18n>Retrieve Last Patron</span>
           </a>
-          <a class="dropdown-item" routerLink="/staff/circ/patron/search/recents"
+          <a *ngIf="maxRecentPatrons > 1" class="dropdown-item" routerLink="/staff/circ/patron/search/recents"
             egAccessKey keyCtx="navbar" i18n-keySpec i18n-keyDesc
             keySpec="shift+f4" keyDesc="Retrieve Recent Patrons">
             <span class="material-icons" aria-hidden="true">redo</span>
