@@ -29,6 +29,7 @@ export class StaffNavComponent implements OnInit, OnDestroy {
     showAngularAcq: boolean;
     curbsideEnabled: boolean;
     showAngularCirc = false;
+    maxRecentPatrons: number = 1;
 
     @ViewChild('navOpChange', {static: false}) opChange: OpChangeComponent;
     permFailedSub: Subscription;
@@ -71,6 +72,10 @@ export class StaffNavComponent implements OnInit, OnDestroy {
             this.org.settings('circ.curbside')
             .then(settings => this.curbsideEnabled =
                 Boolean(settings['circ.curbside']));
+
+            this.org.settings('ui.staff.max_recent_patrons')
+            .then(settings => this.maxRecentPatrons =
+                settings['ui.staff.max_recent_patrons'] ?? 1)
 
             // Do we show the angular circ menu?
             // TODO remove these once Angular Circ takes over.

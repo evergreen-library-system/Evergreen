@@ -305,13 +305,13 @@
               <span>[% l('Register Patron') %]</span>
             </a>
           </li>
-          <li>
+          <li ng-if="showRecentPatron">
             <a href="/eg2/staff/circ/patron/last">
               <span class="glyphicon glyphicon-share-alt" aria-hidden="true"></span>
               <span>[% l('Retrieve Last Patron') %]</span>
             </a>
           </li>
-          <li>
+          <li ng-if="showRecentPatrons">
             <a href="/eg2/staff/circ/patron/search/recents">
               <span class="glyphicon glyphicon-share-alt" aria-hidden="true"></span>
               <span>[% l('Retrieve Recent Patrons') %]</span>
