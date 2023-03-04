@@ -5749,7 +5749,7 @@ SELECT  usr,
 		<fields oils_persist:primary="id" oils_persist:sequence="container.biblio_record_entry_bucket_id_seq">
 			<field name="items" oils_persist:virtual="true" reporter:datatype="link"/>
 			<field name="btype" reporter:datatype="text"/>
-			<field name="id" reporter:datatype="id" />
+			<field name="id" reporter:datatype="id" reporter:selector="id"/>
 			<field name="name" reporter:datatype="text"/>
 			<field name="description" reporter:datatype="text"/>
 			<field name="owner" reporter:datatype="link"/>
@@ -12474,6 +12474,64 @@ SELECT  usr,
 		</permacrud>
 	</class>
 
+	<!-- This is what you see in Catalog -> Link Checker -->
+	<class id="uvsa" controller="open-ils.cstore open-ils.pcrud" oils_obj:fieldmapper="url_verify::sessions_and_attempts" reporter:label="Combined URL Verify Sessions and Batches View" oils_persist:readonly="true">
+		<oils_persist:source_definition><![CDATA[
+			SELECT
+                coalesce(uvva.id,-uvs.id) as id,
+                uvs.id as session_id,
+                uvs.name,
+                uvs.owning_lib,
+                uvs.creator,
+                uvs.container,
+                uvs.create_time,
+                uvs.search,
+                (select string_agg(xpath,',')
+                 from url_verify.url_selector uvus
+                 where uvus.session = uvs.id
+                 group by session) as selectors,
+                uvva.id as batch_id,
+                uvva.usr,
+                uvva.start_time,
+                uvva.finish_time
+            FROM
+                url_verify.session uvs
+            LEFT JOIN
+                url_verify.verification_attempt uvva
+            ON
+                (uvs.id = uvva.session)
+		]]></oils_persist:source_definition>
+		<fields oils_persist:primary="id">
+            <field reporter:label="ID" name="id" reporter:datatype="id" reporter:selector="name"/>
+            <field reporter:label="Session ID" name="session_id" reporter:datatype="link"/>
+            <field reporter:label="Name" name="name" reporter:datatype="text" oils_obj:required="true"/>
+			<field reporter:label="Owning Library" name="owning_lib" reporter:datatype="org_unit" oils_obj:required="true"/>
+            <field reporter:label="Creator" name="creator" reporter:datatype="link" oils_obj:required="true"/>
+            <field reporter:label="Record Container" name="container" reporter:datatype="link" oils_obj:required="true"/>
+            <field reporter:label="Create Time" name="create_time" reporter:datatype="timestamp"/>
+            <field reporter:label="Search Constraints" name="search" reporter:datatype="text" oils_obj:required="true"/>
+            <field reporter:label="Selectors" name="selectors" reporter:datatype="text" oils_obj:required="true"/>
+            <field reporter:label="Batch ID" name="batch_id" reporter:datatype="link"/>
+			<field reporter:label="User" name="usr" reporter:datatype="link"/>
+            <field reporter:label="Start Time" name="start_time" reporter:datatype="timestamp"/>
+            <field reporter:label="Finish Time" name="finish_time" reporter:datatype="timestamp"/>
+		</fields>
+		<links>
+            <link field="session_id" reltype="has_a" key="id" map="" class="uvs"/>
+            <link field="owning_lib" reltype="has_a" key="id" map="" class="aou"/>
+            <link field="creator" reltype="has_a" key="id" map="" class="au"/>
+            <link field="container" reltype="has_a" key="id" map="" class="cbreb"/>
+            <link field="batch_id" reltype="has_a" key="id" map="" class="uvva"/>
+            <link field="usr" reltype="has_a" key="id" map="" class="au"/>
+		</links>
+        <permacrud xmlns="http://open-ils.org/spec/opensrf/IDL/permacrud/v1">
+            <actions>
+                <retrieve permission="URL_VERIFY" context_field="owning_lib"/>
+            </actions>
+        </permacrud>
+	</class>
+
+	<!-- This is what gets created with Catalog -> Link Checker -> New Session -->
     <class
         id="uvs"
         controller="open-ils.cstore open-ils.pcrud"
@@ -12482,7 +12540,7 @@ SELECT  usr,
         reporter:label="URL Verification Session"
     >
         <fields oils_persist:primary="id" oils_persist:sequence="url_verify.session_id_seq">
-            <field reporter:label="Session ID" name="id" reporter:datatype="id"/>
+            <field reporter:label="Session ID" name="id" reporter:datatype="id" reporter:selector="name"/>
             <field reporter:label="Name" name="name" reporter:datatype="text" oils_obj:required="true"/>
 			<field reporter:label="Owning Library" name="owning_lib" reporter:datatype="org_unit" oils_obj:required="true"/>
             <field reporter:label="Creator" name="creator" reporter:datatype="link" oils_obj:required="true"/>
@@ -12503,12 +12561,16 @@ SELECT  usr,
 
         <permacrud xmlns="http://open-ils.org/spec/opensrf/IDL/permacrud/v1">
             <actions>
+                <create permission="URL_VERIFY" context_field="owning_lib"/>
                 <retrieve permission="URL_VERIFY" context_field="owning_lib"/>
+                <update permission="URL_VERIFY" context_field="owning_lib"/>
+                <delete permission="URL_VERIFY" context_field="owning_lib"/>
             </actions>
         </permacrud>
 
     </class>
 
+	<!-- A biblio bucket gets populated with search results from Catalog -> Link Checker -> New Session -->
     <class id="uvsbrem" controller="open-ils.cstore open-ils.pcrud" oils_obj:fieldmapper="url_verify::session_biblio_record_entry_map" oils_persist:readonly="true" reporter:label="URL Verify Session Biblio Record Entry Map">
         <oils_persist:source_definition><![CDATA[
             SELECT
@@ -12540,6 +12602,7 @@ SELECT  usr,
         </permacrud>
     </class>
 
+	<!-- Also created with Catalog -> Link Checker -> New Session -->
     <class
         id="uvus"
         controller="open-ils.cstore open-ils.pcrud"
@@ -12548,7 +12611,7 @@ SELECT  usr,
         reporter:label="URL Verification URL Selector"
     >
         <fields oils_persist:primary="id" oils_persist:sequence="url_verify.url_selector_id_seq">
-            <field reporter:label="URL Selector ID" name="id" reporter:datatype="id"/>
+            <field reporter:label="URL Selector ID" name="id" reporter:datatype="id" reporter:selector="xpath"/>
             <field reporter:label="XPath" name="xpath" reporter:datatype="text" oils_obj:required="true"/>
 			<field reporter:label="Session" name="session" reporter:datatype="link" oils_obj:required="true"/>
             <field reporter:label="URLs" name="urls" reporter:datatype="link" oils_persist:virtual="true"/>
@@ -12578,6 +12641,7 @@ SELECT  usr,
 
     </class>
 
+	<!-- URLs extracted by URL selectors -->
     <class
         id="uvu"
         controller="open-ils.cstore open-ils.pcrud"
@@ -12586,7 +12650,7 @@ SELECT  usr,
         reporter:label="URL Verification URL"
     >
         <fields oils_persist:primary="id" oils_persist:sequence="url_verify.url_id_seq">
-            <field reporter:label="URL ID" name="id" reporter:datatype="id"/>
+            <field reporter:label="URL ID" name="id" reporter:datatype="id" reporter:selector="full_url"/>
 			<field reporter:label="Redirected From" name="redirect_from" reporter:datatype="link"/>
 			<field reporter:label="Container Item" name="item" reporter:datatype="link" oils_obj:required="true"/>
 			<field reporter:label="Session" name="session" reporter:datatype="link" oils_obj:required="true"/>
@@ -12633,6 +12697,7 @@ SELECT  usr,
 
     </class>
 
+	<!-- What we now call Batches in the UI -->
     <class
         id="uvva"
         controller="open-ils.cstore open-ils.pcrud"
@@ -12641,7 +12706,7 @@ SELECT  usr,
         reporter:label="URL Verification Attempt"
     >
         <fields oils_persist:primary="id" oils_persist:sequence="url_verify.verification_attempt_id_seq">
-            <field reporter:label="Attempt ID" name="id" reporter:datatype="id"/>
+            <field reporter:label="Batch ID" name="id" reporter:datatype="id"/>
 			<field reporter:label="User" name="usr" reporter:datatype="link"/>
 			<field reporter:label="Session" name="session" reporter:datatype="link"/>
             <field reporter:label="Start Time" name="start_time" reporter:datatype="timestamp"/>
@@ -12672,6 +12737,7 @@ SELECT  usr,
 
     </class>
 
+	<!-- what we now call Attempts in the UI -->
     <class
         id="uvuv"
         controller="open-ils.cstore open-ils.pcrud"
@@ -12680,9 +12746,9 @@ SELECT  usr,
         reporter:label="URL Verification"
     >
         <fields oils_persist:primary="id" oils_persist:sequence="url_verify.url_verification_id_seq">
-            <field reporter:label="Verification ID" name="id" reporter:datatype="id"/>
+            <field reporter:label="Attempt ID" name="id" reporter:datatype="id"/>
 			<field reporter:label="URL" name="url" reporter:datatype="link"/>
-			<field reporter:label="Attempt" name="attempt" reporter:datatype="link"/>
+			<field reporter:label="Batch" name="attempt" reporter:datatype="link"/>
             <field reporter:label="Request Time" name="req_time" reporter:datatype="timestamp"/>
             <field reporter:label="Result Time" name="res_time" reporter:datatype="timestamp"/>
             <field reporter:label="Result Code" name="res_code" reporter:datatype="int"/>
