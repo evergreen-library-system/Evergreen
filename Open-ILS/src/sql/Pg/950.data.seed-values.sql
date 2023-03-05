@@ -4649,24 +4649,6 @@ INSERT into config.org_unit_setting_type
         'coust', 'description'),
     'string', null)
 
-,( 'format.date', 'gui',
-    oils_i18n_gettext('format.date',
-        'Format Dates with this pattern.',
-        'coust', 'label'),
-    oils_i18n_gettext('format.date',
-        'Format Dates with this pattern (examples: "yyyy-MM-dd" for "2010-04-26", "MMM d, yyyy" for "Apr 26, 2010")',
-        'coust', 'description'),
-    'string', null)
-
-,( 'format.time', 'gui',
-    oils_i18n_gettext('format.time',
-        'Format Times with this pattern.',
-        'coust', 'label'),
-    oils_i18n_gettext('format.time',
-        'Format Times with this pattern (examples: "h:m:s.SSS a z" for "2:07:20.666 PM Eastern Daylight Time", "HH:mm" for "14:07")',
-        'coust', 'description'),
-    'string', null)
-
 ,( 'global.default_locale', 'glob',
     oils_i18n_gettext('global.default_locale',
         'Global Default Locale',

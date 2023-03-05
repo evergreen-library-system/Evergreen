@@ -605,8 +605,8 @@ function($routeProvider , $locationProvider , $compileProvider) {
                     if (blocked) {
                         egCore.audio.play('warning.offline.blocked_patron');
                         var default_format = 'mediumDate';
-                        egCore.org.settings(['format.date']).then(function(set) {
-                            if (set && set['format.date']) default_format = set['format.date'];
+                        egCore.org.settings(['webstaff.format.dates']).then(function(set) {
+                            if (set && set['format.date']) default_format = set['webstaff.format.dates'];
                             $scope.date_format = default_format;
                             var fBlockListDate = $scope.blockListDate ?
                                 $filter('date')(($scope.blockListDate * 1000), $scope.date_format) :

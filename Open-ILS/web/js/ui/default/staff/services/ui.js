@@ -1383,8 +1383,8 @@ https://stackoverflow.com/questions/24764802/angular-js-automatically-focus-inpu
                     scope.showTimePicker = true;
 
                 var default_format = 'mediumDate';
-                egCore.org.settings(['format.date']).then(function(set) {
-                    if (set) default_format = set['format.date'];
+                egCore.org.settings(['webstaff.format.dates']).then(function(set) {
+                    if (set) default_format = set['webstaff.format.dates'];
                     scope.date_format = (scope.dateFormat) ?
                         scope.dateFormat :
                         default_format;

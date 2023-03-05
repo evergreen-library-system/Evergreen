@@ -413,7 +413,7 @@ angular.module('egCoreMod')
             'ui.patron.edit.au.guardian.show',
             'ui.patron.edit.au.guardian.suggest',
             'ui.patron.edit.guardian_required_for_juv',
-            'format.date',
+            'webstaff.format.dates',
             'ui.patron.edit.default_suggested',
             'opac.barcode_regex',
             'opac.username_regex',
