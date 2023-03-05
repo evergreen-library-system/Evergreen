@@ -27,6 +27,9 @@ export class GridToolbarActionsMenuComponent {
     }
 
     shouldDisable(action: GridToolbarAction): boolean {
+        if (action.disabled) {
+            return true;
+        }
         if (action.disableOnRows) {
             return action.disableOnRows(this.gridContext.getSelectedRows());
         }

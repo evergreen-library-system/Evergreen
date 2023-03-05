@@ -24,7 +24,9 @@ export class GridToolbarActionComponent implements OnInit {
     @Input() action: (rows: any[]) => any;
 
     @Input() set disabled(d: boolean) {
-        this.toolbarAction.disabled = d;
+        if (this.toolbarAction) {
+            this.toolbarAction.disabled = d;
+        }
     }
     get disabled(): boolean {
         return this.toolbarAction.disabled;
