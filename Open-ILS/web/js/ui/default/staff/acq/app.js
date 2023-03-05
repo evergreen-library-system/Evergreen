@@ -113,7 +113,7 @@ function($scope , $routeParams , $location , $window , $timeout , egCore , $uibM
     // embed URL must include protocol/domain or it will be loaded via
     // push-state, resulting in an infinitely nested pages.
     $scope.acq_url = 
-        $location.absUrl().replace(/\/eg\/staff.*/, acq_path);
+        $location.absUrl().replace(/\/eg\/staff\/.*/, acq_path);
 
     console.log('Loading Acq URL: ' + $scope.acq_url);
 

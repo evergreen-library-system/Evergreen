@@ -973,7 +973,7 @@ function($scope , $routeParams , $location , $window , $q , egCore , egHolds , e
                         var booking_path = '/eg/conify/global/booking/resource';
 
                         $scope.booking_admin_url =
-                            $location.absUrl().replace(/\/eg\/staff.*/, booking_path);
+                            $location.absUrl().replace(/\/eg\/staff\/.*/, booking_path);
                     }]
                 });
             }
@@ -2038,7 +2038,7 @@ function($scope , $routeParams , $location , $window , $q , egCore , egHolds , e
         // The URL is otherwise generated through user navigation.
         if ($scope.catalog_url) return;
 
-        var url = $location.absUrl().replace(/\/staff.*/, '/opac/advanced');
+        var url = $location.absUrl().replace(/\/staff\/.*/, '/opac/advanced');
 
         // A record ID in the path indicates a request for the record-
         // specific page.
@@ -2080,7 +2080,7 @@ function($scope , $routeParams , $location , $window , $q , egCore , egHolds , e
         $scope.parts_url = $location
             .absUrl()
             .replace(
-                /\/staff.*/,
+                /\/staff\/.*/,
                 '/conify/global/biblio/monograph_part?r='+$scope.record_id
             );
     }
@@ -2141,7 +2141,7 @@ function($scope , $routeParams , $location , $window , $q , egCore) {
 .controller('URLVerifyCtrl',
        ['$scope','$location',
 function($scope , $location) {
-    $scope.verifyurls_url = $location.absUrl().replace(/\/staff.*/, '/url_verify/sessions');
+    $scope.verifyurls_url = $location.absUrl().replace(/\/staff\/.*/, '/url_verify/sessions');
 }])
 
 .controller('VandelayCtrl',
@@ -2179,13 +2179,13 @@ function($scope , $location, egCore, $uibModal) {
 .controller('ManageAuthoritiesCtrl',
        ['$scope','$location',
 function($scope , $location) {
-    $scope.manageauthorities_url = $location.absUrl().replace(/\/staff.*/, '/cat/authority/list');
+    $scope.manageauthorities_url = $location.absUrl().replace(/\/staff\/.*/, '/cat/authority/list');
 }])
 
 .controller('BatchEditCtrl',
        ['$scope','$location','$routeParams',
 function($scope , $location , $routeParams) {
-    $scope.batchedit_url = $location.absUrl().replace(/\/eg.*/, '/opac/extras/merge_template');
+    $scope.batchedit_url = $location.absUrl().replace(/\/eg\/.*/, '/opac/extras/merge_template');
     if ($routeParams.container_type) {
         switch ($routeParams.container_type) {
             case 'bucket':

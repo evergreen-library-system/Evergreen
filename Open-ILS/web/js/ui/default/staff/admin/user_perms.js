@@ -83,7 +83,7 @@ function($scope , $routeParams , $window , $location , egCore) {
     var user_id = $routeParams.user_id;
 
     var url = $location.absUrl().replace(
-        /\/eg\/staff.*/, '/xul/server/patron/user_edit.xhtml');
+        /\/eg\/staff\/.*/, '/xul/server/patron/user_edit.xhtml');
 
     url += '?usr=' + encodeURIComponent(user_id);
 

@@ -346,7 +346,7 @@ function(egCore , egOrg , egCirc , $uibModal , $q , $timeout , $window , ngToast
                         var booking_path = '/eg/conify/global/booking/resource';
 
                         $scope.booking_admin_url =
-                            $location.absUrl().replace(/\/eg\/staff.*/, booking_path);
+                            $location.absUrl().replace(/\/eg\/staff\/.*/, booking_path);
                     }]
                 });
             }
