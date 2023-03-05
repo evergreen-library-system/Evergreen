@@ -1,6 +1,6 @@
 BEGIN;
 
---SELECT evergreen.upgrade_deps_block_check('XXXX', :eg_version);
+SELECT evergreen.upgrade_deps_block_check('1360', :eg_version); -- bshum / Dyrcona / JBoyer
 
 -- replace functions from 300.schema.staged_search.sql
 
@@ -108,7 +108,7 @@ BEGIN
     IF format = 'holdings_xml' THEN -- the special case
         output := unapi.mmr_holdings_xml(
             obj_id, ouid, org, depth,
-            evergreen.array_remove_item_by_value(includes,'holdings_xml'),
+            array_remove(includes,'holdings_xml'),
             slimit, soffset, include_xmlns, pref_lib);
         RETURN output;
     END IF;
@@ -136,7 +136,7 @@ BEGIN
     IF ('holdings_xml' = ANY (includes)) THEN
         hxml := unapi.mmr_holdings_xml(
                     obj_id, ouid, org, depth,
-                    evergreen.array_remove_item_by_value(includes,'holdings_xml'),
+                    array_remove(includes,'holdings_xml'),
                     slimit, soffset, include_xmlns, pref_lib);
     END IF;
 
@@ -252,7 +252,7 @@ BEGIN
         UPDATE actor.usr_address SET usr = dest_usr WHERE usr = src_usr;
     END IF;
 
-    UPDATE actor.usr_note SET usr = dest_usr WHERE usr = src_usr;
+    UPDATE actor.usr_message SET usr = dest_usr WHERE usr = src_usr;
     -- dupes are technically OK in actor.usr_standing_penalty, should manually delete them...
     UPDATE actor.usr_standing_penalty SET usr = dest_usr WHERE usr = src_usr;
     PERFORM actor.usr_merge_rows('actor.usr_org_unit_opt_in', 'usr', src_usr, dest_usr);
