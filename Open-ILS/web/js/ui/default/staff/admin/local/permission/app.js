@@ -460,7 +460,7 @@ function($scope , $routeParams , $location , egCore) {
     // embed URL must include protocol/domain or it will be loaded via
     // push-state, resulting in an infinitely nested pages.
     $scope.local_admin_url = 
-        $location.absUrl().replace(/\/eg\/staff.*/, conify_path);
+        $location.absUrl().replace(/\/eg\/staff\/.*/, conify_path);
 
     console.log('Loading local admin URL: ' + $scope.local_admin_url);
 

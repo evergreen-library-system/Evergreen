@@ -1568,7 +1568,7 @@ function($scope , $location , egCore) {
 function($scope,  $routeParams,  $location , egCore , patronSvc) {
     $scope.initTab('other', $routeParams.id);
 
-    var url = $location.absUrl().replace(/\/staff.*/, '/actor/user/event_log');
+    var url = $location.absUrl().replace(/\/staff\/.*/, '/actor/user/event_log');
     url += '?patron_id=' + encodeURIComponent($routeParams.id);
 
     $scope.triggered_events_url = url;
@@ -1581,7 +1581,7 @@ function($scope,  $routeParams,  $location , egCore , patronSvc) {
     $scope.initTab('other', $routeParams.id);
 
     var url = $location.protocol() + '://' + $location.host()
-        + egCore.env.basePath.replace(/\/staff.*/,  '/actor/user/message');
+        + egCore.env.basePath.replace(/\/staff\/.*/,  '/actor/user/message');
     url += '/' + encodeURIComponent($routeParams.id);
 
     $scope.message_center_url = url;
@@ -1594,7 +1594,7 @@ function($scope , $routeParams , $window , $location , egCore) {
     $scope.initTab('other', $routeParams.id);
 
     var url = $location.absUrl().replace(
-        /\/eg\/staff.*/, '/xul/server/patron/user_edit.xhtml');
+        /\/eg\/staff\/.*/, '/xul/server/patron/user_edit.xhtml');
 
     url += '?usr=' + encodeURIComponent($routeParams.id);
 

@@ -1273,7 +1273,7 @@ console.debug($scope.copy_alert_count);
                 break;
 
             case 'triggered_events':
-                var url = $location.absUrl().replace(/\/staff.*/, '/actor/user/event_log');
+                var url = $location.absUrl().replace(/\/staff\/.*/, '/actor/user/event_log');
                 url += '?copy_id=' + encodeURIComponent(copyId);
                 $scope.triggered_events_url = url;
                 $scope.funcs = {};

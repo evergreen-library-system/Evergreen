@@ -41,7 +41,7 @@ function($scope , $routeParams , $window , $location , egCore) {
     // have to use the full URL, not just the path, to ensure
     // the embeded page is not a nested version of this page (ad infinitum)
     $scope.address_alert_url = $location.absUrl().replace(
-        /\/eg\/staff.*/, '/eg/conify/global/actor/address_alert');
+        /\/eg\/staff\/.*/, '/eg/conify/global/actor/address_alert');
 
     console.log($scope.address_alert_url);
 

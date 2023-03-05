@@ -38,7 +38,7 @@ function($scope , $routeParams , $location , egCore) {
     // embed URL must include protocol/domain or it will be loaded via
     // push-state, resulting in an infinitely nested pages.
     $scope.booking_url = 
-        $location.absUrl().replace(/\/eg\/staff.*/, booking_path);
+        $location.absUrl().replace(/\/eg\/staff\/.*/, booking_path);
 
     console.log('Loading Booking URL: ' + $scope.booking_url);
 

@@ -60,7 +60,7 @@ function($scope , $routeParams , $location , egCore) {
     // embed URL must include protocol/domain or it will be loaded via
     // push-state, resulting in an infinitely nested pages.
     $scope.acq_admin_url =
-        $location.absUrl().replace(/\/eg\/staff.*/, acq_path);
+        $location.absUrl().replace(/\/eg\/staff\/.*/, acq_path);
 
     console.log('Loading Admin Acq URL: ' + $scope.acq_admin_url);
 

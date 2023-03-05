@@ -193,7 +193,7 @@ function($scope , $routeParams , $location , egCore , egWorkLog , patronSvc , $c
     });
 
     $scope.catalog_url = 
-        $location.absUrl().replace(/\/staff.*/, '/opac/advanced');
+        $location.absUrl().replace(/\/staff\/.*/, '/opac/advanced');
 
     $scope.handle_page = function(url) {
     }
