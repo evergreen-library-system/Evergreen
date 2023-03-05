@@ -1,0 +1,6 @@
+== Date / Time Format Settings Deprecated ==
+
+The format.date and format.time org unit settings are no longer used by the staff client
+and have been marked Deprecated. If you are not using these OU settings in a local customization
+they can be removed from the database at your convenience.
+
