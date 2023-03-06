@@ -2365,6 +2365,10 @@ int doCreate( osrfMethodContext* ctx ) {
 	}
 
 	if( !verifyObjectClass( ctx, target )) {
+		osrfAppSessionStatus(ctx->session, OSRF_STATUS_BADREQUEST,
+				"osrfMethodException", ctx->request,
+				"Invalid object or insufficient permissions"
+		);
 		osrfAppRespondComplete( ctx, NULL );
 		return -1;
 	}
@@ -6431,6 +6435,10 @@ int doUpdate( osrfMethodContext* ctx ) {
 		target = jsonObjectGetIndex( ctx->params, 0 );
 
 	if(!verifyObjectClass( ctx, target )) {
+		osrfAppSessionStatus(ctx->session, OSRF_STATUS_BADREQUEST,
+			"osrfMethodException", ctx->request,
+			"Invalid object or insufficient permissions"
+		);
 		osrfAppRespondComplete( ctx, NULL );
 		return -1;
 	}
@@ -6702,6 +6710,10 @@ int doDelete( osrfMethodContext* ctx ) {
 	char* id;
 	if( jsonObjectGetIndex( ctx->params, _obj_pos )->classname ) {
 		if( !verifyObjectClass( ctx, jsonObjectGetIndex( ctx->params, _obj_pos ))) {
+			osrfAppSessionStatus(ctx->session, OSRF_STATUS_BADREQUEST,
+				"osrfMethodException", ctx->request,
+				"Invalid object or insufficient permissions"
+			);
 			osrfAppRespondComplete( ctx, NULL );
 			return -1;
 		}
