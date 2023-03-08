@@ -20,9 +20,9 @@
 		<desc xml:lang="en-US">No change occurred</desc>
 	</event>
 
-    <event code='4' textcode='CACHE_MISS'>
-        <desc xml:lang="en-US">A cached object could not be retrieved by the given reference.</desc>
-    </event>
+	<event code='4' textcode='CACHE_MISS'>
+		<desc xml:lang="en-US">A cached object could not be retrieved by the given reference.</desc>
+	</event>
 
 	<event code='1000' textcode='LOGIN_FAILED'>
 		<desc xml:lang="en-US">User login failed</desc>
@@ -94,7 +94,7 @@
 
 	<event code='1215' textcode='CIRC_EXCEEDS_COPY_RANGE'>
 		<desc xml:lang="en-US">
-			The selected copy may not circulate because the recipient's home 
+			The selected copy may not circulate because the recipient's home
 			location is not within the copy's circulation range
 		</desc>
 	</event>
@@ -135,7 +135,7 @@
 
 	<event code='1226' textcode='REFUND_EXCEEDS_DESK_PAYMENTS'>
 		<desc xml:lang="en-US">
-			This refund amount is not allowed because it exceeds 
+			This refund amount is not allowed because it exceeds
 			the total amount of desk payments for this transaction.
 		</desc>
 	</event>
@@ -168,17 +168,17 @@
 		<desc xml:lang="en-US">An item deposit was paid.</desc>
 	</event>
 	<event code='1235' textcode='INVALID_USER_XACT_ID'>
-        <desc xml:lang="en-US">While you were trying to make payments, this account's transaction history changed.  Please go back and try again.</desc>
+		<desc xml:lang="en-US">While you were trying to make payments, this account's transaction history changed.  Please go back and try again.</desc>
 	</event>
-    <event code='1236' textcode='PATRON_EXCEEDS_LOST_COUNT'>
-        <desc xml:lang="en-US">The patron has too many lost items.</desc>
-    </event>
+	<event code='1236' textcode='PATRON_EXCEEDS_LOST_COUNT'>
+		<desc xml:lang="en-US">The patron has too many lost items.</desc>
+	</event>
 	<event code='1237' textcode='HOLD_ITEM_CHECKED_OUT'>
-        <desc xml:lang="en-US">The item you have attempted to place on hold is already checked out to the requestor.</desc>
+		<desc xml:lang="en-US">The item you have attempted to place on hold is already checked out to the requestor.</desc>
 	</event>
 	<event code='1500' textcode='ACTION_CIRCULATION_NOT_FOUND'>
 		<desc xml:lang="en-US">
-			Someone attempted to retrieve a circulation object from the system and 
+			Someone attempted to retrieve a circulation object from the system and
 			the object was not found.
 		</desc>
 	</event>
@@ -187,7 +187,7 @@
 	</event>
 	<event code='1502' textcode='ASSET_COPY_NOT_FOUND'>
 		<desc xml:lang="en-US">
-			Someone attempted to retrieve a copy object from the 
+			Someone attempted to retrieve a copy object from the
 			system and the object was not found.
 		</desc>
 	</event>
@@ -196,7 +196,7 @@
 	</event>
 	<event code='1504' textcode='ACTION_TRANSIT_COPY_NOT_FOUND'>
 		<desc xml:lang="en-US">
-			Someone attempted to retrieve a transit object from the 
+			Someone attempted to retrieve a transit object from the
 			system and the object was not found.
 		</desc>
 	</event>
@@ -204,13 +204,13 @@
 
 	<event code='1506' textcode='CONTAINER_NOT_FOUND'>
 		<desc xml:lang="en-US">
-			Someone attempted to retrieve a container object from the 
+			Someone attempted to retrieve a container object from the
 			system and the object was not found.
 		</desc>
 	</event>
 	<event code='1507' textcode='CONTAINER_ITEM_NOT_FOUND'>
 		<desc xml:lang="en-US">
-			Someone attempted to retrieve a container item object from the 
+			Someone attempted to retrieve a container item object from the
 			system and the object was not found.
 		</desc>
 	</event>
@@ -243,7 +243,7 @@
 
 
 	<event code='1529' textcode='ACTOR_WORKSTATION_NOT_FOUND'>
-  		<desc xml:lang='en-US'>The requested actor_workstation was not found</desc>
+			<desc xml:lang='en-US'>The requested actor_workstation was not found</desc>
 	</event>
 	<event code='1530' textcode='CONFIG_IDENTIFICATION_TYPE_NOT_FOUND'>
 		<desc xml:lang='en-US'>The requested config_identification_type was not found</desc>
@@ -701,9 +701,9 @@
 	<event code='1881' textcode='PERMISSION_GRP_PENALTY_THRESHOLD_NOT_FOUND'>
 		<desc xml:lang='en-US'>The requested permission_grp_penalty_threshold was not found</desc>
 	</event>
-    <event code='1882' textcode='RECORD_REFERENCED_BY_LINEITEM'>
-        <desc xml:lang="en-US">The selected bib record has an open lineitem order referencing it.</desc>
-    </event>
+	<event code='1882' textcode='RECORD_REFERENCED_BY_LINEITEM'>
+		<desc xml:lang="en-US">The selected bib record has an open lineitem order referencing it.</desc>
+	</event>
 
 	<event code='1700' textcode='NON_CAT_TYPE_EXISTS'>
 		<desc xml:lang="en-US"> The non-cataloged type object already exists </desc>
@@ -783,14 +783,14 @@
 	<event code='2003' textcode='INTERNAL_SERVER_ERROR'>
 		<desc xml:lang="en-US">There was an internal server error</desc>
 	</event>
-        <event code='2004' textcode='ACTOR_USER_DELETE_OPEN_XACTS'>
-                <desc xml:lang="en-US">The user you have attempted to delete cannot be deleted because it has open circulations and/or unpaid bills.</desc>
-        </event>
+	<event code='2004' textcode='ACTOR_USER_DELETE_OPEN_XACTS'>
+		<desc xml:lang="en-US">The user you have attempted to delete cannot be deleted because it has open circulations and/or unpaid bills.</desc>
+	</event>
 	<event code='2005' textcode='OBJECT_UNIQUE_IDENTIFIER_USED'>
 		<desc xml:lang="en-US">You are trying to create an object with a unique identifier (such as a 'name' field) that is already in use.</desc>
 	</event>
 
-    <!-- CREDIT EVENTS -->
+	<!-- CREDIT EVENTS -->
 	<event code='4001' textcode='CREDIT_PROCESSOR_NOT_ENABLED'>
 		<desc xml:lang="en-US">Credit card processor not enabled</desc>
 	</event>
@@ -813,31 +813,21 @@
 		<desc xml:lang="en-US">The credit card processor has declined the transaction.</desc>
 	</event>
 	<event code='4040' textcode='CREDIT_PROCESSOR_SUCCESS_WO_RECORD'>
-        <desc xml:lang="en-US">A *TERRIBLE* problem has occurred: a credit
-            card transaction was processed successfully, but the patron's
-            payment could not be recorded within Evergreen.  Please seek
-            assistance.</desc>
+		<desc xml:lang="en-US">A *TERRIBLE* problem has occurred: a credit
+			card transaction was processed successfully, but the patron's
+			payment could not be recorded within Evergreen.  Please seek
+			assistance.</desc>
 	</event>
 
 
 	<event code='5000' textcode='PERM_FAILURE'>
 		<desc xml:lang="en-US">Permission Denied</desc>
 	</event>
-    <event code='7025' textcode='PATRON_TOO_MANY_ACTIVE_PASSWORD_RESET_REQUESTS'>
-        <desc xml:lang='en-US'>There are too many active password reset request sessions for this patron.</desc>
-    </event>
-    <event code='7026' textcode='PATRON_NOT_AN_ACTIVE_PASSWORD_RESET_REQUEST'>
-        <desc xml:lang='en-US'>The user attempted to update their password using a stale or inactive password reset request session.</desc>
-    </event>
-    <event code='7027' textcode='PATRON_PASSWORD_WAS_NOT_STRONG'>
-        <desc xml:lang='en-US'>The user attempted to set their password to a weak value.</desc>
-    </event>
-
 
 	<!-- ================================================================ -->
 	<!-- CIRC EVENTS -->
 	<event code='7000' textcode='ROUTE_ITEM'>
-		<desc xml:lang="en-US"> 
+		<desc xml:lang="en-US">
 			A copy needs to be routed to a different location	
 			The destination location will be specified by an 'org' key
 			within the event object
@@ -897,7 +887,7 @@
 		<desc xml:lang="en-US">This item is currently on the holds shelf for another patron:</desc>
 	</event>
 	<event code='7017' textcode='ROUTE_TO_COPY_LOCATION'>
-		<desc xml:lang="en-US"> 
+		<desc xml:lang="en-US">
 		A copy needs to be routed to a copy location.  The location
 		should be specified within the event with a 'location' key
 		</desc>
@@ -927,10 +917,10 @@
 		<desc xml:lang="en-US">Copy is marked as long-overdue</desc>
 	</event>
 	<event code='7026' textcode='COPY_STATUS_LOST_AND_PAID'>
-	        <desc xml:lang="en-US">Copy is marked as lost and paid</desc>
+			<desc xml:lang="en-US">Copy is marked as lost and paid</desc>
 	</event>
 	<event code='7028' textcode='PATRON_CIRC_MISMATCH'>
-	        <desc xml:lang="en-US">Potentially notified patron does not own the circulation.</desc>
+			<desc xml:lang="en-US">Potentially notified patron does not own the circulation.</desc>
 	</event>
 	<event code='7029' textcode='MAX_AUTO_RENEWALS_REACHED'>
 		<desc xml:lang="en-US">Circulation has no more auto-renewals remaining</desc>
@@ -953,7 +943,15 @@
 	<event code='7035' textcode='GEOCODING_LOCATION_NOT_FOUND'>
 		<desc xml:lang="en-US">No location returned by Geographic Location Service</desc>
 	</event>
-
+	<event code='7036' textcode='PATRON_TOO_MANY_ACTIVE_PASSWORD_RESET_REQUESTS'>
+		<desc xml:lang='en-US'>There are too many active password reset request sessions for this patron.</desc>
+	</event>
+	<event code='7037' textcode='PATRON_NOT_AN_ACTIVE_PASSWORD_RESET_REQUEST'>
+		<desc xml:lang='en-US'>The user attempted to update their password using a stale or inactive password reset request session.</desc>
+	</event>
+	<event code='7038' textcode='PATRON_PASSWORD_WAS_NOT_STRONG'>
+		<desc xml:lang='en-US'>The user attempted to set their password to a weak value.</desc>
+	</event>
 
 	<!-- ================================================================ -->
 
@@ -1031,75 +1029,71 @@
 
 	<!-- ================================================================ -->
 
-    <event code='11000' textcode='SERIAL_SUBSCRIPTION_NOT_EMPTY'>
-        <desc xml:lang="en-US">The subscription still has dependent objects</desc>
-    </event>
+	<event code='11000' textcode='SERIAL_SUBSCRIPTION_NOT_EMPTY'>
+		<desc xml:lang="en-US">The subscription still has dependent objects</desc>
+	</event>
 
-    <event code='11001' textcode='SERIAL_CAPTION_AND_PATTERN_HAS_ISSUANCES'>
-        <desc xml:lang="en-US">The caption/pattern still has dependent issuances</desc>
-    </event>
+	<event code='11001' textcode='SERIAL_CAPTION_AND_PATTERN_HAS_ISSUANCES'>
+		<desc xml:lang="en-US">The caption/pattern still has dependent issuances</desc>
+	</event>
 
-    <event code='11101' textcode='SERIAL_DISTRIBUTION_HAS_NO_COPY_TEMPLATE'>
-        <desc xml:lang="en-US">Units cannot be created for the given item because its associated distribution does not have a copy template.</desc>
-    </event>
+	<event code='11101' textcode='SERIAL_DISTRIBUTION_HAS_NO_COPY_TEMPLATE'>
+		<desc xml:lang="en-US">Units cannot be created for the given item because its associated distribution does not have a copy template.</desc>
+	</event>
 
-    <event code='11102' textcode='SERIAL_DISTRIBUTION_HAS_NO_CALL_NUMBER'>
-        <desc xml:lang="en-US">Units cannot be created for the given item because its associated distribution does not have a call number.</desc>
-    </event>
+	<event code='11102' textcode='SERIAL_DISTRIBUTION_HAS_NO_CALL_NUMBER'>
+		<desc xml:lang="en-US">Units cannot be created for the given item because its associated distribution does not have a call number.</desc>
+	</event>
 
-    <event code='11103' textcode='TRANSIT_CHECKIN_INTERVAL_BLOCK'>
-        <desc xml:lang="en-US">Checkin attempted on item during minimum transit checkin interval.</desc>
-    </event>
+	<event code='11103' textcode='TRANSIT_CHECKIN_INTERVAL_BLOCK'>
+		<desc xml:lang="en-US">Checkin attempted on item during minimum transit checkin interval.</desc>
+	</event>
 
-    <event code='11104' textcode='SERIAL_CORRUPT_PATTERN_CODE'>
-        <desc xml:lang="en-US">A serial pattern code has been configured
-        that fails to conform to MFHD standards for fields 853-855.</desc>
-    </event>
-
-	<!-- ================================================================ -->
-
-    <event code='11105' textcode='PATRON_CREDIT_DISABLED'>
-        <desc xml:lang="en-US">Payments by patron credit are not allowed 
-            for the selected transaction</desc>
-    </event>
-
-    <event code='11106' textcode='TOTAL_HOLD_COPY_RATIO_EXCEEDED'>
-        <desc xml:lang="en-US">Renewal attempt failed because the "hold / total copies" ratio exceeds the configured limit</desc>
-    </event>
-
-    <event code='11107' textcode='AVAIL_HOLD_COPY_RATIO_EXCEEDED'>
-        <desc xml:lang="en-US">Renewal attempt failed because the "hold / available copies" ratio exceeds the configured limit</desc>
-    </event>
-
-    <event code='11008' textcode='SERIAL_DISTRIBUTION_NOT_EMPTY'>
-        <desc xml:lang="en-US">The distribution still has dependent objects</desc>
-    </event>
-    <event code='11009' textcode='SERIAL_STREAM_NOT_EMPTY'>
-        <desc xml:lang="en-US">The stream still has dependent objects</desc>
-    </event>
-    <event code='11010' textcode='SERIAL_CAPTION_AND_PATTERN_NOT_EMPTY'>
-        <desc xml:lang="en-US">The prediction pattern still has dependent objects</desc>
-    </event>
+	<event code='11104' textcode='SERIAL_CORRUPT_PATTERN_CODE'>
+		<desc xml:lang="en-US">A serial pattern code has been configured
+		that fails to conform to MFHD standards for fields 853-855.</desc>
+	</event>
 
 	<!-- ================================================================ -->
 
-    <event code='12000' textcode='ITEM_TO_MARK_CHECKED_OUT'>
-      <desc xml:lang="en-US">The item to be marked is checked out to a patron.</desc>
-    </event>
-    <event code='12001' textcode='ITEM_TO_MARK_IN_TRANSIT'>
-      <desc xml:lang="en-US">The item to be marked is in transit.</desc>
-    </event>
-    <event code='12002' textcode='ITEM_TO_MARK_LAST_HOLD_COPY'>
-      <desc xml:lang="en-US">The item to be marked is the last possible target for a hold.</desc>
-    </event>
+	<event code='11105' textcode='PATRON_CREDIT_DISABLED'>
+		<desc xml:lang="en-US">Payments by patron credit are not allowed
+			for the selected transaction</desc>
+	</event>
+
+	<event code='11106' textcode='TOTAL_HOLD_COPY_RATIO_EXCEEDED'>
+		<desc xml:lang="en-US">Renewal attempt failed because the "hold / total copies" ratio exceeds the configured limit</desc>
+	</event>
+
+	<event code='11107' textcode='AVAIL_HOLD_COPY_RATIO_EXCEEDED'>
+		<desc xml:lang="en-US">Renewal attempt failed because the "hold / available copies" ratio exceeds the configured limit</desc>
+	</event>
+
+	<event code='11008' textcode='SERIAL_DISTRIBUTION_NOT_EMPTY'>
+		<desc xml:lang="en-US">The distribution still has dependent objects</desc>
+	</event>
+	<event code='11009' textcode='SERIAL_STREAM_NOT_EMPTY'>
+		<desc xml:lang="en-US">The stream still has dependent objects</desc>
+	</event>
+	<event code='11010' textcode='SERIAL_CAPTION_AND_PATTERN_NOT_EMPTY'>
+		<desc xml:lang="en-US">The prediction pattern still has dependent objects</desc>
+	</event>
 
 	<!-- ================================================================ -->
 
-    <event code='12003' textcode='TITLE_HAS_HOLDS'>
-      <desc xml:lang="en-US">This title has hold requests on it that will be canceled if they are not transferred.</desc>
-    </event>
+	<event code='12000' textcode='ITEM_TO_MARK_CHECKED_OUT'>
+		<desc xml:lang="en-US">The item to be marked is checked out to a patron.</desc>
+	</event>
+	<event code='12001' textcode='ITEM_TO_MARK_IN_TRANSIT'>
+		<desc xml:lang="en-US">The item to be marked is in transit.</desc>
+	</event>
+	<event code='12002' textcode='ITEM_TO_MARK_LAST_HOLD_COPY'>
+		<desc xml:lang="en-US">The item to be marked is the last possible target for a hold.</desc>
+	</event>
+
+	<!-- ================================================================ -->
+
+	<event code='12003' textcode='TITLE_HAS_HOLDS'>
+		<desc xml:lang="en-US">This title has hold requests on it that will be canceled if they are not transferred.</desc>
+	</event>
 </ils_events>
-
-
-
-
