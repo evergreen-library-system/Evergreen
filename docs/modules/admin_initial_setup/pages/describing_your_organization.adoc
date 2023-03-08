@@ -32,57 +32,95 @@ bookmobiles or sub-branches is 3.
 
 === Create and edit Organization Unit Types ===
 
-. Open *Administration > Server Administration > Organization Types*.
-. In the left panel, expand the *Organization Unit Types* hierarchy. 
-. Click on a organization type to edit the existing type or to add a new
-  organization unit. 
-. A form opens in the right panel, displaying the data for the selected
-  organization unit. 
-. Edit the fields as required and click *Save*. 
+To create or add an organization unit type, go to *Administration* > *Server Administration* > *Organization Types*. 
 
-To create a new dependent organization unit, click *New Child*. The new child
-organization unit will appear in the left panel list below the parent.
-Highlight the new unit and edit the data as needed, click *Save*
+In the left panel, expand the *Organization Unit Types* hierarchy and click on an organization type to open the form in the right panel. The form displays the data for the selected organization unit type.
+
+image::describing_your_organization/org-unit-type-configuration.png[org unit type configuration]
+
+To edit the selected organization unit type, click *Edit*.
+
+image::describing_your_organization/org-unit-type-edit.png[org unit type record edit button]
+
+This will open up the Record Editor. Make the necessary updates and click *Save*.
+
+image::describing_your_organization/org-unit-type-record-editor.png[org unit type record editor]
+
+To create a new dependent organization unit type, click *Add Child*. 
+
+This will bring up the Record Editor screen. Fill out the required fields and click *Save*.
+
+image::describing_your_organization/org-unit-type-add-child.png[org unit type add child button]
+
+The new child organization unit type will appear in the left panel list below the parent type. The option will also display in the Organizational Unit Type field within the Organizational Units interface.
+
+=== Permissions ===
+
+The following permissions are needed to manage Organizational Unit Types:
+
+* CREATE_ORG_TYPE
+* UPDATE_ORG_TYPE
+* DELETE_ORG_TYPE
+
 
 == Organizational Units ==
 
-'Organizational Units' are the specific instances of the organization unit types
-that make up your library's hierarchy. These will have distinctive proper names
-such as Main Street Branch or Townsville Campus. 
+*Organizational Units* are the specific instances of the organization unit types that make up your library’s hierarchy. These will have distinctive proper names such as Main Street Branch or Townsville Campus.
 
 === Remove or edit default Organizational Units ===
 
-After installing the Evergreen software, the default CONS, SYS1, BR1, etc.,
-organizational units remain. These must be removed or edited to reflect actual
-library entities. 
+After installing the Evergreen software, the default CONS, SYS1, BR1, etc., organizational units remain. These must be removed or edited to reflect actual library entities.
 
 === Create and edit Organizational Units ===
 
-. Open *Administration > Server Administration > Organizational Units*.
-. In the left panel, expand the the Organizational Units hierarchy, select a
-  unit.
-. A form opens in the right panel, displaying the data for the selected
-  organizational unit.
-. To edit the existing, default organizational unit, enter system or library
-  specific data in the form; complete all three tabs: Main Settings, Hours
-  of Operation, Addresses.
-. Click *Save*.
+Organizational units are created and edited through *Administration* > *Server Administration* > *Organizational Units*.
 
-To create a new dependent organizational unit, click *New Child*. The new child
-will appear in the hierarchy list below the parent unit. Click on the new unit
-and edit the data, click *Save*
+The left panel shows a list of current Organizational Units and their hierarchy. Selecting a unit opens a form in the right panel, which displays the data for the selected organizational unit.
 
-=== Organizational Unit data ===
+image::describing_your_organization/org-unit-configuration.png[org unit configuration]
 
-The *Addresses* tab allows you to enter library contact information. Library
-Phone number, email address, and addresses are used in patron email
-notifications, hold slips, and transit slips. The Library address tab is broken
-out into four address types: Physical Address, Holds Address, Mailing Address,
-ILL Address. 
+When creating a new organizational unit, all three tabs must be completed: *Main Settings*, *Hours of Operation*, and *Addresses*.
 
-The *Hours of Operation* tab is where you enter regular, weekly hours. Holiday
-and other closures are set in the *Closed Dates Editor*. Hours of operation and
-closed dates impact due dates and fine accrual.  
+To create a new dependent organizational unit, click *Add Child*. 
+
+image:describing_your_organization/org-unit-add-child.png[org unit add child button]
+
+This will open up a blank form. Input the library information for all three tabs, clicking Save after completing each tab. The same process is followed when editing any organizational unit data. 	
+
+==== Organizational Unit data ====
+
+The *Main Settings* tab is where you input the organizational unit type, name(s), and contact information. The phone number and email address are used in patron email notifications, hold slips, and transit slips. This is also where you can control whether the organizational unit is visible in the OPAC. Note that all required fields must be filled out and saved before you can access the *Hours of Operation* and *Addresses* tabs.
+
+image::describing_your_organization/org-unit-main-settings.png[org unit main settings]
+
+The *Hours of Operation* tab is where you enter regular, weekly hours. Holiday and other closures are set in the *Closed Dates Editor*. Hours of operation and closed dates impact due dates and fine accrual. When an organizational unit is first created, the hours default to 9 AM to 5 PM each day.
+
+To add or edit hours: 
+
+. Click on the *Hours of Operation* tab.
+. Enter the updated hours for open and closed times for each day. 
+. To indicate that a branch is closed on a certain day, click the *Closed* button next to that day. The hours will default to 12:00 AM in both the open and closed fields. (If a library is already listed as closed on a certain day, the Closed button will be grayed out.)
+. Click *Apply Changes*.
+
+image::describing_your_organization/hours-of-operation.png[org unit hours of operation]
+
+There is also the capability to add notes to each day’s hours to record split hours or other service-related information. The notes appear enclosed in parentheses next to each day’s hours when viewing a library’s hours in the Bootstrap OPAC and TPAC.
+
+To add hours of operation notes:
+
+. Click the checkbox under *Edit Note Field?*. Note that all subsequent boxes will be checked, and a notes field will appear under each day.
+. Type in the note for the corresponding day.
+. Click *Apply Changes*.
+
+image::describing_your_organization/hours-of-operation-notes.png[org unit hours of operation notes]
+
+To delete (clear) hours, click *Clear Hours of Operation*. The hours will revert to the default times, and an alert will appear stating the hours have not been saved.
+
+image::describing_your_organization/clear-hours-of-operation.png[clear hours of operation]
+
+The *Addresses* tab is broken out into four address types: *Physical Address*, *Holds Address*, *Mailing Address*, *ILL Address*. Click *Save* in each address tab after adding or editing addresses.
+
+image::describing_your_organization/org_unit_addresses.png[org unit addresses]
 
 === After Changing Organization Unit Data ===
 
@@ -97,3 +135,29 @@ Run this script as the *opensrf* Linux account.
 autogen.sh
 ------------------------------------------------------------------------------
 
+=== Permissions ===
+
+Each tab within the organizational unit configuration requires different permissions to manage the data.
+
+To create an organizational unit and manage the Main Settings:
+
+* CREATE_ORG_UNIT
+* UPDATE_ORG_UNIT
+* DELETE_ORG_UNIT
+
+To manage Addresses:
+
+* CREATE_ORG_ADDRESS
+* UPDATE_ORG_ADDRESS
+* DELETE_ORG_ADDRESS
+
+[Note]
+======
+There is a current bug for the DELETE_ORG_ADDRESS permission where it is not required to delete an address. To delete an address, only the UPDATE_ORG_UNIT permission is needed at this time.
+======
+
+To manage Hours of Operation:
+
+* CREATE_HOURS_OF_OPERATION
+* UPDATE_HOURS_OF_OPERATION
+* DELETE_HOURS_OF_OPERATION
