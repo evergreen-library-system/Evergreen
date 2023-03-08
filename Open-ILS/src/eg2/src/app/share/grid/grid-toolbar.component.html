@@ -16,11 +16,23 @@
         [disabled]="!gridContext.filtersSet() || gridContext.dataSource.requestingData" i18n>
         Remove Filters
       </button>
-      <button *ngFor="let btn of gridContext.toolbarButtons"
-        [disabled]="btn.disabled" type="button" 
-        class="btn btn-outline-dark me-1" (click)="performButtonAction(btn)">
-        {{btn.label}}
-      </button>
+      <ng-container *ngFor="let btn of gridContext.toolbarButtons">
+        <label
+            *ngIf="btn.adjacentPreceedingLabel"
+            [ngClass]="{'button-adjacent-label':true,'disabled':btn.disabled}">
+            {{btn.adjacentPreceedingLabel}}
+        </label>
+        <button
+          [disabled]="btn.disabled" type="button"
+          class="btn btn-outline-dark me-1" (click)="performButtonAction(btn)">
+          {{btn.label}}
+        </button>
+        <label
+            *ngIf="btn.adjacentSubsequentLabel"
+            [ngClass]="{'button-adjacent-label':true,'disabled':btn.disabled}">
+            {{btn.adjacentSubsequentLabel}}
+        </label>
+      </ng-container>
     </div>
 
     <!-- checkboxes -->

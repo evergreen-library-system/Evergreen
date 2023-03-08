@@ -1375,6 +1375,8 @@ export class GridToolbarAction {
 // Buttons are global actions
 export class GridToolbarButton {
     label: string;
+    adjacentPreceedingLabel: string;
+    adjacentSubsequentLabel: string;
     onClick: EventEmitter<any []>;
     action: () => any; // DEPRECATED
     disabled: boolean;

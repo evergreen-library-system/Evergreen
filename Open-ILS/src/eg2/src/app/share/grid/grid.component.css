@@ -103,6 +103,15 @@
   outline: 2px solid var(--primary);
 }
 
+.button-adjacent-label {
+    vertical-align: inherit;
+    cursor: auto;
+}
+
+.button-adjacent-label.disabled {
+    opacity: .65;
+}
+
 .eg-grid-cell-skinny {
   width: 2em;
   text-align: center;

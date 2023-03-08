@@ -12,6 +12,10 @@ export class GridToolbarButtonComponent implements OnInit {
     // Note most input fields should match class fields for GridColumn
     @Input() label: string;
 
+    // These are optional labels that can come before and after the button
+    @Input() adjacentPreceedingLabel: string = '';
+    @Input() adjacentSubsequentLabel: string = '';
+
     // Register to click events
     @Output() onClick: EventEmitter<any>;
 
@@ -46,6 +50,8 @@ export class GridToolbarButtonComponent implements OnInit {
         this.button.onClick = this.onClick;
         this.button.routerLink = this.routerLink;
         this.button.label = this.label;
+        this.button.adjacentPreceedingLabel = this.adjacentPreceedingLabel;
+        this.button.adjacentSubsequentLabel = this.adjacentSubsequentLabel;
         this.button.action = this.action;
         this.grid.context.toolbarButtons.push(this.button);
     }
