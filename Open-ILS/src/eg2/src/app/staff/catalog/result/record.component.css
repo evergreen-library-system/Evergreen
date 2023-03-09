@@ -13,3 +13,18 @@
     max-height: 158px;
     max-width: 100px;
 }
+
+.bib-field-title {
+    font-size: .88rem;
+    font-weight: inherit;
+    margin: 0;
+}
+
+.bib-title-link {
+    font-weight: bold;
+}
+
+.bib-author-link {
+    font-weight: normal;
+    display: block;
+}

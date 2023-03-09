@@ -1,22 +1,14 @@
-<style>
-  .facet-selected {
-    background-color: #DDD;
-  }
-  .card {
-    width: 100%;
-  }
-  .list-group-item {padding: .5rem .75rem .5rem .75rem}
-</style>
 <div *ngIf="searchContext.result.facetData">
+  <h2 class="sr-only" i18n>Facets</h2>
   <div *ngFor="let facetConf of facetConfig.display">
     <div *ngIf="searchContext.result.facetData[facetConf.facetClass]">
       <div *ngFor="let name of facetConf.facetOrder">
         <div class="row"
           *ngIf="searchContext.result.facetData[facetConf.facetClass][name]">
           <div class="card mb-2">
-            <h4 class="card-header">
+            <h3 class="card-header">
               {{searchContext.result.facetData[facetConf.facetClass][name].cmfLabel}}
-            </h4>
+            </h3>
             <ul class="list-group list-group-flush">
               <li class="list-group-item" 
                 [ngClass]="{'facet-selected' :

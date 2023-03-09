@@ -14,7 +14,8 @@ import {ServerStoreService} from '@eg/core/server-store.service';
 
 @Component({
   selector: 'eg-catalog-results',
-  templateUrl: 'results.component.html'
+  templateUrl: 'results.component.html',
+  styleUrls: ['results.component.css']
 })
 export class ResultsComponent implements OnInit, OnDestroy {
 

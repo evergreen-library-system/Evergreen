@@ -1,0 +1,11 @@
+.facet-selected {
+  background-color: #DDD;
+}
+
+.card {
+  width: 100%;
+}
+
+.list-group-item {
+  padding: .5rem .75rem .5rem .75rem
+}
