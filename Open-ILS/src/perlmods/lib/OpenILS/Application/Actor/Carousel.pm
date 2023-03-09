@@ -80,7 +80,7 @@ sub retrieve_carousels_at_org {
     my $e = new_editor();
 
     my $carousels = $e->json_query({
-        select => { ccou => ['carousel','override_name','seq'] },
+        select => { ccou => ['carousel','override_name','seq'], cc => ['name'] },
         distinct => 'true',
         from => { ccou => 'cc' } ,
         where => {
