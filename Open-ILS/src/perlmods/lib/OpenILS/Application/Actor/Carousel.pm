@@ -37,23 +37,20 @@ sub get_carousel_contents {
         name => $carousel->name
     };
     my $q = {
-        select => { bre => ['id'], mfde => [{ column => 'value', alias => 'title' }] },
+        select => { bre => ['id'], rmsr => ['title','author'] },
         from   => {
-            bre => {
-                cbrebi => {
-                    join => {
-                        cbreb => {
-                            join => { cc => {} }
-                        }
-                    }
+            cbrebi => {
+                cbreb => {
+                    join => { cc => {} }
                 },
-                mfde => {}
+                bre => {
+                    join => { rmsr => { fkey => 'id', field => 'id' } }
+                }
             }
         },
         where  => {
             '+cc' => { id => $id },
-            '+bre' => { deleted => 'f' },
-            '+mfde' => { name => 'title' }
+            '+bre' => { deleted => 'f' }
         },
         order_by => {cbrebi => ['pos','create_time']}
     };
