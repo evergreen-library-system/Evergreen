@@ -1,0 +1,15 @@
+#staff-catalog-results-container h2 {
+    color: #212529;
+    font-size: 1.15rem;
+    font-weight: 500;
+}
+
+/* put the facets first visually */
+
+#eg-catalog-result-facets {
+    order: 1;
+}
+
+#eg-catalog-result-records {
+    order: 2;
+}

@@ -38,30 +38,28 @@
         </ng-container>
         <div class="flex-1 pl-2">
           <div class="row">
-            <div class="col-lg-12 font-weight-bold">
+            <div class="col-lg-12">
+              <h3 class="bib-field-title">
               <ng-container *ngIf="hasMrConstituentRecords(summary)">
-                  <a routerLink="/staff/catalog/search"
+                  <a routerLink="/staff/catalog/search" class="bib-title-link"
                     [queryParams]="appendFromMrParam(summary)">
                     <eg-bib-display-field [summary]="summary" field="title"
                       [usePlaceholder]="true"></eg-bib-display-field>
                   </a>
               </ng-container>
+              
               <ng-container *ngIf="!hasMrConstituentRecords(summary)">
                 <a routerLink="/staff/catalog/record/{{summary.id}}"
-                  [queryParams]="currentParams()">
+                  [queryParams]="currentParams()" class="bib-title-link">
                   <eg-bib-display-field [summary]="summary" field="title"
                     [usePlaceholder]="true"></eg-bib-display-field>
                 </a>
               </ng-container>
-            </div>
-          </div>
-          <div class="row pt-2">
-            <div class="col-lg-12">
-              <a routerLink="/staff/catalog/search"
-                [queryParams]="getAuthorSearchParams(summary)">
-                <eg-bib-display-field [summary]="summary" field="author"
-                  [usePlaceholder]="true"></eg-bib-display-field>
+              
+              <a routerLink="/staff/catalog/search" class="bib-author-link pt-2" [queryParams]="getAuthorSearchParams(summary)">
+                <eg-bib-display-field [summary]="summary" field="author" [usePlaceholder]="true"></eg-bib-display-field>
               </a>
+              </h3>
             </div>
           </div>
           <div class="row pt-2">

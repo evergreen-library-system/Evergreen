@@ -17,7 +17,8 @@ export const FACET_CONFIG = {
 
 @Component({
   selector: 'eg-catalog-result-facets',
-  templateUrl: 'facets.component.html'
+  templateUrl: 'facets.component.html',
+  styleUrls: ['./facets.component.css']
 })
 export class ResultFacetsComponent implements OnInit {
 
