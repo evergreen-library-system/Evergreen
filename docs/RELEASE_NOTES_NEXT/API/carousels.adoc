@@ -1,0 +1,2 @@
+* The open-ils.actor.carousel.retrieve_by_org API now returns the carousel's default name in addition to the override name.
+* The open-ils.actor.carousel.get_contents API now returns the item author as well as title.
