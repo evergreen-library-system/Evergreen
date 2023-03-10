@@ -829,6 +829,7 @@
 -%]
 
 [%- BLOCK carousels;
+    IF ctx.show_carousels == 'true';
     config = {
         animated => 0,
         animation_interval => 5,
@@ -911,6 +912,7 @@
 [% END %]
 [% END %]
 </div>
+[% END -%]
 [% END -%]
 [% END -%]
 
