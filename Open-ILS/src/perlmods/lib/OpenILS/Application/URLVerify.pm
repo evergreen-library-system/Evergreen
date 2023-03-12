@@ -689,6 +689,44 @@ sub create_session {
     return $e->data->id;
 }
 
+__PACKAGE__->register_method(
+    method => "delete_session",
+    api_name => "open-ils.url_verify.session.delete",
+    signature => {
+        desc => q/Delete a URL verify session and associated containers, selectors, attempts,
+            and verifications./,
+        params => [
+            {desc => "Authentication token", type => "string"},
+            {desc => "session id", type => "number"},
+        ],
+        return => {desc => "1 on success, event on failure", type => "number"}
+    }
+);
+
+sub delete_session {
+    my ($self, $client, $auth, $session_id) = @_;
+
+    my $e = new_editor(authtoken => $auth, xact => 1);
+    return $e->die_event unless $e->checkauth;
+
+    return $e->die_event unless $e->allowed("URL_VERIFY", $e->requestor->ws_ou);
+
+    my $session = $e->retrieve_url_verify_session($session_id);
+    return $e->die_event unless $session; # not found
+
+    my $container = $e->retrieve_container_biblio_record_entry_bucket($session->container);
+
+    $e->delete_url_verify_session($session) or
+        return $e->die_event;
+
+    $e->delete_container_biblio_record_entry_bucket($container) or
+        return $e->die_event;
+
+    $e->commit or return $e->die_event;
+
+    return 1;
+}
+
 # _check_for_existing_bucket_items() is used later by session_search_and_extract()
 sub _check_for_existing_bucket_items {
     my ($e, $session) = @_;
