@@ -114,6 +114,15 @@ export class GridComponent implements OnInit, AfterViewInit, OnDestroy {
     // filters to start off with
     @Input() initialFilterValues: {[field: string]: string};
 
+    // allowNamedFilterSets: true if the result filtering
+    // controls can be saved or loaded via a name
+    @Input() allowNamedFilterSets: boolean;
+
+    // migrateLegacyFilterSets: if set to a legacy filter interface type
+    // (i.e. url_verify), attempt to migrate any legacy filter sets for
+    // that interface.
+    @Input() migrateLegacyFilterSets: string;
+
     // sticky grid header
     //
     // stickyHeader: true of the grid header should be
@@ -169,6 +178,8 @@ export class GridComponent implements OnInit, AfterViewInit, OnDestroy {
         this.context.isSortable = this.sortable === true;
         this.context.isFilterable = this.filterable === true;
         this.context.initialFilterValues = this.initialFilterValues || null;
+        this.context.allowNamedFilterSets = this.allowNamedFilterSets === true;
+        this.context.migrateLegacyFilterSets = this.migrateLegacyFilterSets;
         this.context.stickyGridHeader = this.stickyHeader === true;
         this.context.isMultiSortable = this.multiSortable === true;
         this.context.useLocalSort = this.useLocalSort === true;

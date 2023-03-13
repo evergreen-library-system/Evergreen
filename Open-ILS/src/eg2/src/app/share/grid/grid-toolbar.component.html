@@ -1,7 +1,11 @@
 <eg-grid-toolbar-actions-editor #toolbarActionsEditor [gridContext]="gridContext">
 </eg-grid-toolbar-actions-editor>
 
+<eg-grid-manage-filters-dialog #gridManageFiltersDialog [gridContext]="gridContext">
+</eg-grid-manage-filters-dialog>
+
 <div class="eg-grid-toolbar mb-2">
+
 
   <div class="btn-toolbar">
     <span class="fw-bold me-2" *ngIf="gridContext.toolbarLabel">
@@ -11,11 +15,19 @@
     <!-- buttons -->
     <div class="btn-grp" *ngIf="gridContext.toolbarButtons.length || gridContext.isFilterable">
       <!-- special case for remove filters button -->
-      <button *ngIf="gridContext.isFilterable" type="button" 
-        class="btn btn-outline-dark me-1" (click)="gridContext.removeFilters()"
-        [disabled]="!gridContext.filtersSet() || gridContext.dataSource.requestingData" i18n>
-        Remove Filters
-      </button>
+      <ng-container *ngIf="gridContext.isFilterable">
+        <button *ngIf="!gridContext.allowNamedFilterSets" type="button"
+          class="btn btn-outline-dark me-1" (click)="gridContext.removeFilters()"
+          [disabled]="!gridContext.filtersSet() || gridContext.dataSource.requestingData" i18n>
+          Remove Filters
+        </button>
+        <button *ngIf="gridContext.allowNamedFilterSets"
+          class="btn btn-outline-dark me-1" type="button"
+          (click)="gridManageFiltersDialog.open().subscribe()"
+          [disabled]="gridContext.dataSource.requestingData" i18n>
+          Manage Filters
+        </button>
+      </ng-container>
       <ng-container *ngFor="let btn of gridContext.toolbarButtons">
         <label
             *ngIf="btn.adjacentPreceedingLabel"

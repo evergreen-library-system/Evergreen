@@ -1,0 +1,82 @@
+<ng-template #dialogContent>
+  <div class="modal-header bg-info">
+    <h4 class="modal-title">
+      <span i18n>Manage Grid Filters</span>
+    </h4>
+    <button type="button" class="btn-close btn-close-white"
+    i18n-aria-label aria-label="Close" (click)="close()">
+  </button>
+</div>
+<div class="modal-body">
+    <form #manageFiltersForm="ngForm" role="form" class="form-validated common-form striped-odd">
+        <div class="form-group row">
+            <div class="col-lg-3">
+                <label for="session_name" i18n>Save as</label>
+            </div>
+            <div class="col-lg-9">
+              <input
+                class="form-control"
+                id="session_name" name="session_name"
+                type="text" pattern="[\s\S]*\S[\s\S]*"
+                placeholder="Name..." i18n-placeholder
+                required="false"
+                [disabled]="disableSaveNameTest()"
+                (ngModelChange)="saveFilterNameModelChanged.next($event)"
+                [ngModel]="saveFilterName"/>
+                <div *ngIf="nameCollision" class="alert alert-warning" i18n>
+                    An existing Filter Set with the same name will be overwritten if you Save.
+                </div>
+            </div>
+        </div>
+        <div class="form-group row">
+            <div class="col-lg-3">
+            </div>
+            <div class="col-lg-9">
+              <button type="button" class="btn btn-success" [disabled]="disableSaveButtonTest()"
+                    (click)="saveFilters()" i18n>
+                    Save Active Filters</button>
+            </div>
+        </div>
+        <div class="form-group row">
+            <div class="col-lg-3">
+                <label for="filter_sets" i18n>Filter Sets</label>
+            </div>
+            <div class="col-lg-9">
+              <eg-combobox #namedFilterSetSelector
+                domId="filterSets" name="filter_sets" [entries]="filterSetEntries"
+                placeholder="Filter Sets..." i18n-placeholder>
+              </eg-combobox>
+            </div>
+        </div>
+        <div class="form-group row">
+            <div class="col-lg-3">
+            </div>
+            <div class="col-lg-9">
+                  <button type="button" class="btn btn-success" [disabled]="!namedFilterSetSelector.selectedId"
+                        (click)="gridContext.loadFilters(namedFilterSetSelector.selectedId); close();" i18n>
+                        Load Filter Set</button>
+                <div *ngIf="gridContext.filtersSet()" class="alert alert-warning" i18n>
+                    Your active filters will be replaced with this filter set if you Load.
+                </div>
+            </div>
+        </div>
+        <div class="form-group row">
+            <div class="col-lg-3">
+            </div>
+            <div class="col-lg-9">
+                  <button type="button" class="btn btn-success" [disabled]="!namedFilterSetSelector.selectedId"
+                        (click)="gridContext.deleteFilters(namedFilterSetSelector.selectedId); namedFilterSetSelector.selectedId = ''; refreshEntries();" i18n>
+                        Delete Filter Set</button>
+            </div>
+        </div>
+    </form>
+</div>
+<div class="modal-footer">
+  <button type="button" class="btn btn-success" [disabled]="manageFiltersForm.invalid"
+        (click)="gridContext.removeFilters(); close(false);" i18n>
+        Remove Filters</button>
+  <button type="button" class="btn btn-secondary"
+        (click)="close()" i18n>
+        Cancel</button>
+</div>
+</ng-template>

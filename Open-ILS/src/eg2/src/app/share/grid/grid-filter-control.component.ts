@@ -49,12 +49,13 @@ export class GridFilterControlComponent implements OnInit {
     }
 
     applyOrgFilter(col: GridColumn) {
-        const org: IdlObject = (col.filterValue as unknown) as IdlObject;
+        let org: IdlObject = (col.filterValue as unknown) as IdlObject;
 
         if (org == null) {
             this.clearFilter(col);
             return;
         }
+        org = this.org.get(org); // if coming from a Named Filter Set, filterValue would be an an org id
         const ous: any[] = new Array();
         if (col.filterIncludeOrgDescendants || col.filterIncludeOrgAncestors) {
             if (col.filterIncludeOrgAncestors) {

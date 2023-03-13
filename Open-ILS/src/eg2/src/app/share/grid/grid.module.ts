@@ -17,6 +17,7 @@ import {GridPrintComponent} from './grid-print.component';
 import {GridFilterControlComponent} from './grid-filter-control.component';
 import {GridToolbarActionsEditorComponent} from './grid-toolbar-actions-editor.component';
 import {GridFlatDataService} from './grid-flat-data.service';
+import {GridManageFiltersDialogComponent} from './grid-manage-filters-dialog.component';
 
 
 @NgModule({
@@ -36,7 +37,8 @@ import {GridFlatDataService} from './grid-flat-data.service';
         GridColumnWidthComponent,
         GridPrintComponent,
         GridFilterControlComponent,
-        GridToolbarActionsEditorComponent
+        GridToolbarActionsEditorComponent,
+        GridManageFiltersDialogComponent
     ],
     imports: [
         EgCommonModule,

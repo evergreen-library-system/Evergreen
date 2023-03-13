@@ -2,7 +2,7 @@
  * Collection of grid related classses and interfaces.
  */
 import {TemplateRef, EventEmitter, QueryList} from '@angular/core';
-import {Observable, Subscription, empty} from 'rxjs';
+import {Observable, Subscription} from 'rxjs';
 import {IdlService, IdlObject} from '@eg/core/idl.service';
 import {OrgService} from '@eg/core/org.service';
 import {ServerStoreService} from '@eg/core/server-store.service';
@@ -76,6 +76,31 @@ export class GridColumn {
         this.filterInputDisabled = false;
         this.filterIncludeOrgAncestors = false;
         this.filterIncludeOrgDescendants = false;
+    }
+
+    loadFilter(f:any) {
+        this.isFiltered = f.isFiltered;
+        this.filterValue = f.filterValue;
+        this.filterOperator = f.filterOperator;
+        this.filterInputDisabled = f.filterInputDisabled;
+        this.filterIncludeOrgAncestors = f.filterIncludeOrgAncestors;
+        this.filterIncludeOrgDescendants = f.IncludeOrgDescendants;
+    }
+
+    getIdlId(value: any) {
+        const obj: IdlObject = (value as unknown) as IdlObject;
+        return obj.id();
+    }
+
+    getFilter() {
+        return {
+            'isFiltered': this.isFiltered,
+            'filterValue': typeof this.filterValue === 'object' ? this.getIdlId(this.filterValue) : this.filterValue,
+            'filterOperator': this.filterOperator,
+            'filterInputDisabled': this.filterInputDisabled,
+            'filterIncludeOrgAncestors': this.filterIncludeOrgAncestors,
+            'filterIncludeOrgDescendants': this.filterIncludeOrgDescendants
+        }
     }
 
     clone(): GridColumn {
@@ -153,7 +178,7 @@ export class GridColumnSet {
     generateWildcardColumns(col: GridColumn) {
 
         const dotpath = col.path.replace(/\.?\*$/, '');
-        let classObj, idlField;
+        let classObj:IdlObject, idlField:any;
 
         if (col.idlClass) {
             classObj = this.idl.classes[col.idlClass];
@@ -164,13 +189,13 @@ export class GridColumnSet {
         if (!classObj) { return; }
 
         const pathParts = dotpath.split(/\./);
-        let oldField;
+        //let oldField;
 
         // find the IDL class definition for the last element in the
         // path before the .*
         // An empty pathParts means expand the root class
         pathParts.forEach((part, pathIdx) => {
-            oldField = idlField;
+            //oldField = idlField;
             idlField = classObj.field_map[part];
 
             // unless we're at the end of the list, this field should
@@ -194,7 +219,7 @@ export class GridColumnSet {
             return;
         }
 
-        classObj.fields.forEach(field => {
+        classObj.fields.forEach((field:any) => {
 
             // Only show wildcard fields where we have data to show
             // Virtual and un-fleshed links will not have any data.
@@ -284,9 +309,9 @@ export class GridColumnSet {
     idlInfoFromDotpath(dotpath: string): any {
         if (!dotpath || !this.idlClass) { return null; }
 
-        let idlParent;
-        let idlField;
-        let idlClass;
+        let idlParent:any;
+        let idlField:any;
+        let idlClass:any;
         let nextIdlClass = this.idl.classes[this.idlClass];
 
         const pathParts = dotpath.split(/\./);
@@ -427,7 +452,7 @@ export class GridColumnSet {
     }
 
     moveColumn(col: GridColumn, diff: number) {
-        let srcIdx, targetIdx;
+        let srcIdx:number, targetIdx:number;
 
         this.columns.forEach((c, i) => {
           if (c.name === col.name) { srcIdx = i; }
@@ -638,6 +663,8 @@ export class GridContext {
     isSortable: boolean;
     isFilterable: boolean;
     initialFilterValues: {[field: string]: string};
+    allowNamedFilterSets: boolean;
+    migrateLegacyFilterSets: string;
     stickyGridHeader: boolean;
     isMultiSortable: boolean;
     useLocalSort: boolean;
@@ -713,31 +740,34 @@ export class GridContext {
     // Load initial settings and data.
     initData() {
         this.applyGridConfig()
-        .then(ok => this.dataSource.requestPage(this.pager))
-        .then(ok => this.listenToPager());
+        .then(() => this.dataSource.requestPage(this.pager))
+        .then(() => this.listenToPager());
     }
 
     destroy() {
         this.ignorePager();
     }
 
-    applyGridConfig(): Promise<void> {
-        return this.getGridConfig(this.persistKey)
-        .then(conf => {
-            let columns = [];
-            if (conf) {
-                columns = conf.columns;
-                if (conf.limit && !this.disablePaging) {
-                    this.pager.limit = conf.limit;
-                }
-                this.applyToolbarActionVisibility(conf.hideToolbarActions);
-            }
+	async applyGridConfig(): Promise<void> {
+		try {
+			const conf = await this.getGridConfig(this.persistKey);
+			let columns = [];
+			if (conf) {
+				columns = conf.columns;
+				if (conf.limit && !this.disablePaging) {
+					this.pager.limit = conf.limit;
+				}
+				this.applyToolbarActionVisibility(conf.hideToolbarActions);
+			}
 
-            // This is called regardless of the presence of saved
-            // settings so defaults can be applied.
-            this.columnSet.applyColumnSettings(columns);
-        });
-    }
+			// This is called regardless of the presence of saved
+			// settings so defaults can be applied.
+			this.columnSet.applyColumnSettings(columns);
+		} catch (error) {
+			console.error('Error applying grid config:', error);
+		}
+	}
+
 
     applyToolbarActionVisibility(hidden: string[]) {
         if (!hidden || hidden.length === 0) { return; }
@@ -795,7 +825,7 @@ export class GridContext {
     listenToPager() {
         if (this.pageChanges) { return; }
         this.pageChanges = this.pager.onChange$.subscribe(
-            val => this.dataSource.requestPage(this.pager));
+            () => this.dataSource.requestPage(this.pager));
     }
 
     ignorePager() {
@@ -938,7 +968,7 @@ export class GridContext {
             return val;
         }
 
-        let interval;
+        let interval:any;
         const intField = col.dateOnlyIntervalField;
         if (intField) {
             const intCol =
@@ -969,8 +999,8 @@ export class GridContext {
 
     nestedItemFieldValue(obj: any, col: GridColumn): string {
 
-        let idlField;
-        let idlClassDef;
+        let idlField:any;
+        let idlClassDef:any;
         const original = obj;
         const steps = col.path.split('.');
 
@@ -1066,7 +1096,7 @@ export class GridContext {
         if (!this.lastSelectedIndex) { return; }
         const pos = this.getRowPosition(this.lastSelectedIndex);
         if (pos === this.pager.offset) {
-            this.toPrevPage().then(ok => this.selectLastRow(), err => {});
+            this.toPrevPage().then(() => this.selectLastRow(), err => { console.log('grid: in selectPreviousRow',err); });
         } else {
             this.selectRowByPos(pos - 1);
         }
@@ -1076,7 +1106,7 @@ export class GridContext {
         if (!this.lastSelectedIndex) { return; }
         const pos = this.getRowPosition(this.lastSelectedIndex);
         if (pos === (this.pager.offset + this.pager.limit - 1)) {
-            this.toNextPage().then(ok => this.selectFirstRow(), err => {});
+            this.toNextPage().then(() => this.selectFirstRow(), err => { console.log('grid: in selectNextRow',err); });
         } else {
             this.selectRowByPos(pos + 1);
         }
@@ -1095,7 +1125,7 @@ export class GridContext {
             (pos === this.pager.offset) ? this.toPrevPage() : Promise.resolve();
 
         promise.then(
-            ok => {
+            () => {
                 const row = this.dataSource.data[pos - 1];
                 const newIndex = this.getRowIndex(row);
                 if (selectedIndexes.filter(i => i === newIndex).length > 0) {
@@ -1106,7 +1136,7 @@ export class GridContext {
                     this.selectMultipleRows(selectedIndexes.concat(newIndex));
                 }
             },
-            err => {}
+            err => { console.log('grid: inside selectMultiRowsPrevious',err); }
         );
     }
 
@@ -1149,7 +1179,7 @@ export class GridContext {
             this.toNextPage() : Promise.resolve();
 
         promise.then(
-            ok => {
+            () => {
                 const row = this.dataSource.data[pos + 1];
                 const newIndex = this.getRowIndex(row);
                 if (selectedIndexes.filter(i => i === newIndex).length > 0) {
@@ -1160,7 +1190,7 @@ export class GridContext {
                     this.selectMultipleRows(selectedIndexes.concat(newIndex));
                 }
             },
-            err => {}
+            err => { console.log('grid: inside selectMultiRowsNext',err); }
         );
     }
 
@@ -1226,22 +1256,76 @@ export class GridContext {
         return flatRow;
     }
 
-    getAllRowsAsText(): Observable<any> {
-        return Observable.create(observer => {
-            this.getAllRows().then(ok => {
-                this.dataSource.data.forEach(row => {
-                    observer.next(this.getRowAsFlatText(row));
-                });
-                observer.complete();
-            });
-        });
-    }
+	getAllRowsAsText(): Observable<any> {
+		return new Observable((observer: any) => {
+			this.getAllRows().then(() => {
+				this.dataSource.data.forEach(row => {
+					observer.next(this.getRowAsFlatText(row));
+				});
+				observer.complete();
+			});
+		});
+	}
 
     removeFilters(): void {
         this.dataSource.filters = {};
         this.columnSet.displayColumns().forEach(col => { col.removeFilter(); });
         this.filterControls.forEach(ctl => ctl.reset());
         this.reload();
+    }
+    saveFilters(asName: string): void {
+        const obj = {
+            'filters' : this.dataSource.filters, // filters isn't 100% reversible to column filter values, so...
+            'controls' : Object.fromEntries(new Map( this.columnSet.columns.map( c => [c.name, c.getFilter()] ) ))
+        }
+        this.store.getItem('eg.grid.filters.' + this.persistKey).then( setting => {
+            console.log('grid: saveFilters, setting = ', setting);
+            setting ||= {};
+            setting[asName] = obj;
+            console.log('grid: saving ' + asName, JSON.stringify(obj));
+            this.store.setItem('eg.grid.filters.' + this.persistKey, setting).then( res => {
+                console.log('grid: save toast here',res);
+            });
+        });
+    }
+    deleteFilters(withName: string): void {
+        this.store.getItem('eg.grid.filters.' + this.persistKey).then( setting => {
+            if (setting) {
+                if (setting[withName]) {
+                    setting[withName] = undefined;
+                    delete setting[withName]; /* not releasing right away */
+                } else {
+                    console.warn('Could not find ' + withName + ' in eg.grid.filters.' + this.persistKey,setting);
+                }
+                this.store.setItem('eg.grid.filters.' + this.persistKey, setting).then( res => {
+                    console.log('grid: delete toast here',res);
+                });
+            } else {
+                console.warn('Could not find setting eg.grid.filters.' + this.persistKey, setting);
+            }
+        });
+    }
+    loadFilters(fromName: string): void {
+        console.log('grid: fromName',fromName);
+        this.store.getItem('eg.grid.filters.' + this.persistKey).then( setting => {
+            if (setting) {
+                const obj = setting[fromName];
+                if (obj) {
+                    this.dataSource.filters = obj.filters;
+                    Object.keys(obj.controls).forEach( col_name => {
+                        let col = this.columnSet.columns.find(c => c.name === col_name);
+                        if (col) {
+                            col.loadFilter( obj.controls[col_name] );
+                        }
+                    });
+                    this.reload();
+                } else {
+                    console.warn('Could not find ' + fromName + ' in eg.grid.filters.' + this.persistKey, obj);
+                }
+            } else {
+                console.warn('Could not find setting eg.grid.filters.' + this.persistKey, setting);
+            }
+        });
     }
     filtersSet(): boolean {
         return Object.keys(this.dataSource.filters).length > 0;
@@ -1261,17 +1345,17 @@ export class GridContext {
         csvStr = csvStr.replace(/,$/, '\n');
 
         return new Promise(resolve => {
-            this.getAllRowsAsText().subscribe(
-                row => {
+            this.getAllRowsAsText().subscribe({
+                next: row => {
                     columns.forEach(col => {
                         csvStr += this.valueToCsv(row[col.name]);
                         csvStr += ',';
                     });
                     csvStr = csvStr.replace(/,$/, '\n');
                 },
-                err => {},
-                ()  => resolve(csvStr)
-            );
+                error: err => { console.log('grid: in gridToCsv',err); },
+                complete: ()  => resolve(csvStr)
+            });
         });
     }
 
@@ -1293,18 +1377,18 @@ export class GridContext {
         if (!this.columnSet.idlClass) { return; }
 
         const pkeyField = this.idl.classes[this.columnSet.idlClass].pkey;
-        const specifiedColumnOrder = this.autoGeneratedColumnOrder ?
-            this.autoGeneratedColumnOrder.split(/,/) : [];
+        //const specifiedColumnOrder = this.autoGeneratedColumnOrder ?
+        //    this.autoGeneratedColumnOrder.split(/,/) : [];
 
         // generate columns for all non-virtual fields on the IDL class
         const fields = this.idl.classes[this.columnSet.idlClass].fields
-            .filter(field => !field.virtual);
+            .filter((field:any) => !field.virtual);
 
         const sortedFields = this.autoGeneratedColumnOrder ?
             this.idl.sortIdlFields(fields, this.autoGeneratedColumnOrder.split(/,/)) :
             fields;
 
-        sortedFields.forEach(field => {
+        sortedFields.forEach((field:any) => {
             if (!this.ignoredFields.filter(ignored => ignored === field.name).length) {
                 const col = new GridColumn();
                 col.name = field.name;
@@ -1444,26 +1528,26 @@ export class GridDataSource {
 
         return new Promise((resolve, reject) => {
             let idx = pager.offset;
-            return this.getRows(pager, this.sort).subscribe(
-                row => {
+            return this.getRows(pager, this.sort).subscribe({
+                next: row => {
                     this.data[idx++] = row;
                     // not updating this.requestingData, as having
                     // retrieved one row doesn't mean we're done
                     this.retrievalError = false;
                 },
-                err => {
+                error: err => {
                     console.error(`grid getRows() error ${err}`);
                     this.requestingData = false;
                     this.retrievalError = true;
                     reject(err);
                 },
-                ()  => {
+                complete: ()  => {
                     this.checkAllRetrieved(pager, idx);
                     this.requestingData = false;
                     this.retrievalError = false;
                     resolve(null);
                 }
-            );
+            });
         });
     }
 
