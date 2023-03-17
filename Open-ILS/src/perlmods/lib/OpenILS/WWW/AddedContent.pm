@@ -282,7 +282,7 @@ sub print_content {
 
 
 
-# returns an HTPP::Response object
+# returns an HTTP::Response object
 sub get_url {
     my( $self, $url ) = @_;
 
@@ -296,7 +296,7 @@ sub get_url {
     return $res;
 }
 
-# returns an HTPP::Response object
+# returns an HTTP::Response object
 sub post_url {
     my( $self, $url, $content ) = @_;
 
