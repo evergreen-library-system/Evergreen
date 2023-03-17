@@ -1,2 +1,3 @@
 * `autogen.sh` can now accept a `-c` switch to specify the location of `opensrf_core.xml`. This is useful for certain multi-tenant setups of Evergreen. (LP#2003707)
 * Prevent templates from applying or changing magical status in angular holdings editor (LP#1999401)
+* Prevent directly editing the shelving location deleted field in the Shelving Locations Editor (LP#2002435)
