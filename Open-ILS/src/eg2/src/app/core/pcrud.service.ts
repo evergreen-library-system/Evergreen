@@ -3,6 +3,7 @@ import {Observable, Observer} from 'rxjs';
 import {IdlService, IdlObject} from './idl.service';
 import {NetService, NetRequest} from './net.service';
 import {AuthService} from './auth.service';
+import {StoreService} from './store.service';
 
 // Externally defined.  Used here for debugging.
 declare var js2JSON: (jsThing: any) => string;
@@ -202,7 +203,7 @@ export class PcrudContext {
     }
 
     private dispatch(method: string, params: any[]): Observable<PcrudResponse> {
-        if (this.authoritative) {
+        if (this.authoritative && PcrudService.useAuthoritative) {
             return this.wrapXact(() => {
                 return this.sendRequest(method, params);
             });
@@ -316,9 +317,11 @@ export class PcrudContext {
 
 @Injectable({providedIn: 'root'})
 export class PcrudService {
+    static useAuthoritative = false;
 
     constructor(
         private idl: IdlService,
+        private store: StoreService,
         private net: NetService,
         private auth: AuthService
     ) {}
@@ -362,6 +365,25 @@ export class PcrudService {
 
     autoApply(list: IdlObject | IdlObject[]): Observable<PcrudResponse> {
         return this.newContext().autoApply(list);
+    }
+
+    setAuthoritative(): Promise<boolean> {
+
+        const enabled = this.store.getLocalItem('eg.sys.use_authoritative');
+        if (typeof enabled === 'boolean') {
+            PcrudService.useAuthoritative = enabled;
+            return Promise.resolve(enabled);
+        }
+
+        return this.net.request(
+            'open-ils.actor',
+            'opensrf.open-ils.system.use_authoritative'
+        ).toPromise().then(enabled => {
+            enabled = Boolean(Number(enabled));
+            PcrudService.useAuthoritative = enabled;
+            this.store.setLocalItem('eg.sys.use_authoritative', enabled);
+            return enabled;
+        });
     }
 }
 

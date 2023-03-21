@@ -1,0 +1,22 @@
+== Optional Evergreen "Authoritative" API Support ==
+
+Previous versions of Evergreen supported "authoritative" API calls by default.
+These are API calls which force database reads to go the primary database
+instead of a pooled replica.
+
+Going forward, this functionality will be disabled by default, but may be
+enabled via a new opensrf.xml setting.
+
+If your site uses database pooling, with Evergreen actively reading from
+replicas, add this setting to your opensrf.xml file within the <default/>
+block:
+
+[source,xml]
+------------------------------------------------------------------------------
+<opensrf version='0.0.3'>
+  <default>
+    <uses_pooled_read_replica_dbs>true</uses_pooled_read_replica_dbs>
+<!-- ... -->
+------------------------------------------------------------------------------
+
+

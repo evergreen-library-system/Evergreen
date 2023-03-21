@@ -4,6 +4,25 @@ use UNIVERSAL::require;
 use base qw/OpenSRF::Application/;
 use OpenILS::Utils::Fieldmapper;
 
+__PACKAGE__->register_method(
+    api_name    => 'opensrf.open-ils.system.use_authoritative',
+    api_level   => 1,
+    method      => 'use_authoritative',
+);
+
+# Do authoritative methods do anything different or are they simply
+# clones of their non-authoritative variant?
+my $_use_authoritative;
+sub use_authoritative {
+    if (!defined $_use_authoritative) {
+        my $ua = OpenSRF::Utils::SettingsClient
+            ->new->config_value('uses_pooled_read_replica_dbs') || '';
+        $_use_authoritative = lc($ua) eq 'true';
+    }
+
+    return $_use_authoritative;
+}
+
 sub ils_version {
     # version format is "x-y-z", for example "2-0-0" for Evergreen 2.0.0
     # For branches, format is "x-y"
@@ -74,7 +93,7 @@ sub authoritative_wrapper {
     my $method = $self->method_lookup($self->{real_api_name});
     die unless $method;
 
-    local $OpenILS::Utils::CStoreEditor::always_xact = 1;
+    local $OpenILS::Utils::CStoreEditor::always_xact = use_authoritative();
 
     $client->respond( $_ ) for ( $method->run(@args) );
 

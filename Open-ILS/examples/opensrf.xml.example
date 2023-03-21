@@ -404,6 +404,14 @@ vim:et:ts=4:sw=4:
         <!-- no apps are enabled globally by default -->
         <activeapps/> 
 
+        <!-- 
+            If this setting is "true", Evergreen "authoritative" APIs
+            will be enabled, forcing select API calls to wrap read calls
+            in a database BEGIN/ROLLBACK so they read from the primary
+            database.
+        -->
+        <uses_pooled_read_replica_dbs>false</uses_pooled_read_replica_dbs>
+
         <cache>
             <!-- memcache servers -->
             <global>

@@ -4,6 +4,7 @@ import {Router, Resolve, RouterStateSnapshot,
 import {IdlService} from '@eg/core/idl.service';
 import {OrgService} from '@eg/core/org.service';
 import {LocaleService} from '@eg/core/locale.service';
+import {PcrudService} from '@eg/core/pcrud.service';
 
 // For locale application
 declare var OpenSRF;
@@ -15,6 +16,7 @@ export class BaseResolver implements Resolve<Promise<void>> {
         private router: Router,
         private idl: IdlService,
         private org: OrgService,
+        private pcrud: PcrudService,
         private locale: LocaleService
     ) {}
 
@@ -31,6 +33,10 @@ export class BaseResolver implements Resolve<Promise<void>> {
 
         this.idl.parseIdl();
 
-        return this.org.fetchOrgs(); // anonymous PCRUD.
+        return this.pcrud.setAuthoritative()
+        .then(enabled => {
+            console.debug('Authoritative API support enabled=' + enabled);
+            return this.org.fetchOrgs();
+        });
     }
 }
