@@ -1,3 +1,260 @@
-Evergreen doesn't keep a GNU-style ChangeLog except in release tarballs.
-Those seeking a change log are encouraged to run 'git log -v', or read
-it online at: http://git.evergreen-ils.org/?p=Evergreen.git;a=log
+commit af915f5134a31446f1c745cdaf9d0f7bc977188d
+Author: Galen Charlton <gmc@equinoxOLI.org>
+Date:   Thu Mar 23 15:11:49 2023 -0400
+
+    LP#1361782: stamp DB update
+    
+    Signed-off-by: Galen Charlton <gmc@equinoxOLI.org>
+
+1	1	Open-ILS/src/sql/Pg/002.schema.config.sql
+1	1	Open-ILS/src/sql/Pg/upgrade/{XXXX.data.concurrent_search_global_flags.sql => 1361.data.concurrent_search_global_flags.sql}
+ rename Open-ILS/src/sql/Pg/upgrade/{XXXX.data.concurrent_search_global_flags.sql => 1361.data.concurrent_search_global_flags.sql} (91%)
+
+commit fcd73f0f106315ae688f512e5ef72d4fd627bab3
+Author: Mike Rylander <mrylander@gmail.com>
+Date:   Tue Feb 21 15:36:46 2023 -0500
+
+    DoS protection release notes
+    
+    Signed-off-by: Mike Rylander <mrylander@gmail.com>
+    Signed-off-by: Galen Charlton <gmc@equinoxOLI.org>
+
+10	0	docs/RELEASE_NOTES_NEXT/Architecture/DoS-protection.adoc
+ create mode 100644 docs/RELEASE_NOTES_NEXT/Architecture/DoS-protection.adoc
+
+commit ffe2102f69c8792f735ac8b4ebb0179ef6ad7ff3
+Author: Mike Rylander <mrylander@gmail.com>
+Date:   Tue Nov 22 16:38:03 2022 -0500
+
+    LP#1361782: Add DoS protection
+    
+    This commit adds two types of simple DoS protection:
+    
+     * Limit concurrent search requests per client IP address, regardless of
+     the searches being performed.  This helps address issues of accidental
+     spamming from a malfunctioning OPAC workstation, or crawlers of various
+     types.  The limit is controlled by a global flag called
+     "opac.max_concurrent_search.ip".
+    
+     * Limit the global concurrent search requests for the same query.  This
+     helps address both simple and distributed DoS that send the same search
+     request over and over.  The limit is controlled by a global flag called
+     "opac.max_concurrent_search.query", and defaults to 20.
+    
+    When the limit is exceeded in either case the client receives an HTTP
+    429 "Too many requests" response from the web server, and the connection
+    is ended.
+    
+    Signed-off-by: Mike Rylander <mrylander@gmail.com>
+    Signed-off-by: Jason Stephenson <jason@sigio.com>
+    Signed-off-by: Galen Charlton <gmc@equinoxOLI.org>
+
+24	2	Open-ILS/src/perlmods/lib/OpenILS/Application/Search/Biblio.pm
+38	2	Open-ILS/src/perlmods/lib/OpenILS/WWW/EGCatLoader/Search.pm
+25	0	Open-ILS/src/sql/Pg/950.data.seed-values.sql
+31	0	Open-ILS/src/sql/Pg/upgrade/XXXX.data.concurrent_search_global_flags.sql
+ create mode 100644 Open-ILS/src/sql/Pg/upgrade/XXXX.data.concurrent_search_global_flags.sql
+
+commit 2e75f23d9d331881560bc37d221e1bdf1ddbac7f
+Author: Mike Rylander <mrylander@gmail.com>
+Date:   Tue Feb 21 16:53:53 2023 -0500
+
+    qtype CGI param protection release notes
+    
+    Signed-off-by: Mike Rylander <mrylander@gmail.com>
+    Signed-off-by: Galen Charlton <gmc@equinoxOLI.org>
+
+11	0	docs/RELEASE_NOTES_NEXT/OPAC/qtype-param-protection.adoc
+ create mode 100644 docs/RELEASE_NOTES_NEXT/OPAC/qtype-param-protection.adoc
+
+commit c39fa94265a000b880fe72db1fbadc3ffb8a15c4
+Author: Mike Rylander <mrylander@gmail.com>
+Date:   Thu Nov 17 17:11:38 2022 -0500
+
+    LP#1811685: qtype CGI parameter checking
+    
+    With this commit we throw away searches with invalid qtype value based
+    on configured classes and aliases.  Invalid qtype values have been seen
+    in the wild as part of attempted (but failed) SQL injection attacks, so
+    we will tighten up what we accept.
+    
+    As an additional (unrelated) bonus, this commit also avoids prepending
+    the search class on basic search when the class (from qytpe) is not
+    exactly "keyword".
+    
+    Signed-off-by: Mike Rylander <mrylander@gmail.com>
+    Signed-off-by: Jason Stephenson <jason@sigio.com>
+    Signed-off-by: Galen Charlton <gmc@equinoxOLI.org>
+
+15	0	Open-ILS/src/perlmods/lib/OpenILS/WWW/EGCatLoader/Search.pm
+1	1	Open-ILS/src/templates-bootstrap/opac/parts/header.tt2
+1	1	Open-ILS/src/templates/opac/parts/header.tt2
+
+commit 26e8be6fa1de4fbe47d47c9179061a6555292752
+Author: Andrea Buntz Neiman <abneiman@equinoxinitiative.org>
+Date:   Wed Mar 8 16:33:42 2023 -0500
+
+    Docs: removing XUL reference from web staff client intro page
+    
+    Signed-off-by: Andrea Buntz Neiman <abneiman@equinoxinitiative.org>
+
+0	2	docs/modules/using_staff_client/pages/introduction.adoc
+
+commit c3a43943bc22e0b9b29e99d016a38d2338264e6b
+Author: Galen Charlton <gmc@equinoxOLI.org>
+Date:   Wed Mar 1 13:49:15 2023 -0500
+
+    LP#2003707: add releases note entry
+    
+    (Also remove entries from the 3.8.2 release)
+    
+    Signed-off-by: Galen Charlton <gmc@equinoxOLI.org>
+
+1	3	docs/RELEASE_NOTES_NEXT/miscellaneous.adoc
+
+commit ea452f4d1e3b8b64734ee3d6c88177e3c5f9852d
+Author: Jason Boyer <JBoyer@equinoxOLI.org>
+Date:   Mon Jan 23 07:23:15 2023 -0500
+
+    LP2003707: Add an OpenSRF Core Config Param to autogen.sh
+    
+    What it says on the tin, if you change the name or location of
+    opensrf_core.xml now you can still run autogen.sh.
+    
+    Signed-off-by: Jason Boyer <JBoyer@equinoxOLI.org>
+    Signed-off-by: Josh Stompro <stomproj@larl.org>
+    Signed-off-by: Galen Charlton <gmc@equinoxOLI.org>
+
+9	7	Open-ILS/src/extras/autogen.sh
+
+commit f28d896c13fe9218ba4b6160fb9dbc52de39ca22
+Author: Chris Sharp <csharp@georgialibraries.org>
+Date:   Fri Jan 27 15:40:31 2023 -0500
+
+    LP#1990306: Also check for authtoken at the auth service level
+    
+    Thank you to Bill Erickson and Jason Stephenson for assistance with this.
+    
+    Signed-off-by: Chris Sharp <csharp@georgialibraries.org>
+    Signed-off-by: Jane Sandberg <sandbergja@gmail.com>
+    Signed-off-by: Galen Charlton <gmc@equinoxOLI.org>
+
+1	0	Open-ILS/web/js/ui/default/staff/services/auth.js
+
+commit 988b9a11a759157f37ce2ebd5622f62dd08a442c
+Author: Jeff Davis <jeff.davis@bc.libraries.coop>
+Date:   Tue Oct 18 12:42:26 2022 -0700
+
+    LP#1990306: avoid VIEW_USER perm lookup on egPatronApp startup when we have a null authtoken
+    
+    Signed-off-by: Jeff Davis <jeff.davis@bc.libraries.coop>
+    Signed-off-by: Chris Sharp <csharp@georgialibraries.org>
+    Signed-off-by: Jane Sandberg <sandbergja@gmail.com>
+    Signed-off-by: Galen Charlton <gmc@equinoxOLI.org>
+
+1	0	Open-ILS/web/js/ui/default/staff/circ/patron/app.js
+
+commit dab04c72a818b7bdac096d93e84c74acaad229cb
+Author: Andrea Buntz Neiman <abneiman@equinoxinitiative.org>
+Date:   Thu Jan 26 11:28:49 2023 -0500
+
+    Docs: updates to Standing Penalties and Group Penalty Thresholds
+    
+    Signed-off-by: Andrea Buntz Neiman <abneiman@equinoxinitiative.org>
+
+115	17	docs/modules/admin/pages/lsa-standing_penalties.adoc
+39	27	docs/modules/local_admin/pages/group_penalty_thresholds.adoc
+
+commit 63fc820de1147238b6923e0d6d90204679bea479
+Author: Andrea Buntz Neiman <abneiman@equinoxinitiative.org>
+Date:   Wed Jan 18 15:52:53 2023 -0500
+
+    Docs: web services docs fix
+    
+    Signed-off-by: Andrea Buntz Neiman <abneiman@equinoxinitiative.org>
+
+1	1	docs/modules/integrations/pages/web_services.adoc
+
+commit ce5ac82f3f92f0ee35215c39432ebcd41b61d07a
+Author: Jason Boyer <JBoyer@equinoxOLI.org>
+Date:   Fri Jan 13 14:39:51 2023 -0500
+
+    Forward Port 3.8.2 Upgrade Script
+    
+    Signed-off-by: Jason Boyer <JBoyer@equinoxOLI.org>
+
+512	0	Open-ILS/src/sql/Pg/version-upgrade/3.8.1-3.8.2-upgrade-db.sql
+ create mode 100644 Open-ILS/src/sql/Pg/version-upgrade/3.8.1-3.8.2-upgrade-db.sql
+
+commit 1fe80ad52d633bb3400de96e6a826f90dcf00e3d
+Author: Galen Charlton <gmc@equinoxOLI.org>
+Date:   Thu Jan 12 12:38:32 2023 -0500
+
+    Docs: Evergreen web services docs
+    
+    Signed-off-by: Andrea Buntz Neiman <abneiman@equinoxinitiative.org>
+
+1	0	docs/modules/integrations/nav.adoc
+92	0	docs/modules/integrations/pages/web_services.adoc
+ create mode 100644 docs/modules/integrations/pages/web_services.adoc
+
+commit 689ca0dda27797b36ee237f68b88c961c57cac7a
+Author: Jane Sandberg <sandbergja@gmail.com>
+Date:   Wed May 4 22:42:26 2022 -0700
+
+    LP#1955079: Use Email::MIME for emailing records in the OPAC
+    
+    Email::Simple was mangling the headers.  Let's use Email::MIME instead.
+    
+    Signed-off-by: Jane Sandberg <sandbergja@gmail.com>
+    Signed-off-by: Garry Collum <gcollum@gmail.com>
+    Signed-off-by: Michele Morgan <mmorgan@noblenet.org>
+
+19	11	Open-ILS/src/perlmods/lib/OpenILS/Application/Search/Biblio.pm
+64	0	Open-ILS/src/perlmods/live_t/35-lp1955079-send-record-email.t
+38	0	Open-ILS/src/perlmods/t/25-lp1955079-opac-mime-email.t
+ create mode 100644 Open-ILS/src/perlmods/live_t/35-lp1955079-send-record-email.t
+ create mode 100644 Open-ILS/src/perlmods/t/25-lp1955079-opac-mime-email.t
+
+commit 85aa4292bb5c18ed4cacc82410b34573a848585d
+Author: Mike Rylander <mrylander@gmail.com>
+Date:   Wed Jan 12 11:25:59 2022 -0500
+
+    LP#1955079: Staff catalog can't email records
+    
+    The angular staff catalog uses the new print/email records
+    functionality, but calls it without some expected parameters.  This
+    causes the backend method to fail as it assumes the params will exist.
+    
+    This commit removes that assumption by testing the length of the
+    parameter list before attempted to read them.
+    
+    Signed-off-by: Mike Rylander <mrylander@gmail.com>
+    Signed-off-by: Jane Sandberg <sandbergja@gmail.com>
+    Signed-off-by: Michele Morgan <mmorgan@noblenet.org>
+
+3	1	Open-ILS/src/perlmods/lib/OpenILS/Application/Search/Biblio.pm
+
+commit c625b979df6560c3d141d06c9a1e771ea050e705
+Author: Garry Collum <gcollum@gmail.com>
+Date:   Thu Aug 25 17:44:13 2022 +0000
+
+    LP1422927 Opac hold history pagination
+    
+    Fixes the hold history pagination in both the TPac and the Bootstrap opac.
+    
+    To test:
+    1. Login as a patron and enable the hold history preference.  The default
+    number of items on each page is 15, so place at least 16 holds for this
+    patron.  (The limit can be overridden in the url with the &limit switch).
+    2. View the hold history and notice that all items are displaying on all
+    pages.
+    3. Apply the patch
+    4. The results are now paginated with 15 items per page.
+    
+    Signed-off-by: Garry Collum <gcollum@gmail.com>
+    Signed-off-by: Terran McCanna <tmccanna@georgialibraries.org>
+    Signed-off-by: Michele Morgan <mmorgan@noblenet.org>
+
+6	1	Open-ILS/src/templates-bootstrap/opac/myopac/hold_history.tt2
+6	1	Open-ILS/src/templates/opac/myopac/hold_history.tt2
