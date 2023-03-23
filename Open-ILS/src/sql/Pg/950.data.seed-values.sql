@@ -23226,7 +23226,7 @@ VALUES (
 INSERT INTO config.global_flag (name, value, enabled, label)
 VALUES (
     'opac.max_concurrent_search.query',
-    '0',
+    '20',
     TRUE,
     oils_i18n_gettext(
         'opac.max_concurrent_search.query',
