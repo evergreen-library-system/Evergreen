@@ -44,18 +44,14 @@ END;
      <!--Keyword-->
         <div class="col-sm-12 col-md">
         <span class='search_box_wrapper'>
-            [%- # autosuggest breaks accessibility, as the aria-label
-                # attribute is removed when the Dijit is created. :(  %]
             <label id="search_box_label" for="search_box" class="w-100">[% l('Search: ') %]
-            <input class="form-control form-control-sm" type="text" id="search_box" name="query" aria-label="[%
+            <input class="form-control form-control-sm" type="search" id="search_box" name="query" aria-label="[%
                     l('Enter search query:');
                 %]" value="[% is_advanced ? ctx.naive_query_scrub(ctx.user_query) : CGI.param('query') | html %]"
                 [%- IF use_autosuggest.enabled == "t" %]
-                dojoType="openils.widget.AutoSuggest" type_selector="'qtype'"
-                submitter="this.textbox.form.submit();"
-                [%-     IF use_autosuggest.value.search('opac_visible') %]
-                store_args='{"org_unit_getter": function() { return [% ctx.search_ou %]; }}'
-                [%-     END # opac_visible -%]
+                    data-instructions="[% l('Press down arrow for autocomplete') %]"
+                    data-listbox-name="[% l('autocomplete') %]"
+                    data-search-org="[% ctx.physical_loc || ctx.aou_tree.id %]"
                 [%- ELSE -%]
                     [% IF basic_search != "f" AND is_home_page%] autofocus [% END %]
                 [%- END # autosuggest enabled %] />

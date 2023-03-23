@@ -222,6 +222,14 @@ npm install   # fetch JS and CSS dependencies
 +
 Note that there is no build step.
 
+3. OPTIONAL: Test OPAC javascript code:
++
+[source,sh]
+------------------------------------------------------------------------------
+npm run test
+------------------------------------------------------------------------------
+
+
 == Configuration and compilation instructions ==
 
 For the time being, we are still installing everything in the `/openils/`

@@ -21,6 +21,8 @@ there are matching MARC records with copies within your search scope.  For examp
 
 image::media/Auto_Suggest_in_Catalog_Search2.jpg[Auto_Suggest_in_Catalog_Search2]
 
+After turning on the feature, you may need to restart memcached and other services.
+
 == Using this Feature ==
 
 . Enter search terms into the basic search field.  Evergreen will automatically suggest search terms.
