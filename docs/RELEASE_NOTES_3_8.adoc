@@ -3,6 +3,38 @@
 :numbered:
 :toclevels: 3
 
+== Evergreen 3.8.3 ==
+
+This release contains bug fixes improving on Evergreen 3.8.2.
+
+=== Upgrade notes ===
+
+* https://bugs.launchpad.net/evergreen/+bug/2003707[Bug 2003707] - During upgrade, if you're running with `opensrf_core.xml` located anywhere other than `/openils/conf` in a single-tenant manner, make sure that `SYSCONFDIR` as set in `autogen.sh` matches what's set in the installed `Cronscript.pm`
+
+=== Bug Fixes ===
+
+==== Administration ====
+
+* `autogen.sh` can now accept a `-c` switch to specify the location of `opensrf_core.xml`. This is useful for certain multi-tenant setups of Evergreen. (https://bugs.launchpad.net/evergreen/+bug/2003707[Bug 2003707])
+* Avoids permission lookup when there's no authtoken (https://bugs.launchpad.net/evergreen/+bug/1990306[Bug 1990306])
+
+
+==== Documentation ====
+
+* Updates to Standing Penalties and Group Penalty Thresholds documentation
+
+=== Acknowledgements ===
+
+We would like to thank the following individuals who contributed code, testing, and documentation to the 3.8.3 point release of Evergreen:
+
+* Jason Boyer
+* Galen Charlton
+* Jeff Davis
+* Andrea Buntz Neiman
+* Jane Sandberg
+* Chris Sharp
+* Josh Stompro
+
 == Evergreen 3.8.2 ==
 
 This release contains bug fixes improving on Evergreen 3.8.1.
