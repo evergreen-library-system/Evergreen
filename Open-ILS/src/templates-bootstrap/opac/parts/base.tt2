@@ -70,7 +70,17 @@
                 let input = document.getElementById('password_field');
                 let icon = btn.querySelector('i');
                 btn.addEventListener('click', () => {
-                    input.type == 'password' ? [input.type = 'text', icon.setAttribute('class','fas fa-eye')] : [input.type = 'password', icon.setAttribute('class', 'fas fa-eye-slash')];
+                    if(input.type == 'password'){
+                        input.type = 'text';
+                        icon.setAttribute('class', 'fas fa-eye');
+                        btn.setAttribute('aria-checked', 'true');
+                        input.setAttribute('aria-description', 'Your password is visible!');
+                    }else {
+                        input.type = 'password';
+                        icon.setAttribute('class', 'fas fa-eye-slash');
+                        btn.setAttribute('aria-checked', 'false');
+                        input.setAttribute('aria-description', 'Your password is not visible.');
+                    }
                     input.focus();
                 });
                 let loginForm = document.getElementById('login_form');

@@ -49,8 +49,14 @@
     let checkbox = document.getElementById('password_visibility_checkbox');
     let input = document.getElementById('password_field');
     checkbox.addEventListener('change', () => {
-        if(checkbox.checked) input.type = 'text';
-        else input.type = 'password';
+        if(checkbox.checked){
+          input.type = 'text';
+          input.setAttribute('aria-description', 'Your password is visible!');
+        }
+        else {
+          input.type = 'password';
+          input.setAttribute('aria-description', 'Your password is not visible.');
+        }
         input.focus();
     });
     // If the form is submitted revert the password field to a password input 

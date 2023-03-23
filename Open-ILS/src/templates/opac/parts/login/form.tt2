@@ -57,7 +57,9 @@
         <div class='float-left'>
             <label for="password_field" class="lbl1" >[% l('PIN Number or Password') %]</label>
             <div class="input_bg">
-                <input id="password_field" name="password" type="password" spellcheck="false"/>
+                <input id="password_field" name="password" type="password"
+                       spellcheck="false" autocapitalize="false" autocomplete="false"
+                       aria-description="Your password is not visible."/>
             </div>
             <div id="password_visibility" class="input_bg">
                 <input id="password_visibility_checkbox" type="checkbox" />

@@ -4023,3 +4023,10 @@ padding: 15px;
 .pointer {
     cursor: pointer;
 }
+#loginModal #show_password {
+    border-top: 1px solid #888;
+    border-right: 1px solid #888;
+    border-bottom: 1px solid #888;
+    border-radius: 0px 4px 4px 0px;
+    background-color: whitesmoke;
+}

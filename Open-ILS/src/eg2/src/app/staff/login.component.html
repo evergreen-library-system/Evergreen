@@ -7,54 +7,54 @@
 
         <div class="row row-cols-auto">
           <label class="form-label col-form-label fw-bold col-4 text-end" for="username" i18n>Username</label>
-          <div class="col-8">
-            <input 
-              type="text" 
-              class="form-control"
-              id="username" 
-              name="username"
-              required
-              autocomplete="username"
-              i18n-placeholder
-              placeholder="Username" 
-              [(ngModel)]="args.username"/>
-          </div>
+          <input
+            type="text"
+            class="form-control col-lg-8"
+            id="username"
+            name="username"
+            required
+            autocomplete="username"
+            i18n-placeholder
+            placeholder="Username"
+            [(ngModel)]="args.username"/>
         </div>
 
-        <div class="row row-cols-auto mt-3">
-          <label class="form-label col-form-label fw-bold col-4 text-end" for="password" i18n>Password</label>
-          <div class="col-8">
-          <input 
+        <div class="row row-cols-auto">
+          <label class="col-lg-4 text-right font-weight-bold" for="password" i18n>Password</label>
+          <div class="input-group col-lg-8 p-0">
+          <input
             [type]="passwordVisible ? 'text' : 'password'"
             class="form-control"
             id="password"
+            #password
             name="password"
             required
             autocomplete="current-password"
             i18n-placeholder
             placeholder="Password"
             spellcheck="false"
+            [attr.aria-description]="ariaDescription"
             [(ngModel)]="args.password"/>
-          <span id="show_password" class="input-group-text pointer" (click)="togglePasswordVisibility()">
+          <button id="show_password" class="input-group-text pointer"
+                  type="button" role="switch" aria-label="password visibility" aria-checked="false"
+                  (click)="togglePasswordVisibility()" >
             <span class="material-icons">{{ passwordVisible ? 'visibility' : 'visibility_off' }}</span>
-          </span>
+          </button>
           </div>
         </div>
 
         <div class="row row-cols-auto mt-3" *ngIf="workstations && workstations.length">
           <label class="form-label col-form-label col-4 text-end fw-bold" for="workstation" i18n>Workstation</label>
-          <div class="col-8">
-            <select 
-              class="form-control" 
-              id="workstation" 
-              name="workstation"
-              required
-              [(ngModel)]="args.workstation">
-              <option *ngFor="let ws of workstations" [value]="ws.name">
-                {{ws.name}}
-              </option>
-            </select>
-          </div>
+          <select
+            class="form-control col-lg-8"
+            id="workstation"
+            name="workstation"
+            required
+            [(ngModel)]="args.workstation">
+            <option *ngFor="let ws of workstations" [value]="ws.name">
+              {{ws.name}}
+            </option>
+          </select>
         </div>
 
         <div class="row row-cols-auto mt-3">

@@ -1,4 +1,10 @@
-import {Component, OnInit, Renderer2} from '@angular/core';
+import {
+    Component,
+    ElementRef,
+    OnInit,
+    Renderer2,
+    ViewChild
+} from '@angular/core';
 import {Location} from '@angular/common';
 import {Router, ActivatedRoute} from '@angular/router';
 import {AuthService, AuthWsState} from '@eg/core/auth.service';
@@ -7,15 +13,19 @@ import {OrgService} from '@eg/core/org.service';
 import {OfflineService} from '@eg/staff/share/offline.service';
 
 @Component({
+  styleUrls: ['./login.component.css'],
   templateUrl : './login.component.html'
 })
 export class StaffLoginComponent implements OnInit {
 
+    @ViewChild('password')
+    passwordInput: ElementRef;
     workstations: any[];
     loginFailed: boolean;
     routeTo: string;
     pendingXactsDate: Date;
     passwordVisible: boolean;
+    ariaDescription: string = 'Your password is not visible.';
 
     args = {
       username : '',
@@ -124,6 +134,9 @@ export class StaffLoginComponent implements OnInit {
 
     togglePasswordVisibility() {
         this.passwordVisible = !this.passwordVisible;
+        if(this.passwordVisible) this.ariaDescription = "Your password is visible!";
+        else this.ariaDescription = "Your password is not visible.";
+        this.passwordInput.nativeElement.focus();
     }
 
 }

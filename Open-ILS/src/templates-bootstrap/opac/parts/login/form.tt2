@@ -39,8 +39,11 @@
 		</div>
 		<div class="col-sm w-50">
 			<div class="input-group">
-				<input class="form-control" id="password_field" name="password" type="password" spellcheck="false" autocomplete="false"/>
-				<span id="show_password" class="input-group-text pointer"><i class="fas fa-eye-slash"></i></span>
+				<input class="form-control" id="password_field" name="password" type="password"
+					   spellcheck="false" autocomplete="false" autocapitalize="none" aria-description="Your password is not visible."/>
+				<button id="show_password" class="input-group-text pointer" type="button" role="checkbox">
+					<i class="fas fa-eye-slash"></i>
+				</button>
 			</div>
 		</div>
 	</div>

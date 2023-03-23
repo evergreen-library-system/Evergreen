@@ -194,7 +194,9 @@ table.list tr.selected td { /* deprecated? */
 .currency-input {
   width: 8em;
 }
-
+#show_password {
+  border: none;
+}
 /* barcode inputs are everywhere.  Let's have a consistent style. */
 .barcode { width: 16em !important; }
 
