@@ -2688,23 +2688,11 @@ table.bookbag-specific {
 .result-bookbag-description { font-size: [% css_fonts.size_bigger %]; font-style: italic; }
 .result-bookbag-item-note { font-style: italic; }
 .lowhits-bookbag-name { font-weight: bold; }
+.search_box_wrapper .list-group { z-index: 2; }
 .oils_AS { font-weight: bold; color: [% css_colors.text_match %]; }
-.oils_AS_match_term {
-    [% IF rtl == 't' -%]
-    text-align: right;
-    [% ELSE -%]
-    text-align: left;
-    [% END -%]
-    color: [% css_colors.text %];
-}
-.oils_AS_match_field {
-    font-size: [% css_fonts.size_smallest %]; padding: 0.65em 0;
-    [% IF rtl == 't' -%]
-    text-align: left;
-    [% ELSE -%]
-    text-align: right;
-    [% END -%]
-    color: [% css_colors.accent_medium %];
+.active .oils_AS {
+    color: #FFF;
+    text-decoration: underline;
 }
 table.result_holdings_table {
     margin-top: 1em;
