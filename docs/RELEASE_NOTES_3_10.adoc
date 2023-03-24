@@ -46,6 +46,16 @@ This is https://bugs.launchpad.net/evergreen/+bug/1361782[Bug 1361782].
 
 === Bug Fixes ===
 
+==== Accessibility ====
+
+* Fixes color contrast on modal headers (https://bugs.launchpad.net/evergreen/+bug/1999954[Bug 1999954])
+* Adjusts staff interface badges to comply with color contrast guidelines (https://bugs.launchpad.net/evergreen/+bug/1999282[Bug 1999282])
+* Increases color contrast on staff client links and buttons (https://bugs.launchpad.net/evergreen/+bug/1991562[Bug 1991562])
+* Adds accessible search form labels to staff catalog search form (https://bugs.launchpad.net/evergreen/+bug/1998855[Bug 1998855])
+* Adds keyboard navigation support to menus within staff catalog bib records (https://bugs.launchpad.net/evergreen/+bug/1814978[Bug 1814978])
+* Adds input labels in the manage authorities interface fields (https://bugs.launchpad.net/evergreen/+bug/1989284[Bug 1989284)]
+* Adds labels to metarecord holds checkboxes in staff client + alt-text for decorative image (https://bugs.launchpad.net/evergreen/+bug/1999304[Bug 1999304])
+
 ==== Acquisitions ====
 
 * Fixes funds dropdown in new acqusitions interfaces (https://bugs.launchpad.net/evergreen/+bug/1999544[Bug 1999544])
@@ -75,9 +85,7 @@ This is https://bugs.launchpad.net/evergreen/+bug/1361782[Bug 1361782].
 
 * Fixes an error emailing records from the staff catalog & OPAC (https://bugs.launchpad.net/evergreen/+bug/1955079[Bug 1955079])
 * Removes deleted call numbers from shelf browse (https://bugs.launchpad.net/evergreen/+bug/2003742[Bug 2003742])
-* Adds accessible search form labels to staff catalog search form (https://bugs.launchpad.net/evergreen/+bug/1998855[Bug 1998855])
 * Adjusts styling of disable search menu items in staff catalog search (https://bugs.launchpad.net/evergreen/+bug/1998969[Bug 1998969])
-* Adds keyboard navigation support to menus within staff catalog bib records (https://bugs.launchpad.net/evergreen/+bug/1814978[Bug 1814978])
 
 ==== Cataloging ====
 
@@ -85,10 +93,9 @@ This is https://bugs.launchpad.net/evergreen/+bug/1361782[Bug 1361782].
 * Fixes an issue where statcats in holding templates wouldn't save correctly (https://bugs.launchpad.net/evergreen/+bug/1999696[Bug 1999696])
 * Fixes inconsistent button placement in delete holdings modal (https://bugs.launchpad.net/evergreen/+bug/1945355[Bug 1945355])
 * Adds styling to show that a holding template changed a statcat value (https://bugs.launchpad.net/evergreen/+bug/2003755[Bug 2003755])
-* Fixes erroneous error messge in cover image upload modal (https://bugs.launchpad.net/evergreen/+bug/1988321[Bug 1988321])
+* Fixes erroneous error message in cover image upload modal (https://bugs.launchpad.net/evergreen/+bug/1988321[Bug 1988321])
 * Fixes an issue where last-copy delete was not creating hold notices (https://bugs.launchpad.net/evergreen/+bug/2007591[Bug 2007591])
 * Restores the ability to create empty call numbers in the holdings editor (https://bugs.launchpad.net/evergreen/+bug/1998494[Bug 1998494])
-* Adds input labels in the manage authorities interface fields (https://bugs.launchpad.net/evergreen/+bug/1989284[Bug 1989284)]
 * Fixes MARC editor heading linker for fields 600, 651, and 655 (https://bugs.launchpad.net/evergreen/+bug/2007351[Bug 2007351])
 * Protects "magic" statuses from overwrite when using holdings editor template (https://bugs.launchpad.net/evergreen/+bug/1999401[Bug 1999401])
 * Prevents deletion of shelving locations with items attached + adds undelete action on shelving location editor  (https://bugs.launchpad.net/evergreen/+bug/2002435[Bug 2002435])
@@ -101,27 +108,23 @@ This is https://bugs.launchpad.net/evergreen/+bug/1361782[Bug 1361782].
 * Fixes slowness in the holds shelf query (https://bugs.launchpad.net/evergreen/+bug/1971745[Bug 1971745])
 * Fixes an issue where the patron registration form sent unnecessarily large amount of data upon save (https://bugs.launchpad.net/evergreen/+bug/1976126[Bug 1976126])
 * Fixes display issue with depth selector in patron note modal (https://bugs.launchpad.net/evergreen/+bug/1980874[Bug 1980874])
-* Adds labels to metarecord holds checkboxes in staff client + alt-text for decorative image (https://bugs.launchpad.net/evergreen/+bug/1999304[Bug 1999304])
 * Removes extra "pre-fetch all holds" checkbox from view holds page (https://bugs.launchpad.net/evergreen/+bug/2002337[Bug 2002337])
 
 ==== Client ====
 
 * Adds localization to Record Summary heading (https://bugs.launchpad.net/evergreen/+bug/1999446[Bug 1999446])
-* Fixes color contrast on modal headers (https://bugs.launchpad.net/evergreen/+bug/1999954[Bug 1999954])
 * Adds a user-visible error if a user attempts to login to the staff client without STAFF_LOGIN permissions (https://bugs.launchpad.net/evergreen/+bug/1969641[Bug 1969641])
 * Fixes grid refresh issue on old Dojo grids (https://bugs.launchpad.net/evergreen/+bug/1625192[Bug 1625192])
 * Fixes shelving location selector that was broken in several interfaces (https://bugs.launchpad.net/evergreen/+bug/1995418[Bug 1995418]
 * Angular fixes including removing alert_message from print template, adding min/max to date picker, and preventing selecting a past date at checkout (https://bugs.launchpad.net/evergreen/+bug/1995623[Bug 1995623])
 * Adds offline message to Angular login page (https://bugs.launchpad.net/evergreen/+bug/1958258[Bug 1958258])
-* Adjusts staff interface badges to comply with color contrast guidelines (https://bugs.launchpad.net/evergreen/+bug/1999282[Bug 1999282])
 * Fixes Angular login redirect issue (https://bugs.launchpad.net/evergreen/+bug/2006513[Bug 2006513])
-* Increases color contrast on staff client links and buttons (https://bugs.launchpad.net/evergreen/+bug/1991562[Bug 1991562])
 
 
 ==== Documentation ====
 
 * Updates to Standing Penalties and Group Penalty Thresholds documentation
-* Updates `create_release_notes.sh` to use asciidoctor formatting (https://bugs.launchpad.net/evergreen/+bug/1995653[Bug 1995653)]
+* Updates `create_release_notes.sh` to use asciidoctor formatting (https://bugs.launchpad.net/evergreen/+bug/1995653[Bug 1995653])
 * Adds Evergreen Web Services documentation
 * Adds Mark Item as Missing Pieces documentation (https://bugs.launchpad.net/evergreen/+bug/1706664[Bug 1706664])
 * Updates to Server Installation documentation for current ng-build parameters (https://bugs.launchpad.net/evergreen/+bug/1863921[Bug 1863921])
@@ -685,7 +688,9 @@ particular field uses MarcXML or MODS in Server Administration
 * The label and description of the acq.fund.allow_rollover_without_money
   library setting are updated for greater clarity (LP#1982031)
 * The Cash Reports interface (under Local Administration) is ported to
-  Angular.
+  Angular. (LP#1859701)
+* The Library Settings Editor (under Local Administration) is ported to
+  Angular. (LP#1839341)
 
 ==== Acknowledgments ====
 
