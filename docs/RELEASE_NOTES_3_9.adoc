@@ -45,6 +45,11 @@ This is https://bugs.launchpad.net/evergreen/+bug/1361782[Bug 1361782].
 
 === Bug Fixes ===
 
+==== Accessibility ====
+
+* Fixes color contrast on modal headers (https://bugs.launchpad.net/evergreen/+bug/1999954[Bug 1999954])
+* Adds input labels in the manage authorities interface fields (https://bugs.launchpad.net/evergreen/+bug/1989284[Bug 1989284)]
+
 ==== Administration ====
 
 * `autogen.sh` can now accept a `-c` switch to specify the location of `opensrf_core.xml`. This is useful for certain multi-tenant setups of Evergreen. (https://bugs.launchpad.net/evergreen/+bug/2003707[Bug 2003707])
@@ -53,7 +58,7 @@ This is https://bugs.launchpad.net/evergreen/+bug/1361782[Bug 1361782].
 * Adds patron database ID to Stripe payment record (https://bugs.launchpad.net/evergreen/+bug/1969994[Bug 1969994])
 * Fix to prevent multiple server processes from being created by `oils_ct.sh` (https://bugs.launchpad.net/evergreen/+bug/1908455[Bug 1908455])
 * Fixes an issue where last-copy delete was not creating hold notices (https://bugs.launchpad.net/evergreen/+bug/2007591[Bug 2007591])
-* Fix to reduce bloating of `search.symspell_dictionary` (https://bugs.launchpad.net/evergreen/+bug/1998355[Bug 1998355)]
+* Fix to reduce bloating of `search.symspell_dictionary` (https://bugs.launchpad.net/evergreen/+bug/1998355[Bug 1998355])
 * Fix to allow legacy `mod_perl` handlers to check `eg.auth.token` (https://bugs.launchpad.net/evergreen/+bug/1996908[Bug 1996908])
 * Fix to change legacy `ARRAY_TO_STRING(ARRAY_AGG())\ functions to `STRING_AGG()` functions (https://bugs.launchpad.net/evergreen/+bug/1441750[Bug 1441750])
 * Fixes typo in `AddedContent.pm` (https://bugs.launchpad.net/evergreen/+bug/2012105[Bug 2012105])
@@ -70,10 +75,9 @@ This is https://bugs.launchpad.net/evergreen/+bug/1361782[Bug 1361782].
 * Fixes an issue where statcats in holding templates wouldn't save correctly (https://bugs.launchpad.net/evergreen/+bug/1999696[Bug 1999696])
 * Fixes inconsistent button placement in delete holdings modal (https://bugs.launchpad.net/evergreen/+bug/1945355[Bug 1945355])
 * Adds styling to show that a holding template changed a statcat value (https://bugs.launchpad.net/evergreen/+bug/2003755[Bug 2003755])
-* Fixes erroneous error messge in cover image upload modal (https://bugs.launchpad.net/evergreen/+bug/1988321[Bug 1988321])
+* Fixes erroneous error message in cover image upload modal (https://bugs.launchpad.net/evergreen/+bug/1988321[Bug 1988321])
 * Fixes an issue where last-copy delete was not creating hold notices (https://bugs.launchpad.net/evergreen/+bug/2007591[Bug 2007591])
 * Restores the ability to create empty call numbers in the holdings editor (https://bugs.launchpad.net/evergreen/+bug/1998494[Bug 1998494])
-* Adds input labels in the manage authorities interface fields (https://bugs.launchpad.net/evergreen/+bug/1989284[Bug 1989284)]
 * Fixes MARC editor heading linker for fields 600, 651, and 655 (https://bugs.launchpad.net/evergreen/+bug/2007351[Bug 2007351])
 * Protects "magic" statuses from overwrite when using holdings editor template (https://bugs.launchpad.net/evergreen/+bug/1999401[Bug 1999401])
 * Prevents deletion of shelving locations with items attached + adds undelete action on shelving location editor (https://bugs.launchpad.net/evergreen/+bug/2002435[Bug 2002435])
@@ -94,7 +98,6 @@ This is https://bugs.launchpad.net/evergreen/+bug/1361782[Bug 1361782].
 * Updates staff page headers to pass color-contrast checks (https://bugs.launchpad.net/evergreen/+bug/1994159[Bug 1994159])
 * Allows combobox inputs to have IDs (https://bugs.launchpad.net/evergreen/+bug/1824709[Bug 1824709])
 * Adds localization to Record Summary heading (https://bugs.launchpad.net/evergreen/+bug/1999446[Bug 1999446])
-* Fixes color contrast on modal headers (https://bugs.launchpad.net/evergreen/+bug/1999954[Bug 1999954])
 * Adds a user-visible error if a user attempts to login to the staff client without STAFF_LOGIN permissions (https://bugs.launchpad.net/evergreen/+bug/1969641[Bug 1969641])
 * Fixes grid refresh issue on old Dojo grids (https://bugs.launchpad.net/evergreen/+bug/1625192[Bug 1625192])
 
