@@ -3,17 +3,17 @@ msgstr ""
 "Project-Id-Version: Evergreen 1.4\n"
 "Report-Msgid-Bugs-To: open-ils-dev@list.georgialibraries.org\n"
 "POT-Creation-Date: 2021-10-12 14:11-0400\n"
-"PO-Revision-Date: 2021-07-26 12:42+0000\n"
+"PO-Revision-Date: 2022-11-23 11:27+0000\n"
 "Last-Translator: Eva Cerninakova <Unknown>\n"
 "Language-Team: UISK <LL@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2021-10-13 04:39+0000\n"
-"X-Generator: Launchpad (build 8a94da2fac127f5e46a49fd1140e43759d578803)\n"
+"X-Launchpad-Export-Date: 2022-11-24 06:42+0000\n"
+"X-Generator: Launchpad (build 58312c50d0ade23d24f71d3daeac191f58b3ed83)\n"
 "X-Poedit-Language: Czech\n"
-"X-Poedit-Country: CZECH REPUBLIC\n"
 "X-Poedit-SourceCharset: utf-8\n"
+"X-Poedit-Country: CZECH REPUBLIC\n"
 
 #: 950.data.seed-values.sql:8646
 msgid "Estonia "
@@ -1180,6 +1180,8 @@ msgid ""
 "URL for a My Account link. Use a complete URL, such as "
 "\"https://example.com/eg/opac/login\"."
 msgstr ""
+"URL pro odkaz na Můj účet. Použijte úplné URL, např.  "
+"\"https://example.com/eg/opac/login\"."
 
 #: 950.data.seed-values.sql:19833
 msgid "Print Template: transit_slip"
@@ -1386,7 +1388,7 @@ msgstr "Objednáno"
 
 #: 950.data.seed-values.sql:21783
 msgid "Stripe ISO 4217 currency code"
-msgstr ""
+msgstr "Kód měny podle ISO 4217 pro Stripe"
 
 #: 950.data.seed-values.sql:18269
 msgid "Order Copies Always Include Call Number (Even if Empty)"
@@ -1522,6 +1524,10 @@ msgid ""
 "the relative weight of the scaled soundex component. Defaults to 0 for "
 "\"off\"."
 msgstr ""
+"Soundex, trgm, and míry podobnosti vzdálenosti na klávesnicimohou být "
+"kombinovány a vytvořit tak sekundární parametr pro řazení návrhů pravopisu. "
+"Ten řídí relativní váhu škálovaných komponent soundexu. Výchozí hodnota je 0 "
+"pro „vypnuto\"."
 
 #: 950.data.seed-values.sql:21083
 msgid "Acquisitions Search: Immediately Search Invoices"
@@ -1977,7 +1983,7 @@ msgstr "Asámština"
 
 #: 950.data.seed-values.sql:1964
 msgid "Allow the user to update a record note"
-msgstr ""
+msgstr "Povolit uživateli upravit poznámku k záznamu"
 
 #: 950.data.seed-values.sql:2976 950.data.seed-values.sql:2977
 msgid "Hold Notification Format"
@@ -2092,7 +2098,7 @@ msgstr "Pásmo Gazy "
 
 #: 950.data.seed-values.sql:21755
 msgid "Show more details in Angular staff catalog"
-msgstr ""
+msgstr "Zobrazit další podrobnosti v angularizovaném služebním katalogu"
 
 #: 950.data.seed-values.sql:13087
 msgid "New record had insufficient quality"
@@ -2545,7 +2551,7 @@ msgstr "Povolit uživateli srovnat účet (obvykle na nulu)"
 
 #: 950.data.seed-values.sql:1960
 msgid "Update the user photo url field in patron registration and editor"
-msgstr ""
+msgstr "Upravte pole pro url fotografie v editoru a registraci čtenáře"
 
 #: 950.data.seed-values.sql:993
 msgid "Allow a user to delete an item out of another user's container"
@@ -2803,6 +2809,10 @@ msgid ""
 "the relative weight of the scaled keyboard distance component. Defaults to 0 "
 "for \"off\"."
 msgstr ""
+"Soundex, trgm, and míry podobnosti vzdálenosti na klávesnicimohou být "
+"kombinovány a vytvořit tak sekundární parametr pro řazení návrhů pravopisu. "
+"Ten řídí relativní váhu škálovaných komponent vzdálenosti na klávesnici. "
+"Výchozí hodnota je 0 pro „vypnuto\"."
 
 #: 950.data.seed-values.sql:7171
 msgid "Cebuano"
@@ -3225,7 +3235,7 @@ msgstr "Trinidad a Tobago "
 
 #: 950.data.seed-values.sql:21020
 msgid "Default org unit for hopeless holds interface"
-msgstr ""
+msgstr "Výchozí organizační jednotka pro rozhraní beznadějných rezervací"
 
 #: 950.data.seed-values.sql:8831
 msgid "Thailand "
@@ -3388,6 +3398,9 @@ msgid ""
 "a field makes it appear with required fields even when not required. If the "
 "field is required this setting is ignored."
 msgstr ""
+"Pole URL fotografie  bude zobrazeno na kartě registračních údajů čtenáře "
+"spolu s povinnými poli i pokud není povinné. Pokud je pole povinné, bude "
+"toto nastavení ignorováno."
 
 #: 950.data.seed-values.sql:4059
 msgid "Pop-up alert for errors"
@@ -3800,7 +3813,7 @@ msgstr "Akkadština"
 #: 950.data.seed-values.sql:1423
 msgid "Allow a user to create, update, and delete trigger hooks"
 msgstr ""
-"Povolit uživateli vytvořit, změnit a smazat vazby spouštěče (triggeru)"
+"Povolit uživateli vytvořit, změnit a smazat háčky spouštěče (triggeru)"
 
 # id::clm.value__snd
 #: 950.data.seed-values.sql:7495
@@ -3982,7 +3995,7 @@ msgstr ""
 
 #: 950.data.seed-values.sql:21854
 msgid "Holdings Editor Default Values and Visibility"
-msgstr ""
+msgstr "Výchozí hodnoty a zobrazení v editoru jednotek"
 
 #: 950.data.seed-values.sql:1479
 msgid "Update org unit settings related to credit card processing"
@@ -4002,7 +4015,7 @@ msgstr ""
 
 #: 950.data.seed-values.sql:5745
 msgid "Suggest Photo URL field on patron registration"
-msgstr ""
+msgstr "Navrhnout pole URL fotografie v registračních údajích čtenáře"
 
 #: 950.data.seed-values.sql:7053
 msgid "Carrier Type"
@@ -4125,6 +4138,7 @@ msgstr "ADMIN_GLOBAL_FLAG"
 msgid ""
 "The Photo URL field will be required on the patron registration screen."
 msgstr ""
+"Pole URL fotografie bude požadováno na kartě registračních údajů čtenáře."
 
 #: 950.data.seed-values.sql:4758 950.data.seed-values.sql:4761
 msgid "Patron circulation summary is horizontal"
@@ -4730,6 +4744,8 @@ msgid ""
 "Array of advanced search filters to display, e.g. "
 "[\"item_lang\",\"audience\",\"lit_form\"]"
 msgstr ""
+"Uspořádání zobrazení filtrů pokročilého vyhledávání, např.  "
+"[\"item_lang\",\"audience\",\"lit_form\"]"
 
 # id::clm.value__sga
 #: 950.data.seed-values.sql:7476
@@ -4922,7 +4938,7 @@ msgstr ""
 
 #: 950.data.seed-values.sql:1966
 msgid "Allow the user to delete a record note"
-msgstr ""
+msgstr "Povolit uživateli smazat poznámku k záznamu"
 
 #: 950.data.seed-values.sql:17048
 msgid "Patron Exceeds Max Long-Overdue Threshold"
@@ -5029,7 +5045,7 @@ msgstr "Tanzánie "
 
 #: 950.data.seed-values.sql:1429
 msgid "Allow a user to update trigger hooks"
-msgstr "Povolit uživateli změnit vazby spouštěče (triggeru)"
+msgstr "Povolit uživateli změnit háčky spouštěče (triggeru)"
 
 #: 950.data.seed-values.sql:1601
 msgid "DELETE_MERGE_PROFILE"
@@ -6262,7 +6278,7 @@ msgstr ""
 
 #: 950.data.seed-values.sql:21672
 msgid "Maximum number of spelling suggestions that may be offered"
-msgstr ""
+msgstr "Maximální počet nabídnurých pravopisných návrhů"
 
 #: 950.data.seed-values.sql:3127
 msgid "Articles"
@@ -6286,7 +6302,7 @@ msgstr "Atribut selektoru formátu v OPACu"
 
 #: 950.data.seed-values.sql:21905
 msgid "Staff Catalog Search Filters"
-msgstr ""
+msgstr "Filtry pro vyhledávání ve služebním katalogu"
 
 #: 950.data.seed-values.sql:4185
 msgid "Minimum Transit Checkin Interval"
@@ -6309,6 +6325,8 @@ msgstr "Seznam rezervací k zachycení"
 msgid ""
 "Require staff initials for entry/edit of patron standing penalties and notes."
 msgstr ""
+"Požadovat iniciály personálu při zadávání nebo editaci poznámek a blokací "
+"čtenáře"
 
 #: 950.data.seed-values.sql:1397
 msgid ""
@@ -7602,8 +7620,6 @@ msgid ""
 "Hook used to trigger the notification of the creation or update of a "
 "curbside pickup appointment with an arrival URL"
 msgstr ""
-"Háček použitý ke spuštění oznámení o vytvoření nebo změně termínu pro "
-"bezkontaktní vyzvednutí s příchozím URL"
 
 #: 950.data.seed-values.sql:18215
 msgid "Orders Include Copy Funds"
@@ -8056,7 +8072,7 @@ msgstr "Povolit uživateli vytvořit nový ne-katalogizovaný typ"
 
 #: 950.data.seed-values.sql:1427
 msgid "Allow a user to delete trigger hooks"
-msgstr "Povolit uživateli smazat vazby spouštěče (triggeru)"
+msgstr "Povolit uživateli smazat háčky spouštěče (triggeru)"
 
 #: 950.data.seed-values.sql:1729
 msgid "Allows a user to create report templates"
@@ -8133,7 +8149,7 @@ msgstr "Diagramy"
 
 #: 950.data.seed-values.sql:1425
 msgid "Allow a user to create trigger hooks"
-msgstr "Povolit uživateli vytvořit vazby spouštěče (triggeru)"
+msgstr "Povolit uživateli vytvořit háčky spouštěče (triggeru)"
 
 #: 950.data.seed-values.sql:20311
 msgid "Grid Config: admin.server.asset.call_number_prefix"
@@ -8848,7 +8864,7 @@ msgstr ""
 
 #: 950.data.seed-values.sql:5737
 msgid "Show Photo URL field on patron registration"
-msgstr ""
+msgstr "Zobrait pole URL fotografie na kartě registračních údajů čtenáře"
 
 #: 950.data.seed-values.sql:13104
 msgid "Perm failure creating a record"
@@ -12083,7 +12099,7 @@ msgid ""
 "Also creates events for the longoverdue.auto hook"
 msgstr ""
 "Označí vypůjčené jednotky jako dlouhodobě nevrácené a aplikuje nastavené "
-"pokuty. Také vytvoří událost pro vazbu spouštěče longoverdue.auto."
+"pokuty. Také vytvoří událost pro háčky spouštěče longoverdue.auto."
 
 # id::clm.value__dak
 #: 950.data.seed-values.sql:7199
@@ -14001,6 +14017,10 @@ msgid ""
 "controls the relative weight of the scaled pg_trgm component. Defaults to 0 "
 "for \"off\"."
 msgstr ""
+"Soundex, trgm, and míry podobnosti vzdálenosti na klávesnicimohou být "
+"kombinovány a vytvořit tak sekundární parametr pro řazení návrhů pravopisu. "
+"Ten řídí relativní váhu škálovaných komponent pg_trgm. Výchozí hodnota je 0 "
+"pro „vypnuto\"."
 
 #: 950.data.seed-values.sql:17867
 msgid "OverDrive Account ID"
@@ -14138,7 +14158,7 @@ msgstr "Výtah z partitury nabo klavírní výtah pro dirigenta"
 
 #: 950.data.seed-values.sql:102 950.data.seed-values.sql:13878
 msgid "Subject"
-msgstr "Téma"
+msgstr "Subjekt"
 
 #: 950.data.seed-values.sql:1129
 msgid "CREATE_LANGUAGE"
@@ -14289,7 +14309,7 @@ msgstr ""
 
 #: 950.data.seed-values.sql:13879
 msgid "Topic Subject axis"
-msgstr "Osa témat"
+msgstr "Osa věcných témat"
 
 #: 950.data.seed-values.sql:8414
 msgid "Chorus score"
