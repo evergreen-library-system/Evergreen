@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Evergreen 1.4\n"
 "Report-Msgid-Bugs-To: open-ils-dev@list.georgialibraries.org\n"
-"POT-Creation-Date: 2023-01-05 07:09:07-0400\n"
+"POT-Creation-Date: 2023-03-24 14:42:00-0400\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -14308,6 +14308,11 @@ msgstr ""
 msgid "Grid Config: admin.server.config.best_hold_order"
 msgstr ""
 
+# id::cgf.label__opac.max_concurrent_search.query
+#: 950.data.seed-values.sql:22085
+msgid "Limit the number of global concurrent matching search queries"
+msgstr ""
+
 # id::cgf.label__history.hold.retention_age_canceled_4
 #: 950.data.seed-values.sql:12487
 msgid "Historical Hold Retention Age - Canceled (Patron in person)"
@@ -16804,6 +16809,11 @@ msgstr ""
 # id::ccvm.value__452
 #: 950.data.seed-values.sql:7562
 msgid "Tuvinian"
+msgstr ""
+
+# id::cgf.label__opac.max_concurrent_search.ip
+#: 950.data.seed-values.sql:22097
+msgid "Limit the number of global concurrent searches per client IP address"
 msgstr ""
 
 # id::csg.label__credit
