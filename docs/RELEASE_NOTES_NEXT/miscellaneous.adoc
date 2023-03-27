@@ -1,0 +1,1 @@
+* Add index to speed up display of the Hopeless Holds interface in large systems (LP#1972738)
