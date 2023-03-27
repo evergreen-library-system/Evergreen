@@ -5,3 +5,5 @@ BEGIN;
 CREATE INDEX hold_request_hopeless_date_idx ON action.hold_request (hopeless_date);
 
 COMMIT;
+
+ANALYZE action.hold_request;
