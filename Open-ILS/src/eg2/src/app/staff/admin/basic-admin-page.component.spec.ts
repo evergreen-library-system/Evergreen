@@ -28,7 +28,6 @@ class MockStaffBannerComponent {
 })
 class MockAdminPageComponent {
     @Input() configLinkBasePath: string;
-    @Input() defaultNewRecord: IdlObject;
     @Input() disableOrgFilter: boolean;
     @Input() fieldOrder: string;
     @Input() idlClass: string;
@@ -69,7 +68,6 @@ describe('Component: BasicAdminPage', () => {
         const data = [{
             schema: 'schema1',
             table: 'table1',
-            defaultNewRecord: { field1: 'value1' },
             enableUndelete: true
         }];
         const parentRoute = { url: of('') };
@@ -100,11 +98,6 @@ describe('Component: BasicAdminPage', () => {
         fixture.detectChanges();
     });
 
-    it('sets default new record from routing data', () => {
-        const adminPage: MockAdminPageComponent = fixture.debugElement.query(
-            By.directive(MockAdminPageComponent)).componentInstance;
-        expect(adminPage.defaultNewRecord.a[0]).toEqual('value1');
-    });
     it('sets enableUndelete from routing data', () => {
         const adminPage: MockAdminPageComponent = fixture.debugElement.query(
             By.directive(MockAdminPageComponent)).componentInstance;
