@@ -1,0 +1,10 @@
+== Adjust Hold Cancel Reasons ==
+
+The dialog to confirm canceling a hold in the staff interface
+now lists only hold cancel reasons that can be manually applied,
+excluding the ones that can only be automatically applied.
+
+In addition, two more hold cancel reasons are added:
+
+ * Patron via email
+ * Patron via SMS
