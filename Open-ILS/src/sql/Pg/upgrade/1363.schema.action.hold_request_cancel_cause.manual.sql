@@ -1,5 +1,7 @@
 BEGIN;
 
+SELECT evergreen.upgrade_deps_block_check('1363', :eg_version);
+
 ALTER TABLE action.hold_request_cancel_cause
   ADD COLUMN manual BOOL NOT NULL DEFAULT FALSE;
 
