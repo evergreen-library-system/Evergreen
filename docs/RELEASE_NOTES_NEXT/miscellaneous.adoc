@@ -10,3 +10,4 @@
 * Better organization of acquisitions line item alert fields (LP#2002977)
 * Prevent templates from applying or changing magical status in angular holdings editor (LP#1999401)
 * Prevent directly editing the shelving location deleted field in the Shelving Locations Editor (LP#2002435)
+* The "Strict Barcode" checkbox is now closer to the barcode input on the Check Out, Check In, and Renew Items pages (LP#1990968)
