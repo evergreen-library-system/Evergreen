@@ -20,6 +20,7 @@ use constant {
     PHONE => '218-555-0177',
     EMAIL => 'nouser@evergreen-ils.test',
     TESTMESSAGE => '123456 TEST Invalidate Message',
+    TESTMESSAGE_ZERO => '0',
     PROFILE => 2, #patrons
 };
 
@@ -141,7 +142,7 @@ sub check_penalty {
 
     my $penalty = $ausp->[0];
     #print ref($penalty)."\n";
-    my $message = $data{$type}[$i].($note ? ' '.$note : '');
+    my $message = $data{$type}[$i].(defined($note) ? ' '.$note : '');
 
     isa_ok($penalty, 'Fieldmapper::actor::usr_message_penalty', 'User Penalty Found -- '.$type);
     is($penalty->message(), $message, $type.' penalty note matches expected format.');
@@ -210,7 +211,7 @@ invalidate_all($user->id(),undef,$user->home_ou(),undef);
 #Invalidate all notifications for user 2 - added note
 diag("Patron 2 - Added note");
 $user = $aus->[1];
-invalidate_all($user->id(),TESTMESSAGE,$user->home_ou(),undef);
+invalidate_all($user->id(),TESTMESSAGE_ZERO,$user->home_ou(),undef);
 
 #Invalidate notifications for users 3,4,5 - using search method with test message
 diag("Patron 3,4,5 - Added note - same contact info");
@@ -225,7 +226,7 @@ check_all_penalties($user->id(),undef,$user->home_ou(),undef,1);
 
 diag("Patron 2 - Added note");
 $user = $aus->[1];
-check_all_penalties($user->id(),TESTMESSAGE,$user->home_ou(),undef,2);
+check_all_penalties($user->id(),TESTMESSAGE_ZERO,$user->home_ou(),undef,2);
 
 diag("Patron 3 - Added note - same contact info");
 $user = $aus->[2];
