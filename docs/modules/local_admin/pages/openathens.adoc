@@ -21,7 +21,7 @@ Using your OpenAthens administrator account at https://admin.openathens.net/, co
   .. For *Name*, enter 'Evergreen' or whatever name you use for your Evergreen portal internally, and click *Save*.
   .. Take a copy of the 36-character key that has been generated. You will need this when configuring Evergreen.
 
-[Note]
+[NOTE]
 =====
 Full OpenAthens documentation, including screenshots, for local authentication API connections is available at http://docs.openathens.net/display/public/MD/API+connector.
 =====
