@@ -51,7 +51,7 @@
         [% END %]
             </tbody>
         </table>
-        <input type='submit' disabled value="[% l('Update') %]" class="opac-button" />
+        <input type='submit' disabled value="[% l('Update') %]" class="btn btn-confirm" />
         <a href='/eg/opac/myopac/prefs_notify'>[% l('Continue without updating') %]</a>
     </form>
 
