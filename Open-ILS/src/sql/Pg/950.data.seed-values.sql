@@ -95,8 +95,8 @@ INSERT INTO config.standing_penalty (id, name, label, staff_alert, org_depth) VA
 
 SELECT SETVAL('config.standing_penalty_id_seq', 100);
 
-INSERT INTO config.metabib_class ( name, label ) VALUES ( 'identifier', oils_i18n_gettext('identifier', 'Identifier', 'cmc', 'label') );
-INSERT INTO config.metabib_class ( name, label ) VALUES ( 'keyword', oils_i18n_gettext('keyword', 'Keyword', 'cmc', 'label') );
+INSERT INTO config.metabib_class ( name, label, variant_authority_suggestion ) VALUES ( 'identifier', oils_i18n_gettext('identifier', 'Identifier', 'cmc', 'label'), FALSE );
+INSERT INTO config.metabib_class ( name, label, variant_authority_suggestion ) VALUES ( 'keyword', oils_i18n_gettext('keyword', 'Keyword', 'cmc', 'label'), FALSE );
 INSERT INTO config.metabib_class ( name, label ) VALUES ( 'title', oils_i18n_gettext('title', 'Title', 'cmc', 'label'));
 INSERT INTO config.metabib_class ( name, label ) VALUES ( 'author', oils_i18n_gettext('author', 'Author', 'cmc', 'label'));
 INSERT INTO config.metabib_class ( name, label ) VALUES ( 'subject', oils_i18n_gettext('subject', 'Subject', 'cmc', 'label') );
@@ -21804,90 +21804,6 @@ VALUES (
 
 INSERT INTO config.internal_flag (name, value, enabled) VALUES ('symspell.prefix_length', '6', TRUE);
 INSERT INTO config.internal_flag (name, value, enabled) VALUES ('symspell.max_edit_distance', '3', TRUE);
-
-INSERT into config.org_unit_setting_type
-( name, grp, label, description, datatype )
-VALUES
-( 'opac.did_you_mean.max_suggestions', 'opac',
-   oils_i18n_gettext(
-     'opac.did_you_mean.max_suggestions',
-     'Maximum number of spelling suggestions that may be offered',
-     'coust', 'label'),
-   oils_i18n_gettext(
-     'opac.did_you_mean.max_suggestions',
-     'If set to -1, provide "best" suggestion if mispelled; if set higher than 0, the maximum suggestions that can be provided; if set to 0, disable suggestions.',
-     'coust', 'description'),
-   'integer' );
-
-INSERT into config.org_unit_setting_type
-( name, grp, label, description, datatype )
-VALUES
-( 'opac.did_you_mean.low_result_threshold', 'opac',
-   oils_i18n_gettext(
-     'opac.did_you_mean.low_result_threshold',
-     'Maximum search result count at which spelling suggestions may be offered',
-     'coust', 'label'),
-   oils_i18n_gettext(
-     'opac.did_you_mean.low_result_threshold',
-     'If a search results in this number or fewer results, and there are correctable spelling mistakes, a suggested search may be provided.',
-     'coust', 'description'),
-   'integer' );
-
-INSERT into config.org_unit_setting_type
-( name, grp, label, description, datatype )
-VALUES
-( 'search.symspell.min_suggestion_use_threshold', 'opac',
-   oils_i18n_gettext(
-     'search.symspell.min_suggestion_use_threshold',
-     'Minimum required uses of a spelling suggestions that may be offered',
-     'coust', 'label'),
-   oils_i18n_gettext(
-     'search.symspell.min_suggestion_use_threshold',
-     'The number of bibliographic records (more or less) that a spelling suggestion must appear in to be considered before offering it to a user. Defaults to 1 (must appear in the bib data).',
-     'coust', 'description'),
-   'integer' );
-
-INSERT into config.org_unit_setting_type
-( name, grp, label, description, datatype )
-VALUES
-( 'search.symspell.soundex.weight', 'opac',
-   oils_i18n_gettext(
-     'search.symspell.soundex.weight',
-     'Soundex score weighting in OPAC spelling suggestions.',
-     'coust', 'label'),
-   oils_i18n_gettext(
-     'search.symspell.soundex.weight',
-     'Soundex, trgm, and keyboard distance similarity measures can be combined to form a secondary ordering parameter for spelling suggestions. This controls the relative weight of the scaled soundex component. Defaults to 0 for "off".',
-     'coust', 'description'),
-   'integer' );
-
-INSERT into config.org_unit_setting_type
-( name, grp, label, description, datatype )
-VALUES
-( 'search.symspell.pg_trgm.weight', 'opac',
-   oils_i18n_gettext(
-     'search.symspell.pg_trgm.weight',
-     'Pg_trgm score weighting in OPAC spelling suggestions.',
-     'coust', 'label'),
-   oils_i18n_gettext(
-     'search.symspell.pg_trgm.weight',
-     'Soundex, pg_trgm, and keyboard distance similarity measures can be combined to form a secondary ordering parameter for spelling suggestions. This controls the relative weight of the scaled pg_trgm component. Defaults to 0 for "off".',
-     'coust', 'description'),
-   'integer' );
-
-INSERT into config.org_unit_setting_type
-( name, grp, label, description, datatype )
-VALUES
-( 'search.symspell.keyboard_distance.weight', 'opac',
-   oils_i18n_gettext(
-     'search.symspell.keyboard_distance.weight',
-     'Keyboard distance score weighting in OPAC spelling suggestions.',
-     'coust', 'label'),
-   oils_i18n_gettext(
-     'search.symspell.keyboard_distance.weight',
-     'Soundex, trgm, and keyboard distance similarity measures can be combined to form a secondary ordering parameter for spelling suggestions. This controls the relative weight of the scaled keyboard distance component. Defaults to 0 for "off".',
-     'coust', 'description'),
-   'integer' );
 
 INSERT INTO config.workstation_setting_type (name, grp, datatype, label)
 VALUES (

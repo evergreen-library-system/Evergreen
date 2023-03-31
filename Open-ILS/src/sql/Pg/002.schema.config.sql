@@ -194,7 +194,19 @@ CREATE TABLE config.metabib_class (
     a_weight NUMERIC  DEFAULT 1.0 NOT NULL,
     b_weight NUMERIC  DEFAULT 0.4 NOT NULL,
     c_weight NUMERIC  DEFAULT 0.2 NOT NULL,
-    d_weight NUMERIC  DEFAULT 0.1 NOT NULL
+    d_weight NUMERIC  DEFAULT 0.1 NOT NULL,
+    variant_authority_suggestion   BOOL NOT NULL DEFAULT TRUE,
+    symspell_transfer_case         BOOL NOT NULL DEFAULT TRUE,
+    symspell_skip_correct          BOOL NOT NULL DEFAULT FALSE,
+    symspell_suggestion_verbosity  INT NOT NULL DEFAULT 2,
+    max_phrase_edit_distance       INT NOT NULL DEFAULT 2,
+    suggestion_word_option_count   INT NOT NULL DEFAULT 5,
+    max_suggestions                INT NOT NULL DEFAULT -1,
+    low_result_threshold           INT NOT NULL DEFAULT 0,
+    min_suggestion_use_threshold   INT NOT NULL DEFAULT 1,
+    soundex_weight                 INT NOT NULL DEFAULT 0,
+    pg_trgm_weight                 INT NOT NULL DEFAULT 0,
+    keyboard_distance_weight       INT NOT NULL DEFAULT 0
 );
 
 CREATE TABLE config.metabib_field (
