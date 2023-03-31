@@ -99,10 +99,15 @@ sub mark_users_contact_invalid {
         $usr_penalty->standing_penalty($penalty->id);
         $usr_penalty->staff($staff_id);
 
+        my $message = $_->$contact_type;
+        if (defined($addl_note) && $addl_note !~ /^\s*$/) {
+            $message .= ' ' . $addl_note;
+        }
+
         my ($result) = $U->simplereq('open-ils.actor', 'open-ils.actor.user.penalty.apply',
             $editor->authtoken,
             $usr_penalty,
-            { message => $addl_note ? $_->$contact_type.' '.$addl_note : $_->$contact_type }
+            { message => $message }
         );
 
         # FIXME: this perpetuates a bug; the patron editor UI doesn't handle these error states well
