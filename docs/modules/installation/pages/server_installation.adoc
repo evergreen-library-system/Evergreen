@@ -71,7 +71,6 @@ before you can successfully configure, compile, and install Evergreen.
    prerequisites using the `Makefile.install` prerequisite installer,
    substituting `debian-bullseye`,`debian-buster`,`ubuntu-jammy`,
    or `ubuntu-focal` for <osname> below:
-
 +
 [source, bash]
 ------------------------------------------------------------------------------
