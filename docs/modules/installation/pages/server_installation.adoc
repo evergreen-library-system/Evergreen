@@ -437,7 +437,7 @@ by every Evergreen system. You can install the packages required by Debian or
 Ubuntu on the machine of your choice using the following commands as the
 *root* Linux account:
 
-. Installing PostgreSQL server packages
+.Installing PostgreSQL server packages
 
 Each OS build target provides the postgres server installation
 packages required for each operating system.  To install Postgres
@@ -515,11 +515,7 @@ make -f Open-ILS/src/extras/Makefile.install postgres-server-ubuntu-bionic-14
 make -f Open-ILS/src/extras/Makefile.install postgres-server-ubuntu-focal-14
 ------------------------------------------------------------------------------
 
-For a standalone PostgreSQL server, install the following Perl modules for your
-distribution as the *root* Linux account:
-
-.(Debian and Ubuntu) 
-No extra modules required for these distributions.
+.Create the Evergreen PostgreSQL user
 
 You need to create a PostgreSQL superuser to create and access the database.
 Issue the following command as the *postgres* Linux account to create a new
