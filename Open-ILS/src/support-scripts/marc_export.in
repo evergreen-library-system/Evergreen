@@ -86,6 +86,7 @@ sub new {
                'help',
                'items',
                '852b=s',
+               'exclude-hidden',
                'mfhd',
                'all',
                'replace_001',
@@ -168,6 +169,14 @@ Usage: $0 [options]
                     specified org. unit and all of its descendants in
                     the tree.
  --uris or -u       Include records with located URIs in the output
+ --exclude-hidden   Exclude records and items if the item is not
+                    OPAC-visible per its org unit, status, shelving,
+                    location, or flag on the item record. This option
+                    is effective only if the --library and/or --items
+                    flags are supplied. This option takes precedence;
+                    for example, if the org unit specified by --library
+                    is not OPAC-visible, its records will not be included
+                    in the export.
 
 Examples:
 
@@ -414,7 +423,11 @@ sub new {
     $self->{libs} = [];
     if ($Marque::config->option_value('library')) {
         # This is done not only for speed, but to prevent SQL injection.
-        my $sth = $self->{handle}->prepare('select id from actor.org_unit where shortname=any(?::text[])');
+        my $query = 'select id from actor.org_unit where shortname=any(?::text[])';
+        if ($Marque::config->option_value('exclude-hidden')) {
+            $query .= ' AND opac_visible';
+        }
+        my $sth = $self->{handle}->prepare($query);
         if ($sth->execute($Marque::config->option_value('library'))) {
             my $r = $sth->fetchall_arrayref();
             my @ids = map {$_->[0]} @{$r};
@@ -425,12 +438,17 @@ sub new {
     # Ditto for descendants.  We don't worry about redundancy, the db can deal with it.
     if ($Marque::config->option_value('descendants')) {
         # Unlike the above, we're looping to make this simpler in the database.
-        my $sth = $self->{handle}->prepare(
-                'select id from actor.org_unit_descendants((select id from actor.org_unit where shortname=?))');
+        my $query = 'select id, opac_visible from actor.org_unit_descendants((select id from actor.org_unit where shortname=?))';
+        my $sth = $self->{handle}->prepare($query);
         foreach my $shortname (@{$Marque::config->option_value('descendants')}) {
             if ($sth->execute($shortname)) {
                 my $r = $sth->fetchall_arrayref();
-                my @ids = map {$_->[0]} @{$r};
+                my @ids = ();
+                if ($Marque::config->option_value('exclude-hidden')) {
+                    @ids = map {$_->[0]} grep {$_->[1]} @{$r};
+                } else {
+                    @ids = map {$_->[0]} grep @{$r};
+                }
                 push(@{$self->{libs}}, @ids);
                 $sth->finish();
             }
@@ -486,10 +504,14 @@ ACN_JOIN
     if ($Marque::config->option_value('items')) {
         unless ($acn_joined) {
             $from .= "\njoin $acnTable on $acnTable.record = $breTable.id";
+            if ($Marque::config->option_value('exclude-hidden')) {
+                $from .= "\n AND $acnTable.owning_lib in (select id from actor.org_unit where opac_visible)";
+            }
             $from .= "\nand $acnTable.deleted = 'f'" unless ($Marque::config->option_value('since'));
         }
         $from .= "\njoin $acpTable on $acpTable.call_number = $acnTable.id";
         $from .= "\nand $acpTable.deleted = 'f'" unless ($Marque::config->option_value('since'));
+        $from .= "\nand $acpTable.opac_visible" if ($Marque::config->option_value('exclude-hidden'));
         $from .= "\nleft outer join $acnpTable on $acnTable.prefix = $acnpTable.id";
         $from .= "\nleft outer join $acnsTable on $acnTable.suffix = $acnsTable.id";
     }
@@ -658,6 +680,10 @@ sub next {
                     my @itemtags = ();
                     foreach my $acp (@acps) {
                         next unless ($acp);
+                        if ($Marque::config->option_value('exclude-hidden')) {
+                            next unless $U->is_true($acp->status()->opac_visible());
+                            next unless $U->is_true($acp->location()->opac_visible());
+                        }
                         my $location = $Marque::config->option_value('location');
                         my $price = ($acp->price() ? $Marque::config->option_value('money').$acp->price() : '');
                         my $prefix = $acp->call_number()->prefix()->label();
@@ -890,6 +916,8 @@ sub acns_for_bre {
         if (@{$self->{libs}}) {
             $query .= "\nand owning_lib in (";
             $query .= join(',', @{$self->{libs}}) . ")";
+        } elsif ($Marque::config->option_value('exclude-hidden')) {
+            $query .= "\nand owning_lib in (select id from actor.org_unit where opac_visible)";
         }
         $query .= "\nand deleted = 'f'" unless($Marque::config->option_value('since'));
         $self->{acnHandle} = $self->{handle}->prepare($query);
