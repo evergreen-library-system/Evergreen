@@ -1320,7 +1320,7 @@ angular.module('egMarcMod', ['egCoreMod', 'ui.bootstrap'])
                                         { id : $scope.recordId, desc : evt.desc }
                                     );
                                 } else {
-                                    loadRecord().then(processOnSaveCallbacks);
+                                    loadRecord().then($scope.processOnSaveCallbacks);
                                 }
                             });
                         } else {
@@ -1345,7 +1345,7 @@ angular.module('egMarcMod', ['egCoreMod', 'ui.bootstrap'])
                                 );
                             } else {
                                 ngToast.create(egCore.strings.SUCCESS_UNDELETE_RECORD);
-                                loadRecord().then(processOnSaveCallbacks);
+                                loadRecord().then($scope.processOnSaveCallbacks);
                             }
                         });
                     }
@@ -1390,7 +1390,7 @@ angular.module('egMarcMod', ['egCoreMod', 'ui.bootstrap'])
                     });
                 }
 
-                processOnSaveCallbacks = function() {
+                $scope.processOnSaveCallbacks = function() {
                     var deferred = $q.defer();
                     if (typeof $scope.onSaveCallback !== 'undefined') {
                         var promise = deferred.promise;
@@ -1475,7 +1475,7 @@ angular.module('egMarcMod', ['egCoreMod', 'ui.bootstrap'])
                             $scope.bibSource = $scope.bib_source.id;
                         }
 
-                        return $timeout(processOnSaveCallbacks);
+                        return $timeout($scope.processOnSaveCallbacks);
                     }
 
                     $scope.mangle_005();
@@ -1514,7 +1514,7 @@ angular.module('egMarcMod', ['egCoreMod', 'ui.bootstrap'])
                                 alert('Could not create anonymous cache key!');
                             }
                         });
-                    }).then(loadRecord).then(processOnSaveCallbacks);
+                    }).then(loadRecord).then($scope.processOnSaveCallbacks);
                 };
 
                 $scope.seeBreaker = function () {
