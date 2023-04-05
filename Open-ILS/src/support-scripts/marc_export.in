@@ -79,10 +79,12 @@ sub new {
     $opts{'timeout'} = 0;
     $opts{'config'} = '@sysconfdir@/opensrf_core.xml';
     $opts{'store'} = 'reporter';
+    $opts{'852b'} = 'both';
 
     GetOptions(\%opts,
                'help',
                'items',
+               '852b=s',
                'mfhd',
                'all',
                'replace_001',
@@ -138,6 +140,12 @@ Usage: $0 [options]
 
  Additional options for type = 'BIBLIO':
  --items or -i      Include items (holdings) in the output
+ --852b             Accepts 'owning_lib', 'circ_lib', or 'both' to
+                    control whether the 852$b in exported embedded
+                    holdings has the owning library, the circulation
+                    library, or both in separate repeats of the $b.
+                    If not supplied, defaults to 'both', which is the
+                    legacy behavior.
  --money            Currency symbol to use in item price field [\$]
  --mfhd             Export serial MFHD records for associated bib records
                     Not compatible with --format=BRE
@@ -258,6 +266,12 @@ HELP
         } elsif ($opts{format} eq 'BRE') {
             die "MFHD export incompatible with format BRE.";
         }
+    }
+
+    if ($opts{'852b'} ne 'circ_lib' &&
+        $opts{'852b'} ne 'owning_lib' &&
+        $opts{'852b'} ne 'both') {
+        die "Invalid value '" . $opts{'852b'} . "' for --852b; must be 'circ_lib', 'owning_lib', or 'both'";
     }
 
     $opts{store} = lc($opts{store});
@@ -632,12 +646,29 @@ sub next {
                                     . shift;
                                 warn($message);
                             };
+
+                            my @sfb = ();
+                            my $f852b_option = $Marque::config->option_value('852b');
+                            if      ($f852b_option eq 'owning_lib') {
+                                @sfb = (
+                                    b => Encode::decode_utf8($acp->call_number()->owning_lib()->shortname()),
+                                );
+                            } elsif ($f852b_option eq 'circ_lib') {
+                                @sfb = (
+                                    b => Encode::decode_utf8($acp->circ_lib()->shortname()),
+                                );
+                            } else {
+                                @sfb = (
+                                    b => Encode::decode_utf8($acp->call_number()->owning_lib()->shortname()),
+                                    b => Encode::decode_utf8($acp->circ_lib()->shortname()),
+                                );
+                            }
+
                             $marc->insert_grouped_field(
                             MARC::Field->new(
                                 '852', '4', ' ',
                                 ($location ? ('a' => $location) : ()),
-                                b => Encode::decode_utf8($acp->call_number()->owning_lib()->shortname()),
-                                b => Encode::decode_utf8($acp->circ_lib()->shortname()),
+                                @sfb,
                                 c => Encode::decode_utf8($acp->location()->name()),
                                 ($prefix ? (k => Encode::decode_utf8($prefix)) : ()),
                                 j => Encode::decode_utf8($acp->call_number()->label()),
