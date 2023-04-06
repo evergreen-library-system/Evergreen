@@ -56,11 +56,11 @@
                     <th>[% l("Cover") %]</th>
                     <th>[% sort_head("sort_title", l("Title")) %]</th>
                     <th>[% sort_head("author", l("Author")) %]</th>
-                    <th>[% sort_head("callnum", l("Call Number")) %]</th>
                     <th>[% sort_head("checkout", l("Checkout Date")) %]</th>
                     <th>[% sort_head("due", l("Due Date")) %]</th>
                     <th>[% sort_head("returned", l("Date Returned")) %]</th>
                     <th>[% sort_head("barcode", l("Barcode")) %]</th>
+                    <th>[% sort_head("callnum", l("Call Number")) %]</th>
                 </tr>
             </thead>
             <tbody>
@@ -173,23 +173,6 @@
                             [% END; %]
                         </td>
                         <td>
-                              [%-
-                                   cnlist = [];
-                                   FOREACH element IN [circ.circ.target_copy.call_number.prefix.label
-                                                circ.circ.target_copy.call_number.label
-                                                circ.circ.target_copy.call_number.suffix.label];
-                                       IF (element);
-                                         cnlist.push(element);
-                                       END;
-                                   END;
-                                   cn = cnlist.join(' ');
-                              %]
-                              [% cn | html %]
-                              [%- IF circ.circ.target_copy.parts.0.label %]
-                                    </BR>[% circ.circ.target_copy.parts.0.label | html -%]
-                              [%- END %]
-                        </td>
-                        <td>
                             [% date.format(ctx.parse_datetime(circ.circ.xact_start),DATE_FORMAT); %]
                         </td>
                         <td>
@@ -208,6 +191,23 @@
                             [% END %]
                         </td>
                         <td>[% circ.circ.target_copy.barcode | html %]</td>
+                        <td>
+                              [%-
+                                   cnlist = [];
+                                   FOREACH element IN [circ.circ.target_copy.call_number.prefix.label
+                                                circ.circ.target_copy.call_number.label
+                                                circ.circ.target_copy.call_number.suffix.label];
+                                       IF (element);
+                                         cnlist.push(element);
+                                       END;
+                                   END;
+                                   cn = cnlist.join(' ');
+                              %]
+                              [% cn | html %]
+                              [%- IF circ.circ.target_copy.parts.0.label %]
+                                    </BR>[% circ.circ.target_copy.parts.0.label | html -%]
+                              [%- END %]
+                        </td>
 
                     </tr>
                 [% END %]
