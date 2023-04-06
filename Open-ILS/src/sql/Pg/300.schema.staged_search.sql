@@ -1048,7 +1048,7 @@ $$ LANGUAGE SQL IMMUTABLE LEAKPROOF STRICT COST 10;
 
 CREATE OR REPLACE FUNCTION search.highlight_display_fields(
     rid         BIGINT,
-    tsq_map     TEXT, -- { '(a | b) & c' => '1,2,3,4', ...}
+    tsq_map     TEXT, -- '(a | b) & c' => '1,2,3,4', ...
     css_class   TEXT DEFAULT 'oils_SH',
     hl_all      BOOL DEFAULT TRUE,
     minwords    INT DEFAULT 5,
@@ -1058,19 +1058,13 @@ CREATE OR REPLACE FUNCTION search.highlight_display_fields(
     delimiter   TEXT DEFAULT ' ... '
 ) RETURNS SETOF search.highlight_result AS $f$
 DECLARE
-    tsq_hstore  TEXT;
     tsq         TEXT;
     fields      TEXT;
     afields     INT[];
     seen        INT[];
 BEGIN
-    IF (tsq_map ILIKE 'hstore%') THEN
-        EXECUTE 'SELECT ' || tsq_map INTO tsq_hstore;
-    ELSE
-        tsq_hstore := tsq_map::HSTORE;
-    END IF;
 
-    FOR tsq, fields IN SELECT key, value FROM each(tsq_hstore::HSTORE) LOOP
+    FOR tsq, fields IN SELECT key, value FROM each(tsq_map::HSTORE) LOOP
         SELECT  ARRAY_AGG(unnest::INT) INTO afields
           FROM  unnest(regexp_split_to_array(fields,','));
         seen := seen || afields;

@@ -259,7 +259,7 @@ export class CatalogService {
             (hlMap = hlMap.query_struct)    &&
             (hlMap = hlMap.additional_data) &&
             (hlMap = hlMap.highlight_map)   &&
-            (Object.keys(hlMap).length > 0)) {
+            (hlMap.length > 0)) {
         } else { return Promise.resolve(); }
 
         let ids;
