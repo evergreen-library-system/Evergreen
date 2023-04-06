@@ -1415,22 +1415,13 @@ sub fetch_display_fields {
         return;
     }
 
-    my $hl_map_string = "";
-    if (ref($highlight_map) =~ /HASH/) {
-        for my $tsq (keys %$highlight_map) {
-            my $field_list = join(',', @{$$highlight_map{$tsq}});
-            $hl_map_string .= ' || ' if $hl_map_string;
-            $hl_map_string .= "hstore(($tsq)\:\:TEXT,'$field_list')";
-        }
-    }
-
     my $e = new_editor();
 
     for my $record ( @records ) {
-        next unless ($record && $hl_map_string);
+        next unless ($record && $highlight_map);
         $conn->respond(
             $e->json_query(
-                {from => ['search.highlight_display_fields', $record, $hl_map_string]}
+                {from => ['search.highlight_display_fields', $record, $highlight_map]}
             )
         );
     }

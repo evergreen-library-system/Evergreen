@@ -88,6 +88,7 @@ sub _initialize_parser {
     $max_mult //= 2.0;
     $max_mult = 2.0 unless $max_mult =~ /^-?(?:\d+\.?|\.\d)\d*\z/; # just in case
     $parser->max_popularity_importance_multiplier($max_mult);
+    $parser->dbh(biblio::record_entry->db_Main);
 
     $cstore->disconnect;
     die("Cannot initialize $parser!") unless ($parser->initialization_complete);
