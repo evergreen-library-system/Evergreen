@@ -136,6 +136,14 @@ sub max_popularity_importance_multiplier {
     return $self->custom_data->{max_popularity_importance_multiplier};
 }
 
+sub dbh {
+    my $self = shift;
+    my $dbh = shift;
+
+    $self->custom_data->{dbh} = $dbh if defined($dbh);
+    return $self->custom_data->{dbh};
+}
+
 sub simple_plan {
     my $self = shift;
 
@@ -1926,7 +1934,9 @@ sub abstract_node_additions {
     my $hm = $self->plan
                 ->QueryParser
                 ->parse_tree
-                ->get_abstract_data('highlight_map') || {};
+                ->get_abstract_data('highlight_map') // {};
+
+    return unless ref($hm);
 
     my $field_set = $self->fields;
     $field_set = $self->plan->QueryParser->search_fields->{$self->classname}
@@ -1983,10 +1993,23 @@ sub abstract_node_additions {
         }
     }
 
+    # finally, ask the database to give us an hstore literal
+    my $hl_map_string = "";
+    for my $tsq (keys %$hm) {
+        my $field_list = join(',', @{$$hm{$tsq}});
+        $hl_map_string .= ' || ' if $hl_map_string;
+        $hl_map_string .= "hstore(($tsq)\:\:TEXT,'$field_list')";
+    }
+
+    my $calculated_hm = '';
+    $calculated_hm = $self->plan->QueryParser->dbh->selectcol_arrayref(
+        "SELECT $hl_map_string AS hm"
+    )->[0] if ($hl_map_string);
+
     $self->plan
         ->QueryParser
         ->parse_tree
-        ->set_abstract_data('highlight_map', $hm);
+        ->set_abstract_data('highlight_map', $calculated_hm);
 }
 
 sub add_vfield {
