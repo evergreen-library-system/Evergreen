@@ -97,7 +97,7 @@ sub new {
                'format=s',
                'type=s',
                'xml-idl=s',
-               'encoding=s',
+               'encoding|e=s',
                'timeout=i',
                'library=s@',
                'descendants=s@',
