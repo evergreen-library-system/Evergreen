@@ -1,0 +1,4 @@
+== Fix SQL Injection Vulnernability ==
+
+An SQL injection vulnernability related to the implementation of
+search term highlights is now closed.
