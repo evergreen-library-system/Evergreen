@@ -22,15 +22,26 @@
 <ng-template #createErrStrTmpl i18n>Failed to create new {{recordLabel || idlClassDef.label}}</ng-template>
 <eg-string #createErrString [template]="createErrStrTmpl"></eg-string>
 
+<eg-confirm-dialog #deleteConfirmDialog
+  i18n-dialogTitle
+  dialogTitle="Delete Selected Rows"
+  [dialogBodyTemplate]="deleteConfirmMsg">
+</eg-confirm-dialog>
+<ng-template #deleteConfirmMsg>
+  <span *ngIf="!deleteConfirmation" i18n>Are you sure you want to delete the selected rows? This will also delete any data depending on the rows deleted.</span>
+  <span *ngIf="deleteConfirmation">{{deleteConfirmation}}</span>
+</ng-template>
+
 <ng-container *ngIf="orgField || gridFilters">
   <div class="row">
     <div class="col-lg-6">
       <ng-container *ngIf="orgField">
         <eg-org-family-select
+          [persistKey]="contextOrgSelectorPersistKey"
           [limitPerms]="viewPerms" 
           [selectedOrgId]="contextOrg.id()"
           [(ngModel)]="searchOrgs"
-          (ngModelChange)="grid.reload()">
+          (ngModelChange)="contextOrgChanged($event)">
         </eg-org-family-select>
       </ng-container>
     </div>
@@ -40,6 +51,12 @@
         <span i18n>Filters Applied: {{gridFilters | json}}</span>
         <a *ngIf="!hideClearFilters" class="ps-2 fst-italic"
           [attr.href]="clearGridFiltersUrl()" i18n>Clear Filters</a>
+        &nbsp;
+        <button class="btn btn-info label-with-material-icon"
+          (click)="goBack()" [disabled]="hasNoHistory()">
+          <span class="material-icons">keyboard_backspace</span>
+          <span i18n>Return</span>
+        </button>
       </ng-container>
     </div>
   </div>
@@ -68,10 +85,11 @@
   <eg-grid-toolbar-button [disabled]="translatableFields.length === 0"
     label="Apply Translations" i18n-label (onClick)="translate()">
   </eg-grid-toolbar-button>
-  <eg-grid-toolbar-action label="Edit Selected" i18n-label (onClick)="editSelected($event)">
+  <eg-grid-toolbar-action label="Edit Selected" i18n-label
+    (onClick)="editSelected($event)" *ngIf="!disableEdit">
   </eg-grid-toolbar-action>
   <eg-grid-toolbar-action label="Delete Selected" i18n-label (onClick)="deleteSelected($event)"
-    [disableOnRows]="shouldDisableDelete">
+    [disableOnRows]="shouldDisableDelete" *ngIf="!disableDelete">
   </eg-grid-toolbar-action>
   <eg-grid-toolbar-action label="Undelete Selected" i18n-label (onClick)="undeleteSelected($event)"
     [disableOnRows]="shouldDisableUndelete" *ngIf="enableUndelete">

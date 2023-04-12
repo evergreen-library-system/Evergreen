@@ -107,7 +107,11 @@ const routes: Routes = [{
         table: 'stat_cat',
         readonlyFields: 'id',
         orgDefaultAllowed: 'owner',
+        orgFieldsDefaultingToContextOrg: 'owner',
+        fieldOptions: {owner: {persistKey: 'admin.stat_cat.owner' } },
+        contextOrgSelectorPersistKey: 'admin.item_stat_cat.main_org_selector',
         recordLabel: $localize `Item Statistical Category`,
+        deleteConfirmation: $localize `Are you sure you wish to delete the selected statistical categories?  This will also remove the affected stat cats from any item records using them.`,
         fieldOrder: 'name,owner,required,opac_visible,checkout_archive,sip_field,sip_format'}]
 }, {
     path: 'asset/stat_cat_entry',
@@ -117,6 +121,11 @@ const routes: Routes = [{
         table: 'stat_cat_entry',
         readonlyFields: 'id,stat_cat',
         orgDefaultAllowed: 'owner',
+        orgFieldsDefaultingToContextOrg: 'owner',
+        fieldOptions: {owner: {persistKey: 'admin.stat_cat.owner' } },
+        contextOrgSelectorPersistKey: 'admin.item_stat_cat.main_org_selector',
+        disableEdit: true,
+        disableDelete: true,
         recordLabel: $localize `Item Statistical Category Entry`,
         hideClearFilters: true,
         fieldOrder: 'stat_cat,value,owner'}]
@@ -128,7 +137,11 @@ const routes: Routes = [{
         table: 'stat_cat',
         readonlyFields: 'id',
         orgDefaultAllowed: 'owner',
+        orgFieldsDefaultingToContextOrg: 'owner',
+        fieldOptions: {owner: {persistKey: 'admin.stat_cat.owner' } },
+        contextOrgSelectorPersistKey: 'admin.patron_stat_cat.main_org_selector',
         recordLabel: $localize `Patron Statistical Category`,
+        deleteConfirmation: $localize `Are you sure you wish to delete the selected statistical categories?  This will also remove the affected stat cats from any patron records using them.`,
         fieldOrder: 'name,owner,required,opac_visible,usr_summary,allow_freetext,checkout_archive,sip_field,sip_format'}]
 }, {
     path: 'actor/stat_cat_entry',
@@ -138,6 +151,11 @@ const routes: Routes = [{
         table: 'stat_cat_entry',
         readonlyFields: 'id,stat_cat',
         orgDefaultAllowed: 'owner',
+        orgFieldsDefaultingToContextOrg: 'owner',
+        fieldOptions: {owner: {persistKey: 'admin.stat_cat.owner' } },
+        contextOrgSelectorPersistKey: 'admin.patron_stat_cat.main_org_selector',
+        disableEdit: true,
+        disableDelete: true,
         recordLabel: $localize `Patron Statistical Category Entry`,
         hideClearFilters: true,
         fieldOrder: 'stat_cat,value,owner'}]

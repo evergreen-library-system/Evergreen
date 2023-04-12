@@ -84,6 +84,9 @@ export interface FmFieldOptions {
     // from the default set of form inputs.
     customTemplate?: CustomFieldTemplate;
 
+    // Use this persistKey if the field is an org field
+    persistKey?: StringComponent;
+
     // help text to display via a popover
     helpText?: StringComponent;
 
@@ -569,6 +572,9 @@ export class FmRecordEditorComponent
         } else if (field.datatype === 'org_unit') {
             field.orgDefaultAllowed =
                 this.orgDefaultAllowedList.includes(field.name);
+            if (fieldOptions.persistKey) {
+                field.persistKey = fieldOptions.persistKey;
+            }
         }
 
         if (fieldOptions.helpText) {

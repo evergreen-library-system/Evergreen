@@ -4,6 +4,7 @@ import {AuthService} from '@eg/core/auth.service';
 import {IdlObject} from '@eg/core/idl.service';
 import {OrgService} from '@eg/core/org.service';
 import {OrgSelectComponent} from '@eg/share/org-select/org-select.component';
+import {ServerStoreService} from '@eg/core/server-store.service';
 
 export interface OrgFamily {
   primaryOrgId: number;
@@ -52,6 +53,8 @@ export class OrgFamilySelectComponent implements ControlValueAccessor, OnInit {
 
     @Input() domId: string;
 
+    @Input() persistKey: string;
+
     @Output() onChange = new EventEmitter<any>();
 
     @ViewChildren(OrgSelectComponent)  orgSelects: QueryList<OrgSelectComponent>;
@@ -70,7 +73,8 @@ export class OrgFamilySelectComponent implements ControlValueAccessor, OnInit {
 
     constructor(
         private auth: AuthService,
-        private org: OrgService
+        private org: OrgService,
+        private serverStore: ServerStoreService
     ) {
     }
 
@@ -130,7 +134,26 @@ export class OrgFamilySelectComponent implements ControlValueAccessor, OnInit {
 
             this.propagateChange(this.options);
             this.onChange.emit(this.options);
+
+            if (this.persistKey) {
+                const key = `eg.orgfamilyselect.${this.persistKey}`;
+                this.serverStore.setItem(key, this.options);
+            }
         };
+
+        this.loadPersistedValues();
+    }
+
+    private loadPersistedValues() {
+        if (!this.persistKey) return;
+
+        const key = `eg.orgfamilyselect.${this.persistKey}`;
+
+        this.serverStore.getItem(key).then(persistedOptions => {
+            if (persistedOptions) {
+                this.writeValue(persistedOptions);
+            }
+        });
     }
 
     writeValue(value: OrgFamily) {

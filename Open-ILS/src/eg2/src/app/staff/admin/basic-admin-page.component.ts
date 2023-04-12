@@ -18,12 +18,18 @@ import {tap, switchMap} from 'rxjs/operators';
       <eg-admin-page persistKeyPfx="{{persistKeyPfx}}" idlClass="{{idlClass}}"
         configLinkBasePath="{{configLinkBasePath}}"
         fieldOrder="{{fieldOrder}}"
+        [fieldOptions]="fieldOptions"
         readonlyFields="{{readonlyFields}}"
         recordLabel="{{recordLabel}}"
         orgDefaultAllowed="{{orgDefaultAllowed}}"
+        orgFieldsDefaultingToContextOrg="{{orgFieldsDefaultingToContextOrg}}"
+        contextOrgSelectorPersistKey="{{contextOrgSelectorPersistKey}}"
         [hideClearFilters]="hideClearFilters"
         [defaultNewRecord]="defaultNewRecordIdl"
         [enableUndelete]="enableUndelete"
+        [disableDelete]="disableDelete"
+        [deleteConfirmation]="deleteConfirmation"
+        [disableEdit]="disableEdit"
         [disableOrgFilter]="disableOrgFilter"></eg-admin-page>
       </ng-container>
     `
@@ -35,9 +41,12 @@ export class BasicAdminPageComponent implements OnInit {
     classLabel: string;
     persistKeyPfx: string;
     fieldOrder = '';
+    fieldOptions = {};
+    contextOrgSelectorPersistKey = '';
     readonlyFields = '';
     recordLabel = '';
     orgDefaultAllowed = '';
+    orgFieldsDefaultingToContextOrg = '';
     hideClearFilters: boolean;
     defaultNewRecordIdl: IdlObject;
     configLinkBasePath = '/staff/admin';
@@ -46,6 +55,9 @@ export class BasicAdminPageComponent implements OnInit {
     disableOrgFilter: boolean;
 
     enableUndelete: boolean;
+    disableDelete: boolean;
+    deleteConfirmation: string;
+    disableEdit: boolean;
 
     private getParams$: Observable<ParamMap>;
     private getRouteData$: Observable<any>;
@@ -83,10 +95,16 @@ export class BasicAdminPageComponent implements OnInit {
                     }
                     this.disableOrgFilter = data['disableOrgFilter'];
                     this.enableUndelete = data['enableUndelete'];
+                    this.disableDelete = data['disableDelete'];
+                    this.deleteConfirmation = data['deleteConfirmation'];
+                    this.disableEdit = data['disableEdit'];
                     this.fieldOrder = data['fieldOrder'];
+                    this.fieldOptions = data['fieldOptions'];
+                    this.contextOrgSelectorPersistKey = data['contextOrgSelectorPersistKey'];
                     this.readonlyFields = data['readonlyFields'];
                     this.recordLabel = data['recordLabel'];
                     this.orgDefaultAllowed = data['orgDefaultAllowed'];
+                    this.orgFieldsDefaultingToContextOrg = data['orgFieldsDefaultingToContextOrg'];
                     this.hideClearFilters = data['hideClearFilters'];
                     this.defaultNewRecord = data['defaultNewRecord'];
                 }

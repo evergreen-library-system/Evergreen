@@ -7,6 +7,7 @@ import {GridDataSource, GridColumn} from '@eg/share/grid/grid';
 import {GridComponent} from '@eg/share/grid/grid.component';
 import {TranslateComponent} from '@eg/share/translate/translate.component';
 import {ToastService} from '@eg/share/toast/toast.service';
+import {ConfirmDialogComponent} from '@eg/share/dialog/confirm.component';
 import {Pager} from '@eg/share/util/pager';
 import {PcrudService} from '@eg/core/pcrud.service';
 import {OrgService} from '@eg/core/org.service';
@@ -63,6 +64,15 @@ export class AdminPageComponent implements OnInit {
     // Give the grid an option to undelete any deleted rows
     @Input() enableUndelete: boolean;
 
+    // Remove the ability to delete rows
+    @Input() disableDelete: boolean;
+
+    // Optional: Replace the default deletion confirmation text with this
+    @Input() deleteConfirmation: string;
+
+    // Remove the ability to edit rows
+    @Input() disableEdit: boolean;
+
     // Include objects linking to org units which are ancestors
     // of the selected org unit.
     @Input() includeOrgAncestors: boolean;
@@ -73,6 +83,9 @@ export class AdminPageComponent implements OnInit {
     // Optional grid persist key.  This is the part of the key
     // following eg.grid.
     @Input() persistKey: string;
+
+    // If present, will be applied to the org selector for the grid
+    @Input() contextOrgSelectorPersistKey: string;
 
     // Optional path component to add to the generated grid persist key,
     // formatted as (for example):
@@ -90,6 +103,9 @@ export class AdminPageComponent implements OnInit {
 
     // optional list of org fields which are allowed a default if unset
     @Input() orgDefaultAllowed: string;
+
+    // list of org fields to receive the context org as their default for new records
+    @Input() orgFieldsDefaultingToContextOrg: string;
 
     // Optional template containing help/about text which will
     // be added to the page, above the grid.
@@ -121,6 +137,8 @@ export class AdminPageComponent implements OnInit {
     @ViewChild('undeleteFailedString', { static: true }) undeleteFailedString: StringComponent;
     @ViewChild('undeleteSuccessString', { static: true }) undeleteSuccessString: StringComponent;
     @ViewChild('translator', { static: true }) translator: TranslateComponent;
+    @ViewChild('deleteConfirmDialog', { static: true })
+    private deleteConfirmDialog: ConfirmDialogComponent;
 
     idlClassDef: any;
     pkeyField: string;
@@ -179,6 +197,11 @@ export class AdminPageComponent implements OnInit {
             this.contextOrg = this.org.get(orgId) || this.org.get(this.auth.user().ws_ou()) || this.org.root();
             this.searchOrgs = {primaryOrgId: this.contextOrg.id()};
         }
+    }
+
+    contextOrgChanged(orgEvent: any) {
+        this.grid.reload();
+        this.setDefaultNewRecordOrgFieldDefaults( orgEvent['primaryOrgId'] );
     }
 
     ngOnInit() {
@@ -241,9 +264,30 @@ export class AdminPageComponent implements OnInit {
         this.checkCreatePerms();
         this.applyOrgValues(Number(contextOrg));
 
+        this.setDefaultNewRecordOrgFieldDefaults( Number(contextOrg) );
+
         // If the caller provides not data source, create a generic one.
         if (!this.dataSource) {
             this.initDataSource();
+        }
+
+        console.log('admin this',this);
+    }
+
+    setDefaultNewRecordOrgFieldDefaults(contextOrg: number) {
+        // however we get a defaultNewRecord, we may want to default some org fields to the context org
+        if (this.orgFieldsDefaultingToContextOrg) {
+            if (!this.defaultNewRecord) {
+                this.defaultNewRecord = this.idl.create(this.idlClass);
+            }
+            this.orgFieldsDefaultingToContextOrg.split(/,/).forEach( field => {
+                if (this.defaultNewRecord[field] && this.pkeyField !== field) {
+                    if (contextOrg) {
+                        // since this can change often, we'll just blow away anything that might have come in a different way
+                        this.defaultNewRecord[field]( contextOrg );
+                    }
+                }
+            });
         }
     }
 
@@ -322,6 +366,9 @@ export class AdminPageComponent implements OnInit {
     }
 
     showEditDialog(idlThing: IdlObject): Promise<any> {
+        if (this.disableEdit) {
+            return;
+        }
         this.editDialog.mode = 'update';
         this.editDialog.recordId = idlThing[this.pkeyField]();
         return new Promise((resolve, reject) => {
@@ -370,18 +417,22 @@ export class AdminPageComponent implements OnInit {
     }
 
     deleteSelected(idlThings: IdlObject[]) {
-        idlThings.forEach(idlThing => idlThing.isdeleted(true));
-        this.pcrud.autoApply(idlThings).subscribe(
-            val => {
-                this.deleteSuccessString.current()
-                    .then(str => this.toast.success(str));
-            },
-            err => {
-                this.deleteFailedString.current()
-                    .then(str => this.toast.danger(str));
-            },
-            ()  => this.grid.reload()
-        );
+        this.deleteConfirmDialog.open().subscribe(confirmed => {
+            if ( confirmed ) {
+                idlThings.forEach(idlThing => idlThing.isdeleted(true));
+                this.pcrud.autoApply(idlThings).subscribe(
+                    val => {
+                        this.deleteSuccessString.current()
+                            .then(str => this.toast.success(str));
+                    },
+                    err => {
+                        this.deleteFailedString.current()
+                            .then(str => this.toast.danger(str));
+                    },
+                    ()  => this.grid.reload()
+                );
+            }
+        });
     }
 
     shouldDisableDelete(rows: IdlObject[]): boolean {
@@ -559,6 +610,15 @@ export class AdminPageComponent implements OnInit {
         const url = this.configLinkBasePath + '/' + parts[0] + '/' + parts[1];
         return this.ngLocation.prepareExternalUrl(url);
     }
+
+    hasNoHistory(): boolean {
+        return history.length === 0;
+    }
+
+    goBack() {
+        history.back();
+    }
+
 }
 
 export interface TemplateField {
