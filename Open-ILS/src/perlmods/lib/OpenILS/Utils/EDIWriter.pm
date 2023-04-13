@@ -154,7 +154,7 @@ sub compile_po {
         provider_id => $po->provider->id,
         vendor_san => $po->provider->san || '',
         org_unit_san => $po->provider->buyer_san ||
-            $po->ordering_agency->mailing_address->san || '',
+            defined($po->ordering_agency->mailing_address) ? ($po->ordering_agency->mailing_address->san || '') : '',
         currency_type => $po->provider->currency_type,
         edi_attrs => {},
         lineitems => []
