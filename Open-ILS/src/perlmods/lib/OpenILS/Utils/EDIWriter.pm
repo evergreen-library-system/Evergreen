@@ -153,7 +153,7 @@ sub compile_po {
         po_name => $self->escape_edi($po->name),
         provider_id => $po->provider->id,
         vendor_san => $po->provider->san || '',
-        org_unit_san => $po->ordering_agency->mailing_address->san || '',
+        org_unit_san => defined($po->ordering_agency->mailing_address) ? ($po->ordering_agency->mailing_address->san || '') : '',
         currency_type => $po->provider->currency_type,
         edi_attrs => {},
         lineitems => []
