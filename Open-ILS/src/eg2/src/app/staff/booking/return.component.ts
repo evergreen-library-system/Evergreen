@@ -88,6 +88,7 @@ export class ReturnComponent implements OnInit, OnDestroy {
                             select: {'curr_rsrcs': {'return_time': null, 'pickup_time': {'!=': null}}}
                         }).pipe(tap((resp) => {
                             if (resp.curr_rsrcs()[0].usr()) {
+                                this.tabs.select('resource');
                                 this.patronId = resp.curr_rsrcs()[0].usr();
                                 this.refreshGrids();
                             }
@@ -121,6 +122,7 @@ export class ReturnComponent implements OnInit, OnDestroy {
               flesh_fields: {'au': ['card']}
           }).pipe(tap(
               (resp) => {
+                  this.tabs.select('patron_tab');
                   this.findPatron.patchValue({patronBarcode: resp.card().barcode()});
                   this.refreshGrids();
               }, (err) => { console.debug(err); }
