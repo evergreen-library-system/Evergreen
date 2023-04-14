@@ -23,6 +23,11 @@ body, .form-control, .btn, .input-group-text {
    */
   font-size: .88rem;
 }
+h1 {
+  font-size: 1.25rem;
+  font-weight: normal;
+  margin: 0
+}
 h2 {
   font-size: 1.25rem;
   font-weight: 550;

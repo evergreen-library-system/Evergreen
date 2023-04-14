@@ -21,7 +21,8 @@ import {CourseAssociateUsersComponent
     } from './course-associate-users.component';
 
 @Component({
-    templateUrl: './course-list.component.html'
+    templateUrl: './course-list.component.html',
+    styleUrls: ['./course-page.component.css']
 })
 
 export class CourseListComponent implements OnInit, AfterViewInit {
