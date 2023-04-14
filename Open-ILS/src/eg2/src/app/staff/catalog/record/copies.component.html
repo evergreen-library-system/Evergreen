@@ -1,20 +1,22 @@
 <ng-template #cnTemplate let-copy="row">
-  {{copy.call_number_prefix_label}}
-  {{copy.call_number_label}}
-  {{copy.call_number_suffix_label}}
+    <div id="copy-callnumber-{{copy.call_number}}">
+    {{copy.call_number_prefix_label}}
+    {{copy.call_number_label}}
+    {{copy.call_number_suffix_label}}
+    </div>
   <div>
     <a routerLink="/staff/cat/volcopy/holdings/callnumber/{{copy.call_number}}"
-      class="" target="_blank"i18n>Edit</a> 
+      target="_blank" i18n attr.aria-describedby="copy-barcode-{{copy.id}}">Edit</a> 
   </div>
 </ng-template>
 
 <ng-template #barcodeTemplate let-copy="row" let-context="userContext">
-  <div>{{copy.barcode}}</div>
+  <div id="copy-barcode-{{copy.id}}">{{copy.barcode}}</div>
   <div>
   <a class="ps-1" target="_blank" 
     href="/eg/staff/cat/item/{{copy.id}}" i18n>View</a>
     <ng-container *ngIf="context.editable(copy)">
-      | <a class="ps-1" target="_blank"
+      | <a class="ps-1" target="_blank"  attr.aria-describedby="copy-barcode-{{copy.id}}"
         routerLink="/staff/cat/volcopy/attrs/item/{{copy.id}}" i18n>Edit</a>
     </ng-container>
   </div>
@@ -24,6 +26,7 @@
   <div *ngIf="context.holdable(copy)">
     <div class="border-bottom">
       <a routerLink="/staff/catalog/hold/C"
+        attr.aria-describedby="copy-barcode-{{copy.id}}"
         [queryParams]="{target: copy.id}"
         queryParamsHandling="merge" i18n>
         Item Hold
@@ -31,6 +34,7 @@
     </div>
     <div>
       <a routerLink="/staff/catalog/hold/V"
+        attr.aria-describedby="copy-barcode-{{copy.id}}"
         [queryParams]="{target: copy.call_number}"
         queryParamsHandling="merge" i18n>
         Call Number Hold
@@ -42,7 +46,9 @@
 
 <ng-template #courseTemplate let-copy="row">
   <div *ngFor="let course of copy._courses">
-    <a routerLink="/staff/admin/local/asset/course_list/{{course.id()}}">
+    <span class="sr-only" id="course-name-{{course.id()}}">{{course.name()}}</span>
+    <a attr.aria-describedby="course-name-{{course.id()}}"
+    routerLink="/staff/admin/local/asset/course_list/{{course.id()}}">
       {{course.course_number()}}
     </a>
   </div>
