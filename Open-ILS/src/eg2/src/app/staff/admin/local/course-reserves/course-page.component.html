@@ -1,7 +1,7 @@
 <eg-staff-banner
   bannerText=" {{currentCourse.course_number()}}: {{currentCourse.name()}}"
   i18n-bannerText class="mb-3" *ngIf="currentCourse"
-  [bannerStyle]="(courseIsArchived || currentCourse.is_archived()) === 't' ? 'alert-secondary' : null"
+  [bannerStyle]="(courseIsArchived || currentCourse.is_archived()) === 't' ? 'course-archived' : null"
   [bannerIcon]="(courseIsArchived || currentCourse.is_archived()) === 't' ? 'lock' : null">
 </eg-staff-banner>
 

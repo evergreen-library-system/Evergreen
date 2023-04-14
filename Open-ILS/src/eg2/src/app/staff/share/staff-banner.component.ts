@@ -5,9 +5,10 @@ import {Component, OnInit, Input} from '@angular/core';
   template: `
     <div class="lead alert alert-primary text-center pt-1 pb-1"
       [ngClass]="bannerStyle ? bannerStyle : 'alert-primary'">
-      <eg-title i18n-prefix [prefix]="bannerText"></eg-title>
-      <i class="material-icons align-middle text-left" *ngIf="bannerIcon">{{bannerIcon}}</i>
-       <span class="align-middle">{{bannerText}}</span>
+      <h1>
+        <i class="material-icons align-middle text-left" *ngIf="bannerIcon">{{bannerIcon}}</i>
+        <span i18n>{{bannerText}}</span>
+      </h1>
     </div>
     `
 })
