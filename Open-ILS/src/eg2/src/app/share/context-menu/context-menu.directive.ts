@@ -41,15 +41,8 @@ export class ContextMenuDirective extends NgbPopover {
         p7: NgZone, @Inject(DOCUMENT) p8: any, p9: ChangeDetectorRef,
         p10: ApplicationRef, private menuService: ContextMenuService) {
 
-        // XXX
-        // The 2nd parameter is removed in a future version of ng-bootstrap,
-        // because it refers to a private service (NgbRTL), which we cannot
-        // instantiate.  Passing null for now so it compiles, but this breaks
-        // the context menu.
-        // https://github.com/ng-bootstrap/ng-bootstrap/commit/7f2146d84822eb1870f5a141626f261d1ecc5799
-        //
         // relay injected services to parent
-        super(p1, null, p2, p3, p5, p6, p7, p8, p9, p10);
+        super(p1, p2, p3, p5, p6, p7, p8, p9, p10);
 
         this.menuItemSelected = new EventEmitter<ContextMenuEntry>();
 

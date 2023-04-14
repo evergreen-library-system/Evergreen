@@ -216,6 +216,8 @@
                 </ng-container> 
               </select>
             </div>
+          </div>
+          <div class="row" *ngIf="showFilters()">
             <div class="col mt-3" *ngIf="searchFilters().includes('vr_format')">
               <label i18n class="form-label select-label" for="context-termSearch-ccvmFilters-vr_format">Video Format</label>
               <select class="form-select" id="context-termSearch-ccvmFilters-vr_format"
@@ -259,23 +261,27 @@
           </div>
           <div class="row row-cols-auto mt-3" *ngIf="showFilters()">
             <div class="col">
-              <div class="form-inline">
-                <label class="form-label" for="pub-date1-input" i18n>Publication Year is</label>
-                <label class="visually-hidden" for="pub-date-operator-select" i18n>compare publication dates using...</label>
-                <select id="pub-date-operator-select" class="form-select ms-2" [(ngModel)]="context.termSearch.dateOp">
-                  <option value='is' i18n>Is</option>
-                  <option value='before' i18n>Before</option>
-                  <option value='after' i18n>After</option>
-                  <option value='between' i18n>Between</option>
-                </select>
-                <label i18n class="visually-hidden" for="context-termSearch-date1">Year, or beginning of year range</label>
-                <input class="form-control ms-2" type="number" id="context-termSearch-date1"
-                  [(ngModel)]="context.termSearch.date1"/>
-                <label i18n class="visually-hidden" for="context-termSearch-date2">End of year range</label>
-                  <input class="form-control ms-2" type="number"
-                  *ngIf="context.termSearch.dateOp === 'between'"
-                  [(ngModel)]="context.termSearch.date2"/>
-              </div>
+              <label class="form-label" for="pub-date1-input" i18n>Publication Year is</label>
+              <label class="visually-hidden" for="pub-date-operator-select" i18n>compare publication dates using...</label>
+            </div>
+            <div class="col">
+              <select id="pub-date-operator-select" class="form-select ms-2" [(ngModel)]="context.termSearch.dateOp">
+                <option value='is' i18n>Is</option>
+                <option value='before' i18n>Before</option>
+                <option value='after' i18n>After</option>
+                <option value='between' i18n>Between</option>
+              </select>
+            </div>
+            <div class="col">
+              <label i18n class="visually-hidden" for="context-termSearch-date1">Year, or beginning of year range</label>
+              <input class="form-control ms-2" type="number" id="context-termSearch-date1"
+                [(ngModel)]="context.termSearch.date1"/>
+            </div>
+            <div class="col">
+              <label i18n class="visually-hidden" for="context-termSearch-date2">End of year range</label>
+                <input class="form-control ms-2" type="number"
+                *ngIf="context.termSearch.dateOp === 'between'"
+                [(ngModel)]="context.termSearch.date2"/>
             </div>
           </div>
         </ng-template>
@@ -283,32 +289,11 @@
       <li role="presentation" [ngbNavItem]="'ident'">
         <a i18n ngbNavLink role="tab">Numeric Search</a>
         <ng-template ngbNavContent>
-          <div class="row mt-4">
-            <div class="col-lg-12">
-              <div class="form-inline">
-                <label for="ident-type" i18n>Query Type</label>
-                <select class="form-select ms-2" name="ident-type"
-                  [(ngModel)]="context.identSearch.queryType">
-                  <option i18n value="identifier|isbn">ISBN</option>
-                  <option i18n value="identifier|upc">UPC</option>
-                  <option i18n value="identifier|issn">ISSN</option>
-                  <option i18n value="identifier|lccn">LCCN</option>
-                  <option i18n value="identifier|tcn">TCN</option>
-                  <option i18n value="item_barcode">Item Barcode</option>
-                </select>
-                <label for="ident-value" class="ms-2" i18n>Value</label>
-                <input name="ident-value" id='ident-query-input' 
-                  type="text" class="form-control ms-2"
-                  [(ngModel)]="context.identSearch.value"
-                  (keyup.enter)="searchByForm()"
-                  placeholder="Numeric Query..."/>
-              </div>
-            </div>
-          </div>
           <div class="row mt-2 gx-3 row-cols-auto justify-content-start align-items-center">
-            <label class="form-label col" for="ident-type" i18n>Query Type</label>
             <div class="col">
               <label class="form-label col-form-label" for="ident-type" i18n>Query Type</label>
+            </div>
+            <div class="col">
               <select class="form-select" name="ident-type"
                 [(ngModel)]="context.identSearch.queryType">
                 <option i18n value="identifier|isbn">ISBN</option>
@@ -321,7 +306,8 @@
             </div>
             <div class="col">
               <label for="ident-value" class="form-label col-form-label" i18n>Value</label>
-            
+            </div>
+            <div class="col">
               <input name="ident-value" id='ident-query-input' 
                 type="text" class="form-control"
                 [(ngModel)]="context.identSearch.value"

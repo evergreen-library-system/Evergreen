@@ -14,7 +14,7 @@
 </eg-confirm-dialog>
 
 <div class="row mb-3">
-  <div class="col-lg-4">
+  <div class="col-lg-5">
     <eg-org-family-select
       [selectedOrgId]="initialOrg"
       [limitPerms]="['ADMIN_PRINT_TEMPLATE']"
@@ -23,7 +23,7 @@
       ngModel #orgFamily="ngModel">
     </eg-org-family-select>
   </div>
-  <div class="col-lg-3">
+  <div class="col-lg-4">
     <div class="input-group">
       <span class="input-group-text" i18n>Template</span>
       <ng-template #entryTemplate let-r="result" let-owner="getOwnerName">

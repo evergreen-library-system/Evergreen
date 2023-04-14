@@ -122,22 +122,28 @@
           <a i18n ngbNavLink role="tab">Group Permissions</a>
           <ng-template ngbNavContent>
 
-            <div class="row d-flex m-2 mb-3">
-              <button class="btn btn-success" (click)="applyChanges()" i18n
-                [disabled]='!changesPending()'>
-                Apply Changes
-              </button>
-              <button class="btn btn-info ms-3" (click)="openAddDialog()" i18n>
-                Add New Mapping
-              </button>
-              <div class="col-lg-3">
+            <div class="row m-2 mb-3">
+              <div class="col">
+                <button class="btn btn-success" (click)="applyChanges()" i18n
+                  [disabled]='!changesPending()'>
+                  Apply Changes
+                </button>
+              </div>
+              <div class="col">
+                <button class="btn btn-info ms-3" (click)="openAddDialog()" i18n>
+                  Add New Mapping
+                </button>
+              </div>
+              <div class="col">
                 <input class="form-control ms-2" [(ngModel)]="filterText"
                   i18n-placeholder placeholder="Filter..."/>
               </div>
-              <button class="btn btn-outline-secondary ms-1" 
-                (click)="filterText=''" i18n>
-                Clear
-              </button>
+              <div class="col">
+                <button class="btn btn-outline-secondary ms-1" 
+                  (click)="filterText=''" i18n>
+                  Clear
+                </button>
+              </div>
             </div>
 
             <div class="row fst-italic">
