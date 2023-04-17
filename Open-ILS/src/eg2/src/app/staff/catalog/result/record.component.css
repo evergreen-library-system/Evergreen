@@ -1,4 +1,3 @@
-
 /**
  * Force the jacket image column to consume a consistent amount of
  * horizontal space, while allowing some room for the browser to
@@ -14,6 +13,136 @@
     max-width: 100px;
 }
 
+.shelving-locations {
+    margin-inline-start: calc(var(--bs-gutter-x) * .5);
+    padding-inline-start: 0;
+    width: auto;
+}
+
+[role="region"][aria-labelledby][tabindex]:focus-visible table {
+    outline: 2px solid #0A58CA;
+    outline-offset: 5px;
+}
+
+.shelving-locations table.table {
+    border: 1px solid rgb(222, 226, 230);
+    caption-side: top;
+    margin-block-start: 1rem;
+    table-layout: auto;
+    white-space: normal;
+    width: revert;
+}
+
+table caption {
+    color: #000;
+    font-weight: bold;
+    caption-side: top;
+}
+
+.shelving-locations .table> :not(:first-child) {
+    border-top: revert;
+}
+
+table th,
+table td {
+    padding: .2rem 1rem .2rem .2rem;
+}
+
+table.compact th,
+table.compact td {
+    line-height: 1.4;
+    padding: .1rem .6rem .1rem .1rem;
+}
+
+table.wide th,
+table.wide td {
+    padding: .5rem 1rem .5rem .5rem;
+}
+
+table thead th {
+    border-bottom: 1px solid rgba(0, 0, 0, .125);
+}
+
+table th {
+    background-color: rgba(0, 0, 0, .03);
+    font-weight: 600;
+    vertical-align: bottom;
+}
+
+table td {
+    vertical-align: top;
+}
+
+.org-unit,
+.callnumber,
+.timestamp {
+    font-variant-numeric: tabular-nums lining-nums;
+}
+
+@media (min-width: 640px) {
+
+    /* pad left with the jacket column (120px) plus result number and checkbox */
+    /* use margin instead of padding for sensible :focus-visible outline */
+    .shelving-locations {
+        margin-inline-start: calc(120px + 3rem);
+        padding: 0;
+    }
+}
+
+@media (max-width: 480px) {
+
+    .shelving-locations table.table,
+    .shelving-locations table caption,
+    .shelving-locations table tbody {
+        border: none;
+        display: block;
+        width: 100%;
+    }
+
+    /* emulate .visually-hidden */
+    .shelving-locations table thead {
+        position: absolute !important;
+        width: 1px !important;
+        height: 1px !important;
+        padding: 0 !important;
+        padding-right: 0px;
+        margin: -1px !important;
+        overflow: hidden !important;
+        clip: rect(0, 0, 0, 0) !important;
+        white-space: nowrap !important;
+        border: 0 !important;
+    }
+
+    .shelving-locations table tr {
+        align-items: flex-start;
+        border: none;
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0 1ch;
+        padding: 0 0 1rem;
+    }
+
+    .shelving-locations table th,
+    .shelving-locations table td {
+        background: none;
+        border: none;
+        display: inline-block;
+        flex-basis: auto;
+        flex-grow: 0;
+        padding: 0;
+    }
+
+    .shelving-locations table .callnumber {
+        flex-basis: 100%;
+    }
+
+    .shelving-locations table .due-date span:before {
+        content: attr(title);
+        display: inline-block;
+        margin-inline-start: 2ch;
+        margin-inline-end: 1ch;
+    }
+}
 .bib-field-title {
     font-size: .88rem;
     font-weight: inherit;
