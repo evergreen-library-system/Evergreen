@@ -1,19 +1,19 @@
 <ng-template #cnTemplate let-copy="row">
     <div id="copy-callnumber-{{copy.call_number}}">
     {{copy.call_number_prefix_label}}
-    {{copy.call_number_label}}
+    <span id="copy-callnumber-label-{{copy.call_number_label}}">{{copy.call_number_label}}</span>
     {{copy.call_number_suffix_label}}
     </div>
   <div>
     <a routerLink="/staff/cat/volcopy/holdings/callnumber/{{copy.call_number}}"
-      target="_blank" i18n attr.aria-describedby="copy-barcode-{{copy.id}}">Edit</a> 
+      target="_blank" i18n attr.aria-describedby="copy-callnumber-label-{{copy.call_number_label}}">Edit</a> 
   </div>
 </ng-template>
 
 <ng-template #barcodeTemplate let-copy="row" let-context="userContext">
   <div id="copy-barcode-{{copy.id}}">{{copy.barcode}}</div>
   <div>
-  <a class="ps-1" target="_blank" 
+  <a class="ps-1" target="_blank" attr.aria-describedby="copy-barcode-{{copy.id}}"
     href="/eg/staff/cat/item/{{copy.id}}" i18n>View</a>
     <ng-container *ngIf="context.editable(copy)">
       | <a class="ps-1" target="_blank"  attr.aria-describedby="copy-barcode-{{copy.id}}"
