@@ -95,6 +95,14 @@
   padding-bottom: 11px;
 }
 
+/* make buttons and links match when focused */
+.eg-grid-toolbar .dropdown-item:focus,
+.eg-grid-toolbar .dropdown-item:hover,
+.eg-grid-column-config-dialog button:focus,
+.eg-grid-column-width-config button:focus {
+  outline: 2px solid var(--primary);
+}
+
 .eg-grid-cell-skinny {
   width: 2em;
   text-align: center;

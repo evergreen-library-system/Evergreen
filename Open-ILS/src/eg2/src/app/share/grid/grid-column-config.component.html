@@ -24,28 +24,28 @@
       </div>
       <div class="col-lg-3" (click)="toggleVisibility(col)">{{col.label}}</div>
       <div class="col-lg-1">
-        <a class="no-href" title="Move column up" i18n-title
+        <button class="btn" title="Move column up" i18n-title
           (click)="columnSet.moveColumn(col, -1)">
           <span class="material-icons">arrow_upward</span>
-        </a>
+        </button>
       </div>
       <div class="col-lg-1">
-        <a class="no-href" title="Move column down" i18n-title
+        <button class="btn" title="Move column down" i18n-title
           (click)="columnSet.moveColumn(col, 1)">
           <span class="material-icons">arrow_downward</span>
-        </a>
+        </button>
       </div>
       <div class="col-lg-2">
-        <a class="no-href" title="Make first visible" i18n-title
+        <button class="btn" title="Make first visible" i18n-title
           (click)="columnSet.moveColumn(col, -10000)">
           <span class="material-icons">vertical_align_top</span>
-        </a>
+        </button>
       </div>
       <div class="col-lg-2">
-        <a class="no-href" title="Make last visible" i18n-title
+        <button class="btn" title="Make last visible" i18n-title
           (click)="columnSet.moveColumn(col, 10000)">
           <span class="material-icons">vertical_align_bottom</span>
-        </a>
+        </button>
       </div>
       <div class="col-lg-2" *ngIf="columnSet.isMultiSortable">
         <div *ngIf="col.isMultiSortable">
