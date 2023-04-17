@@ -238,35 +238,43 @@
       </div>
     </div><!-- row -->
     <div class="row" *ngIf="searchContext.showResultExtras && summary.copies">
-      <div class="col-lg-12 mt-2">
-        <div class="w-auto ms-2 me-2">
-          <ng-container *ngIf="summary.copies.length">
-            <div class="row p-1 fw-bold border-top">
-              <div class="col-lg-2" i18n>Library</div>
-              <div class="col-lg-3" i18n>Shelving location</div>
-              <div class="col-lg-3" i18n>Call number</div>
-              <div class="col-lg-2" i18n>Status</div>
-              <div class="col-lg-2" i18n>Due date</div>
-            </div>
-            <div class="row p-1 mt-1 mb-1 border-top" *ngFor="let copy of summary.copies">
-              <div class="col-lg-2" i18n>{{copy.circ_lib_sn}}</div>
-              <div class="col-lg-3" i18n>{{copy.copy_location}}</div>
-              <div class="col-lg-3" i18n>
+      <div class="shelving-locations" role="region" aria-describedby="caption{{index}}" tabindex="0">
+        <table class="table" role="table" *ngIf="summary.copies.length">
+          <caption id="caption{{index}}" *ngIf="summary.copies.length" i18n>
+            {{summary.copies.length}} Shelving Locations
+          </caption>
+          <thead role="rowgroup">
+            <tr>
+              <th scope="col" role="columnheader" class="shelving-library org-unit" i18n>Library</th>
+              <th scope="col" role="columnheader" class="copy-location" i18n>Shelving location</th>
+              <th scope="col" role="columnheader" class="callnumber" i18n>Call number</th>
+              <th scope="col" role="columnheader" class="status" i18n>Status</th>
+              <th scope="col" role="columnheader" class="due-date timestamp" i18n>Due date</th>
+            </tr>
+          </thead>
+          <tbody role="rowgroup">
+            <tr role="row" *ngFor="let copy of summary.copies">
+              <th role="rowheader" class="shelving-library org-unit" i18n>{{copy.circ_lib_sn}}</th>
+              <td role="cell" class="copy-location" i18n>{{copy.copy_location}}</td>
+              <td role="cell" class="callnumber" i18n>
                 {{copy.call_number_prefix_label}} 
                 {{copy.call_number_label}}
                 {{copy.call_number_suffix_label}}
-              </div>
-              <div class="col-lg-2" i18n>{{copy.copy_status}}</div>
-              <div class="col-lg-2" *ngIf="copy.due_date">
-                {{copy.due_date | date:'shortDate'}}
-              </div>
-            </div>
-          </ng-container>
-          <ng-container *ngIf="!summary.copies.length && !summary.eResourceUrls.length">
-            <span class="fst-italic" i18n>No Items To Display</span>
-          </ng-container>
-        </div>
+              </td>
+              <td role="cell" class="status" i18n>{{copy.copy_status}}</td>
+              <td role="cell" class="due-date timestamp" i18n>
+                <ng-container *ngIf="copy.due_date">
+                  <span title="Due:" i18n-title>{{copy.due_date | date:'shortDate'}}</span>
+                </ng-container>
+              </td>
+            </tr>
+          </tbody>
+        </table>
       </div>
+
+      <ng-container *ngIf="!summary.copies.length && !summary.eResourceUrls.length">
+        <p class="fst-italic" i18n>No Items To Display</p>
+      </ng-container>
     </div>
   </div><!-- card-body -->
 </div><!-- card -->
