@@ -108,59 +108,52 @@
   </eg-grid-column-config>
   <div ngbDropdown placement="bottom-right">
     <button ngbDropdownToggle class="btn btn-outline-dark no-dropdown-caret">
-      <span title="Show Grid Options" i18n-title
-        class="material-icons mat-icon-in-button">settings</span>
+      <span title="Show Grid Options" i18n-title class="material-icons mat-icon-in-button">settings</span>
     </button>
     <div class="dropdown-menu scrollable-menu" ngbDropdownMenu>
-      <a class="dropdown-item label-with-material-icon"
+      <button nbgDropdownItem class="dropdown-item label-with-material-icon"
         (click)="columnConfDialog.open({size:'lg'})">
         <span class="material-icons">build</span>
         <span class="ms-2" i18n>Manage Columns</span>
-      </a>
-      <a class="dropdown-item label-with-material-icon"
+      </button>
+      <button nbgDropdownItem class="dropdown-item label-with-material-icon"
         (click)="colWidthConfig.isVisible = !colWidthConfig.isVisible">
         <span class="material-icons">compare_arrows</span>
         <span class="ms-2" i18n>Manage Column Widths</span>
-      </a>
-      <button class="dropdown-item label-with-material-icon"
-        [disabled]="gridContext.toolbarActions.length === 0"
-        (click)="toolbarActionsEditor.open().subscribe()">
+      </button>
+      <button nbgDropdownItem class="dropdown-item label-with-material-icon"
+        [disabled]="gridContext.toolbarActions.length === 0" (click)="toolbarActionsEditor.open().subscribe()">
         <span class="material-icons">menu</span>
         <span class="ms-2" i18n>Manage Actions Menu</span>
       </button>
-      <a class="dropdown-item label-with-material-icon"
-        *ngIf="!disableSaveSettings"
+      <button nbgDropdownItem class="dropdown-item label-with-material-icon" *ngIf="!disableSaveSettings"
         (click)="saveGridConfig()">
         <span class="material-icons">save</span>
         <span class="ms-2" i18n>Save Grid Settings</span>
-      </a>
-      <a class="dropdown-item label-with-material-icon"
-        (click)="gridContext.columnSet.reset()">
+      </button>
+      <button nbgDropdownItem class="dropdown-item label-with-material-icon" (click)="gridContext.columnSet.reset()">
         <span class="material-icons">restore</span>
         <span class="ms-2" i18n>Reset Columns</span>
-      </a>
-      <a class="dropdown-item label-with-material-icon"
-        (click)="generateCsvExportUrl($event)"
-        [download]="csvExportFileName"
-        [href]="csvExportUrl">
+      </button>
+      <a nbgDropdownItem class="dropdown-item label-with-material-icon" (click)="generateCsvExportUrl($event)"
+        [download]="csvExportFileName" [href]="csvExportUrl">
         <span class="material-icons">cloud_download</span>
         <span class="ms-2" i18n>Download Full CSV</span>
       </a>
-      <a class="dropdown-item label-with-material-icon" (click)="printHtml()">
+      <button nbgDropdownItem class="dropdown-item label-with-material-icon" (click)="printHtml()">
         <span class="material-icons">print</span>
         <span class="ms-2" i18n>Print Full Grid</span>
-      </a>
-
+      </button>
+  
       <div class="dropdown-divider"></div>
-
-      <a class="dropdown-item label-with-material-icon"
-        (click)="toggleVisibility(col)"
+  
+      <button nbgDropdownItem class="dropdown-item label-with-material-icon" (click)="toggleVisibility(col)"
         *ngFor="let col of gridContext.columnSet.sortForColPicker()">
         <span *ngIf="col.visible" class="badge badge-success">&#x2713;</span>
         <span *ngIf="!col.visible" class="badge badge-warning">&#x2717;</span>
         <span class="ms-2">{{col.label}}</span>
-      </a>
-
+      </button>
+  
     </div>
   </div>
 
