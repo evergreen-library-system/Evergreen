@@ -1,8 +1,8 @@
-<nav id="staff-navbar" class="navbar fixed-top navbar-expand navbar-default" aria-label="Main Navigation" i18n-aria-label>
+<nav id="staff-navbar" aria-label="Main Navigation" i18n-aria-label class="navbar fixed-top navbar-expand navbar-default">
   <div class="collapse navbar-collapse">
     <div class="navbar-nav">
       <div class="nav-item">
-        <a i18n class="nav-link with-material-icon" 
+        <a i18n class="nav-link with-material-icon nav-link-home" 
           routerLink="/staff/"
           egAccessKey keyCtx="navbar" i18n-keySpec i18n-keyDesc
           keySpec="alt+h" keyDesc="Navigate Home">
@@ -13,21 +13,21 @@
 
     <div class="navbar-nav">
       <div ngbDropdown class="nav-item dropdown">
-        <a ngbDropdownToggle i18n class="nav-link dropdown-toggle">
-         Search
-        </a>
+        <button ngbDropdownToggle i18n class="nav-link dropdown-toggle">
+          Search
+        </button>
         <div class="dropdown-menu" ngbDropdownMenu>
-          <a class="dropdown-item" href="/eg/staff/circ/patron/search"
+          <a class="dropdown-item" ngbDropdownItem  href="/eg/staff/circ/patron/search"
             egAccessKey keyCtx="navbar" i18n-keySpec i18n-keyDesc
             keySpec="alt+s f4" keyDesc="Patron Search">
             <span class="material-icons" aria-hidden="true">person</span>
             <span i18n>Search for Patrons</span>
           </a>
-          <a class="dropdown-item" href="/eg/staff/cat/item/search">
+          <a class="dropdown-item" ngbDropdownItem  href="/eg/staff/cat/item/search">
             <span class="material-icons" aria-hidden="true">assignment</span>
             <span i18n>Search for Items by Barcode</span>
           </a>
-          <a class="dropdown-item" routerLink="/staff/catalog"
+          <a class="dropdown-item" ngbDropdownItem  routerLink="/staff/catalog"
             egAccessKey keyCtx="navbar" i18n-keySpec i18n-keyDesc
             keySpec="f3" keyDesc="Catalog">
             <span class="material-icons" aria-hidden="true">search</span>
@@ -39,105 +39,105 @@
 
     <div class="navbar-nav">
       <div ngbDropdown class="nav-item dropdown">
-        <a ngbDropdownToggle class="nav-link dropdown-toggle">
-         <span i18n>Circulation</span>
-        </a>
+        <button ngbDropdownToggle class="nav-link dropdown-toggle">
+          <span i18n>Circulation</span>
+        </button>
         <div class="dropdown-menu" ngbDropdownMenu>
-          <a class="dropdown-item" href="/eg/staff/circ/patron/bcsearch"
+          <a class="dropdown-item" ngbDropdownItem  href="/eg/staff/circ/patron/bcsearch"
             egAccessKey keyCtx="navbar" i18n-keySpec i18n-keyDesc
             keySpec="f1" keyDesc="Checkout">
             <span class="material-icons" aria-hidden="true">trending_up</span>
             <span i18n>Check Out</span>
           </a>
-          <a class="dropdown-item" href="/eg/staff/circ/checkin/checkin"
+          <a class="dropdown-item" ngbDropdownItem  href="/eg/staff/circ/checkin/checkin"
             egAccessKey keyCtx="navbar" i18n-keySpec i18n-keyDesc
             keySpec="f2" keyDesc="Checkin">
             <span class="material-icons" aria-hidden="true">trending_down</span>
             <span i18n>Check In</span>
           </a>
-          <a class="dropdown-item" href="/eg/staff/circ/checkin/capture"
+          <a class="dropdown-item" ngbDropdownItem  href="/eg/staff/circ/checkin/capture"
             egAccessKey keyCtx="navbar" i18n-keySpec i18n-keyDesc
             keySpec="shift+f2" keyDesc="Capture Holds">
             <span class="material-icons" aria-hidden="true">pin_drop</span>
             <span i18n>Capture Holds</span>
           </a>
-          <a class="dropdown-item" routerLink="/staff/circ/holds/pull-list">
+          <a class="dropdown-item" ngbDropdownItem  routerLink="/staff/circ/holds/pull-list">
             <span class="material-icons" aria-hidden="true">view_list</span>
             <span i18n>Pull List for Hold Requests</span>
           </a>
-          <a class="dropdown-item" href="/eg/staff/circ/renew/renew"
+          <a class="dropdown-item" ngbDropdownItem  href="/eg/staff/circ/renew/renew"
             egAccessKey keyCtx="navbar" i18n-keySpec i18n-keyDesc
             keySpec="ctrl+f2" keyDesc="Renew Items">
             <span class="material-icons" aria-hidden="true">autorenew</span>
             <span i18n>Renew Items</span>
           </a>
-          <a class="dropdown-item" href="/eg/staff/circ/patron/register"
+          <a class="dropdown-item" ngbDropdownItem  href="/eg/staff/circ/patron/register"
             egAccessKey keyCtx="navbar" i18n-keySpec i18n-keyDesc
             keySpec="shift+f1" keyDesc="Register Patron">
             <span class="material-icons" aria-hidden="true">person_add</span>
             <span i18n>Register Patron</span>
           </a>
-          <a *ngIf="maxRecentPatrons" class="dropdown-item" href="/eg/staff/circ/patron/last"
+          <a *ngIf="maxRecentPatrons" class="dropdown-item" ngbDropdownItem  href="/eg/staff/circ/patron/last"
             egAccessKey keyCtx="navbar" i18n-keySpec i18n-keyDesc
             keySpec="f8" keyDesc="Retrieve Last Patron">
             <span class="material-icons" aria-hidden="true">redo</span>
             <span i18n>Retrieve Last Patron</span>
           </a>
-          <a *ngIf="maxRecentPatrons > 1" class="dropdown-item" href="/eg/staff/circ/patron/search?show_recent=1">
+          <a *ngIf="maxRecentPatrons > 1" class="dropdown-item" ngbDropdownItem  href="/eg/staff/circ/patron/search?show_recent=1">
             <span class="material-icons" aria-hidden="true">redo</span>
             <span i18n>Retrieve Recent Patrons</span>
           </a>
-          <a class="dropdown-item" href="/eg/staff/circ/patron/pending/list">
+          <a class="dropdown-item" ngbDropdownItem  href="/eg/staff/circ/patron/pending/list">
             <span class="material-icons" aria-hidden="true">thumb_up</span>
             <span i18n>Pending Patrons</span>
           </a>
-          <a class="dropdown-item" href="/eg/staff/circ/patron/bucket/view">
+          <a class="dropdown-item" ngbDropdownItem  href="/eg/staff/circ/patron/bucket/view">
             <span class="material-icons" aria-hidden="true">list</span>
             <span i18n>User Buckets</span>
           </a>
-          <a class="dropdown-item" href="/eg/staff/cat/bucket/batch_hold/list">
+          <a class="dropdown-item" ngbDropdownItem  href="/eg/staff/cat/bucket/batch_hold/list">
             <span class="material-icons" aria-hidden="true">list</span>
             <span i18n>Hold Groups</span>
           </a>
           <div class="dropdown-divider"></div>
-          <a class="dropdown-item" href="/eg/staff/circ/patron/credentials">
+          <a class="dropdown-item" ngbDropdownItem  href="/eg/staff/circ/patron/credentials">
             <span class="material-icons" aria-hidden="true">check_circle</span>
             <span i18n>Verify Credentials</span>
           </a>
-          <a class="dropdown-item" href="/eg/staff/circ/in_house_use/index"
+          <a class="dropdown-item" ngbDropdownItem  href="/eg/staff/circ/in_house_use/index"
             egAccessKey keyCtx="navbar" i18n-keySpec i18n-keyDesc
             keySpec="f6" keyDesc="Record In-House Use">
             <span class="material-icons" aria-hidden="true">playlist_add</span>
             <span i18n>Record In-House Use</span>
           </a>
-          <a class="dropdown-item" href="/eg/staff/circ/holds/shelf">
+          <a class="dropdown-item" ngbDropdownItem  href="/eg/staff/circ/holds/shelf">
             <span class="material-icons" aria-hidden="true">format_list_bulleted</span>
             <span i18n>Holds Shelf</span>
           </a>
           <div class="dropdown-divider"></div>
-          <a class="dropdown-item" href="/eg/staff/cat/item/replace_barcode/index">
+          <a class="dropdown-item" ngbDropdownItem  href="/eg/staff/cat/item/replace_barcode/index">
             <span class="material-icons" aria-hidden="true">library_books</span>
             <span i18n>Replace Barcode</span>
           </a>
-          <a class="dropdown-item" href="/eg/staff/cat/item/search"
+          <a class="dropdown-item" ngbDropdownItem  href="/eg/staff/cat/item/search"
             egAccessKey keyCtx="navbar" i18n-keySpec i18n-keyDesc
             keySpec="f5" keyDesc="Navigate To Item Status">
             <span class="material-icons" aria-hidden="true">question_answer</span>
             <span i18n>Item Status</span>
           </a>
-          <a class="dropdown-item" routerLink="/staff/cat/item/missing_pieces">
+          <a class="dropdown-item" ngbDropdownItem  routerLink="/staff/cat/item/missing_pieces">
             <span class="material-icons" aria-hidden="true">grid_on</span>
             <span i18n>Scan Item as Missing Pieces</span>
           </a>
           <div class="dropdown-divider"></div>
-          <a class="dropdown-item" (click)="reprintLast()"
+          <button class="dropdown-item" ngbDropdownItem  (click)="reprintLast()"
             egAccessKey keyCtx="navbar" i18n-keySpec i18n-keyDesc
             keySpec="f9" keyDesc="Reprint Last Receipt">
             <span class="material-icons" aria-hidden="true">redo</span>
             <span i18n>Reprint Last Receipt</span>
-          </a>
+          </button>
           <div class="dropdown-divider"></div>
-          <a class="dropdown-item" href="/eg/staff/offline-interface">
+          <a class="dropdown-item" ngbDropdownItem  href="/eg/staff/offline-interface">
             <span class="material-icons" aria-hidden="true">signal_wifi_off</span>
             <span i18n>Offline Circulation</span>
           </a>
@@ -152,61 +152,61 @@
 
     <div class="navbar-nav" *ngIf="showAngularCirc">
       <div ngbDropdown class="nav-item dropdown">
-        <a ngbDropdownToggle i18n class="nav-link dropdown-toggle">
-         Circulation (Experimental)
-        </a>
+        <button ngbDropdownToggle i18n class="nav-link dropdown-toggle">
+          Circulation (Experimental)
+        </button>
         <div class="dropdown-menu" ngbDropdownMenu>
-          <a class="dropdown-item" routerLink="/staff/circ/patron/search">
+          <a class="dropdown-item" ngbDropdownItem  routerLink="/staff/circ/patron/search">
             <span class="material-icons" aria-hidden="true">person</span>
             <span i18n>Search for Patrons</span>
           </a>
-          <a class="dropdown-item" routerLink="/staff/circ/patron/bcsearch"
+          <a class="dropdown-item" ngbDropdownItem  routerLink="/staff/circ/patron/bcsearch"
             egAccessKey keyCtx="navbar" i18n-keySpec i18n-keyDesc
             keySpec="f1" keyDesc="Checkout">
             <span class="material-icons" aria-hidden="true">trending_up</span>
             <span i18n>Check Out</span>
           </a>
-          <a class="dropdown-item" routerLink="/staff/circ/checkin"
+          <a class="dropdown-item" ngbDropdownItem  routerLink="/staff/circ/checkin"
             egAccessKey keyCtx="navbar" i18n-keySpec i18n-keyDesc
             keySpec="f2" keyDesc="Checkin">
             <span class="material-icons" aria-hidden="true">trending_down</span>
             <span i18n>Check In</span>
           </a>
-          <a class="dropdown-item" routerLink="/staff/circ/checkin/capture"
+          <a class="dropdown-item" ngbDropdownItem  routerLink="/staff/circ/checkin/capture"
             egAccessKey keyCtx="navbar" i18n-keySpec i18n-keyDesc
             keySpec="shift+f2" keyDesc="Capture Holds">
             <span class="material-icons" aria-hidden="true">pin_drop</span>
             <span i18n>Capture Holds</span>
           </a>
-          <a class="dropdown-item" routerLink="/staff/circ/holds/pull-list">
+          <a class="dropdown-item" ngbDropdownItem  routerLink="/staff/circ/holds/pull-list">
             <span class="material-icons" aria-hidden="true">view_list</span>
             <span i18n>Pull List for Hold Requests</span>
           </a>
-          <a class="dropdown-item" routerLink="/staff/circ/renew"
+          <a class="dropdown-item" ngbDropdownItem  routerLink="/staff/circ/renew"
             egAccessKey keyCtx="navbar" i18n-keySpec i18n-keyDesc
             keySpec="ctrl+f2" keyDesc="Renew Items">
             <span class="material-icons" aria-hidden="true">autorenew</span>
             <span i18n>Renew Items</span>
           </a>
-          <a class="dropdown-item" routerLink="/staff/circ/patron/register"
+          <a class="dropdown-item" ngbDropdownItem  routerLink="/staff/circ/patron/register"
             egAccessKey keyCtx="navbar" i18n-keySpec i18n-keyDesc
             keySpec="shift+f1" keyDesc="Register Patron">
             <span class="material-icons" aria-hidden="true">person_add</span>
             <span i18n>Register Patron</span>
           </a>
-          <a *ngIf="maxRecentPatrons" class="dropdown-item" routerLink="/staff/circ/patron/last"
+          <a *ngIf="maxRecentPatrons" class="dropdown-item" ngbDropdownItem  routerLink="/staff/circ/patron/last"
             egAccessKey keyCtx="navbar" i18n-keySpec i18n-keyDesc
             keySpec="f8" keyDesc="Retrieve Last Patron">
             <span class="material-icons" aria-hidden="true">redo</span>
             <span i18n>Retrieve Last Patron</span>
           </a>
-          <a *ngIf="maxRecentPatrons > 1" class="dropdown-item" routerLink="/staff/circ/patron/search/recents"
+          <a *ngIf="maxRecentPatrons > 1" class="dropdown-item" ngbDropdownItem  routerLink="/staff/circ/patron/search/recents"
             egAccessKey keyCtx="navbar" i18n-keySpec i18n-keyDesc
             keySpec="shift+f4" keyDesc="Retrieve Recent Patrons">
             <span class="material-icons" aria-hidden="true">redo</span>
             <span i18n>Retrieve Recent Patrons</span>
           </a>
-          <a class="dropdown-item" routerLink="/staff/circ/patron/credentials"
+          <a class="dropdown-item" ngbDropdownItem  routerLink="/staff/circ/patron/credentials"
             egAccessKey keyCtx="navbar" i18n-keySpec i18n-keyDesc
             keySpec="alt+c" keyDesc="Verify Patron Credentials">
             <span class="material-icons" aria-hidden="true">check_circle</span>
@@ -220,12 +220,12 @@
     
     <div class="navbar-nav">
       <div ngbDropdown class="nav-item dropdown">
-        <a ngbDropdownToggle i18n class="nav-link dropdown-toggle">
-         Cataloging
-        </a>
+        <button ngbDropdownToggle i18n class="nav-link dropdown-toggle">
+          Cataloging
+        </button>
         <div class="dropdown-menu" ngbDropdownMenu>
 
-          <a class="dropdown-item" routerLink="/staff/catalog/search"
+          <a class="dropdown-item" ngbDropdownItem  routerLink="/staff/catalog/search"
             egAccessKey keyCtx="navbar"i18n-keySpec i18n-keyDesc
             keySpec="f3" keyDesc="Catalog">
             <span class="material-icons" aria-hidden="true">search</span>
@@ -235,66 +235,67 @@
             <span class="material-icons" aria-hidden="true">search</span>
             <span i18n>Search the Catalog (Traditional)</span>
           </a>
-          <a class="dropdown-item" href="/eg/staff/cat/item/search"
+          <a class="dropdown-item" ngbDropdownItem  href="/eg/staff/cat/item/search"
             egAccessKey keyCtx="navbar" i18n-keySpec i18n-keyDesc
             keySpec="f5" keyDesc="Navigate To Item Status">
             <span class="material-icons" aria-hidden="true">question_answer</span>
             <span i18n>Item Status</span>
           </a>
           <div class="dropdown-divider"></div>
-          <a href="/eg/staff/cat/bucket/record/view" class="dropdown-item">
+          <a href="/eg/staff/cat/bucket/record/view" ngbDropdownItem class="dropdown-item">
             <span class="material-icons" aria-hidden="true">list</span>
             <span i18n>Record Buckets</span>
           </a>
-          <a href="/eg/staff/cat/bucket/copy/view" class="dropdown-item">
+          <a href="/eg/staff/cat/bucket/copy/view" ngbDropdownItem class="dropdown-item">
             <span class="material-icons" aria-hidden="true">list</span>
             <span i18n>Item Buckets</span>
           </a>
           <div class="dropdown-divider"></div>
-          <a routerLink="/staff/cat/bib-from/id" class="dropdown-item">
+          <a routerLink="/staff/cat/bib-from/id" ngbDropdownItem class="dropdown-item">
             <span class="material-icons" aria-hidden="true">collections</span>
             <span i18n>Retrieve Bib Record by ID</span>
           </a>
-          <a routerLink="/staff/cat/bib-from/tcn" class="dropdown-item"
+          <a routerLink="/staff/cat/bib-from/tcn" ngbDropdownItem class="dropdown-item"
             egAccessKey keyCtx="navbar" i18n-keySpec i18n-keyDesc
             keySpec="shift+f3" keyDesc="Retrieve Bib Record by TCN">
             <span class="material-icons" aria-hidden="true">collections_bookmark</span>
             <span i18n>Retrieve Bib Record by TCN</span>
           </a>
-          <a (click)="retrieveLastRecord()"
+          <button class="dropdown-item" ngbDropdownItem 
+            (click)="retrieveLastRecord()"
             egAccessKey keyCtx="navbar" i18n-keySpec i18n-keyDesc
             keySpec="shift+f8" keyDesc="Retrieve Last Bib Record">
             <span class="material-icons" aria-hidden="true">redo</span>
             <span i18n>Retrieve Last Bib Record</span>
-          </a>
+          </button>
           <div class="dropdown-divider"></div>
-          <a href="/eg/staff/cat/catalog/new_bib" class="dropdown-item">
+          <a href="/eg/staff/cat/catalog/new_bib" ngbDropdownItem class="dropdown-item">
             <span class="material-icons" aria-hidden="true">add</span>
             <span i18n>Create New MARC Record</span>
           </a>
-          <a href="/eg/staff/cat/z3950/index" class="dropdown-item">
+          <a href="/eg/staff/cat/z3950/index" ngbDropdownItem class="dropdown-item">
             <span class="material-icons" aria-hidden="true">cloud_download</span>
             <span i18n>Import Record from Z39.50</span>
           </a>
-          <a routerLink="/staff/cat/vandelay/import" class="dropdown-item">
+          <a routerLink="/staff/cat/vandelay/import" ngbDropdownItem class="dropdown-item">
             <span class="material-icons" aria-hidden="true">import_export</span>
             <span i18n>MARC Batch Import/Export</span>
           </a>
-          <a routerLink="/staff/cat/marcbatch" class="dropdown-item">
+          <a routerLink="/staff/cat/marcbatch" ngbDropdownItem class="dropdown-item">
             <span class="material-icons" aria-hidden="true">format_paint</span>
             <span i18n>MARC Batch Edit</span>
           </a>
           <div class="dropdown-divider"></div>
-          <a href="/eg/staff/cat/catalog/verifyURLs" class="dropdown-item">
+          <a href="/eg/staff/cat/catalog/verifyURLs" ngbDropdownItem class="dropdown-item">
             <span class="material-icons" aria-hidden="true">link</span>
             <span i18n>Link Checker</span>
           </a>
           <div class="dropdown-divider"></div>
-          <a routerLink="/staff/cat/authority/browse" class="dropdown-item">
+          <a routerLink="/staff/cat/authority/browse" ngbDropdownItem class="dropdown-item">
             <span class="material-icons" aria-hidden="true">lock</span>
             <span i18n>Manage Authorities</span>
           </a>
-          <a routerLink="/staff/cat/authority/edit" class="dropdown-item">
+          <a routerLink="/staff/cat/authority/edit" ngbDropdownItem class="dropdown-item">
             <span class="material-icons" aria-hidden="true">collections</span>
             <span i18n>Retrieve Authority Record by ID</span>
           </a>
@@ -306,79 +307,79 @@
 
     <div class="navbar-nav">
       <div ngbDropdown class="nav-item dropdown">
-        <a ngbDropdownToggle i18n class="nav-link dropdown-toggle">
+        <button ngbDropdownToggle i18n class="nav-link dropdown-toggle">
           Acquisitions
-        </a>
+        </button>
         <div class="dropdown-menu" ngbDropdownMenu>
-          <a class="dropdown-item" 
+          <a class="dropdown-item" ngbDropdownItem  
             routerLink="/staff/acq/search">
             <span class="material-icons" aria-hidden="true">search</span>
             <span i18n>General Search</span>
           </a>
           <div class="dropdown-divider"></div>
-          <a class="dropdown-item" 
+          <a class="dropdown-item" ngbDropdownItem  
             routerLink="/staff/acq/provider">
             <span class="material-icons" aria-hidden="true">search</span>
             <span i18n>Provider Search</span>
           </a>
           <div class="dropdown-divider"></div>
-          <a class="dropdown-item"
+          <a class="dropdown-item" ngbDropdownItem 
             routerLink="/staff/acq/search/selectionlists">
             <span class="material-icons" aria-hidden="true">view_list</span>
             <span i18n>Selection Lists</span>
           </a>
-          <a class="dropdown-item" 
+          <a class="dropdown-item" ngbDropdownItem  
             href="/eg/staff/acq/legacy/picklist/brief_record">
             <span class="material-icons" aria-hidden="true">edit</span>
             <span i18n>New Brief Record</span>
           </a>
-          <a class="dropdown-item" 
+          <a class="dropdown-item" ngbDropdownItem  
             href="/eg/staff/acq/legacy/picklist/user_request">
             <span class="material-icons" aria-hidden="true">thumb_up</span>
             <span i18n>Patron Requests</span>
           </a>
-          <a class="dropdown-item" 
+          <a class="dropdown-item" ngbDropdownItem  
             href="/eg/staff/acq/legacy/picklist/bib_search">
             <span class="material-icons" aria-hidden="true">cloud_download</span>
             <span i18n>MARC Federated Search</span>
           </a>
-          <a class="dropdown-item" 
+          <a class="dropdown-item" ngbDropdownItem  
             href="/eg/staff/acq/legacy/picklist/from_bib">
             <span class="material-icons" aria-hidden="true">trending_down</span>
             <span i18n>Load Catalog Record IDs</span>
           </a>
           <div class="dropdown-divider"></div>
-          <a class="dropdown-item" 
+          <a class="dropdown-item" ngbDropdownItem  
           routerLink="/staff/acq/picklist/upload">
           <span class="material-icons" aria-hidden="true">cloud_upload</span>
           <span i18n>Load MARC Order Records</span>
         </a>
-          <a class="dropdown-item"
+          <a class="dropdown-item" ngbDropdownItem 
             routerLink="/staff/acq/search/purchaseorders">
             <span class="material-icons" aria-hidden="true">shopping_cart</span>
             <span i18n>Purchase Orders</span>
           </a>
-          <a class="dropdown-item" routerLink="/staff/acq/po/create">
+          <a class="dropdown-item" ngbDropdownItem  routerLink="/staff/acq/po/create">
             <span class="material-icons" aria-hidden="true">add_shopping_cart</span>
             <span i18n>Create Purchase Order</span>
           </a>
           <div class="dropdown-divider"></div>
-          <a class="dropdown-item" 
+          <a class="dropdown-item" ngbDropdownItem  
             href="/eg/staff/acq/legacy/financial/claim_eligible">
             <span class="material-icons" aria-hidden="true">contact_phone</span>
             <span i18n>Claim-Ready Items</span>
           </a>
-          <a class="dropdown-item"
+          <a class="dropdown-item" ngbDropdownItem 
             routerLink="/staff/acq/asn/receive">
             <span class="material-icons" aria-hidden="true">archive</span>
             <span i18n>Receive Shipment</span>
           </a>
-          <a class="dropdown-item"
+          <a class="dropdown-item" ngbDropdownItem 
             routerLink="/staff/acq/search/invoices">
             <span class="material-icons" aria-hidden="true">attach_money</span>
             <span i18n>Invoices</span>
           </a>
-          <a class="dropdown-item" 
+          <a class="dropdown-item" ngbDropdownItem  
             href="/eg/staff/acq/legacy/invoice/view?create=1">
             <span class="material-icons" aria-hidden="true">monetization_on</span>
             <span i18n>Create Invoice</span>
@@ -389,31 +390,31 @@
 
     <div class="navbar-nav">
       <div ngbDropdown class="nav-item dropdown">
-        <a ngbDropdownToggle i18n class="nav-link dropdown-toggle">
+        <button ngbDropdownToggle i18n class="nav-link dropdown-toggle">
           Booking
-        </a>
+        </button>
         <div class="dropdown-menu" ngbDropdownMenu>
-          <a class="dropdown-item" routerLink="/staff/booking/create_reservation">
+          <a class="dropdown-item" ngbDropdownItem  routerLink="/staff/booking/create_reservation">
             <span class="material-icons" aria-hidden="true">add</span>
             <span i18n>Create Reservations</span>
           </a>
-          <a class="dropdown-item" routerLink="/staff/booking/pull_list">
+          <a class="dropdown-item" ngbDropdownItem  routerLink="/staff/booking/pull_list">
             <span class="material-icons" aria-hidden="true">list</span>
             <span i18n>Pull List</span>
           </a>
-          <a class="dropdown-item" routerLink="/staff/booking/capture">
+          <a class="dropdown-item" ngbDropdownItem  routerLink="/staff/booking/capture">
             <span class="material-icons" aria-hidden="true">pin_drop</span>
             <span i18n>Capture Resources</span>
           </a>
-          <a class="dropdown-item" routerLink="/staff/booking/pickup">
+          <a class="dropdown-item" ngbDropdownItem  routerLink="/staff/booking/pickup">
             <span class="material-icons" aria-hidden="true">trending_up</span>
             <span i18n>Pick Up Reservations</span>
           </a>
-          <a class="dropdown-item" routerLink="/staff/booking/return">
+          <a class="dropdown-item" ngbDropdownItem  routerLink="/staff/booking/return">
             <span class="material-icons" aria-hidden="true">trending_down</span>
             <span i18n>Return Reservations</span>
           </a>
-          <a class="dropdown-item" routerLink="/staff/booking/manage_reservations">
+          <a class="dropdown-item" ngbDropdownItem  routerLink="/staff/booking/manage_reservations">
             <span class="material-icons" aria-hidden="true">layers</span>
             <span i18n>Manage Reservations</span>
           </a>
@@ -423,54 +424,54 @@
 
     <div class="navbar-nav">
       <div ngbDropdown class="nav-item dropdown">
-        <a ngbDropdownToggle i18n class="nav-link dropdown-toggle">
+        <button ngbDropdownToggle i18n class="nav-link dropdown-toggle">
           Administration
-        </a>
+        </button>
         <div class="dropdown-menu" ngbDropdownMenu>
-          <a class="dropdown-item" href="/eg/staff/admin/workstation/index">
+          <a class="dropdown-item" ngbDropdownItem  href="/eg/staff/admin/workstation/index">
             <span class="material-icons" aria-hidden="true">computer</span>
             <span i18n>Workstation</span>
           </a>
           <!--
           Leaving here as a reminder this UI exists.
-          <a class="dropdown-item"
+          <a class="dropdown-item" ngbDropdownItem 
               routerLink="/staff/admin/workstation/workstations/manage">
             <span class="material-icons" aria-hidden="true">computer</span>
             <span i18n>Registered Workstations</span>
           </a>
           -->
-          <a class="dropdown-item" href="/eg/staff/admin/user_perms">
+          <a class="dropdown-item" ngbDropdownItem  href="/eg/staff/admin/user_perms">
             <span class="material-icons" aria-hidden="true">person</span>
             <span i18n>User Permission Editor</span>
           </a>
-          <a class="dropdown-item"
+          <a class="dropdown-item" ngbDropdownItem 
               routerLink="/staff/admin/server/splash">
             <span class="material-icons" aria-hidden="true">account_balance</span>
             <span i18n>Server Administration</span>
           </a>
-          <a class="dropdown-item" routerLink="/staff/admin/local/splash">
+          <a class="dropdown-item" ngbDropdownItem  routerLink="/staff/admin/local/splash">
             <span class="material-icons" aria-hidden="true">landscape</span>
             <span i18n>Local Administration</span>
           </a>
-          <a class="dropdown-item"
+          <a class="dropdown-item" ngbDropdownItem 
               routerLink="/staff/admin/acq/splash">
             <span class="material-icons" aria-hidden="true">attach_money</span>
             <span i18n>Acquisitions Administration</span>
           </a>
-          <a class="dropdown-item" href="/eg/staff/admin/serials/index">
+          <a class="dropdown-item" ngbDropdownItem  href="/eg/staff/admin/serials/index">
             <span class="material-icons" aria-hidden="true">layers</span>
             <span i18n>Serials Administration</span>
           </a>
-          <a class="dropdown-item"
+          <a class="dropdown-item" ngbDropdownItem 
               routerLink="/staff/admin/booking/splash">
             <span class="material-icons" aria-hidden="true">business_center</span>
             <span i18n>Booking Administration</span>
           </a>
-          <a class="dropdown-item" href="/eg/staff/reporter/legacy/main">
+          <a class="dropdown-item" ngbDropdownItem  href="/eg/staff/reporter/legacy/main">
             <span class="material-icons" aria-hidden="true">insert_chart</span>
             <span i18n>Reports</span>
           </a>
-          <a class="dropdown-item" routerLink="/staff/reporter/simple">
+          <a class="dropdown-item" ngbDropdownItem  routerLink="/staff/reporter/simple">
             <span class="material-icons" aria-hidden="true">insert_chart</span>
             <span i18n>Simple Reports</span>
           </a>
@@ -485,30 +486,30 @@
     </div>
     <div class="navbar-nav" *ngIf="locales.length > 1 && currentLocale">
       <div ngbDropdown class="nav-item dropdown" display="dynamic">
-        <a ngbDropdownToggle i18n i18n-title
+        <button ngbDropdownToggle i18n i18n-title
           title="Select Locale"
           class="nav-link dropdown-toggle no-caret with-material-icon">
           <i class="material-icons" aria-hidden="true">flag</i>
           <span>{{currentLocale.name()}}</span>
-        </a>
+        </button>
         <div class="dropdown-menu" ngbDropdownMenu>
-          <a class="dropdown-item" (click)="setLocale(locale)" 
+          <button class="dropdown-item" ngbDropdownItem  (click)="setLocale(locale)" 
             [ngClass]="{disabled: currentLocale.code() === locale.code()}"
             *ngFor="let locale of locales">
             <span class="material-icons" aria-hidden="true">add_location</span>
             <span i18n>{{locale.name()}}</span>
-          </a>
+          </button>
         </div>
       </div>
     </div>
     <div class="navbar-nav" *ngIf="user()">
       <div ngbDropdown class="nav-item dropdown" display="dynamic">
-        <a ngbDropdownToggle i18n 
+        <button ngbDropdownToggle i18n 
           i18n-title
           title="Log out and more..."
           class="nav-link dropdown-toggle no-caret with-material-icon">
           <i class="material-icons">list</i>
-        </a>
+        </button>
         <div class="dropdown-menu dropdown-menu-right" ngbDropdownMenu>
           <eg-op-change #navOpChange
             i18n-failMessage
@@ -516,21 +517,21 @@
             failMessage="Operator Change Failed"
             successMessage="Operator Change Succeeded">
           </eg-op-change>
-          <a class="dropdown-item" *ngIf="!opChangeActive()" 
+          <button class="dropdown-item" ngbDropdownItem  *ngIf="!opChangeActive()" 
             (click)="navOpChange.open()">
             <span class="material-icons" aria-hidden="true">transform</span>
             <span i18n>Change Operator</span>
-          </a>
-          <a *ngIf="opChangeActive()" class="dropdown-item" 
+          </button>
+          <button *ngIf="opChangeActive()" class="dropdown-item" ngbDropdownItem
             (click)="navOpChange.restore()">
             <span class="material-icons" aria-hidden="true">transform</span>
             <span i18n>Restore Operator</span>
-          </a>
-          <a class="dropdown-item" (click)="logout()">
+          </button>
+          <button class="dropdown-item" ngbDropdownItem  (click)="logout()">
             <span class="material-icons" aria-hidden="true">lock_outline</span>
             <span i18n>Logout</span>
-          </a>
-          <a class="dropdown-item" routerLink="/staff/about">
+          </button>
+          <a class="dropdown-item" ngbDropdownItem  routerLink="/staff/about">
             <span class="material-icons" aria-hidden="true">info_outline</span>
             <span i18n>About</span>
           </a>
