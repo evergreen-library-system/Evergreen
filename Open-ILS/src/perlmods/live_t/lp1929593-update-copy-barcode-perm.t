@@ -1,6 +1,6 @@
 #!perl
 use strict; use warnings;
-use Test::More tests => 17;
+use Test::More tests => 25;
 use OpenILS::Utils::TestUtils;
 use OpenILS::Const qw(:const);
 
