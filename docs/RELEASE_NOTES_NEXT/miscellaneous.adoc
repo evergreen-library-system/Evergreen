@@ -1,1 +1,2 @@
 * Add index to speed up display of the Hopeless Holds interface in large systems (LP#1972738)
+* Improve color contrast in the Angular staff catalog and the Bootstrap OPAC. Sites that have customized styles for the `oils_SH` CSS class should review their changes upon upgrade. (LP#2009073)
