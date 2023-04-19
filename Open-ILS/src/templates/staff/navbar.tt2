@@ -12,6 +12,8 @@
 <div id="top-navbar" role="navigation"
   class="navbar navbar-default navbar-fixed-top" role="navigation">
 
+  <a i18n class="skip-nav" href="#top-content-container">[% l('Skip to main content') %]</a>
+
   <!-- navbar-header here needed for supporting angular-ui-bootstrap -->
   <div class="navbar-header">
     <button type="button" class="navbar-toggle" 

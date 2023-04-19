@@ -52,6 +52,25 @@ body { padding-bottom: 50px; }
     border-bottom-color: #ddd;
 }
 
+a.skip-nav:not(:focus):not(:hover) {
+    transform: translateY(-4em);
+    opacity: 0;
+}
+
+a.skip-nav {
+    background-color: #fff;
+    border: 1px solid #0D7764;
+    color: #0D7764;
+    margin: 0;
+    padding: 1em;
+    position: absolute;
+    z-index: 2000;
+    left: 0;
+    top: 0;
+    width: auto;
+    transition: transform 0.15s ease-out, opacity 0.15s ease-out;
+}
+
 /* Hatch / WebSockets / Etc. connectivity status indicator */
 .connect-status-ok {
   color: rgb(92, 184, 92); /* success */
