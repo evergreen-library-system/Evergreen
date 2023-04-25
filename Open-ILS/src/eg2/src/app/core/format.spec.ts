@@ -132,7 +132,7 @@ describe('FormatService', () => {
     it('should transform long Angular format strings to a valid MomentJS one using Angular locale ar-JO', () => {
         registerLocaleData(localeArJO);
         const momentVersion = service['makeFormatParseable']('long', 'ar-JO');
-        expect(momentVersion).toBe('D MMMM Y h:mm:ss a [GMT]Z');
+        expect(momentVersion).toBe('D MMMM Y في h:mm:ss a [GMT]Z');
     });
     it('can create a valid Momentjs object given a valid datetime string and correct format', () => {
         const moment = service['momentize']('7/3/12, 6:06 PM', 'M/D/YY, h:mm a', 'Africa/Addis_Ababa', false);
