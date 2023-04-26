@@ -53,6 +53,45 @@ which can be combined with one another.
 You can combine these in the same query, e.g. `ti:borderlands au:anzaldua available:yes`.  However -- with the exception of the _lang_ search key,
 you should not repeat the same search key twice.
 
+*Limiting Results by Item Type or Search Format*
+
+You can narrow results using search_format or item_type functionalities by entering search_format(_formattype_) or item_type(_type_) to the end of your search query.
+
+Search Formats Examples:
+
+* electronic - Electronic Resources
+* playaway - Playaways
+* blu-ray - Blu-ray
+* dvd - DVD
+* cdaudiobook - CD audiobooks
+* casaudiobook - Cassette audiobooks
+
+The item_type filter will allow you to filter directly from the
+Leader/06 value.
+
+For example, if you search for: _ti:Outlander au:Gabaldon item_type(i)_,
+your results will limited to nonmusical sound recordings.
+
+*Bibliographic Item Types*
+[width="100%",options="header",]
+|===
+|MARC Item Type |Description
+|a |Language material
+|c |Notated music
+|d |Manuscript notated music
+|e |Cartographic material
+|f |Manuscript cartographic material
+|g |Projected medium
+|i |Nonmusical sound recording
+|j |Musical sound recording
+|k |Two-dimensional nonprojectable graphic
+|m |Computer file
+|o |Kit
+|p |Mixed materials
+|r |Three-dimensional artifact or naturally occurring object
+|t |Manuscript language material
+|===
+
 ****
 
 [TIP]
