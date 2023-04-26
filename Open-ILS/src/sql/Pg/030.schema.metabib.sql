@@ -1899,7 +1899,7 @@ BEGIN
         DELETE FROM metabib.record_attr_vector_list WHERE source = bib.id;
     END IF;
 
-    DELETE FROM authority.bib_linking WHERE bib = bib.id; -- Avoid updating fields in bibs that are no longer visible
+    DELETE FROM authority.bib_linking abl WHERE abl.bib = bib.id; -- Avoid updating fields in bibs that are no longer visible
     DELETE FROM biblio.peer_bib_copy_map WHERE peer_record = bib.id; -- Separate any multi-homed items
     DELETE FROM metabib.browse_entry_def_map WHERE source = bib.id; -- Don't auto-suggest deleted bibs
 
