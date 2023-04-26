@@ -1,0 +1,93 @@
+= Angular Staff Catalog: Staff View Tab
+:toc:
+
+As of version 3.11, there is now a Staff View tab to the Angular staff catalog’s bibliographic record view page. This new tab is to the leftmost of the tab ribbon. The new Staff View tab will respect the Set Default View preference (`eg.cat.default_record_tab`), and the Item Table tab is still the default if a preference is not set.
+
+image::staff_view_tab/staff_view_tab.png[Staff View Tab]
+
+On the staff view page itself, fields such as title, author, subject, and series are hyperlinks. Clicking the text in one of those fields will execute a new search for those terms in the search class specified. On the right, the Formats and Editions section also has hyperlinked information. Clicking on a hyperlink in this section will execute a search for metarecord members who meet the criteria of either format or language selected.
+
+The staff view tab can include any fields available as stock Display Fields in Evergreen with the caveat that your administrator will need to do some editing of the Angular template. A list of stock Display Fields is at the end of this document.
+
+To change what is available in Display Fields, navigate to *Administration -> Server Administration -> MARC Search / Facet Fields*. Items usable as Display Fields will have a value of Yes in the _Display Field?_ column. The specific MODS XPath defining what MODS elements (and therefore MARC fields) are in use can be configured by an Evergreen Administrator. When properly configured, this will add record elements to the Display Fields configuration.
+
+Examples of where an administrator may want to change this configuration include:
+
+* Adding 7xx fields and indexing to include Added Author entries
+* Configuring subject type mappings to suppress display of esoteric fields like 255 (Cartographic Mathematical Data)
+*  Configuring ISBN to suppress display of 020$z (Invalid ISBN) fields. In this example, an administrator could apply a "first-word" normalizer to the underlying metabib.display entry for ISBN. There's no UI for this,
+however, the SQL might look like this: 
++
+[source,SQL]
+----
+INSERT INTO config.metabib_field_index_norm_map (field,norm,pos) VALUES
+(18,10,-1); 
+UPDATE metabib.display_entry SET value = first_word(value) where field =
+18;
+----
++
+* Changing Abstract (520) to be multi-valued, so staff view will display all 520 fields present in the MARC record
+
+Any changes to Search / Facet Fields will require a record reingest.
+
+Note that the staff view is configured separately from the OPAC view, since the OPAC view does not currently make use of Display Fields.
+
+=== Stock Display Fields in Evergreen
+
+This list is comprehensive as of version 3.11.
+
+[width="100%",options="header",]
+|===
+|*id* |*field_class* |*name* |*label*
+|1 |series |seriestitle |Series Title
+|2 |title |abbreviated |Abbreviated Title
+|3 |title |translated |Translated Title
+|4 |title |alternative |Alternate Title
+|5 |title |uniform |Uniform Title
+|6 |title |proper |Title Proper
+|7 |author |corporate |Corporate Author
+|8 |author |personal |Personal Author
+|9 |author |conference |Conference Author
+|10 |author |other |Other Author
+|11 |subject |geographic |Geographic Subject
+|12 |subject |name |Name Subject
+|13 |subject |temporal |Temporal Subject
+|14 |subject |topic |Topic Subject
+|16 |subject |complete |All Subjects
+|17 |identifier |accession |Accession Number
+|18 |identifier |isbn |ISBN
+|19 |identifier |issn |ISSN
+|20 |identifier |upc |UPC
+|21 |identifier |ismn |ISMN
+|22 |identifier |ean |EAN
+|23 |identifier |isrc |ISRC
+|24 |identifier |sici |SICI
+|25 |identifier |bibcn |Local Free-Text Call Number
+|26 |identifier |tcn |Title Control Number
+|27 |identifier |bibid |Internal ID
+|28 |identifier |authority_id |Authority Record ID
+|29 |identifier |scn |System Control Number
+|30 |identifier |lccn |LC Control Number
+|31 |title |browse |Title Proper (Browse)
+|32 |series |browse |Series Title (Browse)
+|33 |identifier |genre |Genre
+|34 |subject |topic_browse |Topic Browse
+|35 |subject |geographic_browse |Geographic Name Browse
+|36 |subject |temporal_browse |Temporal Term Browse
+|37 |author |creator |All Creators
+|38 |identifier |edition |Edition
+|39 |keyword |physical_description |Physical Description
+|40 |identifier |publisher |Publisher
+|41 |keyword |abstract |Abstract
+|42 |keyword |toc |Table of Contents
+|43 |identifier |type_of_resource |Type of Resource
+|44 |identifier |pubdate |Publication Date
+|45 |keyword |blob |All searchable fields
+|46 |keyword |bibliography |Bibliography
+|47 |keyword |thesis |Thesis
+|48 |keyword |production_credits |Creation/Production Credits
+|49 |keyword |performers |Performers
+|50 |keyword |general_note |General Note
+|51 |author |first_author |Author
+|52 |identifier |origin_info |Origin Info
+|===
