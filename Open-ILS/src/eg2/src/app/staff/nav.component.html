@@ -484,7 +484,7 @@
       <span i18n>{{user()}} @ {{workstation()}}</span>
     </div>
     <div class="navbar-nav" *ngIf="locales.length > 1 && currentLocale">
-      <div ngbDropdown class="nav-item dropdown" placement="bottom-right">
+      <div ngbDropdown class="nav-item dropdown" display="dynamic">
         <a ngbDropdownToggle i18n i18n-title
           title="Select Locale"
           class="nav-link dropdown-toggle no-caret with-material-icon">
@@ -502,7 +502,7 @@
       </div>
     </div>
     <div class="navbar-nav" *ngIf="user()">
-      <div ngbDropdown class="nav-item dropdown" placement="bottom-right">
+      <div ngbDropdown class="nav-item dropdown" display="dynamic">
         <a ngbDropdownToggle i18n 
           i18n-title
           title="Log out and more..."
