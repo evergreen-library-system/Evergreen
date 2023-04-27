@@ -1,0 +1,5 @@
+== Angular and Bootstrap Updates for Staff Interface ==
+
+The Angular staff interface now uses Angular 15 and Bootstrap 5. This
+introduces various changes to how the staff interface styling is
+done; developers should take note.
