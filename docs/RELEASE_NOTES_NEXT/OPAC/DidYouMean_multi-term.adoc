@@ -7,11 +7,15 @@ with multiple terms.
  * The Library Settings that were previously used to control the global
 behavior of search suggestions have been moved to search class
 configuration fields.  This was done because the data in each search
-class benefits from different setting values.
+class benefits from different setting values. If the Library Settings
+had been set, they will be used to update the corresponding search
+class configuration fields. Regardless, Evergreen administrators are
+recommended to review the settings.
 
- * If a patron's search brings back a suggestion that matches an authority
-variant heading, the system will provide the main heading as a suggestion
-as well, along with spelling-corrected suggestions.
+ * If a patron's search matches a variant or non-preferred heading from
+an authority record, if the main heading of that authority is linked
+to at least bibliographic record, the system will provide that main
+heading as a suggestion as well, along with spelling-corrected suggestions.
 
  * Quoted phrases in user input require strict term order and adjacency
 for the phrase portion of the suggestion generated for the phrase(s),
