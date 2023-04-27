@@ -720,7 +720,7 @@ BEGIN
             JOIN actor.org_unit_type t ON (u.ou_type = t.id)
       WHERE s.name = 'opac.did_you_mean.low_result_threshold';
 
-    IF FOUND THEN
+    IF FOUND AND val IS NOT NULL THEN
         UPDATE config.metabib_class SET low_result_threshold = val::INT;
     END IF;
 
@@ -730,7 +730,7 @@ BEGIN
             JOIN actor.org_unit_type t ON (u.ou_type = t.id)
       WHERE s.name = 'opac.did_you_mean.max_suggestions';
 
-    IF FOUND THEN
+    IF FOUND AND val IS NOT NULL THEN
         UPDATE config.metabib_class SET max_suggestions = val::INT;
     END IF;
 
@@ -740,7 +740,7 @@ BEGIN
             JOIN actor.org_unit_type t ON (u.ou_type = t.id)
       WHERE s.name = 'search.symspell.min_suggestion_use_threshold';
 
-    IF FOUND THEN
+    IF FOUND AND val IS NOT NULL THEN
         UPDATE config.metabib_class SET min_suggestion_use_threshold = val::INT;
     END IF;
 
@@ -750,7 +750,7 @@ BEGIN
             JOIN actor.org_unit_type t ON (u.ou_type = t.id)
       WHERE s.name = 'search.symspell.soundex.weight';
 
-    IF FOUND THEN
+    IF FOUND AND val IS NOT NULL THEN
         UPDATE config.metabib_class SET soundex_weight = val::INT;
     END IF;
 
@@ -760,7 +760,7 @@ BEGIN
             JOIN actor.org_unit_type t ON (u.ou_type = t.id)
       WHERE s.name = 'search.symspell.pg_trgm.weight';
 
-    IF FOUND THEN
+    IF FOUND AND val IS NOT NULL THEN
         UPDATE config.metabib_class SET pg_trgm_weight = val::INT;
     END IF;
 
@@ -770,7 +770,7 @@ BEGIN
             JOIN actor.org_unit_type t ON (u.ou_type = t.id)
       WHERE s.name = 'search.symspell.keyboard_distance.weight';
 
-    IF FOUND THEN
+    IF FOUND AND val IS NOT NULL THEN
         UPDATE config.metabib_class SET keyboard_distance_weight = val::INT;
     END IF;
 END;
