@@ -3,6 +3,8 @@ use strict; use warnings;
 use Apache2::Const -compile => qw(OK DECLINED FORBIDDEN HTTP_INTERNAL_SERVER_ERROR REDIRECT HTTP_BAD_REQUEST);
 use OpenSRF::Utils::JSON;
 use OpenSRF::Utils::Logger qw/$logger/;
+use DateTime;
+use DateTime::Format::ISO8601;
 use OpenILS::Utils::CStoreEditor qw/:funcs/;
 use OpenILS::Utils::Fieldmapper;
 use OpenILS::Application::AppUtils;
@@ -68,6 +70,21 @@ sub load_library {
     if ($hours) {
         $ctx->{hours} = $hours;
     }
+
+    # Get upcoming closed dates
+    my $dt = DateTime->now(time_zone => 'local');
+    my $start = $dt->year .'-'. $dt->month .'-'. $dt->day;
+
+    my $dates = $self->editor->search_actor_org_unit_closed_date([
+        {close_end => { ">=" => $start },
+            org_unit => $lib_id
+        },
+        {order_by => {aoucd => 'close_start'},
+            limit => 10
+        }
+    ]);
+
+    $ctx->{closed_dates} = $dates;
 
     return Apache2::Const::OK;
 }
