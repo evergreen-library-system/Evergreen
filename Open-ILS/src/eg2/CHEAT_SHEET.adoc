@@ -6,10 +6,10 @@
 ---------------------------------------------------------------------
 npm update
 npm install
-ng lint             # check code formatting
-npm run test        # unit tests
-ng build --watch    # compile dev mode
-ng build --prod     # compile production mode
+ng lint                              # check code formatting
+npm run test                         # unit tests
+ng build --watch                     # compile dev mode
+ng build --configuration=production  # compile production mode
 ---------------------------------------------------------------------
 
 == OPTIONAL: Adding a Locale 
