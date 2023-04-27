@@ -153,10 +153,87 @@ CREATE TRIGGER maintain_symspell_entries_tgr
 
 COMMIT;
 
--- Generate symspell sideloader data with authority headings included.
+\qecho ''
+\qecho 'If the Evergreen database has authority records, a reingest of'
+\qecho 'the search suggestion dictionary is recommended.'
+\qecho ''
+\qecho 'The following should be run at the end of the upgrade before any'
+\qecho 'reingest occurs.  Because new triggers are installed already,'
+\qecho 'updates to indexed strings will cause zero-count dictionary entries'
+\qecho 'to be recorded which will require updating every row again (or'
+\qecho 'starting from scratch) so best to do this before other batch'
+\qecho 'changes.  A later reingest that does not significantly change'
+\qecho 'indexed strings will /not/ cause table bloat here, and will be'
+\qecho 'as fast as normal.  A copy of the SQL in a ready-to-use, non-escaped'
+\qecho 'form is available inside a comment at the end of this upgrade sub-'
+\qecho 'script so you do not need to copy this comment from the psql ouptut.'
+\qecho ''
+\qecho '\\a'
+\qecho '\\t'
+\qecho ''
+\qecho '\\o title'
+\qecho 'select value from metabib.title_field_entry;'
+\qecho 'select  h.value'
+\qecho '  from  authority.simple_heading h'
+\qecho '        join authority.control_set_auth_field_metabib_field_map_refs a on (a.authority_field = h.atag)'
+\qecho '        join config.metabib_field m on (a.metabib_field=m.id and m.field_class=\'title\');'
+\qecho '\\o author'
+\qecho 'select value from metabib.author_field_entry;'
+\qecho 'select  h.value'
+\qecho '  from  authority.simple_heading h'
+\qecho '        join authority.control_set_auth_field_metabib_field_map_refs a on (a.authority_field = h.atag)'
+\qecho '        join config.metabib_field m on (a.metabib_field=m.id and m.field_class=\'author\');'
+\qecho '\\o subject'
+\qecho 'select value from metabib.subject_field_entry;'
+\qecho 'select  h.value'
+\qecho '  from  authority.simple_heading h'
+\qecho '        join authority.control_set_auth_field_metabib_field_map_refs a on (a.authority_field = h.atag)'
+\qecho '        join config.metabib_field m on (a.metabib_field=m.id and m.field_class=\'subject\');'
+\qecho '\\o series'
+\qecho 'select value from metabib.series_field_entry;'
+\qecho '\\o identifier'
+\qecho 'select value from metabib.identifier_field_entry;'
+\qecho '\\o keyword'
+\qecho 'select value from metabib.keyword_field_entry;'
+\qecho ''
+\qecho '\\o'
+\qecho '\\a'
+\qecho '\\t'
+\qecho ''
+\qecho '// Then, at the command line:'
+\qecho ''
+\qecho '$ ~/EG-src-path/Open-ILS/src/support-scripts/symspell-sideload.pl title > title.sql'
+\qecho '$ ~/EG-src-path/Open-ILS/src/support-scripts/symspell-sideload.pl author > author.sql'
+\qecho '$ ~/EG-src-path/Open-ILS/src/support-scripts/symspell-sideload.pl subject > subject.sql'
+\qecho '$ ~/EG-src-path/Open-ILS/src/support-scripts/symspell-sideload.pl series > series.sql'
+\qecho '$ ~/EG-src-path/Open-ILS/src/support-scripts/symspell-sideload.pl identifier > identifier.sql'
+\qecho '$ ~/EG-src-path/Open-ILS/src/support-scripts/symspell-sideload.pl keyword > keyword.sql'
+\qecho ''
+\qecho '// And, back in psql'
+\qecho ''
+\qecho 'ALTER TABLE search.symspell_dictionary SET UNLOGGED;'
+\qecho 'TRUNCATE search.symspell_dictionary;'
+\qecho ''
+\qecho '\\i identifier.sql'
+\qecho '\\i author.sql'
+\qecho '\\i title.sql'
+\qecho '\\i subject.sql'
+\qecho '\\i series.sql'
+\qecho '\\i keyword.sql'
+\qecho ''
+\qecho 'CLUSTER search.symspell_dictionary USING symspell_dictionary_pkey;'
+\qecho 'REINDEX TABLE search.symspell_dictionary;'
+\qecho 'ALTER TABLE search.symspell_dictionary SET LOGGED;'
+\qecho 'VACUUM ANALYZE search.symspell_dictionary;'
+\qecho ''
+\qecho 'DROP TABLE search.symspell_dictionary_partial_title;'
+\qecho 'DROP TABLE search.symspell_dictionary_partial_author;'
+\qecho 'DROP TABLE search.symspell_dictionary_partial_subject;'
+\qecho 'DROP TABLE search.symspell_dictionary_partial_series;'
+\qecho 'DROP TABLE search.symspell_dictionary_partial_identifier;'
+\qecho 'DROP TABLE search.symspell_dictionary_partial_keyword;'
 
 /*
-
 \a
 \t
 
@@ -166,27 +243,22 @@ select  h.value
   from  authority.simple_heading h
         join authority.control_set_auth_field_metabib_field_map_refs a on (a.authority_field = h.atag)
         join config.metabib_field m on (a.metabib_field=m.id and m.field_class='title');
-
 \o author
 select value from metabib.author_field_entry;
 select  h.value
   from  authority.simple_heading h
         join authority.control_set_auth_field_metabib_field_map_refs a on (a.authority_field = h.atag)
         join config.metabib_field m on (a.metabib_field=m.id and m.field_class='author');
-
 \o subject
 select value from metabib.subject_field_entry;
 select  h.value
   from  authority.simple_heading h
         join authority.control_set_auth_field_metabib_field_map_refs a on (a.authority_field = h.atag)
         join config.metabib_field m on (a.metabib_field=m.id and m.field_class='subject');
-
 \o series
 select value from metabib.series_field_entry;
-
 \o identifier
 select value from metabib.identifier_field_entry;
-
 \o keyword
 select value from metabib.keyword_field_entry;
 
@@ -194,5 +266,36 @@ select value from metabib.keyword_field_entry;
 \a
 \t
 
-*/
+// Then, at the command line:
 
+$ ~/EG-src-path/Open-ILS/src/support-scripts/symspell-sideload.pl title > title.sql
+$ ~/EG-src-path/Open-ILS/src/support-scripts/symspell-sideload.pl author > author.sql
+$ ~/EG-src-path/Open-ILS/src/support-scripts/symspell-sideload.pl subject > subject.sql
+$ ~/EG-src-path/Open-ILS/src/support-scripts/symspell-sideload.pl series > series.sql
+$ ~/EG-src-path/Open-ILS/src/support-scripts/symspell-sideload.pl identifier > identifier.sql
+$ ~/EG-src-path/Open-ILS/src/support-scripts/symspell-sideload.pl keyword > keyword.sql
+
+// And, back in psql
+
+ALTER TABLE search.symspell_dictionary SET UNLOGGED;
+TRUNCATE search.symspell_dictionary;
+
+\i identifier.sql
+\i author.sql
+\i title.sql
+\i subject.sql
+\i series.sql
+\i keyword.sql
+
+CLUSTER search.symspell_dictionary USING symspell_dictionary_pkey;
+REINDEX TABLE search.symspell_dictionary;
+ALTER TABLE search.symspell_dictionary SET LOGGED;
+VACUUM ANALYZE search.symspell_dictionary;
+
+DROP TABLE search.symspell_dictionary_partial_title;
+DROP TABLE search.symspell_dictionary_partial_author;
+DROP TABLE search.symspell_dictionary_partial_subject;
+DROP TABLE search.symspell_dictionary_partial_series;
+DROP TABLE search.symspell_dictionary_partial_identifier;
+DROP TABLE search.symspell_dictionary_partial_keyword;
+*/

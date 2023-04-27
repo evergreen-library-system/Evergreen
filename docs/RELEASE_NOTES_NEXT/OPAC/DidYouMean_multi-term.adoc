@@ -36,4 +36,11 @@ whereas unquoted input (or the portion that is not quoted) does not.
  * soundex_weight                 Weight of the soundex similarity metric; 0 avoids calculation costs
  * keyboard_distance_weight       Weight of the keyboard distance similarity metric; 0 avoids calculation costs
 
+=== Upgrade ===
 
+If the databse has authority records that are linked to bilbiographic
+records, a reingest of the search suggestion dictionary is recommended.
+
+Instructions for performing that reingest are included in the database
+update scripts and will be output to the log when those scripts are
+run.
