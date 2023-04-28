@@ -1,5 +1,7 @@
 BEGIN;
 
+SELECT evergreen.upgrade_deps_block_check('1367', :eg_version);
+
 -- Bring authorized headings into the symspell dictionary. Side
 -- loader should be used for Real Sites.  See below the COMMIT.
 /*
