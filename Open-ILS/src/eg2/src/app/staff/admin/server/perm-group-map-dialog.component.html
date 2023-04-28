@@ -25,13 +25,13 @@
     </div>
     <ng-container *ngFor="let map of newPermMaps.controls; let i = index">
       <ng-container [formGroup]="map">
+        <hr>
         <div class="row mt-1 pt-1">
           <div class="col-lg-12">
-            <hr>
             <h5 i18n>{{map.controls.label.value}}</h5>
           </div>
         </div>
-        <div class="row row-cols-4 mt-1 pt-1">
+        <div class="row row-cols-5 mt-1 pt-1">
           <div class="col">
             <label [attr.for]="'depth-'+map.controls.id.value"
               i18n>Depth
@@ -52,9 +52,7 @@
             <input type="checkbox" formControlName="grantable"
               id="grantable-{{map.controls.id.value}}">
           </div>
-        </div>
-        <div class="row mt-1 pt-1">
-          <div class="col-lg-12">
+          <div class="col">
             <button type="button" class="btn btn-danger"
               (click)="remove(i)"
               i18n>Remove

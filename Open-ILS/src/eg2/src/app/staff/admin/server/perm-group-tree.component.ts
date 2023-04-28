@@ -361,7 +361,7 @@ export class PermGroupTreeComponent implements OnInit {
     }
 
     openAddDialog() {
-        this.addMappingDialog.open().subscribe(
+        this.addMappingDialog.open({size: 'lg'}).subscribe(
             modified => {
                 if (modified) {
                     this.createMapString.current().then(msg => this.toast.success(msg));

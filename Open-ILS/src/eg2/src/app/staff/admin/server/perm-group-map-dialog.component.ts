@@ -162,6 +162,4 @@ export class PermGroupMapDialogComponent
     ngOnDestroy(): void {
         this.onDestroy.next();
     }
-}   
-
-
+}
