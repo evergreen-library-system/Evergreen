@@ -59,7 +59,7 @@
             <div class="input_bg">
                 <input id="password_field" name="password" type="password"
                        spellcheck="false" autocapitalize="false" autocomplete="false"
-                       aria-description="Your password is not visible."/>
+                       aria-description="[% l('Your password is not visible.') %]"/>
             </div>
             <div id="password_visibility" class="input_bg">
                 <input id="password_visibility_checkbox" type="checkbox" />

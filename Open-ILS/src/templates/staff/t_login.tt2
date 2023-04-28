@@ -26,7 +26,7 @@
               <div class="col-md-8">
                 <div class="input-group">
                   <input type="password" id="login-password" class="form-control"
-                    placeholder="Password" autocapitalize="none" spellcheck="false" autocomplete="false" aria-description="Your password is not visible."
+                    placeholder="Password" autocapitalize="none" spellcheck="false" autocomplete="false" aria-description="[% l('Your password is not visible.') %]"
                          ng-model="args.password"/>
                   <span class="input-group-addon">
                     <button id="show_password" type="button" role="switch" aria-label="password visibility" aria-checked="false" ><i class="glyphicon glyphicon-eye-close"></i></button>
@@ -83,12 +83,12 @@
         input.type = 'text';
         icon.setAttribute('class', 'glyphicon glyphicon-eye-open');
         btn.setAttribute('aria-checked', 'true');
-        input.setAttribute('aria-description', 'Your password is visible!');
+        input.setAttribute('aria-description', "[% l('Your password is visible!') %]");
       }else {
         input.type = 'password';
         icon.setAttribute('class', 'glyphicon glyphicon-eye-close');
         btn.setAttribute('aria-checked', 'false');
-        input.setAttribute('aria-description', 'Your password is not visible.');
+        input.setAttribute('aria-description', "[% l('Your password is not visible.') %]");
       }
       input.focus();
     });

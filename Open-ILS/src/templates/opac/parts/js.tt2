@@ -51,11 +51,11 @@
     checkbox.addEventListener('change', () => {
         if(checkbox.checked){
           input.type = 'text';
-          input.setAttribute('aria-description', 'Your password is visible!');
+          input.setAttribute('aria-description', "[% l('Your password is visible!') %]");
         }
         else {
           input.type = 'password';
-          input.setAttribute('aria-description', 'Your password is not visible.');
+          input.setAttribute('aria-description', "[% l('Your password is not visible.') %]");
         }
         input.focus();
     });

@@ -25,7 +25,7 @@ export class StaffLoginComponent implements OnInit {
     routeTo: string;
     pendingXactsDate: Date;
     passwordVisible: boolean;
-    ariaDescription: string = 'Your password is not visible.';
+    ariaDescription: string = $localize`Your password is not visible.`;
 
     args = {
       username : '',
@@ -134,8 +134,8 @@ export class StaffLoginComponent implements OnInit {
 
     togglePasswordVisibility() {
         this.passwordVisible = !this.passwordVisible;
-        if(this.passwordVisible) this.ariaDescription = "Your password is visible!";
-        else this.ariaDescription = "Your password is not visible.";
+        if(this.passwordVisible) this.ariaDescription = $localize`Your password is visible!`;
+        else this.ariaDescription = $localize`Your password is not visible.`;
         this.passwordInput.nativeElement.focus();
     }
 

@@ -74,12 +74,12 @@
                         input.type = 'text';
                         icon.setAttribute('class', 'fas fa-eye');
                         btn.setAttribute('aria-checked', 'true');
-                        input.setAttribute('aria-description', 'Your password is visible!');
+                        input.setAttribute('aria-description', "[% l('Your password is visible!') %]");
                     }else {
                         input.type = 'password';
                         icon.setAttribute('class', 'fas fa-eye-slash');
                         btn.setAttribute('aria-checked', 'false');
-                        input.setAttribute('aria-description', 'Your password is not visible.');
+                        input.setAttribute('aria-description', "[% l('Your password is not visible.') %]");
                     }
                     input.focus();
                 });
