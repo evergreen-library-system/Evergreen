@@ -28,4 +28,4 @@
     The upgrade script gives any permission groups that already have the
     UPDATE_COPY permission the new UPDATE_COPY_BARCODE permission at the
     same depth, though it's technically not needed.
-
+* Patron and staff login forms now include a button to reveal the password input. (LP#1977554)
