@@ -36,7 +36,7 @@
             [attr.aria-description]="ariaDescription"
             [(ngModel)]="args.password"/>
           <button id="show_password" class="input-group-text pointer"
-                  type="button" role="switch" aria-label="password visibility" aria-checked="false"
+                  type="button" aria-label="password visibility" aria-checked="false"
                   (click)="togglePasswordVisibility()" >
             <span class="material-icons">{{ passwordVisible ? 'visibility' : 'visibility_off' }}</span>
           </button>
