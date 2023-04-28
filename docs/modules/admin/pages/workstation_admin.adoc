@@ -29,7 +29,7 @@ affect other screens.) Use *CTRL + +* (plus sign, to zoom in), *CTRL + -*
 (minus sign, to zoom out), and *CTRL + 0* (to restore default). The
 workstation will remember the setting.
 
-=== Disable Settings ===
+=== Disable Sounds ===
 
 . Select *Administration -> Workstation Administration*.
 . To turn off the system sounds, like the noise that happens when a patron
