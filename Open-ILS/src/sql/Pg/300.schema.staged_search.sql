@@ -2284,7 +2284,19 @@ BEGIN
         old_value := OLD.value;
     END IF;
 
-    PERFORM * FROM search.symspell_build_and_merge_entries(new_value, search_class, old_value);
+    IF new_value = old_value THEN
+        -- same, move along
+    ELSE
+        INSERT INTO search.symspell_dictionary_updates
+            SELECT  txid_current(), *
+              FROM  search.symspell_build_entries(
+                        new_value,
+                        search_class,
+                        old_value
+                    );
+    END IF;
+
+    -- PERFORM * FROM search.symspell_build_and_merge_entries(new_value, search_class, old_value);
 
     RETURN NULL; -- always fired AFTER
 END;
