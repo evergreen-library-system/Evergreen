@@ -1,5 +1,7 @@
 BEGIN;
 
+SELECT evergreen.upgrade_deps_block_check('1369', :eg_version);
+
 INSERT INTO config.global_flag (name, enabled, label) VALUES (
     'ingest.queued.max_threads',  TRUE,
     oils_i18n_gettext(
