@@ -190,7 +190,7 @@ AC_SUBST([LIBXML2_HEADERS])
 PKG_CHECK_MODULES([DBI], [dbi])
 
 AC_ARG_WITH([hiredis],
-[  --with-hiredis=path               location of the hiredis headers (default is /usr/include/hiredis/))],
+[  --with-hiredis=path         location of the hiredis headers (default is /usr/include/hiredis/))],
 [HIREDIS_HEADERS=${withval}],
 [HIREDIS_HEADERS=/usr/include/hiredis/])
 AC_SUBST([HIREDIS_HEADERS])
@@ -205,6 +205,20 @@ AC_ARG_WITH([perlbase],
 [PERL_BASE=${withval}],
 [PERL_BASE=x])
 AC_SUBST([PERL_BASE])
+
+AC_ARG_WITH([redis-accounts],
+[  --with-redis-accounts=path  location of the redis accounts file (default is $sysconfdir/redis-accounts.txt)],
+[REDIS_ACCOUNTS=${withval}],
+[REDIS_ACCOUNTS=$sysconfdir/redis-accounts.txt])
+AC_SUBST([REDIS_ACCOUNTS])
+
+OPENSRF_BUS_PASSWORD=$(grep 'ACL SETUSER opensrf on >' ${REDIS_ACCOUNTS} | cut -d'>' -f2)
+GATEWAY_BUS_PASSWORD=$(grep 'ACL SETUSER gateway on >' ${REDIS_ACCOUNTS} | cut -d'>' -f2)
+ROUTER_BUS_PASSWORD=$(grep 'ACL SETUSER router on >' ${REDIS_ACCOUNTS} | cut -d'>' -f2)
+
+AC_SUBST([OPENSRF_BUS_PASSWORD])
+AC_SUBST([GATEWAY_BUS_PASSWORD])
+AC_SUBST([ROUTER_BUS_PASSWORD])
 
 AM_CONDITIONAL(CHECK_TESTS, test x$enable_tests = xyes)
 
@@ -415,6 +429,8 @@ AC_MSG_RESULT(OpenSRF headers location:                 ${OPENSRF_HEADERS})
 AC_MSG_RESULT(OpenSRF libraries location:               ${OPENSRF_LIBS})
 AC_MSG_RESULT(libhiredis headers location:              ${HIREDIS_HEADERS})
 
+AC_MSG_RESULT(REDIS: ${REDIS_ACCOUNTS})
+AC_MSG_RESULT(PASS: ${OPENSRF_BUS_PASS})
 
 AC_MSG_RESULT([----------------------------------------------------------------------])
 
