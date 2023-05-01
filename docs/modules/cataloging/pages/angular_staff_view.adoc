@@ -1,9 +1,11 @@
 = Angular Staff Catalog: Staff View Tab
 :toc:
 
+== Staff View Tab ==
+
 As of version 3.11, there is now a Staff View tab to the Angular staff catalog’s bibliographic record view page. This new tab is to the leftmost of the tab ribbon. The new Staff View tab will respect the Set Default View preference (`eg.cat.default_record_tab`), and the Item Table tab is still the default if a preference is not set.
 
-image::staff_view_tab/staff_view_tab.png[Staff View Tab]
+image::angular_staff_view/staff_view_tab.png[Staff View Tab]
 
 On the staff view page itself, fields such as title, author, subject, and series are hyperlinks. Clicking the text in one of those fields will execute a new search for those terms in the search class specified. On the right, the Formats and Editions section also has hyperlinked information. Clicking on a hyperlink in this section will execute a search for metarecord members who meet the criteria of either format or language selected.
 
