@@ -240,8 +240,12 @@
     <div class="row" *ngIf="searchContext.showResultExtras && summary.copies">
       <div class="shelving-locations" role="region" aria-describedby="caption{{index}}" tabindex="0">
         <table class="table" role="table" *ngIf="summary.copies.length">
-          <caption id="caption{{index}}" *ngIf="summary.copies.length" i18n>
-            {{summary.copies.length}} Shelving Locations
+          <caption id="caption{{index}}" *ngIf="summary.copies.length">
+              <span i18n="Shelving locations table heading">{{summary.copies.length}} Shelving Locations</span>
+              <span i18n="Shelving locations table heading preposition">for</span> 
+              <eg-bib-display-field [summary]="summary" field="title" [usePlaceholder]="true"></eg-bib-display-field>
+              <span i18n="Shelving locations table heading separator">&nbsp;-&nbsp;</span>
+              <eg-bib-display-field [summary]="summary" field="author" [usePlaceholder]="true"></eg-bib-display-field>
           </caption>
           <thead role="rowgroup">
             <tr>
