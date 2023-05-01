@@ -2261,13 +2261,20 @@ DECLARE
     search_class    TEXT;
     new_value       TEXT := NULL;
     old_value       TEXT := NULL;
+    _atag           INTEGER;
 BEGIN
 
     IF TG_TABLE_SCHEMA = 'authority' THEN
+        IF TG_OP IN ('INSERT', 'UPDATE') THEN
+            _atag = NEW.atag;
+        ELSE
+            _atag = OLD.atag;
+        END IF;
+
         SELECT  m.field_class INTO search_class
           FROM  authority.control_set_auth_field_metabib_field_map_refs a
                 JOIN config.metabib_field m ON (a.metabib_field=m.id)
-          WHERE a.authority_field = NEW.atag;
+          WHERE a.authority_field = _atag;
 
         IF NOT FOUND THEN
             RETURN NULL;

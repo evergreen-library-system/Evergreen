@@ -103,6 +103,59 @@ INSERT INTO config.global_flag (name, enabled, label) VALUES (
 
 UPDATE config.global_flag SET value = '20' WHERE name = 'ingest.queued.max_threads';
 
+CREATE OR REPLACE FUNCTION search.symspell_maintain_entries () RETURNS TRIGGER AS $f$
+DECLARE
+    search_class    TEXT;
+    new_value       TEXT := NULL;
+    old_value       TEXT := NULL;
+    _atag           INTEGER;
+BEGIN
+
+    IF TG_TABLE_SCHEMA = 'authority' THEN
+        IF TG_OP IN ('INSERT', 'UPDATE') THEN
+            _atag = NEW.atag;
+        ELSE
+            _atag = OLD.atag;
+        END IF;
+
+        SELECT  m.field_class INTO search_class
+          FROM  authority.control_set_auth_field_metabib_field_map_refs a
+                JOIN config.metabib_field m ON (a.metabib_field=m.id)
+          WHERE a.authority_field = _atag;
+
+        IF NOT FOUND THEN
+            RETURN NULL;
+        END IF;
+    ELSE
+        search_class := COALESCE(TG_ARGV[0], SPLIT_PART(TG_TABLE_NAME,'_',1));
+    END IF;
+
+    IF TG_OP IN ('INSERT', 'UPDATE') THEN
+        new_value := NEW.value;
+    END IF;
+
+    IF TG_OP IN ('DELETE', 'UPDATE') THEN
+        old_value := OLD.value;
+    END IF;
+
+    IF new_value = old_value THEN
+        -- same, move along
+    ELSE
+        INSERT INTO search.symspell_dictionary_updates
+            SELECT  txid_current(), *
+              FROM  search.symspell_build_entries(
+                        new_value,
+                        search_class,
+                        old_value
+                    );
+    END IF;
+
+    -- PERFORM * FROM search.symspell_build_and_merge_entries(new_value, search_class, old_value);
+
+    RETURN NULL; -- always fired AFTER
+END;
+$f$ LANGUAGE PLPGSQL;
+
 CREATE TABLE action.ingest_queue (
     id          SERIAL      PRIMARY KEY,
     created     TIMESTAMPTZ NOT NULL DEFAULT NOW(),
@@ -231,6 +284,7 @@ CREATE OR REPLACE FUNCTION action.process_ingest_queue_entry (qeid BIGINT) RETUR
 DECLARE
     ingest_success  BOOL := NULL;
     qe              action.ingest_queue_entry%ROWTYPE;
+    aid             authority.record_entry.id%TYPE;
 BEGIN
 
     SELECT * INTO qe FROM action.ingest_queue_entry WHERE id = qeid;
@@ -247,7 +301,8 @@ BEGIN
     ELSE
         IF qe.record_type = 'biblio' THEN
             IF qe.action = 'propagate' THEN
-                SELECT authority.apply_propagate_changes(qe.state_data::BIGINT, qe.record) INTO ingest_success;
+                SELECT authority.apply_propagate_changes(qe.state_data::BIGINT, qe.record) INTO aid;
+                SELECT aid = qe.state_data::BIGINT INTO ingest_success;
             ELSE
                 SELECT metabib.indexing_update(r.*, qe.action = 'insert', qe.state_data) INTO ingest_success FROM biblio.record_entry r WHERE r.id = qe.record;
             END IF;
@@ -271,7 +326,6 @@ BEGIN
     RETURN ingest_success;
 END;
 $func$ LANGUAGE PLPGSQL;
-
 
 CREATE OR REPLACE FUNCTION action.complete_duplicated_entries () RETURNS TRIGGER AS $F$
 BEGIN
@@ -518,6 +572,11 @@ BEGIN
         IF NOT FOUND THEN
             PERFORM authority.reingest_authority_rec_descriptor(auth.id);
         END IF;
+    END IF;
+
+    PERFORM * FROM config.internal_flag WHERE name = 'ingest.disable_symspell_reification' AND enabled;
+    IF NOT FOUND THEN
+        PERFORM search.symspell_dictionary_reify();
     END IF;
 
     RETURN TRUE;
@@ -887,7 +946,7 @@ BEGIN
 
     IF FOUND THEN
         -- XXX enqueue special 'propagate' bib action
-        SELECT action.enqueue_ingest_entry( bid, 'biblio', NOW(), 'propagate', aid::TEXT) INTO queuing_success;
+        SELECT action.enqueue_ingest_entry( bid, 'biblio', NOW(), NULL, 'propagate', aid::TEXT) INTO queuing_success;
 
         IF queuing_success THEN
             RETURN aid;
@@ -1079,6 +1138,9 @@ BEGIN
     RETURN;
 END;
 $func$ LANGUAGE PLPGSQL;
+
+-- get rid of old version
+DROP FUNCTION authority.indexing_ingest_or_delete;
 
 COMMIT;
 

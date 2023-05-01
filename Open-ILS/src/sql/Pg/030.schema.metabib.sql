@@ -2086,6 +2086,11 @@ BEGIN
         END IF;
     END IF;
 
+    PERFORM * FROM config.internal_flag WHERE name = 'ingest.disable_symspell_reification' AND enabled;
+    IF NOT FOUND THEN
+        PERFORM search.symspell_dictionary_reify();
+    END IF;
+
     RETURN TRUE;
 EXCEPTION WHEN OTHERS THEN
     GET STACKED DIAGNOSTICS diag_detail  = PG_EXCEPTION_DETAIL,
