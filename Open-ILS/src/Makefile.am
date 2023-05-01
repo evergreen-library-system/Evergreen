@@ -81,7 +81,8 @@ core_scripts =   $(examples)/oils_ctl.sh \
 		 $(srcdir)/extras/eg_config \
 		 $(srcdir)/extras/openurl_map.pl \
 		 $(srcdir)/extras/import/marc_add_ids \
-		 $(supportscr)/pingest.pl
+		 $(supportscr)/pingest.pl \
+		 $(supportscr)/ingest_ctl
 
 installautojs = $(autojsbinscripts)
 
