@@ -38,6 +38,12 @@ class MockAdminPageComponent {
     @Input() enableUndelete: boolean;
     @Input() recordLabel: string;
     @Input() orgDefaultAllowed: string;
+    @Input() orgFieldsDefaultingToContextOrg: string;
+    @Input() contextOrgSelectorPersistKey: string;
+    @Input() fieldOptions: any;
+    @Input() disableDelete: boolean;
+    @Input() disableEdit: boolean;
+    @Input() deleteConfirmation: boolean;
 }
 
 describe('Component: BasicAdminPage', () => {
