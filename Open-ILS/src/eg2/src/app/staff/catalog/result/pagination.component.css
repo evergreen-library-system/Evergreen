@@ -6,12 +6,20 @@
   cursor: pointer;
 }
 
-.pagination a, .pagination .page-item.active .page-link { 
-  border-color: #0A58CA;
-  color: #0A58CA; 
+.pagination a { 
+  background-color: #fff;
+  border-color: var(--primary);
+  color: var(--primary); 
+}
+
+.pagination .page-item.active .page-link {
+  background-color: var(--primary);
+  border-color: var(--primary);
+  color: #fff;
 }
 
 .pagination a:hover, .pagination .page-item.active .page-link:hover { 
+  background-color: #0848A5;
   border-color: #0848A5;
-  color: #0848A5; 
+  color: #fff; 
 }
