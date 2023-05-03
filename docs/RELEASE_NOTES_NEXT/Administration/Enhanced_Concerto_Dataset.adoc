@@ -1,0 +1,44 @@
+== Enhanced Concerto dataset ==
+
+An alternative sample dataset called "Enhanced Concerto" is now
+available. This dataset includes a more realistic organizational
+unit structure and additional data with which to test Evergreen
+functionality.
+
+The "Enhanced Concerto" dataset supports human-driven testing
+and community demonstrations. However, at present, automated
+tests, particularly the ones found in `Open-ILS/src/sql/Pg/live_t`
+and `Open-ILS/src/perlmods/live_t`, are not guaranteed to pass
+with the "Enhanced Concerto" dataset; instead, they remain targeted
+to working with the original "Concerto" dataset.
+
+=== Installing the dataset ===
+
+The dataset can be loaded when installing Evergreen by using the
+`--load-concerto-enhanced` option of `eg_db_config`. For example:
+
+[source,bash]
+----
+perl Open-ILS/src/support-scripts/eg_db_config --update-config \
+       --service all --create-database --create-schema --create-offline \
+       --user <user> --password <password> --hostname <hostname> --port <port> \
+       --database <dbname> --admin-user <admin-user> --admin-pass <admin-pass> \
+       --load-concerto-enhanced
+----
+
+The `--load-concerto-enhanced` switch is mutually exclusive with the
+`--load-all-sample` switch to load the full original "Concerto" dataset
+and the `--load-concerto` switch to load just the bibs, items, and
+authorities from the original "Concerto" dataset.
+
+=== Updating the dataset ===
+
+An experimental script called `make_concerto_from_evergreen_db.pl` is
+included to support
+
+* updating the dataset as Evergreen's schema evolves
+* incorporating changes to the dataset from a running Evergreen system
+
+The script compares data between different versions of an
+Evergreen database depending on how it is invoked. This script has known
+bugs and its output *must* be manually reviewed before being committed.
