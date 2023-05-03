@@ -1,8 +1,7 @@
 
-import {Component, OnInit, Input, Output, EventEmitter, ViewChild} from '@angular/core';
+import {Component, OnInit, Input, Output, EventEmitter} from '@angular/core';
 import { IdlService} from '@eg/core/idl.service';
 import {ToastService} from '@eg/share/toast/toast.service';
-import {StringComponent} from '@eg/share/string/string.component';
 
 class LinkedLimitSetObjects {
     linkedLimitSet: any;
@@ -17,8 +16,6 @@ class LinkedLimitSetObjects {
 })
 
 export class LinkedCircLimitSetsComponent implements OnInit {
-
-    @ViewChild('errorString', { static: true }) errorString: StringComponent;
 
     @Input() usedSetLimitList = {};
     @Input() limitSetNames = {};
@@ -80,16 +77,11 @@ export class LinkedCircLimitSetsComponent implements OnInit {
 
     addLinkedSet() {
         if (this.linkedSet) {
-            if ( !this.usedSetLimitList[this.linkedSet.id]) {
-                this.createEmptyLimitSetObject();
-                this.linkedSetList[this.getObjectKeys().length - 1].linkedLimitSet.limit_set(this.linkedSet.id);
-                this.linkedSetList[this.getObjectKeys().length - 1].created = true;
-                this.emitLimitSet();
-                this.usedSetLimitList[this.linkedSet.id] = this.linkedSet.label;
-            } else {
-                this.errorString.current()
-                    .then(str => this.toast.danger(str));
-            }
+            this.createEmptyLimitSetObject();
+            this.linkedSetList[this.getObjectKeys().length - 1].linkedLimitSet.limit_set(this.linkedSet.id);
+            this.linkedSetList[this.getObjectKeys().length - 1].created = true;
+            this.emitLimitSet();
+            this.usedSetLimitList[this.linkedSet.id] = this.linkedSet.label;
         }
     }
 

@@ -18,10 +18,10 @@ export class EgHelpPopoverComponent {
 
     // placement value passed to ngbPopover that controls
     // where the popover is displayed. Values include
-    // 'auto', 'right', 'left', 'top-left', 'bottom-right',
+    // 'auto', 'start', 'end', 'top-start', 'bottom-end',
     // 'top', and so forth.
     @Input()
-        placement = '';
+        placement = 'auto';
 
     // Allow for overriding the default button class.
     // This augments the basic 'btn' class

@@ -1,34 +1,33 @@
 
-<eg-string #errorString i18n-text text="The Linked Set Name Already Exists on Another Matchpoint"></eg-string>
-
 <div *ngIf="showLinkLimitSets">
     <div class="modal-header bg-info"><h4 class="modal-title" i18n>Linked Limit Sets</h4></div>
     <ng-container *ngIf="getObjectKeys().length > 0">
         <ng-container *ngFor="let key of getObjectKeys(); let i = index">
             <div *ngIf="!linkedSetList[i].isDeleted" class="col-lg-15 d-flex justify-content-center">
                 <div *ngIf="linkedSetList[i].created" class="col-lg-2 mt-3 mb-3 form-group form-check">
-                    <label for="name" i18n>Name</label>
+                    <span i18n>Name</span>
                     <div class="d-flex justify-content-center">
-                        <span>{{limitSetNames[linkedSetList[i].linkedLimitSet.limit_set()]}}</span>
+                        <span id="linked-limit-set-name{{i}}">{{limitSetNames[linkedSetList[i].linkedLimitSet.limit_set()]}}</span>
                     </div>
                 </div>
                 <div *ngIf="linkedSetList[i].created" class="col-lg-2 mt-3 mb-3 form-group form-check">
-                    <label for="{{fallthrough+i}}" i18n>Fallthrough</label>
+                    <div id="linked-limit-set-fallthrough{{i}}" i18n>Fallthrough</div>
                     <div class="d-flex justify-content-center">
                         <input
                             class="form-check-input"
                             type="checkbox"
-                            name="{{fallthrough+i}}"
+                            attr.aria-labelledby="linked-limit-set-name{{i}} linked-limit-set-fallthrough{{i}}"
                             [ngModel]="linkedSetList[i].linkedLimitSet.fallthrough()" 
                             (ngModelChange)="linkedSetList[i].linkedLimitSet.fallthrough($event); this.emitLimitSet();"/>
                     </div>
                 </div>
                 <div *ngIf="linkedSetList[i].created" class="col-lg-2 mt-3 mb-3 form-group form-check">
-                    <label for="{{active+i}}" i18n>Active</label>
+                    <div id="linked-limit-set-active{{i}}" i18n>Active</div>
                     <div class="d-flex justify-content-center">
                         <input
                         class="form-check-input"
                         type="checkbox"
+                        attr.aria-labelledby="linked-limit-set-name{{i}} linked-limit-set-active{{i}}"
                         [ngModel]="linkedSetList[i].linkedLimitSet.active()"
                         (ngModelChange)="linkedSetList[i].linkedLimitSet.active($event); this.emitLimitSet();"/>
                     </div>
@@ -47,16 +46,15 @@
         </ng-container>
     </ng-container>
     <div class="input-group mt-3 col-md-12">
-        <div class="input-group-prepend">
-            <div class="input-group-text" i18n>Circ Limit Set Name</div>
-            <eg-combobox 
-                name="linkedLimitName"
-                idlClass="ccls" 
-                idlField="name" 
-                asyncSupportsEmptyTermClick="true"
-                (onChange)="onChange($event)">
-            </eg-combobox>
-        </div>
+        <label for="limit-set-name" i18n>Circ Limit Set Name</label>
+        <eg-combobox 
+            name="linkedLimitName"
+            domId="limit-set-name"
+            idlClass="ccls" 
+            idlField="name" 
+            asyncSupportsEmptyTermClick="true"
+            (onChange)="onChange($event)">
+        </eg-combobox>
         <div class="input-group-append">
             <button
                 type="button"
@@ -64,7 +62,7 @@
                 (click)="addLinkedSet()"
                 i18n-title title="Add" i18n>Add
             </button>
-            <eg-help-popover i18n-helpText helpText="'Go to Local Admin -> Circulation Limit Sets to Create a Link Limit Set'" ></eg-help-popover>
+            <eg-help-popover i18n-helpText helpText="Go to Local Admin -> Circulation Limit Sets to Create a Link Limit Set" ></eg-help-popover>
         </div>
     </div>
 </div>

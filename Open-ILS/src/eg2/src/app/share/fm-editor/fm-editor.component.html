@@ -38,7 +38,7 @@
       <div class="form-group row" [ngClass]="field.name">
         <div class="col-lg-3">
           <label class="form-label" for="{{idPrefix}}-{{field.name}}">{{field.label}}</label>
-          <eg-help-popover [placement]="'right'" *ngIf="field.helpText" helpText="{{field.helpTextValue}}"></eg-help-popover>
+          <eg-help-popover placement="end" *ngIf="field.helpText" helpText="{{field.helpTextValue}}"></eg-help-popover>
           <ng-container *ngIf="isSafeToNull(field)">
             <br />(<a (click)="setToNull(field)" href='javascript:;'><span i18n>Unset</span></a>)
           </ng-container>

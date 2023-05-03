@@ -10,7 +10,7 @@ import {Component, OnInit, Input, Output, ViewChild,
     TemplateRef, EventEmitter, ElementRef, forwardRef} from '@angular/core';
 import {ControlValueAccessor, NG_VALUE_ACCESSOR} from '@angular/forms';
 import {Observable, of, Subject} from 'rxjs';
-import {map, tap, reduce, mergeMap, mapTo, debounceTime, distinctUntilChanged, merge, filter} from 'rxjs/operators';
+import {map, mergeMap, mapTo, debounceTime, distinctUntilChanged, merge, filter} from 'rxjs/operators';
 import {NgbTypeahead, NgbTypeaheadSelectItemEvent} from '@ng-bootstrap/ng-bootstrap';
 import {StoreService} from '@eg/core/store.service';
 import {IdlService, IdlObject} from '@eg/core/idl.service';
@@ -127,7 +127,10 @@ implements ControlValueAccessor, OnInit, AfterViewInit, OnChanges {
     // Allow the selected entry ID to be passed via the template
     // This does NOT not emit onChange events.
     @Input() set selectedId(id: any) {
-        if (id === undefined) { return; }
+        if (id === undefined) {
+            this.removeDuplicates();
+            return;
+        }
 
         // clear on explicit null
         if (id === null) {
@@ -555,6 +558,19 @@ implements ControlValueAccessor, OnInit, AfterViewInit, OnChanges {
                 button.classList.add('disabled');
             }
         });
+    }
+
+    // Remove any duplicate entries that have snuck into the
+    // entryList
+    removeDuplicates() {
+        if (this.entrylist.length) {
+            this.entrylist = this.entrylist.filter((entry, index, array) => {
+                const matchingEntry = array.findIndex((potentialMatch) => {
+                    return ((potentialMatch.id === entry.id) && (potentialMatch.label === entry.label));
+                });
+                return (index === matchingEntry); // return false if some other entry matches the current entry
+            });
+        }
     }
 
     filter = (text$: Observable<string>): Observable<ComboboxEntry[]> => {
