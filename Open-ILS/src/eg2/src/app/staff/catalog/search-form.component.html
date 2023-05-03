@@ -100,20 +100,23 @@
             <div class="col-lg-2 pl-0 pr-1">
               <button class="btn btn-sm material-icon-button"
                 (click)="addSearchRow(idx + 1)"
-                i18n-title title="Add Search Row">
-                <span class="material-icons">add_circle_outline</span>
+                i18n-title title="Add Search Row"
+                i18n-aria-label aria-label="Add Search Row">
+                <span class="material-icons" aria-hidden="true">add_circle_outline</span>
               </button>
               <button class="btn btn-sm material-icon-button"
                 [disabled]="context.termSearch.query.length < 2"
                 (click)="delSearchRow(idx)"
-                i18n-title title="Remove Search Row">
-                <span class="material-icons">remove_circle_outline</span>
+                i18n-title title="Remove Search Row"
+                i18n-aria-label aria-label="Remove Search Row">
+                <span class="material-icons" aria-hidden="true">remove_circle_outline</span>
               </button>
               <button *ngIf="idx == 0"
                 class="btn btn-sm material-icon-button" 
                 type="button" (click)="toggleFilters()" 
-                title="Toggle Search Filters" i18n-title>
-                <span class="material-icons">more_vert</span>
+                title="Toggle Search Filters" i18n-title
+                aria-label="Toggle Search Filters" i18n-aria-label>
+                <span class="material-icons" aria-hidden="true">more_vert</span>
               </button>
             </div>
           </div>
