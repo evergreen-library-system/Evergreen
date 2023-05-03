@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Evergreen 1.4\n"
 "Report-Msgid-Bugs-To: open-ils-dev@list.georgialibraries.org\n"
-"POT-Creation-Date: 2022-04-27 17:07:21-0400\n"
+"POT-Creation-Date: 2023-05-03 11:29:59-0400\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -305,13 +305,13 @@ msgstr ""
 
 #: acq.js:LINEITEM_SUMMARY
 msgid ""
-"<div class='acq-lineitem-summary'><a href='${19}?focus_li=${10}&source=${22}'>${0}</a>, by ${1} (${2})</div>\n"
+"<div class='acq-lineitem-summary'><a target='_top' href='${19}'>${0}</a>, by ${1} (${2})</div>\n"
 "<div class='acq-lineitem-summary-extra'>\n"
 "${3} Ordered, ${4} Received, ${7} Invoiced, ${8} Claimed, ${9} Cancelled, ${23} Delayed</div>\n"
 "<div class='acq-lineitem-summary-extra'>Estimated $${6}, Encumbered $${16}, Paid $${17}</div>\n"
 "<div class='acq-lineitem-summary-extra'>\n"
-"# ${10} <a style='padding-right: 10px;' class='hidden${20}'  href='${11}/acq/po/view/${12}?focus_li=${10}&source=${22}'>&#x2318; ${13} ${18}</a>\n"
-"<a style='padding-right: 10px;' class='hidden${21}' href='${11}/acq/picklist/view/${14}?focus_li=${10}&source=${22}'>&#x2756; ${15}</a></div>"
+"# ${10} <a style='padding-right: 10px;' class='hidden${20}'  target='_top' href='/eg2/en-US/staff/acq/po/${12}#${10}'>&#x2318; ${13} ${18}</a>\n"
+"<a style='padding-right: 10px;' class='hidden${21}' target='_top' href='/eg2/en-US/staff/acq/picklist/${14}#${10}'>&#x2756; ${15}</a></div>"
 msgstr ""
 
 #: acq.js:INVOICE_CONFIRM_PRORATE
@@ -331,14 +331,14 @@ msgstr ""
 
 #: acq.js:INVOICE_ITEM_PO_DETAILS
 msgid ""
-"<b>${0}</b><br/><a href='${1}/acq/po/view/${2}'>PO #${3} ${4}</a><br/>Total "
-"Estimated Cost: $${5}"
+"<b>${0}</b><br/><a target='_top' href='/eg2/en-US/staff/acq/po/${2}'>PO "
+"#${3} ${4}</a><br/>Total Estimated Cost: $${5}"
 msgstr ""
 
 #: acq.js:INVOICE_ITEM_PO_LABEL
 msgid ""
-"<a href='${0}/acq/po/view/${1}'>PO #${2} ${3}</a><br/>Total Estimated Cost: "
-"$${4}"
+"<a target='_top' href='/eg2/en-US/staff/acq/po/${1}'>PO #${2} "
+"${3}</a><br/>Total Estimated Cost: $${4}"
 msgstr ""
 
 #: acq.js:UNNAMED

@@ -79,7 +79,7 @@ msgstr ""
 msgid "Contact Us"
 msgstr ""
 
-#: ../../Open-ILS/src/templates/kpac/parts/searchbox.tt2:53
+#: ../../Open-ILS/src/templates/kpac/parts/searchbox.tt2:52
 msgid "Did you mean: "
 msgstr ""
 
@@ -346,10 +346,6 @@ msgstr ""
 
 #: ../../Open-ILS/src/templates/kpac/parts/record_row.tt2:24
 msgid "more info"
-msgstr ""
-
-#: ../../Open-ILS/src/templates/kpac/parts/searchbox.tt2:55
-msgid "or"
 msgstr ""
 
 #: ../../Open-ILS/src/templates/kpac/getit.tt2:61
