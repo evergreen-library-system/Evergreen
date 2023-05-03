@@ -44,7 +44,7 @@ to more thorough documentation, if available.
    -- Converts authority records from MARC format to Evergreen objects
       suitable for importing via pg_loader.pl (or parallel_pg_loader.pl)
  * xref:#make_concerto_from_evergreen_db[make_concerto_from_evergreen_db.pl]
-   -- This script is responsible for generating the enhanced concerto
+   -- This experimental script is responsible for generating the enhanced concerto
       dataset from a live Evergreen database.
  * marc2bre.pl
    -- Converts bibliographic records from MARC format to Evergreen objects
@@ -107,6 +107,10 @@ enhanced dataset. This script requires access to a Postgres database. It will
 automate the process of making the enhanced dataset match the current branch of
 Evergreen. You need to provide the login credentials to the database as well as
 a path to the Evergreen repository where you're currently on the intended branch.
+
+This script has known bugs and should be considered experimental. Its output
+should be carefully reviewed before committing changes to to Evergreen or
+opening a pull request for updating the dataset.
 
 === Generate new dataset from existing DB ===
 
