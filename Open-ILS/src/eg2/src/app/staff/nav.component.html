@@ -1,4 +1,9 @@
-<nav id="staff-navbar" aria-label="Main Navigation" i18n-aria-label class="navbar fixed-top navbar-expand navbar-default">
+<eg-confirm-dialog #confirmLogout
+  dialogTitle="Log out?" i18n-dialogTitle
+  dialogBody="Are you sure you want to log out?" i18n-dialogBody>
+</eg-confirm-dialog>
+
+<nav id="staff-navbar" class="navbar fixed-top navbar-expand navbar-default" aria-label="Main Navigation" i18n-aria-label>
   <div class="collapse navbar-collapse">
     <div class="navbar-nav">
       <div class="nav-item">
@@ -530,7 +535,9 @@
             <span class="material-icons" aria-hidden="true">transform</span>
             <span i18n>Restore Operator</span>
           </button>
-          <button class="dropdown-item" ngbDropdownItem  (click)="logout()">
+          <button class="dropdown-item" ngbDropdownItem  (click)="maybeLogout()"
+              egAccessKey keyCtx="navbar" i18n-keySpec i18n-keyDesc
+              keySpec="alt+shift+q" keyDesc="Logout (Quit)">
             <span class="material-icons" aria-hidden="true">lock_outline</span>
             <span i18n>Logout</span>
           </button>

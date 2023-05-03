@@ -11,6 +11,7 @@ import {StoreService} from '@eg/core/store.service';
 import {NetRequest, NetService} from '@eg/core/net.service';
 import {OpChangeComponent} from '@eg/staff/share/op-change/op-change.component';
 import {PermService} from '@eg/core/perm.service';
+import {ConfirmDialogComponent} from '@eg/share/dialog/confirm.component';
 
 @Component({
     selector: 'eg-staff-nav-bar',
@@ -32,6 +33,7 @@ export class StaffNavComponent implements OnInit, OnDestroy {
     maxRecentPatrons: number = 1;
 
     @ViewChild('navOpChange', {static: false}) opChange: OpChangeComponent;
+    @ViewChild('confirmLogout', { static: true }) confirmLogout: ConfirmDialogComponent;
     permFailedSub: Subscription;
 
     constructor(
@@ -128,6 +130,14 @@ export class StaffNavComponent implements OnInit, OnDestroy {
 
     opChangeActive(): boolean {
         return this.auth.opChangeIsActive();
+    }
+
+    maybeLogout() {
+        this.confirmLogout.open().subscribe(confirmed => {
+            if (!confirmed) { return; }
+            
+            this.logout();
+        });
     }
 
     // Broadcast to all tabs that we're logging out.
