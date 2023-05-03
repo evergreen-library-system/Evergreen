@@ -270,8 +270,6 @@ export class AdminPageComponent implements OnInit {
         if (!this.dataSource) {
             this.initDataSource();
         }
-
-        console.log('admin this',this);
     }
 
     setDefaultNewRecordOrgFieldDefaults(contextOrg: number) {
