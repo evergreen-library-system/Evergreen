@@ -1,5 +1,5 @@
 <div *ngIf="searchContext.result.facetData">
-  <h2 class="sr-only" i18n>Facets</h2>
+  <h2 class="visually-hidden" i18n>Facets</h2>
   <div *ngFor="let facetConf of facetConfig.display">
     <div *ngIf="searchContext.result.facetData[facetConf.facetClass]">
       <div *ngFor="let name of facetConf.facetOrder">
