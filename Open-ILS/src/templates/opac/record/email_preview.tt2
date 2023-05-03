@@ -83,7 +83,7 @@
             [% IF ctx.captcha.key %]
             <div class="searchbar">
                 <p>[% l('Please prove you are not a robot by answering the following addition problem:') %]</p>
-                <p>[% ctx.captcha.left %] + [% ctx.captcha.right %] = <input type="text" name="capanswer"/></p>
+                <p><label for="capanswer">[% ctx.captcha.left %] + [% ctx.captcha.right %] = </label>&nbsp;<input type="text" name="capanswer" id="capanswer"/></p>
                 <input type="hidden" name="capkey" value="[% ctx.captcha.key %]"/>
             </div>
             [% END %]
