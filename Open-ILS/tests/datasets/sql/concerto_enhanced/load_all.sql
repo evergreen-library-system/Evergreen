@@ -385,10 +385,15 @@ SET CONSTRAINTS ALL DEFERRED;
 \i vandelay.session_tracker.sql
 
 SELECT SETVAL('money.billable_xact_id_seq', (SELECT MAX(id) FROM money.billing));
+
 SELECT SETVAL('config.remote_account_id_seq', (SELECT MAX(id) FROM config.remote_account));
+
 SELECT SETVAL('money.payment_id_seq', (SELECT MAX(id) FROM money.payment));
+
 SELECT SETVAL('asset.copy_id_seq', (SELECT MAX(id) FROM asset.copy));
+
 SELECT SETVAL('vandelay.queue_id_seq', (SELECT MAX(id) FROM vandelay.queue));
+
 SELECT SETVAL('vandelay.queued_record_id_seq', (SELECT MAX(id) FROM vandelay.queued_record));
 
 COMMIT;
