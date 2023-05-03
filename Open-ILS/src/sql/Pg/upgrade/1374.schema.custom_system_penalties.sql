@@ -1,6 +1,6 @@
 BEGIN;
 
-SELECT evergreen.upgrade_deps_block_check('XXXX', :eg_version);
+SELECT evergreen.upgrade_deps_block_check('1374', :eg_version);
 
 INSERT INTO config.org_unit_setting_type (name, label, grp, description, datatype, fm_class) VALUES
 (   'circ.custom_penalty_override.PATRON_EXCEEDS_FINES',
