@@ -17,13 +17,13 @@
           <ng-container *ngIf="hasMrConstituentRecords(summary)">
             <a routerLink="/staff/catalog/search"
               [queryParams]="appendFromMrParam(summary)">
-              <img src="/opac/extras/ac/jacket/medium/r/{{summary.id}}"/>
+              <img src="/opac/extras/ac/jacket/medium/r/{{summary.id}}" alt=""/>
             </a>
           </ng-container>
           <ng-container *ngIf="!hasMrConstituentRecords(summary)">
               <a routerLink="/staff/catalog/record/{{summary.id}}"
                 [queryParams]="currentParams()">
-                <img src="/opac/extras/ac/jacket/medium/r/{{summary.id}}"/>
+                <img src="/opac/extras/ac/jacket/medium/r/{{summary.id}}" alt=""/>
               </a>
           </ng-container>
         </div>
@@ -70,7 +70,7 @@
                 <ng-container *ngFor="let icon of summary.attributes.icon_format">
                 <span class="pr-1">
                   <img class="pr-1"
-                    src="/images/format_icons/icon_format/{{icon}}.png"/>
+                    src="/images/format_icons/icon_format/{{icon}}.png" alt=""/>
                   <span>{{iconFormatLabel(icon)}}</span>
                 </span>
                 </ng-container>
