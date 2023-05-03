@@ -5376,10 +5376,6 @@ msgstr ""
 msgid "Wednesday: closed"
 msgstr ""
 
-#: ../../Open-ILS/src/templates-bootstrap/opac/parts/config.tt2:3
-msgid "Where"
-msgstr ""
-
 #: ../../Open-ILS/src/templates-bootstrap/opac/parts/record/contents.tt2:2
 msgid "With Note: "
 msgstr ""
