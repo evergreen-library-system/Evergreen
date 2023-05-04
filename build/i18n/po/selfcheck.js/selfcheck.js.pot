@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Evergreen 1.4\n"
 "Report-Msgid-Bugs-To: open-ils-dev@list.georgialibraries.org\n"
-"POT-Creation-Date: 2022-04-27 17:07:21-0400\n"
+"POT-Creation-Date: 2023-05-04 09:23:23-0400\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -182,6 +182,10 @@ msgstr ""
 
 #: selfcheck.js:FAIL_PART_no_ultimate_items
 msgid "The system could not find any items to match this hold request"
+msgstr ""
+
+#: selfcheck.js:FAIL_PART_monographic_part_required
+msgid "Title hold request invalid when monographic part required"
 msgstr ""
 
 #: selfcheck.js:FAIL_PART_no_matchpoint

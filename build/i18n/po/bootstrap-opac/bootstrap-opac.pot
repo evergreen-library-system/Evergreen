@@ -5185,6 +5185,10 @@ msgstr ""
 msgid "Title"
 msgstr ""
 
+#: ../../Open-ILS/src/templates-bootstrap/opac/parts/hold_error_messages.tt2:2
+msgid "Title hold request invalid when monographic part required"
+msgstr ""
+
 #: ../../Open-ILS/src/templates-bootstrap/opac/myopac/messages/list.tt2:111
 msgid "Title of Message"
 msgstr ""
