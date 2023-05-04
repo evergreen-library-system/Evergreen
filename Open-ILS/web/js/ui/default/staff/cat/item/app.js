@@ -1129,7 +1129,7 @@ console.debug($scope.copy_alert_count);
 
             $scope.circ_counts = counts.reduce(function(circ_counts, circbyyr) {
                 var count = Number(circbyyr.count());
-                var year = circbyyr.year();
+                var year = Number(circbyyr.year());
 
                 var index = circ_counts.findIndex(function(existing_count) {
                     return existing_count.year === year;
