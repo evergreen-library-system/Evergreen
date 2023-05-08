@@ -1,0 +1,9 @@
+ul li {
+  line-height: 1.5;
+  list-style: none;
+  padding: .5rem;
+}
+
+ul li .material-icons {
+  font-size: 1rem;
+}
