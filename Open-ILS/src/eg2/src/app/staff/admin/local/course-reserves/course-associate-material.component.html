@@ -36,6 +36,7 @@
               <div class="row" [ngClass]="isDialog() ? '' : 'mt-3'">
                 <div class="d-flex" [ngClass]="isDialog() ? 'col-md-6' : 'col-md-12'">
                   <div class="input-group">
+                    <label for="associate-item-barcode" class="form-label input-group-text" i18n>Barcode</label>
                     <input type="text" class="flex-grow-1" id="associate-item-barcode"
                       [(ngModel)]="barcodeInput" (click)="$event.target.select()"
                       [disabled]="currentCourse && (courseIsArchived || currentCourse.is_archived()) === 't'"
@@ -61,12 +62,13 @@
               <div class="row mt-3">
                 <div class="d-flex" [ngClass]="isDialog() ? 'col-md-6' : 'col-md-12'">
                   <div class="input-group">
-                    <div class="input-group-text">
-                        <label class="form-label" for="associate-item-temp-call-number" i18n>Call Number</label>
-                    </div>
+                    <div class="input-group">
+                        <label class="form-label input-group-text" for="associate-item-temp-call-number" i18n>Call Number</label>
+                    
                     <input type="text" [(ngModel)]="tempCallNumber" id="associate-item-temp-call-number"
                       [disabled]="currentCourse && (courseIsArchived || currentCourse.is_archived()) === 't'"
                       (input)="isModifyingCallNumber = true" class="flex-grow-1" />
+                    </div>
                       <div class="input-group-text">
                         <input type="checkbox" [(ngModel)]="isModifyingCallNumber"
                           [disabled]="currentCourse && (courseIsArchived || currentCourse.is_archived()) === 't'"
