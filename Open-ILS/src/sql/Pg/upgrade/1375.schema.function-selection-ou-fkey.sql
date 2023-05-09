@@ -1,6 +1,6 @@
 BEGIN;
 
-SELECT evergreen.upgrade_deps_block_check('xxxx', :eg_version);
+SELECT evergreen.upgrade_deps_block_check('1375', :eg_version);
 
 UPDATE action.hold_request 
 SET selection_ou = request_lib
