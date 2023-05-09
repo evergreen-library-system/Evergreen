@@ -319,6 +319,8 @@ sub _create_where_clause {
         my $search_query;
         if ($type eq 'instructor') {
             $query =~ s/\*$/:*/; # postgres prefix matching syntax ends with :* (e.g. string:*, not string*)
+            $query =~ s/^\s+|\s+$//g; # preceding and trailing spaces have the potential to make to_tsquery mad
+            $query =~ s/\s/ \& /g; # postgres to_tsquery wants & characters between words
             my $in = ($contains eq 'nocontains') ? "not in" : "in";
             $search_query = {'id' => {$in => {
                 'from' => {'acmcu' => 'acmr'},
