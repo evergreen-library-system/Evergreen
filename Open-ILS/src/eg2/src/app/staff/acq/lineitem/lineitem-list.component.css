@@ -31,3 +31,13 @@ input[type="text"].form-control-sm { border-width: 1px; }
 .li-state-on-order { background-color: #EEDDDD; }
 .li-state-received { background-color: #DDDDDD; }
 .li-state-delayed { background-color: #B3D9FF; }
+
+.btn-link {
+  color: var(--primary);
+  text-decoration: none;
+}
+
+.btn-link:hover {
+  color: #0848A5;
+  text-decoration: underline;
+}

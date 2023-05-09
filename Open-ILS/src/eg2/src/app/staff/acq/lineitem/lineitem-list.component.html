@@ -38,57 +38,59 @@
   </div>
 </div>
 
-<div class="row mt-3" *ngIf="poId || picklistId">
-  <div class="col-lg-1">
+<div class="row row-cols-auto mt-3 align-items-center" *ngIf="poId || picklistId">
+  <div class="col">
     <div ngbDropdown>
-      <button class="btn btn-info btn-sm" ngbDropdownToggle i18n>Actions</button>
+      <button class="btn btn-info btn-sm" type="button" ngbDropdownToggle i18n>Actions</button>
       <div ngbDropdownMenu>
         <a ngbDropdownItem routerLink="./brief-record"
           [disabled]="isActivatedPo()"
           queryParamsHandling="merge" i18n>Add Brief Record</a>
-        <button ngbDropdownItem (click)="deleteLineitems()" 
+        <button type="button" ngbDropdownItem (click)="deleteLineitems()" 
           [disabled]="!canDeleteLis() || !selectedIds().length" i18n>Delete Selected Line Items</button>
-        <button ngbDropdownItem (click)="addCopiesToLineitems()" 
+        <button type="button" ngbDropdownItem (click)="addCopiesToLineitems()" 
           [disabled]="isActivatedPo() || !selectedIds().length" i18n>Add Items to Selected Line Items</button>
-        <button ngbDropdownItem (click)="batchUpdateCopiesOnLineitems()" 
+        <button type="button" ngbDropdownItem (click)="batchUpdateCopiesOnLineitems()" 
           [disabled]="isActivatedPo() || !selectedIds().length" i18n>Batch Update Items on Selected Line Items</button>
-        <button ngbDropdownItem (click)="exportSingleAttributeList()" 
+        <button type="button" ngbDropdownItem (click)="exportSingleAttributeList()" 
           [disabled]="!selectedIds().length" i18n>Export Single Attribute List for Selected Line Items</button>
         <div class="dropdown-divider"></div>
         <h6 class="dropdown-header" i18n>Selection List Actions</h6>
-        <button ngbDropdownItem (click)="markSelectorReady()" 
+        <button type="button" ngbDropdownItem (click)="markSelectorReady()" 
           [disabled]="!picklistId" i18n>Mark Selected Line Items as Ready for Selector</button>
-        <button ngbDropdownItem (click)="markOrderReady()" 
+        <button type="button" ngbDropdownItem (click)="markOrderReady()" 
           [disabled]="!picklistId" i18n>Mark Selected Line Items as Ready for Order</button>
-        <button ngbDropdownItem (click)="createPo()" 
+        <button type="button" ngbDropdownItem (click)="createPo()" 
           [disabled]="!picklistId" i18n>Create Purchase Order from Selected Line Items</button>
-        <button ngbDropdownItem (click)="createPo(true)"
+        <button type="button" ngbDropdownItem (click)="createPo(true)"
           [disabled]="!picklistId" i18n>Create Purchase Order from All Line Items</button>
         <div class="dropdown-divider"></div>
         <h6 class="dropdown-header" i18n>Purchase Order Actions</h6>
         <a ngbDropdownItem routerLink="./create-assets"
           [disabled]="!isPendingPo()"
           queryParamsHandling="merge" i18n>Load Bibs and Items</a>
-        <button ngbDropdownItem (click)="receiveSelected()" 
+        <button type="button" ngbDropdownItem (click)="receiveSelected()" 
           [disabled]="!isActivatedPo() || !selectedIds().length" i18n>Mark Selected Line Items as Received</button>
-        <button ngbDropdownItem (click)="unReceiveSelected()" 
+        <button type="button" ngbDropdownItem (click)="unReceiveSelected()" 
           [disabled]="!isActivatedPo() || !selectedIds().length" i18n>Un-Receive Selected Line Items</button>
-        <button ngbDropdownItem (click)="cancelSelected()" 
+        <button type="button" ngbDropdownItem (click)="cancelSelected()" 
           [disabled]="!isActivatedPo() || !selectedIds().length" i18n>Cancel Selected Line Items</button>
-        <button ngbDropdownItem (click)="applyClaimPolicyToSelected()" 
+        <button type="button" ngbDropdownItem (click)="applyClaimPolicyToSelected()" 
           [disabled]="!poId || !selectedIds().length" i18n>Apply Claim Policy to Selected Line Items</button>
-        <button ngbDropdownItem (click)="createInvoiceFromSelected()" 
+        <button type="button" ngbDropdownItem (click)="createInvoiceFromSelected()" 
           [disabled]="!isActivatedPo() || !selectedIds().length" i18n>Create Invoice from Selected Line Items</button>
-        <button ngbDropdownItem (click)="linkInvoiceFromSelected()" 
+        <button type="button" ngbDropdownItem (click)="linkInvoiceFromSelected()" 
           [disabled]="!isActivatedPo() || !selectedIds().length" i18n>Link Selected Line Items to Invoice</button>
       </div>
     </div>
   </div>
-  <div class="col-lg-5">
-    <input type="text" class="form-control" [(ngModel)]="batchNote"
-      placeholder="New Line Item Note..." i18n-placeholder/>
+  <div class="col ps-0 pe-1">
+    <label for="new-lineitem-note" class="form-label" i18n>New Line Item Note</label>
   </div>
-  <div class="col-lg-4 form-inline">
+  <div class="col-lg-4 ps-0">
+    <input type="text" class="form-control" id="new-lineitem-note" [(ngModel)]="batchNote"/>
+  </div>
+  <div class="col form-inline">
     <div class="form-check me-2">
       <input class="form-check-input" type="checkbox"
         id="vendor-public" [(ngModel)]="noteIsPublic">
@@ -96,7 +98,9 @@
         Note is vendor-public
       </label>
     </div>
-    <button class="btn btn-outline-dark" (click)="applyBatchNote()"
+  </div>
+  <div class="col">
+    <button type="button" class="btn btn-outline-dark" (click)="applyBatchNote()"
       [disabled]="!selectedIds().length" i18n>
       Apply To Selected
     </button>
@@ -105,14 +109,14 @@
 
 <div *ngIf="batchFailure" class="row mt-2 p-2">
   <div class="col-lg-12 p-2 border border-danger label-with-material-icon" i18n>
-    <span class="material-icons text-danger pe-2">report</span>
+    <span class="material-icons text-danger pe-2" aria-hidden="true">report</span>
     Batch operation failed: 
     {{batchFailure.textcode}} {{batchFailure.desc}}
 
-    <a class="ms-auto" href="javascript:;" 
+    <button type="button" class="btn ms-auto"
       (click)="batchFailure = null" title="Close" i18n-title>
       <span class="material-icons text-danger">close</span>
-    </a>
+    </button>
   </div>
 </div>
 
@@ -155,38 +159,43 @@
 
     <div class="btn-toolbar">
       <button type="button" (click)="toggleExpandAll()"
-        class="btn btn-sm btn-outline-dark me-1">
-        <span title="Expand All" i18n-title *ngIf="!expandAll"
+        class="btn btn-sm btn-outline-dark me-1"
+        [title]="expandAll? 'Expand All' : 'Collapse All'" i18n-title
+        [attr.aria-label]="expandAll? 'Expand All' : 'Collapse All'" i18n-aria-label>
+        <span *ngIf="!expandAll" aria-hidden="true"
           class="material-icons mat-icon-in-button">unfold_more</span>
-        <span title="Collapse All" i18n-title *ngIf="expandAll"
+        <span *ngIf="expandAll" aria-hidden="true"
           class="material-icons mat-icon-in-button">unfold_less</span>
       </button>
       <button [disabled]="pager.isFirstPage()" type="button"
+        title="First Page" i18n-title
+        aria-label="First Page" i18n-aria-label
         class="btn btn-sm btn-outline-dark me-1" (click)="pager.toFirst(); goToPage()">
-        <span title="First Page" i18n-title
-          class="material-icons mat-icon-in-button">first_page</span>
+        <span class="material-icons mat-icon-in-button" aria-hidden="true">first_page</span>
       </button>
       <button [disabled]="pager.isFirstPage()" type="button"
+        title="Previous Page" i18n-title
+        aria-label="Previous Page" i18n-aria-label
         class="btn btn-sm btn-outline-dark me-1" (click)="pager.decrement(); goToPage()">
-        <span title="Previous Page" i18n-title
-            class="material-icons mat-icon-in-button">keyboard_arrow_left</span>
+        <span class="material-icons mat-icon-in-button" aria-hidden="true">keyboard_arrow_left</span>
       </button>
       <button [disabled]="pager.isLastPage()" type="button"
+        title="Next Page" i18n-title
+        aria-label="Next Page" i18n-aria-label
         class="btn btn-sm btn-outline-dark me-1" (click)="pager.increment(); goToPage()">
-        <span title="Next Page" i18n-title
-          class="material-icons mat-icon-in-button">keyboard_arrow_right</span>
+        <span class="material-icons mat-icon-in-button" aria-hidden="true">keyboard_arrow_right</span>
       </button>
       <div ngbDropdown class="me-1" placement="bottom-right">
-        <button ngbDropdownToggle class="btn btn-outline-dark text-button">
+        <button ngbDropdownToggle class="btn btn-outline-dark text-button" type="button">
           <span title="Select Row Count" i18n-title i18n>
             Rows {{pager.limit}}
           </span>
         </button>
         <div class="dropdown-menu" ngbDropdownMenu>
-          <a class="dropdown-item" (click)="pageSizeChange(count)"
+          <button ngbDropdownItem class="dropdown-item" (click)="pageSizeChange(count)"  type="button"
             *ngFor="let count of [5, 10, 25, 50, 100, 500, 1000, 10000]">
             <span class="ms-2">{{count}}</span>
-          </a>
+          </button>
         </div>
       </div>
     </div><!-- buttons -->
@@ -216,7 +225,7 @@
           </select> 
           <select name="filter-operator-select" id="filter-operator-select"
             [(ngModel)]="filterOperator" (ngModelChange)="filterOperatorChange($event)"
-            class="form-control">
+            class="form-control" aria-label="Filter operator" i18n-aria-label>
             <option i18n value="">is</option>
             <option i18n value="__not">is NOT</option>
             <option i18n value="__fuzzy" [hidden]="searchTermDatatypes[filterField] !== 'text'">contains</option>
@@ -290,11 +299,11 @@
       <div class="jacket-wrapper">
         <ng-container *ngIf="jacketIdent(li)">
           <a href="/opac/extras/ac/jacket/large/{{jacketIdent(li)}}">
-            <img class="jacket"
+            <img class="jacket" alt=""
               src='/opac/extras/ac/jacket/small/{{jacketIdent(li)}}'/>
           </a>
         </ng-container>
-        <ng-container *ngIf="!jacketIdent(li)"><img class="jacket"/></ng-container>
+        <ng-container *ngIf="!jacketIdent(li)"><img class="jacket" alt=""/></ng-container>
       </div>
 
       <div class="ms-2 flex-1"> <!-- lineitem summary info -->
@@ -351,13 +360,13 @@
             <!-- w-auto allows the input group to stick to the right 
                  as the status label grows -->
             <div class="input-group w-auto me-2">
-              <div class="input-group-text">
+              <div class="input-group-text py-0">
                 <span *ngIf="identOptions(li).length > 1" class="text-danger me-1"
                   i18n-title title="Multiple Order Identifier Options" i18n>
                   ({{identOptions(li).length}})
                 </span>
                 <div ngbDropdown>
-                  <button class="btn btn-outline-dark btn-sm" ngbDropdownToggle 
+                  <button class="btn btn-outline-dark btn-sm" ngbDropdownToggle type="button"
                     title="Order Identifier Type" i18n-title [disabled]="!canEditIdent(li)"
                     [ngClass]="{'btn-warning': !selectedIdent(li)}">
                     <ng-container *ngIf="orderIdentTypes[li.id()]==='isbn'" i18n>ISBN</ng-container>
@@ -365,11 +374,11 @@
                     <ng-container *ngIf="orderIdentTypes[li.id()]==='upc'" i18n>UPC</ng-container>
                   </button>
                   <div ngbDropdownMenu>
-                    <button class="btn-sm" ngbDropdownItem
+                    <button class="btn-sm" ngbDropdownItem type="button"
                       (click)="orderIdentTypes[li.id()]='isbn'" i18n>ISBN</button>
-                    <button class="btn-sm" ngbDropdownItem
+                    <button class="btn-sm" ngbDropdownItem type="button"
                       (click)="orderIdentTypes[li.id()]='issn'" i18n>ISSN</button>
-                    <button class="btn-sm" ngbDropdownItem
+                    <button class="btn-sm" ngbDropdownItem type="button"
                       (click)="orderIdentTypes[li.id()]='upc'" i18n>UPC</button>
                   </div>
                 </div>
@@ -390,17 +399,17 @@
             </div>
             <div>
               <div ngbDropdown>
-                <button class="btn btn-info btn-sm" ngbDropdownToggle i18n>Actions</button>
+                <button class="btn btn-info btn-sm" type="button" ngbDropdownToggle i18n>Actions</button>
                 <div ngbDropdownMenu>
-                  <button ngbDropdownItem [disabled]="li.state() !== 'on-order' && lineitemDisposition(li) !== 'delayed'"
+                  <button ngbDropdownItem type="button" [disabled]="li.state() !== 'on-order' && lineitemDisposition(li) !== 'delayed'"
                     (click)="markReceived([li.id()])" i18n>Mark Received</button>
-                  <button ngbDropdownItem [disabled]="li.state() !== 'received'"
+                  <button ngbDropdownItem type="button" [disabled]="li.state() !== 'received'"
                     (click)="markUnReceived([li.id()])" i18n>Mark Un-Received</button>
-                  <button ngbDropdownItem [disabled]="!liHasRealCopies(li)"
+                  <button ngbDropdownItem type="button" [disabled]="!liHasRealCopies(li)"
                     (click)="editHoldings(li)" i18n>Update Barcodes</button>
-                  <button ngbDropdownItem [disabled]="!liHasRealCopies(li)"
+                  <button ngbDropdownItem type="button" [disabled]="!liHasRealCopies(li)"
                     (click)="jumpToHoldings(li)" i18n>Open Holdings View</button>
-                  <button ngbDropdownItem [disabled]="!liHasRealCopies(li)"
+                  <button ngbDropdownItem type="button" [disabled]="!liHasRealCopies(li)"
                     (click)="manageClaims(li)" i18n>Claims ({{countClaims(li)}} existing)</button>
                   <a ngbDropdownItem routerLink="lineitem/{{li.id()}}/history"
                     queryParamsHandling="merge" i18n>View History</a>
@@ -424,53 +433,52 @@
             <span class="ms-1 me-1" i18n> | </span>
             <a class="label-with-material-icon" title="Items" i18n-title
               routerLink="./lineitem/{{li.id()}}/items" queryParamsHandling="merge">
-              <span class="material-icons small me-1">shopping_basket</span>
+              <span class="material-icons small me-1" aria-hidden="true">shopping_basket</span>
               <span i18n>Items ({{li.lineitem_details().length}})</span>
             </a>
             <span class="ms-1 me-1" i18n> | </span>
-            <a class="label-with-material-icon" title="Expand" i18n-title
-              href="javascript:;" (click)="toggleShowExpand(li.id())">
+            <button class="btn btn-link label-with-material-icon" type="button"
+              (click)="toggleShowExpand(li.id())">
               <ng-container *ngIf="!expandLineitem[li.id()]">
-                <span class="material-icons small me-1">unfold_more</span>
+                <span class="material-icons small me-1" aria-hidden="true">unfold_more</span>
                 <span i18n>Expand</span>
               </ng-container>
               <ng-container *ngIf="expandLineitem[li.id()]">
-                <span class="material-icons small me-1">unfold_less</span>
+                <span class="material-icons small me-1" aria-hidden="true">unfold_less</span>
                 <span i18n>Collapse</span>
               </ng-container>
-            </a>
+            </button>
             <span class="ms-1 me-1" i18n> | </span>
-            <a class="label-with-material-icon" title="Notes and Alerts" i18n-title
-              href="javascript:;" (click)="toggleShowNotes(li.id())">
-              <span class="material-icons small me-1">event_note</span>
+            <button class="btn btn-link label-with-material-icon" type="button"
+              (click)="toggleShowNotes(li.id())">
+              <span class="material-icons small me-1" aria-hidden="true">event_note</span>
               <span i18n>Notes and Alerts ({{li.lineitem_notes().length}})</span>
               <span *ngIf="liHasAlerts(li)" class="text-danger material-icons"
                 title="Has Alerts" i18n-title>flag</span>
-            </a>
+            </button>
             <ng-container *ngIf="li.eg_bib_id()">
               <span class="ms-1 me-1" i18n> | </span>
               <a class="label-with-material-icon me-2"
                 routerLink="/staff/catalog/record/{{li.eg_bib_id()}}"
                 target="_blank">
-                <span class="material-icons small me-1">library_books</span>
+                <span class="material-icons small me-1" aria-hidden="true">library_books</span>
                 <span i18n>Catalog</span>
               </a>
             </ng-container>
 
             <ng-container *ngIf="!li.eg_bib_id()">
               <span class="ms-1 me-1" i18n> | </span>
-              <a class="label-with-material-icon me-2"
-                href="javascript:;" (click)="openBibFinder(li.id())"
-                title="Link to Catalog" i18n-title>
-                <span class="material-icons small me-1">library_books</span>
+              <button class="btn btn-link label-with-material-icon me-2"
+                (click)="openBibFinder(li.id())" type="button">
+                <span class="material-icons small me-1" aria-hidden="true">library_books</span>
                 <span i18n>Link to Catalog</span>
-              </a>
+              </button>
             </ng-container>
 
             <span class="ms-1 me-1" i18n> | </span>
             <a class="label-with-material-icon"
               routerLink="lineitem/{{li.id()}}/worksheet/">
-              <span class="material-icons small me-1">create</span>
+              <span class="material-icons small me-1" aria-hidden="true">create</span>
               <span i18n>Worksheet</span>
             </a>
             <ng-container *ngIf="!picklistId && li.picklist() && li.picklist().name()">
@@ -478,7 +486,7 @@
               <a class="label-with-material-icon"
                 title="Selection List" i18n-title 
                 routerLink="/staff/acq/picklist/{{li.picklist().id()}}">
-                <span class="material-icons small me-1">widgets</span>
+                <span class="material-icons small me-1" aria-hidden="true">widgets</span>
                 <span i18n>{{li.picklist().name()}}</span>
               </a>
             </ng-container>
@@ -487,7 +495,7 @@
               <a class="label-with-material-icon"
                 title="Purchase Order" i18n-title
                 routerLink="/staff/acq/po/{{li.purchase_order().id()}}">
-                <span class="material-icons small me-1">center_focus_weak</span>
+                <span class="material-icons small me-1" aria-hidden="true">center_focus_weak</span>
                 <span i18n>{{li.purchase_order().name()}}</span>
               </a>
             </ng-container>
@@ -497,7 +505,7 @@
               title="Request(s)" i18n-title
               href="/eg/staff/acq/requests/lineitem/{{li.id()}}"
               target="_blank">
-              <span class="material-icons small me-1">help</span>
+              <span class="material-icons small me-1" aria-hidden="true">help</span>
               <span i18n>Request(s)</span>
             </a>
 
@@ -505,7 +513,7 @@
             <a class="label-with-material-icon"
               [queryParams]="{f: 'jub:id', val1: li.id()}"
               routerLink="/staff/acq/search/invoices" target="_blank">
-              <span class="material-icons small me-1">list</span>
+              <span class="material-icons small me-1" aria-hidden="true">list</span>
               <span i18n>Invoice(s)</span>
             </a>
 
@@ -519,7 +527,7 @@
               <a class="label-with-material-icon"
                 title="Provider" i18n-title target="_blank" 
                 routerLink="/staff/acq/provider/{{li.provider().id()}}/details">
-                <span class="material-icons small me-1">store</span>
+                <span class="material-icons small me-1" aria-hidden="true">store</span>
                 <span i18n>{{li.provider().name()}}</span>
               </a>
             </ng-container>
@@ -527,7 +535,6 @@
             <ng-container *ngIf="li.queued_record()">
               <span class="ms-1 me-1" i18n> | </span>
               <a class="label-with-material-icon"
-                title="Import Queue" i18n-title
                 routerLink="/staff/cat/vandelay/queue/bib/{{li.queued_record().queue()}}"
                 target="_blank">
                 <span class="material-icons small me-1">queue</span>
