@@ -8,7 +8,9 @@ npm update
 npm install
 ng lint                              # check code formatting
 npm run test                         # unit tests
-ng e2e              # end-to-end tests, be sure to set MOZ_HEADLESS=1 if you aren't running x11
+ng e2e                               # end-to-end tests, be sure to set
+                                     # MOZ_HEADLESS=1 if you aren't
+                                     # running x11
 ng build --watch                     # compile dev mode
 ng build --configuration=production  # compile production mode
 ---------------------------------------------------------------------
