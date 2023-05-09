@@ -1,6 +1,6 @@
 #!perl
 use strict; use warnings;
-use Test::More tests => 9;
+use Test::More tests => 11;
 use OpenILS::WWW::EGCatLoader;
 
 use_ok('OpenILS::WWW::EGCatLoader');
@@ -53,6 +53,40 @@ my $instructor_query_expected = {"-and" => [
                                         "from"=>{"acmcu" => "acmr"}}}}]};
 is_query_parsed_correctly( \@instructor_query, $instructor_query_expected,
                            'Create a valid instructor search json query');
+
+my @instructor_query_with_spaces = {'qtype' => 'instructor','contains' => 'contains','bool' => 'and','value' => 'professor gwendolyn davenport'};
+my $instructor_query_with_spaces_expected = {"-and" => [
+                                                {"owning_lib"=> $orgs},
+                                                {"-not"=>{"+acmc"=>"is_archived"}},
+                                                {"id"=>{"in"=>{
+                                                    "where"=>[
+                                                        {"+acmr"=>"is_public"},
+                                                        {"usr"=>{"in"=>
+                                                            {"select"=>{"au"=>["id"]},
+                                                            "where"=>{"name_kw_tsvector"=>
+                                                            {"@@"=>{"value"=>["to_tsquery","professor & gwendolyn & davenport"]}}},
+                                                        "from"=>"au"}}}],                                        
+                                                    "select"=>{"acmcu"=>["course"]},
+                                                    "from"=>{"acmcu" => "acmr"}}}}]};
+is_query_parsed_correctly( \@instructor_query_with_spaces, $instructor_query_with_spaces_expected,
+                           'Add & to the ts_query input in json query');
+
+my @instructor_query_leading_space = {'qtype' => 'instructor','contains' => 'contains','bool' => 'and','value' => ' gwendolyn'};
+my $instructor_query_leading_space_expected = {"-and" => [
+                                                {"owning_lib"=> $orgs},
+                                                {"-not"=>{"+acmc"=>"is_archived"}},
+                                                {"id"=>{"in"=>{
+                                                    "where"=>[
+                                                        {"+acmr"=>"is_public"},
+                                                        {"usr"=>{"in"=>
+                                                            {"select"=>{"au"=>["id"]},
+                                                            "where"=>{"name_kw_tsvector"=>
+                                                            {"@@"=>{"value"=>["to_tsquery","gwendolyn"]}}},
+                                                        "from"=>"au"}}}],                                        
+                                                    "select"=>{"acmcu"=>["course"]},
+                                                    "from"=>{"acmcu" => "acmr"}}}}]};
+is_query_parsed_correctly( \@instructor_query_leading_space, $instructor_query_leading_space_expected,
+                           'Removes preceding space before converting to tsquery in json_query');
 
 my @instructor_prefix_wildcard_query = {'qtype' => 'instructor','contains' => 'contains','bool' => 'and','value' => 'd*'};
 my $instructor_prefix_wildcard_query_expected = {"-and" => [
