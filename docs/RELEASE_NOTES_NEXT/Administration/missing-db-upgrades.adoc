@@ -1,0 +1,14 @@
+== Applying Missing Database Upgrades ==
+
+This patch fixes a situation where an Evergreen database that had
+been been upgraded to 3.6.0 at some point in its past using the
+3.5.1-3.6.0 DB update script may be missing some DB revisions.
+
+The following bugfixes are affected:
+
+    - https://bugs.launchpad.net/evergreen/+bug/1788260
+    - https://bugs.launchpad.net/evergreen/+bug/1908727
+    - https://bugs.launchpad.net/evergreen/+bug/1835127
+    - https://bugs.launchpad.net/evergreen/+bug/1910891
+    - https://bugs.launchpad.net/evergreen/+bug/1882825
+    - https://bugs.launchpad.net/evergreen/+bug/1096209
