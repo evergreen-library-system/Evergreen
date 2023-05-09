@@ -77,12 +77,33 @@ module.exports = {
     },
     // To test with chrome:
     // $ npm install --save-dev chromedriver
-    // $ ng e2e --evn chrome
+    // $ ng e2e --env chrome
     chrome: {
       desiredCapabilities : {
         browserName : 'chrome',
         alwaysMatch: {
           acceptInsecureCerts: true,
+        }
+      },
+      webdriver: {
+        start_process: true,
+        server_path: '',
+        cli_args: [
+        ]
+      }
+    },
+    // $ ng e2e --env chrome-headless
+    'chrome-headless': {
+      desiredCapabilities : {
+        browserName : 'chrome',
+        alwaysMatch: {
+          acceptInsecureCerts: true,
+        },
+        chromeOptions : {
+            args: ['headless', 'no-sandbox', 'disable-gpu']
+        },
+        chromeOptions : {
+            args: ['headless', 'no-sandbox', 'disable-gpu']
         }
       },
       webdriver: {
