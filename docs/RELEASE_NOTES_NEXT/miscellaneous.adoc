@@ -52,3 +52,4 @@
     event for a title hold request when there are items with monographic parts on the bib.  It is possible for
     the library settings and the global flag to differ, but the global flag will catch every instance of hold
     placement including those by third party callers, SIP, etc.
+* Links the lineitem id link in Acquisitions search results to the lineitem detail page rather than the purchase order. (LP#2003946)
