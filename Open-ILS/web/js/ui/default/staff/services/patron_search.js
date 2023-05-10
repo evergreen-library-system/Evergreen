@@ -134,18 +134,21 @@ function($q , $timeout , $location , egCore,  egUser , egConfirmDialog , $locale
     service.addRecentPatron = function(user_id) {
         if (service.maxRecentPatrons < 1) return;
 
+        // ensure ID is a number if pulled from route data
+        user_id = Number(user_id);
+
         // no need to re-track same user
         if (service.current && service.current.id() == user_id) return;
 
         var patrons = 
             egCore.hatch.getLoginSessionItem('eg.circ.recent_patrons') || [];
-        patrons.splice(0, 0, user_id);  // put this user at front
-        patrons.splice(service.maxRecentPatrons, 1); // remove excess
 
-        // remove any other occurrences of this user, which may have been
-        // added before the most recent user.
-        var idx = patrons.indexOf(user_id, 1);
-        if (idx > 0) patrons.splice(idx, 1);
+        // remove potential existing duplicates
+        patrons = patrons.filter(function(id) {
+            return user_id !== id
+        });
+        patrons.splice(0, 0, user_id);  // put this user at front
+        patrons.splice(service.maxRecentPatrons); // remove excess
 
         egCore.hatch.setLoginSessionItem('eg.circ.recent_patrons', patrons);
     }
