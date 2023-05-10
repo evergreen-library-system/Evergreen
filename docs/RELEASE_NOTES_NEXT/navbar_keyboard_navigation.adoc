@@ -1,0 +1,8 @@
+== Angular navbar keyboard navigation ==
+
+Adds basic keyboard navigation support to the Angular web client navbar as follows:
+
+* Use the Tab key to move between the top-level menu items.
+* Press Enter, Space, or the down arrow on a top-level item to open its submenu. Pressing Esc will close it.
+* Shift-tab from the first submenu item back to the top level, and use Enter or Space to toggle the button again and close the submenu.
+* Within the submenu, use either Tab and shift-Tab to move up and down, or the up/down arrow keys.
