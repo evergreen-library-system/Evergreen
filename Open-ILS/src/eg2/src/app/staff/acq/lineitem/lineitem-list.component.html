@@ -43,7 +43,7 @@
     <div ngbDropdown>
       <button class="btn btn-info btn-sm" ngbDropdownToggle i18n>Actions</button>
       <div ngbDropdownMenu>
-        <a ngbDropdownItem routerLink="../brief-record"
+        <a ngbDropdownItem routerLink="./brief-record"
           [disabled]="isActivatedPo()"
           queryParamsHandling="merge" i18n>Add Brief Record</a>
         <button ngbDropdownItem (click)="deleteLineitems()" 
@@ -66,7 +66,7 @@
           [disabled]="!picklistId" i18n>Create Purchase Order from All Line Items</button>
         <div class="dropdown-divider"></div>
         <h6 class="dropdown-header" i18n>Purchase Order Actions</h6>
-        <a ngbDropdownItem routerLink="../create-assets"
+        <a ngbDropdownItem routerLink="./create-assets"
           [disabled]="!isPendingPo()"
           queryParamsHandling="merge" i18n>Load Bibs and Items</a>
         <button ngbDropdownItem (click)="receiveSelected()" 
