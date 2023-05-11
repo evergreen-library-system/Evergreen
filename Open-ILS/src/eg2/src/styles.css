@@ -260,7 +260,7 @@ body>.dropdown-menu {z-index: 2100;}
 
 /* Default modal background color */
 .modal-header {
-  background-color: var(--info);
+  background-color: #087990;
 }
 
 /* Contrast for dialog titles */
