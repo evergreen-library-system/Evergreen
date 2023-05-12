@@ -207,7 +207,7 @@
                 - [% display_end_date %]
             [% END %]
         </td>
-        <td>[% cdate.reason %]</td>
+        <td>[% cdate.reason | html %]</td>
     </tr>
     [% END %]
     </table>
