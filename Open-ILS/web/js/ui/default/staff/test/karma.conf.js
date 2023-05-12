@@ -39,6 +39,10 @@ module.exports = function(config){
       'test/unit/**/*.js'
     ],
 
+    proxies: {
+        '/js/ui/default/staff/offline-db-worker.js' : 'offline-db-worker.js'
+    },
+
     // test results reporter to use
     // possible values: 'dots', 'progress', 'junit', 'growl', 'coverage'
     reporters: ['spec'],  // detailed report
@@ -60,6 +64,10 @@ module.exports = function(config){
             flags: [
                 '-headless',
             ],
+            prefs: {
+                'privacy.resistFingerprinting': false,
+                'general.useragent.override': 'FirefoxHeadless'
+            },
         }
     },
 
