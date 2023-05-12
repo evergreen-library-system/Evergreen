@@ -36,7 +36,7 @@ angular.module('egCoreMod')
 
         service.worker.onerror = function(err) {
             // avoid spamming unit test runner on failure to connect.
-            if (!navigator.userAgent.match(/PhantomJS/)) {
+            if (!navigator.userAgent.match(/Headless/)) {
                 console.error('Error loading shared worker', err);
             }
             service.cannotConnect = true;
