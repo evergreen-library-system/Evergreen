@@ -536,3 +536,8 @@ input.small {
   color: #000;
   background: #adb5bd;
 }
+
+/* Fix tooltip link colors */
+.tooltip .tooltip-inner a {
+  color: inherit;
+}
