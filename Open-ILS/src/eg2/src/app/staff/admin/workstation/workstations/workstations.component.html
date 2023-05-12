@@ -58,12 +58,12 @@
     </div>
     <div class="row mt-3 pt-3 border border-start-0 border-end-0 border-bottom-0 border-light">
       <div class="col">
-        <span i18n>Workstations Registered With This Browser</span>
+        <label for="registeredWS" i18n>Workstations Registered With This Browser</label>
       </div>
     </div>
     <div class="row">
       <div class="col-lg-8">
-        <select class="form-select" [(ngModel)]="selectedName">
+        <select class="form-select" [(ngModel)]="selectedName" id="registeredWS">
           <option *ngFor="let ws of workstations" value="{{ws.name}}">
             <span *ngIf="ws.name === defaultName" i18n>
               {{ws.name}} (Default)

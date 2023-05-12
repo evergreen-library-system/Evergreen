@@ -1,5 +1,5 @@
 <div class="container admin-splash-container">
-
+  <h2>[% l('Workstations') %]</h2>
   <div class="alert alert-warning" ng-show="removing_ws">
     [% l('Workstation "[_1]" is no longer valid.  Removing registration.', 
         '{{removing_ws}}'); %]
@@ -11,7 +11,7 @@
   </div>
 
   <div class="row">
-    <div class="col-md-6">
+    <div class="col-md-6" style="font-weight:bold;">
       [% l('Register a New Workstation For This Browser') %]
     </div>
   </div>
@@ -41,12 +41,12 @@
 
   <div class="row new-entry">
     <div class="col-md-6">
-      [% l('Workstations Registered With This Browser') %]
+      <label for="regws">[% l('Workstations Registered With This Browser') %]</label>
     </div>
   </div>
   <div class="row">
     <div class="col-md-6">
-      <select class="form-control" ng-model="selectedWS">
+      <select class="form-control" ng-model="selectedWS" id="regws">
         <option ng-repeat="ws in workstations" value="{{ws}}"
           ng-selected="ws == selectedWS">
           {{get_ws_label(ws)}}
