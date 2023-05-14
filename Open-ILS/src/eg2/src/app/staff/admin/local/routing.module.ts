@@ -30,6 +30,7 @@ const routes: Routes = [{
         table: 'copy_location',
         enableUndelete: true,
         readonlyFields: 'deleted',
+        initialFilterValues: {deleted: 'f'},
         fieldOrder: 'owning_lib,name,opac_visible,circulate,holdable,hold_verify,checkin_alert,deleted,label_prefix,label_suffix,url,id'}]
 }, {
     path: 'asset/shelving_location_groups',

@@ -114,6 +114,9 @@ export class AdminPageComponent implements OnInit {
     // Override field options for create/edit dialog
     @Input() fieldOptions: {[field: string]: FmFieldOptions};
 
+    // Add default filters to the grid
+    @Input() initialFilterValues: {[field: string]: string};
+
     // Override default values for fm-editor
     @Input() defaultNewRecord: IdlObject;
 

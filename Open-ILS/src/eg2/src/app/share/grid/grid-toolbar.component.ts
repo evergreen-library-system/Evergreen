@@ -1,4 +1,4 @@
-import {Component, Input, OnInit} from '@angular/core';
+import {AfterViewInit, ChangeDetectorRef, Component, Input, OnInit} from '@angular/core';
 import {Router} from '@angular/router';
 import {DomSanitizer, SafeUrl} from '@angular/platform-browser';
 import {GridToolbarButton, GridToolbarAction, GridContext} from '@eg/share/grid/grid';
@@ -11,7 +11,7 @@ import {GridColumn} from './grid';
   templateUrl: 'grid-toolbar.component.html'
 })
 
-export class GridToolbarComponent implements OnInit {
+export class GridToolbarComponent implements OnInit, AfterViewInit {
 
     @Input() gridContext: GridContext;
     @Input() colWidthConfig: GridColumnWidthComponent;
@@ -26,11 +26,16 @@ export class GridToolbarComponent implements OnInit {
 
     constructor(
         private router: Router,
-        private sanitizer: DomSanitizer
+        private sanitizer: DomSanitizer,
+        private cd: ChangeDetectorRef
     ) {}
 
     ngOnInit() {
         this.sortActions();
+    }
+
+    ngAfterViewInit(): void {
+        this.cd.detectChanges();
     }
 
     sortActions() {
