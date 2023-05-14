@@ -31,6 +31,7 @@ class MockAdminPageComponent {
     @Input() defaultNewRecord: IdlObject;
     @Input() disableOrgFilter: boolean;
     @Input() hideClearFilters: boolean;
+    @Input() initialFilterValues: {[field: string]: string};
     @Input() fieldOrder: string;
     @Input() idlClass: string;
     @Input() persistKeyPfx: string;
@@ -79,7 +80,8 @@ describe('Component: BasicAdminPage', () => {
             schema: 'schema1',
             table: 'table1',
             defaultNewRecord: { field1: 'value1' },
-            enableUndelete: true
+            enableUndelete: true,
+            initialFilterValues: { archived: 't' }
         }];
         const parentRoute = { url: of('') };
         const snapshot = { parent: { url: [{ path: '' }] } };
@@ -118,5 +120,10 @@ describe('Component: BasicAdminPage', () => {
         const adminPage: MockAdminPageComponent = fixture.debugElement.query(
             By.directive(MockAdminPageComponent)).componentInstance;
         expect(adminPage.enableUndelete).toEqual(true);
+    });
+    it('sets initialFilterValues from routing data', () => {
+        const adminPage: MockAdminPageComponent = fixture.debugElement.query(
+            By.directive(MockAdminPageComponent)).componentInstance;
+        expect(adminPage.initialFilterValues).toEqual({archived: 't'});
     });
 });

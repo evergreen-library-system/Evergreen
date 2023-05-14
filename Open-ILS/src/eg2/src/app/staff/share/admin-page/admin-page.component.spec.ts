@@ -1,4 +1,4 @@
-import { ActivatedRoute } from "@angular/router";
+import { ActivatedRoute, convertToParamMap } from "@angular/router";
 import { AdminPageComponent } from "./admin-page.component";
 import { Location } from '@angular/common';
 import { FormatService } from "@eg/core/format.service";
@@ -8,22 +8,44 @@ import { AuthService } from "@eg/core/auth.service";
 import { PcrudService } from "@eg/core/pcrud.service";
 import { PermService } from "@eg/core/perm.service";
 import { ToastService } from "@eg/share/toast/toast.service";
+import { ComponentFixture, TestBed } from "@angular/core/testing";
+import { CUSTOM_ELEMENTS_SCHEMA } from "@angular/core";
+import { GridModule } from "@eg/share/grid/grid.module";
+import { PrintService } from "@eg/share/print/print.service";
+import { GridDataSource } from "@eg/share/grid/grid";
 
-describe('CopyAttrsComponent', () => {
+describe('AdminPageComponent', () => {
     let component: AdminPageComponent;
+    let fixture: ComponentFixture<AdminPageComponent>;
 
-    const routeMock = jasmine.createSpyObj<ActivatedRoute>(['snapshot']);
-    const locationMock = jasmine.createSpyObj<Location>(['prepareExternalUrl']);
+    const routeMock = { snapshot: {queryParamMap: convertToParamMap({id: 1}) }};
+    const idlMock = jasmine.createSpyObj<IdlService>([], {classes: {acpl: {pkey: 'id', fields: [{name: 'id'}, {name: 'isDeleted', datatype: 'bool'}]}}});
+    const authMock = jasmine.createSpyObj<AuthService>(['token']);
     const formatMock = jasmine.createSpyObj<FormatService>(['transform']);
-    const idlMock = jasmine.createSpyObj<IdlService>(['classes']);
-    const orgMock = jasmine.createSpyObj<OrgService>(['get']);
-    const authMock = jasmine.createSpyObj<AuthService>(['user']);
-    const pcrudMock = jasmine.createSpyObj<PcrudService>(['retrieveAll']);
-    const permMock = jasmine.createSpyObj<PermService>(['hasWorkPermAt']);
-    const toastMock = jasmine.createSpyObj<ToastService>(['success']);
     beforeEach(() => {
-        component = new AdminPageComponent(routeMock, locationMock, formatMock,
-            idlMock, orgMock, authMock, pcrudMock, permMock, toastMock);
+        TestBed.configureTestingModule({
+            providers: [
+                {provide: ActivatedRoute, useValue: routeMock},
+                {provide: Location, useValue: {}},
+                {provide: FormatService, useValue: formatMock},
+                {provide: IdlService, useValue: idlMock},
+                {provide: OrgService, useValue: {}},
+                {provide: AuthService, useValue: authMock},
+                {provide: PcrudService, useValue: {}},
+                {provide: PermService, useValue: {}},
+                {provide: ToastService, useValue: {}},
+                {provide: PrintService, useValue: {}}
+            ],
+            schemas: [CUSTOM_ELEMENTS_SCHEMA],
+            declarations: [
+                AdminPageComponent,
+            ],
+            imports: [
+                GridModule
+            ]
+        });
+        fixture = TestBed.createComponent(AdminPageComponent);
+        component = fixture.componentInstance;
     })
 
     describe('#shouldDisableDelete', () => {
@@ -61,5 +83,16 @@ describe('CopyAttrsComponent', () => {
             ];
             expect(component.shouldDisableUndelete(rows)).toBe(false);
         })
+    });
+    describe('initialFilterValues input', () => {
+        it('sets initialFilterValue on grid-column', () => {
+            component.idlClass = 'acpl';
+            component.initialFilterValues = {isDeleted: 'f'};
+            component.dataSource = new GridDataSource();
+            component.dataSource.data = [{id: 1, isDeleted: "true"}]
+            fixture.detectChanges();
+            expect(component.grid.context.columnSet.columns[1].name).toEqual('isDeleted');
+            expect(component.grid.context.columnSet.columns[1].filterValue).toEqual('f');
+        });
     });
 });

@@ -637,6 +637,7 @@ export class GridContext {
     idlClass: string;
     isSortable: boolean;
     isFilterable: boolean;
+    initialFilterValues: {[field: string]: string};
     stickyGridHeader: boolean;
     isMultiSortable: boolean;
     useLocalSort: boolean;
@@ -1318,6 +1319,8 @@ export class GridContext {
                 if (this.showDeclaredFieldsOnly) {
                     col.hidden = true;
                 }
+
+                col.filterValue = this?.initialFilterValues?.[field.name];
 
                 this.columnSet.add(col);
             }

@@ -25,6 +25,7 @@ import {tap, switchMap} from 'rxjs/operators';
         orgFieldsDefaultingToContextOrg="{{orgFieldsDefaultingToContextOrg}}"
         contextOrgSelectorPersistKey="{{contextOrgSelectorPersistKey}}"
         [hideClearFilters]="hideClearFilters"
+        [initialFilterValues]="initialFilterValues"
         [defaultNewRecord]="defaultNewRecordIdl"
         [enableUndelete]="enableUndelete"
         [disableDelete]="disableDelete"
@@ -48,6 +49,7 @@ export class BasicAdminPageComponent implements OnInit {
     orgDefaultAllowed = '';
     orgFieldsDefaultingToContextOrg = '';
     hideClearFilters: boolean;
+    initialFilterValues: {[field: string]: string};
     defaultNewRecordIdl: IdlObject;
     configLinkBasePath = '/staff/admin';
 
@@ -106,6 +108,7 @@ export class BasicAdminPageComponent implements OnInit {
                     this.orgDefaultAllowed = data['orgDefaultAllowed'];
                     this.orgFieldsDefaultingToContextOrg = data['orgFieldsDefaultingToContextOrg'];
                     this.hideClearFilters = data['hideClearFilters'];
+                    this.initialFilterValues = data['initialFilterValues'];
                     this.defaultNewRecord = data['defaultNewRecord'];
                 }
 
