@@ -1,4 +1,4 @@
-import {Component, OnInit, Input, Output, ViewChild, EventEmitter, forwardRef} from '@angular/core';
+import {Component, OnInit, Input, Output, EventEmitter, forwardRef} from '@angular/core';
 import {NgbDateStruct} from '@ng-bootstrap/ng-bootstrap';
 import {ControlValueAccessor, NG_VALUE_ACCESSOR} from '@angular/forms';
 import {DateUtil} from '@eg/share/util/date';

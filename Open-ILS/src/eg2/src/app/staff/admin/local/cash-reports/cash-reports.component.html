@@ -2,25 +2,29 @@
 </eg-staff-banner>
 
 <div class="mb-5">
-  <div>
+  <form #criteria="ngForm" egDateFieldOrderList="startDate,endDate">
     <div class="row">
       <div class="input-group col-lg-3">
-          <div class="input-group-text" i18n>Start Date</div> 
-          <eg-date-select [initialDate]="today" (onChangeAsYmd)="onStartDateChange($event)"></eg-date-select>
+          <label class="input-group-text" i18n for="start-date">Start Date</label>
+          <eg-date-select [initialDate]="today" domId="start-date" name="startDate" [(ngModel)]="startDate"></eg-date-select>
       </div>
       <div class="input-group col-lg-3">
-          <div class="input-group-text" i18n>End Date</div> 
-          <eg-date-select [initialDate]="today" (onChangeAsYmd)="onEndDateChange($event)"></eg-date-select>
+          <label class="input-group-text" i18n for="end-date">End Date</label>
+          <eg-date-select [initialDate]="today" domId="end-date" name="endDate" [(ngModel)]="endDate"></eg-date-select>
       </div>
       <div class="input-group col-lg-4">
           <div class="input-group-text" i18n>View reports for</div>
         <eg-org-select [applyDefault]="true" [disableOrgs]="disabledOrgs" (onChange)="onOrgChange($event)"></eg-org-select>
       </div>
       <div class="col-lg-2">
-        <button class="btn btn-primary" (click)="searchForData(startDate, endDate)">Submit</button>
+        <button class="btn btn-primary" (click)="searchForData()" [disabled]="!criteria.valid">Submit</button>
       </div>
     </div>
-  </div>
+    <div role="alert" class="alert alert-danger" id="dateOutOfOrderAlert" *ngIf="criteria.errors?.['datesOutOfOrder'] && (criteria.touched || criteria.dirty)">
+      <span class="material-icons" aria-hidden="true">error</span>
+      <span i18n>Start date must be before end date</span>
+    </div>
+  </form>
 </div>
 
 <ul ngbNav #cashReportsNav="ngbNav" class="nav-tabs"  [keyboard]="true" [roles]="false" role="tablist"

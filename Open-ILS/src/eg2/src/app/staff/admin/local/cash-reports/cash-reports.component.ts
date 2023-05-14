@@ -5,6 +5,7 @@ import {IdlService} from '@eg/core/idl.service';
 import {NetService} from '@eg/core/net.service';
 import {AuthService} from '@eg/core/auth.service';
 import {OrgService} from '@eg/core/org.service';
+import { NgForm } from '@angular/forms';
 
 class DeskTotals {
     cash_payment = 0;
@@ -31,9 +32,8 @@ export class CashReportsComponent implements OnInit {
     deskIdlClass = 'mwps';
     userIdlClass = 'mups';
     selectedOrg = this.org.get(this.auth.user().ws_ou());
-    today = new Date();
-    startDate = `${this.today.getFullYear()}-${String(this.today.getMonth() + 1).padStart(2, '0')}-${String(this.today.getDate()).padStart(2, '0')}`;
-    endDate = `${this.today.getFullYear()}-${String(this.today.getMonth() + 1).padStart(2, '0')}-${String(this.today.getDate()).padStart(2, '0')}`;
+    startDate = new Date();
+    endDate = new Date();
     deskTotals = new DeskTotals();
     userTotals = new UserTotals();
     disabledOrgs = [];
@@ -46,6 +46,7 @@ export class CashReportsComponent implements OnInit {
     @ViewChild('deskPaymentGrid') deskPaymentGrid: GridComponent;
     @ViewChild('userPaymentGrid') userPaymentGrid: GridComponent;
     @ViewChild('userGrid') userGrid: GridComponent;
+    @ViewChild('criteria') criteria: NgForm;
 
     constructor(
         private idl: IdlService,
@@ -55,26 +56,26 @@ export class CashReportsComponent implements OnInit {
 
     ngOnInit() {
         this.disabledOrgs = this.getFilteredOrgList();
-        this.searchForData(this.startDate, this.endDate);
+        this.searchForData();
 
         this.cellTextGenerator = {
             card: row => row.user.card()
         };
     }
 
-    searchForData(start, end) {
+    searchForData() {
         this.userDataSource.data = [];
         this.fillGridData(this.deskIdlClass, 'deskPaymentDataSource',
             this.net.request(
                 'open-ils.circ',
                 'open-ils.circ.money.org_unit.desk_payments',
-                this.auth.token(), this.selectedOrg.id(), start, end));
+                this.auth.token(), this.selectedOrg.id(), this.startDate.toISOString().split('T')[0], this.endDate.toISOString().split('T')[0]));
 
         this.fillGridData(this.userIdlClass, 'userPaymentDataSource',
             this.net.request(
                 'open-ils.circ',
                 'open-ils.circ.money.org_unit.user_payments',
-                this.auth.token(), this.selectedOrg.id(), start, end));
+                this.auth.token(), this.selectedOrg.id(), this.startDate.toISOString().split('T')[0], this.endDate.toISOString().split('T')[0]));
     }
 
     fillGridData(idlClass, dataSource, data) {
@@ -142,16 +143,8 @@ export class CashReportsComponent implements OnInit {
         return this.org.filterList(orgFilter, true);
     }
 
-    onStartDateChange(date) {
-        this.startDate = date;
-    }
-
-    onEndDateChange(date) {
-        this.endDate = date;
-    }
-
     onOrgChange(org) {
         this.selectedOrg = org;
-        this.searchForData(this.startDate, this.endDate);
+        this.searchForData();
     }
 }
