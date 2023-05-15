@@ -1,7 +1,120 @@
 = Evergreen 3.9 Release Notes =
 :toc:
 :numbered:
-:toclevels: 3
+:toclevels: 4
+
+== Evergreen 3.9.3 ==
+
+This release contains bug fixes improving on Evergreen 3.9.2.
+
+
+=== Upgrade notes ===
+
+* https://bugs.launchpad.net/evergreen/+bug/1972738[Bug 1972738] requires a schema update
+* https://bugs.launchpad.net/evergreen/+bug/1920826[Bug 1920826] requires a schema update 
+
+=== Bug Fixes ===
+
+==== Accessibility ====
+
+* Fixes duplicate ID in staff catalog bib actions (https://bugs.launchpad.net/evergreen/+bug/2016341[Bug 2016341])
+* Adds empty alt attributes for images and icons that already have equivalent text representation (https://bugs.launchpad.net/evergreen/+bug/2018208[Bug 2018208])
+* Adds labeling to captcha math problem in OPAC (https://bugs.launchpad.net/evergreen/+bug/2015141[Bug 2015141])
+* Fixes tab order in adminitration splash pages (https://bugs.launchpad.net/evergreen/+bug/2015137)
+* Fixes default modal background color (https://bugs.launchpad.net/evergreen/+bug/2008918[Bug 2008918])
+* Adds aria-label to staff catalog search +/- buttons (https://bugs.launchpad.net/evergreen/+bug/2002363[Bug 2002363])
+
+
+==== Administration ====
+
+* Deduplicates entries in ils_events.xml (https://bugs.launchpad.net/evergreen/+bug/1369345[Bug 1369345])
+* Encourages distinct results when querying ahopl IDL source (https://bugs.launchpad.net/evergreen/+bug/1964986[Bug 1964986])
+* Restores missing database updates for version-upgrade from 3.5.1 to 3.6.0 (https://bugs.launchpad.net/evergreen/+bug/1920826[Bug 1920826])
+* Improved error handling by open-ils.pcrud (https://bugs.launchpad.net/evergreen/+bug/1808016[Bug 1808016])
+
+
+
+==== Catalog ==== 
+
+* Adds consistency to SMS Carrier dropdown display (https://bugs.launchpad.net/evergreen/+bug/1889916[Bug 1889916])
+
+
+==== Cataloging ====
+
+* Ensures authority linker is working in all embedded MARC editors (https://bugs.launchpad.net/evergreen/+bug/1716479[Bug 1716479])
+
+==== Circulation ====
+
+* Adds a note to the Mark Patron Email Invalid function (https://bugs.launchpad.net/evergreen/+bug/1752334[Bug 1752334])
+* Treats empty string as null for preferred name field (https://bugs.launchpad.net/evergreen/+bug/1996651[Bug 1996651])
+* Fixes incorrect total circs in Item Status Detail View (https://bugs.launchpad.net/evergreen/+bug/2018534[Bug 2018534])
+* Removes irrelevant actions from Hold Shelf actions menu (https://bugs.launchpad.net/evergreen/+bug/2004052[Bug 2004052])
+* Removes patron information from the 'Check Out Staff' field in Item Status Circ History list (https://bugs.launchpad.net/evergreen/+bug/2001728[Bug 2001728])
+* Fixes a caching issue that occasionally caused incorrect holds addresses to print on transit slips (https://bugs.launchpad.net/evergreen/+bug/1778567[Bug 1778567])
+
+==== Client ====
+
+* Adds index to speed up display of the Hopeless Holds interface in large systems (https://bugs.launchpad.net/evergreen/+bug/1972738[Bug 1972738])
+* Adds validator to Survey Date so surveys can not be created with an end date before their start date (https://bugs.launchpad.net/evergreen/+bug/1879517[Bug 1879517])
+* Quiets extraneous console noise in some AngularJS grids (https://bugs.launchpad.net/evergreen/+bug/2013223[Bug 2013223])
+* Restores correct link to AngularJS Patron Requests interface (https://bugs.launchpad.net/evergreen/+bug/2019150[Bug 2019150])
+
+==== Course Materials ====
+
+* Fixes circ modifier column in Course Materials grid (https://bugs.launchpad.net/evergreen/+bug/1972917[Bug 1972917])
+
+
+==== Documentation ====
+
+* Fixes to Server Installation documentation
+* Updates to Record Buckets documentation (https://bugs.launchpad.net/evergreen/+bug/1845253[Bug 1845253])
+* Updates to Fonts & Sound Settings documentation
+
+==== OPAC ====
+
+* Fixes button styling in Boostrap OPAC (https://bugs.launchpad.net/evergreen/+bug/1981774[Bug 1981774])
+* Adjusts functionality of "Where" button in OPAC (https://bugs.launchpad.net/evergreen/+bug/1970476[Bug 1970476])
+* Fixes label alignment in MyAccount Circ History (https://bugs.launchpad.net/evergreen/+bug/2015481[Bug 2015484])
+
+==== Miscellaneous ====
+
+* Corrects test error due to erroneous commit in https://bugs.launchpad.net/evergreen/+bug/2002435[Bug 2002435]
+* Adds fixes to AngularJS test suite (https://bugs.launchpad.net/evergreen/+bug/1915326[Bug 1915326])
+
+
+
+
+
+=== Acknowledgements ===
+
+We would like to thank the following individuals who contributed code, testing, and documentation to the 3.9.3 point release of Evergreen:
+
+* John Amundson
+* Jason Boyer
+* Dan Briem
+* Galen Charlton
+* Garry Collum
+* Jeff Davis
+* Britta Dorsey
+* Ruth Frasur
+* Blake Graham-Henderson
+* Stephanie Leary
+* Terran McCanna
+* Chrystal Messam
+* Gina Monti
+* Michele Morgan
+* Susan Morrison
+* Andrea Buntz Neiman
+* Jennifer Pringle
+* Mike Rylander
+* Jane Sandberg
+* Chris Sharp
+* Ben Shum
+* Jason Stephenson
+* Josh Stompro
+* Jennifer Weston
+* Beth Willis
+
 
 == Evergreen 3.9.2 ==
 
