@@ -11,13 +11,13 @@
     <!-- buttons -->
     <div class="btn-grp" *ngIf="gridContext.toolbarButtons.length || gridContext.isFilterable">
       <!-- special case for remove filters button -->
-      <button *ngIf="gridContext.isFilterable"
+      <button *ngIf="gridContext.isFilterable" type="button" 
         class="btn btn-outline-dark me-1" (click)="gridContext.removeFilters()"
         [disabled]="!gridContext.filtersSet() || gridContext.dataSource.requestingData" i18n>
         Remove Filters
       </button>
       <button *ngFor="let btn of gridContext.toolbarButtons"
-        [disabled]="btn.disabled"
+        [disabled]="btn.disabled" type="button" 
         class="btn btn-outline-dark me-1" (click)="performButtonAction(btn)">
         {{btn.label}}
       </button>
@@ -44,13 +44,13 @@
   <div class="font-sm fst-italic d-flex flex-column-reverse me-2">
     {{gridContext.getSelectedRows().length}} selected
   </div>
-  <div ngbDropdown class="me-1" placement="bottom-right">
-    <button ngbDropdownToggle [disabled]="!gridContext.toolbarActions.length"
+  <div ngbDropdown autoClose="false" class="me-1" placement="bottom-right">
+    <button ngbDropdownToggle type="button" [disabled]="!gridContext.toolbarActions.length"
         class="btn btn-outline-dark no-dropdown-caret">
       <span title="Actions For Selected Rows" i18n-title
         class="material-icons mat-icon-in-button">playlist_add_check</span>
     </button>
-    <div class="dropdown-menu" ngbDropdownMenu>
+    <div class="dropdown-menu scrollable-menu" ngbDropdownMenu>
       <eg-grid-toolbar-actions-menu [gridContext]="gridContext">
       </eg-grid-toolbar-actions-menu>
     </div>
@@ -61,32 +61,32 @@
   <ng-container *ngIf="!gridContext.disablePaging">
 
   <button [disabled]="gridContext.pager.isFirstPage()" type="button"
+    title="First Page" i18n-title aria-label="First Page" i18n-aria-label
     class="btn btn-outline-dark me-1" (click)="gridContext.pager.toFirst()">
-    <span title="First Page" i18n-title
-        class="material-icons mat-icon-in-button">first_page</span>
+    <span class="material-icons mat-icon-in-button">first_page</span>
   </button>
   <button [disabled]="gridContext.pager.isFirstPage()" type="button"
+    title="Previous Page" i18n-title aria-label="Previous Page" i18n-aria-label
     class="btn btn-outline-dark me-1" (click)="gridContext.pager.decrement()">
-    <span title="Previous Page" i18n-title
-        class="material-icons mat-icon-in-button">keyboard_arrow_left</span>
+    <span class="material-icons mat-icon-in-button">keyboard_arrow_left</span>
   </button>
   <button [disabled]="gridContext.pager.isLastPage()" type="button"
+    title="Next Page" i18n-title aria-label="Next Page" i18n-aria-label
     class="btn btn-outline-dark me-1" (click)="gridContext.pager.increment()">
-    <span title="Next Page" i18n-title
-        class="material-icons mat-icon-in-button">keyboard_arrow_right</span>
+    <span class="material-icons mat-icon-in-button" aria-hidden="true">keyboard_arrow_right</span>
   </button>
   <div ngbDropdown class="me-1" placement="bottom-right">
-    <button ngbDropdownToggle class="btn btn-outline-dark text-button">
+    <button ngbDropdownToggle type="button" class="btn btn-outline-dark text-button">
       <span title="Select Row Count" i18n-title i18n>
         Rows {{gridContext.pager.limit}}
       </span>
     </button>
     <div class="dropdown-menu" ngbDropdownMenu>
-      <a class="dropdown-item"
+      <button type="button" class="dropdown-item"
         *ngFor="let count of [5, 10, 25, 50, 100]"
         (click)="gridContext.pager.setLimit(count)">
         <span class="ms-2">{{count}}</span>
-      </a>
+      </button>
     </div>
   </div>
   
@@ -107,41 +107,42 @@
   <eg-grid-column-config #columnConfDialog [gridContext]="gridContext">
   </eg-grid-column-config>
   <div ngbDropdown placement="bottom-right">
-    <button ngbDropdownToggle class="btn btn-outline-dark no-dropdown-caret">
-      <span title="Show Grid Options" i18n-title class="material-icons mat-icon-in-button">settings</span>
+    <button ngbDropdownToggle class="btn btn-outline-dark no-dropdown-caret"
+      title="Show Grid Options" i18n-title aria-label="Show Grid Options" i18n-aria-label>
+      <span class="material-icons mat-icon-in-button">settings</span>
     </button>
     <div class="dropdown-menu scrollable-menu" ngbDropdownMenu>
       <button nbgDropdownItem class="dropdown-item label-with-material-icon"
         (click)="columnConfDialog.open({size:'lg'})">
-        <span class="material-icons">build</span>
+        <span class="material-icons" aria-hidden="true">build</span>
         <span class="ms-2" i18n>Manage Columns</span>
       </button>
       <button nbgDropdownItem class="dropdown-item label-with-material-icon"
         (click)="colWidthConfig.isVisible = !colWidthConfig.isVisible">
-        <span class="material-icons">compare_arrows</span>
+        <span class="material-icons" aria-hidden="true">compare_arrows</span>
         <span class="ms-2" i18n>Manage Column Widths</span>
       </button>
       <button nbgDropdownItem class="dropdown-item label-with-material-icon"
         [disabled]="gridContext.toolbarActions.length === 0" (click)="toolbarActionsEditor.open().subscribe()">
-        <span class="material-icons">menu</span>
+        <span class="material-icons" aria-hidden="true">menu</span>
         <span class="ms-2" i18n>Manage Actions Menu</span>
       </button>
       <button nbgDropdownItem class="dropdown-item label-with-material-icon" *ngIf="!disableSaveSettings"
         (click)="saveGridConfig()">
-        <span class="material-icons">save</span>
+        <span class="material-icons" aria-hidden="true">save</span>
         <span class="ms-2" i18n>Save Grid Settings</span>
       </button>
       <button nbgDropdownItem class="dropdown-item label-with-material-icon" (click)="gridContext.columnSet.reset()">
-        <span class="material-icons">restore</span>
+        <span class="material-icons" aria-hidden="true">restore</span>
         <span class="ms-2" i18n>Reset Columns</span>
       </button>
       <a nbgDropdownItem class="dropdown-item label-with-material-icon" (click)="generateCsvExportUrl($event)"
         [download]="csvExportFileName" [href]="csvExportUrl">
-        <span class="material-icons">cloud_download</span>
+        <span class="material-icons" aria-hidden="true">cloud_download</span>
         <span class="ms-2" i18n>Download Full CSV</span>
       </a>
       <button nbgDropdownItem class="dropdown-item label-with-material-icon" (click)="printHtml()">
-        <span class="material-icons">print</span>
+        <span class="material-icons" aria-hidden="true">print</span>
         <span class="ms-2" i18n>Print Full Grid</span>
       </button>
   
@@ -149,8 +150,10 @@
   
       <button nbgDropdownItem class="dropdown-item label-with-material-icon" (click)="toggleVisibility(col)"
         *ngFor="let col of gridContext.columnSet.sortForColPicker()">
-        <span *ngIf="col.visible" class="badge badge-success">&#x2713;</span>
-        <span *ngIf="!col.visible" class="badge badge-warning">&#x2717;</span>
+        <!-- Note that the ARIA labels describe the action that will happen when the button
+          is pressed, not the current state indicated by the badge -->
+        <span *ngIf="col.visible" class="badge badge-success" aria-label="Hide" i18n-aria-label>&#x2713;</span>
+        <span *ngIf="!col.visible" class="badge badge-warning" aria-label="Show" i18n-aria-label>&#x2717;</span>
         <span class="ms-2">{{col.label}}</span>
       </button>
   
