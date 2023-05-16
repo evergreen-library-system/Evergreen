@@ -296,14 +296,10 @@ export class PatronService {
             }
 
             return patronStats = stats;
-        })
 
-        .then(_ => {
-            return this.net.request(
-                'open-ils.circ',
-                'open-ils.circ.open_non_cataloged_circulation.user.authoritative',
-                this.auth.token(), patron.id()
-            ).toPromise();
+        }).then(_ => {
+            return this.pcrud.search('aoncc',
+                {patron: patron.id()}, {}, {idlist: true, atomic: true}).toPromise();
 
         }).then(noncats => {
             if (noncats && patronStats) {

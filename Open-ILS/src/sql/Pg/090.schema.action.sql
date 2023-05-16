@@ -54,6 +54,13 @@ CREATE TABLE action.non_cat_in_house_use (
 CREATE INDEX non_cat_in_house_use_staff_idx ON action.non_cat_in_house_use ( staff );
 CREATE INDEX non_cat_in_house_use_ws_idx ON action.non_cat_in_house_use ( workstation );
 
+CREATE OR REPLACE VIEW action.open_non_cataloged_circulation AS
+    SELECT ncc.* 
+    FROM action.non_cataloged_circulation ncc
+    JOIN config.non_cataloged_type nct ON nct.id = ncc.item_type
+    WHERE ncc.circ_time + nct.circ_duration > CURRENT_TIMESTAMP
+;
+
 CREATE TABLE action.survey (
 	id		SERIAL				PRIMARY KEY,
 	owner		INT				NOT NULL REFERENCES actor.org_unit (id) DEFERRABLE INITIALLY DEFERRED,
