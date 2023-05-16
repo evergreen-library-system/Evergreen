@@ -19,32 +19,32 @@
     <div class="row pt-1" *ngFor="let col of columnSet.columns"
       [ngClass]="{visible : col.visible}">
       <div class="col-lg-1" (click)="toggleVisibility(col)">
-        <span *ngIf="col.visible" class="badge badge-success">&#x2713;</span>
-        <span *ngIf="!col.visible" class="badge badge-warning">&#x2717;</span>
+        <span *ngIf="col.visible" class="badge badge-success" aria-label="Visible" i18n-aria-label>&#x2713;</span>
+        <span *ngIf="!col.visible" class="badge badge-warning" aria-label="Hidden" i18n-aria-label>&#x2717;</span>
       </div>
       <div class="col-lg-3" (click)="toggleVisibility(col)">{{col.label}}</div>
       <div class="col-lg-1">
-        <button class="btn" title="Move column up" i18n-title
+        <button class="btn" title="Move column up" i18n-title aria-label="Move column up" i18n-aria-label
           (click)="columnSet.moveColumn(col, -1)">
-          <span class="material-icons">arrow_upward</span>
+          <span class="material-icons" aria-hidden="true">arrow_upward</span>
         </button>
       </div>
       <div class="col-lg-1">
-        <button class="btn" title="Move column down" i18n-title
+        <button class="btn" title="Move column down" i18n-title aria-label="Move column down" i18n-aria-label
           (click)="columnSet.moveColumn(col, 1)">
-          <span class="material-icons">arrow_downward</span>
+          <span class="material-icons" aria-hidden="true">arrow_downward</span>
         </button>
       </div>
       <div class="col-lg-2">
-        <button class="btn" title="Make first visible" i18n-title
+        <button class="btn" title="Make first visible" i18n-title aria-label="Make first visible" i18n-aria-label
           (click)="columnSet.moveColumn(col, -10000)">
-          <span class="material-icons">vertical_align_top</span>
+          <span class="material-icons" aria-hidden="true">vertical_align_top</span>
         </button>
       </div>
       <div class="col-lg-2">
-        <button class="btn" title="Make last visible" i18n-title
+        <button class="btn" title="Make last visible" i18n-title aria-label="Make last visible" i18n-aria-label
           (click)="columnSet.moveColumn(col, 10000)">
-          <span class="material-icons">vertical_align_bottom</span>
+          <span class="material-icons" aria-hidden="true">vertical_align_bottom</span>
         </button>
       </div>
       <div class="col-lg-2" *ngIf="columnSet.isMultiSortable">

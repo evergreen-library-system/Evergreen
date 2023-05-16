@@ -1,7 +1,7 @@
 <!-- Copy To Clipboard is only displayed when using a row-specific
      context menu as the entry point. -->
-<button *ngIf="viaContextMenu" class="dropdown-item scrollable-menu"
-  (click)="openCopyToClipboard()" tabindex="0">
+<button *ngIf="viaContextMenu" class="dropdown-item"
+  (click)="openCopyToClipboard()" type="button">
   <div i18n>Copy to Clipboard</div>
   <div class="dropdown-divider"></div>
 </button>
@@ -10,9 +10,9 @@
 
 <ng-container 
   *ngFor="let action of gridContext.toolbarActions; let idx = index">
-  <button class="dropdown-item scrollable-menu" *ngIf="!action.hidden"
+  <button ngbDropdownItem class="dropdown-item" *ngIf="!action.hidden"
     [disabled]="shouldDisable(action)"
-    (click)="performAction(action)" tabindex="0">
+    (click)="performAction(action)" type="button">
     <ng-container *ngIf="action.isGroup">
       <span class="fw-bold fst-italic">{{action.label}}</span>
     </ng-container>
