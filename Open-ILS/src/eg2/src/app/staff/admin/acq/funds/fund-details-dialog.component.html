@@ -18,8 +18,8 @@
       i18n-aria-label aria-label="Close" (click)="close()"></button>
   </div>
   <div class="modal-body">
-    <div class="row mt-3">
-      <div class="col-lg-3">
+    <div class="row row-cols-auto mt-3">
+      <div class="col">
         <button class="btn btn-primary"
         [disabled]="fund?.active() !== 't'"
           (click)="allocateToFund()" i18n>Create Allocation</button>
@@ -27,7 +27,7 @@
         [disabled]="fund?.active() !== 't'"
           (click)="doTransfer()" i18n>Transfer Money</button>
       </div>
-      <div class="col-lg-9 text-end pb-1">
+      <div class="col flex-grow-1 text-end pb-1">
         <button class="btn btn-secondary btn-xs" [disabled]="activeTab === defaultTabType"
           (click)="setDefaultTab()" i18n>Set Default View</button>
       </div>
