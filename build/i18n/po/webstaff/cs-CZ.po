@@ -7,15 +7,15 @@ msgid ""
 msgstr ""
 "Project-Id-Version: evergreen\n"
 "Report-Msgid-Bugs-To: FULL NAME <EMAIL@ADDRESS>\n"
-"POT-Creation-Date: 2021-10-12 19:01+0000\n"
-"PO-Revision-Date: 2021-07-26 09:28+0000\n"
+"POT-Creation-Date: 2023-03-27 21:11+0000\n"
+"PO-Revision-Date: 2023-03-24 21:40+0000\n"
 "Last-Translator: Eva Cerninakova <Unknown>\n"
 "Language-Team: Czech <cs@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2021-10-13 04:51+0000\n"
-"X-Generator: Launchpad (build 8a94da2fac127f5e46a49fd1140e43759d578803)\n"
+"X-Launchpad-Export-Date: 2023-03-28 05:15+0000\n"
+"X-Generator: Launchpad (build 610eeb74559fa4aabb929a482afece263183fac0)\n"
 
 #. ("{{pendingXacts | date:\"short\"}}")
 #: ../../Open-ILS/src/templates/staff/t_login.tt2:56
@@ -146,7 +146,11 @@ msgstr " z "
 msgid "#"
 msgstr "č."
 
-#: ../../Open-ILS/src/templates/staff/cat/share/t_volume_list.tt2:13 ../../Open-ILS/src/templates/staff/circ/patron/t_bills.tt2:125
+#: ../../Open-ILS/src/templates/staff/circ/patron/t_bills.tt2:125
+msgid "# Copies"
+msgstr "Počet kopií"
+
+#: ../../Open-ILS/src/templates/staff/cat/share/t_volume_list.tt2:13
 msgid "# Items"
 msgstr "Počet položek"
 
@@ -174,7 +178,7 @@ msgstr "%1 %2 %3&#13;&#10;%4 %5&#13;&#10;%6, %7 %8"
 
 #. ("{{patron().pref_prefix() || patron().prefix()}}", "{{patron().pref_family_name() || patron().family_name()}}", "{{patron().pref_first_given_name() || patron().first_given_name()}}", "{{patron().pref_second_given_name() || patron().second_given_name()}}", "{{patron().pref_suffix() || patron().suffix()}}")
 #. ("{{patron().prefix()}}", "{{patron().family_name()}}", "{{patron().first_given_name()}}", "{{patron().second_given_name()}}", "{{patron().suffix()}}")
-#: ../../Open-ILS/src/templates/staff/circ/patron/index.tt2:110 ../../Open-ILS/src/templates/staff/circ/patron/t_summary.tt2:155
+#: ../../Open-ILS/src/templates/staff/circ/patron/index.tt2:112 ../../Open-ILS/src/templates/staff/circ/patron/t_summary.tt2:155
 msgid "%1 %2, %3 %4 %5"
 msgstr "%1 %2, %3 %4 %5"
 
@@ -474,7 +478,7 @@ msgstr "Přijmout pouze exempláře v \"dobré kvalitě\"?"
 msgid "Acquisition Cost"
 msgstr "Akviziční cena"
 
-#: ../../Open-ILS/src/templates/staff/acq/requests/index.tt2:2 ../../Open-ILS/src/templates/staff/acq/requests/t_list.tt2:3 ../../Open-ILS/src/templates/staff/circ/patron/index.tt2:228
+#: ../../Open-ILS/src/templates/staff/acq/requests/index.tt2:2 ../../Open-ILS/src/templates/staff/acq/requests/t_list.tt2:3 ../../Open-ILS/src/templates/staff/circ/patron/index.tt2:233
 msgid "Acquisition Patron Requests"
 msgstr "Akviziční požadavky čtenářů"
 
@@ -590,7 +594,7 @@ msgstr "Přidat jednotky"
 
 #: ../../Open-ILS/src/templates/staff/cat/catalog/t_holdings.tt2:42 ../../Open-ILS/src/templates/staff/circ/checkin/t_checkin_table.tt2:12 ../../Open-ILS/src/templates/staff/circ/transits/t_list.tt2:37
 msgid "Add Items to Bucket"
-msgstr "Přidat položky do skupiny"
+msgstr "Přidat jednotky do skupiny"
 
 #: ../../Open-ILS/src/templates/staff/serials/t_prediction_wizard.tt2:134 ../../Open-ILS/src/templates/staff/serials/t_prediction_wizard.tt2:204 ../../Open-ILS/src/templates/staff/serials/t_prediction_wizard.tt2:79
 msgid "Add Level"
@@ -760,15 +764,15 @@ msgstr "Přizpůsobení"
 msgid "Administration"
 msgstr "Administrace"
 
-#: ../../Open-ILS/src/templates/staff/admin/workstation/t_splash.tt2:123
+#: ../../Open-ILS/src/templates/staff/admin/workstation/t_splash.tt2:135
 msgid "Advanced (default)"
 msgstr "Pokročilé (výchozí)"
 
-#: ../../Open-ILS/src/templates/staff/admin/workstation/t_splash.tt2:118
+#: ../../Open-ILS/src/templates/staff/admin/workstation/t_splash.tt2:130
 msgid "Advanced Search Default Pane"
 msgstr "Výchozí panel pro pokročilé vyhledávání"
 
-#: ../../Open-ILS/src/templates/staff/admin/workstation/t_splash.tt2:119
+#: ../../Open-ILS/src/templates/staff/admin/workstation/t_splash.tt2:131
 msgid ""
 "Advanced search has secondary panes for Numeric and MARC Expert searching. "
 "You can change which one is loaded by default when opening a new catalog "
@@ -917,6 +921,7 @@ msgstr "Během registrace je požadována adresa."
 #: ../../Open-ILS/src/templates/staff/circ/patron/index.tt2:55
 msgid "An email address is required for a password reset link to be sent."
 msgstr ""
+"Pro odeslání odkazu pro obnovení hesla jen požadována e-mailová adresa."
 
 #: ../../Open-ILS/src/templates/staff/cat/share/z3950_strings.tt2:6
 msgid "An unexpected error occurred"
@@ -928,7 +933,7 @@ msgstr "Přidat poznámku"
 
 #: ../../Open-ILS/src/templates/staff/cat/item/t_summary_pane.tt2:112 ../../Open-ILS/src/templates/staff/cat/item/t_summary_pane.tt2:115
 msgid "Annual Circ History"
-msgstr ""
+msgstr "Roční historie výpůjček"
 
 #: ../../Open-ILS/src/templates/staff/base_js.tt2:136
 msgid ""
@@ -1017,11 +1022,11 @@ msgstr "Duben"
 
 #: ../../Open-ILS/src/templates/staff/circ/patron/t_messages.tt2:16
 msgid "Archive Note"
-msgstr ""
+msgstr "Archivní poznámka"
 
 #: ../../Open-ILS/src/templates/staff/circ/patron/t_messages.tt2:43
 msgid "Archived Notes"
-msgstr ""
+msgstr "Archivní poznámky"
 
 #: ../../Open-ILS/src/templates/staff/base_js.tt2:155
 msgid ""
@@ -1160,7 +1165,7 @@ msgstr "Uživ"
 msgid "August"
 msgstr "Srpen"
 
-#: ../../Open-ILS/src/templates/staff/acq/requests/t_edit.tt2:169 ../../Open-ILS/src/templates/staff/admin/server/config/metabib_field.tt2:31 ../../Open-ILS/src/templates/staff/cat/bucket/batch_hold/t_event.tt2:23 ../../Open-ILS/src/templates/staff/cat/catalog/t_holds.tt2:83 ../../Open-ILS/src/templates/staff/cat/item/t_list.tt2:99 ../../Open-ILS/src/templates/staff/cat/z3950/t_list.tt2:129 ../../Open-ILS/src/templates/staff/circ/checkin/t_checkin_table.tt2:107 ../../Open-ILS/src/templates/staff/circ/holds/t_pull_list.tt2:106 ../../Open-ILS/src/templates/staff/circ/holds/t_shelf_list.tt2:84 ../../Open-ILS/src/templates/staff/circ/patron/t_checkout.tt2:144 ../../Open-ILS/src/templates/staff/circ/patron/t_holds_list.tt2:74 ../../Open-ILS/src/templates/staff/circ/renew/t_renew.tt2:129 ../../Open-ILS/src/templates/staff/circ/share/t_precat_dialog.tt2:23 ../../Open-ILS/src/templates/staff/share/print_templates/t_hold_pull_list.tt2:25 ../../Open-ILS/src/templates/staff/share/print_templates/t_hold_shelf_list.tt2:33
+#: ../../Open-ILS/src/templates/staff/acq/requests/t_edit.tt2:169 ../../Open-ILS/src/templates/staff/admin/server/config/metabib_field.tt2:31 ../../Open-ILS/src/templates/staff/cat/bucket/batch_hold/t_event.tt2:23 ../../Open-ILS/src/templates/staff/cat/bucket/copy/t_pending.tt2:55 ../../Open-ILS/src/templates/staff/cat/bucket/copy/t_view.tt2:47 ../../Open-ILS/src/templates/staff/cat/catalog/t_holds.tt2:83 ../../Open-ILS/src/templates/staff/cat/item/t_list.tt2:99 ../../Open-ILS/src/templates/staff/cat/z3950/t_list.tt2:129 ../../Open-ILS/src/templates/staff/circ/checkin/t_checkin_table.tt2:107 ../../Open-ILS/src/templates/staff/circ/holds/t_pull_list.tt2:106 ../../Open-ILS/src/templates/staff/circ/holds/t_shelf_list.tt2:84 ../../Open-ILS/src/templates/staff/circ/patron/t_checkout.tt2:144 ../../Open-ILS/src/templates/staff/circ/patron/t_holds_list.tt2:74 ../../Open-ILS/src/templates/staff/circ/renew/t_renew.tt2:129 ../../Open-ILS/src/templates/staff/circ/share/t_precat_dialog.tt2:23 ../../Open-ILS/src/templates/staff/share/print_templates/t_hold_pull_list.tt2:25 ../../Open-ILS/src/templates/staff/share/print_templates/t_hold_shelf_list.tt2:33
 msgid "Author"
 msgstr "Autor"
 
@@ -1223,11 +1228,11 @@ msgstr "Automatické okraje"
 
 #: ../../Open-ILS/src/templates/staff/circ/share/t_event_override_dialog.tt2:28
 msgid "Automatically override for subsequent items?"
-msgstr ""
+msgstr "Přepsat automaticky i pro následující položky?"
 
 #: ../../Open-ILS/src/templates/staff/circ/share/t_event_override_dialog.tt2:32
 msgid "Automatically skip items with this error?"
-msgstr ""
+msgstr "Přeskočit automaticky jednotky s touto chybou?"
 
 #: ../../Open-ILS/src/templates/staff/serials/t_season_selector.tt2:4
 msgid "Autumn"
@@ -1475,7 +1480,7 @@ msgstr "Bibliografický"
 msgid "Bibliographic record %1"
 msgstr "Bibliografický záznam %1"
 
-#: ../../Open-ILS/src/templates/staff/circ/checkin/t_checkin_table.tt2:77 ../../Open-ILS/src/templates/staff/circ/patron/t_bill_history_xacts.tt2:19 ../../Open-ILS/src/templates/staff/circ/patron/t_bills_list.tt2:54 ../../Open-ILS/src/templates/staff/circ/renew/t_renew.tt2:99 ../../Open-ILS/src/templates/staff/circ/share/t_bill_patron_dialog.tt2:18
+#: ../../Open-ILS/src/templates/staff/circ/checkin/t_checkin_table.tt2:77 ../../Open-ILS/src/templates/staff/circ/patron/t_bill_history_xacts.tt2:19 ../../Open-ILS/src/templates/staff/circ/patron/t_bills_list.tt2:54 ../../Open-ILS/src/templates/staff/circ/renew/t_renew.tt2:99 ../../Open-ILS/src/templates/staff/circ/share/t_bill_patron_dialog.tt2:18 ../../Open-ILS/src/templates/staff/share/print_templates/t_bills_historical.tt2:50
 msgid "Bill #"
 msgstr "Poplatek č."
 
@@ -1561,7 +1566,7 @@ msgstr "Trvalá:PSČ"
 msgid "Billings Voided:"
 msgstr "Zrušené poplatky:"
 
-#: ../../Open-ILS/src/templates/staff/circ/patron/index.tt2:159 ../../Open-ILS/src/templates/staff/circ/patron/index.tt2:82 ../../Open-ILS/src/templates/staff/circ/patron/t_xact_details_details.tt2:5
+#: ../../Open-ILS/src/templates/staff/circ/patron/index.tt2:161 ../../Open-ILS/src/templates/staff/circ/patron/index.tt2:82 ../../Open-ILS/src/templates/staff/circ/patron/t_xact_details_details.tt2:5
 msgid "Bills"
 msgstr "Poplatky"
 
@@ -1633,19 +1638,19 @@ msgstr "Rezervace zdrojů"
 msgid "Booking Administration"
 msgstr "Správa rezervace zdrojů"
 
-#: ../../Open-ILS/src/templates/staff/circ/patron/index.tt2:238
+#: ../../Open-ILS/src/templates/staff/circ/patron/index.tt2:243
 msgid "Booking: Create Reservation"
 msgstr "REzervace zdrojů: Vytvořit rezervaci"
 
-#: ../../Open-ILS/src/templates/staff/circ/patron/index.tt2:233
+#: ../../Open-ILS/src/templates/staff/circ/patron/index.tt2:238
 msgid "Booking: Manage Reservations"
 msgstr "Rezervace zdrojů: Spravovat rezervace"
 
-#: ../../Open-ILS/src/templates/staff/circ/patron/index.tt2:243
+#: ../../Open-ILS/src/templates/staff/circ/patron/index.tt2:248
 msgid "Booking: Pick Up Reservations"
 msgstr "Rezervace zdrojů: Vyzvednout rezervované zdroje"
 
-#: ../../Open-ILS/src/templates/staff/circ/patron/index.tt2:248
+#: ../../Open-ILS/src/templates/staff/circ/patron/index.tt2:253
 msgid "Booking: Return Reservations"
 msgstr "Rezervace zdrojů: Vrátit rezervované zdroje"
 
@@ -2119,7 +2124,7 @@ msgstr "Vráceno v knihovně"
 msgid "Check Number"
 msgstr "Číslo šeku"
 
-#: ../../Open-ILS/src/templates/staff/base_js.tt2:117 ../../Open-ILS/src/templates/staff/circ/patron/index.tt2:139 ../../Open-ILS/src/templates/staff/navbar.tt2:75 ../../Open-ILS/src/templates/staff/navbar.tt2:77 ../../Open-ILS/src/templates/staff/navbar.tt2:83 ../../Open-ILS/src/templates/staff/navbar.tt2:85
+#: ../../Open-ILS/src/templates/staff/base_js.tt2:117 ../../Open-ILS/src/templates/staff/circ/patron/index.tt2:141 ../../Open-ILS/src/templates/staff/navbar.tt2:75 ../../Open-ILS/src/templates/staff/navbar.tt2:77 ../../Open-ILS/src/templates/staff/navbar.tt2:83 ../../Open-ILS/src/templates/staff/navbar.tt2:85
 msgid "Check Out"
 msgstr "Půjčit"
 
@@ -2502,7 +2507,7 @@ msgstr "Zavřít"
 msgid "Code"
 msgstr "Kód"
 
-#: ../../Open-ILS/src/templates/staff/circ/patron/index.tt2:121
+#: ../../Open-ILS/src/templates/staff/circ/patron/index.tt2:123
 msgid "Collapse Patron Summary Display"
 msgstr "Sbalit zobrazení přehledu údajů o čtenáři"
 
@@ -2566,7 +2571,7 @@ msgstr ""
 "Opravdu chcete zcela SMAZAT toto čtenářské konto, včetně naúčtovaných "
 "poplatků, plateb, seznamů knih atd? Tuto akci NELZE VZÍT ZPĚT."
 
-#: ../../Open-ILS/src/templates/staff/circ/patron/index.tt2:253
+#: ../../Open-ILS/src/templates/staff/circ/patron/index.tt2:258
 msgid "Completely Purge Account"
 msgstr "Zcela vymazat data účtu"
 
@@ -2894,7 +2899,7 @@ msgstr "Vytvořit nový záznam MARC"
 
 #: ../../Open-ILS/src/templates/staff/circ/patron/t_messages.tt2:10
 msgid "Create Note"
-msgstr ""
+msgstr "Vytvořit poznámku"
 
 #: ../../Open-ILS/src/templates/staff/acq/requests/t_edit.tt2:10
 msgid "Create Patron Request"
@@ -2950,7 +2955,7 @@ msgstr "Vytvořit z tohoto pole novou autoritu"
 
 #: ../../Open-ILS/src/templates/staff/circ/share/t_new_message_dialog.tt2:5
 msgid "Create or Edit Note"
-msgstr ""
+msgstr "Vytvořit nebo upravit poznámku"
 
 #: ../../Open-ILS/src/templates/staff/acq/requests/t_edit.tt2:1
 msgid "Create/Edit/View patron Request"
@@ -3247,7 +3252,7 @@ msgstr "Výchozí SMS operátor"
 msgid "Default SMS/Text Number"
 msgstr "Výchozí číslo pro SMS/zprávy"
 
-#: ../../Open-ILS/src/templates/staff/admin/workstation/t_splash.tt2:90
+#: ../../Open-ILS/src/templates/staff/admin/workstation/t_splash.tt2:102
 msgid "Default Search Library"
 msgstr "Výchozí knihovna pro vyhledávání"
 
@@ -3318,7 +3323,7 @@ msgstr "Smazat nevyřízené(ho) čtenáře"
 
 #: ../../Open-ILS/src/templates/staff/circ/patron/t_edit.tt2:880
 msgid "Delete Person Allowed to Use My Account"
-msgstr ""
+msgstr "Smazat osobu, která má opravánění využívat můj účet"
 
 #: ../../Open-ILS/src/templates/staff/admin/server/authority/heading_field.tt2:31 ../../Open-ILS/src/templates/staff/admin/server/config/copy_tag_type.tt2:31 ../../Open-ILS/src/templates/staff/admin/server/config/marc_field.tt2:45 ../../Open-ILS/src/templates/staff/admin/server/config/metabib_field.tt2:49 ../../Open-ILS/src/templates/staff/admin/server/config/metabib_field_virtual_map.tt2:33 ../../Open-ILS/src/templates/staff/cat/share/marcedit_strings.tt2:11
 msgid "Delete Record"
@@ -3412,7 +3417,7 @@ msgstr "Smazat tyto záznamy?"
 
 #: ../../Open-ILS/src/templates/staff/circ/patron/t_edit.tt2:960
 msgid "Delete this address"
-msgstr ""
+msgstr "Smazat tuto adresu"
 
 #: ../../Open-ILS/src/templates/staff/serials/share/serials_strings.tt2:22
 msgid "Delete {{count}} template(s)?"
@@ -3420,7 +3425,7 @@ msgstr "Smazat  {{count}} šablon?"
 
 #: ../../Open-ILS/src/templates/staff/circ/share/t_new_message_dialog.tt2:74
 msgid "Deleted"
-msgstr ""
+msgstr "Smazáno"
 
 #: ../../Open-ILS/src/templates/staff/cat/volcopy/index.tt2:19
 msgid "Deleted holdings template"
@@ -3484,7 +3489,7 @@ msgstr "Vklad?"
 
 #: ../../Open-ILS/src/templates/staff/circ/share/t_new_message_dialog.tt2:40
 msgid "Depth:"
-msgstr ""
+msgstr "Hloubka:"
 
 #: ../../Open-ILS/src/templates/staff/cat/share/t_marcedit.tt2:86
 msgid "Desc"
@@ -3526,9 +3531,9 @@ msgstr "Vypnout zvuky?"
 msgid "Discarded"
 msgstr "Vyřazeno"
 
-#: ../../Open-ILS/src/templates/staff/circ/patron/index.tt2:183
+#: ../../Open-ILS/src/templates/staff/circ/patron/index.tt2:188
 msgid "Display Alerts"
-msgstr ""
+msgstr "Zobrazit varování"
 
 #: ../../Open-ILS/src/templates/staff/admin/server/config/metabib_field.tt2:58
 msgid "Display Field"
@@ -3673,7 +3678,7 @@ msgstr "K vrácení dne:"
 msgid "Due date"
 msgstr "K vrácení dne"
 
-#: ../../Open-ILS/src/templates/staff/cat/share/t_replace_barcode.tt2:2 ../../Open-ILS/src/templates/staff/cat/share/t_replace_barcode.tt2:39 ../../Open-ILS/src/templates/staff/cat/volcopy/t_edit.tt2:2
+#: ../../Open-ILS/src/templates/staff/cat/share/t_replace_barcode.tt2:2 ../../Open-ILS/src/templates/staff/cat/share/t_replace_barcode.tt2:40 ../../Open-ILS/src/templates/staff/cat/volcopy/t_edit.tt2:2
 msgid "Duplicate Barcode"
 msgstr "Duplikace čárového kódu"
 
@@ -3705,7 +3710,7 @@ msgstr "ÚplZ"
 msgid "ELvl_tbmfhd"
 msgstr "ÚplZ_tbmfhd"
 
-#: ../../Open-ILS/src/templates/staff/cat/bucket/record/t_merge_records.tt2:51 ../../Open-ILS/src/templates/staff/cat/catalog/t_holdings.tt2:84 ../../Open-ILS/src/templates/staff/cat/catalog/t_holdings.tt2:86 ../../Open-ILS/src/templates/staff/cat/catalog/t_holdings.tt2:88 ../../Open-ILS/src/templates/staff/cat/catalog/t_holdings.tt2:90 ../../Open-ILS/src/templates/staff/cat/catalog/t_holdings.tt2:92 ../../Open-ILS/src/templates/staff/cat/item/index.tt2:125 ../../Open-ILS/src/templates/staff/cat/item/t_list.tt2:67 ../../Open-ILS/src/templates/staff/cat/item/t_list.tt2:69 ../../Open-ILS/src/templates/staff/cat/item/t_list.tt2:71 ../../Open-ILS/src/templates/staff/cat/item/t_list.tt2:73 ../../Open-ILS/src/templates/staff/cat/item/t_list.tt2:75 ../../Open-ILS/src/templates/staff/cat/volcopy/t_view.tt2:18 ../../Open-ILS/src/templates/staff/circ/checkin/t_checkin_table.tt2:56 ../../Open-ILS/src/templates/staff/circ/patron/index.tt2:173 ../../Open-ILS/src/templates/staff/circ/patron/index.tt2:85
+#: ../../Open-ILS/src/templates/staff/cat/bucket/record/t_merge_records.tt2:51 ../../Open-ILS/src/templates/staff/cat/catalog/t_holdings.tt2:84 ../../Open-ILS/src/templates/staff/cat/catalog/t_holdings.tt2:86 ../../Open-ILS/src/templates/staff/cat/catalog/t_holdings.tt2:88 ../../Open-ILS/src/templates/staff/cat/catalog/t_holdings.tt2:90 ../../Open-ILS/src/templates/staff/cat/catalog/t_holdings.tt2:92 ../../Open-ILS/src/templates/staff/cat/item/index.tt2:125 ../../Open-ILS/src/templates/staff/cat/item/t_list.tt2:67 ../../Open-ILS/src/templates/staff/cat/item/t_list.tt2:69 ../../Open-ILS/src/templates/staff/cat/item/t_list.tt2:71 ../../Open-ILS/src/templates/staff/cat/item/t_list.tt2:73 ../../Open-ILS/src/templates/staff/cat/item/t_list.tt2:75 ../../Open-ILS/src/templates/staff/cat/volcopy/t_view.tt2:18 ../../Open-ILS/src/templates/staff/circ/checkin/t_checkin_table.tt2:56 ../../Open-ILS/src/templates/staff/circ/patron/index.tt2:175 ../../Open-ILS/src/templates/staff/circ/patron/index.tt2:85
 msgid "Edit"
 msgstr "Upravit"
 
@@ -3853,7 +3858,7 @@ msgstr "Změnit knihovnu pro vyzvednutí rezervace"
 
 #: ../../Open-ILS/src/templates/staff/serials/t_view_items_grid.tt2:74
 msgid "Edit issue holding codes"
-msgstr "Upravit kódy exemplářových údajů čísel"
+msgstr "Upravit označení čísla"
 
 #: ../../Open-ILS/src/templates/staff/serials/index.tt2:46
 msgid "Edit issue information"
@@ -3886,7 +3891,7 @@ msgstr "Upravovaný čtenář"
 #. ("{{args.edit_date | date:$root.egDateAndTimeFormat}}", "{{args.editor.usrname()}}")
 #: ../../Open-ILS/src/templates/staff/circ/share/t_new_message_dialog.tt2:69
 msgid "Edited on %1 by %2"
-msgstr ""
+msgstr "Upravil(a)  %2  %1"
 
 #: ../../Open-ILS/src/templates/staff/circ/patron/reg_actions.tt2:44
 msgid "Editing users in this group is disallowed"
@@ -3962,7 +3967,7 @@ msgstr "Datum ukončení: "
 
 #: ../../Open-ILS/src/templates/staff/cat/share/t_marcedit.tt2:98
 msgid "EntW"
-msgstr "ÚÚpl"
+msgstr "PovObs"
 
 #: ../../Open-ILS/src/templates/staff/circ/patron/t_edit_due_date_dialog.tt2:12
 msgid "Enter Due Date: "
@@ -4132,7 +4137,7 @@ msgstr "Během půjčování nastala výjimka"
 
 #: ../../Open-ILS/src/templates/staff/circ/share/t_event_override_dialog.tt2:9
 msgid "Exceptions occurred during renewal."
-msgstr ""
+msgstr "Během prodloužení nastala výjimka."
 
 #: ../../Open-ILS/src/templates/staff/admin/acq/t_splash.tt2:11
 msgid "Exchange Rates"
@@ -4166,7 +4171,7 @@ msgstr "Ukončit"
 msgid "Expand"
 msgstr "Rozbalit"
 
-#: ../../Open-ILS/src/templates/staff/circ/patron/index.tt2:126
+#: ../../Open-ILS/src/templates/staff/circ/patron/index.tt2:128
 msgid "Expand Patron Summary Display"
 msgstr "Rozbalit zobrazení přehledu údajů o čtenáři"
 
@@ -4678,7 +4683,7 @@ msgstr "Vygenerovat heslo"
 
 #: ../../Open-ILS/src/templates/staff/cat/share/t_marcedit.tt2:124
 msgid "GeoDiv"
-msgstr ""
+msgstr "GeoZp"
 
 #: ../../Open-ILS/src/templates/staff/admin/server/t_splash.tt2:11
 msgid "Global Flags"
@@ -4744,7 +4749,7 @@ msgstr "Skupina"
 msgid "Group Fines"
 msgstr "Skupinové pokuty"
 
-#: ../../Open-ILS/src/templates/staff/circ/patron/index.tt2:213 ../../Open-ILS/src/templates/staff/circ/patron/t_group.tt2:2
+#: ../../Open-ILS/src/templates/staff/circ/patron/index.tt2:218 ../../Open-ILS/src/templates/staff/circ/patron/t_group.tt2:2
 msgid "Group Member Details"
 msgstr "Detaily člena skupiny"
 
@@ -4899,7 +4904,7 @@ msgstr "Rezervační skupina č. {{bucket().id()}}: {{bucket().name()}}"
 msgid "Hold Group Buckets"
 msgstr "Skupiny čtenářů pro rezervační skupiny"
 
-#: ../../Open-ILS/src/templates/staff/cat/bucket/batch_hold/index.tt2:40 ../../Open-ILS/src/templates/staff/cat/bucket/batch_hold/t_view.tt2:8 ../../Open-ILS/src/templates/staff/circ/patron/index.tt2:203 ../../Open-ILS/src/templates/staff/circ/patron/t_hold_subscriptions.tt2:1 ../../Open-ILS/src/templates/staff/navbar.tt2:180
+#: ../../Open-ILS/src/templates/staff/cat/bucket/batch_hold/index.tt2:40 ../../Open-ILS/src/templates/staff/cat/bucket/batch_hold/t_view.tt2:8 ../../Open-ILS/src/templates/staff/circ/patron/index.tt2:208 ../../Open-ILS/src/templates/staff/circ/patron/t_hold_subscriptions.tt2:1 ../../Open-ILS/src/templates/staff/navbar.tt2:180
 msgid "Hold Groups"
 msgstr "Rezervační skupiny"
 
@@ -5033,7 +5038,7 @@ msgstr ""
 "Objekty související se správou exemplářů, jako číslování, exempláře,  "
 "jednotky a rejstříky,  nebudou klonovány."
 
-#: ../../Open-ILS/src/templates/staff/circ/patron/index.tt2:151 ../../Open-ILS/src/templates/staff/circ/patron/index.tt2:83 ../../Open-ILS/src/templates/staff/circ/patron/t_summary.tt2:119
+#: ../../Open-ILS/src/templates/staff/circ/patron/index.tt2:153 ../../Open-ILS/src/templates/staff/circ/patron/index.tt2:83 ../../Open-ILS/src/templates/staff/circ/patron/t_summary.tt2:119
 msgid "Holds"
 msgstr "Rezervace"
 
@@ -5241,7 +5246,7 @@ msgstr "Zahrnout neaktivní?"
 
 #: ../../Open-ILS/src/templates/staff/cat/bucket/record/t_bucket_export.tt2:28
 msgid "Include Items?"
-msgstr "Zahrnout položky?"
+msgstr "Zahrnout jednotky?"
 
 #: ../../Open-ILS/src/templates/staff/serials/t_mfhd_tooltip.tt2:72
 msgid "Incomplete"
@@ -5307,11 +5312,11 @@ msgstr "Pro rezervační skupinu byl zadán neplatný cíl"
 msgid "Invalidate"
 msgstr "Zrušit platnost"
 
-#: ../../Open-ILS/src/templates/staff/cat/bucket/copy/t_pending.tt2:61 ../../Open-ILS/src/templates/staff/cat/bucket/copy/t_view.tt2:53 ../../Open-ILS/src/templates/staff/cat/catalog/t_holdings.tt2:133 ../../Open-ILS/src/templates/staff/cat/item/t_list.tt2:170 ../../Open-ILS/src/templates/staff/cat/item/t_summary_pane.tt2:205 ../../Open-ILS/src/templates/staff/circ/checkin/t_checkin_table.tt2:129
+#: ../../Open-ILS/src/templates/staff/cat/bucket/copy/t_pending.tt2:62 ../../Open-ILS/src/templates/staff/cat/bucket/copy/t_view.tt2:55 ../../Open-ILS/src/templates/staff/cat/catalog/t_holdings.tt2:133 ../../Open-ILS/src/templates/staff/cat/item/t_list.tt2:170 ../../Open-ILS/src/templates/staff/cat/item/t_summary_pane.tt2:205 ../../Open-ILS/src/templates/staff/circ/checkin/t_checkin_table.tt2:129
 msgid "Inventory Date"
 msgstr "Datum revize"
 
-#: ../../Open-ILS/src/templates/staff/cat/bucket/copy/t_pending.tt2:62 ../../Open-ILS/src/templates/staff/cat/bucket/copy/t_view.tt2:54 ../../Open-ILS/src/templates/staff/cat/catalog/t_holdings.tt2:134 ../../Open-ILS/src/templates/staff/cat/item/t_list.tt2:171 ../../Open-ILS/src/templates/staff/cat/item/t_summary_pane.tt2:208 ../../Open-ILS/src/templates/staff/circ/checkin/t_checkin_table.tt2:130
+#: ../../Open-ILS/src/templates/staff/cat/bucket/copy/t_pending.tt2:63 ../../Open-ILS/src/templates/staff/cat/bucket/copy/t_view.tt2:56 ../../Open-ILS/src/templates/staff/cat/catalog/t_holdings.tt2:134 ../../Open-ILS/src/templates/staff/cat/item/t_list.tt2:171 ../../Open-ILS/src/templates/staff/cat/item/t_summary_pane.tt2:208 ../../Open-ILS/src/templates/staff/circ/checkin/t_checkin_table.tt2:130
 msgid "Inventory Workstation"
 msgstr "Revizní pracovní stanice"
 
@@ -5462,7 +5467,7 @@ msgstr "Jednotka v přepravě"
 msgid "Item Not Available."
 msgstr "Jednotka není dostupná"
 
-#: ../../Open-ILS/src/templates/staff/cat/bucket/copy/t_pending.tt2:16 ../../Open-ILS/src/templates/staff/cat/item/index.tt2:150 ../../Open-ILS/src/templates/staff/cat/share/t_replace_barcode.tt2:36 ../../Open-ILS/src/templates/staff/circ/in_house_use/index.tt2:66
+#: ../../Open-ILS/src/templates/staff/cat/bucket/copy/t_pending.tt2:16 ../../Open-ILS/src/templates/staff/cat/item/index.tt2:150 ../../Open-ILS/src/templates/staff/cat/share/t_replace_barcode.tt2:37 ../../Open-ILS/src/templates/staff/circ/in_house_use/index.tt2:66
 msgid "Item Not Found"
 msgstr "Jednotka nebyla nalezena"
 
@@ -5543,7 +5548,7 @@ msgstr "Šablony jednotek"
 msgid "Item Type"
 msgstr "Typ exempláře"
 
-#: ../../Open-ILS/src/templates/staff/cat/share/t_replace_barcode.tt2:42
+#: ../../Open-ILS/src/templates/staff/cat/share/t_replace_barcode.tt2:43
 msgid "Item Updated"
 msgstr "Jednotka aktualizována"
 
@@ -5676,7 +5681,7 @@ msgstr "Vrácené exempláře"
 msgid "Items Checked Out"
 msgstr "Vypůjčené exempláře"
 
-#: ../../Open-ILS/src/templates/staff/admin/workstation/t_print_templates.tt2:30 ../../Open-ILS/src/templates/staff/circ/patron/index.tt2:143 ../../Open-ILS/src/templates/staff/circ/patron/index.tt2:84 ../../Open-ILS/src/templates/staff/circ/patron/t_group.tt2:43 ../../Open-ILS/src/templates/staff/circ/patron/t_summary.tt2:91
+#: ../../Open-ILS/src/templates/staff/admin/workstation/t_print_templates.tt2:30 ../../Open-ILS/src/templates/staff/circ/patron/index.tt2:145 ../../Open-ILS/src/templates/staff/circ/patron/index.tt2:84 ../../Open-ILS/src/templates/staff/circ/patron/t_group.tt2:43 ../../Open-ILS/src/templates/staff/circ/patron/t_summary.tt2:91
 msgid "Items Out"
 msgstr "Výpůjčky"
 
@@ -5846,11 +5851,11 @@ msgstr "Vlevo"
 
 #: ../../Open-ILS/src/templates/staff/cat/item/t_summary_pane.tt2:106
 msgid "Legacy/Not Dated"
-msgstr ""
+msgstr "Zastaralé/Bez data"
 
 #: ../../Open-ILS/src/templates/staff/circ/patron/t_summary.tt2:153
 msgid "Legal Name"
-msgstr ""
+msgstr "Úředně platné jméno"
 
 #: ../../Open-ILS/src/templates/staff/reporter/share/report_strings.tt2:103 ../../Open-ILS/src/templates/staff/reporter/share/report_strings.tt2:22
 msgid "Less than"
@@ -5876,6 +5881,10 @@ msgstr "Mapa skupin knihoven"
 #: ../../Open-ILS/src/templates/staff/admin/server/t_splash.tt2:11
 msgid "Library Groups"
 msgstr "Skupiny knihoven"
+
+#: ../../Open-ILS/src/templates/staff/admin/workstation/t_splash.tt2:91
+msgid "Library Selector Shows Combined Names?"
+msgstr ""
 
 #: ../../Open-ILS/src/templates/staff/cat/catalog/t_holdings.tt2:73
 msgid "Library/Call Number as Transfer Destination"
@@ -5943,7 +5952,7 @@ msgstr "Načíst sdílenou skupinu"
 
 #: ../../Open-ILS/src/templates/staff/cat/bucket/record/t_load_shared.tt2:7 ../../Open-ILS/src/templates/staff/cat/bucket/share/t_load_shared.tt2:7 ../../Open-ILS/src/templates/staff/circ/patron/bucket/t_load_shared.tt2:7
 msgid "Load Shared Bucket by ID"
-msgstr ""
+msgstr "Načíst sdílenou skupinu podle ID"
 
 #: ../../Open-ILS/src/templates/staff/circ/patron/t_edit.tt2:149 ../../Open-ILS/src/templates/staff/loading.tt2:4
 msgid "Loading..."
@@ -6021,7 +6030,7 @@ msgstr "Seznam hodnot kódů MARCu"
 msgid "MARC Edit"
 msgstr "Editace MARCu"
 
-#: ../../Open-ILS/src/templates/staff/admin/workstation/t_splash.tt2:125
+#: ../../Open-ILS/src/templates/staff/admin/workstation/t_splash.tt2:137
 msgid "MARC Expert"
 msgstr "Expertní (MARC)"
 
@@ -6422,7 +6431,7 @@ msgstr "Sloučit záznamy?"
 msgid "Message"
 msgstr "Zpráva"
 
-#: ../../Open-ILS/src/templates/staff/circ/patron/index.tt2:193
+#: ../../Open-ILS/src/templates/staff/circ/patron/index.tt2:198
 msgid "Message Center"
 msgstr "Centrum zpráv"
 
@@ -6527,7 +6536,7 @@ msgstr "Byl nalezen více než jeden bibliografický záznam s TCN: %1"
 
 #: ../../Open-ILS/src/templates/staff/cat/item/t_circs_pane.tt2:110
 msgid "Most Recent Circ Group"
-msgstr "Poslední výpůjční skupina"
+msgstr "Naposledy půjčeno čtenáři"
 
 #: ../../Open-ILS/src/templates/staff/cat/item/t_circs_pane.tt2:104
 msgid "Most Recent Circ Group not available for display."
@@ -6704,7 +6713,7 @@ msgstr "Jméno pro smazání sady"
 msgid "Name for edit set"
 msgstr "Jméno editační sady"
 
-#: ../../Open-ILS/src/templates/staff/circ/patron/index.tt2:116
+#: ../../Open-ILS/src/templates/staff/circ/patron/index.tt2:118
 msgid "Name keywords: "
 msgstr "Štítky k uživateli: "
 
@@ -6870,7 +6879,7 @@ msgstr "Bez odchylky"
 
 #: ../../Open-ILS/src/templates/staff/cat/item/t_circs_pane.tt2:3
 msgid "No Previous Circ Group"
-msgstr "Neexistuje přechozí výpůjční skupina"
+msgstr "Předtím půjčeno čtenáři"
 
 #: ../../Open-ILS/src/templates/staff/admin/workstation/t_print_config.tt2:88
 msgid "No Printer Selected"
@@ -6886,7 +6895,7 @@ msgstr "Bez potvrzení"
 
 #: ../../Open-ILS/src/templates/staff/cat/item/t_circs_pane.tt2:99
 msgid "No Recent Circ Group"
-msgstr "Neexistuje poslední výpůjční skupina"
+msgstr "Naposledy neměl nikdo půjčeno"
 
 #. ("{{barcode}}")
 #: ../../Open-ILS/src/templates/staff/cat/item/missing_pieces.tt2:18 ../../Open-ILS/src/templates/staff/circ/checkin/index.tt2:20
@@ -7025,11 +7034,11 @@ msgstr "Text poznámky ..."
 
 #: ../../Open-ILS/src/templates/staff/circ/patron/t_messages.tt2:22 ../../Open-ILS/src/templates/staff/circ/patron/t_messages.tt2:64
 msgid "Note Text"
-msgstr ""
+msgstr "Text poznámky"
 
 #: ../../Open-ILS/src/templates/staff/circ/share/t_new_message_dialog.tt2:89
 msgid "Note Text..."
-msgstr ""
+msgstr "Text poznámky..."
 
 #: ../../Open-ILS/src/templates/staff/cat/volcopy/t_copy_notes.tt2:23 ../../Open-ILS/src/templates/staff/cat/volcopy/t_copy_notes.tt2:75 ../../Open-ILS/src/templates/staff/circ/share/t_bill_patron_dialog.tt2:80 ../../Open-ILS/src/templates/staff/circ/share/t_cancel_hold_dialog.tt2:27 ../../Open-ILS/src/templates/staff/circ/share/t_mark_damaged.tt2:39 ../../Open-ILS/src/templates/staff/serials/t_notes.tt2:29 ../../Open-ILS/src/templates/staff/serials/t_notes.tt2:88
 msgid "Note..."
@@ -7044,7 +7053,7 @@ msgstr "Poznámka:"
 msgid "Note: %1"
 msgstr "Poznámka: %1"
 
-#: ../../Open-ILS/src/templates/staff/circ/curbside/t_schedule_pickup.tt2:73 ../../Open-ILS/src/templates/staff/circ/patron/index.tt2:166 ../../Open-ILS/src/templates/staff/circ/patron/index.tt2:79 ../../Open-ILS/src/templates/staff/circ/patron/t_messages.tt2:1 ../../Open-ILS/src/templates/staff/circ/share/t_hold_details.tt2:67 ../../Open-ILS/src/templates/staff/serials/t_batch_receive.tt2:42
+#: ../../Open-ILS/src/templates/staff/circ/curbside/t_schedule_pickup.tt2:73 ../../Open-ILS/src/templates/staff/circ/patron/index.tt2:168 ../../Open-ILS/src/templates/staff/circ/patron/index.tt2:79 ../../Open-ILS/src/templates/staff/circ/patron/t_messages.tt2:1 ../../Open-ILS/src/templates/staff/circ/share/t_hold_details.tt2:67 ../../Open-ILS/src/templates/staff/serials/t_batch_receive.tt2:42
 msgid "Notes"
 msgstr "Poznámky"
 
@@ -7136,7 +7145,7 @@ msgstr "Počet jednotek: "
 msgid "Number of titles: "
 msgstr "Počet titulů: "
 
-#: ../../Open-ILS/src/templates/staff/admin/workstation/t_splash.tt2:124
+#: ../../Open-ILS/src/templates/staff/admin/workstation/t_splash.tt2:136
 msgid "Numeric"
 msgstr "Podle identifikátorů"
 
@@ -7346,7 +7355,7 @@ msgstr "Organizační jednotky"
 
 #: ../../Open-ILS/src/templates/staff/cat/share/t_marcedit.tt2:96
 msgid "Orig"
-msgstr "PůvF"
+msgstr "PůvForm"
 
 #: ../../Open-ILS/src/templates/staff/share/print_templates/t_bill_payment.tt2:33
 msgid "Original Balance:"
@@ -7360,7 +7369,7 @@ msgstr "Půvoní čárový kód"
 msgid "Originating Acquisition"
 msgstr "Najít zdroj akvizice"
 
-#: ../../Open-ILS/src/templates/staff/circ/patron/index.tt2:177 ../../Open-ILS/src/templates/staff/circ/patron/index.tt2:81
+#: ../../Open-ILS/src/templates/staff/circ/patron/index.tt2:179 ../../Open-ILS/src/templates/staff/circ/patron/index.tt2:81
 msgid "Other"
 msgstr "Ostatní"
 
@@ -7616,7 +7625,7 @@ msgstr "Registrovat čtenáře"
 msgid "Patron Requests"
 msgstr "Požadavky čtenářů"
 
-#: ../../Open-ILS/src/templates/staff/circ/curbside/t_schedule_pickup.tt2:15 ../../Open-ILS/src/templates/staff/circ/patron/index.tt2:259 ../../Open-ILS/src/templates/staff/circ/patron/index.tt2:76
+#: ../../Open-ILS/src/templates/staff/circ/curbside/t_schedule_pickup.tt2:15 ../../Open-ILS/src/templates/staff/circ/patron/index.tt2:264 ../../Open-ILS/src/templates/staff/circ/patron/index.tt2:76
 msgid "Patron Search"
 msgstr "Hledání čtenářů"
 
@@ -7682,6 +7691,8 @@ msgid ""
 "Patron email address appears to have been changed but not yet saved. Please "
 "save user before attempting to send password reset link."
 msgstr ""
+"Zdá se, že e-mailová adresa čtenáře byla změněna, ale není dostud uložena. "
+"Před pokusem o odeslání odkazu pro obnovení hesla prosím uložte uživatele."
 
 #: ../../Open-ILS/src/templates/staff/circ/share/circ_strings.tt2:44
 msgid "Patron exceeds claims returned count.  Force this action?"
@@ -7788,11 +7799,19 @@ msgstr "Propojený typ"
 
 #: ../../Open-ILS/src/templates/staff/circ/patron/t_messages.tt2:29 ../../Open-ILS/src/templates/staff/circ/patron/t_messages.tt2:71
 msgid "Penalty Name"
+msgstr "Název pokuty"
+
+#: ../../Open-ILS/src/templates/staff/circ/patron/index.tt2:90
+msgid "Penalty Refresh Failed"
+msgstr ""
+
+#: ../../Open-ILS/src/templates/staff/circ/patron/index.tt2:91
+msgid "Penalty Refresh Succeeded"
 msgstr ""
 
 #: ../../Open-ILS/src/templates/staff/circ/share/t_new_message_dialog.tt2:30
 msgid "Penalty Type:"
-msgstr ""
+msgstr "Typ pokuty"
 
 #: ../../Open-ILS/src/templates/staff/circ/patron/t_bills.tt2:33
 msgid "Pending Change:"
@@ -8056,7 +8075,7 @@ msgstr "Šablony pro schémata predikcí"
 msgid "Prediction count"
 msgstr "Počet předikcí"
 
-#: ../../Open-ILS/src/templates/staff/admin/workstation/t_splash.tt2:104
+#: ../../Open-ILS/src/templates/staff/admin/workstation/t_splash.tt2:116
 msgid "Preferred Library"
 msgstr "Preferovaná knihovna"
 
@@ -8090,7 +8109,7 @@ msgstr "Předchozí"
 
 #: ../../Open-ILS/src/templates/staff/cat/item/t_circs_pane.tt2:9
 msgid "Previous Circ Group"
-msgstr "Předchozí výpůjční skupina"
+msgstr "Předtím neměl nikdo půjčeno"
 
 #: ../../Open-ILS/src/templates/staff/share/t_autogrid.tt2:78
 msgid "Previous Page"
@@ -8397,7 +8416,7 @@ msgstr "obecné vyhledávání Z39.50"
 
 #: ../../Open-ILS/src/templates/staff/base_js.tt2:139
 msgid "Re-Using Permission Override Login in Batch"
-msgstr ""
+msgstr "Opětovní použití  přihlášení při dávkovém obejití oprávnění"
 
 #: ../../Open-ILS/src/templates/staff/share/t_eframe.tt2:4
 msgid "Re-embed"
@@ -8406,11 +8425,11 @@ msgstr "Znovu vložený"
 #. ("{{args.read_date | date:$root.egDateAndTimeFormat}}")
 #: ../../Open-ILS/src/templates/staff/circ/share/t_new_message_dialog.tt2:61
 msgid "Read on %1"
-msgstr ""
+msgstr "Přečteno  %1"
 
 #: ../../Open-ILS/src/templates/staff/serials/t_routing_list.tt2:64
 msgid "Reader (barcode):"
-msgstr "Čtenář (čáorvý kód)"
+msgstr "Čtenář (čárový kód)"
 
 #: ../../Open-ILS/src/templates/staff/circ/share/hold_strings.tt2:9
 msgid "Ready for Pickup"
@@ -8494,12 +8513,12 @@ msgstr "Naposledy zrušené rezervace"
 
 #: ../../Open-ILS/src/templates/staff/cat/z3950/t_list.tt2:135
 msgid "Record"
-msgstr ""
+msgstr "Záznam"
 
 #. ("{{local_overlay_target}}")
 #: ../../Open-ILS/src/templates/staff/cat/z3950/t_list.tt2:76
 msgid "Record %1 marked for overlay"
-msgstr ""
+msgstr "Záznam %1 byl označen pro přepsání"
 
 #: ../../Open-ILS/src/templates/staff/cat/bucket/record/index.tt2:2 ../../Open-ILS/src/templates/staff/navbar.tt2:285 ../../Open-ILS/src/templates/staff/t_splash.tt2:62
 msgid "Record Buckets"
@@ -8608,6 +8627,10 @@ msgstr "Obnovit"
 msgid "Refresh List"
 msgstr "Obnovit seznam"
 
+#: ../../Open-ILS/src/templates/staff/circ/patron/index.tt2:184
+msgid "Refresh Penalties"
+msgstr ""
+
 #: ../../Open-ILS/src/templates/staff/circ/patron/t_bills_list.tt2:44
 msgid "Refund"
 msgstr "Refundovat"
@@ -8638,7 +8661,7 @@ msgstr "Registrovaný čtenář"
 
 #: ../../Open-ILS/src/templates/staff/admin/workstation/t_splash.tt2:11
 msgid "Registered Workstations"
-msgstr "Registrovat pracovní stanici"
+msgstr "Registrované pracovní stanice"
 
 #: ../../Open-ILS/src/templates/staff/cat/share/t_marcedit.tt2:95
 msgid "Regl"
@@ -8704,7 +8727,7 @@ msgstr "Odstranit úroveň"
 
 #: ../../Open-ILS/src/templates/staff/circ/patron/t_messages.tt2:12
 msgid "Remove Note"
-msgstr ""
+msgstr "Odstranit poznámku"
 
 #: ../../Open-ILS/src/templates/staff/serials/t_prediction_wizard.tt2:405
 msgid "Remove Part"
@@ -8813,7 +8836,7 @@ msgstr "Změnit čárový kód"
 #. ("{{overlay_target.id}}")
 #: ../../Open-ILS/src/templates/staff/cat/z3950/t_overlay.tt2:20
 msgid "Replace record %1"
-msgstr ""
+msgstr "Nahradit záznam  %1"
 
 #: ../../Open-ILS/src/templates/staff/reporter/share/report_strings.tt2:40
 msgid "Report"
@@ -9374,7 +9397,7 @@ msgstr "Vybrat předplatné"
 msgid "Select the value, or cancel:"
 msgstr "Vyberte hodnotu nebo zrušte:"
 
-#: ../../Open-ILS/src/templates/staff/admin/workstation/t_splash.tt2:110 ../../Open-ILS/src/templates/staff/admin/workstation/t_splash.tt2:96
+#: ../../Open-ILS/src/templates/staff/admin/workstation/t_splash.tt2:108 ../../Open-ILS/src/templates/staff/admin/workstation/t_splash.tt2:122
 msgid "Select..."
 msgstr "Vyberte..."
 
@@ -9412,7 +9435,7 @@ msgstr "Poslat e-maily"
 
 #: ../../Open-ILS/src/templates/staff/circ/patron/t_edit.tt2:225
 msgid "Send Password Reset Link"
-msgstr ""
+msgstr "Odeslat odkaz pro obnovení hesla"
 
 #: ../../Open-ILS/src/templates/staff/circ/patron/t_edit.tt2:489
 msgid "Send Test Email"
@@ -9736,7 +9759,7 @@ msgstr "Čárový kód nebo seznam čárových kódů oddělených čárkou"
 
 #: ../../Open-ILS/src/templates/staff/circ/share/t_event_override_dialog.tt2:43
 msgid "Skip?"
-msgstr ""
+msgstr "Přeskočit?"
 
 #: ../../Open-ILS/src/templates/staff/circ/share/t_hold_shelf_dialog.tt2:74 ../../Open-ILS/src/templates/staff/circ/share/t_transit_dialog.tt2:73
 msgid "Slip Date:"
@@ -9819,7 +9842,7 @@ msgstr "Jaro"
 
 #: ../../Open-ILS/src/templates/staff/cat/share/t_marcedit.tt2:94
 msgid "SrTp"
-msgstr "TypP"
+msgstr "TypPokr"
 
 #: ../../Open-ILS/src/templates/staff/cat/share/t_marcedit.tt2:24
 msgid "Stack subfields"
@@ -9909,7 +9932,7 @@ msgstr "Stát"
 msgid "Statement"
 msgstr "Rozpis"
 
-#: ../../Open-ILS/src/templates/staff/cat/volcopy/t_attr_edit.tt2:505 ../../Open-ILS/src/templates/staff/cat/volcopy/t_defaults.tt2:262 ../../Open-ILS/src/templates/staff/circ/patron/index.tt2:198 ../../Open-ILS/src/templates/staff/circ/patron/t_edit.tt2:1131
+#: ../../Open-ILS/src/templates/staff/cat/volcopy/t_attr_edit.tt2:505 ../../Open-ILS/src/templates/staff/cat/volcopy/t_defaults.tt2:262 ../../Open-ILS/src/templates/staff/circ/patron/index.tt2:203 ../../Open-ILS/src/templates/staff/circ/patron/t_edit.tt2:1131
 msgid "Statistical Categories"
 msgstr "Statistické kategorie"
 
@@ -10023,7 +10046,7 @@ msgstr "Vytvořit poplatek"
 
 #: ../../Open-ILS/src/templates/staff/circ/patron/index.tt2:59
 msgid "Submitted request for password reset link to be sent via email."
-msgstr ""
+msgstr "Potvrzená žádost o obnovu hesla k odeslání e-mailem."
 
 #. ("{{ssub.id}}", "{{ssub.owning_lib.shortname()}}", "{{ssub.start_date | date:\"shortDate\"}}", "{{ssub.end_date | date:\"shortDate\"}}")
 #: ../../Open-ILS/src/templates/staff/serials/t_sub_selector.tt2:11
@@ -10115,7 +10138,7 @@ msgstr "Potlačit rezervace a přepravy"
 msgid "Survey"
 msgstr "Průzkum"
 
-#: ../../Open-ILS/src/templates/staff/circ/patron/index.tt2:208 ../../Open-ILS/src/templates/staff/circ/patron/t_edit.tt2:1186 ../../Open-ILS/src/templates/staff/circ/patron/t_surveys.tt2:1
+#: ../../Open-ILS/src/templates/staff/circ/patron/index.tt2:213 ../../Open-ILS/src/templates/staff/circ/patron/t_edit.tt2:1186 ../../Open-ILS/src/templates/staff/circ/patron/t_surveys.tt2:1
 msgid "Surveys"
 msgstr "Průzkumy"
 
@@ -10140,7 +10163,7 @@ msgstr "Kontrolní číslo záznamu (TCN)"
 #. ("{{local_overlay_target_tcn}}")
 #: ../../Open-ILS/src/templates/staff/cat/z3950/t_list.tt2:78 ../../Open-ILS/src/templates/staff/cat/z3950/t_overlay.tt2:21
 msgid "TCN %1"
-msgstr ""
+msgstr "TCN %1"
 
 #: ../../Open-ILS/src/templates/staff/cat/item/t_list.tt2:164
 msgid "TCN Source"
@@ -10232,7 +10255,7 @@ msgstr "Nepodařilo se odeslat testovací oznámení"
 msgid "Test Notification sent"
 msgstr "Testovací oznámení bylo odesláno"
 
-#: ../../Open-ILS/src/templates/staff/circ/patron/index.tt2:223
+#: ../../Open-ILS/src/templates/staff/circ/patron/index.tt2:228
 msgid "Test Password"
 msgstr "Testovat heslo"
 
@@ -10279,7 +10302,7 @@ msgstr ""
 "Průkaz použitý k načtení tohoto konta není aktivní a nemůže být použit k "
 "půjčování exemplářů."
 
-#: ../../Open-ILS/src/templates/staff/admin/workstation/t_splash.tt2:91
+#: ../../Open-ILS/src/templates/staff/admin/workstation/t_splash.tt2:103
 msgid ""
 "The default search library setting determines what library is searched from "
 "the advanced search screen and portal page by default. Manual selection of a "
@@ -10333,8 +10356,10 @@ msgid ""
 "The overlay target has changed from %1 (TCN %2) to %3 (TCN %4).  Continue "
 "with overlay of record %3?"
 msgstr ""
+"Cíl pro přepsání se změnil z  %1 (TCN %2) na %3 (TCN %4).  Chcete pokračovat "
+"a záznam %3 přepsat?"
 
-#: ../../Open-ILS/src/templates/staff/admin/workstation/t_splash.tt2:105
+#: ../../Open-ILS/src/templates/staff/admin/workstation/t_splash.tt2:117
 msgid ""
 "The preferred library is used to show copies and URIs regardless of the "
 "library searched. One recommendation is to set this to your workstation "
@@ -10518,7 +10543,7 @@ msgstr "Časový úsek je plný; vyberte prosím jiný čas"
 msgid "Timestamp"
 msgstr "Časové razítko"
 
-#: ../../Open-ILS/src/templates/staff/acq/requests/t_edit.tt2:157 ../../Open-ILS/src/templates/staff/admin/server/config/metabib_field.tt2:30 ../../Open-ILS/src/templates/staff/cat/bucket/batch_hold/t_event.tt2:18 ../../Open-ILS/src/templates/staff/cat/bucket/copy/t_pending.tt2:55 ../../Open-ILS/src/templates/staff/cat/bucket/copy/t_view.tt2:47 ../../Open-ILS/src/templates/staff/cat/bucket/record/t_pending.tt2:20 ../../Open-ILS/src/templates/staff/cat/bucket/record/t_search.tt2:46 ../../Open-ILS/src/templates/staff/cat/bucket/record/t_view.tt2:37 ../../Open-ILS/src/templates/staff/cat/catalog/t_conjoined_items.tt2:25 ../../Open-ILS/src/templates/staff/cat/catalog/t_holds.tt2:77 ../../Open-ILS/src/templates/staff/cat/item/t_list.tt2:91 ../../Open-ILS/src/templates/staff/cat/z3950/t_list.tt2:128 ../../Open-ILS/src/templates/staff/circ/checkin/t_checkin_table.tt2:98 ../../Open-ILS/src/templates/staff/circ/holds/t_pull_list.tt2:109 ../../Open-ILS/src/templates/staff/circ/holds/t_shelf_list.tt2:78 ../../Open-ILS/src/templates/staff/circ/in_house_use/index.tt2:86 ../../Open-ILS/src/templates/staff/circ/patron/t_bill_history_payments.tt2:22 ../../Open-ILS/src/templates/staff/circ/patron/t_bill_history_payments.tt2:59 ../../Open-ILS/src/templates/staff/circ/patron/t_bill_history_xacts.tt2:26 ../../Open-ILS/src/templates/staff/circ/patron/t_bills_list.tt2:75 ../../Open-ILS/src/templates/staff/circ/patron/t_checkout.tt2:138 ../../Open-ILS/src/templates/staff/circ/patron/t_holds_list.tt2:68 ../../Open-ILS/src/templates/staff/circ/patron/t_items_out.tt2:99 ../../Open-ILS/src/templates/staff/circ/patron/t_xact_details.tt2:11 ../../Open-ILS/src/templates/staff/circ/renew/t_renew.tt2:123 ../../Open-ILS/src/templates/staff/circ/share/t_hold_note_dialog.tt2:28 ../../Open-ILS/src/templates/staff/circ/share/t_precat_dialog.tt2:17 ../../Open-ILS/src/templates/staff/circ/transits/t_list.tt2:59 ../../Open-ILS/src/templates/staff/share/print_templates/t_hold_pull_list.tt2:24 ../../Open-ILS/src/templates/staff/share/print_templates/t_hold_shelf_list.tt2:32
+#: ../../Open-ILS/src/templates/staff/acq/requests/t_edit.tt2:157 ../../Open-ILS/src/templates/staff/admin/server/config/metabib_field.tt2:30 ../../Open-ILS/src/templates/staff/cat/bucket/batch_hold/t_event.tt2:18 ../../Open-ILS/src/templates/staff/cat/bucket/copy/t_pending.tt2:56 ../../Open-ILS/src/templates/staff/cat/bucket/copy/t_view.tt2:49 ../../Open-ILS/src/templates/staff/cat/bucket/record/t_pending.tt2:20 ../../Open-ILS/src/templates/staff/cat/bucket/record/t_search.tt2:46 ../../Open-ILS/src/templates/staff/cat/bucket/record/t_view.tt2:37 ../../Open-ILS/src/templates/staff/cat/catalog/t_conjoined_items.tt2:25 ../../Open-ILS/src/templates/staff/cat/catalog/t_holds.tt2:77 ../../Open-ILS/src/templates/staff/cat/item/t_list.tt2:91 ../../Open-ILS/src/templates/staff/cat/z3950/t_list.tt2:128 ../../Open-ILS/src/templates/staff/circ/checkin/t_checkin_table.tt2:98 ../../Open-ILS/src/templates/staff/circ/holds/t_pull_list.tt2:109 ../../Open-ILS/src/templates/staff/circ/holds/t_shelf_list.tt2:78 ../../Open-ILS/src/templates/staff/circ/in_house_use/index.tt2:86 ../../Open-ILS/src/templates/staff/circ/patron/t_bill_history_payments.tt2:22 ../../Open-ILS/src/templates/staff/circ/patron/t_bill_history_payments.tt2:59 ../../Open-ILS/src/templates/staff/circ/patron/t_bill_history_xacts.tt2:26 ../../Open-ILS/src/templates/staff/circ/patron/t_bills_list.tt2:75 ../../Open-ILS/src/templates/staff/circ/patron/t_checkout.tt2:138 ../../Open-ILS/src/templates/staff/circ/patron/t_holds_list.tt2:68 ../../Open-ILS/src/templates/staff/circ/patron/t_items_out.tt2:99 ../../Open-ILS/src/templates/staff/circ/patron/t_xact_details.tt2:11 ../../Open-ILS/src/templates/staff/circ/renew/t_renew.tt2:123 ../../Open-ILS/src/templates/staff/circ/share/t_hold_note_dialog.tt2:28 ../../Open-ILS/src/templates/staff/circ/share/t_precat_dialog.tt2:17 ../../Open-ILS/src/templates/staff/circ/transits/t_list.tt2:59 ../../Open-ILS/src/templates/staff/share/print_templates/t_hold_pull_list.tt2:24 ../../Open-ILS/src/templates/staff/share/print_templates/t_hold_shelf_list.tt2:32
 msgid "Title"
 msgstr "Název"
 
@@ -10582,7 +10607,7 @@ msgstr "Dnes + 7 dní"
 
 #: ../../Open-ILS/src/templates/staff/cat/bucket/record/t_merge_records.tt2:25
 msgid "Toggle Holdings Display"
-msgstr "Sbalit zobrazení jednotek"
+msgstr "Rozbalit/sbalit zobrazení jednotek"
 
 #: ../../Open-ILS/src/templates/staff/navbar.tt2:19
 msgid "Toggle navigation"
@@ -10817,7 +10842,7 @@ msgstr "Přeprava:"
 msgid "Triggered Events"
 msgstr "Spuštěné události"
 
-#: ../../Open-ILS/src/templates/staff/circ/patron/index.tt2:188
+#: ../../Open-ILS/src/templates/staff/circ/patron/index.tt2:193
 msgid "Triggered Events / Notifications"
 msgstr "Spuštěné události/upozornění"
 
@@ -10930,7 +10955,7 @@ msgstr "Odpojit spojené jednotky"
 
 #: ../../Open-ILS/src/templates/staff/circ/share/t_new_message_dialog.tt2:64
 msgid "Unread"
-msgstr ""
+msgstr "Nepřečtené"
 
 #: ../../Open-ILS/src/templates/staff/circ/patron/bucket/t_update_all.tt2:41 ../../Open-ILS/src/templates/staff/circ/patron/bucket/t_update_all.tt2:57 ../../Open-ILS/src/templates/staff/circ/patron/bucket/t_update_all.tt2:73 ../../Open-ILS/src/templates/staff/reporter/share/report_strings.tt2:142
 msgid "Unset"
@@ -11207,7 +11232,7 @@ msgstr "ID uživatele: %1"
 msgid "User Not Found"
 msgstr "Uživatel nenalezen"
 
-#: ../../Open-ILS/src/templates/staff/admin/user_perms.tt2:2 ../../Open-ILS/src/templates/staff/circ/patron/index.tt2:218 ../../Open-ILS/src/templates/staff/navbar.tt2:516
+#: ../../Open-ILS/src/templates/staff/admin/user_perms.tt2:2 ../../Open-ILS/src/templates/staff/circ/patron/index.tt2:223 ../../Open-ILS/src/templates/staff/navbar.tt2:516
 msgid "User Permission Editor"
 msgstr "Editor uživatelských oprávnění"
 
@@ -11271,7 +11296,7 @@ msgstr "Zobrazit historii výpůjček?"
 msgid "View Holds"
 msgstr "Zobrazit rezervace"
 
-#: ../../Open-ILS/src/templates/staff/cat/share/t_replace_barcode.tt2:45
+#: ../../Open-ILS/src/templates/staff/cat/share/t_replace_barcode.tt2:46
 msgid "View Item Details"
 msgstr "Zobrazit detaily exempláře"
 
@@ -11309,7 +11334,7 @@ msgstr "Zobrazit historii výpůjček"
 
 #: ../../Open-ILS/src/templates/staff/circ/holds/t_pull_list.tt2:4
 msgid "View pull list for: "
-msgstr ""
+msgstr "Zobrazit seznam pro vyzvednutí pro: "
 
 #: ../../Open-ILS/src/templates/staff/cat/volcopy/t_attr_edit.tt2:499
 msgid "View/Edit Item Tags"
@@ -11383,22 +11408,30 @@ msgstr "Varování"
 #: ../../Open-ILS/src/templates/staff/offline-interface.tt2:624
 msgid "Warning: Barcode %2 was flagged Barred in block list downloaded %1."
 msgstr ""
+"Varování: Čárový kód %2 byl  ve staženém seznamu blokovaných účtů %1 označen "
+"jako účet s omezenými transakcemi."
 
 #. ("{{formatted_date}}", "{{pbarcode}}")
 #: ../../Open-ILS/src/templates/staff/offline-interface.tt2:623
 msgid "Warning: Barcode %2 was flagged Expired in block list downloaded %1."
 msgstr ""
+"Varování: Čárový kód %2 byl  ve staženém seznamu blokovaných účtů   %1 "
+"označen jako s účet s prošlou registrací"
 
 #. ("{{formatted_date}}", "{{pbarcode}}")
 #: ../../Open-ILS/src/templates/staff/offline-interface.tt2:622
 msgid "Warning: Barcode %2 was flagged Lost in block list downloaded %1."
 msgstr ""
+"Varování: Čárový kód %2 byl ve staženém seznamu blokovaných účtů %1 označen "
+"jako ztracený průkaz."
 
 #. ("{{formatted_date}}", "{{pbarcode}}")
 #: ../../Open-ILS/src/templates/staff/offline-interface.tt2:621
 msgid ""
 "Warning: Barcode %2 was flagged with penalties in block list downloaded %1."
 msgstr ""
+"Varování: Čárový kód %2 byl ve staženém  seznamu blokovaných účtů  %1 "
+"označen jako účet s nevyřízenými pokutami."
 
 #: ../../Open-ILS/src/templates/staff/circ/share/t_mark_damaged.tt2:12
 msgid "Was returned "
@@ -11449,7 +11482,7 @@ msgid "Weights Association"
 msgstr "Asociace vah"
 
 #. ("{{current_location.name}}")
-#: ../../Open-ILS/src/templates/staff/share/print_templates/t_checkin.tt2:14 ../../Open-ILS/src/templates/staff/share/print_templates/t_checkout.tt2:40 ../../Open-ILS/src/templates/staff/share/print_templates/t_holds_for_patron.tt2:14 ../../Open-ILS/src/templates/staff/share/print_templates/t_items_out.tt2:36 ../../Open-ILS/src/templates/staff/share/print_templates/t_renew.tt2:21
+#: ../../Open-ILS/src/templates/staff/share/print_templates/t_bills_historical.tt2:45 ../../Open-ILS/src/templates/staff/share/print_templates/t_checkin.tt2:14 ../../Open-ILS/src/templates/staff/share/print_templates/t_checkout.tt2:40 ../../Open-ILS/src/templates/staff/share/print_templates/t_holds_for_patron.tt2:14 ../../Open-ILS/src/templates/staff/share/print_templates/t_items_out.tt2:36 ../../Open-ILS/src/templates/staff/share/print_templates/t_renew.tt2:21
 msgid "Welcome to %1"
 msgstr "Vítejte v  %1"
 
@@ -11662,6 +11695,10 @@ msgstr "Nemáte oprávnění pro předkatalogizaci tohoto čárového kódu."
 msgid "You do not have sufficient permissions to view this page"
 msgstr "K zobrazení této stránky nemáte dostatečné oprávnění"
 
+#: ../../Open-ILS/src/templates/staff/share/print_templates/t_bills_historical.tt2:46
+msgid "You had the following bills:"
+msgstr ""
+
 #: ../../Open-ILS/src/templates/staff/reporter/share/report_strings.tt2:128
 msgid ""
 "You have already added this field. Click OK if you would like to reset this "
@@ -11840,7 +11877,7 @@ msgstr "Možnosti potvrzení"
 
 #: ../../Open-ILS/src/templates/staff/cat/share/t_marcedit.tt2:78
 msgid "s_l"
-msgstr ""
+msgstr "Konv"
 
 #: ../../Open-ILS/src/templates/staff/serials/t_sub_selector.tt2:7
 msgid "select subscription to work on"
@@ -11881,649 +11918,3 @@ msgstr "počet položek:  {}"
 #: ../../Open-ILS/src/templates/staff/cat/bucket/batch_hold/t_bucket_info.tt2:8
 msgid "{} users"
 msgstr "{} uživatelé"
-
-#~ msgid ""
-#~ "\n"
-#~ "          There is an open circulation on the requested item.  \n"
-#~ "          This copy was checked out by another patron on %1.\n"
-#~ "          "
-#~ msgstr ""
-#~ "\n"
-#~ "          Požadovaná jednotka  je již vypůjčena.  \n"
-#~ "          Exemplář  si vypůjčil jiný čtenář  %1.\n"
-#~ "          "
-
-#~ msgid "Actions for Catalogers"
-#~ msgstr "Akce pro katalogizátory"
-
-#~ msgid "Abort Transits"
-#~ msgstr "Zrušení přepravy"
-
-#~ msgid "Abort {{num_transits}} transits?"
-#~ msgstr "Zrušit {{num_transits}} přepravy?"
-
-#~ msgid "Alert Msg"
-#~ msgstr "Upozornění"
-
-#~ msgid "Abort Transit then Checkout"
-#~ msgstr "Zrušit přepravu, pak půjčit"
-
-#~ msgid "(print)"
-#~ msgstr "(tisk)"
-
-#~ msgid "Applied On"
-#~ msgstr "Aplikováno"
-
-#~ msgid "Archived Penalties / Messages"
-#~ msgstr "Archivované blokace / zprávy"
-
-#~ msgid "Archive Penalty / Message"
-#~ msgstr "Archivovat blokaci/ zprávu"
-
-#~ msgid "Apply Standing Penalty / Message"
-#~ msgstr "Vytvořit blokaci / zprávu"
-
-#~ msgid "Apply Penalty / Message"
-#~ msgstr "Vytvořit blokaci / zprávu"
-
-#~ msgid "Collapse ... Reload to restore"
-#~ msgstr "Sbalit ... znovu načíst pro obnovení"
-
-#~ msgid "Copies"
-#~ msgstr "Exempláře"
-
-#~ msgid "Copy"
-#~ msgstr "Exemplář"
-
-#~ msgid "Copy \"%1\" was mis-scanned or is not cataloged"
-#~ msgstr "Exemplář \"%1\" byl špatně načten nebo není zkatalogizován"
-
-#~ msgid "Copy #"
-#~ msgstr "Exemplář č."
-
-#~ msgid "Configure Columns"
-#~ msgstr "Nastavit sloupce"
-
-#~ msgid "Copy Alert Message for \"%1\""
-#~ msgstr "Upozornění pro exemplář \"%1\""
-
-#~ msgid "Copy Buckets"
-#~ msgstr "Skupiny exemplářů"
-
-#~ msgid "Copy In Transit"
-#~ msgstr "Exemplář v přepravě"
-
-#~ msgid "Copy is In-Transit"
-#~ msgstr "Exemplář je v přepravě"
-
-#~ msgid "Copy Updated"
-#~ msgstr "Exemplář upraven"
-
-#~ msgid "Copy Status: %1"
-#~ msgstr "Status exempláře: %1"
-
-#~ msgid "Copy Not Found"
-#~ msgstr "Exemplář nenalezen"
-
-#~ msgid "Copy Not Available."
-#~ msgstr "Exemplář není dostupný"
-
-#~ msgid "Created on %1"
-#~ msgstr "Vytvořeno %1"
-
-#~ msgid "Created {{bucket().create_time() | date}}"
-#~ msgstr "Vyvtvořeno {{bucket().create_time() | date}}"
-
-#~ msgid "Current Copy Location"
-#~ msgstr "Umístění aktuálního exempláře"
-
-#~ msgid "Delete Selected Copies from Catalog"
-#~ msgstr "Smazat vybrané exempláře z katalogu"
-
-#~ msgid "Download CSV"
-#~ msgstr "Stáhnout CSV"
-
-#~ msgid "Force Copy Quality"
-#~ msgstr "Vynutit kvalitu exempláře"
-
-#~ msgid "Hold for patron %1, %2 %3"
-#~ msgstr "Rezervace pro čtenáře  %1, %2 %3"
-
-#~ msgid ""
-#~ "If overridden, subsequent checkouts during this patron's \n"
-#~ " session will auto-override this event"
-#~ msgstr ""
-#~ "Pokud budete přesto pokračovat, následné výpůjčky během \n"
-#~ "relace tohoto čtenáře automaticky potlačí tuto událost."
-
-#~ msgid "Library"
-#~ msgstr "Knihovna"
-
-#~ msgid "Local Prefs"
-#~ msgstr "Lokální preference"
-
-#~ msgid "Loading... %1"
-#~ msgstr "Načítám ... %1"
-
-#~ msgid "Load Shared Bucket Bucket by ID"
-#~ msgstr "Načíst sdílenou skupinu pomocí ID"
-
-#~ msgid "Messages"
-#~ msgstr "Zprávy"
-
-#~ msgid "Modify Penalty / Message"
-#~ msgstr "Upravit upozornění/blokaci"
-
-#~ msgid "Network Connection Status"
-#~ msgstr "Status síťového připojení"
-
-#~ msgid "Paid for Selected:"
-#~ msgstr "Za vybrané zaplaceno:"
-
-#~ msgid "Penalties"
-#~ msgstr "Pokuty"
-
-#~ msgid "Pending Copies"
-#~ msgstr "Nevyřízené exempláře"
-
-#~ msgid "Penalty Type"
-#~ msgstr "Typ pokuty"
-
-#~ msgid "Potential Copies"
-#~ msgstr "Potenciální exempláře"
-
-#~ msgid "Print CSV"
-#~ msgstr "Vytisknout CSV"
-
-#~ msgid "Print/Store Connection Status"
-#~ msgstr "Vytisknout/uložit status připojení"
-
-#~ msgid "Publicly Visible?"
-#~ msgstr "Viditelné veřejně?"
-
-#~ msgid "Record with TCN %1 marked for overlay."
-#~ msgstr "Záznam s TCN %1 byl označen pro přepsání."
-
-#~ msgid "Remote Prefs"
-#~ msgstr "Vzdálené preference"
-
-#~ msgid "Remove Penalty / Message"
-#~ msgstr "Odstranit pokutu/zprávu"
-
-#~ msgid "Replace TCN %1 ..."
-#~ msgstr "Nahradit TCN %1 ..."
-
-#~ msgid "Search for Copies by Barcode"
-#~ msgstr "Hledat exempláře podle čárového kódu"
-
-#~ msgid "Select Row"
-#~ msgstr "Vyberte řádek"
-
-#~ msgid "Set Desired Copy Quality"
-#~ msgstr "Nastavit požadovanou kvalitu exempláře"
-
-#~ msgid "Show empty volumes"
-#~ msgstr "Zobrazit prázdné signatury"
-
-#~ msgid "Show copy detail"
-#~ msgstr "Zobrazit detaily exempláře"
-
-#~ msgid "Sort"
-#~ msgstr "Seřadit"
-
-#~ msgid "Show volume detail"
-#~ msgstr "Zobrazit detaily sigantury"
-
-#~ msgid "Staff-Generated Penalties / Messages"
-#~ msgstr "Pokuty / zprávy generované personálem"
-
-#~ msgid "Succes testing credentials"
-#~ msgstr "Úspěšný test ověření"
-
-#~ msgid "There is an open transit on copy %1"
-#~ msgstr "Exemplář y %1 je právě v v přepravě"
-
-#~ msgid "Add To New Bucket"
-#~ msgstr "Přidat do nové skupiny"
-
-#~ msgid "Add To Selected Bucket"
-#~ msgstr "Přidat do vybrané skupiny"
-
-#~ msgid "Add/Edit Copy Notes"
-#~ msgstr "Přidat/Upravit poznámky k exemplářům"
-
-#~ msgid ""
-#~ "Are you sure you want to transfer selected items to the marked volume?"
-#~ msgstr "Opravdu chcet přesunout vybrané položky k odznačené signatuře?"
-
-#~ msgid "Allow Call Number attributes in Copy Templates"
-#~ msgstr "Povolit v exemplářových šablonách atributy signatury"
-
-#~ msgid "Always display Volume/Copy Detail pane"
-#~ msgstr "Vždy zobrazit panel s detaily signatur/exemplářů"
-
-#~ msgid "Circulation Modifer"
-#~ msgstr "Modifikátor výpůjčky"
-
-#~ msgid "Copy Attributes"
-#~ msgstr "Vlastnosti exempláře"
-
-#~ msgid "Copy Notes are Public"
-#~ msgstr "Poznámky o exempláři jsou veřejné"
-
-#~ msgid "Copy Notes"
-#~ msgstr "Poznámky o exempláři"
-
-#~ msgid "Copy Templates"
-#~ msgstr "Šablony exemplářů"
-
-#~ msgid "Copy display"
-#~ msgstr "Zobrazení exempláře"
-
-#~ msgid "Edit Selected Copies"
-#~ msgstr "Upravit vybrané exempláře"
-
-#~ msgid "Existing Copy Notes"
-#~ msgstr "Existující poznámky k exempláři"
-
-#~ msgid "Hide Copy Attributes"
-#~ msgstr "Skrýt vlastnosti exempláře"
-
-#~ msgid "Hide Volume/Copy Details"
-#~ msgstr "Skrýt detaily signatury/exempláře"
-
-#~ msgid "Empty Volumes"
-#~ msgstr "Prázdné signatury"
-
-#~ msgid "Lead record"
-#~ msgstr "Řídící záznam"
-
-#~ msgid "Items to Previously Marked Volume"
-#~ msgstr "Exempláře k dříve označené signatuře"
-
-#~ msgid "Library as Volume Transfer Destination"
-#~ msgstr "Knihovna jako cíl přesunu signatury"
-
-#~ msgid "Name of existing bucket"
-#~ msgstr "Jméno existující skupiny"
-
-#~ msgid "New Copy Note"
-#~ msgstr "Nová poznámka k exempláři"
-
-#~ msgid "Name For New Bucket"
-#~ msgstr "Jméno nové skupiny"
-
-#~ msgid "Permanently delete selected copies and/or volumes from catalog?"
-#~ msgstr "Chcete  vybrané exempláře a/nebo signatury trvale smazat z katalogu?"
-
-#~ msgid "Print Spine Labels"
-#~ msgstr "Vytisknout hřbetní štítky"
-
-#~ msgid "Please select a lead record from the right..."
-#~ msgstr "Prosím, zvolte řídící záznam z ..."
-
-#~ msgid "Records to merge into lead"
-#~ msgstr "Záznam, který má být sloučen s řídícím záznamem"
-
-#~ msgid "Request Selected Copies"
-#~ msgstr "Vyžádat vybrané exempláře"
-
-#~ msgid "Show Copy Attributes"
-#~ msgstr "Zobrazit vlastnosti exempláře"
-
-#~ msgid "Show Volume/Copy Details"
-#~ msgstr "Zobrazit detaily signatury/exempláře"
-
-#~ msgid "Transfer Selected Copies to Marked Volume"
-#~ msgstr "Přesunout vybrané exempláře k označené signatuře?"
-
-#~ msgid "Total Paid:"
-#~ msgstr "Zaplaceno celkem:"
-
-#~ msgid "Unable to checkout copy \"%1\" : %2"
-#~ msgstr "Nelze vypůjčit exemplář  \"%1\" : %2"
-
-#~ msgid "Unlink selected conjoined copies?"
-#~ msgstr "Odpojit vybrané spojené exempláře?"
-
-#~ msgid "Value..."
-#~ msgstr "Hodnota ..."
-
-#~ msgid "Volumes"
-#~ msgstr "Signatury"
-
-#~ msgid "Volumes and Copies"
-#~ msgstr "Signatury a exempláře"
-
-#~ msgid "Volume Transfer"
-#~ msgstr "Přesun signatury"
-
-#~ msgid "Volume/Copy Editor"
-#~ msgstr "Editor signatur / exmplářů"
-
-#~ msgid "Volume Attributes"
-#~ msgstr "Vlastnosti signatury"
-
-#~ msgid "Waiting for Copy"
-#~ msgstr "Čekání na exemplář"
-
-#~ msgid "Volumes to Previously Marked Library"
-#~ msgstr "Signatury do předem označené knihovny"
-
-#~ msgid "Volume/Copy Detail defaults"
-#~ msgstr "Výchozí nastavení pro detaily signatury/exempláře"
-
-#~ msgid "Volume as Item Transfer Destination"
-#~ msgstr "Signatura jak cíl přesunu položky"
-
-#~ msgid "Will delete {{copies}} copies and {{volumes}} volumes"
-#~ msgstr "Smaže {{copies}} exempláře a  {{volumes}} signatury"
-
-#~ msgid "Copies to Previously Marked Library"
-#~ msgstr "Exempláře do předem označené knihovny"
-
-#~ msgid "Choose Library for Volume/Copy Transfer Destination"
-#~ msgstr "Zvolte knihovnu  jako cíl přesunu signatury/exempláře"
-
-#~ msgid "Choose volume transfer target"
-#~ msgstr "Zvolte cíl přesunu signatury"
-
-#~ msgid "Completed Copies"
-#~ msgstr "Hotové exemáře"
-
-#~ msgid "Edit volumes"
-#~ msgstr "Upravit  signatury"
-
-#~ msgid "Edit volumes and copies"
-#~ msgstr "Upravit signatury a exempláře"
-
-#~ msgid "Display defaults for Working Copy tab"
-#~ msgstr "Zobrazit výchozí hodnoty pro tabulku zpracovávaných exemplářů"
-
-#~ msgid "Display defaults for Completed Copies tab"
-#~ msgstr "Zobrazit výchozí hodnoty pro tabulku hotových exemplářů"
-
-#~ msgid "Volumes to Previously Marked Record"
-#~ msgstr "Signatury k předem označeným záznamům"
-
-#~ msgid "Volumes to Previously Marked Record and Library"
-#~ msgstr "Signatury k předem označenému záznamu a knihovně"
-
-#~ msgid "Working Copies"
-#~ msgstr "Zpracovávané exempláře"
-
-#~ msgid "Row Selector Column"
-#~ msgstr "Sloupec výběru řádků"
-
-#~ msgid "Will unlink {{peers}} copies"
-#~ msgstr "Odpojí {{propojené}} exempláře"
-
-#~ msgid "Abort %1 transits?"
-#~ msgstr "Zrušit  %1 přepravy?"
-
-#~ msgid "Abort Transits and Reset Associated Holds"
-#~ msgstr "Zrušit přepravu a vynulovat připojené rezervace"
-
-#~ msgid "Abort Transit"
-#~ msgstr "Zrušit přepravu"
-
-#~ msgid "Abort 1 transit?"
-#~ msgstr "Zrušit 1 přepravu?"
-
-#~ msgid "Copy Statuses"
-#~ msgstr "Statuty exemplářů"
-
-#~ msgid "Item Transfer Target set"
-#~ msgstr "Sada cílů pro přesun exemplářů"
-
-#~ msgid "Search catalog for..."
-#~ msgstr "Hledat v katalogu ..."
-
-#~ msgid "Volume Transfer Target set"
-#~ msgstr "Sada cílů pro přesun signatur"
-
-#~ msgid "Volume(s) transfered"
-#~ msgstr "Signatury přesunuty"
-
-#~ msgid "Volumes and Items"
-#~ msgstr "Signatury a exempláře"
-
-#~ msgid "Add Volumes"
-#~ msgstr "Přidat signatury"
-
-#~ msgid "Booking: Create or Cancel Reservations"
-#~ msgstr "Rezervace zdrojů: Vytvořit nebo zrušit rezervaci"
-
-#~ msgid "Copy Local Storage Settings To Hatch"
-#~ msgstr "Kopírovat nastavení lokálního úložiště do Hatch"
-
-#~ msgid "Copy Hatch Settings To Local Storage"
-#~ msgstr "Kopírovat nastavena Hatche do lokálního úložiště"
-
-#~ msgid "Edit Volume/Copy Templates"
-#~ msgstr "Upravit šablony signatury/exempláře"
-
-#~ msgid "Deleted volume/copy template"
-#~ msgstr "Smazat šablonu signatury/exempláře"
-
-#~ msgid "My Selection Lists"
-#~ msgstr "Moje akviziční seznamy"
-
-#~ msgid "Number of Copies"
-#~ msgstr "Počet kopií"
-
-#~ msgid "Open Invoices"
-#~ msgstr "Otevřít faktury"
-
-#~ msgid "Print / Storage Service (\"Hatch\")"
-#~ msgstr "Služba pro tisk a úložiště (\"Hatch\")"
-
-#~ msgid "Patron Alert Message"
-#~ msgstr "Upozornění pro čtenáře"
-
-#~ msgid "Print/Storage Service (\"Hatch\")"
-#~ msgstr "Služba pro tisk/úložiště (\"Hatch\")"
-
-#~ msgid "Saved volume/copy template(s)"
-#~ msgstr "Uložené šablony signatur/exemplářů"
-
-#~ msgid "Store Local Settings in Hatch"
-#~ msgstr "Uložit lokání nastavení v Hatchi"
-
-#~ msgid "Store Offline Transaction Data in Hatch"
-#~ msgstr "Uložit data offline transakcí v Hatchi"
-
-#~ msgid "Copy Circ Lib ID"
-#~ msgstr "ID výpůjční knihovny exempláře"
-
-#~ msgid "Shelving Location Label"
-#~ msgstr "Označení umístění"
-
-#~ msgid "Copy Number"
-#~ msgstr "Číslo exempláře"
-
-#~ msgid "Add volume"
-#~ msgstr "Přidat signaturu"
-
-#~ msgid "Evergreen Staff %1"
-#~ msgstr "Služební klient Evergreenu  %1"
-
-#~ msgid "{{username}} @ {{workstation}}"
-#~ msgstr "{{username}} @ {{workstation}}"
-
-#~ msgid "Far Right"
-#~ msgstr "Zcela vpravo"
-
-#~ msgid "Far Left"
-#~ msgstr "Úplně vlevo"
-
-#~ msgid "Move column far left"
-#~ msgstr "Přesunout sloupec úplně vlevo"
-
-#~ msgid "Move column right"
-#~ msgstr "Přesunout sloupec doprava"
-
-#~ msgid "Move column far right"
-#~ msgstr "Přesunout sloupec úplně doprava"
-
-#~ msgid "Move column left"
-#~ msgstr "Přesunout sloupec doleva"
-
-#~ msgid "Add copy stream"
-#~ msgstr "Přidat řadu exemplářü"
-
-#~ msgid "Barcode is reported Lost"
-#~ msgstr "Tento čárový kóď byl nahlášen jako ztracený"
-
-#~ msgid "Copy Stream"
-#~ msgstr "Kopírovat řadu exemplářů"
-
-#~ msgid "Patron account is Expired"
-#~ msgstr "Skončila platnost registrace"
-
-#~ msgid "Patron account is Barred"
-#~ msgstr "Čtenářské konto je blokováno"
-
-#~ msgid "Patron has penalties"
-#~ msgstr "Čtenář má blokace/penále"
-
-#~ msgid "Serial Copy Templates"
-#~ msgstr "Šablona pro jednotku seriálu"
-
-#~ msgid "Staff Sharable?"
-#~ msgstr "Lze sdílet s personálem?"
-
-#~ msgid ""
-#~ "The difference between the nominal publishing date of an issue and the date "
-#~ "that you expect to receive your copy."
-#~ msgstr ""
-#~ "Rozdíl mezi nominálním datem publikování čísla a datem očekávaného přijetí "
-#~ "exempláře"
-
-#~ msgid "Unprocessed offline transactions waiting for upload"
-#~ msgstr "Nezpracované offline transakce čekající na nahrádní"
-
-#~ msgid "Add/Edit Copy Tags"
-#~ msgstr "Přidat/upravit tag exempláře"
-
-#~ msgid "Apply Copy Tags"
-#~ msgstr "Použít tag exempláře"
-
-#~ msgid "Copy Tags"
-#~ msgstr "Tagy exemplářů"
-
-#~ msgid "Copy Tag Types"
-#~ msgstr "Typy tagů exemplářů"
-
-#~ msgid "Manage Copy Tags"
-#~ msgstr "Spravovat tagy exempláře"
-
-#~ msgid "Display Alert and Messages"
-#~ msgstr "Zobrazit upozornění a zprávy"
-
-#~ msgid "Copy Alert"
-#~ msgstr "Upozornění k exempláři"
-
-#~ msgid "Add New Note"
-#~ msgstr "Přidat novou poznámku"
-
-#~ msgid "Copy location"
-#~ msgstr "Umístění"
-
-#~ msgid "Remove Selected Copies from Bucket"
-#~ msgstr "Odstranit vybrané exempláře ze skupiny"
-
-#~ msgid "Copy Alerts"
-#~ msgstr "Upozornění k exempláři"
-
-#~ msgid "Copy was marked claims never checked out"
-#~ msgstr "Exemplář byl označen jako údajně nikdy nevypůjčený"
-
-#~ msgid "Copy alerts"
-#~ msgstr "Upozornění k exemplářům"
-
-#~ msgid "Add Copy Alert"
-#~ msgstr "Přidat upozornění k exempláři"
-
-#~ msgid "Add/Edit Copy Alerts"
-#~ msgstr "Přidat/editovat poznámky k exempláři"
-
-#~ msgid "Add Copy Alerts"
-#~ msgstr "Přidat upozornění k exempláři"
-
-#~ msgid "Copy was marked claims returned"
-#~ msgstr "Exemplář byl označen jako údajně vrácený"
-
-#~ msgid "Copy was marked damaged"
-#~ msgstr "Exemplář byl označen jako poškozený"
-
-#~ msgid "Copy was marked lost"
-#~ msgstr "Exemplář byl označen jako ztracený"
-
-#~ msgid "Copy was marked long overdue"
-#~ msgstr "Exemplář byl označen jako dlouhodobě nevrácený"
-
-#~ msgid "Existing Copy Alerts"
-#~ msgstr "Existující upozornění k exempláři"
-
-#~ msgid "Manage Copy Alerts"
-#~ msgstr "Spravovat upozornění k exempláři"
-
-#~ msgid "New Copy Alert"
-#~ msgstr "Nové upozornění k exempláři"
-
-#~ msgid "Next copy status"
-#~ msgstr "Nový statu exempláře"
-
-#~ msgid "Copy was marked missing"
-#~ msgstr "Exemplář byl označek jako postrádaný"
-
-#~ msgid "Copy was marked lost and paid for"
-#~ msgstr "Exemplář byl označen jako ztracený a zaplacený"
-
-#~ msgid "Next copy status: "
-#~ msgstr "Následující status exempláře: "
-
-#~ msgid "# Copies"
-#~ msgstr "Počet kopií"
-
-#~ msgid "Add Copies"
-#~ msgstr "Přidat exempláře"
-
-#~ msgid "%1, %2 %3 (Preferred)"
-#~ msgstr "%1, %2 %3 (Preferované)"
-
-#~ msgid "Empty Call Numbers"
-#~ msgstr "Prázdné signatury"
-
-#~ msgid "Staff Catalog (Experimental)"
-#~ msgstr "Katalog personálu (experimentální)"
-
-#~ msgid ""
-#~ "The overlay target has changed from %1 to %2.  Continue with overlay of "
-#~ "record %2?"
-#~ msgstr ""
-#~ "Cíl pro přepsání se změnil z  %1 na %2.  Pokračovat přepsáním záznamu  %2?"
-
-#~ msgid "Multiple modifiers"
-#~ msgstr "Více modifikátorů"
-
-#~ msgid "Penalties and Messages"
-#~ msgstr "Pokuty a zprávy"
-
-#~ msgid ""
-#~ "If 'Store Local Settings in Hatch' is enabled, use the 'Copy Hatch Settings "
-#~ "To Local Storage' button before disabling 'Store Local Settings in Hatch'"
-#~ msgstr ""
-#~ "Pokud je aktivováno  'Ukládat lokální nastavení v Hatchi', předtím, než "
-#~ "zrušíte 'Ukládat lokální nastavení v Hatchi', použijte tlačítko 'Kopírovat "
-#~ "nastavení Hatche do lokálního úložiště'"
-
-#~ msgid "Storing settings in Hatch is deprecated"
-#~ msgstr "Od ukládání nastavení v Hatchi bylo upuštěno"
-
-#~ msgid "Pertaining to %1, %2 %3 : %4"
-#~ msgstr "Poznámka ke čtenáři   %1, %2 %3 : %4"
-
-#~ msgid "%1 %2, %3 %4 %5 (Preferred)"
-#~ msgstr "%1 %2, %3 %4 %5 (Preferované)"
