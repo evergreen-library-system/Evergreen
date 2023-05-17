@@ -50,7 +50,7 @@ Patron stat cats can be used to keep track of information such as a patron's sch
 
 An example of the _Create a new statistical category_ controls for patrons:
 
-image::media/lsa-statcat-4.png[Create patron stat cat]
+image::stat_cat_editor/patron_stat_editor.png[Create patron stat cat]
 
 * _OPAC Visibility_:  Should the category be displayed in the OPAC?
 * _Required_:  Must the category be assigned a value when registering a new patron or editing an existing one?
