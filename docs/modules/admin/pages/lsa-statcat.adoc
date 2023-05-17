@@ -11,17 +11,6 @@ This is where you configure your statistical categories (stat cats).  Stat cats 
 
 Copy stat cats appear in the _Holdings Editor_. You might use copy stat cats to track books you have bought from a specific vendor, or donations.
 
-An example of the _Create a new statistical category_ controls for copies:
-
-image::stat_cat_editor/stat_cat_editor_copy.png[Create copy stat cat]
-
-[NOTE]
-======
-The _Focus Location_ will scope to the workstation you're logged in as in.
-
-_Copy Statistical Categories_ will automatically come up when accessing Statistical Category Editor.
-======
-
 Below that there is a list of existing stat cats:
 
 image::stat_cat_editor/stat_cat_editor_copy_list.png[List of existing stat cats]
@@ -34,7 +23,14 @@ image::stat_cat_editor/stat_cat_editor_copy_list.png[List of existing stat cats]
 
 Some sample copy stat cats:
 
-image::media/lsa-statcat-2.png[Sample copy stat cats]
+image::stat_cat_editor/stat_cat_editor_copy.png[Create copy stat cat]
+
+[NOTE]
+======
+The _Focus Location_ will scope to the workstation you're logged in as in.
+
+_Copy Statistical Categories_ will automatically come up when accessing Statistical Category Editor.
+======
 
 To add an entry, select _Add_.  Due to a known bug, individual entries for stat cats cannot be edited in the web client.  
 
