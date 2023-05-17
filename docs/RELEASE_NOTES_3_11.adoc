@@ -1,0 +1,571 @@
+= Evergreen 3_11 Release Notes =
+:toc:
+:numbered:
+:toclevels: 3
+
+== Upgrade notes ==
+
+== New Features ==
+
+:leveloffset: +2
+
+
+= Acquisitions =
+
+
+== Lineitem Detail Audit Table ==
+
+The default schema has added an audit table for the
+`acq.lineitem_detail` table.  The audit table is NOT created during
+database upgrade.  If you wish to add the audit table to your
+Evergreen installation, you can run the following SQL in your
+database:
+
+[source, sql]
+----
+SELECT acq.create_acq_auditor ( 'acq', 'lineitem_detail' );
+CREATE INDEX acq_lineitem_detail_hist_id_idx ON acq.acq_lineitem_detail_history( id );
+CREATE INDEX acq_lineitem_detail_hist_lineitem_idx ON acq.acq_lineitem_detail_history( lineitem );
+CREATE INDEX acq_lineitem_detail_hist_fund_debit_idx ON acq.acq_lineitem_detail_history( fund_debit );
+----
+
+
+
+= Administration =
+
+
+== Enhanced Concerto dataset ==
+
+An alternative sample dataset called "Enhanced Concerto" is now
+available. This dataset includes a more realistic organizational
+unit structure and additional data with which to test Evergreen
+functionality.
+
+The "Enhanced Concerto" dataset supports human-driven testing
+and community demonstrations. However, at present, automated
+tests, particularly the ones found in `Open-ILS/src/sql/Pg/live_t`
+and `Open-ILS/src/perlmods/live_t`, are not guaranteed to pass
+with the "Enhanced Concerto" dataset; instead, they remain targeted
+to working with the original "Concerto" dataset.
+
+=== Installing the dataset ===
+
+The dataset can be loaded when installing Evergreen by using the
+`--load-concerto-enhanced` option of `eg_db_config`. For example:
+
+[source,bash]
+----
+perl Open-ILS/src/support-scripts/eg_db_config --update-config \
+       --service all --create-database --create-schema --create-offline \
+       --user <user> --password <password> --hostname <hostname> --port <port> \
+       --database <dbname> --admin-user <admin-user> --admin-pass <admin-pass> \
+       --load-concerto-enhanced
+----
+
+The `--load-concerto-enhanced` switch is mutually exclusive with the
+`--load-all-sample` switch to load the full original "Concerto" dataset
+and the `--load-concerto` switch to load just the bibs, items, and
+authorities from the original "Concerto" dataset.
+
+=== Updating the dataset ===
+
+An experimental script called `make_concerto_from_evergreen_db.pl` is
+included to support
+
+* updating the dataset as Evergreen's schema evolves
+* incorporating changes to the dataset from a running Evergreen system
+
+The script compares data between different versions of an
+Evergreen database depending on how it is invoked. This script has known
+bugs and its output *must* be manually reviewed before being committed.
+
+
+== --pipe option for marc_export ==
+
+Add a --pipe option to marc_export to force reading of record ids from
+standard input when one or more of the --library, or
+--descendants options are used.  This permits more flexibility when
+exporting records with holdings for given libraries or subsets of a
+collection.
+
+It is an error to specify the --all or --since  and --pipe options in the same
+command line.
+
+
+[source]
+--------
+        --pipe
+
+Some examples:
+
+        --pipe --library BR1   [Filter the list of bib ids by those 
+                                with BR1 as the Owning Library]
+
+        --pipe --descendants BR1 [Filters the list of bib ids by those 
+                                  with BR1 or descendants as the Owning Library]
+
+--------
+
+
+== --strip option for marc_export ==
+
+The --strip option is used to suppress generation of specified elements
+from the marc_export output. The option, which can be specified more than
+once, is in one if these forms:
+
+[source]
+--------
+        --strip <field RE>/<subfield RE>
+        --strip /<subfield RE>
+        --strip <field RE>
+
+Some examples:
+
+        --strip 856/0   [Delete subfield 0's in fields with tag 856.]
+
+Regular expressions are accepted:
+
+        --strip 8../0   [Delete subfield 0's in fields with tag 800-899.]
+
+If the field is omitted, it is as if you specified "..." for the field RE.
+
+    --strip /0      [Delete subfield 0's in all fields.]
+    --strip /[abc]  [Delete subfield a, b or c in all fields.]
+
+If the slash and subfield are omitted, it means to delete the given fields.
+
+    -strip 856     [Delete fields with tag 856]
+
+If the slash is present, but the subfield is omitted, it means "all subfields"
+
+    --strip 856/    [Delete all subfields with tag 856]
+--------
+
+
+== Applying Missing Database Upgrades ==
+
+This patch fixes a situation where an Evergreen database that had
+been been upgraded to 3.6.0 at some point in its past using the
+3.5.1-3.6.0 DB update script may be missing some DB revisions.
+
+The following bugfixes are affected:
+
+    - https://bugs.launchpad.net/evergreen/+bug/1788260
+    - https://bugs.launchpad.net/evergreen/+bug/1908727
+    - https://bugs.launchpad.net/evergreen/+bug/1835127
+    - https://bugs.launchpad.net/evergreen/+bug/1910891
+    - https://bugs.launchpad.net/evergreen/+bug/1882825
+    - https://bugs.launchpad.net/evergreen/+bug/1096209
+
+
+== Improvements to Mapping Permissions to Groups ==
+
+The dialog to add permission mappings to a group in the Permission
+Groups administrative interface now allows multiple permissions
+to be added in one invocation. This reduces the number of clicks
+and keyboard interactions required when adding a large number of
+permission mappings.
+
+
+
+= Architecture =
+
+
+== Malicious Search Protection ==
+
+Evergreen sometimes sees some "novel" query strings in the wild that
+cause the search backend to time out or worse.  These are sometimes
+malicious and sometimes accidental, but the effect on users is the
+same.
+
+The changes here improve query compilation in several respects in order
+to reduce the chances of an overly complex query causing problems for
+the search subsystem.
+
+More work is done up front to simplify and combine parts of the
+resulting SQL, allowing more work to be done closer to the data.
+This change allows Evergreen to handle many more tested or chained
+boolean expressions, and negated terms are now handled directly in
+line with other adjacent terms. Phrases (exact matches) are now
+searched for using Postgres' adjacency tsearch operator.
+
+All of these changes work together to improve performance by getting
+more search work done in fewer database operations while protecting
+against certain query constructs that have caused problems in the
+past.
+
+
+
+== Angular and Bootstrap Updates for Staff Interface ==
+
+The Angular staff interface now uses Angular 15 and Bootstrap 5. This
+introduces various changes to how the staff interface styling is
+done; developers should take note.
+
+
+== Fix SQL Injection Vulnernability ==
+
+An SQL injection vulnernability related to the implementation of
+search term highlights is now closed.
+
+
+== Queued Ingest ==
+
+This feature allows for the separation of bib and authority record
+updates and the search (and other) indexing that occurs when a record is
+modified in some way. Prior to this feature, bib and authority records
+would be indexed immediately upon an update.
+
+While individual record ingest has not become a problem with regard to
+system performance or interface usability, there exist several batch
+operations which aggregate many inserts or updates and whose aggregate
+ingest time cost can be significant.  These include, but are not
+limited to, reingest caused by authority control propagation, reingest
+required by the addition or modification of indexing configuration,
+cataloging and acquisitions record import and overlay from the staff
+interface, and upgrade-time reingest required by structural changes
+to the underlying indexing and search system.
+
+=== New Utility ===
+
+When Queued Ingest is enabled, a new control script, `ingest_ctl`, is
+available to perform several functions:
+
+* Run in the background to process the queues of indexing requests
+* Display statistics of queued ingest activity
+* Specify that a set of records should be reindexed.
+
+Here are some examples of how it is used:
+
+[source,bash]
+------------------------------------------------------------------------------------
+# Enqueue records 1-500000 for reingest later, just one worker for the queue
+/openils/bin/ingest_ctl --queue-threads 1
+    --queue-type biblio
+    --queue-run-at tomorrow
+    --queue-owner admin
+    --queue-name "slowly updating records due to new RDA attributes"
+    --start-id 1 --end-id 500000
+
+# Start the background worker
+/openils/bin/ingest_ctl --coordinator --max-child 20
+
+# Stop the background worker
+/openils/bin/ingest_ctl --coordinator --stop
+
+# Process whatever you can Right Now
+/openils/bin/ingest_ctl --max-child 20
+
+# Process a single queue Right Now
+/openils/bin/ingest_ctl --queue 1234 --max-child 20
+
+# Stats on Queued Ingest processing so far today
+/openils/bin/ingest_ctl --stats --since today --totals-only
+------------------------------------------------------------------------------------
+
+This script also requires the following switches (or environment
+variables) in order to connect to the database:
+
+* `--db_user` (or environment variable `PGUSER`)
+* `--db` (or environment variable `PGDATABASE`)
+* `--dbpw` (or environment variable `PGPASSWORD`)
+* `--db_port` (or environment variable `PGPORT`)
+
+=== New Settings ===
+
+This feature adds several new global flags:
+
+
+|===
+| Global Flag | Enabled
+
+| Queued Ingest: Abort transaction on ingest error rather than simply logging an error | no
+| Queued Ingest: Queue all bib record updates on authority change propagation, even if bib queuing is not generally enabled | no
+| Queued Ingest: Use Queued Ingest for bib record ingest on insert and undelete | no
+| Queued Ingest: Use Queued Ingest for authority record ingest on insert and undelete | no
+| Queued Ingest: Use Queued Ingest for bib record ingest on update | no
+| Queued Ingest: Use Queued Ingest for authority record ingest on update | no
+| Queued Ingest: Use Queued Ingest for bib record ingest on delete | no
+| Queued Ingest: Use Queued Ingest for authority record ingest on delete | no
+| Queued Ingest: Maximum number of database workers allowed for queued ingest processes | yes; default value 20
+| Queued Ingest: Use Queued Ingest for all bib record ingest | no
+| Queued Ingest: Use Queued Ingest for all bib and authority record ingest | no
+| Queued Ingest: Do NOT use Queued Ingest when creating a new bib, or undeleting a bib, via the MARC editor | yes
+| Queued Ingest: Use Queued Ingest for all authority record ingest | no
+| Queued Ingest: Do NOT Use Queued Ingest when editing bib records via the MARC Editor | yes
+|===
+
+This feature does not add any new library settings or permissions.
+
+=== Upgrade Notes ===
+
+Queued Ingest is not automatically turned on upon upgrade. to enable it,
+at minimum the following actions should be taken:
+
+* Enable at least the "Use Queued Ingest for all bib and authority record
+  ingest" global flag
+* Ensure that `ingest_ctl` is running with the `--coordinator` flag.
+
+
+
+= Cataloging =
+
+
+== Catalog Staff View ==
+
+Adds a Staff View tab to the record details page in the staff catalog.
+In addition to showing various fields from the bib record, it also shows
+a count of hold requests and a break-down of available items versus
+total items, and it shows a breakdown of similar records by formats and
+language editions, based on the associated metarecord.
+
+
+
+
+= Circulation =
+
+
+== Adjust Hold Cancel Reasons ==
+
+The dialog to confirm canceling a hold in the staff interface
+now lists only hold cancel reasons that can be manually applied,
+excluding the ones that can only be automatically applied.
+
+In addition, two more hold cancel reasons are added:
+
+ * Patron via email
+ * Patron via SMS
+
+
+== New Permission for Viewing Holds Pull List ==
+
+Access to the holds pull list is now restricted to users with the
+VIEW_HOLD_PULL_LIST permission.  By default, this new permission is granted to
+all users with the VIEW_HOLDS permission.
+
+
+
+
+= Client =
+
+
+== Angular navbar keyboard navigation ==
+
+Adds basic keyboard navigation support to the Angular web client navbar as follows:
+
+* Use the Tab key to move between the top-level menu items.
+* Press Enter, Space, or the down arrow on a top-level item to open its submenu. Pressing Esc will close it.
+* Shift-tab from the first submenu item back to the top level, and use Enter or Space to toggle the button again and close the submenu.
+* Within the submenu, use either Tab and shift-Tab to move up and down, or the up/down arrow keys.
+
+
+
+= OPAC =
+
+
+== Multi-term Did You Mean search suggestions ==
+
+Expanding on the previous single-class, single-term search suggestion
+development, this feature provides suggestions for single-class searches
+with multiple terms.
+
+ * The Library Settings that were previously used to control the global
+behavior of search suggestions have been moved to search class
+configuration fields.  This was done because the data in each search
+class benefits from different setting values. If the Library Settings
+had been set, they will be used to update the corresponding search
+class configuration fields. Regardless, Evergreen administrators are
+recommended to review the settings.
+
+ * If a patron's search matches a variant or non-preferred heading from
+an authority record, if the main heading of that authority is linked
+to at least bibliographic record, the system will provide that main
+heading as a suggestion as well, along with spelling-corrected suggestions.
+
+ * Quoted phrases in user input require strict term order and adjacency
+for the phrase portion of the suggestion generated for the phrase(s),
+whereas unquoted input (or the portion that is not quoted) does not.
+
+=== MARC Search/Facet Class field additions ===
+
+ * variant_authority_suggestion   Whether this class should attempt variant authority suggestions based on search-class/browse-axis mapping
+ * symspell_transfer_case         Whether suggestions should retain user-supplied letter case
+ * symspell_skip_correct          Only supply suggestions to misspelled words
+ * symspell_suggestion_verbosity  Setting that controls the amount of effort, and therefore time, spent on suggestion generation
+ * max_phrase_edit_distance       Maximum average per-word edit distance when evaluating suggestions
+ * suggestion_word_option_count   Maximum alternate suggestions per word
+ * max_suggestions                Maximum suggstions to present
+ * low_result_threshold           Maximum hit count beyond which suggestions are not provided
+ * min_suggestion_use_threshold   Minimum number of times a suggestion must exist in the corpus
+ * pg_trgm_weight                 Weight of the trigram similarity metric; 0 avoids calculation costs
+ * soundex_weight                 Weight of the soundex similarity metric; 0 avoids calculation costs
+ * keyboard_distance_weight       Weight of the keyboard distance similarity metric; 0 avoids calculation costs
+
+=== Upgrade ===
+
+If the databse has authority records that are linked to bilbiographic
+records, a reingest of the search suggestion dictionary is recommended.
+
+Instructions for performing that reingest are included in the database
+update scripts and will be output to the log when those scripts are
+run.
+
+
+== Restrict login redirect ==
+
+As a security best-practice, Evergreen should not allow arbitrary
+redirection on successful login, but instead limit redirection to
+local links or configured domains and schemes.
+
+This feature is controlled by a new global flag called *opac.login_redirect_domains*
+which must contain a comma-separated list of domains.  All hostnames
+under each domain is allowed for redirect, and the scheme of the
+redirect URL must be one of http, https, ftp, or ftps.
+
+
+
+Accepting payments with SmartPAY
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+SmartPAY is a payment processing service that lets
+sites take credit card payments without payment card information ever
+touching the sites' own servers.
+
+Library Settings
+++++++++++++++++
+The following settings need to be set at the appropriate org level for
+sites wanting to use SmartPAY.
+
+ * "Allow Credit Card Payments" (should be 'true')
+
+   credit.payments.allow
+
+ * "Enable SmartPAY payments" (should be 'true')
+
+   credit.processor.smartpay.enabled
+
+ * "SmartPAY location ID" (value provided by Comprise)
+
+   credit.processor.smartpay.location_id
+
+ * "SmartPAY customer ID" (value provided by Comprise)
+
+   credit.processor.smartpay.customer_id
+
+ * "SmartPAY login name" (value provided by Comprise)
+
+   credit.processor.smartpay.login
+
+ * "SmartPAY password" (value provided by Comprise)
+
+   credit.processor.smartpay.password
+
+ * "SmartPAY API key" (value provided by Comprise)
+
+   credit.processor.smartpay.api_key
+
+ * "SmartPAY server name" (value provided by Comprise)
+
+   credit.processor.smartpay.server
+
+ * "SmartPAY server port" (value provided by Comprise)
+
+   credit.processor.smartpay.port
+
+ * "Name default credit processor" (should be 'SmartPAY')
+
+   credit.processor.default
+
+
+
+= Miscellaneous =
+
+* Add patron home library code as a column to the View Holds grid in the staff catalog record details page (LP#1991726)
+* Include template ID in the template table in the Reporter (LP#1998386)
+* Remove the `pub` flag from the `biblio.record_note` table (LP#1978978)
+* Add the publication date to the Staff Catalog's Shelf Browse (LP#1999432)
+* Resolve search performance degradation with PostgreSQL version 12 and up (LP#1999274)
+* Improved styling of paid line items in acquisitions screens (LP#1999270)
+* Improved styling of the keyboard shortcut info modal (LP#1999955)
+* (Developer) Add Emacs mode to `fm_IDL.xml` (LP#1914625)
+* `autogen.sh` can now accept a `-c` switch to specify the location of `opensrf_core.xml`. This is useful for certain multi-tenant setups of Evergreen. (LP#2003707)
+* Better organization of acquisitions line item alert fields (LP#2002977)
+* Prevent templates from applying or changing magical status in angular holdings editor (LP#1999401)
+* Prevent directly editing the shelving location deleted field in the Shelving Locations Editor (LP#2002435)
+* The "Strict Barcode" checkbox is now closer to the barcode input on the Check Out, Check In, and Renew Items pages (LP#1990968)
+* LP1929593 UPDATE_COPY_BARCODE permission
+
+    This adds the permission UPDATE_COPY_BARCODE and a new API call,
+
+      open-ils.cat.update_copy_barcode
+
+    which explicitly tests for both UPDATE_COPY_BARCODE and UPDATE_COPY,
+    with either being sufficient for allowing a barcode change.  Existing
+    Replace Barcode UI's in both Angular and AngularJS have been modified
+    to use this API call instead of the pcrud service.  One side-effect of
+    this has been better surfacing of errors, as errors in pcrud were
+    uncaught and bypassing the normal error handling.  This addresses
+    LP1951469.
+
+    The upgrade script gives any permission groups that already have the
+    UPDATE_COPY permission the new UPDATE_COPY_BARCODE permission at the
+    same depth, though it's technically not needed.
+* Patron and staff login forms now include a button to reveal the password input. (LP#1977554)
+* Adds new Local Administration entries for Item Statistical Categories Editor and Patron Statistical Categories Editor, which are angularized interfaces.
+* Tweaks eg-grids to underline hyperlinks within cells.  This potentially affects multiple interfaces.
+* eg-org-family-select now supports persistKey
+* LP1965446 Option to Disable Title-Level Holds on Bib Records with Parts
+
+    This feature adds one global flag and one library setting, respectively:
+
+        * circ.holds.api_require_monographic_part_when_present
+          Holds: Require Monographic Part When Present for hold check.
+        * circ.holds.ui_require_monographic_part_when_present
+          Require Monographic Part when Present
+
+    Normally the selection of a monographic part during hold placement is optional if there is at least one copy
+    on the bib without a monographic part.  A true value for this setting for any involved owning library for the
+    bib or for the global flag will require part selection even under this condition.  This essentially removes
+    the All/Any Parts option from the part selection drop-down, for both versions of the public catalog (TPAC and
+    BOOPAC), and for the Angular staff catalog interface. It should be noted that if the library setting is set
+    below the consortium level, Title level holds may be allowed for some libraries and not others.
+
+    At the API level, we consider just the global flag and will throw a TITLE_HOLD_WHEN_MONOGRAPHIC_PART_REQUIRED
+    event for a title hold request when there are items with monographic parts on the bib.  It is possible for
+    the library settings and the global flag to differ, but the global flag will catch every instance of hold
+    placement including those by third party callers, SIP, etc.
+* Links the lineitem id link in Acquisitions search results to the lineitem detail page rather than the purchase order. (LP#2003946)
+== Angular navbar keyboard navigation ==
+
+Adds basic keyboard navigation support to the Angular web client navbar as follows:
+
+* Use the Tab key to move between the top-level menu items.
+* Press Enter, Space, or the down arrow on a top-level item to open its submenu. Pressing Esc will close it.
+* Shift-tab from the first submenu item back to the top level, and use Enter or Space to toggle the button again and close the submenu.
+* Within the submenu, use either Tab and shift-Tab to move up and down, or the up/down arrow keys.
+
+:leveloffset: 0
+
+
+== Acknowledgments ==
+The Evergreen project would like to acknowledge the following
+organizations that commissioned developments in this release of
+Evergreen:
+
+TODO
+
+We would also like to thank the following individuals who contributed
+code, translations, documentations patches and tests to this release of
+Evergreen:
+
+TODO
+
+
+We also thank the following organizations whose employees contributed
+patches:
+
+TODO
+
+We regret any omissions.  If a contributor has been inadvertently
+missed, please open a bug at http://bugs.launchpad.net/evergreen/
+with a correction.
+
