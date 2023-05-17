@@ -17,7 +17,7 @@ image::media/lsa-statcat-1.png[Create copy stat cat]
 
 * _OPAC Visibility_:  Should the category be displayed in the OPAC?
 * _Required_:  Must the category be assigned a value when editing the item attributes?
-* _Archive with Circs_:  Should the category and its values for the copy be archived with aged circulation data?
+* _Archive with Circs_:  Should the category and its values for the copy be archived with circulation data?
 * _SIP Field_:  Select the SIP field identifier that will contain the category and its value
 * _SIP Format_:  Specify the SIP format string
 
@@ -47,7 +47,7 @@ image::media/lsa-statcat-4.png[Create patron stat cat]
 
 * _OPAC Visibility_:  Should the category be displayed in the OPAC?
 * _Required_:  Must the category be assigned a value when registering a new patron or editing an existing one?
-* _Archive with Circs_:  Should the category and its values for the patron be archived with aged circulation data?
+* _Archive with Circs_:  Should the category and its values for the patron be archived with circulation data?
 * _Allow Free Text_:  May the person registering/editing the patron information supply their own value for the category?
 * _Show in Summary_:  Display the category and its value in the patron summary view?
 * _SIP Field_:  Select the SIP field identifier that will contain the category and its value
