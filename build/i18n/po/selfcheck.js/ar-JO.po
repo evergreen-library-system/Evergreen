@@ -7,55 +7,81 @@ msgid ""
 msgstr ""
 "Project-Id-Version: evergreen\n"
 "Report-Msgid-Bugs-To: FULL NAME <EMAIL@ADDRESS>\n"
-"POT-Creation-Date: 2020-06-12 11:45-0400\n"
+"POT-Creation-Date: 2023-05-04 09:23-0400\n"
 "PO-Revision-Date: 2016-12-21 00:31+0000\n"
 "Last-Translator: fares othman <Unknown>\n"
 "Language-Team: Arabic <ar@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2020-09-16 06:02+0000\n"
-"X-Generator: Launchpad (build 83bdf6c8a3a5f87722c8927e54838522f3e57504)\n"
+"X-Launchpad-Export-Date: 2023-05-05 04:48+0000\n"
+"X-Generator: Launchpad (build 90e2150bef31b411d7bae5c4032c7e320fcaaec8)\n"
 
-#: selfcheck.js:FAIL_PART_config_hold_matrix_test_max_holds
-msgid "The patron has reached the maximum number of holds"
-msgstr "لقد تجاوز المستفيد الحد الأقصى لعدد النُسخ المحجوزة"
+#: selfcheck.js:TOTAL_ITEMS_SESSION
+msgid "Total items this session: ${0}."
+msgstr "مجموع النُسخ في هذه الجلسة: ${0}."
 
-#: selfcheck.js:FAIL_PART_location.holdable
-msgid "The item's location is not holdable"
-msgstr "موقع النُسخة غير قابل للحجز"
+#: selfcheck.js:TOTAL_ITEMS_ACCOUNT
+msgid "Total items on account:  ${0}."
+msgstr "المجموع الإجمالي للنُسخ في الحساب ـ الرصيد ـ : ${0}."
 
-#: selfcheck.js:CHECKOUT_SUCCESS
-msgid "Checkout of item ${0} succeeded"
-msgstr "إعارة النُسخة ${0} نجحت"
-
-#: selfcheck.js:WELCOME_BANNER
-msgid "Welcome, ${0}"
-msgstr "مرحبــــاً, ${0}"
-
-#: selfcheck.js:FAIL_PART_no_ultimate_items
-msgid "The system could not find any items to match this hold request"
-msgstr "لم يتم العثور على أي نُسخ تتطابق مع طلب الحجز هذا"
+#: selfcheck.js:HOLDS_READY_FOR_PICKUP
+msgid "You have ${0} item(s) ready for pickup."
+msgstr "لديك ${0} نُسخة جاهزة لـِ الاستلام ."
 
 #: selfcheck.js:TOTAL_HOLDS
 msgid "You have ${0} total holds."
 msgstr "لديك ${0} المجموع الإجمالي للحجوزات."
 
-#: selfcheck.js:FAIL_PART_config_hold_matrix_test_holdable
-msgid "Hold rules reject this item as unholdable"
-msgstr "قواعد الحجز ترفض هذه النسخة لأنها غير قابلة للحجز"
+#: selfcheck.js:TOTAL_FINES_ACCOUNT
+msgid "Total fines on account: $${0}."
+msgstr "المجموع الإجمالي للغرامات في الحساب ـ الرصيد ـ: $${0}."
 
-#: selfcheck.js:FAIL_PART_asset_copy_status
-msgid "The item cannot circulate at this time"
-msgstr "لا يمكن إعارة النُسخة في الوقت الحالي"
+#: selfcheck.js:HOLD_STATUS_READY
+msgid "Ready for pickup"
+msgstr "جاهز للإستلام"
 
-#: selfcheck.js:FAIL_PART_no_user
-msgid "The system could not find this patron"
-msgstr "تعذر العثور على اسم المستفيد هذا"
+#: selfcheck.js:HOLD_STATUS_WAITING
+msgid "#${0} in line with ${1} copies"
+msgstr "#${0} في السطر مع ${1} نُسخة"
 
-#: selfcheck.js:FAIL_PART_transit_range
-msgid "The item cannot transit this far"
-msgstr "لا يمكن نقل النُسخة ـ العبور ـ أبعد من هذا الحد"
+#: selfcheck.js:CHECKOUT_SUCCESS
+msgid "Checkout of item ${0} succeeded"
+msgstr "إعارة النُسخة ${0} نجحت"
+
+#: selfcheck.js:RENEW_SUCCESS
+msgid "Renewal of item ${0} succeeded"
+msgstr "تجديد النُسخة ${0} نجحت"
+
+#: selfcheck.js:ALREADY_OUT
+msgid "Item ${0} is already checked out"
+msgstr "النُسخة ${0} تمّ بالفعل التحقق منها"
+
+#: selfcheck.js:OPEN_CIRCULATION_EXISTS
+msgid "Item ${0} is already checked out to another user"
+msgstr "النُسخة ${0} مُعارة مسبقاً لمستفيد آخر"
+
+#: selfcheck.js:GENERIC_CIRC_FAILURE
+msgid "Unable to check out item ${0}.  Please see staff."
+msgstr "لا يمكن إعارة النُسخة ${0}. لطفاً ينبغي مراجعة طاقم المكتبة."
+
+#: selfcheck.js:LOGIN_FAILED
+msgid "Login for ${0} failed"
+msgstr "تسجيل الدخول لـِ ${0} فشل"
+
+#: selfcheck.js:UNKNOWN_ERROR
+msgid "An unhandled exception occurred with error code ${0}"
+msgstr "وقع استثناء غير مُعالج يتعلق بـِ كود الخطأ ${0}"
+
+#: selfcheck.js:MAX_RENEWALS
+msgid "No more renewals allowed for item ${0}"
+msgstr "غير مسموح لمزيد من التجديد لهذه النُسخة  ${0}"
+
+#: selfcheck.js:ITEM_NOT_CATALOGED
+msgid "Item ${0} was not found in the system.  Try re-scanning the item."
+msgstr ""
+"النُسخة ${0} لم يتم العثور عليها في النظام. حاول إعادة المسح الضوئي لهذه "
+"النُسخة."
 
 #: selfcheck.js:WORKSTATION_REQUIRED
 msgid ""
@@ -69,55 +95,125 @@ msgstr ""
 "\n"
 "هل ترغب في تسجيل محطةعمل جديدة لـِ واجهة التحقق الذاتي هذه؟"
 
-#: selfcheck.js:FAIL_PART_config_circ_matrix_test_total_copy_hold_ratio
-msgid "The total item-to-hold ratio is too low"
-msgstr "نسبة المجموع الإجمالي لـِ النُسخ للحجز منخفضة جداً"
+#: selfcheck.js:WORKSTATION_EXISTS
+msgid ""
+"This workstation has already been registered.  Would you like to use it for "
+"this self-check station?"
+msgstr ""
+"تمّ التسجيل مُسبقاً لـِ محطة العمل هذه. هل ترغب في استخدامها من أجل محطة "
+"التحقق الذاتي هذه؟"
 
-#: selfcheck.js:ALREADY_OUT
-msgid "Item ${0} is already checked out"
-msgstr "النُسخة ${0} تمّ بالفعل التحقق منها"
+#: selfcheck.js:CC_PAYABLE_BALANCE
+msgid "Total amount to pay: $${0}"
+msgstr "المبلغ الإجمالي للدفع: $${0}"
 
-#: selfcheck.js:FAIL_PART_config_circ_matrix_test_available_copy_hold_ratio
-msgid "The available item-to-hold ratio is too low"
-msgstr "النسبة المُتاحة لـِ النُسخ للحجز مُنخفضة جداً"
+#: selfcheck.js:TOTAL_FINES_SELECTED
+msgid "Selected total: $${0}"
+msgstr "المجموع المُحدد: $${0}"
 
-#: selfcheck.js:TOTAL_ITEMS_ACCOUNT
-msgid "Total items on account:  ${0}."
-msgstr "المجموع الإجمالي للنُسخ في الحساب ـ الرصيد ـ : ${0}."
+#: selfcheck.js:WELCOME_BANNER
+msgid "Welcome, ${0}"
+msgstr "مرحبــــاً, ${0}"
 
-#: selfcheck.js:FAIL_PART_circ_holds_target_skip_me
-msgid "The item's circulation library does not fulfill holds"
-msgstr "المكتبة التي توجد بها النُسخة لا تقبل الحجز"
+#: selfcheck.js:ENTER_PASSWORD
+msgid "Please enter your password"
+msgstr "لطفاً أدخل كلمة المرور الخاصة بك"
 
-#: selfcheck.js:HOLD_STATUS_WAITING
-msgid "#${0} in line with ${1} copies"
-msgstr "#${0} في السطر مع ${1} نُسخة"
+#: selfcheck.js:PLEASE_LOGIN
+msgid "Please log in with your username or library barcode."
+msgstr "لطفاً ينبغي الدخول باسم المستخدم الخاص بك أو باركود المكتبة."
 
-#: selfcheck.js:RENEW_SUCCESS
-msgid "Renewal of item ${0} succeeded"
-msgstr "تجديد النُسخة ${0} نجحت"
-
-#: selfcheck.js:FAIL_PART_config_circ_matrix_circ_mod_test
-msgid "The patron has too many items of this type checked out"
-msgstr "المستفيد قام باستعارة الكثير من نُسخ هذه الفئة"
-
-#: selfcheck.js:TOTAL_FINES_ACCOUNT
-msgid "Total fines on account: $${0}."
-msgstr "المجموع الإجمالي للغرامات في الحساب ـ الرصيد ـ: $${0}."
+#: selfcheck.js:ENTER_BARCODE
+msgid "Please enter an item barcode"
+msgstr "لطفاً أدخل باركود النُسخة"
 
 #: selfcheck.js:MISCELLANEOUS
 msgid "Miscellaneous"
 msgstr "مُتفرقات"
 
-#: selfcheck.js:ITEM_NOT_CATALOGED
-msgid "Item ${0} was not found in the system.  Try re-scanning the item."
-msgstr ""
-"النُسخة ${0} لم يتم العثور عليها في النظام. حاول إعادة المسح الضوئي لهذه "
-"النُسخة."
-
 #: selfcheck.js:FAIL_PART_actor_usr_barred
 msgid "The patron is barred"
 msgstr "المستفيد محظور"
+
+#: selfcheck.js:FAIL_PART_asset_copy_circulate
+msgid "The item does not circulate"
+msgstr "لا يمكن إعارة هذه النُسخة"
+
+#: selfcheck.js:FAIL_PART_asset_copy_location_circulate
+msgid "Items from this shelving location do not circulate"
+msgstr "النُسخ في موقع الرفوف هذا غير مسموح بإعارتها"
+
+#: selfcheck.js:FAIL_PART_asset_copy_status
+msgid "The item cannot circulate at this time"
+msgstr "لا يمكن إعارة النُسخة في الوقت الحالي"
+
+#: selfcheck.js:FAIL_PART_circ_holds_target_skip_me
+msgid "The item's circulation library does not fulfill holds"
+msgstr "المكتبة التي توجد بها النُسخة لا تقبل الحجز"
+
+#: selfcheck.js:FAIL_PART_config_circ_matrix_circ_mod_test
+msgid "The patron has too many items of this type checked out"
+msgstr "المستفيد قام باستعارة الكثير من نُسخ هذه الفئة"
+
+#: selfcheck.js:FAIL_PART_config_circ_matrix_test_available_copy_hold_ratio
+msgid "The available item-to-hold ratio is too low"
+msgstr "النسبة المُتاحة لـِ النُسخ للحجز مُنخفضة جداً"
+
+#: selfcheck.js:FAIL_PART_config_circ_matrix_test_circulate
+msgid "Circulation rules reject this item as non-circulatable"
+msgstr "تم رفض إعارة هذه النُسخة وفقاً لقواعد الإعارة"
+
+#: selfcheck.js:FAIL_PART_config_circ_matrix_test_total_copy_hold_ratio
+msgid "The total item-to-hold ratio is too low"
+msgstr "نسبة المجموع الإجمالي لـِ النُسخ للحجز منخفضة جداً"
+
+#: selfcheck.js:FAIL_PART_config_hold_matrix_test_holdable
+msgid "Hold rules reject this item as unholdable"
+msgstr "قواعد الحجز ترفض هذه النسخة لأنها غير قابلة للحجز"
+
+#: selfcheck.js:FAIL_PART_config_hold_matrix_test_max_holds
+msgid "The patron has reached the maximum number of holds"
+msgstr "لقد تجاوز المستفيد الحد الأقصى لعدد النُسخ المحجوزة"
+
+#: selfcheck.js:FAIL_PART_item.holdable
+msgid "The item is not holdable"
+msgstr "لا يمكن حجز النُسخة"
+
+#: selfcheck.js:FAIL_PART_location.holdable
+msgid "The item's location is not holdable"
+msgstr "موقع النُسخة غير قابل للحجز"
+
+#: selfcheck.js:FAIL_PART_status.holdable
+msgid "The item is not in a holdable status"
+msgstr "حالة النُسخة غير قابلة للحجز"
+
+#: selfcheck.js:FAIL_PART_config_rule_age_hold_protect_prox
+msgid "The item is too new to transit this far"
+msgstr "هذه النُسخة جديد ة جداً  للنقل ـ العبور ـ  أبعد من هذا الحد"
+
+#: selfcheck.js:FAIL_PART_no_item
+msgid "The system could not find this item"
+msgstr "لا يمكن إيجاد هذه النُسخة"
+
+#: selfcheck.js:FAIL_PART_no_ultimate_items
+msgid "The system could not find any items to match this hold request"
+msgstr "لم يتم العثور على أي نُسخ تتطابق مع طلب الحجز هذا"
+
+#: selfcheck.js:FAIL_PART_monographic_part_required
+msgid "Title hold request invalid when monographic part required"
+msgstr ""
+
+#: selfcheck.js:FAIL_PART_no_matchpoint
+msgid "System rules do not define how to handle this item"
+msgstr "قواعد النظام لا تحدد كيفية التعامل مع هذه النُسخة"
+
+#: selfcheck.js:FAIL_PART_no_user
+msgid "The system could not find this patron"
+msgstr "تعذر العثور على اسم المستفيد هذا"
+
+#: selfcheck.js:FAIL_PART_transit_range
+msgid "The item cannot transit this far"
+msgstr "لا يمكن نقل النُسخة ـ العبور ـ أبعد من هذا الحد"
 
 #: selfcheck.js:PAYMENT_INVALID_USER_XACT_ID
 msgid ""
@@ -127,95 +223,3 @@ msgid ""
 msgstr ""
 "لا يمكننا المضي قدما في الدفع، لأنه تم تحديث حسابك من موقع آخر. يرجى تحديث "
 "الواجهة أو تسجيل الخروج والعودة من أجل استرداد أحدث معلومات حسابك"
-
-#: selfcheck.js:FAIL_PART_status.holdable
-msgid "The item is not in a holdable status"
-msgstr "حالة النُسخة غير قابلة للحجز"
-
-#: selfcheck.js:ENTER_PASSWORD
-msgid "Please enter your password"
-msgstr "لطفاً أدخل كلمة المرور الخاصة بك"
-
-#: selfcheck.js:CC_PAYABLE_BALANCE
-msgid "Total amount to pay: $${0}"
-msgstr "المبلغ الإجمالي للدفع: $${0}"
-
-#: selfcheck.js:FAIL_PART_no_item
-msgid "The system could not find this item"
-msgstr "لا يمكن إيجاد هذه النُسخة"
-
-#: selfcheck.js:PLEASE_LOGIN
-msgid "Please log in with your username or library barcode."
-msgstr "لطفاً ينبغي الدخول باسم المستخدم الخاص بك أو باركود المكتبة."
-
-#: selfcheck.js:FAIL_PART_no_matchpoint
-msgid "System rules do not define how to handle this item"
-msgstr "قواعد النظام لا تحدد كيفية التعامل مع هذه النُسخة"
-
-#: selfcheck.js:ENTER_BARCODE
-msgid "Please enter an item barcode"
-msgstr "لطفاً أدخل باركود النُسخة"
-
-#: selfcheck.js:FAIL_PART_asset_copy_circulate
-msgid "The item does not circulate"
-msgstr "لا يمكن إعارة هذه النُسخة"
-
-#: selfcheck.js:LOGIN_FAILED
-msgid "Login for ${0} failed"
-msgstr "تسجيل الدخول لـِ ${0} فشل"
-
-#: selfcheck.js:HOLD_STATUS_READY
-msgid "Ready for pickup"
-msgstr "جاهز للإستلام"
-
-#: selfcheck.js:GENERIC_CIRC_FAILURE
-msgid "Unable to check out item ${0}.  Please see staff."
-msgstr "لا يمكن إعارة النُسخة ${0}. لطفاً ينبغي مراجعة طاقم المكتبة."
-
-#: selfcheck.js:MAX_RENEWALS
-msgid "No more renewals allowed for item ${0}"
-msgstr "غير مسموح لمزيد من التجديد لهذه النُسخة  ${0}"
-
-#: selfcheck.js:FAIL_PART_asset_copy_location_circulate
-msgid "Items from this shelving location do not circulate"
-msgstr "النُسخ في موقع الرفوف هذا غير مسموح بإعارتها"
-
-#: selfcheck.js:FAIL_PART_item.holdable
-msgid "The item is not holdable"
-msgstr "لا يمكن حجز النُسخة"
-
-#: selfcheck.js:FAIL_PART_config_circ_matrix_test_circulate
-msgid "Circulation rules reject this item as non-circulatable"
-msgstr "تم رفض إعارة هذه النُسخة وفقاً لقواعد الإعارة"
-
-#: selfcheck.js:OPEN_CIRCULATION_EXISTS
-msgid "Item ${0} is already checked out to another user"
-msgstr "النُسخة ${0} مُعارة مسبقاً لمستفيد آخر"
-
-#: selfcheck.js:WORKSTATION_EXISTS
-msgid ""
-"This workstation has already been registered.  Would you like to use it for "
-"this self-check station?"
-msgstr ""
-"تمّ التسجيل مُسبقاً لـِ محطة العمل هذه. هل ترغب في استخدامها من أجل محطة "
-"التحقق الذاتي هذه؟"
-
-#: selfcheck.js:UNKNOWN_ERROR
-msgid "An unhandled exception occurred with error code ${0}"
-msgstr "وقع استثناء غير مُعالج يتعلق بـِ كود الخطأ ${0}"
-
-#: selfcheck.js:TOTAL_ITEMS_SESSION
-msgid "Total items this session: ${0}."
-msgstr "مجموع النُسخ في هذه الجلسة: ${0}."
-
-#: selfcheck.js:FAIL_PART_config_rule_age_hold_protect_prox
-msgid "The item is too new to transit this far"
-msgstr "هذه النُسخة جديد ة جداً  للنقل ـ العبور ـ  أبعد من هذا الحد"
-
-#: selfcheck.js:TOTAL_FINES_SELECTED
-msgid "Selected total: $${0}"
-msgstr "المجموع المُحدد: $${0}"
-
-#: selfcheck.js:HOLDS_READY_FOR_PICKUP
-msgid "You have ${0} item(s) ready for pickup."
-msgstr "لديك ${0} نُسخة جاهزة لـِ الاستلام ."

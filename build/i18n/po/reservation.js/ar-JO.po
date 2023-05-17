@@ -7,130 +7,27 @@ msgid ""
 msgstr ""
 "Project-Id-Version: evergreen\n"
 "Report-Msgid-Bugs-To: FULL NAME <EMAIL@ADDRESS>\n"
-"POT-Creation-Date: 2020-06-12 11:45-0400\n"
+"POT-Creation-Date: 2022-04-27 17:07-0400\n"
 "PO-Revision-Date: 2016-12-30 15:31+0000\n"
 "Last-Translator: fares othman <Unknown>\n"
 "Language-Team: Arabic <ar@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2020-09-16 06:02+0000\n"
-"X-Generator: Launchpad (build 83bdf6c8a3a5f87722c8927e54838522f3e57504)\n"
-
-#: reservation.js:AUTO_ending_at
-msgid "and"
-msgstr "و"
-
-#: reservation.js:BRSRC_NOT_FOUND
-msgid "Could not locate that resource."
-msgstr "لا يمكن تحديد موقع هذا المصدر"
-
-#: reservation.js:AUTO_choose_a_brt
-msgid "Choose a Bookable Resource Type"
-msgstr "اختيار نوع المصدر القابل للحجز"
-
-#: reservation.js:CREATE_BRESV_OK
-msgid "Created ${0} reservation(s)"
-msgstr "المُنشئة ${0} حجوزات"
-
-#: reservation.js:AUTO_ATTR_VALUE_reserve_brsrc
-msgid "Reserve Selected"
-msgstr "الحجز المُحدد"
+"X-Launchpad-Export-Date: 2023-05-05 04:48+0000\n"
+"X-Generator: Launchpad (build 90e2150bef31b411d7bae5c4032c7e320fcaaec8)\n"
 
 #: reservation.js:NO_BRT_RESULTS
 msgid "There are no bookable resource types registered."
 msgstr "لا يوجد أنواع مصادر قابلة للحجز مُسجلة أو تمّ تسجيلها"
 
-#: reservation.js:AUTO_ATTR_VALUE_next
-msgid "Next"
-msgstr "التالي"
+#: reservation.js:NO_TARG_DIV
+msgid "Could not find target div"
+msgstr "لا يمكن أن تجد شعبة الهدف"
 
-#: reservation.js:BRSRC_RETRIVE_ERROR
-msgid "Error retrieving resource: "
-msgstr "خطأ في استرداد المصدر: "
-
-#: reservation.js:AUTO_starting_at
-msgid "Between"
-msgstr "ما بين"
-
-#: reservation.js:AUTO_bresv_grid_resource
-msgid "Resource"
-msgstr "المصدر"
-
-#: reservation.js:AUTO_brt_noncat_only
-msgid "Show only non-cataloged bookable resource types"
-msgstr "إظهار فقط أنواع ـ فئات ـ المصادر القابلة للحجز غير المُفهرسة"
-
-#: reservation.js:ON_FLY_ERROR
-msgid "Error attempting to make item a bookable resource:"
-msgstr "حطأ في محاولة إنشاء نُسخة المصدر القابل للحجز:"
-
-#: reservation.js:AUTO_bresv_grid_type
-msgid "Type"
-msgstr "النوع"
-
-#: reservation.js:AUTO_with_these_attr
-msgid "With these attributes:"
-msgstr "مع هذه الخصائص:"
-
-#: reservation.js:WHERES_THE_BARCODE
-msgid "Enter a patron's barcode to make a reservation."
-msgstr "إدخال باكود المستفيد لإنشاء الحجز"
-
-#: reservation.js:CREATE_BRESV_SERVER_ERROR
-msgid "Server error trying to create reservation: "
-msgstr "خطأ في محاولة الخادم لـِ إنشاء الحجز: "
-
-#: reservation.js:CREATE_BRESV_LOCAL_ERROR
-msgid "Exception trying to create reservation: "
-msgstr "محاولة استثنائية لـِ إنشاء الحجز: "
-
-#: reservation.js:CREATE_BRESV_OK_MISSING_TARGET
-msgid ""
-"Created ${0} reservation(s), but ${1} of these could not target any "
-"resources.\n"
-"\n"
-"This means that it won't be possible to fulfill some of these\n"
-"reservations until a suitable resource becomes available."
-msgstr ""
-"الحجوزات المُنشئَة ${0} ،ولكن ${1} من هذه لا يمكن أن تستهدف أية مصادر.\n"
-"\n"
-"هذا يعني أنه لن يكون من الممكن تحقيق بعض هذه\n"
-"الحجوزات حتى يصبح المصدر المُناسب مُتاحاً."
-
-#: reservation.js:CREATE_BRESV_OK_MISSING_TARGET_WILL_CANCEL
-msgid ""
-"Since the requested resource could not be targeted, this\n"
-"reservation will now be canceled."
-msgstr ""
-"بما أنه لا يمكن استهداف المصدر المطلوب، فإن\n"
-"الحجز الآن سيتم إلغاؤه."
-
-#: reservation.js:OUTSTANDING_BRESV
-msgid "Outstanding reservations for patron"
-msgstr "الحجوزات المُعلقة لهذا المستفيد"
-
-#: reservation.js:HERE_ARE_EXISTING_BRESV
-msgid "Existing reservations for"
-msgstr "الحجوزات الموجودة لــِ"
-
-#: reservation.js:CXL_BRESV_SUCCESS
-msgid "Canceled ${0} reservation(s)"
-msgstr "الملغية ${0} حجوزات"
-
-#: reservation.js:GET_PATRON_NO_RESULT
-msgid "No server response after attempting to look up patron by barcode."
-msgstr ""
-"لا توجد استجابة من الخادم بعد محاولة البحث عن المستفيد باستخدام الباركود."
-
-#: reservation.js:AUTO_or
-msgid "- Or -"
-msgstr "- أو -"
-
-#: reservation.js:AUTO_email_notify
-msgid "Send email notification when resource is available for pickup."
-msgstr ""
-"إرسال إشعار بريد الإلكتروني عندما يصبح المصدر مُتاح للالتقاط _ الاستلام _."
+#: reservation.js:NO_BRA_RESULTS
+msgid "Couldn't retrieve booking resource attributes."
+msgstr "لا يمكن استرداد خصائص المصدر المحجوز."
 
 #: reservation.js:SELECT_A_BRSRC_THEN
 msgid ""
@@ -150,125 +47,30 @@ msgstr ""
 "هذه النُسخ غير مُتاحة خلال الوقت المطلوب، إذا كان \n"
 "ممكناً، اختر مصدر آخر أو قم بتغيير وقت الحجز."
 
-#: reservation.js:AUTO_ATTR_VALUE_reserve_brt
-msgid "Reserve Any"
-msgstr "حجز على أي حال"
+#: reservation.js:CREATE_BRESV_LOCAL_ERROR
+msgid "Exception trying to create reservation: "
+msgstr "محاولة استثنائية لـِ إنشاء الحجز: "
 
-#: reservation.js:AUTO_patron_barcode
-msgid "Reserve to patron barcode:"
-msgstr "حجز لـِ باركود المستفيد:"
-
-#: reservation.js:COULD_NOT_RETRIEVE_BRT_PASSED_IN
-msgid "Error retrieving booking resource type"
-msgstr "حدث خطأ أثناء استرداد الحجز لنوع المصدر"
-
-#: reservation.js:ACTOR_CARD_NOT_FOUND
-msgid "Patron barcode not found. Please try again."
-msgstr "باركود المستفيد غير موجود. ينبغي المحاولة مرة اخرى."
-
-#: reservation.js:CXL_BRESV_SELECT_SOMETHING
-msgid "You have not selected any reservations to cancel."
-msgstr "لم يتم تحديد أي حجوزات لإلغائها."
-
-#: reservation.js:AUTO_i_need_this_resource
-msgid "I need this resource..."
-msgstr "احتاج وأُريد هذا المصدر..."
-
-#: reservation.js:NEED_EXACTLY_ONE_BRT_PASSED_IN
-msgid "Can't book multiple resource types at once"
-msgstr "لا يمكن أن تحجز أنواع مصادر متعددة في وقت واحد"
-
-#: reservation.js:AUTO_bresv_grid_start_time
-msgid "Start time"
-msgstr "تاريخ البداية"
-
-#: reservation.js:ERROR_FETCHING_AOUS
-msgid ""
-"Could not retrieve organizational unit settings.\n"
-"This is a non-fatal error, but you may wish to\n"
-"contact your system administrator."
-msgstr ""
-"لا يمكن استرداد إعدادات الوحدة التنظيمية\n"
-"أنه خطأ غير فادح، ولكن قد ترغب في \n"
-"الاتصال بـِ مسؤول نظامك"
-
-#: reservation.js:AUTO_ATTR_VALUE_button_cancel_existing
-msgid "Cancel selected"
-msgstr "إلغاء المُحدد"
-
-#: reservation.js:GET_BRESV_LIST_NO_RESULT
-msgid "No results from server retrieving reservation list."
-msgstr "لا توجد نتائج مُسترجعة من الخادم لقائمة الحجز."
-
-#: reservation.js:GET_BRESV_LIST_ERR
-msgid "Error while retrieving reservation list: "
-msgstr "خطأ أثناء استرداد قائمة الحجز: "
-
-#: reservation.js:AUTO_arbitrary_resource
-msgid "Enter the barcode of a cataloged, bookable resource:"
-msgstr "أدخال باركود المصدر المُفهرس، القابل للحجز:"
-
-#: reservation.js:NO_EXISTING_BRESV
-msgid "This user has no existing reservations at this time."
-msgstr "هذا المستخدم ليس لديه حجوزات موجودة في هذا الوقت."
-
-#: reservation.js:AUTO_explain_bookable
-msgid ""
-"To reserve an item that is not yet registered as a bookable resource, find "
-"it in the catalog or under <em>Display Item</em>, and select <em>Make Item "
-"Bookable</em> or <em>Book Item Now</em> there."
-msgstr ""
-"لحجز النُسخة التي لم يتم تسجيلها بعد كمصدر قابل للحجز، إبحث عنها في الكتالوج "
-"أو تحت <em>إظهار النُسخة</em>، ثم اختر <em>اجعل/أنشيء النسخة قابلة "
-"للحجز</em> أو <em>احجز النُسخة الآن</em> هناك."
-
-#: reservation.js:CXL_BRESV_FAILURE2
-msgid "Error canceling reservations:\n"
-msgstr "خطأ في إلغاء الحجوزات:\n"
-
-#: reservation.js:NO_BRA_RESULTS
-msgid "Couldn't retrieve booking resource attributes."
-msgstr "لا يمكن استرداد خصائص المصدر المحجوز."
+#: reservation.js:CREATE_BRESV_SERVER_ERROR
+msgid "Server error trying to create reservation: "
+msgstr "خطأ في محاولة الخادم لـِ إنشاء الحجز: "
 
 #: reservation.js:CREATE_BRESV_SERVER_NO_RESPONSE
 msgid "No response from server after trying to create reservation."
 msgstr "لا يوجد رد أو إجابة من الخادم بعد محاولة إنشاء الحجز."
 
-#: reservation.js:AUTO_bresv_grid_end_time
-msgid "End time"
-msgstr "تاريخ الانتهاء"
-
-#: reservation.js:UNTARGETED
-msgid "None targeted"
-msgstr "غير المستهدفة"
-
-#: reservation.js:ON_FLY_NO_RESPONSE
-msgid "No response from server attempting to make item a bookable resource."
-msgstr "لا يوجد رد أو إجابة من محاولة الخادم إنشاء نسخة مصدر قابل للحجز."
-
-#: reservation.js:NO_TARG_DIV
-msgid "Could not find target div"
-msgstr "لا يمكن أن تجد شعبة الهدف"
-
-#: reservation.js:INVALID_TS_RANGE
-msgid "You must choose a valid start and end time for the reservation."
-msgstr "يجب عليك عند الاختيار أن تكون بداية التاريخ ونهايته صالحة للحجز."
-
-#: reservation.js:AUTO_pickup_lib_selector
-msgid "Choose the pickup library for this reservation:"
-msgstr "اختيار مكتبة الاستلام لهذا الحجز:"
-
-#: reservation.js:NO_USABLE_BRSRC
+#: reservation.js:CREATE_BRESV_OK_MISSING_TARGET
 msgid ""
-"No reservable resources.  Adjust start and end time\n"
-"until a resource is available for reservation."
+"Created ${0} reservation(s), but ${1} of these could not target any "
+"resources.\n"
+"\n"
+"This means that it won't be possible to fulfill some of these\n"
+"reservations until a suitable resource becomes available."
 msgstr ""
-"لا توجد مصادر قابلة للحجز، ضبط بداية ونهاية الوقت\n"
-"إلا أن تصل إلى المصدر المُتاح لـِ الحجز."
-
-#: reservation.js:AUTO_ATTR_VALUE_button_edit_existing
-msgid "Edit selected"
-msgstr "تعديل المُحدد"
+"الحجوزات المُنشئَة ${0} ،ولكن ${1} من هذه لا يمكن أن تستهدف أية مصادر.\n"
+"\n"
+"هذا يعني أنه لن يكون من الممكن تحقيق بعض هذه\n"
+"الحجوزات حتى يصبح المصدر المُناسب مُتاحاً."
 
 #: reservation.js:CREATE_BRESV_OK_MISSING_TARGET_BLOCKED_BY_CIRC
 msgid ""
@@ -280,10 +82,208 @@ msgstr ""
 "التالي:\n"
 "${0}"
 
-#: reservation.js:ANY
-msgid "ANY"
-msgstr "أياً من"
+#: reservation.js:CREATE_BRESV_OK_MISSING_TARGET_WILL_CANCEL
+msgid ""
+"Since the requested resource could not be targeted, this\n"
+"reservation will now be canceled."
+msgstr ""
+"بما أنه لا يمكن استهداف المصدر المطلوب، فإن\n"
+"الحجز الآن سيتم إلغاؤه."
+
+#: reservation.js:CREATE_BRESV_OK
+msgid "Created ${0} reservation(s)"
+msgstr "المُنشئة ${0} حجوزات"
+
+#: reservation.js:WHERES_THE_BARCODE
+msgid "Enter a patron's barcode to make a reservation."
+msgstr "إدخال باكود المستفيد لإنشاء الحجز"
+
+#: reservation.js:ACTOR_CARD_NOT_FOUND
+msgid "Patron barcode not found. Please try again."
+msgstr "باركود المستفيد غير موجود. ينبغي المحاولة مرة اخرى."
+
+#: reservation.js:GET_BRESV_LIST_ERR
+msgid "Error while retrieving reservation list: "
+msgstr "خطأ أثناء استرداد قائمة الحجز: "
+
+#: reservation.js:GET_BRESV_LIST_NO_RESULT
+msgid "No results from server retrieving reservation list."
+msgstr "لا توجد نتائج مُسترجعة من الخادم لقائمة الحجز."
+
+#: reservation.js:OUTSTANDING_BRESV
+msgid "Outstanding reservations for patron"
+msgstr "الحجوزات المُعلقة لهذا المستفيد"
+
+#: reservation.js:UNTARGETED
+msgid "None targeted"
+msgstr "غير المستهدفة"
+
+#: reservation.js:GET_PATRON_NO_RESULT
+msgid "No server response after attempting to look up patron by barcode."
+msgstr ""
+"لا توجد استجابة من الخادم بعد محاولة البحث عن المستفيد باستخدام الباركود."
+
+#: reservation.js:HERE_ARE_EXISTING_BRESV
+msgid "Existing reservations for"
+msgstr "الحجوزات الموجودة لــِ"
+
+#: reservation.js:NO_EXISTING_BRESV
+msgid "This user has no existing reservations at this time."
+msgstr "هذا المستخدم ليس لديه حجوزات موجودة في هذا الوقت."
+
+#: reservation.js:NO_USABLE_BRSRC
+msgid ""
+"No reservable resources.  Adjust start and end time\n"
+"until a resource is available for reservation."
+msgstr ""
+"لا توجد مصادر قابلة للحجز، ضبط بداية ونهاية الوقت\n"
+"إلا أن تصل إلى المصدر المُتاح لـِ الحجز."
+
+#: reservation.js:CXL_BRESV_SUCCESS
+msgid "Canceled ${0} reservation(s)"
+msgstr "الملغية ${0} حجوزات"
 
 #: reservation.js:CXL_BRESV_FAILURE
 msgid "Error canceling reservations; server silent."
 msgstr "حدث خطأ أثناء إلغاء الحجوزات؛ الخادم الصامت ـ خامد ـ ."
+
+#: reservation.js:CXL_BRESV_FAILURE2
+msgid "Error canceling reservations:\n"
+msgstr "خطأ في إلغاء الحجوزات:\n"
+
+#: reservation.js:CXL_BRESV_SELECT_SOMETHING
+msgid "You have not selected any reservations to cancel."
+msgstr "لم يتم تحديد أي حجوزات لإلغائها."
+
+#: reservation.js:NEED_EXACTLY_ONE_BRT_PASSED_IN
+msgid "Can't book multiple resource types at once"
+msgstr "لا يمكن أن تحجز أنواع مصادر متعددة في وقت واحد"
+
+#: reservation.js:COULD_NOT_RETRIEVE_BRT_PASSED_IN
+msgid "Error retrieving booking resource type"
+msgstr "حدث خطأ أثناء استرداد الحجز لنوع المصدر"
+
+#: reservation.js:INVALID_TS_RANGE
+msgid "You must choose a valid start and end time for the reservation."
+msgstr "يجب عليك عند الاختيار أن تكون بداية التاريخ ونهايته صالحة للحجز."
+
+#: reservation.js:BRSRC_NOT_FOUND
+msgid "Could not locate that resource."
+msgstr "لا يمكن تحديد موقع هذا المصدر"
+
+#: reservation.js:BRSRC_RETRIVE_ERROR
+msgid "Error retrieving resource: "
+msgstr "خطأ في استرداد المصدر: "
+
+#: reservation.js:ON_FLY_NO_RESPONSE
+msgid "No response from server attempting to make item a bookable resource."
+msgstr "لا يوجد رد أو إجابة من محاولة الخادم إنشاء نسخة مصدر قابل للحجز."
+
+#: reservation.js:ON_FLY_ERROR
+msgid "Error attempting to make item a bookable resource:"
+msgstr "حطأ في محاولة إنشاء نُسخة المصدر القابل للحجز:"
+
+#: reservation.js:ANY
+msgid "ANY"
+msgstr "أياً من"
+
+#: reservation.js:ERROR_FETCHING_AOUS
+msgid ""
+"Could not retrieve organizational unit settings.\n"
+"This is a non-fatal error, but you may wish to\n"
+"contact your system administrator."
+msgstr ""
+"لا يمكن استرداد إعدادات الوحدة التنظيمية\n"
+"أنه خطأ غير فادح، ولكن قد ترغب في \n"
+"الاتصال بـِ مسؤول نظامك"
+
+#: reservation.js:AUTO_choose_a_brt
+msgid "Choose a Bookable Resource Type"
+msgstr "اختيار نوع المصدر القابل للحجز"
+
+#: reservation.js:AUTO_i_need_this_resource
+msgid "I need this resource..."
+msgstr "احتاج وأُريد هذا المصدر..."
+
+#: reservation.js:AUTO_starting_at
+msgid "Between"
+msgstr "ما بين"
+
+#: reservation.js:AUTO_ending_at
+msgid "and"
+msgstr "و"
+
+#: reservation.js:AUTO_with_these_attr
+msgid "With these attributes:"
+msgstr "مع هذه الخصائص:"
+
+#: reservation.js:AUTO_patron_barcode
+msgid "Reserve to patron barcode:"
+msgstr "حجز لـِ باركود المستفيد:"
+
+#: reservation.js:AUTO_ATTR_VALUE_next
+msgid "Next"
+msgstr "التالي"
+
+#: reservation.js:AUTO_ATTR_VALUE_reserve_brsrc
+msgid "Reserve Selected"
+msgstr "الحجز المُحدد"
+
+#: reservation.js:AUTO_ATTR_VALUE_reserve_brt
+msgid "Reserve Any"
+msgstr "حجز على أي حال"
+
+#: reservation.js:AUTO_ATTR_VALUE_button_edit_existing
+msgid "Edit selected"
+msgstr "تعديل المُحدد"
+
+#: reservation.js:AUTO_ATTR_VALUE_button_cancel_existing
+msgid "Cancel selected"
+msgstr "إلغاء المُحدد"
+
+#: reservation.js:AUTO_bresv_grid_type
+msgid "Type"
+msgstr "النوع"
+
+#: reservation.js:AUTO_bresv_grid_resource
+msgid "Resource"
+msgstr "المصدر"
+
+#: reservation.js:AUTO_bresv_grid_start_time
+msgid "Start time"
+msgstr "تاريخ البداية"
+
+#: reservation.js:AUTO_bresv_grid_end_time
+msgid "End time"
+msgstr "تاريخ الانتهاء"
+
+#: reservation.js:AUTO_brt_noncat_only
+msgid "Show only non-cataloged bookable resource types"
+msgstr "إظهار فقط أنواع ـ فئات ـ المصادر القابلة للحجز غير المُفهرسة"
+
+#: reservation.js:AUTO_arbitrary_resource
+msgid "Enter the barcode of a cataloged, bookable resource:"
+msgstr "أدخال باركود المصدر المُفهرس، القابل للحجز:"
+
+#: reservation.js:AUTO_explain_bookable
+msgid ""
+"To reserve an item that is not yet registered as a bookable resource, find "
+"it in the catalog or under <em>Display Item</em>, and select <em>Make Item "
+"Bookable</em> or <em>Book Item Now</em> there."
+msgstr ""
+"لحجز النُسخة التي لم يتم تسجيلها بعد كمصدر قابل للحجز، إبحث عنها في الكتالوج "
+"أو تحت <em>إظهار النُسخة</em>، ثم اختر <em>اجعل/أنشيء النسخة قابلة "
+"للحجز</em> أو <em>احجز النُسخة الآن</em> هناك."
+
+#: reservation.js:AUTO_pickup_lib_selector
+msgid "Choose the pickup library for this reservation:"
+msgstr "اختيار مكتبة الاستلام لهذا الحجز:"
+
+#: reservation.js:AUTO_email_notify
+msgid "Send email notification when resource is available for pickup."
+msgstr ""
+"إرسال إشعار بريد الإلكتروني عندما يصبح المصدر مُتاح للالتقاط _ الاستلام _."
+
+#: reservation.js:AUTO_or
+msgid "- Or -"
+msgstr "- أو -"

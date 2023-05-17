@@ -7,37 +7,23 @@ msgid ""
 msgstr ""
 "Project-Id-Version: evergreen\n"
 "Report-Msgid-Bugs-To: FULL NAME <EMAIL@ADDRESS>\n"
-"POT-Creation-Date: 2020-06-12 11:45-0400\n"
+"POT-Creation-Date: 2022-04-27 17:07-0400\n"
 "PO-Revision-Date: 2016-07-28 21:05+0000\n"
 "Last-Translator: Anahi Valdez <avaldez@emeralddata.net>\n"
 "Language-Team: Spanish <es@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2020-09-16 06:04+0000\n"
-"X-Generator: Launchpad (build 83bdf6c8a3a5f87722c8927e54838522f3e57504)\n"
+"X-Launchpad-Export-Date: 2023-05-05 04:50+0000\n"
+"X-Generator: Launchpad (build 90e2150bef31b411d7bae5c4032c7e320fcaaec8)\n"
 
-#: match_set.js:WORKING_MP_HERE
-msgid "Choose from among the three buttons above to add a new match point."
+#: match_set.js:DEFINE_MP
+msgid ""
+"Define this match point using the above fields, then drag me to the tree on "
+"the right."
 msgstr ""
-"Elija de entre los tres botones de arriba para añadir un nuevo punto de "
-"partida."
-
-#: match_set.js:HEADING_MATCH
-msgid "Normalized Heading"
-msgstr "Título Normalizado"
-
-#: match_set.js:OK
-msgid "Ok"
-msgstr "Aceptar"
-
-#: match_set.js:EXIT_REPLACE_MODE
-msgid "Exit Replace Mode"
-msgstr "Salir del modo de Reemplazar"
-
-#: match_set.js:ENTER_REPLACE_MODE
-msgid "Enter Replace Mode"
-msgstr "Introducir modo de Reemplazar"
+"Definir este punto de partido usando los campos anteriores, entonces me "
+"arrastre al árbol de la derecha."
 
 #: match_set.js:LEAVE_ROOT_ALONE
 msgid "You cannot delete the root node of a tree (but you can replace it)."
@@ -51,32 +37,26 @@ msgstr ""
 "Primero, elige exactamente un nodo del árbol de la parte derecha de la "
 "pantalla."
 
-#: match_set.js:CANCEL
-msgid "Cancel"
-msgstr "Cancelar"
+#: match_set.js:EXIT_REPLACE_MODE
+msgid "Exit Replace Mode"
+msgstr "Salir del modo de Reemplazar"
 
-#: match_set.js:WORKING_QM_HERE
-msgid "Use buttons above and to the right to add new quality metrics."
-msgstr ""
-"Utilice los botones arriba ya la derecha para añadir nuevas métricas de "
-"calidad."
-
-#: match_set.js:DEFINE_MP
-msgid ""
-"Define this match point using the above fields, then drag me to the tree on "
-"the right."
-msgstr ""
-"Definir este punto de partido usando los campos anteriores, entonces me "
-"arrastre al árbol de la derecha."
+#: match_set.js:ENTER_REPLACE_MODE
+msgid "Enter Replace Mode"
+msgstr "Introducir modo de Reemplazar"
 
 #: match_set.js:NO_CAN_DO
 msgid "An error has occurred. Close this interface and try again."
 msgstr ""
 "Se ha producido un error. Cierra esta interfaz y vuelve a intentarlo."
 
-#: match_set.js:SVF
-msgid "Record Attribute"
-msgstr "Registro de Atributos"
+#: match_set.js:OK
+msgid "Ok"
+msgstr "Aceptar"
+
+#: match_set.js:CANCEL
+msgid "Cancel"
+msgstr "Cancelar"
 
 #: match_set.js:POINT_NEEDS_ONE
 msgid "You have not entered valid data"
@@ -90,6 +70,26 @@ msgstr ""
 "Una etiqueta MARC debe ser identificado por tres dígitos y el subcampo debe "
 "ser uno no está en blanco, sin carácter de control."
 
+#: match_set.js:WORKING_MP_HERE
+msgid "Choose from among the three buttons above to add a new match point."
+msgstr ""
+"Elija de entre los tres botones de arriba para añadir un nuevo punto de "
+"partida."
+
+#: match_set.js:WORKING_QM_HERE
+msgid "Use buttons above and to the right to add new quality metrics."
+msgstr ""
+"Utilice los botones arriba ya la derecha para añadir nuevas métricas de "
+"calidad."
+
+#: match_set.js:SVF
+msgid "Record Attribute"
+msgstr "Registro de Atributos"
+
 #: match_set.js:MATCH_SCORE
 msgid "Match score ${0}"
 msgstr "Resultado del partido ${0}"
+
+#: match_set.js:HEADING_MATCH
+msgid "Normalized Heading"
+msgstr "Título Normalizado"

@@ -7,67 +7,31 @@ msgid ""
 msgstr ""
 "Project-Id-Version: evergreen\n"
 "Report-Msgid-Bugs-To: FULL NAME <EMAIL@ADDRESS>\n"
-"POT-Creation-Date: 2020-06-12 11:45-0400\n"
+"POT-Creation-Date: 2022-04-27 17:07-0400\n"
 "PO-Revision-Date: 2012-05-31 17:33+0000\n"
 "Last-Translator: Job Diógenes Ribeiro Borges <jobdrb@gmail.com>\n"
 "Language-Team: Brazilian Portuguese <pt_BR@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2020-09-16 06:02+0000\n"
-"X-Generator: Launchpad (build 83bdf6c8a3a5f87722c8927e54838522f3e57504)\n"
+"X-Launchpad-Export-Date: 2023-05-05 04:47+0000\n"
+"X-Generator: Launchpad (build 90e2150bef31b411d7bae5c4032c7e320fcaaec8)\n"
 
-#: capture.js:AUTO_ATTR_VALUE_capture
-msgid "Capture"
-msgstr "Capturar"
+#: capture.js:FAILURE
+msgid "Capture failed"
+msgstr "Captura falhou"
 
-#: capture.js:SLIP_DATE
-msgid "Slip date"
-msgstr "Data do comprovante"
-
-#: capture.js:CAPTURED_NOTHING
-msgid "Didn't capture anything."
-msgstr "Não capturou nada."
-
-#: capture.js:AUTHOR
-msgid "Author"
-msgstr "Autor"
-
-#: capture.js:CAPTURE_BRESV_DATES
-msgid "Reservation time:"
-msgstr "Tempo de reserva"
-
-#: capture.js:CAPTURE_INFO
-msgid "Capture Information"
-msgstr "Capturar Informação"
-
-#: capture.js:HERES_WHAT_WE_KNOW
-msgid "The following information is available about the failed capture:"
-msgstr "A informação a seguir esta disponível sobre a falha de captura:"
-
-#: capture.js:AT
-msgid "at"
-msgstr "em"
-
-#: capture.js:RESERVED
-msgid "Reserved for patron"
-msgstr "Reservado para patrono"
-
-#: capture.js:CAPTURE_CAUSES_TRANSIT
-msgid "This item is now in transit!"
-msgstr "Este item está em trânsito!"
-
-#: capture.js:TITLE
-msgid "Title"
-msgstr "Tí­tulo"
+#: capture.js:SUCCESS
+msgid "Capture succeeded"
+msgstr "Captura sucedida"
 
 #: capture.js:UNKNOWN_PROBLEM
 msgid "An unknown problem occurred during capture attempt."
 msgstr "Um problema desconhecido ocorreu durante a tentativa de captura."
 
-#: capture.js:PRINTED_BY
-msgid "Printed by"
-msgstr "Impresso por"
+#: capture.js:CAPTURED_NOTHING
+msgid "Didn't capture anything."
+msgstr "Não capturou nada."
 
 #: capture.js:NO_PAYLOAD
 msgid ""
@@ -77,6 +41,30 @@ msgstr ""
 "Nós não recebemos mais informações do servidor sobre essa tentativa de "
 "captura."
 
+#: capture.js:HERES_WHAT_WE_KNOW
+msgid "The following information is available about the failed capture:"
+msgstr "A informação a seguir esta disponível sobre a falha de captura:"
+
+#: capture.js:CAPTURE_INFO
+msgid "Capture Information"
+msgstr "Capturar Informação"
+
+#: capture.js:CAPTURE_BRESV_DATES
+msgid "Reservation time:"
+msgstr "Tempo de reserva"
+
+#: capture.js:CAPTURE_BRESV_BRSRC
+msgid "Resource barcode:"
+msgstr "Código de barras de recursos:"
+
+#: capture.js:CAPTURE_BRESV_PICKUP_LIB capture.js:AUTO_pickup_lib_selector
+msgid "Pickup library:"
+msgstr "Biblioteca de retirada"
+
+#: capture.js:CAPTURE_CAUSES_TRANSIT
+msgid "This item is now in transit!"
+msgstr "Este item está em trânsito!"
+
 #: capture.js:CAPTURE_TRANSIT_SOURCE
 msgid "From:"
 msgstr "De:"
@@ -85,58 +73,70 @@ msgstr "De:"
 msgid "To:"
 msgstr "Para:"
 
-#: capture.js:FAILURE
-msgid "Capture failed"
-msgstr "Captura falhou"
-
-#: capture.js:RESERVATION_SHELF
-msgid "RESERVATION SHELF"
-msgstr "PRATELEIRA DE RESERVA"
-
-#: capture.js:SUCCESS
-msgid "Capture succeeded"
-msgstr "Captura sucedida"
-
-#: capture.js:PRINT_ACCESSKEY
-msgid "P"
-msgstr "P"
-
-#: capture.js:CAPTURE_BRESV_BRSRC
-msgid "Resource barcode:"
-msgstr "Código de barras de recursos:"
-
-#: capture.js:DURATION
-msgid "Reserved from"
-msgstr "Reservado de"
-
-#: capture.js:PRINT
-msgid "<u>P</u>rint"
-msgstr "<u>I</u>mprimir"
-
-#: capture.js:CAPTURE_BRESV_PICKUP_LIB capture.js:AUTO_pickup_lib_selector
-msgid "Pickup library:"
-msgstr "Biblioteca de retirada"
-
-#: capture.js:NEEDS_ROUTED_TO
-msgid "This item need to be routed to"
-msgstr "Esta item precisa ser encaminhado para"
-
 #: capture.js:BARCODE
 msgid "Barcode"
 msgstr "Código de Barras"
+
+#: capture.js:TITLE
+msgid "Title"
+msgstr "Tí­tulo"
+
+#: capture.js:AUTHOR
+msgid "Author"
+msgstr "Autor"
+
+#: capture.js:RESERVED
+msgid "Reserved for patron"
+msgstr "Reservado para patrono"
 
 #: capture.js:REQUEST
 msgid "Request time"
 msgstr "Hora da solicitação"
 
+#: capture.js:DURATION
+msgid "Reserved from"
+msgstr "Reservado de"
+
+#: capture.js:SLIP_DATE
+msgid "Slip date"
+msgstr "Data do comprovante"
+
+#: capture.js:PRINTED_BY
+msgid "Printed by"
+msgstr "Impresso por"
+
+#: capture.js:AT
+msgid "at"
+msgstr "em"
+
+#: capture.js:PRINT
+msgid "<u>P</u>rint"
+msgstr "<u>I</u>mprimir"
+
+#: capture.js:PRINT_ACCESSKEY
+msgid "P"
+msgstr "P"
+
 #: capture.js:TRANSIT
 msgid "*** TRANSIT ***"
 msgstr "*** TRANSITO ***"
+
+#: capture.js:RESERVATION_SHELF
+msgid "RESERVATION SHELF"
+msgstr "PRATELEIRA DE RESERVA"
+
+#: capture.js:NEEDS_ROUTED_TO
+msgid "This item need to be routed to"
+msgstr "Esta item precisa ser encaminhado para"
+
+#: capture.js:AUTO_capture_heading
+msgid "Capture Reserved Resources"
+msgstr "Captar Recursos Reservados"
 
 #: capture.js:AUTO_resource_barcode
 msgid "Enter barcode:"
 msgstr "Digite o código de barras:"
 
-#: capture.js:AUTO_capture_heading
-msgid "Capture Reserved Resources"
-msgstr "Captar Recursos Reservados"
+#: capture.js:AUTO_ATTR_VALUE_capture
+msgid "Capture"
+msgstr "Capturar"

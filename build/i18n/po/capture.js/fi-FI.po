@@ -3,74 +3,62 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: open-ils-dev@list.georgialibraries.org\n"
-"POT-Creation-Date: 2020-06-12 11:45-0400\n"
+"POT-Creation-Date: 2022-04-27 17:07-0400\n"
 "PO-Revision-Date: 2013-03-19 19:53+0000\n"
 "Last-Translator: Finnish <Unknown>\n"
 "Language-Team: Finnish <evergreen@jns.fi>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2020-09-16 06:02+0000\n"
-"X-Generator: Launchpad (build 83bdf6c8a3a5f87722c8927e54838522f3e57504)\n"
+"X-Launchpad-Export-Date: 2023-05-05 04:47+0000\n"
+"X-Generator: Launchpad (build 90e2150bef31b411d7bae5c4032c7e320fcaaec8)\n"
 "Language: fi\n"
 
-#: capture.js:AUTO_ATTR_VALUE_capture
-msgid "Capture"
-msgstr "Kiinnitä"
+#: capture.js:FAILURE
+msgid "Capture failed"
+msgstr "Kiinnitys epäonnistui"
 
-#: capture.js:SLIP_DATE
-msgid "Slip date"
-msgstr "Liuskan päiväys"
-
-#: capture.js:CAPTURED_NOTHING
-msgid "Didn't capture anything."
-msgstr "Mitään ei kiinnitetty."
-
-#: capture.js:AUTHOR
-msgid "Author"
-msgstr "Tekijä"
-
-#: capture.js:CAPTURE_BRESV_DATES
-msgid "Reservation time:"
-msgstr "Erikoisvarauksen aika:"
-
-#: capture.js:CAPTURE_INFO
-msgid "Capture Information"
-msgstr "Kiinnitystiedot"
-
-#: capture.js:HERES_WHAT_WE_KNOW
-msgid "The following information is available about the failed capture:"
-msgstr "Epäonnistuneesta kiinnityksestä on saatavilla seuraavat tiedot:"
-
-#: capture.js:AT
-msgid "at"
-msgstr "kohteessa"
-
-#: capture.js:RESERVED
-msgid "Reserved for patron"
-msgstr "Varattu asiakkaalle"
-
-#: capture.js:CAPTURE_CAUSES_TRANSIT
-msgid "This item is now in transit!"
-msgstr "Tämä nide on kuljetettavana!"
-
-#: capture.js:TITLE
-msgid "Title"
-msgstr "Nimeke"
+#: capture.js:SUCCESS
+msgid "Capture succeeded"
+msgstr "Kiinnitys onnistui"
 
 #: capture.js:UNKNOWN_PROBLEM
 msgid "An unknown problem occurred during capture attempt."
 msgstr "Kiinnitysyrityksessä ilmeni tuntematon ongelma."
 
-#: capture.js:PRINTED_BY
-msgid "Printed by"
-msgstr "Tulostanut:"
+#: capture.js:CAPTURED_NOTHING
+msgid "Didn't capture anything."
+msgstr "Mitään ei kiinnitetty."
 
 #: capture.js:NO_PAYLOAD
 msgid ""
 "We did not receive further information from the server about this attempt to "
 "capture."
 msgstr "Palvelin ei antanut muita tietoja tästä kiinnitysyrityksestä."
+
+#: capture.js:HERES_WHAT_WE_KNOW
+msgid "The following information is available about the failed capture:"
+msgstr "Epäonnistuneesta kiinnityksestä on saatavilla seuraavat tiedot:"
+
+#: capture.js:CAPTURE_INFO
+msgid "Capture Information"
+msgstr "Kiinnitystiedot"
+
+#: capture.js:CAPTURE_BRESV_DATES
+msgid "Reservation time:"
+msgstr "Erikoisvarauksen aika:"
+
+#: capture.js:CAPTURE_BRESV_BRSRC
+msgid "Resource barcode:"
+msgstr "Aineiston tunnus:"
+
+#: capture.js:CAPTURE_BRESV_PICKUP_LIB capture.js:AUTO_pickup_lib_selector
+msgid "Pickup library:"
+msgstr "Noutokirjasto:"
+
+#: capture.js:CAPTURE_CAUSES_TRANSIT
+msgid "This item is now in transit!"
+msgstr "Tämä nide on kuljetettavana!"
 
 #: capture.js:CAPTURE_TRANSIT_SOURCE
 msgid "From:"
@@ -80,58 +68,70 @@ msgstr "Lähettäjä:"
 msgid "To:"
 msgstr "Vastaanottaja:"
 
-#: capture.js:FAILURE
-msgid "Capture failed"
-msgstr "Kiinnitys epäonnistui"
-
-#: capture.js:RESERVATION_SHELF
-msgid "RESERVATION SHELF"
-msgstr "VARAUSHYLLY"
-
-#: capture.js:SUCCESS
-msgid "Capture succeeded"
-msgstr "Kiinnitys onnistui"
-
-#: capture.js:PRINT_ACCESSKEY
-msgid "P"
-msgstr "P"
-
-#: capture.js:CAPTURE_BRESV_BRSRC
-msgid "Resource barcode:"
-msgstr "Aineiston tunnus:"
-
-#: capture.js:DURATION
-msgid "Reserved from"
-msgstr "Varattu kohteesta"
-
-#: capture.js:PRINT
-msgid "<u>P</u>rint"
-msgstr "Tulosta (<u>P</u>)"
-
-#: capture.js:CAPTURE_BRESV_PICKUP_LIB capture.js:AUTO_pickup_lib_selector
-msgid "Pickup library:"
-msgstr "Noutokirjasto:"
-
-#: capture.js:NEEDS_ROUTED_TO
-msgid "This item need to be routed to"
-msgstr "Tämä nide on kuljetettava kohteeseen"
-
 #: capture.js:BARCODE
 msgid "Barcode"
 msgstr "Tunnus"
+
+#: capture.js:TITLE
+msgid "Title"
+msgstr "Nimeke"
+
+#: capture.js:AUTHOR
+msgid "Author"
+msgstr "Tekijä"
+
+#: capture.js:RESERVED
+msgid "Reserved for patron"
+msgstr "Varattu asiakkaalle"
 
 #: capture.js:REQUEST
 msgid "Request time"
 msgstr "Pyyntöaika"
 
+#: capture.js:DURATION
+msgid "Reserved from"
+msgstr "Varattu kohteesta"
+
+#: capture.js:SLIP_DATE
+msgid "Slip date"
+msgstr "Liuskan päiväys"
+
+#: capture.js:PRINTED_BY
+msgid "Printed by"
+msgstr "Tulostanut:"
+
+#: capture.js:AT
+msgid "at"
+msgstr "kohteessa"
+
+#: capture.js:PRINT
+msgid "<u>P</u>rint"
+msgstr "Tulosta (<u>P</u>)"
+
+#: capture.js:PRINT_ACCESSKEY
+msgid "P"
+msgstr "P"
+
 #: capture.js:TRANSIT
 msgid "*** TRANSIT ***"
 msgstr "*** KULJETETTAVANA ***"
+
+#: capture.js:RESERVATION_SHELF
+msgid "RESERVATION SHELF"
+msgstr "VARAUSHYLLY"
+
+#: capture.js:NEEDS_ROUTED_TO
+msgid "This item need to be routed to"
+msgstr "Tämä nide on kuljetettava kohteeseen"
+
+#: capture.js:AUTO_capture_heading
+msgid "Capture Reserved Resources"
+msgstr "Kiinnitä varatut aineistot"
 
 #: capture.js:AUTO_resource_barcode
 msgid "Enter barcode:"
 msgstr "Syötä tunnus:"
 
-#: capture.js:AUTO_capture_heading
-msgid "Capture Reserved Resources"
-msgstr "Kiinnitä varatut aineistot"
+#: capture.js:AUTO_ATTR_VALUE_capture
+msgid "Capture"
+msgstr "Kiinnitä"

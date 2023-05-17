@@ -7,35 +7,22 @@ msgid ""
 msgstr ""
 "Project-Id-Version: evergreen\n"
 "Report-Msgid-Bugs-To: FULL NAME <EMAIL@ADDRESS>\n"
-"POT-Creation-Date: 2020-06-12 11:45-0400\n"
+"POT-Creation-Date: 2022-04-27 17:07-0400\n"
 "PO-Revision-Date: 2017-01-19 09:22+0000\n"
 "Last-Translator: fares othman <Unknown>\n"
 "Language-Team: Arabic <ar@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2020-09-16 06:04+0000\n"
-"X-Generator: Launchpad (build 83bdf6c8a3a5f87722c8927e54838522f3e57504)\n"
+"X-Launchpad-Export-Date: 2023-05-05 04:50+0000\n"
+"X-Generator: Launchpad (build 90e2150bef31b411d7bae5c4032c7e320fcaaec8)\n"
 
-#: match_set.js:WORKING_MP_HERE
-msgid "Choose from among the three buttons above to add a new match point."
-msgstr "الاختيار من بين ثلاثة أزرار المتواجدة أعلاه لإضافة نقطة تطابق جديدة"
-
-#: match_set.js:HEADING_MATCH
-msgid "Normalized Heading"
-msgstr "تسوية الترويسة"
-
-#: match_set.js:OK
-msgid "Ok"
-msgstr "موافق"
-
-#: match_set.js:EXIT_REPLACE_MODE
-msgid "Exit Replace Mode"
-msgstr "خروج واستبدال الطريقة"
-
-#: match_set.js:ENTER_REPLACE_MODE
-msgid "Enter Replace Mode"
-msgstr "دخول واستبدال الطريقة"
+#: match_set.js:DEFINE_MP
+msgid ""
+"Define this match point using the above fields, then drag me to the tree on "
+"the right."
+msgstr ""
+"تعريف نقطة المطابقة باستخدام الحقول أعلاه، ثم السحب إلى الشجرة على اليمين."
 
 #: match_set.js:LEAVE_ROOT_ALONE
 msgid "You cannot delete the root node of a tree (but you can replace it)."
@@ -47,28 +34,25 @@ msgid ""
 msgstr ""
 "أولا ينبغي بالضبط تحديد عقدة واحدة من الشجرة في الجانب الأيمن من الشاشة."
 
-#: match_set.js:CANCEL
-msgid "Cancel"
-msgstr "إلغاء"
+#: match_set.js:EXIT_REPLACE_MODE
+msgid "Exit Replace Mode"
+msgstr "خروج واستبدال الطريقة"
 
-#: match_set.js:WORKING_QM_HERE
-msgid "Use buttons above and to the right to add new quality metrics."
-msgstr "استخدم الأزرار أعلاه وإلى اليمين لإضافة مقاييس نوعية جديدة."
-
-#: match_set.js:DEFINE_MP
-msgid ""
-"Define this match point using the above fields, then drag me to the tree on "
-"the right."
-msgstr ""
-"تعريف نقطة المطابقة باستخدام الحقول أعلاه، ثم السحب إلى الشجرة على اليمين."
+#: match_set.js:ENTER_REPLACE_MODE
+msgid "Enter Replace Mode"
+msgstr "دخول واستبدال الطريقة"
 
 #: match_set.js:NO_CAN_DO
 msgid "An error has occurred. Close this interface and try again."
 msgstr "حدث خطأ. إغلاق هذه النافذة وحاول مرة أخرى."
 
-#: match_set.js:SVF
-msgid "Record Attribute"
-msgstr "خاصية التسجيلة"
+#: match_set.js:OK
+msgid "Ok"
+msgstr "موافق"
+
+#: match_set.js:CANCEL
+msgid "Cancel"
+msgstr "إلغاء"
 
 #: match_set.js:POINT_NEEDS_ONE
 msgid "You have not entered valid data"
@@ -82,6 +66,22 @@ msgstr ""
 "ينبغي تحديد التاج في مارك من ثلاثة أرقام، ويجب أن تكون الحقول الفرعية واحدة "
 "بدون فراغ أبيض، غير مُسيطر على المحرف."
 
+#: match_set.js:WORKING_MP_HERE
+msgid "Choose from among the three buttons above to add a new match point."
+msgstr "الاختيار من بين ثلاثة أزرار المتواجدة أعلاه لإضافة نقطة تطابق جديدة"
+
+#: match_set.js:WORKING_QM_HERE
+msgid "Use buttons above and to the right to add new quality metrics."
+msgstr "استخدم الأزرار أعلاه وإلى اليمين لإضافة مقاييس نوعية جديدة."
+
+#: match_set.js:SVF
+msgid "Record Attribute"
+msgstr "خاصية التسجيلة"
+
 #: match_set.js:MATCH_SCORE
 msgid "Match score ${0}"
 msgstr "نتيجة التطابق ${0}"
+
+#: match_set.js:HEADING_MATCH
+msgid "Normalized Heading"
+msgstr "تسوية الترويسة"

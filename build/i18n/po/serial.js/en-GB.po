@@ -7,72 +7,72 @@ msgid ""
 msgstr ""
 "Project-Id-Version: evergreen\n"
 "Report-Msgid-Bugs-To: FULL NAME <EMAIL@ADDRESS>\n"
-"POT-Creation-Date: 2020-06-12 11:45-0400\n"
+"POT-Creation-Date: 2022-04-27 17:07-0400\n"
 "PO-Revision-Date: 2015-03-25 16:26+0000\n"
 "Last-Translator: Andi Chandler <Unknown>\n"
 "Language-Team: English (United Kingdom) <en_GB@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2020-09-16 06:04+0000\n"
-"X-Generator: Launchpad (build 83bdf6c8a3a5f87722c8927e54838522f3e57504)\n"
-
-#: serial.js:SAVE_SUCCESSFUL
-msgid "Save Successful"
-msgstr "Save Successful"
-
-#: serial.js:SEASON_SUMMER
-msgid "Summer"
-msgstr "Summer"
-
-#: serial.js:SELECT_VALID_CAP
-msgid "Have you selected a valid caption and pattern?"
-msgstr "Have you selected a valid caption and pattern?"
-
-#: serial.js:SEASON_WINTER
-msgid "Winter"
-msgstr "Winter"
-
-#: serial.js:CREATE_ISSUANCE
-msgid "Create Issuance"
-msgstr "Create Issuance"
-
-#: serial.js:NOTES_SSUB
-msgid "Subscription Notes (ID: ${0})"
-msgstr "Subscription Notes (ID: ${0})"
-
-#: serial.js:REQUIRE_ONE_ROW
-msgid "Use the checkboxes to select exactly one row for this operation."
-msgstr "Use the checkboxes to select exactly one row for this operation."
+"X-Launchpad-Export-Date: 2023-05-05 04:50+0000\n"
+"X-Generator: Launchpad (build 90e2150bef31b411d7bae5c4032c7e320fcaaec8)\n"
 
 #: serial.js:SEASON_SPRING
 msgid "Spring"
 msgstr "Spring"
 
-#: serial.js:WIZARD
-msgid "Wizard"
-msgstr "Wizard"
+#: serial.js:SEASON_SUMMER
+msgid "Summer"
+msgstr "Summer"
 
-#: serial.js:MODIFY_ISSUANCE
-msgid "Modify Issuance"
-msgstr "Modify Issuance"
+#: serial.js:SEASON_FALL
+msgid "Fall"
+msgstr "Autumn"
+
+#: serial.js:SEASON_WINTER
+msgid "Winter"
+msgstr "Winter"
+
+#: serial.js:SELECT_VALID_CAP
+msgid "Have you selected a valid caption and pattern?"
+msgstr "Have you selected a valid caption and pattern?"
 
 #: serial.js:NO_CAP_SUBFIELDS
 msgid "No caption subfields in selected caption and pattern"
 msgstr "No caption subfields in selected caption and pattern"
 
-#: serial.js:NOTES_SDIST
-msgid "Distribution Notes (ID: ${0})"
-msgstr "Distribution Notes (ID: ${0})"
+#: serial.js:COMPILE
+msgid "Create Holding Code"
+msgstr "Create Holding Code"
 
 #: serial.js:ERROR_BLANK_FIELDS
 msgid "A valid holding code cannot be produced with any blank fields."
 msgstr "A valid holding code cannot be produced with any blank fields."
 
-#: serial.js:COMPILE
-msgid "Create Holding Code"
-msgstr "Create Holding Code"
+#: serial.js:WIZARD
+msgid "Wizard"
+msgstr "Wizard"
 
-#: serial.js:SEASON_FALL
-msgid "Fall"
-msgstr "Autumn"
+#: serial.js:CREATE_ISSUANCE
+msgid "Create Issuance"
+msgstr "Create Issuance"
+
+#: serial.js:MODIFY_ISSUANCE
+msgid "Modify Issuance"
+msgstr "Modify Issuance"
+
+#: serial.js:SAVE_SUCCESSFUL
+msgid "Save Successful"
+msgstr "Save Successful"
+
+#: serial.js:NOTES_SSUB
+msgid "Subscription Notes (ID: ${0})"
+msgstr "Subscription Notes (ID: ${0})"
+
+#: serial.js:NOTES_SDIST
+msgid "Distribution Notes (ID: ${0})"
+msgstr "Distribution Notes (ID: ${0})"
+
+#: serial.js:REQUIRE_ONE_ROW
+msgid "Use the checkboxes to select exactly one row for this operation."
+msgstr "Use the checkboxes to select exactly one row for this operation."

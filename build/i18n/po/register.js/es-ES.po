@@ -7,212 +7,212 @@ msgid ""
 msgstr ""
 "Project-Id-Version: evergreen\n"
 "Report-Msgid-Bugs-To: FULL NAME <EMAIL@ADDRESS>\n"
-"POT-Creation-Date: 2020-06-12 11:45-0400\n"
+"POT-Creation-Date: 2022-04-27 17:07-0400\n"
 "PO-Revision-Date: 2016-08-09 19:10+0000\n"
 "Last-Translator: Anahi Valdez <avaldez@emeralddata.net>\n"
 "Language-Team: Spanish <es@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2020-09-16 06:02+0000\n"
-"X-Generator: Launchpad (build 83bdf6c8a3a5f87722c8927e54838522f3e57504)\n"
+"X-Launchpad-Export-Date: 2023-05-05 04:48+0000\n"
+"X-Generator: Launchpad (build 90e2150bef31b411d7bae5c4032c7e320fcaaec8)\n"
 
-#: register.js:USER_SETTINGS
-msgid "User Settings"
-msgstr "Configuración del usuario"
+#: register.js:DEFAULT_ADDRESS_TYPE
+msgid "MAILING"
+msgstr "Dirección"
 
-#: register.js:ALL_CARDS_APPLY
-msgid "Apply Changes"
-msgstr "Aplicar los cambios"
+#: register.js:DELETE_ADDRESS
+msgid "Delete address ${0}?"
+msgstr "Eliminar dirección ${0}?"
 
-#: register.js:REPLACE_BARCODE
-msgid "Replace Barcode"
-msgstr "Reemplazar código de barras"
+#: register.js:NEED_ADDRESS
+msgid "An address is required during registration."
+msgstr "Se requiere una dirección durante el registro."
 
-#: register.js:ADDRESS_BILLING
-msgid "Billing"
-msgstr "Facturación"
-
-#: register.js:ADDRESS_OWNED
-msgid "This address is owned by another user: "
-msgstr "Esta dirección pertenece a otro usuario: "
-
-#: register.js:ALL_CARDS_PRIMARY
-msgid "Primary"
-msgstr "Primario"
-
-#: register.js:ALL_CARDS_BARCODE
-msgid "Barcode"
-msgstr "Código de barras"
-
-#: register.js:ADD
-msgid "Add"
-msgstr "Añadir"
-
-#: register.js:SECONDARY_GROUP_IS_PROFILE
-msgid "That is already the primary profile group for this patron."
-msgstr "Esto ya es el grupo de perfil principal de este patrón."
-
-#: register.js:SAVE
-msgid "Save"
-msgstr "Guardar"
-
-#: register.js:SHOW_REQUIRED
-msgid "Show Only Required Fields"
-msgstr "Solo mostrar los campos requeridos"
-
-#: register.js:DUPE_PATRON_ADDR
-msgid "Found ${0} patron(s) with the same address"
-msgstr "Encontrados ${0} patron(es) con la misma dirección"
-
-#: register.js:DUPE_PATRON_IDENT
-msgid "Found ${0} patron(s) with the same identification"
-msgstr "Encontrados ${0} patron(es) con la misma identificación"
-
-#: register.js:ADDRESS_MAILING
-msgid "Mailing"
-msgstr "Envío de correo"
+#: register.js:DUPE_PATRON_NAME
+msgid "Found ${0} patron(s) with the same name"
+msgstr "Encontrados ${0} patron(es) con el mismo nombre"
 
 #: register.js:DUPE_PATRON_EMAIL
 msgid "Found ${0} patron(s) with the same email address"
 msgstr ""
 "Encontrados ${0} patron(es) con la misma dirección de correo electrónico"
 
-#: register.js:NEED_ADDRESS
-msgid "An address is required during registration."
-msgstr "Se requiere una dirección durante el registro."
-
-#: register.js:REPLACED_ADDRESS
-msgid "Replaces address ${0}<br/> ${1} ${2}<br/> ${3}, ${4} ${5}"
-msgstr "Reemplaza la dirección ${0}<br/> ${1} ${2}<br/> ${3}, ${4} ${5}"
-
-#: register.js:PARENT_OR_GUARDIAN
-msgid "Parent/Guardian"
-msgstr "Padre / Tutor"
-
-#: register.js:ADDRESS_HEADER
-msgid "Address"
-msgstr "Dirección"
-
-#: register.js:ALL_CARDS_ACTIVE
-msgid "Active"
-msgstr "Activo"
+#: register.js:DUPE_PATRON_IDENT
+msgid "Found ${0} patron(s) with the same identification"
+msgstr "Encontrados ${0} patron(es) con la misma identificación"
 
 #: register.js:DUPE_PATRON_PHONE
 msgid "Found ${0} patron(s) with the same phone number"
 msgstr "Encontrados ${0} patron(es) con el mismo número de teléfono"
 
+#: register.js:DUPE_PATRON_ADDR
+msgid "Found ${0} patron(s) with the same address"
+msgstr "Encontrados ${0} patron(es) con la misma dirección"
+
+#: register.js:REPLACED_ADDRESS
+msgid "Replaces address ${0}<br/> ${1} ${2}<br/> ${3}, ${4} ${5}"
+msgstr "Reemplaza la dirección ${0}<br/> ${1} ${2}<br/> ${3}, ${4} ${5}"
+
 #: register.js:INVALID_FORM
 msgid "Form is invalid.  Please edit and try again."
 msgstr "El formulario es inválido. Por favor, edítelo e inténtelo de nuevo."
-
-#: register.js:BARCODE_IN_USE
-msgid "Barcode is already in use"
-msgstr "El código de barras está en uso"
-
-#: register.js:UPDATE_EXPIRE_DATE
-msgid "Update Expire Date"
-msgstr "Actualizar Fecha de Vencimiento"
-
-#: register.js:SECONDARY_GROUP_ERROR
-msgid "Error saving secondary groups."
-msgstr "Error salvando grupos secundarios."
-
-#: register.js:RESET_PASSWORD
-msgid "Generate Password"
-msgstr "Generar contraseña"
 
 #: register.js:EXAMPLE
 msgid "Example: "
 msgstr "Ejemplo: "
 
-#: register.js:SHOW_SUGGESTED
-msgid "Show Suggested Fields"
-msgstr "Mostrar campos sugeridos"
+#: register.js:REPLACE_BARCODE
+msgid "Replace Barcode"
+msgstr "Reemplazar código de barras"
 
-#: register.js:ADDRESS_PENDING
-msgid "This is a pending address: "
-msgstr "Esta es una dirección pendiente: "
-
-#: register.js:DUPE_USERNAME
-msgid "Username is already in use"
-msgstr "El nombre de usuario ya está en uso"
-
-#: register.js:HOLD_NOTIFY_PHONE
-msgid "Phone: "
-msgstr "Teléfono: "
-
-#: register.js:DUPE_PATRON_NAME
-msgid "Found ${0} patron(s) with the same name"
-msgstr "Encontrados ${0} patron(es) con el mismo nombre"
-
-#: register.js:DEFAULT_ADDRESS_TYPE
-msgid "MAILING"
-msgstr "Dirección"
-
-#: register.js:REQUESTING_USER
-msgid "Account requested by ${0} ${1}"
-msgstr "Cuenta solicitada por ${0} ${1}"
-
-#: register.js:DELETE
-msgid "Delete"
-msgstr "Eliminar"
-
-#: register.js:HOLD_NOTIFY_SMS
-msgid "SMS: "
-msgstr "SMS: "
-
-#: register.js:INVALIDATE
-msgid "Invalidate"
-msgstr "Invalidar"
-
-#: register.js:SHOW_ALL
-msgid "Show All Fields"
-msgstr "Mostrar todos los campos"
-
-#: register.js:SECONDARY_GROUP_EXISTS
-msgid "This group is on the list already."
-msgstr "Este grupo ya esta en la lista."
-
-#: register.js:ADDRESS_APPROVE
-msgid "Approve Address"
-msgstr "Aprobar dirección"
-
-#: register.js:VERIFY_PASSWORD
-msgid "Verify Password"
-msgstr "Verificar contraseña"
-
-#: register.js:SAVE_CLONE
-msgid "Save &amp; Clone"
-msgstr "Guardar y clonar"
-
-#: register.js:STAT_CATS
-msgid "Statistical Categories"
-msgstr "Categorías Estadísticas"
-
-#: register.js:ADDRESS_NEW
-msgid "New Address"
-msgstr "Dirección nueva"
-
-#: register.js:HOLD_NOTIFY_EMAIL
-msgid "Email: "
-msgstr "Correo electrónico: "
-
-#: register.js:SECONDARY_GROUP_NOT_ALLOWED
-msgid "You do not have permission to add this group."
-msgstr "Usted no tiene permiso para agregar este grupo."
+#: register.js:BARCODE_IN_USE
+msgid "Barcode is already in use"
+msgstr "El código de barras está en uso"
 
 #: register.js:SEE_ALL
 msgid "See All"
 msgstr "Ver todos"
 
+#: register.js:DUPE_USERNAME
+msgid "Username is already in use"
+msgstr "El nombre de usuario ya está en uso"
+
+#: register.js:RESET_PASSWORD
+msgid "Generate Password"
+msgstr "Generar contraseña"
+
+#: register.js:VERIFY_PASSWORD
+msgid "Verify Password"
+msgstr "Verificar contraseña"
+
+#: register.js:PARENT_OR_GUARDIAN
+msgid "Parent/Guardian"
+msgstr "Padre / Tutor"
+
+#: register.js:USER_SETTINGS
+msgid "User Settings"
+msgstr "Configuración del usuario"
+
+#: register.js:ADDRESS_HEADER
+msgid "Address"
+msgstr "Dirección"
+
+#: register.js:ADDRESS_MAILING
+msgid "Mailing"
+msgstr "Envío de correo"
+
+#: register.js:ADDRESS_BILLING
+msgid "Billing"
+msgstr "Facturación"
+
+#: register.js:ADDRESS_PENDING
+msgid "This is a pending address: "
+msgstr "Esta es una dirección pendiente: "
+
+#: register.js:ADDRESS_APPROVE
+msgid "Approve Address"
+msgstr "Aprobar dirección"
+
+#: register.js:ADDRESS_OWNED
+msgid "This address is owned by another user: "
+msgstr "Esta dirección pertenece a otro usuario: "
+
+#: register.js:ADDRESS_NEW
+msgid "New Address"
+msgstr "Dirección nueva"
+
+#: register.js:STAT_CATS
+msgid "Statistical Categories"
+msgstr "Categorías Estadísticas"
+
+#: register.js:SAVE
+msgid "Save"
+msgstr "Guardar"
+
+#: register.js:SAVE_CLONE
+msgid "Save &amp; Clone"
+msgstr "Guardar y clonar"
+
+#: register.js:SHOW_REQUIRED
+msgid "Show Only Required Fields"
+msgstr "Solo mostrar los campos requeridos"
+
+#: register.js:SHOW_SUGGESTED
+msgid "Show Suggested Fields"
+msgstr "Mostrar campos sugeridos"
+
+#: register.js:SHOW_ALL
+msgid "Show All Fields"
+msgstr "Mostrar todos los campos"
+
+#: register.js:ALL_CARDS_BARCODE
+msgid "Barcode"
+msgstr "Código de barras"
+
+#: register.js:ALL_CARDS_ACTIVE
+msgid "Active"
+msgstr "Activo"
+
+#: register.js:ALL_CARDS_PRIMARY
+msgid "Primary"
+msgstr "Primario"
+
 #: register.js:ALL_CARDS_CLOSE
 msgid "Close"
 msgstr "Cerrar"
 
-#: register.js:DELETE_ADDRESS
-msgid "Delete address ${0}?"
-msgstr "Eliminar dirección ${0}?"
+#: register.js:ALL_CARDS_APPLY
+msgid "Apply Changes"
+msgstr "Aplicar los cambios"
+
+#: register.js:INVALIDATE
+msgid "Invalidate"
+msgstr "Invalidar"
+
+#: register.js:HOLD_NOTIFY_PHONE
+msgid "Phone: "
+msgstr "Teléfono: "
+
+#: register.js:HOLD_NOTIFY_EMAIL
+msgid "Email: "
+msgstr "Correo electrónico: "
+
+#: register.js:HOLD_NOTIFY_SMS
+msgid "SMS: "
+msgstr "SMS: "
+
+#: register.js:REQUESTING_USER
+msgid "Account requested by ${0} ${1}"
+msgstr "Cuenta solicitada por ${0} ${1}"
+
+#: register.js:UPDATE_EXPIRE_DATE
+msgid "Update Expire Date"
+msgstr "Actualizar Fecha de Vencimiento"
+
+#: register.js:DELETE
+msgid "Delete"
+msgstr "Eliminar"
+
+#: register.js:ADD
+msgid "Add"
+msgstr "Añadir"
+
+#: register.js:SECONDARY_GROUP_NOT_ALLOWED
+msgid "You do not have permission to add this group."
+msgstr "Usted no tiene permiso para agregar este grupo."
+
+#: register.js:SECONDARY_GROUP_IS_PROFILE
+msgid "That is already the primary profile group for this patron."
+msgstr "Esto ya es el grupo de perfil principal de este patrón."
+
+#: register.js:SECONDARY_GROUP_EXISTS
+msgid "This group is on the list already."
+msgstr "Este grupo ya esta en la lista."
+
+#: register.js:SECONDARY_GROUP_ERROR
+msgid "Error saving secondary groups."
+msgstr "Error salvando grupos secundarios."
 
 #~ msgid ""
 #~ "<div>Replaces address <b>${0}</b><br/> ${1} ${2}<br/> ${3}, ${4} ${5}</div>"

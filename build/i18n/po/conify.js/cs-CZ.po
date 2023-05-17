@@ -2,135 +2,22 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Evergreen 1.4\n"
 "Report-Msgid-Bugs-To: open-ils-dev@list.georgialibraries.org\n"
-"POT-Creation-Date: 2020-06-12 11:45-0400\n"
+"POT-Creation-Date: 2022-04-27 17:07-0400\n"
 "PO-Revision-Date: 2018-02-08 18:36+0000\n"
 "Last-Translator: Eva Cerninakova <Unknown>\n"
 "Language-Team: UISK <LL@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2020-09-16 05:50+0000\n"
-"X-Generator: Launchpad (build 83bdf6c8a3a5f87722c8927e54838522f3e57504)\n"
+"X-Launchpad-Export-Date: 2023-05-05 04:36+0000\n"
+"X-Generator: Launchpad (build 90e2150bef31b411d7bae5c4032c7e320fcaaec8)\n"
+"X-Poedit-SourceCharset: utf-8\n"
 "X-Poedit-Country: CZECH REPUBLIC\n"
 "X-Poedit-Language: Czech\n"
-"X-Poedit-SourceCharset: utf-8\n"
 
-#: conify.js:SURVEY_ID
-msgid "Survey ID # ${0}"
-msgstr "ID průzkumu # ${0}"
-
-#: conify.js:IS_AVAILABLE
-msgid "Is Available"
-msgstr "Je dostupné"
-
-#: conify.js:SUCCESS_NEW_PERM_MAP
-msgid "New permission map created"
-msgstr "Nový soubor oprávnění byl vytvořen"
-
-#: conify.js:END_SURVEY
-msgid "End Survey Now"
-msgstr "Ukončit průzkum nyní"
-
-#: conify.js:SUCCESS_SAVING_DATA conify.js:SUCCESS_SAVE
-msgid "Saved changes to ${0}"
-msgstr "Změny uložené do ${0}"
-
-#: conify.js:ERROR_FETCHING_PHYSICAL
-msgid "Problem fetching Physical Address for ${0}"
-msgstr "Problém při načtení  fyzické adresy pro ${0}"
-
-#: conify.js:SURVEY_ADD_ANSWER
-msgid "Add Answer"
-msgstr "Přidat odpověď"
-
-#: conify.js:CBHO_FIELD_DISPLAY
-msgid "[${0}] ${1}"
-msgstr "[${0}] ${1}"
-
-#: conify.js:TRANSLATION conify.js:LABEL_TRANSLATION
-msgid "Translation"
-msgstr "Překlad"
-
-#: conify.js:ACQ_DISTRIB_FORMULA_NAME_CLONE
-msgid "${0} (Clone)"
-msgstr "${0} (Klon)"
-
-#: conify.js:ERROR_DELETING_LAST_AOU
-msgid "Cannot delete ${0}, you need at least one organization unit."
-msgstr ""
-"Nelze smazat ${0}. Je třeba zadat minimálně jednu organizační jednotku."
-
-#: conify.js:SUCCESS_SAVING_HOO
-msgid "Hours of Operation updated for ${0}"
-msgstr "Provozní hodiny  pro ${0} aktualizovány"
-
-#: conify.js:SUCCESS_CREATING_CHILD_AOUT
-msgid "New child Organization Type created for ${0}"
-msgstr "Nový podřízený  typ organizace pro ${0} vytvořen"
-
-#: conify.js:LABEL_VALUE
-msgid "Value"
-msgstr "Hodnota"
-
-#: conify.js:ERROR_DELETING
-msgid "Problem deleting ${0}"
-msgstr "Problém při smazání ${0}"
-
-#: conify.js:SURVEY_SAVE_CHANGES
-msgid "Save Changes"
-msgstr "Uložit změny"
-
-#: conify.js:ERROR_CREATING_CHILD_GROUP
-msgid "Problem creating child Group"
-msgstr "Problém při vytvoření podrízené skupiny"
-
-#: conify.js:SUCCESS_SAVE_PERM
-msgid "Saved permission changes to ${0}"
-msgstr "Změny povolení uloženy do ${0}"
-
-#: conify.js:SURVEY_DELETE_ANSWER
-msgid "Delete Answer"
-msgstr "Smazat odpověď"
-
-#: conify.js:ERROR_FETCHING_GROUPS
-msgid "Problem fetching groups"
-msgstr "Problém při načtení skupin"
-
-#: conify.js:ERROR_FETCHING_STATUSES
-msgid "Problem fetching statuses"
-msgstr "Problém při načtení statutů"
-
-#: conify.js:ERROR_SAVING_PERM_DATA
-msgid "Problem saving permission data for ${0}"
-msgstr "Problém při ukládání dat oprávnění pro ${0}"
-
-#: conify.js:SUCCESS_CREATING_STATUS
-msgid "New ${0} status created"
-msgstr "Nový status ${0}  byl vytvořen"
-
-#: conify.js:SURVEY_DELETE_QUESTION
-msgid "Delete Question & Answers"
-msgstr "Smazat otázky a odpovědi"
-
-#: conify.js:ERROR_CREATING_PERMISSION
-msgid "Problem creating new Permission"
-msgstr "Problém při vytvoření nového oprávnění"
-
-#: conify.js:CBHO_EDITING_NEW
-msgid "You are editing a new best-hold order."
-msgstr "Upravujte novou Nejvýhodnější rezervaci"
-
-#: conify.js:ERROR_CALLING_METHOD_PERM_MAP
-msgid "Problem calling method to create new permission map"
-msgstr "Problém s voláním metody pro vytvoření nového souboru oprávnění"
-
-#: conify.js:SURVEY_QUESTION
-msgid "Question:"
-msgstr "Dotaz:"
-
-#: conify.js:ERROR_FETCHING_MAILING
-msgid "Problem fetching Mailing Address for ${0}"
-msgstr "Problém s načtením poštovních adresy pro ${0}"
+#: conify.js:CONFIRM_DELETE
+msgid "Are you sure you want to delete ${0}?"
+msgstr "Opravdu chcete smazat ${0}?"
 
 #: conify.js:CONFIRM_EXIT_AOU
 msgid ""
@@ -140,49 +27,21 @@ msgstr ""
 "Změny u  jedné nebo více organizačních jednotek nebyly uloženy. Zvolte OK "
 "pro uložení změn nebo Zrušit pro zrušení změn."
 
-#: conify.js:SURVEY_SAVE_ADD
-msgid "Save Question & Add Answer"
-msgstr "Uložit otázku a přidat odpověď"
+#: conify.js:CONFIRM_EXIT_CAM
+msgid ""
+"There are unsaved changes to one or more ${0} codes. Click OK to save these "
+"changes, or Cancel to abandon them."
+msgstr ""
+"Změny  u jednoho nebo více kódů ${0} nebyly uloženy. Zvolte OK pro uložení "
+"změn nebo Zrušit pro zrušení změn."
 
-#: conify.js:LABEL_NEW_BRANCH
-msgid "New Branch"
-msgstr "Nová pobočka"
-
-#: conify.js:SUCCESS_CREATING_CHILD_AOU
-msgid "New child Organizational Unit created for ${0}"
-msgstr "Vytvořena nová podřízená organizační jednotka pro ${0}"
-
-#: conify.js:ERROR_ORPHANS
-msgid "Cannot delete ${0}, ${1} subordinates still exist."
-msgstr "Nelze odstranit ${0}, podřízený ${1} stále existuje."
-
-#: conify.js:ACQ_DISTRIB_FORMULA_NAME_PROMPT
-msgid "Enter new formula name"
-msgstr "Vložit nový název vzorce"
-
-#: conify.js:ERROR_DELETING_LAST_AOUT
-msgid "Cannot delete ${0}. You need at least one organization type."
-msgstr "Nelze smazat ${0}. Je třeba zadat minimálně jeden typ organizace."
-
-#: conify.js:SURVEY_ANSWER
-msgid "Answer:"
-msgstr "Odpověď:"
-
-#: conify.js:SUCCESS_NEW_CHILD_GROUP
-msgid "New child Group created for ${0}"
-msgstr "Byla vytvořena nová podřízená skupina pro ${0}"
-
-#: conify.js:SUCCESS_SAVING_PHYSICAL
-msgid "Saved changes to the Physical Address of ${0}"
-msgstr "Změny  fyzické adresy ${0} byly uloženy"
-
-#: conify.js:LABEL_NEW_GROUP
-msgid "New Group"
-msgstr "Nová skupina"
-
-#: conify.js:CBHO_NO_LOAD
-msgid "Unable to load selected item."
-msgstr "Nebylo možné načíst vybrané exempláře."
+#: conify.js:CONFIRM_EXIT_CCS
+msgid ""
+"There are unsaved changes to one or more copy statuses. Click OK to save "
+"these changes, or Cancel to abandon them."
+msgstr ""
+"Změny u jednoho nebo více statutu exemplářů nebyly uloženy. Zvolte OK pro "
+"uložení změn nebo Zrušit pro zrušení změn."
 
 #: conify.js:CONFIRM_EXIT_PGT
 msgid ""
@@ -191,26 +50,6 @@ msgid ""
 msgstr ""
 "Některé změny v souboru povolení nebyly Uloženy. Zvolte OK pro uložení změn "
 "nebo Zrušit pro zrušení změn."
-
-#: conify.js:SUCCESS_SAVING_MAILING
-msgid "Saved changes to the Mailing Address of ${0}"
-msgstr "Změny e-mailové adresy ${0} byly uloženy"
-
-#: conify.js:ERROR_SAVING_STATUS
-msgid "Problem saving ${0}"
-msgstr "Problém při ukládání ${0}"
-
-#: conify.js:ERROR_CALLING_METHOD_CAM
-msgid "Problem calling method to create new ${0}"
-msgstr "Problém při volání metody pro vytvoření nového ${0}"
-
-#: conify.js:ERROR_CALLING_METHOD_PPL
-msgid "Problem calling method to create new permission"
-msgstr "Problém při volání metody pro vytvoření nového oprávnění"
-
-#: conify.js:CONFIRM_DELETE
-msgid "Are you sure you want to delete ${0}?"
-msgstr "Opravdu chcete smazat ${0}?"
 
 #: conify.js:CONFIRM_EXIT_PPL
 msgid ""
@@ -228,25 +67,322 @@ msgstr ""
 "Změny u jednoho nebo více typů organizací nebyly uloženy. Zvolte OK pro "
 "uložení změn nebo Zrušit pro zrušení změn."
 
+#: conify.js:COPY_ACTIVE
+msgid "Sets copy active"
+msgstr "Nastaví exemplář jako aktivní"
+
+#: conify.js:IS_AVAILABLE
+msgid "Is Available"
+msgstr "Je dostupné"
+
+#: conify.js:ERROR_CALLING_METHOD_AOUT
+msgid "Problem calling method to create child organization type"
+msgstr "Problém při volání metody pro vytvoření podřízeného typu organizace"
+
+#: conify.js:ERROR_CALLING_METHOD_CAM
+msgid "Problem calling method to create new ${0}"
+msgstr "Problém při volání metody pro vytvoření nového ${0}"
+
+#: conify.js:ERROR_CALLING_METHOD_CCS
+msgid "Problem calling method to create new copy status"
+msgstr "Problém při volání metody pro vytvoření nového statutu exempláře"
+
+#: conify.js:ERROR_CALLING_METHOD_PERM_MAP
+msgid "Problem calling method to create new permission map"
+msgstr "Problém s voláním metody pro vytvoření nového souboru oprávnění"
+
+#: conify.js:ERROR_CALLING_METHOD_PGT
+msgid "Problem calling method to create child Group"
+msgstr "Problém při volání metody pro vytvoření podřízené skupiny"
+
+#: conify.js:ERROR_CALLING_METHOD_PPL
+msgid "Problem calling method to create new permission"
+msgstr "Problém při volání metody pro vytvoření nového oprávnění"
+
+#: conify.js:ERROR_CREATING_CHILD_AOU
+msgid "Problem creating child organizational unit"
+msgstr "Problém při vytvoření podřízené organizační jednotky"
+
+#: conify.js:ERROR_CREATING_CHILD_AOUT
+msgid "Problem creating child organization type"
+msgstr "Problém při vytvoření podřízeného typu oraganizace"
+
+#: conify.js:ERROR_CREATING_CHILD_GROUP
+msgid "Problem creating child Group"
+msgstr "Problém při vytvoření podrízené skupiny"
+
+#: conify.js:ERROR_CREATING_PERMISSION
+msgid "Problem creating new Permission"
+msgstr "Problém při vytvoření nového oprávnění"
+
+#: conify.js:ERROR_CREATING_PERM_MAP
+msgid "Problem creating new Permission Map"
+msgstr "Problém při vytvoření nového souboru oprávnění"
+
+#: conify.js:ERROR_CREATING_STATUS
+msgid "Problem creating new Status"
+msgstr "Problém při vytváření nového statutu"
+
+#: conify.js:ERROR_DELETING_LAST_AOU
+msgid "Cannot delete ${0}, you need at least one organization unit."
+msgstr ""
+"Nelze smazat ${0}. Je třeba zadat minimálně jednu organizační jednotku."
+
+#: conify.js:ERROR_DELETING_LAST_AOUT
+msgid "Cannot delete ${0}. You need at least one organization type."
+msgstr "Nelze smazat ${0}. Je třeba zadat minimálně jeden typ organizace."
+
+#: conify.js:ERROR_DELETING_PERM_MAPPING
+msgid "Problem deleting permission mapping ${0}"
+msgstr "Problém při mazání souboru oprávnění ${0}"
+
+#: conify.js:ERROR_DELETING
+msgid "Problem deleting ${0}"
+msgstr "Problém při smazání ${0}"
+
+#: conify.js:ERROR_FETCHING_GROUPS
+msgid "Problem fetching groups"
+msgstr "Problém při načtení skupin"
+
+#: conify.js:ERROR_FETCHING_HOLDS
+msgid "Problem fetching Holds Address for ${0}"
+msgstr "Problém při načtení adresy pro rezervace  pro ${0}"
+
 #: conify.js:ERROR_FETCHING_HOURS
 msgid "Problem fetching hours of operation for ${0}"
 msgstr "Problém při načtení provozních hodin pro ${0}"
+
+#: conify.js:ERROR_FETCHING_ILL
+msgid "Problem fetching ILL Address for ${0}"
+msgstr "Problém s načtením MVS adresy pro ${0}"
+
+#: conify.js:ERROR_FETCHING_MAILING
+msgid "Problem fetching Mailing Address for ${0}"
+msgstr "Problém s načtením poštovních adresy pro ${0}"
+
+#: conify.js:ERROR_FETCHING_ORGS
+msgid "Problem fetching organizational unit data"
+msgstr "Problém s načtením dat organizační jednotky"
+
+#: conify.js:ERROR_FETCHING_PERM_MAPS
+msgid "Problem fetching perm maps"
+msgstr "Problém s načtením souboru oprávnění"
+
+#: conify.js:ERROR_FETCHING_PERMS
+msgid "Problem fetching perms"
+msgstr "Problém s načtením oprávnění"
+
+#: conify.js:ERROR_FETCHING_PHYSICAL
+msgid "Problem fetching Physical Address for ${0}"
+msgstr "Problém při načtení  fyzické adresy pro ${0}"
+
+#: conify.js:ERROR_FETCHING_STATUSES
+msgid "Problem fetching statuses"
+msgstr "Problém při načtení statutů"
+
+#: conify.js:ERROR_FETCHING_TYPES_AOUT
+msgid "Problem fetching organizational unit types"
+msgstr "Problém při načtení  typů organizačních jednotek"
+
+#: conify.js:ERROR_ORPHANS
+msgid "Cannot delete ${0}, ${1} subordinates still exist."
+msgstr "Nelze odstranit ${0}, podřízený ${1} stále existuje."
+
+#: conify.js:ERROR_SAVING_DATA
+msgid "Problem saving data for ${0}"
+msgstr "Problém při uložení dat pro ${0}"
+
+#: conify.js:ERROR_SAVING_DATA_CAM
+msgid "Problem saving data for ${0} ${1}"
+msgstr "Problém při ukládání dat pro ${0} ${1}"
+
+#: conify.js:ERROR_SAVING_HOLDS
+msgid "Problem saving Holds Address data for ${0}"
+msgstr "Problém při ukládání adresy pro rezervace pro ${0}"
+
+#: conify.js:ERROR_SAVING_HOO
+msgid "Problem saving Hours of Operation data for ${0}"
+msgstr "Problém při ukládání dat otevíracích hodin pro ${0}"
+
+#: conify.js:ERROR_SAVING_ILL
+msgid "Problem saving ILL Address data for ${0}"
+msgstr "Problém při ukládání MVS adresy pro ${0}"
+
+#: conify.js:ERROR_SAVING_MAILING
+msgid "Problem saving Mailing Address data for ${0}"
+msgstr "Problém při  ukládání e-mailové adresy pro ${0}"
+
+#: conify.js:ERROR_SAVING_PERM_DATA
+msgid "Problem saving permission data for ${0}"
+msgstr "Problém při ukládání dat oprávnění pro ${0}"
+
+#: conify.js:ERROR_SAVING_PHYSICAL
+msgid "Problem saving Physical Address data for ${0}"
+msgstr "Problém s uložením dat fyzické adresy pro ${0}"
+
+#: conify.js:ERROR_SAVING_STATUS
+msgid "Problem saving ${0}"
+msgstr "Problém při ukládání ${0}"
+
+#: conify.js:HOLDABLE
+msgid "Holdable"
+msgstr "Lze rezervovat"
+
+#: conify.js:ID
+msgid "ID"
+msgstr "ID"
+
+#: conify.js:LABEL_CODE
+msgid "Code"
+msgstr "Kód"
+
+#: conify.js:LABEL_DEPTH
+msgid "Depth"
+msgstr "Hloubka"
+
+#: conify.js:LABEL_DESCRIPTION
+msgid "Description"
+msgstr "Popis"
+
+#: conify.js:LABEL_GRANTABLE
+msgid "Grantable"
+msgstr "Může propůjčit"
+
+#: conify.js:LABEL_NEW_BRANCH
+msgid "New Branch"
+msgstr "Nová pobočka"
+
+#: conify.js:LABEL_NEW_GROUP
+msgid "New Group"
+msgstr "Nová skupina"
 
 #: conify.js:LABEL_NEW_TYPE
 msgid "New Type"
 msgstr "Nový typ"
 
-#: conify.js:CBHO_NEEDS_NAME
-msgid "You need to enter a name for the best-hold order."
-msgstr "Je nutné zadat jméno pro pořadí Nejvýhodnější rezervace."
+#: conify.js:LABEL_TRANSLATION conify.js:TRANSLATION
+msgid "Translation"
+msgstr "Překlad"
 
-#: conify.js:CBHO_EDITING_EXISTING
-msgid "You are editing best-hold order #${0}: ${1}."
-msgstr "Upravujte pořadí Nejvýhodnější rezervace #${0}: ${1}."
+#: conify.js:LABEL_VALUE
+msgid "Value"
+msgstr "Hodnota"
 
-#: conify.js:ERROR_CREATING_CHILD_AOU
-msgid "Problem creating child organizational unit"
-msgstr "Problém při vytvoření podřízené organizační jednotky"
+#: conify.js:NAME
+msgid "Name"
+msgstr "Název"
+
+#: conify.js:OPAC_VISIBLE
+msgid "OPAC Visible"
+msgstr "Zobrazit v OPACu"
+
+#: conify.js:STATUS_DELETED
+msgid "${0} deleted"
+msgstr "${0} smazán"
+
+#: conify.js:STATUS_EDITING
+msgid "Now editing ${0}"
+msgstr "Nyní editováno ${0}"
+
+#: conify.js:SUCCESS_CREATING_CHILD_AOU
+msgid "New child Organizational Unit created for ${0}"
+msgstr "Vytvořena nová podřízená organizační jednotka pro ${0}"
+
+#: conify.js:SUCCESS_CREATING_CHILD_AOUT
+msgid "New child Organization Type created for ${0}"
+msgstr "Nový podřízený  typ organizace pro ${0} vytvořen"
+
+#: conify.js:SUCCESS_CREATING_CODE
+msgid "New ${0} ${1} created"
+msgstr "Vytvořen nový ${0} ${1}"
+
+#: conify.js:SUCCESS_CREATING_PERMISSION
+msgid "New ${0} permission created"
+msgstr "Vytvořeno nové povolení ${0}"
+
+#: conify.js:SUCCESS_CREATING_STATUS
+msgid "New ${0} status created"
+msgstr "Nový status ${0}  byl vytvořen"
+
+#: conify.js:SUCCESS_DELETED_PERM_MAP
+msgid "Permission mapping deleted"
+msgstr "Soubor oprávnění odstraněn"
+
+#: conify.js:SUCCESS_NEW_CHILD_GROUP
+msgid "New child Group created for ${0}"
+msgstr "Byla vytvořena nová podřízená skupina pro ${0}"
+
+#: conify.js:SUCCESS_NEW_PERM_MAP
+msgid "New permission map created"
+msgstr "Nový soubor oprávnění byl vytvořen"
+
+#: conify.js:SUCCESS_SAVE_PERM
+msgid "Saved permission changes to ${0}"
+msgstr "Změny povolení uloženy do ${0}"
+
+#: conify.js:SUCCESS_SAVE conify.js:SUCCESS_SAVING_DATA
+msgid "Saved changes to ${0}"
+msgstr "Změny uložené do ${0}"
+
+#: conify.js:SUCCESS_SAVING_HOLDS
+msgid "Saved changes to the Holds Address of ${0}"
+msgstr "Byly uloženy změny adresy pro rezervace  z ${0}"
+
+#: conify.js:SUCCESS_SAVING_HOO
+msgid "Hours of Operation updated for ${0}"
+msgstr "Provozní hodiny  pro ${0} aktualizovány"
+
+#: conify.js:SUCCESS_SAVING_ILL
+msgid "Saved changes to the ILL Address of ${0}"
+msgstr "Změny MVS adresy pro ${0} byly uloženy"
+
+#: conify.js:SUCCESS_SAVING_MAILING
+msgid "Saved changes to the Mailing Address of ${0}"
+msgstr "Změny e-mailové adresy ${0} byly uloženy"
+
+#: conify.js:SUCCESS_SAVING_PHYSICAL
+msgid "Saved changes to the Physical Address of ${0}"
+msgstr "Změny  fyzické adresy ${0} byly uloženy"
+
+#: conify.js:END_SURVEY
+msgid "End Survey Now"
+msgstr "Ukončit průzkum nyní"
+
+#: conify.js:SURVEY_SAVE_ADD
+msgid "Save Question & Add Answer"
+msgstr "Uložit otázku a přidat odpověď"
+
+#: conify.js:SURVEY_DELETE_QUESTION
+msgid "Delete Question & Answers"
+msgstr "Smazat otázky a odpovědi"
+
+#: conify.js:SURVEY_DELETE_ANSWER
+msgid "Delete Answer"
+msgstr "Smazat odpověď"
+
+#: conify.js:SURVEY_SAVE_CHANGES
+msgid "Save Changes"
+msgstr "Uložit změny"
+
+#: conify.js:SURVEY_ADD_ANSWER
+msgid "Add Answer"
+msgstr "Přidat odpověď"
+
+#: conify.js:SURVEY_ANSWER
+msgid "Answer:"
+msgstr "Odpověď:"
+
+#: conify.js:SURVEY_QUESTION
+msgid "Question:"
+msgstr "Dotaz:"
+
+#: conify.js:SURVEY_ID
+msgid "Survey ID # ${0}"
+msgstr "ID průzkumu # ${0}"
+
+#: conify.js:SURVEY_FOOT_LABEL
+msgid "Questions & Answers"
+msgstr "Otázky a odpovědi"
 
 #: conify.js:SURVEY_WARN_TEXT
 msgid ""
@@ -257,170 +393,34 @@ msgstr ""
 "nebo upravovat existující otázky, musíte datum začátku průzkumu nastaveno "
 "jako budoucí."
 
-#: conify.js:ERROR_SAVING_HOLDS
-msgid "Problem saving Holds Address data for ${0}"
-msgstr "Problém při ukládání adresy pro rezervace pro ${0}"
-
-#: conify.js:ERROR_CREATING_CHILD_AOUT
-msgid "Problem creating child organization type"
-msgstr "Problém při vytvoření podřízeného typu oraganizace"
-
-#: conify.js:ERROR_SAVING_DATA
-msgid "Problem saving data for ${0}"
-msgstr "Problém při uložení dat pro ${0}"
-
-#: conify.js:ERROR_FETCHING_TYPES_AOUT
-msgid "Problem fetching organizational unit types"
-msgstr "Problém při načtení  typů organizačních jednotek"
-
-#: conify.js:ERROR_CALLING_METHOD_CCS
-msgid "Problem calling method to create new copy status"
-msgstr "Problém při volání metody pro vytvoření nového statutu exempláře"
-
-#: conify.js:SUCCESS_CREATING_CODE
-msgid "New ${0} ${1} created"
-msgstr "Vytvořen nový ${0} ${1}"
-
-#: conify.js:LABEL_CODE
-msgid "Code"
-msgstr "Kód"
-
-#: conify.js:SURVEY_FOOT_LABEL
-msgid "Questions & Answers"
-msgstr "Otázky a odpovědi"
-
-#: conify.js:STATUS_EDITING
-msgid "Now editing ${0}"
-msgstr "Nyní editováno ${0}"
-
-#: conify.js:SUCCESS_DELETED_PERM_MAP
-msgid "Permission mapping deleted"
-msgstr "Soubor oprávnění odstraněn"
-
-#: conify.js:ERROR_SAVING_ILL
-msgid "Problem saving ILL Address data for ${0}"
-msgstr "Problém při ukládání MVS adresy pro ${0}"
-
-#: conify.js:ERROR_FETCHING_HOLDS
-msgid "Problem fetching Holds Address for ${0}"
-msgstr "Problém při načtení adresy pro rezervace  pro ${0}"
-
-#: conify.js:SUCCESS_SAVING_ILL
-msgid "Saved changes to the ILL Address of ${0}"
-msgstr "Změny MVS adresy pro ${0} byly uloženy"
-
-#: conify.js:HOLDABLE
-msgid "Holdable"
-msgstr "Lze rezervovat"
-
-#: conify.js:STATUS_DELETED
-msgid "${0} deleted"
-msgstr "${0} smazán"
-
-#: conify.js:LABEL_GRANTABLE
-msgid "Grantable"
-msgstr "Může propůjčit"
-
-#: conify.js:ERROR_FETCHING_PERMS
-msgid "Problem fetching perms"
-msgstr "Problém s načtením oprávnění"
-
-#: conify.js:COPY_ACTIVE
-msgid "Sets copy active"
-msgstr "Nastaví exemplář jako aktivní"
-
-#: conify.js:LABEL_DESCRIPTION
-msgid "Description"
-msgstr "Popis"
-
-#: conify.js:ERROR_CREATING_PERM_MAP
-msgid "Problem creating new Permission Map"
-msgstr "Problém při vytvoření nového souboru oprávnění"
-
-#: conify.js:ERROR_FETCHING_ILL
-msgid "Problem fetching ILL Address for ${0}"
-msgstr "Problém s načtením MVS adresy pro ${0}"
-
-#: conify.js:ERROR_FETCHING_PERM_MAPS
-msgid "Problem fetching perm maps"
-msgstr "Problém s načtením souboru oprávnění"
-
-#: conify.js:ERROR_FETCHING_ORGS
-msgid "Problem fetching organizational unit data"
-msgstr "Problém s načtením dat organizační jednotky"
-
-#: conify.js:CONFIRM_EXIT_CCS
-msgid ""
-"There are unsaved changes to one or more copy statuses. Click OK to save "
-"these changes, or Cancel to abandon them."
-msgstr ""
-"Změny u jednoho nebo více statutu exemplářů nebyly uloženy. Zvolte OK pro "
-"uložení změn nebo Zrušit pro zrušení změn."
-
-#: conify.js:OPAC_VISIBLE
-msgid "OPAC Visible"
-msgstr "Zobrazit v OPACu"
-
-#: conify.js:ERROR_SAVING_PHYSICAL
-msgid "Problem saving Physical Address data for ${0}"
-msgstr "Problém s uložením dat fyzické adresy pro ${0}"
-
-#: conify.js:ERROR_SAVING_MAILING
-msgid "Problem saving Mailing Address data for ${0}"
-msgstr "Problém při  ukládání e-mailové adresy pro ${0}"
-
-#: conify.js:NAME
-msgid "Name"
-msgstr "Název"
-
-#: conify.js:ERROR_SAVING_DATA_CAM
-msgid "Problem saving data for ${0} ${1}"
-msgstr "Problém při ukládání dat pro ${0} ${1}"
-
-#: conify.js:SUCCESS_CREATING_PERMISSION
-msgid "New ${0} permission created"
-msgstr "Vytvořeno nové povolení ${0}"
-
-#: conify.js:ERROR_CREATING_STATUS
-msgid "Problem creating new Status"
-msgstr "Problém při vytváření nového statutu"
-
-#: conify.js:LABEL_DEPTH
-msgid "Depth"
-msgstr "Hloubka"
-
-#: conify.js:ID
-msgid "ID"
-msgstr "ID"
-
-#: conify.js:SUCCESS_SAVING_HOLDS
-msgid "Saved changes to the Holds Address of ${0}"
-msgstr "Byly uloženy změny adresy pro rezervace  z ${0}"
-
-#: conify.js:ERROR_DELETING_PERM_MAPPING
-msgid "Problem deleting permission mapping ${0}"
-msgstr "Problém při mazání souboru oprávnění ${0}"
-
 #: conify.js:EVENT_DEF_LABEL
 msgid "${0}: ${1}"
 msgstr "${0}: ${1}"
 
-#: conify.js:CONFIRM_EXIT_CAM
-msgid ""
-"There are unsaved changes to one or more ${0} codes. Click OK to save these "
-"changes, or Cancel to abandon them."
-msgstr ""
-"Změny  u jednoho nebo více kódů ${0} nebyly uloženy. Zvolte OK pro uložení "
-"změn nebo Zrušit pro zrušení změn."
+#: conify.js:ACQ_DISTRIB_FORMULA_NAME_PROMPT
+msgid "Enter new formula name"
+msgstr "Vložit nový název vzorce"
 
-#: conify.js:ERROR_CALLING_METHOD_PGT
-msgid "Problem calling method to create child Group"
-msgstr "Problém při volání metody pro vytvoření podřízené skupiny"
+#: conify.js:ACQ_DISTRIB_FORMULA_NAME_CLONE
+msgid "${0} (Clone)"
+msgstr "${0} (Klon)"
 
-#: conify.js:ERROR_CALLING_METHOD_AOUT
-msgid "Problem calling method to create child organization type"
-msgstr "Problém při volání metody pro vytvoření podřízeného typu organizace"
+#: conify.js:CBHO_EDITING_NEW
+msgid "You are editing a new best-hold order."
+msgstr "Upravujte novou Nejvýhodnější rezervaci"
 
-#: conify.js:ERROR_SAVING_HOO
-msgid "Problem saving Hours of Operation data for ${0}"
-msgstr "Problém při ukládání dat otevíracích hodin pro ${0}"
+#: conify.js:CBHO_EDITING_EXISTING
+msgid "You are editing best-hold order #${0}: ${1}."
+msgstr "Upravujte pořadí Nejvýhodnější rezervace #${0}: ${1}."
+
+#: conify.js:CBHO_FIELD_DISPLAY
+msgid "[${0}] ${1}"
+msgstr "[${0}] ${1}"
+
+#: conify.js:CBHO_NO_LOAD
+msgid "Unable to load selected item."
+msgstr "Nebylo možné načíst vybrané exempláře."
+
+#: conify.js:CBHO_NEEDS_NAME
+msgid "You need to enter a name for the best-hold order."
+msgstr "Je nutné zadat jméno pro pořadí Nejvýhodnější rezervace."

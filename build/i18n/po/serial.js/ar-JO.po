@@ -7,72 +7,72 @@ msgid ""
 msgstr ""
 "Project-Id-Version: evergreen\n"
 "Report-Msgid-Bugs-To: FULL NAME <EMAIL@ADDRESS>\n"
-"POT-Creation-Date: 2020-06-12 11:45-0400\n"
+"POT-Creation-Date: 2022-04-27 17:07-0400\n"
 "PO-Revision-Date: 2017-01-18 22:06+0000\n"
 "Last-Translator: fares othman <Unknown>\n"
 "Language-Team: Arabic <ar@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2020-09-16 06:04+0000\n"
-"X-Generator: Launchpad (build 83bdf6c8a3a5f87722c8927e54838522f3e57504)\n"
-
-#: serial.js:SAVE_SUCCESSFUL
-msgid "Save Successful"
-msgstr "عملية الحفظ تمت بنجاح"
-
-#: serial.js:SEASON_SUMMER
-msgid "Summer"
-msgstr "الصيف"
-
-#: serial.js:SELECT_VALID_CAP
-msgid "Have you selected a valid caption and pattern?"
-msgstr "هل قمت باختيار التسمية والنمط الصحيحين؟"
-
-#: serial.js:SEASON_WINTER
-msgid "Winter"
-msgstr "الشتاء"
-
-#: serial.js:CREATE_ISSUANCE
-msgid "Create Issuance"
-msgstr "إنشاء عدد"
-
-#: serial.js:NOTES_SSUB
-msgid "Subscription Notes (ID: ${0})"
-msgstr "ملاحظات الاشتراك (ID: ${0})"
-
-#: serial.js:REQUIRE_ONE_ROW
-msgid "Use the checkboxes to select exactly one row for this operation."
-msgstr "استخدام خانات الاختيار لتحديد بالضبط صف واحد لهذه العملية"
+"X-Launchpad-Export-Date: 2023-05-05 04:50+0000\n"
+"X-Generator: Launchpad (build 90e2150bef31b411d7bae5c4032c7e320fcaaec8)\n"
 
 #: serial.js:SEASON_SPRING
 msgid "Spring"
 msgstr "الرَبيع"
 
-#: serial.js:WIZARD
-msgid "Wizard"
-msgstr "المُعالج"
+#: serial.js:SEASON_SUMMER
+msgid "Summer"
+msgstr "الصيف"
 
-#: serial.js:MODIFY_ISSUANCE
-msgid "Modify Issuance"
-msgstr "تعديل العدد"
+#: serial.js:SEASON_FALL
+msgid "Fall"
+msgstr "الخريف"
+
+#: serial.js:SEASON_WINTER
+msgid "Winter"
+msgstr "الشتاء"
+
+#: serial.js:SELECT_VALID_CAP
+msgid "Have you selected a valid caption and pattern?"
+msgstr "هل قمت باختيار التسمية والنمط الصحيحين؟"
 
 #: serial.js:NO_CAP_SUBFIELDS
 msgid "No caption subfields in selected caption and pattern"
 msgstr "لا توجد تسميات حقول فرعية في التسمية والنمط المُحدد"
 
-#: serial.js:NOTES_SDIST
-msgid "Distribution Notes (ID: ${0})"
-msgstr "ملاحظات التوزيع (ID: ${0})"
+#: serial.js:COMPILE
+msgid "Create Holding Code"
+msgstr "إنشاء كود حيازة"
 
 #: serial.js:ERROR_BLANK_FIELDS
 msgid "A valid holding code cannot be produced with any blank fields."
 msgstr "لا يمكن انتاج كود حجز صحيح مع أية حقول فارغة"
 
-#: serial.js:COMPILE
-msgid "Create Holding Code"
-msgstr "إنشاء كود حيازة"
+#: serial.js:WIZARD
+msgid "Wizard"
+msgstr "المُعالج"
 
-#: serial.js:SEASON_FALL
-msgid "Fall"
-msgstr "الخريف"
+#: serial.js:CREATE_ISSUANCE
+msgid "Create Issuance"
+msgstr "إنشاء عدد"
+
+#: serial.js:MODIFY_ISSUANCE
+msgid "Modify Issuance"
+msgstr "تعديل العدد"
+
+#: serial.js:SAVE_SUCCESSFUL
+msgid "Save Successful"
+msgstr "عملية الحفظ تمت بنجاح"
+
+#: serial.js:NOTES_SSUB
+msgid "Subscription Notes (ID: ${0})"
+msgstr "ملاحظات الاشتراك (ID: ${0})"
+
+#: serial.js:NOTES_SDIST
+msgid "Distribution Notes (ID: ${0})"
+msgstr "ملاحظات التوزيع (ID: ${0})"
+
+#: serial.js:REQUIRE_ONE_ROW
+msgid "Use the checkboxes to select exactly one row for this operation."
+msgstr "استخدام خانات الاختيار لتحديد بالضبط صف واحد لهذه العملية"

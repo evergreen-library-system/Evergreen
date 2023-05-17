@@ -7,43 +7,39 @@ msgid ""
 msgstr ""
 "Project-Id-Version: evergreen\n"
 "Report-Msgid-Bugs-To: FULL NAME <EMAIL@ADDRESS>\n"
-"POT-Creation-Date: 2020-06-12 11:45-0400\n"
+"POT-Creation-Date: 2022-04-27 17:07-0400\n"
 "PO-Revision-Date: 2017-01-18 19:57+0000\n"
 "Last-Translator: fares othman <Unknown>\n"
 "Language-Team: Arabic <ar@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2020-09-16 06:04+0000\n"
-"X-Generator: Launchpad (build 83bdf6c8a3a5f87722c8927e54838522f3e57504)\n"
-
-#: URLVerify.js:XPATH
-msgid "XPath"
-msgstr "Xمسار"
-
-#: URLVerify.js:NOTHING_SELECTED
-msgid "No rows are selected, so no action will be taken."
-msgstr "لم يتم اختيار أية صفوف، لذلك لن يتم اتخاذ أي إجراء."
-
-#: URLVerify.js:REVIEW_ATTEMPT
-msgid "Review this verification attempt"
-msgstr "مراجعة محاولة التحقق هذه"
+"X-Launchpad-Export-Date: 2023-05-05 04:50+0000\n"
+"X-Generator: Launchpad (build 90e2150bef31b411d7bae5c4032c7e320fcaaec8)\n"
 
 #: URLVerify.js:CREATING
 msgid "Creating session ..."
 msgstr "إنشاء جلسة..."
 
-#: URLVerify.js:MARC_EDITOR_TITLE
-msgid "Record ID #${0}"
-msgstr "مُعرف التسجيلة #${0}"
+#: URLVerify.js:SAVING_TAGS
+msgid "Saving tag/subfield selectors ..."
+msgstr "حفظ التاج/الحقول الفرعية المُحددة"
 
-#: URLVerify.js:SESSION_NAME
-msgid "Session '${0}'"
-msgstr "الجلسة '${0}'"
+#: URLVerify.js:PERFORMING_SEARCH
+msgid "Performing search ..."
+msgstr "البحث المُنجز ..."
 
-#: URLVerify.js:CLONING
-msgid "Cloning existing session ..."
-msgstr "استنساخ جلسة عمل متواجدة ..."
+#: URLVerify.js:EXTRACTING_URLS
+msgid "Extracting URLs ..."
+msgstr "استخراج عناوين يو آر إل ..."
+
+#: URLVerify.js:NEED_UVUS
+msgid "You must add some tag and subfield combinations."
+msgstr "ينبغي إضافة بعض التيجان وتركيبات الحقول الفرعية."
+
+#: URLVerify.js:REDIRECTING
+msgid "Loading next interface ..."
+msgstr "تحميل الواجهة التالية ..."
 
 #: URLVerify.js:INTERFACE_SETUP
 msgid "Setting up interface ..."
@@ -59,25 +55,45 @@ msgstr ""
 "الجلسة، وتتطابق مع جميع مصطلحات البحث الخاصة بك. انقر على \"إلغاء\" إذا كانت "
 "عناوين المواقع المرئية المحددة هي الوحيدة التي تريد التحقق منها."
 
-#: URLVerify.js:VERIFICATION_ATTEMPT_ID
-msgid "Verification attempt ID: ${0}"
-msgstr "مُعرف محاولة التحقق: ${0}"
-
 #: URLVerify.js:VERIFICATION_DIALOG
 msgid "Verifying URLs ..."
 msgstr "التحقق من عناوين يو آر إل ..."
 
-#: URLVerify.js:NEED_UVUS
-msgid "You must add some tag and subfield combinations."
-msgstr "ينبغي إضافة بعض التيجان وتركيبات الحقول الفرعية."
+#: URLVerify.js:VERIFICATION_ATTEMPT_ID
+msgid "Verification attempt ID: ${0}"
+msgstr "مُعرف محاولة التحقق: ${0}"
+
+#: URLVerify.js:NOTHING_SELECTED
+msgid "No rows are selected, so no action will be taken."
+msgstr "لم يتم اختيار أية صفوف، لذلك لن يتم اتخاذ أي إجراء."
+
+#: URLVerify.js:REVIEW_ATTEMPT
+msgid "Review this verification attempt"
+msgstr "مراجعة محاولة التحقق هذه"
 
 #: URLVerify.js:CLONE_SESSION
 msgid "Clone"
 msgstr "اِستنساخ"
 
-#: URLVerify.js:MARC_EDITOR_LINK
-msgid "Click to open MARC Editor for this record"
-msgstr "انقر لفتح مُحرر مارك لهذه التسجيلة"
+#: URLVerify.js:REREVIEW
+msgid "Open"
+msgstr "فَتح"
+
+#: URLVerify.js:CLONING
+msgid "Cloning existing session ..."
+msgstr "استنساخ جلسة عمل متواجدة ..."
+
+#: URLVerify.js:CLONE_SESSION_NAME
+msgid "Copy of ${0}"
+msgstr "نُسخة من ${0}"
+
+#: URLVerify.js:XPATH
+msgid "XPath"
+msgstr "Xمسار"
+
+#: URLVerify.js:SESSION_NAME
+msgid "Session '${0}'"
+msgstr "الجلسة '${0}'"
 
 #: URLVerify.js:SELECT_MORE
 msgid ""
@@ -86,9 +102,13 @@ msgstr ""
 "انقر هنا لاستعراض كل عناوين المواقع الجلسة (يو آر إل) و / أو تحديد عناوين "
 "(يو آر إل) أخرى للتحقق"
 
-#: URLVerify.js:PERFORMING_SEARCH
-msgid "Performing search ..."
-msgstr "البحث المُنجز ..."
+#: URLVerify.js:MARC_EDITOR_LINK
+msgid "Click to open MARC Editor for this record"
+msgstr "انقر لفتح مُحرر مارك لهذه التسجيلة"
+
+#: URLVerify.js:MARC_EDITOR_TITLE
+msgid "Record ID #${0}"
+msgstr "مُعرف التسجيلة #${0}"
 
 #: URLVerify.js:MARC_EDITOR_SAVE_RECORD
 msgid "Save Record"
@@ -97,23 +117,3 @@ msgstr "حفظ التسجيلة"
 #: URLVerify.js:EDIT
 msgid "Edit"
 msgstr "تعديل"
-
-#: URLVerify.js:SAVING_TAGS
-msgid "Saving tag/subfield selectors ..."
-msgstr "حفظ التاج/الحقول الفرعية المُحددة"
-
-#: URLVerify.js:CLONE_SESSION_NAME
-msgid "Copy of ${0}"
-msgstr "نُسخة من ${0}"
-
-#: URLVerify.js:EXTRACTING_URLS
-msgid "Extracting URLs ..."
-msgstr "استخراج عناوين يو آر إل ..."
-
-#: URLVerify.js:REDIRECTING
-msgid "Loading next interface ..."
-msgstr "تحميل الواجهة التالية ..."
-
-#: URLVerify.js:REREVIEW
-msgid "Open"
-msgstr "فَتح"

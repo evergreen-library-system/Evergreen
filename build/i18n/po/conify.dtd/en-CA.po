@@ -4,14 +4,14 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2015-02-27 11:41-0400\n"
-"PO-Revision-Date: 2012-05-01 20:02+0000\n"
+"PO-Revision-Date: 2023-05-04 18:57+0000\n"
 "Last-Translator: Warren Layton <Unknown>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2020-09-16 05:50+0000\n"
-"X-Generator: Launchpad (build 83bdf6c8a3a5f87722c8927e54838522f3e57504)\n"
+"X-Launchpad-Export-Date: 2023-05-05 04:36+0000\n"
+"X-Generator: Launchpad (build 90e2150bef31b411d7bae5c4032c7e320fcaaec8)\n"
 "X-Accelerator-Marker: &\n"
 
 #. Common entities
@@ -239,11 +239,11 @@ msgstr "City"
 
 #: conify.org_unit.addresses_pane.state
 msgid "State"
-msgstr ""
+msgstr "Province/Territory"
 
 #: conify.org_unit.addresses_pane.zip
 msgid "Zip"
-msgstr ""
+msgstr "Postal Code"
 
 #: conify.org_unit.addresses_pane.country
 msgid "Country"

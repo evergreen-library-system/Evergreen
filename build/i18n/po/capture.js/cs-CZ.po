@@ -7,67 +7,31 @@ msgid ""
 msgstr ""
 "Project-Id-Version: evergreen\n"
 "Report-Msgid-Bugs-To: FULL NAME <EMAIL@ADDRESS>\n"
-"POT-Creation-Date: 2020-06-12 11:45-0400\n"
+"POT-Creation-Date: 2022-04-27 17:07-0400\n"
 "PO-Revision-Date: 2018-02-15 10:15+0000\n"
 "Last-Translator: Eva Cerninakova <Unknown>\n"
 "Language-Team: Spanish <cs@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2020-09-16 06:02+0000\n"
-"X-Generator: Launchpad (build 83bdf6c8a3a5f87722c8927e54838522f3e57504)\n"
+"X-Launchpad-Export-Date: 2023-05-05 04:47+0000\n"
+"X-Generator: Launchpad (build 90e2150bef31b411d7bae5c4032c7e320fcaaec8)\n"
 
-#: capture.js:AUTO_ATTR_VALUE_capture
-msgid "Capture"
-msgstr "Zachytit"
+#: capture.js:FAILURE
+msgid "Capture failed"
+msgstr "Zachycení se nezdařilo"
 
-#: capture.js:SLIP_DATE
-msgid "Slip date"
-msgstr "Datum na průvodce"
-
-#: capture.js:CAPTURED_NOTHING
-msgid "Didn't capture anything."
-msgstr "Nic nebylo zachyceno"
-
-#: capture.js:AUTHOR
-msgid "Author"
-msgstr "Autor"
-
-#: capture.js:CAPTURE_BRESV_DATES
-msgid "Reservation time:"
-msgstr "Čas rezervace:"
-
-#: capture.js:CAPTURE_INFO
-msgid "Capture Information"
-msgstr "Informace o zachycení"
-
-#: capture.js:HERES_WHAT_WE_KNOW
-msgid "The following information is available about the failed capture:"
-msgstr "O selhání zachycení jsou dostupné následující informace:"
-
-#: capture.js:AT
-msgid "at"
-msgstr "v"
-
-#: capture.js:RESERVED
-msgid "Reserved for patron"
-msgstr "Rezervováno pro čtenáře"
-
-#: capture.js:CAPTURE_CAUSES_TRANSIT
-msgid "This item is now in transit!"
-msgstr "Tento exemplář je nyní v přepravě!"
-
-#: capture.js:TITLE
-msgid "Title"
-msgstr "Název"
+#: capture.js:SUCCESS
+msgid "Capture succeeded"
+msgstr "Úspěšně zachyceno"
 
 #: capture.js:UNKNOWN_PROBLEM
 msgid "An unknown problem occurred during capture attempt."
 msgstr "Během pokusu o zachycení se objevil neznámý problém."
 
-#: capture.js:PRINTED_BY
-msgid "Printed by"
-msgstr "Vytiskl(a)"
+#: capture.js:CAPTURED_NOTHING
+msgid "Didn't capture anything."
+msgstr "Nic nebylo zachyceno"
 
 #: capture.js:NO_PAYLOAD
 msgid ""
@@ -75,6 +39,30 @@ msgid ""
 "capture."
 msgstr ""
 "O tomto pokusu o zachycení jsme od serveru neobdrželi žádné další informace."
+
+#: capture.js:HERES_WHAT_WE_KNOW
+msgid "The following information is available about the failed capture:"
+msgstr "O selhání zachycení jsou dostupné následující informace:"
+
+#: capture.js:CAPTURE_INFO
+msgid "Capture Information"
+msgstr "Informace o zachycení"
+
+#: capture.js:CAPTURE_BRESV_DATES
+msgid "Reservation time:"
+msgstr "Čas rezervace:"
+
+#: capture.js:CAPTURE_BRESV_BRSRC
+msgid "Resource barcode:"
+msgstr "Čárový kód zdroje:"
+
+#: capture.js:CAPTURE_BRESV_PICKUP_LIB capture.js:AUTO_pickup_lib_selector
+msgid "Pickup library:"
+msgstr "Knihovna pro vyzvednutí rezervace:"
+
+#: capture.js:CAPTURE_CAUSES_TRANSIT
+msgid "This item is now in transit!"
+msgstr "Tento exemplář je nyní v přepravě!"
 
 #: capture.js:CAPTURE_TRANSIT_SOURCE
 msgid "From:"
@@ -84,58 +72,70 @@ msgstr "Od:"
 msgid "To:"
 msgstr "Pro:"
 
-#: capture.js:FAILURE
-msgid "Capture failed"
-msgstr "Zachycení se nezdařilo"
-
-#: capture.js:RESERVATION_SHELF
-msgid "RESERVATION SHELF"
-msgstr "REGÁL S REZERVACEMI"
-
-#: capture.js:SUCCESS
-msgid "Capture succeeded"
-msgstr "Úspěšně zachyceno"
-
-#: capture.js:PRINT_ACCESSKEY
-msgid "P"
-msgstr "P"
-
-#: capture.js:CAPTURE_BRESV_BRSRC
-msgid "Resource barcode:"
-msgstr "Čárový kód zdroje:"
-
-#: capture.js:DURATION
-msgid "Reserved from"
-msgstr "Rezervováno od"
-
-#: capture.js:PRINT
-msgid "<u>P</u>rint"
-msgstr "<u>T</u>isk"
-
-#: capture.js:CAPTURE_BRESV_PICKUP_LIB capture.js:AUTO_pickup_lib_selector
-msgid "Pickup library:"
-msgstr "Knihovna pro vyzvednutí rezervace:"
-
-#: capture.js:NEEDS_ROUTED_TO
-msgid "This item need to be routed to"
-msgstr "Tento exemplář má být směrován do"
-
 #: capture.js:BARCODE
 msgid "Barcode"
 msgstr "Čárový kód"
+
+#: capture.js:TITLE
+msgid "Title"
+msgstr "Název"
+
+#: capture.js:AUTHOR
+msgid "Author"
+msgstr "Autor"
+
+#: capture.js:RESERVED
+msgid "Reserved for patron"
+msgstr "Rezervováno pro čtenáře"
 
 #: capture.js:REQUEST
 msgid "Request time"
 msgstr "Čas požadavku"
 
+#: capture.js:DURATION
+msgid "Reserved from"
+msgstr "Rezervováno od"
+
+#: capture.js:SLIP_DATE
+msgid "Slip date"
+msgstr "Datum na průvodce"
+
+#: capture.js:PRINTED_BY
+msgid "Printed by"
+msgstr "Vytiskl(a)"
+
+#: capture.js:AT
+msgid "at"
+msgstr "v"
+
+#: capture.js:PRINT
+msgid "<u>P</u>rint"
+msgstr "<u>T</u>isk"
+
+#: capture.js:PRINT_ACCESSKEY
+msgid "P"
+msgstr "P"
+
 #: capture.js:TRANSIT
 msgid "*** TRANSIT ***"
 msgstr "*** PŘEPRAVA ***"
+
+#: capture.js:RESERVATION_SHELF
+msgid "RESERVATION SHELF"
+msgstr "REGÁL S REZERVACEMI"
+
+#: capture.js:NEEDS_ROUTED_TO
+msgid "This item need to be routed to"
+msgstr "Tento exemplář má být směrován do"
+
+#: capture.js:AUTO_capture_heading
+msgid "Capture Reserved Resources"
+msgstr "Zachytit rezervované zdroje"
 
 #: capture.js:AUTO_resource_barcode
 msgid "Enter barcode:"
 msgstr "Zadejte čárový kód:"
 
-#: capture.js:AUTO_capture_heading
-msgid "Capture Reserved Resources"
-msgstr "Zachytit rezervované zdroje"
+#: capture.js:AUTO_ATTR_VALUE_capture
+msgid "Capture"
+msgstr "Zachytit"

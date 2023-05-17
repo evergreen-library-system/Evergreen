@@ -2,45 +2,17 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: open-ils-dev@list.georgialibraries.org\n"
-"POT-Creation-Date: 2020-06-12 11:45-0400\n"
+"POT-Creation-Date: 2022-04-27 17:07-0400\n"
 "PO-Revision-Date: 2017-07-20 12:45+0000\n"
 "Last-Translator: TZ <tigran@flib.sci.am>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2020-09-16 06:01+0000\n"
-"X-Generator: Launchpad (build 83bdf6c8a3a5f87722c8927e54838522f3e57504)\n"
+"X-Launchpad-Export-Date: 2023-05-05 04:47+0000\n"
+"X-Generator: Launchpad (build 90e2150bef31b411d7bae5c4032c7e320fcaaec8)\n"
 
-#: reports.js:OPERATORS_IN_LIST reports.js:FILTERS_LABEL_IN
-msgid "In list"
-msgstr "ցուցակում"
-
-#: reports.js:WIDGET_REAL_DATE
-msgid "Real Date"
-msgstr "Իրական ամսաթիվ"
-
-#: reports.js:TFORMS_LABEL_MONTH_NAME
-msgid "Month Name'"
-msgstr "Ամսվա անվանում"
-
-#: reports.js:OPERATORS_IS_NOT_NULL reports.js:FILTERS_LABEL_NOT_NULL
-msgid "Is not NULL"
-msgstr "NULL չէ"
-
-#: reports.js:FOLDERS_TEMPLATE
-msgid "Template"
-msgstr "Ձևաօրինակ"
-
-#: reports.js:FILTERS_LABEL_NE_ANY reports.js:OPERATORS_NE_ANY
-msgid "Does Not Equal Any"
-msgstr "Ոչ մեկը Հավասար Չէ"
-
-#: reports.js:REPORT_EDITOR_INVALID_DATE_ALERT
-msgid "invalid start date -  YYYY-MM-DD"
-msgstr "սկսման սխալ ամսաթիվ -  ՏՏՏՏ-ԱԱ-ՕՕ"
-
-#: reports.js:TEMPLATE_CONF_CONFIRM_SAVE reports.js:RPT_BUILDER_CONFIRM_SAVE
+#: reports.js:RPT_BUILDER_CONFIRM_SAVE reports.js:TEMPLATE_CONF_CONFIRM_SAVE
 msgid ""
 "Name : ${0}\n"
 "Description: ${1}\n"
@@ -50,29 +22,331 @@ msgstr ""
 "Նկարագրություն: ${1}\n"
 "Հիշե՞լ ձևաօրինակը"
 
-#: reports.js:OPERATORS_GT_EQUAL reports.js:FILTERS_LABEL_GT_EQUAL
-msgid "Greater than or equal to"
-msgstr "Մեծ է քան կա հավասար է"
-
-#: reports.js:TEMPLATE_CONF_PROMPT_CHANGE
-msgid "Change the column header to: ${0}"
-msgstr "Փոխել սյունակ առաջատարը սրան ${0}"
+#: reports.js:LINK_NULLABLE_DEFAULT
+msgid "Default"
+msgstr "Լռելյայն"
 
 #: reports.js:LINK_NULLABLE_RIGHT
 msgid "Parent"
 msgstr "Ծնող"
 
-#: reports.js:TRANSFORMS_MONTH_NAME
-msgid "Month Name"
-msgstr "Ամսվա անուն"
+#: reports.js:LINK_NULLABLE_LEFT
+msgid "Child"
+msgstr "Երեխա"
 
-#: reports.js:TEMPLATE_CONF_BETWEEN
-msgid "Field value is between (comma separated):"
-msgstr "Դաշտի արժեքը ընկած է տիրույթում (ստորակետով բաժանված):"
+#: reports.js:LINK_NULLABLE_NONE reports.js:FOLDER_WINDOW_COLNAME_NONE
+msgid "None"
+msgstr "Ոչ մեկը"
+
+#: reports.js:FILTERS_LABEL_EQUALS reports.js:OPERATORS_EQUALS
+#: reports.js:TEMPLATE_CONF_EQUALS
+msgid "Equals"
+msgstr "Հավասար է"
+
+#: reports.js:FILTERS_LABEL_LIKE reports.js:OPERATORS_LIKE
+msgid "Contains Matching substring"
+msgstr "Պարունակում է համընկնող ենթատող"
+
+#: reports.js:FILTERS_LABEL_ILIKE reports.js:OPERATORS_ILIKE
+msgid "Contains Matching substring (ignore case)"
+msgstr "Պարունակում է համընկնող ենթատող (անտեսիր ռեգիստրը)"
+
+#: reports.js:FILTERS_LABEL_GREATER_THAN reports.js:OPERATORS_GREATER_THAN
+msgid "Greater than"
+msgstr "Մեծ է քան"
+
+#: reports.js:FILTERS_LABEL_GT_TIME reports.js:OPERATORS_GT_TIME
+msgid "After (Date/Time)"
+msgstr "Հետո (Ամսաթիվ/Ժամանակ)"
+
+#: reports.js:FILTERS_LABEL_GT_EQUAL reports.js:OPERATORS_GT_EQUAL
+msgid "Greater than or equal to"
+msgstr "Մեծ է քան կա հավասար է"
+
+#: reports.js:FILTERS_LABEL_GTE_TIME reports.js:OPERATORS_GTE_TIME
+msgid "On or After (Date/Time)"
+msgstr "Ճիշտ կամ հետո (Ամսաթիվ/Ժամանակ)"
+
+#: reports.js:FILTERS_LABEL_LESS_THAN reports.js:OPERATORS_LESS_THAN
+msgid "Less than"
+msgstr "Փոքր է քան"
+
+#: reports.js:FILTERS_LABEL_LT_TIME reports.js:OPERATORS_LT_TIME
+msgid "Before (Date/Time)"
+msgstr "Մինչ (Ամսաթիվ/Ժամանակ)"
+
+#: reports.js:FILTERS_LABEL_LT_EQUAL reports.js:OPERATORS_LT_EQUAL
+msgid "Less than or equal to"
+msgstr "Փոքր է քան կամ հավասար է"
+
+#: reports.js:FILTERS_LABEL_LSE_TIME reports.js:OPERATORS_LTE_TIME
+msgid "On or Before (Date/Time)"
+msgstr "Ճիշտ կամ մինչ (Ամսաթիվ/Ժամանակ)"
+
+#: reports.js:FILTERS_LABEL_IN reports.js:OPERATORS_IN_LIST
+msgid "In list"
+msgstr "ցուցակում"
+
+#: reports.js:FILTERS_LABEL_NOT_IN reports.js:OPERATORS_NOT_IN_LIST
+msgid "Not in list"
+msgstr "Ցուցակում չէ"
+
+#: reports.js:FILTERS_LABEL_BETWEEN reports.js:OPERATORS_BETWEEN
+msgid "Between"
+msgstr "Միջև"
+
+#: reports.js:FILTERS_LABEL_NOT_BETWEEN reports.js:OPERATORS_NOT_BETWEEN
+msgid "Not between"
+msgstr "Միջև չէ"
+
+#: reports.js:FILTERS_LABEL_NULL reports.js:OPERATORS_IS_NULL
+msgid "Is NULL"
+msgstr "NULL է"
+
+#: reports.js:FILTERS_LABEL_NOT_NULL reports.js:OPERATORS_IS_NOT_NULL
+msgid "Is not NULL"
+msgstr "NULL չէ"
+
+#: reports.js:FILTERS_LABEL_NULL_BLANK reports.js:OPERATORS_NULL_BLANK
+msgid "Is NULL or Blank"
+msgstr "NULL կամ Դատարկ"
+
+#: reports.js:FILTERS_LABEL_NOT_NULL_BLANK reports.js:OPERATORS_NOT_NULL_BLANK
+msgid "Is not NULL or Blank"
+msgstr "NULL չէ կամ դատարկ չէ"
+
+#: reports.js:FILTERS_LABEL_EQ_ANY reports.js:OPERATORS_EQ_ANY
+msgid "Equals Any"
+msgstr "Հավասար է ցանկացածին"
+
+#: reports.js:FILTERS_LABEL_NE_ANY reports.js:OPERATORS_NE_ANY
+msgid "Does Not Equal Any"
+msgstr "Ոչ մեկը Հավասար Չէ"
+
+#: reports.js:FOLDERS_TEMPLATES
+msgid "Templates"
+msgstr "Նմուշներ"
+
+#: reports.js:FOLDERS_TEMPLATE
+msgid "Template"
+msgstr "Ձևաօրինակ"
+
+#: reports.js:FOLDERS_REPORTS
+msgid "Reports"
+msgstr "Հաշվետվություններ"
+
+#: reports.js:FOLDERS_REPORT
+msgid "Report"
+msgstr "Հաշվետվություն"
+
+#: reports.js:FOLDERS_OUTPUT
+msgid "Output"
+msgstr "Ելք"
+
+#: reports.js:FOLDER_WINDOW_SELECT_ITEM
+msgid "Please select an item from the list"
+msgstr "Ցուցակից ընտրիր նյութը"
+
+#: reports.js:FOLDER_WINDOW_CHANGE_FOLDERS
+msgid "Change Folders"
+msgstr "Փոխիր թղթապանակները"
+
+#: reports.js:FOLDER_WINDOW_REPORT_OUTPUT
+msgid "Report Output: ${0}"
+msgstr "Հաշվետվության ելք: ${0}"
+
+#: reports.js:FOLDER_WINDOW_COLNAME_SELECT
+msgid "Select"
+msgstr "Ընտրել"
+
+#: reports.js:FOLDER_WINDOW_COLNAME_ALL
+msgid "All"
+msgstr "Բոլոր"
+
+#: reports.js:REPORT_EDITOR_REPORT_FOLDERS
+msgid "Report Folders"
+msgstr "Հաշվետվության թղթապանակներ"
+
+#: reports.js:REPORT_EDITOR_OUTPUT_FOLDERS
+msgid "Output Folders"
+msgstr "Ելքային թղթապանակներ"
+
+#: reports.js:REPORT_EDITOR_PROVIDE_FOLDER_ALERT
+msgid "Please provide a report folder"
+msgstr "Նշիր հաշվետվության թղթապանակը"
+
+#: reports.js:REPORT_EDITOR_ENTER_NAME_ALERT
+msgid "Please enter a report name"
+msgstr "Մուտք արա հաշվետվության անունը"
+
+#: reports.js:REPORT_EDITOR_ENTER_NEW_NAME_ALERT
+msgid "Please change the report name"
+msgstr "Փոխիր հաշվետվության անունը"
+
+#: reports.js:REPORT_EDITOR_INVALID_DATE_ALERT
+msgid "invalid start date -  YYYY-MM-DD"
+msgstr "սկսման սխալ ամսաթիվ -  ՏՏՏՏ-ԱԱ-ՕՕ"
+
+#: reports.js:REPORT_EDITOR_PROVIDE_OUTPUT_ALERT
+msgid "Please provide an output folder"
+msgstr "Նշիր ելքային թղթապանակը"
+
+#: reports.js:TFORMS_LABEL_RAW_DATA reports.js:TEMPLATE_CONF_RAW_DATA
+#: reports.js:TRANSFORMS_BARE
+msgid "Raw Data"
+msgstr "Հում տվյալներ"
+
+#: reports.js:TFORMS_LABEL_FIRST reports.js:TRANSFORMS_FIRST
+msgid "First Value"
+msgstr "Առաջին արժեք"
+
+#: reports.js:TFORMS_LABEL_LAST reports.js:TRANSFORMS_LAST
+msgid "Last Value"
+msgstr "Վերջին արժեք"
+
+#: reports.js:TFORMS_LABEL_COUNT reports.js:TRANSFORMS_COUNT
+msgid "Count"
+msgstr "Հաշիվ"
+
+#: reports.js:TFORMS_LABEL_COUNT_DISTINCT reports.js:TRANSFORMS_COUNT_DISTINCT
+msgid "Count Distinct"
+msgstr "Հաշվել առանձին"
+
+#: reports.js:TFORMS_LABEL_MIN reports.js:TRANSFORMS_MIN
+msgid "Min"
+msgstr "Մին"
+
+#: reports.js:TFORMS_LABEL_MAX reports.js:TRANSFORMS_MAX
+msgid "Max"
+msgstr "Մաքս"
+
+#: reports.js:TFORMS_LABEL_LOWER reports.js:TRANSFORMS_LOWER
+msgid "Lower case"
+msgstr "Ստորին ստեղնաշար"
+
+#: reports.js:TFORMS_LABEL_UPPER reports.js:TRANSFORMS_UPPER
+msgid "Upper case"
+msgstr "Վերին ստբղնաշար"
+
+#: reports.js:TFORMS_LABEL_FIRST5 reports.js:TRANSFORMS_FIRST5
+msgid "First 5 characters (for US ZIP code)"
+msgstr "Առաջին 5 նիշերը (ԱՄՆ ZIP կոդի համար)"
+
+#: reports.js:TFORMS_LABEL_FIRST_WORD reports.js:TRANSFORMS_FIRST_WORD
+msgid "First contiguous non-space string"
+msgstr "Առաջին սահմանակից առանց բացատի տողը"
+
+#: reports.js:TFORMS_LABEL_DOW reports.js:TRANSFORMS_DOW
+msgid "Day of Week"
+msgstr "Շաբաթվա օր"
+
+#: reports.js:TFORMS_LABEL_DOM reports.js:TRANSFORMS_DOM
+msgid "Day of Month"
+msgstr "Ամսվա օր"
+
+#: reports.js:TFORMS_LABEL_DOY reports.js:TRANSFORMS_DOY
+msgid "Day of Year"
+msgstr "Տարվա օր"
+
+#: reports.js:TFORMS_LABEL_WOY reports.js:TRANSFORMS_WOY
+msgid "Week of Year"
+msgstr "Տարվա շաբաթ"
+
+#: reports.js:TFORMS_LABEL_MOY reports.js:TRANSFORMS_MOY
+msgid "Month of Year"
+msgstr "Տարվա ամիս"
+
+#: reports.js:TFORMS_LABEL_QOY reports.js:TRANSFORMS_QOY
+msgid "Quarter of Year"
+msgstr "Տարվա քառորդ"
+
+#: reports.js:TFORMS_LABEL_HOD reports.js:TRANSFORMS_HOD
+msgid "Hour of day"
+msgstr "Օրվա ժամ"
+
+#: reports.js:TFORMS_LABEL_DATE reports.js:TRANSFORMS_DATE
+msgid "Date"
+msgstr "Ամսաթիվ"
+
+#: reports.js:TFORMS_LABEL_MONTH_TRUNC reports.js:TRANSFORMS_MONTH_TRUNC
+msgid "Year + Month"
+msgstr "Տարի + Ամիս"
+
+#: reports.js:TFORMS_LABEL_YEAR_TRUNC reports.js:TRANSFORMS_YEAR_TRUNC
+msgid "Year"
+msgstr "Տարի"
+
+#: reports.js:TFORMS_LABEL_HOUR_TRUNC reports.js:TRANSFORMS_HOUR_TRUNC
+msgid "Hour"
+msgstr "Ժամ"
 
 #: reports.js:TFORMS_LABEL_DAY_NAME reports.js:TRANSFORMS_DAY_NAME
 msgid "Day Name"
 msgstr "Օրվա անվանում"
+
+#: reports.js:TFORMS_LABEL_MONTH_NAME
+msgid "Month Name'"
+msgstr "Ամսվա անվանում"
+
+#: reports.js:TFORMS_LABEL_AGE reports.js:TRANSFORMS_AGE
+msgid "Age"
+msgstr "Տարիք"
+
+#: reports.js:TFORMS_LABEL_MONTHS_AGO reports.js:TRANSFORMS_MONTHS_AGO
+msgid "Months ago"
+msgstr "Ամիսներ առաջ"
+
+#: reports.js:TFORMS_LABEL_QUARTERS_AGO reports.js:TRANSFORMS_QUARTERS_AGO
+msgid "Quarters ago"
+msgstr "Քառորդներ առաջ"
+
+#: reports.js:TFORMS_LABEL_SUM reports.js:TRANSFORMS_SUM
+msgid "Sum"
+msgstr "Գումար"
+
+#: reports.js:TFORMS_LABEL_AVERAGE reports.js:TRANSFORMS_AVERAGE
+msgid "Average"
+msgstr "Միջին"
+
+#: reports.js:TFORMS_LABEL_ROUND reports.js:TRANSFORMS_ROUND
+msgid "Round"
+msgstr "Կլոր"
+
+#: reports.js:TFORMS_LABEL_INT reports.js:TRANSFORMS_INT
+msgid "Drop trailing decimals"
+msgstr "Անտեսիր եզրափակող տասնորդականները"
+
+#: reports.js:WIDGET_DAYS
+msgid "Day(s)"
+msgstr "Օր(եր)"
+
+#: reports.js:WIDGET_MONTHS
+msgid "Month(s)"
+msgstr "Ամիս(ներ)"
+
+#: reports.js:WIDGET_YEARS
+msgid "Year(s)"
+msgstr "Տարի(ներ)"
+
+#: reports.js:WIDGET_QUARTERS
+msgid "Quarter(s)"
+msgstr "Քառորդ(ներ)"
+
+#: reports.js:WIDGET_REAL_DATE
+msgid "Real Date"
+msgstr "Իրական ամսաթիվ"
+
+#: reports.js:WIDGET_RELATIVE_DATE
+msgid "Relative Date"
+msgstr "Հարաբերական ամսաթիվ"
+
+#: reports.js:SOURCE_BROWSE_AGGREGATE
+msgid "Aggregate"
+msgstr "Ագրեգացված"
+
+#: reports.js:SOURCE_BROWSE_NON_AGGREGATE
+msgid "Non-Aggregate"
+msgstr "Չագրեգացված"
 
 #: reports.js:SOURCE_SETUP_CONFIRM_EXIT
 msgid ""
@@ -84,327 +358,17 @@ msgstr ""
 " Սկզբնավորման նոր աղբյուրի ընտրությունը կոչնչացնի ընթացիկ ձևանմուշը և կսկի "
 "նորից։ Սա հարմա՞ր է։"
 
-#: reports.js:WIDGET_YEARS
-msgid "Year(s)"
-msgstr "Տարի(ներ)"
-
-#: reports.js:FOLDER_WINDOW_SELECT_ITEM
-msgid "Please select an item from the list"
-msgstr "Ցուցակից ընտրիր նյութը"
-
-#: reports.js:FOLDERS_REPORT
-msgid "Report"
-msgstr "Հաշվետվություն"
-
-#: reports.js:FILTERS_LABEL_LSE_TIME reports.js:OPERATORS_LTE_TIME
-msgid "On or Before (Date/Time)"
-msgstr "Ճիշտ կամ մինչ (Ամսաթիվ/Ժամանակ)"
-
-#: reports.js:TEMPLATE_CONF_FALSE
-msgid "False"
-msgstr "Սխալ"
-
-#: reports.js:TEMPLATE_CONF_DEFAULT
-msgid "Value ${0}:"
-msgstr "Արժեք ${0}:"
-
-#: reports.js:TRANSFORMS_COUNT_DISTINCT reports.js:TFORMS_LABEL_COUNT_DISTINCT
-msgid "Count Distinct"
-msgstr "Հաշվել առանձին"
-
-#: reports.js:TRANSFORMS_SUBSTRING
-msgid "Substring"
-msgstr "Ենթատող"
-
-#: reports.js:FOLDER_WINDOW_CHANGE_FOLDERS
-msgid "Change Folders"
-msgstr "Փոխիր թղթապանակները"
-
-#: reports.js:TEMPLATE_CONF_SUCCESS_SAVE
-msgid "Template ${0} was successfully saved."
-msgstr "${0} ձևանմուշը հաջողությամբ հիշվել է։"
-
-#: reports.js:REPORT_EDITOR_ENTER_NAME_ALERT
-msgid "Please enter a report name"
-msgstr "Մուտք արա հաշվետվության անունը"
-
-#: reports.js:FOLDER_WINDOW_COLNAME_SELECT
-msgid "Select"
-msgstr "Ընտրել"
-
-#: reports.js:FILTERS_LABEL_LT_TIME reports.js:OPERATORS_LT_TIME
-msgid "Before (Date/Time)"
-msgstr "Մինչ (Ամսաթիվ/Ժամանակ)"
-
-#: reports.js:TFORMS_LABEL_DOY reports.js:TRANSFORMS_DOY
-msgid "Day of Year"
-msgstr "Տարվա օր"
-
-#: reports.js:TRANSFORMS_SUM reports.js:TFORMS_LABEL_SUM
-msgid "Sum"
-msgstr "Գումար"
-
-#: reports.js:TFORMS_LABEL_LOWER reports.js:TRANSFORMS_LOWER
-msgid "Lower case"
-msgstr "Ստորին ստեղնաշար"
-
-#: reports.js:TFORMS_LABEL_DOW reports.js:TRANSFORMS_DOW
-msgid "Day of Week"
-msgstr "Շաբաթվա օր"
-
-#: reports.js:REPORT_EDITOR_OUTPUT_FOLDERS
-msgid "Output Folders"
-msgstr "Ելքային թղթապանակներ"
-
-#: reports.js:FOLDER_WINDOW_COLNAME_ALL
-msgid "All"
-msgstr "Բոլոր"
-
-#: reports.js:REPORT_EDITOR_REPORT_FOLDERS
-msgid "Report Folders"
-msgstr "Հաշվետվության թղթապանակներ"
-
-#: reports.js:FILTERS_LABEL_BETWEEN reports.js:OPERATORS_BETWEEN
-msgid "Between"
-msgstr "Միջև"
-
-#: reports.js:FILTERS_LABEL_LT_EQUAL reports.js:OPERATORS_LT_EQUAL
-msgid "Less than or equal to"
-msgstr "Փոքր է քան կամ հավասար է"
-
-#: reports.js:TRANSFORMS_UPPER reports.js:TFORMS_LABEL_UPPER
-msgid "Upper case"
-msgstr "Վերին ստբղնաշար"
-
-#: reports.js:FILTERS_LABEL_NOT_BETWEEN reports.js:OPERATORS_NOT_BETWEEN
-msgid "Not between"
-msgstr "Միջև չէ"
-
-#: reports.js:WIDGET_MONTHS
-msgid "Month(s)"
-msgstr "Ամիս(ներ)"
-
-#: reports.js:SOURCE_BROWSE_AGGREGATE
-msgid "Aggregate"
-msgstr "Ագրեգացված"
-
-#: reports.js:TEMPLATE_CONF_TRUE
-msgid "True"
-msgstr "Ճիշտ"
-
-#: reports.js:TFORMS_LABEL_AVERAGE reports.js:TRANSFORMS_AVERAGE
-msgid "Average"
-msgstr "Միջին"
-
-#: reports.js:LINK_NULLABLE_NONE reports.js:FOLDER_WINDOW_COLNAME_NONE
-msgid "None"
-msgstr "Ոչ մեկը"
-
-#: reports.js:TFORMS_LABEL_INT reports.js:TRANSFORMS_INT
-msgid "Drop trailing decimals"
-msgstr "Անտեսիր եզրափակող տասնորդականները"
-
-#: reports.js:TRANSFORMS_HOUR_TRUNC reports.js:TFORMS_LABEL_HOUR_TRUNC
-msgid "Hour"
-msgstr "Ժամ"
-
-#: reports.js:TRANSFORMS_AGE reports.js:TFORMS_LABEL_AGE
-msgid "Age"
-msgstr "Տարիք"
-
-#: reports.js:TRANSFORMS_QOY reports.js:TFORMS_LABEL_QOY
-msgid "Quarter of Year"
-msgstr "Տարվա քառորդ"
-
-#: reports.js:TRANSFORMS_LAST reports.js:TFORMS_LABEL_LAST
-msgid "Last Value"
-msgstr "Վերջին արժեք"
-
-#: reports.js:FILTERS_LABEL_EQ_ANY reports.js:OPERATORS_EQ_ANY
-msgid "Equals Any"
-msgstr "Հավասար է ցանկացածին"
-
-#: reports.js:TEMPLATE_CONF_BARE
-msgid "Bare"
-msgstr "Մերկ"
-
-#: reports.js:TEMPLATE_CONF_IN
-msgid "Field matches one of list (comma separated):"
-msgstr "Դաշտը համընկնում է ցուցակներից մեկին"
-
-#: reports.js:TRANSFORMS_MONTH_TRUNC reports.js:TFORMS_LABEL_MONTH_TRUNC
-msgid "Year + Month"
-msgstr "Տարի + Ամիս"
-
-#: reports.js:TRANSFORMS_FIRST_WORD reports.js:TFORMS_LABEL_FIRST_WORD
-msgid "First contiguous non-space string"
-msgstr "Առաջին սահմանակից առանց բացատի տողը"
-
-#: reports.js:TEMPLATE_CONF_NOT_BETWEEN
-msgid "Field value is not between (comma separated):"
-msgstr "Դաշտի արժեքը չի գտնվում միջև (ստորակետով բաժանված)"
-
-#: reports.js:TEMPLATE_CONF_RAW_DATA reports.js:TRANSFORMS_BARE
-#: reports.js:TFORMS_LABEL_RAW_DATA
-msgid "Raw Data"
-msgstr "Հում տվյալներ"
+#: reports.js:SOURCE_SETUP_CORE_SOURCES
+msgid "Core Sources"
+msgstr "Միջուկի աղբյուր"
 
 #: reports.js:SOURCE_SETUP_ALL_AVAIL_SOURCES
 msgid "All Available Sources"
 msgstr "Մատչելի բոլոր աղբյուրները"
 
-#: reports.js:FOLDERS_OUTPUT
-msgid "Output"
-msgstr "Ելք"
-
-#: reports.js:OPERATORS_LIKE reports.js:FILTERS_LABEL_LIKE
-msgid "Contains Matching substring"
-msgstr "Պարունակում է համընկնող ենթատող"
-
-#: reports.js:OPERATORS_EQUALS reports.js:TEMPLATE_CONF_EQUALS
-#: reports.js:FILTERS_LABEL_EQUALS
-msgid "Equals"
-msgstr "Հավասար է"
-
-#: reports.js:WIDGET_QUARTERS
-msgid "Quarter(s)"
-msgstr "Քառորդ(ներ)"
-
-#: reports.js:LINK_NULLABLE_LEFT
-msgid "Child"
-msgstr "Երեխա"
-
-#: reports.js:TFORMS_LABEL_DATE reports.js:TRANSFORMS_DATE
-msgid "Date"
-msgstr "Ամսաթիվ"
-
-#: reports.js:TFORMS_LABEL_COUNT reports.js:TRANSFORMS_COUNT
-msgid "Count"
-msgstr "Հաշիվ"
-
-#: reports.js:LINK_NULLABLE_DEFAULT
-msgid "Default"
-msgstr "Լռելյայն"
-
-#: reports.js:FILTERS_LABEL_LESS_THAN reports.js:OPERATORS_LESS_THAN
-msgid "Less than"
-msgstr "Փոքր է քան"
-
-#: reports.js:SOURCE_SETUP_CORE_SOURCES
-msgid "Core Sources"
-msgstr "Միջուկի աղբյուր"
-
-#: reports.js:TRANSFORMS_MONTHS_AGO reports.js:TFORMS_LABEL_MONTHS_AGO
-msgid "Months ago"
-msgstr "Ամիսներ առաջ"
-
-#: reports.js:TRANSFORMS_ROUND reports.js:TFORMS_LABEL_ROUND
-msgid "Round"
-msgstr "Կլոր"
-
-#: reports.js:TEMPLATE_FIELD_DOC_PROMPT_CHANGE
-msgid "Change the field hint to:"
-msgstr "Փոխիր դաշտի հուշումը սրանով"
-
-#: reports.js:FILTERS_LABEL_NULL_BLANK reports.js:OPERATORS_NULL_BLANK
-msgid "Is NULL or Blank"
-msgstr "NULL կամ Դատարկ"
-
-#: reports.js:FILTERS_LABEL_GT_TIME reports.js:OPERATORS_GT_TIME
-msgid "After (Date/Time)"
-msgstr "Հետո (Ամսաթիվ/Ժամանակ)"
-
-#: reports.js:TRANSFORMS_WOY reports.js:TFORMS_LABEL_WOY
-msgid "Week of Year"
-msgstr "Տարվա շաբաթ"
-
-#: reports.js:TFORMS_LABEL_DOM reports.js:TRANSFORMS_DOM
-msgid "Day of Month"
-msgstr "Ամսվա օր"
-
-#: reports.js:SOURCE_BROWSE_NON_AGGREGATE
-msgid "Non-Aggregate"
-msgstr "Չագրեգացված"
-
-#: reports.js:OPERATORS_IS_NULL reports.js:FILTERS_LABEL_NULL
-msgid "Is NULL"
-msgstr "NULL է"
-
-#: reports.js:TRANSFORMS_MIN reports.js:TFORMS_LABEL_MIN
-msgid "Min"
-msgstr "Մին"
-
-#: reports.js:FILTERS_LABEL_NOT_NULL_BLANK reports.js:OPERATORS_NOT_NULL_BLANK
-msgid "Is not NULL or Blank"
-msgstr "NULL չէ կամ դատարկ չէ"
-
-#: reports.js:FOLDER_WINDOW_REPORT_OUTPUT
-msgid "Report Output: ${0}"
-msgstr "Հաշվետվության ելք: ${0}"
-
-#: reports.js:TEMPLATE_CONF_CONFIRM_STATE
-msgid "Click OK for TRUE and Cancel for FALSE."
-msgstr "Սեղմիր ԼԱՎ TRUE համար և ԱՆՏԵՍԵԼ FALSE համար։"
-
-#: reports.js:FOLDERS_TEMPLATES
-msgid "Templates"
-msgstr "Նմուշներ"
-
-#: reports.js:WIDGET_RELATIVE_DATE
-msgid "Relative Date"
-msgstr "Հարաբերական ամսաթիվ"
-
-#: reports.js:TRANSFORMS_FIRST reports.js:TFORMS_LABEL_FIRST
-msgid "First Value"
-msgstr "Առաջին արժեք"
-
-#: reports.js:FILTERS_LABEL_GREATER_THAN reports.js:OPERATORS_GREATER_THAN
-msgid "Greater than"
-msgstr "Մեծ է քան"
-
-#: reports.js:TEMPLATE_CONF_BOOLEAN_VALUE
-msgid "Boolean Value"
-msgstr "Բուլյան արժեք"
-
-#: reports.js:REPORT_EDITOR_PROVIDE_OUTPUT_ALERT
-msgid "Please provide an output folder"
-msgstr "Նշիր ելքային թղթապանակը"
-
-#: reports.js:REPORT_EDITOR_PROVIDE_FOLDER_ALERT
-msgid "Please provide a report folder"
-msgstr "Նշիր հաշվետվության թղթապանակը"
-
-#: reports.js:WIDGET_DAYS
-msgid "Day(s)"
-msgstr "Օր(եր)"
-
-#: reports.js:TFORMS_LABEL_FIRST5 reports.js:TRANSFORMS_FIRST5
-msgid "First 5 characters (for US ZIP code)"
-msgstr "Առաջին 5 նիշերը (ԱՄՆ ZIP կոդի համար)"
-
-#: reports.js:OPERATORS_GTE_TIME reports.js:FILTERS_LABEL_GTE_TIME
-msgid "On or After (Date/Time)"
-msgstr "Ճիշտ կամ հետո (Ամսաթիվ/Ժամանակ)"
-
-#: reports.js:TRANSFORMS_YEAR_TRUNC reports.js:TFORMS_LABEL_YEAR_TRUNC
-msgid "Year"
-msgstr "Տարի"
-
-#: reports.js:FOLDERS_REPORTS
-msgid "Reports"
-msgstr "Հաշվետվություններ"
-
-#: reports.js:TFORMS_LABEL_QUARTERS_AGO reports.js:TRANSFORMS_QUARTERS_AGO
-msgid "Quarters ago"
-msgstr "Քառորդներ առաջ"
-
-#: reports.js:REPORT_EDITOR_ENTER_NEW_NAME_ALERT
-msgid "Please change the report name"
-msgstr "Փոխիր հաշվետվության անունը"
-
-#: reports.js:TEMPLATE_CONF_SELECT_CANCEL
-msgid "Select the value, or cancel:"
-msgstr "Ընտրիր արժեքը կամ անտեսիր։"
+#: reports.js:TEMPLATE_CONF_BARE
+msgid "Bare"
+msgstr "Մերկ"
 
 #: reports.js:TEMPLATE_CONF_CONFIRM_RESET
 msgid ""
@@ -416,26 +380,62 @@ msgstr ""
 "այս [${1}] աղբյուրից։ Սեղմիր ԼԱՎ եթե\n"
 "ցանկանում ես նորից գրել այս դաշտը։"
 
-#: reports.js:OPERATORS_NOT_IN_LIST reports.js:FILTERS_LABEL_NOT_IN
-msgid "Not in list"
-msgstr "Ցուցակում չէ"
+#: reports.js:TEMPLATE_CONF_PROMPT_CHANGE
+msgid "Change the column header to: ${0}"
+msgstr "Փոխել սյունակ առաջատարը սրան ${0}"
 
-#: reports.js:OPERATORS_ILIKE reports.js:FILTERS_LABEL_ILIKE
-msgid "Contains Matching substring (ignore case)"
-msgstr "Պարունակում է համընկնող ենթատող (անտեսիր ռեգիստրը)"
+#: reports.js:TEMPLATE_FIELD_DOC_PROMPT_CHANGE
+msgid "Change the field hint to:"
+msgstr "Փոխիր դաշտի հուշումը սրանով"
 
-#: reports.js:TRANSFORMS_MOY reports.js:TFORMS_LABEL_MOY
-msgid "Month of Year"
-msgstr "Տարվա ամիս"
+#: reports.js:TEMPLATE_CONF_BOOLEAN_VALUE
+msgid "Boolean Value"
+msgstr "Բուլյան արժեք"
 
-#: reports.js:TRANSFORMS_HOD reports.js:TFORMS_LABEL_HOD
-msgid "Hour of day"
-msgstr "Օրվա ժամ"
+#: reports.js:TEMPLATE_CONF_SELECT_CANCEL
+msgid "Select the value, or cancel:"
+msgstr "Ընտրիր արժեքը կամ անտեսիր։"
 
-#: reports.js:TRANSFORMS_MAX reports.js:TFORMS_LABEL_MAX
-msgid "Max"
-msgstr "Մաքս"
+#: reports.js:TEMPLATE_CONF_TRUE
+msgid "True"
+msgstr "Ճիշտ"
 
-#: reports.js:TEMPLATE_CONF_NOT_IN reports.js:TEMPLATE_CONF_NO_MATCH
+#: reports.js:TEMPLATE_CONF_FALSE
+msgid "False"
+msgstr "Սխալ"
+
+#: reports.js:TEMPLATE_CONF_CONFIRM_STATE
+msgid "Click OK for TRUE and Cancel for FALSE."
+msgstr "Սեղմիր ԼԱՎ TRUE համար և ԱՆՏԵՍԵԼ FALSE համար։"
+
+#: reports.js:TEMPLATE_CONF_NO_MATCH reports.js:TEMPLATE_CONF_NOT_IN
 msgid "Field does not match one of list (comma separated):"
 msgstr "Դաշտը չի համընկնում մեկ ցուցակին (ստորակետով բաժանված)"
+
+#: reports.js:TEMPLATE_CONF_NOT_BETWEEN
+msgid "Field value is not between (comma separated):"
+msgstr "Դաշտի արժեքը չի գտնվում միջև (ստորակետով բաժանված)"
+
+#: reports.js:TEMPLATE_CONF_BETWEEN
+msgid "Field value is between (comma separated):"
+msgstr "Դաշտի արժեքը ընկած է տիրույթում (ստորակետով բաժանված):"
+
+#: reports.js:TEMPLATE_CONF_IN
+msgid "Field matches one of list (comma separated):"
+msgstr "Դաշտը համընկնում է ցուցակներից մեկին"
+
+#: reports.js:TEMPLATE_CONF_DEFAULT
+msgid "Value ${0}:"
+msgstr "Արժեք ${0}:"
+
+#: reports.js:TEMPLATE_CONF_SUCCESS_SAVE
+msgid "Template ${0} was successfully saved."
+msgstr "${0} ձևանմուշը հաջողությամբ հիշվել է։"
+
+#: reports.js:TRANSFORMS_SUBSTRING
+msgid "Substring"
+msgstr "Ենթատող"
+
+#: reports.js:TRANSFORMS_MONTH_NAME
+msgid "Month Name"
+msgstr "Ամսվա անուն"

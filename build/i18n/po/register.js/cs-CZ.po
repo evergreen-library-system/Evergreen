@@ -7,211 +7,211 @@ msgid ""
 msgstr ""
 "Project-Id-Version: evergreen\n"
 "Report-Msgid-Bugs-To: FULL NAME <EMAIL@ADDRESS>\n"
-"POT-Creation-Date: 2020-06-12 11:45-0400\n"
+"POT-Creation-Date: 2022-04-27 17:07-0400\n"
 "PO-Revision-Date: 2014-09-24 12:39+0000\n"
 "Last-Translator: Eva Cerninakova <Unknown>\n"
 "Language-Team: Czech <cs@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2020-09-16 06:02+0000\n"
-"X-Generator: Launchpad (build 83bdf6c8a3a5f87722c8927e54838522f3e57504)\n"
-
-#: register.js:USER_SETTINGS
-msgid "User Settings"
-msgstr "Uživatelská nastavení"
-
-#: register.js:ALL_CARDS_APPLY
-msgid "Apply Changes"
-msgstr "Potvrdit změny"
-
-#: register.js:REPLACE_BARCODE
-msgid "Replace Barcode"
-msgstr "Změnit čárový kód"
-
-#: register.js:ADDRESS_BILLING
-msgid "Billing"
-msgstr "Adresa trvalého bydliště"
-
-#: register.js:ADDRESS_OWNED
-msgid "This address is owned by another user: "
-msgstr "Tuto adresu má  jiný uživatel: "
-
-#: register.js:ALL_CARDS_PRIMARY
-msgid "Primary"
-msgstr "Primární"
-
-#: register.js:ALL_CARDS_BARCODE
-msgid "Barcode"
-msgstr "Čárový kód"
-
-#: register.js:ADD
-msgid "Add"
-msgstr "Přidat"
-
-#: register.js:SECONDARY_GROUP_IS_PROFILE
-msgid "That is already the primary profile group for this patron."
-msgstr "Toto je již primární skupina daného čtenáře"
-
-#: register.js:SAVE
-msgid "Save"
-msgstr "Uložit"
-
-#: register.js:SHOW_REQUIRED
-msgid "Show Only Required Fields"
-msgstr "Zobrazit pouze povinná pole"
-
-#: register.js:DUPE_PATRON_ADDR
-msgid "Found ${0} patron(s) with the same address"
-msgstr "Nalezen(o) ${0} čtenář(ů) se stejnou adresou"
-
-#: register.js:DUPE_PATRON_IDENT
-msgid "Found ${0} patron(s) with the same identification"
-msgstr "Nalezen(o) ${0} čtenář(ů) se stejným číslem identifikačního dokladu"
-
-#: register.js:ADDRESS_MAILING
-msgid "Mailing"
-msgstr "Kontaktní adresa"
-
-#: register.js:DUPE_PATRON_EMAIL
-msgid "Found ${0} patron(s) with the same email address"
-msgstr "Nalezen(o) ${0} čtenář(ů) se stejnou e-mailovou adresou"
-
-#: register.js:NEED_ADDRESS
-msgid "An address is required during registration."
-msgstr "Během registrace je požadována adresa."
-
-#: register.js:REPLACED_ADDRESS
-msgid "Replaces address ${0}<br/> ${1} ${2}<br/> ${3}, ${4} ${5}"
-msgstr "Nahrazuje adresu  ${0}<br/> ${1} ${2}<br/> ${3}, ${4} ${5}"
-
-#: register.js:PARENT_OR_GUARDIAN
-msgid "Parent/Guardian"
-msgstr "Rodič / zákonný zástupce"
-
-#: register.js:ADDRESS_HEADER
-msgid "Address"
-msgstr "Adresa"
-
-#: register.js:ALL_CARDS_ACTIVE
-msgid "Active"
-msgstr "Aktivní"
-
-#: register.js:DUPE_PATRON_PHONE
-msgid "Found ${0} patron(s) with the same phone number"
-msgstr "Nalezen(o) ${0} čtenář(ů) se stejným telefonním číslem"
-
-#: register.js:INVALID_FORM
-msgid "Form is invalid.  Please edit and try again."
-msgstr "Formulář není správně vyplněn. Prosím, upravte ho a zkuste to znovu."
-
-#: register.js:BARCODE_IN_USE
-msgid "Barcode is already in use"
-msgstr "Čárový kód již existuje"
-
-#: register.js:UPDATE_EXPIRE_DATE
-msgid "Update Expire Date"
-msgstr "Aktualizovat datum expirace"
-
-#: register.js:SECONDARY_GROUP_ERROR
-msgid "Error saving secondary groups."
-msgstr "Došlo k chybě při ukládání sekundární skupiny"
-
-#: register.js:RESET_PASSWORD
-msgid "Generate Password"
-msgstr "Vygenerovat heslo"
-
-#: register.js:EXAMPLE
-msgid "Example: "
-msgstr "Příklad: "
-
-#: register.js:SHOW_SUGGESTED
-msgid "Show Suggested Fields"
-msgstr "Zobrazit navrhovaná pole"
-
-#: register.js:ADDRESS_PENDING
-msgid "This is a pending address: "
-msgstr "Toto je nevyřízená adresa: "
-
-#: register.js:DUPE_USERNAME
-msgid "Username is already in use"
-msgstr "Uživatelské jméno již existuje"
-
-#: register.js:HOLD_NOTIFY_PHONE
-msgid "Phone: "
-msgstr "Telefon: "
-
-#: register.js:DUPE_PATRON_NAME
-msgid "Found ${0} patron(s) with the same name"
-msgstr "Nalezen(o) ${0} uživatel(ů) se stejným jménem"
+"X-Launchpad-Export-Date: 2023-05-05 04:48+0000\n"
+"X-Generator: Launchpad (build 90e2150bef31b411d7bae5c4032c7e320fcaaec8)\n"
 
 #: register.js:DEFAULT_ADDRESS_TYPE
 msgid "MAILING"
 msgstr "Kontaktní adresa"
 
-#: register.js:REQUESTING_USER
-msgid "Account requested by ${0} ${1}"
-msgstr "Účet je požadován:  ${0} ${1}"
+#: register.js:DELETE_ADDRESS
+msgid "Delete address ${0}?"
+msgstr "Smazat adresu ${0}?"
 
-#: register.js:DELETE
-msgid "Delete"
-msgstr "Smazat"
+#: register.js:NEED_ADDRESS
+msgid "An address is required during registration."
+msgstr "Během registrace je požadována adresa."
 
-#: register.js:HOLD_NOTIFY_SMS
-msgid "SMS: "
-msgstr "SMS: "
+#: register.js:DUPE_PATRON_NAME
+msgid "Found ${0} patron(s) with the same name"
+msgstr "Nalezen(o) ${0} uživatel(ů) se stejným jménem"
 
-#: register.js:INVALIDATE
-msgid "Invalidate"
-msgstr "Zrušit platnost"
+#: register.js:DUPE_PATRON_EMAIL
+msgid "Found ${0} patron(s) with the same email address"
+msgstr "Nalezen(o) ${0} čtenář(ů) se stejnou e-mailovou adresou"
 
-#: register.js:SHOW_ALL
-msgid "Show All Fields"
-msgstr "Zobrazit všechna pole"
+#: register.js:DUPE_PATRON_IDENT
+msgid "Found ${0} patron(s) with the same identification"
+msgstr "Nalezen(o) ${0} čtenář(ů) se stejným číslem identifikačního dokladu"
 
-#: register.js:SECONDARY_GROUP_EXISTS
-msgid "This group is on the list already."
-msgstr "Tato skupina je již na seznamu."
+#: register.js:DUPE_PATRON_PHONE
+msgid "Found ${0} patron(s) with the same phone number"
+msgstr "Nalezen(o) ${0} čtenář(ů) se stejným telefonním číslem"
 
-#: register.js:ADDRESS_APPROVE
-msgid "Approve Address"
-msgstr "Potvrdit adresu"
+#: register.js:DUPE_PATRON_ADDR
+msgid "Found ${0} patron(s) with the same address"
+msgstr "Nalezen(o) ${0} čtenář(ů) se stejnou adresou"
 
-#: register.js:VERIFY_PASSWORD
-msgid "Verify Password"
-msgstr "Ověření hesla"
+#: register.js:REPLACED_ADDRESS
+msgid "Replaces address ${0}<br/> ${1} ${2}<br/> ${3}, ${4} ${5}"
+msgstr "Nahrazuje adresu  ${0}<br/> ${1} ${2}<br/> ${3}, ${4} ${5}"
 
-#: register.js:SAVE_CLONE
-msgid "Save &amp; Clone"
-msgstr "Uložit a klonovat"
+#: register.js:INVALID_FORM
+msgid "Form is invalid.  Please edit and try again."
+msgstr "Formulář není správně vyplněn. Prosím, upravte ho a zkuste to znovu."
 
-#: register.js:STAT_CATS
-msgid "Statistical Categories"
-msgstr "Statistické kategorie"
+#: register.js:EXAMPLE
+msgid "Example: "
+msgstr "Příklad: "
 
-#: register.js:ADDRESS_NEW
-msgid "New Address"
-msgstr "Nová adresa"
+#: register.js:REPLACE_BARCODE
+msgid "Replace Barcode"
+msgstr "Změnit čárový kód"
 
-#: register.js:HOLD_NOTIFY_EMAIL
-msgid "Email: "
-msgstr "E-mail: "
-
-#: register.js:SECONDARY_GROUP_NOT_ALLOWED
-msgid "You do not have permission to add this group."
-msgstr "Nemáte oprávnění přidat tuto skupinu."
+#: register.js:BARCODE_IN_USE
+msgid "Barcode is already in use"
+msgstr "Čárový kód již existuje"
 
 #: register.js:SEE_ALL
 msgid "See All"
 msgstr "Zobrazit vše"
 
+#: register.js:DUPE_USERNAME
+msgid "Username is already in use"
+msgstr "Uživatelské jméno již existuje"
+
+#: register.js:RESET_PASSWORD
+msgid "Generate Password"
+msgstr "Vygenerovat heslo"
+
+#: register.js:VERIFY_PASSWORD
+msgid "Verify Password"
+msgstr "Ověření hesla"
+
+#: register.js:PARENT_OR_GUARDIAN
+msgid "Parent/Guardian"
+msgstr "Rodič / zákonný zástupce"
+
+#: register.js:USER_SETTINGS
+msgid "User Settings"
+msgstr "Uživatelská nastavení"
+
+#: register.js:ADDRESS_HEADER
+msgid "Address"
+msgstr "Adresa"
+
+#: register.js:ADDRESS_MAILING
+msgid "Mailing"
+msgstr "Kontaktní adresa"
+
+#: register.js:ADDRESS_BILLING
+msgid "Billing"
+msgstr "Adresa trvalého bydliště"
+
+#: register.js:ADDRESS_PENDING
+msgid "This is a pending address: "
+msgstr "Toto je nevyřízená adresa: "
+
+#: register.js:ADDRESS_APPROVE
+msgid "Approve Address"
+msgstr "Potvrdit adresu"
+
+#: register.js:ADDRESS_OWNED
+msgid "This address is owned by another user: "
+msgstr "Tuto adresu má  jiný uživatel: "
+
+#: register.js:ADDRESS_NEW
+msgid "New Address"
+msgstr "Nová adresa"
+
+#: register.js:STAT_CATS
+msgid "Statistical Categories"
+msgstr "Statistické kategorie"
+
+#: register.js:SAVE
+msgid "Save"
+msgstr "Uložit"
+
+#: register.js:SAVE_CLONE
+msgid "Save &amp; Clone"
+msgstr "Uložit a klonovat"
+
+#: register.js:SHOW_REQUIRED
+msgid "Show Only Required Fields"
+msgstr "Zobrazit pouze povinná pole"
+
+#: register.js:SHOW_SUGGESTED
+msgid "Show Suggested Fields"
+msgstr "Zobrazit navrhovaná pole"
+
+#: register.js:SHOW_ALL
+msgid "Show All Fields"
+msgstr "Zobrazit všechna pole"
+
+#: register.js:ALL_CARDS_BARCODE
+msgid "Barcode"
+msgstr "Čárový kód"
+
+#: register.js:ALL_CARDS_ACTIVE
+msgid "Active"
+msgstr "Aktivní"
+
+#: register.js:ALL_CARDS_PRIMARY
+msgid "Primary"
+msgstr "Primární"
+
 #: register.js:ALL_CARDS_CLOSE
 msgid "Close"
 msgstr "Zavřít"
 
-#: register.js:DELETE_ADDRESS
-msgid "Delete address ${0}?"
-msgstr "Smazat adresu ${0}?"
+#: register.js:ALL_CARDS_APPLY
+msgid "Apply Changes"
+msgstr "Potvrdit změny"
+
+#: register.js:INVALIDATE
+msgid "Invalidate"
+msgstr "Zrušit platnost"
+
+#: register.js:HOLD_NOTIFY_PHONE
+msgid "Phone: "
+msgstr "Telefon: "
+
+#: register.js:HOLD_NOTIFY_EMAIL
+msgid "Email: "
+msgstr "E-mail: "
+
+#: register.js:HOLD_NOTIFY_SMS
+msgid "SMS: "
+msgstr "SMS: "
+
+#: register.js:REQUESTING_USER
+msgid "Account requested by ${0} ${1}"
+msgstr "Účet je požadován:  ${0} ${1}"
+
+#: register.js:UPDATE_EXPIRE_DATE
+msgid "Update Expire Date"
+msgstr "Aktualizovat datum expirace"
+
+#: register.js:DELETE
+msgid "Delete"
+msgstr "Smazat"
+
+#: register.js:ADD
+msgid "Add"
+msgstr "Přidat"
+
+#: register.js:SECONDARY_GROUP_NOT_ALLOWED
+msgid "You do not have permission to add this group."
+msgstr "Nemáte oprávnění přidat tuto skupinu."
+
+#: register.js:SECONDARY_GROUP_IS_PROFILE
+msgid "That is already the primary profile group for this patron."
+msgstr "Toto je již primární skupina daného čtenáře"
+
+#: register.js:SECONDARY_GROUP_EXISTS
+msgid "This group is on the list already."
+msgstr "Tato skupina je již na seznamu."
+
+#: register.js:SECONDARY_GROUP_ERROR
+msgid "Error saving secondary groups."
+msgstr "Došlo k chybě při ukládání sekundární skupiny"
 
 #~ msgid ""
 #~ "<div>Replaces address <b>${0}</b><br/> ${1} ${2}<br/> ${3}, ${4} ${5}</div>"

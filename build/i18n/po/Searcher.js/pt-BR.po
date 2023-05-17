@@ -7,172 +7,172 @@ msgid ""
 msgstr ""
 "Project-Id-Version: evergreen\n"
 "Report-Msgid-Bugs-To: FULL NAME <EMAIL@ADDRESS>\n"
-"POT-Creation-Date: 2020-06-12 11:45-0400\n"
+"POT-Creation-Date: 2022-04-27 17:07-0400\n"
 "PO-Revision-Date: 2012-07-04 14:27+0000\n"
 "Last-Translator: Job Diógenes Ribeiro Borges <jobdrb@gmail.com>\n"
 "Language-Team: Brazilian Portuguese <pt_BR@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2020-09-16 06:02+0000\n"
-"X-Generator: Launchpad (build 83bdf6c8a3a5f87722c8927e54838522f3e57504)\n"
-
-#: Searcher.js:before
-msgid "Published Before"
-msgstr "Publicado antes"
-
-#: Searcher.js:lit_form
-msgid "Literary Form"
-msgstr "Forma Literária"
-
-#: Searcher.js:metabib
-msgid "Metarecord Search"
-msgstr "Pesquisa por Metaregistro"
-
-#: Searcher.js:contains
-msgid "Contains"
-msgstr "Contém"
-
-#: Searcher.js:more
-msgid "More..."
-msgstr "Mais ..."
-
-#: Searcher.js:after
-msgid "Published After"
-msgstr "Publicado depois"
-
-#: Searcher.js:basic
-msgid "Basic"
-msgstr "Básico"
-
-#: Searcher.js:modifiers
-msgid "Modifiers"
-msgstr "Modificadores"
-
-#: Searcher.js:item_type
-msgid "Type"
-msgstr "Tipo"
-
-#: Searcher.js:depth
-msgid "Search Depth"
-msgstr "Profundidade da Busca"
-
-#: Searcher.js:available
-msgid "Available"
-msgstr "Disponível"
-
-#: Searcher.js:classed_searches
-msgid "Classed Searches"
-msgstr "Pesquisas Classificadas"
-
-#: Searcher.js:item_form
-msgid "Form"
-msgstr "Forma"
-
-#: Searcher.js:new_modifier
-msgid "New Modifier"
-msgstr "Novo Modificador"
-
-#: Searcher.js:less
-msgid "...Less"
-msgstr "...Menos"
-
-#: Searcher.js:modifier_default
-msgid "-- Select a Modifier --"
-msgstr "-- Selecione um Modificador --"
-
-#: Searcher.js:during
-msgid "In Publication"
-msgstr "Em Publicação"
-
-#: Searcher.js:exact
-msgid "Exactly Matches"
-msgstr "Corresponde Exatamente"
-
-#: Searcher.js:advanced
-msgid "Advanced"
-msgstr "Avançado"
-
-#: Searcher.js:between
-msgid "Published Between"
-msgstr "Publicador Entre"
-
-#: Searcher.js:new_filter
-msgid "New Filter"
-msgstr "Novo Filtro"
-
-#: Searcher.js:faceted_searches
-msgid "Facets"
-msgstr "Facetas"
-
-#: Searcher.js:perform_search
-msgid "Go!"
-msgstr "Ir!"
-
-#: Searcher.js:remove
-msgid "Remove"
-msgstr "Remover"
-
-#: Searcher.js:audience
-msgid "Audience"
-msgstr "Público"
-
-#: Searcher.js:format
-msgid "Type and Form"
-msgstr "Tipo e Forma"
-
-#: Searcher.js:descending
-msgid "Sort Descending"
-msgstr "Ordenar em Ordem Decrescente"
-
-#: Searcher.js:new_facet
-msgid "New Facet"
-msgstr "Nova Faceta"
+"X-Launchpad-Export-Date: 2023-05-05 04:48+0000\n"
+"X-Generator: Launchpad (build 90e2150bef31b411d7bae5c4032c7e320fcaaec8)\n"
 
 #: Searcher.js:and
 msgid "AND"
 msgstr "E"
 
-#: Searcher.js:vr_format
-msgid "Videorecording Format"
-msgstr "Formato da Gravação em Vídeo"
+#: Searcher.js:or
+msgid "OR"
+msgstr "OU"
 
-#: Searcher.js:staff
-msgid "Staff Search"
-msgstr "Pesquisa de Funcionário"
+#: Searcher.js:more
+msgid "More..."
+msgstr "Mais ..."
 
-#: Searcher.js:site
-msgid "Site"
-msgstr "Página"
+#: Searcher.js:less
+msgid "...Less"
+msgstr "...Menos"
 
-#: Searcher.js:notcontains
-msgid "Does Not Contain"
-msgstr "Não Contém"
+#: Searcher.js:classed_searches
+msgid "Classed Searches"
+msgstr "Pesquisas Classificadas"
 
-#: Searcher.js:sort
-msgid "Sort Axis"
-msgstr "Ordenar Axis"
+#: Searcher.js:faceted_searches
+msgid "Facets"
+msgstr "Facetas"
 
 #: Searcher.js:filters
 msgid "Filters"
 msgstr "Filtros"
 
-#: Searcher.js:bib_level
-msgid "Bibliographic Level"
-msgstr "Nível Catalográfico"
+#: Searcher.js:modifiers
+msgid "Modifiers"
+msgstr "Modificadores"
 
-#: Searcher.js:filter_default
-msgid "-- Select a Filter --"
-msgstr "-- Selecionar um filtro --"
+#: Searcher.js:new_facet
+msgid "New Facet"
+msgstr "Nova Faceta"
+
+#: Searcher.js:new_filter
+msgid "New Filter"
+msgstr "Novo Filtro"
+
+#: Searcher.js:new_modifier
+msgid "New Modifier"
+msgstr "Novo Modificador"
+
+#: Searcher.js:remove
+msgid "Remove"
+msgstr "Remover"
+
+#: Searcher.js:advanced
+msgid "Advanced"
+msgstr "Avançado"
+
+#: Searcher.js:basic
+msgid "Basic"
+msgstr "Básico"
+
+#: Searcher.js:perform_search
+msgid "Go!"
+msgstr "Ir!"
+
+#: Searcher.js:contains
+msgid "Contains"
+msgstr "Contém"
+
+#: Searcher.js:notcontains
+msgid "Does Not Contain"
+msgstr "Não Contém"
+
+#: Searcher.js:exact
+msgid "Exactly Matches"
+msgstr "Corresponde Exatamente"
+
+#: Searcher.js:modifier_default
+msgid "-- Select a Modifier --"
+msgstr "-- Selecione um Modificador --"
+
+#: Searcher.js:available
+msgid "Available"
+msgstr "Disponível"
+
+#: Searcher.js:descending
+msgid "Sort Descending"
+msgstr "Ordenar em Ordem Decrescente"
 
 #: Searcher.js:ascending
 msgid "Sort Ascending"
 msgstr "Ordenar em Ordem Crescente"
 
-#: Searcher.js:or
-msgid "OR"
-msgstr "OU"
+#: Searcher.js:metabib
+msgid "Metarecord Search"
+msgstr "Pesquisa por Metaregistro"
+
+#: Searcher.js:staff
+msgid "Staff Search"
+msgstr "Pesquisa de Funcionário"
+
+#: Searcher.js:filter_default
+msgid "-- Select a Filter --"
+msgstr "-- Selecionar um filtro --"
+
+#: Searcher.js:site
+msgid "Site"
+msgstr "Página"
+
+#: Searcher.js:depth
+msgid "Search Depth"
+msgstr "Profundidade da Busca"
+
+#: Searcher.js:sort
+msgid "Sort Axis"
+msgstr "Ordenar Axis"
 
 #: Searcher.js:statuses
 msgid "Statuses"
 msgstr "Estados"
+
+#: Searcher.js:audience
+msgid "Audience"
+msgstr "Público"
+
+#: Searcher.js:before
+msgid "Published Before"
+msgstr "Publicado antes"
+
+#: Searcher.js:after
+msgid "Published After"
+msgstr "Publicado depois"
+
+#: Searcher.js:between
+msgid "Published Between"
+msgstr "Publicador Entre"
+
+#: Searcher.js:during
+msgid "In Publication"
+msgstr "Em Publicação"
+
+#: Searcher.js:item_form
+msgid "Form"
+msgstr "Forma"
+
+#: Searcher.js:item_type
+msgid "Type"
+msgstr "Tipo"
+
+#: Searcher.js:format
+msgid "Type and Form"
+msgstr "Tipo e Forma"
+
+#: Searcher.js:vr_format
+msgid "Videorecording Format"
+msgstr "Formato da Gravação em Vídeo"
+
+#: Searcher.js:lit_form
+msgid "Literary Form"
+msgstr "Forma Literária"
+
+#: Searcher.js:bib_level
+msgid "Bibliographic Level"
+msgstr "Nível Catalográfico"

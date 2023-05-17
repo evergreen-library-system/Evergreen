@@ -7,43 +7,39 @@ msgid ""
 msgstr ""
 "Project-Id-Version: evergreen\n"
 "Report-Msgid-Bugs-To: FULL NAME <EMAIL@ADDRESS>\n"
-"POT-Creation-Date: 2020-06-12 11:45-0400\n"
+"POT-Creation-Date: 2022-04-27 17:07-0400\n"
 "PO-Revision-Date: 2016-08-22 18:20+0000\n"
 "Last-Translator: Anahi Valdez <avaldez@emeralddata.net>\n"
 "Language-Team: Spanish <es@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2020-09-16 06:04+0000\n"
-"X-Generator: Launchpad (build 83bdf6c8a3a5f87722c8927e54838522f3e57504)\n"
-
-#: URLVerify.js:XPATH
-msgid "XPath"
-msgstr "XPath"
-
-#: URLVerify.js:NOTHING_SELECTED
-msgid "No rows are selected, so no action will be taken."
-msgstr "No hay filas seleccionadas, así que no se efectuará ninguna acción"
-
-#: URLVerify.js:REVIEW_ATTEMPT
-msgid "Review this verification attempt"
-msgstr "Revisar esta intento de verificación"
+"X-Launchpad-Export-Date: 2023-05-05 04:50+0000\n"
+"X-Generator: Launchpad (build 90e2150bef31b411d7bae5c4032c7e320fcaaec8)\n"
 
 #: URLVerify.js:CREATING
 msgid "Creating session ..."
 msgstr "Creando sesión ..."
 
-#: URLVerify.js:MARC_EDITOR_TITLE
-msgid "Record ID #${0}"
-msgstr "ID de registro #${0}"
+#: URLVerify.js:SAVING_TAGS
+msgid "Saving tag/subfield selectors ..."
+msgstr "Guardando etiqueta/ Selectores del subcampo ..."
 
-#: URLVerify.js:SESSION_NAME
-msgid "Session '${0}'"
-msgstr "Sesión '${0}'"
+#: URLVerify.js:PERFORMING_SEARCH
+msgid "Performing search ..."
+msgstr "Realizando búsqueda ..."
 
-#: URLVerify.js:CLONING
-msgid "Cloning existing session ..."
-msgstr "Clonando sesión existente ..."
+#: URLVerify.js:EXTRACTING_URLS
+msgid "Extracting URLs ..."
+msgstr "Extrayendo URLs ..."
+
+#: URLVerify.js:NEED_UVUS
+msgid "You must add some tag and subfield combinations."
+msgstr "Debe añadir algunas combinaciones de etiquetas y subcampos."
+
+#: URLVerify.js:REDIRECTING
+msgid "Loading next interface ..."
+msgstr "Cargando próxima interfaz ..."
 
 #: URLVerify.js:INTERFACE_SETUP
 msgid "Setting up interface ..."
@@ -60,25 +56,45 @@ msgstr ""
 "si el seleccionado, direcciones URL visibles son los únicos que desea "
 "verificar."
 
-#: URLVerify.js:VERIFICATION_ATTEMPT_ID
-msgid "Verification attempt ID: ${0}"
-msgstr "Verificación intento ID: ${0}"
-
 #: URLVerify.js:VERIFICATION_DIALOG
 msgid "Verifying URLs ..."
 msgstr "Verificación de URLs ..."
 
-#: URLVerify.js:NEED_UVUS
-msgid "You must add some tag and subfield combinations."
-msgstr "Debe añadir algunas combinaciones de etiquetas y subcampos."
+#: URLVerify.js:VERIFICATION_ATTEMPT_ID
+msgid "Verification attempt ID: ${0}"
+msgstr "Verificación intento ID: ${0}"
+
+#: URLVerify.js:NOTHING_SELECTED
+msgid "No rows are selected, so no action will be taken."
+msgstr "No hay filas seleccionadas, así que no se efectuará ninguna acción"
+
+#: URLVerify.js:REVIEW_ATTEMPT
+msgid "Review this verification attempt"
+msgstr "Revisar esta intento de verificación"
 
 #: URLVerify.js:CLONE_SESSION
 msgid "Clone"
 msgstr "Clonar"
 
-#: URLVerify.js:MARC_EDITOR_LINK
-msgid "Click to open MARC Editor for this record"
-msgstr "Haga clic para abrir el Editor de MARC para este registro"
+#: URLVerify.js:REREVIEW
+msgid "Open"
+msgstr "Abrir"
+
+#: URLVerify.js:CLONING
+msgid "Cloning existing session ..."
+msgstr "Clonando sesión existente ..."
+
+#: URLVerify.js:CLONE_SESSION_NAME
+msgid "Copy of ${0}"
+msgstr "Copia de ${0}"
+
+#: URLVerify.js:XPATH
+msgid "XPath"
+msgstr "XPath"
+
+#: URLVerify.js:SESSION_NAME
+msgid "Session '${0}'"
+msgstr "Sesión '${0}'"
 
 #: URLVerify.js:SELECT_MORE
 msgid ""
@@ -87,9 +103,13 @@ msgstr ""
 "Haga clic aquí para revisar todas las direcciones URL de sesión y / o "
 "seleccionar otras URLs para verificar"
 
-#: URLVerify.js:PERFORMING_SEARCH
-msgid "Performing search ..."
-msgstr "Realizando búsqueda ..."
+#: URLVerify.js:MARC_EDITOR_LINK
+msgid "Click to open MARC Editor for this record"
+msgstr "Haga clic para abrir el Editor de MARC para este registro"
+
+#: URLVerify.js:MARC_EDITOR_TITLE
+msgid "Record ID #${0}"
+msgstr "ID de registro #${0}"
 
 #: URLVerify.js:MARC_EDITOR_SAVE_RECORD
 msgid "Save Record"
@@ -98,23 +118,3 @@ msgstr "Guardar Registro"
 #: URLVerify.js:EDIT
 msgid "Edit"
 msgstr "Editar"
-
-#: URLVerify.js:SAVING_TAGS
-msgid "Saving tag/subfield selectors ..."
-msgstr "Guardando etiqueta/ Selectores del subcampo ..."
-
-#: URLVerify.js:CLONE_SESSION_NAME
-msgid "Copy of ${0}"
-msgstr "Copia de ${0}"
-
-#: URLVerify.js:EXTRACTING_URLS
-msgid "Extracting URLs ..."
-msgstr "Extrayendo URLs ..."
-
-#: URLVerify.js:REDIRECTING
-msgid "Loading next interface ..."
-msgstr "Cargando próxima interfaz ..."
-
-#: URLVerify.js:REREVIEW
-msgid "Open"
-msgstr "Abrir"

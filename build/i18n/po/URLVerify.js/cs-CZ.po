@@ -7,43 +7,39 @@ msgid ""
 msgstr ""
 "Project-Id-Version: evergreen\n"
 "Report-Msgid-Bugs-To: FULL NAME <EMAIL@ADDRESS>\n"
-"POT-Creation-Date: 2020-06-12 11:45-0400\n"
+"POT-Creation-Date: 2022-04-27 17:07-0400\n"
 "PO-Revision-Date: 2018-02-13 13:01+0000\n"
 "Last-Translator: Eva Cerninakova <Unknown>\n"
 "Language-Team: Czech <cs@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2020-09-16 06:04+0000\n"
-"X-Generator: Launchpad (build 83bdf6c8a3a5f87722c8927e54838522f3e57504)\n"
-
-#: URLVerify.js:XPATH
-msgid "XPath"
-msgstr "XPath"
-
-#: URLVerify.js:NOTHING_SELECTED
-msgid "No rows are selected, so no action will be taken."
-msgstr "Nebyly vybrány žádné řádky, takže neproběhne žádná akce."
-
-#: URLVerify.js:REVIEW_ATTEMPT
-msgid "Review this verification attempt"
-msgstr "Zkontrolujte pokus o ověření"
+"X-Launchpad-Export-Date: 2023-05-05 04:50+0000\n"
+"X-Generator: Launchpad (build 90e2150bef31b411d7bae5c4032c7e320fcaaec8)\n"
 
 #: URLVerify.js:CREATING
 msgid "Creating session ..."
 msgstr "Probíhá vytvoření relace ..."
 
-#: URLVerify.js:MARC_EDITOR_TITLE
-msgid "Record ID #${0}"
-msgstr "ID záznamu #${0}"
+#: URLVerify.js:SAVING_TAGS
+msgid "Saving tag/subfield selectors ..."
+msgstr "Probíhá k ukládání selektorů polí a podpolí"
 
-#: URLVerify.js:SESSION_NAME
-msgid "Session '${0}'"
-msgstr "Relace '${0}'"
+#: URLVerify.js:PERFORMING_SEARCH
+msgid "Performing search ..."
+msgstr "Probíhá hledání ..."
 
-#: URLVerify.js:CLONING
-msgid "Cloning existing session ..."
-msgstr "Probíhá kopírování existující relace ..."
+#: URLVerify.js:EXTRACTING_URLS
+msgid "Extracting URLs ..."
+msgstr "Probíhá získávání URL ..."
+
+#: URLVerify.js:NEED_UVUS
+msgid "You must add some tag and subfield combinations."
+msgstr "Musíte zadat kombinaci označení pole a podpole."
+
+#: URLVerify.js:REDIRECTING
+msgid "Loading next interface ..."
+msgstr "Nahrává se další rozhraní ..."
 
 #: URLVerify.js:INTERFACE_SETUP
 msgid "Setting up interface ..."
@@ -59,25 +55,45 @@ msgstr ""
 "vyhledávacím termínům, klikněte na tlačítko 'OK'. Pokud vybraná,  viditelná "
 "URL  jsou jediná, která chcete ověřit, klikněte na  tlačítko  'Zrušit'-"
 
-#: URLVerify.js:VERIFICATION_ATTEMPT_ID
-msgid "Verification attempt ID: ${0}"
-msgstr "Pokus o ověření  ID: ${0}"
-
 #: URLVerify.js:VERIFICATION_DIALOG
 msgid "Verifying URLs ..."
 msgstr "Probíhá ověření URL ..."
 
-#: URLVerify.js:NEED_UVUS
-msgid "You must add some tag and subfield combinations."
-msgstr "Musíte zadat kombinaci označení pole a podpole."
+#: URLVerify.js:VERIFICATION_ATTEMPT_ID
+msgid "Verification attempt ID: ${0}"
+msgstr "Pokus o ověření  ID: ${0}"
+
+#: URLVerify.js:NOTHING_SELECTED
+msgid "No rows are selected, so no action will be taken."
+msgstr "Nebyly vybrány žádné řádky, takže neproběhne žádná akce."
+
+#: URLVerify.js:REVIEW_ATTEMPT
+msgid "Review this verification attempt"
+msgstr "Zkontrolujte pokus o ověření"
 
 #: URLVerify.js:CLONE_SESSION
 msgid "Clone"
 msgstr "Klonovat"
 
-#: URLVerify.js:MARC_EDITOR_LINK
-msgid "Click to open MARC Editor for this record"
-msgstr "Kliknutím otevřete Editor MARC pro tento záznam"
+#: URLVerify.js:REREVIEW
+msgid "Open"
+msgstr "Otevřít"
+
+#: URLVerify.js:CLONING
+msgid "Cloning existing session ..."
+msgstr "Probíhá kopírování existující relace ..."
+
+#: URLVerify.js:CLONE_SESSION_NAME
+msgid "Copy of ${0}"
+msgstr "Kopie ${0}"
+
+#: URLVerify.js:XPATH
+msgid "XPath"
+msgstr "XPath"
+
+#: URLVerify.js:SESSION_NAME
+msgid "Session '${0}'"
+msgstr "Relace '${0}'"
 
 #: URLVerify.js:SELECT_MORE
 msgid ""
@@ -85,9 +101,13 @@ msgid ""
 msgstr ""
 "Pro kontrolu všech relací klikněte zde (a) nebo vyberte pro ověření jiné URL"
 
-#: URLVerify.js:PERFORMING_SEARCH
-msgid "Performing search ..."
-msgstr "Probíhá hledání ..."
+#: URLVerify.js:MARC_EDITOR_LINK
+msgid "Click to open MARC Editor for this record"
+msgstr "Kliknutím otevřete Editor MARC pro tento záznam"
+
+#: URLVerify.js:MARC_EDITOR_TITLE
+msgid "Record ID #${0}"
+msgstr "ID záznamu #${0}"
 
 #: URLVerify.js:MARC_EDITOR_SAVE_RECORD
 msgid "Save Record"
@@ -96,23 +116,3 @@ msgstr "Uložit záznam"
 #: URLVerify.js:EDIT
 msgid "Edit"
 msgstr "Upravit"
-
-#: URLVerify.js:SAVING_TAGS
-msgid "Saving tag/subfield selectors ..."
-msgstr "Probíhá k ukládání selektorů polí a podpolí"
-
-#: URLVerify.js:CLONE_SESSION_NAME
-msgid "Copy of ${0}"
-msgstr "Kopie ${0}"
-
-#: URLVerify.js:EXTRACTING_URLS
-msgid "Extracting URLs ..."
-msgstr "Probíhá získávání URL ..."
-
-#: URLVerify.js:REDIRECTING
-msgid "Loading next interface ..."
-msgstr "Nahrává se další rozhraní ..."
-
-#: URLVerify.js:REREVIEW
-msgid "Open"
-msgstr "Otevřít"

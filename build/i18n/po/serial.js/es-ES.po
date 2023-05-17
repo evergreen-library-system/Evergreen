@@ -7,65 +7,43 @@ msgid ""
 msgstr ""
 "Project-Id-Version: evergreen\n"
 "Report-Msgid-Bugs-To: FULL NAME <EMAIL@ADDRESS>\n"
-"POT-Creation-Date: 2020-06-12 11:45-0400\n"
+"POT-Creation-Date: 2022-04-27 17:07-0400\n"
 "PO-Revision-Date: 2016-08-17 12:38+0000\n"
 "Last-Translator: Anahi Valdez <avaldez@emeralddata.net>\n"
 "Language-Team: Spanish <es@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2020-09-16 06:04+0000\n"
-"X-Generator: Launchpad (build 83bdf6c8a3a5f87722c8927e54838522f3e57504)\n"
-
-#: serial.js:SAVE_SUCCESSFUL
-msgid "Save Successful"
-msgstr "Guardado exitosamente"
-
-#: serial.js:SEASON_SUMMER
-msgid "Summer"
-msgstr "Verano"
-
-#: serial.js:SELECT_VALID_CAP
-msgid "Have you selected a valid caption and pattern?"
-msgstr "¿Ha seleccionado un título y el patrón válido?"
-
-#: serial.js:SEASON_WINTER
-msgid "Winter"
-msgstr "Invierno"
-
-#: serial.js:CREATE_ISSUANCE
-msgid "Create Issuance"
-msgstr "Crear periodicidad"
-
-#: serial.js:NOTES_SSUB
-msgid "Subscription Notes (ID: ${0})"
-msgstr "Notas de suscripción (id.: ${0})"
-
-#: serial.js:REQUIRE_ONE_ROW
-msgid "Use the checkboxes to select exactly one row for this operation."
-msgstr ""
-"Use las casillas de verificación para elegir una sola fila para esta "
-"operación."
+"X-Launchpad-Export-Date: 2023-05-05 04:50+0000\n"
+"X-Generator: Launchpad (build 90e2150bef31b411d7bae5c4032c7e320fcaaec8)\n"
 
 #: serial.js:SEASON_SPRING
 msgid "Spring"
 msgstr "Primavera"
 
-#: serial.js:WIZARD
-msgid "Wizard"
-msgstr "Asistente"
+#: serial.js:SEASON_SUMMER
+msgid "Summer"
+msgstr "Verano"
 
-#: serial.js:MODIFY_ISSUANCE
-msgid "Modify Issuance"
-msgstr "Modificar periodicidad"
+#: serial.js:SEASON_FALL
+msgid "Fall"
+msgstr "Caer"
+
+#: serial.js:SEASON_WINTER
+msgid "Winter"
+msgstr "Invierno"
+
+#: serial.js:SELECT_VALID_CAP
+msgid "Have you selected a valid caption and pattern?"
+msgstr "¿Ha seleccionado un título y el patrón válido?"
 
 #: serial.js:NO_CAP_SUBFIELDS
 msgid "No caption subfields in selected caption and pattern"
 msgstr "No hay subcampos de título en título y el patrón seleccionado"
 
-#: serial.js:NOTES_SDIST
-msgid "Distribution Notes (ID: ${0})"
-msgstr "Notas de distribución (id.: ${0})"
+#: serial.js:COMPILE
+msgid "Create Holding Code"
+msgstr "Crear Código Retención"
 
 #: serial.js:ERROR_BLANK_FIELDS
 msgid "A valid holding code cannot be produced with any blank fields."
@@ -73,10 +51,32 @@ msgstr ""
 "Un código de retención válida no se puede producir con cualquier campo en "
 "blanco."
 
-#: serial.js:COMPILE
-msgid "Create Holding Code"
-msgstr "Crear Código Retención"
+#: serial.js:WIZARD
+msgid "Wizard"
+msgstr "Asistente"
 
-#: serial.js:SEASON_FALL
-msgid "Fall"
-msgstr "Caer"
+#: serial.js:CREATE_ISSUANCE
+msgid "Create Issuance"
+msgstr "Crear periodicidad"
+
+#: serial.js:MODIFY_ISSUANCE
+msgid "Modify Issuance"
+msgstr "Modificar periodicidad"
+
+#: serial.js:SAVE_SUCCESSFUL
+msgid "Save Successful"
+msgstr "Guardado exitosamente"
+
+#: serial.js:NOTES_SSUB
+msgid "Subscription Notes (ID: ${0})"
+msgstr "Notas de suscripción (id.: ${0})"
+
+#: serial.js:NOTES_SDIST
+msgid "Distribution Notes (ID: ${0})"
+msgstr "Notas de distribución (id.: ${0})"
+
+#: serial.js:REQUIRE_ONE_ROW
+msgid "Use the checkboxes to select exactly one row for this operation."
+msgstr ""
+"Use las casillas de verificación para elegir una sola fila para esta "
+"operación."

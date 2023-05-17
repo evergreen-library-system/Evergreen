@@ -7,131 +7,19 @@ msgid ""
 msgstr ""
 "Project-Id-Version: evergreen\n"
 "Report-Msgid-Bugs-To: FULL NAME <EMAIL@ADDRESS>\n"
-"POT-Creation-Date: 2020-06-12 11:45-0400\n"
+"POT-Creation-Date: 2022-04-27 17:07-0400\n"
 "PO-Revision-Date: 2016-12-31 10:00+0000\n"
 "Last-Translator: fares othman <Unknown>\n"
 "Language-Team: Arabic <ar@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2020-09-16 05:50+0000\n"
-"X-Generator: Launchpad (build 83bdf6c8a3a5f87722c8927e54838522f3e57504)\n"
+"X-Launchpad-Export-Date: 2023-05-05 04:36+0000\n"
+"X-Generator: Launchpad (build 90e2150bef31b411d7bae5c4032c7e320fcaaec8)\n"
 
-#: conify.js:SURVEY_ID
-msgid "Survey ID # ${0}"
-msgstr "مُعرف المسح الاستقصائي # ${0}"
-
-#: conify.js:IS_AVAILABLE
-msgid "Is Available"
-msgstr "مُتاح"
-
-#: conify.js:SUCCESS_NEW_PERM_MAP
-msgid "New permission map created"
-msgstr "خريطة صلاحية/إذن جديدة تمّ إنشاؤها"
-
-#: conify.js:END_SURVEY
-msgid "End Survey Now"
-msgstr "إنهاء المسح الاستقصائي الآن"
-
-#: conify.js:SUCCESS_SAVING_DATA conify.js:SUCCESS_SAVE
-msgid "Saved changes to ${0}"
-msgstr "حفظ التغييرات إلى ${0}"
-
-#: conify.js:ERROR_FETCHING_PHYSICAL
-msgid "Problem fetching Physical Address for ${0}"
-msgstr "مشكلة جلب العنوان المادي لـِ ${0}"
-
-#: conify.js:SURVEY_ADD_ANSWER
-msgid "Add Answer"
-msgstr "إضافة إجابة"
-
-#: conify.js:CBHO_FIELD_DISPLAY
-msgid "[${0}] ${1}"
-msgstr "[${0}] ${1}"
-
-#: conify.js:TRANSLATION conify.js:LABEL_TRANSLATION
-msgid "Translation"
-msgstr "التَرجمة"
-
-#: conify.js:ACQ_DISTRIB_FORMULA_NAME_CLONE
-msgid "${0} (Clone)"
-msgstr "${0} (استنساخ)"
-
-#: conify.js:ERROR_DELETING_LAST_AOU
-msgid "Cannot delete ${0}, you need at least one organization unit."
-msgstr "لا يمكن حذف ${0}, تحتاج على الأقل وحدة تنظيمية ـ تَجَمُع ـ"
-
-#: conify.js:SUCCESS_SAVING_HOO
-msgid "Hours of Operation updated for ${0}"
-msgstr "ساعة من عملية التحديث لـِ ${0}"
-
-#: conify.js:SUCCESS_CREATING_CHILD_AOUT
-msgid "New child Organization Type created for ${0}"
-msgstr "نوع جديد لتَجَمُع صغير تمّ إنشاؤه لـِ ${0}"
-
-#: conify.js:LABEL_VALUE
-msgid "Value"
-msgstr "القيمة"
-
-#: conify.js:ERROR_DELETING
-msgid "Problem deleting ${0}"
-msgstr "مشكلة حذف ${0}"
-
-#: conify.js:SURVEY_SAVE_CHANGES
-msgid "Save Changes"
-msgstr "حفظ التغييرات"
-
-#: conify.js:ERROR_CREATING_CHILD_GROUP
-msgid "Problem creating child Group"
-msgstr "مشكلة في إنشاء مجموعة صغيرة/ أطفال"
-
-#: conify.js:SUCCESS_SAVE_PERM
-msgid "Saved permission changes to ${0}"
-msgstr "حفظ تغييرات الصلاحية/الإذن لـِ ${0}"
-
-#: conify.js:SURVEY_DELETE_ANSWER
-msgid "Delete Answer"
-msgstr "حذف إجابة"
-
-#: conify.js:ERROR_FETCHING_GROUPS
-msgid "Problem fetching groups"
-msgstr "مشكلة في مجموعات الجلب"
-
-#: conify.js:ERROR_FETCHING_STATUSES
-msgid "Problem fetching statuses"
-msgstr "مشكلة في حالات الجلب"
-
-#: conify.js:ERROR_SAVING_PERM_DATA
-msgid "Problem saving permission data for ${0}"
-msgstr "مشكلة في توفير بيانات الصلاحية/الإذن لــِ ${0}"
-
-#: conify.js:SUCCESS_CREATING_STATUS
-msgid "New ${0} status created"
-msgstr "تمّ إنشاء ${0} حالة جديدة"
-
-#: conify.js:SURVEY_DELETE_QUESTION
-msgid "Delete Question & Answers"
-msgstr "حذف أسئلة وأجوبة"
-
-#: conify.js:ERROR_CREATING_PERMISSION
-msgid "Problem creating new Permission"
-msgstr "مشكلة في إنشاء صلاحية/إذن جديد"
-
-#: conify.js:CBHO_EDITING_NEW
-msgid "You are editing a new best-hold order."
-msgstr "أنت تقوم بتعديل طلب جديد لأحسن حجز"
-
-#: conify.js:ERROR_CALLING_METHOD_PERM_MAP
-msgid "Problem calling method to create new permission map"
-msgstr "مشكلة في طريقة الاستدعاء لإنشاء خريطة صلاحية/إذن جديدة"
-
-#: conify.js:SURVEY_QUESTION
-msgid "Question:"
-msgstr "السُؤال:"
-
-#: conify.js:ERROR_FETCHING_MAILING
-msgid "Problem fetching Mailing Address for ${0}"
-msgstr "مشكلة في جلب عناوين البريد الإلكتروني لـِ ${0}"
+#: conify.js:CONFIRM_DELETE
+msgid "Are you sure you want to delete ${0}?"
+msgstr "هل أنت متأكد مِن أنك تريد حذف ${0}؟"
 
 #: conify.js:CONFIRM_EXIT_AOU
 msgid ""
@@ -141,49 +29,21 @@ msgstr ""
 "هناك تغييرات غير محفوظة في واحد أو أكثر من الوحدات التنظيمية. انقر فوق نعم "
 "لحفظ هذه التغييرات، أو إلغاء للتخلي عنها."
 
-#: conify.js:SURVEY_SAVE_ADD
-msgid "Save Question & Add Answer"
-msgstr "حفظ السؤال وإضافة إجابة"
+#: conify.js:CONFIRM_EXIT_CAM
+msgid ""
+"There are unsaved changes to one or more ${0} codes. Click OK to save these "
+"changes, or Cancel to abandon them."
+msgstr ""
+"هناك تغييرات غير محفوظة في واحد أو أكثر مِن الأكواد ${0} . أنقر على نعم من "
+"أجل حفظ هذه التغييرات، أو على إلغاء للتخلي عنها."
 
-#: conify.js:LABEL_NEW_BRANCH
-msgid "New Branch"
-msgstr "فرع جديد"
-
-#: conify.js:SUCCESS_CREATING_CHILD_AOU
-msgid "New child Organizational Unit created for ${0}"
-msgstr "وحدة تنظيمية صغيرة جديدة تمّ إنشاؤها لـِ ${0}"
-
-#: conify.js:ERROR_ORPHANS
-msgid "Cannot delete ${0}, ${1} subordinates still exist."
-msgstr "لا يمكن حذف ${0}, ${1} المَرؤوسين لا يزالون موجودين."
-
-#: conify.js:ACQ_DISTRIB_FORMULA_NAME_PROMPT
-msgid "Enter new formula name"
-msgstr "أدخل اسم صيغة جديدة"
-
-#: conify.js:ERROR_DELETING_LAST_AOUT
-msgid "Cannot delete ${0}. You need at least one organization type."
-msgstr "لا يمكن حذف ${0}. تحتاج على الأقل إلى نوع تَجَمُع/منظمة."
-
-#: conify.js:SURVEY_ANSWER
-msgid "Answer:"
-msgstr "الإِجابة:"
-
-#: conify.js:SUCCESS_NEW_CHILD_GROUP
-msgid "New child Group created for ${0}"
-msgstr "مجموعة صغيرة جديدة تمّ إنشاؤها لـِ ${0}"
-
-#: conify.js:SUCCESS_SAVING_PHYSICAL
-msgid "Saved changes to the Physical Address of ${0}"
-msgstr "حفظ التغييرات إلى العناوين المادية لـِ ${0}"
-
-#: conify.js:LABEL_NEW_GROUP
-msgid "New Group"
-msgstr "مَجموعة جديدة"
-
-#: conify.js:CBHO_NO_LOAD
-msgid "Unable to load selected item."
-msgstr "لا يمكن تحميل النُسخة المحددة."
+#: conify.js:CONFIRM_EXIT_CCS
+msgid ""
+"There are unsaved changes to one or more copy statuses. Click OK to save "
+"these changes, or Cancel to abandon them."
+msgstr ""
+"هناك تغييرات غير محفوظة في واحد أو أكثر من حالات النُسخة. انقر فوق نعم لحفظ "
+"هذه التغييرات، أو فوق إلغاء للتخلي عنها."
 
 #: conify.js:CONFIRM_EXIT_PGT
 msgid ""
@@ -192,26 +52,6 @@ msgid ""
 msgstr ""
 "هناك خرائط صلاحية/إذن مُعدلة غير محفوظة. أنقر على نعم من أجل حفظ هذه "
 "التغييرات، أو على إلغاء للتخلي عنها."
-
-#: conify.js:SUCCESS_SAVING_MAILING
-msgid "Saved changes to the Mailing Address of ${0}"
-msgstr "حفظ التغييرات إلى العنوان البريدي لـِ ${0}"
-
-#: conify.js:ERROR_SAVING_STATUS
-msgid "Problem saving ${0}"
-msgstr "مشكلة في حفظ ${0}"
-
-#: conify.js:ERROR_CALLING_METHOD_CAM
-msgid "Problem calling method to create new ${0}"
-msgstr "مشكلة في طريقة الاستدعاء لإنشاء جديد ${0}"
-
-#: conify.js:ERROR_CALLING_METHOD_PPL
-msgid "Problem calling method to create new permission"
-msgstr "مشكلة في طريقة الاستدعاء لإنشاء صلاحية/إذن جديد"
-
-#: conify.js:CONFIRM_DELETE
-msgid "Are you sure you want to delete ${0}?"
-msgstr "هل أنت متأكد مِن أنك تريد حذف ${0}؟"
 
 #: conify.js:CONFIRM_EXIT_PPL
 msgid ""
@@ -229,25 +69,321 @@ msgstr ""
 "هناك تغييرات غير محفوظة لنوع تَجَمُع/منظمة واحد أو أكثر. أنقر على نعم من أجل "
 "حفظ هذه التغييرات، أو على إلغاء للتخلي عنها."
 
+#: conify.js:COPY_ACTIVE
+msgid "Sets copy active"
+msgstr "مجموعات النُسخة النشطة"
+
+#: conify.js:IS_AVAILABLE
+msgid "Is Available"
+msgstr "مُتاح"
+
+#: conify.js:ERROR_CALLING_METHOD_AOUT
+msgid "Problem calling method to create child organization type"
+msgstr "مشكلة في طريقة الاستدعاء لإنشاء نوع تَجَمُع/ منظمة صغير"
+
+#: conify.js:ERROR_CALLING_METHOD_CAM
+msgid "Problem calling method to create new ${0}"
+msgstr "مشكلة في طريقة الاستدعاء لإنشاء جديد ${0}"
+
+#: conify.js:ERROR_CALLING_METHOD_CCS
+msgid "Problem calling method to create new copy status"
+msgstr "مشكلة في طريقة الاستدعاء من أجل إنشاء حالة جديدة للنسخة"
+
+#: conify.js:ERROR_CALLING_METHOD_PERM_MAP
+msgid "Problem calling method to create new permission map"
+msgstr "مشكلة في طريقة الاستدعاء لإنشاء خريطة صلاحية/إذن جديدة"
+
+#: conify.js:ERROR_CALLING_METHOD_PGT
+msgid "Problem calling method to create child Group"
+msgstr "مشكلة في طريقة الاستدعاء لإنشاء مجموعة صغيرة"
+
+#: conify.js:ERROR_CALLING_METHOD_PPL
+msgid "Problem calling method to create new permission"
+msgstr "مشكلة في طريقة الاستدعاء لإنشاء صلاحية/إذن جديد"
+
+#: conify.js:ERROR_CREATING_CHILD_AOU
+msgid "Problem creating child organizational unit"
+msgstr "مشكلة في إنشاء وحدة تنظيمية صغيرة"
+
+#: conify.js:ERROR_CREATING_CHILD_AOUT
+msgid "Problem creating child organization type"
+msgstr "مشكلة في إنشاء نوع تَجَمُع/منظمة صغيرة"
+
+#: conify.js:ERROR_CREATING_CHILD_GROUP
+msgid "Problem creating child Group"
+msgstr "مشكلة في إنشاء مجموعة صغيرة/ أطفال"
+
+#: conify.js:ERROR_CREATING_PERMISSION
+msgid "Problem creating new Permission"
+msgstr "مشكلة في إنشاء صلاحية/إذن جديد"
+
+#: conify.js:ERROR_CREATING_PERM_MAP
+msgid "Problem creating new Permission Map"
+msgstr "مشكلة في إنشاء خريطة صلاحية جديدة"
+
+#: conify.js:ERROR_CREATING_STATUS
+msgid "Problem creating new Status"
+msgstr "مشكلة في إنشاء حالة جديدة"
+
+#: conify.js:ERROR_DELETING_LAST_AOU
+msgid "Cannot delete ${0}, you need at least one organization unit."
+msgstr "لا يمكن حذف ${0}, تحتاج على الأقل وحدة تنظيمية ـ تَجَمُع ـ"
+
+#: conify.js:ERROR_DELETING_LAST_AOUT
+msgid "Cannot delete ${0}. You need at least one organization type."
+msgstr "لا يمكن حذف ${0}. تحتاج على الأقل إلى نوع تَجَمُع/منظمة."
+
+#: conify.js:ERROR_DELETING_PERM_MAPPING
+msgid "Problem deleting permission mapping ${0}"
+msgstr "مشكلة في حذف خرائط الصلاحية/الإذن ${0}"
+
+#: conify.js:ERROR_DELETING
+msgid "Problem deleting ${0}"
+msgstr "مشكلة حذف ${0}"
+
+#: conify.js:ERROR_FETCHING_GROUPS
+msgid "Problem fetching groups"
+msgstr "مشكلة في مجموعات الجلب"
+
+#: conify.js:ERROR_FETCHING_HOLDS
+msgid "Problem fetching Holds Address for ${0}"
+msgstr "مشكلة في جلب عناوين الحجوزات لـِ ${0}"
+
 #: conify.js:ERROR_FETCHING_HOURS
 msgid "Problem fetching hours of operation for ${0}"
 msgstr "مشكلة في جلب ساعات الإجراء /العملية  لـِ ${0}"
+
+#: conify.js:ERROR_FETCHING_ILL
+msgid "Problem fetching ILL Address for ${0}"
+msgstr "مشكلة في جلب عناوين ILL لـِ ${0}"
+
+#: conify.js:ERROR_FETCHING_MAILING
+msgid "Problem fetching Mailing Address for ${0}"
+msgstr "مشكلة في جلب عناوين البريد الإلكتروني لـِ ${0}"
+
+#: conify.js:ERROR_FETCHING_ORGS
+msgid "Problem fetching organizational unit data"
+msgstr "مشكلة في جلب بيانات الوحدة التنظيمية"
+
+#: conify.js:ERROR_FETCHING_PERM_MAPS
+msgid "Problem fetching perm maps"
+msgstr "مشكلة في جلب خرائط صلاحية/إذن"
+
+#: conify.js:ERROR_FETCHING_PERMS
+msgid "Problem fetching perms"
+msgstr "مشكلة في جلب الصلاحيات/الأذونات"
+
+#: conify.js:ERROR_FETCHING_PHYSICAL
+msgid "Problem fetching Physical Address for ${0}"
+msgstr "مشكلة جلب العنوان المادي لـِ ${0}"
+
+#: conify.js:ERROR_FETCHING_STATUSES
+msgid "Problem fetching statuses"
+msgstr "مشكلة في حالات الجلب"
+
+#: conify.js:ERROR_FETCHING_TYPES_AOUT
+msgid "Problem fetching organizational unit types"
+msgstr "مشكلة في جلب أنواع وحدات تنظيمية"
+
+#: conify.js:ERROR_ORPHANS
+msgid "Cannot delete ${0}, ${1} subordinates still exist."
+msgstr "لا يمكن حذف ${0}, ${1} المَرؤوسين لا يزالون موجودين."
+
+#: conify.js:ERROR_SAVING_DATA
+msgid "Problem saving data for ${0}"
+msgstr "مشكلة في حفظ البيانات لـِ ${0}"
+
+#: conify.js:ERROR_SAVING_DATA_CAM
+msgid "Problem saving data for ${0} ${1}"
+msgstr "مشكلة في حفظ البيانات لـِ ${0} ${1}"
+
+#: conify.js:ERROR_SAVING_HOLDS
+msgid "Problem saving Holds Address data for ${0}"
+msgstr "مشكلة في حفظ بيانات عنوان الحجوزات لـِ ${0}"
+
+#: conify.js:ERROR_SAVING_HOO
+msgid "Problem saving Hours of Operation data for ${0}"
+msgstr "مشكلة في حفظ ساعات بيانات الإجراء/العملية لـِ ${0}"
+
+#: conify.js:ERROR_SAVING_ILL
+msgid "Problem saving ILL Address data for ${0}"
+msgstr "مشكلة في حفظ بيانات عناوين ILL لـِ ${0}"
+
+#: conify.js:ERROR_SAVING_MAILING
+msgid "Problem saving Mailing Address data for ${0}"
+msgstr "مشكلة في حفظ بيانات العنوان البريدي لـِ ${0}"
+
+#: conify.js:ERROR_SAVING_PERM_DATA
+msgid "Problem saving permission data for ${0}"
+msgstr "مشكلة في توفير بيانات الصلاحية/الإذن لــِ ${0}"
+
+#: conify.js:ERROR_SAVING_PHYSICAL
+msgid "Problem saving Physical Address data for ${0}"
+msgstr "مشكلة في حفظ بيانات العنوان المادي لـِ ${0}"
+
+#: conify.js:ERROR_SAVING_STATUS
+msgid "Problem saving ${0}"
+msgstr "مشكلة في حفظ ${0}"
+
+#: conify.js:HOLDABLE
+msgid "Holdable"
+msgstr "قابل للحجز"
+
+#: conify.js:ID
+msgid "ID"
+msgstr "المُعرّف"
+
+#: conify.js:LABEL_CODE
+msgid "Code"
+msgstr "الكـود"
+
+#: conify.js:LABEL_DEPTH
+msgid "Depth"
+msgstr "العُمق"
+
+#: conify.js:LABEL_DESCRIPTION
+msgid "Description"
+msgstr "الوصف"
+
+#: conify.js:LABEL_GRANTABLE
+msgid "Grantable"
+msgstr "قابل للمنح"
+
+#: conify.js:LABEL_NEW_BRANCH
+msgid "New Branch"
+msgstr "فرع جديد"
+
+#: conify.js:LABEL_NEW_GROUP
+msgid "New Group"
+msgstr "مَجموعة جديدة"
 
 #: conify.js:LABEL_NEW_TYPE
 msgid "New Type"
 msgstr "نوع جديد"
 
-#: conify.js:CBHO_NEEDS_NAME
-msgid "You need to enter a name for the best-hold order."
-msgstr "ينبغي إدخال الاسم لـِ طلب أحسن حجز"
+#: conify.js:LABEL_TRANSLATION conify.js:TRANSLATION
+msgid "Translation"
+msgstr "التَرجمة"
 
-#: conify.js:CBHO_EDITING_EXISTING
-msgid "You are editing best-hold order #${0}: ${1}."
-msgstr "أنت تقوم بتعديل طلب أحسن حجز  #${0}: ${1}."
+#: conify.js:LABEL_VALUE
+msgid "Value"
+msgstr "القيمة"
 
-#: conify.js:ERROR_CREATING_CHILD_AOU
-msgid "Problem creating child organizational unit"
-msgstr "مشكلة في إنشاء وحدة تنظيمية صغيرة"
+#: conify.js:NAME
+msgid "Name"
+msgstr "الاسم"
+
+#: conify.js:OPAC_VISIBLE
+msgid "OPAC Visible"
+msgstr "إظهار الأوباك"
+
+#: conify.js:STATUS_DELETED
+msgid "${0} deleted"
+msgstr "${0} تمّ حذفها"
+
+#: conify.js:STATUS_EDITING
+msgid "Now editing ${0}"
+msgstr "الآن تعديل ${0}"
+
+#: conify.js:SUCCESS_CREATING_CHILD_AOU
+msgid "New child Organizational Unit created for ${0}"
+msgstr "وحدة تنظيمية صغيرة جديدة تمّ إنشاؤها لـِ ${0}"
+
+#: conify.js:SUCCESS_CREATING_CHILD_AOUT
+msgid "New child Organization Type created for ${0}"
+msgstr "نوع جديد لتَجَمُع صغير تمّ إنشاؤه لـِ ${0}"
+
+#: conify.js:SUCCESS_CREATING_CODE
+msgid "New ${0} ${1} created"
+msgstr "جديد ${0} ${1} تمّ إنشاؤها"
+
+#: conify.js:SUCCESS_CREATING_PERMISSION
+msgid "New ${0} permission created"
+msgstr "${0} صلاحية جديدة تمّ إنشاؤها"
+
+#: conify.js:SUCCESS_CREATING_STATUS
+msgid "New ${0} status created"
+msgstr "تمّ إنشاء ${0} حالة جديدة"
+
+#: conify.js:SUCCESS_DELETED_PERM_MAP
+msgid "Permission mapping deleted"
+msgstr "خرائط الصلاحية/الإذن تمّ حذفها"
+
+#: conify.js:SUCCESS_NEW_CHILD_GROUP
+msgid "New child Group created for ${0}"
+msgstr "مجموعة صغيرة جديدة تمّ إنشاؤها لـِ ${0}"
+
+#: conify.js:SUCCESS_NEW_PERM_MAP
+msgid "New permission map created"
+msgstr "خريطة صلاحية/إذن جديدة تمّ إنشاؤها"
+
+#: conify.js:SUCCESS_SAVE_PERM
+msgid "Saved permission changes to ${0}"
+msgstr "حفظ تغييرات الصلاحية/الإذن لـِ ${0}"
+
+#: conify.js:SUCCESS_SAVE conify.js:SUCCESS_SAVING_DATA
+msgid "Saved changes to ${0}"
+msgstr "حفظ التغييرات إلى ${0}"
+
+#: conify.js:SUCCESS_SAVING_HOLDS
+msgid "Saved changes to the Holds Address of ${0}"
+msgstr "حفظ التغييرات إلى عنوان الحجوزات لـِ ${0}"
+
+#: conify.js:SUCCESS_SAVING_HOO
+msgid "Hours of Operation updated for ${0}"
+msgstr "ساعة من عملية التحديث لـِ ${0}"
+
+#: conify.js:SUCCESS_SAVING_ILL
+msgid "Saved changes to the ILL Address of ${0}"
+msgstr "حفظ تغييرات عناوين ILL لـِ ${0}"
+
+#: conify.js:SUCCESS_SAVING_MAILING
+msgid "Saved changes to the Mailing Address of ${0}"
+msgstr "حفظ التغييرات إلى العنوان البريدي لـِ ${0}"
+
+#: conify.js:SUCCESS_SAVING_PHYSICAL
+msgid "Saved changes to the Physical Address of ${0}"
+msgstr "حفظ التغييرات إلى العناوين المادية لـِ ${0}"
+
+#: conify.js:END_SURVEY
+msgid "End Survey Now"
+msgstr "إنهاء المسح الاستقصائي الآن"
+
+#: conify.js:SURVEY_SAVE_ADD
+msgid "Save Question & Add Answer"
+msgstr "حفظ السؤال وإضافة إجابة"
+
+#: conify.js:SURVEY_DELETE_QUESTION
+msgid "Delete Question & Answers"
+msgstr "حذف أسئلة وأجوبة"
+
+#: conify.js:SURVEY_DELETE_ANSWER
+msgid "Delete Answer"
+msgstr "حذف إجابة"
+
+#: conify.js:SURVEY_SAVE_CHANGES
+msgid "Save Changes"
+msgstr "حفظ التغييرات"
+
+#: conify.js:SURVEY_ADD_ANSWER
+msgid "Add Answer"
+msgstr "إضافة إجابة"
+
+#: conify.js:SURVEY_ANSWER
+msgid "Answer:"
+msgstr "الإِجابة:"
+
+#: conify.js:SURVEY_QUESTION
+msgid "Question:"
+msgstr "السُؤال:"
+
+#: conify.js:SURVEY_ID
+msgid "Survey ID # ${0}"
+msgstr "مُعرف المسح الاستقصائي # ${0}"
+
+#: conify.js:SURVEY_FOOT_LABEL
+msgid "Questions & Answers"
+msgstr "الأسئلة والإجابات"
 
 #: conify.js:SURVEY_WARN_TEXT
 msgid ""
@@ -258,170 +394,34 @@ msgstr ""
 "البداية المُستطلع للمستقبل من أجل إضافة أسئلة جديدة أو تعديل الأسئلة "
 "الموجودة."
 
-#: conify.js:ERROR_SAVING_HOLDS
-msgid "Problem saving Holds Address data for ${0}"
-msgstr "مشكلة في حفظ بيانات عنوان الحجوزات لـِ ${0}"
-
-#: conify.js:ERROR_CREATING_CHILD_AOUT
-msgid "Problem creating child organization type"
-msgstr "مشكلة في إنشاء نوع تَجَمُع/منظمة صغيرة"
-
-#: conify.js:ERROR_SAVING_DATA
-msgid "Problem saving data for ${0}"
-msgstr "مشكلة في حفظ البيانات لـِ ${0}"
-
-#: conify.js:ERROR_FETCHING_TYPES_AOUT
-msgid "Problem fetching organizational unit types"
-msgstr "مشكلة في جلب أنواع وحدات تنظيمية"
-
-#: conify.js:ERROR_CALLING_METHOD_CCS
-msgid "Problem calling method to create new copy status"
-msgstr "مشكلة في طريقة الاستدعاء من أجل إنشاء حالة جديدة للنسخة"
-
-#: conify.js:SUCCESS_CREATING_CODE
-msgid "New ${0} ${1} created"
-msgstr "جديد ${0} ${1} تمّ إنشاؤها"
-
-#: conify.js:LABEL_CODE
-msgid "Code"
-msgstr "الكـود"
-
-#: conify.js:SURVEY_FOOT_LABEL
-msgid "Questions & Answers"
-msgstr "الأسئلة والإجابات"
-
-#: conify.js:STATUS_EDITING
-msgid "Now editing ${0}"
-msgstr "الآن تعديل ${0}"
-
-#: conify.js:SUCCESS_DELETED_PERM_MAP
-msgid "Permission mapping deleted"
-msgstr "خرائط الصلاحية/الإذن تمّ حذفها"
-
-#: conify.js:ERROR_SAVING_ILL
-msgid "Problem saving ILL Address data for ${0}"
-msgstr "مشكلة في حفظ بيانات عناوين ILL لـِ ${0}"
-
-#: conify.js:ERROR_FETCHING_HOLDS
-msgid "Problem fetching Holds Address for ${0}"
-msgstr "مشكلة في جلب عناوين الحجوزات لـِ ${0}"
-
-#: conify.js:SUCCESS_SAVING_ILL
-msgid "Saved changes to the ILL Address of ${0}"
-msgstr "حفظ تغييرات عناوين ILL لـِ ${0}"
-
-#: conify.js:HOLDABLE
-msgid "Holdable"
-msgstr "قابل للحجز"
-
-#: conify.js:STATUS_DELETED
-msgid "${0} deleted"
-msgstr "${0} تمّ حذفها"
-
-#: conify.js:LABEL_GRANTABLE
-msgid "Grantable"
-msgstr "قابل للمنح"
-
-#: conify.js:ERROR_FETCHING_PERMS
-msgid "Problem fetching perms"
-msgstr "مشكلة في جلب الصلاحيات/الأذونات"
-
-#: conify.js:COPY_ACTIVE
-msgid "Sets copy active"
-msgstr "مجموعات النُسخة النشطة"
-
-#: conify.js:LABEL_DESCRIPTION
-msgid "Description"
-msgstr "الوصف"
-
-#: conify.js:ERROR_CREATING_PERM_MAP
-msgid "Problem creating new Permission Map"
-msgstr "مشكلة في إنشاء خريطة صلاحية جديدة"
-
-#: conify.js:ERROR_FETCHING_ILL
-msgid "Problem fetching ILL Address for ${0}"
-msgstr "مشكلة في جلب عناوين ILL لـِ ${0}"
-
-#: conify.js:ERROR_FETCHING_PERM_MAPS
-msgid "Problem fetching perm maps"
-msgstr "مشكلة في جلب خرائط صلاحية/إذن"
-
-#: conify.js:ERROR_FETCHING_ORGS
-msgid "Problem fetching organizational unit data"
-msgstr "مشكلة في جلب بيانات الوحدة التنظيمية"
-
-#: conify.js:CONFIRM_EXIT_CCS
-msgid ""
-"There are unsaved changes to one or more copy statuses. Click OK to save "
-"these changes, or Cancel to abandon them."
-msgstr ""
-"هناك تغييرات غير محفوظة في واحد أو أكثر من حالات النُسخة. انقر فوق نعم لحفظ "
-"هذه التغييرات، أو فوق إلغاء للتخلي عنها."
-
-#: conify.js:OPAC_VISIBLE
-msgid "OPAC Visible"
-msgstr "إظهار الأوباك"
-
-#: conify.js:ERROR_SAVING_PHYSICAL
-msgid "Problem saving Physical Address data for ${0}"
-msgstr "مشكلة في حفظ بيانات العنوان المادي لـِ ${0}"
-
-#: conify.js:ERROR_SAVING_MAILING
-msgid "Problem saving Mailing Address data for ${0}"
-msgstr "مشكلة في حفظ بيانات العنوان البريدي لـِ ${0}"
-
-#: conify.js:NAME
-msgid "Name"
-msgstr "الاسم"
-
-#: conify.js:ERROR_SAVING_DATA_CAM
-msgid "Problem saving data for ${0} ${1}"
-msgstr "مشكلة في حفظ البيانات لـِ ${0} ${1}"
-
-#: conify.js:SUCCESS_CREATING_PERMISSION
-msgid "New ${0} permission created"
-msgstr "${0} صلاحية جديدة تمّ إنشاؤها"
-
-#: conify.js:ERROR_CREATING_STATUS
-msgid "Problem creating new Status"
-msgstr "مشكلة في إنشاء حالة جديدة"
-
-#: conify.js:LABEL_DEPTH
-msgid "Depth"
-msgstr "العُمق"
-
-#: conify.js:ID
-msgid "ID"
-msgstr "المُعرّف"
-
-#: conify.js:SUCCESS_SAVING_HOLDS
-msgid "Saved changes to the Holds Address of ${0}"
-msgstr "حفظ التغييرات إلى عنوان الحجوزات لـِ ${0}"
-
-#: conify.js:ERROR_DELETING_PERM_MAPPING
-msgid "Problem deleting permission mapping ${0}"
-msgstr "مشكلة في حذف خرائط الصلاحية/الإذن ${0}"
-
 #: conify.js:EVENT_DEF_LABEL
 msgid "${0}: ${1}"
 msgstr "${0}: ${1}"
 
-#: conify.js:CONFIRM_EXIT_CAM
-msgid ""
-"There are unsaved changes to one or more ${0} codes. Click OK to save these "
-"changes, or Cancel to abandon them."
-msgstr ""
-"هناك تغييرات غير محفوظة في واحد أو أكثر مِن الأكواد ${0} . أنقر على نعم من "
-"أجل حفظ هذه التغييرات، أو على إلغاء للتخلي عنها."
+#: conify.js:ACQ_DISTRIB_FORMULA_NAME_PROMPT
+msgid "Enter new formula name"
+msgstr "أدخل اسم صيغة جديدة"
 
-#: conify.js:ERROR_CALLING_METHOD_PGT
-msgid "Problem calling method to create child Group"
-msgstr "مشكلة في طريقة الاستدعاء لإنشاء مجموعة صغيرة"
+#: conify.js:ACQ_DISTRIB_FORMULA_NAME_CLONE
+msgid "${0} (Clone)"
+msgstr "${0} (استنساخ)"
 
-#: conify.js:ERROR_CALLING_METHOD_AOUT
-msgid "Problem calling method to create child organization type"
-msgstr "مشكلة في طريقة الاستدعاء لإنشاء نوع تَجَمُع/ منظمة صغير"
+#: conify.js:CBHO_EDITING_NEW
+msgid "You are editing a new best-hold order."
+msgstr "أنت تقوم بتعديل طلب جديد لأحسن حجز"
 
-#: conify.js:ERROR_SAVING_HOO
-msgid "Problem saving Hours of Operation data for ${0}"
-msgstr "مشكلة في حفظ ساعات بيانات الإجراء/العملية لـِ ${0}"
+#: conify.js:CBHO_EDITING_EXISTING
+msgid "You are editing best-hold order #${0}: ${1}."
+msgstr "أنت تقوم بتعديل طلب أحسن حجز  #${0}: ${1}."
+
+#: conify.js:CBHO_FIELD_DISPLAY
+msgid "[${0}] ${1}"
+msgstr "[${0}] ${1}"
+
+#: conify.js:CBHO_NO_LOAD
+msgid "Unable to load selected item."
+msgstr "لا يمكن تحميل النُسخة المحددة."
+
+#: conify.js:CBHO_NEEDS_NAME
+msgid "You need to enter a name for the best-hold order."
+msgstr "ينبغي إدخال الاسم لـِ طلب أحسن حجز"

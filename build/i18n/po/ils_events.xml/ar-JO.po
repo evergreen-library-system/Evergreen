@@ -7,223 +7,69 @@ msgid ""
 msgstr ""
 "Project-Id-Version: evergreen\n"
 "Report-Msgid-Bugs-To: FULL NAME <EMAIL@ADDRESS>\n"
-"POT-Creation-Date: 2021-10-12 14:11-0400\n"
+"POT-Creation-Date: 2023-05-03 11:29-0400\n"
 "PO-Revision-Date: 2017-11-01 06:22+0000\n"
 "Last-Translator: fares othman <Unknown>\n"
 "Language-Team: Arabic <ar@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2021-10-13 04:47+0000\n"
-"X-Generator: Launchpad (build 8a94da2fac127f5e46a49fd1140e43759d578803)\n"
+"X-Launchpad-Export-Date: 2023-05-05 04:42+0000\n"
+"X-Generator: Launchpad (build 90e2150bef31b411d7bae5c4032c7e320fcaaec8)\n"
 
-#: 1208.TITLE_LAST_COPY:71
-msgid "The last copy attached to a title is being removed or deleted"
-msgstr "آخر نسخة مرفقة بالعنوان يتم إزالتها أو حذفها"
+#: 0.SUCCESS:14
+msgid "Success"
+msgstr "نجحت"
 
-#: 1603.CONTAINER_USER_BUCKET_ITEM_NOT_FOUND:457
-msgid "The requested container_user_bucket_item was not found"
-msgstr "تعذر العثور على  container_user_bucket_item"
+#: 1.UNKNOWN:17
+msgid "Placeholder event.  Used for development only"
+msgstr "يُستخدم للتطوير فقط وضع وتحميل الحدث."
 
-#: 1598.MONEY_USER_CIRCULATION_SUMMARY_NOT_FOUND:442
-msgid "The requested money_user_circulation_summary was not found"
-msgstr "تعذر العثور على money_user_circulation_summary"
+#: 3.NO_CHANGE:20
+msgid "No change occurred"
+msgstr "لم يتم حدوث أي تغيير"
 
-#: 1621.CONTAINER_COPY_BUCKET_NOT_FOUND:511
-msgid "The requested container_copy_bucket was not found"
-msgstr "تعذر العثور على  container_copy_bucket"
+#: 4.CACHE_MISS:24
+msgid "A cached object could not be retrieved by the given reference."
+msgstr "تعذر استرداد الكائن المؤقت/الكاش من قبل المرجعية المُعطاة/المُقدمة."
 
-#: 1218.ITEM_AGE_PROTECTED:109
-msgid "This item is too new to have a hold placed on it"
-msgstr "هذه النُسخة جديدة جداً حتى يتم حجزها"
-
-#: 1214.PATRON_DUP_IDENT1:92
-msgid ""
-"The selected primary identification type and value are in use by another "
-"patron"
-msgstr ""
-"نوع التعريف الرئيسي المُحدد والقيمة قَيد الاستخدام من قبل مُستخدم آخر"
-
-#: 1561.PERMISSION_PERM_LIST_NOT_FOUND:334
-msgid "The requested permission_perm_list was not found"
-msgstr "تعذر العثور على permission_perm_list"
-
-#: 1213.PATRON_BARRED:88
-msgid "The patron is barred"
-msgstr "المستفيد محظور"
-
-#: 1645.CONFIG_CIRC_MATRIX_TEST_NOT_FOUND:583
-msgid "The requested config_circ_matrix_test was not found"
-msgstr "تعذر العثور على    config_circ_matrix_test"
-
-#: 1900.URL_VERIFY_NOT_SESSION_CREATOR:767
-msgid ""
-"You did not create this URL Verify session, so you cannot change it.  You "
-"may be able to clone it."
-msgstr ""
-"أنت لم تقم بإنشاء جلسة تحقق الـ يو آر إل، لذلك لا يمكنك تغييره. قد يكون "
-"بإمكانك استنساخها."
-
-#: 1591.METABIB_SERIES_FIELD_ENTRY_NOT_FOUND:421
-msgid "The requested metabib_series_field_entry was not found"
-msgstr "تعذر العثور على metabib_series_field_entry"
-
-#: 1220.ITEM_NOT_HOLDABLE:116
-msgid "An unholdable copy was encountered"
-msgstr ""
-
-#: 11105.PATRON_CREDIT_DISABLED:1063
-msgid ""
-"Payments by patron credit are not allowed for the selected transaction"
-msgstr ""
-"لا يسمح بتسديد المدفوعات عن طريق بطاقة الائتمان لـِ الإجراءات المُحددة"
-
-#: 4003.CREDIT_PROCESSOR_NOT_ALLOWED:801
-msgid "The credit card processor you have named is not allowed"
-msgstr "مُعالج بطاقة الائتمان الذي قمت بتسميته غير مسموح"
-
-#: 4010.CREDIT_PROCESSOR_NO_DEFAULT_SELECTED:807
-msgid "No default credit processor is selected"
-msgstr "لم يتم تحديد مُعالج الائتمان الافتراضي"
-
-#: 1862.ACQ_FUND_EXCEEDS_STOP_PERCENT:666
-msgid ""
-"The requested acq.purchase_order cannot be activated because it would over-"
-"encumber a fund."
-msgstr ""
-"لا يمكن تنشيط الطلب acq.purchase_order المطلوب لأن ذلك من شأنه الإفراط في "
-"الأموال المُثقلة بالدين."
-
-#: 1649.VANDELAY_IMPORT_ITEM_NOT_FOUND:595
-msgid "The requested vandelay.import_item was not found"
-msgstr "تعذر العثور على vandelay.import_item"
-
-#: 1639.REPORTER_SCHEDULE_NOT_FOUND:565
-msgid "The requested reporter_schedule was not found"
-msgstr "لم يتم العثور على reporter_schedule المطلوب"
-
-#: 1847.ACQ_FUNDING_SOURCE_DEDIT_NOT_FOUND:621
-msgid "The requested acq.funding_source_dedit was not found"
-msgstr "لم يتم العثور acq.funding_source_dedit المطلوب"
-
-#: 1641.ACTION_OPEN_CIRC_COUNT_BY_CIRC_MOD_NOT_FOUND:571
-msgid "The requested action_open_circ_count_by_circ_mod was not found"
-msgstr "لم يتم العثور على action_open_circ_count_by_circ_mod المطلوب"
-
-#: 1589.ACTOR_CARD_NOT_FOUND:415
-msgid "The requested actor_card was not found"
-msgstr "لم يتم العثور على actor_card المطلوب"
-
-#: 1882.RECORD_REFERENCED_BY_LINEITEM:705
-msgid "The selected bib record has an open lineitem order referencing it."
-msgstr ""
-
-#: 1608.METABIB_SUBJECT_FIELD_ENTRY_NOT_FOUND:472
-msgid "The requested metabib_subject_field_entry was not found"
-msgstr "لم يتم العثور على metabib_subject_field_entry المطلوب"
-
-#: 1711.BIB_QUEUE_EXISTS:748
-msgid "A bib record queue with the same name already exists"
-msgstr "قائمة/طابور التسجيلة الببليوغرافية مع نفس الاسم موجودة مُسبقاً"
-
-#: 1875.ACQ_LINEITEM_GENERATED_ATTR_DEFINITION_NOT_FOUND:684
-#: 1876.ACQ_LINEITEM_LOCAL_ATTR_DEFINITION_NOT_FOUND:687
-#: 1877.ACQ_LINEITEM_MARC_ATTR_DEFINITION_NOT_FOUND:690
-#: 1878.ACQ_LINEITEM_USR_ATTR_DEFINITION_NOT_FOUND:693
-#: 1879.ACQ_LINEITEM_PROVIDER_ATTR_DEFINITION_NOT_FOUND:696
-msgid "The requested acq_lineitem_attr was not found"
-msgstr "لم يتم العثور على acq_lineitem_attr المطلوب"
-
-#: 1207.REFUND_EXCEEDS_BALANCE:68
-msgid ""
-"A refund greater than the negative balance on a transaction was provided"
-msgstr ""
-"إعادة تسديد المال أكبر مِن رصيد الحساب السلبي في الإجراء المُزوَد/المُقدَم"
-
-#: 1504.ACTION_TRANSIT_COPY_NOT_FOUND:201
-msgid ""
-"Someone attempted to retrieve a transit object from the system and the "
-"object was not found."
-msgstr ""
-"حاول شخص ما استرداد كائن العبور/النقل من النظام ولم يتم العثور على الكائن."
-
-#: 1538.ACTION_SURVEY_RESPONSE_NOT_FOUND:269
-msgid "The requested action_survey_response was not found"
-msgstr "لم يتم العثور على action_survey_response المطلوب"
-
-#: 1555.MONEY_OPEN_BILLABLE_TRANSACTION_SUMMARY_NOT_FOUND:317
-msgid "The requested money_open_billable_transaction_summary was not found"
-msgstr "لم يتم العثور على money_open_billable_transaction_summary المطلوب"
-
-#: 7000.ROUTE_ITEM:844
-msgid ""
-"A copy needs to be routed to a different location The destination location "
-"will be specified by an 'org' key within the event object"
-msgstr ""
-"تحتاج النسخة أن يتم توجيهها إلى موقع آخر وسيتم تحديد موقع الوجهة مِن مفتاح "
-"'المؤسسة' داخل كائن الحدث."
-
-#: 1554.CONFIG_RULES_CIRC_DURATION_NOT_FOUND:314
-msgid "The requested config_rules_circ_duration was not found"
-msgstr "لم يتم العثور على config_rules_circ_duration المطلوب"
-
-#: 1607.ACTION_OPEN_CIRCULATION_NOT_FOUND:469
-msgid "The requested action_open_circulation was not found"
-msgstr "لم يتم العثور على action_open_circulation المطلوب"
-
-#: 1559.METABIB_FULL_REC_NOT_FOUND:328
-msgid "The requested metabib_full_rec was not found"
-msgstr "لم يتم العثور على metabib_full_rec المطلوب"
-
-#: 1527.OPEN_TCN_NOT_FOUND:238
-msgid "No TCN could be found that does not collide with existing records"
-msgstr ""
-"لا يمكن العثور على أي رقم للتحكم بالنقل والذي لا يتعارض مع التسجيلات الموجودة"
-
-#: 2001.DATABASE_UPDATE_FAILED:778
-msgid "The attempt to write to the DB failed"
-msgstr "لقد فشلت محاولة الكتابة إلى قاعدة البيانات"
-
-#: 1563.METABIB_KEYWORD_FIELD_ENTRY_NOT_FOUND:340
-msgid "The requested metabib_keyword_field_entry was not found"
-msgstr "لم يتم العثور على metabib_keyword_field_entry المطلوب"
-
-#: 1546.CONFIG_AUDIENCE_MAP_NOT_FOUND:293
-msgid "The requested config_audience_map was not found"
-msgstr "لم يتم العثور على config_audience_map المطلوب"
-
-#: 10001.ACQ_LINEITEM_NO_COPIES:1010
-msgid "The lineitem has no attached copies"
-msgstr "ليس لدى القيد نُسخ مُرفقة"
-
-#: 8004.OFFLINE_CONFIG_ERROR:974 8005.OFFLINE_CHECKSUM_FAILED:977
-#: 8006.OFFLINE_SESSION_NOT_FOUND:980
-msgid "Offline server is not configured properly"
-msgstr "لم يتم تكوين/تهيئة برنامج الخادم ـ بدون اتصال ـ بشكل صحيح"
+#: 1000.LOGIN_FAILED:28
+msgid "User login failed"
+msgstr "فشل تسجيل دخول المستخدم"
 
 #: 1001.NO_SESSION:31
 msgid "User login session has either timed out or does not exist"
 msgstr "جلسة تسجيل دخول المستخدم إما نَفذ وقتها أو أنها غير موجودة"
 
-#: 4019.CREDIT_PROCESSOR_INVALID_CC_NUMBER:810
-msgid "An invalid credit card number has been supplied."
-msgstr "لقد تمّ تزويد رقم بطاقة ائتمان غير صالح."
+#: 1002.ACTOR_USER_NOT_FOUND:34
+msgid ""
+"Someone attempted to retrieve a user from the system and the user was not "
+"found"
+msgstr "حاول شخص ما استرداد المستخدم من النظام ولم يتم العثور على المستخدم"
 
-#: 1880.CONFIG_BILLING_TYPE_NOT_FOUND:699
-msgid "The requested config_billing_type was not found"
-msgstr "لم يتم العثور على config_billing_type المطلوب"
+#: 1003.Z3950_SEARCH_FAILED:37
+msgid "The Z search did not succeed"
+msgstr "لم يتم النجاح في البحث Z"
 
-#: 1851.ACQ_FUND_ENCUMBRANCE_TOTAL_NOT_FOUND:633
-msgid "The requested acq.fund_encumbrance_total was not found"
-msgstr "لم يتم العثور على acq.fund_encumbrance_total المطلوب"
+#: 1004.Z3950_BAD_QUERY:40
+msgid "The Z query is not formatted correctly"
+msgstr "الاستعلام Z لم تتم تهيئته/تنسيقه بشكل صحيح"
 
-#: 1529.ACTOR_WORKSTATION_NOT_FOUND:246
-msgid "The requested actor_workstation was not found"
-msgstr "لم يتم العثور على actor_workstation المطلوب"
+#: 1200.USERNAME_EXISTS:44
+msgid "The given username already exists in the database"
+msgstr "اسم المستخدم المُقدَم موجود مسبقاً في قاعدة البيانات"
 
-#: 1227.COPY_DELETE_WARNING:145
-msgid "The copy in question is not in an ideal status for deleting"
-msgstr "النُسخة في السؤال ليست في وضع مثالي للحذف"
+#: 1201.CIRC_PERMIT_BAD_KEY:47
+msgid "A checkout was attempted without a valid checkout permit key"
+msgstr "تمّ محاولة الإعارة بدون مفتاح تصريح/مرور صحيح لـِ الإعارة"
+
+#: 1202.ITEM_NOT_CATALOGED:50
+msgid "The requested item is not cataloged in the database"
+msgstr "النُسخة المطلوبة غير مُفهرسة في قاعدة البيانات"
+
+#: 1203.COPY_BAD_STATUS:53
+msgid "The given copy is not in a standard circulation status"
+msgstr "النُسخة المُقدمة ليست في وضع إعارة نموذجي"
 
 #: 1204.CIRC_BAD_STATUS:59
 msgid ""
@@ -233,311 +79,50 @@ msgstr ""
 "الإعارة المُقدمة ليست في وضع نموذجي أو أنه لم يتم أبداً الإغلاق تماماً بشكل "
 "صحيح"
 
-#: 1855.ACQ_FUNDING_SOURCE_CREDIT_TOTAL_NOT_FOUND:645
-msgid "The requested acq.funding_source_credit_total was not found"
-msgstr "لم يتم العثور على acq.funding_source_credit_total المطلوب"
+#: 1205.CARD_EXISTS:62
+msgid "The given user barcode already exists"
+msgstr "باركود المستخدم موجود مُسبقاً"
 
-#: 1870.ACQ_LINEITEM_DETAIL_NOT_FOUND:672
-msgid "The requested acq.lineitem_detail was not found"
-msgstr "لم يتم العثور على acq.lineitem_detail المطلوب"
+#: 1206.VOLUME_NOT_EMPTY:65
+msgid "The selected volume has copies attached"
+msgstr "المجلد المحدد لديه نُسخ مُرفقة"
 
-#: 1223.PATRON_NO_PHONE:127
-msgid "The user does not have a valid phone number assigned"
-msgstr "لم يتم تسجيل/ تعيين للمستخدم رقم هاتف صحيح"
-
-#: 1002.ACTOR_USER_NOT_FOUND:34
+#: 1207.REFUND_EXCEEDS_BALANCE:68
 msgid ""
-"Someone attempted to retrieve a user from the system and the user was not "
-"found"
-msgstr "حاول شخص ما استرداد المستخدم من النظام ولم يتم العثور على المستخدم"
-
-#: 7011.COPY_STATUS_LOST:882
-msgid "Copy is marked as lost"
-msgstr "تمّ تمييز النسخة كـَ مفقودة"
-
-#: 7004.COPY_NOT_AVAILABLE:861
-msgid "Copy is not available"
-msgstr "النُسخة غير مُتاحة"
-
-#: 1643.VANDELAY_BIB_QUEUE_NOT_FOUND:577
-msgid "The requested vandelay_bib_queue was not found"
-msgstr "لم يتم العثور على vandelay_bib_queue المطلوب"
-
-#: 1849.ACQ_FUND_DEBIT_TOTAL_NOT_FOUND:627
-msgid "The requested acq.fund_debit_total was not found"
-msgstr "لم يتم العثور على acq.fund_debit_total المطلوب"
-
-#: 1636.REPORTER_OUTPUT_FOLDER_NOT_FOUND:556
-msgid "The requested reporter_output_folder was not found"
-msgstr "لم يتم العثور على reporter_output_folder المطلوب"
-
-#: 7008.MAX_RENEWALS_REACHED:873
-msgid "Circulation has no more renewals remaining"
-msgstr "الإعارة ليس لديها المزيد من التجديدات المتبقية"
-
-#: 1217.PATRON_INACTIVE:106
-msgid "This account is marked as inactive"
-msgstr "تمّ تمييز هذا الحساب كـَ غير فعال"
-
-#: 11008.SERIAL_DISTRIBUTION_NOT_EMPTY:1075
-msgid "The distribution still has dependent objects"
-msgstr "لا يزال للتوزيع كائنات تابعة"
-
-#: 8003.OFFLINE_PARAM_ERROR:971
-msgid "Missing params in offline upload"
-msgstr "بارمترات مفقودة في التحميل ـ بدون اتصال ـ"
-
-#: 1637.REPORTER_REPORT_FOLDER_NOT_FOUND:559
-msgid "The requested reporter_report_folder was not found"
-msgstr "لم يتم العثور على reporter_report_folder المطلوب"
-
-#: 11010.SERIAL_CAPTION_AND_PATTERN_NOT_EMPTY:1081
-msgid "The prediction pattern still has dependent objects"
-msgstr "نموذج التنبؤ لا يزال لديه كائنات تابعة"
-
-#: 1545.PERM_EX_NOT_FOUND:290
-msgid "The requested perm_ex was not found"
-msgstr "لم يتم العثور على perm_ex المطلوب"
-
-#: 10101.ACQ_ALREADY_CANCELED:1026
-msgid "The object is already canceled."
-msgstr "تمّ إلغاء هذا الكائن مُسبقاً."
-
-#: 1553.ACTOR_ORG_UNIT_CLOSED_DATE_NOT_FOUND:311
-msgid "The requested actor_org_unit_closed_date was not found"
-msgstr "لم يتم العثور على actor_org_unit_closed_date المطلوب"
-
-#: 1531.ACTION_SURVEY_QUESTION_NOT_FOUND:252
-msgid "The requested action_survey_question was not found"
-msgstr "لم يتم العثور على action_survey_question المطلوب"
-
-#: 1541.AUTHORITY_RECORD_DESCRIPTOR_NOT_FOUND:278
-msgid "The requested authority_record_descriptor was not found"
-msgstr "لم يتم العثورعلى  authority_record_descriptor المطلوب"
-
-#: 1587.CONTAINER_CALL_NUMBER_BUCKET_NOT_FOUND:409
-msgid "The requested container_call_number_bucket was not found"
-msgstr "لم يتم العثورعلى container_call_number_bucket المطلوب"
-
-#: 1229.VOLUME_DELETED:152
-msgid "The requested volume is marked as deleted"
-msgstr "تمّ تمييز مجلد الطلب كـَ محذوف"
-
-#: 1635.REPORTER_REPORT_NOT_FOUND:553
-msgid "The requested reporter_report was not found"
-msgstr "لم يتم العثورعلى reporter_report المطلوب"
-
-#: 1631.MONEY_COLLECTIONS_TRACKER_NOT_FOUND:541
-#: 1632.CONFIG_RULES_AGE_HOLD_PROTECT_NOT_FOUND:544
-#: 1633.MONEY_DESK_PAYMENT_NOT_FOUND:547
-msgid "The requested money_collections_tracker was not found"
-msgstr "لم يتم العثورعلى money_collections_tracker المطلوب"
-
-#: 1651.AUTHORITY_RECORD_NUMBER_EXISTS:601
-msgid "An authority record already exists with the requested ARN"
-msgstr "تسجيلة الإسناد موجودة مُسبقاً مع ARN المطلوب"
-
-#: 11001.SERIAL_CAPTION_AND_PATTERN_HAS_ISSUANCES:1039
-msgid "The caption/pattern still has dependent issuances"
-msgstr "التسمية التوضيحية/النمط لا يزال لديها إصدارات تابعة"
-
-#: 5000.PERM_FAILURE:824
-msgid "Permission Denied"
-msgstr "غير مسموح"
-
-#: 7015.NEGATIVE_PATRON_BALANCE:894
-msgid "This requested action would result in a negative patron balance"
-msgstr "الإجراء المطلوب سيتحقق في رصيد/حساب المستفيد المحلي"
-
-#: 1569.ACTOR_USER_STANDING_PENALTY_NOT_FOUND:358
-msgid "The requested actor_user_standing_penalty was not found"
-msgstr "لم يتم العثورعلى actor_user_standing_penalty المطلوب"
-
-#: 8000.OFFLINE_SESSION_ACTIVE:962
-msgid "An offline session for this location is currently processing"
-msgstr "الجلسة ـ دون اتصال ـ لهذا الموقع قَيد المُعالجة حالياً"
-
-#: 1200.USERNAME_EXISTS:44
-msgid "The given username already exists in the database"
-msgstr "اسم المستخدم المُقدَم موجود مسبقاً في قاعدة البيانات"
-
-#: 1602.ACTOR_STAT_CAT_ENTRY_NOT_FOUND:454
-msgid "The requested actor_stat_cat_entry was not found"
-msgstr "لم يتم العثور على actor_stat_cat_entry المطلوب"
-
-#: 1710.CONTAINER_EXISTS:745
-msgid "User has already created a bucket with the requested name"
-msgstr "تمّ إنشاء المستخدم لـِ السلة مع الاسم المطلوب"
-
-#: 7001.PATRON_BAD_STANDING:851
-msgid ""
-"The patron in question is not able to check out materials because their "
-"account is in bad standing"
+"A refund greater than the negative balance on a transaction was provided"
 msgstr ""
-"المستفيد في السؤال ليس قادراً على إستعارة المواد لأن حسابه في وضع سيء"
+"إعادة تسديد المال أكبر مِن رصيد الحساب السلبي في الإجراء المُزوَد/المُقدَم"
 
-#: 1525.BILLING_NOT_FOUND:234
-msgid "Requested billing note does not exist"
-msgstr "ملاحظة الفاتورة المطلوبة غير موجودة"
+#: 1208.TITLE_LAST_COPY:71
+msgid "The last copy attached to a title is being removed or deleted"
+msgstr "آخر نسخة مرفقة بالعنوان يتم إزالتها أو حذفها"
 
-#: 11102.SERIAL_DISTRIBUTION_HAS_NO_CALL_NUMBER:1047
-msgid ""
-"Units cannot be created for the given item because its associated "
-"distribution does not have a call number."
-msgstr ""
-"لا يمكن إنشاء الوحدات لـِ النُسخ المُقدَمة لأن توزيعاتها المُرتبطة لا تملك "
-"رمز استدعاء."
+#: 1209.Z3950_LOGIN_FAILED:74
+msgid "The login failed"
+msgstr "لقد فشل تسجيل الدخول"
 
-#: 1575.CONTAINER_BIBLIO_RECORD_ENTRY_BUCKET_NOT_FOUND:374
-msgid "The requested container_biblio_record_entry_bucket was not found"
-msgstr "لم يتم العثور على container_biblio_record_entry_bucket المطلوب"
-
-#: 7021.RESERVATION_NOT_FOUND:915
-msgid "Booking reservation not found"
-msgstr "لم يتم العثور على الحجز"
+#: 1210.INCORRECT_PASSWORD:78
+msgid "The provided password is not correct"
+msgstr "كلمة المرور المُقدمة غير صحيحة"
 
 #: 1211.BILL_ALREADY_VOIDED:81
 msgid "The bill is already voided"
 msgstr "الفاتورة تمّ إبطالها / إلغائها مُسبقاً"
 
-#: 1700.NON_CAT_TYPE_EXISTS:709
-msgid "The non-cataloged type object already exists"
-msgstr "كائن النوع غير المفهرس موجود مُسبقاً"
+#: 1212.PATRON_EXCEEDS_OVERDUE_COUNT:84
+msgid "The patron has too many overdue items"
+msgstr "المستفيد لديه الكثير من النُسخ المتأخرة"
 
-#: 1860.ACQ_PURCHASE_ORDER_TOO_SHORT:660
+#: 1213.PATRON_BARRED:88
+msgid "The patron is barred"
+msgstr "المستفيد محظور"
+
+#: 1214.PATRON_DUP_IDENT1:92
 msgid ""
-"The requested acq.purchase_order cannot be split because it does not have "
-"more than one lineitem"
+"The selected primary identification type and value are in use by another "
+"patron"
 msgstr ""
-"لا يمكن التقسيم لأنه لايوجد أكثر مِن قيد واحد acq.purchase_order المطلوبة"
-
-#: 10004.ACQ_LINEITEM_NO_PRICE:1019
-msgid "The lineitem has no price"
-msgstr "لايتضمن القيد سعراً"
-
-#: 1226.REFUND_EXCEEDS_DESK_PAYMENTS:140
-msgid ""
-"This refund amount is not allowed because it exceeds the total amount of "
-"desk payments for this transaction."
-msgstr ""
-"مقدار مبلغ السداد غير مسموح لأنه يتجاوز المبلغ الإجمالي للمدفوعات لهذا "
-"الإجراء."
-
-#: 1619.ACTOR_STAT_CAT_ENTRY_USER_MAP_NOT_FOUND:505
-msgid "The requested actor_stat_cat_entry_user_map was not found"
-msgstr "لم يتم العثور على actor_stat_cat_entry_user_map المطلوب"
-
-#: 1558.ASSET_COPY_NOTE_NOT_FOUND:325
-msgid "The requested asset_copy_note was not found"
-msgstr "لم يتم العثور على asset_copy_note المطلوب"
-
-#: 1853.ACQ_FUND_COMBINED_BALANCE_NOT_FOUND:639
-msgid "The requested acq.fund_combined_balance was not found"
-msgstr "لم يتم العثور على acq.fund_combined_balance المطلوب"
-
-#: 7032.CURBSIDE_EXISTS:945
-msgid "A scheduled, unfilled curbside request already exists"
-msgstr ""
-
-#: 1850.ACQ_FUND_ALLOCATION_TOTAL_NOT_FOUND:630
-msgid "The requested acq.fund_allocation_total was not found"
-msgstr "لم يتم العثور على acq.fund_allocation_total المطلوبة"
-
-#: 1616.MONEY_OPEN_USER_CIRCULATION_SUMMARY_NOT_FOUND:496
-msgid "The requested money_open_user_circulation_summary was not found"
-msgstr "لم يتم العثور على money_open_user_circulation_summary المطلوبة"
-
-#: 1624.MONEY_PAYMENT_NOT_FOUND:520
-msgid "The requested money_payment was not found"
-msgstr "لم يتم العثور على money_payment المطلوبة"
-
-#: 1596.ACTOR_ORG_UNIT_TYPE_NOT_FOUND:436
-msgid "The requested actor_org_unit_type was not found"
-msgstr "لم يتم العثور على actor_org_unit_type المطلوبة"
-
-#: 1004.Z3950_BAD_QUERY:40
-msgid "The Z query is not formatted correctly"
-msgstr "الاستعلام Z لم تتم تهيئته/تنسيقه بشكل صحيح"
-
-#: 1205.CARD_EXISTS:62
-msgid "The given user barcode already exists"
-msgstr "باركود المستخدم موجود مُسبقاً"
-
-#: 1713.SURVEY_RESPONSES_EXIST:754
-msgid "Responses to this survey exist"
-msgstr "توجد ردود لـِ هذا الاستطلاع"
-
-#: 1544.CONFIG_METABIB_FIELD_NOT_FOUND:287
-msgid "The requested config_metabib_field was not found"
-msgstr "لم يتم العثور على config_metabib_field المطلوبة"
-
-#: 1584.ACTOR_ORG_ADDRESS_NOT_FOUND:401
-msgid "The requested actor_org_address was not found"
-msgstr "لم يتم العثور على actor_org_address المطلوبة"
-
-#: 11009.SERIAL_STREAM_NOT_EMPTY:1078
-msgid "The stream still has dependent objects"
-msgstr "لا يزال التيار يحتوي على كائنات تابعة"
-
-#: 11103.TRANSIT_CHECKIN_INTERVAL_BLOCK:1051
-msgid "Checkin attempted on item during minimum transit checkin interval."
-msgstr ""
-"محاولة الإرجاع للنُسخة خلال الحد الأدنى لـِ مهلة/مدة نقل/عبور الإرجاع"
-
-#: 1501.BIBLIO_RECORD_ENTRY_NOT_FOUND:186
-msgid "The requested biblio_record_entry was not found"
-msgstr "لم يتم العثور على biblio_record_entry المطلوب"
-
-#: 1852.ACQ_FUND_SPENT_TOTAL_NOT_FOUND:636
-msgid "The requested acq.fund_spent_total was not found"
-msgstr "لم يتم العثور على acq.fund_spent_total المطلوب"
-
-#: 1613.PERMISSION_GRP_TREE_NOT_FOUND:487
-msgid "The requested permission_grp_tree was not found"
-msgstr "لم يتم العثور على permission_grp_tree المطلوب"
-
-#: 7030.CURBSIDE_NOT_ALLOWED:939
-msgid "Curbside pickup is not enabled for this location"
-msgstr ""
-
-#: 1536.ACTION_IN_HOUSE_USE_NOT_FOUND:264
-msgid "The requested action_in_house_use was not found"
-msgstr "لم يتم العثور على action_in_house_use المطلوب"
-
-#: 1872.ACQ_LINEITEM_PROVIDER_ATTR_DEFINITION_NOT_FOUND:678
-msgid "The requested acq.lineitem_provider_attr_definition was not found"
-msgstr "لم يتم العثور على acq.lineitem_provider_attr_definition المطلوب"
-
-#: 1708.MONEY_COLLECTIONS_TRACKER_EXISTS:739
-msgid ""
-"A duplicate money.collections_tracker object already exists in the database"
-msgstr ""
-"الكائن موجود مسبقاً في قاعدة البيانات money.collections_tracker مُكررة/نُسخة "
-"طبق الأصل"
-
-#: 1562.METABIB_METARECORD_SOURCE_MAP_NOT_FOUND:337
-msgid "The requested metabib_metarecord_source_map was not found"
-msgstr "لم يتم العثور على metabib_metarecord_source_map المطلوب"
-
-#: 7009.CIRC_CLAIMS_RETURNED:876
-msgid "Requested circulation is marked claims returned"
-msgstr "الإعارة المطلوبة مُيّزت كـَ مُطالبة إرجاع"
-
-#: 4.CACHE_MISS:24
-msgid "A cached object could not be retrieved by the given reference."
-msgstr "تعذر استرداد الكائن المؤقت/الكاش من قبل المرجعية المُعطاة/المُقدمة."
-
-#: 1612.CONFIG_RULES_MAX_FINE_NOT_FOUND:484
-msgid "The requested config_rules_max_fine was not found"
-msgstr "لم يتم العثور على config_rules_max_fine المطلوب"
-
-#: 1557.ACTOR_ORG_UNIT_SETTING_NOT_FOUND:322
-msgid "The requested actor_org_unit_setting was not found"
-msgstr "لم يتم العثور على actor_org_unit_setting المطلوب"
-
-#: 1629.PERMISSION_USR_GRP_MAP_NOT_FOUND:534
-msgid "The requested permission_usr_grp_map was not found"
-msgstr "لم يتم العثور على permission_usr_grp_map المطلوب"
+"نوع التعريف الرئيسي المُحدد والقيمة قَيد الاستخدام من قبل مُستخدم آخر"
 
 #: 1215.CIRC_EXCEEDS_COPY_RANGE:99
 msgid ""
@@ -547,495 +132,87 @@ msgstr ""
 "النسخة المُحددة مِن المحتمل أنها لا تُعار لأن موقع المُستلم الرئيسي ليس ضمن "
 "مجال إعارة النُسخ"
 
-#: 10005.ACQ_LINEITEM_NO_PROVIDER:1022
-msgid "The lineitem has no provider"
-msgstr "ليس لدى القيد أي مُزود"
-
-#: 1606.MONEY_WORK_PAYMENT_NOT_FOUND:466
-msgid "The requested money_work_payment was not found"
-msgstr "لم يتم العثور على money_work_payment المطلوب"
-
-#: 2000.BAD_PARAMS:775
-msgid "Invalid parameters were encountered in a method"
-msgstr "تمّ مواجهة بارمترات باطلة في الطريقة"
-
-#: 1564.MONEY_CASH_PAYMENT_NOT_FOUND:343
-msgid "The requested money_cash_payment was not found"
-msgstr "لم يتم العثور على money_cash_payment المطلوب"
-
-#: 1221.ORG_CANNOT_HAVE_VOLS:120
-msgid "The selected location cannot have volumes attached"
-msgstr "الموقع المُحدد ليس لديه مجلدات مُرفقة"
-
-#: 8002.OFFLINE_FILE_ERROR:968
-msgid "An offline file or directory could not be created or accessed"
-msgstr "ملف ـ دون اتصال ـ أو المسار لا يمكن إنشاؤه أو الوصول إليه"
-
-#: 1704.TCN_EXISTS:727
-msgid "A record already exists with the requested TCN value"
-msgstr "التسجيلة موجودة مُسبقاً مع قيمة رقم التحكم بالنقل المطلوبة"
-
-#: 1225.TRANSIT_ABORT_NOT_ALLOWED:133
-msgid ""
-"The transit on this item may not be canceled due to the state the item is in"
-msgstr "النقل لهذا البند ربما لم يتم إلغاؤه بسبب حالة البند في"
-
-#: 1.UNKNOWN:17
-msgid "Placeholder event.  Used for development only"
-msgstr "يُستخدم للتطوير فقط وضع وتحميل الحدث."
-
-#: 1622.BIBLIO_RECORD_NODE_NOT_FOUND:514
-msgid "The requested biblio_record_node was not found"
-msgstr "لم يتم العثور على biblio_record_node المطلوب"
-
-#: 1901.URL_VERIFY_SESSION_ALREADY_SEARCHED:771
-msgid "This session has already been searched."
-msgstr "تمّ مُسبقاً البحث في هذه الجلسة."
-
-#: 1534.ACTOR_USER_SETTING_NOT_FOUND:258
-msgid "The requested actor_user_setting was not found"
-msgstr "لم يتم العثور على actor_user_setting المطلوب"
-
-#: 7026.PATRON_NOT_AN_ACTIVE_PASSWORD_RESET_REQUEST:830
-msgid ""
-"The user attempted to update their password using a stale or inactive "
-"password reset request session."
-msgstr ""
-"تمت المحاولة لتحديث كلمة مروره باستخدام قديم أو إعادة تعيين كلمة مرور غير "
-"فعالة للجلسة المطلوبة."
-
-#: 1222.PATRON_NO_EMAIL_ADDRESS:124
-msgid "The user does not have a valid email address assigned"
-msgstr "ليس لدى المستخدم عنوان بريد إلكتروني مُسجل بشكل صحيح"
-
-#: 2005.OBJECT_UNIQUE_IDENTIFIER_USED:790
-msgid ""
-"You are trying to create an object with a unique identifier (such as a "
-"'name' field) that is already in use."
-msgstr ""
-"أنت تحاول إنشاء كائن مع معرف فريد (مثل حقل 'الاسم') التي هي قيد الاستخدام."
-
-#: 1854.ACQ_FUND_SPENT_BALANCE_NOT_FOUND:642
-msgid "The requested acq.fund_spent_balance was not found"
-msgstr "لم يتم العثور على acq.fund_spent_balance المطلوب"
-
-#: 11000.SERIAL_SUBSCRIPTION_NOT_EMPTY:1035
-msgid "The subscription still has dependent objects"
-msgstr "الاشتراك لا يزال لديه كائنات تابعة"
-
-#: 1523.TITLE_NOTE_NOT_FOUND:231
-msgid "Requested title note does not exist"
-msgstr "ملاحظة العنوان المطلوب غير موجودة"
-
-#: 1605.CONFIG_LIT_FORM_MAP_NOT_FOUND:463
-msgid "The requested config_lit_form_map was not found"
-msgstr "لم يتم العثور على config_lit_form_map المطلوب"
-
-#: 1567.METABIB_RECORD_DESCRIPTOR_NOT_FOUND:352
-msgid "The requested metabib_record_descriptor was not found"
-msgstr "لم يتم العثور على metabib_record_descriptor المطلوب"
-
-#: 10102.ACQ_NOT_CANCELABLE:1029
-msgid "The object is not in a cancelable state."
-msgstr "الكائن ليس في حالة قابلية الإلغاء."
-
-#: 7012.COPY_STATUS_MISSING:885
-msgid "Copy is marked as missing"
-msgstr "تم تمييز النُسخة كـَ مفقودة"
-
-#: 1500.ACTION_CIRCULATION_NOT_FOUND:183
-msgid ""
-"Someone attempted to retrieve a circulation object from the system and the "
-"object was not found."
-msgstr ""
-"حاول شخص ما استرداد كائن الإعارة من النظام ولم يتم العثور على الكائن."
-
-#: 4001.CREDIT_PROCESSOR_NOT_ENABLED:795
-msgid "Credit card processor not enabled"
-msgstr "معالج بطاقة الائتمان غير ممكن/غير قادر"
-
-#: 1630.ACTOR_USER_NOTE_NOT_FOUND:537
-msgid "The requested actor_user_note was not found"
-msgstr "لم يتم العثور على actor_user_note المطلوب"
-
-#: 7031.CURBSIDE_MAX_FOR_TIME:942
-msgid "Maximum scheduled curbside pickups at the requested time"
-msgstr ""
-
-#: 7005.LOCATION_CIRC_NOT_ALLOWED:864
-msgid "Location does not allow materials to circulate"
-msgstr "لا يسمح الموقع بإعارة المواد"
-
-#: 1508.ASSET_CALL_NUMBER_NOT_FOUND:218
-msgid "Requested asset_call_number was not found"
-msgstr "لم يتم العثور على asset_call_number المطلوب"
-
-#: 1209.Z3950_LOGIN_FAILED:74
-msgid "The login failed"
-msgstr "لقد فشل تسجيل الدخول"
-
-#: 1543.MONEY_CREDIT_CARD_PAYMENT_NOT_FOUND:284
-msgid "The requested money_credit_card_payment was not found"
-msgstr "لم يتم العثور على money_credit_card_payment المطلوب"
-
-#: 7023.RESERVATION_BAD_PARAMS:921
-msgid "Provided parameters describe unacceptable reservation."
-msgstr "البارمترات المُقدمة تصف حجز غير مقبول/مرفوض."
-
-#: 1857.ACQ_FUNDING_SOURCE_BALANCE_NOT_FOUND:651
-msgid "The requested acq.funding_source_balance was not found"
-msgstr "لم يتم العثور على acq.funding_source_balance المطلوب"
-
-#: 10000.ACQ_LINEITEM_APPROVED:1007
-msgid "The lineitem cannot be altered because it has already been approved"
-msgstr "لا يمكن تعديل القيد لأنه تمّ الموافقة عليه مُسبقاً"
-
-#: 1714.HIGH_LEVEL_HOLD_HAS_NO_COPIES:757
-msgid ""
-"A hold request at a higher level than copy has been attempted, but there are "
-"no copies that belonging to the higher-level unit."
-msgstr ""
-"طلب الحجز في أعلى مستوى مِن النُسخة التي تم المحاولة بها، ولكن لا توجد نسخ "
-"تنتمي إلى وحدة مستوى أعلى."
-
-#: 1611.ACTOR_STAT_CAT_ENTRY_DEFAULT_NOT_FOUND:481
-msgid "The requested actor_stat_cat_entry_default was not found"
-msgstr "لم يتم العثور على actor_stat_cat_entry_default المطلوب"
-
-#: 1535.METABIB_AUTHOR_FIELD_ENTRY_NOT_FOUND:261
-msgid "The requested metabib_author_field_entry was not found"
-msgstr "لم يتم العثور على metabib_author_field_entry المطلوب"
-
-#: 1626.ASSET_STAT_CAT_ENTRY_NOT_FOUND:526
-msgid "The requested asset_stat_cat_entry was not found"
-msgstr "لم يتم العثور على asset_stat_cat_entry المطلوب"
-
-#: 1595.CONFIG_NON_CATALOGED_TYPE_NOT_FOUND:433
-msgid "The requested config_non_cataloged_type was not found"
-msgstr "لم يتم العثور على config_non_cataloged_type المطلوب"
-
-#: 1716.COPY_LOCATION_NOT_EMPTY:715
-msgid "The copy location is not empty"
-msgstr "موقع النُسخة ليس فارغاً"
-
-#: 1542.CONFIG_LANGUAGE_MAP_NOT_FOUND:281
-msgid "The requested config_language_map was not found"
-msgstr "لم يتم العثور على config_language_map المطلوب"
-
-#: 1844.ACQ_FUNDING_SOURCE_NOT_FOUND:612
-msgid "The requested acq.funding_source was not found"
-msgstr "لم يتم العثور على acq.funding_source المطلوب"
-
-#: 1206.VOLUME_NOT_EMPTY:65
-msgid "The selected volume has copies attached"
-msgstr "المجلد المحدد لديه نُسخ مُرفقة"
-
-#: 1540.AUTHORITY_RECORD_ENTRY_NOT_FOUND:275
-msgid "The requested authority_record_entry was not found"
-msgstr "لم يتم العثور على authority_record_entry المطلوب"
-
-#: 1203.COPY_BAD_STATUS:53
-msgid "The given copy is not in a standard circulation status"
-msgstr "النُسخة المُقدمة ليست في وضع إعارة نموذجي"
-
-#: 1601.MONEY_BILLABLE_TRANSACTION_NOT_FOUND:451
-msgid "The requested money_billable_transaction was not found"
-msgstr "لم يتم العثور على money_billable_transaction المطلوب"
-
-#: 1871.PERMISSION_USR_OBJECT_PERM_MAP_NOT_FOUND:675
-msgid "The requested permission.usr_object_perm_map was not found"
-msgstr "لم يتم العثور على permission.usr_object_perm_map المطلوب"
-
-#: 7020.COPY_RESERVED:912
-msgid "Item reserved for booking request"
-msgstr "تمّ حجز النُسخة لـِ طلب الحجز"
-
-#: 1550.MONEY_OPEN_USER_SUMMARY_NOT_FOUND:303
-msgid "The requested money_open_user_summary was not found"
-msgstr "لم يتم العثور على money_open_user_summary المطلوب"
-
-#: 3.NO_CHANGE:20
-msgid "No change occurred"
-msgstr "لم يتم حدوث أي تغيير"
-
-#: 7026.COPY_STATUS_LOST_AND_PAID:930
-msgid "Copy is marked as lost and paid"
-msgstr "تمّ تمييز النُسخة كـَ مفقودة و مدفوعة"
-
-#: 1201.CIRC_PERMIT_BAD_KEY:47
-msgid "A checkout was attempted without a valid checkout permit key"
-msgstr "تمّ محاولة الإعارة بدون مفتاح تصريح/مرور صحيح لـِ الإعارة"
-
-#: 1593.MONEY_CREDIT_PAYMENT_NOT_FOUND:427
-msgid "The requested money_credit_payment was not found"
-msgstr "لم يتم العثور على money_credit_payment المطلوب"
-
-#: 7017.ROUTE_TO_COPY_LOCATION:903
-msgid ""
-"A copy needs to be routed to a copy location.  The location should be "
-"specified within the event with a 'location' key"
-msgstr ""
-"تحتاج النُسخة أن يتم توجيهها إلى موقع النسخة. يجب تحديد الموقع داخل الحدث مع "
-"مفتاح 'الموقع'"
-
-#: 1618.METABIB_TITLE_FIELD_ENTRY_NOT_FOUND:502
-msgid "The requested metabib_title_field_entry was not found"
-msgstr "لم يتم العثور على metabib_title_field_entry المطلوب"
-
-#: 7022.RESERVATION_CAPTURE_FAILED:918
-msgid "Booking reservation capture failed"
-msgstr "تمّ فشل التقاط الحجز"
-
-#: 1202.ITEM_NOT_CATALOGED:50
-msgid "The requested item is not cataloged in the database"
-msgstr "النُسخة المطلوبة غير مُفهرسة في قاعدة البيانات"
-
-#: 1520.WORKSTATION_NOT_FOUND:228
-msgid "Requested workstation object does not exist"
-msgstr "كائن محطة العمل المطلوبة غير موجودة"
-
-#: 1628.MONEY_BILLING_NOT_FOUND:531
-msgid "The requested money_billing was not found"
-msgstr "لم يتم العثور على money_billing المطلوب"
-
-#: 1507.CONTAINER_ITEM_NOT_FOUND:215
-msgid ""
-"Someone attempted to retrieve a container item object from the system and "
-"the object was not found."
-msgstr ""
-"حاول شخص استرداد كائن نُسخة الحاوية من النظام ولم يتم العثور على الكائن."
-
-#: 2002.DATABASE_QUERY_FAILED:781
-msgid "The attempt to query to the DB failed"
-msgstr "تمّ فشل محاولة الاستعلام لـِ قاعدة البيانات"
-
-#: 1549.CONFIG_STANDING_NOT_FOUND:300
-msgid "The requested config_standing was not found"
-msgstr "لم يتم العثور على config_standing المطلوب"
-
-#: 1861.ACQ_PURCHASE_ORDER_TOO_LATE:663
-msgid ""
-"The requested acq.purchase_order cannot be split because it has gone beyond "
-"the \"pending\" state"
-msgstr ""
-"لا يمكن التقسيم لأنه قد ذهب إلى خلف حالة \"مُعلقة\" acq.purchase_order "
-"المطلوب"
-
-#: 1210.INCORRECT_PASSWORD:78
-msgid "The provided password is not correct"
-msgstr "كلمة المرور المُقدمة غير صحيحة"
-
-#: 1582.CONFIG_ITEM_TYPE_MAP_NOT_FOUND:395
-msgid "The requested config_item_type_map was not found"
-msgstr "لم يتم العثور على config_item_type_map المطلوب"
-
-#: 12000.ITEM_TO_MARK_CHECKED_OUT:1087
-msgid "The item to be marked is checked out to a patron."
-msgstr ""
-
-#: 8007.OFFLINE_SESSION_EXISTS:983
-msgid "A session with the given name already exists"
-msgstr "الجلسة بالاسم المعطى موجودة مُسبقاً"
-
-#: 1650.CONFIG_CIRC_MATRIX_RULESET_NOT_FOUND:598
-msgid "The requested config_circ_matrix_ruleset_not_found was not found"
-msgstr "لم يتم العثور على config_circ_matrix_ruleset_not_found المطلوب"
-
-#: 10002.ACQ_LINEITEM_DETAIL_NO_FUND:1013
-msgid "The lineitem detail has no associated fund"
-msgstr "تفاصيل القيد ليس لديه اعتماد مالي/تمويل مُرتبط"
-
-#: 7003.COPY_CIRC_NOT_ALLOWED:858
-msgid "Target copy is not allowed to circulate"
-msgstr "النُسخة المُستهدفة غير مسموح بإعارتها"
-
-#: 1530.CONFIG_IDENTIFICATION_TYPE_NOT_FOUND:249
-msgid "The requested config_identification_type was not found"
-msgstr "لم يتم العثور على config_identification_type المطلوب"
-
-#: 1579.ASSET_COPY_LOCATION_NOT_FOUND:386
-msgid "The requested asset_copy_location was not found"
-msgstr "لم يتم العثور على asset_copy_location المطلوب"
-
-#: 12001.ITEM_TO_MARK_IN_TRANSIT:1090
-msgid "The item to be marked is in transit."
-msgstr ""
-
-#: 1506.CONTAINER_NOT_FOUND:209
-msgid ""
-"Someone attempted to retrieve a container object from the system and the "
-"object was not found."
-msgstr "حاول شخص استرداد كائن الحاوية من النظام ولم يتم العثور على الكائن."
-
-#: 1571.ASSET_CALL_NUMBER_NOTE_NOT_FOUND:363
-msgid "The requested asset_call_number_note was not found"
-msgstr "لم يتم العثور على asset_call_number_note المطلوب"
-
-#: 4004.CREDIT_PROCESSOR_NOT_SPECIFIED:804
-msgid ""
-"No credit card processor specified either in org unit settings or in call to "
-"credit service API method."
-msgstr ""
-"لم يتم تحديد مُعالج بطاقة الائتمان إما في إعدادات الوحدة التنظيمية أو في "
-"استدعاء طريقة API لخدمة الائتمان."
-
-#: 1528.ACTOR_USER_ADDRESS_NOT_FOUND:241
-msgid "Requested address was not found"
-msgstr "لم يتم العثور على العنوان المطلوب"
-
-#: 7002.PATRON_EXCEEDS_CHECKOUT_COUNT:855
-msgid ""
-"The patron in question has the maximum number of items already checked out"
-msgstr "المُستفيد في السؤال لديه الحد الأقصى لعدد النُسخ المُعارة مُسبقاُ"
-
-#: 1609.CONFIG_RULES_RECURRING_FINE_NOT_FOUND:475
-msgid "The requested config_rules_recurring_fine was not found"
-msgstr "لم يتم العثور على config_rules_recurring_fine المطلوب"
-
-#: 1003.Z3950_SEARCH_FAILED:37
-msgid "The Z search did not succeed"
-msgstr "لم يتم النجاح في البحث Z"
-
-#: 1620.PERMISSION_GRP_PERM_MAP_NOT_FOUND:508
-msgid "The requested permission_grp_perm_map was not found"
-msgstr "لم يتم العثور على permission_grp_perm_map المطلوب"
-
-#: 7025.PATRON_TOO_MANY_ACTIVE_PASSWORD_RESET_REQUESTS:827
-msgid ""
-"There are too many active password reset request sessions for this patron."
-msgstr ""
-"هناك العديد من جلسات طلب إعادة تعيين كلمة المرور النشطة لهذا المستفيد."
-
-#: 1232.ITEM_DEPOSIT_REQUIRED:162
-msgid "Payment of an item deposit is required."
-msgstr "الدفع لـِ وديعة/تأمين النُسخة مطلوب."
-
-#: 1709.MAX_HOLDS:742
-msgid "User has reached the maximum number of holds"
-msgstr "لقد وصل المستخدم إلى العدد الأقصى مِن الحجوزات"
-
-#: 1706.ITEM_BARCODE_EXISTS:733
-msgid "An item with the same barcode exists"
-msgstr "النُسخة مع نفس الباركود موجودة"
-
-#: 7014.COPY_IN_TRANSIT:891
-msgid "Copy is in transit"
-msgstr "النُسخة في النقل/العبور"
+#: 1216.PATRON_CARD_INACTIVE:103
+msgid "The patron's card is not active"
+msgstr "بطاقة المستفيد غير فعّالة"
+
+#: 1217.PATRON_INACTIVE:106
+msgid "This account is marked as inactive"
+msgstr "تمّ تمييز هذا الحساب كـَ غير فعال"
+
+#: 1218.ITEM_AGE_PROTECTED:109
+msgid "This item is too new to have a hold placed on it"
+msgstr "هذه النُسخة جديدة جداً حتى يتم حجزها"
 
 #: 1219.COPY_REMOTE_CIRC_LIB:112
 msgid "A copy with a remote circulating library (circ_lib) was encountered"
 msgstr ""
 "تمّ مصادفة/مواجهة مكتبة ريموت/ تَحكم عن بعد للإعارة (circ_lib) لـِ النسخة"
 
-#: 1702.OPEN_CIRCULATION_EXISTS:721
-msgid "There is an open circulation on the requested item"
-msgstr "هناك إعارة مفتوحة في النُسخة المطلوبة"
-
-#: 0.SUCCESS:14
-msgid "Success"
-msgstr "نجحت"
-
-#: 12002.ITEM_TO_MARK_LAST_HOLD_COPY:1093
-msgid "The item to be marked is the last possible target for a hold."
+#: 1220.ITEM_NOT_HOLDABLE:116
+msgid "An unholdable copy was encountered"
 msgstr ""
+
+#: 1221.ORG_CANNOT_HAVE_VOLS:120
+msgid "The selected location cannot have volumes attached"
+msgstr "الموقع المُحدد ليس لديه مجلدات مُرفقة"
+
+#: 1222.PATRON_NO_EMAIL_ADDRESS:124
+msgid "The user does not have a valid email address assigned"
+msgstr "ليس لدى المستخدم عنوان بريد إلكتروني مُسجل بشكل صحيح"
+
+#: 1223.PATRON_NO_PHONE:127
+msgid "The user does not have a valid phone number assigned"
+msgstr "لم يتم تسجيل/ تعيين للمستخدم رقم هاتف صحيح"
+
+#: 1224.PATRON_ACCOUNT_EXPIRED:130
+msgid "The patron's account has expired"
+msgstr "انتهت صلاحية حساب المستفيد"
+
+#: 1225.TRANSIT_ABORT_NOT_ALLOWED:133
+msgid ""
+"The transit on this item may not be canceled due to the state the item is in"
+msgstr "النقل لهذا البند ربما لم يتم إلغاؤه بسبب حالة البند في"
+
+#: 1226.REFUND_EXCEEDS_DESK_PAYMENTS:140
+msgid ""
+"This refund amount is not allowed because it exceeds the total amount of "
+"desk payments for this transaction."
+msgstr ""
+"مقدار مبلغ السداد غير مسموح لأنه يتجاوز المبلغ الإجمالي للمدفوعات لهذا "
+"الإجراء."
+
+#: 1227.COPY_DELETE_WARNING:145
+msgid "The copy in question is not in an ideal status for deleting"
+msgstr "النُسخة في السؤال ليست في وضع مثالي للحذف"
+
+#: 1228.BIB_RECORD_DELETED:149
+msgid "The requested bib record is marked as deleted"
+msgstr "تمّ تمييز تسجيلة المطلوبة للمكتبة كـَ محذوفة"
+
+#: 1229.VOLUME_DELETED:152
+msgid "The requested volume is marked as deleted"
+msgstr "تمّ تمييز مجلد الطلب كـَ محذوف"
+
+#: 1230.XACT_COLLISION:155
+msgid "The saved item has been edited by another user"
+msgstr "النُسخة المحفوظة تمّ تعديلها مِن قبل مستخدم آخر"
 
 #: 1231.RECORD_NOT_EMPTY:159
 msgid "The selected bib record has volumes attached"
 msgstr "تسجيلة المكتبة المحددة لديها مجلدات مُرفقة"
 
-#: 1503.ACTION_HOLD_REQUEST_NOT_FOUND:195
-msgid "The requested action_hold_request was not found"
-msgstr "لم يتم العثور على action_hold_request المطلوب"
+#: 1232.ITEM_DEPOSIT_REQUIRED:162
+msgid "Payment of an item deposit is required."
+msgstr "الدفع لـِ وديعة/تأمين النُسخة مطلوب."
 
-#: 8011.SKIP_ASSET_CHANGED:995
-msgid "Asset status was changed since the offline transaction was recorded"
-msgstr "تم تغيير وضع الأصول منذ أن تم تسجيلها في عملية ــ دون اتصال ــ"
+#: 1233.ITEM_RENTAL_FEE_REQUIRED:165
+msgid "Payment of an item rental fee is required."
+msgstr "رسوم الدفع لـِ تأجير/استعارة النسخة مطلوب"
 
-#: 7029.MAX_AUTO_RENEWALS_REACHED:936
-msgid "Circulation has no more auto-renewals remaining"
-msgstr ""
-
-#: 1212.PATRON_EXCEEDS_OVERDUE_COUNT:84
-msgid "The patron has too many overdue items"
-msgstr "المستفيد لديه الكثير من النُسخ المتأخرة"
-
-#: 1863.ACQ_FUND_EXCEEDS_WARN_PERCENT:669
-msgid ""
-"Activating the requested acq.purchase_order would encumber it beyond its "
-"warning level."
-msgstr ""
-"إن تفعيل acq.purchase_order  المطلوب سيُثقِلها بالديون فيما وراء مستوى "
-"تحذيرها."
-
-#: 1578.ACTION_HOLD_NOTIFICATION_NOT_FOUND:383
-msgid "The requested action_hold_notification was not found"
-msgstr "لم يتم العثور على action_hold_notification المطلوب"
-
-#: 1610.MONEY_CHECK_PAYMENT_NOT_FOUND:478
-msgid "The requested money_check_payment was not found"
-msgstr "لم يتم العثور على money_check_payment المطلوب"
-
-#: 1623.PERMISSION_USR_PERM_MAP_NOT_FOUND:517
-msgid "The requested permission_usr_perm_map was not found"
-msgstr "لم يتم العثور على permission_usr_perm_map المطلوب"
-
-#: 1581.ASSET_STAT_CAT_ENTRY_COPY_MAP_NOT_FOUND:392
-msgid "The requested asset_stat_cat_entry_copy_map was not found"
-msgstr "لم يتم العثور على asset_stat_cat_entry_copy_map المطلوب"
-
-#: 1586.ACTOR_ORG_UNIT_NOT_FOUND:406
-msgid "The requested actor_org_unit was not found"
-msgstr "لم يتم العثور على actor_org_unit المطلوب"
-
-#: 7010.COPY_ALERT_MESSAGE:879
-msgid "The requested copy has an alert message attached"
-msgstr "النسخة المطلوبة لديها رسالة تنبيه مرفقة"
-
-#: 7006.COPY_IS_REFERENCE:867
-msgid "Copy is reference material"
-msgstr "إن هذه النسخة مادة مفضلة/مرجعية"
-
-#: 1716.MONEY_DEBIT_CARD_PAYMENT_NOT_FOUND:763
-msgid "The requested money_debit_card_payment was not found"
-msgstr ""
-
-#: 1547.CONFIG_ITEM_FORM_MAP_NOT_FOUND:296
-msgid "The requested config_item_form_map was not found"
-msgstr "لم يتم العثور على config_item_form_map المطلوب"
-
-#: 1592.CONTAINER_USER_BUCKET_NOT_FOUND:424
-msgid "The requested container_user_bucket was not found"
-msgstr "لم يتم العثور على container_user_bucket المطلوب"
-
-#: 1617.ACTION_UNFULFILLED_HOLD_LIST_NOT_FOUND:499
-msgid "The requested action_unfulfilled_hold_list was not found"
-msgstr "لم يتم العثور على action_unfulfilled_hold_list المطلوب"
-
-#: 1552.ACTOR_ORG_UNIT_HOURS_OF_OPERATION_NOT_FOUND:308
-msgid "The requested actor_org_unit_hours_of_operation was not found"
-msgstr "لم يتم العثور على actor_org_unit_hours_of_operation المطلوب"
-
-#: 1576.EX_NOT_FOUND:377
-msgid "The requested ex was not found"
-msgstr "لم يتم العثور على ex المطلوب"
-
-#: 7019.HOLD_CAPTURE_DELAYED:909
-msgid "Hold capture was delayed for this item"
-msgstr "الحجز المُستلم متأخر لهذه النُسخة"
-
-#: 9000.REPORT_TEMPLATE_EXISTS:999
-msgid "A report template with the given name and folder already exists"
-msgstr "تركيبة التقرير مع الاسم المُعطى والمجلد موجودة مُسبقاً"
-
-#: 1502.ASSET_COPY_NOT_FOUND:192
-msgid ""
-"Someone attempted to retrieve a copy object from the system and the object "
-"was not found."
-msgstr "حاول شخص استرداد كائن النسخة من النظام ولم يتم العثور على الكائن."
-
-#: 1703.WORKSTATION_NAME_EXISTS:724
-msgid "A workstation with that name already exists"
-msgstr "محطة العمل مع ذلك الاسم موجود مُسبقاً"
+#: 1234.ITEM_DEPOSIT_PAID:168
+msgid "An item deposit was paid."
+msgstr "تم دفع وديعة/تأمين النُسخة."
 
 #: 1235.INVALID_USER_XACT_ID:171
 msgid ""
@@ -1045,69 +222,832 @@ msgstr ""
 "بينما كنت في محاولة إنشاء المدفوعات، تمّ تغيير أرشيف عملية هذه الحسابات. "
 "لطفاً ينبغي الرجوع للخلف والمحاولة مرة أخرى."
 
-#: 1568.CONFIG_COPY_STATUS_NOT_FOUND:355
-msgid "The requested config_copy_status was not found"
-msgstr "لم يتم العثور على config_copy_status المطلوب"
+#: 1236.PATRON_EXCEEDS_LOST_COUNT:174
+msgid "The patron has too many lost items."
+msgstr "المستفيد لديه الكثير مِن النسخ المفقودة."
+
+#: 1237.HOLD_ITEM_CHECKED_OUT:177
+msgid ""
+"The item you have attempted to place on hold is already checked out to the "
+"requestor."
+msgstr "النُسخة التي حاولت وضعها في الحجز تمّ إعارتها مُسبقاً إلى الطالب."
+
+#: 1500.ACTION_CIRCULATION_NOT_FOUND:183
+msgid ""
+"Someone attempted to retrieve a circulation object from the system and the "
+"object was not found."
+msgstr ""
+"حاول شخص ما استرداد كائن الإعارة من النظام ولم يتم العثور على الكائن."
+
+#: 1501.BIBLIO_RECORD_ENTRY_NOT_FOUND:186
+msgid "The requested biblio_record_entry was not found"
+msgstr "لم يتم العثور على biblio_record_entry المطلوب"
+
+#: 1502.ASSET_COPY_NOT_FOUND:192
+msgid ""
+"Someone attempted to retrieve a copy object from the system and the object "
+"was not found."
+msgstr "حاول شخص استرداد كائن النسخة من النظام ولم يتم العثور على الكائن."
+
+#: 1503.ACTION_HOLD_REQUEST_NOT_FOUND:195
+msgid "The requested action_hold_request was not found"
+msgstr "لم يتم العثور على action_hold_request المطلوب"
+
+#: 1504.ACTION_TRANSIT_COPY_NOT_FOUND:201
+msgid ""
+"Someone attempted to retrieve a transit object from the system and the "
+"object was not found."
+msgstr ""
+"حاول شخص ما استرداد كائن العبور/النقل من النظام ولم يتم العثور على الكائن."
+
+#: 1506.CONTAINER_NOT_FOUND:209
+msgid ""
+"Someone attempted to retrieve a container object from the system and the "
+"object was not found."
+msgstr "حاول شخص استرداد كائن الحاوية من النظام ولم يتم العثور على الكائن."
+
+#: 1507.CONTAINER_ITEM_NOT_FOUND:215
+msgid ""
+"Someone attempted to retrieve a container item object from the system and "
+"the object was not found."
+msgstr ""
+"حاول شخص استرداد كائن نُسخة الحاوية من النظام ولم يتم العثور على الكائن."
+
+#: 1508.ASSET_CALL_NUMBER_NOT_FOUND:218
+msgid "Requested asset_call_number was not found"
+msgstr "لم يتم العثور على asset_call_number المطلوب"
+
+#: 1518.ACTION_HOLD_TRANSIT_COPY_NOT_FOUND:223
+msgid "The requested action_hold_transit_copy was not found"
+msgstr "لم يتم العثور على action_hold_transit_copy المطلوب"
+
+#: 1520.WORKSTATION_NOT_FOUND:228
+msgid "Requested workstation object does not exist"
+msgstr "كائن محطة العمل المطلوبة غير موجودة"
+
+#: 1523.TITLE_NOTE_NOT_FOUND:231
+msgid "Requested title note does not exist"
+msgstr "ملاحظة العنوان المطلوب غير موجودة"
+
+#: 1525.BILLING_NOT_FOUND:234
+msgid "Requested billing note does not exist"
+msgstr "ملاحظة الفاتورة المطلوبة غير موجودة"
+
+#: 1527.OPEN_TCN_NOT_FOUND:238
+msgid "No TCN could be found that does not collide with existing records"
+msgstr ""
+"لا يمكن العثور على أي رقم للتحكم بالنقل والذي لا يتعارض مع التسجيلات الموجودة"
+
+#: 1528.ACTOR_USER_ADDRESS_NOT_FOUND:241
+msgid "Requested address was not found"
+msgstr "لم يتم العثور على العنوان المطلوب"
+
+#: 1529.ACTOR_WORKSTATION_NOT_FOUND:246
+msgid "The requested actor_workstation was not found"
+msgstr "لم يتم العثور على actor_workstation المطلوب"
+
+#: 1530.CONFIG_IDENTIFICATION_TYPE_NOT_FOUND:249
+msgid "The requested config_identification_type was not found"
+msgstr "لم يتم العثور على config_identification_type المطلوب"
+
+#: 1531.ACTION_SURVEY_QUESTION_NOT_FOUND:252
+msgid "The requested action_survey_question was not found"
+msgstr "لم يتم العثور على action_survey_question المطلوب"
+
+#: 1532.MONEY_BILLABLE_TRANSACTION_SUMMARY_NOT_FOUND:255
+msgid "The requested money_billable_transaction_summary was not found"
+msgstr "لم يتم العثور على money_billable_transaction_summary المطلوب"
+
+#: 1534.ACTOR_USER_SETTING_NOT_FOUND:258
+msgid "The requested actor_user_setting was not found"
+msgstr "لم يتم العثور على actor_user_setting المطلوب"
+
+#: 1535.METABIB_AUTHOR_FIELD_ENTRY_NOT_FOUND:261
+msgid "The requested metabib_author_field_entry was not found"
+msgstr "لم يتم العثور على metabib_author_field_entry المطلوب"
+
+#: 1536.ACTION_IN_HOUSE_USE_NOT_FOUND:264
+msgid "The requested action_in_house_use was not found"
+msgstr "لم يتم العثور على action_in_house_use المطلوب"
+
+#: 1538.ACTION_SURVEY_RESPONSE_NOT_FOUND:269
+msgid "The requested action_survey_response was not found"
+msgstr "لم يتم العثور على action_survey_response المطلوب"
 
 #: 1539.CONTAINER_COPY_BUCKET_ITEM_NOT_FOUND:272
 msgid "The requested container_copy_bucket_item was not found"
 msgstr "لم يتم العثور على container_copy_bucket_item المطلوب"
 
-#: 1590.ACTOR_STAT_CAT_NOT_FOUND:418
-msgid "The requested actor_stat_cat was not found"
-msgstr "لم يتم العثور على actor_stat_cat المطلوب"
+#: 1540.AUTHORITY_RECORD_ENTRY_NOT_FOUND:275
+msgid "The requested authority_record_entry was not found"
+msgstr "لم يتم العثور على authority_record_entry المطلوب"
 
-#: 7027.PATRON_PASSWORD_WAS_NOT_STRONG:833
-msgid "The user attempted to set their password to a weak value."
-msgstr "محاولة ضبط المستخدم كلمة المرور الخاصة به قيمة ضعيفة."
+#: 1541.AUTHORITY_RECORD_DESCRIPTOR_NOT_FOUND:278
+msgid "The requested authority_record_descriptor was not found"
+msgstr "لم يتم العثورعلى  authority_record_descriptor المطلوب"
 
-#: 9001.REPORT_REPORT_EXISTS:1003
-msgid "A report with the given name and folder already exists"
-msgstr "التقرير مع الاسم المُعطى والمجلد موجودة مُسبقاً"
+#: 1542.CONFIG_LANGUAGE_MAP_NOT_FOUND:281
+msgid "The requested config_language_map was not found"
+msgstr "لم يتم العثور على config_language_map المطلوب"
 
-#: 1705.VOLUME_LABEL_EXISTS:730
-msgid "A volume with the same label, title and owning library exists"
-msgstr "المجلد مع نفس التسمية، العنوان والمكتبة المالكة موجود"
+#: 1543.MONEY_CREDIT_CARD_PAYMENT_NOT_FOUND:284
+msgid "The requested money_credit_card_payment was not found"
+msgstr "لم يتم العثور على money_credit_card_payment المطلوب"
 
-#: 8008.OFFLINE_INVALID_SESSION:986
-msgid "The session name is invalid"
-msgstr "اسم الجلسة غير صحيح"
+#: 1544.CONFIG_METABIB_FIELD_NOT_FOUND:287
+msgid "The requested config_metabib_field was not found"
+msgstr "لم يتم العثور على config_metabib_field المطلوبة"
 
-#: 7025.COPY_STATUS_LONG_OVERDUE:927
-msgid "Copy is marked as long-overdue"
-msgstr "تم تمييز النسخة كـَ مستحقة الرد منذ فترة طويلة"
+#: 1545.PERM_EX_NOT_FOUND:290
+msgid "The requested perm_ex was not found"
+msgstr "لم يتم العثور على perm_ex المطلوب"
 
-#: 7007.COPY_NEEDED_FOR_HOLD:870
-msgid "Copy is needed to fulfill a hold"
-msgstr "النسخة تحتاج إلى حجز تام/مُنتهي"
+#: 1546.CONFIG_AUDIENCE_MAP_NOT_FOUND:293
+msgid "The requested config_audience_map was not found"
+msgstr "لم يتم العثور على config_audience_map المطلوب"
+
+#: 1547.CONFIG_ITEM_FORM_MAP_NOT_FOUND:296
+msgid "The requested config_item_form_map was not found"
+msgstr "لم يتم العثور على config_item_form_map المطلوب"
+
+#: 1549.CONFIG_STANDING_NOT_FOUND:300
+msgid "The requested config_standing was not found"
+msgstr "لم يتم العثور على config_standing المطلوب"
+
+#: 1550.MONEY_OPEN_USER_SUMMARY_NOT_FOUND:303
+msgid "The requested money_open_user_summary was not found"
+msgstr "لم يتم العثور على money_open_user_summary المطلوب"
+
+#: 1552.ACTOR_ORG_UNIT_HOURS_OF_OPERATION_NOT_FOUND:308
+msgid "The requested actor_org_unit_hours_of_operation was not found"
+msgstr "لم يتم العثور على actor_org_unit_hours_of_operation المطلوب"
+
+#: 1553.ACTOR_ORG_UNIT_CLOSED_DATE_NOT_FOUND:311
+msgid "The requested actor_org_unit_closed_date was not found"
+msgstr "لم يتم العثور على actor_org_unit_closed_date المطلوب"
+
+#: 1554.CONFIG_RULES_CIRC_DURATION_NOT_FOUND:314
+msgid "The requested config_rules_circ_duration was not found"
+msgstr "لم يتم العثور على config_rules_circ_duration المطلوب"
+
+#: 1555.MONEY_OPEN_BILLABLE_TRANSACTION_SUMMARY_NOT_FOUND:317
+msgid "The requested money_open_billable_transaction_summary was not found"
+msgstr "لم يتم العثور على money_open_billable_transaction_summary المطلوب"
+
+#: 1557.ACTOR_ORG_UNIT_SETTING_NOT_FOUND:322
+msgid "The requested actor_org_unit_setting was not found"
+msgstr "لم يتم العثور على actor_org_unit_setting المطلوب"
+
+#: 1558.ASSET_COPY_NOTE_NOT_FOUND:325
+msgid "The requested asset_copy_note was not found"
+msgstr "لم يتم العثور على asset_copy_note المطلوب"
+
+#: 1559.METABIB_FULL_REC_NOT_FOUND:328
+msgid "The requested metabib_full_rec was not found"
+msgstr "لم يتم العثور على metabib_full_rec المطلوب"
+
+#: 1560.METABIB_METARECORD_NOT_FOUND:331
+msgid "The requested metabib_metarecord was not found"
+msgstr "لم يتم العثور على metabib_metarecord المطلوب"
+
+#: 1561.PERMISSION_PERM_LIST_NOT_FOUND:334
+msgid "The requested permission_perm_list was not found"
+msgstr "تعذر العثور على permission_perm_list"
+
+#: 1562.METABIB_METARECORD_SOURCE_MAP_NOT_FOUND:337
+msgid "The requested metabib_metarecord_source_map was not found"
+msgstr "لم يتم العثور على metabib_metarecord_source_map المطلوب"
+
+#: 1563.METABIB_KEYWORD_FIELD_ENTRY_NOT_FOUND:340
+msgid "The requested metabib_keyword_field_entry was not found"
+msgstr "لم يتم العثور على metabib_keyword_field_entry المطلوب"
+
+#: 1564.MONEY_CASH_PAYMENT_NOT_FOUND:343
+msgid "The requested money_cash_payment was not found"
+msgstr "لم يتم العثور على money_cash_payment المطلوب"
+
+#: 1565.ACTOR_PROFILE_NOT_FOUND:346
+msgid "The requested actor_profile was not found"
+msgstr "لم يتم العثور على actor_profile المطلوب"
+
+#: 1566.MONEY_FORGIVE_PAYMENT_NOT_FOUND:349
+msgid "The requested money_forgive_payment was not found"
+msgstr "لم يتم العثور على money_forgive_payment المطلوب"
+
+#: 1567.METABIB_RECORD_DESCRIPTOR_NOT_FOUND:352
+msgid "The requested metabib_record_descriptor was not found"
+msgstr "لم يتم العثور على metabib_record_descriptor المطلوب"
+
+#: 1568.CONFIG_COPY_STATUS_NOT_FOUND:355
+msgid "The requested config_copy_status was not found"
+msgstr "لم يتم العثور على config_copy_status المطلوب"
+
+#: 1569.ACTOR_USER_STANDING_PENALTY_NOT_FOUND:358
+msgid "The requested actor_user_standing_penalty was not found"
+msgstr "لم يتم العثورعلى actor_user_standing_penalty المطلوب"
+
+#: 1571.ASSET_CALL_NUMBER_NOTE_NOT_FOUND:363
+msgid "The requested asset_call_number_note was not found"
+msgstr "لم يتم العثور على asset_call_number_note المطلوب"
+
+#: 1572.AUTHORITY_RECORD_NOTE_NOT_FOUND:366
+msgid "The requested authority_record_note was not found"
+msgstr "لم يتم العثور على authority_record_note المطلوب"
+
+#: 1574.CONTAINER_CALL_NUMBER_BUCKET_ITEM_NOT_FOUND:371
+msgid "The requested container_call_number_bucket_item was not found"
+msgstr "لم يتم العثور على container_call_number_bucket_item المطلوب"
+
+#: 1575.CONTAINER_BIBLIO_RECORD_ENTRY_BUCKET_NOT_FOUND:374
+msgid "The requested container_biblio_record_entry_bucket was not found"
+msgstr "لم يتم العثور على container_biblio_record_entry_bucket المطلوب"
+
+#: 1576.EX_NOT_FOUND:377
+msgid "The requested ex was not found"
+msgstr "لم يتم العثور على ex المطلوب"
 
 #: 1577.ACTION_HOLD_COPY_MAP_NOT_FOUND:380
 msgid "The requested action_hold_copy_map was not found"
 msgstr "لم يتم العثور على action_hold_copy_map المطلوب"
 
-#: 1648.PERMISSION_USR_WORK_OU_MAP_NOT_FOUND:592
-msgid "The requested permission_usr_work_ou_map was not found"
-msgstr "لم يتم العثور على permission_usr_work_ou_map المطلوب"
+#: 1578.ACTION_HOLD_NOTIFICATION_NOT_FOUND:383
+msgid "The requested action_hold_notification was not found"
+msgstr "لم يتم العثور على action_hold_notification المطلوب"
+
+#: 1579.ASSET_COPY_LOCATION_NOT_FOUND:386
+msgid "The requested asset_copy_location was not found"
+msgstr "لم يتم العثور على asset_copy_location المطلوب"
+
+#: 1580.METABIB_VIRTUAL_RECORD_NOT_FOUND:389
+msgid "The requested metabib_virtual_record was not found"
+msgstr "لم يتم العثور على metabib_virtual_record المطلوب"
+
+#: 1581.ASSET_STAT_CAT_ENTRY_COPY_MAP_NOT_FOUND:392
+msgid "The requested asset_stat_cat_entry_copy_map was not found"
+msgstr "لم يتم العثور على asset_stat_cat_entry_copy_map المطلوب"
+
+#: 1582.CONFIG_ITEM_TYPE_MAP_NOT_FOUND:395
+msgid "The requested config_item_type_map was not found"
+msgstr "لم يتم العثور على config_item_type_map المطلوب"
+
+#: 1583.ACTION_SURVEY_NOT_FOUND:398
+msgid "The requested action_survey was not found"
+msgstr "لم يتم العثور على action_survey المطلوب"
+
+#: 1584.ACTOR_ORG_ADDRESS_NOT_FOUND:401
+msgid "The requested actor_org_address was not found"
+msgstr "لم يتم العثور على actor_org_address المطلوبة"
+
+#: 1586.ACTOR_ORG_UNIT_NOT_FOUND:406
+msgid "The requested actor_org_unit was not found"
+msgstr "لم يتم العثور على actor_org_unit المطلوب"
+
+#: 1587.CONTAINER_CALL_NUMBER_BUCKET_NOT_FOUND:409
+msgid "The requested container_call_number_bucket was not found"
+msgstr "لم يتم العثورعلى container_call_number_bucket المطلوب"
+
+#: 1588.ASSET_STAT_CAT_NOT_FOUND:412
+msgid "The requested asset_stat_cat was not found"
+msgstr "لم يتم العثور على asset_stat_cat المطلوب"
+
+#: 1589.ACTOR_CARD_NOT_FOUND:415
+msgid "The requested actor_card was not found"
+msgstr "لم يتم العثور على actor_card المطلوب"
+
+#: 1590.ACTOR_STAT_CAT_NOT_FOUND:418
+msgid "The requested actor_stat_cat was not found"
+msgstr "لم يتم العثور على actor_stat_cat المطلوب"
+
+#: 1591.METABIB_SERIES_FIELD_ENTRY_NOT_FOUND:421
+msgid "The requested metabib_series_field_entry was not found"
+msgstr "تعذر العثور على metabib_series_field_entry"
+
+#: 1592.CONTAINER_USER_BUCKET_NOT_FOUND:424
+msgid "The requested container_user_bucket was not found"
+msgstr "لم يتم العثور على container_user_bucket المطلوب"
+
+#: 1593.MONEY_CREDIT_PAYMENT_NOT_FOUND:427
+msgid "The requested money_credit_payment was not found"
+msgstr "لم يتم العثور على money_credit_payment المطلوب"
+
+#: 1594.AUTHORITY_FULL_REC_NOT_FOUND:430
+msgid "The requested authority_full_rec was not found"
+msgstr "لم يتم العثور على authority_full_rec المطلوب"
+
+#: 1595.CONFIG_NON_CATALOGED_TYPE_NOT_FOUND:433
+msgid "The requested config_non_cataloged_type was not found"
+msgstr "لم يتم العثور على config_non_cataloged_type المطلوب"
+
+#: 1596.ACTOR_ORG_UNIT_TYPE_NOT_FOUND:436
+msgid "The requested actor_org_unit_type was not found"
+msgstr "لم يتم العثور على actor_org_unit_type المطلوبة"
+
+#: 1597.BIBLIO_RECORD_NOTE_NOT_FOUND:439
+msgid "The requested biblio_record_note was not found"
+msgstr "لم يتم العثور على biblio_record_note المطلوب"
+
+#: 1598.MONEY_USER_CIRCULATION_SUMMARY_NOT_FOUND:442
+msgid "The requested money_user_circulation_summary was not found"
+msgstr "تعذر العثور على money_user_circulation_summary"
+
+#: 1599.MONEY_GROCERY_NOT_FOUND:445
+msgid "The requested money_grocery was not found"
+msgstr "لم يتم العثور على money_grocery المطلوب"
+
+#: 1600.CONFIG_BIB_SOURCE_NOT_FOUND:448
+msgid "The requested config_bib_source was not found"
+msgstr "لم يتم العثور على config_bib_source المطلوب"
+
+#: 1601.MONEY_BILLABLE_TRANSACTION_NOT_FOUND:451
+msgid "The requested money_billable_transaction was not found"
+msgstr "لم يتم العثور على money_billable_transaction المطلوب"
+
+#: 1602.ACTOR_STAT_CAT_ENTRY_NOT_FOUND:454
+msgid "The requested actor_stat_cat_entry was not found"
+msgstr "لم يتم العثور على actor_stat_cat_entry المطلوب"
+
+#: 1603.CONTAINER_USER_BUCKET_ITEM_NOT_FOUND:457
+msgid "The requested container_user_bucket_item was not found"
+msgstr "تعذر العثور على  container_user_bucket_item"
+
+#: 1604.MONEY_USER_SUMMARY_NOT_FOUND:460
+msgid "The requested money_user_summary was not found"
+msgstr "لم يتم العثور على money_user_summary المطلوب"
+
+#: 1605.CONFIG_LIT_FORM_MAP_NOT_FOUND:463
+msgid "The requested config_lit_form_map was not found"
+msgstr "لم يتم العثور على config_lit_form_map المطلوب"
+
+#: 1606.MONEY_WORK_PAYMENT_NOT_FOUND:466
+msgid "The requested money_work_payment was not found"
+msgstr "لم يتم العثور على money_work_payment المطلوب"
+
+#: 1607.ACTION_OPEN_CIRCULATION_NOT_FOUND:469
+msgid "The requested action_open_circulation was not found"
+msgstr "لم يتم العثور على action_open_circulation المطلوب"
+
+#: 1608.METABIB_SUBJECT_FIELD_ENTRY_NOT_FOUND:472
+msgid "The requested metabib_subject_field_entry was not found"
+msgstr "لم يتم العثور على metabib_subject_field_entry المطلوب"
+
+#: 1609.CONFIG_RULES_RECURRING_FINE_NOT_FOUND:475
+msgid "The requested config_rules_recurring_fine was not found"
+msgstr "لم يتم العثور على config_rules_recurring_fine المطلوب"
+
+#: 1610.MONEY_CHECK_PAYMENT_NOT_FOUND:478
+msgid "The requested money_check_payment was not found"
+msgstr "لم يتم العثور على money_check_payment المطلوب"
+
+#: 1611.ACTOR_STAT_CAT_ENTRY_DEFAULT_NOT_FOUND:481
+msgid "The requested actor_stat_cat_entry_default was not found"
+msgstr "لم يتم العثور على actor_stat_cat_entry_default المطلوب"
+
+#: 1612.CONFIG_RULES_MAX_FINE_NOT_FOUND:484
+msgid "The requested config_rules_max_fine was not found"
+msgstr "لم يتم العثور على config_rules_max_fine المطلوب"
+
+#: 1613.PERMISSION_GRP_TREE_NOT_FOUND:487
+msgid "The requested permission_grp_tree was not found"
+msgstr "لم يتم العثور على permission_grp_tree المطلوب"
+
+#: 1614.ACTION_SURVEY_ANSWER_NOT_FOUND:490
+msgid "The requested action_survey_answer was not found"
+msgstr "لم يتم العثور على action_survey_answer المطلوب"
+
+#: 1615.ACTION_NON_CATALOGED_CIRCULATION_NOT_FOUND:493
+msgid "The requested action_non_cataloged_circulation was not found"
+msgstr "لم يتم العثور على action_non_cataloged_circulation المطلوب"
+
+#: 1616.MONEY_OPEN_USER_CIRCULATION_SUMMARY_NOT_FOUND:496
+msgid "The requested money_open_user_circulation_summary was not found"
+msgstr "لم يتم العثور على money_open_user_circulation_summary المطلوبة"
+
+#: 1617.ACTION_UNFULFILLED_HOLD_LIST_NOT_FOUND:499
+msgid "The requested action_unfulfilled_hold_list was not found"
+msgstr "لم يتم العثور على action_unfulfilled_hold_list المطلوب"
+
+#: 1618.METABIB_TITLE_FIELD_ENTRY_NOT_FOUND:502
+msgid "The requested metabib_title_field_entry was not found"
+msgstr "لم يتم العثور على metabib_title_field_entry المطلوب"
+
+#: 1619.ACTOR_STAT_CAT_ENTRY_USER_MAP_NOT_FOUND:505
+msgid "The requested actor_stat_cat_entry_user_map was not found"
+msgstr "لم يتم العثور على actor_stat_cat_entry_user_map المطلوب"
+
+#: 1620.PERMISSION_GRP_PERM_MAP_NOT_FOUND:508
+msgid "The requested permission_grp_perm_map was not found"
+msgstr "لم يتم العثور على permission_grp_perm_map المطلوب"
+
+#: 1621.CONTAINER_COPY_BUCKET_NOT_FOUND:511
+msgid "The requested container_copy_bucket was not found"
+msgstr "تعذر العثور على  container_copy_bucket"
+
+#: 1622.BIBLIO_RECORD_NODE_NOT_FOUND:514
+msgid "The requested biblio_record_node was not found"
+msgstr "لم يتم العثور على biblio_record_node المطلوب"
+
+#: 1623.PERMISSION_USR_PERM_MAP_NOT_FOUND:517
+msgid "The requested permission_usr_perm_map was not found"
+msgstr "لم يتم العثور على permission_usr_perm_map المطلوب"
+
+#: 1624.MONEY_PAYMENT_NOT_FOUND:520
+msgid "The requested money_payment was not found"
+msgstr "لم يتم العثور على money_payment المطلوبة"
+
+#: 1625.CONTAINER_BIBLIO_RECORD_ENTRY_BUCKET_ITEM_NOT_FOUND:523
+msgid "The requested container_biblio_record_entry_bucket_item was not found"
+msgstr "لم يتم العثور على container_biblio_record_entry_bucket_item المطلوب"
+
+#: 1626.ASSET_STAT_CAT_ENTRY_NOT_FOUND:526
+msgid "The requested asset_stat_cat_entry was not found"
+msgstr "لم يتم العثور على asset_stat_cat_entry المطلوب"
+
+#: 1628.MONEY_BILLING_NOT_FOUND:531
+msgid "The requested money_billing was not found"
+msgstr "لم يتم العثور على money_billing المطلوب"
+
+#: 1629.PERMISSION_USR_GRP_MAP_NOT_FOUND:534
+msgid "The requested permission_usr_grp_map was not found"
+msgstr "لم يتم العثور على permission_usr_grp_map المطلوب"
+
+#: 1630.ACTOR_USER_NOTE_NOT_FOUND:537
+msgid "The requested actor_user_note was not found"
+msgstr "لم يتم العثور على actor_user_note المطلوب"
+
+#: 1631.MONEY_COLLECTIONS_TRACKER_NOT_FOUND:541
+#: 1632.CONFIG_RULES_AGE_HOLD_PROTECT_NOT_FOUND:544
+#: 1633.MONEY_DESK_PAYMENT_NOT_FOUND:547
+msgid "The requested money_collections_tracker was not found"
+msgstr "لم يتم العثورعلى money_collections_tracker المطلوب"
+
+#: 1634.REPORTER_TEMPLATE_NOT_FOUND:550
+msgid "The requested reporter_template was not found"
+msgstr "لم يتم العثور على reporter_template المطلوب"
+
+#: 1635.REPORTER_REPORT_NOT_FOUND:553
+msgid "The requested reporter_report was not found"
+msgstr "لم يتم العثورعلى reporter_report المطلوب"
+
+#: 1636.REPORTER_OUTPUT_FOLDER_NOT_FOUND:556
+msgid "The requested reporter_output_folder was not found"
+msgstr "لم يتم العثور على reporter_output_folder المطلوب"
+
+#: 1637.REPORTER_REPORT_FOLDER_NOT_FOUND:559
+msgid "The requested reporter_report_folder was not found"
+msgstr "لم يتم العثور على reporter_report_folder المطلوب"
 
 #: 1638.REPORTER_TEMPLATE_FOLDER_NOT_FOUND:562
 msgid "The requested reporter_template_folder was not found"
 msgstr "لم يتم العثور على reporter_template_folder المطلوب"
 
-#: 4002.CREDIT_PROCESSOR_BAD_PARAMS:798
-msgid "Not enough parameters to use credit card processor"
-msgstr "بارمترات غير كافية م، أجل استخدام معالج بطاقة الإئتمان"
+#: 1639.REPORTER_SCHEDULE_NOT_FOUND:565
+msgid "The requested reporter_schedule was not found"
+msgstr "لم يتم العثور على reporter_schedule المطلوب"
 
-#: 7024.HOLD_RESERVATION_CONFLICT:924
-msgid ""
-"Both a hold and a reservation exist for this item; staff intervention is "
-"required to resolve the conflict."
-msgstr ""
-"كلاً مِن طلب الحجز والحجز موجود لهذه النسخة؛ تدخل طاقم المكتبة مطلوب كي يتم "
-"حل هذا التناقض"
+#: 1640.ACTOR_USR_ORG_UNIT_OPT_IN_NOT_FOUND:568
+msgid "The requested actor_usr_org_unit_opt_in was not found"
+msgstr "لم يتم العثور على actor_usr_org_unit_opt_in المطلوب"
+
+#: 1641.ACTION_OPEN_CIRC_COUNT_BY_CIRC_MOD_NOT_FOUND:571
+msgid "The requested action_open_circ_count_by_circ_mod was not found"
+msgstr "لم يتم العثور على action_open_circ_count_by_circ_mod المطلوب"
+
+#: 1642.CONFIG_CIRC_MODIFIER_NOT_FOUND:574
+msgid "The requested config_circ_modifier was not found"
+msgstr "لم يتم العثور على config_circ_modifier المطلوب"
+
+#: 1643.VANDELAY_BIB_QUEUE_NOT_FOUND:577
+msgid "The requested vandelay_bib_queue was not found"
+msgstr "لم يتم العثور على vandelay_bib_queue المطلوب"
 
 #: 1644.VANDELAY_AUTHORITY_QUEUE_NOT_FOUND:580
 msgid "The requested vandelay_authority_queue was not found"
 msgstr "لم يتم العثور على vandelay_authority_queue المطلوب"
+
+#: 1645.CONFIG_CIRC_MATRIX_TEST_NOT_FOUND:583
+msgid "The requested config_circ_matrix_test was not found"
+msgstr "تعذر العثور على    config_circ_matrix_test"
+
+#: 1646.VANDELAY_QUEUED_BIB_RECORD_NOT_FOUND:586
+msgid "The requested vandelay_queued_bib_record was not found"
+msgstr "لم يتم العثور على vandelay_queued_bib_record المطلوب"
+
+#: 1647.VANDELAY_QUEUED_AUTHORITY_RECORD_NOT_FOUND:589
+msgid "The requested vandelay_queued_authority_record was not found"
+msgstr "لم يتم العثور على vandelay_queued_authority_record المطلوب"
+
+#: 1648.PERMISSION_USR_WORK_OU_MAP_NOT_FOUND:592
+msgid "The requested permission_usr_work_ou_map was not found"
+msgstr "لم يتم العثور على permission_usr_work_ou_map المطلوب"
+
+#: 1649.VANDELAY_IMPORT_ITEM_NOT_FOUND:595
+msgid "The requested vandelay.import_item was not found"
+msgstr "تعذر العثور على vandelay.import_item"
+
+#: 1650.CONFIG_CIRC_MATRIX_RULESET_NOT_FOUND:598
+msgid "The requested config_circ_matrix_ruleset_not_found was not found"
+msgstr "لم يتم العثور على config_circ_matrix_ruleset_not_found المطلوب"
+
+#: 1651.AUTHORITY_RECORD_NUMBER_EXISTS:601
+msgid "An authority record already exists with the requested ARN"
+msgstr "تسجيلة الإسناد موجودة مُسبقاً مع ARN المطلوب"
+
+#: 1841.ACQ_PICKLIST_NOT_FOUND:606
+msgid "The requested acq.picklist was not found"
+msgstr "لم يتم العثور على acq.picklist المطلوب"
+
+#: 1843.ACQ_LINEITEM_ATTR_NOT_FOUND:609
+msgid "The requested acq.lineitem_attr was not found"
+msgstr "لم يتم العثور على acq.lineitem_attr المطلوب"
+
+#: 1844.ACQ_FUNDING_SOURCE_NOT_FOUND:612
+msgid "The requested acq.funding_source was not found"
+msgstr "لم يتم العثور على acq.funding_source المطلوب"
+
+#: 1845.ACQ_PROVIDER_NOT_FOUND:615
+msgid "The requested acq.provider was not found"
+msgstr "لم يتم العثور على acq.provider المطلوب"
+
+#: 1846.ACQ_FUNDING_SOURCE_CREDIT_NOT_FOUND:618
+msgid "The requested acq.funding_source_credit was not found"
+msgstr "لم يتم العثور على acq.funding_source_credit المطلوب"
+
+#: 1847.ACQ_FUNDING_SOURCE_DEDIT_NOT_FOUND:621
+msgid "The requested acq.funding_source_dedit was not found"
+msgstr "لم يتم العثور acq.funding_source_dedit المطلوب"
+
+#: 1848.ACQ_FUND_NOT_FOUND:624
+msgid "The requested acq.fund was not found"
+msgstr "لم يتم العثور على acq.fund المطلوب"
+
+#: 1849.ACQ_FUND_DEBIT_TOTAL_NOT_FOUND:627
+msgid "The requested acq.fund_debit_total was not found"
+msgstr "لم يتم العثور على acq.fund_debit_total المطلوب"
+
+#: 1850.ACQ_FUND_ALLOCATION_TOTAL_NOT_FOUND:630
+msgid "The requested acq.fund_allocation_total was not found"
+msgstr "لم يتم العثور على acq.fund_allocation_total المطلوبة"
+
+#: 1851.ACQ_FUND_ENCUMBRANCE_TOTAL_NOT_FOUND:633
+msgid "The requested acq.fund_encumbrance_total was not found"
+msgstr "لم يتم العثور على acq.fund_encumbrance_total المطلوب"
+
+#: 1852.ACQ_FUND_SPENT_TOTAL_NOT_FOUND:636
+msgid "The requested acq.fund_spent_total was not found"
+msgstr "لم يتم العثور على acq.fund_spent_total المطلوب"
+
+#: 1853.ACQ_FUND_COMBINED_BALANCE_NOT_FOUND:639
+msgid "The requested acq.fund_combined_balance was not found"
+msgstr "لم يتم العثور على acq.fund_combined_balance المطلوب"
+
+#: 1854.ACQ_FUND_SPENT_BALANCE_NOT_FOUND:642
+msgid "The requested acq.fund_spent_balance was not found"
+msgstr "لم يتم العثور على acq.fund_spent_balance المطلوب"
+
+#: 1855.ACQ_FUNDING_SOURCE_CREDIT_TOTAL_NOT_FOUND:645
+msgid "The requested acq.funding_source_credit_total was not found"
+msgstr "لم يتم العثور على acq.funding_source_credit_total المطلوب"
+
+#: 1856.ACQ_FUNDING_SOURCE_ALLOCATION_TOTAL_NOT_FOUND:648
+msgid "The requested acq.funding_source_allocation_total was not found"
+msgstr "لم يتم العثور على acq.funding_source_allocation_total المطلوب"
+
+#: 1857.ACQ_FUNDING_SOURCE_BALANCE_NOT_FOUND:651
+msgid "The requested acq.funding_source_balance was not found"
+msgstr "لم يتم العثور على acq.funding_source_balance المطلوب"
+
+#: 1858.ACQ_LINEITEM_NOT_FOUND:654
+msgid "The requested acq.lineitem was not found"
+msgstr "لم يتم العثور على acq.lineitem المطلوب"
+
+#: 1859.ACQ_PURCHASE_ORDER_NOT_FOUND:657
+msgid "The requested acq.purchase_order was not found"
+msgstr "لم يتم العثور على acq.purchase_order المطلوب"
+
+#: 1860.ACQ_PURCHASE_ORDER_TOO_SHORT:660
+msgid ""
+"The requested acq.purchase_order cannot be split because it does not have "
+"more than one lineitem"
+msgstr ""
+"لا يمكن التقسيم لأنه لايوجد أكثر مِن قيد واحد acq.purchase_order المطلوبة"
+
+#: 1861.ACQ_PURCHASE_ORDER_TOO_LATE:663
+msgid ""
+"The requested acq.purchase_order cannot be split because it has gone beyond "
+"the \"pending\" state"
+msgstr ""
+"لا يمكن التقسيم لأنه قد ذهب إلى خلف حالة \"مُعلقة\" acq.purchase_order "
+"المطلوب"
+
+#: 1862.ACQ_FUND_EXCEEDS_STOP_PERCENT:666
+msgid ""
+"The requested acq.purchase_order cannot be activated because it would over-"
+"encumber a fund."
+msgstr ""
+"لا يمكن تنشيط الطلب acq.purchase_order المطلوب لأن ذلك من شأنه الإفراط في "
+"الأموال المُثقلة بالدين."
+
+#: 1863.ACQ_FUND_EXCEEDS_WARN_PERCENT:669
+msgid ""
+"Activating the requested acq.purchase_order would encumber it beyond its "
+"warning level."
+msgstr ""
+"إن تفعيل acq.purchase_order  المطلوب سيُثقِلها بالديون فيما وراء مستوى "
+"تحذيرها."
+
+#: 1870.ACQ_LINEITEM_DETAIL_NOT_FOUND:672
+msgid "The requested acq.lineitem_detail was not found"
+msgstr "لم يتم العثور على acq.lineitem_detail المطلوب"
+
+#: 1871.PERMISSION_USR_OBJECT_PERM_MAP_NOT_FOUND:675
+msgid "The requested permission.usr_object_perm_map was not found"
+msgstr "لم يتم العثور على permission.usr_object_perm_map المطلوب"
+
+#: 1872.ACQ_LINEITEM_PROVIDER_ATTR_DEFINITION_NOT_FOUND:678
+msgid "The requested acq.lineitem_provider_attr_definition was not found"
+msgstr "لم يتم العثور على acq.lineitem_provider_attr_definition المطلوب"
+
+#: 1873.ACQ_CURRENCY_TYPE_NOT_FOUND:681
+msgid "The requested acq.currency_type was not found"
+msgstr "لم يتم العثور على acq.currency_type المطلوب"
+
+#: 1875.ACQ_LINEITEM_GENERATED_ATTR_DEFINITION_NOT_FOUND:684
+#: 1876.ACQ_LINEITEM_LOCAL_ATTR_DEFINITION_NOT_FOUND:687
+#: 1877.ACQ_LINEITEM_MARC_ATTR_DEFINITION_NOT_FOUND:690
+#: 1878.ACQ_LINEITEM_USR_ATTR_DEFINITION_NOT_FOUND:693
+#: 1879.ACQ_LINEITEM_PROVIDER_ATTR_DEFINITION_NOT_FOUND:696
+msgid "The requested acq_lineitem_attr was not found"
+msgstr "لم يتم العثور على acq_lineitem_attr المطلوب"
+
+#: 1880.CONFIG_BILLING_TYPE_NOT_FOUND:699
+msgid "The requested config_billing_type was not found"
+msgstr "لم يتم العثور على config_billing_type المطلوب"
+
+#: 1881.PERMISSION_GRP_PENALTY_THRESHOLD_NOT_FOUND:702
+msgid "The requested permission_grp_penalty_threshold was not found"
+msgstr "لم يتم العثور على permission_grp_penalty_threshold المطلوب"
+
+#: 1882.RECORD_REFERENCED_BY_LINEITEM:705
+msgid "The selected bib record has an open lineitem order referencing it."
+msgstr ""
+
+#: 1700.NON_CAT_TYPE_EXISTS:709
+msgid "The non-cataloged type object already exists"
+msgstr "كائن النوع غير المفهرس موجود مُسبقاً"
+
+#: 1701.COPY_LOCATION_EXISTS:712
+msgid "The copy location object already exists"
+msgstr "كائن موقع النُسخة موجود مُسبقاً"
+
+#: 1716.COPY_LOCATION_NOT_EMPTY:715
+msgid "The copy location is not empty"
+msgstr "موقع النُسخة ليس فارغاً"
+
+#: 1717.COPY_LOCATION_NOT_FOUND:718
+msgid "The copy location does not exist"
+msgstr "موقع النُسخة غير موجود"
+
+#: 1702.OPEN_CIRCULATION_EXISTS:721
+msgid "There is an open circulation on the requested item"
+msgstr "هناك إعارة مفتوحة في النُسخة المطلوبة"
+
+#: 1703.WORKSTATION_NAME_EXISTS:724
+msgid "A workstation with that name already exists"
+msgstr "محطة العمل مع ذلك الاسم موجود مُسبقاً"
+
+#: 1704.TCN_EXISTS:727
+msgid "A record already exists with the requested TCN value"
+msgstr "التسجيلة موجودة مُسبقاً مع قيمة رقم التحكم بالنقل المطلوبة"
+
+#: 1705.VOLUME_LABEL_EXISTS:730
+msgid "A volume with the same label, title and owning library exists"
+msgstr "المجلد مع نفس التسمية، العنوان والمكتبة المالكة موجود"
+
+#: 1706.ITEM_BARCODE_EXISTS:733
+msgid "An item with the same barcode exists"
+msgstr "النُسخة مع نفس الباركود موجودة"
+
+#: 1707.HOLD_EXISTS:736
+msgid "User already has an open hold on the selected item"
+msgstr "المستخدم لديه مُسبقاُ حجز مفتوح على لـِ النسخة المحددة"
+
+#: 1708.MONEY_COLLECTIONS_TRACKER_EXISTS:739
+msgid ""
+"A duplicate money.collections_tracker object already exists in the database"
+msgstr ""
+"الكائن موجود مسبقاً في قاعدة البيانات money.collections_tracker مُكررة/نُسخة "
+"طبق الأصل"
+
+#: 1709.MAX_HOLDS:742
+msgid "User has reached the maximum number of holds"
+msgstr "لقد وصل المستخدم إلى العدد الأقصى مِن الحجوزات"
+
+#: 1710.CONTAINER_EXISTS:745
+msgid "User has already created a bucket with the requested name"
+msgstr "تمّ إنشاء المستخدم لـِ السلة مع الاسم المطلوب"
+
+#: 1711.BIB_QUEUE_EXISTS:748
+msgid "A bib record queue with the same name already exists"
+msgstr "قائمة/طابور التسجيلة الببليوغرافية مع نفس الاسم موجودة مُسبقاً"
+
+#: 1712.AUTH_QUEUE_EXISTS:751
+msgid "An authority record queue with the same name already exists"
+msgstr "تسجيلة الإسناد في الطابور مع نفس الاسم موجودة مُسبقاً"
+
+#: 1713.SURVEY_RESPONSES_EXIST:754
+msgid "Responses to this survey exist"
+msgstr "توجد ردود لـِ هذا الاستطلاع"
+
+#: 1714.HIGH_LEVEL_HOLD_HAS_NO_COPIES:757
+msgid ""
+"A hold request at a higher level than copy has been attempted, but there are "
+"no copies that belonging to the higher-level unit."
+msgstr ""
+"طلب الحجز في أعلى مستوى مِن النُسخة التي تم المحاولة بها، ولكن لا توجد نسخ "
+"تنتمي إلى وحدة مستوى أعلى."
+
+#: 1715.HOLD_SUSPEND_AFTER_CAPTURE:760
+msgid "Attempt to suspend a hold after it has been captured."
+msgstr "المحاولة لتعليق الحجز بعد ذلك تمّ استلامها"
+
+#: 1716.MONEY_DEBIT_CARD_PAYMENT_NOT_FOUND:763
+msgid "The requested money_debit_card_payment was not found"
+msgstr ""
+
+#: 1900.URL_VERIFY_NOT_SESSION_CREATOR:767
+msgid ""
+"You did not create this URL Verify session, so you cannot change it.  You "
+"may be able to clone it."
+msgstr ""
+"أنت لم تقم بإنشاء جلسة تحقق الـ يو آر إل، لذلك لا يمكنك تغييره. قد يكون "
+"بإمكانك استنساخها."
+
+#: 1901.URL_VERIFY_SESSION_ALREADY_SEARCHED:771
+msgid "This session has already been searched."
+msgstr "تمّ مُسبقاً البحث في هذه الجلسة."
+
+#: 2000.BAD_PARAMS:775
+msgid "Invalid parameters were encountered in a method"
+msgstr "تمّ مواجهة بارمترات باطلة في الطريقة"
+
+#: 2001.DATABASE_UPDATE_FAILED:778
+msgid "The attempt to write to the DB failed"
+msgstr "لقد فشلت محاولة الكتابة إلى قاعدة البيانات"
+
+#: 2002.DATABASE_QUERY_FAILED:781
+msgid "The attempt to query to the DB failed"
+msgstr "تمّ فشل محاولة الاستعلام لـِ قاعدة البيانات"
+
+#: 2003.INTERNAL_SERVER_ERROR:784
+msgid "There was an internal server error"
+msgstr "هناك خطأ في الخادم الداخلي"
+
+#: 2004.ACTOR_USER_DELETE_OPEN_XACTS:787
+msgid ""
+"The user you have attempted to delete cannot be deleted because it has open "
+"circulations and/or unpaid bills."
+msgstr ""
+"لا يمكن حذف المستفيد الذي حاولت حذفه لأن لديه إعارات مفتوحة و/أو فاتورة غير "
+"مدفوعة."
+
+#: 2005.OBJECT_UNIQUE_IDENTIFIER_USED:790
+msgid ""
+"You are trying to create an object with a unique identifier (such as a "
+"'name' field) that is already in use."
+msgstr ""
+"أنت تحاول إنشاء كائن مع معرف فريد (مثل حقل 'الاسم') التي هي قيد الاستخدام."
+
+#: 4001.CREDIT_PROCESSOR_NOT_ENABLED:795
+msgid "Credit card processor not enabled"
+msgstr "معالج بطاقة الائتمان غير ممكن/غير قادر"
+
+#: 4002.CREDIT_PROCESSOR_BAD_PARAMS:798
+msgid "Not enough parameters to use credit card processor"
+msgstr "بارمترات غير كافية م، أجل استخدام معالج بطاقة الإئتمان"
+
+#: 4003.CREDIT_PROCESSOR_NOT_ALLOWED:801
+msgid "The credit card processor you have named is not allowed"
+msgstr "مُعالج بطاقة الائتمان الذي قمت بتسميته غير مسموح"
+
+#: 4004.CREDIT_PROCESSOR_NOT_SPECIFIED:804
+msgid ""
+"No credit card processor specified either in org unit settings or in call to "
+"credit service API method."
+msgstr ""
+"لم يتم تحديد مُعالج بطاقة الائتمان إما في إعدادات الوحدة التنظيمية أو في "
+"استدعاء طريقة API لخدمة الائتمان."
+
+#: 4010.CREDIT_PROCESSOR_NO_DEFAULT_SELECTED:807
+msgid "No default credit processor is selected"
+msgstr "لم يتم تحديد مُعالج الائتمان الافتراضي"
+
+#: 4019.CREDIT_PROCESSOR_INVALID_CC_NUMBER:810
+msgid "An invalid credit card number has been supplied."
+msgstr "لقد تمّ تزويد رقم بطاقة ائتمان غير صالح."
+
+#: 4020.CREDIT_PROCESSOR_DECLINED_TRANSACTION:813
+msgid "The credit card processor has declined the transaction."
+msgstr "رفض معالج بطاقة الائتمان العملية/الإجراء."
 
 #: 4040.CREDIT_PROCESSOR_SUCCESS_WO_RECORD:819
 msgid ""
@@ -1118,227 +1058,270 @@ msgstr ""
 "حدثت مشكلة *رهيبة*: تمّ معالجة عملية بطاقة الإئتمان، لكن فاتورة المستفيد لم "
 "تُسَجل في إيفرغرين. لطفاً ينبغي طلب المساعدة."
 
-#: 1634.REPORTER_TEMPLATE_NOT_FOUND:550
-msgid "The requested reporter_template was not found"
-msgstr "لم يتم العثور على reporter_template المطلوب"
+#: 5000.PERM_FAILURE:824
+msgid "Permission Denied"
+msgstr "غير مسموح"
 
-#: 1583.ACTION_SURVEY_NOT_FOUND:398
-msgid "The requested action_survey was not found"
-msgstr "لم يتم العثور على action_survey المطلوب"
-
-#: 1859.ACQ_PURCHASE_ORDER_NOT_FOUND:657
-msgid "The requested acq.purchase_order was not found"
-msgstr "لم يتم العثور على acq.purchase_order المطلوب"
-
-#: 1625.CONTAINER_BIBLIO_RECORD_ENTRY_BUCKET_ITEM_NOT_FOUND:523
-msgid "The requested container_biblio_record_entry_bucket_item was not found"
-msgstr "لم يتم العثور على container_biblio_record_entry_bucket_item المطلوب"
-
-#: 1000.LOGIN_FAILED:28
-msgid "User login failed"
-msgstr "فشل تسجيل دخول المستخدم"
-
-#: 1873.ACQ_CURRENCY_TYPE_NOT_FOUND:681
-msgid "The requested acq.currency_type was not found"
-msgstr "لم يتم العثور على acq.currency_type المطلوب"
-
-#: 1599.MONEY_GROCERY_NOT_FOUND:445
-msgid "The requested money_grocery was not found"
-msgstr "لم يتم العثور على money_grocery المطلوب"
-
-#: 8009.OFFLINE_NO_ORG:989 8010.OFFLINE_SESSION_COMPLETE:992
-msgid "No org id was provided"
-msgstr "لم يتم تقديم/تزويد أي معرف للمنطمة"
-
-#: 7034.GEOCODING_NOT_ALLOWED:951
-msgid "A Geographic Location Service is not configured for this library"
-msgstr ""
-
-#: 1236.PATRON_EXCEEDS_LOST_COUNT:174
-msgid "The patron has too many lost items."
-msgstr "المستفيد لديه الكثير مِن النسخ المفقودة."
-
-#: 8001.OFFLINE_SESSION_FILE_EXISTS:965
-msgid "An offline file for this workstation exists within this session"
-msgstr "ملف ـ بدون اتصال ـ لـِ محطة العمل موجود داخل هذه الجلسة."
-
-#: 2003.INTERNAL_SERVER_ERROR:784
-msgid "There was an internal server error"
-msgstr "هناك خطأ في الخادم الداخلي"
-
-#: 7033.GEOCODING_NOT_ENABLED:948
-msgid "Geo-Coding is not enabled for this installation"
-msgstr ""
-
-#: 4020.CREDIT_PROCESSOR_DECLINED_TRANSACTION:813
-msgid "The credit card processor has declined the transaction."
-msgstr "رفض معالج بطاقة الائتمان العملية/الإجراء."
-
-#: 12003.TITLE_HAS_HOLDS:1099
+#: 7000.ROUTE_ITEM:834
 msgid ""
-"This title has hold requests on it that will be canceled if they are not "
-"transferred."
+"A copy needs to be routed to a different location The destination location "
+"will be specified by an 'org' key within the event object"
 msgstr ""
+"تحتاج النسخة أن يتم توجيهها إلى موقع آخر وسيتم تحديد موقع الوجهة مِن مفتاح "
+"'المؤسسة' داخل كائن الحدث."
 
-#: 1647.VANDELAY_QUEUED_AUTHORITY_RECORD_NOT_FOUND:589
-msgid "The requested vandelay_queued_authority_record was not found"
-msgstr "لم يتم العثور على vandelay_queued_authority_record المطلوب"
-
-#: 1234.ITEM_DEPOSIT_PAID:168
-msgid "An item deposit was paid."
-msgstr "تم دفع وديعة/تأمين النُسخة."
-
-#: 1597.BIBLIO_RECORD_NOTE_NOT_FOUND:439
-msgid "The requested biblio_record_note was not found"
-msgstr "لم يتم العثور على biblio_record_note المطلوب"
-
-#: 1846.ACQ_FUNDING_SOURCE_CREDIT_NOT_FOUND:618
-msgid "The requested acq.funding_source_credit was not found"
-msgstr "لم يتم العثور على acq.funding_source_credit المطلوب"
-
-#: 1588.ASSET_STAT_CAT_NOT_FOUND:412
-msgid "The requested asset_stat_cat was not found"
-msgstr "لم يتم العثور على asset_stat_cat المطلوب"
-
-#: 1224.PATRON_ACCOUNT_EXPIRED:130
-msgid "The patron's account has expired"
-msgstr "انتهت صلاحية حساب المستفيد"
-
-#: 1560.METABIB_METARECORD_NOT_FOUND:331
-msgid "The requested metabib_metarecord was not found"
-msgstr "لم يتم العثور على metabib_metarecord المطلوب"
-
-#: 1707.HOLD_EXISTS:736
-msgid "User already has an open hold on the selected item"
-msgstr "المستخدم لديه مُسبقاُ حجز مفتوح على لـِ النسخة المحددة"
-
-#: 11107.AVAIL_HOLD_COPY_RATIO_EXCEEDED:1071
+#: 7001.PATRON_BAD_STANDING:841
 msgid ""
-"Renewal attempt failed because the \"hold / available copies\" ratio exceeds "
-"the configured limit"
+"The patron in question is not able to check out materials because their "
+"account is in bad standing"
 msgstr ""
-"فشلت محاولة تجديد لأن مُعدل نسبة \"الحجز / النسخ المتاحة\" تجاوزت حد "
-"التكوين/التهيئة"
+"المستفيد في السؤال ليس قادراً على إستعارة المواد لأن حسابه في وضع سيء"
 
-#: 1712.AUTH_QUEUE_EXISTS:751
-msgid "An authority record queue with the same name already exists"
-msgstr "تسجيلة الإسناد في الطابور مع نفس الاسم موجودة مُسبقاً"
-
-#: 1566.MONEY_FORGIVE_PAYMENT_NOT_FOUND:349
-msgid "The requested money_forgive_payment was not found"
-msgstr "لم يتم العثور على money_forgive_payment المطلوب"
-
-#: 1230.XACT_COLLISION:155
-msgid "The saved item has been edited by another user"
-msgstr "النُسخة المحفوظة تمّ تعديلها مِن قبل مستخدم آخر"
-
-#: 7028.PATRON_CIRC_MISMATCH:933
-msgid "Potentially notified patron does not own the circulation."
-msgstr "مِن المحتمل أن إخطارات المستفيد غير موجودة في الإعارة"
-
-#: 1843.ACQ_LINEITEM_ATTR_NOT_FOUND:609
-msgid "The requested acq.lineitem_attr was not found"
-msgstr "لم يتم العثور على acq.lineitem_attr المطلوب"
-
-#: 1715.HOLD_SUSPEND_AFTER_CAPTURE:760
-msgid "Attempt to suspend a hold after it has been captured."
-msgstr "المحاولة لتعليق الحجز بعد ذلك تمّ استلامها"
-
-#: 1237.HOLD_ITEM_CHECKED_OUT:177
+#: 7002.PATRON_EXCEEDS_CHECKOUT_COUNT:845
 msgid ""
-"The item you have attempted to place on hold is already checked out to the "
-"requestor."
-msgstr "النُسخة التي حاولت وضعها في الحجز تمّ إعارتها مُسبقاً إلى الطالب."
+"The patron in question has the maximum number of items already checked out"
+msgstr "المُستفيد في السؤال لديه الحد الأقصى لعدد النُسخ المُعارة مُسبقاُ"
 
-#: 1614.ACTION_SURVEY_ANSWER_NOT_FOUND:490
-msgid "The requested action_survey_answer was not found"
-msgstr "لم يتم العثور على action_survey_answer المطلوب"
+#: 7003.COPY_CIRC_NOT_ALLOWED:848
+msgid "Target copy is not allowed to circulate"
+msgstr "النُسخة المُستهدفة غير مسموح بإعارتها"
 
-#: 2004.ACTOR_USER_DELETE_OPEN_XACTS:787
-msgid ""
-"The user you have attempted to delete cannot be deleted because it has open "
-"circulations and/or unpaid bills."
-msgstr ""
-"لا يمكن حذف المستفيد الذي حاولت حذفه لأن لديه إعارات مفتوحة و/أو فاتورة غير "
-"مدفوعة."
+#: 7004.COPY_NOT_AVAILABLE:851
+msgid "Copy is not available"
+msgstr "النُسخة غير مُتاحة"
 
-#: 1858.ACQ_LINEITEM_NOT_FOUND:654
-msgid "The requested acq.lineitem was not found"
-msgstr "لم يتم العثور على acq.lineitem المطلوب"
+#: 7005.LOCATION_CIRC_NOT_ALLOWED:854
+msgid "Location does not allow materials to circulate"
+msgstr "لا يسمح الموقع بإعارة المواد"
 
-#: 1845.ACQ_PROVIDER_NOT_FOUND:615
-msgid "The requested acq.provider was not found"
-msgstr "لم يتم العثور على acq.provider المطلوب"
+#: 7006.COPY_IS_REFERENCE:857
+msgid "Copy is reference material"
+msgstr "إن هذه النسخة مادة مفضلة/مرجعية"
 
-#: 1600.CONFIG_BIB_SOURCE_NOT_FOUND:448
-msgid "The requested config_bib_source was not found"
-msgstr "لم يتم العثور على config_bib_source المطلوب"
+#: 7007.COPY_NEEDED_FOR_HOLD:860
+msgid "Copy is needed to fulfill a hold"
+msgstr "النسخة تحتاج إلى حجز تام/مُنتهي"
 
-#: 1717.COPY_LOCATION_NOT_FOUND:718
-msgid "The copy location does not exist"
-msgstr "موقع النُسخة غير موجود"
+#: 7008.MAX_RENEWALS_REACHED:863
+msgid "Circulation has no more renewals remaining"
+msgstr "الإعارة ليس لديها المزيد من التجديدات المتبقية"
 
-#: 1646.VANDELAY_QUEUED_BIB_RECORD_NOT_FOUND:586
-msgid "The requested vandelay_queued_bib_record was not found"
-msgstr "لم يتم العثور على vandelay_queued_bib_record المطلوب"
+#: 7009.CIRC_CLAIMS_RETURNED:866
+msgid "Requested circulation is marked claims returned"
+msgstr "الإعارة المطلوبة مُيّزت كـَ مُطالبة إرجاع"
 
-#: 1228.BIB_RECORD_DELETED:149
-msgid "The requested bib record is marked as deleted"
-msgstr "تمّ تمييز تسجيلة المطلوبة للمكتبة كـَ محذوفة"
+#: 7010.COPY_ALERT_MESSAGE:869
+msgid "The requested copy has an alert message attached"
+msgstr "النسخة المطلوبة لديها رسالة تنبيه مرفقة"
 
-#: 1841.ACQ_PICKLIST_NOT_FOUND:606
-msgid "The requested acq.picklist was not found"
-msgstr "لم يتم العثور على acq.picklist المطلوب"
+#: 7011.COPY_STATUS_LOST:872
+msgid "Copy is marked as lost"
+msgstr "تمّ تمييز النسخة كـَ مفقودة"
 
-#: 7018.COPY_MARKED_LOST:906
-msgid "The requested item is already marked as lost"
-msgstr "تمّ مُسبقاً تمييز النُسخة المطلوبة كـَ مفقودة"
+#: 7012.COPY_STATUS_MISSING:875
+msgid "Copy is marked as missing"
+msgstr "تم تمييز النُسخة كـَ مفقودة"
 
-#: 7016.ITEM_ON_HOLDS_SHELF:897
-msgid "This item is currently on the holds shelf for another patron:"
-msgstr ""
-
-#: 1642.CONFIG_CIRC_MODIFIER_NOT_FOUND:574
-msgid "The requested config_circ_modifier was not found"
-msgstr "لم يتم العثور على config_circ_modifier المطلوب"
-
-#: 1701.COPY_LOCATION_EXISTS:712
-msgid "The copy location object already exists"
-msgstr "كائن موقع النُسخة موجود مُسبقاً"
-
-#: 1532.MONEY_BILLABLE_TRANSACTION_SUMMARY_NOT_FOUND:255
-msgid "The requested money_billable_transaction_summary was not found"
-msgstr "لم يتم العثور على money_billable_transaction_summary المطلوب"
-
-#: 1856.ACQ_FUNDING_SOURCE_ALLOCATION_TOTAL_NOT_FOUND:648
-msgid "The requested acq.funding_source_allocation_total was not found"
-msgstr "لم يتم العثور على acq.funding_source_allocation_total المطلوب"
-
-#: 1216.PATRON_CARD_INACTIVE:103
-msgid "The patron's card is not active"
-msgstr "بطاقة المستفيد غير فعّالة"
-
-#: 1881.PERMISSION_GRP_PENALTY_THRESHOLD_NOT_FOUND:702
-msgid "The requested permission_grp_penalty_threshold was not found"
-msgstr "لم يتم العثور على permission_grp_penalty_threshold المطلوب"
-
-#: 7013.PATRON_EXCEEDS_FINES:888
+#: 7013.PATRON_EXCEEDS_FINES:878
 msgid "The patron in question has reached the maximum fine amount"
 msgstr "المستفيد في السؤال قد وصل إلى الحد الأقصى لـِ مقدار الغرامة"
 
-#: 1233.ITEM_RENTAL_FEE_REQUIRED:165
-msgid "Payment of an item rental fee is required."
-msgstr "رسوم الدفع لـِ تأجير/استعارة النسخة مطلوب"
+#: 7014.COPY_IN_TRANSIT:881
+msgid "Copy is in transit"
+msgstr "النُسخة في النقل/العبور"
 
-#: 1574.CONTAINER_CALL_NUMBER_BUCKET_ITEM_NOT_FOUND:371
-msgid "The requested container_call_number_bucket_item was not found"
-msgstr "لم يتم العثور على container_call_number_bucket_item المطلوب"
+#: 7015.NEGATIVE_PATRON_BALANCE:884
+msgid "This requested action would result in a negative patron balance"
+msgstr "الإجراء المطلوب سيتحقق في رصيد/حساب المستفيد المحلي"
 
-#: 10003.ACQ_LINEITEM_DETAIL_NO_ORG:1016
+#: 7016.ITEM_ON_HOLDS_SHELF:887
+msgid "This item is currently on the holds shelf for another patron:"
+msgstr ""
+
+#: 7017.ROUTE_TO_COPY_LOCATION:893
+msgid ""
+"A copy needs to be routed to a copy location.  The location should be "
+"specified within the event with a 'location' key"
+msgstr ""
+"تحتاج النُسخة أن يتم توجيهها إلى موقع النسخة. يجب تحديد الموقع داخل الحدث مع "
+"مفتاح 'الموقع'"
+
+#: 7018.COPY_MARKED_LOST:896
+msgid "The requested item is already marked as lost"
+msgstr "تمّ مُسبقاً تمييز النُسخة المطلوبة كـَ مفقودة"
+
+#: 7019.HOLD_CAPTURE_DELAYED:899
+msgid "Hold capture was delayed for this item"
+msgstr "الحجز المُستلم متأخر لهذه النُسخة"
+
+#: 7020.COPY_RESERVED:902
+msgid "Item reserved for booking request"
+msgstr "تمّ حجز النُسخة لـِ طلب الحجز"
+
+#: 7021.RESERVATION_NOT_FOUND:905
+msgid "Booking reservation not found"
+msgstr "لم يتم العثور على الحجز"
+
+#: 7022.RESERVATION_CAPTURE_FAILED:908
+msgid "Booking reservation capture failed"
+msgstr "تمّ فشل التقاط الحجز"
+
+#: 7023.RESERVATION_BAD_PARAMS:911
+msgid "Provided parameters describe unacceptable reservation."
+msgstr "البارمترات المُقدمة تصف حجز غير مقبول/مرفوض."
+
+#: 7024.HOLD_RESERVATION_CONFLICT:914
+msgid ""
+"Both a hold and a reservation exist for this item; staff intervention is "
+"required to resolve the conflict."
+msgstr ""
+"كلاً مِن طلب الحجز والحجز موجود لهذه النسخة؛ تدخل طاقم المكتبة مطلوب كي يتم "
+"حل هذا التناقض"
+
+#: 7025.COPY_STATUS_LONG_OVERDUE:917
+msgid "Copy is marked as long-overdue"
+msgstr "تم تمييز النسخة كـَ مستحقة الرد منذ فترة طويلة"
+
+#: 7026.COPY_STATUS_LOST_AND_PAID:920
+msgid "Copy is marked as lost and paid"
+msgstr "تمّ تمييز النُسخة كـَ مفقودة و مدفوعة"
+
+#: 7028.PATRON_CIRC_MISMATCH:923
+msgid "Potentially notified patron does not own the circulation."
+msgstr "مِن المحتمل أن إخطارات المستفيد غير موجودة في الإعارة"
+
+#: 7029.MAX_AUTO_RENEWALS_REACHED:926
+msgid "Circulation has no more auto-renewals remaining"
+msgstr ""
+
+#: 7030.CURBSIDE_NOT_ALLOWED:929
+msgid "Curbside pickup is not enabled for this location"
+msgstr ""
+
+#: 7031.CURBSIDE_MAX_FOR_TIME:932
+msgid "Maximum scheduled curbside pickups at the requested time"
+msgstr ""
+
+#: 7032.CURBSIDE_EXISTS:935
+msgid "A scheduled, unfilled curbside request already exists"
+msgstr ""
+
+#: 7033.GEOCODING_NOT_ENABLED:938
+msgid "Geo-Coding is not enabled for this installation"
+msgstr ""
+
+#: 7034.GEOCODING_NOT_ALLOWED:941
+msgid "A Geographic Location Service is not configured for this library"
+msgstr ""
+
+#: 7035.GEOCODING_LOCATION_NOT_FOUND:944
+msgid "No location returned by Geographic Location Service"
+msgstr ""
+
+#: 7036.PATRON_TOO_MANY_ACTIVE_PASSWORD_RESET_REQUESTS:947
+msgid ""
+"There are too many active password reset request sessions for this patron."
+msgstr ""
+"هناك العديد من جلسات طلب إعادة تعيين كلمة المرور النشطة لهذا المستفيد."
+
+#: 7037.PATRON_NOT_AN_ACTIVE_PASSWORD_RESET_REQUEST:950
+msgid ""
+"The user attempted to update their password using a stale or inactive "
+"password reset request session."
+msgstr ""
+"تمت المحاولة لتحديث كلمة مروره باستخدام قديم أو إعادة تعيين كلمة مرور غير "
+"فعالة للجلسة المطلوبة."
+
+#: 7038.PATRON_PASSWORD_WAS_NOT_STRONG:953
+msgid "The user attempted to set their password to a weak value."
+msgstr "محاولة ضبط المستخدم كلمة المرور الخاصة به قيمة ضعيفة."
+
+#: 8000.OFFLINE_SESSION_ACTIVE:960
+msgid "An offline session for this location is currently processing"
+msgstr "الجلسة ـ دون اتصال ـ لهذا الموقع قَيد المُعالجة حالياً"
+
+#: 8001.OFFLINE_SESSION_FILE_EXISTS:963
+msgid "An offline file for this workstation exists within this session"
+msgstr "ملف ـ بدون اتصال ـ لـِ محطة العمل موجود داخل هذه الجلسة."
+
+#: 8002.OFFLINE_FILE_ERROR:966
+msgid "An offline file or directory could not be created or accessed"
+msgstr "ملف ـ دون اتصال ـ أو المسار لا يمكن إنشاؤه أو الوصول إليه"
+
+#: 8003.OFFLINE_PARAM_ERROR:969
+msgid "Missing params in offline upload"
+msgstr "بارمترات مفقودة في التحميل ـ بدون اتصال ـ"
+
+#: 8004.OFFLINE_CONFIG_ERROR:972 8005.OFFLINE_CHECKSUM_FAILED:975
+#: 8006.OFFLINE_SESSION_NOT_FOUND:978
+msgid "Offline server is not configured properly"
+msgstr "لم يتم تكوين/تهيئة برنامج الخادم ـ بدون اتصال ـ بشكل صحيح"
+
+#: 8007.OFFLINE_SESSION_EXISTS:981
+msgid "A session with the given name already exists"
+msgstr "الجلسة بالاسم المعطى موجودة مُسبقاً"
+
+#: 8008.OFFLINE_INVALID_SESSION:984
+msgid "The session name is invalid"
+msgstr "اسم الجلسة غير صحيح"
+
+#: 8009.OFFLINE_NO_ORG:987 8010.OFFLINE_SESSION_COMPLETE:990
+msgid "No org id was provided"
+msgstr "لم يتم تقديم/تزويد أي معرف للمنطمة"
+
+#: 8011.SKIP_ASSET_CHANGED:993
+msgid "Asset status was changed since the offline transaction was recorded"
+msgstr "تم تغيير وضع الأصول منذ أن تم تسجيلها في عملية ــ دون اتصال ــ"
+
+#: 9000.REPORT_TEMPLATE_EXISTS:997
+msgid "A report template with the given name and folder already exists"
+msgstr "تركيبة التقرير مع الاسم المُعطى والمجلد موجودة مُسبقاً"
+
+#: 9001.REPORT_REPORT_EXISTS:1001
+msgid "A report with the given name and folder already exists"
+msgstr "التقرير مع الاسم المُعطى والمجلد موجودة مُسبقاً"
+
+#: 10000.ACQ_LINEITEM_APPROVED:1005
+msgid "The lineitem cannot be altered because it has already been approved"
+msgstr "لا يمكن تعديل القيد لأنه تمّ الموافقة عليه مُسبقاً"
+
+#: 10001.ACQ_LINEITEM_NO_COPIES:1008
+msgid "The lineitem has no attached copies"
+msgstr "ليس لدى القيد نُسخ مُرفقة"
+
+#: 10002.ACQ_LINEITEM_DETAIL_NO_FUND:1011
+msgid "The lineitem detail has no associated fund"
+msgstr "تفاصيل القيد ليس لديه اعتماد مالي/تمويل مُرتبط"
+
+#: 10003.ACQ_LINEITEM_DETAIL_NO_ORG:1014
 msgid "The lineitem detail has no owning_lib"
 msgstr "تفاصيل القيد ليس لديه owning_lib"
 
-#: 11101.SERIAL_DISTRIBUTION_HAS_NO_COPY_TEMPLATE:1043
+#: 10004.ACQ_LINEITEM_NO_PRICE:1017
+msgid "The lineitem has no price"
+msgstr "لايتضمن القيد سعراً"
+
+#: 10005.ACQ_LINEITEM_NO_PROVIDER:1020
+msgid "The lineitem has no provider"
+msgstr "ليس لدى القيد أي مُزود"
+
+#: 10101.ACQ_ALREADY_CANCELED:1024
+msgid "The object is already canceled."
+msgstr "تمّ إلغاء هذا الكائن مُسبقاً."
+
+#: 10102.ACQ_NOT_CANCELABLE:1027
+msgid "The object is not in a cancelable state."
+msgstr "الكائن ليس في حالة قابلية الإلغاء."
+
+#: 11000.SERIAL_SUBSCRIPTION_NOT_EMPTY:1033
+msgid "The subscription still has dependent objects"
+msgstr "الاشتراك لا يزال لديه كائنات تابعة"
+
+#: 11001.SERIAL_CAPTION_AND_PATTERN_HAS_ISSUANCES:1037
+msgid "The caption/pattern still has dependent issuances"
+msgstr "التسمية التوضيحية/النمط لا يزال لديها إصدارات تابعة"
+
+#: 11101.SERIAL_DISTRIBUTION_HAS_NO_COPY_TEMPLATE:1041
 msgid ""
 "Units cannot be created for the given item because its associated "
 "distribution does not have a copy template."
@@ -1346,51 +1329,20 @@ msgstr ""
 "لا يمكن إنشاء الوحدات للنسخة المُعطاة لأن التوزيع المرتبط ليس لديه تركيبة "
 "نسخة."
 
-#: 1518.ACTION_HOLD_TRANSIT_COPY_NOT_FOUND:223
-msgid "The requested action_hold_transit_copy was not found"
-msgstr "لم يتم العثور على action_hold_transit_copy المطلوب"
-
-#: 1594.AUTHORITY_FULL_REC_NOT_FOUND:430
-msgid "The requested authority_full_rec was not found"
-msgstr "لم يتم العثور على authority_full_rec المطلوب"
-
-#: 1565.ACTOR_PROFILE_NOT_FOUND:346
-msgid "The requested actor_profile was not found"
-msgstr "لم يتم العثور على actor_profile المطلوب"
-
-#: 1580.METABIB_VIRTUAL_RECORD_NOT_FOUND:389
-msgid "The requested metabib_virtual_record was not found"
-msgstr "لم يتم العثور على metabib_virtual_record المطلوب"
-
-#: 1640.ACTOR_USR_ORG_UNIT_OPT_IN_NOT_FOUND:568
-msgid "The requested actor_usr_org_unit_opt_in was not found"
-msgstr "لم يتم العثور على actor_usr_org_unit_opt_in المطلوب"
-
-#: 1572.AUTHORITY_RECORD_NOTE_NOT_FOUND:366
-msgid "The requested authority_record_note was not found"
-msgstr "لم يتم العثور على authority_record_note المطلوب"
-
-#: 7035.GEOCODING_LOCATION_NOT_FOUND:954
-msgid "No location returned by Geographic Location Service"
-msgstr ""
-
-#: 1848.ACQ_FUND_NOT_FOUND:624
-msgid "The requested acq.fund was not found"
-msgstr "لم يتم العثور على acq.fund المطلوب"
-
-#: 11106.TOTAL_HOLD_COPY_RATIO_EXCEEDED:1067
+#: 11102.SERIAL_DISTRIBUTION_HAS_NO_CALL_NUMBER:1045
 msgid ""
-"Renewal attempt failed because the \"hold / total copies\" ratio exceeds the "
-"configured limit"
+"Units cannot be created for the given item because its associated "
+"distribution does not have a call number."
 msgstr ""
-"فشلت محاولة تجديد لأن مُعدل نسبة \"الحجز / إجمالي مجموع النسخ\" تجاوزت حد "
-"التكوين/التهيئة"
+"لا يمكن إنشاء الوحدات لـِ النُسخ المُقدَمة لأن توزيعاتها المُرتبطة لا تملك "
+"رمز استدعاء."
 
-#: 1615.ACTION_NON_CATALOGED_CIRCULATION_NOT_FOUND:493
-msgid "The requested action_non_cataloged_circulation was not found"
-msgstr "لم يتم العثور على action_non_cataloged_circulation المطلوب"
+#: 11103.TRANSIT_CHECKIN_INTERVAL_BLOCK:1049
+msgid "Checkin attempted on item during minimum transit checkin interval."
+msgstr ""
+"محاولة الإرجاع للنُسخة خلال الحد الأدنى لـِ مهلة/مدة نقل/عبور الإرجاع"
 
-#: 11104.SERIAL_CORRUPT_PATTERN_CODE:1056
+#: 11104.SERIAL_CORRUPT_PATTERN_CODE:1054
 msgid ""
 "A serial pattern code has been configured that fails to conform to MFHD "
 "standards for fields 853-855."
@@ -1398,9 +1350,57 @@ msgstr ""
 "تم تكوين/تهيئة كود نمط السلسلة الذي فشل في التوافق مع معايير ـ إم إف أتش دي "
 "ـ لـِ الحقول 853-855."
 
-#: 1604.MONEY_USER_SUMMARY_NOT_FOUND:460
-msgid "The requested money_user_summary was not found"
-msgstr "لم يتم العثور على money_user_summary المطلوب"
+#: 11105.PATRON_CREDIT_DISABLED:1061
+msgid ""
+"Payments by patron credit are not allowed for the selected transaction"
+msgstr ""
+"لا يسمح بتسديد المدفوعات عن طريق بطاقة الائتمان لـِ الإجراءات المُحددة"
+
+#: 11106.TOTAL_HOLD_COPY_RATIO_EXCEEDED:1065
+msgid ""
+"Renewal attempt failed because the \"hold / total copies\" ratio exceeds the "
+"configured limit"
+msgstr ""
+"فشلت محاولة تجديد لأن مُعدل نسبة \"الحجز / إجمالي مجموع النسخ\" تجاوزت حد "
+"التكوين/التهيئة"
+
+#: 11107.AVAIL_HOLD_COPY_RATIO_EXCEEDED:1069
+msgid ""
+"Renewal attempt failed because the \"hold / available copies\" ratio exceeds "
+"the configured limit"
+msgstr ""
+"فشلت محاولة تجديد لأن مُعدل نسبة \"الحجز / النسخ المتاحة\" تجاوزت حد "
+"التكوين/التهيئة"
+
+#: 11008.SERIAL_DISTRIBUTION_NOT_EMPTY:1073
+msgid "The distribution still has dependent objects"
+msgstr "لا يزال للتوزيع كائنات تابعة"
+
+#: 11009.SERIAL_STREAM_NOT_EMPTY:1076
+msgid "The stream still has dependent objects"
+msgstr "لا يزال التيار يحتوي على كائنات تابعة"
+
+#: 11010.SERIAL_CAPTION_AND_PATTERN_NOT_EMPTY:1079
+msgid "The prediction pattern still has dependent objects"
+msgstr "نموذج التنبؤ لا يزال لديه كائنات تابعة"
+
+#: 12000.ITEM_TO_MARK_CHECKED_OUT:1085
+msgid "The item to be marked is checked out to a patron."
+msgstr ""
+
+#: 12001.ITEM_TO_MARK_IN_TRANSIT:1088
+msgid "The item to be marked is in transit."
+msgstr ""
+
+#: 12002.ITEM_TO_MARK_LAST_HOLD_COPY:1091
+msgid "The item to be marked is the last possible target for a hold."
+msgstr ""
+
+#: 12003.TITLE_HAS_HOLDS:1097
+msgid ""
+"This title has hold requests on it that will be canceled if they are not "
+"transferred."
+msgstr ""
 
 #~ msgid "This requested item is currently on the holds shelf"
 #~ msgstr "هذه النسخة المطلوبة حالياً في رف الحجوزات"

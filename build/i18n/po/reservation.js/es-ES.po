@@ -7,133 +7,27 @@ msgid ""
 msgstr ""
 "Project-Id-Version: evergreen\n"
 "Report-Msgid-Bugs-To: FULL NAME <EMAIL@ADDRESS>\n"
-"POT-Creation-Date: 2020-06-12 11:45-0400\n"
+"POT-Creation-Date: 2022-04-27 17:07-0400\n"
 "PO-Revision-Date: 2016-08-16 14:17+0000\n"
 "Last-Translator: Anahi Valdez <avaldez@emeralddata.net>\n"
 "Language-Team: Spanish <es@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2020-09-16 06:02+0000\n"
-"X-Generator: Launchpad (build 83bdf6c8a3a5f87722c8927e54838522f3e57504)\n"
-
-#: reservation.js:AUTO_ending_at
-msgid "and"
-msgstr "y"
-
-#: reservation.js:BRSRC_NOT_FOUND
-msgid "Could not locate that resource."
-msgstr "No se pudo localizar ese recurso."
-
-#: reservation.js:AUTO_choose_a_brt
-msgid "Choose a Bookable Resource Type"
-msgstr "Elija un tipo de recurso se puede reservar"
-
-#: reservation.js:CREATE_BRESV_OK
-msgid "Created ${0} reservation(s)"
-msgstr "Creadas ${0} reserva(s)"
-
-#: reservation.js:AUTO_ATTR_VALUE_reserve_brsrc
-msgid "Reserve Selected"
-msgstr "Reserva seleccionada"
+"X-Launchpad-Export-Date: 2023-05-05 04:48+0000\n"
+"X-Generator: Launchpad (build 90e2150bef31b411d7bae5c4032c7e320fcaaec8)\n"
 
 #: reservation.js:NO_BRT_RESULTS
 msgid "There are no bookable resource types registered."
 msgstr "No hay tipos de recursos se pueden reservar registrados."
 
-#: reservation.js:AUTO_ATTR_VALUE_next
-msgid "Next"
-msgstr "Siguiente"
+#: reservation.js:NO_TARG_DIV
+msgid "Could not find target div"
+msgstr "No pudo encontrar div objectivo"
 
-#: reservation.js:BRSRC_RETRIVE_ERROR
-msgid "Error retrieving resource: "
-msgstr "Error obteniendo el recurso: "
-
-#: reservation.js:AUTO_starting_at
-msgid "Between"
-msgstr "Entre"
-
-#: reservation.js:AUTO_bresv_grid_resource
-msgid "Resource"
-msgstr "Recurso"
-
-#: reservation.js:AUTO_brt_noncat_only
-msgid "Show only non-cataloged bookable resource types"
-msgstr "Mostrar sólo los tipos de recursos se pueden reservar no catalogadas"
-
-#: reservation.js:ON_FLY_ERROR
-msgid "Error attempting to make item a bookable resource:"
-msgstr "Error al intentar hacer punto pueden reservar un recurso:"
-
-#: reservation.js:AUTO_bresv_grid_type
-msgid "Type"
-msgstr "Tipo"
-
-#: reservation.js:AUTO_with_these_attr
-msgid "With these attributes:"
-msgstr "Con estos atributos:"
-
-#: reservation.js:WHERES_THE_BARCODE
-msgid "Enter a patron's barcode to make a reservation."
-msgstr "Ingrese un patrón de código de barras para hacer una reserva."
-
-#: reservation.js:CREATE_BRESV_SERVER_ERROR
-msgid "Server error trying to create reservation: "
-msgstr "Error del servidor al crear una reserva "
-
-#: reservation.js:CREATE_BRESV_LOCAL_ERROR
-msgid "Exception trying to create reservation: "
-msgstr "Excepción tratando de crear reservas: "
-
-#: reservation.js:CREATE_BRESV_OK_MISSING_TARGET
-msgid ""
-"Created ${0} reservation(s), but ${1} of these could not target any "
-"resources.\n"
-"\n"
-"This means that it won't be possible to fulfill some of these\n"
-"reservations until a suitable resource becomes available."
-msgstr ""
-"Creadas $ {0} reserva (s), pero $ {1} de éstos no podrían dirigirse a "
-"cualquier recurso.\n"
-"\n"
-"Esto significa que no será posible para cumplir algunos de estos\n"
-"reservas hasta que un recurso adecuada esté disponible."
-
-#: reservation.js:CREATE_BRESV_OK_MISSING_TARGET_WILL_CANCEL
-msgid ""
-"Since the requested resource could not be targeted, this\n"
-"reservation will now be canceled."
-msgstr ""
-"Dado que el recurso solicitado no podría ser objetivo, esta\n"
-"reserva ahora se cancelará."
-
-#: reservation.js:OUTSTANDING_BRESV
-msgid "Outstanding reservations for patron"
-msgstr "Reservas pendientes para el patrón"
-
-#: reservation.js:HERE_ARE_EXISTING_BRESV
-msgid "Existing reservations for"
-msgstr "Reservas existentes para"
-
-#: reservation.js:CXL_BRESV_SUCCESS
-msgid "Canceled ${0} reservation(s)"
-msgstr "Canceladas ${0} reserva(s)"
-
-#: reservation.js:GET_PATRON_NO_RESULT
-msgid "No server response after attempting to look up patron by barcode."
-msgstr ""
-"No hay respuesta del servidor después de intentar buscar el patrón de código "
-"de barras."
-
-#: reservation.js:AUTO_or
-msgid "- Or -"
-msgstr "- o -"
-
-#: reservation.js:AUTO_email_notify
-msgid "Send email notification when resource is available for pickup."
-msgstr ""
-"Enviar notificación por correo electrónico cuando recurso está disponible "
-"para su recogida."
+#: reservation.js:NO_BRA_RESULTS
+msgid "Couldn't retrieve booking resource attributes."
+msgstr "No se ha podido recuperar los atributos de recursos de reserva."
 
 #: reservation.js:SELECT_A_BRSRC_THEN
 msgid ""
@@ -153,38 +47,151 @@ msgstr ""
 "estos articulos no están disponibles duarnte el tiempo solicutado; si\n"
 "es possible, elija otro recurso o cambiar el tiempo de reserva."
 
-#: reservation.js:AUTO_ATTR_VALUE_reserve_brt
-msgid "Reserve Any"
-msgstr "Reservar Cualquiera"
+#: reservation.js:CREATE_BRESV_LOCAL_ERROR
+msgid "Exception trying to create reservation: "
+msgstr "Excepción tratando de crear reservas: "
 
-#: reservation.js:AUTO_patron_barcode
-msgid "Reserve to patron barcode:"
-msgstr "Reservar a Patrón de código de barras:"
+#: reservation.js:CREATE_BRESV_SERVER_ERROR
+msgid "Server error trying to create reservation: "
+msgstr "Error del servidor al crear una reserva "
 
-#: reservation.js:COULD_NOT_RETRIEVE_BRT_PASSED_IN
-msgid "Error retrieving booking resource type"
-msgstr "Error al recuperar la reserva tipo de recurso"
+#: reservation.js:CREATE_BRESV_SERVER_NO_RESPONSE
+msgid "No response from server after trying to create reservation."
+msgstr "No hay respuesta del servidor después de tratar de crear la reserva."
+
+#: reservation.js:CREATE_BRESV_OK_MISSING_TARGET
+msgid ""
+"Created ${0} reservation(s), but ${1} of these could not target any "
+"resources.\n"
+"\n"
+"This means that it won't be possible to fulfill some of these\n"
+"reservations until a suitable resource becomes available."
+msgstr ""
+"Creadas $ {0} reserva (s), pero $ {1} de éstos no podrían dirigirse a "
+"cualquier recurso.\n"
+"\n"
+"Esto significa que no será posible para cumplir algunos de estos\n"
+"reservas hasta que un recurso adecuada esté disponible."
+
+#: reservation.js:CREATE_BRESV_OK_MISSING_TARGET_BLOCKED_BY_CIRC
+msgid ""
+"The desired reservation(s) are blocked by circulation(s) with the following "
+"due date(s):\n"
+"${0}"
+msgstr ""
+"La reserva deseada(s) están bloqueados por la circulación(s) con la fecha de "
+"vencimiento siguiente (s):\n"
+"$ {0}"
+
+#: reservation.js:CREATE_BRESV_OK_MISSING_TARGET_WILL_CANCEL
+msgid ""
+"Since the requested resource could not be targeted, this\n"
+"reservation will now be canceled."
+msgstr ""
+"Dado que el recurso solicitado no podría ser objetivo, esta\n"
+"reserva ahora se cancelará."
+
+#: reservation.js:CREATE_BRESV_OK
+msgid "Created ${0} reservation(s)"
+msgstr "Creadas ${0} reserva(s)"
+
+#: reservation.js:WHERES_THE_BARCODE
+msgid "Enter a patron's barcode to make a reservation."
+msgstr "Ingrese un patrón de código de barras para hacer una reserva."
 
 #: reservation.js:ACTOR_CARD_NOT_FOUND
 msgid "Patron barcode not found. Please try again."
 msgstr ""
 "Código de barras patrón no se encuentra. Porfavor Inténtelo de nuevo."
 
+#: reservation.js:GET_BRESV_LIST_ERR
+msgid "Error while retrieving reservation list: "
+msgstr "Error al obtener la lista de reservas: "
+
+#: reservation.js:GET_BRESV_LIST_NO_RESULT
+msgid "No results from server retrieving reservation list."
+msgstr ""
+"No hay resultados desde un servidor recuperación de lista de reserva."
+
+#: reservation.js:OUTSTANDING_BRESV
+msgid "Outstanding reservations for patron"
+msgstr "Reservas pendientes para el patrón"
+
+#: reservation.js:UNTARGETED
+msgid "None targeted"
+msgstr "Ninguno objetivo"
+
+#: reservation.js:GET_PATRON_NO_RESULT
+msgid "No server response after attempting to look up patron by barcode."
+msgstr ""
+"No hay respuesta del servidor después de intentar buscar el patrón de código "
+"de barras."
+
+#: reservation.js:HERE_ARE_EXISTING_BRESV
+msgid "Existing reservations for"
+msgstr "Reservas existentes para"
+
+#: reservation.js:NO_EXISTING_BRESV
+msgid "This user has no existing reservations at this time."
+msgstr "Este usuario no tiene reservas existentes."
+
+#: reservation.js:NO_USABLE_BRSRC
+msgid ""
+"No reservable resources.  Adjust start and end time\n"
+"until a resource is available for reservation."
+msgstr ""
+"No hay recursos que se pueden reservar. Ajustar el tiempo de inicio y fin\n"
+"hasta que un recurso está disponible para su reserva."
+
+#: reservation.js:CXL_BRESV_SUCCESS
+msgid "Canceled ${0} reservation(s)"
+msgstr "Canceladas ${0} reserva(s)"
+
+#: reservation.js:CXL_BRESV_FAILURE
+msgid "Error canceling reservations; server silent."
+msgstr "Error de cancelar las reservas; servidor de silencio."
+
+#: reservation.js:CXL_BRESV_FAILURE2
+msgid "Error canceling reservations:\n"
+msgstr "Error al cancelar las reservas:\n"
+
 #: reservation.js:CXL_BRESV_SELECT_SOMETHING
 msgid "You have not selected any reservations to cancel."
 msgstr "No ha seleccionado ninguna reserva para cancelar."
-
-#: reservation.js:AUTO_i_need_this_resource
-msgid "I need this resource..."
-msgstr "Necesito este recurso..."
 
 #: reservation.js:NEED_EXACTLY_ONE_BRT_PASSED_IN
 msgid "Can't book multiple resource types at once"
 msgstr "No se puede reservar varios tipos de recursos a la vez."
 
-#: reservation.js:AUTO_bresv_grid_start_time
-msgid "Start time"
-msgstr "Fecha de Inicio"
+#: reservation.js:COULD_NOT_RETRIEVE_BRT_PASSED_IN
+msgid "Error retrieving booking resource type"
+msgstr "Error al recuperar la reserva tipo de recurso"
+
+#: reservation.js:INVALID_TS_RANGE
+msgid "You must choose a valid start and end time for the reservation."
+msgstr "Debe elegir un tiempo de inicio y final válido para la reserva."
+
+#: reservation.js:BRSRC_NOT_FOUND
+msgid "Could not locate that resource."
+msgstr "No se pudo localizar ese recurso."
+
+#: reservation.js:BRSRC_RETRIVE_ERROR
+msgid "Error retrieving resource: "
+msgstr "Error obteniendo el recurso: "
+
+#: reservation.js:ON_FLY_NO_RESPONSE
+msgid "No response from server attempting to make item a bookable resource."
+msgstr ""
+"No hay respuesta del servidor que quiere hacer artículo reservable en un "
+"recurso."
+
+#: reservation.js:ON_FLY_ERROR
+msgid "Error attempting to make item a bookable resource:"
+msgstr "Error al intentar hacer punto pueden reservar un recurso:"
+
+#: reservation.js:ANY
+msgid "ANY"
+msgstr "CUALQUIERA"
 
 #: reservation.js:ERROR_FETCHING_AOUS
 msgid ""
@@ -196,27 +203,74 @@ msgstr ""
 "Este es un error no-fatal, pero puede que desee\n"
 "ponerse en contacto con el administrador del sistema."
 
+#: reservation.js:AUTO_choose_a_brt
+msgid "Choose a Bookable Resource Type"
+msgstr "Elija un tipo de recurso se puede reservar"
+
+#: reservation.js:AUTO_i_need_this_resource
+msgid "I need this resource..."
+msgstr "Necesito este recurso..."
+
+#: reservation.js:AUTO_starting_at
+msgid "Between"
+msgstr "Entre"
+
+#: reservation.js:AUTO_ending_at
+msgid "and"
+msgstr "y"
+
+#: reservation.js:AUTO_with_these_attr
+msgid "With these attributes:"
+msgstr "Con estos atributos:"
+
+#: reservation.js:AUTO_patron_barcode
+msgid "Reserve to patron barcode:"
+msgstr "Reservar a Patrón de código de barras:"
+
+#: reservation.js:AUTO_ATTR_VALUE_next
+msgid "Next"
+msgstr "Siguiente"
+
+#: reservation.js:AUTO_ATTR_VALUE_reserve_brsrc
+msgid "Reserve Selected"
+msgstr "Reserva seleccionada"
+
+#: reservation.js:AUTO_ATTR_VALUE_reserve_brt
+msgid "Reserve Any"
+msgstr "Reservar Cualquiera"
+
+#: reservation.js:AUTO_ATTR_VALUE_button_edit_existing
+msgid "Edit selected"
+msgstr "Editar seleccionados"
+
 #: reservation.js:AUTO_ATTR_VALUE_button_cancel_existing
 msgid "Cancel selected"
 msgstr "Cancelar seleccionados"
 
-#: reservation.js:GET_BRESV_LIST_NO_RESULT
-msgid "No results from server retrieving reservation list."
-msgstr ""
-"No hay resultados desde un servidor recuperación de lista de reserva."
+#: reservation.js:AUTO_bresv_grid_type
+msgid "Type"
+msgstr "Tipo"
 
-#: reservation.js:GET_BRESV_LIST_ERR
-msgid "Error while retrieving reservation list: "
-msgstr "Error al obtener la lista de reservas: "
+#: reservation.js:AUTO_bresv_grid_resource
+msgid "Resource"
+msgstr "Recurso"
+
+#: reservation.js:AUTO_bresv_grid_start_time
+msgid "Start time"
+msgstr "Fecha de Inicio"
+
+#: reservation.js:AUTO_bresv_grid_end_time
+msgid "End time"
+msgstr "Hora de finalización"
+
+#: reservation.js:AUTO_brt_noncat_only
+msgid "Show only non-cataloged bookable resource types"
+msgstr "Mostrar sólo los tipos de recursos se pueden reservar no catalogadas"
 
 #: reservation.js:AUTO_arbitrary_resource
 msgid "Enter the barcode of a cataloged, bookable resource:"
 msgstr ""
 "Introducir el código de barras de un recurso catalogado, se pueden reservar:"
-
-#: reservation.js:NO_EXISTING_BRESV
-msgid "This user has no existing reservations at this time."
-msgstr "Este usuario no tiene reservas existentes."
 
 #: reservation.js:AUTO_explain_bookable
 msgid ""
@@ -229,70 +283,16 @@ msgstr ""
 "plantilla</ em>, y seleccione <em>Haga reservable artículo </em> o <em> "
 "Artículo de Reserva Ahora</em> alli."
 
-#: reservation.js:CXL_BRESV_FAILURE2
-msgid "Error canceling reservations:\n"
-msgstr "Error al cancelar las reservas:\n"
-
-#: reservation.js:NO_BRA_RESULTS
-msgid "Couldn't retrieve booking resource attributes."
-msgstr "No se ha podido recuperar los atributos de recursos de reserva."
-
-#: reservation.js:CREATE_BRESV_SERVER_NO_RESPONSE
-msgid "No response from server after trying to create reservation."
-msgstr "No hay respuesta del servidor después de tratar de crear la reserva."
-
-#: reservation.js:AUTO_bresv_grid_end_time
-msgid "End time"
-msgstr "Hora de finalización"
-
-#: reservation.js:UNTARGETED
-msgid "None targeted"
-msgstr "Ninguno objetivo"
-
-#: reservation.js:ON_FLY_NO_RESPONSE
-msgid "No response from server attempting to make item a bookable resource."
-msgstr ""
-"No hay respuesta del servidor que quiere hacer artículo reservable en un "
-"recurso."
-
-#: reservation.js:NO_TARG_DIV
-msgid "Could not find target div"
-msgstr "No pudo encontrar div objectivo"
-
-#: reservation.js:INVALID_TS_RANGE
-msgid "You must choose a valid start and end time for the reservation."
-msgstr "Debe elegir un tiempo de inicio y final válido para la reserva."
-
 #: reservation.js:AUTO_pickup_lib_selector
 msgid "Choose the pickup library for this reservation:"
 msgstr "Elegir la biblioteca de recogida para esta reservacion:"
 
-#: reservation.js:NO_USABLE_BRSRC
-msgid ""
-"No reservable resources.  Adjust start and end time\n"
-"until a resource is available for reservation."
+#: reservation.js:AUTO_email_notify
+msgid "Send email notification when resource is available for pickup."
 msgstr ""
-"No hay recursos que se pueden reservar. Ajustar el tiempo de inicio y fin\n"
-"hasta que un recurso está disponible para su reserva."
+"Enviar notificación por correo electrónico cuando recurso está disponible "
+"para su recogida."
 
-#: reservation.js:AUTO_ATTR_VALUE_button_edit_existing
-msgid "Edit selected"
-msgstr "Editar seleccionados"
-
-#: reservation.js:CREATE_BRESV_OK_MISSING_TARGET_BLOCKED_BY_CIRC
-msgid ""
-"The desired reservation(s) are blocked by circulation(s) with the following "
-"due date(s):\n"
-"${0}"
-msgstr ""
-"La reserva deseada(s) están bloqueados por la circulación(s) con la fecha de "
-"vencimiento siguiente (s):\n"
-"$ {0}"
-
-#: reservation.js:ANY
-msgid "ANY"
-msgstr "CUALQUIERA"
-
-#: reservation.js:CXL_BRESV_FAILURE
-msgid "Error canceling reservations; server silent."
-msgstr "Error de cancelar las reservas; servidor de silencio."
+#: reservation.js:AUTO_or
+msgid "- Or -"
+msgstr "- o -"

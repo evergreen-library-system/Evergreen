@@ -7,172 +7,172 @@ msgid ""
 msgstr ""
 "Project-Id-Version: evergreen\n"
 "Report-Msgid-Bugs-To: FULL NAME <EMAIL@ADDRESS>\n"
-"POT-Creation-Date: 2020-06-12 11:45-0400\n"
+"POT-Creation-Date: 2022-04-27 17:07-0400\n"
 "PO-Revision-Date: 2016-12-30 15:31+0000\n"
 "Last-Translator: fares othman <Unknown>\n"
 "Language-Team: Arabic <ar@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2020-09-16 06:02+0000\n"
-"X-Generator: Launchpad (build 83bdf6c8a3a5f87722c8927e54838522f3e57504)\n"
-
-#: Searcher.js:before
-msgid "Published Before"
-msgstr "تاريخ النشر قبل"
-
-#: Searcher.js:lit_form
-msgid "Literary Form"
-msgstr "الشكل الأدبي"
-
-#: Searcher.js:metabib
-msgid "Metarecord Search"
-msgstr "البحث في البيانات الإشارية ـ الميتاداتاـ للتسجيلة"
-
-#: Searcher.js:contains
-msgid "Contains"
-msgstr "تحتوي"
-
-#: Searcher.js:more
-msgid "More..."
-msgstr "مزيد..."
-
-#: Searcher.js:after
-msgid "Published After"
-msgstr "تاريخ النشر بعد"
-
-#: Searcher.js:basic
-msgid "Basic"
-msgstr "أساسي"
-
-#: Searcher.js:modifiers
-msgid "Modifiers"
-msgstr "الصفات التعريفية"
-
-#: Searcher.js:item_type
-msgid "Type"
-msgstr "النوع"
-
-#: Searcher.js:depth
-msgid "Search Depth"
-msgstr "البحث العميق"
-
-#: Searcher.js:available
-msgid "Available"
-msgstr "متاحة"
-
-#: Searcher.js:classed_searches
-msgid "Classed Searches"
-msgstr "البحث المُصنف"
-
-#: Searcher.js:item_form
-msgid "Form"
-msgstr "الشكل"
-
-#: Searcher.js:new_modifier
-msgid "New Modifier"
-msgstr "صفة تعريفية جديدة"
-
-#: Searcher.js:less
-msgid "...Less"
-msgstr "أقل..."
-
-#: Searcher.js:modifier_default
-msgid "-- Select a Modifier --"
-msgstr "-- اختيار صفة تعريفية --"
-
-#: Searcher.js:during
-msgid "In Publication"
-msgstr "تاريخ النشر"
-
-#: Searcher.js:exact
-msgid "Exactly Matches"
-msgstr "يطابق بالضبط"
-
-#: Searcher.js:advanced
-msgid "Advanced"
-msgstr "متقدم"
-
-#: Searcher.js:between
-msgid "Published Between"
-msgstr "تاريخ النشر ما بين"
-
-#: Searcher.js:new_filter
-msgid "New Filter"
-msgstr "تصفية وفرز جديد"
-
-#: Searcher.js:faceted_searches
-msgid "Facets"
-msgstr "الأوجه"
-
-#: Searcher.js:perform_search
-msgid "Go!"
-msgstr "الذهاب!"
-
-#: Searcher.js:remove
-msgid "Remove"
-msgstr "حذف"
-
-#: Searcher.js:audience
-msgid "Audience"
-msgstr "الجمهور"
-
-#: Searcher.js:format
-msgid "Type and Form"
-msgstr "الشكل والنوع"
-
-#: Searcher.js:descending
-msgid "Sort Descending"
-msgstr "فَرز تَنازلي"
-
-#: Searcher.js:new_facet
-msgid "New Facet"
-msgstr "وجه جديد"
+"X-Launchpad-Export-Date: 2023-05-05 04:48+0000\n"
+"X-Generator: Launchpad (build 90e2150bef31b411d7bae5c4032c7e320fcaaec8)\n"
 
 #: Searcher.js:and
 msgid "AND"
 msgstr "وَ"
 
-#: Searcher.js:vr_format
-msgid "Videorecording Format"
-msgstr "صيغة تسجيل الفيديو"
+#: Searcher.js:or
+msgid "OR"
+msgstr "أَو"
 
-#: Searcher.js:staff
-msgid "Staff Search"
-msgstr "بحث طاقم المكتبة"
+#: Searcher.js:more
+msgid "More..."
+msgstr "مزيد..."
 
-#: Searcher.js:site
-msgid "Site"
-msgstr "المَوقع"
+#: Searcher.js:less
+msgid "...Less"
+msgstr "أقل..."
 
-#: Searcher.js:notcontains
-msgid "Does Not Contain"
-msgstr "لا تَحتوي"
+#: Searcher.js:classed_searches
+msgid "Classed Searches"
+msgstr "البحث المُصنف"
 
-#: Searcher.js:sort
-msgid "Sort Axis"
-msgstr "محور الفرز"
+#: Searcher.js:faceted_searches
+msgid "Facets"
+msgstr "الأوجه"
 
 #: Searcher.js:filters
 msgid "Filters"
 msgstr "التصفيات والفرز"
 
-#: Searcher.js:bib_level
-msgid "Bibliographic Level"
-msgstr "المستوى البيبلوغرافي"
+#: Searcher.js:modifiers
+msgid "Modifiers"
+msgstr "الصفات التعريفية"
 
-#: Searcher.js:filter_default
-msgid "-- Select a Filter --"
-msgstr "-- اختيار فرز --"
+#: Searcher.js:new_facet
+msgid "New Facet"
+msgstr "وجه جديد"
+
+#: Searcher.js:new_filter
+msgid "New Filter"
+msgstr "تصفية وفرز جديد"
+
+#: Searcher.js:new_modifier
+msgid "New Modifier"
+msgstr "صفة تعريفية جديدة"
+
+#: Searcher.js:remove
+msgid "Remove"
+msgstr "حذف"
+
+#: Searcher.js:advanced
+msgid "Advanced"
+msgstr "متقدم"
+
+#: Searcher.js:basic
+msgid "Basic"
+msgstr "أساسي"
+
+#: Searcher.js:perform_search
+msgid "Go!"
+msgstr "الذهاب!"
+
+#: Searcher.js:contains
+msgid "Contains"
+msgstr "تحتوي"
+
+#: Searcher.js:notcontains
+msgid "Does Not Contain"
+msgstr "لا تَحتوي"
+
+#: Searcher.js:exact
+msgid "Exactly Matches"
+msgstr "يطابق بالضبط"
+
+#: Searcher.js:modifier_default
+msgid "-- Select a Modifier --"
+msgstr "-- اختيار صفة تعريفية --"
+
+#: Searcher.js:available
+msgid "Available"
+msgstr "متاحة"
+
+#: Searcher.js:descending
+msgid "Sort Descending"
+msgstr "فَرز تَنازلي"
 
 #: Searcher.js:ascending
 msgid "Sort Ascending"
 msgstr "فَرز تَصاعدي"
 
-#: Searcher.js:or
-msgid "OR"
-msgstr "أَو"
+#: Searcher.js:metabib
+msgid "Metarecord Search"
+msgstr "البحث في البيانات الإشارية ـ الميتاداتاـ للتسجيلة"
+
+#: Searcher.js:staff
+msgid "Staff Search"
+msgstr "بحث طاقم المكتبة"
+
+#: Searcher.js:filter_default
+msgid "-- Select a Filter --"
+msgstr "-- اختيار فرز --"
+
+#: Searcher.js:site
+msgid "Site"
+msgstr "المَوقع"
+
+#: Searcher.js:depth
+msgid "Search Depth"
+msgstr "البحث العميق"
+
+#: Searcher.js:sort
+msgid "Sort Axis"
+msgstr "محور الفرز"
 
 #: Searcher.js:statuses
 msgid "Statuses"
 msgstr "الحَالات"
+
+#: Searcher.js:audience
+msgid "Audience"
+msgstr "الجمهور"
+
+#: Searcher.js:before
+msgid "Published Before"
+msgstr "تاريخ النشر قبل"
+
+#: Searcher.js:after
+msgid "Published After"
+msgstr "تاريخ النشر بعد"
+
+#: Searcher.js:between
+msgid "Published Between"
+msgstr "تاريخ النشر ما بين"
+
+#: Searcher.js:during
+msgid "In Publication"
+msgstr "تاريخ النشر"
+
+#: Searcher.js:item_form
+msgid "Form"
+msgstr "الشكل"
+
+#: Searcher.js:item_type
+msgid "Type"
+msgstr "النوع"
+
+#: Searcher.js:format
+msgid "Type and Form"
+msgstr "الشكل والنوع"
+
+#: Searcher.js:vr_format
+msgid "Videorecording Format"
+msgstr "صيغة تسجيل الفيديو"
+
+#: Searcher.js:lit_form
+msgid "Literary Form"
+msgstr "الشكل الأدبي"
+
+#: Searcher.js:bib_level
+msgid "Bibliographic Level"
+msgstr "المستوى البيبلوغرافي"
