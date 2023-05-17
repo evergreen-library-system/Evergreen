@@ -13,7 +13,18 @@ Copy stat cats appear in the _Holdings Editor_. You might use copy stat cats to 
 
 An example of the _Create a new statistical category_ controls for copies:
 
-image::media/lsa-statcat-1.png[Create copy stat cat]
+image::stat_cat_editor/stat_cat_editor_copy.png[Create copy stat cat]
+
+[NOTE]
+======
+The _Focus Location_ will scope to the workstation you're logged in as in.
+
+_Copy Statistical Categories_ will automatically come up when accessing Statistical Category Editor.
+======
+
+Below that there is a list of existing stat cats:
+
+image::stat_cat_editor/stat_cat_editor_copy_list.png[List of existing stat cats]
 
 * _OPAC Visibility_:  Should the category be displayed in the OPAC?
 * _Required_:  Must the category be assigned a value when editing the item attributes?
