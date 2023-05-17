@@ -1,7 +1,0 @@
-== Improvements to Mapping Permissions to Groups ==
-
-The dialog to add permission mappings to a group in the Permission
-Groups administrative interface now allows multiple permissions
-to be added in one invocation. This reduces the number of clicks
-and keyboard interactions required when adding a large number of
-permission mappings.
