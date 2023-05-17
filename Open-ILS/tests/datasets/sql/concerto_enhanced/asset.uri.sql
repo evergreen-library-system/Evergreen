@@ -9,6 +9,7 @@ COPY asset.uri (id, href, label, use_restriction, active) FROM stdin;
 15	http://librweb.laurentian.ca/login?url=http://resolver.scholarsportal.info/isbn/9784431287759	http://librweb.laurentian.ca/login?url=http://resolver.scholarsportal.info/isbn/9784431287759	Available online from ScholarsPortal	1
 16	http://librweb.laurentian.ca/login?url=http://dx.doi.org/10.1007/3-540-46145-0	http://librweb.laurentian.ca/login?url=http://dx.doi.org/10.1007/3-540-46145-0	Available online from SpringerLink	1
 17	http://librweb.laurentian.ca/login?url=http://resolver.scholarsportal.info/isbn/9783540461456	http://librweb.laurentian.ca/login?url=http://resolver.scholarsportal.info/isbn/9783540461456	Available online from Scholars Portal	1
+18	http://example.com/	Link text here	Public note here	1
 \.
 
 \echo sequence update column: id

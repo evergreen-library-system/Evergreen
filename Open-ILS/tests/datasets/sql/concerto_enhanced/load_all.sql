@@ -69,12 +69,6 @@ SET CONSTRAINTS ALL DEFERRED;
 \echo loading money.billing
 \i money.billing.sql
 
-\echo loading acq.acq_lineitem_history
-\i acq.acq_lineitem_history.sql
-
-\echo loading acq.acq_purchase_order_history
-\i acq.acq_purchase_order_history.sql
-
 \echo loading acq.fund_allocation
 \i acq.fund_allocation.sql
 
@@ -261,6 +255,9 @@ SET CONSTRAINTS ALL DEFERRED;
 \echo loading config.hold_matrix_matchpoint
 \i config.hold_matrix_matchpoint.sql
 
+\echo loading config.org_unit_setting_type
+\i config.org_unit_setting_type.sql
+
 \echo loading config.remoteauth_profile
 \i config.remoteauth_profile.sql
 
@@ -323,9 +320,6 @@ SET CONSTRAINTS ALL DEFERRED;
 
 \echo loading permission.grp_tree
 \i permission.grp_tree.sql
-
-\echo loading permission.perm_list
-\i permission.perm_list.sql
 
 \echo loading permission.usr_work_ou_map
 \i permission.usr_work_ou_map.sql
@@ -396,4 +390,288 @@ SELECT SETVAL('vandelay.queue_id_seq', (SELECT MAX(id) FROM vandelay.queue));
 
 SELECT SETVAL('vandelay.queued_record_id_seq', (SELECT MAX(id) FROM vandelay.queued_record));
 
+SELECT SETVAL('acq.acq_lineitem_pkey_seq', (SELECT MAX(audit_id) FROM acq.acq_lineitem_history));
+
+SELECT SETVAL('acq.acq_purchase_order_pkey_seq', (SELECT MAX(audit_id) FROM acq.acq_purchase_order_history));
+
+SELECT SETVAL('actor.workstation_id_seq', (SELECT MAX(id) FROM actor.workstation_setting));
+
+SELECT SETVAL('actor.org_unit_id_seq', (SELECT MAX(id) FROM actor.org_unit));
+
 COMMIT;
+
+CREATE OR REPLACE FUNCTION evergreen.concerto_date_carry_tbl_col(tbl TEXT, col TEXT, datecarry INTERVAL)
+RETURNS void AS $func$
+
+DECLARE
+debug_output TEXT;
+squery TEXT;
+ucount BIGINT := 1;
+current_offset BIGINT := 0;
+chunk_size INT := 500;
+max_rows BIGINT := 0;
+
+BEGIN
+
+squery := $$SELECT COUNT(*) FROM $$ || tbl;
+
+EXECUTE squery INTO max_rows;
+
+WHILE ucount > 0 LOOP
+
+    squery := $$UPDATE $$ || tbl || $$ o SET $$ || col || $$ = $$ || col || $$ + '$$ || datecarry || $$'::INTERVAL
+    FROM (SELECT id FROM $$ || tbl || $$ WHERE $$ || col || $$ IS NOT NULL ORDER BY id LIMIT $$ || chunk_size || $$ OFFSET $$ || current_offset || $$ ) AS j
+    WHERE o.id=j.id$$;
+
+    -- Display what we're about to work on
+    -- SELECT INTO debug_output $$ $$ || squery || $$ $$
+    --  FROM biblio.record_entry LIMIT 1;
+    --  RAISE NOTICE '%', debug_output;
+
+    -- work on it
+    EXECUTE squery;
+
+    current_offset = current_offset + chunk_size;
+
+    squery := $$ SELECT COUNT(*) FROM (SELECT id FROM $$ || tbl || $$ ORDER BY id LIMIT $$ || chunk_size || $$ OFFSET $$ || current_offset || $$) a $$;
+
+    -- Display squery
+    -- SELECT INTO debug_output $$ $$ || squery || $$ $$
+    --  FROM biblio.record_entry LIMIT 1;
+    --  RAISE NOTICE '%', debug_output;
+
+    EXECUTE squery INTO ucount;
+    IF ucount > 0 THEN
+        RAISE NOTICE 'date carry forward: %.% % / %', tbl, col, current_offset, max_rows;
+    END IF;
+
+END LOOP;
+
+END;
+$func$ LANGUAGE plpgsql VOLATILE;
+
+CREATE OR REPLACE FUNCTION evergreen.concerto_date_carry_all( skip_date_carry BOOLEAN DEFAULT FALSE )
+RETURNS void AS $$
+DECLARE
+    datediff INTERVAL;
+
+BEGIN
+
+IF NOT skip_date_carry THEN
+
+    SELECT INTO datediff (SELECT now() - lowdate FROM (SELECT MIN(create_date) lowdate FROM asset.call_number) as a);
+
+    -- acq.claim_event
+    PERFORM evergreen.concerto_date_carry_tbl_col('acq.claim_event', 'event_date', datediff);
+
+    -- acq.fund_allocation
+    PERFORM evergreen.concerto_date_carry_tbl_col('acq.fund_allocation', 'create_time', datediff);
+
+    -- acq.fund_debit
+    PERFORM evergreen.concerto_date_carry_tbl_col('acq.fund_debit', 'create_time', datediff);
+
+    -- acq.fund_transfer
+    PERFORM evergreen.concerto_date_carry_tbl_col('acq.fund_transfer', 'transfer_time', datediff);
+
+    -- acq.funding_source_credit
+    PERFORM evergreen.concerto_date_carry_tbl_col('acq.funding_source_credit', 'deadline_date', datediff);
+    PERFORM evergreen.concerto_date_carry_tbl_col('acq.funding_source_credit', 'effective_date', datediff);
+
+    -- acq.invoice
+    PERFORM evergreen.concerto_date_carry_tbl_col('acq.invoice', 'recv_date', datediff);
+    PERFORM evergreen.concerto_date_carry_tbl_col('acq.invoice', 'close_date', datediff);
+
+    -- acq.lineitem
+    PERFORM evergreen.concerto_date_carry_tbl_col('acq.lineitem', 'expected_recv_time', datediff);
+    PERFORM evergreen.concerto_date_carry_tbl_col('acq.lineitem', 'create_time', datediff);
+    PERFORM evergreen.concerto_date_carry_tbl_col('acq.lineitem', 'edit_time', datediff);
+
+    -- acq.lineitem_detail
+    PERFORM evergreen.concerto_date_carry_tbl_col('acq.lineitem_detail', 'recv_time', datediff);
+
+    -- acq.purchase_order
+    PERFORM evergreen.concerto_date_carry_tbl_col('acq.purchase_order', 'create_time', datediff);
+    PERFORM evergreen.concerto_date_carry_tbl_col('acq.purchase_order', 'edit_time', datediff);
+    PERFORM evergreen.concerto_date_carry_tbl_col('acq.purchase_order', 'order_date', datediff);
+
+    -- action.circulation
+    -- relying on action.push_circ_due_time() to take care of the 1 second before midnight logic
+    -- Omitting xact_start and xact_finish because those are going to get updated when the parent table is updated
+    PERFORM evergreen.concerto_date_carry_tbl_col('action.circulation', 'due_date', datediff);
+    PERFORM evergreen.concerto_date_carry_tbl_col('action.circulation', 'create_time', datediff);
+    PERFORM evergreen.concerto_date_carry_tbl_col('action.circulation', 'stop_fines_time', datediff);
+    PERFORM evergreen.concerto_date_carry_tbl_col('action.circulation', 'checkin_time', datediff);
+
+    -- action.hold_request
+    PERFORM evergreen.concerto_date_carry_tbl_col('action.hold_request', 'request_time', datediff);
+    PERFORM evergreen.concerto_date_carry_tbl_col('action.hold_request', 'capture_time', datediff);
+    PERFORM evergreen.concerto_date_carry_tbl_col('action.hold_request', 'fulfillment_time', datediff);
+    PERFORM evergreen.concerto_date_carry_tbl_col('action.hold_request', 'checkin_time', datediff);
+    PERFORM evergreen.concerto_date_carry_tbl_col('action.hold_request', 'return_time', datediff);
+    PERFORM evergreen.concerto_date_carry_tbl_col('action.hold_request', 'prev_check_time', datediff);
+    PERFORM evergreen.concerto_date_carry_tbl_col('action.hold_request', 'expire_time', datediff);
+    PERFORM evergreen.concerto_date_carry_tbl_col('action.hold_request', 'cancel_time', datediff);
+    PERFORM evergreen.concerto_date_carry_tbl_col('action.hold_request', 'thaw_date', datediff);
+    PERFORM evergreen.concerto_date_carry_tbl_col('action.hold_request', 'shelf_time', datediff);
+    PERFORM evergreen.concerto_date_carry_tbl_col('action.hold_request', 'shelf_expire_time', datediff);
+
+    -- action.survey
+    PERFORM evergreen.concerto_date_carry_tbl_col('action.survey', 'start_date', datediff);
+    PERFORM evergreen.concerto_date_carry_tbl_col('action.survey', 'end_date', datediff);
+
+    -- action.survey_response
+    PERFORM evergreen.concerto_date_carry_tbl_col('action.survey_response', 'answer_date', datediff);
+    PERFORM evergreen.concerto_date_carry_tbl_col('action.survey_response', 'effective_date', datediff);
+
+    -- action.unfulfilled_hold_list
+    PERFORM evergreen.concerto_date_carry_tbl_col('action.unfulfilled_hold_list', 'fail_time', datediff);
+
+    -- actor.org_unit_closed
+    PERFORM evergreen.concerto_date_carry_tbl_col('actor.org_unit_closed', 'close_start', datediff);
+    PERFORM evergreen.concerto_date_carry_tbl_col('actor.org_unit_closed', 'close_end', datediff);
+
+    -- actor.passwd
+    PERFORM evergreen.concerto_date_carry_tbl_col('actor.passwd', 'create_date', datediff);
+    PERFORM evergreen.concerto_date_carry_tbl_col('actor.passwd', 'edit_date', datediff);
+
+    -- actor.usr
+    PERFORM evergreen.concerto_date_carry_tbl_col('actor.usr', 'create_date', datediff);
+    PERFORM evergreen.concerto_date_carry_tbl_col('actor.usr', 'expire_date', datediff);
+
+    -- actor.usr_activity
+    PERFORM evergreen.concerto_date_carry_tbl_col('actor.usr_activity', 'event_time', datediff);
+
+    -- actor.usr_standing_penalty
+    PERFORM evergreen.concerto_date_carry_tbl_col('actor.usr_standing_penalty', 'set_date', datediff);
+    PERFORM evergreen.concerto_date_carry_tbl_col('actor.usr_standing_penalty', 'stop_date', datediff);
+
+    -- asset.call_number
+    PERFORM evergreen.concerto_date_carry_tbl_col('asset.call_number', 'create_date', datediff);
+
+    -- asset.copy
+    PERFORM evergreen.concerto_date_carry_tbl_col('asset.copy', 'create_date', datediff);
+    PERFORM evergreen.concerto_date_carry_tbl_col('asset.copy', 'edit_date', datediff);
+    PERFORM evergreen.concerto_date_carry_tbl_col('asset.copy', 'status_changed_time', datediff);
+    PERFORM evergreen.concerto_date_carry_tbl_col('asset.copy', 'active_date', datediff);
+
+    -- asset.copy_note
+    PERFORM evergreen.concerto_date_carry_tbl_col('asset.copy_note', 'create_date', datediff);
+
+    -- authority.record_entry
+    PERFORM evergreen.concerto_date_carry_tbl_col('authority.record_entry', 'create_date', datediff);
+    PERFORM evergreen.concerto_date_carry_tbl_col('authority.record_entry', 'edit_date', datediff);
+
+    -- biblio.record_entry
+    PERFORM evergreen.concerto_date_carry_tbl_col('biblio.record_entry', 'create_date', datediff);
+    PERFORM evergreen.concerto_date_carry_tbl_col('biblio.record_entry', 'edit_date', datediff);
+    PERFORM evergreen.concerto_date_carry_tbl_col('biblio.record_entry', 'merge_date', datediff);
+
+    -- booking.reservation
+    PERFORM evergreen.concerto_date_carry_tbl_col('booking.reservation', 'request_time', datediff);
+    PERFORM evergreen.concerto_date_carry_tbl_col('booking.reservation', 'start_time', datediff);
+    PERFORM evergreen.concerto_date_carry_tbl_col('booking.reservation', 'end_time', datediff);
+    PERFORM evergreen.concerto_date_carry_tbl_col('booking.reservation', 'capture_time', datediff);
+    PERFORM evergreen.concerto_date_carry_tbl_col('booking.reservation', 'cancel_time', datediff);
+    PERFORM evergreen.concerto_date_carry_tbl_col('booking.reservation', 'pickup_time', datediff);
+    PERFORM evergreen.concerto_date_carry_tbl_col('booking.reservation', 'return_time', datediff);
+
+    -- container.biblio_record_entry_bucket
+    PERFORM evergreen.concerto_date_carry_tbl_col('container.biblio_record_entry_bucket', 'create_time', datediff);
+
+    -- container.carousel
+    PERFORM evergreen.concerto_date_carry_tbl_col('container.carousel', 'create_time', datediff);
+    PERFORM evergreen.concerto_date_carry_tbl_col('container.carousel', 'edit_time', datediff);
+    PERFORM evergreen.concerto_date_carry_tbl_col('container.carousel', 'last_refresh_time', datediff);
+
+    -- container.user_bucket
+    PERFORM evergreen.concerto_date_carry_tbl_col('container.user_bucket', 'create_time', datediff);
+
+    -- container.user_bucket_item
+    PERFORM evergreen.concerto_date_carry_tbl_col('container.user_bucket', 'create_time', datediff);
+
+    -- money.billable_xact
+    PERFORM evergreen.concerto_date_carry_tbl_col('money.billable_xact', 'xact_start', datediff);
+    PERFORM evergreen.concerto_date_carry_tbl_col('money.billable_xact', 'xact_finish', datediff);
+
+    -- money.billing
+    ALTER TABLE money.billing DISABLE TRIGGER maintain_billing_ts_tgr;
+    ALTER TABLE money.billing DISABLE TRIGGER mat_summary_upd_tgr;
+    ALTER TABLE money.billing DROP CONSTRAINT billing_btype_fkey;
+
+    PERFORM evergreen.concerto_date_carry_tbl_col('money.billing', 'billing_ts', datediff);
+    PERFORM evergreen.concerto_date_carry_tbl_col('money.billing', 'void_time', datediff);
+    PERFORM evergreen.concerto_date_carry_tbl_col('money.billing', 'create_date', datediff);
+    PERFORM evergreen.concerto_date_carry_tbl_col('money.billing', 'period_start', datediff);
+    PERFORM evergreen.concerto_date_carry_tbl_col('money.billing', 'period_end', datediff);
+
+    ALTER TABLE money.billing ENABLE TRIGGER maintain_billing_ts_tgr;
+    ALTER TABLE money.billing ENABLE TRIGGER mat_summary_upd_tgr;
+    ALTER TABLE money.billing ADD CONSTRAINT billing_btype_fkey FOREIGN KEY (btype)
+      REFERENCES config.billing_type (id) MATCH SIMPLE
+      ON UPDATE NO ACTION ON DELETE RESTRICT DEFERRABLE INITIALLY DEFERRED;
+
+    -- money.payment
+    PERFORM evergreen.concerto_date_carry_tbl_col('money.payment', 'payment_ts', datediff);
+
+    -- serial.caption_and_pattern
+    PERFORM evergreen.concerto_date_carry_tbl_col('serial.caption_and_pattern', 'create_date', datediff);
+    PERFORM evergreen.concerto_date_carry_tbl_col('serial.caption_and_pattern', 'start_date', datediff);
+    PERFORM evergreen.concerto_date_carry_tbl_col('serial.caption_and_pattern', 'end_date', datediff);
+
+    -- serial.issuance
+    PERFORM evergreen.concerto_date_carry_tbl_col('serial.issuance', 'create_date', datediff);
+    PERFORM evergreen.concerto_date_carry_tbl_col('serial.issuance', 'edit_date', datediff);
+    PERFORM evergreen.concerto_date_carry_tbl_col('serial.issuance', 'date_published', datediff);
+
+    -- serial.item
+    PERFORM evergreen.concerto_date_carry_tbl_col('serial.item', 'create_date', datediff);
+    PERFORM evergreen.concerto_date_carry_tbl_col('serial.item', 'edit_date', datediff);
+    PERFORM evergreen.concerto_date_carry_tbl_col('serial.item', 'date_expected', datediff);
+    PERFORM evergreen.concerto_date_carry_tbl_col('serial.item', 'date_received', datediff);
+
+    -- serial.subscription
+    PERFORM evergreen.concerto_date_carry_tbl_col('serial.subscription', 'start_date', datediff);
+    PERFORM evergreen.concerto_date_carry_tbl_col('serial.subscription', 'end_date', datediff);
+
+    -- vandelay.queued_record
+    PERFORM evergreen.concerto_date_carry_tbl_col('vandelay.queued_record', 'create_time', datediff);
+    PERFORM evergreen.concerto_date_carry_tbl_col('vandelay.queued_record', 'import_time', datediff);
+
+    -- vandelay.session_tracker
+    PERFORM evergreen.concerto_date_carry_tbl_col('vandelay.session_tracker', 'create_time', datediff);
+    PERFORM evergreen.concerto_date_carry_tbl_col('vandelay.session_tracker', 'update_time', datediff);
+
+END IF;
+END;
+$$ LANGUAGE plpgsql;
+
+\set ON_ERROR_STOP off
+
+CREATE TABLE IF NOT EXISTS evergreen.tvar_carry_date(tvar BOOLEAN);
+INSERT INTO evergreen.tvar_carry_date(tvar)
+VALUES(:skip_date_carry::boolean);
+
+BEGIN;
+
+DO $$
+DECLARE skip BOOLEAN;
+BEGIN
+
+    SELECT INTO skip tvar FROM evergreen.tvar_carry_date LIMIT 1;
+    IF NOT FOUND THEN skip = FALSE;
+    END IF;
+
+    PERFORM evergreen.concerto_date_carry_all(skip);
+
+END;
+
+$$;
+
+COMMIT;
+
+DROP FUNCTION evergreen.concerto_date_carry_all(BOOLEAN);
+DROP FUNCTION evergreen.concerto_date_carry_tbl_col(TEXT, TEXT, INTERVAL);
+
+DROP TABLE IF EXISTS evergreen.tvar_carry_date;
+
+
