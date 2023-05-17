@@ -8,13 +8,13 @@ msgstr ""
 "Project-Id-Version: evergreen\n"
 "Report-Msgid-Bugs-To: FULL NAME <EMAIL@ADDRESS>\n"
 "POT-Creation-Date: 2023-05-03 11:29-0400\n"
-"PO-Revision-Date: 2023-05-05 21:40+0000\n"
+"PO-Revision-Date: 2013-04-10 09:03+0000\n"
 "Last-Translator: Alfredo Hernández <Unknown>\n"
 "Language-Team: English (United Kingdom) <en_GB@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2023-05-06 05:02+0000\n"
+"X-Launchpad-Export-Date: 2023-05-05 04:42+0000\n"
 "X-Generator: Launchpad (build 90e2150bef31b411d7bae5c4032c7e320fcaaec8)\n"
 
 #: class.oaib.label:78 class.oaia.label:88
@@ -11659,3 +11659,77 @@ msgstr ""
 #: field.coai.release_barcode.label:15609
 msgid "Release barcode"
 msgstr ""
+
+#~ msgid "Org Lasso Map"
+#~ msgstr "Org Lasso Map"
+
+#~ msgid "Matched Attribute"
+#~ msgstr "Matched Attribute"
+
+#~ msgid "Billing Timestamp"
+#~ msgstr "Billing Timestamp"
+
+#~ msgid ""
+#~ "Circulation Matrix Circulation Modifier Subtest Circulation Modifier Set"
+#~ msgstr ""
+#~ "Circulation Matrix Circulation Modifier Subtest Circulation Modifier Set"
+
+#~ msgid "Copy/Shelving Location"
+#~ msgstr "Copy/Shelving Location"
+
+#~ msgid "OPAC/Staff Client User Name"
+#~ msgstr "OPAC/Staff Client User Name"
+
+#~ msgid "User Note"
+#~ msgstr "User Note"
+
+#~ msgid "Suffix/Title"
+#~ msgstr "Suffix/Title"
+
+#~ msgid "Creating Staff"
+#~ msgstr "Creating Staff"
+
+#~ msgid "Check Out Date/Time"
+#~ msgstr "Issue Date/Time"
+
+#~ msgid "Test ID"
+#~ msgstr "Test ID"
+
+#~ msgid "Keep"
+#~ msgstr "Keep"
+
+#~ msgid "Circulation Modifier Subtest ID"
+#~ msgstr "Circulation Modifier Subtest ID"
+
+#~ msgid "Circulation Matrix Circulation Modifier Subtest"
+#~ msgstr "Circulation Matrix Circulation Modifier Subtest"
+
+#~ msgid "Thaw Date (if frozen)"
+#~ msgstr "Thaw Date (if frozen)"
+
+#~ msgid "Field Type"
+#~ msgstr "Field Type"
+
+#~ msgid "User Name"
+#~ msgstr "User Name"
+
+#~ msgid "Field Class"
+#~ msgstr "Field Class"
+
+#~ msgid "Org Lasso"
+#~ msgstr "Org Lasso"
+
+#~ msgid "Pyament ID"
+#~ msgstr "Payment ID"
+
+#~ msgid "Floating?"
+#~ msgstr "Floating?"
+
+#~ msgid "Is Floating"
+#~ msgstr "Is Floating"
+
+#~ msgid "Claim Policy ID"
+#~ msgstr "Claim Policy ID"
+
+#~ msgid "Fielmapper Class"
+#~ msgstr "Fielmapper Class"

@@ -7,14 +7,14 @@ msgid ""
 msgstr ""
 "Project-Id-Version: evergreen\n"
 "Report-Msgid-Bugs-To: FULL NAME <EMAIL@ADDRESS>\n"
-"POT-Creation-Date: 2023-05-13 01:30+0000\n"
-"PO-Revision-Date: 2023-05-05 21:40+0000\n"
+"POT-Creation-Date: 2023-05-13 01:51+0000\n"
+"PO-Revision-Date: 2017-09-29 10:10+0000\n"
 "Last-Translator: TZ <tigran@flib.sci.am>\n"
 "Language-Team: Armenian <hy@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2023-05-14 05:56+0000\n"
+"X-Launchpad-Export-Date: 2023-05-14 05:43+0000\n"
 "X-Generator: Launchpad (build 90e2150bef31b411d7bae5c4032c7e320fcaaec8)\n"
 
 #. ("{{pendingXacts | date:\"short\"}}")
@@ -11784,3 +11784,217 @@ msgstr ""
 #: ../../Open-ILS/src/templates/staff/cat/bucket/batch_hold/t_bucket_info.tt2:8
 msgid "{} users"
 msgstr ""
+
+#~ msgid ""
+#~ "\n"
+#~ "          There is an open circulation on the requested item.  \n"
+#~ "          This copy was checked out by another patron on %1.\n"
+#~ "          "
+#~ msgstr ""
+#~ "\n"
+#~ "          Պահանջված նյութի համար կա բաց տացք։  \n"
+#~ "          Այս օրինակը վերցված է մեկ այլ հաճախորդի կողմից %1։\n"
+#~ "          "
+
+#~ msgid "(print)"
+#~ msgstr "(տպած)"
+
+#~ msgid "Add New Note"
+#~ msgstr "Ավելացրու նոր նշում"
+
+#~ msgid "Add To New Bucket"
+#~ msgstr "Ավելացնել նոր փնջին։"
+
+#~ msgid "Add Volumes"
+#~ msgstr "Ավելացրու հատորներ"
+
+#~ msgid "Add To Selected Bucket"
+#~ msgstr "Ավելացնել ընտրված փնջին։"
+
+#~ msgid "Add copy stream"
+#~ msgstr "Ավելացնել պատճենի հոսքը։"
+
+#~ msgid "Add/Edit Copy Tags"
+#~ msgstr "Ավելացնել/խմբագրել պատճենի ցուցիչները։"
+
+#~ msgid "Add/Edit Copy Notes"
+#~ msgstr "Ավելացնել/խմբագրել պատճենի նշումները"
+
+#~ msgid "Add volume"
+#~ msgstr "Ավելացնել հատոր"
+
+#~ msgid "Alert Msg"
+#~ msgstr "Զգուշացնող հղդ"
+
+#~ msgid "Allow Call Number attributes in Copy Templates"
+#~ msgstr "Թույլ տուր պատճենի կաղապարում դասիչի հատկանիշներ։"
+
+#~ msgid "Always display Volume/Copy Detail pane"
+#~ msgstr "Միշտ արտածիր հատոր/օրինակ մանրամասների վահանակը։"
+
+#~ msgid "Applied On"
+#~ msgstr "Կիրառված"
+
+#~ msgid "Apply Copy Tags"
+#~ msgstr "Կիրառիր պատճենի ցուցիչները։"
+
+#~ msgid "Apply Standing Penalty / Message"
+#~ msgstr "Կիրառիր սպասող տուգանքը /հաղորդումը։"
+
+#~ msgid "Apply Penalty / Message"
+#~ msgstr "Կիրառիր տուգանքը /հաղորդումը։"
+
+#~ msgid ""
+#~ "Are you sure you want to transfer selected items to the marked volume?"
+#~ msgstr ""
+#~ "Վստա՞հ ես որ ցանկանում ես տեղափոխել ընտրված նյութերը դեպի նշված հատոր։"
+
+#~ msgid "Archived Penalties / Messages"
+#~ msgstr "Արխիվացված տուգանքներ /հաղորդումներ"
+
+#~ msgid "Archive Penalty / Message"
+#~ msgstr "Արխվացման տուգանքի / հաղորդագրություն"
+
+#~ msgid "Barcode is reported Lost"
+#~ msgstr "Գծակոդը կորած է։"
+
+#~ msgid "Booking: Create or Cancel Reservations"
+#~ msgstr "Ամրագրում։ Ստեղծիր կամ չեղյալ արա նախնական պատվերները։"
+
+#~ msgid "Choose Library for Volume/Copy Transfer Destination"
+#~ msgstr "Հատորի/պատճենի/տեղափոխմանվայրի համար ընտրիր գրադարանը։"
+
+#~ msgid "Choose volume transfer target"
+#~ msgstr "Ընտրիր հատորի տեղափոխման թիրախը։"
+
+#~ msgid "Circulation Modifer"
+#~ msgstr "Տացքի ձևափոխիչ։"
+
+#~ msgid "Completed Copies"
+#~ msgstr "Կատարված օրինակներ։"
+
+#~ msgid "Configure Columns"
+#~ msgstr "Ձևափոխիր սյունակները։"
+
+#~ msgid "Copy Attributes"
+#~ msgstr "Պատճենահանման բաղադրիչներ"
+
+#~ msgid "Copies to Previously Marked Library"
+#~ msgstr "Նախապես նշված գրադարանի օրինակներ"
+
+#~ msgid "Copy Circ Lib ID"
+#~ msgstr "Copy Circ Lib ID"
+
+#~ msgid "Copies"
+#~ msgstr "Պատճեններ"
+
+#~ msgid "Copy"
+#~ msgstr "Օրինակ"
+
+#~ msgid "Copy \"%1\" was mis-scanned or is not cataloged"
+#~ msgstr "Օրինակը \"%1\" սխալմամբ է սքանավորվել, կամ քարտագրված չէ։"
+
+#~ msgid "Copy #"
+#~ msgstr "Օրինակի #"
+
+#~ msgid "Copy Alert Message for \"%1\""
+#~ msgstr "Օրինակի ահազանգի հաղորդագրություն \"%1\""
+
+#~ msgid "Copy Buckets"
+#~ msgstr "Պատճենիր փնջերը"
+
+#~ msgid "Copy Hatch Settings To Local Storage"
+#~ msgstr "Արտագրել նրբագծի կարգաբերումները տեղային հիշողություն"
+
+#~ msgid "Copy Notes"
+#~ msgstr "Օրինակի նշումներ"
+
+#~ msgid "Copy Notes are Public"
+#~ msgstr "Օրինակի նշումները հանրային դիտման համար են։"
+
+#~ msgid "Copy Number"
+#~ msgstr "Պատճենի համար"
+
+#~ msgid "Copy In Transit"
+#~ msgstr "Պատճենը տեղափոխման մեջ է"
+
+#~ msgid "Copy Local Storage Settings To Hatch"
+#~ msgstr "Պատճենիր տեղային հիշողության կարգաբերումները նրբագծում"
+
+#~ msgid "Copy Not Found"
+#~ msgstr "Օրինակը գտնված չէ։"
+
+#~ msgid "Copy Not Available."
+#~ msgstr "Օրինակը հասանելի չէ"
+
+#~ msgid "Copy Tags"
+#~ msgstr "Պատճենի ցուցիչներ։"
+
+#~ msgid "Copy Tag Types"
+#~ msgstr "Պատճենի ցուցիչի տեսակներ։"
+
+#~ msgid "Copy display"
+#~ msgstr "Պատճենի արտածում"
+
+#~ msgid "Copy Stream"
+#~ msgstr "Պատճենի հոսք"
+
+#~ msgid "Copy Templates"
+#~ msgstr "Պատճենի ձևանմուշներ"
+
+#~ msgid "Copy Statuses"
+#~ msgstr "Պատճենի կարգավիճակներ"
+
+#~ msgid "Copy Updated"
+#~ msgstr "Պատճենը թարմացվեց"
+
+#~ msgid "Copy Status: %1"
+#~ msgstr "Օրինակի վիճակ: %1"
+
+#~ msgid "Copy is In-Transit"
+#~ msgstr "Պատճենը տեղափոխվում է"
+
+#~ msgid "Copy location"
+#~ msgstr "Պատճենի տեղաբաշխում"
+
+#~ msgid "Created on %1"
+#~ msgstr "Ստեղծվել է %1"
+
+#~ msgid "Created {{bucket().create_time() | date}}"
+#~ msgstr "Ստեղծված {{bucket().create_time() | date}}"
+
+#~ msgid "Current Copy Location"
+#~ msgstr "Ընթացիկ օրինակի տեղաբաշխում"
+
+#~ msgid "Delete Selected Copies from Catalog"
+#~ msgstr "Ջնջիր ընտրված օրինակները քարտարանից։"
+
+#~ msgid "Deleted volume/copy template"
+#~ msgstr "Ջնջված հատորի/օրինակի կձևանմուշ"
+
+#~ msgid "Display defaults for Working Copy tab"
+#~ msgstr "Աշխատանքային օրինակի տաբի համար արտածիր լռակյացները։"
+
+#~ msgid "Display defaults for Completed Copies tab"
+#~ msgstr "Համալրված օրինակների տաբի համար արտածիր լռակյացները։"
+
+#~ msgid "Display Alert and Messages"
+#~ msgstr "Արտածիր զգուշացումները և հաղորդումները"
+
+#~ msgid "Download CSV"
+#~ msgstr "Բեռնաթափիր CSV"
+
+#~ msgid "Edit Volume/Copy Templates"
+#~ msgstr "Խմբագրիր հատորի/օրինակի ձևանմուշները։"
+
+#~ msgid "Edit Selected Copies"
+#~ msgstr "Խմբագրիր ընտրված օրինակները։"
+
+#~ msgid "Edit volumes"
+#~ msgstr "Խմբագրիր հատորները։"
+
+#~ msgid "Edit volumes and copies"
+#~ msgstr "Խմբագրիր հատորները և օրինակները։"
+
+#~ msgid "Empty Volumes"
+#~ msgstr "Դատարկ հատորներ"

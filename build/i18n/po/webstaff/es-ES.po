@@ -7,14 +7,14 @@ msgid ""
 msgstr ""
 "Project-Id-Version: evergreen\n"
 "Report-Msgid-Bugs-To: FULL NAME <EMAIL@ADDRESS>\n"
-"POT-Creation-Date: 2023-05-13 01:30+0000\n"
-"PO-Revision-Date: 2023-05-05 21:40+0000\n"
+"POT-Creation-Date: 2023-05-13 01:51+0000\n"
+"PO-Revision-Date: 2019-08-13 09:46+0000\n"
 "Last-Translator: Noemí Jiménez <Unknown>\n"
 "Language-Team: Spanish <es@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2023-05-14 05:56+0000\n"
+"X-Launchpad-Export-Date: 2023-05-14 05:44+0000\n"
 "X-Generator: Launchpad (build 90e2150bef31b411d7bae5c4032c7e320fcaaec8)\n"
 
 #. ("{{pendingXacts | date:\"short\"}}")
@@ -11821,3 +11821,466 @@ msgstr "{} artículos"
 #: ../../Open-ILS/src/templates/staff/cat/bucket/batch_hold/t_bucket_info.tt2:8
 msgid "{} users"
 msgstr ""
+
+#~ msgid ""
+#~ "\n"
+#~ "          There is an open circulation on the requested item.  \n"
+#~ "          This copy was checked out by another patron on %1.\n"
+#~ "          "
+#~ msgstr ""
+#~ "\n"
+#~ "          Hay una circulaciónon abierta en el articulo solicitado.  \n"
+#~ "          Esta copia fue desprotegido por otro usuario en %1.\n"
+#~ "          "
+
+#~ msgid "(print)"
+#~ msgstr "(imprimir)"
+
+#~ msgid "Actions for Catalogers"
+#~ msgstr "Acciones para catalogadores"
+
+#~ msgid "Abort Transit then Checkout"
+#~ msgstr "Abortar Tránsito después Préstamo"
+
+#~ msgid "Abort Transits"
+#~ msgstr "Abortar tránsitos"
+
+#~ msgid "Abort {{num_transits}} transits?"
+#~ msgstr "Abortar {{num_transits}} tránsitos?"
+
+#~ msgid "Add New Note"
+#~ msgstr "Agregar Nueva Nota"
+
+#~ msgid "Add To New Bucket"
+#~ msgstr "Añadir a Nueva Cubo"
+
+#~ msgid "Add/Edit Copy Notes"
+#~ msgstr "Añadir/Editar copiar notas"
+
+#~ msgid "Add To Selected Bucket"
+#~ msgstr "Agregar al Cubo Seleccionada"
+
+#~ msgid "Alert Msg"
+#~ msgstr "Mensaje de alerta"
+
+#~ msgid "Always display Volume/Copy Detail pane"
+#~ msgstr "Siempre mostrar panel detalle de Volumen/Copia"
+
+#~ msgid "Applied On"
+#~ msgstr "Aplicado en"
+
+#~ msgid "Allow Call Number attributes in Copy Templates"
+#~ msgstr "Permitir que los atributos en plantillas de copia"
+
+#~ msgid ""
+#~ "Are you sure you want to transfer selected items to the marked volume?"
+#~ msgstr ""
+#~ "¿Seguro que desea transferir los elementos seleccionados al volumen marcada?"
+
+#~ msgid "Archived Penalties / Messages"
+#~ msgstr "Penalizaciones archivados / Mensajes"
+
+#~ msgid "Archive Penalty / Message"
+#~ msgstr "Penalización de Archivo / Mensaje"
+
+#~ msgid "Apply Standing Penalty / Message"
+#~ msgstr "Aplicar Pena Permanente / Mensaje"
+
+#~ msgid "Apply Penalty / Message"
+#~ msgstr "Aplicar Pena / Mensaje"
+
+#~ msgid "Choose Library for Volume/Copy Transfer Destination"
+#~ msgstr "Elija la biblioteca de volumen / Copia de destino de transferencia"
+
+#~ msgid "Choose volume transfer target"
+#~ msgstr "Elige destino de la transferencia de volumen"
+
+#~ msgid "Circulation Modifer"
+#~ msgstr "Circulación Modificador"
+
+#~ msgid "Collapse ... Reload to restore"
+#~ msgstr "Colapso ... recarga para almacenar"
+
+#~ msgid "Completed Copies"
+#~ msgstr "Copias Completas"
+
+#~ msgid "Copies"
+#~ msgstr "Copias"
+
+#~ msgid "Configure Columns"
+#~ msgstr "Configurar las columnas"
+
+#~ msgid "Copy Attributes"
+#~ msgstr "Copiar Atributos"
+
+#~ msgid "Copies to Previously Marked Library"
+#~ msgstr "Copias a la biblioteca de marcado previamente"
+
+#~ msgid "Copy"
+#~ msgstr "Copiar"
+
+#~ msgid "Copy \"%1\" was mis-scanned or is not cataloged"
+#~ msgstr "Copia \"%1\" ha sido mis-escaneada o no está catalogado"
+
+#~ msgid "Copy #"
+#~ msgstr "Copia #"
+
+#~ msgid "Copy Notes"
+#~ msgstr "Copiar Notas"
+
+#~ msgid "Copy Templates"
+#~ msgstr "Copiar Plantillas"
+
+#~ msgid "Copy Notes are Public"
+#~ msgstr "Copia notas son públicos"
+
+#~ msgid "Copy In Transit"
+#~ msgstr "Copia en transito"
+
+#~ msgid "Copy Updated"
+#~ msgstr "Copia Actualizada"
+
+#~ msgid "Copy Status: %1"
+#~ msgstr "Estado de la copia: %1"
+
+#~ msgid "Copy Not Found"
+#~ msgstr "Copia no encontrada"
+
+#~ msgid "Copy Not Available."
+#~ msgstr "Ninguna copia disponible."
+
+#~ msgid "Copy display"
+#~ msgstr "Copia pantalla"
+
+#~ msgid "Copy is In-Transit"
+#~ msgstr "Copia está en tránsito"
+
+#~ msgid "Current Copy Location"
+#~ msgstr "Ubicación de la copia actual"
+
+#~ msgid "Delete Selected Copies from Catalog"
+#~ msgstr "Eliminar las copias de acuerdo al catalogo"
+
+#~ msgid "Display defaults for Working Copy tab"
+#~ msgstr "Visualización por defecto para la pestaña Copia de Trabajo"
+
+#~ msgid "Display defaults for Completed Copies tab"
+#~ msgstr "Visualización por defecto para la pestaña copias completadas"
+
+#~ msgid "Display Alert and Messages"
+#~ msgstr "Alerta de pantalla y mensajes"
+
+#~ msgid "Download CSV"
+#~ msgstr "Descargar CSV"
+
+#~ msgid "Edit Selected Copies"
+#~ msgstr "Editar Copias Seleccionadas"
+
+#~ msgid "Edit volumes"
+#~ msgstr "Editar volúmenes"
+
+#~ msgid "Edit volumes and copies"
+#~ msgstr "Editar volúmenes y copias"
+
+#~ msgid "Empty Volumes"
+#~ msgstr "Volúmenes vacíos"
+
+#~ msgid "Existing Copy Notes"
+#~ msgstr "Notas de copias existentes"
+
+#~ msgid "Evergreen Staff %1"
+#~ msgstr "Personal de Evergreen %1"
+
+#~ msgid "Force Copy Quality"
+#~ msgstr "Fuerza de Calidad de Copia"
+
+#~ msgid "Hide Copy Attributes"
+#~ msgstr "Ocultar Copia de atributos"
+
+#~ msgid "Hide Volume/Copy Details"
+#~ msgstr "Ocultar Volumen / Copia de detalles"
+
+#~ msgid "Hold for patron %1, %2 %3"
+#~ msgstr "Mantenga la posición durante patrón %1, %2 %3"
+
+#~ msgid ""
+#~ "If overridden, subsequent checkouts during this patron's \n"
+#~ " session will auto-override this event"
+#~ msgstr ""
+#~ "Si se reemplaza, las cajas posteriores durante este patrón de \n"
+#~ "  sesión de auto-anular este evento"
+
+#~ msgid "Items to Previously Marked Volume"
+#~ msgstr "Artículos al volumen previamente marcados"
+
+#~ msgid "Library"
+#~ msgstr "Librería"
+
+#~ msgid "Lead record"
+#~ msgstr "Registro de cliente potencial"
+
+#~ msgid "Library as Volume Transfer Destination"
+#~ msgstr "Biblioteca como transferencia de Volumen de Destino"
+
+#~ msgid "Loading... %1"
+#~ msgstr "Cargando… %1"
+
+#~ msgid "Load Shared Bucket Bucket by ID"
+#~ msgstr "Cargar compartida Cubo Cubo por ID"
+
+#~ msgid "Local Prefs"
+#~ msgstr "Pref locales"
+
+#~ msgid "Messages"
+#~ msgstr "Mensajes"
+
+#~ msgid "Modify Penalty / Message"
+#~ msgstr "Modificar Pena / Mensaje"
+
+#~ msgid "Network Connection Status"
+#~ msgstr "Estado de la conexión a la red"
+
+#~ msgid "Name of existing bucket"
+#~ msgstr "Nombre del cubo existente"
+
+#~ msgid "Name For New Bucket"
+#~ msgstr "Nombre para nuevo cubo"
+
+#~ msgid "New Copy Note"
+#~ msgstr "Nueva Copia Nota"
+
+#~ msgid "Paid for Selected:"
+#~ msgstr "Pagado por seleccionado:"
+
+#~ msgid "Permanently delete selected copies and/or volumes from catalog?"
+#~ msgstr ""
+#~ "Eliminar permanentemente copias y / o volúmenes de acuerdo al catalogo?"
+
+#~ msgid "Pending Copies"
+#~ msgstr "Copias pendientes"
+
+#~ msgid "Penalty Type"
+#~ msgstr "Tipo de penalización"
+
+#~ msgid "Penalties"
+#~ msgstr "Penalizaciones"
+
+#~ msgid "Pertaining to %1, %2 %3 : %4"
+#~ msgstr "Referente a %1, %2 %3: %4"
+
+#~ msgid "Potential Copies"
+#~ msgstr "Copias Potenciales"
+
+#~ msgid "Please select a lead record from the right..."
+#~ msgstr ""
+#~ "Por favor, seleccione un registro de cliente potencial desde la derecha ..."
+
+#~ msgid "Print CSV"
+#~ msgstr "Imprimir CSV"
+
+#~ msgid "Print/Store Connection Status"
+#~ msgstr "Imprimir/Tienda Estado de la conexión"
+
+#~ msgid "Print Spine Labels"
+#~ msgstr "Imprimir etiquetas de la columna vertebral"
+
+#~ msgid "Publicly Visible?"
+#~ msgstr "Visible para el público?"
+
+#~ msgid "Record with TCN %1 marked for overlay."
+#~ msgstr "Grabar con TCN %1 marcado para la superposición."
+
+#~ msgid "Records to merge into lead"
+#~ msgstr "Registros para combinar en plomo"
+
+#~ msgid "Remote Prefs"
+#~ msgstr "Pref Remotas"
+
+#~ msgid "Remove Penalty / Message"
+#~ msgstr "Retire Pena/Mensaje"
+
+#~ msgid "Remove Selected Copies from Bucket"
+#~ msgstr "Retire copias seleccionadas de Cubo"
+
+#~ msgid "Request Selected Copies"
+#~ msgstr "Solicitud Seleccionada Copias"
+
+#~ msgid "Row Selector Column"
+#~ msgstr "Fila Seleccionada Columna"
+
+#~ msgid "Search for Copies by Barcode"
+#~ msgstr "Búsqueda de copias de código de barras"
+
+#~ msgid "Select Row"
+#~ msgstr "Seleccionar fila"
+
+#~ msgid "Set Desired Copy Quality"
+#~ msgstr "Conjunto deseado Calidad de copia"
+
+#~ msgid "Show Copy Attributes"
+#~ msgstr "Mostrar Copiar Atributos"
+
+#~ msgid "Show empty volumes"
+#~ msgstr "Mostrar los volúmenes vacíos"
+
+#~ msgid "Show copy detail"
+#~ msgstr "Mostrar Detalle de Copia"
+
+#~ msgid "Show Volume/Copy Details"
+#~ msgstr "Mostrar Volumen/Copiar Detalles"
+
+#~ msgid "Sort"
+#~ msgstr "Ordenar"
+
+#~ msgid "Show volume detail"
+#~ msgstr "Mostrar detalles de volumen"
+
+#~ msgid "Staff-Generated Penalties / Messages"
+#~ msgstr "Personal-Generados Sanciones/Mensajes"
+
+#~ msgid "Succes testing credentials"
+#~ msgstr "Éxito de pruebas de credenciales"
+
+#~ msgid "Total Paid:"
+#~ msgstr "Total Pagado:"
+
+#~ msgid "Transfer Selected Copies to Marked Volume"
+#~ msgstr "Transferir Copias Seleccionadas a Volumen Marcado"
+
+#~ msgid "Unable to checkout copy \"%1\" : %2"
+#~ msgstr "No se puede sacar copia \"%1\" : %2"
+
+#~ msgid "Unlink selected conjoined copies?"
+#~ msgstr "Desvincular copias unidos seleccionados?"
+
+#~ msgid "Value..."
+#~ msgstr "Valor..."
+
+#~ msgid "Volume/Copy Detail defaults"
+#~ msgstr "Volumen/Detalle predeterminados de copia"
+
+#~ msgid "Volume as Item Transfer Destination"
+#~ msgstr "Volumen como Transferencia de elementos del Destino"
+
+#~ msgid "Volume Attributes"
+#~ msgstr "Atributos Volumen"
+
+#~ msgid "Volume Transfer"
+#~ msgstr "Transferir Volumen"
+
+#~ msgid "Volumes to Previously Marked Record"
+#~ msgstr "Volúmenes a Registros Marcados Anteriormente"
+
+#~ msgid "Volumes to Previously Marked Record and Library"
+#~ msgstr "Volúmenes a Anteriormente Registros Marcados y Biblioteca"
+
+#~ msgid "Volumes"
+#~ msgstr "Volúmenes"
+
+#~ msgid "Volumes to Previously Marked Library"
+#~ msgstr "Volúmenes a la biblioteca marcada previamente"
+
+#~ msgid "Volumes and Copies"
+#~ msgstr "Volúmenes y Copias"
+
+#~ msgid "Volume/Copy Editor"
+#~ msgstr "Volumen/Copia Editor"
+
+#~ msgid "Waiting for Copy"
+#~ msgstr "Esperando la copia"
+
+#~ msgid "Will unlink {{peers}} copies"
+#~ msgstr "Va desvincular {{compañeros}} copias"
+
+#~ msgid "Will delete {{copies}} copies and {{volumes}} volumes"
+#~ msgstr "Se eliminarán {{copias}} copias y {{volúmenes}} volúmenes"
+
+#~ msgid "Working Copies"
+#~ msgstr "Copias de Trabajo"
+
+#~ msgid "{{username}} @ {{workstation}}"
+#~ msgstr "{{Usuario}} @ {{estación de trabajo}}"
+
+#~ msgid "Abort %1 transits?"
+#~ msgstr "Abortar %1 tránsitos?"
+
+#~ msgid "Abort Transits and Reset Associated Holds"
+#~ msgstr "Abortar tránsitos y Reset Mantiene Asociadas"
+
+#~ msgid "Abort Transit"
+#~ msgstr "Abortar tránsito"
+
+#~ msgid "Abort 1 transit?"
+#~ msgstr "Abortar 1 de tránsito?"
+
+#~ msgid "Copy Statuses"
+#~ msgstr "Estados de copia"
+
+#~ msgid "Item Transfer Target set"
+#~ msgstr "Conjunto de objetos de transferencia de destino"
+
+#~ msgid "Search catalog for..."
+#~ msgstr "Buscar en el Catálogo de..."
+
+#~ msgid "Volume Transfer Target set"
+#~ msgstr "Volumen determinado objetivo de transferencia"
+
+#~ msgid "Volume(s) transfered"
+#~ msgstr "Volumen(s) transferido"
+
+#~ msgid "Volumes and Items"
+#~ msgstr "Volúmenes y artículos"
+
+#~ msgid "Add Volumes"
+#~ msgstr "Añadir volúmenes"
+
+#~ msgid "Copy Alert Message for \"%1\""
+#~ msgstr "Copiar mensaje de alerta para \"%1\""
+
+#~ msgid "Created on %1"
+#~ msgstr "Creado el %1"
+
+#~ msgid "Created {{bucket().create_time() | date}}"
+#~ msgstr "Creado {{bucket().create_time() | date}}"
+
+#~ msgid "Replace TCN %1 ..."
+#~ msgstr "Reemplazar TCN %1 ..."
+
+#~ msgid "There is an open transit on copy %1"
+#~ msgstr "Hay un libre tránsito en el ejemplar %1"
+
+#~ msgid "Add Copy Alert"
+#~ msgstr "Añadir alerta de copia"
+
+#~ msgid "Add Copy Alerts"
+#~ msgstr "Añadir alertas de copia"
+
+#~ msgid "Add volume"
+#~ msgstr "Añadir volumen"
+
+#~ msgid "Copy Buckets"
+#~ msgstr "Lotes de copias"
+
+#~ msgid "Add copy stream"
+#~ msgstr "Agregar copia de transmisión"
+
+#~ msgid "Add/Edit Copy Tags"
+#~ msgstr "Agregar/Editar etiquetas de copias"
+
+#~ msgid "Add/Edit Copy Alerts"
+#~ msgstr "Agregar/Editar alertas de copias"
+
+#~ msgid "Apply Copy Tags"
+#~ msgstr "Aplicar Copiar Etiquetas"
+
+#~ msgid "Barcode is reported Lost"
+#~ msgstr "El código de barras se encuentra reportado como perdido"
+
+#~ msgid "Add Copies"
+#~ msgstr "Agregar Copias"
+
+#~ msgid "%1, %2 %3 (Preferred)"
+#~ msgstr "%1, %2 %3 (Preferido)"
+
+#~ msgid "Booking: Create or Cancel Reservations"
+#~ msgstr "Reservaciones: Crear o cancelar reservaciones"

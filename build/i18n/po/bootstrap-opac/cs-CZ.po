@@ -7,14 +7,14 @@ msgid ""
 msgstr ""
 "Project-Id-Version: evergreen\n"
 "Report-Msgid-Bugs-To: FULL NAME <EMAIL@ADDRESS>\n"
-"POT-Creation-Date: 2023-05-13 01:30+0000\n"
-"PO-Revision-Date: 2023-05-05 22:42+0000\n"
-"Last-Translator: Jeff Davis <Unknown>\n"
+"POT-Creation-Date: 2023-05-13 01:51+0000\n"
+"PO-Revision-Date: 2023-05-10 18:30+0000\n"
+"Last-Translator: Eva Cerninakova <Unknown>\n"
 "Language-Team: Czech <cs@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2023-05-14 05:55+0000\n"
+"X-Launchpad-Export-Date: 2023-05-14 05:44+0000\n"
 "X-Generator: Launchpad (build 90e2150bef31b411d7bae5c4032c7e320fcaaec8)\n"
 
 #: ../../Open-ILS/src/templates-bootstrap/opac/register.tt2:62
@@ -5929,3 +5929,84 @@ msgstr "zobrazit"
 #: ../../Open-ILS/src/templates-bootstrap/opac/parts/place_hold_result.tt2:160
 msgid "volume"
 msgstr "signatura"
+
+#~ msgid "%1 %2"
+#~ msgstr "%1 %2"
+
+#~ msgid ""
+#~ "<i class='fas fa-book-reader' aria-hidden='true'></i> Current Items Checked "
+#~ "Out"
+#~ msgstr ""
+#~ "<i class='fas fa-book-reader' aria-hidden='true'></i> Aktuálně vypůjčené "
+#~ "jednotky"
+
+#~ msgid ""
+#~ "<i class='fas fa-desktop' aria-hidden='true'></i> E-Items Currently Checked "
+#~ "Out"
+#~ msgstr ""
+#~ "<i class='fas fa-desktop' aria-hidden='true'></i> Aktuálně vypůjčené e-knihy"
+
+#~ msgid "Current Items on Hold"
+#~ msgstr "Aktuální rezervace"
+
+#~ msgid "Current Items Checked Out"
+#~ msgstr "Aktuální výpůjčky"
+
+#~ msgid "E-Items Currently Checked out"
+#~ msgstr "Aktuálně vypůjčené E-knihy"
+
+#~ msgid "E-Items Currently Checked Out"
+#~ msgstr "Aktuálně vypůjčné e-knihy"
+
+#~ msgid "E-Items ready for pickup"
+#~ msgstr "E-knihy připravené pro vyzvednutí."
+
+#~ msgid "Items Currently on Hold (%1)"
+#~ msgstr "Aktuálně rezervované jednotky (%1)"
+
+#~ msgid "Items Currently Checked out (%1)"
+#~ msgstr "Vypůjčené jednotky (%1)"
+
+#~ msgid "Items ready for pickup (%1)"
+#~ msgstr "Rezervace připravené k vyzvednutí (%1)"
+
+#~ msgid ""
+#~ "Please enter your user name or barcode to identify your library account and "
+#~ "request a password reset"
+#~ msgstr ""
+#~ "Prosím zadejte BUĎ uživatelské jméno NEBO čárový kód  vašeho čtenářského "
+#~ "konta a potvrďte žádost o přenastavení hesla"
+
+#~ msgid "Search Results facets"
+#~ msgstr "Fasety výsledků vyhledávání"
+
+#~ msgid "Shelving location"
+#~ msgstr "Umístění"
+
+#~ msgid "Summary, etc.: "
+#~ msgstr "Souhrn: "
+
+#~ msgid "E-Items Currently on Hold"
+#~ msgstr "Aktuálně rezervované E-knihy"
+
+#~ msgid "The minimum amount you can pay is $0.01."
+#~ msgstr "Minimální částka pro platbu je 0.01 kč."
+
+#~ msgid "User name:"
+#~ msgstr "Uživatelské jméno:"
+
+#~ msgid ""
+#~ "Your user name or barcode has been submitted for a password reset. If a "
+#~ "matching account with an email address is found, you will soon receive an "
+#~ "email at that address with further instructions for resetting your password."
+#~ msgstr ""
+#~ "Prostřednictvím Vašeho  uživatelského jména nebo čárového kódu byla odeslána "
+#~ "žádost o přenastavení hesla. Pokud bude nalezena odpovídající e-mailová "
+#~ "adresa, bude Vám na tuto adresu brzy doručen e-mail s dalšími instrukcemi "
+#~ "pro přenastavení hesla."
+
+#~ msgid "or"
+#~ msgstr "nebo"
+
+#~ msgid "Where"
+#~ msgstr "Kde"

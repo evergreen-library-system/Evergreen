@@ -4,13 +4,13 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: open-ils-dev@list.georgialibraries.org\n"
 "POT-Creation-Date: 2023-05-03 11:29-0400\n"
-"PO-Revision-Date: 2023-05-05 21:40+0000\n"
+"PO-Revision-Date: 2023-03-28 14:35+0000\n"
 "Last-Translator: Eva Cerninakova <Unknown>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2023-05-06 05:00+0000\n"
+"X-Launchpad-Export-Date: 2023-05-05 04:40+0000\n"
 "X-Generator: Launchpad (build 90e2150bef31b411d7bae5c4032c7e320fcaaec8)\n"
 "X-Accelerator-Marker: &\n"
 
@@ -11679,3 +11679,75 @@ msgstr ""
 #: field.coai.release_barcode.label:15609
 msgid "Release barcode"
 msgstr ""
+
+#~ msgid "Check Out Date/Time"
+#~ msgstr "Datum / Čas výpůjčky"
+
+#~ msgid "Pyament ID"
+#~ msgstr "ID platby"
+
+#~ msgid "Matched Attribute"
+#~ msgstr "Odpovídající atribut"
+
+#~ msgid "Thaw Date (if frozen)"
+#~ msgstr "Datum \"rozmražení\" (pokud zmraženo)"
+
+#~ msgid "Copy/Shelving Location"
+#~ msgstr "Umístění exempláře / regálu"
+
+#~ msgid "Field Type"
+#~ msgstr "Typ pole"
+
+#~ msgid "Suffix/Title"
+#~ msgstr "Sufix / název"
+
+#~ msgid "User Note"
+#~ msgstr "Poznámka týkající se uživatele"
+
+#~ msgid "Test ID"
+#~ msgstr "ID testu"
+
+#~ msgid "Keep"
+#~ msgstr "Zachovat"
+
+#~ msgid "Circulation Modifier Subtest ID"
+#~ msgstr "ID subtestu modifikátoru výpůjčky"
+
+#~ msgid "Claim Policy ID"
+#~ msgstr "ID reklamační politiky"
+
+#~ msgid "OPAC/Staff Client User Name"
+#~ msgstr "Uživatelské jméno pro OPAC / služebního klienta"
+
+#~ msgid "Circulation Matrix Circulation Modifier Subtest"
+#~ msgstr "Výpůjční subtest modifikátoru výpůjční matice"
+
+#~ msgid "Creating Staff"
+#~ msgstr "Vytvořil(a)"
+
+#~ msgid "Floating?"
+#~ msgstr "Pohyblivý exemplář?"
+
+#~ msgid "Is Floating"
+#~ msgstr "Je pohyblivý?"
+
+#~ msgid "Billing Timestamp"
+#~ msgstr "Časová značka vzniku poplatku"
+
+#~ msgid "Combined Aged and Active circulations"
+#~ msgstr "Sloučené archivní a akvitvní výpůjčky"
+
+#~ msgid "Subject"
+#~ msgstr "Téma"
+
+#~ msgid "User Name"
+#~ msgstr "Uživatelské jméno"
+
+#~ msgid "Copy Alert Suppression"
+#~ msgstr "Potlačení upozornění k exempláři"
+
+#~ msgid "Org Lasso Map"
+#~ msgstr "Mapa kruhů organizačních jednotek"
+
+#~ msgid "Org Lasso"
+#~ msgstr "Kruh knihoven"

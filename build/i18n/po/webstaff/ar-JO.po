@@ -7,14 +7,14 @@ msgid ""
 msgstr ""
 "Project-Id-Version: evergreen\n"
 "Report-Msgid-Bugs-To: FULL NAME <EMAIL@ADDRESS>\n"
-"POT-Creation-Date: 2023-05-13 01:30+0000\n"
-"PO-Revision-Date: 2023-05-05 21:40+0000\n"
+"POT-Creation-Date: 2023-05-13 01:51+0000\n"
+"PO-Revision-Date: 2018-09-16 04:35+0000\n"
 "Last-Translator: fares othman <Unknown>\n"
 "Language-Team: Arabic <ar@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2023-05-14 05:55+0000\n"
+"X-Launchpad-Export-Date: 2023-05-14 05:43+0000\n"
 "X-Generator: Launchpad (build 90e2150bef31b411d7bae5c4032c7e320fcaaec8)\n"
 "Language: arabic\n"
 
@@ -11813,3 +11813,520 @@ msgstr "{}  النُسخ"
 #: ../../Open-ILS/src/templates/staff/cat/bucket/batch_hold/t_bucket_info.tt2:8
 msgid "{} users"
 msgstr ""
+
+#~ msgid "(print)"
+#~ msgstr "(طباعة)"
+
+#~ msgid "Abort %1 transits?"
+#~ msgstr "إحباط %1 من المنقولات؟"
+
+#~ msgid "Abort 1 transit?"
+#~ msgstr "إحباط نقل 1؟"
+
+#~ msgid "Abort Transit"
+#~ msgstr "إحباط النقل"
+
+#~ msgid "Abort Transit then Checkout"
+#~ msgstr "إحباط النقل ثم الإعارة"
+
+#~ msgid "Abort Transits"
+#~ msgstr "إحباط النقل"
+
+#~ msgid "Abort {{num_transits}} transits?"
+#~ msgstr "إحباط {{num_transits}}  من المنقولات؟"
+
+#~ msgid "Add New Note"
+#~ msgstr "إضافة ملاحظة جديدة"
+
+#~ msgid "Add To New Bucket"
+#~ msgstr "إضافة إلى سلة جديدة"
+
+#~ msgid "Alert Msg"
+#~ msgstr "رسالة التنبيه"
+
+#~ msgid "Applied On"
+#~ msgstr "تطبيق على"
+
+#~ msgid "Apply Penalty / Message"
+#~ msgstr "تطبيق العقوبة / الرسالة"
+
+#~ msgid ""
+#~ "Are you sure you want to transfer selected items to the marked volume?"
+#~ msgstr "هل تُؤكّد نقل النُسخ المحددة إلى المجلد المحدد؟"
+
+#~ msgid "Paid for Selected:"
+#~ msgstr "دفع المحدد"
+
+#~ msgid "Penalties"
+#~ msgstr "العقوبات"
+
+#~ msgid "Penalty Type"
+#~ msgstr "نوع العقوبة"
+
+#~ msgid "Pending Copies"
+#~ msgstr "النُسخ المُعلّقة"
+
+#~ msgid "Print CSV"
+#~ msgstr "طباعة CSV"
+
+#~ msgid "Publicly Visible?"
+#~ msgstr "مرئي علنياً؟"
+
+#~ msgid "Succes testing credentials"
+#~ msgstr "نجاح اختبار الصلاحيات"
+
+#~ msgid "Total Paid:"
+#~ msgstr "إجمالي المدفوع:"
+
+#~ msgid "Actions for Catalogers"
+#~ msgstr "إجراءات للمفهرسين"
+
+#~ msgid "Add To Selected Bucket"
+#~ msgstr "إضافة إلى السلة المحددة"
+
+#~ msgid "Add/Edit Copy Notes"
+#~ msgstr "ملاحظات إضافة/تحرير نسخة"
+
+#~ msgid "Always display Volume/Copy Detail pane"
+#~ msgstr "إظهار لوحة تفاصيل المجلد/النسخة دائماً"
+
+#~ msgid "Choose volume transfer target"
+#~ msgstr "اختيار هدف نقل المجلد"
+
+#~ msgid "Circulation Modifer"
+#~ msgstr "مُعدّل الإعارة"
+
+#~ msgid "Copies"
+#~ msgstr "النُسخ"
+
+#~ msgid "Copy"
+#~ msgstr "نسخة"
+
+#~ msgid "Copy #"
+#~ msgstr "نسخة #"
+
+#~ msgid "Copy Alert Message for \"%1\""
+#~ msgstr "رسالة تنبيه النسخة لِ \"%1\""
+
+#~ msgid "Copy Attributes"
+#~ msgstr "سمات النسخة"
+
+#~ msgid "Copy In Transit"
+#~ msgstr "النسخة في النقل"
+
+#~ msgid "Copy Not Available."
+#~ msgstr "النسخة غير متاحة"
+
+#~ msgid "Copy Not Found"
+#~ msgstr "تعذر العثور على النسخة"
+
+#~ msgid "Copy Notes"
+#~ msgstr "ملاحظات النسخة"
+
+#~ msgid "Copy Notes are Public"
+#~ msgstr "ملاحظات النسخة علناً"
+
+#~ msgid "Copy Status: %1"
+#~ msgstr "حالة النسخة: %1"
+
+#~ msgid "Copy Statuses"
+#~ msgstr "حالات النسخة"
+
+#~ msgid "Copy Updated"
+#~ msgstr "تم تحديث النسخة"
+
+#~ msgid "Copy display"
+#~ msgstr "إظهار النسخة"
+
+#~ msgid "Copy is In-Transit"
+#~ msgstr "النسخة في حالة النقل"
+
+#~ msgid "Created on %1"
+#~ msgstr "تم الإنشاء في %1"
+
+#~ msgid "Display Alert and Messages"
+#~ msgstr "إظهار التنبيهات والرسائل"
+
+#~ msgid "Download CSV"
+#~ msgstr "تحميل CSV"
+
+#~ msgid "Edit Selected Copies"
+#~ msgstr "تعديل النُسخ المحددة"
+
+#~ msgid "Request Selected Copies"
+#~ msgstr "طلب النُسخ المحددة"
+
+#~ msgid "Transfer Selected Copies to Marked Volume"
+#~ msgstr "نقل النُسخ المحددة إلى المجلد المحدد"
+
+#~ msgid "Unable to checkout copy \"%1\" : %2"
+#~ msgstr "لا يمكن إعارة النسخة \"%1\": %2"
+
+#~ msgid "Unlink selected conjoined copies?"
+#~ msgstr "إلغاء ربط النسخ الموحدة"
+
+#~ msgid "Value..."
+#~ msgstr "القيمة..."
+
+#~ msgid "Volume Attributes"
+#~ msgstr "سمات المجلد"
+
+#~ msgid "Volume Transfer"
+#~ msgstr "نقل المجلد"
+
+#~ msgid "Volume Transfer Target set"
+#~ msgstr "مجموعة وجهة نقل المجلد"
+
+#~ msgid "Volume as Item Transfer Destination"
+#~ msgstr "المجلد كوجهة نقل النُسخة"
+
+#~ msgid "Volume(s) transfered"
+#~ msgstr "مجلد/مجلدات منقولة"
+
+#~ msgid "Volume/Copy Detail defaults"
+#~ msgstr "المجلد/ افتراضي تفاصيل النسخة"
+
+#~ msgid "Volume/Copy Editor"
+#~ msgstr "المجلدات /محرر النُسخ"
+
+#~ msgid "Volumes"
+#~ msgstr "المجلدات"
+
+#~ msgid "Volumes and Copies"
+#~ msgstr "المجلدات والنُسخ"
+
+#~ msgid "Volumes and Items"
+#~ msgstr "المجلدات والنُسخ"
+
+#~ msgid "Volumes to Previously Marked Library"
+#~ msgstr "المجلدات إلى المكتبة المحددة مسبقاً"
+
+#~ msgid "Waiting for Copy"
+#~ msgstr "انتظار النَسخ"
+
+#~ msgid "Will delete {{copies}} copies and {{volumes}} volumes"
+#~ msgstr "سيتم حذف {{copies}}  من النُسخ و {{volumes}} من المجلدات"
+
+#~ msgid "Working Copies"
+#~ msgstr "نُسخ تحت العمل"
+
+#~ msgid "Abort Transits and Reset Associated Holds"
+#~ msgstr "إحباط المنقولات وإعادة ضبط الحجوزات"
+
+#~ msgid "Empty Volumes"
+#~ msgstr "مجلدات فارغة"
+
+#~ msgid "Existing Copy Notes"
+#~ msgstr "ملاحظات النُسخة الموجودة"
+
+#~ msgid "Force Copy Quality"
+#~ msgstr "فرض جودة النُسخة"
+
+#~ msgid "Loading... %1"
+#~ msgstr "تحميل ....%1"
+
+#~ msgid "Local Prefs"
+#~ msgstr "بادئات محلية"
+
+#~ msgid "Messages"
+#~ msgstr "رسائل"
+
+#~ msgid "Modify Penalty / Message"
+#~ msgstr "تعديل الرسالة/العقوبة"
+
+#~ msgid "Name For New Bucket"
+#~ msgstr "اسم السلة الجديدة"
+
+#~ msgid "Name of existing bucket"
+#~ msgstr "اسم السلة الموجودة"
+
+#~ msgid "Network Connection Status"
+#~ msgstr "حالة اتصال الشبكة"
+
+#~ msgid "New Copy Note"
+#~ msgstr "ملاحظة نُسخة جديدة"
+
+#~ msgid "Permanently delete selected copies and/or volumes from catalog?"
+#~ msgstr "حذف النُسخ و/أو المجلدات المحددة من الفهرس بشكل دائم؟"
+
+#~ msgid "Pertaining to %1, %2 %3 : %4"
+#~ msgstr "تتعلق ب: %1, %2 %3 : %4"
+
+#~ msgid "Potential Copies"
+#~ msgstr "نُسخ محتملة"
+
+#~ msgid "Print/Store Connection Status"
+#~ msgstr "طباعة/حفظ حالة الاتصال"
+
+#~ msgid "Remote Prefs"
+#~ msgstr "بادئات عن بعد"
+
+#~ msgid "Remove Penalty / Message"
+#~ msgstr "حذف الرسالة /العقوبة"
+
+#~ msgid "Remove Selected Copies from Bucket"
+#~ msgstr "حذف النُسخ المحددة من السلة"
+
+#~ msgid "Row Selector Column"
+#~ msgstr "عمود مختار الصف"
+
+#~ msgid "Search catalog for..."
+#~ msgstr "البحث في الفهرس عن..."
+
+#~ msgid "Search for Copies by Barcode"
+#~ msgstr "البحث عن نُسخ حسب الباركود"
+
+#~ msgid "Select Row"
+#~ msgstr "اختيار الصف"
+
+#~ msgid "Set Desired Copy Quality"
+#~ msgstr "ضبط جودة النُسخة المرغوبة"
+
+#~ msgid "Show Copy Attributes"
+#~ msgstr "عرض سمات النُسخة"
+
+#~ msgid "Show Volume/Copy Details"
+#~ msgstr "عرض تفاصيل المجلد/النُسخة"
+
+#~ msgid "Show copy detail"
+#~ msgstr "عرض تفاصيل النُسخة"
+
+#~ msgid "Show empty volumes"
+#~ msgstr "عرض المجلدات الفارغة"
+
+#~ msgid "Show volume detail"
+#~ msgstr "عرض تفاصيل المجلد"
+
+#~ msgid "Sort"
+#~ msgstr "فرز"
+
+#~ msgid "There is an open transit on copy %1"
+#~ msgstr "هناك نقل مفتوح للنُسخة %1"
+
+#~ msgid "Will unlink {{peers}} copies"
+#~ msgstr "سيقوم بإلغاء رابط النُسخ {{peers}}"
+
+#~ msgid "{{username}} @ {{workstation}}"
+#~ msgstr "{{username}} @ {{workstation}}"
+
+#~ msgid ""
+#~ "\n"
+#~ "          There is an open circulation on the requested item.  \n"
+#~ "          This copy was checked out by another patron on %1.\n"
+#~ "          "
+#~ msgstr ""
+#~ "\n"
+#~ "          هناك إعارة مفتوحة على النُسخة المطلوبة \n"
+#~ "        تم إعارة هذه النسخة بوساطة مستفيد آخر في %1\n"
+#~ "          "
+
+#~ msgid "Choose Library for Volume/Copy Transfer Destination"
+#~ msgstr "اختيار مكتبة كوجهة نقل المجلد/النُسخة"
+
+#~ msgid "Collapse ... Reload to restore"
+#~ msgstr "طي...تحديث لإعادة التخزين"
+
+#~ msgid "Completed Copies"
+#~ msgstr "النُسخ المكتملة"
+
+#~ msgid "Configure Columns"
+#~ msgstr "ضبط الأعمدة"
+
+#~ msgid "Created {{bucket().create_time() | date}}"
+#~ msgstr "تم إنشاء  {{bucket().create_time() | date}}"
+
+#~ msgid "Current Copy Location"
+#~ msgstr "موقع النُسخة الحالية"
+
+#~ msgid "Delete Selected Copies from Catalog"
+#~ msgstr "حذف النُسخ المحددة من الفهرس"
+
+#~ msgid "Display defaults for Completed Copies tab"
+#~ msgstr "عرض الافتراضي لتبويب النُسخة المكتملة"
+
+#~ msgid "Display defaults for Working Copy tab"
+#~ msgstr "عرض الافتراضي لتبويب النُسخة الحالية"
+
+#~ msgid "Edit volumes"
+#~ msgstr "تعديل المجلدات"
+
+#~ msgid "Edit volumes and copies"
+#~ msgstr "تعديل المجلدات والنُسخ"
+
+#~ msgid "Hide Copy Attributes"
+#~ msgstr "إخفاء سمات النُسخة"
+
+#~ msgid "Hide Volume/Copy Details"
+#~ msgstr "إخفاء المجلد / تفاصيل النُسخة"
+
+#~ msgid "Hold for patron %1, %2 %3"
+#~ msgstr "الحجز للمستفيد %1, %2 %3"
+
+#~ msgid "Item Transfer Target set"
+#~ msgstr "مجموعة استهداف نقل النُسخة"
+
+#~ msgid "Library"
+#~ msgstr "المكتبة"
+
+#~ msgid "Library as Volume Transfer Destination"
+#~ msgstr "المكتبة كوجهة لنقل المجلد"
+
+#~ msgid "Allow Call Number attributes in Copy Templates"
+#~ msgstr "السماح لـِ خصائص رمز الاستدعاء في تركيبات النسخة"
+
+#~ msgid "Archived Penalties / Messages"
+#~ msgstr "العقوبات/الرسائل المُؤرشفة"
+
+#~ msgid "Archive Penalty / Message"
+#~ msgstr "أرشيف العقوبات/الرسائل"
+
+#~ msgid "Copy \"%1\" was mis-scanned or is not cataloged"
+#~ msgstr "النُسخة \"%1\" مفقودة المسح الضوئي أو غير مُفهرسة"
+
+#~ msgid ""
+#~ "If overridden, subsequent checkouts during this patron's \n"
+#~ " session will auto-override this event"
+#~ msgstr ""
+#~ "إذا تجاوزت المخرجات اللاحقة لـِ هذا المستفيد \n"
+#~ "سوف تتجاوز الجلسة هذا الحدث آلياً"
+
+#~ msgid "Records to merge into lead"
+#~ msgstr "دمج التسجيلات في القائدة"
+
+#~ msgid "Volumes to Previously Marked Record"
+#~ msgstr "المجلدات إلى التسجيلة المحددة مسبقاً"
+
+#~ msgid "Volumes to Previously Marked Record and Library"
+#~ msgstr "المجلدات لـِ المكتبة والتسجيلة المحددة مُسبقاً"
+
+#~ msgid "Lead record"
+#~ msgstr "التسجيلة القائدة"
+
+#~ msgid "Apply Standing Penalty / Message"
+#~ msgstr "تطبيق العقوبة القائمة/الرسالة"
+
+#~ msgid "Copies to Previously Marked Library"
+#~ msgstr "النُسخ لـِ المكتبة المعينة سابقاً"
+
+#~ msgid "Copy Buckets"
+#~ msgstr "سلال النسخ"
+
+#~ msgid "Copy Templates"
+#~ msgstr "تركيبات النسخة"
+
+#~ msgid "Items to Previously Marked Volume"
+#~ msgstr "النُسخ لـِ المجلد المعينة سابقاً"
+
+#~ msgid "Load Shared Bucket Bucket by ID"
+#~ msgstr "تحميل السلة المشتركة حسب المُعرف"
+
+#~ msgid "Please select a lead record from the right..."
+#~ msgstr "الرجاء اختيار التسجيلة القائدة من اليمين.."
+
+#~ msgid "Print Spine Labels"
+#~ msgstr "طباعة التسميات أسفل الكتاب"
+
+#~ msgid "Record with TCN %1 marked for overlay."
+#~ msgstr "تم تحديد التسجيلة مع رقم التحكم في النقل  %1 للتراكب"
+
+#~ msgid "Replace TCN %1 ..."
+#~ msgstr "استبدال رقم التحكم في النقل  %1 ..."
+
+#~ msgid "Staff-Generated Penalties / Messages"
+#~ msgstr "العقوبات/الرسائل المُنشأة بوساطة الطاقم"
+
+#~ msgid "Add Volumes"
+#~ msgstr "إضافة مجلدات"
+
+#~ msgid "Booking: Create or Cancel Reservations"
+#~ msgstr "الحجز: إنشاء أو إلغاء حجوزات"
+
+#~ msgid "Deleted volume/copy template"
+#~ msgstr "حذف تركيبة المجلد/النسخة"
+
+#~ msgid "Edit Volume/Copy Templates"
+#~ msgstr "تعديل تركيبات المجلد/النسخة"
+
+#~ msgid "My Selection Lists"
+#~ msgstr "قوائم اختياراتي"
+
+#~ msgid "Number of Copies"
+#~ msgstr "عدد النّسخ"
+
+#~ msgid "Open Invoices"
+#~ msgstr "الفواتير المفتوحة"
+
+#~ msgid "Patron Alert Message"
+#~ msgstr "رسالة تنبيه المستفيد"
+
+#~ msgid "Saved volume/copy template(s)"
+#~ msgstr "تركيبات المجلد/النسخة المحفوظة"
+
+#~ msgid "Copy Hatch Settings To Local Storage"
+#~ msgstr "نسخ إعدادات الهاتش من أجل التخزين المحلي"
+
+#~ msgid "Copy Local Storage Settings To Hatch"
+#~ msgstr "نسخ إعدادات التخزين المحلي من أجل الهاتش"
+
+#~ msgid "Message Center"
+#~ msgstr "محور الرسالة"
+
+#~ msgid "Print / Storage Service (\"Hatch\")"
+#~ msgstr "طباعة / خدمة التخزين (\"الهاتش\")"
+
+#~ msgid "Print/Storage Service (\"Hatch\")"
+#~ msgstr "طباعة/ خدمة التخزين (\"الهاتش\")"
+
+#~ msgid "Store Local Settings in Hatch"
+#~ msgstr "تخزين الإعدادات المحلية في الهاتش"
+
+#~ msgid "Store Offline Transaction Data in Hatch"
+#~ msgstr "تخزين بيانات عملية ـ بدون اتصال بالإنترنت ـ في الهاتش"
+
+#~ msgid "Shelving Location Label"
+#~ msgstr "تسمية موقع الترفيف"
+
+#~ msgid "Copy Circ Lib ID"
+#~ msgstr "معرف نسخة إعارة المكتبة"
+
+#~ msgid "Copy Number"
+#~ msgstr "رقم النُسخة"
+
+#~ msgid "Add volume"
+#~ msgstr "إضافة مجلد"
+
+#~ msgid "Apply Copy Tags"
+#~ msgstr "تطبيق تيجان النُسخ"
+
+#~ msgid "Evergreen Staff %1"
+#~ msgstr "طاقم إِفرغرين %1"
+
+#~ msgid "Add copy stream"
+#~ msgstr "إضافة تيار نسخة"
+
+#~ msgid "Add/Edit Copy Tags"
+#~ msgstr "إضافة / تعديل تيجان النسخة"
+
+#~ msgid "Copy Tags"
+#~ msgstr "تيجان النسخ"
+
+#~ msgid "Copy Tag Types"
+#~ msgstr "أنواع تيجان النسخة"
+
+#~ msgid "Copy location"
+#~ msgstr "موقع النُسخة"
+
+#~ msgid "Copy Alert"
+#~ msgstr "تنبيه النسخة"
+
+#~ msgid "Copy Stream"
+#~ msgstr "تيار النسخة"
+
+#~ msgid "Far Right"
+#~ msgstr "أقصى اليمين"
+
+#~ msgid "Far Left"
+#~ msgstr "أقصى اليسار"
+
+#~ msgid "Add/Edit Copy Alerts"
+#~ msgstr "إضافة/ تعديل تنبيهات النسخة"

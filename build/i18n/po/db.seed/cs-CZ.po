@@ -3,13 +3,13 @@ msgstr ""
 "Project-Id-Version: Evergreen 1.4\n"
 "Report-Msgid-Bugs-To: open-ils-dev@list.georgialibraries.org\n"
 "POT-Creation-Date: 2023-05-04 09:23-0400\n"
-"PO-Revision-Date: 2023-05-05 21:40+0000\n"
+"PO-Revision-Date: 2023-05-14 15:20+0000\n"
 "Last-Translator: Eva Cerninakova <Unknown>\n"
 "Language-Team: UISK <LL@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2023-05-06 04:57+0000\n"
+"X-Launchpad-Export-Date: 2023-05-15 04:35+0000\n"
 "X-Generator: Launchpad (build 90e2150bef31b411d7bae5c4032c7e320fcaaec8)\n"
 "X-Poedit-Language: Czech\n"
 "X-Poedit-Country: CZECH REPUBLIC\n"
@@ -3529,7 +3529,7 @@ msgstr "Upravit nastavení SSO pro čtenáře"
 
 #: 950.data.seed-values.sql:1950
 msgid "Manage batch (subscription) hold events"
-msgstr ""
+msgstr "Spravovat událost dávkových (odebíraných) rezervací"
 
 #: 950.data.seed-values.sql:1952
 msgid "Administer library groups"
@@ -3549,7 +3549,7 @@ msgstr "Upravte pole pro url fotografie v editoru a registraci čtenáře"
 
 #: 950.data.seed-values.sql:1960
 msgid "Allow the user to create a record note"
-msgstr ""
+msgstr "Povolit uživateli vytvořit poznámku k záznamu"
 
 #: 950.data.seed-values.sql:1962
 msgid "Allow the user to update a record note"
@@ -3561,24 +3561,26 @@ msgstr "Povolit uživateli smazat poznámku k záznamu"
 
 #: 950.data.seed-values.sql:1966
 msgid "Update the staff client portal page"
-msgstr ""
+msgstr "Povolit uživatel upravit vstupní stránku služebního klienta"
 
 #: 950.data.seed-values.sql:1968
 msgid "Upload local cover images for added content."
-msgstr ""
+msgstr "Nahrát lokální obrázky obálek pro přidané obsah"
 
 #: 950.data.seed-values.sql:1970
 msgid "Build and run simple reports"
-msgstr ""
+msgstr "Vytvořit a spustit jednoduché sestavy"
 
 #: 950.data.seed-values.sql:1972
 msgid "Allow a user to administer OpenAthens authentication service"
-msgstr ""
+msgstr "Povolit uživatel správu autentizační služby OpenAthens"
 
 #: 950.data.seed-values.sql:1974
 msgid ""
 "Allow a user to access the experimental Angular circulation interfaces"
 msgstr ""
+"Povolit uživatel přístup do experimentálního angularizovaného rozhraní pro "
+"výpůjčky"
 
 #: 950.data.seed-values.sql:1976
 msgid "Allow the user to perform fund propagation and rollover"
@@ -3586,11 +3588,11 @@ msgstr ""
 
 #: 950.data.seed-values.sql:1978
 msgid "Update the barcode for an item."
-msgstr ""
+msgstr "Změnit čárový kód jednotky"
 
 #: 950.data.seed-values.sql:1980
 msgid "View hold pull list"
-msgstr ""
+msgstr "Zobrazit seznam rezervací k vyzvednutí"
 
 # id::pgt.name__1
 #: 950.data.seed-values.sql:1987
@@ -3706,15 +3708,15 @@ msgstr "čtenář via SIP"
 
 #: 950.data.seed-values.sql:2945
 msgid "Hold Group Event rollback"
-msgstr ""
+msgstr "Vrácení událostí rezervační skupiny"
 
 #: 950.data.seed-values.sql:2946
 msgid "Patron via email"
-msgstr ""
+msgstr "Čtenář prostřednictvím e-mailu"
 
 #: 950.data.seed-values.sql:2947
 msgid "Patron via SMS"
-msgstr ""
+msgstr "Čtenář prostřednictvím SMS"
 
 #: 950.data.seed-values.sql:2976 950.data.seed-values.sql:2977
 msgid "OPAC Font Size"
@@ -3897,6 +3899,8 @@ msgstr "DVD"
 #: 950.data.seed-values.sql:3165
 msgid "How to set default owning library for auto-created line item items"
 msgstr ""
+"Jak nastavit  výchozí vlastnickou knihovny pro automaticky vytvořené "
+"jednotky u položek"
 
 #: 950.data.seed-values.sql:3168
 msgid ""
@@ -3911,6 +3915,7 @@ msgstr ""
 #: 950.data.seed-values.sql:3173
 msgid "Default owning library for auto-created line item items"
 msgstr ""
+"Výchozí vlastnická knihovna pro automatiky vytvořené jednotky u položek"
 
 #: 950.data.seed-values.sql:3176
 msgid ""
@@ -4046,7 +4051,7 @@ msgstr "Výchozí klasifikační schéma"
 
 #: 950.data.seed-values.sql:3317
 msgid "Defines the default classification scheme for new call numbers."
-msgstr ""
+msgstr "Definuje výchozí klasifikační schéma pro nové signatury"
 
 #: 950.data.seed-values.sql:3323
 msgid "Default copy status (fast add)"
@@ -4077,11 +4082,11 @@ msgstr "Přednastavená cena exemplářů"
 
 #: 950.data.seed-values.sql:3350
 msgid "Require call number labels in Copy Editor"
-msgstr ""
+msgstr "Požadovat označení signaturyv editoru jednotek"
 
 #: 950.data.seed-values.sql:3353
 msgid "Define whether Copy Editor requires Call Number labels"
-msgstr ""
+msgstr "Definovat, jestli editor jednotek požaduje označení signatur"
 
 #: 950.data.seed-values.sql:3359
 msgid "Minimum Item Price"
@@ -5309,13 +5314,15 @@ msgstr "Zrušit poplatek za ztracený exemplář pokud je exemplář vrácen"
 
 #: 950.data.seed-values.sql:4297
 msgid "Void item deposit fee on checkin"
-msgstr ""
+msgstr "Při vrácení zrušit poplatek za vklad"
 
 #: 950.data.seed-values.sql:4300
 msgid ""
 "If a deposit was charged when checking out an item, void it when the item is "
 "returned"
 msgstr ""
+"Jestliže byl  při výpůjčce naúčtován poplatek za vklad, zrušit tento "
+"poplatek, když je jednotka vrácena"
 
 #: 950.data.seed-values.sql:4306
 msgid "Void processing fee on lost item return"
@@ -5375,6 +5382,8 @@ msgid ""
 "This might be \"AuthorizeNet\", \"PayPal\", \"PayflowPro\", \"SmartPAY\", or "
 "\"Stripe\"."
 msgstr ""
+"Může to být \"AuthorizeNet\", \"PayPal\", \"PayflowPro\", \"SmartPAY\" nebo "
+"\"Stripe\"."
 
 #: 950.data.seed-values.sql:4387
 msgid "Enable PayflowPro payments"
@@ -5447,35 +5456,35 @@ msgstr "Mód testu PayPal"
 
 #: 950.data.seed-values.sql:4486 950.data.seed-values.sql:4489
 msgid "Enable SmartPAY payments"
-msgstr ""
+msgstr "Povolit platby SmartPAY"
 
 #: 950.data.seed-values.sql:4495 950.data.seed-values.sql:4498
 msgid "SmartPAY location ID"
-msgstr ""
+msgstr "ID lokace SmartPAY"
 
 #: 950.data.seed-values.sql:4504 950.data.seed-values.sql:4507
 msgid "SmartPAY customer ID"
-msgstr ""
+msgstr "ID zákazníka SmartPAY"
 
 #: 950.data.seed-values.sql:4513 950.data.seed-values.sql:4516
 msgid "SmartPAY login name"
-msgstr ""
+msgstr "Přihlašovací jméno pro SmartPAY"
 
 #: 950.data.seed-values.sql:4522 950.data.seed-values.sql:4525
 msgid "SmartPAY password"
-msgstr ""
+msgstr "Heslo pro SmartPAY"
 
 #: 950.data.seed-values.sql:4531 950.data.seed-values.sql:4534
 msgid "SmartPAY API key"
-msgstr ""
+msgstr "Klíč pro SmartPAY"
 
 #: 950.data.seed-values.sql:4540 950.data.seed-values.sql:4543
 msgid "SmartPAY server name"
-msgstr ""
+msgstr "Název SmartPAY serveru"
 
 #: 950.data.seed-values.sql:4549 950.data.seed-values.sql:4552
 msgid "SmartPAY server port"
-msgstr ""
+msgstr "Port serveru SmartPAY"
 
 #: 950.data.seed-values.sql:4558 950.data.seed-values.sql:4561
 msgid "Enable Stripe payments"
@@ -5693,17 +5702,17 @@ msgid ""
 "depth of 0 will effectively make every org visible.  The embedded OPAC in "
 "the staff client ignores this setting."
 msgstr ""
-"Tím to budou skryty některé organizační jednotky v OPACu pokud fyzická "
-"lokace (parametr url \"physical_loc) pro OPAC zdědí toto nastavení. Toto "
-"nastavení specifikuje hloubku, která spolu s fyzickou lokací OPACu určuje, "
-"které části organizační hierarchie mají být viditelné v OPACu. Například "
-"instalace Evergreenu bude mít  třístupňovou hierarchii "
-"(Konsocium/Systém/Knihovna), kde systém má hloubku 1 a knihovna má hloubku "
-"2. Pokud  zde  v takovéto instalaci bude nastavení  obsahovat hloubku 1, pak "
-"každá knihovna v systému, ke které daná fyzická lokace patří, bude "
-"viditelná, a všechno ostatní bude skryto. Hloubka 0 způsobí, že každá "
-"organizační jednotka bude viditelná. OPAC ve služebním klientovi je  toto "
-"nastavení ignororváno."
+"This will hide certain org units in the public OPAC if the Physical Location "
+"(url param \"physical_loc\") for the OPAC inherits this setting.  This "
+"setting specifies an org unit depth, that together with the OPAC Physical "
+"Location determines which section of the Org Hierarchy should be visible in "
+"the OPAC.  For example, a stock Evergreen installation will have a 3-tier "
+"hierarchy (Consortium/System/Branch), where System has a depth of 1 and "
+"Branch has a depth of 2.  If this setting contains a depth of 1 in such an "
+"installation, then every library in the System in which the Physical "
+"Location belongs will be visible, and everything else will be hidden.  A "
+"depth of 0 will effectively make every org visible.  The embedded OPAC in "
+"the staff client ignores this setting."
 
 #: 950.data.seed-values.sql:4733 950.data.seed-values.sql:4736
 msgid "Custom CSS for the OPAC"
@@ -5755,7 +5764,7 @@ msgstr "E-mailová adresa pro zasílání upozornění čtenáři"
 
 #: 950.data.seed-values.sql:4778 950.data.seed-values.sql:4781
 msgid "Custom jQuery for the OPAC"
-msgstr ""
+msgstr "Vlastní jQuery pro OPAC"
 
 #: 950.data.seed-values.sql:4787
 msgid "Patron Opt-In Boundary"
@@ -12978,11 +12987,11 @@ msgstr "Iluminace"
 
 #: 950.data.seed-values.sql:9462
 msgid "National bibliographic agency"
-msgstr ""
+msgstr "Národní bibliografická agentura"
 
 #: 950.data.seed-values.sql:9463
 msgid "Cooperative cataloging program"
-msgstr ""
+msgstr "Kooperativní katalogizační program"
 
 #: 950.data.seed-values.sql:9967
 msgid "Creates a hold_notification record for each notified hold"
@@ -15004,12 +15013,13 @@ msgstr ""
 
 #: 950.data.seed-values.sql:17352
 msgid "Permit renewals when patron exceeds max fine threshold"
-msgstr ""
+msgstr "Povolit prodloužení pokud čtenář překročil maximální práh pro pokuty"
 
 #: 950.data.seed-values.sql:17359
 msgid ""
 "Permit renewals even when the patron exceeds the maximum fine threshold"
 msgstr ""
+"Povolit prodloužení přestože čtenář překročil maximální práh pro pokuty"
 
 #: 950.data.seed-values.sql:17375 950.data.seed-values.sql:17378
 msgid "Void lost item billing when claims returned"
@@ -16185,18 +16195,23 @@ msgstr ""
 #: 950.data.seed-values.sql:20114
 msgid "Default org unit for stat cat and stat cat entry editors"
 msgstr ""
+"Výchozí organizační jednotka pro editor statistických kategorií a hodnot"
 
 #: 950.data.seed-values.sql:20121
 msgid ""
 "Default org unit for the main org select in the item stat cat and stat cat "
 "entry admin interfaces."
 msgstr ""
+"Výchozí organizační jednotka pro výběr hlavní organizační jednotky v "
+"rozhraní pro správu statistických kategorií a hodnot."
 
 #: 950.data.seed-values.sql:20128
 msgid ""
 "Default org unit for the main org select in the patron stat cat and stat cat "
 "entry admin interfaces."
 msgstr ""
+"Výchozí organizační jednotka pro výběr hlavní organizační jednotky v "
+"rozhraní pro statistické kategorie čtenářů a v administrativním rozhraní"
 
 #: 950.data.seed-values.sql:20140
 msgid "Staff Catalog Default Search Library"
@@ -16541,7 +16556,7 @@ msgstr ""
 
 #: 950.data.seed-values.sql:20762
 msgid "Shibboleth SSO matchpoint"
-msgstr ""
+msgstr "Shoda SSO Shibolethu"
 
 #: 950.data.seed-values.sql:20763
 msgid ""
@@ -16645,15 +16660,15 @@ msgstr "Průvod zachycení rezervovaného zdroje"
 
 #: 950.data.seed-values.sql:21062
 msgid "Grid Config: Booking Manage Reservations"
-msgstr ""
+msgstr "Nastavení sloupců: Spravovat rezervace v Rezervacích zdrojů"
 
 #: 950.data.seed-values.sql:21068
 msgid "Grid Config: Booking Ready to pick up grid"
-msgstr ""
+msgstr "Nastavení sloupců: Tabulka Rezervace zdrojů připravené k vyzvednutí"
 
 #: 950.data.seed-values.sql:21074
 msgid "Grid Config: Booking Already Picked Up grid"
-msgstr ""
+msgstr "Nastavení sloupců: Tabulka Vyzvednuté rezervace zdrojů"
 
 #: 950.data.seed-values.sql:21080
 msgid "Grid Config: Booking Return Patron tab Already Picked Up grid"
@@ -16673,11 +16688,11 @@ msgstr ""
 
 #: 950.data.seed-values.sql:21104
 msgid "Grid Config: Booking Captured Reservations"
-msgstr ""
+msgstr "Nastavení sloupců: Rezervované zdrojů - Zachycené rezervace"
 
 #: 950.data.seed-values.sql:21110
 msgid "Grid Config: Booking Pull List"
-msgstr ""
+msgstr "Nastavení sloupců: Rezervované zdrojů - Rezervace k zachycení"
 
 #: 950.data.seed-values.sql:21116
 msgid "Sticky setting for pickup ou family in Manage Reservations screen"
@@ -16965,7 +16980,7 @@ msgstr ""
 
 #: 950.data.seed-values.sql:21562
 msgid "Geographic Location Service to use for Addresses"
-msgstr ""
+msgstr "Geolokační služba, která se má použít pro adresy"
 
 #: 950.data.seed-values.sql:21566
 msgid ""
@@ -16981,26 +16996,35 @@ msgid ""
 "scale of 0 (no compression) to 9 (maximum compression), or -1 for the zlib "
 "default."
 msgstr ""
+"Obrázky obálek jsou předeny do souborů typu PNG s touto kompresí, na škále "
+"od  0 (bez komprese) do 9 (maximální komprese), nebo -1 pro výchozí hodnoty "
+"zlib."
 
 #: 950.data.seed-values.sql:21601
 msgid ""
 "Maximum file size for uploaded cover image files (at time of upload, prior "
 "to rescaling)."
 msgstr ""
+"Maximální velikost souboru pro nahrané obrázky obálek (v době nahrání, před "
+"přeškálováním)."
 
 #: 950.data.seed-values.sql:21605
 msgid ""
 "The number of bytes to allow for a cover image upload.  If unset, defaults "
 "to 10737418240 (roughly 10GB)."
 msgstr ""
+"Počet bytů povolených pro nahráné obrázky obálek. Pokud není nastaveno, "
+"použije se výchozí hodnota  10737418240 (přibližně  10GB)."
 
 #: 950.data.seed-values.sql:21618
 msgid "Holds: Require Monographic Part When Present for hold check."
 msgstr ""
+"Rezervace: Pro zaškrtnutí rezervací vyžadovat části monografií, pokud jsou "
+"přítomny"
 
 #: 950.data.seed-values.sql:21628
 msgid "Require Monographic Part when Present"
-msgstr ""
+msgstr "Požadovat části monografií, pokud jsou přítomny"
 
 #: 950.data.seed-values.sql:21632
 msgid ""
@@ -17009,6 +17033,10 @@ msgid ""
 "part.  A true value for this setting will require part selection even under "
 "this condition."
 msgstr ""
+"Výběr části monografie při rezervacích je obvykle volitelný, pokud je k "
+"bibliografickému záznamu připojen alespoň jeden exemplář, který nemá žádné "
+"části monografií.  Pokud zde nastavíte hodnotu na Ano,  bude nutné vybrat "
+"část monografie, i když bude platit, že existuje exemplář bez částí."
 
 #: 950.data.seed-values.sql:21872
 msgid "Staff Catalog \"Exclude Electronic Resources\" Option"
@@ -17061,6 +17089,8 @@ msgid ""
 "Use an all lowercase version of a Stripe-supported ISO 4217 currency code.  "
 "Defaults to \"usd\""
 msgstr ""
+"Použít verzi kódu měny malými písmeny podle ISO 4217 podporovanou Stripe. "
+"Výchozí hodnota \"usd\"."
 
 #: 950.data.seed-values.sql:21983
 msgid "Grid Config: eg.grid.acq.fund.fund_debit"
@@ -17482,3 +17512,486 @@ msgid ""
 "threshold for their group. Use of this feature will likely require "
 "configuration and coordination with an external collection agency."
 msgstr ""
+
+# id::clm.value''in__gwi
+#~ msgid "Gwich"
+#~ msgstr "Gwich'in"
+
+#~ msgid "Holds: Block Renewal of Items Needed for Holds"
+#~ msgstr ""
+#~ "Rezervace: Blokovat prodloužení exemplářů nutných pro splnění rezervací"
+
+#~ msgid "Example Branch 2"
+#~ msgstr "Vzorová pobočka 2"
+
+#~ msgid ""
+#~ "Circulation: Maximum concurrently active self-serve password reset requests"
+#~ msgstr ""
+#~ "Výpůjčky: Maximum současně aktivních požadavků na nové nastavení hesla"
+
+#~ msgid "Holds: Has Local Copy Block"
+#~ msgstr "Rezervace: Lokální exemplář je blokován"
+
+#~ msgid ""
+#~ "Circulation: Maximum concurrently active self-serve password reset requests "
+#~ "per user"
+#~ msgstr ""
+#~ "Výpůjčky: Maximum současně aktivních požadavků na nastavení nového hesla na "
+#~ "uživatele"
+
+#~ msgid "List Published Book Bags"
+#~ msgstr "Vypsat zveřejněné seznamy knih"
+
+#~ msgid "Holds: Clear shelf copy status"
+#~ msgstr "Rezervace: Zrušit status exempláře na regále"
+
+#~ msgid "Example System 1"
+#~ msgstr "Vzorový systém 1"
+
+#~ msgid "Example System 2"
+#~ msgstr "Vzorový systém 2"
+
+#~ msgid "Selfcheck: Workstation Required"
+#~ msgstr "Stanice pro samoobslužné půjčování: Je vyžadována pracovní stanice"
+
+#~ msgid "‡biblios.net"
+#~ msgstr "‡biblios.net"
+
+#~ msgid "Example Branch 4"
+#~ msgstr "Vzorová pobočka 4"
+
+#~ msgid "Example Branch 3"
+#~ msgstr "Vzorová pobočka 3"
+
+#~ msgid "Example Branch 1"
+#~ msgstr "Vzorová pobočka 1"
+
+#~ msgid "Circulation: Self-serve password reset request time-to-live"
+#~ msgstr "Výpůjčky: Životnost požadavku na nastavení nového hesla"
+
+#~ msgid "Example Sub-library 1"
+#~ msgstr "Vzorová dílčí knihovna 1"
+
+#~ msgid "System maintenance, configuration, etc."
+#~ msgstr "Údržba systému, konfigurace apod."
+
+#~ msgid "Local System Administrator"
+#~ msgstr "Správce lokálního systému"
+
+#~ msgid "Selfcheck: Require Patron Password"
+#~ msgstr "Samoobslužná výpůjční stanice: Vyžadovat po čtenáři heslo"
+
+#~ msgid "Example Bookmobile 1"
+#~ msgstr "Vzorová pojízdná knihovna 1"
+
+#~ msgid "Add to Published Book Bags"
+#~ msgstr "Přidat do zveřejněných seznamů knih"
+
+#~ msgid "GUI: Work Log: Maximum Patrons Logged"
+#~ msgstr "GUI: Pracovní deník: maximum přihlášených čtenářů"
+
+#~ msgid "Book Bag"
+#~ msgstr "Seznam knih"
+
+#~ msgid "Appends staff initials and edit date into note content."
+#~ msgstr "Přidává do obsahu poznámky iniciály zaměstnance a datum editace."
+
+#~ msgid "Circ: Cap Max Fine at Item Price"
+#~ msgstr "Výpůjčky: Maximální pokuta je cena exempláře"
+
+#~ msgid "SSN"
+#~ msgstr "Číslo pasu"
+
+#~ msgid ""
+#~ "GUI: Require staff initials for entry/edit of item/patron/penalty "
+#~ "notes/messages."
+#~ msgstr ""
+#~ "GUI: Vyžadovat iniciály personálu pro zadávání/editaci poznámek/zpráv "
+#~ "týkajících se exemplářů/čtenářů/pokut"
+
+#~ msgid "GUI: Work Log: Maximum Actions Logged"
+#~ msgstr "GUI: Pracovní log: maximum zaznamenaných akcí"
+
+#~ msgid "Selfcheck: Audio Alerts"
+#~ msgstr "Samoobslužná výpůjční stanice: Zvuková upozornění"
+
+#~ msgid "Holds: Has Local Copy Alert"
+#~ msgstr "Rezervace: Upozornit, je-li exemplář k dispozici lokálně"
+
+#~ msgid "National Agricultural Library subject authority file"
+#~ msgstr "Věcné autority National Agricultural Library"
+
+#~ msgid "LC subject headings for children's literature"
+#~ msgstr "Věcné třídění Kongresové knihovny pro dětskou literaturu"
+
+#~ msgid "Art and Architecture Thesaurus"
+#~ msgstr "Tezaurus Art and Architecture"
+
+#~ msgid "Library of Congress Subject Headings"
+#~ msgstr "Věcné třídění kongresové knihovny"
+
+#~ msgid "Sears List of Subject Headings"
+#~ msgstr "Mrtvá větev věcného třídění"
+
+#~ msgid "Medical Subject Headings"
+#~ msgstr "Medical Subject Headings"
+
+#~ msgid "Canadian Subject Headings"
+#~ msgstr "Kanadské věcné třídění"
+
+#~ msgid "Repertoire de vedettes-matiere"
+#~ msgstr "Adresář předmětových hesel"
+
+#~ msgid "Allow a user to mark an item as 'missing'"
+#~ msgstr "Povolit uživateli označit exemplář jako \"postrádaný\""
+
+#~ msgid ""
+#~ "Text/HTML/Macros to be inserted into receipt templates in place of "
+#~ "%INCLUDE(header_text)%"
+#~ msgstr ""
+#~ "Text / html /makro pro vložení do šablony výpisu /potvrzení na místě  "
+#~ "%INCLUDE(header_text)%"
+
+#~ msgid ""
+#~ "Allow a user to abort a copy transit if the user is at the transit "
+#~ "destination or source"
+#~ msgstr ""
+#~ "Povolit uživateli zrušit přepravu exempláře pokud je uživatel v cílové nebo "
+#~ "zdrojové destinaci přepravy."
+
+#~ msgid ""
+#~ "How long to wait before allowing remote items to be opportunistically "
+#~ "captured for a hold.  Example \"5 days\""
+#~ msgstr ""
+#~ "Jak dlouho čekat než bude povoleno vzdáleným exemplářům být příležitostně "
+#~ "zachycen pro rezervaci. Příklad: \"5 dnů\""
+
+#~ msgid ""
+#~ "Text/HTML/Macros to be inserted into receipt templates in place of "
+#~ "%INCLUDE(alert_text)%"
+#~ msgstr ""
+#~ "Text / html / makro , které má být vloženo do šablony výpisu / potvrzení na "
+#~ "místě  %INCLUDE(alert_text)%"
+
+#~ msgid ""
+#~ "Allow funds to be rolled over without bringing the money along.  This makes "
+#~ "money left in the old fund disappear, modeling its return to some outside "
+#~ "entity."
+#~ msgstr ""
+#~ "Povolit fondům přenesení aniž by byly přenseseny také peníze. To způsobí, že "
+#~ "peníze ponechané ve starém fondu zmizí a bude namodelován jejich návrat k "
+#~ "některým exeterním subjektům"
+
+#~ msgid ""
+#~ "Text/HTML/Macros to be inserted into receipt templates in place of "
+#~ "%INCLUDE(notice_text)%"
+#~ msgstr ""
+#~ "Text / html / makra pro vložení do šablony výpisů / potvrzení na místě  "
+#~ "%INCLUDE(notice_text)%"
+
+#~ msgid "How many canceled holds to show in patron holds interfaces"
+#~ msgstr ""
+#~ "Kolik zrušených rezervací zobrazit ve čtenářském rozhraní pro rezervace"
+
+#~ msgid ""
+#~ "Text/HTML/Macros to be inserted into receipt templates in place of "
+#~ "%INCLUDE(event_text)%"
+#~ msgstr ""
+#~ "Text / HTML / maker pro vložení do šablony výpisů / potvrzení na místě "
+#~ "%INCLUDE(event_text)%"
+
+#~ msgid ""
+#~ "Allow a user to abort a copy transit if the user is not at the transit "
+#~ "source or dest"
+#~ msgstr ""
+#~ "Povolit uživateli zrušit přepravu exemplářů pokud uživatel není v cílové "
+#~ "nebo zdrojové destinaci přepravy,"
+
+#~ msgid "Show all canceled holds that were canceled within this amount of time"
+#~ msgstr "Zobrazit rezervace zrušené během uvedené doby"
+
+#~ msgid "Canceled holds display age"
+#~ msgstr "Období za které se zabrazí zrušené rezervace"
+
+#~ msgid ""
+#~ "Leave transaction open when long-overdue balance equals zero.  This leaves "
+#~ "the lost copy on the patron record when it is paid"
+#~ msgstr ""
+#~ "Ponechat transakci otevřenou, když se bilance za dlouhodbě nevrácené rovná "
+#~ "nule. Tak bude ponechán ztracený exemplář v záznamu čtenáře, když je "
+#~ "zaplacen."
+
+#~ msgid "Allows patrons to create automatic holds from purchase requests."
+#~ msgstr ""
+#~ "Povolit uživateli vytvořit automatickou rezervaci z akvizičního požadavku."
+
+#~ msgid ""
+#~ "Value is a numeric code, describing which list the circulation should appear "
+#~ "while checked out and whether the circulation should continue to appear in "
+#~ "the bottom list, when checked in with oustanding fines.  1 = top list, "
+#~ "bottom list.  2 = bottom list, bottom list.  5 = top list, do not display.  "
+#~ "6 = bottom list, do not display."
+#~ msgstr ""
+#~ "Hodnoutou se rozumí číselný kód popisující, který seznam výpůjček se má "
+#~ "objevit při půjčování a jestli se má výpůjčka dále objevit  ve spodním "
+#~ "seznamu při vracení v případě vzniklých pokut. 1 = horní seznam, spodní "
+#~ "seznam. 2= spodní seznam, spodní seznam. 5 = horní seznam, nezobrazovat. 6 = "
+#~ "spodní seznam, nezobrazovat."
+
+#~ msgid ""
+#~ "Defines the default classification scheme for new call numbers: 1 = Generic; "
+#~ "2 = Dewey; 3 = LC"
+#~ msgstr ""
+#~ "Definuje výchozí klasifikační schém pro nové signatury: 1 = Obecné; 2 = "
+#~ "Deweyho třídění; 3 = LC (třídění Kongresové knihovny)"
+
+#~ msgid "Appends staff initials and edit date into patron note content."
+#~ msgstr "Připojí do obsahu poznámky iniciály personálu a datum editace."
+
+#~ msgid ""
+#~ "Appends staff initials and edit date into patron standing penalties and "
+#~ "messages."
+#~ msgstr ""
+#~ "Připojí do obsahu blokace / upozornění iniciály personálu a datum editace."
+
+#~ msgid "Require staff initials for entry/edit of patron notes."
+#~ msgstr ""
+#~ "Při vytváření / editaci poznámek pro čtenáře požadovat iniciály personálu"
+
+#~ msgid ""
+#~ "When enabled, Located URIs will provide visiblity behavior identical to "
+#~ "copies."
+#~ msgstr ""
+#~ "Pokud je aktivní, lokalizovaná URI zajistí zobrazování podobné exemplářům"
+
+#~ msgid "Journal/Magazine & Newspaper Articles"
+#~ msgstr "Články z časopisů a denního tisku"
+
+#~ msgid "Allows a user to abort a transit on a copy with status of MISSING"
+#~ msgstr ""
+#~ "Povolí uživateli zrušit přepravu exempláře se statusem \"postrádané\""
+
+#~ msgid ""
+#~ "Text/HTML/Macros to be inserted into receipt templates in place of "
+#~ "%INCLUDE(footer_text)%"
+#~ msgstr ""
+#~ "Text/HTML/makro, které mají být vloženy do šablony výpisu/potvrzení namísto  "
+#~ "%INCLUDE(footer_text)%"
+
+#~ msgid "Allows a user to abort a transit on a copy with status of LOST"
+#~ msgstr "Povolit uživateli zrušit přepravu exempláře se statusem \"ztraceno\""
+
+#~ msgid "VIEW_STANDING_PENALTY"
+#~ msgstr "VIEW_STANDING_PENALTY"
+
+#~ msgid ""
+#~ "This might be \"AuthorizeNet\", \"PayPal\", \"PayflowPro\", or \"Stripe\"."
+#~ msgstr ""
+#~ "Může to být  \"AuthorizeNet\", \"PayPal\", \"PayflowPro\" nebo \"Stripe\"."
+
+#~ msgid ""
+#~ "Require staff initials for entry/edit of patron standing penalties and "
+#~ "messages."
+#~ msgstr "Požadovat iniciály personálu pro vytvoření/editaci pokut a zpráv"
+
+#~ msgid "Define the time zone in which a library physically resides"
+#~ msgstr "Definice časového pásma, ve kterém se knihovna fyzicky nachází"
+
+#~ msgid "Item Print Label - Left Margin for Left Label"
+#~ msgstr "Tiskový štítek jednotky - Levý okraj pro levý štítek"
+
+#~ msgid "Item Print Label - Width for Left Label"
+#~ msgstr "Tiskový štítek jednotky - Šířka pro levý štítek"
+
+#~ msgid ""
+#~ "Set the default height for the leftmost item print label. Please include a "
+#~ "unit of measurement that is valid CSS. For example, \"1in\" or \"2.5cm\""
+#~ msgstr ""
+#~ "Nastavení výchozí výšky levého tiskového štítku. Použijte prosím měrné "
+#~ "jedntoky, které jsou platné v  CSS. Například \"1in\" nebo \"2,5cm\""
+
+#~ msgid "Item Print Label - Height for Right Label"
+#~ msgstr "Šablona pro tisk štítků jednotek - Výška pro pravý štítek"
+
+#~ msgid ""
+#~ "Set the default left margin for the rightmost item print label (or in other "
+#~ "words, the desired space between the two labels). Please include a unit of "
+#~ "measurement that is valid CSS. For example, \"1in\" or \"2.5cm\""
+#~ msgstr ""
+#~ "Nastavení výchozího levého okraje pro pravý tiskový šítek exempláře (tj. "
+#~ "požadovanou mezeru mezi dvěma štítky). Prosím, použijte měrné jednotky, "
+#~ "které jsou platné v CSS, např. \"1in\" nebo \"2.5cm\""
+
+#~ msgid ""
+#~ "Set the default width for the rightmost item print label. Please include a "
+#~ "unit of measurement that is valid CSS. For example, \"1in\" or \"2.5cm\""
+#~ msgstr ""
+#~ "Nastavení výchozí šířky pravého tiskového štítku. Použijte prosím měrné "
+#~ "jednotky, kterou jsou platné v CSS. Například \"1in\" nebo \"2,5cm\""
+
+#~ msgid "Item Print Label - Height for Left Label"
+#~ msgstr "Tisková šablona štítků jednotek - Výška pro levý štítek"
+
+#~ msgid "Item Print Label - Width for Right Label"
+#~ msgstr "Tisková šablona štítků jednotek - Šírka pro pravý štítek"
+
+#~ msgid ""
+#~ "Set the default left margin for the leftmost item print Label. Please "
+#~ "include a unit of measurement that is valid CSS. For example, \"1in\" or "
+#~ "\"2.5cm\""
+#~ msgstr ""
+#~ "Nastavení výchozího levého kraje pro levý tiskový štítek. Prosím použijte "
+#~ "měrné jednotky, které jsou validní v CSS. Např. \"1in\" nebo \"2.5cm\""
+
+#~ msgid ""
+#~ "Set the default height for the rightmost item print label. Please include a "
+#~ "unit of measurement that is valid CSS. For example, \"1in\" or \"2.5cm\""
+#~ msgstr ""
+#~ "Nastavení výchozí výšky pro tisk pravého štítku jednotky. Prosím, použijte "
+#~ "měrné jednotky, které jsou validní v CSS. Napříkla \"1in\" nebo  \"2.5cm\""
+
+#~ msgid "Item Print Label - Left Margin for Right Label"
+#~ msgstr "Tiskové štítky jednotek - Levý okraj pro pravý štítek"
+
+#~ msgid "Canceled holds display count"
+#~ msgstr "Počet zobrazených zrušených rezervací"
+
+#~ msgid "Show alert_message field on patron registration"
+#~ msgstr ""
+#~ "Zobrazit pole Upozornění  - alert_message -  na kartě registračních údajů "
+#~ "čtenáře"
+
+#~ msgid ""
+#~ "The alert_message field will be shown on the patron registration screen. "
+#~ "Showing a field makes it appear with required fields even when not required. "
+#~ "If the field is required this setting is ignored."
+#~ msgstr ""
+#~ "Pole Upozornění - alert_message - bude zobrazeno na kartě registračních "
+#~ "údajů čtenáře i v případě, že není povinné. Pokud je pole povinné, bude toto "
+#~ "nastavení ignorováno."
+
+#~ msgid ""
+#~ "The alert_message field will be suggested on the patron registration screen. "
+#~ "Suggesting a field makes it appear when suggested fields are shown. If the "
+#~ "field is shown or required this setting is ignored."
+#~ msgstr ""
+#~ "Pole Upozornění  - alert_message -  se na kartě registračních údajů čtenáře "
+#~ "zobrazí jako navrhované. Navrhovaná pole jsou zobrazena, pokud je aktivována "
+#~ "volba Zobrazit navrhovaná pole. Pokud je pole zobrazeno nebo je povinné, "
+#~ "bude toto nastavení ignorováno."
+
+#~ msgid "Suggest alert_message field on patron registration"
+#~ msgstr ""
+#~ "Navrhnout pole Upozornění  - alert_message - na kartě registračních údajů "
+#~ "čtenáře"
+
+#~ msgid "Allow funds to be rolled over without bringing the money along"
+#~ msgstr "Povolit přenesení fondu  aniž by byly přeneseny také peníze"
+
+#~ msgid ""
+#~ "Set the default width for the leftmost item print label. Please include a "
+#~ "unit of measurement that is valid CSS. For example, \"1in\" or \"2.5cm\""
+#~ msgstr ""
+#~ "Nastavení výchozí šířky pro tiskový štítek jednotky nejvíce vlevo. Prosím, "
+#~ "použit měrné jednotky, které jsou platné pro CSS. Např. \"1in\"nebor "
+#~ "\"2.5cm\""
+
+#~ msgid "Physical Descrption"
+#~ msgstr "Fyzický popis"
+
+#~ msgid "GUI: Enable Experimental Angular Staff Catalog"
+#~ msgstr ""
+#~ "Grafické uživatelské rozhraní: Zapnout experimentální Angular katalog pro "
+#~ "personál"
+
+#~ msgid "APPLY_WORKSTATION_SETTING"
+#~ msgstr "POUŽÍT_NASTAVENÍ_PRACOVNÍ_STANICE"
+
+#~ msgid ""
+#~ "Display an entry point in the browser client for the experimental Angular "
+#~ "staff catalog."
+#~ msgstr ""
+#~ "Zobrazit v prohlížeči klienta vstupní bod pro experimentální služební "
+#~ "katalog v Angularu"
+
+#~ msgid "Age billings and payments when cirulcations are aged."
+#~ msgstr "Archivovat poplatky a platby při archivaci výpůjček"
+
+#~ msgid "Minimum required uses of a spelling suggestions that may be offered"
+#~ msgstr ""
+#~ "Minimum  požadovaných použití návrhů pravopisu, které mohou být nabízeny"
+
+#~ msgid "Keyboard distance score weighting in OPAC spelling suggestions."
+#~ msgstr ""
+#~ "Váhy pro skóre vzdálenosti na klávesnici pro návrhy pravopisu v OPACu"
+
+#~ msgid ""
+#~ "Value is a numeric code, describing: A. In which tab (\"Items Checked Out\", "
+#~ "or \"Other/Special Circulations\") the circulation should appear while "
+#~ "checked out, and B. Whether the circulation should continue to appear in the "
+#~ "\"Other\" tab when checked in with oustanding fines.  1 = (A) \"Items\", (B) "
+#~ "\"Other\".  2 = (A) \"Other\", (B) \"Other\".  5 = (A) \"Items\", (B) do not "
+#~ "display.  6 = (A) \"Other\", (B) do not display."
+#~ msgstr ""
+#~ "Hodnota je numerický kód, který popisuje: A. Na které kartě (\"Vypůjčené "
+#~ "exempláře\" nebo \"Jiné / Speciální výpůjčky\") by se výpůjčka měla objevit "
+#~ "při načtení.  B.  Jestli by výpůjčka, u které při vrácení zůstanou "
+#~ "nezaplacené pokuty za zpozdné měla zůstat na kartě \"Jiné / Speciální "
+#~ "výpůjčky\".  1 = (A) \"Vypůjčené exempláře\", (B) \"Jiné / Speciální "
+#~ "výpůjčky\". 2 = (A) \"Jiné / Speciální výpůjčky\", (B) \"Jiné / Speciální "
+#~ "výpůjčky\". 5 = (A) \"Vypůjčené exempláře\", (B) nezobrazovat. 6 = (A) "
+#~ "\"Jiné / Speciální výpůjčky\", (B) nezobrazovat."
+
+#~ msgid ""
+#~ "Maximum search result count at which spelling suggestions may be offered"
+#~ msgstr ""
+#~ "Maximální počet výsledků vyhledávání, při kterém mohou být nabízeny návrhy "
+#~ "pravopisu"
+
+#~ msgid "Soundex score weighting in OPAC spelling suggestions."
+#~ msgstr ""
+#~ "Výsledek vážení  dle algoritmu Soudnexu pro pravopisné návrhy v OPACu."
+
+#~ msgid ""
+#~ "If a search results in this number or fewer results, and there are "
+#~ "correctable spelling mistakes, a suggested search may be provided."
+#~ msgstr ""
+#~ "Pokud výsledky vyhledávání obsahují tento nebo menší počet výsledků a "
+#~ "vyskytují se v něm pravopisné chyby, které by bylo možné opravit, mohou být "
+#~ "zobrazeny návrhy na hledání."
+
+#~ msgid ""
+#~ "Soundex, trgm, and keyboard distance similarity measures can be combined to "
+#~ "form a secondary ordering parameter for spelling suggestions. This controls "
+#~ "the relative weight of the scaled keyboard distance component. Defaults to 0 "
+#~ "for \"off\"."
+#~ msgstr ""
+#~ "Soundex, trgm, and míry podobnosti vzdálenosti na klávesnicimohou být "
+#~ "kombinovány a vytvořit tak sekundární parametr pro řazení návrhů pravopisu. "
+#~ "Ten řídí relativní váhu škálovaných komponent vzdálenosti na klávesnici. "
+#~ "Výchozí hodnota je 0 pro „vypnuto\"."
+
+#~ msgid ""
+#~ "Soundex, trgm, and keyboard distance similarity measures can be combined to "
+#~ "form a secondary ordering parameter for spelling suggestions. This controls "
+#~ "the relative weight of the scaled soundex component. Defaults to 0 for "
+#~ "\"off\"."
+#~ msgstr ""
+#~ "Soundex, trgm, and míry podobnosti vzdálenosti na klávesnicimohou být "
+#~ "kombinovány a vytvořit tak sekundární parametr pro řazení návrhů pravopisu. "
+#~ "Ten řídí relativní váhu škálovaných komponent soundexu. Výchozí hodnota je 0 "
+#~ "pro „vypnuto\"."
+
+#~ msgid ""
+#~ "Soundex, pg_trgm, and keyboard distance similarity measures can be combined "
+#~ "to form a secondary ordering parameter for spelling suggestions. This "
+#~ "controls the relative weight of the scaled pg_trgm component. Defaults to 0 "
+#~ "for \"off\"."
+#~ msgstr ""
+#~ "Soundex, trgm, and míry podobnosti vzdálenosti na klávesnicimohou být "
+#~ "kombinovány a vytvořit tak sekundární parametr pro řazení návrhů pravopisu. "
+#~ "Ten řídí relativní váhu škálovaných komponent pg_trgm. Výchozí hodnota je 0 "
+#~ "pro „vypnuto\"."
+
+#~ msgid "Maximum number of spelling suggestions that may be offered"
+#~ msgstr "Maximální počet nabídnurých pravopisných návrhů"

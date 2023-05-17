@@ -7,14 +7,14 @@ msgid ""
 msgstr ""
 "Project-Id-Version: evergreen\n"
 "Report-Msgid-Bugs-To: FULL NAME <EMAIL@ADDRESS>\n"
-"POT-Creation-Date: 2023-05-05 21:45+0000\n"
-"PO-Revision-Date: 2023-05-05 21:40+0000\n"
-"Last-Translator: Francisco J Guel-Mendoza <Unknown>\n"
+"POT-Creation-Date: 2023-05-04 14:54+0000\n"
+"PO-Revision-Date: 2022-12-13 19:15+0000\n"
+"Last-Translator: Gina Monti <Unknown>\n"
 "Language-Team: Spanish <es@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2023-05-06 05:09+0000\n"
+"X-Launchpad-Export-Date: 2023-05-05 04:49+0000\n"
 "X-Generator: Launchpad (build 90e2150bef31b411d7bae5c4032c7e320fcaaec8)\n"
 
 #: ../../Open-ILS/src/templates/opac/register.tt2:66
@@ -5959,3 +5959,180 @@ msgstr "ver"
 #: ../../Open-ILS/src/templates/opac/parts/place_hold_result.tt2:156
 msgid "volume"
 msgstr "volumen"
+
+#~ msgid "April"
+#~ msgstr "Abril"
+
+#~ msgid "August"
+#~ msgstr "Agosto"
+
+#~ msgid "Balance Owed"
+#~ msgstr "Total Debido"
+
+#~ msgid "Are you sure you are ready to charge %1 to your credit card?"
+#~ msgstr ""
+#~ "¿Estás seguro de querer realizar el cargo %1 a tu tarjeta de crédito?"
+
+#~ msgid "December"
+#~ msgstr "Diciembre"
+
+#~ msgid "February"
+#~ msgstr "Febrero"
+
+#~ msgid "Fines"
+#~ msgstr "Multas"
+
+#~ msgid "Fines:"
+#~ msgstr "Multas:"
+
+#~ msgid "January"
+#~ msgstr "Enero"
+
+#~ msgid "July"
+#~ msgstr "Julio"
+
+#~ msgid "June"
+#~ msgstr "Junio"
+
+#~ msgid "Last Payment Time"
+#~ msgstr "Fecha del último pago"
+
+#~ msgid "March"
+#~ msgstr "Marzo"
+
+#~ msgid "May"
+#~ msgstr "Mayo"
+
+#~ msgid "My Existing Lists"
+#~ msgstr "Mis Listas existentes"
+
+#~ msgid "Name"
+#~ msgstr "Nombre"
+
+#~ msgid "November"
+#~ msgstr "Noviembre"
+
+#~ msgid "October"
+#~ msgstr "Octubre"
+
+#~ msgid "Other Fees"
+#~ msgstr "Otros gastos"
+
+#~ msgid "Pay Fines"
+#~ msgstr "Pagar Multas"
+
+#~ msgid "Pay selected fines"
+#~ msgstr "Pagar multas seleccionadas"
+
+#~ msgid "Remove from my list"
+#~ msgstr "Eliminar de mi lista"
+
+#~ msgid "Selected fines you are paying for:"
+#~ msgstr "Multas seleccionadas que estas por pagar:"
+
+#~ msgid "September"
+#~ msgstr "Septiembre"
+
+#~ msgid "Temporary List"
+#~ msgstr "Lista temporal"
+
+#~ msgid "Total Amount Paid"
+#~ msgstr "Cantidad total pagada"
+
+#~ msgid "Total amount to pay:"
+#~ msgstr "Cantidad total a pagar:"
+
+#~ msgid "Transaction Start Time"
+#~ msgstr "Fecha de inicio de la transacción"
+
+#~ msgid "User name:"
+#~ msgstr "Nombre del Usuario:"
+
+#~ msgid "View My List"
+#~ msgstr "Ver Mi Lista"
+
+#~ msgid "You have not created a list yet."
+#~ msgstr "No has creado una lista aún"
+
+#~ msgid "Go back to try again or to cancel this payment attempt."
+#~ msgstr "Regrese para intentar nuevamente o para cancelar el intento de pago."
+
+#~ msgid "Initial Amount Owed"
+#~ msgstr "Monto de Adeudo Inicial"
+
+#~ msgid ""
+#~ "Please enter your user name or barcode to identify your library account and "
+#~ "request a password reset"
+#~ msgstr ""
+#~ "Introduzca su nombre de usuario o código de barras para identificar su "
+#~ "cuenta en la biblioteca y así solicitar un cambio de clave."
+
+#~ msgid "Results %1 - %2 of about %3"
+#~ msgstr "Resultados %1 - %2 de %3"
+
+#~ msgid "You are adding to a temporary list."
+#~ msgstr "Está añadiendo a una lista temporal."
+
+#~ msgid "Click %1Cancel%2 to go back and (un)select other fines."
+#~ msgstr ""
+#~ "Haga clic en %1Cancel %2 para volver y (des) seleccionar otras multas"
+
+#~ msgid ""
+#~ "Important! You must have a printed receipt to be eligible for a refund on "
+#~ "lost items (regulations allow for no exceptions)."
+#~ msgstr ""
+#~ "¡Importante! Debe tener un recibo impreso para ser elegibles para un "
+#~ "reembolso de objetos perdidos (regulaciones permiten sin excepciones)"
+
+#~ msgid "Temporary List Warning"
+#~ msgstr "Advertencia lista temporal"
+
+#~ msgid ""
+#~ "To ensure your necessary receipt information is not lost, enter your email "
+#~ "address above and a receipt will be emailed to you. Otherwise, make certain "
+#~ "you have a printed receipt in hand before closing the payment receipt screen."
+#~ msgstr ""
+#~ "Para garantizar que su información necesaria recibo no se pierde , "
+#~ "introduzca su dirección de correo electrónico anterior y un recibo será "
+#~ "enviado por correo electrónico . De lo contrario , asegúrese de que tiene un "
+#~ "recibo impreso en la mano antes de cerrar la pantalla de la recepción del "
+#~ "pago."
+
+#~ msgid ""
+#~ "You either have no fines to pay or you have selected fines whose total is "
+#~ "non-positive.  We cannot process non-positive amounts."
+#~ msgstr ""
+#~ "Usted o no tiene ninguna multa a pagar o haya seleccionado multas cuyo total "
+#~ "es totalizado a no positivo . No podemos procesar cantidades no positivos ."
+
+#~ msgid ""
+#~ "Your user name or barcode has been submitted for a password reset. If a "
+#~ "matching account with an email address is found, you will soon receive an "
+#~ "email at that address with further instructions for resetting your password."
+#~ msgstr ""
+#~ "El nombre de usuario o código de barras ha sido sometido a un "
+#~ "restablecimiento de contraseña . Si se encuentra una cuenta coincidente con "
+#~ "una dirección de correo electrónico , usted pronto recibirá un correo "
+#~ "electrónico a esa dirección con más instrucciones para restablecer su "
+#~ "contraseña."
+
+#~ msgid "Add %1 to my list"
+#~ msgstr "Añadir %1 a mi lista"
+
+#~ msgid "Remove %1 from my list"
+#~ msgstr "Eliminar %1 de mi lista"
+
+#~ msgid "View My Lists"
+#~ msgstr "Vea Mis Listas"
+
+#~ msgid "View My Temporary List"
+#~ msgstr "Vea Mi Lista Temporal"
+
+#~ msgid " View My Temporary List"
+#~ msgstr " Ver Mi Lista Temporal"
+
+#~ msgid " View My Lists"
+#~ msgstr " Ver Mis Listas"
+
+#~ msgid "The minimum amount you can pay is $0.01."
+#~ msgstr "La cantidad mínima a pagar es $0.01."

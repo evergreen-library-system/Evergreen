@@ -7,14 +7,14 @@ msgid ""
 msgstr ""
 "Project-Id-Version: evergreen\n"
 "Report-Msgid-Bugs-To: FULL NAME <EMAIL@ADDRESS>\n"
-"POT-Creation-Date: 2023-05-05 21:45+0000\n"
-"PO-Revision-Date: 2023-05-05 21:40+0000\n"
+"POT-Creation-Date: 2023-05-04 14:54+0000\n"
+"PO-Revision-Date: 2017-09-29 08:23+0000\n"
 "Last-Translator: TZ <tigran@flib.sci.am>\n"
 "Language-Team: Armenian <hy@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2023-05-06 05:08+0000\n"
+"X-Launchpad-Export-Date: 2023-05-05 04:48+0000\n"
 "X-Generator: Launchpad (build 90e2150bef31b411d7bae5c4032c7e320fcaaec8)\n"
 
 #: ../../Open-ILS/src/templates/opac/register.tt2:66
@@ -5926,3 +5926,175 @@ msgstr "դիտել"
 #: ../../Open-ILS/src/templates/opac/parts/place_hold_result.tt2:156
 msgid "volume"
 msgstr "հատոր"
+
+#~ msgid "Are you sure you are ready to charge %1 to your credit card?"
+#~ msgstr "Դու վստա՞հ ես որ պատրաստ ես վճարելու %1 to քո կրեդիտ քարտից։"
+
+#~ msgid "April"
+#~ msgstr "Ապրիլ"
+
+#~ msgid "August"
+#~ msgstr "Օգոստոս"
+
+#~ msgid "Balance Owed"
+#~ msgstr "Տնօրինած հաշվեկշիռ"
+
+#~ msgid "Click %1Cancel%2 to go back and (un)select other fines."
+#~ msgstr "Սեղմիր %1Չեղյալ անել%2 հետ գնալ և (հետ)ընտրել այլ տուգանքներ։"
+
+#~ msgid "December"
+#~ msgstr "Դեկտեմբեր"
+
+#~ msgid "Fines"
+#~ msgstr "Տուգանքներ"
+
+#~ msgid "Fines:"
+#~ msgstr "Տուգանքներ։"
+
+#~ msgid "February"
+#~ msgstr "Փետրվար"
+
+#~ msgid "Go back to try again or to cancel this payment attempt."
+#~ msgstr "Ետ գնալ որ նորից փորձես կամ որ չեղյալ անես այս վճարման փորձը։"
+
+#~ msgid "Initial Amount Owed"
+#~ msgstr "Սկզբնական պարտքի գումարը"
+
+#~ msgid "January"
+#~ msgstr "Հունվար"
+
+#~ msgid "June"
+#~ msgstr "Հունիս"
+
+#~ msgid "July"
+#~ msgstr "Հուլիս"
+
+#~ msgid "Last Payment Time"
+#~ msgstr "Վերջին վճարման ժամ"
+
+#~ msgid "May"
+#~ msgstr "Մայիս"
+
+#~ msgid "March"
+#~ msgstr "Մարտ"
+
+#~ msgid "Name"
+#~ msgstr "Անունը"
+
+#~ msgid "November"
+#~ msgstr "Նոյեմբեր"
+
+#~ msgid "October"
+#~ msgstr "Հոկտեմբեր"
+
+#~ msgid "Other Fees"
+#~ msgstr "Այլ գումարներ"
+
+#~ msgid "Pay Fines"
+#~ msgstr "Վճարի տուգանքներ"
+
+#~ msgid "Pay selected fines"
+#~ msgstr "Վճարի ընտրված տուգանքները"
+
+#~ msgid ""
+#~ "Please enter your user name or barcode to identify your library account and "
+#~ "request a password reset"
+#~ msgstr ""
+#~ "Մուտք արա քո օգտվողի անունը կամ շտրիխ կոդը որպեսզի նույնականացնես գրադարանի "
+#~ "քո հաշիվը և պահանջես գաղտնաբառի վերագրում։"
+
+#~ msgid "Remove from my list"
+#~ msgstr "Հեռացնել իմ ցանկից"
+
+#~ msgid "Selected fines you are paying for:"
+#~ msgstr "Ընտրված տուգանքներ որոնց համար վճարում ես։"
+
+#~ msgid "September"
+#~ msgstr "Սեպտեմբեր"
+
+#~ msgid "Temporary List Warning"
+#~ msgstr "Ժամանակավոր ցուցակի զգուշացում"
+
+#~ msgid "Temporary List"
+#~ msgstr "Ժամանակավոր ցուցակ"
+
+#~ msgid "Total amount to pay:"
+#~ msgstr "Վճարման ենթակա ընդհանուր գումար"
+
+#~ msgid "Transaction Start Time"
+#~ msgstr "Տրանզակցիայի սկզբանվորման ժամ"
+
+#~ msgid "Total Amount Paid"
+#~ msgstr "Ընդհանուր վճարված գումար"
+
+#~ msgid "View My List"
+#~ msgstr "Դիտիր իմ ցուցակը"
+
+#~ msgid "User name:"
+#~ msgstr "Օգտագործողի անունը՝"
+
+#~ msgid "You are adding to a temporary list."
+#~ msgstr "Դու խմբագրում ես ժամանակավոր ցուցակում"
+
+#~ msgid ""
+#~ "You either have no fines to pay or you have selected fines whose total is "
+#~ "non-positive.  We cannot process non-positive amounts."
+#~ msgstr ""
+#~ "Դու կամ չունես վճարման ենթակա տուգանքներ կամ դու ընտրել ես տուգանքներ որոնց "
+#~ "գումարային արժեքը բացասական է։ Մենք չենք կարող աշխատել բացասական գումարների "
+#~ "դեպքում։"
+
+#~ msgid "You have not created a list yet."
+#~ msgstr "Դու դեռ չես ստեղծել ցուցակ։"
+
+#~ msgid ""
+#~ "Your user name or barcode has been submitted for a password reset. If a "
+#~ "matching account with an email address is found, you will soon receive an "
+#~ "email at that address with further instructions for resetting your password."
+#~ msgstr ""
+#~ "Քո օգտվողի անունը կամ շտրիխ կոդը ուղարկվել են գաղտնաբառի վերագրման համար։ "
+#~ "Եթե համընկնող հաշիվ է հայտնաբերվել այդ էլ. փոստով դու էլ. փոստով այդ հասցեի "
+#~ "վրա շուտով կստանաս հաղորդագրություն գաղտնաբառի վերագրման համար։"
+
+#~ msgid "My Existing Lists"
+#~ msgstr "Իմ առկա ցուցակները"
+
+#~ msgid ""
+#~ "Important! You must have a printed receipt to be eligible for a refund on "
+#~ "lost items (regulations allow for no exceptions)."
+#~ msgstr ""
+#~ "Կարևոր է։ Պետք է ունենաս տպված ստացական որպեսզի իրավասու լինես ստանալու "
+#~ "փոխհատուցում կորած նյութերի համար (կարգավորումները թույլ չեն տալիս "
+#~ "բացառություններ)"
+
+#~ msgid "Results %1 - %2 of about %3"
+#~ msgstr "Արդյունքներ %1 - %2 մոտ %3"
+
+#~ msgid ""
+#~ "To ensure your necessary receipt information is not lost, enter your email "
+#~ "address above and a receipt will be emailed to you. Otherwise, make certain "
+#~ "you have a printed receipt in hand before closing the payment receipt screen."
+#~ msgstr ""
+#~ "Վստահ լինելու համար որ պահանջվող տեղեկատվությունը կորած չէ, մուտք արա  քո էլ "
+#~ "փոստը և մինչ վճարման ստացականի պաստառի փակվելը քեզ կուղարկվի ստացականը։"
+
+#~ msgid " View My Temporary List"
+#~ msgstr " Դիտիր իմ ժամանակավոր Ցուցակները"
+
+#~ msgid " View My Lists"
+#~ msgstr " Դիտիր իմ Ցուցակները"
+
+#~ msgid "Add %1 to my list"
+#~ msgstr "Ավելացրու %1 իմ ցուցակին"
+
+#~ msgid "Remove %1 from my list"
+#~ msgstr "Հեռացրու %1 իմ ցուցակից"
+
+#~ msgid "View My Lists"
+#~ msgstr "Դիտիր իմ ցուցակները։"
+
+#~ msgid "View My Temporary List"
+#~ msgstr "Դիտիր իմ ժամանակավոր ցուցակները։"
+
+#~ msgid "The minimum amount you can pay is $0.01."
+#~ msgstr "Քո կողմից վճարման ենթակա նվազագուն գումարը $0.01."

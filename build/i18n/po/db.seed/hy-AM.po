@@ -3,14 +3,22 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: open-ils-dev@list.georgialibraries.org\n"
 "POT-Creation-Date: 2023-05-04 09:23-0400\n"
-"PO-Revision-Date: 2023-05-05 21:40+0000\n"
+"PO-Revision-Date: 2017-09-06 11:43+0000\n"
 "Last-Translator: TZ <tigran@flib.sci.am>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2023-05-06 04:57+0000\n"
+"X-Launchpad-Export-Date: 2023-05-05 04:36+0000\n"
 "X-Generator: Launchpad (build 90e2150bef31b411d7bae5c4032c7e320fcaaec8)\n"
+
+#: 950.data.seed-values.sql:565
+msgid "American English"
+msgstr "Ամերիկյան անգլերեն"
+
+#: 950.data.seed-values.sql:7651
+msgid "Tamil"
+msgstr "Թամիլերեն"
 
 # id::cbs.source__1
 # id::1
@@ -673,10 +681,6 @@ msgstr "Ոչ մատչելի"
 #: 950.data.seed-values.sql:564
 msgid "English (US)"
 msgstr "Անգլերեն (ԱՄՆ)"
-
-#: 950.data.seed-values.sql:565
-msgid "American English"
-msgstr "Ամերիկյան անգլերեն"
 
 # id::clm.value__cze id::i18n_l.name__cs-CZ id::i18n_l.description__cs-CZ
 # id::cze
@@ -9756,10 +9760,6 @@ msgstr "Թաի (այլ)"
 msgid "Tajik"
 msgstr "Տաջիկերեն"
 
-#: 950.data.seed-values.sql:7651
-msgid "Tamil"
-msgstr "Թամիլերեն"
-
 # id::clm.value__-tar id::clm.value__tat
 # id::-tar
 #: 950.data.seed-values.sql:7652 950.data.seed-values.sql:7653
@@ -18032,3 +18032,395 @@ msgid ""
 "threshold for their group. Use of this feature will likely require "
 "configuration and coordination with an external collection agency."
 msgstr ""
+
+# id::aou.name__7
+# id::7
+#~ msgid "Example Branch 4"
+#~ msgstr "Օրինակ մասնաճյուղ 4"
+
+# id::aou.name__5
+# id::5
+#~ msgid "Example Branch 2"
+#~ msgstr "Օրինակ մասնաճյուղ 2"
+
+# id::aou.name__6
+# id::6
+#~ msgid "Example Branch 3"
+#~ msgstr "Օրինակ մասնաճյուղ 3"
+
+# id::aou.name__4
+# id::4
+#~ msgid "Example Branch 1"
+#~ msgstr "Օրինակ մասնաճյուղ 1"
+
+# id::cit.name__2
+# id::2
+#~ msgid "SSN"
+#~ msgstr "SSN"
+
+# id::aou.name__2
+# id::2
+#~ msgid "Example System 1"
+#~ msgstr "Օրինակ համակարգ 1"
+
+# id::aou.name__3
+# id::3
+#~ msgid "Example System 2"
+#~ msgstr "Օրինակ համակարգ 2"
+
+# id::aou.name__9
+# id::9
+#~ msgid "Example Bookmobile 1"
+#~ msgstr "Example Bookmobile 1"
+
+#~ msgid "Gwich"
+#~ msgstr "Gwich"
+
+#~ msgid "List Published Book Bags"
+#~ msgstr "Թվարկիր տպագրված գրքերի պայուսակները"
+
+#~ msgid "Holds: Clear shelf copy status"
+#~ msgstr "Պահումներ։ Մաքրիր պատճենի դարակի վիճակը"
+
+#~ msgid "Selfcheck: Workstation Required"
+#~ msgstr "Ինքնաստուգում։ Պահանջվում է աշխատանքային կայան"
+
+#~ msgid "Local System Administrator"
+#~ msgstr "Տեղային համակարգի կառավարիչ"
+
+#~ msgid "Example Sub-library 1"
+#~ msgstr "Օրինակ։ Ենթագրադարան 1"
+
+#~ msgid "Selfcheck: Require Patron Password"
+#~ msgstr "Ինքնաստուգում։ Պահանջում է ընթերցողի գաղտնաբառ։"
+
+#~ msgid "‡biblios.net"
+#~ msgstr "‡biblios.net"
+
+#~ msgid "Add to Published Book Bags"
+#~ msgstr "Ավելացրու Հրատարակված գրքերի պայուսակում"
+
+#~ msgid "Book Bag"
+#~ msgstr "Գրքի պայուսակ"
+
+#~ msgid "System maintenance, configuration, etc."
+#~ msgstr "Համակարգի շահագործում, կարգաբերում, և այլն"
+
+#~ msgid "GUI: Work Log: Maximum Patrons Logged"
+#~ msgstr "ՕԳՄ։ Աշխատանքային լոգ։ Գրանցված են մաքսիմում ընթերցողներ։"
+
+#~ msgid "GUI: Work Log: Maximum Actions Logged"
+#~ msgstr "ՕԳՄ։ Աշխատանքային լոգ Մաքսիմում գործողություններ են ակտիվ։"
+
+#~ msgid "Circ: Cap Max Fine at Item Price"
+#~ msgstr "Տացք: Cap Max տուգանք նյութի գնին համապատասխան"
+
+#~ msgid "Holds: Has Local Copy Block"
+#~ msgstr "Պահումներ։ Ունի տեղային պատճենի բլոկ"
+
+#~ msgid ""
+#~ "Circulation: Maximum concurrently active self-serve password reset requests "
+#~ "per user"
+#~ msgstr ""
+#~ "Տացք. Ամենաշատ մրցակից ակտիվ ինքնագրվող գաղտնաբառի վերագրման առաջարկներ ըմտ "
+#~ "մեկ օգտվողի"
+
+#~ msgid "Circulation: Self-serve password reset request time-to-live"
+#~ msgstr "Տացք։ ինքնստուգվող գաղնաբառի վերագրման թողնելու գալու ժամ"
+
+#~ msgid "Selfcheck: Audio Alerts"
+#~ msgstr "Ինքնստուգում։ Ձայնային զգուշացում"
+
+#~ msgid ""
+#~ "Circulation: Maximum concurrently active self-serve password reset requests"
+#~ msgstr ""
+#~ "Տացք։ Ամենաշատ մրցակից ակտիվ ինքնաստուգվող գաղտնաբառերի վերագրման պահանջ"
+
+#~ msgid ""
+#~ "GUI: Require staff initials for entry/edit of item/patron/penalty "
+#~ "notes/messages."
+#~ msgstr ""
+#~ "ՕԳՄ։ Պահանջում է աշխատակցի սկզբնատառերը որպեսզի խմբագրի/մուտքագրի "
+#~ "նյութի/ընթերցողի/տուգանքի նշումների/հաղորդումները"
+
+#~ msgid "Appends staff initials and edit date into note content."
+#~ msgstr "Կիրառում է աշխատակազմի սկզբնատառերը և խմբագրում է ամսաթիվը նշումի"
+
+#~ msgid "Holds: Block Renewal of Items Needed for Holds"
+#~ msgstr "Պահումներ։ Պահման համար պահանջվող նյութերի թարմացումներ"
+
+#~ msgid "Holds: Has Local Copy Alert"
+#~ msgstr "Պահումներ. ունի տեղային պատճենի ահազանգ"
+
+#~ msgid "LC subject headings for children's literature"
+#~ msgstr "Կոնգրեսի գրադարանի խորագրեր մանկական գրականության համար"
+
+#~ msgid "Art and Architecture Thesaurus"
+#~ msgstr "Արվեստի և ճարտարապետության տեզաուրուս"
+
+#~ msgid "National Agricultural Library subject authority file"
+#~ msgstr ""
+#~ "Գյուղատնտեսական գրականության ազգային գրադարանի խորագրերի հեղինակավոր ֆայլ"
+
+#~ msgid "Repertoire de vedettes-matiere"
+#~ msgstr "Repertoire de vedettes-matiere"
+
+#~ msgid "Library of Congress Subject Headings"
+#~ msgstr "Կոնգրեսի գրադարանի խորագրեր"
+
+#~ msgid "Sears List of Subject Headings"
+#~ msgstr "Խորագրերի Սիրսի ցուցակ"
+
+#~ msgid "Canadian Subject Headings"
+#~ msgstr "Կանադական խորագրեր"
+
+#~ msgid "Medical Subject Headings"
+#~ msgstr "Բժշկական թեմաների խորագրեր"
+
+#~ msgid "Allow funds to be rolled over without bringing the money along"
+#~ msgstr "Թույլ է տալիս բյուջեներին շրջվել առանց գումար բերելու"
+
+#~ msgid "Allow a user to mark an item as 'missing'"
+#~ msgstr "Թույլ տուր օգտվողին նշելու նյութը որպես 'բացակա'"
+
+#~ msgid ""
+#~ "Value is a numeric code, describing which list the circulation should appear "
+#~ "while checked out and whether the circulation should continue to appear in "
+#~ "the bottom list, when checked in with oustanding fines.  1 = top list, "
+#~ "bottom list.  2 = bottom list, bottom list.  5 = top list, do not display.  "
+#~ "6 = bottom list, do not display."
+#~ msgstr ""
+#~ "Արժեքը դա թվային կոդ է և նկարագրում է թե տացքի որ ցուցակը պետք է հայտնվի "
+#~ "քանի դեռ դուրս է տրված և արդյոք տացքը պետք է շարունակվի հայտնվել ներքևի "
+#~ "ցուցակում, երբ հետ է ընդունվում ժամկետանց տուգանքներով։ 1 = վերին ցուցակ, "
+#~ "ներքևի ցուցակ։ 2 = ներքևի ցուցակ, ներքևի ցուցակ։ 5 = վերին ցուցակ, մի "
+#~ "արտածիր։ 6 = ներքևի ցուցակ, մի արտածիր։"
+
+#~ msgid ""
+#~ "Text/HTML/Macros to be inserted into receipt templates in place of "
+#~ "%INCLUDE(header_text)%"
+#~ msgstr ""
+#~ "Text/HTML/Macros որ պետք է ներդրվեն ստացականի ձևանմուշներում սրա փոխարեն "
+#~ "%INCLUDE(header_text)%"
+
+#~ msgid ""
+#~ "Allow a user to abort a copy transit if the user is at the transit "
+#~ "destination or source"
+#~ msgstr ""
+#~ "Թույլ տուր ընթերցողին վիժեցնելու պատճենի տեղափոխումը եթե օգտվողը տեղափոխման "
+#~ "նպատակակետում է կամ աղբյուրում"
+
+#~ msgid ""
+#~ "How long to wait before allowing remote items to be opportunistically "
+#~ "captured for a hold.  Example \"5 days\""
+#~ msgstr ""
+#~ "Ինչքան սպասել որից հետո թույլ կտրվի հեռավար նյութերին որսվալու պահման համար։ "
+#~ "Օրինակ՝ \"5 օր\""
+
+#~ msgid ""
+#~ "Text/HTML/Macros to be inserted into receipt templates in place of "
+#~ "%INCLUDE(alert_text)%"
+#~ msgstr ""
+#~ "Text/HTML/Macros պետք է ներդրվեն ստացականի ձևանմուշներում սրա փոխարեն "
+#~ "%INCLUDE(alert_text)%"
+
+#~ msgid ""
+#~ "Allow funds to be rolled over without bringing the money along.  This makes "
+#~ "money left in the old fund disappear, modeling its return to some outside "
+#~ "entity."
+#~ msgstr ""
+#~ "Թույլ տուր դրամագլուխներին պտտվել առանց գումար բերելու։ Սա թույլ է տալիս որ "
+#~ "հին դրամագլխում մնացած գումարը անհետանա, մոդելավորելով դրա վերադարձը մեկ այլ "
+#~ "մուտքի։"
+
+#~ msgid "Canceled holds display count"
+#~ msgstr "Չեղյալ արված պահումների արտածման հաշվիչ"
+
+#~ msgid ""
+#~ "Text/HTML/Macros to be inserted into receipt templates in place of "
+#~ "%INCLUDE(notice_text)%"
+#~ msgstr ""
+#~ "Text/HTML/Macros պետք է ներդրվեն ստացման ձևանմուշներում սրա փոխարեն "
+#~ "%INCLUDE(notice_text)%"
+
+#~ msgid "How many canceled holds to show in patron holds interfaces"
+#~ msgstr "Ընթերցողի պահման միջերեսում քանի չեղյալ արված պահումներ ցուցյց տալ"
+
+#~ msgid ""
+#~ "Text/HTML/Macros to be inserted into receipt templates in place of "
+#~ "%INCLUDE(event_text)%"
+#~ msgstr ""
+#~ "Text/HTML/Macros պետք է ներդրվեն ստացման ձևանմուշներում սրա "
+#~ "փոխարեն%INCLUDE(event_text)%"
+
+#~ msgid ""
+#~ "Allow a user to abort a copy transit if the user is not at the transit "
+#~ "source or dest"
+#~ msgstr ""
+#~ "Թույլ տուր օգտվողին վիժեցնել պատճենի տրանզիտը եթե օգտվողը տրանզիտի "
+#~ "աղբյուրում կամ նպատակակետում չէ։"
+
+#~ msgid "Show all canceled holds that were canceled within this amount of time"
+#~ msgstr ""
+#~ "Ցույց տուր բոլոր չեղյալ արված պահումները որոնք չեղյալ են արվել որոշակի "
+#~ "ժամանակահատվածում"
+
+#~ msgid "Canceled holds display age"
+#~ msgstr "Չեղյալ արված պահումների արտածման տարիք"
+
+#~ msgid "Appends staff initials and edit date into patron note content."
+#~ msgstr ""
+#~ "Ընթերցողի նշումների բովանդակությունում ավելացնում է աշխատակազմի սկզբնատառերը "
+#~ "և խմբագրում է ամսաթիվը։"
+
+#~ msgid ""
+#~ "Leave transaction open when long-overdue balance equals zero.  This leaves "
+#~ "the lost copy on the patron record when it is paid"
+#~ msgstr ""
+#~ "Գործարքը թող բաց երբ երկարաժամկետ ուշացման հաշվեկշիռը դառնում է զրո։ Սա "
+#~ "թողնում է կորած օրինակը հաճախորդի քարտին, երբ այն վճարված է։"
+
+#~ msgid "Show alert_message field on patron registration"
+#~ msgstr "Ընթերցող գրանցելիս ցույց տուր alert_message դաշտը"
+
+#~ msgid ""
+#~ "Appends staff initials and edit date into patron standing penalties and "
+#~ "messages."
+#~ msgstr ""
+#~ "Ընթերցողի սպասող տուգանքներին և հաղորդագրություններին հավելում է աշխատակազմի "
+#~ "սկզբնատառերը ևխմբագրման ամսաթիվը։"
+
+#~ msgid "Define the time zone in which a library physically resides"
+#~ msgstr "Սահմանիր ժամային գոտին որում ֆիզիկապես գտնվում է գրադարանը։"
+
+#~ msgid "Item Print Label - Left Margin for Left Label"
+#~ msgstr "Նյութի Տպած Պիտակ - Ձախ եզր ձախ պիտակի համար"
+
+#~ msgid "Item Print Label - Width for Left Label"
+#~ msgstr "Նյութի Տպած Պիտակ - Ձախ պիտակի խորությունը"
+
+#~ msgid ""
+#~ "Set the default width for the leftmost item print label. Please include a "
+#~ "unit of measurement that is valid CSS. For example, \"1in\" or \"2.5cm\""
+#~ msgstr ""
+#~ "Կարգաբերի նյութի ամենաձախ տպելու պիտակի համար։ Ներառ չափման միավոր, որը "
+#~ "թույլատրելի CSS է։ Օրինակ,  \"1դույմ\" կամr \"2.5սմ\"։"
+
+#~ msgid "Allows patrons to create automatic holds from purchase requests."
+#~ msgstr "Թույլ տուր ընթերցողին գնման պատվերից ստեղծելու ավտոմատ պահումներ։"
+
+#~ msgid "Require staff initials for entry/edit of patron notes."
+#~ msgstr ""
+#~ "Ընթերցողի նշումների մուտք/խմբագրման համար պահանջվում է աշխատակցի "
+#~ "սկզբնատառերը։"
+
+#~ msgid ""
+#~ "When enabled, Located URIs will provide visiblity behavior identical to "
+#~ "copies."
+#~ msgstr ""
+#~ "Երբ թույլատրված է, տեղաբաշխված URI-ները կտրամադրեն տեսանելի վարքագիծը, որը "
+#~ "պատճենների նույնականն է։"
+
+#~ msgid "Item Print Label - Height for Right Label"
+#~ msgstr "Նյութի տպելու պիտակ - Աջ պիտակի բարձրությունը։"
+
+#~ msgid ""
+#~ "Defines the default classification scheme for new call numbers: 1 = Generic; "
+#~ "2 = Dewey; 3 = LC"
+#~ msgstr ""
+#~ "Սահմանում է լռակյաց դասակարգման սխեման նոր դասիչների համար: 1 = Ընդհանուր; 2 "
+#~ "= Դյուի; 3 = LC"
+
+#~ msgid ""
+#~ "Set the default height for the leftmost item print label. Please include a "
+#~ "unit of measurement that is valid CSS. For example, \"1in\" or \"2.5cm\""
+#~ msgstr ""
+#~ "Ամենաձախ նյութի տպման պիտակի համար տեղադրի լռակյաց բարձրությունը։ Ներառ "
+#~ "չափման միավորը, որը վավեր CSS է։ Օրինակ, \"1դույմ\" կամ \"2.5սմ\"։"
+
+#~ msgid ""
+#~ "The alert_message field will be suggested on the patron registration screen. "
+#~ "Suggesting a field makes it appear when suggested fields are shown. If the "
+#~ "field is shown or required this setting is ignored."
+#~ msgstr ""
+#~ "Ընթերցողի գրանցման պաստառից կառաջարկվի lert_message դաշտը։ Առաջարկելով դաշտ "
+#~ "թույլ է տալիս որ այն հայտնվի երբ առաջարկվող դաշտերը ցույց են տրված։ Եթե "
+#~ "դաշտը ցույց է տրված կամ առաջարկված, այս կարգաբերումը անտեսվում է։"
+
+#~ msgid ""
+#~ "The alert_message field will be shown on the patron registration screen. "
+#~ "Showing a field makes it appear with required fields even when not required. "
+#~ "If the field is required this setting is ignored."
+#~ msgstr ""
+#~ "Ընթերցողի գրանցման պաստառին կերևա alert_message դաշտը։ Ցույց տալով դաշտը "
+#~ "ստիպում է, որ այն հայտնվի պահանջվող դաշտերով, եթե նույնիսկ պահանջված չէ։ Եթե "
+#~ "դաշտը պահանջված է, այս կարգաբերումը կանտեսվի։"
+
+#~ msgid "Suggest alert_message field on patron registration"
+#~ msgstr "Ընթերցող գրնացելիս առաջարկիր alert_message դաշտը։"
+
+#~ msgid "Journal/Magazine & Newspaper Articles"
+#~ msgstr "Ամսագրի/Հանդեսի & թերթի հոդված։"
+
+#~ msgid "Item Print Label - Width for Right Label"
+#~ msgstr "Նյութի տպելու պիտակ - ձախ պիտակի լայնություն"
+
+#~ msgid "Item Print Label - Height for Left Label"
+#~ msgstr "Նյութի տպելու պիտակ - Ձախ պիտակի բարձրություն։"
+
+#~ msgid ""
+#~ "Text/HTML/Macros to be inserted into receipt templates in place of "
+#~ "%INCLUDE(footer_text)%"
+#~ msgstr ""
+#~ "Text/HTML/Macros հարկ է ներդնել ստացականի ձևանմուշում սրա փոխարեն "
+#~ "%INCLUDE(footer_text)%"
+
+#~ msgid "VIEW_STANDING_PENALTY"
+#~ msgstr "VIEW_STANDING_PENALTY"
+
+#~ msgid ""
+#~ "Set the default width for the rightmost item print label. Please include a "
+#~ "unit of measurement that is valid CSS. For example, \"1in\" or \"2.5cm\""
+#~ msgstr ""
+#~ "Կարգաբերի ամենաաջ նյութի տպելու պիտակի լռակյաց լայնությունը։ Ներառ չափման "
+#~ "միավոր, որը ընդունելի CSS է։ Օրինակ, \"1ինչ\" կամ \"2.5սմ\""
+
+#~ msgid ""
+#~ "Set the default left margin for the rightmost item print label (or in other "
+#~ "words, the desired space between the two labels). Please include a unit of "
+#~ "measurement that is valid CSS. For example, \"1in\" or \"2.5cm\""
+#~ msgstr ""
+#~ "Տեղադրի ձախ լռակյաց եզրը ամենաաջ նյութի տպելու պիտակի համար (կամ այլ կերպ "
+#~ "ասած, երկու պիտակների միջի ցանկալի բացատը)։ Ներառ չափման միավորը, որը վավեր "
+#~ "CSS է։ Օրինակ, \"1դույմ կամ \"2.5սմ\"։"
+
+#~ msgid ""
+#~ "Set the default left margin for the leftmost item print Label. Please "
+#~ "include a unit of measurement that is valid CSS. For example, \"1in\" or "
+#~ "\"2.5cm\""
+#~ msgstr ""
+#~ "կարգաբերի լռակյաց ձախ եզրը ամենաձախ նյութի տպելու պիտակի համար։ Ներառ չափման "
+#~ "միավորը որպես վավեր CSS։ Օրինակ,  \"1դույմ\" կամ \"2.5սմ\"։"
+
+#~ msgid ""
+#~ "This might be \"AuthorizeNet\", \"PayPal\", \"PayflowPro\", or \"Stripe\"."
+#~ msgstr ""
+#~ "Սա կարող է լինել  \"AuthorizeNet\", \"PayPal\", \"PayflowPro\", կամ "
+#~ "\"Stripe\"։"
+
+#~ msgid ""
+#~ "Set the default height for the rightmost item print label. Please include a "
+#~ "unit of measurement that is valid CSS. For example, \"1in\" or \"2.5cm\""
+#~ msgstr ""
+#~ "Ամենաաջ նյութի տպելու պիտակի լռակյաց բարձրության կարգաբերում։ Ներառ "
+#~ "վավերական CSS չափման միավոր։ Օրինակ, \"1դույմ\" կամ \"2.5սմ\"։"
+
+#~ msgid ""
+#~ "Require staff initials for entry/edit of patron standing penalties and "
+#~ "messages."
+#~ msgstr ""
+#~ "Հաճախորդի սպասող տուգանքների և հաղորդագրությունների մուտքագրման/խմբագրման "
+#~ "համար պահանջվում են աշխատակազմի անվանատառերը։"
+
+#~ msgid "Item Print Label - Left Margin for Right Label"
+#~ msgstr "Նյութի տպելու պիտակ - Աջ պիտակի ձախ եզրը։"

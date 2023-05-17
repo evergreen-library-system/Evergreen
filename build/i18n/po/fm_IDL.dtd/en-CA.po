@@ -8,13 +8,13 @@ msgstr ""
 "Project-Id-Version: evergreen\n"
 "Report-Msgid-Bugs-To: FULL NAME <EMAIL@ADDRESS>\n"
 "POT-Creation-Date: 2023-05-03 11:29-0400\n"
-"PO-Revision-Date: 2023-05-05 21:40+0000\n"
+"PO-Revision-Date: 2013-01-31 19:02+0000\n"
 "Last-Translator: Warren Layton <Unknown>\n"
 "Language-Team: English (Canada) <en_CA@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2023-05-06 05:02+0000\n"
+"X-Launchpad-Export-Date: 2023-05-05 04:42+0000\n"
 "X-Generator: Launchpad (build 90e2150bef31b411d7bae5c4032c7e320fcaaec8)\n"
 
 #: class.oaib.label:78 class.oaia.label:88
@@ -11659,3 +11659,74 @@ msgstr ""
 #: field.coai.release_barcode.label:15609
 msgid "Release barcode"
 msgstr ""
+
+#~ msgid "Pyament ID"
+#~ msgstr "Payment ID"
+
+#~ msgid "Matched Attribute"
+#~ msgstr "Matched Attribute"
+
+#~ msgid "Billing Timestamp"
+#~ msgstr "Billing Timestamp"
+
+#~ msgid "OPAC/Staff Client User Name"
+#~ msgstr "OPAC/Staff Client User Name"
+
+#~ msgid "Copy/Shelving Location"
+#~ msgstr "Copy/Shelving Location"
+
+#~ msgid "Check Out Date/Time"
+#~ msgstr "Check Out Date/Time"
+
+#~ msgid "Floating?"
+#~ msgstr "Floating?"
+
+#~ msgid "Thaw Date (if frozen)"
+#~ msgstr "Thaw Date (if frozen)"
+
+#~ msgid "Org Lasso Map"
+#~ msgstr "Org Lasso Map"
+
+#~ msgid "Field Type"
+#~ msgstr "Field Type"
+
+#~ msgid "User Note"
+#~ msgstr "User Note"
+
+#~ msgid "Circulation Matrix Circulation Modifier Subtest"
+#~ msgstr "Circulation Matrix Circulation Modifier Subtest"
+
+#~ msgid "User Name"
+#~ msgstr "User Name"
+
+#~ msgid "Is Floating"
+#~ msgstr "Is Floating"
+
+#~ msgid "Org Lasso"
+#~ msgstr "Org Lasso"
+
+#~ msgid "Fielmapper Class"
+#~ msgstr "Fielmapper Class"
+
+#~ msgid ""
+#~ "Circulation Matrix Circulation Modifier Subtest Circulation Modifier Set"
+#~ msgstr ""
+#~ "Circulation Matrix Circulation Modifier Subtest Circulation Modifier Set"
+
+#~ msgid "Suffix/Title"
+#~ msgstr "Suffix/Title"
+
+#~ msgid "Creating Staff"
+#~ msgstr "Creating Staff"
+
+#~ msgid "Test ID"
+#~ msgstr "Test ID"
+
+#~ msgid "Keep"
+#~ msgstr "Keep"
+
+#~ msgid "Circulation Modifier Subtest ID"
+#~ msgstr "Circulation Modifier Subtest ID"
+
+#~ msgid "Claim Policy ID"
+#~ msgstr "Claim Policy ID"

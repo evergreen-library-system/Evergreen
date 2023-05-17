@@ -7,14 +7,14 @@ msgid ""
 msgstr ""
 "Project-Id-Version: evergreen\n"
 "Report-Msgid-Bugs-To: FULL NAME <EMAIL@ADDRESS>\n"
-"POT-Creation-Date: 2023-05-05 21:45+0000\n"
-"PO-Revision-Date: 2023-05-05 21:40+0000\n"
+"POT-Creation-Date: 2023-05-04 14:54+0000\n"
+"PO-Revision-Date: 2021-09-21 00:36+0000\n"
 "Last-Translator: Jennifer Pringle <Unknown>\n"
 "Language-Team: French <fr@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2023-05-06 05:08+0000\n"
+"X-Launchpad-Export-Date: 2023-05-05 04:48+0000\n"
 "X-Generator: Launchpad (build 90e2150bef31b411d7bae5c4032c7e320fcaaec8)\n"
 
 #: ../../Open-ILS/src/templates/opac/register.tt2:66
@@ -5980,3 +5980,183 @@ msgstr "afficher"
 #: ../../Open-ILS/src/templates/opac/parts/place_hold_result.tt2:156
 msgid "volume"
 msgstr "volume"
+
+#~ msgid "April"
+#~ msgstr "avril"
+
+#~ msgid "August"
+#~ msgstr "août"
+
+#~ msgid "Balance Owed"
+#~ msgstr "Solde dû"
+
+#~ msgid "December"
+#~ msgstr "décembre"
+
+#~ msgid "Fines"
+#~ msgstr "Amendes"
+
+#~ msgid "Fines:"
+#~ msgstr "Amendes :"
+
+#~ msgid "February"
+#~ msgstr "février"
+
+#~ msgid "Initial Amount Owed"
+#~ msgstr "Montant initial dû"
+
+#~ msgid "January"
+#~ msgstr "janvier"
+
+#~ msgid "July"
+#~ msgstr "juillet"
+
+#~ msgid "June"
+#~ msgstr "juin"
+
+#~ msgid "May"
+#~ msgstr "mai"
+
+#~ msgid "March"
+#~ msgstr "mars"
+
+#~ msgid "Name"
+#~ msgstr "Nom"
+
+#~ msgid "November"
+#~ msgstr "novembre"
+
+#~ msgid "October"
+#~ msgstr "octobre"
+
+#~ msgid "Other Fees"
+#~ msgstr "Autres frais"
+
+#~ msgid "Are you sure you are ready to charge %1 to your credit card?"
+#~ msgstr "Voulez-vous vraiment débiter %1 de votre carte de crédit?"
+
+#~ msgid "Go back to try again or to cancel this payment attempt."
+#~ msgstr "Retour pour réessayer ou annuler le paiement"
+
+#~ msgid "Last Payment Time"
+#~ msgstr "Date du dernier paiement"
+
+#~ msgid "Pay selected fines"
+#~ msgstr "Payer les amendes sélectionnées"
+
+#~ msgid "Pay Fines"
+#~ msgstr "Payer les amendes"
+
+#~ msgid ""
+#~ "Please enter your user name or barcode to identify your library account and "
+#~ "request a password reset"
+#~ msgstr ""
+#~ "Entrez le nom d’utilisateur ou le code à barres de votre compte de "
+#~ "bibliothèque et demandez de réinitialiser votre mot de passe."
+
+#~ msgid "Remove from my list"
+#~ msgstr "Supprimer de ma liste"
+
+#~ msgid "Selected fines you are paying for:"
+#~ msgstr "Sélectionner les amendes à payer :"
+
+#~ msgid "September"
+#~ msgstr "Septembre"
+
+#~ msgid "Temporary List"
+#~ msgstr "Liste temporaire :"
+
+#~ msgid "Total amount to pay:"
+#~ msgstr "Montant total à payer :"
+
+#~ msgid "Transaction Start Time"
+#~ msgstr "Début de la transaction"
+
+#~ msgid "Total Amount Paid"
+#~ msgstr "Montant total payé"
+
+#~ msgid "View My List"
+#~ msgstr "Afficher ma liste"
+
+#~ msgid "User name:"
+#~ msgstr "Nom d’utilisateur :"
+
+#~ msgid ""
+#~ "You either have no fines to pay or you have selected fines whose total is "
+#~ "non-positive.  We cannot process non-positive amounts."
+#~ msgstr ""
+#~ "Vous n’avez pas d’amendes à payer ou vous avez sélectionner des amendes dont "
+#~ "le solde n’est pas positif. Nous ne pouvons traiter des montants non "
+#~ "positifs."
+
+#~ msgid ""
+#~ "Your user name or barcode has been submitted for a password reset. If a "
+#~ "matching account with an email address is found, you will soon receive an "
+#~ "email at that address with further instructions for resetting your password."
+#~ msgstr ""
+#~ "Une réinitialisation de mot de passe a été demandée pour votre nom "
+#~ "d’utilisateur ou votre code à barres. Si un compte assorti d’une adresse de "
+#~ "courriel est trouvé, vous recevrez sous peu un courriel qui indique comment "
+#~ "réinitialiser votre mot de passe."
+
+#~ msgid "You have not created a list yet."
+#~ msgstr "Aucune liste créée."
+
+#~ msgid "Click %1Cancel%2 to go back and (un)select other fines."
+#~ msgstr ""
+#~ "Cliquez sur %1Annuler%2 pour retourner en arrière et modifier la sélection "
+#~ "d’amendes."
+
+#~ msgid "Add %1 to my list"
+#~ msgstr "Ajouter %1 à ma liste"
+
+#~ msgid "My Existing Lists"
+#~ msgstr "Mes listes existantes"
+
+#~ msgid "Results %1 - %2 of about %3"
+#~ msgstr "Resultats %1 à %2 de %3"
+
+#~ msgid "Remove %1 from my list"
+#~ msgstr "Supprimer %1 de ma liste"
+
+#~ msgid " View My Lists"
+#~ msgstr " Afficher mes listes"
+
+#~ msgid ""
+#~ "Important! You must have a printed receipt to be eligible for a refund on "
+#~ "lost items (regulations allow for no exceptions)."
+#~ msgstr ""
+#~ "Important! Vous devez avoir un reçu imprimé afin de recevoir un "
+#~ "remboursement sur les articles perdus (les règlements ne permettent aucune "
+#~ "exception)."
+
+#~ msgid "The minimum amount you can pay is $0.01."
+#~ msgstr "Le montant minimal que vous pouvez payer est de 0,01 $."
+
+#~ msgid ""
+#~ "To ensure your necessary receipt information is not lost, enter your email "
+#~ "address above and a receipt will be emailed to you. Otherwise, make certain "
+#~ "you have a printed receipt in hand before closing the payment receipt screen."
+#~ msgstr ""
+#~ "Afin d’éviter de perdre les renseignements de facturation nécessaires, "
+#~ "saisissez votre adresse électronique ci-dessus et un reçu vous sera envoyé "
+#~ "par courriel. Autrement, assurez-vous d’avoir un reçu imprimé en main avant "
+#~ "de fermer l’écran de reçu du paiement."
+
+#~ msgid "Temporary List Warning"
+#~ msgstr "Avertissement de liste temporaire"
+
+#~ msgid " View My Temporary List"
+#~ msgstr " Afficher ma liste temporaire"
+
+#~ msgid "You are adding to a temporary list."
+#~ msgstr "Vous ajoutez à une liste temporaire."
+
+#~ msgid "View My Lists"
+#~ msgstr "Afficher mes listes"
+
+#~ msgid "View My Temporary List"
+#~ msgstr "Afficher ma liste temporaire"
+
+#~ msgid "or"
+#~ msgstr "ou"

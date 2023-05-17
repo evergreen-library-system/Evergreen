@@ -7,14 +7,14 @@ msgid ""
 msgstr ""
 "Project-Id-Version: evergreen\n"
 "Report-Msgid-Bugs-To: FULL NAME <EMAIL@ADDRESS>\n"
-"POT-Creation-Date: 2023-05-13 01:30+0000\n"
-"PO-Revision-Date: 2023-05-05 21:40+0000\n"
+"POT-Creation-Date: 2023-05-13 01:51+0000\n"
+"PO-Revision-Date: 2023-05-14 09:47+0000\n"
 "Last-Translator: Eva Cerninakova <Unknown>\n"
 "Language-Team: Czech <cs@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2023-05-14 05:56+0000\n"
+"X-Launchpad-Export-Date: 2023-05-15 04:36+0000\n"
 "X-Generator: Launchpad (build 90e2150bef31b411d7bae5c4032c7e320fcaaec8)\n"
 
 #. ("{{pendingXacts | date:\"short\"}}")
@@ -401,7 +401,7 @@ msgstr "<Archivní výpůjčka>"
 
 #: ../../Open-ILS/src/templates/staff/cat/item/t_circ_list_pane.tt2:78
 msgid "<Auto-Renewal>"
-msgstr ""
+msgstr "<Automatické prodloužení>"
 
 #: ../../Open-ILS/src/templates/staff/admin/serials/t_attr_edit.tt2:174 ../../Open-ILS/src/templates/staff/admin/serials/t_attr_edit.tt2:213
 msgid "<NONE>"
@@ -409,7 +409,7 @@ msgstr "<HODNOTA NEZADÁNA>"
 
 #: ../../Open-ILS/src/templates/staff/cat/item/t_circ_list_pane.tt2:77
 msgid "<OPAC Renewal>"
-msgstr ""
+msgstr "<Prodloužení v OPACu>"
 
 #: ../../Open-ILS/src/templates/staff/navbar.tt2:571
 msgid "<no workstation>"
@@ -12000,3 +12000,649 @@ msgstr "počet položek:  {}"
 #: ../../Open-ILS/src/templates/staff/cat/bucket/batch_hold/t_bucket_info.tt2:8
 msgid "{} users"
 msgstr "{} uživatelé"
+
+#~ msgid ""
+#~ "\n"
+#~ "          There is an open circulation on the requested item.  \n"
+#~ "          This copy was checked out by another patron on %1.\n"
+#~ "          "
+#~ msgstr ""
+#~ "\n"
+#~ "          Požadovaná jednotka  je již vypůjčena.  \n"
+#~ "          Exemplář  si vypůjčil jiný čtenář  %1.\n"
+#~ "          "
+
+#~ msgid "Actions for Catalogers"
+#~ msgstr "Akce pro katalogizátory"
+
+#~ msgid "Abort Transits"
+#~ msgstr "Zrušení přepravy"
+
+#~ msgid "Abort {{num_transits}} transits?"
+#~ msgstr "Zrušit {{num_transits}} přepravy?"
+
+#~ msgid "Alert Msg"
+#~ msgstr "Upozornění"
+
+#~ msgid "Abort Transit then Checkout"
+#~ msgstr "Zrušit přepravu, pak půjčit"
+
+#~ msgid "(print)"
+#~ msgstr "(tisk)"
+
+#~ msgid "Applied On"
+#~ msgstr "Aplikováno"
+
+#~ msgid "Archived Penalties / Messages"
+#~ msgstr "Archivované blokace / zprávy"
+
+#~ msgid "Archive Penalty / Message"
+#~ msgstr "Archivovat blokaci/ zprávu"
+
+#~ msgid "Apply Standing Penalty / Message"
+#~ msgstr "Vytvořit blokaci / zprávu"
+
+#~ msgid "Apply Penalty / Message"
+#~ msgstr "Vytvořit blokaci / zprávu"
+
+#~ msgid "Collapse ... Reload to restore"
+#~ msgstr "Sbalit ... znovu načíst pro obnovení"
+
+#~ msgid "Copies"
+#~ msgstr "Exempláře"
+
+#~ msgid "Copy"
+#~ msgstr "Exemplář"
+
+#~ msgid "Copy \"%1\" was mis-scanned or is not cataloged"
+#~ msgstr "Exemplář \"%1\" byl špatně načten nebo není zkatalogizován"
+
+#~ msgid "Copy #"
+#~ msgstr "Exemplář č."
+
+#~ msgid "Configure Columns"
+#~ msgstr "Nastavit sloupce"
+
+#~ msgid "Copy Alert Message for \"%1\""
+#~ msgstr "Upozornění pro exemplář \"%1\""
+
+#~ msgid "Copy Buckets"
+#~ msgstr "Skupiny exemplářů"
+
+#~ msgid "Copy In Transit"
+#~ msgstr "Exemplář v přepravě"
+
+#~ msgid "Copy is In-Transit"
+#~ msgstr "Exemplář je v přepravě"
+
+#~ msgid "Copy Updated"
+#~ msgstr "Exemplář upraven"
+
+#~ msgid "Copy Status: %1"
+#~ msgstr "Status exempláře: %1"
+
+#~ msgid "Copy Not Found"
+#~ msgstr "Exemplář nenalezen"
+
+#~ msgid "Copy Not Available."
+#~ msgstr "Exemplář není dostupný"
+
+#~ msgid "Created on %1"
+#~ msgstr "Vytvořeno %1"
+
+#~ msgid "Created {{bucket().create_time() | date}}"
+#~ msgstr "Vyvtvořeno {{bucket().create_time() | date}}"
+
+#~ msgid "Current Copy Location"
+#~ msgstr "Umístění aktuálního exempláře"
+
+#~ msgid "Delete Selected Copies from Catalog"
+#~ msgstr "Smazat vybrané exempláře z katalogu"
+
+#~ msgid "Download CSV"
+#~ msgstr "Stáhnout CSV"
+
+#~ msgid "Force Copy Quality"
+#~ msgstr "Vynutit kvalitu exempláře"
+
+#~ msgid "Hold for patron %1, %2 %3"
+#~ msgstr "Rezervace pro čtenáře  %1, %2 %3"
+
+#~ msgid ""
+#~ "If overridden, subsequent checkouts during this patron's \n"
+#~ " session will auto-override this event"
+#~ msgstr ""
+#~ "Pokud budete přesto pokračovat, následné výpůjčky během \n"
+#~ "relace tohoto čtenáře automaticky potlačí tuto událost."
+
+#~ msgid "Library"
+#~ msgstr "Knihovna"
+
+#~ msgid "Local Prefs"
+#~ msgstr "Lokální preference"
+
+#~ msgid "Loading... %1"
+#~ msgstr "Načítám ... %1"
+
+#~ msgid "Load Shared Bucket Bucket by ID"
+#~ msgstr "Načíst sdílenou skupinu pomocí ID"
+
+#~ msgid "Messages"
+#~ msgstr "Zprávy"
+
+#~ msgid "Modify Penalty / Message"
+#~ msgstr "Upravit upozornění/blokaci"
+
+#~ msgid "Network Connection Status"
+#~ msgstr "Status síťového připojení"
+
+#~ msgid "Paid for Selected:"
+#~ msgstr "Za vybrané zaplaceno:"
+
+#~ msgid "Penalties"
+#~ msgstr "Pokuty"
+
+#~ msgid "Pending Copies"
+#~ msgstr "Nevyřízené exempláře"
+
+#~ msgid "Penalty Type"
+#~ msgstr "Typ pokuty"
+
+#~ msgid "Potential Copies"
+#~ msgstr "Potenciální exempláře"
+
+#~ msgid "Print CSV"
+#~ msgstr "Vytisknout CSV"
+
+#~ msgid "Print/Store Connection Status"
+#~ msgstr "Vytisknout/uložit status připojení"
+
+#~ msgid "Publicly Visible?"
+#~ msgstr "Viditelné veřejně?"
+
+#~ msgid "Record with TCN %1 marked for overlay."
+#~ msgstr "Záznam s TCN %1 byl označen pro přepsání."
+
+#~ msgid "Remote Prefs"
+#~ msgstr "Vzdálené preference"
+
+#~ msgid "Remove Penalty / Message"
+#~ msgstr "Odstranit pokutu/zprávu"
+
+#~ msgid "Replace TCN %1 ..."
+#~ msgstr "Nahradit TCN %1 ..."
+
+#~ msgid "Search for Copies by Barcode"
+#~ msgstr "Hledat exempláře podle čárového kódu"
+
+#~ msgid "Select Row"
+#~ msgstr "Vyberte řádek"
+
+#~ msgid "Set Desired Copy Quality"
+#~ msgstr "Nastavit požadovanou kvalitu exempláře"
+
+#~ msgid "Show empty volumes"
+#~ msgstr "Zobrazit prázdné signatury"
+
+#~ msgid "Show copy detail"
+#~ msgstr "Zobrazit detaily exempláře"
+
+#~ msgid "Sort"
+#~ msgstr "Seřadit"
+
+#~ msgid "Show volume detail"
+#~ msgstr "Zobrazit detaily sigantury"
+
+#~ msgid "Staff-Generated Penalties / Messages"
+#~ msgstr "Pokuty / zprávy generované personálem"
+
+#~ msgid "Succes testing credentials"
+#~ msgstr "Úspěšný test ověření"
+
+#~ msgid "There is an open transit on copy %1"
+#~ msgstr "Exemplář y %1 je právě v v přepravě"
+
+#~ msgid "Add To New Bucket"
+#~ msgstr "Přidat do nové skupiny"
+
+#~ msgid "Add To Selected Bucket"
+#~ msgstr "Přidat do vybrané skupiny"
+
+#~ msgid "Add/Edit Copy Notes"
+#~ msgstr "Přidat/Upravit poznámky k exemplářům"
+
+#~ msgid ""
+#~ "Are you sure you want to transfer selected items to the marked volume?"
+#~ msgstr "Opravdu chcet přesunout vybrané položky k odznačené signatuře?"
+
+#~ msgid "Allow Call Number attributes in Copy Templates"
+#~ msgstr "Povolit v exemplářových šablonách atributy signatury"
+
+#~ msgid "Always display Volume/Copy Detail pane"
+#~ msgstr "Vždy zobrazit panel s detaily signatur/exemplářů"
+
+#~ msgid "Circulation Modifer"
+#~ msgstr "Modifikátor výpůjčky"
+
+#~ msgid "Copy Attributes"
+#~ msgstr "Vlastnosti exempláře"
+
+#~ msgid "Copy Notes are Public"
+#~ msgstr "Poznámky o exempláři jsou veřejné"
+
+#~ msgid "Copy Notes"
+#~ msgstr "Poznámky o exempláři"
+
+#~ msgid "Copy Templates"
+#~ msgstr "Šablony exemplářů"
+
+#~ msgid "Copy display"
+#~ msgstr "Zobrazení exempláře"
+
+#~ msgid "Edit Selected Copies"
+#~ msgstr "Upravit vybrané exempláře"
+
+#~ msgid "Existing Copy Notes"
+#~ msgstr "Existující poznámky k exempláři"
+
+#~ msgid "Hide Copy Attributes"
+#~ msgstr "Skrýt vlastnosti exempláře"
+
+#~ msgid "Hide Volume/Copy Details"
+#~ msgstr "Skrýt detaily signatury/exempláře"
+
+#~ msgid "Empty Volumes"
+#~ msgstr "Prázdné signatury"
+
+#~ msgid "Lead record"
+#~ msgstr "Řídící záznam"
+
+#~ msgid "Items to Previously Marked Volume"
+#~ msgstr "Exempláře k dříve označené signatuře"
+
+#~ msgid "Library as Volume Transfer Destination"
+#~ msgstr "Knihovna jako cíl přesunu signatury"
+
+#~ msgid "Name of existing bucket"
+#~ msgstr "Jméno existující skupiny"
+
+#~ msgid "New Copy Note"
+#~ msgstr "Nová poznámka k exempláři"
+
+#~ msgid "Name For New Bucket"
+#~ msgstr "Jméno nové skupiny"
+
+#~ msgid "Permanently delete selected copies and/or volumes from catalog?"
+#~ msgstr "Chcete  vybrané exempláře a/nebo signatury trvale smazat z katalogu?"
+
+#~ msgid "Print Spine Labels"
+#~ msgstr "Vytisknout hřbetní štítky"
+
+#~ msgid "Please select a lead record from the right..."
+#~ msgstr "Prosím, zvolte řídící záznam z ..."
+
+#~ msgid "Records to merge into lead"
+#~ msgstr "Záznam, který má být sloučen s řídícím záznamem"
+
+#~ msgid "Request Selected Copies"
+#~ msgstr "Vyžádat vybrané exempláře"
+
+#~ msgid "Show Copy Attributes"
+#~ msgstr "Zobrazit vlastnosti exempláře"
+
+#~ msgid "Show Volume/Copy Details"
+#~ msgstr "Zobrazit detaily signatury/exempláře"
+
+#~ msgid "Transfer Selected Copies to Marked Volume"
+#~ msgstr "Přesunout vybrané exempláře k označené signatuře?"
+
+#~ msgid "Total Paid:"
+#~ msgstr "Zaplaceno celkem:"
+
+#~ msgid "Unable to checkout copy \"%1\" : %2"
+#~ msgstr "Nelze vypůjčit exemplář  \"%1\" : %2"
+
+#~ msgid "Unlink selected conjoined copies?"
+#~ msgstr "Odpojit vybrané spojené exempláře?"
+
+#~ msgid "Value..."
+#~ msgstr "Hodnota ..."
+
+#~ msgid "Volumes"
+#~ msgstr "Signatury"
+
+#~ msgid "Volumes and Copies"
+#~ msgstr "Signatury a exempláře"
+
+#~ msgid "Volume Transfer"
+#~ msgstr "Přesun signatury"
+
+#~ msgid "Volume/Copy Editor"
+#~ msgstr "Editor signatur / exmplářů"
+
+#~ msgid "Volume Attributes"
+#~ msgstr "Vlastnosti signatury"
+
+#~ msgid "Waiting for Copy"
+#~ msgstr "Čekání na exemplář"
+
+#~ msgid "Volumes to Previously Marked Library"
+#~ msgstr "Signatury do předem označené knihovny"
+
+#~ msgid "Volume/Copy Detail defaults"
+#~ msgstr "Výchozí nastavení pro detaily signatury/exempláře"
+
+#~ msgid "Volume as Item Transfer Destination"
+#~ msgstr "Signatura jak cíl přesunu položky"
+
+#~ msgid "Will delete {{copies}} copies and {{volumes}} volumes"
+#~ msgstr "Smaže {{copies}} exempláře a  {{volumes}} signatury"
+
+#~ msgid "Copies to Previously Marked Library"
+#~ msgstr "Exempláře do předem označené knihovny"
+
+#~ msgid "Choose Library for Volume/Copy Transfer Destination"
+#~ msgstr "Zvolte knihovnu  jako cíl přesunu signatury/exempláře"
+
+#~ msgid "Choose volume transfer target"
+#~ msgstr "Zvolte cíl přesunu signatury"
+
+#~ msgid "Completed Copies"
+#~ msgstr "Hotové exemáře"
+
+#~ msgid "Edit volumes"
+#~ msgstr "Upravit  signatury"
+
+#~ msgid "Edit volumes and copies"
+#~ msgstr "Upravit signatury a exempláře"
+
+#~ msgid "Display defaults for Working Copy tab"
+#~ msgstr "Zobrazit výchozí hodnoty pro tabulku zpracovávaných exemplářů"
+
+#~ msgid "Display defaults for Completed Copies tab"
+#~ msgstr "Zobrazit výchozí hodnoty pro tabulku hotových exemplářů"
+
+#~ msgid "Volumes to Previously Marked Record"
+#~ msgstr "Signatury k předem označeným záznamům"
+
+#~ msgid "Volumes to Previously Marked Record and Library"
+#~ msgstr "Signatury k předem označenému záznamu a knihovně"
+
+#~ msgid "Working Copies"
+#~ msgstr "Zpracovávané exempláře"
+
+#~ msgid "Row Selector Column"
+#~ msgstr "Sloupec výběru řádků"
+
+#~ msgid "Will unlink {{peers}} copies"
+#~ msgstr "Odpojí {{propojené}} exempláře"
+
+#~ msgid "Abort %1 transits?"
+#~ msgstr "Zrušit  %1 přepravy?"
+
+#~ msgid "Abort Transits and Reset Associated Holds"
+#~ msgstr "Zrušit přepravu a vynulovat připojené rezervace"
+
+#~ msgid "Abort Transit"
+#~ msgstr "Zrušit přepravu"
+
+#~ msgid "Abort 1 transit?"
+#~ msgstr "Zrušit 1 přepravu?"
+
+#~ msgid "Copy Statuses"
+#~ msgstr "Statuty exemplářů"
+
+#~ msgid "Item Transfer Target set"
+#~ msgstr "Sada cílů pro přesun exemplářů"
+
+#~ msgid "Search catalog for..."
+#~ msgstr "Hledat v katalogu ..."
+
+#~ msgid "Volume Transfer Target set"
+#~ msgstr "Sada cílů pro přesun signatur"
+
+#~ msgid "Volume(s) transfered"
+#~ msgstr "Signatury přesunuty"
+
+#~ msgid "Volumes and Items"
+#~ msgstr "Signatury a exempláře"
+
+#~ msgid "Add Volumes"
+#~ msgstr "Přidat signatury"
+
+#~ msgid "Booking: Create or Cancel Reservations"
+#~ msgstr "Rezervace zdrojů: Vytvořit nebo zrušit rezervaci"
+
+#~ msgid "Copy Local Storage Settings To Hatch"
+#~ msgstr "Kopírovat nastavení lokálního úložiště do Hatch"
+
+#~ msgid "Copy Hatch Settings To Local Storage"
+#~ msgstr "Kopírovat nastavena Hatche do lokálního úložiště"
+
+#~ msgid "Edit Volume/Copy Templates"
+#~ msgstr "Upravit šablony signatury/exempláře"
+
+#~ msgid "Deleted volume/copy template"
+#~ msgstr "Smazat šablonu signatury/exempláře"
+
+#~ msgid "Message Center"
+#~ msgstr "Centrum zpráv"
+
+#~ msgid "My Selection Lists"
+#~ msgstr "Moje akviziční seznamy"
+
+#~ msgid "Number of Copies"
+#~ msgstr "Počet kopií"
+
+#~ msgid "Open Invoices"
+#~ msgstr "Otevřít faktury"
+
+#~ msgid "Print / Storage Service (\"Hatch\")"
+#~ msgstr "Služba pro tisk a úložiště (\"Hatch\")"
+
+#~ msgid "Patron Alert Message"
+#~ msgstr "Upozornění pro čtenáře"
+
+#~ msgid "Print/Storage Service (\"Hatch\")"
+#~ msgstr "Služba pro tisk/úložiště (\"Hatch\")"
+
+#~ msgid "Saved volume/copy template(s)"
+#~ msgstr "Uložené šablony signatur/exemplářů"
+
+#~ msgid "Store Local Settings in Hatch"
+#~ msgstr "Uložit lokání nastavení v Hatchi"
+
+#~ msgid "Store Offline Transaction Data in Hatch"
+#~ msgstr "Uložit data offline transakcí v Hatchi"
+
+#~ msgid "Copy Circ Lib ID"
+#~ msgstr "ID výpůjční knihovny exempláře"
+
+#~ msgid "Shelving Location Label"
+#~ msgstr "Označení umístění"
+
+#~ msgid "Copy Number"
+#~ msgstr "Číslo exempláře"
+
+#~ msgid "Add volume"
+#~ msgstr "Přidat signaturu"
+
+#~ msgid "Evergreen Staff %1"
+#~ msgstr "Služební klient Evergreenu  %1"
+
+#~ msgid "{{username}} @ {{workstation}}"
+#~ msgstr "{{username}} @ {{workstation}}"
+
+#~ msgid "Far Right"
+#~ msgstr "Zcela vpravo"
+
+#~ msgid "Far Left"
+#~ msgstr "Úplně vlevo"
+
+#~ msgid "Move column far left"
+#~ msgstr "Přesunout sloupec úplně vlevo"
+
+#~ msgid "Move column right"
+#~ msgstr "Přesunout sloupec doprava"
+
+#~ msgid "Move column far right"
+#~ msgstr "Přesunout sloupec úplně doprava"
+
+#~ msgid "Move column left"
+#~ msgstr "Přesunout sloupec doleva"
+
+#~ msgid "Add copy stream"
+#~ msgstr "Přidat řadu exemplářü"
+
+#~ msgid "Barcode is reported Lost"
+#~ msgstr "Tento čárový kóď byl nahlášen jako ztracený"
+
+#~ msgid "Copy Stream"
+#~ msgstr "Kopírovat řadu exemplářů"
+
+#~ msgid "Patron account is Expired"
+#~ msgstr "Skončila platnost registrace"
+
+#~ msgid "Patron account is Barred"
+#~ msgstr "Čtenářské konto je blokováno"
+
+#~ msgid "Patron has penalties"
+#~ msgstr "Čtenář má blokace/penále"
+
+#~ msgid "Serial Copy Templates"
+#~ msgstr "Šablona pro jednotku seriálu"
+
+#~ msgid "Staff Sharable?"
+#~ msgstr "Lze sdílet s personálem?"
+
+#~ msgid ""
+#~ "The difference between the nominal publishing date of an issue and the date "
+#~ "that you expect to receive your copy."
+#~ msgstr ""
+#~ "Rozdíl mezi nominálním datem publikování čísla a datem očekávaného přijetí "
+#~ "exempláře"
+
+#~ msgid "Unprocessed offline transactions waiting for upload"
+#~ msgstr "Nezpracované offline transakce čekající na nahrádní"
+
+#~ msgid "Add/Edit Copy Tags"
+#~ msgstr "Přidat/upravit tag exempláře"
+
+#~ msgid "Apply Copy Tags"
+#~ msgstr "Použít tag exempláře"
+
+#~ msgid "Copy Tags"
+#~ msgstr "Tagy exemplářů"
+
+#~ msgid "Copy Tag Types"
+#~ msgstr "Typy tagů exemplářů"
+
+#~ msgid "Manage Copy Tags"
+#~ msgstr "Spravovat tagy exempláře"
+
+#~ msgid "Display Alert and Messages"
+#~ msgstr "Zobrazit upozornění a zprávy"
+
+#~ msgid "Copy Alert"
+#~ msgstr "Upozornění k exempláři"
+
+#~ msgid "Add New Note"
+#~ msgstr "Přidat novou poznámku"
+
+#~ msgid "Copy location"
+#~ msgstr "Umístění"
+
+#~ msgid "Remove Selected Copies from Bucket"
+#~ msgstr "Odstranit vybrané exempláře ze skupiny"
+
+#~ msgid "Copy Alerts"
+#~ msgstr "Upozornění k exempláři"
+
+#~ msgid "Copy was marked claims never checked out"
+#~ msgstr "Exemplář byl označen jako údajně nikdy nevypůjčený"
+
+#~ msgid "Copy alerts"
+#~ msgstr "Upozornění k exemplářům"
+
+#~ msgid "Add Copy Alert"
+#~ msgstr "Přidat upozornění k exempláři"
+
+#~ msgid "Add/Edit Copy Alerts"
+#~ msgstr "Přidat/editovat poznámky k exempláři"
+
+#~ msgid "Add Copy Alerts"
+#~ msgstr "Přidat upozornění k exempláři"
+
+#~ msgid "Copy was marked claims returned"
+#~ msgstr "Exemplář byl označen jako údajně vrácený"
+
+#~ msgid "Copy was marked damaged"
+#~ msgstr "Exemplář byl označen jako poškozený"
+
+#~ msgid "Copy was marked lost"
+#~ msgstr "Exemplář byl označen jako ztracený"
+
+#~ msgid "Copy was marked long overdue"
+#~ msgstr "Exemplář byl označen jako dlouhodobě nevrácený"
+
+#~ msgid "Existing Copy Alerts"
+#~ msgstr "Existující upozornění k exempláři"
+
+#~ msgid "Manage Copy Alerts"
+#~ msgstr "Spravovat upozornění k exempláři"
+
+#~ msgid "New Copy Alert"
+#~ msgstr "Nové upozornění k exempláři"
+
+#~ msgid "Next copy status"
+#~ msgstr "Nový statu exempláře"
+
+#~ msgid "Copy was marked missing"
+#~ msgstr "Exemplář byl označek jako postrádaný"
+
+#~ msgid "Copy was marked lost and paid for"
+#~ msgstr "Exemplář byl označen jako ztracený a zaplacený"
+
+#~ msgid "Next copy status: "
+#~ msgstr "Následující status exempláře: "
+
+#~ msgid "Add Copies"
+#~ msgstr "Přidat exempláře"
+
+#~ msgid "%1, %2 %3 (Preferred)"
+#~ msgstr "%1, %2 %3 (Preferované)"
+
+#~ msgid "Empty Call Numbers"
+#~ msgstr "Prázdné signatury"
+
+#~ msgid "Staff Catalog (Experimental)"
+#~ msgstr "Katalog personálu (experimentální)"
+
+#~ msgid ""
+#~ "The overlay target has changed from %1 to %2.  Continue with overlay of "
+#~ "record %2?"
+#~ msgstr ""
+#~ "Cíl pro přepsání se změnil z  %1 na %2.  Pokračovat přepsáním záznamu  %2?"
+
+#~ msgid "Multiple modifiers"
+#~ msgstr "Více modifikátorů"
+
+#~ msgid "Penalties and Messages"
+#~ msgstr "Pokuty a zprávy"
+
+#~ msgid ""
+#~ "If 'Store Local Settings in Hatch' is enabled, use the 'Copy Hatch Settings "
+#~ "To Local Storage' button before disabling 'Store Local Settings in Hatch'"
+#~ msgstr ""
+#~ "Pokud je aktivováno  'Ukládat lokální nastavení v Hatchi', předtím, než "
+#~ "zrušíte 'Ukládat lokální nastavení v Hatchi', použijte tlačítko 'Kopírovat "
+#~ "nastavení Hatche do lokálního úložiště'"
+
+#~ msgid "Storing settings in Hatch is deprecated"
+#~ msgstr "Od ukládání nastavení v Hatchi bylo upuštěno"
+
+#~ msgid "Pertaining to %1, %2 %3 : %4"
+#~ msgstr "Poznámka ke čtenáři   %1, %2 %3 : %4"
+
+#~ msgid "%1 %2, %3 %4 %5 (Preferred)"
+#~ msgstr "%1 %2, %3 %4 %5 (Preferované)"

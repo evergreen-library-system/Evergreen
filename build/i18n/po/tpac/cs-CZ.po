@@ -7,14 +7,14 @@ msgid ""
 msgstr ""
 "Project-Id-Version: evergreen\n"
 "Report-Msgid-Bugs-To: FULL NAME <EMAIL@ADDRESS>\n"
-"POT-Creation-Date: 2023-05-05 21:45+0000\n"
-"PO-Revision-Date: 2023-05-10 18:29+0000\n"
+"POT-Creation-Date: 2023-05-04 14:54+0000\n"
+"PO-Revision-Date: 2023-05-14 09:47+0000\n"
 "Last-Translator: Eva Cerninakova <Unknown>\n"
 "Language-Team: Czech <cs@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2023-05-11 06:07+0000\n"
+"X-Launchpad-Export-Date: 2023-05-15 04:35+0000\n"
 "X-Generator: Launchpad (build 90e2150bef31b411d7bae5c4032c7e320fcaaec8)\n"
 
 #: ../../Open-ILS/src/templates/opac/register.tt2:66
@@ -182,7 +182,7 @@ msgstr "(%1)"
 
 #: ../../Open-ILS/src/templates/opac/parts/library/hours.tt2:117 ../../Open-ILS/src/templates/opac/parts/library/hours.tt2:135 ../../Open-ILS/src/templates/opac/parts/library/hours.tt2:27 ../../Open-ILS/src/templates/opac/parts/library/hours.tt2:45 ../../Open-ILS/src/templates/opac/parts/library/hours.tt2:63 ../../Open-ILS/src/templates/opac/parts/library/hours.tt2:81 ../../Open-ILS/src/templates/opac/parts/library/hours.tt2:99
 msgid "(' _ note _ ')"
-msgstr ""
+msgstr "(' _ poznámka _ ')"
 
 #. (example)
 #: ../../Open-ILS/src/templates/opac/register.tt2:191
@@ -5956,3 +5956,181 @@ msgstr "zobrazit"
 #: ../../Open-ILS/src/templates/opac/parts/place_hold_result.tt2:156
 msgid "volume"
 msgstr "signatura"
+
+#~ msgid "April"
+#~ msgstr "Duben"
+
+#~ msgid "Are you sure you are ready to charge %1 to your credit card?"
+#~ msgstr "Opravdu chcete naúčtovat %1 na vaši kreditní kartu?"
+
+#~ msgid "August"
+#~ msgstr "Srpen"
+
+#~ msgid "Balance Owed"
+#~ msgstr "Dlužná částka"
+
+#~ msgid "Click %1Cancel%2 to go back and (un)select other fines."
+#~ msgstr ""
+#~ "Kliknutím na %1Cancel%2 se vrátíte zpět a zrušíte výběr dalších pokut."
+
+#~ msgid "December"
+#~ msgstr "Prosinec"
+
+#~ msgid "February"
+#~ msgstr "Únor"
+
+#~ msgid "Fines"
+#~ msgstr "Pokuty"
+
+#~ msgid "Fines:"
+#~ msgstr "Pokuty:"
+
+#~ msgid "Go back to try again or to cancel this payment attempt."
+#~ msgstr "Vrátit se zpět nebo zrušit tento pokus o platbu"
+
+#~ msgid "Initial Amount Owed"
+#~ msgstr "Počáteční dlužná částka"
+
+#~ msgid "June"
+#~ msgstr "Červen"
+
+#~ msgid "January"
+#~ msgstr "Leden"
+
+#~ msgid "July"
+#~ msgstr "Červenec"
+
+#~ msgid "Last Payment Time"
+#~ msgstr "Čas platby"
+
+#~ msgid "May"
+#~ msgstr "Květen"
+
+#~ msgid "March"
+#~ msgstr "Březen"
+
+#~ msgid "Name"
+#~ msgstr "Jméno"
+
+#~ msgid "November"
+#~ msgstr "Listopad"
+
+#~ msgid "October"
+#~ msgstr "Říjen"
+
+#~ msgid "Other Fees"
+#~ msgstr "Další poplatky"
+
+#~ msgid "Pay selected fines"
+#~ msgstr "Zaplatit vybrané pokuty"
+
+#~ msgid "Pay Fines"
+#~ msgstr "Zaplatit pokuty"
+
+#~ msgid "Remove from my list"
+#~ msgstr "Odebrat z mého seznamu"
+
+#~ msgid "Selected fines you are paying for:"
+#~ msgstr "Pokuty vybrané pro tuto platbu:"
+
+#~ msgid "September"
+#~ msgstr "Září"
+
+#~ msgid "Temporary List"
+#~ msgstr "Dočasný seznam"
+
+#~ msgid "Total amount to pay:"
+#~ msgstr "Celkem k platbě"
+
+#~ msgid "Transaction Start Time"
+#~ msgstr "Datum zahájení transakce"
+
+#~ msgid "User name:"
+#~ msgstr "Uživatelské jméno:"
+
+#~ msgid "Total Amount Paid"
+#~ msgstr "Celkem zaplaceno"
+
+#~ msgid "View My List"
+#~ msgstr "Zobrazit moje seznamy"
+
+#~ msgid "You have not created a list yet."
+#~ msgstr "Ještě jste nevytvořili seznam."
+
+#~ msgid ""
+#~ "You either have no fines to pay or you have selected fines whose total is "
+#~ "non-positive.  We cannot process non-positive amounts."
+#~ msgstr ""
+#~ "Buď nemáte žádné pokuty k zaplacení, nebo pokuty, nebo celková výše "
+#~ "vybraných pokut čin má nulovou či negativní hodnotu. Nelze zpracovat platby, "
+#~ "které mají nulovou/negativní hodnotu."
+
+#~ msgid ""
+#~ "Your user name or barcode has been submitted for a password reset. If a "
+#~ "matching account with an email address is found, you will soon receive an "
+#~ "email at that address with further instructions for resetting your password."
+#~ msgstr ""
+#~ "Prostřednictvím Vašeho  uživatelského jména nebo čárového kódu byla odeslána "
+#~ "žádost o přenastavení hesla. Pokud bude nalezena odpovídající e-mailová "
+#~ "adresa, bude Vám na tuto adresu brzy doručen e-mail s dalšími instrukcemi "
+#~ "pro přenastavení hesla."
+
+#~ msgid "Temporary List Warning"
+#~ msgstr "Varování - dočasný list"
+
+#~ msgid "You are adding to a temporary list."
+#~ msgstr "Přidáváte položky do dočasného seznamu"
+
+#~ msgid "My Existing Lists"
+#~ msgstr "Moje seznamy"
+
+#~ msgid ""
+#~ "Important! You must have a printed receipt to be eligible for a refund on "
+#~ "lost items (regulations allow for no exceptions)."
+#~ msgstr ""
+#~ "Důležité upozornění! Abyste mohli nárokovat vrácení peněz za ztracený "
+#~ "exemplář, je nutné předložit vytištěné potvrzení (toto ustanovení neumožňuje "
+#~ "výjimky)."
+
+#~ msgid "Results %1 - %2 of about %3"
+#~ msgstr "Výsledky  %1 - %2 z přibližně %3"
+
+#~ msgid ""
+#~ "To ensure your necessary receipt information is not lost, enter your email "
+#~ "address above and a receipt will be emailed to you. Otherwise, make certain "
+#~ "you have a printed receipt in hand before closing the payment receipt screen."
+#~ msgstr ""
+#~ "Aby nedošlo ke ztrátě informací na potvrzení, zadejte výše svou e-mailovou "
+#~ "adresu a potvrzení vám bude zasláno e-mailem. Případně se před uzavření okna "
+#~ "s potvrzením platby, ujistěte se , že jste potvrzení vytiskli."
+
+#~ msgid "Add %1 to my list"
+#~ msgstr "Přidat  %1 do mého seznamu"
+
+#~ msgid "Remove %1 from my list"
+#~ msgstr "Odebrat %1 z mého seznamu"
+
+#~ msgid ""
+#~ "Please enter your user name or barcode to identify your library account and "
+#~ "request a password reset"
+#~ msgstr ""
+#~ "Prosím zadejte BUĎ uživatelské jméno NEBO čárový kód  vašeho čtenářského "
+#~ "konta a potvrďte žádost o přenastavení hesla"
+
+#~ msgid " View My Temporary List"
+#~ msgstr " Zobrazit můj dočasný seznam"
+
+#~ msgid " View My Lists"
+#~ msgstr " Zobrazit moje seznamy"
+
+#~ msgid "View My Lists"
+#~ msgstr "Zobrazit moje seznamy"
+
+#~ msgid "View My Temporary List"
+#~ msgstr "Zobrazit můj dočasný seznam"
+
+#~ msgid "The minimum amount you can pay is $0.01."
+#~ msgstr "Minimální částka pro platbu je 0.01 kč."
+
+#~ msgid "or"
+#~ msgstr "nebo"

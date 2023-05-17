@@ -8,13 +8,13 @@ msgstr ""
 "Project-Id-Version: evergreen\n"
 "Report-Msgid-Bugs-To: FULL NAME <EMAIL@ADDRESS>\n"
 "POT-Creation-Date: 2023-05-04 09:23-0400\n"
-"PO-Revision-Date: 2023-05-05 21:40+0000\n"
+"PO-Revision-Date: 2018-09-16 04:39+0000\n"
 "Last-Translator: fares othman <Unknown>\n"
 "Language-Team: Arabic <ar@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2023-05-06 04:57+0000\n"
+"X-Launchpad-Export-Date: 2023-05-05 04:36+0000\n"
 "X-Generator: Launchpad (build 90e2150bef31b411d7bae5c4032c7e320fcaaec8)\n"
 "Language: ar\n"
 
@@ -16596,3 +16596,234 @@ msgid ""
 "threshold for their group. Use of this feature will likely require "
 "configuration and coordination with an external collection agency."
 msgstr ""
+
+#~ msgid ""
+#~ "Require staff initials for entry/edit of patron standing penalties and "
+#~ "messages."
+#~ msgstr ""
+#~ "يتطلب الأحرف الأولى من أسماء طاقم العمل لعمليات الإدخال/التعديل لرسائل "
+#~ "وعقوبات قائمة وخاصة بالمستفيدين"
+
+#~ msgid ""
+#~ "This might be \"AuthorizeNet\", \"PayPal\", \"PayflowPro\", or \"Stripe\"."
+#~ msgstr ""
+#~ "يمكن أن يكون \"AuthorizeNet\"، \"PayPal\" ، \"PayflowPro\" أو \"Stripe\""
+
+#~ msgid "Allows a user to abort a transit on a copy with status of LOST"
+#~ msgstr "السماح للمستخدم بإلغاء نقل نُسخة بحالة ضائع"
+
+#~ msgid "VIEW_STANDING_PENALTY"
+#~ msgstr "VIEW_STANDING_PENALTY"
+
+#~ msgid "Show alert_message field on patron registration"
+#~ msgstr "إظهار الحقل alert_message في تسجيل المستفيد"
+
+#~ msgid "Allows patrons to create automatic holds from purchase requests."
+#~ msgstr "السماح للمستفيدين بإنشاء أتوماتيكي للحجوزات مِن طلبات الشراء"
+
+#~ msgid ""
+#~ "Allow a user to abort a copy transit if the user is at the transit "
+#~ "destination or source"
+#~ msgstr ""
+#~ "السماح لـِ المستخدم بإحباط/إفشال عبور/نفل النسخة إذا كان المستفيد في وجهة "
+#~ "العبور أو المصدر"
+
+#~ msgid "Canceled holds display count"
+#~ msgstr "التعداد المعروض للحجوزات الملغية"
+
+#~ msgid "Canadian Subject Headings"
+#~ msgstr "قائمة رؤوس الموضوعات الكندية"
+
+#~ msgid "How many canceled holds to show in patron holds interfaces"
+#~ msgstr "كم عدد الحجوزات الملغية مِن أجل عرضها في نوافذ حجوزات المستفيد"
+
+#~ msgid "Art and Architecture Thesaurus"
+#~ msgstr "مكنز الفنون وهندسة العمارة"
+
+#~ msgid ""
+#~ "Allow a user to abort a copy transit if the user is not at the transit "
+#~ "source or dest"
+#~ msgstr ""
+#~ "السماح لـ المستخدم بإلغاء/إبطال عبور النُسخة إذا كان المستفيد ليس في مصدر "
+#~ "العبور/النقل أو الوجهة"
+
+#~ msgid "Show all canceled holds that were canceled within this amount of time"
+#~ msgstr ""
+#~ "إظهار كافة الحجوزات الملغية/الباطلة التي تمّ إلغائها خلال هذا القدر مِن الوقت"
+
+#~ msgid "Canceled holds display age"
+#~ msgstr "عمر عرض الحجوزات الملغية"
+
+#~ msgid "Medical Subject Headings"
+#~ msgstr "قائمة رؤوس الموضوعات الطبية"
+
+#~ msgid ""
+#~ "Leave transaction open when long-overdue balance equals zero.  This leaves "
+#~ "the lost copy on the patron record when it is paid"
+#~ msgstr ""
+#~ "ترك العملية مفتوحة عندما رصيد الاستقاق الطويل يساوي صفر. هذا يترك النسخة "
+#~ "المفقودة في تسجيلة المستفيد عند دفعها"
+
+#~ msgid ""
+#~ "Text/HTML/Macros to be inserted into receipt templates in place of "
+#~ "%INCLUDE(header_text)%"
+#~ msgstr ""
+#~ "Text/HTML/وحدات الماكرو لإدراجها في تركيبات الاستلام بدلاً من "
+#~ "%INCLUDE(header_text)%"
+
+#~ msgid ""
+#~ "Text/HTML/Macros to be inserted into receipt templates in place of "
+#~ "%INCLUDE(alert_text)%"
+#~ msgstr ""
+#~ "Text/HTML/وحدات الماكرو لإدراجها في تركيبات الاستلام بدلاً مِن "
+#~ "%INCLUDE(alert_text)%"
+
+#~ msgid ""
+#~ "Text/HTML/Macros to be inserted into receipt templates in place of "
+#~ "%INCLUDE(notice_text)%"
+#~ msgstr ""
+#~ "Text/HTML/وحدات الماكرو لإدراجها في تركيبات الاستلام بدلاً من "
+#~ "%INCLUDE(notice_text)%"
+
+#~ msgid ""
+#~ "Text/HTML/Macros to be inserted into receipt templates in place of "
+#~ "%INCLUDE(event_text)%"
+#~ msgstr ""
+#~ "Text/HTML/وحدات الماكرو لإدراجها في تركيبات الاستلام في مكان "
+#~ "%INCLUDE(event_text)%"
+
+#~ msgid ""
+#~ "Allow funds to be rolled over without bringing the money along.  This makes "
+#~ "money left in the old fund disappear, modeling its return to some outside "
+#~ "entity."
+#~ msgstr ""
+#~ "السماح بترحيل الأموال بدون جلب المال مِن آخر.  وهذا سيجعل المال يساراً "
+#~ "التمويل القديم غير المعروض، وإعادة تشكيلها إلى كيان خارجي."
+
+#~ msgid ""
+#~ "Value is a numeric code, describing which list the circulation should appear "
+#~ "while checked out and whether the circulation should continue to appear in "
+#~ "the bottom list, when checked in with oustanding fines.  1 = top list, "
+#~ "bottom list.  2 = bottom list, bottom list.  5 = top list, do not display.  "
+#~ "6 = bottom list, do not display."
+#~ msgstr ""
+#~ "القيمة هي رمز رقمي، تصف قائمة الإعارة التي ينبغي أن تظهر أثناء الإعارة وفيما "
+#~ "إذا كان ينبغي أن تستمر الإعارة لتظهر في القائمة السفلية، عند الإرجاع مع "
+#~ "غرامات مُعلقة. 1 = أعلى القائمة، أسفل القائمة. 2 = أسفل القائمة، أسفل "
+#~ "القائمة. 5 =أعلى القائمة، بدون إظهار. 6 = أسفل القائمة، بدون إظهار."
+
+#~ msgid ""
+#~ "How long to wait before allowing remote items to be opportunistically "
+#~ "captured for a hold.  Example \"5 days\""
+#~ msgstr ""
+#~ "كم مُدة الانتظار قبل السماح للنسخ البعيدة ليتم استلامها بشكل ملائم مِن أجل "
+#~ "الحجز.  على سبيل المثال \"5 أيام\""
+
+#~ msgid "Suggest alert_message field on patron registration"
+#~ msgstr "اقتراح الحقل alert_message في تسجيل المستفيد"
+
+#~ msgid "Appends staff initials and edit date into patron note content."
+#~ msgstr "إلحاق الحروف الأولى للطاقم وتاريخ التعديل في محتوى ملاحظة المستفيد."
+
+#~ msgid "Sears List of Subject Headings"
+#~ msgstr "قائمة سيرز لرؤوس الموضوعات"
+
+#~ msgid ""
+#~ "Appends staff initials and edit date into patron standing penalties and "
+#~ "messages."
+#~ msgstr ""
+#~ "يلحق بالأحرف الأولى لطاقم المكتبة وتاريخ التحرير إلى عقوبات المستفيد القائمة "
+#~ "والرسائل."
+
+#~ msgid "Repertoire de vedettes-matiere"
+#~ msgstr "مرجع أو دليل المواد المَعنية"
+
+#~ msgid "Require staff initials for entry/edit of patron notes."
+#~ msgstr ""
+#~ "مطلوب الحروف الأولى لـِ اسم طاقم المكتبة من أجل الدخول أو تحرير ملاحظات "
+#~ "المستفيد"
+
+#~ msgid "LC subject headings for children's literature"
+#~ msgstr "قائمة رؤوس موضوعات مكتبة الكونغرس لـِ أدب الأطفال"
+
+#~ msgid "Library of Congress Subject Headings"
+#~ msgstr "قائمة رؤوس موضوعات مكتبة الكونغرس"
+
+#~ msgid ""
+#~ "When enabled, Located URIs will provide visiblity behavior identical to "
+#~ "copies."
+#~ msgstr ""
+#~ "عند التمكين، فإن روابط الكائنات سوف توفر إمكانية رؤية السلوك المُطابق للنسخ."
+
+#~ msgid ""
+#~ "Defines the default classification scheme for new call numbers: 1 = Generic; "
+#~ "2 = Dewey; 3 = LC"
+#~ msgstr ""
+#~ "تحديد مخطط التصنيف الافتراضي لـِ رموز الاستدعاء الجديدة: 1 = عام؛ 2 = ديوي؛ "
+#~ "3 = كونغرس"
+
+#~ msgid "Journal/Magazine & Newspaper Articles"
+#~ msgstr "مقالات الصحف والمجلات/الدوريات"
+
+#~ msgid "National Agricultural Library subject authority file"
+#~ msgstr "ملف رؤوس موضوعات المكتبة الوطنية الزراعية"
+
+#~ msgid "Allow a user to mark an item as 'missing'"
+#~ msgstr "السماح للمستخدم بتعيين حالة نُسخة كـَ \"ضائع\""
+
+#~ msgid ""
+#~ "The alert_message field will be suggested on the patron registration screen. "
+#~ "Suggesting a field makes it appear when suggested fields are shown. If the "
+#~ "field is shown or required this setting is ignored."
+#~ msgstr ""
+#~ "سيتم اقتراح حقل alert_message في واجهة تسجيل المستفيد.  سيتم إظهاره في حال "
+#~ "إظهار الحقول المقترحة.  سيتم تجاهل هذا الإعداد إذا كان الحقل ظاهر أو مطلوب."
+
+#~ msgid ""
+#~ "The alert_message field will be shown on the patron registration screen. "
+#~ "Showing a field makes it appear with required fields even when not required. "
+#~ "If the field is required this setting is ignored."
+#~ msgstr ""
+#~ "سيظهر حقل alert_message في تسجيل المستفيد. إظهار الحقل سيجعله يظهر مع الحقول "
+#~ "المطلوبة وحتى لو لم تكن مطلوبة. سيتم تجاهل هذا الإعداد إذا كان الحقل مطلوب."
+
+#~ msgid "Allows a user to abort a transit on a copy with status of MISSING"
+#~ msgstr "السماح للمستخدم بإحباط النقل على النسخة التي في حالة مفقود"
+
+#~ msgid "Allow funds to be rolled over without bringing the money along"
+#~ msgstr "السماح بترحيل التمويلات بدون جلب الأموال من شخص لآخر"
+
+#~ msgid ""
+#~ "Text/HTML/Macros to be inserted into receipt templates in place of "
+#~ "%INCLUDE(footer_text)%"
+#~ msgstr ""
+#~ "Text/HTML/Macros ليتم إدراجها في تركيبات الاستلام بدلاً من "
+#~ "%INCLUDE(footer_text)%"
+
+#~ msgid "Item Print Label - Left Margin for Left Label"
+#~ msgstr "تسمية الطباعة - الهامش الأيسر للتسمية من اليسار"
+
+#~ msgid "Item Print Label - Width for Left Label"
+#~ msgstr "تسمية الطباعة - عرض التسمية من اليسار"
+
+#~ msgid ""
+#~ "Set the default width for the leftmost item print label. Please include a "
+#~ "unit of measurement that is valid CSS. For example, \"1in\" or \"2.5cm\""
+#~ msgstr ""
+#~ "تعيين العرض الافتراضي لأقصى حد من اليسار لتسمية الطباعة. ينبغي تضمين وحدة "
+#~ "قياس صالحة في CSS. على سبيل المثال، \"1in\" أو \"2.5cm\""
+
+#~ msgid "Define the time zone in which a library physically resides"
+#~ msgstr "حدد المنطقة الزمنية التي توجد فيها المكتبة فعلياً"
+
+#~ msgid "Item Print Label - Left Margin for Right Label"
+#~ msgstr "تسمية الطباعة - الهامش الأيسر لـِ التسمية من اليمين"
+
+#~ msgid "Item Print Label - Height for Right Label"
+#~ msgstr "تسمية الطباعة - الارتفاع لـِ التسمية من اليمين"
+
+#~ msgid "Item Print Label - Width for Right Label"
+#~ msgstr "تسمية الطباعة - العرض لـِ لتسمية من اليمين"
+
+#~ msgid "Item Print Label - Height for Left Label"
+#~ msgstr "تسمية الطباعة - الإرتفاع لـِ التسمية من اليسار"

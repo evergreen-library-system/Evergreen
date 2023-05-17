@@ -8,14 +8,53 @@ msgstr ""
 "Project-Id-Version: evergreen\n"
 "Report-Msgid-Bugs-To: FULL NAME <EMAIL@ADDRESS>\n"
 "POT-Creation-Date: 2023-05-03 11:29-0400\n"
-"PO-Revision-Date: 2023-05-05 21:40+0000\n"
+"PO-Revision-Date: 2017-09-06 11:57+0000\n"
 "Last-Translator: TZ <tigran@flib.sci.am>\n"
 "Language-Team: Armenian <hy@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2023-05-06 05:00+0000\n"
+"X-Launchpad-Export-Date: 2023-05-05 04:40+0000\n"
 "X-Generator: Launchpad (build 90e2150bef31b411d7bae5c4032c7e320fcaaec8)\n"
+
+#: field.amtr.success.label:182
+msgid "Success"
+msgstr "Հաջողվեց"
+
+#: field.atevdef.hook.label:1464 field.atevdefg.hook.label:1550
+#: field.atul.hook.label:1704 field.atoul.hook.label:1783
+msgid "Hook"
+msgstr "Կեռ"
+
+#: class.cvrfm.label:2010 field.chmw.marc_vr_format.label:2041
+#: field.ccmw.marc_vr_format.label:2072 field.chmm.marc_vr_format.label:2129
+#: field.ccmm.marc_vr_format.label:2181
+msgid "Videorecording Format"
+msgstr "Տեսագրման ձեւաչափը"
+
+#: field.acn.copies.label:3530 field.acpl.copies.label:5835
+msgid "Copies"
+msgstr "Պատճեններ"
+
+#: field.mrd.item_form.label:4777
+msgid "Form"
+msgstr "Ձեւ"
+
+#: field.aou.settings.label:7276
+msgid "Settings"
+msgstr "Կարգավորումներ"
+
+#: class.clfm.label:7888 field.rccc.lit_form.label:13229
+msgid "Literary Form"
+msgstr "Գեղարվեստական ձեւը"
+
+#: field.act.location.label:8348 field.acqdfe.location.label:11457
+msgid "Location"
+msgstr "Տեղադրությունը"
+
+#: field.acqpca.contact.label:9735
+msgid "Contact"
+msgstr "Կապ"
 
 #: class.oaib.label:78 class.oaia.label:88
 msgid "OAI2 record list"
@@ -62,10 +101,6 @@ msgstr "Մատրիցային թեստի արդյունքներ"
 #: field.ccmm.id.label:2168
 msgid "Matchpoint ID"
 msgstr "Համընկնելու ID"
-
-#: field.amtr.success.label:182
-msgid "Success"
-msgstr "Հաջողվեց"
 
 #: field.amtr.fail_part.label:183
 msgid "Failure Part"
@@ -1446,11 +1481,6 @@ msgstr "Հավաքող"
 msgid "Trigger Event Definition"
 msgstr "Գործարկիր իրադարձության սահմանումը"
 
-#: field.atevdef.hook.label:1464 field.atevdefg.hook.label:1550
-#: field.atul.hook.label:1704 field.atoul.hook.label:1783
-msgid "Hook"
-msgstr "Կեռ"
-
 #: field.atevdef.validator.label:1465
 msgid "Validator"
 msgstr "Ստուգիչ"
@@ -1842,12 +1872,6 @@ msgstr "Մատենագիտական գրառման փնջի տեսակ"
 #: class.cubt.label:1994
 msgid "User Bucket Type"
 msgstr "Օգտվողի փնջի տեսակ"
-
-#: class.cvrfm.label:2010 field.chmw.marc_vr_format.label:2041
-#: field.ccmw.marc_vr_format.label:2072 field.chmm.marc_vr_format.label:2129
-#: field.ccmm.marc_vr_format.label:2181
-msgid "Videorecording Format"
-msgstr "Տեսագրման ձեւաչափը"
 
 #: class.chmw.label:2026
 msgid "Hold Matrix Weights"
@@ -3191,10 +3215,6 @@ msgstr "Դասիչ/Հատորի նախածանց"
 msgid "Call Number/Volume"
 msgstr "Դասիչ/հատոր"
 
-#: field.acn.copies.label:3530 field.acpl.copies.label:5835
-msgid "Copies"
-msgstr "Պատճեններ"
-
 #: field.acn.creator.label:3532 field.sunit.creator.label:6269
 #: field.acp.creator.label:8092 field.cc.creator.label:14117
 #: field.srcp.creating_user.label:14963
@@ -4161,10 +4181,6 @@ msgstr "ELvl"
 #: field.mrd.id.label:4776
 msgid "Descriptor ID"
 msgstr "Նկարագրիչի ID"
-
-#: field.mrd.item_form.label:4777
-msgid "Form"
-msgstr "Ձեւ"
 
 #: field.mrd.item_lang.label:4778
 msgid "Lang"
@@ -6134,10 +6150,6 @@ msgstr "Ֆինանսական օրացույց"
 msgid "Users"
 msgstr "Օգտվողներ"
 
-#: field.aou.settings.label:7276
-msgid "Settings"
-msgstr "Կարգավորումներ"
-
 #: field.aou.addresses.label:7277 field.acqpro.addresses.label:9399
 #: field.acqpc.addresses.label:9701
 msgid "Addresses"
@@ -6532,10 +6544,6 @@ msgstr ""
 msgid "User Bucket Item Note"
 msgstr "Օգտվողի փնջի նյութի նշում"
 
-#: class.clfm.label:7888 field.rccc.lit_form.label:13229
-msgid "Literary Form"
-msgstr "Գեղարվեստական ձեւը"
-
 #: field.clfm.code.label:7890
 msgid "LitF Code"
 msgstr "LitF կոդ"
@@ -6733,10 +6741,6 @@ msgstr "Տնօրինող գրադ"
 #: field.act.circ_lib.label:8346 field.rocit.circ_lib.label:13591
 msgid "Circ Lib"
 msgstr "Տացքի գրադարան"
-
-#: field.act.location.label:8348 field.acqdfe.location.label:11457
-msgid "Location"
-msgstr "Տեղադրությունը"
 
 #: field.act.age_protect.label:8351
 msgid "Age Protect"
@@ -7596,10 +7600,6 @@ msgstr "Դեր"
 #: class.acqpca.label:9724
 msgid "Provider Contact Address"
 msgstr "Մատակարարի կապի հասցե"
-
-#: field.acqpca.contact.label:9735
-msgid "Contact"
-msgstr "Կապ"
 
 #: class.acqftr.label:9760
 msgid "Fund Transfer"
@@ -11665,3 +11665,82 @@ msgstr ""
 #: field.coai.release_barcode.label:15609
 msgid "Release barcode"
 msgstr ""
+
+#~ msgid "Org Lasso Map"
+#~ msgstr "Org Lasso քարտեզ"
+
+#~ msgid "Pyament ID"
+#~ msgstr "Վճարման ID"
+
+#~ msgid "Matched Attribute"
+#~ msgstr "Համընկնման բլորոշ հատկանիշ"
+
+#~ msgid "Billing Timestamp"
+#~ msgstr "Վճարի ժամանակի դրոշմ"
+
+#~ msgid ""
+#~ "Circulation Matrix Circulation Modifier Subtest Circulation Modifier Set"
+#~ msgstr "Տացքի մատրիցա Տացքի ձևափոխիչի ենթատեստ Տացքի ձևափոխիչի բազմություն"
+
+#~ msgid "Copy/Shelving Location"
+#~ msgstr "Օրինակ/դարակի վրա գտնվելու տեղ"
+
+#~ msgid "OPAC/Staff Client User Name"
+#~ msgstr "ՀՕԱՔ/Աշխատակազմի հաճախորդի օգտվողի անուն"
+
+#~ msgid "User Note"
+#~ msgstr "Օգտվողի նշում"
+
+#~ msgid "Suffix/Title"
+#~ msgstr "Նախածանց/կոչում"
+
+#~ msgid "Creating Staff"
+#~ msgstr "Ստեղծող կազմ"
+
+#~ msgid "Check Out Date/Time"
+#~ msgstr "Դուրս տրման ամսաթիվ/ժամ"
+
+#~ msgid "Test ID"
+#~ msgstr "Թեստ ID"
+
+#~ msgid "Keep"
+#~ msgstr "Պահել"
+
+#~ msgid "Circulation Modifier Subtest ID"
+#~ msgstr "Տացքի ձևափոխիչի ենթատեստի ID"
+
+#~ msgid "Circulation Matrix Circulation Modifier Subtest"
+#~ msgstr "Տացքի մատրիցա։ Տացքի ձևափոխիչի ենթատեստ"
+
+#~ msgid "Thaw Date (if frozen)"
+#~ msgstr "Մեղմացնելու ամսաթիվ (եթե սառեցված է)"
+
+#~ msgid "Field Type"
+#~ msgstr "Դաշտի տեսակ"
+
+#~ msgid "User Name"
+#~ msgstr "Օգտվողի անուն"
+
+#~ msgid "Field Class"
+#~ msgstr "Դաշտի դաս"
+
+#~ msgid "Org Lasso"
+#~ msgstr "Org Lasso"
+
+#~ msgid "Floating?"
+#~ msgstr "Սահո՞ղ"
+
+#~ msgid "Is Floating"
+#~ msgstr "Սահում է"
+
+#~ msgid "Claim Policy ID"
+#~ msgstr "Պահանջի քաղաքականության ID"
+
+#~ msgid "Fielmapper Class"
+#~ msgstr "Ֆայլի քարտեզի դաս"
+
+#~ msgid "Combined Aged and Active circulations"
+#~ msgstr "Համակցված տարիքներ և ակտիվ տացքեր։"
+
+#~ msgid "Subject"
+#~ msgstr "Խորագիր"

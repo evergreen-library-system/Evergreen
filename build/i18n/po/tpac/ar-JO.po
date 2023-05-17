@@ -7,17 +7,17 @@ msgid ""
 msgstr ""
 "Project-Id-Version: evergreen\n"
 "Report-Msgid-Bugs-To: FULL NAME <EMAIL@ADDRESS>\n"
-"POT-Creation-Date: 2023-05-05 21:45+0000\n"
-"PO-Revision-Date: 2023-05-05 21:40+0000\n"
+"POT-Creation-Date: 2023-05-04 14:54+0000\n"
+"PO-Revision-Date: 2018-09-16 04:38+0000\n"
 "Last-Translator: fares othman <Unknown>\n"
 "Language-Team: Arabic <ar@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2023-05-06 05:08+0000\n"
+"X-Launchpad-Export-Date: 2023-05-05 04:48+0000\n"
 "X-Generator: Launchpad (build 90e2150bef31b411d7bae5c4032c7e320fcaaec8)\n"
-"Language: AR\n"
 "X-Poedit-SourceCharset: UTF-8\n"
+"Language: AR\n"
 
 #: ../../Open-ILS/src/templates/opac/register.tt2:66
 msgid ""
@@ -5913,3 +5913,170 @@ msgstr "عرض"
 #: ../../Open-ILS/src/templates/opac/parts/place_hold_result.tt2:156
 msgid "volume"
 msgstr "المجلد"
+
+#~ msgid "Add %1 to my list"
+#~ msgstr "إضافة %1 إلى القائمة الخاصة بي"
+
+#~ msgid "April"
+#~ msgstr "نيسان"
+
+#~ msgid "Are you sure you are ready to charge %1 to your credit card?"
+#~ msgstr "هل تؤكد دفع %1 من بطاقتك الإئتمانية؟"
+
+#~ msgid "August"
+#~ msgstr "آب"
+
+#~ msgid "September"
+#~ msgstr "أيلول"
+
+#~ msgid "Temporary List"
+#~ msgstr "القائمة المؤقتة"
+
+#~ msgid "User name:"
+#~ msgstr "الاسم:"
+
+#~ msgid "View My List"
+#~ msgstr "عرض القائمة الخاصة بي"
+
+#~ msgid "You have not created a list yet."
+#~ msgstr "لم تقم بإنشاء قائمة بعد"
+
+#~ msgid "Balance Owed"
+#~ msgstr "الرصيد المُستحق"
+
+#~ msgid "Click %1Cancel%2 to go back and (un)select other fines."
+#~ msgstr "انقر على %1إلغاء%2 للرجوع أو لتحديد/لإلغاء تحديد الغرامات الأخرى."
+
+#~ msgid "December"
+#~ msgstr "كانون الأول"
+
+#~ msgid "February"
+#~ msgstr "شباط"
+
+#~ msgid "March"
+#~ msgstr "آذار"
+
+#~ msgid "May"
+#~ msgstr "أيار"
+
+#~ msgid "Remove %1 from my list"
+#~ msgstr "حذف %1 من القائمة الخاصة بي"
+
+#~ msgid "Remove from my list"
+#~ msgstr "حذف من القائمة الخاصة بي"
+
+#~ msgid ""
+#~ "To ensure your necessary receipt information is not lost, enter your email "
+#~ "address above and a receipt will be emailed to you. Otherwise, make certain "
+#~ "you have a printed receipt in hand before closing the payment receipt screen."
+#~ msgstr ""
+#~ "الرجاء إدخال عنوان بريدك الإلكتروني أعلاه ليتم إرسال معلومات الإيصال لك، أو "
+#~ "تأكّد من طباعة الإيصال والحصول على نسخة منه قبل إغلاق نافذة إيصال الدفع."
+
+#~ msgid "Total Amount Paid"
+#~ msgstr "المجموع الكلي المدفوع"
+
+#~ msgid "Total amount to pay:"
+#~ msgstr "المجموع النهائي للدفع:"
+
+#~ msgid "Transaction Start Time"
+#~ msgstr "بداية تاريخ الإجراء"
+
+#~ msgid "You are adding to a temporary list."
+#~ msgstr "تقوم بالإضافة إلى قائمة مؤقتة."
+
+#~ msgid ""
+#~ "You either have no fines to pay or you have selected fines whose total is "
+#~ "non-positive.  We cannot process non-positive amounts."
+#~ msgstr ""
+#~ "قد لا يكون عليك أي غرامات للدفع، أو مجموع مبلغ الغرامات يساوي عدد سالب، لا "
+#~ "يمكننا معالجة المبالغ السالبة."
+
+#~ msgid ""
+#~ "Your user name or barcode has been submitted for a password reset. If a "
+#~ "matching account with an email address is found, you will soon receive an "
+#~ "email at that address with further instructions for resetting your password."
+#~ msgstr ""
+#~ "إذا كان عنوان البريد الإلكتروني لاسم المستخدم أو الباركود المُدخل موجود، "
+#~ "سيتم إرسال بريد إلكتروني لك متضمناً التعليمات لتغيير كلمة المرور."
+
+#~ msgid "Fines"
+#~ msgstr "الغرامات"
+
+#~ msgid "Fines:"
+#~ msgstr "الغرامات:"
+
+#~ msgid "Last Payment Time"
+#~ msgstr "تاريخ آخر دفع"
+
+#~ msgid "Name"
+#~ msgstr "الاسم"
+
+#~ msgid "November"
+#~ msgstr "تشرين الثاني"
+
+#~ msgid "October"
+#~ msgstr "تشرين الأول"
+
+#~ msgid "Other Fees"
+#~ msgstr "الرسوم الأخرى"
+
+#~ msgid "Pay Fines"
+#~ msgstr "دفع الغرامات"
+
+#~ msgid "Pay selected fines"
+#~ msgstr "دفع الغرامات المحددة"
+
+#~ msgid ""
+#~ "Please enter your user name or barcode to identify your library account and "
+#~ "request a password reset"
+#~ msgstr "الرجاء إدخال اسم المستخدم للولوج في حسابك أو طلب تغيير كلمة المرور"
+
+#~ msgid "Results %1 - %2 of about %3"
+#~ msgstr "نتائج %1 - %2 حول %3"
+
+#~ msgid "Selected fines you are paying for:"
+#~ msgstr "الغرامات المحددة التي ستدفعها:"
+
+#~ msgid "Temporary List Warning"
+#~ msgstr "تحذير القائمة المؤقتة"
+
+#~ msgid "Go back to try again or to cancel this payment attempt."
+#~ msgstr "يمكنك الرجوع من أجل المحاولة مرة أخرى أو إلغاء محاولة الدفع هذه"
+
+#~ msgid "January"
+#~ msgstr "كانون الثاني"
+
+#~ msgid "July"
+#~ msgstr "تموز"
+
+#~ msgid "June"
+#~ msgstr "حزيران"
+
+#~ msgid ""
+#~ "Important! You must have a printed receipt to be eligible for a refund on "
+#~ "lost items (regulations allow for no exceptions)."
+#~ msgstr ""
+#~ "هـام! يجب أن يكون لديك إيصال مطبوع ليكون مؤهلاً لاسترداد النُسخ المفقودة "
+#~ "(لوائح وأنظمة لا تسمح باستثناءات)"
+
+#~ msgid "Initial Amount Owed"
+#~ msgstr "المبلغ أو الكمية الأولية المستحقة"
+
+#~ msgid "My Existing Lists"
+#~ msgstr "القوائم المتواجدة الخاصة بي"
+
+#~ msgid "View My Lists"
+#~ msgstr "عرض قوائمي"
+
+#~ msgid "View My Temporary List"
+#~ msgstr "عرض قائمتي المؤقتة"
+
+#~ msgid " View My Lists"
+#~ msgstr " عرض قوائمي"
+
+#~ msgid " View My Temporary List"
+#~ msgstr " عرض قائمتي المؤقتة"
+
+#~ msgid "The minimum amount you can pay is $0.01."
+#~ msgstr "الحد الأدنى للمقدار الذي يمكنك دفعه هو $0.01."

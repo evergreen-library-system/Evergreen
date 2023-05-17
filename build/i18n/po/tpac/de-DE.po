@@ -7,14 +7,14 @@ msgid ""
 msgstr ""
 "Project-Id-Version: evergreen\n"
 "Report-Msgid-Bugs-To: FULL NAME <EMAIL@ADDRESS>\n"
-"POT-Creation-Date: 2023-05-05 21:45+0000\n"
-"PO-Revision-Date: 2023-05-05 21:40+0000\n"
+"POT-Creation-Date: 2023-05-04 14:54+0000\n"
+"PO-Revision-Date: 2017-02-16 01:29+0000\n"
 "Last-Translator: vulpecula <Unknown>\n"
 "Language-Team: German <de@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2023-05-06 05:08+0000\n"
+"X-Launchpad-Export-Date: 2023-05-05 04:49+0000\n"
 "X-Generator: Launchpad (build 90e2150bef31b411d7bae5c4032c7e320fcaaec8)\n"
 
 #: ../../Open-ILS/src/templates/opac/register.tt2:66
@@ -5840,3 +5840,21 @@ msgstr ""
 #: ../../Open-ILS/src/templates/opac/parts/place_hold_result.tt2:156
 msgid "volume"
 msgstr ""
+
+#~ msgid "Add %1 to my list"
+#~ msgstr "Füge %1 zu meiner Liste hinzu"
+
+#~ msgid "April"
+#~ msgstr "April"
+
+#~ msgid "August"
+#~ msgstr "August"
+
+#~ msgid "December"
+#~ msgstr "Dezember"
+
+#~ msgid "February"
+#~ msgstr "Februar"
+
+#~ msgid "Fines"
+#~ msgstr "Ordnungsgelder"

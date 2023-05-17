@@ -8,13 +8,13 @@ msgstr ""
 "Project-Id-Version: evergreen\n"
 "Report-Msgid-Bugs-To: FULL NAME <EMAIL@ADDRESS>\n"
 "POT-Creation-Date: 2023-05-04 09:23-0400\n"
-"PO-Revision-Date: 2023-05-05 21:40+0000\n"
+"PO-Revision-Date: 2017-06-22 06:42+0000\n"
 "Last-Translator: Anahi Valdez <avaldez@emeralddata.net>\n"
 "Language-Team: Spanish <es@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2023-05-06 04:59+0000\n"
+"X-Launchpad-Export-Date: 2023-05-05 04:39+0000\n"
 "X-Generator: Launchpad (build 90e2150bef31b411d7bae5c4032c7e320fcaaec8)\n"
 
 #: 950.data.seed-values.sql:2
@@ -17097,3 +17097,293 @@ msgid ""
 "threshold for their group. Use of this feature will likely require "
 "configuration and coordination with an external collection agency."
 msgstr ""
+
+#~ msgid "Gwich"
+#~ msgstr "Gwich"
+
+#~ msgid "SSN"
+#~ msgstr "Número de Seguro Social"
+
+#~ msgid "Example Branch 4"
+#~ msgstr "Rama de ejemplo 4"
+
+#~ msgid "Example Branch 2"
+#~ msgstr "Rama de ejemplo 2"
+
+#~ msgid "Holds: Has Local Copy Block"
+#~ msgstr "Contiene: Tiene Bloque copia local"
+
+#~ msgid ""
+#~ "Circulation: Maximum concurrently active self-serve password reset requests "
+#~ "per user"
+#~ msgstr ""
+#~ "Circulación: Máximo reseteos de solicitudes de contraseña servidos propios "
+#~ "por usuario al mismo tiempo"
+
+#~ msgid "Holds: Block Renewal of Items Needed for Holds"
+#~ msgstr ""
+#~ "Apartados: Bloquear Renovaciones de Artículos Necesarios para Apartados"
+
+#~ msgid "Holds: Clear shelf copy status"
+#~ msgstr "Apartados: Limpiar el estado de la copia en el estante"
+
+#~ msgid "Example Branch 3"
+#~ msgstr "Rama Ejemplo 3"
+
+#~ msgid "Example Branch 1"
+#~ msgstr "Rama Ejemplo 1"
+
+#~ msgid "Selfcheck: Workstation Required"
+#~ msgstr "Verificación Propia: Estación De Trabajo Requerida"
+
+#~ msgid "GUI: Work Log: Maximum Actions Logged"
+#~ msgstr ""
+#~ "Interfaz Gráfico De Usuario: Registro De Trabajo: Acciones Máximas "
+#~ "Registradas"
+
+#~ msgid "Example Sub-library 1"
+#~ msgstr "Sub-biblioteca ejemplo 1"
+
+#~ msgid ""
+#~ "Circulation: Maximum concurrently active self-serve password reset requests"
+#~ msgstr ""
+#~ "Circulación: máximas solicitudes de restablecimiento de contraseña de "
+#~ "autoservicio al mismo tiempo"
+
+#~ msgid ""
+#~ "GUI: Require staff initials for entry/edit of item/patron/penalty "
+#~ "notes/messages."
+#~ msgstr ""
+#~ "Interfaz gráfico de usuarioL Requiere iniciales de un empleado para "
+#~ "entrar/editar un artículo/cliente/notas/mensajes de castigo"
+
+#~ msgid "Example System 1"
+#~ msgstr "Ejemplo De Sistema 1"
+
+#~ msgid "Example System 2"
+#~ msgstr "Ejemplo Sistema 2"
+
+#~ msgid "Local System Administrator"
+#~ msgstr "Administrador Del Sistema Local"
+
+#~ msgid "Selfcheck: Require Patron Password"
+#~ msgstr "Escaneo Propio: Requerir Contraseña Del Cliente"
+
+#~ msgid "Repertoire de vedettes-matiere"
+#~ msgstr "Repertorio de las partidas en cuestión"
+
+#~ msgid ""
+#~ "Allow funds to be rolled over without bringing the money along.  This makes "
+#~ "money left in the old fund disappear, modeling its return to some outside "
+#~ "entity."
+#~ msgstr ""
+#~ "Permitir que los fondos se dio la vuelta sin que el dinero junto . Esto hace "
+#~ "que el dinero que queda en el fondo antiguo desaparecerá , modelando su "
+#~ "retorno a alguna entidad externa."
+
+#~ msgid "Appends staff initials and edit date into patron note content."
+#~ msgstr ""
+#~ "Añade las iniciales del personal y editar contenidos en la fecha patrón nota."
+
+#~ msgid "Allow a user to mark an item as 'missing'"
+#~ msgstr "Permitir que un usuario marcar un artículo como \"desaparecido\""
+
+#~ msgid ""
+#~ "Value is a numeric code, describing which list the circulation should appear "
+#~ "while checked out and whether the circulation should continue to appear in "
+#~ "the bottom list, when checked in with oustanding fines.  1 = top list, "
+#~ "bottom list.  2 = bottom list, bottom list.  5 = top list, do not display.  "
+#~ "6 = bottom list, do not display."
+#~ msgstr ""
+#~ "El valor es un código numérico, que describe a qué lista debe aparecer la "
+#~ "circulación mientras desprotegido y si la circulación debe seguir "
+#~ "apareciendo en la lista inferior, cuando se puso en contacto con multas "
+#~ "sobresaliente. 1 = lista superior, lista inferior. 2 = lista de abajo, de la "
+#~ "lista inferior. 5 = lista superior, no se muestran. 6 = lista inferior, no "
+#~ "se muestran"
+
+#~ msgid ""
+#~ "Text/HTML/Macros to be inserted into receipt templates in place of "
+#~ "%INCLUDE(header_text)%"
+#~ msgstr ""
+#~ "Text / html / Macros para ser insertados en las plantillas de recibos en "
+#~ "lugar de %INCLUDE(header_text)%"
+
+#~ msgid ""
+#~ "Allow a user to abort a copy transit if the user is at the transit "
+#~ "destination or source"
+#~ msgstr ""
+#~ "Permitir a un usuario para abortar un tránsito copia si el usuario está en "
+#~ "el destino de tránsito o la fuente"
+
+#~ msgid ""
+#~ "How long to wait before allowing remote items to be opportunistically "
+#~ "captured for a hold.  Example \"5 days\""
+#~ msgstr ""
+#~ "Cuánto tiempo debe esperar antes de permitir que los elementos remotos "
+#~ "pueden capturar de forma oportunista para una sujeción. Ejemplo \"5 días\""
+
+#~ msgid ""
+#~ "Text/HTML/Macros to be inserted into receipt templates in place of "
+#~ "%INCLUDE(alert_text)%"
+#~ msgstr ""
+#~ "Text / html / Macros para ser insertados en las plantillas de recibos en "
+#~ "lugar de% include (alert_text)%"
+
+#~ msgid "Canceled holds display count"
+#~ msgstr "Cancelado sostiene recuento de display"
+
+#~ msgid "Canadian Subject Headings"
+#~ msgstr "Encabezamientos de materia canadienses"
+
+#~ msgid ""
+#~ "Text/HTML/Macros to be inserted into receipt templates in place of "
+#~ "%INCLUDE(notice_text)%"
+#~ msgstr ""
+#~ "Text/html /Macros para ser insertados en las plantillas de recibos en lugar "
+#~ "de %INCLUDE(notice_text)%"
+
+#~ msgid "How many canceled holds to show in patron holds interfaces"
+#~ msgstr ""
+#~ "¿Cuántas canceladas tiene que mostrar en el patrón tiene las interfaces"
+
+#~ msgid "Art and Architecture Thesaurus"
+#~ msgstr "Tesauro de arte y arquitectura"
+
+#~ msgid ""
+#~ "Text/HTML/Macros to be inserted into receipt templates in place of "
+#~ "%INCLUDE(event_text)%"
+#~ msgstr ""
+#~ "Text / html / Macros para ser insertados en las plantillas de recibos en "
+#~ "lugar de% include (event_text)%"
+
+#~ msgid ""
+#~ "Allow a user to abort a copy transit if the user is not at the transit "
+#~ "source or dest"
+#~ msgstr ""
+#~ "Permitir a un usuario para abortar un tránsito copia si el usuario no está "
+#~ "en el origen de tránsito o dest"
+
+#~ msgid "Show all canceled holds that were canceled within this amount of time"
+#~ msgstr ""
+#~ "Mostrar todo cancelado sostiene que se cancela dentro de este período de "
+#~ "tiempo"
+
+#~ msgid "Canceled holds display age"
+#~ msgstr "Cancelado sostiene edad pantalla"
+
+#~ msgid ""
+#~ "Leave transaction open when long-overdue balance equals zero.  This leaves "
+#~ "the lost copy on the patron record when it is paid"
+#~ msgstr ""
+#~ "Deja abierta la transacción cuando el saldo largamente esperada es igual a "
+#~ "cero. Esto deja la copia perdida en el registro de usuario cuando se paga"
+
+#~ msgid "Show alert_message field on patron registration"
+#~ msgstr "Mostrar alert_message campo en el registro de patrón"
+
+#~ msgid "Medical Subject Headings"
+#~ msgstr "Titulo de los encabezamientos de materia"
+
+#~ msgid ""
+#~ "Appends staff initials and edit date into patron standing penalties and "
+#~ "messages."
+#~ msgstr ""
+#~ "Añade las iniciales del personal y de edición de fecha en las penas de pie "
+#~ "patronos y mensajes."
+
+#~ msgid "Allows patrons to create automatic holds from purchase requests."
+#~ msgstr ""
+#~ "Permite a los clientes para crear sostiene automática de solicitudes de "
+#~ "compra."
+
+#~ msgid "Require staff initials for entry/edit of patron notes."
+#~ msgstr ""
+#~ "Exigir a las iniciales del personal para la entrada / edición de notas "
+#~ "patronos."
+
+#~ msgid ""
+#~ "When enabled, Located URIs will provide visiblity behavior identical to "
+#~ "copies."
+#~ msgstr ""
+#~ "Cuando está activado, URI Situado proporcionarán un comportamiento idéntico "
+#~ "al visiblity de copias."
+
+#~ msgid ""
+#~ "Defines the default classification scheme for new call numbers: 1 = Generic; "
+#~ "2 = Dewey; 3 = LC"
+#~ msgstr ""
+#~ "Define el esquema de clasificación por defecto para los nuevos números de "
+#~ "llamada: 1 = genérica; 2 = Dewey; 3 = LC"
+
+#~ msgid "Sears List of Subject Headings"
+#~ msgstr "Sears Lista de encabezamientos de materia"
+
+#~ msgid ""
+#~ "The alert_message field will be suggested on the patron registration screen. "
+#~ "Suggesting a field makes it appear when suggested fields are shown. If the "
+#~ "field is shown or required this setting is ignored."
+#~ msgstr ""
+#~ "El campo alert_message se sugirió en la pantalla de registro de patrón. Lo "
+#~ "que sugiere un campo hace que aparece cuando se muestran los campos "
+#~ "sugeridas. Si se muestra o se requiere el campo se ignora este ajuste."
+
+#~ msgid ""
+#~ "The alert_message field will be shown on the patron registration screen. "
+#~ "Showing a field makes it appear with required fields even when not required. "
+#~ "If the field is required this setting is ignored."
+#~ msgstr ""
+#~ "El campo alert_message se mostrará en la pantalla de registro de patrón. "
+#~ "Mostrando un campo hace que aparece con los campos necesarios, incluso "
+#~ "cuando no es necesario. Si se requiere el campo se ignora este ajuste."
+
+#~ msgid "Suggest alert_message field on patron registration"
+#~ msgstr "Sugerir alert_message campo en el registro de patrón"
+
+#~ msgid "Journal/Magazine & Newspaper Articles"
+#~ msgstr "Diario / Revista y artículos periodísticos"
+
+#~ msgid "LC subject headings for children's literature"
+#~ msgstr "Encabezamientos de materia LC para literatura infantil"
+
+#~ msgid "National Agricultural Library subject authority file"
+#~ msgstr "archivo de autoridades de materia Biblioteca Nacional de Agricultura"
+
+#~ msgid "Allow funds to be rolled over without bringing the money along"
+#~ msgstr ""
+#~ "Permitir que los fondos se dio la vuelta sin traer el dinero a lo largo de"
+
+#~ msgid "Allows a user to abort a transit on a copy with status of MISSING"
+#~ msgstr ""
+#~ "Permite a un usuario para abortar un tránsito en una copia con el estado de "
+#~ "la falta"
+
+#~ msgid "Allows a user to abort a transit on a copy with status of LOST"
+#~ msgstr ""
+#~ "Permite a un usuario para abortar un tránsito en una copia con el estado de "
+#~ "PERDIDO"
+
+#~ msgid ""
+#~ "Text/HTML/Macros to be inserted into receipt templates in place of "
+#~ "%INCLUDE(footer_text)%"
+#~ msgstr ""
+#~ "Text/HTML/Macros to be inserted into receipt templates in place of "
+#~ "%INCLUDE(footer_text)%"
+
+#~ msgid "VIEW_STANDING_PENALTY"
+#~ msgstr "VIEW_STANDING_PENALTY"
+
+#~ msgid "Library of Congress Subject Headings"
+#~ msgstr "Biblioteca del Congreso Encabezamiento de Materia"
+
+#~ msgid ""
+#~ "This might be \"AuthorizeNet\", \"PayPal\", \"PayflowPro\", or \"Stripe\"."
+#~ msgstr ""
+#~ "Esto podría ser \"AuthorizeNet\", \"PayPal\", \"PayflowPro\", o \"raya\"."
+
+#~ msgid ""
+#~ "Require staff initials for entry/edit of patron standing penalties and "
+#~ "messages."
+#~ msgstr ""
+#~ "Exigir a las iniciales del personal para la entrada / edición de las penas "
+#~ "de pie patronos y mensajes."
