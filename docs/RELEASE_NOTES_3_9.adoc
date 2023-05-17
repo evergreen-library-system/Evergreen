@@ -14,18 +14,16 @@ fixes for three security bugs.
 * https://bugs.launchpad.net/evergreen/+bug/1972738[Bug 1972738] requires a schema update
 * https://bugs.launchpad.net/evergreen/+bug/1920826[Bug 1920826] requires a schema update
 
-=== Bug Fixes ===
-
 === Security Fixes ===
 
-=== Fix SQL Injection Vulnerability ===
+==== Fix SQL Injection Vulnerability ====
 
 An SQL injection vulnerability related to the implementation of
 search term highlights is now closed.
 
 This is https://bugs.launchpad.net/evergreen/+bug/2004055[Bug 2004055].
 
-=== Malicious Search Protection ===
+==== Malicious Search Protection ====
 
 Evergreen sometimes sees some "novel" query strings in the wild that
 cause the search backend to time out or worse.  These are sometimes
@@ -50,7 +48,7 @@ past.
 
 This is https://bugs.launchpad.net/evergreen/+bug/1775958[Bug 1775958].
 
-=== Restrict login redirect ===
+==== Restrict login redirect ====
 
 As a security best-practice, Evergreen should not allow arbitrary
 redirection on successful login, but instead limit redirection to
@@ -62,6 +60,8 @@ under each domain is allowed for redirect, and the scheme of the
 redirect URL must be one of http, https, ftp, or ftps.
 
 This is https://bugs.launchpad.net/evergreen/+bug/1908576[Bug 1908576].
+
+=== Bug Fixes ===
 
 ==== Accessibility ====
 
@@ -224,7 +224,7 @@ This is https://bugs.launchpad.net/evergreen/+bug/1361782[Bug 1361782].
 * Fix to change legacy `ARRAY_TO_STRING(ARRAY_AGG())\ functions to `STRING_AGG()` functions (https://bugs.launchpad.net/evergreen/+bug/1441750[Bug 1441750])
 * Fixes typo in `AddedContent.pm` (https://bugs.launchpad.net/evergreen/+bug/2012105[Bug 2012105])
 
-==== Catalog ==== 
+==== Catalog ====
 
 * Enables keyboard tabbing for search results pagination (https://bugs.launchpad.net/evergreen/+bug/1993859[Bug 1993859])
 * Fixes an error emailing records from the staff catalog & OPAC (https://bugs.launchpad.net/evergreen/+bug/1955079[Bug 1955079])
