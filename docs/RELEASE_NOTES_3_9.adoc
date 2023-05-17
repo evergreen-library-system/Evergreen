@@ -5,15 +5,63 @@
 
 == Evergreen 3.9.3 ==
 
-This release contains bug fixes improving on Evergreen 3.9.2.
+This release contains bug fixes improving on Evergreen 3.9.2. This release also includes
+fixes for three security bugs.
 
 
 === Upgrade notes ===
 
 * https://bugs.launchpad.net/evergreen/+bug/1972738[Bug 1972738] requires a schema update
-* https://bugs.launchpad.net/evergreen/+bug/1920826[Bug 1920826] requires a schema update 
+* https://bugs.launchpad.net/evergreen/+bug/1920826[Bug 1920826] requires a schema update
 
 === Bug Fixes ===
+
+=== Security Fixes ===
+
+=== Fix SQL Injection Vulnerability ===
+
+An SQL injection vulnerability related to the implementation of
+search term highlights is now closed.
+
+This is https://bugs.launchpad.net/evergreen/+bug/2004055[Bug 2004055].
+
+=== Malicious Search Protection ===
+
+Evergreen sometimes sees some "novel" query strings in the wild that
+cause the search backend to time out or worse.  These are sometimes
+malicious and sometimes accidental, but the effect on users is the
+same.
+
+The changes here improve query compilation in several respects in order
+to reduce the chances of an overly complex query causing problems for
+the search subsystem.
+
+More work is done up front to simplify and combine parts of the
+resulting SQL, allowing more work to be done closer to the data.
+This change allows Evergreen to handle many more tested or chained
+boolean expressions, and negated terms are now handled directly in
+line with other adjacent terms. Phrases (exact matches) are now
+searched for using Postgres' adjacency tsearch operator.
+
+All of these changes work together to improve performance by getting
+more search work done in fewer database operations while protecting
+against certain query constructs that have caused problems in the
+past.
+
+This is https://bugs.launchpad.net/evergreen/+bug/1775958[Bug 1775958].
+
+=== Restrict login redirect ===
+
+As a security best-practice, Evergreen should not allow arbitrary
+redirection on successful login, but instead limit redirection to
+local links or configured domains and schemes.
+
+This feature is controlled by a new global flag called *opac.login_redirect_domains*
+which must contain a comma-separated list of domains.  All hostnames
+under each domain is allowed for redirect, and the scheme of the
+redirect URL must be one of http, https, ftp, or ftps.
+
+This is https://bugs.launchpad.net/evergreen/+bug/1908576[Bug 1908576].
 
 ==== Accessibility ====
 
@@ -34,7 +82,7 @@ This release contains bug fixes improving on Evergreen 3.9.2.
 
 
 
-==== Catalog ==== 
+==== Catalog ====
 
 * Adds consistency to SMS Carrier dropdown display (https://bugs.launchpad.net/evergreen/+bug/1889916[Bug 1889916])
 
