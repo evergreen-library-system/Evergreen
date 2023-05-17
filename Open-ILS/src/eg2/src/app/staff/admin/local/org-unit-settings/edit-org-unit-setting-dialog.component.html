@@ -115,6 +115,13 @@
                       </ng-container><!-- fmClass ngSwitch -->
                 </div>
               </ng-container>
+              <ng-container *ngSwitchCase="'timezone'">
+                <div class="input-group">
+                    <eg-timezone-select
+                      [(ngModel)]="entryValue">
+                    </eg-timezone-select>
+                </div>
+              </ng-container>
 
             </ng-container> <!-- input type ngSwitch -->
         </div>

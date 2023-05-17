@@ -7,13 +7,16 @@ import {OuSettingHistoryDialogComponent} from './org-unit-setting-history-dialog
 import {OrgUnitSettingsRoutingModule} from './org-unit-settings-routing.module';
 import {OuSettingJsonDialogComponent} from './org-unit-setting-json-dialog.component';
 import {ItemLocationSelectModule} from '@eg/share/item-location-select/item-location-select.module';
+import { TimezoneSelectComponent } from './timezone-select/timezone-select.component';
+import { Timezone } from '@eg/share/util/timezone';
 
 @NgModule({
     declarations: [
         OrgUnitSettingsComponent,
         EditOuSettingDialogComponent,
         OuSettingHistoryDialogComponent,
-        OuSettingJsonDialogComponent
+        OuSettingJsonDialogComponent,
+        TimezoneSelectComponent
     ],
     imports: [
         AdminCommonModule,
@@ -24,6 +27,7 @@ import {ItemLocationSelectModule} from '@eg/share/item-location-select/item-loca
     exports: [
     ],
     providers: [
+        Timezone
     ]
 })
 

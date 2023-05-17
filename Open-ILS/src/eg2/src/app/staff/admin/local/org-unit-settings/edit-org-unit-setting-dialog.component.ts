@@ -28,6 +28,9 @@ export class EditOuSettingDialogComponent extends DialogComponent {
     }
 
     inputType() {
+        if (this.entry.name === 'lib.timezone') {
+            return 'timezone';
+        }
         return this.entry.dataType;
     }
 

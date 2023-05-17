@@ -44,8 +44,7 @@ export class DialogComponent implements OnInit {
     @Input() public dialogTitle: string;
 
     // Pointer to the dialog content template.
-    @ViewChild('dialogContent', {static: false})
-    private dialogContent: TemplateRef<any>;
+    @ViewChild('dialogContent', {static: false}) dialogContent: TemplateRef<any>;
 
     identifier: number = DialogComponent.counter++;
 
