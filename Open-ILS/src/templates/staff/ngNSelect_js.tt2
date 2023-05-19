@@ -1,0 +1,53 @@
+[%-
+# this file must be loaded after the ns2init.js file provided by NoveList
+USE CGI;
+
+isbn = CGI.params.isbn.list.first.replace("'",'');
+profile = CGI.params.profile.list.first.replace("'",'');
+passwd = CGI.params.passwd.list.first.replace("'",'');
+
+version = CGI.params.version.list.first.replace("'",'') || '2.6';
+loading = CGI.params.loading.list.first.replace("'",'') || 'novelist-loading-msg';
+
+IF isbn AND profile AND passwd
+
+-%]
+
+setTimeout(function () {
+  novSelect.loadContentForQuery(
+    {
+      ClientIdentifier: '[% isbn %]',
+      ISBN: '[% isbn %]',
+      version: '[% version %]'
+    },
+    '[% profile %]',
+    '[% passwd %]',
+    function (d) {
+      // note if d.length == 0, there is no content to display
+      const msg = document.getElementById('[% loading %]');
+
+      if ( d.length == 0 ) {
+        // hide the Loading... text
+        msg.classList.toggle('visually-hidden');
+        // change the tab
+        document.getElementById('added-content-data').style.display = 'none';
+        document.getElementById('added-content-no-data').style.display = 'inline';
+        // update the ARIA live region
+        document.getElementById('novelist-data-msg').style.display = 'none';
+        document.getElementById('novelist-no-data-msg').style.display = 'inline';
+      }
+      else {
+        // hide the Loading... text
+        msg.classList.toggle('visually-hidden');
+        // change the tab
+        document.getElementById('added-content-no-data').style.display = 'none';
+        document.getElementById('added-content-data').style.display = 'inline';
+        // update the ARIA live region
+        document.getElementById('novelist-no-data-msg').style.display = 'none';
+        document.getElementById('novelist-data-msg').style.display = 'inline';
+      }
+    }
+  );
+});
+
+[%- END -%]

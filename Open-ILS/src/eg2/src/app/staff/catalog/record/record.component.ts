@@ -10,24 +10,30 @@ import {BibRecordService, BibRecordSummary} from '@eg/share/catalog/bib-record.s
 import {StaffCatalogService} from '../catalog.service';
 import {BibSummaryComponent} from '@eg/staff/share/bib-summary/bib-summary.component';
 import {BibStaffViewComponent} from '@eg/staff/share/bib-staff-view/bib-staff-view.component';
+import {AddedContentComponent} from '@eg/staff/catalog/content/added-content.component';
 import {StoreService} from '@eg/core/store.service';
 import {ConfirmDialogComponent} from '@eg/share/dialog/confirm.component';
 import {MarcEditorComponent} from '@eg/staff/share/marc-edit/editor.component';
 import {HoldingsMaintenanceComponent} from './holdings.component';
 import {HoldingsService} from '@eg/staff/share/holdings/holdings.service';
+import { ServerStoreService } from '@eg/core/server-store.service';
 
 @Component({
   selector: 'eg-catalog-record',
-  templateUrl: 'record.component.html'
+  templateUrl: 'record.component.html',
+  styleUrls: ['./record.component.css']
 })
 export class RecordComponent implements OnInit {
 
     recordId: number;
     recordTab: string;
+    added_content_activated: boolean = false;
+    added_content_sources: string[] = [];
     summary: BibRecordSummary;
     searchContext: CatalogSearchContext;
     @ViewChild('recordTabs', { static: true }) recordTabs: NgbNav;
     @ViewChild('marcEditor', {static: false}) marcEditor: MarcEditorComponent;
+    @ViewChild('addedContent', { static: true }) addedContent: AddedContentComponent;
 
     @ViewChild('holdingsMaint', {static: false})
         holdingsMaint: HoldingsMaintenanceComponent;
@@ -46,7 +52,8 @@ export class RecordComponent implements OnInit {
         private cat: CatalogService,
         private staffCat: StaffCatalogService,
         private holdings: HoldingsService,
-        private store: StoreService
+        private store: StoreService,
+        private serverStore: ServerStoreService,
     ) {}
 
     ngOnInit() {
@@ -55,7 +62,7 @@ export class RecordComponent implements OnInit {
         this.defaultTab =
             this.store.getLocalItem('eg.cat.default_record_tab')
             || 'item_table';
-
+        
         // Watch for URL record ID changes
         // This includes the initial route.
         // When applying the default configured tab, no navigation occurs
@@ -148,6 +155,7 @@ export class RecordComponent implements OnInit {
         if (this.staffCat.currentDetailRecordSummary &&
             this.recordId === this.staffCat.currentDetailRecordSummary.id) {
             this.summary = this.staffCat.currentDetailRecordSummary;
+            this.activateAddedContent();
             return;
         }
 
@@ -159,6 +167,7 @@ export class RecordComponent implements OnInit {
         .then(summary => {
             this.summary =
                 this.staffCat.currentDetailRecordSummary = summary;
+            this.activateAddedContent();
         });
     }
 
@@ -208,6 +217,25 @@ export class RecordComponent implements OnInit {
             this.holdings.spawnAddHoldingsUi(
                 this.recordId, null, [{owner: this.auth.user().ws_ou()}]);
         }
+    }
+
+    // This just sets the record component-level flag. choices about /if/ to
+    // gather AC should go in here and set this.added_content_activated as needed.
+    activateAddedContent(): void {
+        // NovelistSelect settings
+        this.serverStore.getItemBatch([
+            'staff.added_content.novelistselect.profile',
+            'staff.added_content.novelistselect.passwd'
+        ]).then(settings => {
+            const activate = !!(Object.values(settings).filter(v => !!v).length == 2);
+            this.added_content_activated ||= activate;
+
+            if (activate) {
+                if (!this.added_content_sources.includes('novelist')) {
+                    this.added_content_sources.push('novelist');
+                }
+            }
+        });
     }
 }
 

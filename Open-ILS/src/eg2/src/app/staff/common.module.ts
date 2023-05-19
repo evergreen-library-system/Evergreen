@@ -13,6 +13,7 @@ import {TitleComponent} from '@eg/share/title/title.component';
 import {BucketDialogComponent} from '@eg/staff/share/buckets/bucket-dialog.component';
 import {BibSummaryComponent} from '@eg/staff/share/bib-summary/bib-summary.component';
 import {BibStaffViewComponent} from '@eg/staff/share/bib-staff-view/bib-staff-view.component';
+import {AddedContentComponent} from '@eg/staff/catalog/content/added-content.component';
 import {EgHelpPopoverComponent} from '@eg/share/eg-help-popover/eg-help-popover.component';
 import {DatetimeValidatorDirective} from '@eg/share/validators/datetime_validator.directive';
 import {MultiSelectComponent} from '@eg/share/multi-select/multi-select.component';
@@ -25,6 +26,7 @@ import {CourseService} from './share/course.service';
 import {FileExportService} from '@eg/share/util/file-export.service';
 import {OfflineService} from '@eg/staff/share/offline.service';
 import {ItemLocationSelectModule} from '@eg/share/item-location-select/item-location-select.module';
+import { ScriptService } from "@eg/share/util/script.service";
 
 /**
  * Imports the EG common modules and adds modules common to all staff UI's.
@@ -47,6 +49,7 @@ import {ItemLocationSelectModule} from '@eg/share/item-location-select/item-loca
     NotBeforeMomentValidatorDirective,
     DatesInOrderValidatorDirective,
     PatronBarcodeValidatorDirective,
+    AddedContentComponent,
   ],
   imports: [
     EgCommonModule,
@@ -74,7 +77,8 @@ import {ItemLocationSelectModule} from '@eg/share/item-location-select/item-loca
     TextMultiSelectComponent,
     NotBeforeMomentValidatorDirective,
     DatesInOrderValidatorDirective,
-    PatronBarcodeValidatorDirective
+    PatronBarcodeValidatorDirective,
+    AddedContentComponent,
   ]
 })
 
@@ -88,7 +92,8 @@ export class StaffCommonModule {
                 BroadcastService,
                 CourseService,
                 FileExportService,
-                OfflineService
+                OfflineService,
+                ScriptService
             ]
         };
     }

@@ -40,7 +40,7 @@
             (click)="setDefaultTab()" i18n>Set Default View</button>
       </div>
     </div>
-    <ul ngbNav #recordTabs="ngbNav" [(activeId)]="recordTab"
+    <ul ngbNav #recordTabs="ngbNav" [(activeId)]="recordTab" [destroyOnHide]="false"
       (navChange)="beforeNavChange($event)" [keyboard]="true" [roles]="false" role="tablist" class="nav-tabs">
       <li role="presentation" [ngbNavItem]="'staff_view'">
         <a i18n ngbNavLink role="tab">Staff View</a>
@@ -49,14 +49,38 @@
           </eg-bib-staff-view>
         </ng-template>
       </li>
-      <li role="presentation" [ngbNavItem]="'item_table'">
+
+      <!-- ADDED CONTENT -->
+      <!-- This tab must not be destroyed on hide. It calls external
+              scripts that determine whether added content is available -->
+      <li role="presentation" [destroyOnHide]="false" [ngbNavItem]="'added-content'" [hidden]="!added_content_activated">
+        <a ngbNavLink role="tab">
+          <span id="added-content-data" style="display: none;">
+            <span i18n>Added Content</span>
+            <span class="material-icons added-content text-warning" aria-hidden="true">star</span>
+          </span>
+      
+          <span id="added-content-no-data" style="display: inline;">
+            <span i18n>No Added Content</span>
+            <span class="material-icons added-content text-muted" aria-hidden="true">star_outline</span>
+          </span>
+        </a>
+        <ng-template ngbNavContent>
+          <div class="mt-2" *ngIf="summary">
+            <eg-catalog-added-content [bibSummary]="summary">
+            </eg-catalog-added-content>
+          </div>
+        </ng-template>
+      </li>
+
+      <li role="presentation" [ngbNavItem]="'item_table'" [destroyOnHide]="true">
         <a i18n ngbNavLink role="tab">Item Table</a>
         <ng-template ngbNavContent>
           <eg-catalog-copies [recordId]="recordId"></eg-catalog-copies>
         </ng-template>
       </li>
       <!-- NOTE some tabs send the user over to the AngJS app -->
-      <li role="presentation" [ngbNavItem]="'marc_edit'">
+      <li role="presentation" [ngbNavItem]="'marc_edit'" [destroyOnHide]="true">
         <a i18n ngbNavLink role="tab">MARC Edit</a>
         <ng-template ngbNavContent>
           <div class="mt-3">
@@ -65,20 +89,20 @@
           </div>
         </ng-template>
       </li>
-      <li role="presentation" [ngbNavItem]="'marc_html'">
+      <li role="presentation" [ngbNavItem]="'marc_html'" [destroyOnHide]="true">
         <a i18n ngbNavLink role="tab">MARC View</a>
         <ng-template ngbNavContent>
           <eg-marc-html [recordId]="recordId" recordType="bib"></eg-marc-html>
         </ng-template>
       </li>
-      <li role="presentation" [ngbNavItem]="'bibnotes'">
+      <li role="presentation" [ngbNavItem]="'bibnotes'" [destroyOnHide]="true">
         <a i18n ngbNavLink role="tab">Record Notes</a>
         <ng-template ngbNavContent>
           <eg-catalog-record-notes [recordId]="recordId">
           </eg-catalog-record-notes>
         </ng-template>
       </li>
-      <li role="presentation" [ngbNavItem]="'holds'">
+      <li role="presentation" [ngbNavItem]="'holds'" [destroyOnHide]="true">
         <a i18n ngbNavLink role="tab">View Holds</a>
         <ng-template ngbNavContent>
           <eg-holds-grid [recordId]="recordId"
@@ -89,28 +113,28 @@
             [initialPickupLib]="currentSearchOrg()"></eg-holds-grid>
         </ng-template>
       </li>
-      <li role="presentation" [ngbNavItem]="'monoparts'">
+      <li role="presentation" [ngbNavItem]="'monoparts'" [destroyOnHide]="true">
         <a i18n ngbNavLink role="tab">Monograph Parts</a>
         <ng-template ngbNavContent>
           <eg-catalog-record-parts [recordId]="recordId">
           </eg-catalog-record-parts>
         </ng-template>
       </li>
-      <li role="presentation" [ngbNavItem]="'holdings'">
+      <li role="presentation" [ngbNavItem]="'holdings'" [destroyOnHide]="true">
         <a i18n ngbNavLink role="tab">Holdings View</a>
         <ng-template ngbNavContent>
           <eg-holdings-maintenance #holdingsMaint [recordId]="recordId">
           </eg-holdings-maintenance>
         </ng-template>
       </li>
-      <li role="presentation" [ngbNavItem]="'conjoined'">
+      <li role="presentation" [ngbNavItem]="'conjoined'" [destroyOnHide]="true">
         <a i18n ngbNavLink role="tab">Conjoined Items</a>
         <ng-template ngbNavContent>
           <eg-catalog-record-conjoined [recordId]="recordId">
           </eg-catalog-record-conjoined>
         </ng-template>
       </li>
-      <li role="presentation" [ngbNavItem]="'cnbrowse'">
+      <li role="presentation" [ngbNavItem]="'cnbrowse'" [destroyOnHide]="true">
         <a i18n ngbNavLink role="tab">Shelf Browse</a>
         <ng-template ngbNavContent>
           <ng-container *ngIf="summary">

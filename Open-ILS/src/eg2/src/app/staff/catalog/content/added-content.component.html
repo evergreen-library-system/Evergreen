@@ -1,0 +1,16 @@
+<!-- If adding more content sources in the future, this div could instead be an ngbNav tab set under the Added Content tab -->
+<!-- Note that loading and data messages' visibility is determined in the NoveList loading script:
+      Open-ILS/src/templates/staff/ngNSelect_js.tt2 -->
+<div *ngIf="added_content_sources.includes('novelist')" class="row eg-bib-added-content">
+  <h2 i18n>NoveList</h2>
+  <div *ngIf="isbn" id="novelist-loading" aria-live="polite" [attr.aria-atomic]="'true'">
+    <p i18n id="novelist-loading-msg">Loading NoveList...</p>
+    <!-- #novelist-data-msg should be heard via ARIA but never seen -->
+    <p i18n id="novelist-data-msg" style="display: none;" class="visually-hidden">NoveList recommendations loaded.</p>
+    <p i18n id="novelist-no-data-msg" style="display: none;">No NoveList recommendations available.</p>
+  </div>
+  <p i18n *ngIf="!isbn">Could not load NoveList recommendations; this record has no ISBNs.</p>
+  <div [attr.data-novelist-novelistselect]="isbn" *ngIf="isbn">
+    <!-- NoveList will add its data to the element with the data-novelist-novelistselect attribute -->
+  </div>
+</div>
