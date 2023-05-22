@@ -557,13 +557,75 @@ We would also like to thank the following individuals who contributed
 code, translations, documentations patches and tests to this release of
 Evergreen:
 
-TODO
-
+* John Amundson
+* Scott Angel
+* Jason Boyer
+* Dan Briem
+* Andrea Buntz Neiman
+* Eva Cerninakova
+* Galen Charlton
+* Garry Collum
+* Elizabeth Davis
+* Jeff Davis
+* Britta Dorsey
+* Bill Erickson
+* Jason Etheridge
+* Ruth Frasur
+* Jeff Godin
+* Blake Graham-Henderson
+* Rogan Hamby
+* Elaine Hardy
+* Stephanie Leary
+* Clayton Liddell
+* Shula Link
+* Tiffany Little
+* Mary Llewellyn
+* Debbie Luchenbill
+* Llewellyn Marshall
+* Terran McCanna
+* Chrystal Messam
+* Gina Monti
+* Christine Morgan
+* Michele Morgan
+* Susan Morrison
+* Susasn Morrison
+* Dan Pearl
+* Jennifer Pringle
+* Mike Risher
+* Mike Rylander
+* Jane Sandberg
+* Chris Sharp
+* Ben Shum
+* Jason Stephenson
+* Josh Stompro
+* Elizabeth Thomsen
+* Jennifer Weston
+* Beth Willis
+* Carol Witt
+* Adam Woolford
+* Jessica Woolford
 
 We also thank the following organizations whose employees contributed
 patches:
 
-TODO
+* BC Libraries Coop
+* Bibliomation
+* Catalyte
+* CW MARS
+* Equinox Open Library Initiative
+* Evergreen Indiana
+* Georgia Public Library Service
+* Kenton County Library
+* King County Library System
+* Lake Agassiz Regional Library
+* LibraryMarket
+* Linn Benton Community College
+* MOBIUS
+* NC Cardinal
+* NOBLE
+* Princeton University
+* Sigio
+* Westchester Library System
 
 We regret any omissions.  If a contributor has been inadvertently
 missed, please open a bug at http://bugs.launchpad.net/evergreen/
