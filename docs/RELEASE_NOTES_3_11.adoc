@@ -551,7 +551,12 @@ The Evergreen project would like to acknowledge the following
 organizations that commissioned developments in this release of
 Evergreen:
 
-TODO
+* CW MARS
+* Evergreen Community Development Initiative
+* Evergreen Indiana
+* King County Library System
+* Pennsylvania Integrated Library System
+* Westchester Library System
 
 We would also like to thank the following individuals who contributed
 code, translations, documentations patches and tests to this release of
