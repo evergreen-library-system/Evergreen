@@ -7,15 +7,15 @@ msgid ""
 msgstr ""
 "Project-Id-Version: evergreen\n"
 "Report-Msgid-Bugs-To: FULL NAME <EMAIL@ADDRESS>\n"
-"POT-Creation-Date: 2023-05-04 09:23-0400\n"
+"POT-Creation-Date: 2023-05-17 16:58-0400\n"
 "PO-Revision-Date: 2023-05-05 21:40+0000\n"
 "Last-Translator: Cédric VALMARY (Tot en òc) <cvalmary@yahoo.fr>\n"
 "Language-Team: Occitan (post 1500) <oc@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2023-05-06 04:59+0000\n"
-"X-Generator: Launchpad (build 90e2150bef31b411d7bae5c4032c7e320fcaaec8)\n"
+"X-Launchpad-Export-Date: 2023-05-19 04:49+0000\n"
+"X-Generator: Launchpad (build 333bbdc825b25f14e50a980a2dbe4dc39f3d34d9)\n"
 
 #: 950.data.seed-values.sql:2
 msgid "oclc"
@@ -15788,147 +15788,153 @@ msgstr ""
 msgid "Limit the number of global concurrent matching search queries"
 msgstr ""
 
-#: 950.data.seed-values.sql:23291
+#: 950.data.seed-values.sql:23288
 msgid "Limit the number of global concurrent searches per client IP address"
 msgstr ""
 
-#: 950.data.seed-values.sql:23300
+#: 950.data.seed-values.sql:23297
+msgid ""
+"Restrict post-login redirection to local URLs, or those that match the "
+"supplied comma-separated list of foreign domains or host names."
+msgstr ""
+
+#: 950.data.seed-values.sql:23306
 msgid ""
 "Queued Ingest: Maximum number of database workers allowed for queued ingest "
 "processes"
 msgstr ""
 
-#: 950.data.seed-values.sql:23307
+#: 950.data.seed-values.sql:23313
 msgid ""
 "Queued Ingest: Abort transaction on ingest error rather than simply logging "
 "an error"
 msgstr ""
 
-#: 950.data.seed-values.sql:23314
+#: 950.data.seed-values.sql:23320
 msgid ""
 "Queued Ingest: Queue all bib record updates on authority change propagation, "
 "even if bib queuing is not generally enabled"
 msgstr ""
 
-#: 950.data.seed-values.sql:23321
+#: 950.data.seed-values.sql:23327
 msgid ""
 "Queued Ingest: Use Queued Ingest for all bib and authority record ingest"
 msgstr ""
 
-#: 950.data.seed-values.sql:23328
+#: 950.data.seed-values.sql:23334
 msgid "Queued Ingest: Use Queued Ingest for all bib record ingest"
 msgstr ""
 
-#: 950.data.seed-values.sql:23335
+#: 950.data.seed-values.sql:23341
 msgid "Queued Ingest: Use Queued Ingest for all authority record ingest"
 msgstr ""
 
-#: 950.data.seed-values.sql:23342
+#: 950.data.seed-values.sql:23348
 msgid ""
 "Queued Ingest: Do NOT use Queued Ingest when creating a new bib, or "
 "undeleting a bib, via the MARC editor"
 msgstr ""
 
-#: 950.data.seed-values.sql:23349
+#: 950.data.seed-values.sql:23355
 msgid ""
 "Queued Ingest: Use Queued Ingest for bib record ingest on insert and undelete"
 msgstr ""
 
-#: 950.data.seed-values.sql:23356
+#: 950.data.seed-values.sql:23362
 msgid ""
 "Queued Ingest: Use Queued Ingest for authority record ingest on insert and "
 "undelete"
 msgstr ""
 
-#: 950.data.seed-values.sql:23363
+#: 950.data.seed-values.sql:23369
 msgid ""
 "Queued Ingest: Do NOT Use Queued Ingest when editing bib records via the "
 "MARC Editor"
 msgstr ""
 
-#: 950.data.seed-values.sql:23370
+#: 950.data.seed-values.sql:23376
 msgid "Queued Ingest: Use Queued Ingest for bib record ingest on update"
 msgstr ""
 
-#: 950.data.seed-values.sql:23377
+#: 950.data.seed-values.sql:23383
 msgid ""
 "Queued Ingest: Use Queued Ingest for authority record ingest on update"
 msgstr ""
 
-#: 950.data.seed-values.sql:23384
+#: 950.data.seed-values.sql:23390
 msgid "Queued Ingest: Use Queued Ingest for bib record ingest on delete"
 msgstr ""
 
-#: 950.data.seed-values.sql:23391
+#: 950.data.seed-values.sql:23397
 msgid ""
 "Queued Ingest: Use Queued Ingest for authority record ingest on delete"
 msgstr ""
 
-#: 950.data.seed-values.sql:23403
+#: 950.data.seed-values.sql:23409
 msgid "Custom PATRON_EXCEEDS_FINES penalty"
 msgstr ""
 
-#: 950.data.seed-values.sql:23407
+#: 950.data.seed-values.sql:23413
 msgid ""
 "Specifies a non-default standing penalty to apply to patrons that exceed the "
 "max-fine threshold for their group."
 msgstr ""
 
-#: 950.data.seed-values.sql:23412
+#: 950.data.seed-values.sql:23418
 msgid "Custom PATRON_EXCEEDS_OVERDUE_COUNT penalty"
 msgstr ""
 
-#: 950.data.seed-values.sql:23416
+#: 950.data.seed-values.sql:23422
 msgid ""
 "Specifies a non-default standing penalty to apply to patrons that exceed the "
 "overdue count threshold for their group."
 msgstr ""
 
-#: 950.data.seed-values.sql:23421
+#: 950.data.seed-values.sql:23427
 msgid "Custom PATRON_EXCEEDS_CHECKOUT_COUNT penalty"
 msgstr ""
 
-#: 950.data.seed-values.sql:23425
+#: 950.data.seed-values.sql:23431
 msgid ""
 "Specifies a non-default standing penalty to apply to patrons that exceed the "
 "checkout count threshold for their group."
 msgstr ""
 
-#: 950.data.seed-values.sql:23430
+#: 950.data.seed-values.sql:23436
 msgid "Custom PATRON_EXCEEDS_COLLECTIONS_WARNING penalty"
 msgstr ""
 
-#: 950.data.seed-values.sql:23434
+#: 950.data.seed-values.sql:23440
 msgid ""
 "Specifies a non-default standing penalty to apply to patrons that exceed the "
 "collections fine warning threshold for their group."
 msgstr ""
 
-#: 950.data.seed-values.sql:23439
+#: 950.data.seed-values.sql:23445
 msgid "Custom PATRON_EXCEEDS_LOST_COUNT penalty"
 msgstr ""
 
-#: 950.data.seed-values.sql:23443
+#: 950.data.seed-values.sql:23449
 msgid ""
 "Specifies a non-default standing penalty to apply to patrons that exceed the "
 "lost item count threshold for their group."
 msgstr ""
 
-#: 950.data.seed-values.sql:23448
+#: 950.data.seed-values.sql:23454
 msgid "Custom PATRON_EXCEEDS_LONGOVERDUE_COUNT penalty"
 msgstr ""
 
-#: 950.data.seed-values.sql:23452
+#: 950.data.seed-values.sql:23458
 msgid ""
 "Specifies a non-default standing penalty to apply to patrons that exceed the "
 "long-overdue item count threshold for their group."
 msgstr ""
 
-#: 950.data.seed-values.sql:23457
+#: 950.data.seed-values.sql:23463
 msgid "Custom PATRON_IN_COLLECTIONS penalty"
 msgstr ""
 
-#: 950.data.seed-values.sql:23461
+#: 950.data.seed-values.sql:23467
 msgid ""
 "Specifies a non-default standing penalty that may have been applied to "
 "patrons that have been placed into collections and that should be "

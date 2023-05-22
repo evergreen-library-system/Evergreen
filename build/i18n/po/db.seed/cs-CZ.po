@@ -2,17 +2,17 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Evergreen 1.4\n"
 "Report-Msgid-Bugs-To: open-ils-dev@list.georgialibraries.org\n"
-"POT-Creation-Date: 2023-05-04 09:23-0400\n"
+"POT-Creation-Date: 2023-05-17 16:58-0400\n"
 "PO-Revision-Date: 2023-05-05 21:40+0000\n"
 "Last-Translator: Eva Cerninakova <Unknown>\n"
 "Language-Team: UISK <LL@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2023-05-06 04:57+0000\n"
-"X-Generator: Launchpad (build 90e2150bef31b411d7bae5c4032c7e320fcaaec8)\n"
-"X-Poedit-Language: Czech\n"
+"X-Launchpad-Export-Date: 2023-05-19 04:47+0000\n"
+"X-Generator: Launchpad (build 333bbdc825b25f14e50a980a2dbe4dc39f3d34d9)\n"
 "X-Poedit-Country: CZECH REPUBLIC\n"
+"X-Poedit-Language: Czech\n"
 "X-Poedit-SourceCharset: utf-8\n"
 
 # id::cbs.source__1
@@ -3529,7 +3529,7 @@ msgstr "Upravit nastavení SSO pro čtenáře"
 
 #: 950.data.seed-values.sql:1950
 msgid "Manage batch (subscription) hold events"
-msgstr ""
+msgstr "Spravovat událost dávkových (odebíraných) rezervací"
 
 #: 950.data.seed-values.sql:1952
 msgid "Administer library groups"
@@ -3549,7 +3549,7 @@ msgstr "Upravte pole pro url fotografie v editoru a registraci čtenáře"
 
 #: 950.data.seed-values.sql:1960
 msgid "Allow the user to create a record note"
-msgstr ""
+msgstr "Povolit uživateli vytvořit poznámku k záznamu"
 
 #: 950.data.seed-values.sql:1962
 msgid "Allow the user to update a record note"
@@ -3561,24 +3561,26 @@ msgstr "Povolit uživateli smazat poznámku k záznamu"
 
 #: 950.data.seed-values.sql:1966
 msgid "Update the staff client portal page"
-msgstr ""
+msgstr "Povolit uživatel upravit vstupní stránku služebního klienta"
 
 #: 950.data.seed-values.sql:1968
 msgid "Upload local cover images for added content."
-msgstr ""
+msgstr "Nahrát lokální obrázky obálek pro přidané obsah"
 
 #: 950.data.seed-values.sql:1970
 msgid "Build and run simple reports"
-msgstr ""
+msgstr "Vytvořit a spustit jednoduché sestavy"
 
 #: 950.data.seed-values.sql:1972
 msgid "Allow a user to administer OpenAthens authentication service"
-msgstr ""
+msgstr "Povolit uživatel správu autentizační služby OpenAthens"
 
 #: 950.data.seed-values.sql:1974
 msgid ""
 "Allow a user to access the experimental Angular circulation interfaces"
 msgstr ""
+"Povolit uživatel přístup do experimentálního angularizovaného rozhraní pro "
+"výpůjčky"
 
 #: 950.data.seed-values.sql:1976
 msgid "Allow the user to perform fund propagation and rollover"
@@ -3586,11 +3588,11 @@ msgstr ""
 
 #: 950.data.seed-values.sql:1978
 msgid "Update the barcode for an item."
-msgstr ""
+msgstr "Změnit čárový kód jednotky"
 
 #: 950.data.seed-values.sql:1980
 msgid "View hold pull list"
-msgstr ""
+msgstr "Zobrazit seznam rezervací k vyzvednutí"
 
 # id::pgt.name__1
 #: 950.data.seed-values.sql:1987
@@ -3706,15 +3708,15 @@ msgstr "čtenář via SIP"
 
 #: 950.data.seed-values.sql:2945
 msgid "Hold Group Event rollback"
-msgstr ""
+msgstr "Vrácení událostí rezervační skupiny"
 
 #: 950.data.seed-values.sql:2946
 msgid "Patron via email"
-msgstr ""
+msgstr "Čtenář prostřednictvím e-mailu"
 
 #: 950.data.seed-values.sql:2947
 msgid "Patron via SMS"
-msgstr ""
+msgstr "Čtenář prostřednictvím SMS"
 
 #: 950.data.seed-values.sql:2976 950.data.seed-values.sql:2977
 msgid "OPAC Font Size"
@@ -3897,6 +3899,8 @@ msgstr "DVD"
 #: 950.data.seed-values.sql:3165
 msgid "How to set default owning library for auto-created line item items"
 msgstr ""
+"Jak nastavit  výchozí vlastnickou knihovny pro automaticky vytvořené "
+"jednotky u položek"
 
 #: 950.data.seed-values.sql:3168
 msgid ""
@@ -3911,6 +3915,7 @@ msgstr ""
 #: 950.data.seed-values.sql:3173
 msgid "Default owning library for auto-created line item items"
 msgstr ""
+"Výchozí vlastnická knihovna pro automatiky vytvořené jednotky u položek"
 
 #: 950.data.seed-values.sql:3176
 msgid ""
@@ -4046,7 +4051,7 @@ msgstr "Výchozí klasifikační schéma"
 
 #: 950.data.seed-values.sql:3317
 msgid "Defines the default classification scheme for new call numbers."
-msgstr ""
+msgstr "Definuje výchozí klasifikační schéma pro nové signatury"
 
 #: 950.data.seed-values.sql:3323
 msgid "Default copy status (fast add)"
@@ -4077,11 +4082,11 @@ msgstr "Přednastavená cena exemplářů"
 
 #: 950.data.seed-values.sql:3350
 msgid "Require call number labels in Copy Editor"
-msgstr ""
+msgstr "Požadovat označení signaturyv editoru jednotek"
 
 #: 950.data.seed-values.sql:3353
 msgid "Define whether Copy Editor requires Call Number labels"
-msgstr ""
+msgstr "Definovat, jestli editor jednotek požaduje označení signatur"
 
 #: 950.data.seed-values.sql:3359
 msgid "Minimum Item Price"
@@ -5309,13 +5314,15 @@ msgstr "Zrušit poplatek za ztracený exemplář pokud je exemplář vrácen"
 
 #: 950.data.seed-values.sql:4297
 msgid "Void item deposit fee on checkin"
-msgstr ""
+msgstr "Při vrácení zrušit poplatek za vklad"
 
 #: 950.data.seed-values.sql:4300
 msgid ""
 "If a deposit was charged when checking out an item, void it when the item is "
 "returned"
 msgstr ""
+"Jestliže byl  při výpůjčce naúčtován poplatek za vklad, zrušit tento "
+"poplatek, když je jednotka vrácena"
 
 #: 950.data.seed-values.sql:4306
 msgid "Void processing fee on lost item return"
@@ -5375,6 +5382,8 @@ msgid ""
 "This might be \"AuthorizeNet\", \"PayPal\", \"PayflowPro\", \"SmartPAY\", or "
 "\"Stripe\"."
 msgstr ""
+"Může to být \"AuthorizeNet\", \"PayPal\", \"PayflowPro\", \"SmartPAY\" nebo "
+"\"Stripe\"."
 
 #: 950.data.seed-values.sql:4387
 msgid "Enable PayflowPro payments"
@@ -5447,35 +5456,35 @@ msgstr "Mód testu PayPal"
 
 #: 950.data.seed-values.sql:4486 950.data.seed-values.sql:4489
 msgid "Enable SmartPAY payments"
-msgstr ""
+msgstr "Povolit platby SmartPAY"
 
 #: 950.data.seed-values.sql:4495 950.data.seed-values.sql:4498
 msgid "SmartPAY location ID"
-msgstr ""
+msgstr "ID lokace SmartPAY"
 
 #: 950.data.seed-values.sql:4504 950.data.seed-values.sql:4507
 msgid "SmartPAY customer ID"
-msgstr ""
+msgstr "ID zákazníka SmartPAY"
 
 #: 950.data.seed-values.sql:4513 950.data.seed-values.sql:4516
 msgid "SmartPAY login name"
-msgstr ""
+msgstr "Přihlašovací jméno pro SmartPAY"
 
 #: 950.data.seed-values.sql:4522 950.data.seed-values.sql:4525
 msgid "SmartPAY password"
-msgstr ""
+msgstr "Heslo pro SmartPAY"
 
 #: 950.data.seed-values.sql:4531 950.data.seed-values.sql:4534
 msgid "SmartPAY API key"
-msgstr ""
+msgstr "Klíč pro SmartPAY"
 
 #: 950.data.seed-values.sql:4540 950.data.seed-values.sql:4543
 msgid "SmartPAY server name"
-msgstr ""
+msgstr "Název SmartPAY serveru"
 
 #: 950.data.seed-values.sql:4549 950.data.seed-values.sql:4552
 msgid "SmartPAY server port"
-msgstr ""
+msgstr "Port serveru SmartPAY"
 
 #: 950.data.seed-values.sql:4558 950.data.seed-values.sql:4561
 msgid "Enable Stripe payments"
@@ -5693,17 +5702,17 @@ msgid ""
 "depth of 0 will effectively make every org visible.  The embedded OPAC in "
 "the staff client ignores this setting."
 msgstr ""
-"Tím to budou skryty některé organizační jednotky v OPACu pokud fyzická "
-"lokace (parametr url \"physical_loc) pro OPAC zdědí toto nastavení. Toto "
-"nastavení specifikuje hloubku, která spolu s fyzickou lokací OPACu určuje, "
-"které části organizační hierarchie mají být viditelné v OPACu. Například "
-"instalace Evergreenu bude mít  třístupňovou hierarchii "
-"(Konsocium/Systém/Knihovna), kde systém má hloubku 1 a knihovna má hloubku "
-"2. Pokud  zde  v takovéto instalaci bude nastavení  obsahovat hloubku 1, pak "
-"každá knihovna v systému, ke které daná fyzická lokace patří, bude "
-"viditelná, a všechno ostatní bude skryto. Hloubka 0 způsobí, že každá "
-"organizační jednotka bude viditelná. OPAC ve služebním klientovi je  toto "
-"nastavení ignororváno."
+"This will hide certain org units in the public OPAC if the Physical Location "
+"(url param \"physical_loc\") for the OPAC inherits this setting.  This "
+"setting specifies an org unit depth, that together with the OPAC Physical "
+"Location determines which section of the Org Hierarchy should be visible in "
+"the OPAC.  For example, a stock Evergreen installation will have a 3-tier "
+"hierarchy (Consortium/System/Branch), where System has a depth of 1 and "
+"Branch has a depth of 2.  If this setting contains a depth of 1 in such an "
+"installation, then every library in the System in which the Physical "
+"Location belongs will be visible, and everything else will be hidden.  A "
+"depth of 0 will effectively make every org visible.  The embedded OPAC in "
+"the staff client ignores this setting."
 
 #: 950.data.seed-values.sql:4733 950.data.seed-values.sql:4736
 msgid "Custom CSS for the OPAC"
@@ -5755,7 +5764,7 @@ msgstr "E-mailová adresa pro zasílání upozornění čtenáři"
 
 #: 950.data.seed-values.sql:4778 950.data.seed-values.sql:4781
 msgid "Custom jQuery for the OPAC"
-msgstr ""
+msgstr "Vlastní jQuery pro OPAC"
 
 #: 950.data.seed-values.sql:4787
 msgid "Patron Opt-In Boundary"
@@ -12978,11 +12987,11 @@ msgstr "Iluminace"
 
 #: 950.data.seed-values.sql:9462
 msgid "National bibliographic agency"
-msgstr ""
+msgstr "Národní bibliografická agentura"
 
 #: 950.data.seed-values.sql:9463
 msgid "Cooperative cataloging program"
-msgstr ""
+msgstr "Kooperativní katalogizační program"
 
 #: 950.data.seed-values.sql:9967
 msgid "Creates a hold_notification record for each notified hold"
@@ -15004,12 +15013,13 @@ msgstr ""
 
 #: 950.data.seed-values.sql:17352
 msgid "Permit renewals when patron exceeds max fine threshold"
-msgstr ""
+msgstr "Povolit prodloužení pokud čtenář překročil maximální práh pro pokuty"
 
 #: 950.data.seed-values.sql:17359
 msgid ""
 "Permit renewals even when the patron exceeds the maximum fine threshold"
 msgstr ""
+"Povolit prodloužení přestože čtenář překročil maximální práh pro pokuty"
 
 #: 950.data.seed-values.sql:17375 950.data.seed-values.sql:17378
 msgid "Void lost item billing when claims returned"
@@ -16185,18 +16195,23 @@ msgstr ""
 #: 950.data.seed-values.sql:20114
 msgid "Default org unit for stat cat and stat cat entry editors"
 msgstr ""
+"Výchozí organizační jednotka pro editor statistických kategorií a hodnot"
 
 #: 950.data.seed-values.sql:20121
 msgid ""
 "Default org unit for the main org select in the item stat cat and stat cat "
 "entry admin interfaces."
 msgstr ""
+"Výchozí organizační jednotka pro výběr hlavní organizační jednotky v "
+"rozhraní pro správu statistických kategorií a hodnot."
 
 #: 950.data.seed-values.sql:20128
 msgid ""
 "Default org unit for the main org select in the patron stat cat and stat cat "
 "entry admin interfaces."
 msgstr ""
+"Výchozí organizační jednotka pro výběr hlavní organizační jednotky v "
+"rozhraní pro statistické kategorie čtenářů a v administrativním rozhraní"
 
 #: 950.data.seed-values.sql:20140
 msgid "Staff Catalog Default Search Library"
@@ -16541,7 +16556,7 @@ msgstr ""
 
 #: 950.data.seed-values.sql:20762
 msgid "Shibboleth SSO matchpoint"
-msgstr ""
+msgstr "Shoda SSO Shibolethu"
 
 #: 950.data.seed-values.sql:20763
 msgid ""
@@ -16645,15 +16660,15 @@ msgstr "Průvod zachycení rezervovaného zdroje"
 
 #: 950.data.seed-values.sql:21062
 msgid "Grid Config: Booking Manage Reservations"
-msgstr ""
+msgstr "Nastavení sloupců: Spravovat rezervace v Rezervacích zdrojů"
 
 #: 950.data.seed-values.sql:21068
 msgid "Grid Config: Booking Ready to pick up grid"
-msgstr ""
+msgstr "Nastavení sloupců: Tabulka Rezervace zdrojů připravené k vyzvednutí"
 
 #: 950.data.seed-values.sql:21074
 msgid "Grid Config: Booking Already Picked Up grid"
-msgstr ""
+msgstr "Nastavení sloupců: Tabulka Vyzvednuté rezervace zdrojů"
 
 #: 950.data.seed-values.sql:21080
 msgid "Grid Config: Booking Return Patron tab Already Picked Up grid"
@@ -16673,11 +16688,11 @@ msgstr ""
 
 #: 950.data.seed-values.sql:21104
 msgid "Grid Config: Booking Captured Reservations"
-msgstr ""
+msgstr "Nastavení sloupců: Rezervované zdrojů - Zachycené rezervace"
 
 #: 950.data.seed-values.sql:21110
 msgid "Grid Config: Booking Pull List"
-msgstr ""
+msgstr "Nastavení sloupců: Rezervované zdrojů - Rezervace k zachycení"
 
 #: 950.data.seed-values.sql:21116
 msgid "Sticky setting for pickup ou family in Manage Reservations screen"
@@ -16965,7 +16980,7 @@ msgstr ""
 
 #: 950.data.seed-values.sql:21562
 msgid "Geographic Location Service to use for Addresses"
-msgstr ""
+msgstr "Geolokační služba, která se má použít pro adresy"
 
 #: 950.data.seed-values.sql:21566
 msgid ""
@@ -16981,26 +16996,35 @@ msgid ""
 "scale of 0 (no compression) to 9 (maximum compression), or -1 for the zlib "
 "default."
 msgstr ""
+"Obrázky obálek jsou předeny do souborů typu PNG s touto kompresí, na škále "
+"od  0 (bez komprese) do 9 (maximální komprese), nebo -1 pro výchozí hodnoty "
+"zlib."
 
 #: 950.data.seed-values.sql:21601
 msgid ""
 "Maximum file size for uploaded cover image files (at time of upload, prior "
 "to rescaling)."
 msgstr ""
+"Maximální velikost souboru pro nahrané obrázky obálek (v době nahrání, před "
+"přeškálováním)."
 
 #: 950.data.seed-values.sql:21605
 msgid ""
 "The number of bytes to allow for a cover image upload.  If unset, defaults "
 "to 10737418240 (roughly 10GB)."
 msgstr ""
+"Počet bytů povolených pro nahráné obrázky obálek. Pokud není nastaveno, "
+"použije se výchozí hodnota  10737418240 (přibližně  10GB)."
 
 #: 950.data.seed-values.sql:21618
 msgid "Holds: Require Monographic Part When Present for hold check."
 msgstr ""
+"Rezervace: Pro zaškrtnutí rezervací vyžadovat části monografií, pokud jsou "
+"přítomny"
 
 #: 950.data.seed-values.sql:21628
 msgid "Require Monographic Part when Present"
-msgstr ""
+msgstr "Požadovat části monografií, pokud jsou přítomny"
 
 #: 950.data.seed-values.sql:21632
 msgid ""
@@ -17009,6 +17033,10 @@ msgid ""
 "part.  A true value for this setting will require part selection even under "
 "this condition."
 msgstr ""
+"Výběr části monografie při rezervacích je obvykle volitelný, pokud je k "
+"bibliografickému záznamu připojen alespoň jeden exemplář, který nemá žádné "
+"části monografií.  Pokud zde nastavíte hodnotu na Ano,  bude nutné vybrat "
+"část monografie, i když bude platit, že existuje exemplář bez částí."
 
 #: 950.data.seed-values.sql:21872
 msgid "Staff Catalog \"Exclude Electronic Resources\" Option"
@@ -17061,6 +17089,8 @@ msgid ""
 "Use an all lowercase version of a Stripe-supported ISO 4217 currency code.  "
 "Defaults to \"usd\""
 msgstr ""
+"Použít verzi kódu měny malými písmeny podle ISO 4217 podporovanou Stripe. "
+"Výchozí hodnota \"usd\"."
 
 #: 950.data.seed-values.sql:21983
 msgid "Grid Config: eg.grid.acq.fund.fund_debit"
@@ -17334,147 +17364,153 @@ msgstr ""
 msgid "Limit the number of global concurrent matching search queries"
 msgstr ""
 
-#: 950.data.seed-values.sql:23291
+#: 950.data.seed-values.sql:23288
 msgid "Limit the number of global concurrent searches per client IP address"
 msgstr ""
 
-#: 950.data.seed-values.sql:23300
+#: 950.data.seed-values.sql:23297
+msgid ""
+"Restrict post-login redirection to local URLs, or those that match the "
+"supplied comma-separated list of foreign domains or host names."
+msgstr ""
+
+#: 950.data.seed-values.sql:23306
 msgid ""
 "Queued Ingest: Maximum number of database workers allowed for queued ingest "
 "processes"
 msgstr ""
 
-#: 950.data.seed-values.sql:23307
+#: 950.data.seed-values.sql:23313
 msgid ""
 "Queued Ingest: Abort transaction on ingest error rather than simply logging "
 "an error"
 msgstr ""
 
-#: 950.data.seed-values.sql:23314
+#: 950.data.seed-values.sql:23320
 msgid ""
 "Queued Ingest: Queue all bib record updates on authority change propagation, "
 "even if bib queuing is not generally enabled"
 msgstr ""
 
-#: 950.data.seed-values.sql:23321
+#: 950.data.seed-values.sql:23327
 msgid ""
 "Queued Ingest: Use Queued Ingest for all bib and authority record ingest"
 msgstr ""
 
-#: 950.data.seed-values.sql:23328
+#: 950.data.seed-values.sql:23334
 msgid "Queued Ingest: Use Queued Ingest for all bib record ingest"
 msgstr ""
 
-#: 950.data.seed-values.sql:23335
+#: 950.data.seed-values.sql:23341
 msgid "Queued Ingest: Use Queued Ingest for all authority record ingest"
 msgstr ""
 
-#: 950.data.seed-values.sql:23342
+#: 950.data.seed-values.sql:23348
 msgid ""
 "Queued Ingest: Do NOT use Queued Ingest when creating a new bib, or "
 "undeleting a bib, via the MARC editor"
 msgstr ""
 
-#: 950.data.seed-values.sql:23349
+#: 950.data.seed-values.sql:23355
 msgid ""
 "Queued Ingest: Use Queued Ingest for bib record ingest on insert and undelete"
 msgstr ""
 
-#: 950.data.seed-values.sql:23356
+#: 950.data.seed-values.sql:23362
 msgid ""
 "Queued Ingest: Use Queued Ingest for authority record ingest on insert and "
 "undelete"
 msgstr ""
 
-#: 950.data.seed-values.sql:23363
+#: 950.data.seed-values.sql:23369
 msgid ""
 "Queued Ingest: Do NOT Use Queued Ingest when editing bib records via the "
 "MARC Editor"
 msgstr ""
 
-#: 950.data.seed-values.sql:23370
+#: 950.data.seed-values.sql:23376
 msgid "Queued Ingest: Use Queued Ingest for bib record ingest on update"
 msgstr ""
 
-#: 950.data.seed-values.sql:23377
+#: 950.data.seed-values.sql:23383
 msgid ""
 "Queued Ingest: Use Queued Ingest for authority record ingest on update"
 msgstr ""
 
-#: 950.data.seed-values.sql:23384
+#: 950.data.seed-values.sql:23390
 msgid "Queued Ingest: Use Queued Ingest for bib record ingest on delete"
 msgstr ""
 
-#: 950.data.seed-values.sql:23391
+#: 950.data.seed-values.sql:23397
 msgid ""
 "Queued Ingest: Use Queued Ingest for authority record ingest on delete"
 msgstr ""
 
-#: 950.data.seed-values.sql:23403
+#: 950.data.seed-values.sql:23409
 msgid "Custom PATRON_EXCEEDS_FINES penalty"
 msgstr ""
 
-#: 950.data.seed-values.sql:23407
+#: 950.data.seed-values.sql:23413
 msgid ""
 "Specifies a non-default standing penalty to apply to patrons that exceed the "
 "max-fine threshold for their group."
 msgstr ""
 
-#: 950.data.seed-values.sql:23412
+#: 950.data.seed-values.sql:23418
 msgid "Custom PATRON_EXCEEDS_OVERDUE_COUNT penalty"
 msgstr ""
 
-#: 950.data.seed-values.sql:23416
+#: 950.data.seed-values.sql:23422
 msgid ""
 "Specifies a non-default standing penalty to apply to patrons that exceed the "
 "overdue count threshold for their group."
 msgstr ""
 
-#: 950.data.seed-values.sql:23421
+#: 950.data.seed-values.sql:23427
 msgid "Custom PATRON_EXCEEDS_CHECKOUT_COUNT penalty"
 msgstr ""
 
-#: 950.data.seed-values.sql:23425
+#: 950.data.seed-values.sql:23431
 msgid ""
 "Specifies a non-default standing penalty to apply to patrons that exceed the "
 "checkout count threshold for their group."
 msgstr ""
 
-#: 950.data.seed-values.sql:23430
+#: 950.data.seed-values.sql:23436
 msgid "Custom PATRON_EXCEEDS_COLLECTIONS_WARNING penalty"
 msgstr ""
 
-#: 950.data.seed-values.sql:23434
+#: 950.data.seed-values.sql:23440
 msgid ""
 "Specifies a non-default standing penalty to apply to patrons that exceed the "
 "collections fine warning threshold for their group."
 msgstr ""
 
-#: 950.data.seed-values.sql:23439
+#: 950.data.seed-values.sql:23445
 msgid "Custom PATRON_EXCEEDS_LOST_COUNT penalty"
 msgstr ""
 
-#: 950.data.seed-values.sql:23443
+#: 950.data.seed-values.sql:23449
 msgid ""
 "Specifies a non-default standing penalty to apply to patrons that exceed the "
 "lost item count threshold for their group."
 msgstr ""
 
-#: 950.data.seed-values.sql:23448
+#: 950.data.seed-values.sql:23454
 msgid "Custom PATRON_EXCEEDS_LONGOVERDUE_COUNT penalty"
 msgstr ""
 
-#: 950.data.seed-values.sql:23452
+#: 950.data.seed-values.sql:23458
 msgid ""
 "Specifies a non-default standing penalty to apply to patrons that exceed the "
 "long-overdue item count threshold for their group."
 msgstr ""
 
-#: 950.data.seed-values.sql:23457
+#: 950.data.seed-values.sql:23463
 msgid "Custom PATRON_IN_COLLECTIONS penalty"
 msgstr ""
 
-#: 950.data.seed-values.sql:23461
+#: 950.data.seed-values.sql:23467
 msgid ""
 "Specifies a non-default standing penalty that may have been applied to "
 "patrons that have been placed into collections and that should be "
