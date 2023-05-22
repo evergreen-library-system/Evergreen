@@ -14,9 +14,11 @@ Additional penalties that can be configured with Group Penalty Thresholds includ
 * PATRON_EXCEEDS_COLLECTION_WARNING: Blocks specified circulation actions if patron exceeds X in fines. A user with this penalty will be flagged for review by the Collections API.
 * PATRON_IN_COLLECTIONS: Blocks specified circulation actions if patron exceeds X in fines. This penalty is set by the Collections API.
 
+If your system uses custom penalties, you can set thresholds for them in the Group Penalty Threshold interface as well. See the documentation on xref:admin:lsa-standing_penalties.adoc#custom_penalties[custom penalties] for more information.
+
 Accounts that meet or exceed penalty thresholds display an alert message when opened and require staff overrides for blocked transactions.
 
-To configure which circulation actions are blocked by each penalty, navigate to *Administration -> Local Administration -> Standing Penalties* and refer to the documentation for xref:admin:lsa-standing_penalties.adoc[Standing Penalties]. Note that the Org Depth of the standing penalty matters if your Group Penalty Threshold is not at the top of the organization tree. If you want all penalty blocks to take effect everywhere, you will need to set the standing penalty Org Depth to 0, otherwise penalty blocks will only apply at the level they are mapped to a threshold.
+To configure which circulation actions are blocked by each penalty, navigate to *Administration->Local Administration->Standing Penalties* and refer to the documentation for xref:admin:lsa-standing_penalties.adoc[Standing Penalties]. Note that the Org Depth of the standing penalty matters if your Group Penalty Threshold is not at the top of the organization tree. If you want all penalty blocks to take effect everywhere, you will need to set the standing penalty Org Depth to 0, otherwise penalty blocks will only apply at the level they are mapped to a threshold.
 
 Group Penalty Thresholds may be set up on different levels in terms of patron profiles and libraries. Penalties on more specific levels of profile and/or library take precedence. This allows you to set up penalties on a higher level of profile and/or library system instead of branch, for most profiles and/or branches to share. If there are rules applied to lower level profiles or a branch, you just need to set them up for these specific profile/branch.
 
@@ -41,7 +43,7 @@ image::group_penalty_thresholds/group-penalty-thresholds-2.png[New Group Penalty
 .. _ID_: The system-assigned ID for the Group Penalty Threshold.
 .. _Penalty_: The penalty for which the threshold should be set. 
 .. _Org Unit_: The library organizational unit to which the threshold should apply. Child organizaional units will be included in this threshold unless they have their own more specific threshold set.
-... *Note:* This dropdown includes several penalties for which numerical thresholds are not applicable. For the purposes of the Group Penalty Thresholds interface, you can ignore ALERT_NOTE, SILENT_NOTE, and anything that starts with INVALID_ or STAFF_
+... *Note:* This dropdown includes several penalties for which numerical thresholds are not applicable. For the purposes of the Group Penalty Thresholds interface, you can ignore ALERT_NOTE, SILENT_NOTE, and anything that starts with INVALID_ or STAFF_.
 .. _Threshold_: The numeric value of the threshold. This can represent a monetary value or a count value depending on the selected penalty.
 . Select *Save* to save your changes, or *Cancel* to exit the modal without saving.
 +

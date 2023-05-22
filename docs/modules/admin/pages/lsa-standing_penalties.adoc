@@ -102,6 +102,7 @@ Make your desired changes, and select *Save* to save your changes, or *Cancel* t
 NOTE: The Name field cannot be edited for any of the stock penalties since they are referenced by name in legacy code. 
 
 NOTE: Do not use spaces in the penalty name.
+
 [[creating_penalty_type]]
 == Creating a Standing Penalty Type ==
 
@@ -113,7 +114,7 @@ Select *Save* to save your changes, or *Cancel* to exit the modal without saving
 
 Standing penalties can be shared and used by the full Evergreen consortium.
 
-TIP: If you add a penalty, a stock Evergreen system cannot automatically apply the new penalty. Added penalties need to be manually applied by a staff member to a patron account, or custom code needs to be written to automatically apply the new penalty. See the documentation about xref:circulation:circulation_patron_records_web_client.adoc#patron_blocks[circulation blocks] for more information about manually applying a penalty.
+TIP: If you add a penalty, a stock Evergreen system cannot automatically apply the new penalty unless it is mapped as a custom penalty (see below). Any other added penalties need to be manually applied by a staff member to a patron account, or custom code needs to be written to automatically apply the new penalty. See the documentation about xref:circulation:circulation_patron_records_web_client.adoc#patron_blocks[circulation blocks] for more information about manually applying a penalty.
 
 [[deleting_penalty_type]]
 == Deleting a Standing Penalty Type ==
@@ -121,3 +122,32 @@ TIP: If you add a penalty, a stock Evergreen system cannot automatically apply t
 To delete a standing penalty type, either select the row and then navigate to Delete Selected in the Actions Menu on the upper right of the grid or right click on the row and choose Delete Selected.
 
 WARNING: The interface does not warn you before deleting a standing penalty type, and deleting stock standing penalty types may cause unintended negative consequences in your Evergreen system. Proceed with extreme caution.
+
+[[custom_penalties]]
+== Custom Penalties ==
+
+As of *VERSION*, administrators may customize system-applied penalties by using the following library settings to establish a mapping between a system-applied penalty and a new standing penalty that you create:
+
+* Custom PATRON_EXCEEDS_FINES penalty
+* Custom PATRON_EXCEEDS_OVERDUE_COUNT penalty
+* Custom PATRON_EXCEEDS_CHECKOUT_COUNT penalty
+* Custom PATRON_EXCEEDS_COLLECTIONS_WARNING penalty
+* Custom PATRON_EXCEEDS_LOST_COUNT penalty
+* Custom PATRON_IN_COLLECTIONS penalty
+* Custom PATRON_EXCEEDS_LONGOVERDUE_COUNT penalty
+
+The library setting instructs Evergreen to use the custom standing penalty in place of the system standing penalty, and will automatically apply the custom penalty in the same manner as its mapped standing penalty. 
+
+The library setting uses the circulation library as the context organizational unit. Per standard library setting rules, the "closest" setting to the circulation will be applied. 
+
+For example, if a Branch has a custom penalty set this will be applied to circulations at that Branch regardless of custom penalties set at the System or Consortium level. If the Branch has no value set for the custom penalty, it will inherit a value set at the System level.
+
+Custom penalties can be given thresholds in Administration -> Local Administration -> Group Penalty Thresholds as normal.
+
+To set up a custom penalty, take the following steps:
+
+. Create a new Standing Penalty Type as instructed above.
+. Navigate to *Administration -> Local Administration -> Group Penalty Thresholds* and establish a threshold, organizational unit, and group for your penalty.
+.. See the documentation on xref:local_admin:group_penalty_thresholds.adoc[Group Penalty Thresholds] for more information.
+. Navigate to *Administration -> Local Administration -> Library Settings, and location the Library Setting for the sytem penalty you want to replace with your custom penalty.
+. Select the name of your custom penalty from the dropdown, and select the organizational unit to which the custom penalty should apply.
