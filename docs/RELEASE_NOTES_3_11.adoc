@@ -92,7 +92,7 @@ It is an error to specify the --all or --since  and --pipe options in the same
 command line.
 
 
-[source]
+[source,sh]
 --------
         --pipe
 
@@ -113,7 +113,7 @@ The --strip option is used to suppress generation of specified elements
 from the marc_export output. The option, which can be specified more than
 once, is in one if these forms:
 
-[source]
+[source,sh]
 --------
         --strip <field RE>/<subfield RE>
         --strip /<subfield RE>
@@ -424,14 +424,12 @@ redirect URL must be one of http, https, ftp, or ftps.
 
 
 
-Accepting payments with SmartPAY
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+== Accepting payments with SmartPAY ==
 SmartPAY is a payment processing service that lets
 sites take credit card payments without payment card information ever
 touching the sites' own servers.
 
-Library Settings
-++++++++++++++++
+=== Library Settings ===
 The following settings need to be set at the appropriate org level for
 sites wanting to use SmartPAY.
 
