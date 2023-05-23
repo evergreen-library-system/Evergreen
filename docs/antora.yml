@@ -1,6 +1,6 @@
 name: docs
 title: Evergreen docs
-version: '3.11'
+version: 'latest'
 nav:
 - modules/ROOT/nav.adoc
 - modules/installation/nav.adoc
