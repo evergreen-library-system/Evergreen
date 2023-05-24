@@ -46,9 +46,10 @@
   </div>
   <div ngbDropdown autoClose="false" class="me-1" placement="bottom-right">
     <button ngbDropdownToggle type="button" [disabled]="!gridContext.toolbarActions.length"
-        class="btn btn-outline-dark no-dropdown-caret">
-      <span title="Actions For Selected Rows" i18n-title
-        class="material-icons mat-icon-in-button">playlist_add_check</span>
+      title="Actions For Selected Rows" i18n-title
+      aria-label="Actions For Selected Rows" i18n-aria-label 
+      class="btn btn-outline-dark no-dropdown-caret">
+      <span class="material-icons mat-icon-in-button" aria-hidden="true">playlist_add_check</span>
     </button>
     <div class="dropdown-menu scrollable-menu" ngbDropdownMenu>
       <eg-grid-toolbar-actions-menu [gridContext]="gridContext">
@@ -93,14 +94,21 @@
   </ng-container><!-- if disablePaging-->
 
 
-  <button type="button"
+  <button type="button" *ngIf="!gridContext.overflowCells"
     class="btn btn-outline-dark me-1"
+    title="Expand Cells Vertically" i18n-title
+    aria-label="Expand Cells Vertically" i18n-aria-label
     (click)="gridContext.overflowCells=!gridContext.overflowCells">
-    <span *ngIf="!gridContext.overflowCells"
-      title="Expand Cells Vertically" i18n-title
+    <span aria-hidden="true"
       class="material-icons mat-icon-in-button">expand_more</span>
-    <span *ngIf="gridContext.overflowCells"
-      title="Collapse Cells Vertically" i18n-title
+    </button>
+
+  <button type="button" *ngIf="gridContext.overflowCells" 
+    class="btn btn-outline-dark me-1"
+    title="Condense Cells Vertically" i18n-title 
+    aria-label="Condense Cells Vertically" i18n-aria-label
+    (click)="gridContext.overflowCells=!gridContext.overflowCells">
+    <span *ngIf="gridContext.overflowCells" aria-hidden="true"
       class="material-icons mat-icon-in-button">expand_less</span>
   </button>
 
@@ -109,7 +117,7 @@
   <div ngbDropdown placement="bottom-right">
     <button ngbDropdownToggle class="btn btn-outline-dark no-dropdown-caret"
       title="Show Grid Options" i18n-title aria-label="Show Grid Options" i18n-aria-label>
-      <span class="material-icons mat-icon-in-button">settings</span>
+      <span class="material-icons mat-icon-in-button" aria-hidden="true">settings</span>
     </button>
     <div class="dropdown-menu scrollable-menu" ngbDropdownMenu>
       <button nbgDropdownItem class="dropdown-item label-with-material-icon"
