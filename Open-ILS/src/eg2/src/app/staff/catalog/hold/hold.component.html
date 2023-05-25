@@ -12,9 +12,9 @@
 
 <div class="row">
   <div class="col-lg-1">
-    <button class="btn btn-info label-with-material-icon"
+    <button type="button" class="btn btn-info label-with-material-icon"
       (click)="goBack()" [disabled]="hasNoHistory()">
-      <span class="material-icons">keyboard_backspace</span>
+      <span class="material-icons" aria-hidden="true">keyboard_backspace</span>
       <span i18n>Return</span>
     </button>
   </div>
@@ -34,9 +34,8 @@
     </ng-container>
   </div>
   <div class="col-lg-2">
-    <button class="btn btn-outline-dark btn-sm" (click)="searchPatrons()">
-      <span class="material-icons mat-icon-in-button align-middle"
-        i18n-title title="Search for Patron">search</span>
+    <button type="button" class="btn btn-outline-dark btn-sm" (click)="searchPatrons()">
+      <span class="material-icons mat-icon-in-button align-middle" aria-hidden="true">search</span>
       <span class="align-middle" i18n>Search for Patron</span>
     </button>
   </div>

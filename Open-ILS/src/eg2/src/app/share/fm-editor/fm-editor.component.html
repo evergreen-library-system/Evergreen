@@ -14,12 +14,12 @@
     <h4 class="modal-title" i18n>Record Editor: {{recordLabel}}</h4>
     <ng-container *ngIf="isDialog()">
       <button type="button" class="btn-close btn-close-white" 
+        i18n-title title="Close"
         i18n-aria-label aria-label="Close" (click)="closeEditor()"></button>
     </ng-container>
   </div>
   <div class="modal-body">
-    <form #fmEditForm="ngForm" role="form"
-          class="form-validated common-form striped-odd"
+    <form #fmEditForm="ngForm" class="form-validated common-form striped-odd"
           [egDateFieldOrderList]="dateFieldOrderList">
       <ng-container *ngIf="!record">
         <!-- display a progress dialog while the editor
@@ -29,6 +29,7 @@
       <ng-container *ngIf="record">
       <div role="alert" class="alert alert-danger" *ngIf="fmEditForm.errors?.['datesOutOfOrder'] && (fmEditForm.touched || fmEditForm.dirty)">
         <span class="material-icons" aria-hidden="true">error</span>
+        <span i18n class="visually-hidden">Error: </span>
         <span i18n>Dates must be in the correct order</span>
       </div>
 
@@ -198,12 +199,11 @@
           </ng-container> <!-- switch -->
         </div>
         <div class="col-lg-1" *ngIf="field.i18n && !field.readOnly">
-          <a (click)="openTranslator(field.name)"
-            i18n-title title="Translate">
-            <button class="btn btn-outline-info mat-icon-in-button">
-              <span class="material-icons">translate</span>
-            </button>
-          </a>
+          <button (click)="openTranslator(field.name)"
+            i18n-title title="Translate" i18n-aria-label aria-label="Translate"
+            class="btn btn-outline-info mat-icon-in-button">
+            <span class="material-icons" aria-hidden="true">translate</span>
+          </button>
         </div>
       </div>
       </ng-container>

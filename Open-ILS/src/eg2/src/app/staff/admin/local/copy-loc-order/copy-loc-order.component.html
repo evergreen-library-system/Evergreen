@@ -12,20 +12,24 @@
     </div>
     <div class="ms-3">
       <button (click)="up()" i18n-title title="Move Selected Location Up"
-        class="me-2 btn btn-sm btn-outline-dark .mat-icon-shrunk-in-button">
-        <span class="material-icons">arrow_upward</span>
+        i18n-aria-label aria-label="Move Selected Location Up"
+        class="me-2 btn btn-sm btn-outline-dark mat-icon-shrunk-in-button">
+        <span class="material-icons" aria-hidden="true">arrow_upward</span>
       </button>
       <button (click)="down()" i18n-title title="Move Selected Location Down"
-        class="me-2 btn btn-sm btn-outline-dark .mat-icon-shrunk-in-button">
-        <span class="material-icons">arrow_downward</span>
+        i18n-aria-label aria-label="Move Selected Location Down"
+        class="me-2 btn btn-sm btn-outline-dark mat-icon-shrunk-in-button">
+        <span class="material-icons" aria-hidden="true">arrow_downward</span>
       </button>
       <button (click)="up(true)" i18n-title title="Move Selected Location To Top"
-        class="me-2 btn btn-sm btn-outline-dark .mat-icon-shrunk-in-button">
-        <span class="material-icons">vertical_align_top</span>
+        i18n-aria-label aria-label="Move Selected Location To Top"
+        class="me-2 btn btn-sm btn-outline-dark mat-icon-shrunk-in-button">
+        <span class="material-icons" aria-hidden="true">vertical_align_top</span>
       </button>
       <button (click)="down(true)" i18n-title title="Move Selected Location To Bottom"
-        class="me-2 btn btn-sm btn-outline-dark .mat-icon-shrunk-in-button">
-        <span class="material-icons">vertical_align_bottom</span>
+        i18n-aria-label aria-label="Move Selected Location To Bottom"
+        class="me-2 btn btn-sm btn-outline-dark mat-icon-shrunk-in-button">
+        <span class="material-icons" aria-hidden="true">vertical_align_bottom</span>
       </button>
       <span class="ms-2 fst-italic" *ngIf="selected()">
         Selected: {{selected().location().name()}} 
@@ -33,7 +37,7 @@
       </span>
     </div>
     <div class="flex-1"></div>
-    <button class="btn btn-outline-dark" (click)="save()" 
+    <button class="btn btn-outline-dark" (click)="save()" type="submit"
       [disabled]="!changesPending()" i18n>Save Changes</button>
   </div>
 </div>

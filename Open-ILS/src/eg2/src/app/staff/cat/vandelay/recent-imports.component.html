@@ -54,7 +54,8 @@
               <span *ngIf="tracker.state() === 'complete'" i18n>Complete</span>
               <span *ngIf="tracker.state() === 'error'" i18n>Error</span>
               <span class='ps-3' *ngIf="tracker.state() === 'complete'">
-                <span class="material-icons text-success">thumb_up</span>
+                <span class="material-icons text-success" aria-hidden="true">thumb_up</span>
+                <span class="visually-hidden" i18n>Success</span>
               </span>
             </div>
           </div>

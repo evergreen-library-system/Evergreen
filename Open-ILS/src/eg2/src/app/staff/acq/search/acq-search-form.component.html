@@ -13,18 +13,18 @@
       of the following terms:</label>
     </div>
     <div class="col">
-      <a class="with-material-icon no-href text-primary"
+      <button class="with-material-icon btn btn-link text-primary"
         title="Show Form" i18n-title
-        tabindex="0"
-        *ngIf="!showForm" (click)="showForm=true"><span class="visually-hidden" i18n>Show Form</span>
+        aria-label="Show Form" i18n-aria-label
+        *ngIf="!showForm" (click)="showForm=true">
         <span class="material-icons" aria-hidden="true">expand_more</span>
-      </a>
-      <a class="with-material-icon no-href text-primary"
+      </button>
+      <button class="with-material-icon btn btn-link text-primary"
         title="Hide Form" i18n-title
-        tabindex="0"
-        *ngIf="showForm" (click)="showForm=false"><span class="visually-hidden" i18n>Hide Form</span>
+        aria-label="Hide Form" i18n-aria-label
+        *ngIf="showForm" (click)="showForm=false">
         <span class="material-icons" aria-hidden="true">expand_less</span>
-      </a>
+      </button>
     </div>
   </div>
   <div class="row row-cols-auto mb-1" *ngFor="let t of searchTerms; let idx=index" [hidden]="!showForm">

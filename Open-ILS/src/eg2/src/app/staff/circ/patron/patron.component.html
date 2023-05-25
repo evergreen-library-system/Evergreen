@@ -72,15 +72,11 @@
 
         <ng-container *ngIf="patronTab !== 'search'">
           <li ngbDropdown ngbNavItem="toggle">
-            <a href class="nav-link" (click)="toggleSummaryPane(); false"
-              title="Toggle Summary Pane" i18n-title>
-              <ng-container *ngIf="showSummaryPane()">
-                <span class="material-icons">fullscreen</span>
-              </ng-container>
-              <ng-container *ngIf="!showSummaryPane()">
-                <span class="material-icons">fullscreen_exit</span>
-              </ng-container>
-            </a>
+            <button class="nav-link" (click)="toggleSummaryPane(); false"
+              [title]="showSummaryPane() ? 'Hide Summary Pane' : 'Show Summary Pane'" i18n-title
+              [attr.aria-label]="showSummaryPane() ? 'Hide Summary Pane' : 'Show Summary Pane'" i18n-aria-label>
+              <span class="material-icons" aria-hidden="true">{{showSummaryPane() ? 'fullscreen' : 'fullscreen_exit'}}</span>
+            </button>
           </li>
         </ng-container>
 

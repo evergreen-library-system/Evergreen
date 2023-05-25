@@ -169,21 +169,22 @@
     </div>
     <div class="me-3">
       <div class="input-group">
-        <span class="material-icons pt-2 pe-2">
-          <ng-container *ngIf="!mayEmailReceipt()">print</ng-container>
-          <ng-container *ngIf="mayEmailReceipt()">email</ng-container>
+        <span class="material-icons pt-2 pe-2" aria-hidden="true">
+          {{mayEmailReceipt() ? 'email' : 'print'}}
         </span>
-        <button class="btn btn-outline-dark" (click)="quickReceipt()" i18n>
+        <button class="btn btn-outline-dark" (click)="quickReceipt()" i18n type="button">
           Quick Receipt
         </button>
         <div class="input-group-text">
           <div ngbDropdown>
-            <button ngbDropdownToggle class="btn btn-outline-dark">
+            <button ngbDropdownToggle class="btn btn-outline-dark" type="button"
+              aria-label="Select email or print" i18n-aria-label
+              title="Select email or print" i18n-title>
             </button>
             <div ngbDropdownMenu>
-              <button ngbDropdownItem (click)="emailReceipt()" 
+              <button ngbDropdownItem (click)="emailReceipt()" type="button"
                 [disabled]="!mayEmailReceipt()" i18n>Email Receipt</button>
-              <button ngbDropdownItem (click)="printReceipt()" i18n>Print Receipt</button>
+              <button ngbDropdownItem (click)="printReceipt()" i18n type="button">Print Receipt</button>
             </div>
           </div>
         </div>
@@ -191,12 +192,14 @@
     </div>
     <div class="me-3">
       <div class="input-group">
-        <button class="btn btn-outline-dark" (click)="doneAutoReceipt()" i18n>
+        <button class="btn btn-outline-dark" (click)="doneAutoReceipt()" i18n type="button">
           Done
         </button>
         <div class="input-group-text">
           <div ngbDropdown>
-            <button ngbDropdownToggle class="btn btn-outline-dark">
+            <button ngbDropdownToggle class="btn btn-outline-dark" type="button"
+              aria-label="Select email or print" i18n-aria-label
+              title="Select email or print" i18n-title>
             </button>
             <div ngbDropdownMenu>
               <button ngbDropdownItem (click)="doneRedirect()" i18n>No Receipt</button>

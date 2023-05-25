@@ -91,21 +91,22 @@
         <ng-container *ngIf="disposition() === 'pre-order'">
           <button
             class="btn btn-outline-danger material-icon-button"
-            (click)="deleteRequested.emit(copy)" title="Delete Item" i18n-title>
-            <span class="material-icons">delete</span>
+            (click)="deleteRequested.emit(copy)" title="Delete Item" i18n-title
+            aria-label="Delete Item" i18n-aria-label>
+            <span class="material-icons" aria-hidden="true">delete</span>
           </button>
         </ng-container>
         <ng-container *ngIf="disposition() === 'on-order' || disposition() === 'delayed'">
-          <a href="javascript:;" (click)="receiveRequested.emit(copy)" i18n>Mark Received</a>
+          <button type="button" class="btn btn-link" (click)="receiveRequested.emit(copy)" i18n>Mark Received</button>
         </ng-container>
         <ng-container *ngIf="disposition() === 'received'">
-          <a href="javascript:;" (click)="unReceiveRequested.emit(copy)" i18n>Un-Receive</a>
+          <button type="button" class="btn btn-link" (click)="unReceiveRequested.emit(copy)" i18n>Un-Receive</button>
         </ng-container>
         <ng-container *ngIf="disposition() === 'on-order'">
-          <a href="javascript:;" class="ms-2" (click)="cancelRequested.emit(copy)" i18n>Cancel</a>
+          <button type="button" class="btn btn-link" class="ms-2" (click)="cancelRequested.emit(copy)" i18n>Cancel</button>
         </ng-container>
         <ng-container *ngIf="disposition() === 'delayed'">
-          &nbsp;<a href="javascript:;" (click)="cancelRequested.emit(copy)" i18n>Cancel</a>
+          &nbsp;<button type="button" class="btn btn-link" (click)="cancelRequested.emit(copy)" i18n>Cancel</button>
         </ng-container>
         <ng-container *ngIf="disposition() === 'delayed'">
           <span class="fst-italic ms-2" title="{{copy.cancel_reason().description()}}">

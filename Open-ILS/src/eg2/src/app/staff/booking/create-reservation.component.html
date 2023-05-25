@@ -26,7 +26,7 @@
     <ul ngbNav #details="ngbNav" [(activeId)]="detailsTab" [keyboard]="true" [roles]="false" role="tablist" class="nav-tabs">
       <li role="presentation" [ngbNavItem]="'select-resource-type'">
         <a ngbNavLink role="tab">
-          <span class="material-icons">dns</span>
+          <span class="material-icons" aria-hidden="true">dns</span>
           <ng-container i18n>Choose resource by type</ng-container>
         </a>
         <ng-template ngbNavContent>
@@ -52,7 +52,7 @@
 
       <li role="presentation" [ngbNavItem]="'select-resource'">
         <a ngbNavLink role="tab">
-          <span class="material-icons">assignment</span>
+          <span class="material-icons" aria-hidden="true">assignment</span>
           <ng-container i18n>Choose resource by barcode</ng-container>
         </a>
         <ng-template ngbNavContent>
@@ -69,7 +69,7 @@
 
       <li role="presentation" [ngbNavItem]="'attributes'" [disabled]="0 === attributes.length">
         <a ngbNavLink role="tab">
-          <span class="material-icons">filter_list</span>
+          <span class="material-icons" aria-hidden="true">filter_list</span>
           <ng-container i18n>Limit by attributes</ng-container>
         </a>
         <ng-template ngbNavContent>
@@ -90,7 +90,7 @@
 
       <li role="presentation" [ngbNavItem]="'display-settings'">
         <a ngbNavLink role="tab">
-          <span class="material-icons">settings</span>
+          <span class="material-icons" aria-hidden="true">settings</span>
           <ng-container i18n>Schedule settings</ng-container>
         </a>
         <ng-template ngbNavContent>
@@ -139,13 +139,13 @@
   <hr>
   <div class="row" *ngIf="idealDate && !multiday">
     <button class="btn btn-info col-sm-2 offset-sm-3" (click)="addDays(-1)">
-        <span class="material-icons mat-icon-in-button">keyboard_arrow_left</span>
+        <span class="material-icons mat-icon-in-button" aria-hidden="true">keyboard_arrow_left</span>
         <span i18n>Previous day</span>
     </button>
     <h2 class="col-sm-2 text-center" i18n>{{idealDate | formatValue:'timestamp'}}</h2>
     <button class="btn btn-info col-sm-2" (click)="addDays(1)">
       <span i18n>Next day</span>
-      <span class="material-icons mat-icon-in-button">keyboard_arrow_right</span>
+      <span class="material-icons mat-icon-in-button" aria-hidden="true">keyboard_arrow_right</span>
     </button>
   </div>
   <eg-grid #scheduleGrid

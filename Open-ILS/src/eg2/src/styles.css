@@ -48,14 +48,25 @@ h5 {font-size: .95rem}
 /** Use a default link color that achieves WCAG AA
  *  color contrast against a white background
  */
- a { 
+a { 
   border-color: #0A58CA;
   color: #0A58CA; 
 }
 
+a:focus,
 a:hover { 
   border-color: #0848A5;
   color: #0848A5; 
+}
+
+.btn-link {
+  color: #0A58CA;
+  padding: inherit;
+}
+
+.btn-link:focus,
+.btn-link:hover {
+  color: #0848A5;
 }
 
 /** Ang5 routes on clicks to href's with no values, so we can't have

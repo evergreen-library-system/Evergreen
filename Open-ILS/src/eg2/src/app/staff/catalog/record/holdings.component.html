@@ -20,17 +20,17 @@
   <!-- ps-* is doubled for added impact -->
   <div class="ps-{{row.locationDepth}}">
     <span class="ps-{{row.locationDepth}}">
-      <a class="label-with-material-icon" (click)="userContext.toggleExpandRow(row)">
+      <button type="button" class="label-with-material-icon" (click)="userContext.toggleExpandRow(row)">
         <!--  leave the icons in place for all node types, but make them
               invisible when they are not needed. -->
         <span *ngIf="row.treeNode.expanded"
           [ngClass]="{invisible: row.copy || row.treeNode.children.length === 0}"
-          class="material-icons p-0 m-0">keyboard_arrow_down</span>
+          class="material-icons p-0 m-0" aria-hidden="true">keyboard_arrow_down</span>
         <span *ngIf="!row.treeNode.expanded"
           [ngClass]="{invisible: row.copy || row.treeNode.children.length === 0}"
-          class="material-icons p-0 m-0">keyboard_arrow_right</span>
+          class="material-icons p-0 m-0" aria-hidden="true">keyboard_arrow_right</span>
         <span>{{row.locationLabel}}</span>
-      </a>
+      </button>
     </span>
   </div>
 </ng-template>

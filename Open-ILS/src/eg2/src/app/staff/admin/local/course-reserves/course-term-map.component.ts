@@ -14,7 +14,7 @@ import {ActivatedRoute} from '@angular/router';
         <div class="row">
             <div class="col text-right">
                 <a class="btn btn-warning ml-3" routerLink="/staff/admin/local/asset/course_list" i18n>
-                    <i class="material-icons align-middle">keyboard_return</i>
+                    <i class="material-icons align-middle" aria-hidden="true">keyboard_return</i>
                     <span class="align-middle">Return to Course List</span>
                 </a>
             </div>
