@@ -251,16 +251,20 @@ function($scope , $q , $routeParams , egCore , egConfirmDialog , $location,
         isEnabled: true,
         template: function(item) {
             var icon = '';
+            var text = '';
             if (item['circulation.due_date'] && !item['circulation.checkin_time']) {
                 if (item['circulation.stop_fines'] == "LOST") {
                     icon = 'glyphicon-question-sign';
+                    text = egCore.strings.STOP_FINES_LOST;
                 } else if (item['circulation.stop_fines'] == "LONGOVERDUE") {
                     icon = 'glyphicon-exclamation-sign';
+                    text = egCore.strings.STOP_FINES_LONGOVERDUE;
                 } else {
                     icon = 'glyphicon-time';
+                    text = egCore.strings.CIRC_OVERDUE;
                 }
             }
-            return "<i class='glyphicon " + icon + "'></i>"
+            return "<i class='glyphicon " + icon + "' title='" + text + "' aria-hidden='true'></i><span class='sr-only'>" + text + "</span>";
         }
     }
 
