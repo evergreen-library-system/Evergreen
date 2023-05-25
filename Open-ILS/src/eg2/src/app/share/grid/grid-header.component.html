@@ -15,7 +15,8 @@
   <div *ngIf="context.rowFlairIsEnabled"
     role="columnheader"
     class="eg-grid-cell eg-grid-header-cell eg-grid-flair-cell">
-    <span class="material-icons">notifications</span>
+    <span class="material-icons" aria-hidden="true" title="Notifications" i18n-title>notifications</span>
+    <span class="visually-hidden" i18n>Notifications</span>
   </div>
   <div role="columnheader"
     *ngFor="let col of context.columnSet.displayColumns()"

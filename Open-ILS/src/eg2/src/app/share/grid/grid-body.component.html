@@ -34,11 +34,11 @@
             obviating the need for multiple calls of the same function -->
       <ng-container *ngIf="context.rowFlairCallback(row); let flair">
         <ng-container *ngIf="flair.icon">
-          <!-- tooltip is disabled when no title is set -->
-          <span class="material-icons"
-            ngbTooltip="{{flair.title || ''}}" triggers="mouseenter:mouseleave">
+          <span class="material-icons" aria-hidden="true"
+            title="{{flair.title}}" i18n-title>
             {{flair.icon}}
           </span>
+          <span *ngIf="flair.title" class="visually-hidden" i18n>{{flair.title}}</span>
         </ng-container>
       </ng-container>
     </div>
