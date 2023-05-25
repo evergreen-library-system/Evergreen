@@ -1,0 +1,519 @@
+<eg-title i18n-prefix i18n-suffix prefix="Z39.50" suffix="{{ searchMode === 'cat' ? 'Cataloging' : 'Acquisitions' }}"/>
+<eg-staff-banner i18n-bannerText bannerText="Z39.50 - {{ searchMode === 'cat' ? 'Cataloging' : 'Acquisitions' }}"/>
+
+<eg-confirm-dialog #jumpToSLDlg
+  i18n-confirmString confirmString="Go to Selection List"
+  i18n-cancelString cancelString="Back to results"
+  i18n-dialogBody dialogBody="Open updated Selection list {{selectedSL ? selectedSL.label : ''}}"
+  i18n-dialogTitle dialogTitle="Selection List updated"
+/>
+
+<eg-confirm-dialog #jumpToPODlg
+  i18n-confirmString confirmString="Go to Purchase Order"
+  i18n-cancelString cancelString="Back to results"
+  i18n-dialogBody dialogBody="Open updated Purchase Order {{selectedPO ? selectedPO.label : ''}}"
+  i18n-dialogTitle dialogTitle="Purchase Order updated"
+/>
+
+<eg-confirm-dialog #confirmImportDlg
+  i18n-confirmString confirmString="Go to record"
+  i18n-cancelString cancelString="Back"
+  i18n-dialogBody dialogBody="Record imported as ID {{lastImportedRecord}}"
+  i18n-dialogTitle dialogTitle="Imported Record"
+/>
+
+<ng-template #editMARCtmpl>
+  <eg-marc-editor
+    [inPlaceMode]="true"
+    [recordXml]="currentEditRecord.marcxml"
+    (recordSaved)="updateCurrentEditRecord($event)"
+  />
+</ng-template>
+
+<eg-confirm-dialog #editMARCdlg
+  [dialogBodyTemplate]="editMARCTemplate"
+  i18n-dialogTitle dialogTitle="Edit MARC for {{currentEditAction}}"
+  i18n-confirmString confirmString="{{currentEditConfirm}}"
+  i18n-cancelString cancelString="Cancel"
+  [hideFooter]="currentEditHideFooter"
+/>
+
+<ng-template #addToSLtmpl>
+  <div class="row">
+    <div class="col-md-12">
+      <eg-combobox [(ngModel)]="selectedSL" idlClass="acqpl" [asyncSupportsEmptyTermClick]="true"
+        [allowFreeText]="true" placeholder="Select Existing or Name New List..." i18n-placeHolder/>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-md-6">
+      <button type="button" class="btn btn-outline-secondary btn-sm" (click)="editSelectedInSeries()" i18n>Edit incoming MARC...</button>
+    </div>
+  </div>
+</ng-template>
+
+<eg-confirm-dialog #addToSLdlg
+  [dialogBodyTemplate]="addToSLTemplate"
+  i18n-dialogTitle dialogTitle="Add to Selection List"
+  i18n-confirmString confirmString="Continue"
+  i18n-cancelString cancelString="Cancel"
+/>
+
+<ng-template #addToPOtmpl>
+
+  <div class="row">
+  <div class="col-md-4">
+    <label class="form-label" for="po-selector" i18n>Purchase Order</label>
+  </div>
+  <div class="col-md-8">
+  <eg-combobox domId='po-selector'
+    idlClass="acqpo"
+    [asyncSupportsEmptyTermClick]="true"
+    [idlQueryAnd]="{state: ['new', 'pending']}"
+    idlIncludeLibraryInLabel="ordering_agency"
+    [(ngModel)]="selectedPO"
+    [allowFreeText]="true"
+    placeholder="Select Existing or Name New PO..." i18n-placeHolder/>
+  </div>
+  </div>
+
+  <div class="row form-group">
+  <div class="col-md-4">
+    <label class="form-label" for="order-agency-input" i18n>Ordering Agency</label>
+    <span *ngIf="!selectedPO" i18n> (required)</span>
+  </div>
+  <div class="col-md-8">
+    <eg-org-select domId="order-agency-input"
+      (onChange)="changeSelectedOrderingAgency($event)"
+      [initialOrgId]="auth.user().ws_ou()"
+      [limitPerms]="['CREATE_PURCHASE_ORDER']"
+      [required]="true"
+      [disabled]="selectedPO && selectedPO.id"/>
+  </div>
+  </div>
+
+  <div class="row form-group">
+  <div class="col-md-4">
+    <label class="form-label" for="provider-selector" i18n>Provider</label>
+    <span *ngIf="!selectedPO" i18n> (required)</span>
+  </div>
+  <div class="col-md-8">
+    <eg-combobox domId="provider-selector"
+      idlClass="acqpro"
+      [required]="true"
+      [disabled]="selectedPO && selectedPO.id"
+      (onChange)="changeSelectedProvider($event)"
+      [asyncSupportsEmptyTermClick]="true"
+      idlIncludeLibraryInLabel="owner"
+      [idlQueryAnd]="{active: 't'}"/>
+  </div>
+  </div>
+
+  <div class="row form-group">
+  <div class="col-md-4">
+    <label class="form-label" for="prepayment-required" i18n>Prepayment Required</label>
+  </div>
+  <div class="col-md-8">
+    <input type="checkbox" class="form-check-input" [disabled]="selectedPO && selectedPO.id"
+      [(ngModel)]="currentNewPOprepayment_required" id="prepayment-required"/>
+  </div>
+  </div>
+  <div class="row">
+    <div class="col-md-6">
+      <button type="button" class="btn btn-outline-secondary btn-sm" (click)="editSelectedInSeries()" i18n>Edit incoming MARC...</button>
+    </div>
+  </div>
+
+</ng-template>
+
+<eg-confirm-dialog #addToPOdlg
+  [dialogBodyTemplate]="addToPOTemplate"
+  i18n-dialogTitle dialogTitle="Add to Purchase Order"
+  i18n-confirmString confirmString="Continue"
+  i18n-cancelString cancelString="Cancel"
+/>
+
+<ng-template #overlayMARCtmpl>
+<div>        
+  <div class="row">
+    <div class="col">
+      <div class="row">
+        <div class="col"><label for="overlay_vmp" i18n>Choose overlay profile:</label></div>
+        <div class="col">
+          <eg-combobox
+            id='overlay_vmp'
+            idlClass='vmp'
+            (onChange)="selectedOverlayProfile = $event ? $event.id : null"
+            [asyncSupportsEmptyTermClick]="true"/>
+        </div>
+      </div>
+    </div>
+    <div class="col">
+      <button type="button" class="btn btn-outline-secondary btn-sm" (click)="justEditCurrent()" i18n>Edit Z39.50 Record</button>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col">
+      <span i18n>Replace record {{overlayTarget}}...</span>
+    </div>
+    <div class="col">
+      <span i18n>...with this?</span>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col">
+      <eg-marc-html [recordId]="overlayTarget"/>
+    </div>
+    <div class="col">
+      <eg-marc-html [recordXml]="currentEditRecord.marcxml"/>
+    </div>
+  </div>
+</div>        
+</ng-template>
+
+<eg-confirm-dialog #overlayMARCdlg
+  [dialogBodyTemplate]="overlayMARCTemplate"
+  i18n-dialogTitle dialogTitle="Overlay MARC"
+  i18n-confirmString confirmString="{{ selectedOverlayProfile ? 'Merge and Overlay' : 'Overlay'}}"
+  i18n-cancelString cancelString="Cancel"
+/>
+
+<ng-template #showMARCtmpl>
+  <div class="marc-compare">
+    <div class="marc-file" *ngFor="let rec of showMARCRecordSet">
+        <h2 class="marc-name fw-normal" i18n>
+          <b><i>{{rec.title()}}</i></b> from <u>{{rec.service_name}}</u>
+        </h2>
+        <div style="display:flex" class="row">
+          <div *ngIf="rec.isbn()" style="flex:1" class="col">
+            <img i18n-alt alt="jacket cover image" src="/opac/extras/ac/jacket/medium/{{rec.isbn().trim().split(' ')[0]}}"/>
+          </div>
+          <div style="flex:3" class="col marc-xml table-responsive">
+            <eg-marc-html [recordXml]="rec.marcxml"/>
+          </div>
+        </div>
+    </div>
+  </div>
+</ng-template>
+
+<eg-confirm-dialog #showMARCdlg
+  [dialogBodyTemplate]="showMARCTemplate"
+  i18n-dialogTitle dialogTitle="View MARC"
+  i18n-confirmString confirmString="Close"
+  [hideCancel]="true"
+/>
+
+<eg-prompt-dialog #rawSearchPrmpt
+  i18n-dialogBody dialogBody="Raw Z39.50 PQN search string"
+  i18n-dialogTitle dialogTitle="Raw Search"
+  i18n-confirmString confirmString="Search"
+/>
+
+<button type="button" class="btn btn-outline-secondary btn-sm" (click)="showForm = !showForm" i18n>{{ showForm ? 'Hide' : 'Show'}} form</button>
+
+<div [hidden]="!showForm">
+
+  <!-- maybe use reactive forms. see: https://www.positronx.io/angular-radio-buttons-example/#tc_2968_03 -->
+  <form (submit)="performSearch()" id="{{domId}}-form" autocomplete="off">
+  <div class="row gx-5 mt-3">
+    
+    <div class="col">
+      <h2 i18n>Services and Credentials</h2>
+      <ul class="list-unstyled">
+        <li class="form-check" *ngFor="let src of permittedTargets()"> <!-- function returns hash-flattened version of czs FM objects -->
+          <input class="form-check-input"
+            (change)="sourceSelectionChange(src)"
+            [checked]="src.selected"
+            type="checkbox"
+            name="{{domId}}-src-{{src.code}}"
+            id="{{domId}}-src-{{src.code}}"/> <!-- see: https://www.tutsmake.com/angular-11-checkbox-checked-event-tutorial/ -->
+          <label class="form-check-label" for="{{domId}}-src-{{src.code}}">{{src.settings.label || src.settings.name}}</label>
+          <div *ngIf="src.settings.auth === 't'" class="z3950-credentials row row-cols-auto gx-3 m-2">
+            <div class="col">
+              <label for="{{domId}}-src-{{src.name}}-username" class="form-label" i18n>{{src.settings.label || src.settings.name}} Username</label>
+              <input
+                [(ngModel)]="src.username"
+                autocomplete="off"
+                type="text"
+                id="{{domId}}-src-{{src.code}}-username"
+                name="{{domId}}-src-{{src.code}}-username"
+                class="form-control"/>
+            </div>
+            
+            <div class="col">
+              <label for="{{domId}}-src-{{src.code}}-password" class="form-label" i18n>{{src.settings.label || src.settings.name}} Password</label>
+              <input
+                [(ngModel)]="src.password"
+                autocomplete="off"
+                type="password"
+                id="{{domId}}-src-{{src.code}}-password"
+                name="{{domId}}-src-{{src.code}}-password"
+                class="form-control"/>
+              
+             
+             </div>
+          </div>
+        </li>
+      </ul>
+
+      <button
+        type="button"
+        (click)="saveDefaultZ3950Targets(false)"
+        class="btn btn-outline-secondary btn-sm"
+        [disabled]="selectedTargets().length === 0"
+        i18n>Save as Default
+      </button>
+
+      <hr class="my-3"/>
+
+      <div *ngIf="field_strip_groups.length > 0">
+        <h2 i18n>Remove Field Groups</h2>
+        <ul class="list-unstyled">
+          <li *ngFor="let grp of field_strip_groups" class="form-check">
+            <input id="strip-grp-{{grp.id()}}" [(ngModel)]="grp.selected" [ngModelOptions]="{standalone: true}" type="checkbox" class="form-check-input" />
+            <label for="strip-grp-{{grp.id()}}" class="form-check-label">{{grp.label()}}</label>
+          </li>
+        </ul>
+      </div>  
+ 
+     </div>
+    
+    <div class="col">
+      <h2 i18n>Search Query</h2>
+      
+      <table class="table">
+        <caption class="visually-hidden" aria-live="polite" aria-atomic="false" i18n>
+          Search fields for Z39.50 services.
+          <!-- This should be updated when the default is changed. aria-live listens for DOM changes. -->
+          <span aria-relevant="text">The default search field is {{'xxx'}}.</span>
+        </caption>
+        <thead>
+          <tr>
+            <th scope="col" i18n>Field</th>
+            <th scope="col" i18n>Search Terms</th>
+            <th scope="col" i18n class="z3950_default">Use as Default</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let nameGroup of currentFields"> <!-- i.e.: {name:"name they share",labels:[unique labels],sources:[source objects]} -->
+            <th scope="row">
+              <label for="{{domId}}-{{nameGroup.name}}-search-term-value" class="form-label">{{nameGroup.labels[0]}}</label>
+            </th>
+            <td>
+             <ng-container [ngSwitch]="nameGroup.name">
+              <select *ngSwitchCase="'item_type'"
+                attr.aria-describedby="{{domId}}-{{nameGroup.name}}-search-term-usage"
+                id="{{domId}}-{{nameGroup.name}}-search-term-value"
+                [attr.ngbAutofocus]="nameGroup.name === defaultField ? true : null"
+                name="{{domId}}-{{nameGroup.name}}-search-term-value"
+                class="form-control"
+                [(ngModel)]="nameGroup.searchTerms">
+                <option value="" i18n>All Formats</option>
+                <option value='art' i18n>Papers or Articles</option>
+                <option value='bks' i18n>Books</option>
+                <option value='com' i18n>Computer files</option>
+                <option value='map' i18n>Maps</option>
+                <option value='mix' i18n>Mixed material</option>
+                <option value='rec' i18n>Sound recordings</option>
+                <option value='sco' i18n>Musical scores</option>
+                <option value='ser' i18n>Serials</option>
+                <option value='url' i18n>Internet Resources</option>
+                <option value='vis' i18n>Visual materials</option>
+              </select>
+              <input *ngSwitchDefault
+                attr.aria-describedby="{{domId}}-{{nameGroup.name}}-search-term-usage"
+                [(ngModel)]="nameGroup.searchTerms"
+                [egautofocus]="nameGroup.name === defaultField"
+                id="{{domId}}-{{nameGroup.name}}-search-term-value"
+                name="{{domId}}-{{nameGroup.name}}-search-term-value"
+                class="form-control"/> <!-- what if the ID'd node for aria-describedby doesn't exist due to ngif? -->
+             </ng-container>
+             <p
+                [hidden]="nameGroup.sources.length >= selectedTargets().length"
+                class="form-text"
+                id="{{domId}}-{{nameGroup.name}}-search-term-usage">
+              <span i18n>Used only by: </span> {{nameGroup.source_labels.join(', ')}} <!-- this might be bad for i18n? -->
+             </p>
+            </td>
+            <td class="z3950_default">
+              <input
+                name="z3950_default"
+                type="radio"
+                class="form-check-input"
+                (change)="saveDefaultField()"
+                [value]="nameGroup.name"
+                [(ngModel)]="defaultField"
+                attr.aria-label="Set {{nameGroup.labels[0]}} field as default" i18n-aria-label/>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+   
+    </div>  
+
+  </div>
+
+  <div class="row">
+    <div class="col d-flex g-2">
+      <button type="submit" class="btn btn-primary" i18n>Submit</button>
+      <button
+        [disabled]="localTargetIsSelected() || !oneTargetIsSelected()"
+        (click)="showRawSearch()"
+        type="button"
+        class="btn btn-secondary ms-1" i18n>
+          Raw Search
+      </button>
+        
+      <button type="reset" class="btn btn-outline-secondary ms-auto" i18n>Clear Form</button>
+    </div>
+  </div>
+
+  </form>
+
+</div>
+
+<div class="row mt-2">
+  <div class="col-md-4">
+    <p i18n>Total hits: {{total_hits}}</p>
+  </div>
+  <div class="col-md-4">
+    <p *ngIf="searchMode !== 'acq' && overlayTarget">
+      <span i18n>Record {{overlayTarget}} marked for overlay</span>
+      <span *ngIf="overlayTarget !== overlayTargetTCN" i18n>
+          (TCN {{overlayTargetTCN}})
+      </span>
+    </p>
+    <p *ngIf="searchMode !== 'acq' && !overlayTarget" i18n>No record marked for overlay</p>
+  </div>
+  <div class="col-md-4"><eg-progress-inline *ngIf="searchInProgress"/></div>
+</div>
+
+<div class="row pt-2">
+  <eg-grid #ResultGrid
+    idlClass='mvr'
+    idlField='index'
+    persistKey="{{persistKeyPrefix}}_z3950.search_results"
+    [disableMultiSelect]="true"
+    [dataSource]="gridSource"
+    [stickyHeader]="true"
+    [filterable]="false"
+    [sortable]="true"
+    [useLocalSort]="true"
+    [cellTextGenerator]="cellTextGenerator"
+    (onRowActivate)="viewMARC([$event])">
+
+    <eg-grid-toolbar-button
+      i18n-label label="View MARC"
+      [disabled]="selectedRows().length === 0"
+      (onClick)="viewMARC($event)"/>
+
+    <eg-grid-toolbar-button
+      *ngIf="includeNativeCatalog"
+      i18n-label label="Show in Catalog"
+      [disabled]="!oneLocalSelected()"
+      (onClick)="showInCatalog($event)"/>
+
+    <eg-grid-toolbar-button
+      *ngIf="searchMode !== 'acq'"
+      i18n-label label="Import"
+      [disabled]="!oneSelected()"
+      (onClick)="import($event)"/>
+
+    <eg-grid-toolbar-button
+      *ngIf="searchMode !== 'acq'"
+      i18n-label label="Edit then Import"
+      [disabled]="!oneSelected()"
+      (onClick)="editThenImport($event)"/>
+
+    <eg-grid-toolbar-button
+      *ngIf="includeNativeCatalog && searchMode !== 'acq'"
+      i18n-label label="Mark for Overlay"
+      [disabled]="!oneLocalSelected()"
+      (onClick)="markOverlayTarget($event)"/>
+
+    <eg-grid-toolbar-button
+      *ngIf="includeNativeCatalog && searchMode !== 'acq'"
+      i18n-label label="Overlay"
+      [disabled]="cant_overlay()"
+      (onClick)="editThenOverlay($event)"/>
+
+    <eg-grid-toolbar-button
+      *ngIf="searchMode === 'acq'"
+      i18n-label label="Add to Selection List"
+      [disabled]="noneSelected()"
+      (onClick)="addToSL($event)"/>
+
+    <eg-grid-toolbar-button
+      *ngIf="searchMode === 'acq'"
+      i18n-label label="Add to Purchase Order"
+      [disabled]="noneSelected()"
+      (onClick)="addToPO($event)"/>
+
+    <eg-grid-toolbar-action
+      i18n-label label="View MARC"
+      [disableOnRows]="noneSelectedForGrid"
+      (onClick)="viewMARC($event)"/>
+
+    <eg-grid-toolbar-action
+      *ngIf="includeNativeCatalog"
+      i18n-group group="Local Records"
+      i18n-label label="Show in Catalog"
+      [disableOnRows]="notOneLocalSelectedForGrid"
+      (onClick)="showInCatalog($event)"/>
+
+    <eg-grid-toolbar-action
+      *ngIf="includeNativeCatalog && searchMode !== 'acq'"
+      i18n-group group="Local Records"
+      i18n-label label="Mark for Overlay"
+      [disableOnRows]="notOneLocalSelectedForGrid"
+      (onClick)="markOverlayTarget($event)"/>
+
+    <eg-grid-toolbar-action
+      *ngIf="searchMode !== 'acq'"
+      i18n-label label="Import"
+      [disableOnRows]="notOneSelectedForGrid"
+      (onClick)="import($event)"/>
+
+    <eg-grid-toolbar-action
+      *ngIf="searchMode !== 'acq'"
+      i18n-label label="Edit then Import"
+      [disableOnRows]="notOneSelectedForGrid"
+      (onClick)="editThenImport($event)"/>
+
+<!-- -action@disableOnRows is not smart enough to do what we want, cannot use non-grid info
+    <eg-grid-toolbar-action
+      *ngIf="includeNativeCatalog && searchMode !== 'acq'"
+      i18n-label label="Overlay"
+      [disableOnRows]="cant_overlayForGrid"
+      (onClick)="editThenOverlay($event)"/>
+-->
+
+    <eg-grid-toolbar-action
+      *ngIf="searchMode === 'acq'"
+      i18n-label label="Add to Selection List"
+      [disableOnRows]="noneSelectedForGrid"
+      (onClick)="addToSL($event)"/>
+
+    <eg-grid-toolbar-action
+      *ngIf="searchMode === 'acq'"
+      i18n-label label="Add to Purchase Order"
+      [disableOnRows]="noneSelectedForGrid"
+      (onClick)="addToPO($event)"/>
+
+
+    <eg-grid-column i18n-label label="Result index" [index]="true" path="index" [hidden]="true"/>
+    <eg-grid-column i18n-label label="Record" path='tcn'/>
+    <eg-grid-column i18n-label label="Source" path='service_name'/>
+    <eg-grid-column i18n-label label="Source Code" path='service' [hidden]="true"/>
+    <eg-grid-column i18n-label label="Title" path='title'/>
+    <eg-grid-column i18n-label label="Author" path='author'/>
+    <eg-grid-column i18n-label label="Publisher" path='publisher'/>
+    <eg-grid-column i18n-label label="Publication Date" path='pubdate'/>
+    <eg-grid-column i18n-label label="ISBN" path='isbn'/>
+    <eg-grid-column i18n-label label="Edition" path='edition'/>
+    <eg-grid-column i18n-label label="Local ID" [hidden]="true" path='bibid'/>
+    <eg-grid-column i18n-label label="Local TCN" [hidden]="true" path='bibtcn'/>
+    <eg-grid-column path='*' [hidden]="true"/>
+  </eg-grid>
+</div>
+

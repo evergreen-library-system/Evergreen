@@ -5,9 +5,13 @@
     <a class="nav-link" [ngClass]="{active: tab==='export'}"
       routerLink="/staff/cat/vandelay/export" i18n>Export</a>
   </li>
-  <li class="nav-item">
+  <li class="nav-item" *ngIf="importTabSetting === 'cat' || importTabSetting === 'both'">
     <a class="nav-link" [ngClass]="{active: tab==='import'}"
-      routerLink="/staff/cat/vandelay/import" i18n>Import</a>
+      routerLink="/staff/cat/vandelay/import" i18n>Import for Cataloging</a>
+  </li>
+  <li class="nav-item" *ngIf="importTabSetting === 'acq' || importTabSetting === 'both'">
+    <a class="nav-link" [ngClass]="{active: tab==='acqimport'}"
+      routerLink="/staff/cat/vandelay/acqimport" i18n>Import for Acquisitions</a>
   </li>
   <li class="nav-item">
     <a class="nav-link" [ngClass]="{active: tab==='queue'}"
@@ -37,6 +41,11 @@
     <a class="nav-link" [ngClass]="{active: tab==='active_imports'}"
       routerLink="/staff/cat/vandelay/active_imports" 
       i18n>Recent Imports</a>
+  </li>
+  <li class="nav-item">
+    <a class="nav-link" [ngClass]="{active: tab==='background-import'}"
+      routerLink="/staff/cat/vandelay/background-import" 
+      i18n>Background Imports</a>
   </li>
 </ul>
 

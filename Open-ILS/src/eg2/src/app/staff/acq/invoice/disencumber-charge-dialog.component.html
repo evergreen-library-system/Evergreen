@@ -1,0 +1,47 @@
+<ng-template #dialogContent>
+  <form class="form-validated">
+    <div class="modal-header">
+      <h3 class="modal-title" i18n>Disencumber Direct Charge</h3>
+      <button type="button" class="btn-close btn-close-white"
+        i18n-aria-label aria-label="Close" (click)="close()"></button>
+    </div>
+    <div class="modal-body">
+      <div class="d-flex">
+        <div class="flex-2" i18n>Charge:</div>
+        <div class="flex-3">
+          <eg-combobox idlClass="aiit" [selectedId]="charge.inv_item_type()"
+            [readOnly]="true"></eg-combobox>
+        </div>
+      </div>
+      <div class="d-flex">
+        <div class="flex-2" i18n>Amount:</div>
+        <div class="flex-3">{{charge.cost_billed()}}</div>
+      </div>
+      <div class="d-flex">
+        <div class="flex-2" i18n>Original Fund:</div>
+        <div class="flex-3">
+          <eg-combobox idlClass="acqf" [selectedId]="charge.fund()"
+            [readOnly]="true"></eg-combobox>
+        </div>
+      </div>
+      <div class="d-flex">
+        <div class="flex-2" i18n>Fund Debited:</div>
+        <div class="flex-3">
+          <eg-combobox idlClass="acqf" [selectedId]="charge.fund_debit().fund()"
+            [readOnly]="true"></eg-combobox>
+        </div>
+      </div>
+      <div class="d-flex">
+        <div class="flex-2" i18n>Amount Encumbered:</div>
+        <div class="flex-3">{{charge.fund_debit().amount()}}</div>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button type="button" class="btn btn-success"
+        (click)="close(true)" i18n>Disencumber</button>
+      <button type="button" class="btn btn-warning"
+        (click)="close()" i18n>Cancel</button>
+    </div>
+  </form>
+</ng-template>
+

@@ -1,0 +1,36 @@
+.duplicate {
+    border-color: red;
+    background-color: pink;
+}
+
+eg-fm-record-editor {
+  width: 100%;
+}
+
+eg-fm-record-editor .modal-body {
+  padding: 0 0 0.5rem;
+}
+
+eg-fm-record-editor .modal-footer {
+  border: none;
+  margin: 0;
+  padding: 0;
+}
+
+eg-fm-record-editor .modal-body form {
+  column-count: 2;
+  column-gap: 1.5rem;
+  column-width: auto;
+}
+
+eg-fm-record-editor .form-group.row {
+  width: 100%;
+  align-items: center;
+}
+
+eg-fm-record-editor .common-form.striped-odd .row:nth-child(2n+1),
+eg-fm-record-editor .striped-rows-odd .row:nth-child(2n+1),
+eg-fm-record-editor .modal-body .row:nth-of-type(2n+1) {
+  background-color: #fff;
+  border: none;
+}

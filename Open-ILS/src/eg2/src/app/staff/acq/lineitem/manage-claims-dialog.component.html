@@ -3,7 +3,7 @@
     <div class="modal-header">
       <h3 class="modal-title" i18n>Manage Claims</h3>
       <button type="button" class="btn-close btn-close-white"
-        i18n-aria-label aria-label="Close" (click)="close()"></button>
+              i18n-aria-label aria-label="Close" (click)="close({claimMade:false})"></button>
     </div>
     <div class="modal-body">
       <h4 i18n>Claims</h4>
@@ -24,7 +24,7 @@
       <hr>
       <h4 i18n>Initiate New Claims</h4>
       <div *ngFor="let lid of li.lineitem_details()" i18n>
-        <input type="checkbox" name="lidsToClaim" [(ngModel)]="lid._selected_for_claim">
+        <input type="checkbox" name="lidsToClaim-{{lid.id()}}" [(ngModel)]="lid._selected_for_claim">
         {{lid.barcode()}} /
         <ng-container *ngIf="lid.cancel_reason()">Cancelled ({{lid.cancel_reason().label()}})</ng-container>
         <ng-container *ngIf="lid.recv_time() && !lid.cancel_reason()">Received {{lid.recv_time() | formatValue:'timestamp'}}</ng-container>
@@ -51,10 +51,12 @@
     
     <div class="modal-footer">
       <button type="button" class="btn btn-success"
-        [disabled]="!canPerformClaim()"
+        [disabled]="!canPerformClaim()" *ngIf="li.lineitem_details().length"
         (click)="claimItems()" i18n>Claim Selected</button>
+      <button type="button" class="btn btn-warning" *ngIf="insideBatch"
+                            (click)="close({breakChain: true})" i18n>Abort Batch</button>
       <button type="button" class="btn btn-normal"
-        (click)="close()" i18n>Exit Dialog</button>
+                            (click)="close({claimMade: false})" i18n>Exit Dialog</button>
     </div>
   </form>
 </ng-template>

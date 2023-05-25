@@ -457,6 +457,41 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 		</permacrud>
 	</class>
 
+	<class id="vbi" controller="open-ils.cstore open-ils.pcrud" oils_obj:fieldmapper="vandelay::background_import" oils_persist:tablename="vandelay.background_import" reporter:label="Import/Overlay Background Import Job">
+		<fields oils_persist:primary="id" oils_persist:sequence="vandelay.background_import_id_seq">
+			<field reporter:label="Background Import Job ID" name="id" reporter:selector="name" reporter:datatype="id"/>
+			<field reporter:label="Owner" name="owner" reporter:datatype="link"/>
+			<field reporter:label="Workstation" name="workstation" reporter:datatype="link"/>
+			<field reporter:label="Notification Email" name="email" reporter:datatype="text"/>
+			<field reporter:label="Type" name="import_type" reporter:datatype="text"/>
+			<field reporter:label="Parameters" name="params" reporter:datatype="text"/>
+			<field reporter:label="State" name="state" reporter:datatype="text"/>
+			<field reporter:label="Request Time" name="request_time" reporter:datatype="timestamp"/>
+			<field reporter:label="Complete Time" name="complete_time" reporter:datatype="timestamp"/>
+			<field reporter:label="Queue ID" name="queue" reporter:datatype="int"/>
+		</fields>
+		<links>
+			<link field="owner" reltype="has_a" key="id" map="" class="au"/>
+			<link field="workstation" reltype="has_a" key="id" map="" class="aws"/>
+		</links>
+		<permacrud xmlns="http://open-ils.org/spec/opensrf/IDL/permacrud/v1">
+			<actions>
+				<create permission="CREATE_BACKGROUND_IMPORT" owning_user="owner">
+                    <context link="workstation" field="owning_lib"/>
+                </create>
+				<retrieve permission="VIEW_BACKGROUND_IMPORT" owning_user="owner">
+                    <context link="workstation" field="owning_lib"/>
+                </retrieve>
+				<update permission="UPDATE_BACKGROUND_IMPORT" owning_user="owner">
+                    <context link="workstation" field="owning_lib"/>
+                </update>
+				<delete permission="UPDATE_BACKGROUND_IMPORT" owning_user="owner">
+                    <context link="workstation" field="owning_lib"/>
+                </delete>
+			</actions>
+		</permacrud>
+	</class>
+
 	<class id="vbq" controller="open-ils.cstore open-ils.pcrud" oils_obj:fieldmapper="vandelay::bib_queue" oils_persist:tablename="vandelay.bib_queue" reporter:label="Import/Overlay Bib Queue">
 		<fields oils_persist:primary="id" oils_persist:sequence="vandelay.queue_id_seq">
 			<field reporter:label="Queue ID" name="id" reporter:selector="name" reporter:datatype="id"/>
@@ -9407,8 +9442,8 @@ SELECT  usr,
 			<field reporter:label="Receiver" name="receiver" reporter:datatype="org_unit" oils_obj:required="true"/>
 			<field reporter:label="Provider" name="provider" reporter:datatype="link" oils_obj:required="true"/>
 			<field reporter:label="Shipper" name="shipper" reporter:datatype="link" oils_obj:required="true"/>
-			<field reporter:label="Invoice Date" name="recv_date" reporter:datatype="timestamp"/>
-			<field reporter:label="Receive Method" name="recv_method" reporter:datatype="link"/>
+			<field reporter:label="Invoice Date" name="recv_date" reporter:datatype="timestamp" oils_obj:required="true"/>
+			<field reporter:label="Receive Method" name="recv_method" reporter:datatype="link" oils_obj:required="true"/>
 			<field reporter:label="Invoice Type" name="inv_type" reporter:datatype="text"/>
 			<field reporter:label="Vendor Invoice ID" name="inv_ident" reporter:datatype="text" oils_obj:required="true"/>
 			<field reporter:label="Payment Auth" name="payment_auth" reporter:datatype="text"/>
@@ -11557,6 +11592,34 @@ SELECT  usr,
 				<retrieve permission="ADMIN_CLAIM_POLICY VIEW_PROVIDER" context_field="org_unit"/>
 				<update permission="ADMIN_CLAIM_POLICY" context_field="org_unit"/>
 				<delete permission="ADMIN_CLAIM_POLICY" context_field="org_unit"/>
+			</actions>
+		</permacrud>
+	</class>
+
+	<class id="acqclpaouv" controller="open-ils.cstore open-ils.pcrud" oils_obj:fieldmapper="acq::claim_policy_action_org_unit_view" oils_persist:readonly="true" reporter:label="Claim Policy Action Org Unit View">
+		<oils_persist:source_definition><![CDATA[
+			SELECT id, claim_policy, action_interval, action,
+				(SELECT org_unit FROM acq.claim_policy cp WHERE cp.id = cpa.claim_policy) AS claim_policy_org_unit,
+				(SELECT org_unit FROM acq.claim_event_type cet WHERE cet.id = cpa.action) AS action_org_unit
+			FROM acq.claim_policy_action cpa
+			]]></oils_persist:source_definition>
+		<fields oils_persist:primary="id" oils_persist:sequence="acq.claim_policy_action_id_seq">
+			<field reporter:label="ID" name="id" reporter:datatype="id" reporter:selector="action"/>
+			<field reporter:label="Claim Policy" name="claim_policy" reporter:datatype="link"/>
+			<field reporter:label="Action Interval" name="action_interval" reporter:datatype="interval"/>
+			<field reporter:label="Action (Event Type)" name="action" reporter:datatype="link"/>
+			<field reporter:label="Claim Policy Org Unit" name="claim_policy_org_unit" reporter:datatype="org_unit"/>
+			<field reporter:label="Claim Event Type Org Unit" name="action_org_unit" reporter:datatype="org_unit"/>
+		</fields>
+		<links>
+			<link field="claim_policy" reltype="has_a" key="id" map="" class="acqclp"/>
+			<link field="action" reltype="has_a" key="id" map="" class="acqclet"/>
+		</links>
+		<permacrud xmlns="http://open-ils.org/spec/opensrf/IDL/permacrud/v1">
+			<actions>
+				<retrieve permission="ADMIN_CLAIM_POLICY VIEW_PROVIDER">
+					<context link="claim_policy" field="org_unit"/>
+                </retrieve>
 			</actions>
 		</permacrud>
 	</class>

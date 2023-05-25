@@ -8,6 +8,7 @@ import {PicklistComponent} from './picklist.component';
 import {PicklistSummaryComponent} from './summary.component';
 import {HttpClientModule} from '@angular/common/http';
 import {AcqCommonModule} from '../acq-common.module';
+import {Z3950SearchModule} from '@eg/staff/share/z3950-search/z3950-search.module';
 
 @NgModule({
     declarations: [
@@ -15,6 +16,7 @@ import {AcqCommonModule} from '../acq-common.module';
         PicklistSummaryComponent
     ],
     imports: [
+        Z3950SearchModule,
         StaffCommonModule,
         CatalogCommonModule,
         LineitemModule,

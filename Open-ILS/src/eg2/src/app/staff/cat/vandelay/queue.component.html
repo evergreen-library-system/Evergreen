@@ -12,7 +12,7 @@
   </eg-confirm-dialog>
 
   <h2 i18n>Queue {{queueSummary.queue.name()}}</h2>
-  <div class="row pb-2">
+  <div class="row pb-4">
     <div class="col-lg-6">
       <div class="card tight-card">
         <h5 class="card-header" i18n>Queue Summary</h5>
@@ -111,6 +111,9 @@
 </ng-template>
 
 <ng-template #importedAsTmpl let-row="row">
+  <a *ngIf="queueType==='acq'" target="_blank" routerLink="/staff/catalog/record/{{row.imported_as}}">
+    {{row.imported_as}}
+  </a>
   <a *ngIf="queueType==='bib'" target="_blank" routerLink="/staff/catalog/record/{{row.imported_as}}">
     {{row.imported_as}}
   </a>

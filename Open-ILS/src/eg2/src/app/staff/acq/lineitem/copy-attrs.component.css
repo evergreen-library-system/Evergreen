@@ -1,22 +1,21 @@
-button.dropdown-item {
-    padding: 0;
-}
+/* see also combobox.component.css */
 
-button.dropdown-item span {
-    display: block;
-    padding: .25rem 1.5rem;
+.fund-balance-state-stop:not(:in(button)),
+.fund-balance-state-warning:not(:in(button)) {
+    padding-left: .2rem;
 }
 
 .fund-balance-state-stop,
-button.dropdown-item .fund-balance-state-stop {
+button.dropdown-item:has(.fund-balance-state-stop) {
     background-color: #f8d7da;
     color: #842029;
     font-weight: bold;
-    padding-left: .2rem;
 }
-button.dropdown-item.active .fund-balance-state-stop {
+
+button.dropdown-item.active:has(.fund-balance-state-stop) {
     background-color: #F1AFB5;
 }
+
 /* show octagon/stop ! ("report") icon */
 .fund-balance-state-stop:before {
     content: "\e160";
@@ -27,15 +26,16 @@ button.dropdown-item.active .fund-balance-state-stop {
 }
 
 .fund-balance-state-warning,
-button.dropdown-item .fund-balance-state-warning {
+button.dropdown-item:has(.fund-balance-state-warning) {
     background-color: #ffe69c;
     color: #984C0C;
     font-weight: bold;
-    padding-left: .2rem;
 }
-button.dropdown-item.active .fund-balance-state-warning {
+
+button.dropdown-item.active:has(.fund-balance-state-warning) {
     background-color: #FFDA6A;
 }
+
 /* show triangle ! ("warning") icon */
 .fund-balance-state-warning:before {
     content: "\e002";

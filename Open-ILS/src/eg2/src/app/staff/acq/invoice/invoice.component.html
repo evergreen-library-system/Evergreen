@@ -1,0 +1,142 @@
+<ng-container *ngIf="loading || needsContextPerm()">
+  <eg-staff-banner *ngIf="!errorText" i18n-bannerText bannerText="Working..."></eg-staff-banner>
+  <eg-staff-banner *ngIf="errorText" i18n-bannerText bannerText="Error Retrieving or Creating Invoice"></eg-staff-banner>
+  <div *ngIf="errorText">{{errorText}}</div>
+  <div *ngIf="context === 'view' && needs_invoice_view_perm" i18n>
+    You lack permission to view invoices at this workstation.
+  </div>
+  <div *ngIf="context === 'create' && needs_invoice_create_perm" i18n>
+    You lack permission to create invoices at this workstation.
+  </div>
+  <div *ngIf="attachedPoId" class="mt-2">
+    <a routerLink="/staff/acq/po/{{attachedPoId}}" queryParamsHandling="">
+      <button class="btn btn-info" i18n>Return to Purchase Order</button>
+    </a>
+  </div>
+  <div *ngIf="errorText" class="mt-2">
+    <a routerLink="/staff/acq/invoice/create" queryParamsHandling="">
+      <button class="btn btn-info" i18n>Create a new Invoice</button>
+    </a>
+  </div>
+</ng-container>
+<ng-container *ngIf="!loading && !needsContextPerm()">
+  <eg-staff-banner i18n-bannerText 
+                   bannerText="Invoice #{{invoiceId()}} ({{invoiceService.currentInvoice.inv_ident()}})">
+  </eg-staff-banner>
+
+  <ng-template let-isTop="isTop" #toolbar>
+    <div class="p-2">
+      <div class="row mt-1 justify-content-start">
+        <div class="col-lg-12 invoice-actions">
+          <button class="btn btn-primary" type="button"
+            [disabled]="!isSafeToSaveAndClear()"
+            (click)="onNewInvoiceClick()" i18n>New Invoice</button>
+          <button *ngIf="!invoiceService.currentInvoice?.close_date()" class="btn btn-normal" type="button"
+            [disabled]="!isSafeToSaveAndCloseInvoice()" (click)="saveAndCloseInvoice()" i18n>Close Invoice</button>
+          <button *ngIf="invoiceService.currentInvoice?.close_date()" class="btn btn-normal" type="button"
+            [disabled]="!testReopenPerm()"
+            (click)="reopenInvoice()" i18n>Re-open Invoice</button>
+          <ng-container *ngIf="!isTop">
+            <button class="btn btn-info" type="button" [disabled]="!isSafeToSaveAndProrateInvoice()"
+              (click)="saveAndProrateInvoice()" i18n>Prorate</button>
+          </ng-container>
+          <button class="btn btn-success" type="button" [disabled]="!isSafeToSaveInvoice()" (click)="saveInvoice()" i18n>Save</button>
+          <!--
+          <a routerLink="./printer" class="label-with-material-icon">
+            <span class="material-icons small me-1" aria-hidden="true">print</span>
+            <span i18n>Print</span>
+          </a>-->
+          <ng-container *ngIf="showLegacyLinks">
+            <a href="/eg/staff/acq/legacy/invoice/view/{{invoiceId()}}" target="_blank">
+              Show Invoice in Legacy Interface
+            </a>
+          </ng-container>
+          <ng-container *ngIf="isTop">
+            <button type="button" (click)="toggleFmEditor()"
+                    class="btn btn-normal label-with-material-icon"
+                    [title]="showFmEditor? 'Hide Edit Form' : 'Show Edit Form'" i18n-title
+                    [attr.aria-label]="showFmEditor? 'Hide Edit Form' : 'Show Edit Form'" i18n-aria-label>
+              <span *ngIf="!showFmEditor" aria-hidden="true"
+                                          class="material-icons mat-icon-in-button">unfold_more</span>
+              <span *ngIf="showFmEditor" aria-hidden="true"
+                                         class="material-icons mat-icon-in-button">unfold_less</span>
+            </button>
+          </ng-container>
+        </div>
+      </div>
+    </div>
+  </ng-template>
+
+  <ng-container *ngTemplateOutlet="toolbar; context: {isTop: true}"></ng-container>
+
+  <eg-acq-invoice-details [style.display]="showFmEditor ? 'block' : 'none'" #invoiceDetails></eg-acq-invoice-details>
+
+  <ng-container *ngIf="!isBasePage()">
+    <div class="mt-2">
+      <a routerLink="/staff/acq/invoice/{{invoiceId()}}" queryParamsHandling="merge">
+        <button class="btn btn-info" i18n>Return</button>
+      </a>
+    </div>
+  </ng-container>
+
+  <div>
+    <div class="box" *ngFor="let poId of finalizablePoList">
+      <eg-po-label [poId]="poId" showEstimatedCost="true">
+        <br /><input class="form-check-input" type="checkbox" (change)="finalizeDisabled = false;"
+                                              id="finalize-po-{{poId}}" [(ngModel)]="finalizeThese[poId]">
+        <label class="form-label form-check-label" for="finalize-po-{{poId}}" i18n>
+          Final invoice for Blanket order?
+        </label>
+      </eg-po-label>
+    </div>
+    <!-- We'll let the Save button handle finalizing checked blanket orders -->
+    <!--
+    <div class="box" *ngIf="finalizablePoList?.length > 0">
+      <button [disabled]="finalizeDisabled" (click)="finalizeBlanketOrders()"
+         class="btn btn-md btn-warning" i18n>Finalize Checked Orders</button>
+    </div>
+    -->
+  </div>
+
+  <div class="row" id="acq-lineitems-and-search-div">
+    <div class="col-lg-12">
+      <ul ngbNav #acqInvoiceTabs="ngbNav" class="nav-tabs" [keyboard]="true" [roles]="false" role="tablist" (navChange)="onTabChange($event)">
+        <li role="presentation" [ngbNavItem]="'main'">
+          <a role="tab" ngbNavLink i18n>Invoice Line Items</a>
+          <ng-template ngbNavContent>
+            <eg-lineitem-list [poId]="attachedPoId"></eg-lineitem-list>
+            <hr class="mt-3 pt-3"/>
+            <!-- gets its invoice from invoiceService -->
+            <ng-container *ngIf="isBasePage()">
+              <eg-acq-invoice-charges #invoiceCharges></eg-acq-invoice-charges>
+            </ng-container>
+          </ng-template>
+        </li>
+        <li role="presentation" [ngbNavItem]="'receiving'" [disabled]="invoice() && invoice().close_date()">
+          <a role="tab" ngbNavLink i18n>Batch Receive</a>
+          <ng-template ngbNavContent>
+            <eg-acq-invoice-batch-receive></eg-acq-invoice-batch-receive>
+          </ng-template>
+        </li>
+        <li role="presentation" [ngbNavItem]="'search'" [disabled]="invoice() && invoice().close_date()">
+          <a role="tab" ngbNavLink i18n>Search</a>
+          <ng-template ngbNavContent>
+            <eg-lineitem-results [invoice]="invoice()" [providerId]="providerId()"
+              callbackButtonLabel="Add Line Item(s) to Invoice" i18n-callbackButtonLabel
+              [callbackButtonFunction]="linkFromSearch"></eg-lineitem-results>
+          </ng-template>
+        </li>
+        <li role="presentation" [ngbNavItem]="'printing'" [disabled]="invoice() && invoice().isnew()">
+          <a role="tab" ngbNavLink i18n>Print Preview</a>
+          <ng-template ngbNavContent>
+            <eg-acq-invoice-print></eg-acq-invoice-print>
+          </ng-template>
+        </li>
+      </ul>
+      <div [ngbNavOutlet]="acqInvoiceTabs"></div>
+    </div>
+  </div>
+
+  <ng-container *ngTemplateOutlet="toolbar; context: {isTop: false}"></ng-container>
+
+</ng-container>

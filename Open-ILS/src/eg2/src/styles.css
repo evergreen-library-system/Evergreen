@@ -480,7 +480,11 @@ button.input-group-text.text-danger {
 .btn-primary:hover,
 .btn-primary.hover,
 .btn-primary:focus,
-.btn-primary.focus {
+.btn-primary.focus,
+.btn-check:active + .btn-primary, 
+.btn-check:checked + .btn-primary, 
+.btn-primary.active,
+.show > .btn-primary.dropdown-toggle {
   background-color: #0848A5;
   border-color: #0848A5;
   color: #fff;
@@ -524,9 +528,19 @@ button.input-group-text.text-danger {
 .btn-info:hover,
 .btn-info.hover,
 .btn-info:focus,
-.btn-info.focus {
+.btn-info.focus,
+.btn-check:active + .btn-info, 
+.btn-check:checked + .btn-info, 
+.btn-info.active,
+.show > .btn-info.dropdown-toggle {
   background-color: #076376;
   border-color: #076376;
+  color: #fff;
+}
+
+.btn-info.disabled, .btn-info:disabled {
+  background-color: rgba(var(--bs-info-rgb), 0.5);
+  border-color: rgba(var(--bs-info-rgb), 0.5);
   color: #fff;
 }
 
@@ -573,7 +587,11 @@ button.input-group-text.text-danger {
 .btn-success:hover,
 .btn-success.hover,
 .btn-success:focus,
-.btn-success.focus {
+.btn-success.focus, 
+.btn-check:active + .btn-success, 
+.btn-check:checked + .btn-success, 
+.btn-success.active,
+.show > .btn-success.dropdown-toggle {
   background-color: #157146;
   border-color: #157146;
   color: #fff;
@@ -642,6 +660,101 @@ button.input-group-text.text-danger {
 
 .btn-outline-normal:hover,
 .btn-outline-normal:focus {
+  color: var(--bs-gray-900);
+  background-color: var(--bs-gray-200);
+  border: 1px solid var(--bs-gray-400);
+}
+
+.btn-normal[disabled],
+.btn-destroy[disabled] {
+  color: var(--bs-gray-700);
+  background-color: var(--bs-gray-200);
+  border: 1px solid var(--bs-gray-300);
+}
+
+.btn-outline-normal[disabled],
+.btn-outline-destroy[disabled] {
+  color: var(--bs-gray-700);
+  background-color: transparent;
+  border: 1px solid var(--bs-gray-300);
+}
+
+.btn-link.btn-destroy {
+  background-color: transparent;
+  border-color: transparent;
+}
+
+.btn-destroy:hover,
+.btn-destroy:focus,
+.btn-link.btn-destroy:hover,
+.btn-link.btn-destroy:focus {
+  color: var(--bs-red-600);
+  background-color: var(--bs-gray-200);
+  border: 1px solid var(--bs-red);
+  box-shadow: 0 0 0 .25rem rgba(var(--bs-red-rgb), .25);
+}
+
+.btn-destroy:active {
+  color: #fff;
+  background-color: var(--bs-red);
+  border: 1px solid var(--bs-red-700);
+}
+
+.btn-link.btn-destroy:active {
+  color: var(--bs-red-700);
+  background-color: transparent;
+  border: 1px solid var(--bs-red-700);
+}
+
+.btn-outline-destroy:hover,
+.btn-outline-destroy:focus {
+  color: var(--bs-red-600);
+  background-color: transparent;
+  border: 1px solid var(--bs-red);
+  box-shadow: 0 0 0 .25rem rgba(var(--bs-red-rgb), .25);
+}
+
+.btn-outline-destroy:active {
+  color: var(--bs-red);
+  background-color: transparent;
+  border: 1px solid var(--bs-red-700);
+}
+
+/* inset a solid outline instead of using Bootstrap's box-shadow style */
+button.focus-border:focus,
+button.focus-border:focus-visible {
+    box-shadow: none;
+    outline: 3px solid var(--bs-primary);
+    outline-offset: -3px;
+}
+
+.btn-normal,
+.btn-destroy,
+.btn-outline-normal:hover,
+.btn-outline-normal:focus {
+  color: var(--bs-gray-900);
+  background-color: var(--bs-gray-200);
+  border: 1px solid var(--bs-gray-400);
+}
+
+.btn-normal:hover,
+.btn-normal:focus,
+.btn-normal:active {
+  color: var(--bs-gray-900);
+  background-color: var(--bs-gray-300);
+  border: 1px solid var(--bs-gray-400);
+}
+
+.btn-outline-normal,
+.btn-outline-destroy {
+  color: var(--bs-gray-900);
+  background-color: transparent;
+  border: 1px solid var(--bs-gray-400);
+}
+
+.btn-outline-normal:hover,
+.btn-outline-normal:focus,
+.btn-outline-normal:active {
   color: var(--bs-gray-900);
   background-color: var(--bs-gray-200);
   border: 1px solid var(--bs-gray-400);

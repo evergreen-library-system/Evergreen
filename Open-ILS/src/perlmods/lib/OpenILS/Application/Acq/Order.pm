@@ -1016,6 +1016,8 @@ __PACKAGE__->register_method(
 sub fund_exceeds_balance_percent_api {
     my ($self, $conn, $auth, $fund_id, $debit_amount) = @_;
 
+    $logger->info("1: testing fund $fund_id against $debit_amount increase");
+
     $debit_amount ||= 0;
 
     my $e = new_editor("authtoken" => $auth);
@@ -1031,6 +1033,13 @@ sub fund_exceeds_balance_percent_api {
 
     $e->disconnect;
     return $result;
+}
+
+# so other packages can get at fund_exceeds_balance_percent
+sub fund_exceeds_balance_percent_wrapper {
+    my ($self, $fund, $debit_amount, $e, $which) = @_;
+    $logger->info("2: testing fund " . $fund->id . " against $debit_amount increase");
+    return fund_exceeds_balance_percent($fund, $debit_amount, $e, $which);
 }
 
 sub fund_exceeds_balance_percent {
@@ -1481,8 +1490,8 @@ sub upload_records {
 
     my $cache = OpenSRF::Utils::Cache->new;
 
-    my $data = $cache->get_cache("vandelay_import_spool_$key");
-    my $filename        = $data->{path};
+    my $data = $cache->get_cache("vandelay_import_spool_$key") || {};
+    my $filename        = $data->{path} || $args->{spool_filename};
     my $provider        = $args->{provider};
     my $picklist        = $args->{picklist};
     my $create_po       = $args->{create_po};
@@ -2319,6 +2328,60 @@ sub receive_lineitem_batch_api {
         # Editor may have no die_event to return
         receive_lineitem($mgr, $li_id) or return 
             $e->die_event || OpenILS::Event->new('ACQ_LI_RECEIVE_FAILED');
+
+        $mgr->respond;
+    }
+
+    $e->commit or return $e->die_event;
+    $mgr->respond_complete;
+    $mgr->run_post_response_hooks;
+}
+
+__PACKAGE__->register_method(
+    method => 'receive_lineitem_detail_batch_api',
+    api_name    => 'open-ils.acq.lineitem_detail.receive.batch',
+    stream => 1,
+    signature => {
+        desc => 'Mark lineitem details as received',
+        params => [
+            {desc => 'Authentication token', type => 'string'},
+            {desc => 'lineitem detail ID list', type => 'array'}
+        ],
+        return => {desc =>
+            q/On success, stream of objects describing changes to LIs and
+            possibly PO; onerror, Event.  Any event, even after lots of other
+            objects, should mean general failure of whole batch operation./
+        }
+    }
+);
+
+sub receive_lineitem_detail_batch_api {
+    my ($self, $conn, $auth, $lid_idlist) = @_;
+
+    return unless ref $lid_idlist eq 'ARRAY' and @$lid_idlist;
+
+    my $e = new_editor(xact => 1, authtoken => $auth);
+    return $e->die_event unless $e->checkauth;
+
+    my $mgr = new OpenILS::Application::Acq::BatchManager(
+        editor => $e, conn => $conn
+    );
+
+    for my $lid_id (map { int $_ } @$lid_idlist) {
+        my $lid = $e->retrieve_acq_lineitem_detail([
+            $lid_id, {
+                flesh => 2,
+                flesh_fields => { acqlid => ['lineitem'], jub => ['purchase_order'] }
+            }
+        ]) or return $e->die_event;
+
+        return $e->die_event unless $e->allowed(
+            'RECEIVE_PURCHASE_ORDER', $lid->lineitem->purchase_order->ordering_agency
+        );
+
+        # Editor may have no die_event to return
+        receive_lineitem_detail($mgr, $lid_id) or return 
+            $e->die_event || OpenILS::Event->new('ACQ_LID_RECEIVE_FAILED');
 
         $mgr->respond;
     }

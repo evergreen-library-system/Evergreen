@@ -1,4 +1,4 @@
-<eg-staff-banner bannerText="Load MARC Order Records" i18n-bannerText *ngIf="mode !== 'getImportParams'">
+<eg-staff-banner bannerText="Load MARC Order Records" i18n-bannerText *ngIf="mode !== 'getImportParams' && !vandelayEmbed">
 </eg-staff-banner>
 
 <div class="row" *ngIf="mode !== 'getImportParams'">
@@ -258,6 +258,27 @@
       <input #fileSelector (change)="fileSelected($event)" 
         id="upload-file" required class="form-control" type="file"/>
     </div>
+    <div class="col-lg-3">
+      <label class="form-label" for="background-import" i18n>Request background import</label>
+      <div *ngIf="tooMuchForBackground()" class="small" i18n>Not available when PO or Selection List actions are requested</div>
+    </div>
+    <div class="col-lg-3">
+      <input class="form-check-input" type="checkbox"
+        id="background-import" [disabled]="tooMuchForBackground()"
+        [(ngModel)]="backgroundImportForUpload">
+    </div>
+  </div>
+  <div class="row" *ngIf="!importSelection()">
+    <div class="col-lg-6"></div>
+    <div class="col-lg-3">
+      <label class="form-label" for="background-import-email" i18n>Background Import Notification Email</label>
+    </div>
+    <div class="col-lg-3">
+      <input [disabled]="!backgroundImportForUpload"
+        class="form-control" type="text" id="background-import-email"
+        name="background-import-email" i18n-placeholder placeholder="Email address..."
+        [(ngModel)]="backgroundImportEmail">
+    </div>
   </div>
   <div class="row" *ngIf="importSelection()">
     <div class="col-lg-3">
@@ -278,7 +299,7 @@
   <div class="row" *ngIf="mode !== 'getImportParams'">
     <div class="d-grid gap-2 col-6 mx-auto">
       <button type="button" class="btn btn-success btn-lg fw-bold"
-        [disabled]="isUploading || !hasNeededData()" 
+        [disabled]="isUploading || (uploadComplete && !uploadError) || !hasNeededData()" 
         (click)="upload()" i18n>Upload</button>
     </div>
   </div>
@@ -314,14 +335,18 @@
     </ng-container>
     <ng-container *ngIf="!uploadError">
       <div class="col-lg-6 offset-lg-3">
-        <h2><label class="form-label" i18n>Upload Complete!</label></h2>
+        <h2>
+          <label *ngIf="!backgroundImportForUpload" class="form-label" i18n>Upload Complete</label>
+          <label *ngIf="backgroundImportForUpload" class="form-label" i18n>Upload Complete for Background Import</label>
+        </h2>
         <div class="row" [hidden]="!uploadComplete">
-          <div class="col-2">
+          <div class="col-2" >
             <label class="form-label" i18n>Go to:</label>
           </div>
-          <div class="col-2"><a routerLink="/staff/cat/vandelay/queue/{{recordType}}/{{activeQueueId}}" target="_blank" i18n>Queue</a></div>
-          <div class="col-2" [hidden]="!selectedSelectionList"><a routerLink="/staff/acq/picklist/{{activeSelectionListId}}" target="_blank">Selection List</a></div>
-          <div class="col-2" [hidden]="!createPurchaseOrder"><a routerLink="/staff/acq/po/{{newPO}}" target="_blank">Purchase Order</a></div>
+          <div class="col-2" [hidden]="backgroundImportForUpload"><a routerLink="/staff/cat/vandelay/queue/{{recordType}}/{{activeQueueId}}" target="_blank" i18n>Queue</a></div>
+          <div class="col-2" [hidden]="backgroundImportForUpload || !selectedSelectionList"><a routerLink="/staff/acq/picklist/{{activeSelectionListId}}" target="_blank">Selection List</a></div>
+          <div class="col-2" [hidden]="backgroundImportForUpload || !createPurchaseOrder"><a routerLink="/staff/acq/po/{{newPO}}" target="_blank">Purchase Order</a></div>
+          <div class="col-4" [hidden]="!backgroundImportForUpload"><a routerLink="/staff/cat/vandelay/background-import" target="_blank" i18n>Background Import Management</a></div>
         </div>
       </div>
     </ng-container>

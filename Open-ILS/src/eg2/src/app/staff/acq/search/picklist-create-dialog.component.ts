@@ -63,7 +63,7 @@ export class PicklistCreateDialogComponent
                   }
                   this.close(false);
               } else {
-                  console.log(res);
+                  console.debug(res);
               }
           },
           (err: unknown) => {

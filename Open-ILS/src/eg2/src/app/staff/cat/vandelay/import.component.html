@@ -56,7 +56,7 @@
           i18n-entryLabel></eg-combobox-entry>
         <eg-combobox-entry entryId="authority" entryLabel="Authority Records" 
           i18n-entryLabel></eg-combobox-entry>
-        <eg-combobox-entry entryId="bib-acq" entryLabel="Acquisitions Records" 
+        <eg-combobox-entry entryId="acq" entryLabel="Acquisitions Records" 
           i18n-entryLabel></eg-combobox-entry>
       </eg-combobox>
     </div>
@@ -75,19 +75,16 @@
   </div>
   <div class="row">
     <div class="col-lg-3">
-      <label class="form-label" for="queue-select" i18n>Select or Create a Queue</label>
+      <label class="form-label" for="match-set-select" i18n>Record Match Set</label>
     </div>
     <div class="col-lg-3">
-      <eg-combobox [entries]="formatEntries('activeQueues')"
-        #queueSelector
-        domId="queue-select"
-        [startId]="startQueueId"
-        [startIdFiresOnChange]="true"
-        [disabled]="startQueueId"
-        (onChange)="selectedQueue=$event" i18n-placeholder
-        [required]="true"
-        [allowFreeText]="true" placeholder="Select or Create a Queue...">
-      </eg-combobox>
+      <eg-combobox #matchSetSelector
+        domId="match-set-select"
+        [entries]="formatEntries('matchSets')" 
+        [disabled]="(selectedQueue && !selectedQueue.freetext) || importSelection()"
+        [startId]="selectedMatchSet || defaultMatchSet"
+        (onChange)="selectEntry($event, 'matchSets')"
+        placeholder="Match Set..." i18n-placeholder></eg-combobox>
     </div>
     <div class="col-lg-3">
       <label class="form-label" for="bucket-select" i18n>Limit Matches to Bucket</label>
@@ -104,28 +101,6 @@
   </div>
   <div class="row">
     <div class="col-lg-3">
-      <label class="form-label" for="match-set-select" i18n>Record Match Set</label>
-    </div>
-    <div class="col-lg-3">
-      <eg-combobox #matchSetSelector
-        domId="match-set-select"
-        [entries]="formatEntries('matchSets')" 
-        [disabled]="(selectedQueue && !selectedQueue.freetext) || importSelection()"
-        [startId]="selectedMatchSet || defaultMatchSet"
-        (onChange)="selectEntry($event, 'matchSets')"
-        placeholder="Match Set..." i18n-placeholder></eg-combobox>
-    </div>
-    <div class="col-lg-3">
-        <label class="form-label" for="import-non-matching" i18n>Import Non-Matching Records</label>
-    </div>
-    <div class="col-lg-3">
-      <input class="form-check-input" type="checkbox" 
-        id="import-non-matching"
-        [(ngModel)]="importNonMatching">
-    </div>
- </div>
-  <div class="row">
-    <div class="col-lg-3">
       <label class="form-label" for="item-import-def" i18n>Holdings Import Profile</label>
     </div>
     <div class="col-lg-3"> <!-- TODO disable for authority -->
@@ -139,13 +114,14 @@
       </eg-combobox>
     </div>
     <div class="col-lg-3">
-        <label class="form-label" for="merge-on-exact" i18n>Merge On Exact Match (901c)</label>
+        <label class="form-label" for="import-non-matching" i18n>Import Non-Matching Records</label>
     </div>
     <div class="col-lg-3">
       <input class="form-check-input" type="checkbox" 
-        id="merge-on-exact" [(ngModel)]="mergeOnExact">
+        id="import-non-matching"
+        [(ngModel)]="importNonMatching">
     </div>
-  </div>
+ </div>
   <div class="row">
     <div class="col-lg-3">
       <label class="form-label" for="merge-profiles" i18n>Merge Profile</label>
@@ -159,11 +135,11 @@
       </eg-combobox>
     </div>
     <div class="col-lg-3">
-        <label class="form-label" for="merge-on-single" i18n>Merge On Single Match</label>
+        <label class="form-label" for="merge-on-exact" i18n>Merge On Exact Match (901c)</label>
     </div>
     <div class="col-lg-3">
       <input class="form-check-input" type="checkbox" 
-        id="merge-on-single" [(ngModel)]="mergeOnSingleMatch">
+        id="merge-on-exact" [(ngModel)]="mergeOnExact">
     </div>
   </div>
   <div class="row">
@@ -181,11 +157,11 @@
       </eg-combobox>
     </div>
     <div class="col-lg-3">
-      <label class="form-label" for="merge-on-best" i18n>Merge On Best Match</label>
+        <label class="form-label" for="merge-on-single" i18n>Merge On Single Match</label>
     </div>
     <div class="col-lg-3">
       <input class="form-check-input" type="checkbox" 
-        id="merge-on-best" [(ngModel)]="mergeOnBestMatch">
+        id="merge-on-single" [(ngModel)]="mergeOnSingleMatch">
     </div>
   </div>
   <div class="row">
@@ -199,15 +175,11 @@
         class="form-control" [(ngModel)]="minQualityRatio">
     </div>
     <div class="col-lg-3">
-      <label class="form-label" for="auto-overlay-acq-copies" i18n>
-        Auto-overlay In-process Acquisitions Items
-      </label>
+      <label class="form-label" for="merge-on-best" i18n>Merge On Best Match</label>
     </div>
     <div class="col-lg-3">
       <input class="form-check-input" type="checkbox" 
-        id="auto-overlay-acq-copies"
-        [disabled]="recordType === 'authority'"
-        [(ngModel)]="autoOverlayAcqCopies">
+        id="merge-on-best" [(ngModel)]="mergeOnBestMatch">
     </div>
   </div>
   <div class="row">
@@ -219,15 +191,15 @@
         name="session-name" i18n-placeholder placeholder="Session Name..."/>
     </div>
     <div class="col-lg-3">
-      <label class="form-label" for="auto-overlay-on-order-copies" i18n>
-        Auto-overlay On-order Cataloging Items
+      <label class="form-label" for="auto-overlay-acq-copies" i18n>
+        Auto-overlay In-process Acquisitions Items
       </label>
     </div>
     <div class="col-lg-3">
       <input class="form-check-input" type="checkbox" 
-        id="auto-overlay-on-order-copies"
+        id="auto-overlay-acq-copies"
         [disabled]="recordType === 'authority'"
-        [(ngModel)]="autoOverlayOnOrderCopies">
+        [(ngModel)]="autoOverlayAcqCopies">
     </div>
   </div>
   <div class="row">
@@ -247,6 +219,20 @@
       </div>
     </ng-container>
     <div class="col-lg-3">
+      <label class="form-label" for="auto-overlay-on-order-copies" i18n>
+        Auto-overlay On-order Cataloging Items
+      </label>
+    </div>
+    <div class="col-lg-3">
+      <input class="form-check-input" type="checkbox" 
+        id="auto-overlay-on-order-copies"
+        [disabled]="recordType === 'authority'"
+        [(ngModel)]="autoOverlayOnOrderCopies">
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-lg-6"></div>
+    <div class="col-lg-3">
       <label class="form-label" for="auto-overlay-org-unit-copies" i18n>
         Use Org Unit Matching in Copy to Determine Best Match
       </label>
@@ -258,6 +244,33 @@
         [(ngModel)]="autoOverlayOrgUnitCopies">
     </div>
   </div>
+
+  <h2 i18n>This Upload</h2>
+  <div class="row">
+    <div class="col-lg-3">
+      <label class="form-label" for="queue-select" i18n>Select or Create a Queue</label>
+    </div>
+    <div class="col-lg-3">
+      <eg-combobox [entries]="formatEntries('activeQueues')"
+        #queueSelector
+        domId="queue-select"
+        [startId]="startQueueId"
+        [startIdFiresOnChange]="true"
+        [disabled]="startQueueId"
+        (onChange)="selectedQueue=$event" i18n-placeholder
+        [required]="true"
+        [allowFreeText]="true" placeholder="Select or Create a Queue...">
+      </eg-combobox>
+    </div>
+    <div class="col-lg-3" *ngIf="!importSelection()">
+      <label class="form-label" for="background-import" i18n>Request background import</label>
+    </div>
+    <div class="col-lg-3" *ngIf="!importSelection()">
+      <input class="form-check-input" type="checkbox" 
+        id="background-import"
+        [(ngModel)]="backgroundImportForUpload">
+    </div>
+  </div>
   <div class="row" *ngIf="!importSelection()">
     <div class="col-lg-3">
       <label class="form-label" for="upload-file" i18n>File to Upload:</label>
@@ -265,6 +278,15 @@
     <div class="col-lg-3">
       <input #fileSelector (change)="fileSelected($event)" 
         id="upload-file" required class="form-control" type="file"/>
+    </div>
+    <div class="col-lg-3">
+      <label class="form-label" for="background-import-email" i18n>Background Import Notification Email</label>
+    </div>
+    <div class="col-lg-3">
+      <input [disabled]="!backgroundImportForUpload"
+        class="form-control" type="text" id="background-import-email"
+        name="background-import-email" i18n-placeholder placeholder="Email address..."
+        [(ngModel)]="backgroundImportEmail">
     </div>
   </div>
   <div class="row" *ngIf="importSelection()">
@@ -299,7 +321,7 @@
       <eg-progress-inline #uploadProgress></eg-progress-inline>
     </div>
   </div>
-  <div class="row" [hidden]="!showProgress || importSelection()">
+  <div class="row" [hidden]="backgroundImportForUpload || !showProgress || importSelection()">
     <div class="col-lg-3">
       <label class="form-label" i18n>Enqueue Progress</label>
     </div>
@@ -307,7 +329,7 @@
       <eg-progress-inline #enqueueProgress></eg-progress-inline>
     </div>
   </div>
-  <div class="row" [hidden]="!showProgress">
+  <div class="row" [hidden]="backgroundImportForUpload || !showProgress">
     <div class="col-lg-3">
       <label class="form-label" i18n>Import Progress</label>
     </div>
@@ -315,11 +337,18 @@
       <eg-progress-inline #importProgress></eg-progress-inline>
     </div>
   </div>
-  <div class="row" [hidden]="!uploadComplete">
+  <div class="row" [hidden]="backgroundImportForUpload || !uploadComplete">
     <div class="d-grid gap-2 col-6 mx-auto">
       <button type="button"  class="btn btn-info btn-lg fw-bold"
         routerLink="/staff/cat/vandelay/queue/{{recordType}}/{{activeQueueId}}"
         i18n>Go To Queue</button>
+    </div>
+  </div>
+  <div class="row" [hidden]="!backgroundImportForUpload || !uploadComplete">
+    <div class="d-grid gap-2 col-6 mx-auto">
+      <button class="btn btn-info btn-lg fw-bold"
+        routerLink="/staff/cat/vandelay/background-import"
+        i18n>Go To Background Import Management</button>
     </div>
   </div>
 </div>

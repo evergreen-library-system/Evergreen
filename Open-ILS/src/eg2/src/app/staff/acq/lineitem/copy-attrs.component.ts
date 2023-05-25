@@ -198,7 +198,8 @@ export class LineitemCopyAttrsComponent implements OnInit {
                 id: fund.id(),
                 label: fund.code() + ' (' + fund.year() + ')' +
                        ' (' + this.getOrgShortname(fund.org()) + ')',
-                fm: fund
+                fm: fund,
+                class: 'fund-balance-state-' + fund['_balance']
             }];
         }
 

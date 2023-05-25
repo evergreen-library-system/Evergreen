@@ -13,8 +13,14 @@ const routes: Routes = [{
     path: 'po',
     loadChildren: () => import('./po/po.module').then(m => m.PoModule)
 }, {
+    path: 'invoice',
+    loadChildren: () => import('./invoice/invoice.module').then(m => m.InvoiceModule)
+}, {
     path: 'asn',
     loadChildren: () => import('./asn/asn.module').then(m => m.AsnModule)
+}, {
+    path: 'claim',
+    loadChildren: () => import('./claim/claim.module').then(m => m.ClaimModule)
 }, {
     path: 'picklist',
     loadChildren: () =>

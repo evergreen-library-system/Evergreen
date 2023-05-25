@@ -91,7 +91,7 @@ export class ProviderAttributesComponent implements OnInit, AfterViewInit, OnDes
     }
 
     ngAfterViewInit() {
-        console.log('this.providerRecord', this.providerRecord);
+        console.debug('this.providerRecord', this.providerRecord);
     }
 
     ngOnDestroy() {

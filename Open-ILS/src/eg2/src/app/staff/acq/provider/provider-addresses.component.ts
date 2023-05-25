@@ -93,7 +93,7 @@ export class ProviderAddressesComponent implements OnInit, AfterViewInit, OnDest
     }
 
     ngAfterViewInit() {
-        console.log('this.providerRecord', this.providerRecord);
+        console.debug('this.providerRecord', this.providerRecord);
     }
 
     ngOnDestroy() {

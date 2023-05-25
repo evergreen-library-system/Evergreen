@@ -4,6 +4,7 @@ import {DatePipe, DecimalPipe, getLocaleDateFormat, getLocaleTimeFormat, getLoca
 import {IdlService, IdlObject} from '@eg/core/idl.service';
 import {OrgService} from '@eg/core/org.service';
 import {AuthService} from '@eg/core/auth.service';
+import {PcrudService} from '@eg/core/pcrud.service';
 import {LocaleService} from '@eg/core/locale.service';
 import * as moment from 'moment-timezone';
 import {DateUtil} from '@eg/share/util/date';
@@ -407,3 +408,43 @@ export class DueDatePipe implements PipeTransform {
     }
 }
 
+@Pipe({name: 'egOrUnderscores'})
+export class OrUnderscoresPipe implements PipeTransform {
+    constructor() {}
+    // Add other filter params as needed to fill in the FormatParams
+    transform(value: string, datatype: string): string {
+        return value !== '' && value !== null ? value : '________';
+    }
+}
+
+@Pipe({ name: 'js2json'})
+export class Js2JsonPipe implements PipeTransform {
+    transform(value: any): string {
+        return JSON.stringify(value, null, 2); // spacing level = 2
+    }
+}
+
+/* TODO: this should probably be moved elsewhere, within the acq/ hierarchy */
+@Pipe({ name: 'fundLabel', pure: false })
+export class FundLabelPipe implements PipeTransform {
+    private cache = new Map<number, string>();
+
+    constructor(private pcrud: PcrudService, private org: OrgService,) {}
+
+    transform(fundId: number): string {
+        if (this.cache.has(fundId)) {
+            return this.cache.get(fundId);
+        }
+
+        /* I loathed pulling in LineitemService here, so some code duplication */
+        /* .toPromise() is also deprecated here */
+        this.pcrud.retrieve('acqf',fundId).toPromise().then(fund => {
+            if (fund) {
+                const label = `${fund.code()} (${fund.year()}) (${this.org.get(fund.org()).shortname()})`;
+                this.cache.set(fundId, label);
+            }
+        });
+
+        return ''; // default value until the fund is loaded
+    }
+}

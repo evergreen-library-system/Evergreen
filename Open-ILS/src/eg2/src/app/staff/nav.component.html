@@ -443,7 +443,7 @@
             <span i18n>Create New MARC Record</span>
           </a>
           <a ngbDropdownItem class="dropdown-item"
-            href="/eg/staff/cat/z3950/index"
+            routerLink="/staff/cat/z3950/search"
             (click)="isMenuCollapsed = true" 
             (keydown.space)="isMenuCollapsed = true" 
             (keydown.enter)="isMenuCollapsed = true">
@@ -536,7 +536,7 @@
             <span i18n>Selection Lists</span>
           </a>
           <a class="dropdown-item" ngbDropdownItem  
-            href="/eg/staff/acq/legacy/picklist/brief_record"
+	     routerLink="/staff/acq/picklist/brief-record"
             (click)="isMenuCollapsed = true" 
             (keydown.space)="isMenuCollapsed = true" 
             (keydown.enter)="isMenuCollapsed = true">
@@ -552,7 +552,7 @@
             <span i18n>Patron Requests</span>
           </a>
           <a class="dropdown-item" ngbDropdownItem  
-            href="/eg/staff/acq/legacy/picklist/bib_search"
+	     routerLink="/staff/acq/picklist/z3950-search"
             (click)="isMenuCollapsed = true" 
             (keydown.space)="isMenuCollapsed = true" 
             (keydown.enter)="isMenuCollapsed = true">
@@ -560,7 +560,7 @@
             <span i18n>MARC Federated Search</span>
           </a>
           <a class="dropdown-item" ngbDropdownItem  
-            href="/eg/staff/acq/legacy/picklist/from_bib"
+            routerLink="/staff/acq/picklist/from-bib-ids"
             (click)="isMenuCollapsed = true" 
             (keydown.space)="isMenuCollapsed = true" 
             (keydown.enter)="isMenuCollapsed = true">
@@ -576,14 +576,19 @@
           <span class="material-icons" aria-hidden="true">cloud_upload</span>
           <span i18n>Load MARC Order Records</span>
         </a>
+	 <a class="dropdown-item" ngbDropdownItem routerLinkActive="active"
+             ariaCurrentWhenActive="page" routerLink="/staff/cat/vandelay/background-import" [queryParams]="{type:'acq'}">
+          <span class="material-icons" aria-hidden="true">cloud_download</span>
+          <span i18n>Background Imports</span>
+        </a>
           <a class="dropdown-item" ngbDropdownItem routerLinkActive="active" 
             ariaCurrentWhenActive="page" routerLink="/staff/acq/search/purchaseorders"
             (click)="isMenuCollapsed = true" 
             (keydown.space)="isMenuCollapsed = true" 
             (keydown.enter)="isMenuCollapsed = true">
-            <span class="material-icons" aria-hidden="true">shopping_cart</span>
-            <span i18n>Purchase Orders</span>
-          </a>
+	  <span class="material-icons" aria-hidden="true">shopping_cart</span>
+             <span i18n>Purchase Orders</span>
+	  </a>
           <a class="dropdown-item" ngbDropdownItem
            routerLinkActive="active" 
             ariaCurrentWhenActive="page" routerLink="/staff/acq/po/create"
@@ -595,17 +600,22 @@
           </a>
           <div class="dropdown-divider"></div>
           <a class="dropdown-item" ngbDropdownItem  
-            href="/eg/staff/acq/legacy/financial/claim_eligible"
+	    routerLink="/staff/acq/claim"
             (click)="isMenuCollapsed = true" 
             (keydown.space)="isMenuCollapsed = true" 
             (keydown.enter)="isMenuCollapsed = true">
             <span class="material-icons" aria-hidden="true">contact_phone</span>
             <span i18n>Claim-Ready Items</span>
           </a>
-          <a class="dropdown-item" ngbDropdownItem routerLinkActive="active" 
+          <a class="dropdown-item" ngbDropdownItem  
+            href="/eg/staff/acq/legacy/financial/claim_eligible">
+            <span class="material-icons" aria-hidden="true">contact_phone</span>
+            <span i18n>Claim-Ready Items (Legacy)</span>
+          </a>
+          <a class="dropdown-item" ngbDropdownItem routerLinkActive="active"
             ariaCurrentWhenActive="page" routerLink="/staff/acq/asn/receive"
-            (click)="isMenuCollapsed = true" 
-            (keydown.space)="isMenuCollapsed = true" 
+            (click)="isMenuCollapsed = true"
+            (keydown.space)="isMenuCollapsed = true"
             (keydown.enter)="isMenuCollapsed = true">
             <span class="material-icons" aria-hidden="true">archive</span>
             <span i18n>Receive Shipment</span>
@@ -618,13 +628,18 @@
             <span class="material-icons" aria-hidden="true">attach_money</span>
             <span i18n>Invoices</span>
           </a>
-          <a class="dropdown-item" ngbDropdownItem  
-            href="/eg/staff/acq/legacy/invoice/view?create=1"
+          <a class="dropdown-item" ngbDropdownItem ariaCurrentWhenActive="page" 
+	     routerLink="/staff/acq/invoice/create"
             (click)="isMenuCollapsed = true" 
             (keydown.space)="isMenuCollapsed = true" 
             (keydown.enter)="isMenuCollapsed = true">
             <span class="material-icons" aria-hidden="true">monetization_on</span>
             <span i18n>Create Invoice</span>
+          </a>
+          <a class="dropdown-item" ngbDropdownItem  
+            href="/eg/staff/acq/legacy/invoice/view?create=1">
+            <span class="material-icons" aria-hidden="true">monetization_on</span>
+            <span i18n>Create Invoice (Legacy)</span>
           </a>
         </div>
       </div>

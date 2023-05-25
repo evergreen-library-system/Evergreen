@@ -397,7 +397,7 @@
             </a>
           </li>
           <li>
-            <a href="./cat/z3950/index" target="_self">
+            <a href="/eg2/staff/cat/z3950/search" target="_self">
               <span class="glyphicon glyphicon-cloud-download" aria-hidden="true"></span>
               [% l('Import Record from Z39.50') %]
             </a>
@@ -463,7 +463,7 @@
             </a>
           </li>
           <li>
-            <a href="./acq/legacy/picklist/brief_record" target="_self">
+            <a href="/eg2/staff/acq/picklist/brief-record" target="_self">
               <span class="glyphicon glyphicon-pencil" aria-hidden="true"></span>
               [% l('New Brief Record') %]
             </a>
@@ -475,13 +475,13 @@
             </a>
           </li>
           <li>
-            <a href="./acq/legacy/picklist/bib_search" target="_self">
+            <a href="/eg2/staff/acq/picklist/z3950-search" target="_self">
               <span class="glyphicon glyphicon-cloud-download" aria-hidden="true"></span>
               [% l('MARC Federated Search') %]
             </a>
           </li>
           <li>
-            <a href="./acq/legacy/picklist/from_bib" target="_self">
+            <a href="/eg2/staff/acq/picklist/from-bib-ids" target="_self">
               <span class="glyphicon glyphicon-import" aria-hidden="true"></span>
               [% l('Load Catalog Record IDs') %]
             </a>
@@ -493,6 +493,11 @@
               [% l('Load MARC Order Records') %]
             </a>
           </li>
+          <li>
+            <a href="/eg2/staff/cat/vandelay/background-import?type=acq" target="_self">
+              <span class="glyphicon glyphicon-cloud-download" aria-hidden="true"></span>
+              [% l('Background Imports') %]
+            </a>
           <li>
             <a href="/eg2/staff/acq/search/purchaseorders" target="_self">
               <span class="glyphicon glyphicon-shopping-cart" aria-hidden="true"></span>
@@ -507,9 +512,15 @@
           </li>
           <li class="divider"></li>
           <li>
-            <a href="./acq/legacy/financial/claim_eligible" target="_self">
+            <a href="/eg2/staff/acq/claim" target="_self">
               <span class="glyphicon glyphicon-question-sign" aria-hidden="true"></span>
               [% l('Claim-Ready Items') %]
+            </a>
+          </li>
+          <li>
+            <a href="./acq/legacy/financial/claim_eligible" target="_self">
+              <span class="glyphicon glyphicon-question-sign" aria-hidden="true"></span>
+              [% l('Claim-Ready Items (Legacy)') %]
             </a>
           </li>
           <li>
@@ -526,9 +537,15 @@
             </a>
           </li>
           <li>
-            <a href="./acq/legacy/invoice/view?create=1" target="_self">
+            <a href="/eg2/staff/acq/invoice/create" target="_self">
               <span class="glyphicon glyphicon-credit-card" aria-hidden="true"></span>
               [% l('Create Invoice') %]
+            </a>
+          </li>
+          <li>
+            <a href="./acq/legacy/invoice/view?create=1" target="_self">
+              <span class="glyphicon glyphicon-credit-card" aria-hidden="true"></span>
+              [% l('Create Invoice (Legacy)') %]
             </a>
           </li>
        </ul>

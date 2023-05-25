@@ -156,9 +156,24 @@
     </div>
     <div class="col ps-5">
       <input class="form-check-input" type="checkbox" id="retrieve-immediately"
-             (change)="saveRunImmediately()"
+             (ngModelChange)="saveRunImmediately($event)"
              [ngModelOptions]="{standalone: true}" [(ngModel)]="runImmediately"/>
       <label for="retrieve-immediately" class="form-label form-check-label" i18n>Retrieve Results Immediately</label>
+      <ng-container *ngIf="searchContext==='InvoiceEmbeddedLineitem'">
+        <br />
+        <input class="form-check-input" type="checkbox" id="filter-to-invoiceable"
+               (ngModelChange)="saveFilterToInvoiceable($event); maybeAddInvoiceableItemTerms($event)"
+               [ngModelOptions]="{standalone: true}" [(ngModel)]="filterToInvoiceable"/>
+        <label for="filter-to-invoiceable" class="form-label form-check-label" i18n>Limit to Invoiceable Items</label>
+      </ng-container>
+    </div>
+    <div class="col ps-5">
+      <ng-container *ngIf="searchContext==='InvoiceEmbeddedLineitem'">
+      <input class="form-check-input" type="checkbox" id="keep-results"
+             (ngModelChange)="saveKeepResults($event); onKeepResultsChange($event)"
+             [ngModelOptions]="{standalone: true}" [(ngModel)]="keepResults"/>
+      <label for="keep-results" class="form-label form-check-label" i18n>Keep Results between searches</label>
+      </ng-container>
     </div>
   </div>
 </form>

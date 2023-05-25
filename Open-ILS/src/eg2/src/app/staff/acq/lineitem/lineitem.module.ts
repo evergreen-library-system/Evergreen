@@ -15,6 +15,7 @@ import {LineitemCopiesComponent} from './copies.component';
 import {LineitemBatchCopiesComponent} from './batch-copies.component';
 import {LineitemCopyAttrsComponent} from './copy-attrs.component';
 import {LineitemHistoryComponent} from './history.component';
+import {LineitemFromBibIdsComponent} from './from-bib-ids.component';
 import {BriefRecordComponent} from './brief-record.component';
 import {CreateAssetsComponent} from './create-assets.component';
 import {CancelDialogComponent} from './cancel-dialog.component';
@@ -28,6 +29,7 @@ import {ExportAttributesDialogComponent} from './export-attributes-dialog.compon
 import {ClaimPolicyDialogComponent} from './claim-policy-dialog.component';
 import {ManageClaimsDialogComponent} from './manage-claims-dialog.component';
 import {LineitemAlertDialogComponent} from './lineitem-alert-dialog.component';
+import {AddExtraItemsForOrderDialogComponent} from './add-extra-items-for-order-dialog.component';
 import {MarcEditModule} from '@eg/staff/share/marc-edit/marc-edit.module';
 import {AcqCommonModule} from '../acq-common.module';
 
@@ -53,6 +55,8 @@ import {AcqCommonModule} from '../acq-common.module';
         ClaimPolicyDialogComponent,
         ManageClaimsDialogComponent,
         LineitemAlertDialogComponent,
+        AddExtraItemsForOrderDialogComponent,
+        LineitemFromBibIdsComponent,
         BriefRecordComponent,
         CreateAssetsComponent,
         LineitemWorksheetComponent
@@ -67,7 +71,8 @@ import {AcqCommonModule} from '../acq-common.module';
         ExportAttributesDialogComponent,
         ClaimPolicyDialogComponent,
         ManageClaimsDialogComponent,
-        LineitemAlertDialogComponent
+        LineitemAlertDialogComponent,
+        AddExtraItemsForOrderDialogComponent,
     ],
     imports: [
         StaffCommonModule,

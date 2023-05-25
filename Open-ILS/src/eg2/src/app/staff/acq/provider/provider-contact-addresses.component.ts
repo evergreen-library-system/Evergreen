@@ -89,7 +89,7 @@ export class ProviderContactAddressesComponent implements OnInit, AfterViewInit 
 
 
     ngAfterViewInit() {
-        console.log('this.contactId', this.contactId);
+        console.debug('this.contactId', this.contactId);
     }
 
     generateSearch(filters): any {

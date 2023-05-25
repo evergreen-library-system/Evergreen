@@ -109,7 +109,7 @@ export class ProviderEdiAccountsComponent implements OnInit, AfterViewInit, OnDe
     }
 
     ngAfterViewInit() {
-        console.log('this.providerRecord', this.providerRecord);
+        console.debug('this.providerRecord', this.providerRecord);
     }
 
     ngOnDestroy() {

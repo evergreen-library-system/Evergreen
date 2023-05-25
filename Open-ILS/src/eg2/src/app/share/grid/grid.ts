@@ -1487,6 +1487,8 @@ export class GridDataSource {
     data: any[];
     sort: GridColumnSort[];
     filters: Object;
+    prependRows = false;
+    trimList = 0;
     allRowsRetrieved: boolean;
     requestingData: boolean;
     retrievalError: boolean;
@@ -1499,7 +1501,9 @@ export class GridDataSource {
     }
 
     reset() {
-        this.data = [];
+        if (!this.prependRows) {
+            this.data = [];
+        }
         this.allRowsRetrieved = false;
     }
 
@@ -1531,10 +1535,19 @@ export class GridDataSource {
         this.retrievalError = false;
 
         return new Promise((resolve, reject) => {
-            let idx = pager.offset;
+            // You must set disablePaging and useLocalSort to true for the grid if using prependRows
+            // Adjust the starting index based on prependRows
+            let idx = this.prependRows ? this.data.length : pager.offset;
             return this.getRows(pager, this.sort).subscribe({
                 next: row => {
-                    this.data[idx++] = row;
+                    if (this.prependRows) {
+                        this.data.unshift(row);
+                        if (this.trimList && this.data.length > this.trimList) {
+                            this.data.length = this.trimList;
+                        }
+                    } else {
+                        this.data[idx++] = row;
+                    }
                     // not updating this.requestingData, as having
                     // retrieved one row doesn't mean we're done
                     this.retrievalError = false;

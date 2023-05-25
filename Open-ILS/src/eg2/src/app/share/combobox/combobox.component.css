@@ -1,10 +1,46 @@
 .icons {margin-left:-18px}
 .material-icons {font-size: 16px;font-weight:bold}
 
-.fund-balance-state-stop {
-    color: #c00;
+/* see also copy-attrs.component.css */
+.fund-balance-state-stop,
+button.dropdown-item:has(.fund-balance-state-stop) {
+    background-color: #f8d7da;
+    color: #842029;
     font-weight: bold;
 }
-.fund-balance-state-warning {
-    color: #c93;
+
+button.dropdown-item.active:has(.fund-balance-state-stop),
+button.dropdown-item.active .fund-balance-state-stop {
+    background-color: #F1AFB5;
 }
+
+/* show octagon/stop ! ("report") icon */
+.fund-balance-state-stop:before {
+    content: "\e160";
+    font-family: "Material Icons";
+    font-weight: normal;
+    margin-right: .3ch;
+    vertical-align: bottom;
+}
+
+.fund-balance-state-warning,
+button.dropdown-item:has(.fund-balance-state-warning) {
+    background-color: #ffe69c;
+    color: #984C0C;
+    font-weight: bold;
+}
+
+button.dropdown-item.active:has(.fund-balance-state-warning),
+button.dropdown-item.active .fund-balance-state-warning {
+    background-color: #FFDA6A;
+}
+
+/* show triangle ! ("warning") icon */
+.fund-balance-state-warning:before {
+    content: "\e002";
+    font-family: "Material Icons";
+    font-weight: normal;
+    margin-right: .3ch;
+    vertical-align: bottom;
+}
+

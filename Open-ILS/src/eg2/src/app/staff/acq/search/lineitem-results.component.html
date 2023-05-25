@@ -1,6 +1,13 @@
-<eg-acq-search-form #acqSearchForm (searchSubmitted)="doSearch($event)" [initialSearchTerms]="initialSearchTerms"
-  i18n-searchTypeLabel searchTypeLabel="Line Item" runImmediatelySetting="eg.acq.search.lineitems.run_immediately"
-  defaultSearchSetting="eg.acq.search.default.lineitems"></eg-acq-search-form>
+<eg-acq-search-form #acqSearchForm
+  (searchSubmitted)="doSearch($event)" [initialSearchTerms]="initialSearchTerms"
+  i18n-searchTypeLabel searchTypeLabel="Line Item"
+  defaultSearchSetting="eg.acq.search.default.lineitems"
+  runImmediatelySetting="eg.acq.search.lineitems.run_immediately"
+  filterToInvoiceableSetting="eg.acq.search.lineitems.filter_to_invoiceable"
+  keepResultsSetting="eg.acq.search.lineitems.keep_results"
+  trimListSetting="eg.acq.search.lineitems.trim_list"
+  [searchContext]="invoice ? 'InvoiceEmbeddedLineitem' : ''"
+  [invoice]="invoice" [providerId]="providerId"></eg-acq-search-form>
 
 <eg-acq-export-attributes-dialog #exportAttributesDialog></eg-acq-export-attributes-dialog>
 <eg-acq-claim-policy-dialog #claimPolicyDialog></eg-acq-claim-policy-dialog>
@@ -10,6 +17,7 @@
 <eg-acq-link-invoice-dialog #linkInvoiceDialog></eg-acq-link-invoice-dialog>
 <eg-lineitem-alert-dialog #confirmAlertsDialog></eg-lineitem-alert-dialog>
 
+<eg-string #lineitemsMovedString i18n-text text="Moved Selected Line Item(s)"></eg-string>
 <eg-string #claimPolicyAppliedString i18n-text text="Claim Policy Applied to Selected Line Item(s)"></eg-string>
 <eg-string #lineItemsReceivedString i18n-text text="Line Item(s) Received"></eg-string>
 <eg-string #lineItemsUnReceivedString i18n-text text="Line Item(s) Un-Received"></eg-string>
@@ -17,6 +25,18 @@
 <eg-string #lineItemsDeletedString i18n-text text="Line Item(s) Deleted"></eg-string>
 <eg-string #lineItemsUpdatedString i18n-text text="Line Item(s) Updated"></eg-string>
 <eg-string #lineItemsAddedToPoString i18n-text text="Line Item(s) Added to Purchase Order"></eg-string>
+
+<ng-template #addToSLtmpl>
+  <eg-combobox [(ngModel)]="selectedSL" idlClass="acqpl" [asyncSupportsEmptyTermClick]="true"
+        [allowFreeText]="true" placeholder="Select Existing or Name New List..." i18n-placeHolder/>
+</ng-template>
+
+<eg-confirm-dialog #addToSLdlg
+  [dialogBodyTemplate]="addToSLTemplate"
+  i18n-dialogTitle dialogTitle="Move to Selection List"
+  i18n-confirmString confirmString="Continue"
+  i18n-cancelString cancelString="Cancel"
+/>
 
 <eg-alert-dialog #noActionableLIs i18n-dialogBody
   dialogBody="None of the selected line items are suitable for the action.">
@@ -131,24 +151,28 @@
   (onRowActivate)="showRow($event)"
   [showDeclaredFieldsOnly]="true">
 
-  <eg-grid-toolbar-action label="Mark Ready for Selector" i18n-label
+  <eg-grid-toolbar-button *ngIf="callbackButtonLabel"
+    label="{{callbackButtonLabel}}"
+    (onClick)="callbackButtonFunction(lineitemResultsGrid.context.getSelectedRows(),this)"
+    [disabled]="callbackButtonDisableOnRowsFunction(lineitemResultsGrid.context.getSelectedRows())">
+  </eg-grid-toolbar-button>
+
+  <eg-grid-toolbar-action *ngIf="!invoice" label="Mark Ready for Selector" i18n-label
     (onClick)="markSelectorReady($event)" [disableOnRows]="noSelectedRows">
   </eg-grid-toolbar-action>
-  <eg-grid-toolbar-action label="Mark Ready for Order" i18n-label
+  <eg-grid-toolbar-action *ngIf="!invoice" label="Mark Ready for Order" i18n-label
     (onClick)="markOrderReady($event)" [disableOnRows]="noSelectedRows">
   </eg-grid-toolbar-action>
-<!-- TODO implement this when the SL interface is more fleshed out
   <eg-grid-toolbar-action label="Move to Selection List" i18n-label
     (onClick)="moveToSelectionList($event)" [disableOnRows]="noSelectedRows">
   </eg-grid-toolbar-action>
--->
-  <eg-grid-toolbar-action label="Create Purchase Order from Selected Line Items" i18n-label
+  <eg-grid-toolbar-action *ngIf="!invoice" label="Create Purchase Order from Selected Line Items" i18n-label
     (onClick)="createPurchaseOrder($event)" [disableOnRows]="noSelectedRows">
   </eg-grid-toolbar-action>
-  <eg-grid-toolbar-action label="Add Selected to Purchase Order" i18n-label
+  <eg-grid-toolbar-action *ngIf="!invoice" label="Add Selected to Purchase Order" i18n-label
     (onClick)="addSelectedToPurchaseOrder($event)" [disableOnRows]="noSelectedRows">
   </eg-grid-toolbar-action>
-  <eg-grid-toolbar-action label="Apply Claim Policy" i18n-label
+  <eg-grid-toolbar-action *ngIf="!invoice" label="Apply Claim Policy" i18n-label
     (onClick)="applyClaimPolicy($event)" [disableOnRows]="noSelectedRows">
   </eg-grid-toolbar-action>
   <eg-grid-toolbar-action label="Mark Selected Line Items as Received" i18n-label
@@ -157,16 +181,16 @@
   <eg-grid-toolbar-action label="Un-receive Selected Line Items" i18n-label
     (onClick)="markUnReceived($event)" [disableOnRows]="noSelectedRows">
   </eg-grid-toolbar-action>
-  <eg-grid-toolbar-action label="Create Invoice from Selected Line Items" i18n-label
-    (onClick)="createInvoiceFromSelected($event)" [disableOnRows]="noSelectedRows">
+  <eg-grid-toolbar-action *ngIf="!invoice" label="Create Invoice from Selected Line Items" i18n-label
+    (onClick)="createInvoiceFromSelected($event)" [disableOnRows]="rowsNotOkayForInvoice">
   </eg-grid-toolbar-action>
-  <eg-grid-toolbar-action label="Link Selected Line Items to Invoice" i18n-label
-    (onClick)="linkInvoiceFromSelected($event)" [disableOnRows]="noSelectedRows">
+  <eg-grid-toolbar-action *ngIf="!invoice" label="Link Selected Line Items to Invoice" i18n-label
+    (onClick)="linkInvoiceFromSelected($event)" [disableOnRows]="rowsNotOkayForInvoice">
   </eg-grid-toolbar-action>
   <eg-grid-toolbar-action label="Cancel Selected" i18n-label
     (onClick)="cancelLineitems($event)" [disableOnRows]="noSelectedRows">
   </eg-grid-toolbar-action>
-  <eg-grid-toolbar-action label="Delete Selected" i18n-label
+  <eg-grid-toolbar-action *ngIf="!invoice" label="Delete Selected" i18n-label
     (onClick)="deleteLineitems($event)" [disableOnRows]="noSelectedRows">
   </eg-grid-toolbar-action>
   <eg-grid-toolbar-action label="Export Single Attribute List" i18n-label

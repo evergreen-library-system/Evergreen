@@ -46,7 +46,7 @@ export class QueueListComponent {
 
             // Serialize the deletes, especially if there are many of them
             // because they can be bulky calls
-            const qtype = this.queueType;
+            const qtype = this.realQueueType();
             const method = `open-ils.vandelay.${qtype}_queue.delete`;
             const selected = queues.slice(0); // clone to be nice
 
@@ -64,6 +64,13 @@ export class QueueListComponent {
 
             deleteNext(0);
         };
+    }
+
+    realQueueType(): string {
+        if (this.queueType === 'acq') {
+            return 'bib';
+        }
+        return this.queueType;
     }
 
     currentGrid(): GridComponent {
@@ -90,11 +97,16 @@ export class QueueListComponent {
             return of();
         }
 
-        const qtype = this.queueType.match(/bib/) ? 'bib' : 'authority';
+        const filter = {};
+        if (this.realQueueType() === 'bib') {
+            filter['queue_type'] = this.queueType;
+        }
+
+        const qtype = this.realQueueType().match(/auth/) ? 'authority' : 'bib';
         const method = `open-ils.vandelay.${qtype}_queue.owner.retrieve`;
 
         return this.net.request('open-ils.vandelay',
-            method, this.auth.token(), null, null,
+            method, this.auth.token(), null, filter,
             {offset: pager.offset, limit: pager.limit}
         );
     }

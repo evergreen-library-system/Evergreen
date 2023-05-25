@@ -132,8 +132,11 @@ export class DateSelectComponent implements OnInit, ControlValueAccessor {
         };
     }
 
-    writeValue(value: Date) {
-        if (value) {
+    writeValue(value: any) {
+        if (typeof value === 'string') {
+            value = new Date(value);
+        }
+        if (value && value instanceof Date && !isNaN(value.getTime())) {
             this.current = {
                 year: value.getFullYear(),
                 month: value.getMonth() + 1,

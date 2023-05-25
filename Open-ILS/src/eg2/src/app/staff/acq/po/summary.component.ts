@@ -217,7 +217,7 @@ export class PoSummaryComponent implements OnInit, OnDestroy {
         this.linkInvoiceDialog.open().subscribe(invId => {
             if (!invId) { return; }
 
-            const path = '/eg/staff/acq/legacy/invoice/view/' + invId + '?' +
+            const path = '/eg2/staff/acq/invoice/' + invId + '?' +
                      'attach_po=' + this.poId;
             window.location.href = path;
         });

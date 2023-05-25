@@ -7,6 +7,7 @@
          aligns with an invisible 0 for 1..9 -->
     {{rowIndex}}<span *ngIf="rowIndex < 10" class="invisible">0</span>
   </div>
+  <ng-content></ng-content>
   <div class="flex-1 p-1">
     <eg-org-select #owningLibSelect placeholder="Owning Branch..." 
       i18n-placeholder [readOnly]="fieldIsDisabled('owning_lib')"

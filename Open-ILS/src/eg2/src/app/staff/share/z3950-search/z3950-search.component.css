@@ -1,0 +1,51 @@
+th.z3950_default {
+  width: min-content;
+}
+
+td.z3950_default {
+  text-align: center;
+}
+
+.z3950-credentials {
+  margin: 0.5rem 1rem;
+}
+
+/* Side by side MARC file comparison */
+
+.marc-compare {
+  display: grid;
+  row-gap: 1rem;
+  column-gap: 2rem;
+  grid-template-rows: auto auto;
+  grid-template-columns: repeat(auto-fill, 1fr);
+  grid-auto-flow: column;
+  overflow-y: scroll;
+}
+
+.marc-file {
+  display: grid;
+  grid-template-rows: subgrid;
+  grid-column: auto;
+  grid-row: 1 / span 2;
+  min-width: 60ch;
+  padding: 1rem;
+}
+
+.marc-file:nth-child(odd) {
+  background-color: #EFF1F3;
+}
+
+.marc-name {
+  grid-row: 1;
+  align-self: end;
+}
+
+.marc-xml {
+  grid-row: 2;
+}
+
+/* align tags to the top of their table rows */
+.marc-compare tbody th,
+.marc-compare tbody td {
+  vertical-align: top;
+}

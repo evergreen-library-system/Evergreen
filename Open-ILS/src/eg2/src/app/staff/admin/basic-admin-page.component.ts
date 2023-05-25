@@ -76,6 +76,7 @@ export class BasicAdminPageComponent implements OnInit {
     }
 
     ngOnInit() {
+        console.log('BasicAdminPageComponent, this', this);
         this.getParams$ = this.route.paramMap
             .pipe(tap(params => {
                 this.schema = params.get('schema');

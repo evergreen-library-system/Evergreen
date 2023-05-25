@@ -93,7 +93,7 @@ export class InvoiceResultsComponent implements OnInit {
     }
 
     showRow(row: any) {
-        window.open('/eg/staff/acq/legacy/invoice/view/' + row.id(), '_blank');
+        window.open('/eg2/staff/acq/invoice/' + row.id(), '_blank');
     }
 
     doSearch(search: AcqSearch) {
@@ -102,4 +102,19 @@ export class InvoiceResultsComponent implements OnInit {
             this.invoiceResultsGrid.reload();
         });
     }
+
+    calculateInvoiceTotal(invoice: IdlObject, numberField: string): number {
+        let total = 0;
+
+        [...(invoice.items() || []), ...(invoice.entries() || [])].forEach( (thing: IdlObject) => {
+            const amount = parseFloat(thing[numberField]());
+
+            if (!isNaN(amount)) {
+                total += amount;
+            }
+        });
+
+        return total;
+    }
+
 }

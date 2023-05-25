@@ -56,7 +56,7 @@ export class PicklistCloneDialogComponent
                   this.fail.open();
                   this.close(false);
               } else {
-                  console.log(res);
+                  console.debug(res);
               }
           },
           (err: unknown) => {

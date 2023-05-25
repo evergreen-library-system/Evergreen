@@ -2,6 +2,14 @@
 <eg-staff-banner bannerText="Sandbox" i18n-bannerText>
 </eg-staff-banner>
 
+<div class="row">
+  <h4>Z Search component</h4>
+  <eg-z3950-search
+    [includeNativeCatalog]="true"
+    persistKeyPrefix="sandbox">
+  </eg-z3950-search>
+</div>
+
 <eg-title 
   i18n-prefix i18n-suffix
   prefix=":) {{dynamicTitleText}}"
@@ -555,3 +563,6 @@
     <div class="col-lg-2">{{circHourly | egDueDate}}</div>
   </div>
 </div>
+
+
+

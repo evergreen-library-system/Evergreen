@@ -193,11 +193,25 @@
           <span i18n>Invoices ({{invoiceCount}})</span>
       </a>
       <span class="ps-2 pe-2" i18n> | </span>
-      <a href="/eg/staff/acq/legacy/invoice/view?create=1&attach_po={{poId}}"
+      <a routerLink="/staff/acq/invoice/create" [queryParams]="{ attach_po: poId }"
         class="label-with-material-icon">
         <span class="material-icons small me-1" aria-hidden="true">receipt</span>
         <span i18n>Create Invoice</span>
       </a>
+      <span class="ps-2 pe-2" i18n> | </span>
+      <a routerLink="/staff/acq/invoice/create" [queryParams]="{ attach_po: poId, po_prices: 1 }"
+        class="label-with-material-icon">
+        <span class="material-icons small me-1">receipt</span>
+        <span i18n>Create Invoice with PO prices</span>
+      </a>
+      <ng-container *ngIf="showLegacyLinks">
+        <span class="ps-2 pe-2" i18n> | </span>
+        <a href="/eg/staff/acq/legacy/invoice/view?create=1&attach_po={{poId}}"
+          class="label-with-material-icon">
+          <span class="material-icons small me-1">receipt</span>
+          <span i18n>Legacy Create Invoice</span>
+        </a>
+      </ng-container>
       <span class="ps-2 pe-2" i18n> | </span>
       <button type="button" (click)="linkInvoiceFromPo()"
         class="btn btn-link label-with-material-icon">

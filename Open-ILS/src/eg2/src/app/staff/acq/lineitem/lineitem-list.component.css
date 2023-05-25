@@ -8,6 +8,20 @@
 
 input[type="text"].form-control-sm { border-width: 1px; }
 
+.invoice-entry-deleted {
+    border: thick dotted black !important;
+    background-color: #DDDDDD;
+}
+
+.invoice-entry {
+    border: black solid black;
+}
+
+a.disabled {
+    color: black;
+    pointer-events: none;
+}
+
 .toolbar .form-check-label {
   font-size: 115%;
 }
@@ -40,4 +54,8 @@ input[type="text"].form-control-sm { border-width: 1px; }
 .btn-link:hover {
   color: #0848A5;
   text-decoration: underline;
+}
+
+.invoice-entry .btn-destroy {
+  box-shadow: 0 0 2px black;
 }

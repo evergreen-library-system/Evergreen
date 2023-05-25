@@ -1,6 +1,7 @@
 import {NgModule} from '@angular/core';
 import {RouterModule, Routes} from '@angular/router';
 import {BibByIdentComponent} from './bib-by-ident.component';
+import {Z3950SearchComponent} from '@eg/staff/share/z3950-search/z3950-search.component';
 
 const routes: Routes = [
     { path: 'vandelay',
@@ -28,6 +29,9 @@ const routes: Routes = [
     }, {
         path: 'bib-from/:identType',
         component: BibByIdentComponent
+    }, {
+        path: 'z3950/search',
+        component: Z3950SearchComponent
     }
 ];
 

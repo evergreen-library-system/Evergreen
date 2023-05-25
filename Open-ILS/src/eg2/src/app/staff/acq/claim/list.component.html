@@ -1,0 +1,17 @@
+<eg-staff-banner bannerText="Claim Eligible Items" i18n-bannerText>
+</eg-staff-banner>
+
+<div class="d-flex align-items-start">
+  <span class="input-group-text" i18n>Ordering Agency</span>
+  <eg-org-select #ordering_agency placeholder="Ordering Agency"
+    i18n-placeholder
+    [applyOrgId]="initialContextOrg()"
+    [limitPerms]="['VIEW_CLAIM','MANAGE_CLAIM']"
+    (onChange)="changeContextOrg($event)">
+  </eg-org-select>
+</div>
+
+<eg-lineitem-list #lineitemList
+    persistKeySuffix=".claims" [lids]="lids"
+    defaultSortOrder="li_expected_recv_time_asc"
+    batchClaimMode="true"></eg-lineitem-list>

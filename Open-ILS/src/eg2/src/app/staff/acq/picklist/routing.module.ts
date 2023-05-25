@@ -6,18 +6,27 @@ import {LineitemListComponent} from '../lineitem/lineitem-list.component';
 import {LineitemDetailComponent} from '../lineitem/detail.component';
 import {LineitemCopiesComponent} from '../lineitem/copies.component';
 import {LineitemWorksheetComponent} from '../lineitem/worksheet.component';
+import {LineitemFromBibIdsComponent} from '../lineitem/from-bib-ids.component';
 import {BriefRecordComponent} from '../lineitem/brief-record.component';
 import {LineitemHistoryComponent} from '../lineitem/history.component';
 import {UploadComponent} from './upload.component';
 import {VandelayService} from '@eg/staff/cat/vandelay/vandelay.service';
 import {PicklistUploadService} from './upload.service';
+import {Z3950SearchComponent} from '@eg/staff/share/z3950-search/z3950-search.component';
 
 const routes: Routes = [{
     path: 'brief-record',
     component: BriefRecordComponent
 }, {
+    path: 'from-bib-ids',
+    component: LineitemFromBibIdsComponent
+}, {
     path: 'upload',
     component: UploadComponent
+}, {
+    path: 'z3950-search',
+    component: Z3950SearchComponent,
+    data: { searchMode: 'acq' }
 }, {
     path: ':picklistId',
     component: PicklistComponent,
@@ -27,6 +36,9 @@ const routes: Routes = [{
     }, {
         path: 'brief-record',
         component: BriefRecordComponent
+    }, {
+        path: 'from-bib-ids',
+        component: LineitemFromBibIdsComponent
     }, {
         path: 'lineitem/:lineitemId/detail',
         component: LineitemDetailComponent

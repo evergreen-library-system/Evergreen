@@ -24,6 +24,7 @@ import {GridComponent} from '@eg/share/grid/grid.component';
 import * as Moment from 'moment-timezone';
 import {SampleDataService} from '@eg/share/util/sample-data.service';
 import {HtmlToTxtService} from '@eg/share/util/htmltotxt.service';
+import {Z3950SearchComponent} from '@eg/staff/share/z3950-search/z3950-search.component';
 
 @Component({
     templateUrl: 'sandbox.component.html',

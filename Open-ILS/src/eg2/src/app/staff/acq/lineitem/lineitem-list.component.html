@@ -10,6 +10,7 @@
 <eg-acq-manage-claims-dialog #manageClaimsDialog></eg-acq-manage-claims-dialog>
 <eg-acq-export-attributes-dialog #exportAttributesDialog></eg-acq-export-attributes-dialog>
 <eg-lineitem-alert-dialog #confirmAlertsDialog></eg-lineitem-alert-dialog>
+<eg-acq-add-extra-items-for-order-dialog #confirmExtraItemsDialog></eg-acq-add-extra-items-for-order-dialog>
 
 <eg-string #lineItemsUpdatedString i18n-text text="Line Item(s) Updated"></eg-string>
 
@@ -26,6 +27,19 @@
   dialogTitle="Confirm Line Item Change"
   dialogBody="Mark selected line item(s) as ready for order?">
 </eg-confirm-dialog>
+<eg-confirm-dialog #warnPercentConfirmDialog
+  i18n-dialogTitle i18n-dialogBody
+  dialogTitle="Confirm Fund Debit"
+  dialogBody="Ignore fund limit warning and encumber for this amount?">
+</eg-confirm-dialog>
+<eg-confirm-dialog #stopPercentConfirmDialog
+  i18n-dialogTitle i18n-dialogBody
+  dialogTitle="Confirm Fund Debit"
+  dialogBody="This action would over-encumber the fund. Proceed?">
+</eg-confirm-dialog>
+<eg-alert-dialog #stopPercentAlertDialog i18n-dialogBody
+  dialogBody="This amount would over-encumber the fund. Reverting to previous value.">
+</eg-alert-dialog>
 
 <div class="col-lg-6 offset-lg-3" *ngIf="saving">
   <eg-progress-inline [max]="progressMax" [value]="progressValue">
@@ -38,22 +52,28 @@
   </div>
 </div>
 
-<div class="row row-cols-auto mt-3 align-items-center" *ngIf="poId || picklistId">
+<div class="row row-cols-auto mt-3 align-items-center" *ngIf="!batchClaimMode && !batchReceiveMode && (poId || picklistId || invoice() || lids)">
   <div class="col">
     <div ngbDropdown>
       <button class="btn btn-info btn-sm" type="button" ngbDropdownToggle i18n>Actions</button>
       <div ngbDropdownMenu>
+        <ng-container *ngIf="!invoice() && !lids">
         <a ngbDropdownItem routerLink="./brief-record"
           [disabled]="isActivatedPo()"
           queryParamsHandling="merge" i18n>Add Brief Record</a>
-        <button type="button" ngbDropdownItem (click)="deleteLineitems()" 
+        <a ngbDropdownItem routerLink="./from-bib-ids"
+          [disabled]="!picklistId"
+          queryParamsHandling="merge" i18n>Add Catalog Records</a>
+        <button *ngIf="!invoice() && !lids" type="button" ngbDropdownItem (click)="deleteLineitems()" 
           [disabled]="!canDeleteLis() || !selectedIds().length" i18n>Delete Selected Line Items</button>
         <button type="button" ngbDropdownItem (click)="addCopiesToLineitems()" 
           [disabled]="isActivatedPo() || !selectedIds().length" i18n>Add Items to Selected Line Items</button>
         <button type="button" ngbDropdownItem (click)="batchUpdateCopiesOnLineitems()" 
           [disabled]="isActivatedPo() || !selectedIds().length" i18n>Batch Update Items on Selected Line Items</button>
+        </ng-container>
         <button type="button" ngbDropdownItem (click)="exportSingleAttributeList()" 
           [disabled]="!selectedIds().length" i18n>Export Single Attribute List for Selected Line Items</button>
+        <ng-container *ngIf="!invoice() && !lids">
         <div class="dropdown-divider"></div>
         <h6 class="dropdown-header" i18n>Selection List Actions</h6>
         <button type="button" ngbDropdownItem (click)="markSelectorReady()" 
@@ -69,6 +89,7 @@
         <a ngbDropdownItem routerLink="./create-assets"
           [disabled]="!isPendingPo()"
           queryParamsHandling="merge" i18n>Load Bibs and Items</a>
+        </ng-container>
         <button type="button" ngbDropdownItem (click)="receiveSelected()" 
           [disabled]="!isActivatedPo() || !selectedIds().length" i18n>Mark Selected Line Items as Received</button>
         <button type="button" ngbDropdownItem (click)="unReceiveSelected()" 
@@ -76,35 +97,39 @@
         <button type="button" ngbDropdownItem (click)="cancelSelected()" 
           [disabled]="!isActivatedPo() || !selectedIds().length" i18n>Cancel Selected Line Items</button>
         <button type="button" ngbDropdownItem (click)="applyClaimPolicyToSelected()" 
-          [disabled]="!poId || !selectedIds().length" i18n>Apply Claim Policy to Selected Line Items</button>
+          [disabled]="!(invoice() || poId || lids) || !selectedIds().length" i18n>Apply Claim Policy to Selected Line Items</button>
+        <ng-container *ngIf="!invoice() && !lids">
         <button type="button" ngbDropdownItem (click)="createInvoiceFromSelected()" 
           [disabled]="!isActivatedPo() || !selectedIds().length" i18n>Create Invoice from Selected Line Items</button>
         <button type="button" ngbDropdownItem (click)="linkInvoiceFromSelected()" 
           [disabled]="!isActivatedPo() || !selectedIds().length" i18n>Link Selected Line Items to Invoice</button>
+        </ng-container>
       </div>
     </div>
   </div>
-  <div class="col ps-0 pe-1">
-    <label for="new-lineitem-note" class="form-label" i18n>New Line Item Note</label>
-  </div>
-  <div class="col-lg-4 ps-0">
-    <input type="text" class="form-control" id="new-lineitem-note" [(ngModel)]="batchNote"/>
-  </div>
-  <div class="col form-inline">
-    <div class="form-check me-2">
-      <input class="form-check-input" type="checkbox"
-        id="vendor-public" [(ngModel)]="noteIsPublic">
-      <label class="form-label form-check-label" for="vendor-public">
-        Note is vendor-public
-      </label>
+  <ng-container *ngIf="!invoice() && !lids">
+    <div class="col ps-0 pe-1">
+      <label for="new-lineitem-note" class="form-label" i18n>New Line Item Note</label>
     </div>
-  </div>
-  <div class="col">
-    <button type="button" class="btn btn-outline-dark" (click)="applyBatchNote()"
-      [disabled]="!selectedIds().length" i18n>
-      Apply To Selected
-    </button>
-  </div>
+    <div class="col-lg-4 ps-0">
+      <input type="text" class="form-control" id="new-lineitem-note" [(ngModel)]="batchNote"/>
+    </div>
+    <div class="col form-inline">
+      <div class="form-check me-2">
+        <input class="form-check-input" type="checkbox"
+          id="vendor-public" [(ngModel)]="noteIsPublic">
+        <label class="form-label form-check-label" for="vendor-public">
+          Note is vendor-public
+        </label>
+      </div>
+    </div>
+    <div class="col">
+      <button type="button" class="btn btn-outline-dark" (click)="applyBatchNote()"
+        [disabled]="!selectedIds().length" i18n>
+        Apply To Selected
+      </button>
+    </div>
+  </ng-container>
 </div>
 
 <div *ngIf="batchFailure" class="row mt-2 p-2">
@@ -123,7 +148,7 @@
 
 <!-- NAVIGATION / EXPANDY -->
 
-<div *ngIf="poId || picklistId"
+<div *ngIf="poId || picklistId || invoice() || lids"
   class="row mt-3 mb-1 border border-info rounded toolbar">
   <div class="col-lg-12 d-flex">
     <div class="d-flex justify-content-center flex-column h-100">
@@ -263,6 +288,8 @@
             class="form-control">
             <option value="li_id_asc" i18n>Line Item ID Ascending</option>
             <option value="li_id_desc" i18n>Line Item ID Descending</option>
+            <option value="li_expected_recv_time_asc" i18n>Line Item Expected Receive Time Ascending</option>
+            <option value="li_expected_recv_time_desc" i18n>Line Item Expected Receive Time Descending</option>
             <option value="title_asc" i18n>Title Ascending</option>
             <option value="title_desc" i18n>Title Descending</option>
             <option value="author_asc" i18n>Author Ascending</option>
@@ -272,6 +299,36 @@
             <option value="order_ident_asc" i18n>Order Identifier Ascending</option>
             <option value="order_ident_desc" i18n>Order Identifier Descending</option>
           </select>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="col-lg-12 d-flex">
+    <div class="d-flex justify-content-center flex-column h-100">
+      <div class="btn-toolbar">
+        <div *ngIf="batchReceiveMode" class="d-flex ms-3 justify-content-center flex-column h-100">
+          <button class="btn btn-info btn-sm" type="button"
+                                              (click)="receiveSelected()"
+                                              [disabled]="!selectedIds().length"
+                                              i18n>Receive Selected Line Items</button>
+        </div>
+        <div *ngIf="batchReceiveMode" class="d-flex ms-3 justify-content-center flex-column h-100">
+          <button class="btn btn-info btn-sm" type="button" 
+                                              (click)="receiveSelectedLids()"
+                                              [disabled]="!selectedLidIds().length"
+                                              i18n>Receive Selected Items</button>
+        </div>
+        <div *ngIf="batchClaimMode" class="d-flex ms-3 justify-content-center flex-column h-100">
+          <button class="btn btn-info btn-sm" type="button"
+                                              (click)="manageClaimsForLiIds(selectedIds())"
+                                              [disabled]="!selectedIds().length"
+                                              i18n>Claim Selected Line Items</button>
+        </div>
+        <div *ngIf="batchClaimMode" class="d-flex ms-3 justify-content-center flex-column h-100">
+          <button class="btn btn-info btn-sm" type="button" 
+                                              (click)="manageClaimsForLiIds(liIdsForSelectedLids(), selectedLidIds())"
+                                              [disabled]="!selectedLidIds().length"
+                                              i18n>Claim Selected Items</button>
         </div>
       </div>
     </div>
@@ -305,8 +362,14 @@
         <div class="row">
           <div class="col-lg-12">
             <input type="checkbox" [(ngModel)]="selected[li.id()]"  attr.aria-labelledby="lineitem-{{li.id()}}"/>
-            <a class="ms-2" queryParamsHandling="merge" [id]="'lineitem-'+li.id()"
+            <a *ngIf="!invoice() && !batchRecieveMode && !batchClaimMode"
+              class="ms-2" queryParamsHandling="merge" [id]="'lineitem-'+li.id()"
               routerLink="./lineitem/{{li.id()}}/detail">
+              {{displayAttr(li, 'title')}}
+            </a>
+            <a *ngIf="invoice() || batchRecieveMode || batchClaimMode"
+              class="ms-2" queryParamsHandling="merge" [id]="li.id()" target="_blank"
+              href="/eg2/staff/acq/po/{{idl.pkeyValue(li.purchase_order())}}/lineitem/{{li.id()}}/detail">
               {{displayAttr(li, 'title')}}
             </a>
           </div>
@@ -322,10 +385,69 @@
             <span class="pe-1">{{li.source_label()}}</span>
           </div>
         </div>
+        <div *ngIf="invoiceEntryMap[li.id()] && !batchReceiveMode"
+                  class="row invoice-entry" [ngClass]="{'invoice-entry-deleted': invoiceEntryMap[li.id()].isdeleted()}">
+          <div class="col-lg-12 d-flex" >
+            <div class="me-2">
+              <label class="form-label me-2" i18n># Invoiced:</label>
+              <input type="number" class="form-control-sm medium"
+                [ngClass]="{'border border-danger text-danger': !invoiceEntryInvItemCountIsValid(li)}"
+                placeholder='#' i18n-placeholder min="0"
+                [disabled]="disabledViaInvoice()"
+                [ngModelOptions]="{updateOn: 'blur'}"
+                [ngModel]="invoiceEntryMap[li.id()].inv_item_count()"
+                (ngModelChange)="lineItemObservables[li.id()]['inv_item_count'].next({li: li, newValue: $event})"/>
+            </div>
+            <div class="me-2">
+              <label class="form-label me-2" i18n># Paid:</label>
+              <input type="number" class="form-control-sm medium"
+                [ngClass]="{'border border-danger text-danger': !invoiceEntryPhyItemCountIsValid(li)}"
+                [disabled]="disabledViaInvoice()"
+                placeholder='#' i18n-placeholder min="0"
+                [ngModelOptions]="{updateOn: 'blur'}"
+                [ngModel]="invoiceEntryMap[li.id()].phys_item_count()"
+                (ngModelChange)="lineItemObservables[li.id()]['phys_item_count'].next({li: li, newValue: $event})"/>
+            </div>
+            <div class="me-2">
+              <label class="form-label me-2" i18n>Billed:</label>
+              <input type="text" class="form-control-sm medium"
+                [ngClass]="{'border border-danger text-danger': !invoiceEntryCostBilledIsValid(li)}"
+                [disabled]="disabledViaInvoice()"
+                placeholder='$' i18n-placeholder min="0"
+                [ngModelOptions]="{updateOn: 'blur'}"
+                [ngModel]="invoiceEntryMap[li.id()].cost_billed()"
+                (ngModelChange)="lineItemObservables[li.id()]['cost_billed'].next({li: li, newValue: $event})"/>
+            </div>
+            <!--<div class="me-2">
+              <label class="form-label me-2" i18n>Per Copy:</label>
+              <input type="text" class="form-control-sm medium" disabled>1.00</input>
+            </div>-->
+            <div class="me-2">
+              <label class="form-label me-2" i18n>Paid:</label>
+              <input type="text" class="form-control-sm medium"
+                [ngClass]="{'border border-danger text-danger': !invoiceEntryAmountPaidIsValid(li)}"
+                [disabled]="disabledViaInvoice()"
+                placeholder='$' i18n-placeholder min="0"
+                [ngModelOptions]="{updateOn: 'blur'}"
+                [ngModel]="invoiceEntryMap[li.id()].amount_paid()"
+                (ngModelChange)="lineItemObservables[li.id()]['amount_paid'].next({li: li, newValue: $event})"/>
+            </div>
+            <div class="me-2">
+              <button *ngIf="!invoiceEntryMap[li.id()].isdeleted()" class="btn btn-destroy btn-sm" type="button"
+                [disabled]="disabledViaInvoice()"
+                (click)="reAndDeTachLiFromInvoice(li,true)"
+                i18n>Detach</button>
+              <button *ngIf="invoiceEntryMap[li.id()].isdeleted()" class="btn btn-normal btn-sm" type="button"
+                [disabled]="disabledViaInvoice()"
+                (click)="reAndDeTachLiFromInvoice(li,false)"
+                i18n>Reattach</button>
+            </div>
+          </div>
+        </div>
         <div class="row">
           <div class="col-lg-12 d-flex">
             <div class="me-2">
-              <ng-container [ngSwitch]="li.state()">	
+              <ng-container [ngSwitch]="li.state()">
                 <div i18n 
                   class="p-1 text-dark border border-dark bg-light badge rounded-pill"
                   *ngSwitchCase="'new'">New</div>
@@ -354,7 +476,7 @@
             </div>
             <!-- w-auto allows the input group to stick to the right 
                  as the status label grows -->
-            <div class="input-group w-auto me-2">
+            <div *ngIf="!batchReceiveMode && !batchClaimMode && !invoice()" class="input-group w-auto me-2">
               <div class="input-group-text py-0">
                 <span *ngIf="identOptions(li).length > 1" class="text-danger me-1"
                   i18n-title title="Multiple Order Identifier Options" i18n>
@@ -386,25 +508,32 @@
               </eg-combobox>
             </div>
             <div class="me-2">
-              <input type="text" class="form-control-sm medium"
+              <input *ngIf="!invoice() && !batchClaimMode" type="text" class="form-control-sm medium"
                 [ngClass]="{'border border-danger text-danger': !liPriceIsValid(li)}"
+                [disabled]="disabledViaInvoice() || batchReceiveMode || batchClaimMode"
                 placeholder='Price...' i18n-placeholder
                 (change)="liPriceChange(li)" [ngModel]="li.estimated_unit_price()"
                 (ngModelChange)="li.estimated_unit_price($event)"/>
+              <span *ngIf="invoice() && !batchReceiveMode && !batchClaimMode"><label i18n>Price Per Item:</label>
+                {{price_per_copy(li) | currency}}</span>
             </div>
-            <div>
+            <div class="me-2" *ngIf="batchClaimMode">
+              <button class="btn btn-info btn-sm" type="button" (click)="manageClaims(li, {lidIds: selectedLidIds()})"
+                i18n>Claim This</button>
+            </div>
+            <div *ngIf="!batchReceiveMode && !batchClaimMode && !invoice()" class="me-2">
               <div ngbDropdown>
                 <button class="btn btn-info btn-sm" type="button" ngbDropdownToggle i18n>Actions</button>
                 <div ngbDropdownMenu>
-                  <button ngbDropdownItem type="button" [disabled]="li.state() !== 'on-order' && lineitemDisposition(li) !== 'delayed'"
+                  <button ngbDropdownItem type="button" [disabled]="(li.state() !== 'on-order' && lineitemDisposition(li) !== 'delayed') || disabledViaInvoice()"
                     (click)="markReceived([li.id()])" i18n>Mark Received</button>
-                  <button ngbDropdownItem type="button" [disabled]="li.state() !== 'received'"
+                  <button ngbDropdownItem type="button" [disabled]="(li.state() !== 'received') || disabledViaInvoice()"
                     (click)="markUnReceived([li.id()])" i18n>Mark Un-Received</button>
-                  <button ngbDropdownItem type="button" [disabled]="!liHasRealCopies(li)"
+                  <button ngbDropdownItem type="button" [disabled]="(!liHasRealCopies(li)) || disabledViaInvoice()"
                     (click)="editHoldings(li)" i18n>Update Barcodes</button>
-                  <button ngbDropdownItem type="button" [disabled]="!liHasRealCopies(li)"
+                  <button ngbDropdownItem type="button" [disabled]="(!liHasRealCopies(li)) || disabledViaInvoice()"
                     (click)="jumpToHoldings(li)" i18n>Open Holdings View</button>
-                  <button ngbDropdownItem type="button" [disabled]="!liHasRealCopies(li)"
+                  <button ngbDropdownItem type="button" [disabled]="!li.lineitem_details().length"
                     (click)="manageClaims(li)" i18n>Claims ({{countClaims(li)}} existing)</button>
                   <a ngbDropdownItem routerLink="lineitem/{{li.id()}}/history"
                     queryParamsHandling="merge" i18n>View History</a>
@@ -419,118 +548,142 @@
           </div>
         </div>
         <div class="row">
-          <div class="col-lg-12">
+          <div class="col-lg-12 d-flex lh-lg align-items-start">
             <span title="Line Item ID" i18n-title i18n># {{li.id()}}</span>
             <span class="ms-1 me-1" i18n> | </span>
             <span title="Existing Item Count" i18n-title i18n
               [ngClass]="{'text-danger fw-bold': existingCopyCounts[li.id()] > 0}">
               {{existingCopyCounts[li.id()]}}</span>
             <span class="ms-1 me-1" i18n> | </span>
-            <a class="label-with-material-icon" title="Items" i18n-title
-              routerLink="./lineitem/{{li.id()}}/items" queryParamsHandling="merge">
-              <span class="material-icons small me-1" aria-hidden="true">shopping_basket</span>
-              <span i18n>Items ({{li.lineitem_details().length}})</span>
-            </a>
-            <span class="ms-1 me-1" i18n> | </span>
-            <button class="btn btn-link label-with-material-icon"
-              [title]="expandLineitem[li.id()] ? Collapse : Expand" i18n-title 
-              [attr.aria-label]="expandLineitem[li.id()] ? Collapse : Expand" i18n-aria-label 
-              (click)="toggleShowExpand(li.id())" type="button">
-              <span class="material-icons small me-1" aria-hidden="true">{{expandLineitem[li.id()] ? 'unfold_less' : 'unfold_more'}}</span>
-            </button>
-            <span class="ms-1 me-1" i18n> | </span>
-            <button class="btn btn-link label-with-material-icon" 
-              title="Notes and Alerts" i18n-title
-              (click)="toggleShowNotes(li.id())" type="button">
-              <span class="material-icons small me-1" aria-hidden="true">event_note</span>
-              <span i18n>Notes and Alerts ({{li.lineitem_notes().length}})</span>
-              <span *ngIf="liHasAlerts(li)" class="text-danger material-icons" aria-hidden="true">flag</span>
-            </button>
-            <ng-container *ngIf="li.eg_bib_id()">
-              <span class="ms-1 me-1" i18n> | </span>
-              <a class="label-with-material-icon me-2"
-                routerLink="/staff/catalog/record/{{li.eg_bib_id()}}"
-                target="_blank">
-                <span class="material-icons small me-1" aria-hidden="true">library_books</span>
-                <span i18n>Catalog</span>
+            <ng-container *ngIf="!invoice() && !batchReceiveMode && !batchClaimMode">
+              <a class="label-with-material-icon" title="Items" i18n-title
+                [class.disabled]="disabledViaInvoice()"
+                (click)="disabledViaInvoice() ? $event.preventDefault() : null"
+                routerLink="./lineitem/{{li.id()}}/items" queryParamsHandling="merge">
+                <span class="material-icons small me-1" aria-hidden="true">shopping_basket</span>
+                <span i18n>Items ({{li.lineitem_details().length}})</span>
               </a>
-            </ng-container>
-
-            <ng-container *ngIf="!li.eg_bib_id()">
               <span class="ms-1 me-1" i18n> | </span>
-              <button class="btn btn-link label-with-material-icon me-2"
-                (click)="openBibFinder(li.id())" type="button">
-                <span class="material-icons small me-1" aria-hidden="true">library_books</span>
-                <span i18n>Link to Catalog</span>
+            </ng-container>
+            <button class="btn btn-link label-with-material-icon p-0" type="button"
+              (click)="toggleShowExpand(li.id())">
+              <ng-container *ngIf="!expandLineitem[li.id()]">
+                <span class="material-icons small me-1" aria-hidden="true">unfold_more</span>
+                <span i18n>Expand</span>
+              </ng-container>
+              <ng-container *ngIf="expandLineitem[li.id()]">
+                <span class="material-icons small me-1" aria-hidden="true">unfold_less</span>
+                <span i18n>Collapse</span>
+              </ng-container>
+            </button>
+            <span class="ms-1 me-1" i18n> | </span>
+            <ng-container *ngIf="batchReceiveMode">
+              <div class="me-2">
+                <label class="form-label me-2" i18n>Receiving:</label>
+                <input type="number" class="form-control-sm medium"
+                    placeholder='#' i18n-placeholder
+                    min="0" max="{{(li.lineitem_details()||[]).length}}"
+                    [disabled]="li.state() === 'received'"
+                    [(ngModel)]="lineitemDetailCountMap[li.id()]"
+                    (ngModelChange)="adjustSelectedLids(li.id(),$event)"/>
+              </div>
+            </ng-container>
+            <ng-container *ngIf="!batchReceiveMode && !batchClaimMode && !invoice()">
+              <button class="btn btn-link label-with-material-icon" type="button"
+                                                                    (click)="toggleShowNotes(li.id())">
+                <span class="material-icons small me-1" aria-hidden="true">event_note</span>
+                <span i18n>Notes and Alerts ({{li.lineitem_notes().length}})</span>
+                <span *ngIf="liHasAlerts(li)" class="text-danger material-icons"
+                                              title="Has Alerts" i18n-title>flag</span>
               </button>
             </ng-container>
+              <ng-container *ngIf="li.eg_bib_id()">
+                <span class="ms-1 me-1" i18n> | </span>
+                <a class="label-with-material-icon me-2"
+                   routerLink="/staff/catalog/record/{{li.eg_bib_id()}}"
+                   target="_blank">
+                  <span class="material-icons small me-1" aria-hidden="true">library_books</span>
+                  <span i18n>Catalog</span>
+                </a>
+              </ng-container>
 
-            <span class="ms-1 me-1" i18n> | </span>
-            <a class="label-with-material-icon"
-              routerLink="lineitem/{{li.id()}}/worksheet/">
-              <span class="material-icons small me-1" aria-hidden="true">create</span>
-              <span i18n>Worksheet</span>
-            </a>
-            <ng-container *ngIf="!picklistId && li.picklist() && li.picklist().name()">
+              <ng-container *ngIf="!li.eg_bib_id()">
+                <span class="ms-1 me-1" i18n> | </span>
+                <button class="btn btn-link label-with-material-icon me-2"
+                        (click)="openBibFinder(li.id())" type="button">
+                  <span class="material-icons small me-1" aria-hidden="true">library_books</span>
+                  <span i18n>Link to Catalog</span>
+                </button>
+              </ng-container>
+
+            <ng-container *ngIf="!batchReceiveMode && !batchClaimMode && !invoice()">
               <span class="ms-1 me-1" i18n> | </span>
               <a class="label-with-material-icon"
-                title="Selection List" i18n-title 
-                routerLink="/staff/acq/picklist/{{li.picklist().id()}}">
-                <span class="material-icons small me-1" aria-hidden="true">widgets</span>
-                <span i18n>{{li.picklist().name()}}</span>
+                 routerLink="lineitem/{{li.id()}}/worksheet/">
+                <span class="material-icons small me-1" aria-hidden="true">create</span>
+                <span i18n>Worksheet</span>
               </a>
             </ng-container>
-            <ng-container *ngIf="!poId && li.purchase_order()">
+              <ng-container *ngIf="!picklistId && li.picklist() && li.picklist().name()">
+                <span class="ms-1 me-1" i18n> | </span>
+                <a class="label-with-material-icon"
+                   title="Selection List" i18n-title target="_blank"
+                   href="/eg2/staff/acq/picklist/{{li.picklist().id()}}#{{li.id()}}">
+                  <span class="material-icons small me-1" aria-hidden="true">widgets</span>
+                  <span i18n>{{li.picklist().name()}}</span>
+                </a>
+              </ng-container>
+              <ng-container *ngIf="!poId && li.purchase_order()">
+                <span class="ms-1 me-1" i18n> | </span>
+                <a class="label-with-material-icon"
+                   title="Purchase Order" i18n-title target="_blank"
+                   href="/eg2/staff/acq/po/{{li.purchase_order().id()}}#{{li.id()}}">
+                  <span class="material-icons small me-1" aria-hidden="true">center_focus_weak</span>
+                  <span i18n>{{li.purchase_order().name()}}</span>
+                </a>
+              </ng-container>
+
               <span class="ms-1 me-1" i18n> | </span>
               <a class="label-with-material-icon"
-                title="Purchase Order" i18n-title
-                routerLink="/staff/acq/po/{{li.purchase_order().id()}}">
-                <span class="material-icons small me-1" aria-hidden="true">center_focus_weak</span>
-                <span i18n>{{li.purchase_order().name()}}</span>
+                 title="Request(s)" i18n-title
+                 href="/eg/staff/acq/requests/lineitem/{{li.id()}}"
+                 target="_blank">
+                <span class="material-icons small me-1" aria-hidden="true">help</span>
+                <span i18n>Request(s)</span>
               </a>
-            </ng-container>
 
-            <span class="ms-1 me-1" i18n> | </span>
-            <a class="label-with-material-icon"
-              href="/eg/staff/acq/requests/lineitem/{{li.id()}}"
-              target="_blank">
-              <span class="material-icons small me-1" aria-hidden="true">help</span>
-              <span i18n>Request(s)</span>
-            </a>
-
-            <span class="ms-1 me-1" i18n> | </span>
-            <a class="label-with-material-icon"
-              [queryParams]="{f: 'jub:id', val1: li.id()}"
-              routerLink="/staff/acq/search/invoices" target="_blank">
-              <span class="material-icons small me-1" aria-hidden="true">list</span>
-              <span i18n>Invoice(s)</span>
-            </a>
-
-            <ng-container *ngIf="li.claim_policy()">
-              <span class="ms-1 me-1" i18n> | </span>
-              <span i18n>Claim policy: {{li.claim_policy().name()}}</span>
-            </ng-container>
-
-            <ng-container *ngIf="li.provider()">
               <span class="ms-1 me-1" i18n> | </span>
               <a class="label-with-material-icon"
-                title="Provider" i18n-title target="_blank" 
-                routerLink="/staff/acq/provider/{{li.provider().id()}}/details">
-                <span class="material-icons small me-1" aria-hidden="true">store</span>
-                <span i18n>{{li.provider().name()}}</span>
+                 [queryParams]="{f: 'jub:id', val1: li.id()}"
+                 routerLink="/staff/acq/search/invoices" target="_blank">
+                <span class="material-icons small me-1" aria-hidden="true">list</span>
+                <span i18n>Invoice(s)</span>
               </a>
-            </ng-container>
 
-            <ng-container *ngIf="li.queued_record()">
-              <span class="ms-1 me-1" i18n> | </span>
-              <a class="label-with-material-icon"
-                routerLink="/staff/cat/vandelay/queue/bib/{{li.queued_record().queue()}}"
-                target="_blank">
-                <span class="material-icons small me-1" aria-hidden="true">queue</span>
-                <span i18n>Import Queue</span>
-              </a>
-            </ng-container>
+              <ng-container *ngIf="li.claim_policy()">
+                <span class="ms-1 me-1" i18n> | </span>
+                <span i18n>Claim policy: {{li.claim_policy().name()}}</span>
+              </ng-container>
 
+              <ng-container *ngIf="li.provider() && !invoice()">
+                <span class="ms-1 me-1" i18n> | </span>
+                <a class="label-with-material-icon"
+                   title="Provider" i18n-title target="_blank" 
+                                               routerLink="/staff/acq/provider/{{li.provider().id()}}/details">
+                  <span class="material-icons small me-1" aria-hidden="true">store</span>
+                  <span i18n>{{li.provider().name()}}</span>
+                </a>
+              </ng-container>
+
+              <ng-container *ngIf="li.queued_record()">
+                <span class="ms-1 me-1" i18n> | </span>
+                <a class="label-with-material-icon"
+                   routerLink="/staff/cat/vandelay/queue/bib/{{li.queued_record().queue()}}"
+                   target="_blank">
+                  <span class="material-icons small me-1">queue</span>
+                  <span i18n>Import Queue</span>
+                </a>
+              </ng-container>
           </div>
         </div>
       </div>
@@ -549,6 +702,10 @@
       <!-- Note the flex values are set so they also match the layout
            of the list of copies in the copies component. -->
       <div class="div d-flex fw-bold">
+        <div class="flex-1 p-1" *ngIf="batchReceiveMode || batchClaimMode">
+          <input type="checkbox" class="form-check-input"
+              (change)="batchLidSelectionToggle(li, $event)"/>
+        </div>
         <div class="flex-1 p-1" i18n>Owning Branch</div>  
         <div class="flex-1 p-1" i18n>Shelving Location</div>
         <div class="flex-1 p-1" i18n>Collection Code</div>
@@ -560,6 +717,11 @@
       </div>
       <div class="batch-copy-row" *ngFor="let copy of li.lineitem_details()">
         <eg-lineitem-copy-attrs [embedded]="true" [showReceiver]="true" [copy]="copy">
+          <div class="flex-1 p-1" *ngIf="batchReceiveMode || batchClaimMode">
+            <input type="checkbox" class="form-check-input"
+              [(ngModel)]="lineitemDetailSelectionMap[li.id()][copy.id()]"
+              (ngModelChange)="adjustNumberReceived(li.id())"/>
+          </div>
         </eg-lineitem-copy-attrs>
       </div>
     </div>

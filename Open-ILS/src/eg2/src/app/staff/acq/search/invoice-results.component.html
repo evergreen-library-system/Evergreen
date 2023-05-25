@@ -4,7 +4,7 @@
   defaultSearchSetting="eg.acq.search.default.invoices"></eg-acq-search-form>
 
 <ng-template #inv_identTmpl let-invoice="row">
-  <a href="/eg/staff/acq/legacy/invoice/view/{{invoice.id()}}"
+  <a href="/eg2/staff/acq/invoice/{{invoice.id()}}"
      target="_blank">
     {{invoice.inv_ident()}}
   </a>
@@ -20,6 +20,15 @@
      target="_blank">
     {{invoice.shipper().code()}}
   </a>
+</ng-template>
+<ng-template #costBilledTmpl let-invoice="row">
+  {{ calculateInvoiceTotal(invoice, 'cost_billed') | currency }}
+</ng-template>
+<ng-template #amountPaidTmpl let-invoice="row">
+  {{ calculateInvoiceTotal(invoice, 'amount_paid') | currency }}
+</ng-template>
+<ng-template #actualCostTmpl let-invoice="row">
+  {{ calculateInvoiceTotal(invoice, 'actual_cost') | currency }}
 </ng-template>
 
 <eg-grid #acqSearchInvoicesGrid
@@ -44,6 +53,12 @@
   <eg-grid-column [asyncSupportsEmptyTermClick]="true" path="payment_method"></eg-grid-column>
   <eg-grid-column path="recv_date" [datePlusTime]="true"></eg-grid-column>
   <eg-grid-column path="close_date" [datePlusTime]="true"></eg-grid-column>  
+  <eg-grid-column name="cost_billed" i18n-label label="Total Billed"
+    [sortable]="false" [cellTemplate]="costBilledTmpl"></eg-grid-column>
+  <eg-grid-column name="actual_cost" i18n-label label="Total Cost"
+    [sortable]="false" [cellTemplate]="actualCostTmpl"></eg-grid-column>
+  <eg-grid-column name="amount_paid" i18n-label label="Total Paid"
+    [sortable]="false" [cellTemplate]="amountPaidTmpl"></eg-grid-column>
 
 </eg-grid>
 

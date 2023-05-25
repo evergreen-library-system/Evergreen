@@ -40,6 +40,36 @@ sub get_li_attr {
 my $_TT_helpers; # define first so one helper can use another
 $_TT_helpers = {
 
+    generate_internal_auth_session => sub {
+        my $user_id = shift;
+        my $type = shift || 'opac';
+        my $ws_id = shift;
+
+        my $args = {
+            user_id    => $user_id,
+            login_type => $type,
+        };
+
+        if ($ws_id) {
+            $$args{workstation} = new_editor()->retrieve_actor_workstation($ws_id)->name;
+        }
+
+        return $U->simplereq(
+            'open-ils.auth_internal',
+            'open-ils.auth_internal.session.create',
+            $args
+        )->{payload}->{authtoken};
+    },
+
+    fetch_vbi_queue_summary => sub {
+        my $vbi= shift;
+        my $type = $vbi->import_type =~ /auth/ ? 'auth' : 'bib';
+        my $auth = $_TT_helpers->{generate_internal_auth_session}->( $vbi->owner, 'staff', $vbi->workstation );
+
+        my $method = "open-ils.vandelay.${type}_queue.summary.retrieve";
+        return $U->simplereq( 'open-ils.vandelay', $method, $auth, $vbi->queue);
+    },
+
     # turns a date into something TT can understand
     format_date => sub {
         my $date = shift;
@@ -68,6 +98,10 @@ $_TT_helpers = {
         my $str = shift;
         $str =~ s/([\x{0080}-\x{fffd}])/sprintf('\u%0.4x',ord($1))/sgoe;
         return $str;
+    },
+
+    jsonify => sub {
+        return $_TT_helpers->{escape_json}->( OpenSRF::Utils::JSON->perl2JSON(shift) );
     },
 
     # encode email headers in UTF-8, per RFC2231

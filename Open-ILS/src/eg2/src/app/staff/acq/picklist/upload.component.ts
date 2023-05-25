@@ -1,11 +1,12 @@
 import {Component, AfterViewInit, Input,
     ViewChild, OnDestroy} from '@angular/core';
-import {Router} from '@angular/router';
+import {Router, ActivatedRoute} from '@angular/router';
 import {tap} from 'rxjs/operators';
 import {IdlObject} from '@eg/core/idl.service';
 import {NetService} from '@eg/core/net.service';
 import {EventService} from '@eg/core/event.service';
 import {OrgService} from '@eg/core/org.service';
+import {PermService} from '@eg/core/perm.service';
 import {AuthService} from '@eg/core/auth.service';
 import {StringComponent} from '@eg/share/string/string.component';
 import {ToastService} from '@eg/share/toast/toast.service';
@@ -69,6 +70,7 @@ export class UploadComponent implements AfterViewInit, OnDestroy {
     //                   assets for a purchase order; the invoker
     //                   would do the actual asset creation
     @Input() mode = 'upload';
+    vandelayEmbed = false;
 
     @Input() customAction: (args: any) => void;
     customActionProcessing = false;
@@ -91,6 +93,9 @@ export class UploadComponent implements AfterViewInit, OnDestroy {
     selectedFallThruMergeProfile: number;
     selectedFile: File;
     newPO: number;
+
+    backgroundImportForUpload: boolean;
+    backgroundImportEmail: string;
 
     defaultMatchSet: string;
 
@@ -117,6 +122,7 @@ export class UploadComponent implements AfterViewInit, OnDestroy {
     selectedTemplate: string;
     formTemplates: {[name: string]: any};
     newTemplateName: string;
+    hasPermission: any;
 
     @ViewChild('fileSelector', { static: false }) private fileSelector;
     @ViewChild('uploadProgress', { static: true })
@@ -151,14 +157,29 @@ export class UploadComponent implements AfterViewInit, OnDestroy {
     constructor(
         private http: HttpClient,
         private router: Router,
+        private route: ActivatedRoute,
         private toast: ToastService,
         private evt: EventService,
         private net: NetService,
         private auth: AuthService,
         private org: OrgService,
+        private perm: PermService,
         private store: ServerStoreService,
         private vlagent: PicklistUploadService
     ) {
+        // If we're inside Vandelay, note that fact
+        this.route.snapshot.pathFromRoot.forEach(p => {
+            if (p.url.find(s => s.path === 'vandelay')) {
+                this.vandelayEmbed = true;
+            }
+        });
+
+        // force a reload of the component if we navigate to it
+        // from itself
+        this.router.routeReuseStrategy.shouldReuseRoute = () => {
+            return false;
+        };
+
         this.applyDefaults();
         this.applySettings();
     }
@@ -200,6 +221,8 @@ export class UploadComponent implements AfterViewInit, OnDestroy {
 
     ngAfterViewInit() {
         this.loadStartupData();
+        this.perm.hasWorkPermHere(['CREATE_BIB_IMPORT_QUEUE','CREATE_AUTHORITY_IMPORT_QUEUE'])
+            .then(perms => this.hasPermission = perms);
     }
 
     ngOnDestroy() {
@@ -238,12 +261,14 @@ export class UploadComponent implements AfterViewInit, OnDestroy {
 
 
     orgOnChange(org: IdlObject) {
-        this.orderingAgency = org.id();
-        this.vlagent.getFiscalYears(this.orderingAgency).then( years => {
-            this.vlagent.getDefaultFiscalYear(this.orderingAgency).then(
-                y => { this.selectedFiscalYear = y.id(); this.fiscalYearSelector.applyEntryId(this.selectedFiscalYear); }
-            );
-        });
+        if (org) {
+            this.orderingAgency = org.id();
+            this.vlagent.getFiscalYears(this.orderingAgency).then( years => {
+                this.vlagent.getDefaultFiscalYear(this.orderingAgency).then(
+                    y => { this.selectedFiscalYear = y.id(); this.fiscalYearSelector.applyEntryId(this.selectedFiscalYear); }
+                );
+            });
+        }
     }
 
     loadTemplates() {
@@ -352,9 +377,23 @@ export class UploadComponent implements AfterViewInit, OnDestroy {
         this.selectedFile = $event.target.files[0];
     }
 
+    tooMuchForBackground(): boolean {
+        const no_good = this.mode !== 'upload';
+
+        if (no_good) { // forced off
+            this.backgroundImportForUpload = false;
+        }
+
+        return no_good;
+    }
+
     hasNeededData(): boolean {
         if (this.mode === 'getImportParams') {
             return this.selectedQueue ? true : false;
+        }
+        if (this.backgroundImportForUpload) {
+            const test_perm = this.recordType === 'authority' ? 'CREATE_AUTHORITY_IMPORT_QUEUE' : 'CREATE_BIB_IMPORT_QUEUE'; // recordType of 'acq' is also a bib
+            if (!this.hasPermission[test_perm]) {return false;}
         }
         return this.selectedQueue &&
         Boolean(this.selectedFile) &&
@@ -368,31 +407,51 @@ export class UploadComponent implements AfterViewInit, OnDestroy {
         this.isUploading = true;
         this.uploadComplete = false;
         this.resetProgressBars();
-
-        // eslint-disable-next-line no-unused-expressions
-        this.resolveSelectionList(),
-        this.resolveQueue()
-            .then(
-                queueId => {
-                    this.activeQueueId = queueId;
-                    return this.uploadFile();
-                },
-                err => Promise.reject('queue create failed')
-            ).then(
-                ok => this.processUpload(),
-                err => Promise.reject('process spool failed')
-            ).then(
-                ok => {
-                    this.isUploading = false;
-                    this.uploadComplete = true;
-                },
-                err => {
-                    console.log('file upload failed: ', err);
-                    this.isUploading = false;
-                    this.resetProgressBars();
-
-                }
-            );
+	    this.resolveSelectionList().then( list_id => {
+    		if (!this.backgroundImportForUpload) {
+        	    this.resolveQueue()
+            	.then(
+	                queueId => {
+    	                this.activeQueueId = queueId;
+            	        return this.uploadFile();
+                	},
+	                err => Promise.reject('queue create failed')
+    	        ).then(
+        	        ok => this.processUpload(),
+                	err => Promise.reject('process spool failed')
+	            ).then(
+    	            ok => {
+        	            this.isUploading = false;
+            	        this.uploadComplete = true;
+    	            },
+        	        err => {
+            	        console.log('file upload failed: ', err);
+                	    this.isUploading = false;
+                    	this.resetProgressBars();
+    	            }
+        	    );
+            } else {
+                this.uploadFile()
+                    .then( _ => {
+                        this.net.request(
+                            'open-ils.vandelay',
+                            'open-ils.vandelay.background_import.create',
+                            this.auth.token(), this.compileImportOptions()
+                        ).subscribe( new_job => {
+                            const evt = this.evt.parse(new_job);
+                            if (evt) {
+                                this.toast.danger(evt.toString());
+                                this.isUploading = false;
+                                this.resetProgressBars();
+                            } else {
+                                this.toast.success($localize`Background import requested`);
+                                this.isUploading = false;
+                                this.uploadComplete = true;
+                            }
+                        });
+                    });
+            }
+        });
     }
 
     // helper method to return the year string rather than the FY ID
@@ -514,7 +573,7 @@ export class UploadComponent implements AfterViewInit, OnDestroy {
 
                 } else if (evt instanceof HttpResponse) {
                     this.sessionKey = evt.body as string;
-                    console.log(
+                    console.debug(
                         'vlagent file uploaded OK with key ' + this.sessionKey);
                 }
             },
@@ -571,7 +630,7 @@ export class UploadComponent implements AfterViewInit, OnDestroy {
             ).subscribe(
                 progress => {
                     const resp = this.evt.parse(progress);
-                    console.log(progress);
+                    console.debug(progress);
                     if (resp) {
                         this.uploadError = true;
                         this.uploadErrorCode = resp.textcode;
@@ -588,6 +647,38 @@ export class UploadComponent implements AfterViewInit, OnDestroy {
                 }
             );
         });
+    }
+
+    compileImportOptions() {
+
+        let itype = 'bib';
+        if (this.activeSelectionListId || this.createPurchaseOrder) {
+            itype = 'acq';
+        }
+
+        return {
+            session_key: this.sessionKey,
+            background_email: this.backgroundImportForUpload ? this.backgroundImportEmail : null,
+            import_no_match: this.importNonMatching,
+            auto_overlay_exact: this.mergeOnExact,
+            auto_overlay_best_match: this.mergeOnBestMatch,
+            auto_overlay_1match: this.mergeOnSingleMatch,
+            existing_queue: this.selectedQueue?.id,
+            queue_name: (this.selectedQueue && this.selectedQueue?.id === null) ? this.selectedQueue.label : null,
+            match_set: this.selectedMatchSet || this.defaultMatchSet,
+            merge_profile: this.selectedMergeProfile,
+            bib_source: this.selectedBibSource,
+            import_type: itype,
+            fall_through_merge_profile: this.selectedFallThruMergeProfile,
+            match_quality_ratio: this.minQualityRatio,
+            provider: this.selectedProvider,
+            ordering_agency: this.orderingAgency,
+            create_assets: this.loadItems,
+            create_po: this.createPurchaseOrder,
+            activate_po: this.activatePurchaseOrder,
+            fiscal_year: this._getFiscalYearLabel(),
+            picklist: this.activeSelectionListId
+        };
     }
 
     clearSelection() {

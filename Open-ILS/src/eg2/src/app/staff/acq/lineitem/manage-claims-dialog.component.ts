@@ -17,6 +17,8 @@ import {PrintService} from '@eg/share/print/print.service';
 
 export class ManageClaimsDialogComponent extends DialogComponent {
     @Input() li: IdlObject;
+    @Input() lidIds: number[];
+    @Input() insideBatch: boolean;
 
     @ViewChild('printTemplate', { static: true }) private printTemplate: TemplateRef<any>;
 
@@ -46,6 +48,20 @@ export class ManageClaimsDialogComponent extends DialogComponent {
         this.claimEventTypes = [];
         this.selectedClaimEventTypes = [];
         this.getClaimEventTypes();
+
+        // console.log('ManageClaimsDialogComponent, this.lidIds',this.lidIds);
+        if (this.lidIds) {
+            this.li.lineitem_details().forEach( (lid: IdlObject) => {
+                // console.log('ManageClaimsDialogComponent, lid',lid);
+                if (this.lidIds.includes( Number(lid.id()) )) {
+                    lid._selected_for_claim = true;
+                    // console.log('ManageClaimsDialogComponent, self-selecting',lid);
+                } else {
+                    lid._selected_for_claim = false;
+                    // console.log('ManageClaimsDialogComponent, ensuring not selected',lid);
+                }
+            });
+        }
 
         return super.open(args);
     }
@@ -92,7 +108,7 @@ export class ManageClaimsDialogComponent extends DialogComponent {
                     printContext: 'default'
                 });
             }
-            this.close(true);
+            this.close({claimMade: true});
         });
     }
 

@@ -1,0 +1,76 @@
+<eg-confirm-dialog #confirmFinalize
+  i18n-dialogTitle i18n-dialogBody
+  dialogTitle="Finalize Blanket Order?"
+  dialogBody="This will disencumber all blanket charges and mark the Invoice as received.">
+</eg-confirm-dialog>
+<eg-confirm-dialog #confirmActivate
+  i18n-dialogTitle i18n-dialogBody
+  dialogTitle="Confirm Order Activation?"
+  dialogBody="Please confirm that you want to activate the order; there are warnings.">
+</eg-confirm-dialog>
+
+<div *ngIf="!invoice()" class="p-1 mb-2 border border-secondary rounded">
+  Loading...
+</div>
+<div *ngIf="invoice()" class="p-1 mb-2 border border-secondary rounded">
+  <div class="p-2">
+    <div class="row mt-1 justify-content-start">
+      <div class="col-lg-8 d-flex align-items-center">
+        <ng-template #invIdentTemplate let-field="field" let-record="record">
+            <input class="form-control" name="{{field.name}}"
+                [readonly]="field.readOnly" [required]="field.isRequired()"
+                [ngModel]="record[field.name]()"
+                (ngModelChange)="record[field.name]($event); debouncedInputForRecord.next($event)"
+                [ngClass]="{'duplicate': duplicateInvIdentFound}"
+            />
+            <label *ngIf="duplicateInvIdentFound" aria-live="polite" i18n>
+              This invoice ID is in use with another invoice.</label>
+        </ng-template>
+        <ng-template #providerTemplate let-field="field" let-record="record">
+            <ng-container *ngIf="field.readOnly">
+              <span>{{ getLinkedFmObservable(field.class, record[field.name]()) | async }}</span>
+            </ng-container>
+            <eg-combobox *ngIf="!field.readOnly"
+              id="{{idPrefix}}-{{field.name}}" name="{{field.name}}"
+              placeholder="{{field.label}}..." i18n-placeholder
+              [required]="field.isRequired()"
+              [idlClass]="field.class" [asyncSupportsEmptyTermClick]="true"
+              [idlBaseQuery]="field.idlBaseQuery"
+              [idlField]="field.selector"
+              [selectedId]="record[field.name]()"
+              (onChange)="record[field.name]($event ? $event.id : null); debouncedInputForProvider.next($event)">
+            </eg-combobox>
+        </ng-template>
+        <eg-fm-record-editor #recordEditor
+           idlClass="acqinv" displayMode="inline" mode="create" hideBanner="true" hideSave="true"
+           [fieldOptions]="{inv_ident:{customTemplate:{template:invIdentTemplate}},provider:{customTemplate:{template:providerTemplate}}}"
+           fieldOrder="inv_ident,provider,shipper,recv_method,receiver,inv_type,payment_method,payment_auth,note,recv_date,close_date,closed_by"
+            hiddenFields="id" readonlyFields="close_date,closed_by" [record]="defleshedInvoice()"
+            orgDefaultAllowed="receiver">
+        </eg-fm-record-editor>
+      </div>
+      <div class="col-lg-4 d-flex flex-column align-items-start">
+        <h3 i18n>Saved Data Summary</h3>
+        <h3 *ngIf="errorWithTotals" class="badge-warning" i18n>error calculating totals</h3>
+        <dl>
+          <dt i18n>Total Billed:</dt>
+          <dd>{{totalCost | currency}}</dd>
+          <dt i18n>Total Encumbered:</dt>
+          <dd>{{totalEncumbered | currency}}</dd>
+          <dt i18n>Total Paid:</dt>
+          <dd>{{totalPaid | currency}}</dd>
+          <dt i18n>Balance Owed:</dt>
+          <dd><span class="badge badge-danger">{{balanceOwed | currency}}</span></dd>
+        </dl>
+        <h3 i18n>Fund Summary</h3>
+        <dl>
+          <ng-container *ngFor="let fs of fundSummary">
+            <dt>{{fs.fund.code}} ({{fs.fund.year}})</dt>
+            <dd>{{fs.total | currency}}</dd>
+          </ng-container>
+        </dl>
+      </div>
+    </div>
+  </div>
+</div>
+

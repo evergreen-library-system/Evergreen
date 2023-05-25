@@ -10,6 +10,7 @@ import {FundingSourceTransactionsDialogComponent} from './funding-source-transac
 import {FundTagsComponent} from './fund-tags.component';
 import {FundTransferDialogComponent} from './fund-transfer-dialog.component';
 import {FundRolloverDialogComponent} from './fund-rollover-dialog.component';
+import {AcqCommonModule} from '@eg/staff/acq/acq-common.module';
 
 @NgModule({
     declarations: [
@@ -26,6 +27,7 @@ import {FundRolloverDialogComponent} from './fund-rollover-dialog.component';
         StaffCommonModule,
         AdminCommonModule,
         FundsRoutingModule,
+        AcqCommonModule,
     ],
     exports: [
     ],

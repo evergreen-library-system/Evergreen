@@ -188,7 +188,7 @@ export class AcqProviderSummaryPaneComponent implements OnInit, AfterViewInit {
                             .then(str => this.toast.danger(str));
                     },
                     ()  => {
-                        console.log('deleteProvider, what is this?');
+                        console.debug('deleteProvider, what is this?');
                     }
                 );
         });

@@ -16,7 +16,10 @@
     <a role="tab" ngbNavLink i18n>Claim Policy Actions</a>
     <ng-template ngbNavContent>
       <div class="mt-2">
-        <eg-admin-page idlClass="acqclpa"></eg-admin-page>
+        <eg-admin-page
+          idlEditClass="acqclpa" idlClass="acqclpaouv"
+          orgField="claim_policy_org_unit"
+          [additionalOrgFields]="['action_org_unit']"></eg-admin-page>
        </div>
     </ng-template>
   </li>

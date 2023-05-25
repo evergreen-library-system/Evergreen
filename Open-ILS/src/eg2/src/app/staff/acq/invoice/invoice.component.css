@@ -1,0 +1,31 @@
+.box {
+  background-color: #cfe2ff;
+  color: #084298;
+  border-radius: 5px;
+  padding: 20px;
+}
+
+.box:nth-child(even) {
+  background-color: #fff;
+  color: #084298;
+}
+
+.wrapper {
+  width: 900px;
+  display: grid;
+  grid-gap: 10px;
+  grid-template-columns: repeat(3, 300px);
+}
+
+.invoice-actions {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.invoice-actions .material-icons {
+  font-size: 1rem;
+}
+
+.invoice-actions .mat-icon-in-button {
+  padding: 0.15rem 0.5rem;
+}

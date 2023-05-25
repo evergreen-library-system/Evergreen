@@ -1,0 +1,6 @@
+<span class="material-icons small me-1" aria-hidden="true">center_focus_weak</span>
+<span i18n>{{po?.name()}} {{po?.order_date() | date:'shortDate'}}</span>
+<ng-container *ngIf="showEstimatedCost">
+  <br /><span i18n>Total Estimated Cost: {{po?.amount_estimated() | currency}}</span>
+</ng-container>
+<ng-content></ng-content>

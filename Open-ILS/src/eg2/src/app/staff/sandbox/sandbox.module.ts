@@ -9,6 +9,7 @@ import {SampleDataService} from '@eg/share/util/sample-data.service';
 import {OrgFamilySelectModule} from '@eg/share/org-family-select/org-family-select.module';
 import {ItemLocationSelectModule} from '@eg/share/item-location-select/item-location-select.module';
 import {PatronModule} from '@eg/staff/share/patron/patron.module';
+import {Z3950SearchModule} from '@eg/staff/share/z3950-search/z3950-search.module';
 
 @NgModule({
     declarations: [
@@ -22,7 +23,8 @@ import {PatronModule} from '@eg/staff/share/patron/patron.module';
         ItemLocationSelectModule,
         SandboxRoutingModule,
         ReactiveFormsModule,
-        PatronModule
+        PatronModule,
+        Z3950SearchModule
     ],
     providers: [
         SampleDataService

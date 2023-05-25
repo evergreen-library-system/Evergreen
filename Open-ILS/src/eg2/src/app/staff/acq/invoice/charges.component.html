@@ -1,0 +1,143 @@
+<eg-confirm-dialog #warnPercentConfirmDialog
+  i18n-dialogTitle i18n-dialogBody
+  dialogTitle="Confirm Fund Debit"
+  dialogBody="Ignore fund limit warning and encumber for this amount?">
+</eg-confirm-dialog>
+<eg-confirm-dialog #stopPercentConfirmDialog
+  i18n-dialogTitle i18n-dialogBody
+  dialogTitle="Confirm Fund Debit"
+  dialogBody="This action would over-encumber the fund. Proceed?">
+</eg-confirm-dialog>
+<eg-alert-dialog #stopPercentAlertDialog i18n-dialogBody
+  dialogBody="This amount would over-encumber the fund. Reverting to previous value.">
+</eg-alert-dialog>
+
+<h4 i18n>Direct Charges, Taxes, Fees, etc. 
+  <ng-container *ngIf="canModify">
+  <button class="btn btn-info btn-sm"
+    (click)="newCharge()" *ngIf="canModify">
+    New Charge</button>
+  <span class="ps-2 pe-2"> | </span>
+  <button class="btn btn-info btn-sm"
+    [disabled]="inBatch" (click)="batchEdit()" *ngIf="canModify">
+    Edit All</button>
+  <span class="ps-2 pe-2"> | </span>
+  <!--
+  <button class="btn btn-info btn-sm"
+    (click)="saveAllCharges()" [disabled]="!allChargesValid() || !atLeastOneChargeIsChangedOrNew()">
+    Save All</button>
+  -->
+  </ng-container>
+</h4>
+
+<!--<eg-acq-disencumber-charge-dialog #disencumberChargeDialog></eg-acq-disencumber-charge-dialog>-->
+
+<ng-container *ngIf="showBody">
+  <div class="row d-flex">
+    <div class="flex-2 p-2 fw-bold">Charge Type</div>
+    <div class="flex-2 p-2 fw-bold">Fund</div>
+    <div class="flex-2 p-2 fw-bold">Title/Description</div>
+    <div class="flex-2 p-2 fw-bold">Author</div>
+    <div class="flex-2 p-2 fw-bold">Note</div>
+    <div class="flex-2 p-2 fw-bold">Billed</div>
+    <div class="flex-2 p-2 fw-bold">Paid</div>
+    <div class="flex-2 p-2"> </div>
+  </div>
+  <div class="row mt-2 pt-2 d-flex border-top form-validated"
+       [ngClass]="{'deleted': chargeMap[chargeId].isdeleted() }"
+    *ngFor="let chargeId of getChargeMapKeys(); trackBy: trackByKey">
+    <div class="flex-2 p-2">
+      <eg-combobox idlClass="aiit" [selectedId]="chargeMap[chargeId].inv_item_type()"
+        [asyncSupportsEmptyTermClick]="true"
+        (onChange)="handleChangedChargeType(chargeMap[chargeId],$event)"
+        i18n-placeholder placeholder="Charge Type..."
+        [required]="true" [readOnly]="!chargeMap[chargeId].isnew() && !chargeMap[chargeId].ischanged()"></eg-combobox><br />
+      <a *ngIf="chargeMap[chargeId]?.purchase_order()" target="_blank" href="/eg2/staff/acq/po/{{idl.pkeyValue(chargeMap[chargeId]?.purchase_order())}}">
+        <eg-po-label [poId]="chargeMap[chargeId]?.purchase_order()" showEstimatedCost="true"></eg-po-label>
+      </a>
+    </div>
+    <div class="flex-2 p-2">
+      <ng-container *ngIf="isChargeFundRequired(chargeMap[chargeId])">
+        <!--  the IDL does not require a fund, but the Perl code assumes
+              one is present -->
+        <eg-combobox idlClass="acqf" [selectedId]="chargeMap[chargeId].fund()"
+          (onChange)="chargeMap[chargeId].fund($event ? $event.id : null); invoiceService.changeNotify()"
+          i18n-placeholder placeholder="Fund..."
+          [asyncSupportsEmptyTermClick]="true"
+          [required]="isChargeFundRequired(chargeMap[chargeId])" [readOnly]="(!chargeMap[chargeId].isnew() && !chargeMap[chargeId].ischanged()) || !isChargeFundRequired(chargeMap[chargeId])"
+          [idlQuerySort]="{acqf: 'year DESC, code'}"
+          [idlQueryAnd]="{org: owners, active: 't'}">
+        </eg-combobox>
+      </ng-container>
+      <ng-container *ngIf="!isChargeFundRequired(chargeMap[chargeId])">
+        <span i18n>
+          Not checking fund warning/stop thresholds.
+        </span>
+      </ng-container>
+      <span *ngIf="chargeMap[chargeId].fund_debit() && chargeMap[chargeId].fund_debit().fund() !== chargeMap[chargeId].fund()">
+        <br>
+        <i i18n>Fund {{chargeMap[chargeId].fund_debit().fund() | fundLabel}} in use until a change is saved.</i>
+      </span>
+    </div>
+    <div class="flex-2 p-2">
+      <span *ngIf="!chargeMap[chargeId].isnew() && !chargeMap[chargeId].ischanged()">{{chargeMap[chargeId].title()}}</span>
+      <input *ngIf="chargeMap[chargeId].isnew() || chargeMap[chargeId].ischanged()" type="text" class="form-control" 
+        i18n-placeholder placeholder="Title..."
+        [ngModel]="chargeMap[chargeId].title()" (ngModelChange)="chargeMap[chargeId].title($event); invoiceService.changeNotify()"/>
+    </div>
+    <div class="flex-2 p-2">
+      <span *ngIf="!chargeMap[chargeId].isnew() && !chargeMap[chargeId].ischanged()">{{chargeMap[chargeId].author()}}</span>
+      <input *ngIf="chargeMap[chargeId].isnew() || chargeMap[chargeId].ischanged()" type="text" class="form-control" 
+        i18n-placeholder placeholder="Author..."
+        [ngModel]="chargeMap[chargeId].author()" (ngModelChange)="chargeMap[chargeId].author($event); invoiceService.changeNotify()"/>
+    </div>
+    <div class="flex-2 p-2">
+      <span *ngIf="!chargeMap[chargeId].isnew() && !chargeMap[chargeId].ischanged()">{{chargeMap[chargeId].note()}}</span>
+      <input *ngIf="chargeMap[chargeId].isnew() || chargeMap[chargeId].ischanged()" type="text" class="form-control" 
+        i18n-placeholder placeholder="Note..."
+        [ngModel]="chargeMap[chargeId].note()" (ngModelChange)="chargeMap[chargeId].note($event); invoiceService.changeNotify()"/>
+    </div>
+    <div class="flex-2 p-2">
+      <span *ngIf="!chargeMap[chargeId].isnew() && !chargeMap[chargeId].ischanged()">{{chargeMap[chargeId].cost_billed() | currency}}</span>
+      <input *ngIf="chargeMap[chargeId].isnew() || chargeMap[chargeId].ischanged()" type="number" min="0" class="form-control" 
+        i18n-placeholder placeholder="Amount Billed..." [required]="true"
+        [ngModel]="chargeMap[chargeId].cost_billed()"
+        [ngModelOptions]="{updateOn: 'blur'}"
+        (ngModelChange)="handleCostBilledChange(chargeMap[chargeId], $event);"/>
+    </div>
+    <div class="flex-2 p-2">
+      <span *ngIf="!chargeMap[chargeId].isnew() && !chargeMap[chargeId].ischanged()">{{chargeMap[chargeId].amount_paid() | currency}}</span>
+      <input *ngIf="chargeMap[chargeId].isnew() || chargeMap[chargeId].ischanged()" type="number" min="0" class="form-control" 
+        i18n-placeholder placeholder="Amount Paid..." [required]="true"
+        [(ngModel)]="amountPaidMap[chargeId]"
+        [ngModelOptions]="{updateOn: 'blur'}"
+        (ngModelChange)="handleAmountPaidChange(chargeMap[chargeId], $event);"/>
+      <span *ngIf="chargeMap[chargeId].fund_debit()">
+        <br>
+        <span *ngIf="chargeMap[chargeId].fund_debit().encumbrance() === 't'" i18n>
+          <i>Amount encumbered is {{chargeMap[chargeId].fund_debit().amount() | currency}}</i>
+        </span>
+        <span *ngIf="chargeMap[chargeId].fund_debit().encumbrance() === 'f'" i18n>
+          <i>Amount expended is {{chargeMap[chargeId].fund_debit().amount() | currency}}</i>
+        </span>
+      </span>
+    </div>
+    <div class="flex-2 p-1">
+      <!--<button *ngIf="canModify && !inBatch"
+         [disabled]="!chargeValid(chargeMap[chargeId]) || !(!chargeMap[chargeId].isnew() || chargeMap[chargeId].ischanged())"
+         class="btn btn-success btn-sm" 
+         (click)="saveCharge(chargeMap[chargeId])" i18n>Save</button>-->
+      <button *ngIf="canModify && !chargeMap[chargeId].ischanged()"
+        class="btn btn-outline-dark btn-sm ms-1" 
+        (click)="editCharge(chargeMap[chargeId])" i18n>Edit</button>
+      <!--<button class="btn btn-normal btn-sm ms-1" 
+        (click)="disencumberCharge(chargeMap[chargeId])" *ngIf="canDisencumber(chargeMap[chargeId])" i18n>Disencumber</button>-->
+      <button class="btn btn-normal btn-sm ms-1" 
+        (click)="removeCharge(chargeMap[chargeId])" *ngIf="canRemove(chargeMap[chargeId])" i18n>Remove</button>
+      <button class="btn btn-destroy btn-sm ms-1" 
+        (click)="deleteCharge(chargeMap[chargeId])" *ngIf="canDelete(chargeMap[chargeId])" i18n>Delete</button>
+      <button class="btn btn-destroy btn-sm ms-1" 
+        (click)="undeleteCharge(chargeMap[chargeId])" *ngIf="canUndelete(chargeMap[chargeId])" i18n>Un-Delete</button>
+    </div>
+  </div>
+</ng-container>

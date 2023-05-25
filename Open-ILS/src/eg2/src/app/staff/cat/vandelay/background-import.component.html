@@ -1,0 +1,63 @@
+<eg-progress-dialog #progressDlg
+  dialogTitle="Deleting Background Import jobs..." i18n-dialogTitle/>
+
+<eg-confirm-dialog
+  #confirmDelDlg
+  i18n-dialogTitle i18n-dialogBody
+  dialogTitle="Confirm Delete"
+  dialogBody="Delete {{jobsToDelete.length}} Background Import {{jobsToDelete.length !== 1 ? 'jobs' : 'job'}}?"/>
+
+<ng-template #qTmpl let-row="row">
+  <a *ngIf="row.queue() !== null" routerLink="/staff/cat/vandelay/queue/{{row.import_type()}}/{{row.queue()}}" i18n>
+    Inspect queue {{row.queue()}}
+  </a>
+</ng-template>
+
+<ng-template #statsTmpl let-row="row">
+  <ng-container *ngIf="row.queueSummary && row.queueSummary.queue">
+
+      <div class="card tight-card">
+        <ul class="list-group list-group-flush">
+          <li class="list-group-item">
+            <div class="d-flex">
+              <div class="flex-3" i18n>Records:</div>
+              <div class="flex-1">{{row.queueSummary.total}}</div>
+              <div class="flex-3" i18n>Items:</div>
+              <div class="flex-1">{{row.queueSummary.total_items}}</div>
+            </div>
+          </li>
+          <li class="list-group-item">
+            <div class="d-flex">
+              <div class="flex-3" i18n>Imported:</div>
+              <div class="flex-1">{{row.queueSummary.imported}}</div>
+              <div class="flex-3" i18n>Items Imported:</div>
+              <div class="flex-1">{{row.queueSummary.total_items_imported}}</div>
+            </div>
+          </li>
+          <li class="list-group-item">
+            <div class="d-flex">
+              <div class="flex-3" i18n>Records Failures:</div>
+              <div class="flex-1">{{row.queueSummary.rec_import_errors}}</div>
+              <div class="flex-3" i18n>Item Failures:</div>
+              <div class="flex-1">{{row.queueSummary.item_import_errors}}</div>
+            </div>
+          </li>
+        </ul>
+      </div>
+
+  </ng-container>
+
+  <span i19n *ngIf="!row.queueSummary">Waiting...</span>
+</ng-template>
+
+<eg-grid #jobGrid [cellTextGenerator]="cellTextGenerator"
+  persistKey="cat.vandelay.background-import.list"
+  (onRowActivate)="rowActivated($event)" hideFields="id,params"
+  idlClass="vbi" [dataSource]="jobSource">
+  <eg-grid-toolbar-action label="Delete Selected" i18n-label (onClick)="deleteJobs($event)"/>
+  <eg-grid-column name="queue" i18n-label label="Actions" [cellTemplate]="qTmpl" [filterable]="false" [sortable]="false"/>
+  <eg-grid-column name="stats" [hidden]="true" i18n-label [disableTooltip]="true" flex="6" label="Statistics" [cellTemplate]="statsTmpl" [filterable]="false" [sortable]="false"/>
+  <eg-grid-column path="request_time" i18n-label label="Request Time" [datePlusTime]="true"/>
+  <eg-grid-column path="complete_time" i18n-label label="Complete Time" [datePlusTime]="true"/>
+</eg-grid>
+

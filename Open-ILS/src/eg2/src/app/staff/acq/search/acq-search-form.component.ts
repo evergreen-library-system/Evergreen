@@ -19,16 +19,33 @@ export class AcqSearchFormComponent implements OnInit, OnChanges {
     @Input() fallbackSearchTerms: AcqSearchTerm[] = [];
     @Input() defaultSearchSetting = '';
     @Input() runImmediatelySetting = '';
+    @Input() filterToInvoiceableSetting = '';
+    @Input() keepResultsSetting = '';
+    @Input() trimListSetting = '';
+    @Input() invoice: IdlObject;
+    @Input() providerId: string;
     @Input() searchTypeLabel = '';
+    @Input() searchContext = ''; // only used to *ngIf some widgets
 
     @Output() searchSubmitted = new EventEmitter<AcqSearch>();
+    @Output() keepResultsChange: EventEmitter<boolean> = new EventEmitter();
+    @Output() trimListChange: EventEmitter<boolean> = new EventEmitter();
+
+    onKeepResultsChange(value: boolean) {
+        console.debug('AcqSearchFormComponent, onKeepResultsChange', value);
+        this.keepResultsChange.emit(value);
+    }
+    onTrimListChange(value: boolean) {
+        console.debug('AcqSearchFormComponent, onTrimListChange', value);
+        this.trimListChange.emit(value);
+    }
 
     @ViewChild('defaultSearchSavedString', { static: true}) defaultSearchSavedString: StringComponent;
     @ViewChild('defaultSearchResetString', { static: true}) defaultSearchResetString: StringComponent;
 
     showForm = true;
 
-    hints = ['jub', 'acqpl', 'acqpo', 'acqinv', 'acqlid'];
+    hints = ['jub', 'acqpl', 'acqpo', 'acqinv', 'acqlid', 'acqlisumi'];
     availableSearchFields = {};
     dateLikeSearchFields = {};
     searchTermDatatypes = {};
@@ -39,6 +56,9 @@ export class AcqSearchFormComponent implements OnInit, OnChanges {
     searchConjunction = 'all';
     runImmediately = false;
     hasDefaultSearch = false;
+    filterToInvoiceable = false;
+    keepResults = false;
+    trimList = false;
 
     searchTerms: AcqSearchTerm[] = [];
 
@@ -49,9 +69,8 @@ export class AcqSearchFormComponent implements OnInit, OnChanges {
         private toast: ToastService
     ) {}
 
-    ngOnInit() {
+    loadRunImmediatelySettingAndMaybeRun() {
         const self = this;
-
         this.store.getItem(this.runImmediatelySetting).then(val => {
             this.runImmediately = val;
 
@@ -114,11 +133,14 @@ export class AcqSearchFormComponent implements OnInit, OnChanges {
                             this.searchTerms = JSON.parse(JSON.stringify(defaultSearch.terms));
                             this.searchConjunction = defaultSearch.conjunction;
                             this.hasDefaultSearch = true;
+                            this.maybeAddInvoiceableItemTerms(this.filterToInvoiceable);
                         } else if (this.fallbackSearchTerms.length) {
                             this.searchTerms.length = 0;
                             JSON.parse(JSON.stringify(this.fallbackSearchTerms))
                                 .forEach(term => this.searchTerms.push(term)); // need a copy
+                            this.maybeAddInvoiceableItemTerms(this.filterToInvoiceable);
                         } else {
+                            this.maybeAddInvoiceableItemTerms(this.filterToInvoiceable);
                             this.addSearchTerm();
                         }
                         if (this.runImmediately) {
@@ -133,9 +155,116 @@ export class AcqSearchFormComponent implements OnInit, OnChanges {
         });
     }
 
+    ngOnInit() {
+        console.warn('AcqSearchFormComponent, this', this);
+
+        if (this.searchContext === 'InvoiceEmbeddedLineitem') {
+            this.store.getItemBatch([
+                this.filterToInvoiceableSetting,
+                this.keepResultsSetting,
+                this.trimListSetting,
+            ]).then(settings => {
+                console.debug('AcqSearchFormComponent, store.getItemBatch', settings);
+
+                this.filterToInvoiceable = settings[this.filterToInvoiceableSetting] || false;
+                this.keepResults = settings[this.keepResultsSetting] || false;
+                this.trimList = settings[this.trimListSetting] || false;
+
+                console.debug('AcqSearchFormComponent, filterToInvoiceable, keepResults, trimList',
+                    this.filterToInvoiceable, this.keepResults, this.trimList);
+                this.onKeepResultsChange(this.keepResults);
+                this.onTrimListChange(this.trimList);
+                // this will be handled by LineitemResultsComponent in this context:
+                //   this.loadRunImmediatelySettingAndMaybeRun();
+            });
+        } else {
+            this.loadRunImmediatelySettingAndMaybeRun();
+        }
+    }
+
     ngOnChanges(changes: SimpleChanges) {
         if ('initialSearchTerms' in changes && !changes.initialSearchTerms.firstChange) {
             this.ngOnInit();
+        }
+    }
+
+    filterOutTheseLiIds(liIds: number[]) {
+        // example: {field: 'jub:id', op: '__not', value1: '1', value2: '', is_date: false}
+        const newTerms = liIds.map(liId => ({
+            field: 'jub:id',
+            op: '__not',
+            value1: liId.toString(),
+            value2: '',
+            is_date: false
+        }));
+        newTerms.forEach(newTerm => {
+            // Check if term already exists in array
+            const termExists = this.searchTerms.some(
+                existingTerm => JSON.stringify(existingTerm) === JSON.stringify(newTerm));
+
+            // Only add term if it does not exist
+            if (!termExists) {
+                this.searchTerms.unshift(newTerm);
+            }
+        });
+    }
+
+    maybeAddInvoiceableItemTerms(newValue) {
+        if (newValue) {
+            const newTerms = [
+                { 'field': 'jub:state', 'op': '__not',
+                    'value1': 'cancelled', 'value2': '', 'is_date': false },
+                { 'field': 'acqlisumi:item_count', 'op':'__gte',
+                    'value1': '1', 'value2': '', 'is_date': false },
+            ];
+            if (this.invoice && !this.invoice.isnew()) {
+                newTerms.push(
+                    { 'field': 'acqinv:id', 'op': '__not',
+                        'value1': this.invoice.id(), 'value2': '', 'is_date': false }
+                );
+            }
+            if (this.providerId) {
+                newTerms.push(
+                    { 'field': 'jub:provider', 'op': '',
+                        'value1': this.providerId, 'value2': '', 'is_date': false }
+                );
+            }
+
+            newTerms.forEach(newTerm => {
+                // Check if term already exists in array
+                const termExists = this.searchTerms.some(
+                    existingTerm => JSON.stringify(existingTerm) === JSON.stringify(newTerm));
+
+                // Only add term if it does not exist
+                if (!termExists) {
+                    this.searchTerms.unshift(newTerm);
+                }
+            });
+
+            // if (dojo.byId('acq-invoice-search-limit-invoiceable').checked) {
+            //    if (!searchObject.jub)
+            //        searchObject.jub = [];
+            //
+            //    // exclude lineitems that are "cancelled" (sidebar: 'Mericans spell it 'canceled')
+            //    searchObject.jub.push({state : 'cancelled', '__not' : true});
+            //
+            //    // exclude lineitems already linked to this invoice
+            //    if (invoice && invoice.id() > 0) {
+            //        if (!searchObject.acqinv)
+            //            searchObject.acqinv = [];
+            //        searchObject.acqinv.push({id : invoice.id(), '__not' : true});
+            //    }
+            //
+            //    // limit to lineitems that have invoiceable copies
+            //    searchObject.acqlisumi = [{item_count : 1, '_gte' : true}];
+            //
+            //    // limit to provider if a provider is selected
+            //    var provider = invoicePane.getFieldValue('provider');
+            //    if (provider) {
+            //        if (!searchObject.jub.filter(function(i) { return i.provider != null }).length)
+            //            searchObject.jub.push({provider : provider});
+            //    }
+            // }
         }
     }
 
@@ -218,6 +347,8 @@ export class AcqSearchFormComponent implements OnInit, OnChanges {
         // tossing setTimeout here to ensure that the
         // grid data source is fully initialized
         setTimeout(() => {
+            console.warn('AcqSearchFormComponent, terms and conjunction',
+                this.searchTerms, this.searchConjunction);
             this.searchSubmitted.emit({
                 terms: this.searchTerms,
                 conjunction: this.searchConjunction
@@ -244,7 +375,20 @@ export class AcqSearchFormComponent implements OnInit, OnChanges {
             );
         });
     }
-    saveRunImmediately() {
-        return this.store.setItem(this.runImmediatelySetting, this.runImmediately);
+    saveRunImmediately(newValue) {
+        console.debug('AcqSearchFormComponent, saveRunImmediately',this.runImmediatelySetting, newValue);
+        return this.store.setItem(this.runImmediatelySetting, newValue);
+    }
+    saveFilterToInvoiceable(newValue) {
+        console.debug('AcqSearchFormComponent, saveFilterToInvoiceable',this.filterToInvoiceableSetting, newValue);
+        return this.store.setItem(this.filterToInvoiceableSetting, newValue);
+    }
+    saveTrimList(newValue) {
+        console.debug('AcqSearchFormComponent, saveTrimList',this.trimListSetting, newValue);
+        return this.store.setItem(this.trimListSetting, newValue);
+    }
+    saveKeepResults(newValue) {
+        console.debug('AcqSearchFormComponent, saveKeepResults',this.keepResultsSetting, newValue);
+        return this.store.setItem(this.keepResultsSetting, newValue);
     }
 }

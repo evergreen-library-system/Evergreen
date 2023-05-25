@@ -69,7 +69,7 @@ export class VandelayService {
         if (this.attrDefs[dtype]) {
             return Promise.resolve(this.attrDefs[dtype]);
         }
-        const cls = (dtype === 'bib') ? 'vqbrad' : 'vqarad';
+        const cls = !dtype.match(/auth/) ? 'vqbrad' : 'vqarad';
         const orderBy = {};
         orderBy[cls] = 'id';
         return this.pcrud.retrieveAll(cls,
@@ -102,11 +102,18 @@ export class VandelayService {
             this.allQueues[qtype] = [];
         }
 
+        const filter = {};
+        let real_qtype = qtype;
+        if (qtype === 'acq') {
+            real_qtype = 'bib';
+            filter['queue_type'] = qtype;
+        }
+
         // could be a big list, invoke in streaming mode
         return this.net.request(
             'open-ils.vandelay',
-            `open-ils.vandelay.${qtype}_queue.owner.retrieve`,
-            this.auth.token()
+            `open-ils.vandelay.${real_qtype}_queue.owner.retrieve`,
+            this.auth.token(),null,filter
         ).pipe(tap(
             queue => this.allQueues[qtype].push(queue)
         )).toPromise().then(() => this.allQueues[qtype]);
@@ -212,17 +219,17 @@ export class VandelayService {
         matchSet: number,
         matchBucket: number): Promise<number> {
 
-        const method = `open-ils.vandelay.${recordType}_queue.create`;
-
-        let qType = recordType;
-        if (recordType.match(/bib_acq/)) {
-            qType = 'acq';
+        let real_recordType = recordType;
+        if (recordType === 'acq') {
+            real_recordType = 'bib';
         }
+
+        const method = `open-ils.vandelay.${real_recordType}_queue.create`;
 
         return new Promise((resolve, reject) => {
             this.net.request(
                 'open-ils.vandelay', method,
-                this.auth.token(), queueName, null, qType,
+                this.auth.token(), queueName, null, recordType,
                 matchSet, importDefId, matchBucket
             ).subscribe(queue => {
                 const e = this.evt.parse(queue);
@@ -231,7 +238,7 @@ export class VandelayService {
                 } else {
                     // createQueue is always called after queues have
                     // been fetched and cached.
-                    this.allQueues[qType].push(queue);
+                    this.allQueues[recordType].push(queue);
                     resolve(queue.id());
                 }
             });
@@ -241,7 +248,7 @@ export class VandelayService {
     getQueuedRecords(queueId: number, queueType: string,
         options?: any, limitToMatches?: boolean): Observable<any> {
 
-        const qtype = queueType.match(/bib/) ? 'bib' : 'auth';
+        const qtype = queueType.match(/auth/) ? 'auth' : 'bib';
 
         let method =
           `open-ils.vandelay.${qtype}_queue.records.retrieve`;

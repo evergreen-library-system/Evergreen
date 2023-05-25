@@ -6,6 +6,7 @@ use OpenSRF::Utils::Logger qw(:logger);
 use OpenILS::Utils::Fieldmapper;
 use OpenILS::Utils::CStoreEditor q/:funcs/;
 use OpenILS::Application::AppUtils;
+use OpenILS::Application::Acq::Order;
 use OpenILS::Event;
 my $U = 'OpenILS::Application::AppUtils';
 
@@ -44,11 +45,88 @@ __PACKAGE__->register_method(
     }
 );
 
+__PACKAGE__->register_method(
+    method => 'build_invoice_api',
+    api_name    => 'open-ils.acq.invoice.update.fleshed',
+    signature => {
+        desc => q/Creates, updates, and deletes invoices, and related invoice entries, and invoice items/,
+        params => [
+            {desc => 'Authentication token', type => 'string'},
+            {desc => q/Invoice/, type => 'number'},
+            {desc => q/Entries.  Array of 'acqie' objects/, type => 'array'},
+            {desc => q/Items.  Array of 'acqii' objects/, type => 'array'},
+            {desc => q/Finalize PO's.  Array of 'acqpo' ID's/, type => 'array'},
+        ],
+        return => {desc => 'The invoice w/ entries and items attached, and providers fleshed.', type => 'object', class => 'acqinv'}
+    }
+);
+
+__PACKAGE__->register_method(
+    method => 'build_invoice_api',
+    api_name    => 'open-ils.acq.invoice.update.fleshed.dry_run',
+    signature => {
+        desc => q/Goes through the motion of creating, updating, and deleting invoices, and related invoice entries, and invoice items, returning intermediate events as normal, but does not commit to the database at the end./,
+        params => [
+            {desc => 'Authentication token', type => 'string'},
+            {desc => q/Invoice/, type => 'number'},
+            {desc => q/Entries.  Array of 'acqie' objects/, type => 'array'},
+            {desc => q/Items.  Array of 'acqii' objects/, type => 'array'},
+            {desc => q/Finalize PO's.  Array of 'acqpo' ID's/, type => 'array'},
+        ],
+        return => {desc => 'The invoice w/ entries and items attached, and providers fleshed.', type => 'object', class => 'acqinv'}
+    }
+);
+
+__PACKAGE__->register_method(
+    method => 'build_invoice_api',
+    api_name    => 'open-ils.acq.invoice.update.fleshed.override',
+    signature => {
+        desc => q/Creates, updates, and deletes invoices, and related invoice entries, and invoice items. Overrides certain events./,
+        params => [
+            {desc => 'Authentication token', type => 'string'},
+            {desc => q/Invoice/, type => 'number'},
+            {desc => q/Entries.  Array of 'acqie' objects/, type => 'array'},
+            {desc => q/Items.  Array of 'acqii' objects/, type => 'array'},
+            {desc => q/Finalize PO's.  Array of 'acqpo' ID's/, type => 'array'},
+        ],
+        return => {desc => 'The invoice w/ entries and items attached, and providers fleshed.', type => 'object', class => 'acqinv'}
+    }
+);
 
 sub build_invoice_impl {
-    my ($e, $invoice, $entries, $items, $do_commit, $finalize_pos) = @_;
+    my ($e, $invoice, $entries, $items, $do_commit, $finalize_pos, $fully_fleshed, $override, $fund_check) = @_;
 
     $finalize_pos ||= [];
+
+    # for comparing with updated fund totals right before the $do_commit check,
+    # so we can do stop/warn threshold checks
+    my %orig_fund_totals = ();
+    # if invoice is new, we won't have initial totals
+    # also, this is an uber method, so only do these fund checks with update.fleshed
+    # dojo acq uses ordinary update without the .fleshed
+    if ($fund_check) {
+        if ($invoice->isnew) {
+                $logger->info("fund check: for invoice save, pre-business logic: new invoice");
+        } else {
+            $logger->info("fund check: for invoice save, pre-business logic: existing invoice");
+            my $orig_fund_summary = amounts_spent_per_fund($e, $invoice->id, $e->authtoken);
+            use Data::Dumper;
+            $Data::Dumper::Indent = 0;  # No newlines and default indentation
+            $Data::Dumper::Terse  = 1;  # No variable names where feasible
+            $logger->info("fund check: pre, summary = " . Dumper($orig_fund_summary));
+
+            # Loop through each hash in the array
+            foreach my $fund_entry (@$orig_fund_summary) {
+                # Extract the fund ID and total
+                my $fund_id = $fund_entry->{'fund'}->{'id'};
+                my $total   = $fund_entry->{'total'};
+
+                $logger->info("fund check: for invoice save, pre-business logic: fund $fund_id total $total");
+                # Add to our hash
+                $orig_fund_totals{$fund_id} = $total;
+            }
+        }
+    }
 
     my $inv_closing = 0;
     my $inv_reopening = 0;
@@ -89,7 +167,7 @@ sub build_invoice_impl {
                 $e->create_acq_invoice_entry($entry) or return $e->die_event;
                 return $evt if $evt = uncancel_copies_as_needed($e, $entry);
                 return $evt if $evt = update_entry_debits(
-                    $e, $entry, 'unlinked', $inv_closing, $inv_reopening);
+                    $e, $entry, 'unlinked', $inv_closing, $inv_reopening, $override);
             } elsif ($entry->isdeleted) {
                 # XXX Deleting entries does not recancel anything previously
                 # uncanceled.
@@ -113,7 +191,7 @@ sub build_invoice_impl {
                     # search for un-invoiced, potentially linked debits 
                     # to (re-) invoice.
                     return $evt if $evt = update_entry_debits(
-                        $e, $entry, 'all', $inv_closing, $inv_reopening);
+                        $e, $entry, 'all', $inv_closing, $inv_reopening, $override);
                 }
 
                 $e->update_acq_invoice_entry($entry) or return $e->die_event;
@@ -276,7 +354,12 @@ sub build_invoice_impl {
         return $evt if $evt;
     }
 
-    $invoice = fetch_invoice_impl($e, $invoice->id);
+    my $options = {};
+    if ($fully_fleshed) {
+        $options->{'flesh_provider'} = 1;
+        $options->{'flesh_entries'} = 1;
+    }
+    $invoice = fetch_invoice_impl($e, $invoice->id, $options);
 
     # entries and items processed above may not represent every item or
     # entry in the invoice.  This will synchronize any remaining debits.
@@ -286,7 +369,83 @@ sub build_invoice_impl {
         $evt = handle_invoice_state_change($e, $invoice, $inv_closing);
         return $evt if $evt;
 
-        $invoice = fetch_invoice_impl($e, $invoice->id);
+        $invoice = fetch_invoice_impl($e, $invoice->id, $options);
+    }
+
+    # fund limit checks, but only for acq invoice updates in angular
+    if ($fund_check) {
+        my $updated_fund_summary = amounts_spent_per_fund($e, $invoice->id, $e->authtoken);
+        use Data::Dumper;
+        $Data::Dumper::Indent = 0;  # No newlines and default indentation
+        $Data::Dumper::Terse  = 1;  # No variable names where feasible
+        $logger->info("fund check: post, summary = " . Dumper($updated_fund_summary));
+
+        my @stops = (); # funds that hit their stop threshold
+        my @warns = (); # funds that hit their warn threshold
+
+        # Loop through each hash in the array
+        foreach my $fund_entry (@$updated_fund_summary) {
+            # Extract the fund ID and total
+            my $fund_id = $fund_entry->{'fund'}->{'id'};
+            my $total   = $fund_entry->{'total'};
+
+            $logger->info("fund check: for invoice save, post-business logic: fund $fund_id total $total");
+
+            # Though we have fund data, we need a fieldmapper version for the balance check below
+            my $fund = $e->retrieve_acq_fund($fund_id);
+            if (!defined $fund) {
+                return $e->die_event;
+            }
+
+            my $amount_to_test = $total;
+
+            # Test against our fund totals
+            my $original_amount = $orig_fund_totals{$fund_id};
+
+            # if there was an original amount, we want to test the difference between old and new
+            if ($original_amount) {
+                $amount_to_test -= $original_amount;
+            }
+            my $stop_test = OpenILS::Application::Acq::Order->fund_exceeds_balance_percent_wrapper(
+                    $fund, $amount_to_test, $e, 'stop');
+            $logger->info("fund check: stop_test = $stop_test");
+            if ('1' eq $stop_test) {
+                $logger->info("fund check: adding fund to stop list");
+                push @stops, { "fund_id" => $fund_id, "fund" => $fund, "amount" => $amount_to_test };
+            }
+            my $warn_test = OpenILS::Application::Acq::Order->fund_exceeds_balance_percent_wrapper(
+                    $fund, $amount_to_test, $e, 'warning');
+            $logger->info("fund check: warn_test = $warn_test");
+            if ('1' eq $warn_test) {
+                $logger->info("fund check: adding fund to warn list");
+                push @warns, { "fund_id" => $fund_id, "fund" => $fund, "amount" => $amount_to_test };
+            }
+        }
+
+        # die on stops unless override
+        if (scalar @stops > 0 && !$override) {
+            $logger->info("fund check: returning ACQ_FUND_EXCEEDS_STOP_PERCENT");
+            return $e->die_event(
+                new OpenILS::Event(
+                    'ACQ_FUND_EXCEEDS_STOP_PERCENT',
+                    "payload" => {
+                        "tuples" => \@stops
+                    }
+                )
+            );
+        }
+        # let's only die on warns during a dry_run
+        if (scalar @warns > 0 && !$do_commit) {
+            $logger->info("fund check: returning ACQ_FUND_EXCEEDS_WARN_PERCENT");
+            return $e->die_event(
+                new OpenILS::Event(
+                    'ACQ_FUND_EXCEEDS_WARN_PERCENT',
+                    "payload" => {
+                        "tuples" => \@warns
+                    }
+                )
+            );
+        }
     }
 
     if ($do_commit) {
@@ -340,10 +499,17 @@ sub build_invoice_api {
         $invoice->receiver($e->requestor->ws_ou);
     }
 
+    my $context_org = (ref $invoice->receiver) ? $invoice->receiver->id : $invoice->receiver;
     return $e->die_event unless
-        $e->allowed('CREATE_INVOICE', $invoice->receiver);
+        $e->allowed('CREATE_INVOICE', $context_org);
 
-    return build_invoice_impl($e, $invoice, $entries, $items, 1, $finalize_pos);
+    my $dry_run = $self->api_name =~ 'dry_run';
+    my $do_commit = !$dry_run;
+    my $fleshed = $self->api_name =~ 'fleshed';
+    my $override = $self->api_name =~ 'override';
+    my $fund_check = $self->api_name =~ 'update.fleshed'; # Dojo ACQ doesn't use this
+    $logger->info("fund check: fund_check = $fund_check, api_name = " . $self->api_name);
+    return build_invoice_impl($e, $invoice, $entries, $items, $do_commit, $finalize_pos, $fleshed, $override, $fund_check);
 }
 
 
@@ -387,18 +553,24 @@ sub rollback_entry_debits {
 # inv_closing -- invoice is going from close_date=null to now
 # inv_reopening -- invoice is going from close_date=date to null
 sub update_entry_debits {
-    my($e, $entry, $link_state, $inv_closing, $inv_reopening) = @_;
+    my($e, $entry, $link_state, $inv_closing, $inv_reopening, $override) = @_;
 
     my $debits = find_entry_debits(
         $e, $entry, $link_state, $inv_reopening ? 'f' : 't');
     return undef unless @$debits;
 
     if($entry->phys_item_count > @$debits) {
-        $e->rollback;
-        # We can't invoice for more items than we have debits for
-        return OpenILS::Event->new(
-            'ACQ_INVOICE_ENTRY_COUNT_EXCEEDS_DEBITS', 
-            payload => {entry => $entry->id});
+        if ($override) {
+            $logger->info(
+                "Overriding ACQ_INVOICE_ENTRY_COUNT_EXCEEDS_DEBITS"
+            );
+        } else {
+            $e->rollback;
+            # We can't invoice for more items than we have debits for
+            return OpenILS::Event->new(
+                'ACQ_INVOICE_ENTRY_COUNT_EXCEEDS_DEBITS', 
+                payload => {entry => $entry->id});
+        }
     }
 
     for my $debit (@$debits) {
@@ -534,20 +706,80 @@ sub easy_money { # TODO XXX replace with something from a library
     }
 }
 
+__PACKAGE__->register_method(
+    method => 'invoice_fund_summary',
+    api_name    => 'open-ils.acq.invoice.fund_summary',
+    signature => {
+        desc => q/Gives a breakdown of fund totals for an invoice/,
+        params => [
+            {desc => 'Authentication token', type => 'string'},
+            {desc => q/Inv ID/, type => 'number'}
+        ],
+		return => {desc => q/An array of objects with fund and total keys or an error. Example:
+			[
+				{
+					"fund":{
+						"allocations":null,
+						"rollover":"f",
+						"currency_type":"USD",
+						"org":4,
+						"summary":null,
+						"encumbrance_total":null,
+						"spent_balance":null,
+						"balance_stop_percent":null,
+						"id":4,
+						"active":"t",
+						"code":"JUV",
+						"combined_balance":null,
+						"isnew":null,
+						"balance_warning_percent":null,
+						"ischanged":null,
+						"tags":null,
+						"isdeleted":null,
+						"spent_total":null,
+						"propagate":"t",
+						"debit_total":null,
+						"allocation_total":null,
+						"name":"Juvenile",
+						"debits":null,
+						"year":2023
+					},
+					"total":"11.00"
+				}
+			]/
+		}
+    }
+);
+sub invoice_fund_summary {
+    my ($self, $client, $auth, $inv_id) = @_;
+    my $e = new_editor(xact => 1, authtoken=>$auth);
+    my $amounts = amounts_spent_per_fund($e, $inv_id, $auth) or
+        return $e->die_event;
+    $e->rollback;
+    return $amounts;
+}
+
 # 0 on failure (caller should call $e->die_event), array on success
 sub amounts_spent_per_fund {
-    my ($e, $inv_id) = @_;
+    my ($e, $inv_id, $auth) = @_;
 
-    my $entries = $e->search_acq_invoice_entry({"invoice" => $inv_id}) or
-        return 0;
+    $logger->info("fund check: amounts_spent_per_fund for invoice $inv_id");
 
-    my $items = $e->search_acq_invoice_item({"invoice" => $inv_id}) or
-        return 0;
+    my $entries = $e->search_acq_invoice_entry({"invoice" => $inv_id}) || [];
+    my $items = $e->search_acq_invoice_item({"invoice" => $inv_id}) || [];
+    use Data::Dumper;
+    $Data::Dumper::Indent = 0;  # No newlines and default indentation
+    $Data::Dumper::Terse  = 1;  # No variable names where feasible
+    $logger->info("fund check: amounts_spent_per_fund for invoice $inv_id: entries =" . Dumper($entries));
+    $logger->info("fund check: amounts_spent_per_fund for invoice $inv_id: items =" . Dumper($items));
+    return 0 unless $entries || $items;
 
     my %totals_by_fund;
     foreach my $entry (@$entries) {
         my $debits = find_entry_debits($e, $entry, 'linked', "f") or return 0;
+        $logger->info("fund check: amounts_spent_per_fund for invoice $inv_id: entry " . $entry->id . " debits = " . Dumper($debits));
         foreach (@$debits) {
+            $logger->info("fund check: amounts_spent_per_fund for invoice $inv_id: entry " . $entry->id . " debit = " . Dumper($_));
             $totals_by_fund{$_->fund} ||= 0.0;
             $totals_by_fund{$_->fund} += $_->amount;
         }
@@ -555,18 +787,32 @@ sub amounts_spent_per_fund {
 
     foreach my $item (@$items) {
         next unless $item->fund and $item->amount_paid;
+        $logger->info("fund check: amounts_spent_per_fund for invoice $inv_id: item " . $item->id . " fund = " . $item->fund . " paid = " . $item->amount_paid);
         $totals_by_fund{$item->fund} ||= 0.0;
         $totals_by_fund{$item->fund} += $item->amount_paid;
     }
 
-    my @totals;
+    my @totals = ();
     foreach my $fund_id (keys %totals_by_fund) {
-        my $fund = $e->retrieve_acq_fund($fund_id) or return 0;
+        my $fund;
+        if ($auth) { # fleshier behavior with auth
+            $fund = $U->simplereq(
+                'open-ils.acq',
+                'open-ils.acq.fund.retrieve',
+                $auth,
+                $fund_id,
+                { 'flesh_summary' => 1 }
+            );
+        } else { # original behavior
+            $fund = $e->retrieve_acq_fund($fund_id) or return 0;
+        }
+
         push @totals, {
             "fund" => $fund->to_bare_hash,
             "total" => easy_money($totals_by_fund{$fund_id})
         };
     }
+    $logger->info("fund check: amounts_spent_per_fund for invoice $inv_id: totals = " . Dumper(\@totals));
 
     return \@totals;
 }
@@ -688,13 +934,27 @@ __PACKAGE__->register_method(
     }
 );
 
+__PACKAGE__->register_method(
+    method => 'build_invoice_api',
+    api_name    => 'open-ils.acq.invoice.fleshed.retrieve',
+    authoritative => 1,
+    signature => {
+        desc => q/Creates a new stub invoice (does it really?)/,
+        params => [
+            {desc => 'Authentication token', type => 'string'},
+            {desc => q/Invoice Id/, type => 'number'},
+        ],
+        return => {desc => 'The new invoice w/ entries and items attached, and providers and shippers', type => 'object', class => 'acqinv'}
+    }
+);
 
 sub fetch_invoice_with_perm_check {
     my($e, $invoice_id, $options) = @_;
 
     my $invoice = fetch_invoice_impl($e, $invoice_id, $options) or
         return $e->event;
-    return $e->event unless $e->allowed(['VIEW_INVOICE', 'CREATE_INVOICE'], $invoice->receiver);
+    my $context_org = (ref $invoice->receiver) ? $invoice->receiver->id : $invoice->receiver;
+    return $e->event unless $e->allowed(['VIEW_INVOICE', 'CREATE_INVOICE'], $context_org);
 
     return $invoice;
 }
@@ -720,6 +980,11 @@ sub fetch_invoice_impl {
         }
         push @{ $args->[1]->{flesh_fields}->{acqinv} }, "provider";
         push @{ $args->[1]->{flesh_fields}->{acqinv} }, "shipper";
+    }
+    if ($options->{"flesh_entries"}) {
+        push @{ $args->[1]->{flesh_fields}->{acqie} }, "lineitem";
+        push @{ $args->[1]->{flesh_fields}->{jub} }, "lineitem_details";
+        push @{ $args->[1]->{flesh_fields}->{acqlid} }, "fund_debit";
     }
 
     return $e->retrieve_acq_invoice($args);
@@ -749,7 +1014,8 @@ sub prorate_invoice {
     return $e->die_event unless $e->checkauth;
 
     my $invoice = fetch_invoice_impl($e, $invoice_id) or return $e->die_event;
-    return $e->die_event unless $e->allowed('CREATE_INVOICE', $invoice->receiver);
+    my $context_org = (ref $invoice->receiver) ? $invoice->receiver->id : $invoice->receiver;
+    return $e->die_event unless $e->allowed('CREATE_INVOICE', $context_org);
 
     my @lid_debits;
     push(@lid_debits, 

@@ -234,7 +234,7 @@ export class PicklistUploadService {
                 if (this.evt.parse(picklist)) {
                     console.error(picklist);
                 } else {
-                    console.log(picklist);
+                    console.debug(picklist);
                     resolve(picklist);
                 }
             });

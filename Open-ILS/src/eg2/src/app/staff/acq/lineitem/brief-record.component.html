@@ -11,9 +11,30 @@
   <div class="d-flex mt-2" *ngIf="!targetPicklist && !targetPo">
     <div class="flex-1" i18n>Add To Selection List</div>
     <div class="flex-3">
-      <eg-combobox [(ngModel)]="selectedPl" idlClass="acqpl"
-        [allowFreeText]="true" placeholder="Select List..." i18n-placeHolder>
+      <eg-combobox [disabled]="!!selectedPo" [(ngModel)]="selectedPl" idlClass="acqpl" [asyncSupportsEmptyTermClick]="true"
+        [allowFreeText]="true" placeholder="Select Existing or Name New List..." i18n-placeHolder>
       </eg-combobox>
+    </div>
+  </div>
+  <div class="d-flex mt-2" *ngIf="!targetPicklist && !targetPo">
+    <div class="flex-1" i18n>Add To PO</div>
+    <div class="flex-3">
+      <eg-combobox
+        [disabled]="!!selectedPl" [(ngModel)]="selectedPo"
+        idlClass="acqpo" [asyncSupportsEmptyTermClick]="true"
+        [idlQueryAnd]="{state: ['new', 'pending']}"
+        idlIncludeLibraryInLabel="ordering_agency"
+        placeholder="Select Existing PO..." i18n-placeHolder>
+      </eg-combobox>
+    </div>
+  </div>
+  <div class="d-flex mt-2">
+    <div class="flex-1" i18n>Bibliographic template</div>
+    <div class="flex-2">
+      <eg-combobox #MARCTemplateSelector [entries]="MARCTemplateList" [(ngModel)]="selectedMARCTemplate"/>
+    </div>
+    <div class="flex-1">
+      <button class="btn btn-secondary" (click)="setWSDefaultTemplate()" i18n>Set Default</button>
     </div>
   </div>
   <div class="d-flex mt-2" *ngFor="let attr of attrs">
@@ -24,4 +45,4 @@
   </div>
 </div>
 
-<button type="button" class="btn btn-success mt-2" (click)="save()" i18n>Add Record</button>
+<button type="button" [disabled]="!canSave()" class="btn btn-success mt-2" (click)="save()" i18n>Add Record</button>

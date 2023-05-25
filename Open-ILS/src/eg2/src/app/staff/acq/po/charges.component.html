@@ -37,9 +37,7 @@
       </eg-combobox>
       <span *ngIf="charge.fund_debit() && charge.fund_debit().fund() !== charge.fund()">
         <br>
-        <i>Fund actually debited is 
-        <eg-combobox idlClass="acqf" [selectedId]="charge.fund_debit().fund()"
-          [readOnly]="true"></eg-combobox></i>
+        <i i18n>Fund {{charge.fund_debit().fund() | fundLabel}} in use until a change is saved.</i>
       </span>
     </div>
     <div class="flex-2 p-2">

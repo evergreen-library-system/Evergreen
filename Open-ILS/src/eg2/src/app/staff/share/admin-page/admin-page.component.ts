@@ -223,7 +223,7 @@ export class AdminPageComponent implements OnInit {
     }
 
     ngOnInit() {
-        //console.warn('AdminPageComponent, this', this);
+        console.warn('AdminPageComponent, this', this);
 
         this.idlClassDef = this.idl.classes[this.idlClass];
         this.idlLabelClassDef = this.idlClassDef;

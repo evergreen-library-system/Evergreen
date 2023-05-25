@@ -1,0 +1,46 @@
+<ng-template #dialogContent>
+  <form class="form-validated">
+    <div class="modal-header">
+      <h3 class="modal-title" i18n>Add Extra Items To Order</h3>
+      <button type="button" class="btn-close btn-close-white"
+        i18n-aria-label aria-label="Close" (click)="close(false)"></button>
+    </div>
+    <div class="modal-body">
+      <h4 i18n>You are attempting to invoice {{extra_count}} more copy or copies than originally ordered. To add these items to the original purchase order, select a fund and choose 'Add New Items' below. If you do this, it will happen immediately, whether you save changes to the invoice or not.</h4>
+      <eg-combobox idlClass="acqf" name="fund"
+        i18n-placeholder placeholder="Fund..."
+        [asyncSupportsEmptyTermClick]="true"
+        [required]="true"
+        [idlQuerySort]="{acqf: 'year DESC, code'}"
+        [idlQueryAnd]="{org: owners, active: 't'}"
+        [(ngModel)]="fund" (ngModelChange)="fundSelected($event)"></eg-combobox>
+    </div>
+    <div class="row" style="margin-left: 1.33em">
+      <div class="col"><label i18n>Allocation Total</label></div>
+      <div class="col">{{fundSummary?.allocation_total | currency}}</div>
+    </div>
+    <div class="row" style="margin-left: 1.33em">
+      <div class="col"><label i18n>Combined Balance</label></div>
+      <div class="col">{{fundSummary?.combined_balance | currency}}</div>
+    </div>
+    <div class="row" style="margin-left: 1.33em">
+      <div class="col"><label i18n>Encumbrance Total</label></div>
+      <div class="col">{{fundSummary?.encumbrance_total | currency}}</div>
+    </div>
+    <div class="row" style="margin-left: 1.33em">
+      <div class="col"><label i18n>Debit Total</label></div>
+      <div class="col">{{fundSummary?.debit_total | currency}}</div>
+    </div>
+    <div class="row" style="margin-left: 1.33em">
+      <div class="col"><label i18n>Spent Total</label></div>
+      <div class="col">{{fundSummary?.spent_total | currency}}</div>
+    </div>
+    <div class="modal-footer">
+      <button type="button" class="btn btn-success" [disabled]="!fund" 
+        (click)="close(fund)" i18n>Add New Items</button>
+      <button type="button" class="btn btn-warning"
+        (click)="close(false)" i18n>Exit Dialog</button>
+    </div>
+  </form>
+</ng-template>
+

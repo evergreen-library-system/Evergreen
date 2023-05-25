@@ -1,6 +1,6 @@
 import {Injectable, EventEmitter} from '@angular/core';
-import {Observable, from, concat, empty} from 'rxjs';
-import {switchMap, map, tap} from 'rxjs/operators';
+import {Observable, from, concat, empty, firstValueFrom} from 'rxjs';
+import {switchMap, map, tap, merge} from 'rxjs/operators';
 import {IdlObject, IdlService} from '@eg/core/idl.service';
 import {NetService} from '@eg/core/net.service';
 import {AuthService} from '@eg/core/auth.service';
@@ -303,7 +303,8 @@ export class LineitemService {
             .toPromise().then(defs => this.liAttrDefs = defs);
     }
 
-    updateLiDetails(li: IdlObject): Observable<BatchLineitemUpdateStruct> {
+    updateLiDetails(li: IdlObject, createDebits = false, dry_run = false): Observable<BatchLineitemUpdateStruct> {
+        console.debug('LineitemService, updateLiDetails', li, createDebits);
         const lids = li.lineitem_details().filter(copy =>
             (copy.isnew() || copy.ischanged() || copy.isdeleted()));
 
@@ -318,13 +319,15 @@ export class LineitemService {
         ).pipe(switchMap(_ =>
             this.net.request(
                 'open-ils.acq',
-                'open-ils.acq.lineitem_detail.cud.batch',
-                this.auth.token(), lids
+                // dry_run won't create the fund_debits if they would cause the fund to
+                // go over its stop percentage, but it will still create the lineitem details
+                'open-ils.acq.lineitem_detail.cud.batch' + (dry_run ? '.dry_run' : ''),
+                this.auth.token(), lids, createDebits
             )
         ));
     }
 
-    updateLiDetailsMulti(inLids: IdlObject[]): Observable<BatchLineitemUpdateStruct> {
+    updateLiDetailsMulti(inLids: IdlObject[], createDebits = false): Observable<BatchLineitemUpdateStruct> {
         const lids = inLids.filter(copy =>
             (copy.isnew() || copy.ischanged() || copy.isdeleted()));
 
@@ -340,7 +343,7 @@ export class LineitemService {
             this.net.request(
                 'open-ils.acq',
                 'open-ils.acq.lineitem_detail.cud.batch',
-                this.auth.token(), lids
+                this.auth.token(), lids, createDebits
             )
         ));
     }
@@ -363,6 +366,25 @@ export class LineitemService {
         return obs;
     }
 
+    // let's leverage the fundCache from fetchFunds, but not worry about those emits
+    async getFund(fundId: number): Promise<IdlObject | null> {
+        let fund = this.fundCache[fundId];
+        if (fund) {
+            return fund;
+        }
+
+        try {
+            fund = await firstValueFrom( this.pcrud.retrieve('acqf',fundId) );
+            if (fund) {
+                this.fundCache[fundId] = fund;
+                return fund;
+            }
+        } catch (error) {
+            console.error(`Error fetching fund with ID ${fundId}:`, error);
+        }
+
+        return null;
+    }
 
     // Methods to fetch copy-related data, add it to our local cache,
     // and announce that new values are available for comboboxes.

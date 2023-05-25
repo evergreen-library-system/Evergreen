@@ -96,16 +96,17 @@ export class QueueComponent implements AfterViewInit {
     }
 
     openRecord(row: any) {
+        const link_type = 'bib';
         if (this.queueType === 'auth') {
             this.queueType = 'authority';
         }
         const url =
-          `/staff/cat/vandelay/queue/${this.queueType}/${this.queueId}/record/${row.id}/marc`;
+          `/staff/cat/vandelay/queue/${link_type}/${this.queueId}/record/${row.id}/marc`;
         this.router.navigate([url]);
     }
 
     applyQueueType() {
-        this.queuedRecClass = this.queueType.match(/bib/) ? 'vqbr' : 'vqar';
+        this.queuedRecClass = this.queueType.match(/auth/) ? 'vqar' : 'vqbr';
         this.vandelay.getAttrDefs(this.queueType).then(
             attrs => {
                 this.attrDefs = attrs;
@@ -126,7 +127,7 @@ export class QueueComponent implements AfterViewInit {
     }
 
     qtypeShort(): string {
-        return this.queueType === 'bib' ? 'bib' : 'auth';
+        return this.queueType.match(/auth/) ? 'auth' : 'bib';
     }
 
     loadQueueSummary(): Promise<any> {
@@ -171,7 +172,7 @@ export class QueueComponent implements AfterViewInit {
                     matches: rec.matches()
                 };
 
-                if (this.queueType === 'bib') {
+                if (!this.queueType.match(/auth/)) {
                     recHash.import_items = rec.import_items();
                     recHash.error_items = rec.import_items().filter(i => i.import_error());
                 }

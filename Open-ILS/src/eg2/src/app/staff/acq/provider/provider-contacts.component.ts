@@ -115,8 +115,8 @@ export class ProviderContactsComponent implements OnInit, AfterViewInit, OnDestr
     }
 
     ngAfterViewInit() {
-        console.log('this.providerRecord', this.providerRecord);
-        console.log('this.providerContactAddresses', this.providerContactAddresses);
+        console.debug('this.providerRecord', this.providerRecord);
+        console.debug('this.providerContactAddresses', this.providerContactAddresses);
         this.providerContactsGrid.onRowClick.subscribe(
             (idlThing: IdlObject) => {
                 this.selectedContact = idlThing;

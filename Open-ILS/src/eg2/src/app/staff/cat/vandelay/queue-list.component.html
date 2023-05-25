@@ -13,7 +13,7 @@
           i18n-entryLabel></eg-combobox-entry>
         <eg-combobox-entry entryId="auth" entryLabel="Authority Records" 
           i18n-entryLabel></eg-combobox-entry>
-        <eg-combobox-entry entryId="bib-acq" entryLabel="Acquisitions Records" 
+        <eg-combobox-entry entryId="acq" entryLabel="Acquisitions Records" 
           i18n-entryLabel></eg-combobox-entry>
       </eg-combobox>
     </div>
@@ -22,6 +22,14 @@
 
 <eg-grid *ngIf="queueType==='bib'" #bibQueueGrid
   persistKey="cat.vandelay.queue.list.bib"
+  (onRowActivate)="rowActivated($event)"
+  idlClass="vbq" [dataSource]="queueSource">
+  <eg-grid-toolbar-action label="Delete Selected" i18n-label 
+    [action]="deleteSelected"></eg-grid-toolbar-action>
+</eg-grid>
+
+<eg-grid *ngIf="queueType==='acq'" #acqQueueGrid
+  persistKey="cat.vandelay.queue.list.acq"
   (onRowActivate)="rowActivated($event)"
   idlClass="vbq" [dataSource]="queueSource">
   <eg-grid-toolbar-action label="Delete Selected" i18n-label 

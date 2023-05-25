@@ -176,6 +176,7 @@ sub retrieve_lineitem_impl {
     push(@{$fields->{jub}   },       'creator') if $$options{flesh_creator};
     push(@{$fields->{jub}   },        'editor') if $$options{flesh_editor};
     push(@{$fields->{jub}   },      'selector') if $$options{flesh_selector};
+    push(@{$fields->{jub}  },'invoice_entries') if $$options{flesh_invoice_entries};
 
     if ($$options{flesh_formulas}) {
         push(@{$fields->{jub}},    'distribution_formulas');

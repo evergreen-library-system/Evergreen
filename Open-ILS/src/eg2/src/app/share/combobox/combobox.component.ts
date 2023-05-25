@@ -251,6 +251,10 @@ implements ControlValueAccessor, OnInit, AfterViewInit, OnChanges {
                            ' (' + this.getOrgShortname(fm.org()) + ')';
                 case 'acpl':
                     return fm.name() + ' (' + this.getOrgShortname(fm.owning_lib()) + ')';
+                    break;
+                case 'acqpro':
+                    return fm.name() + ' (' + this.getOrgShortname(fm.owner()) + ')';
+                    break;
                 default:
                     const field = this.idlField;
                     if (this.idlIncludeLibraryInLabel) {

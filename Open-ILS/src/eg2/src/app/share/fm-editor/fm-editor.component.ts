@@ -473,6 +473,10 @@ export class FmRecordEditorComponent
                        + ' (' + this.getOrgShortname(fm.org()) + ')';
             case 'acpl':
                 return fm.name() + ' (' + this.getOrgShortname(fm.owning_lib()) + ')';
+                break;
+            case 'acqpro':
+                return fm.name() + ' (' + this.getOrgShortname(fm.owner()) + ')';
+                break;
             default:
                 // no equivalent of idlIncludeLibraryInLabel yet
                 return fm[selector]();

@@ -237,6 +237,20 @@ export class IdlService {
         return obj1[pkeyField]() === obj2[pkeyField]();
     }
 
+    pkeyValue(obj: any): any {
+        if (!obj || typeof obj === 'number') { return obj; }
+        try {
+            const idlClass = obj.classname;
+            const pkeyField = this.classes[idlClass].pkey || 'id';
+            return obj[pkeyField]();
+        } catch(E) {
+            if (typeof obj === 'object') {
+                console.log('Error returning pkey value', obj);
+            }
+            return obj;
+        }
+    }
+
     // Sort an array of fields from the IDL (like you might get from calling
     // this.idlClasses[classname][fields])
 

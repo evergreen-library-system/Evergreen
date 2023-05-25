@@ -1,0 +1,49 @@
+
+<eg-staff-banner *ngIf="!targetPicklist &&! targetPo" i18n-bannerText bannerText="Load Catalog Record IDs"/>
+
+<div class="w-50 m-2">
+  <div class="d-flex mt-2" *ngIf="!targetPicklist && !targetPo">
+    <div class="flex-2"><label for="sl-select-list">Add to Selection List</label></div>
+    <div class="flex-3">
+      <eg-combobox domId="sl-select-list"
+        [(ngModel)]="selectedPl"
+        idlClass="acqpl"
+        [asyncSupportsEmptyTermClick]="true"
+        [allowFreeText]="true"
+        [required]="true"
+        placeholder="Select Existing or Name New List..." i18n-placeHolder/>
+    </div>
+  </div>
+  <div class="d-flex mt-2">
+    <div *ngIf="listIsEmpty()" class="flex-2"><label for="sl-catalog-rec-files" i18n>Add records from</label></div>
+    <div *ngIf="!listIsEmpty()"class="flex-2"><label for="sl-catalog-rec-files" i18n>Add additional records from</label></div>
+    <div class="flex-3">
+      <input multiple id="sl-catalog-rec-files"
+        #fileSelector
+        (change)="fileSelected($event)"
+        class="form-control"
+        type="file"
+        required/>
+    </div>
+  </div>
+</div>
+
+<div class="row">
+  <h2 class="mt-3" i18n>{{listFromMap().length}} records from {{bibIdMapKeys().length}} {{bibIdMapKeys().length == 1 ? 'file' : 'files'}}</h2>
+
+  <ul class="mt-2 list-unstyled lineitem-file-list">
+    <li *ngFor="let fname of bibIdMapKeys()" class="lineitem-file-item">
+      <div class="lineitem-file-name lh-lg"><span i18n>{{ bibIdMap[fname].length }} records from </span><span class="font-monospace fw-bold">{{fname}}</span></div>
+      <div class="lineitem-file-remove">
+        <button type="button" class="btn btn-destroy m-0 p-0 lh-sm material-icons mat-icon-in-button" 
+          attr.aria-label="Remove {{ bibIdMap[fname].length }} records from {{fname}}" i18n-aria-label
+          title="Remove {{ bibIdMap[fname].length }} records from {{fname}}" i18n-title
+          (click)="removeFile(fname)">close</button>
+      </div>
+    </li>
+  </ul>
+
+  <div class="container">
+    <button [disabled]="!canSave()" class="btn btn-success mt-2" (click)="save()" i18n>Save Line Items</button>
+  </div>
+</div>
