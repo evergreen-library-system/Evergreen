@@ -4,12 +4,14 @@
     {{label}} <span *ngIf="hasChanged" class="text-danger">*</span>
     <ng-container *ngIf="bulky()">
       <div class="flex-1"></div>
-      <a href='javascript:;' (click)="expanded = true" *ngIf="!expanded">
-        <span class="material-icons">unfold_more</span>
-      </a>
-      <a href='javascript:;' (click)="expanded = false" *ngIf="expanded">
-        <span class="material-icons">unfold_less</span>
-      </a>
+      <button (click)="expanded = true" *ngIf="!expanded" type="button"
+        aria-label="Expand" i18n-aria-label title="Expand" i18n-title>
+        <span class="material-icons" aria-hidden="true">unfold_more</span>
+      </button>
+      <button (click)="expanded = false" *ngIf="expanded" type="button"
+        aria-label="Condense" i18n-aria-label title="Condense" i18n-title>
+        <span class="material-icons" aria-hidden="true">unfold_less</span>
+      </button>
     </ng-container>
   </div>
   <div tabindex="0" class="p-2" *ngIf="!editing || multiValue()"

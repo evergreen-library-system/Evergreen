@@ -11,7 +11,8 @@
   <div class="col-sm-2" *ngFor="let ftm of tagMaps">
     <button class="btn btn-sm material-icon-button" type="button"
       (click)="removeTagMap(ftm)"
-      i18n-title title="Remove Tag"><span class="visually-hidden">Remove Tag</span>
+      i18n-aria-label aria-label="Remove Tag"
+      i18n-title title="Remove Tag">
       <span class="material-icons" aria-hidden="true">delete</span>
     </button>
     {{ftm.tag().name()}} ({{ftm.tag().owner().shortname()}})

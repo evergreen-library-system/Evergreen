@@ -15,7 +15,7 @@
   <button class="btn btn-sm btn-outline-dark label-with-material-icon" 
     (click)="toggleBatchVisibility()">
     <span i18n>Batch Actions</span>
-    <span class="material-icons">unfold_more</span>
+    <span class="material-icons" aria-hidden="true">unfold_more</span>
   </button>
 </div>
 
@@ -26,7 +26,7 @@
     <button class="btn btn-sm btn-outline-dark label-with-material-icon" 
       (click)="toggleBatchVisibility()">
       <span i18n>Batch Actions</span>
-      <span class="material-icons">unfold_less</span>
+      <span class="material-icons" aria-hidden="true">unfold_less</span>
     </button>
   </div>
   <div class="p-1" [ngStyle]="{flex: flexAt(3)}">
@@ -84,9 +84,9 @@
     <div><label class="form-label fw-bold" i18n>Batch</label></div>
     <div>
       <button class="btn btn-sm btn-outline-dark label-with-material-icon"
-        (click)="batchVolApply()">
+        type="button" (click)="batchVolApply()">
         <span i18n>Apply</span>
-        <span class="material-icons">arrow_downward</span>
+        <span class="material-icons" aria-hidden="true">arrow_downward</span>
       </button>
     </div>
   </div>
@@ -101,15 +101,17 @@
   <div class="p-1" [ngStyle]="{flex: flexAt(1)}">
     <span class="fw-bold" i18n>Owning Library
       <ng-container *ngIf="expand !== 1">
-        <button title="Expand Column" i18n-title 
+        <button type="button" title="Expand Column" i18n-title
+          aria-label="Expand Column" i18n-aria-label 
           class="material-icon-button" (click)="expand = 1">
-          &#x2197;
+          <span aria-hidden="true">&#x2197;</span>
         </button>
       </ng-container>
       <ng-container *ngIf="expand === 1">
-        <button title="Shrink Column" i18n-title 
+        <button type="button" title="Shrink Column" i18n-title 
+          aria-label="Shrink Column" i18n-aria-label 
           class="material-icon-button" (click)="expand = null">
-          &#x2199;
+          <span aria-hidden="true">&#x2199;</span>
         </button>
       </ng-container>
     </span>
@@ -118,15 +120,17 @@
     <ng-container *ngIf="displayColumn('classification')">
       <span class="fw-bold" i18n>Classification
         <ng-container *ngIf="expand !== 3">
-          <button title="Expand Column" i18n-title 
+          <button type="button" title="Expand Column" i18n-title
+            aria-label="Expand Column" i18n-aria-label 
             class="material-icon-button" (click)="expand = 3">
-            &#x2197;
+            <span aria-hidden="true">&#x2197;</span>
           </button>
         </ng-container>
         <ng-container *ngIf="expand === 3">
-          <button title="Shrink Column" i18n-title 
+          <button type="button" title="Shrink Column" i18n-title
+            aria-label="Shrink Column" i18n-aria-label 
             class="material-icon-button" (click)="expand = null">
-            &#x2199;
+            <span aria-hidden="true">&#x2199;</span>
           </button>
         </ng-container>
       </span>
@@ -136,15 +140,17 @@
     <ng-container *ngIf="displayColumn('prefix')">
       <span class="fw-bold" i18n>Prefix
         <ng-container *ngIf="expand !== 4">
-          <button title="Expand Column" i18n-title 
+          <button type="button" title="Expand Column" i18n-title 
+            aria-label="Expand Column" i18n-aria-label 
             class="material-icon-button" (click)="expand = 4">
-            &#x2197;
+            <span aria-hidden="true">&#x2197;</span>
           </button>
         </ng-container>
         <ng-container *ngIf="expand === 4">
-          <button title="Shrink Column" i18n-title 
+          <button type="button" title="Shrink Column" i18n-title
+            aria-label="Shrink Column" i18n-aria-label 
             class="material-icon-button" (click)="expand = null">
-            &#x2199;
+            <span aria-hidden="true">&#x2199;</span>
           </button>
         </ng-container>
       </span>
@@ -153,15 +159,17 @@
   <div class="p-1" [ngStyle]="{flex: flexAt(5)}">
     <span class="fw-bold" i18n>Call Number Label
       <ng-container *ngIf="expand !== 5">
-        <button title="Expand Column" i18n-title 
+        <button type="button" title="Expand Column" i18n-title 
+          aria-label="Expand Column" i18n-aria-label 
           class="material-icon-button" (click)="expand = 5">
-          &#x2197;
+          <span aria-hidden="true">&#x2197;</span>
         </button>
       </ng-container>
       <ng-container *ngIf="expand === 5">
-        <button title="Shrink Column" i18n-title
+        <button type="button" title="Shrink Column" i18n-title
+          aria-label="Shrink Column" i18n-aria-label
           class="material-icon-button" (click)="expand = null">
-          &#x2199;
+          <span aria-hidden="true">&#x2199;</span>
         </button>
       </ng-container>
     </span>
@@ -170,15 +178,17 @@
     <ng-container *ngIf="displayColumn('suffix')">
       <span class="fw-bold" i18n>Suffix
         <ng-container *ngIf="expand !== 6">
-          <button title="Expand Column" i18n-title 
+          <button type="button" title="Expand Column" i18n-title 
+          aria-label="Expand Column" i18n-aria-label
             class="material-icon-button" (click)="expand = 6">
-            &#x2197;
+            <span aria-hidden="true">&#x2197;</span>
           </button>
         </ng-container>
         <ng-container *ngIf="expand === 6">
-          <button title="Shrink Column" i18n-title
+          <button type="button" title="Shrink Column" i18n-title
+            aria-label="Shrink Column" i18n-aria-label
             class="material-icon-button" (click)="expand = null">
-            &#x2199;
+            <span aria-hidden="true">&#x2199;</span>
           </button>
         </ng-container>
       </span>
@@ -195,15 +205,17 @@
   <div class="p-1" [ngStyle]="{flex: flexAt(8)}">
     <span class="fw-bold" i18n>Barcode
       <ng-container *ngIf="expand !== 8">
-        <button title="Expand Column" i18n-title 
+        <button type="button" title="Expand Column" i18n-title 
+          aria-label="Expand Column" i18n-aria-label 
           class="material-icon-button" (click)="expand = 8">
-          &#x2197;
+          <span aria-hidden="true">&#x2197;</span>
         </button>
       </ng-container>
       <ng-container *ngIf="expand === 8">
-        <button title="Shrink Column" i18n-title
+        <button type="button" title="Shrink Column" i18n-title
+          aria-label="Shrink Column" i18n-aria-label
           class="material-icon-button" (click)="expand = null">
-          &#x2199;
+          <span aria-hidden="true">&#x2199;</span>
         </button>
       </ng-container>
     </span>
@@ -217,15 +229,17 @@
     <ng-container *ngIf="displayColumn('copy_part')">
       <span class="fw-bold" i18n>Part
         <ng-container *ngIf="expand !== 10">
-          <button title="Expand Column" i18n-title 
+          <button type="button" title="Expand Column" i18n-title 
+            aria-label="Expand Column" i18n-aria-label 
             class="material-icon-button" (click)="expand = 10">
-            &#x2197;
+            <span aria-hidden="true">&#x2197;</span>
           </button>
         </ng-container>
         <ng-container *ngIf="expand === 10">
-          <button title="Shrink Column" i18n-title 
+          <button type="button" title="Shrink Column" i18n-title
+            aria-label="Shrink Column" i18n-aria-label 
             class="material-icon-button" (click)="expand = null">
-            &#x2199;
+            <span aria-hidden="true">&#x2199;</span>
           </button>
         </ng-container>
       </span>
@@ -260,8 +274,9 @@
                   placement="bottom" [ngbPopover]="addOrgTmpl"
                   autoClose="outside" #addOrgPopover="ngbPopover"
                   i18n-popoverTitle="Add Call Number For Location"
-                  i18n-title title="Add Call Number For Location">
-                  <span class="material-icons">add_circle_outline</span>
+                  i18n-title title="Add Call Number For Location"
+                  i18n-aria-label aria-label="Add Call Number For Location">
+                  <span class="material-icons" aria-hidden="true">add_circle_outline</span>
                 </button>
               </div>
             </ng-container>
@@ -279,8 +294,9 @@
                   placement="bottom" [ngbPopover]="editOrgTmpl"
                   autoClose="outside" #editOrgPopover="ngbPopover"
                   i18n-popoverTitle="Edit Call Number Owning Location"
-                  i18n-title title="Edit Call Number Owning Location">
-                  <span class="material-icons">edit</span>
+                  i18n-title title="Edit Call Number Owning Location"
+                  i18n-aria-label aria-label="Edit Call Number Owning Location">
+                  <span class="material-icons" aria-hidden="true">edit</span>
                 </button>
               </div>
             </ng-container>
@@ -352,9 +368,10 @@
             <ng-container 
               *ngIf="context.sessionType === 'record' || context.sessionType === 'mixed'">
               <button class="btn btn-sm material-icon-button p-1"
-                (click)="createVols(orgNode, 1)"
-                i18n-title title="Add Call Number">
-                <span class="material-icons">add_circle_outline</span>
+                (click)="createVols(orgNode, 1)" type="button"
+                i18n-title title="Add Call Number"
+                i18n-aria-label aria-label="Add Call Number">
+                <span class="material-icons" aria-hidden="true">add_circle_outline</span>
               </button>
 
               <ng-template #addVolCountTmpl>
@@ -364,7 +381,7 @@
                     id='add-vol-popover' 
                     (keyup.enter)="createVolsFromPopover(orgNode, addVolsPopover)"
                     [(ngModel)]="addVolCount" [required]="true" min="1"/>
-                  <button class="btn btn-sm btn-success ms-1" 
+                  <button class="btn btn-sm btn-success ms-1" type="button"
                     (click)="createVolsFromPopover(orgNode, addVolsPopover)"
                     i18n>Add</button>
                 </div>
@@ -376,14 +393,16 @@
                 placement="bottom" [ngbPopover]="addVolCountTmpl"
                 autoClose="outside" #addVolsPopover="ngbPopover"
                 i18n-popoverTitle="Add Call Numbers"
-                i18n-title title="Add Call Numbers">
-                <span class="material-icons">playlist_add</span>
+                i18n-title title="Add Call Numbers"
+                i18n-aria-label aria-label="Add Call Numbers">
+                <span class="material-icons" aria-hidden="true">playlist_add</span>
               </button>
 
-              <button class="btn btn-sm material-icon-button p-1"
+              <button type="button" class="btn btn-sm material-icon-button p-1"
                 (click)="deleteVol(volNode)"
+                i18n-aria-label aria-label="Remove Call Number"
                 i18n-title title="Remove Call Number">
-                <span class="material-icons">remove_circle_outline</span>
+                <span class="material-icons" aria-hidden="true">remove_circle_outline</span>
               </button>
 
             </ng-container>
@@ -441,9 +460,10 @@
         <div class="p-1" [ngStyle]="{flex: flexAt(11)}">
           <ng-container *ngIf="context.sessionType !== 'copy'">
 
-            <button class="btn btn-sm material-icon-button p-1"
-              (click)="createCopies(volNode, 1)" i18n-title title="Add Item">
-              <span class="material-icons">add_circle_outline</span>
+            <button class="btn btn-sm material-icon-button p-1" type="button"
+              (click)="createCopies(volNode, 1)" i18n-title title="Add Item"
+              i18n-aria-label aria-label="Add Item">
+              <span class="material-icons" aria-hidden="true">add_circle_outline</span>
             </button>
 
             <ng-template #addCopyCountTmpl>
@@ -453,23 +473,25 @@
                   id="add-copy-popover"
                   (keyup.enter)="createCopiesFromPopover(volNode, addCopiesPopover)"
                   [(ngModel)]="addCopyCount" [required]="true" min="1"/>
-                <button class="btn btn-sm btn-success ms-1" 
+                <button class="btn btn-sm btn-success ms-1"  type="button"
                   (click)="createCopiesFromPopover(volNode, addCopiesPopover)"
                   i18n>Add</button>
               </div>
             </ng-template>
 
-            <button class="btn btn-sm material-icon-button p-1"
+            <button type="button" class="btn btn-sm material-icon-button p-1"
               placement="left" [ngbPopover]="addCopyCountTmpl"
               autoClose="outside" #addCopiesPopover="ngbPopover"
               i18n-popoverTitle="Add Items" i18n-title title="Add Items"
+              i18n-aria-label aria-label="Add Items"
               (shown)="focusElement('add-copy-popover')">
-              <span class="material-icons">playlist_add</span>
+              <span class="material-icons" aria-hidden="true">playlist_add</span>
             </button>
 
-            <button class="btn btn-sm material-icon-button p-1"
-              (click)="deleteCopy(copyNode)" i18n-title title="Remove Item">
-              <span class="material-icons">remove_circle_outline</span>
+            <button type="button" class="btn btn-sm material-icon-button p-1"
+              (click)="deleteCopy(copyNode)" i18n-title title="Remove Item"
+              i18n-aria-label aria-label="Remove Item">
+              <span class="material-icons" aria-hidden="true">remove_circle_outline</span>
             </button>
 
           </ng-container>

@@ -105,8 +105,8 @@
 </div>
 <div class="row">
   <div class="col-lg-1">
-  <button class="btn btn-info label-with-material-icon" (click)="goBack()" [disabled]="hasNoHistory()">
-      <span class="material-icons">keyboard_backspace</span>
+  <button type="button" class="btn btn-info label-with-material-icon" (click)="goBack()" [disabled]="hasNoHistory()">
+      <span class="material-icons" aria-hidden="true">keyboard_backspace</span>
       <span i18n>Return</span>
   </button>
   </div>

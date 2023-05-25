@@ -8,7 +8,8 @@
 <ng-template #targetTemplate let-row="row">
   <ng-container *ngIf="isOverlayTarget(row.id)">
     <span i18n-title title="Selected Merge Target" 
-      class="material-icons">check_circle</span>
+      class="material-icons" aria-hidden="true">check_circle</span>
+    <span class="visually-hidden" i18n>Selected Merge Target</span>
   </ng-container>
 </ng-template>
 

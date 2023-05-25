@@ -52,9 +52,9 @@
         <a *ngIf="!hideClearFilters" class="ps-2 fst-italic"
           [attr.href]="clearGridFiltersUrl()" i18n>Clear Filters</a>
         &nbsp;
-        <button class="btn btn-info label-with-material-icon"
+        <button class="btn btn-info label-with-material-icon" type="button"
           (click)="goBack()" [disabled]="hasNoHistory()">
-          <span class="material-icons">keyboard_backspace</span>
+          <span class="material-icons" aria-hidden="true">keyboard_backspace</span>
           <span i18n>Return</span>
         </button>
       </ng-container>

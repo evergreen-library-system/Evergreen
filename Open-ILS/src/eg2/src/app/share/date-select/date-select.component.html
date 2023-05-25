@@ -21,11 +21,11 @@
       (ngModelChange)="inputChanged($event)"
       (keyup.enter)="onDateEnter()"
       (dateSelect)="onDateSelect($event)"/>
-    <div class="input-group-text p-0">
-      <button class="btn px-2" [disabled]="disabled"
+      
+      <button class="input-group-text" [disabled]="disabled"
+        title="Select Date" i18n-title aria-label="Select Date" i18n-aria-label
         (click)="datePicker.toggle()" type="button">
-        <span title="Select Date" i18n-title class="material-icons">event</span>
+        <span class="material-icons mat-icon-in-button" aria-hidden="true">event</span>
       </button>
-    </div>
   </div>
 </ng-container>

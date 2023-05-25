@@ -13,9 +13,10 @@
     </div>
     <button class="btn btn-sm btn-success ms-2" [disabled]="!noteText" 
       (click)="newNote()" i18n>New Note</button>
-    <a class="ms-auto" href="javascript:;" (click)="close()" title="Close" i18n-title>
+    <button type="button" class="btn btn-link ms-auto" (click)="close()" 
+      title="Close" i18n-title aria-label="Close" i18n-aria-label>
       <span class="material-icons text-danger">close</span>
-    </a>
+    </button>
   </div>
 
   <div *ngFor="let note of po.notes()">

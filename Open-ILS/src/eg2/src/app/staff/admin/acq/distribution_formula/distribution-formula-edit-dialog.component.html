@@ -7,7 +7,7 @@
       i18n-aria-label aria-label="Close" (click)="close()"></button>
   </div>
   <div class="modal-body">
-    <form #myForm="ngForm" role="form" class="form-validated">
+    <form #myForm="ngForm" class="form-validated">
       <div class="form-group row mt-2" *ngIf="formula">
         <label for="formula-name" class="form-label col-sm-1 col-form-label" i18n>Formula Name
         </label>
@@ -43,8 +43,8 @@
       <div class="form-group row mt-2" *ngFor="let entry of formula?.entries(); index as idx; last as isLast; first as isFirst; count as count">
         <div class="col-sm-1">
           <button *ngIf="!isLast" class="btn btn-sm material-icon-button" type="button"
-            (click)="removeRow(idx)"
-            i18n-title title="Remove Entry"><span class="visually-hidden">Remove Entry</span>
+            (click)="removeRow(idx)" i18n-aria-label aria-label="Remove Entry"
+            i18n-title title="Remove Entry">
             <span class="material-icons" aria-hidden="true">delete</span>
           </button>
         </div>
@@ -100,13 +100,15 @@
           <button *ngIf="!isLast" class="btn btn-sm material-icon-button" type="button"
             [disabled]="isFirst"
             (click)="moveUp(idx)"
-            i18n-title title="Move Up"><span class="visually-hidden">Move Up</span>
+            i18n-aria-label aria-label="Move Up"
+            i18n-title title="Move Up">
             <span class="material-icons" aria-hidden="true">keyboard_arrow_up</span>
           </button>
           <button *ngIf="!isLast" class="btn btn-sm material-icon-button" type="button"
             (click)="moveDown(idx)"
             [disabled]="count < 3 || idx === count - 2"
-            i18n-title title="Move Down"><span class="visually-hidden">Move Down</span>
+            i18n-aria-label aria-label="Move Down"
+            i18n-title title="Move Down">
             <span class="material-icons" aria-hidden="true">keyboard_arrow_down</span>
           </button>
           <button *ngIf="isLast" type="button" class="btn btn-info" (click)="addRow()" i18n>Add</button>

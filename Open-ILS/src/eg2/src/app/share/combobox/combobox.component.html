@@ -18,7 +18,7 @@
 </ng-container>
 
 <ng-container *ngIf="!readOnly">
-  <div class="d-flex">
+  <div class="input-group">
     <input type="text" 
       class="form-control"
       [id]="domId"
@@ -39,9 +39,9 @@
       container="body"
       (selectItem)="selectorChanged($event)"
       #instance="ngbTypeahead"/>
-    <div class="d-flex flex-column icons" (click)="openMe($event)">
-      <span class="material-icons">keyboard_arrow_up</span>
-      <span class="material-icons">keyboard_arrow_down</span>
-    </div>
+    <button type="button" class="input-group-text" (click)="openMe($event)"
+      aria-label="Open" i18n-aria-label title="Open" i18n-title>
+      <span class="material-icons" aria-hidden="true">unfold_more</span>
+    </button>
   </div>
 </ng-container>

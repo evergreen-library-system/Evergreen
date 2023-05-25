@@ -209,7 +209,7 @@
                 <button (click)="placeHold()" [disabled]="!summary.isHoldable"
                   [ngClass]="summary.isHoldable ? 'btn-success' : 'btn-secondary'"
                   class="btn btn-sm label-with-material-icon small-text-1">
-                  <span class="material-icons">check</span>
+                  <span class="material-icons" aria-hidden="true">check</span>
                   <span i18n>Place Hold</span>
                 </button>
               </span>

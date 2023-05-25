@@ -8,8 +8,9 @@
     </div>
 
     <div *ngIf="withDeselect" class="sr-field-deselect col-md-1">
-      <button class="btn btn-sm material-icon-button p-1 sr-checkbox" title="Un-Select Field" (click)="deselectAction()" title-i18n>
-        <span class="material-icons">remove_circle_outline</span></button>
+      <button class="btn btn-sm material-icon-button p-1 sr-checkbox" (click)="deselectAction()" 
+        title="Un-Select Field" i18n-title aria-label="Un-Select Field" aria-label>
+        <span class="material-icons" aria-hidden="true">remove_circle_outline</span></button>
     </div>
 
     <div *ngIf="withAlias" class="sr-field-name col-md-auto">
@@ -201,8 +202,18 @@
     </div>
 
     <div *ngIf="withUpDown" class="sr-field-updown col-md-2">
-      <button (click)="upAction()" class="btn btn-outline-primary btn-sm" [disabled]="disableUp"><span class="material-icons">arrow_upward</span></button>
-      <button (click)="downAction()" class="btn btn-outline-primary btn-sm" [disabled]="disableDown"><span class="material-icons">arrow_downward</span></button>
+      <button (click)="upAction()" class="btn btn-outline-primary btn-sm" 
+        [disabled]="disableUp" type="button"
+        aria-label="Move this field up in display order" i18n-aria-label
+        title="Move this field up in display order" i18n-title>
+        <span class="material-icons" aria-hidden="true">arrow_upward</span>
+      </button>
+      <button (click)="downAction()" class="btn btn-outline-primary btn-sm" 
+        [disabled]="disableDown" type="button"
+        aria-label="Move this field down in display order" i18n-aria-label
+        title="Move this field down in display order" i18n-title>
+        <span class="material-icons" aria-hidden="true">arrow_downward</span>
+      </button>
     </div>
 
   </div>

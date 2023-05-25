@@ -16,23 +16,23 @@
 <div class="row mt-2 mb-2 border border-info">
   <div class="col-lg-2 p-1">
     <button class="btn btn-outline-dark label-with-material-icon"
-      (click)="createPicklist()" i18n>
-      <span class="material-icons me-1">create_new_folder</span>
-      Create Selection List
+      (click)="createPicklist()" type="button">
+      <span class="material-icons me-1" aria-hidden="true">create_new_folder</span>
+      <span i18n>Create Selection List</span>
     </button>
   </div>
   <div class="col-lg-2 p-1">
     <button class="btn btn-outline-dark label-with-material-icon" 
-      (click)="addingToPl=!addingToPl" i18n>
-      <span class="material-icons me-1">add_circle</span>
-      Add To Selection List
+      (click)="addingToPl=!addingToPl" type="button">
+      <span class="material-icons me-1" aria-hidden="true">add_circle</span>
+      <span i18n>Add To Selection List</span>
     </button>
   </div>
   <div class="col-lg-2 p-1">
     <div *ngIf="addingToPl" class="d-flex">
       <eg-combobox [(ngModel)]="selectedPl" idlClass="acqpl"
         placeholder="Select List..." i18n-placeHolder></eg-combobox>
-      <button class="btn btn-outline-primary btn-sm" 
+      <button class="btn btn-outline-primary btn-sm" type="button"
         (click)="addToPicklist(selectedPl ? selectedPl.id : null)" i18n>
         Apply
       </button>
@@ -40,23 +40,23 @@
   </div>
   <div class="col-lg-2 p-1">
     <button class="btn btn-outline-dark label-with-material-icon"
-      (click)="createPo()" i18n>
-      <span class="material-icons me-1">create_new_folder</span>
-      Create Purchase Order
+      (click)="createPo()" type="button">
+      <span class="material-icons me-1" aria-hidden="true">create_new_folder</span>
+      <span i18n>Create Purchase Order</span>
     </button>
   </div>
   <div class="col-lg-2 p-1">
     <button class="btn btn-outline-dark label-with-material-icon" 
-      (click)="addingToPo=!addingToPo" i18n>
-      <span class="material-icons me-1">add_circle_outline</span>
-      Add To Purchase Order
+      (click)="addingToPo=!addingToPo" type="button">
+      <span class="material-icons me-1" aria-hidden="true">add_circle_outline</span>
+      <span i18n>Add To Purchase Order</span>
     </button>
   </div>
   <div class="col-lg-2 p-1">
     <div *ngIf="addingToPo" class="d-flex">
       <eg-combobox [(ngModel)]="selectedPo" idlClass="acqpo"
         placeholder="Select Order..." i18n-placeHolder></eg-combobox>
-      <button class="btn btn-outline-primary btn-sm" 
+      <button class="btn btn-outline-primary btn-sm" type="button"
         (click)="addToPo(selectedPo ? selectedPo.id : null)" i18n>
         Apply
       </button>

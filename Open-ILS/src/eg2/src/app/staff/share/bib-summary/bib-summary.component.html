@@ -9,7 +9,7 @@
       <ng-container *ngIf="summary.attributes.icon_format && summary.attributes.icon_format[0]">
         <ng-container *ngFor="let icon of summary.attributes.icon_format">
           <span class="pe-1 ps-2">
-            <img class="pe-1"
+            <img class="pe-1" alt=""
               src="/images/format_icons/icon_format/{{icon}}.png"/>
             <span class="fw-normal">{{iconFormatLabel(icon)}}</span>
           </span>
@@ -18,16 +18,16 @@
     </div>
     <div class="flex-1"></div>
     <div>
-      <a class="with-material-icon no-href text-primary"
+      <button class="with-material-icon btn btn-link" type="button"
         title="Show More" i18n-title
         *ngIf="!expand" (click)="expand=true">
-        <span class="material-icons">expand_more</span>
-      </a>
-      <a class="with-material-icon no-href text-primary"
-        title="Show Less" i18n-title
+        <span class="material-icons" aria-hidden="true">expand_more</span>
+      </button>
+      <button class="with-material-icon btn btn-link" type="button"
+        title="Show Less" i18n-title aria-label="Show Less" i18n-aria-label
         *ngIf="expand" (click)="expand=false">
-        <span class="material-icons">expand_less</span>
-      </a>
+        <span class="material-icons" aria-hidden="true">expand_less</span>
+      </button>
     </div>
   </div>
   <div class="row">

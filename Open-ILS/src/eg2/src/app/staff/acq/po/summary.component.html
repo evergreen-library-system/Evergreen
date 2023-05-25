@@ -180,30 +180,30 @@
   <hr class="p-0 m-0 mt-1"/>
   <div class="row mt-1">
     <div class="col-lg-12">
-      <a class="" href="javascript:;" class="label-with-material-icon"
+      <button type="button" class="btn btn-link label-with-material-icon"
         (click)="showNotes=!showNotes">
-        <span class="material-icons small me-1">event_note</span>
+        <span class="material-icons small me-1" aria-hidden="true">event_note</span>
         <span>Notes ({{po().notes().length}})</span>
-      </a>
+      </button>
       <ng-container *ngIf="po().order_date()"> <!-- show invoice actions only if order was activated -->
       <span class="ps-2 pe-2" i18n> | </span>
       <a [queryParams]="{f: 'acqpo:id', val1: poId}" class="label-with-material-icon"
         routerLink="/staff/acq/search/invoices">
-          <span class="material-icons small me-1">list</span>
+          <span class="material-icons small me-1" aria-hidden="true">list</span>
           <span i18n>Invoices ({{invoiceCount}})</span>
       </a>
       <span class="ps-2 pe-2" i18n> | </span>
       <a href="/eg/staff/acq/legacy/invoice/view?create=1&attach_po={{poId}}"
         class="label-with-material-icon">
-        <span class="material-icons small me-1">receipt</span>
+        <span class="material-icons small me-1" aria-hidden="true">receipt</span>
         <span i18n>Create Invoice</span>
       </a>
       <span class="ps-2 pe-2" i18n> | </span>
-      <a (click)="linkInvoiceFromPo()" href="javascript:;"
-        class="label-with-material-icon">
-        <span class="material-icons small me-1">receipt</span>
+      <button (click)="linkInvoiceFromPo()"
+        class="btn btn-link label-with-material-icon">
+        <span class="material-icons small me-1" aria-hidden="true">receipt</span>
         <span i18n>Link Invoice</span>
-      </a>
+      </button>
       </ng-container> <!-- show invoice actions -->
       <span class="ps-2 pe-2" i18n> | </span>
       <a routerLink="./edi" i18n>EDI Messages ({{ediMessageCount}})</a>
@@ -211,7 +211,7 @@
       <a routerLink="./history" i18n>History</a>
       <span class="ps-2 pe-2" i18n> | </span>
       <a routerLink="./printer" class="label-with-material-icon">
-        <span class="material-icons small me-1">print</span>
+        <span class="material-icons small me-1" aria-hidden="true">print</span>
         <span i18n>Print</span>
       </a>
       <ng-container *ngIf="po().state() === 'on-order'">
@@ -228,10 +228,10 @@
       </ng-container>
       <ng-container *ngIf="canFinalize">
         <span class="ps-2 pe-2" i18n> | </span>
-        <a (click)="finalizePo()" href="javascript:;" class="label-with-material-icon">
-          <span class="material-icons small me-1">check_circle</span>
+        <button (click)="finalizePo()" class="btn btn-link label-with-material-icon">
+          <span class="material-icons small me-1" aria-hidden="true">check_circle</span>
           <span i18n>Finalize Blanket Order</span>
-        </a>
+        </button>
       </ng-container>
       <ng-container *ngIf="showLegacyLinks">
         <span class="ps-2 pe-2" i18n> | </span>

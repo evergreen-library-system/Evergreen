@@ -342,7 +342,8 @@
           <eg-combobox-entry entryId="wrong" entryLabel="42" i18n-entryLabel></eg-combobox-entry>
         </eg-combobox>
         <div *ngIf="!ranganathan.valid" class="alert alert-danger">
-          <span class="material-icons">error</span>
+          <span class="material-icons" aria-hidden="true">error</span>
+          <span class="visually-hidden" i18n>Error</span>
           <span i18n>That isn't a real law of library science!</span>
         </div>
       </div>
@@ -357,7 +358,8 @@
           labelText="Choose the fanciest libraries">
         </eg-org-family-select>
         <div *ngIf="!badOrgForm.valid" class="alert alert-danger">
-          <span class="material-icons">error</span>
+          <span class="material-icons" aria-hidden="true">error</span>
+          <span class="visually-hidden" i18n>Error</span>
           <span i18n>Too many fancy libraries!</span>
         </div>
       </div>

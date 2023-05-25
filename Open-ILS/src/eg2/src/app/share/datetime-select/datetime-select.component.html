@@ -14,12 +14,12 @@
     [attr.disabled]="readOnly ? true : null"
     [required]="required"
     (touch)="onTouched()">
-  <div class="input-group-btn">
-    <button class="btn btn-primary" ngbDropdownToggle
+  
+    <button class="input-group-text" ngbDropdownToggle
+      title="Select date and time" i18n-title
       aria-label="Select date and time" i18n-aria-label>
-      <span class="material-icons mat-icon-in-button">event</span>
+      <span class="material-icons mat-icon-in-button" aria-hidden="true">event</span>
     </button>
-  </div>
   <div ngbDropdownMenu>
     <div i18n *ngIf="readOnly">
       Cannot edit this date or time.

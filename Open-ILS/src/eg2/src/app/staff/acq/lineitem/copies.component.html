@@ -53,9 +53,10 @@
         <li class="list-group-item p-0 m-0 border-0" 
           *ngFor="let formula of lineitem.distribution_formulas()">
           <div class="d-flex">
-            <button class="btn btn-outline-danger material-icon-button p-0 m-0"
-              (click)="deleteFormula(formula)" title="Delete Formula" i18n-title>
-              <span class="material-icons">delete</span>
+            <button type="button" class="btn btn-outline-danger material-icon-button p-0 m-0"
+              (click)="deleteFormula(formula)" title="Delete {{formula.formula().name()}}" i18n-title
+              aria-label="Delete {{formula.formula().name()}}" i18n-aria-label>
+              <span class="material-icons" aria-hidden="true">delete</span>
             </button>
             <div class="ms-2">{{formula.create_time() | date:'short'}}</div>
             <div class="ms-2">{{formula.creator().usrname()}}</div>

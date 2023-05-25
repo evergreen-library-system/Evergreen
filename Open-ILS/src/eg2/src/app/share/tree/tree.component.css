@@ -17,3 +17,6 @@
   border-left: 2px dashed rgba(0,0,0,.125);
 }
 
+.btn-link {
+  line-height: 1;
+}

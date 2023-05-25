@@ -84,9 +84,9 @@
       <div class="row mb-2">
         <div class="col-lg-12 d-flex justify-content-end">
           <button class="btn btn-outline-danger label-with-material-icon"
-            (click)="removeRule(idx)" i18n>
-            <span>Remove this Merge Rule</span>
-            <span class="material-icons ms-2">delete</span>
+            (click)="removeRule(idx)" type="button">
+            <span i18n>Remove this Merge Rule</span>
+            <span class="material-icons ms-2" aria-hidden="true">delete</span>
           </button>
         </div>
       </div>
@@ -94,9 +94,9 @@
     <div class="row mb-2">
       <div class="col-lg-6">
         <button class="btn btn-outline-dark label-with-material-icon" 
-          (click)="addRule()">
+          (click)="addRule()" type="button">
           <span i18n>Add a New Merge Rule</span>
-          <span class="material-icons ms-2">arrow_downward</span>
+          <span class="material-icons ms-2" aria-hidden="true">arrow_downward</span>
         </button>
       </div>
     </div>

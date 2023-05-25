@@ -5,11 +5,13 @@
 
 <div class="d-flex justify-content-end">
   <div class="pe-1">
+
     <div class="float-end">
       <!-- note basket view link does not propagate search params -->
       <a routerLink="/staff/catalog/search" [queryParams]="{showBasket: true}" 
         class="label-with-material-icon">
-        <span class="material-icons">shopping_basket</span>
+        <span class="material-icons" aria-hidden="true">shopping_basket</span>
+        <span class="visually-hidden" i18n>Basket</span>
         <span i18n>({{basketCount()}})</span>
       </a>
     </div>
@@ -19,21 +21,21 @@
       <button class="btn btn-light" id="basketActions"
         ngbDropdownToggle i18n>Basket Actions</button>
       <div ngbDropdownMenu aria-labelledby="basketActions">
-        <button class="dropdown-item" [disabled]="isMetarecordSearch()"
+        <button type="button" class="dropdown-item" ngbDropdownItem [disabled]="isMetarecordSearch()"
           (click)="applyAction('add_all')" i18n>Add All Search Results</button>
-        <button class="dropdown-item" [disabled]="!basketCount()"
+        <button type="button" class="dropdown-item" ngbDropdownItem [disabled]="!basketCount()"
           (click)="applyAction('view')" i18n>View Basket</button>
-        <button class="dropdown-item" [disabled]="!basketCount()"
+        <button type="button" class="dropdown-item" ngbDropdownItem [disabled]="!basketCount()"
           (click)="applyAction('hold')" i18n>Place Hold</button>
-        <button class="dropdown-item" [disabled]="!basketCount()"
+        <button type="button" class="dropdown-item" ngbDropdownItem [disabled]="!basketCount()"
           (click)="applyAction('print')" i18n>Print Title Details</button>
-        <button class="dropdown-item" [disabled]="!basketCount()"
+        <button type="button" class="dropdown-item" ngbDropdownItem [disabled]="!basketCount()"
           (click)="applyAction('email')" i18n>Email Title Details</button>
-        <button class="dropdown-item" [disabled]="!basketCount()"
+        <button type="button" class="dropdown-item" ngbDropdownItem [disabled]="!basketCount()"
           (click)="applyAction('bucket')" i18n>Add Basket to Bucket</button>
-        <button class="dropdown-item" [disabled]="!basketCount()"
+        <button type="button" class="dropdown-item" ngbDropdownItem [disabled]="!basketCount()"
           (click)="applyAction('export_marc')" i18n>Export Records</button>
-        <button class="dropdown-item" [disabled]="!basketCount()"
+        <button type="button" class="dropdown-item" ngbDropdownItem [disabled]="!basketCount()"
           (click)="applyAction('clear')" i18n>Clear Basket</button>
       </div>
     </div>

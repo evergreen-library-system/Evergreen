@@ -4,17 +4,21 @@
   <div class="eg-tree-node-wrapper d-flex"
     [ngStyle]="{'padding-left': (node.depth * 20) + 'px'}">
     <div class="eg-tree-node-expandy">
-      <div *ngIf="node.children.length" (click)="node.toggleExpand()"
-        i18n-title title="Toggle Expand Node">
-        <span *ngIf="!node.expanded" class="material-icons">expand_more</span>
-        <span *ngIf="node.expanded" class="material-icons">expand_less</span>
-      </div>
+      <ng-container *ngIf="node.children.length">
+        <button (click)="node.toggleExpand()" 
+          type="button" class="input-group-text" 
+          [attr.title]="node.expanded? 'Close nodes under ' + node.label : 'Open nodes under ' + node.label" 
+          [attr.aria-label]="node.expanded? 'Close nodes under ' + node.label : 'Open nodes under ' + node.label" 
+          i18n-aria-label i18n-title>
+          <span class="material-icons" aria-hidden="true">{{node.expanded? 'expand_less' : 'expand_more'}}</span>
+        </button>
+      </ng-container>
       <div *ngIf="!node.children.length" class="eg-tree-node-nochild">
        &nbsp; 
       </div>
     </div>
     <div class="eg-tree-node" [ngClass]="{active : node.selected}">
-      <a [routerLink]="" (click)="handleNodeClick(node)">{{node.label}}</a>
+      <button class="btn btn-link" (click)="handleNodeClick(node)">{{node.label}}</button>
     </div>
   </div>
 </div>

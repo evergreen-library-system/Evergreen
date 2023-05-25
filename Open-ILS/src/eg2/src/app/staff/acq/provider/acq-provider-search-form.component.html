@@ -16,9 +16,12 @@
     <div class="col-auto align-items-end text-end">
       <button class="btn btn-primary me-1" (click)="submitSearch()" type="submit" [hidden]="!collapsed" i18n>Search</button>
       <button class="btn btn-secondary" (click)="clearSearch()" type="button" [hidden]="!collapsed" i18n>Reset Form</button>
-      <button class="btn" [hidden]="collapsed" (click)="toggleCollapse()" type="submit" i18n><span class="material-icons">expand_less</span></button>
-      <button class="btn" [hidden]="!collapsed" (click)="toggleCollapse()" type="submit" i18n><span class="material-icons">expand_more</span></button>
-    </div>
+      <button class="btn" (click)="toggleCollapse()" type="button" 
+        i18n-title [attr.title]="collapsed? 'Show Provider Details' : 'Hide Provider Details'"
+        i18n-aria-label [attr.aria-label]="collapsed? 'Show Provider Details' : 'Hide Provider Details'">
+        <span class="material-icons">{{collapsed? 'expand_less' : 'expand_more'}}</span>
+      </button>
+      </div>
   </div>
 
   <div class="row mb-1" [hidden]="collapsed">

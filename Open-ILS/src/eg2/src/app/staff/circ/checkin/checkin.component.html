@@ -22,37 +22,37 @@
 
       <span *ngIf="backdate" 
         class="me-3 pe-3 border-end border-info label-with-material-icon">
-        <span class="material-icons">history</span>
+        <span class="material-icons" aria-hidden="true">history</span>
         <span class="ps-2" i18n>Backdated Check In {{backdate | date:'shortDate'}}</span>
       </span>
 
       <span *ngIf="backdate && backdateUntilLogout"
         class="me-3 pe-3 border-end border-info label-with-material-icon">
-        <span class="material-icons">timeline</span>
+        <span class="material-icons" aria-hidden="true">timeline</span>
         <span class="ps-2" i18n>Use Effective Date Until Logout</span>
       </span>
 
       <span *ngIf="modifiers.no_precat_alert"
         class="me-3 pe-3 border-end border-info label-with-material-icon">
-        <span class="material-icons">edit</span>
+        <span class="material-icons" aria-hidden="true">edit</span>
         <span class="ps-2" i18n>Ignore Pre-Cataloged Items</span>
       </span>
 
       <span *ngIf="modifiers.noop"
         class="me-3 pe-3 border-end border-info label-with-material-icon"> 
-        <span class="material-icons">block</span>
+        <span class="material-icons" aria-hidden="true">block</span>
         <span class="ps-2" i18n>Suppress Holds and Transits</span>
       </span>
 
       <span *ngIf="modifiers.void_overdues"
         class="me-3 pe-3 border-end border-info label-with-material-icon">
-        <span class="material-icons">monetization_on</span>
+        <span class="material-icons" aria-hidden="true">monetization_on</span>
         <span class="ps-2" i18n>Amnesty Mode</span>
       </span>
 
       <span *ngIf="modifiers.auto_print_holds_transits"
         class="me-3 pe-3 border-end border-info label-with-material-icon">
-        <span class="material-icons">print</span>
+        <span class="material-icons" aria-hidden="true">print</span>
         <span class="ps-2" i18n>Auto-Print Hold and Transit Slips</span>
       </span>
 
@@ -68,7 +68,7 @@
 
       <span *ngIf="modifiers.hold_as_transit"
         class="me-3 pe-3 border-end border-info label-with-material-icon">
-        <span class="material-icons">directions_transit</span>
+        <span class="material-icons" aria-hidden="true">directions_transit</span>
         <span class="ps-2" i18n>Capture Local Holds As Transits</span>
       </span>
 
@@ -91,7 +91,7 @@
           i18n-aria-label aria-label="Barcode Input" (keydown.enter)="checkin()" />
         <div class="input-group-text">
           <button class="btn btn-outline-dark" (keydown.enter)="checkin()" 
-            (click)="checkin()" i18n>Submit</button>
+            (click)="checkin()" i18n type="button">Submit</button>
         </div>
       </div>
     </div>
@@ -116,7 +116,7 @@
     <div class="me-2" i18n>Effective Date:</div>
     <eg-date-select [initialIso]="backdate" [(ngModel)]="backdateDate"
       (onChangeAsIso)="backdate = $event"></eg-date-select>
-    <button class="btn btn-sm btn-outline-dark ms-1" 
+    <button class="btn btn-sm btn-outline-dark ms-1" type="button"
       (click)="backdateDate=null; backdate=null" i18n>Clear</button>
   </div>
 </div>

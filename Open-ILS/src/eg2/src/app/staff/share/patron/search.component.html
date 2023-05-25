@@ -34,11 +34,11 @@
       <button class="btn btn-success w-100" (click)="go()" i18n>Search</button>
     </div>
     <div class="col-lg-2 ps-1 pe-1">
-      <button (click)="toggleExpandForm()"
+      <button (click)="toggleExpandForm()" type="button"
         class="btn btn-outline-dark ms-2 label-with-material-icon"
+        i18n-aria-label aria-label="Toggle Expanded Form Display"
         i18n-title title="Toggle Expanded Form Display">
-        <span *ngIf="!expandForm" class="material-icons">arrow_drop_down</span>
-        <span *ngIf="expandForm"  class="material-icons">arrow_drop_up</span>
+        <span class="material-icons" aria-hidden="true">{{expandForm ? 'arrow_drop_up' : 'arrow_drop_down'}}</span>
       </button>
     </div>
   </div>

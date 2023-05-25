@@ -2,11 +2,12 @@
   <div class="collapse navbar-collapse">
     <div class="navbar-nav">
       <div class="nav-item">
-        <a i18n class="nav-link with-material-icon nav-link-home" 
+        <a class="nav-link with-material-icon nav-link-home" 
           routerLink="/staff/"
           egAccessKey keyCtx="navbar" i18n-keySpec i18n-keyDesc
           keySpec="alt+h" keyDesc="Navigate Home">
-          <span class="material-icons">home</span>
+          <span class="material-icons" aria-hidden="true">home</span>
+          <span class="visually-hidden" i18n>Home</span>
         </a>
       </div>
     </div>
@@ -506,11 +507,11 @@
     </div>
     <div class="navbar-nav" *ngIf="user()">
       <div ngbDropdown class="nav-item dropdown" display="dynamic">
-        <button ngbDropdownToggle i18n 
-          i18n-title
-          title="Log out and more..."
+        <button ngbDropdownToggle type="button" 
+          i18n-title title="Log out and more..."
+          i18n-aria-label aria-label="Log out and more..."
           class="nav-link dropdown-toggle no-caret with-material-icon">
-          <i class="material-icons">list</i>
+          <i class="material-icons" aria-hidden="true">list</i>
         </button>
         <div class="dropdown-menu dropdown-menu-right" ngbDropdownMenu>
           <eg-op-change #navOpChange

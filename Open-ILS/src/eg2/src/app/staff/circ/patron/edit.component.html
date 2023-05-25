@@ -652,15 +652,18 @@
         <div class="ms-3">
           <button class="btn btn-danger material-icon-button" 
             [ngClass]="{'invisible': waiver.isdeleted()}"
-            (click)="removeWaiver(waiver)"
+            (click)="removeWaiver(waiver)" type="button"
+            i18n-aria-label aria-label="Remove Privacy Waiver"
             i18n-title title="Remove Privacy Waiver">
-            <span class="text-danger material-icons">delete</span>
+            <span class="text-danger material-icons" aria-hidden="true">delete</span>
           </button>
         </div>
         <div class="ms-2" *ngIf="index === patron.waiver_entries().length - 1">
           <button class="btn btn-success material-icon-button" 
-          (click)="addWaiver()" i18n-title title="Add Privacy Waiver">
-            <span class="text-success material-icons">add</span>
+            (click)="addWaiver()" type="button"
+            i18n-aria-label aria-label="Add Privacy Waiver"
+            i18n-title title="Add Privacy Waiver">
+            <span class="text-success material-icons" aria-hidden="true">add</span>
           </button>
         </div>
       </div>

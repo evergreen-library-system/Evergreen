@@ -108,14 +108,15 @@
 </div>
 
 <div *ngIf="batchFailure" class="row mt-2 p-2">
-  <div class="col-lg-12 p-2 border border-danger label-with-material-icon" i18n>
+  <div class="col-lg-12 p-2 border border-danger label-with-material-icon">
     <span class="material-icons text-danger pe-2" aria-hidden="true">report</span>
-    Batch operation failed: 
+    <span class="visually-hidden" i18n>Alert</span>
+    <span i18n>Batch operation failed: 
     {{batchFailure.textcode}} {{batchFailure.desc}}
-
-    <button type="button" class="btn ms-auto"
-      (click)="batchFailure = null" title="Close" i18n-title>
-      <span class="material-icons text-danger">close</span>
+    </span>
+    <button class="btn btn-link ms-auto" (click)="batchFailure = null" 
+      title="Close" i18n-title aria-label="Close" i18n-aria-label type="button">
+      <span class="material-icons text-danger" aria-hidden="true">close</span>
     </button>
   </div>
 </div>
@@ -160,28 +161,22 @@
     <div class="btn-toolbar">
       <button type="button" (click)="toggleExpandAll()"
         class="btn btn-sm btn-outline-dark me-1"
-        [title]="expandAll? 'Expand All' : 'Collapse All'" i18n-title
-        [attr.aria-label]="expandAll? 'Expand All' : 'Collapse All'" i18n-aria-label>
-        <span *ngIf="!expandAll" aria-hidden="true"
-          class="material-icons mat-icon-in-button">unfold_more</span>
-        <span *ngIf="expandAll" aria-hidden="true"
-          class="material-icons mat-icon-in-button">unfold_less</span>
+        [title]="expandAll ? 'Collapse All' : 'Expand All'" i18n-title 
+        [attr.aria-label]="expandAll ? 'Collapse All' : 'Expand All'" i18n-aria-label>
+        <span class="material-icons mat-icon-in-button" aria-hidden="true">{{expandAll ? 'unfold_less' : unfold_more}}</span>
       </button>
       <button [disabled]="pager.isFirstPage()" type="button"
-        title="First Page" i18n-title
-        aria-label="First Page" i18n-aria-label
+        title="First Page" i18n-title aria-label="First Page" i18n-aria-label
         class="btn btn-sm btn-outline-dark me-1" (click)="pager.toFirst(); goToPage()">
         <span class="material-icons mat-icon-in-button" aria-hidden="true">first_page</span>
       </button>
       <button [disabled]="pager.isFirstPage()" type="button"
-        title="Previous Page" i18n-title
-        aria-label="Previous Page" i18n-aria-label
+        title="Previous Page" i18n-title aria-label="Previous Page" i18n-aria-label
         class="btn btn-sm btn-outline-dark me-1" (click)="pager.decrement(); goToPage()">
         <span class="material-icons mat-icon-in-button" aria-hidden="true">keyboard_arrow_left</span>
       </button>
       <button [disabled]="pager.isLastPage()" type="button"
-        title="Next Page" i18n-title
-        aria-label="Next Page" i18n-aria-label
+        title="Next Page" i18n-title aria-label="Next Page" i18n-aria-label
         class="btn btn-sm btn-outline-dark me-1" (click)="pager.increment(); goToPage()">
         <span class="material-icons mat-icon-in-button" aria-hidden="true">keyboard_arrow_right</span>
       </button>
@@ -437,24 +432,19 @@
               <span i18n>Items ({{li.lineitem_details().length}})</span>
             </a>
             <span class="ms-1 me-1" i18n> | </span>
-            <button class="btn btn-link label-with-material-icon" type="button"
-              (click)="toggleShowExpand(li.id())">
-              <ng-container *ngIf="!expandLineitem[li.id()]">
-                <span class="material-icons small me-1" aria-hidden="true">unfold_more</span>
-                <span i18n>Expand</span>
-              </ng-container>
-              <ng-container *ngIf="expandLineitem[li.id()]">
-                <span class="material-icons small me-1" aria-hidden="true">unfold_less</span>
-                <span i18n>Collapse</span>
-              </ng-container>
+            <button class="btn btn-link label-with-material-icon"
+              [title]="expandLineitem[li.id()] ? Collapse : Expand" i18n-title 
+              [attr.aria-label]="expandLineitem[li.id()] ? Collapse : Expand" i18n-aria-label 
+              (click)="toggleShowExpand(li.id())" type="button">
+              <span class="material-icons small me-1" aria-hidden="true">{{expandLineitem[li.id()] ? 'unfold_less' : 'unfold_more'}}</span>
             </button>
             <span class="ms-1 me-1" i18n> | </span>
-            <button class="btn btn-link label-with-material-icon" type="button"
-              (click)="toggleShowNotes(li.id())">
+            <button class="btn btn-link label-with-material-icon" 
+              title="Notes and Alerts" i18n-title
+              (click)="toggleShowNotes(li.id())" type="button">
               <span class="material-icons small me-1" aria-hidden="true">event_note</span>
               <span i18n>Notes and Alerts ({{li.lineitem_notes().length}})</span>
-              <span *ngIf="liHasAlerts(li)" class="text-danger material-icons"
-                title="Has Alerts" i18n-title>flag</span>
+              <span *ngIf="liHasAlerts(li)" class="text-danger material-icons" aria-hidden="true">flag</span>
             </button>
             <ng-container *ngIf="li.eg_bib_id()">
               <span class="ms-1 me-1" i18n> | </span>
@@ -502,7 +492,6 @@
 
             <span class="ms-1 me-1" i18n> | </span>
             <a class="label-with-material-icon"
-              title="Request(s)" i18n-title
               href="/eg/staff/acq/requests/lineitem/{{li.id()}}"
               target="_blank">
               <span class="material-icons small me-1" aria-hidden="true">help</span>
@@ -537,7 +526,7 @@
               <a class="label-with-material-icon"
                 routerLink="/staff/cat/vandelay/queue/bib/{{li.queued_record().queue()}}"
                 target="_blank">
-                <span class="material-icons small me-1">queue</span>
+                <span class="material-icons small me-1" aria-hidden="true">queue</span>
                 <span i18n>Import Queue</span>
               </a>
             </ng-container>

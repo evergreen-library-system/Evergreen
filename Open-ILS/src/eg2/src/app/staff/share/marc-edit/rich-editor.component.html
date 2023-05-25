@@ -41,9 +41,10 @@
 
   <ng-container *ngIf="context.recordType === 'biblio' && isControlledBibTag(field.tag)">
     <button class="btn btn-sm btn-outline-info link-button"
+      i18n-aria-label aria-label="Create authority link"
       i18n-title title="Create authority link"
       (click)="openLinkerDialog(field)">
-      <span class="material-icons">link</span>
+      <span class="material-icons" aria-hidden="true">link</span>
     </button>
   </ng-container>
 
@@ -53,11 +54,13 @@
         title="Authority Validation Succeeded" i18n-title
         class="material-icons label-with-material-icon text-success">
         check_circle_outline
+        <span class="visually-hidden" i18n>Authority Validation Succeeded</span>
       </span>
       <span *ngIf="!field.authValid"
         title="Authority Validation Failed" i18n-title
         class="material-icons label-with-material-icon text-danger">
         error_outline
+        <span class="visually-hidden" i18n>Authority Validation Failed</span>
       </span>
     </span>
   </ng-container>
@@ -155,10 +158,11 @@
       </eg-marc-editable-content>
 
       <ng-container *ngIf="field.tag === '007'">
-         <button class="btn btn-sm btn-outline-info link-button"
+         <button class="btn btn-sm btn-outline-info link-button" type="button"
+          i18n-aria-label aria-label="Open physical characteristics wizard"
           i18n-title title="Open physical characteristics wizard"
           (click)="openPhysCharDialog(field)">
-          <span class="material-icons">launch</span>
+          <span class="material-icons" aria-hidden="true">launch</span>
         </button>
       </ng-container>
     </div>
