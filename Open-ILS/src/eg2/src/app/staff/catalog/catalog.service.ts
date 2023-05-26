@@ -1,4 +1,4 @@
-import {Injectable, EventEmitter} from '@angular/core';
+import {Injectable, EventEmitter, NgZone} from '@angular/core';
 import {Router, ActivatedRoute} from '@angular/router';
 import {IdlObject} from '@eg/core/idl.service';
 import {OrgService} from '@eg/core/org.service';
@@ -8,6 +8,8 @@ import {CatalogSearchContext} from '@eg/share/catalog/search-context';
 import {BibRecordSummary} from '@eg/share/catalog/bib-record.service';
 import {PatronService} from '@eg/staff/share/patron/patron.service';
 import {StoreService} from '@eg/core/store.service';
+import {BroadcastService} from '@eg/share/util/broadcast.service';
+import {Observable, tap} from 'rxjs';
 
 const HOLD_FOR_PATRON_KEY = 'eg.circ.patron_hold_target';
 
@@ -70,7 +72,9 @@ export class StaffCatalogService {
         private org: OrgService,
         private cat: CatalogService,
         private patron: PatronService,
-        private catUrl: CatalogUrlService
+        private catUrl: CatalogUrlService,
+        private broadcaster: BroadcastService,
+        private zone: NgZone
     ) { }
 
     createContext(): void {
@@ -99,11 +103,50 @@ export class StaffCatalogService {
         this.applySearchDefaults();
     }
 
-    clearHoldPatron() {
+    clearHoldPatron(broadcast: boolean = true) {
+        const removedTarget = this.holdForBarcode;
+
         this.holdForUser = null;
         this.holdForBarcode = null;
         this.store.removeLoginSessionItem(HOLD_FOR_PATRON_KEY);
         this.holdForChange.emit();
+        if (!broadcast) return;
+
+        // clear hold patron on other tabs
+        this.broadcaster.broadcast(
+            HOLD_FOR_PATRON_KEY, { removedTarget }
+        );
+    }
+
+    onBeforeUnload(): void {
+        const closedTarget = this.holdForBarcode;
+        if (closedTarget) {
+            this.clearHoldPatron(false);
+            this.broadcaster.broadcast(HOLD_FOR_PATRON_KEY,
+                { closedTarget }
+            );
+        }
+    }
+
+    onChangeHoldPatron(): Observable<any> {
+        return this.broadcaster.listen(HOLD_FOR_PATRON_KEY).pipe(
+            tap(({ removedTarget, closedTarget }) => {
+                if (removedTarget && this.holdForBarcode) {
+                    // broadcaster doesn't trigger change detection,
+                    // so trigger it manually
+                    this.zone.run(() => this.clearHoldPatron(false));
+
+                } else if (closedTarget) {
+                    // if hold target was unset by another tab,
+                    // restore the hold target
+                    if (closedTarget === this.holdForBarcode) {
+                        this.store.setLoginSessionItem(
+                            HOLD_FOR_PATRON_KEY, closedTarget
+                        );
+                    }
+                }
+            })
+        );
     }
 
     cloneContext(context: CatalogSearchContext): CatalogSearchContext {

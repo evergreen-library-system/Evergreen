@@ -86,6 +86,29 @@ function($q,  $rootScope,  $location,  $window,  egIDL,  egAuth,  egEnv , egOrg 
     // of the startup routines when no valid token exists during startup.
     $rootScope.$on('egAuthExpired', function() {service.expiredAuthHandler()});
 
+    // in case we just left an Angular context, clear the hold target
+    // and notify any open Angular catalog tabs to do the same
+    function clearHoldTarget() {
+        var patronHoldTarget = $cookies.get(
+            'eg.circ.patron_hold_target'
+        );
+        if (patronHoldTarget) {
+            $cookies.remove(
+                'eg.circ.patron_hold_target'
+            )
+            if (typeof BroadcastChannel !== 'undefined') {
+                var broadcaster = new BroadcastChannel(
+                    'eg.circ.patron_hold_target'
+                );
+                broadcaster.postMessage(
+                    { removedTarget: patronHoldTarget }
+                );
+                broadcaster.close();
+            }
+        }
+    }
+    clearHoldTarget();
+
     service.go = function () {
         if (service.promise) {
             // startup already started, return our existing promise
