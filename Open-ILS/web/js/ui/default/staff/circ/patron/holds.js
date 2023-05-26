@@ -146,7 +146,7 @@ function($scope,  $q,  $routeParams,  egCore,  egUser,  patronSvc,
 
     $scope.place_hold = function() {
 
-        egCore.hatch.setLocalItem(
+        egCore.hatch.setLoginSessionItem(
             'eg.circ.patron_hold_target', patronSvc.current.card().barcode());
 
         $window.location.href = '/eg2/staff/catalog';
