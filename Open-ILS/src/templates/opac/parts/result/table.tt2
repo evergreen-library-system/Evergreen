@@ -115,7 +115,7 @@
                                             </td>
                                             <td class='result_table_pic_header'>
                                                 <a href="[% mkurl(record_url_path, add_parms, del_parms); %]">
-                                                 <img alt="[% l('Book cover') %]"
+                                                 <img alt=""
                                                         name='item_jacket' class='result_table_pic' width="55"
                                                         src='[% ctx.media_prefix %]/opac/extras/ac/jacket/small/r/[% rec.bre_id | uri %]' /></a><br />
                                             </td>
@@ -185,8 +185,7 @@ END;
                                                     [%- IF attrs.format_label; %]
                                                         [% FOR format IN attrs.all_formats %]
                                                             <img title="[% format.label | html %]" 
-                                                                alt="[% format.label | html %]" 
-                                                                src="[% format.icon %]" /> 
+                                                                alt="" src="[% format.icon %]" /> 
                                                             [% format.label | html %]
                                                         [% END %]
                                                     [%- END %]
@@ -430,7 +429,7 @@ END;
                                                     [% END %]
                                                     [% IF rec.user_circulated %]
                                                     <div class="result_item_circulated">
-                                                        <img src="[% ctx.media_prefix %]/images/green_check.png[% ctx.cache_key %]" alt="[% l('Checked Out Before') %]"/>
+                                                        <img src="[% ctx.media_prefix %]/images/green_check.png[% ctx.cache_key %]" alt=""/>
                                                         <span>[% l('I have checked this item out before') %]</span>
                                                     </div>
                                                     [% END %]
@@ -537,7 +536,7 @@ END;
                                                                 href="[% ctx.ext_proto %]://contentcafe2.btol.com/ContentCafeClient/ContentCafe.aspx?UserID=[%- 
                                                                     ENV.OILS_CONTENT_CAFE_USER %]&amp;Password=[%-
                                                                     ENV.OILS_CONTENT_CAFE_PASS %]&amp;ItemKey=[% ident | uri %]&amp;Options=Y" rel="noopener nofollow" vocab="">
-                                                                <img src='[% ctx.media_prefix %]/images/starz.png[% ctx.cache_key %]' alt="[% l('Ratings Icon') %]"/>
+                                                                <img src='[% ctx.media_prefix %]/images/starz.png[% ctx.cache_key %]' alt=""/>
                                                                 <span class="results_reviews">[% l('Reviews &amp; More') %]</span>
                                                             </a>
                                                         </div>

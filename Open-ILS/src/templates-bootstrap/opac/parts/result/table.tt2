@@ -99,7 +99,7 @@
                         </div>
                         <!--Cover Image-->
                         <div class='col-sm-2 text-center' id="result[% rec.bre_id %]">
-                            <a href="[% mkurl(record_url_path, add_parms, del_parms); %]"><img alt="[% attrs.title | html;%]"
+                            <a href="[% mkurl(record_url_path, add_parms, del_parms); %]"><img alt=""
                             id='item_jacket[% rec.bre_id %]' class='my-2 img-fluid'
                             src='[% ctx.media_prefix %]/opac/extras/ac/jacket/large/r/[% rec.bre_id | uri %]' style="max-height:150px;" /></a><br />
                         </div>
@@ -120,8 +120,7 @@
                                     <span class="mx-2">
                                         [%- IF attrs.format_label; %]
                                             [% FOR format IN attrs.all_formats %]
-                                                <img alt="[% format.label | html %]"
-                                                    src="[% format.icon %]" />
+                                                <img alt="" src="[% format.icon %]" />
                                                 [% format.label | html %]
                                             [% END %]
                                         [%- END %]
