@@ -15,8 +15,88 @@
   </div>
 </div>
 
+<hr>
+
+<!-- Button & Material Icon Accessibility -->
+<div class="row mt-2 mb-3">
+  <h2 i18n>Accessible Buttons and Icons</h2>
+  <div class="row row-auto-cols m-2">
+    <div class="col">
+      <p i18n>Icon only:</p>
+      <!-- aria-label and title should match -->
+      <button type="button" class="btn btn-success" (click)="null"
+        aria-label="New Items" i18n-aria-label
+        title="New Items" i18n-title>
+        <span class="material-icons mat-icon-in-button" aria-hidden="true">new_releases</span>
+      </button>
+    </div>
+
+    <div class="col">
+      <p>Icon with text:</p>
+      <!-- aria-label is not needed because there is equivalent visible text -->
+      <button type="button" class="btn btn-secondary label-with-material-icon" (click)="null"
+        title="Folders" i18n-title>
+        <span class="material-icons mat-icon-in-button" aria-hidden="true">folder_open</span>
+        <span class="ms-1" i18n>Folders</span>
+      </button>
+    </div>
+
+    <div class="col">
+      <p>Icon inline with link text:</p>
+      <!-- Use <a> only with href or routerLink. Otherwise use <button> -->
+      <a class="label-with-material-icon" routerLink="/staff/admin/server/splash">
+        <span class="material-icons" aria-hidden="true">edit</span>
+        <span i18n>Edit Settings</span>
+      </a>
+    </div>
+
+    <div class="col">
+      <p>Icon by itself:</p>
+      <!-- aria-label is not valid on <span>, <div>, or <p>. Use visually-hidden text instead. -->
+      <span class="material-icons" aria-hidden="true"
+        title="Error" i18n-title>report</span>
+      <span i18n class="visually-hidden">Error</span>
+    </div>
+
+    <div class="col">
+      <p>Button styled as a link:</p>
+      <button type="button" class="btn btn-link" (click)="null" i18n>
+        Download CSV
+      </button>
+    </div>
+  </div>
+  </div>
+  <div class="row mt-2 mb-3 bg-light border">
+  <h2 class="mt-3" i18n>Inaccessible examples: what not to do</h2>
+  <div class="row row-auto-cols m-2">
+    <div class="col">
+      <p i18n>These buttons cannot be accessed using the keyboard and are announced with the wrong roles:</p>
+      <!-- do not copy this example -->
+      <a class="btn btn-primary" (click)="null" i18n>Mouse users only!</a>
+      <!-- especially do not copy this example -->
+      <!-- screen readers do not even announce this as a clickable element -->
+      <div class="btn btn-danger ms-2" (click)="null" i18n>No role!</div>
+    </div>
+
+    <div class="col">
+      <p i18n>This button is announced as "new underscore releases" (no ARIA label):</p>
+      <!-- do not copy this example -->
+      <button type="button" class="btn btn-danger" (click)="null" 
+        title="This tooltip is not read by screen readers" i18n-title>
+        <span class="material-icons mat-icon-in-button">new_releases</span>
+      </button>
+    </div>
+
+    <div class="col">
+      <p i18n>This button will submit form input on <kbd>Spacebar</kbd> or <kbd>Enter</kbd> (no type attribute):</p>
+      <!-- do not copy this example -->
+      <button class="btn btn-info" (click)="null" i18n>Whoops!</button>
+    </div>
+  </div>
+</div>
+
 <!-- FM Editor Experiments ----------------------------- -->
-<div class="row mb-3">
+<div class="row my-2">
   <ng-template #descriptionTemplate 
       let-field="field" let-record="record" let-hello="hello">
   <!-- example custom template for editing the 'description' field -->
