@@ -264,6 +264,13 @@ option[disabled] {
   color: rgba(0,0,0,.3);
 }
 
+.form-check-input[type=checkbox] {
+  border-width: 2px;
+  border-color: rgba(0, 0, 0, .4);
+  min-width: 1rem;
+  min-height: 1rem;
+}
+
 /**
  * Only display the print container when printing
  */
