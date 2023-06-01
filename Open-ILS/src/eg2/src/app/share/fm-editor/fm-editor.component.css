@@ -1,0 +1,19 @@
+.fm-form-input-and-help {
+  display: flex;
+  flex-wrap: wrap;
+}
+/* Place inputs above the hints visually */
+.fm-form-input-and-help .fm-form-input {
+  flex-basis: 100%;
+  order: -1;
+}
+.fm-form-input-and-help .form-text {
+  flex-basis: 100%;
+  margin-bottom: .25rem;
+}
+.input-group-text { 
+  padding: .125rem .375rem; 
+}
+.input-group-text .material-icons { 
+  line-height: inherit; 
+}
