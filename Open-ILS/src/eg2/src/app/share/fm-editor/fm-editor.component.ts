@@ -96,8 +96,7 @@ export interface FmFieldOptions {
 @Component({
     selector: 'eg-fm-record-editor',
     templateUrl: './fm-editor.component.html',
-    /* align checkboxes when not using class="form-check" */
-    styles: ['input[type="checkbox"] {margin-left: 0px;}']
+    styleUrls: ['fm-editor.component.css']
 })
 export class FmRecordEditorComponent
     extends DialogComponent implements OnInit {

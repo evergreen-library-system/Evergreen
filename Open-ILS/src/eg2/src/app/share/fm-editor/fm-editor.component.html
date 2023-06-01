@@ -37,174 +37,181 @@
       <div class="form-group row" *ngFor="let field of fields">
         <div class="col-lg-3">
           <label class="form-label" for="{{idPrefix}}-{{field.name}}">{{field.label}}</label>
-          <eg-help-popover [placement]="'right'" *ngIf="field.helpText" helpText="{{field.helpTextValue}}"></eg-help-popover>
         </div>
         <div class="col-lg-9">
+          <div class="fm-form-input-and-help">
+            <div class="form-text" id="{{idPrefix}}-{{field.name}}-help" *ngIf="field.helpText">
+              {{field.helpTextValue}}
+            </div>
+            <div class="fm-form-input">
+              <ng-container [ngSwitch]="inputType(field)">
 
-          <ng-container [ngSwitch]="inputType(field)">
+                <ng-container *ngSwitchCase="'template'">
+                  <ng-container
+                    *ngTemplateOutlet="field.template; context:customTemplateFieldContext(field)">
+                  </ng-container>
+                </ng-container>
 
-            <ng-container *ngSwitchCase="'template'">
-              <ng-container
-                *ngTemplateOutlet="field.template; context:customTemplateFieldContext(field)">
-              </ng-container>
-            </ng-container>
+                <ng-container *ngSwitchCase="'readonly'">
+                  <span>{{record[field.name]()}}</span>
+                </ng-container>
 
-            <ng-container *ngSwitchCase="'readonly'">
-              <span>{{record[field.name]()}}</span>
-            </ng-container>
+                <ng-container *ngSwitchCase="'readonly-money'">
+                  <span>{{record[field.name]() | currency}}</span>
+                </ng-container>
 
-            <ng-container *ngSwitchCase="'readonly-money'">
-              <span>{{record[field.name]() | currency}}</span>
-            </ng-container>
+                <ng-container *ngSwitchCase="'readonly-list'">
+                  <ng-container *ngIf="field.linkedValues && field.linkedValues[0]?.label">
+                    <span>{{field.linkedValues[0].label}}</span>
+                  </ng-container>
+                </ng-container>
 
-            <ng-container *ngSwitchCase="'readonly-list'">
-              <ng-container *ngIf="field.linkedValues && field.linkedValues[0]?.label">
-                <span>{{field.linkedValues[0].label}}</span>
-              </ng-container>
-            </ng-container>
+                <ng-container *ngSwitchCase="'timestamp'">
+                  <eg-date-select
+                    domId="{{idPrefix}}-{{field.name}}"
+                    [attr.aria-describedby]="field.helpText ? idPrefix+'-'+field.name+'-help' : null"
+                    [readOnly]="field.readOnly"
+                    [ngModel]="record[field.name]()"
+                    name="{{field.name}}"
+                    (onChangeAsIso)="record[field.name]($event)"
+                    initialIso="{{record[field.name]()}}">
+                  </eg-date-select>
+                </ng-container>
 
-            <ng-container *ngSwitchCase="'timestamp'">
-              <eg-date-select
-                domId="{{idPrefix}}-{{field.name}}"
-                [readOnly]="field.readOnly"
-                [ngModel]="record[field.name]()"
-                name="{{field.name}}"
-                (onChangeAsIso)="record[field.name]($event)"
-                initialIso="{{record[field.name]()}}">
-              </eg-date-select>
-            </ng-container>
+                <ng-container *ngSwitchCase="'timestamp-timepicker'">
+                  <eg-datetime-select
+                    [showTZ]="timezone"
+                    [timezone]="timezone"
+                    domId="{{idPrefix}}-{{field.name}}"
+                    [attr.aria-describedby]="field.helpText ? idPrefix+'-'+field.name+'-help' : null"
+                    (onChangeAsIso)="record[field.name]($event)"
+                    i18n-validatorError
+                    [readOnly]="field.readOnly"
+                    [ngModel]="record[field.name]()"
+                    name="{{field.name}}"
+                    initialIso="{{record[field.name]()}}">
+                  </eg-datetime-select>
+                </ng-container>
 
-            <ng-container *ngSwitchCase="'timestamp-timepicker'">
-              <eg-datetime-select
-                [showTZ]="timezone"
-                [timezone]="timezone"
-                domId="{{idPrefix}}-{{field.name}}"
-                (onChangeAsIso)="record[field.name]($event)"
-                i18n-validatorError
-                [readOnly]="field.readOnly"
-                [ngModel]="record[field.name]()"
-                name="{{field.name}}"
-                initialIso="{{record[field.name]()}}">
-              </eg-datetime-select>
-            </ng-container>
+                <ng-container *ngSwitchCase="'org_unit'">
+                  <eg-org-select
+                    domId="{{idPrefix}}-{{field.name}}"
+                    [attr.aria-describedby]="field.helpText ? idPrefix+'-'+field.name+'-help' : null"
+                    persistKey="{{field.persistKey}}"
+                    [limitPerms]="modePerms[mode]"
+                    [readOnly]="field.readOnly"
+                    [applyDefault]="field.orgDefaultAllowed"
+                    [applyOrgId]="record[field.name]()"
+                    (onChange)="record[field.name]($event)">
+                  </eg-org-select>
+                </ng-container>
 
-            <ng-container *ngSwitchCase="'org_unit'">
-              <eg-org-select
-                placeholder="{{field.label}}..."
-                i18n-placeholder
-                domId="{{idPrefix}}-{{field.name}}"
-                persistKey="{{field.persistKey}}"
-                [limitPerms]="modePerms[mode]"
-                [readOnly]="field.readOnly"
-                [applyDefault]="field.orgDefaultAllowed"
-                [applyOrgId]="record[field.name]()"
-                (onChange)="record[field.name]($event)">
-              </eg-org-select>
-            </ng-container>
+                <ng-container *ngSwitchCase="'money'">
+                  <input
+                    class="form-control"
+                    type="number" step="0.1"
+                    name="{{field.name}}"
+                    id="{{idPrefix}}-{{field.name}}"
+                    [attr.aria-describedby]="field.helpText ? idPrefix+'-'+field.name+'-help' : null"
+                    [readonly]="field.readOnly"
+                    [required]="field.isRequired()"
+                    [ngModel]="record[field.name]()"
+                    (ngModelChange)="record[field.name]($event)"/>
+                </ng-container>
 
-            <ng-container *ngSwitchCase="'money'">
-              <input
-                class="form-control"
-                type="number" step="0.1"
-                name="{{field.name}}"
-                id="{{idPrefix}}-{{field.name}}"
-                placeholder="{{field.label}}..."
-                i18n-placeholder
-                [readonly]="field.readOnly"
-                [required]="field.isRequired()"
-                [ngModel]="record[field.name]()"
-                (ngModelChange)="record[field.name]($event)"/>
-            </ng-container>
+                <ng-container *ngSwitchCase="'int'">
+                  <input
+                    class="form-control"
+                    type="number"
+                    name="{{field.name}}"
+                    id="{{idPrefix}}-{{field.name}}"
+                    [attr.aria-describedby]="field.helpText ? idPrefix+'-'+field.name+'-help' : null"
+                    [required]="field.isRequired()"
+                    egMin="{{field.min}}"
+                    egMax="{{field.max}}"
+                    [ngModel]="record[field.name]()"
+                    (ngModelChange)="record[field.name]($event)"/>
+                </ng-container>
 
-            <ng-container *ngSwitchCase="'int'">
-              <input
-                class="form-control"
-                type="number"
-                name="{{field.name}}"
-                id="{{idPrefix}}-{{field.name}}"
-                placeholder="{{field.label}}..."
-                i18n-placeholder
-                [required]="field.isRequired()"
-                egMin="{{field.min}}"
-                egMax="{{field.max}}"
-                [ngModel]="record[field.name]()"
-                (ngModelChange)="record[field.name]($event)"/>
-            </ng-container>
+                <ng-container *ngSwitchCase="'float'">
+                  <input
+                    class="form-control"
+                    type="number" step="0.1"
+                    name="{{field.name}}"
+                    id="{{idPrefix}}-{{field.name}}"
+                    [attr.aria-describedby]="field.helpText ? idPrefix+'-'+field.name+'-help' : null"
+                    [required]="field.isRequired()"
+                    [ngModel]="record[field.name]()"
+                    (ngModelChange)="record[field.name]($event)"/>
+                </ng-container>
 
-            <ng-container *ngSwitchCase="'float'">
-              <input
-                class="form-control"
-                type="number" step="0.1"
-                name="{{field.name}}"
-                id="{{idPrefix}}-{{field.name}}"
-                placeholder="{{field.label}}..."
-                i18n-placeholder
-                [required]="field.isRequired()"
-                [ngModel]="record[field.name]()"
-                (ngModelChange)="record[field.name]($event)"/>
-            </ng-container>
+                <ng-container *ngSwitchCase="'text'">
+                  <div class="input-group">
+                  <input
+                    class="form-control"
+                    id="{{idPrefix}}-{{field.name}}" name="{{field.name}}"
+                    [attr.aria-describedby]="field.helpText ? idPrefix+'-'+field.name+'-help' : null"
+                    type="text" pattern="[\s\S]*\S[\s\S]*"
+                    [required]="field.isRequired()"
+                    [ngModel]="record[field.name]()"
+                    (ngModelChange)="record[field.name]($event)"/>
+                    <span *ngIf="field.i18n && !field.readOnly" [ngClass]="(field.i18n && !field.readOnly) ? 'input-group-text' : null">
+                      <button type="button" (click)="openTranslator(field.name)" class="btn"
+                        i18n-title title="Translate" i18n-aria-label aria-label="Translate">
+                        <span class="material-icons text-info" aria-hidden="true">translate</span>
+                      </button>
+                    </span>
+                  </div>
+                </ng-container>
 
-            <ng-container *ngSwitchCase="'text'">
-              <input
-                class="form-control"
-                id="{{idPrefix}}-{{field.name}}" name="{{field.name}}"
-                type="text" pattern="[\s\S]*\S[\s\S]*"
-                placeholder="{{field.label}}..." i18n-placeholder
-                [required]="field.isRequired()"
-                [ngModel]="record[field.name]()"
-                (ngModelChange)="record[field.name]($event)"/>
-            </ng-container>
+                <ng-container *ngSwitchCase="'bool'">
+                  <input
+                    class="form-check"
+                    type="checkbox"
+                    name="{{field.name}}"
+                    id="{{idPrefix}}-{{field.name}}"
+                    [attr.aria-describedby]="field.helpText ? idPrefix+'-'+field.name+'-help' : null"
+                    [disabled]="field.readOnly"
+                    [ngModel]="record[field.name]()"
+                    (ngModelChange)="record[field.name]($event)"/>
+                </ng-container>
 
-            <ng-container *ngSwitchCase="'bool'">
-              <input
-                class="form-check-input"
-                type="checkbox"
-                name="{{field.name}}"
-                id="{{idPrefix}}-{{field.name}}"
-                [disabled]="field.readOnly"
-                [ngModel]="record[field.name]()"
-                (ngModelChange)="record[field.name]($event)"/>
-            </ng-container>
+                <ng-container *ngSwitchCase="'readonly-au'">
+                  <ng-container *ngIf="field.linkedValues">
+                    <a href="/eg/staff/circ/patron/{{field.linkedValues[0].id}}/checkout" 
+                    target="_blank" i18n-title title="Open user record in new tab"
+                    i18n-aria-label aria-label="Open user record in new tab">{{field.linkedValues[0].label}}
+                    <span class="material-icons" aria-hidden="true">open_in_new</span></a>
+                  </ng-container>
+                </ng-container>
 
-	    <ng-container *ngSwitchCase="'readonly-au'">
-              <ng-container *ngIf="field.linkedValues">
-                <a href="/eg/staff/circ/patron/{{field.linkedValues[0].id}}/checkout" target="_blank">{{field.linkedValues[0].label}}
-                <span class="material-icons" i18n-title title="Open user record in new tab">open_in_new</span></a>
-              </ng-container>
-            </ng-container>
+                <ng-container *ngSwitchCase="'link'">
+                  <eg-combobox
+                    id="{{idPrefix}}-{{field.name}}" name="{{field.name}}"
+                    [attr.aria-describedby]="field.helpText ? idPrefix+'-'+field.name+'-help' : null"
+                    [required]="field.isRequired()"
+                    [idlClass]="field.class" [asyncSupportsEmptyTermClick]="true"
+                    [idlBaseQuery]="field.idlBaseQuery"
+                    [idlField]="field.selector"
+                    [selectedId]="record[field.name]()"
+                    (onChange)="record[field.name]($event ? $event.id : null)">
+                  </eg-combobox>
+                </ng-container>
 
-            <ng-container *ngSwitchCase="'link'">
-              <eg-combobox
-                id="{{idPrefix}}-{{field.name}}" name="{{field.name}}"
-                placeholder="{{field.label}}..." i18n-placeholder
-                [required]="field.isRequired()"
-                [idlClass]="field.class" [asyncSupportsEmptyTermClick]="true"
-                [idlBaseQuery]="field.idlBaseQuery"
-                [idlField]="field.selector"
-                [selectedId]="record[field.name]()"
-                (onChange)="record[field.name]($event ? $event.id : null)">
-              </eg-combobox>
-            </ng-container>
-
-            <ng-container *ngSwitchCase="'list'">
-              <eg-combobox
-                domId="{{idPrefix}}-{{field.name}}" name="{{field.name}}"
-                placeholder="{{field.label}}..." i18n-placeholder
-                [required]="field.isRequired()"
-                [entries]="field.linkedValues"
-                [asyncDataSource]="field.linkedValuesSource"
-                [selectedId]="record[field.name]()"
-                (onChange)="record[field.name]($event ? $event.id : null)">
-              </eg-combobox>
-            </ng-container>
-          </ng-container> <!-- switch -->
-        </div>
-        <div class="col-lg-1" *ngIf="field.i18n && !field.readOnly">
-          <button type="button" (click)="openTranslator(field.name)"
-            i18n-title title="Translate" i18n-aria-label aria-label="Translate"
-            class="btn btn-outline-info mat-icon-in-button">
-            <span class="material-icons" aria-hidden="true">translate</span>
-          </button>
+                <ng-container *ngSwitchCase="'list'">
+                  <eg-combobox
+                    domId="{{idPrefix}}-{{field.name}}" name="{{field.name}}"
+                    [attr.aria-describedby]="field.helpText ? idPrefix+'-'+field.name+'-help' : null"
+                    [required]="field.isRequired()"
+                    [entries]="field.linkedValues"
+                    [asyncDataSource]="field.linkedValuesSource"
+                    [selectedId]="record[field.name]()"
+                    (onChange)="record[field.name]($event ? $event.id : null)">
+                  </eg-combobox>
+                </ng-container>
+              </ng-container> <!-- switch -->
+            </div>
+          </div>
         </div>
       </div>
       </ng-container>
