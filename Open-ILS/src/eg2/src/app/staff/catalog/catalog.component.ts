@@ -2,14 +2,15 @@ import {Component, HostListener, OnDestroy, OnInit} from '@angular/core';
 import {IdlObject} from '@eg/core/idl.service';
 import {StaffCatalogService} from './catalog.service';
 import {BasketService} from '@eg/share/catalog/basket.service';
-import {Subject, takeUntil} from 'rxjs';
+import {Subject} from 'rxjs';
+import {takeUntil} from 'rxjs/operators';
 
 @Component({
   templateUrl: 'catalog.component.html'
 })
 export class CatalogComponent implements OnInit, OnDestroy {
 
-    private onDestroy = new Subject<void>();
+    private onDestroy = new Subject<null>();
 
     constructor(
         private basket: BasketService,
@@ -51,7 +52,7 @@ export class CatalogComponent implements OnInit, OnDestroy {
 
     ngOnDestroy(): void {
         this.clearHoldPatron();
-        this.onDestroy.next();
+        this.onDestroy.next(null);
     }
 }
 
