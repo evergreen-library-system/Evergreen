@@ -24,7 +24,7 @@ my $base_url;
 my $tmp_space = './build';
 my $html_output = './output';
 my $antoraui_git = 'git://git.evergreen-ils.org/eg-antora.git';
-my $antoraui_git_branch = 'master';
+my $antoraui_git_branch = 'main';
 my $antora_version = '2.3';
 my $help;
 
@@ -55,7 +55,7 @@ sub help
     --tmp-space                                   [Writable path for staging the antora UI repo and build files, defaults to ./build]
     --html-output                                 [Path for the generated HTML files, defaults to ./output]
     --antora-ui-repo                              [Antora-UI repository for the built UI, defaults to git://git.evergreen-ils.org/eg-antora.git]
-    --antora-ui-repo-branch                       [OPTIONAL: Antora-UI repository checkout branch, Defaults to "master"]
+    --antora-ui-repo-branch                       [OPTIONAL: Antora-UI repository checkout branch, Defaults to "main"]
     --antora-version                              [Target version of antora, defaults to 2.3]
 
 HELP
