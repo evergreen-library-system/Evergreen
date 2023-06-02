@@ -161,7 +161,7 @@ call file via an Action/Trigger template and then ships it off to the Asterisk m
 
 For now, the important thing is that Evergreen will send call files to your Asterisk machine on TCP port 10080 via XML-RPC.  One of these two Perl scripts I'm talking about has the job of listening for those deliveries.
 
-Find the +Open-ILS/src/asterisk/pbx-daemon+ directory in the tarball for whatever version of Evergreen you installed, or from a checkout of the master branch.  From there, copy the two .pl files to +/usr/local/bin+ and the one .conf file to +/usr/local/etc+.
+Find the +Open-ILS/src/asterisk/pbx-daemon+ directory in the tarball for whatever version of Evergreen you installed, or from a checkout of the main branch.  From there, copy the two .pl files to +/usr/local/bin+ and the one .conf file to +/usr/local/etc+.
 
 Try to run the command +eg-pbx-mediator.pl -c /usr/local/etc/eg-pbx-daemon.conf+.  It probably won't work the first time.  Read whatever error messages you get, and use your distribution's package manager or CPAN to install any missing perl dependencies (like Config::General and RPC::XML).  Rinse and repeat until the script runs without errors.  Use sudo or su to run it as the user "nobody." Once eg-pbx-mediator.pl is running, background it and get it out of your sight.
 
