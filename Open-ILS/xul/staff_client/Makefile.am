@@ -30,7 +30,7 @@ CHROME_LOCALES = $$(ls -1 chrome/locale)
 SKIN_CSS = $$(ls -1 server/skin/*css | sed -e "s/.css/_custom.css/")
 UPDATESDIR=@localstatedir@/updates
 
-GIT_BRANCH=$$(echo $$(git rev-parse --abbrev-ref HEAD || echo master) | sed 's|.*/||')
+GIT_BRANCH=$$(echo $$(git rev-parse --abbrev-ref HEAD || echo main) | sed 's|.*/||')
 GIT_TAG=$$(git rev-parse --short HEAD) # For auto-tagging builds
 
 export NSIS_EXTRAOPTS
@@ -127,12 +127,12 @@ localize_manifest:
 
 # The default "automatic" BUILD ID is acceptable.
 
-# The version from the README usually conforms to that documentation, unless it is master.
-# If we are in master, we probably have git kicking around, ask it for the revision and build an appropriate version string.
+# The version from the README usually conforms to that documentation, unless it is main.
+# If we are in main, we probably have git kicking around, ask it for the revision and build an appropriate version string.
 
 # Neither really applies to the STAMP, though.
 # The method below gives the same format STAMPS as previous instructions provided. If README has version 1.2.3.4 then STAMP_ID will become rel_1_2_3_4.
-# Master VERSION will end up with 0branch.release, master STAMP ID will be 0branch_release.
+# Main VERSION will end up with 0branch.release, main STAMP ID will be 0branch_release.
 stamp:
 	@/bin/date +"%Y%m%d.%H%M%S" > build/BUILD_ID
 	@if [ -n "${STAFF_CLIENT_BUILD_ID}" ]; then ( echo "Stamping with Build ID: ${STAFF_CLIENT_BUILD_ID}" ; echo ${STAFF_CLIENT_BUILD_ID} > build/BUILD_ID ) ; fi
