@@ -142,6 +142,12 @@ ${{patron_money.balance_owed}}</span>`
 
 See also: https://docs.angularjs.org/api/ng/directive/ngIf
 
+=== Preferred Name Formatting ===
+
+If a patron has a preferred name, those names can be placed in the receipt.
+
+Use `{{patron.pref_first_given_name}}`, `{{patron.pref_second_given_name}}`, and/or `{{patron.pref_family_name}}`.
+
 === Substrings ===
 
 To print just a sub-string of a variable, you can use a *limitTo* function.
