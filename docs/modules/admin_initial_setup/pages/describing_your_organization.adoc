@@ -122,6 +122,14 @@ The *Addresses* tab is broken out into four address types: *Physical Address*, *
 
 image::describing_your_organization/org_unit_addresses.png[org unit addresses]
 
+If you are offering geographic location service for your catalog, you can also set the longitude and latitude coordinates under any of the addresses screens.
+
+If library settings have geographic location service enabled, then you could type in the address, click *Get Coordinates* for the fields to autofill.  You can also set the coordinates manually.
+
+image::geo_coordinates.png[Coordinates Screenshot]
+
+Click here for more information on xref:admin_initial_setup:geosort_admin.adoc#geographic_loc[Geographic Location Service Configuration].
+
 === After Changing Organization Unit Data ===
 
 After you change Org Unit data, you must run the autogen.sh script.  
