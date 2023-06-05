@@ -194,9 +194,6 @@ image::media/sup-permissions-2_web_client.png[Secondary Permission Group List]
 +
 . Click _Add_.
 . Click _Apply Changes_.
-+
-image::media/sup-permissions-3.png[Secondary Permission Group Save]
-+
 . Click _Save_ in the top right hand corner of the _Edit Screen_ to save the user's account.
 
 
