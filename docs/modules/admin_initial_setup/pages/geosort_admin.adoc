@@ -46,6 +46,7 @@ ADMIN_GEOLOCATION_SERVICES, control viewing and editing values in the
 Geolocation Location Services interface. They are added to the System
 Administrator and Global Administrator permissions groups by default.
 
+[[geographic_loc]]
 == Geographic Location Service Configuration
 
 There is a new administrative interface located at *Server
