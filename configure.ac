@@ -428,9 +428,7 @@ AC_MSG_RESULT(libdbi location:                          ${DBI_LIBS})
 AC_MSG_RESULT(OpenSRF headers location:                 ${OPENSRF_HEADERS})
 AC_MSG_RESULT(OpenSRF libraries location:               ${OPENSRF_LIBS})
 AC_MSG_RESULT(libhiredis headers location:              ${HIREDIS_HEADERS})
-
-AC_MSG_RESULT(REDIS: ${REDIS_ACCOUNTS})
-AC_MSG_RESULT(PASS: ${OPENSRF_BUS_PASS})
+AC_MSG_RESULT(Redis Accounts: ${REDIS_ACCOUNTS})
 
 AC_MSG_RESULT([----------------------------------------------------------------------])
 
