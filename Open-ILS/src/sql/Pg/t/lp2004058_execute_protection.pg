@@ -1,0 +1,52 @@
+BEGIN;
+
+SELECT plan(6);
+
+UPDATE asset.call_number_class 
+SET normalizer = $$1; INSERT INTO config.upgrade_log (version) VALUES ('lp2004058_asset.label_normalizer'); SELECT asset.label_normalizer_generic$$ 
+WHERE id = 1;
+
+PREPARE acn_update_query AS
+    UPDATE asset.call_number SET label = 'a    callnumber'
+    WHERE id = 1;
+
+SELECT throws_ok('acn_update_query', NULL, NULL, 'Invalid asset.label_normalizer should cause error');
+
+SELECT cmp_ok(
+    (SELECT COUNT(*) FROM config.upgrade_log WHERE version = 'lp2004058_asset.label_normalizer'),
+    '<', '1', 'Injection fixed in asset.label_normalizer'
+);
+
+UPDATE asset.call_number_class 
+SET normalizer = 'asset.label_normalizer_generic'
+WHERE id = 1;
+
+UPDATE asset.call_number SET label = 'a    callnumber'
+WHERE id = 1;
+
+SELECT is(
+    (SELECT label_sortkey FROM asset.call_number WHERE id = 1),
+    'A CALLNUMBER', 'asset.label_normalizer still causes normalization'
+);
+
+PREPARE extract_marc_field_query AS
+    SELECT evergreen.extract_marc_field(
+        'biblio.record_entry where id = -1; select acq.create_acq_seq($$extract_marc_field$$, $$; INSERT INTO config.upgrade_log (version) VALUES (''lp2004058_evergreen.extract_marc_field''); CREATE sequence acq.extract_marc_field_2$$);select marc from biblio.record_entry',
+        1, '', ''
+    );
+
+SELECT throws_ok('extract_marc_field_query', NULL, NULL, 'Invalid evergreen.extract_marc_field should cause error');
+
+SELECT cmp_ok(
+    (SELECT COUNT(*) FROM config.upgrade_log WHERE version = 'lp2004058_evergreen.extract_marc_field'),
+    '<', '1', 'Injection fixed in evergreen.extract_marc_field'
+);
+
+SELECT is(
+    (SELECT evergreen.extract_marc_field('biblio.record_entry', -1, '//*[@tag="901"]/*[@code="c"][1]')),
+    '-1', 'evergreen.extract_marc_field still works'
+);
+
+SELECT * FROM finish();
+
+ROLLBACK;
