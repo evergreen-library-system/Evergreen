@@ -343,8 +343,7 @@ BEGIN
         );
     END IF;
 
-    EXECUTE 'SELECT ' || acnc.normalizer || '(' || 
-       quote_literal( NEW.label ) || ')'
+    EXECUTE FORMAT('SELECT %s(%L)', acnc.normalizer::REGPROC, NEW.label)
        FROM asset.call_number_class acnc
        WHERE acnc.id = NEW.label_class
        INTO sortkey;
