@@ -58,4 +58,6 @@ CREATE OR REPLACE FUNCTION evergreen.extract_marc_field ( TEXT, BIGINT, TEXT ) R
     SELECT extract_marc_field($1,$2,$3,'');
 $$ LANGUAGE SQL IMMUTABLE;
 
+DROP FUNCTION IF EXISTS unapi.memoize(TEXT, BIGINT, TEXT, TEXT, TEXT[], TEXT, INT, HSTORE, HSTORE, BOOL);
+
 COMMIT;
