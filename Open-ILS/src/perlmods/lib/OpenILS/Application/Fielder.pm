@@ -82,7 +82,14 @@ sub fielder_fetch {
     my $fields = $obj->{fields};
     my $distinct = $obj->{distinct} ? 1 : 0;
 
-    return undef unless $query;
+    return OpenILS::Event->new('BAD_PARAMS', note => 'query is required') unless $query;
+    return OpenILS::Event->new('BAD_PARAMS', note => 'query must be a hash') unless ref($query) eq 'HASH';
+    return OpenILS::Event->new('BAD_PARAMS', note => 'query must not use function transforms')
+        if _fielder_fetch_query_is_bad($query, 0);
+    if ($fields) {
+        return OpenILS::Event->new('BAD_PARAMS', note => 'field list must not use function transforms')
+            if _fielder_fetch_query_is_bad($fields, 0);
+    }
 
     my $obj_class = $self->{class_hint};
     my $fm_class = $self->{class_name};
@@ -134,6 +141,36 @@ sub fielder_fetch {
 
     $cache->put_cache( $key => $res => $cache_timeout ) unless ($nocache);
     return undef;
+}
+
+sub _fielder_fetch_query_is_bad {
+    my ($query, $depth) = @_;
+
+    if ($depth >= 10) {
+        # arbitrarily assume that something naughty is going
+        # on if the original structure is 10 layers deep
+        return 1;
+    }
+
+    if (ref $query eq 'HASH') {
+        return 1 if exists $query->{transform};
+        return 1 if exists $query->{params};
+        foreach my $key (keys %{ $query }) {
+            if (_fielder_fetch_query_is_bad($query->{$key}, $depth + 1)) {
+                return 1;
+            }
+        }
+        return 0;
+    } elsif (ref $query eq 'ARRAY') {
+        foreach my $entry (@{ $query }) {
+            if (_fielder_fetch_query_is_bad($entry, $depth + 1)) {
+                return 1;
+            }
+        }
+        return 0;
+    } else {
+        return 0;
+    }
 }
 
 sub generate_methods {
