@@ -1,8 +1,25 @@
-
-
+<div class="eg-tree-node-wrapper d-flex">
+  <input *ngIf="showSelectors" type="checkbox"
+      (change)="toggleSelections($event)" />
+  <div (click)="expandAll()">
+        <span class="material-icons">expand_more</span>
+  </div>
+  <div (click)="collapseAll()">
+        <span class="material-icons">expand_less</span>
+  </div>
+  <ng-content select="[header]"></ng-content>
+</div>
 <div class="eg-tree" *ngFor="let node of displayNodes()">
   <div class="eg-tree-node-wrapper d-flex"
     [ngStyle]="{'padding-left': (node.depth * 20) + 'px'}">
+    <input *ngIf="showSelectors
+       ? (node === tree.rootNode
+          ? !disableRootSelector
+          : true)
+       : false"
+      type="checkbox"
+      [(ngModel)]="node.selected"
+      (change)="handleNodeCheck(node)" />
     <div class="eg-tree-node-expandy">
       <ng-container *ngIf="node.children.length">
         <button (click)="node.toggleExpand()" 
@@ -20,5 +37,7 @@
     <div class="eg-tree-node" [ngClass]="{active : node.selected}">
       <button class="btn btn-link" (click)="handleNodeClick(node)">{{node.label}}</button>
     </div>
+    <ng-container *ngTemplateOutlet="rowTrailingTemplate; context: {$implicit: node}"></ng-container>
   </div>
 </div>
+<ng-content select="[footer]"></ng-content>

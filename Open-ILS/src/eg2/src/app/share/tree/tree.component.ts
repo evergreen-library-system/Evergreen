@@ -1,4 +1,4 @@
-import {Component, Input, Output, EventEmitter} from '@angular/core';
+import {Component, Input, Output, EventEmitter, TemplateRef} from '@angular/core';
 import {Tree, TreeNode} from './tree';
 
 /*
@@ -49,10 +49,17 @@ export class TreeComponent {
         return this._tree;
     }
 
+    @Input() showSelectors: boolean = false; // the checkboxes, etc.
+    @Input() disableRootSelector: boolean = false; // checkbox at the top of the tree
+    @Input() toggleOnClick: boolean = false; // selectNode vs toggleNodeSelection
+    @Input() rowTrailingTemplate: TemplateRef<any>;
+
     @Output() nodeClicked: EventEmitter<TreeNode>;
+    @Output() nodeChecked: EventEmitter<TreeNode>;
 
     constructor() {
         this.nodeClicked = new EventEmitter<TreeNode>();
+        this.nodeChecked = new EventEmitter<TreeNode>();
     }
 
     displayNodes(): TreeNode[] {
@@ -61,9 +68,65 @@ export class TreeComponent {
     }
 
     handleNodeClick(node: TreeNode) {
-        this.tree.selectNode(node);
+        if (this.disableRootSelector && node === this.tree.rootNode) {
+            return;
+        }
+        if (this.toggleOnClick) {
+            this.tree.toggleNodeSelection(node);
+        } else {
+            this.tree.selectNode(node);
+        }
         this.nodeClicked.emit(node);
     }
+
+    handleNodeCheck(node: TreeNode) {
+        // If needed, add logic here to handle the case where
+        // a node's checkbox was clicked.
+        // since ngModel is node.selected, we don't need to set it ourselves
+        //this.handleNodeClick(node);
+        this.nodeClicked.emit(node);
+    }
+
+    expandAll() {
+        if (this.tree) {
+            this.tree.expandAll();
+        }
+    }
+
+    collapseAll() {
+        if (this.tree) {
+            this.tree.collapseAll();
+        }
+    }
+
+    toggleSelections(ev: any) {
+        if (ev.target.checked) {
+            this.selectAll();
+        } else {
+            this.deselectAll();
+        }
+    }
+
+    selectAll() {
+        if (this.tree) {
+            this.tree.nodeList().forEach(node => {
+                if (!(this.disableRootSelector && (node === this.tree.rootNode))) {
+                    node.selected = true;
+                }
+            });
+        }
+    }
+
+    deselectAll() {
+        if (this.tree) {
+            this.tree.nodeList().forEach(node => {
+                if (!(this.disableRootSelector && (node === this.tree.rootNode))) {
+                    node.selected = false;
+                }
+            });
+        }
+    }
+
 }
 
 

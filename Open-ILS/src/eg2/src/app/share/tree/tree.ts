@@ -39,6 +39,18 @@ export class TreeNode {
     toggleExpand() {
         this.expanded = !this.expanded;
     }
+
+    clone(): TreeNode {
+        const clonedNode = new TreeNode({
+            id: this.id,
+            label: this.label,
+            expanded: this.expanded,
+            callerData: this.callerData, // NOTE: shallow copy
+        });
+
+        clonedNode.children = this.children.map(child => child.clone());
+        return clonedNode;
+    }
 }
 
 export class Tree {
@@ -91,6 +103,17 @@ export class Tree {
         }
     }
 
+    findNodesByFieldAndValue(field: string, value: any): TreeNode[] {
+        const list = this.nodeList();
+        let found = [];
+        for (let idx = 0; idx < list.length; idx++) {
+            if (list[idx][field] === value) {
+                found.push( list[idx] );
+            }
+        }
+        return found;
+    }
+
     findParentNode(node: TreeNode) {
         const list = this.nodeList();
         for (let idx = 0; idx < list.length; idx++) {
@@ -113,20 +136,51 @@ export class Tree {
     }
 
     expandAll() {
-        this.nodeList().forEach(node => node.expanded = true);
+        if (this.rootNode) {
+            this.nodeList().forEach(node => node.expanded = true);
+        }
     }
 
     collapseAll() {
-        this.nodeList().forEach(node => node.expanded = false);
+        if (this.rootNode) {
+            this.nodeList().forEach(node => node.expanded = false);
+        }
     }
 
     selectedNode(): TreeNode {
         return this.nodeList().filter(node => node.selected)[0];
     }
 
+    selectedNodes(): TreeNode[] {
+        return this.nodeList().filter(node => node.selected);
+    }
+
     selectNode(node: TreeNode) {
         this.nodeList().forEach(n => n.selected = false);
         node.selected = true;
+    }
+
+    unSelectNode(node: TreeNode) {
+        node.selected = false;
+    }
+
+    toggleNodeSelection(node: TreeNode) {
+        node.selected = !node.selected;
+    }
+
+    selectNodes(nodes: TreeNode[]) {
+        this.nodeList().forEach(n => n.selected = false);
+        nodes.forEach(node => {
+            let foundNode = this.findNode(node.id);
+            if (foundNode) {
+                foundNode.selected = true;
+            }
+        });
+    }
+
+    clone(): Tree {
+        const clonedTree = new Tree(this.rootNode.clone());
+        return clonedTree;
     }
 }
 
