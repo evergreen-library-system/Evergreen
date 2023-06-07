@@ -21,16 +21,14 @@ DECLARE
     del TEXT;
     cur_row RECORD;
 BEGIN
-    sel := 'SELECT id::BIGINT FROM ' || table_name || ' WHERE ' || quote_ident(col_name) || ' = ' || quote_literal(src_usr);
-    upd := 'UPDATE ' || table_name || ' SET ' || quote_ident(col_name) || ' = ' || quote_literal(dest_usr) || ' WHERE id = ';
-    del := 'DELETE FROM ' || table_name || ' WHERE id = ';
-    FOR cur_row IN EXECUTE sel LOOP
+    sel := FORMAT('SELECT id::BIGINT FROM %s WHERE %I = $1', table_name::REGCLASS, col_name);
+    upd := FORMAT('UPDATE %s SET %I = $1 WHERE id = $2', table_name::REGCLASS, col_name);
+    del := FORMAT('DELETE FROM %s WHERE id = $1', table_name::REGCLASS);
+    FOR cur_row IN EXECUTE sel USING src_usr LOOP
         BEGIN
-            --RAISE NOTICE 'Attempting to merge % %', table_name, cur_row.id;
-            EXECUTE upd || cur_row.id;
+            EXECUTE upd USING dest_usr, cur_row.id;
         EXCEPTION WHEN unique_violation THEN
-            --RAISE NOTICE 'Deleting conflicting % %', table_name, cur_row.id;
-            EXECUTE del || cur_row.id;
+            EXECUTE del USING cur_row.id;
         END;
     END LOOP;
 END;

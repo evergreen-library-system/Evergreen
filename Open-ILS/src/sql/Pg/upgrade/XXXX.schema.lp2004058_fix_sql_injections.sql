@@ -60,4 +60,24 @@ $$ LANGUAGE SQL IMMUTABLE;
 
 DROP FUNCTION IF EXISTS unapi.memoize(TEXT, BIGINT, TEXT, TEXT, TEXT[], TEXT, INT, HSTORE, HSTORE, BOOL);
 
+CREATE OR REPLACE FUNCTION actor.usr_merge_rows( table_name TEXT, col_name TEXT, src_usr INT, dest_usr INT ) RETURNS VOID AS $$
+DECLARE
+    sel TEXT;
+    upd TEXT;
+    del TEXT;
+    cur_row RECORD;
+BEGIN
+    sel := FORMAT('SELECT id::BIGINT FROM %s WHERE %I = $1', table_name::REGCLASS, col_name);
+    upd := FORMAT('UPDATE %s SET %I = $1 WHERE id = $2', table_name::REGCLASS, col_name);
+    del := FORMAT('DELETE FROM %s WHERE id = $1', table_name::REGCLASS);
+    FOR cur_row IN EXECUTE sel USING src_usr LOOP
+        BEGIN
+            EXECUTE upd USING dest_usr, cur_row.id;
+        EXCEPTION WHEN unique_violation THEN
+            EXECUTE del USING cur_row.id;
+        END;
+    END LOOP;
+END;
+$$ LANGUAGE plpgsql;
+
 COMMIT;
