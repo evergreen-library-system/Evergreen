@@ -757,8 +757,8 @@ CREATE TABLE actor.org_unit_custom_tree (
 CREATE TABLE actor.org_unit_custom_tree_node (
     id              SERIAL  PRIMARY KEY,
     tree            INTEGER REFERENCES actor.org_unit_custom_tree (id) DEFERRABLE INITIALLY DEFERRED,
-	org_unit        INTEGER NOT NULL REFERENCES actor.org_unit (id) DEFERRABLE INITIALLY DEFERRED,
-	parent_node     INTEGER REFERENCES actor.org_unit_custom_tree_node (id) DEFERRABLE INITIALLY DEFERRED,
+    org_unit        INTEGER NOT NULL REFERENCES actor.org_unit (id) DEFERRABLE INITIALLY DEFERRED,
+    parent_node     INTEGER REFERENCES actor.org_unit_custom_tree_node (id) ON DELETE CASCADE DEFERRABLE INITIALLY DEFERRED,
     sibling_order   INTEGER NOT NULL DEFAULT 0,
     CONSTRAINT aouctn_once_per_org UNIQUE (tree, org_unit)
 );

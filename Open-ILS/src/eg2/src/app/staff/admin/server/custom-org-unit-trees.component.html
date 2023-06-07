@@ -1,0 +1,71 @@
+<eg-staff-banner bannerText="Custom Org Unit Trees" i18n-bannerText>
+</eg-staff-banner>
+
+<ng-template #successStrTmpl i18n>Update Succeeded</ng-template>
+<eg-string #successString [template]="successStrTmpl"></eg-string>
+
+<ng-template #updateFailedStrTmpl i18n>Update Failed</ng-template>
+<eg-string #updateFailedString [template]="updateFailedStrTmpl"></eg-string>
+
+<eg-confirm-dialog #delConfirm
+  i18n-dialogTitle i18n-dialogBody
+  dialogTitle="Confirm Delete"
+  dialogBody="Delete Org Unit {{selected ? selected.label : ''}}?">
+</eg-confirm-dialog>
+
+<eg-custom-org-unit-trees-dialog #moveNodeElsewhereDialog>
+</eg-custom-org-unit-trees-dialog>
+
+<div class="row org-unit-types-row">
+  <div class="col-lg-4 org-unit-types-col-aside">
+    <h3 i18n>Full Org Unit Tree</h3>
+    <div class="border rounded p-1" >
+      <eg-tree
+        [showSelectors]="true"
+        [disableRootSelector]="true"
+        [toggleOnClick]="true"
+        [tree]="tree"
+        (nodeClicked)="nodeClicked($event)"
+        (nodeChecked)="nodeChecked($event)">
+        <div header>
+          <button type="button" class="btn btn-link" [disabled]="copyNodesDisabled" (click)="copyNodes()" i18n>Copy Selected Nodes to Custom Tree</button>
+        </div>
+      </eg-tree>
+    </div>
+  </div>
+  <div class="col-lg-4 org-unit-types-col-aside">
+    <h3 *ngIf="active">
+          <span i18n>Custom Org Unit Tree (Active)</span>
+          <button type="button" class="btn btn-link" *ngIf="active" (click)="active = !active" i18n>Deactivate Tree</button>
+    </h3>
+    <h3 *ngIf="!active">
+          <span i18n>Custom Org Unit Tree (Inactive)</span>
+          <button type="button" class="btn btn-link" *ngIf="!active" (click)="active = !active" i18n>Activate Tree</button>
+    </h3>
+    <div class="border rounded p-1" >
+      <ng-template #selectedRowButtons let-node>
+        <div *ngIf="node.selected">
+          <button type="button" class="btn btn-link" [disabled]="moveNodeUpDisabled" (click)="moveNodeUp(node)" i18n>Up</button>
+          <button type="button" class="btn btn-link" [disabled]="moveNodeDownDisabled" (click)="moveNodeDown(node)" i18n>Down</button>
+          <button type="button" class="btn btn-link" [disabled]="moveNodeElsewhereDisabled" (click)="moveNodeElsewhere(node)" i18n>Move</button>
+          <button type="button" class="btn btn-link" [disabled]="deleteNodesDisabled" (click)="deleteNode(node)" i18n>Delete</button>
+        </div>
+      </ng-template>
+      <eg-tree
+        [showSelectors]="true"
+        [disableRootSelector]="false"
+        [toggleOnClick]="true"
+        [tree]="custom_tree"
+        (nodeClicked)="custom_nodeClicked($event)"
+        (nodeChecked)="custon_nodeChecked($event)"
+        [rowTrailingTemplate]="selectedRowButtons">
+        <div header>
+          <button type="button" class="btn btn-link" (click)="applyChanges()" i18n>Save Changes</button>
+          <button type="button" class="btn btn-link" [disabled]="deleteNodesDisabled" (click)="deleteSelectedNodes()" i18n>Delete</button>
+        </div>
+        <div footer>
+        </div>
+      </eg-tree>
+    </div>
+  </div>
+</div>

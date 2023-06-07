@@ -3,6 +3,7 @@ import {RouterModule, Routes} from '@angular/router';
 import {AdminServerSplashComponent} from './admin-server-splash.component';
 import {BasicAdminPageComponent} from '@eg/staff/admin/basic-admin-page.component';
 import {OrgUnitTypeComponent} from './org-unit-type.component';
+import {CustomOrgUnitTreesComponent} from './custom-org-unit-trees.component';
 import {PrintTemplateComponent} from './print-template.component';
 import {PermGroupTreeComponent} from './perm-group-tree.component';
 
@@ -12,6 +13,9 @@ const routes: Routes = [{
 }, {
     path: 'actor/org_unit_type',
     component: OrgUnitTypeComponent
+}, {
+    path: 'actor/custom_org_unit_trees',
+    component: CustomOrgUnitTreesComponent
 }, {
     path: 'config/coded_value_map',
     loadChildren: () =>
