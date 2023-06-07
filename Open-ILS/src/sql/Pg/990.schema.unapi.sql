@@ -357,33 +357,6 @@ CREATE OR REPLACE FUNCTION unapi.biblio_record_entry_feed ( id_list BIGINT[], fo
 
 CREATE OR REPLACE FUNCTION unapi.metabib_virtual_record_feed ( id_list BIGINT[], format TEXT, includes TEXT[], org TEXT, depth INT DEFAULT NULL, slimit HSTORE DEFAULT NULL, soffset HSTORE DEFAULT NULL, include_xmlns BOOL DEFAULT TRUE, title TEXT DEFAULT NULL, description TEXT DEFAULT NULL, creator TEXT DEFAULT NULL, update_ts TEXT DEFAULT NULL, unapi_url TEXT DEFAULT NULL, header_xml XML DEFAULT NULL, pref_lib INT DEFAULT NULL ) RETURNS XML AS $F$ SELECT NULL::XML $F$ LANGUAGE SQL STABLE;
 
-CREATE OR REPLACE FUNCTION unapi.memoize (classname TEXT, obj_id BIGINT, format TEXT,  ename TEXT, includes TEXT[], org TEXT, depth INT DEFAULT NULL, slimit HSTORE DEFAULT NULL, soffset HSTORE DEFAULT NULL, include_xmlns BOOL DEFAULT TRUE ) RETURNS XML AS $F$
-DECLARE
-    key     TEXT;
-    output  XML;
-BEGIN
-    key :=
-        'id'        || COALESCE(obj_id::TEXT,'') ||
-        'format'    || COALESCE(format::TEXT,'') ||
-        'ename'     || COALESCE(ename::TEXT,'') ||
-        'includes'  || COALESCE(includes::TEXT,'{}'::TEXT[]::TEXT) ||
-        'org'       || COALESCE(org::TEXT,'') ||
-        'depth'     || COALESCE(depth::TEXT,'') ||
-        'slimit'    || COALESCE(slimit::TEXT,'') ||
-        'soffset'   || COALESCE(soffset::TEXT,'') ||
-        'include_xmlns'   || COALESCE(include_xmlns::TEXT,'');
-    -- RAISE NOTICE 'memoize key: %', key;
-
-    key := MD5(key);
-    -- RAISE NOTICE 'memoize hash: %', key;
-
-    -- XXX cache logic ... memcached? table?
-
-    EXECUTE $$SELECT unapi.$$ || classname || $$( $1, $2, $3, $4, $5, $6, $7, $8, $9);$$ INTO output USING obj_id, format, ename, includes, org, depth, slimit, soffset, include_xmlns;
-    RETURN output;
-END;
-$F$ LANGUAGE PLPGSQL STABLE;
-
 CREATE OR REPLACE FUNCTION unapi.biblio_record_entry_feed ( id_list BIGINT[], format TEXT, includes TEXT[], org TEXT, depth INT DEFAULT NULL, slimit HSTORE DEFAULT NULL, soffset HSTORE DEFAULT NULL, include_xmlns BOOL DEFAULT TRUE, title TEXT DEFAULT NULL, description TEXT DEFAULT NULL, creator TEXT DEFAULT NULL, update_ts TEXT DEFAULT NULL, unapi_url TEXT DEFAULT NULL, header_xml XML DEFAULT NULL, pref_lib INT DEFAULT NULL ) RETURNS XML AS $F$
 DECLARE
     layout          unapi.bre_output_layout%ROWTYPE;
@@ -1828,10 +1801,6 @@ $FUNK$ LANGUAGE SQL STABLE;
 /*
 
  -- Some test queries
-
-SELECT unapi.memoize( 'bre', 1,'mods32','','{holdings_xml,acp}'::TEXT[], 'SYS1');
-SELECT unapi.memoize( 'bre', 1,'marcxml','','{holdings_xml,acp}'::TEXT[], 'SYS1');
-SELECT unapi.memoize( 'bre', 1,'holdings_xml','','{holdings_xml,acp}'::TEXT[], 'SYS1');
 
 SELECT unapi.biblio_record_entry_feed('{1}'::BIGINT[],'mods32','{holdings_xml,acp}'::TEXT[],'SYS1',NULL,'acn=>1',NULL, NULL,NULL,NULL,NULL,'http://c64/opac/extras/unapi', '<totalResults xmlns="http://a9.com/-/spec/opensearch/1.1/">2</totalResults><startIndex xmlns="http://a9.com/-/spec/opensearch/1.1/">1</startIndex><itemsPerPage xmlns="http://a9.com/-/spec/opensearch/1.1/">10</itemsPerPage>');
 
