@@ -28,7 +28,7 @@ my %HOLD_SORT_ORDER_BY = (
     approx => 'action.hold_copy_calculated_proximity(h.id, %d, %d)', # $cp,$here
     priority => 'pgt.hold_priority',
     cut => 'CASE WHEN h.cut_in_line IS TRUE THEN 0 ELSE 1 END',
-    depth => 'h.selection_depth',
+    depth => 'h.selection_depth DESC',
     rtime => 'h.request_time',
     htime => q!
         CASE WHEN
