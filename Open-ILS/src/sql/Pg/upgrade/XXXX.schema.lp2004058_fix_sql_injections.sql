@@ -80,4 +80,6 @@ BEGIN
 END;
 $$ LANGUAGE plpgsql;
 
+DROP FUNCTION IF EXISTS evergreen.change_db_setting(TEXT, TEXT[]);
+
 COMMIT;
