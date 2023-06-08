@@ -1,17 +1,19 @@
 <div class="eg-tree-node-wrapper d-flex">
   <input *ngIf="showSelectors" type="checkbox"
       (change)="toggleSelections($event)" />
-  <div (click)="expandAll()">
-        <span class="material-icons">expand_more</span>
-  </div>
-  <div (click)="collapseAll()">
-        <span class="material-icons">expand_less</span>
-  </div>
+  <button type="button" class="btn" (click)="expandAll()"
+    aria-label="Expand All" i18n-aria-label title="Expand All" i18n-title>
+      <span class="material-icons" aria-hidden="true">expand_more</span>
+  </button>
+  <button type="button" class="btn" (click)="collapseAll()"
+    aria-label="Expand All" i18n-aria-label title="Expand All" i18n-title>
+      <span class="material-icons" aria-hidden="true">expand_less</span>
+  </button>
   <ng-content select="[header]"></ng-content>
 </div>
 <div class="eg-tree" *ngFor="let node of displayNodes()">
   <div class="eg-tree-node-wrapper d-flex"
-    [ngStyle]="{'padding-left': (node.depth * 20) + 'px'}">
+    [ngStyle]="{'padding-left': node.depth + 'rem'}">
     <input *ngIf="showSelectors
        ? (node === tree.rootNode
           ? !disableRootSelector
