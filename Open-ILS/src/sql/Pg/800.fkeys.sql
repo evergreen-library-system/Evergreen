@@ -40,6 +40,11 @@ BEGIN
         RAISE EXCEPTION
             'Copy location % contains active copies and cannot be deleted', acpl_id;
     END IF;
+
+    IF acpl_id = 1 THEN
+        RAISE EXCEPTION
+            'Copy location 1 cannot be deleted';
+    END IF;
 END;
 $FUNK$ LANGUAGE plpgsql;
 
@@ -53,8 +58,22 @@ CREATE RULE protect_copy_location_delete AS
         DELETE FROM asset.copy_location_group_map WHERE location = OLD.id;
         DELETE FROM config.circ_limit_set_copy_loc_map WHERE copy_loc = OLD.id;
     );
-    
-CREATE RULE protect_acl_id_1 AS ON UPDATE TO asset.copy_location WHERE OLD.id = 1 DO INSTEAD NOTHING;
+
+CREATE OR REPLACE FUNCTION asset.copy_location_validate_edit()
+  RETURNS trigger
+  LANGUAGE plpgsql
+AS $function$
+BEGIN
+    IF OLD.id = 1 THEN
+        IF OLD.owning_lib != NEW.owning_lib OR NEW.deleted THEN
+            RAISE EXCEPTION 'Copy location 1 cannot be moved or deleted';
+        END IF;
+    END IF;
+    RETURN NEW;
+END;
+$function$;
+
+CREATE TRIGGER acpl_validate_edit BEFORE UPDATE ON asset.copy_location FOR EACH ROW EXECUTE FUNCTION asset.copy_location_validate_edit();
 
 CREATE RULE protect_mono_part_delete AS
     ON DELETE TO biblio.monograph_part DO INSTEAD (
