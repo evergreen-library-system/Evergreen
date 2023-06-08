@@ -16,10 +16,10 @@
 <eg-custom-org-unit-trees-dialog #moveNodeElsewhereDialog>
 </eg-custom-org-unit-trees-dialog>
 
-<div class="row org-unit-types-row">
-  <div class="col-lg-4 org-unit-types-col-aside">
-    <h3 i18n>Full Org Unit Tree</h3>
-    <div class="border rounded p-1" >
+<div class="row row-cols-auto org-unit-types-row">
+  <div class="col org-unit-types-col-aside">
+    <div class="card bg-light rounded p-3" >
+      <h3 i18n>Full Org Unit Tree</h3>
       <eg-tree
         [showSelectors]="true"
         [disableRootSelector]="true"
@@ -33,22 +33,38 @@
       </eg-tree>
     </div>
   </div>
-  <div class="col-lg-4 org-unit-types-col-aside">
+  <div class="col org-unit-types-col-aside p-3">
     <h3 *ngIf="active">
           <span i18n>Custom Org Unit Tree (Active)</span>
-          <button type="button" class="btn btn-link" *ngIf="active" (click)="active = !active" i18n>Deactivate Tree</button>
+          <button type="button" class="btn btn-link p-0 ms-2" *ngIf="active" (click)="active = !active" i18n>Deactivate Tree</button>
     </h3>
     <h3 *ngIf="!active">
           <span i18n>Custom Org Unit Tree (Inactive)</span>
-          <button type="button" class="btn btn-link" *ngIf="!active" (click)="active = !active" i18n>Activate Tree</button>
+          <button type="button" class="btn btn-link p-0 ms-2" *ngIf="!active" (click)="active = !active" i18n>Activate Tree</button>
     </h3>
-    <div class="border rounded p-1" >
+    <div class="p-1" >
       <ng-template #selectedRowButtons let-node>
         <div *ngIf="node.selected">
-          <button type="button" class="btn btn-link" [disabled]="moveNodeUpDisabled" (click)="moveNodeUp(node)" i18n>Up</button>
-          <button type="button" class="btn btn-link" [disabled]="moveNodeDownDisabled" (click)="moveNodeDown(node)" i18n>Down</button>
-          <button type="button" class="btn btn-link" [disabled]="moveNodeElsewhereDisabled" (click)="moveNodeElsewhere(node)" i18n>Move</button>
-          <button type="button" class="btn btn-link" [disabled]="deleteNodesDisabled" (click)="deleteNode(node)" i18n>Delete</button>
+          <button type="button" class="btn btn-link p-0" 
+            [disabled]="moveNodeUpDisabled" (click)="moveNodeUp(node)" 
+            i18n-title title="Move Up" i18n-aria-label aria-label="Move Up">
+            <span class="material-icons" aria-hidden="true">arrow_upward</span>
+          </button>
+          <button type="button" class="btn btn-link p-0" 
+            [disabled]="moveNodeDownDisabled" (click)="moveNodeDown(node)" 
+            i18n-title title="Move Down" i18n-aria-label aria-label="Move Down">
+            <span class="material-icons" aria-hidden="true">arrow_downward</span>
+          </button>
+          <button type="button" class="btn btn-link p-0" 
+            [disabled]="moveNodeElsewhereDisabled" (click)="moveNodeElsewhere(node)" 
+            i18n-title title="Move Elsewhere" i18n-aria-label aria-label="Move Elsewhere">
+            <span class="material-icons" aria-hidden="true">arrow_forward</span>
+          </button>
+          <button type="button" class="btn btn-link p-0" 
+            [disabled]="deleteNodesDisabled" (click)="deleteNode(node)" 
+            i18n-title title="Delete" i18n-aria-label aria-label="Delete">
+            <span class="material-icons" aria-hidden="true">delete</span>
+          </button>
         </div>
       </ng-template>
       <eg-tree
@@ -57,7 +73,7 @@
         [toggleOnClick]="true"
         [tree]="custom_tree"
         (nodeClicked)="custom_nodeClicked($event)"
-        (nodeChecked)="custon_nodeChecked($event)"
+        (nodeChecked)="custom_nodeChecked($event)"
         [rowTrailingTemplate]="selectedRowButtons">
         <div header>
           <button type="button" class="btn btn-link" (click)="applyChanges()" i18n>Save Changes</button>
