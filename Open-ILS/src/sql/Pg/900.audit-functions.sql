@@ -41,25 +41,23 @@ CREATE OR REPLACE FUNCTION auditor.clear_audit_info() RETURNS VOID AS $$
     delete($_SHARED{"eg_audit_ws"});
 $$ LANGUAGE plperlu;
 
-CREATE FUNCTION auditor.create_auditor_seq     ( sch TEXT, tbl TEXT ) RETURNS BOOL AS $creator$
+CREATE OR REPLACE FUNCTION auditor.create_auditor_seq     ( sch TEXT, tbl TEXT ) RETURNS BOOL AS $creator$
 BEGIN
-    EXECUTE $$
-        CREATE SEQUENCE auditor.$$ || sch || $$_$$ || tbl || $$_pkey_seq;
-    $$;
-	RETURN TRUE;
+    EXECUTE $$CREATE SEQUENCE auditor.$$ || quote_ident(sch || $$_$$ || tbl || $$_pkey_seq$$);
+    RETURN TRUE;
 END;
 $creator$ LANGUAGE 'plpgsql';
 
-CREATE FUNCTION auditor.create_auditor_history ( sch TEXT, tbl TEXT ) RETURNS BOOL AS $creator$
+CREATE OR REPLACE FUNCTION auditor.create_auditor_history ( sch TEXT, tbl TEXT ) RETURNS BOOL AS $creator$
 BEGIN
     EXECUTE $$
-        CREATE TABLE auditor.$$ || sch || $$_$$ || tbl || $$_history (
+        CREATE TABLE auditor.$$ || quote_ident(sch || $$_$$ || tbl || $$_history$$) || $$ (
             audit_id	BIGINT				PRIMARY KEY,
             audit_time	TIMESTAMP WITH TIME ZONE	NOT NULL,
             audit_action	TEXT				NOT NULL,
             audit_user  INT,
             audit_ws    INT,
-            LIKE $$ || sch || $$.$$ || tbl || $$
+            LIKE $$ || quote_ident(sch) || $$.$$ || quote_ident(tbl) || $$
         );
     $$;
 	RETURN TRUE;
@@ -77,12 +75,12 @@ BEGIN
         WHERE relkind = 'r' AND n.nspname = sch AND c.relname = tbl AND a.attnum > 0 AND NOT a.attisdropped;
 
     EXECUTE $$
-        CREATE OR REPLACE FUNCTION auditor.audit_$$ || sch || $$_$$ || tbl || $$_func ()
+        CREATE OR REPLACE FUNCTION auditor.$$ || quote_ident($$audit_$$ || sch || $$_$$ || tbl || $$_func$$) || $$ ()
         RETURNS TRIGGER AS $func$
         BEGIN
-            INSERT INTO auditor.$$ || sch || $$_$$ || tbl || $$_history ( audit_id, audit_time, audit_action, audit_user, audit_ws, $$
+            INSERT INTO auditor.$$ || quote_ident(sch || $$_$$ || tbl || $$_history$$) || $$ ( audit_id, audit_time, audit_action, audit_user, audit_ws, $$
             || array_to_string(column_list, ', ') || $$ )
-                SELECT  nextval('auditor.$$ || sch || $$_$$ || tbl || $$_pkey_seq'),
+                SELECT  nextval($$ || quote_literal($$auditor.$$ || sch || $$_$$ || tbl || $$_pkey_seq$$) || $$),
                     now(),
                     SUBSTR(TG_OP,1,1),
                     eg_user,
@@ -97,12 +95,12 @@ BEGIN
 END;
 $creator$ LANGUAGE 'plpgsql';
 
-CREATE FUNCTION auditor.create_auditor_update_trigger ( sch TEXT, tbl TEXT ) RETURNS BOOL AS $creator$
+CREATE OR REPLACE FUNCTION auditor.create_auditor_update_trigger ( sch TEXT, tbl TEXT ) RETURNS BOOL AS $creator$
 BEGIN
     EXECUTE $$
-        CREATE TRIGGER audit_$$ || sch || $$_$$ || tbl || $$_update_trigger
-            AFTER UPDATE OR DELETE ON $$ || sch || $$.$$ || tbl || $$ FOR EACH ROW
-            EXECUTE PROCEDURE auditor.audit_$$ || sch || $$_$$ || tbl || $$_func ();
+        CREATE TRIGGER $$ || quote_ident($$audit_$$ || sch || $$_$$ || tbl || $$_update_trigger$$) || $$
+            AFTER UPDATE OR DELETE ON $$ || quote_ident(sch) || $$.$$ || quote_ident(tbl) || $$ FOR EACH ROW
+            EXECUTE PROCEDURE auditor.$$ || quote_ident($$audit_$$ || sch || $$_$$ || tbl || $$_func$$) || $$ ();
     $$;
 	RETURN TRUE;
 END;
@@ -119,18 +117,18 @@ BEGIN
         WHERE relkind = 'r' AND n.nspname = sch AND c.relname = tbl AND a.attnum > 0 AND NOT a.attisdropped;
 
     EXECUTE $$
-        CREATE VIEW auditor.$$ || sch || $$_$$ || tbl || $$_lifecycle AS
+        CREATE VIEW auditor.$$ || quote_ident(sch || $$_$$ || tbl || $$_lifecycle$$) || $$ AS
             SELECT -1 AS audit_id,
                    now() AS audit_time,
                    '-' AS audit_action,
                    -1 AS audit_user,
                    -1 AS audit_ws,
                    $$ || array_to_string(column_list, ', ') || $$
-              FROM $$ || sch || $$.$$ || tbl || $$
+              FROM $$ || quote_ident(sch) || $$.$$ || quote_ident(tbl) || $$
                 UNION ALL
             SELECT audit_id, audit_time, audit_action, audit_user, audit_ws,
             $$ || array_to_string(column_list, ', ') || $$
-              FROM auditor.$$ || sch || $$_$$ || tbl || $$_history;
+              FROM auditor.$$ || quote_ident(sch || $$_$$ || tbl || $$_history$$) || $$;
     $$;
     RETURN TRUE;
 END;
@@ -139,7 +137,7 @@ $creator$ LANGUAGE 'plpgsql';
 
 -- The main event
 
-CREATE FUNCTION auditor.create_auditor ( sch TEXT, tbl TEXT ) RETURNS BOOL AS $creator$
+CREATE OR REPLACE FUNCTION auditor.create_auditor ( sch TEXT, tbl TEXT ) RETURNS BOOL AS $creator$
 BEGIN
     PERFORM auditor.create_auditor_seq(sch, tbl);
     PERFORM auditor.create_auditor_history(sch, tbl);
