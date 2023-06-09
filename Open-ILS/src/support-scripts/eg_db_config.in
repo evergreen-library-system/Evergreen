@@ -145,7 +145,7 @@ sub create_database {
 	$ENV{'PGPASSWORD'} = $settings->{pw};
 	$ENV{'PGPORT'} = $settings->{port};
 	$ENV{'PGHOST'} = $settings->{host};
-	my @temp = split(/ /, `psql -d postgres -qtc 'show server_version;' | xargs | cut -d. -f 1,2`);
+	my @temp = split(/ /, `psql -d postgres -qXAtc 'show server_version;' | cut -d. -f 1,2`);
 	chomp $temp[0];
 	my $pgversion = $temp[0];
 	my $cmd;
