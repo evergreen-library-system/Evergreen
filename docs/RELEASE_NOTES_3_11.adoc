@@ -492,11 +492,11 @@ sites wanting to use SmartPAY.
 * The "Strict Barcode" checkbox is now closer to the barcode input on the Check Out, Check In, and Renew Items pages (LP#1990968)
 * LP1929593 UPDATE_COPY_BARCODE permission
 
-    This adds the permission UPDATE_COPY_BARCODE and a new API call,
+    ** This adds the permission UPDATE_COPY_BARCODE and a new API call,
 
       open-ils.cat.update_copy_barcode
 
-    which explicitly tests for both UPDATE_COPY_BARCODE and UPDATE_COPY,
+    ** which explicitly tests for both UPDATE_COPY_BARCODE and UPDATE_COPY,
     with either being sufficient for allowing a barcode change.  Existing
     Replace Barcode UI's in both Angular and AngularJS have been modified
     to use this API call instead of the pcrud service.  One side-effect of
@@ -504,7 +504,7 @@ sites wanting to use SmartPAY.
     uncaught and bypassing the normal error handling.  This addresses
     LP1951469.
 
-    The upgrade script gives any permission groups that already have the
+    ** The upgrade script gives any permission groups that already have the
     UPDATE_COPY permission the new UPDATE_COPY_BARCODE permission at the
     same depth, though it's technically not needed.
 * Patron and staff login forms now include a button to reveal the password input. (LP#1977554)
@@ -513,25 +513,26 @@ sites wanting to use SmartPAY.
 * eg-org-family-select now supports persistKey
 * LP1965446 Option to Disable Title-Level Holds on Bib Records with Parts
 
-    This feature adds one global flag and one library setting, respectively:
+    ** This feature adds one global flag and one library setting, respectively:
 
-        * circ.holds.api_require_monographic_part_when_present
+        *** circ.holds.api_require_monographic_part_when_present
           Holds: Require Monographic Part When Present for hold check.
-        * circ.holds.ui_require_monographic_part_when_present
+        *** circ.holds.ui_require_monographic_part_when_present
           Require Monographic Part when Present
 
-    Normally the selection of a monographic part during hold placement is optional if there is at least one copy
+    ** Normally the selection of a monographic part during hold placement is optional if there is at least one copy
     on the bib without a monographic part.  A true value for this setting for any involved owning library for the
     bib or for the global flag will require part selection even under this condition.  This essentially removes
     the All/Any Parts option from the part selection drop-down, for both versions of the public catalog (TPAC and
     BOOPAC), and for the Angular staff catalog interface. It should be noted that if the library setting is set
     below the consortium level, Title level holds may be allowed for some libraries and not others.
 
-    At the API level, we consider just the global flag and will throw a TITLE_HOLD_WHEN_MONOGRAPHIC_PART_REQUIRED
+    ** At the API level, we consider just the global flag and will throw a TITLE_HOLD_WHEN_MONOGRAPHIC_PART_REQUIRED
     event for a title hold request when there are items with monographic parts on the bib.  It is possible for
     the library settings and the global flag to differ, but the global flag will catch every instance of hold
     placement including those by third party callers, SIP, etc.
 * Links the lineitem id link in Acquisitions search results to the lineitem detail page rather than the purchase order. (LP#2003946)
+
 == Angular navbar keyboard navigation ==
 
 Adds basic keyboard navigation support to the Angular web client navbar as follows:
