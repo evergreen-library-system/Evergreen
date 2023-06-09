@@ -1,6 +1,6 @@
 BEGIN;
 
-SELECT plan(11);
+SELECT plan(17);
 
 UPDATE asset.call_number_class 
 SET normalizer = $$1; INSERT INTO config.upgrade_log (version) VALUES ('lp2004058_asset.label_normalizer'); SELECT asset.label_normalizer_generic$$ 
@@ -83,6 +83,53 @@ SELECT is(
 PREPARE bad_usr_merge_rows AS
     SELECT actor.usr_merge_rows('actor.does_not_exist', 'usr', 1, 4);
 SELECT throws_ok('bad_usr_merge_rows', NULL, NULL, 'actor.usr_merge_rows does not accept an invalid table');
+
+
+-- Auditor functions
+-- For better or worse, this doesn't blow up with the fixes in place, it just creates this mess of a sequence name:
+-- "auditor"."sneaky_seq; INSERT INTO config.upgrade_log (version)
+--    VALUES "
+SELECT auditor.create_auditor_seq($$sneaky_seq; INSERT INTO config.upgrade_log (version)
+    VALUES ('lp2004058_auditor.create_auditor_seq'); CREATE sequence auditor.sneaky_seq$$, 'again');
+
+SELECT cmp_ok(
+    (SELECT COUNT(*) FROM config.upgrade_log WHERE version = 'lp2004058_auditor.create_auditor_seq'),
+    '<', '1', 'Injection fixed in auditor.create_auditor_seq'
+);
+
+
+-- For the next 5 tests we just verify that each component part of auditor creation continues to work
+-- as expected with the quote_* additions, so just call the top-level auditor.create_auditor and then
+-- verify each part
+
+SELECT auditor.create_auditor('serial','issuance');
+
+SELECT cmp_ok(
+    (SELECT COUNT(*) FROM information_schema.sequences WHERE sequence_schema = 'auditor' AND sequence_name = 'serial_issuance_pkey_seq'),
+    '=', '1', 'auditor.create_auditor_seq still creates expected sequence'
+);
+
+SELECT cmp_ok(
+    (SELECT COUNT(*) FROM information_schema.tables where table_schema = 'auditor' AND table_name = 'serial_issuance_history'),
+    '=', '1', 'auditor.create_auditor_history still creates the expected table'
+);
+
+SELECT cmp_ok(
+    (SELECT COUNT(*) FROM information_schema.routines where routine_schema = 'auditor' AND routine_name = 'audit_serial_issuance_func'),
+    '=', '1', 'auditor.create_auditor_func still creates the expected function'
+);
+
+-- There are 2 information_schema.triggers entries for auditor trigger functions; 1 for UPDATE and 1 for DELETE
+SELECT cmp_ok(
+    (SELECT COUNT(*) FROM information_schema.triggers where trigger_schema = 'serial' AND trigger_name = 'audit_serial_issuance_update_trigger'),
+    '=', '2', 'auditor.create_auditor_update_trigger still creates the expected triggers'
+);
+
+SELECT cmp_ok(
+    (SELECT COUNT(*) FROM information_schema.tables where table_schema = 'auditor' AND table_name = 'serial_issuance_lifecycle'),
+    '=', '1', 'auditor.create_auditor_lifecycle still creates the expected view'
+);
+
 
 SELECT * FROM finish();
 
