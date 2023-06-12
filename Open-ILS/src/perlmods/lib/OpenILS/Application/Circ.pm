@@ -1879,7 +1879,9 @@ sub fire_circ_events {
         return $e->event unless $e->allowed('VIEW_CIRCULATIONS', $org_id);
         $targets = $e->batch_retrieve_action_circulation($target_ids);
     }
-    $e->rollback; # FIXME using transaction because of pgpool/slony setups, but not
+    $e->rollback; # FIXME using transaction because of pgpool + logical replication
+                  # setups where statements in an explicit transaction are sent to
+                  # the primary database in the replica set, but not
                   # simply making this method authoritative because of weirdness
                   # with transaction handling in A/T code that causes rollback
                   # failure down the line if handling many targets

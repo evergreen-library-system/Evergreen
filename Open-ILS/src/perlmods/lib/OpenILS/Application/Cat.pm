@@ -1749,7 +1749,9 @@ sub acn_sms_msg {
 
     my $targets = $e->batch_retrieve_asset_call_number($target_ids);
 
-    $e->rollback; # FIXME using transaction because of pgpool/slony setups, but not
+    $e->rollback; # FIXME using transaction because of pgpool + logical replication
+                  # setups where statements in an explicit transaction are sent to
+                  # the primary database in the replica set, but not
                   # simply making this method authoritative because of weirdness
                   # with transaction handling in A/T code that causes rollback
                   # failure down the line if handling many targets
