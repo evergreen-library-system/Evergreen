@@ -1565,6 +1565,8 @@ BEGIN
       FROM  config.metabib_class cmc
       WHERE cmc.name = search_class;
 
+    IF NOT FOUND THEN RETURN; END IF; -- If the requested search class doesn't exist, we leave.
+
     c_min_suggestion_use_threshold := COALESCE(count_threshold,c_min_suggestion_use_threshold);
     c_symspell_transfer_case := COALESCE(xfer_case,c_symspell_transfer_case);
     c_symspell_suggestion_verbosity := COALESCE(verbosity,c_symspell_suggestion_verbosity);
@@ -1853,6 +1855,7 @@ BEGIN
       FROM  config.metabib_class cmc
       WHERE cmc.name = search_class;
 
+    IF NOT FOUND THEN RETURN; END IF; -- If the requested search class doesn't exist, we leave.
 
     -- Set up variables to use at run time based on params and settings
     c_min_suggestion_use_threshold := COALESCE(count_threshold,c_min_suggestion_use_threshold);

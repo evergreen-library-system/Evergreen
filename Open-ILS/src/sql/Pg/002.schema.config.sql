@@ -186,7 +186,7 @@ INSERT INTO config.biblio_fingerprint (name, xpath, format)
     );
 
 CREATE TABLE config.metabib_class (
-    name     TEXT    PRIMARY KEY,
+    name     TEXT    CHECK (name ~ '^\w+$') PRIMARY KEY,
     label    TEXT    NOT NULL UNIQUE,
     buoyant  BOOL    DEFAULT FALSE NOT NULL,
     restrict BOOL    DEFAULT FALSE NOT NULL,
