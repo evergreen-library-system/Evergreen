@@ -1,5 +1,5 @@
 export DEF_LDFLAGS = -L@abs_top_srcdir@/Open-ILS/src/c-apps -L$(OPENSRF_LIBS)
-export DEF_CFLAGS = -D_LARGEFILE64_SOURCE -pipe -g -Wall -O2 -fPIC -I@abs_top_srcdir@/Open-ILS/include -I$(LIBXML2_HEADERS) -I$(APACHE2_HEADERS) -I$(APR_HEADERS) -I$(LIBXML2_HEADERS)/libxml -I$(OPENSRF_HEADERS)
+export DEF_CFLAGS = -D_LARGEFILE64_SOURCE -pipe -g -Wall -O2 -fPIC -I@abs_top_srcdir@/Open-ILS/include -I$(LIBXML2_HEADERS) -I$(APACHE2_HEADERS) -I$(APR_HEADERS) -I$(LIBXML2_HEADERS)/libxml -I$(OPENSRF_HEADERS) -I$(HIREDIS_HEADERS)
 export DEF_LDLIBS = -lopensrf
 
 COMMON = testsuite.c
