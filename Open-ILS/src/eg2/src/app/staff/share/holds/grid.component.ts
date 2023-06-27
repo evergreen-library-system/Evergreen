@@ -287,8 +287,10 @@ export class HoldsGridComponent implements OnInit {
 
             // There are aliases for these (cp_status, cp_circ_lib),
             // but the API complains when I use them.
-            filters['cp.status'] = [0, 7];
+            filters['cp.status'] = {"in":{"select":{"ccs":["id"]},"from":"ccs","where":{"holdable":'t',"is_available":'t'}}};
             filters['cp.circ_lib'] = this.pullListOrg;
+            // Avoid deleted copies AND this uses a database index on copy circ_lib where deleted is false.
+            filters['cp.deleted'] = 'f';
 
             return filters;
         }

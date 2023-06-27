@@ -6962,7 +6962,8 @@ SELECT  usr,
 			ahr.cancel_time IS NULL AND
 			csp.id IS NULL AND
 			(ahr.expire_time is NULL OR ahr.expire_time > NOW()) AND
-			acp.status IN (0,7)
+			acp.deleted IS FALSE AND
+			acp.status IN (SELECT id FROM config.copy_status WHERE holdable IS TRUE AND is_available IS TRUE)
 		]]></oils_persist:source_definition>
 		<fields oils_persist:primary="id">
 			<field reporter:label="Status" name="status" oils_persist:virtual="true" />

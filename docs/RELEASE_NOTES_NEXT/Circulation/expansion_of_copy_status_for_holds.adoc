@@ -1,0 +1,8 @@
+== Expansion of Copy Statuses Eligible to Fill Holds ==
+
+Copies with a status that has both the `holdable` and `is_available`
+fields set to `true` are now elibible to fill holds.  This was
+previously limited to copies with a "magical" status of 0 or 7.  The
+change expands the copies that can fill holds and affords better
+control over what copies with what statuses will appear on the holds
+pull list or target holds.

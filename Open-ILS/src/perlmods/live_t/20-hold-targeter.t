@@ -2,7 +2,7 @@
 use strict;
 use warnings;
 
-use Test::More tests => 18;
+use Test::More tests => 82;
 diag("General hold targeter tests");
 
 use OpenILS::Const qw/:const/;
@@ -185,4 +185,149 @@ $e->update_metabib_metarecord_source_map($mrmap_101) or die $e->die_event;
 $e->update_metabib_metarecord_source_map($mrmap_42) or die $e->die_event;
 $e->xact_commit;
 
+# Test Lp 1904737 hold status expansion.
+$hold_id = 67;
+$hold = $e->retrieve_action_hold_request($hold_id);
+my $copy = $e->retrieve_asset_copy($hold->current_copy());
+my $saved_status = $copy->status();
+# change its status to one that won't fill holds
+my $cataloging_status = $e->retrieve_config_copy_status(11);
+$copy->status($cataloging_status->id());
+$e->xact_begin;
+$e->update_asset_copy($copy);
+$e->xact_commit();
+$result = target({hold => $hold->id()});
+ok($result->{success}, "Targeting hold $hold_id returned success");
+$hold = $e->retrieve_action_hold_request($hold_id);
+isnt($copy->id(), $hold->current_copy(), "Hold $hold_id has new current copy");
+# Check the hold copy map, it should be 1 less than before.
+$maps = $e->search_action_hold_copy_map({hold => $hold_id});
+is(scalar(@$maps), 28, "Hold $hold_id has 28 mapped potential copies");
+# Check asset.staff_ou_metarecord_copy_count
+$result = $e->json_query({from => ["asset.staff_ou_metarecord_copy_count", 4, 70]});
+is(scalar(@$result), 3, "asset.staff_ou_metarecord_copy_count returns 3 rows");
+for (my $i = 0; $i < 3; $i++) {
+    my $row = $result->[$i];
+    if ($i == 0) {
+        is($row->{depth}, 0, "Depth of first row is 0");
+        is($row->{org_unit}, 1, "Org Unit of first row is 1");
+        is($row->{visible}, 31, "Visible of first row is 31");
+        is($row->{available}, 25, "Available of first row is 25");
+    } elsif ($i == 1) {
+        is($row->{depth}, 1, "Depth of second row is 1");
+        is($row->{org_unit}, 2, "Org Unit of second row is 2");
+        is($row->{visible}, 14, "Visible of second row is 14");
+        is($row->{available}, 11, "Available of second row is 11");
+    } elsif ($i == 2) {
+        is($row->{depth}, 2, "Depth of third row is 2");
+        is($row->{org_unit}, 4, "Org Unit of third row is 4");
+        is($row->{visible}, 7, "Visible of third row is 7");
+        is($row->{available}, 5, "Available of third row is 5");
+    }
+}
+# Make copy status holdable, retarget the hold and check values again.
+$cataloging_status->holdable('t');
+$e->xact_begin;
+$e->update_config_copy_status($cataloging_status);
+$e->xact_commit;
+$cataloging_status = $e->retrieve_config_copy_status(11);
+is($cataloging_status->holdable(), 't', "Cataloging status is holdable");
+$result = target({hold => $hold->id()});
+ok($result->{success}, "Targeting hold $hold_id returned success");
+$maps = $e->search_action_hold_copy_map({hold => $hold_id});
+is(scalar(@$maps), 29, "Hold $hold_id has 29 mapped potential copies");
+# Check asset.staff_ou_metarecord_copy_count
+$result = $e->json_query({from => ["asset.staff_ou_metarecord_copy_count", 4, 70]});
+is(scalar(@$result), 3, "asset.staff_ou_metarecord_copy_count returns 3 rows");
+for (my $i = 0; $i < 3; $i++) {
+    my $row = $result->[$i];
+    if ($i == 0) {
+        is($row->{depth}, 0, "Depth of first row is 0");
+        is($row->{org_unit}, 1, "Org Unit of first row is 1");
+        is($row->{visible}, 31, "Visible of first row is 31");
+        is($row->{available}, 25, "Available of first row is 25");
+    } elsif ($i == 1) {
+        is($row->{depth}, 1, "Depth of second row is 1");
+        is($row->{org_unit}, 2, "Org Unit of second row is 2");
+        is($row->{visible}, 14, "Visible of second row is 14");
+        is($row->{available}, 11, "Available of second row is 11");
+    } elsif ($i == 2) {
+        is($row->{depth}, 2, "Depth of third row is 2");
+        is($row->{org_unit}, 4, "Org Unit of third row is 4");
+        is($row->{visible}, 7, "Visible of third row is 7");
+        is($row->{available}, 5, "Available of third row is 5");
+    }
+}
+# Make copy status available, retarget the hold and check values again.
+$cataloging_status->is_available('t');
+$e->xact_begin;
+$e->update_config_copy_status($cataloging_status);
+$e->xact_commit;
+$cataloging_status = $e->retrieve_config_copy_status(11);
+is($cataloging_status->is_available(), 't', "Cataloging status is available");
+$result = target({hold => $hold->id()});
+ok($result->{success}, "Targeting hold $hold_id returned success");
+$maps = $e->search_action_hold_copy_map({hold => $hold_id});
+is(scalar(@$maps), 29, "Hold $hold_id has 29 mapped potential copies");
+# Check asset.staff_ou_metarecord_copy_count
+$result = $e->json_query({from => ["asset.staff_ou_metarecord_copy_count", 4, 70]});
+is(scalar(@$result), 3, "asset.staff_ou_metarecord_copy_count returns 3 rows");
+for (my $i = 0; $i < 3; $i++) {
+    my $row = $result->[$i];
+    if ($i == 0) {
+        is($row->{depth}, 0, "Depth of first row is 0");
+        is($row->{org_unit}, 1, "Org Unit of first row is 1");
+        is($row->{visible}, 31, "Visible of first row is 31");
+        is($row->{available}, 26, "Available of first row is 26");
+    } elsif ($i == 1) {
+        is($row->{depth}, 1, "Depth of second row is 1");
+        is($row->{org_unit}, 2, "Org Unit of second row is 2");
+        is($row->{visible}, 14, "Visible of second row is 14");
+        is($row->{available}, 12, "Available of second row is 12");
+    } elsif ($i == 2) {
+        is($row->{depth}, 2, "Depth of third row is 2");
+        is($row->{org_unit}, 4, "Org Unit of third row is 4");
+        is($row->{visible}, 7, "Visible of third row is 7");
+        is($row->{available}, 6, "Available of third row is 6");
+    }
+}
+# Reset the copy status, retarget the hold, and check the numbers one last time.
+$copy->status($saved_status);
+$e->xact_begin;
+$e->update_asset_copy($copy);
+$e->xact_commit;
+$copy = $e->retrieve_asset_copy($copy->id());
+is($copy->status(), $saved_status, "Copy status is $saved_status");
+$result = target({hold => $hold->id()});
+ok($result->{success}, "Targeting hold $hold_id returned success");
+$maps = $e->search_action_hold_copy_map({hold => $hold_id});
+is(scalar(@$maps), 29, "Hold $hold_id has 29 mapped potential copies");
+# Check asset.staff_ou_metarecord_copy_count
+$result = $e->json_query({from => ["asset.staff_ou_metarecord_copy_count", 4, 70]});
+is(scalar(@$result), 3, "asset.staff_ou_metarecord_copy_count returns 3 rows");
+for (my $i = 0; $i < 3; $i++) {
+    my $row = $result->[$i];
+    if ($i == 0) {
+        is($row->{depth}, 0, "Depth of first row is 0");
+        is($row->{org_unit}, 1, "Org Unit of first row is 1");
+        is($row->{visible}, 31, "Visible of first row is 31");
+        is($row->{available}, 26, "Available of first row is 26");
+    } elsif ($i == 1) {
+        is($row->{depth}, 1, "Depth of second row is 1");
+        is($row->{org_unit}, 2, "Org Unit of second row is 2");
+        is($row->{visible}, 14, "Visible of second row is 14");
+        is($row->{available}, 12, "Available of second row is 12");
+    } elsif ($i == 2) {
+        is($row->{depth}, 2, "Depth of third row is 2");
+        is($row->{org_unit}, 4, "Org Unit of third row is 4");
+        is($row->{visible}, 7, "Visible of third row is 7");
+        is($row->{available}, 6, "Available of third row is 6");
+    }
+}
 
+# Reset cataloging status
+$cataloging_status->holdable('f');
+$cataloging_status->is_available('f');
+$e->xact_begin();
+$e->update_config_copy_status($cataloging_status);
+$e->commit();

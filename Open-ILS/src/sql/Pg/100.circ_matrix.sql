@@ -400,7 +400,7 @@ BEGIN
               WHERE m.hold IN ( SELECT DISTINCT hold FROM action.hold_copy_map WHERE target_copy = copy_id ) AND NOT h.frozen
         LOOP
             output.copy_count := output.copy_count + 1;
-            IF hold_map_data.status IN (0,7,12) THEN
+            IF hold_map_data.status IN (SELECT id FROM config.copy_status WHERE holdable AND is_available) THEN
                 output.available_count := output.available_count + 1;
             END IF;
         END LOOP;
