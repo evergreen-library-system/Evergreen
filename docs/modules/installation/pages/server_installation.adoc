@@ -51,6 +51,7 @@ autoreconf -i
 
   * **PostgreSQL**: The minimum supported version is 10.
   * **Linux**: Evergreen has been tested on
+    Debian Bookworm (12),
     Debian Bullseye (11),
     Debian Buster (10), 
     Ubuntu Jammy Jellyfish (22.04),
@@ -69,7 +70,7 @@ before you can successfully configure, compile, and install Evergreen.
 +
 2. Issue the following commands as the *root* Linux account to install
    prerequisites using the `Makefile.install` prerequisite installer,
-   substituting `debian-bullseye`,`debian-buster`,`ubuntu-jammy`,
+   substituting `debian-bookworm`,`debian-bullseye`,`debian-buster`,`ubuntu-jammy`,
    or `ubuntu-focal` for <osname> below:
 +
 [source, bash]
@@ -450,6 +451,7 @@ version and the version recommended for production use of Evergreen:
 
 [source, bash]
 ------------------------------------------------------------------------------
+make -f Open-ILS/src/extras/Makefile.install postgres-server-debian-bookworm-10
 make -f Open-ILS/src/extras/Makefile.install postgres-server-debian-bullseye-10
 make -f Open-ILS/src/extras/Makefile.install postgres-server-debian-buster-10
 make -f Open-ILS/src/extras/Makefile.install postgres-server-ubuntu-focal-10
@@ -470,6 +472,7 @@ system:
 
 [source, bash]
 ------------------------------------------------------------------------------
+make -f Open-ILS/src/extras/Makefile.install postgres-server-debian-bookworm-11
 make -f Open-ILS/src/extras/Makefile.install postgres-server-debian-bullseye-11
 make -f Open-ILS/src/extras/Makefile.install postgres-server-debian-buster-11
 make -f Open-ILS/src/extras/Makefile.install postgres-server-ubuntu-focal-11
@@ -481,6 +484,7 @@ system:
 
 [source, bash]
 ------------------------------------------------------------------------------
+make -f Open-ILS/src/extras/Makefile.install postgres-server-debian-bookworm-12
 make -f Open-ILS/src/extras/Makefile.install postgres-server-debian-bullseye-12
 make -f Open-ILS/src/extras/Makefile.install postgres-server-debian-buster-12
 make -f Open-ILS/src/extras/Makefile.install postgres-server-ubuntu-focal-12
@@ -492,6 +496,7 @@ system:
 
 [source, bash]
 ------------------------------------------------------------------------------
+make -f Open-ILS/src/extras/Makefile.install postgres-server-debian-bookworm-13
 make -f Open-ILS/src/extras/Makefile.install postgres-server-debian-bullseye-13
 make -f Open-ILS/src/extras/Makefile.install postgres-server-debian-buster-13
 make -f Open-ILS/src/extras/Makefile.install postgres-server-ubuntu-focal-13
@@ -503,6 +508,7 @@ system:
 
 [source, bash]
 ------------------------------------------------------------------------------
+make -f Open-ILS/src/extras/Makefile.install postgres-server-debian-bookworm-14
 make -f Open-ILS/src/extras/Makefile.install postgres-server-debian-bullseye-14
 make -f Open-ILS/src/extras/Makefile.install postgres-server-debian-buster-14
 make -f Open-ILS/src/extras/Makefile.install postgres-server-ubuntu-focal-14
@@ -514,6 +520,7 @@ system:
 
 [source, bash]
 ------------------------------------------------------------------------------
+make -f Open-ILS/src/extras/Makefile.install postgres-server-debian-bookworm-15
 make -f Open-ILS/src/extras/Makefile.install postgres-server-debian-bullseye-15
 make -f Open-ILS/src/extras/Makefile.install postgres-server-debian-buster-15
 make -f Open-ILS/src/extras/Makefile.install postgres-server-ubuntu-focal-15

@@ -4,12 +4,14 @@
 #
 # Makefile to install prerequisites for OpenSRF and Evergreen
 #
-# Currently supports Debian (bullseye, buster),
+# Currently supports Debian (bookworm, bullseye, buster),
 # Ubuntu (16.04), Ubuntu (18.04).
 #
 # Installs Perl prereqs, libdbi, libdbi-drivers, and libyaz
 #
 # usage:
+# 	make -f Makefile.install debian-bookworm
+# 	- or -
 # 	make -f Makefile.install debian-bullseye
 # 	- or -
 # 	make -f Makefile.install debian-buster
@@ -70,6 +72,8 @@ DIR = $(dir $(lastword $(MAKEFILE_LIST)))/install
 
 all:
 	@echo "please specify an OS" && exit 0
+debian-bookworm:
+	@make -f $(DIR)/Makefile.debian-bookworm
 debian-bullseye:
 	@make -f $(DIR)/Makefile.debian-bullseye
 debian-buster:
@@ -81,6 +85,18 @@ ubuntu-jammy:
 fedora:
 	@make -f $(DIR)/Makefile.fedora
 
+postgres-server-debian-bookworm-10:
+	@make -f $(DIR)/Makefile.debian-bookworm install_postgres_server_10
+postgres-server-debian-bookworm-11:
+	@make -f $(DIR)/Makefile.debian-bookworm install_postgres_server_11
+postgres-server-debian-bookworm-12:
+	@make -f $(DIR)/Makefile.debian-bookworm install_postgres_server_12
+postgres-server-debian-bookworm-13:
+	@make -f $(DIR)/Makefile.debian-bookworm install_postgres_server_13
+postgres-server-debian-bookworm-14:
+	@make -f $(DIR)/Makefile.debian-bookworm install_postgres_server_14
+postgres-server-debian-bookworm-15:
+	@make -f $(DIR)/Makefile.debian-bookworm install_postgres_server_15
 postgres-server-debian-bullseye-10:
 	@make -f $(DIR)/Makefile.debian-bullseye install_postgres_server_10
 postgres-server-debian-bullseye-11:
@@ -136,6 +152,9 @@ ubuntu-focal-developer:
 	@make -f $(DIR)/Makefile.ubuntu-focal install_developer
 ubuntu-jammy-developer:
 	@make -f $(DIR)/Makefile.ubuntu-jammy install_developer
+
+debian-bookworm-developer:
+	@make -f $(DIR)/Makefile.debian-bookworm install_developer
 debian-bullseye-developer:
 	@make -f $(DIR)/Makefile.debian-bullseye install_developer
 debian-buster-developer:
@@ -145,6 +164,8 @@ ubuntu-focal-translator:
 	@make -f $(DIR)/Makefile.ubuntu-focal install_translator
 ubuntu-jammy-translator:
 	@make -f $(DIR)/Makefile.ubuntu-jammy install_translator
+debian-bookworm-translator:
+	@make -f $(DIR)/Makefile.debian-bookworm install_translator
 debian-bullseye-translator:
 	@make -f $(DIR)/Makefile.debian-bullseye install_translator
 debian-buster-translator:
@@ -154,6 +175,8 @@ ubuntu-focal-packager:
 	@make -f $(DIR)/Makefile.ubuntu-focal install_packager
 ubuntu-jammy-packager:
 	@make -f $(DIR)/Makefile.ubuntu-jammy install_packager
+debian-bookworm-packager:
+	@make -f $(DIR)/Makefile.debian-bookworm install_packager
 debian-bullseye-packager:
 	@make -f $(DIR)/Makefile.debian-bullseye install_packager
 debian-buster-packager:
