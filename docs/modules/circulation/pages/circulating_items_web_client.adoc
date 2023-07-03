@@ -535,6 +535,41 @@ image::media/in_house_use_non_cat.png[]
 The statistics of in-house use are separated from circulation statistics. The in-house use count of cataloged items is not included in the items' total use count.
 
 [[itemstatus_web_client]]
+
+== How Item Statuses Work ==
+
+This section goes over all item statuses and their relationship to the system.
+
+=== List of Item Statuses ===
+
+-*Available*: Item is available for checkout.
+-*Checked out*: Item is checked out to a patron account.
+-*Bindery*: Manually set for items that are being sent out to be re-bound.
+-*Lost*: Item has been checked out past a due date threshold or is no longer in a patron’s possession while they’re still responsible for the item. Can be automated based on due date, or manually set by staff.
+-*Missing*: Item cannot be found on the shelves - either manually set, or applied upon “claims returned” (as well as claims never checked out?)
+-*In process*: An item is newly cataloged and waiting to be checked in.
+-*In transit*: Item has been checked in and is being sent to a different library, whether as a return to its home library, or to fulfill a hold.
+-*Reshelving*: A transitional status for items that have been checked in, and need reshelving.
+-*On holds shelf*: Item is captured for a hold of a patron at their pickup location and waiting to be checked out.
+-*On order*: A title has been ordered, but the physical copy has not yet been processed and added to the catalog. Can allow patrons to discover forthcoming acquisitions, and to place holds prior to the library receiving the item in question.
+-*ILL*: Inter-library loan.
+-*Cataloging*: An item has been pulled to be edited by a cataloger.
+-*Reserves*: _info here from reserves module_
+-*Discard/Weed*: Item has been manually flagged for removal from the collection, but has not yet been deleted.
+-*Damaged*: Item is damaged and the patron was billed.
+-*On reservation shelf*: _another booking module thing to insert_
+-*Long Overdue*: Item has been checked out past a due date threshold.
+-*Lost and Paid*: Item was marked lost and the patron paid the replacement cost.
+-*Canceled Transit*: Item that was in transit status but was then canceled.
+
+=== Actions that Change Item Statuses ===
+
+-*Available*: checking in an item that isn’t eligible for a hold
+-*On reservation shelf*: booking module
+-*On order*: acquisitions
+-*In process*: an item is newly cataloged and waiting to be checked in
+-*Damaged*: Marked Damaged needs to be executed on a screen 
+
 == Item Status ==
 
 The Item Status screen is very useful. Many actions can be taken by either circulation staff or catalogers on this screen. Here we will cover some circulation-related functions, namely checking item status, viewing past circulations, inserting item alert messages, marking items missing or damaged, etc.
@@ -610,7 +645,6 @@ The *Edit Item Attributes* function on the *Actions for Selected Items* dropdown
 //image::media/copy_alert_message_web_client.png[]
 
 5) Click *Modify Copies*, then confirm the action.
-
 
 == Long Overdue Items ==
 
