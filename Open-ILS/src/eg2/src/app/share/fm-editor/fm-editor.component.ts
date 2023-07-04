@@ -158,6 +158,9 @@ export class FmRecordEditorComponent
     // for displayMode === 'inline'
     @Input() hideBanner: boolean;
 
+    // In case you want to put your Save action outside of the editor
+    @Input() hideSave: boolean;
+
     // do not close dialog on error saving record
     @Input() remainOpenOnError: false;
 

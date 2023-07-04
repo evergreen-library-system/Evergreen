@@ -266,5 +266,15 @@ export class IdlService {
         newList = newList.concat(remainder);
         return newList;
     }
+
+    toBoolean(value) {
+        if (typeof value === 'string') {
+            if (value === 't') { return true; }
+            if (value === 'f') { return false; }
+            return null;
+        } else {
+            return value;
+        }
+    }
 }
 

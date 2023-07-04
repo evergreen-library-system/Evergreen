@@ -1,25 +1,25 @@
-<ng-template #successStrTmpl i18n>{{recordLabel || idlClassDef.label}} Update Succeeded</ng-template>
+<ng-template #successStrTmpl i18n>{{recordLabel || idlLabelClassDef.label}} Update Succeeded</ng-template>
 <eg-string #successString [template]="successStrTmpl"></eg-string>
 
-<ng-template #updateFailedStrTmpl i18n>Update of {{recordLabel || idlClassDef.label}} failed</ng-template>
+<ng-template #updateFailedStrTmpl i18n>Update of {{recordLabel || idlLabelClassDef.label}} failed</ng-template>
 <eg-string #updateFailedString [template]="updateFailedStrTmpl"></eg-string>
 
-<ng-template #deleteFailedStrTmpl i18n>Delete of {{recordLabel || idlClassDef.label}} failed or was not allowed</ng-template>
+<ng-template #deleteFailedStrTmpl i18n>Delete of {{recordLabel || idlLabelClassDef.label}} failed or was not allowed</ng-template>
 <eg-string #deleteFailedString [template]="deleteFailedStrTmpl"></eg-string>
 
-<ng-template #deleteSuccessStrTmpl i18n>{{recordLabel || idlClassDef.label}} Successfully Deleted</ng-template>
+<ng-template #deleteSuccessStrTmpl i18n>{{recordLabel || idlLabelClassDef.label}} Successfully Deleted</ng-template>
 <eg-string #deleteSuccessString [template]="deleteSuccessStrTmpl"></eg-string>
 
-<ng-template #undeleteFailedStrTmpl i18n>Undelete of {{idlClassDef.label}} failed or was not allowed</ng-template>
+<ng-template #undeleteFailedStrTmpl i18n>Undelete of {{idlLabelClassDef.label}} failed or was not allowed</ng-template>
 <eg-string #undeleteFailedString [template]="undeleteFailedStrTmpl"></eg-string>
 
-<ng-template #undeleteSuccessStrTmpl i18n>{{idlClassDef.label}} Successfully undeleted</ng-template>
+<ng-template #undeleteSuccessStrTmpl i18n>{{idlLabelClassDef.label}} Successfully undeleted</ng-template>
 <eg-string #undeleteSuccessString [template]="undeleteSuccessStrTmpl"></eg-string>
 
-<ng-template #createStrTmpl i18n>{{recordLabel || idlClassDef.label}} Successfully Created</ng-template>
+<ng-template #createStrTmpl i18n>{{recordLabel || idlLabelClassDef.label}} Successfully Created</ng-template>
 <eg-string #createString [template]="createStrTmpl"></eg-string>
 
-<ng-template #createErrStrTmpl i18n>Failed to create new {{recordLabel || idlClassDef.label}}</ng-template>
+<ng-template #createErrStrTmpl i18n>Failed to create new {{recordLabel || idlLabelClassDef.label}}</ng-template>
 <eg-string #createErrString [template]="createErrStrTmpl"></eg-string>
 
 <eg-confirm-dialog #deleteConfirmDialog
@@ -82,7 +82,7 @@
     [initialFilterValues]="initialFilterValues"
     [filterable]="true" [stickyHeader]="true">
   <eg-grid-toolbar-button [disabled]="!canCreate" 
-    label="New {{recordLabel || idlClassDef.label}}" i18n-label (onClick)="createNew()">
+    label="New {{recordLabel || idlLabelClassDef.label}}" i18n-label (onClick)="createNew()">
   </eg-grid-toolbar-button>
   <eg-grid-toolbar-button [disabled]="translatableFields.length === 0"
     label="Apply Translations" i18n-label (onClick)="translate()">
@@ -106,7 +106,7 @@
   </ng-container>
 </eg-grid>
 
-<eg-fm-record-editor #editDialog idlClass="{{idlClass}}" 
+<eg-fm-record-editor #editDialog idlClass="{{idlEditClass || idlClass}}" 
     [recordLabel]="recordLabel"
     [fieldOptions]="fieldOptions"
     [fieldOrder]="fieldOrder"

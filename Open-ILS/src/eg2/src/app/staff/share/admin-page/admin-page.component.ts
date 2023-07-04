@@ -43,6 +43,12 @@ export class AdminPageComponent implements OnInit {
     // that requires no special handling, filtering, etc.
     @Input() dataSource: GridDataSource;
 
+    // An alternative to a custom data source or template fields; if used,
+    // idlClass should be a view over top of idlEditClass, just perhaps with
+    // extra columns and/or filtering.  Whenever an edit, delete, undelete,
+    // or create action is taken, we'll use this class instead of idlClass.
+    @Input() idlEditClass: string;
+
     // Size of create/edito dialog.  Uses large by default.
     @Input() dialogSize: 'sm' | 'lg' = 'lg';
 
@@ -58,6 +64,12 @@ export class AdminPageComponent implements OnInit {
     // If an org unit field is specified, an org unit filter
     // is added to the top of the page.
     @Input() orgField: string;
+
+    // This is ignored if orgField is not set, and is used to specify
+    // additional org fields to be filtered against the selected context
+    // orgs.  All specified org fields are essentially OR'ed together in
+    // the retrieval query.
+    @Input() additionalOrgFields: string[] = [];
 
     // Disable the auto-matic org unit field filter
     @Input() disableOrgFilter: boolean;
@@ -145,6 +157,8 @@ export class AdminPageComponent implements OnInit {
     private deleteConfirmDialog: ConfirmDialogComponent;
 
     idlClassDef: any;
+    idlEditClassDef: any;
+    idlLabelClassDef: any; // for the template
     pkeyField: string;
     configFields: any[]; // IDL field definitions
 
@@ -209,11 +223,17 @@ export class AdminPageComponent implements OnInit {
     }
 
     ngOnInit() {
+        //console.warn('AdminPageComponent, this', this);
 
         this.idlClassDef = this.idl.classes[this.idlClass];
+        this.idlLabelClassDef = this.idlClassDef;
         this.pkeyField = this.idlClassDef.pkey || 'id';
+        if (this.idlEditClass) {
+            this.idlEditClassDef = this.idl.classes[this.idlEditClass];
+            this.idlLabelClassDef = this.idlEditClassDef;
+        }
 
-        this.translatableFields =
+        this.translatableFields = // TODO: a wrinkle in the idlEditClass idea
             this.idlClassDef.fields.filter(f => f.i18n).map(f => f.name);
 
         if (!this.persistKey) {
@@ -245,7 +265,7 @@ export class AdminPageComponent implements OnInit {
             // Use the grid filters as the basis for our default
             // new record (passed to fm-editor).
             if (!this.defaultNewRecord) {
-                const rec = this.idl.create(this.idlClass);
+                const rec = this.idl.create(this.idlEditClass || this.idlClass);
                 Object.keys(this.gridFilters).forEach(field => {
                     // When filtering on the primary key of the current
                     // object type, avoid using it in the default new object.
@@ -280,7 +300,7 @@ export class AdminPageComponent implements OnInit {
         // however we get a defaultNewRecord, we may want to default some org fields to the context org
         if (this.orgFieldsDefaultingToContextOrg) {
             if (!this.defaultNewRecord) {
-                this.defaultNewRecord = this.idl.create(this.idlClass);
+                this.defaultNewRecord = this.idl.create(this.idlEditClass || this.idlClass);
             }
             this.orgFieldsDefaultingToContextOrg.split(/,/).forEach( field => {
                 if (this.defaultNewRecord[field] && this.pkeyField !== field) {
@@ -295,7 +315,9 @@ export class AdminPageComponent implements OnInit {
 
     checkCreatePerms() {
         this.canCreate = false;
-        const pc = this.idlClassDef.permacrud || {};
+        const pc = this.idlEditClass
+            ? (this.idlEditClassDef.permacrud || {})
+            : (this.idlClassDef.permacrud || {});
         const perms = pc.create ? pc.create.perms : [];
         if (perms.length === 0) { return; }
 
@@ -336,12 +358,21 @@ export class AdminPageComponent implements OnInit {
             }
 
             const search: any[] = new Array();
-            const orgFilter: any = {};
+            const orgFilters: any[] = [];
 
             if (this.orgField && (this.searchOrgs || this.contextOrg)) {
-                orgFilter[this.orgField] =
-                    this.searchOrgs.orgIds || [this.contextOrg.id()];
-                search.push(orgFilter);
+                const orgFields = (this.additionalOrgFields || []).concat( [ this.orgField ]);
+                orgFields.forEach( field => {
+                    const orgFilter: any = {};
+                    orgFilter[field] =
+                        this.searchOrgs.orgIds || [this.contextOrg.id()];
+                    orgFilters.push(orgFilter);
+                });
+                if (orgFilters.length == 1) {
+                    search.push(orgFilters[0]);
+                } else if (orgFilters.length > 1) {
+                    search.push( { '-or': orgFilters } );
+                }
             }
 
             Object.keys(this.dataSource.filters).forEach(key => {
@@ -370,6 +401,9 @@ export class AdminPageComponent implements OnInit {
     showEditDialog(idlThing: IdlObject): Promise<any> {
         if (this.disableEdit) {
             return;
+        }
+        if (this.idlEditClass) {
+            idlThing =  this.convertIdlClass2IdlEditClass(idlThing);
         }
         this.editDialog.mode = 'update';
         this.editDialog.recordId = idlThing[this.pkeyField]();
@@ -403,7 +437,24 @@ export class AdminPageComponent implements OnInit {
         editOneThing(idlThings.shift());
     }
 
+    convertIdlClass2IdlEditClass(oldIdlThing: IdlObject): IdlObject {
+        if (!this.idlEditClass
+            || oldIdlThing.classname === this.idlClass
+            || oldIdlThing.classname !== this.idlEditClass) {
+            console.warn('AdminPageComponent, incorrect use of convertIdlClass2IdlEditClass',oldIdlThing);
+            return oldIdlThing;
+        }
+        const newIdlThing = this.idl.create(this.idlEditClass);
+        this.idlEditClassDef.fields.forEach( f => {
+            newIdlThing[f]( oldIdlThing[f]() );
+        });
+        return newIdlThing;
+    }
+
     undeleteSelected(idlThings: IdlObject[]) {
+        if (this.idlEditClass) {
+            idlThings = idlThings.map( thing => this.convertIdlClass2IdlEditClass(thing) );
+        }
         idlThings.forEach(idlThing => idlThing.deleted(false));
         this.pcrud.update(idlThings).subscribe(
             val => {
@@ -419,6 +470,9 @@ export class AdminPageComponent implements OnInit {
     }
 
     deleteSelected(idlThings: IdlObject[]) {
+        if (this.idlEditClass) {
+            idlThings = idlThings.map( thing => this.convertIdlClass2IdlEditClass(thing) );
+        }
         this.deleteConfirmDialog.open().subscribe(confirmed => {
             if ( confirmed ) {
                 this.doDelete(idlThings);

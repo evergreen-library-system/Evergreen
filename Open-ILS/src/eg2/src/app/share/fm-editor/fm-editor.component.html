@@ -246,7 +246,7 @@
     </ng-container>
 
     <button type="button" class="btn btn-info"
-      [disabled]="fmEditForm.invalid" *ngIf="mode !== 'view'"
+      [disabled]="fmEditForm.invalid" *ngIf="mode !== 'view' && !hideSave"
       (click)="save()" i18n>Save</button>
   </div>
 </ng-template>
