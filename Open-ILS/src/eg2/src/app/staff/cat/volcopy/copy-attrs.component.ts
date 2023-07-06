@@ -549,6 +549,34 @@ export class CopyAttrsComponent implements OnInit, AfterViewInit {
             if (value === null || value === undefined) { return; }
             if (field === 'status' && this.volcopy.copyStatIsMagic(value)) { return; }
 
+            // Call number 'value' is a nested object with call number-
+            // specific key-value pairs.
+            // NOTE: Changed values are visible in the interface, but
+            // they are not highlighted the way copy attribute changes are.
+            if (field === 'callnumber') {
+                // Currently supported fields are prefix, suffix, and
+                // classification (label_class).  These all use numeric
+                // values as defaults.
+                Object.keys(value).forEach(field => {
+                    let newVal = value[field];
+
+                    // Only replace values where a default is set.
+                    let defaultValue = -1; // Effectively empty
+                    if (field === 'classification') {
+                        field = 'label_class';
+                        defaultValue = 1; // "Generic"
+                    }
+
+                    if (Number(newVal) >= defaultValue) {
+                        this.context.volNodes().forEach(volNode => {
+                            if (Number(volNode.target[field]()) <= defaultValue) {
+                                volNode.target[field](newVal);
+                            }
+                        });
+                    }
+                });
+            }
+
             if (field === 'statcats') {
                 Object.keys(value).forEach(catId => {
                     if (value[+catId] !== null) {
