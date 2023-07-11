@@ -16,6 +16,9 @@
 <eg-custom-org-unit-trees-dialog #moveNodeElsewhereDialog>
 </eg-custom-org-unit-trees-dialog>
 
+<div i18n>
+  To add new nodes to the custom tree, left-click on the node you wish to add on the left and then left-click on a node on the right that will serve as that node's parent. You may need to expand the custom tree to see the placement. Changes to the custom org tree will require a web server (Apache) reload by your system administrator before taking effect.
+</div>
 <div class="row row-cols-auto org-unit-types-row">
   <div class="col org-unit-types-col-aside">
     <div class="card bg-light rounded p-3" >
@@ -28,7 +31,7 @@
         (nodeClicked)="nodeClicked($event)"
         (nodeChecked)="nodeChecked($event)">
         <div header>
-          <button type="button" class="btn btn-link" [disabled]="copyNodesDisabled" (click)="copyNodes()" i18n>Copy Selected Nodes to Custom Tree</button>
+          <button type="button" class="btn btn-warning btn-link" [disabled]="!isCopyNodesAllowed()" (click)="copyNodes()" i18n>Copy Selected Org Units to Custom Tree</button>
         </div>
       </eg-tree>
     </div>
@@ -44,7 +47,7 @@
     </h3>
     <div class="p-1" >
       <ng-template #selectedRowButtons let-node>
-        <div *ngIf="node.selected">
+        <div *ngIf="node.selected && custom_tree.selectedNodes().length === 1">
           <button type="button" class="btn btn-link p-0" 
             [disabled]="moveNodeUpDisabled" (click)="moveNodeUp(node)" 
             i18n-title title="Move Up" i18n-aria-label aria-label="Move Up">
@@ -61,23 +64,23 @@
             <span class="material-icons" aria-hidden="true">arrow_forward</span>
           </button>
           <button type="button" class="btn btn-link p-0" 
-            [disabled]="deleteNodesDisabled" (click)="deleteNode(node)" 
+            [disabled]="!isDeleteNodesAllowed()" (click)="deleteNode(node)" 
             i18n-title title="Delete" i18n-aria-label aria-label="Delete">
             <span class="material-icons" aria-hidden="true">delete</span>
           </button>
         </div>
       </ng-template>
       <eg-tree
-        [showSelectors]="true"
+        [showSelectors]="false"
         [disableRootSelector]="false"
-        [toggleOnClick]="true"
+        [toggleOnClick]="false"
         [tree]="custom_tree"
         (nodeClicked)="custom_nodeClicked($event)"
         (nodeChecked)="custom_nodeChecked($event)"
         [rowTrailingTemplate]="selectedRowButtons">
         <div header>
-          <button type="button" class="btn btn-link" (click)="applyChanges()" i18n>Save Changes</button>
-          <button type="button" class="btn btn-link" [disabled]="deleteNodesDisabled" (click)="deleteSelectedNodes()" i18n>Delete</button>
+          <button type="button" class="btn btn-warning btn-link" (click)="applyChanges()" i18n>Save Changes</button>
+          <!-- Don't need this unless we're allowing multi-select, err, toggleOnClick. <button type="button" class="btn btn-link" [disabled]="!isDeleteNodesAllowed()" (click)="deleteSelectedNodes()" i18n>Delete</button>-->
         </div>
         <div footer>
         </div>

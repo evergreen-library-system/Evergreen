@@ -1,6 +1,6 @@
 <ng-template #dialogContent>
   <div class="modal-header bg-info">
-    <h4 class="modal-title" i18n>Move Node Elsewhere</h4>
+    <h4 class="modal-title" i18n>Move Org Unit Elsewhere</h4>
     <button type="button" class="btn-close btn-close-white" 
                           i18n-aria-label aria-label="Close" 
                                           (click)="close()"></button>
@@ -9,9 +9,9 @@
     <h3 i18n>Custom Org Unit Tree</h3>
     <div class="border rounded p-1" >
       <eg-tree
-        [showSelectors]="true"
+        [showSelectors]="false"
         [disableRootSelector]="false"
-        [toggleOnClick]="true"
+        [toggleOnClick]="false"
         [tree]="customTree"
         (nodeClicked)="dialog_nodeClicked($event)">
       </eg-tree>
@@ -20,7 +20,7 @@
   <div class="modal-footer">
     <button type="button" class="btn btn-success" 
                           [disabled]="moveNodeHereDisabled"
-                          (click)="moveNodeHere()" i18n>Move Node Here</button>
+                          (click)="moveNodeHere()" i18n>Move Org Unit Here</button>
     <button type="button" class="btn btn-warning" 
                           (click)="close()" i18n>Cancel Move</button>
   </div>

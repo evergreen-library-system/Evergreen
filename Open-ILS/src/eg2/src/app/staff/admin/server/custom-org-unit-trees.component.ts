@@ -51,7 +51,7 @@ export class CustomOrgUnitTreesComponent implements OnInit {
         try {
             await this.loadAouTree(this.org.root().id());
             await this.loadCustomTree('opac');
-            console.log('component this', this);
+            console.warn('CustomOrgUnitTreesComponent, this', this);
         } catch(E) {
             console.error('caught during ngOnInit',E);
         }
@@ -204,23 +204,37 @@ export class CustomOrgUnitTreesComponent implements OnInit {
     }
 
     isCopyNodesAllowed(): boolean {
-      const sourceNodes = this.tree.selectedNodes();
-      if (sourceNodes.length === 0) {
-          console.log('isCopyNodesAllowed: no sourceNodes selected', false);
-          return false;
-      }
-      for (let sourceNode of sourceNodes) {
-          if (this.custom_tree.findNodesByFieldAndValue('label', sourceNode.label).length > 0) {
-              console.log('isCopyNodesAllowed: selected SourceNode already in custom_tree', false);
-              return false;
-          }
-          if (sourceNode === this.tree.rootNode) {
-              console.log('isCopyNodesAllowed: rootNode is sacrosanct', false);
-              return false;
-          }
-      }
-      console.log('isCopyNodesAllowed', true);
-      return true;
+        try {
+            if (!this.tree) {
+                console.log('isCopyNodesAllowed: tree not ready', false);
+                return false;
+            }
+            const sourceNodes = this.tree.selectedNodes();
+            if (sourceNodes.length === 0) {
+                //console.log('isCopyNodesAllowed: no sourceNodes selected', false);
+                return false;
+            }
+            const destinationNode = this.custom_tree.selectedNode();
+            if (!destinationNode) {
+                //console.log('isCopyNodesAllowed: no destinationNode selected', false);
+                return false;
+            }
+            for (let sourceNode of sourceNodes) {
+                if (this.custom_tree.findNodesByFieldAndValue('label', sourceNode.label).length > 0) {
+                    //console.log('isCopyNodesAllowed: selected SourceNode already in custom_tree', false);
+                    return false;
+                }
+                if (sourceNode === this.tree.rootNode) {
+                    //console.log('isCopyNodesAllowed: rootNode is sacrosanct', false);
+                    return false;
+                }
+            }
+            //console.log('isCopyNodesAllowed', true);
+            return true;
+        } catch(E) {
+            console.log('isCopyNodesAllowed, error', E);
+            return false;
+        }
     }
 
     copyNodes() {
@@ -230,17 +244,19 @@ export class CustomOrgUnitTreesComponent implements OnInit {
         if (!this.isCopyNodesAllowed()) {
             return;
         }
-        this._copyNodes(sourceNodes, targetNode);
+        this._copyNodes(sourceNodes, targetNode, false);
     }
 
-    _copyNodes(sourceNodes: TreeNode[], targetNode: TreeNode) {
+    _copyNodes(sourceNodes: TreeNode[], targetNode: TreeNode, cloneChildren = true) {
         console.log('_copyNodes', { sourceNodes: sourceNodes, targetNode: targetNode });
         const traverseTreeAndCopySourceNodes = (currentNode: TreeNode, targetNode: TreeNode) => {
             console.log('traverseTreeAndCopySourceNodes', currentNode.label);
             if (sourceNodes.map(n => n.label).includes(currentNode.label)) {
                 console.log('found a source node, copying',currentNode.label);
                 let newNode = currentNode.clone();
-                newNode.children = [];
+                if (!cloneChildren) {
+                    newNode.children = [];
+                }
                 targetNode.children.push(newNode);
                 targetNode = newNode;
             }
@@ -255,19 +271,28 @@ export class CustomOrgUnitTreesComponent implements OnInit {
     }
 
     isDeleteNodesAllowed(): boolean {
-        const targetNodes = this.custom_tree.selectedNodes();
-        if (targetNodes.length === 0) {
-            console.log('isDeleteNodesAllowed: no targetNodes selected', false);
-            return false;
-        }
-        for (let targetNode of targetNodes) {
-            if (targetNode === this.custom_tree.rootNode) {
-                console.log('isDeleteNodesAllowed: rootNode is sacrosanct', false);
+        try {
+            if (!this.custom_tree) {
+                console.log('isDeleteNodesAllowed: custom_tree not ready', false);
                 return false;
             }
+            const targetNodes = this.custom_tree.selectedNodes();
+            if (targetNodes.length === 0) {
+                //console.log('isDeleteNodesAllowed: no targetNodes selected', false);
+                return false;
+            }
+            for (let targetNode of targetNodes) {
+                if (targetNode === this.custom_tree.rootNode) {
+                    //console.log('isDeleteNodesAllowed: rootNode is sacrosanct', false);
+                    return false;
+                }
+            }
+            //console.log('isDeleteNodesAllowed', true);
+            return true;
+        } catch(E) {
+            console.log('isDeleteNodesAllowed, error', E);
+            return false;
         }
-        console.log('isDeleteNodesAllowed', true);
-        return true;
     }
 
     deleteNodes(targetNodes: TreeNode[]) {
@@ -277,6 +302,10 @@ export class CustomOrgUnitTreesComponent implements OnInit {
         if (! window.confirm($localize`Are you sure?`)) {
             return;
         }
+
+        // Sort nodes by depth in descending order
+        targetNodes.sort((a, b) => b.depth - a.depth);
+
         for (let targetNode of targetNodes) {
             if (targetNode !== this.custom_tree.rootNode) {
                 console.log('removing node',targetNode);
@@ -359,8 +388,17 @@ export class CustomOrgUnitTreesComponent implements OnInit {
 
     moveNodeElsewhere() {
         let nodeToMove = this.custom_tree.selectedNode();
-        this.moveNodeElsewhereDialog.customTree = this.custom_tree.clone();
+        const selectionTree = this.custom_tree.clone();
+
+        // prune nodeToMove and descendants from destination selection tree
+        const equivalentNode = selectionTree.findNodesByFieldAndValue(
+            'label',nodeToMove.label)[0];
+        selectionTree.removeNode(equivalentNode);
+
+        this.moveNodeElsewhereDialog.customTree = selectionTree;
         this.moveNodeElsewhereDialog.nodeToMove = nodeToMove;
+
+
         this.moveNodeElsewhereDialog.open({size: 'lg'}).subscribe(
             result => {
                 console.log('modal result',result);
@@ -382,7 +420,8 @@ export class CustomOrgUnitTreesComponent implements OnInit {
                         // Add the selected node as the last child of the target node in custom_tree.
                         if (targetNodeInCustomTree) {
                             this.custom_tree.removeNode(nodeToMove);
-                            this._copyNodes([nodeToMove], targetNodeInCustomTree);
+                            //this._copyNodes([nodeToMove], targetNodeInCustomTree);
+                            targetNodeInCustomTree.children.push( nodeToMove );
                         }
 
                         // re-index
