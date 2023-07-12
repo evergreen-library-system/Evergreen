@@ -544,7 +544,9 @@ This section goes over all item statuses and their relationship to the system.
 
 -*Available*: Item is available for checkout.
 
--*Checked out*: Item is checked out to a patron account.
+-*Checked out*: Item is checked out to a patron account.  This status does not indicate whether or not the item is overdue.
+
+-*Claims Returned*: item has been claimed as returned by the patron. This option as an item status is controlled by a library setting.
 
 -*Bindery*: Manually set for items that are being sent out to be re-bound.
 
@@ -566,7 +568,7 @@ This section goes over all item statuses and their relationship to the system.
 
 -*Cataloging*: An item has been pulled to be edited by a cataloger.
 
--*Reserves*: _info here from reserves module_
+-*Reserves*: Evergreen default status.
 
 -*Discard/Weed*: Item has been manually flagged for removal from the collection, but has not yet been deleted.
 
@@ -591,6 +593,165 @@ This section goes over all item statuses and their relationship to the system.
 -*In process*: an item is newly cataloged and waiting to be checked in
 
 -*Damaged*: Marked Damaged needs to be executed on a screen 
+
+[cols= "6,23"]
+|===
+|Name |Holdable? |OPAC Visible? |Sets copy active? |Is available? |Assignable?
+
+|Available
+|Yes
+|Yes
+|Yes
+|Yes
+|System controller
+
+|Bindery
+|No
+|No
+|No
+|No
+|Yes
+
+|Canceled Transit
+|Yes
+|Yes
+|No
+|No
+|System controlled
+
+|Cataloging
+|No
+|No
+|No
+|No
+|Yes
+
+|Checked out
+|Yes
+|Yes
+|Yes
+|No
+|System controlled
+
+|Damaged
+|No
+|No
+|No
+|No
+|Yes
+
+|Discard/weed
+|No
+|No
+|No
+|No
+|Yes
+
+|ILL
+|No
+|No
+|Yes
+|No
+|Yes
+
+|In process
+|Yes
+|Yes
+|No
+|No
+|Yes
+
+|In receiving
+|Yes
+|Yes
+|No
+|No
+|System controlled
+
+|In transit
+|Yes
+|Yes
+|No
+|No
+|System controlled
+
+|Long Overdue
+|No
+|No
+|No
+|No
+|System controlled
+
+|Long Overdue (Legacy)
+|No
+|No
+|No
+|No
+|Yes
+
+|Lost
+|No
+|No
+|No
+|No
+|Yes
+
+|Lost and paid
+|No
+|No
+|No
+|No
+|Yes
+
+|Missing
+|No
+|No
+|No
+|No
+|Yes
+
+|On holds shelf
+|Yes
+|Yes
+|Yes
+|No
+|System controlled
+
+|On order
+|No
+|No
+|No
+|No
+|Yes
+
+|On reservation shelf
+|No
+|No
+|Yes
+|No
+|Yes
+
+|Reserves
+|No
+|No
+|Yes
+|No
+|Yes
+
+|Reshelving
+|Yes
+|Yes
+|Yes
+|Yes
+|System controlled
+
+|Temporarily unavailable
+|No
+|No
+|No
+|No
+|Yes
+|===
 
 == Item Status ==
 
