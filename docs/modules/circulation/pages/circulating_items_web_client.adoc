@@ -594,7 +594,7 @@ This section goes over all item statuses and their relationship to the system.
 
 -*Damaged*: Marked Damaged needs to be executed on a screen 
 
-[cols= "6,23"]
+[cols= "6,6"]
 |===
 |Name |Holdable? |OPAC Visible? |Sets copy active? |Is available? |Assignable?
 
