@@ -278,7 +278,8 @@ export class VolCopyService {
                         const orgVols = vols.filter(v => v.owning_lib() === orgId);
                         orgVols.forEach(vol => {
                             vol.label_class(
-                                sets['cat.default_classification_scheme'] || 1
+				// Strip quotes resulting from old style ou settings
+                                Number(sets['cat.default_classification_scheme']) || 1
                             );
                         });
                     });
