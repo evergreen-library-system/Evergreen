@@ -594,6 +594,8 @@ This section goes over all item statuses and their relationship to the system.
 
 -*Damaged*: Marked Damaged needs to be executed on a screen 
 
+== Item Status Properties ==
+
 |===
 |Name |Holdable? |OPAC Visible? |Sets copy active? |Is available? |Assignable?
 
@@ -751,6 +753,19 @@ This section goes over all item statuses and their relationship to the system.
 |No
 |Yes
 |===
+
+The following properties can be set for each status:
+
+-*Holdable* - If checked, users can place holds on copies in this status, provided nothing else prevents holds. If unchecked, users cannot place holds on copies in this status.
+
+-*OPAC Visible* - If checked, copies in this status will be visible in the public catalog. If unchecked, copies in this status will Not be visible in the public catalog, but they will be visible when using the catalog in the staff client.
+Sets copy active - If checked, moving a copy that does not yet have an active date to this status will set the active date. If the copy already has an active date, then no changes will be made to the active date. If “No”, this status will never set the copy’s active date.
+
+-*Is Available* - If checked, copies with this status will appear in catalog searches where “limit to available” is selected as a search filter. Also, copies with this status will check out without status warnings. By default, the “Available” and “Reshelving” statuses have the “Is Available” flag set.
+
+Default Evergreen statuses have a further property:
+
+-*Assignable* – Status is system controlled and editing to either assign or change in the Holdings editor is not always possible.
 
 == Item Status ==
 
