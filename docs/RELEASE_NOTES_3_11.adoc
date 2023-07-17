@@ -166,6 +166,30 @@ to be added in one invocation. This reduces the number of clicks
 and keyboard interactions required when adding a large number of
 permission mappings.
 
+== Custom Penalties ==
+
+This development creates a set of Library Settings that a staff
+member with appropriate permissions can use to set a custom value
+for a stock penalty according to the following workflow:
+
+. Create a new penalty in Standing Penalties
+. Set the desired penalty threshold in Group Penalty Thresholds
+. Use the Library Setting to associate your new penalty with a
+   stock system penalty and organizational unit context.
+
+The custom penalty will be automatically applied in place of the
+stock penalty at the specified org units, when the patrons'
+account meets the penalty criteria.
+
+System penalties that can be overridden:
+
+* PATRON_EXCEEDS_FINES
+* PATRON_EXCEEDS_OVERDUE_COUNT
+* PATRON_EXCEEDS_CHECKOUT_COUNT
+* PATRON_EXCEEDS_LOST_COUNT
+* PATRON_EXCEEDS_LONGOVERDUE_COUNT
+* PATRON_EXCEEDS_COLLECTIONS_WARNING
+* PATRON_IN_COLLECTIONS
 
 
 = Architecture =
