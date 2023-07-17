@@ -126,7 +126,7 @@ WARNING: The interface does not warn you before deleting a standing penalty type
 [[custom_penalties]]
 == Custom Penalties ==
 
-As of *VERSION*, administrators may customize system-applied penalties by using the following library settings to establish a mapping between a system-applied penalty and a new standing penalty that you create:
+As of Evergreen 3.11, administrators may customize system-applied penalties by using the following library settings to establish a mapping between a system-applied penalty and a new standing penalty that you create:
 
 * Custom PATRON_EXCEEDS_FINES penalty
 * Custom PATRON_EXCEEDS_OVERDUE_COUNT penalty
