@@ -425,6 +425,7 @@ input.small {
 .btn-primary {
   background-color: #0A58CA;
   border-color: #0A58CA;
+  color: #fff;
 }
 
 .btn-primary:hover,
@@ -433,17 +434,36 @@ input.small {
 .btn-primary.focus {
   background-color: #0848A5;
   border-color: #0848A5;
+  color: #fff;
 }
 
 .btn-outline-primary {
+  background-color: #fff;
   border-color: #0A58CA;
+  color: #0A58CA;
 }
 
 .btn-outline-primary:hover,
 .btn-outline-primary.hover,
 .btn-outline-primary:focus,
 .btn-outline-primary.focus {
+  background-color: #fff;
   border-color: #0848A5;
+  color: #0848A5;
+}
+
+.btn-primary.disabled,
+.btn-primary:disabled {
+  color: #fff;
+  background-color: #156EF4;
+  border-color: #156EF4;
+}
+
+.btn-outline-primary.disabled,
+.btn-outline-primary:disabled {
+  color: #156EF4;
+  background-color: #fff;
+  border-color: #156EF4;
 }
 
 .btn-info {
@@ -458,22 +478,47 @@ input.small {
 .btn-info.focus {
   background-color: #076376;
   border-color: #076376;
+  color: #fff;
 }
 
 .btn-outline-info {
+  background-color: #fff;
   border-color: #087990;
+  color: #087990;
 }
 
 .btn-outline-info:hover,
 .btn-outline-info.hover,
 .btn-outline-info:focus,
-.btn-outline-info.focus {
+.btn-outline-info.focus,
+.btn-check:active+.btn-info,
+.btn-check:checked+.btn-info,
+.btn-info.active,
+.btn-info:active,
+.show>.btn-info.dropdown-toggle {
+  color: #fff;
+  background-color: #076376;
   border-color: #076376;
+}
+
+.btn-info.disabled,
+.btn-info:disabled {
+  color: #fff;
+  background-color: #0A92AE;
+  border-color: #0A92AE;
+}
+
+.btn-outline-info.disabled,
+.btn-outline-info:disabled {
+  color: #0A92AE;
+  background-color: #fff;
+  border-color: #0A92AE;
 }
 
 .btn-success {
   background-color: #198754;
   border-color: #198754;
+  color: #fff;
 }
 
 .btn-success:hover,
@@ -482,17 +527,36 @@ input.small {
 .btn-success.focus {
   background-color: #157146;
   border-color: #157146;
+  color: #fff;
 }
 
 .btn-outline-success {
+  background-color: #fff;
   border-color: #198754;
+  color: #198754;
 }
 
 .btn-outline-success:hover,
 .btn-outline-success.hover,
 .btn-outline-success:focus,
 .btn-outline-success.focus {
+  background-color: #fff;
   border-color: #157146;
+  color: #157146;
+}
+
+.btn-success.disabled,
+.btn-success:disabled {
+  color: #fff;
+  background-color: #1D9F63;
+  border-color: #1D9F63;
+}
+
+.btn-outline-success.disabled,
+.btn-outline-success:disabled {
+  color: #1D9F63;
+  background-color: #fff;
+  border-color: #1D9F63;
 }
 
 /* Less intense, WCAG AAA-compliant badges */
