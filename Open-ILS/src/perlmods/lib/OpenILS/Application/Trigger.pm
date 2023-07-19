@@ -662,7 +662,7 @@ sub pending_events {
             $query->[0]->{'+atevdef'} = {'-or' => [ {granularity => $granularity}, {granularity => undef} ] };
         }
     } else {
-        $query->[0]->{'+atevdef'} = {granularity => undef};
+        $query->[0]->{'+atevdef'} = { '-or' => [ {granularity => undef}, {granularity => { '~' => '^\s*$' }} ] };
     }
 
     return new_editor(xact=>1)->search_action_trigger_event(
