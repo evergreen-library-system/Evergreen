@@ -1,11 +1,66 @@
-= Evergreen 3.11.0 Release Notes =
+= Evergreen 3.11 Release Notes =
 :toc:
 :numbered:
 :toclevels: 3
 
-== Upgrade notes ==
+== Evergreen 3.11.1 ==
 
-== New Features ==
+This release contains bug fixes improving on Evergreen 3.11.0.
+
+=== Upgrade notes ===
+
+
+=== Bug Fixes ===
+
+==== Accessibility ====
+
+* Fixes color contrast in tooltip links (https://bugs.launchpad.net/evergreen/+bug/2011056[Bug 2011056)]
+* Restores checkbox borders in Bootstrap 5 (https://bugs.launchpad.net/evergreen/+bug/2019735(Bug 2019735)]
+
+
+==== Acquisitions ====
+
+* Adds keyboard support for links in purchase order line item list (https://bugs.launchpad.net/evergreen/+bug/2019032[Bug 2019032]) 
+
+==== Administration ====
+
+* Removes unused npm package ngx-i18nsupport (https://bugs.launchpad.net/evergreen/+bug/2018694[Bug 20186940]) 
+
+
+==== Circulation ====
+
+* Fixes issues with place hold from patron record in Angular and AngularJS (https://bugs.launchpad.net/evergreen/+bug/1996818[Bug 1996818])
+
+==== Documentation ====
+
+* Fixes GitHub actions docs build errors (https://bugs.launchpad.net/evergreen/+bug/2022366[Bug 2022366)]
+* Further updating references from master to main in documentation and comments
+* Fixes to Standing Penalties docs & release notes (https://bugs.launchpad.net/evergreen/+bug/2022962[Bug 2022962])
+
+
+==== Reports ====
+
+* Fixes an issue where enabling Shibboleth broke reports output access (https://bugs.launchpad.net/evergreen/+bug/2008252[Bug 2008252)]
+
+
+=== Acknowledgements ===
+
+We would like to thank the following individuals who contributed code, testing, and documentation to the 3.11.1 point release of Evergreen:
+
+* John Amundson
+* Jason Boyer
+* Dan Briem
+* Galen Charlton
+* Jeff Davis
+* Stephanie Leary
+* Andrea Buntz Neiman
+* Jane Sandberg
+* Jason Stephenson
+
+
+
+
+== Evergreen 3.11.0 ==
 
 :leveloffset: +2
 
