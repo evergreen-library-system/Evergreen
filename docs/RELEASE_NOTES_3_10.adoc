@@ -3,6 +3,73 @@
 :numbered:
 :toclevels: 4
 
+== Evergreen 3.10.3 ==
+
+This release contains bug fixes improving on Evergreen 3.10.2.
+
+=== Upgrade notes ===
+
+* https://bugs.launchpad.net/evergreen/+bug/2024682[Bug 2024682] requires a schema update.
+
+=== Bug Fixes ===
+
+==== Accessibility ====
+
+* Adds aria-labels to AngularJS grid controls (https://bugs.launchpad.net/evergreen/+bug/1887866[Bug 1887866])
+* Fixes color contrast in tooltip links (https://bugs.launchpad.net/evergreen/+bug/2011056[Bug 2011056)]
+
+==== Administration ====
+
+* Redirects WARN statements to DEBUG in StatCat.pm (https://bugs.launchpad.net/evergreen/+bug/2004205[Bug 2004205])
+* Restores correct version of action.item_user_circ_test function (https://bugs.launchpad.net/evergreen/+bug/2024682[Bug 2024682])
+
+
+==== Cataloging ====
+
+* Restores ability to edit Item Notes (https://bugs.launchpad.net/evergreen/+bug/1983628[Bug 1983628)]
+
+==== Circulation ====
+
+* Fixes issues with place hold from patron record in Angular and AngularJS (https://bugs.launchpad.net/evergreen/+bug/1996818[Bug 1996818])
+
+
+==== Documentation ====
+
+* Removes obsolete RFID Integration documentation (https://bugs.launchpad.net/evergreen/+bug/1955666[Bug 1955666])
+* Corrections to archive stat cat documentation (https://bugs.launchpad.net/evergreen/+bug/1836221[Bug 1836221])
+* Fixes GitHub actions docs build errors (https://bugs.launchpad.net/evergreen/+bug/2022366[Bug 2022366)]
+
+
+==== Reports ====
+
+* Fixes an issue where enabling Shibboleth broke reports output access (https://bugs.launchpad.net/evergreen/+bug/2008252[Bug 2008252)]
+
+
+=== Acknowledgements ===
+
+We would like to thank the following individuals who contributed code, testing, and documentation to the 3.10.3 point release of Evergreen:
+
+* John Amundson
+* Jason Boyer
+* Dan Briem
+* Galen Charlton
+* Jeff Davis
+* Elaine Hardy
+* Stephanie Leary
+* Terran McCanna
+* Gina Monti
+* Andrea Buntz Neiman
+* Mike Risher
+* Jane Sandberg
+* Chris Sharp
+* Jason Stephenson
+* Jessica Woolford
+
+
+
+
+
+
 == Evergreen 3.10.2 ==
 
 This release contains bug fixes improving on Evergreen 3.10.1.  This release also includes
@@ -69,7 +136,7 @@ This is https://bugs.launchpad.net/evergreen/+bug/1908576[Bug 1908576].
 * Fixes duplicate ID in staff catalog bib actions (https://bugs.launchpad.net/evergreen/+bug/2016341[Bug 2016341])
 * Adds empty alt attributes for images and icons that already have equivalent text representation (https://bugs.launchpad.net/evergreen/+bug/2018208[Bug 2018208])
 * Adds labeling to captcha math problem in OPAC (https://bugs.launchpad.net/evergreen/+bug/2015141[Bug 2015141])
-* Fixes tab order in adminitration splash pages (https://bugs.launchpad.net/evergreen/+bug/2015137)
+* Fixes tab order in administration splash pages (https://bugs.launchpad.net/evergreen/+bug/2015137[Bug 2015137])
 * Fixes default modal background color (https://bugs.launchpad.net/evergreen/+bug/2008918[Bug 2008918])
 * Adds aria-label to staff catalog search +/- buttons (https://bugs.launchpad.net/evergreen/+bug/2002363[Bug 2002363])
 * Adds H1 headings to staff pages (https://bugs.launchpad.net/evergreen/+bug/1994711[Bug 1994711])
