@@ -7,10 +7,18 @@
 
 This release contains bug fixes improving on Evergreen 3.11.0.
 
+This includes a fix for a critical security issue. Users are advised to
+upgrade as soon as possible.
+
 === Upgrade notes ===
 
 
 === Bug Fixes ===
+
+==== Security ===
+
+* Fixes an issue in `open-ils.fielder` that could enable unauthenticated remote SQL
+  injection attacks.
 
 ==== Accessibility ====
 
