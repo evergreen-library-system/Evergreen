@@ -7,11 +7,19 @@
 
 This release contains bug fixes improving on Evergreen 3.10.2.
 
+This includes a fix for a critical security issue. Users are advised to
+upgrade as soon as possible.
+
 === Upgrade notes ===
 
 * https://bugs.launchpad.net/evergreen/+bug/2024682[Bug 2024682] requires a schema update.
 
 === Bug Fixes ===
+
+==== Security ===
+
+* Fixes an issue in `open-ils.fielder` that could enable unauthenticated remote SQL
+  injection attacks.
 
 ==== Accessibility ====
 
