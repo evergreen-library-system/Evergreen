@@ -7,15 +7,15 @@ msgid ""
 msgstr ""
 "Project-Id-Version: evergreen\n"
 "Report-Msgid-Bugs-To: FULL NAME <EMAIL@ADDRESS>\n"
-"POT-Creation-Date: 2023-05-18 19:30+0000\n"
+"POT-Creation-Date: 2023-05-23 01:42+0000\n"
 "PO-Revision-Date: 2023-05-05 21:40+0000\n"
 "Last-Translator: Noemí Jiménez <Unknown>\n"
 "Language-Team: Spanish <es@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2023-05-19 04:54+0000\n"
-"X-Generator: Launchpad (build 333bbdc825b25f14e50a980a2dbe4dc39f3d34d9)\n"
+"X-Launchpad-Export-Date: 2023-05-24 06:14+0000\n"
+"X-Generator: Launchpad (build c43d60b7954ab6ec7298e66f7f5c3ccc58e1a52d)\n"
 
 #. ("{{pendingXacts | date:\"short\"}}")
 #: ../../Open-ILS/src/templates/staff/t_login.tt2:62
@@ -140,7 +140,7 @@ msgstr ""
 msgid " from "
 msgstr " de "
 
-#: ../../Open-ILS/src/templates/staff/share/t_autogrid.tt2:226
+#: ../../Open-ILS/src/templates/staff/share/t_autogrid.tt2:231
 msgid "#"
 msgstr "#"
 
@@ -499,7 +499,7 @@ msgstr "Precio de adquisición"
 msgid "Action"
 msgstr "Acción"
 
-#: ../../Open-ILS/src/templates/staff/cat/item/index.tt2:95 ../../Open-ILS/src/templates/staff/circ/curbside/t_schedule_pickup.tt2:77 ../../Open-ILS/src/templates/staff/share/t_autogrid.tt2:96
+#: ../../Open-ILS/src/templates/staff/cat/item/index.tt2:95 ../../Open-ILS/src/templates/staff/circ/curbside/t_schedule_pickup.tt2:77 ../../Open-ILS/src/templates/staff/share/t_autogrid.tt2:99
 msgid "Actions"
 msgstr "Acciones"
 
@@ -843,7 +843,7 @@ msgstr "Alertas"
 msgid "Alias"
 msgstr "Alias"
 
-#: ../../Open-ILS/src/templates/staff/reporter/share/report_strings.tt2:46 ../../Open-ILS/src/templates/staff/serials/t_view_items_grid.tt2:11 ../../Open-ILS/src/templates/staff/share/t_autogrid.tt2:128
+#: ../../Open-ILS/src/templates/staff/reporter/share/report_strings.tt2:46 ../../Open-ILS/src/templates/staff/serials/t_view_items_grid.tt2:11 ../../Open-ILS/src/templates/staff/share/t_autogrid.tt2:132
 msgid "All"
 msgstr "Todo"
 
@@ -867,7 +867,7 @@ msgstr "Todas las páginas"
 msgid "All classes"
 msgstr "Todas las clases"
 
-#: ../../Open-ILS/src/templates/staff/share/t_autogrid.tt2:230
+#: ../../Open-ILS/src/templates/staff/share/t_autogrid.tt2:235
 msgid "All rows"
 msgstr ""
 
@@ -3653,7 +3653,7 @@ msgstr ""
 msgid "Done"
 msgstr "Hecho"
 
-#: ../../Open-ILS/src/templates/staff/share/t_autogrid.tt2:197
+#: ../../Open-ILS/src/templates/staff/share/t_autogrid.tt2:202
 msgid "Download Full CSV"
 msgstr ""
 
@@ -4163,7 +4163,7 @@ msgstr ""
 msgid "Exit"
 msgstr "Salir"
 
-#: ../../Open-ILS/src/templates/staff/share/t_autogrid.tt2:269
+#: ../../Open-ILS/src/templates/staff/share/t_autogrid.tt2:274
 msgid "Expand"
 msgstr "Expandir"
 
@@ -4659,7 +4659,7 @@ msgstr ""
 msgid "Global Flags"
 msgstr "Banderas Globales"
 
-#: ../../Open-ILS/src/templates/staff/share/t_autogrid.tt2:148
+#: ../../Open-ILS/src/templates/staff/share/t_autogrid.tt2:152
 msgid "Go To..."
 msgstr "Ir a..."
 
@@ -4705,6 +4705,10 @@ msgstr "Mayor o igual a"
 
 #: ../../Open-ILS/src/templates/staff/share/t_grid_columns.tt2:6
 msgid "Grid Columns Configuration"
+msgstr ""
+
+#: ../../Open-ILS/src/templates/staff/share/t_autogrid.tt2:167
+msgid "Grid Options"
 msgstr ""
 
 #: ../../Open-ILS/src/templates/staff/circ/patron/t_bills_list.tt2:115
@@ -4806,7 +4810,7 @@ msgstr ""
 msgid "Help"
 msgstr "Ayuda"
 
-#: ../../Open-ILS/src/templates/staff/share/t_autogrid.tt2:187
+#: ../../Open-ILS/src/templates/staff/share/t_autogrid.tt2:192
 msgid "Hide All Columns"
 msgstr "Ocultar todas las columnas"
 
@@ -6118,11 +6122,11 @@ msgstr ""
 msgid "Make New Appointment"
 msgstr ""
 
-#: ../../Open-ILS/src/templates/staff/share/t_autogrid.tt2:283
+#: ../../Open-ILS/src/templates/staff/share/t_autogrid.tt2:288
 msgid "Make column narrower"
 msgstr "Hacer la columna angosta"
 
-#: ../../Open-ILS/src/templates/staff/share/t_autogrid.tt2:277
+#: ../../Open-ILS/src/templates/staff/share/t_autogrid.tt2:282
 msgid "Make column wider"
 msgstr "Hacer la columna más amplia"
 
@@ -6142,11 +6146,11 @@ msgstr ""
 msgid "Manage Authorities"
 msgstr "Manejo de Autoridades"
 
-#: ../../Open-ILS/src/templates/staff/share/t_autogrid.tt2:174
+#: ../../Open-ILS/src/templates/staff/share/t_autogrid.tt2:179
 msgid "Manage Column Widths"
 msgstr ""
 
-#: ../../Open-ILS/src/templates/staff/share/t_autogrid.tt2:169
+#: ../../Open-ILS/src/templates/staff/share/t_autogrid.tt2:174
 msgid "Manage Columns"
 msgstr ""
 
@@ -6775,7 +6779,7 @@ msgstr ""
 msgid "Next"
 msgstr "Siguiente"
 
-#: ../../Open-ILS/src/templates/staff/share/t_autogrid.tt2:89
+#: ../../Open-ILS/src/templates/staff/share/t_autogrid.tt2:91 ../../Open-ILS/src/templates/staff/share/t_autogrid.tt2:92
 msgid "Next Page"
 msgstr "Siguiente página"
 
@@ -6819,7 +6823,7 @@ msgstr ""
 msgid "No Hold Group Selected"
 msgstr ""
 
-#: ../../Open-ILS/src/templates/staff/share/t_autogrid.tt2:293
+#: ../../Open-ILS/src/templates/staff/share/t_autogrid.tt2:298
 msgid "No Items To Display"
 msgstr "No hay artículos para mostrar"
 
@@ -7412,7 +7416,7 @@ msgid "PO Line Item ID: %1"
 msgstr ""
 
 #. ("{{page()}}")
-#: ../../Open-ILS/src/templates/staff/share/t_autogrid.tt2:136
+#: ../../Open-ILS/src/templates/staff/share/t_autogrid.tt2:140
 msgid "Page %1"
 msgstr "Página %1"
 
@@ -8056,7 +8060,7 @@ msgstr "Anterior"
 msgid "Previous Circ Group"
 msgstr "Anterior Grupo de Circ"
 
-#: ../../Open-ILS/src/templates/staff/share/t_autogrid.tt2:78
+#: ../../Open-ILS/src/templates/staff/share/t_autogrid.tt2:79 ../../Open-ILS/src/templates/staff/share/t_autogrid.tt2:80
 msgid "Previous Page"
 msgstr "Página anterior"
 
@@ -8088,7 +8092,7 @@ msgstr ""
 msgid "Print Feed Option"
 msgstr ""
 
-#: ../../Open-ILS/src/templates/staff/share/t_autogrid.tt2:201
+#: ../../Open-ILS/src/templates/staff/share/t_autogrid.tt2:206
 msgid "Print Full Grid"
 msgstr ""
 
@@ -8901,7 +8905,7 @@ msgstr ""
 msgid "Required Fields"
 msgstr "Información Requisita"
 
-#: ../../Open-ILS/src/templates/staff/share/t_autogrid.tt2:192
+#: ../../Open-ILS/src/templates/staff/share/t_autogrid.tt2:197
 msgid "Reset Columns"
 msgstr "Reiniciar columnas"
 
@@ -9067,15 +9071,15 @@ msgid "Row"
 msgstr ""
 
 #. ("{{$index + offset() + 1}}")
-#: ../../Open-ILS/src/templates/staff/share/t_autogrid.tt2:312
+#: ../../Open-ILS/src/templates/staff/share/t_autogrid.tt2:317
 msgid "Row %1"
 msgstr ""
 
-#: ../../Open-ILS/src/templates/staff/share/t_autogrid.tt2:301
+#: ../../Open-ILS/src/templates/staff/share/t_autogrid.tt2:306
 msgid "Row Index"
 msgstr "Indice de la fila"
 
-#: ../../Open-ILS/src/templates/staff/share/t_autogrid.tt2:226
+#: ../../Open-ILS/src/templates/staff/share/t_autogrid.tt2:231
 msgid "Row Number Column"
 msgstr "Fila Columna Número"
 
@@ -9084,7 +9088,7 @@ msgid "Rows"
 msgstr ""
 
 #. ("{{limit()}}")
-#: ../../Open-ILS/src/templates/staff/share/t_autogrid.tt2:113
+#: ../../Open-ILS/src/templates/staff/share/t_autogrid.tt2:117
 msgid "Rows %1"
 msgstr "Columnas %1"
 
@@ -9132,7 +9136,7 @@ msgstr "Guardar & Cerrar"
 msgid "Save & Exit"
 msgstr "Guardar & Salir"
 
-#: ../../Open-ILS/src/templates/staff/share/t_autogrid.tt2:178
+#: ../../Open-ILS/src/templates/staff/share/t_autogrid.tt2:183
 msgid "Save Columns"
 msgstr "Guardar Columnas"
 
@@ -9302,7 +9306,7 @@ msgstr ""
 msgid "Select Operator"
 msgstr "Seleccione el operador"
 
-#: ../../Open-ILS/src/templates/staff/share/t_autogrid.tt2:134
+#: ../../Open-ILS/src/templates/staff/share/t_autogrid.tt2:138
 msgid "Select Page"
 msgstr "Seleccione la página"
 
@@ -9318,7 +9322,7 @@ msgstr ""
 msgid "Select Printer"
 msgstr "Seleccionar impresora"
 
-#: ../../Open-ILS/src/templates/staff/share/t_autogrid.tt2:111
+#: ../../Open-ILS/src/templates/staff/share/t_autogrid.tt2:114 ../../Open-ILS/src/templates/staff/share/t_autogrid.tt2:115
 msgid "Select Row Count"
 msgstr "Seleccione cuento de filas"
 
@@ -9586,7 +9590,7 @@ msgstr "Nombre Corto"
 msgid "Show"
 msgstr "Mostrar"
 
-#: ../../Open-ILS/src/templates/staff/share/t_autogrid.tt2:183
+#: ../../Open-ILS/src/templates/staff/share/t_autogrid.tt2:188
 msgid "Show All Columns"
 msgstr "Mostrar Todas las Columnas"
 
@@ -9690,7 +9694,7 @@ msgstr ""
 msgid "Show:"
 msgstr "Mostrar:"
 
-#: ../../Open-ILS/src/templates/staff/share/t_autogrid.tt2:270
+#: ../../Open-ILS/src/templates/staff/share/t_autogrid.tt2:275
 msgid "Shrink"
 msgstr "Reducir"
 
@@ -9842,7 +9846,7 @@ msgstr ""
 msgid "Staging Staff"
 msgstr ""
 
-#: ../../Open-ILS/src/templates/staff/admin/workstation/t_print_config.tt2:365 ../../Open-ILS/src/templates/staff/cat/catalog/t_catalog.tt2:9 ../../Open-ILS/src/templates/staff/cat/share/t_authority_browser.tt2:4 ../../Open-ILS/src/templates/staff/cat/share/t_authority_browser.tt2:54 ../../Open-ILS/src/templates/staff/circ/checkin/t_checkin_table.tt2:95 ../../Open-ILS/src/templates/staff/circ/patron/t_bill_history_payments.tt2:54 ../../Open-ILS/src/templates/staff/circ/patron/t_bill_history_xacts.tt2:21 ../../Open-ILS/src/templates/staff/circ/patron/t_bills_list.tt2:57 ../../Open-ILS/src/templates/staff/circ/patron/t_xact_details.tt2:26 ../../Open-ILS/src/templates/staff/circ/share/t_bill_patron_dialog.tt2:30 ../../Open-ILS/src/templates/staff/share/t_autogrid.tt2:69
+#: ../../Open-ILS/src/templates/staff/admin/workstation/t_print_config.tt2:365 ../../Open-ILS/src/templates/staff/cat/catalog/t_catalog.tt2:9 ../../Open-ILS/src/templates/staff/cat/share/t_authority_browser.tt2:4 ../../Open-ILS/src/templates/staff/cat/share/t_authority_browser.tt2:54 ../../Open-ILS/src/templates/staff/circ/checkin/t_checkin_table.tt2:95 ../../Open-ILS/src/templates/staff/circ/patron/t_bill_history_payments.tt2:54 ../../Open-ILS/src/templates/staff/circ/patron/t_bill_history_xacts.tt2:21 ../../Open-ILS/src/templates/staff/circ/patron/t_bills_list.tt2:57 ../../Open-ILS/src/templates/staff/circ/patron/t_xact_details.tt2:26 ../../Open-ILS/src/templates/staff/circ/share/t_bill_patron_dialog.tt2:30 ../../Open-ILS/src/templates/staff/share/t_autogrid.tt2:69 ../../Open-ILS/src/templates/staff/share/t_autogrid.tt2:70
 msgid "Start"
 msgstr "Iniciar"
 
@@ -9894,7 +9898,7 @@ msgstr ""
 msgid "Statistical category removal"
 msgstr ""
 
-#: ../../Open-ILS/src/templates/staff/admin/serials/t_attr_edit.tt2:51 ../../Open-ILS/src/templates/staff/admin/serials/t_template_list.tt2:40 ../../Open-ILS/src/templates/staff/cat/catalog/t_holdings.tt2:113 ../../Open-ILS/src/templates/staff/cat/catalog/t_holds.tt2:133 ../../Open-ILS/src/templates/staff/cat/catalog/t_holds.tt2:85 ../../Open-ILS/src/templates/staff/cat/item/t_summary_pane.tt2:27 ../../Open-ILS/src/templates/staff/cat/share/t_marcedit.tt2:146 ../../Open-ILS/src/templates/staff/cat/volcopy/t_attr_edit.tt2:155 ../../Open-ILS/src/templates/staff/cat/volcopy/t_defaults.tt2:219 ../../Open-ILS/src/templates/staff/cat/volcopy/t_edit.tt2:180 ../../Open-ILS/src/templates/staff/circ/checkin/t_checkin_table.tt2:115 ../../Open-ILS/src/templates/staff/circ/holds/t_shelf_list.tt2:108 ../../Open-ILS/src/templates/staff/circ/holds/t_shelf_list.tt2:74 ../../Open-ILS/src/templates/staff/circ/patron/t_holds_list.tt2:76 ../../Open-ILS/src/templates/staff/circ/patron/t_xact_details.tt2:67 ../../Open-ILS/src/templates/staff/circ/share/t_hold_details.tt2:26 ../../Open-ILS/src/templates/staff/serials/t_view_items_grid.tt2:98 ../../Open-ILS/src/templates/staff/share/print_templates/t_hold_shelf_list.tt2:36 ../../Open-ILS/src/templates/staff/share/t_autogrid.tt2:236
+#: ../../Open-ILS/src/templates/staff/admin/serials/t_attr_edit.tt2:51 ../../Open-ILS/src/templates/staff/admin/serials/t_template_list.tt2:40 ../../Open-ILS/src/templates/staff/cat/catalog/t_holdings.tt2:113 ../../Open-ILS/src/templates/staff/cat/catalog/t_holds.tt2:133 ../../Open-ILS/src/templates/staff/cat/catalog/t_holds.tt2:85 ../../Open-ILS/src/templates/staff/cat/item/t_summary_pane.tt2:27 ../../Open-ILS/src/templates/staff/cat/share/t_marcedit.tt2:146 ../../Open-ILS/src/templates/staff/cat/volcopy/t_attr_edit.tt2:155 ../../Open-ILS/src/templates/staff/cat/volcopy/t_defaults.tt2:219 ../../Open-ILS/src/templates/staff/cat/volcopy/t_edit.tt2:180 ../../Open-ILS/src/templates/staff/circ/checkin/t_checkin_table.tt2:115 ../../Open-ILS/src/templates/staff/circ/holds/t_shelf_list.tt2:108 ../../Open-ILS/src/templates/staff/circ/holds/t_shelf_list.tt2:74 ../../Open-ILS/src/templates/staff/circ/patron/t_holds_list.tt2:76 ../../Open-ILS/src/templates/staff/circ/patron/t_xact_details.tt2:67 ../../Open-ILS/src/templates/staff/circ/share/t_hold_details.tt2:26 ../../Open-ILS/src/templates/staff/serials/t_view_items_grid.tt2:98 ../../Open-ILS/src/templates/staff/share/print_templates/t_hold_shelf_list.tt2:36 ../../Open-ILS/src/templates/staff/share/t_autogrid.tt2:241
 msgid "Status"
 msgstr "Estatus"
 
@@ -9906,7 +9910,7 @@ msgstr "El estado ha cambiado"
 msgid "Status Changed Time"
 msgstr ""
 
-#: ../../Open-ILS/src/templates/staff/share/t_autogrid.tt2:236
+#: ../../Open-ILS/src/templates/staff/share/t_autogrid.tt2:241
 msgid "Status Icon Column"
 msgstr ""
 

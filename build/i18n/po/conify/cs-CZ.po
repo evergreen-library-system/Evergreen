@@ -8,14 +8,14 @@ msgstr ""
 "Project-Id-Version: evergreen\n"
 "Report-Msgid-Bugs-To: FULL NAME <EMAIL@ADDRESS>\n"
 "POT-Creation-Date: 2023-05-05 21:43+0000\n"
-"PO-Revision-Date: 2023-05-05 21:40+0000\n"
+"PO-Revision-Date: 2023-06-11 14:50+0000\n"
 "Last-Translator: Eva Cerninakova <Unknown>\n"
 "Language-Team: Czech <cs@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2023-05-06 04:56+0000\n"
-"X-Generator: Launchpad (build 90e2150bef31b411d7bae5c4032c7e320fcaaec8)\n"
+"X-Launchpad-Export-Date: 2023-06-12 04:54+0000\n"
+"X-Generator: Launchpad (build 620cd5280e3a973662e263ebf9346837ed657a46)\n"
 
 #. (i18n_vac)
 #: ../../Open-ILS/src/templates/conify/global/acq/edi_account.tt2:54
@@ -581,7 +581,7 @@ msgstr "Nezdařené"
 
 #: ../../Open-ILS/src/templates/conify/global/config/idl_field_doc.tt2:2 ../../Open-ILS/src/templates/conify/global/config/idl_field_doc.tt2:6
 msgid "Field Documentation"
-msgstr "Dokumentace polí"
+msgstr "Dokumentace pole"
 
 #: ../../Open-ILS/src/templates/conify/global/config/org_unit_setting_type.tt2:9 ../../Open-ILS/src/templates/conify/global/config/usr_setting_type.tt2:9
 msgid "Float"
