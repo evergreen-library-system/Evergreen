@@ -1,3 +1,406 @@
-Evergreen doesn't keep a GNU-style ChangeLog except in release tarballs.
-Those seeking a change log are encouraged to run 'git log -v', or read
-it online at: http://git.evergreen-ils.org/?p=Evergreen.git;a=log
+commit 8d978852177beaaad5eb2b171892f5819b089292
+Author: blake <blake@mobiusconsortium.org>
+Date:   Fri Jul 21 10:49:47 2023 -0500
+
+    fixed upgrade script naming convention
+    
+    Signed-off-by: blake <blake@mobiusconsortium.org>
+
+15	15	docs/modules/installation/pages/server_upgrade.adoc
+
+commit 9a02facee79bd6b248ab09d4bca735443f4c2c23
+Author: blake <blake@mobiusconsortium.org>
+Date:   Fri Jul 21 10:44:43 2023 -0500
+
+    bumping Perl version string for 3.11.1
+    
+    Signed-off-by: blake <blake@mobiusconsortium.org>
+
+1	1	Open-ILS/src/perlmods/lib/OpenILS.pm
+
+commit aa8469aae0d75b093bc91b02d536b31f03c1fb5d
+Author: blake <blake@mobiusconsortium.org>
+Date:   Fri Jul 21 10:44:23 2023 -0500
+
+    Translation updates - po files
+    
+    Signed-off-by: blake <blake@mobiusconsortium.org>
+
+11	3	build/i18n/po/bootstrap-opac/cs-CZ.po
+11	3	build/i18n/po/bootstrap-opac/en-CA.po
+11	3	build/i18n/po/bootstrap-opac/es-ES.po
+11	3	build/i18n/po/bootstrap-opac/fr-CA.po
+4	4	build/i18n/po/conify/cs-CZ.po
+11	3	build/i18n/po/tpac/ar-JO.po
+11	3	build/i18n/po/tpac/cs-CZ.po
+11	3	build/i18n/po/tpac/de-DE.po
+11	3	build/i18n/po/tpac/en-CA.po
+11	3	build/i18n/po/tpac/en-GB.po
+11	3	build/i18n/po/tpac/es-ES.po
+11	3	build/i18n/po/tpac/fi-FI.po
+11	3	build/i18n/po/tpac/fr-CA.po
+11	3	build/i18n/po/tpac/he-IL.po
+11	3	build/i18n/po/tpac/hu-HU.po
+11	3	build/i18n/po/tpac/hy-AM.po
+11	3	build/i18n/po/tpac/oc-FR.po
+11	3	build/i18n/po/tpac/pt-BR.po
+11	3	build/i18n/po/tpac/ru-RU.po
+11	3	build/i18n/po/tpac/sv-SE.po
+11	3	build/i18n/po/tpac/tr-TR.po
+37	33	build/i18n/po/webstaff/ar-JO.po
+39	35	build/i18n/po/webstaff/cs-CZ.po
+37	33	build/i18n/po/webstaff/de-DE.po
+37	33	build/i18n/po/webstaff/en-CA.po
+37	33	build/i18n/po/webstaff/en-GB.po
+37	33	build/i18n/po/webstaff/es-ES.po
+37	33	build/i18n/po/webstaff/hy-AM.po
+37	33	build/i18n/po/webstaff/ru-RU.po
+
+commit 4a70d0c1fa809704193c98b8a86d343edf58f96c
+Author: blake <blake@mobiusconsortium.org>
+Date:   Fri Jul 21 10:42:30 2023 -0500
+
+    Translation updates - newpot
+    
+    Signed-off-by: blake <blake@mobiusconsortium.org>
+
+2	2	build/i18n/po/bootstrap-opac/bootstrap-opac.pot
+2	2	build/i18n/po/tpac/tpac.pot
+5	5	build/i18n/po/webstaff/webstaff.pot
+
+commit 57591922fbb2efdc6205af3999b5a7eca4737dda
+Author: Galen Charlton <gmc@equinoxOLI.org>
+Date:   Thu Jul 20 17:49:38 2023 -0400
+
+    update 3.10.3 release notes for security release
+    
+    Signed-off-by: Galen Charlton <gmc@equinoxOLI.org>
+
+8	0	docs/RELEASE_NOTES_3_10.adoc
+
+commit 55fa095fb3fb41979599d8de859da0e73becd0c6
+Author: Galen Charlton <gmc@equinoxOLI.org>
+Date:   Thu Jul 20 17:46:09 2023 -0400
+
+    update 3.11.1 release notes for security release
+    
+    Signed-off-by: Galen Charlton <gmc@equinoxOLI.org>
+
+8	0	docs/RELEASE_NOTES_3_11.adoc
+
+commit 3fa074ce7027fe910c4def90de57781e01901978
+Author: Galen Charlton <gmc@equinoxOLI.org>
+Date:   Wed Jun 7 14:26:16 2023 -0400
+
+    LP#2023222: prevent open-ils.fielder.$IDLCLASS from invoking function transforms
+    
+    This patch adds some argument checking to the family of
+    open-ils.fielder.$IDLCLASS[.atomic] methods to prevent
+    JSON query funcion transforms from being invoked. This
+    is needed to prevent unauthenticated callers from invoking
+    arbitrary stored procedures.
+    
+    This is a security patch that closes down a pathway
+    towards remote, unauthenticated SQL injection attacks.
+    
+    Signed-off-by: Galen Charlton <gmc@equinoxOLI.org>
+    Signed-off-by: Jason Stephenson <jason@sigio.com>
+    Signed-off-by: Galen Charlton <gmc@equinoxOLI.org>
+
+38	1	Open-ILS/src/perlmods/lib/OpenILS/Application/Fielder.pm
+
+commit 28ec91d90da37f032d3a88c0aa5d39f070f96069
+Author: Andrea Buntz Neiman <abneiman@equinoxinitiative.org>
+Date:   Thu Jul 20 15:05:03 2023 -0400
+
+    Docs: release notes for 3.11.1 and 3.10.3
+    
+    Signed-off-by: Andrea Buntz Neiman <abneiman@equinoxinitiative.org>
+    Signed-off-by: Jane Sandberg <js7389@princeton.edu>
+
+68	1	docs/RELEASE_NOTES_3_10.adoc
+58	3	docs/RELEASE_NOTES_3_11.adoc
+
+commit 3f02622cdde2b9ad867f9ce0b5d4ca33bb8a45b0
+Author: Andrea Buntz Neiman <abneiman@equinoxinitiative.org>
+Date:   Mon Jul 17 15:33:10 2023 -0400
+
+    LP#2022962 part 2: 3.11 release notes fix
+    
+    Signed-off-by: Andrea Buntz Neiman <abneiman@equinoxinitiative.org>
+
+24	0	docs/RELEASE_NOTES_3_11.adoc
+
+commit a5c9ad7920a4b16a12f5e0259988baabc1cfa063
+Author: Andrea Buntz Neiman <abneiman@equinoxinitiative.org>
+Date:   Mon Jul 17 15:24:34 2023 -0400
+
+    LP#2022962: docs fix on Standing Penlaties
+    
+    Signed-off-by: Andrea Buntz Neiman <abneiman@equinoxinitiative.org>
+
+1	1	docs/modules/admin/pages/lsa-standing_penalties.adoc
+
+commit bd7919a07bca93b5c3ec7c082b6981ccf40da5fd
+Author: Galen Charlton <gmc@equinoxOLI.org>
+Date:   Mon Jul 3 18:16:43 2023 -0400
+
+    LP#2024682: reserve placeholder DB update
+    
+    This intentionally does nothing other than inserting the
+    database revision stamp; the only substantive use of 1379
+    is in rel_3_10, but it's important to ensure that anybody
+    applying the individual DB updates doesn't accidentally
+    apply the 1379 change to a 3.11 or later system.
+    
+    Signed-off-by: Galen Charlton <gmc@equinoxOLI.org>
+
+1	1	Open-ILS/src/sql/Pg/002.schema.config.sql
+12	0	Open-ILS/src/sql/Pg/upgrade/1379.data.noop.sql
+ create mode 100644 Open-ILS/src/sql/Pg/upgrade/1379.data.noop.sql
+
+commit 1bef8fb9c1800f9f630d05213f803123744ba799
+Author: Jason Stephenson <jason@sigio.com>
+Date:   Fri Jun 2 09:58:35 2023 -0400
+
+    Update more branch references from master to main
+    
+    Change references from the master branch branch to main in some
+    documentation and comments.
+    
+    Update the default eg-antora branch in generate_docs.pl from master to
+    main.
+    
+    Update the XUL Makefile.am to look for main instead of master.
+    
+    Signed-off-by: Jason Stephenson <jason@sigio.com>
+
+4	4	Open-ILS/xul/staff_client/Makefile.am
+7	7	build/i18n/scripts/update_pofiles
+1	1	docs/TechRef/Telephony/telephony-setup-guide.adoc
+2	2	docs/generate_docs.pl
+
+commit 49132f1a2d38c37d5a2eb188cf159fe182d627ff
+Author: Jason Boyer <JBoyer@equinoxOLI.org>
+Date:   Fri Jun 2 09:13:17 2023 -0400
+
+    Update default branch name for docs
+    
+    Signed-off-by: Jason Boyer <JBoyer@equinoxOLI.org>
+
+1	1	docs/site.yml
+
+commit f7353740b420a4af0c6381f4b54d311ab34784dd
+Author: Galen Charlton <gmc@equinoxOLI.org>
+Date:   Wed Jun 14 10:59:42 2023 -0400
+
+    fix title of 3.11.0 release notes
+    
+    Once 3.11.1 is released, we then need to shift to the consolidated
+    release notes style.
+    
+    Signed-off-by: Galen Charlton <gmc@equinoxOLI.org>
+
+1	1	docs/RELEASE_NOTES_3_11.adoc
+
+commit 03cbcb2b32de3f0813c5baa01db32054afe35b73
+Author: Josh Stompro <stomproj+gitlab2020@gsuite.larl.org>
+Date:   Fri Jun 9 18:31:31 2023 +0000
+
+    LP#2023582 - 3.11.0 release notes - remove redundant section
+    
+    The "Angular navbar keyboard navigation" section was included twice.
+    
+    Signed-off-by: Josh Stompro <stomproj@larl.org>
+    Signed-off-by: Galen Charlton <gmc@equinoxOLI.org>
+
+0	9	docs/RELEASE_NOTES_3_11.adoc
+
+commit ae4cb6157ea55a4b2545ddad950bb86da7532ec7
+Author: Josh Stompro <stomproj+gitlab2020@gsuite.larl.org>
+Date:   Fri Jun 9 18:29:46 2023 +0000
+
+    LP#2023582: Update RELEASE_NOTES_3_11.adoc - formatting fixes
+    
+    Signed-off-by: Josh Stompro <stomproj@larl.org>
+    Signed-off-by: Galen Charlton <gmc@equinoxOLI.org>
+
+9	8	docs/RELEASE_NOTES_3_11.adoc
+
+commit 13a9bde0a3c70160cc7700155f92cc6142dd0204
+Author: Dan Briem <dbriem@wlsmail.org>
+Date:   Fri Jun 2 15:24:43 2023 -0400
+
+    LP#1996818 Issues Placing Holds from the Patron Record
+    
+    Import from rxjs/operators and avoid Subjects of type void for
+    compatibility reasons between RxJS 6 and 7.
+    
+    Signed-off-by: Dan Briem <dbriem@wlsmail.org>
+    Signed-off-by: John Amundson <jamundson@cwmars.org>
+    Signed-off-by: Jason Stephenson <jason@sigio.com>
+    Signed-off-by: Galen Charlton <gmc@equinoxOLI.org>
+
+4	3	Open-ILS/src/eg2/src/app/staff/catalog/catalog.component.ts
+2	1	Open-ILS/src/eg2/src/app/staff/catalog/catalog.service.ts
+
+commit 451155ce8b48b97236203235570e8782ecce1074
+Author: Dan Briem <dbriem@wlsmail.org>
+Date:   Fri May 26 16:24:54 2023 +0000
+
+    LP#1996818 Issues Placing Holds from the Patron Record
+    
+    Set the hold target using the same cookie Angular uses when
+    placing holds from AngularJS patron records.
+    
+    Clear the cookie and broadcast to all catalog tabs to remove
+    the hold target when:
+    - the Clear button for the hold target is pressed
+    - the hold interface loads a different patron
+    - a different Angular route loads
+    - AngularJS app starts (left the Angular context)
+    
+    When a catalog tab is closed, clear the cookie and broadcast
+    it so that any open catalog tabs can restore it.
+    
+    To test:
+    1. After loading the patch, build Angular and AngularJS
+    2. Place a hold from AngJS patron record, note target is set
+    3. Open multiple catalog tabs
+    5. Close one catalog tab, note target persists in other tabs
+    6. Click Clear button, note target is cleared in all tabs
+    7. Repeat steps 2-3, load a different patron in the hold
+       interface, note target is cleared in all tabs
+    8. Repeat steps 2-3, click the home icon in the navbar, note
+       target is cleared in all tabs
+    9. Repeat steps 2-3, click AngJS Check Out in the navbar,
+       note target is cleared in all tabs
+    
+    Signed-off-by: Dan Briem <dbriem@wlsmail.org>
+    Signed-off-by: John Amundson <jamundson@cwmars.org>
+    Signed-off-by: Jason Stephenson <jason@sigio.com>
+    Signed-off-by: Galen Charlton <gmc@equinoxOLI.org>
+
+21	2	Open-ILS/src/eg2/src/app/staff/catalog/catalog.component.ts
+46	3	Open-ILS/src/eg2/src/app/staff/catalog/catalog.service.ts
+1	1	Open-ILS/web/js/ui/default/staff/circ/patron/holds.js
+23	0	Open-ILS/web/js/ui/default/staff/services/startup.js
+
+commit e55d152db1c28fefd33df77968afb7ecc4e00b74
+Author: Stephanie Leary <stephanie.leary@equinoxoli.org>
+Date:   Thu Jun 1 17:18:21 2023 +0000
+
+    LP2019735 Fix Bootstrap5 checkbox borders
+    
+    Restores checkbox borders to 2px for better visibility. Also sets a
+    minimum size equivalent to the current font size.
+    
+    Signed-off-by: Stephanie Leary <stephanie.leary@equinoxoli.org>
+    Signed-off-by: Galen Charlton <gmc@equinoxOLI.org>
+
+7	0	Open-ILS/src/eg2/src/styles.css
+
+commit 23c0ed2d8fa805d3e3545e67e80f34401d4c6b11
+Author: Stephanie Leary <stephanie.leary@equinoxoli.org>
+Date:   Fri May 12 15:47:26 2023 +0000
+
+    LP2011056 Color contrast for links in tooltips
+    
+    Forces links in tooltips to inherit the parent text color.
+    
+    Signed-off-by: Stephanie Leary <stephanie.leary@equinoxoli.org>
+    Signed-off-by: Galen Charlton <gmc@equinoxOLI.org>
+
+5	0	Open-ILS/src/eg2/src/styles.css
+
+commit 4fae567b5cfc8adf57849447e6ce54f5fc1c55e6
+Author: Galen Charlton <gmc@equinoxOLI.org>
+Date:   Mon Jun 5 09:55:47 2023 -0400
+
+    LP2018694: remove unused npm package ngx-i18nsupport
+    
+    Based on a patch originally written by Jane Sandberg, but
+    I ended up running 'npm uninstall ngx-i18nsupport' directly
+    rather than attempt to deal with merge conflicts.
+    
+    Signed-off-by: Galen Charlton <gmc@equinoxOLI.org>
+
+161	164	Open-ILS/src/eg2/package-lock.json
+0	1	Open-ILS/src/eg2/package.json
+
+commit ff9e6c465878c28c2987d8f70aaf31be11cb9309
+Author: Galen Charlton <gmc@equinoxOLI.org>
+Date:   Fri Jun 2 10:24:03 2023 -0400
+
+    LP#2022366: quell a GitHub actions warning
+    
+    Because of a Node version bump, the actions/checkout@v2
+    action is now deprecated.
+    
+    Signed-off-by: Galen Charlton <gmc@equinoxOLI.org>
+    Signed-off-by: Jane Sandberg <sandbergja@gmail.com>
+
+1	1	.github/workflows/docs.yml
+1	1	.github/workflows/ng-lint.yml
+
+commit bf587ea1eaee6cc59cd3e6fc31aa22be79ff135d
+Author: Stephanie Leary <stephanie.leary@equinoxoli.org>
+Date:   Tue May 9 19:16:32 2023 +0000
+
+    LP2019032 Keyboard support for PO line items
+    
+    Reworks links, buttons, and form labels in the single PO view.
+    
+    * <a click()> is now <button type="button">
+    * Items in dropdown lists have ngbDropdownItem directive for
+    keyboard up/down arrow support
+    * Icons are now aria-hidden (except "close," which is fine as-is)
+    and their parent elements have ARIA labels where necessary
+    * Text inputs have labels instead of placeholders
+    
+    Signed-off-by: Stephanie Leary <stephanie.leary@equinoxoli.org>
+    Signed-off-by: Galen Charlton <gmc@equinoxOLI.org>
+
+10	0	Open-ILS/src/eg2/src/app/staff/acq/lineitem/lineitem-list.component.css
+81	74	Open-ILS/src/eg2/src/app/staff/acq/lineitem/lineitem-list.component.html
+
+commit 39dfc2c695adbc555063d8aa77bd980f2e3a43bf
+Author: Jane Sandberg <sandbergja@gmail.com>
+Date:   Fri Jun 2 00:39:07 2023 -0400
+
+    Update node version in github actions
+    
+    Signed-off-by: Jane Sandberg <sandbergja@gmail.com>
+    Signed-off-by: Galen Charlton <gmc@equinoxOLI.org>
+
+1	1	.github/workflows/ng-lint.yml
+
+commit a23735761295c5e54e77c3fcda557503898f3b19
+Author: Jason Boyer <JBoyer@equinoxOLI.org>
+Date:   Thu Feb 23 12:44:00 2023 -0500
+
+    LP2008252: Fix report output access when Shibboleth is enabled
+    
+    When mod_shib is enabled use the ShibCompatValidUser option to ensure
+    report outputs load correctly.
+    
+    Additionally, since it's SSO related, mention the sso_loc variable in
+    a comment for the apache config.
+    
+    Signed-off-by: Jason Boyer <JBoyer@equinoxOLI.org>
+    Signed-off-by: Jeff Davis <jeff.davis@bc.libraries.coop>
+    Signed-off-by: Galen Charlton <gmc@equinoxOLI.org>
+
+6	0	Open-ILS/examples/apache_24/eg.conf.in
+5	0	Open-ILS/examples/apache_24/eg_vhost.conf.in
+
+commit 63f3a2cb2f1c59e6a9edc17682c354f18f8c30ba
+Author: Jason Boyer <JBoyer@equinoxOLI.org>
+Date:   Tue May 30 08:54:56 2023 -0400
+
+    Forward Port 3.11.0 Upgrade Script
+    
+    Signed-off-by: Jason Boyer <JBoyer@equinoxOLI.org>
+
+3485	0	Open-ILS/src/sql/Pg/version-upgrade/3.10.2-3.11.0-upgrade-db.sql
+ create mode 100644 Open-ILS/src/sql/Pg/version-upgrade/3.10.2-3.11.0-upgrade-db.sql
