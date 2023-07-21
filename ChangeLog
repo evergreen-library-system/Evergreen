@@ -1,3 +1,347 @@
-Evergreen doesn't keep a GNU-style ChangeLog except in release tarballs.
-Those seeking a change log are encouraged to run 'git log -v', or read
-it online at: http://git.evergreen-ils.org/?p=Evergreen.git;a=log
+commit cd2f62182d4a5840b5c3b2c8e7f2db5a12caa193
+Author: blake <blake@mobiusconsortium.org>
+Date:   Fri Jul 21 08:40:50 2023 -0500
+
+    fixed upgrade script naming convention
+    
+    Signed-off-by: blake <blake@mobiusconsortium.org>
+
+16	16	docs/modules/installation/pages/server_upgrade.adoc
+
+commit db360274711869275e863e8e2ddc8010ae790433
+Author: blake <blake@mobiusconsortium.org>
+Date:   Fri Jul 21 08:26:02 2023 -0500
+
+    bumping Perl version string for 3.10.3
+    
+    Signed-off-by: blake <blake@mobiusconsortium.org>
+
+1	1	Open-ILS/src/perlmods/lib/OpenILS.pm
+
+commit 2d521a01a1be3b87011490ea129abd5be835ea09
+Author: Galen Charlton <gmc@equinoxOLI.org>
+Date:   Thu Jul 20 17:49:38 2023 -0400
+
+    update 3.10.3 release notes for security release
+    
+    Signed-off-by: Galen Charlton <gmc@equinoxOLI.org>
+
+8	0	docs/RELEASE_NOTES_3_10.adoc
+
+commit 7fdaaa462678e72b685a5aa66f66939d8c5c30c6
+Author: Galen Charlton <gmc@equinoxOLI.org>
+Date:   Wed Jun 7 14:26:16 2023 -0400
+
+    LP#2023222: prevent open-ils.fielder.$IDLCLASS from invoking function transforms
+    
+    This patch adds some argument checking to the family of
+    open-ils.fielder.$IDLCLASS[.atomic] methods to prevent
+    JSON query funcion transforms from being invoked. This
+    is needed to prevent unauthenticated callers from invoking
+    arbitrary stored procedures.
+    
+    This is a security patch that closes down a pathway
+    towards remote, unauthenticated SQL injection attacks.
+    
+    Signed-off-by: Galen Charlton <gmc@equinoxOLI.org>
+    Signed-off-by: Jason Stephenson <jason@sigio.com>
+    Signed-off-by: Galen Charlton <gmc@equinoxOLI.org>
+
+38	1	Open-ILS/src/perlmods/lib/OpenILS/Application/Fielder.pm
+
+commit bc18a7b9a05521d78dc176de6b3b99f75bd44416
+Author: Andrea Buntz Neiman <abneiman@equinoxinitiative.org>
+Date:   Thu Jul 20 15:05:03 2023 -0400
+
+    Docs: release notes for 3.10.3
+    
+    Signed-off-by: Andrea Buntz Neiman <abneiman@equinoxinitiative.org>
+    Signed-off-by: Jane Sandberg <js7389@princeton.edu>
+
+68	1	docs/RELEASE_NOTES_3_10.adoc
+
+commit 38cdd5654920d3395bfa7130354b3e86f345f8f5
+Author: Galen Charlton <gmc@equinoxOLI.org>
+Date:   Mon Jul 3 18:20:21 2023 -0400
+
+    LP#2024682: stamp DB update
+    
+    Signed-off-by: Galen Charlton <gmc@equinoxOLI.org>
+
+1	1	Open-ILS/src/sql/Pg/002.schema.config.sql
+2	0	Open-ILS/src/sql/Pg/upgrade/{XXXX.function.user_circ_test.sql => 1379.function.user_circ_test.sql}
+ rename Open-ILS/src/sql/Pg/upgrade/{XXXX.function.user_circ_test.sql => 1379.function.user_circ_test.sql} (99%)
+
+commit 6ea198a7b4643684839ade0e9a231c0e3d181a92
+Author: Jeff Davis <jdavis@sitka.bclibraries.ca>
+Date:   Thu Jun 29 09:27:04 2023 -0700
+
+    LP#2024682: fix regression in action.item_user_circ_test
+    
+    A previous bugfix reverted portions of the action.item_user_circ_test
+    function to an older version in the 3.9.1-3.10.0 version upgrade script.
+    This commit provides an upgrade script to restore the correct version of
+    the function on 3.10.
+    
+    Signed-off-by: Jeff Davis <jdavis@sitka.bclibraries.ca>
+    Signed-off-by: Galen Charlton <gmc@equinoxOLI.org>
+
+243	0	Open-ILS/src/sql/Pg/upgrade/XXXX.function.user_circ_test.sql
+ create mode 100644 Open-ILS/src/sql/Pg/upgrade/XXXX.function.user_circ_test.sql
+
+commit 655ef4f0b1ad147daf7f4f1ece5663352bcfd56a
+Author: Stephanie Leary <stephanie.leary@equinoxoli.org>
+Date:   Fri May 12 15:47:26 2023 +0000
+
+    LP2011056 Color contrast for links in tooltips
+    
+    Forces links in tooltips to inherit the parent text color.
+    
+    Backported to 3.10 after conflict resolution.
+    
+    Signed-off-by: Stephanie Leary <stephanie.leary@equinoxoli.org>
+    Signed-off-by: Galen Charlton <gmc@equinoxOLI.org>
+    Signed-off-by: Jason Stephenson <jason@sigio.com>
+
+6	1	Open-ILS/src/eg2/src/styles.css
+
+commit 16016a22e627483c2b383939aea439310842124b
+Author: Jason Stephenson <jason@sigio.com>
+Date:   Fri Jun 2 09:58:35 2023 -0400
+
+    Update more branch references from master to main
+    
+    Change references from the master branch branch to main in some
+    documentation and comments.
+    
+    Update the default eg-antora branch in generate_docs.pl from master to
+    main.
+    
+    Update the XUL Makefile.am to look for main instead of master.
+    
+    Signed-off-by: Jason Stephenson <jason@sigio.com>
+
+4	4	Open-ILS/xul/staff_client/Makefile.am
+7	7	build/i18n/scripts/update_pofiles
+1	1	docs/TechRef/Telephony/telephony-setup-guide.adoc
+2	2	docs/generate_docs.pl
+
+commit 7f76476a780e3af9c02a62e95676ced34dda1c7e
+Author: Galen Charlton <gmc@equinoxOLI.org>
+Date:   Wed Jun 14 11:06:16 2023 -0400
+
+    update branch name in Antora's site.yml - rel_3_10
+    
+    Signed-off-by: Galen Charlton <gmc@equinoxOLI.org>
+
+1	1	docs/site.yml
+
+commit 3f7285a2256755a412949dbd5fda90d4b22294aa
+Author: Dan Briem <dbriem@wlsmail.org>
+Date:   Fri Jun 2 15:24:43 2023 -0400
+
+    LP#1996818 Issues Placing Holds from the Patron Record
+    
+    Import from rxjs/operators and avoid Subjects of type void for
+    compatibility reasons between RxJS 6 and 7.
+    
+    Signed-off-by: Dan Briem <dbriem@wlsmail.org>
+    Signed-off-by: John Amundson <jamundson@cwmars.org>
+    Signed-off-by: Jason Stephenson <jason@sigio.com>
+    Signed-off-by: Galen Charlton <gmc@equinoxOLI.org>
+
+4	3	Open-ILS/src/eg2/src/app/staff/catalog/catalog.component.ts
+2	1	Open-ILS/src/eg2/src/app/staff/catalog/catalog.service.ts
+
+commit 350a28a622027796234ddd9d90bb1d83f2e0b348
+Author: Dan Briem <dbriem@wlsmail.org>
+Date:   Fri May 26 16:24:54 2023 +0000
+
+    LP#1996818 Issues Placing Holds from the Patron Record
+    
+    Set the hold target using the same cookie Angular uses when
+    placing holds from AngularJS patron records.
+    
+    Clear the cookie and broadcast to all catalog tabs to remove
+    the hold target when:
+    - the Clear button for the hold target is pressed
+    - the hold interface loads a different patron
+    - a different Angular route loads
+    - AngularJS app starts (left the Angular context)
+    
+    When a catalog tab is closed, clear the cookie and broadcast
+    it so that any open catalog tabs can restore it.
+    
+    To test:
+    1. After loading the patch, build Angular and AngularJS
+    2. Place a hold from AngJS patron record, note target is set
+    3. Open multiple catalog tabs
+    5. Close one catalog tab, note target persists in other tabs
+    6. Click Clear button, note target is cleared in all tabs
+    7. Repeat steps 2-3, load a different patron in the hold
+       interface, note target is cleared in all tabs
+    8. Repeat steps 2-3, click the home icon in the navbar, note
+       target is cleared in all tabs
+    9. Repeat steps 2-3, click AngJS Check Out in the navbar,
+       note target is cleared in all tabs
+    
+    Signed-off-by: Dan Briem <dbriem@wlsmail.org>
+    Signed-off-by: John Amundson <jamundson@cwmars.org>
+    Signed-off-by: Jason Stephenson <jason@sigio.com>
+    Signed-off-by: Galen Charlton <gmc@equinoxOLI.org>
+
+21	2	Open-ILS/src/eg2/src/app/staff/catalog/catalog.component.ts
+46	3	Open-ILS/src/eg2/src/app/staff/catalog/catalog.service.ts
+1	1	Open-ILS/web/js/ui/default/staff/circ/patron/holds.js
+23	0	Open-ILS/web/js/ui/default/staff/services/startup.js
+
+commit e9b4dc4d3891aea4d1a7fda07d74200bef533db6
+Author: Galen Charlton <gmc@equinoxOLI.org>
+Date:   Fri Jun 2 10:24:03 2023 -0400
+
+    LP#2022366: quell a GitHub actions warning
+    
+    Because of a Node version bump, the actions/checkout@v2
+    action is now deprecated.
+    
+    Signed-off-by: Galen Charlton <gmc@equinoxOLI.org>
+    Signed-off-by: Jane Sandberg <sandbergja@gmail.com>
+
+1	1	.github/workflows/docs.yml
+1	1	.github/workflows/ng-lint.yml
+
+commit 9c28e77ed429369cc7c419d41db017aa7d202792
+Author: Jane Sandberg <sandbergja@gmail.com>
+Date:   Fri Jun 2 00:39:07 2023 -0400
+
+    Update node version in github actions
+    
+    Signed-off-by: Jane Sandberg <sandbergja@gmail.com>
+    Signed-off-by: Galen Charlton <gmc@equinoxOLI.org>
+
+1	1	.github/workflows/ng-lint.yml
+
+commit 6e8b1166e870a91dc76a3272f9c619c4b54f2597
+Author: Jason Boyer <JBoyer@equinoxOLI.org>
+Date:   Thu Feb 23 12:44:00 2023 -0500
+
+    LP2008252: Fix report output access when Shibboleth is enabled
+    
+    When mod_shib is enabled use the ShibCompatValidUser option to ensure
+    report outputs load correctly.
+    
+    Additionally, since it's SSO related, mention the sso_loc variable in
+    a comment for the apache config.
+    
+    Signed-off-by: Jason Boyer <JBoyer@equinoxOLI.org>
+    Signed-off-by: Jeff Davis <jeff.davis@bc.libraries.coop>
+    Signed-off-by: Galen Charlton <gmc@equinoxOLI.org>
+
+6	0	Open-ILS/examples/apache_24/eg.conf.in
+5	0	Open-ILS/examples/apache_24/eg_vhost.conf.in
+
+commit 70434887ad85deefbf2cb3cafa445c19c86e613c
+Author: Jane Sandberg <js7389@princeton.edu>
+Date:   Wed Mar 1 04:58:07 2023 -0800
+
+    LP1983628: Add editor for item notes
+    
+    Test plan:
+    1. Open your favorite bib record in the staff catalog
+    2. On the item table tab, find a barcode and click "Edit"
+    3. Press the Item Notes button.
+    4. Add a note with a title and value.
+    5. Press Apply Changes
+    6. Press Apply All and Save
+    7. Press the Item Notes button again.
+    8. Without this commit, you will not have a way to edit
+    these notes.  With this commit, you will have an edit
+    button.
+    9. Confirm that you can Back out of the editor without
+    making changes
+    10. Confirm that you can make changes and they persist.
+    
+    This commit also adds a test to confirm that this fm-editor
+    won't inadvertently fetch every single row in asset.copy
+    (as a linked field).
+    
+    Signed-off-by: Jane Sandberg <js7389@princeton.edu>
+    Signed-off-by: Elaine Hardy <ehardy@georgialibraries.org>
+    Signed-off-by: Jason Boyer <JBoyer@equinoxOLI.org>
+
+0	2	Open-ILS/src/eg2/src/app/share/fm-editor/fm-editor.component.ts
+66	0	Open-ILS/src/eg2/src/app/share/fm-editor/fm-editor.spec.ts
+59	46	Open-ILS/src/eg2/src/app/staff/share/holdings/copy-notes-dialog.component.html
+15	1	Open-ILS/src/eg2/src/app/staff/share/holdings/copy-notes-dialog.component.ts
+12	0	Open-ILS/src/eg2/src/app/staff/share/holdings/copy-notes-edit/copy-notes-edit.component.html
+37	0	Open-ILS/src/eg2/src/app/staff/share/holdings/copy-notes-edit/copy-notes-edit.component.spec.ts
+13	0	Open-ILS/src/eg2/src/app/staff/share/holdings/copy-notes-edit/copy-notes-edit.component.ts
+5	1	Open-ILS/src/eg2/src/app/staff/share/holdings/holdings.module.ts
+ create mode 100644 Open-ILS/src/eg2/src/app/share/fm-editor/fm-editor.spec.ts
+ create mode 100644 Open-ILS/src/eg2/src/app/staff/share/holdings/copy-notes-edit/copy-notes-edit.component.html
+ create mode 100644 Open-ILS/src/eg2/src/app/staff/share/holdings/copy-notes-edit/copy-notes-edit.component.spec.ts
+ create mode 100644 Open-ILS/src/eg2/src/app/staff/share/holdings/copy-notes-edit/copy-notes-edit.component.ts
+
+commit 4bd05518ea4d74dcf05ae635c1c001f6d0c7bc25
+Author: Gina Monti <gmonti@biblio.org>
+Date:   Wed May 17 10:33:19 2023 -0400
+
+    Docs: LP1836221 correction for archive stat cat
+    
+    Taking out the 'aged' in the circulation data for 'Archive with Circs'.  Two changes were made.
+    
+    Signed-off-by: Gina Monti <gmonti@biblio.org>
+    Signed-off-by: Andrea Buntz Neiman <abneiman@equinoxinitiative.org>
+
+2	2	docs/modules/admin/pages/lsa-statcat.adoc
+
+commit 5e6d52c58339f4cdac39acafc0a6f89b64dfd3d0
+Author: Jessica Woolford <jwoolford@biblio.org>
+Date:   Wed May 17 11:41:48 2023 -0400
+
+    LP 1955666 Remove RFID Product Integrations page from docs
+    
+    Removed obsolete RFID Product Information page as well as the link to the page.
+    
+    Signed-off-by: Andrea Buntz Neiman <abneiman@equinoxinitiative.org>
+
+0	1	docs/modules/integrations/nav.adoc
+0	73	docs/modules/integrations/pages/rfid.adoc
+ delete mode 100644 docs/modules/integrations/pages/rfid.adoc
+
+commit 45bf640896cb3e2f237e74313d22b16519a37db8
+Author: Chris Sharp <csharp@georgialibraries.org>
+Date:   Sun Jan 15 09:26:20 2023 -0500
+
+    LP# 2004205: quiet warn logs from stat cat warnings
+    
+    Signed-off-by: Chris Sharp <csharp@georgialibraries.org>
+    Signed-off-by: Jane Sandberg <sandbergja@gmail.com>
+
+22	23	Open-ILS/src/perlmods/lib/OpenILS/Application/Circ/StatCat.pm
+
+commit 986b3e41bcac0b167d26cd363dcc993d392e5b39
+Author: Mike Risher <mrisher@catalyte.io>
+Date:   Thu Jul 16 23:12:31 2020 +0000
+
+    LP#1887866: add aria-labels to AngularJS grid controls
+    
+    This is a modified version of a patch originally by Mike Risher
+    to add some aria-label attributes to the AngularJS grid.
+    
+    Signed-off-by: Mike Risher <mrisher@catalyte.io>
+    Signed-off-by: Terran McCanna <tmccanna@georgialibraries.org>
+    Signed-off-by: Galen Charlton <gmc@equinoxOLI.org>
+
+9	4	Open-ILS/src/templates/staff/share/t_autogrid.tt2
+
+commit e23d42e591cd8c7406063bbf29fa441aeffc8426
+Author: Jason Stephenson <jason@sigio.com>
+Date:   Wed May 17 18:50:16 2023 -0400
+
+    Forward port 3.10.1-3.10.2 database upgrae
+    
+    Signed-off-by: Jason Stephenson <jason@sigio.com>
+
+318	0	Open-ILS/src/sql/Pg/version-upgrade/3.10.1-3.10.2-upgrade-db.sql
+ create mode 100644 Open-ILS/src/sql/Pg/version-upgrade/3.10.1-3.10.2-upgrade-db.sql
