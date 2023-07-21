@@ -100,7 +100,7 @@ export CPAN_MODULES = \
 	Geo::Coder::Google \
 	Business::OnlinePayment::PayPal \
 	String::KeyboardDistance \
-	Test:MockModule \
+	Test::MockModule \
 	Text::Levenshtein::Damerau::XS \
 	Email::Send
 
