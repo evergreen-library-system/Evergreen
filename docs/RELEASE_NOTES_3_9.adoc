@@ -10,7 +10,8 @@ upgrade as soon as possible.
 
 === Upgrade Notes ===
 
-None.
+A new test dependency is added: Test::MockModule. If you intend to run the code tests,
+you should run the prerequisite installation for your GNU/Linux distribution again.
 
 === Security Fixes ====
 
