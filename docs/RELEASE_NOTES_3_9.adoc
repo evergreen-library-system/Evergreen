@@ -3,6 +3,20 @@
 :numbered:
 :toclevels: 4
 
+== Evergreen 3.9.4 ==
+
+This release contains a bug fix for a critical security issue. Users are advised to
+upgrade as soon as possible.
+
+=== Upgrade Notes ===
+
+None.
+
+=== Security Fixes ====
+
+Fixes an issue in `open-ils.fielder` that could enable unauthenticated remote SQL
+injection attacks.
+
 == Evergreen 3.9.3 ==
 
 This release contains bug fixes improving on Evergreen 3.9.2. This release also includes
