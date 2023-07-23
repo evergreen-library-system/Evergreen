@@ -18,6 +18,20 @@ you should run the prerequisite installation for your GNU/Linux distribution aga
 Fixes an issue in `open-ils.fielder` that could enable unauthenticated remote SQL
 injection attacks.
 
+=== Bug Fixes ===
+
+==== Accessibility ====
+
+* Adds aria-labels to AngularJS grid controls (https://bugs.launchpad.net/evergreen/+bug/1887866[Bug 1887866])
+
+
+==== Documentation ====
+
+* Removes obsolete RFID Integration documentation (https://bugs.launchpad.net/evergreen/+bug/1955666[Bug 1955666])
+* Corrections to archive stat cat documentation (https://bugs.launchpad.net/evergreen/+bug/1836221[Bug 1836221])
+* Fixes GitHub actions docs build errors (https://bugs.launchpad.net/evergreen/+bug/2022366[Bug 2022366)]
+
+
 == Evergreen 3.9.3 ==
 
 This release contains bug fixes improving on Evergreen 3.9.2. This release also includes
