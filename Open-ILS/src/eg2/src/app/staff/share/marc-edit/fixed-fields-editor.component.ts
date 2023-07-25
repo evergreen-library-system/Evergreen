@@ -1,4 +1,4 @@
-import {Component, Input} from '@angular/core';
+import {Component, Input, ViewEncapsulation} from '@angular/core';
 import {IdlService} from '@eg/core/idl.service';
 import {OrgService} from '@eg/core/org.service';
 import {MarcRecord} from './marcrecord';
@@ -11,7 +11,9 @@ import {TagTableService} from './tagtable.service';
 
 @Component({
     selector: 'eg-fixed-fields-editor',
-    templateUrl: './fixed-fields-editor.component.html'
+    templateUrl: './fixed-fields-editor.component.html',
+    styleUrls: ['fixed-fields-editor.component.css'],
+    encapsulation: ViewEncapsulation.None
 })
 
 export class FixedFieldsEditorComponent {

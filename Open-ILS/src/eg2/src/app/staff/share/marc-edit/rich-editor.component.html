@@ -1,4 +1,3 @@
-
 <ng-container *ngIf="!dataLoaded">
   <div class="row mt-5">
     <div class="offset-lg-3 col-lg-6">
@@ -12,214 +11,424 @@
 
 <eg-phys-char-dialog #physCharDialog></eg-phys-char-dialog>
 
-<ng-template #subfieldChunk let-field="field" let-subfield="subfield">
+<ng-template #subfieldChunk let-field="field" let-subfield="subfield" let-tabIndex="tabIndex">
 
   <!-- move these around depending on whether we are stacking subfields -->
 
-  <!-- SUBFIELD DECORATOR/DELIMITER -->
-  <eg-marc-editable-content fieldText="‡" i18n-fieldText
-    moreClasses="sf-delimiter border-end-0 bg-transparent p-1 pe-0">
-  </eg-marc-editable-content>
-
-  <!-- SUBFIELD CHARACTER -->
-  <eg-marc-editable-content
+   <!-- SUBFIELD CHARACTER -->
+   <eg-marc-editable-content
     [context]="context" [field]="field" fieldType="sfc"
     [subfield]="subfield" ariaLabel="Subfield Code" i18n-ariaLabel
-    moreClasses="sf-code border-start-0 p-1 ps-0">
+    moreClasses="sf-code code type-sfc" [tabindex]="tabIndex">
   </eg-marc-editable-content>
 
   <!-- SUBFIELD VALUE -->
+  <!-- width (in characters) based on subfield length; min and max set in CSS -->
   <eg-marc-editable-content
-    [context]="context" [field]="field" fieldType="sfv"
-    [subfield]="subfield" ariaLabel="Subfield Value" i18n-ariaLabel
-    moreClasses="p-1">
+    [context]="context" [field]="field" [subfield]="subfield" fieldType="sfv" 
+    [bigText]="context.isFullWidth(field.tag, subfield[0])" [tabindex]="tabIndex"
+    [ariaLabel]="'Subfield {{subfield[0]}} Value'" i18n-ariaLabel
+    moreClasses="contents type-sfv" [ngStyle]="fieldSize(subfield[1])">
   </eg-marc-editable-content>
 
+  <button type="button" class="btn btn-tiny delete-subfield" [tabindex]="tabIndex"
+    i18n-aria-label [attr.aria-label]="'Delete ' + field.tag + ' ' + subfield[0]"
+    (click)="deleteSubfield(field, subfield)" (keydown)="onKeyDown($event, field)"
+    (focus)="focusButton(field, $event)" (blur)="blurButton(field, $event)">
+    <span class="material-icons mat-icon-in-button" aria-hidden="true"
+      i18n-title title="Delete {{field.tag}} {{subfield[0]}}" >close</span>
+  </button>  
+
 </ng-template>
 
-<ng-template #postSubfieldsChunk let-field="field">
+<ng-template #fieldHelp let-field="field" let-subfield="subfield" let-tagTable="tagTable">
+  <div class="field-hints" [ngClass]="'field-hints-'+field.fieldType" *ngIf="showHelp(field) && field.tag > 99 && field.tag < 900">
+    <h4>{{field.tag}}: {{tagTable.getFieldLabel(field.tag)}}</h4>
 
-  <ng-container *ngIf="context.recordType === 'biblio' && isControlledBibTag(field.tag)">
-    <button type="button" class="btn btn-sm btn-outline-info link-button"
-      i18n-aria-label aria-label="Create authority link"
-      i18n-title title="Create authority link"
-      (click)="openLinkerDialog(field)">
-      <span class="material-icons" aria-hidden="true">link</span>
-    </button>
-  </ng-container>
-
-  <ng-container *ngIf="field.authChecked">
-    <span class="ps-2 pt-2">
-      <span *ngIf="field.authValid"
-        title="Authority Validation Succeeded" i18n-title
-        class="material-icons label-with-material-icon text-success">
-        check_circle_outline
-        <span class="visually-hidden" i18n>Authority Validation Succeeded</span>
-      </span>
-      <span *ngIf="!field.authValid"
-        title="Authority Validation Failed" i18n-title
-        class="material-icons label-with-material-icon text-danger">
-        error_outline
-        <span class="visually-hidden" i18n>Authority Validation Failed</span>
-      </span>
-    </span>
-  </ng-container>
-</ng-template>
-
-<ng-container *ngIf="dataLoaded">
-  <div class="mt-3 font-monospace"
-    (contextmenu)="$event.preventDefault()">
-    <div class="row pb-2 mb-2 border-bottom border-muted">
-      <div class="col-lg-9 fixed-fields-container">
-        <eg-fixed-fields-editor [context]="context"></eg-fixed-fields-editor>
+    <div class="row">
+      <div class="col-md-3 col-marc-ind">
+        <h5 i18n>Indicator 1</h5>
+        <ul class="list-unstyled marc-help">
+          <li *ngFor="let ind1 of tagTable.getIndicatorValues(field.tag, 'ind1')">
+            <b class="code">{{ind1.id}}</b>: {{ind1.label}}
+          </li>
+        </ul>
       </div>
-      <div class="col-lg-3">
-        <div><button type="button" class="btn btn-outline-dark"
-          (click)="showHelp = !showHelp" i18n>Help</button></div>
-        <ng-container *ngIf="context.recordType === 'biblio'">
-          <div class="mt-2"><button type="button" class="btn btn-outline-dark"
-            (click)="validate()" i18n>Validate</button></div>
-        </ng-container>
-        <div class="mt-2">
-          <button  type="button" class="btn btn-outline-info"
-            [disabled]="undoCount() < 1" (click)="undo()">
-            Undo <span class="badge rounded-pill text-light bg-info p-1">{{undoCount()}}</span>
-          </button>
-          <button type="button" class="btn btn-outline-info ms-2"
-            [disabled]="redoCount() < 1" (click)="redo()">
-            Redo <span class="badge rounded-pill text-light bg-info p-1">{{redoCount()}}</span>
-          </button>
-        </div>
-        <div class="mt-2">
-          <div class="form-check">
-            <input class="form-check-input" type="checkbox"
-              (change)="stackSubfieldsChange()"
-              [(ngModel)]="stackSubfields" id="stack-subfields-{{randId}}">
-            <label class="form-label form-check-label" for="stack-subfields-{{randId}}">
-              Stack Subfields
-            </label>
+      <div class="col-md-3 col-marc-ind">
+        <h5 i18n>Indicator 2</h5>
+        <ul class="list-unstyled marc-help">
+          <li *ngFor="let ind2 of tagTable.getIndicatorValues(field.tag, 'ind2')">
+            <b class="code">{{ind2.id}}</b>: {{ind2.label}}
+          </li>
+        </ul>
+      </div>
+      <div class="col-md-6">
+        <h5 i18n>Subfields</h5>
+        <ul class="list-unstyled marc-help marc-help-subfields">
+          <li *ngFor="let sfc of tagTable.getSubfieldCodes(field.tag)">
+            <b class="code">{{sfc.id}}</b>: {{sfc.label}}
+          </li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</ng-template>
+
+<div *ngIf="dataLoaded" id="eg-marc-rich-editor">
+  <div class="row pt-3 pb-2 ps-2 mb-2">
+
+    <div class="col-sm-12">
+        <div class="btn-group rounded me-2 marc-toolbar" role="group" [attr.aria-label]="'MARC Rich Editor Toolbar'" i18n-aria-label>
+          <!-- Add... dropdown buttons -->
+          <div class="btn-group dropdown" role="group" ngbDropdown>
+            <button type="button" class="btn btn-secondary dropdown-toggle" ngbDropdownToggle i18n>
+              Add...
+            </button>
+            <ul class="dropdown-menu menu-with-accesskeys" ngbDropdownMenu>
+              <li>
+                <button type="button" ngbDropdownItem class="dropdown-item" (click)="context.insertStubField(context.record.fields[context.record.fields.length - 1], false)">
+                  <span class="dropdown-item-label" i18n>Add Row</span> <kbd i18n>Ctrl+Enter</kbd>
+                </button>
+              </li>
+              <li>
+                <button type="button" ngbDropdownItem class="dropdown-item" (click)="context.insertReplace008()">
+                  <span class="dropdown-item-label" i18n>Add/Replace 008</span> <kbd i18n>Shift+F8</kbd>
+                </button>
+              </li>
+              <li>
+                <button type="button" ngbDropdownItem class="dropdown-item" (click)="context.add00X('007')">
+                  <span class="dropdown-item-label" i18n>Add/Replace 007</span> <kbd i18n>Shift+F7</kbd>
+                </button>
+              </li>
+              <li>
+                <button type="button" ngbDropdownItem class="dropdown-item" (click)="context.add00X('006')">
+                  <span class="dropdown-item-label" i18n>Add/Replace 006</span> <kbd i18n>Shift+F6</kbd>
+                </button>
+              </li>
+            </ul>
           </div>
+          <!-- Single buttons -->
+          <button type="button" class="btn btn-secondary" i18n
+            title="Ctrl-Z" i18n-title (click)="undo()">
+            Undo <span class="badge badge-dark rounded-pill p-1">{{undoCount()}}</span>
+          </button>
+          <button type="button" class="btn btn-secondary" i18n
+            title="Ctrl-Y" i18n-title (click)="redo()" >
+            Redo <span class="badge badge-dark rounded-pill p-1">{{redoCount()}}</span>
+          </button>
+          <!-- section that looks like part of the button toolbar -->
+          <div class="btn btn-secondary">
+            <div class="form-check">
+              <input class="form-check-input" type="checkbox"
+                (change)="stackSubfieldsChange()"
+                [(ngModel)]="stackSubfields" id="stack-subfields-{{randId}}">
+              <label class="form-label form-check-label" for="stack-subfields-{{randId}}" i18n>
+                Stack Subfields
+              </label>
+            </div>
+          </div>
+          <!-- Single buttons -->
+          <button type="button" class="btn btn-secondary" (click)="validate()" i18n>Validate</button>
+          <button type="button" class="btn btn-secondary" [ngClass]="{active: context.showHelp}" (click)="context.showHelp = !context.showHelp" i18n>Help</button>
         </div>
-      </div>
-      <div class="col-lg-1">
-      </div>
+      
     </div>
-    <div *ngIf="showHelp" class="row m-2">
-      <div class="col-lg-4">
-        <ul>
-          <li>Undo: CTRL-z</li>
-          <li>Redo: CTRL-y</li>
-          <li>Add Row: CTRL+Enter</li>
-          <li>Insert Row: CTRL+Shift+Enter</li>
-        </ul>
-      </div>
-      <div class="col-lg-4">
-        <ul>
-         <li>Copy Current Row Above: CTRL+Up</li>
-         <li>Copy Current Row Below: CTRL+Down</li>
-         <li>Add Subfield: CTRL+D or CTRL+I</li>
-         <li>Remove Row: CTRL+Del</li>
-        </ul>
-      </div>
-      <div class="col-lg-4">
-        <ul>
-         <li>Remove Subfield: Shift+Del</li>
-         <li>Create/Replace 006: Shift+F6</li>
-         <li>Create/Replace 007: Shift+F7</li>
-         <li>Create/Replace 008: Shift+F8</li>
-        </ul>
-      </div>
+  </div>  
+  
+  <div *ngIf="context.showHelp" class="row m-2">
+    <div class="col-lg-12">
+    <h3 i18n>Keyboard Shortcuts</h3>
+      <ul class="list-unstyled marc-help marc-help-shortcuts">
+        <li i18n>Undo: Ctrl-Z</li>
+        <li i18n>Redo: Ctrl-Y</li>
+        <li i18n>Add Row: Ctrl+Enter</li>
+        <li i18n>Insert Row: Ctrl+Shift+Enter</li>
+        <li i18n>Copy Current Row Above: Ctrl+Up</li>
+        <li i18n>Copy Current Row Below: Ctrl+Down</li>
+        <li i18n>Add Subfield: Ctrl+D or Ctrl+I</li>
+        <li i18n>Edit Subfield (when grouped): Right Arrow</li>
+        <li i18n>Remove Row: Ctrl+Del</li>
+        <li i18n>Remove Subfield: Shift+Del</li>
+        <li i18n>Open Suggestions: Ctrl+Shift+Down</li>
+        <li i18n>Close Suggestions: Ctrl+Shift+Up</li>
+        <li i18n>Create/Replace 006: Shift+F6</li>
+        <li i18n>Create/Replace 007: Shift+F7</li>
+        <li i18n>Create/Replace 008: Shift+F8</li>
+      </ul>
     </div>
+  </div>
 
-    <!-- LEADER -->
-    <div class="row row-cols-auto gx-0 pt-0 pb-0 ps-3">
-      <eg-marc-editable-content
-        [context]="context" fieldText="LDR" i18n-fieldText moreClasses="p-1">
-      </eg-marc-editable-content>
-
-      <eg-marc-editable-content
-        [context]="context" fieldType="ldr"
-        ariaLabel="Leader" i18n-ariaLabel moreClasses="p-1 pe-2">
-      </eg-marc-editable-content>
-    </div>
-
-    <!-- CONTROL FIELDS -->
-    <div class="row row-cols-auto gx-0 pt-0 pb-0 ps-3"
-      *ngFor="let field of controlFields()">
-
-      <eg-marc-editable-content
-        [context]="context" [field]="field" fieldType="tag"
-        ariaLabel="Control Field Tag" i18n-ariaLabel moreClasses="p-1">
-      </eg-marc-editable-content>
-
-      <eg-marc-editable-content
-        [context]="context" [field]="field" fieldType="cfld"
-        ariaLabel="Control Field Content" i18n-ariaLabel moreClasses="p-1">
-      </eg-marc-editable-content>
-
-      <ng-container *ngIf="field.tag === '007'">
-         <button class="btn btn-sm btn-outline-info link-button" type="button"
-          i18n-aria-label aria-label="Open physical characteristics wizard"
-          i18n-title title="Open physical characteristics wizard"
-          (click)="openPhysCharDialog(field)">
-          <span class="material-icons" aria-hidden="true">launch</span>
-        </button>
-      </ng-container>
-    </div>
+  <div class="row fixed-fields-container font-monospace m-2">
+    <eg-fixed-fields-editor [context]="context"></eg-fixed-fields-editor>
+  </div>
+    
+  <div class="row row-cols-auto">
+    <div class="col">
+    <table class="table font-monospace marc-table marc-control-fields start-even">
+      <colgroup>
+        <col class="tag" />
+        <col class="subfields" />
+        <col class="actions" />
+      </colgroup>
+      <thead class="visually-hidden">
+        <th class="tag" scope="col" i18n>Tag</th>
+        <th class="subfields" scope="col" i18n>Control Fields</th>
+        <th class="actions" scope="col" i18n>Actions</th>
+      </thead>
+      <tbody>
+        <!-- LEADER -->
+        <tr class="marc-tag-ldr marc-field">
+          <th class="tag align-left" scope="row" i18n>LDR</th>
+          <td class="subfields">
+            <div class="subfields-flex">
+              <eg-marc-editable-content [context]="context" fieldType="ldr" 
+                ariaLabel="Leader" i18n-ariaLabel 
+                moreClasses="p-1 pe-2 type-ldr" [ngStyle]="fieldSize(record.leader)">
+              </eg-marc-editable-content>
+            </div>
+          </td>
+          <td class="actions"></td>
+        </tr>
+        <!-- CONTROL FIELDS -->
+        <tr class="marc-tag-{{field.tag}} marc-field" *ngFor="let field of controlFields()">
+          <th class="tag" scope="row">
+            <eg-marc-editable-content [context]="context" [field]="field" fieldType="tag" 
+              [ariaLabel]="'Control Field Tag: {{field.tag}}'" i18n-ariaLabel 
+              moreClasses="p-1 type-cfld-tag">
+            </eg-marc-editable-content>
+          </th>
+          <td class="subfields">
+            <div class="subfields-flex">
+              <eg-marc-editable-content [context]="context" [field]="field" fieldType="cfld" 
+              [ariaLabel]="'Control Field Content: {{field.tag}}'" i18n-ariaLabel 
+              moreClasses="p-1 type-cfld" [ngStyle]="fieldSize(field.data)">
+            </eg-marc-editable-content>
+            </div>
+          </td>
+          <td class="actions">
+            <ng-container *ngIf="field.tag === '007'">
+              <button type="button" class="btn btn-tiny link-button" 
+                i18n-aria-label [attr.aria-label]="'Open physical characteristics wizard'"
+                (focus)="focusButton(field, $event)" 
+                (blur)="blurButton(field, $event)"
+                (keydown)="onKeyDown($event, field)"
+                (click)="openPhysCharDialog(field)">
+                <span class="material-icons mat-icon-in-button" aria-hidden="true"
+                  i18n-title title="Open physical characteristics wizard">launch</span>
+              </button>
+            </ng-container>
+            <ng-container *ngIf="field.tag === '008'">
+              <button type="button" class="btn btn-tiny link-button" 
+                i18n-aria-label [attr.aria-label]="'Replace 008'"
+                (focus)="focusButton(field, $event)" 
+                (blur)="blurButton(field, $event)"
+                (keydown)="onKeyDown($event, field)"
+                (click)="context.insertReplace008()">
+                <span class="material-icons mat-icon-in-button" aria-hidden="true"
+                  i18n-title title="Replace 008">cached</span>
+              </button>
+            </ng-container>
+            <button type="button" class="btn btn-tiny" 
+              (focus)="focusButton(field, $event)" 
+              (blur)="blurButton(field, $event)"
+              (keydown)="onKeyDown($event, field)"
+              (click)="deleteField(field)"
+              [attr.aria-label]="'Delete ' + field.tag" i18n-aria-label>
+              <span class="material-icons mat-icon-in-button" aria-hidden="true"
+                title="Delete {{field.tag}}" i18n-title>close</span>
+            </button>
+          </td>
+        </tr>
+        </tbody>
+      </table>
 
     <!-- data fields -->
-    <ng-container *ngFor="let field of dataFields()">
+    <table class="table font-monospace marc-table marc-data-fields" 
+     [ngClass]="{
+      'stacked': stackSubfields,
+      'form-inline': !stackSubfields,
+      'start-even': controlFields().length % 2 }" >
+      <colgroup>
+        <col class="tag" />
+        <col class="indicator" />
+        <col class="indicator" />
+        <col class="subfields" />
+        <col class="actions" />
+      </colgroup>
+      <thead class="visually-hidden">
+        <th class="tag" scope="col" i18n>Tag</th>
+        <th class="indicator" scope="col" i18n>Indicator 1</th>
+        <th class="indicator" scope="col" i18n>Indicator 2</th>
+        <th class="subfields" scope="col" i18n>Subfields</th>
+        <th class="actions" scope="col" i18n>Actions</th>
+      </thead>
+      <tbody>
+    <ng-container *ngFor="let field of dataFields(); index as fieldIndex">
 
-      <div class="row row-cols-auto gx-0 pt-0 pb-0 ps-3">
+      <tr class="marc-tag-{{field.tag}} marc-field" 
+      [ngClass]="{
+        'isDragTarget': field.isDragTarget, 
+        'isDragRow': (dragRow && dragRow.fieldId === field.fieldId),
+        'hasFocus': field.hasFocus
+      }"
+        [attr.data-fieldId]="field.fieldId"
+        [attr.data-position]="field.position"
+        [draggable]="field.isDraggable"
+        (dragstart)="dragRow = field"
+        (drop)="onRowDrop($event, field)"
+        (dragover)="onRowDragEnter($event, field)"
+        (dragleave)="onRowDragLeave($event, field)">
 
         <!-- TAG -->
-        <eg-marc-editable-content
-          [context]="context" [field]="field" fieldType="tag"
-          ariaLabel="Data Field Tag" i18n-ariaLabel moreClasses="p-1">
-        </eg-marc-editable-content>
+        <th class="tag" scope="row">
+          <!-- Pos: {{field.position}} Index: {{fieldIndex}} Tag: {{field.tag}} -->
+          <eg-marc-editable-content
+            [context]="context" [field]="field" fieldType="tag"
+            ariaLabel="Data Field Tag" i18n-ariaLabel>
+          </eg-marc-editable-content>
+        </th>
 
         <!-- INDICATOR 1 -->
-        <eg-marc-editable-content
-          [context]="context" [field]="field" fieldType="ind1"
-          ariaLabel="Data Field Indicator 1" i18n-ariaLabel moreClasses="p-1">
-        </eg-marc-editable-content>
+        <td class="indicator">
+          <eg-marc-editable-content
+            [context]="context" [field]="field" fieldType="ind1"
+            ariaLabel="Data Field Indicator 1" i18n-ariaLabel>
+          </eg-marc-editable-content>
+        </td>
 
         <!-- INDICATOR 2 -->
-        <eg-marc-editable-content
-          [context]="context" [field]="field" fieldType="ind2"
-          ariaLabel="Data Field Indicator 2" i18n-ariaLabel moreClasses="p-1">
-        </eg-marc-editable-content>
-
-        <!-- when not stacking subfields, render them inline -->
-        <ng-container *ngIf="!stackSubfields">
-          <ng-container *ngFor="let subfield of field.subfields; let last = last">
-            <ng-container
-              *ngTemplateOutlet="subfieldChunk;context:{field:field,subfield:subfield}">
-            </ng-container>
-            <ng-container *ngIf="last">
-              <ng-container
-                *ngTemplateOutlet="postSubfieldsChunk;context:{field:field}">
-              </ng-container>
-            </ng-container>
-          </ng-container>
-        </ng-container>
-
-      </div>
-
-      <!-- when stacking subfields, each subfield gets its own row
-        preceeded by a placeholder for the tag as a way to 'tab' right -->
-      <ng-container *ngIf="stackSubfields">
-        <div *ngFor="let subfield of field.subfields"
-          class="d-flex flex-wrap ps-3">
-          <eg-marc-editable-content fieldText="   " moreClasses="p-1 invisible">
+        <td class="indicator">
+          <eg-marc-editable-content
+            [context]="context" [field]="field" fieldType="ind2"
+            ariaLabel="Data Field Indicator 2" i18n-ariaLabel>
           </eg-marc-editable-content>
-          <ng-container
-            *ngTemplateOutlet="subfieldChunk;context:{field:field,subfield:subfield}">
-          </ng-container>
-        </div>
-      </ng-container>
-    </ng-container>
+        </td>
 
+        <!-- SUBFIELDS -->
+        <td class="subfields">
+          <ul class="subfields-flex">
+          <li *ngFor="let subfield of field.subfields; let last = last" 
+            class="subfield field{{field.tag+subfield[0]}}" 
+            [ngClass]="{
+              'stacked': stackSubfields,
+              'full-width': subfield[1].length > 100 || context.isFullWidth(field.tag, subfield[0]),
+              'last': last
+            }"
+            tabindex="0"
+            [id]="'subfield-{{subfield[2]}}'"
+            (keydown)="onKeyDown($event, field, subfield)"
+            attr.aria-description="Press right arrow to edit." 
+            i18n-aria-label i18n-aria-description>
+            <ng-container #subfieldContent
+              *ngTemplateOutlet="subfieldChunk;context:{field:field,subfield:subfield,tabIndex:context.subfieldHasFocus(field, subfield) ? 0 : -1}">
+            </ng-container>
+
+            <button type="button" *ngIf="context.subfieldHasFocus(field, subfield)"
+              class="btn btn-tiny add-subfield" 
+              i18n-aria-label [attr.aria-label]="'Insert subfield after ' + field.tag + ' ' + subfield[0]"
+              (focus)="focusButton(field, $event)" 
+              (blur)="blurButton(field, $event)"
+              (keydown)="onKeyDown($event, field, subfield)"
+              (click)="addSubfield(field, subfield[2] + 1)">
+              <span class="material-icons mat-icon-in-button" aria-hidden="true"
+                i18n-title title="Insert subfield after {{field.tag}} {{subfield[0]}}">new_label</span>
+            </button>
+          </li>
+
+          <li class="actions">
+            <ng-container *ngIf="context.recordType === 'biblio' && isControlledBibTag(field.tag)">
+              <button type="button" class="btn btn-tiny auth-link link-button" 
+                i18n-aria-label [attr.aria-label]="'Create authority link for ' + field.tag"
+                (click)="openLinkerDialog(field)" 
+                (keydown)="onKeyDown($event, field)"
+                (focus)="focusButton(field, $event)" 
+                (blur)="blurButton(field, $event)">
+                <span class="material-icons mat-icon-in-button" aria-hidden="true"
+                  i18n-title title="Create authority link for {{field.tag}}">add_link</span>
+              </button>
+
+            </ng-container>
+            
+            <ng-container *ngIf="field.authChecked">
+              <span class="p-1 lh-sm">
+                <ng-container *ngIf="field.authValid">
+                  <span class="material-icons label-with-material-icon text-success"
+                    title="Authority Validation Succeeded" i18n-title aria-hidden="true">check_circle_outline</span>
+                  <span class="visually-hidden" i18n>Authority Validation Succeeded</span>
+                </ng-container>
+                <ng-container *ngIf="!field.authValid">
+                  <span class="material-icons label-with-material-icon text-danger"
+                    title="Authority Validation Failed" i18n-title aria-hidden="true">error_outline</span>
+                  <span class="visually-hidden" i18n>Authority Validation Failed</span>
+                </ng-container>
+              </span>
+            </ng-container>
+
+            <button type="button"
+              class="btn btn-tiny add-subfield add-subfield-last" 
+              i18n-aria-label [attr.aria-label]="'Add subfield for ' + field.tag"
+              (focus)="focusButton(field, $event)" 
+              (blur)="blurButton(field, $event)"
+              (keydown)="onKeyDown($event, field, subfield)"
+              (click)="addSubfield(field, field.subfields.length + 1)">
+              <span class="material-icons mat-icon-in-button" aria-hidden="true"
+                i18n-title title="Add subfield for {{field.tag}}">new_label</span>
+            </button>
+          </li>
+
+          </ul>
+
+          <!-- HELP -->
+          <ng-container
+              *ngTemplateOutlet="fieldHelp;context:{field:field,subfield:subfield,tagTable:context.tagTable}">
+          </ng-container>
+        </td>
+
+        <!-- FIELD ACTIONS -->
+        <td class="actions">
+          <button type="button" class="btn btn-tiny move" id="move-btn-{{field.fieldId}}"
+            (focus)="focusButton(field, $event, 'move')" (blur)="blurButton(field, $event, 'move')"
+            (keydown.arrowup)="upField(field, $event)" (keydown.arrowdown)="downField(field, $event)"
+            (keydown)="onKeyDown($event, field)"
+            [attr.aria-label]="'Move ' + field.tag + ' up or down with arrow keys, or drag row'" i18n-aria-label>
+            <span class="material-icons mat-icon-in-button" aria-hidden="true"
+              title="Move {{field.tag}} up or down with arrow keys, or drag row" i18n-title>open_with</span>
+          </button>
+          <button type="button" class="btn btn-tiny" (click)="copyField(field)"
+            (keydown)="onKeyDown($event, field)"
+            (focus)="focusButton(field, $event)" (blur)="blurButton(field, $event)"
+            [attr.aria-label]="'Copy ' + field.tag" i18n-aria-label>
+            <span class="material-icons mat-icon-in-button" aria-hidden="true"
+              title="Copy {{field.tag}}" i18n-title>content_copy</span>
+          </button>
+          <button type="button" class="btn btn-tiny" (click)="addField(field)"
+            (keydown)="onKeyDown($event, field)"
+            (focus)="focusButton(field, $event)" (blur)="blurButton(field, $event)"
+            [attr.aria-label]="'Add new field after ' + field.tag" i18n-aria-label>
+            <span class="material-icons mat-icon-in-button" aria-hidden="true"
+              title="Add new field after {{field.tag}}" i18n-title>add</span>
+          </button>
+          <button type="button" class="btn btn-tiny" 
+            (focus)="focusButton(field, $event)" (blur)="blurButton(field, $event)"
+            (click)="deleteField(field)" (keydown)="onKeyDown($event, field)"
+            [attr.aria-label]="'Delete ' + field.tag" i18n-aria-label>
+            <span class="material-icons mat-icon-in-button" aria-hidden="true"
+              title="Delete {{field.tag}}" i18n-title>close</span>
+          </button>
+        </td>
+      </tr>
+
+    </ng-container>
+    <!-- empty row for drop zone -->
+    <tr id="marc-tag-END" class="marc-field"
+      (drop)="onRowDrop($event, 'END')"
+      (dragover)="onRowDragEnter($event, 'END')"
+      (dragleave)="onRowDragLeave($event, 'END')">
+      <td colspan="5"></td>
+    </tr>
+    </tbody>
+    </table>
+    </div>
   </div>
-</ng-container>
+</div>
 

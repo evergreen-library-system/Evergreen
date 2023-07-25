@@ -17,7 +17,7 @@
 <eg-string #successMsg i18n-text text="Record successfully updated"></eg-string>
 <eg-string #failMsg i18n-text text="Record failed to update"></eg-string>
 
-<div class="row gx-1 row-cols-auto p-2 m-2">
+<div class="row gx-1 row-cols-auto p-3" id="marc-edit">
 
   <ng-container *ngIf="recordType === 'biblio'">
     <div class="form-check">
@@ -41,7 +41,7 @@
   <div class="flex-1"></div>
 
   <h3 class="me-2">
-    <span class="col-form-label rounded bg-light p-2" i18n>
+    <span class="col-form-label rounded p-2" i18n>
       Record Type {{record ? record.recordType() : ''}}
     </span>
   </h3>

@@ -1,17 +1,11 @@
 
-<ng-container *ngIf="fieldMeta">
-
-  <div class="d-flex">
-    <div class="flex-4">
-      <span id="label-{{randId}}" class="text-left fw-bold">
-        {{fieldLabel}}
-      </span>
-    </div>
-      <div class="flex-5">
-        <eg-marc-editable-content
-          [context]="context" [ariaLabel]="fieldLabel"
-          [fixedFieldCode]="fieldCode" fieldType="ffld" moreClasses="p-1">
-        </eg-marc-editable-content>
-      </div>
+<div class="ff-field row" *ngIf="fieldMeta">
+  <label for="{{domId}}" class="col-sm-4 col-form-label form-label fw-bold" title="{{fieldMeta.description}}" i18n-title>
+    {{fieldLabel}}
+  </label>
+  <div class="ff-value col-sm-8">
+    <eg-marc-editable-content [domId]="domId" [context]="context"
+      [fixedFieldCode]="fieldCode" fieldType="ffld" moreClasses="form-control-sm">
+    </eg-marc-editable-content>
   </div>
-</ng-container>
+</div>

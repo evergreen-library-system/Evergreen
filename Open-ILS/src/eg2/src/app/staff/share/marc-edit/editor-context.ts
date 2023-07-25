@@ -16,7 +16,7 @@ export type MARC_EDITABLE_FIELD_TYPE =
 
 export interface FieldFocusRequest {
     fieldId: number;
-    target: MARC_EDITABLE_FIELD_TYPE;
+    target: MARC_EDITABLE_FIELD_TYPE | 'group' | 'move';
     sfOffset?: number; // focus a specific subfield by its offset
     ffCode?: string; // fixed field code
 
@@ -36,6 +36,9 @@ export class UndoRedoAction {
     // Grouped actions are tracked as multiple undo / redo actions, but
     // are done and un-done as a unit.
     groupSize?: number;
+
+    // Was the action just a move?
+    wasMove: boolean;
 }
 
 export class TextUndoRedoAction extends UndoRedoAction {
@@ -60,6 +63,9 @@ export class StructUndoRedoAction extends UndoRedoAction {
 
     // Location of the cursor at time of initial action.
     prevFocus: FieldFocusRequest;
+
+    // Previous index of the field in the record (for field moves)
+    prevIndex: number;
 }
 
 
@@ -79,8 +85,10 @@ export class MarcEditContext {
 
     // True if any changes have been made.
     // For the 'rich' editor, this is any un-do-able actions.
-    // For the text edtior it's any text change.
+    // For the text editor it's any text change.
     changesPending: boolean;
+
+    showHelp = false;
 
     private _record: MarcRecord;
     set record(r: MarcRecord) {
@@ -105,8 +113,33 @@ export class MarcEditContext {
         // timeout allows for new components to be built before the
         // focus request is emitted.
         if (req) {
+            if (req.target === 'group') {
+                setTimeout(() => {
+                    const sfGroup = document.getElementById('subfield-'+req.sfOffset) as HTMLElement;
+                    if (sfGroup) {
+                        sfGroup.focus();
+                    }
+                });
+            }
+            if (req.target === 'move') {
+                this.focusAfterMove(req.fieldId);
+            }
             setTimeout(() => this.fieldFocusRequest.emit(req));
         }
+    }
+
+    // Move fields via drag and drop
+    moveField(moveFrom: number, moveTo: number, field: MarcField, skipTracking?: boolean) {
+        if (moveTo > this.record.fields.length) {
+            moveTo = this.record.fields.length;
+        }
+        // TODO: change this to ARIA announcement
+        console.debug('Moving ' + moveFrom + ' to ' + moveTo);
+        this.record.fields.splice(moveTo, 0, this.record.fields.splice(moveFrom, 1)[0]);
+        if (!skipTracking) {
+            this.trackMoveUndo(field, moveFrom);
+        }
+
     }
 
     resetUndos() {
@@ -204,60 +237,80 @@ export class MarcEditContext {
 
     handleStructuralUndoRedo(action: StructUndoRedoAction) {
 
-        if (action.wasAddition) {
-            // Remove the added field
-
-            if (action.subfield) {
-                const prevPos = action.subfield[2] - 1;
-                action.field.deleteExactSubfields(action.subfield);
-                this.focusSubfield(action.field, prevPos);
-
-            } else {
-                this.record.deleteFields(action.field);
-            }
-
-            // When deleting chunks, always return focus to the
-            // pre-insert position.
-            this.requestFieldFocus(action.prevFocus);
-
+        // Handle moves first, since they don't involve adding or deleting anything
+        if (action.wasMove) {
+            const currentIndex = this.record.fields.indexOf(action.field);
+            this.moveField(currentIndex, action.prevIndex, action.field, true);
+            this.focusAfterMove(action.field.fieldId);
         } else {
-            // Re-insert the removed field and focus it.
+            if (action.wasAddition) {
+                // Remove the added field
 
-            if (action.subfield) {
+                if (action.subfield) {
+                    const prevPos = action.subfield[2] - 1;
+                    action.field.deleteExactSubfields(action.subfield);
+                    this.focusSubfield(action.field, prevPos, true);
 
-                this.insertSubfield(action.field, action.subfield, true);
-                this.focusSubfield(action.field, action.subfield[2]);
+                } else {
+                    this.record.deleteFields(action.field);
+                }
+
+                // When deleting chunks, always return focus to the
+                // pre-insert position.
+                this.requestFieldFocus(action.prevFocus);
 
             } else {
+                // Re-insert the removed field and focus it.
 
-                const fieldId = action.position.fieldId;
-                const prevField =
-                    this.record.getField(action.prevPosition.fieldId);
+                if (action.subfield) {
 
-                this.record.insertFieldsAfter(prevField, action.field);
+                    this.insertSubfield(action.field, action.subfield, true);
+                    this.focusSubfield(action.field, action.subfield[2]);
 
-                // Recover the original fieldId, which gets re-stamped
-                // in this.record.insertFields* calls.
-                action.field.fieldId = fieldId;
+                } else {
 
-                // Focus the newly recovered field.
-                this.requestFieldFocus(action.position);
+                    const fieldId = action.position.fieldId;
+                    const prevField =
+                        this.record.getField(action.prevPosition.fieldId);
+
+                    this.record.insertFieldsAfter(prevField, action.field);
+
+                    // Recover the original fieldId, which gets re-stamped
+                    // in this.record.insertFields* calls.
+                    action.field.fieldId = fieldId;
+
+                    // Focus the newly recovered field.
+                    this.requestFieldFocus(action.position);
+                }
+
+                // When inserting chunks, track the location where the
+                // insert was requested so we can return the cursor so we
+                // can return the cursor to the scene of the crime if the
+                // undo is re-done or vice versa.  This is primarily useful
+                // when performing global inserts like add00X, which can be
+                // done without the 00X field itself having focus.
+                action.prevFocus = this.lastFocused;
             }
 
-            // When inserting chunks, track the location where the
-            // insert was requested so we can return the cursor so we
-            // can return the cursor to the scene of the crime if the
-            // undo is re-done or vice versa.  This is primarily useful
-            // when performing global inserts like add00X, which can be
-            // done without the 00X field itself having focus.
-            action.prevFocus = this.lastFocused;
+            action.wasAddition = !action.wasAddition;
         }
-
-        action.wasAddition = !action.wasAddition;
 
         const moveTo = action.isRedo ? this.undoStack : this.redoStack;
 
         moveTo.unshift(action);
+    }
+
+    trackMoveUndo(field: MarcField, prevIndex: number) {
+        const position: FieldFocusRequest = {fieldId: field.fieldId, target: 'move'};
+
+        const action = new StructUndoRedoAction();
+        action.field = field;
+        action.wasMove = true;
+        action.prevIndex = prevIndex;
+        action.wasAddition = null;
+        action.position = position;
+
+        this.addToUndoStack(action);
     }
 
     trackStructuralUndo(field: MarcField, isAddition: boolean, subfield?: MarcSubfield) {
@@ -365,6 +418,7 @@ export class MarcEditContext {
         subfield: MarcSubfield, skipTracking?: boolean) {
         const position = subfield[2];
 
+
         // array index 3 contains that position of the subfield
         // in the MARC field.  When splicing a new subfield into
         // the set, be sure the any that come after the new one
@@ -387,7 +441,7 @@ export class MarcEditContext {
 
     // Focus the requested subfield by its position.  If its
     // position is less than zero, focus the field's tag instead.
-    focusSubfield(field: MarcField, position: number) {
+    focusSubfield(field: MarcField, position: number, group?: boolean) {
 
         const focus: FieldFocusRequest = {fieldId: field.fieldId, target: 'tag'};
 
@@ -395,6 +449,11 @@ export class MarcEditContext {
             // Focus the code instead of the value, because attempting to
             // focus an empty (editable) div results in nothing getting focus.
             focus.target = 'sfc';
+            focus.sfOffset = position;
+        }
+
+        if (group) {
+            focus.target = 'group';
             focus.sfOffset = position;
         }
 
@@ -408,7 +467,7 @@ export class MarcEditContext {
 
         field.deleteExactSubfields(subfield);
 
-        this.focusSubfield(field, sfpos);
+        this.focusSubfield(field, sfpos, true);
     }
 
     focusTag(field: MarcField) {
@@ -416,7 +475,7 @@ export class MarcEditContext {
     }
 
     // Returns true if the field has a next tag to focus
-    focusNextTag(field: MarcField) {
+    focusNextTag(field: MarcField): boolean {
         const nextField = this.record.getNextField(field.fieldId);
         if (nextField) {
             this.focusTag(nextField);
@@ -433,6 +492,54 @@ export class MarcEditContext {
             return true;
         }
         return false;
+    }
+
+    // focus on the Move button
+    focusAfterMove(fieldId: number, $event?: any) {
+        if ($event) {$event.preventDefault();}
+
+        const move = document.getElementById('move-btn-'+fieldId) as HTMLElement;
+        if (move) {
+            // setTimeout() prevents random loss of focus during DOM updates
+            setTimeout(() => move.focus());
+        }
+    }
+
+    subfieldHasFocus(field: MarcField, subfield: MarcSubfield): boolean {
+        if (!this.lastFocused) {return false;}
+
+        if (this.lastFocused.fieldId === field.fieldId &&
+            this.lastFocused.sfOffset === subfield[2]) {
+            return true;
+        }
+
+        return false;
+    }
+
+    // forces full width layout for all 5xx fields
+    // and a handful of other subfields
+    isFullWidth(tag: string, subfieldCode: string): boolean {
+        if (tag.substring(0,1) === '5') {return true;}
+
+        let fullWidth = false;
+        switch (subfieldCode) {
+            case 'a':
+                if (tag === '963') {fullWidth = true;}
+                break;
+            case 'n':
+                if (['533','993'].includes(tag)) {fullWidth = true;}
+                break;
+            case 't':
+                if (['780','787'].includes(tag)) {fullWidth = true;}
+                break;
+            /*
+            case 'u':
+                fullWidth = true;
+                break;
+            /**/
+        }
+
+        return fullWidth;
     }
 }
 

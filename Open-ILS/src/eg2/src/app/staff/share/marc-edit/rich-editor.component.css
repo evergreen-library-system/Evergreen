@@ -1,10 +1,44 @@
+#eg-marc-rich-editor {
+  background-color: var(--gray-125);
+}
 
 .fixed-fields-container {
-  /*
-   * wait for https://bugs.launchpad.net/evergreen/+bug/1735568 approval
-  background-color: lightcyan;
-  border-bottom: 1px solid gray;
-  */
+  margin: 1rem 0.25rem;
+}
+
+.marc-toolbar.btn-group {
+  display: flex;
+  align-content: center;
+}
+
+.marc-toolbar.btn-group > .btn {
+  flex: 0 0 max-content;
+}
+
+.marc-toolbar,
+.marc-toolbar .btn-secondary {
+  background-color: var(--gray-550);
+}
+
+.marc-toolbar .btn-secondary:focus,
+.marc-toolbar .btn-secondary:hover {
+  background-color: var(--gray-650);
+}
+
+.marc-toolbar .badge-dark {
+  background-color: var(--gray-300);
+}
+
+.menu-with-accesskeys .dropdown-item {
+  display: flex;
+  gap: 1.5rem;
+  justify-content: space-between;
+}
+
+.btn-group .form-check,
+.btn-group .form-check-label {
+  margin-bottom: 0;
+  min-height: revert;
 }
 
 .link-button .material-icons {
@@ -13,3 +47,318 @@
   vertical-align: middle;
   align-items: center;
 }
+
+.marc-table {
+  margin-bottom: 0;
+  table-layout: fixed;
+  width: 100%;
+}
+
+/* remove Bootstrap table border */
+.marc-table.table>:not(:first-child) {
+  border-top: none;
+  /* border-top: .25rem solid var(--gray-200); */
+}
+
+/* column widths */
+.marc-table col.tag {
+  width: 3rem;
+}
+
+.marc-table col.indicator {
+  width: 1.6875rem;
+}
+
+/* .actions must be specified for fixed table layout, but it can squeeze for mobile */
+.marc-table col.actions {
+  width: 8rem;
+}
+
+.marc-table td.actions {
+  padding-right: 0.35rem;
+  text-align: right;
+}
+
+@media screen and (max-width: 760px) {
+  .marc-table col.actions {
+    width: 4.25rem;
+  }
+  .marc-table td.actions {
+    padding: 0;
+    text-align: center;
+  }
+
+  textarea.bigtext {
+    padding: 2px;
+  }
+}
+
+@media screen and (max-width: 600px) {
+  .marc-table col.actions {
+    width: 1.8rem;
+  }
+  .marc-table td.actions {
+    padding: 0;
+    text-align: center;
+  }
+}
+
+/* col.subfields will take the remaining available space */
+
+.marc-table tr {
+  background-color: var(--gray-125);
+}
+
+.start-even tr:not(.changed):nth-child(odd),
+.marc-table:not(.start-even) tr:not(.changed):nth-child(even) {
+  background-color: var(--gray-100);
+}
+
+.marc-table tr.changed {
+  background-color: var(--gray-200);
+}
+
+.marc-table tr.changed th.tag {
+  border-left: .2rem dotted black;
+}
+
+tr:nth-child(even):hover,
+tr:nth-child(odd):hover,
+.start-even tr:nth-child(even):hover,
+.start-even tr:nth-child(odd):hover {
+  background-color: #ffffed !important;
+  box-shadow: 0 .25em .5em rgba(0, 0, 40, 0.2);
+  /* fix bug where shadow is obscured by subsequent row background color: */
+  transform: scale(1);
+  -webkit-transform: scale(1);
+  -moz-transform: scale(1);
+}
+
+/* drop zone row does not need alternating background color or hover style */
+tr#marc-tag-END,
+tr#marc-tag-END:not(.changed):nth-child(even),
+tr#marc-tag-END:hover {
+  background-color: var(--bs-table-bg) !important;
+  box-shadow: none;
+}
+
+.marc-table td,
+.marc-table th {
+  padding: 0;
+  vertical-align: top;
+  border: none;
+}
+
+.marc-table tr.marc-field th {
+  padding-left: 0.5em;
+  text-align: center;
+}
+
+.marc-field th,
+.marc-field td {
+  padding: 0.35rem 0.1rem;
+}
+
+.subfields-flex {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-start;
+  gap: 5px;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.subfield {
+  flex: auto;
+  flex-grow: 0;
+  vertical-align: top;
+  display: flex;
+  flex-wrap: nowrap;
+  align-items: flex-start;
+  margin: 0;
+  max-width: 100%;
+}
+
+.subfield:focus,
+.subfield:focus-visible {
+  outline: 0.25rem solid  rgba(13,110,253,.75);
+}
+
+.subfield eg-marc-editable-content {
+  display: inline-block;
+  flex: auto;
+  flex-grow: 0;
+  max-width: calc(100% - 2.2rem); /* leave room for add button */
+}
+
+.subfield.full-width {
+  flex-basis: calc(100% - 2.2rem);
+}
+
+/* leave room for add button */
+.subfield.full-width eg-marc-editable-content {
+  max-width: calc(100% - 5.2rem); 
+}
+
+.subfield.full-width.last eg-marc-editable-content {
+  max-width: calc(100% - 2.2rem); /* no add button */
+}
+
+.subfield eg-marc-editable-content.sfc {
+  max-width: 1.6rem;
+}
+
+.subfield:has(.bigtext) {
+  min-height: 3rem;
+}
+
+/* eg-marc-editable-content does not have classes, but the contents will be second */
+.subfield.full-width eg-marc-editable-content:nth-of-type(2) {
+  flex-grow: 1 !important;
+}
+
+.subfield textarea.form-control.contents {
+  width: 100%;
+}
+
+/* let the Add Subfield button sit next to the last input */
+.stacked.subfield:not(:last-of-type, .last, .actions) {
+  flex-basis: calc(100% - 5.2rem);
+}
+
+@media screen and (max-width: 600px) {
+  .subfield.full-width {
+    flex-basis: calc(100% - 1rem); /* allow add link button to fall below */
+  }
+}
+
+/* HELP */
+
+.field-hints {
+  font-family: var(--bs-body-font-family);
+  margin-left: -5.55rem; /* total width of tag and indicator columns */
+  margin-right: -7.5rem; /* total width of actions column */
+  margin-top: 1rem;
+}
+
+.field-hints.field-hints-ctrl {
+  margin-left: -2.55rem; /* total width of tag column; no indicators */
+}
+
+.field-hints h4 {
+  /* TODO: adjust contrast after changing table backgrounds */
+  color: #0D7764;
+  font-size: 1.15rem;
+  font-weight: 600;
+}
+
+.field-hints h5 {
+  border-bottom: 1px solid var(--gray-400);
+  padding-bottom: 0.25rem;
+  font-weight: 600;
+}
+
+.marc-help b.code {
+  display: inline-block;
+  font-variant-numeric: tabular-nums;
+  min-width: 1ch;
+}
+
+/* CSS columns are not responsive by default */
+@media screen and (min-width: 600px) {
+  .marc-help-subfields {
+    columns: 2;
+  }
+  
+  .marc-help-shortcuts {
+    columns: 3;
+  }
+}
+
+/* ACTIONS */
+
+.marc-table tr.marc-field .actions button:not(.auth-link) {
+  opacity: 0;
+}
+
+.marc-table tr.marc-field:has(:focus) .actions button,
+.marc-table tr.marc-field:focus .actions button,
+.marc-table tr.marc-field:hover .actions button,
+.marc-table tr.marc-field .actions button:focus {
+  opacity: 1;
+}
+
+.subfield.last button.add-subfield {
+  display: none;
+}
+
+button.delete-subfield {
+  color: var(--gray-600);
+  background-color: var(--gray-100);
+  border: 1px solid var(--gray-200);
+  border-left: 1px solid var(--gray-150);
+  border-radius: 0;
+}
+
+button.delete-subfield:focus,
+button.delete-subfield:hover,
+.marc-table tr.marc-field:focus button.delete-subfield,
+.marc-table tr.marc-field:hover button.delete-subfield {
+  color: var(--gray-700);
+}
+
+.move:hover {
+  cursor: grab;
+}
+
+.btn-tiny {
+  padding: 0 0.25rem;
+}
+
+.btn-tiny:hover {
+  border: 1px solid var(--gray-700);
+  box-shadow: 1px 1px .25rem rgba(0,0,0,0.25);
+}
+
+.btn-tiny:focus {
+  outline: 0.25rem solid rgba(13, 110, 253, 0.75);
+  outline-offset: 0;
+}
+
+.btn-tiny .material-icons {
+  font-size: 1.2rem;
+}
+
+/* DRAG AND DROP */
+
+/* empty row drop zone at the bottom of the table */
+tr.marc-tag-END td {
+  min-height: 1rem;
+}
+
+/* drop zone row */
+.isDragTarget {
+  border-top: 2px solid var(--primary);
+}
+
+/* row being dragged */
+.isDragRow {
+  opacity: 0.4;
+}
+
+@media screen and (max-width: 767px) {
+  .row > .col-marc-ind {
+    width: 50%;
+  }
+} 
+
+@media screen and (max-width: 575px) {
+  .row > .col-marc-ind {
+    width: 100%;
+  }
+
+  .help-subfields {
+    columns: unset;
+  }
+} 

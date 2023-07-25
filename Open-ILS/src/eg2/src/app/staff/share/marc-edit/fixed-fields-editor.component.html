@@ -1,281 +1,436 @@
-<div class="row p-0">
-  <div class="col-lg-2">
-    <eg-fixed-field i18n-fieldLabel [context]="context" 
+<div class="ff-wrapper" [ngClass]="context.recordType">
+  
+  <div class="ff-row row">
+    <div class="col-md-2 col-sm-4">
+      <eg-fixed-field i18n-fieldLabel [context]="context" 
       fieldCode="Type" fieldLabel="Type"></eg-fixed-field>
-  </div>
-  <div class="col-lg-2">
-    <eg-fixed-field i18n-fieldLabel [context]="context" 
-      fieldCode="ELvl" fieldLabel="ELvl"></eg-fixed-field>
-  </div>
-  <div class="col-lg-2">
-    <eg-fixed-field i18n-fieldLabel [context]="context" 
-      fieldCode="Srce" fieldLabel="Srce"></eg-fixed-field>
-  </div>
-  <div class="col-lg-2">
-    <eg-fixed-field i18n-fieldLabel [context]="context" 
-      fieldCode="Audn" fieldLabel="Audn"></eg-fixed-field>
-  </div>
-  <div class="col-lg-2">
-    <eg-fixed-field i18n-fieldLabel [context]="context" 
-      fieldCode="Ctrl" fieldLabel="Ctrl"></eg-fixed-field>
-  </div>
-  <div class="col-lg-2">
-    <eg-fixed-field i18n-fieldLabel [context]="context" 
-      fieldCode="Lang" fieldLabel="Lang"></eg-fixed-field>
-  </div>
-</div>
-<div class="row p-0">
-  <div class="col-lg-2">
-    <eg-fixed-field i18n-fieldLabel [context]="context" 
-      fieldCode="BLvl" fieldLabel="BLvl"></eg-fixed-field>
-  </div>
-  <div class="col-lg-2">
-    <eg-fixed-field i18n-fieldLabel [context]="context" 
-      fieldCode="Form" fieldLabel="Form"></eg-fixed-field>
-  </div>
-  <div class="col-lg-2">
-    <eg-fixed-field i18n-fieldLabel [context]="context" 
-      fieldCode="Conf" fieldLabel="Conf"></eg-fixed-field>
-  </div>
-  <div class="col-lg-2">
-    <eg-fixed-field i18n-fieldLabel [context]="context" 
-      fieldCode="Biog" fieldLabel="Biog"></eg-fixed-field>
-  </div>
-  <div class="col-lg-2">
-    <eg-fixed-field i18n-fieldLabel [context]="context" 
-      fieldCode="MRec" fieldLabel="MRec"></eg-fixed-field>
-  </div>
-  <div class="col-lg-2">
-    <eg-fixed-field i18n-fieldLabel [context]="context" 
-      fieldCode="Ctry" fieldLabel="Ctry"></eg-fixed-field>
-  </div>
-</div>
-<div class="row p-0">
-  <div class="col-lg-2">
-    <eg-fixed-field i18n-fieldLabel [context]="context" 
-      fieldCode="s_l" fieldLabel="s_l"></eg-fixed-field>
-  </div>
-  <div class="col-lg-2">
-    <eg-fixed-field i18n-fieldLabel [context]="context" 
-      fieldCode="Cont" fieldLabel="Cont"></eg-fixed-field>
-  </div>
-  <div class="col-lg-2">
-    <eg-fixed-field i18n-fieldLabel [context]="context" 
-      fieldCode="GPub" fieldLabel="GPub"></eg-fixed-field>
-  </div>
-  <div class="col-lg-2">
-    <eg-fixed-field i18n-fieldLabel [context]="context" 
-      fieldCode="LitF" fieldLabel="LitF"></eg-fixed-field>
-  </div>
-  <div class="col-lg-2">
-    <eg-fixed-field i18n-fieldLabel [context]="context" 
-      fieldCode="Indx" fieldLabel="Indx"></eg-fixed-field>
-  </div>
-  <div class="col-lg-2">
-    <eg-fixed-field i18n-fieldLabel [context]="context" 
-      fieldCode="Alph" fieldLabel="Alph"></eg-fixed-field>
-  </div>
-</div>
-<div class="row p-0">
-  <div class="col-lg-2">
-    <eg-fixed-field i18n-fieldLabel [context]="context" 
-      fieldCode="Desc" fieldLabel="Desc"></eg-fixed-field>
-  </div>
-  <div class="col-lg-2">
-    <eg-fixed-field i18n-fieldLabel [context]="context" 
-      fieldCode="Ills" fieldLabel="Ills"></eg-fixed-field>
-  </div>
-  <div class="col-lg-2">
-    <eg-fixed-field i18n-fieldLabel [context]="context" 
-      fieldCode="Fest" fieldLabel="Fest"></eg-fixed-field>
-  </div>
-  <div class="col-lg-2">
-    <eg-fixed-field i18n-fieldLabel [context]="context" 
-      fieldCode="DtSt" fieldLabel="DtSt"></eg-fixed-field>
-  </div>
-  <div class="col-lg-2">
-    <eg-fixed-field i18n-fieldLabel [context]="context" 
-      fieldCode="Date1" fieldLabel="Date1"></eg-fixed-field>
-  </div>
-  <div class="col-lg-2">
-    <eg-fixed-field i18n-fieldLabel [context]="context" 
-      fieldCode="Date2" fieldLabel="Date2"></eg-fixed-field>
-  </div>
-</div>
-<div class="row p-0">
-  <div class="col-lg-2">
-    <eg-fixed-field i18n-fieldLabel [context]="context" 
-      fieldCode="SrTp" fieldLabel="SrTp"></eg-fixed-field>
-  </div>
-  <div class="col-lg-2">
-    <eg-fixed-field i18n-fieldLabel [context]="context" 
-      fieldCode="Regl" fieldLabel="Regl"></eg-fixed-field>
-  </div>
-  <div class="col-lg-2">
-    <eg-fixed-field i18n-fieldLabel [context]="context" 
-      fieldCode="Orig" fieldLabel="Orig"></eg-fixed-field>
-  </div>
-  <div class="col-lg-2">
-    <eg-fixed-field i18n-fieldLabel [context]="context" 
-      fieldCode="Freq" fieldLabel="Freq"></eg-fixed-field>
-  </div>
-  <div class="col-lg-2">
-    <eg-fixed-field i18n-fieldLabel [context]="context" 
-      fieldCode="EntW" fieldLabel="EntW"></eg-fixed-field>
-  </div>
-</div>
-<div class="row p-0">
-  <div class="col-lg-2">
-    <eg-fixed-field i18n-fieldLabel [context]="context" 
-      fieldCode="TrAr" fieldLabel="TrAr"></eg-fixed-field>
-  </div>
-  <div class="col-lg-2">
-    <eg-fixed-field i18n-fieldLabel [context]="context" 
-      fieldCode="Part" fieldLabel="Part"></eg-fixed-field>
-  </div>
-  <div class="col-lg-2">
-    <eg-fixed-field i18n-fieldLabel [context]="context" 
-      fieldCode="LTxt" fieldLabel="LTxt"></eg-fixed-field>
-  </div>
-  <div class="col-lg-2">
-    <eg-fixed-field i18n-fieldLabel [context]="context" 
-      fieldCode="FMus" fieldLabel="FMus"></eg-fixed-field>
-  </div>
-  <div class="col-lg-2">
-    <eg-fixed-field i18n-fieldLabel [context]="context" 
-      fieldCode="AccM" fieldLabel="AccM"></eg-fixed-field>
-  </div>
-  <div class="col-lg-2">
-    <eg-fixed-field i18n-fieldLabel [context]="context" 
-      fieldCode="Comp" fieldLabel="Comp"></eg-fixed-field>
-  </div>
-</div>
-<div class="row p-0">
-  <div class="col-lg-2">
-    <eg-fixed-field i18n-fieldLabel [context]="context" 
-      fieldCode="SpFm" fieldLabel="SpFm"></eg-fixed-field>
-  </div>
-  <div class="col-lg-2">
-    <eg-fixed-field i18n-fieldLabel [context]="context" 
-      fieldCode="Relf" fieldLabel="Relf"></eg-fixed-field>
-  </div>
-  <div class="col-lg-2">
-    <eg-fixed-field i18n-fieldLabel [context]="context" 
-      fieldCode="Proj" fieldLabel="Proj"></eg-fixed-field>
-  </div>
-  <div class="col-lg-2">
-    <eg-fixed-field i18n-fieldLabel [context]="context" 
-      fieldCode="CrTp" fieldLabel="CrTp"></eg-fixed-field>
-  </div>
-</div>
-<div class="row p-0">
-  <div class="col-lg-2">
-    <eg-fixed-field i18n-fieldLabel [context]="context" 
-      fieldCode="TMat" fieldLabel="TMat"></eg-fixed-field>
-  </div>
-  <div class="col-lg-2">
-    <eg-fixed-field i18n-fieldLabel [context]="context" 
-      fieldCode="Time" fieldLabel="Time"></eg-fixed-field>
-  </div>
-  <div class="col-lg-2">
-    <eg-fixed-field i18n-fieldLabel [context]="context" 
-      fieldCode="Tech" fieldLabel="Tech"></eg-fixed-field>
-  </div>
-  <div class="col-lg-2">
-    <eg-fixed-field i18n-fieldLabel [context]="context" 
-      fieldCode="File" fieldLabel="File"></eg-fixed-field>
-  </div>
-</div>
-<div class="row p-0">
-  <div class="col-lg-2">
-    <eg-fixed-field i18n-fieldLabel [context]="context" 
-      fieldCode="Type_tbmfhd" fieldLabel="Type_tbmfhd"></eg-fixed-field>
-  </div>
-  <div class="col-lg-2">
-    <eg-fixed-field i18n-fieldLabel [context]="context" 
-      fieldCode="ELvl_tbmfhd" fieldLabel="ELvl_tbmfhd"></eg-fixed-field>
-  </div>
-  <div class="col-lg-2">
-    <eg-fixed-field i18n-fieldLabel [context]="context" 
-      fieldCode="Item_tbmfhd" fieldLabel="Item_tbmfhd"></eg-fixed-field>
-  </div>
-  <div class="col-lg-2">
-    <eg-fixed-field i18n-fieldLabel [context]="context" 
-      fieldCode="GeoDiv" fieldLabel="GeoDiv"></eg-fixed-field>
-  </div>
-  <div class="col-lg-2">
-    <eg-fixed-field i18n-fieldLabel [context]="context" 
-      fieldCode="Roman" fieldLabel="Roman"></eg-fixed-field>
-  </div>
-  <div class="col-lg-2">
-    <eg-fixed-field i18n-fieldLabel [context]="context" 
-      fieldCode="CatLang" fieldLabel="CatLang"></eg-fixed-field>
-  </div>
-</div>
-<div class="row p-0">
-  <div class="col-lg-2">
-    <eg-fixed-field i18n-fieldLabel [context]="context" 
-      fieldCode="Kind" fieldLabel="Kind"></eg-fixed-field>
-  </div>
-  <div class="col-lg-2">
-    <eg-fixed-field i18n-fieldLabel [context]="context" 
-      fieldCode="Rules" fieldLabel="Rules"></eg-fixed-field>
-  </div>
-  <div class="col-lg-2">
-    <eg-fixed-field i18n-fieldLabel [context]="context" 
-      fieldCode="Subj" fieldLabel="Subj"></eg-fixed-field>
-  </div>
-  <div class="col-lg-2">
-    <eg-fixed-field i18n-fieldLabel [context]="context" 
-      fieldCode="Series" fieldLabel="Series"></eg-fixed-field>
-  </div>
-  <div class="col-lg-2">
-    <eg-fixed-field i18n-fieldLabel [context]="context" 
-      fieldCode="SerNum" fieldLabel="SerNum"></eg-fixed-field>
-  </div>
-  <div class="col-lg-2">
-    <eg-fixed-field i18n-fieldLabel [context]="context" 
-      fieldCode="NameUse" fieldLabel="NameUse"></eg-fixed-field>
-  </div>
-</div>
-<div class="row p-0">
-  <div class="col-lg-2">
-    <eg-fixed-field i18n-fieldLabel [context]="context" 
-      fieldCode="SubjUse" fieldLabel="SubjUse"></eg-fixed-field>
-  </div>
-  <div class="col-lg-2">
-    <eg-fixed-field i18n-fieldLabel [context]="context" 
-      fieldCode="SerUse" fieldLabel="SerUse"></eg-fixed-field>
-  </div>
-  <div class="col-lg-2">
-    <eg-fixed-field i18n-fieldLabel [context]="context" 
-      fieldCode="TypeSubd" fieldLabel="TypeSubd"></eg-fixed-field>
-  </div>
-  <div class="col-lg-2">
-    <eg-fixed-field i18n-fieldLabel [context]="context" 
-      fieldCode="GovtAgn" fieldLabel="GovtAgn"></eg-fixed-field>
-  </div>
-  <div class="col-lg-2">
-    <eg-fixed-field i18n-fieldLabel [context]="context" 
-      fieldCode="RefStatus" fieldLabel="RefStatus"></eg-fixed-field>
-  </div>
-  <div class="col-lg-2">
-    <eg-fixed-field i18n-fieldLabel [context]="context" 
-      fieldCode="UpdStatus" fieldLabel="UpdStatus"></eg-fixed-field>
-  </div>
-</div>
-<div class="row p-0">
-  <div class="col-lg-2">
-    <eg-fixed-field i18n-fieldLabel [context]="context" 
-      fieldCode="Name" fieldLabel="Name"></eg-fixed-field>
-  </div>
-  <div class="col-lg-2">
-    <eg-fixed-field i18n-fieldLabel [context]="context" 
-      fieldCode="Status" fieldLabel="Status"></eg-fixed-field>
-  </div>
-  <div class="col-lg-2">
-    <eg-fixed-field i18n-fieldLabel [context]="context" 
-      fieldCode="ModRec" fieldLabel="ModRec"></eg-fixed-field>
-  </div>
-</div>
+    </div>
 
+    <div class="col-md-2 col-sm-4" *ngIf="context.recordType === 'authority'">
+      <eg-fixed-field i18n-fieldLabel [context]="context" 
+      fieldCode="UpdStatus" fieldLabel="UpdStatus"></eg-fixed-field>
+    </div>
+  
+    <div class="col-md-2 col-sm-4">
+      <eg-fixed-field i18n-fieldLabel [context]="context" 
+      fieldCode="ELvl" fieldLabel="ELvl"></eg-fixed-field>
+    </div>
+  
+    <div class="col-md-2 col-sm-4">
+      <eg-fixed-field i18n-fieldLabel [context]="context" 
+      fieldCode="Srce" fieldLabel="Srce"></eg-fixed-field>
+    </div>
+    
+    <div class="col-md-2 col-sm-4">
+      <eg-fixed-field i18n-fieldLabel [context]="context" 
+      fieldCode="Audn" fieldLabel="Audn"></eg-fixed-field>
+    </div>
+  
+    <div class="col-md-2 col-sm-4">
+      <eg-fixed-field i18n-fieldLabel [context]="context" 
+      fieldCode="Ctrl" fieldLabel="Ctrl"></eg-fixed-field>
+    </div>
+  
+    <div class="col-md-2 col-sm-4">
+      <eg-fixed-field i18n-fieldLabel [context]="context" 
+      fieldCode="Lang" fieldLabel="Lang"></eg-fixed-field>
+    </div>
+  </div>
+
+  <div class="ff-row row" *ngIf="context.recordType === 'authority'">
+    <div class="col-md-2 col-sm-4">
+      <eg-fixed-field i18n-fieldLabel [context]="context" 
+      fieldCode="Roman" fieldLabel="Roman"></eg-fixed-field>
+    </div>
+
+    <div class="col-md-2 col-sm-4">
+      <!-- Reference Evaluation = 008 / 29 -->
+      <eg-fixed-field i18n-fieldLabel [context]="context" 
+      fieldCode="RefStatus" fieldLabel="RefStatus"></eg-fixed-field>
+    </div>
+
+    <div class="col-md-2 col-sm-4">
+      <eg-fixed-field i18n-fieldLabel [context]="context" 
+      fieldCode="ModRec" fieldLabel="ModRec"></eg-fixed-field>
+    </div>
+
+    <div class="col-md-2 col-sm-4">
+      <eg-fixed-field i18n-fieldLabel [context]="context" 
+      fieldCode="NameUse" fieldLabel="NameUse"></eg-fixed-field>
+    </div>
+  </div>
+
+  <div class="ff-row row" *ngIf="context.recordType === 'authority'">
+    <div class="col-md-2 col-sm-4">
+      <eg-fixed-field i18n-fieldLabel [context]="context" 
+      fieldCode="GovtAgn" fieldLabel="GovtAgn"></eg-fixed-field>
+    </div>
+
+    <div class="col-md-2 col-sm-4">
+      <eg-fixed-field i18n-fieldLabel [context]="context" 
+      fieldCode="Status" fieldLabel="Status"></eg-fixed-field>
+    </div>
+
+    <div class="col-md-2 col-sm-4">
+      <eg-fixed-field i18n-fieldLabel [context]="context" 
+      fieldCode="Subj" fieldLabel="Subj"></eg-fixed-field>
+    </div>
+
+    <div class="col-md-2 col-sm-4">
+      <eg-fixed-field i18n-fieldLabel [context]="context" 
+      fieldCode="SubjUse" fieldLabel="SubjUse"></eg-fixed-field>
+    </div>
+  </div>
+
+  <div class="ff-row row" *ngIf="context.recordType === 'authority'">
+    <div class="col-md-2 col-sm-4">
+      <eg-fixed-field i18n-fieldLabel [context]="context" 
+      fieldCode="Series" fieldLabel="Series"></eg-fixed-field>
+    </div>
+
+    <div class="col-md-2 col-sm-4">
+        <!-- Kind of Record = 008 / 09 -->
+        <!-- Auth/ref in Connexion -->
+        <eg-fixed-field i18n-fieldLabel [context]="context" 
+        fieldCode="Kind" fieldLabel="Kind"></eg-fixed-field>
+      </div>
+    
+    <div class="col-md-2 col-sm-4" *ngIf="context.recordType !== 'authority'">
+      <eg-fixed-field i18n-fieldLabel [context]="context" 
+      fieldCode="GeoDiv" fieldLabel="GeoDiv"></eg-fixed-field>
+    </div>
+
+    <div class="col-md-2 col-sm-4" *ngIf="context.recordType !== 'authority'">
+      <eg-fixed-field i18n-fieldLabel [context]="context" 
+      fieldCode="SerUse" fieldLabel="SerUse"></eg-fixed-field>
+    </div>
+  </div>
+
+  <div class="ff-row row" *ngIf="context.recordType === 'authority'">
+    <div class="col-md-2 col-sm-4">
+      <eg-fixed-field i18n-fieldLabel [context]="context" 
+      fieldCode="SerNum" fieldLabel="SerNum"></eg-fixed-field>
+    </div>
+
+    <div class="col-md-2 col-sm-4">
+      <eg-fixed-field i18n-fieldLabel [context]="context" 
+      fieldCode="Name" fieldLabel="Name"></eg-fixed-field>
+    </div>
+
+    <div class="col-md-2 col-sm-4">
+      <!-- Subdiv tp in Connexion -->
+      <eg-fixed-field i18n-fieldLabel [context]="context" 
+      fieldCode="TypeSubd" fieldLabel="TypeSubd"></eg-fixed-field>
+    </div>
+
+    <div class="col-md-2 col-sm-4">
+      <eg-fixed-field i18n-fieldLabel [context]="context" 
+      fieldCode="Rules" fieldLabel="Rules"></eg-fixed-field>
+    </div>
+  </div>
+
+  <div class="ff-row row">
+    <div class="col-md-2 col-sm-4">
+      <eg-fixed-field i18n-fieldLabel [context]="context" 
+      fieldCode="BLvl" fieldLabel="BLvl"></eg-fixed-field>
+    </div>
+  
+    <div class="col-md-2 col-sm-4">
+      <eg-fixed-field i18n-fieldLabel [context]="context" 
+      fieldCode="Form" fieldLabel="Form"></eg-fixed-field>
+    </div>
+  
+    <div class="col-md-2 col-sm-4">
+      <eg-fixed-field i18n-fieldLabel [context]="context" 
+      fieldCode="Conf" fieldLabel="Conf"></eg-fixed-field>
+    </div>
+  
+    <div class="col-md-2 col-sm-4">
+      <eg-fixed-field i18n-fieldLabel [context]="context" 
+      fieldCode="Biog" fieldLabel="Biog"></eg-fixed-field>
+    </div>
+  
+    <div class="col-md-2 col-sm-4">
+      <eg-fixed-field i18n-fieldLabel [context]="context" 
+      fieldCode="MRec" fieldLabel="MRec"></eg-fixed-field>
+    </div>
+  
+    <div class="col-md-2 col-sm-4">
+      <eg-fixed-field i18n-fieldLabel [context]="context" 
+      fieldCode="Ctry" fieldLabel="Ctry"></eg-fixed-field>
+    </div>
+  </div>
+  <div class="ff-row row">
+    <div class="col-md-2 col-sm-4">
+      <eg-fixed-field i18n-fieldLabel [context]="context" 
+      fieldCode="s_l" fieldLabel="s_l"></eg-fixed-field>
+    </div>
+  
+    <div class="col-md-2 col-sm-4">
+      <eg-fixed-field i18n-fieldLabel [context]="context" 
+      fieldCode="Cont" fieldLabel="Cont"></eg-fixed-field>
+    </div>
+  
+    <div class="col-md-2 col-sm-4">
+      <eg-fixed-field i18n-fieldLabel [context]="context" 
+      fieldCode="GPub" fieldLabel="GPub"></eg-fixed-field>
+    </div>
+  
+    <div class="col-md-2 col-sm-4">
+      <eg-fixed-field i18n-fieldLabel [context]="context" 
+      fieldCode="LitF" fieldLabel="LitF"></eg-fixed-field>
+    </div>
+  
+    <div class="col-md-2 col-sm-4">
+      <eg-fixed-field i18n-fieldLabel [context]="context" 
+      fieldCode="Indx" fieldLabel="Indx"></eg-fixed-field>
+    </div>
+  
+    <div class="col-md-2 col-sm-4">
+      <eg-fixed-field i18n-fieldLabel [context]="context" 
+      fieldCode="Alph" fieldLabel="Alph"></eg-fixed-field>
+    </div>
+  </div>
+  <div class="ff-row row">
+    <div class="col-md-2 col-sm-4">
+      <eg-fixed-field i18n-fieldLabel [context]="context" 
+      fieldCode="Desc" fieldLabel="Desc"></eg-fixed-field>
+    </div>
+  
+    <div class="col-md-2 col-sm-4">
+      <eg-fixed-field i18n-fieldLabel [context]="context" 
+      fieldCode="Ills" fieldLabel="Ills"></eg-fixed-field>
+    </div>
+  
+    <div class="col-md-2 col-sm-4">
+      <eg-fixed-field i18n-fieldLabel [context]="context" 
+      fieldCode="Fest" fieldLabel="Fest"></eg-fixed-field>
+    </div>
+  
+    <div class="col-md-2 col-sm-4">
+      <eg-fixed-field i18n-fieldLabel [context]="context" 
+      fieldCode="DtSt" fieldLabel="DtSt"></eg-fixed-field>
+    </div>
+  
+    <div class="col-md-2 col-sm-4">
+      <eg-fixed-field i18n-fieldLabel [context]="context" 
+      fieldCode="Date1" fieldLabel="Date1"></eg-fixed-field>
+    </div>
+  
+    <div class="col-md-2 col-sm-4">
+      <eg-fixed-field i18n-fieldLabel [context]="context" 
+      fieldCode="Date2" fieldLabel="Date2"></eg-fixed-field>
+    </div>
+  </div>
+  <div class="ff-row row">
+    <div class="col-md-2 col-sm-4">
+      <eg-fixed-field i18n-fieldLabel [context]="context" 
+      fieldCode="SrTp" fieldLabel="SrTp"></eg-fixed-field>
+    </div>
+  
+    <div class="col-md-2 col-sm-4">
+      <eg-fixed-field i18n-fieldLabel [context]="context" 
+      fieldCode="Regl" fieldLabel="Regl"></eg-fixed-field>
+    </div>
+  
+    <div class="col-md-2 col-sm-4">
+      <eg-fixed-field i18n-fieldLabel [context]="context" 
+      fieldCode="Orig" fieldLabel="Orig"></eg-fixed-field>
+    </div>
+  
+    <div class="col-md-2 col-sm-4">
+      <eg-fixed-field i18n-fieldLabel [context]="context" 
+      fieldCode="Freq" fieldLabel="Freq"></eg-fixed-field>
+    </div>
+  
+    <div class="col-md-2 col-sm-4">
+      <eg-fixed-field i18n-fieldLabel [context]="context" 
+      fieldCode="EntW" fieldLabel="EntW"></eg-fixed-field>
+    </div>
+  </div>
+  <div class="ff-row row">
+    <div class="col-md-2 col-sm-4">
+      <eg-fixed-field i18n-fieldLabel [context]="context" 
+      fieldCode="TrAr" fieldLabel="TrAr"></eg-fixed-field>
+    </div>
+  
+    <div class="col-md-2 col-sm-4">
+      <eg-fixed-field i18n-fieldLabel [context]="context" 
+      fieldCode="Part" fieldLabel="Part"></eg-fixed-field>
+    </div>
+  
+    <div class="col-md-2 col-sm-4">
+      <eg-fixed-field i18n-fieldLabel [context]="context" 
+      fieldCode="LTxt" fieldLabel="LTxt"></eg-fixed-field>
+    </div>
+  
+    <div class="col-md-2 col-sm-4">
+      <eg-fixed-field i18n-fieldLabel [context]="context" 
+      fieldCode="FMus" fieldLabel="FMus"></eg-fixed-field>
+    </div>
+  
+    <div class="col-md-2 col-sm-4">
+      <eg-fixed-field i18n-fieldLabel [context]="context" 
+      fieldCode="AccM" fieldLabel="AccM"></eg-fixed-field>
+    </div>
+  
+    <div class="col-md-2 col-sm-4">
+      <eg-fixed-field i18n-fieldLabel [context]="context" 
+      fieldCode="Comp" fieldLabel="Comp"></eg-fixed-field>
+    </div>
+  </div>
+  <div class="ff-row row">
+    <div class="col-md-2 col-sm-4">
+      <eg-fixed-field i18n-fieldLabel [context]="context" 
+      fieldCode="SpFm" fieldLabel="SpFm"></eg-fixed-field>
+    </div>
+  
+    <div class="col-md-2 col-sm-4">
+      <eg-fixed-field i18n-fieldLabel [context]="context" 
+      fieldCode="Relf" fieldLabel="Relf"></eg-fixed-field>
+    </div>
+  
+    <div class="col-md-2 col-sm-4">
+      <eg-fixed-field i18n-fieldLabel [context]="context" 
+      fieldCode="Proj" fieldLabel="Proj"></eg-fixed-field>
+    </div>
+  
+    <div class="col-md-2 col-sm-4">
+      <eg-fixed-field i18n-fieldLabel [context]="context" 
+      fieldCode="CrTp" fieldLabel="CrTp"></eg-fixed-field>
+    </div>
+  </div>
+  <div class="ff-row row">
+    <div class="col-md-2 col-sm-4">
+      <eg-fixed-field i18n-fieldLabel [context]="context" 
+      fieldCode="TMat" fieldLabel="TMat"></eg-fixed-field>
+    </div>
+  
+    <div class="col-md-2 col-sm-4">
+      <eg-fixed-field i18n-fieldLabel [context]="context" 
+      fieldCode="Time" fieldLabel="Time"></eg-fixed-field>
+    </div>
+  
+    <div class="col-md-2 col-sm-4">
+      <eg-fixed-field i18n-fieldLabel [context]="context" 
+      fieldCode="Tech" fieldLabel="Tech"></eg-fixed-field>
+    </div>
+  
+    <div class="col-md-2 col-sm-4">
+      <eg-fixed-field i18n-fieldLabel [context]="context" 
+      fieldCode="File" fieldLabel="File"></eg-fixed-field>
+    </div>
+  </div>
+  <div class="ff-row row" *ngIf="context.recordType !== 'authority'">
+    <div class="col-md-2 col-sm-4">
+      <eg-fixed-field i18n-fieldLabel [context]="context" 
+      fieldCode="Type_tbmfhd" fieldLabel="Type_tbmfhd"></eg-fixed-field>
+    </div>
+  
+    <div class="col-md-2 col-sm-4">
+      <eg-fixed-field i18n-fieldLabel [context]="context" 
+      fieldCode="ELvl_tbmfhd" fieldLabel="ELvl_tbmfhd"></eg-fixed-field>
+    </div>
+  
+    <div class="col-md-2 col-sm-4">
+      <eg-fixed-field i18n-fieldLabel [context]="context" 
+      fieldCode="Item_tbmfhd" fieldLabel="Item_tbmfhd"></eg-fixed-field>
+    </div>
+  
+    <div class="col-md-2 col-sm-4">
+      <eg-fixed-field i18n-fieldLabel [context]="context" 
+      fieldCode="GeoDiv" fieldLabel="GeoDiv"></eg-fixed-field>
+    </div>
+  
+    <div class="col-md-2 col-sm-4">
+      <eg-fixed-field i18n-fieldLabel [context]="context" 
+      fieldCode="Roman" fieldLabel="Roman"></eg-fixed-field>
+    </div>
+  
+    <div class="col-md-2 col-sm-4">
+      <eg-fixed-field i18n-fieldLabel [context]="context" 
+      fieldCode="CatLang" fieldLabel="CatLang"></eg-fixed-field>
+    </div>
+  </div>
+  <div class="ff-row row" *ngIf="context.recordType !== 'authority'">
+    <div class="col-md-2 col-sm-4">
+      <!-- Kind of Record = 008 / 09 -->
+      <eg-fixed-field i18n-fieldLabel [context]="context" 
+      fieldCode="Kind" fieldLabel="Kind"></eg-fixed-field>
+    </div>
+  
+    <div class="col-md-2 col-sm-4">
+      <eg-fixed-field i18n-fieldLabel [context]="context" 
+      fieldCode="Rules" fieldLabel="Rules"></eg-fixed-field>
+    </div>
+  
+    <div class="col-md-2 col-sm-4">
+      <eg-fixed-field i18n-fieldLabel [context]="context" 
+      fieldCode="Subj" fieldLabel="Subj"></eg-fixed-field>
+    </div>
+  
+    <div class="col-md-2 col-sm-4">
+      <eg-fixed-field i18n-fieldLabel [context]="context" 
+      fieldCode="Series" fieldLabel="Series"></eg-fixed-field>
+    </div>
+  
+    <div class="col-md-2 col-sm-4">
+      <eg-fixed-field i18n-fieldLabel [context]="context" 
+      fieldCode="SerNum" fieldLabel="SerNum"></eg-fixed-field>
+    </div>
+  
+    <div class="col-md-2 col-sm-4">
+      <eg-fixed-field i18n-fieldLabel [context]="context" 
+      fieldCode="NameUse" fieldLabel="NameUse"></eg-fixed-field>
+    </div>
+  </div>
+  <div class="ff-row row" *ngIf="context.recordType !== 'authority'">
+    <div class="col-md-2 col-sm-4">
+      <eg-fixed-field i18n-fieldLabel [context]="context" 
+      fieldCode="SubjUse" fieldLabel="SubjUse"></eg-fixed-field>
+    </div>
+  
+    <div class="col-md-2 col-sm-4">
+      <eg-fixed-field i18n-fieldLabel [context]="context" 
+      fieldCode="SerUse" fieldLabel="SerUse"></eg-fixed-field>
+    </div>
+  
+    <div class="col-md-2 col-sm-4">
+      <eg-fixed-field i18n-fieldLabel [context]="context" 
+      fieldCode="TypeSubd" fieldLabel="TypeSubd"></eg-fixed-field>
+    </div>
+  
+    <div class="col-md-2 col-sm-4">
+      <eg-fixed-field i18n-fieldLabel [context]="context" 
+      fieldCode="GovtAgn" fieldLabel="GovtAgn"></eg-fixed-field>
+    </div>
+  
+    <div class="col-md-2 col-sm-4">
+      <!-- Reference Evaluation = 008 / 29 -->
+      <eg-fixed-field i18n-fieldLabel [context]="context" 
+      fieldCode="RefStatus" fieldLabel="RefStatus"></eg-fixed-field>
+    </div>
+  
+    <div class="col-md-2 col-sm-4">
+      <eg-fixed-field i18n-fieldLabel [context]="context" 
+      fieldCode="UpdStatus" fieldLabel="UpdStatus"></eg-fixed-field>
+    </div>
+  </div>
+  <div class="ff-row row" *ngIf="context.recordType !== 'authority'">
+    <div class="col-md-2 col-sm-4">
+      <eg-fixed-field i18n-fieldLabel [context]="context" 
+      fieldCode="Name" fieldLabel="Name"></eg-fixed-field>
+    </div>
+  
+    <div class="col-md-2 col-sm-4">
+      <eg-fixed-field i18n-fieldLabel [context]="context" 
+      fieldCode="Status" fieldLabel="Status"></eg-fixed-field>
+    </div>
+  
+    <div class="col-md-2 col-sm-4">
+      <eg-fixed-field i18n-fieldLabel [context]="context" 
+      fieldCode="ModRec" fieldLabel="ModRec"></eg-fixed-field>
+    </div>
+  </div>
+
+</div>

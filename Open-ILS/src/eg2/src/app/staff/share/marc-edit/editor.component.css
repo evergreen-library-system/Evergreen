@@ -1,0 +1,37 @@
+/* eg-marc-editor background set in parent record.component.css */
+
+.nav-tabs {
+  background-color: var(--gray-125);
+  border-color: var(--gray-250);
+  padding-left: 0.5rem; /* separate active tab from page background */
+}
+
+.nav-tabs .nav-link {
+  background-color: var(--gray-100);
+  border-color: var(--gray-250);
+  color: #084DB4;
+}
+
+.nav-tabs .nav-link.active {
+  background: linear-gradient(var(--gray-050) 35%, var(--gray-125));
+  border-color: var(--gray-300) var(--gray-400) var(--gray-125);
+  color:var(--gray-900);
+}
+
+.nav-tabs .nav-link:hover,
+.nav-tabs .nav-link:focus {
+  background-color: var(--gray-100);
+  border-color: var(--gray-600) var(--gray-600) var(--gray-100);
+}
+
+
+.btn-destroy {
+  background-color: var(--gray-550);
+  color: white;
+}
+
+.btn-destroy:hover,
+.btn-destroy:focus {
+  background-color: var(--bs-danger);
+  color: white;
+}

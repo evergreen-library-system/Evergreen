@@ -1,24 +1,98 @@
-
-div[contenteditable] {
-   /* provide plenty of input space */
-   min-width: 2em;
-   /* match BS form-control border color */
-   border: 1px solid rgb(206, 212, 218);
-}
-
-.sf-delimiter {
-  /* match angjs color */
-  color: rgb(0, 0, 255)!important;
-  /* snuggle up to my subfield code */
-  margin-right: -0.5rem;
-}
-
-.sf-code {
-  /* match angjs color */
-  color: rgb(0, 0, 255)!important;
-}
-
 .auth-invalid {
-  color: rgb(255, 0, 0)!important;
+  background-color: #f8d7da;
+  color: #842029;
 }
 
+/* 2ch == 1rem usually; width includes padding */
+
+#eg-marc-rich-editor input.form-control {
+  border-radius: 0;
+  min-width: 1.5rem;
+  padding: clamp(2px, 0.25rem, 8px);
+  width: 100%;
+}
+
+#eg-marc-rich-editor .form-control:focus {
+  box-shadow: none; /* remove Bootstrap style */
+  outline: .25rem solid rgba(13,110,253,0.75);
+  outline-offset: -.15rem;
+  /* make sure focus outline is not obscured by adjacent elements */
+  position: relative;
+  z-index: 10;
+}
+
+input.form-control.type-ffld {
+  width: 100%;
+}
+
+input.form-control.type-tag {
+  display: block; /* Firefox is dumb */
+  font-weight: bold;
+  text-align: center;
+  max-width: 2.5rem;
+}
+
+input.form-control.type-sfc {
+  font-weight: bold;
+  text-align: center;
+  max-width: 1.5rem;
+  border-right: none;
+}
+
+input.form-control.type-ind1,
+input.form-control.type-ind2 {
+  font-weight: normal;
+  max-width: 1.5rem;
+  text-align: center !important;
+}
+
+th.tag input.form-control {
+  font-weight: bold;
+  text-align: center !important;
+  width: 100%;
+}
+
+input.code.form-control {
+  max-width: 2ch;
+  font-weight: bold;
+}
+
+input.form-control.type-ldr,
+input.form-control.type-cfld,
+input.form-control.type-sfv {
+  min-width: 3rem;
+  max-width: 100%;
+  width: 100%;
+}
+
+textarea.contents:empty {
+  height: 2em;
+}
+
+textarea.bigtext {
+  border-radius: 0;
+  min-height: 3lh;
+  min-width: calc(100% - 4.2rem);
+  height: 99%;
+  resize: none;
+  padding: clamp(2px, 0.25rem, 8px);
+}
+
+@media screen and (max-width: 600px) {
+  #eg-marc-rich-editor input.form-control {
+    padding: 0 !important;
+  }
+  
+  textarea.bigtext {
+    padding: 2px;
+  } 
+}
+
+.padded {
+  padding: 2px 3px;
+}
+
+/* style for free text entry "choice" in combobox; will be highlighted w/blue background */
+.unknown {
+  font-style: italic;
+}

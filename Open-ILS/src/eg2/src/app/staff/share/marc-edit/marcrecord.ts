@@ -26,6 +26,14 @@ export interface MarcField {
     // Fields are immutable when it comes to controlfield vs.
     // data field.  Stamp the value when stamping field IDs.
     isCtrlField: boolean;
+
+    // Used for rich editor drag and drop operations
+    isDragTarget?: boolean;
+    isDraggable?: boolean;
+
+    // Fake :has(:focus), which Firefox does not do
+    hasFocus?: boolean;
+
     indicator?: (ind: number) => any;
 
     // Pass-through to marcrecord.js

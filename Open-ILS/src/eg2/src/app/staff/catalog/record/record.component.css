@@ -1,3 +1,7 @@
+#marcEditor {
+  background-color: var(--gray-125);
+}
+
 .nav-tabs li h2 {
   color: inherit;
   font-size: inherit;

@@ -1,5 +1,5 @@
 
-<div *ngIf="record">
+<div *ngIf="record" class="flat-editor-container">
   <textarea class="form-control flat-editor-content" 
     (change)="textChanged()"
     (blur)="record.absorbBreakerChanges()"

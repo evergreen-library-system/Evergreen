@@ -3,6 +3,7 @@
   <span id="{{domId}}-{{r.id}}" [ngClass]="r.class">{{r.label}}</span>
 </ng-template>
 
+<!-- Combobox result formatters for specific IDL classes; used by multiple components. -->
 <ng-template #acqfTemplate egIdlClass="acqf" let-r="result">
   <span id="{{domId}}-{{r.id}}" [ngClass]="r.class">{{r.fm.code()}} ({{r.fm.year()}}) ({{getOrgShortname(r.fm.org())}})</span>
 </ng-template>
@@ -20,26 +21,32 @@
 <ng-container *ngIf="!readOnly">
   <div class="input-group">
     <input type="text" 
-      class="form-control"
+      class="form-control {{moreClasses}}"
+      [tabindex]="tabindex"
+      [maxlength]="maxLength"
       [id]="domId"
       [ngClass]="{
         'text-success fst-italic fw-bold': selected && selected.freetext,
         'form-control-sm': smallFormControl
       }"
+      [attr.aria-label]="ariaLabel"
       [placeholder]="placeholder"
       [name]="name"
       [disabled]="isDisabled"
+      [selectOnExact]="selectOnExact"
       [required]="isRequired"
+      [editable]="isEditable"
       [(ngModel)]="selected" 
       [ngbTypeahead]="filter"
       [resultTemplate]="getResultTemplate()"
       [inputFormatter]="formatDisplayString"
       (click)="onClick($event)"
-      (blur)="onBlur()"
+      (blur)="onBlur($event)"
+      (focus)="onFocus($event)"
       container="body"
       (selectItem)="selectorChanged($event)"
       #instance="ngbTypeahead"/>
-    <button type="button" class="input-group-text" (click)="openMe($event)"
+    <button *ngIf="icons" type="button" class="input-group-text" (click)="openMe($event)"
       aria-label="Open" i18n-aria-label title="Open" i18n-title>
       <span class="material-icons" aria-hidden="true">unfold_more</span>
     </button>

@@ -1,4 +1,3 @@
-
 <!--
 Some context menus have additional static options.
 Track their labels here.
@@ -10,31 +9,54 @@ Track their labels here.
 <eg-string #insertAfter text="Insert Field After" i18n-text></eg-string>
 <eg-string #deleteField text="Delete Field" i18n-text></eg-string>
 
+<!-- Combobox result formatters used by [displayTemplate] -->
+<!-- id: tag/indicator/subfield number; label: human-readable name -->
+<ng-template #marcTagDisplayTemplate let-r="result">
+  <span *ngIf="r.id !== null" class="font-monospace" [ngClass]="r.userdata.class" id="{{domId}}-{{r.id}}"><b>{{r.id}}</b>: {{r.userdata?.label}}</span>
+</ng-template>
+
 <ng-container *ngIf="bigText">
-  <div contenteditable
-    id='{{randId}}'
-    class="d-inline-block text-dark text-break {{moreClasses}}"
+  <textarea
+    id="{{domId}}"
+    class="d-inline-block text-dark text-break form-control bigtext {{moreClasses}}"
     [ngClass]="{'auth-invalid': isAuthInvalid()}"
-    [attr.tabindex]="fieldText ? -1 : '0'"
+    tabindex="{{tabindex}}"
     [attr.aria-label]="ariaLabel"
-    [egContextMenu]="contextMenuEntries()"
-    (menuItemSelected)="contextMenuChange($event.value)"
     (keydown)="inputKeyDown($event)"
     (focus)="selectText()"
     (blur)="inputBlurred()"
     (input)="bigTextValueChange()">
-  </div>
+  </textarea>
 </ng-container>
 
 <ng-container *ngIf="!bigText">
-  <input
-    id='{{randId}}'
-    class="text-dark rounded-0 form-control {{moreClasses}}"
+
+  <eg-combobox #MARCCombo *ngIf="suggest"
+    [domId]="domId"
+    [moreClasses]="'fw-bold form-control-sm type-'+fieldType"
+    tabindex="{{tabindex}}"
+    [ariaLabel]="ariaLabel"
+    [maxLength]="maxLength"
+    [labelTrim]="false"
+    [selectOnExact]="true"
+    [startsWith]="true"
+    [clearOnAsync]="true"
+    [startId]="getContent()"
+    [icons]="false"
+    [displayTemplate]="marcTagDisplayTemplate"
+    [asyncSupportsEmptyTermClick]="true"
+    [entries]="initialEntryList()"
+    (inputBlurred)="inputBlurred()"
+    (keydown)="inputKeyDown($event)"
+    (onChange)="setContent($event)"
+    (inputFocused)="selectText()">
+  </eg-combobox>
+
+  <input *ngIf="!suggest"
+    id='{{domId}}'
+    class="form-control type-{{fieldType}} {{moreClasses}}"
     [ngClass]="{'auth-invalid': isAuthInvalid()}"
-    [size]="inputSize()"
-    [maxlength]="maxLength || ''"
-    [disabled]="fieldText"
-    [attr.tabindex]="fieldText ? -1 : '0'"
+    tabindex="{{tabindex}}"
     [attr.aria-label]="ariaLabel"
     [egContextMenu]="contextMenuEntries()"
     (menuItemSelected)="contextMenuChange($event.value)"
@@ -45,4 +67,3 @@ Track their labels here.
     (ngModelChange)="setContent($event)"
   />
 </ng-container>
-

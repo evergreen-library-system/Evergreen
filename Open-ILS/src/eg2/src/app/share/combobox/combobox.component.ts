@@ -64,10 +64,13 @@ implements ControlValueAccessor, OnInit, AfterViewInit, OnChanges {
     @ViewChildren(IdlClassTemplateDirective) idlClassTemplates: QueryList<IdlClassTemplateDirective>;
 
     @Input() domId = 'eg-combobox-' + ComboboxComponent.domIdAuto++;
+    @Input() tabindex = null;
 
     // Applies a name attribute to the input.
     // Useful in forms.
     @Input() name: string;
+
+    @Input() ariaLabel?: string = null;
 
     // Placeholder text for selector input
     @Input() placeholder = '';
@@ -75,15 +78,27 @@ implements ControlValueAccessor, OnInit, AfterViewInit, OnChanges {
     @Input() persistKey: string; // TODO
 
     @Input() allowFreeText = false;
+    @Input() labelTrim = true;
 
-    @Input() inputSize: number = null;
+    @Input() inputSize?: number = null;
+    @Input() maxLength?: number = null;
 
     // If true, applies form-control-sm CSS
     @Input() smallFormControl = false;
 
+    // space-separated list of additional CSS classes to append
+    @Input() moreClasses: string;
+
+    // If false, omits the up/down arrow icons
+    @Input() icons = true;
+
     // If true, the typeahead only matches values that start with
     // the value typed as opposed to a 'contains' match.
     @Input() startsWith = false;
+
+    @Input() clearOnAsync = false;
+    @Input() isEditable = false;
+    @Input() selectOnExact = false;
 
     // Add a 'required' attribute to the input
     isRequired: boolean;
@@ -116,6 +131,8 @@ implements ControlValueAccessor, OnInit, AfterViewInit, OnChanges {
     @Input() idlBaseQuery: any = null;
     @Input() startIdFiresOnChange: boolean;
 
+    @Input() searchInId = false;
+
     // This will be appended to the async data retrieval query
     // when fetching objects by idlClass.
     @Input() idlQueryAnd: {[field: string]: any};
@@ -125,6 +142,8 @@ implements ControlValueAccessor, OnInit, AfterViewInit, OnChanges {
     // Display the selected value as text instead of within
     // the typeahead
     @Input() readOnly = false;
+
+    @Input() focused = false;
 
     // Allow the selected entry ID to be passed via the template
     // This does NOT not emit onChange events.
@@ -206,14 +225,26 @@ implements ControlValueAccessor, OnInit, AfterViewInit, OnChanges {
     }
 
     // When provided use this as the display template for each entry.
+    // To create a custom result format in a single component, add <ng-template> to
+    // your component HTML and provide its TemplateRef using [displayTemplate]
     @Input() displayTemplate: TemplateRef<any>;
+
+    // For propagating focus/blur events coming from the input element
+    @Output() inputFocused: EventEmitter<void>;
+    @Output() inputBlurred: EventEmitter<void>;
 
     // Emitted when the value is changed via UI.
     // When the UI value is cleared, null is emitted.
     @Output() onChange: EventEmitter<ComboboxEntry>;
 
+    // set to "id" to use the result ID instead of the result label
+    // as the inputFormatter display string
+    @Input() inputFormatField = 'label';
+
     // Useful for massaging the match string prior to comparison
-    // and display.  Default version trims leading/trailing spaces.
+    // and display.  Default version trims leading/trailing spaces
+    // from the result, unless ID is specified using inputFormatField.
+    // Used as ngbTypeahead's inputFormatter directive.
     formatDisplayString: (e: ComboboxEntry) => string;
 
     idlDisplayTemplateMap: { [key: string]: TemplateRef<any> } = {};
@@ -236,8 +267,18 @@ implements ControlValueAccessor, OnInit, AfterViewInit, OnChanges {
         this.onChange = new EventEmitter<ComboboxEntry>();
         this.defaultSelectionApplied = false;
 
+        this.inputFocused = new EventEmitter<void>();
+        this.inputBlurred = new EventEmitter<void>();
+
+        // determines how selected items display in the <input>, if different from result
         this.formatDisplayString = (result: ComboboxEntry) => {
-            const display = result.label || result.id;
+            console.debug('formatDisplayString result (input):', result);
+            const displayField = this.inputFormatField || 'label';
+
+            // trim the result string
+            const display = result[displayField] || result.id;
+            console.debug('formatDisplayString display (output):', result);
+            if (!this.labelTrim) {return (display + '');}
             return (display + '').trim();
         };
 
@@ -400,6 +441,10 @@ implements ControlValueAccessor, OnInit, AfterViewInit, OnChanges {
         setTimeout(() => this.click$.next(''));
     }
 
+    closeMe($event) {
+        this.instance.dismissPopup();
+    }
+
     // Returns true if the 2 entries are equivalent.
     entriesMatch(e1: ComboboxEntry, e2: ComboboxEntry): boolean {
         return (
@@ -451,11 +496,12 @@ implements ControlValueAccessor, OnInit, AfterViewInit, OnChanges {
 
     // Called by combobox-entry.component
     addEntry(entry: ComboboxEntry) {
-
-        if (!this.isDuplicateEntry(entry)) {
-            this.entrylist.push(entry);
+        if (entry.disabled) {
+            if (!this.disableEntries.find(e => e === entry.id)) {
+                this.disableEntries.push(entry.id);
+            }
         }
-
+        this.entrylist.push(entry);
         this.applySelection();
     }
 
@@ -476,10 +522,28 @@ implements ControlValueAccessor, OnInit, AfterViewInit, OnChanges {
         this.selected = this.entrylist.filter(e => e.id === entryId)[0];
     }
 
+    removeEntryById(entryId: string) {
+        if (this.hasEntry(entryId)) {
+            this.entrylist.splice(
+                this.entrylist.findIndex(e => e.id === entryId),
+                1
+            );
+        }
+    }
+
     addAsyncEntry(entry: ComboboxEntry) {
         if (!entry) { return; }
         // Avoid duplicate async entries
-        if (!this.asyncIds['' + entry.id]) {
+        const old_label = this.entrylist.find(e => e.id === entry.id)?.label;
+        const old_ud = this.entrylist.find(e => e.id === entry.id)?.userdata;
+        const old_fm = this.entrylist.find(e => e.id === entry.id)?.fm;
+        if (!this.asyncIds['' + entry.id]) { // no matchin async id recorded
+            this.asyncIds['' + entry.id] = true;
+            this.addEntry(entry);
+        } else if (old_label !== entry?.label
+                || old_ud !== entry?.userdata
+                || old_fm !== entry?.fm) { // something is different, replace it
+            this.removeEntryById(entry.id);
             this.asyncIds['' + entry.id] = true;
             this.addEntry(entry);
         }
@@ -489,7 +553,17 @@ implements ControlValueAccessor, OnInit, AfterViewInit, OnChanges {
         return this.entrylist.filter(e => e.id === entryId)[0] !== undefined;
     }
 
-    onBlur() {
+    onFocus($event) {
+        this.focused = true;
+        this.inputFocused.emit();
+        $event.preventDefault();
+        console.debug('onFocus: ', $event);
+    }
+
+    onBlur($event) {
+        this.focused = false;
+
+        console.debug('onBlur selected started as: ', this.selected);
         // When the selected value is a string it means we have either
         // no value (user cleared the input) or a free-text value.
 
@@ -516,6 +590,10 @@ implements ControlValueAccessor, OnInit, AfterViewInit, OnChanges {
                     };
                 }
 
+                if (this.inputFormatField) {
+                    this.selected[this.inputFormatField] = this.selected.label;
+                }
+
             } else {
 
                 this.selected = null;
@@ -526,13 +604,17 @@ implements ControlValueAccessor, OnInit, AfterViewInit, OnChanges {
             this.selectorChanged(
                 {item: this.selected, preventDefault: () => true});
         }
+        this.inputBlurred.emit();
+        console.debug('onBlur selected is now: ', this.selected);
         this.propagateTouch();
     }
 
     // Fired by the typeahead to inform us of a change.
     selectorChanged(selEvent: NgbTypeaheadSelectItemEvent) {
+        selEvent.preventDefault();
         this.onChange.emit(selEvent.item);
         this.propagateChange(selEvent.item);
+        console.debug('selectorChanged: ', selEvent);
     }
 
     // Adds matching async entries to the entry list
@@ -553,6 +635,12 @@ implements ControlValueAccessor, OnInit, AfterViewInit, OnChanges {
                 // Skip the final filter map and display nothing.
                 return of();
             }
+        }
+
+        if (this.clearOnAsync) {
+            this.asyncIds = {};
+            this.entrylist.length = 0;
+            this.selected = null;
         }
 
         return new Observable(observer => {
@@ -597,6 +685,7 @@ implements ControlValueAccessor, OnInit, AfterViewInit, OnChanges {
 
             // mergeMap coalesces an observable into our stream.
             mergeMap(term => this.addAsyncEntries(term)),
+
             map((term: string) => {
 
                 // Display no values when the input is empty and no
@@ -613,12 +702,24 @@ implements ControlValueAccessor, OnInit, AfterViewInit, OnChanges {
                 // Filter entrylist whose labels substring-match the
                 // text entered.
                 return this.entrylist.filter(entry => {
-                    const label = String(entry.label) || String(entry.id);
+                    const label = String(entry.label);
+                    const id = String(entry.id);
+
                     if (!label) { return false; }
 
                     if (this.startsWith) {
+                        if (this.searchInId) {
+                            if (id.toLowerCase().startsWith(term.toLowerCase())) {
+                                return true;
+                            }
+                        }
                         return label.toLowerCase().startsWith(term.toLowerCase());
                     } else {
+                        if (this.searchInId) {
+                            if (id.toLowerCase().indexOf(term.toLowerCase()) > -1) {
+                                return true;
+                            }
+                        }
                         return label.toLowerCase().indexOf(term.toLowerCase()) > -1;
                     }
                 });
@@ -627,6 +728,7 @@ implements ControlValueAccessor, OnInit, AfterViewInit, OnChanges {
     };
 
     writeValue(value: ComboboxEntry) {
+        console.debug('writeValue: ', value);
         if (value !== undefined && value !== null) {
             this.startId = value.id;
             this.applySelection();

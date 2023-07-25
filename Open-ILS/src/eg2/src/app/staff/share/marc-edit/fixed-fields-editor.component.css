@@ -1,0 +1,111 @@
+.ff-field .input-group {
+  width: unset;
+}
+
+.ff-field:hover,
+.ff-field:has(:focus) {
+  background: #ffffed;
+}
+
+/* Tighten up fixed field code and value */
+.ff-field .col-sm-4 {
+  flex-basis: 6.5ch;
+  padding-right: 0;
+}
+
+.ff-field .col-sm-8 {
+  padding-left: 0.25rem;
+}
+
+.authority .ff-field .col-sm-4 {
+  flex-basis: 10ch;
+}
+
+.authority .ff-field .col-sm-8 {
+  flex-basis: calc(100% - 12ch);
+}
+
+/* TODO:
+  Restore grid-based layout commented out below when Chrome/Mac ships subgrid.
+  Also remove from HTML: 
+  .row
+  .col-*
+
+  And remove the above .ff-field .col-* styles
+/**/
+
+/* 
+  12 columns: 6 repeating pairs of subgrid columns, label/value
+  <label> columns will accommodate the longest field label,
+  value <input>s must be at least 1rem but can grow
+*/
+
+/* 
+.ff-wrapper {
+  display: grid;
+  grid-template-columns: repeat(6, max-content minmax(1rem, 1fr)); 
+  grid-template-rows: auto;
+  row-gap: 0;
+  column-gap: 1rem;
+}
+
+.ff-row {
+  display: grid;
+  grid-template-columns: subgrid;
+  grid-template-rows: min-content;
+  grid-column: 1 / span 12;
+  grid-row: auto;
+}
+/**/
+
+/* pass subgrid down to children */
+/*
+eg-fixed-field {
+  display: grid;
+  grid-template-columns: subgrid;
+  grid-column: auto / span 2;
+  grid-row: auto;
+}
+/**/
+
+/* pass subgrid down to children, reset gap between label and value input */
+/*
+.ff-field {
+  display: grid;
+  grid-template-columns: subgrid;
+  grid-column: 1 / span 2;
+  column-gap: 0.25rem;
+  margin: 0.25rem 0 0;
+  align-items: center;
+}
+/**/
+
+/* inherited subgrid from .ff-wrapper:
+   label in column 1, input in column 2. */
+/*
+.ff-field .form-label {
+  grid-column: 1;
+}
+
+.ff-field .ff-value {
+  grid-column: 2;
+}
+/**/
+
+/* small screens / large text zoom: abandon grid */
+/*
+@media only screen and (max-width: 720px) {
+  .ff-wrapper {
+    display: flex;
+    flex-wrap: wrap;
+    flex-basis: 50%;
+    row-gap: 0;
+    column-gap: 0;
+  }
+  
+  .ff-field {
+    display: block;
+    margin: 0.25rem 0.5rem;
+  }
+}
+/**/

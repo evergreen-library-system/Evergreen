@@ -10,7 +10,8 @@ import {OrgService} from '@eg/core/org.service';
 /* Find, merge, and edit authority records */
 
 @Component({
-    templateUrl: 'manage.component.html'
+    templateUrl: 'manage.component.html',
+    styles: ['#marcEditor { background-color: var(--gray-125)}']
 })
 export class ManageAuthorityComponent implements OnInit {
 

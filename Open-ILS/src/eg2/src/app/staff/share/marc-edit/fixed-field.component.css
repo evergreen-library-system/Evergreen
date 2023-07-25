@@ -1,6 +1,6 @@
 
 :host .popover {
-  font-family: 'Lucida Console', Monaco, monospace;
+  font-family: monospace;
   max-width: 550px;
 }
 

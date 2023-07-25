@@ -1,13 +1,15 @@
-import {Component, Input, OnInit, OnDestroy,
-    ViewChild, AfterViewInit} from '@angular/core';
-import {Subscription} from 'rxjs';
-import {filter} from 'rxjs/operators';
+import {ElementRef, TemplateRef, Component, Input, Output, OnInit, OnDestroy,
+    ViewChild, EventEmitter, AfterViewInit, ViewEncapsulation} from '@angular/core';
+import {Subscription, from, Observable, Subject, merge, OperatorFunction} from 'rxjs';
+import {filter, debounceTime, distinctUntilChanged, map} from 'rxjs/operators';
 import {MarcRecord, MarcField, MarcSubfield} from './marcrecord';
 import {MarcEditContext, FieldFocusRequest, MARC_EDITABLE_FIELD_TYPE,
     TextUndoRedoAction} from './editor-context';
 import {ContextMenuEntry} from '@eg/share/context-menu/context-menu.service';
 import {StringComponent} from '@eg/share/string/string.component';
 import {TagTable} from './tagtable.service';
+import {ComboboxComponent, ComboboxEntry} from '@eg/share/combobox/combobox.component';
+import {NgbTypeahead, NgbTypeaheadModule} from '@ng-bootstrap/ng-bootstrap';
 
 /**
  * MARC Editable Content Component
@@ -16,20 +18,20 @@ import {TagTable} from './tagtable.service';
 @Component({
     selector: 'eg-marc-editable-content',
     templateUrl: './editable-content.component.html',
-    styleUrls: ['./editable-content.component.css']
+    styleUrls: ['./editable-content.component.css'],
+    encapsulation: ViewEncapsulation.None
 })
 
 export class EditableContentComponent
 implements OnInit, AfterViewInit, OnDestroy {
 
     static idGen = 0;
+    @Input() domId: any = 'editable-content-' + EditableContentComponent.idGen++;
 
     @Input() context: MarcEditContext;
     @Input() field: MarcField;
     @Input() fieldType: MARC_EDITABLE_FIELD_TYPE = null;
-
-    // read-only field text.  E.g. 'LDR'
-    @Input() fieldText: string = null;
+    @Input() bigText = false;
 
     // array of subfield code and subfield value
     @Input() subfield: MarcSubfield;
@@ -44,10 +46,19 @@ implements OnInit, AfterViewInit, OnDestroy {
 
     get record(): MarcRecord { return this.context.record; }
 
-    bigText = false;
-    randId = 'editable-content-' + EditableContentComponent.idGen++;
+    // If true, the typeahead only matches values that start with
+    // the value typed as opposed to a 'contains' match.
+    @Input() startsWith = false;
+    // If true, matches either the ID or the label in the combobox result
+    @Input() searchInId = false;
+
+    IAmFocused = false;
+
+
+    inputContent: string;
+    suggest = true;
     editInput: any; // <input/> or <div contenteditable/>
-    maxLength: number = null;
+    maxLength: number | null = null;
 
     // Track the load-time content so we know what text value to
     // track on our undo stack.
@@ -58,15 +69,19 @@ implements OnInit, AfterViewInit, OnDestroy {
     isLeader: boolean; // convenience
 
     // Cache of fixed field menu options
-    ffValues: ContextMenuEntry[] = [];
+    ffValues: ComboboxEntry[] = [];
 
-    // Cache of tag context menu entries
+    // Cache of context menu entries
     tagMenuEntries: ContextMenuEntry[] = [];
+
+    // Cache of tag combobox entries
+    tagComboListEntries: ComboboxEntry[] = [];
 
     // Track the fixed field value locally since extracting the value
     // in real time from the record, which adds padding to the text,
     // causes usability problems.
     ffValue: string;
+    @Input() tabindex = null;
 
     @ViewChild('add006', {static: false}) add006Str: StringComponent;
     @ViewChild('add007', {static: false}) add007Str: StringComponent;
@@ -74,6 +89,9 @@ implements OnInit, AfterViewInit, OnDestroy {
     @ViewChild('insertBefore', {static: false}) insertBeforeStr: StringComponent;
     @ViewChild('insertAfter', {static: false}) insertAfterStr: StringComponent;
     @ViewChild('deleteField', {static: false}) deleteFieldStr: StringComponent;
+    @ViewChild('MARCCombo', { static: false }) TagComboBox: ComboboxComponent;
+    @ViewChild('instance', { static: true }) instance: NgbTypeahead;
+    @ViewChild('marcTagDisplayTemplate', { static: false }) marcTagDisplayTemplateRef: TemplateRef<any>;
 
     tt(): TagTable { // for brevity
         return this.context.tagTable;
@@ -81,6 +99,23 @@ implements OnInit, AfterViewInit, OnDestroy {
 
     ngOnInit() {
         this.setupFieldType();
+        this.inputContent = this.getContent();
+    }
+
+    ngOnChange() {
+        this.checkSize();
+    }
+
+    checkSize(field?: string, subfield?:string): boolean {
+        // switch from <input> to <textarea> if existing content is long
+        const threshold = 85;
+        if (this.inputContent && this.inputContent.length > threshold) {
+            this.bigText = true;
+        } else {
+            this.bigText = this.context.isFullWidth(field, subfield);
+        }
+
+        return this.bigText;
     }
 
     ngOnDestroy() {
@@ -122,10 +157,11 @@ implements OnInit, AfterViewInit, OnDestroy {
     }
 
     selectText(req?: FieldFocusRequest) {
-        if (this.bigText) {
-            this.focusBigText();
-        } else {
-            this.editInput.select();
+        this.field.hasFocus = true;
+        this.field.isDraggable = false;
+
+        if (!this.bigText) {
+            this.editInput?.select();
         }
 
         if (req) {
@@ -152,54 +188,46 @@ implements OnInit, AfterViewInit, OnDestroy {
         const content = this.getContent();
         this.undoBackToText = content;
 
+        this.watchForFocusRequests();
+        this.watchForUndoRedoRequests();
+
         switch (this.fieldType) {
             case 'ldr':
                 this.isLeader = true;
-                if (content) { this.maxLength = content.length; }
-                this.watchForFocusRequests();
-                this.watchForUndoRedoRequests();
+                this.suggest = false;
                 break;
 
             case 'tag':
                 this.maxLength = 3;
-                this.watchForFocusRequests();
-                this.watchForUndoRedoRequests();
                 break;
 
             case 'cfld':
-                this.watchForFocusRequests();
-                this.watchForUndoRedoRequests();
+                this.suggest = false;
                 break;
 
             case 'ffld':
                 this.applyFFOptions();
-                this.watchForFocusRequests();
-                this.watchForUndoRedoRequests();
+                if (['Cont','Date1','Date2','Ills','Time'].includes(this.fixedFieldCode)) {
+                    this.suggest = false;
+                }
                 break;
 
             case 'ind1':
             case 'ind2':
                 this.maxLength = 1;
-                this.watchForFocusRequests();
-                this.watchForUndoRedoRequests();
                 break;
 
             case 'sfc':
                 this.maxLength = 1;
-                this.watchForFocusRequests();
-                this.watchForUndoRedoRequests();
                 break;
 
             case 'sfv':
-                this.bigText = true;
-                this.watchForFocusRequests();
-                this.watchForUndoRedoRequests();
+                this.suggest = false;
+                this.maxLength = null;
                 break;
 
             default:
-                if (this.fieldText) {
-                    this.maxLength = this.fieldText.length;
-                }
+                /* */
         }
     }
 
@@ -211,6 +239,128 @@ implements OnInit, AfterViewInit, OnDestroy {
                 }
             });
     }
+
+    asyncComboMenuEntries(dummyTerm: string) : Observable<ComboboxEntry> {
+        return from(this.comboMenuEntries(dummyTerm).map(e => {
+            return { id: e.id, label: e.id, userdata: e };
+        }));
+    }
+
+    // These are served dynamically to handle cases where a tag or
+    // subfield is modified in place.
+    comboMenuEntries(currentUserValue?: string): ComboboxEntry[] {
+        if (this.isLeader) { return; }
+
+        let haystack = [];
+        const needle = this.getContent();
+
+        console.debug(`comboMenuEntries: type ${this.fieldType}, term ${currentUserValue}, current content ${needle}`);
+
+        switch (this.fieldType) {
+            case 'tag':
+                haystack = this.tt().getFieldTags();
+                break;
+
+            case 'sfc':
+                haystack = this.tt().getSubfieldCodes(this.field.tag);
+                break;
+
+            case 'sfv':
+                haystack = this.tt().getSubfieldValues(
+                    this.field.tag, this.subfield[0]);
+                break;
+
+            case 'ind1':
+            case 'ind2':
+                haystack = this.tt().getIndicatorValues(
+                    this.field.tag, this.fieldType);
+                break;
+
+            case 'ffld':
+                haystack = this.tt().getFfValues(this.fixedFieldCode);
+                break;
+        }
+
+        haystack ??= [{id:null,label:'',disabled:true}]; // dummy entry if undefined, must have at least one extra. thanks, combobox
+
+        // makin' copies ... so others' filter()s don't break the future
+        haystack = haystack.map(h => { return { id: h.id, label: h.label, disabled: h.disabled }; });
+
+        let input_source = 'current content';
+        let input_value = needle;
+
+        if (currentUserValue.length > 0) { // term isn't empty (user didn't backspace it out)
+            input_source = 'user input';
+            input_value = currentUserValue;
+            this.setContent(input_value); // this works in concert with selectOnExact to let ngbTypeahead choose a dummy entry
+        }
+
+        const new_entry = haystack.findIndex(e => e.id === input_value); // look for a "valid" entry in list based on source
+        if (new_entry > -1) { // if we find one, push to the front and return the full list
+            const to_front = haystack.splice(new_entry,1);
+            to_front[0].class = 'initial_value';
+            const list = to_front.concat(haystack);
+            console.debug(`comboMenuEntries: found entry matching ${input_source} "${input_value}"`);
+            console.debug('comboMenuEntries: returning haystack with chosen entry at the front', list);
+            return list;
+        }
+
+        // if we get here, there is no source-driven valid entry. we construct one and return the rest of the list after
+        const list = [{
+            id: input_value,
+            label: $localize`Input value "${input_value}" unknown`,
+            class: {
+                // if the haystack has entries, we could mark this as "bad" in the dropdown, via the template
+                'unknown': !!(haystack.filter(h => h.id !== null).length > 0)
+            }
+        }].concat(haystack);
+
+        console.debug(`comboMenuEntries: did NOT find entry matching ${input_source} "${input_value}"`);
+        console.debug('comboMenuEntries: returning constructed entry, with any valid options following', list);
+        return list;
+    }
+
+    tagComboMenuEntries(): ComboboxEntry[] {
+
+        // string components may not yet be loaded.
+        if (this.tagComboListEntries.length > 0 || !this.add006Str) {
+            return this.tagComboListEntries;
+        }
+
+        this.tt().getFieldTags().forEach(e => this.tagComboListEntries.push(e));
+
+        return this.tagComboListEntries;
+    }
+
+    initialEntryList(): ComboboxEntry[] {
+        return [{ id: this.getContent(), label: this.getContent() } as ComboboxEntry];
+        // return [{id: this.getContent(), label: this.getComboboxEntryLabel()} as ComboboxEntry]
+    }
+
+    getComboboxEntryLabel(): string {
+
+        switch (this.fieldType) {
+            case 'ldr':
+                return $localize`Leader`;
+            case 'cfld':
+                return $localize`Control Field Data`;
+            case 'tag':
+                return this.tt().getFieldLabel(this.getContent());
+            case 'sfc':
+                return this.tt().getSubfieldLabel(this.field.tag, this.getContent());
+            case 'sfv':
+                return this.tt().getSubfieldValueLabel(this.field.tag, this.subfield[0], this.getContent());
+            case 'ind1':
+            case 'ind2':
+                return this.tt().getIndicatorValueLabel(this.field.tag, this.fieldType, this.getContent());
+
+            case 'ffld':
+                return this.tt().getFfValueLabel(this.fixedFieldCode, this.getContent());
+        }
+
+        return null;
+    }
+
 
     // These are served dynamically to handle cases where a tag or
     // subfield is modified in place.
@@ -272,7 +422,6 @@ implements OnInit, AfterViewInit, OnDestroy {
     }
 
     getContent(): string {
-        if (this.fieldText) { return this.fieldText; } // read-only
 
         switch (this.fieldType) {
             case 'ldr': return this.record.leader;
@@ -304,9 +453,13 @@ implements OnInit, AfterViewInit, OnDestroy {
         return 'X';
     }
 
-    setContent(value: string, propagatBigText?: boolean, skipUndoTrack?: boolean) {
+    setContent(passed_value: any, skipUndoTrack?: boolean) {
 
-        if (this.fieldText) { return; } // read-only text
+        let value = passed_value;
+        if (typeof passed_value === 'object') { // got a ComboboxEntry-alike
+            value = passed_value.id;
+        }
+
 
         switch (this.fieldType) {
             case 'ldr': this.record.leader = value; break;
@@ -323,16 +476,10 @@ implements OnInit, AfterViewInit, OnDestroy {
                 break;
         }
 
-        if (propagatBigText && this.bigText) {
-            // Propagate new content to the bigtext div.
-            // Should only be used when a content change occurrs via
-            // external means (i.e. not from a direct edit of the div).
-            this.editInput.innerText = value;
-        }
-
         if (!skipUndoTrack) {
             this.trackTextChangeForUndo(value);
         }
+
     }
 
     trackTextChangeForUndo(value: string) {
@@ -365,7 +512,7 @@ implements OnInit, AfterViewInit, OnDestroy {
 
         // Undoing a text change
         const recoverContent = this.getContent();
-        this.setContent(action.textContent, true, true);
+        this.setContent(action.textContent, true);
 
         action.textContent = recoverContent;
         const moveTo = action.isRedo ?
@@ -379,44 +526,47 @@ implements OnInit, AfterViewInit, OnDestroy {
         // track the new value as the value the next session of
         // text edits should return to upon undo.
         this.undoBackToText = this.getContent();
+        this.field.hasFocus = false;
     }
 
-    // Propagate editable div content into our record
+    // Propagate textarea content into our record
     bigTextValueChange() {
         this.setContent(this.editInput.innerText);
     }
 
     ngAfterViewInit() {
-        this.editInput = document.getElementById(this.randId + '');
+        this.editInput = document.getElementById(this.domId + '');
 
-        // Initialize the editable div
-        this.editInput.innerText = this.getContent();
+        // Initialize the textarea
+        if (this.bigText) {
+            this.editInput.innerText = this.getContent();
+        }
+
+        if (this.TagComboBox) {
+            this.TagComboBox.asyncDataSource = (_: string) => this.asyncComboMenuEntries(_);
+        }
     }
 
     inputSize(): number {
-        if (this.maxLength) {
-            return this.maxLength + 1;
+        /* eslint-disable no-magic-numbers */
+        switch (this.fieldType) {
+            case 'ind1':
+            case 'ind2':
+            case 'sfc': return 1;
+            case 'tag': return 3;
+            default:
+                // give some breathing room
+                if (this.maxLength && this.maxLength >= 0) {
+                    return this.maxLength + 1;
+                }
+
+                // grow with the content
+                if (this.getContent()) {return this.getContent().length + 3;}
+
+                // default if nothing is set
+                return 5;
         }
-        // give at least 2+ chars space and grow with the content
-        // eslint-disable-next-line no-magic-numbers
-        return Math.max(2, (this.getContent() || '').length) * 1.1;
-    }
-
-    focusBigText() {
-        const targetNode = this.editInput.firstChild;
-
-        if (!targetNode) {
-            // Div contains no text content, nothing to select
-            return;
-        }
-
-        const range = document.createRange();
-        range.setStart(targetNode, 0);
-        range.setEnd(targetNode, targetNode.length);
-
-        const selection = window.getSelection();
-        selection.removeAllRanges();
-        selection.addRange(range);
+        /* eslint-enable no-magic-numbers */
     }
 
     // Route keydown events to the appropriate handler
@@ -428,14 +578,14 @@ implements OnInit, AfterViewInit, OnDestroy {
                     this.context.requestRedo();
                     evt.preventDefault();
                 }
-                return;
+                break;
 
             case 'z':
                 if (evt.ctrlKey) { // undo
                     this.context.requestUndo();
                     evt.preventDefault();
                 }
-                return;
+                break;
 
             case 'F6':
                 if (evt.shiftKey) {
@@ -444,7 +594,7 @@ implements OnInit, AfterViewInit, OnDestroy {
                     evt.preventDefault();
                     evt.stopPropagation();
                 }
-                return;
+                break;
 
             case 'F7':
                 if (evt.shiftKey) {
@@ -453,7 +603,7 @@ implements OnInit, AfterViewInit, OnDestroy {
                     evt.preventDefault();
                     evt.stopPropagation();
                 }
-                return;
+                break;
 
             case 'F8':
                 if (evt.shiftKey) {
@@ -462,7 +612,49 @@ implements OnInit, AfterViewInit, OnDestroy {
                     evt.preventDefault();
                     evt.stopPropagation();
                 }
-                return;
+                break;
+
+            case 'ArrowDown':
+
+                if (evt.ctrlKey && !evt.shiftKey && !(this.fieldType === 'ldr' || this.fieldType === 'ffld')) {
+                    // ctrl+down == copy current field down one
+                    this.context.insertField(
+                        this.field, this.record.cloneField(this.field));
+                }
+
+                // ctrl+shift+down = open combobox
+                if (evt.ctrlKey && evt.shiftKey && this.TagComboBox) {
+                    this.TagComboBox.openMe(evt);
+                }
+
+                // down == move focus to tag of next field
+                // but not in a combobox or textarea
+                if (!evt.ctrlKey && !this.suggest && !this.bigText) {
+                    // avoid dupe focus requests during copy
+                    this.context.focusNextTag(this.field);
+                }
+                break;
+
+            case 'ArrowUp':
+
+                if (evt.ctrlKey && !evt.shiftKey && !(this.fieldType === 'ldr' || this.fieldType === 'ffld')) {
+                    // ctrl+up == copy current field up one
+                    this.context.insertField(
+                        this.field, this.record.cloneField(this.field), true);
+                }
+                // ctrl+shift+up = close combobox
+                if (evt.ctrlKey && evt.shiftKey && this.TagComboBox) {
+                    this.TagComboBox.closeMe(evt);
+                }
+
+                // up == move focus to tag of previous field
+                // but not in a combobox or textarea
+                if (!evt.ctrlKey && !this.suggest && !this.bigText) {
+                    // avoid dupe focus requests
+                    this.context.focusPreviousTag(this.field);
+                }
+                break;
+
         }
 
         // None of the remaining key combos are supported by the LDR
@@ -502,35 +694,6 @@ implements OnInit, AfterViewInit, OnDestroy {
 
                 break;
 
-            case 'ArrowDown':
-
-                if (evt.ctrlKey) {
-                    // ctrl+down == copy current field down one
-                    this.context.insertField(
-                        this.field, this.record.cloneField(this.field));
-                } else {
-                    // avoid dupe focus requests
-                    this.context.focusNextTag(this.field);
-                }
-
-                evt.preventDefault();
-                break;
-
-            case 'ArrowUp':
-
-                if (evt.ctrlKey) {
-                    // ctrl+up == copy current field up one
-                    this.context.insertField(
-                        this.field, this.record.cloneField(this.field), true);
-                } else {
-                    // avoid dupe focus requests
-                    this.context.focusPreviousTag(this.field);
-                }
-
-                // up == move focus to tag of previous field
-                evt.preventDefault();
-                break;
-
             case 'd': // thunk
             case 'i':
                 if (evt.ctrlKey) {
@@ -540,6 +703,31 @@ implements OnInit, AfterViewInit, OnDestroy {
                     evt.preventDefault();
                 }
                 break;
+        }
+
+    }
+
+    // if the user has added the max number of characters for the field, advance focus to the next input
+    // NOT USED
+    // TODO: to use, add (input)="inputEvent(inputSize(), $event)" to eg-combobox
+    skipToNext(max: number, $event?: InputEvent) {
+        if ($event.data.length === max) {
+            switch (this.fieldType) {
+                case 'tag':
+                    this.context.requestFieldFocus({fieldId: this.field.fieldId, target: 'ind1'});
+                    break;
+                case 'ind1':
+                    this.context.requestFieldFocus({fieldId: this.field.fieldId, target: 'ind2'});
+                    break;
+                case 'ind2':
+                    this.context.requestFieldFocus({fieldId: this.field.fieldId, target: 'sfc', sfOffset: 0});
+                    break;
+                case 'sfc':
+                    this.context.requestFieldFocus({fieldId: this.field.fieldId, target: 'sfv', sfOffset: this.subfield[2]});
+                    break;
+                default:
+                    break;
+            }
         }
     }
 
@@ -632,6 +820,7 @@ implements OnInit, AfterViewInit, OnDestroy {
 
         return false;
     }
+
 }
 
 
