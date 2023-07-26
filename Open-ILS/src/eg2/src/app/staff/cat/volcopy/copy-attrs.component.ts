@@ -560,20 +560,16 @@ export class CopyAttrsComponent implements OnInit, AfterViewInit {
                 Object.keys(value).forEach(field => {
                     let newVal = value[field];
 
-                    // Only replace values where a default is set.
-                    let defaultValue = -1; // Effectively empty
                     if (field === 'classification') {
                         field = 'label_class';
-                        defaultValue = 1; // "Generic"
                     }
 
-                    if (Number(newVal) >= defaultValue) {
-                        this.context.volNodes().forEach(volNode => {
-                            if (Number(volNode.target[field]()) <= defaultValue) {
-                                volNode.target[field](newVal);
-                            }
-                        });
-                    }
+                    this.context.volNodes().forEach(volNode => {
+                        if (Number(volNode.target[field]())) {
+                            volNode.target[field](newVal);
+			    volNode.target.ischanged(true);
+                        }
+                    });
                 });
             }
 
