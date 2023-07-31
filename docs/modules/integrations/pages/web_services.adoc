@@ -41,6 +41,45 @@ The WebSocket gateway can be thought of as a WebSocket implementation of the HTT
 
 Responses from the WebSocket gateway are always serialized as JSON.
 
+A brief javascript example that retrieves a MarcXML record via the
+Websocket gateway:
+
+[source,js]
+----------------------------------------------------------------------------
+const threadId = Math.random().toString();
+const request = {
+    'service':'open-ils.pcrud',
+    'thread':threadId,
+    'osrf_msg':[{
+        '__c':'osrfMessage',
+        '__p':{
+            'type': 'REQUEST',
+            'payload':{
+                '__c':'osrfMethod',
+                '__p':{
+                    'method':'open-ils.pcrud.retrieve.bre',
+                    'params':['ANONYMOUS','226']
+                }
+            }
+        }
+    }]
+};
+
+const webSocket = new WebSocket('wss://my-evergreen-system.edu:443/osrf-websocket-translator');
+webSocket.onmessage = (event) => {
+    let response = JSON.parse(event.data);
+    if (response['thread'] == threadId) {
+        console.log(response['osrf_msg'][0]['__p']['payload']['__p']['content']['__p'][11]);
+    }
+};
+
+webSocket.onopen = () => {
+    webSocket.send(JSON.stringify(request));
+};
+
+webSocket.close();
+----------------------------------------------------------------------------
+
 === XML-RPC gateway ===
 
 The XML-RPC gateway is a thin wrapper over OpenSRF method calls that supports the XML-RPC protocol. This gateway is not part of OpenSRF proper; instead, it is implemented by an Evergreen mod_perl handler.
