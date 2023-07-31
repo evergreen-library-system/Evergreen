@@ -118,6 +118,94 @@ table.table.eg-grid {
   height: 100%;
   vertical-align: bottom;
   width: calc(100% - 2px); /* Chrome won't let us overlap the draggable with the resize handle */
+  align-items: flex-start;
+}
+
+.eg-grid-toolbar h2 {
+  flex-basis: 100%;
+}
+
+.eg-grid-toolbar .material-icons {
+  font-size: 20px;
+}
+
+/* Kind of hacky -- only way to get a toolbar button with no 
+ * mat icon to line up horizontally with mat icon buttons */
+.eg-grid-toolbar .text-button {
+  padding-top: 11px;
+  padding-bottom: 11px;
+}
+
+/* make buttons and links match when focused */
+.eg-grid-toolbar .dropdown-item:focus,
+.eg-grid-toolbar .dropdown-item:hover,
+.eg-grid-column-config-dialog button:focus,
+.eg-grid-column-width-config button:focus {
+  outline: 2px solid var(--primary);
+}
+
+.button-adjacent-label {
+    vertical-align: inherit;
+    cursor: auto;
+}
+
+.button-adjacent-label.disabled {
+    opacity: .65;
+}
+
+.eg-grid-cell-skinny {
+  width: 2em;
+  text-align: center;
+  flex: none;
+}
+
+.eg-grid-cell-skinny-2 {
+  width: 2.6em;
+  flex: none;
+}
+
+.eg-grid-flair-cell {
+  /* mat icons currently 22px, unclear why it needs this much space */
+  width: 34px; 
+  text-align: center;
+  flex: none;
+}
+
+/* depends on width of .eg-grid-cell-skinny */
+.eg-grid-column-width-header {
+  width: 4.6em;
+  text-align: center;
+  flex: none;
+  display: inline-flex;
+  vertical-align: middle;
+  align-items: center;
+}
+
+.eg-grid-column-width-config .eg-grid-cell {
+    border-left: 2px dashed grey;
+}
+
+.eg-grid-column-width-icon {
+  cursor: pointer;
+  font-size: 18px;
+  color: #007bff;
+}
+
+.eg-grid-column-config-dialog {
+  height: auto;
+  max-height: 400px;
+  overflow: auto;
+  box-shadow: none;
+}
+
+.eg-grid-filter-control-cell {
+  white-space: normal;
+}
+.eg-grid-col-is-filtered {
+    background: lightblue;
+}
+.eg-grid-filter-menu {
+  min-width: 17rem;
 }
 
 .eg-grid-sticky-header {

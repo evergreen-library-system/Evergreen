@@ -8,9 +8,9 @@
 
 
   <div class="btn-toolbar">
-    <span class="fw-bold me-2" *ngIf="gridContext.toolbarLabel">
+    <h2 *ngIf="gridContext.toolbarLabel">
       {{gridContext.toolbarLabel}}
-    </span>
+    </h2>
 
     <!-- buttons -->
     <div class="btn-grp" *ngIf="gridContext.toolbarButtons.length || gridContext.isFilterable">
