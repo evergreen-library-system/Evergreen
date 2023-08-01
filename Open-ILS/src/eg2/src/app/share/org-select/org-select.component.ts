@@ -39,7 +39,7 @@ interface OrgDisplay {
     templateUrl: './org-select.component.html'
 })
 export class OrgSelectComponent implements OnInit {
-    static domId = 0;
+    static _domId = 0;
 
     showCombinedNames = false; // Managed via user/workstation setting
 
@@ -77,7 +77,7 @@ export class OrgSelectComponent implements OnInit {
     @Input() ariaLabel?: string;
 
     // ID to display in the DOM for this selector
-    @Input() domId = 'eg-org-select-' + OrgSelectComponent.domId++;
+    @Input() domId = 'eg-org-select-' + OrgSelectComponent._domId++;
 
     @Input() name = '';
 

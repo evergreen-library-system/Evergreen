@@ -1,6 +1,6 @@
 <div class="input-group">
-  <input class="form-control" type="numeric" [(ngModel)]="period" (ngModelChange)="changeListener()" />
-  <select class="form-select" [(ngModel)]="unit" (ngModelChange)="changeListener()">
+  <input [disabled]="disabled" id="{{domId}}-text" class="form-control" type="numeric" [(ngModel)]="period" (ngModelChange)="changeListener()" />
+  <select [disabled]="disabled" id="{{domId}}-select" class="form-select" [(ngModel)]="unit" (ngModelChange)="changeListener()">
     <option value="hours" i18n>hours</option>
     <option value="days" i18n>days</option>
     <option value="weeks" i18n>weeks</option>

@@ -30,6 +30,12 @@ export class OrgFamilySelectComponent implements ControlValueAccessor, OnInit {
     // ARIA label for selector. Required if there is no <label> in the markup.
     @Input() ariaLabel?: string;
 
+    // Global "disabled" flag
+    @Input() disabled: boolean = false;
+
+    // The label for this input
+    @Input() labelText = 'Library';
+
     // Should the Ancestors checkbox be hidden?
     @Input() hideAncestorSelector = false;
 
@@ -105,7 +111,7 @@ export class OrgFamilySelectComponent implements ControlValueAccessor, OnInit {
         });
 
         this.orgOnChange = ($event: IdlObject) => {
-            this.options.primaryOrgId = $event.id();
+            this.options.primaryOrgId = $event?.id();
             this.disableAncestorSelector() ? this.includeAncestors.disable() : this.includeAncestors.enable();
             this.disableDescendantSelector() ? this.includeDescendants.disable() : this.includeDescendants.enable();
             this.emitArray();
@@ -181,12 +187,12 @@ export class OrgFamilySelectComponent implements ControlValueAccessor, OnInit {
     }
 
     disableAncestorSelector(): boolean {
-        return this.options.primaryOrgId === this.org.root().id();
+        return this.disabled || this.options.primaryOrgId === this.org.root().id();
     }
 
     disableDescendantSelector(): boolean {
         const contextOrg = this.org.get(this.options.primaryOrgId);
-        return contextOrg.children().length === 0;
+        return this.disabled || (contextOrg ? contextOrg.children().length === 0 : true);
     }
 
     get includeAncestors() {

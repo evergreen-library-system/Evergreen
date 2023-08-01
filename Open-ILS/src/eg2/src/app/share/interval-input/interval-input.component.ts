@@ -19,7 +19,9 @@ import {map, tap, reduce, mergeMap, mapTo, debounceTime, distinctUntilChanged, m
 })
 export class IntervalInputComponent implements ControlValueAccessor, OnInit {
 
+    @Input() domId: string = 'eg-intv-' + Number(Math.random() * 1000);
     @Input() initialValue: string;
+    @Input() disabled: boolean = false;
     @Output() onChange = new EventEmitter<string>();
 
     period: string;

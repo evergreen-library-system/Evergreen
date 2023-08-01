@@ -1,11 +1,11 @@
 <div>
   <div class="eg-text-multi-select-row" *ngIf="!disabled">
     <input #newEntryInput id="{{domId}}" class="form-control" type="textbox" (change)="valueSelected($event.target.value)" />
-    <button type="button" class="btn btn-outline-dark" (click)="addSelectedValue()" i18n>Add</button>
+    <button class="btn btn-outline-dark" (click)="addSelectedValue()" i18n>Add</button>
   </div>
   <div class="eg-text-multi-select-row" *ngFor="let entry of entrylist">
     <div class="w-auto my-2">{{entry}}</div>
-    <button type="button" class="btn btn-sm btn-outline-danger my-2" (click)="removeValue(entry)" i18n-aria-label
+    <button class="btn btn-sm btn-outline-danger my-2" (click)="removeValue(entry)" i18n-aria-label
       [attr.aria-label]="'Remove ' + entry.label" i18n-title [title]="'Remove ' + entry.label" [disabled]="disabled">
       <span class="material-icons mat-icon-in-button" aria-hidden="true">close</span>
     </button>

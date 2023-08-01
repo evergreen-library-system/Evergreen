@@ -9,7 +9,7 @@
       </div>
       <div class="col-5">
         <label for="context_library" class="form-label" i18n>Owned by</label>
-        <eg-org-select domId="context_library"
+        <eg-org-select
           [applyDefault]="true" [disabled]="disabled"
           (onChange)="acplContextOrgId = $event.id()">
         </eg-org-select>
@@ -29,14 +29,14 @@
         (onChange)="valueSelected($event)" [domId]="domId">
       </eg-combobox>
     </div>
-    <div class="col-2 p-0 text-end">
-      <button type="button" class="btn btn-outline-dark" (click)="addSelectedValue()" [disabled]="disabled || !selected" i18n>Add</button>
+    <div class="col-2 ps-0">
+      <button class="btn btn-outline-dark" (click)="addSelectedValue()" [disabled]="disabled || !selected" i18n>Add</button>
     </div>
   </div>
-  <div class="row py-2 ps-3 align-items-start" *ngFor="let entry of entrylist">
-    <div class="col-10 p-0">{{entry.label}}</div>
-    <div class="col-2 p-0 text-end">
-      <button type="button" class="btn btn-sm btn-outline-danger" (click)="removeValue(entry)" i18n-aria-label [disabled]="disabled"
+  <div class="row py-2 ps-1 align-items-start" *ngFor="let entry of entrylist">
+    <div class="col-10">{{entry.label}}</div>
+    <div class="col-2 pe-0 text-end">
+      <button class="btn btn-sm btn-outline-danger" (click)="removeValue(entry)" i18n-aria-label [disabled]="disabled"
         [attr.aria-label]="'Remove ' + entry.label" i18n-title [title]="'Remove ' + entry.label">
         <span class="material-icons mat-icon-in-button" aria-hidden="true">close</span>
       </button>
