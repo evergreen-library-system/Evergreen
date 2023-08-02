@@ -678,6 +678,8 @@ sub next {
                     $marc->delete_fields($marc->field('852'));
                     my @acps = $self->acps_for_bre($r);
                     my @itemtags = ();
+                    my $itemcount = 0;
+
                     foreach my $acp (@acps) {
                         next unless ($acp);
                         if ($Marque::config->option_value('exclude-hidden')) {
@@ -713,6 +715,7 @@ sub next {
                                 );
                             }
 
+                            $itemcount++;
                             push(
                                 @itemtags,
                                 MARC::Field->new(
@@ -747,6 +750,12 @@ sub next {
                             $marc->insert_fields_after($firsttag,@itemtags);
                         }
                     }
+
+                    #Check if no items are visible, skip bib if empty and exclude-hidden is enabled
+                    #Finally check if there are located uris and skip excluding the bib
+                    return $self->next() if (!$itemcount
+                                             and $Marque::config->option_value('exclude-hidden')
+                                             and !($Marque::config->option_value('uris') and $self->uris_exist_for_bre($r)));
                 }
                 if ($Marque::config->option_value('mfhd')) {
                     $self->{mfhds} = [$self->sres_for_bre($r)];
@@ -903,6 +912,42 @@ sub suffixes {
     return $self->{suffixes};
 }
 
+# Return true if an in scope uri exists for the given bre object or id.
+# Purpose is prevent excluding a bib if it has no copies but it does have scoped uris
+# Assumptions - --uris is in use, --items is in use and --exclude-hidden is in use
+sub uris_exist_for_bre {
+    my $self = shift;
+    my $bre = shift;
+    $bre = $bre->id() if (ref($bre));
+
+    unless ($self->{acnUriHandle}) {
+        my $acnTable = $self->{acnClass}->Table();
+        my $auricnmTable = $self->{auricnmClass}->Table();
+
+        my $query = "select 1";
+        $query .= "\nfrom $acnTable";
+        $query .= "\njoin $auricnmTable on $auricnmTable.call_number = $acnTable.id";
+        $query .= "\nwhere";
+        $query .= "\n$acnTable.record = ?";
+        $query .= "\nand $acnTable.owning_lib in (select id from actor.org_unit where opac_visible)";
+        if (@{$self->{libs}}) {
+                $query .= "\nand owning_lib in (";
+                $query .= join(',', @{$self->{libs}}) . ")";
+        }
+        $query .= "\nand deleted = 'f'" unless($Marque::config->option_value('since'));
+        $query .= "\nlimit 1";
+        $self->{acnUriHandle} = $self->{handle}->prepare($query);
+    }
+
+    if ($self->{acnUriHandle}->execute($bre)) {
+        (my $result) = $self->{acnUriHandle}->fetchrow_array();
+        return 1 if $result;
+    }
+
+    # If for some reason, we don't find anything.
+    return undef;
+
+}
 # Returns an array of acn objects for a given bre object or id.
 sub acns_for_bre {
     my $self = shift;
