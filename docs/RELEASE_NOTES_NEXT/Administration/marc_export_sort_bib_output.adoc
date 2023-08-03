@@ -1,0 +1,6 @@
+== Support Script: marc_export sorting bib output ==
+
+The *marc_export* script will now sort the bib record output
+by the bib record ID so that the records in the export file
+are in a consistant order. 
+https://bugs.launchpad.net/evergreen/+bug/2029256[Bug #2029256]

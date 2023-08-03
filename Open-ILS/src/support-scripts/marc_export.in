@@ -510,6 +510,7 @@ ACN_JOIN
 
     $self->{query} = $select . "\n" . $from . "\n" . $where;
     $self->{query} .= $uri_union if ($uri_union);
+    $self->{query} .= "\n" . "order by id"; #sort results by bre id.
 }
 
 sub execute_query {
