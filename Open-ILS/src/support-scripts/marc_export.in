@@ -73,7 +73,7 @@ sub new {
 
     # set some default values
     $opts{'format'} = 'USMARC';
-    $opts{'encoding'} = 'MARC8';
+    $opts{'encoding'} = 'UTF-8';
     $opts{'type'} = 'biblio';
     $opts{'money'} = '$';
     $opts{'timeout'} = 0;
@@ -122,7 +122,7 @@ Usage: $0 [options]
  --help or -h       This screen.
  --config or -c     Configuration file [@sysconfdir@/opensrf_core.xml]
  --format or -f     Output format (USMARC, UNIMARC, XML, BRE, ARE) [USMARC]
- --encoding or -e   Output encoding (UTF-8, ISO-8859-?, MARC8) [MARC8]
+ --encoding or -e   Output encoding (UTF-8, ISO-8859-?, MARC8) [UTF-8]
  --xml-idl or -x    Location of the IDL XML
  --timeout          Remains for backward compatibility. No longer used.
  --type or -t       Record type (BIBLIO, AUTHORITY) [BIBLIO]
