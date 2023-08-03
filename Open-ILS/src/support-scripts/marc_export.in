@@ -41,6 +41,8 @@ if ($config->need_ids()) {
     }
 }
 
+die "IDs required but none entered, exiting\n" if ($config->need_ids() && !@ids);
+
 my $exporter;
 if ($config->option_value('type') eq 'authority') {
     $exporter = Marque::Authority->new(\@ids);
