@@ -44,6 +44,7 @@ export DEBS = \
 	libgeo-coder-osm-perl\
 	libhttp-async-perl\
 	libhttp-oai-perl\
+	liblocale-codes-perl\
 	liblocale-maketext-lexicon-perl\
 	liblog-log4perl-perl\
 	libmarc-charset-perl \
@@ -106,8 +107,7 @@ export CPAN_MODULES = \
 	Business::OnlinePayment::PayPal \
 	String::KeyboardDistance \
 	Text::Levenshtein::Damerau::XS \
-	Email::Send \
-	Locale::Country
+	Email::Send
 
 export CPAN_MODULES_FORCE = \
 	Business::Stripe \
