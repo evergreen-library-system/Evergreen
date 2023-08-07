@@ -82,7 +82,7 @@ sub child_init {
     $base_url = $app_settings->{'base_url'} || 'localhost';
     $base_url =~/(.*)\/$/ ; # Keep all minus the trailing forward slash.
     $repository_identifier = $app_settings->{'repository_identifier'} || 'localhost';
-    $repository_name = $app_settings->{'repository_name '} || 'A name';
+    $repository_name = $app_settings->{'repository_name'} || 'A name';
     $admin_email = $app_settings->{'admin_email'} || 'adminEmail@' . $repository_identifier ;
     $earliest_datestamp =  $app_settings->{'earliest_datestamp'} || '0001-01-01' ;
     $deleted_record = $app_settings->{'deleted_record'} || 'yes' ;
