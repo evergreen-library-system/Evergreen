@@ -1,0 +1,26 @@
+<div class="modal-header">
+  <button type="button" class="close" ng-click="cancel()"
+    aria-hidden="true">&times;</button>
+  <h4 class="modal-title">[% l('Create Carousel') %]</h4>
+</div>
+<div class="modal-body">
+  <div class="row">
+    <div class="col-md-4">
+      <label for="select-carousel">[% l('Name of Carousel') %]</label>
+    </div>
+    <div class="col-md-4">
+      <input id="carousel-name" ng-model="carousel_name" required>
+      </input>
+    </div>
+    <div class="col-md-4">
+      <button class="btn btn-primary" ng-class="{disabled : !carousel_name}"
+          ng-click="create_carousel()">[% l('Create Carousel') %]</button>
+    </div>
+  </div>
+  </div>
+</div>
+<div class="modal-footer">
+  <div class="col-md-6 pull-right">
+    <button class="btn btn-warning" ng-click="cancel($event)">[% l('Cancel') %]</button>
+  </div>
+</div>

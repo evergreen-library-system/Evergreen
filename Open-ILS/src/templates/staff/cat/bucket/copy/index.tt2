@@ -9,6 +9,8 @@
 <script src="[% ctx.media_prefix %]/js/ui/default/staff/services/grid.js"></script>
 <script src="[% ctx.media_prefix %]/js/ui/default/staff/services/ui.js"></script>
 <script src="[% ctx.media_prefix %]/js/ui/default/staff/cat/bucket/copy/app.js"></script>
+<script src="[% ctx.media_prefix %]/js/ui/default/staff/circ/services/circ.js"></script>
+<script src="[% ctx.media_prefix %]/js/ui/default/staff/circ/services/item.js"></script>
 <script>
   angular.module('egCoreMod').run(['egStrings', function(s) {
     s.CONFIRM_DELETE_COPY_BUCKET_ITEMS_FROM_CATALOG =
@@ -27,6 +29,8 @@
       "[% l('Hold successfully requested') %]";
     s.FAILURE_HOLD_REQUEST =
       "[% l('Hold not successfully requested') %]";
+    s.SUCCESS_CAROUSEL_CREATE =
+      "[% l('Successfully created new carousel from items') %]";
   }])
 </script>
 [% END %]

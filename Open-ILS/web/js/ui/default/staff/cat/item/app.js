@@ -580,6 +580,12 @@ function($scope , $q , $window , $location , $timeout , egCore , egNet , egGridD
         return true;
     };
 
+    $scope.need_at_least_one_selected = function() {
+        var items = $scope.gridControls.selectedItems();
+        if (items.length == 0) return true; // Disable the control (i.e. true) if none selected
+        return false;
+    };
+
     $scope.make_copies_bookable = function() {
         itemSvc.make_copies_bookable(copyGrid.selectedItems());
     }
@@ -594,6 +600,11 @@ function($scope , $q , $window , $location , $timeout , egCore , egNet , egGridD
         var item = copyGrid.selectedItems()[0];
         if (item)
             itemSvc.manage_reservations(item.barcode);
+    }
+
+    $scope.create_carousel = function() {
+        var itemIds = copyGrid.selectedItems().map(function (item) {return item.id});
+        itemSvc.create_carousel_from_items(itemIds);
     }
 
     $scope.requestItems = function() {

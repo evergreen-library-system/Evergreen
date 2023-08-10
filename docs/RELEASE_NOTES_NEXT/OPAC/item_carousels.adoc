@@ -1,0 +1,12 @@
+== Creating carousels from item bucket or item status ==
+
+The item status interfaces has a new option:
+"Create Carousel from Selected Items".  The item bucket
+interface has a new option: "Create Carousel from Bucket".
+Both of these options allow users to create carousels, which
+can later be edited as needed in the Carousels Admin interface.
+
+One use case for the new item bucket interface is to allow
+libraries to showcase existing item buckets that they have
+created for a holiday, program, or display.
+

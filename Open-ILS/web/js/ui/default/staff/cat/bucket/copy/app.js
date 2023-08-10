@@ -518,9 +518,9 @@ function($scope,  $routeParams,  bucketSvc , egGridDataProvider,   egCore) {
 
 .controller('ViewCtrl',
        ['$scope','$q','$routeParams','$timeout','$window','$uibModal','bucketSvc','egCore','egOrg','egUser',
-        'ngToast','egConfirmDialog','egProgressDialog',
+        'ngToast','egConfirmDialog','egProgressDialog', 'egItem',
 function($scope,  $q , $routeParams , $timeout , $window , $uibModal , bucketSvc , egCore , egOrg , egUser ,
-         ngToast , egConfirmDialog , egProgressDialog) {
+         ngToast , egConfirmDialog , egProgressDialog, itemSvc) {
 
     $scope.setTab('view');
     $scope.bucketId = $routeParams.id;
@@ -822,6 +822,15 @@ function($scope,  $q , $routeParams , $timeout , $window , $uibModal , bucketSvc
                 });
             });
         });
+    }
+
+    $scope.createCarouselFromBucket = function() {
+        if (!bucketSvc?.currentBucket?.items()?.length) {
+            return;
+        }
+        itemSvc.create_carousel_from_items(
+            bucketSvc.currentBucket.items().map(function (item) {return item.target_copy()})
+        );
     }
 
     $scope.transferCopies = function(copies) {

@@ -12,6 +12,9 @@
 <eg-grid-menu-item label="[% l('Shared Bucket') %]" 
   handler="openSharedBucketDialog"></eg-grid-menu-item>
 
+<eg-grid-menu-item label="[% l('Create Carousel from Bucket') %]"
+  handler="createCarouselFromBucket"></eg-grid-menu-item>
+
 <eg-grid-menu-item divider="true"></eg-grid-menu-item>
 
 <eg-grid-menu-item ng-repeat="bkt in bucketSvc.allBuckets" 

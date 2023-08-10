@@ -24,6 +24,9 @@
   <eg-grid-action handler="manage_reservations"
     disabled="need_one_selected"
     label="[% l('Manage Reservations') %]"></eg-grid-action>
+  <eg-grid-action handler="create_carousel"
+    disabled="need_at_least_one_selected"
+    label="[% l('Create Carousel from Selected Items') %]"></eg-grid-action>
   <eg-grid-action handler="requestItems"
     label="[% l('Request Items') %]"></eg-grid-action>
   <eg-grid-action handler="attach_to_peer_bib"

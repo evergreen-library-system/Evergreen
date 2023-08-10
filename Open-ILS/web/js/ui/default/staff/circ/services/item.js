@@ -294,6 +294,45 @@ function(egCore , egOrg , egCirc , $uibModal , $q , $timeout , $window , ngToast
         });
     }
 
+    service.create_carousel_from_items = function(list) {
+        if (list.length == 0) return;
+
+        return $uibModal.open({
+            templateUrl: './cat/catalog/t_create_carousel',
+            backdrop: 'static',
+            animation: true,
+            size: 'md',
+            controller:
+                   ['$scope','$uibModalInstance',
+            function($scope , $uibModalInstance) {
+
+                $scope.carousel_name = '';
+
+                $scope.create_carousel = function() {
+                    return egCore.net.request(
+                        'open-ils.actor',
+                        'open-ils.actor.carousel.create_carousel_from_items',
+                        egCore.auth.token(), $scope.carousel_name, list
+                    ).then(function(response) {
+                        if (response) {
+                            var evt = egCore.evt.parse(response);
+                            if (evt) {
+                                ngToast.danger(evt);
+                            } else {
+                                ngToast.success(egCore.strings.SUCCESS_CAROUSEL_CREATE);
+                                $uibModalInstance.close();
+                            }
+                        }
+                    });
+                }
+
+                $scope.cancel = function() {
+                    $uibModalInstance.dismiss();
+                }
+            }]
+        });
+    }
+
     service.make_copies_bookable = function(items) {
 
         var copies_by_record = {};

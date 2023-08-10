@@ -235,4 +235,78 @@ sub add_carousel_from_bucket {
     return $carousel->id;
 }
 
+__PACKAGE__->register_method(
+    method => "create_carousel_from_items",
+    api_name => "open-ils.actor.carousel.create_carousel_from_items",
+    signature => {
+        desc => q/Create a new carousel populated with the records connected to the requested items/,
+        params => [
+            { name => 'authtoken',
+              desc => 'A user authtoken',
+              type => 'string' },
+            { name => 'carousel_name',
+              desc => 'A name for the new carousel',
+              type => 'string' },
+            { name => 'items',
+              desc => 'Array of copy locations to filter copies by, optional and can be undef.',
+              type => 'array' }
+        ],
+        return => {
+            type => 'int',
+            desc => q/The id of the new carousel/
+        }
+    }
+);
+
+sub create_carousel_from_items {
+    my ($self, $client, $auth, $carousel_name, $item_ids) = @_;
+
+    my $e = new_editor(authtoken => $auth);
+    return $e->event unless $e->checkauth;
+    return $e->event unless $e->allowed('ADMIN_CAROUSEL');
+
+    $e->xact_begin;
+    my $bucket = Fieldmapper::container::biblio_record_entry_bucket->new;
+    $bucket->owner($e->requestor->id);
+    $bucket->name('New bucket created from items by ' . $e->requestor->id . ' on ' . localtime());
+    $bucket->btype('carousel');
+    $bucket->pub('t');
+    $bucket->owning_lib($e->requestor->ws_ou);
+    $e->create_container_biblio_record_entry_bucket($bucket) or return $e->event;
+
+    my $bre_ids = _acp_ids_to_bre_ids($e, $item_ids);
+
+    my $carousel = Fieldmapper::container::carousel->new;
+    $carousel->name($carousel_name);
+    $carousel->type(1); # manual
+    $carousel->owner($e->requestor->ws_ou);
+    $carousel->creator($e->requestor->id);
+    $carousel->editor($e->requestor->id);
+    $carousel->max_items(scalar(@$bre_ids));
+    $carousel->bucket($bucket->id);
+    $e->create_container_carousel($carousel) or return $e->event;
+
+    foreach my $bre_id (@$bre_ids) {
+        my $entry = Fieldmapper::container::biblio_record_entry_bucket_item->new;
+        $entry->target_biblio_record_entry($bre_id);
+        $entry->bucket($bucket->id);
+        $entry->create_time('now');
+        $e->create_container_biblio_record_entry_bucket_item($entry) or return $e->event;
+    }
+
+    $e->xact_commit or return $e->event;
+
+    return $carousel->id;
+}
+
+sub _acp_ids_to_bre_ids {
+    my ($e, $item_ids) = @_;
+    my $items = $e->search_asset_copy([
+        {id => $item_ids},
+        {flesh => 1, flesh_fields => {acp => ['call_number']}}
+    ]);
+    my @bre_ids = map { $_->call_number->record } @$items;
+    return \@bre_ids;
+}
+
 1;

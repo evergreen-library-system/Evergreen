@@ -48,7 +48,8 @@
       "[% l('Hold successfully requested') %]";
     s.FAILURE_HOLD_REQUEST =
       "[% l('Hold not successfully requested') %]";
-
+    s.SUCCESS_CAROUSEL_CREATE =
+      "[% l('Successfully created new carousel from items') %]";
   }])
 </script>
 [% END %]
