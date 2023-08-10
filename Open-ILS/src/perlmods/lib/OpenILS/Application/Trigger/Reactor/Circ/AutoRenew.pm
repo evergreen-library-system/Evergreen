@@ -45,9 +45,8 @@ sub handler {
         );
 
     my $token = $auth_internal_svc->request($api, \%args)->gather(1)->{payload}->{authtoken};
-    
+
     # 2. carry out renewal:
-    my $ses = OpenSRF::AppSession->connect('open-ils.trigger');
     for (@$circs){
 
         $logger->info( "AUTORENEW: circ.target_copy: " . Dumper($_->target_copy()) );
@@ -85,11 +84,13 @@ sub handler {
 
         # Create the event from the source circ instead of the
         # new circ, since the renewal may have failed.
-        $ses->request('open-ils.trigger.event.autocreate', 
-            'autorenewal', $_, $_->circ_lib(), undef, \%user_data);
+        # Fire and do not forget so we don't flood A/T.
+        $AppUtils->simplereq(
+            'open-ils.trigger',
+            'open-ils.trigger.event.autocreate',
+            'autorenewal', $_, $_->circ_lib, undef, \%user_data
+        );
     }
-
-    $ses->disconnect;
 
     return 1;
 }
