@@ -20,6 +20,9 @@
   --info: #087990;
   --bs-cyan-rgb: 8,121,144;
   --bs-info-rgb: 8,121,144;
+  --bs-red-rgb: 220,53,69;
+  --bs-red-600: #B02A37;
+  --bs-red-700: #58151C;
 }
 
 /** BS default fonts are huge */
@@ -572,6 +575,108 @@ button.input-group-text.text-danger {
   color: #1D9F63;
   background-color: #fff;
   border-color: #1D9F63;
+}
+
+.btn-normal,
+.btn-destroy,
+.btn-outline-normal:hover,
+.btn-outline-normal:focus {
+  color: var(--bs-gray-900);
+  background-color: var(--bs-gray-200);
+  border: 1px solid var(--bs-gray-400);
+}
+
+.btn-normal:hover,
+.btn-normal:focus,
+.btn-normal:active {
+  color: var(--bs-gray-900);
+  background-color: var(--bs-gray-300);
+  border: 1px solid var(--bs-gray-400);
+}
+
+.btn-outline-normal,
+.btn-outline-destroy {
+  color: var(--bs-gray-900);
+  background-color: transparent;
+  border: 1px solid var(--bs-gray-400);
+}
+
+.btn-outline-normal:hover,
+.btn-outline-normal:focus,
+.btn-outline-normal:active {
+  color: var(--bs-gray-900);
+  background-color: var(--bs-gray-200);
+  border: 1px solid var(--bs-gray-400);
+}
+
+.btn-outline-normal:hover,
+.btn-outline-normal:focus {
+  color: var(--bs-gray-900);
+  background-color: var(--bs-gray-200);
+  border: 1px solid var(--bs-gray-400);
+}
+
+.btn-normal[disabled],
+.btn-destroy[disabled] {
+  color: var(--bs-gray-700);
+  background-color: var(--bs-gray-200);
+  border: 1px solid var(--bs-gray-300);
+}
+
+.btn-outline-normal[disabled],
+.btn-outline-destroy[disabled] {
+  color: var(--bs-gray-700);
+  background-color: transparent;
+  border: 1px solid var(--bs-gray-300);
+}
+
+.btn-link.btn-destroy {
+  background-color: transparent;
+  border-color: transparent;
+}
+
+.btn-destroy:hover,
+.btn-destroy:focus,
+.btn-link.btn-destroy:hover,
+.btn-link.btn-destroy:focus {
+  color: var(--bs-red-600);
+  background-color: var(--bs-gray-200);
+  border: 1px solid var(--bs-red);
+  box-shadow: 0 0 0 .25rem rgba(var(--bs-red-rgb), .25);
+}
+
+.btn-destroy:active {
+  color: #fff;
+  background-color: var(--bs-red);
+  border: 1px solid var(--bs-red-700);
+}
+
+.btn-link.btn-destroy:active {
+  color: var(--bs-red-700);
+  background-color: transparent;
+  border: 1px solid var(--bs-red-700);
+}
+
+.btn-outline-destroy:hover,
+.btn-outline-destroy:focus {
+  color: var(--bs-red-600);
+  background-color: transparent;
+  border: 1px solid var(--bs-red);
+  box-shadow: 0 0 0 .25rem rgba(var(--bs-red-rgb), .25);
+}
+
+.btn-outline-destroy:active {
+  color: var(--bs-red);
+  background-color: transparent;
+  border: 1px solid var(--bs-red-700);
+}
+
+/* inset a solid outline instead of using Bootstrap's box-shadow style */
+button.focus-border:focus,
+button.focus-border:focus-visible {
+    box-shadow: none;
+    outline: 3px solid var(--bs-primary);
+    outline-offset: -3px;
 }
 
 /* Less intense, WCAG AAA-compliant badges */

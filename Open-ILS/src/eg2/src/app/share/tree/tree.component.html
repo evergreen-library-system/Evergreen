@@ -1,18 +1,19 @@
 <div class="eg-tree-node-wrapper d-flex">
   <input *ngIf="showSelectors" type="checkbox"
       (change)="toggleSelections($event)" />
-  <button type="button" class="btn" (click)="expandAll()"
+  <button type="button" class="btn btn-link text-dark p-1 focus-border" (click)="expandAll()"
     aria-label="Expand All" i18n-aria-label title="Expand All" i18n-title>
       <span class="material-icons" aria-hidden="true">expand_more</span>
   </button>
-  <button type="button" class="btn" (click)="collapseAll()"
+  <button type="button" class="btn btn-link text-dark p-1 focus-border" (click)="collapseAll()"
     aria-label="Collapse All" i18n-aria-label title="Collapse All" i18n-title>
       <span class="material-icons" aria-hidden="true">expand_less</span>
   </button>
   <ng-content select="[header]"></ng-content>
 </div>
 <div class="eg-tree" *ngFor="let node of displayNodes()">
-  <div class="eg-tree-node-wrapper d-flex"
+  <div class="eg-tree-node-wrapper d-flex align-items-center"
+    [ngClass]="{active : node.selected}"
     [ngStyle]="{'padding-left': node.depth + 'rem'}">
     <input *ngIf="showSelectors
        ? (node === tree.rootNode
@@ -25,19 +26,19 @@
     <div class="eg-tree-node-expandy">
       <ng-container *ngIf="node.children.length">
         <button (click)="node.toggleExpand()" 
-          type="button" class="input-group-text" 
+          type="button" class="btn btn-link p-1 text-dark focus-border" 
           [attr.title]="node.expanded? 'Close nodes under ' + node.label : 'Open nodes under ' + node.label" 
           [attr.aria-label]="node.expanded? 'Close nodes under ' + node.label : 'Open nodes under ' + node.label" 
           i18n-aria-label i18n-title>
-          <span class="material-icons" aria-hidden="true">{{node.expanded? 'expand_less' : 'expand_more'}}</span>
+          <span class="material-icons mat-icon-in-button" aria-hidden="true">{{node.expanded? 'expand_less' : 'expand_more'}}</span>
         </button>
       </ng-container>
       <div *ngIf="!node.children.length" class="eg-tree-node-nochild">
        &nbsp; 
       </div>
     </div>
-    <div class="eg-tree-node" [ngClass]="{active : node.selected}">
-      <button class="btn btn-link" (click)="handleNodeClick(node)">{{node.label}}</button>
+    <div class="eg-tree-node">
+      <button class="btn btn-link p-1" (click)="handleNodeClick(node)">{{node.label}}</button>
     </div>
     <ng-container *ngTemplateOutlet="rowTrailingTemplate; context: {$implicit: node}"></ng-container>
   </div>

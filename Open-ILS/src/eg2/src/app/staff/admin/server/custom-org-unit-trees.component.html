@@ -31,7 +31,10 @@
         (nodeClicked)="nodeClicked($event)"
         (nodeChecked)="nodeChecked($event)">
         <div header>
-          <button type="button" class="btn btn-warning btn-link" [disabled]="!isCopyNodesAllowed()" (click)="copyNodes()" i18n>Copy Selected Org Units to Custom Tree</button>
+          <button type="button" class="btn btn-normal btn-sm label-with-material-icon" [disabled]="!isCopyNodesAllowed()" (click)="copyNodes()">
+            <span class="material-icons mat-icon-in-button" aria-hidden="true">content_copy</span>
+            <span i18n>Copy Selected Org Units to Custom Tree</span>
+          </button>
         </div>
       </eg-tree>
     </div>
@@ -48,22 +51,22 @@
     <div class="p-1" >
       <ng-template #selectedRowButtons let-node>
         <div *ngIf="node.selected && custom_tree.selectedNodes().length === 1">
-          <button type="button" class="btn btn-link p-0" 
+          <button type="button" class="btn btn-link lh-1 py-1 px-0 text-dark" 
             [disabled]="moveNodeUpDisabled" (click)="moveNodeUp(node)" 
             i18n-title title="Move Up" i18n-aria-label aria-label="Move Up">
             <span class="material-icons" aria-hidden="true">arrow_upward</span>
           </button>
-          <button type="button" class="btn btn-link p-0" 
+          <button type="button" class="btn btn-link lh-1 py-1 px-0 text-dark" 
             [disabled]="moveNodeDownDisabled" (click)="moveNodeDown(node)" 
             i18n-title title="Move Down" i18n-aria-label aria-label="Move Down">
             <span class="material-icons" aria-hidden="true">arrow_downward</span>
           </button>
-          <button type="button" class="btn btn-link p-0" 
+          <button type="button" class="btn btn-link lh-1 py-1 px-0 text-dark" 
             [disabled]="moveNodeElsewhereDisabled" (click)="moveNodeElsewhere(node)" 
             i18n-title title="Move Elsewhere" i18n-aria-label aria-label="Move Elsewhere">
             <span class="material-icons" aria-hidden="true">arrow_forward</span>
           </button>
-          <button type="button" class="btn btn-link p-0" 
+          <button type="button" class="btn btn-link btn-destroy lh-1 py-1 px-0" 
             [disabled]="!isDeleteNodesAllowed()" (click)="deleteNode(node)" 
             i18n-title title="Delete" i18n-aria-label aria-label="Delete">
             <span class="material-icons" aria-hidden="true">delete</span>
@@ -71,16 +74,22 @@
         </div>
       </ng-template>
       <eg-tree
-        [showSelectors]="false"
+        [showSelectors]="true"
         [disableRootSelector]="false"
-        [toggleOnClick]="false"
+        [toggleOnClick]="true"
         [tree]="custom_tree"
         (nodeClicked)="custom_nodeClicked($event)"
         (nodeChecked)="custom_nodeChecked($event)"
         [rowTrailingTemplate]="selectedRowButtons">
         <div header>
-          <button type="button" class="btn btn-warning btn-link" (click)="applyChanges()" i18n>Save Changes</button>
-          <!-- Don't need this unless we're allowing multi-select, err, toggleOnClick. <button type="button" class="btn btn-link" [disabled]="!isDeleteNodesAllowed()" (click)="deleteSelectedNodes()" i18n>Delete</button>-->
+          <button type="button" class="btn btn-normal btn-sm label-with-material-icon" (click)="applyChanges()">
+            <span class="material-icons mat-icon-in-button" aria-hidden="true">save</span>
+            <span i18n>Save Changes</span>
+          </button>
+          <button type="button" class="btn btn-destroy btn-sm label-with-material-icon" [disabled]="!isDeleteNodesAllowed()" (click)="deleteSelectedNodes()">
+            <span class="material-icons mat-icon-in-button" aria-hidden="true">delete</span>
+            <span i18n>Delete Selected</span>
+          </button>
         </div>
         <div footer>
         </div>
