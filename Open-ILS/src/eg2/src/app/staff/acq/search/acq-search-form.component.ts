@@ -71,7 +71,14 @@ export class AcqSearchFormComponent implements OnInit, OnChanges {
                                 self.searchTermDatatypes[hint + ':' + field.name] = field.datatype;
                                 self.searchTermFieldIsRequired[hint + ':' + field.name] = field.required;
                                 if (field.datatype === 'link') {
-                                    self.searchFieldLinkedClasses[hint + ':' + field.name] = field.class;
+                                    if ((hint === 'jub' && field.name === 'eg_bib_id') ||
+                                        (hint === 'acqlid' && field.name === 'eg_copy_id')) {
+                                        // special exception for eg_bib_id and eg_copy_id, which
+                                        // shouldn't get comboboxes on the search form
+                                        self.searchTermDatatypes[hint + ':' + field.name] = 'int';
+                                    } else {
+                                        self.searchFieldLinkedClasses[hint + ':' + field.name] = field.class;
+                                    }
                                 }
                             }
                         }
