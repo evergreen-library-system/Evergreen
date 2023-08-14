@@ -568,13 +568,13 @@ This section goes over all item statuses and their relationship to the system.
 
 -*Cataloging*: An item has been pulled to be edited by a cataloger.
 
--*Reserves*: Evergreen default status.
+-*Reserves*: In reserves collection.
 
 -*Discard/Weed*: Item has been manually flagged for removal from the collection, but has not yet been deleted.
 
 -*Damaged*: Item is damaged and the patron was billed.
 
--*On reservation shelf*: _another booking module thing to insert_
+-*On reservation shelf*: Used with room/booking module. When an item has been booked/reserved, it is placed in a unique location, ready for pick-up.
 
 -*Long Overdue*: Item has been checked out past a due date threshold.
 
@@ -586,11 +586,15 @@ This section goes over all item statuses and their relationship to the system.
 
 -*Available*: checking in an item that isn’t eligible for a hold
 
--*On reservation shelf*: booking module
+-*Claims Returned*: item is marked as claimed returned via the patron account
 
--*On order*: acquisitions
+-*In Transit*: item is captured for a transit to another location at check in
 
--*In process*: an item is newly cataloged and waiting to be checked in
+-*On reservation shelf*: Item is captured for reservation through the Booking module.
+
+-*On order*: Items is created via activating a purchase order in Acquisitions.
+
+-*In process*: An item is newly cataloged and waiting to be checked in. Also, item is received in acquisitions.
 
 -*Damaged*: Marked Damaged needs to be executed on a screen 
 
@@ -761,7 +765,9 @@ The following properties can be set for each status:
 -*OPAC Visible* - If checked, copies in this status will be visible in the public catalog. If unchecked, copies in this status will Not be visible in the public catalog, but they will be visible when using the catalog in the staff client.
 Sets copy active - If checked, moving a copy that does not yet have an active date to this status will set the active date. If the copy already has an active date, then no changes will be made to the active date. If “No”, this status will never set the copy’s active date.
 
--*Is Available* - If checked, copies with this status will appear in catalog searches where “limit to available” is selected as a search filter. Also, copies with this status will check out without status warnings. By default, the “Available” and “Reshelving” statuses have the “Is Available” flag set.
+-*Is Available* - If checked, copies with this status will appear in catalog searches where “limit to available” is selected as a search filter. Also, copies with this status will check out without status warnings. By default, the “Available” and “Reshelving” statuses have the “Is Available” flag set as true/yes.
+
+-*Hopeless Holds* (as of ver. 3.6): _need info_
 
 Default Evergreen statuses have a further property:
 
