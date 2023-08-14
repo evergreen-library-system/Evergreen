@@ -44,8 +44,9 @@
     <div class="row" *ngIf="!hidePickupLibFilter">
       <div class="col-lg-5">
         <div class="input-group">
-          <div class="input-group-text" i18n>Pickup Library</div>
-          <eg-org-select [persistKey]="persistKey" [fallbackOrg]="pickupLib"
+          <label for="pickup-lib-filter-one" class="input-group-text" i18n>Pickup Library</label>
+          <eg-org-select domId="pickup-lib-filter-one"
+            [persistKey]="persistKey" [fallbackOrg]="pickupLib"
             (componentLoaded)="plCompLoaded = true" (onChange)="pickupLibChanged($event)">
           </eg-org-select>
         </div>
@@ -53,12 +54,21 @@
     </div>
 
     <div class="row" *ngIf="pullListOrg">
-      <div class="col-lg-4 mb-2">
+      <div class="col-lg-3 mb-2">
         <div class="input-group">
-          <div class="input-group-text" i18n>View Pull List For:</div>
-          <eg-org-select [initialOrgId]="pullListOrg" [limitPerms]="['VIEW_HOLD_PULL_LIST']"
+          <label for="pickup-lib-filter-two" class="input-group-text" i18n>Pickup Library</label>
+          <eg-org-select domId="pickup-lib-filter-two"
+            [initialOrgId]="pullListOrg" [limitPerms]="['VIEW_HOLD_PULL_LIST']"
             (onChange)="pullListOrgChanged($event)">
           </eg-org-select>
+        </div>
+      </div>
+      <div class="col-lg-3 mb-2">
+        <div class="input-group">
+          <label for="copy-location-filter" class="input-group-text" i18n>Shelf Location:</label>
+          <eg-item-location-select domId="copy-location-filter"
+            [contextOrgId]="pullListOrg" (valueChange)="copyLocationChange($event)">
+          </eg-item-location-select>
         </div>
       </div>
     </div>

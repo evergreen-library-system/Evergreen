@@ -93,6 +93,7 @@ export class HoldsGridComponent implements OnInit {
     editHolds: number[];
     transferTarget: number;
     uncancelHoldCount: number;
+    copyLocation: number;
 
     @ViewChild('holdsGrid', { static: false }) private holdsGrid: GridComponent;
     @ViewChild('progressDialog', { static: true })
@@ -259,6 +260,11 @@ export class HoldsGridComponent implements OnInit {
         this.holdsGrid.reload();
     }
 
+    copyLocationChange(loc: IdlObject) {
+        this.copyLocation = loc ? loc.id() : null;
+        this.holdsGrid.reload();
+    }
+
     preFetchHolds(apply: boolean) {
         this.enablePreFetch = apply;
 
@@ -275,6 +281,10 @@ export class HoldsGridComponent implements OnInit {
     applyFilters(): any {
 
         const filters: any = {};
+
+        if (this.copyLocation) {
+            filters['acpl.id'] = this.copyLocation;
+        }
 
         if (this.pullListOrg) {
             filters.cancel_time = null;

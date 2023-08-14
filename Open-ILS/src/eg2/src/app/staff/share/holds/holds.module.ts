@@ -11,6 +11,7 @@ import {HoldCancelDialogComponent} from './cancel-dialog.component';
 import {HoldManageDialogComponent} from './manage-dialog.component';
 import {HoldNoteDialogComponent} from './note-dialog.component';
 import {HoldNotifyDialogComponent} from './notify-dialog.component';
+import {ItemLocationSelectModule} from '@eg/share/item-location-select/item-location-select.module';
 
 @NgModule({
     declarations: [
@@ -26,6 +27,7 @@ import {HoldNotifyDialogComponent} from './notify-dialog.component';
     ],
     imports: [
         StaffCommonModule,
+        ItemLocationSelectModule,
         HoldingsModule
     ],
     exports: [
