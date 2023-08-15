@@ -235,7 +235,7 @@ to export from Evergreen. One way to do this is using SQL:
 [source,sql]
 ----
 SELECT DISTINCT bre.id FROM biblio.record_entry AS bre
-    JOIN asset.call_number AS acn ON acn.record = bre.id 
+    JOIN asset.call_number AS acn ON acn.record = bre.id and not acn.deleted
     WHERE bre.deleted='false' and owning_lib=101 \g /home/opensrf/records.txt;
 ----
 +
