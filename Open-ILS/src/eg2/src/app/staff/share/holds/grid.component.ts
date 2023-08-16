@@ -286,6 +286,11 @@ export class HoldsGridComponent implements OnInit {
             filters['acpl.id'] = this.copyLocation;
         }
 
+        if (this.pickupLib) {
+            filters.pickup_lib =
+                this.org.descendants(this.pickupLib, true);
+        }
+
         if (this.pullListOrg) {
             filters.cancel_time = null;
             filters.capture_time = null;
@@ -331,11 +336,6 @@ export class HoldsGridComponent implements OnInit {
                 )
               : (new Date()).toISOString()
           };
-        }
-
-        if (this.pickupLib) {
-            filters.pickup_lib =
-                this.org.descendants(this.pickupLib, true);
         }
 
         if (this.recordId) {

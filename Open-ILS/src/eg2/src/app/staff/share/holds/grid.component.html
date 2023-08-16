@@ -56,7 +56,7 @@
     <div class="row" *ngIf="pullListOrg">
       <div class="col-lg-3 mb-2">
         <div class="input-group">
-          <label for="pickup-lib-filter-two" class="input-group-text" i18n>Pickup Library</label>
+          <label for="pill-list-lib-filter" class="input-group-text" i18n>Pull List For:</label>
           <eg-org-select domId="pickup-lib-filter-two"
             [initialOrgId]="pullListOrg" [limitPerms]="['VIEW_HOLD_PULL_LIST']"
             (onChange)="pullListOrgChanged($event)">
@@ -65,11 +65,24 @@
       </div>
       <div class="col-lg-3 mb-2">
         <div class="input-group">
+          <label for="pickup-lib-filter-two" class="input-group-text" i18n>Pickup Library:</label>
+          <eg-org-select domId="pickup-lib-filter-two"
+            [fallbackOrg]="pullListOrg"
+            (componentLoaded)="plCompLoaded = true" (onChange)="pickupLibChanged($event)">
+          </eg-org-select>
+        </div>
+      </div>
+      <div class="col-lg-3 mb-2">
+        <div class="input-group">
+          <!-- TODO multi select? -->
           <label for="copy-location-filter" class="input-group-text" i18n>Shelf Location:</label>
           <eg-item-location-select domId="copy-location-filter"
             [contextOrgId]="pullListOrg" (valueChange)="copyLocationChange($event)">
           </eg-item-location-select>
         </div>
+      </div>
+      <div class="col-lg-3 mb-2">
+        <!-- copy location selector? -->
       </div>
     </div>
 
