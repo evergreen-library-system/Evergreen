@@ -28,7 +28,7 @@ BuildSQLState* buildSQLStateNew( dbi_conn dbhandle ) {
 	state->result          = NULL;
 	state->error           = 0;
 	state->error_msgs      = osrfNewStringArray( 16 );
-	state->sql             = buffer_init( 128 );
+	state->sql             = osrf_buffer_init( 128 );
 	state->bindvar_list    = NULL;  // Don't build it until we need it
 	state->query_stack     = NULL;
 	state->expr_stack      = NULL;
@@ -63,7 +63,7 @@ void buildSQLStateFree( BuildSQLState* state ){
 			state->result = NULL;
 		}
 		osrfStringArrayFree( state->error_msgs );
-		buffer_free( state->sql );
+		osrf_buffer_free( state->sql );
 		if( state->bindvar_list )
 			osrfHashFree( state->bindvar_list );
 		while( state->query_stack )

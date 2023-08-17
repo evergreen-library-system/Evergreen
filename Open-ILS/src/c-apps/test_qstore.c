@@ -295,7 +295,7 @@ static dbi_conn connect_db( Opts* opts ) {
 	}
 
 	char* pw = NULL;
-	growing_buffer* buf = buffer_init( 32 );
+	growing_buffer* buf = osrf_buffer_init( 32 );
 
 	// Get the database password, either from a designated file
 	// or from the terminal.
@@ -303,23 +303,23 @@ static dbi_conn connect_db( Opts* opts ) {
 		FILE* pwfile = fopen( opts->password_file, "r" );
 		if( !pwfile ) {
 			fprintf( stderr, "Unable to open password file %s\n", opts->password_file );
-			buffer_free( buf );
+			osrf_buffer_free( buf );
 			return NULL;
 		} else {
 			if( load_pw( buf, pwfile )) {
 				fprintf( stderr, "Unable to load password file %s\n", opts->password_file );
-				buffer_free( buf );
+				osrf_buffer_free( buf );
 				return NULL;
 			} else
-				pw = buffer_release( buf );
+				pw = osrf_buffer_release( buf );
 		}
 	} else {
 		if( prompt_password( buf )) {
 			fprintf( stderr, "Unable to get password\n" );
-			buffer_free( buf );
+			osrf_buffer_free( buf );
 			return NULL;
 		} else
-			pw = buffer_release( buf );
+			pw = osrf_buffer_release( buf );
 	}
 
 	// Set database connection options
@@ -355,13 +355,13 @@ static dbi_conn connect_db( Opts* opts ) {
 	Intended for use in loading a password.
 */
 static int load_pw( growing_buffer* buf, FILE* in ) {
-	buffer_reset( buf );
+	osrf_buffer_reset( buf );
 	while( 1 ) {
 		int c = getc( in );
 		if( '\n' == c || EOF == c )
 			break;
 		else if( '\b' == c )
-			buffer_chomp( buf );
+			osrf_buffer_chomp( buf );
 		else
 			OSRF_BUFFER_ADD_CHAR( buf, c );
 	}

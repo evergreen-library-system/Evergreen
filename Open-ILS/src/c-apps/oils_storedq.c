@@ -122,16 +122,16 @@ jsonObject* oilsGetColNames( BuildSQLState* state, StoredQ* query ) {
 	}
 
 	// Wrap it in an outer query to get the column names, but no rows
-	growing_buffer* wrapper = buffer_init( 80 + strlen( OSRF_BUFFER_C_STR( state->sql )));
-	buffer_add( wrapper, "SELECT \"phony query\".* FROM (" );
-	buffer_add( wrapper, OSRF_BUFFER_C_STR( state->sql ));
-	buffer_chomp( wrapper );    // remove the terminating newline
-	buffer_chomp( wrapper );    // remove the terminating semicolon
-	buffer_add( wrapper, ") AS \"phony query\" WHERE FALSE;" );
+	growing_buffer* wrapper = osrf_buffer_init( 80 + strlen( OSRF_BUFFER_C_STR( state->sql )));
+	osrf_buffer_add( wrapper, "SELECT \"phony query\".* FROM (" );
+	osrf_buffer_add( wrapper, OSRF_BUFFER_C_STR( state->sql ));
+	osrf_buffer_chomp( wrapper );    // remove the terminating newline
+	osrf_buffer_chomp( wrapper );    // remove the terminating semicolon
+	osrf_buffer_add( wrapper, ") AS \"phony query\" WHERE FALSE;" );
 
 	// Execute the wrapped query
 	dbi_result result = dbi_conn_query( state->dbhandle, OSRF_BUFFER_C_STR( wrapper ));
-	buffer_free( wrapper );
+	osrf_buffer_free( wrapper );
 	if( !result ) {
 		const char* msg;
 		int errnum = dbi_conn_error( state->dbhandle, &msg );
