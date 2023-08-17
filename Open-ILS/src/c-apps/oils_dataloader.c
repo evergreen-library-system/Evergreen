@@ -74,15 +74,15 @@ int main (int argc, char **argv) {
 		char* _fm = strdup( (char*)osrfHashGet(idlClass, "fieldmapper") );
 		char* part = strtok_r(_fm, ":", &st_tmp);
 
-		growing_buffer* _method_name =  buffer_init(64);
-		buffer_fadd(_method_name, "%s.direct.%s", CSTORE, part);
+		growing_buffer* _method_name =  osrf_buffer_init(64);
+		osrf_buffer_fadd(_method_name, "%s.direct.%s", CSTORE, part);
 
 		while ((part = strtok_r(NULL, ":", &st_tmp))) {
-			buffer_fadd(_method_name, ".%s", part);
+			osrf_buffer_fadd(_method_name, ".%s", part);
 		}
-		buffer_fadd(_method_name, ".%s", method);
+		osrf_buffer_fadd(_method_name, ".%s", method);
 
-		char* m = buffer_release(_method_name);
+		char* m = osrf_buffer_release(_method_name);
 		osrfHashSet( mnames, m, classname );
 
 		osrfLogDebug(OSRF_LOG_MARK, "Constructed %s method named %s for %s", method, m, classname);
@@ -103,7 +103,7 @@ int main (int argc, char **argv) {
 		osrfLogError(OSRF_LOG_MARK, "An error occured while attempting to start a transaction");
 	}
 
-	growing_buffer* json = buffer_init(128);
+	growing_buffer* json = osrf_buffer_init(128);
 	char* json_string;
 	int c;
 	int counter = 0;
@@ -112,8 +112,8 @@ int main (int argc, char **argv) {
 			case '\n':
 			case EOF:
 				// End of a line
-				json_string = buffer_data(json);
-				buffer_reset(json);
+				json_string = osrf_buffer_data(json);
+				osrf_buffer_reset(json);
 
 				if (!sendCommand(json_string)) {
 					osrfLogError(
@@ -136,17 +136,17 @@ int main (int argc, char **argv) {
 
 				counter++;
 
-				buffer_reset(json);
+				osrf_buffer_reset(json);
 				free(json_string);
 				break;
 
 			default:
-				buffer_add_char( json, c );
+				osrf_buffer_add_char( json, c );
 				break;
 		}
 	}
 
-	buffer_free(json);
+	osrf_buffer_free(json);
 
 	// clean up, commit, go away
 	if (!commitTransaction()) {

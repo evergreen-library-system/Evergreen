@@ -507,18 +507,18 @@ static int oilsAuthVerifyPassword( const osrfMethodContext* ctx, int user_id,
  */
 static int oilsAuthLoginCheckPassword(int user_id, const char* password) {
 
-    growing_buffer* gb = buffer_init(33); // free me 1
+    growing_buffer* gb = osrf_buffer_init(33); // free me 1
     char* salt = oilsAuthGetSalt(user_id); // free me 2
     char* passhash = md5sum(password); // free me 3
 
-    buffer_add(gb, salt); // gb strdup's internally
-    buffer_add(gb, passhash);
+    osrf_buffer_add(gb, salt); // gb strdup's internally
+    osrf_buffer_add(gb, passhash);
 
     free(salt); // free 2
     free(passhash); // free 3
 
     // salt + md5(password)
-    passhash = buffer_release(gb); // free 1 ; free me 4
+    passhash = osrf_buffer_release(gb); // free 1 ; free me 4
     char* finalpass = md5sum(passhash); // free me 5
 
     free(passhash); // free 4
@@ -555,11 +555,11 @@ static int oilsAuthLoginVerifyPassword(const osrfMethodContext* ctx,
     int user_id, const char* username, const char* password) {
 
     // build the cache key
-    growing_buffer* gb = buffer_init(64); // free me
-    buffer_add(gb, OILS_AUTH_CACHE_PRFX);
-    buffer_add(gb, username);
-    buffer_add(gb, OILS_AUTH_COUNT_SFFX);
-    char* countkey = buffer_release(gb); // free me
+    growing_buffer* gb = osrf_buffer_init(64); // free me
+    osrf_buffer_add(gb, OILS_AUTH_CACHE_PRFX);
+    osrf_buffer_add(gb, username);
+    osrf_buffer_add(gb, OILS_AUTH_COUNT_SFFX);
+    char* countkey = osrf_buffer_release(gb); // free me
 
     jsonObject* countobject = osrfCacheGetObject(countkey); // free me
 

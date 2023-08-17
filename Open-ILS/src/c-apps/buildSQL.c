@@ -170,15 +170,15 @@ int oilsApplyBindValues( BuildSQLState* state, const jsonObject* bindings ) {
 */
 int buildSQL( BuildSQLState* state, const StoredQ* query ) {
 	state->error  = 0;
-	buffer_reset( state->sql );
+	osrf_buffer_reset( state->sql );
 	state->indent = 0;
 	build_Query( state, query );
 	if( ! state->error ) {
 		// Remove the trailing space, if there is one, and add a semicolon.
-		char c = buffer_chomp( state->sql );
+		char c = osrf_buffer_chomp( state->sql );
 		if( c != ' ' )
-			buffer_add_char( state->sql, c );  // oops, not a space; put it back
-		buffer_add( state->sql, ";\n" );
+			osrf_buffer_add_char( state->sql, c );  // oops, not a space; put it back
+		osrf_buffer_add( state->sql, ";\n" );
 	}
 	return state->error;
 }
@@ -191,7 +191,7 @@ int buildSQL( BuildSQLState* state, const StoredQ* query ) {
 	Look at the query type and branch to the corresponding routine.
 */
 static void build_Query( BuildSQLState* state, const StoredQ* query ) {
-	if( buffer_length( state->sql ))
+	if( osrf_buffer_length( state->sql ))
 		add_newline( state );
 
 	switch( query->type ) {
@@ -244,10 +244,10 @@ static void buildCombo( BuildSQLState* state, const StoredQ* query, const char* 
 		seq = seq->next;
 		if( seq ) {
 			add_newline( state );
-			buffer_add( state->sql, type_str );
-			buffer_add_char( state->sql, ' ' );
+			osrf_buffer_add( state->sql, type_str );
+			osrf_buffer_add_char( state->sql, ' ' );
 			if( query->use_all )
-				buffer_add( state->sql, "ALL " );
+				osrf_buffer_add( state->sql, "ALL " );
 		}
 	}
 
@@ -269,7 +269,7 @@ static void buildSelect( BuildSQLState* state, const StoredQ* query ) {
 	}
 
 	// Get SELECT list
-	buffer_add( state->sql, "SELECT" );
+	osrf_buffer_add( state->sql, "SELECT" );
 	incr_indent( state );
 	buildSelectList( state, query->select_list );
 	if( state->error ) {
@@ -292,7 +292,7 @@ static void buildSelect( BuildSQLState* state, const StoredQ* query ) {
 	// Build WHERE clause, if there is one
 	if( query->where_clause ) {
 		add_newline( state );
-		buffer_add( state->sql, "WHERE" );
+		osrf_buffer_add( state->sql, "WHERE" );
 		incr_indent( state );
 		add_newline( state );
 		buildExpression( state, query->where_clause );
@@ -310,7 +310,7 @@ static void buildSelect( BuildSQLState* state, const StoredQ* query ) {
 	// Build HAVING clause, if there is one
 	if( query->having_clause ) {
 		add_newline( state );
-		buffer_add( state->sql, "HAVING" );
+		osrf_buffer_add( state->sql, "HAVING" );
 		incr_indent( state );
 		add_newline( state );
 		buildExpression( state, query->having_clause );
@@ -335,14 +335,14 @@ static void buildSelect( BuildSQLState* state, const StoredQ* query ) {
 	// Build LIMIT clause, if there is one
 	if( query->limit_count ) {
 		add_newline( state );
-		buffer_add( state->sql, "LIMIT " );
+		osrf_buffer_add( state->sql, "LIMIT " );
 		buildExpression( state, query->limit_count );
 	}
 
 	// Build OFFSET clause, if there is one
 	if( query->offset_count ) {
 		add_newline( state );
-		buffer_add( state->sql, "OFFSET " );
+		osrf_buffer_add( state->sql, "OFFSET " );
 		buildExpression( state, query->offset_count );
 	}
 
@@ -357,7 +357,7 @@ static void buildSelect( BuildSQLState* state, const StoredQ* query ) {
 static void buildFrom( BuildSQLState* state, const FromRelation* core_from ) {
 
 	add_newline( state );
-	buffer_add( state->sql, "FROM" );
+	osrf_buffer_add( state->sql, "FROM" );
 	incr_indent( state );
 	add_newline( state );
 
@@ -378,18 +378,18 @@ static void buildFrom( BuildSQLState* state, const FromRelation* core_from ) {
 			}
 
 			// Add table or view
-			buffer_add( state->sql, relation );
+			osrf_buffer_add( state->sql, relation );
 			if( !core_from->table_name )
 				free( relation );   // In this case we strdup'd it, must free it
 			break;
 		}
 		case FRT_SUBQUERY :
-			buffer_add_char( state->sql, '(' );
+			osrf_buffer_add_char( state->sql, '(' );
 			incr_indent( state );
 			build_Query( state, core_from->subquery );
 			decr_indent( state );
 			add_newline( state );
-			buffer_add_char( state->sql, ')' );
+			osrf_buffer_add_char( state->sql, ')' );
 			break;
 		case FRT_FUNCTION :
 			buildFunction( state, core_from->function_call );
@@ -410,16 +410,16 @@ static void buildFrom( BuildSQLState* state, const FromRelation* core_from ) {
 
 	// Add a table alias, if possible
 	if( core_from->table_alias ) {
-		buffer_add( state->sql, " AS \"" );
-		buffer_add( state->sql, core_from->table_alias );
-		buffer_add( state->sql, "\" " );
+		osrf_buffer_add( state->sql, " AS \"" );
+		osrf_buffer_add( state->sql, core_from->table_alias );
+		osrf_buffer_add( state->sql, "\" " );
 	}
 	else if( core_from->class_name ) {
-		buffer_add( state->sql, " AS \"" );
-		buffer_add( state->sql, core_from->class_name );
-		buffer_add( state->sql, "\" " );
+		osrf_buffer_add( state->sql, " AS \"" );
+		osrf_buffer_add( state->sql, core_from->class_name );
+		osrf_buffer_add( state->sql, "\" " );
 	} else
-		buffer_add_char( state->sql, ' ' );
+		osrf_buffer_add_char( state->sql, ' ' );
 
 	incr_indent( state );
 	FromRelation* join = core_from->join_list;
@@ -449,16 +449,16 @@ static void buildJoin( BuildSQLState* state, const FromRelation* join ) {
 			state->error = 1;
 			return;
 		case JT_INNER :
-			buffer_add( state->sql, "INNER JOIN " );
+			osrf_buffer_add( state->sql, "INNER JOIN " );
 			break;
 		case JT_LEFT:
-			buffer_add( state->sql, "LEFT JOIN " );
+			osrf_buffer_add( state->sql, "LEFT JOIN " );
 			break;
 		case JT_RIGHT:
-			buffer_add( state->sql, "RIGHT JOIN " );
+			osrf_buffer_add( state->sql, "RIGHT JOIN " );
 			break;
 		case JT_FULL:
-			buffer_add( state->sql, "FULL JOIN " );
+			osrf_buffer_add( state->sql, "FULL JOIN " );
 			break;
 		default :
 			sqlAddMsg( state, "Unrecognized join type in relation # %d", join->id );
@@ -474,7 +474,7 @@ static void buildJoin( BuildSQLState* state, const FromRelation* join ) {
 				state->error = 1;
 				return;
 			}
-			buffer_add( state->sql, join->table_name );
+			osrf_buffer_add( state->sql, join->table_name );
 			break;
 		case FRT_SUBQUERY :
 			// Sanity check
@@ -488,12 +488,12 @@ static void buildJoin( BuildSQLState* state, const FromRelation* join ) {
 				state->error = 1;
 				return;
 			}
-			buffer_add_char( state->sql, '(' );
+			osrf_buffer_add_char( state->sql, '(' );
 			incr_indent( state );
 			build_Query( state, join->subquery );
 			decr_indent( state );
 			add_newline( state );
-			buffer_add_char( state->sql, ')' );
+			osrf_buffer_add_char( state->sql, ')' );
 			break;
 		case FRT_FUNCTION :
 			if( !join->table_name || ! *join->table_name ) {
@@ -510,15 +510,15 @@ static void buildJoin( BuildSQLState* state, const FromRelation* join ) {
 		effective_alias = join->class_name;
 
 	if( effective_alias ) {
-		buffer_add( state->sql, " AS \"" );
-		buffer_add( state->sql, effective_alias );
-		buffer_add_char( state->sql, '\"' );
+		osrf_buffer_add( state->sql, " AS \"" );
+		osrf_buffer_add( state->sql, effective_alias );
+		osrf_buffer_add_char( state->sql, '\"' );
 	}
 
 	if( join->on_clause ) {
 		incr_indent( state );
 		add_newline( state );
-		buffer_add( state->sql, "ON " );
+		osrf_buffer_add( state->sql, "ON " );
 		buildExpression( state, join->on_clause );
 		decr_indent( state );
 	}
@@ -544,7 +544,7 @@ static void buildSelectList( BuildSQLState* state, const SelectItem* item ) {
 	int first = 1;
 	while( item ) {
 		if( !first )
-			buffer_add_char( state->sql, ',' );
+			osrf_buffer_add_char( state->sql, ',' );
 		add_newline( state );
 		buildExpression( state, item->expression );
 		if( state->error ) {
@@ -554,14 +554,14 @@ static void buildSelectList( BuildSQLState* state, const SelectItem* item ) {
 		}
 
 		if( item->column_alias ) {
-			buffer_add( state->sql, " AS \"" );
-			buffer_add( state->sql, item->column_alias );
-			buffer_add_char( state->sql, '\"' );
+			osrf_buffer_add( state->sql, " AS \"" );
+			osrf_buffer_add( state->sql, item->column_alias );
+			osrf_buffer_add_char( state->sql, '\"' );
 		}
 		first = 0;
 		item = item->next;
 	};
-	buffer_add_char( state->sql, ' ' );
+	osrf_buffer_add_char( state->sql, ' ' );
 }
 
 /**
@@ -580,13 +580,13 @@ static void buildGroupBy( BuildSQLState* state, const SelectItem* sel_list ) {
 		if( sel_list->grouped_by ) {
 			if( first ) {
 				add_newline( state );
-				buffer_add( state->sql, "GROUP BY " );
+				osrf_buffer_add( state->sql, "GROUP BY " );
 				first = 0;
 			}
 			else
-				buffer_add( state->sql, ", " );
+				osrf_buffer_add( state->sql, ", " );
 
-			buffer_fadd( state->sql, "%d", seq );
+			osrf_buffer_fadd( state->sql, "%d", seq );
 		}
 
 		sel_list = sel_list->next;
@@ -600,7 +600,7 @@ static void buildGroupBy( BuildSQLState* state, const SelectItem* sel_list ) {
 */
 static void buildOrderBy( BuildSQLState* state, const OrderItem* ord_list ) {
 	add_newline( state );
-	buffer_add( state->sql, "ORDER BY" );
+	osrf_buffer_add( state->sql, "ORDER BY" );
 	incr_indent( state );
 
 	int first = 1;    // boolean
@@ -608,7 +608,7 @@ static void buildOrderBy( BuildSQLState* state, const OrderItem* ord_list ) {
 		if( first )
 			first = 0;
 		else
-			buffer_add_char( state->sql, ',' );
+			osrf_buffer_add_char( state->sql, ',' );
 		add_newline( state );
 		buildExpression( state, ord_list->expression );
 		if( state->error ) {
@@ -637,12 +637,12 @@ static void buildExpression( BuildSQLState* state, const Expression* expr ) {
 	}
 
 	if( expr->parenthesize )
-		buffer_add_char( state->sql, '(' );
+		osrf_buffer_add_char( state->sql, '(' );
 
 	switch( expr->type ) {
 		case EXP_BETWEEN :
 			if( expr->negate )
-				buffer_add( state->sql, "NOT " );
+				osrf_buffer_add( state->sql, "NOT " );
 
 			buildExpression( state, expr->left_operand );
 			if( state->error ) {
@@ -651,7 +651,7 @@ static void buildExpression( BuildSQLState* state, const Expression* expr ) {
 				break;
 			}
 
-			buffer_add( state->sql, " BETWEEN " );
+			osrf_buffer_add( state->sql, " BETWEEN " );
 
 			buildExpression( state, expr->subexp_list );
 			if( state->error ) {
@@ -660,7 +660,7 @@ static void buildExpression( BuildSQLState* state, const Expression* expr ) {
 				break;
 			}
 
-			buffer_add( state->sql, " AND " );
+			osrf_buffer_add( state->sql, " AND " );
 
 			buildExpression( state, expr->subexp_list->next );
 			if( state->error ) {
@@ -680,13 +680,13 @@ static void buildExpression( BuildSQLState* state, const Expression* expr ) {
 			break;
 		case EXP_BOOL :
 			if( expr->negate )
-				buffer_add( state->sql, "NOT " );
+				osrf_buffer_add( state->sql, "NOT " );
 
 			if( expr->literal ) {
-				buffer_add( state->sql, expr->literal );
-				buffer_add_char( state->sql, ' ' );
+				osrf_buffer_add( state->sql, expr->literal );
+				osrf_buffer_add_char( state->sql, ' ' );
 			} else
-				buffer_add( state->sql, "FALSE " );
+				osrf_buffer_add( state->sql, "FALSE " );
 			break;
 		case EXP_CASE :
 			buildCase( state, expr );
@@ -696,18 +696,18 @@ static void buildExpression( BuildSQLState* state, const Expression* expr ) {
 			break;
 		case EXP_CAST :                   // Type cast
 			if( expr->negate )
-				buffer_add( state->sql, "NOT " );
+				osrf_buffer_add( state->sql, "NOT " );
 
-			buffer_add( state->sql, "CAST (" );
+			osrf_buffer_add( state->sql, "CAST (" );
 			buildExpression( state, expr->left_operand );
 			if( state->error )
 				sqlAddMsg( state, "Unable to build left operand for CAST expression # %d",
 					expr->id );
 			else {
-				buffer_add( state->sql, " AS " );
+				osrf_buffer_add( state->sql, " AS " );
 				if( expr->cast_type && expr->cast_type->datatype_name ) {
-					buffer_add( state->sql, expr->cast_type->datatype_name );
-					buffer_add_char( state->sql, ')' );
+					osrf_buffer_add( state->sql, expr->cast_type->datatype_name );
+					osrf_buffer_add_char( state->sql, ')' );
 				} else {
 					osrfLogError( OSRF_LOG_MARK, sqlAddMsg( state,
 						"No datatype available for CAST expression # %d", expr->id ));
@@ -717,17 +717,17 @@ static void buildExpression( BuildSQLState* state, const Expression* expr ) {
 			break;
 		case EXP_COLUMN :                 // Table column
 			if( expr->negate )
-				buffer_add( state->sql, "NOT " );
+				osrf_buffer_add( state->sql, "NOT " );
 
 			if( expr->table_alias ) {
-				buffer_add_char( state->sql, '\"' );
-				buffer_add( state->sql, expr->table_alias );
-				buffer_add( state->sql, "\"." );
+				osrf_buffer_add_char( state->sql, '\"' );
+				osrf_buffer_add( state->sql, expr->table_alias );
+				osrf_buffer_add( state->sql, "\"." );
 			}
 			if( expr->column_name ) {
-				buffer_add( state->sql, expr->column_name );
+				osrf_buffer_add( state->sql, expr->column_name );
 			} else {
-				buffer_add_char( state->sql, '*' );
+				osrf_buffer_add_char( state->sql, '*' );
 			}
 			break;
 		case EXP_EXIST :
@@ -737,14 +737,14 @@ static void buildExpression( BuildSQLState* state, const Expression* expr ) {
 				state->error = 1;
 			} else {
 				if( expr->negate )
-					buffer_add( state->sql, "NOT " );
+					osrf_buffer_add( state->sql, "NOT " );
 
-				buffer_add( state->sql, "EXISTS (" );
+				osrf_buffer_add( state->sql, "EXISTS (" );
 				incr_indent( state );
 				build_Query( state, expr->subquery );
 				decr_indent( state );
 				add_newline( state );
-				buffer_add_char( state->sql, ')' );
+				osrf_buffer_add_char( state->sql, ')' );
 			}
 			break;
 		case EXP_FUNCTION :
@@ -755,8 +755,8 @@ static void buildExpression( BuildSQLState* state, const Expression* expr ) {
 				buildExpression( state, expr->left_operand );
 				if( !state->error ) {
 					if( expr->negate )
-						buffer_add( state->sql, "NOT " );
-					buffer_add( state->sql, " IN (" );
+						osrf_buffer_add( state->sql, "NOT " );
+					osrf_buffer_add( state->sql, " IN (" );
 
 					if( expr->subquery ) {
 						incr_indent( state );
@@ -766,14 +766,14 @@ static void buildExpression( BuildSQLState* state, const Expression* expr ) {
 						else {
 							decr_indent( state );
 							add_newline( state );
-							buffer_add_char( state->sql, ')' );
+							osrf_buffer_add_char( state->sql, ')' );
 						}
 					} else {
 						buildSeries( state, expr->subexp_list, NULL );
 						if( state->error )
 							sqlAddMsg( state, "Unable to build IN list" );
 						else
-							buffer_add_char( state->sql, ')' );
+							osrf_buffer_add_char( state->sql, ')' );
 					}
 				}
 			}
@@ -789,15 +789,15 @@ static void buildExpression( BuildSQLState* state, const Expression* expr ) {
 			}
 
 			if( expr->negate )
-				buffer_add( state->sql, " IS NOT NULL" );
+				osrf_buffer_add( state->sql, " IS NOT NULL" );
 			else
-				buffer_add( state->sql, " IS NULL" );
+				osrf_buffer_add( state->sql, " IS NULL" );
 			break;
 		case EXP_NULL :
 			if( expr->negate )
-				buffer_add( state->sql, "NOT " );
+				osrf_buffer_add( state->sql, "NOT " );
 
-			buffer_add( state->sql, "NULL" );
+			osrf_buffer_add( state->sql, "NULL" );
 			break;
 		case EXP_NUMBER :                    // Numeric literal
 			if( !expr->literal ) {
@@ -805,12 +805,12 @@ static void buildExpression( BuildSQLState* state, const Expression* expr ) {
 					"Internal error: No numeric value in string expression # %d", expr->id ));
 				state->error = 1;
 			} else {
-				buffer_add( state->sql, expr->literal );
+				osrf_buffer_add( state->sql, expr->literal );
 			}
 			break;
 		case EXP_OPERATOR :
 			if( expr->negate )
-				buffer_add( state->sql, "NOT (" );
+				osrf_buffer_add( state->sql, "NOT (" );
 
 			if( expr->left_operand ) {
 				buildExpression( state, expr->left_operand );
@@ -820,9 +820,9 @@ static void buildExpression( BuildSQLState* state, const Expression* expr ) {
 					break;
 				}
 			}
-			buffer_add_char( state->sql, ' ' );
-			buffer_add( state->sql, expr->op );
-			buffer_add_char( state->sql, ' ' );
+			osrf_buffer_add_char( state->sql, ' ' );
+			osrf_buffer_add( state->sql, expr->op );
+			osrf_buffer_add_char( state->sql, ' ' );
 			if( expr->right_operand ) {
 				buildExpression( state, expr->right_operand );
 				if( state->error ) {
@@ -833,12 +833,12 @@ static void buildExpression( BuildSQLState* state, const Expression* expr ) {
 			}
 
 			if( expr->negate )
-				buffer_add_char( state->sql, ')' );
+				osrf_buffer_add_char( state->sql, ')' );
 
 			break;
 		case EXP_SERIES :
 			if( expr->negate )
-				buffer_add( state->sql, "NOT (" );
+				osrf_buffer_add( state->sql, "NOT (" );
 
 			buildSeries( state, expr->subexp_list, expr->op );
 			if( state->error ) {
@@ -846,7 +846,7 @@ static void buildExpression( BuildSQLState* state, const Expression* expr ) {
 					expr->op ? expr->op : "," );
 			}
 			if( expr->negate )
-				buffer_add_char( state->sql, ')' );
+				osrf_buffer_add_char( state->sql, ')' );
 
 			break;
 		case EXP_STRING :                     // String literal
@@ -858,7 +858,7 @@ static void buildExpression( BuildSQLState* state, const Expression* expr ) {
 				char* str = strdup( expr->literal );
 				dbi_conn_quote_string( state->dbhandle, &str );
 				if( str ) {
-					buffer_add( state->sql, str );
+					osrf_buffer_add( state->sql, str );
 					free( str );
 				} else {
 					osrfLogWarning( OSRF_LOG_MARK, sqlAddMsg( state,
@@ -870,15 +870,15 @@ static void buildExpression( BuildSQLState* state, const Expression* expr ) {
 			break;
 		case EXP_SUBQUERY :
 			if( expr->negate )
-				buffer_add( state->sql, "NOT " );
+				osrf_buffer_add( state->sql, "NOT " );
 
 			if( expr->subquery ) {
-				buffer_add_char( state->sql, '(' );
+				osrf_buffer_add_char( state->sql, '(' );
 				incr_indent( state );
 				build_Query( state, expr->subquery );
 				decr_indent( state );
 				add_newline( state );
-				buffer_add_char( state->sql, ')' );
+				osrf_buffer_add_char( state->sql, ')' );
 			} else {
 				osrfLogWarning( OSRF_LOG_MARK, sqlAddMsg( state,
 					"Internal error: No subquery in subquery expression # %d", expr->id ));
@@ -888,7 +888,7 @@ static void buildExpression( BuildSQLState* state, const Expression* expr ) {
 	}
 
 	if( expr->parenthesize )
-		buffer_add_char( state->sql, ')' );
+		osrf_buffer_add_char( state->sql, ')' );
 }
 
 /**
@@ -909,10 +909,10 @@ static void buildCase( BuildSQLState* state, const Expression* expr ) {
 	}
 
 	if( expr->negate )
-		buffer_add( state->sql, "NOT (" );
+		osrf_buffer_add( state->sql, "NOT (" );
 
 	// left_operand is the expression on which we shall branch
-	buffer_add( state->sql, "CASE " );
+	osrf_buffer_add( state->sql, "CASE " );
 	buildExpression( state, expr->left_operand );
 	if( state->error ) {
 		sqlAddMsg( state, "Unable to build operand of CASE expression # %d", expr->id );
@@ -928,14 +928,14 @@ static void buildCase( BuildSQLState* state, const Expression* expr ) {
 
 		if( branch->condition ) {
 			// Emit a WHEN condition
-			buffer_add( state->sql, "WHEN " );
+			osrf_buffer_add( state->sql, "WHEN " );
 			buildExpression( state, branch->condition );
 			incr_indent( state );
 			add_newline( state );
-			buffer_add( state->sql, "THEN " );
+			osrf_buffer_add( state->sql, "THEN " );
 		} else {
 			// Emit ELSE
-			buffer_add( state->sql, "ELSE " );
+			osrf_buffer_add( state->sql, "ELSE " );
 			incr_indent( state );
 			add_newline( state );
 		}
@@ -949,10 +949,10 @@ static void buildCase( BuildSQLState* state, const Expression* expr ) {
 
 	decr_indent( state );
 	add_newline( state );
-	buffer_add( state->sql, "END" );
+	osrf_buffer_add( state->sql, "END" );
 
 	if( expr->negate )
-		buffer_add( state->sql, ")" );
+		osrf_buffer_add( state->sql, ")" );
 }
 
 /**
@@ -962,12 +962,12 @@ static void buildCase( BuildSQLState* state, const Expression* expr ) {
 */
 static void buildFunction( BuildSQLState* state, const Expression* expr ) {
 	if( expr->negate )
-		buffer_add( state->sql, "NOT " );
+		osrf_buffer_add( state->sql, "NOT " );
 
 	// If a subfield is specified, the function call
 	// needs an extra layer of parentheses
 	if( expr->column_name )
-		buffer_add_char( state->sql, '(' );
+		osrf_buffer_add_char( state->sql, '(' );
 
 	// First, check for some specific functions with peculiar syntax, and treat them
 	// as special exceptions.  We rely on the input side to ensure that the function
@@ -975,15 +975,15 @@ static void buildFunction( BuildSQLState* state, const Expression* expr ) {
 	if( !strcasecmp( expr->function_name, "EXTRACT" ))
 		buildExtract( state, expr );
 	else if( !strcasecmp( expr->function_name, "CURRENT_DATE" ) && ! expr->subexp_list )
-		buffer_add( state->sql, "CURRENT_DATE " );
+		osrf_buffer_add( state->sql, "CURRENT_DATE " );
 	else if( !strcasecmp( expr->function_name, "CURRENT_TIME" ) && ! expr->subexp_list )
-		buffer_add( state->sql, "CURRENT_TIME " );
+		osrf_buffer_add( state->sql, "CURRENT_TIME " );
 	else if( !strcasecmp( expr->function_name, "CURRENT_TIMESTAMP" ) && ! expr->subexp_list )
-		buffer_add( state->sql, "CURRENT_TIMESTAMP " );
+		osrf_buffer_add( state->sql, "CURRENT_TIMESTAMP " );
 	else if( !strcasecmp( expr->function_name, "LOCALTIME" ) && ! expr->subexp_list )
-		buffer_add( state->sql, "LOCALTIME " );
+		osrf_buffer_add( state->sql, "LOCALTIME " );
 	else if( !strcasecmp( expr->function_name, "LOCALTIMESTAMP" ) && ! expr->subexp_list )
-		buffer_add( state->sql, "LOCALTIMESTAMP " );
+		osrf_buffer_add( state->sql, "LOCALTIMESTAMP " );
 	else if( !strcasecmp( expr->function_name, "TRIM" )) {
 		int arg_count = subexp_count( expr );
 
@@ -1001,9 +1001,9 @@ static void buildFunction( BuildSQLState* state, const Expression* expr ) {
 
 	if( expr->column_name ) {
 		// Add the name of the subfield
-		buffer_add( state->sql, ").\"" );
-		buffer_add( state->sql, expr->column_name );
-		buffer_add_char( state->sql, '\"' );
+		osrf_buffer_add( state->sql, ").\"" );
+		osrf_buffer_add( state->sql, expr->column_name );
+		osrf_buffer_add_char( state->sql, '\"' );
 	}
 }
 
@@ -1033,13 +1033,13 @@ static int subexp_count( const Expression* expr ) {
 	Emit the parameters as a comma-separated list of expressions.
 */
 static void buildTypicalFunction( BuildSQLState* state, const Expression* expr ) {
-	buffer_add( state->sql, expr->function_name );
-	buffer_add_char( state->sql, '(' );
+	osrf_buffer_add( state->sql, expr->function_name );
+	osrf_buffer_add_char( state->sql, '(' );
 
 	// Add the parameters, if any
 	buildSeries( state, expr->subexp_list, NULL );
 
-	buffer_add_char( state->sql, ')' );
+	osrf_buffer_add_char( state->sql, ')' );
 }
 
 /**
@@ -1096,9 +1096,9 @@ static void buildExtract( BuildSQLState* state, const Expression* expr ) {
 		}
 	}
 
-	buffer_add( state->sql, "EXTRACT(" );
-	buffer_add( state->sql, arg->literal );
-	buffer_add( state->sql, " FROM " );
+	osrf_buffer_add( state->sql, "EXTRACT(" );
+	osrf_buffer_add( state->sql, arg->literal );
+	osrf_buffer_add( state->sql, " FROM " );
 
 	arg = arg->next;
 	if( !arg ) {
@@ -1111,7 +1111,7 @@ static void buildExtract( BuildSQLState* state, const Expression* expr ) {
 	// The second parameter must be of type timestamp, time, or interval.  We don't have
 	// a good way of checking it here, so we rely on PostgreSQL to complain if necessary.
 	buildExpression( state, arg );
-	buffer_add_char( state->sql, ')' );
+	osrf_buffer_add_char( state->sql, ')' );
 }
 
 /**
@@ -1146,15 +1146,15 @@ static void buildSeries( BuildSQLState* state, const Expression* subexp_list, co
 		else {
 			// Insert a separator
 			if( comma )
-				buffer_add( state->sql, ", " );
+				osrf_buffer_add( state->sql, ", " );
 			else {
 				if( newline_needed )
 					add_newline( state );
 				else
-					buffer_add_char( state->sql, ' ' );
+					osrf_buffer_add_char( state->sql, ' ' );
 
-				buffer_add( state->sql, op );
-				buffer_add_char( state->sql, ' ' );
+				osrf_buffer_add( state->sql, op );
+				osrf_buffer_add_char( state->sql, ' ' );
 			}
 		}
 
@@ -1192,8 +1192,8 @@ static void buildBindVar( BuildSQLState* state, const BindVar* bind ) {
 		return;
 	} else {
 		// No value available, and that's okay.  Emit the name of the bind variable.
-		buffer_add_char( state->sql, ':' );
-		buffer_add( state->sql, bind->name );
+		osrf_buffer_add_char( state->sql, ':' );
+		osrf_buffer_add( state->sql, bind->name );
 		return;
 	}
 
@@ -1220,7 +1220,7 @@ static void buildBindVar( BuildSQLState* state, const BindVar* bind ) {
 					if( first )
 						first = 0;
 					else
-						buffer_add( state->sql, ", " );
+						osrf_buffer_add( state->sql, ", " );
 
 					buildScalar( state, numeric, jsonObjectGetIndex( value, i ));
 					++i;
@@ -1270,7 +1270,7 @@ static void buildScalar( BuildSQLState* state, int numeric, const jsonObject* ob
 				char* str = jsonObjectToSimpleString( obj );
 				dbi_conn_quote_string( state->dbhandle, &str );
 				if( str ) {
-					buffer_add( state->sql, str );
+					osrf_buffer_add( state->sql, str );
 					free( str );
 				} else {
 					osrfLogWarning( OSRF_LOG_MARK, sqlAddMsg( state,
@@ -1282,7 +1282,7 @@ static void buildScalar( BuildSQLState* state, int numeric, const jsonObject* ob
 			break;
 		case JSON_NUMBER :
 			if( numeric ) {
-				buffer_add( state->sql, jsonObjectGetString( obj ));
+				osrf_buffer_add( state->sql, jsonObjectGetString( obj ));
 			} else {
 				sqlAddMsg( state,
 					"Invalid value for bind variable: expected a number, found a string" );
@@ -1290,7 +1290,7 @@ static void buildScalar( BuildSQLState* state, int numeric, const jsonObject* ob
 			}
 			break;
 		case JSON_NULL :
-			buffer_add( state->sql, "NULL" );
+			osrf_buffer_add( state->sql, "NULL" );
 			break;
 		case JSON_BOOL :
 			osrfLogError( OSRF_LOG_MARK, sqlAddMsg( state,
@@ -1310,7 +1310,7 @@ static void buildScalar( BuildSQLState* state, int numeric, const jsonObject* ob
 	@param state Pointer to the query-building context.
 */
 static void add_newline( BuildSQLState* state ) {
-	buffer_add_char( state->sql, '\n' );
+	osrf_buffer_add_char( state->sql, '\n' );
 
 	// Add indentation
 	static const char blanks[] = "                                ";   // 32 blanks
@@ -1319,7 +1319,7 @@ static void add_newline( BuildSQLState* state ) {
 	int n = state->indent * blanks_per_level;
 	while( n > 0 ) {
 		size_t len = n >= maxlen ? maxlen : n;
-		buffer_add_n( state->sql, blanks, len );
+		osrf_buffer_add_n( state->sql, blanks, len );
 		n -= len;
 	}
 }

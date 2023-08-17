@@ -81,50 +81,50 @@ int osrfAppInitialize() {
 	// to set the module name for use in error messages.
 	oilsSetSQLOptions( modulename, 0, 100 );
 
-	growing_buffer* method_name = buffer_init( 64 );
+	growing_buffer* method_name = osrf_buffer_init( 64 );
 
 	OSRF_BUFFER_ADD( method_name, modulename );
 	OSRF_BUFFER_ADD( method_name, ".prepare" );
 	osrfAppRegisterMethod( modulename, OSRF_BUFFER_C_STR( method_name ),
 		"doPrepare", "", 1, 0 );
 
-	buffer_reset( method_name );
+	osrf_buffer_reset( method_name );
 	OSRF_BUFFER_ADD( method_name, modulename );
 	OSRF_BUFFER_ADD( method_name, ".columns" );
 	osrfAppRegisterMethod( modulename, OSRF_BUFFER_C_STR( method_name ),
 		"doColumns", "", 1, 0 );
 
-	buffer_reset( method_name );
+	osrf_buffer_reset( method_name );
 	OSRF_BUFFER_ADD( method_name, modulename );
 	OSRF_BUFFER_ADD( method_name, ".param_list" );
 	osrfAppRegisterMethod( modulename, OSRF_BUFFER_C_STR( method_name ),
 		"doParamList", "", 1, 0 );
 
-	buffer_reset( method_name );
+	osrf_buffer_reset( method_name );
 	OSRF_BUFFER_ADD( method_name, modulename );
 	OSRF_BUFFER_ADD( method_name, ".bind_param" );
 	osrfAppRegisterMethod( modulename, OSRF_BUFFER_C_STR( method_name ),
 		"doBindParam", "", 2, 0 );
 
-	buffer_reset( method_name );
+	osrf_buffer_reset( method_name );
 	OSRF_BUFFER_ADD( method_name, modulename );
 	OSRF_BUFFER_ADD( method_name, ".execute" );
 	osrfAppRegisterMethod( modulename, OSRF_BUFFER_C_STR( method_name ),
 		"doExecute", "", 1, OSRF_METHOD_STREAMING );
 
-	buffer_reset( method_name );
+	osrf_buffer_reset( method_name );
 	OSRF_BUFFER_ADD( method_name, modulename );
 	OSRF_BUFFER_ADD( method_name, ".sql" );
 	osrfAppRegisterMethod( modulename, OSRF_BUFFER_C_STR( method_name ),
 		"doSql", "", 1, OSRF_METHOD_STREAMING );
 
-	buffer_reset( method_name );
+	osrf_buffer_reset( method_name );
 	OSRF_BUFFER_ADD( method_name, modulename );
 	OSRF_BUFFER_ADD( method_name, ".finish" );
 	osrfAppRegisterMethod( modulename, OSRF_BUFFER_C_STR( method_name ),
 		"doFinish", "", 1, 0 );
 
-	buffer_reset( method_name );
+	osrf_buffer_reset( method_name );
 	OSRF_BUFFER_ADD( method_name, modulename );
 	OSRF_BUFFER_ADD( method_name, ".messages" );
 	osrfAppRegisterMethod( modulename, OSRF_BUFFER_C_STR( method_name ),

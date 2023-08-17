@@ -111,10 +111,10 @@ static int do_request( char* request ) {
 		jsonObject* params = NULL;
 
 		if( *tmp ) {
-			growing_buffer* buffer = buffer_init(256);
-			buffer_fadd( buffer, "[%s]", tmp );
+			growing_buffer* buffer = osrf_buffer_init(256);
+			osrf_buffer_fadd( buffer, "[%s]", tmp );
 			params = jsonParse( buffer->buf );
-			buffer_free(buffer);
+			osrf_buffer_free(buffer);
 		}
 
 		osrfAppSession* session = osrfAppSessionClientInit(service);
@@ -151,59 +151,59 @@ static char* format_response( const jsonObject* o ) {
 
 		int i = 0;
 		char* key;
-		growing_buffer* buffer = buffer_init(256);
+		growing_buffer* buffer = osrf_buffer_init(256);
 
-		buffer_fadd(buffer, " FM Class: %s\n", o->classname);
+		osrf_buffer_fadd(buffer, " FM Class: %s\n", o->classname);
 
 		while( (key = fm_pton(o->classname, i++)) ) {
 			char* val = oilsFMGetString(o, key);
 			const jsonObject* item;
 
 			int l = strlen(key + 2);
-			buffer_fadd(buffer, " %s: ", key);
+			osrf_buffer_fadd(buffer, " %s: ", key);
 
 			if(val) {
 
-				while( l++ < width ) buffer_add(buffer, "-");
-				buffer_fadd(buffer, " %s\n", val);
+				while( l++ < width ) osrf_buffer_add(buffer, "-");
+				osrf_buffer_fadd(buffer, " %s\n", val);
 				free(val);
 
 			} else if( (item = oilsFMGetObject(o, key))) {
 
 				if(item->type != JSON_NULL ) {
 					char* d = format_response(item);
-					buffer_add(buffer, "\n====================================\n");
-					buffer_fadd(buffer, "%s\n", d);
-					buffer_add(buffer, "====================================\n");
+					osrf_buffer_add(buffer, "\n====================================\n");
+					osrf_buffer_fadd(buffer, "%s\n", d);
+					osrf_buffer_add(buffer, "====================================\n");
 					free(d);
 				} else {
-					while( l++ < width ) buffer_add(buffer, "-");
-					buffer_add(buffer," NULL \n");
+					while( l++ < width ) osrf_buffer_add(buffer, "-");
+					osrf_buffer_add(buffer," NULL \n");
 				}
 
 			} else {
 
-				while( l++ < width ) buffer_add(buffer, "-");
-				buffer_add(buffer," NULL \n");
+				while( l++ < width ) osrf_buffer_add(buffer, "-");
+				osrf_buffer_add(buffer," NULL \n");
 			}
 
 			free(key);
 		}
 
-		return buffer_release(buffer);
+		return osrf_buffer_release(buffer);
 	}
 
 	char* jjson;
 	if( o->type == JSON_ARRAY ) {
 		int i = 0;
-		growing_buffer* arrb = buffer_init(256);
+		growing_buffer* arrb = osrf_buffer_init(256);
 		for( i = 0; i != o->size; i++ ) {
 			char* d = format_response(jsonObjectGetIndex(o, i));
-			buffer_fadd(arrb, "%s\n", d);
+			osrf_buffer_fadd(arrb, "%s\n", d);
 			free(d);
 		}
 
-		jjson = buffer_release(arrb);
+		jjson = osrf_buffer_release(arrb);
 
 	} else {
 		char* json = jsonObjectToJSON(o);

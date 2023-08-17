@@ -120,52 +120,52 @@ int osrfAppInitialize( void ) {
 	oilsSetSQLOptions( modulename, enforce_pcrud, max_flesh_depth );
 
 	// Now register all the methods
-	growing_buffer* method_name = buffer_init(64);
+	growing_buffer* method_name = osrf_buffer_init(64);
 
 	// Generic search thingy
-	buffer_add( method_name, modulename );
-	buffer_add( method_name, ".json_query" );
+	osrf_buffer_add( method_name, modulename );
+	osrf_buffer_add( method_name, ".json_query" );
 	osrfAppRegisterMethod( modulename, OSRF_BUFFER_C_STR( method_name ),
 		"doJSONSearch", "", 1, OSRF_METHOD_STREAMING );
 
 	// first we register all the transaction and savepoint methods
-	buffer_reset(method_name);
+	osrf_buffer_reset(method_name);
 	OSRF_BUFFER_ADD(method_name, modulename );
 	OSRF_BUFFER_ADD(method_name, ".transaction.begin");
 	osrfAppRegisterMethod( modulename, OSRF_BUFFER_C_STR( method_name ),
 			"beginTransaction", "", 0, 0 );
 
-	buffer_reset(method_name);
+	osrf_buffer_reset(method_name);
 	OSRF_BUFFER_ADD(method_name, modulename );
 	OSRF_BUFFER_ADD(method_name, ".transaction.commit");
 	osrfAppRegisterMethod( modulename, OSRF_BUFFER_C_STR(method_name),
 			"commitTransaction", "", 0, 0 );
 
-	buffer_reset(method_name);
+	osrf_buffer_reset(method_name);
 	OSRF_BUFFER_ADD(method_name, modulename );
 	OSRF_BUFFER_ADD(method_name, ".transaction.rollback");
 	osrfAppRegisterMethod( modulename, OSRF_BUFFER_C_STR(method_name),
 			"rollbackTransaction", "", 0, 0 );
 
-	buffer_reset(method_name);
+	osrf_buffer_reset(method_name);
 	OSRF_BUFFER_ADD(method_name, modulename );
 	OSRF_BUFFER_ADD(method_name, ".savepoint.set");
 	osrfAppRegisterMethod( modulename, OSRF_BUFFER_C_STR(method_name),
 			"setSavepoint", "", 1, 0 );
 
-	buffer_reset(method_name);
+	osrf_buffer_reset(method_name);
 	OSRF_BUFFER_ADD(method_name, modulename );
 	OSRF_BUFFER_ADD(method_name, ".savepoint.release");
 	osrfAppRegisterMethod( modulename, OSRF_BUFFER_C_STR(method_name),
 			"releaseSavepoint", "", 1, 0 );
 
-	buffer_reset(method_name);
+	osrf_buffer_reset(method_name);
 	OSRF_BUFFER_ADD(method_name, modulename );
 	OSRF_BUFFER_ADD(method_name, ".savepoint.rollback");
 	osrfAppRegisterMethod( modulename, OSRF_BUFFER_C_STR(method_name),
 			"rollbackSavepoint", "", 1, 0 );
 
-	buffer_reset(method_name);
+	osrf_buffer_reset(method_name);
 	OSRF_BUFFER_ADD(method_name, modulename );
 	OSRF_BUFFER_ADD(method_name, ".set_audit_info");
 	osrfAppRegisterMethod( modulename, OSRF_BUFFER_C_STR(method_name),
@@ -229,7 +229,7 @@ int osrfAppInitialize( void ) {
 				&& ( *method_type == 'c' || *method_type == 'u' || *method_type == 'd') )
 				continue;
 
-			buffer_reset( method_name );
+			osrf_buffer_reset( method_name );
 
 			// Build the method name: MODULENAME.MODULENAME.direct.XXX.method_type
 			// where XXX is the fieldmapper name from the IDL, with every run of
@@ -239,7 +239,7 @@ int osrfAppInitialize( void ) {
 			char* _fm = strdup( idlClass_fieldmapper );
 			part = strtok_r(_fm, ":", &st_tmp);
 
-			buffer_fadd(method_name, "%s.direct.%s", modulename, part);
+			osrf_buffer_fadd(method_name, "%s.direct.%s", modulename, part);
 
 			while ((part = strtok_r(NULL, ":", &st_tmp))) {
 				OSRF_BUFFER_ADD_CHAR(method_name, '.');
@@ -259,7 +259,7 @@ int osrfAppInitialize( void ) {
 
 			osrfHash* method_meta = osrfNewHash();
 			osrfHashSet( method_meta, idlClass, "class");
-			osrfHashSet( method_meta, buffer_data( method_name ), "methodname" );
+			osrfHashSet( method_meta, osrf_buffer_data( method_name ), "methodname" );
 			osrfHashSet( method_meta, strdup(method_type), "methodtype" );
 
 			// Register the method, with a pointer to an osrfHash to tell the method
@@ -277,7 +277,7 @@ int osrfAppInitialize( void ) {
 		} // end for each global method
 	} // end for each class in IDL
 
-	buffer_free( method_name );
+	osrf_buffer_free( method_name );
 	osrfHashIteratorFree( class_itr );
 
 	return 0;

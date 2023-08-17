@@ -249,15 +249,15 @@ static char* load_query( const char* filename ) {
 	// Load file into a growing_buffer
 	size_t num_read;
 	char buf[ BUFSIZ + 1 ];
-	growing_buffer* gb = buffer_init( sizeof( buf ) );
+	growing_buffer* gb = osrf_buffer_init( sizeof( buf ) );
 
 	while( ( num_read = fread( buf, 1, sizeof( buf ) - 1, fp ) ) ) {
 		buf[ num_read ] = '\0';
-		buffer_add( gb, buf );
+		osrf_buffer_add( gb, buf );
 	}
 
 	if( fp != stdin )
 		fclose( fp );
 
-	return buffer_release( gb );
+	return osrf_buffer_release( gb );
 }
