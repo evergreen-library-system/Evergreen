@@ -298,7 +298,8 @@ if test "x$openils_core" = "xtrue"; then
     # /openils/lib, the compilation test will fail. Support that case.
     LDFLAGS="-L$OPENSRF_LIBS"
 
-    AC_CHECK_LIB([opensrf], [osrfMessageFree], [], AC_MSG_ERROR(*** OpenILS requires libopensrf))
+    # checking this specific function name ensures we have a "new enough" libopensrf but isn't actually checking the lib version :-/
+    AC_CHECK_LIB([opensrf], [osrf_buffer_free], [], AC_MSG_ERROR(*** OpenILS requires libopensrf))
     AC_CHECK_LIB([readline], [main], [], AC_MSG_ERROR(*** OpenILS requires libreadline))
     AC_CHECK_LIB([xml2], [main], [], AC_MSG_ERROR(*** OpenILS requires libxml2))
     AC_CHECK_LIB([hiredis], [redisConnect], [], AC_MSG_ERROR(***OpenSRF requires libhiredis))
