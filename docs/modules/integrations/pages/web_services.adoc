@@ -14,8 +14,9 @@ Evergreen already provides a number of web services that can be used by clients 
 * Web-based patron authentication and lookup services
 * A mechanism for requesting that certain public catalog requests return their responses as JSON
 * OpenSRF API access via XMPP
+* OAI-PMH Responder
 
-Evergreen can also support SIP2 and NCIP via add-ons.
+Evergreen can also support SIP2, NCIP and Z39.50 via add-ons.
 
 === OpenSRF gateway ===
 
@@ -69,6 +70,10 @@ The Evergreen public catalog mod_perl application normally returns HTML by combi
 
 OpenSRF is built on XMPP, and an XMPP client application could make OpenSRF requests directly. However, this is very rarely done outside of Evergreen client code itself.
 
+=== OAI-PMH Responder ===
+
+As of version 3.9 Evergreen can act as an OAI-PMH data provider, exposing the catalog to harvesting through the OAI2 protocol.
+
 === SIP2 ===
 
 SIP2, while not a web protocol per se, is frequently used to perform patron authentication and circulation actions. It has its origins in a serial line protocol and consequently suffers from a significant flaw: it is not encrypted by default.
@@ -76,6 +81,12 @@ SIP2, while not a web protocol per se, is frequently used to perform patron auth
 === NISO Circulation Interchange Protocol (NCIP) ===
 
 Via add-ons, Evergreen supports NCIP. NCIP can be thought of as an XML-over-HTTP moral equivalent of SIP2.
+
+=== Z39.50 Server Support ===
+
+Via add-ons, and using the SRU service Evergreen supports providing a Z39.50 server to allow others to search
+the Evergreen database via Z39.50.  Z39.50 is also not a web protocol per se, but is frequently used to allow
+remote hosts to search bibliographic data.
 
 == Evergreen API ==
 
