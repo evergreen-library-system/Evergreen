@@ -183,7 +183,7 @@ sub load_course_browse {
             if ($value_exists eq 0) {
                 # For Name/Course Number browse queries...
                 if ($bterm_match eq 0) {
-                    if ($result->{$rqtype} =~ m/^$bterm./i || $result->{$rqtype} eq  m/^$bterm./i) {
+                    if ($result->{$rqtype} =~ m/^$bterm/i || $result->{$rqtype} eq  m/^$bterm/i || $result->{$rqtype} =~  m/^$bterm./i || $result->{$rqtype} eq  m/^$bterm./i) {
                         $bterm_match = 1;
                         $entry->{'match'} = 1;
                     }
