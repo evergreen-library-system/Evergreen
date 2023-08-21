@@ -38,12 +38,6 @@ angular.module('egWorkstationAdmin',
         resolve : resolver
     });
 
-    $routeProvider.when('/admin/workstation/hatch', {
-        templateUrl: './admin/workstation/t_hatch',
-        controller: 'HatchCtrl',
-        resolve : resolver
-    });
-
     $routeProvider.when('/admin/workstation/tests', {
         templateUrl: './admin/workstation/t_tests',
         controller: 'testsCtrl',
@@ -1052,25 +1046,6 @@ function($scope , $q , $window , $location , egCore , egAlertDialog , workstatio
             $scope.is_registering = false;
         });
     }
-}])
-
-.controller('HatchCtrl',
-       ['$scope','egCore','ngToast',
-function($scope , egCore , ngToast) {
-    var hatch = egCore.hatch;  // convenience
-
-    $scope.hatch_available = hatch.hatchAvailable;
-
-    hatch.usePrinting().then(function(answer) {
-        $scope.hatch_printing = answer;
-    });
-
-    // Apply Hatch settings as changes occur in the UI.
-    
-    $scope.$watch('hatch_printing', function(newval) {
-        if (typeof newval != 'boolean') return;
-        hatch.setItem('eg.hatch.enable.printing', newval);
-    });
 }])
 
 /*

@@ -150,7 +150,7 @@ export class HatchService {
     }
 
     getPrinterOptions(name: string): Promise<any> {
-        if (name === 'hatch_file_writer' || name === 'hatch_browser_printing') {
+        if (name === 'hatch_file_writer' || name === 'hatch_browser_printing' || name == '') {
             return Promise.resolve({});
         }
         const msg = new HatchMessage({action: 'printer-options', printer: name});

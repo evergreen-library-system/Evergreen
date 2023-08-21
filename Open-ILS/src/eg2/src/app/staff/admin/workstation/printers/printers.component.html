@@ -17,9 +17,23 @@
 
 <div class="col-lg-10 offset-lg-1">
 
-  <div class="alert alert-warning m-3" *ngIf="!useHatchPrinting" i18n>
-    Hatch printing is not enabled on this browser.  The settings below will 
-    have no effect until Hatch printing is enabled.
+  <div class="d-flex m-2 p-2 border rounded">
+    <div class="p-2" i18n>Hatch Status:</div>
+    <div class="p-2 text-success label-with-material-icon" *ngIf="hatchConnected()" i18n>
+      Connected <span class="material-icons">done</span>
+    </div>
+    <div class="p-2 text-warning label-with-material-icon" *ngIf="!hatchConnected()" i18n>
+      Not Connected <span class="material-icons">close</span>
+    </div>
+    <label for="use-hatch" class="p-2" i18n>Use Hatch for Printing?</label>
+    <div class="p-2">
+      <input class="form-check" id="use-hatch" type="checkbox"
+        (ngModelChange)="hatchPrintChange($event)"
+        [(ngModel)]="useHatchPrinting"/>
+    </div>
+    <div class="p-2 ps-2 text-danger" i18n *ngIf="useHatchPrinting === false">
+      Printer settings below will have no effect.
+    </div>
   </div>
 
   <ul ngbNav #contextTabs="ngbNav" class="nav-tabs"
@@ -29,7 +43,7 @@
     <li ngbNavItem="label"><a ngbNavLink i18n>Label</a></li>
     <li ngbNavItem="mail"><a ngbNavLink i18n>Mail</a></li>
     <li ngbNavItem="offline"><a ngbNavLink i18n>Offline</a></li>
-    <li ngbNavItem="test" class="ml-auto"><a ngbNavLink i18n>Test Printing</a></li>
+    <li ngbNavItem="test" class="ms-auto"><a ngbNavLink i18n>Test Printing</a></li>
   </ul>
 
   <div [ngbNavOutlet]="contextTabs"></div>
@@ -59,7 +73,7 @@
         <button class="btn btn-warning" 
           (click)="resetConfig(context)" i18n>Reset Form</button>
 
-        <button class="btn btn-success ml-2" 
+        <button class="btn btn-success ms-2" 
           (click)="saveConfig(context)" i18n>Apply Changes</button>
       </div>
     </div>
@@ -168,7 +182,7 @@
           <div class="col-lg-3 font-weight-bold" i18n>Manual Margins</div>
           <div class="col-lg-4">
             <div class="d-flex">
-              <div class="flex-1 mr-1">
+              <div class="flex-1 me-1">
                 <div class="input-group">
                   <div class="input-group-prepend">
                     <span class="input-group-text" i18n>Left</span>
@@ -178,7 +192,7 @@
                     [(ngModel)]="printConfigs[context].leftMargin"/>
                 </div>
               </div>
-              <div class="flex-1 ml-1">
+              <div class="flex-1 ms-1">
                 <div class="input-group">
                   <div class="input-group-prepend">
                     <span class="input-group-text" i18n>Top</span>
@@ -190,7 +204,7 @@
               </div>
             </div>
             <div class="d-flex mt-2">
-              <div class="flex-1 mr-1">
+              <div class="flex-1 me-1">
                 <div class="input-group">
                   <div class="input-group-prepend">
                     <span class="input-group-text" i18n>Right</span>
@@ -200,7 +214,7 @@
                     [(ngModel)]="printConfigs[context].rightMargin"/>
                 </div>
               </div>
-              <div class="flex-1 ml-1">
+              <div class="flex-1 ms-1">
                 <div class="input-group">
                   <div class="input-group-prepend">
                     <span class="input-group-text" i18n>Bottom</span>
@@ -218,12 +232,12 @@
           <div class="col-lg-3 offset-lg-1 font-weight-bold" i18n>Page Ranges</div>
           <div class="col-lg-4">
             <div class="d-flex">
-              <div class="flex-1 mr-1 form-check form-check-inline">
+              <div class="flex-1 me-1 form-check">
                 <input type="radio" class="form-check-input" id="all-pages"
                   [(ngModel)]="printConfigs[context].allPages" name="page-ranges" [value]="true"/>
                 <label class="form-check-intput" for="all-pages" i18n>All Pages</label>
               </div>
-              <div class="flex-1 ml-1">
+              <div class="flex-1 ms-1 form-check">
                 <input type="radio" class="form-check-input" id="page-range"
                   [(ngModel)]="printConfigs[context].allPages" name="page-ranges" [value]="false"/>
                 <label class="form-check-intput" for="page-range" i18n>Page Range</label>
@@ -240,7 +254,7 @@
                     [(ngModel)]="printConfigs[context].pageRanges[0]"/>
                 </div>
               </div>
-              <div class="flex-1 ml-1">
+              <div class="flex-1 ms-1">
                 <div class="input-group">
                   <div class="input-group-prepend">
                     <span class="input-group-text" i18n>End</span>
@@ -271,11 +285,11 @@
       <div class="col-lg-12 d-flex">
         <div class="flex-1"></div>
         <div>
-          <button class="btn btn-success ml-auto" (click)="testPrint(false)"
+          <button class="btn btn-success ms-auto" (click)="testPrint(false)"
             i18n>Print</button>
         </div>
-        <div class="ml-2">
-          <button class="btn btn-primary ml-auto" (click)="testPrint(true)" 
+        <div class="ms-2">
+          <button class="btn btn-primary ms-auto" (click)="testPrint(true)" 
             i18n>Print with Dialog</button>
         </div>
       </div>

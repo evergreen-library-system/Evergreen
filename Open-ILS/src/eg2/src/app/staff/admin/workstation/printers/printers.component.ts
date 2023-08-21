@@ -26,7 +26,7 @@ export class PrintersComponent implements OnInit {
     showTestView = false;
     printConfigs: {[ctx: string]: PrintConfig} = {};
     printerOptions: any = {};
-    useHatchPrinting = false;
+    useHatchPrinting: boolean = null;
     testTab = 'text';
 
     marginLeft: number;
@@ -77,7 +77,7 @@ export class PrintersComponent implements OnInit {
     ngOnInit() {
 
         this.serverStore.getItem('eg.hatch.enable.printing')
-        .then(use => this.useHatchPrinting = use);
+        .then(use => this.useHatchPrinting = Boolean(use));
 
         this.hatch.getPrinters()
         .then(printers => {
@@ -97,6 +97,14 @@ export class PrintersComponent implements OnInit {
             })).toPromise();
         })
         .then(_ => this.setContext('default'));
+    }
+
+    hatchConnected(): boolean {
+        return this.hatch.isAvailable;
+    }
+
+    hatchPrintChange(val: boolean) {
+        this.serverStore.setItem('eg.hatch.enable.printing', val);
     }
 
     getPrinterLabel(name: string): string {
