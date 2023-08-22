@@ -22,11 +22,6 @@
     <input type="text" class="form-control form-control-sm" id="alert-text-input"
       [(ngModel)]="alertComments" placeholder="Alert Comments" i18n-placeholder/>
     </span>
-    <span class="ms-2">
-      <eg-combobox idlClass="acqliat" [(ngModel)]="alertEntry" 
-        [asyncSupportsEmptyTermClick]="true">
-      </eg-combobox>
-    </span>
     <button class="btn btn-sm btn-success ms-2" [disabled]="!alertEntry" 
       (click)="newNote(true)" i18n>Create Alert</button>
     <a class="ms-auto" href="javascript:;" (click)="close()" title="Close" i18n-title>
