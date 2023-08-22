@@ -13,7 +13,7 @@ import {tap, switchMap} from 'rxjs/operators';
       <ng-container *ngIf="idlClass">
       <eg-title i18n-prefix prefix="{{recordLabel || classLabel}} Administration">
       </eg-title>
-      <eg-staff-banner bannerText="{{recordLabel || classLabel}} Configuration" i18n-bannerText>
+      <eg-staff-banner bannerText="{{recordLabel || classLabel}} Editor" i18n-bannerText>
       </eg-staff-banner>
       <eg-admin-page persistKeyPfx="{{persistKeyPfx}}" idlClass="{{idlClass}}"
         configLinkBasePath="{{configLinkBasePath}}"
