@@ -1,0 +1,1 @@
+* Fixed issue loading some AngularJS interfaces when hostname starts with *staff* or *eg*. https://bugs.launchpad.net/evergreen/+bug/1862834[Bug 1862834]
