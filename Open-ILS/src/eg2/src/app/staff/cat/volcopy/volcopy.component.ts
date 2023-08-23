@@ -285,7 +285,7 @@ export class VolCopyComponent implements OnInit {
                 vData => vData.callnumber === vol.id())[0];
 
             const copy =
-                this.volcopy.createStubCopy(vol, {circLib: volData.owner});
+                this.volcopy.createStubCopy(vol, {circLib: volData.owner, barcode: volData.barcode});
 
             this.context.findOrCreateCopyNode(copy);
             copies.push(copy);
