@@ -227,6 +227,8 @@ export class VolCopyService {
         copy.copy_alerts([]);
         copy.stat_cat_entries([]);
 
+        copy.barcode(options.barcode || "");
+
         return copy;
     }
 
