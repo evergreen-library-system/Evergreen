@@ -30,8 +30,7 @@ export class CustomOrgUnitTreesDialogComponent
     }
 
     isMoveNodeHereAllowed(): boolean {
-        const selectedNodes = this.customTree.selectedNodes();
-        return selectedNodes.length === 1;
+        return !!this.customTree.selectedNode();
     }
 
     moveNodeHere() {

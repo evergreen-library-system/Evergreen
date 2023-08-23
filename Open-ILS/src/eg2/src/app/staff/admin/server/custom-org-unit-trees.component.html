@@ -24,12 +24,11 @@
     <div class="card bg-light rounded p-3" >
       <h3 i18n>Full Org Unit Tree</h3>
       <eg-tree
-        [showSelectors]="true"
+        [showSelectAll]="true"
         [disableRootSelector]="true"
-        [toggleOnClick]="true"
         [tree]="tree"
         (nodeClicked)="nodeClicked($event)"
-        (nodeChecked)="nodeChecked($event)">
+        (stateFlagClicked)="nodeChecked($event)">
         <div header>
           <button type="button" class="btn btn-normal btn-sm label-with-material-icon" [disabled]="!isCopyNodesAllowed()" (click)="copyNodes()">
             <span class="material-icons mat-icon-in-button" aria-hidden="true">content_copy</span>
@@ -50,7 +49,7 @@
     </h3>
     <div class="p-1" >
       <ng-template #selectedRowButtons let-node>
-        <div *ngIf="node.selected && custom_tree.selectedNodes().length === 1">
+        <div *ngIf="node.selected">
           <button type="button" class="btn btn-link lh-1 py-1 px-0 text-dark" 
             [disabled]="moveNodeUpDisabled" (click)="moveNodeUp(node)" 
             i18n-title title="Move Up" i18n-aria-label aria-label="Move Up">
@@ -67,19 +66,18 @@
             <span class="material-icons" aria-hidden="true">arrow_forward</span>
           </button>
           <button type="button" class="btn btn-link btn-destroy lh-1 py-1 px-0" 
-            [disabled]="!isDeleteNodesAllowed()" (click)="deleteNode(node)" 
+            [disabled]="!isDeleteSelectedNodeAllowed()" (click)="deleteNode(node)" 
             i18n-title title="Delete" i18n-aria-label aria-label="Delete">
             <span class="material-icons" aria-hidden="true">delete</span>
           </button>
         </div>
       </ng-template>
       <eg-tree
-        [showSelectors]="true"
+        [showSelectAll]="true"
         [disableRootSelector]="false"
-        [toggleOnClick]="true"
         [tree]="custom_tree"
         (nodeClicked)="custom_nodeClicked($event)"
-        (nodeChecked)="custom_nodeChecked($event)"
+        (stateFlagClicked)="custom_nodeChecked($event)"
         [rowTrailingTemplate]="selectedRowButtons">
         <div header>
           <button type="button" class="btn btn-normal btn-sm label-with-material-icon" (click)="applyChanges()">

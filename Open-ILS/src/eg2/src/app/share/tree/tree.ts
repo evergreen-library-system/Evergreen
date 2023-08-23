@@ -6,10 +6,19 @@ export class TreeNode {
     // Display label
     label: string;
 
+    // If set, the state flag is displayed and this is the tooltip
+    stateFlagLabel: string;
+
     // True if child nodes should be visible
     expanded: boolean;
 
+    // opaque "marked" flag for use by caller
+    stateFlag: boolean;
+
     children: TreeNode[];
+
+    // function! accepts this tree node as a param, so you can use callerData as extra info
+    childrenCB: any;
 
     // Set by the tree.
     depth: number;
@@ -21,9 +30,14 @@ export class TreeNode {
     // This field is ignored by the tree.
     callerData: any;
 
+    // Internal pointer to the owning tree
+
     constructor(values: {[key: string]: any}) {
         this.children = [];
+        this.childrenCB = null;
         this.expanded = true;
+        this.stateFlag = false;
+        this.stateFlagLabel = null;
         this.depth = 0;
         this.selected = false;
 
@@ -31,34 +45,53 @@ export class TreeNode {
 
         if ('id' in values) { this.id = values.id; }
         if ('label' in values) { this.label = values.label; }
+        if ('stateFlagLabel' in values) { this.stateFlagLabel = values.stateFlagLabel; }
         if ('children' in values) { this.children = values.children; }
+        if ('childrenCB' in values) { this.childrenCB = values.childrenCB; }
         if ('expanded' in values) { this.expanded = values.expanded; }
+        if ('stateFlag' in values) { this.stateFlag= values.stateFlag; }
         if ('callerData' in values) { this.callerData = values.callerData; }
+
+        if (this.expanded && this.childrenCB) {
+            this.children = this.childrenCB(this);
+            this.childrenCB = null;
+        }
     }
 
     toggleExpand() {
         this.expanded = !this.expanded;
     }
 
-    clone(): TreeNode {
+    toggleStateFlag() {
+        this.stateFlag = !this.stateFlag;
+    }
+
+    clone(overlay?: any): TreeNode {
+        overlay ||= {};
+
         const clonedNode = new TreeNode({
-            id: this.id,
-            label: this.label,
-            expanded: this.expanded,
-            callerData: this.callerData, // NOTE: shallow copy
+            id: 'id' in overlay ? overlay['id'] : this.id,
+            label: 'label' in overlay ? overlay['label'] : this.label,
+            expanded: 'expanded' in overlay ? overlay['expanded'] : this.expanded,
+            stateFlag: 'stateFlag' in overlay ? overlay['stateFlag'] : this.stateFlag,
+            stateFlagLabel: 'stateFlagLabel' in overlay ? overlay['stateFlagLabel'] : this.stateFlagLabel,
+            childrenCB: 'childrenCB' in overlay ? overlay['childrenCB'] : this.childrenCB,
+            callerData: 'callerData' in overlay ? overlay['callerData'] : this.callerData // NOTE: shallow copy
         });
 
-        clonedNode.children = this.children.map(child => child.clone());
+        clonedNode.children = this.children.map(child => child.clone(overlay));
         return clonedNode;
     }
 }
 
 export class Tree {
 
+    treeId: any;
     rootNode: TreeNode;
     idMap: {[id: string]: TreeNode};
 
     constructor(rootNode?: TreeNode) {
+        this.treeId = parseInt((Math.random() * 1000) + '');
         this.rootNode = rootNode;
         this.idMap = {};
     }
@@ -69,28 +102,37 @@ export class Tree {
 
         const nodes = [];
 
-        const recurseTree =
-            (node: TreeNode, depth: number, hidden: boolean) => {
-                if (!node) { return; }
+        const recurseTree = (node: TreeNode, depth: number, hidden: boolean) => {
+            if (!node) { return; }
 
-                node.depth = depth++;
-                this.idMap[node.id + ''] = node;
+            node.depth = depth++;
+            this.idMap[node.id + ''] = node;
 
-                if (hidden) {
-                // it could be confusing for a hidden node to be selected.
-                    node.selected = false;
-                }
+            if (hidden) {
+            // it could be confusing for a hidden node to be selected.
+                node.selected = false;
+            }
 
-                if (hidden && filterHidden) {
+            if (hidden && filterHidden) {
                 // Avoid adding hidden child nodes to the list.
-                } else {
-                    nodes.push(node);
-                    node.children.forEach(n => recurseTree(n, depth, !node.expanded));
+            } else {
+                nodes.push(node);
+
+                if (!hidden && node.childrenCB) {
+                    node.children = node.childrenCB(node);
+                    node.childrenCB = null;
                 }
-            };
+            
+                node.children.forEach(n => recurseTree(n, depth, !node.expanded));
+            }
+        };
 
         recurseTree(this.rootNode, 0, false);
         return nodes;
+    }
+
+    findStateFlagNodes(): TreeNode[] {
+        return this.nodeList().filter(n => n.stateFlag);
     }
 
     findNode(id: any): TreeNode {
@@ -114,8 +156,8 @@ export class Tree {
         return found;
     }
 
-    findParentNode(node: TreeNode) {
-        const list = this.nodeList();
+    findParentNode(node: TreeNode, findHidden?: boolean) {
+        const list = this.nodeList(findHidden ? false : true);
         for (let idx = 0; idx < list.length; idx++) {
             const pnode = list[idx];
             if (pnode.children.filter(c => c.id === node.id).length) {
@@ -125,6 +167,26 @@ export class Tree {
         return null;
     }
 
+    expandPathTo(node: TreeNode) {
+        let nextNode = this.findParentNode(node, true);
+        while (nextNode) {
+            nextNode.expanded = true;
+            nextNode = this.findParentNode(nextNode, true);
+        }
+    }
+
+    findNodePath(node: TreeNode) {
+        let path = [];
+        do {
+            let pnode = {...node};
+            delete pnode['children']
+            delete pnode['childrenCB']
+            path.push({...pnode})
+        } while (node = this.findParentNode(node));
+        return path.reverse();
+    }
+
+    // only work on non-dynamic trees, that is, those with no childrenCB callback function
     removeNode(node: TreeNode) {
         if (!node) { return; }
         const pnode = this.findParentNode(node);
@@ -148,11 +210,7 @@ export class Tree {
     }
 
     selectedNode(): TreeNode {
-        return this.nodeList().filter(node => node.selected)[0];
-    }
-
-    selectedNodes(): TreeNode[] {
-        return this.nodeList().filter(node => node.selected);
+        return this.nodeList().find(node => node.selected);
     }
 
     selectNode(node: TreeNode) {
@@ -178,8 +236,8 @@ export class Tree {
         });
     }
 
-    clone(): Tree {
-        const clonedTree = new Tree(this.rootNode.clone());
+    clone(overlay?: any): Tree {
+        const clonedTree = new Tree(this.rootNode.clone(overlay));
         return clonedTree;
     }
 }

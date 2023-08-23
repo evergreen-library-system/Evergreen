@@ -123,7 +123,7 @@ export class CustomOrgUnitTreesComponent implements OnInit {
         if (this.aouctn_root) {
             this.ingestCustomTree(this.aouctn_root); // sets this.custom_tree as a side-effect
         } else {
-            this.custom_tree = this.tree.clone();
+            this.custom_tree = this.tree.clone({stateFlagLabel:$localize`Select for adjustment`});
         }
         return this.custom_tree;
     }
@@ -138,7 +138,8 @@ export class CustomOrgUnitTreesComponent implements OnInit {
                 id: orgNode.id(),
                 label: orgNode.name() + '--' + orgNode.shortname(),
                 callerData: {orgId: orgNode.id()},
-                expanded: expand
+                expanded: expand,
+                stateFlagLabel: $localize`Select for custom tree`
             });
 
             // Tree node labels are "name -- shortname".  Sorting
@@ -166,7 +167,8 @@ export class CustomOrgUnitTreesComponent implements OnInit {
                 id: orgNode.id(),
                 label: orgNode.org_unit().name() + '--' + orgNode.org_unit().shortname(),
                 callerData: {orgId: orgNode.org_unit().id()},
-                expanded: expand
+                expanded: expand,
+                stateFlagLabel: $localize`Select for adjustment`
             });
 
             orgNode.children()
@@ -199,7 +201,9 @@ export class CustomOrgUnitTreesComponent implements OnInit {
 
     custom_nodeChecked($event: any) {
         // this.custom_selected = $event;
-        // console.log('custom: custom_nodeChecked',typeof $event);
+        this.custom_tree.selectNode($event);
+        // console.debug('custom: custom_nodeChecked',typeof $event);
+        //console.debug('custom: selected node: ', $event);
     }
 
     isCopyNodesAllowed(): boolean {
@@ -208,7 +212,7 @@ export class CustomOrgUnitTreesComponent implements OnInit {
                 // console.log('isCopyNodesAllowed: tree not ready', false);
                 return false;
             }
-            const sourceNodes = this.tree.selectedNodes();
+            const sourceNodes = this.tree.findStateFlagNodes();
             if (sourceNodes.length === 0) {
                 // console.log('isCopyNodesAllowed: no sourceNodes selected', false);
                 return false;
@@ -238,7 +242,7 @@ export class CustomOrgUnitTreesComponent implements OnInit {
 
     copyNodes() {
         // console.log('copyNodes');
-        const sourceNodes = this.tree.selectedNodes();
+        const sourceNodes = this.tree.findStateFlagNodes();
         const targetNode = this.custom_tree.selectedNode();
         if (!this.isCopyNodesAllowed()) {
             return;
@@ -272,17 +276,17 @@ export class CustomOrgUnitTreesComponent implements OnInit {
     isDeleteNodesAllowed(): boolean {
         try {
             if (!this.custom_tree) {
-                // console.log('isDeleteNodesAllowed: custom_tree not ready', false);
+                console.debug('isDeleteNodesAllowed: custom_tree not ready');
                 return false;
             }
-            const targetNodes = this.custom_tree.selectedNodes();
+            const targetNodes = this.custom_tree.findStateFlagNodes();
             if (targetNodes.length === 0) {
-                // console.log('isDeleteNodesAllowed: no targetNodes selected', false);
+                console.debug('isDeleteNodesAllowed: no targetNodes selected');
                 return false;
             }
             for (const targetNode of targetNodes) {
                 if (targetNode === this.custom_tree.rootNode) {
-                    // console.log('isDeleteNodesAllowed: rootNode is sacrosanct', false);
+                    console.debug('isDeleteNodesAllowed: rootNode is sacrosanct');
                     return false;
                 }
             }
@@ -294,8 +298,22 @@ export class CustomOrgUnitTreesComponent implements OnInit {
         }
     }
 
-    deleteNodes(targetNodes: TreeNode[]) {
-        if (! this.isDeleteNodesAllowed()) {
+    isDeleteSelectedNodeAllowed(): boolean {
+        if (this.custom_tree.selectedNode()) {
+            if (this.custom_tree.selectedNode() === this.custom_tree.rootNode) {
+                return false;
+            }
+            return true;
+        }
+        return false;
+    }
+
+    deleteNodes(targetNodes: TreeNode[], justOne?: boolean) {
+        if (justOne) {
+            if (! this.isDeleteSelectedNodeAllowed()) {
+                return;
+            }
+        } else if (! this.isDeleteNodesAllowed()) {
             return;
         }
         if (! window.confirm($localize`Are you sure?`)) {
@@ -315,11 +333,11 @@ export class CustomOrgUnitTreesComponent implements OnInit {
     }
 
     deleteNode(node: TreeNode) {
-        this.deleteNodes([node]);
+        this.deleteNodes([node], true);
     }
 
     deleteSelectedNodes() {
-        this.deleteNodes(this.custom_tree.selectedNodes());
+        this.deleteNodes(this.custom_tree.findStateFlagNodes());
     }
 
     isMoveNodeUpAllowed(node: TreeNode): boolean {
@@ -387,7 +405,11 @@ export class CustomOrgUnitTreesComponent implements OnInit {
 
     moveNodeElsewhere() {
         const nodeToMove = this.custom_tree.selectedNode();
-        const selectionTree = this.custom_tree.clone();
+        const selectionTree = this.custom_tree.clone({
+            stateFlag: false,
+            stateFlagLabel: null,
+            selected:false
+        });
 
         // prune nodeToMove and descendants from destination selection tree
         const equivalentNode = selectionTree.findNodesByFieldAndValue(

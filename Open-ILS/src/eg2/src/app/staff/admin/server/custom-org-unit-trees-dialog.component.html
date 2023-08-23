@@ -9,9 +9,7 @@
     <h3 i18n>Custom Org Unit Tree</h3>
     <div class="border rounded p-1" >
       <eg-tree
-        [showSelectors]="false"
-        [disableRootSelector]="false"
-        [toggleOnClick]="false"
+        [showSelectAll]="false"
         [tree]="customTree"
         (nodeClicked)="dialog_nodeClicked($event)">
       </eg-tree>

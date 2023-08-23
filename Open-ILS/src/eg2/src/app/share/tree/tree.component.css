@@ -1,17 +1,105 @@
+.eg-tree {
+  padding-left: 0;
+}
+
+.eg-tree, .eg-tree ul {
+  margin-bottom: 0;
+}
+
+/* top level */
+.eg-tree ul {
+  padding-left: 0.5rem;
+}
+
+/* subsequent levels */
+.eg-tree ul ul {
+  padding-left: .75rem;
+}
+
+.eg-tree-node-expandy {
+  display: inline;
+}
 
 .eg-tree-node-expandy .material-icons {
+  color: black;
   font-size: 16px;
 }
 
 .eg-tree-node {
-  padding: 2px;
+  list-style: none;
 }
 
+/* from ACQB, may not be needed */
 .eg-tree-node-wrapper.active {
   background-color: rgba(0,0,0,.03);
   border: 1px solid rgba(0,0,0,.125);
 }
 
+/* from ACQB, may not be needed */
 .btn-link {
   line-height: 1;
+}
+
+.eg-tree-branch .eg-tree-node.haschildren {
+  padding-left: 1rem;
+}
+
+/* elbow lines for folders */
+.eg-tree-branch .eg-tree-node {
+  border-left: 2px solid var(--bs-gray-400);
+  padding-left: 1rem;
+}
+
+.eg-tree-branch .eg-tree-node:last-child {
+  border-left: none;
+}
+
+.eg-tree-branch .eg-tree-node-wrapper:before {
+  border-bottom: 2px solid var(--bs-gray-400);
+  display: inline-block;
+  height: 1rem;
+  width: 1rem;
+  margin-left: -1.05rem;
+  content: " ";
+}
+
+.eg-tree-branch .eg-tree-node:last-child > .eg-tree-node-wrapper:before {
+  border-left: 2px solid var(--bs-gray-400);
+}
+
+.eg-tree-branch .eg-tree-node > .eg-tree-node-wrapper {
+  border: 1px solid transparent;
+}
+
+.eg-tree-branch .eg-tree-node.active > .eg-tree-node-wrapper {
+  background-color: rgba(0,0,0,.03);
+  border: 1px solid var(--bs-gray-400);
+}
+
+.eg-tree-node-wrapper {
+  display: flex;
+  gap: .25rem;
+  justify-content: flex-start;
+  align-items: flex-start;
+}
+
+.eg-tree-node-wrapper .btn {
+  text-align: left;
+  white-space: normal;
+}
+
+.eg-tree-node-wrapper .btn-link {
+  text-decoration: none;
+}
+
+.eg-tree-node-wrapper input[type="checkbox"] {
+  margin-top: .65rem;
+}
+
+.eg-tree-node-wrapper .btn.eg-tree-node-expandy {
+  padding: .5rem 0 .25rem;
+}
+
+.eg-tree-node-wrapper .btn.eg-tree-node-label {
+  padding: .5rem .5rem .25rem 0;
 }
