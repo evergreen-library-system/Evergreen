@@ -1,0 +1,28 @@
+<ng-template #dialogContent>
+  <div class="modal-header">
+    <h4 class="modal-title" i18n>Share Folder</h4>
+    <button type="button" class="btn-close btn-close-white" 
+      i18n-aria-label aria-label="Close" (click)="close()"></button>
+  </div>
+  <div class="modal-body">
+    <div class="row justify-content-center">
+      <div class="col">
+        <h5 i18n>{{currentFolder.name()}}</h5>
+      </div>
+    </div>
+    <div class="row mt-3">
+        <div class="col-md-12">
+            <div class="input-group">
+              <div class="input-group-text" i18n>Share with:</div>
+              <eg-org-select [hideOrgs]="notMyOrgs()" [applyDefault]=true (onChange)="contextOrg = $event"/>
+            </div>
+        </div>
+    </div>
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-success" 
+      (click)="close(contextOrg)" i18n>Save</button>
+    <button type="button" class="btn btn-outline-dark" 
+      (click)="close()" i18n>Cancel</button>
+  </div>
+</ng-template>

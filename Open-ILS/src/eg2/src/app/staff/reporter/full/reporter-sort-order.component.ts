@@ -1,15 +1,14 @@
 import {Component, Input, Output, EventEmitter, ViewChild} from '@angular/core';
 import {NgbAccordion} from '@ng-bootstrap/ng-bootstrap';
 import {IdlService, IdlObject} from '@eg/core/idl.service';
-import {ReporterService} from '../share/reporter.service';
 
 @Component({
-    selector: 'eg-sr-sort-order',
-    styleUrls: ['./sr-sort-order.component.css'],
-    templateUrl: './sr-sort-order.component.html'
+    selector: 'eg-reporter-sort-order',
+    styleUrls: ['./reporter-sort-order.component.css'],
+    templateUrl: './reporter-sort-order.component.html'
 })
 
-export class SRSortOrderComponent {
+export class ReporterSortOrderComponent {
 
     @Input() fields: IdlObject[] = [];
     @Output() fieldsChange = new EventEmitter<IdlObject[]>();
@@ -20,13 +19,12 @@ export class SRSortOrderComponent {
     @ViewChild('orderList', { static: false }) orderList: NgbAccordion;
 
     constructor(
-        private idl: IdlService,
-        private srSvc: ReporterService
+        private idl: IdlService
     ) {
     }
 
     updateField(field: IdlObject) {
-        const idx = this.fields.findIndex(el => el.name === field.name);
+        const idx = this.fields.findIndex(el => el.treeNodeId === field.treeNodeId);
         this.fields[idx] = field;
         this.fieldsChange.emit(this.fields);
     }
@@ -70,7 +68,7 @@ export class SRSortOrderComponent {
     fieldsInOrderByOrder() {
         const sorted = [];
         this.orderByNames.forEach(el => {
-            sorted.push(this.fields[this.fields.findIndex(fl => fl.name === el)]);
+            sorted.push(this.fields[this.fields.findIndex(fl => fl.treeNodeId === el)]);
         });
         return sorted;
     }

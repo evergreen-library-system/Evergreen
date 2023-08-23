@@ -1,0 +1,194 @@
+<ng-template #deletedOutputStringTmpl let-num="num" i18n>{num, plural, =1 {Output Deleted} other {{{num}} Outputs Deleted}}</ng-template>
+<eg-string #deleted [template]="deletedOutputStringTmpl"></eg-string>
+
+<ng-template #confirmDeleteOutputStringTmpl let-num="num" i18n>{num, plural, =1 {Are you sure you want to delete this output?} other {Are you sure you want to delete these {{num}} outputs?}}</ng-template>
+<eg-string #delete [template]="confirmDeleteOutputStringTmpl"></eg-string>
+
+<ng-template #promptRenameOutputStringTmpl let-old="old" i18n>Enter a new name for the output folder: {{old}}</ng-template>
+<eg-string #rename [template]="promptRenameOutputStringTmpl"></eg-string>
+
+<ng-template #promptNewSubfolderOutputStringTmpl let-old="old" i18n>Enter a name for the subfolder of {{old}}</ng-template>
+<eg-string #newSF [template]="promptNewSubfolderOutputStringTmpl"></eg-string>
+
+<folder-share-org-dialog
+  #promptShareOrg
+  [currentFolder]="currentFolder"
+></folder-share-org-dialog>
+
+<change-folder-dialog
+  #promptChangeFolder
+  [currentFolder]="currentFolder"
+></change-folder-dialog>
+
+<eg-confirm-dialog
+  #confirmDelete
+  i18n-dialogTitle
+  dialogTitle="Confirm Deletion"
+></eg-confirm-dialog>
+
+<eg-confirm-dialog
+  #confirmDeleteFolder
+  i18n-dialogTitle dialogTitle="Confirm Deletion"
+  i18n-dialogBody dialogBody="Delete folder {{currentFolder ? currentFolder.name() : '' }}?"
+></eg-confirm-dialog>
+
+<eg-prompt-dialog
+  #promptRename
+  i18n-dialogTitle
+  dialogTitle="Rename Output Folder"
+></eg-prompt-dialog>
+
+<eg-prompt-dialog
+  #promptNewSubfolder
+  i18n-dialogTitle
+  dialogTitle="Create a Output Folder"
+></eg-prompt-dialog>
+
+<ng-template #outputDebugTmpl let-rpt="row">
+  <ul *ngIf="!rpt.error_code" class="list-group list-group-horizontal">
+    <li class="list-group-item">
+      <a href="{{outputPath(rpt, 'report-data.html.debug.html')}}" target="_blank" i18n>
+        Debug Output
+      </a>
+    </li>
+  </ul>
+  <span *ngIf="rpt.error_code" i18n>
+    Error running report
+  </span>
+</ng-template>
+
+<ng-template #outputTmpl let-rpt="row">
+  <ul *ngIf="!rpt.error_code" class="list-group list-group-horizontal">
+    <li *ngIf="rpt._rs.html_format() === 't'" class="list-group-item">
+      <a href="{{outputPath(rpt, 'report-data.html.raw.html')}}" target="_blank" i18n>
+        HTML
+      </a>
+    </li>
+    <li *ngIf="rpt._rs.csv_format() === 't'" class="list-group-item">
+      <a href="{{outputPath(rpt, 'report-data.csv')}}" i18n>
+        CSV
+      </a>
+    </li>
+    <li *ngIf="rpt._rs.excel_format() === 't'" class="list-group-item">
+      <a href="{{outputPath(rpt, 'report-data.xlsx')}}" i18n>
+        Excel
+      </a>
+    </li>
+    <li *ngIf="rpt._rs.chart_line() === 't'" class="list-group-item">
+      <a href="{{outputPath(rpt, 'report-data.html.line.gif')}}" target="_blank" i18n>
+        Line Chart
+      </a>
+    </li>
+    <li *ngIf="rpt._rs.chart_bar() === 't'" class="list-group-item">
+      <a href="{{outputPath(rpt, 'report-data.html.bar.gif')}}" target="_blank" i18n>
+        Bar Chart
+      </a>
+    </li>
+  </ul>
+  <span *ngIf="rpt.error_code" i18n>
+    Error running report
+  </span>
+</ng-template>
+
+<div *ngIf="currentFolder" class="mt-2"><h2 i18n>Output in folder: </h2> {{currentFolder.name()}}</div>
+<div *ngIf="searchReport" class="mt-2"><h2 i18n>Output based on: </h2> {{searchReport.name()}}</div>
+
+<div class="mt-2">
+  <button type="button" i18n class="btn btn-outline-dark m-1" (click)="refreshBothGrids()">Refresh Grids</button>
+  <button type="button" i18n class="btn btn-outline-dark m-1"
+    *ngIf="currentFolder && RSvc.folderIsMine(currentFolder)" (click)="renameFolder()">Rename Folder</button>
+  <button type="button" i18n class="btn btn-outline-dark m-1"
+    *ngIf="currentFolder && RSvc.folderIsMine(currentFolder)" (click)="deleteFolder()"
+    [disabled]="!RSvc.canDeleteFolder(currentFolder,pendingGridSource) || !RSvc.canDeleteFolder(currentFolder,completeGridSource)">Delete Folder</button>
+  <button type="button" i18n class="btn btn-outline-dark m-1"
+    *ngIf="currentFolder && RSvc.folderIsMine(currentFolder)" (click)="newSubfolder()">Add Subfolder</button>
+  <button type="button" i18n class="btn btn-outline-dark m-1"
+	*ngIf="currentFolder && RSvc.folderIsMine(currentFolder) && currentFolder.shared() === 'f'" (click)="shareFolder()">Share Folder</button>
+  <button type="button" i18n class="btn btn-outline-dark m-1"
+	*ngIf="currentFolder && RSvc.folderIsMine(currentFolder) && currentFolder.shared() === 't'" (click)="unshareFolder()">Unshare Folder</button>
+</div>
+
+<hr/>
+
+<div class="mt-2">
+  <eg-grid #PendingOutputsGrid
+    persistKey="reporter.full.outputs.pending"
+    i18n-toolbarLabel toolbarLabel="Pending"
+    [dataSource]="pendingGridSource"
+    [stickyHeader]="true"
+    [filterable]="false"
+    [sortable]="false"
+    [cellTextGenerator]="cellTextGenerator"
+    [showDeclaredFieldsOnly]="true">
+
+    <eg-grid-toolbar-button label="Refresh" i18n-label
+      (onClick)="refreshPendingGrid($event)">
+    </eg-grid-toolbar-button>
+
+    <eg-grid-toolbar-action label="Delete Selected" i18n-label
+      (onClick)="deleteOutputs($event)"
+      [disableOnRows]="zeroSelectedRows">
+    </eg-grid-toolbar-action>
+
+    <eg-grid-toolbar-action label="Move Selected" i18n-label
+      (onClick)="moveSelected($event)"
+      [disableOnRows]="zeroSelectedRows">
+    </eg-grid-toolbar-action>
+
+    <eg-grid-column path="id" [hidden]=true [index]="true" i18n-label label="Run ID" [filterable]="false" [sortable]="false"></eg-grid-column>
+    <eg-grid-column path="template_name" i18n-label [hidden]=true label="Template"></eg-grid-column>
+    <eg-grid-column path="report_name" i18n-label label="Report"></eg-grid-column>
+    <eg-grid-column path="run_time" i18n-label label="Scheduled Run Time" datatype="timestamp" [datePlusTime]="true"></eg-grid-column>
+    <eg-grid-column path="start_time" i18n-label label="Start Time" datatype="timestamp" [datePlusTime]="true"></eg-grid-column>
+
+  </eg-grid>
+</div>
+
+<div class="mt-2">
+  <eg-grid #CompleteOutputsGrid
+    persistKey="reporter.full.outputs.complete"
+    i18n-toolbarLabel toolbarLabel="Complete"
+    [dataSource]="completeGridSource"
+    [stickyHeader]="true"
+    [filterable]="false"
+    [sortable]="false"
+    [cellTextGenerator]="cellTextGenerator"
+    [showDeclaredFieldsOnly]="true"
+    (onRowActivate)="goToOutput([$event])">
+
+    <eg-grid-toolbar-button label="Refresh" i18n-label
+      (onClick)="refreshCompleteGrid($event)">
+    </eg-grid-toolbar-button>
+
+    <eg-grid-toolbar-action label="Delete Selected" i18n-label
+      (onClick)="deleteOutputs($event)" *ngIf="currentFolder && RSvc.folderIsMine(currentFolder)"
+      [disableOnRows]="zeroSelectedRows">
+    </eg-grid-toolbar-action>
+
+    <eg-grid-toolbar-action label="Move Selected" i18n-label
+      (onClick)="moveSelected($event)" *ngIf="currentFolder && RSvc.folderIsMine(currentFolder)"
+      [disableOnRows]="zeroSelectedRows">
+    </eg-grid-toolbar-action>
+
+    <eg-grid-toolbar-action label="Clone Report" i18n-label
+      (onClick)="cloneSelected($event)"
+      [disableOnRows]="notOneSelectedRow">
+    </eg-grid-toolbar-action>
+
+    <eg-grid-toolbar-action label="View Output" i18n-label
+      (onClick)="goToOutput($event)"
+      [disableOnRows]="notOneSelectedRow">
+    </eg-grid-toolbar-action>
+
+    <eg-grid-column path="id" [hidden]=true [index]="true" i18n-label label="Run ID" [filterable]="false" [sortable]="false"></eg-grid-column>
+    <eg-grid-column path="template_name" i18n-label [hidden]=true label="Template"></eg-grid-column>
+    <eg-grid-column path="report_name" i18n-label label="Report"></eg-grid-column>
+    <eg-grid-column path="run_time" i18n-label label="Scheduled Run Time" datatype="timestamp" [datePlusTime]="true"></eg-grid-column>
+    <eg-grid-column path="start_time" i18n-label label="Start Time" datatype="timestamp" [datePlusTime]="true"></eg-grid-column>
+    <eg-grid-column path="complete_time" i18n-label label="Finish Time" datatype="timestamp" [datePlusTime]="true"></eg-grid-column>
+    <eg-grid-column path="_output"  [cellTemplate]="outputTmpl" i18n-label label="Output" [sortable]="false" [filterable]="false" [disableTooltip]="true"></eg-grid-column>
+    <eg-grid-column path="_debug"  [cellTemplate]="outputDebugTmpl" i18n-label [hidden]=true label="Debugging Output" [sortable]="false" [filterable]="false" [disableTooltip]="true"></eg-grid-column>
+    <eg-grid-column path="error_text"[hidden]=true i18n-label label="Error Text"></eg-grid-column>
+
+  </eg-grid>
+</div>

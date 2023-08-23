@@ -7,7 +7,7 @@ import {IdlService} from '@eg/core/idl.service';
 import {PcrudService} from '@eg/core/pcrud.service';
 import {GridComponent} from '@eg/share/grid/grid.component';
 import {GridDataSource, GridCellTextGenerator} from '@eg/share/grid/grid';
-import {SimpleReporterService, SRTemplate} from './simple-reporter.service';
+import {ReporterService, SRTemplate} from '../share/reporter.service';
 import {StringComponent} from '@eg/share/string/string.component';
 import {ToastService} from '@eg/share/toast/toast.service';
 import {ConfirmDialogComponent} from '@eg/share/dialog/confirm.component';
@@ -44,14 +44,14 @@ export class SRReportsComponent implements OnInit {
         private auth: AuthService,
         private pcrud: PcrudService,
         private idl: IdlService,
-        private srSvc: SimpleReporterService,
+        private srSvc: ReporterService,
         private toast: ToastService,
         private net: NetService
     ) {
     }
 
     ngOnInit() {
-        this.gridSource = this.srSvc.getReportsDatasource();
+        this.gridSource = this.srSvc.getSReportsDatasource();
 
         this.editSelected = ($event) => {
             this.router.navigate(['edit', $event[0].rt_id], { relativeTo: this.route });

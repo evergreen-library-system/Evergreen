@@ -1,0 +1,20 @@
+.chooser-row {
+  display: flex;
+  justify-content: flex-start;
+}
+
+.reporter-chooser-display-list {
+  font-size: .8rem;
+}
+
+/* TODO: these have no effect??? */
+
+.chooser-row .accordion-body {
+  padding: 0 .5rem 1rem 1rem;
+}
+
+.accordion-header h3 {
+  font-size: 1rem;
+  font-weight: 600;
+  padding: .75rem;
+}

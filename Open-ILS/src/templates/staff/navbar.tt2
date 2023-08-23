@@ -647,7 +647,7 @@
             </a>
           </li>
           <li>
-            <a href="./reporter/legacy/main" target="_self">
+            <a href="/eg2/staff/reporter/full" target="_self">
               <span class="glyphicon glyphicon-object-align-bottom" 
                 aria-hidden="true"></span>
               [% l('Reports') %]

@@ -1,0 +1,135 @@
+<ng-template #deleteSuccesstringTmpl let-ct="ct" i18n>{ct, plural, =1 {Deleted 1 Report} other {Deleted {{ct}} Report}}</ng-template>
+<eg-string #deleteSuccess i18n-text [template]="deleteSuccesstringTmpl"></eg-string>
+<ng-template #deleteFailureStringTmpl let-ct="ct" i18n>{ct, plural, =1 {Failed to Delete 1 Report} other {Failed to Delete {{ct}} Reports}}</ng-template>
+<eg-string #deleteFailure i18n-text [template]="deleteFailureStringTmpl"></eg-string>
+<ng-template #mixedResultsStringTmpl let-fail="fail" let-success="success" i18n>{fail, plural, =1 {Failed to Delete 1 Report But Succeeded In Deleting {{success}}} other {Failed to Delete {{fail}} Reports But Succeeded in Deleting {{success}}}}</ng-template>
+<eg-string #mixedResults i18n-text [template]="mixedResultsStringTmpl"></eg-string>
+<ng-template #deleteStringTmpl let-ct="ct" i18n>{ct, plural, =1 {Are you sure you want to delete this report and its output?} other {Are you sure you want to delete these {{ct}} report and their output?}}</ng-template>
+<eg-string #delete [template]="deleteStringTmpl"></eg-string>
+<ng-template #promptCloneOutputStringTmpl let-old="old" i18n>Enter a new name for the clone of: {{old}}</ng-template>
+<eg-string #clone [template]="promptCloneOutputStringTmpl"></eg-string>
+
+<ng-template #promptRenameOutputStringTmpl let-old="old" i18n>Enter a new name for the report folder: {{old}}</ng-template>
+<eg-string #rename [template]="promptRenameOutputStringTmpl"></eg-string>
+
+<ng-template #promptNewSubfolderOutputStringTmpl let-old="old" i18n>Enter a name for the subfolder of {{old}}</ng-template>
+<eg-string #newSF [template]="promptNewSubfolderOutputStringTmpl"></eg-string>
+
+<eg-string #templateSaved i18n-text text="Report Saved Successfully"></eg-string>
+<eg-string #templateSaveError i18n-text text="Error Saving Report"></eg-string>
+
+<folder-share-org-dialog
+  #promptShareOrg
+  [currentFolder]="currentFolder"
+></folder-share-org-dialog>
+
+<change-folder-dialog
+  #promptChangeFolder
+  [currentFolder]="currentFolder"
+></change-folder-dialog>
+
+<eg-confirm-dialog
+  #confirmDelete
+  i18n-dialogTitle
+  dialogTitle="Confirm Deletion"
+></eg-confirm-dialog>
+
+<eg-confirm-dialog
+  #confirmDeleteFolder
+  i18n-dialogTitle dialogTitle="Confirm Deletion"
+  i18n-dialogBody dialogBody="Delete folder {{currentFolder ? currentFolder.name() : '' }}?"
+></eg-confirm-dialog>
+
+<eg-prompt-dialog
+  #promptClone
+  i18n-dialogTitle
+  dialogTitle="Clone Report"
+></eg-prompt-dialog>
+
+<eg-prompt-dialog
+  #promptRename
+  i18n-dialogTitle
+  dialogTitle="Rename Report Folder"
+></eg-prompt-dialog>
+
+<eg-prompt-dialog
+  #promptNewSubfolder
+  i18n-dialogTitle
+  dialogTitle="Create a Report Folder"
+></eg-prompt-dialog>
+
+<div class="mt-2">
+  <eg-grid #ReportsGrid
+     i18n-toolbarLabel [toolbarLabel]="currentFolder ? currentFolder.name() : (searchTemplate ? 'Reports based on: ' + searchTemplate.name() : 'Search Results' )"
+    persistKey="reporter.full.reports"
+    [dataSource]="gridSource"
+    [stickyHeader]="true"
+    [filterable]="true"
+    [sortable]="true"
+    [cellTextGenerator]="cellTextGenerator"
+    [showDeclaredFieldsOnly]="true"
+    (onRowActivate)="outputsForReport([$event])">
+  
+    <eg-grid-toolbar-button label="Rename Folder" i18n-label *ngIf="currentFolder && RSvc.folderIsMine(currentFolder)"
+      (onClick)="renameFolder($event)">
+    </eg-grid-toolbar-button>
+
+    <eg-grid-toolbar-button label="Delete Folder" i18n-label *ngIf="currentFolder && RSvc.folderIsMine(currentFolder)"
+      (onClick)="deleteFolder(currentFolder)" [disabled]="!RSvc.canDeleteFolder(currentFolder,gridSource)">
+    </eg-grid-toolbar-button>
+
+    <eg-grid-toolbar-button label="Add Subfolder" i18n-label *ngIf="currentFolder && RSvc.folderIsMine(currentFolder)"
+      (onClick)="newSubfolder($event)">
+    </eg-grid-toolbar-button>
+ 
+    <eg-grid-toolbar-button label="Share Folder" i18n-label *ngIf="currentFolder && RSvc.folderIsMine(currentFolder) && currentFolder.shared() === 'f'"
+      (onClick)="shareFolder($event)">
+    </eg-grid-toolbar-button>
+
+    <eg-grid-toolbar-button label="Unshare Folder" i18n-label *ngIf="currentFolder && RSvc.folderIsMine(currentFolder) && currentFolder.shared() === 't'"
+      (onClick)="unshareFolder($event)">
+    </eg-grid-toolbar-button>
+
+    <eg-grid-toolbar-action label="Delete Selected" i18n-label
+      (onClick)="deleteSelected($event)" *ngIf="currentFolder && RSvc.folderIsMine(currentFolder)"
+      [disableOnRows]="zeroSelectedRows">
+    </eg-grid-toolbar-action>
+
+    <eg-grid-toolbar-action label="Move Selected" i18n-label
+      (onClick)="moveSelected($event)" *ngIf="currentFolder && RSvc.folderIsMine(currentFolder)"
+      [disableOnRows]="zeroSelectedRows">
+    </eg-grid-toolbar-action>
+  
+    <eg-grid-toolbar-action label="Clone Report" i18n-label
+      (onClick)="cloneSelected($event)"
+      [disableOnRows]="notOneSelectedRow">
+    </eg-grid-toolbar-action>
+
+    <eg-grid-toolbar-action label="Edit Report" i18n-label
+      (onClick)="editSelected($event)" *ngIf="currentFolder && RSvc.folderIsMine(currentFolder)"
+      [disableOnRows]="notOneSelectedRow">
+    </eg-grid-toolbar-action>
+
+    <eg-grid-toolbar-action label="View Report" i18n-label
+      (onClick)="viewSelected($event)"
+      [disableOnRows]="notOneSelectedRow">
+    </eg-grid-toolbar-action>
+
+    <eg-grid-toolbar-action label="Output list..." i18n-label
+      (onClick)="outputsForReport($event)"
+      [disableOnRows]="notOneSelectedRow">
+    </eg-grid-toolbar-action>
+
+    <eg-grid-column path="rr_id" i18n-label label="Report ID" [hidden]="true" [index]="true" [filterable]="false" [sortable]="false"></eg-grid-column>
+    <eg-grid-column path="folder" i18n-label [hidden]="!!currentFolder" label="Folder"></eg-grid-column>
+    <eg-grid-column path="name" i18n-label label="Name"></eg-grid-column>
+    <eg-grid-column path="description" i18n-label label="Description"></eg-grid-column>
+    <eg-grid-column path="create_time" i18n-label label="Date Created" datatype="timestamp" [datePlusTime]="true"></eg-grid-column>
+    <eg-grid-column path="owner" [hidden]="currentFolder && RSvc.folderIsMine(currentFolder)" i18n-label label="Owner"></eg-grid-column>
+    <eg-grid-column path="recurring" i18n-label datatype="bool" label="Recurring?"></eg-grid-column>
+    <eg-grid-column path="recurrence" i18n-label datatype="interval" label="Recurrence Interval"></eg-grid-column>
+    <eg-grid-column path="documentation" i18n-label label="Template Documentation"></eg-grid-column>
+    <eg-grid-column path="version" i18n-label label="Template verison" [hidden]="true" [filterable]="false" [sortable]="false"></eg-grid-column>
+  
+  </eg-grid>
+<div>

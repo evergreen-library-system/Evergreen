@@ -1,6 +1,6 @@
 import {Component, Input} from '@angular/core';
 import {IdlService} from '@eg/core/idl.service';
-import {SimpleReporterService, SRTemplate} from './simple-reporter.service';
+import {ReporterService, SRTemplate} from '../share/reporter.service';
 import * as moment from 'moment-timezone';
 
 @Component({
@@ -16,7 +16,7 @@ export class SROutputOptionsComponent {
 
     constructor(
         private idl: IdlService,
-        private srSvc: SimpleReporterService
+        private srSvc: ReporterService
     ) { }
 
     defaultTime() {

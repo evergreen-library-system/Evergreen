@@ -1,0 +1,109 @@
+<form #srOutputOptionsForm="ngForm" class="form-validated common-form">
+  <div class="form-group row" *ngIf="advancedMode">
+   <legend class="col-form-label col-sm-1 pt-0" i18n>Pivot Label Column</legend>
+   <div class="col-sm-4">
+    <select i18n-title title="{{canPivot() ? '' : 'Must have at least one aggregate and one non-aggregate column in order to pivot the output'}}"
+      [disabled]="!canPivot()" class="form-select" id="pivot-label-select" [ngModelOptions]="{standalone: true}" [(ngModel)]="templ.pivotLabel">
+      <option value="" i18n>{{ templ.pivotLabel ? 'No pivot' : 'Select One (Optional)'}}</option>
+      <option
+		*ngFor="let f of templ.nonAggregateDisplayFields()"
+		value="{{templ.displayFields.indexOf(f) + 1}}"
+	  >{{f.alias || f.name }}</option>
+    </select>
+   </div>
+   <legend class="col-form-label col-sm-1 pt-0" i18n>Pivot Data Column</legend>
+   <div class="col-sm-4">
+    <select i18n-title title="{{canPivot() ? '' : 'Must have at least one aggregate and one non-aggregate column in order to pivot the output'}}"
+      [disabled]="!canPivot()" class="form-select" id="pivot-data-select" [ngModelOptions]="{standalone: true}" [(ngModel)]="templ.pivotData">
+      <option
+		*ngFor="let f of templ.aggregateDisplayFields()"
+		value="{{templ.displayFields.indexOf(f) + 1}}"
+	  >{{f.alias || f.name }}</option>
+    </select>
+   </div>
+  </div>
+  <div class="form-group row">
+    <legend class="col-form-label col-sm-1 pt-0" i18n>Choose your output format(s)</legend>
+    <div class="col-sm-3">
+      <div *ngIf="advancedMode" class="form-check">
+        <input [disabled]="disabled" class="form-check-input" type="checkbox" id="srDoRollup" name="srDoRollup" [(ngModel)]="templ.doRollup">
+        <label class="form-label form-check-label" for="srDoRollup" i18n>Calculate grouping subtotals</label>
+      </div>
+      <div class="form-check">
+        <input [disabled]="disabled" class="form-check-input" type="checkbox" id="srExcelOutput" name="srExcelOutput" [(ngModel)]="templ.excelOutput">
+        <label class="form-label form-check-label" for="srExcelOutput" i18n>Excel Output</label>
+      </div>
+      <div class="form-check">
+        <input [disabled]="disabled" class="form-check-input" type="checkbox" id="srCsvOutput" name="srCsvOutput" [(ngModel)]="templ.csvOutput">
+        <label class="form-label form-check-label" for="srCsvOutput" i18n>CSV Output</label>
+      </div>
+      <div class="form-check">
+        <input [disabled]="disabled" class="form-check-input" type="checkbox" id="srHtmlOutput" name="srHtmlOutput" [(ngModel)]="templ.htmlOutput">
+        <label class="form-label form-check-label" for="srHtmlOutput" i18n>HTML Output</label>
+      </div>
+      <div class="form-check">
+        <input [disabled]="disabled" class="form-check-input" type="checkbox" id="srBarCharts" name="srBarCharts" [(ngModel)]="templ.barCharts">
+        <label class="form-label form-check-label" for="srBarCharts" i18n>Bar Chart</label>
+      </div>
+      <div class="form-check">
+        <input [disabled]="disabled" class="form-check-input" type="checkbox" id="srLineCharts" name="srLineCharts" [(ngModel)]="templ.lineCharts">
+        <label class="form-label form-check-label" for="srLineCharts" i18n>Line Chart</label>
+      </div>
+    </div>
+    <div *ngIf="advancedMode" class="col-sm-4">
+	  <div>
+        <span class="col-form-label pt-0" i18n>Report Folder: </span>
+        <span *ngIf="!RSvc.reportFolder" class="badge badge-danger" i18n>Report folder is required</span>
+        <label class="form-label">{{RSvc.reportFolder?.name()}}</label>
+      </div>
+	  <eg-tree [disabled]="disabled" [tree]="RSvc.myFolderTrees.reports" (nodeClicked)="folderNodeSelected($event)"></eg-tree>
+    </div>
+    <div *ngIf="advancedMode" class="col-sm-4">
+	  <div>
+        <span class="col-form-label pt-0" i18n>Output Folder: </span>
+        <span *ngIf="!RSvc.outputFolder" class="badge badge-danger" i18n>Output folder is required</span>
+        <label class="form-label">{{RSvc.outputFolder?.name()}}</label>
+      </div>
+	  <eg-tree [disabled]="disabled" [tree]="RSvc.myFolderTrees.outputs" (nodeClicked)="folderNodeSelected($event)"></eg-tree>
+	  
+    </div>
+  </div>
+  <div class="form-group row">
+    <legend class="col-form-label col-sm-1 pt-0" i18n>Recurrence</legend>
+    <div class="col-sm-3 form-inline">
+      <div class="form-check me-sm-2">
+        <input [disabled]="disabled" class="form-check-input" type="checkbox" id="srRecurring" name="srRecurring" [(ngModel)]="templ.recurring">
+        <label class="form-label form-check-label" for="srRecurring" i18n>Recurring Report?</label>
+      </div>
+      <label *ngIf="templ.recurring" class="form-label me-sm-2" for="srRecurrenceInterval">Recurrence Interval</label>
+      <eg-interval-input [disabled]="disabled" *ngIf="templ.recurring" [(ngModel)]="templ.recurrence" id="srRecurrenceInterval" name="srRecurrenceInterval">
+      </eg-interval-input>
+    </div>
+  </div>
+  <div class="form-group row">{{ '' // Can't use form-inline here because it breaks the calendar display }}
+    <legend class="col-form-label col-sm-1 pt-0" i18n>Scheduling</legend>
+    <div class="col-sm-3 ">
+      <div class="form-check form-check-inline">
+        <input [disabled]="disabled" class="form-check-input" type="radio" id="srRunNow" name="srRun" value="now" [(ngModel)]="templ.runNow">
+        <label class="form-label form-check-label" for="srRunNow" i18n>Run Report Now</label>
+      </div>
+      <div class="form-check form-check-inline">
+        <input [disabled]="disabled" class="form-check-input" type="radio" id="srScheduleLater" name="srRun" value="later" (change)="defaultTime()" [(ngModel)]="templ.runNow">
+        <label class="form-label form-check-label" for="srScheduleLater" i18n>Schedule Report For Later</label>
+      </div>
+      <div class="col-sm-10">
+        <eg-datetime-select [disabled]="disabled" *ngIf="templ.runNow === 'later'" [(ngModel)]="templ.runTime" name="srRunTime"></eg-datetime-select>
+      </div>
+    </div>
+  </div>
+  <div class="form-group row">
+    <legend class="col-form-label col-sm-1 pt-0" i18n>Email</legend>
+    <div class="col-sm-3 form-inline">
+      <label class="form-control-label me-sm-2" for="srEmail" i18n>Email Address</label>
+      <input [disabled]="disabled" class="form-control" type="text" id="srEmail" name="srEmail" [(ngModel)]="templ.email">
+    </div>
+  </div>
+  <div *ngIf="!advancedMode" class="form-group row">
+    <button type="button" class="btn btn-success" (click)="saveTemplate(true)" [disabled]="!readyToSchedule()" i18n>Save and schedule report</button>
+  </div>
+</form>

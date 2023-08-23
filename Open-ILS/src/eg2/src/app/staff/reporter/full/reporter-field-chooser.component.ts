@@ -1,16 +1,16 @@
 import {Component, Input, Output, EventEmitter, ViewChild} from '@angular/core';
 import {NgbAccordion} from '@ng-bootstrap/ng-bootstrap';
 import {IdlService, IdlObject} from '@eg/core/idl.service';
-import {ReporterService} from '../share/reporter.service';
 
 @Component({
-    selector: 'eg-sr-field-chooser',
-    styleUrls: ['./sr-field-chooser.component.css'],
-    templateUrl: './sr-field-chooser.component.html'
+    selector: 'eg-reporter-field-chooser',
+    styleUrls: ['./reporter-field-chooser.component.css'],
+    templateUrl: './reporter-field-chooser.component.html'
 })
 
-export class SRFieldChooserComponent {
+export class ReporterFieldChooserComponent {
 
+    @Input() editorMode = 'template';
     @Input() fieldType = 'display';
     @Input() allFields: IdlObject[] = [];
     @Input() fieldGroups: IdlObject[] = [];
@@ -24,13 +24,16 @@ export class SRFieldChooserComponent {
     @ViewChild('selectedList', { static: false }) selectedList: NgbAccordion;
 
     constructor(
-        private idl: IdlService,
-        private srSvc: ReporterService
+        private idl: IdlService
     ) {
     }
 
+    hasFilterSuggestions() {
+        return this.allFields.filter(f => !!f.suggest_filter).length > 0;
+    }
+
     fieldIsSelected(field: IdlObject) {
-        return this.selectedFields.findIndex(el => el.name === field.name) > -1;
+        return this.selectedFields.findIndex(el => el.treeNodeId === field.treeNodeId) > -1;
     }
 
     hideField(field: IdlObject) {
@@ -41,19 +44,19 @@ export class SRFieldChooserComponent {
     }
 
     toggleSelect(field: IdlObject) {
-        const idx = this.selectedFields.findIndex(el => el.name === field.name);
+        const idx = this.selectedFields.findIndex(el => el.treeNodeId === field.treeNodeId);
         if ( idx > -1 ) {
             if ( field.forced_filter ) { return; } // These should just be hidden, but if not...
             this.selectedFields.splice(idx, 1);
             if ( this.fieldType === 'display' ) {
-                this.orderByNames.splice(this.orderByNames.findIndex(el => el === field.name), 1);
+                this.orderByNames.splice(this.orderByNames.findIndex(el => el === field.treeNodeId), 1);
             }
         } else {
             const f = { ...field };
 
             if ( this.fieldType === 'display' ) {
                 f['alias'] = f.label; // can be edited
-                this.orderByNames.push(f.name);
+                this.orderByNames.push(f.treeNodeId);
             }
             this.selectedFields.push(f);
         }
@@ -66,26 +69,26 @@ export class SRFieldChooserComponent {
     }
 
     updateField(field: IdlObject) {
-        const idx = this.selectedFields.findIndex(el => el.name === field.name);
+        const idx = this.selectedFields.findIndex(el => el.treeNodeId === field.treeNodeId);
         this.selectedFields[idx] = field;
         this.selectedFieldsChange.emit(this.selectedFields);
     }
 
     moveUp(idx: number) {
         if ( idx > 0 ) { // should always be the case, but we check anyway
-            const hold: IdlObject = this.selectedFields[idx - 1];
-            this.selectedFields[idx - 1] = this.selectedFields[idx];
-            this.selectedFields[idx] = hold;
-            this.selectedFieldsChange.emit(this.selectedFields);
+        const hold: IdlObject = this.selectedFields[idx - 1];
+        this.selectedFields[idx - 1] = this.selectedFields[idx];
+        this.selectedFields[idx] = hold;
+        this.selectedFieldsChange.emit(this.selectedFields);
         }
     }
 
     moveDown(idx: number) {
         if ( idx < this.selectedFields.length ) { // see above comment
-            const hold: IdlObject = this.selectedFields[idx + 1];
-            this.selectedFields[idx + 1] = this.selectedFields[idx];
-            this.selectedFields[idx] = hold;
-            this.selectedFieldsChange.emit(this.selectedFields);
+        const hold: IdlObject = this.selectedFields[idx + 1];
+        this.selectedFields[idx + 1] = this.selectedFields[idx];
+        this.selectedFields[idx] = hold;
+        this.selectedFieldsChange.emit(this.selectedFields);
         }
     }
 

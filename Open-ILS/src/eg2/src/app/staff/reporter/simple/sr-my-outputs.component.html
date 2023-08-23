@@ -63,7 +63,7 @@
     </eg-grid-toolbar-action>
 
     <eg-grid-column path="id" [hidden]=true [index]="true" i18n-label label="Run ID" [filterable]="false" [sortable]="false"></eg-grid-column>
-    <eg-grid-column path="template_name" i18n-label label="Report"></eg-grid-column>
+    <eg-grid-column path="simple_name" i18n-label label="Report"></eg-grid-column>
     <eg-grid-column path="complete_time" i18n-label label="Finish Time" datatype="timestamp" [datePlusTime]="true"></eg-grid-column>
     <eg-grid-column path="_output"  [cellTemplate]="outputTmpl" i18n-label label="Output" [sortable]="false" [filterable]="false" [disableTooltip]="true"></eg-grid-column>
     <eg-grid-column path="error_text"[hidden]=true i18n-label label="Error Text"></eg-grid-column>

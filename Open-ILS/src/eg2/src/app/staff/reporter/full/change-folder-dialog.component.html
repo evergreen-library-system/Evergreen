@@ -1,0 +1,31 @@
+<ng-template #dialogContent>
+  <div class="modal-header">
+    <h4 class="modal-title" i18n>Move selected</h4>
+    <button type="button" class="btn-close btn-close-white" 
+      i18n-aria-label aria-label="Close" (click)="close()"></button>
+  </div>
+  <div class="modal-body">
+    <div class="row mt-3">
+        <div class="col-md-12">
+            <div>
+                <label class="form-label mr-1" for="current-folder-name-in-move-dialog" i18n>Move from: </label>
+                <span id="current-folder-name-in-move-dialog">{{currentFolder.name()}}</span>
+            </div>
+            <div>
+                <label class="form-label mr-1" for="new-folder-name-in-move-dialog" i18n>Move to: </label>
+                <span id="new-folder-name-in-move-dialog">{{newFolder?.name()}}</span>
+            </div>
+            <eg-tree
+                [tree]="RSvc.tempFolderTree(currentFolder.classname, true, false, true)"
+                (nodeClicked)="folderNodeSelected($event)"
+            ></eg-tree>
+        </div>
+    </div>
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-success" [disabled]="!newFolder"
+      (click)="close(newFolder)" i18n>Save</button>
+    <button type="button" class="btn btn-outline-dark" 
+      (click)="close()" i18n>Cancel</button>
+  </div>
+</ng-template>

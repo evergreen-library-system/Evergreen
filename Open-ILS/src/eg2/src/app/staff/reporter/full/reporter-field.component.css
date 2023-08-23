@@ -1,0 +1,233 @@
+.reporter-field-container {
+  margin-bottom: .5rem;
+}
+
+.reporter-checkbox {
+  margin-right: .5rem;
+}
+
+.reporter-field-explainer {
+  font-size: .8rem;
+}
+
+.reporter-field-disp-ind {
+  padding-left: .3rem;
+  padding-bottom: .3rem;
+}
+
+.form-label.reporter-field-label {
+  display: inline;
+  margin: 0;
+  overflow-wrap: break-word;
+}
+
+.datatype {
+  font-size: .875rem;
+  color: #6c757d;
+}
+
+.reporter-field-container {
+  border-bottom: 1px solid #dee2e6;
+  padding: 1rem 0;
+  container-type: normal;
+  container-name: field-container;
+}
+
+eg-reporter-field:last-child .reporter-field-container {
+  border-bottom: none;
+}
+
+.input-group.flex-wrap input {
+  min-width: 3rem !important;
+}
+
+/* Grid layout for field rows other than the checkbox selection list */
+.reporter-field-container .reporter-field {
+  display: grid;
+  gap: .25rem 1rem;
+  align-items: flex-start;
+}
+
+.reporter-field-container-with-select .reporter-field {
+  display: flex;
+  flex-wrap: nowrap;
+  justify-content: flex-start;
+  align-content: flex-start;
+  margin-bottom: .5rem;
+}
+
+/* DISPLAY FIELDS TAB */
+
+/* desktop layout */
+#field-display .reporter-field {
+  grid-template-areas:
+    "deselect name xform  updown"
+    "deselect path path   updown"
+    "deselect description description description";
+    
+  grid-template-columns: 2rem 1fr 1fr 5rem;
+}
+
+/* mobile layout */
+@container field-container (max-width: 24rem) {
+  #field-display .reporter-field {
+    grid-template-areas:
+      "deselect name  updown"
+      "deselect path  updown"
+      "deselect description  updown"
+      "deselect xform updown";
+    grid-template-columns: 2rem 1fr 2rem;
+  }
+
+  .reporter-field-updown {
+    overflow-wrap: normal;
+  }
+}
+
+.reporter-field-deselect {
+  grid-area: deselect;
+  padding-top: 1.4rem;
+}
+
+.reporter-field-name {
+  grid-area: name;
+}
+
+.reporter-field-description {
+  grid-area: description;
+}
+
+.reporter-field-path-label {
+  grid-area: path;
+}
+
+.reporter-field-xform {
+  grid-area: xform;
+}
+
+.reporter-field-updown {
+  overflow-wrap: nowrap;
+  padding-top: 1.7rem;
+}
+
+.reporter-field-value-input {
+  padding-top: 1rem;
+}
+
+/* TEMPLATE FILTERS TAB */
+
+#field-filters .reporter-field {
+  grid-template-areas:
+    "deselect name  name"
+    "deselect path  path"
+    "deselect xform operator"
+    "deselect description description";
+  grid-template-columns: 2rem 1fr 1fr;
+}
+
+/* mobile layout */
+@container field-container (max-width: 14rem) {
+  #field-sorter-display-fields .reporter-field {
+    grid-template-areas:
+      "deselect name"
+      "deselect path"
+      "deselect xform"
+      "deselect operator"
+      "deselect description";
+    grid-template-columns: 2rem 1fr;
+  }
+}
+
+#field-filters .reporter-field-value {
+  grid-area: operator;
+}
+
+#field-filters .reporter-field-name {
+  font-size: 1rem;
+  font-weight: 600;
+}
+
+/* OUTPUT ORDER TAB */
+
+#field-filters .reporter-field-value .col {
+  flex: 1 1 100%; /* override standard column flex in this panel only */
+}
+
+#field-filters .reporter-field-value-org-unit {
+  max-height: 24rem;  /* About 12 items */
+  overflow-y: auto;   /* Adds scrollbar only when needed. 'scroll' would show the scroll gutter at all times. */
+}
+
+/* TEMPLATE OUTPUT ORDER TAB */
+
+/* Desktop layout */
+#field-sorter-display-fields .reporter-field {
+  grid-template-areas:
+    "name xform updown"
+    "path path  updown"
+    "description description description";
+  grid-template-columns: 1fr 1fr 5rem;
+}
+
+#field-sorter-sort-order .reporter-field {
+  grid-template-areas:
+    "name sortdir updown"
+    "path path    updown"
+    "description description description";
+  grid-template-columns: 1fr 1fr 5rem;
+}
+
+/* mobile layout */
+@container field-container (max-width: 18rem) {
+  #field-sorter-display-fields .reporter-field {
+    grid-template-areas:
+      "name   updown"
+      "path   updown"
+      "xform  updown"
+      "description description";
+    grid-template-columns: 1fr 2.5rem;
+  }
+
+  #field-sorter-sort-order .reporter-field {
+    grid-template-areas:
+      "name     updown"
+      "sortdir  updown"
+      "path     updown"
+      "description description";
+    grid-template-columns: 1fr 2.5rem;
+  }
+
+  /* Allow the up/down buttons to stack */
+  .reporter-field-updown {
+    overflow-wrap: normal;
+  }
+}
+
+/* NEW REPORT COLUMNS TAB */
+
+#new-report-columns .reporter-field {
+  grid-template-areas: 
+    "name xform" 
+    "description description" 
+    "path path";
+  grid-template-columns: 2fr 1fr;
+}
+
+/* NEW REPORT FILTERS TAB */
+
+#new-report-filters .reporter-field {
+  grid-template-areas: 
+    "name        operator xform" 
+    "description operator xform" 
+    "path path     .";
+  grid-template-columns: .75fr 2.5fr 1fr;
+}
+
+#new-report-filters .reporter-field-name {
+  font-size: 1rem;
+  font-weight: 600;
+}
+
+#new-report-filters .reporter-field-value-input {
+  padding-top: .25rem;
+}

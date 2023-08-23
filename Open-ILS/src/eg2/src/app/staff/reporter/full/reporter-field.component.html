@@ -1,0 +1,453 @@
+<div class="reporter-field-container{{ withSelect === true ? '-with-select' : '' }}">
+
+  <div class="reporter-field-item reporter-field" (click)="selectAction()">
+
+    <div *ngIf="withSelect" class="reporter-field-select">
+      <input (change)="selectAction()" (click)="selectAction()" class="reporter-checkbox" type="checkbox"
+        id="chk{{field.name}}" checked="{{ selected === true ? 'checked' : '' }}" />
+        <!-- <label> is defined below -->
+    </div>
+
+    <div *ngIf="withDeselect" class="reporter-field-deselect">
+      <button type="button" class="btn btn-sm material-icon-button p-1 reporter-checkbox" (click)="deselectAction()"
+        title="Deselect Field" i18n-title [attr.aria-label]="'Deselect Field'" i18n-aria-label>
+        <span class="material-icons" aria-hidden="true">remove_circle_outline</span></button>
+    </div>
+
+    <div *ngIf="withAlias" class="reporter-field-name">
+      <label class="form-label" for="NM-{{pathId}}" i18n>Name</label>
+      <input id="NM-{{pathId}}" class="form-control" type="text" [disabled]="disabled || !editAlias" [(ngModel)]="field.alias" />
+    </div>
+
+    <div *ngIf="!withAlias" class="reporter-field-name">
+      <label *ngIf="withSelect" (click)="selectAction()"  class="form-label reporter-field-label" for="chk{{field.name}}">
+        {{field.label}}
+        <span *ngIf="field.datatype" class="datatype" i18n>({{origDatatype || field.datatype}})</span>
+        <span *ngIf="field.transform.final_datatype" class="datatype form-text" i18n>({{field.transform.final_datatype}})</span>
+      </label>
+      <label *ngIf="!withSelect"  class="form-label reporter-field-label" for="chk{{field.name}}">{{field.label}}</label>
+    </div>
+
+    <div *ngIf="withHint" class="reporter-field-description">
+      <div *ngIf="editHint" class="form-check">
+        <input class="form-check-input reporter-checkbox"
+             type="checkbox"
+             id="HNTCB-{{pathId}}" 
+             (click)="toggleSupplyHint()"
+             [(ngModel)]="supplyHint"/>
+        <label class="form-label form-check-label" for="HNTCB-{{pathId}}" i18n>Supply Hint</label>
+      </div>
+      <div *ngIf="!editHint && supplyHint" class="d-inline-block alert alert-primary">
+        {{field.field_doc}}
+      </div>
+      <div *ngIf="supplyHint && editHint">
+        <label class="form-label" for="HNT-{{pathId}}" i18n>Hint</label>
+        <input id="HNT-{{pathId}}" class="form-control" type="text" [(ngModel)]="field.field_doc"/>
+      </div>
+    </div>
+
+    <div *ngIf="withTransforms" class="reporter-field-xform">
+
+      <label for="TR-{{pathId}}" class="form-label" i18n>Transform</label>
+      <select id="TR-{{pathId}}" class="form-select" (change)="transformChange($event)" [disabled]="disabled || field.force_transform || editorMode == 'report'">
+        <option *ngFor="let t of transforms" value="{{t.name}}" selected="{{ field.transform.name === t.name ? 'selected' : '' }}">
+          <span *ngIf="t.name === 'Bare'" i18n>Raw Data</span>
+          <span *ngIf="t.name === 'upper'" i18n>Upper Case</span>
+          <span *ngIf="t.name === 'lower'" i18n>Lower Case</span>
+          <span *ngIf="t.name === 'substring'" i18n>Substring</span>
+          <span *ngIf="t.name === 'day_name'" i18n>Day Name</span>
+          <span *ngIf="t.name === 'month_name'" i18n>Month Name</span>
+          <span *ngIf="t.name === 'doy'" i18n>Day of Year</span>
+          <span *ngIf="t.name === 'woy'" i18n>Week of Year</span>
+          <span *ngIf="t.name === 'moy'" i18n>Month of Year</span>
+          <span *ngIf="t.name === 'qoy'" i18n>Quarter of Year</span>
+          <span *ngIf="t.name === 'dom'" i18n>Day of Month</span>
+          <span *ngIf="t.name === 'dow'" i18n>Day of Week</span>
+          <span *ngIf="t.name === 'year_trunc'" i18n>Year</span>
+          <span *ngIf="t.name === 'month_trunc'" i18n>Month</span>
+          <span *ngIf="t.name === 'date_trunc'" i18n>Date</span>
+          <span *ngIf="t.name === 'hour_trunc'" i18n>Hour</span>
+          <span *ngIf="t.name === 'quarter'" i18n>Quarter</span>
+          <span *ngIf="t.name === 'months_ago'" i18n>Months Ago</span>
+          <span *ngIf="t.name === 'hod'" i18n>Hour of Day</span>
+          <span *ngIf="t.name === 'quarters_ago'" i18n>Quarters Ago</span>
+          <span *ngIf="t.name === 'age'" i18n>Age</span>
+          <span *ngIf="t.name === 'first'" i18n>First Value</span>
+          <span *ngIf="t.name === 'last'" i18n>Last Value</span>
+          <span *ngIf="t.name === 'min'" i18n>Minimum Value</span>
+          <span *ngIf="t.name === 'max'" i18n>Maximum Value</span>
+          <span *ngIf="t.name === 'count'" i18n>Count</span>
+          <span *ngIf="t.name === 'count_distinct'" i18n>Count</span>{{ '' // This is currently the only Count transform offered; if that's changed this will need its 'Distinct' back. }}
+          <span *ngIf="t.name === 'sum'" i18n>Sum</span>
+          <span *ngIf="t.name === 'average'" i18n>Average</span>
+          <span *ngIf="t.name === 'first5'" i18n>First 5 characters</span>
+        </option>
+      </select>
+
+      <div *ngIf="editorMode === 'template' && field.operator.arity > 0">
+        <div class="form-check pt-2">
+        <input class="form-check-input reporter-checkbox" type="checkbox" id="IV-{{pathId}}"
+          (click)="toggleFilterValueSupplied()" name="supply-filter-value" [(ngModel)]="withValueInput" />
+        <label class="form-label form-check-label" for="IV-{{pathId}}" i18n>Supply filter value</label>
+        </div>
+      </div>
+
+    </div>
+
+    <div *ngIf="withOperators" class="reporter-field-value row">
+     <div class="col">
+     <label for="OP-{{pathId}}" class="form-label" i18n>Operator</label>
+     <select id="OP-{{pathId}}" class="form-select" (change)="operatorChange($event)" [disabled]="disabled || field.force_operator || editorMode == 'report'">
+       <option *ngFor="let o of operators" value="{{o.name}}" selected="{{ field.operator.name === o.name ? 'selected' : '' }}">
+         <span *ngIf="o.name === '= any'" i18n>Equals</span> {{ '' // this and the next are used for bools only }}
+         <span *ngIf="o.name === '<> any'" i18n>Does Not Equal</span>
+         <span *ngIf="o.name === '='" i18n>Equals</span>
+         <span *ngIf="o.name === 'like'" i18n>Contains Matching Substring (Case Sensitive)</span>{{ '' // This is on hiatus along with non-distinct counting }}
+         <span *ngIf="o.name === 'ilike'" i18n>Contains String</span>
+         <span *ngIf="o.name === '>' && (field.transform.final_datatype || field.datatype) === 'timestamp'" i18n>After</span>
+         <span *ngIf="o.name === '>' && (field.transform.final_datatype || field.datatype) !== 'timestamp'" i18n>Greater Than</span>
+         <span *ngIf="o.name === '>=' && (field.transform.final_datatype || field.datatype) === 'timestamp'" i18n>On or After</span>
+         <span *ngIf="o.name === '>=' && (field.transform.final_datatype || field.datatype) !== 'timestamp'" i18n>Greater Than or Equal to</span>
+         <span *ngIf="o.name === '<' && (field.transform.final_datatype || field.datatype) === 'timestamp'" i18n>Before</span>
+         <span *ngIf="o.name === '<' && (field.transform.final_datatype || field.datatype) !== 'timestamp'" i18n>Less Than</span>
+         <span *ngIf="o.name === '<=' && (field.transform.final_datatype || field.datatype) === 'timestamp'" i18n>On or Before</span>
+         <span *ngIf="o.name === '<=' && (field.transform.final_datatype || field.datatype) !== 'timestamp'" i18n>Less Than or Equal to</span>
+         <span *ngIf="o.name === 'in'" i18n>In List</span>
+         <span *ngIf="o.name === 'not in'" i18n>Not In List</span>
+         <span *ngIf="o.name === 'between'" i18n>Between</span>
+         <span *ngIf="o.name === 'not between'" i18n>Not Between</span>
+         <span *ngIf="o.name === 'is'" i18n>Is Null</span>
+         <span *ngIf="o.name === 'is not'" i18n>Is Not Null</span>
+         <span *ngIf="o.name === 'is blank'" i18n>Is Null or Blank</span>
+         <span *ngIf="o.name === 'is not blank'" i18n>Is Not Null or Blank</span>
+       </option>
+     </select>
+     </div>
+
+      <div class="col" *ngIf="editorMode !== 'none' && withValueInput ">
+        <div *ngIf="field.operator.name.indexOf('in') > -1" class="row pt-2">
+          <label for="FV-{{pathId}}" class="form-label" i18n>Filter value</label>
+          <div [ngSwitch]="field.transform.final_datatype || field.datatype">
+            <div *ngSwitchCase="'link'">
+              <eg-multi-select
+                *ngIf="idl.getClassSelector(field.class, true)"
+                domId="FV-{{pathId}}"
+                [disabled]="disabled || editorMode === 'report' && field.with_value_input"
+                [linkedLibraryLabel]="field.org_filter_field"
+                [idlBaseQuery]="linkedIdlBaseQuery"
+                [idlClass]="field.class"
+                [startValue]="getBracketListValue(field.filter_value)"
+                (onChange)="setBracketListValue($event)">
+              </eg-multi-select>
+              <eg-text-multi-select
+                *ngIf="!idl.getClassSelector(field.class, true)"
+                domId="FV-{{pathId}}"
+                [disabled]="disabled || editorMode === 'report' && field.with_value_input"
+                [startValue]="field.filter_value"
+                (onChange)="setSingleValue($event)">
+              </eg-text-multi-select>
+            </div>
+            <div class="reporter-field-value-input-inner reporter-field-value-org-unit" *ngSwitchCase="'org_unit'">
+              <eg-tree
+                id="FV-{{pathId}}"
+                [disabled]="disabled || editorMode === 'report' && field.with_value_input"
+                [tree]="orgTree"
+                (nodeClicked)="combineLabelAndStateClick($event)"
+                (stateFlagClicked)="saveFlaggedOrgs()">
+              </eg-tree>
+            </div>
+            <div *ngSwitchDefault>
+              <eg-text-multi-select
+                domId="FV-{{pathId}}"
+                [disabled]="disabled || editorMode === 'report' && field.with_value_input"
+                [startValue]="field.filter_value"
+                (onChange)="setSingleValue($event)">
+              </eg-text-multi-select>
+            </div>
+          </div>
+        </div>
+
+        <div *ngIf="field.operator.name.indexOf('between') > -1">
+          <div class="reporter-field-value-input pt-2" [ngSwitch]="field.transform.final_datatype || field.datatype">
+            <label for="FV-{{pathId}}-1" class="form-label" i18n>Filter value</label>
+            <div *ngSwitchCase="'interval'" class="row">
+              <div class="col-md-5 pe-0">
+              <label for="FV-{{pathId}}-1" class="visually-hidden form-label" i18n>Beginning of filter range</label>
+              <eg-interval-input
+                  domId="FV-{{pathId}}-1"
+                  [disabled]="disabled || editorMode === 'report' && field.with_value_input"
+                  [initialValue]="field.filter_value[0]"
+                  (onChange)="firstBetweenValue($event)"></eg-interval-input>
+              </div>
+              <div class="col-md-2 align-items-center text-center">
+                <span i18n>and</span>
+              </div>
+              <div class="col-md-5 ps-0">
+              <label for="FV-{{pathId}}-2" class="visually-hidden form-label" i18n>End of filter range</label>
+              <eg-interval-input
+                  domId="FV-{{pathId}}-2"
+                  [disabled]="disabled || editorMode === 'report' && field.with_value_input"
+                  [initialValue]="field.filter_value[1]"
+                  (onChange)="secondBetweenValue($event)"> </eg-interval-input>
+              </div>
+            </div>
+            <div *ngSwitchCase="'timestamp'" class="row relative-time-row">
+              <div *ngIf="field.transform.relative_time_input_transform" class="row">
+                <div class="form-check col-md-12 ps-2 pt-2">
+                  <input [disabled]="disabled || editorMode === 'report' && field.with_value_input"
+                    class="form-check-input ms-1 ps-0 reporter-checkbox " type="checkbox" id="RTIT-{{pathId}}" (change)="clearFilterValue()"
+                    [(ngModel)]="field.transform.relativeTransform" />
+                  <label class="form-label form-check-label" for="RTIT-{{pathId}}" i18n>Relative time value</label>
+                </div>
+              </div>
+
+              <div class="row">
+                <ng-container *ngIf="!field.transform.relativeTransform; else relativeTimeInputTransformBetweenTemplate">
+                  <div class="col-md-5 pe-0">
+                  <label for="FV-{{pathId}}-1" class="visually-hidden form-label" i18n>Beginning of filter date range</label>
+                  <eg-date-select
+                      domId="FV-{{pathId}}-1"
+                      [required]="true"
+                      [disabled]="disabled || editorMode === 'report' && field.with_value_input"
+                      [initialIso]="field.filter_value[0]"
+                      (onChangeAsIso)="firstBetweenValue($event)"></eg-date-select>
+                  </div>
+                  <div class="col-md-2 align-items-center text-center">
+                    <span i18n>and</span>
+                  </div>
+                  <div class="col-md-5 ps-0">
+                  <label for="FV-{{pathId}}-2" class="visually-hidden form-label" i18n>End of filter date range</label>
+                  <eg-date-select
+                      domId="FV-{{pathId}}-2"
+                      [required]="true"
+                      [disabled]="disabled || editorMode === 'report' && field.with_value_input"
+                      [initialIso]="field.filter_value[1]"
+                      (onChangeAsIso)="secondBetweenValue($event)"></eg-date-select>
+                  </div>
+                </ng-container>
+              </div>
+            </div>
+            <div *ngSwitchCase="'link'">{{ '' }}</div>
+            <div *ngSwitchCase="'org_unit'">{{ '' }}</div>
+            <div *ngSwitchCase="'bool'">{{ '' }}</div>
+            <div *ngSwitchDefault>
+              <div *ngIf="field.transform.relative_time_input_transform" class="row">
+                <div class="form-check col-md-12 ps-2 pt-2">
+                  <input [disabled]="disabled || editorMode === 'report' && field.with_value_input"
+                    class="form-check-input ms-1 ps-0 reporter-checkbox " type="checkbox" id="RTIT-{{pathId}}" (change)="clearFilterValue()"
+                    [(ngModel)]="field.transform.relativeTransform" />
+                  <label class="form-label form-check-label" for="RTIT-{{pathId}}" i18n>Relative time value</label>
+                </div>
+              </div>
+
+              <div class="row">
+                <ng-container *ngIf="!field.transform.relativeTransform; else relativeTimeInputTransformBetweenTemplate">
+                <div class="col-md-5 pe-0">
+                  <input
+                    class="form-control"
+                    placeholder="{{field.transform.hint || ''}}"
+                    type="text"
+                    id="FV-{{pathId}}-1" 
+                    [required]="true"
+                    [attr.aria-label]="'Beginning of filter range'" i18n-aria-label 
+                    value="{{field.filter_value[0]}}"
+                    (change)="firstBetweenValue($event.target.value)"
+                    [disabled]="disabled || editorMode === 'report' && field.with_value_input"/>
+                </div>
+                <div class="col-md-2 align-items-center text-center">
+                  <span i18n>and</span>
+                </div>
+                <div class="col-md-5 ps-0">
+                  <input
+                    class="form-control"
+                    placeholder="{{field.transform.hint || ''}}"
+                    type="text"
+                    id="FV-{{pathId}}-2" 
+                    [required]="true"
+                    [attr.aria-label]="'End of filter range'" i18n-aria-label 
+                    value="{{field.filter_value[1]}}"
+                    (change)="secondBetweenValue($event.target.value)"
+                    [disabled]="disabled || editorMode === 'report' && field.with_value_input"/>
+                </div>
+                </ng-container>
+              </div>
+
+            </div>
+          </div>
+        </div>
+
+        <div class="reporter-field-transform-inputs pt-2"
+          *ngIf="field.operator.name.indexOf('between') === -1 && field.operator.name.indexOf('in') === -1 && field.operator.name.indexOf('is') === -1">
+          <div [ngSwitch]="field.transform.final_datatype || field.datatype">
+            <label for="FV-{{pathId}}" class="form-label" i18n>Filter value</label>
+            <div *ngSwitchCase="'org_unit'">
+              <eg-org-family-select
+                domId="FV-{{pathId}}"
+                (onChange)="setOrgFamilyValue($event)"
+                [disabled]="disabled || editorMode === 'report' && field.with_value_input"
+                [selectedOrgId]="field._org_family_primaryOrgId"
+                [ancestorSelectorChecked]="field._org_family_includeAncestors"
+                [descendantSelectorChecked]="field._org_family_includeDescendants">
+              </eg-org-family-select>
+            </div>
+            <div *ngSwitchCase="'link'">
+              <eg-combobox i18n-placeholder placeholder="Select..." idlClass="{{field.class}}"
+                *ngIf="idl.getClassSelector(field.class, true)"
+                domId="FV-{{pathId}}"
+                [required]="true"
+                [disabled]="disabled || editorMode === 'report' && field.with_value_input"
+                [idlBaseQuery]="linkedIdlBaseQuery"
+                [idlIncludeLibraryInLabel]="field.org_filter_field"
+                [asyncSupportsEmptyTermClick]="true"
+                [selectedId]="field.filter_value"
+                (onChange)="setSingleValue($event[field.key])">
+              </eg-combobox>
+              <input
+                *ngIf="!idl.getClassSelector(field.class, true)"
+                id="FV-{{pathId}}"
+                [required]="true"
+                [disabled]="disabled || editorMode === 'report' && field.with_value_input"
+                class="form-control"
+                placeholder="{{field.transform.hint || ''}}"
+                type="text"
+                value="{{field.filter_value}}"
+                (change)="setSingleValue($event.target.value)" />
+            </div>
+            <div *ngSwitchCase="'timestamp'">
+              <div *ngIf="field.transform.relative_time_input_transform" class="row">
+                <div class="form-check pt-2">
+                  <input [disabled]="disabled || editorMode === 'report' && field.with_value_input" class="form-check-input reporter-checkbox"
+                    type="checkbox" id="RTIT-{{pathId}}" (change)="clearFilterValue()" [(ngModel)]="field.transform.relativeTransform" />
+                  <label class="form-label form-check-label" for="RTIT-{{pathId}}" i18n>Relative time value</label>
+                </div>
+              </div>
+
+              <ng-container *ngIf="!field.transform.relativeTransform; else relativeTimeInputTransformSimpleTemplate">
+                <eg-date-select
+                  [required]="true"
+                  domId="FV-{{pathId}}"
+                  [disabled]="disabled || editorMode === 'report' && field.with_value_input"
+                  [initialIso]="field.filter_value"
+                  (onChangeAsIso)="setSingleValue($event)"/>
+              </ng-container>
+            </div>
+            <div *ngSwitchCase="'interval'">
+              <eg-interval-input domId="FV-{{pathId}}" [disabled]="disabled || editorMode === 'report' && field.with_value_input" [initialValue]="field.filter_value" (onChange)="setSingleValue($event)"></eg-interval-input>
+            </div>
+            <div *ngSwitchCase="'bool'">
+              <select [required]="true" id="FV-{{pathId}}" class="form-select" [disabled]="disabled || editorMode === 'report' && field.with_value_input" (change)="setSingleValue($event.target.value)">
+                <option selected="{{ !field.filter_value ? 'selected' : '' }}" disabled="disabled" i18n>Select one</option>
+                <option value="{t}" selected="{{ field.filter_value === '{t}' ? 'selected' : '' }}" i18n>True</option>
+                <option value="{f}" selected="{{ field.filter_value === '{f}' ? 'selected' : '' }}" i18n>False</option>
+                <option value="{t,f}" selected="{{ (field.filter_value && (field.filter_value !== '{t}' && field.filter_value !== '{f}') ) ? 'selected' : '' }}" i18n>Both</option>
+              </select>
+            </div>
+
+            <div class="row relative-time-row" *ngSwitchDefault>
+              <div *ngIf="field.transform.relative_time_input_transform">
+                <div class="form-check pt-2">
+                  <input [disabled]="disabled || editorMode === 'report' && field.with_value_input" class="form-check-input reporter-checkbox"
+                    type="checkbox" id="RTIT-{{pathId}}" (change)="clearFilterValue()" [(ngModel)]="field.transform.relativeTransform" />
+                  <label class="form-label form-check-label" for="RTIT-{{pathId}}" i18n>Relative time value</label>
+                </div>
+              </div>
+
+              <ng-container *ngIf="!field.transform.relativeTransform; else relativeTimeInputTransformSimpleTemplate">
+                <input
+                  id="FV-{{pathId}}"
+                  [required]="true"
+                  [disabled]="disabled || editorMode === 'report' && field.with_value_input"
+                  class="form-control"
+                  placeholder="{{field.transform.hint || ''}}"
+                  type="text"
+                  value="{{field.filter_value}}"
+                  (change)="setSingleValue($event.target.value)" />
+              </ng-container>
+              
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+
+    <div *ngIf="withSortDirection" class="reporter-field-sortdir">
+      <label for="sortdir-{{pathId}}" class="form-label" i18n>Direction</label>
+      <select id="sortdir-{{pathId}}" class="form-select" (change)="directionChange($event)">
+
+        <option *ngIf="field.datatype === 'timestamp'" value="ascending" selected="{{ field.direction === 'ascending' ? 'selected' : '' }}" i18n>Later dates at the bottom</option>
+        <option *ngIf="field.datatype === 'number' || field.datatype === 'int' || field.datatype === 'float' || field.datatype === 'money'"
+          value="ascending" selected="{{ field.direction === 'ascending' ? 'selected' : '' }}" i18n>Larger numbers at the bottom</option>
+        <option *ngIf="field.datatype !== 'timestamp' && field.datatype !== 'number' && field.datatype !== 'int' && field.datatype !== 'float' && field.datatype !== 'money'"
+          value="ascending" selected="{{ field.direction === 'ascending' ? 'selected' : '' }}" i18n>Ascending (1, 2, a, b, A, B; FALSE, TRUE)</option>
+
+        <option *ngIf="field.datatype === 'timestamp'" value="descending" selected="{{ field.direction === 'descending' ? 'selected' : '' }}" i18n>Later dates at the top</option>
+        <option *ngIf="field.datatype === 'number' || field.datatype === 'int' || field.datatype === 'float' || field.datatype === 'money'"
+          value="descending" selected="{{ field.direction === 'descending' ? 'selected' : '' }}" i18n>Larger numbers at the top</option>
+        <option *ngIf="field.datatype !== 'timestamp' && field.datatype !== 'number' && field.datatype !== 'int' && field.datatype !== 'float' && field.datatype !== 'money'"
+          value="descending" selected="{{ field.direction === 'descending' ? 'selected' : '' }}" i18n>Descending (B, A, b, a, 2, 1; TRUE, FALSE)</option>
+
+      </select>
+    </div>
+
+    <div *ngIf="withUpDown" class="reporter-field-updown">
+      <button type="button" (click)="upAction()" class="btn btn-outline-primary btn-sm" [disabled]="disabled || disableUp" title="Move up" i18n-title [attr.aria-label]="'Move up'" i18n-aria-label><span class="material-icons">arrow_upward</span></button>
+      <button type="button" (click)="downAction()" class="btn btn-outline-primary btn-sm" [disabled]="disabled || disableDown" title="Move down" i18n-title [attr.aria-label]="'Move down'" i18n-aria-label><span class="material-icons">arrow_downward</span></button>
+    </div>
+
+    <p *ngIf="pathLabel && (withTransforms || withAlias)"
+      class="reporter-field-explainer reporter-field-path-label">{{pathLabel}}</p>
+
+  </div>
+
+</div>
+
+<ng-template #relativeTimeInputTransformSimpleTemplate>
+  <div class="form-group row">
+    <div class="input-group flex-wrap">
+      <input id="FV-{{pathId}}" class="form-control" type="number" value="{{field.filter_value?.params[0] * -1}}"
+        (change)="setSingleValue({transform: field.transform.relative_time_input_transform, params: [$event.target.value * -1]})"
+        [disabled]="disabled || editorMode === 'report' && field.with_value_input" [required]="true"/>
+      <label class="form-label input-group-text" [ngSwitch]="field.transform.relative_time_input_transform">
+        <ng-container *ngSwitchCase="'relative_year'" i18n>Year(s) ago</ng-container>
+        <ng-container *ngSwitchCase="'relative_month'" i18n>Month(s) ago</ng-container>
+        <ng-container *ngSwitchCase="'relative_date'" i18n>Day(s) ago</ng-container>
+      </label>
+    </div>
+  </div>
+</ng-template>
+
+<ng-template #relativeTimeInputTransformBetweenTemplate>
+  <div class="row">
+    <div class="col-md-5 pe-0">
+      <div class="input-group flex-wrap">
+        <input class="form-control" type="number" id="IV-{{pathId}}-1" value="{{field.filter_value[0]?.params[0] * -1}}"
+          (change)="firstBetweenValue({transform: field.transform.relative_time_input_transform, params: [$event.target.value * -1]})"
+          [disabled]="disabled || editorMode === 'report' && field.with_value_input" [required]="true"/>
+        <label for="IV-{{pathId}}-1" class="form-label input-group-text" [ngSwitch]="field.transform.relative_time_input_transform">
+          <ng-container *ngSwitchCase="'relative_year'" i18n>Year(s) ago</ng-container>
+          <ng-container *ngSwitchCase="'relative_month'" i18n>Month(s) ago</ng-container>
+          <ng-container *ngSwitchCase="'relative_date'" i18n>Day(s) ago</ng-container>
+        </label>
+      </div>
+    </div>
+  
+    <div class="col-md-2 align-items-center text-center">
+      <span i18n>and</span>
+    </div>
+  
+    <div class="col-md-5 ps-0">
+      <div class="input-group flex-wrap">
+        <input class="form-control" type="number" id="IV-{{pathId}}-2" value="{{field.filter_value[1]?.params[0] * -1}}"
+          (change)="secondBetweenValue({transform: field.transform.relative_time_input_transform, params: [$event.target.value * -1]})"
+          [disabled]="disabled || editorMode === 'report' && field.with_value_input" [required]="true"/>
+        <label for="IV-{{pathId}}-2" class="form-label input-group-text" [ngSwitch]="field.transform.relative_time_input_transform">
+          <ng-container *ngSwitchCase="'relative_year'" i18n>Year(s) ago</ng-container>
+          <ng-container *ngSwitchCase="'relative_month'" i18n>Month(s) ago</ng-container>
+          <ng-container *ngSwitchCase="'relative_date'" i18n>Day(s) ago</ng-container>
+        </label>
+      </div>
+    </div>
+  </div>
+
+</ng-template>

@@ -1,0 +1,42 @@
+.reporter-name-empty {
+  border-left: 5px solid #FA787E;
+}
+
+.reporter-name-notempty {
+  border-left: 5px solid #78FA89;
+}
+
+#source-tree li input[type="checkbox"] {
+  margin-right: .25rem;
+}
+
+#basic-info-name {
+  display: grid;
+  gap: 1rem;
+  grid-template-areas: 
+    "name docs folder"
+    "desc desc folder";
+  grid-template-columns: 1fr 1fr 1fr;
+  margin-bottom: 1rem;
+}
+
+.edit-template-name {
+  grid-area: name;
+}
+
+.edit-template-folder {
+  grid-area: folder;
+}
+
+.edit-template-docs {
+  grid-area: docs;
+}
+
+.edit-template-desc {
+  grid-area: desc;
+}
+
+#basic-info-name .form-label {
+  display: block;
+  font-weight: bold;
+}

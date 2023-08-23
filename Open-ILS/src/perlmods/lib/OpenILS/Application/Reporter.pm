@@ -108,26 +108,49 @@ __PACKAGE__->register_method(
     method => 'retrieve_folder_data'
 );
 
+__PACKAGE__->register_method(
+    api_name => 'open-ils.reporter.folder_data.retrieve.stream',
+    method => 'retrieve_folder_data',
+    stream => 1
+);
+
 sub retrieve_folder_data {
-    my( $self, $conn, $auth, $type, $folderid, $limit, $offset ) = @_;
+    my( $self, $conn, $auth, $type, $folderid, $limit, $offset, $order_by ) = @_;
     my $e = new_rstore_editor(authtoken=>$auth);
     return $e->event unless $e->checkauth;
+
+    if (!ref($folderid)) {
+        $folderid = { folder => $folderid };
+    }
+
     if($type eq 'output') {
         return $e->event unless $e->allowed(['RUN_REPORTS','VIEW_REPORT_OUTPUT']);
     } else {
         return $e->event unless $e->allowed('RUN_REPORTS');
     }
+
     my $meth = "search_reporter_${type}";
     my $class = 'rr';
     $class = 'rt' if $type eq 'template';
+
+    unless ($order_by) {
+        $order_by = { $class => 'create_time DESC' };
+    }
+
     my $flesh = {
         flesh => 1,
         flesh_fields => { $class => ['owner']},
-        order_by => { $class => 'create_time DESC'}
+        order_by => $order_by
     };
     $flesh->{limit} = $limit if $limit;
     $flesh->{offset} = $offset if $offset;
-    return $e->$meth([{ folder => $folderid }, $flesh]);
+
+    my $list = $e->$meth([$folderid, $flesh]);
+    if ($self->api_name =~ /stream$/) {
+        $conn->respond($_) for @$list;
+        return;
+    }
+    return $list;
 }
 
 __PACKAGE__->register_method(
@@ -139,13 +162,13 @@ sub retrieve_schedules {
     return $e->event unless $e->checkauth;
     return $e->event unless $e->allowed(['RUN_REPORTS','VIEW_REPORT_OUTPUT']);
 
-    my $search = { folder => $folderId };
+    my $search = ref($folderId) ? $folderId : { folder => $folderId };
     my $query = [
-        { folder => $folderId },
+        $search,
         {
             order_by => { rs => 'run_time DESC' } ,
-            flesh => 1,
-            flesh_fields => { rs => ['report'] }
+            flesh => 2,
+            flesh_fields => { rs => ['report'], rr => ['template'] }
         }
     ];
 
@@ -237,11 +260,12 @@ __PACKAGE__->register_method(
     api_name => 'open-ils.reporter.template.retrieve',
     method => 'retrieve_template');
 sub retrieve_template {
-    my( $self, $conn, $auth, $id ) = @_;
+    my( $self, $conn, $auth, $id, $opts ) = @_;
+    $opts ||= {};
     my $e = new_rstore_editor(authtoken=>$auth);
     return $e->event unless $e->checkauth;
     return $e->event unless $e->allowed(['RUN_REPORTS','VIEW_REPORT_OUTPUT']);
-    my $t = $e->retrieve_reporter_template($id)
+    my $t = $e->retrieve_reporter_template([$id,$opts])
         or return $e->event;
     return $t;
 }
@@ -251,11 +275,12 @@ __PACKAGE__->register_method(
     api_name => 'open-ils.reporter.report.retrieve',
     method => 'retrieve_report');
 sub retrieve_report {
-    my( $self, $conn, $auth, $id ) = @_;
+    my( $self, $conn, $auth, $id, $opts ) = @_;
+    $opts ||= {};
     my $e = new_rstore_editor(authtoken=>$auth);
     return $e->event unless $e->checkauth;
     return $e->event unless $e->allowed(['RUN_REPORTS','VIEW_REPORT_OUTPUT']);
-    my $r = $e->retrieve_reporter_report($id)
+    my $r = $e->retrieve_reporter_report([$id,$opts])
         or return $e->event;
     return $r;
 }
@@ -771,7 +796,7 @@ sub search_templates {
     my $template_ids = $e->json_query($query);
 
     # Flesh template owner for consistency with retrieve_folder_data
-    my $flesh = {flesh => 1, flesh_fields => {rt => ['owner']}};
+    my $flesh = {flesh => 1, flesh_fields => {rt => ['owner','folder']}};
 
     $client->respond($e->retrieve_reporter_template([$_->{id}, $flesh])) 
         for @$template_ids;

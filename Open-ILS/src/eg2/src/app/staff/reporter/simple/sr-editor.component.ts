@@ -9,7 +9,7 @@ import {ConfirmDialogComponent} from '@eg/share/dialog/confirm.component';
 import {IdlService, IdlObject} from '@eg/core/idl.service';
 import {PcrudService} from '@eg/core/pcrud.service';
 import {StringComponent} from '@eg/share/string/string.component';
-import {SimpleReporterService, SRTemplate} from './simple-reporter.service';
+import {ReporterService, SRTemplate} from '../share/reporter.service';
 
 @Component({
     templateUrl: './sr-editor.component.html',
@@ -47,7 +47,7 @@ export class SREditorComponent implements OnInit {
         private evt: EventService,
         private idl: IdlService,
         private pcrud: PcrudService,
-        private srSvc: SimpleReporterService
+        private srSvc: ReporterService
     ) {
         const id = this.route.snapshot.paramMap.get('id');
         if ( id === null ) {
@@ -194,19 +194,19 @@ export class SREditorComponent implements OnInit {
     saveTemplate = (scheduleNow) => {
         this.templ.name = this.name;
 
-        this.srSvc.saveTemplate(this.templ, scheduleNow)
-            .then(rt => {
-                this._isDirty = false;
-                // It appears that calling pcrud.create will return the newly created object,
-                // while pcrud.update just gives you back the id of the updated object.
-                if ( typeof rt === 'object' ) {
-                    this.templ = new SRTemplate(rt); // pick up the id and create_time fields
-                }
-                this.templateSavedString.current()
-                    .then(str => {
-                        this.toast.success(str);
-                    });
-                if (scheduleNow) {
+        this.srSvc.saveSimpleTemplate(this.templ, scheduleNow)
+        .then(rt => {
+            this._isDirty = false;
+            // It appears that calling pcrud.create will return the newly created object,
+            // while pcrud.update just gives you back the id of the updated object.
+            if ( typeof rt === 'object' ) {
+                this.templ = new SRTemplate(rt); // pick up the id and create_time fields
+            }
+            this.templateSavedString.current()
+            .then(str => {
+                this.toast.success(str);
+            });
+            if (scheduleNow) {
                 // we're done, so jump to the main page
                     this.router.navigate(['/staff/reporter/simple']);
                 } else if (this.isNew) {

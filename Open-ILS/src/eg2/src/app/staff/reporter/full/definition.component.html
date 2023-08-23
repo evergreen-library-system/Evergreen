@@ -1,0 +1,199 @@
+<eg-string #templateSaved i18n-text text="Report Saved Successfully"></eg-string>
+<eg-string #templateSaveError i18n-text text="Error Saving Report"></eg-string>
+<eg-string #newTitle i18n-text text="New Report"></eg-string>
+<eg-string #viewTitle i18n-text text="View Report"></eg-string>
+<eg-string #editTitle i18n-text text="Edit Report"></eg-string>
+<eg-string #cloneTitle i18n-text text="Edit Report Clone"></eg-string>
+
+<eg-staff-banner #banner [bannerText]="pageTitle">
+</eg-staff-banner>
+
+<eg-confirm-dialog
+  #changeTypeDialog
+  i18n-dialogTitle i18n-dialogBody
+  dialogTitle="Confirm Report Type Change"
+  dialogBody="You have already started creating a report; changing the report type will remove your progress. Continue?"
+></eg-confirm-dialog>
+
+<eg-confirm-dialog
+  #closeFormDialog
+  i18n-dialogTitle i18n-dialogBody
+  dialogTitle="Confirm Close Report Editor"
+  dialogBody="Close report editor, abandoning any unsaved changes?"
+></eg-confirm-dialog>
+
+<div class="row">
+  <div class="col-sm-2">
+    <label class="form-label" for="report-name" i18n>Report Name</label>
+  </div>
+  <div class="col-lg-3">
+    <input [disabled]="isView" id="report-name" class="form-control reporter-name-{{ (name !== '' && name !== null) ? 'not' : '' }}empty" [(ngModel)]="name" (ngModelChange)="dirty()" />
+  </div>
+
+  <div class="col-sm-2">
+    <label class="form-label" for="template-name" i18n>Template Name</label>
+  </div>
+  <div class="col-lg-3">
+    <input disabled id="template-name" class="form-control" [ngModel]="templ.name"/>
+  </div>
+</div>
+
+<div class="row">
+  <div class="col-sm-2">
+    <label class="form-label" for="report-description" i18n>Report Description</label>
+  </div>
+  <div class="col-lg-3">
+    <input [disabled]="isView" id="report-description" class="form-control" [(ngModel)]="description" (ngModelChange)="dirty()" />
+  </div>
+
+  <div class="col-sm-2">
+    <label class="form-label" for="template-description" i18n>Template Description</label>
+  </div>
+  <div class="col-lg-3">
+    <input disabled id="template-description" class="form-control" [ngModel]="templ.description"/>
+  </div>
+</div>
+
+<div *ngIf="rptType !== ''" class="row mt-2" id="definition-editor-main">
+  <div class="col-lg-12">
+    <ul ngbNav #srEditorTabs="ngbNav" class="nav-tabs" [keyboard]="true" [roles]="false" role="tablist" [activeId]="selectedTab">
+
+      <li role="presentation" [ngbNavItem]="'rptDisplayFields'">
+        <a role="tab" ngbNavLink (click)="changeToTab('rptDisplayFields')" i18n>Columns</a>
+        <ng-template ngbNavContent>
+          <div class="row mt-3">
+            <div class="col-auto">
+              <button type="button" class="btn btn-primary order-2" (click)="changeToTab('rptFilterFields')" i18n>Next</button>
+            </div>
+          </div>
+		<div id="new-report-columns" class="row">
+          <ng-container *ngFor="let f of templ.displayFields; index as idx">
+            <eg-reporter-field
+              *ngIf="!hideField(f)"
+              [field]=f
+              [disabled]="isView"
+              [editorMode]="'report'"
+              [editHint]=false
+              [editAlias]=false
+              [withAlias]=true
+              [withDeselect]=false
+              [withTransforms]=true
+              [withOperators]=false
+              [withValueInput]=false
+            >
+            </eg-reporter-field>
+          </ng-container>
+
+          <div class="row mt-3">
+            <div class="col-auto">
+              <button type="button" class="btn btn-primary order-2" (click)="changeToTab('rptFilterFields')" i18n>Next</button>
+            </div>
+            <div class="col-auto">
+              <button type="button" *ngIf="isView" class="btn btn-outline-dark order-1" (click)="closeForm()" i18n>Close</button>
+              <button type="button" *ngIf="!isView" class="btn btn-outline-dark order-1" (click)="closeForm()" i18n>Cancel</button>
+            </div>
+          </div>
+ 		</div>
+
+        </ng-template>
+      </li>
+
+      <li role="presentation" [ngbNavItem]="'rptFilterFields'">
+        <a role="tab" ngbNavLink (click)="changeToTab('rptFilterFields')" i18n>Filters</a>
+        <ng-template ngbNavContent>
+          <div class="row mt-3">
+            <div class="col-auto order-2">
+              <button type="button" class="btn btn-primary" (click)="changeToTab('rptOutputOptions')" i18n>Next</button>
+            </div>
+            <div class="col-auto order-1">
+              <button type="button" class="btn btn-outline-primary" (click)="changeToTab('rptDisplayFields')" i18n>Previous</button>
+            </div>
+          </div>
+		<div id="new-report-filters" class="row">
+          <ng-container *ngFor="let f of templ.filterFields; index as idx">
+            <eg-reporter-field
+              *ngIf="!hideField(f)"
+              [field]=f
+              [disabled]="isView"
+              [editorMode]="'report'"
+              [editAlias]=false
+              [editHint]=false
+              [withDeselect]=false
+              [withTransforms]=true
+              [withOperators]=true
+              [withValueInput]=true
+            >
+            </eg-reporter-field>
+          </ng-container>
+
+          <div class="row mt-3">
+            <div class="col-auto order-2">
+              <button type="button" class="btn btn-primary" (click)="changeToTab('rptOutputOptions')" i18n>Next</button>
+            </div>
+            <div class="col-auto order-1">
+              <button type="button" class="btn btn-outline-primary" (click)="changeToTab('rptDisplayFields')" i18n>Previous</button>
+            </div>
+          </div>
+          <div class="row mt-5">
+            <div class="col-auto">
+              <button type="button" *ngIf="isView" class="btn btn-outline-dark" (click)="closeForm()" i18n>Close</button>
+              <button type="button" *ngIf="!isView" class="btn btn-outline-dark" (click)="closeForm()" i18n>Cancel</button>
+            </div>
+          </div>
+ 		</div>
+
+        </ng-template>
+      </li>
+
+      <li role="presentation" [ngbNavItem]="'rptOutputOptions'">
+        <a role="tab" ngbNavLink (click)="changeToTab('rptOutputOptions')" i18n>Layout and Scheduling</a>
+        <ng-template ngbNavContent>
+          <div class="row mt-3">
+            <div class="col-auto order-1">
+              <button type="button" class="btn btn-outline-primary ms-1" (click)="changeToTab('rptFilterFields')" i18n>Previous</button>
+            </div>
+          </div>
+          <eg-reporter-output-options
+            [advancedMode]="true"
+            [templ]="templ"
+            [disabled]="isView"
+          ></eg-reporter-output-options>
+
+          <div *ngIf="(isEdit && !readyToSave()) || (!isView && !readyToSchedule())" class="row mt-3">
+            <div class="col-sm-1 pt-0" i18n>Errors</div>
+            <div class="col-sm-3 alert alert-warning">
+              <ul class="m-0">
+                <li *ngIf="!name" i18n>Report name not set</li>
+                <li *ngIf="!RSvc.reportFolder" i18n>Report folder not set</li>
+                <li *ngIf="!RSvc.outputFolder" i18n>Output folder not set</li>
+                <li *ngIf="filtersWithoutValues().length" i18n>Filters are missing required values</li>
+              </ul>
+            </div>
+          </div>
+
+          <div class="row mt-3">
+            <div *ngIf="isEdit" class="col-auto order-2">
+              <button type="button" [ngClass]="{'btn-success' : readyToSave(), 'btn-normal' : !readyToSave()}" class="btn" (click)="saveDefinition()" [disabled]="!readyToSave()" i18n>Save Report</button>
+            </div>
+            <div *ngIf="!isView" class="col-auto order-2">
+              <button type="button" [ngClass]="{'btn-success' : readyToSchedule(), 'btn-normal' : !readyToSchedule()}" class="btn" (click)="saveAndScheduleDefinition()" [disabled]="!readyToSchedule()" i18n>Save and schedule report</button>
+            </div>
+            <div class="col-auto order-1">
+              <button type="button" class="btn btn-outline-primary ms-1" (click)="changeToTab('rptFilterFields')" i18n>Previous</button>
+            </div>
+          </div>
+          <div class="row mt-5">
+            <div class="col-auto">
+              <button type="button" *ngIf="isView" class="btn btn-outline-dark ms-1" (click)="closeForm()" i18n>Close</button>
+              <button type="button" *ngIf="!isView" class="btn btn-outline-dark ms-1" (click)="closeForm()" i18n>Cancel</button>
+            </div>
+          </div>
+        </ng-template>
+
+      </li>
+
+    </ul>
+
+    <div [ngbNavOutlet]="srEditorTabs"></div>
+  </div>
+</div>

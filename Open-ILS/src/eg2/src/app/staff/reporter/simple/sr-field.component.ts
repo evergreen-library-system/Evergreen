@@ -2,7 +2,7 @@ import {Component, Input, Output, EventEmitter, OnInit} from '@angular/core';
 import {IdlObject} from '@eg/core/idl.service';
 import {OrgService} from '@eg/core/org.service';
 import {AuthService} from '@eg/core/auth.service';
-import {SimpleReporterService} from './simple-reporter.service';
+import {ReporterService} from '../share/reporter.service';
 
 @Component({
     selector: 'eg-sr-field',
@@ -38,14 +38,14 @@ export class SRFieldComponent implements OnInit {
     constructor(
         private org: OrgService,
         private auth: AuthService,
-        private srSvc: SimpleReporterService
+        private srSvc: ReporterService
     ) {
     }
 
     ngOnInit() {
 
         if ( this.withTransforms ) {
-            this.transforms = this.srSvc.getTransformsForDatatype(this.field.datatype);
+            this.transforms = this.srSvc.getTransformsForDatatype(this.field.datatype, true);
         }
 
         if ( this.withOperators ) {

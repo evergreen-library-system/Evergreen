@@ -1,0 +1,131 @@
+<eg-string #templateSaved i18n-text text="Template Saved Successfully"></eg-string>
+<eg-string #templateSaveError i18n-text text="Error Saving Template"></eg-string>
+<eg-string #newTitle i18n-text text="New Template"></eg-string>
+<eg-string #editTitle i18n-text text="Edit Template"></eg-string>
+<eg-string #cloneTitle i18n-text text="Clone Template"></eg-string>
+
+<eg-staff-banner #banner [bannerText]="pageTitle">
+</eg-staff-banner>
+
+<eg-confirm-dialog
+  #changeTypeDialog
+  i18n-dialogTitle i18n-dialogBody
+  dialogTitle="Confirm Template Type Change"
+  dialogBody="You have already started creating a template; changing the template type will remove your progress. Continue?"
+></eg-confirm-dialog>
+
+<eg-confirm-dialog
+  #closeFormDialog
+  i18n-dialogTitle i18n-dialogBody
+  dialogTitle="Confirm Close Template Editor"
+  dialogBody="Close template editor, abandoning any unsaved changes?"
+></eg-confirm-dialog>
+
+<div class="row" id="basic-info-name">
+  <div class="edit-template-name">
+    <label class="form-label" for="template-name" i18n>Template Name</label>
+    <input id="template-name" class="form-control reporter-name-{{ (name !== '' && name !== null) ? 'not' : '' }}empty" [(ngModel)]="name" (ngModelChange)="dirty()" />
+  </div>
+  <div class="edit-template-docs">
+    <label class="form-label" for="template-docs" i18n>Documentation URL</label>
+    <input id="template-docs" class="form-control" [(ngModel)]="doc_url" (ngModelChange)="dirty()" />
+  </div>
+  <div class="edit-template-folder">
+    <label class="form-label" for="template-folder" i18n>Folder</label>
+    <span *ngIf="folder" id="template-folder">{{folder.name()}}</span>
+    <span *ngIf="!folder" id="template-folder" class="badge badge-danger" i18n>Folder is required</span>
+    <eg-tree [tree]="folderTree" (nodeClicked)="folderNodeSelected($event)"/>
+  </div>
+  <div class="edit-template-desc">
+    <label class="form-label" for="template-desc" i18n>Template Description</label>
+    <textarea id="template-desc" class="form-control" [(ngModel)]="description" (ngModelChange)="dirty()">{{description}}</textarea>
+  </div>
+</div>
+
+<div class="row" id="basic-info-save">
+  <div class="col-sm-2">
+    <button type="button" class="btn btn-success" (click)="saveTemplate(true)" [disabled]="!readyToSave()" i18n>Save</button>
+    <button type="button" class="btn btn-outline-dark ms-1" (click)="closeForm()" i18n>Close</button>
+  </div>
+</div>
+
+<br/><hr/><br/>
+
+<div class="row" id="source-select">
+  <div class="col-lg-3">
+    <select class="form-select" id="template-source" [ngModelOptions]="{standalone: true}" 
+      [(ngModel)]="rptType" (change)="changeReportType()" [disabled]="!isNew"
+      [attr.aria-label]="'Select Source'" i18n-aria-label>
+      <option value="" i18n disabled="disabled">Select Source</option>
+      <optgroup i18n-label label="Core sources">
+        <option *ngFor="let c of RSvc.getCoreSources()" value="{{c.name}}">{{c.label || c.name }}</option>
+      </optgroup>
+      <optgroup i18n-label label="Other sources">
+        <option *ngFor="let c of RSvc.getNonCoreSources()" value="{{c.name}}">{{c.label || c.name }}</option>
+      </optgroup>
+    </select>
+  </div>
+  <div class="col-lg-9">
+    <h2 *ngIf="currentIdlNode" title="{{currentIdlNode.id}}">{{currentIdlNode.label}}</h2>
+  </div>
+</div>
+<div class="row" id="source-tree">
+
+  <div class="col-sm-3">
+    <eg-tree
+      [showExpandAll]="false"
+      [tree]="currentIdlTree"
+      (nodeClicked)="idlTreeNodeSelected($event)"
+      (stateFlagClicked)="idlTreeNodeRequired($event)"
+    ></eg-tree>
+  </div>
+
+  <div class="col-sm-9">
+    <div *ngIf="rptType !== ''" class="row mt-2" id="reporter-editor-main">
+      <div class="col-lg-12">
+        <ul ngbNav #EditorTabs="ngbNav" class="nav-tabs" [keyboard]="true" [roles]="false" role="tablist">
+    
+          <li role="presentation" [ngbNavItem]="'rptFields'">
+            <a role="tab" ngbNavLink i18n>Display Fields</a>
+    	<ng-template ngbNavContent>
+              <eg-reporter-field-chooser
+                [editorMode]="'template'"
+                [fieldType]="'display'"
+                [allFields]="allFields"
+                [fieldGroups]="fieldGroups"
+                [(selectedFields)]="templ.displayFields"
+                (selectedFieldsChange)="dirty()"
+                [(orderByNames)]="templ.orderByNames"
+                (orderByNamesChange)="dirty()"
+              >
+              </eg-reporter-field-chooser>
+            </ng-template>
+          </li>
+    
+   
+          <li role="presentation" [ngbNavItem]="'rptFilterFields'">
+            <a role="tab" ngbNavLink i18n>Filters</a>
+    	<ng-template ngbNavContent>
+              <eg-reporter-field-chooser
+                [fieldType]="'filter'"
+                [allFields]="allFields"
+                [fieldGroups]="fieldGroups"
+                [(selectedFields)]="templ.filterFields"
+                (selectedFieldsChange)="dirty()"
+                [listFields]="templ.displayFields"
+              >
+              </eg-reporter-field-chooser>
+            </ng-template>
+          </li>
+
+           <li role="presentation" [ngbNavItem]="'rptSortFields'">
+            <a role="tab" ngbNavLink i18n>Report Layout</a>
+    	<ng-template ngbNavContent><eg-reporter-sort-order [(fields)]="templ.displayFields" [(orderByNames)]="templ.orderByNames" (orderByNamesChange)="dirty()"></eg-reporter-sort-order></ng-template>
+          </li>
+    
+        </ul>
+        <div [ngbNavOutlet]="EditorTabs"></div>
+      </div>
+    </div>
+  </div>
+</div>

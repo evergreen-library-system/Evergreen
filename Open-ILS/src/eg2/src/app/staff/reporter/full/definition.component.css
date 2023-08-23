@@ -1,0 +1,7 @@
+.reporter-name-empty {
+  border-left: 5px solid #FA787E;
+}
+
+.reporter-name-notempty {
+  border-left: 5px solid #78FA89;
+}

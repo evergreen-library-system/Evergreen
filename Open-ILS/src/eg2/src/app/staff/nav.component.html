@@ -785,10 +785,10 @@
             <span class="material-icons" aria-hidden="true">business_center</span>
             <span i18n>Booking Administration</span>
           </a>
-          <a class="dropdown-item" ngbDropdownItem
-            href="/eg/staff/reporter/legacy/main"
-            (click)="isMenuCollapsed = true" 
-            (keydown.space)="isMenuCollapsed = true" 
+          <a class="dropdown-item" ngbDropdownItem routerLinkActive="active"
+          ariaCurrentWhenActive="page" routerLink="/staff/reporter/full"
+            (click)="isMenuCollapsed = true"
+            (keydown.space)="isMenuCollapsed = true"
             (keydown.enter)="isMenuCollapsed = true">
             <span class="material-icons" aria-hidden="true">insert_chart</span>
             <span i18n>Reports</span>

@@ -2,7 +2,7 @@ import {NgModule} from '@angular/core';
 import {RouterModule, Routes, RouterStateSnapshot, ActivatedRouteSnapshot} from '@angular/router';
 import {SimpleReporterComponent} from './simple-reporter.component';
 import {SREditorComponent} from './sr-editor.component';
-import {SimpleReporterServiceResolver} from './simple-reporter.service';
+import {SimpleReporterServiceResolver} from '../share/reporter.service';
 
 const routes: Routes = [
     { path: '',

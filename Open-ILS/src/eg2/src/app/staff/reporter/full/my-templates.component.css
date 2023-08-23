@@ -1,0 +1,15 @@
+.template-folders .eg-grid-toolbar h2:before {
+  display: inline;
+  font-family: "Material Icons";
+  font-size: inherit;
+  /* folder_open */
+  content: "\e2c8";
+}
+
+.template-search-results .eg-grid-toolbar h2:before {
+  display: inline;
+  font-family: "Material Icons";
+  font-size: inherit;
+  /* topic */
+  content: "\f1c8";
+}

@@ -1,0 +1,144 @@
+<ng-template #promptNewFolderOutputStringTmpl i18n>Enter a new folder name</ng-template>
+<eg-string #newF [template]="promptNewFolderOutputStringTmpl"></eg-string>
+
+<eg-prompt-dialog
+  #promptNewFolder
+  i18n-dialogTitle
+  dialogTitle="Create a top-level folder"
+></eg-prompt-dialog>
+
+<eg-staff-banner bannerText="Evergreen Reports" i18n-bannerText>
+</eg-staff-banner>
+
+<ul ngbNav #searchBrowseTabs="ngbNav" class="nav-tabs" [keyboard]="true" [roles]="false" role="tablist">
+  <li role="presentation" [ngbNavItem]="'browse'">
+    <a role="tab" ngbNavLink i18n>Browse</a>
+    <ng-template ngbNavContent>
+
+    <div class="row p-3" id="reporter-main">
+      <div class="col-lg-3">
+    	<h3 i18n>My Folders</h3>
+        <div><eg-tree
+          [showExpandAll]="false"
+          [tree]="RSvc.myFolderTrees.templates"
+          (nodeClicked)="folderNodeSelected($event)"
+        ></eg-tree></div>
+        <div><eg-tree
+          [showExpandAll]="false"
+          [tree]="RSvc.myFolderTrees.reports"
+          (nodeClicked)="folderNodeSelected($event)"
+        ></eg-tree></div>
+        <div><eg-tree
+          [showExpandAll]="false"
+          [tree]="RSvc.myFolderTrees.outputs"
+          (nodeClicked)="folderNodeSelected($event)"
+        ></eg-tree></div>
+    
+    	<hr/>
+    
+    	<h3 i18n>Shared Folders</h3>
+        <div><eg-tree
+          [showExpandAll]="false"
+          [tree]="RSvc.sharedFolderTrees.templates"
+          (nodeClicked)="folderNodeSelected($event)"
+        ></eg-tree></div>
+        <div><eg-tree
+          [showExpandAll]="false"
+          [tree]="RSvc.sharedFolderTrees.reports"
+          (nodeClicked)="folderNodeSelected($event)"
+        ></eg-tree></div>
+        <div><eg-tree
+          [showExpandAll]="false"
+          [tree]="RSvc.sharedFolderTrees.outputs"
+          (nodeClicked)="folderNodeSelected($event)"
+        ></eg-tree></div>
+    
+      </div>
+      <div class="col-lg-9">
+    	<div *ngIf="RSvc.currentFolderType == 'rtf-manager'">
+    	  <div *ngIf="managableFolderType">
+    		<button type="button" class="btn btn-outline-dark ms-1" i18n (click)="newFolder()">Add top-level template folder</button>
+    	  </div>
+    	  <div *ngIf="!managableFolderType">
+					<p i18n>These folders are shared with you. You cannot manage them.</p>
+				</div>
+    	</div>
+    	<div *ngIf="RSvc.currentFolderType == 'rrf-manager'">
+    	  <div *ngIf="managableFolderType">
+    		<button type="button" class="btn btn-outline-dark ms-1" i18n (click)="newFolder()">Add top-level report folder</button>
+    	  </div>
+    	  <div *ngIf="!managableFolderType">
+					<p i18n>These folders are shared with you. You cannot manage them.</p>
+				</div>
+    	</div>
+    	<div *ngIf="RSvc.currentFolderType == 'rof-manager'">
+    	  <div *ngIf="managableFolderType">
+    		<button type="button" class="btn btn-outline-dark ms-1" i18n (click)="newFolder()">Add top-level output folder</button>
+    	  </div>
+    	  <div *ngIf="!managableFolderType">
+					<p i18n>These folders are shared with you. You cannot manage them.</p>
+				</div>
+    	</div>
+    	<div *ngFor="let i of rerenderGridArea">
+    		<eg-reporter-templates *ngIf="RSvc.currentFolderType == 'rtf'" [currentFolder]="currentFolder"></eg-reporter-templates>
+    		<eg-reporter-reports *ngIf="RSvc.currentFolderType == 'rrf'" [currentFolder]="currentFolder"></eg-reporter-reports>
+    		<eg-reporter-reports *ngIf="RSvc.currentFolderType == 'rrf-from-rt'" [searchTemplate]="RSvc.selectedTemplate"></eg-reporter-reports>
+    		<eg-reporter-outputs *ngIf="RSvc.currentFolderType == 'rof'" [currentFolder]="currentFolder"></eg-reporter-outputs>
+    		<eg-reporter-outputs *ngIf="RSvc.currentFolderType == 'rof-from-rr'" [searchReport]="RSvc.selectedReport"></eg-reporter-outputs>
+    	</div>
+      </div>
+    </div>
+
+    </ng-template>
+  </li>
+
+  <li role="presentation" [ngbNavItem]="'search'">
+    <a role="tab" ngbNavLink i18n>Search</a>
+    <ng-template ngbNavContent>
+
+    <div class="row p-3" id="reporter-search">
+      <div class="col-lg-3">
+				<div class="row mb-3">
+					<label class="form-label" for="template-search-string-input" i18n>Search templates for string:</label>
+					<input (change)="searchGridRender()" id="template-search-string-input" class="form-control" [(ngModel)]="templateSearchString"/>
+				</div>
+				<div class="row mb-3">
+					<label class="form-label" for="template-search-field-input" i18n>Search in field:</label>
+					<select (change)="searchGridRender()" class="form-select" id="template-search-field-input" [ngModelOptions]="{standalone: true}" [(ngModel)]="templateSearchField">
+						<option value="" i18n>All Fields</option>
+						<option value="name" i18n>Name</option>
+						<option value="description" i18n>Description</option>
+					</select>
+				</div>
+				<div class="row mb-3">
+					<h3 i18n>Folder to search:</h3>
+					<div><eg-tree 
+						[tree]="RSvc.templateSearchFolderTree"
+						(nodeClicked)="templateSearchFolderNodeSelected($event)"
+					></eg-tree></div>
+				</div>
+	  </div>
+    <div *ngIf="templateSearchString" class="col-lg-9">
+	    <div *ngFor="let i of rerenderSearchArea">
+				<eg-reporter-templates
+					[searchFolder]="templateSearchFolder"
+					[searchString]="templateSearchString"
+					[searchField]="templateSearchField"
+				></eg-reporter-templates>
+        <div class="mt-2 outline-dark" *ngIf="RSvc.currentFolderType == 'rrf-from-rt'">
+            <br/><hr/><br/>
+      		<eg-reporter-reports [searchTemplate]="RSvc.selectedTemplate"></eg-reporter-reports>
+        </div>
+        <div class="mt-2 outline-dark" *ngIf="RSvc.currentFolderType == 'rof-from-rr'">
+            <br/><hr/><br/>
+       		<eg-reporter-outputs [searchReport]="RSvc.selectedReport"></eg-reporter-outputs>
+        </div>
+        </div> <!-- rerender trigger -->
+	  </div>
+	</div>
+
+    </ng-template>
+  </li>
+</ul>
+
+<div [ngbNavOutlet]="searchBrowseTabs"></div>

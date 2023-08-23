@@ -1,0 +1,16 @@
+h2 {
+  font-size: 1.15rem;
+}
+
+h3 {
+  font-size: 1rem;
+}
+
+h4 {
+  font-size: .875rem;
+  font-weight: bold;
+}
+
+.eg-grid-toolbar {
+  align-items: flex-end;
+}
