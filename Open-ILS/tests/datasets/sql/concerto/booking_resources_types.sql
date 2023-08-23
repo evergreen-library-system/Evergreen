@@ -1,6 +1,6 @@
 -- Create booking resource types
 INSERT INTO booking.resource_type(id, name, owner, catalog_item, transferable)
-VALUES (555, 'Meeting room', 1, False, True),
+VALUES (555, 'Meeting room', 1, False, False),
 (556, 'Phone charger', 3, False, True);
 
 -- Create booking resource types from MARC
