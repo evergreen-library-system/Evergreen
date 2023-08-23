@@ -844,6 +844,52 @@ angular.module('egCoreMod')
             service.stat_cat_entry_maps[map.stat_cat.id] = map.stat_cat_entry;
         });
 
+        // fetch survey responses for this user
+        var org_ids = egCore.org.fullPath(egCore.auth.user().ws_ou(), true);
+        var svr_responses = {};
+        patron.surveys = [];
+
+        egCore.pcrud.search('asvr',
+            {usr : patron.id},
+            {flesh : 2, flesh_fields : {asvr : ['survey','question','answer']}}
+        ).then(
+            function() {
+                // All responses collected and deduplicated.
+                // Create one collection of responses per survey.
+                angular.forEach(svr_responses, function(questions, survey_id) {
+                    var collection = {responses : []};
+                    angular.forEach(questions, function(response) {
+                        collection.survey = response.survey();
+                        collection.responses.push(response);
+                    });
+                    patron.surveys.push(collection);
+                });
+            },
+            null,
+            function(response) {
+                // Discard responses for out-of-scope surveys.
+                if (org_ids.indexOf(response.survey().owner()) < 0)
+                    return;
+
+                // survey_id => question_id => response
+                var svr_id = response.survey().id();
+                var qst_id = response.question().id();
+
+                if (!svr_responses[svr_id])
+                    svr_responses[svr_id] = [];
+
+                if (!svr_responses[svr_id][qst_id]) {
+                    svr_responses[svr_id][qst_id] = response;
+                } else {
+                    // We may have multiple responses for the same question.
+                    // For this UI we only care about the most recent response.
+                    if (response.effective_date() >
+                        svr_responses[svr_id][qst_id].effective_date())
+                        svr_responses[svr_id][qst_id] = response;
+                }
+            }
+        );
+
         service.patron = patron;
         return patron;
     }

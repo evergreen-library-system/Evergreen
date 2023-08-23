@@ -447,6 +447,21 @@ function($scope , $q , egCore , ngToast) {
                 stat_cat : {'name' : 'Favorite Book'},
                 'stat_cat_entry' : 'Beasts Made of Night'
             }
+        ],
+        surveys : [
+            {
+                survey : {
+                    'id' : function() {return '1'},
+                    'description' : function() {return 'Voter Registration'},
+                },
+                responses : [
+                    {
+                        'answer_date' : function() {return '2020-12-31'},
+                        question : function() {return {'question' : function() {return 'Would you like to register to vote today?'}}},
+                        answer : function() {return {'answer' : function() {return 'Already registered'}}}
+                    }
+                ]
+            }
         ]
     }
 
