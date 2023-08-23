@@ -204,6 +204,19 @@ sub create_bresv {
     my $usr = $U->fetch_user_by_barcode($target_user_barcode);
     return $usr if ref($usr) eq 'HASH' and exists($usr->{"ilsevent"});
 
+    my $filters = { type => $brt, available => $datetime_range, pickup_lib => $pickup_lib };
+    if ( defined $brsrc_list->[0] ) {
+        $filters->{'resources'} = $brsrc_list;
+    }
+    my $available_resources = resource_list_by_attrs($self, $client, $authtoken, $filters);
+    unless (scalar @{$available_resources}) {
+        my $ev = OpenILS::Event->new(
+            'RESOURCE_IN_USE',
+            desc => 'Resource is in use at this time'
+        );
+        return $ev;
+    }
+
     my $results = [];
     foreach my $brsrc (@$brsrc_list) {
         my $bresv = new Fieldmapper::booking::reservation;
@@ -333,6 +346,10 @@ sub resource_list_by_attrs {
     $query->{where} = {"-and" => []};
     if ($filters->{type}) {
         push @{$query->{where}->{"-and"}}, {"type" => $filters->{type}};
+    }
+
+    if ($filters->{resources}) {
+        push @{$query->{where}->{'-and'}}, {'id' => $filters->{resources}};
     }
 
     if ($filters->{pickup_lib}) {
@@ -475,6 +492,10 @@ __PACKAGE__->register_method(
 
 The filter object parameter can contain the following keys:
  * type             => The id of a booking resource type (brt)
+ * resources        => The ids of specific resources to choose amongst
+ * pickup_lib       => The relevant pickup library. When paired with the available filter,
+                       it will check if the resource lives at the pickup_lib or if it is
+                       allowed to transit to the pickup_lib.
  * attribute_values => The ids of booking resource type attribute values that the resource must have assigned to it (brav)
  * available        => Either:
                         A timestamp during which the resources are not reserved.  If the resource is overbookable, this is ignored.

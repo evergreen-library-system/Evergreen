@@ -1,5 +1,5 @@
 import {Component, Input, Output, OnInit, ViewChild, EventEmitter} from '@angular/core';
-import {FormGroup, FormControl, Validators, ValidatorFn, ValidationErrors} from '@angular/forms';
+import {FormGroup, FormControl, Validators} from '@angular/forms';
 import {Router} from '@angular/router';
 import {Observable, of} from 'rxjs';
 import {switchMap, single, startWith, tap} from 'rxjs/operators';
@@ -44,7 +44,7 @@ export class CreateReservationDialogComponent
 
     public disableOrgs: () => number[];
     addBresv$: () => Observable<any>;
-    @ViewChild('fail', { static: true }) private fail: AlertDialogComponent;
+    @ViewChild('fail', { static: true }) fail: AlertDialogComponent;
     @ViewChild('patronSearch') patronSearch: PatronSearchDialogComponent;
 
     handlePickupLibChange: ($event: IdlObject) => void;
@@ -106,21 +106,21 @@ export class CreateReservationDialogComponent
                 this.attributes.filter(Boolean),
                 this.emailNotify,
                 this.bresvNote
-            ).pipe(tap(
-                (success) => {
-                    if (success.ilsevent) {
-                        console.warn(success);
+            ).pipe(tap({
+                next: (response) => {
+                    if ('ilsevent' in response) {
+                        console.warn(response);
                         this.fail.open();
                     } else {
                         this.toast.success('Reservation successfully created');
-                        console.debug(success);
+                        console.debug(response);
                         this.close();
                    }
-                }, (fail) => {
-                    console.warn(fail);
+                }, error: (response) => {
+                    console.warn(response);
                     this.fail.open();
-                }, () => this.reservationRequestCompleted.emit(true)
-            ));
+                }, complete: () => this.reservationRequestCompleted.emit(true)
+            }));
         };
 
         this.handlePickupLibChange = ($event) => {
