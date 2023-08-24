@@ -64,9 +64,9 @@
         <form method="post" id="messages-form"
          onsubmit="if (document.getElementById('acct_messages_actions').value == 'mark_deleted') { return confirm('[% l("Are you sure you wish to permanently delete the selected message(s)?") %]') } else { return true; }">
             <div class="my-2">
-                <button name="action" class="btn btn-action" value="mark_read" id="mark_read" type="submit"><i class="fas fa-glasses" aria-hidden="true"></i> Mark Read</button>
-                <button name="action" class="btn btn-opac" value="mark_unread" id="mark_unread"  type="submit"><i class="fas fa-eye-slash" aria-hidden="true"></i> Mark Unread</button>
-                <button name="action" class="btn btn-deny" value="mark_deleted" id="mark_deleted"  type="submit" onclick="return confirm('[% l("Are you sure you wish to permanently delete the selected message(s)?") %]')"><i class="fas fa-trash-alt" aria-hidden="true"></i> Delete</button>
+                <button name="action" class="btn btn-action" value="mark_read" id="mark_read" type="submit"><i class="fas fa-glasses" aria-hidden="true"></i> [% l('Mark Read') %]</button>
+                <button name="action" class="btn btn-opac" value="mark_unread" id="mark_unread" type="submit"><i class="fas fa-eye-slash" aria-hidden="true"></i> [% l('Mark Unread') %]</button>
+                <button name="action" class="btn btn-deny" value="mark_deleted" id="mark_deleted" type="submit" onclick="return confirm('[% l("Are you sure you wish to permanently delete the selected message(s)?") %]')"><i class="fas fa-trash-alt" aria-hidden="true"></i> [% l('Delete') %]</button>
             </div>
             [% IF count < 1 %]
             <div class="warning_box">[% l('No messages found.') %]</div>
