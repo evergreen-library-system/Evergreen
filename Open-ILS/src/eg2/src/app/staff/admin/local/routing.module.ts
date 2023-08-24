@@ -111,7 +111,7 @@ const routes: Routes = [{
         orgFieldsDefaultingToContextOrg: 'owner',
         fieldOptions: {owner: {persistKey: 'admin.stat_cat.owner' } },
         contextOrgSelectorPersistKey: 'admin.item_stat_cat.main_org_selector',
-        recordLabel: $localize `Item Statistical Category`,
+        recordLabel: $localize `Statistical Category Editor - Item`,
         deleteConfirmation: $localize `Are you sure you wish to delete the selected statistical categories?  This will also remove the affected stat cats from any item records using them.`,
         fieldOrder: 'name,owner,required,opac_visible,checkout_archive,sip_field,sip_format'}]
 }, {
@@ -127,7 +127,7 @@ const routes: Routes = [{
         contextOrgSelectorPersistKey: 'admin.item_stat_cat.main_org_selector',
         disableEdit: true,
         disableDelete: true,
-        recordLabel: $localize `Item Statistical Category Entry`,
+        recordLabel: $localize `Statistical Category Entry - Item`,
         hideClearFilters: true,
         fieldOrder: 'stat_cat,value,owner'}]
 }, {
@@ -141,7 +141,7 @@ const routes: Routes = [{
         orgFieldsDefaultingToContextOrg: 'owner',
         fieldOptions: {owner: {persistKey: 'admin.stat_cat.owner' } },
         contextOrgSelectorPersistKey: 'admin.patron_stat_cat.main_org_selector',
-        recordLabel: $localize `Patron Statistical Category`,
+        recordLabel: $localize `Statistical Category Editor - Patron`,
         deleteConfirmation: $localize `Are you sure you wish to delete the selected statistical categories?  This will also remove the affected stat cats from any patron records using them.`,
         fieldOrder: 'name,owner,required,opac_visible,usr_summary,allow_freetext,checkout_archive,sip_field,sip_format'}]
 }, {
@@ -157,7 +157,7 @@ const routes: Routes = [{
         contextOrgSelectorPersistKey: 'admin.patron_stat_cat.main_org_selector',
         disableEdit: true,
         disableDelete: true,
-        recordLabel: $localize `Patron Statistical Category Entry`,
+        recordLabel: $localize `Statistical Category Entry - Patron`,
         hideClearFilters: true,
         fieldOrder: 'stat_cat,value,owner'}]
 }, {
