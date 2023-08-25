@@ -9,11 +9,11 @@ In the example below, records exist for a set of books and for individual volume
 
 View of the original record to which the item is attached.  Clicking the link below the item will bring you to the conjoined/linked record.
 
-image::media/Conjoined_PV_Original.png[Menu: Patron View Original Record]
+image::conjoined_items/Conjoined_PV_Original.png[Menu: Patron View Original Record]
 
 View of the record to which the item has been linked/conjoined.  Clicking the link below the item will bring you to the original record.
 
-image::media/Conjoined_PV_Linked.png[Menu: Patron View Linked Record]
+image::conjoined_items/Conjoined_PV_Linked.png[Menu: Patron View Linked Record]
 
 == Using the Conjoined Items Feature ==
 
@@ -25,7 +25,7 @@ The Conjoined Items feature was designed so that you can link items between bibl
  
 2. Click *Mark for -> Conjoined Items.*
 +
-image::media/Conjoined_step_1.png[Menu: Mark as Target for Conjoined Items]
+image::conjoined_items/Conjoined_step_1.png[Menu: Mark as Target for Conjoined Items]
 
 3. A confirmation message will appear.  
  
@@ -34,17 +34,17 @@ you want to link to the other record.
  
 5. In *Holdings View*, select the item you wish to link to the record and click the *Actions for Selected Rows* button *-> Link as Conjoined to Marked Bib Record.*
 +
-image::media/Conjoined_step_5.png[Menu: Link as Conjoined]
+image::conjoined_items/Conjoined_step_5.png[Menu: Link as Conjoined]
 
 6. A pop-up will appear with a dropdown menu. Choose the *Peer Type* for the conjoined item, then click *Attach/Modify*.
 +
-image::media/Conjoined_step_6.png[Conjoined step 6]
+image::conjoined_items/Conjoined_step_6.png[Conjoined step 6]
 
 7. A confirmation message indicating that the item has been successfully attached or modified will appear. 
 
 8. The conjoined item will then be listed on the *Conjoined Items* tab of the record to which it was linked.
 +
-image::media/Conjoined_step_8.png[Conjoined step 8]
+image::conjoined_items/Conjoined_step_8.png[Conjoined step 8]
 
 .Scenario 2: I want to link an item to another bibliographic record, and I do have the item in hand
 
@@ -52,17 +52,17 @@ image::media/Conjoined_step_8.png[Conjoined step 8]
 
 2. Click *Mark for -> Conjoined Items.*
 +
-image::media/Conjoined_step_1.png[Menu: Mark as Target for Conjoined Items]
+image::conjoined_items/Conjoined_step_1.png[Menu: Mark as Target for Conjoined Items]
 
 3. A confirmation message will appear. 
 
 4. Open *Item Status*. Enter the item barcode number. Select the item then click *Actions -> Link as Conjoined to Previously Marked Bib Record.*
 +
-image::media/Conjoined_scenario_2_step_4.png[Link as Conjoined] 
+image::conjoined_items/Conjoined_scenario_2_step_4.png[Link as Conjoined] 
 
 5. A pop-up will appear with a dropdown menu. Choose the *Peer Type* for the conjoined item, then click *OK*.
 +
-image::media/Conjoined_scenario_2_step_5.png[Conjoined peer type]
+image::conjoined_items/Conjoined_scenario_2_step_5.png[Conjoined peer type]
  
 .Scenario 3: I want to edit the link between an item and a bibliographic record
  
@@ -78,7 +78,7 @@ image::media/Conjoined_step_5.png[Menu: Link as Conjoined]
  
 4. A pop-up will appear with a dropdown menu. Choose the *Peer Type* for the conjoined item, then click *Attach/Modify*.
 +
-image::media/Conjoined_step_6.png[Conjoined step 6]
+image::conjoined_items/Conjoined_step_6.png[Conjoined step 6]
 
 5. A confirmation message indicating that the item has been successfully attached or modified will appear.
 
@@ -86,7 +86,7 @@ image::media/Conjoined_step_6.png[Conjoined step 6]
 
 Retrieve the bibliographic record to which the item has been linked. Under the *Conjoined Items* tab, select the item and click the *Actions for Selected Rows* button *-> Unlink*.
 
-image::media/Conjoined_unlink.png[Menu: Unlink Item]
+image::conjoined_items/Conjoined_unlink.png[Menu: Unlink Item]
 
 Permission needed to perform these fuctions:
  
