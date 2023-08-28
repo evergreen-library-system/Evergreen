@@ -568,6 +568,18 @@ export class CopyAttrsComponent implements OnInit, AfterViewInit {
             if (field === 'copy_alerts' && Array.isArray(value)) {
                 value.forEach(a => {
                     this.context.copyList().forEach(copy => {
+                        // Check for existing alert, don't apply duplicates
+                        let dupskip = 0;
+                        copy.copy_alerts().forEach(curAlert => {
+                            if(a.alert_type === curAlert.alert_type() &&
+                               a.temp === curAlert.temp() &&
+                               a.note === curAlert.note() ) {
+                                console.log("Already have this alert",a); //identical alert exists.
+                                dupskip = 1;   
+                               }
+                        });
+                        if(dupskip) return; //skip copy for this new alert
+                        
                         const newAlert = this.idl.create('aca');
                         newAlert.isnew(true);
                         newAlert.copy(copy.id());
