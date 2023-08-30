@@ -74,7 +74,7 @@ image::conjoined_items/Conjoined_scenario_2_step_5.png[Conjoined peer type]
  
 3. In *Holdings View*, select the linked item and click the *Actions for Selected Rows* button *-> Link as Conjoined to Marked Bib Record.*
 +
-image::media/Conjoined_step_5.png[Menu: Link as Conjoined]
+image::conjoined_items/Conjoined_step_5.png[Menu: Link as Conjoined]
  
 4. A pop-up will appear with a dropdown menu. Choose the *Peer Type* for the conjoined item, then click *Attach/Modify*.
 +
