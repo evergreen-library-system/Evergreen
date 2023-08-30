@@ -98,12 +98,12 @@
           </eg-combobox>
         </ng-template>
         <ng-container *ngTemplateOutlet="batchAttr;
-          context:{field:'status',template:statusTemplate}">
+          context:{field:'status', template:statusTemplate}">
         </ng-container>
       </ng-container>
 
       <ng-template #noEditStat>
-        <eg-batch-item-attr label="Status" i18n-label [readOnly]="true"
+        <eg-batch-item-attr label="Item Status" i18n-label [readOnly]="true"
           [labelCounts]="itemAttrCounts('status')">
         </eg-batch-item-attr>
       </ng-template>
