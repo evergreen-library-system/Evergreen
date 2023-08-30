@@ -175,11 +175,11 @@ Enhancements to the Search Filters now makes it easier to view, remove, and modi
 
 For example, the screenshot below shows a Keyword search for "violin concerto" while filtering on Item Type: Musical sound recording.
 
-image::opac/advanced_search_ex.jpg[search using search filters]
+image::using_the_public_access_catalog/advanced_search_ex.jpg[search using search filters]
 
 In the search results, the Item Type, Item Form, Language, Audience, Video Format, Bib Level, Literary Form, and Shelving Location filters appear directly below the search box.  Click on these to expand and see facets.
 
-image::opac/advanced_search_filters.jpg[search results with search filter enhancements]
+image::using_the_public_access_catalog/advanced_search_filters.jpg[search results with search filter enhancements]
 
 Each filter can be removed by clicking the X next to the filter name to modify the search within the search results screen.  Below the search box on the search results screen, there is also a link to _Refine My Original Search_, which will bring the user back to the advanced search screen where the original search parameters selected can be viewed and modified.
 
@@ -265,13 +265,13 @@ Selector.
 
 Library Groups location on the Basic Search page:
 
-image::media/library_group_location_bs.png[Library Groups in Basic Search]
+image::using_the_public_access_catalog/library_group_location_bs.png[Library Groups in Basic Search]
 
 On the Advanced Search page, Library Groups as well as Copy Location
 Groups and the Depth Selector are gathered into a dropdown labelled
 *Where*, and this can be seen below the Search Library dropdown:
 
-image::media/library_group_location_as.png[Library Groups in Advanced Search]
+image::using_the_public_access_catalog/library_group_location_as.png[Library Groups in Advanced Search]
 
 The motivation for collecting these elements into a new dropdown is that
 they are secondary or subordinate to the search location -- the
@@ -415,7 +415,7 @@ number links allow you to skip to that results page, if your search results
 needed multiple pages to display. Here is an example: 
 
 
-image::opac/search_results.jpg[Search results]
+image::using_the_public_access_catalog/search_results.jpg[Search results]
 
 Brief information about the title, such as author, edition, publication date, 
 etc. is displayed under each title. The icons beside the brief information 
@@ -451,7 +451,7 @@ using that subject, author, or series to narrow down your current results. The
 facet filters can be undone by clicking the link a second time, thus returning 
 your original results before the facet was activated. 
 
-image::opac/search_facets.jpg[search facets]
+image::using_the_public_access_catalog/search_facets.jpg[search facets]
 
 
 === Availability ===
@@ -466,9 +466,9 @@ multi-branch library system you will see an extra row under each title showing
 how many copies are available in all branches.
 
 
-image::opac/branch_search.jpg[branch search]
+image::using_the_public_access_catalog/branch_search.jpg[branch search]
 
-image::media/search_result_quantity.jpg[search result quantity]
+image::using_the_public_access_catalog/search_result_quantity.jpg[search result quantity]
 
 You may also click the _Show More Details_ link at the top of the results page, 
 next to the _Limit to available items_ check box, to view each search result's 
@@ -479,10 +479,13 @@ copies' individual call number, status, and shelving location.
 
 indexterm:[Searching,Search Suggestions] 
 
-As of 3.7, the work for Did You Mean enables search suggestions for a search comprising a single word within a single search class. For the purposes of suggestions, a search class in Evergreen is a keyword, title, author, series, or subject. Search suggestions are available in the public catalog (both TPAC and Bootstrap versions), the Children's OPAC (KPAC), and the Angular Staff Catalog.
+As of 3.7, the work for Did You Mean enables search suggestions for a search comprising a single word within a single search class. For the purposes of suggestions, a search class in Evergreen is a keyword, title, author, series, or subject. 
 
-Future iterations of this project are planning to add multi word, cross
-class, and other search suggestion mechanisms.
+As of 3.11, search suggestions are offered for phrases and multi-word search within a single search class. Search suggestions can also leverage variant headings (4xx fields) in Authority records in this latest version, as long as search terms in these fields are in the symspell dictionary for the specified search class. Quoted phrases in search inputs require strict term order and adjacency for the phrase portion of the suggestion generated for the phrase(s), while unquoted search inputs do not require strict order and adjacency. 
+
+Search suggestions are available in the public catalog (both TPAC and Bootstrap versions), the Children's OPAC (KPAC), and the Angular Staff Catalog.
+
+Future iterations of this project are planning to add cross class and other search suggestion mechanisms.
 
 Search suggestions are based on existing bibliographic data, and are
 offered for potentially correctable spelling mistakes. A new set of
@@ -514,31 +517,39 @@ Search suggestions are offered under the search bar. Clicking a
 suggestion will execute a new search. In both examples below, the test
 system was configured to offer 3 suggestions.
 
-image::media/dym_tpac.png[TPAC Search Suggestions]
+image::using_the_public_access_catalog/dym_tpac.png[TPAC Search Suggestions]
 
 In the case of zero hits, suggestions are given both under the search
 bar as well as in the search results area.
 
-image::media/dym_tpac_nohits.png[TPAC Search Suggestions when there are no hits]
+image::using_the_public_access_catalog/dym_tpac_nohits.png[TPAC Search Suggestions when there are no hits]
 
 ==== Public Catalog (Bootstrap)
 
 Search suggestions display in the same locations in the new Bootstrap
 public catalog as they do in the TPAC.
 
-image::opac/did_you_mean_no_results.jpg[Suggestions for Bootstrap]
+An example of a single word single class suggestion is below:
+
+image::using_the_public_access_catalog/did_you_mean_no_results.jpg[Suggestions for Bootstrap]
+
+Examples of multi word single class suggestions are below:
+
+image::using_the_public_access_catalog/dym_opac_multiword.png[OPAC Multi word suggestion example 1]
+
+image::using_the_public_access_catalog/dym_opac_multiword_2.png[OPAC Multi word suggestion example 2]
 
 ==== Public Catalog (KPAC)
 
 Search suggestions display in the right-hand sidebar next to Search
 Results.
 
-image::media/dym_kpac.png[KPAC Search Suggestions]
+image::using_the_public_access_catalog/dym_kpac.png[KPAC Search Suggestions]
 
 ==== Staff Catalog
 
 Search suggestions in the Staff Catalog appear at the bottom of the
-search area. 
+search area. Images showing this location can be seen in the xref:admin_initial_setup:dym_admin.adoc[Administrator documentation].
 
 === Viewing a record ===
 
@@ -548,8 +559,8 @@ Click on a search result's title to view a detailed record of the title,
 including descriptive information, location and availability, current holds, and
 options for placing holds, add to my list, and print/email. Click on _More Details_ for more information and record details.
 
-image::opac/viewing_record.jpg[Viewing Record]
-image::opac/more_details_record.jpg[More Details Button in Record]
+image::using_the_public_access_catalog/viewing_record.jpg[Viewing Record]
+image::using_the_public_access_catalog/more_details_record.jpg[More Details Button in Record]
 
 [[geosort]]
 ==== Sort by Geographic Proximity
@@ -569,7 +580,7 @@ When a patron selects a bibliographic record, they are taken to the
 record details interface. At the top of the holdings grid is a box to
 enter an address or postal code.
 
-image::media/geosort_entry_box.png[OPAC Entry Box for Geographic Sort]
+image::using_the_public_access_catalog/geosort_entry_box.png[OPAC Entry Box for Geographic Sort]
 
 The input box will accept several variants on a full address, but in
 order to return a correct calculation there must be at least a
@@ -584,7 +595,7 @@ the top of the grid, with remaining libraries sorted by increasing
 distance from the address entry. The distance display defaults to
 kilometers but can be changed to show miles via a Library Setting.
 
-image::media/geosort_results_km.png[Geographic Sort Results]
+image::using_the_public_access_catalog/geosort_results_km.png[Geographic Sort Results]
 
 To return to the default item sort, click the *Use default item sort*
 button.
@@ -592,7 +603,7 @@ button.
 If the configured Geographic Location API is not able to resolve an
 address entry, an error message will appear:
 
-image::media/geosort_retrieval_error.png[Geographic Sort Error]
+image::using_the_public_access_catalog/geosort_retrieval_error.png[Geographic Sort Error]
 
 == Details ==
 
@@ -610,7 +621,7 @@ database, links to those alternate formats will display. The formats used
 in this section are based on the configurable catalog icon formats.
 
 
-image::opac/record_details.jpg[Record Details]
+image::using_the_public_access_catalog/record_details.jpg[Record Details]
 
 The Record Details view shows how many copies are at the library or libraries
 you have selected, and whether they are available or checked out. It also
@@ -660,7 +671,7 @@ means an item has been held waiting for you to pick up, you can edit, suspend or
 If you want to suspend the hold to be filled at a specific date, check off _Suspend this Hold?_ and _Set activiation date_
 to bring up the calendar tool.  From your account you can also suspend and activate holds that are already placed.
 
-image::opac/placing_holds.jpg[Placing Holds]
+image::using_the_public_access_catalog/placing_holds.jpg[Placing Holds]
 
 === Printing and Emailing Records ===
 
@@ -668,17 +679,17 @@ indexterm:[opac printing, opac emailing]
 
 Evergreen now provides additional functionality for printing and emailing bibliographic record and holdings information from the catalog. Users can print or email bibliographic information from an individual bibliographic record or from a basket.
   
-image::opac/print_email_records.jpg[Location of Print and Email function]
+image::using_the_public_access_catalog/print_email_records.jpg[Location of Print and Email function]
 
 After selecting Print or Email, the user will be presented with a preview of the printout or email, respectively. From the preview users can choose to view Brief or Full record information (Full includes holdings information) and how records should be sorted (Author, Title, Publication Date). Holdings information can also be limited to a certain library. Users can be required to log in to their OPAC account to send an email or this feature can be configured to allow sending an email without signing in to the OPAC.
 
 *Print Preview*
 
-image::opac/print_records_screen.jpg[Record Print Preview]
+image::using_the_public_access_catalog/print_records_screen.jpg[Record Print Preview]
 
 *Email Preview*
 
-image::opac/email_records_screen.jpg[Email Preview, not logged in to OPAC]
+image::using_the_public_access_catalog/email_records_screen.jpg[Email Preview, not logged in to OPAC]
 
 If you're logged into the OPAC, your email saved in your account settings will appear.  If you're not logged in, fill out the email field.
 
@@ -692,7 +703,7 @@ Search results default to highlighting keywords found.  In this example, "concer
 and the title in the search results matched.  You can _Disable Highlighting_ if you dislike the feature 
 and _Enable Highlighting_ whenever you wish.
 
-image::opac/highlighting.jpg[Highlighting toggle]
+image::using_the_public_access_catalog/highlighting.jpg[Highlighting toggle]
 
 === Permalink ===
 
@@ -703,7 +714,7 @@ The record summary page offers a link to a shorter permalink that
  the holdings from one library/system or displays holdings from all libraries
  with a specific library's holdings floating to the top.
 
-image::opac/permalink.jpg[Permalink]
+image::using_the_public_access_catalog/permalink.jpg[Permalink]
 
 === Going back ===
 
@@ -713,7 +724,7 @@ When you are viewing a specific record, you can always go back to your title
 list by clicking the link _Back to Results_ on the top right or left bottom of 
 the page. 
 
-image::opac/back_to_results.jpg[Back to Results]
+image::using_the_public_access_catalog/back_to_results.jpg[Back to Results]
 
 You can start a new search at any time by entering new search terms in the 
 search box at the top of the page.

@@ -5,10 +5,13 @@ indexterm:[Searching,Search Suggestions]
 
 == Introduction
 
-As of 3.7, the work for Did You Mean enables search suggestions for a search comprising a single word within a single search class. For the purposes of suggestions, a search class in Evergreen is a keyword, title, author, series, or subject. Search suggestions are available in the public catalog (both TPAC and Bootstrap versions), the Children's OPAC (KPAC), and the Angular Staff Catalog.
+As of 3.7, the work for Did You Mean enables search suggestions for a search comprising a single word within a single search class. For the purposes of suggestions, a search class in Evergreen is a keyword, title, author, series, or subject. 
 
-Future iterations of this project are planning to add multi word, cross
-class, and other search suggestion mechanisms.
+As of 3.11, search suggestions are offered for phrases and multi-word search within a single search class. Search suggestions can also leverage variant headings (4xx fields) in Authority records in this latest version, as long as search terms in these fields are in the symspell dictionary for the specified search class. Quoted phrases in search inputs require strict term order and adjacency for the phrase portion of the suggestion generated for the phrase(s), while unquoted search inputs do not require strict order and adjacency. 
+
+Search suggestions are available in the public catalog (both TPAC and Bootstrap versions), the Children's OPAC (KPAC), and the Angular Staff Catalog.
+
+Future iterations of this project are planning to add cross class and other search suggestion mechanisms.
 
 Several search suggestion ordering mechanisms have been added, and are
 described below in the Library Settings section. The relative weights of
@@ -32,6 +35,11 @@ the new search.
 Evergreen’s existing use of search term stemming has not been altered as
 a consequence of this work.
 
+The Library Settings that were previously used to control the global behavior of search suggestions have been moved to search class configuration fields.  This was done because the data in each search class benefits from different setting values. These settings are documented below.
+
+As in the previous iteration of Did You Mean, search suggestions are globally using Damerau-Levenshtein distance as their highest-weighted setting. Damerau-Levenshtein includes insertion, deletion, substitution, and transposition. This is not a setting that can be changed, but the current implementation supports natural language word matching for Western languages.
+
+
 == Search Results Display
 
 In all cases, search suggestions will be offered for potentially
@@ -42,73 +50,90 @@ of these thresholds are configured via Library Settings described below.
 
 For examples of where suggestions display in various public catalog interfaces, please see the documentation in the  xref:opac:using_the_public_access_catalog.adoc#did_you_mean[Did You Mean?] section of the OPAC documentation. 
 
-Search suggestions in the Staff Catalog appear at the bottom of the search area.
+Search suggestions in the Staff Catalog appear at the bottom of the search area. Below is an example of a single word suggestion:
 
-image::media/dym_staffcat.png[Search suggestions in the Staff Catalog]
+image::dym_admin/dym_staffcat.png[Search suggestions in the Staff Catalog]
+
+Below is an image of a multi word suggestion using an authority cross-reference:
+
+image::dym_admin/dym_auth_correction.png[Authority record based suggestion]
+
+Below is an image of a phrase suggestion:
+
+image::dym_admin/dym_phrase_search.png[Phrase search suggestion]
+
+Authority record-based suggestions and phrase suggestions are also available in the public catalog.
 
 == Administration
 
-=== Library Settings
+=== Did You Mean Configuration
 
-Search suggestions are controlled by several Library Settings. Three
-settings set thresholds for spelling suggestions, and three settings
-control the weighting of different suggestion mechanisms. A lower number
-represents a ‘lighter’ weight. All settings accept a number value as
-input. Library settings are inheritable, unless there is an
-organizationally closer setting.
+To configure Did You Mean search settings, navigate to *Administration -> Server Administration -> MARC Search / Facet Classes*.
 
-* *Maximum search result count at which spelling suggestions may be offered*
-** Default value is 0, which means suggestions will only be offered if
-there are no results.
-** If a search has this number or fewer results, and there are correctable
-spelling mistakes, a suggested search may be provided.
-** If you want all searches to generate suggestions, you can set this to an
-artificially high number, but it’s possible that this will generate
-less-useful suggestions.
-* *Minimum required uses of a spelling suggestions that may be offered*
-** Default is 1.
-** The number of indexed bibliographic strings in which a spelling
-suggestion must appear in order to be offered to a user. Suggestions
-must appear in the bib data.
-* *Maximum number of spelling suggestions that may be offered*
-** The maximum recommended value for this setting is 3, since suggestions
-become rapidly less useful beyond that point.
-** If this is set to 0, no suggestions will be provided.
-** All values other than 0 only provide suggestions that meet the *Minimum
-required uses* threshold, and only when the *Maximum search result
-count* threshold is not passed.
-** If this is set to -1, the system will provide the best suggestion
-(dependent on the weights of various suggestion mechanisms) if and only
-if the term is considered misspelled based on the *Minimum required
-uses* setting.
-** If this is set to 1 or more, that is the maximum number of suggestions
-that will be provided.
-* *Pg_trgm score weighting in OPAC spelling suggestions*
-** Defaults to 0 for "off".
-** Controls the relative weight of the scaled pg_trgm component.
-** Input can be any positive or negative whole number, but testing
-demonstrates that setting this to 1 can significantly improve
-suggestions for most catalogs.
-* *Soundex score weighting in OPAC spelling suggestions*
-** Defaults to 0 for "off".
-** Controls the relative weight of the scaled soundex component.
-** Input can be any positive or negative whole number, but testing
-demonstrates that setting this to 1 can improve suggestions for catalogs
-that are primarily English.
-* *Keyboard distance score weighting in OPAC spelling suggestions*
-** Defaults to 0 for "off".
-** Controls the relative weight of the scaled keyboard distance component.
-** While this option is available, it can have a negative impact on
-suggestions and a value greater than 0 is not recommended for most
-catalogs.
-** If an administrator decides to use this weighting, it will accept any
-positive or negative whole number value.
+The screenshot below shows the new fields on MARC Search / Facet Classes to configure search suggestions. Please note that in the interest of visual spacing, the screenshot is deliberately not showing several extant MARC Search / Facet Class columns. These columns are still present and visible by default in this view.
+
+image::dym_admin/dym_metabib_config.png[MARC Search/Facet class configuration]
 
 
-The three similarity measures, Pg_trgm (Tri-gram), Soundex, and QWERTY
-Keyboard similarity, are calculated by comparing the user's search input
-to each potential suggestion. The Library Setting numerical values for
-Pg_trgm, Soundex, and QWERTY are multipliers for each similarity
+The new configuration fields are described in the table below.
+
+[width="100%",cols="25%,59%,16%",options="header",stripes=none]
+|===
+|*Field Name* |*Description* |*Default value*
+|Low result threshold for suggestions |If a search results in this
+number or fewer results, and there are correctable spelling mistakes, a
+suggested search may be provided. If you want all searches to generate
+suggestions, you can set this to an artificially high number, but it’s
+possible that this will generate less-useful suggestions. |0 (only
+searches with no hits)
+|Max suggestions |If this is set to -1, the system will provide the best
+suggestion (dependent on the weights of various suggestion mechanisms)
+if and only if the term is considered misspelled based on the Minimum
+required uses setting; if this is set to 1 or more, that is the maximum
+number of suggestions that will be provided; if this is set to 0, no
+suggestions will be provided. All values other than 0 only provide
+suggestions that meet the Minimum required uses threshold, and only when
+the Maximum search result count threshold is not passed. The maximum
+recommended setting for this is 3, since suggestions become rapidly less
+useful beyond that point. |-1
+|Perform variant heading authority suggestion cross-reference |When set
+to “Yes”, search suggestions will be offered from authority record 4xx
+(See From Tracing) fields. Suggestions are only offered for fields in
+the same search class, e.g., subject heading suggestions for subject
+search. |Yes
+|Minimum bib record suggestion threshold |The number of indexed
+bibliographic strings in which a spelling suggestion must appear in
+order to be offered to a user. Suggestions must appear in the bib data.
+|1
+|Suggestion SOUNDEX weight |Controls the relative weight of the scaled
+soundex component. Setting this to 1 can improve suggestions for
+catalogs that are primarily English. |0 (off)
+|Suggestion PG Trigram weight |Controls the relative weight of the
+scaled pg_trgm component. Setting this to 1 can significantly improve
+suggestions for most catalogs. |0 (off)
+|Suggestion keyboard distance weight |Controls the relative weight of
+the scaled keyboard distance component. This option can have a negative
+impact on suggestions and a value greater than 0 is not recommended for
+most catalogs. |0 (off)
+|Retain case in suggestions |Present search suggestions in the same
+casing as the original user-input search terms. |Yes
+|Avoid alternate suggestions on correctly spelled words |If set to Yes,
+correctly spelled words will not have suggestions offered even if a
+potential suggestion may exist in the bibliographic or authority data.
+|No
+|Symspell suggestion calculation verbosity |A setting used to control
+the internal behavior of the SymSpell algorithm. It allows tuning the
+balance between performance and suggestion generation, and is set to
+provide the widest range of suggestion generation by default. |2
+|Maximum average word edit distance |Suggestions that have an average
+per-word edit distance larger than this are discarded. |2
+|Maximum suggestions per word |The maximum number of suggestions offered
+for each individual word in the search phrase. |5
+|===
+
+The three similarity measures, Pg_trgm (Tri-gram), Soundex, and keyboard distance weight, are calculated by comparing the user's search input
+to each potential suggestion. The configured numerical values for
+Pg_trgm, Soundex, and keyboard distance are multipliers for each similarity
 measure. For example, setting the Pg_trgm weight to 2 will double the
 raw score for that similarity measure.
 
