@@ -11,7 +11,7 @@ The table below is sorted in alphabetical order according to the _Name_ column. 
 
 == Global Flags Details == 
 
-[options="header"]
+[width="100%",cols="13%,13%,13%,13%,35%,13%",options="header",stripes=none]
 |===
 |Name|Label|Enabled (Default)|Value (Default)|Notes|Other Information
 |auth.block_expired_staff_login |Block the ability of expired user with the STAFF_LOGIN permission to log into Evergreen.|No| |If this flag is enabled, accounts that have the STAFF_LOGIN permission and whose expiration date is in the past are prevented from logging into any Evergreen interface, including the staff client, the public catalog, and SIP2. Regular non-staff patrons are allowed to log into the public catalog with expired accounts.|https://bugs.launchpad.net/evergreen/+bug/1474029[bug 1474029]
