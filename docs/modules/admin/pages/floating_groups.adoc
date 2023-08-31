@@ -5,6 +5,39 @@ Before floating groups items could float or not. If they floated then they float
 
 After floating groups where an item will float is defined by what group it has been assigned to.
 
+The floating groups feature was added in Evergreen 2.5.
+
+== What is Floating ==
+
+Floating refers to items having their circulating library changed to the location 
+they are checked-in at.  So instead of always going in transit back to a certain circulating library
+, the item can stay where it was last returned.
+
+Some of the benefits of floating are the reduction of items going into delivery, and that items may
+stay more adjacent to patrons that may want to check them out again.  One downside can be that the 
+collection at a location can become unbalanced without staff managing it.  A book club requesting multiple copies can result in all those copies being shelved at the same location when they are returned for instance.
+
+== When Does Floating Happen ==
+
+Floating happens at the point where an item has been checked in and it would go back into transit to its circulating library to be re-shelved.  Instead of being sent back, the circulating library is changed and the items is set to re-shelve at the current branch.  It does not happen if an item is going to fill another hold at the current location or at another location.
+
+== Floating and Shelving Locations ==
+
+Floating does not try to update an items shelving location.  So it works best if the locations included in the floating group all
+share the same set of Shelving Locations.  Otherwise an item may end up in a shelving location that is not valid for
+the location that an item floated to.
+
+== Floating Troubleshooting ==
+
+If you run into problems with Floating, here is a checklist of things to check on.
+
+1. Floating Group has been created.
+2. Locations included in the group have been defined as Floating Group Members.
+3. Item has been marked as a member of the Floating Group in the Holdings Editor.
+4. Item has no holds and is ready to be re-shelved.  Floating only happens for a check-in where an item would 
+   be going back to be re-shelved.
+5. Item has no current in transit records.  If an item is already in-transit, then that transit would be followed first. 
+
 == Floating Groups ==
 
 Each floating group comes with a name and a manual flag, plus zero or more group members. The name is used solely for selection and display purposes.
