@@ -62,6 +62,15 @@ function($q,  $rootScope,  $location,  $window,  egIDL,  egAuth,  egEnv , egOrg 
 
         // Only notify other tabs the auth session has expired 
         // when this tab was the first tab to know it.
+        // Note that there is a hole here: when the AngularJS
+        // login page is displayed again after a logout, there
+        // will be at least one more invocation of expiredAuthHandler
+        // by egStartup due to there being no authtoken - and this
+        // invocation will send a message on the eg.auth channel.
+        // However, because the AngularJS app doesn't start _listening_
+        // to the channel until the staff user has logged in, that
+        // second invocation has a much lower risk of causing
+        // a broadcast storm.
         var broadcast = !(data && data.startedElsewhere);
 
         egAuth.logout(broadcast); // clean up
@@ -84,7 +93,11 @@ function($q,  $rootScope,  $location,  $window,  egIDL,  egAuth,  egEnv , egOrg 
     // authtoken, call our epired token handler
     // we handle this here instead egAuth, since it affects the flow
     // of the startup routines when no valid token exists during startup.
-    $rootScope.$on('egAuthExpired', function() {service.expiredAuthHandler()});
+    // Note that we need to ensure that we pass along the startedElsewhere
+    // flag, if available, to ensure that we don't start a broadcast storm
+    // on the eg.auth BroadcastChannel of any other tabs that happen to have
+    // the AngularJS staff client open.
+    $rootScope.$on('egAuthExpired', function(event, data) {service.expiredAuthHandler(data)});
 
     // in case we just left an Angular context, clear the hold target
     // and notify any open Angular catalog tabs to do the same
