@@ -1,0 +1,1698 @@
+= Permissions List =
+
+_The following list includes permissions available in the Evergreen database as of 3.11._
+
+
+*ABORT_REMOTE_TRANSIT.* Allows a user to cancel an item transit if the user is not at the transit destination or source
+
+*ABORT_TRANSIT.* Allows a user to cancel an item transit if the user is
+at the transit destination or source
+
+*ABORT_TRANSIT_ON_LOST.* Allows a user to cancel a transit on an item
+with status of Lost
+
+*ABORT_TRANSIT_ON_MISSING.* Allows a user to cancel a transit on an item
+with status of Missing
+
+*ACCESS_ANGULAR_CIRC.* Allows a user to access the experimental Angular circulation interfaces
+
+*ACQ_ADD_LINEITEM_IDENTIFIER.* Allows an acquisitions user to add new
+lineitem identifiers to linked bib records when a linkage exists
+
+*ACQ_INVOICE_REOPEN.* Allows an acquisitions user to reopen an invoice
+
+*ACQ_SET_LINEITEM_IDENTIFIER.* Allows an acquisitions user to apply
+order identifiers to lineitems
+
+*ACQ_XFER_MANUAL_DFUND_AMOUNT.* Allows an acquisitions user to transfer
+money out of one fund and into another
+
+*ACTOR_USER_DELETE_OPEN_XACTS.override.* Allows a user to override the
+user deletion alert when the account has open circulations and/or unpaid
+bills
+
+*ADJUST_BILLS.* Allows a user to adjust a bill to zero
+
+*ADMIN_ACQ_CANCEL_CAUSE.* Allows an acquisitions user to
+create/edit/delete cancel reasons
+
+*ADMIN_ACQ_CLAIM.* Allows an acquisitions user to create/edit/delete
+claims
+
+*ADMIN_ACQ_CLAIM_EVENT_TYPE.* Allows an acquisitions user to
+create/edit/delete claim event types
+
+*ADMIN_ACQ_CLAIM_TYPE.* Allows an acquisitions user to
+create/edit/delete claim types
+
+*ADMIN_ACQ_DISTRIB_FORMULA.* Allows an acquisitions user to
+create/edit/delete distribution formulas
+
+*ADMIN_ACQ_FISCAL_YEAR.* Allows an acquisitions user to
+create/edit/delete fiscal years
+
+*ADMIN_ACQ_FUND.* Allows an acquisitions user to create/edit/delete
+funds in fund administration
+
+*ADMIN_ACQ_FUND_ALLOCATION_PERCENT.* Allows an acquisitions user to
+create/edit/delete fund allocation percentages
+
+*ADMIN_ACQ_FUND_TAG.* Allows an acquisitions user to create/edit/delete
+fund tags
+
+*ADMIN_ACQ_LINEITEM_ALERT_TEXT.* Allows an acquisitions user to
+create/edit/delete lineitem alert text
+
+*ADMIN_ADDRESS_ALERT.* Allows a user to create/edit/delete address
+alerts
+
+*ADMIN_AGE_PROTECT_RULE.* Allows a user to create/edit/delete age
+protection rules
+
+*ADMIN_ASSET_COPY_TEMPLATE.* Allows a user to create/edit/delete serial
+item templates
+
+*ADMIN_BOOKING_RESERVATION.* Allows a user to create/edit/delete booking
+reservations
+
+*ADMIN_BOOKING_RESERVATION_ATTR_MAP.* Allows a user to
+create/edit/delete booking reservation attribute maps
+
+*ADMIN_BOOKING_RESERVATION_ATTR_VALUE_MAP.* Allows a user to
+create/edit/delete booking reservation attribute value maps
+
+*ADMIN_BOOKING_RESOURCE.* Allows a user to create/edit/delete booking
+resources
+
+*ADMIN_BOOKING_RESOURCE_ATTR.* Allows a user to create/edit/delete
+booking resource attributes
+
+*ADMIN_BOOKING_RESOURCE_ATTR_MAP.* Allows a user to create/edit/delete
+booking resource attribute maps
+
+*ADMIN_BOOKING_RESOURCE_ATTR_VALUE.* Allows a user to create/edit/delete
+booking resource attribute values
+
+*ADMIN_BOOKING_RESOURCE_TYPE.* Allows a user to create/edit/delete
+booking resource types
+
+*ADMIN_CAROUSEL.* Allows a user to create/edit/delete carousels and
+carousel library mappings
+
+*ADMIN_CAROUSEL_TYPE.* Allows a user to create/edit/delete carousel
+types
+
+*ADMIN_CIRC_MATRIX_MATCHPOINT.* Allows a user to create/edit/delete
+circulation limit sets, circulation matrix weights, and circulation
+policies
+
+*ADMIN_CIRC_MOD.* Allows a user to create/edit/delete circulation
+modifiers
+
+*ADMIN_CLAIM_POLICY.* Allows an acquisitions user to create/edit/delete
+claim policies and claim policy actions
+
+*ADMIN_CODED_VALUE.* Allows a user to create/edit/delete SVF record
+attribute (MARC) coded value maps
+
+*ADMIN_CONFIG_REMOTE_ACCOUNT.* Allows a user to create/edit/delete
+remote (third-party) accounts
+
+*ADMIN_COPY_ALERT.* Allows a user to create/edit/delete item alerts
+
+*ADMIN_COPY_ALERT_SUPPRESS.* Allows a user to create/edit/delete item
+alert suppressions
+
+*ADMIN_COPY_ALERT_TYPE.* Allows a user to create/edit/delete item alert
+types
+
+*ADMIN_COPY_LOCATION_GROUP.* Allows a user to create/edit/delete
+shelving location groups
+
+*ADMIN_COPY_LOCATION_ORDER.* Allows a user to adjust the order of
+shelving locations
+
+*ADMIN_COPY_TAG.* Allows a user to create/edit/delete item tags
+
+*ADMIN_COPY_TAG_TYPES.* Allows a user to create/edit/delete item tag
+types
+
+*ADMIN_CREDIT_CARD_PROCESSING.* Allows a user to edit Credit Card
+Processing organizational unit settings
+
+*ADMIN_CURRENCY_TYPE.* Allows an acquisitions user to create/edit/delete
+currency types
+
+*ADMIN_FIELD_DOC.* Allows a user to create/edit field documentation
+
+*ADMIN_FLOAT_GROUPS.* Allows a user to create/edit/delete floating
+groups
+
+*ADMIN_FUND.* Allows an acquisitions user to assign funds to lineitems
+on purchase orders
+
+*ADMIN_FUND_ROLLOVER.* Allows an acquisitions user to complete year-end
+rollovers on funds
+
+*ADMIN_FUNDING_SOURCE.* Allows an acquisitions user to
+create/edit/delete funding sources
+
+*ADMIN_GEOLOCATION_SERVICES.* Allows a user to create/edit/delete
+geographic location services
+
+*ADMIN_GLOBAL_FLAG.* Allows a user to create/edit/delete global flags
+
+*ADMIN_GROUP_PENALTY_THRESHOLD.* Allows a user to create/edit/delete
+group penalty thresholds
+
+*ADMIN_HOLD_CANCEL_CAUSE.* Allows a user to create/edit/delete cancel
+reasons for holds
+
+*ADMIN_HOLD_CAPTURE_SORT.* Allows a user to make changes to the
+best-hold selection sort order
+
+*ADMIN_HOLD_MATRIX_MATCHPOINT.* Allows a user to create/edit/delete hold
+matrix matchpoints and hold policies
+
+*ADMIN_IDENT_TYPE.* Allows a user to create/edit/delete identification
+types
+
+*ADMIN_IMPORT_ITEM_ATTR_DEF.* Allows an acquisitions user to edit import
+item attribute definitions
+
+*ADMIN_IMPORT_MATCH_SET.* Allows an acquisitions user to
+create/edit/delete Vandelay match sets
+
+*ADMIN_INDEX_NORMALIZER.* Allows a user to create/edit/delete metabib
+class and field TS maps
+
+*ADMIN_INVOICE.* Allows an acquisitions user to create/edit/delete
+invoices
+
+*ADMIN_INVOICE_METHOD.* Allows an acquisitions user to
+create/edit/delete invoice methods
+
+*ADMIN_INVOICE_PAYMENT_METHOD.* Allows an acquisitions user to
+create/edit/delete invoice payment methods
+
+*ADMIN_LIBRARY_GROUPS.* Allows a user to create/edit/delete library
+groups
+
+*ADMIN_LINEITEM_MARC_ATTR_DEF.* Allows an acquisitions user to
+create/edit/delete lineitem MARC attribute definitions
+
+*ADMIN_MARC_CODE.* Allows a user to create/edit/delete MARC code
+
+*ADMIN_MAX_FINE_RULE.* Allows a user to create/edit/delete circulation
+max fine rules
+
+*ADMIN_MERGE_PROFILE.* Allows a user to create/edit/delete bib import
+merge profiles
+
+*ADMIN_OPENATHENS.* Allows a user to administer the OpenAthens
+authentication service
+
+*ADMIN_ORG_UNIT_CUSTOM_TREE.* Allows a user to edit custom
+organizational unit trees
+
+*ADMIN_ORG_UNIT_SETTING_TYPE.* Allows a user to create/edit/delete
+organizational unit setting types
+
+*ADMIN_ORG_UNIT_SETTING_TYPE_LOG.* Allows a user to modify the
+organizational unit setting types log
+
+*ADMIN_PRINT_TEMPLATE.* Allows a user to manage print template
+administration
+
+*ADMIN_PROVIDER.* Allows an acquisitions user to create/edit/delete
+providers
+
+*ADMIN_PROXIMITY_ADJUSTMENT.* Allows a user to create/edit/delete organizational unit
+proximity adjustments
+
+*ADMIN_RECURRING_FINE_RULE.* Allows a user to create/edit/delete
+recurring fine rules
+
+*ADMIN_REMOTEAUTH.* Allows a user to create/edit/delete remote
+authentication profiles
+
+*ADMIN_SEARCH_FILTER_GROUP.* Allows a user to manage search filter
+groups and entries
+
+*ADMIN_SERIAL_CAPTION_PATTERN.* Allows a user to create/edit/delete
+serial caption and pattern objects
+
+*ADMIN_SERIAL_DISTRIBUTION.* Allows a user to create/edit/delete serial
+distribution objects
+
+*ADMIN_SERIAL_ITEM.* Allows a user to create/edit/delete serial items
+
+*ADMIN_SERIAL_PATTERN_TEMPLATE.* Allows a user to create/edit/delete
+serial prediction pattern templates
+
+*ADMIN_SERIAL_STREAM.* Allows a user to create/edit/delete serial stream
+objects
+
+*ADMIN_SERIAL_SUBSCRIPTION.* Allows a user to create/edit/delete serial
+subscription objects
+
+*ADMIN_SERVER_ADDON_FOR_WORKSTATION.* Allows a user to specify which
+server add-ons get invoked at the current workstation
+
+*ADMIN_SMS_CARRIER.* Allows a user to create/edit/delete SMS carrier
+entries
+
+*ADMIN_STAFF_PORTAL_PAGE.* Allows a user to customize the staff client
+portal page
+
+*ADMIN_STANDING_PENALTY.* Allows a user to create/edit/delete standing
+penalties
+
+*ADMIN_SURVEY.* Allows a user to create/edit/delete surveys
+
+*ADMIN_SVF.* Allows a user to create/edit/delete SVF record attributes
+
+*ADMIN_TAG_TABLE.* Allows a user to create/edit/delete MARC tag tables
+
+*ADMIN_TOOLBAR.* Allows a user to create/edit/delete custom toolbars
+
+*ADMIN_TOOLBAR_FOR_ORG.* Allows a user to create/edit/delete custom
+toolbars for organizational units
+
+*ADMIN_TOOLBAR_FOR_USER.* Allows a user to create/edit/delete custom
+toolbars for users
+
+*ADMIN_TOOLBAR_FOR_WORKSTATION.* Allows a user to to create/edit/delete
+custom toolbars for workstations
+
+*ADMIN_TRIGGER_CLEANUP.* Allows a user to to create/edit/delete trigger
+cleanup entries
+
+*ADMIN_TRIGGER_EVENT_DEF.* Allows a user to create/edit/delete trigger
+event definitions
+
+*ADMIN_TRIGGER_HOOK.* Allows a user to create/edit/delete trigger hooks
+
+*ADMIN_TRIGGER_REACTOR.* Allows a user to create/edit/delete trigger
+reactors
+
+*ADMIN_TRIGGER_TEMPLATE_OUTPUT.* Allows a user to delete trigger
+template outputs
+
+*ADMIN_TRIGGER_VALIDATOR.* Allows a user to create/edit/delete
+trigger validators
+
+*ADMIN_USER_ACTIVITY_TYPE.* Allows a user to create/edit/delete user
+activity types
+
+*ADMIN_USER_REQUEST_TYPE.* Allows a user to create/edit/delete user
+purchase request types
+
+*ADMIN_USER_SETTING_GROUP.* Allows a user to create/edit/delete user
+setting groups
+
+*ADMIN_USER_SETTING_TYPE.* Allows a user to create/edit/delete user
+setting types
+
+*ADMIN_Z3950_SOURCE.* Allows a user to create/edit/delete z39.50 sources
+and index field maps
+
+*ALLOW_ALT_TCN.* Allows a user to import a record using an alternate TCN
+to avoid conflicts
+
+*APPLY_WORKSTATION_SETTING.* Allows a user to apply values to
+workstation settings
+
+*ASSIGN_GROUP_PERM.* Allows a user to add permissions to a permission
+group
+
+*ASSIGN_WORK_ORG_UNIT.* Allows a user to assign working locations to a
+staff account
+
+*AVAIL_HOLD_COPY_RATIO_EXCEEDED.override.* Allows a user to override the event when the number of holds to available copies ratio is exceeded
+
+*BAR_PATRON.* Allows a user to bar a patron
+
+*CANCEL_HOLDS.* Allows a user to cancel holds
+
+*CAPTURE_RESERVATION.* Allows a user to capture booking reservations
+
+*CHECKIN_BYPASS_HOLD_FULFILL.* _(no longer applicable)_
+
+CIRC_CLAIMS_RETURNED.override.* Allows a user to check in/out an item
+that is marked as claims returned
+
+*CIRC_EXCEEDS_COPY_RANGE.override.* Allows a user to override
+circulation item range failure
+
+*CIRC_OVERRIDE_DUE_DATE.* Allows a user to edit the due date on an item
+
+*CIRC_PERMIT_OVERRIDE.* Allows a user to bypass the circulation permit
+call for checkout
+
+*CLEAR_PURCHASE_REQUEST.* Allows a user to clear completed purchase
+requests
+
+*CONTAINER_BATCH_UPDATE.* Allows a user to batch edit user accounts in a
+user bucket
+
+*COPY_ALERT_MESSAGE.override.* Allows a user to check in/out an item
+that has an alert message
+
+*COPY_BAD_STATUS.override.* Allows a user to check out an item in a
+non-circulatable status
+
+*COPY_CHECKIN.* Allows a user to check in an item
+
+*COPY_CHECKOUT.* Allows a user to check out an item
+
+*COPY_CIRC_NOT_ALLOWED.override.* Allows a user to check out an item
+that is marked as non-circulating
+
+*COPY_DELETE_WARNING.override.* Allows a user to override warnings about
+deleting copies in problematic situations
+
+*COPY_HOLDS.* Allows a user to place a hold on a specific item
+
+*COPY_HOLDS_FORCE.* Allows a user to place a force hold on a specific
+item
+
+*COPY_HOLDS_RECALL.* Allows a user to place a recall hold on a specific
+item
+
+*COPY_IS_REFERENCE.override.* Allows a user to override the
+COPY_IS_REFERENCE event
+
+*COPY_NEEDED_FOR_HOLD.override.* Allows a user to force the renewal of
+an item that could fulfill a hold request
+
+*COPY_NOT_AVAILABLE.override.* Allows a user to force the checkout of
+an item not in an available status
+
+*COPY_STATUS_LONG_OVERDUE.override.* Allows a user to check in
+long-overdue items, thus removing the long-overdue status on the item
+
+*COPY_STATUS_LOST.override.* Allows a user to remove the Lost status
+from an item
+
+*COPY_STATUS_LOST_AND_PAID.override.* Allows a user to override the
+COPY_STATUS_LOST_AND_PAID event
+
+*COPY_STATUS_MISSING.override.* Allows a user to remove the Missing
+status on an item
+
+*COPY_TRANSIT_RECEIVE.* Allows a user to close out a transit on an item
+
+*CREATE_ACQ_FUNDING_SOURCE.* Allows an acquisitions user to create
+funding sources
+
+*CREATE_AUDIENCE.* Allows a user to create MARC audience codes
+
+*CREATE_AUTHORITY_CONTROL_SET.* Allows a user to create authority
+control sets and authority browse axes
+
+*CREATE_AUTHORITY_IMPORT_IMPORT_FIELD_DEF.* Allows a user to create
+queued authority record attribute definitions
+
+*CREATE_AUTHORITY_IMPORT_QUEUE.* Allows a user to create a queue when
+importing authority records
+
+*CREATE_AUTHORITY_RECORD.* Allows a user to create authority records
+
+*CREATE_AUTHORITY_RECORD_NOTE.* Allows a user to create notes on
+authority records
+
+*CREATE_BIB_BTYPE.* Allows a user to create bibliographic record bucket
+types
+
+*CREATE_BIB_IMPORT_FIELD_DEF.* Allows a user to create queued bib record
+attribute definitions
+
+*CREATE_BIB_IMPORT_QUEUE.* Allows an acquisitions user to choose or
+create a queue when loading MARC order records
+
+*CREATE_BIB_LEVEL.* CREATE_BIB_LEVEL
+
+*CREATE_BIB_PTYPE.* Allows a user to create bibliographic record peer
+types
+
+*CREATE_BIB_SOURCE.* Allows a user to create bibliographic sources
+
+*CREATE_BIBLIO_FINGERPRINT.* Allows a user to create bibliographic
+fingerprint definitions
+
+*CREATE_BILL.* Allows a user to create a bill on a transaction
+
+*CREATE_BILLING_TYPE.* Allows a user to create billing types
+
+*CREATE_CIRC_DURATION.* Allows a user to create circulation durations
+
+*CREATE_CIRC_MOD.* Allows a user to create circulation modifiers
+
+*CREATE_CN_BTYPE.* Allows a user to create call number bucket types
+
+*CREATE_CONTAINER.* Allows a user to create buckets for another user
+
+*CREATE_CONTAINER_ITEM.* Allows a user to add items to another user's
+bucket
+
+*CREATE_COPY.* Allows a user to create items
+
+*CREATE_COPY_ALERT.* Allows a user to create item alerts
+
+*CREATE_COPY_ALERT_SUPPRESS.* Allows a user to create item alert
+suppressions
+
+*CREATE_COPY_ALERT_TYPE.* Allows a user to create item alert types
+
+*CREATE_COPY_BTYPE.* Allows a user to create item bucket types
+
+*CREATE_COPY_LOCATION.* Allows a user to create shelving locations
+
+*CREATE_COPY_NOTE.* Allows a user to create item notes
+
+*CREATE_COPY_STAT_CAT.* Allows a user to create item statistical
+categories
+
+*CREATE_COPY_STAT_CAT_ENTRY.* Allows a user to create item statistical
+category entries
+
+*CREATE_COPY_STAT_CAT_ENTRY_MAP.* Allows a user to link items to an item
+statistical category entry
+
+*CREATE_COPY_STATUS.* Allows a user to create item statuses
+
+*CREATE_COPY_TRANSIT.* Allows a user to create a transit_copy object for
+transiting an item
+
+*CREATE_DUPLICATE_HOLDS.* Allows a user to create multiple holds on the
+same title
+
+*CREATE_FUND.* Allows an acquisitions user to create funds
+
+*CREATE_FUND_ALLOCATION.* Allows an acquisitions user to create fund
+allocations
+
+*CREATE_FUNDING_SOURCE.* Allows an acquisitions user to create funding sources
+
+*CREATE_HOLD_NOTIFICATION.* Allows a user to create new hold
+notifications
+
+*CREATE_HOURS_OF_OPERATION.* Allows a user to add hours of operation for
+an organizational unit
+
+*CREATE_IMPORT_ITEM.* Allows an acquisitions user to create import items
+
+*CREATE_IMPORT_ITEM_ATTR_DEF.* Allows an acquisitions user to create
+import item attribute definitions
+
+*CREATE_IMPORT_TRASH_FIELD.* Allows a user to create import/overlay
+field groups
+
+*CREATE_IN_HOUSE_USE.* Allows a user to record in-house use
+
+*CREATE_INVOICE.* Allows an acquisitions user to create and edit
+invoices
+
+*CREATE_INVOICE_ITEM_TYPE.* Allows an acquisitions user to create
+non-bibliographic invoice item types
+
+*CREATE_INVOICE_METHOD.* Allows a user to create invoice methods
+
+*CREATE_ITEM_FORM.* Allows a user to create item forms
+
+*CREATE_ITEM_TYPE.* Allows a user to create item types
+
+*CREATE_LANGUAGE.* CREATE_LANGUAGE
+
+*CREATE_LASSO.* _(no longer applicable)_
+
+*CREATE_LASSO_MAP.* _(no longer applicable)_
+
+*CREATE_LIT_FORM.* CREATE_LIT_FORM
+
+*CREATE_LOCALE.* Allows a user to create locales
+
+*CREATE_MARC.* Allows a user to create MARC records
+
+*CREATE_MARC_CODE.* Allows a user to create MARC code
+
+*CREATE_MERGE_PROFILE.* Allows a user to create bib import merge
+profiles
+
+*CREATE_METABIB_CLASS.* Allows a user to create metabib classes
+
+*CREATE_METABIB_FIELD.* Allows a user to create metabib fields
+
+*CREATE_METABIB_SEARCH_ALIAS.* Allows a user to create metabib search
+aliases
+
+*CREATE_MFHD_RECORD.* Allows a user to create MFHD records
+
+*CREATE_MONOGRAPH_PART.* Allows a user to create monograph part
+definitions
+
+*CREATE_MY_CONTAINER.* Allows a user to create a bucket for themselves
+
+*CREATE_NET_ACCESS_LEVEL.* Allows a user to create net access levels
+
+*CREATE_NON_CAT_TYPE.* Allows a user to create non-cataloged item types
+
+*CREATE_ORG_ADDRESS.* Allows a user to add a new organizational unit
+address
+
+*CREATE_ORG_TYPE.* Allows a user to create organizational unit types
+
+*CREATE_ORG_UNIT.* Allows a user to create organizational units
+
+*CREATE_ORG_UNIT_CLOSING.* Allows a user to create closed date entries
+for an organizational unit
+
+*CREATE_PATRON_STAT_CAT.* Allows a user to create patron statistical
+categories
+
+*CREATE_PATRON_STAT_CAT_ENTRY.* Allows a user to create patron
+statistical category entries
+
+*CREATE_PATRON_STAT_CAT_ENTRY_DEFAULT.* Allows a user to set a default
+entry for patron statistical categories
+
+*CREATE_PATRON_STAT_CAT_ENTRY_MAP.* Allows a user to link another user
+to a patron statistical category entry
+
+*CREATE_PAYMENT.* Allows a user to record bill payments
+
+*CREATE_PERM.* Allows a user to create permissions in the permissions
+list
+
+*CREATE_PICKLIST.* Allows an acquisitions user to create selection lists
+
+*CREATE_POP_BADGE.* Allows a user to create statistical popularity
+badges
+
+*CREATE_POP_PARAMETER.* Allows a user to create popularity badge
+parameters
+
+*CREATE_PRECAT.* Allows a user to create pre-cataloged items
+
+*CREATE_PROVIDER.* Allows an acquisitions user to create providers
+
+*CREATE_PURCHASE_ORDER.* Allows an acquisitions user to create purchase
+orders
+
+*CREATE_PURCHASE_REQUEST.* Allows a user to create patron purchase
+requests
+
+*CREATE_RECORD_NOTE.* Allows a user to create record notes
+
+*CREATE_RELEVANCE_ADJUSTMENT.* Allows a user to create relevance
+adjustments
+
+*CREATE_REPORT_TEMPLATE.* Allows a user to create report templates
+
+*CREATE_SURVEY.* Allows a user to create surveys
+
+*CREATE_TITLE_NOTE.* Allows a user to create title notes
+
+*CREATE_TRANSACTION.* Allows a user to create new billable transactions
+
+*CREATE_TRANSIT.* Allows a user to place an item in transit
+
+*CREATE_TRANSLATION.* Allows a user to apply translations
+
+*CREATE_TRIGGER_CLEANUP.* Allows a user to create trigger cleanup
+entries
+
+*CREATE_TRIGGER_EVENT_DEF.* Allows a user to create trigger event
+definitions
+
+*CREATE_TRIGGER_HOOK.* Allows a user to create trigger hooks
+
+*CREATE_TRIGGER_REACTOR.* Allows a user to create trigger reactors
+
+*CREATE_TRIGGER_VALIDATOR.* Allows a user to create trigger validators
+
+*CREATE_USER.* Allows a user to create (register) user accounts
+
+*CREATE_USER_BTYPE.* Allows a user to create user bucket types
+
+*CREATE_USER_GROUP_LINK.* Allows a user to assign secondary permission
+groups to a user
+
+*CREATE_VOLUME.* Allows a user to create call numbers
+
+*CREATE_VOLUME_NOTE.* Allows a user to create notes on call numbers
+
+*CREATE_VOLUME_PREFIX.* Allows a user to create call number prefix label
+definitions
+
+*CREATE_VOLUME_SUFFIX.* Allows a user to create call number suffix label
+definitions
+
+*CREATE_VR_FORMAT.* Allows a user to create videorecording formats
+
+*CREATE_XML_TRANSFORM.* Allows a user to create XML/XSLT transform
+definitions
+
+*DEBUG_CLIENT.* Allows a user to use debug functions in the staff client
+
+*DELETE_ACQ_FUNDING_SOURCE.* Allows an acquisitions user to delete
+funding sources
+
+*DELETE_AUDIENCE.* Allows a user to delete MARC audience codes
+
+*DELETE_AUTHORITY_CONTROL_SET.* Allows a user to delete authority
+control sets
+
+*DELETE_AUTHORITY_IMPORT_IMPORT_FIELD_DEF.* Allows a user to delete
+queued authority record attribute definitions
+
+*DELETE_AUTHORITY_IMPORT_QUEUE.* Allows a user to delete authority
+import queues
+
+*DELETE_AUTHORITY_RECORD.* Allows a user to delete authority records
+
+*DELETE_AUTHORITY_RECORD NOTE.* Allows a user to delete notes on
+authority records
+
+*DELETE_BIB_BTYPE.* Allows a user to delete bibliographic record bucket
+types
+
+*DELETE_BIB_IMPORT_IMPORT_FIELD_DEF.* Allows a user to delete queued bib
+record attribute definitions
+
+*DELETE_BIB_IMPORT_QUEUE.* Allows a user to delete bib import queues
+
+*DELETE_BIB_LEVEL.* DELETE_BIB_LEVEL
+
+*DELETE_BIB_PTYPE.* Allows a user to delete bibliographic record peer
+types
+
+*DELETE_BIB_SOURCE.* Allows a user to delete bibliographic sources
+
+*DELETE_BIBLIO_FINGERPRINT.* Allows a user to delete bibliographic
+fingerprint definitions
+
+*DELETE_BILLING_TYPE.* Allows a user to delete billing types
+
+*DELETE_CIRC_DURATION.* Allows a user to delete circulation duration
+rules
+
+*DELETE_CIRC_MOD.* Allows a user to delete circulation modifiers
+
+*DELETE_CN_BTYPE.* Allows a user to delete call number bucket types
+
+*DELETE_CONTAINER.* Allows a user to delete another user's bucket
+
+*DELETE_CONTAINER_ITEM.* Allows a user to remove items from another
+user's bucket
+
+*DELETE_COPY.* Allows a user to delete item records
+
+*DELETE_COPY_ALERT.* Allows a user to delete item alerts
+
+*DELETE_COPY_ALERT_SUPPRESS.* Allows a user to delete item alert
+suppressions
+
+*DELETE_COPY_ALERT_TYPE.* Allows a user to delete item alert types
+
+*DELETE_COPY_BTYPE.* Allows a user to delete item bucket types
+
+*DELETE_COPY_LOCATION.* Allows a user to delete shelving locations
+
+*DELETE_COPY_NOTE.* Allows a user to delete item notes
+
+*DELETE_COPY_STAT_CAT.* Allows a user to delete item statistical
+categories
+
+*DELETE_COPY_STAT_CAT_ENTRY.* Allows a user to delete item statistical
+category entries
+
+*DELETE_COPY_STAT_CAT_ENTRY_MAP.* Allows a user to delete item
+statistical category entry maps
+
+*DELETE_COPY_STATUS.* Allows a user to delete item statuses
+
+*DELETE_FUND.* Allows an acquisitions user to delete funds
+
+*DELETE_FUND_ALLOCATION.* Allows an acquisitions user to delete fund
+allocations
+
+*DELETE_FUNDING_SOURCE.* Allows a user to delete funding sources
+
+*DELETE_HOLDS.* Allows a user to delete holds
+
+*DELETE_HOURS_OF_OPERATION.* Allows a user to delete (clear) hours of
+operation for an organizational unit
+
+*DELETE_IMPORT_ITEM.* Allows a user to delete import items
+
+*DELETE_IMPORT_ITEM_ATTR_DEF.* Allows an acquisitions user to edit
+import item attribute definitions
+
+*DELETE_IMPORT_TRASH_FIELD.* Allows a user to delete import/overlay
+field groups
+
+*DELETE_INVOICE_ITEM_TYPE.* Allows an acquisitions user to delete
+non-bibliographic invoice item types
+
+*DELETE_INVOICE_METHOD.* Allows a user to delete invoice methods
+
+*DELETE_ITEM_FORM.* Allows a user to delete item forms
+
+*DELETE_ITEM_TYPE.* Allows a user to delete item types
+
+*DELETE_LANGUAGE.* DELETE_LANGUAGE
+
+*DELETE_LASSO.* _(no longer applicable)_
+
+*DELETE_LASSO_MAP.* _(no longer applicable)_
+
+*DELETE_LIT_FORM.* DELETE_LIT_FORM
+
+*DELETE_LOCALE.* Allows a user to delete locales
+
+*DELETE_MARC_CODE.* Allows a user to delete MARC code
+
+*DELETE_MERGE_PROFILE.* Allows a user to delete bib import merge
+profiles
+
+*DELETE_METABIB_CLASS.* Allows a user to delete metabib classes
+
+*DELETE_METABIB_FIELD.* Allows a user to delete metabib fields
+
+*DELETE_METABIB_SEARCH_ALIAS.* Allows a user to delete metabib search
+aliases
+
+*DELETE_MFHD_RECORD.* Allows a user to delete MFHD records
+
+*DELETE_MONOGRAPH_PART.* Allows a user to merge and delete monograph
+part definitions
+
+*DELETE_NET_ACCESS_LEVEL.* Allows a user to delete net access levels
+
+*DELETE_NON_CAT_TYPE.* Allows a user to delete non-cataloged types
+
+*DELETE_ORG_ADDRESS.* Allows a user to delete organizational unit
+addresses
+
+*DELETE_ORG_TYPE.* Allows a user to delete organizational unit types
+
+*DELETE_ORG_UNIT.* Allows a user to delete organizational units
+
+*DELETE_ORG_UNIT_CLOSING.* Allows a user to delete closed date entries
+for an organizational unit
+
+*DELETE_PATRON_STAT_CAT.* Allows a user to delete patron statistical
+categories
+
+*DELETE_PATRON_STAT_CAT_ENTRY.* Allows a user to delete patron
+statistical category entries
+
+*DELETE_PATRON_STAT_CAT_ENTRY_DEFAULT.* Allows a user to delete (unset)
+a default entry in a patron statistical category
+
+*DELETE_PATRON_STAT_CAT_ENTRY_MAP.* Allows a user to delete patron
+statistical category entry maps
+
+*DELETE_PERM.* Allows a user to delete permissions from the permissions
+list
+
+*DELETE_POP_BADGE.* Allows a user to delete statistical popularity
+badges
+
+*DELETE_POP_PARAMETER.* Allows a user to delete popularity badge
+parameters
+
+*DELETE_PROVIDER.* Allows an acquisitions user to delete providers
+
+*DELETE_RECORD.* Allows a user to delete bibliographic records
+
+*DELETE_RECORD_NOTE.* Allows a user to delete record notes
+
+*DELETE_RELEVANCE_ADJUSTMENT.* Allows a user to delete relevance
+adjustments
+
+*DELETE_SURVEY.* Allows a user to delete surveys
+
+*DELETE_TITLE_NOTE.* Allows a user to delete title notes
+
+*DELETE_TRANSIT.* DELETE_TRANSIT
+
+*DELETE_TRANSLATION.* Allows a user to delete translations
+
+*DELETE_TRIGGER_CLEANUP.* Allows a user to delete trigger cleanup
+entries
+
+*DELETE_TRIGGER_EVENT_DEF.* Allows a user to delete trigger event
+definitions
+
+*DELETE_TRIGGER_HOOK.* Allows a user to delete trigger hooks
+
+*DELETE_TRIGGER_REACTOR.* Allows a user to delete trigger reactors
+
+*DELETE_TRIGGER_TEMPLATE_OUTPUT.* Allows a user to delete trigger
+template output
+
+*DELETE_TRIGGER_VALIDATOR.* Allows a user to delete trigger validators
+
+*DELETE_USER.* Allows a user to delete (purge) another user's account
+
+*DELETE_USER_BTYPE.* Allows a user to delete user bucket types
+
+*DELETE_VOLUME.* Allows a user to delete call numbers
+
+*DELETE_VOLUME_NOTE.* Allows a user to delete someone else's call number
+notes
+
+*DELETE_VOLUME_PREFIX.* Allows a user to delete call number prefix label
+definitions
+
+*DELETE_VOLUME_SUFFIX.* Allows a user to delete call number suffix label
+definitions
+
+*DELETE_VR_FORMAT.* Allows a user to delete videorecording formats
+
+*DELETE_WORKSTATION.* Allows a user to remove workstations
+
+*DELETE_XML_TRANSFORM.* Allows a user to delete XML/XSLT transform
+definitions
+
+*EDIT_SELF_IN_CLIENT.* Allows a user to edit their own account in the
+staff client
+
+*EMERGENCY_CLOSING.* Allows a user to create emergency closed date
+entries for an organizational unit
+
+*EVERYTHING.* Allows a user to perform any function where a permission is checked _(note: currently this does not include all functions)_
+
+*GENERAL_ACQ.* Allows an acquisitions user to access acquisitions interfaces at the lowest level _(note: currently is used only to retrieve all currency types)_
+
+*HOLD_EXISTS.override.* Allows a user to place multiple holds on a
+single item
+
+*HOLD_ITEM_CHECKED_OUT.override.* Allows a user to place a hold on an
+item that they already have checked out
+
+*IMPORT_ACQ_LINEITEM_BIB_RECORD.* Allows an acquisitions user to import
+a bib record from the acquisitions staging area (on-order record) into the ILS
+bib data set
+
+*IMPORT_ACQ_LINEITEM_BIB_RECORD_UPLOAD.* Allows a user to create new
+bibs directly from an acquisitions MARC file upload
+
+*IMPORT_AUTHORITY_MARC.* Allows a user to create new authority records
+
+*IMPORT_MARC.* Allows a user to import MARC records
+
+*IMPORT_ON_ORDER_CAT_COPY.* Allows a users to import copies based on the
+on-order items attached to a record
+
+*IMPORT_OVERLAY_COPY.* Allows a user to overlay item data in MARC import
+
+*IMPORT_USE_ORG_UNIT_COPIES.* Allows a users to import records based on
+the number of organizational unit copies attached to a record
+
+*ISSUANCE_HOLDS.* Allows a user to place holds on serials issuances
+
+*ITEM_AGE_PROTECTED.override.* Allows a user to place holds on
+age-protected items
+
+*ITEM_DEPOSIT_PAID.override.* Allows a user to override the alert upon
+check-in of an item that requires a deposit
+
+*ITEM_DEPOSIT_REQUIRED.override.* Allows a user to override the alert
+upon checkout of an item that requires a deposit
+
+*ITEM_NOT_HOLDABLE.override.* Allows a user to place a hold on an item marked as not holdable
+
+*ITEM_ON_HOLDS_SHELF.override.* Allows a user to check out an item on
+the holds shelf for another patron
+
+*ITEM_RENTAL_FEE_REQUIRED.override.* Allows a user to override the alert
+upon checkout of an item that has a deposit amount but does not require
+a deposit
+
+*MANAGE_CLAIM.* Allows an acquisitions user to manage claims
+
+*MANAGE_CUSTOM_PERM_GRP_TREE.* Allows a user to manage permission tree
+display entries
+
+*MANAGE_FUND.* Allows an acquisitions user to view/credit/debit funds
+
+*MANAGE_FUNDING_SOURCE.* Allows an acquisitions user to
+view/credit/debit funding sources
+
+*MANAGE_HOLD_GROUPS.* Allows a user to create and cancel hold group
+events
+
+*MANAGE_PROVIDER.* Allows an acquisitions user to view and purchase from
+a provider
+
+*MANAGE_RESERVES.* Allows a user to manage courses and course materials
+and associate users with courses
+
+*MAP_MONOGRAPH_PART.* Allows a user to create/edit/delete item monograph
+part maps
+
+*MARK_BAD_DEBT.* Allows a user to mark a transaction as bad
+(unrecoverable) debt
+
+*MARK_ITEM_AVAILABLE.* Allows a user to mark an item's status as
+'Available'
+
+*MARK_ITEM_BINDERY.* Allows a user to mark an item's status as 'Bindery'
+
+*MARK_ITEM_CATALOGING.* Allow a user to mark an item's status as
+'Cataloging'
+
+*MARK_ITEM_CHECKED_OUT.* Allows a user to mark an item's status as
+'Checked out'
+
+*MARK_ITEM_DAMAGED.* Allows a user to mark an item's status as 'Damaged'
+
+*MARK_ITEM_DISCARD.* Allows a user to mark an item's status as 'Discard'
+
+*MARK_ITEM_ILL.* Allows a user to mark an item's status as 'ILL'
+
+*MARK_ITEM_IN_PROCESS.* Allows a user to mark an item's status as 'In
+process'
+
+*MARK_ITEM_IN_TRANSIT.* Allows a user to mark an item's status as 'In
+transit'
+
+*MARK_ITEM_LOST.* Allows a user to mark an item's status as 'Lost'
+
+*MARK_ITEM_MISSING.* Allows a user to mark an item's status as 'Missing'
+
+*MARK_ITEM_MISSING_PIECES.* Allows a user to scan an item as missing
+pieces
+
+*MARK_ITEM_ON_HOLDS_SHELF.* Allows a user to mark an item's status as
+'On holds shelf'
+
+*MARK_ITEM_ON_ORDER.* Allows a user to mark an item's status as 'On
+order'
+
+*MARK_ITEM_RESERVES.* Allows a user to mark an item's status as
+'Reserves'
+
+*MARK_ITEM_RESHELVING.* Allows a user to mark an item's status as
+'Reshelving'
+
+*MAX_HOLDS.override.* Allows a user to override the alert when the
+maximum number of holds has been reached
+
+*MAX_RENEWALS_REACHED.override.* Allows a user to renew an item that has
+reached the maximum amount of renewals
+
+*MERGE_AUTH_RECORDS.* Allows a user to merge authority records
+
+*MERGE_BIB_RECORDS.* Allows a user to merge bib records and their
+associated data regardless of their bib/call number/item-level
+permissions
+
+*MERGE_USERS.* Allows a user to merge two user profiles
+
+*MR_HOLDS.* Allows a user to create metarecord holds
+
+*OFFLINE_EXECUTE.* Allows a user to execute (process) an offline script
+batch
+
+*OFFLINE_UPLOAD.* Allows a user to upload an offline script
+
+*OFFLINE_VIEW.* Allows a user to view offline sessions
+
+*OPAC_LOGIN.* Allows a user to log in to the OPAC
+
+*OVERRIDE_HOLD_HAS_LOCAL_COPY.* Allows a user to override the
+circ.holds.hold_has_copy_at.block setting
+
+*PATRON_EXCEEDS_CHECKOUT_COUNT.override.* Allows a user to override the
+alert when a user has the maximum number of items checked out
+
+*PATRON_EXCEEDS_FINES.override.* Allows a user to override the alert
+when a user exceeds the fines threshold
+
+*PATRON_EXCEEDS_LOST_COUNT.override.* Allows a user to override the
+alert at checkout when a user has met the maximum lost item count
+
+*PATRON_EXCEEDS_OVERDUE_COUNT.override.* Allows a user to override the
+alert when patron has too many overdue items
+
+*PERSISTENT_LOGIN.* Allows a user to authenticate and get a long-lived
+session (length configured in opensrf.xml)
+
+*PLACE_UNFILLABLE_HOLD.* Allows a user to place a hold that cannot
+currently be filled
+
+*RECEIVE_PURCHASE_ORDER.* Allows an acquisitions user to mark a purchase
+order, lineitem, or individual item as received
+
+*RECEIVE_SERIAL.* Allows an acquisitions user to receive serial items
+
+*REFRESH_CAROUSEL.* Allows a user to refresh carousels
+
+*REGISTER_WORKSTATION.* Allows a user to register workstations
+
+*REMOTE_Z3950_QUERY.* Allows a user to perform z39.50 queries against
+remote servers
+
+*REMOVE_GROUP_PERM.* Allows a user to delete permissions from a
+permission group
+
+*REMOVE_USER_GROUP_LINK.* Allows a user to remove secondary permission
+groups from a user
+
+*RENEW_CIRC.* Allows a user to renew an item's circulation on another
+user's account
+
+*RENEW_HOLD_OVERRIDE.* Allows a user to renew an item's circulation even
+if it is required for a hold
+
+*REQUEST_HOLDS.* Allows a user to create holds for another user
+
+*REQUEST_HOLDS_OVERRIDE.* _(no longer applicable)_
+
+*RETRIEVE_RESERVATION_PULL_LIST.* Allows a user to retrieve the booking
+reservation pull list
+
+*RUN_REPORTS.* Allows a user to run reports
+
+*RUN_SIMPLE_REPORTS.* Allows a user to access Simple Reports
+
+*SAVED_FILTER_DIALOG_FILTERS.* Allows a user to save and load sets of
+filters for filter dialogs, available in certain staff interfaces
+
+*SET_CIRC_CLAIMS_RETURNED.* Allows a user to mark an item as 'Claims
+Returned'
+
+*SET_CIRC_CLAIMS_RETURNED.override.* Allows a user to override the
+maximum claims returned value for a patron
+
+*SET_CIRC_LONG_OVERDUE.* Allows the user to mark an item as 'Long
+Overdue'
+
+*SET_CIRC_LOST.* Allows a user to mark an item as 'Lost'
+
+*SHARE_REPORT_FOLDER.* Allows a user to share their report folders
+
+*SSO_ADMIN.* Allows a user to edit single sign on (SSO) organizational
+unit settings
+
+*STAFF_LOGIN.* Allows a user to log in to the staff client
+
+*TITLE_HOLDS.* Allows a user to place a title-level hold
+
+*TOTAL_HOLD_COPY_RATIO_EXCEEDED.override.* Allows a user to override the
+TOTAL_HOLD_COPY_RATIO_EXCEEDED event 
+
+*TRANSIT_CHECKIN_INTERVAL_BLOCK.override.* Allows a user to override the
+TRANSIT_CHECKIN_INTERVAL_BLOCK event
+
+*TRANSIT_COPY.* TRANSIT_COPY
+
+*UNBAR_PATRON.* Allows a user to unbar a patron
+
+*UPDATE_ACQ_FUNDING_SOURCE.* Allows a user to edit acquisitions funding
+sources
+
+*UPDATE_AUDIENCE.* Allows a user to edit MARC audience codes
+
+*UPDATE_AUTHORITY_CONTROL_SET.* Allow a user to modify authority control
+sets
+
+*UPDATE_AUTHORITY_IMPORT_IMPORT_FIELD_DEF.* Allows a user to edit queued
+authority record attribute definitions
+
+*UPDATE_AUTHORITY_IMPORT_QUEUE.* Allows a user to edit authority import
+queues
+
+*UPDATE_AUTHORITY_RECORD.* Allows a user to modify authority records
+
+*UPDATE_AUTHORITY_RECORD_NOTE.* Allows a user to edit notes on authority
+records
+
+*UPDATE_BATCH_COPY.* Allows a user to batch edit item records
+
+*UPDATE_BIB_BTYPE.* Allows a user to edit bibliographic record bucket
+types
+
+*UPDATE_BIB_IMPORT_IMPORT_FIELD_DEF.* Allows a user to edit queued bib
+record attribute definitions
+
+*UPDATE_BIB_IMPORT_QUEUE.* Allows a user to edit bibliographic import
+queues
+
+*UPDATE_BIB_LEVEL.* UPDATE_BIB_LEVEL
+
+*UPDATE_BIB_PTYPE.* Allows a user to edit bibliographic record peer types
+
+*UPDATE_BIB_SOURCE.* Allows a user to edit bibliographic sources
+
+*UPDATE_BIBLIO_FINGERPRINT.* Allows a user to edit bibliographic
+fingerprint definitions
+
+*UPDATE_BILL_NOTE.* Allows a user to edit the note on a bill
+
+*UPDATE_BILLING_TYPE.* Allows a user to edit billing types
+
+*UPDATE_CIRC_DURATION.* Allows a user to edit circulation duration rules
+
+*UPDATE_CIRC_MOD.* Allows a user to edit circulation modifiers
+
+*UPDATE_CN_BTYPE.* Allows a user to edit call number bucket types
+
+*UPDATE_CONTAINER.* Allows a user to edit another user's bucket
+
+*UPDATE_COPY.* Allows a user to edit items
+
+*UPDATE_COPY_ALERT.* Allows a user to edit item alerts
+
+*UPDATE_COPY_ALERT_SUPPRESS.* Allows a user to edit item alert
+suppressions
+
+*UPDATE_COPY_ALERT_TYPE.* Allows a user to edit item alert types
+
+*UPDATE_COPY_BARCODE.* Allows a user to edit (replace) the barcode for
+an item
+
+*UPDATE_COPY_BTYPE.* Allows a user to edit item bucket types
+
+*UPDATE_COPY_LOCATION.* Allows a user to edit shelving locations
+
+*UPDATE_COPY_NOTE.* Allows a user to edit item notes
+
+*UPDATE_COPY_STAT_CAT.* Allows a user to edit item statistical
+categories
+
+*UPDATE_COPY_STAT_CAT_ENTRY.* Allows a user to edit item statistical
+category entries
+
+*UPDATE_COPY_STATUS.* Allows a user to edit the attributes of an item
+status
+
+*UPDATE_FUND.* Allows an acquisitions user to edit funds
+
+*UPDATE_FUND_ALLOCATION.* Allows a user to edit fund allocations
+
+*UPDATE_FUNDING_SOURCE.* Allows an acquisitions user to edit funding
+sources
+
+*UPDATE_GROUP_PERM.* Allows a user to edit permission depth and
+grantability
+
+*UPDATE_HOLD.* Allows a user to edit another user's holds
+
+*UPDATE_HOLD_REQUEST_TIME.* Allows a user to edit a hold's request date,
+therefore moving a hold to the top of the holds queue
+
+*UPDATE_HOURS_OF_OPERATION.* Allows a user to edit hours of operation
+for an organizational unit
+
+*UPDATE_IMPORT_ITEM.* Allows a user to edit import items
+
+*UPDATE_IMPORT_ITEM_ATTR_DEF.* Allows a user to edit import item
+attribute definitions
+
+*UPDATE_IMPORT_TRASH_FIELD.* Allows a user to edit import/overlay field
+groups
+
+*UPDATE_INVOICE_ITEM_TYPE.* Allows an acquisitions user to edit
+non-bibliographic invoice item types
+
+*UPDATE_INVOICE_METHOD.* Allows a user to edit invoice methods
+
+*UPDATE_ITEM_FORM.* Allows a user to edit item forms
+
+*UPDATE_ITEM_TYPE.* Allows a user to edit item types
+
+*UPDATE_LANGUAGE.* UPDATE_LANGUAGE
+
+*UPDATE_LASSO.* _(no longer applicable)_
+
+*UPDATE_LASSO_MAP.* _(no longer applicable)_
+
+*UPDATE_LIT_FORM.* UPDATE_LIT_FORM
+
+*UPDATE_LOCALE.* Allows a user to edit locales
+
+*UPDATE_MARC.* Allows a user to edit MARC records
+
+*UPDATE_MARC_CODE.* Allows a user to edit MARC code
+
+*UPDATE_MERGE_PROFILE.* Allows a user to edit bib import merge profiles
+
+*UPDATE_METABIB_CLASS.* Allows a user to edit metabib classes
+
+*UPDATE_METABIB_FIELD.* Allows a user to edit metabib fields
+
+*UPDATE_METABIB_SEARCH_ALIAS.* Allows a user to edit metabib search
+aliases
+
+*UPDATE_MFHD_RECORD.* Allows a user to edit MFHD records
+
+*UPDATE_MONOGRAPH_PART.* Allows a user to edit monograph part
+definitions
+
+*UPDATE_NET_ACCESS_LEVEL.* Allows a user to edit net access levels
+
+*UPDATE_NON_CAT_TYPE.* Allows a user to edit non-cataloged types
+
+*UPDATE_ORG_ADDRESS.* Allows a user to edit organizational unit
+addresses
+
+*UPDATE_ORG_SETTING.* Allows a user to edit organizational unit settings
+
+*UPDATE_ORG_TYPE.* Allows a user to edit organizational unit types
+
+*UPDATE_ORG_UNIT.* Allows a user to edit the main settings for an
+organizational unit
+
+*UPDATE_ORG_UNIT_CLOSING.* Allows a user to edit closed date entries for
+an organizational unit
+
+*UPDATE_ORG_UNIT_SETTING_ALL.* Allows a user to edit all organizational
+unit settings in the Library Settings Editor
+
+*UPDATE_ORG_UNIT_SETTING.auth.opac_timeout.* Allows a user to edit the
+auth.opac_timeout setting in the Library Settings Editor
+
+*UPDATE_ORG_UNIT_SETTING.auth.staff_timeout.* Allows a user to edit the
+auth.staff_timeout setting in the Library Settings Editor
+
+*UPDATE_ORG_UNIT_SETTING.cat.bib.alert_on_empty.* Allows a user to edit
+the cat.bib.alert_on_empty setting in the Library Settings Editor
+
+*UPDATE_ORG_UNIT_SETTING.cat.bib.keep_on_empty.* Allows a user to edit
+the cat.bib.keep_on_empty setting in the Library Settings Editor
+
+*UPDATE_ORG_UNIT_SETTING.cat.default_item_price.* Allows a user to edit
+the cat.default_item_price setting in the Library Settings Editor
+
+*UPDATE_ORG_UNIT_SETTING.circ.block_renews_for_holds.* Allows a user to
+edit the circ.block_renews_for_holds setting in the Library Settings
+Editor
+
+*UPDATE_ORG_UNIT_SETTING.circ.hold_boundary.hard.* Allows a user to edit
+the circ.hold_boundary.hard setting in the Library Settings Editor
+
+*UPDATE_ORG_UNIT_SETTING.circ.hold_boundary.soft.* Allows a user to edit
+the circ.hold_boundary.soft setting in the Library Settings Editor
+
+*UPDATE_ORG_UNIT_SETTING.circ.hold_expire_alert_interval.* Allows a user
+to edit the circ.hold_expire_alert_interval setting in the Library
+Settings Editor
+
+*UPDATE_ORG_UNIT_SETTING.circ.hold_expire_interval.* Allows a user to
+edit the circ.hold_expire_interval setting in the Library Settings
+Editor
+
+*UPDATE_ORG_UNIT_SETTING.circ.hold_stalling.soft.* Allows a user to edit
+the circ.hold_stalling.soft setting in the Library Settings Editor
+
+*UPDATE_ORG_UNIT_SETTING.circ.item_checkout_history.max.* Allows a user
+to edit the circ.item_checkout_history.max setting in the Library
+Settings Editor
+
+*UPDATE_ORG_UNIT_SETTING.circ.lost_materials_processing_fee.* Allows a
+user to edit the lost_materials_processing_fee setting in the Library
+Settings Editor
+
+*UPDATE_ORG_UNIT_SETTING.circ.max_item_price.* Allows a user to edit the
+circ.max_item_price setting in the Library Settings Editor
+
+*UPDATE_ORG_UNIT_SETTING.circ.min_item_price.* Allows a user to edit the
+circ.min_item_price setting in the Library Settings Editor
+
+*UPDATE_ORG_UNIT_SETTING.circ.reshelving_complete.interval.* Allows a
+user to edit the circ.reshelving_complete.interval setting in the
+Library Settings Editor
+
+*UPDATE_ORG_UNIT_SETTING.circ.selfcheck.alert_on_checkout_event.* Allows
+a user to edit the circ.selfcheck.alert_on_checkout_event setting in the
+Library Settings Editor
+
+*UPDATE_ORG_UNIT_SETTING.circ.selfcheck.patron_login_timeout.* Allows a
+user to edit the circ.selfcheck.patron_login_timeout setting in the
+Library Settings Editor
+
+*UPDATE_ORG_UNIT_SETTING.circ.staff_client.receipt.alert_text.* Allows a
+user to edit the circ.staff_client.receipt.alert_text setting in the
+Library Settings Editor
+
+*UPDATE_ORG_UNIT_SETTING.circ.void_overdue_on_lost.* Allows a user to
+edit the circ.void_overdue_on_lost setting in the Library Settings
+Editor
+
+*UPDATE_ORG_UNIT_SETTING.credit.payments.allow.* Allows a user to edit
+the credit.payments.allow setting in the Library Settings Editor
+
+*UPDATE_ORG_UNIT_SETTING.global.juvenile_age_threshold.* Allows a user
+to edit the global.juvenile_age_threshold setting in the Library
+Settings Editor
+
+*UPDATE_ORG_UNIT_SETTING.global.password_regex.* Allows a user to edit
+the global.password_regex setting in the Library Settings Editor
+
+*UPDATE_ORG_UNIT_SETTING.opac.barcode_regex.* Allows a user to edit the
+opac.barcode_regex setting in the Library Settings Editor
+
+*UPDATE_ORG_UNIT_SETTING.opac.matomo.* Allows a user to configure Matomo
+Analytics settings in the Library Settings Editor
+
+*UPDATE_ORG_UNIT_SETTING.opac.patron.custom_css.* Allows a user to edit
+the opac.patron.custom_css setting in the Library Settings Editor
+
+*UPDATE_ORG_UNIT_SETTING.org.bounced_emails.* Allows a user to edit the
+org.bounced_emails setting in the Library Settings Editor
+
+*UPDATE_ORG_UNIT_SETTING.patron.password.use_phone.* Allows a user to
+edit the patron.password.use_phone setting in the Library Settings
+Editor
+
+*UPDATE_ORG_UNIT_SETTING.ui.hide_copy_editor_fields.* Allows a user to
+edit the ui.hide_copy_editor_fields setting in the Library Settings
+Editor
+
+*UPDATE_PATRON_ACTIVE_CARD.* Allows a user to manually adjust another
+user's active cards
+
+*UPDATE_PATRON_CLAIM_NEVER_CHECKED_OUT_COUNT.* Allows a user to manually
+change a patron's claims never checked out count
+
+*UPDATE_PATRON_CLAIM_RETURN_COUNT.* Allows a user to manually change a
+patron's claims returned count
+
+*UPDATE_PATRON_COLLECTIONS_EXEMPT.* Allows a user to indicate that a
+patron is exempt from collections processing
+
+*UPDATE_PATRON_PRIMARY_CARD.* Allows a user to manually adjust another
+user's primary barcode
+
+*UPDATE_PATRON_STAT_CAT.* Allows a user to edit patron statistical
+categories
+
+*UPDATE_PATRON_STAT_CAT_ENTRY.* Allows a user to edit patron statistical
+category entries
+
+*UPDATE_PATRON_STAT_CAT_ENTRY_DEFAULT.* Allows a user to set a default
+entry for patron statistical categories
+
+*UPDATE_PAYMENT_NOTE.* Allows a user to edit the note for a payment on a
+transaction
+
+*UPDATE_PERM.* Allows a user to edit permissions in the permissions list
+
+*UPDATE_PICKLIST.* Allows an acquisitions user to edit and reuse a
+selection list
+
+*UPDATE_PICKUP_LIB_FROM_HOLDS_SHELF.* Allows a user to change the pickup
+library chosen for a hold
+
+*UPDATE_PICKUP_LIB_FROM_TRANSIT.* Allows a user to change the pickup and
+transit destinations for a captured hold item already in transit
+
+*UPDATE_POP_BADGE.* Allows a user to delete statistical popularity
+badges
+
+*UPDATE_POP_PARAMETER.* Allows a user to edit popularity badge
+parameters
+
+*UPDATE_PROVIDER.* Allows an acquisitions user to edit providers
+
+*UPDATE_RECORD.* Allows a user to undelete MARC records
+
+*UPDATE_RECORD_NOTE.* Allows a user to edit record notes
+
+*UPDATE_RELEVANCE_ADJUSTMENT.* Allows a user to edit relevance
+adjustments
+
+*UPDATE_SURVEY.* Allows a user to edit surveys
+
+*UPDATE_TRANSIT.* UPDATE_TRANSIT
+
+*UPDATE_TRANSLATION.* Allows a user to edit translations
+
+*UPDATE_TRIGGER_CLEANUP.* Allows a user to edit trigger cleanup entries
+
+*UPDATE_TRIGGER_EVENT_DEF.* Allows a user to edit trigger event
+definitions
+
+*UPDATE_TRIGGER_HOOK.* Allows a user to edit trigger hooks
+
+*UPDATE_TRIGGER_REACTOR.* Allows a user to edit trigger reactors
+
+*UPDATE_TRIGGER_VALIDATOR.* Allows a user to edit trigger validators
+
+*UPDATE_USER.* Allows a user to edit another user's account
+
+*UPDATE_USER_BTYPE.* Allows a user to edit user bucket types
+
+*UPDATE_USER_PHOTO_URL.* Allows a user to edit the Photo URL field in
+the patron registration and edit screens
+
+*UPDATE_VOLUME.* Allows a user to edit call numbers
+
+*UPDATE_VOLUME_NOTE.* Allows a user to edit call number notes
+
+*UPDATE_VOLUME_PREFIX.* Allows a user to edit call number prefix label
+definitions
+
+*UPDATE_VOLUME_SUFFIX.* Allows a user to edit call number suffix label
+definitions
+
+*UPDATE_VR_FORMAT.* Allows a user to edit videorecording formats
+
+*UPDATE_WORKSTATION.* Allows a user to take over an existing workstation
+registration
+
+*UPDATE_XML_TRANSFORM.* Allows a user to edit XML/XSLT transform
+definitions
+
+*UPLOAD_COVER_IMAGE.* Allows a user to upload a custom jacket/cover
+image for a given bibliographic record for display in the staff client
+and OPAC
+
+*URL_VERIFY.* Allows a user to process and verify URLs through the
+cataloging Link Checker
+
+*URL_VERIFY_UPDATE_SETTINGS.* Allows a user to configure URL
+verification organizational unit settings
+
+*VIEW_ACQ_FUND_ALLOCATION_PERCENT.* Allows an acquisitions user to view
+credits allocated to funds
+
+*VIEW_ACQ_FUNDING_SOURCE.* Allows an acquisitions user to view funding
+sources
+
+*VIEW_ADDRESS_ALERT.* Allows a user to view address alerts
+
+*VIEW_AUTHORITY_RECORD_NOTES.* Allows a user to view authority record
+notes
+
+*VIEW_BILLING_TYPE.* Allows a user to view billing types
+
+*VIEW_BOOKING_RESERVATION.* Allows a user to view booking reservations
+
+*VIEW_BOOKING_RESERVATION_ATTR_MAP.* Allows a user to view booking
+reservation attribute maps
+
+*VIEW_BOOKING_RESOURCE.* Allows a user to view booking resources
+
+*VIEW_BOOKING_RESOURCE_TYPE.* Allows a user to view booking resource
+types
+
+*VIEW_CIRC_MATRIX_MATCHPOINT.* Allows a user to view circulation limit
+sets, circulation matrix weights, and circulation policies
+
+*VIEW_CIRCULATIONS.* Allows a user to see what another user has checked
+out
+
+*VIEW_CLAIM.* Allows an acquisitions user to view claim types and claim
+type events
+
+*VIEW_CONTAINER.* Allows a user to view another user's (shared) buckets
+
+*VIEW_COPY_ALERT.* Allows a user to view item alerts
+
+*VIEW_COPY_CHECKOUT_HISTORY.* Allows a user to view which users have
+checked out a given item
+
+*VIEW_COPY_NOTES.* Allows a user to view all notes attached to an item
+
+*VIEW_CREDIT_CARD_PROCESSING.* Allows a user to view Credit Card
+Processing settings in the Library Settings Editor
+
+*VIEW_FUND.* Allows an acquisitions user to view funds under fund
+administration
+
+*VIEW_FUND_ALLOCATION.* Allows an acquisitions user to view fund
+allocations
+
+*VIEW_FUNDING_SOURCE.* Allows an acquisitions user to view funding
+sources
+
+*VIEW_GEOLOCATION_SERVICES.* Allows a user to view geographic location
+services
+
+*VIEW_GROUP_PENALTY_THRESHOLD.* Allows a user to view group penalty
+thresholds
+
+*VIEW_HOLD.* Allows a user to view another user's holds
+
+*VIEW_HOLD_MATRIX_MATCHPOINT.* Allows a user to view hold matrix
+matchpoints and hold policies
+
+*VIEW_HOLD_NOTIFICATION.* Allows a user to view staff notifications
+attached to a hold
+
+*VIEW_HOLD_PERMIT.* Allows a user to see if another user has permission
+to place a hold on a given item
+
+*VIEW_HOLD_PULL_LIST.* Allows a user to view the holds pull list
+
+*VIEW_IMPORT_MATCH_SET.* Allows an acquisitions user to view Vandelay
+match sets
+
+*VIEW_INVOICE.* Allows an acquisitions user to search for and print
+invoices
+
+*VIEW_MERGE_PROFILE.* Allows an acquisitions user to view Merge Profile
+options
+
+*VIEW_ORG_SETTINGS.* Allows a user to view all organizational unit
+settings in the Library Settings Editor
+
+*VIEW_PERM_GROUPS.* Allow a user to view another user's permission
+groups
+
+*VIEW_PERMISSION.* Allows a user to view the permissions list and a user’s permissions within the User Permissions Editor
+
+*VIEW_PERMIT_CHECKOUT.* Allows a user to determine if another user can
+check out an item
+
+*VIEW_PICKLIST.* Allows an acquisitions user to view selection lists
+
+*VIEW_PROVIDER.* Allows an acquisitions user to view providers
+
+*VIEW_PURCHASE_ORDER.* Allows an acquisitions user to view purchase
+orders
+
+*VIEW_REPORT_OUTPUT.* Allows a user to view report outputs
+
+*VIEW_SEARCH_FILTER_GROUP.* Allows a user to view search filter groups
+and entries
+
+*VIEW_SERIAL_SUBSCRIPTION.* Allows a user to view serial subscriptions
+
+*VIEW_TITLE_NOTES.* Allows a user to view all notes attached to a title
+
+*VIEW_TRANSACTION.* Allows a user to view user transactions and cash
+reports
+
+*VIEW_TRIGGER_EVENT.* Allows a user to view the circ- and hold-related
+action/trigger event log attached to a user account
+
+*VIEW_TRIGGER_EVENT_DEF.* Allows a user to view trigger event
+definitions
+
+*VIEW_USER.* Allows a user to view user accounts
+
+*VIEW_USER_FINES_SUMMARY.* Allows a user to see the total bill balance
+attached to a user account
+
+*VIEW_USER_SETTING_TYPE.* Allows a user to view configurable user setting
+types
+
+*VIEW_USER_TRANSACTIONS.* Allows a user to view another user's bill
+transactions
+
+*VIEW_VOLUME_NOTES.* Allows a user to view all notes attached to a call
+number
+
+*VIEW_ZIP_DATA.* Allows a user to query the zip code data method
+
+*VOID_BILLING.* Allows a user to void bills
+
+*VOLUME_HOLDS.* Allows a user to place a call number-level hold
+
+*actor.org_unit.closed_date.create.* Allows a user to create closed date
+entries for an organizational unit
+
+*actor.org_unit.closed_date.delete.* Allows a user to delete closed date
+entries for an organizational unit
+
+*actor.org_unit.closed_date.update.* Allows a user to edit closed date
+entries for an organizational unit
+
+*group_application.user.* Allows a user to create and edit users in the
+User permission group
+
+*group_application.user.patron.* Allows a user to create and edit users
+in the Patron permission group
+
+*group_application.user.sip_client.* Allows a user to create and edit
+users in the SIP-Client permission group
+
+*group_application.user.staff.* Allows a user to create and edit users
+in the Staff permission group
+
+*group_application.user.staff.acq.* Allows a user to create and edit
+users in the Acquisitions permission groups
+
+*group_application.user.staff.acq_admin.* Allows a user to create and
+edit users in Acquisitions Administration permission groups
+
+*group_application.user.staff.admin.global_admin.* Allows a user to
+create and edit users in the GlobalAdmin permission group
+
+*group_application.user.staff.admin.lib_manager.* Allows a user to
+create and edit users in the LibraryManager permission group
+
+*group_application.user.staff.admin.local_admin.* Allows a user to
+create and edit users in the LocalAdmin permission group
+
+*group_application.user.staff.admin.system_admin.* Allows a user to
+create and edit users in the System Administrator permission group
+
+*group_application.user.staff.cat.* Allows a user to create and edit
+users in the Cataloger permission groups
+
+*group_application.user.staff.cat_admin.* Allows a user to create and
+edit users in the Cataloging Administrator permission group
+
+*group_application.user.staff.cat.cat1.* Allows a user to create and
+edit users in the Cat1 permission group
+
+*group_application.user.staff.circ.* Allows a user to create and edit
+users in the Circulator permission groups
+
+*group_application.user.staff.circ_admin.* Allows a user to create and
+edit users in the Circulation Administrator permission group
+
+*group_application.user.staff.data_review.* Allows a user to create and
+edit users in the Data Review permission group
+
+*group_application.user.staff.supercat.* Allows a user to create and
+edit users in the SuperCat permission group
+
+*group_application.user.staff.volunteers.* Allows a user to create and
+edit users in the Volunteers permission group
+
+*group_application.user.vendor.* Allows a user to create and edit users
+in the Vendor permission groups
+
+*money.collections_tracker.create.* Allows a user to put a user into
+collections
+
+*money.collections_tracker.delete.* Allows a user to remove a user from
+collections
+
+*user_request.create.* Allows a user to create patron purchase requests
+
+*user_request.delete.* Allows a user to delete patron purchase requests
+
+*user_request.update.* Allows a user to edit patron purchase requests
+
+*user_request.view.* Allows a user to view patron purchase requests
