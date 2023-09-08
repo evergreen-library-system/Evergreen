@@ -100,9 +100,7 @@ In this section, we'll show you in the staff client:
 * how to see the permissions associated with each group
 * how to add or remove permissions from a group
 
-We also provide an appendix with a listing of suggested minimum permissions for
-some essential groups. You can compare the existing permissions with these
-suggested permissions and, if any are missing, you will know how to add them.
+The xref:appendix:permissions_list.adoc[Permissions List] in the appendix provides a list of available permissions with their descriptions.
 
 === Where to find existing permissions and what they mean ===
 In the staff client, in the upper right corner of the screen, click on
