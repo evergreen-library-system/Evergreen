@@ -73,32 +73,22 @@ root 	30349  0.8  0.1  52620 10824 pts/0	S	13:04   0:00 ruby ./edi_webrick.rb
 kill -INT $(pgrep ruby)
 -----------------------
 
-=== Install EDI Scripts ===
+=== Enable EDI cron Jobs ===
 
 The EDI scripts are "edi_pusher.pl" and "edi_fetcher.pl" and are used to
 "push" and "fetch" EDI messages for configured EDI accounts.
 
-1. As the *opensrf* user, copy edi_pusher.pl and edi_fetcher.pl from
-   Open-ILS/src/support-scripts into /openils/bin:
-+
-[source, bash]
---------------------------------------------------
-cp Open-ILS/src/support-scripts/edi_pusher.pl /openils/bin
-cp Open-ILS/src/support-scripts/edi_fetcher.pl /openils/bin
---------------------------------------------------
-2. Setup the edi_pusher.pl and edi_fetcher.pl scripts to run as cron jobs
+1. Un-comment the below lines in the opensrf user's crontab
    in order to regularly push and receive EDI messages.
-   * Add to the opensrf user's crontab the following entries:
+   * The example schedule for running the EDI scripts are:
 +
 [source, bash]
 -----------------------------------------------------------------------
 10 * * * * cd /openils/bin && /usr/bin/perl ./edi_pusher.pl > /dev/null
 0 1 * * * cd /openils/bin && /usr/bin/perl ./edi_fetcher.pl > /dev/null
 -----------------------------------------------------------------------
-   * The example for edi_pusher.pl sets the script to run at 
-     10 minutes past the hour, every hour.
-   * The example for edi_fetcher.pl sets the script to run at
-     1 AM every night.
+   * edi_pusher.pl runs at 10 minutes past the hour, every hour.
+   * edi_fetcher.pl runs at 1 AM every night.
 
 [NOTE]
 You may choose to run the EDI scripts more or less frequently based on the 
