@@ -70,6 +70,12 @@ EG_BIN_DIR = /openils/bin
 # Calculate scores for popularity badges
 #30 4 * * * . ~/.bashrc && $EG_BIN_DIR/badge_score_generator.pl $SRF_CORE
 
+# EDI ordering and invoicing - un-comment as needed
+#0 1 * * * cd /openils/bin && /usr/bin/perl ./edi_fetcher.pl > /dev/null
+# Use edi_pusher.pl for installations using the old Ruby edi_webrick and edi_order_pusher.pl for newer style EDI.
+#10 * * * * cd /openils/bin && /usr/bin/perl ./edi_pusher.pl > /dev/null
+#10 * * * * cd /openils/bin && /usr/bin/perl ./edi_order_pusher.pl > /dev/null
+
 # Action/Trigger entries ----
 
 # Runs all pending A/T events every half hour
