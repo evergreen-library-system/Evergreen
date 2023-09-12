@@ -3,11 +3,11 @@ import {PageObjectModel} from 'nightwatch';
 const navBar: PageObjectModel = {
     elements: {
         acqMenu: {
-            selector: '//a[@class = "dropdown-toggle nav-link" and contains(text(), "Acquisitions")]',
+            selector: '//button[@class = "dropdown-toggle nav-link" and contains(text(), "Acquisitions")]',
             locateStrategy: 'xpath'
         },
         catMenu: {
-            selector: '//a[@class = "dropdown-toggle nav-link" and contains(text(), "Cataloging")]',
+            selector: '//button[@class = "dropdown-toggle nav-link" and contains(text(), "Cataloging")]',
             locateStrategy: 'xpath'
         },
         catMenuMarcBatchImportExport: {
