@@ -11,6 +11,7 @@ import {StringService} from '@eg/share/string/string.service';
 import {ConfirmDialogComponent} from '@eg/share/dialog/confirm.component';
 import {FmRecordEditorComponent} from '@eg/share/fm-editor/fm-editor.component';
 import {ComboboxEntry} from '@eg/share/combobox/combobox.component';
+import {PermService} from '@eg/core/perm.service';
 
 @Component({
     templateUrl: './org-unit.component.html',
@@ -22,6 +23,8 @@ export class OrgUnitComponent implements OnInit {
     selected: TreeNode;
     orgUnitTab: string;
 
+    hasClosedDatePerms: boolean;
+
     @ViewChild('editString', { static: true }) editString: StringComponent;
     @ViewChild('errorString', { static: true }) errorString: StringComponent;
     @ViewChild('delConfirm', { static: true }) delConfirm: ConfirmDialogComponent;
@@ -32,12 +35,26 @@ export class OrgUnitComponent implements OnInit {
         private auth: AuthService,
         private pcrud: PcrudService,
         private strings: StringService,
-        private toast: ToastService
+        private toast: ToastService,
+        private perm: PermService,
     ) {}
 
 
     ngOnInit() {
         this.loadAouTree(this.org.root().id());
+        
+        //Check once on init if user could be linked to closed date editor (don't want them to land on a page that does nothing and think it's broken)
+        let neededClosedDatesPerms = ['actor.org_unit.closed_date.create',
+            'actor.org_unit.closed_date.update',
+            'actor.org_unit.closed_date.delete'];
+        
+        this.perm.hasWorkPermAt(neededClosedDatesPerms, true).then((perm) => {
+            //Set true once if they have every permission they need to change closed dates
+            this.hasClosedDatePerms = neededClosedDatesPerms.every(element => {
+                return perm[element].length > 0;
+            });
+        });
+
     }
 
     navChanged(evt: NgbNavChangeEvent) {
@@ -154,6 +171,11 @@ export class OrgUnitComponent implements OnInit {
             this.hours(dow, 'open') === '00:00:00' &&
             this.hours(dow, 'close') === '00:00:00'
         );
+    }
+
+    //Is the org closed every day of the week?
+    allClosed(): boolean{
+        return [0, 1, 2, 3, 4, 5, 6].every(dow => this.isClosed(dow));;
     }
     
     getNote(dow: number, hoo?: IdlObject) {
