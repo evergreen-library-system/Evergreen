@@ -19,7 +19,8 @@
     </ng-container>
   </div>
   <div class="modal-body">
-    <form #fmEditForm="ngForm" class="form-validated common-form striped-odd"
+    <form #fmEditForm="ngForm"
+          class="form-validated common-form striped-odd"
           [egDateFieldOrderList]="dateFieldOrderList">
       <ng-container *ngIf="!record">
         <!-- display a progress dialog while the editor

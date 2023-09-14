@@ -1,5 +1,5 @@
 <form class="d-flex align-items-start" [formGroup]="familySelectors">
-  <span class="input-group-text">{{labelText}}</span>
+  <label class="input-group-text" [for]="domId">{{labelText}}</label>
   <eg-org-select [domId]="domId"
     (onChange)="orgOnChange($event)"
     [limitPerms]="limitPerms"

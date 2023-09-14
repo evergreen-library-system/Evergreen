@@ -30,5 +30,15 @@ module.exports = {
       browser.setValue('#holdings-tag', '981')
              .click('link text', 'Provider')
              .assert.textMatches('h4.modal-title', 'Unsaved Changes Warning');
+  },
+  'Provider search screen passes axe accessibility checks': (browser: NightwatchBrowser) => {
+    navigateToEgUrl('eg2/en-US/staff/acq/provider', browser);
+    browser.waitForElementVisible('h1');
+    browser.axeInject().axeRun('main');
+  },
+  'Individual provider screen passes axe accessibility checks': (browser: NightwatchBrowser) => {
+    navigateToEgUrl('eg2/en-US/staff/acq/provider/4/details', browser);
+    browser.waitForElementVisible('h1');
+    browser.axeInject().axeRun('main');
   }
 };

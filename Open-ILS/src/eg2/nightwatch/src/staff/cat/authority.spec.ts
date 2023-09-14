@@ -25,5 +25,10 @@ module.exports = {
                 .assert.visible('#eg-toast-container')
                 .setValue('@marcTag550', '450')
                 .click('@saveChangesButton');
+    },
+    'Authority browse screen passes axe accessibility checks': (browser: NightwatchBrowser) => {
+        navigateToEgUrl('/eg2/en-US/staff/cat/authority/browse', browser);
+        browser.waitForElementVisible('h1');
+        browser.axeInject().axeRun();
     }
 };

@@ -1,5 +1,5 @@
 import {EnhancedPageObject, NightwatchBrowser} from 'nightwatch';
-import {fixtureFile, randomString} from '../../utils';
+import {fixtureFile, navigateToEgUrl, randomString} from '../../utils';
 
 const exampleXpath = '//*[@tag="010"]/*[@code="a"][1]';
 
@@ -45,5 +45,11 @@ module.exports = {
                     .click('@goToQueueButton')
                     .assert.textContains('div.eg-grid-header-row', 'LC control number')
                     .assert.textContains('div.eg-grid-body', 'sh 85038796');
-    }
+    },
+
+    'Record display attributes screen passes axe accessibility checks': (browser: NightwatchBrowser) => {
+        navigateToEgUrl('eg2/en-US/staff/cat/vandelay/display_attrs/bib', browser);
+        browser.waitForElementVisible('h1');
+        browser.axeInject().axeRun('main');
+      }
 };

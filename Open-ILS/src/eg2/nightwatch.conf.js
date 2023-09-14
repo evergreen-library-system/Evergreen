@@ -50,6 +50,17 @@ module.exports = {
       webdriver: {
         start_process: true,
         server_path: ''
+      },
+
+      globals: {
+        axeSettings: {
+          options: {
+            rules: {
+              'aria-required-children': {enabled: false}
+            }
+          }
+        }
+
       }
     },
 

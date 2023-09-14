@@ -4,10 +4,7 @@
   </eg-grid-toolbar-actions-menu>
 </ng-template>
 
-<!--
-  tabindex=1 so the grid body can capture keyboard events.
--->
-<div class="eg-grid-body" tabindex="1" (keydown)="onGridKeyDown($event)">
+<div class="eg-grid-body" tabindex="0" (keydown)="onGridKeyDown($event)">
   <div role="row" class="eg-grid-row eg-grid-body-row {{context.rowClassCallback(row)}}"
     [ngClass]="{'selected': context.rowSelector.contains(context.getRowIndex(row))}"
     *ngFor="let row of context.dataSource.getPageOfRows(context.pager); let idx = index">
