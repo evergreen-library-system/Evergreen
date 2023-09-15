@@ -1,0 +1,185 @@
+== Upgrading to Evergreen/OpenSRF Redis ==
+
+Some of these steps are part of a standard install, included here
+for completeness.
+
+=== NOTE ===
+
+Most of these steps are done automatically when installing OpenSRF and 
+Evergreen from scratch.  It may be easier for some (and less error 
+prone) to install new servers than to upgrade existing ones.
+
+=== Assumptions ===
+
+* Evergreen/OpenSRF are installed in the default /openils directory.
+* Assumes a single machine 'localhost' install.
+
+=== Install ===
+
+* From within the dowload / checkout directory
+* ${OSNAME} might be, for example, 'ubuntu-jammy'
+
+==== Install Prerequisites ====
+
+[source,sh]
+------------------------------------------------------------------------------
+sudo make -f OpenSRF/src/extras/Makefile.install ${OSNAME}
+sudo make -f Evergreen/Open-ILS/src/extras/Makefile.install ${OSNAME}
+------------------------------------------------------------------------------
+
+==== Install Opensrf & Evergreen ====
+
+[source,sh]
+------------------------------------------------------------------------------
+cd OpenSRF
+make clean all
+sudo make install
+
+# ----
+
+cd ../Evergreen
+make clean all
+sudo make install
+------------------------------------------------------------------------------
+
+=== Configure ===
+
+==== configure opensrf_core.xml ====
+
+===== Create a local redis-accounts.txt file =====
+
+Redis passwords are generated at install time and stored in 
+'redis-accounts.txt.example'.  Make a local copy to retain our passwords.
+The defaults will be locally generated, unique, and safe to use.
+
+[source,sh]
+------------------------------------------------------------------------------
+cd /openils/conf
+cp redis-accounts.txt.example redis-accounts.txt
+------------------------------------------------------------------------------
+
+===== Copy Redis passwords into opensrf_core.xml =====
+
+Passwords are defined for 'opensrf', 'router', and 'gateway'.
+
+Example redis-accounts.txt entry for the 'opensrf' account:
+
+[source,sh]
+------------------------------------------------------------------------------
+ACL SETUSER opensrf reset
+ACL SETUSER opensrf on >1f129912-b38a-4c42-910f-521e0651b7b9
+ACL SETUSER opensrf -@all +lpop +blpop +rpush +del ~opensrf:router:* ~opensrf:service:* ~opensrf:client:*
+------------------------------------------------------------------------------
+
+The 'opensrf' account password for the example above is
+'1f129912-b38a-4c42-910f-521e0651b7b9'.  Copy this value into opensrf_core.xml
+
+[source,xml]
+------------------------------------------------------------------------------
+    <domain>private.localhost</domain>                                         
+    <username>opensrf</username>                                               
+    <passwd>1f129912-b38a-4c42-910f-521e0651b7b9</passwd> 
+------------------------------------------------------------------------------
+
+Repeat this process for the 'router' and 'gateway' accounts.  There will
+be one password entry for 'gateway' and 2 password entries for 'router'.
+
+===== Update Gateway Username =====
+
+Going forward, the username for the <gateway/> section will be 'gateway'.
+
+Example:
+
+[source,xml]
+------------------------------------------------------------------------------
+  <gateway>
+    ...
+    <username>gateway</username>
+    <passwd>a9080f2e-3504-4d38-9179-8e3d06c53bfd</passwd>
+    <port>6379</port>
+    <loglevel>3</loglevel>
+    ...
+  </gateway>
+------------------------------------------------------------------------------
+
+===== Update the Port =====
+
+Update occurrences of port '5222' (i.e. your local ejabberd port) with
+the default Redis port '6379'. There will be 4 occurrences by default.
+
+Example:
+
+[source,xml]
+------------------------------------------------------------------------------
+    <domain>private.localhost</domain>
+    <username>opensrf</username>
+    <passwd>1f129912-b38a-4c42-910f-521e0651b7b9</passwd>
+    <port>6379</port>
+------------------------------------------------------------------------------
+
+
+==== Update /etc/hosts ====
+
+To avoid requiring Redis listen on multiple IP addresses, change the
+'public' and 'private' hosts in /etc/hosts to use the same IP.
+
+[source,sh]
+------------------------------------------------------------------------------
+127.0.0.1 localhost public.localhost private.localhost
+------------------------------------------------------------------------------
+
+==== Configure Redis ====
+
+Disable message persistence by modifying the Redis 'save' setting.
+
+* Open `/etc/redis/redis.conf` and make the following                            
+** Apply a save value of ""
+** Disable existing definitions for the 'save' value.
+
+[source, bash]                                                                 
+---------------------------------------------------------------------------    
+# Snapshotting can be completely disabled with a single empty string argument  
+# as in following example:                                                     
+#                                                                              
+save ""                                                                        
+
+# save 900 1
+# save 300 10
+# save 60 10000
+---------------------------------------------------------------------------    
+                                                                              
+Restart the Redis server to make the changes take effect:                   
+                                                                              
+[source,sh]
+---------------------------------------------------------------------------    
+sudo systemctl restart redis-server                                                   
+---------------------------------------------------------------------------    
+
+==== Apply Redis Accounts ====
+
+
+===== About =====
+
+* This step must be run every time Redis is restarted, including server
+  reboots.
+
+TODO: Bake this into osrf_control so that it runs automatically every 
+time services are restarted, with an option to skip the step.
+
+
+[source,sh]
+---------------------------------------------------------------------------    
+/openils/bin/osrf_control -l --reset-message-bus
+---------------------------------------------------------------------------    
+
+==== Restart Everything ====
+
+[source,sh]
+---------------------------------------------------------------------------    
+osrf_control -l --restart-all
+sudo systemctl restart apache2 nginx websocketd-osrf
+---------------------------------------------------------------------------    
+
+== Done! ==
+
+
