@@ -249,6 +249,8 @@ sub bucket_retrieve_class {
         $apputils->checkses_requestor( $authtoken, $userid, 'VIEW_CONTAINER' );
     return $evt if $evt;
 
+    $userid = $staff->id unless $userid;
+
     $logger->debug("User " . $staff->id . 
         " retrieving buckets for user $userid [class=$class, type=$type]");
 
