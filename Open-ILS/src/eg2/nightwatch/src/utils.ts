@@ -21,3 +21,7 @@ export function fmEditorFieldSelector(fieldName: string) {
 export function fixtureFile(fileName: string) {
     return path.resolve(__dirname, '..', 'fixtures', fileName);
 }
+
+export function scrollToTopOfPage(browser: NightwatchBrowser) {
+    browser.execute(() => { window.scrollTo(0, 0); });
+}

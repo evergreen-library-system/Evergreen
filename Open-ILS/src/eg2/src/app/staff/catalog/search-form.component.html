@@ -420,7 +420,7 @@
     <div [ngbNavOutlet]="searchTabs" class="mt-2"></div>
 
   </div>
-  <div class="col-lg-4">
+  <div class="col-lg-4 h-100">
     <div class="row">
       <div class="col-lg-12">
         <div class="card">
@@ -433,6 +433,7 @@
               </eg-org-select>
               <button class="btn btn-success me-1 ms-1" type="button"
                 [disabled]="searchIsActive()"
+                id="run-catalog-search"
                 (click)="context.pager.offset=0;searchByForm()" i18n>
                 Search
               </button>

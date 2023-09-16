@@ -12,6 +12,10 @@ const navBar: PageObjectModel = {
         },
         catMenuMarcBatchImportExport: {
             selector: 'a[href="/eg2/en-US/staff/cat/vandelay/import"]'
+        },
+        searchMenu: {
+            selector: '//button[@class = "dropdown-toggle nav-link" and contains(text(), "Search")]',
+            locateStrategy: 'xpath'
         }
     }
 };
