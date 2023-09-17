@@ -356,7 +356,7 @@ export class HoldingsMaintenanceComponent implements OnInit {
 
     onRowActivate(row: any) {
         if (row.copy) {
-            // Launch copy editor?
+            this.openHoldingEdit([row], true, false);
         } else {
             this.gridTemplateContext.toggleExpandRow(row);
         }
