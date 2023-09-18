@@ -1,42 +1,46 @@
-= Cloning Shared Templates =
+[[cloning_report_templates]]
+= Cloning Report Templates =
 :toc:
 
 indexterm:[reports, cloning]
 
-This chapter describes how to make local copies of shared templates for routine 
-reports or as a starting point for customization. When creating a new template 
-it is a good idea to review the shared templates first: even if the exact 
-template you need does not exist it is often faster to modify an existing 
-template than to build a brand new one. A Local System Administrator account is 
-required to clone templates from the _Shared Folders_ section and save them to _My 
-Folders_.
+In Evergreen, reports are run from templates that can be used multiple times. Library staff can create their own templates or clone templates from other users, or clone their own templates to make changes or modifications to the template.
 
-The steps below assume you have already created at least one _Templates_ folder.  
-If you haven’t done this, please see
-xref:reports:reporter_folder.adoc#reporter_creating_folders[Creating Folders].
+When creating a new template it is a good idea to review the shared templates first: even if the exact template you need does not exist it is often faster to modify an existing template than to build a brand new one. A Local System Administrator account is required to clone templates from the Shared Folders section and save them to My Folders.
 
-. Access the reports interface from _Administration_ -> _Reports_
-. Under _Shared Folders_ expand the _Templates_ folder and the subfolder of the 
-report you wish to clone.  To expand the folders click on the grey arrow or 
-folder icon.  Do not click on the blue underlined hyperlink.
-. Click on the subfolder.
-. Select the template you wish to clone.  From the dropdown menu choose _Clone 
-selected templates_, then click _Submit_.  
+The steps below assume you have already created at least one folder in _Templates_. If you have not done so, please see xref:reports:reporter_folder.adoc#creating_folders[Creating Folders].
+
+. Navigate to *Administration -> Reports*.
+. In the _Shared Folders_ section select the arrow beside the _Templates_ folder to see the shared template folders. Use the arrows to expand the folder tree until you find the folder containing
+the template you would like to clone.
 +
-NOTE: By default Evergreen only displays the first 10 items in any folder. To view 
-all content, change the Limit output setting from 10 to All.
+image::media/clone-report-template-1.png[Folder Tree]
 +
-. Choose the folder where you want to save the cloned template, then click 
-_Select Folder_. Only template folders created with your account will be visible. 
-If there are no folders to choose from please see 
-xref:reports:reporter_folder.adoc#reporter_creating_folders[Creating Folders].
-
-. The cloned template opens in the template editor. From here you may modify 
-the template by adding, removing, or editing fields and filters as described in 
-xref:reports:reporter_create_templates.adoc#reporter_creating_templates[Creating Templates]. _Template Name_ and 
-_Description_ can also be edited. When satisfied with your changes click _Save_.
-
-. Click _OK_ in the resulting confirmation windows.
-
-Once saved it is not possible to edit a template. To make changes, clone a 
-template and change the clone. 
+. Select the folder name to display the contents.
++
+image::media/clone-report-template-2.png[Selected Folder]
++
+. Check the box beside the template you wish to clone.
+. From the drop-down menu choose _Clone selected template_. Select *Submit*. 
++
+image::media/clone-report-template-3.png[Clone Selected Template]
++
+[TIP]
+=====
+By default Evergreen only displays the first 10 items in any folder. To view all content, change the _Limit output to_ setting from _10_ to _All_. Be aware that this may cause performance issues in large-data systems.
+=====
++
+. Select the name of your folder where you'd like to save the cloned template and then click _Select Folder_. 
++
+image::media/clone-report-template-4.png[Select Folder]
++
+. The template editor will open. For information on modifying templates, see the section on xref:reporter_modifying_templates.adoc[Modifying Templates].
+. Update the template name and/or template description if desired.
+. Select *Save Template*. Once a template is saved it is not possible to edit the template. To make changes, clone a template and change the clone.
++
+image::media/clone-report-template-5.png[Save Template]
++
+. A pop-up will appear confirming that you wish to save the template. Select *OK/Continue*.
+. The template can now be found in the folder you saved it in.
++
+image::media/clone-report-template-6.png[Folder View]

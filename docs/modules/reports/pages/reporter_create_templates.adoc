@@ -1,8 +1,11 @@
-[[reporter_creating_templates]]
-= Creating Templates =
+[[creating_report_templates]]
+= Creating Report Templates =
+:page-aliases: reporter_template_enhancements.adoc
 :toc:
 
-indexterm:[reports, creating templates]
+indexterm:[reports, creating templates, report templates]
+
+== Introduction ==
 
 Once you have created a folder, the next step in building a report is to create 
 or clone a template. Templates allow you to run a report more than once without 
@@ -29,261 +32,386 @@ into problems because you will know exactly what changes caused the problem.
 Also consider adding extra fields in the intermediate steps to help you check 
 your results for correctness.
 
-This example illustrates creating a template for circulation statistics. This is 
-an example of the most basic template that you can create. The steps required to 
-create a template are the same every time, but the tables chosen, how the data 
-is transformed and displayed, and the filters used will vary depending on your 
-needs.
+== Creating a Template ==
 
-== Choosing Report Fields ==
+Before creating a completely new template, it is recommended that you check your organization’s shared templates to see if there is a template that can be modified to give you the information you need. The template search can be used to find and identify potential templates. Please note that the search does not provide the folder name where the template is stored. Be sure to leave out any special characters or punctuation in your search.
 
-indexterm:[reports, creating templates, choosing reports fields]
+See xref:reports:reporter_cloning_shared_templates[Cloning Report Templates] for more information.
 
-. Click on the My Folder template folder where you want the template to be saved.
-+
-image::media/create-template-1.png[create-template-1]
-+
-. Click on Create a new Template for this folder.
-+
-image::media/create-template-2.png[create-template-2]
-+
-. You can now see the template creating interface. The upper half of the screen 
-is the _Database Source Browser_. The top left hand pane contains the database 
-_Sources_ drop-down list. This is the list of tables available as a starting point 
-for your report. Commonly used sources are _Circulation_ (for circ stats and 
-overdue reports), _ILS User_ (for patron reports), and _Item_ (for reports on a 
-library's holdings).
-+
-image::media/create-template-3.png[create-template-3]
-+
-The Enable source nullability checkbox below the sources list is for advanced 
-reporting and should be left unchecked by default.
-+
-. Select _Circulation_ in the _Sources_ dropdown menu. Note that the _Core 
-Sources_ for reporting are listed first, however it is possible to access all 
-available sources at the bottom of this dropdown menu. You may only specify one 
-source per template.
-+
-image::media/create-template-4.png[create-template-4]
-+
-. Click on _Circulation_ to retrieve all the field names in the Field Name pane. 
-Note that the _Source_ Specifier (above the middle and right panes) shows the 
-path that you took to get to the specific field.
-+
-image::media/create-template-5.png[create-template-5]
-+
-. Select _Circ ID_ in the middle _Field Name_ pane, and _Count Distinct_ from the 
-right _Field Transform_ pane. The _Field Transform_ pane is where you choose how 
-to manipulate the data from the selected fields. You are counting the number of 
-circulations.
-+
-indexterm:[reports, field transform]
-+
-image::media/create-template-6.png[create-template-6]
-+
-_Field Transforms_ have either an _Aggregate_ or _Non-Aggregate_ output type. 
-See the section called
-xref:reports:reporter_template_terminology.adoc#field_transforms[Field Transforms] for more about 
-_Count, _Count Distinct_, and other transform options.
-+
-. Click _Add Selected Fields_ underneath the _Field Transform_ pane to add this 
-field to your report output. Note that _Circ ID_ now shows up in the bottom left 
-hand pane under the _Displayed Fields_ tab.
-+
-image::media/create-template-7.png[create-template-7]
-+
-. _Circ ID_ will be the column header in the report output. You can rename 
-default display names to something more meaningful. To do so in this example, 
-select the _Circ ID_ row and click _Alter Display Header_.
-+
-image::media/create-template-8.png[create-template-8]
-+
-Double-clicking on the displayed field name is a shortcut to altering the 
-display header.
-+
-. Type in the new column header name, for example _Circ count_ and click _OK_.
-+
-image::media/create-template-9.png[create-template-9]
-+
-. Add other data to your report by going back to the _Sources_ pane and selecting 
-the desired fields. In this example, we are going to add _Circulating Item --> 
-Shelving Location_ to further refine the circulation report.
-+
-In the top left hand _Sources_ pane, expand _Circulation_. Depending on your 
-computer you will either click on the _+_ sign or on an arrow to expand the tree.
-+
-image::media/create-template-10.png[create-template-10]
-+
-Click on the _+_ or arrow to expand _Circulating Item_. Select 
-_Shelving Location_.
-+
-image::media/create-template-11.png[create-template-11]
-+
-When you are creating a template take the shortest path to the field you need in 
-the left hand Sources pane. Sometimes it is possible to find the same field name 
-further in the file structure, but the shortest path is the most efficient.
-+
-In the Field Name pane select Name.
-+
-image::media/create-template-12.png[create-template-12]
-+
-In the upper right _Field Transform_ pane, select _Raw Data_ and click _Add Selected_ 
-Fields. Use _Raw Data_ when you do not wish to transform field data in any manner.
-+
-image::media/create-template-13.png[create-template-13]
-+
-Name will appear in the bottom left pane. Select the Name row and click _Alter 
-Display Header_.
-+
-image::media/create-template-15.png[create-template-15]
-+
-. Enter a new, more descriptive column header, for example, _Shelving location_. 
-Click _OK_.
-+
-image::media/create-template-16.png[create-template-16]
-+
-. Note that the order of rows (top to bottom) will correspond to the order of 
-columns (left to right) on the final report. Select _Shelving location_ and click 
-on _Move Up_ to move _Shelving location_ before _Circ count_.
-+
-image::media/create-template-17.png[create-template-17]
-+
-. Return to the _Sources_ pane to add more fields to your template. Under 
-_Sources_ click _Circulation_, then select _Check Out Date/Time_ from the middle 
-_Field Name_ pane.
-+
-image::media/create-template-19.png[create-template-19]
-+
-. Select _Year + Month_ in the right hand _Field Transform_ pane and click _Add 
-Selected Fields_
-+
-image::media/create-template-20.png[create-template-20]
-+
-. _Check Out Date/Time_ will appear in the _Displayed Fields_ pane. In the report 
-it will appear as a year and month _(YYYY-MM)_ corresponding to the selected transform.
-+
-image::media/create-template-21.png[create-template-21]
-+
-. Select the _Check Out Date/Time_ row. Click _Alter Display Header_ and change 
-the column header to _Check out month_.
-+
-image::media/create-template-22.png[create-template-22]
-+
-. Move _Check out month_ to the top of the list using the _Move Up_ button, so 
-that it will be the first column in an MS Excel spreadsheet or in a chart. 
-Report output will sort by the first column.
+Creating a template is complex and requires some understanding of the Evergreen database and how 
+Evergreen handles various records when performing tasks on the staff client. It can be useful to plan 
+out your template before getting started with the reporter. Think about what type of records you will
+be reporting on (circulation, item, bibliographic, patron, etc.) and what information you want to see
+displayed in your report output. You also want to think about what filters should be used so the report 
+output contains only the records you're interested in.
 
-image::media/create-template-23.png[create-template-23]
+. Navigate to *Administration -> Reports*. 
+. In the _My Folders_ section, select the arrow beside the _Templates_ folder to see your template folders. Use the arrows to expand the folder tree until you find the folder where you'd like to create
+the new template.
++
+image::media/reports-run-1.png[Templates Folder]
++
+. Select the folder name.
+. In the folder, select *Create a new Template for this folder*.
++
+image::media/report-create-template-1.png[Create a New Template]]
++
+. The _Report Template Editor_ will open. See xref:reports:reporter_create_templates.adoc#report_template_editor[Report Template Edotpr] for information on using the editor.
+. Choose a Core Source. See xref:reports:reporter_create_templates.adoc#report_core_source[Core Source].
+. Add Display Fields. See xref:reports:reporter_create_templates.adoc#adding_report_display_field[Adding a Display Field].
+. Add Filters. See xref:reports:reporter_create_templates.adoc#adding_report_filters[Adding a Filter].
++
+[CAUTION]
+=========
+All report templates MUST have at least one filter to choose a specific library. This filter is important as it allows staff to restrict the data in the report output to only data relevant to their library.
+=========
++
+. Add hardcoded filter values for any filters that should always use the same value. See xref:reports:reporter_basics.adoc#hardcoded_filters[Reporter Basics] for a list of filters that are commonly hardcoded.
+. Select *Save Template*.
+. Your new template can now be found in the folder you saved it in.
+. xref:reports:reporter_basics.adoc#running_reports[Run a report] from the new template to see if the desired output is generated.
++
+[TIP]
+=====
+If the path for one of your display fields or filters is incorrect, you will get an error instead of the 
+expected report output. Sometimes the error text will give you a clue about what isn't working.
+
+image::media/report-output-error-1.png[Report Output Error]
+
+You can modify your template and try again. It may be helpful to review xref:reports:reporter_create_templates.adoc#troubleshooting_report_templates[Troubleshooting Report Templates].
+=====
++
+. Repeat the above steps until your template works as desired.
 
 [NOTE]
 ======
-Note the _Change Transform_ button in the bottom left hand pane. It has the same 
-function as the upper right _Field Transform_ pane for fields that have already 
-been added.
-
-image::media/create-template-24.png[create-template-24]
+It is not unusual to create multiple versions of a template when working to modify a template. Once you have a template that works as desired, it is recommended that you delete the interim versions of the template.
+See xref:reports:reporter_basics.adoc#deleting_report_templates[Deleting Report Templates].
 ======
 
+[[report_template_editor]]
+== Report Template Editor ==
 
-== Applying Filters ==
+The report template editor is made up of three sections:
 
-indexterm:[reports, applying filters]
+. Basic Information
+. Display Field and Filter Selector
+. Display Field and Filter Tabs
 
-Evergreen reports access the entire database, so to limit report output to a 
-single library or library system you need to apply filters.
+image::media/report-template-editor-1.png[Report_Template_Editor]
 
-After following the steps in the previous section you will see three fields in 
-the bottom left hand _Template Configuration_ pane. There are three tabs in this 
-pane: _Displayed Fields_ (covered in the previous section), _Base Filters_ and 
-_Aggregate Filters_. A filter allows you to return only the results that meet 
-the criteria you set.
+=== Basic Information Section ===
 
-indexterm:[reports, applying filters, base filter]
+The _Basic Information_ section of the report template editor is where you can add or update the template name, description, and documentation URL.
 
-indexterm:[reports, applying filters, aggregate filters]
-
-_Base Filters_ apply to non-aggregate output types, while _Aggregate Filters_ are 
-used for aggregate types. In most reports you will be using the _Base Filters_ tab. 
-For more information on aggregate and non-aggregate types see the section called 
-“Field Transforms”.
-
-There are many available operators when using filters. Some examples are _Equals_, 
-_In list_, is _NULL_, _Between_, _Greater than_ or _equal to_, and so on. _In list_ 
-is the most flexible operator, and in this case will allow you flexibility when 
-running a report from this template. For example, it would be possible to run a 
-report on a list of timestamps (in this case will be trimmed to year and month 
-only), run a report on a single month, or run a report comparing two months. It 
-is also possible to set up recurring reports to run at the end of each month.
-
-In this example we are going to use a Base Filter to filter out one library’s 
-circulations for a specified time frame. The time frame in the template will be 
-configured so that you can change it each time you run the report.
-
-=== Using Base Filters ===
-
-indexterm:[reports, applying filters, base filter]
-
-. Select the _Base Filters_ tab in the bottom _Template Configuration_ pane.
-
-. For this circulation statistics example, select _Circulation --> Check Out 
-Date/Time --> Year + Month_ and click on _Add Selected Fields_. You are going to 
-filter on the time period.
-+
-image::media/create-template-25.png[create-template-25]
-+
-. Select _Check Out Date/Time_. Click on _Change Operator_ and select _In list_ 
-from the dropdown menu. 
-+
-image::media/create-template-26.png[create-template-26]
-+
-. To filter on the location of the circulation select 
-_Circulation --> Circulating library --> Raw Data_ and click on _Add Selected Fields_.
-+
-image::media/create-template-27.png[create-template-276]
-+
-. Select _Circulating Library_ and click on _Change Operator_ and select _Equals_. 
-Note that this is a template, so the value for _Equals_ will be filled out when 
-you run the report.
-+
-image::media/create-template-28.png[create-template-28]
-+
-For multi-branch libraries, you would select _Circulating Library_ with _In list_ 
-as the operator, so you could specify the branch(es) when you run the report. This 
-leaves the template configurable to current requirements. In comparison, sometimes 
-you will want to hardcode true/false values into a template. For example, deleted 
-bibliographic records remain in the database, so perhaps you want to hardcode 
-_deleted=false_, so that deleted records don’t show up in the results. You might 
-want to use _deleted=true_, for a template for a report on deleted items in the 
-last month.
-+
-. Once you have configured your template, you must name and save it. Name this 
-template _Circulations by month for one library_. You can also add a description. 
-In this example, the title is descriptive enough, so a description is not necessary. 
-Click _Save_.
-+
-image::media/create-template-29.png[create-template-29]
-+
-. Click _OK_.
-+
-image::media/create-template-30.png[create-template-30]
-+
-. You will get a confirmation dialogue box that the template was successfully 
-saved. Click OK.
-+
-image::media/create-template-31.png[create-template-31]
-+
-After saving it is not possible to edit a template. To make changes you will 
-need to clone it and edit the clone
 
 [NOTE]
-==========
-The bottom right hand pane is also a source specifier. By selecting one of these 
-rows you will limit the fields that are visible to the sources you have specified. 
-This may be helpful when reviewing templates with many fields. Use *Ctrl+Click* to 
-select or deselect items.
+======
+The names of templates in a folder must be unique. Evergreen will not allow a template using an identical name to be saved into the same folder.
+======
 
-image::media/create-template-32.png[create-template-32]
-==========
+If you have local documentation online that pertains to a report, you can add it in the _Documentation URL_ field and it will be included as a link in the report output.
 
+[[report_display_fields_and_filters]]
+=== Display Field and Filter Selector ===
 
+The _Display Field and Filter Selector_ is where you build your display fields and filters for your template.
 
+[[report_core_source]]
+==== Core Source ====
+
+Every report template starts with a core source. This is the database table from which your template is built. The top of the left-hand pane of the _Display Field and Filter Selector_ section of the 
+_Report Template Editor_ contains the _Core Sources_ dropdown menu.
+
+image::media/report-core-source-1.png[Report Core Source]
+
+When modifying a template, NEVER change the core source. This will scrap your existing template and you will have to start again from scratch.
+
+When creating a new template, the first thing you need to do is figure out which core source makes the most sense for the data you want to see in your report output. If you need information from other tables, you'll follow the links to those tables when adding display fields and filters.
+
+The three most commonly used core sources are Circulation, Item, and ILS User. Templates for monthly circulation statistics and templates for tracking overdue items use the core source Circulation. Templates about the state of your collection use the core source Item. Templates containing counts or lists of your patrons use the core source ILS User. More information can be found in xref:reports:reporter_evergreen_database.adoc#commonly_used_tables[Commonly Used Tables].
+
+You can link to other database tables to include information contained in those tables but not every table links directly. For example, patrons and items aren't directly linked to each other. Information about items out to a patron is held in the circulation table while information about items on hold is held in the hold request table. More information can be found in documentation about the xref:reports:reporter_evergreen_database.adoc[Evergreen Database].
+
+[[report_nullability]]
+==== Nullability ====
+
+The Nullability checkbox is beside the core source list. In general, this checkbox should be left un-checked. 
+
+image::media/report-nullability-1.png[Nullability Checkbox]
+
+You may wish to use nullability if your report output includes null values that you don't want included or if your report output doesn't include null values that you do want to see. Nullability allows you to have more control over whether or not null values in fields are included in your report output. It does this by allowing you to manually select the way in which Evergreen is joining the database tables when running a report from the template. The type of join used will determine what kind of data can display a null value in your report output.
+
+When Nullability is checked, the following options show for joins between tables:
+
+* _Default_ = defined within Evergreen. See xref:reports:reporter_evergreen_database.adoc[Evergreen Database] for more information.
+* _Child Nullable_ = depends on the default join (usually left). Evergreen will include all records in the linked child table.
+* _Parent Nullable_ = depends on the default join (usually right). Evergreen will include all records in the linked parent table.
+* _None Nullable_ = equivalent to inner join. Evergreen will only include data that is in both tables.
+
+image::media/report-nullability-2.png[Nullability Selection]
+
+[NOTE]
+======
+You must use the same nullability selection on all display fields and filters that you add from the same table.
+======
+
+To learn more about nullability, see the Evergreen conference presentation https://youtu.be/oDtjpW3Kiz8[Thanks for Nothing: Nullability Selection in Evergreen Reports].
+
+[[report_displayed_fields]]
+=== Display Fields ===
+
+Display fields are the columns of information that will display on your report output. The _Display Fields_ tab is the active tab by default in the _Report Template Editor_.
+
+[NOTE]
+======
+The action _Change Column Documentation_ on the _Display Fields_ tab can generally be ignored. The column documentation will appear next to the column name in the Report Columns section of the template, but it does not appear next to the column name in the report output.
+======
+
+[[adding_report_display_field]]
+==== Adding a Display Field ====
+
+Display fields are the columns which will display in your report output.
+
+. Ensure the _Display Fields_ tab is the active tab in the _Display Field and Filter Tabs_ section of the Report Template Editor.
+. Select the top of the tree in the _Core Source_ pane. A list of available fields will display in the _Source Path_ pane.
++
+image::media/report-add-display-field-1.png[Add Displayed Field]
++
+. The icon beside the field name indicates the xref:reports:reporter_template_terminology.adoc#report_data_types[data type]. If the field you want to use is a Link, you need to expand the tree in the _Core Source_ pane to find it and then select it.
++
+image::media/report-add-display-field-2.png[Select Source]
++
+. Select the field in the _Source Path_ pane you would like to add as a display field.
++
+For display fields, you generally want to pick a Text field over an ID or Org_unit field. For example, to add shelving location as a display field, you will select _Name_ rather than _Location ID_.
++
+image::media/report-add-display-field-3.png[Field Selection]
++
+. In the _Transform_ pane, select the xref:reports:reporter_template_terminology.adoc#report_field_transforms[transform] you would like to use. The transforms available in the list will vary depending on the xref:reports:reporter_template_terminology.adoc#report_data_types[data type] of the selected field.
++
+The transform will determine how Evergreen processes the data when generating the report. Raw data is the most commonly used transform for display fields except when it's a timestamp, in which case Date is more commonly used. More information on the available transforms can be found in xref:reports:reporter_template_terminology.adoc#report_field_transforms[Field Transforms].
++
+image::media/report-add-display-field-4.png[Transform]
++
+. Your selected options will display in bold in the three panes. In the _Display Fields_ tab, select
+_Add Fields_.
++
+image::media/report-add-display-field-5.png[Add Fields]
++
+. Your display field will now display in the grid.
+
+[[reordering_display_fields]]
+==== Reordering Display Fields ====
+
+. On the _Display Fields_ tab, select the field you would like to re-order.
+. From the _Actions_ menu, choose _Move Field Up_ or _Move Field Down_. You can also right-click on the field to open the _Actions_ menu.
++
+image::media/report-display-fields-1.png[Move Fields]
++
+. Repeat until your fields are in the order you desire.
+
+[[renaming_a_display_field]]
+==== Renaming a Display Field ====
+
+Each display field in a template has a column label which displays as the column header in the report output.
+
+. On the _Display Fields_ tab, select the field you would like to rename.
+. From the _Actions_ menu, choose _Change Column Label_. You can also right-click on the field to open the _Actions_ menu.
++
+image::media/report-display-fields-2.png[Change Column Label]
++
+. In the pop-up that appears, enter the new name for the field and select *OK/Continue*.
++
+image::media/report-display-fields-3.png[Enter New Column Label]
++
+. The new field name displays in the _Column Label_ column and will display as the column header on your report output.
+
+[NOTE]
+======
+It is best practice to include qualifiers in the field names for fields like barcode and library so that staff know what data they are looking at in the report output.
+
+For example, for multi-branch libraries and libraries participating in reciprocal borrowing, it is not uncommon for the Circulating Library and Owning Library of an item to be different. In this case, it is important to specify in the field name which type of library is being presented in the report output data.
+======
+
+[[changing_a_display_transform]]
+==== Changing a Transform ====
+
+For information on specific transforms, see xref:reports:reporter_template_terminology.adoc#report_field_transforms[Field Transforms].
+
+. On the _Display Fields_ tab, select the field you would like to change the transform for.
+. From the _Actions_ menu, choose _Change Transform_. You can also right-click on the field to open the _Actions_ menu.
++
+image::media/report-display-fields-5.png[Change Transform]
++
+. In the pop-up that appears, select the new transform from the list and select *OK/Continue*.
++
+image::media/report-display-fields-6.png[Change Transform]
++
+. The new transform will display in the _Field Transform_ column in the grid.
+
+[[removing_a_display_field]]
+==== Removing a Display Field ====
+
+[CAUTION]
+=========
+Removing display fields usually does not affect the result set for the report output, but it can, especially when the report output displays a count of records (whether item, patron, circulation, hold, or bibliographic).
+
+When removing fields, be mindful of whether or not it will still be clear in the report output what your results mean. 
+=========
+
+. On the _Display Fields_ tab, select the field you would like to rename.
+. From the _Actions_ menu, choose _Remove Field_. You can also right-click on the field to open the _Actions_ menu.
++
+image::media/report-display-fields-4.png[Remove Field]
++
+. The selected field is removed and no longer shows as a display field.
+
+[[report_filters]]
+=== Filters ===
+
+[[adding_report_filters]]
+==== Adding a Filter ====
+
+Filters allow you to set up the criteria so that Evergreen returns the information you are looking for. In most cases, the value for the filter will be entered when the report is run, rather than included in the template.
+
+. Ensure the _Filter_ tab is the active tab in the _Display Field and Filter Tabs_ section of the Report Template Editor.
+. Select the top of the tree in the _Core Source_ pane. A list of available fields will display in the _Source Path_ pane.
++
+image::media/report-add-display-field-1.png[Add A Filter]
++
+. The icon beside the field name indicates the xref:reports:reporter_template_terminology.adoc#report_data_types[data type]. If the field you want to use is a Link you need to expand the tree in the _Core Source_ pane to find it and then select it.
++
+image::media/report-add-display-field-2.png[Select Source]
++
+. Select the field in the _Source Path_ pane you would like to add as a filter.
++
+For filters you generally want to pick an ID or Org_unit field over a Text field. For example, to add circulating library as a filter you will select _Circulating Library_ which has the tree icon indicating it's an Org_unit.
++
+image::media/report-add-filter-field-1.png[Select Filter]
++
+. In the _Transform_ pane select the xref:reports:reporter_template_terminology.adoc#report_field_transforms[transform] you would like to use. The transforms available in the list will vary depending on the xref:reports:reporter_template_terminology.adoc#report_data_types[data type] of the selected field.
++
+The transform will determine how Evergreen processes the data when generating the report. Raw data 
+is the most commonly used transform for filters except when it's a timestamp in which case Date or Month + Year is more commonly used. More information on the available transforms can be found in xref:reports:reporter_template_terminology.adoc#report_field_transforms[Field Transforms].
++
+image::media/report-add-filter-field-2.png[Filter Field Transform]
++
+. Your selected options will display in bold in the three panes. In the _Filter_ tab, select _Add Fields_.
++
+image::media/report-add-filter-field-3.png[Add Filter Fields]
++
+. Your filter will now display in the grid.
+. If desired, you can hardcode the value of the filter into the template. See xref:reports:reporter_basics.adoc#hardcoded_filters[Harcoded Filters] for more information.
+
+[[changing_column_documentation]]
+==== Changing the Column Documentation ====
+
+When running a report, the filter can include text which gives information on how to use the particular filter and, in some cases, how to enter the filter value. In the _Report Template Editor_, this is referred to as column documentation or a field hint.
+
+image::media/report-filters-1.png[Column Documentation]
+
+. On the _Filter_ tab, select the field you would like to add column documentation to.
+. From the _Actions_ menu, choose _Change Column Documentation_. You can also right-click on the field to open the _Actions_ menu.
++
+image::media/report-filters-2.png[Change Column Documentation]
++
+. In the pop-up that appears, add or update the text and select *OK/Continue*.
++
+image::media/report-filters-3.png[Edit Column Documentation]
++
+. When running a report, the column documentation will display under the filter path. 
++
+image::media/report-filters-4.png[Column Documentation Display]
+
+[[changing_an_operator]]
+==== Changing an Operator ====
+
+For information on specific operators, see xref:reports:reporter_template_terminology.adoc#report_operators[Report Operators].
+
+. On the _Filter_ tab, select the field you would like to change the operator of.
+. From the _Actions_ menu, choose _Change Operator_. You can also right-click on the field to open the _Actions_ menu.
++
+image::media/report-filters-operator-1.png[Change Operator]
++
+. In the pop-up that appears, select the new operator from the list and select *OK/Continue*.
++
+image::media/report-filters-operator-2.png[Change Operator]
++
+. The operator will be updated in the grid.
+
+[[changing_transform]]
+==== Changing a Transform ====
+
+For information on specific transforms, see xref:reports:reporter_template_terminology.adoc#report_field_transforms[Field Transforms].
+
+. On the _Filters_ tab, select the field you would like to change the transform for.
+. From the _Actions_ menu, choose _Change Transform_. You can also right-click on the field to open the _Actions_ menu.
++
+image::media/report-filters-transform-1.png[Change Transform]
++
+. In the pop-up that appears, select the new transform from the list and select *OK/Continue*.
++
+image::media/report-filters-transform-2.png[Change Transform]
++
+. The new transform will display in the _Field Transform_ column in the grid.
+
+[[updating_filter_value]]
+==== Updating a Filter Value ====
+
+Filter values can be hardcoded into a template or left blank to be filled in when the report is run. Information on commonly hardcoded filters can be found in xref:reports:reporter_basics.adoc#hardcoded_filters[Reporter Basics].
+
+Hardcoding a filter is recommended when the value of the filter will not change. For example, hardcoded filters are often used when filtering out deleted items.
+
+Filter values can also be hardcoded into templates to make it easier for staff with less reporter experience to run certain reports. For example, you can set up a report with an Item Status filter with a hardcoded value  of _Missing_ so that staff can run a report to get a list of all missing items without having to enter filter information.
+
+It is recommended that you balance the reusability of templates that comes when staff enter filter values at the time of running a report versus the ease of use for staff with less experience with the reporter. For example, when no value is entered in the template for a filter on Item Status, staff can pick the relevant status from the list of existing statuses. When a value is hardcoded for Item Status, a new template must be created every time you wish to filter on a different item status.
+
+. On the _Filter_ tab, select the field you would like to add, update, or remove the filter value for.
+. From the _Actions_ menu, choose _Change Filter Value_ to add or update the value or choose _Remove Filter Value_ to clear the value from the filter. You can also right-click on the field to open the _Actions_ menu.
++
+image::media/report-filters-value-1.png[Change or Remove Filter Value]
++
+. When changing a filter value, a pop-up will appear where you can add the relevant value. See xref:reports:reporter_template_terminology.adoc#report_filter_values[Filter Values] for details on exactly how different values must be entered.
+. Select *OK/Continue*.
++
+image::media/report-filters-value-2.png[Filter Value]
++
+. The filter value will display in the grid.
++
+image::media/report-filters-value-3.png[Filter Value Grid Display]
+
+[[removing_filter]]
+==== Removing a Filter ====
+
+[CAUTION]
+=========
+Removing a filter WILL affect what results are included in your report output. Ensure you don't need to filter on a particular field before removing it.
+
+It is recommended that reports have at least one filter to choose a specific library. This filter is important as it allows staff to restrict the data in the report output to only data relevant to their library.
+=========
+
+. On the _Filter_ tab, select the filter field you would like to remove.
+. From the _Actions_ menu, choose _Remove Field_. You can also right-click on the field to open the _Actions_ menu.
++
+image::media/report-filters-remove-1.png[Remove Field]
++
+. The selected field is removed and no longer shows as a filter field.
+
+[[troubleshooting_report_templates]]
+== Troubleshooting Report Templates ==
+
+indexterm:[troubleshooting, troubleshooting reports]
+
+If you run into difficulties creating or modifying a template, you may need to contact your system administrator for assistance.
+
+Before contacting your system administrator, please ensure the applicable template folder is xref:reports:reporter_folder.adoc#sharing_folders[shared with your library] so your system administrator is able to view the template in question.
+
+When contacting your system administrator, please include the following information:
+
+* Username of the staff account where the template has been created
+* Folder where the template has been created
+* Name of the template in question
+* Desired end result for the template (what do you want it to report on?)
+* Specific display fields or filters you are having difficulties modifying or adding
+* Links to your current report output from the template if relevant
