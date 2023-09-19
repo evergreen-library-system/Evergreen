@@ -1,5 +1,5 @@
 = Reporter Basics =
-:page-aliases: reporter_running_recurring_reports.adoc, reporter_template_enhancements.adoc#recurring_reports, repoter_generating_reports.adoc, repoter_generating_reports.adoc#generating_reports
+:page-aliases: reporter_running_recurring_reports.adoc, reporter_generating_reports.adoc, reporter_view_output.adoc
 
 :toc:
 
