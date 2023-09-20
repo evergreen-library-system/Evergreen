@@ -15624,6 +15624,109 @@ SELECT  usr,
 		</permacrud>
 	</class>
 
+	<class id="acqr_inv_totals"
+		controller="open-ils.reporter"
+		oils_persist:virtual="true"
+		reporter:label="Invoice Totals">
+		<oils_persist:source_definition><![CDATA[
+			WITH invoice_entry_totals AS (
+				SELECT acqinv.id,
+					SUM(COALESCE(acqie.cost_billed, 0.00)) AS total_invoice_entry_cost_billed,
+					SUM(COALESCE(acqie.amount_paid, 0.00)) AS total_invoice_entry_amount_paid
+				FROM acq.invoice acqinv
+				LEFT JOIN acq.invoice_entry acqie ON (acqinv.id = acqie.invoice)
+				GROUP BY 1
+			), invoice_item_totals AS (
+				SELECT acqinv.id,
+					SUM(COALESCE(acqii.cost_billed, 0.00)) AS total_invoice_item_cost_billed,
+					SUM(COALESCE(acqii.amount_paid, 0.00)) AS total_invoice_item_amount_paid
+				FROM acq.invoice acqinv
+				LEFT JOIN acq.invoice_item  acqii ON (acqinv.id = acqii.invoice)
+				GROUP BY 1
+			)
+			SELECT id,
+				total_invoice_entry_cost_billed, total_invoice_entry_amount_paid,
+				total_invoice_item_cost_billed, total_invoice_item_amount_paid,
+				total_invoice_entry_cost_billed + total_invoice_item_cost_billed AS total_cost_billed,
+				total_invoice_entry_amount_paid + total_invoice_item_amount_paid AS total_amount_paid
+			FROM invoice_entry_totals
+			JOIN invoice_item_totals USING (id)
+		]]></oils_persist:source_definition>
+		<fields oils_persist:primary="id">
+			<field reporter:label="Invoice" name="id" reporter:datatype="link" />
+			<field reporter:label="Total Billed for Line Items" name="total_invoice_entry_cost_billed" reporter:datatype="money" />
+			<field reporter:label="Total Paid for Line Items" name="total_invoice_entry_amount_paid" reporter:datatype="money" />
+			<field reporter:label="Total Billed for Direct Charges" name="total_invoice_item_cost_billed" reporter:datatype="money" />
+			<field reporter:label="Total Paid for Direct Charges" name="total_invoice_item_amount_paid" reporter:datatype="money" />
+			<field reporter:label="Total Billed" name="total_cost_billed" reporter:datatype="money" />
+			<field reporter:label="Total Paid" name="total_amount_paid" reporter:datatype="money" />
+		</fields>
+        <links>
+            <link field="id" reltype="has_a" key="id" map="" class="acqinv"/>
+        </links>
+	</class>
+
+	<class id="acqr_debit_by_fund"
+		controller="open-ils.reporter"
+		oils_persist:virtual="true"
+		reporter:label="Invoice Debits by Fund">
+		<oils_persist:source_definition><![CDATA[
+			WITH invoice_funds AS (
+				SELECT invoice, fund, COALESCE(amount, 0.00)::NUMERIC(8,2) AS amount, encumbrance
+				FROM acq.invoice_entry acqie
+				JOIN acq.fund_debit acqfdeb ON (acqfdeb.invoice_entry = acqie.id)
+				UNION ALL
+				SELECT invoice, acqfdeb.fund, COALESCE(amount, 0.00)::NUMERIC(8,2) AS amount, encumbrance
+				FROM acq.invoice_item acqii
+				JOIN acq.fund_debit acqfdeb ON (acqfdeb.id = acqii.fund_debit)
+			)
+			SELECT invoice, fund, encumbrance, SUM (amount) AS total_amount
+			FROM invoice_funds
+			GROUP BY 1, 2, 3
+		]]></oils_persist:source_definition>
+		<fields>
+			<field reporter:label="Invoice" name="invoice" reporter:datatype="link" />
+			<field reporter:label="Fund" name="fund" reporter:datatype="link" />
+			<field reporter:label="Encumbrance?" name="encumbrance" reporter:datatype="bool" />
+			<field reporter:label="Total Amount" name="total_amount" reporter:datatype="money" />
+		</fields>
+        <links>
+            <link field="invoice" reltype="has_a" key="id" map="" class="acqinv"/>
+            <link field="fund" reltype="has_a" key="id" map="" class="acqf"/>
+        </links>
+	</class>
+
+	<class id="acqr_debit_by_fund_tag"
+		controller="open-ils.reporter"
+		oils_persist:virtual="true"
+		reporter:label="Invoice Debits by Fund Tag">
+		<oils_persist:source_definition><![CDATA[
+			WITH invoice_funds AS (
+				SELECT invoice, fund, COALESCE(amount, 0.00)::NUMERIC(8,2) AS amount, encumbrance
+				FROM acq.invoice_entry acqie
+				JOIN acq.fund_debit acqfdeb ON (acqfdeb.invoice_entry = acqie.id)
+				UNION ALL
+				SELECT invoice, acqfdeb.fund, COALESCE(amount, 0.00)::NUMERIC(8,2) AS amount, encumbrance
+				FROM acq.invoice_item acqii
+				JOIN acq.fund_debit acqfdeb ON (acqfdeb.id = acqii.fund_debit)
+			)
+			SELECT invoice, tag, encumbrance, SUM(amount) AS total_amount
+			FROM invoice_funds
+			LEFT JOIN acq.fund_tag_map acqftm ON (invoice_funds.fund = acqftm.fund)
+			GROUP BY 1, 2, 3
+		]]></oils_persist:source_definition>
+		<fields>
+			<field reporter:label="Invoice" name="invoice" reporter:datatype="link" />
+			<field reporter:label="Fund Tag" name="tag" reporter:datatype="link" />
+			<field reporter:label="Encumbrance?" name="encumbrance" reporter:datatype="bool" />
+			<field reporter:label="Total Amount" name="total_amount" reporter:datatype="money" />
+		</fields>
+        <links>
+            <link field="invoice" reltype="has_a" key="id" map="" class="acqinv"/>
+            <link field="tag" reltype="has_a" key="id" map="" class="acqft"/>
+        </links>
+	</class>
+
 	<!-- ********************************************************************************************************************* -->
 </IDL>
 
