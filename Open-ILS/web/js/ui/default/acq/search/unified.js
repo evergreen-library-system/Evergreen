@@ -674,6 +674,7 @@ function ResultManager(liPager, poGrid, plGrid, invGrid) {
                     self.liPager.batch_length = self.count_results;
                     self.liPager.relabelControls();
                     self.liPager.enableControls(true);
+                    self.liPager.liTable.initBatchUpdater(null, true);
                     progressDialog.hide();
                 },
                 "adder": function(li) {
