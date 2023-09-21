@@ -1134,8 +1134,8 @@ BEGIN
             ELSE -- otherwise, an UPSERT-protected variant
                 INSERT INTO metabib.browse_entry
                     ( value, sort_value ) VALUES
-                    ( value_prepped, ind_data.sort_value )
-                  ON CONFLICT (sort_value, value) DO UPDATE SET sort_value = EXCLUDED.sort_value -- must update a row to return an existing id
+                    ( SUBSTRING(value_prepped FOR 1000), SUBSTRING(ind_data.sort_value FOR 1000) )
+                  ON CONFLICT (sort_value, value) DO UPDATE SET sort_value = SUBSTRING(EXCLUDED.sort_value FOR 1000) -- must update a row to return an existing id
                   RETURNING id INTO mbe_id;
             END IF;
 
