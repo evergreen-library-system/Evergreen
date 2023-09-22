@@ -15,7 +15,7 @@ following fields:
 * First Name 
 * Middle Name 
 
-image::media/circulation_patron_records-1a_web_client.png[circulation_patron_records 1a]
+image::circulation_patron_records_web_client/circulation_patron_records-1a_web_client.png[Screenshot of the collapsed form of the patron search. Shows the patron record tabs at the top and the fields Last Name, First Name, Middle Name. To the right of the fields are buttons for Search, Clear Form, and a down arrow icon.]
 
 
 Next to the _Clear Form_ button there is a button with an arrow pointing down that will display the following additional search fields:
@@ -41,7 +41,7 @@ Next to the _Clear Form_ button there is a button with an arrow pointing down th
 To include patrons marked ``inactive'', click on the _Include Inactive?_ checkbox.
 
 
-image::media/circulation_patron_records-1b_web_client.png[circulation_patron_records 1b]
+image::circulation_patron_records_web_client/circulation_patron_records-1b_web_client.png[Screenshot of the expanded form of the patron search screen. The fields named above are displayed in a grid.]
 
 .Tips for searching 
 [TIP] 
@@ -58,7 +58,7 @@ image::media/circulation_patron_records-1b_web_client.png[circulation_patron_rec
 Once you have located the desired patron, click on the entry row for this patron in
 the results screen.  A summary for this patron will display on the left hand side.  
 
-image::media/circulation_patron_records-2_web_client.png[circulation_patron_records 2]
+image::circulation_patron_records_web_client/circulation_patron_records-2_web_client.png[Screenshot of the patron search results. The results are listed in a grid with each line representing a different patron account. One line is selected using the checkbox on the left and is highlighted. A summary of the account is displayed in a column on the left.]
 
 The _Patron Search_ button on the upper right may be used to resume searching for patrons.
 
@@ -97,16 +97,16 @@ indexterm:[patrons, registering]
 To register a new patron, select _Circulation -> Register Patron_ from the menu bar. The Patron
 Registration form will display. 
 
-image::media/circulation_patron_records-4.JPG[Patron registration form]
+image::circulation_patron_records_web_client/circulation_patron_records-4.JPG[Screenshot of the top portion of the Patron registration form, All Fields view. Top left are the options to show; Required Fields, Suggested Fields, and All Fields. Top right are the Save and Save & Clone buttons. The majority of the screenshot focuses on the fields to be completed. The Barcode, OPAC/Staff Client User Name, First Name, and Last Name fields are all highlighted to indicate they are required.]
 
 Mandatory fields display in yellow.
 
-image::media/circulation_patron_records-5.JPG[circulation_patron_records 5]
+image::circulation_patron_records_web_client/circulation_patron_records-5.JPG[A zoomed in view of the same screenshot as above. The Barcode and OPAC/Staff Client User Name fields are highlighted]
 
 The _Show: Required Fields_ and _Show: Suggested Fields_ links may be used to limit
 the options on this page.
 
-image::media/circulation_patron_records-6.JPG[circulation_patron_records 6]
+image::circulation_patron_records_web_client/circulation_patron_records-6.JPG[Another zoomed in view. This one has expanded slightly to include the Show options just above the Barcode field.]
 
 When finished entering the necessary information, select _Save_ to save the new
 patron record or _Save & Clone_ to register a patron with the same address.
@@ -114,7 +114,7 @@ When _Save & Clone_ is selected, the address information is copied into the
 resulting patron registration screen.  It is linked to the original patron.
 Address information may only be edited through the original record.
 
-image::media/circulation_patron_records-8.JPG[circulation_patron_records 8]
+image::circulation_patron_records_web_client/circulation_patron_records-8.JPG[A screenshot showing a lower section of the patron registration screen. This is focused on the address section. The Postal Code, Street (1), City, and Country fields are yellow to indicate they are required fields. An arrow has been added to highlight the location of the Save and Save & Clone buttons in the upper right.]
 
 [TIP]
 ============================================================================
@@ -135,11 +135,11 @@ As of 3.8, a staff user with the `UPDATE_USER_PHOTO_URL` permission can add or e
 
 Location of Photo URL field in the Patron Editor:
 
-image::media/patron_photo_url.png[Patron URL field]
+image::circulation_patron_records_web_client/patron_photo_url.png[A screenshot of a section of the patron registration page showing Secondary Identification Type, Secondary Identification, Photo URL, and Email Address. The Photo URL is highlighted and the URL used links out to a Wikimedia page.]
 
 Enter the URL in that field and click **Save** at the top of the Patron Editor. The image indicated by the URL will display in the Patron Sidebar:
 
-image::media/patron_photo_sidebar.png[Patron Photo in Sidebar]
+image::circulation_patron_records_web_client/patron_photo_sidebar.png[Screenshot of a photo in the patron account summary sidebar. At the top is the Patron name. Below is the photo (a photo of actress Hedy Lamar has been used) and below the photo we see the words Profile and Patrons.]
 
 === Email field ===
 
@@ -172,7 +172,7 @@ Patron Self-Registration allows patrons to initiate registration for a library a
 
 . Patrons will see a confirmation message: “Registration successful!  Please see library staff to complete your registration.”
 
-image::media/patron_self_registration2.jpg[Patron Self-Registration form]
+image::circulation_patron_records_web_client/patron_self_registration2.jpg[Screenshot of a generic Patron Self-Registration form. The fields are focused on name, address, phone, and email contact information. Little red astrisks are used to indicate required fields.]
 
 *Managing Pending Patrons*
 
@@ -195,7 +195,7 @@ Retrieve the patron record as described in the section
 
 Click on _Edit_ from the options that display at the top of the patron record. 
 
-image::media/circulation_patron_records-9_web_client.png[Patron edit with summary display]
+image::circulation_patron_records_web_client/circulation_patron_records-9_web_client.png[Screenshot of a patron account for Sarah Smith. On the left is the summary display. The Edit tab has been selected at the top and all of the fields we saw on the patron registration screen can now be edited again. Replace Barcode and See All buttons are now visible next to the Barcode field.]
 
 Edit information as required.  When finished, select _Save_.  
 
@@ -236,7 +236,7 @@ If unfulfilled holds are detected, the staff user will be prompted via a modal t
 
 Select the desired holds to update by checking the box next to each different notification grouping and clicking *Update Holds*. The selected holds will be updated. If the user does not wish to update holds, click *Do Not Update Holds*.
 
-image::media/update_holds.png[Update Hold Notifications]
+image::circulation_patron_records_web_client/update_holds.png[A view of the Update Hold Notification Info? modal described above. The checkboxes next to the options are highlighted as is the Update Holds button.]
 
 The Update Holds process will also be triggered if a phone number or email address is invalidated. Once the staff user clicks *Save* after invalidating a phone number or email address, Evergreen will check for unfulfilled holds and prompt for removing a notification method if necessary.
 
@@ -257,15 +257,15 @@ If unfulfilled holds are detected, the patron user will be prompted via an inter
 
 Select the desired holds to update by checking the box next to the each notification grouping and click *Update*. The selected holds will be updated. If the user does not wish to update holds, click *Continue without updating*.
 
-image::media/opac_update_holds.png[Update Hold Notifications in the public catalog]
+image::circulation_patron_records_web_client/opac_update_holds.png[Screenshot of the public catalog My Account area for Account Information and Preferences. The check boxes for the update promptes and the Update button are highlighted.]
 
 This work also added a _Notify Method_ column to the _Current Items on Hold_ table, found under the _Holds_ tab, that will show the patron user which notification methods are active, along with which numbers will be used for Phone or SMS notification. 
 
-image::media/notify_methods.png[Show notification methods in the public catalog]
+image::circulation_patron_records_web_client/notify_methods.png[A view of the public catalog My Account holds grid. One of the columns is highlighted. This is the Notify Method column. The example shows "Phone:410-000-1534"]
 
 Additionally, patron users can now edit hold notification preferences on individual holds by using the _Edit_ function found in the _Current Items on Hold_ table.
 
-image::media/update_individual_hold.png[Update individual hold in the public catalog]
+image::circulation_patron_records_web_client/update_individual_hold.png[A screenshot of the Editing Hold page in the My Account section of the public catalog. The title information is above. As is status  and hold queue position. The lower half of the shot is a grey box indicating the area that can be edited. There are fields for Pickup library, Cancel unless filled by, Active?, If suspended, activate on, email Notification, Phone Notification, SMS Notification, and Default Mobile Carrier. The last four fields have been highlighted.]
 == Renewing Library Cards ==
 
 indexterm:[library cards, renewing]
@@ -273,7 +273,7 @@ indexterm:[library cards, renewing]
 Expired patron accounts when initially retrieved – an alert
 stating that the ``Patron account is EXPIRED.''
 
-image::media/circulation_patron_records-11_web_client.png[circulation_patron_records 11]
+image::circulation_patron_records_web_client/circulation_patron_records-11_web_client.png[A screenshot of the alerts on a patron account. A small stop sign icon is first and then there are two light yellow banners with dark yellow text. The first is "Patron account is EXPIRED." The second alert alert banner reads, "Patron account has invalid addresses. Under all of this is a grey banner with black text that reads "Press a navigation button abouve (for example, Check Out) to clear this alert."]
 
 Open the patron record in edit mode as described in the section
 <<updating_patron_information,Updating Patron Information>>.
@@ -282,7 +282,7 @@ Navigate to the information field labeled _Privilege Expiration Date_.  Enter a
 new date in this box.  Or click the calendar icon, and a calendar widget
 will display to help you easily navigate to the desired date.
 
-image::media/circulation_patron_records-12.JPG[circulation_patron_records 12]
+image::circulation_patron_records_web_client/circulation_patron_records-12.JPG[A screenshot of the patron registration page. The calendar widget for the Privilege Expiration Date has been opened and there is an arrow indicating the button for the widget between the field and the Update Expire Date button.]
 
 Select the date using the calendar widget or key the date in manually.  Click
 the _Save_ button.  The screen will refresh and the ``expired'' alerts on the
@@ -301,7 +301,7 @@ Open the patron record in edit mode as described in the section
  
 Next to the _Barcode_ field, select the _Replace Barcode_ button.
 
-image::media/circulation_patron_records_13.JPG[circulation_patron_records 13]
+image::circulation_patron_records_web_client/circulation_patron_records_13.JPG[A screenshot of the top of the patron record screen. The Replace Barcode button next to the barcode field is highlighted.]
 
 This will clear the barcode field.  Enter a new barcode and _Save_ the record.
 The screen will refresh and the new barcode will display in the patron summary
@@ -315,7 +315,7 @@ edit mode as described in the section <<updating_patron_information,Updating Pat
 Select the _See All_ button next to the _Replace Barcode_ button.  This will
 display the current and past barcodes associated with this account. 
 
-image::media/circulation_patron_records_14.JPG[circulation_patron_records 14]
+image::circulation_patron_records_web_client/circulation_patron_records_14.JPG[A screenshot of the Patron Barcodes modal. Two barcodes are shown. Under the Active heading, only the lower checkbox is selected. Under the Primary column the radio button for the second barcode is selected.]
 
 Check the box(es) for all barcodes that should be active for the patron.  An
 active barcode may be used for circulation transactions.  A patron may have
@@ -340,7 +340,7 @@ Open the patron record in edit mode as described in the section
 
 Select the _Generate Password_ button next to the _Password_ field.
 
-image::media/circulation_patron_records_15.JPG[circulation_patron_records 15]
+image::circulation_patron_records_web_client/circulation_patron_records_15.JPG[Screenshot of the top of the patron record. Just below the Replace Barcode button is the Generate Password button which is highlighted. The four digit password in the Password field to the left is also highlighted.]
 
 NOTE: The existing password is not displayed in patron records for security
 reasons.
@@ -363,7 +363,7 @@ Open the patron record in edit mode as described in the section
 
 Check the box for _Barred_ in the patron account. 
 
-image::media/circulation_patron_records-16.JPG[circulation_patron_records 16]
+image::circulation_patron_records_web_client/circulation_patron_records-16.JPG[A screenshot of a small piece of the patron registration screen. Displayed are the fields for Internet Access Level, Active, Barred, Is Group Lead Account, and Claims-returned Count. Barred is highlighted.]
 
 _Save_ the user.  The screen will refresh.  
 
@@ -413,7 +413,7 @@ notes for that user.
 
 In the _Notes_ tab of a patron account, the top portion of the screen displays active notes, alerts, and blocks while the bottom portion of the screen will display those that have been archived. The archived notes, alerts, and blocks from the last year display by default. The calendar pickers can be used to view older archived notes, alerts, or blocks.
 
-image::media/notes_tab_full.png[Notes Tab]
+image::circulation_patron_records_web_client/notes_tab_full.png[A screenshot of the full notes tab. The Notes section at top has a typical grid view with the regualr actions and grid options buttons. To the left above the grid is the Create Note button. In the lower Archived Notes section there is another grid with the grid options buttons. Above this on the right are fields for Set Date Start and Set Date End.]
 
 New notes, alerts, and blocks can be added by clicking the *Create Note* button. This process and the functionality of each type of notification are further detailed in this documentation. Library staff can Edit, Remove, and Archive notes, alerts, and blocks by selecting them from the list and then going to the Actions menu (you can also right-click on a selection to view the Actions menu).
 
@@ -426,7 +426,7 @@ New notes, alerts, and blocks can be added by clicking the *Create Note* button.
 ** Archiving a block will remove the block from the patron account.
 ** Once archived, notes, alerts, and blocks cannot be deleted from the _Notes_ tab. Archived patron visible notes will continue to display in the patron's OPAC account unless they are deleted from the _Other -> Message Center_ interface.
 
-image::media/actions_menu.png[Notes Actions Menu]
+image::circulation_patron_records_web_client/actions_menu.png[Notes Actions Menu expanded to show the three options described above.]
 
 === Notes ===
 [[patron_notes]]
@@ -437,7 +437,7 @@ Notes can be added to patron accounts. Notes can be visible in the patron OPAC a
 
 When a note is present on a patron account, staff will see a counter on the tab ribbon that indicates how many un-archived notes, alerts, and blocks are on the account that are visible at the workstation at which the staff member is logged in. To view the note, click on the _Notes_ tab.
 
-image::media/notes_counter.png[Notes Counter]
+image::circulation_patron_records_web_client/notes_counter.png[Screenshot of the top of the Patron Account. The counter is a number inside of parentheses after the Tab name. So the tab reads "Notes (1)"]
 
 The Notes tab contains a list of all of the notes, alerts, and blocks present on a patron’s account. The top portion of the screen displays active notes, alerts, and blocks, while the bottom portion of the screen will display those that have been archived within the past year (by default). Notes only appear in the _Notes_ tab, whereas Alerts and Messages can appear elsewhere.
 
@@ -456,7 +456,7 @@ To create a new Note:
 . Enter your initials if your library requires initials when creating notes on patron accounts.
 . Click *OK* to create the note.
 
-image::media/note_modal.png[Note Modal]
+image::circulation_patron_records_web_client/note_modal.png[A screenshot of the Note Modal. The fields are as described above. Only the Title field is highlighted yellow to indicate a required field.]
 
 ==== Messages and Message Center ====
 [[patron_messages]]
@@ -475,7 +475,7 @@ Patrons will see a tab for Messages in their OPAC account, as well as a notifica
 
 Unread messages display in bold font. Click on the subject of the message to view the full message.
 
-image::media/myaccount_boopac.png[Messages in My Account]
+image::circulation_patron_records_web_client/myaccount_boopac.png[Screenshot of Messages in the patron My Account area. There is a red number one at the top of the screen next to Messages. In the My Account menu on the left of the screen the Messges tab is selected and has an one next to it. The main portion of the screen is open to the Messages page and is showing a grid view with one example message. The Message line is bold. The buttons above the grid are Mark Read, Mark Unread, and Delete. ]
 
 === Alerts ===
 [[patron_alerts]]
@@ -486,7 +486,7 @@ Alerts can be applied to patron accounts to notify library staff when the patron
 
 When an alert is present on a patron account, a Stop sign and the alert text is displayed when the patron account is viewed. The alert title also displays in the patron account summary on the left hand side of the screen and there is an indicator in the patron summary that indicates how many un-archived notes, alerts, and blocks are on the account that are visible at the workstation at which the staff member is logged in. Alerts can also be displayed by going to _Other -> Display Alerts_.
 
-image::media/stopsign_alert.png[Alert Display]
+image::circulation_patron_records_web_client/stopsign_alert.png[A screenshot of the alert described above. The alert note text is shown in a banner across the screen with the word Alerts shown in a light yellow box with dark yellow text. The contents of the note are black text on a white background.]
 
 ==== Create an Alert ====
 
@@ -502,7 +502,7 @@ To create a new Alert:
 . Enter your initials if your library requires initials when creating alerts on patron accounts.
 . Click *OK* to create the alert.
 
-image::media/alert_note.png[Alert Modal]
+image::circulation_patron_records_web_client/alert_note.png[A screenshot of the Alert Modal. The fields are as described above. Only the Title field is highlighted yellow to indicate a required field.]
 
 === Blocks ===
 [[patron_blocks]]
@@ -519,7 +519,7 @@ Blocks can be manually added to a patron account to take away certain library pr
 
 When a block is present on a patron account, a Stop sign and the block text is displayed when the patron account is viewed. The block title also displays in the patron account summary on the left hand side of the screen and there is an indicator in the patron summary that indicates how many un-archived notes, alerts, and blocks are on the account that are visible at the workstation at which the staff member is logged in. Blocks can also be displayed by going to _Other -> Display Alerts_.
 
-image::media/stopsign_block.png[Block Display]
+image::circulation_patron_records_web_client/stopsign_block.png[A screenshot of the block described above. The alert note text is shown in a banner across the screen with the word Alerts shown in a light yellow box with dark yellow text. The contents of the note are black text on a white background.]
 
 ==== Create a Block ====
 
@@ -537,7 +537,7 @@ To create a new Block:
 . Enter your initials if your library requires initials when creating blocks on patron accounts.
 .  Click *OK* to create the block.
 
-image::media/block.png[Block Modal]
+image::circulation_patron_records_web_client/block.png[Screenshot of the Block Display version of the note modal. The only difference from the alert type is the Block tab is selected and the Penalty Type is changed to Alerting block on Circ, Hold and...]
 
 === Administration for Patron Notes, Alerts, Blocks, and Messages ===
 [[patron_notes_admin]]
@@ -569,6 +569,99 @@ the legacy “standing penalties and messages” setting will become the
 value for the new Library Setting and the “patron notes” value will be
 recorded in a text file as part of the upgrade script.
 
+== Merging Patrons ==
+indexterm:[patrons, merging]
+
+Occasionally you may encounter a case where a patron has more than one account
+in the system. This most commonly occurs when a new library system has joined a
+consortium. It is possible to merge the patron accounts together and retain most
+of the data from both records. 
+
+[WARNING]
+====
+Merging patron accounts is not reversible. 
+Make sure that the accounts are truly duplicates before you merge.
+====
+
+Merge Two Patron Accounts:
+
+. Do a patron search; *Search -> Search for Patrons*.
+
+. In the patron search results, check the two patron records that need to be merged.
+
+. Select the *Merge Patrons* button.
+
++
+image::circulation_patron_records_web_client/patron_merge_button.png[Screenshot of patron search results. In-line with the grid view actions button is a button labeled Merge Patrons.]
++
+
+. A new pop-up will open to display the two records side by side for comparative
+purposes. Select *Use as lead* on the account that should be the primary account
+after the merge.
+
+. Select *Merge* at the bottom of the screen.
+
+. Evergreen will merge the two accounts and then return to the patron search screen.
+
+[NOTE]
+=====================
+Post-Merge Data:
+
+The configuration of your library settings will determine if barcodes are
+retained or stay active. Your settings will also retain or delete the patron’s
+addresses. Information from the subordinate account like checkouts, statistics,
+notes, holds, and fines will be moved to the lead account.
+
+If one of the patron accounts was barred, that information will only be retained
+if the barred status was on the lead account. If the subordinate account was
+barred, and you wish to retain that status, you will need to go in and reapply
+the barred status on the newly merged account. 
+
+If the subordinate account was in a patron group, that group connection will
+not be retained on the merged account. Group membership will be retained if the
+lead account was the group member.
+=====================
+
+=== Patron Merge Permissions and Settings ===
+
+The ability to merge patron accounds is controlled by the permission, 'MERGE_USERS'.
+
+There are four Library Settings involved in data retention and behavior during
+a patron merge. For discussion of how to edit settings see the 
+xref:admin:librarysettings.adoc#_editing_library_settings[Library Settings Editor].
+
+* _Patron Merge Address Delete_ - Delete address(es) of subordinate user(s) in a
+patron merge.
+
+** When set to "True," only the addresses of the lead record are retained when
+merging patrons. Addresses from the merged patron record are deleted.
+
+** If set to “False,” both addresses are retained. You can manually set retained
+addresses as inactive or delete them using the X button next to the address.
+
+* _Patron Merge Barcode Delete_ - Delete barcode(s) of subordinate user(s) in a
+patron merge.
+
+** When set to "True," only the barcode(s) from the lead record are retained when
+merging patrons. Barcodes from the merged patron records are deleted.
+
+* _Patron Merge Deactivate Card_ - Mark barcode(s) of subordinate user(s) in a
+patron merge as inactive.
+
+** When set to "True," only the barcode of the lead record remains active when
+merging patrons. Barcodes from the merged patron record are deactivated if not
+deleted by the setting for Patron Merge Barcode Delete.
+
+** If barcodes from both are retained, they can be found on the patron record by
+clicking on the See All button next to the barcode field. If the inactive barcode
+is used, Evergreen will provide an alert and will not allow checkouts without
+acknowledgement of the issue.
+
+* _Cloned patrons get address copy_ - In the Patron editor, copy addresses from the
+cloned user instead of linking directly to the address.
+
+** This setting will not control the ability to merge accounts regardless of if
+the account is group lead or not. There will be no alert.
 
 == User Buckets ==
 
@@ -597,9 +690,9 @@ User accounts can be added to User Buckets by scanning individual user barcodes 
 .. If creating a new user bucket, a dialog box called _Create Bucket_ will appear where you can enter a bucket _Name_ and _Description_ and indicate if the bucket is _Staff Shareable?_.  Click *Create Bucket*.
 . After adding users to a bucket, an update will appear at the bottom-right hand corner of the screen that says _"Successfully added # users to bucket [Name]"_.
 
-image::media/userbucket1.PNG[]
+image::circulation_patron_records_web_client/userbucket1.PNG[Screenshot of the patron search page. The Add to Bucket and Merge Patrons buttons are inbetween the search fields above and the search results below.]
 
-image::media/userbucket2.PNG[]
+image::circulation_patron_records_web_client/userbucket2.PNG[Screenshot of the Create Bucket modal. There are Name and description fields and a checkbox for Staff Shareable?]
 
 *To add users to a bucket by scanning user barcodes in the User Bucket interface:*
 
@@ -611,7 +704,7 @@ image::media/userbucket2.PNG[]
 . Select the user accounts that you want to add to the bucket by checking the box next to each user row or by using the CTRL or SHIFT key on your keyboard to select multiple users.
 . Go to *Actions->Add To Bucket* or right-click on a selected user account to view the _Actions_ menu and select *Add To Bucket*.  The user accounts will move to the Bucket View tab and are now in the selected User Bucket.
 
-image::media/userbucket3.PNG[]
+image::circulation_patron_records_web_client/userbucket3.PNG[Screenshot of the User bucket interface as described above. The tab options are Pending Users () and Bucket View (). The options to add users are next on the screen, The bucket selection button is inline with the grid actions buttons. The pending users tab and the add users sections are highlighted.]
 
 *To add users to a bucket by uploading a file of user barcodes:*
 
@@ -646,7 +739,7 @@ To batch edit all users in a user bucket:
 
 . Click *Apply Changes*.  The modification(s) will be applied in batch.
 
-image::media/userbucket4.PNG[]
+image::circulation_patron_records_web_client/userbucket4.PNG[Screenshot of the Update all users modal. The fields are as described above. Two fields have been changed and these are indicated by green highlights.]
 
 === Batch Modify Statistical Categories ===
 
@@ -661,7 +754,7 @@ To batch modify statistical categories for all users in a bucket:
 .. Check the box next to Remove to delete the current stat cat value from the patron accounts.
 . Click *Apply Changes*.  The stat cat modification(s) will be applied in batch.
 
-image::media/userbucket12.PNG[]
+image::circulation_patron_records_web_client/userbucket12.PNG[screenshot of the Update statistical categories screen as described above.]
 
 === Batch Delete Users ===
 
@@ -675,7 +768,7 @@ To batch delete users in a bucket:
 
 NOTE: Batch deleting patrons from a user bucket does not use the Purge User functionality, but instead marks the users as deleted.
 
-image::media/userbucket7.PNG[]
+image::circulation_patron_records_web_client/userbucket7.PNG[Screenshot of the Delete all users modal. Text has been entered in the name field and the field is now highlighted green.]
 
 === View Batch Changes ===
 
@@ -684,7 +777,7 @@ image::media/userbucket7.PNG[]
 . Click *View batch changes*.  A dialog box will appear that lists the _Name_, date _Completed_, and date _Rolled back_ of any batch changes made to the bucket.  There is also an option to _Delete_ a batch change.  This will remove this batch change from the list of actions that can be rolled back.  It will not delete or reverse the batch change.
 . Click *OK* to close the dialog box.
 
-image::media/userbucket8.PNG[]
+image::circulation_patron_records_web_client/userbucket8.PNG[Screenshot of the View batch Changes modal as described above.]
 
 === Roll Back Batch Changes ===
 
@@ -694,14 +787,14 @@ image::media/userbucket8.PNG[]
 
 NOTE: Batch statistical category changes cannot be rolled back.
 
-image::media/userbucket10.png[]
+image::circulation_patron_records_web_client/userbucket10.png[Screenshot of the Roll back batch edit modal. The dropdown menu is opened to show two options. "--- Select edit to roll back ---" and "deletion 3/12/2017"]
 
-image::media/userbucket9.PNG[]
+image::circulation_patron_records_web_client/userbucket9.PNG[Screenshot of the View batch Changes modal. A new date has been added to the Rolled back column.]
 
 === Sharing Buckets ===
 If a User Bucket has been made Staff Shareable, it can be retrieved via bucket ID by another staff account.  The ID for each bucket can be found at the end of the URL for the bucket.  For example, in the screenshot below, the bucket ID is 32.
 
-image::media/userbucket11.PNG[]
+image::circulation_patron_records_web_client/userbucket11.PNG[Screenshog of the Bucket view page showing the URL bar at the top of the screen. The URL is "dev-test2.esilibrary.com/eg/staff/circ/patron/bucket/view/32"]
 
 A shared bucket can be retrieved by going to *Circulation->User Buckets* and selecting the *Bucket View* tab.  Next, click *Buckets* and select *Shared Bucket*.  A dialog box called _Load Shared Bucket by Bucket ID_ will appear.  Enter the ID of the bucket you wish to retrieve and click *Load Bucket*.  The shared bucket will load in the Bucket View tab.
 
