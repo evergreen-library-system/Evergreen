@@ -242,18 +242,10 @@ export class AuthService {
      */
     sessionPoll(): void {
 
-        // add a 5 second delay to give the token plenty of time
-        // to expire on the server.
-        let pollTime = this.authtime() * 1000 + 5000;
-
-        if (pollTime < 60000) {
-            // Never poll more often than once per minute.
-            pollTime = 60000;
-        } else if (pollTime > 2147483647) {
-            // Avoid integer overflow resulting in $timeout() effectively
-            // running with timeout=0 in a loop.
-            pollTime = 2147483647;
-        }
+        // Check every 3 minutes. This still won't reset the authtoken timeout
+        // but it WILL reset the memcached LRU for the authtoken so staff authtokens
+        // are less likely to be evicted.
+        const pollTime = 60 * 1000 * 3;
 
         this.pollTimeout = setTimeout(() => {
             this.net.request(
