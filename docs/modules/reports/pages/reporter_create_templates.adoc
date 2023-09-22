@@ -49,12 +49,12 @@ output contains only the records you're interested in.
 . In the _My Folders_ section, select the arrow beside the _Templates_ folder to see your template folders. Use the arrows to expand the folder tree until you find the folder where you'd like to create
 the new template.
 +
-image::media/reports-run-1.png[Templates Folder]
+image::reporter_create_template/reports-run-1.png[Templates Folder]
 +
 . Select the folder name.
 . In the folder, select *Create a new Template for this folder*.
 +
-image::media/report-create-template-1.png[Create a New Template]]
+image::reporter_create_template/report-create-template-1.png[Create a New Template]
 +
 . The _Report Template Editor_ will open. See xref:reports:reporter_create_templates.adoc#report_template_editor[Report Template Edotpr] for information on using the editor.
 . Choose a Core Source. See xref:reports:reporter_create_templates.adoc#report_core_source[Core Source].
@@ -76,7 +76,7 @@ All report templates MUST have at least one filter to choose a specific library.
 If the path for one of your display fields or filters is incorrect, you will get an error instead of the 
 expected report output. Sometimes the error text will give you a clue about what isn't working.
 
-image::media/report-output-error-1.png[Report Output Error]
+image::shared/report-output-error-1.png[Report Output Error]
 
 You can modify your template and try again. It may be helpful to review xref:reports:reporter_create_templates.adoc#troubleshooting_report_templates[Troubleshooting Report Templates].
 =====
@@ -98,7 +98,7 @@ The report template editor is made up of three sections:
 . Display Field and Filter Selector
 . Display Field and Filter Tabs
 
-image::media/report-template-editor-1.png[Report_Template_Editor]
+image::reporter_create_template/report-template-editor-1.png[Report_Template_Editor]
 
 === Basic Information Section ===
 
@@ -123,7 +123,7 @@ The _Display Field and Filter Selector_ is where you build your display fields a
 Every report template starts with a core source. This is the database table from which your template is built. The top of the left-hand pane of the _Display Field and Filter Selector_ section of the 
 _Report Template Editor_ contains the _Core Sources_ dropdown menu.
 
-image::media/report-core-source-1.png[Report Core Source]
+image::reporter_create_template/report-core-source-1.png[Report Core Source]
 
 When modifying a template, NEVER change the core source. This will scrap your existing template and you will have to start again from scratch.
 
@@ -138,7 +138,7 @@ You can link to other database tables to include information contained in those 
 
 The Nullability checkbox is beside the core source list. In general, this checkbox should be left un-checked. 
 
-image::media/report-nullability-1.png[Nullability Checkbox]
+image::reporter_create_template/report-nullability-1.png[Nullability Checkbox]
 
 You may wish to use nullability if your report output includes null values that you don't want included or if your report output doesn't include null values that you do want to see. Nullability allows you to have more control over whether or not null values in fields are included in your report output. It does this by allowing you to manually select the way in which Evergreen is joining the database tables when running a report from the template. The type of join used will determine what kind of data can display a null value in your report output.
 
@@ -149,7 +149,7 @@ When Nullability is checked, the following options show for joins between tables
 * _Parent Nullable_ = depends on the default join (usually right). Evergreen will include all records in the linked parent table.
 * _None Nullable_ = equivalent to inner join. Evergreen will only include data that is in both tables.
 
-image::media/report-nullability-2.png[Nullability Selection]
+image::reporter_create_template/report-nullability-2.png[Nullability Selection]
 
 [NOTE]
 ======
@@ -176,28 +176,28 @@ Display fields are the columns which will display in your report output.
 . Ensure the _Display Fields_ tab is the active tab in the _Display Field and Filter Tabs_ section of the Report Template Editor.
 . Select the top of the tree in the _Core Source_ pane. A list of available fields will display in the _Source Path_ pane.
 +
-image::media/report-add-display-field-1.png[Add Displayed Field]
+image::reporter_create_template/report-add-display-field-1.png[Add Displayed Field]
 +
 . The icon beside the field name indicates the xref:reports:reporter_template_terminology.adoc#report_data_types[data type]. If the field you want to use is a Link, you need to expand the tree in the _Core Source_ pane to find it and then select it.
 +
-image::media/report-add-display-field-2.png[Select Source]
+image::reporter_create_template/report-add-display-field-2.png[Select Source]
 +
 . Select the field in the _Source Path_ pane you would like to add as a display field.
 +
 For display fields, you generally want to pick a Text field over an ID or Org_unit field. For example, to add shelving location as a display field, you will select _Name_ rather than _Location ID_.
 +
-image::media/report-add-display-field-3.png[Field Selection]
+image::reporter_create_template/report-add-display-field-3.png[Field Selection]
 +
 . In the _Transform_ pane, select the xref:reports:reporter_template_terminology.adoc#report_field_transforms[transform] you would like to use. The transforms available in the list will vary depending on the xref:reports:reporter_template_terminology.adoc#report_data_types[data type] of the selected field.
 +
 The transform will determine how Evergreen processes the data when generating the report. Raw data is the most commonly used transform for display fields except when it's a timestamp, in which case Date is more commonly used. More information on the available transforms can be found in xref:reports:reporter_template_terminology.adoc#report_field_transforms[Field Transforms].
 +
-image::media/report-add-display-field-4.png[Transform]
+image::reporter_create_template/report-add-display-field-4.png[Transform]
 +
 . Your selected options will display in bold in the three panes. In the _Display Fields_ tab, select
 _Add Fields_.
 +
-image::media/report-add-display-field-5.png[Add Fields]
+image::reporter_create_template/report-add-display-field-5.png[Add Fields]
 +
 . Your display field will now display in the grid.
 
@@ -207,7 +207,7 @@ image::media/report-add-display-field-5.png[Add Fields]
 . On the _Display Fields_ tab, select the field you would like to re-order.
 . From the _Actions_ menu, choose _Move Field Up_ or _Move Field Down_. You can also right-click on the field to open the _Actions_ menu.
 +
-image::media/report-display-fields-1.png[Move Fields]
+image::reporter_create_template/report-display-fields-1.png[Move Fields]
 +
 . Repeat until your fields are in the order you desire.
 
@@ -219,11 +219,11 @@ Each display field in a template has a column label which displays as the column
 . On the _Display Fields_ tab, select the field you would like to rename.
 . From the _Actions_ menu, choose _Change Column Label_. You can also right-click on the field to open the _Actions_ menu.
 +
-image::media/report-display-fields-2.png[Change Column Label]
+image::reporter_create_template/report-display-fields-2.png[Change Column Label]
 +
 . In the pop-up that appears, enter the new name for the field and select *OK/Continue*.
 +
-image::media/report-display-fields-3.png[Enter New Column Label]
+image::reporter_create_template/report-display-fields-3.png[Enter New Column Label]
 +
 . The new field name displays in the _Column Label_ column and will display as the column header on your report output.
 
@@ -242,11 +242,11 @@ For information on specific transforms, see xref:reports:reporter_template_termi
 . On the _Display Fields_ tab, select the field you would like to change the transform for.
 . From the _Actions_ menu, choose _Change Transform_. You can also right-click on the field to open the _Actions_ menu.
 +
-image::media/report-display-fields-5.png[Change Transform]
+image::reporter_create_template/report-display-fields-5.png[Change Transform]
 +
 . In the pop-up that appears, select the new transform from the list and select *OK/Continue*.
 +
-image::media/report-display-fields-6.png[Change Transform]
+image::reporter_create_template/report-display-fields-6.png[Change Transform]
 +
 . The new transform will display in the _Field Transform_ column in the grid.
 
@@ -263,7 +263,7 @@ When removing fields, be mindful of whether or not it will still be clear in the
 . On the _Display Fields_ tab, select the field you would like to rename.
 . From the _Actions_ menu, choose _Remove Field_. You can also right-click on the field to open the _Actions_ menu.
 +
-image::media/report-display-fields-4.png[Remove Field]
+image::reporter_create_template/report-display-fields-4.png[Remove Field]
 +
 . The selected field is removed and no longer shows as a display field.
 
@@ -278,28 +278,28 @@ Filters allow you to set up the criteria so that Evergreen returns the informati
 . Ensure the _Filter_ tab is the active tab in the _Display Field and Filter Tabs_ section of the Report Template Editor.
 . Select the top of the tree in the _Core Source_ pane. A list of available fields will display in the _Source Path_ pane.
 +
-image::media/report-add-display-field-1.png[Add A Filter]
+image::reporter_create_template/report-add-display-field-1.png[Add A Filter]
 +
 . The icon beside the field name indicates the xref:reports:reporter_template_terminology.adoc#report_data_types[data type]. If the field you want to use is a Link you need to expand the tree in the _Core Source_ pane to find it and then select it.
 +
-image::media/report-add-display-field-2.png[Select Source]
+image::reporter_create_template/report-add-display-field-2.png[Select Source]
 +
 . Select the field in the _Source Path_ pane you would like to add as a filter.
 +
 For filters you generally want to pick an ID or Org_unit field over a Text field. For example, to add circulating library as a filter you will select _Circulating Library_ which has the tree icon indicating it's an Org_unit.
 +
-image::media/report-add-filter-field-1.png[Select Filter]
+image::reporter_create_template/report-add-filter-field-1.png[Select Filter]
 +
 . In the _Transform_ pane select the xref:reports:reporter_template_terminology.adoc#report_field_transforms[transform] you would like to use. The transforms available in the list will vary depending on the xref:reports:reporter_template_terminology.adoc#report_data_types[data type] of the selected field.
 +
 The transform will determine how Evergreen processes the data when generating the report. Raw data 
 is the most commonly used transform for filters except when it's a timestamp in which case Date or Month + Year is more commonly used. More information on the available transforms can be found in xref:reports:reporter_template_terminology.adoc#report_field_transforms[Field Transforms].
 +
-image::media/report-add-filter-field-2.png[Filter Field Transform]
+image::reporter_create_template/report-add-filter-field-2.png[Filter Field Transform]
 +
 . Your selected options will display in bold in the three panes. In the _Filter_ tab, select _Add Fields_.
 +
-image::media/report-add-filter-field-3.png[Add Filter Fields]
+image::reporter_create_template/report-add-filter-field-3.png[Add Filter Fields]
 +
 . Your filter will now display in the grid.
 . If desired, you can hardcode the value of the filter into the template. See xref:reports:reporter_basics.adoc#hardcoded_filters[Harcoded Filters] for more information.
@@ -309,20 +309,20 @@ image::media/report-add-filter-field-3.png[Add Filter Fields]
 
 When running a report, the filter can include text which gives information on how to use the particular filter and, in some cases, how to enter the filter value. In the _Report Template Editor_, this is referred to as column documentation or a field hint.
 
-image::media/report-filters-1.png[Column Documentation]
+image::reporter_create_template/report-filters-1.png[Column Documentation]
 
 . On the _Filter_ tab, select the field you would like to add column documentation to.
 . From the _Actions_ menu, choose _Change Column Documentation_. You can also right-click on the field to open the _Actions_ menu.
 +
-image::media/report-filters-2.png[Change Column Documentation]
+image::reporter_create_template/report-filters-2.png[Change Column Documentation]
 +
 . In the pop-up that appears, add or update the text and select *OK/Continue*.
 +
-image::media/report-filters-3.png[Edit Column Documentation]
+image::reporter_create_template/report-filters-3.png[Edit Column Documentation]
 +
 . When running a report, the column documentation will display under the filter path. 
 +
-image::media/report-filters-4.png[Column Documentation Display]
+image::reporter_create_template/report-filters-4.png[Column Documentation Display]
 
 [[changing_an_operator]]
 ==== Changing an Operator ====
@@ -332,11 +332,11 @@ For information on specific operators, see xref:reports:reporter_template_termin
 . On the _Filter_ tab, select the field you would like to change the operator of.
 . From the _Actions_ menu, choose _Change Operator_. You can also right-click on the field to open the _Actions_ menu.
 +
-image::media/report-filters-operator-1.png[Change Operator]
+image::reporter_create_template/report-filters-operator-1.png[Change Operator]
 +
 . In the pop-up that appears, select the new operator from the list and select *OK/Continue*.
 +
-image::media/report-filters-operator-2.png[Change Operator]
+image::reporter_create_template/report-filters-operator-2.png[Change Operator]
 +
 . The operator will be updated in the grid.
 
@@ -348,11 +348,11 @@ For information on specific transforms, see xref:reports:reporter_template_termi
 . On the _Filters_ tab, select the field you would like to change the transform for.
 . From the _Actions_ menu, choose _Change Transform_. You can also right-click on the field to open the _Actions_ menu.
 +
-image::media/report-filters-transform-1.png[Change Transform]
+image::reporter_create_template/report-filters-transform-1.png[Change Transform]
 +
 . In the pop-up that appears, select the new transform from the list and select *OK/Continue*.
 +
-image::media/report-filters-transform-2.png[Change Transform]
+image::reporter_create_template/report-filters-transform-2.png[Change Transform]
 +
 . The new transform will display in the _Field Transform_ column in the grid.
 
@@ -370,16 +370,16 @@ It is recommended that you balance the reusability of templates that comes when 
 . On the _Filter_ tab, select the field you would like to add, update, or remove the filter value for.
 . From the _Actions_ menu, choose _Change Filter Value_ to add or update the value or choose _Remove Filter Value_ to clear the value from the filter. You can also right-click on the field to open the _Actions_ menu.
 +
-image::media/report-filters-value-1.png[Change or Remove Filter Value]
+image::reporter_create_template/report-filters-value-1.png[Change or Remove Filter Value]
 +
 . When changing a filter value, a pop-up will appear where you can add the relevant value. See xref:reports:reporter_template_terminology.adoc#report_filter_values[Filter Values] for details on exactly how different values must be entered.
 . Select *OK/Continue*.
 +
-image::media/report-filters-value-2.png[Filter Value]
+image::reporter_create_template/report-filters-value-2.png[Filter Value]
 +
 . The filter value will display in the grid.
 +
-image::media/report-filters-value-3.png[Filter Value Grid Display]
+image::reporter_create_template/report-filters-value-3.png[Filter Value Grid Display]
 
 [[removing_filter]]
 ==== Removing a Filter ====
@@ -394,7 +394,7 @@ It is recommended that reports have at least one filter to choose a specific lib
 . On the _Filter_ tab, select the filter field you would like to remove.
 . From the _Actions_ menu, choose _Remove Field_. You can also right-click on the field to open the _Actions_ menu.
 +
-image::media/report-filters-remove-1.png[Remove Field]
+image::reporter_create_template/report-filters-remove-1.png[Remove Field]
 +
 . The selected field is removed and no longer shows as a filter field.
 

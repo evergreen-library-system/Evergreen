@@ -21,7 +21,7 @@ It is recommended that staff run a report from the original template to see what
 =====
 If the path for one of your display fields or filters is incorrect, you will get an error instead of the expected report output. Sometimes the error text will give you a clue about what isn't working.
 
-image::media/report-output-error-1.png[Report Output Error]
+image::shared/report-output-error-1.png[Report Output Error]
 
 You can modify your template and try again. It may be helpful to review xref:reports:reporter_create_templates.adoc#troubleshooting_report_templates[Troubleshooring Report Templates].
 =====

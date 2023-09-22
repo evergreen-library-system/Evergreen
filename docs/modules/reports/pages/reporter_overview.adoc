@@ -31,9 +31,9 @@ When a xref:reports:reporter_basics.adoc#running_reports[report is run] Evergree
 
 The Reports interface is accessed in Evergreen by going to *Administration -> Reports*.
 
-image::media/accessing-reports-1.png[Accessing Reports]
+image::reporter_overview/accessing-reports-1.png[Accessing Reports]
 
 Users without reporter permissions granted to their staff account will see the message _You do 
 not have sufficient permissions to run reports_.
 
-image::media/accessing-reports-2.png[Reports Permission Denied]
+image::reporter_overview/accessing-reports-2.png[Reports Permission Denied]

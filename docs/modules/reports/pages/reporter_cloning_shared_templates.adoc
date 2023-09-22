@@ -14,16 +14,16 @@ The steps below assume you have already created at least one folder in _Template
 . In the _Shared Folders_ section select the arrow beside the _Templates_ folder to see the shared template folders. Use the arrows to expand the folder tree until you find the folder containing
 the template you would like to clone.
 +
-image::media/clone-report-template-1.png[Folder Tree]
+image::images/reporter_cloning_shared_templates/clone-report-template-1.png[Folder Tree]
 +
 . Select the folder name to display the contents.
 +
-image::media/clone-report-template-2.png[Selected Folder]
+image::images/reporter_cloning_shared_templates/clone-report-template-2.png[Selected Folder]
 +
 . Check the box beside the template you wish to clone.
 . From the drop-down menu choose _Clone selected template_. Select *Submit*. 
 +
-image::media/clone-report-template-3.png[Clone Selected Template]
+image::images/reporter_cloning_shared_templates/clone-report-template-3.png[Clone Selected Template]
 +
 [TIP]
 =====
@@ -32,15 +32,15 @@ By default Evergreen only displays the first 10 items in any folder. To view all
 +
 . Select the name of your folder where you'd like to save the cloned template and then click _Select Folder_. 
 +
-image::media/clone-report-template-4.png[Select Folder]
+image::images/reporter_cloning_shared_templates/clone-report-template-4.png[Select Folder]
 +
 . The template editor will open. For information on modifying templates, see the section on xref:reporter_modifying_templates.adoc[Modifying Templates].
 . Update the template name and/or template description if desired.
 . Select *Save Template*. Once a template is saved it is not possible to edit the template. To make changes, clone a template and change the clone.
 +
-image::media/clone-report-template-5.png[Save Template]
+image::images/reporter_cloning_shared_templates/clone-report-template-5.png[Save Template]
 +
 . A pop-up will appear confirming that you wish to save the template. Select *OK/Continue*.
 . The template can now be found in the folder you saved it in.
 +
-image::media/clone-report-template-6.png[Folder View]
+image::images/reporter_cloning_shared_templates/clone-report-template-6.png[Folder View]

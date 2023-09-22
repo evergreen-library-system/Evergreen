@@ -26,7 +26,7 @@ data type is treated specially by the software for determining how tables are li
 
 Evergreen uses icons to indicate data type on the report interface.
 
-image::media/term-1.png[Data Type Icons]
+image::reporter_template_terminology/term-1.png[Data Type Icons]
 
 [[report_field_transforms]]
 == Field Transforms ==

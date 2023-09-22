@@ -18,7 +18,7 @@ The connections among many tables are premade by the reporter. You just need to 
 
 **Simplified Diagram of the Tables and Connections Among Them**
 
-image::media/reports-evergreen-database-1.png[scaledwidth="75%",alt="Database Diagram"]
+image::reporter_evergreen_database/reports-evergreen-database-1.png[scaledwidth="75%",alt="Database Diagram"]
 
 [TIP]
 =====
@@ -44,7 +44,7 @@ When you create a template, you are writing a SQL (structured query language) qu
 
 This can be viewed in the report output by selecting *Debugging Info*.
 
-image::media/reports-evergreen-database-2.png[Debugging Info]
+image::reporter_evergreen_database/reports-evergreen-database-2.png[Debugging Info]
 
 [[commonly_used_tables]]
 == Commonly Used Tables ==
