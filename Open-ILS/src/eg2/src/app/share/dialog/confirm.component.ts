@@ -10,7 +10,10 @@ import {DialogComponent} from '@eg/share/dialog/dialog.component';
  * Confirmation dialog that asks a yes/no question.
  */
 export class ConfirmDialogComponent extends DialogComponent {
-    // What question are we asking?
+    @Input() public hideFooter: boolean = false;
+    @Input() public hideCancel: boolean = false;
+    @Input() public confirmString: string = $localize`Confirm`;
+    @Input() public cancelString: string = $localize`Cancel`;
     @Input() public dialogBody: string;
     @Input() public dialogBodyTemplate: TemplateRef<any>;
 }

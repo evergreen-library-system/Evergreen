@@ -20,6 +20,8 @@ export class PromptDialogComponent extends DialogComponent implements OnInit {
     @Input() public promptValue: string;
     // 'password', etc.
     @Input() promptType = 'text';
+    @Input() confirmString: string = $localize`Confirm`;
+    @Input() cancelString: string = $localize`Cancel`;
 
     // May be used when promptType == 'number'
     @Input() promptMin: number = null;

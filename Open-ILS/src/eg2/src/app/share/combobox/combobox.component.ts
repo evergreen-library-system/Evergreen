@@ -25,6 +25,7 @@ export interface ComboboxEntry {
   userdata?: any; // opaque external value; ignored by this component.
   fm?: IdlObject;
   disabled?: boolean;
+  class?: any;  // any valid ngClass value
 }
 
 @Directive({

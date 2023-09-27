@@ -21,6 +21,7 @@ export interface MarcSavedEvent {
     marcXml: string;
     bibSource?: number;
     recordId?: number;
+    fastItem?: any;
 }
 
 /**
@@ -174,6 +175,14 @@ export class MarcEditorComponent implements OnInit {
 
         const emission = {
             marcXml: xml, bibSource: sourceId, recordId: this.recordId};
+
+        if (this.showFastAdd && this.fastItemLabel && this.fastItemBarcode) {
+            emission['fastItem'] = {
+                label: this.fastItemLabel,
+                barcode: this.fastItemBarcode,
+                fast_add: true
+            };
+        }
 
         if (this.inPlaceMode) {
             // Let the caller have the modified XML and move on.

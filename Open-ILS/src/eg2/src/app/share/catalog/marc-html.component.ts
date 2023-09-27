@@ -38,7 +38,7 @@ export class MarcHtmlComponent implements OnInit {
         return this._recordXml;
     }
 
-    private _recordType: string;
+    private _recordType: string = 'bib'; // reasonable default
     @Input() set recordType(rtype: string) {
         this._recordType = rtype;
     }

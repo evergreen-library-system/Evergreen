@@ -15,8 +15,8 @@
   </div>
   <div class="modal-footer">
     <button type="button" class="btn btn-success" 
-      (click)="close(promptValue)" i18n>Confirm</button>
+      (click)="close(promptValue)">{{confirmString}}</button>
     <button type="button" class="btn btn-normal" 
-      (click)="close()" i18n>Cancel</button>
+      (click)="close()">{{cancelString}}</button>
   </div>
 </ng-template>
