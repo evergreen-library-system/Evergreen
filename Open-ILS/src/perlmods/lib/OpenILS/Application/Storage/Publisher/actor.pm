@@ -365,6 +365,25 @@ __PACKAGE__->register_method(
     method      => 'new_org_closed_overlap',
 );
 
+# Check if a set of hours of operation are completely closed.
+sub are_all_closed{
+    my $hoo = shift;
+
+    for (my $dow = 0; $dow < 7; $dow++)
+    {
+        
+        my $dow_open_meth = "dow_".$dow."_open";
+        my $dow_close_meth = "dow_".$dow."_close";
+        if ($hoo->$dow_open_meth != "00:00:00" || $hoo->$dow_close_meth != "00:00:00")
+            {return  0;}
+    }
+
+    return 1;
+}
+
+# Recursive method with two parts: first is checking the closures and second is checking the hours of operation
+# Direction means whether to check forwards or backwards on the next call. Negative 1 is backwards, positive 1 is forwards - 0 means to check both, backwards then forwards
+# Recursion terminates when returning undefined - this means stop changing the start and end times instead of meaning exit with an error.
 sub org_closed_overlap {
     my $self = shift;
     my $client = shift;
@@ -374,6 +393,7 @@ sub org_closed_overlap {
     my $no_hoo = shift || 0;
 
     return undef unless ($date && $ou);
+
 
     my $t = actor::org_unit::closed_date->table;
     my $sql = <<"    SQL";
@@ -389,7 +409,8 @@ sub org_closed_overlap {
     my ($begin, $end) = ($date,$date);
 
     my $hoo = actor::org_unit::hours_of_operation->retrieve($ou);
-
+    
+    # This block checks only the closures - does not consider the hours of operation. That's the next block
     if (my $closure = actor::org_unit::closed_date->db_Main->selectrow_hashref( $sql, {}, $date, $ou )) {
         $begin = clean_ISO8601($closure->{close_start});
         $end = clean_ISO8601($closure->{close_end});
@@ -415,9 +436,12 @@ sub org_closed_overlap {
         }
     }
 
+    #This block checks if the org unit's hours are open or not at the given time. If they are, it checks closures.
     if ( !$no_hoo ) {
-        if ( $hoo ) {
+        #Making sure to ignore this and take the only closure hours from the first block if all hours are closed
+        if ( $hoo && !are_all_closed($hoo)) {
 
+            
             if ( $direction <= 0 ) {
                 my $begin_dow = $_dt_parser->parse_datetime( $begin )->day_of_week_0;
                 my $begin_open_meth = "dow_".$begin_dow."_open";
@@ -473,6 +497,7 @@ sub org_closed_overlap {
         }
     }
 
+    # If there were no changes made to the given date that means no further action should be taken - you've arrived at an acceptable date
     if ($begin eq $date && $end eq $date) {
         return undef;
     }
