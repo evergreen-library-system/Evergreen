@@ -51,23 +51,25 @@
     </eg-combobox>
   </div>
   <div class="col-lg-7 d-flex">
-    <button type="button" class="btn btn-outline-dark me-2" (click)="applyTemplate()" i18n>Apply</button>
-    <button type="button" class="btn btn-outline-dark me-2" (click)="saveTemplate()" i18n>Save</button>
+    <button type="button" class="btn btn-outline-dark me-2" (click)="applyTemplate()" i18n>Apply Template</button>
+    <button type="button" class="btn btn-outline-dark me-2" (click)="saveTemplate()" i18n>Save Template</button>
 
     <!-- 
       The typical approach of wrapping a file input in a <label> results
       in button-ish things that have slightly different dimensions.
       Instead have a button activate a hidden file input.
     -->
-    <button type="button" class="btn btn-outline-dark me-2" (click)="templateFile.click()" i18n>
-      Import
+    <button type="button" class="btn btn-outline-dark me-2" (click)="templateFile.click()">
+      <input type="file" class="d-none" #templateFile
+        (change)="importTemplate($event)" id="template-file-upload"/>
+      <span i18n>Import Templates</span>
     </button>
     <input type="file" class="d-none" #templateFile
         (change)="importTemplate($event)" id="template-file-upload"/>
 
     <a (click)="exportTemplate($event)"
       download="export_copy_template.json" [href]="exportTemplateUrl()">
-      <button type="button" class="btn btn-outline-dark me-2" i18n>Export</button>
+      <button type="button" class="btn btn-outline-dark me-2" i18n>Export All Templates</button>
     </a>
     
     <div class="flex-1"> </div>

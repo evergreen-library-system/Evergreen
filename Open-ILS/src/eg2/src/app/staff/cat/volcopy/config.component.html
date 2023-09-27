@@ -15,16 +15,6 @@
               <div class="form-check form-check-inline">
                 <input class="form-check-input" type="checkbox" 
                   id="hide-classification-column" 
-                  [(ngModel)]="volcopy.defaults.values.show_vol_template_controls">
-                <label class="form-check-label" for="hide-classification-column" i18n>
-                  Allow Call Number attributes in Item Templates
-                </label>
-              </div>
-            </li>
-            <li class="list-group-item">
-              <div class="form-check form-check-inline">
-                <input class="form-check-input" type="checkbox"
-                  id="hide-classification-column"
                   [(ngModel)]="volcopy.defaults.hidden.classification">
                 <label class="form-label form-check-label" for="hide-classification-column" i18n>
                   Hide Call Number Classification Column
@@ -100,7 +90,7 @@
                   id="volcopy-unified-interface" 
                   [(ngModel)]="volcopy.defaults.values.unified_display">
                 <label class="form-label form-check-label" for="volcopy-unified-interface" i18n>
-                  Unified Holdings and Item Attributes Display
+                  Unified Holdings, Item Attributes Display, and Item Templates
                 </label>
               </div>
             </li>
