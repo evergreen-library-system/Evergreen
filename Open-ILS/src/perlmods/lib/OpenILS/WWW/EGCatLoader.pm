@@ -474,7 +474,7 @@ sub load_common {
         return $rows;
     };
 
-    $ctx->{course_ou} = int($self->cgi->param('locg')) || $self->ctx->{physical_loc} || $self->ctx->{aou_tree}->()->id;
+    $ctx->{course_ou} = $ctx->{physical_loc} || $ctx->{aou_tree}->()->id;
     $ctx->{use_courses} = $ctx->{get_org_setting}->($ctx->{course_ou}, 'circ.course_materials_opt_in') ? 1 : 0;
 
     $ctx->{sso_org} = $ENV{sso_loc} || $ctx->{physical_loc} || $ctx->{search_ou};
