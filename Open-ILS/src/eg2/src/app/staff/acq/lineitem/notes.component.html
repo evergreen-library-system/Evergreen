@@ -15,6 +15,7 @@
       (click)="newNote()" i18n>Create Note</button>
     <div class="ms-3 me-3">|</div>
       <eg-combobox idlClass="acqliat" [(ngModel)]="alertEntry" 
+        [idlQueryAnd]="{owning_lib: owners}"
         [asyncSupportsEmptyTermClick]="true"
         i18n-placeholder placeholder="Alert type">
       </eg-combobox>
