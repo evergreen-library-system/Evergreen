@@ -13,7 +13,7 @@
     *ngFor="let row of context.dataSource.getPageOfRows(context.pager); let idx = index">
 
     <ng-container *ngIf="!context.disableSelect">
-      <div class="eg-grid-cell eg-grid-checkbox-cell eg-grid-cell-skinny">
+      <div role="gridcell" class="eg-grid-cell eg-grid-checkbox-cell eg-grid-cell-skinny">
         <input type='checkbox' 
           [ngModel]="context.rowSelector.indexes[context.getRowIndex(row)]"
           (ngModelChange)="context.rowSelector.toggle(context.getRowIndex(row))"
@@ -26,10 +26,10 @@
           triggers="manual">
       </div>
     </ng-container>
-    <div class="eg-grid-cell eg-grid-number-cell eg-grid-cell-skinny-2">
+    <div role="gridcell" class="eg-grid-cell eg-grid-number-cell eg-grid-cell-skinny-2">
       {{context.pager.rowNumber(idx)}}
     </div>
-    <div *ngIf="context.rowFlairIsEnabled" class="eg-grid-cell eg-grid-flair-cell">
+    <div role="gridcell" *ngIf="context.rowFlairIsEnabled" class="eg-grid-cell eg-grid-flair-cell">
       <!-- using *ngIf allows us to assign the flair callback to a value,
             obviating the need for multiple calls of the same function -->
       <ng-container *ngIf="context.rowFlairCallback(row); let flair">
