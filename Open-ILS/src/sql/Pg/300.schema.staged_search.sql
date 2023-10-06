@@ -1527,6 +1527,7 @@ CREATE FUNCTION search.symspell_lookup (
 DECLARE
     prefix_length INT;
     maxED         INT;
+    good_suggs  HSTORE;
     word_list   TEXT[];
     edit_list   TEXT[] := '{}';
     seen_list   TEXT[] := '{}';
@@ -1644,38 +1645,32 @@ BEGIN
                          AND '||search_class||'_suggestions IS NOT NULL' 
                 USING entry_key
             LOOP
-                FOREACH sugg IN ARRAY entry.suggestions LOOP
-                    IF NOT seen_list @> ARRAY[sugg] THEN
-                        seen_list := seen_list || sugg;
-                        IF input = sugg THEN -- exact match, no need to spend time on a call
-                            output.lev_distance := 0;
-                            output.suggestion_count = entry.count;
-                        ELSIF ABS(CHARACTER_LENGTH(input) - CHARACTER_LENGTH(sugg)) > maxED THEN
-                            -- They are definitionally too different to consider, just move on.
-                            CONTINUE;
-                        ELSE
-                            --output.lev_distance := levenshtein_less_equal(
-                            output.lev_distance := evergreen.levenshtein_damerau_edistance(
-                                input,
-                                sugg,
-                                maxED
-                            );
-                            IF output.lev_distance < 0 THEN
-                                -- The Perl module returns -1 for "more distant than max".
-                                output.lev_distance := maxED + 1;
-                                -- This short-circuit's the count test below for speed, bypassing
-                                -- a couple useless tests.
-                                output.suggestion_count := -1;
-                            ELSE
-                                EXECUTE 'SELECT '||search_class||'_count FROM search.symspell_dictionary WHERE prefix_key = $1'
-                                    INTO output.suggestion_count USING sugg;
-                            END IF;
-                        END IF;
 
-                        -- The caller passes a minimum suggestion count threshold (or uses
-                        -- the default of 0) and if the suggestion has that many or less uses
-                        -- then we move on to the next suggestion, since this one is too rare.
-                        CONTINUE WHEN output.suggestion_count < c_min_suggestion_use_threshold;
+                SELECT  HSTORE(
+                            ARRAY_AGG(
+                                ARRAY[s, evergreen.levenshtein_damerau_edistance(input,s,maxED)::TEXT]
+                                    ORDER BY evergreen.levenshtein_damerau_edistance(input,s,maxED) ASC
+                            )
+                        )
+                  INTO  good_suggs
+                  FROM  UNNEST(entry.suggestions) s
+                  WHERE (ABS(CHARACTER_LENGTH(s) - CHARACTER_LENGTH(input)) <= maxEd
+                        AND evergreen.levenshtein_damerau_edistance(input,s,maxED) BETWEEN 0 AND maxED)
+                        AND NOT seen_list @> ARRAY[s];
+
+                CONTINUE WHEN good_suggs IS NULL;
+
+                FOR sugg, output.suggestion_count IN EXECUTE
+                    'SELECT  prefix_key, '||search_class||'_count
+                       FROM  search.symspell_dictionary
+                       WHERE prefix_key = ANY ($1)
+                             AND '||search_class||'_count >= $2'
+                    USING AKEYS(good_suggs), c_min_suggestion_use_threshold
+                LOOP
+
+                    IF NOT seen_list @> ARRAY[sugg] THEN
+                        output.lev_distance := good_suggs->sugg;
+                        seen_list := seen_list || sugg;
 
                         -- Track the smallest edit distance among suggestions from this prefix key.
                         IF smallest_ed = -1 OR output.lev_distance < smallest_ed THEN
