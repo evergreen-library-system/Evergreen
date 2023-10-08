@@ -10,6 +10,7 @@ import {StringComponent} from '@eg/share/string/string.component';
 import {DialogComponent} from '@eg/share/dialog/dialog.component';
 import {NgbModal, NgbModalOptions} from '@ng-bootstrap/ng-bootstrap';
 import {ComboboxEntry} from '@eg/share/combobox/combobox.component';
+import {VolCopyService} from '@eg/staff/cat/volcopy/volcopy.service';
 
 /**
  * Dialog for managing copy alerts.
@@ -58,7 +59,8 @@ export class CopyAlertsDialogComponent
         private idl: IdlService,
         private pcrud: PcrudService,
         private org: OrgService,
-        private auth: AuthService) {
+        private auth: AuthService,
+        private volcopy: VolCopyService) {
         super(modal); // required for subclassing
         this.copyIds = [];
         this.copies = [];
@@ -73,6 +75,9 @@ export class CopyAlertsDialogComponent
         this.copy = null;
         this.copies = [];
         this.newAlert = this.idl.create('aca');
+        if (this.volcopy.defaults.values?.item_alert_type) {
+            this.newAlert.alert_type(this.volcopy.defaults.values.item_alert_type);
+        }
         this.newAlerts = [];
         this.newAlert.create_staff(this.auth.user().id());
 

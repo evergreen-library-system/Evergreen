@@ -25,3 +25,21 @@ export function fixtureFile(fileName: string) {
 export function scrollToTopOfPage(browser: NightwatchBrowser) {
     browser.execute(() => { window.scrollTo(0, 0); });
 }
+
+export function waitForTabCount(count: number, browser: NightwatchBrowser): void {
+    browser.waitUntil(async () => {
+        return new Promise((resolve) => {
+            browser.windowHandles((result) => {
+                const tabs = <Array<any>>result.value;
+                resolve(tabs.length === count);
+            });
+        });
+    });
+}
+
+export function openTab(index: number, browser: NightwatchBrowser): void {
+    browser.windowHandles((result) => {
+        const tabs = <Array<any>>result.value;
+        browser.switchToWindow(tabs[index]);
+    });
+}

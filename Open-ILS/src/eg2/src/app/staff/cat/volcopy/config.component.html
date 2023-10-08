@@ -1,5 +1,5 @@
 <div class="d-flex">
-  <h3 class="mt-3" i18n>Holdings Preferences</h3>
+  <h2 class="mt-3" i18n>Holdings Preferences</h2>
   <div class="flex-1"></div>
   <div i18n class="fst-italic">Changes are saved automatically.</div>
 </div>
@@ -173,7 +173,7 @@
 </div>
 
 <hr class="p-2"/>
-<h3 i18n>Item Attribute Settings</h3>
+<h2 i18n>Item Attribute Settings</h2>
 
 <div class="row">
   <div class="col-lg-6">
@@ -205,6 +205,20 @@
             </label>
           </div>
         </li>
+        <li class="list-group-item">
+          <div class="form-check form-check-inline">
+            <eg-combobox
+              domId="default-item-alert-type"
+              idlClass="ccat"
+              [selectedId]="volcopy.defaults.values.item_alert_type"
+              (onChange)="volcopy.defaults.values.item_alert_type = $event ? $event.id : null">
+            </eg-combobox>
+            <label class="form-label ms-2" for="default-item-alert-type" i18n>
+              Default Item Alert Type
+            </label>
+          </div>
+
+        </li>
       </ul>
     </div>
   </div>
@@ -213,7 +227,7 @@
 
 <hr class="p-2"/>
 
-<h3 i18n>Hide Item Attributes</h3>
+<h2 i18n>Hide Item Attributes</h2>
 <span class="fst-italic" i18n>
   Selected Fields Will be <span class="fw-bold">Hidden</span>
   from the Item Attributes Form.

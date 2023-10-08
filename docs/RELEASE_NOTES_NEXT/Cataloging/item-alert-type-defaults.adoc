@@ -1,0 +1,13 @@
+== Cataloging ==
+
+Staff can now set a default item alert type for new item
+alerts.  To do this:
+
+. Open the holdings editor
+. Select the Preferences tab.  
+. Under the "Item Attribute Settings" heading, use the
+"Default Item Alert Type" dropdown to choose the type
+that you use most frequently.
+. The setting takes effect immediately, no need to save
+it.
+
