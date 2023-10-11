@@ -838,7 +838,7 @@ SelfCheckManager.prototype.insertHold = function(data) {
 
     var row = this.holdTemplate.cloneNode(true);
 
-    if(data.mvr.isbn()) {
+    if(data.mvr.doc_id()) {
         this.byName(row, 'jacket').setAttribute('src', '/opac/extras/ac/jacket/small/r/' + data.mvr.doc_id());
     }
 
