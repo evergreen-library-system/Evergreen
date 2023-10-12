@@ -230,29 +230,8 @@ sub add_carousel_from_bucket {
     $carousel->creator($e->requestor->id);
     $carousel->editor($e->requestor->id);
     $carousel->max_items(scalar(@$entries));
+    $carousel->bucket($bucket_id);
     $e->create_container_carousel($carousel) or return $e->event;
-
-    # and the bucket
-    my $bucket = Fieldmapper::container::biblio_record_entry_bucket->new;
-    $bucket->owner($e->requestor->id);
-    $bucket->name('System-created bucket for carousel ' . $carousel->id . ' copied from bucket ' . $bucket_id);
-    $bucket->btype('carousel');
-    $bucket->pub('t');
-    $bucket->owning_lib($e->requestor->ws_ou);
-    $e->create_container_biblio_record_entry_bucket($bucket) or return $e->event;
-
-    # link it to the container;
-    $carousel = $e->retrieve_container_carousel($carousel->id) or return $e->event;
-    $carousel->bucket($bucket->id);
-    $e->update_container_carousel($carousel) or return $e->event;
-
-    # and fill it
-    foreach my $entry (@$entries) {
-        $entry->clear_id;
-        $entry->bucket($bucket->id);
-        $entry->create_time('now');
-        $e->create_container_biblio_record_entry_bucket_item($entry) or return $e->event;
-    }
 
     $e->xact_commit or return $e->event;
 
