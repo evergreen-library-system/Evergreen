@@ -1,0 +1,150 @@
+[[z3950_servers]]
+= Z39.50 Servers =
+:page-aliases: restrict_Z39.50_sources_by_perm_group.adoc
+:toc:
+
+== Z39.50 Server Administration ==
+
+Permissions required:
+
+* ADMIN_Z3950_SOURCE
+* REMOTE_Z3950_QUERY
+
+=== Known issues when adding new servers ===
+
+* Cannot “clone” existing Z39.50 Attributes from other sources when creating a new source – worked in previous Evergreen versions
+* Other known attributes are not included in Z39.50 Attributes creator, such as _Relation Attributes_, _Position Attributes_ and _Completeness Attributes_ - see https://www.loc.gov/z3950/agency/bib1.html
+* Some sources/servers do not work as expected - see https://bugs.launchpad.net/evergreen/+bug/1745249[Bug 1745249]
+
+=== Add New Z39.50 Servers and Source Configuration ===
+
+. Locate Server information via a Z39.50 Target Directory
+* Example of source target directory: https://irspy.indexdata.com/
+. Go to *Administration -> Server Administration -> Z39.50 Servers*
+. Select _New Z39.50 source_
+. Fill out fields:
+.. _Z39.50 Source_ - Source name
+.. _Label_ - Source name - can be same as z39.50 Source; example, "Seattle Public Library"
+.. _Host_ - URL link to their host, copied exactly from the source
+.. _Port_ - the port for the host, copied exactly from the source
+.. _DB_ - the host database name, copied exactly from the source
+.. _Record format_ - valid values are F, B, FA, FI or T
+* F – Full record display
+* B – Brief record display
+* FA – Full with all Holdings
+* FI – Full record display with No Holdings
+* T – Full text 
+.. _Transmission format_ - typically usmarc or xml, copied exactly from the source
+.. _Auth_ - Authentication; leave blank unless required for a resource like OCLC
+.. _Use permission_ - leave blank unless required
+. Click _Save_
+
+=== Add Attribute Configuration to Z39.50 servers ===
+
+Z39.50 Attributes dictate the fields that appear in the “Import Record from Z39.50” screen for that source
+
+. Locate coding documentation for the Z39.50 Attributes used by your source, and consult this documentation to fill out the attributes below.
+* Example of documentation: https://www.loc.gov/z3950/agency/bib1.html
+. Go to *Administration -> Server Administration -> Z39.50 Servers*
+. Select the _Attrs_ link on the source you wish to configure in order to open the _Z39.50 Attribute Configuration_ interface
+. Select _New Z39.50 Attribute_
+. Fill out fields using appropriate coding. 
++
+[NOTE]
+====
+See the table below for common attributes and their coding.
+====
++
+.. _Code_ - This is a Use Attribute that specifies an access point (e.g., author, title, subject, ISBN, UPC). It is coded by number.
+.. _Format_ - This is a Structure Attribute that specifies the type of search term (e.g., a single word, a phrase, several words to be treated as multiple single terms, etc.). It is coded by number, and a best practice is to mimic existing numeric coding for other z39.50 sources.
+.. _Label_ - This is a Use Attribute and it is the term that appears next to blank field on Z39.50 import screen
+.. _Name_ - This is the Attribute that is being searched, usually the same as _Label_
+.. _Truncation_ This is a Truncation Attribute which specifies whether one or more characters may be omitted in matching the search term in the target system at the position specified by the Truncation attribute. This is coded by number.
+.. _Z39.50 Source_ - Select the Z39.50 Server to which to apply the attribute. This may
+auto-fill depending on Server Source selected.
+. Click _Save_
+. Repeat the above steps as needed to create new Attributes that are required and/or useful for that particular Z39.50 server
+
+=== Table of Common Attributes and Their Coding
+
+[width="100%",options="header",stripes="none"]
+|===
+|Name |Label |Code |Format |Truncation
+|title |Title |4 |6 |1
+|isbn |ISBN |7 |6 |1
+|issn |ISSN |8 |1 |1
+|lccn |LCCN |9 |1 |1
+|tcn |Title Control Number |12 |1 |1
+|pubdate |Publication Date |31 |1 |1
+|item_type |Item Type |1001 |1 |1
+|author |Author |1003 |6 |1
+|upc |UPC |1007 |6 |0
+|upc |UPC |1007 |1 |1
+|publisher |Publisher |1018 |6 |1
+|===
+
+
+== Restrict Z39.50 Sources by Permission Group ==
+
+In Evergreen versions preceding 2.2, all users with cataloging privileges could view all of the Z39.50 servers that were available for use in the staff client.  In Evergreen versions 2.2 and after, you can use a permission to restrict users' access to Z39.50 servers.  You can apply a permission to the Z39.50 servers to restrict access to that server, and then assign that permission to users or groups so that they can access the restricted servers.
+
+=== Administrative Settings ===
+
+You can add a permission to limit use of Z39.50 servers, or you can use an existing permission.
+
+NOTE: You must be authorized to add permission types at the database level to add a new permission.
+
+Add a new permission:
+
+1) Create a permission at the database level.
+
+2) Click *Administration -> Server Administration ->  Permissions* to add a permission to the staff client.
+
+3) In the *New Permission* field, enter the text that describes the new permission.
+
+image::media/Restrict_Z39_50_Sources_by_Permission_Group2.png[Create new permission to limit use of Z39.50 servers]
+
+4) Click *Add*.
+
+5) The new permission appears in the list of permissions.
+
+
+
+=== Restrict Z39.50 Sources by Permission Group ===
+
+1) Click *Administration -> Server Administration ->  Z39.50 Servers*
+
+2) Click *New Z39.50 Server*, or double click on an existing Z39.50 server to restrict its use.
+
+3) Select the permission that you added to restrict Z39.50 use from the drop down menu.
+
+image::media/Restrict_Z39_50_Sources_by_Permission_Group1.jpg[]
+
+4) Click *Save*.
+
+5) Add the permission that you created to a user or user group so that they can access the restricted server.
+
+
+image::media/Restrict_Z39_50_Sources_by_Permission_Group3.jpg[]
+
+6) Users that log in to the staff client and have that permission will be able to see the restricted Z39.50 server.  
+
+NOTE: As an alternative to creating a new permission to restrict use, you can use a preexisting permission.  For example, your library uses a permission group called SuperCat, and only members in this group should have access to a restricted Z39.50 source.  Identify a permission that is unique to the SuperCat group (e.g. CREATE_MARC) and apply that permission to the restricted Z39.50 server.  Because these users are in the only group with the permission, they will be the only group w/ access to the restricted server.
+
+
+== Storing Z39.50 Server Credentials ==
+
+Staff have the option to apply Z39.50 login credentials to each Z39.50 server at different levels of the organizational unit hierarchy.  Credentials can be set at the library branch or system level, or for an entire consortium.  When credentials are set for a Z39.50 server, searches of the Z39.50 server will use the stored credentials.  If a staff member provides alternate credentials in the Z39.50 search interface, the supplied credentials will override the stored ones.  Staff have the ability to apply new credentials or clear existing ones in this interface.  For security purposes, it is not possible for staff to retrieve or report on passwords.
+
+
+To set up stored credentials for a Z39.50 server:
+
+1) Go to *Administration -> Server Administration ->  Z39.50 Servers*.
+
+2) Select a *Z39.50 Source* by clicking on the hyperlinked source name.  This will take you the Z39.50 Attributes for the source.
+
+3) At the top of the screen, select the *org unit* for which you would like to configure the credentials.  
+
+4) Enter the *Username* and *Password*, and click *Apply Credentials*.  
+
+image::media/storing_z3950_credentials.jpg[Storing Z39.50 Credentials]
