@@ -407,7 +407,7 @@ For example:
 [source,sql]
 ----
 CREATE TABLE auditor.backup_usr_alert_msg AS
-   CREATE audit_id, audit_time, audit_action, audit_user,
+   SELECT audit_id, audit_time, audit_action, audit_user,
           audit_ws, id as "usr_id", last_update_time,
           alert_message
    FROM auditor.actor_usr_history
