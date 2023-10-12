@@ -22,7 +22,7 @@
     <div class="row">
         <div class="col-sm w-50">
                     [% IF ctx.get_org_setting (
-                          ctx.physical_org || ctx.aou_tree.id, 'opac.allow_pending_user') %]
+                          ctx.physical_loc || ctx.aou_tree.id, 'opac.allow_pending_user') %]
             <a href='[% mkurl(ctx.opac_root _ '/register', {}, 1) %]'>[% l('Request A Card') %]</a>
                     [% END %]
         </div>
