@@ -25,7 +25,7 @@ Report templates tell Evergreen what fields are to be displayed in the report ou
 what conditions to filter on in the database. These templates 
 allow you to run a report more than once, without building it anew every time. Templates may be shared for commonly needed reports. These templates can be xref:reports:reporter_cloning_shared_templates.adoc[cloned] and used as is or xref:reports:reporter_modifying_templates.adoc[modified] by library staff. Library staff can also xref:reports:reporter_create_templates.adoc[create new report templates]. Successfully creating a new template generally requires a solid understanding of Evergreen and the xref:reports:reporter_evergreen_database.adoc[Evergreen database]. 
 
-When a xref:reports:reporter_basics.adoc#running_reports[report is run] Evergreen looks at the values defined for the filters in the report definition and then goes through the database and gathers the records that meet the conditions into an output file. The output file can be viewed via the reporter within the staff client or via a link in the report completion email. See xref:reports:reporter_basics.adoc#viewing_report_output.adoc[Viewing Report Output] for more information.
+When a xref:reports:reporter_basics.adoc#running_reports[report is run] Evergreen looks at the values defined for the filters in the report definition and then goes through the database and gathers the records that meet the conditions into an output file. The output file can be viewed via the reporter within the staff client or via a link in the report completion email. See xref:reports:reporter_basics.adoc#viewing_report_output[Viewing Report Output] for more information.
 
 == Accessing the Reporter ==
 

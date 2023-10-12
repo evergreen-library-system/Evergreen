@@ -1,5 +1,5 @@
 [[reports_folders]]
-=Reports Folders =
+= Reports Folders =
 :toc:
 
 indexterm:[reports, report folders, folders]
