@@ -175,14 +175,14 @@ Save time by scheduling recurring reports to run your regular reports automatica
 
 Staff with access to the reporter can set up recurring reports to email a link to the password-protected report output to another staff member.
 
-To set up a recurring report, follow the procedure in xref:reports:reporter_basics.adoc#running_reports[Running Reports], above, until you reach step 11 and then follow the steps below.
+To set up a recurring report, follow the procedure in xref:reports:reporter_basics.adoc#running_reports[Running a Report], above, until you reach step 11 and then follow the steps below.
  
 . Select the box for _Recurring Report_.
 . Select your desired _Recurrence Interval_. Reports can run on a daily, weekly, or monthly interval.
 +
 [TIP] 
 =====
-The recurrence interval should correspond to the date filter. For example, if the template filters on a date instead of month, a recurring report running with a monthly interval may miss a day or capture an extra day's data. See xref:reporter_basics.adoc#report_date_filters[Report Date Filters] for more information on working with date filters on a recurring report.
+The recurrence interval should correspond to the date filter. For example, if the template filters on a date instead of month, a recurring report running with a monthly interval may miss a day or capture an extra day's data. See xref:reporter_basics.adoc#report_date_filters[Date Filters] for more information on working with date filters on a recurring report.
 =====
 +
 . Check the box beside the date and set the date of the first run of the report.
@@ -360,7 +360,7 @@ output. Select *OK*.
 
 [NOTE]
 ======
-If you have shared your template and/or created created a recurring report from your template, you will not be able to delete your template. This is why it is important for all users to clone templates into their own folders before running reports.
+If you have shared your template and/or created a recurring report from your template, you will not be able to delete your template. This is why it is important for all users to clone templates into their own folders before running reports.
 ======
 
 
