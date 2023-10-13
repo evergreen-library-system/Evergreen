@@ -51,25 +51,25 @@
           <li class="list-group-item">
             <div class="d-flex">
               <div class="flex-1">
-                <a [routerLink]="" (click)="importSelected()"
-                  i18n>Import Selected Records</a>
+                <button type="button" class="btn btn-link p-0" (click)="importSelected()"
+                  i18n>Import Selected Records</button>
               </div>
               <div class="flex-1">
-                <a [routerLink]="" (click)="importAll()" i18n>Import All Records</a>
+                <button type="button" class="btn btn-link p-0" (click)="importAll()" i18n>Import All Records</button>
               </div>
             </div>
           </li>
           <li class="list-group-item">
             <div class="d-flex">
               <div class="flex-1">
-                <a i18n
+                <a i18n class="btn btn-link p-0"
                   routerLink="/staff/cat/vandelay/queue/{{queueType}}/{{queueId}}/items">
                     View Import Items
                 </a>
               </div>
               <div class="flex-1">
-                <a [routerLink]="" (click)="exportNonImported()"
-                  i18n>Export Non-Imported Records</a>
+                <button type="button" class="btn btn-link p-0" (click)="exportNonImported()"
+                  i18n>Export Non-Imported Records</button>
               </div>
             </div>
           </li>
@@ -78,12 +78,12 @@
               <eg-bucket-dialog #bucketDialog bucketClass="biblio" [fromBibQueue]="queueId">
               </eg-bucket-dialog>
               <div class="flex-1">
-                <a href="javascript:;" (click)="bucketDialog.open({size:'lg'})" i18n>
+                <button type="button" class="btn btn-link p-0" (click)="bucketDialog.open({size:'lg'})" i18n>
                   Copy Queue To Bucket
-                </a>
+                </button>
               </div>
               <div class="flex-1">
-                <a href="javascript:;" (click)="deleteQueue()" i18n>Delete Queue</a>
+                <button type="button" class="btn btn-link p-0" (click)="deleteQueue()" i18n>Delete Queue</button>
               </div>
             </div>
           </li>
