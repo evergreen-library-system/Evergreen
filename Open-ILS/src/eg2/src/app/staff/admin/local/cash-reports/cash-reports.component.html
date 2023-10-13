@@ -39,22 +39,27 @@
     <a role="tab" ngbNavLink i18n>Desk Payments</a>
     <ng-template ngbNavContent>
       <div class="mt-3">
-        <div class="row">
-          <div class="col-sm-2" i18n>Total Cash Payments</div>
-          <div class="col-sm-10">{{deskTotals.cash_payment | currency}}</div>
-        </div>
-        <div class="row">
-          <div class="col-sm-2" i18n>Total Check Payments</div>
-          <div class="col-sm-10">{{deskTotals.check_payment | currency}}</div>
-        </div>
-        <div class="row">
-          <div class="col-sm-2" i18n>Total Credit Card Payments</div>
-          <div class="col-sm-10">{{deskTotals.credit_card_payment | currency}}</div>
-        </div>
-        <div class="row">
-          <div class="col-sm-2" i18n>Total Debit Card Payments</div>
-          <div class="col-sm-10">{{deskTotals.debit_card_payment | currency}}</div>
-        </div>
+        <table class="table w-auto">
+          <tbody>
+            <tr>
+              <th class="fw-normal" scope="row" i18n>Total Cash Payments</th>
+              <td class="fw-bold text-end">{{deskTotals.cash_payment | currency}}</td>
+            </tr>
+            <tr>
+              <th class="fw-normal" scope="row" i18n>Total Check Payments</th>
+              <td class="fw-bold text-end">{{deskTotals.check_payment | currency}}</td>
+            </tr>
+            <tr>
+              <th class="fw-normal" scope="row" i18n>Total Credit Card Payments</th>
+              <td class="fw-bold text-end">{{deskTotals.credit_card_payment | currency}}</td>
+            </tr>
+            <tr>
+              <th class="fw-normal" scope="row" i18n>Total Debit Card Payments</th>
+              <td class="fw-bold text-end">{{deskTotals.debit_card_payment | currency}}</td>
+            </tr>
+          </tbody>
+        </table>
+
         <eg-grid #deskPaymentGrid
           persistKey="admin.local.cash_reports.desk_payments"
           [disableSelect]="true"
@@ -74,22 +79,27 @@
     <a role="tab" ngbNavLink i18n>Staff User Payments</a>
     <ng-template ngbNavContent>
       <div class="mt-3">
-        <div class="row">
-          <div class="col-sm-2" i18n>Total Patron Credit Payments</div>
-          <div class="col-sm-10">{{userTotals.credit_payment | currency}}</div>
-        </div>
-        <div class="row">
-          <div class="col-sm-2" i18n>Total Forgive Payments</div>
-          <div class="col-sm-10">{{userTotals.forgive_payment | currency}}</div>
-        </div>
-        <div class="row">
-          <div class="col-sm-2" i18n>Total Work Payments</div>
-          <div class="col-sm-10">{{userTotals.work_payment | currency}}</div>
-        </div>
-        <div class="row">
-          <div class="col-sm-2" i18n>Total Goods Payments</div>
-          <div class="col-sm-10">{{userTotals.goods_payment | currency}}</div>
-        </div>
+        <table class="table w-auto">
+          <tbody>
+            <tr>
+              <th class="fw-normal" scope="row" i18n>Total Patron Credit Payments</th>
+              <td class="fw-bold text-end">{{userTotals.credit_payment | currency}}</td>
+            </tr>
+            <tr>
+              <th class="fw-normal" scope="row" i18n>Total Forgive Payments</th>
+              <td class="fw-bold text-end">{{userTotals.forgive_payment | currency}}</td>
+            </tr>
+            <tr>
+              <th class="fw-normal" scope="row" i18n>Total Work Payments</th>
+              <td class="fw-bold text-end">{{userTotals.work_payment | currency}}</td>
+            </tr>
+            <tr>
+              <th class="fw-normal" scope="row" i18n>Total Goods Payments</th>
+              <td class="fw-bold text-end">{{userTotals.goods_payment | currency}}</td>
+            </tr>
+          </tbody>
+        </table>
+
         <ng-template #cardTmpl let-row="row">
           <a target="_blank" href="/eg/staff/circ/patron/{{row.user.id()}}/checkout">
             {{row.user.card()}}
