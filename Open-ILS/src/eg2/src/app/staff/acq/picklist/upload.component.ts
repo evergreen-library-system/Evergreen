@@ -159,11 +159,6 @@ export class UploadComponent implements AfterViewInit, OnDestroy {
         private store: ServerStoreService,
         private vlagent: PicklistUploadService
     ) {
-        // force a reload of the component if we navigate to it
-        // from itself
-        this.router.routeReuseStrategy.shouldReuseRoute = () => {
-            return false;
-        };
         this.applyDefaults();
         this.applySettings();
     }
