@@ -1,4 +1,5 @@
 * xref:shared:attributions.adoc[Appendix A. Attributions]
 * xref:shared:licensing.adoc[Appendix B. Licensing]
+* xref:appendix:permissions_list.adoc[Permissions List]
 * xref:appendix:glossary.adoc[Glossary]
 * xref:shared:index.adoc[Index]
