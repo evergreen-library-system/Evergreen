@@ -79,10 +79,9 @@
 
 <ng-template #historyCellTemplate let-entry="row">
   <span>
-    <a
-      (click)="showHistoryDialog(entry)" class="ps-1"
-      [routerLink]="" i18n>
+    <button type="button"
+      (click)="showHistoryDialog(entry)" class="btn btn-link ps-1" i18n>
       History
-    </a>
+    </button>
   </span>
 </ng-template>
