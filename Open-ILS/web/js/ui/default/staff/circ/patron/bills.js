@@ -173,10 +173,10 @@ function($q , egCore , egWorkLog , patronSvc) {
 .controller('PatronBillsCtrl',
        ['$scope','$q','$routeParams','egCore','egConfirmDialog','$location',
         'egGridDataProvider','billSvc','patronSvc','egPromptDialog', 'egAlertDialog',
-        'egBilling','$uibModal',
+        'egBilling','$uibModal', '$sce',
 function($scope , $q , $routeParams , egCore , egConfirmDialog , $location,
          egGridDataProvider , billSvc , patronSvc , egPromptDialog, egAlertDialog,
-         egBilling , $uibModal) {
+         egBilling , $uibModal, $sce) {
 
     $scope.initTab('bills', $routeParams.id);
     billSvc.userId = $routeParams.id;
@@ -264,7 +264,7 @@ function($scope , $q , $routeParams , egCore , egConfirmDialog , $location,
                     text = egCore.strings.CIRC_OVERDUE;
                 }
             }
-            return "<i class='glyphicon " + icon + "' title='" + text + "' aria-hidden='true'></i><span class='sr-only'>" + text + "</span>";
+            return $sce.trustAsHtml("<i class='glyphicon " + icon + "' title='" + text + "' aria-hidden='true'></i><span class='sr-only'>" + text + "</span>");
         }
     }
 
