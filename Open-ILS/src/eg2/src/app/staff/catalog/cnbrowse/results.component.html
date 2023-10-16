@@ -40,11 +40,11 @@
           <div class="col-lg-4 pt-2 d-flex border"
             [ngClass]="{'border-primary': isCenter(rowIdx, colIdx)}">
             <div class="flex-1">
-              <div class="fw-bold">
+              <h3 class="browse-call-number">
                 {{callNumber.prefix().label()}} {{callNumber.label()}}
                 {{callNumber.suffix().label()}}
                 @ {{orgName(callNumber.owning_lib())}}
-              </div>
+              </h3>
               <div>
                 <a queryParamsHandling="merge"
                   routerLink="/staff/catalog/record/{{callNumber._bibSummary.id}}">
