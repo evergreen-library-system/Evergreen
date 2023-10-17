@@ -3168,43 +3168,50 @@ sub catalog_record_summary {
             get_one_record_summary($self, $e, $org_id, $rec_id);
 
         # Let's get Formats & Editions data FIXME: consider peer bibs?
+        my @metabib_records;
         unless ($is_meta) {
             my $meta_search = $e->search_metabib_metarecord_source_map({source => $rec_id});
-            if ($meta_search) {
+            if (scalar(@$meta_search) > 0) {
                 $response->{staff_view_metabib_id} = $meta_search->[0]->metarecord;
                 my $maps = $e->search_metabib_metarecord_source_map({metarecord => $response->{staff_view_metabib_id}});
-                my @metabib_records = map { $_->source } @$maps;
-                $response->{staff_view_metabib_records} = \@metabib_records;
+                @metabib_records = map { $_->source } @$maps;
+            } else {
+                # XXX ugly hack for bibs without metarecord mappings, e.g. deleted bibs
+                # where ingest.metarecord_mapping.preserve_on_delete is false
+                @metabib_records = ( $rec_id );
+            }
 
-                my $attributes = $U->get_bre_attrs(\@metabib_records);
-                # we get "243":{
-                #       "srce":{
-                #         "code":" ",
-                #         "label":"National bibliographic agency"
-                #       }, ...}
-                my $metabib_attr = {};
+            $response->{staff_view_metabib_records} = \@metabib_records;
 
-                foreach my $bib_id ( keys %{ $attributes } ) {
-                    foreach my $ctype ( keys %{ $attributes->{$bib_id} } ) {
-                        # we want {
-                        #   "srce":{ " ": { "label": "National bibliographic agency", "count" : 1 } },
-                        #       ...
-                        #   }
-                        my $current_code = $attributes->{$bib_id}->{$ctype}->{code};
-                        my $code_label = $attributes->{$bib_id}->{$ctype}->{label};
-                        $metabib_attr->{$ctype} = {} unless $metabib_attr->{$ctype};
-                        if (! $metabib_attr->{$ctype}->{ $current_code }) {
-                            $metabib_attr->{$ctype}->{ $current_code } = {
-                                "label" => $code_label,
-                                "count" => 1
-                            }
-                        } else {
-                            $metabib_attr->{$ctype}->{ $current_code }->{count}++;
+            my $attributes = $U->get_bre_attrs(\@metabib_records);
+            # we get "243":{
+            #       "srce":{
+            #         "code":" ",
+            #         "label":"National bibliographic agency"
+            #       }, ...}
+            my $metabib_attr = {};
+
+            foreach my $bib_id ( keys %{ $attributes } ) {
+                foreach my $ctype ( keys %{ $attributes->{$bib_id} } ) {
+                    # we want {
+                    #   "srce":{ " ": { "label": "National bibliographic agency", "count" : 1 } },
+                    #       ...
+                    #   }
+                    my $current_code = $attributes->{$bib_id}->{$ctype}->{code};
+                    my $code_label = $attributes->{$bib_id}->{$ctype}->{label};
+                    $metabib_attr->{$ctype} = {} unless $metabib_attr->{$ctype};
+                    if (! $metabib_attr->{$ctype}->{ $current_code }) {
+                        $metabib_attr->{$ctype}->{ $current_code } = {
+                            "label" => $code_label,
+                            "count" => 1
                         }
+                    } else {
+                        $metabib_attr->{$ctype}->{ $current_code }->{count}++;
                     }
                 }
-                $response->{staff_view_metabib_attributes} = $metabib_attr;
             }
+
+            $response->{staff_view_metabib_attributes} = $metabib_attr;
         }
 
         ($response->{copy_counts}) = $copy_method->run($org_id, $rec_id);
