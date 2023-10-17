@@ -11,7 +11,7 @@ import {HoldCancelDialogComponent} from './cancel-dialog.component';
 import {HoldManageDialogComponent} from './manage-dialog.component';
 import {HoldNoteDialogComponent} from './note-dialog.component';
 import {HoldNotifyDialogComponent} from './notify-dialog.component';
-import {ItemLocationSelectModule} from '@eg/share/item-location-select/item-location-select.module';
+import {HoldCopyLocationsDialogComponent} from './copy-locations-dialog.component';
 
 @NgModule({
     declarations: [
@@ -23,11 +23,11 @@ import {ItemLocationSelectModule} from '@eg/share/item-location-select/item-loca
         HoldCancelDialogComponent,
         HoldManageDialogComponent,
         HoldNoteDialogComponent,
-        HoldNotifyDialogComponent
+        HoldNotifyDialogComponent,
+        HoldCopyLocationsDialogComponent
     ],
     imports: [
         StaffCommonModule,
-        ItemLocationSelectModule,
         HoldingsModule
     ],
     exports: [
@@ -37,7 +37,8 @@ import {ItemLocationSelectModule} from '@eg/share/item-location-select/item-loca
         HoldRetargetDialogComponent,
         HoldTransferDialogComponent,
         HoldCancelDialogComponent,
-        HoldManageDialogComponent
+        HoldManageDialogComponent,
+        HoldCopyLocationsDialogComponent
     ],
     providers: [
         HoldsService

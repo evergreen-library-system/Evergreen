@@ -25,6 +25,9 @@ import {HoldCancelDialogComponent} from './cancel-dialog.component';
 import {HoldManageDialogComponent} from './manage-dialog.component';
 import {PrintService} from '@eg/share/print/print.service';
 import {HoldingsService} from '@eg/staff/share/holdings/holdings.service';
+import {OrgSelectComponent} from '@eg/share/org-select/org-select.component';
+import {ComboboxEntry} from '@eg/share/combobox/combobox.component';
+import {HoldCopyLocationsDialogComponent} from './copy-locations-dialog.component';
 
 /** Holds grid with access to detail page and other actions */
 
@@ -93,7 +96,9 @@ export class HoldsGridComponent implements OnInit {
     editHolds: number[];
     transferTarget: number;
     uncancelHoldCount: number;
-    copyLocation: number;
+    copyLocationClass?: string;
+    copyLocationEntries: ComboboxEntry[] = [];
+    copyLocationIds: number[] = [];
 
     @ViewChild('holdsGrid', { static: false }) private holdsGrid: GridComponent;
     @ViewChild('progressDialog', { static: true })
@@ -113,6 +118,12 @@ export class HoldsGridComponent implements OnInit {
     @ViewChild('manageDialog', { static: true })
         private manageDialog: HoldManageDialogComponent;
     @ViewChild('uncancelDialog') private uncancelDialog: ConfirmDialogComponent;
+    @ViewChild('copyLocationsDialog')
+        private copyLocationsDialog: HoldCopyLocationsDialogComponent;
+    @ViewChild('clearCopyLocationsDialog')
+        private clearCopyLocationsDialog: ConfirmDialogComponent;
+    @ViewChild('pullPickupLibFilter')
+        private pullPickupLibFilter: OrgSelectComponent;
 
     // Bib record ID.
     _recordId: number;
@@ -221,12 +232,12 @@ export class HoldsGridComponent implements OnInit {
 
         this.gridDataSource.getRows = (pager: Pager, sort: any[]) => {
 
-            if (!this.hidePickupLibFilter && !this.plCompLoaded) {
+            if (!this.hidePickupLibFilter || this.pullListOrg) {
                 // When the pickup lib selector is active, avoid any
                 // data fetches until it has settled on a default value.
                 // Once the final value is applied, its onchange will
                 // fire and we'll be back here with plCompLoaded=true.
-                return of([]);
+                if (!this.plCompLoaded) return of([]);
             }
 
             sort = sort.length > 0 ? sort : this.defaultSort;
@@ -242,6 +253,21 @@ export class HoldsGridComponent implements OnInit {
             ucard_barcode: row => row.ucard_barcode,
             hold_status: row => row.hold_status // TODO labels
         };
+
+        if (this.pullListOrg) {
+            this.store.getItem('eg.holds.pull_list_filters').then(data => {
+                if (data) {
+                    this.copyLocationClass = data.copyLocationClass;
+                    this.copyLocationEntries = data.copyLocationEntries;
+                    this.copyLocationIds = data.copyLocationIds;
+                    if (data.pickupLib) {
+                        this.pickupLib = this.org.get(data.pickupLib);
+                    }
+                } else {
+                    this.copyLocationClass = 'acpl';
+                }
+            });
+        }
     }
 
     // Returns true after all data/settings/etc required to render the
@@ -255,14 +281,69 @@ export class HoldsGridComponent implements OnInit {
         this.holdsGrid.reload();
     }
 
-    pullListOrgChanged(org: IdlObject) {
-        this.pullListOrg = org.id();
+    pullPickupLibLoaded(): void {
+        this.plCompLoaded = true;
         this.holdsGrid.reload();
     }
 
-    copyLocationChange(loc: IdlObject) {
-        this.copyLocation = loc ? loc.id() : null;
-        this.holdsGrid.reload();
+    resetPullPickupLibFilter(): void {
+        if (this.pickupLib) {
+            this.pullPickupLibFilter.reset();
+        }
+    }
+
+    pullPickupLibChanged(org: IdlObject): void {
+        if (org?.id() !== this.pickupLib?.id()) {
+            this.pickupLib = org;
+            this.savePullFilterSettings();
+            this.holdsGrid.reload();
+        }
+    }
+
+    openCopyLocationsDialog(): void {
+        this.copyLocationsDialog.init();
+        this.copyLocationsDialog.open({size: 'lg'}).subscribe(
+            ([fmClass, entries, ids]) => {
+                this.copyLocationClass = fmClass;
+                this.copyLocationEntries = entries;
+                this.copyLocationIds = ids;
+                this.savePullFilterSettings();
+                this.holdsGrid.reload();
+            }
+        );
+    }
+
+    clearCopyLocations(): void {
+        if (!this.copyLocationEntries.length) return;
+        this.clearCopyLocationsDialog.open().subscribe(data => {
+            if (data) {
+                this.copyLocationClass = 'acpl';
+                this.copyLocationEntries = [];
+                this.copyLocationIds = [];
+                this.savePullFilterSettings();
+                this.holdsGrid.reload();
+            }
+        });
+    }
+
+    pullListSettingsLoaded(): boolean {
+        return !!this.copyLocationClass;
+    }
+
+    savePullFilterSettings(): void {
+        this.store.setItem('eg.holds.pull_list_filters', {
+            copyLocationClass: this.copyLocationClass,
+            copyLocationEntries: this.copyLocationEntries,
+            copyLocationIds: this.copyLocationIds,
+            pickupLib: this.pickupLib ? +this.pickupLib.id() : undefined
+        });
+    }
+
+    pullListOrgChanged(org: IdlObject): void {
+        if (org && +org.id() !== +this.pullListOrg) {
+            this.pullListOrg = org.id();
+            this.holdsGrid.reload();
+        }
     }
 
     preFetchHolds(apply: boolean) {
@@ -282,8 +363,8 @@ export class HoldsGridComponent implements OnInit {
 
         const filters: any = {};
 
-        if (this.copyLocation) {
-            filters['acpl.id'] = this.copyLocation;
+        if (this.copyLocationIds.length) {
+            filters['acpl.id'] = this.copyLocationIds;
         }
 
         if (this.pickupLib) {

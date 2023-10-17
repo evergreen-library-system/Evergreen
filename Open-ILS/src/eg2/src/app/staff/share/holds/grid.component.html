@@ -14,6 +14,16 @@
   i18n-dialogTitle="Un-Cancel Holds"
   dialogBody="Un-Cancel {{uncancelHoldCount}} hold(s)?"
 ></eg-confirm-dialog>
+<eg-hold-copy-locations-dialog #copyLocationsDialog
+  [contextOrg]="pullListOrg"
+  [selectedClass]="copyLocationClass"
+  [selectedEntries]="copyLocationEntries">
+</eg-hold-copy-locations-dialog>
+<eg-confirm-dialog #clearCopyLocationsDialog
+  i18n-dialogTitle i18n-dialogBody
+  dialogTitle="Clear Shelving Location Filters?"
+  dialogBody="Are you sure you want to clear the shelving location filters?"
+></eg-confirm-dialog>
 
 <ng-template #statusTemplate let-hold="row">
   <ng-container [ngSwitch]="hold.hold_status">
@@ -56,33 +66,69 @@
     <div class="row" *ngIf="pullListOrg">
       <div class="col-lg-3 mb-2">
         <div class="input-group">
-          <label for="pill-list-lib-filter" class="input-group-text" i18n>Pull List For:</label>
-          <eg-org-select domId="pickup-lib-filter-two"
+          <label for="pull-list-lib-filter" class="input-group-text"
+            i18n>Pull List For:
+          </label>
+          <eg-org-select domId="pull-list-lib-filter"
             [initialOrgId]="pullListOrg" [limitPerms]="['VIEW_HOLD_PULL_LIST']"
             (onChange)="pullListOrgChanged($event)">
           </eg-org-select>
         </div>
       </div>
-      <div class="col-lg-3 mb-2">
+      <div class="col-lg-3 mb-2" *ngIf="pullListSettingsLoaded()">
         <div class="input-group">
-          <label for="pickup-lib-filter-two" class="input-group-text" i18n>Pickup Library:</label>
-          <eg-org-select domId="pickup-lib-filter-two"
-            [fallbackOrg]="pullListOrg"
-            (componentLoaded)="plCompLoaded = true" (onChange)="pickupLibChanged($event)">
+          <label for="pull-pickup-lib-filter" class="input-group-text"
+            i18n>Pickup Library:
+          </label>
+          <eg-org-select domId="pull-pickup-lib-filter"
+            #pullPickupLibFilter [initialOrg]="pickupLib"
+            (componentLoaded)="pullPickupLibLoaded()"
+            (onChange)="pullPickupLibChanged($event)">
           </eg-org-select>
+          <button type="button" class="btn btn-outline-dark"
+            [ngClass]="{disabled: !pickupLib}"
+            (click)="resetPullPickupLibFilter()" i18n>Clear
+          </button>
         </div>
       </div>
-      <div class="col-lg-3 mb-2">
-        <div class="input-group">
-          <!-- TODO multi select? -->
-          <label for="copy-location-filter" class="input-group-text" i18n>Shelf Location:</label>
-          <eg-item-location-select domId="copy-location-filter"
-            [contextOrgId]="pullListOrg" (valueChange)="copyLocationChange($event)">
-          </eg-item-location-select>
+      <div class="col-lg-6 mb-2">
+        <div class="row">
+          <div class="col-lg-6">
+            <div class="input-group">
+              <label for="copy-locations-filter-btn" class="input-group-text"
+                style="cursor: pointer" i18n>Shelving Locations:
+              </label>
+              <input type="button" id="copy-locations-filter-btn"
+                class="form-control" (click)="openCopyLocationsDialog()">
+              <button type="button" class="btn btn-outline-dark"
+                [ngClass]="{disabled: !this.copyLocationEntries.length}"
+                (click)="clearCopyLocations()" i18n>Clear
+              </button>
+            </div>
+          </div>
         </div>
-      </div>
-      <div class="col-lg-3 mb-2">
-        <!-- copy location selector? -->
+        <div class="row mt-2" *ngIf="copyLocationEntries.length">
+          <div class="col">
+            <div class="border rounded p-2" style="clear: both">
+              <h3 class="lh-base m-1 float-start"
+              style="font-size: inherit;">
+              <ng-container *ngIf="copyLocationClass === 'acpl'"
+                i18n>Shelving Locations:
+              </ng-container>
+              <ng-container *ngIf="copyLocationClass === 'acplg'"
+                i18n>Shelving Location Groups:
+              </ng-container>
+            </h3>
+            <ul class="list-unstyled mb-0">
+              <li class="d-inline-block text-nowrap m-1"
+                *ngFor="let entry of copyLocationEntries as entries; let i = index">
+                {{entry.label}}
+                <ng-container *ngIf="i < entries.length - 1">,</ng-container>
+              </li>
+            </ul>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
 

@@ -1,0 +1,98 @@
+<eg-string #entryRemoved i18n-text text="entry removed"></eg-string>
+<eg-string #entriesRemoved i18n-text text="entries removed"></eg-string>
+
+<ng-template #dialogContent>
+  <div class="modal-header">
+    <h4 class="modal-title" i18n>
+      Filter by Shelving Locations or Groups
+    </h4>
+
+    <button type="button" class="btn-close" (click)="close()"
+      i18n-aria-label aria-label="Close">
+    </button>
+  </div>
+
+  <div class="modal-body" *ngIf="pendingClass$ | async as idlClass">
+    <!--toggle between locations and groups-->
+    <fieldset class="mb-2">
+      <legend i18n>Filter by Shelving Locations or Groups</legend>
+
+      <div class="form-check">
+        <input type="radio" name="copy-loc-dialog-class"
+          class="form-check-input"
+          id="copy-loc-dialog-class-acpl" value="acpl"
+          [ngModel]="idlClass"
+          (ngModelChange)="updatePendingClass($event)">
+        <label for="copy-loc-dialog-class-acpl"
+          i18n>Shelving Locations
+        </label>
+      </div>
+
+      <div class="form-check">
+        <input type="radio" name="copy-loc-dialog-class"
+          class="form-check-input"
+          id="copy-loc-dialog-class-acplg" value="acplg"
+          [ngModel]="idlClass"
+          (ngModelChange)="updatePendingClass($event)">
+        <label for="copy-loc-dialog-class-acplg"
+          i18n>Shelving Location Groups
+        </label>
+      </div>
+    </fieldset>
+
+    <!--select locations or groups-->
+    <div class="input-group mb-2">
+      <label for="copy-loc-dialog-combobox" class="input-group-text">
+        <ng-container *ngIf="idlClass === 'acpl'"
+          i18n>Shelving Locations
+        </ng-container>
+        <ng-container *ngIf="idlClass === 'acplg'"
+          i18n>Shelving Location Groups
+        </ng-container>
+      </label>
+
+      <eg-combobox domId="copy-loc-dialog-combobox"
+        #copyLocDialogCombobox
+        [entries]="entries$ | async"
+        [disableEntries]="pendingEntryIds()"
+        [disabled]="entriesLoading"
+        (onChange)="select(copyLocDialogCombobox, $event)">
+      </eg-combobox>
+
+      <button type="button" class="btn btn-outline-dark"
+        [ngClass]="{disabled: !pendingEntries.length}"
+        (click)="removeAll()" i18n>Remove All
+      </button>
+    </div>
+
+    <!--selected locations or groups-->
+    <ul class="list-unstyled mb-0">
+
+      <li class="d-inline-block text-nowrap m-2"
+        *ngFor="let entry of pendingEntries">
+        <div class="d-flex align-items-center">
+          <span>{{entry.label}}</span>
+
+          <button type="button" class="btn btn-close"
+            (click)="remove(entry)"
+            i18n-aria-label [attr.aria-label]="'Remove '+entry.label">
+          </button>
+        </div>
+      </li>
+    </ul>
+
+    <div aria-live="polite" role="status" class="visually-hidden">
+      {{announcement}}
+    </div>
+  </div>
+
+  <div class="modal-footer">
+    <button type="button" class="btn btn-success"
+      [disabled]="!readyToApply()"
+      (click)="apply.next(true)" i18n>Apply
+    </button>
+    <button type="button" class="btn btn-warning"
+      (click)="close()" i18n>Cancel
+    </button>
+  </div>
+</ng-template>
