@@ -1,40 +1,45 @@
 <div>
-  <div class="row">
+  <div class="row align-items-start">
     <ng-container *ngIf="idlClass === 'acpl'">
-      <div class="col-6">
+      <div class="col-5">
         <eg-item-location-select (entryChange)="valueSelected($event)"
-          [contextOrgId]="acplContextOrgId"
-          [includeDescendants]="acplIncludeDescendants"
-          domId='location-input'>
+          [contextOrgId]="acplContextOrgId" [disabled]="disabled"
+          [includeDescendants]="acplIncludeDescendants">
         </eg-item-location-select>
       </div>
-      <div class="col-6">
+      <div class="col-5">
         <label for="context_library" class="form-label" i18n>Owned by</label>
         <eg-org-select
-          domId="context_library"
-          [applyDefault]="true"
+          [applyDefault]="true" [disabled]="disabled"
           (onChange)="acplContextOrgId = $event.id()">
         </eg-org-select>
-        <label class="form-label form-check-label me-1" for="acplIncludeDescendants" i18n>Include descendants?</label>
+        
+        <div class="form-check">
         <input type="checkbox"
-          domId="acplIncludeDescendants"
           id="acplIncludeDescendants"
-          [(ngModel)]="acplIncludeDescendants"
-          class="ml-1">
+          [(ngModel)]="acplIncludeDescendants" [disabled]="disabled"
+          class="me-1 form-check-input">
+        <label class="form-label form-check-label" for="acplIncludeDescendants" i18n>Include descendants?</label>
+        </div>
       </div>
     </ng-container>
-    <ng-container *ngIf="idlClass !== 'acpl'">
-      <eg-combobox [idlBaseQuery]="idlBaseQuery" [idlClass]="idlClass"
+    <div *ngIf="idlClass !== 'acpl'"  class="col-10">
+      <eg-combobox [disabled]="disabled" [idlBaseQuery]="idlBaseQuery" [idlClass]="idlClass"
         [idlIncludeLibraryInLabel]="linkedLibraryLabel" [asyncSupportsEmptyTermClick]="true"
-        (onChange)="valueSelected($event)">
+        (onChange)="valueSelected($event)" [domId]="domId">
       </eg-combobox>
-    </ng-container>
-    <button class="btn btn-outline-dark" (click)="addSelectedValue()" [disabled]="!this.selected" i18n>Add</button>
+    </div>
+    <div class="col-2 p-0 text-end">
+      <button class="btn btn-outline-dark" (click)="addSelectedValue()" [disabled]="disabled || !selected" i18n>Add</button>
+    </div>
   </div>
-  <div class="row" *ngFor="let entry of entrylist">
-    <div class="col">{{entry.label}}</div>
-    <div class="col">
-      <button class="btn btn-sm btn-warning" (click)="removeValue(entry)" i18n>Remove</button>
+  <div class="row py-2 ps-3 align-items-start" *ngFor="let entry of entrylist">
+    <div class="col-10 p-0">{{entry.label}}</div>
+    <div class="col-2 p-0 text-end">
+      <button class="btn btn-sm btn-outline-danger" (click)="removeValue(entry)" i18n-aria-label [disabled]="disabled"
+        [attr.aria-label]="'Remove ' + entry.label" i18n-title [title]="'Remove ' + entry.label">
+        <span class="material-icons mat-icon-in-button" aria-hidden="true">close</span>
+      </button>
     </div>
   </div>
 </div>
