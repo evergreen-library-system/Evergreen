@@ -15,7 +15,7 @@
 
 <ng-template #barcodeTmpl let-user="row">
   <a target="_blank" href="/eg/staff/circ/patron/{{user.id()}}/checkout">
-    {{user.card().barcode()}}
+    {{user.card() && user.card().barcode ? user.card().barcode() : "-"}}
   </a>
 </ng-template>
 
