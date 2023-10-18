@@ -4262,7 +4262,7 @@ sub negative_balance_users {
                 }
             }
         },
-        where => {'+mous' => {balance_owed => {'<' => 0}}},
+        where => {'+mous' => {balance_owed => {'<' => 0}}, '+au' => {deleted => 'f'}},
         offset => $options->{offset},
         limit => $options->{limit},
         order_by => [{class => 'mous', field => 'usr'}]
