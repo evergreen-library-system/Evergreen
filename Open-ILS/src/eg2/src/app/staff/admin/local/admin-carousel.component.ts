@@ -24,6 +24,8 @@ export class AdminCarouselComponent extends AdminPageComponent implements OnInit
     classLabel: string;
 
     refreshSelected: (idlThings: IdlObject[]) => void;
+    mungeCarousel: (editMode: string, rec: IdlObject) => void;
+    postSave: (rec: IdlObject) => void;
     createNew: () => void;
     deleteSelected: (idlThings: IdlObject[]) => void;
     cellTextGenerator: GridCellTextGenerator;
@@ -89,63 +91,64 @@ export class AdminCarouselComponent extends AdminPageComponent implements OnInit
 
             editOneThing(carouselFields.shift());
         };
-    }
 
-    mungeCarousel(editMode: string, rec: IdlObject) {
-        if (editMode === 'create') {
-            rec.creator(this.auth.user().id());
-        }
-        rec.editor(this.auth.user().id());
-        rec.edit_time('now');
-
-        // convert empty string to nulls as needed
-        // for int[] columns
-        if (rec.owning_lib_filter() === '') {
-            rec.owning_lib_filter(null);
-        }
-        if (rec.copy_location_filter() === '') {
-            rec.copy_location_filter(null);
-        }
-    }
-
-    postSave(rec: IdlObject) {
-        if (rec._isfieldmapper) {
-            // if we got an actual IdlObject back, the
-            // record had just been created, not just
-            // edited. therefore, we probably need
-            if (rec.bucket() == null) {
-                const bucket = this.idl.create('cbreb');
-                bucket.owner(this.auth.user().id());
-                bucket.name('System-generated bucket for carousel: ' + rec.id()); // FIXME I18N
-                bucket.btype('carousel');
-                bucket.pub('t');
-                bucket.owning_lib(rec.owner());
-                rec.bucket(bucket);
-                this.net.request(
-                    'open-ils.actor',
-                    'open-ils.actor.container.create',
-                    this.auth.token(), 'biblio', bucket
-                ).toPromise().then(
-                    newBucket => {
-                        const ccou = this.idl.create('ccou');
-                        ccou.carousel(rec.id());
-                        ccou.org_unit(rec.owner());
-                        ccou.seq(0);
-                        rec.bucket(newBucket);
-                        this.pcrud.create(ccou).subscribe(
-                            ok => {
-                                this.pcrud.update(rec).subscribe(
-                                    ok2 => console.debug('updated'),
-                                    err => console.error(err),
-                                    () => { this.grid.reload(); }
-                                );
-                            },
-                            err => console.error(err),
-                            () => { this.grid.reload(); }
-                        );
-                    }
-                );
+        this.mungeCarousel = (editMode: string, rec: IdlObject) => {
+            if (editMode === 'create') {
+                rec.creator(this.auth.user().id());
             }
-        }
+            rec.editor(this.auth.user().id());
+            rec.edit_time('now');
+    
+            // convert empty string to nulls as needed
+            // for int[] columns
+            if (rec.owning_lib_filter() === '') {
+                rec.owning_lib_filter(null);
+            }
+            if (rec.copy_location_filter() === '') {
+                rec.copy_location_filter(null);
+            }
+        };
+    
+        this.postSave = (rec: IdlObject) => {
+            if (rec._isfieldmapper) {
+                // if we got an actual IdlObject back, the
+                // record had just been created, not just
+                // edited. therefore, we probably need
+                if (rec.bucket() == null) {
+                    const bucket = this.idl.create('cbreb');
+                    bucket.owner(this.auth.user().id());
+                    bucket.name('System-generated bucket for carousel: ' + rec.id()); // FIXME I18N
+                    bucket.btype('carousel');
+                    bucket.pub('t');
+                    bucket.owning_lib(rec.owner());
+                    rec.bucket(bucket);
+                    this.net.request(
+                        'open-ils.actor',
+                        'open-ils.actor.container.create',
+                        this.auth.token(), 'biblio', bucket
+                    ).toPromise().then(
+                        newBucket => {
+                            const ccou = this.idl.create('ccou');
+                            ccou.carousel(rec.id());
+                            ccou.org_unit(rec.owner());
+                            ccou.seq(0);
+                            rec.bucket(newBucket);
+                            this.pcrud.create(ccou).subscribe(
+                                ok => {
+                                    this.pcrud.update(rec).subscribe(
+                                        ok2 => console.debug('updated'),
+                                        err => console.error(err),
+                                        () => { this.grid.reload(); }
+                                    );
+                                },
+                                err => console.error(err),
+                                () => { this.grid.reload(); }
+                            );
+                        }
+                    );
+                }
+            }
+        };
+
     }
 }
