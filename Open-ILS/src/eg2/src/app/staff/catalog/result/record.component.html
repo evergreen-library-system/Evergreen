@@ -77,6 +77,13 @@
           </div>
           <div class="row pt-2">
             <div class="col-lg-12">
+              <ng-container *ngIf="summary.display.series_title">
+                <!-- [].concat() to avoid modifying the summary arrays -->
+                <div class="pb-1" i18n>Series:
+                  <eg-bib-display-field [summary]="summary"
+                    field="series_title" joiner=","></eg-bib-display-field>
+                </div>
+              </ng-container>
               <ng-container *ngIf="summary.firstCallNumber">
                 <div class="pb-1" i18n>Call Number:
                   {{summary.firstCallNumber.call_number_prefix_label}}
