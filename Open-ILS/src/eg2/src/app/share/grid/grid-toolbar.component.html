@@ -153,6 +153,13 @@
         <span class="material-icons" aria-hidden="true">print</span>
         <span class="ms-2" i18n>Print Full Grid</span>
       </button>
+      <button nbgDropdownItem
+        class="dropdown-item label-with-material-icon"
+        [disabled]="!gridContext.getSelectedRows().length"
+        (click)="printSelectedRows()">
+        <span class="material-icons" aria-hidden="true">print</span>
+        <span class="ms-2" i18n>Print Selected Rows</span>
+      </button>
   
       <div class="dropdown-divider"></div>
   

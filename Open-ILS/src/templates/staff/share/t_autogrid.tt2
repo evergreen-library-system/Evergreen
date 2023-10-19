@@ -205,6 +205,11 @@
           <span class="glyphicon glyphicon-print"></span>
           [% l('Print Full Grid') %]
         </a></li>
+        <li><a href ng-click="printSelectedRows()"
+          a-disabled="!hasSelected()">
+          <span class="glyphicon glyphicon-print"></span>
+          [% l('Print Selected Rows') %]
+        </a></li>
         <li role="presentation" class="divider"></li>
         <li ng-repeat="col in columns">
           <a href title="{{col.idlclass}}" ng-click="toggleColumnVisibility(col)">

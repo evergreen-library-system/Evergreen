@@ -1197,6 +1197,28 @@ angular.module('egGridMod',
                 });
             }
 
+            $scope.printSelectedRows = function() {
+                $scope.gridColumnPickerIsOpen = false;
+
+                var columns = grid.columnsProvider.columns.filter(
+                    function(c) { return c.visible }
+                );
+                var selectedItems = grid.getSelectedItems();
+                var scope = {items: [], columns};
+                var template = 'grid_html';
+
+                angular.forEach(selectedItems, function(item) {
+                    var textItem = {};
+                    angular.forEach(columns, function(col) {
+                        textItem[col.name] = 
+                            grid.getItemTextContent(item, col);
+                    });
+                    scope.items.push(textItem);
+                });
+
+                egCore.print.print({template, scope});
+            };
+
             $scope.showColumnDialog = function() {
                 return $uibModal.open({
                     templateUrl: './share/t_grid_columns',

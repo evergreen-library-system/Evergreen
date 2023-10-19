@@ -98,6 +98,10 @@ export class GridToolbarComponent implements OnInit, AfterViewInit {
         this.gridPrinter.printGrid();
     }
 
+    printSelectedRows(): void {
+        this.gridPrinter.printSelectedRows();
+    }
+
     generateCsvExportUrl($event) {
 
         if (this.csvExportInProgress) {
