@@ -1,0 +1,9 @@
+== Add filters to Holds Pull List ==
+
+Two new filter comboboxes have been added to the Holds Pull List, one to filter by Pickup Library
+and one to filter by Shelving Locations / Shelving Location Groups. The Print Full List and
+Download CSV actions respect the new filters, which will improve usability for libraries with
+large pull lists who need to split the list into sections for multiple staff to work on. The
+settings are also sticky, which will make it easier for individuals who always work on pulling
+holds in the same section of the library every day.
+ 
