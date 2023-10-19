@@ -1162,26 +1162,27 @@ angular.module('egGridMod',
                 // we don't know the total number of rows we're about
                 // to retrieve, but we can indicate the number retrieved
                 // so far as each item arrives.
-                egProgressDialog.open({value : 0});
-
-                var visible_cols = grid.columnsProvider.columns.filter(
-                    function(c) { return c.visible });
-
-                return grid.dataProvider.get(0, 10000).then(
-                    function() { 
-                        return {items : text_items, columns : visible_cols};
-                    }, 
-                    null,
-                    function(item) { 
-                        egProgressDialog.increment();
-                        var text_item = {};
-                        angular.forEach(visible_cols, function(col) {
-                            text_item[col.name] = 
-                                grid.getItemTextContent(item, col);
-                        });
-                        text_items.push(text_item);
-                    }
-                ).finally(egProgressDialog.close);
+                var progressDialog = egProgressDialog.open({value : 0});
+                return progressDialog.opened.then(function() {
+                    var visible_cols = grid.columnsProvider.columns.filter(
+                        function(c) { return c.visible });
+    
+                    return grid.dataProvider.get(0, 10000).then(
+                        function() { 
+                            return {items : text_items, columns : visible_cols};
+                        }, 
+                        null,
+                        function(item) { 
+                            egProgressDialog.increment();
+                            var text_item = {};
+                            angular.forEach(visible_cols, function(col) {
+                                text_item[col.name] = 
+                                    grid.getItemTextContent(item, col);
+                            });
+                            text_items.push(text_item);
+                        }
+                    ).finally(egProgressDialog.close);
+                });
             }
 
             // Fetch "all" of the grid data, translate it into print-friendly 
