@@ -215,22 +215,22 @@ export class CourseListComponent implements OnInit, AfterViewInit {
     }
 
     duplicateSelected(course: IdlObject[]) {
-        let new_course = this.idl.create('acmc');;
         course.forEach(courseToCopy => {
+            const new_course = this.idl.create('acmc');
             new_course.name(courseToCopy.name() + $localize`:duplicate of an existing course: (Copy)`);
             new_course.course_number(courseToCopy.course_number());
             new_course.section_number(courseToCopy.section_number());
             new_course.owning_lib(courseToCopy.owning_lib());
             new_course.is_archived(courseToCopy.is_archived());
-            this.pcrud.create(new_course).subscribe(val => {
+            this.pcrud.create(new_course).subscribe({next: (val) => {
                 console.debug('duplicated: ' + val);
                 this.duplicateSuccessString.current()
                     .then(str => this.toast.success(str));
-            }, err => {
+            }, error: (err: unknown) => {
                 this.duplicateFailedString.current()
                     .then(str => this.toast.danger(str));
-            }, () => this.grid.reload()
-            );
+            }, complete: () => this.grid.reload()
+            });
         });
     }
 
