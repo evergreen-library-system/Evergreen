@@ -1,0 +1,7 @@
+== Patron View Discovery Layer URL ==
+
+A new org unit setting configures the discovery layer URL opened
+by the Patron View button on a staff catalog record.
+The placeholder to include for the record ID is {eg_record_id}.
+
+Example: `https://example.com/Record/{eg_record_id}`
