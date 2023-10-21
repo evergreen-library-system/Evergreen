@@ -52,6 +52,7 @@ export class CatalogResolver implements Resolve<Promise<any[]>> {
             'cat.marcedit.flateditor',
             'cat.holdings_show_copies',
             'cat.holdings_show_vols',
+            'cat.patron_view_discovery_layer_url',
             'opac.staff_saved_search.size',
             'eg.catalog.search_templates',
             'opac.staff_saved_search.size',
@@ -81,6 +82,10 @@ export class CatalogResolver implements Resolve<Promise<any[]>> {
                 settings['opac.staff.jump_to_details_on_single_hit'] === true;
             this.staffCat.searchFilters =
                 settings['eg.staffcat.search_filters'] || CATALOG_CCVM_FILTERS;
+            if (settings['cat.patron_view_discovery_layer_url']) {
+                this.staffCat.patronViewUrl =
+                    settings['cat.patron_view_discovery_layer_url'];
+            };
         });
     }
 }

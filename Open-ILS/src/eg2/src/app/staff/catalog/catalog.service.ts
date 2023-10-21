@@ -66,6 +66,9 @@ export class StaffCatalogService {
     // result
     jumpOnSingleHit = false;
 
+    // discovery layer URL to display an item in "patron view"
+    patronViewUrl: string = '';
+
     constructor(
         private router: Router,
         private route: ActivatedRoute,

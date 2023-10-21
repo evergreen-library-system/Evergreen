@@ -45,6 +45,15 @@ export class RecordActionsComponent implements OnInit {
         }
     };
 
+    get patronViewUrl(): string {
+        if (!this.staffCat.patronViewUrl) {
+            return `/eg/opac/record/${encodeURIComponent(this.recId)}`;
+        }
+        return encodeURI(this.staffCat.patronViewUrl.replace(
+            /\{eg_record_id\}/g, ''+this.recId
+        ));
+    }
+
     @Input() set recordId(recId: number) {
         this.recId = recId;
         if (this.initDone) {
