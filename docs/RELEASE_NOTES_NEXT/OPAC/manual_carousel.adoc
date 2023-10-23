@@ -1,0 +1,9 @@
+== Editing manual carousels via the original bucket ==
+
+Creating a carousel from a bucket no longer creates a new "System-created bucket".  When
+a new carousel is generated from a record bucket, any changes made to the bucket will be
+automatically reflected in the carousel. Staff no longer need to go to the Carousels
+Administration screen to make these changes.
+
+This change only affects newly created carousels.  Existing manual carousels will still
+need to be edited via the Carousels Administration screen.
