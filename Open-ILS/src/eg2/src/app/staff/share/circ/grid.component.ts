@@ -27,8 +27,6 @@ import {StringComponent} from '@eg/share/string/string.component';
 import {DueDateDialogComponent} from './due-date-dialog.component';
 import {MarkDamagedDialogComponent
     } from '@eg/staff/share/holdings/mark-damaged-dialog.component';
-import {MarkMissingDialogComponent
-    } from '@eg/staff/share/holdings/mark-missing-dialog.component';
 import {ClaimsReturnedDialogComponent} from './claims-returned-dialog.component';
 import {ToastService} from '@eg/share/toast/toast.service';
 import {AddBillingDialogComponent} from '@eg/staff/share/billing/billing-dialog.component';
@@ -102,8 +100,6 @@ export class CircGridComponent implements OnInit {
     @ViewChild('dueDateDialog') private dueDateDialog: DueDateDialogComponent;
     @ViewChild('markDamagedDialog')
         private markDamagedDialog: MarkDamagedDialogComponent;
-    @ViewChild('markMissingDialog')
-        private markMissingDialog: MarkMissingDialogComponent;
     @ViewChild('itemsOutConfirm')
         private itemsOutConfirm: ConfirmDialogComponent;
     @ViewChild('claimsReturnedConfirm')
@@ -388,32 +384,6 @@ export class CircGridComponent implements OnInit {
             if (rowsModified) {
                 this.emitReloadRequest();
             }
-        });
-    }
-
-    markMissing(rows: CircGridEntry[]) {
-        const copyIds = this.getCopyIds(rows, 4 /* ignore missing */);
-
-        if (copyIds.length === 0) { return; }
-
-        // This assumes all of our items our checked out, since this is
-        // a circ grid.  If we add support later for showing completed
-        // circulations, there may be cases where we can skip the items
-        // out confirmation alert and subsequent checkin
-        this.itemsOutConfirm.open().subscribe(confirmed => {
-            if (!confirmed) { return; }
-
-            this.checkin(rows, {noop: true}, true).toPromise().then(_ => {
-
-                this.markMissingDialog.copyIds = copyIds;
-                this.markMissingDialog.open({}).subscribe(
-                    rowsModified => {
-                        if (rowsModified) {
-                            this.emitReloadRequest();
-                        }
-                    }
-                );
-            });
         });
     }
 

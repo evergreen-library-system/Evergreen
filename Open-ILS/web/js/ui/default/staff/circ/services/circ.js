@@ -1425,6 +1425,16 @@ function($uibModal , $q , egCore , egAlertDialog , egConfirmDialog,  egAddCopyAl
         var dlogTitle, dlogMessage;
         switch (event.textcode) {
         case 'ITEM_TO_MARK_CHECKED_OUT':
+            if (status.id() === 4) {
+                // checked out items shouldn't be marked missing
+                console.error(
+                    'Mark item ' + status.name() + ' for ' +
+                    copy.barcode + ' failed: ' + event
+                );
+                return service.exit_alert(
+                    egCore.strings.MARK_MISSING_FAILURE_CHECKED_OUT,
+                    {barcode : copy.barcode});
+            }
             dlogTitle = egCore.strings.MARK_ITEM_CHECKED_OUT;
             dlogMessage = egCore.strings.MARK_ITEM_CHECKIN_CONTINUE;
             args.handle_checkin = 1;
@@ -1555,11 +1565,20 @@ function($uibModal , $q , egCore , egAlertDialog , egConfirmDialog,  egAddCopyAl
         ).result.then(function() {
             return egCore.pcrud.retrieve('ccs', 4)
                 .then(function(resp) {
+                    var modified = [];
                     var promise = $q.when();
                     angular.forEach(copies, function(copy) {
                         promise = promise.then(function() {
-                            return service.mark_item(copy, resp, {});
+                            return service.mark_item(
+                                copy, resp, {}
+                            ).then(function() {
+                                modified.push(copy.barcode);
+                            }).catch(function(){});
                         });
+                    });
+                    promise = promise.then(function() {
+                        if (!modified.length) return $q.reject();
+                        return modified;
                     });
                     return promise;
                 });
