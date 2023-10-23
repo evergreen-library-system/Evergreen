@@ -2,11 +2,13 @@
     <div class="modal-header">
       <button type="button" class="close" ng-click="cancel()" 
         aria-hidden="true">&times;</button>
-      <h4 class="modal-title">[% l('Create or Edit Note') %]</h4>
+      <h4 class="modal-title" ng-if="args.stop_date">[% l('Archived Note') %]</h4>
+      <h4 class="modal-title" ng-if="!args.stop_date">[% l('Create or Edit Note') %]</h4>
+
     </div>
     <div class="modal-body">
       <div class="row">
-        <div class="col-md-6 pull-left">
+        <div class="col-md-6 pull-left" ng-if="!args.stop_date">
           <ul class="nav nav-pills">
             <!-- 21 == SILENT_NOTE -->
             <li ng-class="{active : args.penalty == 21}">
@@ -30,14 +32,14 @@
             <label>[% l('Penalty Type:') %]
               <select class="form-control"
                       ng-model="args.custom_penalty"
-                      ng-disabled="(args.pub && args.read_date) || args.deleted"
+                      ng-disabled="(args.pub && args.read_date) || args.deleted || args.stop_date"
                       ng-options="penalty.id() as penalty.label() for penalty in penalties">
               </select>
             </label>
         </div>
         <div class="col-md-6 pull-right">
             <div>
-                <label ng-disabled="(args.pub && args.read_date) || args.deleted">[% l('Depth:') %]
+                <label ng-disabled="(args.pub && args.read_date) || args.deleted || args.stop_date">[% l('Depth:') %]
                     <eg-share-depth-selector id="org_depth" useOpacLabel maxDepth="{{args.max_depth}}" ng-model="args.custom_depth"></eg-share-depth-selector>
                 </label>
             </div>
@@ -52,7 +54,7 @@
         <div class="col-md-3 pull-left">
             <label>
                 <input type="checkbox" ng-model="args.pub"
-                      ng-disabled="(args.pub && args.read_date) || args.deleted"/>
+                      ng-disabled="(args.pub && args.read_date) || args.deleted || args.stop_date"/>
                     [% l('Patron Visible') %]
             </label>
         </div>
@@ -68,6 +70,9 @@
             <label ng-if="args.edit_date">
                     [% l('Edited on [_1] by [_2]', '{{args.edit_date | date:$root.egDateAndTimeFormat}}', '{{args.editor.usrname()}}') %]
             </label>
+            <label ng-if="args.stop_date">
+                [% l('Archived on [_1]', '{{args.stop_date | date:$root.egDateAndTimeFormat}}') %]
+            </label>
         </div>
         <div class="col-md-3 pull-left">
             <label class="patron-summary-alert" ng-if="args.deleted">
@@ -79,7 +84,7 @@
         <div class="col-md-12">
           <textarea class="form-control" 
             ng-model="args.title" placeholder="[% l('Title...') %]"
-            ng-required="true" ng-disabled="(args.pub && args.read_date) || args.deleted">
+            ng-required="true" ng-disabled="(args.pub && args.read_date) || args.deleted || args.stop_date">
           </textarea>
         </div>
       </div>
@@ -87,7 +92,7 @@
         <div class="col-md-12">
           <textarea class="form-control" 
             ng-model="args.note" placeholder="[% l('Note Text...') %]"
-            ng-disabled="(args.pub && args.read_date) || args.deleted">
+            ng-disabled="(args.pub && args.read_date) || args.deleted || args.stop_date">
           </textarea>
         </div>
       </div>
@@ -101,7 +106,8 @@
         </div>
         <div class="col-md-10 pull-right">
           <input type="submit" class="btn btn-primary"
-            ng-disabled="(args.pub && args.read_date) || args.deleted || !args.org" value="[% l('OK') %]"/>
+            ng-disabled="(args.pub && args.read_date) || args.deleted || !args.org || args.stop_date"
+            ng-hide="args.stop_date" value="[% l('OK') %]"/>
           <button class="btn btn-warning" ng-click="cancel($event)">[% l('Cancel') %]</button>
         </div>
       </div>

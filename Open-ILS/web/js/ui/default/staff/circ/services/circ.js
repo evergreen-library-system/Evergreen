@@ -2313,6 +2313,7 @@ function($uibModal , $q , egCore , egAlertDialog , egConfirmDialog,  egAddCopyAl
                         : aum.deleted() == 't',
                     read_date : aum.read_date(),
                     edit_date : aum.edit_date(),
+                    stop_date : aum.stop_date(),
                     editor : aum.editor()
                 }
                 $scope.args.max_depth = $scope.args.org.ou_type().depth();

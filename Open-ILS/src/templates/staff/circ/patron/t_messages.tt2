@@ -57,6 +57,8 @@
   dateformat="{{$root.egDateAndTimeFormat}}"
   persist-key="circ.patron.archived_messages">
 
+  <eg-grid-action label="[% l('View Note') %]"
+    handler="editPenalty"></eg-grid-action>
   <eg-grid-action label="[% l('Unarchive Note') %]"
     handler="unarchivePenalty"></eg-grid-action>
 

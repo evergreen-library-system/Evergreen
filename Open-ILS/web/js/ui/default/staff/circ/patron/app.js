@@ -831,6 +831,10 @@ function($scope , $q , $routeParams,  egCore , $uibModal , egConfirmDialog , pat
                     {stop_date : {'>' : 'now'}}
                 ]
             }
+        },
+        activateItem : function(selected) {
+            // activateItem returns a single row.
+            $scope.editPenalty([selected])
         }
     }
 
@@ -845,6 +849,10 @@ function($scope , $q , $routeParams,  egCore , $uibModal , egConfirmDialog , pat
                 stop_date : {'<=' : 'now'},
                 create_date : {between : date_range()}
             };
+        },
+        activateItem : function(selected) {
+            // activateItem returns a single row.
+            $scope.editPenalty([selected])
         }
     };
 
