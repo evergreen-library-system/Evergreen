@@ -421,6 +421,10 @@ input.small {
 
 /* Accessible button colors */
 
+button.input-group-text.text-danger {
+  color: #C92235 !important;
+}
+
 .btn-warning,
 .btn-outline-warning {
   border-color: #BB8402;
