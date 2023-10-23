@@ -1980,7 +1980,11 @@ INSERT INTO permission.perm_list ( id, code, description ) VALUES
  ( 643, 'VIEW_HOLD_PULL_LIST', oils_i18n_gettext(643,
     'View hold pull list', 'ppl', 'description')),
  ( 644, 'ADMIN_PROXIMITY_ADJUSTMENT', oils_i18n_gettext(644,
-    'Allow a user to administer Org Unit Proximity Adjustments', 'ppl', 'description'))
+    'Allow a user to administer Org Unit Proximity Adjustments', 'ppl', 'description')),
+ ( 645, 'ADMIN_USER_BUCKET', oils_i18n_gettext(645,
+    'Allow a user to administer User Buckets', 'ppl', 'description')),
+ ( 646, 'CREATE_USER_BUCKET', oils_i18n_gettext(646,
+    'Allow a user to create a User Bucket', 'ppl', 'description'))
 ;
 
 SELECT SETVAL('permission.perm_list_id_seq'::TEXT, 1000);
@@ -2470,7 +2474,9 @@ INSERT INTO permission.grp_perm_map (grp, perm, depth, grantable)
 			'PATRON_EXCEEDS_OVERDUE_COUNT.override',
 			'RETRIEVE_RESERVATION_PULL_LIST',
 			'UPDATE_HOLD',
-            'UPDATE_USER_PHOTO_URL');
+                        'UPDATE_USER_PHOTO_URL',
+		        'ADMIN_USER_BUCKET',
+		        'CREATE_USER_BUCKET');
 
 
 -- Add advanced circulation permissions to the Circulation Admin group
@@ -2602,7 +2608,9 @@ INSERT INTO permission.grp_perm_map (grp, perm, depth, grantable)
 			'ITEM_DEPOSIT_PAID.override',
 			'COPY_STATUS_LOST_AND_PAID.override',
 			'ADMIN_PRINT_TEMPLATE',
-			'ITEM_NOT_HOLDABLE.override');
+			'ITEM_NOT_HOLDABLE.override',
+		        'ADMIN_USER_BUCKET',
+		        'CREATE_USER_BUCKET');
 
 
 -- Add basic sys admin permissions to the Local Administrator group
