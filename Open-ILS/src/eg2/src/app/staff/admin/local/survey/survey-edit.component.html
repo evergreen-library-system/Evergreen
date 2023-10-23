@@ -30,68 +30,65 @@
                 <eg-staff-banner bannerText="Questions & Answers" i18n-bannerText>
                     </eg-staff-banner>
                 <div *ngFor="let question of localArray; let questionIndex = index;">
-                    <div class="mb-3 mt-3 p-2 bg-light input-group">
-                        <label class="form-label input-group-text">
-                            <b>Question</b>
-                        </label>
+                    <div class="mb-2 mt-5 input-group align-items-start">
+                        <label class="form-label fw-bold input-group-text" for="question-{{questionIndex}}">Question {{questionIndex+1}}.</label>
                         <input type="text" [(ngModel)]="question.words" class="form-control"
-                            name="question-{{questionIndex}}">
-                        <span class="input-group-text">
-                            <button class="ms-2 btn btn-info"
+                            name="question-{{questionIndex}}" id="question-{{questionIndex}}">
+                        
+                            <button class="fw-bold input-group-text"
                                 (click)="updateQuestion(question)" i18n>
                                 Save
                             </button>
-                            <button class="ms-1 btn btn-danger"
+                            <button class="text-danger fw-bold input-group-text"
                                 (click)="deleteQuestion(question)" i18n>
                                 Delete Question & Answers
                             </button>
-                        </span>
                     </div>
+                    <h3 i18n>Answers for question #{{questionIndex+1}}:</h3>
                     <div *ngFor="let answer of question.answers; let answerIndex = index;"
                         class="mb-2 input-group">
+                        <label class="input-group-text" for="answer-{{questionIndex}}-{{answerIndex}}">{{answerIndex+1}}.</label>
                         <input class="form-control" type="text"
                             [(ngModel)]="answer.words"
+                            id="answer-{{questionIndex}}-{{answerIndex}}"
                             name="answer-{{questionIndex}}-{{answerIndex}}">
-                        <span class="input-group-text">
-                            <button class="ms-2 btn btn-info"
+                        
+                            <button class="input-group-text"
                                 (click)="updateAnswer(answer, question, questionIndex, answerIndex)"
                                 i18n>
                                 Save
                             </button>
-                            <button class="ms-1 btn btn-danger" (click)="deleteAnswer(answer)"
+                            <button class="text-danger input-group-text" (click)="deleteAnswer(answer)"
                                 i18n>
                                 Delete
                             </button>
-                        </span>
                     </div>
                     <div class="mb-2 input-group">
-                        <input class="form-control" type="text"
+                        <label class="input-group-text" for="newAnswer-{{questionIndex}}" i18n>New</label>
+                        <input class="form-control" type="text" id="newAnswer-{{questionIndex}}"
                             [(ngModel)]="newAnswerArray[questionIndex].inputText"
                                 value="">
-                        <span class="input-group-text">
-                            <button class="ms-2 btn btn-info"
+                        
+                            <button class="input-group-text"
                                 (click)="createAnswer(newAnswerArray[questionIndex].inputText, question)"
                                 i18n>
                                 Add Answer
                             </button>
-                        </span>
                     </div>
                 </div>
-                <div class="mb-3 mt-3 p-2 bg-light input-group">
-                    <label class="form-label input-group-text">
-                        <b>New Question</b>
-                    </label>
+                <div class="mb-2 mt-5 input-group align-items-start">
+                    <label class="form-label fw-bold input-group-text" for="newQuestion" i18n>New Question</label>
                     <input #newQuestionInput
+                        id="newQuestion"
                         class="form-control"
                         type="text"
                         [(ngModel)]="newQuestionText"
                         name="question-new" value="">
-                    <span class="input-group-text">
-                        <button class="ms-2 btn btn-info"
+                    
+                        <button class="fw-bold input-group-text"
                             (click)="createQuestion(newQuestionText)" i18n>
                             Save Question & Add Answer
                         </button>
-                    </span>
                 </div>
             </div>
         </ng-template>
