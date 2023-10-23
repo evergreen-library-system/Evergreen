@@ -452,9 +452,6 @@ function($scope , $q , $routeParams , $timeout , egCore , egUser , patronSvc ,
             }).then(() => $timeout(reset_page,1000)) // reset after each, because rejecting one stops the $q.all() chain
         });
     }
-    $scope.mark_missing = function(items) {
-        batch_action_with_flat_copies(items, egCirc.mark_missing);
-    }
     $scope.mark_lost = function(items) {
         batch_action_with_barcodes(items, egCirc.mark_lost);
     }

@@ -36,6 +36,8 @@ s.MARK_ITEM_CONTINUE = '[% l("Do you wish to continue marking it {{status}}?") %
 s.MARK_ITEM_CHECKIN_CONTINUE = '[% l("Do you wish to check it in and continue marking it {{status}}?") %]';
 s.MARK_ITEM_ABORT_CONTINUE = '[% l("Do you wish to abort the transit and continue marking it {{status}}?") %]';
 s.MARK_ITEM_FAILURE = '[% l("Marking of item {{barcode}} with status {{status}} failed: {{textcode}}") %]'
+s.MARK_MISSING_FAILURE_CHECKED_OUT =
+  '[% l("Item {{barcode}} could not be marked missing because it is currently checked out.") %]';
 s.ABORT_TRANSIT_CONFIRM = '[% l("Cancel {{num_transits}} transits?") %]';
 s.ROUTE_TO_HOLDS_SHELF = '[% l("Holds Shelf") %]';
 s.ROUTE_TO_CATALOGING = '[% l("Cataloging") %]';
