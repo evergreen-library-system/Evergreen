@@ -5,7 +5,6 @@
 <eg-due-date-dialog [allowPastDate]="true" #dueDateDialog></eg-due-date-dialog>
 <eg-mark-damaged-dialog #markDamagedDialog [handleCheckin]="true">
 </eg-mark-damaged-dialog>
-<eg-mark-missing-dialog #markMissingDialog></eg-mark-missing-dialog>
 <eg-claims-returned-dialog #claimsReturnedDialog></eg-claims-returned-dialog>
 <eg-confirm-dialog #itemsOutConfirm
   i18n-dialogTitle i18n-dialogBody
@@ -67,10 +66,6 @@
     <eg-grid-toolbar-action
       group="Mark" i18n-group i18n-label label="Mark Item Damaged"
       (onClick)="markDamaged($event)"></eg-grid-toolbar-action>
-
-    <eg-grid-toolbar-action
-      group="Mark" i18n-group i18n-label label="Mark Item Missing"
-      (onClick)="markMissing($event)"></eg-grid-toolbar-action>
 
     <eg-grid-toolbar-action
       group="Mark" i18n-group i18n-label label="Mark Claims Returned"

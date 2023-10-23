@@ -240,7 +240,7 @@ function($scope , $q , $window , $location , $timeout , egCore , egNet , egGridD
         itemSvc.selectedHoldingsMissing([{
             id : $scope.args.copyId,
             barcode : $scope.args.barcode
-        }]);
+        }]).catch(function(){});
     }
 
     $scope.selectedHoldingsVolCopyAdd = function () {
@@ -639,12 +639,16 @@ function($scope , $q , $window , $location , $timeout , egCore , egNet , egGridD
     }
 
     $scope.selectedHoldingsMissing = function () {
-        egProgressDialog.open();
-        itemSvc.selectedHoldingsMissing(copyGrid.selectedItems())
-        .then(function() { 
-            egProgressDialog.close();
-            console.debug('Marking missing complete, refreshing grid');
-            copyGrid.refresh();
+        var dialog = egProgressDialog.open();
+        dialog.opened.then(function() {
+            itemSvc.selectedHoldingsMissing(copyGrid.selectedItems())
+            .then(function() { 
+                console.debug('Marking missing complete, refreshing grid');
+                copyGrid.refresh();
+            }).catch(function() {
+            }).finally(function() {
+                egProgressDialog.close();
+            });
         });
     }
 

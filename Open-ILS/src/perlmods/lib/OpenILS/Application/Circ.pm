@@ -1359,8 +1359,9 @@ sub mark_item {
 
     # Copy status checks.
     if ($copy->status->id() == OILS_COPY_STATUS_CHECKED_OUT) {
-        # Items must be checked in before any attempt is made to change its status.
-        if ($args->{handle_checkin}) {
+        # Checked out items should not be marked missing.
+        # Otherwise, attempt a checkin before a status change.
+        if ($stat ne OILS_COPY_STATUS_MISSING && $args->{handle_checkin}) {
             $evt = try_checkin($auth, $copy_id);
         } else {
             $evt = OpenILS::Event->new('ITEM_TO_MARK_CHECKED_OUT');

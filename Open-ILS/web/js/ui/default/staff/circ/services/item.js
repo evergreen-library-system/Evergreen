@@ -667,11 +667,11 @@ function(egCore , egOrg , egCirc , $uibModal , $q , $timeout , $window , ngToast
     service.selectedHoldingsMissing = function (items) {
         return egCirc.mark_missing(
             items.map(function(el){return {id : el.id, barcode : el.barcode};})
-        ).then(function(){
+        ).then(function(modified){
             var promise = $q.when();
-            angular.forEach(items, function(cp){
+            angular.forEach(modified, function(barcode){
                 promise = promise.then(function() {
-                    return service.add_barcode_to_list(cp.barcode, true);
+                    return service.add_barcode_to_list(barcode, true);
                 });
             });
             return promise;
