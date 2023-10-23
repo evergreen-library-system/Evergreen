@@ -128,7 +128,6 @@ implements ControlValueAccessor, OnInit, AfterViewInit, OnChanges {
     // This does NOT not emit onChange events.
     @Input() set selectedId(id: any) {
         if (id === undefined) {
-            this.removeDuplicates();
             return;
         }
 
@@ -446,8 +445,22 @@ implements ControlValueAccessor, OnInit, AfterViewInit, OnChanges {
 
     // Called by combobox-entry.component
     addEntry(entry: ComboboxEntry) {
+
+      if (!this.isDuplicateEntry(entry)) {
         this.entrylist.push(entry);
-        this.applySelection();
+      }
+
+      this.applySelection();
+    }
+
+    // I don't think we have anything enforcing unique id's here, so We could
+    // conceivably have multiple entries with the same id but different labels.
+    // Thus, check both together as a composite key.
+    isDuplicateEntry(entry: ComboboxEntry) {
+      return this.entrylist.some(e => 
+        e.id === entry.id && 
+        e.label === entry.label
+      );
     }
 
     // Manually set the selected value by ID.
@@ -558,19 +571,6 @@ implements ControlValueAccessor, OnInit, AfterViewInit, OnChanges {
                 button.classList.add('disabled');
             }
         });
-    }
-
-    // Remove any duplicate entries that have snuck into the
-    // entryList
-    removeDuplicates() {
-        if (this.entrylist.length) {
-            this.entrylist = this.entrylist.filter((entry, index, array) => {
-                const matchingEntry = array.findIndex((potentialMatch) => {
-                    return ((potentialMatch.id === entry.id) && (potentialMatch.label === entry.label));
-                });
-                return (index === matchingEntry); // return false if some other entry matches the current entry
-            });
-        }
     }
 
     filter = (text$: Observable<string>): Observable<ComboboxEntry[]> => {
