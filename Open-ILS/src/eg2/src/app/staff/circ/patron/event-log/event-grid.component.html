@@ -11,4 +11,9 @@
     (onClick)="act_on_events('cancel',$event)" [disableOnRows]="noRowSelected">
   </eg-grid-toolbar-action>
   <eg-grid-column [sortable]="false" [filterable]="false" path="context_user.card.barcode" label="Patron Barcode" i18n-label></eg-grid-column>
+  <eg-grid-column path="run_time" [datePlusTime]="true" label="Event Run Time" i18n-label></eg-grid-column>
+  <eg-grid-column path="complete_time" [datePlusTime]="true" label="Event Complete Time" i18n-label></eg-grid-column>
+  <eg-grid-column path="start_time" [datePlusTime]="true" [hidden]="true" label="Event Start Time" i18n-label></eg-grid-column>
+  <eg-grid-column path="update_time" [datePlusTime]="true" [hidden]="true" label="Event Update Time" i18n-label></eg-grid-column>
+  <eg-grid-column path="add_time" [datePlusTime]="true" [hidden]="true" label="Event Add Time" i18n-label></eg-grid-column>
 </eg-grid>
