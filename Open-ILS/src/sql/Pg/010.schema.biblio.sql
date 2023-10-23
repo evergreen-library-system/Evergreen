@@ -101,7 +101,11 @@ CREATE TABLE biblio.monograph_part (
     record          BIGINT  NOT NULL REFERENCES biblio.record_entry (id),
     label           TEXT    NOT NULL,
     label_sortkey   TEXT    NOT NULL,
-    deleted         BOOL    NOT NULL DEFAULT FALSE
+    deleted         BOOL    NOT NULL DEFAULT FALSE,
+    creator         INT     NOT NULL DEFAULT 1,
+    create_date     TIMESTAMP WITH TIME ZONE     NOT NULL DEFAULT now(),
+    editor          INT     NOT NULL DEFAULT 1,
+    edit_date       TIMESTAMP WITH TIME ZONE    NOT NULL DEFAULT now()
 );
 CREATE UNIQUE INDEX record_label_unique_idx ON biblio.monograph_part (record, label) WHERE deleted = FALSE;
 

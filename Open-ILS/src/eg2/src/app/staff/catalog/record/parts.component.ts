@@ -3,6 +3,7 @@ import {IdlService, IdlObject} from '@eg/core/idl.service';
 import {PcrudService} from '@eg/core/pcrud.service';
 import {Pager} from '@eg/share/util/pager';
 import {OrgService} from '@eg/core/org.service';
+import {AuthService} from '@eg/core/auth.service';
 import {PermService} from '@eg/core/perm.service';
 import {GridDataSource} from '@eg/share/grid/grid';
 import {GridComponent} from '@eg/share/grid/grid.component';
@@ -46,6 +47,7 @@ export class PartsComponent implements OnInit {
         private idl: IdlService,
         private org: OrgService,
         private pcrud: PcrudService,
+        private auth: AuthService,
         private perm: PermService
     ) {
         this.permissions = {};
@@ -75,7 +77,11 @@ export class PartsComponent implements OnInit {
             const searchOps = {
                 offset: pager.offset,
                 limit: pager.limit,
-                order_by: orderBy
+                order_by: orderBy,
+                flesh: 2,
+                flesh_fields: {
+                    bmp: ['creator','editor']
+                }
             };
 
             return this.pcrud.search('bmp',
@@ -84,8 +90,10 @@ export class PartsComponent implements OnInit {
 
         this.partsGrid.onRowActivate.subscribe(
             (part: IdlObject) => {
+                part.editor(this.auth.user().id());
+                part.edit_date('now');
                 this.editDialog.mode = 'update';
-                this.editDialog.recordId = part.id();
+                this.editDialog.record = part;
                 this.editDialog.open()
                     // eslint-disable-next-line rxjs/no-nested-subscribe
                     .subscribe(ok => this.partsGrid.reload());
@@ -96,6 +104,8 @@ export class PartsComponent implements OnInit {
 
             const part = this.idl.create('bmp');
             part.record(this.recordId);
+            part.creator(this.auth.user().id());
+            part.editor(this.auth.user().id());
             this.editDialog.record = part;
 
             this.editDialog.mode = 'create';
@@ -103,12 +113,16 @@ export class PartsComponent implements OnInit {
         };
 
         this.deleteSelected = (parts: IdlObject[]) => {
-            parts.forEach(part => part.isdeleted(true));
-            this.pcrud.autoApply(parts).subscribe(
-                val => console.debug('deleted: ' + val),
-                (err: unknown) => {},
-                ()  => this.partsGrid.reload()
-            );
+            parts.forEach(part => {
+                part.editor(this.auth.user().id());
+                part.edit_date('now');
+            });
+
+            this.pcrud.update(parts).toPromise().then(_ => {
+                this.pcrud.remove(parts).toPromise().then(__ => {
+                    this.partsGrid.reload();
+                });
+            });
         };
 
         this.mergeSelected = (parts: IdlObject[]) => {
@@ -116,6 +130,7 @@ export class PartsComponent implements OnInit {
             this.mergeDialog.parts = parts;
             this.mergeDialog.open().subscribe(ok => this.partsGrid.reload());
         };
+
     }
 }
 

@@ -207,6 +207,8 @@ sub update_copy_parts {
             my $new_part = Fieldmapper::biblio::monograph_part->new();
             $new_part->record( $incoming_part->record );
             $new_part->label( $incoming_part->label );
+            $new_part->creator($incoming_part->creator);
+            $new_part->editor($incoming_part->editor);
             $incoming_part = $editor->create_biblio_monograph_part($new_part)
                 or return $editor->event;
         }

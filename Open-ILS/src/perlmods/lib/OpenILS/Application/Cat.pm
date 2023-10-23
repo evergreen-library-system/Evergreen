@@ -959,6 +959,8 @@ sub transfer_copies_to_volume {
                $part_obj = Fieldmapper::biblio::monograph_part->new();
                $part_obj->label( $part_label );
                $part_obj->record( $cn->record );
+               $part_obj->creator($editor->requestor->id );
+               $part_obj->editor($editor->requestor->id );
                unless($editor->create_biblio_monograph_part($part_obj)) {
                  return $editor->die_event if $editor->die_event;
                }
@@ -1559,6 +1561,8 @@ sub batch_volume_transfer {
                         $part_obj = Fieldmapper::biblio::monograph_part->new();
                         $part_obj->label( $part_label );
                         $part_obj->record( $rec );
+                        $part_obj->creator($e->requestor->id );
+                        $part_obj->editor($e->requestor->id );
                         unless($e->create_biblio_monograph_part($part_obj)) {
                           return $e->die_event if $e->die_event;
                         }

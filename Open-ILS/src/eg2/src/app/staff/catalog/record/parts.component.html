@@ -4,8 +4,7 @@
 <div class="mt-3">
 
   <eg-grid #partsGrid idlClass="bmp" [dataSource]="gridDataSource"
-      [sortable]="true" persistKey="catalog.record.parts"
-      showFields="id,label" class="mt-3">
+      [sortable]="true" persistKey="catalog.record.parts" hideFields="label_sortkey,deleted,record" class="mt-3">
     <eg-grid-toolbar-button [disabled]="!permissions.CREATE_MONOGRAPH_PART"
       label="New Monograph Part" i18n-label [action]="createNew">
     </eg-grid-toolbar-button>
@@ -13,10 +12,16 @@
     </eg-grid-toolbar-action>
     <eg-grid-toolbar-action [disabled]="!permissions.DELETE_MONOGRAPH_PART" label="Delete Selected" i18n-label [action]="deleteSelected">
     </eg-grid-toolbar-action>
+    <eg-grid-column path="id"></eg-grid-column>
+    <eg-grid-column path="label"></eg-grid-column>
+    <eg-grid-column path="creator"></eg-grid-column>
+    <eg-grid-column path="create_date" [datePlusTime]="true"></eg-grid-column>
+    <eg-grid-column path="edit_date" [datePlusTime]="true"></eg-grid-column>
+    <eg-grid-column path="editor"></eg-grid-column>
   </eg-grid>
   
   <eg-fm-record-editor #editDialog idlClass="bmp"     
-    hiddenFields="record,label_sortkey,deleted">
+    hiddenFields="record,label_sortkey,deleted,creator,editor,create_date,edit_date,editor">
   </eg-fm-record-editor>
 
 </div>

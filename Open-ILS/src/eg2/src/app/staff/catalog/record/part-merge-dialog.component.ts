@@ -2,6 +2,7 @@ import {Component, Input, ViewChild, TemplateRef} from '@angular/core';
 import {DialogComponent} from '@eg/share/dialog/dialog.component';
 import {IdlService, IdlObject} from '@eg/core/idl.service';
 import {PcrudService} from '@eg/core/pcrud.service';
+import {AuthService} from '@eg/core/auth.service';
 import { HoldsService } from '@eg/staff/share/holds/holds.service';
 import {NgbModal, NgbModalOptions} from '@ng-bootstrap/ng-bootstrap';
 import { EmptyError, firstValueFrom, lastValueFrom, map, tap, toArray} from 'rxjs';
@@ -24,6 +25,7 @@ export class PartMergeDialogComponent extends DialogComponent {
     constructor(
         private idl: IdlService,
         private pcrud: PcrudService,
+        private auth: AuthService,
         private holds: HoldsService,
         private modal: NgbModal) {
         super(modal);
@@ -105,8 +107,16 @@ export class PartMergeDialogComponent extends DialogComponent {
 
     deleteParts() {
         const parts = this.parts.filter(p => Number(p.id()) !== this.leadPart);
-        parts.forEach(p => p.isdeleted(true));
-        return lastValueFrom(this.pcrud.autoApply(parts)).then(res => this.close(res));
+        const now = new Date().toISOString();
+        parts.forEach(p => {
+            p.editor(this.auth.user().id());
+            p.edit_date(now);
+        });
+        return lastValueFrom(this.pcrud.update(parts)).then(_ => {
+            lastValueFrom(this.pcrud.remove(parts)).then(
+                res => this.close(res)
+            );
+        });
     }
 }
 

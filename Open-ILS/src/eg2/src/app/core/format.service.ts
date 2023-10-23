@@ -143,6 +143,9 @@ export class FormatService {
                     }
                 }
 
+                if (value === 'now') {
+                    return '';
+                }
                 const date = moment(value).tz(tz);
                 if (!date || !date.isValid()) {
                     console.error(

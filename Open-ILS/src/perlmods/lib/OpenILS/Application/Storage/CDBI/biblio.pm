@@ -43,7 +43,7 @@ package biblio::monograph_part;
 use base qw/biblio/;
 
 biblio::monograph_part->table( 'biblio_monograph_part' );
-biblio::monograph_part->columns( Essential => qw/id record label label_sortkey deleted/ );
+biblio::monograph_part->columns( Essential => qw/id record label label_sortkey deleted creator create_date editor edit_date/ );
 #-------------------------------------------------------------------------------
 
 1;

@@ -291,6 +291,8 @@ export class VolEditComponent implements OnInit {
                 newPart.isnew(true);
                 newPart.record(copy.call_number().record());
                 newPart.label(entry.label);
+                newPart.creator(this.auth.user().id());
+                newPart.editor(this.auth.user().id());
 
             } else {
 
