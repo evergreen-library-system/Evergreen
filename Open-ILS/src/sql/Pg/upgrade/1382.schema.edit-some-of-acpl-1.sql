@@ -1,6 +1,6 @@
 BEGIN;
 
---SELECT evergreen.upgrade_deps_block_check('TODO', :eg_version); -- JBoyer /  / 
+SELECT evergreen.upgrade_deps_block_check('1382', :eg_version); -- JBoyer / smorrison
 
 -- Remove previous acpl 1 protection
 DROP RULE protect_acl_id_1 ON asset.copy_location;
