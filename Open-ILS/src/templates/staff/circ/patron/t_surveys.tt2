@@ -17,17 +17,26 @@
     </div>
     <div class="row">
       <div class="col-md-12 well" style="margin-left:12px">
-        <ol>
-          <li ng-repeat="response in collection.responses">
-            <span class="col-md-3">{{response.question().question()}}</span>
-            <span class="col-md-3">[% l('Answer: ') %] <span class="strong-text">
-              {{response.answer().answer()}}</span>
-            </span>
-            <span class="col-md-3">[% l('Last Answered on: ') %]
-              {{response.answer_date() | date:$root.egDateFormat}}
-            </span>
-          </li>
-        </ol>
+        <table class="table">
+          <thead>
+            <th scope="col">[% l('Question: ') %]</th>
+            <th scope="col">[% l('Answer: ') %]</th>
+            <th scope="col">[% l('Last Answered on: ') %]</th>
+          </thead>
+          <tbody>
+            <tr ng-repeat="response in collection.responses">
+              <td>
+                {{response.question().question()}}
+              </td>
+              <td>
+                {{response.answer().answer()}}
+              </td>
+              <td>
+                {{response.answer_date() | date:$root.egDateFormat}}
+              </td>
+            </tr>
+          </tbody>
+        </table>
       </div>
     </div>
   </div>
