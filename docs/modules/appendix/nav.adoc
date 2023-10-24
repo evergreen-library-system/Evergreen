@@ -1,5 +1,6 @@
 * xref:shared:attributions.adoc[Appendix A. Attributions]
 * xref:shared:licensing.adoc[Appendix B. Licensing]
+* xref:shared:previous_docs.adoc[Appendix C. Older Evergreen Docs]
 * xref:appendix:permissions_list.adoc[Permissions List]
 * xref:appendix:glossary.adoc[Glossary]
 * xref:shared:index.adoc[Index]
