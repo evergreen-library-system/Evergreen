@@ -212,7 +212,9 @@
                         replaces = addr.replaces;
                         pending.$replaces = addr;
                     ELSE;
-                        regular.push(addr);
+                        IF addr.valid == 't';
+                            regular.push(addr);
+                        END;
                     END;
                 END;
             FOR addr IN regular;
