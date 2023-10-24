@@ -13903,7 +13903,7 @@ $$
 FOR item IN items;
     bibxml = helpers.unapi_bre(item.target_biblio_record_entry, {flesh => '{mra}'});
     title = "";
-    FOR part IN bibxml.findnodes('//*[@tag="245"]/*[@code="a" or @code="b"]');
+    FOR part IN bibxml.findnodes('//*[@tag="245"]/*[@code="a" or @code="b" or @code="n" or @code="p"]');
         title = title _ part.textContent;
     END;
     author = bibxml.findnodes('//*[@tag="100"]/*[@code="a"]').textContent;
