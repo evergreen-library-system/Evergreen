@@ -652,7 +652,7 @@ image::media/new_hold_group.png[Create New Hold Group]
 
 Patrons can be added to a Hold Group by barcode, by searching for a
 patron with an integrated patron search on the Add Users tab, or by a
-normal patron search. Staff must have PLACE_HOLD permissions to add
+normal patron search. Staff must have MANAGE_HOLDS permission to add
 patrons to a Hold Group at least at the same organizational unit depth
 (library) as the patron they are trying to add. For example, a staff
 member with branch level permissions for Branch A could only add patrons
