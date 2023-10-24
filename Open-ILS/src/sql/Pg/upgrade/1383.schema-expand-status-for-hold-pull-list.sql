@@ -1,6 +1,6 @@
 BEGIN;
 
---SELECT evergreen.upgrade_deps_block_check('XXXX', :eg_version);
+SELECT evergreen.upgrade_deps_block_check('1383', :eg_version);
 
 DROP INDEX IF EXISTS asset.cp_available_by_circ_lib_idx;
 
