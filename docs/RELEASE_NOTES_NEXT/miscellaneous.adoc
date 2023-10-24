@@ -1,1 +1,2 @@
 * Fix an issue where auto-renewal events can overwhelm open-ils.trigger drones (LP#2030915)
+* Adds a new database view for open non-cataloged circulations: action.open_non_cataloged_circulation (LP#2019974)
