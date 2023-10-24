@@ -1,0 +1,168 @@
+= Older Evergreen documentation
+:toc:
+== Evergreen 3.5
+
+. https://olddocs.evergreen-ils.org/docs/3.5/[Consolidated documentation (HTML)]
+.. Acquisitions staff https://olddocs.evergreen-ils.org/docs/reorg/3.5/acquisitions/[(HTML)] https://olddocs.evergreen-ils.org/docs/reorg/3.5/acquisitions/Evergreen_Documentation.pdf[(PDF)] https://olddocs.evergreen-ils.org/docs/reorg/3.5/acquisitions/Evergreen_Documentation.epub[(EPUB)]
+.. Cataloging staff https://olddocs.evergreen-ils.org/docs/reorg/3.5/cataloging/[(HTML)] https://olddocs.evergreen-ils.org/docs/reorg/3.5/cataloging/Evergreen_Documentation.pdf[(PDF)] https://olddocs.evergreen-ils.org/docs/reorg/3.5/cataloging/Evergreen_Documentation.epub[(EPUB)]
+.. Circulation desk staff https://olddocs.evergreen-ils.org/docs/reorg/3.5/circulation/[(HTML)] https://olddocs.evergreen-ils.org/docs/reorg/3.5/circulation/Evergreen_Documentation.pdf[(PDF)] https://olddocs.evergreen-ils.org/docs/reorg/3.5/circulation/Evergreen_Documentation.epub[(EPUB)]
+.. Integrating Evergreen with other technologies https://olddocs.evergreen-ils.org/docs/reorg/3.5/integrations/[(HTML)] https://olddocs.evergreen-ils.org/docs/reorg/3.5/integrations/Evergreen_Documentation.pdf[(PDF)] https://olddocs.evergreen-ils.org/docs/reorg/3.5/integrations/Evergreen_Documentation.epub[(EPUB)]
+.. Public catalog https://olddocs.evergreen-ils.org/docs/reorg/3.5/opac/[(HTML)] https://olddocs.evergreen-ils.org/docs/reorg/3.5/opac/Evergreen_Documentation.pdf[(PDF)] https://olddocs.evergreen-ils.org/docs/reorg/3.5/opac/Evergreen_Documentation.epub[(EPUB)]
+.. Serials staff https://olddocs.evergreen-ils.org/docs/reorg/3.5/serials/[(HTML)] https://olddocs.evergreen-ils.org/docs/reorg/3.5/serials/Evergreen_Documentation.pdf[(PDF)] https://olddocs.evergreen-ils.org/docs/reorg/3.5/serials/Evergreen_Documentation.epub[(EPUB)]
+.. System administration from the command line https://olddocs.evergreen-ils.org/docs/reorg/3.5/command_line_admin/[(HTML)] https://olddocs.evergreen-ils.org/docs/reorg/3.5/command_line_admin/Evergreen_Documentation.pdf[(PDF)] https://olddocs.evergreen-ils.org/docs/reorg/3.5/command_line_admin/Evergreen_Documentation.epub[(EPUB)]
+.. System administration from the staff client https://olddocs.evergreen-ils.org/docs/reorg/3.5/staff_client_admin/[(HTML)] https://olddocs.evergreen-ils.org/docs/reorg/3.5/staff_client_admin/Evergreen_Documentation.pdf[(PDF)] https://olddocs.evergreen-ils.org/docs/reorg/3.5/staff_client_admin/Evergreen_Documentation.epub[(EPUB)]
+
+== Evergreen 3.4
+
+. https://olddocs.evergreen-ils.org/docs/3.4/[Consolidated documentation (HTML)]
+.. Acquisitions staff https://olddocs.evergreen-ils.org/docs/reorg/3.4/acquisitions/[(HTML)] https://olddocs.evergreen-ils.org/docs/reorg/3.4/acquisitions/Evergreen_Documentation.pdf[(PDF)] https://olddocs.evergreen-ils.org/docs/reorg/3.4/acquisitions/Evergreen_Documentation.epub[(EPUB)]
+.. Cataloging staff https://olddocs.evergreen-ils.org/docs/reorg/3.4/cataloging/[(HTML)] https://olddocs.evergreen-ils.org/docs/reorg/3.4/cataloging/Evergreen_Documentation.pdf[(PDF)] https://olddocs.evergreen-ils.org/docs/reorg/3.4/cataloging/Evergreen_Documentation.epub[(EPUB)]
+.. Circulation desk staff https://olddocs.evergreen-ils.org/docs/reorg/3.4/circulation/[(HTML)] https://olddocs.evergreen-ils.org/docs/reorg/3.4/circulation/Evergreen_Documentation.pdf[(PDF)] https://olddocs.evergreen-ils.org/docs/reorg/3.4/circulation/Evergreen_Documentation.epub[(EPUB)]
+.. Integrating Evergreen with other technologies https://olddocs.evergreen-ils.org/docs/reorg/3.4/integrations/[(HTML)] https://olddocs.evergreen-ils.org/docs/reorg/3.4/integrations/Evergreen_Documentation.pdf[(PDF)] https://olddocs.evergreen-ils.org/docs/reorg/3.4/integrations/Evergreen_Documentation.epub[(EPUB)]
+.. Public catalog https://olddocs.evergreen-ils.org/docs/reorg/3.4/opac/[(HTML)] https://olddocs.evergreen-ils.org/docs/reorg/3.4/opac/Evergreen_Documentation.pdf[(PDF)] https://olddocs.evergreen-ils.org/docs/reorg/3.4/opac/Evergreen_Documentation.epub[(EPUB)]
+.. Serials staff https://olddocs.evergreen-ils.org/docs/reorg/3.4/serials/[(HTML)] https://olddocs.evergreen-ils.org/docs/reorg/3.4/serials/Evergreen_Documentation.pdf[(PDF)] https://olddocs.evergreen-ils.org/docs/reorg/3.4/serials/Evergreen_Documentation.epub[(EPUB)]
+.. System administration from the command line https://olddocs.evergreen-ils.org/docs/reorg/3.4/command_line_admin/[(HTML)] https://olddocs.evergreen-ils.org/docs/reorg/3.4/command_line_admin/Evergreen_Documentation.pdf[(PDF)] https://olddocs.evergreen-ils.org/docs/reorg/3.4/command_line_admin/Evergreen_Documentation.epub[(EPUB)]
+.. System administration from the staff client https://olddocs.evergreen-ils.org/docs/reorg/3.4/staff_client_admin/[(HTML)] https://olddocs.evergreen-ils.org/docs/reorg/3.4/staff_client_admin/Evergreen_Documentation.pdf[(PDF)] https://olddocs.evergreen-ils.org/docs/reorg/3.4/staff_client_admin/Evergreen_Documentation.epub[(EPUB)]
+
+== Evergreen 3.3
+
+. https://olddocs.evergreen-ils.org/docs/3.3/[Consolidated documentation (HTML)]
+.. Acquisitions staff https://olddocs.evergreen-ils.org/docs/reorg/3.3/acquisitions/[(HTML)] https://olddocs.evergreen-ils.org/docs/reorg/3.3/acquisitions/Evergreen_Documentation.pdf[(PDF)] https://olddocs.evergreen-ils.org/docs/reorg/3.3/acquisitions/Evergreen_Documentation.epub[(EPUB)]
+.. Cataloging staff https://olddocs.evergreen-ils.org/docs/reorg/3.3/cataloging/[(HTML)] https://olddocs.evergreen-ils.org/docs/reorg/3.3/cataloging/Evergreen_Documentation.pdf[(PDF)] https://olddocs.evergreen-ils.org/docs/reorg/3.3/cataloging/Evergreen_Documentation.epub[(EPUB)]
+.. Circulation desk staff https://olddocs.evergreen-ils.org/docs/reorg/3.3/circulation/[(HTML)] https://olddocs.evergreen-ils.org/docs/reorg/3.3/circulation/Evergreen_Documentation.pdf[(PDF)] https://olddocs.evergreen-ils.org/docs/reorg/3.3/circulation/Evergreen_Documentation.epub[(EPUB)]
+.. Integrating Evergreen with other technologies https://olddocs.evergreen-ils.org/docs/reorg/3.3/integrations/[(HTML)] https://olddocs.evergreen-ils.org/docs/reorg/3.3/integrations/Evergreen_Documentation.pdf[(PDF)] https://olddocs.evergreen-ils.org/docs/reorg/3.3/integrations/Evergreen_Documentation.epub[(EPUB)]
+.. Public catalog https://olddocs.evergreen-ils.org/docs/reorg/3.3/opac/[(HTML)] https://olddocs.evergreen-ils.org/docs/reorg/3.3/opac/Evergreen_Documentation.pdf[(PDF)] https://olddocs.evergreen-ils.org/docs/reorg/3.3/opac/Evergreen_Documentation.epub[(EPUB)]
+.. Serials staff https://olddocs.evergreen-ils.org/docs/reorg/3.3/serials/[(HTML)] https://olddocs.evergreen-ils.org/docs/reorg/3.3/serials/Evergreen_Documentation.pdf[(PDF)] https://olddocs.evergreen-ils.org/docs/reorg/3.3/serials/Evergreen_Documentation.epub[(EPUB)]
+.. System administration from the command line https://olddocs.evergreen-ils.org/docs/reorg/3.3/command_line_admin/[(HTML)] https://olddocs.evergreen-ils.org/docs/reorg/3.3/command_line_admin/Evergreen_Documentation.pdf[(PDF)] https://olddocs.evergreen-ils.org/docs/reorg/3.3/command_line_admin/Evergreen_Documentation.epub[(EPUB)]
+.. System administration from the staff client https://olddocs.evergreen-ils.org/docs/reorg/3.3/staff_client_admin/[(HTML)] https://olddocs.evergreen-ils.org/docs/reorg/3.3/staff_client_admin/Evergreen_Documentation.pdf[(PDF)] https://olddocs.evergreen-ils.org/docs/reorg/3.3/staff_client_admin/Evergreen_Documentation.epub[(EPUB)]
+
+== Evergreen 3.2
+
+. Consolidated documentation https://olddocs.evergreen-ils.org/docs/3.2/[(HTML)] https://olddocs.evergreen-ils.org/3.2/Evergreen_Documentation.pdf[(PDF)] https://olddocs.evergreen-ils.org/reorg/3.2/acquisitions/Evergreen_Documentation.epub[(EPUB)]
+.. Acquisitions staff https://olddocs.evergreen-ils.org/docs/reorg/3.2/acquisitions/[(HTML)] https://olddocs.evergreen-ils.org/docs/reorg/3.2/acquisitions/Evergreen_Documentation.pdf[(PDF)] https://olddocs.evergreen-ils.org/docs/reorg/3.2/acquisitions/Evergreen_Documentation.epub[(EPUB)]
+.. Cataloging staff https://olddocs.evergreen-ils.org/docs/reorg/3.2/cataloging/[(HTML)] https://olddocs.evergreen-ils.org/docs/reorg/3.2/cataloging/Evergreen_Documentation.pdf[(PDF)] https://olddocs.evergreen-ils.org/docs/reorg/3.2/cataloging/Evergreen_Documentation.epub[(EPUB)]
+.. Circulation desk staff https://olddocs.evergreen-ils.org/docs/reorg/3.2/circulation/[(HTML)] https://olddocs.evergreen-ils.org/docs/reorg/3.2/circulation/Evergreen_Documentation.pdf[(PDF)] https://olddocs.evergreen-ils.org/docs/reorg/3.2/circulation/Evergreen_Documentation.epub[(EPUB)]
+.. Integrating Evergreen with other technologies https://olddocs.evergreen-ils.org/docs/reorg/3.2/integrations/[(HTML)] https://olddocs.evergreen-ils.org/docs/reorg/3.2/integrations/Evergreen_Documentation.pdf[(PDF)] https://olddocs.evergreen-ils.org/docs/reorg/3.2/integrations/Evergreen_Documentation.epub[(EPUB)]
+.. Public catalog https://olddocs.evergreen-ils.org/docs/reorg/3.2/opac/[(HTML)] https://olddocs.evergreen-ils.org/docs/reorg/3.2/opac/Evergreen_Documentation.pdf[(PDF)] https://olddocs.evergreen-ils.org/docs/reorg/3.2/opac/Evergreen_Documentation.epub[(EPUB)]
+.. Serials staff https://olddocs.evergreen-ils.org/docs/reorg/3.2/serials/[(HTML)] https://olddocs.evergreen-ils.org/docs/reorg/3.2/serials/Evergreen_Documentation.pdf[(PDF)] https://olddocs.evergreen-ils.org/docs/reorg/3.2/serials/Evergreen_Documentation.epub[(EPUB)]
+.. System administration from the command line https://olddocs.evergreen-ils.org/docs/reorg/3.2/command_line_admin/[(HTML)] https://olddocs.evergreen-ils.org/docs/reorg/3.2/command_line_admin/Evergreen_Documentation.pdf[(PDF)] https://olddocs.evergreen-ils.org/docs/reorg/3.2/command_line_admin/Evergreen_Documentation.epub[(EPUB)]
+.. System administration from the staff client https://olddocs.evergreen-ils.org/docs/reorg/3.2/staff_client_admin/[(HTML)] https://olddocs.evergreen-ils.org/docs/reorg/3.2/staff_client_admin/Evergreen_Documentation.pdf[(PDF)] https://olddocs.evergreen-ils.org/docs/reorg/3.2/staff_client_admin/Evergreen_Documentation.epub[(EPUB)]
+
+== Evergreen 3.1
+
+. Consolidated documentation https://olddocs.evergreen-ils.org/3.1/[(HTML)] https://olddocs.evergreen-ils.org/3.1/Evergreen_Documentation.pdf[(PDF)] https://olddocs.evergreen-ils.org/reorg/3.1/acquisitions/Evergreen_Documentation.epub[(EPUB)]
+.. Acquisitions staff https://olddocs.evergreen-ils.org/reorg/3.1/acquisitions/[(HTML)] https://olddocs.evergreen-ils.org/reorg/3.1/acquisitions/Evergreen_Documentation.pdf[(PDF)] https://olddocs.evergreen-ils.org/reorg/3.1/acquisitions/Evergreen_Documentation.epub[(EPUB)]
+.. Cataloging staff https://olddocs.evergreen-ils.org/reorg/3.1/cataloging/[(HTML)] https://olddocs.evergreen-ils.org/reorg/3.1/cataloging/Evergreen_Documentation.pdf[(PDF)] https://olddocs.evergreen-ils.org/reorg/3.1/cataloging/Evergreen_Documentation.epub[(EPUB)]
+.. Circulation desk staff https://olddocs.evergreen-ils.org/reorg/3.1/circulation/[(HTML)] https://olddocs.evergreen-ils.org/reorg/3.1/circulation/Evergreen_Documentation.pdf[(PDF)] https://olddocs.evergreen-ils.org/reorg/3.1/circulation/Evergreen_Documentation.epub[(EPUB)]
+.. Integrating Evergreen with other technologies https://olddocs.evergreen-ils.org/reorg/3.1/integrations/[(HTML)] https://olddocs.evergreen-ils.org/reorg/3.1/integrations/Evergreen_Documentation.pdf[(PDF)] https://olddocs.evergreen-ils.org/reorg/3.1/integrations/Evergreen_Documentation.epub[(EPUB)]
+.. Public catalog https://olddocs.evergreen-ils.org/reorg/3.1/opac/[(HTML)] https://olddocs.evergreen-ils.org/reorg/3.1/opac/Evergreen_Documentation.pdf[(PDF)] https://olddocs.evergreen-ils.org/reorg/3.1/opac/Evergreen_Documentation.epub[(EPUB)]
+.. Serials staff https://olddocs.evergreen-ils.org/reorg/3.1/serials/[(HTML)] https://olddocs.evergreen-ils.org/reorg/3.1/serials/Evergreen_Documentation.pdf[(PDF)] https://olddocs.evergreen-ils.org/reorg/3.1/serials/Evergreen_Documentation.epub[(EPUB)]
+.. System administration from the command line https://olddocs.evergreen-ils.org/reorg/3.1/command_line_admin/[(HTML)] https://olddocs.evergreen-ils.org/reorg/3.1/command_line_admin/Evergreen_Documentation.pdf[(PDF)] https://olddocs.evergreen-ils.org/reorg/3.1/command_line_admin/Evergreen_Documentation.epub[(EPUB)]
+.. System administration from the staff client https://olddocs.evergreen-ils.org/reorg/3.1/staff_client_admin/[(HTML)] https://olddocs.evergreen-ils.org/reorg/3.1/staff_client_admin/Evergreen_Documentation.pdf[(PDF)] https://olddocs.evergreen-ils.org/reorg/3.1/staff_client_admin/Evergreen_Documentation.epub[(EPUB)]
+
+== Evergreen 3.0
+
+. Consolidated documentation https://olddocs.evergreen-ils.org/3.0/[(HTML)] https://olddocs.evergreen-ils.org/3.0/Evergreen_Documentation.pdf[(PDF)] https://olddocs.evergreen-ils.org/reorg/3.0/acquisitions/Evergreen_Documentation.epub[(EPUB)]
+.. Acquisitions staff https://olddocs.evergreen-ils.org/reorg/3.0/acquisitions/[(HTML)] https://olddocs.evergreen-ils.org/reorg/3.0/acquisitions/Evergreen_Documentation.pdf[(PDF)] https://olddocs.evergreen-ils.org/reorg/3.0/acquisitions/Evergreen_Documentation.epub[(EPUB)]
+.. Cataloging staff https://olddocs.evergreen-ils.org/reorg/3.0/cataloging/[(HTML)] https://olddocs.evergreen-ils.org/reorg/3.0/cataloging/Evergreen_Documentation.pdf[(PDF)] https://olddocs.evergreen-ils.org/reorg/3.0/cataloging/Evergreen_Documentation.epub[(EPUB)]
+.. Circulation desk staff https://olddocs.evergreen-ils.org/reorg/3.0/circulation/[(HTML)] https://olddocs.evergreen-ils.org/reorg/3.0/circulation/Evergreen_Documentation.pdf[(PDF)] https://olddocs.evergreen-ils.org/reorg/3.0/circulation/Evergreen_Documentation.epub[(EPUB)]
+.. Integrating Evergreen with other technologies https://olddocs.evergreen-ils.org/reorg/3.0/integrations/[(HTML)] https://olddocs.evergreen-ils.org/reorg/3.0/integrations/Evergreen_Documentation.pdf[(PDF)] https://olddocs.evergreen-ils.org/reorg/3.0/integrations/Evergreen_Documentation.epub[(EPUB)]
+.. Public catalog https://olddocs.evergreen-ils.org/reorg/3.0/opac/[(HTML)] https://olddocs.evergreen-ils.org/reorg/3.0/opac/Evergreen_Documentation.pdf[(PDF)] https://olddocs.evergreen-ils.org/reorg/3.0/opac/Evergreen_Documentation.epub[(EPUB)]
+.. Serials staff https://olddocs.evergreen-ils.org/reorg/3.0/serials/[(HTML)] https://olddocs.evergreen-ils.org/reorg/3.0/serials/Evergreen_Documentation.pdf[(PDF)] https://olddocs.evergreen-ils.org/reorg/3.0/serials/Evergreen_Documentation.epub[(EPUB)]
+.. System administration from the command line https://olddocs.evergreen-ils.org/reorg/3.0/command_line_admin/[(HTML)] https://olddocs.evergreen-ils.org/reorg/3.0/command_line_admin/Evergreen_Documentation.pdf[(PDF)] https://olddocs.evergreen-ils.org/reorg/3.0/command_line_admin/Evergreen_Documentation.epub[(EPUB)]
+.. System administration from the staff client https://olddocs.evergreen-ils.org/reorg/3.0/staff_client_admin/[(HTML)] https://olddocs.evergreen-ils.org/reorg/3.0/staff_client_admin/Evergreen_Documentation.pdf[(PDF)] https://olddocs.evergreen-ils.org/reorg/3.0/staff_client_admin/Evergreen_Documentation.epub[(EPUB)]
+
+== Evergreen 2.12
+
+. https://olddocs.evergreen-ils.org/2.12/index.html[(HTML)]
+. https://olddocs.evergreen-ils.org/2.12/Evergreen_Documentation.pdf[(PDF)]
+. https://olddocs.evergreen-ils.org/2.12/Evergreen_Documentation.epub[(EPUB)]
+
+== Evergreen 2.11
+
+. https://olddocs.evergreen-ils.org/2.11/index.html[(HTML)]
+. https://olddocs.evergreen-ils.org/2.11/Evergreen_Documentation.pdf[(PDF)]
+. https://olddocs.evergreen-ils.org/2.11/Evergreen_Documentation.epub[(EPUB)]
+
+== Evergreen 2.10
+
+. https://olddocs.evergreen-ils.org/2.10/index.html[(HTML)]
+. https://olddocs.evergreen-ils.org/2.10/Evergreen_Documentation.pdf[(PDF)]
+. https://olddocs.evergreen-ils.org/2.10/Evergreen_Documentation.epub[(EPUB)]
+
+== Evergreen 2.9
+
+. https://olddocs.evergreen-ils.org/2.9/index.html[(HTML)]
+. https://olddocs.evergreen-ils.org/2.9/Evergreen_Documentation.pdf[(PDF)]
+. https://olddocs.evergreen-ils.org/2.9/Evergreen_Documentation.epub[(EPUB)]
+. https://olddocs.evergreen-ils.org/2.9/schema/index.html[DB Schema]
+
+== Evergreen 2.8
+
+. https://olddocs.evergreen-ils.org/2.8/index.html[(HTML)]
+. https://olddocs.evergreen-ils.org/2.8/Evergreen_Documentation.pdf[(PDF)]
+. https://olddocs.evergreen-ils.org/2.8/Evergreen_Documentation.epub[(EPUB)]
+. https://olddocs.evergreen-ils.org/2.8/schema/index.html[DB Schema]
+
+== Evergreen 2.7
+
+. https://olddocs.evergreen-ils.org/2.7/index.html[(HTML)]
+. https://olddocs.evergreen-ils.org/2.7/Evergreen_Documentation.pdf[(PDF)]
+. https://olddocs.evergreen-ils.org/2.7/Evergreen_Documentation.epub[(EPUB)]
+. https://olddocs.evergreen-ils.org/2.7/schema/index.html[DB Schema]
+
+== Evergreen 2.6
+
+. https://olddocs.evergreen-ils.org/2.6/index.html[(HTML)]
+. https://olddocs.evergreen-ils.org/2.6/Evergreen_Documentation.pdf[(PDF)]
+. https://olddocs.evergreen-ils.org/2.6/Evergreen_Documentation.epub[(EPUB)]
+. https://olddocs.evergreen-ils.org/2.6/schema/index.html[DB Schema]
+
+== Evergreen 2.5
+
+. https://olddocs.evergreen-ils.org/2.5/index.html[(HTML)]
+. https://olddocs.evergreen-ils.org/2.5/Evergreen_Documentation.pdf[(PDF)]
+. https://olddocs.evergreen-ils.org/2.5/Evergreen_Documentation.epub[(EPUB)]
+. https://olddocs.evergreen-ils.org/2.5/schema/index.html[DB Schema]
+
+== Evergreen 2.4
+
+. https://olddocs.evergreen-ils.org/2.4/index.html[(HTML)]
+. https://olddocs.evergreen-ils.org/2.4/Evergreen_Documentation.pdf[(PDF)]
+. https://olddocs.evergreen-ils.org/2.4/Evergreen_Documentation.epub[(EPUB)]
+. https://olddocs.evergreen-ils.org/2.4/schema/index.html[DB Schema]
+
+== Evergreen 2.3
+
+. https://olddocs.evergreen-ils.org/2.3/index.html[(HTML)]
+. https://olddocs.evergreen-ils.org/2.3/Evergreen_Documentation.pdf[(PDF)]
+. https://olddocs.evergreen-ils.org/2.3/Evergreen_Documentation.epub[(EPUB)]
+. https://olddocs.evergreen-ils.org/2.3/schema/index.html[DB Schema]
+
+== Evergreen 2.2
+
+. https://olddocs.evergreen-ils.org/2.2/index.html[(HTML)]
+. https://olddocs.evergreen-ils.org/2.2/Evergreen_Documentation.pdf[(PDF)]
+. https://olddocs.evergreen-ils.org/2.2/Evergreen_Documentation.epub[(EPUB)]
+. https://olddocs.evergreen-ils.org/2.2/schema/index.html[DB Schema]
+
+== Evergreen 2.1
+
+. https://olddocs.evergreen-ils.org/2.1/index.html[(HTML)]
+. https://olddocs.evergreen-ils.org/2.1/Evergreen_Documentation.pdf[(PDF)]
+
+== Evergreen 2.0
+
+. https://olddocs.evergreen-ils.org/2.0/index.html[(HTML)]
+. https://olddocs.evergreen-ils.org/2.0/Evergreen_Documentation.pdf[(PDF)]
+
+== Evergreen 1.6
+
+. https://olddocs.evergreen-ils.org/1.6/draft/html/index.html[(HTML)]
+. https://olddocs.evergreen-ils.org/1.6/draft/pdf/Evergreen_Documentation.pdf.html[(PDF)]
+
+== Evergreen in Action
+
+An administrators guide published in 2012.
+
+http://evergreen-ils.org/dokuwiki/doku.php?id=books:evergreen_in_action[Wiki]
