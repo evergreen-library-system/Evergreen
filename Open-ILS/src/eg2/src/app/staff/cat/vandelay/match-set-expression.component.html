@@ -36,7 +36,7 @@
         Add To Selected Node
       </button>
 
-      <button class="btn btn-success ms-3" (click)="addChildNode(true)"
+      <button class="btn btn-success mt-1" (click)="addChildNode(true)"
         [disabled]="!hasSelectedNode() ||
           (newPointType !== 'bool' && selectedIsBool())" i18n>
         Replace Selected Node
