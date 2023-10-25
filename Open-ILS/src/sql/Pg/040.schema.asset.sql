@@ -110,7 +110,7 @@ CREATE INDEX cp_avail_cn_idx ON asset.copy (call_number);
 CREATE INDEX cp_creator_idx  ON asset.copy ( creator );
 CREATE INDEX cp_editor_idx   ON asset.copy ( editor );
 CREATE INDEX cp_create_date  ON asset.copy (create_date);
-CREATE INDEX cp_available_by_circ_lib_idx ON asset.copy (circ_lib) WHERE status IN (0,7);
+CREATE INDEX cp_extant_by_circ_lib_idx ON asset.copy(circ_lib) WHERE deleted = FALSE OR deleted IS FALSE;
 CREATE RULE protect_copy_delete AS ON DELETE TO asset.copy DO INSTEAD UPDATE asset.copy SET deleted = TRUE WHERE OLD.id = asset.copy.id;
 
 CREATE TABLE asset.copy_part_map (
@@ -708,7 +708,8 @@ BEGIN
         SELECT  -1,
                 ans.id,
                 COUNT( cp.id ),
-                SUM( CASE WHEN cp.status IN (0,7,12) THEN 1 ELSE 0 END ),
+                SUM( CASE WHEN cp.status IN (SELECT id FROM config.copy_status WHERE holdable AND is_available)
+                   THEN 1 ELSE 0 END ),
                 SUM( CASE WHEN cl.opac_visible AND cp.opac_visible THEN 1 ELSE 0 END),
                 trans
           FROM
@@ -858,7 +859,7 @@ BEGIN
         SELECT  ans.depth,
                 ans.id,
                 COUNT( cp.id ),
-                SUM( CASE WHEN cp.status IN (0,7,12) THEN 1 ELSE 0 END ),
+                SUM( CASE WHEN cp.status IN (SELECT id FROM config.copy_status WHERE holdable AND is_available) THEN 1 ELSE 0 END ),
                 COUNT( cp.id ),
                 trans
           FROM
@@ -890,7 +891,7 @@ BEGIN
         SELECT  -1,
                 ans.id,
                 COUNT( cp.id ),
-                SUM( CASE WHEN cp.status IN (0,7,12) THEN 1 ELSE 0 END ),
+                SUM( CASE WHEN cp.status IN (SELECT id FROM config.copy_status WHERE holdable AND is_available) THEN 1 ELSE 0 END ),
                 COUNT( cp.id ),
                 trans
           FROM

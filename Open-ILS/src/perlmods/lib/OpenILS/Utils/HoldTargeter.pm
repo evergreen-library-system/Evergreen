@@ -32,6 +32,7 @@ sub new {
     my $self = {
         editor => new_editor(),
         ou_setting_cache => {},
+        targetable_statuses => [],
         %args,
     };
     return bless($self, $class);
@@ -253,6 +254,21 @@ sub precache_batch_ou_settings {
     for my $org_id (keys %settings) {
         $c->{$org_id}->{$setting} = $settings{$org_id}->{value};
     }
+}
+
+# Get the list of statuses able to target a hold, i.e. allowed for the
+# current_copy.  Default to 0 and 7 if there ia a failure.
+sub get_targetable_statuses {
+    my $self = shift;
+    unless (ref($self->{tagetable_statuses}) eq 'ARRAY' && @{$self->{targetable_statuses}}) {
+        my $e = $self->{editor};
+        $self->{targetable_statuses} = $e->search_config_copy_status({holdable => 't', is_available => 't'},
+                                                                     {idlist => 1});
+        unless (ref($self->{targetable_statuses}) eq 'ARRAY' && @{$self->{targetable_statuses}}) {
+            $self->{targetable_statuses} = [0,7];
+        }
+    }
+    return $self->{targetable_statuses};
 }
 
 # -----------------------------------------------------------------------
@@ -843,8 +859,12 @@ sub filter_copies_by_status {
     # Track checked out copies for later recall
     $self->recall_copies([grep {$_->{status} == 1} @{$self->copies}]);
 
+    my $targetable_statuses = $self->parent->get_targetable_statuses();
     $self->copies([
-        grep {$_->{status} == 0 || $_->{status} == 7} @{$self->copies}
+        grep {
+            my $c = $_;
+            grep {$c->{status} == $_} @{$targetable_statuses}
+        } @{$self->copies}
     ]);
 
     return 1;

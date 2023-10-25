@@ -2035,7 +2035,7 @@ sub print_hold_pull_list_stream {
                         "field" => "id",
                         "fkey" => "current_copy",
                         "filter" => {
-                            "circ_lib" => $$params{org_id}, "status" => [0,7]
+                            "circ_lib" => $$params{org_id}
                         },
                         "join" => {
                             "acn" => {
@@ -2058,6 +2058,14 @@ sub print_hold_pull_list_stream {
                                 "type" => "left",
                                 "filter" => {
                                     "location" => {"=" => {"+acp" => "location"}}
+                                }
+                            },
+                            "ccs" => {
+                                "field" => "id",
+                                "fkey" => "status",
+                                "filter" => {
+                                    "holdable" => "t",
+                                    "is_available" => "t"
                                 }
                             }
                         }
@@ -4238,10 +4246,10 @@ sub hold_has_copy_at {
                     filter => { holdable => 't', deleted => 'f' },
                     fkey => 'location'
                 },
-                ccs  => {field => 'id', filter => { holdable => 't'}, fkey => 'status'  }
+                ccs  => {field => 'id', filter => {holdable => 't', is_available => 't'}, fkey => 'status'}
             }
         },
-        where => {'+acp' => { circulate => 't', deleted => 'f', holdable => 't', circ_lib => $org_unit, status => [0,7]}},
+        where => {'+acp' => { circulate => 't', deleted => 'f', holdable => 't', circ_lib => $org_unit }},
         limit => 1
     };
 

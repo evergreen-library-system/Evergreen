@@ -793,7 +793,8 @@ sub hold_pull_list {
     my $count = 1 if ($self->api_name =~/count$/o);
 
     my $status_filter = '';
-    $status_filter = 'AND a.status IN (0,7)' if ($self->api_name =~/status_filtered/o);
+    $status_filter = 'AND a.status IN (SELECT id FROM config.copy_status WHERE holdable AND is_available)'
+        if ($self->api_name =~/status_filtered/);
 
     my $select = <<"    SQL";
         SELECT  h.*
@@ -801,6 +802,7 @@ sub hold_pull_list {
             JOIN $a_table a ON (h.current_copy = a.id)
             LEFT JOIN $ord_table ord ON (a.location = ord.location AND a.circ_lib = ord.org)
           WHERE a.circ_lib = ?
+            AND a.deleted IS FALSE
             AND h.capture_time IS NULL
             AND h.cancel_time IS NULL
             AND (h.expire_time IS NULL OR h.expire_time > NOW())
@@ -826,6 +828,7 @@ sub hold_pull_list {
               FROM    $h_table h
                   JOIN $a_table a ON (h.current_copy = a.id)
               WHERE    a.circ_lib = ?
+                  AND a.deleted is FALSE
                   AND h.capture_time IS NULL
                   AND h.cancel_time IS NULL
                   AND (h.expire_time IS NULL OR h.expire_time > NOW())

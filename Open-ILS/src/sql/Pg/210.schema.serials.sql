@@ -224,6 +224,7 @@ CREATE INDEX unit_cn_idx ON serial.unit (call_number);
 CREATE INDEX unit_avail_cn_idx ON serial.unit (call_number);
 CREATE INDEX unit_creator_idx  ON serial.unit ( creator );
 CREATE INDEX unit_editor_idx   ON serial.unit ( editor );
+CREATE INDEX unit_extant_by_circ_lib_idx ON serial.unit(circ_lib) WHERE deleted = FALSE OR deleted IS FALSE;
 
 -- must create this rule explicitly; it is not inherited from asset.copy
 CREATE RULE protect_serial_unit_delete AS ON DELETE TO serial.unit DO INSTEAD UPDATE serial.unit SET deleted = TRUE WHERE OLD.id = serial.unit.id;

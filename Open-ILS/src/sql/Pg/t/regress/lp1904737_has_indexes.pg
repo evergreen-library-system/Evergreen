@@ -1,0 +1,13 @@
+BEGIN;
+
+SELECT plan(4);
+
+SELECT has_index('asset', 'copy', 'cp_extant_by_circ_lib_idx', ARRAY['circ_lib']);
+
+SELECT has_index('serial', 'unit', 'unit_extant_by_circ_lib_idx', ARRAY['circ_lib']);
+
+SELECT hasnt_index('asset', 'copy', 'cp_available_by_circ_lib_idx');
+
+SELECT hasnt_index('serial', 'unit', 'unit_available_by_circ_lib_idx');
+
+ROLLBACK;
