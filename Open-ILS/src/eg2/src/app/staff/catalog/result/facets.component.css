@@ -9,3 +9,8 @@
 .list-group-item {
   padding: .5rem .75rem .5rem .75rem
 }
+
+/* first five elements from zero */
+.list-truncate .list-group-item:nth-child(n+6) {
+  display: none;
+}
