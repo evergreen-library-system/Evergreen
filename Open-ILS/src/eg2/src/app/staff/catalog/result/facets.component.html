@@ -5,16 +5,21 @@
       <div *ngFor="let name of facetConf.facetOrder">
         <div class="row"
           *ngIf="searchContext.result.facetData[facetConf.facetClass][name]">
-          <div class="card mb-2 p-0">
-            <h3 class="card-header">
-              {{searchContext.result.facetData[facetConf.facetClass][name].cmfLabel}}
-            </h3>
+          <div class="card mb-2 p-0" [ngClass]="{'list-truncate': this.displayFullFacets.indexOf(facetConf.facetClass+'-'+name) < 0}">
+            <div class="card-header d-flex align-items-start justify-content-between">
+              <h3>{{searchContext.result.facetData[facetConf.facetClass][name].cmfLabel}}</h3>
+              <button (click)="facetToggle(name, facetConf.facetClass)" i18n-title
+                title="Show {{displayFullFacets.indexOf(facetConf.facetClass+'-'+name) < 0 ? searchContext.result.facetData[facetConf.facetClass][name].valueList.length : 5}}"
+                class="btn btn-link p-0" i18n>
+                {{displayFullFacets.indexOf(facetConf.facetClass+'-'+name) < 0 ? 'More' : 'Less'}}
+              </button>
+            </div>
             <ul class="list-group list-group-flush">
               <li class="list-group-item" 
                 [ngClass]="{'facet-selected' :
                   facetIsApplied(facetConf.facetClass, name, value.value)}"
                 *ngFor="
-                  let value of searchContext.result.facetData[facetConf.facetClass][name].valueList | slice:0:facetConfig.displayCount">
+                  let value of searchContext.result.facetData[facetConf.facetClass][name].valueList">
                 <div class="row">
                   <div class="col-lg-9">
                     <a class="card-link"
@@ -23,7 +28,7 @@
                       {{value.value}}
                     </a>
                   </div>
-                  <div class="col-lg-3">{{value.count}}</div>
+                  <div class="col-lg-3 text-end">{{value.count}}</div>
                 </div>
               </li>
             </ul>

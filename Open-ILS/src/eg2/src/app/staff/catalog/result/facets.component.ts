@@ -11,8 +11,7 @@ export const FACET_CONFIG = {
         {facetClass : 'identifier', facetOrder : ['genre']},
         {facetClass : 'series',  facetOrder : ['seriestitle']},
         {facetClass : 'subject', facetOrder : ['name', 'geographic']}
-    ],
-    displayCount : 5
+    ]
 };
 
 @Component({
@@ -24,6 +23,7 @@ export class ResultFacetsComponent implements OnInit {
 
     searchContext: CatalogSearchContext;
     facetConfig: any;
+    displayFullFacets: string[] = [];
 
     constructor(
         private cat: CatalogService,
@@ -46,6 +46,18 @@ export class ResultFacetsComponent implements OnInit {
         context.termSearch.toggleFacet(new FacetFilter(cls, name, value));
         context.pager.offset = 0;
         return this.catUrl.toUrlParams(context);
+    }
+
+    // Build a list of the facet class+names that should be expanded to show all options.
+    // More than one facet may be expanded
+    facetToggle(name: string, fClass: string) {
+        let index = this.displayFullFacets.indexOf(fClass+'-'+name);
+        if ( index == -1 ) {  // not found
+            this.displayFullFacets.push(fClass+'-'+name);
+        }
+        else { // delete it
+            this.displayFullFacets.splice(index, 1);
+        }
     }
 }
 
