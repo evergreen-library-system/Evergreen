@@ -408,6 +408,47 @@ refer back to the OpenSRF README and, as the *opensrf* Linux account, edit the
 Evergreen version of the `opensrf_core.xml` file using the same Jabber users
 and domains as you used while installing and testing OpenSRF.
 
+=== OPTIONAL: Configure Evergreen for OpenSRF+Redis
+
+If using the Redis variant of OpenSRF, modify /openils/conf/opensrf_core.xml
+to use the Redis settings instead of the Ejabberd settings. 
+
+Several sections of the file have 2 configuration blocks, one for Ejabberd
+and one for Redis.  Example:
+
+[source,xml]
+------------------------------------------------------------------------------
+<!-- Ejabberd -->                                                          
+<passwd>password</passwd>                                                  
+<port>5222</port>                                                          
+<!-- ===  -->                                                              
+																		   
+<!-- Redis -->                                                             
+<!--                                                                       
+<passwd>456fc340-beba-4489-9070-0d6b49e9952b</passwd>                      
+<port>6379</port>                                                          
+-->                                                                        
+<!-- ===  -->   
+------------------------------------------------------------------------------
+
+For each occurrence of such block, commente out the Ejabberd sections
+and un-comment the Redis sections.  Example:
+
+[source,xml]
+------------------------------------------------------------------------------
+<!-- Ejabberd -->                                                          
+<!--
+<passwd>password</passwd>                                                  
+<port>5222</port>                                                          
+-->
+<!-- ===  -->                                                              
+																		   
+<!-- Redis -->                                                             
+<passwd>456fc340-beba-4489-9070-0d6b49e9952b</passwd>                      
+<port>6379</port>                                                          
+<!-- ===  -->   
+------------------------------------------------------------------------------
+
 [NOTE]
 The `-b` flag tells the `cp` command to create a backup version of the
 destination file. The backup version of the destination file has a tilde (`~`)
