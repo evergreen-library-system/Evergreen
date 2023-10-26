@@ -44,8 +44,10 @@ export class PreferencesComponent implements OnInit {
         const localVar = setting === 'eg.search.search_lib' ?
             'defaultSearchOrg' : 'prefOrg';
 
-        this.updateValue(setting, org ? org.id() : null)
-        .then(val => this.staffCat[localVar] = val);
+        if (org.id()) {
+            this.updateValue(setting, org ? org.id() : null)
+            .then(val => this.staffCat[localVar] = val);
+        }
     }
 
     paneChanged(entry: ComboboxEntry) {
