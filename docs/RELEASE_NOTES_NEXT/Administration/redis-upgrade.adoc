@@ -155,23 +155,6 @@ Restart the Redis server to make the changes take effect:
 sudo systemctl restart redis-server                                                   
 ---------------------------------------------------------------------------    
 
-==== Apply Redis Accounts ====
-
-
-===== About =====
-
-* This step must be run every time Redis is restarted, including server
-  reboots.
-
-TODO: Bake this into osrf_control so that it runs automatically every 
-time services are restarted, with an option to skip the step.
-
-
-[source,sh]
----------------------------------------------------------------------------    
-/openils/bin/osrf_control -l --reset-message-bus
----------------------------------------------------------------------------    
-
 ==== Restart Everything ====
 
 [source,sh]
