@@ -203,7 +203,7 @@ export class CreateReservationComponent implements OnInit, AfterViewInit, OnDest
             if (multiday) { this.multiday = multiday; }
             this.criteria.patchValue({reservationType:
                 this.multiday ? this.reservationTypes[1] : this.reservationTypes[0]
-            });
+            }, {emitEvent: false});
         });
 
         const minutesInADay = 1440;
@@ -268,7 +268,7 @@ export class CreateReservationComponent implements OnInit, AfterViewInit, OnDest
             this.flattenedSelectedAttributes
         );
         if (this.resourceId) {
-            resources$ = from(this.resources);
+            resources$ = of(this.resources[0]);
         } else {
             this.resources = [];
         }
