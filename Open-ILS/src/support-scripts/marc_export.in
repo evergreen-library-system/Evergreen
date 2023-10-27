@@ -633,6 +633,7 @@ sub next {
                     # If --items was passed discard any static 852 fields; they're either dupes, out-of-sync, or junk.
                     $marc->delete_fields($marc->field('852'));
                     my @acps = $self->acps_for_bre($r);
+                    my @itemtags = ();
                     foreach my $acp (@acps) {
                         next unless ($acp);
                         my $location = $Marque::config->option_value('location');
@@ -664,30 +665,38 @@ sub next {
                                 );
                             }
 
-                            $marc->insert_grouped_field(
-                            MARC::Field->new(
-                                '852', '4', ' ',
-                                ($location ? ('a' => $location) : ()),
-                                @sfb,
-                                c => Encode::decode_utf8($acp->location()->name()),
-                                ($prefix ? (k => Encode::decode_utf8($prefix)) : ()),
-                                j => Encode::decode_utf8($acp->call_number()->label()),
-                                ($suffix ? (m => Encode::decode_utf8($suffix)) : ()),
-                                ($acp->circ_modifier() ? (g => Encode::decode_utf8($acp->circ_modifier())) : ()),
-                                p => Encode::decode_utf8($acp->barcode()),
-                                s => Encode::decode_utf8($status),
-                                ($price ? (y => Encode::decode_utf8($price)) : ()),
-                                ($acp->copy_number() ? (t => $acp->copy_number()) : ()),
-                                ($U->is_true($acp->ref()) ? (x => 'reference') : ()),
-                                (!$U->is_true($acp->holdable()) ? (x => 'unholdable') : ()),
-                                (!$U->is_true($acp->circulate()) ? (x => 'noncirculating') : ()),
-                                (!$U->is_true($acp->opac_visible()) ? (x => 'hidden') : ())
-                            ));
+                            push(
+                                @itemtags,
+                                MARC::Field->new(
+                                    '852', '4', ' ',
+                                    ($location ? ('a' => $location) : ()),
+                                    @sfb,
+                                    c => Encode::decode_utf8($acp->location()->name()),
+                                    ($prefix ? (k => Encode::decode_utf8($prefix)) : ()),
+                                    j => Encode::decode_utf8($acp->call_number()->label()),
+                                    ($suffix ? (m => Encode::decode_utf8($suffix)) : ()),
+                                    ($acp->circ_modifier() ? (g => Encode::decode_utf8($acp->circ_modifier())) : ()),
+                                    p => Encode::decode_utf8($acp->barcode()),
+                                    s => Encode::decode_utf8($status),
+                                    ($price ? (y => Encode::decode_utf8($price)) : ()),
+                                    ($acp->copy_number() ? (t => $acp->copy_number()) : ()),
+                                    ($U->is_true($acp->ref()) ? (x => 'reference') : ()),
+                                    (!$U->is_true($acp->holdable()) ? (x => 'unholdable') : ()),
+                                    (!$U->is_true($acp->circulate()) ? (x => 'noncirculating') : ()),
+                                    (!$U->is_true($acp->opac_visible()) ? (x => 'hidden') : ())
+                                ));
                         };
                         if ($@) {
                             warn("Error in bibliographic record " . $r->id() . ": $@");
                             import MARC::File::XML; # Reset SAX Parser.
                             return $self->next();
+                        }
+                    }
+                    my $firsttag = shift @itemtags;
+                    if ($firsttag) {
+                        $marc->insert_grouped_field($firsttag);
+                        if (@itemtags) {
+                            $marc->insert_fields_after($firsttag,@itemtags);
                         }
                     }
                 }
