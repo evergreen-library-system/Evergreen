@@ -530,7 +530,9 @@ ACN_JOIN
 sub execute_query {
     my $self = shift;
     $self->build_query() unless ($self->{query});
-    $self->{sth} = $self->{handle}->prepare($self->{query});
+    my $cursor = 'DECLARE bibs CURSOR WITH HOLD FOR ';
+    $self->{handle}->do($cursor.$self->{query});
+    $self->{sth} = $self->{handle}->prepare('fetch 10000 from bibs');
     return $self->{sth}->execute;
 }
 
@@ -563,6 +565,12 @@ sub next {
         }
     } else {
         my $data = $self->{sth}->fetchrow_hashref;
+        # If the cursor ran out of data, fetch the next 10000.
+        if (!$data){
+            $self->{sth} = $self->{handle}->prepare('fetch 10000 from bibs');
+            $self->{sth}->execute;
+            $data = $self->{sth}->fetchrow_hashref;
+        }
         if ($data) {
             $r = $self->{breClass}->from_bare_hash($data);
             if ($Marque::config->option_value('format') eq 'BRE') {
