@@ -549,7 +549,14 @@ ctx.metalinks.push('
                             END;
                             -%]
                         </a>
-                        [%- '<ul><li property="description">' _ filtered_note _ '</li></ul>' IF filtered_note %]
+                        [%- IF filtered_note -%]
+                            [%- '<ul><li property="description">' _ filtered_note _ '</li></ul>' %]
+                        [%- ELSE -%]
+                            [% IF ctx.get_org_setting(ctx.search_ou, 'opac.uri_default_note_text') %]
+                                [% link_note = ctx.get_org_setting(ctx.search_ou, 'opac.uri_default_note_text') %]
+                                [% '<ul><li property="description">'; link_note | html; '</li></ul>' %]
+                            [% END %]
+                        [%- END -%]
                         [%- '<ul><li property="description">' _ filtered_materials _ '</li></ul>' IF filtered_materials %]
                         [%- '<ul><li property="description">' _ filtered_access _ '</li></ul>' IF filtered_access %]
                         <link property="availability" href="http://schema.org/OnlineOnly" />

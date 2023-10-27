@@ -352,7 +352,15 @@ END;
                                                                 <td valign='top'>
                                                                     <strong>[% l('Electronic resource') %]</strong>
                                                                 </td>
-                                                                <td><a href="[% uri.href | html %]" class="uri_link" target="_blank" rel="noopener">[% uri.link | html %]</a>[% ' - ' _ uri.note | html IF uri.note %]</td>
+                                                                <td><a href="[% uri.href | html %]" class="uri_link" target="_blank" rel="noopener">[% uri.link | html %]</a>
+                                                                    [%- IF uri.note -%]
+                                                                        [%- '- <span property="description">' _ uri.note _ '</span>' %]
+                                                                    [%- ELSE -%]
+                                                                        [% IF ctx.get_org_setting(ctx.search_ou, 'opac.uri_default_note_text') %]
+                                                                            [% link_note = ctx.get_org_setting(ctx.search_ou, 'opac.uri_default_note_text') %]
+                                                                            [% '- <span property="description">'; link_note | html; '</span>' %]
+                                                                        [% END %]
+                                                                    [%- END -%]</td>
                                                             </tr>
                                                             [% END %]
                                                          [% END %]
