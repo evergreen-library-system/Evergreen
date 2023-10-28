@@ -726,14 +726,21 @@ within the "form" by name for validation.
 
 <div class="row reg-field-row">
   <div class="col-md-3 reg-field-label">
-    <label id="defaultPhone">{{user_setting_types['opac.default_phone'].label()}}</label>
+    <label for="default-phone">
+      {{user_setting_types['opac.default_phone'].label()}}
+    </label>
   </div>
   <div class="col-md-3 reg-field-input">
     <input ng-required="hold_notify_type.phone"
-      aria-labelledby="defaultPhone"
+      id="default-phone"
+      aria-describedby="default-phone-example"
       ng-change="field_modified()" 
       ng-blur="handle_field_changed(user_settings, 'opac.default_phone')"
+      ng-pattern="field_pattern('aus', 'default_phone')"
       type='text' ng-model="user_settings['opac.default_phone']"/>
+  </div>
+  <div id="default-phone-example" class="col-md-3">
+    [% draw_example_text('aus', 'default_phone') %]
   </div>
 </div>
 
@@ -827,21 +834,27 @@ within the "form" by name for validation.
 
 <div class="row reg-field-row" ng-if="org_settings['sms.enable']">
   <div class="col-md-3 reg-field-label">
-    <label id="defaultSmsNum">[% l('Default SMS/Text Number') %]</label>
+    <label for="default-sms-num">[% l('Default SMS/Text Number') %]</label>
   </div>
   <div class="col-md-3 reg-field-input">
     <input 
       name="default_sms_text_number"
-      aria-labelledby="defaultSmsNum"
+      id="default-sms-num"
+      aria-describedby="default-sms-num-example"
       ng-required="hold_notify_type.sms"
       ng-change="field_modified()" ng-model="user_settings['opac.default_sms_notify']"
       ng-blur="handle_field_changed(user_settings, 'opac.default_sms_notify')"
+      ng-pattern="field_pattern('aus', 'default_sms_notify')"
       type='text'/>
   </div>
-  <div class="col-md-3" ng-if="base_default_sms && !patron.isnew">
-    <button class="btn btn-default"
+  <div class="col-md-6">
+    <button ng-if="base_default_sms && !patron.isnew"
+      class="btn btn-default patron-reg-example-btn"
       ng-disabled="reg_form['default_sms_text_number'].$dirty || reg_form['default_sms_text_carrier'].$dirty"
       ng-click="send_test_sms()">[% l('Send Test Text') %]</button>
+    <span id="default-sms-num-example">
+      [% draw_example_text('aus', 'default_sms_notify') %]
+    </span>
   </div>
 </div>
 

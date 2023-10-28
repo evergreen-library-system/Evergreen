@@ -192,7 +192,8 @@ export class EditComponent implements OnInit {
     fieldPatterns: {[cls: string]: {[field: string]: RegExp}} = {
         au: {},
         ac: {},
-        aua: {}
+        aua: {},
+        aus: {}
     };
 
     fieldVisibility: {[key: string]: FieldVisibility} = {};

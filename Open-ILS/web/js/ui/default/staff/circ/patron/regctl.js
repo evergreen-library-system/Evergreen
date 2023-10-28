@@ -391,6 +391,10 @@ angular.module('egCoreMod')
             'ui.patron.edit.au.other_phone.suggest',
             'ui.patron.edit.au.other_phone.regex',
             'ui.patron.edit.au.other_phone.example',
+            'ui.patron.edit.aus.default_phone.regex',
+            'ui.patron.edit.aus.default_phone.example',
+            'ui.patron.edit.aus.default_sms_notify.regex',
+            'ui.patron.edit.aus.default_sms_notify.example',
             'ui.patron.edit.phone.regex',
             'ui.patron.edit.phone.example',
             'ui.patron.edit.au.active.show',
@@ -1435,7 +1439,7 @@ function($scope , $routeParams , $q , $uibModal , $window , egCore ,
     // note: angular docs say ng-pattern accepts a regexp or string,
     // but as of writing, it only works with a regexp object.
     // (Likely an angular 1.2 vs. 1.4 issue).
-    var field_patterns = {au : {}, ac : {}, aua : {}};
+    var field_patterns = {au : {}, ac : {}, aua : {}, aus: {}};
     $scope.field_pattern = function(cls, field) { 
         if (!field_patterns[cls][field])
             field_patterns[cls][field] = new RegExp('.*');

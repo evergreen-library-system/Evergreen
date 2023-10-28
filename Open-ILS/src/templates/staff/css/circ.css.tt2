@@ -239,6 +239,10 @@ but the ones I'm finding aren't quite cutting it..*/
   background-color: rgb(215, 215, 215);
 }
 
+.patron-reg-example-btn {
+  margin-right: 15px;
+}
+
 .patron-reg-pending-address {
   border:2px dashed #d9e8f9;
   -moz-border-radius: 10px;

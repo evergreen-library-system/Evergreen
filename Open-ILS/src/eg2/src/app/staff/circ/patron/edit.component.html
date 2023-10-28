@@ -47,6 +47,13 @@
   </span>
 </ng-template>
 
+<ng-template #userSettingExample let-args="args">
+  <span *ngIf="exampleText('aus', args.field)"
+    [id]="args.field+'_example'" class="ms-2"
+    i18n>Example: {{exampleText('aus', args.field)}}
+  </span>
+</ng-template>
+
 <!-- IDL-generated field labels.  Override with args.overrideLabel -->
 <ng-template #fieldLabel let-args="args">
   <div class="col-lg-3 field-label">
@@ -149,6 +156,9 @@
       (ngModelChange)="userSettingChange(args.settingName, $event)"
       [required]="settingFieldRequired(args.settingName)"
       [disabled]="args.disabled"
+      [pattern]="fieldPattern('aus', args.field)"
+      [attr.aria-describedby]="exampleText('aus', args.field)
+        ? args.field+'_example' : null"
     />
   </div>
 </ng-template>
@@ -160,6 +170,11 @@
     </ng-container>
     <ng-container *ngTemplateOutlet="userSettingInput; context: {args: args}">
     </ng-container>
+    <div class="col-lg-3">
+      <ng-container
+        *ngTemplateOutlet="userSettingExample; context: {args: args}">
+      </ng-container>
+    </div>
   </div>
 </ng-template>
 
@@ -506,7 +521,7 @@
   </div>
 
   <ng-container *ngTemplateOutlet="userSettingInputRow; context: 
-    {args: {settingName: 'opac.default_phone'}}">
+    {args: {cls: 'aus', field: 'default_phone', settingName: 'opac.default_phone'}}">
   </ng-container>
 
   <div class="row pt-1 pb-1 mt-1" *ngIf="showField('au.home_ou')">
@@ -559,7 +574,8 @@
         context: {args: {settingName: 'opac.default_sms_notify'}}">
       </ng-container>
       <ng-container *ngTemplateOutlet="userSettingInput;
-        context: {args: {settingName: 'opac.default_sms_notify'}}">
+        context: {args: {field: 'default_sms_notify',
+        settingName: 'opac.default_sms_notify'}}">
       </ng-container>
       <div class="col-lg-6">
         <ng-container *ngIf="userSettings['opac.default_sms_notify'] && 
@@ -568,6 +584,9 @@
             (click)="sendTestMessage('au.sms_text.test')" i18n>
             Send Test Text
           </button>
+        </ng-container>
+        <ng-container *ngTemplateOutlet="userSettingExample;
+          context: {args: {field: 'default_sms_notify'}}">
         </ng-container>
       </div>
     </div>
