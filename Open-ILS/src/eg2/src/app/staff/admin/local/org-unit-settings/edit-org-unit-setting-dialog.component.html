@@ -18,8 +18,8 @@
     <div class="row mt-3">
         <div class="col-md-6">
             <div class="input-group">
-              <div class="input-group-text" i18n>Context</div>
-              <eg-org-select [initialOrg]="entryContext"
+              <label for="context-org-select" class="input-group-text" i18n>Context</label>
+              <eg-org-select [initialOrg]="entryContext" domId="context-org-select"
                   (onChange)="entryContext = $event"></eg-org-select>
             </div>
         </div>
@@ -41,9 +41,9 @@
               </ng-container>
               <ng-container *ngSwitchCase="'currency'">
                 <div class="input-group">
-                    <div class="input-group-text" i18n>Value</div>
+                    <label for="entryValue" class="input-group-text" i18n>Value</label>
                     <div class="input-group-text" i18n>$</div>
-                    <input
+                    <input id="entryValue"
                       class="form-control" type="number"
                       step="0.01"
                       name="entryValue"
@@ -54,8 +54,8 @@
               </ng-container>
               <ng-container *ngSwitchCase="'string'">
                 <div class="input-group">
-                    <div class="input-group-text" i18n>Value</div>
-                    <input
+                    <label for="entryValue" class="input-group-text" i18n>Value</label>
+                    <input id="entryValue"
                       class="form-control" type="text"
                       name="entryValue"
                       placeholder="Input a value"
@@ -65,8 +65,8 @@
               </ng-container>
               <ng-container *ngSwitchCase="'interval'">
                 <div class="input-group">
-                    <div class="input-group-text" i18n>Value</div>
-                    <input
+                    <label for="entryValue" class="input-group-text" i18n>Value</label>
+                    <input id="entryValue"
                       class="form-control" type="text"
                       name="entryValue"
                       placeholder="e.g. 1 day, 4 months"
@@ -76,8 +76,8 @@
               </ng-container>
               <ng-container *ngSwitchCase="'bool'">
                 <div class="input-group">
-                    <div class="input-group-text" i18n>Value</div>
-                    <select
+                    <label for="entryValue" class="input-group-text" i18n>Value</label>
+                    <select id="entryValue"
                       class="form-select" name="entryValue"
                       placeholder="True or False" i18n-placeholder
                       [(ngModel)]="entryValue">
@@ -88,8 +88,8 @@
               </ng-container>
               <ng-container *ngSwitchCase="'array'">
                 <div class="input-group">
-                    <div class="input-group-text" i18n>Value</div>
-                    <input
+                    <label for="entryValue" class="input-group-text" i18n>Value</label>
+                    <input id="entryValue"
                       class="form-control" type="text"
                       name="entryValue"
                       placeholder="Input a comma-separated list..."
@@ -99,16 +99,16 @@
               </ng-container>
               <ng-container *ngSwitchCase="'link'">
                 <div class="input-group">
-                    <div class="input-group-text" i18n>Value</div>
+                    <label for="entryValue" class="input-group-text" i18n>Value</label>
                       <ng-container [ngSwitch]="entry.fmClass">
                         <ng-container *ngSwitchCase="'acpl'">
-                          <eg-item-location-select [permFilter]="entry.view_perm"
+                          <eg-item-location-select [permFilter]="entry.view_perm" domId="entryValue" 
                             [contextOrgId]="entryContext" (valueChange)="setInputValue($event ? $event.id() : null)">
                           </eg-item-location-select>
                         </ng-container>
                         <ng-container *ngSwitchDefault>
                           <eg-combobox placeholder="Select a value" [idlClass]="entry.fmClass" idlField="name"
-                            [asyncSupportsEmptyTermClick]="true" [displayTemplate]="fmClassLabel"
+                            [asyncSupportsEmptyTermClick]="true" [displayTemplate]="fmClassLabel" domId="entryValue" 
                             (onChange)="setInputValue($event ? $event.id : null)">
                           </eg-combobox>
                         </ng-container>
