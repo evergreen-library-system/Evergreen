@@ -217,7 +217,7 @@ HELP
     if (none {$_ eq $opts{type}} (TYPES)) {
         die "Please select a supported type.  ".
             "Right now that means one of [".
-                join('|',(FORMATS)). "]\n";
+                join('|',(TYPES)). "]\n";
     }
     $opts{format} = uc($opts{format});
     if (none {$_ eq $opts{format}} (FORMATS)) {
