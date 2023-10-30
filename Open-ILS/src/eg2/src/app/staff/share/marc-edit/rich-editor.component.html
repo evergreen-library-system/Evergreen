@@ -32,7 +32,7 @@
   <eg-marc-editable-content
     [context]="context" [field]="field" fieldType="sfv"
     [subfield]="subfield" ariaLabel="Subfield Value" i18n-ariaLabel
-    moreClasses="p-1 pt-2">
+    moreClasses="p-1">
   </eg-marc-editable-content>
 
 </ng-template>
@@ -209,7 +209,8 @@
       <!-- when stacking subfields, each subfield gets its own row
         preceeded by a placeholder for the tag as a way to 'tab' right -->
       <ng-container *ngIf="stackSubfields">
-        <div class="form-inline" *ngFor="let subfield of field.subfields">
+        <div *ngFor="let subfield of field.subfields"
+          class="d-flex flex-wrap ps-3">
           <eg-marc-editable-content fieldText="   " moreClasses="p-1 invisible">
           </eg-marc-editable-content>
           <ng-container
