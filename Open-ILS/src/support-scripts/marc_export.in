@@ -781,10 +781,10 @@ sub next {
     return $output;
 }
 
-# Returns a list of aou objects in an array.
+# Returns a hash reference to aou objects in a hash, id as key.
 sub orgs {
     my $self = shift;
-    unless ($self->{orgs} && @{$self->{orgs}}) {
+    unless ($self->{orgs} && %{$self->{orgs}}) {
         my $fmClass = Fieldmapper::class_for_hint('aou');
         my @classFields = $fmClass->real_fields();
         my $classTable = $fmClass->Table();
@@ -792,86 +792,89 @@ sub orgs {
         $query .= "\nfrom $classTable";
         my $sth = $self->{handle}->prepare($query);
         if ($sth->execute()) {
-            my $result = $sth->fetchall_arrayref({});
-            my @orgs = map {$fmClass->from_bare_hash($_)} @{$result};
-            $self->{orgs} = \@orgs;
+            my $result = $sth->fetchall_hashref('id');
+            my %orgs = map {$_ => $fmClass->from_bare_hash($$result{$_})} keys %{ $result }; #translate with fieldmapper
+            $self->{orgs} = \%orgs;
+            #print STDERR Data::Dumper->new([\%orgs],[qw(orgs)])->Indent(3)->Quotekeys(0)->Dump;
         } else {
-            $self->{orgs} = [];
+            $self->{orgs} = {};
         }
     }
-    return @{$self->{orgs}};
+    return $self->{orgs};
 }
 
-# Returns an array of acpl objects.
+# Returns a reference to a hash of acpl objects, id as key.
 sub shelves {
     my $self = shift;
 
-    unless ($self->{shelves} && @{$self->{shelves}}) {
+    unless ($self->{shelves} && %{$self->{shelves}}) {
         my $fmClass = Fieldmapper::class_for_hint('acpl');
         my @classFields = $fmClass->real_fields();
         my $classTable = $fmClass->Table();
         my $query = 'select ' . join(',', @classFields);
         $query .= "\nfrom $classTable";
-        my $result = $self->{handle}->selectall_arrayref($query, {Slice=>{}});
-        my @shelves = map {$fmClass->from_bare_hash($_)} @{$result};
-        $self->{shelves} = \@shelves;
+        #my $result = $self->{handle}->selectall_arrayref($query, {Slice=>{}});
+        my $result = $self->{handle}->selectall_hashref($query, 'id');
+        #Translate into fieldmapper objects
+        my %shelves = map {$_ => $fmClass->from_bare_hash($$result{$_})} keys %{ $result };
+        $self->{shelves} = \%shelves;
     }
 
-    return @{$self->{shelves}};
+    return $self->{shelves};
 }
 
-# Returns an array of ccs objects.
+# Returns an reference to a hash of ccs objects.
 sub statuses {
     my $self = shift;
 
-    unless ($self->{statuses} && @{$self->{statuses}}) {
+    unless ($self->{statuses} && %{$self->{statuses}}) {
         my $fmClass = Fieldmapper::class_for_hint('ccs');
         my @classFields = $fmClass->real_fields();
         my $classTable = $fmClass->Table();
         my $query = 'select ' . join(',', @classFields);
         $query .= "\nfrom $classTable";
-        my $result = $self->{handle}->selectall_arrayref($query, {Slice=>{}});
-        my @statuses = map {$fmClass->from_bare_hash($_)} @{$result};
-        $self->{statuses} = \@statuses;
+        my $result = $self->{handle}->selectall_hashref($query, 'id');
+        my %statuses = map {$_ => $fmClass->from_bare_hash($$result{$_})} keys %{ $result };
+        $self->{statuses} = \%statuses;
     }
 
-    return @{$self->{statuses}};
+    return $self->{statuses};
 }
 
-# Returns an array of acnp objects.
+# Returns a reference to a hash of acnp objects, id as key.
 sub prefixes {
     my $self = shift;
 
-    unless ($self->{prefixes} && @{$self->{prefixes}}) {
+    unless ($self->{prefixes} && %{$self->{prefixes}}) {
         my $fmClass = Fieldmapper::class_for_hint('acnp');
         my @classFields = $fmClass->real_fields();
         my $classTable = $fmClass->Table();
         my $query = 'select ' . join(',', @classFields);
         $query .= "\nfrom $classTable";
-        my $result = $self->{handle}->selectall_arrayref($query, {Slice=>{}});
-        my @prefixes = map {$fmClass->from_bare_hash($_)} @{$result};
-        $self->{prefixes} = \@prefixes;
+        my $result = $self->{handle}->selectall_hashref($query, 'id');
+        my %prefixes = map {$_ => $fmClass->from_bare_hash($$result{$_})} keys %{ $result };
+        $self->{prefixes} = \%prefixes;
     }
 
-    return @{$self->{prefixes}};
+    return $self->{prefixes};
 }
 
-# Returns an array of acns objects.
+# Returns a reference to a hash of acns objects, id as key
 sub suffixes {
     my $self = shift;
 
-    unless ($self->{suffixes} && @{$self->{suffixes}}) {
+    unless ($self->{suffixes} && %{$self->{suffixes}}) {
         my $fmClass = Fieldmapper::class_for_hint('acns');
         my @classFields = $fmClass->real_fields();
         my $classTable = $fmClass->Table();
         my $query = 'select ' . join(',', @classFields);
         $query .= "\nfrom $classTable";
-        my $result = $self->{handle}->selectall_arrayref($query, {Slice=>{}});
-        my @suffixes = map {$fmClass->from_bare_hash($_)} @{$result};
-        $self->{suffixes} = \@suffixes;
+        my $result = $self->{handle}->selectall_hashref($query, 'id');
+        my %suffixes = map {$_ => $fmClass->from_bare_hash($$result{$_})} keys %{ $result };
+        $self->{suffixes} = \%suffixes;
     }
 
-    return @{$self->{suffixes}};
+    return $self->{suffixes};
 }
 
 # Returns an array of acn objects for a given bre object or id.
@@ -907,45 +910,46 @@ sub acps_for_bre {
     my $bre = shift;
     $bre = $bre->id() if (ref($bre));
 
-    my @orgs = $self->orgs();
-    my @locations = $self->shelves();
-    my @prefixes = $self->prefixes();
-    my @suffixes = $self->suffixes();
-    my @statuses = $self->statuses();
+    my $orgs = $self->orgs();
+    my $locations = $self->shelves();
+    my $prefixes = $self->prefixes();
+    my $suffixes = $self->suffixes();
+    my $statuses = $self->statuses();
 
     my @acns = $self->acns_for_bre($bre);
     if (@acns) {
-        my $query = 'select ' . join(',', $self->{acpClass}->real_fields());
-        $query .= "\nfrom " . $self->{acpClass}->Table();
-        $query .= "\nwhere call_number in (";
-        $query .= join(',', map {$_->id()} @acns);
-        $query .= ")";
-        $query .= "\nand deleted = 'f'" unless ($Marque::config->option_value('since'));
-        my $result = $self->{handle}->selectall_arrayref($query, {Slice=>{}});
+
+        #Setup a prepared statement for the first call
+        unless ($self->{acpHandle}) {
+            my $query = 'select ' . join(',', $self->{acpClass}->real_fields());
+            $query .= "\nfrom " . $self->{acpClass}->Table();
+            $query .= "\nwhere call_number = ANY(?::INT[])";
+            #$query .= join(',', map {$_->id()} @acns);
+            #$query .= ")";
+            $query .= "\nand deleted = 'f'" unless ($Marque::config->option_value('since'));
+            $query .= "\nand opac_visible" if ($Marque::config->option_value('exclude-hidden'));
+            $self->{acpHandle} = $self->{handle}->prepare($query);
+        }
+
+        #Use the prepared statement
+        my $result;
+        my @acnsa = map {$_->id()} @acns;
+        if ($self->{acpHandle}->execute( \@acnsa )) {
+            $result = $self->{acpHandle}->fetchall_arrayref( {} );
+        }
+
         if ($result && @{$result}) {
             my @acps = map {$self->{acpClass}->from_bare_hash($_)} @{$result};
             foreach (@acps) {
                 my $cn = $_->call_number();
-                my $clib = $_->circ_lib();
-                my $loc = $_->location();
-                my $stat = $_->status();
-                my ($org) = grep {$_->id() == $clib} @orgs;
                 my ($acn) = grep {$_->id() == $cn} @acns;
-                my ($location) = grep {$_->id() == $loc} @locations;
-                my $olib = $acn->owning_lib();
-                my $pre = $acn->prefix();
-                my $suf = $acn->suffix();
-                my ($ccs) = grep {$_->id() == $stat} @statuses;
-                my ($acnp) = grep {$_->id() == $pre} @prefixes;
-                my ($acns) = grep {$_->id() == $suf} @suffixes;
-                my ($owner) = grep {$_->id() == $olib} @orgs;
-                $acn->owning_lib($owner);
+                $acn->owning_lib($orgs->{$acn->owning_lib()});
                 $_->call_number($acn);
-                $_->circ_lib($org);
-                $_->location($location);
-                $_->call_number->prefix($acnp);
-                $_->call_number->suffix($acns);
-                $_->status($ccs);
+                $_->circ_lib($orgs->{$_->circ_lib()});
+                $_->location($locations->{$_->location()});
+                $_->status($statuses->{$_->status()});
+                $_->call_number->prefix($prefixes->{$acn->prefix()});
+                $_->call_number->suffix($suffixes->{$acn->suffix()});
             }
             return @acps;
         }
