@@ -54,7 +54,7 @@
   </div>
   <div class="col-lg-2">
     <eg-combobox [selectedId]="settings['eg.search.adv_pane']"
-      (onChange)="paneChanged($event)">
+      (onChange)="paneChanged($event)" domId="def-pane-selector">
       <eg-combobox-entry entryId="advanced" entryLabel="Keyword Search"></eg-combobox-entry>
       <eg-combobox-entry entryId="numeric" entryLabel="Numeric Search"></eg-combobox-entry>
       <eg-combobox-entry entryId="expert" entryLabel="MARC Search"></eg-combobox-entry>
@@ -69,14 +69,14 @@
 
 <div class="row border-bottom border-secondary p-2 m-2">
   <div class="col-lg-2 offset-lg-1">
-    <label for="pref-lib-selector" class="form-label fw-bold" i18n>
+    <label for="pref-lib-per-page" class="form-label fw-bold" i18n>
       Search Results Per Page
     </label>
   </div>
   <div class="col-lg-2">
     <input type="number" min="1" max="100" class="form-control"
       [(ngModel)]="settings['eg.catalog.results.count']"
-      (change)="countChanged()"/>
+      (change)="countChanged()" id="pref-lib-per-page" />
   </div>
   <div class="col-lg-6" i18n>
     The number of search results to display per page.
