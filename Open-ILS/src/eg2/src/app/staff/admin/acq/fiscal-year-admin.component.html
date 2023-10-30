@@ -1,0 +1,24 @@
+<eg-staff-banner bannerText="Fiscal Years & Calendars Administration" i18n-bannerText>
+</eg-staff-banner>
+
+<eg-title i18n-prefix prefix="Fiscal Years and Calendar Administration"></eg-title>
+
+<ul ngbNav #claimingAdminNav="ngbNav" class="nav-tabs" [keyboard]="true" [roles]="false" role="tablist">
+  <li role="presentation" ngbNavItem>
+    <a role="tab" ngbNavLink i18n>Fiscal Years</a>
+    <ng-template ngbNavContent>
+      <div class="mt-2">
+        <eg-admin-page idlClass="acqfy"></eg-admin-page>
+       </div>
+    </ng-template>
+  </li>
+  <li role="presentation" ngbNavItem>
+    <a role="tab" ngbNavLink i18n>Fiscal Calendars</a>
+    <ng-template ngbNavContent>
+      <div class="mt-2">
+        <eg-admin-page idlClass="acqfc"></eg-admin-page>
+       </div>
+    </ng-template>
+  </li>
+</ul>
+<div [ngbNavOutlet]="claimingAdminNav"></div>

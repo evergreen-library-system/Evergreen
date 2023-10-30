@@ -29,21 +29,5 @@
        </div>
     </ng-template>
   </li>
-  <li role="presentation" [ngbNavItem]="'fiscal_year'">
-    <a role="tab" ngbNavLink i18n>Fiscal Years</a>
-    <ng-template ngbNavContent>
-      <div class="mt-2">
-        <eg-admin-page idlClass="acqfy"></eg-admin-page>
-       </div>
-    </ng-template>
-  </li>
-  <li role="presentation" [ngbNavItem]="'fiscal_calendar'">
-    <a role="tab" ngbNavLink i18n>Fiscal Calendars</a>
-    <ng-template ngbNavContent>
-      <div class="mt-2">
-        <eg-admin-page idlClass="acqfc"></eg-admin-page>
-       </div>
-    </ng-template>
-  </li>
 </ul>
 <div [ngbNavOutlet]="claimingAdminNav"></div>

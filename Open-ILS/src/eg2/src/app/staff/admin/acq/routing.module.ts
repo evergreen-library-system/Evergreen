@@ -3,6 +3,7 @@ import {RouterModule, Routes} from '@angular/router';
 import {AdminAcqSplashComponent} from './admin-acq-splash.component';
 import {BasicAdminPageComponent} from '@eg/staff/admin/basic-admin-page.component';
 import {ClaimingAdminComponent} from './claiming-admin.component';
+import {FiscalYearAdminComponent} from './fiscal-year-admin.component';
 
 const routes: Routes = [{
     path: 'splash',
@@ -49,6 +50,15 @@ const routes: Routes = [{
     path: 'edi_attr_set',
     loadChildren: () =>
       import('./edi_attr_set/edi-attr-sets.module').then(m => m.EdiAttrSetsModule)
+}, {
+    path: 'fiscal-year-admin',
+    component: FiscalYearAdminComponent
+}, {
+    path:'fiscal_calendar',
+    redirectTo: 'fiscal-year-admin' // from legacy auto-generated admin page
+}, {
+    path:'fiscal_year',
+    redirectTo: 'fiscal-year-admin' // from legacy auto-generated admin page
 }, {
     path: 'funds',
     loadChildren: () =>
