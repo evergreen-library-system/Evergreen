@@ -79,6 +79,7 @@ sub new {
     $opts{'timeout'} = 0;
     $opts{'config'} = '@sysconfdir@/opensrf_core.xml';
     $opts{'store'} = 'reporter';
+    $opts{'batch-size'} = 10000;
 
     GetOptions(\%opts,
                'help',
@@ -101,7 +102,8 @@ sub new {
                'store=s',
                'uris',
                'debug',
-               'pipe');
+               'pipe',
+               'batch-size=i');
 
     if ($opts{help}) {
         print <<"HELP";
@@ -135,6 +137,13 @@ Usage: $0 [options]
  --since            Export records modified since a certain date and time.
  --pipe             Force record ids to be read from list on standard input,
                     despite other options to the contrary
+ --batch-size       Number of records to fetch at a time for processing
+                    (default 10000). This option can be adjusted
+                    depending on your database performance or
+                    environment. Doing smaller batch sizes can
+                    sometimes speed up the extraction. Finding the
+                    best value for your situation requires
+                    experimentation.
 
  Additional options for type = 'BIBLIO':
  --items or -i      Include items (holdings) in the output
@@ -515,9 +524,12 @@ ACN_JOIN
 sub execute_query {
     my $self = shift;
     $self->build_query() unless ($self->{query});
-    my $cursor = 'DECLARE bibs CURSOR WITH HOLD FOR ';
-    $self->{handle}->do($cursor.$self->{query});
-    $self->{sth} = $self->{handle}->prepare('fetch 10000 from bibs');
+    unless ($self->{cursor}) {
+        $self->{cursor} = 'DECLARE bibs CURSOR WITH HOLD FOR ' . $self->{query};
+        $self->{handle}->do($self->{cursor});
+        $self->{fetchcmd} = 'fetch ' . $Marque::config->option_value('batch-size') . ' from bibs';
+    }
+    $self->{sth} = $self->{handle}->prepare($self->{fetchcmd});
     return $self->{sth}->execute;
 }
 
@@ -550,12 +562,14 @@ sub next {
         }
     } else {
         my $data = $self->{sth}->fetchrow_hashref;
-        # If the cursor ran out of data, fetch the next 10000.
-        if (!$data){
-            $self->{sth} = $self->{handle}->prepare('fetch 10000 from bibs');
-            $self->{sth}->execute;
-            $data = $self->{sth}->fetchrow_hashref;
+
+        unless ($data){
+            # We ran out of data, so fetch the next batch.
+            if ($self->execute_query()) {
+                $data = $self->{sth}->fetchrow_hashref;
+            }
         }
+
         if ($data) {
             $r = $self->{breClass}->from_bare_hash($data);
             if ($Marque::config->option_value('format') eq 'BRE') {
@@ -984,10 +998,16 @@ sub build_query {
     $self->{query} = $select . "\n" . $from . "\n" . $where;
 }
 
+
 sub execute_query {
     my $self = shift;
     $self->build_query() unless ($self->{query});
-    $self->{sth} = $self->{handle}->prepare($self->{query});
+    unless ($self->{cursor}) {
+        $self->{cursor} = 'DECLARE auths CURSOR WITH HOLD FOR ' . $self->{query};
+        $self->{handle}->do($self->{cursor});
+        $self->{fetchcmd} = 'fetch ' . $Marque::config->option_value('batch-size') . ' from auths';
+    }
+    $self->{sth} = $self->{handle}->prepare($self->{fetchcmd});
     return $self->{sth}->execute;
 }
 
@@ -995,6 +1015,13 @@ sub next {
     my $self = shift;
     my $output;
     my $data = $self->{sth}->fetchrow_hashref;
+
+    unless ($data) {
+        # We ran out of data, so try fetching the next batch.
+        if ($self->execute_query()) {
+            $data = $self->{sth}->fetchrow_hashref();
+        }
+    }
 
     if ($data) {
         my $format = $Marque::config->option_value('format');
