@@ -26,6 +26,7 @@ import {PromptDialogComponent} from '@eg/share/dialog/prompt.component';
 import {ProgressInlineComponent} from '@eg/share/dialog/progress-inline.component';
 import {ProgressDialogComponent} from '@eg/share/dialog/progress.component';
 import {BoolDisplayComponent} from '@eg/share/util/bool.component';
+import {BackButtonComponent} from '@eg/share/util/back-button.component';
 import {ToastService} from '@eg/share/toast/toast.service';
 import {ToastComponent} from '@eg/share/toast/toast.component';
 import {StringModule} from '@eg/share/string/string.module';
@@ -41,7 +42,8 @@ import {StringModule} from '@eg/share/string/string.module';
     ProgressInlineComponent,
     ProgressDialogComponent,
     ToastComponent,
-    BoolDisplayComponent
+    BoolDisplayComponent,
+    BackButtonComponent,
   ],
   imports: [
     CommonModule,
@@ -68,6 +70,7 @@ import {StringModule} from '@eg/share/string/string.module';
     ProgressInlineComponent,
     ProgressDialogComponent,
     BoolDisplayComponent,
+    BackButtonComponent,
     ToastComponent
   ]
 })
