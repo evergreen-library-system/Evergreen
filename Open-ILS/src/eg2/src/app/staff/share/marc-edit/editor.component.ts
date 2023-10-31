@@ -129,22 +129,6 @@ export class MarcEditorComponent implements OnInit {
         if (!this.record && this.recordId) {
             this.fromId(this.recordId);
         }
-
-        if (this.recordType !== 'biblio') { return; }
-
-        this.pcrud.retrieveAll('cbs').subscribe(
-            src => this.sources.push({id: +src.id(), label: src.source()}),
-            _ => {},
-            () => {
-                this.sources = this.sources.sort((a, b) =>
-                    a.label.toLowerCase() < b.label.toLowerCase() ? -1 : 1
-                );
-
-                if (this.recordSource) {
-                    this.sourceSelector.applyEntryId(this.recordSource);
-                }
-            }
-        );
     }
 
     changesPending(): boolean {
@@ -180,6 +164,9 @@ export class MarcEditorComponent implements OnInit {
         let sourceName: string = null;
         let sourceId: number = null;
 
+        // We don't just use this.recordSource here because we need
+        // to use the name (label) for an API call.  That seems like
+        // an API bug...
         if (this.sourceSelector && this.sourceSelector.selected) {
             sourceName = this.sourceSelector.selected.label;
             sourceId = this.sourceSelector.selected.id;
@@ -276,9 +263,13 @@ export class MarcEditorComponent implements OnInit {
             this.record.id = id;
             this.record.deleted = rec.deleted() === 't';
             if (idlClass === 'bre' && rec.source()) {
-                this.sourceSelector.applyEntryId(+rec.source());
+                this.recordSource = +rec.source();
             }
         });
+    }
+
+    updateRecordSource(entry) {
+        this.recordSource = entry.id;
     }
 
     fromXml(xml: string) {
