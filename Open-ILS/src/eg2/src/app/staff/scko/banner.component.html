@@ -1,10 +1,10 @@
 
 <div id="scko-banner" class="pb-2">
-	<div id="scko-logo-div">
-		<img src="/images/self_eg_logo.png"/>
-	</div>
+	<header id="scko-logo-div">
+		<img src="/images/self_eg_logo.png" alt="Evergreen self-checkout"/>
+  </header>
   <div class="scko-scan-container mt-3">
-    <ng-container *ngIf="scko.auth.user() && !scko.patronSummary">
+    <main *ngIf="scko.auth.user() && !scko.patronSummary">
       <div id="scko-scan-input-text" i18n>
         Please log in with your username or library barcode.
       </div>
@@ -35,7 +35,7 @@
         </div>
         <div class="flex-1"></div>
       </div>
-    </ng-container>
+    </main>
 
     <ng-container *ngIf="scko.patronSummary">
       <div id="scko-scan-input-text" i18n>Please enter an item barcode</div>
@@ -67,7 +67,7 @@
   </div>
 </div>
 
-<div *ngIf="!scko.auth.user()" class="container mt-3">
+<main *ngIf="!scko.auth.user()" class="container mt-3">
 
   <div class="col-lg-6 offset-lg-3">
     <fieldset>
@@ -136,4 +136,4 @@
       </form>
     </fieldset>
   </div>
-</div>
+</main>
