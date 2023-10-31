@@ -25,7 +25,7 @@
           class="btn btn-outline-dark me-1" type="button"
           (click)="gridManageFiltersDialog.open().subscribe()"
           [disabled]="gridContext.dataSource.requestingData" i18n>
-          Manage Filters
+          Manage Grid Filters
         </button>
       </ng-container>
       <ng-container *ngFor="let btn of gridContext.toolbarButtons">
