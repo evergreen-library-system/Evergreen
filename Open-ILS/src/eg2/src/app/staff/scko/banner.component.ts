@@ -1,12 +1,10 @@
-import {Component, OnInit, AfterViewInit, NgZone, HostListener} from '@angular/core';
+import {Component, OnInit, AfterViewInit} from '@angular/core';
 import {Location} from '@angular/common';
-import {Router, ActivatedRoute, NavigationEnd} from '@angular/router';
+import {ActivatedRoute} from '@angular/router';
 import {AuthService, AuthWsState} from '@eg/core/auth.service';
-import {NetService} from '@eg/core/net.service';
 import {StoreService} from '@eg/core/store.service';
 import {SckoService, ActionContext} from './scko.service';
 import {OrgService} from '@eg/core/org.service';
-import {EventService, EgEvent} from '@eg/core/event.service';
 import {HatchService} from '@eg/core/hatch.service';
 
 @Component({
@@ -32,9 +30,7 @@ export class SckoBannerComponent implements OnInit, AfterViewInit {
     constructor(
         private route: ActivatedRoute,
         private store: StoreService,
-        private net: NetService,
         private auth: AuthService,
-        private evt: EventService,
         private ngLocation: Location,
         private org: OrgService,
         private hatch: HatchService,
@@ -152,6 +148,7 @@ export class SckoBannerComponent implements OnInit, AfterViewInit {
     submitItemBarcode() {
         this.scko.resetPatronTimeout();
         this.scko.checkout(this.itemBarcode);
+        this.itemBarcode = '';
     }
 }
 
