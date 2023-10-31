@@ -506,8 +506,7 @@ sub build_html {
 			table { border-collapse: collapse; }
 			th { background-color: lightgray; }
 			td,th { border: solid black 1px; }
-			* { font-family: sans-serif; font-size: 10px; }
-			.dim { color: lightblue; }
+			* { font-family: sans-serif; font-size: 1rem; }
 		</style>
 	</head>
 	<body>
@@ -535,7 +534,7 @@ sub build_html {
 	push @links, "<a href='report-data.csv'>CSV Output</a>" if ($r->{csv_format});
 
 	# debugging output
-	push @links, "<a class='dim' href='report-data.html.debug.html'>Debugging Info</a>";
+	push @links, "<a href='report-data.html.debug.html'>Debugging Info</a>";
 
 	my $debug = new FileHandle (">$file.debug.html") or die "Cannot write to '$file.debug.html'";
 	print $debug "<html><head><meta charset='utf-8'><title>DEBUG: $$r{report}{name}</title></head><body>";
