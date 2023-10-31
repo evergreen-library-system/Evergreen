@@ -24649,9 +24649,11 @@ UPDATE config.print_template SET template = $TEMPLATE$
   <div>
     Library Hours
     [%- 
-        BLOCK format_time; 
-            date.format(time _ ' 1/1/1000', format='%I:%M %p'); 
-        END 
+        BLOCK format_time;
+          IF time;
+            date.format(time _ ' 1/1/1000', format='%I:%M %p');
+          END;
+        END
     -%]
     <div>
       Monday 
