@@ -1,5 +1,5 @@
 
-<eg-staff-banner i18n-bannerText bannerText="Linetiems Related to Bib Record">
+<eg-staff-banner i18n-bannerText bannerText="Line Items Related to Bib Record">
 </eg-staff-banner>
 
 <eg-bib-summary [recordId]="recordId"></eg-bib-summary> 
@@ -30,7 +30,7 @@
   </div>
   <div class="col-lg-2 p-1">
     <div *ngIf="addingToPl" class="d-flex">
-      <eg-combobox [(ngModel)]="selectedPl" idlClass="acqpl"
+      <eg-combobox [(ngModel)]="selectedPl" idlClass="acqpl" [asyncSupportsEmptyTermClick]="true"
         placeholder="Select List..." i18n-placeHolder></eg-combobox>
       <button class="btn btn-outline-primary btn-sm" type="button"
         (click)="addToPicklist(selectedPl ? selectedPl.id : null)" i18n>
@@ -54,7 +54,7 @@
   </div>
   <div class="col-lg-2 p-1">
     <div *ngIf="addingToPo" class="d-flex">
-      <eg-combobox [(ngModel)]="selectedPo" idlClass="acqpo"
+      <eg-combobox [(ngModel)]="selectedPo" idlClass="acqpo" [asyncSupportsEmptyTermClick]="true"
         placeholder="Select Order..." i18n-placeHolder></eg-combobox>
       <button class="btn btn-outline-primary btn-sm" type="button"
         (click)="addToPo(selectedPo ? selectedPo.id : null)" i18n>
