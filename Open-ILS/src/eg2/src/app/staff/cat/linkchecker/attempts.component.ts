@@ -35,6 +35,8 @@ export class LinkCheckerAttemptsComponent implements OnInit {
     attemptsPermaCrud: any;
     attemptsPerms: string;
 
+    alertMessage: string = '';
+
     @ViewChild('grid', { static: true }) grid: GridComponent;
     dataSource: GridDataSource = new GridDataSource();
     noSelectedRows: boolean;
@@ -59,6 +61,9 @@ export class LinkCheckerAttemptsComponent implements OnInit {
 
         this.route.queryParams.pipe(
             switchMap(params => {
+                if (params.alertMessage) {
+                    this.alertMessage = params.alertMessage;
+                }
                 if (params.batches) {
                     this.batches = JSON.parse(params.batches);
                     // Return an observable that immediately completes

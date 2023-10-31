@@ -156,22 +156,23 @@ export class LinkCheckerComponent implements OnInit {
 	newSessionWrapper(optionalSessionToClone?: any) {
         this.newSessionDialog.sessionToClone = optionalSessionToClone;
 		this.newSessionDialog.open({size: 'lg'}).subscribe( (res) => {
+            let alertMessage = '';
             console.log('new dialog res', res);
             if (res['sessionId']) {
-                window.alert( // TODO: replace this with an angular dialog
+                alertMessage =
                       $localize`Session ID = ` + res['sessionId'] + '\n'
                     + $localize`Title Hits = ` + res['number_of_hits'] + '\n'
                     + $localize`URLs Extracted = ` + res['urls_extracted'] + '\n'
-                    + $localize`URLs Verified = ` + res['verified_total_processed'] + '\n'
-                );
+                    + $localize`URLs Verified = ` + res['verified_total_processed'] + '\n';
+                //window.alert(alertMessage);
             }
             if (res && res['sessionId']) {
                 if (res['viewURLs'] && res['urls_extracted'] > 0) {
                     this.router.navigate(['/staff/cat/linkchecker/urls/'],
-                        { queryParams: { sessions: JSON.stringify([ Number(res['sessionId']) ]) } });
+                        { queryParams: { alertMessage: alertMessage, sessions: JSON.stringify([ Number(res['sessionId']) ]) } });
                 } else if (res['viewAttempts'] && res['verified_total_processed'] > 0) {
                     this.router.navigate(['/staff/cat/linkchecker/attempts/'],
-                        { queryParams: { sessions: JSON.stringify([ Number(res['sessionId']) ]) } });
+                        { queryParams: { alertMessage: alertMessage, sessions: JSON.stringify([ Number(res['sessionId']) ]) } });
                 } else {
                     this.grid.reload();
                 }

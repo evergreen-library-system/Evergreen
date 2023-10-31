@@ -34,6 +34,8 @@ export class LinkCheckerUrlsComponent implements OnInit {
     urlsPermaCrud: any;
     urlsPerms: string;
 
+    alertMessage: string = '';
+
     @ViewChild('progress', { static: true }) private progress: ProgressDialogComponent;
     progressText: string = '';
 
@@ -62,6 +64,9 @@ export class LinkCheckerUrlsComponent implements OnInit {
                     this.session_names.push(n.name());
                     this.cdr.detectChanges();
                 });
+            }
+            if (params.alertMessage) {
+                this.alertMessage = params.alertMessage;
             }
         });
 
