@@ -108,7 +108,7 @@ sub new {
     if ($opts{help}) {
         print <<"HELP";
 This script exports MARC authority, bibliographic, and serial holdings
-records from an Evergreen database. 
+records from an Evergreen database.
 
 Input to this script can consist of a list of record IDs, with one record ID
 per line, corresponding to the record ID in the Evergreen database table of
@@ -209,7 +209,7 @@ HELP
                 'records with the option to read record ids via standard input');
     }
     if ($opts{since} && $opts{pipe}) {
-        die('Incompatible arguments: you cannot combine a request for records added or '. 
+        die('Incompatible arguments: you cannot combine a request for records added or '.
                 'changed since a certain date with ' .
                 'the option to read record ids via standard input');
     }
