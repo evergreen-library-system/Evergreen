@@ -304,8 +304,8 @@
       <div class="ms-2 flex-1"> <!-- lineitem summary info -->
         <div class="row">
           <div class="col-lg-12">
-            <input type="checkbox" [(ngModel)]="selected[li.id()]"  attr.aria-labelledby="{{li.id()}}"/>
-            <a class="ms-2" queryParamsHandling="merge" [id]="li.id()"
+            <input type="checkbox" [(ngModel)]="selected[li.id()]"  attr.aria-labelledby="lineitem-{{li.id()}}"/>
+            <a class="ms-2" queryParamsHandling="merge" [id]="'lineitem-'+li.id()"
               routerLink="./lineitem/{{li.id()}}/detail">
               {{displayAttr(li, 'title')}}
             </a>
