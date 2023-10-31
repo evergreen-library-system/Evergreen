@@ -33,10 +33,14 @@
 
     <eg-grid-toolbar-button
         label="Verify Selected URLs" i18n-label
-        adjacentSubsequentLabel="This will create a new Batch for the Session."
-        i18n-adjacentSubsequentLabel
         [disabled]="noSelectedRows" 
         (onClick)="verifySelectedUrls()">
+        </eg-grid-toolbar-button>
+    <eg-grid-toolbar-button
+        label="Verify All URLs" i18n-label
+        adjacentSubsequentLabel="These Verify actions will create a new Batch for the Session."
+        i18n-adjacentSubsequentLabel
+        (onClick)="verifyAllUrls()">
         </eg-grid-toolbar-button>
     <eg-grid-column path="id" [index]="true" [required]="true"></eg-grid-column>
     <eg-grid-column [required]="true" path="item.target_biblio_record_entry.id" [cellTemplate]="bibIdTemplate">

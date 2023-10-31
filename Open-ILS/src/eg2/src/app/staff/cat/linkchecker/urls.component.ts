@@ -126,14 +126,20 @@ export class LinkCheckerUrlsComponent implements OnInit {
     verifyUrlsFilteredForSession(rows: any[], ses_ids: any[]) {
         var ses_id = ses_ids.pop();
         if (ses_id) {
-            this.resetProgressMeter($localize`Verifying selected URLs for Session ${ses_id}...`);
+            if (rows === null) {
+                this.resetProgressMeter($localize`Verifying all URLs for Session ${ses_id}...`);
+            } else {
+                this.resetProgressMeter($localize`Verifying selected URLs for Session ${ses_id}...`);
+            }
             console.log('Verifying selected URLs for Session ' + ses_id);
             this.net.request(
                 'open-ils.url_verify',
                 'open-ils.url_verify.session.verify',
                 this.auth.token(),
                 ses_id,
-                rows.filter( url => url.session === ses_id ).map( url => url.id )
+                rows === null
+                    ? null // an empty [] would result in no URLs being processed
+                    : rows.filter( url => url.session === ses_id ).map( url => url.id )
             ).subscribe({
                 next: (res) => {
                     console.log('res',res);
@@ -163,5 +169,10 @@ export class LinkCheckerUrlsComponent implements OnInit {
         let session_ids = Array.from( new Set( rows.map(x => Number(x.session)) ) );
         this.startProgressMeter($localize`Verifying selected URLs for Sessions ${session_ids}...`);
         this.verifyUrlsFilteredForSession(rows,session_ids);
+    }
+
+    verifyAllUrls() {
+        this.startProgressMeter($localize`Verifying All URLs for Sessions ${this.sessions}...`);
+        this.verifyUrlsFilteredForSession(null,this.sessions);
     }
 }
