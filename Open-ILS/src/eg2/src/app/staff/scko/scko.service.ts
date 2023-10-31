@@ -241,9 +241,9 @@ export class SckoService {
     }
 
     startPatronTimer() {
-        this.patronTimeoutId = setTimeout(
+        setTimeout(
             () => this.showPatronLogoutWarning(),
-            this.patronIdleTimeout * 1000
+            this.patronTimeoutId = this.patronIdleTimeout * 1000
         );
     }
 
@@ -263,13 +263,13 @@ export class SckoService {
 
         // Force the session to end if no action is taken on the
         // logout warning dialog.
-        this.logoutWarningTimerId = setTimeout(
+        setTimeout(
             () => {
                 console.debug('Clearing patron on warning dialog timeout');
                 this.resetPatron();
                 this.router.navigate(['/staff/scko']);
             },
-            this.logoutWarningTimeout * 1000
+            this.logoutWarningTimerId = this.logoutWarningTimeout * 1000
         );
     }
 
