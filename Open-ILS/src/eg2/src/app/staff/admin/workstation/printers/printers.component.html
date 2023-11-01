@@ -83,13 +83,13 @@
     <div class="row" *ngIf="virtualPrinter()">
       <div class="col-lg-12">
         <div class="alert alert-info" 
-          *ngIf="printConfigs[context].printer == 'hatch_file_writer'" i18n>
+          *ngIf="printConfigs[context].printer === 'hatch_file_writer'" i18n>
           Hatch File Writer translates print output to plain text
           and writes the content to a text file in the Hatch profile directory.
           No additional settings are required.
         </div>
         <div class="alert alert-info" 
-          *ngIf="printConfigs[context].printer == 'hatch_browser_printing'" i18n>
+          *ngIf="printConfigs[context].printer === 'hatch_browser_printing'" i18n>
           Hatch Browser Printing sends print requests directly
           to the browser, bypassing the external Hatch print mechanism. No 
           additional settings are required.
