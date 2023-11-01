@@ -350,15 +350,19 @@
                 </div>
                 <div class="col">
                   <button class="btn btn-sm material-icon-button ms-2"
+                    i18n-title title="Add Search Row"
+                    i18n-aria-label aria-label="Add Search Row"
                     (click)="addMarcSearchRow(idx + 1)">
-                    <span class="material-icons">add_circle_outline</span>
+                    <span class="material-icons" aria-hidden="true">add_circle_outline</span>
                   </button>
                 </div>
                 <div class="col">
                   <button class="btn btn-sm material-icon-button ps-0 ms-0"
+                    i18n-title title="Remove Search Row"
+                    i18n-aria-label aria-label="Remove Search Row"
                     [disabled]="context.marcSearch.values.length < 2"
                     (click)="delMarcSearchRow(idx)">
-                    <span class="material-icons">remove_circle_outline</span>
+                    <span class="material-icons" aria-hidden="true">remove_circle_outline</span>
                   </button>
                 </div>
               </div>
