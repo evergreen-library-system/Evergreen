@@ -1,12 +1,5 @@
-import {Component, OnInit, NgZone, HostListener} from '@angular/core';
-import {Location} from '@angular/common';
-import {Router, ActivatedRoute, NavigationEnd} from '@angular/router';
-import {AuthService, AuthWsState} from '@eg/core/auth.service';
-import {NetService} from '@eg/core/net.service';
-import {StoreService} from '@eg/core/store.service';
+import {Component, OnInit} from '@angular/core';
 import {SckoService} from './scko.service';
-import {OrgService} from '@eg/core/org.service';
-import {EventService, EgEvent} from '@eg/core/event.service';
 
 @Component({
   selector: 'eg-scko-summary',
@@ -35,19 +28,7 @@ export class SckoSummaryComponent implements OnInit {
     }
 
     canEmail(): boolean {
-        if (!this.scko.patronSummary) { return false; }
-
-        const patron = this.scko.patronSummary.patron;
-
-        const setting = patron.settings().filter(
-            s => s.name() === 'circ.send_email_checkout_receipts')[0];
-
-        return (
-            Boolean(patron.email())
-            && patron.email().match(/.*@.*/) !== null
-            && setting
-            && setting.value() === 'true' // JSON
-        );
+        return Boolean(this.scko.patronSummary?.patron?.email());
     }
 }
 
