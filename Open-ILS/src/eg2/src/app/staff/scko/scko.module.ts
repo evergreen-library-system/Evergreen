@@ -14,6 +14,7 @@ import {SckoCheckoutComponent} from './checkout.component';
 import {SckoItemsComponent} from './items.component';
 import {SckoHoldsComponent} from './holds.component';
 import {SckoFinesComponent} from './fines.component';
+import {ForceReloadService} from '@eg/share/util/force-reload.service';
 
 @NgModule({
   declarations: [
@@ -33,7 +34,8 @@ import {SckoFinesComponent} from './fines.component';
   ],
   providers: [
     SckoService,
-    AudioService
+    AudioService,
+    ForceReloadService
   ]
 })
 

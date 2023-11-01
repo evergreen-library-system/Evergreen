@@ -1,11 +1,11 @@
 import {Component, OnInit, AfterViewInit} from '@angular/core';
-import {Location} from '@angular/common';
 import {ActivatedRoute} from '@angular/router';
 import {AuthService, AuthWsState} from '@eg/core/auth.service';
 import {StoreService} from '@eg/core/store.service';
 import {SckoService, ActionContext} from './scko.service';
 import {OrgService} from '@eg/core/org.service';
 import {HatchService} from '@eg/core/hatch.service';
+import {ForceReloadService} from '@eg/share/util/force-reload.service';
 
 @Component({
   selector: 'eg-scko-banner',
@@ -24,6 +24,7 @@ export class SckoBannerComponent implements OnInit, AfterViewInit {
     staffPassword: string;
     staffWorkstation: string;
     staffLoginFailed = false;
+    missingRequiredWorkstation = false;
 
     itemBarcode: string;
 
@@ -31,10 +32,10 @@ export class SckoBannerComponent implements OnInit, AfterViewInit {
         private route: ActivatedRoute,
         private store: StoreService,
         private auth: AuthService,
-        private ngLocation: Location,
         private org: OrgService,
         private hatch: HatchService,
-        public scko: SckoService
+        public scko: SckoService,
+        private forceReload: ForceReloadService
     ) {}
 
     ngOnInit() {
@@ -80,7 +81,7 @@ export class SckoBannerComponent implements OnInit, AfterViewInit {
         }
     }
 
-    submitStaffLogin() {
+    submitStaffLogin(): Promise<void> {
 
         this.staffLoginFailed = false;
 
@@ -94,7 +95,7 @@ export class SckoBannerComponent implements OnInit, AfterViewInit {
         this.staffLoginFailed = false;
         this.workstationNotFound = false;
 
-        this.auth.login(args).then(
+        return this.auth.login(args).then(
             ok => {
 
                 if (this.auth.workstationState === AuthWsState.NOT_FOUND_SERVER) {
@@ -102,16 +103,21 @@ export class SckoBannerComponent implements OnInit, AfterViewInit {
                     this.workstationNotFound = true;
 
                 } else {
+                    this.org.settings('circ.selfcheck.workstation_required', this.org.root().id(), true).then((settings) => {
+                        if (settings['circ.selfcheck.workstation_required'] && !this.staffWorkstation) {
+                            this.staffLoginFailed = true;
+                            this.missingRequiredWorkstation = true;
+                            this.auth.logout();
+                        } else {
+                            // Initial login clears cached org unit setting values
+                            // and user/workstation setting values
+                            this.org.clearCachedSettings().then(_ => {
 
-                    // Initial login clears cached org unit setting values
-                    // and user/workstation setting values
-                    this.org.clearCachedSettings().then(_ => {
-
-                        // Force reload of the app after a successful login.
-                        window.location.href =
-                            this.ngLocation.prepareExternalUrl('/staff/scko');
-
-                    });
+                                // Force reload of the app after a successful login.
+                                this.forceReload.reload('/staff/scko');
+                            });
+                        }
+                    })
                 }
             },
             notOk => {

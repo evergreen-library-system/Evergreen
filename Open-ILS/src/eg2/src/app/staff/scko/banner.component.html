@@ -131,6 +131,12 @@
           </div>
           <div class="col-lg-3">
             <div *ngIf="loginFailed" class="badge badge-warning p-2" i18n>Login Failed</div>
+            <div *ngIf="missingRequiredWorkstation">
+              <span i18n>Workstations are required.</span>
+              <a target="_blank" href="/eg/staff/admin/workstation/workstations" i18n>
+                Please configure a workstation.
+              </a>
+            </div>
           </div>
         </div>
       </form>
