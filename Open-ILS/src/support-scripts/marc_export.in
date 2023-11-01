@@ -447,7 +447,7 @@ sub new {
                 if ($Marque::config->option_value('exclude-hidden')) {
                     @ids = map {$_->[0]} grep {$_->[1]} @{$r};
                 } else {
-                    @ids = map {$_->[0]} grep @{$r};
+                    @ids = map {$_->[0]} @{$r};
                 }
                 push(@{$self->{libs}}, @ids);
                 $sth->finish();
