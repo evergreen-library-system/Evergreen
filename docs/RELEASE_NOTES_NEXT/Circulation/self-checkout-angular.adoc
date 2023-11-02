@@ -3,7 +3,7 @@
 The patron self-checkout interface is now available as an Angular port of 
 the interface.
 
-https://myhost.mydomain/eg2/staff/scko
+https://myhost.mydomain/eg2/staff/selfcheck
 
 === New Print Templates ===
 

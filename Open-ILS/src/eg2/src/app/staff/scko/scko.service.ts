@@ -94,7 +94,7 @@ export class SckoService {
     logoutStaff() {
         this.resetPatron();
         this.auth.logout();
-        this.router.navigate(['/staff/scko']);
+        this.router.navigate(['/staff/selfcheck']);
     }
 
     resetPatron() {
@@ -158,7 +158,7 @@ export class SckoService {
                 return this.loadPatron(username);
             } else {
                 // Go to the base checkout page by default.
-                this.router.navigate(['/staff/scko']);
+                this.router.navigate(['/staff/selfcheck']);
             }
         }).catch(_ => {}); // console errors
     }
@@ -257,7 +257,7 @@ export class SckoService {
                 this.resetPatronTimeout();
             } else {
                 this.resetPatron();
-                this.router.navigate(['/staff/scko']);
+                this.router.navigate(['/staff/selfcheck']);
             }
         });
 
@@ -267,7 +267,7 @@ export class SckoService {
             () => {
                 console.debug('Clearing patron on warning dialog timeout');
                 this.resetPatron();
-                this.router.navigate(['/staff/scko']);
+                this.router.navigate(['/staff/selfcheck']);
             },
             this.logoutWarningTimerId = this.logoutWarningTimeout * 1000
         );
@@ -325,7 +325,7 @@ export class SckoService {
         // so we can see our items out in progress.
         })
         .then(ctx => this.notifyPatron(ctx))
-        .finally(() => this.router.navigate(['/staff/scko']));
+        .finally(() => this.router.navigate(['/staff/selfcheck']));
     }
 
     renew(barcode: string,
@@ -623,7 +623,7 @@ export class SckoService {
 
         return promise.then(_ => {
             this.resetPatron();
-            this.router.navigate(['/staff/scko']);
+            this.router.navigate(['/staff/selfcheck']);
         });
     }
 

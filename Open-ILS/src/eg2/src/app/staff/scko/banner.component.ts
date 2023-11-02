@@ -114,7 +114,7 @@ export class SckoBannerComponent implements OnInit, AfterViewInit {
                             this.org.clearCachedSettings().then(_ => {
 
                                 // Force reload of the app after a successful login.
-                                this.forceReload.reload('/staff/scko');
+                                this.forceReload.reload('/staff/selfcheck');
                             });
                         }
                     })

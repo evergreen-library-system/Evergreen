@@ -32,7 +32,7 @@ export class SckoItemsComponent implements OnInit {
     ngOnInit() {
 
         if (!this.scko.patronSummary) {
-            this.router.navigate(['/staff/scko']);
+            this.router.navigate(['/staff/selfcheck']);
             return;
         }
 

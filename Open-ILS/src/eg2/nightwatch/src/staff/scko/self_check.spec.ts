@@ -10,7 +10,7 @@ module.exports = {
     },
 
     'Axe finds no accessibility issues on login screen': (browser: NightwatchBrowser) => {
-        browser.navigateTo('/eg2/en-US/staff/scko')
+        browser.navigateTo('/eg2/en-US/staff/selfcheck')
                .assert.elementPresent('#staff-username')
                .axeInject().axeRun();
     },
@@ -33,7 +33,7 @@ module.exports = {
     },
 
     'Previously checked out items are cleared on logout': (browser: NightwatchBrowser) => {
-        browser.click('#receipt-none') // We don't want to deal with the browser print dialog in this test
+        browser.click('label[for="receipt-none"]') // We don't want to deal with the browser print dialog in this test
                .click('xpath', '//button[contains(text(), "Logout")]')
                .setValue('#patron-username', '99999342948') // Patron Omar Bernard from the concerto data set
                .submitForm('#patron-username')
