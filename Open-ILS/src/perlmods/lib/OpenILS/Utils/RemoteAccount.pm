@@ -347,11 +347,11 @@ sub delete {
 
     if ($self->type eq "FTP") {
         return $self->delete_ftp($file);
-    } elsif {
+    } elsif ($self->type eq "SFTP") {
         return $self->delete_sftp($file);
     } else {
-	    my %keys = $self->key_check($params);
-	    return $self->delete_ssh2(\%keys, $file);
+	my %keys = $self->key_check($params);
+	return $self->delete_ssh2(\%keys, $file);
     }
 }
 
@@ -379,7 +379,7 @@ sub _sftp {
     $self->{sftp} and return $self->{sftp};     # caching
     my $sftp = Net::SFTP::Foreign->new($self->remote_host, user => $self->remote_user, password => $self->remote_password);
     $sftp->error and $logger->error("SFTP connect FAILED: " . $sftp->error);
-    return $self->{sftp} = $sftp
+    return $self->{sftp} = $sftp;
 }
 
 sub put_sftp {
@@ -479,11 +479,10 @@ sub ls_sftp {   # returns full path like: dir/path/file.ext
     }
     return @list;
 }
-}
 
 sub delete_sftp {
 #$sftp->remove($putfile) or die "could not remove $putfile: " . $sftp->error;
-
+  return;
 }
 
 sub _ssh2 {
@@ -854,8 +853,10 @@ sub new {
 sub DESTROY { 
     # in order to create, we must first ...
     my $self  = shift;
-    $self->{sftp} and $self->{sftp}->disconnect;  # let the other end know we're done.
-    $self->{ftp} and $self->{ftp}->quit();  # let the other end know we're done.
+    # let the other end know we're done.
+    $self->{ssh2} and $self->{ssh2}->disconnect();
+    $self->{sftp} and $self->{sftp}->disconnect();
+    $self->{ftp} and $self->{ftp}->quit();
 }
 
 sub AUTOLOAD {
