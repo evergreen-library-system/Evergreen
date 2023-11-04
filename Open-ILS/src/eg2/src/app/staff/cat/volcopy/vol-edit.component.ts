@@ -7,7 +7,6 @@ import {NetService} from '@eg/core/net.service';
 import {PcrudService} from '@eg/core/pcrud.service';
 import {VolCopyContext, HoldingsTreeNode} from './volcopy';
 import {ComboboxEntry} from '@eg/share/combobox/combobox.component';
-import {HoldingsService} from '@eg/staff/share/holdings/holdings.service';
 import {ConfirmDialogComponent} from '@eg/share/dialog/confirm.component';
 import {VolCopyService} from './volcopy.service';
 
@@ -75,6 +74,7 @@ export class VolEditComponent implements OnInit {
 
     // Emitted when the save-ability of this form changes.
     @Output() canSaveChange: EventEmitter<boolean> = new EventEmitter<boolean>();
+    changedCallnumberFields: string[] = [];
 
     constructor(
         private renderer: Renderer2,
@@ -83,7 +83,6 @@ export class VolEditComponent implements OnInit {
         private pcrud: PcrudService,
         private net: NetService,
         private auth: AuthService,
-        private holdings: HoldingsService,
         public  volcopy: VolCopyService
     ) {}
 
@@ -265,8 +264,9 @@ export class VolEditComponent implements OnInit {
         }
 
         if (vol[key]() !== value) {
+            this.changedCallnumberFields.push(key);
             vol[key](value);
-            vol.ischanged(true);
+            vol.ischanged(this.changedCallnumberFields);
         }
 
         this.emitSaveChange();
