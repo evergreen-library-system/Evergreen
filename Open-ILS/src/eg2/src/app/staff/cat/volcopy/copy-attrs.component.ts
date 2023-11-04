@@ -563,6 +563,13 @@ export class CopyAttrsComponent implements OnInit, AfterViewInit {
                 // Currently supported fields are prefix, suffix, and
                 // classification (label_class).  These all use numeric
                 // values as defaults.
+                const changedFields = Object.keys(value).map((templateKey) => {
+                    if (templateKey === 'classification') {
+                        return 'label_class';
+                    } else {
+                        return templateKey;
+                    }
+                });
                 Object.keys(value).forEach(field => {
                     const newVal = value[field];
 
@@ -573,10 +580,11 @@ export class CopyAttrsComponent implements OnInit, AfterViewInit {
                     this.context.volNodes().forEach(volNode => {
                         if (Number(volNode.target[field]())) {
                             volNode.target[field](newVal);
-                            volNode.target.ischanged(true);
+                            volNode.target.ischanged(changedFields);
                         }
                     });
                 });
+
             }
 
             if (field === 'statcats') {
@@ -703,10 +711,15 @@ export class CopyAttrsComponent implements OnInit, AfterViewInit {
             const vol = volNode.target;
             if(vol.ischanged()){ // Something was changed
                 template.callnumber = {};
-                ['label_class','prefix','suffix'].forEach(field => {
-
-                    template.callnumber[field] = vol[field]();
-                });
+                if(vol.ischanged().includes('prefix')) {
+                    template.callnumber['prefix'] = vol['prefix']();
+                }
+                if(vol.ischanged().includes('suffix')) {
+                    template.callnumber['suffix'] = vol['suffix']();
+                }
+                if(vol.ischanged().includes('label_class')) {
+                    template.callnumber['classification'] = vol['label_class']();
+                }
             }
             console.log('Template:',template);
             // volNode.target.forEach(field=>{
