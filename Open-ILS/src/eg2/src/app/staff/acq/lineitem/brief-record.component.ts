@@ -1,4 +1,4 @@
-import {Component, OnInit, Input, Output} from '@angular/core';
+import {Component, OnInit, OnDestroy} from '@angular/core';
 import {ActivatedRoute, Router, ParamMap} from '@angular/router';
 import {IdlService, IdlObject} from '@eg/core/idl.service';
 import {NetService} from '@eg/core/net.service';
@@ -7,6 +7,7 @@ import {PcrudService} from '@eg/core/pcrud.service';
 import {AuthService} from '@eg/core/auth.service';
 import {LineitemService} from './lineitem.service';
 import {ComboboxEntry} from '@eg/share/combobox/combobox.component';
+import {Subscription} from 'rxjs';
 
 const MARC_NS = 'http://www.loc.gov/MARC21/slim';
 
@@ -23,16 +24,19 @@ const MARC_XML_BASE = `
   templateUrl: 'brief-record.component.html',
   selector: 'eg-lineitem-brief-record'
 })
-export class BriefRecordComponent implements OnInit {
+export class BriefRecordComponent implements OnInit, OnDestroy {
 
     targetPicklist: number;
     targetPo: number;
+    targetSub: Subscription;
 
     attrs: IdlObject[] = [];
     values: {[attr: string]: string} = {};
 
     // From the inline PL selector
     selectedPl: ComboboxEntry;
+
+    isSaving: boolean = false;
 
     constructor(
         private router: Router,
@@ -47,6 +51,7 @@ export class BriefRecordComponent implements OnInit {
 
     ngOnInit() {
 
+        this.targetSub =
         this.route.parent.paramMap.subscribe((params: ParamMap) => {
             this.targetPicklist = +params.get('picklistId');
             this.targetPo = +params.get('poId');
@@ -54,6 +59,10 @@ export class BriefRecordComponent implements OnInit {
 
         this.pcrud.retrieveAll('acqlimad')
         .subscribe(attr => this.attrs.push(attr));
+    }
+
+    ngOnDestroy(): void {
+        this.targetSub.unsubscribe();
     }
 
     compile(): string {
@@ -97,8 +106,11 @@ export class BriefRecordComponent implements OnInit {
     }
 
     save() {
+        if (this.isSaving) return;
+        this.isSaving = true;
         this.saveManualPicklist()
-        .then(ok => { if (ok) { this.createLineitem(); } });
+        .then(ok => { if (ok) { return this.createLineitem(); } })
+        .finally(() => this.isSaving = false);
     }
 
     saveManualPicklist(): Promise<boolean> {
@@ -128,7 +140,7 @@ export class BriefRecordComponent implements OnInit {
         });
     }
 
-    createLineitem() {
+    createLineitem(): Promise<any> {
 
         const xml = this.compile();
 
@@ -145,7 +157,7 @@ export class BriefRecordComponent implements OnInit {
         li.creator(this.auth.user().id());
         li.editor(this.auth.user().id());
 
-        this.net.request('open-ils.acq',
+        return this.net.request('open-ils.acq',
             'open-ils.acq.lineitem.create', this.auth.token(), li
         ).toPromise().then(liId => {
 
