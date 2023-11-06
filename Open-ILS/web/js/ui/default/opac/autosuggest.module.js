@@ -40,7 +40,7 @@ export class Suggestion {
     const searchClassData = await fieldCache.get(this.searchClass);
     return '<li id="' + rowPrefix + '" class="list-group-item" role="option">' +
       '<span id="' + rowPrefix + '-term" tabindex="-1">' + this.highlighted + '</span> ' +
-      '<span id="' + rowPrefix + '-class" tabindex="-1" role="note" class="float-right" data-class-name="' +
+      '<span id="' + rowPrefix + '-class" tabindex="-1" role="note" class="float-right ml-3" data-class-name="' +
       searchClassData?.field_class + '">' + searchClassData?.class_label + '</span>' +
     '</li>';
   }
