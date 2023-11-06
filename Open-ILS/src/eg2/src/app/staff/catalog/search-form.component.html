@@ -128,8 +128,7 @@
               </button>
             </div>
           </div>
-          <div class="mt-3 gx-3 row row-cols-auto">
-            <div class="col row-cols-auto d-flex align-items-end form-inline">
+          <div class="mt-3 gx-3 row row-cols-auto align-items-end">
               <div class="col form-inline-group">
                 <label i18n class="form-label select-label" for="context-sort">Sort Results</label>
                 <select class="form-select me-2" id="context-sort" [(ngModel)]="context.sort">
@@ -152,33 +151,33 @@
                   </optgroup>
                 </select>
               </div>
-                <div class="col checkbox ps-2 ms-2 pt-2">
-                  <label class="form-label" for="context-termSearch-available">
-                    <input type="checkbox" [(ngModel)]="context.termSearch.available" id="context-termSearch-available" />
+              <div class="col form-check form-check-inline ms-2 pt-2">
+                  <label class="form-label form-check-label" for="context-termSearch-available">
+                    <input class="form-check-input" type="checkbox" [(ngModel)]="context.termSearch.available" id="context-termSearch-available" />
                     <span class="ps-1" i18n>Limit to Available</span>
                   </label>
                 </div>
-                <div class="col checkbox ps-3 pt-2">
-                  <label class="form-label" for="context-termSearch-groupByMetarecord">
-                    <input type="checkbox" id="context-termSearch-groupByMetarecord"
+              <div class="col form-check form-check-inline ms-2 pt-2">
+                  <label class="form-label form-check-label" for="context-termSearch-groupByMetarecord">
+                    <input class="form-check-input" type="checkbox" id="context-termSearch-groupByMetarecord"
                       [(ngModel)]="context.termSearch.groupByMetarecord"/>
                     <span class="ps-1" i18n>Group Formats/Editions</span>
                   </label>
-                </div>
-                <div class="col checkbox ps-3 pt-2">
-                  <label class="form-label" for="context-global">
-                    <input type="checkbox" id="context-global" [(ngModel)]="context.global"/>
+              </div>
+              <div class="col form-check form-check-inline ms-2 pt-2">
+                  <label class="form-label form-check-label" for="context-global">
+                    <input class="form-check-input" type="checkbox" id="context-global" [(ngModel)]="context.global"/>
                     <span class="ps-1" i18n>Results from All Libraries</span>
                   </label>
-                </div>
-                <div class="col checkbox ps-3 pt-2" *ngIf="showExcludeElectronic()">
-                  <label class="form-label" for="context-termSearch-excludeElectronic">
-                    <input type="checkbox" id="context-termSearch-excludeElectronic"
+              </div>
+              <div class="col form-check form-check-inline ms-2 pt-2" *ngIf="showExcludeElectronic()">
+                  <label class="form-label form-check-label" for="context-termSearch-excludeElectronic">
+                    <input class="form-check-input" type="checkbox" id="context-termSearch-excludeElectronic"
                       [(ngModel)]="context.termSearch.excludeElectronic"/>
                     <span class="ps-1" i18n>Exclude Electronic Resources</span>
                   </label>
                 </div>
-                <div class="d-inline-flex ml-2 pl-3 pt-2" *ngIf="showCourseFilter">
+              <div class="pt-2">
                   <label for="reserveCombobox" i18n class="align-self-center mr-2">Reserves materials</label>
                   <eg-combobox (onChange)="reserveComboboxChange($event.id)"
                                selectedId="any" [allowFreeText]="false" class="pl-1">
@@ -189,9 +188,9 @@
                     <eg-combobox-entry entryId="negated" entryLabel="No items attached to a course"
                                        i18n-entryLabel="Limit results to results not attached to a course"></eg-combobox-entry>
                   </eg-combobox>
-                </div>
               </div>
           </div>
+
           <div class="row" *ngIf="showFilters()">
             <div class="col mt-3" *ngIf="searchFilters().includes('item_type')">
               <label i18n class="form-label select-label" for="context-termSearch-ccvmFilters-item_type">Item Type</label>
@@ -436,7 +435,7 @@
     <div [ngbNavOutlet]="searchTabs" class="mt-2"></div>
 
   </div>
-  <div class="col-lg-4 h-100">
+  <div class="col-lg-4">
     <div class="row">
       <div class="col-lg-12">
         <div class="card">
