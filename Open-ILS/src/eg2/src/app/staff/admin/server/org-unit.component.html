@@ -117,7 +117,7 @@
                 *ngIf="currentOrg().hours_of_operation().isnew()">
                 Hours of Operation Have Not Yet Been Saved.
               </div>
-              <div class="alert alert-warning mr-2 p-1">
+              <div class="alert alert-warning mr-2 p-1"
                 *ngIf="allClosed() && hasClosedDatePerms">
                 <span i18n>
                   These hours mean {{currentOrg().name()}} is never open! Some functions may not work as expected. Did you mean to 
