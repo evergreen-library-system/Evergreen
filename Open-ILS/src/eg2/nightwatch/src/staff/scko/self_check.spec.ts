@@ -32,6 +32,11 @@ module.exports = {
                .assert.textContains('body', 'Checkout Succeeded');
     },
 
+    'Patron can view items checked out': (browser: NightwatchBrowser) => {
+        browser.click('xpath', '//a[contains(text(), "View Items Out")]')
+               .assert.textContains('body', 'Throne of the Crescent Moon');
+    },
+
     'Previously checked out items are cleared on logout': (browser: NightwatchBrowser) => {
         browser.click('label[for="receipt-none"]') // We don't want to deal with the browser print dialog in this test
                .click('xpath', '//button[contains(text(), "Logout")]')

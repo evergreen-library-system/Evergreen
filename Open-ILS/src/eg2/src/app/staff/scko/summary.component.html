@@ -37,7 +37,7 @@
       <span i18n>Total items on account: </span>
       <b>{{scko.accountTotalCheckouts()}}</b>
     </div>
-    <a routerLink="/staff/scko/items" class="mt-2 btn btn-link scko-button" i18n>View Items Out</a>
+    <a routerLink="/staff/selfcheck/items" class="mt-2 btn btn-link scko-button" i18n>View Items Out</a>
   </fieldset>
   <fieldset>
     <legend i18n>Holds</legend>
@@ -51,7 +51,7 @@
       <b>{{scko.patronSummary.stats.holds.total}}</b>
       total holds.
     </div>
-    <a routerLink="/staff/scko/holds" id="oils-selfck-hold-details-link" class="mt-2 btn btn-link scko-button" i18n>View Holds</a>
+    <a routerLink="/staff/selfcheck/holds" id="oils-selfck-hold-details-link" class="mt-2 btn btn-link scko-button" i18n>View Holds</a>
   </fieldset>
   <fieldset>
     <legend i18n>Fines</legend>
@@ -59,7 +59,7 @@
       <span i18n>Total fines on account:</span>
       <b>{{scko.patronSummary.stats.fines.balance_owed | currency}}</b>
     </div>
-    <a routerLink="/staff/scko/fines" id="oils-selfck-view-fines-link" class="mt-2 btn btn-link scko-button" i18n>View Details</a>
+    <a routerLink="/staff/selfcheck/fines" id="oils-selfck-view-fines-link" class="mt-2 btn btn-link scko-button" i18n>View Details</a>
   </fieldset>
 </div>
 
