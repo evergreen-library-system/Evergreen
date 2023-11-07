@@ -262,7 +262,7 @@ export class MarcEditorComponent implements OnInit {
             this.context.record = new MarcRecord(rec.marc());
             this.record.id = id;
             this.record.deleted = rec.deleted() === 't';
-            if (idlClass === 'bre' && rec.source()) {
+            if (idlClass === 'bre') {
                 this.recordSource = +rec.source();
             }
         });
