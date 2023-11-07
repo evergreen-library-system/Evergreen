@@ -93,16 +93,8 @@
         <div class="form-group row">
           <label class="col-lg-4 text-right font-weight-bold" 
             for="staff-password" i18n>Password</label>
-          <input 
-            type="password" 
-            class="form-control col-lg-8"
-            id="staff-password" 
-            name="staff-password"
-            required
-            autocomplete="current-password"
-            i18n-placeholder
-            placeholder="Staff Password" 
-            [(ngModel)]="staffPassword"/>
+          <eg-credential-input domId="staff-password" name="staff-password"
+            [(ngModel)]="staffPassword"></eg-credential-input>
         </div>
 
         <div class="form-group row" *ngIf="workstations && workstations.length">

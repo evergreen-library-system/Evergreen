@@ -1,9 +1,7 @@
 import {
     Component,
-    ElementRef,
     OnInit,
-    Renderer2,
-    ViewChild
+    Renderer2
 } from '@angular/core';
 import {Location} from '@angular/common';
 import {Router, ActivatedRoute} from '@angular/router';
@@ -88,8 +86,6 @@ export class StaffLoginComponent implements OnInit {
 
     handleSubmit() {
 
-        this.passwordVisible = false;
-
         // post-login URL
         let url: string = this.routeTo || '/staff/splash';
 
@@ -146,7 +142,6 @@ export class StaffLoginComponent implements OnInit {
         this.passwordVisible = !this.passwordVisible;
         this.passwordInput.nativeElement.focus();
     }
-
 }
 
 

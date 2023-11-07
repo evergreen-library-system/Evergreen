@@ -11,6 +11,7 @@ import {StaffMFAComponent} from './mfa.component';
 import {StaffSplashComponent, AutofocusDirective} from './splash.component';
 import {AboutComponent} from './about.component';
 import {StaffLoginNotAllowedComponent} from './login-not-allowed.component';
+import { CommonWidgetsModule } from '@eg/share/common-widgets.module';
 
 @NgModule({
     declarations: [
@@ -26,7 +27,8 @@ import {StaffLoginNotAllowedComponent} from './login-not-allowed.component';
     imports: [
         StaffCommonModule.forRoot(),
         StaffRoutingModule,
-        QRCodeModule
+        QRCodeModule,
+        CommonWidgetsModule
     ]
 })
 

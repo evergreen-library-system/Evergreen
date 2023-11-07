@@ -35,30 +35,7 @@
         <div class="row row-cols-auto mt-3">
           <label class="form-label col-form-label col-4 text-end fw-bold" for="password" i18n>Password</label>
           <div class="col-8">
-            <div class="input-group p-0">
-              <input
-                [type]="passwordVisible ? 'text' : 'password'"
-                class="form-control"
-                id="password"
-                #password
-                name="password"
-                required
-                autocomplete="current-password"
-                i18n-placeholder
-                placeholder="Password"
-                spellcheck="false"
-                aria-describedby="form-error-summary password-visibility"
-                [(ngModel)]="args.password"/>
-              <button id="show_password" class="input-group-text pointer"
-                type="button" 
-                [attr.title]="passwordVisible ? 'Hide Password' : 'Show Password'"
-                [attr.aria-label]="passwordVisible ? 'Hide Password' : 'Show Password'"
-                i18n-aria-label i18n-title (click)="togglePasswordVisibility()" >
-                <span class="material-icons" aria-hidden="true">{{ passwordVisible ? 'visibility' : 'visibility_off' }}</span>
-              </button>
-              <p id="password-visibility" class="visually-hidden" *ngIf="!passwordVisible" i18n>Your password is not visible.</p>
-              <p id="password-visibility" class="visually-hidden" *ngIf="passwordVisible" i18n>Your password is visible.</p>
-            </div>
+            <eg-credential-input domId="password" name="password" [(ngModel)]="args.password"></eg-credential-input>
           </div>
         </div>
        

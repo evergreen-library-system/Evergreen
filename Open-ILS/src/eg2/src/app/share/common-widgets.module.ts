@@ -19,9 +19,11 @@ import {ContextMenuModule} from '@eg/share/context-menu/context-menu.module';
 import {FileReaderComponent} from '@eg/share/file-reader/file-reader.component';
 import {IntervalInputComponent} from '@eg/share/interval-input/interval-input.component';
 import {ClipboardDialogComponent} from '@eg/share/clipboard/clipboard-dialog.component';
+import { CredentialInputComponent } from './util/credential-input.component';
 
 
 @NgModule({
+<<<<<<< HEAD
     declarations: [
         ComboboxComponent,
         ComboboxEntryComponent,
@@ -34,6 +36,7 @@ import {ClipboardDialogComponent} from '@eg/share/clipboard/clipboard-dialog.com
         ClipboardDialogComponent,
         IdlClassTemplateDirective,
         IntervalInputComponent,
+        CredentialInputComponent
     ],
     imports: [
         CommonModule,
@@ -59,6 +62,7 @@ import {ClipboardDialogComponent} from '@eg/share/clipboard/clipboard-dialog.com
         ContextMenuModule,
         FileReaderComponent,
         IntervalInputComponent,
+        CredentialInputComponent
     ],
 })
 
