@@ -86,7 +86,8 @@ export class SckoBannerComponent implements OnInit, AfterViewInit {
         this.staffLoginFailed = false;
 
         const args = {
-            type: 'persistent',
+            type: 'staff',
+            agent: 'selfcheck',
             username: this.staffUsername,
             password: this.staffPassword,
             workstation: this.staffWorkstation
