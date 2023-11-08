@@ -32,8 +32,13 @@ export class SearchFormComponent implements OnInit, AfterViewInit {
     ccvmMap: {[ccvm: string]: IdlObject[]} = {};
     cmfMap: {[cmf: string]: IdlObject} = {};
     showSearchFilters = false;
+    libraryGroups: IdlObject[];
     copyLocations: IdlObject[];
+    copyLocationGroups: IdlObject[];
     searchTab: string;
+
+    refreshingLibraryGroups: boolean = false;
+    refreshingCopyLocationGroups: boolean = false;
 
     // What does the user want us to do?
     // On pages where we can be hidded, start out hidden, unless the
@@ -55,6 +60,8 @@ export class SearchFormComponent implements OnInit, AfterViewInit {
         private staffCat: StaffCatalogService
     ) {
         this.copyLocations = [];
+        this.copyLocationGroups = [];
+        this.libraryGroups = [];
 
     }
 
@@ -65,7 +72,8 @@ export class SearchFormComponent implements OnInit, AfterViewInit {
 
         // Start with advanced search options open
         // if any filters are active.
-        this.showSearchFilters = this.filtersActive();
+        this.context.activeFiltersCount = this.filtersActive();
+        this.showSearchFilters = this.context.activeFiltersCount > 0;
 
         // Some search scenarios, like rendering a search template,
         // will not be searchable and thus not resovle to a specific
@@ -143,6 +151,8 @@ export class SearchFormComponent implements OnInit, AfterViewInit {
 
                 }
 
+                this.refreshLibraryGroups();
+                this.refreshCopyLocationGroups();
                 if (this.searchTab === 'term') {
                     this.refreshCopyLocations();
                 }
@@ -150,6 +160,10 @@ export class SearchFormComponent implements OnInit, AfterViewInit {
 
             this.focusTabInput();
         });
+    }
+
+    lassoAndLocationGroupsAllowed() {
+        return this.searchTab === 'term';
     }
 
     onNavChange(evt: NgbNavChangeEvent) {
@@ -166,6 +180,8 @@ export class SearchFormComponent implements OnInit, AfterViewInit {
         let selector: string;
         switch (this.searchTab) {
             case 'ident':
+                this.refreshLibraryGroups();
+                this.refreshCopyLocationGroups();
                 selector = '#ident-query-input';
                 break;
             case 'marc':
@@ -178,6 +194,8 @@ export class SearchFormComponent implements OnInit, AfterViewInit {
                 selector = '#cnbrowse-term-input';
                 break;
             default:
+                this.refreshLibraryGroups();
+                this.refreshCopyLocationGroups();
                 this.refreshCopyLocations();
                 selector = '#first-query-input';
         }
@@ -199,7 +217,7 @@ export class SearchFormComponent implements OnInit, AfterViewInit {
         // Note that filters may become active due to external
         // actions on the search context.  Always show the filters
         // if filter values are applied.
-        return this.showSearchFilters || this.filtersActive();
+        return this.showSearchFilters;
     }
 
     toggleFilters() {
@@ -207,26 +225,33 @@ export class SearchFormComponent implements OnInit, AfterViewInit {
         this.refreshCopyLocations();
     }
 
-    filtersActive(): boolean {
+    filtersActive(): number {
 
-        if (this.context.termSearch.copyLocations[0] !== '') { return true; }
+        if (this.context.termSearch.copyLocations[0] !== '') { 
+            this.context.activeFiltersCount++;
+        }
+
+        if (this.context.termSearch.date1) {
+            this.context.activeFiltersCount++;
+        }
 
         // ccvm filters may be present without any filters applied.
         // e.g. if filters were applied then removed.
-        let show = false;
         Object.keys(this.context.termSearch.ccvmFilters).forEach(ccvm => {
             if (this.context.termSearch.ccvmFilters[ccvm][0] !== '') {
-                show = true;
+                this.context.activeFiltersCount++;
             }
         });
 
-        return show;
+        return this.context.activeFiltersCount;
     }
 
     orgOnChange = (org: IdlObject): void => {
         this.context.searchOrg = org;
         this.refreshCopyLocations();
-    };
+        this.refreshCopyLocationGroups();
+        this.refreshLibraryGroups();
+    }
 
     refreshCopyLocations() {
         if (!this.showFilters()) { return; }
@@ -234,6 +259,24 @@ export class SearchFormComponent implements OnInit, AfterViewInit {
         this.cat.fetchCopyLocations(this.context.searchOrg).then(() =>
             this.copyLocations = this.cat.copyLocations
         );
+    }
+
+    refreshCopyLocationGroups() {
+        if (this.refreshingCopyLocationGroups) return;
+        this.refreshingCopyLocationGroups = true;
+        this.cat.fetchCopyLocationGroups(this.context.searchOrg).then(() => {
+            this.copyLocationGroups = this.cat.copyLocationGroups
+            this.refreshingCopyLocationGroups = false;
+        });
+    }
+
+    refreshLibraryGroups() {
+        if (this.refreshingLibraryGroups) return;
+        this.refreshingLibraryGroups = true;
+        this.cat.fetchLibraryGroups(this.context.searchOrg).then(() => {
+            this.libraryGroups = this.cat.libraryGroups
+            this.refreshingLibraryGroups = false;
+        });
     }
 
     orgName(orgId: number): string {

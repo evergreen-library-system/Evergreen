@@ -189,9 +189,27 @@
                                        i18n-entryLabel="Limit results to results not attached to a course"></eg-combobox-entry>
                   </eg-combobox>
               </div>
+
+              <div class="col">
+                COUNT: {{context.activeFiltersCount}}
+
+
+                <button type="button" class="btn btn-secondary mt-3" 
+                  (click)="toggleFilters()" i18n>
+                  <!-- filters are open: -->
+                  <ng-container *ngIf="showSearchFilters">
+                    Hide {{context.activeFiltersCount > 0 ? context.activeFiltersCount : null}} filters
+                  </ng-container>
+
+                  <!-- filters are closed: -->
+                  <ng-container *ngIf="!showSearchFilters">
+                    Show {{context.activeFiltersCount > 0 ? context.activeFiltersCount + ' active' : 'more'}} filters
+                  </ng-container>
+                </button>
+              </div>
           </div>
 
-          <div class="row" *ngIf="showFilters()">
+          <div class="row" [hidden]="!showSearchFilters">
             <div class="col mt-3" *ngIf="searchFilters().includes('item_type')">
               <label i18n class="form-label select-label" for="context-termSearch-ccvmFilters-item_type">Item Type</label>
               <select class="form-select"  multiple="true" id="context-termSearch-ccvmFilters-item_type"
@@ -233,7 +251,7 @@
               </select>
             </div>
           </div>
-          <div class="row" *ngIf="showFilters()">
+          <div class="row" [hidden]="!showSearchFilters">
             <div class="col mt-3" *ngIf="searchFilters().includes('vr_format')">
               <label i18n class="form-label select-label" for="context-termSearch-ccvmFilters-vr_format">Video Format</label>
               <select class="form-select" id="context-termSearch-ccvmFilters-vr_format"
@@ -275,7 +293,7 @@
               </select>
             </div>
           </div>
-          <div class="row row-cols-auto mt-3" *ngIf="showFilters()">
+          <div class="row row-cols-auto mt-3" [hidden]="!showSearchFilters">
             <div class="col">
               <label class="form-label" for="pub-date1-input" i18n>Publication Year is</label>
               <label class="visually-hidden" for="pub-date-operator-select" i18n>compare publication dates using...</label>
@@ -458,6 +476,30 @@
                 (click)="context.reset()" i18n>
                 Reset
               </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-lg-12">
+        <div class="card">
+          <div class="card-body">
+            <div class="float-end d-flex">
+              <label i18n class="form-label select-label" for="locationGroupOrLasso-selector">Library or Shelving Location Group</label>
+              <select class="form-control"
+                  id="locationGroupOrLasso-selector"
+                  name="locationGroupOrLasso"
+                  [(ngModel)]="context.termSearch.locationGroupOrLasso"
+                  [disabled]="!lassoAndLocationGroupsAllowed()">
+                <option *ngIf="context.termSearch.locationGroupOrLasso" value="" i18n>No Group Restriction</option>
+                <optgroup *ngIf="libraryGroups.length > 0" i18n-label label="Library Groups">
+                  <option *ngFor="let lasso of libraryGroups" value="lasso({{lasso.id()}})">{{lasso.name()}}</option>
+                </optgroup>
+                <optgroup *ngIf="copyLocationGroups.length > 0" i18n-label label="Shelving Location Groups">
+                  <option *ngFor="let grp of copyLocationGroups" value="location_groups({{grp.id()}})">{{grp.name()}}</option>
+                </optgroup>
+              </select>
             </div>
           </div>
         </div>

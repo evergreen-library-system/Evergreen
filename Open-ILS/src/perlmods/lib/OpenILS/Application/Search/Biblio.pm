@@ -3514,6 +3514,42 @@ sub record_copy_counts_global {
     return $hash;
 }
 
+__PACKAGE__->register_method(
+    method        => "fetch_in_scope_lassos",
+    api_name      => "open-ils.search.fetch_context_library_groups",
+    stream        => 1,
+    signature     => {
+        desc   => "Fetch global and in-scope library groups (lassos)",
+        params => [
+            { desc => 'Optional org unit id for context scoping' }
+        ],
+        return => {
+            desc => 'Stream (or array, in atomic mode) of library groups (lassos)'
+        }
+    }
+);
+
+sub fetch_in_scope_lassos {
+    my( $self, $client, $org ) = @_;
+    my $e = new_editor();
+
+    my $direct_lassos = [];
+
+    # this supports a scalar org id, or an array of them
+    if ($org and (!ref($org) or ref($org) eq 'ARRAY')) {
+        $direct_lassos = $e->search_actor_org_lasso_map(
+            { org_unit => $org }
+        );
+        $direct_lassos = [ map { $_->lasso } @$direct_lassos];
+    }
+
+    my $lassos = $e->search_actor_org_lasso(
+        { '-or' => { global => 't', @$direct_lassos ? (id => { in => $direct_lassos}) : () } }
+    );
+
+    $client->respond($_) for sort { $a->name cmp $b->name } @$lassos;
+    return undef;
+}
 
 1;
 

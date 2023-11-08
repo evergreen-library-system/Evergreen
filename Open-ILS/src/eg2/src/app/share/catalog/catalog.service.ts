@@ -17,6 +17,8 @@ export class CatalogService {
     ccvmMap: {[ccvm: string]: IdlObject[]} = {};
     cmfMap: {[cmf: string]: IdlObject} = {};
     copyLocations: IdlObject[];
+    copyLocationGroups: IdlObject[];
+    libraryGroups: IdlObject[];
 
     // Keep a reference to the most recently retrieved facet data,
     // since facet data is consistent across a given search.
@@ -439,6 +441,31 @@ export class CatalogService {
             {order_by: {acpl: 'name'}},
             {anonymous: true}
         ).pipe(tap(loc => this.copyLocations.push(loc))).toPromise();
+    }
+
+    fetchCopyLocationGroups(contextOrg: number | IdlObject): Promise<any> {
+        const contextOrgId: any = this.org.get(contextOrg).id();
+        const orgIds: any[] = this.org.fullPath(contextOrg, true);
+
+        this.copyLocationGroups = [];
+
+        return this.pcrud.search('acplg',
+            {opac_visible: 't', owner: orgIds},
+            {order_by: [{class: "acplg", field: "pos"}, {class: "acplg", field: "name"}]},
+            {anonymous: true}
+        ).pipe(tap(loc => this.copyLocationGroups.push(loc))).toPromise();
+    }
+
+    fetchLibraryGroups(contextOrg: number | IdlObject): Promise<any> {
+        const contextOrgId: any = this.org.get(contextOrg).id();
+
+        this.libraryGroups = [];
+
+        return this.net.request(
+            'open-ils.search',
+            'open-ils.search.fetch_context_library_groups',
+            contextOrgId
+        ).pipe(tap(loc => this.libraryGroups.push(loc))).toPromise();
     }
 
     browse(ctx: CatalogSearchContext): Observable<any> {

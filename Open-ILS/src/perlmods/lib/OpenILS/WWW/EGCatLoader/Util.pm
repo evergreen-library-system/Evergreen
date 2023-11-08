@@ -853,20 +853,14 @@ sub search_lasso_orgs {
 
 sub load_lassos {
     my $self = shift;
-    my $ctx = $self->ctx;
 
-    # User can access global lassos and those at the current search lib
-    my $direct_lassos = $self->editor->search_actor_org_lasso_map(
-        { org_unit => $ctx->{search_ou} }
-    );
-    $direct_lassos = [ map { $_->lasso } @$direct_lassos];
-
-    my $lassos = $self->editor->search_actor_org_lasso(
-        { '-or' => { global => 't', @$direct_lassos ? (id => { in => $direct_lassos}) : () } }
+    $self->ctx->{lassos} = $U->simplereq(
+        'open-ils.search',
+        'open-ils.search.fetch_context_library_groups.atomic',
+        $self->ctx->{search_ou}
     );
 
-    $ctx->{lassos} = [ sort { $a->name cmp $b->name } @$lassos ];
-    $self->apache->log->info("Fetched ".scalar(@$lassos)." lassos");
+    $self->apache->log->info("Fetched ".scalar(@{$self->ctx->{lassos}})." lassos");
 }
 
 sub set_file_download_headers {

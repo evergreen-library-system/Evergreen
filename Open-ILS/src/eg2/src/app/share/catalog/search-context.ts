@@ -192,6 +192,8 @@ export class CatalogTermContext {
     joinOp: string[];
     matchOp: string[];
     format: string;
+    locationGroupOrLasso: string = '';
+    lasso: string;
     available = false;
     onReserveFilter = false;
     onReserveFilterNegated = false;
@@ -371,6 +373,7 @@ export class CatalogSearchContext {
     // Utility stuff
     pager: Pager;
     org: OrgService;
+    activeFiltersCount: number = 0;
 
     constructor() {
         this.pager = new Pager();
@@ -673,7 +676,11 @@ export class CatalogSearchContext {
             str += ' locations(' + ts.copyLocations + ')';
         }
 
-        str += ' site(' + this.searchOrg.shortname() + ')';
+        if (ts.locationGroupOrLasso !== '') {
+            str += ' ' + ts.locationGroupOrLasso;
+        } else {
+            str += ' site(' + this.searchOrg.shortname() + ')';
+        }
 
         Object.keys(ts.ccvmFilters).forEach(field => {
             if (ts.ccvmFilters[field][0] !== '') {
