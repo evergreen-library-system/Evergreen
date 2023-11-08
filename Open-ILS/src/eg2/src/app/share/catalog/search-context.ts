@@ -582,6 +582,7 @@ export class CatalogSearchContext {
         }
 
         if (ts.onReserveFilter) {
+            str += ' ';
             if (ts.onReserveFilterNegated) {
                 str += '-';
             }
@@ -616,6 +617,8 @@ export class CatalogSearchContext {
                     }
             }
         }
+
+        str = str.trimStart();
 
         // -------
         // Compile boolean sub-query components
