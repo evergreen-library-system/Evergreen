@@ -75,7 +75,7 @@ Carousel types can be deleted with the Actions Menu
 
 The Carousels administration page is used to define the characteristics of the carousel, such as the carousel type, which libraries will be able to display the carousel, and which shelving locations should be used to populate the carousel.
 
-The Carousels administration page is accessed through Administration > Server Administration > Carousels. (Please note that in the community release, this page will eventually move to Local Administration.) The interface displays existing carousels in a grid format. The grid can be filtered by organizational unit, based on ownership. The filter may include ancestor or descendent organization units, depending on the scope chosen. The columns displayed correspond to attributes of the carousel. The following are displayed by default: Carousel ID, Carousel Type, Owner, Name, Last Refresh Time, Active, Maximum Items. 
+The Carousels administration page is accessed through Administration > Local Administration > Carousels. The interface displays existing carousels in a grid format. The grid can be filtered by organizational unit, based on ownership. The filter may include ancestor or descendent organization units, depending on the scope chosen. The columns displayed correspond to attributes of the carousel. The following are displayed by default: Carousel ID, Carousel Type, Owner, Name, Last Refresh Time, Active, Maximum Items. 
 
 image::carousel4.png[Carousels configuration screen]
 
@@ -98,7 +98,7 @@ Additional columns may be added to the display with the column picker, including
 
 === Creating a Carousel from the Carousels Administration Page ===
 
-. Go to Administration > Server Administration > Carousels
+. Go to Administration > Local Administration > Carousels
 . Select the *New Carousels* button
 . A popup will open where you will enter information about the carousel
 . Choose the Carousel Type from the drop-down menu
@@ -171,7 +171,7 @@ The Carousel Library Mapping administration page is used to manage which librari
 
 The visibility of a carousel at a given organizational unit is not automatically inherited by the descendants of that unit. The carousel’s owning organizational unit is automatically added to the list of display organizational units.
 
-The interface is accessed by going to Administration > Server Administration > Carousel Library Mapping. (Please note that in the community release, this page will eventually move to Local Administration.) The interface produces a grid display with a list of the current mapping. The grid can be filtered by organizational unit, based on ownership. The filter may include ancestor or descendent organizational units, depending on the scope chosen. 
+The interface is accessed by going to Administration > Local Administration > Carousel Library Mapping. The interface produces a grid display with a list of the current mapping. The grid can be filtered by organizational unit, based on ownership. The filter may include ancestor or descendent organizational units, depending on the scope chosen. 
 
 WARNING: If a carousel is deleted, its mappings are deleted.
 
@@ -185,7 +185,7 @@ WARNING: If a carousel is deleted, its mappings are deleted.
 
 === Create a New Carousel Mapping ===
 
-. Go to Administration > Server Administration > Carousel Library Mapping
+. Go to Administration > Local Administration > Carousel Library Mapping
 . Select *New Carousels Visible at Library*
 . Choose the Carousel you wish to map from the Carousel drop-down menu
 . If you want the title of the carousel on the public catalog home screen to be different from the carousel’s name, enter your desired name in the Override Name field
