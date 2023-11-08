@@ -1626,7 +1626,8 @@ sub pullup {
         if ($current_node->isa('QueryParser::query_plan::node')
             and $next_node->isa('QueryParser::query_plan::node')
             and $current_node->requested_class eq $next_node->requested_class
-            and $current_node->negate eq $next_node->negate
+            and (defined $current_node->negate ? $current_node->negate : "") 
+                eq (defined $next_node->negate ? $next_node->negate : "")
         ) {
             warn "merging RHS atoms into atom list for LHS with joiner $current_joiner\n" if $self->QueryParser->debug;
             push @{$current_node->query_atoms}, $current_joiner if @{$current_node->query_atoms};
@@ -1658,8 +1659,8 @@ sub pullup {
                     if $self->QueryParser->debug;
                 my $first_atom = $atoms[0];
                 my $last_atom = $atoms[-1];
-                $first_atom->explicit_start(1 + $first_atom->explicit_start );
-                $last_atom->explicit_end(1 + $last_atom->explicit_end);
+                $first_atom->explicit_start(defined $first_atom->explicit_start ? $first_atom->explicit_start + 1 : 1);
+                $last_atom->explicit_end(defined $last_atom->explicit_end ? $last_atom->explicit_end + 1 : 1);
         } else { # otherwise, the explicit grouping is meaningless, toss it
             $self->explicit(0);
         }
