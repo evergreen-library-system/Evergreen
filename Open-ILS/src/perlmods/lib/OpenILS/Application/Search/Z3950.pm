@@ -279,8 +279,8 @@ sub do_class_search {
                 push @results, $res->{result}; 
                 push @connections, $res->{connection}; 
 
-                $logger->debug("z3950: Result object: $results[$i], Connection object: $connections[$i]");
-            } 
+                $logger->debug("z3950: Result object: $results[-1], Connection object: $connections[-1]");
+            }
         }
 
     }
