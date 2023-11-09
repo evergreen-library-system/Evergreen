@@ -1,11 +1,10 @@
 BEGIN;
 
-SELECT evergreen.upgrade_deps_block_check('XXXX', :eg_version);
+SELECT evergreen.upgrade_deps_block_check('1386', :eg_version);
 
--- The permission id below needs to be adjusted at commit time
 INSERT INTO permission.perm_list ( id, code, description ) VALUES (
-    999, 'UPDATE_ADDED_CONTENT_URL',
-    oils_i18n_gettext(999, 'Update the NoveList added-content javascript URL', 'ppl', 'description')
+    647, 'UPDATE_ADDED_CONTENT_URL',
+    oils_i18n_gettext(647, 'Update the NoveList added-content javascript URL', 'ppl', 'description')
 );
 
 -- Note: see local.syndetics_id as precedence for not requiring view or update perms for credentials
@@ -55,7 +54,7 @@ VALUES (
 INSERT into config.org_unit_setting_type
     (name, datatype, grp, update_perm, label, description)
 VALUES (
-    'staff.added_content.novelistselect.url', 'string', 'opac', 999,
+    'staff.added_content.novelistselect.url', 'string', 'opac', 647,
     oils_i18n_gettext(
         'staff.added_content.novelistselect.url',
         'URL Override for NoveList Select added content javascript',
