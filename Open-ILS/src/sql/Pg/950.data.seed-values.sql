@@ -1984,7 +1984,9 @@ INSERT INTO permission.perm_list ( id, code, description ) VALUES
  ( 645, 'ADMIN_USER_BUCKET', oils_i18n_gettext(645,
     'Allow a user to administer User Buckets', 'ppl', 'description')),
  ( 646, 'CREATE_USER_BUCKET', oils_i18n_gettext(646,
-    'Allow a user to create a User Bucket', 'ppl', 'description'))
+    'Allow a user to create a User Bucket', 'ppl', 'description')),
+ ( 647, 'UPDATE_ADDED_CONTENT_URL', oils_i18n_gettext(647,
+    'Update the NoveList added-content javascript URL', 'ppl', 'description'))
 ;
 
 SELECT SETVAL('permission.perm_list_id_seq'::TEXT, 1000);
@@ -23487,5 +23489,63 @@ VALUES (
         'eg.holds.pull_list_filters',
         'Holds pull list filter values for pickup library and shelving locations.',
         'cwst', 'label'
+    )
+);
+
+INSERT into config.org_unit_setting_type
+    (name, grp, label, description, datatype)
+VALUES (
+    'staff.added_content.novelistselect.version',
+    'gui',
+    oils_i18n_gettext('staff.added_content.novelistselect.version',
+        'Staff Client added content: NoveList Select API version',
+        'coust', 'label'),
+    oils_i18n_gettext('staff.added_content.novelistselect.version',
+        'API version used to provide NoveList Select added content in the Staff Client',
+        'coust', 'description'),
+    'string'
+);
+
+INSERT into config.org_unit_setting_type
+    (name, grp, label, description, datatype)
+VALUES (
+    'staff.added_content.novelistselect.profile',
+    'gui',
+    oils_i18n_gettext('staff.added_content.novelistselect.profile',
+        'Staff Client added content: NoveList Select profile/user',
+        'coust', 'label'),
+    oils_i18n_gettext('staff.added_content.novelistselect.profile',
+        'Profile/user used to provide NoveList Select added content in the Staff Client',
+        'coust', 'description'),
+    'string'
+);
+
+INSERT into config.org_unit_setting_type
+    (name, grp, label, description, datatype)
+VALUES (
+    'staff.added_content.novelistselect.passwd',
+    'gui',
+    oils_i18n_gettext('staff.added_content.novelistselect.passwd',
+        'Staff Client added content: NoveList Select key/password',
+        'coust', 'label'),
+    oils_i18n_gettext('staff.added_content.novelistselect.passwd',
+        'Key/password used to provide NoveList Select added content in the Staff Client',
+        'coust', 'description'),
+    'string'
+);
+
+INSERT into config.org_unit_setting_type
+    (name, datatype, grp, update_perm, label, description)
+VALUES (
+    'staff.added_content.novelistselect.url', 'string', 'opac', 647,
+    oils_i18n_gettext(
+        'staff.added_content.novelistselect.url',
+        'URL Override for NoveList Select added content javascript',
+        'coust', 'label'
+    ),
+    oils_i18n_gettext(
+        'staff.added_content.novelistselect.url',
+        'URL Override for NoveList Select added content javascript',
+        'coust', 'description'
     )
 );
