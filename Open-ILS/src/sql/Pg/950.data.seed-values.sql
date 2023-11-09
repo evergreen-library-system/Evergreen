@@ -7244,6 +7244,10 @@ INSERT INTO config.record_attr_definition (name,label,fixed_field) VALUES ('relf
 INSERT INTO config.record_attr_definition (name,label,fixed_field) VALUES ('relf4','Relf(4)','Relf4');
 INSERT INTO config.record_attr_definition (name,label,fixed_field) VALUES ('spfm1','SpFm(1)','SpFm1');
 INSERT INTO config.record_attr_definition (name,label,fixed_field) VALUES ('spfm2','SpFm(2)','SpFm2');
+INSERT INTO config.record_attr_definition (name, label, description)
+VALUES ('on_reserve',
+        oils_i18n_gettext('on_reserve', 'Course materials', 'crad', 'label'),
+        oils_i18n_gettext('on_reserve', 'Course materials', 'crad', 'description'));
 
 
 -- TO-DO: Auto-generate these values from CLDR
