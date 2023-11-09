@@ -1,0 +1,25 @@
+== Added Content Tab in Staff Catalog ==
+
+Adds an Added Content tab to the record details page in the angular staff catalog.
+
+ *  The new Added Content tab currently supports only NoveList Select added content.
+ *  NoveList Select subscribers will need to request credentials specifying the staff client url from NoveList for the library settings, separate from the credentials used in the OPAC.
+
+=== Added Content Library Settings ===
+
+The following Library Settings control the behavior of the Added Content tab
+
+  * Staff Client added content: NoveList Select API version (not required)
+  * Staff Client added content: NoveList Select profile/user (
+  * Staff Client added content: NoveList Select key/password
+  * URL Override for NoveList Select added content javascript (not required)
+
+The following new permission controls the ability to setting the URL Override library setting
+
+  * UPDATE_ADDED_CONTENT_URL
+
+=== Added Content Tab Behavior ===
+
+  * If no NoveList settings are present for the OU level, the Added Content tab does not appear.
+  * If NoveList is set up but the bib record lacks ISBNs, or there is no NoveList content available for the work, the tab appears but it will say "No Added Content" and its star will be empty and gray.
+  * If NoveList is set up and content is available, the tab's star will be gold and filled in. It may take a few seconds to change when you first load the record. It will load in the background while you are viewing any other tab in the record.
