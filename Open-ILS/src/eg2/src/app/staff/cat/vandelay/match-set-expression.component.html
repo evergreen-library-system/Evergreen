@@ -11,37 +11,39 @@
   [template]="nodeStrTmpl"></eg-string>
 
 <div class="row mt-2">
-  <div class="col-lg-7">
-    <div class="row ms-2">
-      <span class="text-white bg-dark p-2" i18n>
+  <div class="col-lg-7 m2-2">
+    <span class="text-white bg-dark p-2" i18n>
         Your Expression: {{expressionAsString()}}
-      </span>
-    </div>
-    <div class="row ms-2 mt-4">
-      <span class="me-2" i18n>Add New:</span>
-      <button class="btn btn-outline-dark me-2" *ngIf="matchSetType==='biblio'"
-        (click)="newPointType='attr'" i18n>Record Attribute</button>
-      <button class="btn btn-outline-dark me-2" 
-        (click)="newPointType='marc'" i18n>MARC Tag and Subfield</button>
-      <button class="btn btn-outline-dark me-2" *ngIf="matchSetType==='authority'"
-        (click)="newPointType='heading'" i18n>Normalized Authority Heading</button>
-      <button class="btn btn-outline-dark me-2" 
-        (click)="newPointType='bool'" i18n>Boolean Operator</button>
+    </span>
+    
+    <div class="row row-cols-auto ms-2 mt-4">
+      <div class="col">
+        <span class="me-2" i18n>Add New:</span>
+        <button class="btn btn-outline-dark me-2" *ngIf="matchSetType==='biblio'"
+          (click)="newPointType='attr'" i18n>Record Attribute</button>
+        <button class="btn btn-outline-dark me-2" 
+          (click)="newPointType='marc'" i18n>MARC Tag and Subfield</button>
+        <button class="btn btn-outline-dark me-2" *ngIf="matchSetType==='authority'"
+          (click)="newPointType='heading'" i18n>Normalized Authority Heading</button>
+        <button class="btn btn-outline-dark me-2" 
+          (click)="newPointType='bool'" i18n>Boolean Operator</button>
+      </div>
     </div>
     <eg-match-set-new-point #newPoint [pointType]="newPointType">
     </eg-match-set-new-point>
-    <div class="row mt-2 ms-2" *ngIf="newPointType">
-      <button class="btn btn-success" (click)="addChildNode()" 
-        [disabled]="!selectedIsBool()" i18n>
-        Add To Selected Node
-      </button>
+    <div class="row row-cols-auto mt-2 ms-2" *ngIf="newPointType">
+      <div class="col">
+        <button class="btn btn-success me-2" (click)="addChildNode()" 
+          [disabled]="!selectedIsBool()" i18n>
+          Add To Selected Node
+        </button>
 
-      <button class="btn btn-success mt-1" (click)="addChildNode(true)"
-        [disabled]="!hasSelectedNode() ||
-          (newPointType !== 'bool' && selectedIsBool())" i18n>
-        Replace Selected Node
-      </button>
-
+        <button class="btn btn-success ms-2" (click)="addChildNode(true)"
+          [disabled]="!hasSelectedNode() ||
+            (newPointType !== 'bool' && selectedIsBool())" i18n>
+          Replace Selected Node
+        </button>
+      </div>
     </div>
     <div class="row mt-2 ms-2 fst-italic" *ngIf="newPointType">
       <ol i18n>
