@@ -55,7 +55,7 @@
         </div>
         <div class="flex-1 d-flex">
           <div class="flex-1"></div>
-          <div id="scko-welcome-message" class="mr-2 rounded" i18n>Welcome,
+          <div id="scko-welcome-message" class="me-2 rounded" i18n>Welcome,
             {{scko.patronSummary.patron.pref_first_given_name() 
               || scko.patronSummary.patron.first_given_name()}}
           </div>
@@ -89,14 +89,14 @@
             [(ngModel)]="staffUsername"/>
         </div>
 
-        <div class="form-group row">
+        <div class="form-group row mt-2">
           <label class="col-lg-4 text-right font-weight-bold" 
             for="staff-password" i18n>Password</label>
           <eg-credential-input domId="staff-password" name="staff-password"
             [(ngModel)]="staffPassword"></eg-credential-input>
         </div>
 
-        <div class="form-group row p-0 g-0" *ngIf="workstations && workstations.length">
+        <div class="form-group row p-0 g-0 mt-2" *ngIf="workstations && workstations.length">
           <label class="col-lg-4 text-right font-weight-bold" 
             for="workstation" i18n>Workstation</label>
           <select 
@@ -111,8 +111,8 @@
           </select>
         </div>
 
-        <div class="row">
-          <div class="col-lg-2 offset-lg-4 pl-0">
+        <div class="row mt-2">
+          <div class="col-lg-2 offset-lg-4 ps-0">
             <button type="submit" class="btn btn-outline-dark" i18n>Sign In</button>
           </div>
           <div class="col-lg-3">
