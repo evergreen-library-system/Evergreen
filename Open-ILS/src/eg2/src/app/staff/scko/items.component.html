@@ -28,7 +28,7 @@
         <td>
           <input type="checkbox" [(ngModel)]="selected[circ.id()]"/>
         <td>
-          <ng-container *ngIf="circ.target_copy().id() != -1">
+          <ng-container *ngIf="circ.target_copy().id() !== -1">
             <img src="/opac/extras/ac/jacket/small/r/{{circ.target_copy().call_number().record().id()}}"/>
           </ng-container>
         </td>

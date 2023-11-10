@@ -9,16 +9,13 @@ import {ServerStoreService} from '@eg/core/server-store.service';
   templateUrl: 'checkout.component.html'
 })
 
-export class SckoCheckoutComponent implements OnInit {
+export class SckoCheckoutComponent implements OnDestroy {
 
     constructor(
         private router: Router,
         private route: ActivatedRoute,
         public  scko: SckoService
     ) {}
-
-    ngOnInit() {
-    }
 
     ngOnDestroy() {
         // Removew checkout errors when navigating away.

@@ -20,10 +20,10 @@
         <td>{{hold.title}}</td>
         <td>{{hold.author}}</td>
         <td>
-          <ng-container *ngIf="hold.hold_status == 4" i18n>
+          <ng-container *ngIf="hold.hold_status === 4" i18n>
             Ready for Pickup
           </ng-container>
-          <ng-container *ngIf="hold.hold_status != 4" i18n>
+          <ng-container *ngIf="hold.hold_status !== 4" i18n>
             #{{hold.relative_queue_position}} in line with {{hold.potentials}} copie(s)
           </ng-container>
         </td>

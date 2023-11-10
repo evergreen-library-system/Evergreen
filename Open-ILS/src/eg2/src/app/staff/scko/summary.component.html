@@ -13,18 +13,18 @@
       <input class="btn-check" name="receipt-type" type="radio" 
         [(ngModel)]="receiptType" id="receipt-email" value="email">
       <label class="btn btn-outline-success m-1" for="receipt-email" i18n
-        [ngClass]="{'active': receiptType == 'email'}">Email</label>
+        [ngClass]="{'active': receiptType === 'email'}">Email</label>
     </div>
 
     <input class="btn-check" name="receipt-type" type="radio" 
       [(ngModel)]="receiptType" id="receipt-print" value="print">
     <label class="btn btn-outline-success m-1" for="receipt-print" i18n
-      [ngClass]="{'active': receiptType == 'print'}">Print</label>
+      [ngClass]="{'active': receiptType === 'print'}">Print</label>
 
     <input class="btn-check" name="receipt-type" type="radio" 
       [(ngModel)]="receiptType" id="receipt-none" value="none">
     <label class="btn btn-outline-success m-1" for="receipt-none" i18n
-      [ngClass]="{'active': receiptType == 'none'}">None</label>
+      [ngClass]="{'active': receiptType === 'none'}">None</label>
   </div>
 
   <fieldset>

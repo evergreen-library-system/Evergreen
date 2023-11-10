@@ -18,10 +18,10 @@
     <tbody class='oils-selfck-item-table'>
 	    <tr *ngFor="let xact of xacts">
         <td>
-          <ng-container *ngIf="xact.summary().xact_type() == 'circulation'" i18n>
+          <ng-container *ngIf="xact.summary().xact_type() === 'circulation'" i18n>
             Circulation
           </ng-container>
-          <ng-container *ngIf="xact.summary().xact_type() != 'circulation'" i18n>
+          <ng-container *ngIf="xact.summary().xact_type() !== 'circulation'" i18n>
             Miscellaneous
           </ng-container>
         </td>
