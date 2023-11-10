@@ -34,15 +34,18 @@ CREATE TABLE url_verify.session (
 CREATE TABLE url_verify.url_selector (
     id      SERIAL  PRIMARY KEY,
     xpath   TEXT    NOT NULL,
-    session INT     NOT NULL REFERENCES url_verify.session (id) DEFERRABLE INITIALLY DEFERRED,
+    session INT     NOT NULL REFERENCES url_verify.session (id) 
+                    ON DELETE CASCADE ON UPDATE CASCADE DEFERRABLE INITIALLY DEFERRED,
     CONSTRAINT tag_once_per_sess UNIQUE (xpath, session)
 );
 
 CREATE TABLE url_verify.url (
     id              SERIAL  PRIMARY KEY,
-    redirect_from   INT     REFERENCES url_verify.url(id) DEFERRABLE INITIALLY DEFERRED,
+    redirect_from   INT     REFERENCES url_verify.url(id) 
+                            ON DELETE CASCADE ON UPDATE CASCADE DEFERRABLE INITIALLY DEFERRED,
     item            INT     REFERENCES container.biblio_record_entry_bucket_item (id) DEFERRABLE INITIALLY DEFERRED,
-    session         INT     REFERENCES url_verify.session (id) DEFERRABLE INITIALLY DEFERRED,
+    session         INT     REFERENCES url_verify.session (id)
+                            ON DELETE CASCADE ON UPDATE CASCADE DEFERRABLE INITIALLY DEFERRED,
     url_selector    INT     REFERENCES url_verify.url_selector (id) DEFERRABLE INITIALLY DEFERRED,
     tag             TEXT,    
     subfield        TEXT,    
@@ -73,14 +76,16 @@ CREATE TABLE url_verify.url (
 CREATE TABLE url_verify.verification_attempt (
     id          SERIAL                      PRIMARY KEY,
     usr         INT                         NOT NULL REFERENCES actor.usr (id) DEFERRABLE INITIALLY DEFERRED,
-    session     INT                         NOT NULL REFERENCES url_verify.session (id) DEFERRABLE INITIALLY DEFERRED,
+    session     INT                         NOT NULL REFERENCES url_verify.session (id)
+                                            ON DELETE CASCADE ON UPDATE CASCADE DEFERRABLE INITIALLY DEFERRED,
     start_time  TIMESTAMP WITH TIME ZONE    NOT NULL DEFAULT NOW(),
     finish_time TIMESTAMP WITH TIME ZONE
 );
  
 CREATE TABLE url_verify.url_verification (
     id          SERIAL                      PRIMARY KEY,
-    url         INT                         NOT NULL REFERENCES url_verify.url (id) DEFERRABLE INITIALLY DEFERRED,
+    url         INT                         NOT NULL REFERENCES url_verify.url (id)
+                                            ON DELETE CASCADE ON UPDATE CASCADE DEFERRABLE INITIALLY DEFERRED,
     attempt     INT                         NOT NULL REFERENCES url_verify.verification_attempt (id) DEFERRABLE INITIALLY DEFERRED,
     req_time    TIMESTAMP WITH TIME ZONE    NOT NULL DEFAULT NOW(),
     res_time    TIMESTAMP WITH TIME ZONE, 
