@@ -47,7 +47,7 @@
   </div>
   <div class="row mb-1">
     <div class="col-lg-5" i18n>
-      <a href="javascript:;" (click)="showDob = !showDob">Date of Birth</a>
+      <button type="button" class="btn btn-link" (click)="showDob = !showDob">Date of Birth</button>
     </div>
     <div class="col-lg-7">
       <ng-container *ngIf="showDob">{{p().dob() | date}}</ng-container>
@@ -202,10 +202,10 @@
         <legend class="d-flex" [ngClass]="{'alert alert-danger p-0': addr.valid() === 'f'}">
           <div class="flex-1">{{addr.address_type()}}</div>
           <div>
-            <a class="me-2" href="javascript:;" 
-              (click)="copyAddress(addr)" i18n>copy</a>
-            <a class="me-2" href="javascript:;" 
-              (click)="printAddress(addr)" i18n>print</a>
+            <button type="button" class="btn btn-link me-2" 
+              (click)="copyAddress(addr)" i18n>copy</button>
+            <button type="button" class="btn btn-link me-2"
+              (click)="printAddress(addr)" i18n>print</button>
           </div>
         </legend>
         <div i18n>{{addr.street1()}} {{addr.street2()}}</div>

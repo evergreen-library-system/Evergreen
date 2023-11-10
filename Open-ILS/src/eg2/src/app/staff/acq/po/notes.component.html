@@ -29,8 +29,8 @@
       <div class="flex-5 ms-2 p-1">{{note.value()}}</div>
       <div class="ms-2 p-1">{{note.create_time() | date:'short'}}</div>
       <div class="ms-2 p-1">
-        <a href="javascript:;" class="text-danger" 
-          (click)="deleteNote(note)" i18n>Delete</a>
+        <button type="button" class="btn btn-outline-danger" 
+          (click)="deleteNote(note)" i18n>Delete</button>
       </div>
     </div>
   </div>
