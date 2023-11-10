@@ -1,0 +1,6 @@
+== Print Selected Rows ==
+
+Grids throughout the staff client now have an option
+to print only rows that the user has selected, rather
+than printing all rows in the grid.
+
