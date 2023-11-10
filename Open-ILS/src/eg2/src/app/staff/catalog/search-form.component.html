@@ -92,14 +92,14 @@
                     id='first-query-input'
                     [(ngModel)]="context.termSearch.query[idx]"
                     (keyup.enter)="searchByForm()"
-                    placeholder="Query..."/>
+                    placeholder="Query..." i18n-placeholder />
                 </div>
                 <div *ngIf="idx > 0">
                   <label i18n class="input-label" for='context-termSearch-query-{{idx}}'>Search Terms</label>
                   <input type="search" class="form-control"
                     [(ngModel)]="context.termSearch.query[idx]"
                     (keyup.enter)="searchByForm()"
-                    placeholder="Query..."/>
+                    placeholder="Query..." i18n-placeholder />
                 </div>
               </div>
             </div>
@@ -303,7 +303,7 @@
                   type="text" class="form-control ml-2"
                   [(ngModel)]="context.identSearch.value"
                   (keyup.enter)="searchByForm()"
-                  placeholder="Numeric Query..."/>
+                  placeholder="Numeric Query..." i18n-placeholder />
               </div>
             </div>
           </div>
@@ -368,7 +368,7 @@
                 id='browse-term-input' name="query"
                 [(ngModel)]="context.browseSearch.value"
                 (keyup.enter)="searchByForm()"
-                placeholder="Browse for..."/>
+                placeholder="Browse for..." i18n-placeholder />
             </div>
           </div>
         </ng-template>
@@ -384,7 +384,7 @@
                 id='cnbrowse-term-input' name="query"
                 [(ngModel)]="context.cnBrowseSearch.value"
                 (keyup.enter)="searchByForm()"
-                placeholder="Browse Call Numbers..."/>
+                placeholder="Browse Call Numbers..." i18n-placeholder />
             </div>
           </div>
         </ng-template>
@@ -400,7 +400,7 @@
               <eg-org-select 
                 (onChange)="orgOnChange($event)"
                 [initialOrg]="context.searchOrg"
-                [placeholder]="'Library'" >
+                [placeholder]="'Library'" i18n-placeholder>
               </eg-org-select>
               <button class="btn btn-success mr-1 ml-1" type="button"
                 [disabled]="searchIsActive()"
