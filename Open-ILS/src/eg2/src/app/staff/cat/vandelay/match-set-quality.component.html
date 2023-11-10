@@ -1,20 +1,24 @@
 <div class="row mt-2">
   <div class="col-lg-7">
-    <div class="row ms-2 mt-4">
-      <span class="me-2" i18n>Add New:</span>
-      <button class="btn btn-outline-dark me-2" *ngIf="matchSetType==='biblio'"
-        (click)="newPointType='attr'" i18n>Record Attribute</button>
-      <button class="btn btn-outline-dark me-2" 
-        (click)="newPointType='marc'" i18n>MARC Tag and Subfield</button>
+    <div class="row row-cols-auto ms-2 mt-4">
+      <div class="col">
+        <span class="me-2" i18n>Add New:</span>
+        <button class="btn btn-outline-dark me-2" *ngIf="matchSetType==='biblio'"
+          (click)="newPointType='attr'" i18n>Record Attribute</button>
+        <button class="btn btn-outline-dark me-2" 
+          (click)="newPointType='marc'" i18n>MARC Tag and Subfield</button>
+      </div>
     </div>
     <eg-match-set-new-point #newPoint 
       [pointType]="newPointType" [isForQuality]="true">
     </eg-match-set-new-point>
-    <div class="row mt-2 ms-2" *ngIf="newPointType">
-      <button class="btn btn-success me-2" 
-        (click)="addQuality()" i18n>Add</button>
-      <button class="btn btn-warning"
-        (click)="newPointType=null" i18n>Cancel</button>
+    <div class="row row-cols-auto mt-2 ms-2" *ngIf="newPointType">
+      <div class="col">
+        <button class="btn btn-success me-2" 
+          (click)="addQuality()" i18n>Add</button>
+        <button class="btn btn-warning"
+          (click)="newPointType=null" i18n>Cancel</button>
+      </div>
     </div>
   </div>
 </div>
