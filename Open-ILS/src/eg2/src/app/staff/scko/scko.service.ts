@@ -147,9 +147,6 @@ export class SckoService {
             this.patronIdleTimeout =
                 Number(sets['circ.selfcheck.patron_login_timeout'] || 160);
 
-            // Compensate for the warning dialog
-            this.patronIdleTimeout -= this.logoutWarningTimeout;
-
             // Load a patron by barcode via URL params.
             // Useful for development.
             const username = this.route.snapshot.queryParamMap.get('patron');
@@ -234,16 +231,24 @@ export class SckoService {
 
     resetPatronTimeout() {
         console.debug('Resetting patron timeout=' + this.patronIdleTimeout);
+
         if (this.patronTimeoutId) {
             clearTimeout(this.patronTimeoutId);
+            this.patronTimeoutId = null;
         }
+
+        if (this.logoutWarningTimerId) {
+            clearTimeout(this.logoutWarningTimerId);
+            this.logoutWarningTimerId = null;
+        }
+
         this.startPatronTimer();
     }
 
     startPatronTimer() {
-        setTimeout(
+        this.patronTimeoutId = setTimeout(
             () => this.showPatronLogoutWarning(),
-            this.patronTimeoutId = this.patronIdleTimeout * 1000
+            this.patronIdleTimeout * 1000
         );
     }
 
@@ -252,8 +257,6 @@ export class SckoService {
 
         this.logoutDialog.open().subscribe(remain => {
             if (remain) {
-                clearTimeout(this.logoutWarningTimerId);
-                this.logoutWarningTimerId = null;
                 this.resetPatronTimeout();
             } else {
                 this.resetPatron();
@@ -263,13 +266,13 @@ export class SckoService {
 
         // Force the session to end if no action is taken on the
         // logout warning dialog.
-        setTimeout(
+        this.logoutWarningTimerId = setTimeout(
             () => {
                 console.debug('Clearing patron on warning dialog timeout');
                 this.resetPatron();
                 this.router.navigate(['/staff/selfcheck']);
             },
-            this.logoutWarningTimerId = this.logoutWarningTimeout * 1000
+            this.logoutWarningTimeout * 1000
         );
     }
 

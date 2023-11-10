@@ -1,4 +1,4 @@
-import {Component, OnInit, ViewEncapsulation} from '@angular/core';
+import {Component, OnInit, OnDestroy, ViewEncapsulation} from '@angular/core';
 import {Router, ActivatedRoute, NavigationEnd} from '@angular/router';
 import {AuthService} from '@eg/core/auth.service';
 import {IdlObject} from '@eg/core/idl.service';
@@ -18,6 +18,11 @@ export class SckoCheckoutComponent implements OnInit {
     ) {}
 
     ngOnInit() {
+    }
+
+    ngOnDestroy() {
+        // Removew checkout errors when navigating away.
+        this.scko.statusDisplayText = '';
     }
 
     printList() {

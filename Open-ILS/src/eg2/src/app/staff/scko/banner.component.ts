@@ -39,6 +39,10 @@ export class SckoBannerComponent implements OnInit, AfterViewInit {
     ) {}
 
     ngOnInit() {
+        this.staffUsername = '';
+        this.staffPassword = '';
+        this.patronUsername = '';
+        this.patronPassword = '';
 
         this.hatch.connect();
 
@@ -65,8 +69,11 @@ export class SckoBannerComponent implements OnInit, AfterViewInit {
     focusNode(id: string) {
         setTimeout(() => {
             const node = document.getElementById(id);
-            if (node) { (node as HTMLInputElement).select(); }
-        });
+            if (node) {
+                (node as HTMLInputElement).select();
+                (node as HTMLInputElement).focus();
+            }
+        }, 50);
     }
 
     applyWorkstation() {

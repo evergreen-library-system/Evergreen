@@ -12,18 +12,18 @@
         <div class="flex-1"></div>
         <div>
           <form (ngSubmit)="submitPatronLogin()" #patronLoginForm="ngForm"
-            autocomplete="off" class="form-validated form-inline">
+            autocomplete="off" class="form-validated">
 
-            <label class="sr-only" for="patron-username" i18n>Username</label>
+            <label class="visually-hidden" for="patron-username" i18n>Username</label>
 
-            <input type="text" class="form-control border border-dark shadow-rounded" 
+            <input type="text" class="form-control border border-dark shadow-rounded mb-3" 
               (keyup.enter)="submitPatronLogin()"
               autocomplete="off" id="patron-username" required 
               [(ngModel)]="patronUsername" name="patron-username"
               placeholder="Username or Barcode" i18n-placeholder>
 
             <ng-container *ngIf="scko.patronPasswordRequired">
-              <label class="sr-only" for="patron-password" i18n>Password</label>
+              <label class="visually-hidden" for="patron-password" i18n>Password</label>
               <eg-credential-input domId="patron-password"
                 name="patron-password"
                 [(ngModel)]="patronPassword"
@@ -44,7 +44,7 @@
           <form (ngSubmit)="submitItemBarcode()" #barcodeForm="ngForm"
             autocomplete="off" class="form-validated form-inline">
 
-            <label class="sr-only" for="item-barcode" i18n>Item Barcode</label>
+            <label class="visually-hidden" for="item-barcode" i18n>Item Barcode</label>
 
             <input type="text" class="form-control border border-dark shadow-rounded" 
               autocomplete="off" id="item-barcode" required 
@@ -89,14 +89,14 @@
             [(ngModel)]="staffUsername"/>
         </div>
 
-        <div class="form-group row mt-2">
+        <div class="form-group row mt-3">
           <label class="col-lg-4 text-right font-weight-bold" 
             for="staff-password" i18n>Password</label>
           <eg-credential-input domId="staff-password" name="staff-password"
             [(ngModel)]="staffPassword"></eg-credential-input>
         </div>
 
-        <div class="form-group row p-0 g-0 mt-2" *ngIf="workstations && workstations.length">
+        <div class="form-group row p-0 g-0 mt-3" *ngIf="workstations && workstations.length">
           <label class="col-lg-4 text-right font-weight-bold" 
             for="workstation" i18n>Workstation</label>
           <select 
@@ -111,7 +111,7 @@
           </select>
         </div>
 
-        <div class="row mt-2">
+        <div class="row mt-3">
           <div class="col-lg-2 offset-lg-4 ps-0">
             <button type="submit" class="btn btn-outline-dark" i18n>Sign In</button>
           </div>
