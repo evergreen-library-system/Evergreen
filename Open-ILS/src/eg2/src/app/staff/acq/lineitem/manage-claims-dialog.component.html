@@ -16,7 +16,7 @@
           <ng-container *ngIf="!lid.recv_time() && !lid.cancel_reason()">Not received</ng-container>
           <ul>
             <li *ngFor="let claim of lid.claims()">
-               {{claim.type().code()}} <a href="javascript:;" (click)="printVoucher(lid.id())">Print Voucher</a>
+               {{claim.type().code()}} <button  type="button" class="btn" (click)="printVoucher(lid.id())">Print Voucher</button>
             </li>
           </ul>
         </li>
