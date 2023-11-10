@@ -102,10 +102,10 @@
                 <td class='light_border'>[% ctx.user.email | html %]</td>
                 <td class='light_border'>
                 [%- IF ctx.user.email %]
-                <a href="#" onclick="sendTestEmail(
+                <button type="button" class="btn btn-link" onclick="sendTestEmail(
                         [% ctx.user.id %], '[% ctx.authtoken %]'
                     )"
-                    title="[% l('Send Test Email') %]">[% l('Send Test Email') %]</a></td>
+                    title="[% l('Send Test Email') %]">[% l('Send Test Email') %]</button></td>
                 [%- END %]
                 [%- IF disable_email_change == 'true' %]
                 <td></td>
