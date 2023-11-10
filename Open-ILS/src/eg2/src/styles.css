@@ -59,13 +59,19 @@ a:hover {
   color: #0848A5; 
 }
 
+.nav-link {
+  color: #0A58CA;
+}
+
 .btn-link {
   color: #0A58CA;
   padding: inherit;
 }
 
 .btn-link:focus,
-.btn-link:hover {
+.btn-link:hover,
+.nav-link:focus,
+.nav-link:hover {
   color: #0848A5;
 }
 
