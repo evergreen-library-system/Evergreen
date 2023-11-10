@@ -1,6 +1,6 @@
 BEGIN;
 
---SELECT evergreen.upgrade_deps_block_check('XXXX', :eg_version);
+SELECT evergreen.upgrade_deps_block_check('1388', :eg_version);
 
 UPDATE action_trigger.event_definition
 SET delay = '-24:01:00'::INTERVAL
