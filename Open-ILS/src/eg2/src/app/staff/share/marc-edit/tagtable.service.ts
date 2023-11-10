@@ -312,11 +312,6 @@ export class TagTableService {
             selector.marcFormat = DEFAULT_MARC_FORMAT;
         }
 
-        // Tag tables of a given marc record type are identical.
-        if (this.tagTables[selector.marcRecordType]) {
-            return Promise.resolve(this.tagTables[selector.marcRecordType]);
-        }
-
         const tt = new TagTable(
             this.store, this.auth, this.net, this.pcrud, selector);
 
