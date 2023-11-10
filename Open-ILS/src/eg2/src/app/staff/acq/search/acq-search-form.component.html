@@ -5,12 +5,12 @@
 <form>
   <div class="row row-cols-auto mb-1">
     <div class="col form-group form-inline">
-      <label class="form-label" i18n>Search for records matching
+      <label class="form-label"><span i18n>Search for records matching</span>
       <select class="form-select d-inline w-auto mx-1 py-1" id="acq-search-conjunction" [ngModelOptions]="{standalone: true}" [(ngModel)]="searchConjunction">
-        <option value="all">all</option>
-        <option value="any">any</option>
+        <option value="all" i18n>all</option>
+        <option value="any" i18n>any</option>
       </select>
-      of the following terms:</label>
+      <span i18n>of the following terms:</span></label>
     </div>
     <div class="col">
       <button type="button" class="with-material-icon btn btn-link text-primary"
@@ -33,8 +33,8 @@
         (ngModelChange)="old = t.field; t.field = $event"
         (change)="clearSearchTerm(t, old)">
         <option disabled="disabled" i18n>Select Search Field</option>
-        <optgroup *ngFor="let g of hints" label="{{availableSearchFields[g]['__label']}}">
-          <option *ngFor="let o of availableSearchFields[g]['__fields']" value="{{g}}:{{o}}">
+        <optgroup *ngFor="let g of hints" label="{{availableSearchFields[g]['__label']}}" i18n-label>
+          <option *ngFor="let o of availableSearchFields[g]['__fields']" value="{{g}}:{{o}}" i18n>
             {{availableSearchFields[g]['__label']}} - {{availableSearchFields[g][o].label}}
           </option>
         </optgroup>
@@ -133,12 +133,12 @@
     <div class="col ps-3 pe-1">
       <button type="button" class="btn btn-sm material-icon-button" type="button"
         (click)="addSearchTerm()"
-        i18n-title title="Add Search Row"><span class="visually-hidden">Add Search Row</span>
+        i18n-title title="Add Search Row"><span class="visually-hidden" i18n>Add Search Row</span>
         <span class="material-icons" aria-hidden="true">add_circle_outline</span>
       </button>
       <button type="button" class="btn btn-sm material-icon-button" type="button"
         (click)="delSearchTerm(idx)"
-        i18n-title title="Remove Search Row"><span class="visually-hidden">Remove Search Row</span>
+        i18n-title title="Remove Search Row"><span class="visually-hidden" i18n>Remove Search Row</span>
         <span class="material-icons" aria-hidden="true">remove_circle_outline</span>
       </button>
     </div>
