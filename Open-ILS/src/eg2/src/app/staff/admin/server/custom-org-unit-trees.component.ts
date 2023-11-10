@@ -51,7 +51,7 @@ export class CustomOrgUnitTreesComponent implements OnInit {
         try {
             await this.loadAouTree(this.org.root().id());
             await this.loadCustomTree('opac');
-            console.warn('CustomOrgUnitTreesComponent, this', this);
+            //console.warn('CustomOrgUnitTreesComponent, this', this);
         } catch(E) {
             console.error('caught during ngOnInit',E);
         }
@@ -157,7 +157,7 @@ export class CustomOrgUnitTreesComponent implements OnInit {
         const rootNode = handleNode(aouTree, true);
         this.tree = new Tree(rootNode);
     }
-    
+
     ingestCustomTree(aouctnTree: IdlObject) {
 
         const handleNode = (orgNode: IdlObject, expand?: boolean): TreeNode => {
@@ -185,28 +185,28 @@ export class CustomOrgUnitTreesComponent implements OnInit {
 
     nodeClicked($event: any) {
         //this.selected = $event;
-        console.log('custom: nodeClicked',typeof $event);
+        //console.log('custom: nodeClicked',typeof $event);
     }
 
     custom_nodeClicked($event: any) {
         //this.custom_selected = $event;
-        console.log('custom: custom_nodeClicked',typeof $event);
+        //console.log('custom: custom_nodeClicked',typeof $event);
     }
 
     nodeChecked($event: any) {
         //this.selected = $event;
-        console.log('custom: nodeChecked',typeof $event);
+        //console.log('custom: nodeChecked',typeof $event);
     }
 
     custom_nodeChecked($event: any) {
         //this.custom_selected = $event;
-        console.log('custom: custom_nodeChecked',typeof $event);
+        //console.log('custom: custom_nodeChecked',typeof $event);
     }
 
     isCopyNodesAllowed(): boolean {
         try {
             if (!this.tree) {
-                console.log('isCopyNodesAllowed: tree not ready', false);
+                //console.log('isCopyNodesAllowed: tree not ready', false);
                 return false;
             }
             const sourceNodes = this.tree.selectedNodes();
@@ -238,7 +238,7 @@ export class CustomOrgUnitTreesComponent implements OnInit {
     }
 
     copyNodes() {
-        console.log('copyNodes');
+        //console.log('copyNodes');
         const sourceNodes = this.tree.selectedNodes();
         const targetNode = this.custom_tree.selectedNode();
         if (!this.isCopyNodesAllowed()) {
@@ -248,11 +248,11 @@ export class CustomOrgUnitTreesComponent implements OnInit {
     }
 
     _copyNodes(sourceNodes: TreeNode[], targetNode: TreeNode, cloneChildren = true) {
-        console.log('_copyNodes', { sourceNodes: sourceNodes, targetNode: targetNode });
+        //console.log('_copyNodes', { sourceNodes: sourceNodes, targetNode: targetNode });
         const traverseTreeAndCopySourceNodes = (currentNode: TreeNode, targetNode: TreeNode) => {
-            console.log('traverseTreeAndCopySourceNodes', currentNode.label);
+            //console.log('traverseTreeAndCopySourceNodes', currentNode.label);
             if (sourceNodes.map(n => n.label).includes(currentNode.label)) {
-                console.log('found a source node, copying',currentNode.label);
+                //console.log('found a source node, copying',currentNode.label);
                 let newNode = currentNode.clone();
                 if (!cloneChildren) {
                     newNode.children = [];
@@ -273,7 +273,7 @@ export class CustomOrgUnitTreesComponent implements OnInit {
     isDeleteNodesAllowed(): boolean {
         try {
             if (!this.custom_tree) {
-                console.log('isDeleteNodesAllowed: custom_tree not ready', false);
+                //console.log('isDeleteNodesAllowed: custom_tree not ready', false);
                 return false;
             }
             const targetNodes = this.custom_tree.selectedNodes();
@@ -308,7 +308,7 @@ export class CustomOrgUnitTreesComponent implements OnInit {
 
         for (let targetNode of targetNodes) {
             if (targetNode !== this.custom_tree.rootNode) {
-                console.log('removing node',targetNode);
+                //console.log('removing node',targetNode);
                 this.custom_tree.removeNode(targetNode);
             }
         }
@@ -401,7 +401,7 @@ export class CustomOrgUnitTreesComponent implements OnInit {
 
         this.moveNodeElsewhereDialog.open({size: 'lg'}).subscribe(
             result => {
-                console.log('modal result',result);
+                //console.log('modal result',result);
                 if (result) {
                     try {
                         // Find the equivalent node in custom_tree
@@ -436,7 +436,7 @@ export class CustomOrgUnitTreesComponent implements OnInit {
     }
 
 	async applyChanges() {
-        console.log('applyChanges');
+        //console.log('applyChanges');
 		if (this.active !== (this.tree_type.active() === 't')) {
 			this.tree_type.active(this.active ? 't' : 'f');
 			this.tree_type.ischanged('t');
@@ -457,18 +457,18 @@ export class CustomOrgUnitTreesComponent implements OnInit {
 	}
 
 	async createNewAouctns(node: TreeNode, parent_id: number = null, order: number = 0) {
-        console.log('createNewAouctns for ' + node.label + ' with parent_id = ' + parent_id + ' and order = ' + order, node);
+        //console.log('createNewAouctns for ' + node.label + ' with parent_id = ' + parent_id + ' and order = ' + order, node);
         // delete the existing custom nodes for the custom tree
         // TODO: this is what the dojo interface did, but do we really need so much churn?
         // TODO: we may want to move this to an OpenSRF method so we can wrap the entire
         //       delete and create into a single transaction
         if (this.aouctn_root) {
             if (this.org.get(this.aouctn_root.org_unit()).id() === node.callerData.orgId) {
-                console.warn('removing aouctn for org ' + this.org.get(node.callerData.orgId).shortname(), this.aouctn_root);
+                //console.warn('removing aouctn for org ' + this.org.get(node.callerData.orgId).shortname(), this.aouctn_root);
                 let result = await lastValueFrom(this.pcrud.remove(this.aouctn_root));
-                console.log('remove returned', result);
-                console.log('this should have cascaded and deleted all descendants');
-                console.log('setting aouctn_root to null');
+                //console.log('remove returned', result);
+                //console.log('this should have cascaded and deleted all descendants');
+                //console.log('setting aouctn_root to null');
                 this.aouctn_root = null;
             }
         }
@@ -478,26 +478,26 @@ export class CustomOrgUnitTreesComponent implements OnInit {
 		newNode.sibling_order(order);
 		newNode.org_unit(node.callerData.orgId);
 		newNode.tree(this.tree_type.id());
-        console.warn('creating aouctn for org ' + this.org.get(node.callerData.orgId).shortname(), newNode);
+        //console.warn('creating aouctn for org ' + this.org.get(node.callerData.orgId).shortname(), newNode);
 
 		// Send the new node to the server and get back the updated node
 		newNode = await firstValueFrom(this.pcrud.create(newNode));
-        console.log('pcrud.create returned', newNode);
+        //console.log('pcrud.create returned', newNode);
         if (!this.aouctn_root) {
-            console.log('setting it to aouctn_root; parent_node =', newNode.parent_node())
+            //console.log('setting it to aouctn_root; parent_node =', newNode.parent_node())
             this.aouctn_root = newNode;
         }
 
 		// If the original TreeNode has children, create new aouctn's for each child
 		if (node.children && node.children.length > 0) {
-            console.log('looping through children for ' + this.org.get(newNode.org_unit()).shortname());
+            //console.log('looping through children for ' + this.org.get(newNode.org_unit()).shortname());
 			for (let i = 0; i < node.children.length; i++) {
 				await this.createNewAouctns(node.children[i], newNode.id(), i);
 			}
-            console.log('finished with children for ' + this.org.get(newNode.org_unit()).shortname());
+            //console.log('finished with children for ' + this.org.get(newNode.org_unit()).shortname());
 		}
 
-        console.warn('final version of node', newNode);
+        //console.warn('final version of node', newNode);
 		return newNode;
 	}
 
