@@ -37,7 +37,7 @@ sub get_carousel_contents {
         name => $carousel->name
     };
     my $q = {
-        select => { bre => ['id'], mfde1 => [{ column => 'value', alias => 'title' }], mfde2 => [{ column => 'value', alias => 'author' }] },
+        select => { bre => ['id'], mfde => [{ column => 'value', alias => 'title' }] },
         from   => {
             bre => {
                 cbrebi => {
@@ -47,15 +47,13 @@ sub get_carousel_contents {
                         }
                     }
                 },
-                mfde1 => { class => 'mfde' },
-                mfde2 => { class => 'mfde' }
+                mfde => {}
             }
         },
         where  => {
             '+cc' => { id => $id },
             '+bre' => { deleted => 'f' },
-            '+mfde1' => { name => 'title' },
-            '+mfde2' => { name => 'author' }
+            '+mfde' => { name => 'title' }
         },
         order_by => {cbrebi => ['pos','create_time']}
     };
