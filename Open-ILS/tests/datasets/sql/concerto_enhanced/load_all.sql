@@ -255,9 +255,6 @@ SET CONSTRAINTS ALL DEFERRED;
 \echo loading config.hold_matrix_matchpoint
 \i config.hold_matrix_matchpoint.sql
 
-\echo loading config.org_unit_setting_type
-\i config.org_unit_setting_type.sql
-
 \echo loading config.remoteauth_profile
 \i config.remoteauth_profile.sql
 
