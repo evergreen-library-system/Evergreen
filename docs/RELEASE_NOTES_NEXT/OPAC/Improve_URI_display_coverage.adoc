@@ -1,0 +1,13 @@
+== Improve OPAC URI link purpose display and coverage ==
+
+Previously, the logic used in the OPAC and staff client to display
+non-located URIs was slightly different. In particular, the staff client
+included any 856 with an ind2 value of 0, 1, or 2, and provided a label
+indicating the purpose of the URI based on the ind2 value. The OPAC, on
+the other hand, only displayed 856s with an ind2 of 0 or 1, and did
+not distinguish the purpose.
+
+Now the OPAC displays non-located URIs in the same ways as the staff
+client, including those with an ind2 value of 2 and displaying a
+descriptive purpose with the link.
+
