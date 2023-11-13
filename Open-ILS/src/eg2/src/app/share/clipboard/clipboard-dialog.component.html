@@ -10,7 +10,7 @@
     <div class="row" *ngFor="let value of values">
       <div class="col-lg-4 font-weight-bold border-right">{{value.label}}</div>
       <div class="col-lg-8">
-        <a href="javascript:;" (click)="copyValue(value.value)">{{value.value}}</a>
+        <button type="button" class="btn btn-link" (click)="copyValue(value.value)">{{value.value}}</button>
       </div>
     </div>
 
