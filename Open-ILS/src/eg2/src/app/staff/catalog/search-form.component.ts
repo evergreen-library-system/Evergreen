@@ -32,6 +32,7 @@ export class SearchFormComponent implements OnInit, AfterViewInit {
     ccvmMap: {[ccvm: string]: IdlObject[]} = {};
     cmfMap: {[cmf: string]: IdlObject} = {};
     showSearchFilters = false;
+    activeFiltersCount: number = 0;
     libraryGroups: IdlObject[];
     copyLocations: IdlObject[];
     copyLocationGroups: IdlObject[];
@@ -72,8 +73,8 @@ export class SearchFormComponent implements OnInit, AfterViewInit {
 
         // Start with advanced search options open
         // if any filters are active.
-        this.context.activeFiltersCount = this.filtersActive();
-        this.showSearchFilters = this.context.activeFiltersCount > 0;
+        this.activeFiltersCount = this.filtersActive();
+        this.showSearchFilters = this.activeFiltersCount > 0;
 
         // Some search scenarios, like rendering a search template,
         // will not be searchable and thus not resovle to a specific
@@ -226,24 +227,24 @@ export class SearchFormComponent implements OnInit, AfterViewInit {
     }
 
     filtersActive(): number {
-
+        this.activeFiltersCount = 0;
         if (this.context.termSearch.copyLocations[0] !== '') { 
-            this.context.activeFiltersCount++;
+            this.activeFiltersCount++;
         }
 
         if (this.context.termSearch.date1) {
-            this.context.activeFiltersCount++;
+            this.activeFiltersCount++;
         }
 
         // ccvm filters may be present without any filters applied.
         // e.g. if filters were applied then removed.
         Object.keys(this.context.termSearch.ccvmFilters).forEach(ccvm => {
             if (this.context.termSearch.ccvmFilters[ccvm][0] !== '') {
-                this.context.activeFiltersCount++;
+                this.activeFiltersCount++;
             }
         });
 
-        return this.context.activeFiltersCount;
+        return this.activeFiltersCount;
     }
 
     orgOnChange = (org: IdlObject): void => {
@@ -311,6 +312,7 @@ export class SearchFormComponent implements OnInit, AfterViewInit {
 
     searchByForm(): void {
         this.context.pager.offset = 0; // New search
+        this.activeFiltersCount = this.filtersActive();
 
         // Form search overrides basket display
         this.context.showBasket = false;

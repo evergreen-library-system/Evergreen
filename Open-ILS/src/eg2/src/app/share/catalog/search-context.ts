@@ -373,7 +373,6 @@ export class CatalogSearchContext {
     // Utility stuff
     pager: Pager;
     org: OrgService;
-    activeFiltersCount: number = 0;
 
     constructor() {
         this.pager = new Pager();

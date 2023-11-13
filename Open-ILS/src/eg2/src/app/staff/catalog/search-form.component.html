@@ -31,7 +31,7 @@
     </div>
   </div>
   
-  <div *ngIf="!hideForm()" class="row pt-3 pb-1 mb-1" role="search">
+  <div *ngIf="!hideForm()" class="row px-2 pt-3 pb-1 mb-1" role="search">
   <div class="col-lg-8">
     <ul ngbNav #searchTabs="ngbNav" [activeId]="searchTab" (navChange)="onNavChange($event)" [keyboard]="true" [roles]="false" role="tablist" class="nav-tabs">
       <li role="presentation" [ngbNavItem]="'term'">
@@ -191,19 +191,23 @@
               </div>
 
               <div class="col">
-                COUNT: {{context.activeFiltersCount}}
-
-
                 <button type="button" class="btn btn-secondary mt-3" 
-                  (click)="toggleFilters()" i18n>
-                  <!-- filters are open: -->
+                  (click)="toggleFilters()" i18n="Show/hide catalog advanced search filters">
+                  <!-- filters are open; pluralize text -->
                   <ng-container *ngIf="showSearchFilters">
-                    Hide {{context.activeFiltersCount > 0 ? context.activeFiltersCount : null}} filters
+                    {activeFiltersCount, plural,
+                      =0 { Hide filters }
+                      =1 { Hide 1 active filter }
+                      other { Hide {{activeFiltersCount}} active filters } 
+                    }
                   </ng-container>
-
-                  <!-- filters are closed: -->
+                  <!-- filters are closed -->
                   <ng-container *ngIf="!showSearchFilters">
-                    Show {{context.activeFiltersCount > 0 ? context.activeFiltersCount + ' active' : 'more'}} filters
+                    {activeFiltersCount, plural,
+                      =0 { Show more filters }
+                      =1 { Show 1 active filter }
+                      other { Show {{activeFiltersCount}} active filters } 
+                    }
                   </ng-container>
                 </button>
               </div>
@@ -213,7 +217,7 @@
             <div class="col mt-3" *ngIf="searchFilters().includes('item_type')">
               <label i18n class="form-label select-label" for="context-termSearch-ccvmFilters-item_type">Item Type</label>
               <select class="form-select"  multiple="true" id="context-termSearch-ccvmFilters-item_type"
-                [(ngModel)]="context.termSearch.ccvmFilters.item_type">
+                [(ngModel)]="context.termSearch.ccvmFilters.item_type" (change)="filtersActive()">
                 <option value='' i18n>All Item Types</option>
                 <ng-container
                   *ngTemplateOutlet="ccvmOption;context:{list:ccvmMap.item_type}">
@@ -223,7 +227,7 @@
             <div class="col mt-3" *ngIf="searchFilters().includes('item_form')">
               <label i18n class="form-label select-label" for="context-termSearch-ccvmFilters-item_form">Form</label>
               <select class="form-select" multiple="true" id="context-termSearch-ccvmFilters-item_form"
-                [(ngModel)]="context.termSearch.ccvmFilters.item_form">
+                [(ngModel)]="context.termSearch.ccvmFilters.item_form" (change)="filtersActive()">
                 <option value='' i18n>All Item Forms</option>
                 <ng-container
                   *ngTemplateOutlet="ccvmOption;context:{list:ccvmMap.item_form}">
@@ -233,7 +237,7 @@
             <div class="col mt-3" *ngIf="searchFilters().includes('item_lang')">
               <label i18n class="form-label select-label" for="context-termSearch-ccvmFilters-item_lang">Language</label>
               <select class="form-select" id="context-termSearch-ccvmFilters-item_lang"
-                [(ngModel)]="context.termSearch.ccvmFilters.item_lang" multiple="true">
+                [(ngModel)]="context.termSearch.ccvmFilters.item_lang" multiple="true" (change)="filtersActive()">
                 <option value='' i18n>All Languages</option>
                 <ng-container
                   *ngTemplateOutlet="ccvmOption;context:{list:ccvmMap.item_lang}">
@@ -243,7 +247,7 @@
             <div class="col mt-3" *ngIf="searchFilters().includes('audience')">
               <label i18n class="form-label select-label" for="context-termSearch-ccvmFilters-audience">Audience</label>
               <select class="form-select" id="context-termSearch-ccvmFilters-audience"
-                [(ngModel)]="context.termSearch.ccvmFilters.audience" multiple="true">
+                [(ngModel)]="context.termSearch.ccvmFilters.audience" multiple="true" (change)="filtersActive()">
                 <option value='' i18n>All Audiences</option>
                 <ng-container
                   *ngTemplateOutlet="ccvmOption;context:{list:ccvmMap.audience}">
@@ -255,7 +259,7 @@
             <div class="col mt-3" *ngIf="searchFilters().includes('vr_format')">
               <label i18n class="form-label select-label" for="context-termSearch-ccvmFilters-vr_format">Video Format</label>
               <select class="form-select" id="context-termSearch-ccvmFilters-vr_format"
-                [(ngModel)]="context.termSearch.ccvmFilters.vr_format" multiple="true">
+                [(ngModel)]="context.termSearch.ccvmFilters.vr_format" multiple="true" (change)="filtersActive()">
                 <option value='' i18n>All Video Formats</option>
                 <ng-container
                   *ngTemplateOutlet="ccvmOption;context:{list:ccvmMap.vr_format}">
@@ -265,7 +269,7 @@
             <div class="col mt-3" *ngIf="searchFilters().includes('bib_level')">
               <label i18n class="form-label select-label" for="context-termSearch-ccvmFilters-bib_level">Bibliographic Level</label>
               <select class="form-select" id="context-termSearch-ccvmFilters-bib_level"
-                [(ngModel)]="context.termSearch.ccvmFilters.bib_level" multiple="true">
+                [(ngModel)]="context.termSearch.ccvmFilters.bib_level" multiple="true" (change)="filtersActive()">
                 <option value='' i18n>All Bib Levels</option>
                 <ng-container
                   *ngTemplateOutlet="ccvmOption;context:{list:ccvmMap.bib_level}">
@@ -275,7 +279,7 @@
             <div class="col mt-3" *ngIf="searchFilters().includes('lit_form')">
               <label i18n class="form-label select-label" for="context-termSearch-ccvmFilters-lit_form">Literary Form</label>
               <select class="form-select" id="context-termSearch-ccvmFilters-lit_form"
-                [(ngModel)]="context.termSearch.ccvmFilters.lit_form" multiple="true">
+                [(ngModel)]="context.termSearch.ccvmFilters.lit_form" multiple="true" (change)="filtersActive()">
                 <option value='' i18n>All Literary Forms</option>
                 <ng-container
                   *ngTemplateOutlet="ccvmOption;context:{list:ccvmMap.lit_form}">
@@ -284,14 +288,19 @@
             </div>
             <div class="col mt-3">
               <label i18n class="form-label select-label" for="context-termSearch-copyLocations">Shelving Location</label>
-              <select class="form-select" id="context-termSearch-copyLocations"
-                [(ngModel)]="context.termSearch.copyLocations" multiple="true">
+              <select class="form-select" id="context-termSearch-copyLocations" [disabled]="context.termSearch.locationGroupOrLasso !== ''"
+                [(ngModel)]="context.termSearch.copyLocations" multiple="true" (change)="filtersActive()">
                 <option value='' i18n>All Shelving Locations</option>
                 <option *ngFor="let loc of copyLocations" value="{{loc.id()}}" i18n>
                   {{loc.name()}} ({{orgName(loc.owning_lib())}})
                 </option>
               </select>
             </div>
+          </div>
+          <div *ngIf="context.termSearch.locationGroupOrLasso !== ''" [hidden]="!showSearchFilters" class="row row-cols-auto mt-1">
+            <p class="form-text mx-1 my-0">
+              <i i18n>Clear the Library Group or Shelving Location Group selection to choose individual Shelving Locations</i>
+            </p>
           </div>
           <div class="row row-cols-auto mt-3" [hidden]="!showSearchFilters">
             <div class="col">
@@ -309,7 +318,7 @@
             <div class="col">
               <label i18n class="visually-hidden" for="context-termSearch-date1">Year, or beginning of year range</label>
               <input class="form-control ms-2" type="number" id="context-termSearch-date1"
-                [(ngModel)]="context.termSearch.date1"/>
+                [(ngModel)]="context.termSearch.date1"  (change)="filtersActive()"/>
             </div>
             <div class="col">
               <label i18n class="visually-hidden" for="context-termSearch-date2">End of year range</label>
@@ -455,54 +464,47 @@
   </div>
   <div class="col-lg-4">
     <div class="row">
-      <div class="col-lg-12">
-        <div class="card">
-          <div class="card-body">
-            <div class="float-end d-flex">
-              <eg-org-select 
-                (onChange)="orgOnChange($event)"
-                [initialOrg]="context.searchOrg"
-                [placeholder]="'Library'" i18n-placeholder
-                ariaLabel="Library" i18n-ariaLabel>
-              </eg-org-select>
-              <button type="button" class="btn btn-success me-1 ms-1" type="button"
-                [disabled]="searchIsActive()"
-                id="run-catalog-search"
-                (click)="context.pager.offset=0;searchByForm()" i18n>
-                Search
-              </button>
-              <button type="button" class="btn btn-destroy me-1" type="button"
-                [disabled]="searchIsActive()"
-                (click)="context.reset()" i18n>
-                Reset
-              </button>
-            </div>
-          </div>
-        </div>
+      <div class="col-lg-9">
+        <label i18n class="form-label select-label" for="search-org-selector">Search in Library</label>
+        <eg-org-select domId="search-org-selector"
+          (onChange)="orgOnChange($event)"
+          [initialOrg]="context.searchOrg"
+          [placeholder]="'Library'" i18n-placeholder
+          ariaLabel="Library" i18n-ariaLabel>
+        </eg-org-select>
+        
+        <label i18n class="form-label select-label mt-3" for="locationGroupOrLasso-selector">Library Group or Shelving Location Group</label>
+        <select class="form-control"
+            id="locationGroupOrLasso-selector"
+            name="locationGroupOrLasso"
+            [(ngModel)]="context.termSearch.locationGroupOrLasso"
+            [disabled]="!lassoAndLocationGroupsAllowed() || this.context.termSearch.copyLocations[0] !== ''">
+          <option *ngIf="context.termSearch.locationGroupOrLasso" value="" i18n>No Group Restriction</option>
+          <optgroup *ngIf="libraryGroups.length > 0" i18n-label label="Library Groups">
+            <option *ngFor="let lasso of libraryGroups" value="lasso({{lasso.id()}})">{{lasso.name()}}</option>
+          </optgroup>
+          <optgroup *ngIf="copyLocationGroups.length > 0" i18n-label label="Shelving Location Groups">
+            <option *ngFor="let grp of copyLocationGroups" value="location_groups({{grp.id()}})">{{grp.name()}}</option>
+          </optgroup>
+        </select>
+        <p *ngIf="this.context.termSearch.copyLocations[0] !== ''" class="form-text mx-1 my-0">
+          <i i18n>Clear the individual Shelving Location selections in the advanced search filters to search by Library Group or Shelving Location Group</i>
+        </p>
       </div>
-    </div>
-    <div class="row">
-      <div class="col-lg-12">
-        <div class="card">
-          <div class="card-body">
-            <div class="float-end d-flex">
-              <label i18n class="form-label select-label" for="locationGroupOrLasso-selector">Library or Shelving Location Group</label>
-              <select class="form-control"
-                  id="locationGroupOrLasso-selector"
-                  name="locationGroupOrLasso"
-                  [(ngModel)]="context.termSearch.locationGroupOrLasso"
-                  [disabled]="!lassoAndLocationGroupsAllowed()">
-                <option *ngIf="context.termSearch.locationGroupOrLasso" value="" i18n>No Group Restriction</option>
-                <optgroup *ngIf="libraryGroups.length > 0" i18n-label label="Library Groups">
-                  <option *ngFor="let lasso of libraryGroups" value="lasso({{lasso.id()}})">{{lasso.name()}}</option>
-                </optgroup>
-                <optgroup *ngIf="copyLocationGroups.length > 0" i18n-label label="Shelving Location Groups">
-                  <option *ngFor="let grp of copyLocationGroups" value="location_groups({{grp.id()}})">{{grp.name()}}</option>
-                </optgroup>
-              </select>
-            </div>
-          </div>
-        </div>
+    
+      <div class="col-lg-3 pt-1">
+        <button class="btn btn-success me-1 ms-1 mt-3 d-block w-100" type="button"
+          [disabled]="searchIsActive()"
+          id="run-catalog-search"
+          (click)="context.pager.offset=0;searchByForm()" i18n>
+          Search
+        </button>
+        <br /> <!-- line up with <label> -->
+        <button class="btn btn-destroy me-1 mt-3 d-block w-100" type="button"
+          [disabled]="searchIsActive()"
+          (click)="context.reset(); activeFiltersCount=0" i18n>
+          Reset
+        </button>
       </div>
     </div>
     <div class="row mt-1">
