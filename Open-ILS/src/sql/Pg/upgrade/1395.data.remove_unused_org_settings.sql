@@ -1,6 +1,6 @@
 BEGIN;
 
--- SELECT evergreen.upgrade_deps_block_check('XXXX', :eg_version);
+SELECT evergreen.upgrade_deps_block_check('1395', :eg_version);
 
 DELETE FROM actor.org_unit_setting WHERE name IN (
     'opac.did_you_mean.low_result_threshold',
