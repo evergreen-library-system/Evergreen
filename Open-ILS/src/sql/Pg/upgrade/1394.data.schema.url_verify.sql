@@ -1,7 +1,7 @@
 
 BEGIN;
 
---SELECT evergreen.upgrade_deps_block_check('XXXX', :eg_version);
+SELECT evergreen.upgrade_deps_block_check('1394', :eg_version);
 
 ALTER TABLE url_verify.url_selector
     DROP CONSTRAINT url_selector_session_fkey,
