@@ -22,11 +22,12 @@
 
     <div class="row">
       <div class="col">
-        <label for="workstationSelect" i18n>Register a New Workstation For This Browser</label>
+        <h2 class="form-label fs-6 text-dark" i18n>Register a New Workstation For This Browser</h2>
       </div>
     </div>
     <div class="row mt-2">
       <div class="col-lg-2">
+        <label class="form-label" for="workstationSelect" i18n="Workstation registration: owning library">Library</label>
         <eg-org-select 
           domId="workstationSelect"
           [applyDefault]="true"
@@ -37,14 +38,17 @@
           placeholder="Owner..." >
         </eg-org-select>
       </div>
+
       <div class="col-lg-6">
+        <label class="form-label" for="register-new-workstation-name" i18n>
+          Workstation Name
+        </label>
         <div class="input-group">
-          <input type='text'
+          <input type='text' 
+            id="register-new-workstation-name"
             class='form-control'
             i18n-title
             title="Workstation Name"
-            i18n-placeholder
-            placeholder="Workstation Name..."
             [(ngModel)]='newName'/>
           <div class="input-group-btn">
             <button class="btn btn-outline-dark" 
@@ -58,7 +62,7 @@
     </div>
     <div class="row mt-3 pt-3 border border-start-0 border-end-0 border-bottom-0 border-light">
       <div class="col">
-        <label for="registeredWS" i18n>Workstations Registered With This Browser</label>
+        <label class="form-label" for="registeredWS" i18n>Workstations Registered With This Browser</label>
       </div>
     </div>
     <div class="row">
@@ -77,15 +81,15 @@
     </div>
     <div class="row mt-2">
       <div class="col-lg-6">
-        <button i18n class="btn btn-success" 
+        <button i18n class="btn btn-success me-2" 
           (click)="useNow()" [disabled]="!selected">
           Use Now
         </button>
-        <button i18n class="btn btn-outline-dark" 
+        <button i18n class="btn btn-outline-dark me-2" 
           (click)="setDefault()" [disabled]="!selected">
           Mark As Default
         </button>
-        <button i18n class="btn btn-danger"
+        <button i18n class="btn btn-danger me-2"
           (click)="removeSelected()"
           [disabled]="!selected || !canDeleteSelected()">
           Remove
