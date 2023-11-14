@@ -129,6 +129,19 @@ setting is only required if the multiple Identity Providers need to be
 supported but the *physical_loc* setting is inappropriate for choosing
 the context location.
 
+==== eg_vhost.conf
+
+Shibboleth needs be enabled in *eg_vhost.conf*. Uncomment the two lines in eg_vhost.conf as follows:
+
+.eg_vhost.conf
+[source,xml]
+....
+<Location /eg/opac>
+    # Uncomment the entries below to enable Shibboleth authentication
+    AuthType shibboleth
+    Require shibboleth
+....
+
 === Shibboleth configuration
 
 Configuring Shibboleth is particular to each institution's needs, and
