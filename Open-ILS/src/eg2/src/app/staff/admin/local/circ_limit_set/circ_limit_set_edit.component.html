@@ -31,8 +31,8 @@
                                 {{ mod.code }} : {{ mod.name }}
                             </div>
                             <div class="col-lg-3">
-                                <div class="btn btn-danger col-lg-12" 
-                                    (click)="removeEntry(mod, circMods)" i18n>Remove</div>
+                                <button type="button" class="btn btn-danger col-lg-12" 
+                                    (click)="removeEntry(mod, circMods)" i18n>Remove</button>
                             </div>
                         </div>
                     </div>
@@ -44,8 +44,8 @@
                                 (onChange)="circModChanged($event)"></eg-combobox>
                         </div>
                         <div class="col-lg-3">
-                            <div class="btn btn-outline-dark col-lg-12" 
-                                (click)="addCircMod()" i18n>Add</div>
+                            <button type="button" class="btn btn-outline-dark col-lg-12" 
+                                (click)="addCircMod()" i18n>Add</button>
                         </div>
                     </div>  
                 </div>
@@ -62,8 +62,8 @@
                                     {{ location.shortname }} : {{ location.name }} 
                             </div>
                             <div class="col-lg-3">
-                                <div class="btn btn-danger col-lg-12" 
-                                    (click)="removeLocation(location)" i18n>Remove</div>
+                                <button type="button" class="btn btn-danger col-lg-12" 
+                                    (click)="removeLocation(location)" i18n>Remove</button>
                             </div>
                         </div>
                     </div>
@@ -74,8 +74,8 @@
                         </eg-item-location-select>
                         </div>
                         <div class="col-lg-3">
-                            <div class="btn btn-outline-dark col-lg-12" 
-                                (click)="addLocation()" i18n>Add</div>
+                            <button type="button" class="btn btn-outline-dark col-lg-12" 
+                                (click)="addLocation()" i18n>Add</button>
                         </div>
                     </div>
                 </div>
@@ -100,8 +100,8 @@
                                 [checked]="group.checked" />
                             </div>
                             <div class="col-lg-3">
-                                <div class="btn btn-danger col-lg-12" 
-                                    (click)="removeEntry(group, limitGroups)" i18n>Remove</div>
+                                <button type="button" class="btn btn-danger col-lg-12" 
+                                    (click)="removeEntry(group, limitGroups)" i18n>Remove</button>
                             </div>
                         </div>
                     </div>
@@ -113,14 +113,14 @@
                                 [asyncSupportsEmptyTermClick]="true"></eg-combobox>
                         </div>
                         <div class="col-lg-3">
-                            <div class="btn btn-outline-dark col-lg-12" 
-                                (click)="addLimitGroup()" i18n>Add</div>
+                            <button type="button" class="btn btn-outline-dark col-lg-12" 
+                                (click)="addLimitGroup()" i18n>Add</button>
                         </div>
                     </div>
                 </div>
             </div>
-            <div class="btn btn-success btn-lg offset-lg-5 col-lg-2 mt-4" 
-                (click)="save()" i18n>Save</div>
+            <button type="button" class="btn btn-success btn-lg offset-lg-5 col-lg-2 mt-4" 
+                (click)="save()" i18n>Save</button>
         </ng-template>
     </li>
 </ul>

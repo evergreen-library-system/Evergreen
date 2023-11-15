@@ -18,13 +18,13 @@
       </ng-container>
       <ng-container *ngIf="!action.isGroup && !action.isSeparator">
         <div class="col-lg-9">
-          <div [ngClass]="{'ps-2': action.group}"
-            (click)="showHideClicked(action)">{{action.label}}</div>
+          <button type="button" class="btn-sm" [ngClass]="{'ps-2': action.group}"
+            (click)="showHideClicked(action)">{{action.label}}</button>
         </div>
-        <div class="col-lg-3" (click)="showHideClicked(action)">
+        <button type="button" class="btn-sm" class="col-lg-3" (click)="showHideClicked(action)">
           <span *ngIf="!action.hidden" class="badge badge-success">&#x2713;</span>
           <span *ngIf="action.hidden" class="badge badge-warning">&#x2717;</span>
-        </div>
+        </button>
       </ng-container>
     </div>
   </div>
