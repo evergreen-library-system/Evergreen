@@ -37,6 +37,7 @@ import {BrowsePagerComponent} from './result/browse-pager.component';
 import {HttpClientModule} from '@angular/common/http';
 import {BarcodesModule} from '@eg/staff/share/barcodes/barcodes.module';
 import {WorkLogModule} from '@eg/staff/share/worklog/worklog.module';
+import {VolCopyModule} from '@eg/staff/cat/volcopy/volcopy.module';
 
 @NgModule({
   declarations: [
@@ -78,7 +79,8 @@ import {WorkLogModule} from '@eg/staff/share/worklog/worklog.module';
     MarcEditModule,
     HttpClientModule,
     BarcodesModule,
-    WorkLogModule
+    WorkLogModule,
+    VolCopyModule
   ],
   providers: [
     StaffCatalogService
