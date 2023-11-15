@@ -18,7 +18,7 @@
   </div>
   <div class="pe-1">
     <div ngbDropdown placement="bottom-right">
-      <button class="btn btn-light" id="basketActions"
+      <button  type="button" class="btn btn-light" id="basketActions"
         ngbDropdownToggle i18n>Basket Actions</button>
       <div ngbDropdownMenu aria-labelledby="basketActions">
         <button type="button" class="dropdown-item" ngbDropdownItem [disabled]="isMetarecordSearch()"
@@ -43,8 +43,6 @@
   <div>
     <!-- Note this Prefernces links is not specific to Basket handling,
         but it's here since it allowed for consistent formatting -->
-    <a routerLink="/staff/catalog/prefs" queryParamsHandling="merge">
-      <button class="btn btn-light" i18n>Search Preferences</button>
-    </a>
+    <a routerLink="/staff/catalog/prefs" queryParamsHandling="merge" class="btn btn-light" i18n>Search Preferences</a>
   </div>
 </div>

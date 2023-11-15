@@ -97,7 +97,7 @@ export class MarcHtmlComponent implements OnInit {
 
         // Remove embedded labels and actions.
         html = html.replace(
-            /<button onclick="window.print(.*?)<\/button>/, '');
+            /<button type="button" onclick="window.print(.*?)<\/button>/, '');
 
         html = html.replace(/<title>(.*?)<\/title>/, '');
 

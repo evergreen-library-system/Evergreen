@@ -2,7 +2,7 @@
   <a target="_blank" href="{{helpLink}}" *ngIf="helpLink.length >= 1">{{helpText}}</a>
   <span *ngIf="helpLink.length < 1">{{helpText}}</span>
 </ng-template>
-<button class="btn {{buttonClass}}" placement="{{placement}}" 
+<button  type="button" class="btn {{buttonClass}}" placement="{{placement}}" 
   [ngbPopover]="popContent" triggers="click" aria-haspopup="true"
   i18n-title title="Show help" i18n-aria-label aria-label="Show help">
   <span class="material-icons mat-icon-shrunk-in-button" 

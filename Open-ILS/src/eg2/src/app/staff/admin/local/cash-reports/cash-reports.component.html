@@ -23,7 +23,7 @@
         </div>
       </div>
       <div class="col-lg-2">
-        <button class="btn btn-primary" (click)="searchForData()" [disabled]="!criteria.valid">Submit</button>
+        <button type="button" class="btn btn-primary" (click)="searchForData()" [disabled]="!criteria.valid">Submit</button>
       </div>
     </div>
     <div role="alert" class="alert alert-danger" id="dateOutOfOrderAlert" *ngIf="criteria.errors?.['datesOutOfOrder'] && (criteria.touched || criteria.dirty)">

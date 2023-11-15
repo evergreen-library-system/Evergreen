@@ -14,7 +14,7 @@
       <div class="col-lg-7">
         <input type="text" id="create-patron-barcode"
         class="form-control " formControlName="patronBarcode" [disabled]="patronId">
-        <button class="btn btn-outline-dark btn-sm" (click)="searchPatrons()">
+        <button type="button" class="btn btn-outline-dark btn-sm" (click)="searchPatrons()">
           <span class="material-icons mat-icon-in-button align-middle"
             aria-hidden="true">search</span>
           <span class="align-middle" i18n>Search for Patron</span>
@@ -89,11 +89,11 @@
     </div>
   </form>
   <div class="modal-footer">
-    <button (click)="addBresv$().subscribe()" [disabled]="!create.valid" class="btn btn-info" i18n>Confirm reservation</button>
-    <button (click)="addBresvAndOpenPatronReservations()" [disabled]="!create.valid" class="btn btn-info" i18n>
+    <button type="button" (click)="addBresv$().subscribe()" [disabled]="!create.valid" class="btn btn-info" i18n>Confirm reservation</button>
+    <button type="button" (click)="addBresvAndOpenPatronReservations()" [disabled]="!create.valid" class="btn btn-info" i18n>
       Confirm and show patron reservations
     </button>
-    <button (click)="close()" class="btn btn-warning ms-2" i18n>Cancel</button>
+    <button type="button" (click)="close()" class="btn btn-warning ms-2" i18n>Cancel</button>
   </div>
 </ng-template>
 <eg-alert-dialog #fail i18n-dialogBody

@@ -55,10 +55,10 @@
         <div class="input-group">
           <div class="input-group-prepend">
             <div ngbDropdown>
-              <button class="btn btn-outline-dark"
+              <button type="button" class="btn btn-outline-dark"
                 ngbDropdownToggle i18n>Select Printer</button>
               <div ngbDropdownMenu>
-                <button class="dropdown-item" 
+                <button type="button" class="dropdown-item" 
                   *ngFor="let printer of printers" (click)="setPrinter(printer.name, true)">
                   {{getPrinterLabel(printer.name)}}
                 </button>
@@ -70,10 +70,10 @@
         </div>
       </div>
       <div class="col-lg-4">
-        <button class="btn btn-warning" 
+        <button type="button" class="btn btn-warning" 
           (click)="resetConfig(context)" i18n>Reset Form</button>
 
-        <button class="btn btn-success ms-2" 
+        <button type="button" class="btn btn-success ms-2" 
           (click)="saveConfig(context)" i18n>Apply Changes</button>
       </div>
     </div>
@@ -285,11 +285,11 @@
       <div class="col-lg-12 d-flex">
         <div class="flex-1"></div>
         <div>
-          <button class="btn btn-success ms-auto" (click)="testPrint(false)"
+          <button type="button" class="btn btn-success ms-auto" (click)="testPrint(false)"
             i18n>Print</button>
         </div>
         <div class="ms-2">
-          <button class="btn btn-primary ms-auto" (click)="testPrint(true)" 
+          <button type="button" class="btn btn-primary ms-auto" (click)="testPrint(true)" 
             i18n>Print with Dialog</button>
         </div>
       </div>

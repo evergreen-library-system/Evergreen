@@ -30,13 +30,13 @@
       </eg-combobox>
     </div>
     <div class="col-lg-6">
-      <button class="btn btn-success"
+      <button type="button" class="btn btn-success"
         [disabled]="!selectedTemplate"
         (click)="saveTemplate()" i18n>Save As New Template</button>
-      <button class="btn btn-outline-primary ms-3"
+      <button type="button" class="btn btn-outline-primary ms-3"
         [disabled]="!selectedTemplate"
         (click)="markTemplateDefault()" i18n>Mark Template as Default</button>
-      <button class="btn btn-danger ms-3"
+      <button type="button" class="btn btn-danger ms-3"
         [disabled]="!selectedTemplate"
         (click)="deleteTemplate()" i18n>Delete Template</button>
     </div>
@@ -278,14 +278,14 @@
         Importing Queue {{importSelection().queue.name()}}</span>
     </div>
     <div class="col-lg-3">
-      <button class="btn btn-outline-info ms-2" (click)="clearSelection()" i18n>
+      <button type="button" class="btn btn-outline-info ms-2" (click)="clearSelection()" i18n>
         Clear Selection
       </button>
     </div>
   </div>
   <div class="row">
     <div class="d-grid gap-2 col-6 mx-auto">
-      <button class="btn btn-success btn-lg fw-bold"
+      <button type="button" class="btn btn-success btn-lg fw-bold"
         [disabled]="isUploading || !hasNeededData()" 
         (click)="upload()" i18n>Upload</button>
     </div>
@@ -317,7 +317,7 @@
   </div>
   <div class="row" [hidden]="!uploadComplete">
     <div class="d-grid gap-2 col-6 mx-auto">
-      <button class="btn btn-info btn-lg fw-bold"
+      <button type="button"  class="btn btn-info btn-lg fw-bold"
         routerLink="/staff/cat/vandelay/queue/{{recordType}}/{{activeQueueId}}"
         i18n>Go To Queue</button>
     </div>

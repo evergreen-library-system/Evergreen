@@ -14,7 +14,7 @@
       id='copy-count-input' [disabled]="liLocked"
       [(ngModel)]="copyCount" type="text" (keyup.enter)="applyCount()"/>
 
-    <button class="btn btn-sm btn-outline-dark ms-3" 
+    <button type="button" class="btn btn-sm btn-outline-dark ms-3" 
       [disabled]="liLocked" (click)="applyCount()" i18n>Apply</button>
 
     <span class="ms-3" i18n> | </span>
@@ -27,11 +27,11 @@
         #distribFormCbox domId="distrib-formula-cbox">
       </eg-combobox>
     </span>
-    <button class="btn btn-sm btn-outline-dark ms-3" 
+    <button type="button" class="btn btn-sm btn-outline-dark ms-3" 
       [disabled]="!distribFormCbox.selectedId || liLocked"
       (click)="applyFormula(distribFormCbox.selectedId)" i18n>Apply</button>
 
-    <button class="btn btn-sm btn-success ms-auto" [disabled]="liLocked" *ngIf="mode !== 'multiAdd'"
+    <button type="button" class="btn btn-sm btn-success ms-auto" [disabled]="liLocked" *ngIf="mode !== 'multiAdd'"
       (click)="save()" i18n>Save Changes</button>
 
   </div>

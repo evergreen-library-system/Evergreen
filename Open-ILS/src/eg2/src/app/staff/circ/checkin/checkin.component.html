@@ -290,7 +290,7 @@
   <div class="col-lg-12 d-flex">
     <div class="flex-1"></div>
     <div class="me-3">
-      <button class="btn btn-outline-dark" 
+      <button type="button" class="btn btn-outline-dark" 
         (click)="printReceipt()" i18n>Print Receipt</button>
     </div>
     <div class="me-3">
@@ -312,79 +312,79 @@
     </div>
     <div>
       <div ngbDropdown>
-        <button class="btn btn-outline-dark" 
+        <button class="btn btn-outline-dark" type="button"
           ngbDropdownToggle i18n>Checkin Modifiers</button>
         <div ngbDropdownMenu>
-          <a ngbDropdownItem (click)="toggleMod('no_precat_alert')">
+          <button type="button" ngbDropdownItem (click)="toggleMod('no_precat_alert')">
             <span *ngIf="modifiers.no_precat_alert" 
               class="badge rounded-pill bg-success me-2">&#x2713;</span>
             <span *ngIf="!modifiers.no_precat_alert" 
               class="badge rounded-pill bg-warning me-2">&#x2717;</span>
             <span i18n>Ignore Pre-cataloged Items</span>
-          </a>
-          <a ngbDropdownItem (click)="toggleMod('noop')">
+          </button>
+          <button type="button" ngbDropdownItem (click)="toggleMod('noop')">
             <span *ngIf="modifiers.noop" 
               class="badge rounded-pill bg-success me-2">&#x2713;</span>
             <span *ngIf="!modifiers.noop" 
               class="badge rounded-pill bg-warning me-2">&#x2717;</span>
             <span i18n>Suppress Holds and Transits</span>
-          </a>
-          <a ngbDropdownItem (click)="toggleMod('void_overdues')">
+          </button>
+          <button type="button" ngbDropdownItem (click)="toggleMod('void_overdues')">
             <span *ngIf="modifiers.void_overdues" 
               class="badge rounded-pill bg-success me-2">&#x2713;</span>
             <span *ngIf="!modifiers.void_overdues"
               class="badge rounded-pill bg-warning me-2">&#x2717;</span>
             <span i18n>Amnesty Mode</span>
-          </a>
-          <a ngbDropdownItem (click)="toggleMod('auto_print_holds_transits')">
+          </button>
+          <button type="button" ngbDropdownItem (click)="toggleMod('auto_print_holds_transits')">
             <span *ngIf="modifiers.auto_print_holds_transits" 
               class="badge rounded-pill bg-success me-2">&#x2713;</span>
             <span *ngIf="!modifiers.auto_print_holds_transits"
               class="badge rounded-pill bg-warning me-2">&#x2717;</span>
             <span>Auto-Print Hold and Transit Slips</span>
-          </a>
-          <a ngbDropdownItem (click)="toggleMod('clear_expired')">
+          </button>
+          <button type="button" ngbDropdownItem (click)="toggleMod('clear_expired')">
             <span *ngIf="modifiers.clear_expired" 
               class="badge rounded-pill bg-success me-2">&#x2713;</span>
             <span *ngIf="!modifiers.clear_expired"
               class="badge rounded-pill bg-warning me-2">&#x2717;</span>
             <span i18n>Clear Holds Shelf</span>
-          </a>
-          <a ngbDropdownItem (click)="toggleMod('retarget_holds')">
+          </button>
+          <button type="button" ngbDropdownItem (click)="toggleMod('retarget_holds')">
             <span *ngIf="modifiers.retarget_holds" 
               class="badge rounded-pill bg-success me-2">&#x2713;</span>
             <span *ngIf="!modifiers.retarget_holds"
               class="badge rounded-pill bg-warning me-2">&#x2717;</span>
             <span i18n>Retarget Local Holds</span>
-          </a>
-          <a ngbDropdownItem (click)="toggleMod('retarget_holds_all')">
+          </button>
+          <button type="button" ngbDropdownItem (click)="toggleMod('retarget_holds_all')">
             <span *ngIf="modifiers.retarget_holds_all" 
               class="badge rounded-pill bg-success me-2">&#x2713;</span>
             <span *ngIf="!modifiers.retarget_holds_all"
               class="badge rounded-pill bg-warning me-2">&#x2717;</span>
             <span i18n>Retarget All Statuses</span>
-          </a>
-          <a ngbDropdownItem (click)="toggleMod('hold_as_transit')">
+          </button>
+          <button type="button" ngbDropdownItem (click)="toggleMod('hold_as_transit')">
             <span *ngIf="modifiers.hold_as_transit" 
               class="badge rounded-pill bg-success me-2">&#x2713;</span>
             <span *ngIf="!modifiers.hold_as_transit"
               class="badge rounded-pill bg-warning me-2">&#x2717;</span>
             <span i18n>Capture Local Holds As Transits</span>
-          </a>
-          <a ngbDropdownItem (click)="toggleMod('manual_float')">
+          </button>
+          <button type="button" ngbDropdownItem (click)="toggleMod('manual_float')">
             <span *ngIf="modifiers.manual_float"
               class="badge rounded-pill bg-success me-2">&#x2713;</span>
             <span *ngIf="!modifiers.manual_float"
               class="badge rounded-pill bg-warning me-2">&#x2717;</span>
             <span i18n>Manual Floating Active</span>
-          </a>
-          <a ngbDropdownItem (click)="toggleMod('do_inventory_update')">
+          </button>
+          <button type="button" ngbDropdownItem (click)="toggleMod('do_inventory_update')">
             <span *ngIf="modifiers.do_inventory_update"
               class="badge rounded-pill bg-success me-2">&#x2713;</span>
             <span *ngIf="!modifiers.do_inventory_update"
               class="badge rounded-pill bg-warning me-2">&#x2717;</span>
             <span i18n>Update Inventory</span>
-          </a>
+          </button>
         </div>
       </div>
     </div>

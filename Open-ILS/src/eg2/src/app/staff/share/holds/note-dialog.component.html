@@ -1,7 +1,7 @@
 <ng-template #dialogContent>
   <div class="modal-header">
     <h4 class="modal-title">Add Hold Note for Hold #{{holdId}}</h4>
-    <button type="button" class="btn-close btn-close-white"
+    <button type="button" type="button" class="btn-close btn-close-white"
       i18n-aria-label aria-label="Close" (click)="close()"></button>
   </div>
   <div class="modal-body form-validated">
@@ -27,9 +27,9 @@
       </textarea>
     </div>
     <div class="w-100">
-      <button class="btn btn-success ms-auto" (click)="createNote()"
+      <button type="button" class="btn btn-success ms-auto" (click)="createNote()"
         [disabled]="!title || !body" i18n>Create Note</button>
-      <button class="btn btn-warning ms-2" (click)="close()" i18n>Cancel</button>
+      <button type="button" class="btn btn-warning ms-2" (click)="close()" i18n>Cancel</button>
     </div>
   </div>
 </ng-template>

@@ -32,15 +32,15 @@
   
   <ng-container *ngIf="recentSearchesCount > 0">
     <div ngbDropdown placement="bottom-right">
-      <button class="btn btn-light" id="recentSearches"
+      <button type="button" class="btn btn-light" id="recentSearches"
         ngbDropdownToggle i18n>Recent Searches</button>
       <div ngbDropdownMenu aria-labelledby="recentSearches">
-      <button class="dropdown-item" (click)="deleteSearches()" 
+      <button type="button" class="dropdown-item" (click)="deleteSearches()" 
         [disabled]="searches.length === 0" i18n>Clear Recent Searches</button>
       <div class="dropdown-divider"></div>
-      <button [disabled]="true" *ngIf="searches.length === 0" 
+      <button type="button" [disabled]="true" *ngIf="searches.length === 0" 
         class="dropdown-item fst-italic" i18n>No Recent Searches</button>
-      <button *ngFor="let search of sortSearches()"
+      <button type="button" *ngFor="let search of sortSearches()"
         class="dropdown-item" 
         (click)="searchSelected(search)"
         [routerLink]="getSearchPath(search)"
@@ -50,19 +50,19 @@
   </ng-container>
 
   <div ngbDropdown placement="bottom-right">
-    <button class="btn btn-light" id="searchTemplates" 
+    <button type="button" class="btn btn-light" id="searchTemplates" 
       ngbDropdownToggle i18n>Search Templates</button>
     <div ngbDropdownMenu aria-labelledby="searchTemplates">
-      <button class="dropdown-item" i18n (click)="open()"
+      <button type="button" class="dropdown-item" i18n (click)="open()"
         [disabled]="searchTab === 'cnbrowse'">Save Template</button>
-      <button class="dropdown-item" (click)="deleteTemplate()" 
+      <button type="button" class="dropdown-item" (click)="deleteTemplate()" 
         [disabled]="!selectedTemplate()" i18n>Delete Selected</button>
-      <button class="dropdown-item" (click)="deleteAllTemplates()" 
+      <button type="button" class="dropdown-item" (click)="deleteAllTemplates()" 
         [disabled]="templates.length === 0" i18n>Delete All Templates</button>
       <div class="dropdown-divider"></div>
-      <button [disabled]="true" *ngIf="templates.length === 0" 
+      <button type="button" [disabled]="true" *ngIf="templates.length === 0" 
         class="dropdown-item fst-italic" i18n>No Saved Templates</button>
-      <button *ngFor="let tmpl of sortTemplates()"
+      <button type="button" *ngFor="let tmpl of sortTemplates()"
         class="dropdown-item" 
         (click)="templateSelected(tmpl)"
         [ngClass]="{'fw-bold': tmpl.name === selectedTemplate()}"

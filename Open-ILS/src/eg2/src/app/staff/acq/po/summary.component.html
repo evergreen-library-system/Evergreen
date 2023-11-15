@@ -199,7 +199,7 @@
         <span i18n>Create Invoice</span>
       </a>
       <span class="ps-2 pe-2" i18n> | </span>
-      <button (click)="linkInvoiceFromPo()"
+      <button type="button" (click)="linkInvoiceFromPo()"
         class="btn btn-link label-with-material-icon">
         <span class="material-icons small me-1" aria-hidden="true">receipt</span>
         <span i18n>Link Invoice</span>
@@ -216,19 +216,19 @@
       </a>
       <ng-container *ngIf="po().state() === 'on-order'">
         <span class="ps-2 pe-2" i18n> | </span>
-        <button class="btn btn-sm btn-danger" (click)="cancelPo()" i18n>Cancel Order</button>
+        <button type="button" class="btn btn-sm btn-danger" (click)="cancelPo()" i18n>Cancel Order</button>
       </ng-container>
       <ng-container *ngIf="canActivate === true">
         <span class="ps-2 pe-2" i18n> | </span>
-        <button class="btn btn-sm btn-primary" (click)="activatePo(true)" [disabled]="doingActivation" i18n>Activate Without Loading Items</button>
+        <button type="button" class="btn btn-sm btn-primary" (click)="activatePo(true)" [disabled]="doingActivation" i18n>Activate Without Loading Items</button>
       </ng-container>
       <ng-container *ngIf="canActivate === true">
         <span class="ps-2 pe-2" i18n> | </span>
-        <button class="btn btn-sm btn-success" (click)="activatePo()" [disabled]="doingActivation" i18n>Activate Order</button>
+        <button type="button" class="btn btn-sm btn-success" (click)="activatePo()" [disabled]="doingActivation" i18n>Activate Order</button>
       </ng-container>
       <ng-container *ngIf="canFinalize">
         <span class="ps-2 pe-2" i18n> | </span>
-        <button (click)="finalizePo()" class="btn btn-link label-with-material-icon">
+        <button type="button" (click)="finalizePo()" class="btn btn-link label-with-material-icon">
           <span class="material-icons small me-1" aria-hidden="true">check_circle</span>
           <span i18n>Finalize Blanket Order</span>
         </button>

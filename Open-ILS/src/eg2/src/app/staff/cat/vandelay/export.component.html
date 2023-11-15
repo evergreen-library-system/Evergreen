@@ -8,9 +8,7 @@
           Exporting {{basketRecords.length}} Records from Catalog Basket.
         </div>
         <div>
-          <a routerLink="/staff/catalog/search" queryParamsHandling="merge">
-            <button class="btn btn-info" i18n>Return to Catalog</button>
-          </a>
+          <a routerLink="/staff/catalog/search" queryParamsHandling="merge" class="btn btn-info" i18n>Return to Catalog</a>
         </div>
       </ng-container>
       <ng-container *ngIf="!exportingBasket">
@@ -123,7 +121,7 @@
       </div>
       <div class="row">
         <div class="d-grid gap-2 col-10 mx-auto">
-          <button class="btn btn-success btn-lg fw-bold"
+          <button type="button" class="btn btn-success btn-lg fw-bold"
             [disabled]="isExporting || !hasNeededData()" 
             (click)="exportRecords()" i18n>Export</button>
         </div>

@@ -95,11 +95,11 @@
     <ng-container *ngIf="chargeResponse">
       <button type="button" class="btn btn-warning" 
         (click)="close(false)" i18n>Cancel</button>
-      <button class="btn btn-info me-2" 
+      <button type="button" class="btn btn-info me-2" 
         (click)="amountChangeRequested = true" i18n>Change Amount</button>
-      <button class="btn btn-secondary me-2" 
+      <button type="button" class="btn btn-secondary me-2" 
         (click)="markDamaged({apply_fines:'noapply'})" i18n>No Charge</button>
-      <button class="btn btn-success me-2" 
+      <button type="button" class="btn btn-success me-2" 
         (click)="markDamaged({apply_fines:'apply'})" i18n>OK</button>
     </ng-container>
   </div>

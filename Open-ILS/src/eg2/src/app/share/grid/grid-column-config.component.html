@@ -24,25 +24,25 @@
       </div>
       <div class="col-lg-3" (click)="toggleVisibility(col)">{{col.label}}</div>
       <div class="col-lg-1">
-        <button class="btn" title="Move column up" i18n-title aria-label="Move column up" i18n-aria-label
+        <button type="button" class="btn" title="Move column up" i18n-title aria-label="Move column up" i18n-aria-label
           (click)="columnSet.moveColumn(col, -1)">
           <span class="material-icons" aria-hidden="true">arrow_upward</span>
         </button>
       </div>
       <div class="col-lg-1">
-        <button class="btn" title="Move column down" i18n-title aria-label="Move column down" i18n-aria-label
+        <button type="button" class="btn" title="Move column down" i18n-title aria-label="Move column down" i18n-aria-label
           (click)="columnSet.moveColumn(col, 1)">
           <span class="material-icons" aria-hidden="true">arrow_downward</span>
         </button>
       </div>
       <div class="col-lg-2">
-        <button class="btn" title="Make first visible" i18n-title aria-label="Make first visible" i18n-aria-label
+        <button type="button" class="btn" title="Make first visible" i18n-title aria-label="Make first visible" i18n-aria-label
           (click)="columnSet.moveColumn(col, -10000)">
           <span class="material-icons" aria-hidden="true">vertical_align_top</span>
         </button>
       </div>
       <div class="col-lg-2">
-        <button class="btn" title="Make last visible" i18n-title aria-label="Make last visible" i18n-aria-label
+        <button type="button" class="btn" title="Make last visible" i18n-title aria-label="Make last visible" i18n-aria-label
           (click)="columnSet.moveColumn(col, 10000)">
           <span class="material-icons" aria-hidden="true">vertical_align_bottom</span>
         </button>
@@ -57,10 +57,10 @@
     </div>
   </div>
   <div class="modal-footer">
-    <button class="btn btn-info" (click)="columnSet.moveVisibleToFront()">
+    <button type="button" class="btn btn-info" (click)="columnSet.moveVisibleToFront()">
       Move Visible Columns To Top
     </button>
-    <button type="button" class="btn btn-success ms-2" 
+    <button type="button" type="button" class="btn btn-success ms-2" 
       (click)="close('confirmed')" i18n>Close</button>
   </div>
 </ng-template>

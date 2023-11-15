@@ -25,7 +25,7 @@
       i18n-placeholder placeholder="Select tag"></eg-combobox>
   </div>
   <div class="col-sm-1">
-    <button class="btn btn-success" [disabled]="!newTag || checkNewTagAlreadyMapped()"
+    <button type="button" class="btn btn-success" [disabled]="!newTag || checkNewTagAlreadyMapped()"
       (click)="addTagMap()" i18n>Add Tag
     </button>
   </div>

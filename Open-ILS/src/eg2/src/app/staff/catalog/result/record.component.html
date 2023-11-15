@@ -213,7 +213,7 @@
                 <span class="text-danger" i18n>(Deleted)</span>
               </ng-container>
               <span>
-                <button (click)="placeHold()" [disabled]="!summary.isHoldable"
+                <button type="button" (click)="placeHold()" [disabled]="!summary.isHoldable"
                   [ngClass]="summary.isHoldable ? 'btn-success' : 'btn-secondary'"
                   class="btn btn-sm label-with-material-icon small-text-1">
                   <span class="material-icons" aria-hidden="true">check</span>

@@ -1,7 +1,7 @@
 <eg-staff-banner bannerText="{{this.evtDefName}}" i18n-bannerText>
 </eg-staff-banner>
 <div class="text-center">
-    <button class="btn btn-outline-dark" (click)="back()">&#8592; Back to Notifications/Action Triggers</button>
+    <button type="button" class="btn btn-outline-dark" (click)="back()">&#8592; Back to Notifications/Action Triggers</button>
 </div>
 <ul ngbNav #editNav="ngbNav" class="nav-tabs mb-3"  [keyboard]="true" [roles]="false" role="tablist"
     [activeId]="editTab" (navChange)="onTabChange($event)">
@@ -21,7 +21,7 @@
                 fieldOrder="owner,name,hook,active,delay,delay_field,group_field,reactor,validator,repeat_delay,id,cleanup_failure,granularity,max_delay,message_library_path,message_template,message_title,message_usr_path,opt_in_setting,usr_field,retention_interval,cleanup_success,template">
             </eg-fm-record-editor>
             <div class="text-end">
-                <button class="btn btn-outline-dark me-3" (click)="back()">&#8592; Back to Notifications/Action Triggers</button>
+                <button type="button" class="btn btn-outline-dark me-3" (click)="back()">&#8592; Back to Notifications/Action Triggers</button>
             </div>
     </ng-template>
     </li>
@@ -97,14 +97,14 @@
             <input aria-labelledby="barcode" type="text" [(ngModel)]="barcode"
                 (keyup.enter)="runTest(barcode)" class="ms-2" />
             <div></div>
-            <button class="btn btn-info" (click)="runTest(barcode)" i18n>Go</button>
+            <button type="button" class="btn btn-info" (click)="runTest(barcode)" i18n>Go</button>
             <div [hidden]="!testDone">
                 <div class="mt-3 border rounded p-2 bg-light">
                     <div>{{testErr1}}</div>
                     <div>{{testErr2}}</div>
                     <pre [hidden]="!testResult">{{testResult}}</pre>
                 </div>
-                <button class="btn btn-outline-dark mt-3" (click)="clearTestResults()" i18n>
+                <button type="button" class="btn btn-outline-dark mt-3" (click)="clearTestResults()" i18n>
                     Clear Test Results
                 </button>
             </div>

@@ -38,7 +38,7 @@
       </div>
     </div>
     <div class="eg-tree-node">
-      <button class="btn btn-link p-1" (click)="handleNodeClick(node)">{{node.label}}</button>
+      <button type="button" class="btn btn-link p-1" (click)="handleNodeClick(node)">{{node.label}}</button>
     </div>
     <ng-container *ngTemplateOutlet="rowTrailingTemplate; context: {$implicit: node}"></ng-container>
   </div>

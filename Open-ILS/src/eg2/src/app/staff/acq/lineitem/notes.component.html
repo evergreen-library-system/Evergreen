@@ -11,7 +11,7 @@
         Vendor Public
       </label>
     </div>
-    <button class="btn btn-sm btn-success ms-2" [disabled]="!noteText" 
+    <button type="button" class="btn btn-sm btn-success ms-2" [disabled]="!noteText" 
       (click)="newNote()" i18n>Create Note</button>
     <div class="ms-3 me-3">|</div>
       <eg-combobox idlClass="acqliat" [(ngModel)]="alertEntry" 
@@ -23,7 +23,7 @@
     <input type="text" class="form-control form-control-sm" id="alert-text-input"
       [(ngModel)]="alertComments" placeholder="Alert Comments" i18n-placeholder/>
     </span>
-    <button class="btn btn-sm btn-success ms-2" [disabled]="!alertEntry" 
+    <button type="submit" class="btn btn-sm btn-success ms-2" [disabled]="!alertEntry" 
       (click)="newNote(true)" i18n>Create Alert</button>
     <button type="button" class="btn btn-link ms-auto" (click)="close()" 
       title="Close" i18n-title aria-label="Close" i18n-aria-label>

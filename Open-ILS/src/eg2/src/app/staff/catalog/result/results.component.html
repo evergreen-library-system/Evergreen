@@ -52,7 +52,7 @@
           {{searchContext.pager.rowNumber(searchContext.currentResultIds().length - 1)}}
         </span>
       </label>
-      <button class="btn btn-outline-dark ms-2" (click)="toggleShowMore()">
+      <button type="button" class="btn btn-outline-dark ms-2" (click)="toggleShowMore()">
         <ng-container *ngIf="showMoreDetails" i18n>Show Fewer Details</ng-container>
         <ng-container *ngIf="!showMoreDetails" i18n>Show More Details</ng-container>
       </button>

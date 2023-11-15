@@ -7,7 +7,7 @@
 
 <div class="row">
   <div class="col-lg-2">
-    <button (click)="showListView()" class="btn btn-info" i18n>List View</button>
+    <button type="button" (click)="showListView()" class="btn btn-info" i18n>List View</button>
   </div>
   <div class="col-lg-3 fw-bold" i18n><h4>Hold #{{holdId}}</h4></div>
 </div>
@@ -106,7 +106,7 @@
       <li role="presentation" ngbNavItem="notes">
         <a role="tab" ngbNavLink i18n>Notes</a>
         <ng-template ngbNavContent>
-          <button class="btn btn-outline-dark mt-3" (click)="newNote()" i18n>New Note</button>
+          <button type="button" class="btn btn-outline-dark mt-3" (click)="newNote()" i18n>New Note</button>
           <div class="mt-3" *ngFor="let note of notes">
             <div class="d-flex">
               <div class="fw-bold">{{note.title()}}</div>
@@ -124,7 +124,7 @@
               <div class="well-row">
                 <div class="well-value">{{note.body()}}</div>
                 <div class="well-label-no-flex">
-                  <button class="btn btn-warning" 
+                  <button type="button" class="btn btn-warning" 
                     (click)="deleteNote(note)" i18n>Delete</button>
                 </div>
               </div>
@@ -135,7 +135,7 @@
       <li role="presentation" ngbNavItem="notifications">
         <a role="tab" ngbNavLink i18n>Staff Notifications</a>
         <ng-template ngbNavContent>
-          <button class="btn btn-outline-dark mt-3" 
+          <button type="button" class="btn btn-outline-dark mt-3" 
             (click)="newNotify()" i18n>Add Record of Notification</button>
           <div class="mt-3" *ngFor="let notify of notifies">
             <div class="d-flex">

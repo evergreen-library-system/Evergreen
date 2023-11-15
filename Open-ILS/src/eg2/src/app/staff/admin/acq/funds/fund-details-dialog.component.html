@@ -14,21 +14,21 @@
 <ng-template #dialogContent>
   <div class="modal-header">
     <h3 class="modal-title" i18n>Fund Details - {{fund?.name()}} ({{fund?.code()}} ({{fund?.year()}}) ({{fund?.org().shortname()}}))</h3>
-    <button type="button" class="btn-close btn-close-white"
+    <button type="button" type="button" class="btn-close btn-close-white"
       i18n-aria-label aria-label="Close" (click)="close()"></button>
   </div>
   <div class="modal-body">
     <div class="row row-cols-auto mt-3">
       <div class="col">
-        <button class="btn btn-primary"
+        <button type="button" class="btn btn-primary"
         [disabled]="fund?.active() !== 't'"
           (click)="allocateToFund()" i18n>Create Allocation</button>
-        <button class="btn btn-primary ms-1"
+        <button type="button" class="btn btn-primary ms-1"
         [disabled]="fund?.active() !== 't'"
           (click)="doTransfer()" i18n>Transfer Money</button>
       </div>
       <div class="col flex-grow-1 text-end pb-1">
-        <button class="btn btn-secondary btn-xs" [disabled]="activeTab === defaultTabType"
+        <button type="button" class="btn btn-secondary btn-xs" [disabled]="activeTab === defaultTabType"
           (click)="setDefaultTab()" i18n>Set Default View</button>
       </div>
     </div>
@@ -38,7 +38,7 @@
         <ng-template ngbNavContent>
           <div class="mt-2">
             <div class="row">
-              <button class="btn btn-info ms-3" (click)="openEditDialog()" i18n>Edit Fund</button>
+              <button type="button" class="btn btn-info ms-3" (click)="openEditDialog()" i18n>Edit Fund</button>
             </div>
             <div class="row">
               <ng-container *ngTemplateOutlet="summaryField;context:{value:fund.code(),field:'code'}"></ng-container>
@@ -193,7 +193,7 @@
     <div [ngbNavOutlet]="fundDetailsNav"></div>
   </div>
   <div class="modal-footer">
-    <button type="button" class="btn btn-warning"
+    <button type="button" type="button" class="btn btn-warning"
       (click)="close()" i18n>Close</button>
   </div>
 </ng-template>

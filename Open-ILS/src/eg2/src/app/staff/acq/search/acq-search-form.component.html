@@ -13,13 +13,13 @@
       of the following terms:</label>
     </div>
     <div class="col">
-      <button class="with-material-icon btn btn-link text-primary"
+      <button type="button" class="with-material-icon btn btn-link text-primary"
         title="Show Form" i18n-title
         aria-label="Show Form" i18n-aria-label
         *ngIf="!showForm" (click)="showForm=true">
         <span class="material-icons" aria-hidden="true">expand_more</span>
       </button>
-      <button class="with-material-icon btn btn-link text-primary"
+      <button type="button" class="with-material-icon btn btn-link text-primary"
         title="Hide Form" i18n-title
         aria-label="Hide Form" i18n-aria-label
         *ngIf="showForm" (click)="showForm=false">
@@ -131,12 +131,12 @@
       </ng-container>
     </div>
     <div class="col ps-3 pe-1">
-      <button class="btn btn-sm material-icon-button" type="button"
+      <button type="button" class="btn btn-sm material-icon-button" type="button"
         (click)="addSearchTerm()"
         i18n-title title="Add Search Row"><span class="visually-hidden">Add Search Row</span>
         <span class="material-icons" aria-hidden="true">add_circle_outline</span>
       </button>
-      <button class="btn btn-sm material-icon-button" type="button"
+      <button type="button" class="btn btn-sm material-icon-button" type="button"
         (click)="delSearchTerm(idx)"
         i18n-title title="Remove Search Row"><span class="visually-hidden">Remove Search Row</span>
         <span class="material-icons" aria-hidden="true">remove_circle_outline</span>
@@ -145,12 +145,12 @@
   </div>
   <div class="row row-cols-auto" [hidden]="!showForm">
     <div class="col">
-      <button class="btn btn-success" (click)="submitSearch()" type="submit" i18n>Search</button>
+      <button type="button" class="btn btn-success" (click)="submitSearch()" type="submit" i18n>Search</button>
     </div>
     <div class="col"></div>
     <div class="col ps-3">
-      <button class="btn btn-primary me-1" (click)="saveSearchAsDefault()" type="button" i18n>Set As Default {{searchTypeLabel}} Search</button>
-      <button class="btn btn-secondary" (click)="clearDefaultSearch()" type="button" [disabled]="!hasDefaultSearch" i18n>
+      <button type="button" class="btn btn-primary me-1" (click)="saveSearchAsDefault()" type="button" i18n>Set As Default {{searchTypeLabel}} Search</button>
+      <button type="button" class="btn btn-secondary" (click)="clearDefaultSearch()" type="button" [disabled]="!hasDefaultSearch" i18n>
         Reset Default Search
       </button>
     </div>

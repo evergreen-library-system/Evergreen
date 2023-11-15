@@ -200,7 +200,7 @@
           </ng-container> <!-- switch -->
         </div>
         <div class="col-lg-1" *ngIf="field.i18n && !field.readOnly">
-          <button (click)="openTranslator(field.name)"
+          <button type="button" (click)="openTranslator(field.name)"
             i18n-title title="Translate" i18n-aria-label aria-label="Translate"
             class="btn btn-outline-info mat-icon-in-button">
             <span class="material-icons" aria-hidden="true">translate</span>

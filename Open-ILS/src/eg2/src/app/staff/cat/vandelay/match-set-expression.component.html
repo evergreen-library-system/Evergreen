@@ -19,13 +19,13 @@
     <div class="row row-cols-auto ms-2 mt-4">
       <div class="col">
         <span class="me-2" i18n>Add New:</span>
-        <button class="btn btn-outline-dark me-2" *ngIf="matchSetType==='biblio'"
+        <button type="button" class="btn btn-outline-dark me-2" *ngIf="matchSetType==='biblio'"
           (click)="newPointType='attr'" i18n>Record Attribute</button>
-        <button class="btn btn-outline-dark me-2" 
+        <button type="button" class="btn btn-outline-dark me-2" 
           (click)="newPointType='marc'" i18n>MARC Tag and Subfield</button>
-        <button class="btn btn-outline-dark me-2" *ngIf="matchSetType==='authority'"
+        <button type="button" class="btn btn-outline-dark me-2" *ngIf="matchSetType==='authority'"
           (click)="newPointType='heading'" i18n>Normalized Authority Heading</button>
-        <button class="btn btn-outline-dark me-2" 
+        <button type="button" class="btn btn-outline-dark me-2" 
           (click)="newPointType='bool'" i18n>Boolean Operator</button>
       </div>
     </div>
@@ -33,12 +33,12 @@
     </eg-match-set-new-point>
     <div class="row row-cols-auto mt-2 ms-2" *ngIf="newPointType">
       <div class="col">
-        <button class="btn btn-success me-2" (click)="addChildNode()" 
+        <button type="button" class="btn btn-success me-2" (click)="addChildNode()" 
           [disabled]="!selectedIsBool()" i18n>
           Add To Selected Node
         </button>
 
-        <button class="btn btn-success ms-2" (click)="addChildNode(true)"
+        <button type="button" class="btn btn-success ms-2" (click)="addChildNode(true)"
           [disabled]="!hasSelectedNode() ||
             (newPointType !== 'bool' && selectedIsBool())" i18n>
           Replace Selected Node
@@ -57,11 +57,11 @@
   <div class="col-lg-5">
     <ng-container *ngIf="tree">
       <div class="d-flex">
-        <button class="btn btn-warning me-1" (click)="deleteNode()" 
+        <button type="button" class="btn btn-warning me-1" (click)="deleteNode()" 
           [disabled]="!hasSelectedNode() || isRootNode()" i18n>
           Remove Selected Node
         </button>
-        <button class="btn btn-success me-1" (click)="saveTree()"
+        <button type="button" class="btn btn-success me-1" (click)="saveTree()"
           [disabled]="!changesMade" i18n>
           Save Changes 
         </button>

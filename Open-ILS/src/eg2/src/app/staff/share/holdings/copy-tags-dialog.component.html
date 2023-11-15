@@ -23,7 +23,7 @@
         <div class="col-lg-4">{{map.tag().tag_type().label()}}</div>
         <div class="col-lg-5">{{map.tag().label()}}</div>
         <div class="col-lg-3">
-          <button class="btn btn-outline-danger" (click)="removeTag(map.tag())" i18n>
+          <button type="button" class="btn btn-outline-danger" (click)="removeTag(map.tag())" i18n>
             Remove
           </button>
         </div>
@@ -37,7 +37,7 @@
         <div class="col-lg-4">{{tagTypeMap[tag.tag_type()].label()}}</div>
         <div class="col-lg-5">{{tag.label()}}</div>
         <div class="col-lg-3">
-          <button class="btn btn-outline-danger" (click)="removeTag(tag)" i18n>
+          <button type="button" class="btn btn-outline-danger" (click)="removeTag(tag)" i18n>
             Remove
           </button>
         </div>
@@ -58,13 +58,13 @@
       </div>
       <div class="col-lg-3">
         <div class="pt-2">
-          <button class="btn btn-success" (click)="addNew()" i18n>Add Tag</button>
+          <button type="button" class="btn btn-success" (click)="addNew()" i18n>Add Tag</button>
         </div>  
       </div>
     </div>
   </div>
   <div class="modal-footer">
     <button type="button" class="btn btn-secondary" (click)="close()" i18n>Cancel</button>
-    <button class="btn btn-success me-2" (click)="applyChanges()" i18n>Apply Changes</button>
+    <button type="button" class="btn btn-success me-2" (click)="applyChanges()" i18n>Apply Changes</button>
   </div>
 </ng-template>

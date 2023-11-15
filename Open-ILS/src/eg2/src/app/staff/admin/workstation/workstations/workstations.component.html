@@ -51,7 +51,7 @@
             title="Workstation Name"
             [(ngModel)]='newName'/>
           <div class="input-group-btn">
-            <button class="btn btn-outline-dark" 
+            <button type="button" class="btn btn-outline-dark" 
               [disabled]="!newName || !newOwner"
               (click)="registerWorkstation()">
               <span i18n>Register</span>
@@ -81,15 +81,15 @@
     </div>
     <div class="row mt-2">
       <div class="col-lg-6">
-        <button i18n class="btn btn-success me-2" 
+        <button type="button" i18n class="btn btn-success me-2" 
           (click)="useNow()" [disabled]="!selected">
           Use Now
         </button>
-        <button i18n class="btn btn-outline-dark me-2" 
+        <button type="button" i18n class="btn btn-outline-dark me-2" 
           (click)="setDefault()" [disabled]="!selected">
           Mark As Default
         </button>
-        <button i18n class="btn btn-danger me-2"
+        <button type="button" i18n class="btn btn-danger me-2"
           (click)="removeSelected()"
           [disabled]="!selected || !canDeleteSelected()">
           Remove

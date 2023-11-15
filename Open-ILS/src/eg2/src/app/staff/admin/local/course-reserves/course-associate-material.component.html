@@ -23,7 +23,7 @@
   <div class="modal-header" [ngClass]="isDialog() ? 'modal-header' : 'alert mt-3'">
     <h4 class="modal-title" i18n>Course Materials</h4>
     <ng-container *ngIf="isDialog()">
-      <button type="button" class="btn-close btn-close-white" i18n-aria-label aria-label="Close" (click)="close()">      </button>
+      <button type="button" type="button" class="btn-close btn-close-white" i18n-aria-label aria-label="Close" (click)="close()">      </button>
     </ng-container>
   </div>
   <div [ngClass]="isDialog() ? 'modal-body' : ''">
@@ -127,7 +127,7 @@
               </div>
               <div class="row mt-3">
                 <div class="col-lg-12 text-end">
-                  <button class="btn btn-primary" [disabled]="currentCourse && (courseIsArchived || currentCourse.is_archived()) === 't'"
+                  <button type="button" class="btn btn-primary" [disabled]="currentCourse && (courseIsArchived || currentCourse.is_archived()) === 't'"
                     (click)="associateItem(barcodeInput, relationshipInput)" i18n [disabled]="!barcodeInput">
                     Add Material
                   </button>
@@ -185,7 +185,7 @@
               </div>
               <div class="row mt-3">
                 <div class="col-lg-12 text-end">
-                  <button class="btn btn-primary" i18n (click)="associateElectronicBibRecord()"
+                  <button type="button" class="btn btn-primary" i18n (click)="associateElectronicBibRecord()"
                     [disabled]="currentCourse && (courseIsArchived || currentCourse.is_archived()) === 't'">
                     Add Material
                   </button>

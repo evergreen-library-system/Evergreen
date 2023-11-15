@@ -31,7 +31,7 @@
         </ng-container>
       </div>
     </ng-container>
-    <button class="btn btn-primary" (click)="emitXml()">
+    <button type="button" class="btn btn-primary" (click)="emitXml()">
       <ng-container *ngIf="buttonLabel">{{buttonLabel}}</ng-container>
       <ng-container *ngIf="!buttonLabel" i18n>Save</ng-container>
     </button>

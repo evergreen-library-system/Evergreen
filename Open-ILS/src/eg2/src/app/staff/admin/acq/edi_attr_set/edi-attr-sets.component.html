@@ -72,7 +72,7 @@
   <eg-grid-column i18n-label label="# Providers Using Attribute Set" path="num_providers" name="num_providers"
     [sortable]="false" [filterable]="false"></eg-grid-column>
   <ng-template #ediAttrSetProvidersTmpl let-attrSet="row">
-    <button class="btn btn-outline-dark" (click)="openEdiAttrSetProvidersDialog(attrSet.id())" [disabled]="attrSet.num_providers < 1" i18n>View Providers</button>
+    <button type="button" class="btn btn-outline-dark" (click)="openEdiAttrSetProvidersDialog(attrSet.id())" [disabled]="attrSet.num_providers < 1" i18n>View Providers</button>
   </ng-template>
   <eg-grid-column i18n-label label="View Providers" name="view_providers"
     [sortable]="false" [filterable]="false" [cellTemplate]="ediAttrSetProvidersTmpl" [disableTooltip]="true"></eg-grid-column>

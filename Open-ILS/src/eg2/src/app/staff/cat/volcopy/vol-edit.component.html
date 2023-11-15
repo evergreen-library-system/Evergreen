@@ -12,7 +12,7 @@
 
 <div *ngIf="!volcopy.defaults.visible.batch_actions"
   class="bg-faint mb-2 p-1 border border-dark rounded">
-  <button class="btn btn-sm btn-outline-dark label-with-material-icon" 
+  <button type="button"  class="btn btn-sm btn-outline-dark label-with-material-icon" 
     (click)="toggleBatchVisibility()">
     <span i18n>Batch Actions</span>
     <span class="material-icons" aria-hidden="true">unfold_more</span>
@@ -271,7 +271,7 @@
                   </eg-org-select>
                 </ng-template>
 
-                <button class="btn btn-sm material-icon-button p-1"
+                <button type="button" class="btn btn-sm material-icon-button p-1"
                   placement="bottom" [ngbPopover]="addOrgTmpl"
                   autoClose="outside" #addOrgPopover="ngbPopover"
                   i18n-popoverTitle="Add Call Number For Location"
@@ -292,7 +292,7 @@
                   </eg-org-select>
                 </ng-template>
 
-                <button class="btn btn-sm material-icon-button p-1"
+                <button type="button" class="btn btn-sm material-icon-button p-1"
                   placement="bottom" [ngbPopover]="editOrgTmpl"
                   autoClose="outside" #editOrgPopover="ngbPopover"
                   i18n-popoverTitle="Edit Call Number Owning Location"
@@ -369,7 +369,7 @@
           <ng-container *ngIf="copyIdx === 0">
             <ng-container 
               *ngIf="context.sessionType === 'record' || context.sessionType === 'mixed'">
-              <button class="btn btn-sm material-icon-button p-1"
+              <button  type="button" class="btn btn-sm material-icon-button p-1"
                 (click)="createVols(orgNode, 1)" type="button"
                 i18n-title title="Add Call Number"
                 i18n-aria-label aria-label="Add Call Number">
@@ -389,7 +389,7 @@
                 </div>
               </ng-template>
 
-              <button class="btn btn-sm material-icon-button p-1"
+              <button  type="button" class="btn btn-sm material-icon-button p-1"
                 [disabled]="context.sessionType === 'copy' || context.sessionType === 'vol'"
                 (shown)="focusElement('add-vol-popover')"
                 placement="bottom" [ngbPopover]="addVolCountTmpl"

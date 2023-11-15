@@ -66,7 +66,7 @@
   <eg-grid-column path="code"></eg-grid-column>
   <eg-grid-column path="label"></eg-grid-column>
   <ng-template #exchangeRatesTmpl let-currency="row">
-    <button class="btn btn-outline-dark" (click)="openExchangeRatesDialog(currency.code())" i18n>Manage Exchange Rates</button>
+    <button type="button" class="btn btn-outline-dark" (click)="openExchangeRatesDialog(currency.code())" i18n>Manage Exchange Rates</button>
   </ng-template>
   <eg-grid-column i18n-label label="Exchange Rates" name="exchange_rates"
     [sortable]="false" [filterable]="false" [cellTemplate]="exchangeRatesTmpl" [disableTooltip]="true"></eg-grid-column>

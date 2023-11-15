@@ -13,11 +13,11 @@
 <!-- apply/clear actions are the same for all filter types -->
 <ng-template #actionsTemplate>
   <div class="pt-2">
-    <button class="btn btn-sm btn-outline-dark" (click)="applyFilterCommon(col)" i18n>Apply filter</button>
+    <button type="button" class="btn btn-sm btn-outline-dark" (click)="applyFilterCommon(col)" i18n>Apply filter</button>
     <span class="ps-2"></span>
-    <button class="btn btn-sm btn-outline-dark" (click)="clearFilter(col)" i18n>Clear filter</button>
+    <button type="button" class="btn btn-sm btn-outline-dark" (click)="clearFilter(col)" i18n>Clear filter</button>
     <span class="ps-2"></span>
-    <button class="btn btn-sm btn-outline-dark" (click)="closeDropdown()" i18n>Close</button>
+    <button type="button" class="btn btn-sm btn-outline-dark" (click)="closeDropdown()" i18n>Close</button>
   </div>
 </ng-template>
 

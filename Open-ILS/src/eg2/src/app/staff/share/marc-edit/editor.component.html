@@ -60,15 +60,15 @@
   </ng-container>
 
   <div class="pe-3 me-3 border-end">
-    <button class="btn btn-success" (click)="saveRecord()"
+    <button type="button" class="btn btn-success" (click)="saveRecord()"
       [disabled]="record && (record.deleted || record.id === -1)" i18n>Save Changes</button>
   </div>
 
   <ng-container *ngIf="record && record.id">
     <div>
-      <button *ngIf="!record.deleted && record.id !== -1" class="btn btn-warning"
+      <button type="button" *ngIf="!record.deleted && record.id !== -1" class="btn btn-warning"
         [disabled]="inPlaceMode" (click)="deleteRecord()" i18n>Delete Record</button>
-      <button *ngIf="record.deleted" class="btn btn-info" 
+      <button type="button" *ngIf="record.deleted" class="btn btn-info" 
         [disabled]="inPlaceMode" (click)="undeleteRecord()" i18n>Undelete Record</button>
     </div>
   </ng-container>
@@ -109,7 +109,7 @@
 
 <div class="row p-2 m-2 text-end">
   <div>
-    <button class="btn btn-success" (click)="saveRecord()"
+    <button type="button" class="btn btn-success" (click)="saveRecord()"
       [disabled]="record && (record.deleted || record.id === -1)" i18n>Save Changes</button>
   </div>
 </div>

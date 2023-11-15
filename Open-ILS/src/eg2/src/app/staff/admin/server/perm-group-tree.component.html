@@ -62,9 +62,9 @@
                 <label class="form-label" i18n>Actions for Selected: </label>
               </div>
               <div class="col-lg-9">
-                <button class="btn btn-info me-2" (click)="edit()" i18n>Edit</button>
-                <button class="btn btn-info me-2" (click)="addChild()" i18n>Add Child</button>
-                <button class="btn btn-warning me-2" (click)="remove()" i18n>Delete</button>
+                <button type="button" class="btn btn-info me-2" (click)="edit()" i18n>Edit</button>
+                <button type="button" class="btn btn-info me-2" (click)="addChild()" i18n>Add Child</button>
+                <button type="button" class="btn btn-warning me-2" (click)="remove()" i18n>Delete</button>
               </div>
             </div>
             <div class="row">
@@ -124,13 +124,13 @@
 
             <div class="row m-2 mb-3">
               <div class="col">
-                <button class="btn btn-success" (click)="applyChanges()" i18n
+                <button type="button" class="btn btn-success" (click)="applyChanges()" i18n
                   [disabled]='!changesPending()'>
                   Apply Changes
                 </button>
               </div>
               <div class="col">
-                <button class="btn btn-info ms-3" (click)="openAddDialog()" i18n>
+                <button type="button" class="btn btn-info ms-3" (click)="openAddDialog()" i18n>
                   Add New Mapping
                 </button>
               </div>
@@ -139,7 +139,7 @@
                   i18n-placeholder placeholder="Filter..."/>
               </div>
               <div class="col">
-                <button class="btn btn-outline-secondary ms-1" 
+                <button type="button" class="btn btn-outline-secondary ms-1" 
                   (click)="filterText=''" i18n>
                   Clear
                 </button>
@@ -181,7 +181,7 @@
               </div>
               <ng-container *ngIf="permIsInherited(map); else nativeMap">
                 <div class="col-lg-4">
-                  <button class="btn btn-link m-0 p-0"
+                  <button type="button" class="btn btn-link m-0 p-0"
                     (click)="selectGroup(map.grp().id())">
                     {{map.grp().name()}}
                   </button>
@@ -221,7 +221,7 @@
               </ng-template>
             </div>
             <div class="row d-flex m-2 mb-3">
-              <button class="btn btn-success" (click)="applyChanges()" i18n
+              <button type="submit" class="btn btn-success" (click)="applyChanges()" i18n
                 [disabled]='!changesPending()'>
                 Apply Changes
               </button>

@@ -10,7 +10,7 @@
         (keyup.enter)="findContainer()" placeholder="Barcode..." 
         i18n-placeholder [(ngModel)]="barcode"/>
       <div class="input-group-text">
-        <button class="btn p-0" 
+        <button class="btn p-0"  type="button"
           (click)="findContainer()" i18n>Submit</button>
       </div>
       <div class="form-check form-check-inline ms-2">
@@ -161,7 +161,7 @@ across different vendors to match a container code.
       </div>
       <div class="card-footer d-flex">
         <div class="flex-1"></div>
-        <button (click)="clearReceiving()" class="btn btn-outline-dark" i18n>
+        <button type="button" (click)="clearReceiving()" class="btn btn-outline-dark" i18n>
           Close
         </button>
       </div>

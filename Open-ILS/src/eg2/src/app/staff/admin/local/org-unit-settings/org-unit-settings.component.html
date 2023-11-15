@@ -32,16 +32,16 @@
             aria-label="Filter Settings"
             i18n-aria-label
         />
-        <button class="btn btn-outline-dark me-1" i18n>Filter</button>
-        <button class="btn btn-outline-dark me-1" i18n
+        <button type="button" class="btn btn-outline-dark me-1" i18n>Filter</button>
+        <button type="button" class="btn btn-outline-dark me-1" i18n
           (click)="applyFilter(true)">Clear Filter</button>
     </div>
   </div>
   <div class="col-md-3">
     <div class="input-group">
-      <button class="btn btn-outline-dark me-1"
+      <button type="button" class="btn btn-outline-dark me-1"
         (click)="showJsonDialog(true)" i18n>Export</button>
-      <button class="btn btn-outline-dark me-1"
+      <button type="button" class="btn btn-outline-dark me-1"
         (click)="showJsonDialog(false)" i18n>Import</button>
     </div>
   </div>
@@ -70,7 +70,7 @@
 
 <ng-template #editCellTemplate let-entry="row">
   <span>
-    <button (click)="showEditSettingValueDialog(entry)"
+    <button type="button" (click)="showEditSettingValueDialog(entry)"
       class="btn btn-primary" i18n>
       Edit
     </button>

@@ -30,7 +30,7 @@
               </eg-combobox>
             </div>
             <div class="col-lg-4">
-              <button class="btn btn-info" (click)="addToSelected()" i18n
+              <button type="button" class="btn btn-info" (click)="addToSelected()" i18n
                 [disabled]="!selectedBucket">
                 Add To Selected Bucket
               </button>
@@ -50,7 +50,7 @@
                 [(ngModel)]="newBucketName"/>
             </div>
             <div class="col-lg-4">
-              <button class="btn btn-info" (click)="addToNew()" i18n
+              <button type="button" class="btn btn-info" (click)="addToNew()" i18n
                 [disabled]="!newBucketName">
                 Add To New Bucket
               </button>
@@ -78,7 +78,7 @@
                 [(ngModel)]="sharedBucketId"/>
             </div>
             <div class="col-lg-4">
-              <button class="btn btn-info" (click)="addToShared()" i18n
+              <button type="button" class="btn btn-info" (click)="addToShared()" i18n
                 [disabled]="!sharedBucketId">
                 Add To Shared Bucket
               </button>
