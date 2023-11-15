@@ -1,4 +1,4 @@
-import {Component, ViewChild, Input, Output, OnInit, EventEmitter} from '@angular/core';
+import {Component, ViewChild, Input, OnInit} from '@angular/core';
 import {NetService} from '@eg/core/net.service';
 import {OrgService} from '@eg/core/org.service';
 import {AuthService} from '@eg/core/auth.service';
@@ -15,8 +15,8 @@ import {MarcEditorDialogComponent} from './editor-dialog.component';
  */
 
 @Component({
-  selector: 'eg-authority-linking-dialog',
-  templateUrl: './authority-linking-dialog.component.html'
+    selector: 'eg-authority-linking-dialog',
+    templateUrl: './authority-linking-dialog.component.html'
 })
 
 export class AuthorityLinkingDialogComponent
@@ -199,12 +199,13 @@ export class AuthorityLinkingDialogComponent
             if (editFirst) {
                 this.marcEditDialog.recordXml = record;
                 this.marcEditDialog.open({size: 'xl'})
-                .subscribe(saveEvent => {
-                    if (saveEvent && saveEvent.recordId) {
-                        this.setSubfieldZero(saveEvent.recordId);
-                    }
-                    this.close();
-                });
+                    // eslint-disable-next-line rxjs/no-nested-subscribe
+                    .subscribe(saveEvent => {
+                        if (saveEvent && saveEvent.recordId) {
+                            this.setSubfieldZero(saveEvent.recordId);
+                        }
+                        this.close();
+                    });
             } else {
                 this.setSubfieldZero(record.id());
                 this.close();

@@ -24,23 +24,23 @@ describe('PatronBarcodeValidator', () => {
     it('should not throw an error if there is exactly 1 match', () => {
         const pbv = new PatronBarcodeValidator(authService, netService);
         pbv['parseActorCall'](of(1))
-        .subscribe((val) => {
-            expect(val).toBeNull();
-        });
+            .subscribe((val) => {
+                expect(val).toBeNull();
+            });
     });
     it('should throw an error if there is more than 1 match', () => {
         const pbv = new PatronBarcodeValidator(authService, netService);
         pbv['parseActorCall'](of(1, 2, 3))
-        .subscribe((val) => {
-            expect(val).not.toBeNull();
-        });
+            .subscribe((val) => {
+                expect(val).not.toBeNull();
+            });
     });
     it('should throw an error if there is no match', () => {
         const pbv = new PatronBarcodeValidator(authService, netService);
         pbv['parseActorCall'](of())
-        .subscribe((val) => {
-            expect(val).not.toBeNull();
-        });
+            .subscribe((val) => {
+                expect(val).not.toBeNull();
+            });
     });
 });
 

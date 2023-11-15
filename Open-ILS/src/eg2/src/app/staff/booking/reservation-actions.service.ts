@@ -34,7 +34,7 @@ export class ReservationActionsService {
 
     manageReservationsByResource = (barcode: string) => {
         this.router.navigate(['/staff', 'booking', 'manage_reservations', 'by_resource', barcode]);
-    }
+    };
 
     printCaptureSlip = (templateData: CaptureInformation) => {
         templateData.staff = this.auth.user();
@@ -44,23 +44,23 @@ export class ReservationActionsService {
             contextData: templateData,
             printContext: 'receipt'
         });
-    }
+    };
 
     reprintCaptureSlip = (ids: number[]): Observable<CaptureInformation> => {
         return this.fetchDataForCaptureSlip$(ids)
-        .pipe(tap((data) => this.printCaptureSlip(data)));
-    }
+            .pipe(tap((data) => this.printCaptureSlip(data)));
+    };
 
     viewItemStatus = (barcode: string) => {
         this.pcrud.search('acp', { 'barcode': barcode }, { limit: 1 })
-        .subscribe((acp) => {
-            window.open('/eg/staff/cat/item/' + acp.id());
-        });
-    }
+            .subscribe((acp) => {
+                window.open('/eg/staff/cat/item/' + acp.id());
+            });
+    };
 
     notOneUniqueSelected = (ids: number[]) => {
         return (new Set(ids).size !== 1);
-    }
+    };
 
     private fetchDataForCaptureSlip$ = (ids: number[]): Observable<CaptureInformation> => {
         return this.pcrud.search('bresv', {'id': ids}, {
@@ -71,7 +71,7 @@ export class ReservationActionsService {
                 'brsrc': ['type']
             }
         }).pipe(mergeMap((reservation: IdlObject) => this.assembleDataForCaptureSlip$(reservation)));
-    }
+    };
 
     private assembleDataForCaptureSlip$ = (reservation: IdlObject): Observable<CaptureInformation> => {
         let observable$ = of({
@@ -80,16 +80,16 @@ export class ReservationActionsService {
         });
         if (reservation.pickup_lib() === this.auth.user().ws_ou()) {
             observable$ = this.pcrud.search('artc', {'reservation': reservation.id()}, {limit: 1})
-            .pipe(switchMap(transit => {
-                return of({
-                    reservation: reservation,
-                    captured: 1,
-                    transit: transit
-                });
-            }));
+                .pipe(switchMap(transit => {
+                    return of({
+                        reservation: reservation,
+                        captured: 1,
+                        transit: transit
+                    });
+                }));
         }
         return observable$;
-    }
+    };
 
 }
 

@@ -4,15 +4,15 @@ import {CatRoutingModule} from './routing.module';
 import {BibByIdentComponent} from './bib-by-ident.component';
 
 @NgModule({
-  declarations: [
-    BibByIdentComponent
-  ],
-  imports: [
-    StaffCommonModule,
-    CatRoutingModule
-  ],
-  providers: [
-  ]
+    declarations: [
+        BibByIdentComponent
+    ],
+    imports: [
+        StaffCommonModule,
+        CatRoutingModule
+    ],
+    providers: [
+    ]
 })
 
 export class CatModule {

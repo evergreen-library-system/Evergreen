@@ -26,60 +26,60 @@ import {CourseService} from './share/course.service';
 import {FileExportService} from '@eg/share/util/file-export.service';
 import {OfflineService} from '@eg/staff/share/offline.service';
 import {ItemLocationSelectModule} from '@eg/share/item-location-select/item-location-select.module';
-import { ScriptService } from "@eg/share/util/script.service";
+import { ScriptService } from '@eg/share/util/script.service';
 
 /**
  * Imports the EG common modules and adds modules common to all staff UI's.
  */
 
 @NgModule({
-  declarations: [
-    StaffBannerComponent,
-    AccessKeyDirective,
-    AccessKeyInfoComponent,
-    TitleComponent,
-    OpChangeComponent,
-    BucketDialogComponent,
-    BibSummaryComponent,
-    BibStaffViewComponent,
-    EgHelpPopoverComponent,
-    DatetimeValidatorDirective,
-    MultiSelectComponent,
-    TextMultiSelectComponent,
-    NotBeforeMomentValidatorDirective,
-    DatesInOrderValidatorDirective,
-    PatronBarcodeValidatorDirective,
-    AddedContentComponent,
-  ],
-  imports: [
-    EgCommonModule,
-    CommonWidgetsModule,
-    GridModule,
-    CatalogCommonModule,
-    ItemLocationSelectModule
-  ],
-  exports: [
-    EgCommonModule,
-    CommonWidgetsModule,
-    GridModule,
-    CatalogCommonModule,
-    StaffBannerComponent,
-    AccessKeyDirective,
-    AccessKeyInfoComponent,
-    TitleComponent,
-    OpChangeComponent,
-    BucketDialogComponent,
-    BibSummaryComponent,
-    BibStaffViewComponent,
-    EgHelpPopoverComponent,
-    DatetimeValidatorDirective,
-    MultiSelectComponent,
-    TextMultiSelectComponent,
-    NotBeforeMomentValidatorDirective,
-    DatesInOrderValidatorDirective,
-    PatronBarcodeValidatorDirective,
-    AddedContentComponent,
-  ]
+    declarations: [
+        StaffBannerComponent,
+        AccessKeyDirective,
+        AccessKeyInfoComponent,
+        TitleComponent,
+        OpChangeComponent,
+        BucketDialogComponent,
+        BibSummaryComponent,
+        BibStaffViewComponent,
+        EgHelpPopoverComponent,
+        DatetimeValidatorDirective,
+        MultiSelectComponent,
+        TextMultiSelectComponent,
+        NotBeforeMomentValidatorDirective,
+        DatesInOrderValidatorDirective,
+        PatronBarcodeValidatorDirective,
+        AddedContentComponent,
+    ],
+    imports: [
+        EgCommonModule,
+        CommonWidgetsModule,
+        GridModule,
+        CatalogCommonModule,
+        ItemLocationSelectModule
+    ],
+    exports: [
+        EgCommonModule,
+        CommonWidgetsModule,
+        GridModule,
+        CatalogCommonModule,
+        StaffBannerComponent,
+        AccessKeyDirective,
+        AccessKeyInfoComponent,
+        TitleComponent,
+        OpChangeComponent,
+        BucketDialogComponent,
+        BibSummaryComponent,
+        BibStaffViewComponent,
+        EgHelpPopoverComponent,
+        DatetimeValidatorDirective,
+        MultiSelectComponent,
+        TextMultiSelectComponent,
+        NotBeforeMomentValidatorDirective,
+        DatesInOrderValidatorDirective,
+        PatronBarcodeValidatorDirective,
+        AddedContentComponent,
+    ]
 })
 
 export class StaffCommonModule {

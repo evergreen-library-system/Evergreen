@@ -9,8 +9,8 @@ import {ComboboxEntry} from '@eg/share/combobox/combobox.component';
 import {LineitemCopyAttrsComponent} from './copy-attrs.component';
 
 @Component({
-  selector: 'eg-acq-batch-update-copies-dialog',
-  templateUrl: './batch-update-copies-dialog.component.html'
+    selector: 'eg-acq-batch-update-copies-dialog',
+    templateUrl: './batch-update-copies-dialog.component.html'
 })
 
 export class BatchUpdateCopiesDialogComponent extends DialogComponent {

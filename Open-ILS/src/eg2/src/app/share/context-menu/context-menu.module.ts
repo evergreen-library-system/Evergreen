@@ -6,18 +6,18 @@ import {ContextMenuDirective} from './context-menu.directive';
 import {ContextMenuContainerComponent} from './context-menu-container.component';
 
 @NgModule({
-  declarations: [
-    ContextMenuDirective,
-    ContextMenuContainerComponent
-  ],
-  imports: [
-    CommonModule,
-    NgbModule
-  ],
-  exports: [
-    ContextMenuDirective,
-    ContextMenuContainerComponent
-  ]
+    declarations: [
+        ContextMenuDirective,
+        ContextMenuContainerComponent
+    ],
+    imports: [
+        CommonModule,
+        NgbModule
+    ],
+    exports: [
+        ContextMenuDirective,
+        ContextMenuContainerComponent
+    ]
 })
 
 export class ContextMenuModule { }

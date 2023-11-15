@@ -55,7 +55,7 @@ export class SREditorComponent implements OnInit {
         } else {
             this.isNew = false;
             this.loadTemplate(Number(id))
-            .then( x => this.reloadFields(this.templ.fmClass));
+                .then( x => this.reloadFields(this.templ.fmClass));
         }
 
     }
@@ -65,12 +65,12 @@ export class SREditorComponent implements OnInit {
     }
 
     _setPageTitle() {
-         if ( this.isNew ) {
+        if ( this.isNew ) {
             this.newTitleString.current()
-            .then(str => this.pageTitle = str );
+                .then(str => this.pageTitle = str );
         } else {
             this.editTitleString.current()
-            .then(str => this.pageTitle = str );
+                .then(str => this.pageTitle = str );
         }
     }
 
@@ -78,6 +78,7 @@ export class SREditorComponent implements OnInit {
         this.allFields = [];
         this.forcedFields = 0;
         this.sourceClass = this.idl.classes[fmClass];
+        // eslint-disable-next-line no-unused-expressions
         ('field_groups' in this.sourceClass) ?
             // grab a clone
             this.fieldGroups = this.sourceClass.field_groups.map(x => ({...x})) :
@@ -142,17 +143,17 @@ export class SREditorComponent implements OnInit {
             this._isDirty = true;
         } else {
             return this.changeTypeDialog.open()
-            .subscribe(confirmed => {
-                if ( confirmed ) {
-                    this.oldRptType = this.rptType;
-                    this.templ = new SRTemplate();
-                    this.templ.fmClass = this.rptType;
-                    this.reloadFields(this.rptType);
-                    this._isDirty = true;
-                } else {
-                    this.rptType = this.oldRptType;
-                }
-            });
+                .subscribe(confirmed => {
+                    if ( confirmed ) {
+                        this.oldRptType = this.rptType;
+                        this.templ = new SRTemplate();
+                        this.templ.fmClass = this.rptType;
+                        this.reloadFields(this.rptType);
+                        this._isDirty = true;
+                    } else {
+                        this.rptType = this.oldRptType;
+                    }
+                });
         }
     }
 
@@ -170,7 +171,7 @@ export class SREditorComponent implements OnInit {
 
     readyToSchedule = () => {
         return ( this.readyToSave() && this.templ.displayFields.length > 0 );
-    }
+    };
 
     canLeaveEditor() {
         if ( this.isDirty() ) {
@@ -182,50 +183,50 @@ export class SREditorComponent implements OnInit {
 
     loadTemplate(id: number) {
         return this.srSvc.loadTemplate(id)
-        .then(idl => {
-            this.templ = new SRTemplate(idl);
-            this.name = this.templ.name;
-            this.rptType = this.templ.fmClass;
-            this.oldRptType = this.templ.fmClass;
-        });
+            .then(idl => {
+                this.templ = new SRTemplate(idl);
+                this.name = this.templ.name;
+                this.rptType = this.templ.fmClass;
+                this.oldRptType = this.templ.fmClass;
+            });
     }
 
     saveTemplate = (scheduleNow) => {
         this.templ.name = this.name;
 
         this.srSvc.saveTemplate(this.templ, scheduleNow)
-        .then(rt => {
-            this._isDirty = false;
-            // It appears that calling pcrud.create will return the newly created object,
-            // while pcrud.update just gives you back the id of the updated object.
-            if ( typeof rt === 'object' ) {
-                this.templ = new SRTemplate(rt); // pick up the id and create_time fields
-            }
-            this.templateSavedString.current()
-            .then(str => {
-                this.toast.success(str);
-            });
-            if (scheduleNow) {
+            .then(rt => {
+                this._isDirty = false;
+                // It appears that calling pcrud.create will return the newly created object,
+                // while pcrud.update just gives you back the id of the updated object.
+                if ( typeof rt === 'object' ) {
+                    this.templ = new SRTemplate(rt); // pick up the id and create_time fields
+                }
+                this.templateSavedString.current()
+                    .then(str => {
+                        this.toast.success(str);
+                    });
+                if (scheduleNow) {
                 // we're done, so jump to the main page
-                this.router.navigate(['/staff/reporter/simple']);
-            } else if (this.isNew) {
+                    this.router.navigate(['/staff/reporter/simple']);
+                } else if (this.isNew) {
                 // we've successfully saved, so we're no longer new
                 // adjust page title...
-                this.isNew = false;
-                this._setPageTitle();
-                // ... and make the URL say that we're editing
-                const url = this.router.createUrlTree(['/staff/reporter/simple/edit/' + this.templ.id]).toString();
-                this.location.go(url); // go without reloading
-            }
-        },
-        err => {
-            this.templateSaveErrorString.current()
-            .then(str => {
-                this.toast.danger(str + err);
-                console.error('Error saving template: %o', err);
+                    this.isNew = false;
+                    this._setPageTitle();
+                    // ... and make the URL say that we're editing
+                    const url = this.router.createUrlTree(['/staff/reporter/simple/edit/' + this.templ.id]).toString();
+                    this.location.go(url); // go without reloading
+                }
+            },
+            err => {
+                this.templateSaveErrorString.current()
+                    .then(str => {
+                        this.toast.danger(str + err);
+                        console.error('Error saving template: %o', err);
+                    });
             });
-        });
-    }
+    };
 
     closeForm() {
         this.router.navigate(['/staff/reporter/simple']);

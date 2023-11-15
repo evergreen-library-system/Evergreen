@@ -142,24 +142,24 @@ export class PermGroupTreeComponent implements OnInit {
         // "pgt" is text instead of a link.  So the value it expects
         // is the code, not the ID.
         return this.pcrud.retrieveAll('ppl', {order_by: {ppl: 'code'}})
-        .pipe(map(perm => {
-            this.loadProgress.increment();
-            this.permissions.push(perm);
-            this.permEntries.push({id: perm.code(), label: perm.code()});
-            this.permissions.forEach(p => this.permIdMap[+p.id()] = p);
-        })).toPromise();
+            .pipe(map(perm => {
+                this.loadProgress.increment();
+                this.permissions.push(perm);
+                this.permEntries.push({id: perm.code(), label: perm.code()});
+                this.permissions.forEach(p => this.permIdMap[+p.id()] = p);
+            })).toPromise();
     }
 
     async loadPermMaps(): Promise<any> {
         this.permMaps = [];
         return this.pcrud.retrieveAll('pgpm', {},
             {fleshSelectors: true, authoritative: true})
-        .pipe(map(m => {
-            if (this.loadProgress) {
-                this.loadProgress.increment();
-            }
-            this.permMaps.push(m);
-        })).toPromise();
+            .pipe(map(m => {
+                if (this.loadProgress) {
+                    this.loadProgress.increment();
+                }
+                this.permMaps.push(m);
+            })).toPromise();
     }
 
     fmEditorOptions(): {[fieldName: string]: FmFieldOptions} {
@@ -185,8 +185,8 @@ export class PermGroupTreeComponent implements OnInit {
             pgtNode.children()
                 .sort((c1, c2) => c1.name() < c2.name() ? -1 : 1)
                 .forEach(childNode =>
-                treeNode.children.push(handleNode(childNode))
-            );
+                    treeNode.children.push(handleNode(childNode))
+                );
 
             return treeNode;
         };
@@ -267,7 +267,7 @@ export class PermGroupTreeComponent implements OnInit {
             success => {
                 this.successString.current().then(str => this.toast.success(str));
             },
-            failed => {
+            (failed: unknown) => {
                 this.errorString.current()
                     .then(str => this.toast.danger(str));
             }
@@ -280,20 +280,21 @@ export class PermGroupTreeComponent implements OnInit {
                 if (!confirmed) { return; }
 
                 this.pcrud.remove(this.selected.callerData)
-                .subscribe(
-                    ok2 => {},
-                    err => {
-                        this.errorString.current()
-                          .then(str => this.toast.danger(str));
-                    },
-                    ()  => {
+                    // eslint-disable-next-line rxjs/no-nested-subscribe
+                    .subscribe(
+                        ok2 => {},
+                        (err: unknown) => {
+                            this.errorString.current()
+                                .then(str => this.toast.danger(str));
+                        },
+                        ()  => {
                         // Avoid updating until we know the entire
                         // pcrud action/transaction completed.
-                        this.tree.removeNode(this.selected);
-                        this.selected = null;
-                        this.successString.current().then(str => this.toast.success(str));
-                    }
-                );
+                            this.tree.removeNode(this.selected);
+                            this.selected = null;
+                            this.successString.current().then(str => this.toast.success(str));
+                        }
+                    );
             }
         );
     }
@@ -320,7 +321,7 @@ export class PermGroupTreeComponent implements OnInit {
                 parentTreeNode.children.push(newNode);
                 this.createString.current().then(str => this.toast.success(str));
             },
-            failed => {
+            (failed: unknown) => {
                 this.errorString.current()
                     .then(str => this.toast.danger(str));
             }
@@ -349,7 +350,7 @@ export class PermGroupTreeComponent implements OnInit {
 
         this.pcrud.autoApply(maps).subscribe(
             one => console.debug('Modified one mapping: ', one),
-            err => {
+            (err: unknown) => {
                 console.error(err);
                 this.errorMapString.current().then(msg => this.toast.danger(msg));
             },

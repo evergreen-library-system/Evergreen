@@ -69,11 +69,11 @@ export class FloatingGroupComponent extends AdminPageComponent implements OnInit
     editSelected = (floatingGroups: IdlObject[]) => {
         const idToEdit = floatingGroups[0].id();
         this.navigateToEditPage(idToEdit);
-    }
+    };
 
     deleteSelected = (floatingGroups: IdlObject[]) => {
         super.deleteSelected(floatingGroups);
-    }
+    };
 
     navigateToEditPage(id: any) {
         this.router.navigate(['/staff/admin/server/config/floating_group/' + id]);
@@ -84,4 +84,4 @@ export class FloatingGroupComponent extends AdminPageComponent implements OnInit
         return;
     }
 
- }
+}

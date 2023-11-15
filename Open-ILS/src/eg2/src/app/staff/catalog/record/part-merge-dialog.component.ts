@@ -5,8 +5,8 @@ import {PcrudService} from '@eg/core/pcrud.service';
 import {NgbModal, NgbModalOptions} from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
-  selector: 'eg-catalog-part-merge-dialog',
-  templateUrl: './part-merge-dialog.component.html'
+    selector: 'eg-catalog-part-merge-dialog',
+    templateUrl: './part-merge-dialog.component.html'
 })
 
 /**
@@ -36,28 +36,28 @@ export class PartMergeDialogComponent extends DialogComponent {
         // 1. Migrate copy maps to the lead part.
         const partIds = this.parts
             .filter(p => Number(p.id()) !== this.leadPart)
-               .map(p => Number(p.id()));
+            .map(p => Number(p.id()));
 
         const maps = [];
         this.pcrud.search('acpm', {part: partIds})
-        .subscribe(
-            map => {
-                map.part(this.leadPart);
-                map.ischanged(true);
-                maps.push(map);
-            },
-            err => {},
-            ()  => {
+            .subscribe(
+                map => {
+                    map.part(this.leadPart);
+                    map.ischanged(true);
+                    maps.push(map);
+                },
+                (err: unknown) => {},
+                ()  => {
                 // 2. Delete the now-empty subordinate parts.  Note the
                 // delete must come after the part map changes are committed.
-                if (maps.length > 0) {
-                    this.pcrud.autoApply(maps)
-                        .toPromise().then(() => this.deleteParts());
-                } else {
-                    this.deleteParts();
+                    if (maps.length > 0) {
+                        this.pcrud.autoApply(maps)
+                            .toPromise().then(() => this.deleteParts());
+                    } else {
+                        this.deleteParts();
+                    }
                 }
-            }
-        );
+            );
     }
 
     deleteParts() {

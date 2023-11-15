@@ -1,3 +1,4 @@
+/* eslint-disable no-magic-numbers */
 import {Injectable, EventEmitter} from '@angular/core';
 import {NetService} from './net.service';
 import {EventService, EgEvent} from './event.service';
@@ -5,7 +6,7 @@ import {IdlService, IdlObject} from './idl.service';
 import {StoreService} from './store.service';
 
 // Not universally available.
-declare var BroadcastChannel;
+declare var BroadcastChannel; // eslint-disable-line no-var
 
 // Models a login instance.
 class AuthUser {
@@ -29,6 +30,7 @@ interface AuthLoginArgs {
     workstation?: string;
 }
 
+// eslint-disable-next-line no-shadow
 export enum AuthWsState {
     PENDING,
     NOT_USED,
@@ -104,23 +106,23 @@ export class AuthService {
         return this.net.request(
             'open-ils.auth',
             'open-ils.auth.session.retrieve', this.token()).toPromise()
-        .then(user => {
+            .then(user => {
             // NetService interceps NO_SESSION events.
             // We can only get here if the session is valid.
-            this.activeUser.user = user;
-            this.listenForLogout();
-            this.sessionPoll();
-        });
+                this.activeUser.user = user;
+                this.listenForLogout();
+                this.sessionPoll();
+            });
     }
 
     loginApi(args: AuthLoginArgs, service: string,
         method: string, isOpChange?: boolean): Promise<void> {
 
         return this.net.request(service, method, args)
-        .toPromise().then(res => {
-            return this.handleLoginResponse(
-                args, this.egEvt.parse(res), isOpChange);
-        });
+            .toPromise().then(res => {
+                return this.handleLoginResponse(
+                    args, this.egEvt.parse(res), isOpChange);
+            });
     }
 
     login(args: AuthLoginArgs, isOpChange?: boolean): Promise<void> {
@@ -135,21 +137,21 @@ export class AuthService {
         return this.net.request(
             'open-ils.auth_proxy',
             'open-ils.auth_proxy.enabled')
-        .toPromise().then(
-            enabled => {
-                if (Number(enabled) === 1) {
-                    service = 'open-ils.auth_proxy';
-                    method = 'open-ils.auth_proxy.login';
-                }
-                return this.loginApi(args, service, method, isOpChange);
-            },
-            error => {
+            .toPromise().then(
+                enabled => {
+                    if (Number(enabled) === 1) {
+                        service = 'open-ils.auth_proxy';
+                        method = 'open-ils.auth_proxy.login';
+                    }
+                    return this.loginApi(args, service, method, isOpChange);
+                },
+                error => {
                 // auth_proxy check resulted in a low-level error.
                 // Likely the service is not running.  Fall back to
                 // standard auth login.
-                return this.loginApi(args, service, method, isOpChange);
-            }
-        );
+                    return this.loginApi(args, service, method, isOpChange);
+                }
+            );
     }
 
     handleLoginResponse(
@@ -265,7 +267,7 @@ export class AuthService {
             // If the promise resolves, the session is valid.
             ).subscribe(
                 user => this.sessionPoll(),
-                err  => console.warn('auth poll error: ' + err)
+                (err: unknown)  => console.warn('auth poll error: ' + err)
             );
 
         }, pollTime);
@@ -314,7 +316,7 @@ export class AuthService {
             this.net.request(
                 'open-ils.auth',
                 'open-ils.auth.session.delete', this.token())
-            .subscribe(x => {});
+                .subscribe(x => {});
         }
     }
 

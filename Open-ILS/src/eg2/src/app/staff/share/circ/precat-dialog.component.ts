@@ -10,8 +10,8 @@ import {PermService} from '@eg/core/perm.service';
  */
 
 @Component({
-  selector: 'eg-precat-checkout-dialog',
-  templateUrl: 'precat-dialog.component.html'
+    selector: 'eg-precat-checkout-dialog',
+    templateUrl: 'precat-dialog.component.html'
 })
 
 export class PrecatCheckoutDialogComponent extends DialogComponent implements OnInit {
@@ -43,7 +43,7 @@ export class PrecatCheckoutDialogComponent extends DialogComponent implements On
             this.values.circ_modifier = null;
 
             this.perm.hasWorkPermHere('CREATE_PRECAT')
-            .then(perms => this.hasPerm = perms['CREATE_PRECAT']);
+                .then(perms => this.hasPerm = perms['CREATE_PRECAT']);
 
             setTimeout(() => {
                 const node = document.getElementById('precat-title-input');

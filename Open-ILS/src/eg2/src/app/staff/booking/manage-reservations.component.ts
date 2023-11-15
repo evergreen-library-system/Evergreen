@@ -73,15 +73,16 @@ export class ManageReservationsComponent implements OnInit, OnDestroy {
                             'open-ils.actor',
                             'open-ils.actor.get_barcodes',
                             this.auth.token(), this.auth.user().ws_ou(),
-                           'actor', this.patronBarcode.value.trim()).pipe(
-                               single(),
-                               tap((response) =>
-                                   this.router.navigate(['/staff', 'booking', 'manage_reservations', 'by_patron', response[0].id])
-                        ));
+                            'actor', this.patronBarcode.value.trim()).pipe(
+                            single(),
+                            tap((response) =>
+                                this.router.navigate(['/staff', 'booking', 'manage_reservations', 'by_patron', response[0].id])
+                            ));
                     } else {
                         this.toast.danger('No patron found with this barcode');
                         return of();
-                    }})
+                    }
+                })
             ).subscribe());
 
         this.subscriptions.push(
@@ -96,7 +97,7 @@ export class ManageReservationsComponent implements OnInit, OnDestroy {
                         }
                     }
                 }
-            )).subscribe());
+                )).subscribe());
 
         this.subscriptions.push(
             this.resourceType.valueChanges.pipe(
@@ -107,15 +108,15 @@ export class ManageReservationsComponent implements OnInit, OnDestroy {
                         this.removeFilters();
                     }
                 }
-            )).subscribe());
+                )).subscribe());
 
-            this.subscriptions.push(
-                this.pickupLibraries.valueChanges.pipe(
-                    tap((value) =>  this.store.setItem('eg.booking.manage.selected_org_family', value))
-                ).subscribe());
+        this.subscriptions.push(
+            this.pickupLibraries.valueChanges.pipe(
+                tap((value) =>  this.store.setItem('eg.booking.manage.selected_org_family', value))
+            ).subscribe());
 
         this.removeFilters = () => {
-              this.router.navigate(['/staff', 'booking', 'manage_reservations']);
+            this.router.navigate(['/staff', 'booking', 'manage_reservations']);
         };
 
 
@@ -134,19 +135,20 @@ export class ManageReservationsComponent implements OnInit, OnDestroy {
                         flesh_fields: {'au': ['card']}
                     }).pipe(tap(
                         (resp) => {
-                            this.filters.patchValue({patronBarcode: resp.card().barcode()}); },
-                        (err) => { console.debug(err); }
+                            this.filters.patchValue({patronBarcode: resp.card().barcode()});
+                        },
+                        (err: unknown) => { console.debug(err); }
                     ));
                 } else if (this.resourceBarcode.value) {
                     this.startingTab = 'resource';
                     return this.pcrud.search('brsrc',
-                    {'barcode' : this.resourceBarcode.value}, {'limit': 1}).pipe(
-                    tap((res) => {
-                        this.resourceId = res.id();
-                    }, (err) => {
-                        this.resourceId = -1;
-                        this.toast.danger('No resource found with this barcode');
-                    }));
+                        {'barcode' : this.resourceBarcode.value}, {'limit': 1}).pipe(
+                        tap((res) => {
+                            this.resourceId = res.id();
+                        }, (err: unknown) => {
+                            this.resourceId = -1;
+                            this.toast.danger('No resource found with this barcode');
+                        }));
                 } else if (this.resourceType.value) {
                     this.startingTab = 'type';
                     return of(null);
@@ -154,14 +156,14 @@ export class ManageReservationsComponent implements OnInit, OnDestroy {
                     return of(null);
                 }
 
-        })).subscribe();
+            })).subscribe();
     }
 
     get pickupLibraries() {
         return this.filters.get('pickupLibraries');
     }
     get patronBarcode() {
-      return this.filters.get('patronBarcode');
+        return this.filters.get('patronBarcode');
     }
     get resourceBarcode() {
         return this.filters.get('resourceBarcode');

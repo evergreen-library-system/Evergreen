@@ -10,9 +10,9 @@ import {MarcEditContext} from './editor-context';
  */
 
 @Component({
-  selector: 'eg-marc-flat-editor',
-  templateUrl: './flat-editor.component.html',
-  styleUrls: ['flat-editor.component.css']
+    selector: 'eg-marc-flat-editor',
+    templateUrl: './flat-editor.component.html',
+    styleUrls: ['flat-editor.component.css']
 })
 
 export class MarcFlatEditorComponent implements OnInit {
@@ -40,6 +40,7 @@ export class MarcFlatEditorComponent implements OnInit {
         if (this.record && this.record.breakerText) {
             return this.record.breakerText.split(/\n/).length + 2;
         }
+        // eslint-disable-next-line no-magic-numbers
         return 40;
     }
 

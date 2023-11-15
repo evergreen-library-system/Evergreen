@@ -12,25 +12,25 @@ import {FundTransferDialogComponent} from './fund-transfer-dialog.component';
 import {FundRolloverDialogComponent} from './fund-rollover-dialog.component';
 
 @NgModule({
-  declarations: [
-    FundsComponent,
-    FundsManagerComponent,
-    FundDetailsDialogComponent,
-    FundingSourcesComponent,
-    FundingSourceTransactionsDialogComponent,
-    FundTagsComponent,
-    FundTransferDialogComponent,
-    FundRolloverDialogComponent
-  ],
-  imports: [
-    StaffCommonModule,
-    AdminCommonModule,
-    FundsRoutingModule,
-  ],
-  exports: [
-  ],
-  providers: [
-  ]
+    declarations: [
+        FundsComponent,
+        FundsManagerComponent,
+        FundDetailsDialogComponent,
+        FundingSourcesComponent,
+        FundingSourceTransactionsDialogComponent,
+        FundTagsComponent,
+        FundTransferDialogComponent,
+        FundRolloverDialogComponent
+    ],
+    imports: [
+        StaffCommonModule,
+        AdminCommonModule,
+        FundsRoutingModule,
+    ],
+    exports: [
+    ],
+    providers: [
+    ]
 })
 
 export class FundsModule {

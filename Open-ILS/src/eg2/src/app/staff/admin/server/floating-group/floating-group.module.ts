@@ -5,18 +5,18 @@ import {EditFloatingGroupComponent} from './edit-floating-group.component';
 import {FloatingGroupRoutingModule} from './floating-group-routing.module';
 
 @NgModule({
-  declarations: [
-    FloatingGroupComponent,
-    EditFloatingGroupComponent
-  ],
-  imports: [
-    AdminCommonModule,
-    FloatingGroupRoutingModule
-  ],
-  exports: [
-  ],
-  providers: [
-  ]
+    declarations: [
+        FloatingGroupComponent,
+        EditFloatingGroupComponent
+    ],
+    imports: [
+        AdminCommonModule,
+        FloatingGroupRoutingModule
+    ],
+    exports: [
+    ],
+    providers: [
+    ]
 })
 
 export class FloatingGroupModule {

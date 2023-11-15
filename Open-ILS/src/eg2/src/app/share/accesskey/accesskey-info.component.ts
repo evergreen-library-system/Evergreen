@@ -6,10 +6,10 @@ import {DialogComponent} from '@eg/share/dialog/dialog.component';
 import {NgbModal} from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
-  selector: 'eg-accesskey-info',
-  templateUrl: './accesskey-info.component.html',
-  styleUrls: [ 'accesskey-info.component.css' ],
-  encapsulation: ViewEncapsulation.None
+    selector: 'eg-accesskey-info',
+    templateUrl: './accesskey-info.component.html',
+    styleUrls: [ 'accesskey-info.component.css' ],
+    encapsulation: ViewEncapsulation.None
 })
 export class AccessKeyInfoComponent extends DialogComponent {
 

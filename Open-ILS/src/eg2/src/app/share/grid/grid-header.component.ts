@@ -4,8 +4,8 @@ import {GridContext, GridColumn, GridRowSelector,
 import {GridFilterControlComponent} from './grid-filter-control.component';
 
 @Component({
-  selector: 'eg-grid-header',
-  templateUrl: './grid-header.component.html'
+    selector: 'eg-grid-header',
+    templateUrl: './grid-header.component.html'
 })
 
 export class GridHeaderComponent implements OnInit, AfterViewInit {

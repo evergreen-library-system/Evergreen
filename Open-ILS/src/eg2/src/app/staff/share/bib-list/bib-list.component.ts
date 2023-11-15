@@ -14,8 +14,8 @@ import {ComboboxEntry} from '@eg/share/combobox/combobox.component';
 /* Grid of bib records and associated actions. */
 
 @Component({
-  templateUrl: 'bib-list.component.html',
-  selector: 'eg-bib-list'
+    templateUrl: 'bib-list.component.html',
+    selector: 'eg-bib-list'
 })
 export class BibListComponent implements OnInit {
 
@@ -63,7 +63,7 @@ export class BibListComponent implements OnInit {
 
         } else if (this.bibIds && this.bibIds.length > 0) {
             promise = Promise.resolve(
-              this.bibIds.slice(pager.offset, pager.offset + pager.limit));
+                this.bibIds.slice(pager.offset, pager.offset + pager.limit));
 
         } else {
             return EMPTY;

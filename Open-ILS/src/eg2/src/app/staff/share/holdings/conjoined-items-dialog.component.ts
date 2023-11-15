@@ -15,8 +15,8 @@ import {ComboboxEntry} from '@eg/share/combobox/combobox.component';
  */
 
 @Component({
-  selector: 'eg-conjoined-items-dialog',
-  templateUrl: 'conjoined-items-dialog.component.html'
+    selector: 'eg-conjoined-items-dialog',
+    templateUrl: 'conjoined-items-dialog.component.html'
 })
 
 export class ConjoinedItemsDialogComponent
@@ -66,7 +66,7 @@ export class ConjoinedItemsDialogComponent
                 this.peerRecord =
                     this.localStore.getLocalItem('eg.cat.marked_conjoined_record');
 
-                    if (!this.peerRecord) {
+                if (!this.peerRecord) {
                     this.close(false);
                 }
             }
@@ -94,20 +94,20 @@ export class ConjoinedItemsDialogComponent
         }
 
         this.pcrud.search('bpbcm', search)
-        .subscribe(map => {
-            this.existingMaps[map.target_copy()] = map;
-            if (this.modifyAll) {
-                this.copyIds.push(map.target_copy());
-            }
-        });
+            .subscribe(map => {
+                this.existingMaps[map.target_copy()] = map;
+                if (this.modifyAll) {
+                    this.copyIds.push(map.target_copy());
+                }
+            });
     }
 
     // Fetch and map peer types to combobox entries
     getPeerTypes(): Promise<any> {
         return this.pcrud.retrieveAll('bpt', {}, {atomic: true}).toPromise()
-        .then(types =>
-            this.peerTypes = types.map(t => ({id: t.id(), label: t.name()}))
-        );
+            .then(types =>
+                this.peerTypes = types.map(t => ({id: t.id(), label: t.name()}))
+            );
     }
 
     peerTypeChanged(entry: ComboboxEntry) {
@@ -140,7 +140,7 @@ export class ConjoinedItemsDialogComponent
 
         return this.pcrud.autoApply(maps).subscribe(
             ok => this.numSucceeded++,
-            err => {
+            (err: unknown) => {
                 this.numFailed++;
                 console.error(err);
                 this.errorMsg.current().then(msg => this.toast.warning(msg));

@@ -20,9 +20,9 @@ import {HoldingsService} from './holdings.service';
  */
 
 @Component({
-  selector: 'eg-copy-alert-manager',
-  templateUrl: 'copy-alert-manager.component.html',
-  styles: ['.acknowledged {text-decoration: line-through }']
+    selector: 'eg-copy-alert-manager',
+    templateUrl: 'copy-alert-manager.component.html',
+    styles: ['.acknowledged {text-decoration: line-through }']
 })
 
 export class CopyAlertManagerDialogComponent extends DialogComponent {
@@ -67,7 +67,7 @@ export class CopyAlertManagerDialogComponent extends DialogComponent {
             const key = `staff.holdings.copyalert.${copyAlert._event}.${state}`;
             promise = promise.then(_ => {
                 return this.strings.interpolate(key)
-                .then(str => copyAlert._message = str);
+                    .then(str => copyAlert._message = str);
             });
         }
 
@@ -87,16 +87,16 @@ export class CopyAlertManagerDialogComponent extends DialogComponent {
         if (this.mode === 'checkin' && nextStatuses.length > 0) {
 
             promise = promise.then(_ => this.holdings.getCopyStatuses())
-            .then(statMap => {
-                nextStatuses.forEach(statId => {
-                    const wanted = statMap[statId];
-                    if (wanted) { this.nextStatuses.push(wanted); }
-                });
+                .then(statMap => {
+                    nextStatuses.forEach(statId => {
+                        const wanted = statMap[statId];
+                        if (wanted) { this.nextStatuses.push(wanted); }
+                    });
 
-                if (this.nextStatuses.length > 0) {
-                    this.nextStatus = this.nextStatuses[0].id();
-                }
-            });
+                    if (this.nextStatuses.length > 0) {
+                        this.nextStatus = this.nextStatuses[0].id();
+                    }
+                });
         }
 
         return promise;
@@ -127,7 +127,7 @@ export class CopyAlertManagerDialogComponent extends DialogComponent {
 
             if (acks.length > 0) {
                 this.pcrud.update(acks).toPromise()
-                .then(_ => this.close({nextStatus: this.nextStatus}));
+                    .then(_ => this.close({nextStatus: this.nextStatus}));
             } else {
                 this.close({nextStatus: this.nextStatus});
             }

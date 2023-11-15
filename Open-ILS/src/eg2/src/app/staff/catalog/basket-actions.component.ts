@@ -7,14 +7,14 @@ import {PrintService} from '@eg/share/print/print.service';
 import {CatalogService} from '@eg/share/catalog/catalog.service';
 import {StaffCatalogService} from './catalog.service';
 import {BucketDialogComponent
-    } from '@eg/staff/share/buckets/bucket-dialog.component';
+} from '@eg/staff/share/buckets/bucket-dialog.component';
 import {ProgressDialogComponent} from '@eg/share/dialog/progress.component';
 
 const MAX_FROM_SEARCH_RESULTS = 1000;
 
 @Component({
-  selector: 'eg-catalog-basket-actions',
-  templateUrl: 'basket-actions.component.html'
+    selector: 'eg-catalog-basket-actions',
+    templateUrl: 'basket-actions.component.html'
 })
 export class BasketActionsComponent {
 
@@ -59,13 +59,14 @@ export class BasketActionsComponent {
 
                 this.addAllProgress.open();
 
+                // eslint-disable-next-line no-case-declarations
                 const ctx = this.staffCat.cloneContext(this.staffCat.searchContext);
                 ctx.pager.offset = 0;
                 ctx.pager.limit = MAX_FROM_SEARCH_RESULTS;
 
                 this.cat.search(ctx)
-                .then(_ => this.basket.addRecordIds(ctx.currentResultIds()))
-                .then(_ => this.addAllProgress.close());
+                    .then(_ => this.basket.addRecordIds(ctx.currentResultIds()))
+                    .then(_ => this.addAllProgress.close());
 
                 break;
 

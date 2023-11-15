@@ -14,8 +14,7 @@ import {OrgService} from '@eg/core/org.service';
 import {PermService} from '@eg/core/perm.service';
 import {AuthService} from '@eg/core/auth.service';
 import {NetService} from '@eg/core/net.service';
-import {map, mergeMap} from 'rxjs/operators';
-import {StringComponent} from '@eg/share/string/string.component';
+import {mergeMap} from 'rxjs/operators';
 import {Observable, forkJoin, of} from 'rxjs';
 import {AlertDialogComponent} from '@eg/share/dialog/alert.component';
 import {ConfirmDialogComponent} from '@eg/share/dialog/confirm.component';
@@ -131,7 +130,7 @@ export class FundingSourcesComponent extends AdminPageComponent implements OnIni
         if (this.startId) {
             this.pcrud.retrieve('acqfs', this.startId).subscribe(
                 acqfs => this.openTransactionsDialog([acqfs], 'allocations'),
-                err => {},
+                (err: unknown) => {},
                 () => this.startId = null
             );
         }
@@ -163,9 +162,10 @@ export class FundingSourcesComponent extends AdminPageComponent implements OnIni
                         }
                     });
                 },
-                err => {},
+                (err: unknown) => {},
                 () => {
                     if (can) {
+                        // eslint-disable-next-line rxjs/no-nested-subscribe
                         this.confirmDel.open().subscribe(confirmed => {
                             if (!confirmed) { return; }
                             super.deleteSelected([ rows[0] ]);
@@ -184,7 +184,7 @@ export class FundingSourcesComponent extends AdminPageComponent implements OnIni
         this.fundingSourceTransactionsDialog.activeTab = tab;
         this.fundingSourceTransactionsDialog.open({size: 'xl'}).subscribe(
             res => {},
-            err => {},
+            (err: unknown) => {},
             () => this.grid.reload()
         );
     }
@@ -199,12 +199,12 @@ export class FundingSourcesComponent extends AdminPageComponent implements OnIni
         this.applyCreditDialog.hiddenFieldsList = ['id', 'funding_source'];
         this.applyCreditDialog.fieldOrder = 'amount,note,effective_date,deadline_date';
         this.applyCreditDialog.open().subscribe(
-             result => {
+            result => {
                 this.successString.current()
                     .then(str => this.toast.success(str));
                 this.grid.reload();
             },
-            error => {
+            (error: unknown) => {
                 this.updateFailedString.current()
                     .then(str => this.toast.danger(str));
             }
@@ -223,12 +223,12 @@ export class FundingSourcesComponent extends AdminPageComponent implements OnIni
         this.allocateToFundDialog.hiddenFieldsList = ['id', 'funding_source', 'allocator', 'create_time'];
         this.allocateToFundDialog.fieldOrder = 'fund,amount,note';
         this.allocateToFundDialog.open().subscribe(
-             result => {
+            result => {
                 this.successString.current()
                     .then(str => this.toast.success(str));
                 this.grid.reload();
             },
-            error => {
+            (error: unknown) => {
                 this.updateFailedString.current()
                     .then(str => this.toast.danger(str));
             }

@@ -16,9 +16,9 @@ import {AttrDefsService} from '../search/attr-defs.service';
 import {ProviderRecord, ProviderRecordService} from './provider-record.service';
 
 @Component({
-  selector: 'eg-provider-purchase-orders',
-  templateUrl: 'provider-purchase-orders.component.html',
-  providers: [AcqSearchService, AttrDefsService]
+    selector: 'eg-provider-purchase-orders',
+    templateUrl: 'provider-purchase-orders.component.html',
+    providers: [AcqSearchService, AttrDefsService]
 })
 export class ProviderPurchaseOrdersComponent implements OnInit, AfterViewInit, OnDestroy {
 

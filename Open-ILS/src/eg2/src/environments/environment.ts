@@ -4,7 +4,7 @@
 // The list of which env maps to which file can be found in `.angular-cli.json`.
 
 export const environment = {
-  production: false,
-  // currently locales are only supported in production builds.
-  locales: ['en-US']
+    production: false,
+    // currently locales are only supported in production builds.
+    locales: ['en-US']
 };

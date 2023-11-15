@@ -28,8 +28,8 @@ import {ToastService} from '@eg/share/toast/toast.service';
 import {DateUtil} from '@eg/share/util/date';
 
 @Component({
-  templateUrl: 'billing-history.component.html',
-  selector: 'eg-patron-billing-history'
+    templateUrl: 'billing-history.component.html',
+    selector: 'eg-patron-billing-history'
 })
 export class BillingHistoryComponent implements OnInit {
 
@@ -91,12 +91,12 @@ export class BillingHistoryComponent implements OnInit {
             }
 
             const query: any = {
-               usr: this.patronId,
-               xact_start: {between: [this.xactsStart, this.xactsEnd]},
-               '-or': [
+                usr: this.patronId,
+                xact_start: {between: [this.xactsStart, this.xactsEnd]},
+                '-or': [
                     {balance_owed: {'<>': 0}},
                     {last_payment_ts: {'<>': null}}
-               ]
+                ]
             };
 
             return this.flatData.getRows(
@@ -105,8 +105,8 @@ export class BillingHistoryComponent implements OnInit {
 
         this.paymentsDataSource.getRows = (pager: Pager, sort: any[]) => {
             const query: any = {
-               'xact.usr': this.patronId,
-               payment_ts: {between: [this.paymentsStart, this.paymentsEnd]},
+                'xact.usr': this.patronId,
+                payment_ts: {between: [this.paymentsStart, this.paymentsEnd]},
             };
 
             if (sort.length === 0) {
@@ -158,20 +158,20 @@ export class BillingHistoryComponent implements OnInit {
         let changesApplied = false;
 
         from(xactIds)
-        .pipe(concatMap(id => {
-            this.billingDialog.xactId = id;
-            return this.billingDialog.open();
-        }))
-        .pipe(tap(data => {
-            if (data) {
-                changesApplied = true;
-            }
-        }))
-        .subscribe(null, null, () => {
-            if (changesApplied) {
-                this.xactsGrid.reload();
-            }
-        });
+            .pipe(concatMap(id => {
+                this.billingDialog.xactId = id;
+                return this.billingDialog.open();
+            }))
+            .pipe(tap(data => {
+                if (data) {
+                    changesApplied = true;
+                }
+            }))
+            .subscribe(null, null, () => {
+                if (changesApplied) {
+                    this.xactsGrid.reload();
+                }
+            });
     }
 
     printBills(rows: any) {

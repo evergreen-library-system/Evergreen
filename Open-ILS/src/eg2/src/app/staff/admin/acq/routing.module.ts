@@ -35,7 +35,7 @@ const routes: Routes = [{
 }, {
     path: 'currency',
     loadChildren: () =>
-      import('./currency/currencies.module').then(m => m.CurrenciesModule)
+        import('./currency/currencies.module').then(m => m.CurrenciesModule)
 }, {
     path: 'currency_type',
     redirectTo: 'currency' // from auto-generated admin page
@@ -45,11 +45,11 @@ const routes: Routes = [{
 }, {
     path: 'distribution_formula',
     loadChildren: () =>
-      import('./distribution_formula/distribution-formulas.module').then(m => m.DistributionFormulasModule)
+        import('./distribution_formula/distribution-formulas.module').then(m => m.DistributionFormulasModule)
 }, {
     path: 'edi_attr_set',
     loadChildren: () =>
-      import('./edi_attr_set/edi-attr-sets.module').then(m => m.EdiAttrSetsModule)
+        import('./edi_attr_set/edi-attr-sets.module').then(m => m.EdiAttrSetsModule)
 }, {
     path: 'fiscal-year-admin',
     component: FiscalYearAdminComponent
@@ -62,7 +62,7 @@ const routes: Routes = [{
 }, {
     path: 'funds',
     loadChildren: () =>
-      import('./funds/funds.module').then(m => m.FundsModule)
+        import('./funds/funds.module').then(m => m.FundsModule)
 }, {
     path: 'fund',
     redirectTo: 'funds' // from auto-generated admin page
@@ -99,8 +99,8 @@ const routes: Routes = [{
 }];
 
 @NgModule({
-  imports: [RouterModule.forChild(routes)],
-  exports: [RouterModule]
+    imports: [RouterModule.forChild(routes)],
+    exports: [RouterModule]
 })
 
 export class AdminAcqRoutingModule {}

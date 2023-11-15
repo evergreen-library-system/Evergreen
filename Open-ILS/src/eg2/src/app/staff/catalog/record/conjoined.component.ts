@@ -1,5 +1,5 @@
 import {Component, OnInit, Input, ViewChild} from '@angular/core';
-import {IdlService, IdlObject} from '@eg/core/idl.service';
+import {IdlService} from '@eg/core/idl.service';
 import {PcrudService} from '@eg/core/pcrud.service';
 import {Pager} from '@eg/share/util/pager';
 import {OrgService} from '@eg/core/org.service';
@@ -8,13 +8,13 @@ import {GridDataSource} from '@eg/share/grid/grid';
 import {GridComponent} from '@eg/share/grid/grid.component';
 import {ConfirmDialogComponent} from '@eg/share/dialog/confirm.component';
 import {ConjoinedItemsDialogComponent
-    } from '@eg/staff/share/holdings/conjoined-items-dialog.component';
+} from '@eg/staff/share/holdings/conjoined-items-dialog.component';
 
 /** Conjoined items per record grid */
 
 @Component({
-  selector: 'eg-catalog-record-conjoined',
-  templateUrl: 'conjoined.component.html'
+    selector: 'eg-catalog-record-conjoined',
+    templateUrl: 'conjoined.component.html'
 })
 export class ConjoinedComponent implements OnInit {
 
@@ -27,10 +27,10 @@ export class ConjoinedComponent implements OnInit {
     @ViewChild('conjoinedGrid', { static: true }) private grid: GridComponent;
 
     @ViewChild('conjoinedDialog', { static: true })
-        private conjoinedDialog: ConjoinedItemsDialogComponent;
+    private conjoinedDialog: ConjoinedItemsDialogComponent;
 
     @ViewChild('confirmUnlink', { static: true })
-        private confirmUnlink: ConfirmDialogComponent;
+    private confirmUnlink: ConfirmDialogComponent;
 
     constructor(
         private idl: IdlService,
@@ -79,20 +79,22 @@ export class ConjoinedComponent implements OnInit {
             const maps = [];
             this.pcrud.search('bpbcm',
                 {target_copy: this.idsToUnlink, peer_record: this.recordId})
-            .subscribe(
-                map => maps.push(map),
-                err => {},
-                () => {
-                    this.pcrud.remove(maps).subscribe(
-                        ok => console.debug('deleted map ', ok),
-                        err => console.error(err),
-                        ()  => {
-                            this.idsToUnlink = [];
-                            this.grid.reload();
-                        }
-                    );
-                }
-            );
+                // eslint-disable-next-line rxjs/no-nested-subscribe
+                .subscribe(
+                    map => maps.push(map),
+                    (err: unknown) => {},
+                    () => {
+                        // eslint-disable-next-line rxjs/no-nested-subscribe
+                        this.pcrud.remove(maps).subscribe(
+                            ok => console.debug('deleted map ', ok),
+                            (err: unknown) => console.error(err),
+                            ()  => {
+                                this.idsToUnlink = [];
+                                this.grid.reload();
+                            }
+                        );
+                    }
+                );
         });
     }
 

@@ -2,10 +2,10 @@ import {Injectable} from '@angular/core';
 import {Location} from '@angular/common';
 import {Observable, Observer, of} from 'rxjs';
 import {Router, Resolve, RouterStateSnapshot,
-        ActivatedRoute, ActivatedRouteSnapshot} from '@angular/router';
+    ActivatedRoute, ActivatedRouteSnapshot} from '@angular/router';
 import {StoreService} from '@eg/core/store.service';
 import {NetService} from '@eg/core/net.service';
-import {AuthService, AuthWsState} from '@eg/core/auth.service';
+import {AuthService} from '@eg/core/auth.service';
 import {PermService} from '@eg/core/perm.service';
 import {OrgService} from '@eg/core/org.service';
 import {FormatService} from '@eg/core/format.service';
@@ -66,7 +66,7 @@ export class StaffResolver implements Resolve<Observable<any>> {
         }
 
         const observable: Observable<any>
-            = Observable.create(o => this.observer = o);
+            = new Observable(o => this.observer = o);
 
         this.auth.testAuthToken().then(
             tokenOk => {
@@ -75,11 +75,11 @@ export class StaffResolver implements Resolve<Observable<any>> {
                         this.auth.verifyWorkstation().then(
                             wsOk => {
                                 this.loadStartupData()
-                                .then(ok => {
+                                    .then(ok => {
                                     // Resolve observable must emit /something/
-                                    this.observer.next(true);
-                                    this.observer.complete();
-                                });
+                                        this.observer.next(true);
+                                        this.observer.complete();
+                                    });
                             },
                             wsNotOk => this.handleInvalidWorkstation(path)
                         );

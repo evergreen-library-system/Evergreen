@@ -3,13 +3,13 @@ import {RouterModule, Routes} from '@angular/router';
 import {RecordAttrDefinitionsComponent} from './record-attr-definitions.component';
 
 const routes: Routes = [{
-  path: '',
-  component: RecordAttrDefinitionsComponent
+    path: '',
+    component: RecordAttrDefinitionsComponent
 }];
 
 @NgModule({
-  imports: [RouterModule.forChild(routes)],
-  exports: [RouterModule]
+    imports: [RouterModule.forChild(routes)],
+    exports: [RouterModule]
 })
 
 export class RecordAttrDefinitionsRoutingModule {}

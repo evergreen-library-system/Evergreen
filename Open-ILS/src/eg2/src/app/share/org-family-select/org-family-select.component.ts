@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-expressions */
 import {Component, EventEmitter, OnInit, Input, Output, ViewChildren, QueryList, forwardRef} from '@angular/core';
 import {ControlValueAccessor, FormGroup, FormControl, NG_VALUE_ACCESSOR} from '@angular/forms';
 import {AuthService} from '@eg/core/auth.service';
@@ -17,12 +18,12 @@ export interface OrgFamily {
     selector: 'eg-org-family-select',
     templateUrl: 'org-family-select.component.html',
     providers: [
-    {
-      provide: NG_VALUE_ACCESSOR,
-      useExisting: forwardRef(() => OrgFamilySelectComponent),
-      multi: true
-    }
-  ]
+        {
+            provide: NG_VALUE_ACCESSOR,
+            useExisting: forwardRef(() => OrgFamilySelectComponent),
+            multi: true
+        }
+    ]
 })
 export class OrgFamilySelectComponent implements ControlValueAccessor, OnInit {
 
@@ -95,6 +96,7 @@ export class OrgFamilySelectComponent implements ControlValueAccessor, OnInit {
         });
 
         if (!this.domId) {
+            // eslint-disable-next-line no-magic-numbers
             this.domId = 'org-family-select-' + Math.floor(Math.random() * 100000);
         }
 
@@ -145,7 +147,7 @@ export class OrgFamilySelectComponent implements ControlValueAccessor, OnInit {
     }
 
     private loadPersistedValues() {
-        if (!this.persistKey) return;
+        if (!this.persistKey) {return;}
 
         const key = `eg.orgfamilyselect.${this.persistKey}`;
 

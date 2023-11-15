@@ -36,47 +36,47 @@ import {WorkLogModule} from '@eg/staff/share/worklog/worklog.module';
 import {LastPatronComponent} from './last.component';
 
 @NgModule({
-  declarations: [
-    PatronComponent,
-    PatronAlertsComponent,
-    CheckoutComponent,
-    HoldsComponent,
-    EditComponent,
-    EditToolbarComponent,
-    BcSearchComponent,
-    ItemsComponent,
-    BillsComponent,
-    BillStatementComponent,
-    BillingHistoryComponent,
-    TestPatronPasswordComponent,
-    PatronMessagesComponent,
-    PatronSurveyResponsesComponent,
-    PatronGroupComponent,
-    RegisterPatronComponent,
-    PatronStatCatsComponent,
-    PatronPermsComponent,
-    LastPatronComponent,
-    PatronBarcodesDialogComponent,
-    SecondaryGroupsDialogComponent,
-    HoldNotifyUpdateDialogComponent
-  ],
-  imports: [
-    StaffCommonModule,
-    FmRecordEditorModule,
-    BillingModule,
-    CircModule,
-    HoldsModule,
-    HoldingsModule,
-    BookingModule,
-    PatronModule,
-    PatronRoutingModule,
-    BarcodesModule,
-    WorkLogModule
-  ],
-  providers: [
-    PatronResolver,
-    PatronContextService
-  ]
+    declarations: [
+        PatronComponent,
+        PatronAlertsComponent,
+        CheckoutComponent,
+        HoldsComponent,
+        EditComponent,
+        EditToolbarComponent,
+        BcSearchComponent,
+        ItemsComponent,
+        BillsComponent,
+        BillStatementComponent,
+        BillingHistoryComponent,
+        TestPatronPasswordComponent,
+        PatronMessagesComponent,
+        PatronSurveyResponsesComponent,
+        PatronGroupComponent,
+        RegisterPatronComponent,
+        PatronStatCatsComponent,
+        PatronPermsComponent,
+        LastPatronComponent,
+        PatronBarcodesDialogComponent,
+        SecondaryGroupsDialogComponent,
+        HoldNotifyUpdateDialogComponent
+    ],
+    imports: [
+        StaffCommonModule,
+        FmRecordEditorModule,
+        BillingModule,
+        CircModule,
+        HoldsModule,
+        HoldingsModule,
+        BookingModule,
+        PatronModule,
+        PatronRoutingModule,
+        BarcodesModule,
+        WorkLogModule
+    ],
+    providers: [
+        PatronResolver,
+        PatronContextService
+    ]
 })
 
 export class PatronManagerModule {}

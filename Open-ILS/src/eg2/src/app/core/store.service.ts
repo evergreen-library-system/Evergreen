@@ -180,7 +180,7 @@ export class StoreService {
                         console.debug(
                             'Migrating default workstation to Hatch ' + name);
                         return this.hatch.setItem(WS_DEF_KEY, name)
-                        .then(ok => name);
+                            .then(ok => name);
                     } else {
                         return null;
                     }

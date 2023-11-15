@@ -10,7 +10,7 @@ import {ServerStoreService} from '@eg/core/server-store.service';
 import {StringComponent} from '@eg/share/string/string.component';
 import {MarcRecord} from './marcrecord';
 import {ComboboxEntry, ComboboxComponent
-  } from '@eg/share/combobox/combobox.component';
+} from '@eg/share/combobox/combobox.component';
 import {ConfirmDialogComponent} from '@eg/share/dialog/confirm.component';
 import {MarcEditContext, MARC_RECORD_TYPE} from './editor-context';
 import {NgbNav, NgbNavChangeEvent} from '@ng-bootstrap/ng-bootstrap';
@@ -28,8 +28,8 @@ export interface MarcSavedEvent {
  */
 
 @Component({
-  selector: 'eg-marc-editor',
-  templateUrl: './editor.component.html'
+    selector: 'eg-marc-editor',
+    templateUrl: './editor.component.html'
 })
 
 export class MarcEditorComponent implements OnInit {
@@ -53,10 +53,10 @@ export class MarcEditorComponent implements OnInit {
             this._pendingRecordId = null;
             this.fromId(id);
 
-         } else {
+        } else {
             // fetch later in OnInit
             this._pendingRecordId = id;
-         }
+        }
     }
 
     get recordId(): number {
@@ -258,14 +258,14 @@ export class MarcEditorComponent implements OnInit {
         const idlClass = this.recordType === 'authority' ? 'are' : 'bre';
 
         return this.pcrud.retrieve(idlClass, id)
-        .toPromise().then(rec => {
-            this.context.record = new MarcRecord(rec.marc());
-            this.record.id = id;
-            this.record.deleted = rec.deleted() === 't';
-            if (idlClass === 'bre') {
-                this.recordSource = +rec.source();
-            }
-        });
+            .toPromise().then(rec => {
+                this.context.record = new MarcRecord(rec.marc());
+                this.record.id = id;
+                this.record.deleted = rec.deleted() === 't';
+                if (idlClass === 'bre') {
+                    this.recordSource = +rec.source();
+                }
+            });
     }
 
     updateRecordSource(entry) {
@@ -280,33 +280,33 @@ export class MarcEditorComponent implements OnInit {
     deleteRecord(): Promise<any> {
 
         return this.confirmDelete.open().toPromise()
-        .then(yes => {
-            if (!yes) { return; }
+            .then(yes => {
+                if (!yes) { return; }
 
-            let promise;
-            if (this.recordType === 'authority') {
-                promise = this.deleteAuthorityRecord();
-            } else {
-                promise = this.deleteBibRecord();
-            }
+                let promise;
+                if (this.recordType === 'authority') {
+                    promise = this.deleteAuthorityRecord();
+                } else {
+                    promise = this.deleteBibRecord();
+                }
 
-            return promise.then(ok => {
-                if (!ok) { return; }
+                return promise.then(ok => {
+                    if (!ok) { return; }
 
-                return this.fromId(this.record.id).then(_ => {
-                    this.recordSaved.emit({
-                        marcXml: this.record.toXml(),
-                        recordId: this.recordId
+                    return this.fromId(this.record.id).then(_ => {
+                        this.recordSaved.emit({
+                            marcXml: this.record.toXml(),
+                            recordId: this.recordId
+                        });
                     });
                 });
             });
-        });
     }
 
     deleteAuthorityRecord(): Promise<boolean> {
         return this.pcrud.retrieve('are', this.record.id).toPromise()
-        .then(rec => this.pcrud.remove(rec).toPromise())
-        .then(resp => resp !== null);
+            .then(rec => this.pcrud.remove(rec).toPromise())
+            .then(resp => resp !== null);
     }
 
     deleteBibRecord(): Promise<boolean> {
@@ -315,56 +315,56 @@ export class MarcEditorComponent implements OnInit {
             'open-ils.cat.biblio.record_entry.delete',
             this.auth.token(), this.record.id).toPromise()
 
-        .then(resp => {
+            .then(resp => {
 
-            const evt = this.evt.parse(resp);
-            if (evt) {
-                if (evt.textcode === 'RECORD_NOT_EMPTY') {
-                    return this.cannotDelete.open().toPromise()
-                    .then(_ => false);
-                } else {
-                    console.error(evt);
-                    alert(evt);
-                    return false;
+                const evt = this.evt.parse(resp);
+                if (evt) {
+                    if (evt.textcode === 'RECORD_NOT_EMPTY') {
+                        return this.cannotDelete.open().toPromise()
+                            .then(_ => false);
+                    } else {
+                        console.error(evt);
+                        alert(evt);
+                        return false;
+                    }
                 }
-            }
 
-            return true;
-        });
+                return true;
+            });
     }
 
     undeleteRecord(): Promise<any> {
 
         return this.confirmUndelete.open().toPromise()
-        .then(yes => {
-            if (!yes) { return; }
+            .then(yes => {
+                if (!yes) { return; }
 
-            let promise;
-            if (this.recordType === 'authority') {
-                promise = this.undeleteAuthorityRecord();
-            } else {
-                promise = this.undeleteBibRecord();
-            }
+                let promise;
+                if (this.recordType === 'authority') {
+                    promise = this.undeleteAuthorityRecord();
+                } else {
+                    promise = this.undeleteBibRecord();
+                }
 
-            return promise.then(ok => {
-                if (!ok) { return; }
-                return this.fromId(this.record.id)
-                .then(_ => {
-                    this.recordSaved.emit({
-                        marcXml: this.record.toXml(),
-                        recordId: this.recordId
-                    });
+                return promise.then(ok => {
+                    if (!ok) { return; }
+                    return this.fromId(this.record.id)
+                        .then(_ => {
+                            this.recordSaved.emit({
+                                marcXml: this.record.toXml(),
+                                recordId: this.recordId
+                            });
+                        });
                 });
             });
-        });
     }
 
     undeleteAuthorityRecord(): Promise<any> {
         return this.pcrud.retrieve('are', this.record.id).toPromise()
-        .then(rec => {
-            rec.deleted('f');
-            return this.pcrud.update(rec).toPromise();
-        }).then(resp => resp !== null);
+            .then(rec => {
+                rec.deleted('f');
+                return this.pcrud.update(rec).toPromise();
+            }).then(resp => resp !== null);
     }
 
     undeleteBibRecord(): Promise<any> {
@@ -373,17 +373,17 @@ export class MarcEditorComponent implements OnInit {
             'open-ils.cat.biblio.record_entry.undelete',
             this.auth.token(), this.record.id).toPromise()
 
-        .then(resp => {
+            .then(resp => {
 
-            const evt = this.evt.parse(resp);
-            if (evt) {
-                console.error(evt);
-                alert(evt);
-                return false;
-            }
+                const evt = this.evt.parse(resp);
+                if (evt) {
+                    console.error(evt);
+                    alert(evt);
+                    return false;
+                }
 
-            return true;
-        });
+                return true;
+            });
     }
 
     // Spawns the copy editor with the requested barcode and

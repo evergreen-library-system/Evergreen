@@ -50,51 +50,51 @@ export class CopyLocOrderComponent implements OnInit {
 
         return this.pcrud.search('acpl',
             {owning_lib: this.org.ancestors(this.contextOrg, true)})
-        .pipe(tap(loc => this.locations[loc.id()] = loc))
-        .toPromise()
+            .pipe(tap(loc => this.locations[loc.id()] = loc))
+            .toPromise()
 
-        .then(_ => {
+            .then(_ => {
 
-            return this.pcrud.search('acplo',
-                {org: this.contextOrg},
-                {order_by: {acplo: 'position'}},
-                {authoritative: true}
-            )
-            .pipe(tap(e => {
-                e.position(Number(e.position()));
-                e.location(this.locations[e.location()]);
-                this.entries.push(e);
-            }))
-            .toPromise();
-        })
+                return this.pcrud.search('acplo',
+                    {org: this.contextOrg},
+                    {order_by: {acplo: 'position'}},
+                    {authoritative: true}
+                )
+                    .pipe(tap(e => {
+                        e.position(Number(e.position()));
+                        e.location(this.locations[e.location()]);
+                        this.entries.push(e);
+                    }))
+                    .toPromise();
+            })
 
-        .then(_ => {
+            .then(_ => {
 
-            // Ensure we have an entry for every in-range copy location.
+                // Ensure we have an entry for every in-range copy location.
 
-            const locs = Object.values(this.locations)
-                .sort((o1, o2) => o1.name() < o2.name() ? -1 : 1);
+                const locs = Object.values(this.locations)
+                    .sort((o1, o2) => o1.name() < o2.name() ? -1 : 1);
 
-            let pos = this.entries.length;
+                let pos = this.entries.length;
 
-            locs.forEach(loc => {
-                pos++;
+                locs.forEach(loc => {
+                    pos++;
 
-                let entry = this.entries.filter(e => e.location().id() === loc.id())[0];
-                if (entry) { return; }
+                    let entry = this.entries.filter(e => e.location().id() === loc.id())[0];
+                    if (entry) { return; }
 
-                // Either we have no entries or we encountered a new copy
-                // location added since the last time entries were saved.
+                    // Either we have no entries or we encountered a new copy
+                    // location added since the last time entries were saved.
 
-                entry = this.idl.create('acplo');
-                entry.isnew(true);
-                entry.id(-pos); // local temp ID
-                entry.location(loc);
-                entry.position(pos);
-                entry.org(this.contextOrg);
-                this.entries.push(entry);
+                    entry = this.idl.create('acplo');
+                    entry.isnew(true);
+                    entry.id(-pos); // local temp ID
+                    entry.location(loc);
+                    entry.position(pos);
+                    entry.org(this.contextOrg);
+                    this.entries.push(entry);
+                });
             });
-        });
     }
 
     orgChanged(org: IdlObject) {
@@ -194,10 +194,10 @@ export class CopyLocOrderComponent implements OnInit {
         this.entries.forEach(e => { if (e.isnew()) { e.id(null); } });
 
         this.pcrud.autoApply(this.entries).toPromise()
-        .then(_ => {
-            this.selectedEntry = null;
-            this.load().then(__ => this.toast.success(this.editString.text));
-        });
+            .then(_ => {
+                this.selectedEntry = null;
+                this.load().then(__ => this.toast.success(this.editString.text));
+            });
     }
 }
 

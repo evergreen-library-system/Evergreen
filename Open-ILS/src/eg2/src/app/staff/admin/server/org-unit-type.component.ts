@@ -96,10 +96,11 @@ export class OrgUnitTypeComponent implements OnInit {
             success => {
                 this.postUpdate(this.editString);
                 this.loadAoutTree(); // since the tree is never going to
-                                     // be large, just reload the whole
-                                     // thing
+                // be large, just reload the whole
+                // thing
             },
-            rejected => {
+            // eslint-disable-next-line rxjs/no-implicit-any-catch
+            (rejected: any) => {
                 if (rejected && rejected.dismissed) {
                     return;
                 }
@@ -114,22 +115,23 @@ export class OrgUnitTypeComponent implements OnInit {
             if (!confirmed) { return; }
 
             this.pcrud.remove(this.selected.callerData.aout)
-            .subscribe(
-                ok2 => {},
-                err => {
-                    this.errorString.current()
-                      .then(str => this.toast.danger(str));
-                },
-                ()  => {
+                // eslint-disable-next-line rxjs/no-nested-subscribe
+                .subscribe(
+                    ok2 => {},
+                    (err: unknown) => {
+                        this.errorString.current()
+                            .then(str => this.toast.danger(str));
+                    },
+                    ()  => {
                     // Avoid updating until we know the entire
                     // pcrud action/transaction completed.
-                    this.loadAoutTree(); // since the tree is never going to
-                                         // be large, just reload the whole
-                                         // thing
-                    this.selected = null;
-                    this.postUpdate(this.editString);
-                }
-            );
+                        this.loadAoutTree(); // since the tree is never going to
+                        // be large, just reload the whole
+                        // thing
+                        this.selected = null;
+                        this.postUpdate(this.editString);
+                    }
+                );
         });
     }
 
@@ -154,12 +156,13 @@ export class OrgUnitTypeComponent implements OnInit {
                     callerData: { aout: result, orgCount: 0 }
                 });
                 this.loadAoutTree(); // since the tree is never going to
-                                     // be large, just reload the whole
-                                     // thing
+                // be large, just reload the whole
+                // thing
                 this.postUpdate(this.createString);
             },
 
-            rejected => {
+            // eslint-disable-next-line rxjs/no-implicit-any-catch
+            (rejected: any) => {
                 if (rejected && rejected.dismissed) {
                     return;
                 }

@@ -17,8 +17,8 @@ import {StringComponent} from '@eg/share/string/string.component';
  */
 
 @Component({
-  selector: 'eg-replace-barcode-dialog',
-  templateUrl: 'replace-barcode-dialog.component.html'
+    selector: 'eg-replace-barcode-dialog',
+    templateUrl: 'replace-barcode-dialog.component.html'
 })
 
 export class ReplaceBarcodeDialogComponent
@@ -35,10 +35,10 @@ export class ReplaceBarcodeDialogComponent
     numFailed: number;
 
     @ViewChild('successMsg', { static: true })
-        private successMsg: StringComponent;
+    private successMsg: StringComponent;
 
     @ViewChild('errorMsg', { static: true })
-        private errorMsg: StringComponent;
+    private errorMsg: StringComponent;
 
     constructor(
         private modal: NgbModal, // required for passing to parent
@@ -57,10 +57,10 @@ export class ReplaceBarcodeDialogComponent
         this.numFailed = 0;
 
         return this.getNextCopy()
-        .pipe(switchMap(() => super.open(args)),
-            tap(() =>
-                this.renderer.selectRootElement('#new-barcode-input').focus())
-        );
+            .pipe(switchMap(() => super.open(args)),
+                tap(() =>
+                    this.renderer.selectRootElement('#new-barcode-input').focus())
+            );
     }
 
     getNextCopy(): Observable<any> {
@@ -79,7 +79,7 @@ export class ReplaceBarcodeDialogComponent
         const id = this.ids.pop();
 
         return this.pcrud.retrieve('acp', id)
-        .pipe(map(c => this.copy = c));
+            .pipe(map(c => this.copy = c));
     }
 
     replaceOneBarcode() {
@@ -87,38 +87,38 @@ export class ReplaceBarcodeDialogComponent
 
         // First see if the barcode is in use
         return this.pcrud.search('acp', {deleted: 'f', barcode: this.newBarcode})
-        .toPromise().then(async (existing) => {
-            if (existing) {
-                this.barcodeExists = true;
-                return;
-            }
-
-            this.net.request(
-                'open-ils.cat',
-                'open-ils.cat.update_copy_barcode',
-                this.auth.token(), this.copy.id(), this.newBarcode
-            ).subscribe(
-                (res) => {
-                    if (this.evt.parse(res)) {
-                        console.error('parsed error response', res);
-                    } else {
-                        console.log('success', res);
-                        this.numSucceeded++;
-                        this.successMsg.current().then(m => this.toast.success(m));
-                        this.getNextCopy().toPromise();
-                    }
-                },
-                (err) => {
-                    console.error('error', err);
-                    this.numFailed++;
-                    console.error('Replace barcode failed: ', err);
-                    this.errorMsg.current().then(m => this.toast.warning(m));
-                },
-                () => {
-                    console.log('finis');
+            .toPromise().then(async (existing) => {
+                if (existing) {
+                    this.barcodeExists = true;
+                    return;
                 }
-            );
-        });
+
+                this.net.request(
+                    'open-ils.cat',
+                    'open-ils.cat.update_copy_barcode',
+                    this.auth.token(), this.copy.id(), this.newBarcode
+                ).subscribe(
+                    (res) => {
+                        if (this.evt.parse(res)) {
+                            console.error('parsed error response', res);
+                        } else {
+                            console.log('success', res);
+                            this.numSucceeded++;
+                            this.successMsg.current().then(m => this.toast.success(m));
+                            this.getNextCopy().toPromise();
+                        }
+                    },
+                    (err: unknown) => {
+                        console.error('error', err);
+                        this.numFailed++;
+                        console.error('Replace barcode failed: ', err);
+                        this.errorMsg.current().then(m => this.toast.warning(m));
+                    },
+                    () => {
+                        console.log('finis');
+                    }
+                );
+            });
     }
 }
 

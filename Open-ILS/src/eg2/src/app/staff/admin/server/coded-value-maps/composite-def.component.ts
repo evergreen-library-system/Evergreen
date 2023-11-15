@@ -1,3 +1,4 @@
+/* eslint-disable rxjs/no-async-subscribe */
 import {Component, ViewChild, OnInit} from '@angular/core';
 import {Router, ActivatedRoute} from '@angular/router';
 import {Tree, TreeNode} from '@eg/share/tree/tree';
@@ -57,7 +58,7 @@ export class CompositeDefComponent implements OnInit {
             });
             this.getCodedMapValues();
         });
-    }
+    };
 
     getCodedMapValues = () => {
         this.pcrud.search('ccvm', {'id': this.currentId},
@@ -72,7 +73,7 @@ export class CompositeDefComponent implements OnInit {
                     this.noSavedTreeData = true;
                 }
             });
-    }
+    };
 
     createNodeLabels = () => {
         for (const key of Object.keys(this.idmap)) {
@@ -89,7 +90,7 @@ export class CompositeDefComponent implements OnInit {
                     nodeCallerData.valueLabel, nodeCallerData.valueId);
             }
         }
-    }
+    };
 
     expressionAsString = () => {
         if (!this.tree) { return ''; }
@@ -119,7 +120,7 @@ export class CompositeDefComponent implements OnInit {
             }
         };
         return renderNode(this.tree.rootNode);
-    }
+    };
 
     buildTreeStart = (def) => {
         if (def) {
@@ -158,7 +159,7 @@ export class CompositeDefComponent implements OnInit {
                     data => {
                         this.codedValueMaps[data.id()] = data;
                     },
-                    err => {
+                    (err: unknown) => {
                         console.debug(err);
                     },
                     () => {
@@ -167,7 +168,7 @@ export class CompositeDefComponent implements OnInit {
                 );
             }
         }
-    }
+    };
 
     buildTree = (parentNode, nodeData) => {
         let dataIsArray = false;
@@ -188,7 +189,7 @@ export class CompositeDefComponent implements OnInit {
         } else { // not boolean. it's a record
             this.buildTreeRecord(nodeData, point, parentNode);
         }
-    }
+    };
 
     buildTreeBoolean = (nodeData: any, dataIsArray: any, point: any, parentNode) => {
         if (dataIsArray) {
@@ -222,7 +223,7 @@ export class CompositeDefComponent implements OnInit {
         } else {
             console.debug('Error building tree');
         }
-    }
+    };
 
     buildTreeRecord = (nodeData: any, point: any, parentNode) => {
         point.typeLabel = this.recordAttrDefs[nodeData._attr].label();
@@ -238,7 +239,7 @@ export class CompositeDefComponent implements OnInit {
         });
         parentNode.children.push(newNode);
         this.idmap[point.id + ''] = newNode;
-    }
+    };
 
     createNewTree = () => {
         this.changesMade = true;
@@ -248,7 +249,7 @@ export class CompositeDefComponent implements OnInit {
         } else {
             this.addRecordRootNode(this.newPoint);
         }
-    }
+    };
 
     addBooleanRootNode = (boolOp: any) => {
         const point = { id: 1, label: boolOp, children: []};
@@ -257,7 +258,7 @@ export class CompositeDefComponent implements OnInit {
         this.idmap['1'] = node;
         this.tree = new Tree(node);
         return node;
-    }
+    };
 
     addRecordRootNode = (record: any) => {
         const point = { id: 1, expanded: true, children: [], label: null, typeLabel: null,
@@ -272,11 +273,11 @@ export class CompositeDefComponent implements OnInit {
         this.idmap['1'] = node;
         this.tree = new Tree(node);
         return node;
-    }
+    };
 
     buildLabel = (tlbl, tid, vlbl, vid) => {
         return tlbl + ' (' + tid + ') => ' + vlbl + ' (' + vid + ')';
-    }
+    };
 
     nodeClicked(node: TreeNode) {
         console.debug('Node clicked on: ' + node.label);
@@ -287,7 +288,7 @@ export class CompositeDefComponent implements OnInit {
         this.idmap = {};
         this.treeIndex = 2;
         this.changesMade = true;
-    }
+    };
 
     deleteNode = () => {
         this.changesMade = true;
@@ -296,7 +297,7 @@ export class CompositeDefComponent implements OnInit {
         } else {
             this.tree.removeNode(this.tree.selectedNode());
         }
-    }
+    };
 
     hasSelectedNode(): boolean {
         if (this.tree) {
@@ -382,7 +383,7 @@ export class CompositeDefComponent implements OnInit {
                     this.saveSuccess.current().then(str => this.toast.success(str));
                     this.noSavedTreeData = false;
                 },
-                err => {
+                (err: unknown) => {
                     this.saveFail.current().then(str => this.toast.danger(str));
                 }
             );
@@ -391,12 +392,12 @@ export class CompositeDefComponent implements OnInit {
                 async (ok) => {
                     this.saveSuccess.current().then(str => this.toast.success(str));
                 },
-                async (err) => {
+                async (err: unknown) => {
                     this.saveFail.current().then(str => this.toast.danger(str));
                 }
             );
         }
-    }
+    };
 
     exportTree(node: TreeNode): any {
         const lbl = node.label;
@@ -475,4 +476,4 @@ export class CompositeDefComponent implements OnInit {
         }
     }
 
- }
+}

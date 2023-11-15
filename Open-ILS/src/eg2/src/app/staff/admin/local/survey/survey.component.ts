@@ -74,6 +74,7 @@ export class SurveyComponent implements OnInit {
 
         this.defaultNewRecord = this.idl.create('asv');
         const nextWeek = new Date();
+        // eslint-disable-next-line no-magic-numbers
         nextWeek.setDate(nextWeek.getDate() + 7);
         this.defaultNewRecord.end_date(nextWeek.toISOString());
     }
@@ -85,7 +86,7 @@ export class SurveyComponent implements OnInit {
     editSelected = (surveys: IdlObject[]) => {
         const idToEdit = surveys[0].id();
         this.navigateToEditPage(idToEdit);
-    }
+    };
 
     endSurvey = (surveys: IdlObject[]) => {
         const today = new Date().toISOString();
@@ -100,7 +101,7 @@ export class SurveyComponent implements OnInit {
                 }
             );
         }
-    }
+    };
 
     deleteSelected = (surveys: IdlObject[]) => {
         for (let i = 0; i < surveys.length; i++) {
@@ -114,12 +115,12 @@ export class SurveyComponent implements OnInit {
                     .then(str => this.toast.success(str));
                 this.grid.reload();
                 return res;
-            }, (err) => {
+            }, (err: unknown) => {
                 this.deleteFailedString.current()
                     .then(str => this.toast.success(str));
             });
         }
-    }
+    };
 
     navigateToEditPage(id: any) {
         this.router.navigate(['/staff/admin/local/action/survey/' + id]);
@@ -134,12 +135,13 @@ export class SurveyComponent implements OnInit {
                     .then(str => this.toast.success(str));
                 this.grid.reload();
             },
-            rejection => {
+            // eslint-disable-next-line rxjs/no-implicit-any-catch
+            (rejection: any) => {
                 if (!rejection.dismissed) {
                     this.createErrString.current()
                         .then(str => this.toast.danger(str));
                 }
             }
         );
-    }
+    };
 }

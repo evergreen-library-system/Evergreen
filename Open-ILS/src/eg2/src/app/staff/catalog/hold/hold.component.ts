@@ -1,6 +1,5 @@
 import {Component, OnInit, ViewChild} from '@angular/core';
 import {Router, ActivatedRoute, ParamMap} from '@angular/router';
-import {tap} from 'rxjs/operators';
 import {EventService} from '@eg/core/event.service';
 import {NetService} from '@eg/core/net.service';
 import {AuthService} from '@eg/core/auth.service';
@@ -17,10 +16,10 @@ import {HoldsService, HoldRequest,
 import {ComboboxEntry, ComboboxComponent} from '@eg/share/combobox/combobox.component';
 import {PatronService} from '@eg/staff/share/patron/patron.service';
 import {PatronSearchDialogComponent
-  } from '@eg/staff/share/patron/search-dialog.component';
+} from '@eg/staff/share/patron/search-dialog.component';
 import {AlertDialogComponent} from '@eg/share/dialog/alert.component';
 import {BarcodeSelectComponent
-    } from '@eg/staff/share/barcodes/barcode-select.component';
+} from '@eg/staff/share/barcodes/barcode-select.component';
 import {WorkLogService} from '@eg/staff/share/worklog/worklog.service';
 
 class HoldContext {
@@ -36,9 +35,9 @@ class HoldContext {
         this.holdTarget = target;
         this.processing = false;
         this.selectedFormats = {
-           // code => selected-boolean
-           formats: {},
-           langs: {}
+            // code => selected-boolean
+            formats: {},
+            langs: {}
         };
     }
 
@@ -50,7 +49,7 @@ class HoldContext {
 }
 
 @Component({
-  templateUrl: 'hold.component.html'
+    templateUrl: 'hold.component.html'
 })
 export class HoldComponent implements OnInit {
 
@@ -98,7 +97,7 @@ export class HoldComponent implements OnInit {
     disableOrgs: number[] = [];
 
     @ViewChild('patronSearch', {static: false})
-      patronSearch: PatronSearchDialogComponent;
+        patronSearch: PatronSearchDialogComponent;
 
     @ViewChild('smsCbox', {static: false}) smsCbox: ComboboxComponent;
     @ViewChild('barcodeSelect') private barcodeSelect: BarcodeSelectComponent;
@@ -181,18 +180,18 @@ export class HoldComponent implements OnInit {
         this.resetForm();
 
         this.getRequestorSetsAndPerms()
-        .then(_ => {
+            .then(_ => {
 
-            // Load receipient data if we have any.
-            if (this.staffCat.holdForBarcode) {
-                this.holdFor = 'patron';
-                this.userBarcode = this.staffCat.holdForBarcode;
-            }
+                // Load receipient data if we have any.
+                if (this.staffCat.holdForBarcode) {
+                    this.holdFor = 'patron';
+                    this.userBarcode = this.staffCat.holdForBarcode;
+                }
 
-            if (this.holdFor === 'staff' || this.userBarcode) {
-                this.holdForChanged();
-            }
-        });
+                if (this.holdFor === 'staff' || this.userBarcode) {
+                    this.holdForChanged();
+                }
+            });
 
         setTimeout(() => {
             const node = document.getElementById('patron-barcode');
@@ -205,36 +204,36 @@ export class HoldComponent implements OnInit {
         return this.org.settings(
             ['sms.enable', 'circ.holds.max_duplicate_holds'])
 
-        .then(sets => {
+            .then(sets => {
 
-            this.smsEnabled = sets['sms.enable'];
+                this.smsEnabled = sets['sms.enable'];
 
-            const max = Number(sets['circ.holds.max_duplicate_holds']);
-            if (Number(max) > 0) { this.maxMultiHolds = Number(max); }
+                const max = Number(sets['circ.holds.max_duplicate_holds']);
+                if (Number(max) > 0) { this.maxMultiHolds = Number(max); }
 
-            if (this.smsEnabled) {
+                if (this.smsEnabled) {
 
-                return this.patron.getSmsCarriers().then(carriers => {
-                    carriers.forEach(carrier => {
-                        this.smsCarriers.push({
-                            id: carrier.id(),
-                            label: carrier.name()
+                    return this.patron.getSmsCarriers().then(carriers => {
+                        carriers.forEach(carrier => {
+                            this.smsCarriers.push({
+                                id: carrier.id(),
+                                label: carrier.name()
+                            });
                         });
                     });
-                });
-            }
+                }
 
-        }).then(_ => {
+            }).then(_ => {
 
-            if (this.maxMultiHolds) {
+                if (this.maxMultiHolds) {
 
-                // Multi-copy holds are supported.  Let's see where this
-                // requestor has permission to take advantage of them.
-                return this.perm.hasWorkPermAt(
-                    ['CREATE_DUPLICATE_HOLDS'], true).then(perms =>
-                    this.canPlaceMultiAt = perms['CREATE_DUPLICATE_HOLDS']);
-            }
-        });
+                    // Multi-copy holds are supported.  Let's see where this
+                    // requestor has permission to take advantage of them.
+                    return this.perm.hasWorkPermAt(
+                        ['CREATE_DUPLICATE_HOLDS'], true).then(perms =>
+                        this.canPlaceMultiAt = perms['CREATE_DUPLICATE_HOLDS']);
+                }
+            });
     }
 
     holdCountRange(): number[] {
@@ -246,17 +245,17 @@ export class HoldComponent implements OnInit {
 
         return new Promise(resolve => {
             this.holds.getHoldTargetMeta(this.holdType, this.holdTargets, this.auth.user().ws_ou())
-            .subscribe(
-                meta => {
-                    this.holdContexts.filter(ctx => ctx.holdTarget === meta.target)
-                    .forEach(ctx => {
-                        ctx.holdMeta = meta;
-                        this.mrFiltersToSelectors(ctx);
-                    });
-                },
-                err => {},
-                () => resolve(null)
-            );
+                .subscribe(
+                    meta => {
+                        this.holdContexts.filter(ctx => ctx.holdTarget === meta.target)
+                            .forEach(ctx => {
+                                ctx.holdMeta = meta;
+                                this.mrFiltersToSelectors(ctx);
+                            });
+                    },
+                    (err: unknown) => {},
+                    () => resolve(null)
+                );
         });
     }
 
@@ -367,6 +366,7 @@ export class HoldComponent implements OnInit {
         }
 
         const timeout =
+            // eslint-disable-next-line no-magic-numbers
             (barcode && (barcode as ClipboardEvent).target) ? 0 : 500;
 
         this.userBarcodeTimeout =

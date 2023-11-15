@@ -136,10 +136,10 @@ export class HoldsService {
             target.callNum = meta.volume; // map to client terminology
 
             return this.bib.getBibSummary(target.bibId)
-            .pipe(map(sum => {
-                target.bibSummary = sum;
-                return target;
-            }));
+                .pipe(map(sum => {
+                    target.bibSummary = sum;
+                    return target;
+                }));
         }));
     }
 

@@ -1,3 +1,4 @@
+/* eslint-disable no-case-declarations */
 /**
  * <eg-combobox [allowFreeText]="true" [entries]="comboboxEntryList"/>
  *  <!-- see also <eg-combobox-entry> -->
@@ -35,20 +36,20 @@ export class IdlClassTemplateDirective {
 }
 
 @Component({
-  selector: 'eg-combobox',
-  templateUrl: './combobox.component.html',
-  styles: [`
+    selector: 'eg-combobox',
+    templateUrl: './combobox.component.html',
+    styles: [`
     .icons {margin-left:-18px}
     .material-icons {font-size: 16px;font-weight:bold}
   `],
-  providers: [{
-    provide: NG_VALUE_ACCESSOR,
-    useExisting: forwardRef(() => ComboboxComponent),
-    multi: true
-  }]
+    providers: [{
+        provide: NG_VALUE_ACCESSOR,
+        useExisting: forwardRef(() => ComboboxComponent),
+        multi: true
+    }]
 })
 export class ComboboxComponent
-    implements ControlValueAccessor, OnInit, AfterViewInit, OnChanges {
+implements ControlValueAccessor, OnInit, AfterViewInit, OnChanges {
 
     static domIdAuto = 0;
 
@@ -144,15 +145,15 @@ export class ComboboxComponent
             this.startId = id;
             if (this.idlClass) {
                 this.pcrud.retrieve(this.idlClass, id)
-                .subscribe(rec => {
-                    this.entrylist = [{
-                        id: id,
-                        label: this.getFmRecordLabel(rec),
-                        fm: rec,
-                        disabled : this.disableEntries.includes(id)
-                    }];
-                    this.selected = this.entrylist.filter(e => e.id === id)[0];
-                });
+                    .subscribe(rec => {
+                        this.entrylist = [{
+                            id: id,
+                            label: this.getFmRecordLabel(rec),
+                            fm: rec,
+                            disabled : this.disableEntries.includes(id)
+                        }];
+                        this.selected = this.entrylist.filter(e => e.id === id)[0];
+                    });
             }
         }
     }
@@ -242,14 +243,11 @@ export class ComboboxComponent
             switch (this.idlClass) {
                 case 'acmc':
                     return fm.course_number() + ': ' + fm.name();
-                    break;
                 case 'acqf':
                     return fm.code() + ' (' + fm.year() + ')' +
                            ' (' + this.getOrgShortname(fm.org()) + ')';
-                    break;
                 case 'acpl':
                     return fm.name() + ' (' + this.getOrgShortname(fm.owning_lib()) + ')';
-                    break;
                 default:
                     const field = this.idlField;
                     if (this.idlIncludeLibraryInLabel) {
@@ -538,7 +536,7 @@ export class ComboboxComponent
         return new Observable(observer => {
             this.asyncDataSource(searchTerm).subscribe(
                 (entry: ComboboxEntry) => this.addAsyncEntry(entry),
-                err => {},
+                (err: unknown) => {},
                 ()  => {
                     observer.next(term);
                     observer.complete();
@@ -561,6 +559,7 @@ export class ComboboxComponent
 
     filter = (text$: Observable<string>): Observable<ComboboxEntry[]> => {
         return text$.pipe(
+            // eslint-disable-next-line no-magic-numbers
             debounceTime(200),
             distinctUntilChanged(),
 
@@ -603,7 +602,7 @@ export class ComboboxComponent
                 });
             })
         );
-    }
+    };
 
     writeValue(value: ComboboxEntry) {
         if (value !== undefined && value !== null) {

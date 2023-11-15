@@ -8,9 +8,9 @@ import {Pager} from '@eg/share/util/pager';
 
 
 @Component({
-  selector: 'eg-catalog-record-pagination',
-  templateUrl: 'pagination.component.html',
-  styleUrls: ['pagination.component.css'] 
+    selector: 'eg-catalog-record-pagination',
+    templateUrl: 'pagination.component.html',
+    styleUrls: ['pagination.component.css']
 })
 export class RecordPaginationComponent implements OnInit {
 
@@ -56,22 +56,22 @@ export class RecordPaginationComponent implements OnInit {
 
     firstRecord(): void {
         this.findRecordAtIndex(0)
-        .then(id => this.routeToRecord(id));
+            .then(id => this.routeToRecord(id));
     }
 
     lastRecord(): void {
         this.findRecordAtIndex(this.searchContext.result.count - 1)
-        .then(id => this.routeToRecord(id));
+            .then(id => this.routeToRecord(id));
     }
 
     nextRecord(): void {
         this.findRecordAtIndex(this.index + 1)
-        .then(id => this.routeToRecord(id));
+            .then(id => this.routeToRecord(id));
     }
 
     prevRecord(): void {
         this.findRecordAtIndex(this.index - 1)
-        .then(id => this.routeToRecord(id));
+            .then(id => this.routeToRecord(id));
     }
 
     // Returns the offset of the record within the search results as a whole.
@@ -151,10 +151,10 @@ export class RecordPaginationComponent implements OnInit {
         ctx.getHighlightsFor = this.id;
 
         return this.cat.search(ctx)
-        .then(_ => {
-            ctx.pager = origPager;
-            ctx.getHighlightsFor = null;
-        });
+            .then(_ => {
+                ctx.pager = origPager;
+                ctx.getHighlightsFor = null;
+            });
     }
 
     returnToSearch(): void {

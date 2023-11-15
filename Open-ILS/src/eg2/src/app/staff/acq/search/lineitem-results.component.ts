@@ -1,8 +1,8 @@
+/* eslint-disable rxjs/no-nested-subscribe */
 import {Component, OnInit, Input, ViewChild} from '@angular/core';
-import {Observable, from, of} from 'rxjs';
-import {map, concatMap} from 'rxjs/operators';
-import {Router, ActivatedRoute, ParamMap} from '@angular/router';
-import {Pager} from '@eg/share/util/pager';
+import {from, of} from 'rxjs';
+import {concatMap} from 'rxjs/operators';
+import {Router, ActivatedRoute} from '@angular/router';
 import {IdlObject} from '@eg/core/idl.service';
 import {NetService} from '@eg/core/net.service';
 import {AuthService} from '@eg/core/auth.service';
@@ -24,8 +24,8 @@ import {LinkInvoiceDialogComponent} from '../lineitem/link-invoice-dialog.compon
 import {LineitemAlertDialogComponent} from '../lineitem/lineitem-alert-dialog.component';
 
 @Component({
-  selector: 'eg-lineitem-results',
-  templateUrl: 'lineitem-results.component.html'
+    selector: 'eg-lineitem-results',
+    templateUrl: 'lineitem-results.component.html'
 })
 export class LineitemResultsComponent implements OnInit {
 
@@ -127,7 +127,7 @@ export class LineitemResultsComponent implements OnInit {
             ).toPromise().then(resp => {
                 window.open('/eg2/staff/acq/po/' + poId, '_blank');
                 this.lineItemsAddedToPoString.current()
-                .then(str => this.toast.success(str));
+                    .then(str => this.toast.success(str));
                 this.lineitemResultsGrid.reload();
             });
         });
@@ -155,7 +155,7 @@ export class LineitemResultsComponent implements OnInit {
                     liStruct.lineitem.claim_policy(claimPolicy);
                     lisToUpdate.push(liStruct.lineitem);
                 },
-                err => { },
+                (err: unknown) => { },
                 () => {
                     this.net.request(
                         'open-ils.acq',
@@ -163,7 +163,7 @@ export class LineitemResultsComponent implements OnInit {
                         this.auth.token(), lisToUpdate
                     ).toPromise().then(resp => {
                         this.claimPolicyAppliedString.current()
-                        .then(str => this.toast.success(str));
+                            .then(str => this.toast.success(str));
                     });
                 }
             );
@@ -189,7 +189,7 @@ export class LineitemResultsComponent implements OnInit {
                 this.auth.token(), ids, reason
             ).toPromise().then(resp => {
                 this.lineItemsCancelledString.current()
-                .then(str => this.toast.success(str));
+                    .then(str => this.toast.success(str));
                 this.lineitemResultsGrid.reload();
             });
         });
@@ -239,20 +239,20 @@ export class LineitemResultsComponent implements OnInit {
             if (!doIt) { return; }
 
             from(lis)
-            .pipe(concatMap(li => {
-                const method = li.purchase_order() ?
-                    'open-ils.acq.purchase_order.lineitem.delete' :
-                    'open-ils.acq.picklist.lineitem.delete';
+                .pipe(concatMap(li => {
+                    const method = li.purchase_order() ?
+                        'open-ils.acq.purchase_order.lineitem.delete' :
+                        'open-ils.acq.picklist.lineitem.delete';
 
-                return this.net.request('open-ils.acq', method, this.auth.token(), li.id());
+                    return this.net.request('open-ils.acq', method, this.auth.token(), li.id());
                 // TODO: cap parallelism
-            }))
-            .pipe(concatMap(_ => of(true) ))
-            .subscribe(r => {}, err => {}, () => {
-                this.lineItemsDeletedString.current()
-                .then(str => this.toast.success(str));
-                this.lineitemResultsGrid.reload();
-            });
+                }))
+                .pipe(concatMap(_ => of(true) ))
+                .subscribe(r => {}, (err: unknown) => {}, () => {
+                    this.lineItemsDeletedString.current()
+                        .then(str => this.toast.success(str));
+                    this.lineitemResultsGrid.reload();
+                });
         });
     }
 
@@ -300,7 +300,7 @@ export class LineitemResultsComponent implements OnInit {
                     liStruct.lineitem.state('order-ready');
                     lisToUpdate.push(liStruct.lineitem);
                 },
-                err => { },
+                (err: unknown) => { },
                 () => {
                     this.net.request(
                         'open-ils.acq',
@@ -308,7 +308,7 @@ export class LineitemResultsComponent implements OnInit {
                         this.auth.token(), lisToUpdate
                     ).toPromise().then(resp => {
                         this.lineItemsUpdatedString.current()
-                        .then(str => this.toast.success(str));
+                            .then(str => this.toast.success(str));
                         this.lineitemResultsGrid.reload();
                     });
                 }
@@ -332,7 +332,7 @@ export class LineitemResultsComponent implements OnInit {
                     liStruct.lineitem.state('selector-ready');
                     lisToUpdate.push(liStruct.lineitem);
                 },
-                err => { },
+                (err: unknown) => { },
                 () => {
                     this.net.request(
                         'open-ils.acq',
@@ -340,7 +340,7 @@ export class LineitemResultsComponent implements OnInit {
                         this.auth.token(), lisToUpdate
                     ).toPromise().then(resp => {
                         this.lineItemsUpdatedString.current()
-                        .then(str => this.toast.success(str));
+                            .then(str => this.toast.success(str));
                         this.lineitemResultsGrid.reload();
                     });
                 }
@@ -365,7 +365,7 @@ export class LineitemResultsComponent implements OnInit {
                 this.auth.token(), ids
             ).toPromise().then(resp => {
                 this.lineItemsReceivedString.current()
-                .then(str => this.toast.success(str));
+                    .then(str => this.toast.success(str));
                 this.lineitemResultsGrid.reload();
             });
         }, err => {}); // avoid console errors
@@ -386,7 +386,7 @@ export class LineitemResultsComponent implements OnInit {
             this.auth.token(), ids
         ).toPromise().then(resp => {
             this.lineItemsUnReceivedString.current()
-            .then(str => this.toast.success(str));
+                .then(str => this.toast.success(str));
             this.lineitemResultsGrid.reload();
         });
     }

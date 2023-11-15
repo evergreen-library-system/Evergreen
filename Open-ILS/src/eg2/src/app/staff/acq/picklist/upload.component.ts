@@ -12,9 +12,9 @@ import {ToastService} from '@eg/share/toast/toast.service';
 import {ComboboxComponent,
     ComboboxEntry} from '@eg/share/combobox/combobox.component';
 import {VandelayImportSelection,
-  VANDELAY_UPLOAD_PATH} from '@eg/staff/cat/vandelay/vandelay.service';
-import {HttpClient, HttpRequest, HttpEventType} from '@angular/common/http';
-import {HttpResponse, HttpErrorResponse} from '@angular/common/http';
+    VANDELAY_UPLOAD_PATH} from '@eg/staff/cat/vandelay/vandelay.service';
+import {HttpClient, HttpRequest, HttpEventType,
+    HttpResponse, HttpErrorResponse} from '@angular/common/http';
 import {ProgressInlineComponent} from '@eg/share/dialog/progress-inline.component';
 import {AlertDialogComponent} from '@eg/share/dialog/alert.component';
 import {ServerStoreService} from '@eg/core/server-store.service';
@@ -58,8 +58,8 @@ const ORG_SETTINGS = [
 
 
 @Component({
-  selector: 'eg-acq-upload',
-  templateUrl: './upload.component.html'
+    selector: 'eg-acq-upload',
+    templateUrl: './upload.component.html'
 })
 export class UploadComponent implements AfterViewInit, OnDestroy {
 
@@ -120,32 +120,32 @@ export class UploadComponent implements AfterViewInit, OnDestroy {
 
     @ViewChild('fileSelector', { static: false }) private fileSelector;
     @ViewChild('uploadProgress', { static: true })
-        private uploadProgress: ProgressInlineComponent;
+    private uploadProgress: ProgressInlineComponent;
 
     @ViewChild('formTemplateSelector', { static: true })
-        private formTemplateSelector: ComboboxComponent;
+    private formTemplateSelector: ComboboxComponent;
     @ViewChild('bibSourceSelector', { static: true })
-        private bibSourceSelector: ComboboxComponent;
+    private bibSourceSelector: ComboboxComponent;
     @ViewChild('providerSelector', {static: false})
-        private providerSelector: ComboboxComponent;
+    private providerSelector: ComboboxComponent;
     @ViewChild('fiscalYearSelector', { static: false })
-        private fiscalYearSelector: ComboboxComponent;
+    private fiscalYearSelector: ComboboxComponent;
     @ViewChild('selectionListSelector', { static: true })
-        private selectionListSelector: ComboboxComponent;
+    private selectionListSelector: ComboboxComponent;
     @ViewChild('matchSetSelector', { static: true })
-        private matchSetSelector: ComboboxComponent;
+    private matchSetSelector: ComboboxComponent;
     @ViewChild('mergeProfileSelector', { static: true })
-        private mergeProfileSelector: ComboboxComponent;
+    private mergeProfileSelector: ComboboxComponent;
     @ViewChild('fallThruMergeProfileSelector', { static: true })
-        private fallThruMergeProfileSelector: ComboboxComponent;
+    private fallThruMergeProfileSelector: ComboboxComponent;
     @ViewChild('dupeQueueAlert', { static: true })
-        private dupeQueueAlert: AlertDialogComponent;
+    private dupeQueueAlert: AlertDialogComponent;
     @ViewChild('loadMarcOrderTemplateSavedString', { static: false })
-        private loadMarcOrderTemplateSavedString: StringComponent;
+    private loadMarcOrderTemplateSavedString: StringComponent;
     @ViewChild('loadMarcOrderTemplateDeletedString', { static: false })
-        private loadMarcOrderTemplateDeletedString: StringComponent;
+    private loadMarcOrderTemplateDeletedString: StringComponent;
     @ViewChild('loadMarcOrderTemplateSetAsDefaultString', { static: false })
-        private loadMarcOrderTemplateSetAsDefaultString: StringComponent;
+    private loadMarcOrderTemplateSetAsDefaultString: StringComponent;
 
 
     constructor(
@@ -165,20 +165,20 @@ export class UploadComponent implements AfterViewInit, OnDestroy {
 
     applySettings(): Promise<any> {
         return this.store.getItemBatch(ORG_SETTINGS)
-        .then(settings => {
-            this.createPurchaseOrder = settings['acq.upload.default.create_po'];
-            this.activatePurchaseOrder = settings['acq.upload.default.activate_po'];
-            this.selectedProvider = Number(settings['acq.upload.default.provider']);
-            this.importNonMatching = settings['acq.upload.default.vandelay.import_non_matching'];
-            this.loadItems = settings['acq.upload.default.vandelay.load_item_for_imported'];
-            this.selectedFallThruMergeProfile = Number(settings['acq.upload.default.vandelay.low_quality_fall_thru_profile']);
-            this.selectedMatchSet = Number(settings['acq.upload.default.vandelay.match_set']);
-            this.mergeOnBestMatch = settings['acq.upload.default.vandelay.merge_on_best'];
-            this.mergeOnExact = settings['acq.upload.default.vandelay.merge_on_exact'];
-            this.mergeOnSingleMatch = settings['acq.upload.default.vandelay.merge_on_single'];
-            this.selectedMergeProfile = Number(settings['acq.upload.default.vandelay.merge_profile']);
-            this.minQualityRatio = Number(settings['acq.upload.default.vandelay.quality_ratio']);
-        });
+            .then(settings => {
+                this.createPurchaseOrder = settings['acq.upload.default.create_po'];
+                this.activatePurchaseOrder = settings['acq.upload.default.activate_po'];
+                this.selectedProvider = Number(settings['acq.upload.default.provider']);
+                this.importNonMatching = settings['acq.upload.default.vandelay.import_non_matching'];
+                this.loadItems = settings['acq.upload.default.vandelay.load_item_for_imported'];
+                this.selectedFallThruMergeProfile = Number(settings['acq.upload.default.vandelay.low_quality_fall_thru_profile']);
+                this.selectedMatchSet = Number(settings['acq.upload.default.vandelay.match_set']);
+                this.mergeOnBestMatch = settings['acq.upload.default.vandelay.merge_on_best'];
+                this.mergeOnExact = settings['acq.upload.default.vandelay.merge_on_exact'];
+                this.mergeOnSingleMatch = settings['acq.upload.default.vandelay.merge_on_single'];
+                this.selectedMergeProfile = Number(settings['acq.upload.default.vandelay.merge_profile']);
+                this.minQualityRatio = Number(settings['acq.upload.default.vandelay.quality_ratio']);
+            });
     }
     applyDefaults() {
         this.minQualityRatio = 0;
@@ -284,12 +284,11 @@ export class UploadComponent implements AfterViewInit, OnDestroy {
                 return (this.vlagent.fiscalYears || []).map(
                     fy => {
                         return {id: fy.id(), label: fy.year()};
-                       });
-                break;
+                    });
 
             case 'selectionLists':
-                 list = this.vlagent.selectionLists;
-                 break;
+                list = this.vlagent.selectionLists;
+                break;
 
             case 'activeQueues':
                 list = (this.vlagent.allQueues[rtype] || []);
@@ -350,7 +349,7 @@ export class UploadComponent implements AfterViewInit, OnDestroy {
     }
 
     fileSelected($event) {
-       this.selectedFile = $event.target.files[0];
+        this.selectedFile = $event.target.files[0];
     }
 
     hasNeededData(): boolean {
@@ -370,29 +369,30 @@ export class UploadComponent implements AfterViewInit, OnDestroy {
         this.uploadComplete = false;
         this.resetProgressBars();
 
+        // eslint-disable-next-line no-unused-expressions
         this.resolveSelectionList(),
         this.resolveQueue()
-        .then(
-            queueId => {
-                this.activeQueueId = queueId;
-                return this.uploadFile();
-            },
-            err => Promise.reject('queue create failed')
-        ).then(
-            ok => this.processUpload(),
-            err => Promise.reject('process spool failed')
-        ).then(
-            ok => {
-                this.isUploading = false;
-                this.uploadComplete = true;
-            },
-            err => {
-                console.log('file upload failed: ', err);
-                this.isUploading = false;
-                this.resetProgressBars();
+            .then(
+                queueId => {
+                    this.activeQueueId = queueId;
+                    return this.uploadFile();
+                },
+                err => Promise.reject('queue create failed')
+            ).then(
+                ok => this.processUpload(),
+                err => Promise.reject('process spool failed')
+            ).then(
+                ok => {
+                    this.isUploading = false;
+                    this.uploadComplete = true;
+                },
+                err => {
+                    console.log('file upload failed: ', err);
+                    this.isUploading = false;
+                    this.resetProgressBars();
 
-            }
-        );
+                }
+            );
     }
 
     // helper method to return the year string rather than the FY ID
@@ -519,6 +519,7 @@ export class UploadComponent implements AfterViewInit, OnDestroy {
                 }
             },
 
+            // eslint-disable-next-line rxjs/no-implicit-any-catch
             (err: HttpErrorResponse) => {
                 console.error(err);
                 this.toast.danger(err.error);
@@ -561,7 +562,7 @@ export class UploadComponent implements AfterViewInit, OnDestroy {
             vandelay: vandelayOptions
         };
 
-        const method = `open-ils.acq.process_upload_records`;
+        const method = 'open-ils.acq.process_upload_records';
 
         return new Promise((resolve, reject) => {
             this.net.request(
@@ -644,7 +645,7 @@ export class UploadComponent implements AfterViewInit, OnDestroy {
             this.providerSelector.selectedId = this.selectedProvider;
         }
         if (this.fiscalYearSelector) {
-           this.fiscalYearSelector.applyEntryId(this.selectedFiscalYear);
+            this.fiscalYearSelector.applyEntryId(this.selectedFiscalYear);
         }
         this.mergeProfileSelector.applyEntryId(this.selectedMergeProfile);
         this.fallThruMergeProfileSelector.applyEntryId(this.selectedFallThruMergeProfile);

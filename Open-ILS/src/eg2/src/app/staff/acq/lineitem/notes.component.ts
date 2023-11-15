@@ -7,8 +7,8 @@ import {AuthService} from '@eg/core/auth.service';
 import {ComboboxEntry} from '@eg/share/combobox/combobox.component';
 
 @Component({
-  templateUrl: 'notes.component.html',
-  selector: 'eg-lineitem-notes'
+    templateUrl: 'notes.component.html',
+    selector: 'eg-lineitem-notes'
 })
 export class LineitemNotesComponent implements OnInit, AfterViewInit {
 

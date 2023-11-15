@@ -1,5 +1,4 @@
-import {Injectable, EventEmitter} from '@angular/core';
-import {Observable} from 'rxjs';
+import {Injectable} from '@angular/core';
 import {map, tap, distinct} from 'rxjs/operators';
 import {StoreService} from '@eg/core/store.service';
 import {IdlObject} from '@eg/core/idl.service';
@@ -184,7 +183,7 @@ export class TagTable {
             value: sf.code,
             label: `${sf.code}: ${sf.description}`
         }))
-        .sort((a, b) => a.label < b.label ? -1 : 1);
+            .sort((a, b) => a.label < b.label ? -1 : 1);
 
         return this.toCache('sfcodes', tag, null, list);
     }
@@ -200,12 +199,12 @@ export class TagTable {
 
         if (!this.fieldTags) {
             this.fieldTags = Object.keys(this.tagMap)
-            .filter(tag => Boolean(this.tagMap[tag]))
-            .map(tag => ({
-                value: tag,
-                label: `${tag}: ${this.tagMap[tag].name}`
-            }))
-            .sort((a, b) => a.label < b.label ? -1 : 1);
+                .filter(tag => Boolean(this.tagMap[tag]))
+                .map(tag => ({
+                    value: tag,
+                    label: `${tag}: ${this.tagMap[tag].name}`
+                }))
+                .sort((a, b) => a.label < b.label ? -1 : 1);
         }
 
         return this.fieldTags;
@@ -220,18 +219,19 @@ export class TagTable {
         const list: ContextMenuEntry[] = [];
 
         this.tagMap[tag].subfields
-        .filter(sf =>
-            sf.code === sfCode && sf.hasOwnProperty('value_list'))
-        .forEach(sf => {
-            sf.value_list.forEach(value => {
+            .filter(sf =>
+                // eslint-disable-next-line no-prototype-builtins
+                sf.code === sfCode && sf.hasOwnProperty('value_list'))
+            .forEach(sf => {
+                sf.value_list.forEach(value => {
 
-                let label = value.description || value.code;
-                const code = value.code || label;
-                if (code !== label) { label = `${code}: ${label}`; }
+                    let label = value.description || value.code;
+                    const code = value.code || label;
+                    if (code !== label) { label = `${code}: ${label}`; }
 
-                list.push({value: code, label: label});
+                    list.push({value: code, label: label});
+                });
             });
-        });
 
         return this.toCache('sfvalues', tag, sfCode, list);
     }
@@ -249,7 +249,7 @@ export class TagTable {
             value: value.code,
             label: `${value.code}: ${value.description}`
         }))
-        .sort((a, b) => a.label < b.label ? -1 : 1);
+            .sort((a, b) => a.label < b.label ? -1 : 1);
 
         return this.toCache('indicators', tag, which, values);
     }
@@ -327,11 +327,11 @@ export class TagTableService {
 
         this.controlledBibTags = [];
         return this.pcrud.retrieveAll('acsbf', {select: ['tag']})
-        .pipe(
-            map(field => field.tag()),
-            distinct(),
-            map(tag => this.controlledBibTags.push(tag))
-        ).toPromise().then(_ => this.controlledBibTags);
+            .pipe(
+                map(field => field.tag()),
+                distinct(),
+                map(tag => this.controlledBibTags.push(tag))
+            ).toPromise().then(_ => this.controlledBibTags);
     }
 }
 

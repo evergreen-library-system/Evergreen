@@ -1,12 +1,11 @@
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { BoolDisplayComponent } from './bool.component';
-import { Component } from '@angular/core';
-import { ViewChild } from '@angular/core';
+import { Component, ViewChild } from '@angular/core';
 
 describe('BoolDisplayComponent', () => {
     @Component({
-        selector: `eg-host-component`,
-        template: `<eg-bool></eg-bool>`
+        selector: 'eg-host-component',
+        template: '<eg-bool></eg-bool>'
     })
     class TestHostComponent {
         @ViewChild(BoolDisplayComponent, {static: false})
@@ -18,9 +17,9 @@ describe('BoolDisplayComponent', () => {
 
     beforeEach(waitForAsync(() => {
         TestBed.configureTestingModule({
-        declarations: [ BoolDisplayComponent, TestHostComponent ],
+            declarations: [ BoolDisplayComponent, TestHostComponent ],
         })
-        .compileComponents();
+            .compileComponents();
     }));
 
     beforeEach(() => {

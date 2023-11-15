@@ -15,8 +15,8 @@ import {ComboboxComponent, ComboboxEntry} from '@eg/share/combobox/combobox.comp
  */
 
 @Component({
-  selector: 'eg-phys-char-dialog',
-  templateUrl: './phys-char-dialog.component.html'
+    selector: 'eg-phys-char-dialog',
+    templateUrl: './phys-char-dialog.component.html'
 })
 
 export class PhysCharDialogComponent
@@ -162,7 +162,7 @@ export class PhysCharDialogComponent
 
     currentSubfield(): Promise<any> {
         return this.getPhysCharSubfieldMap(this.currentPtype)
-        .then(sfList => sfList[this.step - 1]);
+            .then(sfList => sfList[this.step - 1]);
     }
 
     reset(clear?: boolean) {
@@ -181,10 +181,10 @@ export class PhysCharDialogComponent
 
         return this.pcrud.retrieveAll(
             'cmpctm', {order_by: {cmpctm: 'label'}}, {atomic: true})
-        .toPromise().then(maps => {
-            return this.typeMap = maps.map(
-                map => ({id: map.ptype_key(), label: map.label()}));
-        });
+            .toPromise().then(maps => {
+                return this.typeMap = maps.map(
+                    map => ({id: map.ptype_key(), label: map.label()}));
+            });
     }
 
     getPhysCharSubfieldMap(ptypeKey: string): Promise<IdlObject[]> {
@@ -198,7 +198,7 @@ export class PhysCharDialogComponent
             {order_by : {cmpcsm : ['start_pos']}},
             {atomic : true}
         ).toPromise().then(maps => this.sfMap[ptypeKey] = maps);
-   }
+    }
 
     getPhysCharValueMap(ptypeSubfield: string): Promise<ComboboxEntry[]> {
 
@@ -214,7 +214,7 @@ export class PhysCharDialogComponent
             this.valueMap[ptypeSubfield] = maps.map(
                 map => ({id: map.value(), label: map.label()}))
         );
-   }
+    }
 }
 
 

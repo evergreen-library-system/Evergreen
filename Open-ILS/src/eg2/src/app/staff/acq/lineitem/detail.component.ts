@@ -9,7 +9,7 @@ import {LineitemService, BatchLineitemStruct} from './lineitem.service';
 import {ComboboxEntry} from '@eg/share/combobox/combobox.component';
 
 @Component({
-  templateUrl: 'detail.component.html'
+    templateUrl: 'detail.component.html'
 })
 export class LineitemDetailComponent implements OnInit {
 
@@ -60,7 +60,7 @@ export class LineitemDetailComponent implements OnInit {
         const xml = changes.marcXml;
         this.lineitem.marc(xml);
         this.liService.updateLineitems([this.lineitem]).toPromise()
-        .then(_ => this.load());
+            .then(_ => this.load());
     }
 }
 

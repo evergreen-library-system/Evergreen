@@ -14,36 +14,36 @@ import {Subject, Subscription, Observable} from 'rxjs';
 import {debounceTime, distinctUntilChanged} from 'rxjs/operators';
 
 @Component({
-  selector: 'eg-new-session-dialog',
-  templateUrl: './new-session-dialog.component.html'
+    selector: 'eg-new-session-dialog',
+    templateUrl: './new-session-dialog.component.html'
 })
 
 export class NewSessionDialogComponent extends DialogComponent implements OnInit, OnDestroy {
 
     @Input() sessionToClone: any; // not really a "session", but a combined session/batch view
 
-    progressText: string = '';
+    progressText = '';
 
     savedSearchIdlClass = 'asq';
 
-    encounteredError: boolean = false;
-    nameCollision: boolean = false;
+    encounteredError = false;
+    nameCollision = false;
 
     subscriptions: Subscription[] = [];
 
     sessionId: number;
-    sessionName: string = '';
+    sessionName = '';
     sessionNameModelChanged: Subject<string> = new Subject<string>();
 
     sessionOwningLibrary: IdlObject;
     sessionSearchScope: IdlObject;
-    sessionSearch: string = '';
+    sessionSearch = '';
     sessionSavedSearch: number = null;
 
     selectorModels: any = {
         'tag' : [],
         'subfields' : []
-    }
+    };
     savedSearchEntries: ComboboxEntry[] = [];
     savedSearchObjectCache: any = {};
 
@@ -62,7 +62,7 @@ export class NewSessionDialogComponent extends DialogComponent implements OnInit
         private renderer: Renderer2,
     ) {
         super(modal);
-        if (this.modal) {} // noop for linting
+        if (this.modal) { /* empty */ } // noop for linting
     }
 
     ngOnInit() {
@@ -75,14 +75,15 @@ export class NewSessionDialogComponent extends DialogComponent implements OnInit
                     this.sessionName = 'Copy of ' + this.sessionToClone.name;
                     this.sessionOwningLibrary = this.sessionToClone.owning_lib;
                     this.sessionSearch = this.sessionToClone.search;
+                    // eslint-disable-next-line rxjs/no-nested-subscribe
                     this.pcrud.search('uvus', {'session':this.sessionToClone.session_id},{},{'atomic':true}).subscribe(
                         (list) => {
                             console.log('list',list);
                             list.forEach( (s: any,idx: number) => {
-                                let xpath = s.xpath();
+                                const xpath = s.xpath();
                                 this.selectorModels.tag[idx] = xpath.match(/tag='(\d+)'/)[1];
                                 this.selectorModels.subfields[idx] = '';
-                                let matches = xpath.matchAll(/code='(.)'/g);
+                                const matches = xpath.matchAll(/code='(.)'/g);
                                 for (const match of matches) {
                                     this.selectorModels.subfields[idx] += match[1];
                                 }
@@ -108,24 +109,26 @@ export class NewSessionDialogComponent extends DialogComponent implements OnInit
                 this.savedSearchEntries.push({id: search.id(), label: search.label()});
                 this.savedSearchObjectCache[ search.id() ] = search;
             }
-        ));
+            ));
 
         this.subscriptions.push(
             this.sessionNameModelChanged
-            .pipe(
-                debounceTime(300),
-                distinctUntilChanged()
-            )
-            .subscribe( newText => {
-                this.sessionName = newText;
-                this.nameCollision = false;
-                this.subscriptions.push(
-                    this.pcrud.search('uvs',{
-                        owning_lib: this.sessionOwningLibrary,
-                        name: this.sessionName},{})
-                    .subscribe( () => { this.nameCollision = true; })
-                );
-            })
+                .pipe(
+                    // eslint-disable-next-line no-magic-numbers
+                    debounceTime(300),
+                    distinctUntilChanged()
+                )
+                .subscribe( newText => {
+                    this.sessionName = newText;
+                    this.nameCollision = false;
+                    this.subscriptions.push(
+                        this.pcrud.search('uvs',{
+                            owning_lib: this.sessionOwningLibrary,
+                            name: this.sessionName},{})
+                            // eslint-disable-next-line rxjs/no-nested-subscribe
+                            .subscribe( () => { this.nameCollision = true; })
+                    );
+                })
         );
         console.log('new-session-dialog this', this);
     }
@@ -138,11 +141,11 @@ export class NewSessionDialogComponent extends DialogComponent implements OnInit
 
     applyOwningLibrary(p: any) {
         // [applyOrgId]="sessionOwningLibrary" is working fine
-        if (p) {} // noop for linting
+        if (p) { /* empty */ } // noop for linting
     }
 
     applySessionSearch(p: any) {
-        if (p) {} // noop for linting
+        if (p) { /* empty */ } // noop for linting
     }
 
     applySearchScope(p: any) {
@@ -154,16 +157,16 @@ export class NewSessionDialogComponent extends DialogComponent implements OnInit
         if (p) {
             this.sessionSearch = this.sessionSearch.replace(
                 /^(.*)(site\(.+?\))(.*)$/,
-                "$1site(" + p.shortname() + ")$3"
+                '$1site(' + p.shortname() + ')$3'
             );
             if (! this.sessionSearch.match(/site\(.+?\)/)) {
-                this.sessionSearch += ' site(' + p.shortname() + ')'
+                this.sessionSearch += ' site(' + p.shortname() + ')';
             }
         }
     }
 
     applySavedSearch(p: any) {
-        var obj = this.savedSearchObjectCache[p.id];
+        const obj = this.savedSearchObjectCache[p.id];
         if (obj) {
             this.sessionSearch = obj.query_text();
             this.applySearchScope( this.sessionSearchScope );
@@ -172,7 +175,7 @@ export class NewSessionDialogComponent extends DialogComponent implements OnInit
 
     // https://stackoverflow.com/questions/42322968/angular2-dynamic-input-field-lose-focus-when-input-changes
     trackByIdx(index: any, item: any) {
-        if (item) {} // noop for linting
+        if (item) { /* empty */ } // noop for linting
         return index;
     }
 
@@ -203,7 +206,7 @@ export class NewSessionDialogComponent extends DialogComponent implements OnInit
     }
 
     createNewSession(options: any) {
-        ///////////////////////////////////////////////
+        // /////////////////////////////////////////////
         options['verified_total_processed'] = 0;
         options['url_selectors_created'] = 0;
         options['urls_extracted'] = 0;
@@ -225,9 +228,10 @@ export class NewSessionDialogComponent extends DialogComponent implements OnInit
                 } else {
                     this.sessionId = res;
                     options['sessionId'] = res;
-                    /////////////////////////////////////////////////////
+                    // ///////////////////////////////////////////////////
                     this.resetProgressMeter($localize`Creating URL selectors...`);
                     this.subscriptions.push(
+                        // eslint-disable-next-line rxjs/no-nested-subscribe
                         this.createUrlSelectors().subscribe({
                             next: (res2) => {
                                 if (this.evt.parse(res2)) {
@@ -236,24 +240,25 @@ export class NewSessionDialogComponent extends DialogComponent implements OnInit
                                     this.stopProgressMeter();
                                     this.close(false);
                                 } else {
-                                    //console.log('url_selector',res2);
+                                    // console.log('url_selector',res2);
                                     options['url_selectors_created'] += 1;
                                 }
                             },
-                            error: (err2) => {
+                            error: (err2: unknown) => {
                                 console.error('url_selector.create error',err2);
                                 this.fail.open();
                                 this.stopProgressMeter();
                                 this.close(false);
                             },
                             complete: () => {
-                                ////////////////////////////////////////////////////////////
+                                // //////////////////////////////////////////////////////////
                                 this.resetProgressMeter($localize`Searching and extracting URLs...`);
                                 this.subscriptions.push(this.net.request(
                                     'open-ils.url_verify',
                                     'open-ils.url_verify.session.search_and_extract',
                                     this.auth.token(),
                                     this.sessionId
+                                // eslint-disable-next-line rxjs/no-nested-subscribe
                                 ).subscribe({
                                     next: (res3) => {
                                         console.log('res3',res3);
@@ -272,7 +277,7 @@ export class NewSessionDialogComponent extends DialogComponent implements OnInit
                                             }
                                         }
                                     },
-                                    error: (err3) => {
+                                    error: (err3: unknown) => {
                                         console.log('err3',err3);
                                         this.stopProgressMeter();
                                         this.close(false);
@@ -281,20 +286,21 @@ export class NewSessionDialogComponent extends DialogComponent implements OnInit
                                         if (options['fullAuto']) {
                                             options['viewURLs'] = false;
                                             options['viewAttempts'] = true;
-                                            /////////////////////////////////////////////
+                                            // ///////////////////////////////////////////
                                             this.resetProgressMeter($localize`Verifying URLs...`);
                                             this.subscriptions.push(this.net.request(
                                                 'open-ils.url_verify',
                                                 'open-ils.url_verify.session.verify',
                                                 this.auth.token(),
                                                 this.sessionId
+                                            // eslint-disable-next-line rxjs/no-nested-subscribe
                                             ).subscribe({
                                                 next: (res4) => {
                                                     console.log('res4',res4);
                                                     this.progress.update({max: res4['url_count'], value: res4['total_processed']});
                                                     options['verified_total_processed'] = Number(res4['total_processed']);
                                                 },
-                                                error: (err4) => {
+                                                error: (err4: unknown) => {
                                                     this.stopProgressMeter();
                                                     console.log('err4',err4);
                                                     this.close(false);
@@ -317,7 +323,7 @@ export class NewSessionDialogComponent extends DialogComponent implements OnInit
                     );
                 }
             },
-            error: (err) => {
+            error: (err: unknown) => {
                 console.error('session.create error',err);
                 this.fail.open();
                 this.stopProgressMeter();
@@ -329,20 +335,21 @@ export class NewSessionDialogComponent extends DialogComponent implements OnInit
 
     createUrlSelectors(): Observable<any> {
         // Examples:
-        //*[@tag='856']/*[@code='u']
-        //*[@tag='956']/*[@code='a' or @code='b' or @code='c']
+        //* [@tag='856']/*[@code='u']
+        //* [@tag='956']/*[@code='a' or @code='b' or @code='c']
         console.log('createUrlSelectors');
-        var xpaths: string[] = [];
-        var selectors: IdlObject[] = [];
-        for (var i = 0; i < this.selectorModels['tag'].length; i++) {
-            let tag = this.selectorModels['tag'][i];
-            let subfields = this.selectorModels['subfields'][i];
-            let xpath = "//*[@tag='" + tag + "']/*[" + subfields.split('').map( (e: string) => "@code='" + e + "'" ).join(' or ') + ']';
+        let xpaths: string[] = [];
+        let selectors: IdlObject[] = [];
+        for (let i = 0; i < this.selectorModels['tag'].length; i++) {
+            const tag = this.selectorModels['tag'][i];
+            const subfields = this.selectorModels['subfields'][i];
+            // eslint-disable-next-line max-len
+            const xpath = '//*[@tag=\'' + tag + '\']/*[' + subfields.split('').map( (e: string) => '@code=\'' + e + '\'' ).join(' or ') + ']';
             xpaths.push(xpath);
         }
         xpaths = Array.from( new Set( xpaths ) ); // dedupe
         selectors = xpaths.map( _xpath => {
-            var uvus = this.idl.create('uvus');
+            const uvus = this.idl.create('uvus');
             uvus.isnew(true);
             uvus.session(this.sessionId);
             uvus.xpath( _xpath );

@@ -21,8 +21,8 @@ export interface CopyNotesChanges {
 }
 
 @Component({
-  selector: 'eg-copy-notes-dialog',
-  templateUrl: 'copy-notes-dialog.component.html'
+    selector: 'eg-copy-notes-dialog',
+    templateUrl: 'copy-notes-dialog.component.html'
 })
 
 export class CopyNotesDialogComponent
@@ -106,12 +106,12 @@ export class CopyNotesDialogComponent
             {flesh: 1, flesh_fields: {acp: ['notes']}},
             {atomic: true}
         )
-        .toPromise().then(copies => {
-            this.copies = copies;
-            if (copies.length === 1) {
-                this.copy = copies[0];
-            }
-        });
+            .toPromise().then(copies => {
+                this.copies = copies;
+                if (copies.length === 1) {
+                    this.copy = copies[0];
+                }
+            });
     }
 
     editNote(note: IdlObject) {
@@ -123,7 +123,7 @@ export class CopyNotesDialogComponent
         this.getCopies().then(() => {
             this.idToEdit = null;
             this.mode = 'manage';
-        })
+        });
     }
 
     removeNote(note: IdlObject) {
@@ -177,14 +177,14 @@ export class CopyNotesDialogComponent
         });
 
         this.pcrud.create(notes).toPromise()
-        .then(_ => {
-            if (this.delNotes.length) {
-                return this.pcrud.remove(this.delNotes).toPromise();
-            }
-        }).then(_ => {
-            this.successMsg.current().then(msg => this.toast.success(msg));
-            this.close({ newNotes: this.newNotes, delNotes: this.delNotes });
-        });
+            .then(_ => {
+                if (this.delNotes.length) {
+                    return this.pcrud.remove(this.delNotes).toPromise();
+                }
+            }).then(_ => {
+                this.successMsg.current().then(msg => this.toast.success(msg));
+                this.close({ newNotes: this.newNotes, delNotes: this.delNotes });
+            });
     }
 }
 

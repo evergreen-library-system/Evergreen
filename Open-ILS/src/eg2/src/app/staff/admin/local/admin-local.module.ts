@@ -11,23 +11,23 @@ import {AdminStaffPortalPageComponent} from './staff_portal_page/staff-portal-pa
 import {StandingPenaltyComponent} from './standing-penalty.component';
 
 @NgModule({
-  declarations: [
-      AdminLocalSplashComponent,
-      AddressAlertComponent,
-      AdminCarouselComponent,
-      StandingPenaltyComponent,
-      ClonePortalEntriesDialogComponent,
-      AdminStaffPortalPageComponent
-  ],
-  imports: [
-    AdminCommonModule,
-    AdminLocalRoutingModule,
-    TreeModule
-  ],
-  exports: [
-  ],
-  providers: [
-  ]
+    declarations: [
+        AdminLocalSplashComponent,
+        AddressAlertComponent,
+        AdminCarouselComponent,
+        StandingPenaltyComponent,
+        ClonePortalEntriesDialogComponent,
+        AdminStaffPortalPageComponent
+    ],
+    imports: [
+        AdminCommonModule,
+        AdminLocalRoutingModule,
+        TreeModule
+    ],
+    exports: [
+    ],
+    providers: [
+    ]
 })
 
 export class AdminLocalModule {

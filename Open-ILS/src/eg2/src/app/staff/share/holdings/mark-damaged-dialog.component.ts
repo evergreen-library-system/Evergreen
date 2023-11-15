@@ -20,8 +20,8 @@ import {BillingService} from '@eg/staff/share/billing/billing.service';
  */
 
 @Component({
-  selector: 'eg-mark-damaged-dialog',
-  templateUrl: 'mark-damaged-dialog.component.html'
+    selector: 'eg-mark-damaged-dialog',
+    templateUrl: 'mark-damaged-dialog.component.html'
 })
 
 export class MarkDamagedDialogComponent
@@ -94,13 +94,13 @@ export class MarkDamagedDialogComponent
     getData(): Promise<any> {
         return this.pcrud.retrieve('acp', this.copyId,
             {flesh: 1, flesh_fields: {acp: ['call_number']}}).toPromise()
-        .then(copy => {
-            this.copy = copy;
-            return this.bib.getBibSummary(
-                copy.call_number().record()).toPromise();
-        }).then(summary => {
+            .then(copy => {
+                this.copy = copy;
+                return this.bib.getBibSummary(
+                    copy.call_number().record()).toPromise();
+            }).then(summary => {
                 this.bibSummary = summary;
-        });
+            });
     }
 
     reset() {
@@ -150,7 +150,7 @@ export class MarkDamagedDialogComponent
                     this.newCharge = this.chargeResponse.charge;
                 }
             },
-            err => {
+            (err: unknown) => {
                 this.errorMsg.current().then(m => this.toast.danger(m));
                 console.error(err);
             }

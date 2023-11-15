@@ -26,7 +26,7 @@ import {EventService, EgEvent} from './event.service';
 
 // Global vars from opensrf.js
 // These are availavble at runtime, but are not exported.
-declare var OpenSRF, OSRF_TRANSPORT_TYPE_WS;
+declare var OpenSRF, OSRF_TRANSPORT_TYPE_WS; // eslint-disable-line no-var
 
 export class NetRequest {
     service: string;
@@ -98,7 +98,7 @@ export class NetService {
 
     // Request with pre-compiled NetRequest
     requestCompiled(request: NetRequest): Observable<any> {
-        return Observable.create(
+        return new Observable(
             observer => {
                 request.observer = observer;
                 this.sendCompiledRequest(request);
@@ -144,7 +144,7 @@ export class NetService {
                 console.error(msg);
 
                 if (request.service === 'open-ils.pcrud'
-                    && Number(statCode) === 401) {
+                    && Number(statCode) === 401) { // eslint-disable-line no-magic-numbers
                     // 401 is the PCRUD equivalent of a NO_SESSION event
                     this.authExpired$.emit({request: request});
                 }

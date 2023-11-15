@@ -1,7 +1,8 @@
-import {Component, Input, ViewChild, OnInit} from '@angular/core';
+/* eslint-disable eqeqeq, max-len, no-magic-numbers */
+import {Component, ViewChild, OnInit} from '@angular/core';
 import {Tree, TreeNode} from '@eg/share/tree/tree';
 import {IdlService, IdlObject} from '@eg/core/idl.service';
-import {NgbNav, NgbNavChangeEvent} from '@ng-bootstrap/ng-bootstrap';
+import {NgbNavChangeEvent} from '@ng-bootstrap/ng-bootstrap';
 import {OrgService} from '@eg/core/org.service';
 import {AuthService} from '@eg/core/auth.service';
 import {PcrudService} from '@eg/core/pcrud.service';
@@ -9,7 +10,6 @@ import {ToastService} from '@eg/share/toast/toast.service';
 import {StringComponent} from '@eg/share/string/string.component';
 import {StringService} from '@eg/share/string/string.service';
 import {ConfirmDialogComponent} from '@eg/share/dialog/confirm.component';
-import {FmRecordEditorComponent} from '@eg/share/fm-editor/fm-editor.component';
 import {ComboboxEntry} from '@eg/share/combobox/combobox.component';
 import {PermService} from '@eg/core/perm.service';
 
@@ -42,14 +42,14 @@ export class OrgUnitComponent implements OnInit {
 
     ngOnInit() {
         this.loadAouTree(this.org.root().id());
-        
-        //Check once on init if user could be linked to closed date editor (don't want them to land on a page that does nothing and think it's broken)
-        let neededClosedDatesPerms = ['actor.org_unit.closed_date.create',
+
+        // Check once on init if user could be linked to closed date editor (don't want them to land on a page that does nothing and think it's broken)
+        const neededClosedDatesPerms = ['actor.org_unit.closed_date.create',
             'actor.org_unit.closed_date.update',
             'actor.org_unit.closed_date.delete'];
-        
+
         this.perm.hasWorkPermAt(neededClosedDatesPerms, true).then((perm) => {
-            //Set true once if they have every permission they need to change closed dates
+            // Set true once if they have every permission they need to change closed dates
             this.hasClosedDatePerms = neededClosedDatesPerms.every(element => {
                 return perm[element].length > 0;
             });
@@ -121,10 +121,10 @@ export class OrgUnitComponent implements OnInit {
             // by name suffices and bypasses the need the wait
             // for all of the labels to interpolate.
             orgNode.children()
-            .sort((a, b) => a.name() < b.name() ? -1 : 1)
-            .forEach(childNode =>
-                treeNode.children.push(handleNode(childNode))
-            );
+                .sort((a, b) => a.name() < b.name() ? -1 : 1)
+                .forEach(childNode =>
+                    treeNode.children.push(handleNode(childNode))
+                );
 
             return treeNode;
         };
@@ -173,11 +173,11 @@ export class OrgUnitComponent implements OnInit {
         );
     }
 
-    //Is the org closed every day of the week?
+    // Is the org closed every day of the week?
     allClosed(): boolean{
-        return [0, 1, 2, 3, 4, 5, 6].every(dow => this.isClosed(dow));;
+        return [0, 1, 2, 3, 4, 5, 6].every(dow => this.isClosed(dow));
     }
-    
+
     getNote(dow: number, hoo?: IdlObject) {
         if (!hoo && !this.selected) { return null; }
 
@@ -185,7 +185,7 @@ export class OrgUnitComponent implements OnInit {
 
         return hours['dow_' + dow + '_note']();
     }
-    
+
     setNote(dow: number, value?: string, hoo?: IdlObject) {
         console.log(value);
         if (!hoo && !this.selected) { return null; }
@@ -199,11 +199,11 @@ export class OrgUnitComponent implements OnInit {
     }
 
     note(dow: number, which: 'note', value?: string, hoo?: IdlObject) {
-         if (!hoo && !this.selected) { return null; }
+        if (!hoo && !this.selected) { return null; }
 
         const hours = hoo || this.selected.callerData.orgUnit.hours_of_operation();
         if (!value) {
-            hours[`dow_${dow}_${which}`]("");
+            hours[`dow_${dow}_${which}`]('');
             hours.ischanged(true);
         } else if (value != hours[`dow_${dow}_${which}`]()) {
             hours[`dow_${dow}_${which}`](value);
@@ -226,7 +226,7 @@ export class OrgUnitComponent implements OnInit {
                 this.editString.current()
                     .then(msg => this.toast.success(msg));
             },
-            error => {
+            (error: unknown) => {
                 this.errorString.current()
                     .then(msg => this.toast.danger(msg));
             },
@@ -265,11 +265,12 @@ export class OrgUnitComponent implements OnInit {
 
             const org = this.selected.callerData.orgUnit;
 
+            // eslint-disable-next-line rxjs/no-nested-subscribe
             this.pcrud.remove(org).subscribe(
                 ok2 => {},
-                err => {
+                (err: unknown) => {
                     this.errorString.current()
-                      .then(str => this.toast.danger(str));
+                        .then(str => this.toast.danger(str));
                 },
                 ()  => {
                     // Avoid updating until we know the entire

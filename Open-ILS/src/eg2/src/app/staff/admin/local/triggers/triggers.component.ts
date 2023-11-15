@@ -9,7 +9,7 @@ import {FmRecordEditorComponent} from '@eg/share/fm-editor/fm-editor.component';
 import {ConfirmDialogComponent} from '@eg/share/dialog/confirm.component';
 import {StringComponent} from '@eg/share/string/string.component';
 import {ToastService} from '@eg/share/toast/toast.service';
-import {NgbNav, NgbNavChangeEvent} from '@ng-bootstrap/ng-bootstrap';
+import {NgbNavChangeEvent} from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
     templateUrl: './triggers.component.html'
@@ -99,10 +99,10 @@ export class TriggersComponent implements OnInit {
         });
         return this.pcrud.search(idlString,
             query, {
-            offset: pager.offset,
-            limit: pager.limit,
-            order_by: currentOrderBy
-        });
+                offset: pager.offset,
+                limit: pager.limit,
+                order_by: currentOrderBy
+            });
     }
 
     onTabChange(event: NgbNavChangeEvent) {
@@ -111,19 +111,19 @@ export class TriggersComponent implements OnInit {
 
     createNewEvent = () => {
         this.createNewThing(this.eventDialog, this.eventsGrid);
-    }
+    };
 
     createNewHook = () => {
         this.createNewThing(this.hookDialog, this.hooksGrid);
-    }
+    };
 
     createNewReactor = () => {
         this.createNewThing(this.reactorDialog, this.reactorsGrid);
-    }
+    };
 
     createNewValidator = () => {
         this.createNewThing(this.validatorDialog, this.validatorsGrid);
-    }
+    };
 
     createNewThing = (currentDialog: any, currentGrid: any) => {
         currentDialog.mode = 'create';
@@ -142,7 +142,7 @@ export class TriggersComponent implements OnInit {
                 }
             }
         );
-    }
+    };
 
     editSelected = (selectedRecords: IdlObject[]) => {
         if (this.triggerTab === 'eventDefinitions') {
@@ -155,12 +155,12 @@ export class TriggersComponent implements OnInit {
                 () => editOneThing(selectedRecords.shift()));
         };
         editOneThing(selectedRecords.shift());
-    }
+    };
 
     editEventDefinition = (selectedRecords: IdlObject[]) => {
         const id = selectedRecords[0].id();
         this.router.navigate(['/staff/admin/local/action_trigger/event_definition/' + id]);
-    }
+    };
 
     lookUpIdl (idl: string) {
         let currentDialog;
@@ -208,10 +208,10 @@ export class TriggersComponent implements OnInit {
                     this.updateFailedString.current()
                         .then(str => this.toast.danger(str));
                     reject(error);
-               }
-           );
-       });
-    }
+                }
+            );
+        });
+    };
 
     deleteSelected = (idlThings: IdlObject[]) => {
         const idl = idlThings[0].classname;
@@ -224,32 +224,32 @@ export class TriggersComponent implements OnInit {
                     .then(str => this.toast.success(str));
                 currentGrid.reload();
             },
-            err => {
+            (err: unknown) => {
                 this.deleteFailedString.current()
                     .then(str => this.toast.danger(str));
             }
         );
-    }
+    };
 
     cloneSelected = (selectedRecords: IdlObject[]) => {
         const clone = this.idl.clone(selectedRecords[0]);
         // look for existing environments
         this.pcrud.search('atenv', {event_def: selectedRecords[0].id()}, {}, {atomic: true})
             .toPromise().then(envs => {
-            if (envs) {
+                if (envs) {
                 // if environments found, ask user if they want to clone them
-                this.confirmDialog.open().toPromise().then(ok => {
-                    if (ok) {
-                        this.doClone(clone, envs);
-                    } else {
-                        this.doClone(clone, []);
-                    }
-                });
-            } else {
-                this.doClone(clone, []);
-            }
-        });
-    }
+                    this.confirmDialog.open().toPromise().then(ok => {
+                        if (ok) {
+                            this.doClone(clone, envs);
+                        } else {
+                            this.doClone(clone, []);
+                        }
+                    });
+                } else {
+                    this.doClone(clone, []);
+                }
+            });
+    };
 
     doClone(eventDef, env_list) {
         eventDef.id(null);
@@ -267,7 +267,8 @@ export class TriggersComponent implements OnInit {
                     this.cloneEnvs(response.id(), env_list);
                 }
             },
-            rejection => {
+            // eslint-disable-next-line rxjs/no-implicit-any-catch
+            (rejection: any) => {
                 if (!rejection.dismissed) {
                     this.cloneFailedString.current()
                         .then(str => this.toast.danger(str));

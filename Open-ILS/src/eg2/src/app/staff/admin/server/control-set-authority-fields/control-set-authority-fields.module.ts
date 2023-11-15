@@ -6,19 +6,19 @@ import {CSAuthorityFieldsRoutingModule} from './control-set-authority-fields-rou
 import {AdminPageModule} from '@eg/staff/share/admin-page/admin-page.module';
 
 @NgModule({
-  declarations: [
-    CSAuthorityFieldsComponent
-  ],
-  imports: [
-    StaffCommonModule,
-    FmRecordEditorModule,
-    AdminPageModule,
-    CSAuthorityFieldsRoutingModule
-  ],
-  exports: [
-  ],
-  providers: [
-  ]
+    declarations: [
+        CSAuthorityFieldsComponent
+    ],
+    imports: [
+        StaffCommonModule,
+        FmRecordEditorModule,
+        AdminPageModule,
+        CSAuthorityFieldsRoutingModule
+    ],
+    exports: [
+    ],
+    providers: [
+    ]
 })
 
 export class CSAuthorityFieldsModule {

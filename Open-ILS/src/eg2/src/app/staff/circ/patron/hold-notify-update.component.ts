@@ -23,8 +23,8 @@ export interface HoldNotifyMod {
 }
 
 @Component({
-  selector: 'eg-hold-notify-update-dialog',
-  templateUrl: 'hold-notify-update.component.html'
+    selector: 'eg-hold-notify-update-dialog',
+    templateUrl: 'hold-notify-update.component.html'
 })
 
 export class HoldNotifyUpdateDialogComponent
@@ -76,29 +76,29 @@ export class HoldNotifyUpdateDialogComponent
         this.loading = true;
 
         from(Object.keys(this.selected))
-        .pipe(filter(field => this.selected[field] === true))
-        .pipe(concatMap(field => {
+            .pipe(filter(field => this.selected[field] === true))
+            .pipe(concatMap(field => {
 
-            const mod = this.mods.filter(m => m.field === field)[0];
-            const holdIds = mod.holds.map(h => h.id);
-            const carrierId = mod.field === 'default_sms' ?  this.defaultCarrier : null;
+                const mod = this.mods.filter(m => m.field === field)[0];
+                const holdIds = mod.holds.map(h => h.id);
+                const carrierId = mod.field === 'default_sms' ?  this.defaultCarrier : null;
 
-            return this.net.request(
-                'open-ils.circ',
-                'open-ils.circ.holds.batch_update_holds_by_notify_staff',
-                this.auth.token(), this.patronId, holdIds, mod.oldValue,
-                mod.newValue, mod.field, carrierId
+                return this.net.request(
+                    'open-ils.circ',
+                    'open-ils.circ.holds.batch_update_holds_by_notify_staff',
+                    this.auth.token(), this.patronId, holdIds, mod.oldValue,
+                    mod.newValue, mod.field, carrierId
+                );
+
+            }))
+            .subscribe(
+                resp => console.log('GOT', resp),
+                (err: unknown) => console.error(err),
+                () => {
+                    this.loading = false;
+                    this.close();
+                }
             );
-
-        }))
-        .subscribe(
-            resp => console.log('GOT', resp),
-            err => console.error(err),
-            () => {
-                this.loading = false;
-                this.close();
-            }
-        );
     }
 }
 

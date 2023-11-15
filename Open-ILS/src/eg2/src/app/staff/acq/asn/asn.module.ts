@@ -11,20 +11,20 @@ import {AsnReceiveComponent} from './receive.component';
 
 
 @NgModule({
-  declarations: [
-    AsnComponent,
-    AsnReceiveComponent
-  ],
-  imports: [
-    StaffCommonModule,
-    CatalogCommonModule,
-    LineitemModule,
-    HoldingsModule,
-    AsnRoutingModule
-  ],
-  providers: [
-    AsnService
-  ]
+    declarations: [
+        AsnComponent,
+        AsnReceiveComponent
+    ],
+    imports: [
+        StaffCommonModule,
+        CatalogCommonModule,
+        LineitemModule,
+        HoldingsModule,
+        AsnRoutingModule
+    ],
+    providers: [
+        AsnService
+    ]
 })
 
 export class AsnModule {

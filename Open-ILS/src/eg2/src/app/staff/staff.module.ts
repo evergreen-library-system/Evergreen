@@ -10,19 +10,19 @@ import {AboutComponent} from './about.component';
 import {StaffLoginNotAllowedComponent} from './login-not-allowed.component';
 
 @NgModule({
-  declarations: [
-    StaffComponent,
-    StaffNavComponent,
-    StaffSplashComponent,
-    AutofocusDirective,
-    StaffLoginComponent,
-    StaffLoginNotAllowedComponent,
-    AboutComponent
-  ],
-  imports: [
-    StaffCommonModule.forRoot(),
-    StaffRoutingModule
-  ]
+    declarations: [
+        StaffComponent,
+        StaffNavComponent,
+        StaffSplashComponent,
+        AutofocusDirective,
+        StaffLoginComponent,
+        StaffLoginNotAllowedComponent,
+        AboutComponent
+    ],
+    imports: [
+        StaffCommonModule.forRoot(),
+        StaffRoutingModule
+    ]
 })
 
 export class StaffModule {}

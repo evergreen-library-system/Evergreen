@@ -12,8 +12,8 @@ import {StringComponent} from '@eg/share/string/string.component';
  */
 
 @Component({
-  selector: 'eg-authority-merge-dialog',
-  templateUrl: 'merge-dialog.component.html'
+    selector: 'eg-authority-merge-dialog',
+    templateUrl: 'merge-dialog.component.html'
 })
 
 export class AuthorityMergeDialogComponent
@@ -25,10 +25,10 @@ export class AuthorityMergeDialogComponent
     leadRecord: number;
 
     @ViewChild('successMsg', {static: true})
-        private successMsg: StringComponent;
+    private successMsg: StringComponent;
 
     @ViewChild('errorMsg', {static: true})
-        private errorMsg: StringComponent;
+    private errorMsg: StringComponent;
 
     constructor(
         private modal: NgbModal, // required for passing to parent
@@ -56,17 +56,17 @@ export class AuthorityMergeDialogComponent
         this.net.request('open-ils.cat',
             'open-ils.cat.authority.records.merge',
             this.auth.token(), this.leadRecord, list)
-        .subscribe(resp => {
-            const evt = this.evt.parse(resp);
+            .subscribe(resp => {
+                const evt = this.evt.parse(resp);
 
-            if (evt) {
-                this.errorMsg.current().then(str => this.toast.warning(str));
-                this.close(false);
-            } else {
-                this.successMsg.current().then(str => this.toast.success(str));
-                this.close(true);
-            }
-        });
+                if (evt) {
+                    this.errorMsg.current().then(str => this.toast.warning(str));
+                    this.close(false);
+                } else {
+                    this.successMsg.current().then(str => this.toast.success(str));
+                    this.close(true);
+                }
+            });
     }
 }
 

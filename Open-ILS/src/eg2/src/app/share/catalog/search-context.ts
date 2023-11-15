@@ -1,3 +1,4 @@
+/* eslint-disable no-shadow */
 import {OrgService} from '@eg/core/org.service';
 import {IdlObject} from '@eg/core/idl.service';
 import {Pager} from '@eg/share/util/pager';
@@ -563,7 +564,7 @@ export class CatalogSearchContext {
     }
 
     stripAnchors(query: string): string {
-        return query.replace(/[\^\$]/g, '');
+        return query.replace(/[\^$]/g, '');
     }
 
     addQuotes(query: string): string {

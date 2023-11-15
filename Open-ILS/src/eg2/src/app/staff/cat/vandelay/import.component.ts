@@ -10,9 +10,9 @@ import {ToastService} from '@eg/share/toast/toast.service';
 import {ComboboxComponent,
     ComboboxEntry} from '@eg/share/combobox/combobox.component';
 import {VandelayService, VandelayImportSelection,
-  VANDELAY_UPLOAD_PATH} from './vandelay.service';
-import {HttpClient, HttpRequest, HttpEventType} from '@angular/common/http';
-import {HttpResponse, HttpErrorResponse} from '@angular/common/http';
+    VANDELAY_UPLOAD_PATH} from './vandelay.service';
+import {HttpClient, HttpRequest, HttpEventType,
+    HttpResponse, HttpErrorResponse} from '@angular/common/http';
 import {ProgressInlineComponent} from '@eg/share/dialog/progress-inline.component';
 import {AlertDialogComponent} from '@eg/share/dialog/alert.component';
 import {ServerStoreService} from '@eg/core/server-store.service';
@@ -55,7 +55,7 @@ interface ImportOptions {
 }
 
 @Component({
-  templateUrl: 'import.component.html'
+    templateUrl: 'import.component.html'
 })
 export class ImportComponent implements OnInit, AfterViewInit, OnDestroy {
 
@@ -111,32 +111,32 @@ export class ImportComponent implements OnInit, AfterViewInit, OnDestroy {
 
     @ViewChild('fileSelector', { static: false }) private fileSelector;
     @ViewChild('uploadProgress', { static: true })
-        private uploadProgress: ProgressInlineComponent;
+    private uploadProgress: ProgressInlineComponent;
     @ViewChild('enqueueProgress', { static: true })
-        private enqueueProgress: ProgressInlineComponent;
+    private enqueueProgress: ProgressInlineComponent;
     @ViewChild('importProgress', { static: true })
-        private importProgress: ProgressInlineComponent;
+    private importProgress: ProgressInlineComponent;
 
     // Need these refs so values can be applied via external stimuli
     @ViewChild('formTemplateSelector', { static: true })
-        private formTemplateSelector: ComboboxComponent;
+    private formTemplateSelector: ComboboxComponent;
     @ViewChild('recordTypeSelector', { static: true })
-        private recordTypeSelector: ComboboxComponent;
+    private recordTypeSelector: ComboboxComponent;
     @ViewChild('bibSourceSelector', { static: true })
-        private bibSourceSelector: ComboboxComponent;
+    private bibSourceSelector: ComboboxComponent;
     @ViewChild('matchSetSelector', { static: true })
-        private matchSetSelector: ComboboxComponent;
+    private matchSetSelector: ComboboxComponent;
     @ViewChild('holdingsProfileSelector', { static: true })
-        private holdingsProfileSelector: ComboboxComponent;
+    private holdingsProfileSelector: ComboboxComponent;
     @ViewChild('mergeProfileSelector', { static: true })
-        private mergeProfileSelector: ComboboxComponent;
+    private mergeProfileSelector: ComboboxComponent;
     @ViewChild('fallThruMergeProfileSelector', { static: true })
-        private fallThruMergeProfileSelector: ComboboxComponent;
+    private fallThruMergeProfileSelector: ComboboxComponent;
     @ViewChild('queueSelector') private queueSelector: ComboboxComponent;
     @ViewChild('bucketSelector') private bucketSelector: ComboboxComponent;
 
     @ViewChild('dupeQueueAlert', { static: true })
-        private dupeQueueAlert: AlertDialogComponent;
+    private dupeQueueAlert: AlertDialogComponent;
 
     constructor(
         private http: HttpClient,
@@ -300,7 +300,7 @@ export class ImportComponent implements OnInit, AfterViewInit, OnDestroy {
 
             case 'activeQueues':
                 list = (this.vandelay.allQueues[rtype] || [])
-                        .filter(q => q.complete() === 'f');
+                    .filter(q => q.complete() === 'f');
                 break;
 
             case 'matchSets':
@@ -356,7 +356,7 @@ export class ImportComponent implements OnInit, AfterViewInit, OnDestroy {
     }
 
     fileSelected($event) {
-       this.selectedFile = $event.target.files[0];
+        this.selectedFile = $event.target.files[0];
     }
 
     // Required form data varies depending on context.
@@ -388,30 +388,30 @@ export class ImportComponent implements OnInit, AfterViewInit, OnDestroy {
         this.resetProgressBars();
 
         this.resolveQueue()
-        .then(
-            queueId => {
-                this.activeQueueId = queueId;
-                return this.uploadFile();
-            },
-            err => Promise.reject('queue create failed')
-        ).then(
-            ok => this.processSpool(),
-            err => Promise.reject('process spool failed')
-        ).then(
-            ok => this.importRecords(),
-            err => Promise.reject('import records failed')
-        ).then(
-            ok => {
-                this.isUploading = false;
-                this.uploadComplete = true;
-            },
-            err => {
-                console.log('file upload failed: ', err);
-                this.isUploading = false;
-                this.resetProgressBars();
+            .then(
+                queueId => {
+                    this.activeQueueId = queueId;
+                    return this.uploadFile();
+                },
+                err => Promise.reject('queue create failed')
+            ).then(
+                ok => this.processSpool(),
+                err => Promise.reject('process spool failed')
+            ).then(
+                ok => this.importRecords(),
+                err => Promise.reject('import records failed')
+            ).then(
+                ok => {
+                    this.isUploading = false;
+                    this.uploadComplete = true;
+                },
+                err => {
+                    console.log('file upload failed: ', err);
+                    this.isUploading = false;
+                    this.resetProgressBars();
 
-            }
-        );
+                }
+            );
     }
 
     resetProgressBars() {
@@ -486,6 +486,7 @@ export class ImportComponent implements OnInit, AfterViewInit, OnDestroy {
                 }
             },
 
+            // eslint-disable-next-line rxjs/no-implicit-any-catch
             (err: HttpErrorResponse) => {
                 console.error(err);
                 this.toast.danger(err.error);
@@ -520,20 +521,21 @@ export class ImportComponent implements OnInit, AfterViewInit, OnDestroy {
 
                     // Spooling is in progress, track the results.
                     this.vandelay.pollSessionTracker(tracker.id())
-                    .subscribe(
-                        trkr => {
-                            this.enqueueProgress.update({
+                        // eslint-disable-next-line rxjs/no-nested-subscribe
+                        .subscribe(
+                            trkr => {
+                                this.enqueueProgress.update({
                                 // enqueue API only tracks actions performed
-                                max: null,
-                                value: trkr.actions_performed()
-                            });
-                        },
-                        err => { console.log(err); reject(); },
-                        () => {
-                            this.enqueueProgress.update({max: 1, value: 1});
-                            resolve(null);
-                        }
-                    );
+                                    max: null,
+                                    value: trkr.actions_performed()
+                                });
+                            },
+                            (err: unknown) => { console.log(err); reject(); },
+                            () => {
+                                this.enqueueProgress.update({max: 1, value: 1});
+                                resolve(null);
+                            }
+                        );
                 }
             );
         });
@@ -569,28 +571,29 @@ export class ImportComponent implements OnInit, AfterViewInit, OnDestroy {
         return new Promise((resolve, reject) => {
             this.net.request('open-ils.vandelay',
                 method, this.auth.token(), target, options)
-            .subscribe(
-                tracker => {
-                    const e = this.evt.parse(tracker);
-                    if (e) { console.error(e); return reject(); }
+                .subscribe(
+                    tracker => {
+                        const e = this.evt.parse(tracker);
+                        if (e) { console.error(e); return reject(); }
 
-                    // Spooling is in progress, track the results.
-                    this.vandelay.pollSessionTracker(tracker.id())
-                    .subscribe(
-                        trkr => {
-                            this.importProgress.update({
-                                max: trkr.total_actions(),
-                                value: trkr.actions_performed()
-                            });
-                        },
-                        err => { console.log(err); reject(); },
-                        () => {
-                            this.importProgress.update({max: 1, value: 1});
-                            resolve(null);
-                        }
-                    );
-                }
-            );
+                        // Spooling is in progress, track the results.
+                        this.vandelay.pollSessionTracker(tracker.id())
+                            // eslint-disable-next-line rxjs/no-nested-subscribe
+                            .subscribe(
+                                trkr => {
+                                    this.importProgress.update({
+                                        max: trkr.total_actions(),
+                                        value: trkr.actions_performed()
+                                    });
+                                },
+                                (err: unknown) => { console.log(err); reject(); },
+                                () => {
+                                    this.importProgress.update({max: 1, value: 1});
+                                    resolve(null);
+                                }
+                            );
+                    }
+                );
         });
     }
 

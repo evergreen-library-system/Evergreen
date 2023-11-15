@@ -1,7 +1,8 @@
+/* eslint-disable @typescript-eslint/no-throw-literal */
 import {Component, OnInit, AfterViewInit, OnDestroy, Input, ViewChild} from '@angular/core';
-import {EMPTY, throwError, Observable, from, Subscription} from 'rxjs';
+import {EMPTY, throwError, from, Subscription} from 'rxjs';
 import {map} from 'rxjs/operators';
-import {Router, ActivatedRoute, ParamMap} from '@angular/router';
+import {Router, ActivatedRoute} from '@angular/router';
 import {Pager} from '@eg/share/util/pager';
 import {IdlService, IdlObject} from '@eg/core/idl.service';
 import {NetService} from '@eg/core/net.service';
@@ -10,15 +11,14 @@ import {PcrudService} from '@eg/core/pcrud.service';
 import {EventService} from '@eg/core/event.service';
 import {GridComponent} from '@eg/share/grid/grid.component';
 import {GridDataSource, GridCellTextGenerator} from '@eg/share/grid/grid';
-import {ProviderRecord, ProviderRecordService} from './provider-record.service';
-import {AcqProviderSearchFormComponent} from './acq-provider-search-form.component';
+import {ProviderRecordService} from './provider-record.service';
 import {FmRecordEditorComponent} from '@eg/share/fm-editor/fm-editor.component';
 import {StringComponent} from '@eg/share/string/string.component';
 import {ToastService} from '@eg/share/toast/toast.service';
 
 @Component({
-  selector: 'eg-provider-addresses',
-  templateUrl: 'provider-addresses.component.html',
+    selector: 'eg-provider-addresses',
+    templateUrl: 'provider-addresses.component.html',
 })
 export class ProviderAddressesComponent implements OnInit, AfterViewInit, OnDestroy {
 
@@ -71,7 +71,7 @@ export class ProviderAddressesComponent implements OnInit, AfterViewInit, OnDest
                     this.deleteSuccessString.current()
                         .then(str => this.toast.success(str));
                 },
-                err => {
+                (err: unknown) => {
                     this.deleteFailedString.current()
                         .then(str => this.toast.danger(str));
                 },
@@ -189,7 +189,7 @@ export class ProviderAddressesComponent implements OnInit, AfterViewInit, OnDest
                     );
                     resolve(result);
                 },
-                error => {
+                (error: unknown) => {
                     this.updateFailedString.current()
                         .then(str => this.toast.danger(str));
                     reject(error);
@@ -225,7 +225,8 @@ export class ProviderAddressesComponent implements OnInit, AfterViewInit, OnDest
                     () => this.providerAddressesGrid.reload()
                 );
             },
-            rejection => {
+            // eslint-disable-next-line rxjs/no-implicit-any-catch
+            (rejection: any) => {
                 if (!rejection.dismissed) {
                     this.createErrString.current()
                         .then(str => this.toast.danger(str));

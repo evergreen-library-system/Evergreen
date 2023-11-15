@@ -1,19 +1,17 @@
-import {Component, Input, ViewChild} from '@angular/core';
+import {Component, Input} from '@angular/core';
 import {Observable} from 'rxjs';
-import {map} from 'rxjs/operators';
 import {NgbModal, NgbModalOptions} from '@ng-bootstrap/ng-bootstrap';
 import {DialogComponent} from '@eg/share/dialog/dialog.component';
 import {NetService} from '@eg/core/net.service';
-import {EgEvent, EventService} from '@eg/core/event.service';
-import {IdlService, IdlObject} from '@eg/core/idl.service';
-import {ComboboxEntry} from '@eg/share/combobox/combobox.component';
+import {EventService} from '@eg/core/event.service';
+import {IdlObject} from '@eg/core/idl.service';
 import {LineitemService} from './lineitem.service';
 import {BibRecordService, BibRecordSummary} from '@eg/share/catalog/bib-record.service';
 
 @Component({
-  selector: 'eg-acq-bib-finder-dialog',
-  styleUrls: ['./bib-finder-dialog.component.css'],
-  templateUrl: './bib-finder-dialog.component.html'
+    selector: 'eg-acq-bib-finder-dialog',
+    styleUrls: ['./bib-finder-dialog.component.css'],
+    templateUrl: './bib-finder-dialog.component.html'
 })
 
 export class BibFinderDialogComponent extends DialogComponent {
@@ -88,9 +86,10 @@ export class BibFinderDialogComponent extends DialogComponent {
                 return;
             }
             const bibSummaries: {[id: number]: BibRecordSummary} = {};
+            // eslint-disable-next-line rxjs/no-nested-subscribe
             this.bib.getBibSummaries(ids).subscribe(
                 summary => bibSummaries[summary.id] = summary,
-                err => {},
+                (err: unknown) => {},
                 () => {
                     this.doingSearch = false;
                     ids.forEach(id => {

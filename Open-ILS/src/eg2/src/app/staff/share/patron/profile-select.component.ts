@@ -8,7 +8,7 @@ import {OrgService} from '@eg/core/org.service';
 import {AuthService} from '@eg/core/auth.service';
 import {PcrudService} from '@eg/core/pcrud.service';
 import {ComboboxEntry, ComboboxComponent
-    } from '@eg/share/combobox/combobox.component';
+} from '@eg/share/combobox/combobox.component';
 
 /* User permission group select comoboxbox.
  *
@@ -22,13 +22,13 @@ import {ComboboxEntry, ComboboxComponent
 const PAD_SPACE = ' '; // U+2007
 
 @Component({
-  selector: 'eg-profile-select',
-  templateUrl: './profile-select.component.html',
-  providers: [{
-    provide: NG_VALUE_ACCESSOR,
-    useExisting: forwardRef(() => ProfileSelectComponent),
-    multi: true
-  }]
+    selector: 'eg-profile-select',
+    templateUrl: './profile-select.component.html',
+    providers: [{
+        provide: NG_VALUE_ACCESSOR,
+        useExisting: forwardRef(() => ProfileSelectComponent),
+        multi: true
+    }]
 })
 export class ProfileSelectComponent implements ControlValueAccessor, OnInit {
 
@@ -65,8 +65,8 @@ export class ProfileSelectComponent implements ControlValueAccessor, OnInit {
 
     ngOnInit() {
         this.collectGroups().then(grps => this.sortGroups(grps))
-        .then(_ => this.fetchInitialGroup())
-        .then(_ => this.cbox.selectedId = this.initialGroupId);
+            .then(_ => this.fetchInitialGroup())
+            .then(_ => this.cbox.selectedId = this.initialGroupId);
     }
 
     // If the initial group is not included in our set of groups because
@@ -78,12 +78,12 @@ export class ProfileSelectComponent implements ControlValueAccessor, OnInit {
         }
 
         return this.pcrud.retrieve('pgt', this.initialGroupId).toPromise()
-        .then(grp => {
-            this.profiles[grp.id()] = grp;
-            grp.parent(null);
-            this.cboxEntries.push(
-                {id: grp.id(), label: this.grpLabel([], grp)});
-        });
+            .then(grp => {
+                this.profiles[grp.id()] = grp;
+                grp.parent(null);
+                this.cboxEntries.push(
+                    {id: grp.id(), label: this.grpLabel([], grp)});
+            });
 
     }
 

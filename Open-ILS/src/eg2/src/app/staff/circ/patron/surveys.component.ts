@@ -13,8 +13,8 @@ import {PatronService} from '@eg/staff/share/patron/patron.service';
 import {PatronContextService} from './patron.service';
 
 @Component({
-  templateUrl: 'surveys.component.html',
-  selector: 'eg-patron-survey-responses'
+    templateUrl: 'surveys.component.html',
+    selector: 'eg-patron-survey-responses'
 })
 export class PatronSurveyResponsesComponent implements OnInit {
 
@@ -61,7 +61,7 @@ export class PatronSurveyResponsesComponent implements OnInit {
                     collection[sid][qid] = response;
                 }
             },
-            err => console.error(err),
+            (err: unknown) => console.error(err),
             () => {
 
                 Object.keys(collection).forEach(sid => {

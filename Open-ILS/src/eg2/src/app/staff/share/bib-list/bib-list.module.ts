@@ -4,13 +4,13 @@ import {BibListComponent} from './bib-list.component';
 
 @NgModule({
     declarations: [
-      BibListComponent
+        BibListComponent
     ],
     imports: [
         StaffCommonModule
     ],
     exports: [
-      BibListComponent
+        BibListComponent
     ],
     providers: [
     ]

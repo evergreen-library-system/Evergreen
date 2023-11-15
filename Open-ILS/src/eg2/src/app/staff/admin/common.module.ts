@@ -7,28 +7,28 @@ import {AdminPageModule} from '@eg/staff/share/admin-page/admin-page.module';
 import {BasicAdminPageComponent} from '@eg/staff/admin/basic-admin-page.component';
 
 @NgModule({
-  declarations: [
-    LinkTableComponent,
-    LinkTableLinkComponent,
-    BasicAdminPageComponent
-  ],
-  imports: [
-    StaffCommonModule,
-    TranslateModule,
-    FmRecordEditorModule,
-    AdminPageModule
-  ],
-  exports: [
-    StaffCommonModule,
-    TranslateModule,
-    FmRecordEditorModule,
-    AdminPageModule,
-    LinkTableComponent,
-    LinkTableLinkComponent,
-    BasicAdminPageComponent
-  ],
-  providers: [
-  ]
+    declarations: [
+        LinkTableComponent,
+        LinkTableLinkComponent,
+        BasicAdminPageComponent
+    ],
+    imports: [
+        StaffCommonModule,
+        TranslateModule,
+        FmRecordEditorModule,
+        AdminPageModule
+    ],
+    exports: [
+        StaffCommonModule,
+        TranslateModule,
+        FmRecordEditorModule,
+        AdminPageModule,
+        LinkTableComponent,
+        LinkTableLinkComponent,
+        BasicAdminPageComponent
+    ],
+    providers: [
+    ]
 })
 
 export class AdminCommonModule {

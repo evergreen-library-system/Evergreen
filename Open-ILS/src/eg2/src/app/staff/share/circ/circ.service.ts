@@ -1,15 +1,15 @@
+/* eslint-disable no-case-declarations, no-magic-numbers */
 import {Injectable} from '@angular/core';
 import {Observable, empty, from} from 'rxjs';
-import {map, concatMap, mergeMap} from 'rxjs/operators';
+import {concatMap} from 'rxjs/operators';
 import {IdlObject} from '@eg/core/idl.service';
 import {NetService} from '@eg/core/net.service';
 import {OrgService} from '@eg/core/org.service';
 import {PcrudService} from '@eg/core/pcrud.service';
 import {EventService, EgEvent} from '@eg/core/event.service';
 import {AuthService} from '@eg/core/auth.service';
-import {BibRecordService, BibRecordSummary} from '@eg/share/catalog/bib-record.service';
+import {BibRecordService} from '@eg/share/catalog/bib-record.service';
 import {AudioService} from '@eg/share/util/audio.service';
-import {CircEventsComponent} from './events-dialog.component';
 import {CircComponentsComponent} from './components.component';
 import {StringService} from '@eg/share/string/string.service';
 import {ServerStoreService} from '@eg/core/server-store.service';
@@ -291,10 +291,10 @@ export class CircService {
         }
 
         return this.pcrud.retrieve('aoa', addrId).toPromise()
-        .then(addr => {
-            this.orgAddrCache[addrId] = addr;
-            return addr;
-        });
+            .then(addr => {
+                this.orgAddrCache[addrId] = addr;
+                return addr;
+            });
     }
 
     // find the open transit for the given copy barcode; flesh the org
@@ -305,21 +305,21 @@ export class CircService {
         // the transit we want, since a transit close + open in the API
         // returns the closed transit.
         return this.findCopyTransitById(result.copy.id())
-        .then(transit => {
-            result.transit = transit;
-            return transit;
-         });
+            .then(transit => {
+                result.transit = transit;
+                return transit;
+            });
     }
 
     findCopyTransitById(copyId: number): Promise<IdlObject> {
         return this.pcrud.search('atc', {
-                dest_recv_time : null,
-                cancel_time : null,
-                target_copy: copyId
-            }, {
-                limit : 1,
-                order_by : {atc : 'source_send_time desc'},
-            }, {authoritative : true}
+            dest_recv_time : null,
+            cancel_time : null,
+            target_copy: copyId
+        }, {
+            limit : 1,
+            order_by : {atc : 'source_send_time desc'},
+        }, {authoritative : true}
         ).toPromise().then(transit => {
             if (transit) {
                 transit.source(this.org.get(transit.source()));
@@ -337,25 +337,25 @@ export class CircService {
         // the transit we want, since a transit close + open in the API
         // returns the closed transit.
 
-         const barcode = result.params.copy_barcode;
+        const barcode = result.params.copy_barcode;
 
-         return this.pcrud.search('atc', {
-                dest_recv_time : null,
-                cancel_time : null
-            }, {
-                flesh : 1,
-                flesh_fields : {atc : ['target_copy']},
-                join : {
-                    acp : {
-                        filter : {
-                            barcode : barcode,
-                            deleted : 'f'
-                        }
+        return this.pcrud.search('atc', {
+            dest_recv_time : null,
+            cancel_time : null
+        }, {
+            flesh : 1,
+            flesh_fields : {atc : ['target_copy']},
+            join : {
+                acp : {
+                    filter : {
+                        barcode : barcode,
+                        deleted : 'f'
                     }
-                },
-                limit : 1,
-                order_by : {atc : 'source_send_time desc'}
-            }, {authoritative : true}
+                }
+            },
+            limit : 1,
+            order_by : {atc : 'source_send_time desc'}
+        }, {authoritative : true}
 
         ).toPromise().then(transit => {
             if (transit) {
@@ -414,8 +414,8 @@ export class CircService {
             return this.net.request(
                 'open-ils.circ', method,
                 this.auth.token(), this.apiParams(params)).toPromise()
-            .then(result => this.unpackCheckoutData(params, result))
-            .then(result => this.processCheckoutResult(result));
+                .then(result => this.unpackCheckoutData(params, result))
+                .then(result => this.processCheckoutResult(result));
         });
     }
 
@@ -434,8 +434,8 @@ export class CircService {
             return this.net.request(
                 'open-ils.circ', method,
                 this.auth.token(), this.apiParams(params)).toPromise()
-            .then(result => this.unpackCheckoutData(params, result))
-            .then(result => this.processCheckoutResult(result));
+                .then(result => this.unpackCheckoutData(params, result))
+                .then(result => this.processCheckoutResult(result));
         });
     }
 
@@ -545,37 +545,37 @@ export class CircService {
     exitAlert(context: any): Promise<any> {
         const key = 'staff.circ.events.' + context.textcode;
         return this.strings.interpolate(key, context)
-        .then(str => {
-            this.components.circFailedDialog.dialogBody = str;
-            return this.components.circFailedDialog.open().toPromise();
-        })
-        .then(_ => Promise.reject('Bailling on event ' + context.textcode));
+            .then(str => {
+                this.components.circFailedDialog.dialogBody = str;
+                return this.components.circFailedDialog.open().toPromise();
+            })
+            .then(_ => Promise.reject('Bailling on event ' + context.textcode));
     }
 
     copyInTransitDialog(result: CheckoutResult): Promise<CheckoutResult> {
         this.components.copyInTransitDialog.checkout = result;
 
         return this.findCopyTransitByBarcode(result)
-        .then(_ => this.components.copyInTransitDialog.open().toPromise())
-        .then(cancelAndCheckout => {
-            if (cancelAndCheckout) {
+            .then(_ => this.components.copyInTransitDialog.open().toPromise())
+            .then(cancelAndCheckout => {
+                if (cancelAndCheckout) {
 
-                return this.abortTransit(result.transit.id())
-                .then(_ => {
-                    // We had to look up the copy from the barcode since
-                    // it was not embedded in the result event.  Since
-                    // we have the specifics on the copy, go ahead and
-                    // copy them into the params we use for the follow
-                    // up checkout.
-                    result.params.copy_barcode = result.copy.barcode();
-                    result.params.copy_id = result.copy.id();
-                    return this.checkout(result.params);
-                });
+                    return this.abortTransit(result.transit.id())
+                        .then(_ => {
+                            // We had to look up the copy from the barcode since
+                            // it was not embedded in the result event.  Since
+                            // we have the specifics on the copy, go ahead and
+                            // copy them into the params we use for the follow
+                            // up checkout.
+                            result.params.copy_barcode = result.copy.barcode();
+                            result.params.copy_id = result.copy.id();
+                            return this.checkout(result.params);
+                        });
 
-            } else {
-                return result;
-            }
-        });
+                } else {
+                    return result;
+                }
+            });
     }
 
     // Ask the user if we should resolve the circulation and check
@@ -591,43 +591,43 @@ export class CircService {
             'open-ils.circ.copy_checkout_history.retrieve',
             this.auth.token(), result.params.copy_id, 1).toPromise()
 
-        .then(circs => {
-            const circ = circs[0];
+            .then(circs => {
+                const circ = circs[0];
 
-            sameUser = result.params.patron_id === circ.usr();
-            this.components.openCircDialog.sameUser = sameUser;
-            this.components.openCircDialog.circDate = circ.xact_start();
+                sameUser = result.params.patron_id === circ.usr();
+                this.components.openCircDialog.sameUser = sameUser;
+                this.components.openCircDialog.circDate = circ.xact_start();
 
-            return this.components.openCircDialog.open({size: 'lg'}).toPromise();
-        })
+                return this.components.openCircDialog.open({size: 'lg'}).toPromise();
+            })
 
-        .then(fromDialog => {
+            .then(fromDialog => {
 
-            // Leave the open circ checked out.
-            if (!fromDialog) { return result; }
+                // Leave the open circ checked out.
+                if (!fromDialog) { return result; }
 
-            const coParams = Object.assign({}, result.params); // clone
+                const coParams = Object.assign({}, result.params); // clone
 
-            if (fromDialog.renew) {
-                coParams.void_overdues = fromDialog.forgiveFines;
-                return this.renew(coParams);
-            }
-
-            const ciParams: CheckinParams = {
-                noop: true,
-                copy_id: coParams.copy_id,
-                void_overdues: fromDialog.forgiveFines
-            };
-
-            return this.checkin(ciParams)
-            .then(res => {
-                if (res.success) {
-                    return this.checkout(coParams);
-                } else {
-                    return Promise.reject('Unable to check in item');
+                if (fromDialog.renew) {
+                    coParams.void_overdues = fromDialog.forgiveFines;
+                    return this.renew(coParams);
                 }
+
+                const ciParams: CheckinParams = {
+                    noop: true,
+                    copy_id: coParams.copy_id,
+                    void_overdues: fromDialog.forgiveFines
+                };
+
+                return this.checkin(ciParams)
+                    .then(res => {
+                        if (res.success) {
+                            return this.checkout(coParams);
+                        } else {
+                            return Promise.reject('Unable to check in item');
+                        }
+                    });
             });
-        });
     }
 
     handleOverridableCheckoutEvents(result: CheckoutResult): Promise<CheckoutResult> {
@@ -658,12 +658,12 @@ export class CircService {
                 params._renewal ? 'renew' : 'checkout';
 
             return this.components.copyAlertManager.open().toPromise()
-            .then(resp => {
-                if (resp) {
-                    params._override = true;
-                    return this.checkout(params);
-                }
-            });
+                .then(resp => {
+                    if (resp) {
+                        params._override = true;
+                        return this.checkout(params);
+                    }
+                });
         }
 
         return this.showOverrideDialog(result, events);
@@ -688,44 +688,44 @@ export class CircService {
         this.components.circEventsDialog.mode = mode;
 
         return this.components.circEventsDialog.open().toPromise()
-        .then(resp => {
-            const confirmed = resp.override;
-            if (!confirmed) { return null; }
+            .then(resp => {
+                const confirmed = resp.override;
+                if (!confirmed) { return null; }
 
-            let promise = Promise.resolve(null);
+                let promise = Promise.resolve(null);
 
-            if (!checkin) {
+                if (!checkin) {
                 // Indicate these events have been seen and overridden.
-                events.forEach(evt => {
-                    if (CHECKOUT_OVERRIDE_AFTER_FIRST.includes(evt.textcode)) {
-                        this.autoOverrideCheckoutEvents[evt.textcode] = true;
-                    }
-                });
-
-                if (holdShelfEvent && resp.clearHold) {
-                    const holdId = holdShelfEvent.payload.hold_id;
-
-                    // Cancel the hold that put our checkout item
-                    // on the holds shelf.
-
-                    promise = promise.then(_ => {
-                        return this.net.request(
-                            'open-ils.circ',
-                            'open-ils.circ.hold.cancel',
-                            this.auth.token(),
-                            holdId,
-                            5, // staff forced
-                            'Item checked out by other patron' // FIXME I18n
-                        ).toPromise();
+                    events.forEach(evt => {
+                        if (CHECKOUT_OVERRIDE_AFTER_FIRST.includes(evt.textcode)) {
+                            this.autoOverrideCheckoutEvents[evt.textcode] = true;
+                        }
                     });
-                }
-            }
 
-            return promise.then(_ => {
-                params._override = true;
-                return this[mode](params); // checkout/renew/checkin
+                    if (holdShelfEvent && resp.clearHold) {
+                        const holdId = holdShelfEvent.payload.hold_id;
+
+                        // Cancel the hold that put our checkout item
+                        // on the holds shelf.
+
+                        promise = promise.then(_ => {
+                            return this.net.request(
+                                'open-ils.circ',
+                                'open-ils.circ.hold.cancel',
+                                this.auth.token(),
+                                holdId,
+                                5, // staff forced
+                                'Item checked out by other patron' // FIXME I18n
+                            ).toPromise();
+                        });
+                    }
+                }
+
+                return promise.then(_ => {
+                    params._override = true;
+                    return this[mode](params); // checkout/renew/checkin
+                });
             });
-        });
     }
 
     handlePrecat(result: CheckoutResult): Promise<CheckoutResult> {
@@ -759,8 +759,8 @@ export class CircService {
             return this.net.request(
                 'open-ils.circ', method,
                 this.auth.token(), this.apiParams(params)).toPromise()
-            .then(result => this.unpackCheckinData(params, result))
-            .then(result => this.processCheckinResult(result));
+                .then(result => this.unpackCheckinData(params, result))
+                .then(result => this.processCheckinResult(result));
         });
     }
 
@@ -769,7 +769,7 @@ export class CircService {
             flesh: 1,
             flesh_fields : {'au' : ['card', 'stat_cat_entries']}
         })
-        .toPromise();
+            .toPromise();
     }
 
     fleshCommonData(result: CircResultCommon): Promise<CircResultCommon> {
@@ -788,10 +788,10 @@ export class CircService {
             console.debug('fleshCommonData() hold ', hold.usr());
             promise = promise.then(_ => {
                 return this.fetchPatron(hold.usr())
-                .then(usr => {
-                    result.hold_patron = usr;
-                    console.debug('Setting hold patron to ' + usr.id());
-                });
+                    .then(usr => {
+                        result.hold_patron = usr;
+                        console.debug('Setting hold patron to ' + usr.id());
+                    });
             });
         }
 
@@ -802,10 +802,10 @@ export class CircService {
             console.debug('fleshCommonData() circ patron id', circPatronId);
             promise = promise.then(_ => {
                 return this.fetchPatron(circPatronId)
-                .then(usr => {
-                    result.circ_patron = usr;
-                    console.debug('Setting circ patron to ' + usr.id());
-                });
+                    .then(usr => {
+                        result.circ_patron = usr;
+                        console.debug('Setting circ patron to ' + usr.id());
+                    });
             });
         }
 
@@ -831,20 +831,20 @@ export class CircService {
             } else {
                 promise = promise.then(_ => {
                     return this.pcrud.retrieve('acpl', copy.location())
-                    .toPromise().then(loc => {
-                        copy.location(loc);
-                        this.copyLocationCache[loc.id()] = loc;
-                    });
+                        .toPromise().then(loc => {
+                            copy.location(loc);
+                            this.copyLocationCache[loc.id()] = loc;
+                        });
                 });
             }
 
             if (typeof copy.status() !== 'object') {
                 promise = promise.then(_ => this.holdings.getCopyStatuses())
-                .then(stats => {
-                    const stat =
+                    .then(stats => {
+                        const stat =
                         Object.values(stats).filter(s => s.id() === copy.status())[0];
-                    if (stat) { copy.status(stat); }
-                });
+                        if (stat) { copy.status(stat); }
+                    });
             }
         }
 
@@ -935,11 +935,11 @@ export class CircService {
         }
 
         return this.fleshCommonData(result)
-        .then(_ => this.updateInventory(result))
-        .then(_ => {
-            this.addWorkLog('checkin', result);
-            return result;
-        });
+            .then(_ => this.updateInventory(result))
+            .then(_ => {
+                this.addWorkLog('checkin', result);
+                return result;
+            });
     }
 
     updateInventory(result: CheckinResult): Promise<any> {
@@ -1000,8 +1000,8 @@ export class CircService {
 
                 this.components.routeDialog.checkin = result;
                 return this.findCopyTransit(result)
-                .then(_ => this.components.routeDialog.open().toPromise())
-                .then(_ => result);
+                    .then(_ => this.components.routeDialog.open().toPromise())
+                    .then(_ => result);
 
             case 'ASSET_COPY_NOT_FOUND':
                 this.audio.play('error.checkin.not_found');
@@ -1049,7 +1049,7 @@ export class CircService {
         if (!this.suppressCheckinPopups && !this.ignoreCheckinPrecats) {
             // Tell the user its a precat and return the result.
             return this.components.routeToCatalogingDialog.open()
-            .toPromise();
+                .toPromise();
         }
         return Promise.resolve(null);
     }
@@ -1081,7 +1081,7 @@ export class CircService {
                         result.routeTo = this.components.holdShelfStr.text;
                         this.components.routeDialog.checkin = result;
                         return this.components.routeDialog.open().toPromise()
-                        .then(_ => result);
+                            .then(_ => result);
 
                     } else {
                         // Should not happen in practice, but to be safe.
@@ -1125,7 +1125,7 @@ export class CircService {
         ).then(str => {
             this.components.locationAlertDialog.dialogBody = str;
             return this.components.locationAlertDialog.open().toPromise()
-            .then(_ => result);
+                .then(_ => result);
         });
     }
 
@@ -1142,7 +1142,7 @@ export class CircService {
         ).then(str => {
             this.components.uncatAlertDialog.dialogBody = str;
             return this.components.uncatAlertDialog.open().toPromise()
-            .then(_ => result);
+                .then(_ => result);
         });
     }
 
@@ -1173,19 +1173,19 @@ export class CircService {
             this.components.copyAlertManager.mode = 'checkin';
 
             return this.components.copyAlertManager.open().toPromise()
-            .then(resp => {
+                .then(resp => {
 
-                if (!resp) { return result; } // dialog was canceled
+                    if (!resp) { return result; } // dialog was canceled
 
-                if (resp.nextStatus !== null) {
-                    params.next_copy_status = [resp.nextStatus];
-                    params.capture = 'nocapture';
-                }
+                    if (resp.nextStatus !== null) {
+                        params.next_copy_status = [resp.nextStatus];
+                        params.capture = 'nocapture';
+                    }
 
-                params._override = true;
+                    params._override = true;
 
-                return this.checkin(params);
-            });
+                    return this.checkin(params);
+                });
         }
 
         return this.showOverrideDialog(result, events, true);
@@ -1274,10 +1274,10 @@ export class CircService {
         this.components.badBarcodeDialog.barcode = params.copy_barcode;
         return this.components.badBarcodeDialog.open().toPromise()
         // Avoid prompting again on an override
-        .then(response => {
-            params._checkbarcode = false;
-            return response;
-        });
+            .then(response => {
+                params._checkbarcode = false;
+                return response;
+            });
     }
 
     checkBarcode(barcode: string): boolean {

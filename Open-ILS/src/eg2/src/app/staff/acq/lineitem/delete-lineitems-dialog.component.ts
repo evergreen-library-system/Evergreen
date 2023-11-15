@@ -5,8 +5,8 @@ import {IdlService, IdlObject} from '@eg/core/idl.service';
 import {ComboboxEntry} from '@eg/share/combobox/combobox.component';
 
 @Component({
-  selector: 'eg-acq-delete-lineitems-dialog',
-  templateUrl: './delete-lineitems-dialog.component.html'
+    selector: 'eg-acq-delete-lineitems-dialog',
+    templateUrl: './delete-lineitems-dialog.component.html'
 })
 
 export class DeleteLineitemsDialogComponent extends DialogComponent {

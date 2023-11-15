@@ -53,7 +53,7 @@ export class ScheduleGridService {
                         second: 0}
                 });
             }));
-    }
+    };
 
     resourceAvailabilityIcon = (row: ScheduleRow, numResources: number): GridRowFlairEntry => {
         let icon = {icon: 'event_busy', title: 'All resources are reserved at this time'};
@@ -67,7 +67,7 @@ export class ScheduleGridService {
             icon = {icon: 'event_available', title: 'Resources are available at this time'};
         }
         return icon;
-    }
+    };
 
     fetchRelevantResources = (resourceTypeId: number, owningLibraries: number[], selectedAttributes: number[]): Observable<IdlObject> => {
         const where = {
@@ -78,14 +78,14 @@ export class ScheduleGridService {
         if (selectedAttributes.length) {
             where['id'] = {'in':
                 {'from': 'bram', 'select': {'bram': ['resource']},
-                'where': {'value':  selectedAttributes}}};
+                    'where': {'value':  selectedAttributes}}};
         }
         return this.pcrud.search('brsrc', where, {
             order_by: 'barcode ASC',
             flesh: 1,
             flesh_fields: {'brsrc': ['attr_maps']},
         });
-    }
+    };
 
     momentizeDateRange = (range: DateRange, timezone: string): {startTime: moment.Moment, endTime: moment.Moment} => {
         return {
@@ -93,14 +93,14 @@ export class ScheduleGridService {
                 range.fromDate.year,
                 range.fromDate.month - 1,
                 range.fromDate.day],
-                timezone),
+            timezone),
             endTime: moment.tz([
                 range.toDate.year,
                 range.toDate.month - 1,
                 range.toDate.day + 1],
-                timezone)
+            timezone)
         };
-    }
+    };
     momentizeDay = (date: Date, start: NgbTimeStruct, end: NgbTimeStruct, timezone: string):
         {startTime: moment.Moment, endTime: moment.Moment} => {
         return {
@@ -110,16 +110,16 @@ export class ScheduleGridService {
                 date.getDate(),
                 start.hour,
                 start.minute],
-                timezone),
+            timezone),
             endTime: moment.tz([
                 date.getFullYear(),
                 date.getMonth(),
                 date.getDate(),
                 end.hour,
                 end.minute],
-                timezone)
+            timezone)
         };
-    }
+    };
 
     createBasicSchedule = (range: {startTime: moment.Moment, endTime: moment.Moment}, granularity: number): ScheduleRow[] => {
         const currentTime = range.startTime.clone();
@@ -129,7 +129,7 @@ export class ScheduleGridService {
             currentTime.add(granularity, 'minutes');
         }
         return schedule;
-    }
+    };
 
     fetchReservations = (range: {startTime: moment.Moment, endTime: moment.Moment}, resourceIds: number[]): Observable<IdlObject> => {
         return this.pcrud.search('bresv', {
@@ -138,8 +138,8 @@ export class ScheduleGridService {
             'start_time': {'<': range.endTime.toISOString()},
             'return_time': null,
             'cancel_time': null },
-            {'flesh': 1, 'flesh_fields': {'bresv': ['current_resource', 'usr']}});
-    }
+        {'flesh': 1, 'flesh_fields': {'bresv': ['current_resource', 'usr']}});
+    };
 
     addReservationToSchedule = (reservation: IdlObject, schedule: ScheduleRow[], granularity: number, timezone: string): ScheduleRow[] => {
         for (let index = 0; index < schedule.length; index++) {
@@ -157,22 +157,22 @@ export class ScheduleGridService {
                     .findIndex(patron => patron.patronId === reservation.usr().id()) === -1) {
                     schedule[index].patrons[reservation.current_resource().barcode()].push(
                         {'patronLabel': reservation.usr().usrname(),
-                        'patronId': reservation.usr().id(),
-                        'reservationId': reservation.id()});
+                            'patronId': reservation.usr().id(),
+                            'reservationId': reservation.id()});
                 }
             }
 
         }
         return schedule;
 
-    }
+    };
 
     // Evergreen uses its own day of week style, where dow_0 = Monday and dow_6 = Sunday
     private evergreenStyleDow = (original: Date): string => {
         const daysInAWeek = 7;
         const offset = 6;
         return 'dow_' + (original.getDay() + offset) % daysInAWeek;
-    }
+    };
 
 
 }

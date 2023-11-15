@@ -3,7 +3,7 @@ import {Router, ActivatedRoute, ParamMap} from '@angular/router';
 import {IdlObject} from '@eg/core/idl.service';
 
 @Component({
-  templateUrl: 'asn.component.html'
+    templateUrl: 'asn.component.html'
 })
 export class AsnComponent {
 

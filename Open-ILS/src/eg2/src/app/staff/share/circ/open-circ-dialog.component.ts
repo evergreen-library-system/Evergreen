@@ -14,8 +14,8 @@ import {ComboboxEntry} from '@eg/share/combobox/combobox.component';
 /* Dialog for alerting of an existing open circulation */
 
 @Component({
-  selector: 'eg-open-circ-dialog',
-  templateUrl: 'open-circ-dialog.component.html'
+    selector: 'eg-open-circ-dialog',
+    templateUrl: 'open-circ-dialog.component.html'
 })
 
 export class OpenCircDialogComponent extends DialogComponent {

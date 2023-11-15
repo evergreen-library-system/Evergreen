@@ -11,22 +11,22 @@ import {BrowseService} from './browse.service';
 import {BibListModule} from '@eg/staff/share/bib-list/bib-list.module';
 
 @NgModule({
-  declarations: [
-    AuthorityMarcEditComponent,
-    BrowseAuthorityComponent,
-    ManageAuthorityComponent,
-    AuthorityMergeDialogComponent
-  ],
-  imports: [
-    StaffCommonModule,
-    CommonWidgetsModule,
-    MarcEditModule,
-    AuthorityRoutingModule,
-    BibListModule
-  ],
-  providers: [
-    BrowseService
-  ]
+    declarations: [
+        AuthorityMarcEditComponent,
+        BrowseAuthorityComponent,
+        ManageAuthorityComponent,
+        AuthorityMergeDialogComponent
+    ],
+    imports: [
+        StaffCommonModule,
+        CommonWidgetsModule,
+        MarcEditModule,
+        AuthorityRoutingModule,
+        BibListModule
+    ],
+    providers: [
+        BrowseService
+    ]
 })
 
 export class AuthorityModule {

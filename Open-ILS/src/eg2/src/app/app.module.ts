@@ -14,19 +14,19 @@ import {BaseRoutingModule} from './routing.module';
 import {WelcomeComponent} from './welcome.component';
 
 @NgModule({
-  declarations: [
-    BaseComponent,
-    WelcomeComponent
-  ],
-  imports: [
-    EgCommonModule.forRoot(),
-    BaseRoutingModule,
-    BrowserModule,
-    NgbModule,
-    CookieModule.forRoot()
-  ],
-  exports: [],
-  bootstrap: [BaseComponent]
+    declarations: [
+        BaseComponent,
+        WelcomeComponent
+    ],
+    imports: [
+        EgCommonModule.forRoot(),
+        BaseRoutingModule,
+        BrowserModule,
+        NgbModule,
+        CookieModule.forRoot()
+    ],
+    exports: [],
+    bootstrap: [BaseComponent]
 })
 
 export class BaseModule {}

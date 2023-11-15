@@ -2,8 +2,8 @@ import {Component, Input, ViewChild, OnInit, TemplateRef} from '@angular/core';
 import {DialogComponent} from '@eg/share/dialog/dialog.component';
 
 @Component({
-  selector: 'eg-prompt-dialog',
-  templateUrl: './prompt.component.html'
+    selector: 'eg-prompt-dialog',
+    templateUrl: './prompt.component.html'
 })
 
 /**

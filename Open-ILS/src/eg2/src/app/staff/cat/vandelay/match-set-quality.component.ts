@@ -11,8 +11,8 @@ import {Pager} from '@eg/share/util/pager';
 import {MatchSetNewPointComponent} from './match-set-new-point.component';
 
 @Component({
-  selector: 'eg-match-set-quality',
-  templateUrl: 'match-set-quality.component.html'
+    selector: 'eg-match-set-quality',
+    templateUrl: 'match-set-quality.component.html'
 })
 export class MatchSetQualityComponent {
 
@@ -68,7 +68,7 @@ export class MatchSetQualityComponent {
         this.deleteSelected = (rows: any[]) => {
             this.pcrud.remove(rows).subscribe(
                 ok  => console.log('deleted ', ok),
-                err => console.error(err),
+                (err: unknown) => console.error(err),
                 ()  => this.grid.reload()
             );
         };
@@ -91,7 +91,7 @@ export class MatchSetQualityComponent {
 
         this.pcrud.create(quality).subscribe(
             ok  => console.debug('created ', ok),
-            err => console.error(err),
+            (err: unknown) => console.error(err),
             ()  => {
                 this.newPointType = null;
                 this.grid.reload();

@@ -14,7 +14,7 @@ export class DateTimeSelectComponent implements OnInit, ControlValueAccessor {
     @Input() fieldName: string;
     @Input() initialIso: string;
     @Input() required: boolean;
-    @Input() minuteStep = 15;
+    @Input() minuteStep = 15; // eslint-disable-line no-magic-numbers
     @Input() showTZ = true;
     @Input() timezone: string = this.format.wsOrgTimezone;
     @Input() readOnly = false;
@@ -95,7 +95,7 @@ export class DateTimeSelectComponent implements OnInit, ControlValueAccessor {
                 this.time.value.hour, this.time.value.minute, 0], this.timezone);
             this.dateTimeForm.patchValue({stringVersion:
                 this.format.transform({value: newDate, datatype: 'timestamp', datePlusTime: true})},
-                {emitEvent: false, onlySelf: true});
+            {emitEvent: false, onlySelf: true});
             this.onChange(newDate);
             this.onChangeAsIso.emit(newDate.toISOString());
         });
@@ -105,11 +105,11 @@ export class DateTimeSelectComponent implements OnInit, ControlValueAccessor {
                 (this.date.value.month - 1),
                 this.date.value.day,
                 time.hour, time.minute, 0],
-                this.timezone);
+            this.timezone);
             this.dateTimeForm.patchValue({stringVersion:
                 this.format.transform({
-                value: newDate, datatype: 'timestamp', datePlusTime: true})},
-                {emitEvent: false, onlySelf: true});
+                    value: newDate, datatype: 'timestamp', datePlusTime: true})},
+            {emitEvent: false, onlySelf: true});
             this.onChange(newDate);
             this.onChangeAsIso.emit(newDate.toISOString());
         });
@@ -135,8 +135,8 @@ export class DateTimeSelectComponent implements OnInit, ControlValueAccessor {
     writeValue(value: moment.Moment|string) {
         if (typeof value === 'string') {
             if (value.length === 0) {
-               return;
-            };
+                return;
+            }
             value = this.format.momentizeIsoString(value, this.timezone);
         }
 

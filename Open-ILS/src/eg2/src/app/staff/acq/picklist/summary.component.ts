@@ -13,8 +13,8 @@ import {BroadcastService} from '@eg/share/util/broadcast.service';
 
 
 @Component({
-  templateUrl: 'summary.component.html',
-  selector: 'eg-acq-picklist-summary'
+    templateUrl: 'summary.component.html',
+    selector: 'eg-acq-picklist-summary'
 })
 export class PicklistSummaryComponent implements OnInit {
 

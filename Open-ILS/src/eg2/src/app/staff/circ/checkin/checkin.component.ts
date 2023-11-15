@@ -1,33 +1,34 @@
-import {Component, ViewChild, OnInit, AfterViewInit, HostListener} from '@angular/core';
+/* eslint-disable no-magic-numbers */
+import {Component, ViewChild, OnInit, AfterViewInit} from '@angular/core';
 import {Location} from '@angular/common';
 import {Router, ActivatedRoute, ParamMap} from '@angular/router';
 import {empty, from} from 'rxjs';
 import {concatMap} from 'rxjs/operators';
-import {IdlObject, IdlService} from '@eg/core/idl.service';
+import {IdlObject} from '@eg/core/idl.service';
 import {NetService} from '@eg/core/net.service';
 import {OrgService} from '@eg/core/org.service';
 import {AuthService} from '@eg/core/auth.service';
 import {ServerStoreService} from '@eg/core/server-store.service';
 import {PatronService} from '@eg/staff/share/patron/patron.service';
-import {GridDataSource, GridColumn, GridCellTextGenerator} from '@eg/share/grid/grid';
+import {GridDataSource, GridCellTextGenerator} from '@eg/share/grid/grid';
 import {GridComponent} from '@eg/share/grid/grid.component';
 import {Pager} from '@eg/share/util/pager';
 import {CircService, CircDisplayInfo, CheckinParams, CheckinResult
-    } from '@eg/staff/share/circ/circ.service';
+} from '@eg/staff/share/circ/circ.service';
 import {BarcodeSelectComponent
-    } from '@eg/staff/share/barcodes/barcode-select.component';
+} from '@eg/staff/share/barcodes/barcode-select.component';
 import {PrintService} from '@eg/share/print/print.service';
 import {MarkDamagedDialogComponent
-    } from '@eg/staff/share/holdings/mark-damaged-dialog.component';
+} from '@eg/staff/share/holdings/mark-damaged-dialog.component';
 import {CopyAlertsDialogComponent
-    } from '@eg/staff/share/holdings/copy-alerts-dialog.component';
+} from '@eg/staff/share/holdings/copy-alerts-dialog.component';
 import {BucketDialogComponent
-    } from '@eg/staff/share/buckets/bucket-dialog.component';
+} from '@eg/staff/share/buckets/bucket-dialog.component';
 import {ToastService} from '@eg/share/toast/toast.service';
 import {StringComponent} from '@eg/share/string/string.component';
 import {BackdateDialogComponent} from '@eg/staff/share/circ/backdate-dialog.component';
 import {CancelTransitDialogComponent
-    } from '@eg/staff/share/circ/cancel-transit-dialog.component';
+} from '@eg/staff/share/circ/cancel-transit-dialog.component';
 import {HoldingsService} from '@eg/staff/share/holdings/holdings.service';
 import {AnonCacheService} from '@eg/share/util/anon-cache.service';
 
@@ -57,8 +58,8 @@ const SETTINGS = [
 ];
 
 @Component({
-  templateUrl: 'checkin.component.html',
-  styleUrls: ['checkin.component.css']
+    templateUrl: 'checkin.component.html',
+    styleUrls: ['checkin.component.css']
 })
 export class CheckinComponent implements OnInit, AfterViewInit {
     checkins: CheckinGridEntry[] = [];
@@ -125,7 +126,7 @@ export class CheckinComponent implements OnInit, AfterViewInit {
 
         const setNames =
             CHECKIN_MODIFIERS.map(mod => `eg.circ.checkin.${mod}`)
-            .concat(SETTINGS);
+                .concat(SETTINGS);
 
         this.store.getItemBatch(setNames).then(sets => {
             CHECKIN_MODIFIERS.forEach(mod =>
@@ -168,16 +169,16 @@ export class CheckinComponent implements OnInit, AfterViewInit {
             return this.circ.checkin(collectedParams);
         })
 
-        .then((result: CheckinResult) => {
-            if (result && result.success) {
-                this.gridifyResult(result);
-            }
-            delete this.copiesInFlight[this.barcode];
-            this.resetForm();
-            return result;
-        })
+            .then((result: CheckinResult) => {
+                if (result && result.success) {
+                    this.gridifyResult(result);
+                }
+                delete this.copiesInFlight[this.barcode];
+                this.resetForm();
+                return result;
+            })
 
-        .finally(() => delete this.copiesInFlight[this.barcode]);
+            .finally(() => delete this.copiesInFlight[this.barcode]);
     }
 
     collectParams(): Promise<CheckinParams> {
@@ -201,16 +202,16 @@ export class CheckinComponent implements OnInit, AfterViewInit {
         });
 
         return this.barcodeSelect.getBarcode('asset', this.barcode)
-        .then(selection => {
-            if (selection) {
-                params.copy_id = selection.id;
-                params.copy_barcode = selection.barcode;
-                return params;
-            } else {
+            .then(selection => {
+                if (selection) {
+                    params.copy_id = selection.id;
+                    params.copy_barcode = selection.barcode;
+                    return params;
+                } else {
                 // User canceled the multi-match selection dialog.
-                return null;
-            }
-        });
+                    return null;
+                }
+            });
     }
 
     resetForm() {
@@ -374,23 +375,23 @@ export class CheckinComponent implements OnInit, AfterViewInit {
         from(rows).pipe(concatMap(row => {
             return from(
                 this.circ.findCopyTransit(row)
-                .then(transit => row.transit = transit)
+                    .then(transit => row.transit = transit)
             );
         }))
-        .pipe(concatMap(_ => {
+            .pipe(concatMap(_ => {
 
-            const ids = rows
-                .filter(row => Boolean(row.transit))
-                .map(row => row.transit.id());
+                const ids = rows
+                    .filter(row => Boolean(row.transit))
+                    .map(row => row.transit.id());
 
-            if (ids.length > 0) {
-                this.cancelTransitDialog.transitIds = ids;
-                return this.cancelTransitDialog.open();
-            } else {
-                return empty();
-            }
+                if (ids.length > 0) {
+                    this.cancelTransitDialog.transitIds = ids;
+                    return this.cancelTransitDialog.open();
+                } else {
+                    return empty();
+                }
 
-        })).subscribe();
+            })).subscribe();
     }
 
     showRecordHolds(rows: CheckinGridEntry[]) {
@@ -434,10 +435,10 @@ export class CheckinComponent implements OnInit, AfterViewInit {
         if (ids.length === 0) { return; }
 
         this.anonCache.setItem(null, 'print-labels-these-copies', {copies: ids})
-        .then(key => {
-            const url = `/eg/staff/cat/printlabels/${key}`;
-            window.open(url);
-        });
+            .then(key => {
+                const url = `/eg/staff/cat/printlabels/${key}`;
+                window.open(url);
+            });
     }
 }
 

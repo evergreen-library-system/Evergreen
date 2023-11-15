@@ -21,9 +21,9 @@ export class CoursePageComponent implements OnInit {
 
     // Materials Tab
     @ViewChild('courseMaterialDialog', {static: true})
-        private courseMaterialDialog: CourseAssociateMaterialComponent;
+    private courseMaterialDialog: CourseAssociateMaterialComponent;
     @ViewChild('courseUserDialog', {static: true})
-        private courseUserDialog: CourseAssociateUsersComponent;
+    private courseUserDialog: CourseAssociateUsersComponent;
 
     // Edit Tab
     @ViewChild('archiveFailedString', { static: true })
@@ -61,13 +61,13 @@ export class CoursePageComponent implements OnInit {
                 console.debug('archived: ' + val);
                 this.archiveSuccessString.current()
                     .then(str => this.toast.success(str));
-            }, err => {
+            }, (err: unknown) => {
                 this.archiveFailedString.current()
                     .then(str => this.toast.danger(str));
             });
         });
     }
-    
+
     unarchiveCourse() {
         this.course.disassociateMaterials([this.currentCourse]).then(res => {
             this.currentCourse.is_archived('f');
@@ -77,7 +77,7 @@ export class CoursePageComponent implements OnInit {
                 this.course.removeNonPublicUsers(this.currentCourse.id());
                 this.unarchiveSuccessString.current()
                     .then(str => this.toast.success(str));
-            }, err => {
+            }, (err: unknown) => {
                 this.unarchiveFailedString.current()
                     .then(str => this.toast.danger(str));
             });

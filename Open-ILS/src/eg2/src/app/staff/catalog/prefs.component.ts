@@ -19,7 +19,7 @@ const CATALOG_PREFS = [
 ];
 
 @Component({
-  templateUrl: 'prefs.component.html'
+    templateUrl: 'prefs.component.html'
 })
 export class PreferencesComponent implements OnInit {
 
@@ -39,7 +39,7 @@ export class PreferencesComponent implements OnInit {
 
         // Pre-fetched by the resolver.
         return this.store.getItemBatch(CATALOG_PREFS)
-        .then(settings => this.settings = settings);
+            .then(settings => this.settings = settings);
     }
 
     showCoursePreferences() {
@@ -52,21 +52,22 @@ export class PreferencesComponent implements OnInit {
 
         if (org.id()) {
             this.updateValue(setting, org ? org.id() : null)
-            .then(val => this.staffCat[localVar] = val);
+                .then(val => this.staffCat[localVar] = val);
         }
     }
 
     paneChanged(entry: ComboboxEntry) {
         this.updateValue('eg.search.adv_pane', entry ? entry.id : null)
-        .then(value => this.staffCat.defaultTab = value);
+            .then(value => this.staffCat.defaultTab = value);
     }
 
     countChanged() {
         this.updateValue('eg.catalog.results.count',
             this.settings['eg.catalog.results.count'] || null)
-        .then(value => {
-            this.staffCat.searchContext.pager.limit = value || 20;
-        });
+            .then(value => {
+                // eslint-disable-next-line no-magic-numbers
+                this.staffCat.searchContext.pager.limit = value || 20;
+            });
     }
 
     checkboxChanged(setting: string) {

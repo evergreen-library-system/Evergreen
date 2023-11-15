@@ -4,7 +4,7 @@ import {Router, ActivatedRoute} from '@angular/router';
 import {AuthService, AuthWsState} from '@eg/core/auth.service';
 
 @Component({
-  templateUrl : './login-not-allowed.component.html'
+    templateUrl : './login-not-allowed.component.html'
 })
 
 export class StaffLoginNotAllowedComponent implements OnInit, AfterViewInit {

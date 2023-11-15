@@ -13,8 +13,8 @@ import {BibRecordService, BibRecordSummary} from '@eg/share/catalog/bib-record.s
 import {VandelayService, VandelayImportSelection} from './vandelay.service';
 
 @Component({
-  selector: 'eg-queued-record-matches',
-  templateUrl: 'queued-record-matches.component.html'
+    selector: 'eg-queued-record-matches',
+    templateUrl: 'queued-record-matches.component.html'
 })
 export class QueuedRecordMatchesComponent {
 
@@ -117,7 +117,7 @@ export class QueuedRecordMatchesComponent {
                 const bibSummaries: {[id: number]: BibRecordSummary} = {};
                 this.bib.getBibSummaries(recIds).subscribe(
                     summary => bibSummaries[summary.id] = summary,
-                    err => {},
+                    (err: unknown) => {},
                     ()  => {
                         matches.forEach(match => {
                             const row = {

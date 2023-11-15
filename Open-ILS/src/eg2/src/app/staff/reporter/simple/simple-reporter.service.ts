@@ -1,11 +1,10 @@
 import {Injectable} from '@angular/core';
 import {Router, Resolve, RouterStateSnapshot,
-                ActivatedRouteSnapshot} from '@angular/router';
+    ActivatedRouteSnapshot} from '@angular/router';
 import * as moment from 'moment-timezone';
 import {Md5} from 'ts-md5';
-import {EMPTY} from 'rxjs';
+import {EMPTY, Observable, of, from} from 'rxjs';
 import {map, mergeMap, defaultIfEmpty, last} from 'rxjs/operators';
-import {Observable, of, from} from 'rxjs';
 import {AuthService} from '@eg/core/auth.service';
 import {PermService} from '@eg/core/perm.service';
 import {GridDataSource} from '@eg/share/grid/grid';
@@ -152,7 +151,7 @@ const transforms = [
         aggregate: true
     },
     // "Simple" would be to only offer the choice that's almost always what you mean.
-    /*{
+    /* {
         name: 'count',
         aggregate: true
     },*/
@@ -190,7 +189,7 @@ const operators = [
         name: '<> any'
     },
     // If I had a dollar for every time someone wanted a case sensitive substring search, I might be able to buy a coffee.
-    /*{
+    /* {
         name: 'like',
         arity: 1,
         datatypes: ['text']
@@ -362,48 +361,48 @@ export class SimpleReporterService {
             new Promise<void>((resolve, reject) => {
                 // Verify folders exist, create if not
                 this.getDefaultFolder('rtf')
-                .then(f => {
-                    if (f) {
-                        this.templateFolder = f;
-                        resolve();
-                    } else {
-                        this.createDefaultFolder('rtf')
-                        .then(n => {
-                            this.templateFolder = n;
+                    .then(f => {
+                        if (f) {
+                            this.templateFolder = f;
                             resolve();
-                        });
-                    }
-                });
+                        } else {
+                            this.createDefaultFolder('rtf')
+                                .then(n => {
+                                    this.templateFolder = n;
+                                    resolve();
+                                });
+                        }
+                    });
             }),
             new Promise<void>((resolve, reject) => {
                 this.getDefaultFolder('rrf')
-                .then(f => {
-                    if (f) {
-                        this.reportFolder = f;
-                        resolve();
-                    } else {
-                        this.createDefaultFolder('rrf')
-                        .then(n => {
-                            this.reportFolder = n;
+                    .then(f => {
+                        if (f) {
+                            this.reportFolder = f;
                             resolve();
-                        });
-                    }
-                });
+                        } else {
+                            this.createDefaultFolder('rrf')
+                                .then(n => {
+                                    this.reportFolder = n;
+                                    resolve();
+                                });
+                        }
+                    });
             }),
             new Promise<void>((resolve, reject) => {
                 this.getDefaultFolder('rof')
-                .then(f => {
-                    if (f) {
-                        resolve();
-                        this.outputFolder = f;
-                    } else {
-                        this.createDefaultFolder('rof')
-                        .then(n => {
-                            this.outputFolder = n;
+                    .then(f => {
+                        if (f) {
                             resolve();
-                        });
-                    }
-                });
+                            this.outputFolder = f;
+                        } else {
+                            this.createDefaultFolder('rof')
+                                .then(n => {
+                                    this.outputFolder = n;
+                                    resolve();
+                                });
+                        }
+                    });
             })
         ]);
     }
@@ -475,7 +474,7 @@ export class SimpleReporterService {
     getDefaultFolder(fmClass: string): Promise<IdlObject> {
         return this.pcrud.search(fmClass,
             { owner: this.auth.user().id(), 'simple_reporter': 't', name: defaultFolderName },
-        {}).toPromise();
+            {}).toPromise();
     }
 
     createDefaultFolder(fmClass: string): Promise<IdlObject> {
@@ -500,7 +499,7 @@ export class SimpleReporterService {
 
     saveTemplate(
         templ: SRTemplate,
-        scheduleNow: boolean = false
+        scheduleNow = false
     ): Promise<any> { // IdlObject or Number? It depends!
         const rtData = this.buildTemplateData(templ);
 
@@ -536,58 +535,58 @@ export class SimpleReporterService {
         rrIdl.folder(this.reportFolder.id());
         rrIdl.template(templ.id);
         rrIdl.create_time('now'); // rr create time is serving as the edit time
-                                  // of the SR template as a whole
+        // of the SR template as a whole
 
         rrIdl.recur(templ.recurring ? 't' : 'f');
         rrIdl.recurrence(templ.recurrence);
 
         return this.pcrud.search('rt', { name: rtIdl.name(), folder: rtIdl.folder() })
-        .pipe(defaultIfEmpty(rtIdl), map(existing => {
-            if (existing.id() !== rtIdl.id()) { // oh no! dup name
-                throw new Error(': Duplicate Report Name');
-            }
+            .pipe(defaultIfEmpty(rtIdl), map(existing => {
+                if (existing.id() !== rtIdl.id()) { // oh no! dup name
+                    throw new Error(': Duplicate Report Name');
+                }
 
-            if ( templ.id === -1 ) {
-                return this.pcrud.create(rtIdl).pipe(mergeMap(rt => {
-                    rrIdl.template(rt.id());
-                    // after saving the rr, return an Observable of the rt
-                    // to the caller
-                    return this.pcrud.create(rrIdl).pipe(mergeMap(
-                        rr => this.scheduleReport(templ, rr, scheduleNow).pipe(mergeMap(rs => of(rt)))
-                    ));
-                })).toPromise();
-            } else {
-                const emptyRR = this.idl.create('rr');
-                emptyRR.id('no_rr');
-                return this.pcrud.update(rtIdl).pipe(mergeMap(rtId => {
+                if ( templ.id === -1 ) {
+                    return this.pcrud.create(rtIdl).pipe(mergeMap(rt => {
+                        rrIdl.template(rt.id());
+                        // after saving the rr, return an Observable of the rt
+                        // to the caller
+                        return this.pcrud.create(rrIdl).pipe(mergeMap(
+                            rr => this.scheduleReport(templ, rr, scheduleNow).pipe(mergeMap(rs => of(rt)))
+                        ));
+                    })).toPromise();
+                } else {
+                    const emptyRR = this.idl.create('rr');
+                    emptyRR.id('no_rr');
+                    return this.pcrud.update(rtIdl).pipe(mergeMap(rtId => {
                     // we may or may not have the rr already created, so
                     // test and act accordingly
-                    return this.pcrud.search('rr', { template: rtId }).pipe(defaultIfEmpty(emptyRR), mergeMap(rr => {
-                        if (rr.id() === 'no_rr') {
-                            rrIdl.isnew(true);
-                            return this.pcrud.create(rrIdl).pipe(mergeMap(rr2 =>
-                                this.scheduleReport(templ, rr2, scheduleNow).pipe(mergeMap(rs => of(rtId)))
-                            ));
-                        } else {
-                            rr.create_time('now'); // rr create time is serving as the
-                                                                         // edit time of the SR template as a whole
-                            rr.recur(templ.recurring ? 't' : 'f');
-                            rr.recurrence(templ.recurrence);
-                            rr.data(rrIdl.data());
-                            return this.pcrud.update(rr).pipe(mergeMap(
-                                rr2 => this.scheduleReport(templ, rr, scheduleNow).pipe(mergeMap(rs => of(rtId) ))
-                            ));
-                        }
-                    }));
-                })).toPromise();
-            }
-        })).toPromise();
+                        return this.pcrud.search('rr', { template: rtId }).pipe(defaultIfEmpty(emptyRR), mergeMap(rr => {
+                            if (rr.id() === 'no_rr') {
+                                rrIdl.isnew(true);
+                                return this.pcrud.create(rrIdl).pipe(mergeMap(rr2 =>
+                                    this.scheduleReport(templ, rr2, scheduleNow).pipe(mergeMap(rs => of(rtId)))
+                                ));
+                            } else {
+                                rr.create_time('now'); // rr create time is serving as the
+                                // edit time of the SR template as a whole
+                                rr.recur(templ.recurring ? 't' : 'f');
+                                rr.recurrence(templ.recurrence);
+                                rr.data(rrIdl.data());
+                                return this.pcrud.update(rr).pipe(mergeMap(
+                                    rr2 => this.scheduleReport(templ, rr, scheduleNow).pipe(mergeMap(rs => of(rtId) ))
+                                ));
+                            }
+                        }));
+                    })).toPromise();
+                }
+            })).toPromise();
     }
 
     scheduleReport(templ: SRTemplate, rr: IdlObject, scheduleNow: boolean): Observable<IdlObject> {
         const rs = this.idl.create('rs');
         if (!scheduleNow) {
-                return of(rs); // return a placeholder
+            return of(rs); // return a placeholder
         }
         rs.isnew(true);
         rs.report(rr.id());
@@ -614,8 +613,8 @@ export class SimpleReporterService {
                 old_rs.forEach(x => x.isdeleted(true));
                 old_rs.push(rs);
                 return this.pcrud.autoApply(old_rs).pipe(last()); // note that we don't care
-                                                                  // what the last one processed
-                                                                  // actually is
+                // what the last one processed
+                // actually is
             } else {
                 return this.pcrud.create(rs);
             }
@@ -753,7 +752,7 @@ export class SimpleReporterService {
             const searchOpts = {
                 flesh: 2,
                 flesh_fields: {
-                        rcr: ['run'],
+                    rcr: ['run'],
                 },
                 offset: pager.offset,
                 limit: pager.limit,
@@ -761,22 +760,22 @@ export class SimpleReporterService {
             };
 
             return this.pcrud.search('rcr', query, searchOpts)
-            .pipe(map(row => {
-                if ( this.evt.parse(row) ) {
-                    throw new Error(row);
-                } else {
-                    return {
-                        template_name: row.template_name(),
-                        complete_time: row.complete_time(),
-                        id: row.run().id(),
-                        report_id: row.report(),
-                        template_id: row.template(),
-                        error_code: row.run().error_code(),
-                        error_text: row.run().error_text(),
-                        _rs: row.run()
-                    };
-                }
-            }));
+                .pipe(map(row => {
+                    if ( this.evt.parse(row) ) {
+                        throw new Error(row);
+                    } else {
+                        return {
+                            template_name: row.template_name(),
+                            complete_time: row.complete_time(),
+                            id: row.run().id(),
+                            report_id: row.report(),
+                            template_id: row.template(),
+                            error_code: row.run().error_code(),
+                            error_text: row.run().error_text(),
+                            _rs: row.run()
+                        };
+                    }
+                }));
 
         };
 
@@ -887,28 +886,28 @@ export class SimpleReporterService {
 @Injectable()
 export class SimpleReporterServiceResolver implements Resolve<Promise<any[]>> {
 
-        constructor(
+    constructor(
                 private router: Router,
                 private perm: PermService,
                 private svc: SimpleReporterService
-        ) {}
+    ) {}
 
-        resolve(
-                route: ActivatedRouteSnapshot,
-                state: RouterStateSnapshot): Promise<any[]> {
+    resolve(
+        route: ActivatedRouteSnapshot,
+        state: RouterStateSnapshot): Promise<any[]> {
 
-                return from(this.perm.hasWorkPermHere('RUN_SIMPLE_REPORTS')).pipe(mergeMap(
-                        permResult => {
-                                if (permResult['RUN_SIMPLE_REPORTS']) {
-                                        return Promise.all([
-                                                this.svc._initFolders()
-                                        ]);
-                                } else {
-                                        this.router.navigate(['/staff/no_permission']);
-                                        return EMPTY;
-                                }
-                        }
-                )).toPromise();
-        }
+        return from(this.perm.hasWorkPermHere('RUN_SIMPLE_REPORTS')).pipe(mergeMap(
+            permResult => {
+                if (permResult['RUN_SIMPLE_REPORTS']) {
+                    return Promise.all([
+                        this.svc._initFolders()
+                    ]);
+                } else {
+                    this.router.navigate(['/staff/no_permission']);
+                    return EMPTY;
+                }
+            }
+        )).toPromise();
+    }
 
 }

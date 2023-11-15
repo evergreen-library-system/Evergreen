@@ -29,7 +29,7 @@ interface PullListRow {
 
 export class PullListComponent implements OnInit {
     @ViewChild('confirmCancelReservationDialog', { static: true })
-        private cancelReservationDialog: CancelReservationDialogComponent;
+    private cancelReservationDialog: CancelReservationDialogComponent;
 
     @ViewChild('pullList', { static: true }) private pullList: GridComponent;
 
@@ -78,7 +78,7 @@ export class PullListComponent implements OnInit {
                 (this.daysHence.value * numberOfSecondsInADay),
                 this.currentOrg
             ).pipe(switchMap(arr => from(arr)), // Change the array we got into a stream
-            mergeMap(resource => this.fleshResource$(resource)) // Add info for cataloged resources
+                mergeMap(resource => this.fleshResource$(resource)) // Add info for cataloged resources
             );
         };
     }
@@ -88,27 +88,27 @@ export class PullListComponent implements OnInit {
     notOneResourceSelected = (rows: IdlObject[]) => {
         return this.actions.notOneUniqueSelected(
             rows.map(row => { if (row['current_resource']) { return row['current_resource']['id']; }}));
-    }
+    };
 
     notOneCatalogedItemSelected = (rows: IdlObject[]) => {
         return this.actions.notOneUniqueSelected(
             rows.filter(row => (row['current_resource'] && row['call_number']))
-            .map(row => row['current_resource'].id())
+                .map(row => row['current_resource'].id())
         );
-    }
+    };
 
     cancelSelected = (rows: IdlObject[]) => {
         this.cancelReservationDialog.open(rows.map(row => row['reservations'][0].id()));
-    }
+    };
 
     fleshResource$ = (resource: any): Observable<PullListRow> => {
         if ('t' === resource['target_resource_type'].catalog_item()) {
             return this.pcrud.search('acp', {
                 'barcode': resource['current_resource'].barcode()
-                }, {
-                    limit: 1,
-                    flesh: 1,
-                    flesh_fields: {'acp' : ['call_number', 'location' ]}
+            }, {
+                limit: 1,
+                flesh: 1,
+                flesh_fields: {'acp' : ['call_number', 'location' ]}
             }).pipe(mergeMap((acp) => {
                 resource['call_number'] = acp.call_number().label();
                 resource['call_number_sortkey'] = acp.call_number().label_sortkey();
@@ -118,15 +118,15 @@ export class PullListComponent implements OnInit {
         } else {
             return of(resource);
         }
-    }
+    };
 
     viewByResource = (reservations: IdlObject[]) => {
         this.actions.manageReservationsByResource(reservations[0]['current_resource'].barcode());
-    }
+    };
 
     viewItemStatus = (reservations: IdlObject[]) => {
         this.actions.viewItemStatus(reservations[0]['current_resource'].barcode());
-    }
+    };
 
     get daysHence() {
         return this.pullListCriteria.get('daysHence');

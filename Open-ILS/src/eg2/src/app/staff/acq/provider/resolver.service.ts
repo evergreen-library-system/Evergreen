@@ -1,7 +1,7 @@
 import {Injectable} from '@angular/core';
 import {Observable} from 'rxjs';
 import {Router, Resolve, RouterStateSnapshot,
-        ActivatedRouteSnapshot, CanDeactivate} from '@angular/router';
+    ActivatedRouteSnapshot, CanDeactivate} from '@angular/router';
 import {ProviderRecordService} from './provider-record.service';
 
 @Injectable()

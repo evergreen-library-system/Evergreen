@@ -18,7 +18,7 @@ interface Workstation {
 }
 
 @Component({
-  templateUrl: 'workstations.component.html'
+    templateUrl: 'workstations.component.html'
 })
 export class WorkstationsComponent implements OnInit {
 
@@ -37,7 +37,7 @@ export class WorkstationsComponent implements OnInit {
     disableOrgs: number[];
     orgOnChange = (org: IdlObject): void => {
         this.newOwner = org;
-    }
+    };
 
     constructor(
         private router: Router,
@@ -54,37 +54,37 @@ export class WorkstationsComponent implements OnInit {
     ngOnInit() {
         this.store.getWorkstations()
 
-        .then(wsList => {
-            this.workstations = wsList || [];
+            .then(wsList => {
+                this.workstations = wsList || [];
 
-            // Populate the new WS name field with the hostname when available.
-            return this.setNewName();
+                // Populate the new WS name field with the hostname when available.
+                return this.setNewName();
 
-        }).then(
-            ok => this.store.getDefaultWorkstation()
+            }).then(
+                ok => this.store.getDefaultWorkstation()
 
-        ).then(def => {
-            this.defaultName = def;
-            this.selectedName = this.auth.workstation() || this.defaultName;
-            const rm = this.route.snapshot.paramMap.get('remove');
-            if (rm) { this.removeSelected(this.removeWorkstation = rm); }
-        });
+            ).then(def => {
+                this.defaultName = def;
+                this.selectedName = this.auth.workstation() || this.defaultName;
+                const rm = this.route.snapshot.paramMap.get('remove');
+                if (rm) { this.removeSelected(this.removeWorkstation = rm); }
+            });
 
         // TODO: use the org selector limitPerm option
         this.perm.hasWorkPermAt(['REGISTER_WORKSTATION'], true)
-        .then(perms => {
+            .then(perms => {
             // Disable org units that cannot have users and any
             // that this user does not have work perms for.
-            this.disableOrgs =
+                this.disableOrgs =
                 this.org.filterList({canHaveUsers : false}, true)
-                .concat(this.org.filterList(
-                    {notInList : perms.REGISTER_WORKSTATION}, true));
-        });
+                    .concat(this.org.filterList(
+                        {notInList : perms.REGISTER_WORKSTATION}, true));
+            });
     }
 
     selected(): Workstation {
         return this.workstations.filter(
-          ws => ws.name === this.selectedName)[0];
+            ws => ws.name === this.selectedName)[0];
     }
 
     useNow(): void {
@@ -95,7 +95,7 @@ export class WorkstationsComponent implements OnInit {
     }
 
     setDefault(): void {
-      if (this.selected()) {
+        if (this.selected()) {
             this.defaultName = this.selected().name;
             this.store.setDefaultWorkstation(this.defaultName);
         }
@@ -119,7 +119,7 @@ export class WorkstationsComponent implements OnInit {
     }
 
     registerWorkstation(): void {
-        console.log(`Registering new workstation ` +
+        console.log('Registering new workstation ' +
             `"${this.newName}" at ${this.newOwner.shortname()}`);
 
         this.newName = this.newOwner.shortname() + '-' + this.newName;
@@ -167,7 +167,7 @@ export class WorkstationsComponent implements OnInit {
                         reject();
                     }
                 } else {
-                   resolve(wsId);
+                    resolve(wsId);
                 }
             });
         });

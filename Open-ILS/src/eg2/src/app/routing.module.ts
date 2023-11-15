@@ -11,21 +11,21 @@ import {WelcomeComponent} from './welcome.component';
  * from the server only when needed.
  */
 const routes: Routes = [
-  { path: '',
-    component: WelcomeComponent
-  }, {
-    path: 'staff',
-    resolve : {startup : BaseResolver},
-    loadChildren: () => import('./staff/staff.module').then(m => m.StaffModule)
-  }
+    { path: '',
+        component: WelcomeComponent
+    }, {
+        path: 'staff',
+        resolve : {startup : BaseResolver},
+        loadChildren: () => import('./staff/staff.module').then(m => m.StaffModule)
+    }
 ];
 
 @NgModule({
-  imports: [RouterModule.forRoot(routes, {
-    onSameUrlNavigation: 'reload'
-})],
-  exports: [RouterModule],
-  providers: [BaseResolver]
+    imports: [RouterModule.forRoot(routes, {
+        onSameUrlNavigation: 'reload'
+    })],
+    exports: [RouterModule],
+    providers: [BaseResolver]
 })
 
 export class BaseRoutingModule {}

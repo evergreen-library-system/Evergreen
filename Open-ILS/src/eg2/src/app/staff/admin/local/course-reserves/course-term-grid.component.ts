@@ -112,7 +112,8 @@ export class TermListComponent implements OnInit, AfterViewInit {
                     .then(str => this.toast.success(str));
                 this.grid.reload();
             },
-            rejection => {
+            // eslint-disable-next-line rxjs/no-implicit-any-catch
+            (rejection: any) => {
                 if (!rejection.dismissed) {
                     this.createErrString.current()
                         .then(str => this.toast.danger(str));
@@ -133,7 +134,8 @@ export class TermListComponent implements OnInit, AfterViewInit {
                         .then(str => this.toast.success(str));
                     this.grid.reload();
                 },
-                rejection => {
+                // eslint-disable-next-line rxjs/no-implicit-any-catch
+                (rejection: any) => {
                     if (!rejection.dismissed) {
                         this.createErrString.current()
                             .then(str => this.toast.danger(str));
@@ -151,7 +153,7 @@ export class TermListComponent implements OnInit, AfterViewInit {
                 if (map) {
                     termHasLinkedCourses = true;
                 }
-            }, err => {
+            }, (err: unknown) => {
                 console.error(err);
             }, () => {
                 if (termHasLinkedCourses) {
@@ -176,7 +178,7 @@ export class TermListComponent implements OnInit, AfterViewInit {
                 this.deleteSuccessString.current()
                     .then(str => this.toast.success(str));
             },
-            err => {
+            (err: unknown) => {
                 this.deleteFailedString.current()
                     .then(str => this.toast.danger(str));
             },

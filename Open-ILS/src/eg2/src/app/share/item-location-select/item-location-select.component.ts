@@ -21,16 +21,16 @@ import {ItemLocationService} from './item-location-select.service';
  */
 
 @Component({
-  selector: 'eg-item-location-select',
-  templateUrl: './item-location-select.component.html',
-  providers: [{
-      provide: NG_VALUE_ACCESSOR,
-      useExisting: forwardRef(() => ItemLocationSelectComponent),
-      multi: true
-  }]
+    selector: 'eg-item-location-select',
+    templateUrl: './item-location-select.component.html',
+    providers: [{
+        provide: NG_VALUE_ACCESSOR,
+        useExisting: forwardRef(() => ItemLocationSelectComponent),
+        multi: true
+    }]
 })
 export class ItemLocationSelectComponent
-    implements OnInit, AfterViewInit, ControlValueAccessor {
+implements OnInit, AfterViewInit, ControlValueAccessor {
     static domIdAuto = 0;
 
     // Limit copy locations to those owned at or above org units where
@@ -129,8 +129,8 @@ export class ItemLocationSelectComponent
             this.initDone = true;
         } else {
             this.setFilterOrgs()
-            .then(_ => this.getLocations())
-            .then(_ => this.initDone = true);
+                .then(_ => this.getLocations())
+                .then(_ => this.initDone = true);
         }
     }
 
@@ -232,7 +232,7 @@ export class ItemLocationSelectComponent
                     this.loc.locationCache[loc.id()] = loc;
                     observer.next({id: loc.id(), label: loc.name(), userdata: loc});
                 },
-                err => {},
+                (err: unknown) => {},
                 () => observer.complete()
             );
         });
@@ -312,25 +312,25 @@ export class ItemLocationSelectComponent
         }
 
         return this.perm.hasWorkPermAt([this.permFilter], true)
-        .then(values => {
+            .then(values => {
             // Include ancestors of perm-approved org units (shared item locations)
 
-            const permOrgIds = values[this.permFilter];
-            let trimmedOrgIds = [];
-            permOrgIds.forEach(orgId => {
-                if (orgIds.includes(orgId)) {
-                    trimmedOrgIds = trimmedOrgIds.concat(this.org.ancestors(orgId, true));
-                    if (this.includeDescendants) {
-                        trimmedOrgIds = trimmedOrgIds.concat(this.org.descendants(orgId, true));
+                const permOrgIds = values[this.permFilter];
+                let trimmedOrgIds = [];
+                permOrgIds.forEach(orgId => {
+                    if (orgIds.includes(orgId)) {
+                        trimmedOrgIds = trimmedOrgIds.concat(this.org.ancestors(orgId, true));
+                        if (this.includeDescendants) {
+                            trimmedOrgIds = trimmedOrgIds.concat(this.org.descendants(orgId, true));
+                        }
                     }
-                }
+                });
+
+                this.filterOrgs = [...new Set(trimmedOrgIds)];
+                this.loc.filterOrgsCache[this.permFilter] = this.filterOrgs;
+
+                return this.filterOrgs;
             });
-
-            this.filterOrgs = [...new Set(trimmedOrgIds)];
-            this.loc.filterOrgsCache[this.permFilter] = this.filterOrgs;
-
-            return this.filterOrgs;
-        });
     }
 
     orgName(orgId: number): string {

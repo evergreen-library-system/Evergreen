@@ -24,8 +24,8 @@ const VALID_PRE_PO_LI_STATES = [
 ];
 
 @Component({
-  templateUrl: 'create.component.html',
-  selector: 'eg-acq-po-create'
+    templateUrl: 'create.component.html',
+    selector: 'eg-acq-po-create'
 })
 export class PoCreateComponent implements OnInit {
 
@@ -76,10 +76,10 @@ export class PoCreateComponent implements OnInit {
                 liStruct => {
                     fleshed_lis.push(liStruct.lineitem);
                 },
-                err => { },
+                (err: unknown) => { },
                 () => {
                     this.lineitems = fleshed_lis.filter(li => VALID_PRE_PO_LI_STATES.includes(li.state()))
-                                                .map(li => li.id());
+                        .map(li => li.id());
                     this.initDone = true;
                 }
             );

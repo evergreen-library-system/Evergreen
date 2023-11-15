@@ -85,11 +85,11 @@ export class CourseAssociateUsersComponent extends DialogComponent implements On
                 'open-ils.actor.user.retrieve_id_by_barcode_or_username',
                 this.auth.token(), barcode.trim()
             ).subscribe(patron => {
-                    this.course.associateUsers(patron, args)
+                this.course.associateUsers(patron, args)
                     .then(() => this.usersGrid.reload());
-                }, err => {
-                    this.userAddFailedString.current().then(str => this.toast.danger(str));
-                }
+            }, (err: unknown) => {
+                this.userAddFailedString.current().then(str => this.toast.danger(str));
+            }
             );
         }
     }
@@ -127,7 +127,7 @@ export class CourseAssociateUsersComponent extends DialogComponent implements On
                     this.usersGrid.reload();
                     resolve(result);
                 },
-                error => {
+                (error: unknown) => {
                     this.userEditFailedString.current()
                         .then(str => this.toast.danger(str));
                     reject(error);
@@ -140,13 +140,14 @@ export class CourseAssociateUsersComponent extends DialogComponent implements On
         const acmcu_ids = users.map(u => u.id());
         this.pcrud.search('acmcu', {course: this.courseId, id: acmcu_ids}).subscribe(user => {
             user.isdeleted(true);
+            // eslint-disable-next-line rxjs/no-nested-subscribe
             this.pcrud.autoApply(user).subscribe(
                 val => {
                     console.debug('deleted: ' + val);
                     this.userDeleteSuccessString.current().then(str => this.toast.success(str));
                     this.usersGrid.reload();
                 },
-                err => {
+                (err: unknown) => {
                     this.userDeleteFailedString.current()
                         .then(str => this.toast.danger(str));
                 }

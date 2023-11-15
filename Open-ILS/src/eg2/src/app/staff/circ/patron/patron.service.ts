@@ -4,7 +4,7 @@ import {NetService} from '@eg/core/net.service';
 import {OrgService} from '@eg/core/org.service';
 import {AuthService} from '@eg/core/auth.service';
 import {PatronService, PatronSummary, PatronStats, PatronAlerts
-    } from '@eg/staff/share/patron/patron.service';
+} from '@eg/staff/share/patron/patron.service';
 import {PatronSearch} from '@eg/staff/share/patron/search.component';
 import {StoreService} from '@eg/core/store.service';
 import {ServerStoreService} from '@eg/core/server-store.service';
@@ -98,10 +98,10 @@ export class PatronContextService {
         }
 
         return this.patrons.getFleshedById(id, PATRON_FLESH_FIELDS)
-        .then(p => this.summary = new PatronSummary(p))
-        .then(_ => this.getPatronStats(id))
-        .then(_ => this.compileAlerts())
-        .then(_ => this.addRecentPatron());
+            .then(p => this.summary = new PatronSummary(p))
+            .then(_ => this.getPatronStats(id))
+            .then(_ => this.compileAlerts())
+            .then(_ => this.addRecentPatron());
     }
 
     addRecentPatron(patronId?: number): Promise<any> {
@@ -109,19 +109,19 @@ export class PatronContextService {
         if (!patronId) { patronId = this.summary.id; }
 
         return this.serverStore.getItem('ui.staff.max_recent_patrons')
-        .then(num => {
-            if (num) { this.maxRecentPatrons = num; }
+            .then(num => {
+                if (num) { this.maxRecentPatrons = num; }
 
-            let patrons: number[] =
+                let patrons: number[] =
                 this.store.getLoginSessionItem('eg.circ.recent_patrons') || [];
 
-            // remove potential existing duplicates
-            patrons = patrons.filter(id => patronId !== id);
-            patrons.splice(0, 0, patronId);  // put this user at front
-            patrons.splice(this.maxRecentPatrons); // remove excess
+                // remove potential existing duplicates
+                patrons = patrons.filter(id => patronId !== id);
+                patrons.splice(0, 0, patronId);  // put this user at front
+                patrons.splice(this.maxRecentPatrons); // remove excess
 
-            this.store.setLoginSessionItem('eg.circ.recent_patrons', patrons);
-        });
+                this.store.setLoginSessionItem('eg.circ.recent_patrons', patrons);
+            });
     }
 
     getPatronStats(id: number): Promise<any> {
@@ -132,7 +132,7 @@ export class PatronContextService {
         if (!this.summary) { return Promise.resolve(); }
 
         return this.patrons.getVitalStats(this.summary.patron)
-        .then(stats => this.summary.stats = stats);
+            .then(stats => this.summary.stats = stats);
     }
 
     patronAlertsShown(): boolean {
@@ -150,17 +150,17 @@ export class PatronContextService {
         if (!this.summary) { return Promise.resolve(); }
 
         return this.patrons.compileAlerts(this.summary)
-        .then(alerts => {
-            this.summary.alerts = alerts;
+            .then(alerts => {
+                this.summary.alerts = alerts;
 
-            if (this.searchBarcode) {
-                const card = this.summary.patron.cards()
-                    .filter(c => c.barcode() === this.searchBarcode)[0];
-                this.summary.alerts.retrievedWithInactive =
+                if (this.searchBarcode) {
+                    const card = this.summary.patron.cards()
+                        .filter(c => c.barcode() === this.searchBarcode)[0];
+                    this.summary.alerts.retrievedWithInactive =
                     card && card.active() === 'f';
-                this.searchBarcode = null;
-            }
-        });
+                    this.searchBarcode = null;
+                }
+            });
     }
 
     orgSn(orgId: number): string {

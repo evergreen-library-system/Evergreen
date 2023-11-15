@@ -15,8 +15,8 @@ import {StringComponent} from '@eg/share/string/string.component';
  */
 
 @Component({
-  selector: 'eg-hold-transfer-dialog',
-  templateUrl: 'transfer-dialog.component.html'
+    selector: 'eg-hold-transfer-dialog',
+    templateUrl: 'transfer-dialog.component.html'
 })
 
 export class HoldTransferDialogComponent
@@ -53,7 +53,7 @@ export class HoldTransferDialogComponent
 
         if (!this.transferTarget) {
             this.targetNeeded.current()
-            .then((msg) => this.toast.warning(msg));
+                .then((msg) => this.toast.warning(msg));
 
             return throwError('Transfer Target Required');
         }

@@ -5,8 +5,8 @@ import {GridColumn, GridColumnSet, GridContext} from './grid';
 import {NgbModal, NgbModalOptions} from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
-  selector: 'eg-grid-column-config',
-  templateUrl: './grid-column-config.component.html'
+    selector: 'eg-grid-column-config',
+    templateUrl: './grid-column-config.component.html'
 })
 
 /**

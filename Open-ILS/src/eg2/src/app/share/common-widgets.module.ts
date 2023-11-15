@@ -21,42 +21,42 @@ import {ClipboardDialogComponent} from '@eg/share/clipboard/clipboard-dialog.com
 
 
 @NgModule({
-  declarations: [
-    ComboboxComponent,
-    ComboboxEntryComponent,
-    DateSelectComponent,
-    OrgSelectComponent,
-    DateRangeSelectComponent,
-    DateTimeSelectComponent,
-    FileReaderComponent,
-    ClipboardDialogComponent,
-    IdlClassTemplateDirective,
-    IntervalInputComponent,
-  ],
-  imports: [
-    CommonModule,
-    FormsModule,
-    ReactiveFormsModule,
-    NgbModule,
-    EgCoreModule,
-    ContextMenuModule
-  ],
-  exports: [
-    CommonModule,
-    FormsModule,
-    NgbModule,
-    EgCoreModule,
-    ComboboxComponent,
-    ComboboxEntryComponent,
-    DateSelectComponent,
-    OrgSelectComponent,
-    DateRangeSelectComponent,
-    DateTimeSelectComponent,
-    ClipboardDialogComponent,
-    ContextMenuModule,
-    FileReaderComponent,
-    IntervalInputComponent,
-  ],
+    declarations: [
+        ComboboxComponent,
+        ComboboxEntryComponent,
+        DateSelectComponent,
+        OrgSelectComponent,
+        DateRangeSelectComponent,
+        DateTimeSelectComponent,
+        FileReaderComponent,
+        ClipboardDialogComponent,
+        IdlClassTemplateDirective,
+        IntervalInputComponent,
+    ],
+    imports: [
+        CommonModule,
+        FormsModule,
+        ReactiveFormsModule,
+        NgbModule,
+        EgCoreModule,
+        ContextMenuModule
+    ],
+    exports: [
+        CommonModule,
+        FormsModule,
+        NgbModule,
+        EgCoreModule,
+        ComboboxComponent,
+        ComboboxEntryComponent,
+        DateSelectComponent,
+        OrgSelectComponent,
+        DateRangeSelectComponent,
+        DateTimeSelectComponent,
+        ClipboardDialogComponent,
+        ContextMenuModule,
+        FileReaderComponent,
+        IntervalInputComponent,
+    ],
 })
 
 export class CommonWidgetsModule { }

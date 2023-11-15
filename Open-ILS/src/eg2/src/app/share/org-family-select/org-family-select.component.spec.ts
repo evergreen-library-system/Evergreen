@@ -54,7 +54,7 @@ describe('Component: OrgFamilySelect', () => {
             ], declarations: [
                 OrgFamilySelectComponent,
                 MockOrgSelectComponent,
-        ]});
+            ]});
         fixture = TestBed.createComponent(OrgFamilySelectComponent);
         component = fixture.componentInstance;
         component.domId = 'family-test';

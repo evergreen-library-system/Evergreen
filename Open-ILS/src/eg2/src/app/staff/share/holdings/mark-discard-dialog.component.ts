@@ -15,8 +15,8 @@ import {StringComponent} from '@eg/share/string/string.component';
  */
 
 @Component({
-  selector: 'eg-mark-discard-dialog',
-  templateUrl: 'mark-discard-dialog.component.html'
+    selector: 'eg-mark-discard-dialog',
+    templateUrl: 'mark-discard-dialog.component.html'
 })
 
 export class MarkDiscardDialogComponent
@@ -68,8 +68,8 @@ export class MarkDiscardDialogComponent
         this.numFailed = 0;
 
         return from(this.copyIds)
-        .pipe(concatMap(copyId => this.markOneItemDiscard(copyId)))
-        .toPromise().then(_ => this.close(this.numSucceeded > 0));
+            .pipe(concatMap(copyId => this.markOneItemDiscard(copyId)))
+            .toPromise().then(_ => this.close(this.numSucceeded > 0));
     }
 }
 

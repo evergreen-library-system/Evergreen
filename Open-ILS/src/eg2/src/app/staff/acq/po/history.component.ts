@@ -24,7 +24,7 @@ export class PoHistoryComponent implements OnInit {
         this.route.parent.paramMap.subscribe((params: ParamMap) => {
             this.poId = +params.get('poId');
         });
-   }
+    }
 
     getHistory(pager: Pager, sort: any) {
         if (!this.poId) { return empty(); }

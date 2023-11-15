@@ -6,7 +6,7 @@ import {PcrudService} from '@eg/core/pcrud.service';
 import {OrgService} from '@eg/core/org.service';
 
 @Component({
-  templateUrl: 'match-set.component.html'
+    templateUrl: 'match-set.component.html'
 })
 export class MatchSetComponent implements OnInit {
 

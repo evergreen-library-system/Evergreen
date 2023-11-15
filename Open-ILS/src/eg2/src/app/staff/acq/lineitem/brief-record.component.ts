@@ -21,8 +21,8 @@ const MARC_XML_BASE = `
 `;
 
 @Component({
-  templateUrl: 'brief-record.component.html',
-  selector: 'eg-lineitem-brief-record'
+    templateUrl: 'brief-record.component.html',
+    selector: 'eg-lineitem-brief-record'
 })
 export class BriefRecordComponent implements OnInit, OnDestroy {
 
@@ -36,7 +36,7 @@ export class BriefRecordComponent implements OnInit, OnDestroy {
     // From the inline PL selector
     selectedPl: ComboboxEntry;
 
-    isSaving: boolean = false;
+    isSaving = false;
 
     constructor(
         private router: Router,
@@ -58,7 +58,7 @@ export class BriefRecordComponent implements OnInit, OnDestroy {
         });
 
         this.pcrud.retrieveAll('acqlimad')
-        .subscribe(attr => this.attrs.push(attr));
+            .subscribe(attr => this.attrs.push(attr));
     }
 
     ngOnDestroy(): void {
@@ -106,11 +106,11 @@ export class BriefRecordComponent implements OnInit, OnDestroy {
     }
 
     save() {
-        if (this.isSaving) return;
+        if (this.isSaving) {return;}
         this.isSaving = true;
         this.saveManualPicklist()
-        .then(ok => { if (ok) { return this.createLineitem(); } })
-        .finally(() => this.isSaving = false);
+            .then(ok => { if (ok) { return this.createLineitem(); } })
+            .finally(() => this.isSaving = false);
     }
 
     saveManualPicklist(): Promise<boolean> {
@@ -132,12 +132,12 @@ export class BriefRecordComponent implements OnInit, OnDestroy {
             'open-ils.acq',
             'open-ils.acq.picklist.create', this.auth.token(), pl).toPromise()
 
-        .then(plId => {
-            const evt = this.evt.parse(plId);
-            if (evt) { alert(evt); return false; }
-            this.targetPicklist = plId;
-            return true;
-        });
+            .then(plId => {
+                const evt = this.evt.parse(plId);
+                if (evt) { alert(evt); return false; }
+                this.targetPicklist = plId;
+                return true;
+            });
     }
 
     createLineitem(): Promise<any> {

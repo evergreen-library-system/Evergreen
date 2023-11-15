@@ -7,7 +7,7 @@ import {PcrudService} from '@eg/core/pcrud.service';
 /* Component for retrieving bib records by ID, TCN */
 
 @Component({
-  templateUrl: 'bib-by-ident.component.html'
+    templateUrl: 'bib-by-ident.component.html'
 })
 export class BibByIdentComponent implements OnInit, AfterViewInit {
 
@@ -60,7 +60,7 @@ export class BibByIdentComponent implements OnInit, AfterViewInit {
     getById(): Promise<number> {
         // Confirm the record exists before redirecting.
         return this.pcrud.retrieve('bre', this.identValue).toPromise()
-        .then(rec => rec ? rec.id() : null);
+            .then(rec => rec ? rec.id() : null);
     }
 
     getByTcn(): Promise<number> {
@@ -69,31 +69,31 @@ export class BibByIdentComponent implements OnInit, AfterViewInit {
         return this.net.request(
             'open-ils.search',
             'open-ils.search.biblio.tcn', this.identValue).toPromise()
-        .then(resp => {
+            .then(resp => {
 
-            if (resp.count > 0) {
-                return Promise.resolve(resp);
-            }
-
-            // No active records, see if we have any deleted records.
-            return this.net.request(
-                'open-ils.search',
-                'open-ils.search.biblio.tcn', this.identValue, true
-            ).toPromise();
-
-        }).then(resp => {
-
-            if (resp.count) {
-                if (resp.count > 1) {
-                    this.multiRecordsFound = true;
-                    return null;
-                } else {
-                    return resp.ids[0];
+                if (resp.count > 0) {
+                    return Promise.resolve(resp);
                 }
-            }
 
-            return null;
-        });
+                // No active records, see if we have any deleted records.
+                return this.net.request(
+                    'open-ils.search',
+                    'open-ils.search.biblio.tcn', this.identValue, true
+                ).toPromise();
+
+            }).then(resp => {
+
+                if (resp.count) {
+                    if (resp.count > 1) {
+                        this.multiRecordsFound = true;
+                        return null;
+                    } else {
+                        return resp.ids[0];
+                    }
+                }
+
+                return null;
+            });
     }
 
     goToRecord(id: number) {

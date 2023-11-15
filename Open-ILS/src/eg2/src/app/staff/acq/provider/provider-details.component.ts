@@ -11,8 +11,8 @@ import {StringComponent} from '@eg/share/string/string.component';
 import {ToastService} from '@eg/share/toast/toast.service';
 
 @Component({
-  selector: 'eg-provider-details',
-  templateUrl: 'provider-details.component.html',
+    selector: 'eg-provider-details',
+    templateUrl: 'provider-details.component.html',
 })
 export class ProviderDetailsComponent implements OnInit {
 

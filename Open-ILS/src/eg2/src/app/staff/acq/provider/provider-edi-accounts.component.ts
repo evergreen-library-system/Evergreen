@@ -1,6 +1,5 @@
 import {Component, OnInit, AfterViewInit, OnDestroy, Input, Output, EventEmitter, ViewChild, ChangeDetectorRef} from '@angular/core';
-import {EMPTY, throwError, Observable, from, Subscription} from 'rxjs';
-import {map} from 'rxjs/operators';
+import {EMPTY, from, Subscription} from 'rxjs';
 import {Router, ActivatedRoute, ParamMap} from '@angular/router';
 import {Pager} from '@eg/share/util/pager';
 import {IdlService, IdlObject} from '@eg/core/idl.service';
@@ -8,8 +7,7 @@ import {NetService} from '@eg/core/net.service';
 import {AuthService} from '@eg/core/auth.service';
 import {GridComponent} from '@eg/share/grid/grid.component';
 import {GridDataSource, GridCellTextGenerator} from '@eg/share/grid/grid';
-import {ProviderRecord, ProviderRecordService} from './provider-record.service';
-import {AcqProviderSearchFormComponent} from './acq-provider-search-form.component';
+import {ProviderRecordService} from './provider-record.service';
 import {FmRecordEditorComponent} from '@eg/share/fm-editor/fm-editor.component';
 import {StringComponent} from '@eg/share/string/string.component';
 import {ToastService} from '@eg/share/toast/toast.service';
@@ -17,8 +15,8 @@ import {ConfirmDialogComponent} from '@eg/share/dialog/confirm.component';
 import {PcrudService} from '@eg/core/pcrud.service';
 
 @Component({
-  selector: 'eg-provider-edi-accounts',
-  templateUrl: 'provider-edi-accounts.component.html',
+    selector: 'eg-provider-edi-accounts',
+    templateUrl: 'provider-edi-accounts.component.html',
 })
 export class ProviderEdiAccountsComponent implements OnInit, AfterViewInit, OnDestroy {
 
@@ -87,7 +85,7 @@ export class ProviderEdiAccountsComponent implements OnInit, AfterViewInit, OnDe
                     this.deleteSuccessString.current()
                         .then(str => this.toast.success(str));
                 },
-                err => {
+                (err: unknown) => {
                     this.deleteFailedString.current()
                         .then(str => this.toast.danger(str));
                 },
@@ -172,12 +170,12 @@ export class ProviderEdiAccountsComponent implements OnInit, AfterViewInit, OnDe
             });
             return this.pcrud.search('acqedim',
                 query, {
-                flesh: 3,
-                flesh_fields: {acqedim: ['account', 'purchase_order']},
-                offset: pager.offset,
-                limit: pager.limit,
-                order_by: orderBy
-            });
+                    flesh: 3,
+                    flesh_fields: {acqedim: ['account', 'purchase_order']},
+                    offset: pager.offset,
+                    limit: pager.limit,
+                    order_by: orderBy
+                });
         };
         return gridSource;
     }
@@ -195,7 +193,7 @@ export class ProviderEdiAccountsComponent implements OnInit, AfterViewInit, OnDe
                     );
                     resolve(result);
                 },
-                error => {
+                (error: unknown) => {
                     this.updateFailedString.current()
                         .then(str => this.toast.danger(str));
                     reject(error);
@@ -223,12 +221,13 @@ export class ProviderEdiAccountsComponent implements OnInit, AfterViewInit, OnDe
             this.providerRecord.refreshCurrent().then(() => {
                 this.provider.edi_default(providerEdiAccountFields[0].id());
                 this.provider.ischanged(true);
+                // eslint-disable-next-line rxjs/no-nested-subscribe
                 this.providerRecord.batchUpdate(this.provider).subscribe(
                     val => {
                         this.setAsDefaultSuccessString.current()
                             .then(str => this.toast.success(str));
                     },
-                    err => {
+                    (err: unknown) => {
                         this.setAsDefaultFailedString.current()
                             .then(str => this.toast.danger(str));
                     },
@@ -269,7 +268,8 @@ export class ProviderEdiAccountsComponent implements OnInit, AfterViewInit, OnDe
                     () => this.providerEdiAccountsGrid.reload()
                 );
             },
-            rejection => {
+            // eslint-disable-next-line rxjs/no-implicit-any-catch
+            (rejection: any) => {
                 if (!rejection.dismissed) {
                     this.createErrString.current()
                         .then(str => this.toast.danger(str));

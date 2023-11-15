@@ -1,6 +1,6 @@
 import {Injectable} from '@angular/core';
 import {Router, Resolve, RouterStateSnapshot,
-        ActivatedRouteSnapshot} from '@angular/router';
+    ActivatedRouteSnapshot} from '@angular/router';
 import {ServerStoreService} from '@eg/core/server-store.service';
 import {NetService} from '@eg/core/net.service';
 import {OrgService} from '@eg/core/org.service';
@@ -70,7 +70,7 @@ export class CatalogResolver implements Resolve<Promise<any[]>> {
                 this.org.get(settings['eg.search.pref_lib']);
             this.staffCat.defaultTab = settings['eg.search.adv_pane'];
             if (settings['eg.catalog.results.count']) {
-               this.staffCat.defaultSearchLimit =
+                this.staffCat.defaultSearchLimit =
                   Number(settings['eg.catalog.results.count']);
             }
             this.staffCat.enableBookplates =

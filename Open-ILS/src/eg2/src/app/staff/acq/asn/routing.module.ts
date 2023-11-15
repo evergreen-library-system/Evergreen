@@ -10,18 +10,18 @@ import {AsnComponent} from './asn.component';
 import {AsnReceiveComponent} from './receive.component';
 
 const routes: Routes = [{
-  path: 'receive',
-  component: AsnReceiveComponent
+    path: 'receive',
+    component: AsnReceiveComponent
 }, {
-  path: 'receive/:containerCode',
-  component: AsnReceiveComponent
+    path: 'receive/:containerCode',
+    component: AsnReceiveComponent
 
 }];
 
 @NgModule({
-  imports: [RouterModule.forChild(routes)],
-  exports: [RouterModule],
-  providers: []
+    imports: [RouterModule.forChild(routes)],
+    exports: [RouterModule],
+    providers: []
 })
 
 export class AsnRoutingModule {}

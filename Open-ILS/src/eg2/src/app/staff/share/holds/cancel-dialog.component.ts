@@ -15,8 +15,8 @@ import {ComboboxEntry} from '@eg/share/combobox/combobox.component';
  */
 
 @Component({
-  selector: 'eg-hold-cancel-dialog',
-  templateUrl: 'cancel-dialog.component.html'
+    selector: 'eg-hold-cancel-dialog',
+    templateUrl: 'cancel-dialog.component.html'
 })
 
 export class HoldCancelDialogComponent
@@ -52,12 +52,12 @@ export class HoldCancelDialogComponent
 
         if (this.cancelReasons.length === 0) {
             this.pcrud.retrieveAll('ahrcc', {}, {atomic: true}).toPromise()
-            .then(reasons => {
-                this.cancelReasons = reasons
+                .then(reasons => {
+                    this.cancelReasons = reasons
                     // only display reasons for manually canceling holds
-                    .filter(r => 't' === r.manual())
-                    .map(r => ({id: r.id(), label: r.label()}));
-            });
+                        .filter(r => 't' === r.manual())
+                        .map(r => ({id: r.id(), label: r.label()}));
+                });
         }
 
         return super.open(args);

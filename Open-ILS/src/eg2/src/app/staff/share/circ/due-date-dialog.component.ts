@@ -14,8 +14,8 @@ import {ComboboxEntry} from '@eg/share/combobox/combobox.component';
 /* Dialog for modifying circulation due dates. */
 
 @Component({
-  selector: 'eg-due-date-dialog',
-  templateUrl: 'due-date-dialog.component.html'
+    selector: 'eg-due-date-dialog',
+    templateUrl: 'due-date-dialog.component.html'
 })
 
 export class DueDateDialogComponent

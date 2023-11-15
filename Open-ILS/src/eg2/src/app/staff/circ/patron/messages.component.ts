@@ -14,11 +14,11 @@ import {GridComponent} from '@eg/share/grid/grid.component';
 import {Pager} from '@eg/share/util/pager';
 import {DateUtil} from '@eg/share/util/date';
 import {PatronPenaltyDialogComponent
-    } from '@eg/staff/share/patron/penalty-dialog.component';
+} from '@eg/staff/share/patron/penalty-dialog.component';
 
 @Component({
-  selector: 'eg-patron-messages',
-  templateUrl: 'messages.component.html'
+    selector: 'eg-patron-messages',
+    templateUrl: 'messages.component.html'
 })
 export class PatronMessagesComponent implements OnInit {
 
@@ -33,7 +33,7 @@ export class PatronMessagesComponent implements OnInit {
     @ViewChild('mainGrid') private mainGrid: GridComponent;
     @ViewChild('archiveGrid') private archiveGrid: GridComponent;
     @ViewChild('penaltyDialog')
-        private penaltyDialog: PatronPenaltyDialogComponent;
+    private penaltyDialog: PatronPenaltyDialogComponent;
 
     constructor(
         private org: OrgService,
@@ -125,7 +125,7 @@ export class PatronMessagesComponent implements OnInit {
         this.penaltyDialog.open({size: 'lg'}).subscribe(changes => {
             if (changes) {
                 this.context.refreshPatron()
-                .then(_ => this.mainGrid.reload());
+                    .then(_ => this.mainGrid.reload());
             }
         });
     }
@@ -133,28 +133,28 @@ export class PatronMessagesComponent implements OnInit {
     unArchive(penalties: IdlObject[]) {
         penalties.forEach(p => p.stop_date(null));
         this.pcrud.update(penalties).toPromise()
-        .then(_ => this.context.refreshPatron())
-        .then(_ => {
-            this.mainGrid.reload();
-            this.archiveGrid.reload();
-        });
+            .then(_ => this.context.refreshPatron())
+            .then(_ => {
+                this.mainGrid.reload();
+                this.archiveGrid.reload();
+            });
     }
 
     archive(penalties: IdlObject[]) {
         penalties.forEach(p => p.stop_date('now'));
         this.pcrud.update(penalties).toPromise()
-        .then(_ => {
-            this.mainGrid.reload();
-            this.archiveGrid.reload();
-        });
+            .then(_ => {
+                this.mainGrid.reload();
+                this.archiveGrid.reload();
+            });
     }
 
     remove(penalties: IdlObject[]) {
         this.pcrud.remove(penalties).toPromise()
-        .then(_ => {
-            this.mainGrid.reload();
-            this.archiveGrid.reload();
-        });
+            .then(_ => {
+                this.mainGrid.reload();
+                this.archiveGrid.reload();
+            });
     }
 
     modify(penalties: IdlObject[]) {

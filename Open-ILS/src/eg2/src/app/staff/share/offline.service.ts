@@ -1,6 +1,5 @@
-import {Observable} from 'rxjs';
 import {from} from 'rxjs';
-import {tap, concatMap} from 'rxjs/operators';
+import {concatMap} from 'rxjs/operators';
 import {Injectable} from '@angular/core';
 import {AuthService} from '@eg/core/auth.service';
 import {EventService} from '@eg/core/event.service';
@@ -31,21 +30,21 @@ export class OfflineService {
 
     refreshOfflineData(): Promise<any> {
         return this.cacheNeedsUpdating()
-        .then(needs => {
-            if (needs) {
-                return this.clearOfflineCache()
-                .then(_ => this.fetchOfflineData());
-            }
-        });
+            .then(needs => {
+                if (needs) {
+                    return this.clearOfflineCache()
+                        .then(_ => this.fetchOfflineData());
+                }
+            });
     }
 
     clearOfflineCache(): Promise<any> {
         return this.db.request(
             {schema: 'cache', table: 'Object', action: 'deleteAll'})
 
-        .then(_ => this.db.request(
-            {schema: 'cache', table: 'StatCat', action: 'deleteAll'})
-        );
+            .then(_ => this.db.request(
+                {schema: 'cache', table: 'StatCat', action: 'deleteAll'})
+            );
     }
 
     fetchOfflineData(): Promise<any> {
@@ -58,14 +57,14 @@ export class OfflineService {
             'open-ils.circ.offline.data.retrieve',
             this.auth.token()
         )
-        .pipe(concatMap(data => {
-            if (data.idl_class === 'actsc') {
-                return from(this.addStatCatsToCache(data.data));
-            } else {
-                return from(this.addListToCache(data.idl_class, data.data));
-            }
-        }))
-        .toPromise();
+            .pipe(concatMap(data => {
+                if (data.idl_class === 'actsc') {
+                    return from(this.addStatCatsToCache(data.data));
+                } else {
+                    return from(this.addListToCache(data.idl_class, data.data));
+                }
+            }))
+            .toPromise();
     }
 
     cacheNeedsUpdating(): Promise<boolean> {

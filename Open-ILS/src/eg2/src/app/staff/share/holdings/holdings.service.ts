@@ -1,8 +1,9 @@
+/* eslint-disable no-magic-numbers */
 /**
  * Common code for mananging holdings
  */
-import {Injectable, EventEmitter} from '@angular/core';
-import {IdlObject, IdlService} from '@eg/core/idl.service';
+import {Injectable} from '@angular/core';
+import {IdlObject} from '@eg/core/idl.service';
 import {tap} from 'rxjs/operators';
 import {NetService} from '@eg/core/net.service';
 import {AnonCacheService} from '@eg/share/util/anon-cache.service';
@@ -104,8 +105,8 @@ export class HoldingsService {
 
         this.copyStatuses = {};
         return this.pcrud.retrieveAll('ccs', {order_by: {ccs: 'name'}})
-        .pipe(tap(stat => this.copyStatuses[stat.id()] = stat))
-        .toPromise().then(_ => this.copyStatuses);
+            .pipe(tap(stat => this.copyStatuses[stat.id()] = stat))
+            .toPromise().then(_ => this.copyStatuses);
     }
 }
 

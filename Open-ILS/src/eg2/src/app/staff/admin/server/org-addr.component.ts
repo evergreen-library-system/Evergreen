@@ -123,8 +123,8 @@ export class OrgAddressComponent {
         });
 
         this.pcrud.update(tmpOrg).toPromise()
-        .then(_ => this.pcrud.remove(addr).toPromise())
-        .then(_ => this.addrChange.emit(addr));
+            .then(_ => this.pcrud.remove(addr).toPromise())
+            .then(_ => this.addrChange.emit(addr));
     }
 
     // Addr saved by fm-editor.
@@ -182,7 +182,7 @@ export class OrgAddressComponent {
                     this.toast.danger(res.desc);
                 }
             },
-            (err) => {
+            (err: unknown) => {
                 console.error('geo', err);
             }
         );

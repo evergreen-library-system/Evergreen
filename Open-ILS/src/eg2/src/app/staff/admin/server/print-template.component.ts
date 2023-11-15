@@ -8,7 +8,7 @@ import {AuthService} from '@eg/core/auth.service';
 import {OrgService} from '@eg/core/org.service';
 import {ServerStoreService} from '@eg/core/server-store.service';
 import {ComboboxComponent, ComboboxEntry
-    } from '@eg/share/combobox/combobox.component';
+} from '@eg/share/combobox/combobox.component';
 import {PrintService} from '@eg/share/print/print.service';
 import {LocaleService} from '@eg/core/locale.service';
 import {NgbNav, NgbNavChangeEvent} from '@ng-bootstrap/ng-bootstrap';
@@ -279,9 +279,9 @@ export class PrintTemplateComponent implements OnInit {
             }
 
             this.store.getItem('eg.print.template_context.' + this.template.name())
-            .then(setting => {
-                this.printContextCbox.applyEntryId(setting || 'unset');
-            });
+                .then(setting => {
+                    this.printContextCbox.applyEntryId(setting || 'unset');
+                });
         });
     }
 

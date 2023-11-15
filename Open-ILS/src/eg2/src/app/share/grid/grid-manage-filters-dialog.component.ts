@@ -1,3 +1,4 @@
+/* eslint-disable no-empty */
 import {ComboboxEntry, ComboboxComponent} from '@eg/share/combobox/combobox.component';
 import {Component, Input, OnInit, OnDestroy, ViewChild, Renderer2} from '@angular/core';
 import {GridContext} from '@eg/share/grid/grid';
@@ -10,8 +11,8 @@ import {Subject, Subscription} from 'rxjs';
 import {debounceTime, distinctUntilChanged} from 'rxjs/operators';
 
 @Component({
-  selector: 'eg-grid-manage-filters-dialog',
-  templateUrl: './grid-manage-filters-dialog.component.html'
+    selector: 'eg-grid-manage-filters-dialog',
+    templateUrl: './grid-manage-filters-dialog.component.html'
 })
 
 export class GridManageFiltersDialogComponent extends DialogComponent implements OnInit, OnDestroy {
@@ -20,9 +21,9 @@ export class GridManageFiltersDialogComponent extends DialogComponent implements
 
     subscriptions: Subscription[] = [];
 
-    saveFilterName: string = '';
+    saveFilterName = '';
     saveFilterNameModelChanged: Subject<string> = new Subject<string>();
-    nameCollision: boolean = false;
+    nameCollision = false;
 
     filterSetEntries: ComboboxEntry[] = [];
 
@@ -50,23 +51,24 @@ export class GridManageFiltersDialogComponent extends DialogComponent implements
 
         this.subscriptions.push(
             this.saveFilterNameModelChanged
-            .pipe(
-                debounceTime(300),
-                distinctUntilChanged()
-            )
-            .subscribe( newText => {
-                this.saveFilterName = newText;
-                this.nameCollision = false;
-                if (newText !== '') {
-                    this.store.getItem('eg.grid.filters.' + this.gridContext.persistKey).then( setting => {
-                        if (setting) {
-                            if (setting[newText]) {
-                                this.nameCollision = true;
+                .pipe(
+                    // eslint-disable-next-line no-magic-numbers
+                    debounceTime(300),
+                    distinctUntilChanged()
+                )
+                .subscribe( newText => {
+                    this.saveFilterName = newText;
+                    this.nameCollision = false;
+                    if (newText !== '') {
+                        this.store.getItem('eg.grid.filters.' + this.gridContext.persistKey).then( setting => {
+                            if (setting) {
+                                if (setting[newText]) {
+                                    this.nameCollision = true;
+                                }
                             }
-                        }
-                    });
-                }
-            })
+                        });
+                    }
+                })
         );
 
         this.refreshEntries();
@@ -85,21 +87,21 @@ export class GridManageFiltersDialogComponent extends DialogComponent implements
         this.close();
     }
 
-	disableSaveNameTest(): boolean {
-	  const isEmpty = (obj: any): boolean => {
-		return obj && Object.keys(obj).length === 0;
-	  };
+    disableSaveNameTest(): boolean {
+        const isEmpty = (obj: any): boolean => {
+            return obj && Object.keys(obj).length === 0;
+        };
 
-	  return isEmpty(this.gridContext?.dataSource?.filters);
-	}
+        return isEmpty(this.gridContext?.dataSource?.filters);
+    }
 
-	disableSaveButtonTest(): boolean {
-	  const isEmpty = (obj: any): boolean => {
-		return obj && Object.keys(obj).length === 0;
-	  };
+    disableSaveButtonTest(): boolean {
+        const isEmpty = (obj: any): boolean => {
+            return obj && Object.keys(obj).length === 0;
+        };
 
-	  return this.nameCollision || this.saveFilterName === '' || isEmpty(this.gridContext?.dataSource?.filters);
-	}
+        return this.nameCollision || this.saveFilterName === '' || isEmpty(this.gridContext?.dataSource?.filters);
+    }
 
     refreshEntries() {
         this.filterSetEntries = [];
@@ -140,15 +142,15 @@ export class GridManageFiltersDialogComponent extends DialogComponent implements
         let value = legacy_value;
         let filterOperator = legacy_operator;
         let filterValue = legacy_value;
-        let filterInputDisabled = false;
-        let filterIncludeOrgAncestors = false;
-        let filterIncludeOrgDescendants = false;
+        const filterInputDisabled = false;
+        const filterIncludeOrgAncestors = false;
+        const filterIncludeOrgDescendants = false;
         let notSupported = false;
         if (field_datatype) {} // delint TODO: remove this?
         switch(legacy_operator) {
             case '=': case '!=': case '>': case '<': case '>=': case '<=':
                 /* same */
-            break;
+                break;
             case 'in': case 'not in':
             case 'between': case 'not between':
                 /* not supported, warn user */
@@ -157,30 +159,30 @@ export class GridManageFiltersDialogComponent extends DialogComponent implements
                 filterOperator = '=';
                 filterValue = undefined;
                 notSupported = true;
-            break;
+                break;
             case 'null':
                 operator = '=';
                 value = undefined;
                 filterOperator = '=';
                 filterValue = null;
-            break;
+                break;
             case 'not null':
                 operator = '!=';
                 value = undefined;
                 filterOperator = '!=';
                 filterValue = null;
-            break;
+                break;
             case 'like': case 'not like':
                 value = '%' + filterValue + '%';
                 /* not like needs special handling further below */
-            break;
+                break;
         }
         if (notSupported) {
             return undefined;
         }
 
-        let filter = {}
-        let mappedFieldName = this.legacyFieldMap(field_name);
+        const filter = {};
+        const mappedFieldName = this.legacyFieldMap(field_name);
         filter[mappedFieldName] = {};
         if (operator === 'not like') {
             filter[mappedFieldName]['-not'] = {};
@@ -190,14 +192,14 @@ export class GridManageFiltersDialogComponent extends DialogComponent implements
             filter[mappedFieldName][operator] = value;
         }
 
-        let control = {
+        const control = {
             isFiltered: true,
             filterValue: filterValue,
             filterOperator: filterOperator,
             filterInputDisabled: filterInputDisabled,
             filterIncludeOrgAncestors: filterIncludeOrgAncestors,
             filterIncludeOrgDescendants: filterIncludeOrgDescendants
-        }
+        };
 
         return [ filter, control ];
     }
@@ -211,16 +213,16 @@ export class GridManageFiltersDialogComponent extends DialogComponent implements
         this.pcrud.search('cfdfs', {'interface':this.gridContext.migrateLegacyFilterSets},{},{'atomic':true}).subscribe(
             (legacySets) => {
                 legacySets.forEach( (s:any) => {
-                    let obj = {
+                    const obj = {
                         'filters' : {},
                         'controls' : {}
                     };
                     console.log('migrating legacy set ' + s.name(), s );
                     JSON.parse( s.filters() ).forEach( (f:any) => {
-                        let mappedFieldName = this.legacyFieldMap(f.field);
-                        let c = this.gridContext.columnSet.getColByName( mappedFieldName );
+                        const mappedFieldName = this.legacyFieldMap(f.field);
+                        const c = this.gridContext.columnSet.getColByName( mappedFieldName );
                         if (c) {
-                            let r = this.legacyOperatorValueMap(f.field, c.datatype, f.operator, f.value || f.values);
+                            const r = this.legacyOperatorValueMap(f.field, c.datatype, f.operator, f.value || f.values);
                             obj['filters'][mappedFieldName] = [ r[0] ];
                             obj['controls'][mappedFieldName] = r[1];
                         } else {

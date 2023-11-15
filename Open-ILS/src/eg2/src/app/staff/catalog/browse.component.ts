@@ -3,7 +3,7 @@ import {StaffCatalogService} from './catalog.service';
 import {SearchFormComponent} from './search-form.component';
 
 @Component({
-  templateUrl: 'browse.component.html'
+    templateUrl: 'browse.component.html'
 })
 export class BrowseComponent implements OnInit {
 

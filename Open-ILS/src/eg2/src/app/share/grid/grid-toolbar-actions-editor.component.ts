@@ -5,8 +5,8 @@ import {DialogComponent} from '@eg/share/dialog/dialog.component';
 /** Allows users to show/hide toolbar action entries */
 
 @Component({
-  selector: 'eg-grid-toolbar-actions-editor',
-  templateUrl: 'grid-toolbar-actions-editor.component.html'
+    selector: 'eg-grid-toolbar-actions-editor',
+    templateUrl: 'grid-toolbar-actions-editor.component.html'
 })
 
 export class GridToolbarActionsEditorComponent extends DialogComponent {

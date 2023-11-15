@@ -33,18 +33,18 @@ export function providerRouteMatcher(segments: UrlSegment[]) {
 }
 
 const routes: Routes = [
-  { matcher: providerRouteMatcher,
-    component: AcqProviderComponent,
-    resolve: { providerResolver : ProviderResolver },
-    canDeactivate: [CanLeaveAcqProviderGuard],
-    runGuardsAndResolvers: 'always'
-  }
+    { matcher: providerRouteMatcher,
+        component: AcqProviderComponent,
+        resolve: { providerResolver : ProviderResolver },
+        canDeactivate: [CanLeaveAcqProviderGuard],
+        runGuardsAndResolvers: 'always'
+    }
 ];
 
 @NgModule({
-  imports: [RouterModule.forChild(routes)],
-  exports: [RouterModule],
-  providers: [ProviderResolver, CanLeaveAcqProviderGuard]
+    imports: [RouterModule.forChild(routes)],
+    exports: [RouterModule],
+    providers: [ProviderResolver, CanLeaveAcqProviderGuard]
 })
 
 export class AcqProviderRoutingModule {}

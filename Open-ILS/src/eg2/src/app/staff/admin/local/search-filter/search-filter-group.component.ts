@@ -71,22 +71,23 @@ export class SearchFilterGroupComponent extends AdminPageComponent implements On
                     .then(str => this.toast.success(str));
                 this.grid.reload();
             },
-            rejection => {
+            // eslint-disable-next-line rxjs/no-implicit-any-catch
+            (rejection: any) => {
                 if (!rejection.dismissed) {
                     this.createErrString.current()
                         .then(str => this.toast.danger(str));
                 }
             }
         );
-    }
+    };
 
     editSelected = (sfGroups: IdlObject[]) => {
         const idToEdit = sfGroups[0].id();
         this.navigateToEditPage(idToEdit);
-    }
+    };
 
     navigateToEditPage(id: any) {
         this.router.navigate(['/staff/admin/local/actor/search_filter_group/' + id]);
     }
 
- }
+}

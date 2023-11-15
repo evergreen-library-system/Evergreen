@@ -19,12 +19,12 @@ import {ProgressInlineComponent} from '@eg/share/dialog/progress-inline.componen
 import {ComboboxEntry} from '@eg/share/combobox/combobox.component';
 
 @Component({
-  selector: 'eg-fund-rollover-dialog',
-  templateUrl: './fund-rollover-dialog.component.html'
+    selector: 'eg-fund-rollover-dialog',
+    templateUrl: './fund-rollover-dialog.component.html'
 })
 
 export class FundRolloverDialogComponent
-  extends DialogComponent implements OnInit {
+    extends DialogComponent implements OnInit {
 
     doneLoading = false;
 
@@ -33,7 +33,7 @@ export class FundRolloverDialogComponent
     @ViewChild('successString', { static: true }) successString: StringComponent;
     @ViewChild('updateFailedString', { static: false }) updateFailedString: StringComponent;
     @ViewChild('rolloverProgress', { static: true })
-        private rolloverProgress: ProgressInlineComponent;
+    private rolloverProgress: ProgressInlineComponent;
 
     includeDescendants = false;
     doCloseout = false;
@@ -132,7 +132,7 @@ export class FundRolloverDialogComponent
                 this.amount_rolled += Number(r.rollover_amount);
                 this.encumb_rolled += Number(r.encumb_amount);
             },
-            err => {},
+            (err: unknown) => {},
             () => {
                 this.isProcessing = false;
                 this.showResults = true;

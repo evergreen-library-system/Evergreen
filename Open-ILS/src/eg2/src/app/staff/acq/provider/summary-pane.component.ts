@@ -1,6 +1,5 @@
 import {Component, OnInit, AfterViewInit, Input, Output, EventEmitter, ViewChild} from '@angular/core';
 import {Router} from '@angular/router';
-import {StaffCommonModule} from '@eg/staff/common.module';
 import {IdlService, IdlObject} from '@eg/core/idl.service';
 import {OrgService} from '@eg/core/org.service';
 import {PcrudService} from '@eg/core/pcrud.service';
@@ -177,20 +176,21 @@ export class AcqProviderSummaryPaneComponent implements OnInit, AfterViewInit {
             if (!confirmed) { return; }
 
             this.pcrud.remove(this.provider)
-            .subscribe(
-                ok2 => {
-                    this.deleteSuccessString.current()
-                        .then(str => this.toast.success(str));
-                    this.router.navigate(['/staff', 'acq', 'provider']);
-                },
-                err => {
-                    this.errorString.current()
-                      .then(str => this.toast.danger(str));
-                },
-                ()  => {
-                    console.log('deleteProvider, what is this?');
-                }
-            );
+                // eslint-disable-next-line rxjs/no-nested-subscribe
+                .subscribe(
+                    ok2 => {
+                        this.deleteSuccessString.current()
+                            .then(str => this.toast.success(str));
+                        this.router.navigate(['/staff', 'acq', 'provider']);
+                    },
+                    (err: unknown) => {
+                        this.errorString.current()
+                            .then(str => this.toast.danger(str));
+                    },
+                    ()  => {
+                        console.log('deleteProvider, what is this?');
+                    }
+                );
         });
 
     }

@@ -1,7 +1,7 @@
 /**
  * Create and consume BroadcastChannel broadcasts
  */
-import {Injectable, EventEmitter} from '@angular/core';
+import {Injectable} from '@angular/core';
 import {DomSanitizer, SafeUrl} from '@angular/platform-browser';
 
 @Injectable()
@@ -13,7 +13,7 @@ export class FileExportService {
     constructor(private sanitizer: DomSanitizer) { }
 
     exportFile($event: any, content: string,
-        contentType: string = 'text/plain'): Promise<any> {
+        contentType = 'text/plain'): Promise<any> {
 
         if (!$event || !content) { return null; }
 
@@ -25,6 +25,7 @@ export class FileExportService {
                 this.resolver();
                 this.resolver = null;
                 this.safeUrl = null;
+            // eslint-disable-next-line no-magic-numbers
             }, 500);
 
             return;

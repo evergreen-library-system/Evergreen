@@ -4,17 +4,17 @@ import {NegativeBalancesRoutingModule} from './routing.module';
 import {NegativeBalancesComponent} from './list.component';
 
 @NgModule({
-  declarations: [
-    NegativeBalancesComponent
-  ],
-  imports: [
-    AdminCommonModule,
-    NegativeBalancesRoutingModule
-  ],
-  exports: [
-  ],
-  providers: [
-  ]
+    declarations: [
+        NegativeBalancesComponent
+    ],
+    imports: [
+        AdminCommonModule,
+        NegativeBalancesRoutingModule
+    ],
+    exports: [
+    ],
+    providers: [
+    ]
 })
 
 export class NegativeBalancesModule {

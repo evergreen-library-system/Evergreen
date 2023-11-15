@@ -69,13 +69,15 @@ export class CashReportsComponent implements OnInit {
             this.net.request(
                 'open-ils.circ',
                 'open-ils.circ.money.org_unit.desk_payments',
-                this.auth.token(), this.selectedOrg.id(), this.startDate.toISOString().split('T')[0], this.endDate.toISOString().split('T')[0]));
+                this.auth.token(), this.selectedOrg.id(),
+                this.startDate.toISOString().split('T')[0], this.endDate.toISOString().split('T')[0]));
 
         this.fillGridData(this.userIdlClass, 'userPaymentDataSource',
             this.net.request(
                 'open-ils.circ',
                 'open-ils.circ.money.org_unit.user_payments',
-                this.auth.token(), this.selectedOrg.id(), this.startDate.toISOString().split('T')[0], this.endDate.toISOString().split('T')[0]));
+                this.auth.token(), this.selectedOrg.id(),
+                this.startDate.toISOString().split('T')[0], this.endDate.toISOString().split('T')[0]));
     }
 
     fillGridData(idlClass, dataSource, data) {

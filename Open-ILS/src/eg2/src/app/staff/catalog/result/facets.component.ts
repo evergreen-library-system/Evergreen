@@ -1,4 +1,4 @@
-import {Component, OnInit, Input} from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {CatalogService} from '@eg/share/catalog/catalog.service';
 import {CatalogUrlService} from '@eg/share/catalog/catalog-url.service';
 import {CatalogSearchContext, FacetFilter} from '@eg/share/catalog/search-context';
@@ -15,9 +15,9 @@ export const FACET_CONFIG = {
 };
 
 @Component({
-  selector: 'eg-catalog-result-facets',
-  templateUrl: 'facets.component.html',
-  styleUrls: ['./facets.component.css']
+    selector: 'eg-catalog-result-facets',
+    templateUrl: 'facets.component.html',
+    styleUrls: ['./facets.component.css']
 })
 export class ResultFacetsComponent implements OnInit {
 
@@ -51,11 +51,11 @@ export class ResultFacetsComponent implements OnInit {
     // Build a list of the facet class+names that should be expanded to show all options.
     // More than one facet may be expanded
     facetToggle(name: string, fClass: string) {
-        let index = this.displayFullFacets.indexOf(fClass+'-'+name);
+        const index = this.displayFullFacets.indexOf(fClass+'-'+name);
+        // eslint-disable-next-line eqeqeq
         if ( index == -1 ) {  // not found
             this.displayFullFacets.push(fClass+'-'+name);
-        }
-        else { // delete it
+        } else { // delete it
             this.displayFullFacets.splice(index, 1);
         }
     }

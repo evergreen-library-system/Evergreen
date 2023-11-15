@@ -32,8 +32,8 @@ const PATRON_FLESH_FIELDS = [
 ];
 
 @Component({
-  selector: 'eg-patron-merge-dialog',
-  templateUrl: 'merge-dialog.component.html'
+    selector: 'eg-patron-merge-dialog',
+    templateUrl: 'merge-dialog.component.html'
 })
 
 export class PatronMergeDialogComponent
@@ -60,22 +60,22 @@ export class PatronMergeDialogComponent
             this.loading = true;
             this.leadAccount = null;
             this.loadPatron(this.patronIds[0])
-            .then(ctx => this.summary1 = ctx)
-            .then(__ => this.loadPatron(this.patronIds[1]))
-            .then(ctx => this.summary2 = ctx)
-            .then(__ => this.loading = false);
+                .then(ctx => this.summary1 = ctx)
+                .then(__ => this.loadPatron(this.patronIds[1]))
+                .then(ctx => this.summary2 = ctx)
+                .then(__ => this.loading = false);
         });
     }
 
     loadPatron(id: number): Promise<PatronSummary> {
         const sum = new PatronSummary();
         return this.patrons.getFleshedById(id, PATRON_FLESH_FIELDS)
-        .then(patron => sum.patron = patron)
-        .then(_ => this.patrons.getVitalStats(sum.patron))
-        .then(stats => sum.stats = stats)
-        .then(_ => this.patrons.compileAlerts(sum))
-        .then(alerts => sum.alerts = alerts)
-        .then(_ => sum);
+            .then(patron => sum.patron = patron)
+            .then(_ => this.patrons.getVitalStats(sum.patron))
+            .then(stats => sum.stats = stats)
+            .then(_ => this.patrons.compileAlerts(sum))
+            .then(alerts => sum.alerts = alerts)
+            .then(_ => sum);
     }
 
     merge() {

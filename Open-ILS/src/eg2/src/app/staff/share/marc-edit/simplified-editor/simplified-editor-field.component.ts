@@ -8,8 +8,8 @@ import {MarcField, MarcSubfield} from '../marcrecord';
  */
 
 @Component({
-  selector: 'eg-marc-simplified-editor-field',
-  template: ''
+    selector: 'eg-marc-simplified-editor-field',
+    template: ''
 })
 export class MarcSimplifiedEditorFieldComponent implements OnInit, AfterViewInit {
 
@@ -26,32 +26,32 @@ export class MarcSimplifiedEditorFieldComponent implements OnInit, AfterViewInit
   constructor(@Host() private editor: MarcSimplifiedEditorComponent) {}
 
   ngOnInit() {
-    this.marcVersion = {
-      tag: this.tag,
-      subfields: [],
-      authValid: false,
-      authChecked: false,
-      isCtrlField: false,
-      isControlfield: () => false,
-      indicator: (ind: number) => (ind === 1) ? this.ind1 : this.ind2,
-      deleteExactSubfields: (...subfield: MarcSubfield[]) => 0, // not used by the simplified editor
-    };
+      this.marcVersion = {
+          tag: this.tag,
+          subfields: [],
+          authValid: false,
+          authChecked: false,
+          isCtrlField: false,
+          isControlfield: () => false,
+          indicator: (ind: number) => (ind === 1) ? this.ind1 : this.ind2,
+          deleteExactSubfields: (...subfield: MarcSubfield[]) => 0, // not used by the simplified editor
+      };
 
-    this.addSubfield = (code: string, defaultValue?: string) => {
-      this.marcVersion.subfields.push(
-        [
-          code,
-          defaultValue ? defaultValue : '',
-          this.subfieldIndex
-        ]
-      );
-      this.subfieldIndex += 1;
+      this.addSubfield = (code: string, defaultValue?: string) => {
+          this.marcVersion.subfields.push(
+              [
+                  code,
+                  defaultValue ? defaultValue : '',
+                  this.subfieldIndex
+              ]
+          );
+          this.subfieldIndex += 1;
 
-    };
+      };
   }
 
   ngAfterViewInit() {
-    this.editor.addField(this.marcVersion);
+      this.editor.addField(this.marcVersion);
   }
 
 }

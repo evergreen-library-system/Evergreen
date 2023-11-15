@@ -4,9 +4,9 @@ import {OrgService} from '@eg/core/org.service';
 import {AuthService} from '@eg/core/auth.service';
 
 @Component({
-  selector: 'eg-marc-html',
-  // view is generated from MARC HTML
-  template: '<ng-template></ng-template>'
+    selector: 'eg-marc-html',
+    // view is generated from MARC HTML
+    template: '<ng-template></ng-template>'
 })
 export class MarcHtmlComponent implements OnInit {
 
@@ -29,7 +29,7 @@ export class MarcHtmlComponent implements OnInit {
     private _recordXml: string;
     @Input() set recordXml(xml: string) {
         this._recordXml = xml;
-         if (this.initDone) {
+        if (this.initDone) {
             this.collectData();
         }
     }
@@ -90,7 +90,7 @@ export class MarcHtmlComponent implements OnInit {
         }
 
         return this.net.requestWithParamList(service, method, params)
-        .toPromise().then(html => this.injectHtml(html));
+            .toPromise().then(html => this.injectHtml(html));
     }
 
     injectHtml(html: string) {

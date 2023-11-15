@@ -7,18 +7,18 @@ import {PatronModule} from '@eg/staff/share/patron/patron.module';
 import {MarkItemMissingPiecesComponent} from './missing-pieces.component';
 
 @NgModule({
-  declarations: [
-    MarkItemMissingPiecesComponent
-  ],
-  imports: [
-    StaffCommonModule,
-    CommonWidgetsModule,
-    ItemRoutingModule,
-    HoldingsModule,
-    PatronModule
-  ],
-  providers: [
-  ]
+    declarations: [
+        MarkItemMissingPiecesComponent
+    ],
+    imports: [
+        StaffCommonModule,
+        CommonWidgetsModule,
+        ItemRoutingModule,
+        HoldingsModule,
+        PatronModule
+    ],
+    providers: [
+    ]
 })
 
 export class ItemModule {}

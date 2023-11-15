@@ -1,5 +1,5 @@
 import {Component, OnInit, Input, Output, EventEmitter, ViewChild,
-        OnChanges, SimpleChanges} from '@angular/core';
+    OnChanges, SimpleChanges} from '@angular/core';
 import {IdlService, IdlObject} from '@eg/core/idl.service';
 import {PcrudService} from '@eg/core/pcrud.service';
 import {StringComponent} from '@eg/share/string/string.component';
@@ -8,9 +8,9 @@ import {AcqSearchTerm, AcqSearch} from './acq-search.service';
 import {ServerStoreService} from '@eg/core/server-store.service';
 
 @Component({
-  selector: 'eg-acq-search-form',
-  styleUrls: ['acq-search-form.component.css'],
-  templateUrl: './acq-search-form.component.html'
+    selector: 'eg-acq-search-form',
+    styleUrls: ['acq-search-form.component.css'],
+    templateUrl: './acq-search-form.component.html'
 })
 
 export class AcqSearchFormComponent implements OnInit, OnChanges {
@@ -90,23 +90,23 @@ export class AcqSearchFormComponent implements OnInit, OnChanges {
             this.hints.push('acqlia');
             this.availableSearchFields['acqlia'] = {'__label': this.idl.classes.acqlia.label, '__fields': []};
             this.pcrud.retrieveAll('acqliad', {'order_by': {'acqliad': 'id'}})
-            .subscribe(liad => {
-                this.availableSearchFields['acqlia']['__fields'].push('' + liad.id());
-                this.availableSearchFields['acqlia'][liad.id()] = {
-                    label: liad.description(),
-                    datatype: 'text'
-                };
-                this.searchTermDatatypes['acqlia:' + liad.id()] = 'text';
-                if (liad.code().match(/date/)) {
-                    this.dateLikeSearchFields['acqlia:' + liad.id()] = true;
-                }
-            });
+                .subscribe(liad => {
+                    this.availableSearchFields['acqlia']['__fields'].push('' + liad.id());
+                    this.availableSearchFields['acqlia'][liad.id()] = {
+                        label: liad.description(),
+                        datatype: 'text'
+                    };
+                    this.searchTermDatatypes['acqlia:' + liad.id()] = 'text';
+                    if (liad.code().match(/date/)) {
+                        this.dateLikeSearchFields['acqlia:' + liad.id()] = true;
+                    }
+                });
 
             if (this.initialSearchTerms.length > 0) {
                 this.searchTerms = JSON.parse(JSON.stringify(this.initialSearchTerms)); // deep copy
                 this.submitSearch(); // if we've been passed an initial search, e.g., via a URL, assume
-                                     // we want the results immediately regardless of the workstation
-                                     // setting
+                // we want the results immediately regardless of the workstation
+                // setting
             } else {
                 this.store.getItem(this.defaultSearchSetting).then(
                     defaultSearch => {
@@ -177,7 +177,7 @@ export class AcqSearchFormComponent implements OnInit, OnChanges {
         if (old && this.searchTermDatatypes[old] === this.searchTermDatatypes[term.field] &&
             this.searchTermDatatypes[term.field] === 'link' &&
             (this.searchFieldLinkedClasses[old] !== this.searchFieldLinkedClasses[term.field])
-           ) {
+        ) {
             term.op = '';
         }
         if (term.field.startsWith('acqlia:') && term.op === '') {
@@ -198,7 +198,7 @@ export class AcqSearchFormComponent implements OnInit, OnChanges {
         if (this.searchTermDatatypes[term.field] === 'link') {
             if (oldOp === '__fuzzy' || term.op === '__fuzzy' ||
                 oldOp === '__not,__fuzzy' || term.op === '__not,__fuzzy'
-               ) {
+            ) {
                 term.value1 = '';
                 term.value2 = '';
             }
@@ -206,6 +206,7 @@ export class AcqSearchFormComponent implements OnInit, OnChanges {
     }
 
     setOrgUnitSearchValue(org: IdlObject, term: AcqSearchTerm) {
+        // eslint-disable-next-line eqeqeq
         if (org == null) {
             term.value1 = '';
         } else {

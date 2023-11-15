@@ -12,8 +12,8 @@ import {AcqSearchService, AcqSearchTerm, AcqSearch} from './acq-search.service';
 import {AcqSearchFormComponent} from './acq-search-form.component';
 
 @Component({
-  selector: 'eg-purchase-order-results',
-  templateUrl: 'purchase-order-results.component.html',
+    selector: 'eg-purchase-order-results',
+    templateUrl: 'purchase-order-results.component.html',
 })
 export class PurchaseOrderResultsComponent implements OnInit {
 

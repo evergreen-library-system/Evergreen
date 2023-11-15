@@ -16,8 +16,8 @@ import {PrintService} from '@eg/share/print/print.service';
 /** Route Item Dialog */
 
 @Component({
-  templateUrl: 'in-transit-dialog.component.html',
-  selector: 'eg-copy-in-transit-dialog'
+    templateUrl: 'in-transit-dialog.component.html',
+    selector: 'eg-copy-in-transit-dialog'
 })
 export class CopyInTransitDialogComponent extends DialogComponent {
 

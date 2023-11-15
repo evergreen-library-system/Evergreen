@@ -4,9 +4,9 @@ import {ToastService, ToastMessage} from '@eg/share/toast/toast.service';
 const EG_TOAST_TIMEOUT = 3000;
 
 @Component({
-  selector: 'eg-toast',
-  templateUrl: './toast.component.html',
-  styleUrls: ['./toast.component.css']
+    selector: 'eg-toast',
+    templateUrl: './toast.component.html',
+    styleUrls: ['./toast.component.css']
 })
 export class ToastComponent implements OnInit {
 

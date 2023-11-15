@@ -6,8 +6,8 @@ import {ToastService} from '@eg/share/toast/toast.service';
 import {ConfirmDialogComponent} from '@eg/share/dialog/confirm.component';
 
 @Component({
-  selector: 'eg-cancel-reservation-dialog',
-  template: `
+    selector: 'eg-cancel-reservation-dialog',
+    template: `
   <eg-confirm-dialog #confirmCancelReservationDialog
     i18n-dialogTitle i18n-dialogBody
     dialogTitle="Confirm Cancelation"
@@ -34,7 +34,7 @@ export class CancelReservationDialogComponent {
     reservations: number[];
 
     @ViewChild('confirmCancelReservationDialog', { static: true })
-        private cancelReservationDialog: ConfirmDialogComponent;
+    private cancelReservationDialog: ConfirmDialogComponent;
 
     @Output() reservationCancelled = new EventEmitter();
 

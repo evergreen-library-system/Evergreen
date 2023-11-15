@@ -8,12 +8,12 @@ import {AuthService} from '@eg/core/auth.service';
 import {NgbModal} from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
-  selector: 'eg-picklist-delete-dialog',
-  templateUrl: './picklist-delete-dialog.component.html'
+    selector: 'eg-picklist-delete-dialog',
+    templateUrl: './picklist-delete-dialog.component.html'
 })
 
 export class PicklistDeleteDialogComponent
-  extends DialogComponent {
+    extends DialogComponent {
 
   @Input() grid: any;
   listNames: string[];
@@ -26,45 +26,45 @@ export class PicklistDeleteDialogComponent
     private auth: AuthService,
     private modal: NgbModal
   ) {
-    super(modal);
+      super(modal);
   }
 
   update() {
-    this.listNames = this.grid.context.getSelectedRows().map( r => r.name() );
+      this.listNames = this.grid.context.getSelectedRows().map( r => r.name() );
   }
 
   deleteList(list) {
-    return this.net.request(
-      'open-ils.acq',
-      'open-ils.acq.picklist.delete',
-      this.auth.token(),
-      list.id()
-    );
+      return this.net.request(
+          'open-ils.acq',
+          'open-ils.acq.picklist.delete',
+          this.auth.token(),
+          list.id()
+      );
   }
 
   deleteLists() {
-    const that = this;
-    const observables = [];
-    this.grid.context.getSelectedRows().forEach(function(r) {
-      observables.push( that.deleteList(r) );
-    });
-    forkJoin(observables).subscribe(
-      (res) => {
-        if (this.evt.parse(res)) {
-          console.error(res);
-          this.fail.open();
-          this.close(false);
-        } else {
-          console.log(res);
-        }
-      },
-      (err) => {
-        console.error(err);
-        this.fail.open();
-        this.close(false);
-      },
-      () => this.close(true)
-    );
+      const that = this;
+      const observables = [];
+      this.grid.context.getSelectedRows().forEach(function(r) {
+          observables.push( that.deleteList(r) );
+      });
+      forkJoin(observables).subscribe(
+          (res) => {
+              if (this.evt.parse(res)) {
+                  console.error(res);
+                  this.fail.open();
+                  this.close(false);
+              } else {
+                  console.log(res);
+              }
+          },
+          (err: unknown) => {
+              console.error(err);
+              this.fail.open();
+              this.close(false);
+          },
+          () => this.close(true)
+      );
   }
 }
 

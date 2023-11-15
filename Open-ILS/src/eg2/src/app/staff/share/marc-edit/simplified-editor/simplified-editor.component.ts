@@ -13,8 +13,8 @@ const DEFAULT_RECORD_TYPE = 'BKS';
  */
 
 @Component({
-  selector: 'eg-marc-simplified-editor',
-  templateUrl: './simplified-editor.component.html'
+    selector: 'eg-marc-simplified-editor',
+    templateUrl: './simplified-editor.component.html'
 })
 export class MarcSimplifiedEditorComponent implements AfterViewInit, OnInit {
 
@@ -44,6 +44,7 @@ export class MarcSimplifiedEditorComponent implements AfterViewInit, OnInit {
 
     ngOnInit() {
         // Add some randomness to the generated DOM IDs to ensure against clobbering
+        // eslint-disable-next-line no-magic-numbers
         this.idPrefix = 'marc-simplified-editor-' + Math.floor(Math.random() * 100000);
         this.editor = new FormGroup({
             marcForm: new FormControl(),

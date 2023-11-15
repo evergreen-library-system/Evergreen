@@ -5,8 +5,8 @@ import {AuthService} from '@eg/core/auth.service';
 import {BarcodeSelectComponent} from '@eg/staff/share/barcodes/barcode-select.component';
 
 @Component({
-  templateUrl: 'bcsearch.component.html',
-  selector: 'eg-patron-barcode-search'
+    templateUrl: 'bcsearch.component.html',
+    selector: 'eg-patron-barcode-search'
 })
 
 export class BcSearchComponent implements OnInit, AfterViewInit {
@@ -35,13 +35,13 @@ export class BcSearchComponent implements OnInit, AfterViewInit {
     findUser(): void {
         this.notFound = false;
         this.barcodeSelect.getBarcode('actor', this.barcode)
-        .then(selection => {
-            if (selection && selection.id) {
-                this.router.navigate(['/staff/circ/patron', selection.id, 'checkout']);
-            } else {
-                this.notFound = true;
-            }
-        });
+            .then(selection => {
+                if (selection && selection.id) {
+                    this.router.navigate(['/staff/circ/patron', selection.id, 'checkout']);
+                } else {
+                    this.notFound = true;
+                }
+            });
     }
 }
 

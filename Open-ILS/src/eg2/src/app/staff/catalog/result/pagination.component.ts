@@ -4,9 +4,9 @@ import {CatalogSearchContext} from '@eg/share/catalog/search-context';
 import {StaffCatalogService} from '../catalog.service';
 
 @Component({
-  selector: 'eg-catalog-result-pagination',
-  styleUrls: ['pagination.component.css'],
-  templateUrl: 'pagination.component.html'
+    selector: 'eg-catalog-result-pagination',
+    styleUrls: ['pagination.component.css'],
+    templateUrl: 'pagination.component.html'
 })
 export class ResultPaginationComponent implements OnInit {
 

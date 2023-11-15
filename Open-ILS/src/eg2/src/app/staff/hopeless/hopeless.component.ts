@@ -1,15 +1,14 @@
+/* eslint-disable no-magic-numbers */
 
-import {Component, OnInit, ViewChild, Input, TemplateRef} from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {IdlObject} from '@eg/core/idl.service';
 import {PcrudService} from '@eg/core/pcrud.service';
 import {AuthService} from '@eg/core/auth.service';
 import {FormatService} from '@eg/core/format.service';
-import {Pager} from '@eg/share/util/pager';
-import {DateSelectComponent} from '@eg/share/date-select/date-select.component';
-import {BibRecordService, BibRecordSummary} from '@eg/share/catalog/bib-record.service';
+import {BibRecordService} from '@eg/share/catalog/bib-record.service';
 
 @Component({
-  templateUrl: 'hopeless.component.html'
+    templateUrl: 'hopeless.component.html'
 })
 export class HopelessComponent implements OnInit {
 

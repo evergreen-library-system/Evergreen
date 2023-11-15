@@ -43,7 +43,7 @@ export class StaffSplashComponent implements OnInit {
                 // guaranteed to be unique
                 tmpPortalEntries[page_col][item.col_pos()].push(item);
             },
-            err => {},
+            (err: unknown) => {},
             () => {
                 // find the first set of entries belonging to the
                 // workstation OU or one of its ancestors
@@ -53,8 +53,8 @@ export class StaffSplashComponent implements OnInit {
                     tmpPortalEntries.forEach((col) => {
                         if (col !== undefined) {
                             const filtered = col.reduce((prev, curr) => prev.concat(curr), [])
-                                                .filter(x => x !== undefined)
-                                                .filter(x => ou === x.owner());
+                                .filter(x => x !== undefined)
+                                .filter(x => ou === x.owner());
                             if (filtered.length) {
                                 foundMatch = true;
                                 filteredPortalEntries.push(filtered);

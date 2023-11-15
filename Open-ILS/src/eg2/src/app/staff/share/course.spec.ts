@@ -28,7 +28,7 @@ describe('CourseService', () => {
         } else {
             return originalCircLib;
         }
-    })
+    });
     const itemSpy = jasmine.createSpyObj<IdlObject>(['call_number', 'circ_lib', 'id']);
     itemSpy.circ_lib.and.callFake((newValue?: number) => { // this will return 5 unless set otherwise
         if (newValue) {
@@ -67,8 +67,8 @@ describe('CourseService', () => {
 
     beforeEach(() => {
         service = new CourseService(authServiceSpy, evtServiceSpy,
-                                    idlServiceSpy, netServiceSpy,
-                                    orgServiceSpy, pcrudServiceSpy);
+            idlServiceSpy, netServiceSpy,
+            orgServiceSpy, pcrudServiceSpy);
         orgServiceSpy.canHaveVolumes.and.returnValue(true);
         circLib = 5; // set the item's circ lib to 5
     });
@@ -77,7 +77,7 @@ describe('CourseService', () => {
         pcrudServiceSpy.update.calls.reset();
         itemSpy.circ_lib.calls.reset();
         materialSpy.original_circ_lib.calls.reset();
-    })
+    });
 
     it('updateItem() passes the expected parameters to open-ils.cat', () => {
         service.updateItem(itemSpy, mockOrg, 'ABC 123', true);
@@ -105,7 +105,7 @@ describe('CourseService', () => {
         });
     }));
 
-    it("#associateMaterials does not change the item circ_lib if the requested lib can't have items", () => {
+    it('#associateMaterials does not change the item circ_lib if the requested lib can\'t have items', () => {
         orgServiceSpy.canHaveVolumes.and.returnValue(false);
         const results = service.associateMaterials(itemSpy, {tempLibrary: 1, isModifyingLibrary: true, currentCourse: mockCourse});
         expect(itemSpy.circ_lib).not.toHaveBeenCalled();

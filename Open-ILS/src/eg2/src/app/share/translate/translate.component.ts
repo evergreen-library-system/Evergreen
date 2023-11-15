@@ -8,8 +8,8 @@ import {DialogComponent} from '@eg/share/dialog/dialog.component';
 import {NgbModal} from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
-  selector: 'eg-translate',
-  templateUrl: 'translate.component.html'
+    selector: 'eg-translate',
+    templateUrl: 'translate.component.html'
 })
 
 export class TranslateComponent

@@ -11,7 +11,7 @@ interface LinkTableLink {
     templateUrl: './link-table.component.html',
     styleUrls: ['link-table.component.css'],
     styles: [
-    `
+        `
       ul {
         column-count: var(--columnCount);
       }

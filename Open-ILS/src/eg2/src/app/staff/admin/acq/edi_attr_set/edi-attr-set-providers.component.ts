@@ -15,12 +15,12 @@ import {ToastService} from '@eg/share/toast/toast.service';
 import {PermService} from '@eg/core/perm.service';
 
 @Component({
-  selector: 'eg-edi-attr-set-providers',
-  templateUrl: './edi-attr-set-providers.component.html'
+    selector: 'eg-edi-attr-set-providers',
+    templateUrl: './edi-attr-set-providers.component.html'
 })
 
 export class EdiAttrSetProvidersComponent
-  extends DialogComponent implements OnInit {
+    extends DialogComponent implements OnInit {
 
     @Input() attrSetId: number;
     @ViewChild('grid', { static: false }) grid: GridComponent;

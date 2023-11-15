@@ -1,4 +1,4 @@
-import {Component, Input, ViewChild, OnInit} from '@angular/core';
+import {Component, ViewChild, OnInit} from '@angular/core';
 import {Location} from '@angular/common';
 import {FormatService} from '@eg/core/format.service';
 import {GridDataSource, GridCellTextGenerator} from '@eg/share/grid/grid';
@@ -13,7 +13,7 @@ import {OrgService} from '@eg/core/org.service';
 import {PermService} from '@eg/core/perm.service';
 import {AuthService} from '@eg/core/auth.service';
 import {NetService} from '@eg/core/net.service';
-import {map, mergeMap} from 'rxjs/operators';
+import {mergeMap} from 'rxjs/operators';
 import {StringComponent} from '@eg/share/string/string.component';
 import {DistributionFormulaEditDialogComponent} from './distribution-formula-edit-dialog.component';
 import {Observable, forkJoin, of} from 'rxjs';
@@ -88,7 +88,7 @@ export class DistributionFormulasComponent extends AdminPageComponent implements
                 // No org filter -- fetch all rows
                 return this.pcrud.retrieveAll(
                     this.idlClass, searchOps, reqOps)
-                        .pipe(mergeMap((row) => this.countItems(row)));
+                    .pipe(mergeMap((row) => this.countItems(row)));
             }
 
             const search: any = new Array();
@@ -108,7 +108,7 @@ export class DistributionFormulasComponent extends AdminPageComponent implements
 
             return this.pcrud.search(
                 this.idlClass, search, searchOps, reqOps)
-                    .pipe(mergeMap((row) => this.countItems(row)));
+                .pipe(mergeMap((row) => this.countItems(row)));
         };
 
         super.ngOnInit();
@@ -131,7 +131,7 @@ export class DistributionFormulasComponent extends AdminPageComponent implements
                         .then(str => this.toast.success(str));
                     resolve(result);
                 },
-                error => {
+                (error: unknown) => {
                     this.updateFailedString.current()
                         .then(str => this.toast.danger(str));
                     reject(error);
@@ -174,9 +174,10 @@ export class DistributionFormulasComponent extends AdminPageComponent implements
                         }
                     });
                 },
-                err => {},
+                (err: unknown) => {},
                 () => {
                     if (can) {
+                        // eslint-disable-next-line rxjs/no-nested-subscribe
                         this.confirmDel.open().subscribe(confirmed => {
                             if (!confirmed) { return; }
                             super.deleteSelected([ rows[0] ]);

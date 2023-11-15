@@ -19,8 +19,8 @@ import {PicklistMergeDialogComponent} from './picklist-merge-dialog.component';
 import {AcqSearchFormComponent} from './acq-search-form.component';
 
 @Component({
-  selector: 'eg-picklist-results',
-  templateUrl: 'picklist-results.component.html'
+    selector: 'eg-picklist-results',
+    templateUrl: 'picklist-results.component.html'
 })
 export class PicklistResultsComponent implements OnInit {
 
@@ -64,14 +64,14 @@ export class PicklistResultsComponent implements OnInit {
         private acqSearch: AcqSearchService,
         private perm: PermService
     ) {
-      this.permissions = {};
+        this.permissions = {};
     }
 
     ngOnInit() {
         this.gridSource = this.acqSearch.getAcqSearchDataSource('picklist');
 
         this.perm.hasWorkPermHere(['CREATE_PICKLIST', 'UPDATE_PICKLIST', 'VIEW_PICKLIST']).
-          then(perms => this.permissions = perms);
+            then(perms => this.permissions = perms);
 
         this.noSelectedRows = (rows: IdlObject[]) => (rows.length === 0);
         this.oneSelectedRows = (rows: IdlObject[]) => (rows.length === 1);

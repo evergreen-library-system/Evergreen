@@ -4,8 +4,8 @@ import {SimpleReporterService, SRTemplate} from './simple-reporter.service';
 import * as moment from 'moment-timezone';
 
 @Component({
-  selector: 'eg-sr-output-options',
-  templateUrl: './sr-output-options.component.html'
+    selector: 'eg-sr-output-options',
+    templateUrl: './sr-output-options.component.html'
 })
 
 export class SROutputOptionsComponent {
@@ -23,6 +23,7 @@ export class SROutputOptionsComponent {
         // When changing to Later for the first time default minutes to the quarter hour
         if (this.templ.runNow === 'later' && this.templ.runTime === null) {
             const now = moment();
+            // eslint-disable-next-line no-magic-numbers
             const nextQ = now.add(15 - (now.minutes() % 15), 'minutes');
             this.templ.runTime = nextQ;
         }

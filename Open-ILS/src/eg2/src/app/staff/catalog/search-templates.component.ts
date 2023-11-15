@@ -27,8 +27,8 @@ class SearchTemplate {
 }
 
 @Component({
-  selector: 'eg-catalog-search-templates',
-  templateUrl: 'search-templates.component.html'
+    selector: 'eg-catalog-search-templates',
+    templateUrl: 'search-templates.component.html'
 })
 export class SearchTemplatesComponent extends DialogComponent implements OnInit {
 
@@ -62,21 +62,21 @@ export class SearchTemplatesComponent extends DialogComponent implements OnInit 
         this.context = this.staffCat.searchContext;
 
         this.serverStore.getItem('opac.staff_saved_search.size')
-        .then(size => {
-            if (!size) { return; }
+            .then(size => {
+                if (!size) { return; }
 
-            this.recentSearchesCount = Number(size);
+                this.recentSearchesCount = Number(size);
 
-            this.getSearches().then(_ => {
-                this.searches.forEach(
-                    s => s.params.ridx = ++this.staffCat.routeIndex);
+                this.getSearches().then(_ => {
+                    this.searches.forEach(
+                        s => s.params.ridx = ++this.staffCat.routeIndex);
 
-                // Save the search that runs on page load.
-                this.saveSearch(this.context);
-                // Watch for new searches
-                this.cat.onSearchComplete.subscribe(ctx => this.saveSearch(ctx));
+                    // Save the search that runs on page load.
+                    this.saveSearch(this.context);
+                    // Watch for new searches
+                    this.cat.onSearchComplete.subscribe(ctx => this.saveSearch(ctx));
+                });
             });
-        });
 
         this.getTemplates();
     }
@@ -108,10 +108,10 @@ export class SearchTemplatesComponent extends DialogComponent implements OnInit 
             // No saved searches in progress.  Start from scratch.
 
             return this.cache.setItem(null, 'searches', []) // generates cache key
-            .then(cKey => {
-                this.searchesCacheKey = cKey;
-                this.store.setLoginSessionItem(RECENT_SEARCHES_KEY, cKey);
-            });
+                .then(cKey => {
+                    this.searchesCacheKey = cKey;
+                    this.store.setLoginSessionItem(RECENT_SEARCHES_KEY, cKey);
+                });
         }
     }
 
@@ -194,7 +194,7 @@ export class SearchTemplatesComponent extends DialogComponent implements OnInit 
 
             this.cache.setItem(
                 this.searchesCacheKey, 'searches', this.searches)
-            .then(_ => search.params.ridx = ++this.staffCat.routeIndex);
+                .then(_ => search.params.ridx = ++this.staffCat.routeIndex);
         });
     }
 

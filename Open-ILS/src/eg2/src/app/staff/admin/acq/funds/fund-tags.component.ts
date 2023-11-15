@@ -7,8 +7,7 @@ import {PcrudService} from '@eg/core/pcrud.service';
 import {OrgService} from '@eg/core/org.service';
 import {StringComponent} from '@eg/share/string/string.component';
 import {ToastService} from '@eg/share/toast/toast.service';
-import {ComboboxComponent} from '@eg/share/combobox/combobox.component';
-import {ComboboxEntry} from '@eg/share/combobox/combobox.component';
+import {ComboboxComponent, ComboboxEntry} from '@eg/share/combobox/combobox.component';
 import {Observable} from 'rxjs';
 import {map} from 'rxjs/operators';
 
@@ -75,7 +74,7 @@ export class FundTagsComponent implements OnInit {
             }
         }).subscribe(
             res => this.tagMaps.push(res),
-            err => {},
+            (err: unknown) => {},
             () => this.tagMaps.sort((a, b) => {
                 return a.tag().name() < b.tag().name() ? -1 : 1;
             })
@@ -83,6 +82,7 @@ export class FundTagsComponent implements OnInit {
     }
 
     checkNewTagAlreadyMapped(): boolean {
+        // eslint-disable-next-line eqeqeq
         if ( this.newTag == null) { return false; }
         const matches: IdlObject[] = this.tagMaps.filter(tm => tm.tag().id() === this.newTag.id);
         return matches.length > 0 ? true : false;
@@ -94,12 +94,12 @@ export class FundTagsComponent implements OnInit {
         ftm.fund(this.fundId);
         this.pcrud.create(ftm).subscribe(
             ok => {
-              this.addSuccessString.current()
-                .then(str => this.toast.success(str));
+                this.addSuccessString.current()
+                    .then(str => this.toast.success(str));
             },
-            err => {
-              this.addErrorString.current()
-                .then(str => this.toast.danger(str));
+            (err: unknown) => {
+                this.addErrorString.current()
+                    .then(str => this.toast.danger(str));
             },
             () => {
                 this.newTag = null;
@@ -111,12 +111,12 @@ export class FundTagsComponent implements OnInit {
     removeTagMap(ftm: IdlObject) {
         this.pcrud.remove(ftm).subscribe(
             ok => {
-              this.removeSuccessString.current()
-                .then(str => this.toast.success(str));
+                this.removeSuccessString.current()
+                    .then(str => this.toast.success(str));
             },
-            err => {
-              this.removeErrorString.current()
-                .then(str => this.toast.danger(str));
+            (err: unknown) => {
+                this.removeErrorString.current()
+                    .then(str => this.toast.danger(str));
             },
             () => this._loadTagMaps()
         );

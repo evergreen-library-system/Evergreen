@@ -3,8 +3,8 @@ import {GridToolbarCheckbox} from './grid';
 import {GridComponent} from './grid.component';
 
 @Component({
-  selector: 'eg-grid-toolbar-checkbox',
-  template: '<ng-template></ng-template>'
+    selector: 'eg-grid-toolbar-checkbox',
+    template: '<ng-template></ng-template>'
 })
 
 export class GridToolbarCheckboxComponent implements OnInit {

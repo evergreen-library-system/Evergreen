@@ -13,9 +13,9 @@ import {BasketService} from '@eg/share/catalog/basket.service';
 import {ServerStoreService} from '@eg/core/server-store.service';
 
 @Component({
-  selector: 'eg-catalog-results',
-  templateUrl: 'results.component.html',
-  styleUrls: ['results.component.css']
+    selector: 'eg-catalog-results',
+    templateUrl: 'results.component.html',
+    styleUrls: ['results.component.css']
 })
 export class ResultsComponent implements OnInit, OnDestroy {
 
@@ -58,14 +58,14 @@ export class ResultsComponent implements OnInit, OnDestroy {
         this.routeSub =
             this.route.queryParamMap.subscribe((params: ParamMap) => {
 
-              // TODO: Angular docs suggest using switchMap(), but
-              // it's not firing for some reason.  Also, could avoid
-              // firing unnecessary searches when a param unrelated to
-              // searching is changed by .map()'ing out only the desired
-              // params and running through .distinctUntilChanged(), but
-              // .map() is not firing either.  I'm missing something.
-              this.searchByUrl(params);
-        });
+                // TODO: Angular docs suggest using switchMap(), but
+                // it's not firing for some reason.  Also, could avoid
+                // firing unnecessary searches when a param unrelated to
+                // searching is changed by .map()'ing out only the desired
+                // params and running through .distinctUntilChanged(), but
+                // .map() is not firing either.  I'm missing something.
+                this.searchByUrl(params);
+            });
 
         // After each completed search, update the record selector.
         this.searchSub = this.cat.onSearchComplete.subscribe(
@@ -93,7 +93,7 @@ export class ResultsComponent implements OnInit, OnDestroy {
     jumpIfNecessary() {
         const ids = this.searchContext.currentResultIds();
         if (this.staffCat.jumpOnSingleHit && ids.length === 1) {
-           // this.router.navigate(['/staff/catalog/record/' + ids[0], { queryParams: this.catUrl.toUrlParams(this.searchContext) }]);
+            // this.router.navigate(['/staff/catalog/record/' + ids[0], { queryParams: this.catUrl.toUrlParams(this.searchContext) }]);
             this.router.navigate(['/staff/catalog/record/' + ids[0]], {queryParamsHandling: 'merge'});
         }
     }
@@ -119,21 +119,21 @@ export class ResultsComponent implements OnInit, OnDestroy {
         if (this.searchContext.isSearchable()) {
 
             this.serverStore.getItem('eg.staff.catalog.results.show_more')
-            .then(showMore => {
+                .then(showMore => {
 
-                this.showMoreDetails =
+                    this.showMoreDetails =
                     this.searchContext.showResultExtras = showMore;
 
-                if (this.staffCat.prefOrg) {
-                    this.searchContext.prefOu = this.staffCat.prefOrg.id();
-                }
+                    if (this.staffCat.prefOrg) {
+                        this.searchContext.prefOu = this.staffCat.prefOrg.id();
+                    }
 
-                this.cat.search(this.searchContext)
-                .then(ok => {
-                    this.cat.fetchFacets(this.searchContext);
-                    this.cat.fetchBibSummaries(this.searchContext);
+                    this.cat.search(this.searchContext)
+                        .then(ok => {
+                            this.cat.fetchFacets(this.searchContext);
+                            this.cat.fetchBibSummaries(this.searchContext);
+                        });
                 });
-            });
         }
     }
 
@@ -142,17 +142,17 @@ export class ResultsComponent implements OnInit, OnDestroy {
 
         this.serverStore.setItem(
             'eg.staff.catalog.results.show_more', this.showMoreDetails)
-        .then(_ => {
+            .then(_ => {
 
-            this.searchContext.showResultExtras = this.showMoreDetails;
+                this.searchContext.showResultExtras = this.showMoreDetails;
 
-            if (this.showMoreDetails) {
-                this.staffCat.search();
-            } else {
+                if (this.showMoreDetails) {
+                    this.staffCat.search();
+                } else {
                 // Clear the collected copies.  No need for another search.
-                this.searchContext.result.records.forEach(rec => rec.copies = undefined);
-            }
-        });
+                    this.searchContext.result.records.forEach(rec => rec.copies = undefined);
+                }
+            });
     }
 
     searchIsDone(): boolean {

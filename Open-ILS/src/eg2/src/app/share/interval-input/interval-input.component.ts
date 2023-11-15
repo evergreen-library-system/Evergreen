@@ -9,13 +9,13 @@ import {Observable, of, Subject} from 'rxjs';
 import {map, tap, reduce, mergeMap, mapTo, debounceTime, distinctUntilChanged, merge, filter} from 'rxjs/operators';
 
 @Component({
-  selector: 'eg-interval-input',
-  templateUrl: './interval-input.component.html',
-  providers: [{
-    provide: NG_VALUE_ACCESSOR,
-    useExisting: forwardRef(() => IntervalInputComponent),
-    multi: true
-  }]
+    selector: 'eg-interval-input',
+    templateUrl: './interval-input.component.html',
+    providers: [{
+        provide: NG_VALUE_ACCESSOR,
+        useExisting: forwardRef(() => IntervalInputComponent),
+        multi: true
+    }]
 })
 export class IntervalInputComponent implements ControlValueAccessor, OnInit {
 

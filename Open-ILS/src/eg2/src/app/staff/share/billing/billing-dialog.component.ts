@@ -19,8 +19,8 @@ import {BillingService} from './billing.service';
 const DEFAULT_BILLING_TYPE = 101; // Stock "Misc"
 
 @Component({
-  selector: 'eg-add-billing-dialog',
-  templateUrl: 'billing-dialog.component.html'
+    selector: 'eg-add-billing-dialog',
+    templateUrl: 'billing-dialog.component.html'
 })
 
 export class AddBillingDialogComponent
@@ -130,7 +130,7 @@ export class AddBillingDialogComponent
             xactId = id;
             return this.createBill(id);
         })
-        .then(billId => this.close({xactId: xactId, billId: billId}));
+            .then(billId => this.close({xactId: xactId, billId: billId}));
     }
 
     handleResponse(id: number): number {

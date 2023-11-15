@@ -3,8 +3,8 @@ import {Router, NavigationEnd} from '@angular/router';
 import {DialogComponent} from '@eg/share/dialog/dialog.component';
 
 @Component({
-  selector: 'eg-root',
-  template: '<router-outlet></router-outlet>'
+    selector: 'eg-root',
+    template: '<router-outlet></router-outlet>'
 })
 
 export class BaseComponent {

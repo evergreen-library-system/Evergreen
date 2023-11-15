@@ -1,5 +1,5 @@
-import { AbstractControl } from "@angular/forms";
-import { datesInOrderValidator } from "./dates_in_order_validator.directive";
+import { AbstractControl } from '@angular/forms';
+import { datesInOrderValidator } from './dates_in_order_validator.directive';
 
 describe('datesInOrderValidator', () => {
     const mockForm = jasmine.createSpyObj<AbstractControl>(['get']);

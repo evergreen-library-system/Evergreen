@@ -1,9 +1,10 @@
 import {Component, OnInit, Input, ViewChild,
-    Output, EventEmitter, TemplateRef} from '@angular/core';
-import {NgForm} from '@angular/forms';
+    Output, EventEmitter, TemplateRef,
+    Directive, HostBinding} from '@angular/core';
+import {NgForm, AbstractControl, NG_VALIDATORS, ValidationErrors,
+    Validator, Validators} from '@angular/forms';
 import {IdlService, IdlObject} from '@eg/core/idl.service';
 import {Observable} from 'rxjs';
-import {map} from 'rxjs/operators';
 import {PcrudService} from '@eg/core/pcrud.service';
 import {OrgService} from '@eg/core/org.service';
 import {DialogComponent} from '@eg/share/dialog/dialog.component';
@@ -15,8 +16,6 @@ import {FormatService} from '@eg/core/format.service';
 import {TranslateComponent} from '@eg/share/translate/translate.component';
 import {FmRecordEditorActionComponent} from './fm-editor-action.component';
 import {ConfirmDialogComponent} from '@eg/share/dialog/confirm.component';
-import {Directive, HostBinding} from '@angular/core';
-import {AbstractControl, NG_VALIDATORS, ValidationErrors, Validator, Validators} from '@angular/forms';
 
 interface CustomFieldTemplate {
     template: TemplateRef<any>;
@@ -95,10 +94,10 @@ export interface FmFieldOptions {
 }
 
 @Component({
-  selector: 'eg-fm-record-editor',
-  templateUrl: './fm-editor.component.html',
-  /* align checkboxes when not using class="form-check" */
-  styles: ['input[type="checkbox"] {margin-left: 0px;}']
+    selector: 'eg-fm-record-editor',
+    templateUrl: './fm-editor.component.html',
+    /* align checkboxes when not using class="form-check" */
+    styles: ['input[type="checkbox"] {margin-left: 0px;}']
 })
 export class FmRecordEditorComponent
     extends DialogComponent implements OnInit {
@@ -265,7 +264,7 @@ export class FmRecordEditorComponent
       private format: FormatService,
       private org: OrgService,
       private pcrud: PcrudService) {
-      super(modal);
+        super(modal);
     }
 
     // Avoid fetching data on init since that may lead to unnecessary
@@ -280,6 +279,7 @@ export class FmRecordEditorComponent
         this.recordLabel = this.recordLabel || this.idlDef.label;
 
         // Add some randomness to the generated DOM IDs to ensure against clobbering
+        // eslint-disable-next-line no-magic-numbers
         this.idPrefix = 'fm-editor-' + Math.floor(Math.random() * 100000);
 
         if (this.isDialog()) {
@@ -461,14 +461,11 @@ export class FmRecordEditorComponent
         switch (field.class) {
             case 'acmc':
                 return fm.course_number() + ': ' + fm.name();
-                break;
             case 'acqf':
                 return fm.code() + ' (' + fm.year() + ')'
                        + ' (' + this.getOrgShortname(fm.org()) + ')';
-                break;
             case 'acpl':
                 return fm.name() + ' (' + this.getOrgShortname(fm.owning_lib()) + ')';
-                break;
             default:
                 // no equivalent of idlIncludeLibraryInLabel yet
                 return fm[selector]();

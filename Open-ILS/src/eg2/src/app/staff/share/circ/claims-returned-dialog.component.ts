@@ -8,8 +8,8 @@ import {AuthService} from '@eg/core/auth.service';
 import {EventService} from '@eg/core/event.service';
 
 @Component({
-  templateUrl: 'claims-returned-dialog.component.html',
-  selector: 'eg-claims-returned-dialog'
+    templateUrl: 'claims-returned-dialog.component.html',
+    selector: 'eg-claims-returned-dialog'
 })
 export class ClaimsReturnedDialogComponent
     extends DialogComponent implements OnInit {
@@ -64,11 +64,11 @@ export class ClaimsReturnedDialogComponent
                 return of(false);
             }));
         }))
-        .subscribe(
-            null,
-            err => console.log('Claims returned stopped with', err),
-            () => this.close(Object.keys(this.completed).length)
-        );
+            .subscribe(
+                null,
+                (err: unknown) => console.log('Claims returned stopped with', err),
+                () => this.close(Object.keys(this.completed).length)
+            );
     }
 
     confirmExceeds() {

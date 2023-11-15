@@ -1,3 +1,4 @@
+/* eslint-disable eqeqeq */
 import {Component, OnInit, Input, Output, EventEmitter, forwardRef} from '@angular/core';
 import {NgbDateStruct} from '@ng-bootstrap/ng-bootstrap';
 import {ControlValueAccessor, NG_VALUE_ACCESSOR} from '@angular/forms';
@@ -10,14 +11,14 @@ import {DateUtil} from '@eg/share/util/date';
  */
 
 @Component({
-  selector: 'eg-date-select',
-  templateUrl: './date-select.component.html',
-  styleUrls: ['date-select.component.css'],
-  providers: [ {
-      provide: NG_VALUE_ACCESSOR,
-      useExisting: forwardRef(() => DateSelectComponent),
-      multi: true
-  } ]
+    selector: 'eg-date-select',
+    templateUrl: './date-select.component.html',
+    styleUrls: ['date-select.component.css'],
+    providers: [ {
+        provide: NG_VALUE_ACCESSOR,
+        useExisting: forwardRef(() => DateSelectComponent),
+        multi: true
+    } ]
 })
 export class DateSelectComponent implements OnInit, ControlValueAccessor {
 

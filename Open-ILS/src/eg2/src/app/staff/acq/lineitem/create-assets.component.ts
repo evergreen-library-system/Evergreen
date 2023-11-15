@@ -19,7 +19,7 @@ interface AssetCreationResponse {
 }
 
 @Component({
-  templateUrl: 'create-assets.component.html'
+    templateUrl: 'create-assets.component.html'
 })
 export class CreateAssetsComponent implements OnInit {
 
@@ -88,7 +88,7 @@ export class CreateAssetsComponent implements OnInit {
                     this.creationStatus['copiesProcessed'] = resp.copies;
                 }
             },
-            err => {},
+            (err: unknown) => {},
             () => {
                 if (!this.creationErrors.length) {
                     this.creatingAssets = false;
@@ -101,6 +101,6 @@ export class CreateAssetsComponent implements OnInit {
                 }
             }
         );
-    }
+    };
 }
 

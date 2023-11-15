@@ -1,3 +1,4 @@
+/* eslint-disable no-magic-numbers */
 import {Injectable} from '@angular/core';
 import {IdlService, IdlObject} from '@eg/core/idl.service';
 
@@ -113,7 +114,7 @@ export class SampleDataService {
         return list[Math.floor(Math.random() * list.length)][field];
     }
 
-    listOfThings(idlClass: string, count: number = 1): IdlObject[] {
+    listOfThings(idlClass: string, count = 1): IdlObject[] {
         if (!(idlClass in DATA)) {
             throw new Error(`No sample data for class ${idlClass}'`);
         }
@@ -131,13 +132,13 @@ export class SampleDataService {
     }
 
     // Returns a random-ish date in the past or the future.
-    randomDate(future: boolean = false): Date {
+    randomDate(future = false): Date {
         const rando = Math.random() * 10000000000;
         const time = new Date().getTime();
         return new Date(future ? time + rando : time - rando);
     }
 
-    randomDateIso(future: boolean = false): string {
+    randomDateIso(future = false): string {
         return this.randomDate(future).toISOString();
     }
 }

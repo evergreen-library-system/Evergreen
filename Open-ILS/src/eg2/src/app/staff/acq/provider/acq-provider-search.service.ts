@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-throw-literal */
 import {Injectable} from '@angular/core';
 import {EMPTY, throwError} from 'rxjs';
 import {map} from 'rxjs/operators';

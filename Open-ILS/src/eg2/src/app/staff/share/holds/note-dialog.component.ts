@@ -12,8 +12,8 @@ import {DialogComponent} from '@eg/share/dialog/dialog.component';
 /** New hold note dialog */
 
 @Component({
-  selector: 'eg-hold-note-dialog',
-  templateUrl: 'note-dialog.component.html'
+    selector: 'eg-hold-note-dialog',
+    templateUrl: 'note-dialog.component.html'
 })
 export class HoldNoteDialogComponent extends DialogComponent {
     pub = false;

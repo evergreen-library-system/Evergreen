@@ -113,7 +113,7 @@ export class CourseAssociateMaterialComponent extends DialogComponent implements
                 this.materialAddSuccessString.current()
                     .then(str => this.toast.success(str));
             });
-         };
+        };
 
     }
 
@@ -141,6 +141,7 @@ export class CourseAssociateMaterialComponent extends DialogComponent implements
                 result => {
                     this.materialEditSuccessString.current()
                         .then(str => this.toast.success(str));
+                    // eslint-disable-next-line rxjs/no-nested-subscribe
                     this.pcrud.retrieve('acmcm', result).subscribe(material => {
                         if (material.course() !== this.courseId) {
                             this.materialsGrid.reload();
@@ -150,7 +151,7 @@ export class CourseAssociateMaterialComponent extends DialogComponent implements
                     });
                     resolve(result);
                 },
-                error => {
+                (error: unknown) => {
                     this.materialEditFailedString.current()
                         .then(str => this.toast.danger(str));
                     reject(error);
@@ -169,49 +170,49 @@ export class CourseAssociateMaterialComponent extends DialogComponent implements
             this.isModifyingLibrary = item.circ_lib().id() !== this.currentCourse.owning_lib().id();
             return this.isModifyingLibrary ? this.handleItemAtDifferentLibrary$(item) : of(item);
         }))
-        .subscribe((originalItem) => {
-            const args = {
-                barcode: barcode.trim(),
-                relationship: relationship,
-                isModifyingCallNumber: this.isModifyingCallNumber,
-                isModifyingCircMod: this.isModifyingCircMod,
-                isModifyingLocation: this.isModifyingLocation,
-                isModifyingStatus: this.isModifyingStatus,
-                isModifyingLibrary: this.isModifyingLibrary,
-                tempCircMod: this.tempCircMod,
-                tempLocation: this.tempLocation,
-                tempLibrary: this.currentCourse.owning_lib().id(),
-                tempStatus: this.tempStatus,
-                currentCourse: this.currentCourse
-            };
+            .subscribe((originalItem) => {
+                const args = {
+                    barcode: barcode.trim(),
+                    relationship: relationship,
+                    isModifyingCallNumber: this.isModifyingCallNumber,
+                    isModifyingCircMod: this.isModifyingCircMod,
+                    isModifyingLocation: this.isModifyingLocation,
+                    isModifyingStatus: this.isModifyingStatus,
+                    isModifyingLibrary: this.isModifyingLibrary,
+                    tempCircMod: this.tempCircMod,
+                    tempLocation: this.tempLocation,
+                    tempLibrary: this.currentCourse.owning_lib().id(),
+                    tempStatus: this.tempStatus,
+                    currentCourse: this.currentCourse
+                };
 
-            const associatedMaterial = this.course.associateMaterials(originalItem, args);
+                const associatedMaterial = this.course.associateMaterials(originalItem, args);
 
-            associatedMaterial.material.then(res => {
-                const item = associatedMaterial.item;
-                let new_cn = item.call_number().label();
-                if (this.tempCallNumber) { new_cn = this.tempCallNumber; }
-                this.course.updateItem(item, this.currentCourse.owning_lib(),
-                    new_cn, args.isModifyingCallNumber
-                ).then(resp => {
-                    this.materialsGrid.reload();
-                    this.materialAddSuccessString.current()
-                    .then(str => this.toast.success(str));
+                associatedMaterial.material.then(res => {
+                    const item = associatedMaterial.item;
+                    let new_cn = item.call_number().label();
+                    if (this.tempCallNumber) { new_cn = this.tempCallNumber; }
+                    this.course.updateItem(item, this.currentCourse.owning_lib(),
+                        new_cn, args.isModifyingCallNumber
+                    ).then(resp => {
+                        this.materialsGrid.reload();
+                        this.materialAddSuccessString.current()
+                            .then(str => this.toast.success(str));
+                    });
+                }, err => {
+                    this.materialAddFailedString.current()
+                        .then(str => this.toast.danger(str));
                 });
-            }, err => {
-                this.materialAddFailedString.current()
-                .then(str => this.toast.danger(str));
             });
-        });
     }
 
     deleteSelectedMaterials(items) {
-        let deleteRequest$ = this.course.detachMaterials(items);
+        const deleteRequest$ = this.course.detachMaterials(items);
         merge(...deleteRequest$).subscribe(
             val => {
                 this.materialDeleteSuccessString.current().then(str => this.toast.success(str));
             },
-            err => {
+            (err: unknown) => {
                 this.materialDeleteFailedString.current()
                     .then(str => this.toast.danger(str));
             }
@@ -228,15 +229,15 @@ export class CourseAssociateMaterialComponent extends DialogComponent implements
         return from(promise).pipe(concatMap((editableItemLibs) => {
             if (editableItemLibs.indexOf(item.circ_lib().id()) !== -1) {
                 return this.confirmOtherLibraryDialog.open()
-                .pipe(switchMap(confirmed => {
+                    .pipe(switchMap(confirmed => {
                     // If the user clicked "no", return an empty observable,
                     // so the subsequent code has nothing to do.
-                    if (!confirmed) { return EMPTY; }
-                    return of(item);
-                }));
+                        if (!confirmed) { return EMPTY; }
+                        return of(item);
+                    }));
             } else {
                 return this.otherLibraryNoPermissionsAlert.open()
-                .pipe(switchMap(() => EMPTY));
+                    .pipe(switchMap(() => EMPTY));
             }
         }));
     }

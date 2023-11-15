@@ -93,11 +93,11 @@ export class AdminStaffPortalPageComponent extends AdminPageComponent implements
                 }
                 updates.push(entry);
             },
-            err => {},
+            (err: unknown) => {},
         ).add(() => {
             this.pcrud.autoApply(updates).subscribe(
                 val => {},
-                err => {
+                (err: unknown) => {
                     this.cloneFailedString.current()
                         .then(str => this.toast.danger(str));
                 },
@@ -105,7 +105,7 @@ export class AdminStaffPortalPageComponent extends AdminPageComponent implements
                     this.cloneSuccessString.current()
                         .then(str => this.toast.success(str));
                     this.searchOrgs = {primaryOrgId: tgt}; // change the org filter to the
-                                                           // the one we just cloned into
+                    // the one we just cloned into
                     this.grid.reload();
                 }
             );

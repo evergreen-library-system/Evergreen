@@ -28,39 +28,39 @@ import {RecentImportsComponent} from './recent-imports.component';
 import {MarcEditModule} from '@eg/staff/share/marc-edit/marc-edit.module';
 
 @NgModule({
-  declarations: [
-    VandelayComponent,
-    ImportComponent,
-    ExportComponent,
-    QueueComponent,
-    QueueListComponent,
-    QueuedRecordComponent,
-    QueuedRecordMatchesComponent,
-    DisplayAttrsComponent,
-    MergeProfilesComponent,
-    HoldingsProfilesComponent,
-    QueueItemsComponent,
-    RecordItemsComponent,
-    MatchSetListComponent,
-    MatchSetComponent,
-    MatchSetExpressionComponent,
-    MatchSetQualityComponent,
-    MatchSetNewPointComponent,
-    RecentImportsComponent
-  ],
-  imports: [
-    TreeModule,
-    StaffCommonModule,
-    FmRecordEditorModule,
-    AdminPageModule,
-    MarcEditModule,
-    CatalogCommonModule,
-    VandelayRoutingModule,
-    HttpClientModule,
-  ],
-  providers: [
-    VandelayService
-  ]
+    declarations: [
+        VandelayComponent,
+        ImportComponent,
+        ExportComponent,
+        QueueComponent,
+        QueueListComponent,
+        QueuedRecordComponent,
+        QueuedRecordMatchesComponent,
+        DisplayAttrsComponent,
+        MergeProfilesComponent,
+        HoldingsProfilesComponent,
+        QueueItemsComponent,
+        RecordItemsComponent,
+        MatchSetListComponent,
+        MatchSetComponent,
+        MatchSetExpressionComponent,
+        MatchSetQualityComponent,
+        MatchSetNewPointComponent,
+        RecentImportsComponent
+    ],
+    imports: [
+        TreeModule,
+        StaffCommonModule,
+        FmRecordEditorModule,
+        AdminPageModule,
+        MarcEditModule,
+        CatalogCommonModule,
+        VandelayRoutingModule,
+        HttpClientModule,
+    ],
+    providers: [
+        VandelayService
+    ]
 })
 
 export class VandelayModule {

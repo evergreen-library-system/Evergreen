@@ -2,7 +2,7 @@ import {Pager} from '@eg/share/util/pager';
 import {Component, OnInit, ViewChild} from '@angular/core';
 import {GridComponent} from '@eg/share/grid/grid.component';
 import {GridDataSource} from '@eg/share/grid/grid';
-import {ActivatedRoute} from '@angular/router';
+import {ActivatedRoute, Router} from '@angular/router';
 import {IdlService, IdlObject} from '@eg/core/idl.service';
 import {PcrudService} from '@eg/core/pcrud.service';
 import {NetService} from '@eg/core/net.service';
@@ -10,8 +10,7 @@ import {AuthService} from '@eg/core/auth.service';
 import {FmRecordEditorComponent} from '@eg/share/fm-editor/fm-editor.component';
 import {StringComponent} from '@eg/share/string/string.component';
 import {ToastService} from '@eg/share/toast/toast.service';
-import {NgbNav, NgbNavChangeEvent} from '@ng-bootstrap/ng-bootstrap';
-import {Router} from '@angular/router';
+import {NgbNavChangeEvent} from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
     templateUrl: './trigger-edit.component.html'
@@ -103,15 +102,15 @@ export class EditEventDefinitionComponent implements OnInit {
 
     createNewEnv = () => {
         this.createNewThing(this.envDialog, this.envGrid, 'atenv');
-    }
+    };
 
     createNewAltTemplate = () => {
         this.createNewThing(this.altTemplateDialog, this.altTemplateGrid, 'atevalt');
-    }
+    };
 
     createNewParam = () => {
         this.createNewThing(this.paramDialog, this.paramGrid, 'atevparam');
-    }
+    };
 
     createNewThing = (currentDialog: any, currentGrid: any, idl: any) => {
         currentDialog.mode = 'create';
@@ -133,7 +132,7 @@ export class EditEventDefinitionComponent implements OnInit {
                 }
             }
         );
-    }
+    };
 
     deleteSelected = (idlThings: IdlObject[]) => {
         let currentGrid;
@@ -153,7 +152,7 @@ export class EditEventDefinitionComponent implements OnInit {
                     .then(str => this.toast.success(str));
                 _deleted++;
             },
-            err => {
+            (err: unknown) => {
                 this.deleteFailedString.current()
                     .then(str => this.toast.danger(str));
             },
@@ -163,7 +162,7 @@ export class EditEventDefinitionComponent implements OnInit {
                 }
             }
         );
-    }
+    };
 
     editSelected = (selectedRecords: IdlObject[]) => {
         const editOneThing = (record: IdlObject) => {
@@ -172,7 +171,7 @@ export class EditEventDefinitionComponent implements OnInit {
                 () => editOneThing(selectedRecords.shift()));
         };
         editOneThing(selectedRecords.shift());
-    }
+    };
 
     showEditDialog = (selectedRecord: IdlObject): Promise<any> => {
         let currentDialog;
@@ -202,10 +201,10 @@ export class EditEventDefinitionComponent implements OnInit {
                     this.updateFailedString.current()
                         .then(str => this.toast.danger(str));
                     reject(error);
-               }
-           );
-       });
-    }
+                }
+            );
+        });
+    };
 
     runTest = (barcode) => {
         if (!barcode) {
@@ -224,20 +223,21 @@ export class EditEventDefinitionComponent implements OnInit {
             } else {
                 this.testResult = res.template_output().data();
             }
-        }, err => {
+        // eslint-disable-next-line rxjs/no-implicit-any-catch
+        }, (err: any) => {
             this.testDone = true;
             this.errorDuringTestString.current().then(str => this.testErr1 = str);
             this.testErr2 = err;
         });
-    }
+    };
 
     clearTestResults = () => {
         this.testDone = false;
         this.testErr1 = '';
         this.testErr2 = '';
         this.testResult = '';
-    }
+    };
     back = () => {
         this.router.navigate(['/staff/admin/local/action_trigger/event_definition/']);
-    }
+    };
 }

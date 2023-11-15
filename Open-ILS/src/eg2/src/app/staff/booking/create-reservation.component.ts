@@ -1,9 +1,9 @@
 import { Component, OnInit, AfterViewInit, QueryList, ViewChildren, ViewChild, OnDestroy } from '@angular/core';
 import {FormGroup, FormControl, ValidationErrors, ValidatorFn, FormArray} from '@angular/forms';
 import {Router, ActivatedRoute} from '@angular/router';
-import {from, iif, Observable, of, throwError, timer, Subscription} from 'rxjs';
+import {iif, Observable, of, throwError, timer, Subscription} from 'rxjs';
 import {catchError, debounceTime, takeLast, mapTo, single, switchMap, tap} from 'rxjs/operators';
-import {NgbCalendar, NgbNav, NgbNavChangeEvent} from '@ng-bootstrap/ng-bootstrap';
+import {NgbCalendar, NgbNav} from '@ng-bootstrap/ng-bootstrap';
 import {AuthService} from '@eg/core/auth.service';
 import {ComboboxEntry} from '@eg/share/combobox/combobox.component';
 import {FormatService} from '@eg/core/format.service';
@@ -52,6 +52,7 @@ export class CreateReservationComponent implements OnInit, AfterViewInit, OnDest
     resourceOwner: number;
     subscriptions: Subscription[] = [];
 
+    // eslint-disable-next-line no-magic-numbers
     defaultGranularity = 30;
     granularity: number = this.defaultGranularity;
 
@@ -68,7 +69,7 @@ export class CreateReservationComponent implements OnInit, AfterViewInit, OnDest
     changeGranularity: ($event: ComboboxEntry) => void;
 
     dateRange: DateRange;
-    detailsTab: string = '';
+    detailsTab = '';
 
     @ViewChild('createDialog', { static: true }) createDialog: CreateReservationDialogComponent;
     @ViewChild('details', { static: true }) details: NgbNav;
@@ -130,9 +131,9 @@ export class CreateReservationComponent implements OnInit, AfterViewInit, OnDest
                         this.pcrud.search('brsrc',
                             {'barcode' : rb.value},
                             {'limit': 1})),
-                        single(),
-                        mapTo(null),
-                        catchError(() => of({ resourceBarcode: 'No resource found with that barcode' }))
+                    single(),
+                    mapTo(null),
+                    catchError(() => of({ resourceBarcode: 'No resource found with that barcode' }))
                     )),
             'resourceType': new FormControl(),
             'startOfDay': new FormControl({hour: 9, minute: 0, second: 0}),
@@ -147,15 +148,15 @@ export class CreateReservationComponent implements OnInit, AfterViewInit, OnDest
 
         const debouncing = 1500;
         this.criteria.get('resourceBarcode').valueChanges
-        .pipe(debounceTime(debouncing))
-        .subscribe((barcode) => {
-            this.resources = [];
-            if ('INVALID' === this.criteria.get('resourceBarcode').status) {
-                this.toast.danger('No resource found with this barcode');
-            } else {
-                this.router.navigate(['/staff', 'booking', 'create_reservation', 'for_resource', barcode]);
-            }
-        });
+            .pipe(debounceTime(debouncing))
+            .subscribe((barcode) => {
+                this.resources = [];
+                if ('INVALID' === this.criteria.get('resourceBarcode').status) {
+                    this.toast.danger('No resource found with this barcode');
+                } else {
+                    this.router.navigate(['/staff', 'booking', 'create_reservation', 'for_resource', barcode]);
+                }
+            });
 
         this.subscriptions.push(
             this.resourceType.valueChanges.pipe(
@@ -168,7 +169,7 @@ export class CreateReservationComponent implements OnInit, AfterViewInit, OnDest
                     // be simplified to this.selectedAttributes.clear();
                     while (this.selectedAttributes.length) {
                         this.selectedAttributes.removeAt(0);
-                     }
+                    }
                     if (value.id) {
                         return this.pcrud.search('bra', {resource_type : value.id}, {
                             order_by: 'name ASC',
@@ -231,7 +232,7 @@ export class CreateReservationComponent implements OnInit, AfterViewInit, OnDest
         this.changeGranularity = ($event) => {
             this.granularity = $event.id;
             this.store.setItem('eg.booking.create.granularity', $event.id)
-            .then(() => this.fetchData());
+                .then(() => this.fetchData());
         };
 
         const minutesInAnHour = 60;
@@ -254,7 +255,7 @@ export class CreateReservationComponent implements OnInit, AfterViewInit, OnDest
             }
             this.subscriptions.push(
                 this.createDialog.open({size: 'lg'})
-                .subscribe(() => this.fetchData())
+                    .subscribe(() => this.fetchData())
             );
         };
     }
@@ -307,7 +308,7 @@ export class CreateReservationComponent implements OnInit, AfterViewInit, OnDest
                 this.granularity,
                 this.format.wsOrgTimezone
             );
-        }, (err) => {
+        }, (err: unknown) => {
         }, () => {
             this.cellTextGenerator = {
                 'Time': row => {
@@ -322,30 +323,32 @@ export class CreateReservationComponent implements OnInit, AfterViewInit, OnDest
                 };
             });
         });
-    }
+    };
     // TODO: make this into cross-field validation, and don't fetch data if true
+    /* eslint-disable eqeqeq */
     invalidMultidaySettings(): boolean {
         return (this.multiday && (!this.idealDateRange ||
             (null == this.idealDateRange.fromDate) ||
             (null == this.idealDateRange.toDate)));
     }
+    /* eslint-enable eqeqeq */
 
     handleBarcodeFromUrl$(barcode: string): Observable<any> {
         return this.findResourceByBarcode$(barcode)
-        .pipe(
-            catchError(() => this.handleBrsrcError$(barcode)),
-            tap((resource) => {
-                if (resource) {
-                    this.resourceId = resource.id();
-                    this.criteria.patchValue({
-                        resourceType: {id: resource.type()}},
+            .pipe(
+                catchError(() => this.handleBrsrcError$(barcode)),
+                tap((resource) => {
+                    if (resource) {
+                        this.resourceId = resource.id();
+                        this.criteria.patchValue({
+                            resourceType: {id: resource.type()}},
                         {emitEvent: false});
-                    this.resources = [resource];
-                    this.details.select('select-resource');
-                    this.fetchData();
-                }
-            })
-        );
+                        this.resources = [resource];
+                        this.details.select('select-resource');
+                        this.fetchData();
+                    }
+                })
+            );
     }
 
     findResourceByBarcode$(barcode: string): Observable<IdlObject> {
@@ -356,44 +359,44 @@ export class CreateReservationComponent implements OnInit, AfterViewInit, OnDest
 
     handleBrsrcError$(barcode: string): Observable<any> {
         return this.tryToMakeThisBookable$(barcode)
-        .pipe(switchMap(() => this.findResourceByBarcode$(barcode)),
-            catchError(() => {
-                this.toast.danger('No resource found with this barcode');
-                this.resourceId = -1;
-                return throwError('could not find or create a resource');
-            }));
+            .pipe(switchMap(() => this.findResourceByBarcode$(barcode)),
+                catchError(() => {
+                    this.toast.danger('No resource found with this barcode');
+                    this.resourceId = -1;
+                    return throwError('could not find or create a resource');
+                }));
     }
 
     tryToMakeThisBookable$(barcode: string): Observable<any> {
         return this.pcrud.search('acp',
             {'barcode' : barcode}, {'limit': 1})
-        .pipe(single(),
-            switchMap((item) =>
-                this.net.request( 'open-ils.booking',
-                    'open-ils.booking.resources.create_from_copies',
-                    this.auth.token(), [item.id()])
+            .pipe(single(),
+                switchMap((item) =>
+                    this.net.request( 'open-ils.booking',
+                        'open-ils.booking.resources.create_from_copies',
+                        this.auth.token(), [item.id()])
                 ),
-            catchError(() => {
-                this.toast.danger('Cannot make this barcode bookable');
-                return throwError('Tried and failed to make that barcode bookable');
-            }),
-            tap((response) => {
-                this.toast.info('Made this barcode bookable');
-                this.resourceId = response['brsrc'][0][0];
-            }));
+                catchError(() => {
+                    this.toast.danger('Cannot make this barcode bookable');
+                    return throwError('Tried and failed to make that barcode bookable');
+                }),
+                tap((response) => {
+                    this.toast.info('Made this barcode bookable');
+                    this.resourceId = response['brsrc'][0][0];
+                }));
     }
 
     addDays = (days: number): void => {
         const result = new Date(this.idealDate);
         result.setDate(result.getDate() + days);
         this.criteria.patchValue({idealDate: result});
-    }
+    };
 
     openReservationViewer = (id: number): void => {
         this.viewReservation.mode = 'view';
         this.viewReservation.recordId = id;
         this.viewReservation.open({ size: 'lg' });
-    }
+    };
 
     get resourceType() {
         return this.criteria.get('resourceType');
@@ -430,7 +433,7 @@ export class CreateReservationComponent implements OnInit, AfterViewInit, OnDest
         this.subscriptions.forEach((subscription) => {
             subscription.unsubscribe();
         });
-      }
+    }
 
 }
 

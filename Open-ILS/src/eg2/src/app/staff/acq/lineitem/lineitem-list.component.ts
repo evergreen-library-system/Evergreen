@@ -1,6 +1,7 @@
-import {Component, OnInit, Input, Output, ViewChild} from '@angular/core';
+/* eslint-disable rxjs/no-nested-subscribe */
+import {Component, OnInit, ViewChild} from '@angular/core';
 import {Router, ActivatedRoute, ParamMap} from '@angular/router';
-import {Observable, from, of, Subscription} from 'rxjs';
+import {from, of, Subscription} from 'rxjs';
 import {tap, concatMap} from 'rxjs/operators';
 import {Pager} from '@eg/share/util/pager';
 import {EgEvent, EventService} from '@eg/core/event.service';
@@ -42,15 +43,15 @@ const SORT_ORDER_MAP = {
     publisher_asc:  { 'order_by': [{'class': 'acqlia', 'field': 'attr_value', 'direction': 'ASC'}], 'order_by_attr': 'publisher' },
     publisher_desc: { 'order_by': [{'class': 'acqlia', 'field': 'attr_value', 'direction': 'DESC'}], 'order_by_attr': 'publisher' },
     order_ident_asc:  { 'order_by': [{'class': 'acqlia', 'field': 'attr_value', 'direction': 'ASC'}],
-                        'order_by_attr': ['isbn', 'issn', 'upc'] },
+        'order_by_attr': ['isbn', 'issn', 'upc'] },
     order_ident_desc: { 'order_by': [{'class': 'acqlia', 'field': 'attr_value', 'direction': 'DESC'}],
-                        'order_by_attr': ['isbn', 'issn', 'upc'] },
+        'order_by_attr': ['isbn', 'issn', 'upc'] },
 };
 
 @Component({
-  templateUrl: 'lineitem-list.component.html',
-  selector: 'eg-lineitem-list',
-  styleUrls: ['lineitem-list.component.css']
+    templateUrl: 'lineitem-list.component.html',
+    selector: 'eg-lineitem-list',
+    styleUrls: ['lineitem-list.component.css']
 })
 export class LineitemListComponent implements OnInit {
 
@@ -119,8 +120,8 @@ export class LineitemListComponent implements OnInit {
     batchFailure: EgEvent;
     focusLi: number;
     firstLoad = true; // using this to ensure that we avoid loading the LI table
-                      // until the page size and sort order WS settings have been fetched
-                      // TODO: route guard might be better
+    // until the page size and sort order WS settings have been fetched
+    // TODO: route guard might be better
 
     @ViewChild('cancelDialog') cancelDialog: CancelDialogComponent;
     @ViewChild('deleteLineitemsDialog') deleteLineitemsDialog: DeleteLineitemsDialogComponent;
@@ -178,6 +179,7 @@ export class LineitemListComponent implements OnInit {
         });
 
         this.store.getItem('acq.lineitem.page_size').then(count => {
+            // eslint-disable-next-line no-magic-numbers
             this.pager.setLimit(count || 20);
             this.store.getItem('acq.lineitem.sort_order').then(sortOrder => {
                 if (sortOrder && (sortOrder in SORT_ORDER_MAP)) {
@@ -396,6 +398,7 @@ export class LineitemListComponent implements OnInit {
             if (_doingClientSort) {
                 const sortOrder = this.sortOrder;
                 const liService = this.liService;
+                // eslint-disable-next-line no-inner-declarations
                 function _compareLIs(a, b) {
                     const direction = sortOrder.match(/_asc$/) ? 'asc' : 'desc';
                     const field = sortOrder.replace(/_asc|_desc$/, '');
@@ -515,10 +518,10 @@ export class LineitemListComponent implements OnInit {
 
         return this.liService.getFleshedLineitems(
             ids, {fromCache: true, toCache: true})
-        .pipe(tap(struct => {
-            this.ingestOneLi(struct.lineitem);
-            this.existingCopyCounts[struct.id] = struct.existing_copies;
-        })).toPromise();
+            .pipe(tap(struct => {
+                this.ingestOneLi(struct.lineitem);
+                this.existingCopyCounts[struct.id] = struct.existing_copies;
+            })).toPromise();
     }
 
     ingestOneLi(li: IdlObject, replace?: boolean) {
@@ -673,7 +676,7 @@ export class LineitemListComponent implements OnInit {
         if (ids.length === 0 || !this.batchNote) { return; }
 
         this.liService.applyBatchNote(ids, this.batchNote, this.noteIsPublic)
-        .then(resp => this.load());
+            .then(resp => this.load());
     }
 
     liPriceIsValid(li: IdlObject): boolean {
@@ -739,19 +742,19 @@ export class LineitemListComponent implements OnInit {
                 'open-ils.acq.picklist.lineitem.delete';
 
             from(ids)
-            .pipe(concatMap(id =>
-                this.net.request('open-ils.acq', method, this.auth.token(), id)
+                .pipe(concatMap(id =>
+                    this.net.request('open-ils.acq', method, this.auth.token(), id)
                 // TODO: cap parallelism
-            ))
-            .pipe(concatMap(_ => of(true) ))
-            .subscribe(r => {}, err => {}, () => {
-                ids.forEach(id => {
-                    delete this.liService.liCache[id];
-                    delete this.selected[id];
+                ))
+                .pipe(concatMap(_ => of(true) ))
+                .subscribe(r => {}, (err: unknown) => {}, () => {
+                    ids.forEach(id => {
+                        delete this.liService.liCache[id];
+                        delete this.selected[id];
+                    });
+                    this.batchSelectAll = false;
+                    this.load();
                 });
-                this.batchSelectAll = false;
-                this.load();
-            });
         });
     }
 
@@ -781,7 +784,7 @@ export class LineitemListComponent implements OnInit {
                     this.progressMax = struct.total;
                     this.progressValue++;
                 },
-                err => {},
+                (err: unknown) => {},
                 () => {
                     // Remove the modified LI's from the cache so we are
                     // forced to re-fetch them.
@@ -807,7 +810,7 @@ export class LineitemListComponent implements OnInit {
                     liStruct.lineitem.attributes([]);
                     lis.push(liStruct.lineitem);
                 },
-                err => { },
+                (err: unknown) => { },
                 () => {
                     this.net.request(
                         'open-ils.acq',
@@ -843,7 +846,7 @@ export class LineitemListComponent implements OnInit {
                         this.progressValue++;
                     }
                 },
-                err => {},
+                (err: unknown) => {},
                 () => {
                     this.saving = false;
                     this.loadPageOfLis();
@@ -874,7 +877,7 @@ export class LineitemListComponent implements OnInit {
                     lis.push(liStruct.lineitem);
                 }
             },
-            err => {},
+            (err: unknown) => {},
             () => {
                 if (lis.length === 0) {
                     this.noActionableLIs.open();
@@ -889,7 +892,7 @@ export class LineitemListComponent implements OnInit {
                         this.auth.token(), lis
                     ).toPromise().then(resp => {
                         this.lineItemsUpdatedString.current()
-                        .then(str => this.toast.success(str));
+                            .then(str => this.toast.success(str));
                         this.postBatchAction(resp, ids);
                     });
                 });
@@ -908,7 +911,7 @@ export class LineitemListComponent implements OnInit {
                     lis.push(liStruct.lineitem);
                 }
             },
-            err => {},
+            (err: unknown) => {},
             () => {
                 if (lis.length === 0) {
                     this.noActionableLIs.open();
@@ -923,7 +926,7 @@ export class LineitemListComponent implements OnInit {
                         this.auth.token(), lis
                     ).toPromise().then(resp => {
                         this.lineItemsUpdatedString.current()
-                        .then(str => this.toast.success(str));
+                            .then(str => this.toast.success(str));
                         this.postBatchAction(resp, ids);
                     });
                 });
@@ -1012,7 +1015,7 @@ export class LineitemListComponent implements OnInit {
                     liStruct.lineitem.claim_policy(claimPolicy);
                     lis.push(liStruct.lineitem);
                 },
-                err => { },
+                (err: unknown) => { },
                 () => {
                     this.net.request(
                         'open-ils.acq',
@@ -1054,7 +1057,7 @@ export class LineitemListComponent implements OnInit {
         const lis: IdlObject[] = [];
         this.liService.getFleshedLineitems(liIds, { fromCache: true }).subscribe(
             liStruct => lis.push(liStruct.lineitem),
-            err => {},
+            (err: unknown) => {},
             () => {
                 this.liService.checkLiAlerts(lis, this.confirmAlertsDialog).then(ok => {
                     this.net.request(

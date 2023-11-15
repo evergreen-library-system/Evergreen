@@ -86,15 +86,15 @@ export class ItemEventGridComponent implements OnChanges, OnInit {
 
             return this.pcrud.search('atoul',
                 query, {
-                flesh: 3,
-                flesh_fields: {
-                    atoul: ['context_user', 'context_item'],
-                    au: ['card']
-                },
-                offset: pager.offset,
-                limit: pager.limit,
-                order_by: orderBy
-            });
+                    flesh: 3,
+                    flesh_fields: {
+                        atoul: ['context_user', 'context_item'],
+                        au: ['card']
+                    },
+                    offset: pager.offset,
+                    limit: pager.limit,
+                    order_by: orderBy
+                });
         };
 
         this.act_on_events = (action: string, rows: IdlObject[]) => {
@@ -110,7 +110,7 @@ export class ItemEventGridComponent implements OnChanges, OnInit {
                         console.log('success', res);
                     }
                 },
-                (err) => {
+                (err: unknown) => {
                     console.error('error', err);
                 },
                 () => {

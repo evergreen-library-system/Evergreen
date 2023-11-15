@@ -1,4 +1,4 @@
-import {Component, Input, ViewChild, OnInit} from '@angular/core';
+import {Component, ViewChild, OnInit} from '@angular/core';
 import {Location} from '@angular/common';
 import {FormatService} from '@eg/core/format.service';
 import {GridDataSource, GridCellTextGenerator} from '@eg/share/grid/grid';
@@ -13,9 +13,8 @@ import {OrgService} from '@eg/core/org.service';
 import {PermService} from '@eg/core/perm.service';
 import {AuthService} from '@eg/core/auth.service';
 import {NetService} from '@eg/core/net.service';
-import {StringComponent} from '@eg/share/string/string.component';
 import {ExchangeRatesDialogComponent} from './exchange-rates-dialog.component';
-import {Observable, forkJoin, of} from 'rxjs';
+import {forkJoin} from 'rxjs';
 import {AlertDialogComponent} from '@eg/share/dialog/alert.component';
 import {ConfirmDialogComponent} from '@eg/share/dialog/confirm.component';
 
@@ -133,9 +132,10 @@ export class CurrenciesComponent extends AdminPageComponent implements OnInit {
                         }
                     });
                 },
-                err => {},
+                (err: unknown) => {},
                 () => {
                     if (can) {
+                        // eslint-disable-next-line rxjs/no-nested-subscribe
                         this.confirmDel.open().subscribe(confirmed => {
                             if (!confirmed) { return; }
                             super.deleteSelected([ rows[0] ]);

@@ -58,11 +58,11 @@ export class CircLimitSetEditComponent  implements OnInit {
         });
 
         this.pcrud.search('cclscmm', {limit_set: this.recordId},
-        {
-            flesh: 1,
-            flesh_fields: {cclscmm: ['circ_mod', 'name', 'code']},
-            order_by: {}
-        }).subscribe(data => {
+            {
+                flesh: 1,
+                flesh_fields: {cclscmm: ['circ_mod', 'name', 'code']},
+                order_by: {}
+            }).subscribe(data => {
             data.deleted = false;
             data.name = data.circ_mod().name();
             data.code = data.circ_mod().code();
@@ -76,15 +76,15 @@ export class CircLimitSetEditComponent  implements OnInit {
 
         this.pcrud.retrieveAll('cclg', { order_by: {} },
             {fleshSelectors: true}).subscribe(data => {
-                this.allLimitGroups.push(data);
+            this.allLimitGroups.push(data);
         });
 
         this.pcrud.search('cclsacpl', {limit_set: this.recordId},
-        {
-            flesh: 1,
-            flesh_fields: {cclsacpl: ['copy_loc', 'name']},
-            order_by: {}
-        }).subscribe(location => {
+            {
+                flesh: 1,
+                flesh_fields: {cclsacpl: ['copy_loc', 'name']},
+                order_by: {}
+            }).subscribe(location => {
             location.deleted = false;
             location.shortname = this.org.get(location.copy_loc().owning_lib()).shortname();
             location.name = location.copy_loc().name();
@@ -92,11 +92,11 @@ export class CircLimitSetEditComponent  implements OnInit {
         });
 
         this.pcrud.search('cclsgm', {limit_set: this.recordId},
-        {
-            flesh: 1,
-            flesh_fields: {cclsgm: ['limit_group', 'check_only']},
-            order_by: {}
-        }).subscribe(data => {
+            {
+                flesh: 1,
+                flesh_fields: {cclsgm: ['limit_group', 'check_only']},
+                order_by: {}
+            }).subscribe(data => {
             const checked = data.check_only();
             data.checked = (checked === 't');
             data.checkedOriginalValue = (checked === 't');
@@ -244,7 +244,7 @@ export class CircLimitSetEditComponent  implements OnInit {
                                 item.checkedOriginalValue = item.checked;
                             }
                         },
-                        err => {
+                        (err: unknown) => {
                             errorOccurred = true;
                             this.savingEntryError.current().then(msg =>
                                 this.toast.warning(msg));
@@ -256,7 +256,7 @@ export class CircLimitSetEditComponent  implements OnInit {
                         ok => {
                             item.deletedSuccess = true;
                         },
-                        err => {
+                        (err: unknown) => {
                             errorOccurred = true;
                             this.deletingEntryError.current().then(msg =>
                                 this.toast.warning(msg));
@@ -270,7 +270,7 @@ export class CircLimitSetEditComponent  implements OnInit {
                         ok => {
                             item.checkedOriginalValue = item.checked;
                         },
-                        err => {
+                        (err: unknown) => {
                             errorOccurred = true;
                             this.updatingEntryError.current().then(msg =>
                                 this.toast.warning(msg));

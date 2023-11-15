@@ -1,5 +1,5 @@
-import {ElementRef, Component, Input, Output, OnInit, OnDestroy,
-    ViewChild, EventEmitter, AfterViewInit} from '@angular/core';
+import {Component, Input, OnInit, OnDestroy,
+    ViewChild, AfterViewInit} from '@angular/core';
 import {Subscription} from 'rxjs';
 import {filter} from 'rxjs/operators';
 import {MarcRecord, MarcField, MarcSubfield} from './marcrecord';
@@ -14,13 +14,13 @@ import {TagTable} from './tagtable.service';
  */
 
 @Component({
-  selector: 'eg-marc-editable-content',
-  templateUrl: './editable-content.component.html',
-  styleUrls: ['./editable-content.component.css']
+    selector: 'eg-marc-editable-content',
+    templateUrl: './editable-content.component.html',
+    styleUrls: ['./editable-content.component.css']
 })
 
 export class EditableContentComponent
-    implements OnInit, AfterViewInit, OnDestroy {
+implements OnInit, AfterViewInit, OnDestroy {
 
     static idGen = 0;
 
@@ -91,13 +91,13 @@ export class EditableContentComponent
     watchForFocusRequests() {
         this.focusSub = this.context.fieldFocusRequest.pipe(
             filter((req: FieldFocusRequest) => this.focusRequestIsMe(req)))
-        .subscribe((req: FieldFocusRequest) => this.selectText(req));
+            .subscribe((req: FieldFocusRequest) => this.selectText(req));
     }
 
     watchForUndoRedoRequests() {
         this.undoRedoSub = this.context.textUndoRedoRequest.pipe(
             filter((action: TextUndoRedoAction) => this.focusRequestIsMe(action.position)))
-        .subscribe((action: TextUndoRedoAction) => this.processUndoRedo(action));
+            .subscribe((action: TextUndoRedoAction) => this.processUndoRedo(action));
     }
 
     focusRequestIsMe(req: FieldFocusRequest): boolean {
@@ -205,11 +205,11 @@ export class EditableContentComponent
 
     applyFFOptions() {
         return this.tt().getFfFieldMeta(this.fixedFieldCode)
-        .then(fieldMeta => {
-            if (fieldMeta) {
-                this.maxLength = fieldMeta.length || 1;
-            }
-        });
+            .then(fieldMeta => {
+                if (fieldMeta) {
+                    this.maxLength = fieldMeta.length || 1;
+                }
+            });
     }
 
     // These are served dynamically to handle cases where a tag or
@@ -398,6 +398,7 @@ export class EditableContentComponent
             return this.maxLength + 1;
         }
         // give at least 2+ chars space and grow with the content
+        // eslint-disable-next-line no-magic-numbers
         return Math.max(2, (this.getContent() || '').length) * 1.1;
     }
 

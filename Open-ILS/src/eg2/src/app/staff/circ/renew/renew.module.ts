@@ -13,24 +13,24 @@ import {RenewComponent} from './renew.component';
 import {WorkLogModule} from '@eg/staff/share/worklog/worklog.module';
 
 @NgModule({
-  declarations: [
-    RenewComponent
-  ],
-  imports: [
-    StaffCommonModule,
-    RenewRoutingModule,
-    FmRecordEditorModule,
-    BillingModule,
-    CircModule,
-    HoldsModule,
-    HoldingsModule,
-    BookingModule,
-    PatronModule,
-    BarcodesModule,
-    WorkLogModule
-  ],
-  providers: [
-  ]
+    declarations: [
+        RenewComponent
+    ],
+    imports: [
+        StaffCommonModule,
+        RenewRoutingModule,
+        FmRecordEditorModule,
+        BillingModule,
+        CircModule,
+        HoldsModule,
+        HoldingsModule,
+        BookingModule,
+        PatronModule,
+        BarcodesModule,
+        WorkLogModule
+    ],
+    providers: [
+    ]
 })
 
 export class RenewModule {}

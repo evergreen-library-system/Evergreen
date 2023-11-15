@@ -1,19 +1,16 @@
-import {Component, OnInit, ViewChild} from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {Router, ActivatedRoute, ParamMap} from '@angular/router';
-import {Observable} from 'rxjs';
-import {map, switchMap} from 'rxjs/operators';
-import {NgbNav, NgbNavChangeEvent} from '@ng-bootstrap/ng-bootstrap';
-import {IdlObject} from '@eg/core/idl.service';
+import {map} from 'rxjs/operators';
+import {NgbNavChangeEvent} from '@ng-bootstrap/ng-bootstrap';
 import {Pager} from '@eg/share/util/pager';
 import {NetService} from '@eg/core/net.service';
 import {PcrudService} from '@eg/core/pcrud.service';
 import {OrgService} from '@eg/core/org.service';
-import {ComboboxEntry} from '@eg/share/combobox/combobox.component';
 
 /* Find, merge, and edit authority records */
 
 @Component({
-  templateUrl: 'manage.component.html'
+    templateUrl: 'manage.component.html'
 })
 export class ManageAuthorityComponent implements OnInit {
 
@@ -42,6 +39,7 @@ export class ManageAuthorityComponent implements OnInit {
                 this.net.request(
                     'open-ils.search',
                     'open-ils.search.authority.main_entry', this.authId
+                // eslint-disable-next-line rxjs/no-nested-subscribe
                 ).subscribe(meta => this.authMeta = meta);
             }
         });

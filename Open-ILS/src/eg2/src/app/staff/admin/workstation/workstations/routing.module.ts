@@ -6,18 +6,18 @@ import {WorkstationsComponent} from './workstations.component';
 // there is nothing for the router to match, unless we rely on the parent
 // module to handle all of our routing for us.
 const routes: Routes = [
-  {
-    path: 'manage',
-    component: WorkstationsComponent
-  }, {
-    path: 'remove/:remove',
-    component: WorkstationsComponent
-  }
+    {
+        path: 'manage',
+        component: WorkstationsComponent
+    }, {
+        path: 'remove/:remove',
+        component: WorkstationsComponent
+    }
 ];
 
 @NgModule({
-  imports: [RouterModule.forChild(routes)],
-  exports: [RouterModule]
+    imports: [RouterModule.forChild(routes)],
+    exports: [RouterModule]
 })
 
 export class WorkstationsRoutingModule {

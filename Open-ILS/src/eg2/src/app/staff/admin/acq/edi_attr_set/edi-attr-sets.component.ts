@@ -1,4 +1,4 @@
-import {Component, Input, ViewChild, OnInit} from '@angular/core';
+import {Component, ViewChild, OnInit} from '@angular/core';
 import {Location} from '@angular/common';
 import {FormatService} from '@eg/core/format.service';
 import {GridDataSource, GridCellTextGenerator} from '@eg/share/grid/grid';
@@ -14,7 +14,7 @@ import {PermService} from '@eg/core/perm.service';
 import {AuthService} from '@eg/core/auth.service';
 import {NetService} from '@eg/core/net.service';
 import {Observable, of} from 'rxjs';
-import {map, mergeMap} from 'rxjs/operators';
+import {mergeMap} from 'rxjs/operators';
 import {StringComponent} from '@eg/share/string/string.component';
 import {EdiAttrSetProvidersDialogComponent} from './edi-attr-set-providers-dialog.component';
 import {EdiAttrSetEditDialogComponent} from './edi-attr-set-edit-dialog.component';
@@ -88,7 +88,7 @@ export class EdiAttrSetsComponent extends AdminPageComponent implements OnInit {
                 // No org filter -- fetch all rows
                 return this.pcrud.retrieveAll(
                     this.idlClass, searchOps, reqOps)
-                   .pipe(mergeMap((row) => this.countProviders(row)));
+                    .pipe(mergeMap((row) => this.countProviders(row)));
             }
 
             const search: any = new Array();
@@ -107,7 +107,7 @@ export class EdiAttrSetsComponent extends AdminPageComponent implements OnInit {
             });
 
             return this.pcrud.search(this.idlClass, search, searchOps, reqOps)
-                   .pipe(mergeMap((row) => this.countProviders(row)));
+                .pipe(mergeMap((row) => this.countProviders(row)));
         };
 
         super.ngOnInit();
@@ -148,7 +148,7 @@ export class EdiAttrSetsComponent extends AdminPageComponent implements OnInit {
                     this.grid.reload();
                     resolve(result);
                 },
-                error => {
+                (error: unknown) => {
                     this.updateFailedString.current()
                         .then(str => this.toast.danger(str));
                     reject(error);

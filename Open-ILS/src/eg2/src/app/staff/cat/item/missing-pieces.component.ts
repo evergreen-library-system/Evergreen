@@ -1,5 +1,5 @@
-import {Component, Input, AfterViewInit, ViewChild} from '@angular/core';
-import {Router, ActivatedRoute, ParamMap} from '@angular/router';
+import {Component, AfterViewInit, ViewChild} from '@angular/core';
+import {ActivatedRoute, ParamMap} from '@angular/router';
 import {IdlObject} from '@eg/core/idl.service';
 import {PcrudService} from '@eg/core/pcrud.service';
 import {AuthService} from '@eg/core/auth.service';
@@ -10,7 +10,7 @@ import {EventService} from '@eg/core/event.service';
 import {PatronPenaltyDialogComponent} from '@eg/staff/share/patron/penalty-dialog.component';
 
 @Component({
-  templateUrl: 'missing-pieces.component.html'
+    templateUrl: 'missing-pieces.component.html'
 })
 export class MarkItemMissingPiecesComponent implements AfterViewInit {
 
@@ -24,7 +24,7 @@ export class MarkItemMissingPiecesComponent implements AfterViewInit {
     itemProcessed = false;
 
     @ViewChild('penaltyDialog', {static: false})
-    penaltyDialog: PatronPenaltyDialogComponent;
+        penaltyDialog: PatronPenaltyDialogComponent;
 
     constructor(
         private route: ActivatedRoute,
@@ -55,11 +55,11 @@ export class MarkItemMissingPiecesComponent implements AfterViewInit {
         this.itemBarcode = bc;
 
         return this.holdings.getItemIdFromBarcode(this.itemBarcode)
-        .then(id => {
-            this.noSuchItem = (id === null);
-            this.itemId = id;
-            return this.getItemById();
-        });
+            .then(id => {
+                this.noSuchItem = (id === null);
+                this.itemId = id;
+                return this.getItemById();
+            });
     }
 
     selectInput() {
@@ -88,12 +88,12 @@ export class MarkItemMissingPiecesComponent implements AfterViewInit {
         };
 
         return this.pcrud.retrieve('acp', this.itemId, flesh)
-        .toPromise().then(item => {
-            this.item = item;
-            this.itemId = item.id();
-            this.itemBarcode = item.barcode();
-            this.selectInput();
-        });
+            .toPromise().then(item => {
+                this.item = item;
+                this.itemId = item.id();
+                this.itemBarcode = item.barcode();
+                this.selectInput();
+            });
     }
 
     display(field: string): string {
@@ -154,9 +154,10 @@ export class MarkItemMissingPiecesComponent implements AfterViewInit {
 
             if (payload.circ) {
                 this.penaltyDialog.patronId = payload.circ.usr();
+                // eslint-disable-next-line rxjs/no-nested-subscribe
                 this.penaltyDialog.open().subscribe(
                     penId => console.debug('Applied penalty ', penId),
-                    err => {},
+                    (err: unknown) => {},
                     () => this.selectInput()
                 );
             } else {
@@ -174,6 +175,7 @@ export class MarkItemMissingPiecesComponent implements AfterViewInit {
     }
 
     letterRowCount(): number {
+        // eslint-disable-next-line no-magic-numbers
         return this.letter ? this.letter.split(/\n/).length + 2 : 20;
     }
 }

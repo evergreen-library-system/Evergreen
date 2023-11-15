@@ -23,8 +23,8 @@ export interface CopyTagChanges {
 }
 
 @Component({
-  selector: 'eg-copy-tags-dialog',
-  templateUrl: 'copy-tags-dialog.component.html'
+    selector: 'eg-copy-tags-dialog',
+    templateUrl: 'copy-tags-dialog.component.html'
 })
 
 export class CopyTagsDialogComponent
@@ -73,7 +73,7 @@ export class CopyTagsDialogComponent
 
     ngOnInit() {
 
-       this.tagDataSource = term => {
+        this.tagDataSource = term => {
             if (!this.curTagType) { return EMPTY; }
 
             return this.pcrud.search(
@@ -140,12 +140,12 @@ export class CopyTagsDialogComponent
                 acp: ['tags'], acptcm: ['tag'], acpt: ['tag_type']}},
             {atomic: true}
         )
-        .toPromise().then(copies => {
-            this.copies = copies;
-            if (copies.length === 1) {
-                this.copy = copies[0];
-            }
-        });
+            .toPromise().then(copies => {
+                this.copies = copies;
+                if (copies.length === 1) {
+                    this.copy = copies[0];
+                }
+            });
     }
 
     removeTag(tag: IdlObject) {

@@ -7,8 +7,8 @@ import {GridDataSource} from '@eg/share/grid/grid';
 import {PcrudService} from '@eg/core/pcrud.service';
 
 @Component({
-  templateUrl: 'history.component.html',
-  selector: 'eg-lineitem-history'
+    templateUrl: 'history.component.html',
+    selector: 'eg-lineitem-history'
 })
 export class LineitemHistoryComponent implements OnInit {
 
@@ -28,7 +28,7 @@ export class LineitemHistoryComponent implements OnInit {
         this.route.paramMap.subscribe((params: ParamMap) => {
             this.lineitemId = +params.get('lineitemId');
         });
-   }
+    }
 
     getHistory(pager: Pager, sort: any) {
         if (!this.lineitemId) { return empty(); }

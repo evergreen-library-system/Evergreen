@@ -11,7 +11,7 @@ import {AlertDialogComponent} from '@eg/share/dialog/alert.component';
 import {ComboboxEntry} from '@eg/share/combobox/combobox.component';
 
 @Component({
-  templateUrl: 'related.component.html'
+    templateUrl: 'related.component.html'
 })
 export class RelatedComponent implements OnInit {
 
@@ -51,42 +51,42 @@ export class RelatedComponent implements OnInit {
     createPicklist() {
 
         this.newPlDialog.open().toPromise()
-        .then(name => {
-            if (!name) { return; }
+            .then(name => {
+                if (!name) { return; }
 
-            return this.pcrud.search('acqpl',
-                {owner: this.auth.user().id(), name: name}, null, {idlist: true}
-            ).toPromise().then(existing => {
-                return {existing: existing, name: name};
-            });
+                return this.pcrud.search('acqpl',
+                    {owner: this.auth.user().id(), name: name}, null, {idlist: true}
+                ).toPromise().then(existing => {
+                    return {existing: existing, name: name};
+                });
 
-        }).then(info => {
-            if (!info) { return; }
+            }).then(info => {
+                if (!info) { return; }
 
-            if (info.existing) {
+                if (info.existing) {
                 // Alert the user the requested name is already in
                 // use and reopen the create dialog.
-                this.plNameExists.open().toPromise().then(_ => this.createPicklist());
-                return;
-            }
+                    this.plNameExists.open().toPromise().then(_ => this.createPicklist());
+                    return;
+                }
 
-            const pl = this.idl.create('acqpl');
-            pl.name(info.name);
-            pl.owner(this.auth.user().id());
+                const pl = this.idl.create('acqpl');
+                pl.name(info.name);
+                pl.owner(this.auth.user().id());
 
-            return this.net.request(
-                'open-ils.acq',
-                'open-ils.acq.picklist.create', this.auth.token(), pl
-            ).toPromise();
+                return this.net.request(
+                    'open-ils.acq',
+                    'open-ils.acq.picklist.create', this.auth.token(), pl
+                ).toPromise();
 
-        }).then(plId => {
-            if (!plId) { return; }
+            }).then(plId => {
+                if (!plId) { return; }
 
-            const evt = this.evt.parse(plId);
-            if (evt) { alert(evt); return; }
+                const evt = this.evt.parse(plId);
+                if (evt) { alert(evt); return; }
 
-            this.addToPicklist(plId);
-        });
+                this.addToPicklist(plId);
+            });
     }
 
     createLineitem(options?: any): Promise<IdlObject> {
@@ -122,11 +122,11 @@ export class RelatedComponent implements OnInit {
         if (!plId) { return; }
 
         this.createLineitem({reuse_picklist: plId})
-        .then(li => {
-            if (li) {
-                this.router.navigate(['/staff/acq/picklist', plId]);
-            }
-        });
+            .then(li => {
+                if (li) {
+                    this.router.navigate(['/staff/acq/picklist', plId]);
+                }
+            });
     }
 
     // Create the lineitem, then send the user to the new PO UI.

@@ -1,8 +1,8 @@
+/* eslint-disable no-case-declarations, no-cond-assign, no-magic-numbers, no-self-assign, no-shadow */
 import {Component, OnInit, Input, ViewChild} from '@angular/core';
-import {Router, ActivatedRoute, ParamMap} from '@angular/router';
+import {Router} from '@angular/router';
 import {empty, from} from 'rxjs';
 import {concatMap, tap} from 'rxjs/operators';
-import {NgbNav, NgbNavChangeEvent} from '@ng-bootstrap/ng-bootstrap';
 import {OrgService} from '@eg/core/org.service';
 import {IdlService, IdlObject} from '@eg/core/idl.service';
 import {NetService} from '@eg/core/net.service';
@@ -10,7 +10,7 @@ import {AuthService} from '@eg/core/auth.service';
 import {PcrudService} from '@eg/core/pcrud.service';
 import {PatronService} from '@eg/staff/share/patron/patron.service';
 import {PatronContextService} from './patron.service';
-import {ComboboxComponent, ComboboxEntry} from '@eg/share/combobox/combobox.component';
+import {ComboboxEntry} from '@eg/share/combobox/combobox.component';
 import {DateUtil} from '@eg/share/util/date';
 import {ProfileSelectComponent} from '@eg/staff/share/patron/profile-select.component';
 import {ToastService} from '@eg/share/toast/toast.service';
@@ -43,14 +43,14 @@ const PATRON_FLESH_FIELDS = [
 ];
 
 const COMMON_USER_SETTING_TYPES = [
-  'circ.holds_behind_desk',
-  'circ.autorenew.opt_in',
-  'circ.collections.exempt',
-  'opac.hold_notify',
-  'opac.default_phone',
-  'opac.default_pickup_location',
-  'opac.default_sms_carrier',
-  'opac.default_sms_notify'
+    'circ.holds_behind_desk',
+    'circ.autorenew.opt_in',
+    'circ.collections.exempt',
+    'opac.hold_notify',
+    'opac.default_phone',
+    'opac.default_pickup_location',
+    'opac.default_sms_carrier',
+    'opac.default_sms_notify'
 ];
 
 const PERMS_NEEDED = [
@@ -109,9 +109,9 @@ interface StatCat {
 }
 
 @Component({
-  templateUrl: 'edit.component.html',
-  selector: 'eg-patron-edit',
-  styleUrls: ['edit.component.css']
+    templateUrl: 'edit.component.html',
+    selector: 'eg-patron-edit',
+    styleUrls: ['edit.component.css']
 })
 export class EditComponent implements OnInit {
 
@@ -140,16 +140,16 @@ export class EditComponent implements OnInit {
     }
 
     @ViewChild('profileSelect')
-        private profileSelect: ProfileSelectComponent;
+    private profileSelect: ProfileSelectComponent;
     @ViewChild('secondaryGroupsDialog')
-        private secondaryGroupsDialog: SecondaryGroupsDialogComponent;
+    private secondaryGroupsDialog: SecondaryGroupsDialogComponent;
     @ViewChild('holdNotifyUpdateDialog')
-        private holdNotifyUpdateDialog: HoldNotifyUpdateDialogComponent;
+    private holdNotifyUpdateDialog: HoldNotifyUpdateDialogComponent;
     @ViewChild('addrAlert') private addrAlert: AlertDialogComponent;
     @ViewChild('addrRequiredAlert')
-        private addrRequiredAlert: AlertDialogComponent;
+    private addrRequiredAlert: AlertDialogComponent;
     @ViewChild('xactCollisionAlert')
-        private xactCollisionAlert: AlertDialogComponent;
+    private xactCollisionAlert: AlertDialogComponent;
 
 
     autoId = -1;
@@ -247,20 +247,20 @@ export class EditComponent implements OnInit {
         this.loading = true;
         this.showForm = false;
         return this.setStatCats()
-        .then(_ => this.getFieldDocs())
-        .then(_ => this.setSurveys())
-        .then(_ => this.loadPatron())
-        .then(_ => this.getCloneUser())
-        .then(_ => this.getStageUser())
-        .then(_ => this.getSecondaryGroups())
-        .then(_ => this.applyPerms())
-        .then(_ => this.setEditProfiles())
-        .then(_ => this.setIdentTypes())
-        .then(_ => this.setInetLevels())
-        .then(_ => this.setOptInSettings())
-        .then(_ => this.setSmsCarriers())
-        .then(_ => this.setFieldPatterns())
-        .then(_ => this.showForm = true)
+            .then(_ => this.getFieldDocs())
+            .then(_ => this.setSurveys())
+            .then(_ => this.loadPatron())
+            .then(_ => this.getCloneUser())
+            .then(_ => this.getStageUser())
+            .then(_ => this.getSecondaryGroups())
+            .then(_ => this.applyPerms())
+            .then(_ => this.setEditProfiles())
+            .then(_ => this.setIdentTypes())
+            .then(_ => this.setInetLevels())
+            .then(_ => this.setOptInSettings())
+            .then(_ => this.setSmsCarriers())
+            .then(_ => this.setFieldPatterns())
+            .then(_ => this.showForm = true)
         // Not my preferred way to handle this, but some values are
         // applied to widgets slightly after the load() is done and the
         // widgets are rendered.  If a widget is required and has no
@@ -269,16 +269,16 @@ export class EditComponent implements OnInit {
         // non-saveable state on page load without forcing the page into
         // an nonsaveable state on every page load, check the save state
         // after a 1 second delay.
-        .then(_ => setTimeout(() => {
-            this.emitSaveState();
-            this.loading = false;
-        }, 1000));
+            .then(_ => setTimeout(() => {
+                this.emitSaveState();
+                this.loading = false;
+            }, 1000));
     }
 
     setEditProfiles(): Promise<any> {
         return this.pcrud.retrieveAll('pgt', {}, {atomic: true}).toPromise()
-        .then(list => this.grpList = list)
-        .then(_ => this.applyEditProfiles());
+            .then(list => this.grpList = list)
+            .then(_ => this.applyEditProfiles());
     }
 
     // TODO
@@ -319,11 +319,11 @@ export class EditComponent implements OnInit {
 
         return this.patronService.getById(this.cloneId,
             {flesh: 1, flesh_fields: {au: ['addresses']}})
-        .then(cloneUser => {
-            const evt = this.evt.parse(cloneUser);
-            if (evt) { return alert(evt); }
-            this.copyCloneData(cloneUser);
-        });
+            .then(cloneUser => {
+                const evt = this.evt.parse(cloneUser);
+                if (evt) { return alert(evt); }
+                this.copyCloneData(cloneUser);
+            });
     }
 
     getStageUser(): Promise<any> {
@@ -334,26 +334,26 @@ export class EditComponent implements OnInit {
             'open-ils.actor.user.stage.retrieve.by_username',
             this.auth.token(), this.stageUsername).toPromise()
 
-        .then(suser => {
-            const evt = this.evt.parse(suser);
-            if (evt) {
-                alert(evt);
-                return Promise.reject(evt);
-            } else {
-                this.stageUser = suser;
-            }
-        })
-        .then(_ => {
+            .then(suser => {
+                const evt = this.evt.parse(suser);
+                if (evt) {
+                    alert(evt);
+                    return Promise.reject(evt);
+                } else {
+                    this.stageUser = suser;
+                }
+            })
+            .then(_ => {
 
-            const requestor = this.stageUser.user.requesting_usr();
-            if (requestor) {
-                return this.pcrud.retrieve('au', requestor).toPromise();
-            }
+                const requestor = this.stageUser.user.requesting_usr();
+                if (requestor) {
+                    return this.pcrud.retrieve('au', requestor).toPromise();
+                }
 
-        })
-        .then(reqr => this.stageUserRequestor = reqr)
-        .then(_ => this.copyStageData())
-        .then(_ => this.maintainJuvFlag());
+            })
+            .then(reqr => this.stageUserRequestor = reqr)
+            .then(_ => this.copyStageData())
+            .then(_ => this.maintainJuvFlag());
     }
 
     copyStageData() {
@@ -392,7 +392,7 @@ export class EditComponent implements OnInit {
             addr.valid('t');
 
             this.strings.interpolate('circ.patron.edit.default_addr_type')
-            .then(msg => addr.address_type(msg));
+                .then(msg => addr.address_type(msg));
 
             Object.keys(this.idl.classes[cls].field_map).forEach(key => {
                 const field = this.idl.classes.aua.field_map[key];
@@ -486,25 +486,25 @@ export class EditComponent implements OnInit {
 
         return this.dupeValueChange('name', patron.family_name())
 
-        .then(_ => {
-            if (patron.ident_value()) {
-                return this.dupeValueChange('ident', patron.ident_value());
-            }
-        })
-        .then(_ => {
-            if (patron.day_phone()) {
-                return this.dupeValueChange('phone', patron.day_phone());
-            }
-        })
-        .then(_ => {
-            let promise = Promise.resolve();
-            this.patron.addresses().forEach(addr => {
-                promise =
+            .then(_ => {
+                if (patron.ident_value()) {
+                    return this.dupeValueChange('ident', patron.ident_value());
+                }
+            })
+            .then(_ => {
+                if (patron.day_phone()) {
+                    return this.dupeValueChange('phone', patron.day_phone());
+                }
+            })
+            .then(_ => {
+                let promise = Promise.resolve();
+                this.patron.addresses().forEach(addr => {
+                    promise =
                     promise.then(__ => this.dupeValueChange('address', addr));
-                promise =
+                    promise =
                     promise.then(__ => this.toolbar.checkAddressAlerts(patron, addr));
+                });
             });
-        });
     }
 
     copyCloneData(clone: IdlObject) {
@@ -565,12 +565,12 @@ export class EditComponent implements OnInit {
     getFieldDocs(): Promise<any> {
         return this.pcrud.search('fdoc', {
             fm_class: ['au', 'ac', 'aua', 'actsc', 'asv', 'asvq', 'asva']})
-        .pipe(tap(doc => {
-            if (!this.fieldDoc[doc.fm_class()]) {
-                this.fieldDoc[doc.fm_class()] = {};
-            }
-            this.fieldDoc[doc.fm_class()][doc.field()] = doc.string();
-        })).toPromise();
+            .pipe(tap(doc => {
+                if (!this.fieldDoc[doc.fm_class()]) {
+                    this.fieldDoc[doc.fm_class()] = {};
+                }
+                this.fieldDoc[doc.fm_class()][doc.field()] = doc.string();
+            })).toPromise();
     }
 
     getFieldDoc(cls: string, field: string): string {
@@ -587,7 +587,7 @@ export class EditComponent implements OnInit {
 
     setSurveys(): Promise<any> {
         return this.patronService.getSurveys()
-        .then(surveys => this.surveys = surveys);
+            .then(surveys => this.surveys = surveys);
     }
 
     surveyQuestionAnswers(question: IdlObject): ComboboxEntry[] {
@@ -645,16 +645,16 @@ export class EditComponent implements OnInit {
 
     setIdentTypes(): Promise<any> {
         return this.patronService.getIdentTypes()
-        .then(types => {
-            this.identTypes = types.map(t => ({id: t.id(), label: t.name()}));
-        });
+            .then(types => {
+                this.identTypes = types.map(t => ({id: t.id(), label: t.name()}));
+            });
     }
 
     setInetLevels(): Promise<any> {
         return this.patronService.getInetLevels()
-        .then(levels => {
-            this.inetLevels = levels.map(t => ({id: t.id(), label: t.name()}));
-        });
+            .then(levels => {
+                this.inetLevels = levels.map(t => ({id: t.id(), label: t.name()}));
+            });
     }
 
     applyPerms(): Promise<any> {
@@ -691,38 +691,38 @@ export class EditComponent implements OnInit {
         };
 
         return this.pcrud.search('cust', query, {}, {atomic : true})
-        .toPromise().then(types => {
+            .toPromise().then(types => {
 
-            types.forEach(stype => {
-                this.userSettingTypes[stype.name()] = stype;
-                if (!COMMON_USER_SETTING_TYPES.includes(stype.name())) {
-                    this.optInSettingTypes[stype.name()] = stype;
-                }
+                types.forEach(stype => {
+                    this.userSettingTypes[stype.name()] = stype;
+                    if (!COMMON_USER_SETTING_TYPES.includes(stype.name())) {
+                        this.optInSettingTypes[stype.name()] = stype;
+                    }
 
-                if (this.patron.isnew()) {
-                    let val = stype.reg_default();
-                    if (val !== null && val !== undefined) {
-                        if (stype.datatype() === 'bool') {
+                    if (this.patron.isnew()) {
+                        let val = stype.reg_default();
+                        if (val !== null && val !== undefined) {
+                            if (stype.datatype() === 'bool') {
                             // A boolean user setting type whose default
                             // value starts with t/T is considered 'true',
                             // false otherwise.
-                            val = Boolean((val + '').match(/^t/i));
+                                val = Boolean((val + '').match(/^t/i));
+                            }
+                            this.userSettings[stype.name()] = val;
                         }
-                        this.userSettings[stype.name()] = val;
                     }
-                }
+                });
             });
-        });
     }
 
     loadPatron(): Promise<any> {
         if (this.patronId) {
             return this.patronService.getFleshedById(this.patronId, PATRON_FLESH_FIELDS)
-            .then(patron => {
-                this.patron = patron;
-                this.origUsername = patron.usrname();
-                this.absorbPatronData();
-            });
+                .then(patron => {
+                    this.patron = patron;
+                    this.origUsername = patron.usrname();
+                    this.absorbPatronData();
+                });
         } else {
             return Promise.resolve(this.createNewPatron());
         }
@@ -839,12 +839,12 @@ export class EditComponent implements OnInit {
         patron.addresses([addr]);
 
         this.strings.interpolate('circ.patron.edit.default_addr_type')
-        .then(msg => addr.address_type(msg));
+            .then(msg => addr.address_type(msg));
 
         this.serverStore.getItem('ui.patron.default_ident_type')
-        .then(identType => {
-            if (identType) { patron.ident_type(Number(identType)); }
-        });
+            .then(identType => {
+                if (identType) { patron.ident_type(Number(identType)); }
+            });
 
         this.patron = patron;
         this.addWaiver();
@@ -1251,7 +1251,7 @@ export class EditComponent implements OnInit {
 
     generatePassword() {
         this.fieldValueChange(null, null,
-          'passwd', Math.floor(Math.random() * 9000) + 1000);
+            'passwd', Math.floor(Math.random() * 9000) + 1000);
 
         // Normally this is called on (blur), but the input is not
         // focused when using the generate button.
@@ -1261,14 +1261,14 @@ export class EditComponent implements OnInit {
 
     cannotHaveUsersOrgs(): number[] {
         return this.org.list()
-          .filter(org => org.ou_type().can_have_users() === 'f')
-          .map(org => org.id());
+            .filter(org => org.ou_type().can_have_users() === 'f')
+            .map(org => org.id());
     }
 
     cannotHaveVolsOrgs(): number[] {
         return this.org.list()
-          .filter(org => org.ou_type().can_have_vols() === 'f')
-          .map(org => org.id());
+            .filter(org => org.ou_type().can_have_vols() === 'f')
+            .map(org => org.id());
     }
 
     setExpireDate() {
@@ -1288,15 +1288,15 @@ export class EditComponent implements OnInit {
 
         if (success) {
             return this.strings.interpolate(msg)
-            .then(str => this.toast.success(str))
-            .then(_ => true);
+                .then(str => this.toast.success(str))
+                .then(_ => true);
         }
 
-      console.error(errMsg);
+        console.error(errMsg);
 
-      return this.strings.interpolate(msg)
-      .then(str => this.toast.danger(str))
-      .then(_ => false);
+        return this.strings.interpolate(msg)
+            .then(str => this.toast.danger(str))
+            .then(_ => false);
     }
 
     sendTestMessage(hook: string): Promise<boolean> {
@@ -1342,7 +1342,7 @@ export class EditComponent implements OnInit {
             this.patron.last_xact_id(resp.payload.last_xact_id[this.patronId]);
 
             return this.handleBoolResponse(
-              true, 'circ.patron.edit.invalidate.success');
+                true, 'circ.patron.edit.invalidate.success');
         });
     }
 
@@ -1473,10 +1473,10 @@ export class EditComponent implements OnInit {
         this.showForm = false;
 
         return this.saveUser()
-        .then(_ => this.saveUserSettings())
-        .then(_ => this.updateHoldPrefs())
-        .then(_ => this.removeStagedUser())
-        .then(_ => this.postSaveRedirect(clone));
+            .then(_ => this.saveUserSettings())
+            .then(_ => this.updateHoldPrefs())
+            .then(_ => this.removeStagedUser())
+            .then(_ => this.postSaveRedirect(clone));
     }
 
     postSaveRedirect(clone: boolean) {
@@ -1592,20 +1592,20 @@ export class EditComponent implements OnInit {
         if (this.patron.isnew()) { return Promise.resolve(); }
 
         return this.collectHoldNotifyChange()
-        .then(mods => {
+            .then(mods => {
 
-            if (mods.length === 0) { return Promise.resolve(); }
+                if (mods.length === 0) { return Promise.resolve(); }
 
-            this.holdNotifyUpdateDialog.patronId = this.patronId;
-            this.holdNotifyUpdateDialog.mods = mods;
-            this.holdNotifyUpdateDialog.smsCarriers = this.smsCarriers;
+                this.holdNotifyUpdateDialog.patronId = this.patronId;
+                this.holdNotifyUpdateDialog.mods = mods;
+                this.holdNotifyUpdateDialog.smsCarriers = this.smsCarriers;
 
-            this.holdNotifyUpdateDialog.defaultCarrier =
+                this.holdNotifyUpdateDialog.defaultCarrier =
                 this.userSettings['opac.default_sms_carrier']
                 || this.holdNotifyValues.default_sms_carrier;
 
-            return this.holdNotifyUpdateDialog.open().toPromise();
-        });
+                return this.holdNotifyUpdateDialog.open().toPromise();
+            });
     }
 
     // Compare current values with those collected at patron load time.
@@ -1616,46 +1616,46 @@ export class EditComponent implements OnInit {
         const holdNotify = this.userSettings['opac.hold_notify'] || '';
 
         return from(Object.keys(this.holdNotifyValues))
-        .pipe(concatMap(field => {
+            .pipe(concatMap(field => {
 
-            let newValue, matches;
+                let newValue, matches;
 
-            if (field.match(/default_/)) {
-                newValue = this.userSettings[`opac.${field}`] || null;
+                if (field.match(/default_/)) {
+                    newValue = this.userSettings[`opac.${field}`] || null;
 
-            } else if (field.match(/_phone/)) {
-                newValue = this.patron[field]();
+                } else if (field.match(/_phone/)) {
+                    newValue = this.patron[field]();
 
-            } else if (matches = field.match(/(\w+)_notify/)) {
-                const notify = this.userSettings['opac.hold_notify'] || '';
-                newValue = notify.match(matches[1]) !== null;
-            }
-
-            const oldValue = this.holdNotifyValues[field];
-
-            // No change to apply?
-            if (newValue === oldValue) { return empty(); }
-
-            // API / user setting name mismatch
-            if (field.match(/carrier/)) { field += '_id'; }
-
-            const apiValue = field.match(/notify|carrier/) ? oldValue : newValue;
-
-            return this.net.request(
-                'open-ils.circ',
-                'open-ils.circ.holds.retrieve_by_notify_staff',
-                this.auth.token(), this.patronId, apiValue, field
-            ).pipe(tap(holds => {
-                if (holds && holds.length > 0) {
-                    mods.push({
-                        field: field,
-                        newValue: newValue,
-                        oldValue: oldValue,
-                        holds: holds
-                    });
+                } else if (matches = field.match(/(\w+)_notify/)) {
+                    const notify = this.userSettings['opac.hold_notify'] || '';
+                    newValue = notify.match(matches[1]) !== null;
                 }
-            }));
-        })).toPromise().then(_ => mods);
+
+                const oldValue = this.holdNotifyValues[field];
+
+                // No change to apply?
+                if (newValue === oldValue) { return empty(); }
+
+                // API / user setting name mismatch
+                if (field.match(/carrier/)) { field += '_id'; }
+
+                const apiValue = field.match(/notify|carrier/) ? oldValue : newValue;
+
+                return this.net.request(
+                    'open-ils.circ',
+                    'open-ils.circ.holds.retrieve_by_notify_staff',
+                    this.auth.token(), this.patronId, apiValue, field
+                ).pipe(tap(holds => {
+                    if (holds && holds.length > 0) {
+                        mods.push({
+                            field: field,
+                            newValue: newValue,
+                            oldValue: oldValue,
+                            holds: holds
+                        });
+                    }
+                }));
+            })).toPromise().then(_ => mods);
     }
 
     removeStagedUser(): Promise<any> {

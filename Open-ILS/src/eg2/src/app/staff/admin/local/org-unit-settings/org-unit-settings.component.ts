@@ -13,11 +13,11 @@ import {LocaleService} from '@eg/core/locale.service';
 import {ProgressDialogComponent} from '@eg/share/dialog/progress.component';
 
 import {EditOuSettingDialogComponent
-    } from '@eg/staff/admin/local/org-unit-settings/edit-org-unit-setting-dialog.component';
+} from '@eg/staff/admin/local/org-unit-settings/edit-org-unit-setting-dialog.component';
 import {OuSettingHistoryDialogComponent
-    } from '@eg/staff/admin/local/org-unit-settings/org-unit-setting-history-dialog.component';
+} from '@eg/staff/admin/local/org-unit-settings/org-unit-setting-history-dialog.component';
 import {OuSettingJsonDialogComponent
-    } from '@eg/staff/admin/local/org-unit-settings/org-unit-setting-json-dialog.component';
+} from '@eg/staff/admin/local/org-unit-settings/org-unit-setting-json-dialog.component';
 
 export class OrgUnitSetting {
     name: string;
@@ -54,11 +54,11 @@ export class OrgUnitSettingsComponent implements OnInit {
     @ViewChild('orgUnitSettingsGrid', { static: true }) orgUnitSettingsGrid: GridComponent;
 
     @ViewChild('editOuSettingDialog', { static: true })
-        private editOuSettingDialog: EditOuSettingDialogComponent;
+    private editOuSettingDialog: EditOuSettingDialogComponent;
     @ViewChild('orgUnitSettingHistoryDialog', { static: true })
-        private orgUnitSettingHistoryDialog: OuSettingHistoryDialogComponent;
+    private orgUnitSettingHistoryDialog: OuSettingHistoryDialogComponent;
     @ViewChild('ouSettingJsonDialog', { static: true })
-        private ouSettingJsonDialog: OuSettingJsonDialogComponent;
+    private ouSettingJsonDialog: OuSettingJsonDialogComponent;
 
     @ViewChild('progress') private progress: ProgressDialogComponent;
 
@@ -105,7 +105,7 @@ export class OrgUnitSettingsComponent implements OnInit {
             }},
             { authoritative: true }).subscribe(
                 settingTypes => this.allocateSettingTypes(settingTypes),
-                err => {},
+                (err: unknown) => {},
                 ()  => {
                     this.refreshSettings = false;
                     this.mergeSettingValues().then(
@@ -127,7 +127,7 @@ export class OrgUnitSettingsComponent implements OnInit {
             this.net.request(
                 'open-ils.actor',
                 'open-ils.actor.ou_setting.ancestor_default.batch',
-                 this.contextOrg.id(), settingNames, this.auth.token()
+                this.contextOrg.id(), settingNames, this.auth.token()
             ).subscribe(
                 blob => {
                     const settingVals = Object.keys(blob).map(key => {
@@ -157,7 +157,7 @@ export class OrgUnitSettingsComponent implements OnInit {
                     });
                     resolve(this.settingTypeArr);
                 },
-                err => reject(err)
+                (err: unknown) => reject(err)
             );
         });
     }
@@ -209,7 +209,7 @@ export class OrgUnitSettingsComponent implements OnInit {
                 });
 
                 resolve(this.currentHistory);
-            }, err => {reject(err); });
+            }, (err: unknown) => {reject(err); });
         });
     }
 
@@ -230,7 +230,7 @@ export class OrgUnitSettingsComponent implements OnInit {
     }
 
     flattenSettings(observer: Observer<any>) {
-        let sorted = this.settingTypeArr.sort((a,b) => {
+        const sorted = this.settingTypeArr.sort((a,b) => {
             if (a.grp && b.grp) {
                 if (a.grp.toLowerCase() < b.grp.toLowerCase()) {
                     return -1;
@@ -251,7 +251,7 @@ export class OrgUnitSettingsComponent implements OnInit {
 
             return 0;
         });
-        this.gridDataSource.data = sorted
+        this.gridDataSource.data = sorted;
         observer.complete();
     }
 
@@ -277,7 +277,9 @@ export class OrgUnitSettingsComponent implements OnInit {
             if (!noToast) {
                 this.toast.success(entry.label + ' Updated.');
                 if (obj.context.id() !== this.contextOrg.id()) {
-                    this.toast.warning('The setting you edited is not the currently chosen org unit, therefore the changes you made are not visible.');
+                    this.toast.warning(
+                        'The setting you edited is not the currently chosen org unit, therefore the changes you made are not visible.'
+                    );
                 }
             }
 
@@ -370,19 +372,18 @@ export class OrgUnitSettingsComponent implements OnInit {
     }
 
     parseValType(value, dataType) {
-        if (value === null || value === undefined)
-            return null;
+        if (value === null || value === undefined) {return null;}
 
         const intTypes = ['integer', 'currency', 'float'];
         if (intTypes.includes(dataType)) {
             value = Number(value);
         }
 
-        if (typeof value == 'string') {
+        if (typeof value === 'string') {
             value = value.replace(/^"(.*)"$/, '$1');
         }
 
-        if (typeof value == 'string' && dataType === 'bool') {
+        if (typeof value === 'string' && dataType === 'bool') {
             if (value.match(/^t/)) {
                 value = true;
             } else {
@@ -390,7 +391,7 @@ export class OrgUnitSettingsComponent implements OnInit {
             }
         }
 
-        return value
+        return value;
     }
 
     filterCoust() {
@@ -401,11 +402,11 @@ export class OrgUnitSettingsComponent implements OnInit {
             tempGrid.forEach(row => {
                 const containsString =
                      row.name.toLocaleLowerCase(this.locale.currentLocaleCode())
-                        .includes(this.filterString.toLocaleLowerCase(this.locale.currentLocaleCode())) ||
+                         .includes(this.filterString.toLocaleLowerCase(this.locale.currentLocaleCode())) ||
                      row.label.toLocaleLowerCase(this.locale.currentLocaleCode())
-                        .includes(this.filterString.toLocaleLowerCase(this.locale.currentLocaleCode())) ||
+                         .includes(this.filterString.toLocaleLowerCase(this.locale.currentLocaleCode())) ||
                      (row.grp && row.grp.toLocaleLowerCase(this.locale.currentLocaleCode())
-                        .includes(this.filterString.toLocaleLowerCase(this.locale.currentLocaleCode()))) ||
+                         .includes(this.filterString.toLocaleLowerCase(this.locale.currentLocaleCode()))) ||
                      (row.description && row.description.toLocaleLowerCase(this.locale.currentLocaleCode())
                          .includes(this.filterString.toLocaleLowerCase(this.locale.currentLocaleCode())));
                 if (containsString) {

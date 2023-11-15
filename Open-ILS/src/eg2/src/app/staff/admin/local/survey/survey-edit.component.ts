@@ -19,7 +19,7 @@ export class SurveyEditComponent implements OnInit {
     newAnswerArray: object[];
     newQuestionText: string;
     surveyTab: string;
-   
+
     @ViewChild('editDialog', { static: true }) editDialog: FmRecordEditorComponent;
 
     @ViewChild('createAnswerString', { static: true })

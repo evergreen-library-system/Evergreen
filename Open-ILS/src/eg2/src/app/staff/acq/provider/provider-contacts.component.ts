@@ -1,7 +1,7 @@
 import {Component, OnInit, AfterViewInit, OnDestroy, Input, Output, ViewChild, EventEmitter, ChangeDetectorRef} from '@angular/core';
-import {EMPTY, throwError, Observable, from, Subscription} from 'rxjs';
+import {EMPTY, throwError, from, Subscription} from 'rxjs';
 import {map} from 'rxjs/operators';
-import {Router, ActivatedRoute, ParamMap} from '@angular/router';
+import {Router, ActivatedRoute} from '@angular/router';
 import {Pager} from '@eg/share/util/pager';
 import {IdlService, IdlObject} from '@eg/core/idl.service';
 import {NetService} from '@eg/core/net.service';
@@ -12,7 +12,6 @@ import {GridComponent} from '@eg/share/grid/grid.component';
 import {GridDataSource, GridCellTextGenerator} from '@eg/share/grid/grid';
 import {ProviderRecordService} from './provider-record.service';
 import {ProviderContactAddressesComponent} from './provider-contact-addresses.component';
-import {AcqProviderSearchFormComponent} from './acq-provider-search-form.component';
 import {FmRecordEditorComponent} from '@eg/share/fm-editor/fm-editor.component';
 import {StringComponent} from '@eg/share/string/string.component';
 import {ConfirmDialogComponent} from '@eg/share/dialog/confirm.component';
@@ -20,8 +19,8 @@ import {ToastService} from '@eg/share/toast/toast.service';
 
 
 @Component({
-  selector: 'eg-provider-contacts',
-  templateUrl: 'provider-contacts.component.html',
+    selector: 'eg-provider-contacts',
+    templateUrl: 'provider-contacts.component.html',
 })
 export class ProviderContactsComponent implements OnInit, AfterViewInit, OnDestroy {
 
@@ -94,7 +93,7 @@ export class ProviderContactsComponent implements OnInit, AfterViewInit, OnDestr
                         .then(str => this.toast.success(str));
                     this.desireSummarize.emit(this.provider.id());
                 },
-                err => {
+                (err: unknown) => {
                     this.deleteFailedString.current()
                         .then(str => this.toast.danger(str));
                 },
@@ -180,6 +179,7 @@ export class ProviderContactsComponent implements OnInit, AfterViewInit, OnDestr
                 ).pipe(
                     map(res => {
                         if (this.evt.parse(res)) {
+                            // eslint-disable-next-line @typescript-eslint/no-throw-literal
                             throw throwError(res);
                         } else {
                             return res;
@@ -223,7 +223,7 @@ export class ProviderContactsComponent implements OnInit, AfterViewInit, OnDestr
                     this.desireSummarize.emit(this.provider.id());
                     resolve(result);
                 },
-                error => {
+                (error: unknown) => {
                     this.updateFailedString.current()
                         .then(str => this.toast.danger(str));
                     reject(error);
@@ -259,7 +259,8 @@ export class ProviderContactsComponent implements OnInit, AfterViewInit, OnDestr
                 );
                 this.desireSummarize.emit(this.provider.id());
             },
-            rejection => {
+            // eslint-disable-next-line rxjs/no-implicit-any-catch
+            (rejection: any) => {
                 if (!rejection.dismissed) {
                     this.createErrString.current()
                         .then(str => this.toast.danger(str));
@@ -275,12 +276,13 @@ export class ProviderContactsComponent implements OnInit, AfterViewInit, OnDestr
             this.providerRecord.refreshCurrent().then(() => {
                 this.provider.primary_contact(providerContacts[0].id());
                 this.provider.ischanged(true);
+                // eslint-disable-next-line rxjs/no-nested-subscribe
                 this.providerRecord.batchUpdate(this.provider).subscribe(
                     val => {
                         this.setAsPrimarySuccessString.current()
                             .then(str => this.toast.success(str));
                     },
-                    err => {
+                    (err: unknown) => {
                         this.setAsPrimaryFailedString.current()
                             .then(str => this.toast.danger(str));
                     },
@@ -304,12 +306,13 @@ export class ProviderContactsComponent implements OnInit, AfterViewInit, OnDestr
             this.providerRecord.refreshCurrent().then(() => {
                 this.provider.primary_contact(null);
                 this.provider.ischanged(true);
+                // eslint-disable-next-line rxjs/no-nested-subscribe
                 this.providerRecord.batchUpdate(this.provider).subscribe(
                     val => {
                         this.unsetAsPrimarySuccessString.current()
                             .then(str => this.toast.success(str));
                     },
-                    err => {
+                    (err: unknown) => {
                         this.unsetAsPrimaryFailedString.current()
                             .then(str => this.toast.danger(str));
                     },

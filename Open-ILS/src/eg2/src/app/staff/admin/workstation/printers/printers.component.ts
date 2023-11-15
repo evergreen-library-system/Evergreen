@@ -16,7 +16,7 @@ import {NgbNav, NgbNavChangeEvent} from '@ng-bootstrap/ng-bootstrap';
 import {StringComponent} from '@eg/share/string/string.component';
 
 @Component({
-  templateUrl: 'printers.component.html'
+    templateUrl: 'printers.component.html'
 })
 export class PrintersComponent implements OnInit {
 
@@ -77,26 +77,26 @@ export class PrintersComponent implements OnInit {
     ngOnInit() {
 
         this.serverStore.getItem('eg.hatch.enable.printing')
-        .then(use => this.useHatchPrinting = Boolean(use));
+            .then(use => this.useHatchPrinting = Boolean(use));
 
         this.hatch.getPrinters()
-        .then(printers => {
+            .then(printers => {
 
-            this.printers = printers;
+                this.printers = printers;
 
-            return from(PRINT_CONTEXTS).pipe(concatMap(ctx => {
-                return from(
-                    this.getPrintConfig(ctx).then(conf => {
-                        if (conf) {
-                            this.printConfigs[ctx] = conf;
-                        } else {
-                            this.resetConfig(ctx);
-                        }
-                    })
-                );
-            })).toPromise();
-        })
-        .then(_ => this.setContext('default'));
+                return from(PRINT_CONTEXTS).pipe(concatMap(ctx => {
+                    return from(
+                        this.getPrintConfig(ctx).then(conf => {
+                            if (conf) {
+                                this.printConfigs[ctx] = conf;
+                            } else {
+                                this.resetConfig(ctx);
+                            }
+                        })
+                    );
+                })).toPromise();
+            })
+            .then(_ => this.setContext('default'));
     }
 
     hatchConnected(): boolean {

@@ -9,9 +9,9 @@ import {PatronService, PatronSummary} from './patron.service';
 import {ServerStoreService} from '@eg/core/server-store.service';
 
 @Component({
-  templateUrl: 'summary.component.html',
-  styleUrls: ['summary.component.css'],
-  selector: 'eg-patron-summary'
+    templateUrl: 'summary.component.html',
+    styleUrls: ['summary.component.css'],
+    selector: 'eg-patron-summary'
 })
 export class PatronSummaryComponent implements OnInit {
 
@@ -120,7 +120,7 @@ export class PatronSummaryComponent implements OnInit {
         }
 
         if (this.summary.stats.fines.balance_owed > 0) {
-           return 'PATRON_HAS_BILLS';
+            return 'PATRON_HAS_BILLS';
         }
 
         if (this.summary.stats.checkouts.overdue > 0) {

@@ -8,8 +8,8 @@ import {NgbModal} from '@ng-bootstrap/ng-bootstrap';
 import {NgForm} from '@angular/forms';
 
 @Component({
-  selector: 'eg-query-dialog',
-  templateUrl: './query-dialog.component.html'
+    selector: 'eg-query-dialog',
+    templateUrl: './query-dialog.component.html'
 })
 
 export class QueryDialogComponent extends DialogComponent implements OnInit {
@@ -31,7 +31,7 @@ export class QueryDialogComponent extends DialogComponent implements OnInit {
         private idl: IdlService,
         private net: NetService,
         private auth: AuthService
-        ) {
+    ) {
         super(modal); // required for subclassing
     }
 
