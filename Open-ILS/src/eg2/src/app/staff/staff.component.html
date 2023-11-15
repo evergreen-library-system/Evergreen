@@ -8,16 +8,16 @@
 
 <!-- EgAccessKey Info Panel -->
 <eg-accesskey-info #egAccessKeyInfo></eg-accesskey-info>
-<a egAccessKey keyCtx="base"
+<button type="button" class="d-none" egAccessKey keyCtx="base"
     keySpec="ctrl+h" i18n-keySpec
     keyDesc="Display AccessKey Info Dialog" i18n-keyDesc
-    (click)="egAccessKeyInfo.open({size: 'lg'})">
-</a>
-<a egAccessKey keyCtx="base"
+    (click)="egAccessKeyInfo.open({size: 'lg'})">Display AccessKey Info Dialog
+</button>
+<button type="button" class="d-none" egAccessKey keyCtx="base"
     keySpec="shift+f10" i18n-keySpec
     keyDesc="Display Context Menu" i18n-keyDesc
-    (click)="fireContextMenuEvent()">
-</a>
+    (click)="fireContextMenuEvent()">Display Context Menu
+</button>
 
 <!-- global toast alerts -->
 <eg-toast></eg-toast>
