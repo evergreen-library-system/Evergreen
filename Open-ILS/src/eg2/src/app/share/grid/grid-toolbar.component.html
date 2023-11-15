@@ -29,21 +29,21 @@
         </button>
       </ng-container>
       <ng-container *ngFor="let btn of gridContext.toolbarButtons">
-        <label
+        <span
             *ngIf="btn.adjacentPreceedingLabel"
             [ngClass]="{'button-adjacent-label':true,'disabled':btn.disabled}">
             {{btn.adjacentPreceedingLabel}}
-        </label>
+        </span>
         <button
           [disabled]="btn.disabled" type="button"
           class="btn btn-outline-dark me-1" (click)="performButtonAction(btn)">
           {{btn.label}}
         </button>
-        <label
+        <span
             *ngIf="btn.adjacentSubsequentLabel"
             [ngClass]="{'button-adjacent-label':true,'disabled':btn.disabled}">
             {{btn.adjacentSubsequentLabel}}
-        </label>
+        </span>
       </ng-container>
     </div>
 

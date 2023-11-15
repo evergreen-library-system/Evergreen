@@ -118,7 +118,7 @@
     [fieldOptions]="{marc_record_type:{customValues:[{id:'biblio'},{id:'serial'},{id:'authority'}]},description:{customTemplate:{template:descriptionTemplate,context:{'hello':'goodbye'}}}}"
     recordId="1" orgDefaultAllowed="owner">
   </eg-fm-record-editor>
-  <button class="btn btn-dark" (click)="openEditor()">
+  <button type="button" class="btn btn-dark" (click)="openEditor()">
       Fm Record Editor
   </button>
 </div>
@@ -127,7 +127,7 @@
 <!-- Progress Dialog Experiments ----------------------------- -->
 <div class="row mb-3">
   <div class="col-lg-3">
-    <button class="btn btn-outline-danger" (click)="progress.increment()">Increment Inline</button>
+    <button type="button" class="btn btn-outline-danger" (click)="progress.increment()">Increment Inline</button>
     <eg-help-popover [placement]="'bottom'" helpText="Exercise your clicking finger by clicking the button above.">
     </eg-help-popover>
   </div>
@@ -139,7 +139,7 @@
   <div class="col-lg-4">
     <eg-progress-dialog #progressDialog>
     </eg-progress-dialog>
-    <button class="btn btn-light" (click)="showProgress()">Test Progress Dialog</button>
+    <button type="button" class="btn btn-light" (click)="showProgress()">Test Progress Dialog</button>
   </div>
   <div class="col-lg-3">
     <eg-help-popover helpLink="https://www.youtube.com/watch?v=dQw4w9WgXcQ" helpText="This popover is supposed to help or something...!"></eg-help-popover>
@@ -157,7 +157,7 @@
 <div class="row mb-3">
   <div class="col-lg-4">
    <eg-help-popover helpText="If you like Toast you must click below!" placement="'auto'"></eg-help-popover>
-   <button class="btn btn-info" (click)="testToast()">Test Toast Message</button>
+   <button type="button" class="btn btn-info" (click)="testToast()">Test Toast Message</button>
   </div>
   <div class="col-lg-2">
     <label for="limitPermsSelect" class="form-label org-unit-select-label" i18n>Org select with limit perms</label>
@@ -203,7 +203,7 @@
 <!--
 <div class="row mb-3">
     <eg-string #helloString text="Hello, {{name}}" i18n-text></eg-string>
-    <button class="btn btn-success" (click)="testStrings()">Test Strings</button>
+    <button type="button" class="btn btn-success" (click)="testStrings()">Test Strings</button>
 </div>
 -->
 
@@ -213,7 +213,7 @@
     <eg-string #helloStr key="helloKey" [template]="helloStrTmpl"></eg-string>
     -->
     <eg-string key="staff.sandbox.test" [template]="helloStrTmpl"></eg-string>
-    <button class="btn btn-success" (click)="testStrings()">Test Strings</button>
+    <button type="button" class="btn btn-success" (click)="testStrings()">Test Strings</button>
 </div>
 
 <div class="row">
@@ -231,16 +231,16 @@
 
 <div class="d-flex">
   <div class="me-2">
-    <button class="btn btn-info" (click)="doPrint()">Test Local Print</button>
+    <button type="button" class="btn btn-info" (click)="doPrint()">Test Local Print</button>
     <ng-template #printTemplate let-context>Hello, {{context.world}}!</ng-template>
   </div>
   <div class="me-2">
-    <button class="btn btn-info" (click)="printWithDialog()">
+    <button type="button" class="btn btn-info" (click)="printWithDialog()">
       Print with dialog (Hatch Only)
     </button>
   </div>
   <div class="me-2">
-    <button class="btn btn-info" 
+    <button type="button" class="btn btn-info" 
       (click)="testServerPrint()">Test Server-Generated Print</button>
   </div>
 </div>
@@ -249,7 +249,7 @@
 <div class="row">
   <div class="col-lg-3">
     <eg-translate #translate [idlObject]="oneBtype" fieldName="name"></eg-translate>
-    <button class="btn btn-info"
+    <button type="button" class="btn btn-info"
       (click)="translate.open({size:'lg'})">Translate</button>
   </div>
 </div>
@@ -449,9 +449,9 @@
   </form>
 </div>
 
-<button (click)="confirmNumber(1)">Confirm 1</button>
-<button (click)="confirmNumber(0)">Confirm 0</button>
-<button (click)="confirmNumber(20)">Confirm 20</button>
+<button type="button" (click)="confirmNumber(1)">Confirm 1</button>
+<button type="button" (click)="confirmNumber(0)">Confirm 0</button>
+<button type="button" (click)="confirmNumber(20)">Confirm 20</button>
 
 <eg-confirm-dialog #numConfirmDialog
   i18n-dialogTitle
@@ -467,7 +467,7 @@
     idlClass="bresv"
     hiddenFields="capture_staff,usr" readonlyFields="cancel_time">
   </eg-fm-record-editor>
-  <button class="btn btn-info" (click)="bresvEditor.open({})">
+  <button type="button" class="btn btn-info" (click)="bresvEditor.open({})">
     Test Readonly Date
   </button>
 </div>
@@ -509,7 +509,7 @@
 <div class="mt-4 mb-4">
   <h4>Add Patron Penalty</h4>
   <eg-patron-penalty-dialog #penaltyDialog patronId="1"></eg-patron-penalty-dialog>
-  <button class="btn btn-outline-dark" (click)="openPenalty()" i18n>
+  <button type="button" class="btn btn-outline-dark" (click)="openPenalty()" i18n>
     Open Penalty Dialog
   </button>
 </div>
