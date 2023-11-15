@@ -63,9 +63,9 @@
   <ng-container *ngIf="editing">
     <ng-container *ngTemplateOutlet="editTemplate"></ng-container>
     <div class="mt-1">
-      <button class="btn btn-outline-dark" (click)="save()" i18n>Apply</button>
-      <button class="btn btn-outline-dark ms-1" (click)="cancel()" i18n>Cancel</button>
-      <button class="btn btn-outline-dark ms-1" (click)="clear()" i18n>Clear</button>
+      <button type="button" class="btn btn-outline-dark" (click)="save()" i18n>Apply</button>
+      <button type="button" class="btn btn-outline-dark ms-1" (click)="cancel()" i18n>Cancel</button>
+      <button type="button" class="btn btn-outline-dark ms-1" (click)="clear()" i18n>Clear</button>
     </div>
   </ng-container>
 </div>

@@ -72,7 +72,7 @@
 
         <ng-container *ngIf="patronTab !== 'search'">
           <li ngbDropdown ngbNavItem="toggle">
-            <button class="nav-link" (click)="toggleSummaryPane(); false"
+            <button type="button" class="nav-link" (click)="toggleSummaryPane(); false"
               [title]="showSummaryPane() ? 'Hide Summary Pane' : 'Show Summary Pane'" i18n-title
               [attr.aria-label]="showSummaryPane() ? 'Hide Summary Pane' : 'Show Summary Pane'" i18n-aria-label>
               <span class="material-icons" aria-hidden="true">{{showSummaryPane() ? 'fullscreen' : 'fullscreen_exit'}}</span>
@@ -189,10 +189,10 @@
               target="_top"
               ngbDropdownItem i18n>Booking: Pick Up Reservations</a>
             <a routerLink="/staff/booking/return/by_patron/{{patronId}}"
-              target="_top" ngbDropdownItem i18n></a>
-            <a href (click)="purgeAccount(); false"
+              target="_top" ngbDropdownItem i18n>Booking: Return</a>
+            <button type="button" href (click)="purgeAccount(); false"
               [disabled]="disablePurge()"
-              ngbDropdownItem i18n>Completely Purge Account</a>
+              ngbDropdownItem i18n>Completely Purge Account</button>
           </div>
           <ng-template ngbNavContent>
             <ng-container [ngSwitch]="altTab">

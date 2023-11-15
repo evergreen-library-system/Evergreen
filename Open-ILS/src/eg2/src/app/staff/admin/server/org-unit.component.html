@@ -93,7 +93,7 @@
                   (ngModelChange)="hours(dow, 'close', $event)"/>
               </div>
               <div class="col-lg-2">
-                <button class="btn btn-outline-dark" (click)="closedOn(dow)" 
+                <button type="button" class="btn btn-outline-dark" (click)="closedOn(dow)" 
                   [disabled]="isClosed(dow)" i18n>Closed</button>
               </div>
               <div class="col-lg-2">
@@ -128,12 +128,12 @@
                 </a>
               </div>
               <div class="me-2">
-                <button class="btn btn-warning" (click)="deleteHours()" i18n>
+                <button type="button" class="btn btn-warning" (click)="deleteHours()" i18n>
                   Clear Hours of Operation
                 </button>
               </div>
               <div>
-                <button class="btn btn-info" (click)="saveHours()" i18n>
+                <button type="button" class="btn btn-info" (click)="saveHours()" i18n>
                   Apply Changes
                 </button>
               </div>

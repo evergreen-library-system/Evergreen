@@ -28,12 +28,12 @@
             <div class="col-lg-3">{{note.title()}}</div>
             <div class="col-lg-5">{{note.value()}}</div>
             <div class="col-lg-2">
-              <button class="btn btn-outline-info" (click)="editNote(note)" i18n>
+              <button type="button" class="btn btn-outline-info" (click)="editNote(note)" i18n>
                 Edit
               </button>
             </div>
             <div class="col-lg-2">
-              <button class="btn btn-outline-danger"
+              <button type="button" class="btn btn-outline-danger"
                 (click)="removeNote(note)" i18n>Remove</button>
             </div>
           </div>
@@ -45,7 +45,7 @@
           <div class="col-lg-3">{{note.title()}}</div>
           <div class="col-lg-7">{{note.value()}}</div>
           <div class="col-lg-2">
-            <button class="btn btn-outline-danger" (click)="removeNote(note)" i18n>
+            <button type="button" class="btn btn-outline-danger" (click)="removeNote(note)" i18n>
               Remove
             </button>
           </div>
@@ -72,7 +72,7 @@
                   i18n-placeholder placeholder="Enter note value..."></textarea>
               </div>
               <div class="col-lg-3">
-                <button class="btn btn-success" (click)="addNew()" i18n>Add Note</button>
+                <button type="button" class="btn btn-success" (click)="addNew()" i18n>Add Note</button>
               </div>
             </div>
           </div>
@@ -82,7 +82,7 @@
   </div>
 
   <div class="modal-footer" *ngIf="mode !== 'edit'">
-    <button type="button" class="btn btn-secondary" (click)="close()" i18n>Cancel</button>
-    <button class="btn btn-success me-2" (click)="applyChanges()" i18n>Apply Changes</button>
+    <button type="button" type="button" class="btn btn-secondary" (click)="close()" i18n>Cancel</button>
+    <button type="button" class="btn btn-success me-2" (click)="applyChanges()" i18n>Apply Changes</button>
   </div>
 </ng-template>

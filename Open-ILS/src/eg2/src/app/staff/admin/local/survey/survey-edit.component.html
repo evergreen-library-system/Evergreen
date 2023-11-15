@@ -6,7 +6,7 @@
         <ng-template ngbNavContent>
             <div class="col-lg-6 offset-lg-3 mt-3">
                 <div style="text-align: center;">
-                    <button class="p-2 mb-3 btn btn-danger btn-lg"
+                    <button type="button" class="p-2 mb-3 btn btn-danger btn-lg"
                     (click)="endSurvey()" i18n>
                         End Survey Now
                     </button>
@@ -35,11 +35,11 @@
                         <input type="text" [(ngModel)]="question.words" class="form-control"
                             name="question-{{questionIndex}}" id="question-{{questionIndex}}">
                         
-                            <button class="fw-bold input-group-text"
+                            <button type="button" class="fw-bold input-group-text"
                                 (click)="updateQuestion(question)" i18n>
                                 Save
                             </button>
-                            <button class="text-danger fw-bold input-group-text"
+                            <button type="button" class="text-danger fw-bold input-group-text"
                                 (click)="deleteQuestion(question)" i18n>
                                 Delete Question & Answers
                             </button>
@@ -53,12 +53,12 @@
                             id="answer-{{questionIndex}}-{{answerIndex}}"
                             name="answer-{{questionIndex}}-{{answerIndex}}">
                         
-                            <button class="input-group-text"
+                            <button type="button" class="input-group-text"
                                 (click)="updateAnswer(answer, question, questionIndex, answerIndex)"
                                 i18n>
                                 Save
                             </button>
-                            <button class="text-danger input-group-text" (click)="deleteAnswer(answer)"
+                            <button type="button" class="text-danger input-group-text" (click)="deleteAnswer(answer)"
                                 i18n>
                                 Delete
                             </button>
@@ -69,7 +69,7 @@
                             [(ngModel)]="newAnswerArray[questionIndex].inputText"
                                 value="">
                         
-                            <button class="input-group-text"
+                            <button type="button" class="input-group-text"
                                 (click)="createAnswer(newAnswerArray[questionIndex].inputText, question)"
                                 i18n>
                                 Add Answer
@@ -85,7 +85,7 @@
                         [(ngModel)]="newQuestionText"
                         name="question-new" value="">
                     
-                        <button class="fw-bold input-group-text"
+                        <button type="button" class="fw-bold input-group-text"
                             (click)="createQuestion(newQuestionText)" i18n>
                             Save Question & Add Answer
                         </button>

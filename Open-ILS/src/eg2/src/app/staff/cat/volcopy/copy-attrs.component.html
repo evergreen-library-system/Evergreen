@@ -51,27 +51,27 @@
     </eg-combobox>
   </div>
   <div class="col-lg-7 d-flex">
-    <button class="btn btn-outline-dark me-2" (click)="applyTemplate()" i18n>Apply</button>
-    <button class="btn btn-outline-dark me-2" (click)="saveTemplate()" i18n>Save</button>
+    <button type="button" class="btn btn-outline-dark me-2" (click)="applyTemplate()" i18n>Apply</button>
+    <button type="button" class="btn btn-outline-dark me-2" (click)="saveTemplate()" i18n>Save</button>
 
     <!-- 
       The typical approach of wrapping a file input in a <label> results
       in button-ish things that have slightly different dimensions.
       Instead have a button activate a hidden file input.
     -->
-    <button class="btn btn-outline-dark me-2" (click)="templateFile.click()">
-      <input type="file" class="d-none" #templateFile
-        (change)="importTemplate($event)" id="template-file-upload"/>
-      <span i18n>Import</span>
+    <button type="button" class="btn btn-outline-dark me-2" (click)="templateFile.click()" i18n>
+      Import
     </button>
+    <input type="file" class="d-none" #templateFile
+        (change)="importTemplate($event)" id="template-file-upload"/>
 
     <a (click)="exportTemplate($event)"
       download="export_copy_template.json" [href]="exportTemplateUrl()">
-      <button class="btn btn-outline-dark me-2" i18n>Export</button>
+      <button type="button" class="btn btn-outline-dark me-2" i18n>Export</button>
     </a>
     
     <div class="flex-1"> </div>
-    <button class="btn btn-outline-danger me-2" 
+    <button type="button" class="btn btn-outline-danger me-2" 
       (click)="deleteTemplate()" i18n>Delete Template</button>
   </div>
 </div>
@@ -343,7 +343,7 @@
       <eg-copy-alerts-dialog #copyAlertsDialog></eg-copy-alerts-dialog>
       <div class="batch-header fw-bold p-2" i18n>Add Item Alerts</div>
       <div class="p-1">
-        <button class="btn btn-outline-dark" (click)="openCopyAlerts()" i18n>
+        <button type="button" class="btn btn-outline-dark" (click)="openCopyAlerts()" i18n>
           Item Alerts
         </button>
       </div>
@@ -432,7 +432,7 @@
       <eg-copy-tags-dialog #copyTagsDialog></eg-copy-tags-dialog>
       <div class="batch-header fw-bold p-2" i18n>Add Item Tags</div>
       <div class="p-1">
-        <button class="btn btn-outline-dark" (click)="openCopyTags()" i18n>
+        <button type="button" class="btn btn-outline-dark" (click)="openCopyTags()" i18n>
           Item Tags
         </button>
       </div>
@@ -442,7 +442,7 @@
       <eg-copy-notes-dialog #copyNotesDialog></eg-copy-notes-dialog>
       <div class="batch-header fw-bold p-2" i18n>Add Item Notes</div>
       <div class="p-1">
-        <button class="btn btn-outline-dark" (click)="openCopyNotes()" i18n>
+        <button type="button" class="btn btn-outline-dark" (click)="openCopyNotes()" i18n>
           Item Notes
         </button>
       </div>

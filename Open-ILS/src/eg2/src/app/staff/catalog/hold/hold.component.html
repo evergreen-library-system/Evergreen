@@ -66,7 +66,7 @@
               (paste)="debounceUserBarcodeLookup($event)"
               [(ngModel)]="userBarcode"/>
             <div class="input-group-text">
-              <button class="btn btn-outline-dark" (click)="userBarcodeChanged()">Submit</button>
+              <button type="button" class="btn btn-outline-dark" (click)="userBarcodeChanged()">Submit</button>
             </div>
           </div>
         </div>
@@ -197,9 +197,9 @@
             </div>
           </li>
           <li class="list-group-item">
-            <button class="btn btn-success" (click)="placeHolds()"
+            <button type="button" class="btn btn-success" (click)="placeHolds()"
               [disabled]="!readyToPlaceHolds()" i18n>Place Hold(s)</button>
-            <button class="btn btn-outline-dark ms-2" (click)="resetForm()" i18n>Reset</button>
+            <button type="button" class="btn btn-outline-dark ms-2" (click)="resetForm()" i18n>Reset</button>
           </li>
         </ul><!-- col -->
       </div><!-- row -->
@@ -229,19 +229,19 @@
       <span i18n>Item-Level Hold Options:</span>
       <span class="ps-2">
         <a routerLink="/staff/catalog/hold/C" queryParamsHandling="merge">
-          <button [disabled]="holdType === 'C'" class="btn btn-outline-primary"
+          <button type="button" [disabled]="holdType === 'C'" class="btn btn-outline-primary"
             i18n>Item Hold</button>
         </a>
       </span>
       <span class="ps-2">
         <a routerLink="/staff/catalog/hold/R" queryParamsHandling="merge">
-          <button [disabled]="holdType === 'R'" class="btn btn-outline-primary"
+          <button type="button" [disabled]="holdType === 'R'" class="btn btn-outline-primary"
             i18n>Recall Hold</button>
         </a>
       </span>
       <span class="ps-2">
         <a routerLink="/staff/catalog/hold/F" queryParamsHandling="merge">
-          <button [disabled]="holdType === 'F'" class="btn btn-outline-primary"
+          <button type="button" [disabled]="holdType === 'F'" class="btn btn-outline-primary"
             i18n>Force Item Hold</button>
         </a>
       </span>
@@ -279,7 +279,7 @@
     <div class="col-lg-12">
       <div class="row">
         <div class="col-lg-1 ms-auto">
-          <button class="btn btn-info" i18n
+          <button type="button" class="btn btn-info" i18n
             (click)="overrideAll()">
             Override All
           </button>
@@ -355,7 +355,7 @@
         </div>
         <div class="col-lg-1">
           <ng-container *ngIf="canOverride(ctx)">
-            <button class="btn btn-info" (click)="override(ctx)">Override</button>
+            <button type="button" class="btn btn-info" (click)="override(ctx)">Override</button>
           </ng-container>
         </div>
       </div>

@@ -13,7 +13,7 @@
   [ngClass]="isDialog() ? 'modal-header' : 'alert mt-3'">
   <h4 class="modal-title" i18n>Course Users</h4>
   <ng-container *ngIf="isDialog()">
-  <button type="button" class="btn-close btn-close-white"
+  <button type="button" type="button" class="btn-close btn-close-white"
     i18n-aria-label aria-label="Close" (click)="close()"></button>
   </ng-container>
 </div>
@@ -28,7 +28,7 @@
               [(ngModel)]="userBarcode" (click)="$event.target.select()"
               [disabled]="currentCourse && (courseIsArchived || currentCourse.is_archived()) === 't'"
               />
-            <button class="btn btn-outline-dark btn-sm" (click)="searchPatrons()">
+            <button type="button" class="btn btn-outline-dark btn-sm" (click)="searchPatrons()">
               <span class="material-icons mat-icon-in-button align-middle"
               aria-hidden="true">search</span>
               <span class="align-middle" i18n>Search for Patron</span>
@@ -47,7 +47,7 @@
       </div>
       <div class="row mt-3">
         <div class="text-end" [ngClass]="isDialog() ? 'col-md-2' : 'col-md-6'">
-          <button class="btn btn-primary"
+          <button type="button" class="btn btn-primary"
             [disabled]="currentCourse && (courseIsArchived || currentCourse.is_archived()) === 't'"
             i18n [disabled]="!userBarcode" (click)="associateUser(userBarcode)">
             Add User

@@ -1,6 +1,6 @@
 
 <h4 i18n>Direct Charges, Taxes, Fees, etc. 
-  <button class="btn btn-info btn-sm" (click)="newCharge()" *ngIf="canModify">New Charge</button>
+  <button type="button" class="btn btn-info btn-sm" (click)="newCharge()" *ngIf="canModify">New Charge</button>
 </h4>
 
 <eg-acq-disencumber-charge-dialog #disencumberChargeDialog></eg-acq-disencumber-charge-dialog>
@@ -76,13 +76,13 @@
       </span>
     </div>
     <div class="flex-2 p-1">
-      <button *ngIf="canModify" [disabled]="!(charge.isnew() || charge.ischanged())" class="btn btn-success btn-sm" 
+      <button type="button" *ngIf="canModify" [disabled]="!(charge.isnew() || charge.ischanged())" class="btn btn-success btn-sm" 
         (click)="saveCharge(charge)" i18n>Save</button>
-      <button *ngIf="canModify" [disabled]="charge.isnew()" class="btn btn-outline-dark btn-sm ms-1" 
+      <button type="button" *ngIf="canModify" [disabled]="charge.isnew()" class="btn btn-outline-dark btn-sm ms-1" 
         (click)="charge.ischanged(true)" i18n>Edit</button>
-      <button class="btn btn-warning btn-sm ms-1" 
+      <button type="button" class="btn btn-warning btn-sm ms-1" 
         (click)="disencumberCharge(charge)" *ngIf="canDisencumber(charge)" i18n>Disencumber</button>
-      <button class="btn btn-danger btn-sm ms-1" 
+      <button type="button" class="btn btn-danger btn-sm ms-1" 
         (click)="removeCharge(charge)" *ngIf="canDelete(charge)" i18n>Remove</button>
     </div>
   </div>

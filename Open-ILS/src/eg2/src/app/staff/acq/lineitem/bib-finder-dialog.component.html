@@ -25,8 +25,8 @@
           <div class="mt-1 pt-1 border-top">
             <div *ngFor="let rec of results" class="bib-finder-results-row row mt-1">
               <div class="col-3">
-                <button class="btn btn-success me-1" (click)="close(rec.id)" i18n>Link</button>
-                <button class="btn btn-outline-dark me-1" (click)="bibToDisplay = rec.id" i18n>View MARC</button>
+                <button type="button" class="btn btn-success me-1" (click)="close(rec.id)" i18n>Link</button>
+                <button type="button" class="btn btn-outline-dark me-1" (click)="bibToDisplay = rec.id" i18n>View MARC</button>
               </div>
               <div class="col-9">
                 <span class="pe-1" i18n>Record {{rec.id}}:</span>

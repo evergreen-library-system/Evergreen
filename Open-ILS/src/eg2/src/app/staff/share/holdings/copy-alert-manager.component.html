@@ -66,7 +66,7 @@
         {{alert._message}}
       </div>
       <div class="col-lg-2">
-        <button class="btn btn-sm btn-outline-dark me-2" *ngIf="canBeAcked(alert)"
+        <button type="button" class="btn btn-sm btn-outline-dark me-2" *ngIf="canBeAcked(alert)"
           (click)="alert._acked = !alert._acked" i18n>Clear</button>
       </div>
     </div>
@@ -90,7 +90,7 @@
 
   </div>
   <div class="modal-footer">
-    <button class="btn btn-success me-2" (click)="ok()" i18n>OK/Continue</button>
+    <button type="button" class="btn btn-success me-2" (click)="ok()" i18n>OK/Continue</button>
     <button type="button" class="btn btn-secondary" (click)="close()" i18n>Cancel</button>
   </div>
 </ng-template>

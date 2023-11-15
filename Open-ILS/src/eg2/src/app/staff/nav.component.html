@@ -20,7 +20,7 @@
 
     <div class="navbar-nav">
       <div ngbDropdown class="nav-item dropdown">
-        <button ngbDropdownToggle i18n class="nav-link dropdown-toggle">
+        <button type="button" ngbDropdownToggle i18n class="nav-link dropdown-toggle">
           Search
         </button>
         <div class="dropdown-menu" ngbDropdownMenu>
@@ -46,7 +46,7 @@
 
     <div class="navbar-nav">
       <div ngbDropdown class="nav-item dropdown">
-        <button ngbDropdownToggle class="nav-link dropdown-toggle">
+        <button type="button" ngbDropdownToggle class="nav-link dropdown-toggle">
           <span i18n>Circulation</span>
         </button>
         <div class="dropdown-menu" ngbDropdownMenu>
@@ -137,7 +137,7 @@
             <span i18n>Scan Item as Missing Pieces</span>
           </a>
           <div class="dropdown-divider"></div>
-          <button class="dropdown-item" ngbDropdownItem  (click)="reprintLast()"
+          <button type="button" class="dropdown-item" ngbDropdownItem  (click)="reprintLast()"
             egAccessKey keyCtx="navbar" i18n-keySpec i18n-keyDesc
             keySpec="f9" keyDesc="Reprint Last Receipt">
             <span class="material-icons" aria-hidden="true">redo</span>
@@ -159,7 +159,7 @@
 
     <div class="navbar-nav" *ngIf="showAngularCirc">
       <div ngbDropdown class="nav-item dropdown">
-        <button ngbDropdownToggle i18n class="nav-link dropdown-toggle">
+        <button type="button" ngbDropdownToggle i18n class="nav-link dropdown-toggle">
           Circulation (Experimental)
         </button>
         <div class="dropdown-menu" ngbDropdownMenu>
@@ -227,7 +227,7 @@
     
     <div class="navbar-nav">
       <div ngbDropdown class="nav-item dropdown">
-        <button ngbDropdownToggle i18n class="nav-link dropdown-toggle">
+        <button type="button" ngbDropdownToggle i18n class="nav-link dropdown-toggle">
           Cataloging
         </button>
         <div class="dropdown-menu" ngbDropdownMenu>
@@ -268,7 +268,7 @@
             <span class="material-icons" aria-hidden="true">collections_bookmark</span>
             <span i18n>Retrieve Bib Record by TCN</span>
           </a>
-          <button class="dropdown-item" ngbDropdownItem 
+          <button type="button" class="dropdown-item" ngbDropdownItem 
             (click)="retrieveLastRecord()"
             egAccessKey keyCtx="navbar" i18n-keySpec i18n-keyDesc
             keySpec="shift+f8" keyDesc="Retrieve Last Bib Record">
@@ -316,7 +316,7 @@
 
     <div class="navbar-nav">
       <div ngbDropdown class="nav-item dropdown">
-        <button ngbDropdownToggle i18n class="nav-link dropdown-toggle">
+        <button type="button" ngbDropdownToggle i18n class="nav-link dropdown-toggle">
           Acquisitions
         </button>
         <div class="dropdown-menu" ngbDropdownMenu>
@@ -399,7 +399,7 @@
 
     <div class="navbar-nav">
       <div ngbDropdown class="nav-item dropdown">
-        <button ngbDropdownToggle i18n class="nav-link dropdown-toggle">
+        <button type="button" ngbDropdownToggle i18n class="nav-link dropdown-toggle">
           Booking
         </button>
         <div class="dropdown-menu" ngbDropdownMenu>
@@ -433,7 +433,7 @@
 
     <div class="navbar-nav">
       <div ngbDropdown class="nav-item dropdown">
-        <button ngbDropdownToggle i18n class="nav-link dropdown-toggle">
+        <button type="button" ngbDropdownToggle i18n class="nav-link dropdown-toggle">
           Administration
         </button>
         <div class="dropdown-menu" ngbDropdownMenu>
@@ -495,14 +495,14 @@
     </div>
     <div class="navbar-nav" *ngIf="locales.length > 1 && currentLocale">
       <div ngbDropdown class="nav-item dropdown" display="dynamic">
-        <button ngbDropdownToggle i18n i18n-title
+        <button type="button" ngbDropdownToggle i18n i18n-title
           title="Select Locale"
           class="nav-link dropdown-toggle no-caret with-material-icon">
           <i class="material-icons" aria-hidden="true">flag</i>
           <span>{{currentLocale.name()}}</span>
         </button>
         <div class="dropdown-menu" ngbDropdownMenu>
-          <button class="dropdown-item" ngbDropdownItem  (click)="setLocale(locale)" 
+          <button type="button" class="dropdown-item" ngbDropdownItem  (click)="setLocale(locale)" 
             [ngClass]="{disabled: currentLocale.code() === locale.code()}"
             *ngFor="let locale of locales">
             <span class="material-icons" aria-hidden="true">add_location</span>
@@ -526,17 +526,17 @@
             failMessage="Operator Change Failed"
             successMessage="Operator Change Succeeded">
           </eg-op-change>
-          <button class="dropdown-item" ngbDropdownItem  *ngIf="!opChangeActive()" 
+          <button type="button" class="dropdown-item" ngbDropdownItem  *ngIf="!opChangeActive()" 
             (click)="navOpChange.open()">
             <span class="material-icons" aria-hidden="true">transform</span>
             <span i18n>Change Operator</span>
           </button>
-          <button *ngIf="opChangeActive()" class="dropdown-item" ngbDropdownItem
+          <button type="button" *ngIf="opChangeActive()" class="dropdown-item" ngbDropdownItem
             (click)="navOpChange.restore()">
             <span class="material-icons" aria-hidden="true">transform</span>
             <span i18n>Restore Operator</span>
           </button>
-          <button class="dropdown-item" ngbDropdownItem  (click)="maybeLogout()"
+          <button type="button" class="dropdown-item" ngbDropdownItem  (click)="maybeLogout()"
               egAccessKey keyCtx="navbar" i18n-keySpec i18n-keyDesc
               keySpec="alt+shift+q" keyDesc="Logout (Quit)">
             <span class="material-icons" aria-hidden="true">lock_outline</span>

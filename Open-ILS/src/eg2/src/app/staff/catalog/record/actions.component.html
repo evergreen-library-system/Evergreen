@@ -22,23 +22,23 @@
 <div class="row gx-0 row-cols-auto ms-0 me-0">
 
   <a target="_blank" href="/eg/opac/record/{{recId}}">
-    <button class="btn btn-outline-primary ms-1" i18n>Patron View</button>
+    <button type="button" class="btn btn-outline-primary ms-1" i18n>Patron View</button>
   </a>
 
   <a routerLink="/staff/catalog/hold/T" [queryParams]="{target: recId}"
     *ngIf="isHoldable">
-    <button class="btn btn-outline-primary ms-1" i18n>Place Hold</button>
+    <button type="button" class="btn btn-outline-primary ms-1" i18n>Place Hold</button>
   </a>
-  <button class="btn btn-outline-secondary ms-1" *ngIf="!isHoldable" disabled i18n>
+  <button type="button" class="btn btn-outline-secondary ms-1" *ngIf="!isHoldable" disabled i18n>
     Place Hold
   </button>
 
-  <button class="btn btn-outline-primary ms-1" (click)="addHoldings()" i18n id="add-holdings-btn">
+  <button type="button" class="btn btn-outline-primary ms-1" (click)="addHoldings()" i18n id="add-holdings-btn">
     Add Holdings
   </button>
 
   <div ngbDropdown placement="bottom-right" class="ms-1">
-    <button class="btn btn-outline-primary" id="actionsForSerials"
+    <button type="button" class="btn btn-outline-primary" id="actionsForSerials"
       ngbDropdownToggle i18n>Serials</button>
     <div ngbDropdownMenu aria-labelledby="actionsForSerials">
       <a ngbDropdownItem class="dropdown-item" href="/eg/staff/serials/{{recId}}" i18n>
@@ -51,50 +51,42 @@
   </div>
 
   <div ngbDropdown placement="bottom-right" class="ms-1">
-    <button class="btn btn-outline-primary" id="actionsForDd"
+    <button type="button" class="btn btn-outline-primary" id="actionsForDd"
       ngbDropdownToggle i18n>Mark For...</button>
     <div ngbDropdownMenu aria-labelledby="actionsForDd">
-      <button ngbDropdownItem class="dropdown-item" (click)="mark('conjoined')">
-        <span i18n>
-          Conjoined Items<ng-container *ngIf="targets.conjoined.current">
+      <button type="button" ngbDropdownItem class="dropdown-item" (click)="mark('conjoined')" i18n>
+        Conjoined Items<ng-container *ngIf="targets.conjoined.current">
             (Currently {{targets.conjoined.current}})</ng-container>
-        </span>
       </button>
-      <button ngbDropdownItem class="dropdown-item" (click)="mark('overlay')">
-        <span i18n>
-          Overlay Target<ng-container *ngIf="targets.overlay.current">
+      <button type="button" ngbDropdownItem class="dropdown-item" (click)="mark('overlay')" i18n>
+        Overlay Target<ng-container *ngIf="targets.overlay.current">
             (Currently {{targets.overlay.current}})</ng-container>
-        </span>
-      </button>
-      <button ngbDropdownItem class="dropdown-item" (click)="mark('holdTransfer')">
-        <span i18n>
-          Title Hold Transfer<ng-container *ngIf="targets.holdTransfer.current">
+        </button>
+      <button type="button" ngbDropdownItem class="dropdown-item" (click)="mark('holdTransfer')" i18n>
+        Title Hold Transfer<ng-container *ngIf="targets.holdTransfer.current">
             (Currently {{targets.holdTransfer.current}})</ng-container>
-        </span>
       </button>
-      <button ngbDropdownItem class="dropdown-item" (click)="mark('holdingTransfer')">
-        <span i18n>
-          Holding Transfer<ng-container *ngIf="targets.holdingTransfer.current">
+      <button type="button" ngbDropdownItem class="dropdown-item" (click)="mark('holdingTransfer')" i18n>
+        Holding Transfer<ng-container *ngIf="targets.holdingTransfer.current">
             (Currently {{targets.holdingTransfer.current}})</ng-container>
-        </span>
       </button>
-      <button ngbDropdownItem class="dropdown-item" (click)="clearMarks()">
-        <span i18n>Reset Record Marks</span>
+      <button type="button" ngbDropdownItem class="dropdown-item" (click)="clearMarks()" i18n>
+        Reset Record Marks
       </button>
     </div>
   </div>
 
   <div ngbDropdown placement="bottom-right" class="ms-1">
-    <button class="btn btn-outline-primary" id="otherActionsForDd"
+    <button type="button" class="btn btn-outline-primary" id="otherActionsForDd"
       ngbDropdownToggle i18n>Other Actions</button>
     <div ngbDropdownMenu aria-labelledby="otherActionsForDd">
-      <button ngbDropdownItem class="dropdown-item" (click)="recordBucketDialog.open({size: 'lg'})">
+      <button type="button" ngbDropdownItem class="dropdown-item" (click)="recordBucketDialog.open({size: 'lg'})">
         <span i18n>Add To Bucket</span>
       </button>
-      <button ngbDropdownItem class="dropdown-item" (click)="recordCarouselDialog.open({size: 'lg'})">
+      <button type="button" ngbDropdownItem class="dropdown-item" (click)="recordCarouselDialog.open({size: 'lg'})">
         <span i18n>Add To Carousel</span>
       </button>
-      <button ngbDropdownItem class="dropdown-item" (click)="jacketImageDialog.open({size: 'lg'})">
+      <button type="button" ngbDropdownItem class="dropdown-item" (click)="jacketImageDialog.open({size: 'lg'})">
         <span i18n>Upload Cover Image</span>
       </button>
       <a ngbDropdownItem class="dropdown-item" target="_blank" routerLink="/staff/acq/related/{{recId}}">

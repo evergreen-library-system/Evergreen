@@ -40,7 +40,7 @@
 <ng-template #postSubfieldsChunk let-field="field">
 
   <ng-container *ngIf="context.recordType === 'biblio' && isControlledBibTag(field.tag)">
-    <button class="btn btn-sm btn-outline-info link-button"
+    <button type="button" class="btn btn-sm btn-outline-info link-button"
       i18n-aria-label aria-label="Create authority link"
       i18n-title title="Create authority link"
       (click)="openLinkerDialog(field)">
@@ -74,14 +74,14 @@
         <eg-fixed-fields-editor [context]="context"></eg-fixed-fields-editor>
       </div>
       <div class="col-lg-3">
-        <div><button class="btn btn-outline-dark"
+        <div><button type="button" class="btn btn-outline-dark"
           (click)="showHelp = !showHelp" i18n>Help</button></div>
         <ng-container *ngIf="context.recordType === 'biblio'">
-          <div class="mt-2"><button class="btn btn-outline-dark"
+          <div class="mt-2"><button type="button" class="btn btn-outline-dark"
             (click)="validate()" i18n>Validate</button></div>
         </ng-container>
         <div class="mt-2">
-          <button type="button" class="btn btn-outline-info"
+          <button  type="button" class="btn btn-outline-info"
             [disabled]="undoCount() < 1" (click)="undo()">
             Undo <span class="badge rounded-pill text-light bg-info p-1">{{undoCount()}}</span>
           </button>

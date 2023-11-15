@@ -85,7 +85,7 @@
             </div>
           </ng-container>
           <ng-container *ngIf="volcopy.defaults.hidden.generate_barcodes !== true">
-            <button class="btn btn-sm btn-outline-dark label-with-material-icon"
+            <button type="button" class="btn btn-sm btn-outline-dark label-with-material-icon"
               (click)="volcopy.genBarcodesRequested.emit()">
               <span i18n>Generate Barcodes</span>
               <span class="material-icons" aria-hidden="true">refresh</span>
@@ -94,10 +94,10 @@
         </ng-container>
 
         <div class="flex-1"> </div>
-        <button class="btn btn-outline-dark" (click)="save(false, true)" 
+        <button type="button" class="btn btn-outline-dark" (click)="save(false, true)" 
           [ngClass]="{'border-danger': isNotSaveable()}"
           [disabled]="isNotSaveable()" i18n>Apply All &amp; Save</button>
-        <button class="btn btn-outline-dark ms-2" (click)="save(true, true)"
+        <button type="button" class="btn btn-outline-dark ms-2" (click)="save(true, true)"
           [ngClass]="{'border-danger': isNotSaveable()}"
           [disabled]="isNotSaveable()" i18n>Apply All, Save &amp; Exit</button>
       </div>

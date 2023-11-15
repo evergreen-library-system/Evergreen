@@ -42,8 +42,8 @@
     <input id="report-name" class="form-control sr-name-{{ (name !== '' && name !== null) ? 'not' : '' }}empty" [(ngModel)]="name" (ngModelChange)="dirty()" />
   </div>
   <div class="col-sm-2">
-    <button class="btn btn-success" (click)="saveTemplate(false)" [disabled]="!readyToSave()" i18n>Save</button>
-    <button class="btn btn-outline-dark ms-1" (click)="closeForm()" i18n>Close</button>
+    <button type="button" class="btn btn-success" (click)="saveTemplate(false)" [disabled]="!readyToSave()" i18n>Save</button>
+    <button type="button" class="btn btn-outline-dark ms-1" (click)="closeForm()" i18n>Close</button>
   </div>
 </div>
 <div *ngIf="rptType !== ''" class="row mt-2" id="sr-editor-main">

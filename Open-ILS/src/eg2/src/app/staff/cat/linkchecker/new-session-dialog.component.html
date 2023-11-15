@@ -120,12 +120,12 @@
                             placeholder="u..." i18n-placeholder />
                     </div>
                     <div class="col-lg-2">
-                        <button class="btn btn-sm material-icon-button"
+                        <button type="button" class="btn btn-sm material-icon-button"
                             (click)="addSelectorRow(idx + 1)"
                             i18n-title title="Add Selector Row">
                             <span class="material-icons">add_circle_outline</span>
                         </button>
-                        <button class="btn btn-sm material-icon-button"
+                        <button type="button" class="btn btn-sm material-icon-button"
                             [disabled]="selectorModels['tag'].length < 2"
                             (click)="delSelectorRow(idx)"
                             i18n-title title="Remove Selector Row">

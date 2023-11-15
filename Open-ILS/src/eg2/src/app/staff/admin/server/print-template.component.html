@@ -55,13 +55,13 @@
       <ng-template ngbNavContent>
         <div class="row">
           <div class="col-lg-12 mt-3 d-flex">
-            <button class="btn btn-info" (click)="openEditDialog()" i18n>
+            <button type="button" class="btn btn-info" (click)="openEditDialog()" i18n>
               Edit Template Attributes
             </button>
-            <button class="btn btn-success ms-2" (click)="applyChanges()" i18n>
+            <button type="button" class="btn btn-success ms-2" (click)="applyChanges()" i18n>
               Save Template Changes
             </button>
-            <button class="btn btn-info ms-2" (click)="cloneTemplate()" i18n>
+            <button type="button" class="btn btn-info ms-2" (click)="cloneTemplate()" i18n>
               Clone Template
             </button>
             <span class="ms-3 me-1" i18n>Force Print Context:</span>
@@ -82,7 +82,7 @@
               </eg-combobox-entry>
             </eg-combobox>
             <div class="flex-1"> </div>
-            <button class="btn btn-danger ms-2" (click)="deleteTemplate()" i18n>
+            <button type="button" class="btn btn-danger ms-2" (click)="deleteTemplate()" i18n>
               Delete Template
             </button>
             <span *ngIf="invalidJson" class="badge badge-danger ms-2" i18n>

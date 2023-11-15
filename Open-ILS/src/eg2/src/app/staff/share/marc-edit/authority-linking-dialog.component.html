@@ -14,7 +14,7 @@
 <!-- display a single heading as MARC or as the human friendlier string -->
 <ng-template #headingField 
   let-field="field" let-from="from" let-also="also" let-authId="authId">
-  <button class="btn btn-sm p-1 me-1" 
+  <button type="button" class="btn btn-sm p-1 me-1" 
     [ngClass]="{'btn-outline-primary': !(from || also), 'btn-outline-info': (from || also)}"
     (click)="applyHeading(field, authId)" i18n>Apply</button>
   <ng-container *ngIf="showAs === 'heading'">
@@ -58,20 +58,20 @@
       <div class="ms-2 p-1">
         <div class="mb-1" i18n>Create new authority from this field</div>
         <div>
-          <button class="btn btn-outline-info" 
+          <button type="button" class="btn btn-outline-info" 
             (click)="createNewAuthority()">Immediately</button>
-          <button class="btn btn-outline-info ms-2" 
+          <button type="button" class="btn btn-outline-info ms-2" 
             (click)="createNewAuthority(true)">Create and Edit</button>
         </div>
       </div>
     </div>
     <div class="row border-bottom border-secondary p-2 d-flex">
       <div class="flex-1">
-        <button class="btn btn-outline-dark" [disabled]="pager.offset === 0"
+        <button type="button" class="btn btn-outline-dark" [disabled]="pager.offset === 0"
           (click)="getPage(0)" i18n>Start</button>
-        <button class="btn btn-outline-dark ms-2"
+        <button type="button" class="btn btn-outline-dark ms-2"
           (click)="getPage(-1)" i18n>Previous</button>
-        <button class="btn btn-outline-dark ms-2"
+        <button type="button" class="btn btn-outline-dark ms-2"
           (click)="getPage(1)" i18n>Next</button>
       </div>
       <div class="pt-2 mb-2">

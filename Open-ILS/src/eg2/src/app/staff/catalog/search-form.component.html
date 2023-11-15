@@ -18,7 +18,7 @@
   <div *ngIf="canBeHidden()" class="row pt-1 pe-2">
     <div class="col-lg-12 d-flex">
       <div class="flex-1"></div><!-- push right -->
-      <button (click)="toggleFormDisplay()" class="btn btn-link label-with-material-icon">
+      <button type="button" (click)="toggleFormDisplay()" class="btn btn-link label-with-material-icon">
         <ng-container *ngIf="hideForm()">
           <span i18n>Show Search Form</span> 
           <span class="material-icons" aria-hidden="true">unfold_more</span>
@@ -106,20 +106,20 @@
               </div>
             </div>
             <div class="col-lg-2 ps-0 pe-1">
-              <button class="btn btn-sm material-icon-button"
+              <button type="button" class="btn btn-sm material-icon-button"
                 (click)="addSearchRow(idx + 1)"
                 i18n-title title="Add Search Row"
                 i18n-aria-label aria-label="Add Search Row">
                 <span class="material-icons" aria-hidden="true">add_circle_outline</span>
               </button>
-              <button class="btn btn-sm material-icon-button"
+              <button type="button" class="btn btn-sm material-icon-button"
                 [disabled]="context.termSearch.query.length < 2"
                 type="button" (click)="delSearchRow(idx)"
                 i18n-title title="Remove Search Row"
                 i18n-aria-label aria-label="Remove Search Row">
                 <span class="material-icons" aria-hidden="true">remove_circle_outline</span>
               </button>
-              <button *ngIf="idx === 0"
+              <button type="button" *ngIf="idx === 0"
                 class="btn btn-sm material-icon-button" 
                 type="button" (click)="toggleFilters()" 
                 title="Toggle Search Filters" i18n-title
@@ -360,7 +360,7 @@
                     (keyup.enter)="searchByForm()"/>
                 </div>
                 <div class="col">
-                  <button class="btn btn-sm material-icon-button ms-2"
+                  <button type="button" class="btn btn-sm material-icon-button ms-2"
                     i18n-title title="Add Search Row"
                     i18n-aria-label aria-label="Add Search Row"
                     (click)="addMarcSearchRow(idx + 1)">
@@ -368,7 +368,7 @@
                   </button>
                 </div>
                 <div class="col">
-                  <button class="btn btn-sm material-icon-button ps-0 ms-0"
+                  <button type="button" class="btn btn-sm material-icon-button ps-0 ms-0"
                     i18n-title title="Remove Search Row"
                     i18n-aria-label aria-label="Remove Search Row"
                     [disabled]="context.marcSearch.values.length < 2"
@@ -447,13 +447,13 @@
                 [placeholder]="'Library'" i18n-placeholder
                 ariaLabel="Library" i18n-ariaLabel>
               </eg-org-select>
-              <button class="btn btn-success me-1 ms-1" type="button"
+              <button type="button" class="btn btn-success me-1 ms-1" type="button"
                 [disabled]="searchIsActive()"
                 id="run-catalog-search"
                 (click)="context.pager.offset=0;searchByForm()" i18n>
                 Search
               </button>
-              <button class="btn btn-warning me-1" type="button"
+              <button type="button" class="btn btn-warning me-1" type="button"
                 [disabled]="searchIsActive()"
                 (click)="context.reset()" i18n>
                 Reset

@@ -191,11 +191,11 @@
     </ng-container>
     <div class="col-lg-6">
       <ng-container *ngIf="!patron.isnew()">
-        <button [disabled]="replaceBarcodeUsed" class="btn btn-outline-dark" 
+        <button type="button" [disabled]="replaceBarcodeUsed" class="btn btn-outline-dark" 
           (click)="replaceBarcode()" i18n>
           Replace Barcode
         </button>
-        <button class="btn btn-outline-dark ms-2" (click)="barcodesDialog.open()" i18n>
+        <button type="button" class="btn btn-outline-dark ms-2" (click)="barcodesDialog.open()" i18n>
           See All
         </button>
       </ng-container>
@@ -224,7 +224,7 @@
       *ngTemplateOutlet="fieldInput; context: {args: {field: 'passwd'}}">
     </ng-container>
     <div class="col-lg-3">
-      <button class="btn btn-outline-dark" (click)="generatePassword()" i18n>
+      <button type="button" class="btn btn-outline-dark" (click)="generatePassword()" i18n>
         Generate Password
       </button>
     </div>
@@ -350,12 +350,12 @@
     </ng-container>
     <div class="col-lg-6">
       <ng-container *ngIf="patron.email()">
-        <button class="btn btn-outline-dark" 
+        <button type="button" class="btn btn-outline-dark" 
           (click)="sendTestMessage('au.email.test')" i18n>
           Send Test Email
         </button>
         <ng-container *ngIf="!patron.isnew()">
-         <button class="btn btn-outline-dark ms-2" 
+         <button type="button" class="btn btn-outline-dark ms-2" 
            (click)="invalidateField('email')" i18n>Invalidate</button>
         </ng-container>
       </ng-container>
@@ -378,7 +378,7 @@
     </ng-container>
     <div class="col-lg-6">
       <ng-container *ngIf="patron.day_phone() && !patron.isnew()">
-        <button class="btn btn-outline-dark" 
+        <button type="button" class="btn btn-outline-dark" 
           (click)="invalidateField('day_phone')" i18n>Invalidate</button>
       </ng-container>
       <ng-container *ngTemplateOutlet="fieldExample; context: {args: {field: 'day_phone'}}">
@@ -395,7 +395,7 @@
     </ng-container>
     <div class="col-lg-6">
       <ng-container *ngIf="patron.evening_phone() && !patron.isnew()">
-        <button class="btn btn-outline-dark" 
+        <button type="button" class="btn btn-outline-dark" 
           (click)="invalidateField('evening_phone')" i18n>Invalidate</button>
       </ng-container>
       <ng-container *ngTemplateOutlet="fieldExample; context: {args: {field: 'evening_phone'}}">
@@ -412,7 +412,7 @@
     </ng-container>
     <div class="col-lg-6">
       <ng-container *ngIf="patron.other_phone() && !patron.isnew()">
-        <button class="btn btn-outline-dark" 
+        <button type="button" class="btn btn-outline-dark" 
           (click)="invalidateField('other_phone')" i18n>Invalidate</button>
       </ng-container>
       <ng-container *ngTemplateOutlet="fieldExample; context: {args: {field: 'other_phone'}}">
@@ -453,7 +453,7 @@
       </eg-profile-select>
     </div>
     <div class="col-lg-6">
-      <button class="btn btn-outline-dark" 
+      <button type="button" class="btn btn-outline-dark" 
         *ngIf="hasPerm.CREATE_USER_GROUP_LINK"
         (click)="openGroupsDialog()" i18n>Secondary Groups</button>
     </div>
@@ -475,7 +475,7 @@
       </eg-date-select>
     </div>
     <div class="col-lg-6">
-      <button class="btn btn-outline-dark" (click)="setExpireDate()" i18n>
+      <button type="button" class="btn btn-outline-dark" (click)="setExpireDate()" i18n>
         Update Expire Date
       </button>
     </div>
@@ -564,7 +564,7 @@
       <div class="col-lg-6">
         <ng-container *ngIf="userSettings['opac.default_sms_notify'] && 
           userSettings['opac.default_sms_carrier']">
-          <button class="btn btn-outline-dark" 
+          <button type="button" class="btn btn-outline-dark" 
             (click)="sendTestMessage('au.sms_text.test')" i18n>
             Send Test Text
           </button>
@@ -650,7 +650,7 @@
           </div>
         </div>
         <div class="ms-3">
-          <button class="btn btn-danger material-icon-button" 
+          <button type="button" class="btn btn-danger material-icon-button" 
             [ngClass]="{'invisible': waiver.isdeleted()}"
             (click)="removeWaiver(waiver)" type="button"
             i18n-aria-label aria-label="Remove Privacy Waiver"
@@ -659,7 +659,7 @@
           </button>
         </div>
         <div class="ms-2" *ngIf="index === patron.waiver_entries().length - 1">
-          <button class="btn btn-success material-icon-button" 
+          <button type="button" class="btn btn-success material-icon-button" 
             (click)="addWaiver()" type="button"
             i18n-aria-label aria-label="Add Privacy Waiver"
             i18n-title title="Add Privacy Waiver">
@@ -697,7 +697,7 @@
               <label class="form-label form-check-label" 
                 for="addr-{{addr.id()}}-billing" i18n>Physical</label>
             </div>
-            <button class="btn btn-danger" (click)="deleteAddr(addr)" i18n>Delete</button>
+            <button type="button" class="btn btn-danger" (click)="deleteAddr(addr)" i18n>Delete</button>
           </div>
         </div>
       </div>
@@ -734,7 +734,7 @@
     </div>
   </ng-container>
 
-  <button class="btn btn-success" (click)="newAddr()" i18n>New Address</button>
+  <button type="button" class="btn btn-success" (click)="newAddr()" i18n>New Address</button>
 
   <ng-container *ngIf="showField('stat_cats') && statCats.length > 0">
     <div class="alert alert-success pt-2 pb-2 mt-3 mb-3 d-flex">

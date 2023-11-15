@@ -50,11 +50,11 @@
     </div>
   </div>
   <div class="modal-footer">
-    <button *ngIf="prevString" (click)="prevString()" 
+    <button type="button" *ngIf="prevString" (click)="prevString()" 
       class="btn btn-info" i18n>Prev String</button>
-    <button *ngIf="nextString" (click)="nextString()" 
+    <button type="button" *ngIf="nextString" (click)="nextString()" 
       class="btn btn-info me-3" i18n>Next String</button>
-    <button (click)="translate()" class="btn btn-info" i18n>Apply</button>
-    <button (click)="close()" class="btn btn-warning ms-2" i18n>Cancel</button>
+    <button type="button" (click)="translate()" class="btn btn-info" i18n>Apply</button>
+    <button type="button" (click)="close()" class="btn btn-warning ms-2" i18n>Cancel</button>
   </div>
 </ng-template>

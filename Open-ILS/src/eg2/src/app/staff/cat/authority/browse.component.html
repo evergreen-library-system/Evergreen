@@ -26,18 +26,18 @@
       can lead to firing duplicate searches if you're quick on the draw.
       If we want it back, uncomment and add a [disabled] attribute to
       prevent dupe searches.
-      <button class="btn btn-outline-dark ms-2" (click)="search()" i18n>Submit</button>
+      <button type="button" class="btn btn-outline-dark ms-2" (click)="search()" i18n>Submit</button>
       -->
     </div>
   </div>
   <div class="col-lg-4 d-flex">
     <div class="flex-1"></div><!-- push right -->
     <div class="form-inline d-flex align-items-center">
-      <button class="btn btn-outline-dark ms-2" (click)="search(-1)" i18n>Previous</button>
+      <button type="button" class="btn btn-outline-dark ms-2" (click)="search(-1)" i18n>Previous</button>
       <label for='offset-input' class="form-label m-2" i18n>Page</label>
       <input class="form-control" type="number" 
         [(ngModel)]="browse.searchOffset" id="offset-input" (change)="search()"/>
-      <button class="btn btn-outline-dark ms-2" (click)="search(1)" i18n>Next</button>
+      <button type="button" class="btn btn-outline-dark ms-2" (click)="search(1)" i18n>Next</button>
     </div>
   </div>
 </div>

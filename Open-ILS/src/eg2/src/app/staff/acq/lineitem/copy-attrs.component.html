@@ -68,7 +68,7 @@
   </div>
   <div class="flex-1 p-1">
     <ng-container *ngIf="batchMode">
-      <button class="btn btn-outline-dark" 
+      <button type="button" class="btn btn-outline-dark" 
         (click)="batchApplyRequested.emit(copy)" i18n>Batch Update</button>
     </ng-container>
     <ng-container *ngIf="!batchMode && !batchAdd && !gatherParamsOnly">
@@ -90,7 +90,7 @@
     <div class="flex-2 p-1 pe-2 ps-2">
       <ng-container *ngIf="!batchMode">
         <ng-container *ngIf="disposition() === 'pre-order'">
-          <button
+          <button type="button"
             class="btn btn-outline-danger material-icon-button"
             (click)="deleteRequested.emit(copy)" title="Delete Item" i18n-title
             aria-label="Delete Item" i18n-aria-label>

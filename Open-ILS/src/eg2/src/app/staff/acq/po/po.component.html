@@ -6,13 +6,9 @@
 
 <eg-acq-po-summary [poId]="poId"></eg-acq-po-summary>
 
-<ng-container *ngIf="!isBasePage()">
-  <div class="mt-2">
-    <a routerLink="/staff/acq/po/{{poId}}" queryParamsHandling="merge">
-      <button class="btn btn-sm btn-info" i18n>Return</button>
-    </a>
-  </div>
-</ng-container>
+<div class="mt-2" *ngIf="!isBasePage()">
+  <a routerLink="/staff/acq/po/{{poId}}" queryParamsHandling="merge" class="btn btn-sm btn-info" i18n>Return</a>
+</div>
 
 <router-outlet></router-outlet>
 

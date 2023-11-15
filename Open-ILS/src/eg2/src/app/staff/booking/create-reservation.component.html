@@ -145,12 +145,12 @@
 <ng-container *ngIf="resources.length">
   <hr>
   <div class="row" *ngIf="idealDate && !multiday">
-    <button class="btn btn-info col-sm-2 offset-sm-3" (click)="addDays(-1)">
+    <button type="button" class="btn btn-info col-sm-2 offset-sm-3" (click)="addDays(-1)">
         <span class="material-icons mat-icon-in-button" aria-hidden="true">keyboard_arrow_left</span>
         <span i18n>Previous day</span>
     </button>
     <h2 class="col-sm-2 text-center" i18n>{{idealDate | formatValue:'timestamp'}}</h2>
-    <button class="btn btn-info col-sm-2" (click)="addDays(1)">
+    <button type="button" class="btn btn-info col-sm-2" (click)="addDays(1)">
       <span i18n>Next day</span>
       <span class="material-icons mat-icon-in-button" aria-hidden="true">keyboard_arrow_right</span>
     </button>
@@ -189,7 +189,7 @@
   <ng-container *ngIf="row.patrons && row.patrons[col.name]">
     <ul class="list-unstyled">
       <li *ngFor="let reservation of row.patrons[col.name]">
-        <button class="btn btn-info" (click)="openReservationViewer(reservation['reservationId'])">
+        <button type="button" class="btn btn-info" (click)="openReservationViewer(reservation['reservationId'])">
           {{reservation['patronLabel']}}
         </button>
       </li>
