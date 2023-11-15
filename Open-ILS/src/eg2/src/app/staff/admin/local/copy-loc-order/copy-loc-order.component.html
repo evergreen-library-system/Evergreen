@@ -47,16 +47,18 @@
 </div>
 
 <ol class="mt-3">
-  <li *ngFor="let entry of entries" (click)="selectedEntry = entry.id()">
+  <li *ngFor="let entry of entries">
     <div class="row p-1">
       <div class="col-lg-12">
-        <input type="radio" name="selected-entry" 
+        <input type="radio" name="selected-entry" id="entry-location-{{entry.id()}}"
           [value]="entry.id()" [(ngModel)]="selectedEntry"/>
-        <span class="flex-1 ms-1 p-1" i18n
-          [ngClass]="{'border border-primary rounded': selectedEntry === entry.id()}">
-          {{entry.location().name()}} ({{orgSn(entry.location().owning_lib())}})
-        </span>
-        <span *ngIf="entry.isnew()" class="ms-2 fst-italic text-info">(unsaved)</span>
+        <label class="flex-1 ms-1 p-1" for="entry-location-{{entry.id()}}">
+          <button type="button" class="btn btn-link" (click)="selectedEntry = entry.id()"
+            [ngClass]="{'border border-primary rounded': selectedEntry === entry.id()}">
+            <span i18n>{{entry.location().name()}} ({{orgSn(entry.location().owning_lib())}})</span>
+            <span i18n *ngIf="entry.isnew()" class="ms-2 fst-italic text-info">(unsaved)</span>
+          </button>
+        </label>
       </div>
     </div>
   </li>
