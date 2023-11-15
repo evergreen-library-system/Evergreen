@@ -35,8 +35,8 @@ interface OrgDisplay {
 }
 
 @Component({
-  selector: 'eg-org-select',
-  templateUrl: './org-select.component.html'
+    selector: 'eg-org-select',
+    templateUrl: './org-select.component.html'
 })
 export class OrgSelectComponent implements OnInit {
     static domId = 0;
@@ -164,6 +164,7 @@ export class OrgSelectComponent implements OnInit {
     // selected org unit. One way of invoking this is via a template
     // reference variable.
     selectedOrg(): IdlObject {
+        // eslint-disable-next-line eqeqeq
         if (this.selected == null) {
             return null;
         }
@@ -192,21 +193,21 @@ export class OrgSelectComponent implements OnInit {
 
         promise = promise.then(startupOrg => {
             return this.serverStore.getItem('eg.orgselect.show_combined_names')
-            .then(show => {
-                const sortField = show ? 'name' : this.displayField;
+                .then(show => {
+                    const sortField = show ? 'name' : this.displayField;
 
-                // Sort the tree and reabsorb to propagate the sorted
-                // nodes to the org.list() used by this component.
-                // Maintain our own copy of the org list in case the
-                // org service is sorted in a different manner by other
-                // parts of the code.
-                this.org.sortTree(sortField);
-                this.org.absorbTree();
-                this.sortedOrgs = this.org.list();
+                    // Sort the tree and reabsorb to propagate the sorted
+                    // nodes to the org.list() used by this component.
+                    // Maintain our own copy of the org list in case the
+                    // org service is sorted in a different manner by other
+                    // parts of the code.
+                    this.org.sortTree(sortField);
+                    this.org.absorbTree();
+                    this.sortedOrgs = this.org.list();
 
-                this.showCombinedNames = show;
-            })
-            .then(_ => startupOrg);
+                    this.showCombinedNames = show;
+                })
+                .then(_ => startupOrg);
         });
 
         promise.then((startupOrgId: number) => {
@@ -351,13 +352,14 @@ export class OrgSelectComponent implements OnInit {
     filter = (text$: Observable<string>): Observable<OrgDisplay[]> => {
 
         return text$.pipe(
+            // eslint-disable-next-line no-magic-numbers
             debounceTime(200),
             distinctUntilChanged(),
             merge(
                 // Inject a specifier indicating the source of the
                 // action is a user click
                 this.click$.pipe(filter(() => !this.instance.isPopupOpen()))
-                .pipe(mapTo('_CLICK_'))
+                    .pipe(mapTo('_CLICK_'))
             ),
             map(term => {
 
@@ -390,7 +392,7 @@ export class OrgSelectComponent implements OnInit {
                 return orgs.map(org => this.formatForDisplay(org));
             })
         );
-    }
+    };
 }
 
 

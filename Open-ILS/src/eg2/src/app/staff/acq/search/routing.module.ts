@@ -5,22 +5,22 @@ import {AttrDefsResolver} from './resolver.service';
 import {AttrDefsService} from './attr-defs.service';
 
 const routes: Routes = [
-  { path: '',
-    component: AcqSearchComponent,
-    resolve: { attrDefsResolver : AttrDefsResolver },
-    runGuardsAndResolvers: 'always'
-  },
-  { path: ':searchtype',
-    component: AcqSearchComponent,
-    resolve: { attrDefsResolver : AttrDefsResolver },
-    runGuardsAndResolvers: 'always'
-  }
+    { path: '',
+        component: AcqSearchComponent,
+        resolve: { attrDefsResolver : AttrDefsResolver },
+        runGuardsAndResolvers: 'always'
+    },
+    { path: ':searchtype',
+        component: AcqSearchComponent,
+        resolve: { attrDefsResolver : AttrDefsResolver },
+        runGuardsAndResolvers: 'always'
+    }
 ];
 
 @NgModule({
-  imports: [RouterModule.forChild(routes)],
-  exports: [RouterModule],
-  providers: [AttrDefsResolver, AttrDefsService]
+    imports: [RouterModule.forChild(routes)],
+    exports: [RouterModule],
+    providers: [AttrDefsResolver, AttrDefsService]
 })
 
 export class AcqSearchRoutingModule {}

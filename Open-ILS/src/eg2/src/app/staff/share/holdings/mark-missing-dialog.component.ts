@@ -14,8 +14,8 @@ import {StringComponent} from '@eg/share/string/string.component';
  */
 
 @Component({
-  selector: 'eg-mark-missing-dialog',
-  templateUrl: 'mark-missing-dialog.component.html'
+    selector: 'eg-mark-missing-dialog',
+    templateUrl: 'mark-missing-dialog.component.html'
 })
 
 export class MarkMissingDialogComponent
@@ -27,10 +27,10 @@ export class MarkMissingDialogComponent
     numFailed: number;
 
     @ViewChild('successMsg', { static: true })
-        private successMsg: StringComponent;
+    private successMsg: StringComponent;
 
     @ViewChild('errorMsg', { static: true })
-        private errorMsg: StringComponent;
+    private errorMsg: StringComponent;
 
     constructor(
         private modal: NgbModal, // required for passing to parent

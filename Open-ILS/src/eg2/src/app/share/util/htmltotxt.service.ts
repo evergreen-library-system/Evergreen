@@ -9,7 +9,7 @@ const ENTITY_REGEX = /&[^\s]+;/;
 @Injectable()
 export class HtmlToTxtService {
 
-   unEscapeHtml(text: string): string {
+    unEscapeHtml(text: string): string {
         text = text.replace(/&amp;/g, '&');
         text = text.replace(/&quot;/g, '"');
         text = text.replace(/&nbsp;/g, ' ');

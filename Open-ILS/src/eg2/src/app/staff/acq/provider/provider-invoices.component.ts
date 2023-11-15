@@ -16,9 +16,9 @@ import {AttrDefsService} from '../search/attr-defs.service';
 import {ProviderRecord, ProviderRecordService} from './provider-record.service';
 
 @Component({
-  selector: 'eg-provider-invoices',
-  templateUrl: 'provider-invoices.component.html',
-  providers: [AcqSearchService, AttrDefsService]
+    selector: 'eg-provider-invoices',
+    templateUrl: 'provider-invoices.component.html',
+    providers: [AcqSearchService, AttrDefsService]
 })
 export class ProviderInvoicesComponent implements OnInit, AfterViewInit, OnDestroy {
 
@@ -89,32 +89,32 @@ export class ProviderInvoicesComponent implements OnInit, AfterViewInit, OnDestr
     // TODO - copied from InvoiceResultsComponent, could be
     // consolidated
     printSelectedInvoices(rows: IdlObject[]) {
-      const that = this;
-      let html = '<style type="text/css">.acq-invoice-' +
+        const that = this;
+        let html = '<style type="text/css">.acq-invoice-' +
         'voucher {page-break-after:always;}' +
         '</style>\n';
-      this.net.request(
-        'open-ils.acq',
-        'open-ils.acq.invoice.print.html',
-        this.auth.token(), rows.map( invoice => invoice.id() )
-      ).subscribe(
-        (res) => {
-          if (this.evt.parse(res)) {
-            console.error(res);
-            this.printfail.open();
-          } else {
-            html +=  res.template_output().data();
-          }
-        },
-        (err) => {
-          console.error(err);
-          this.printfail.open();
-        },
-        () => this.printer.print({
-          text: html,
-          printContext: 'default'
-        })
-      );
+        this.net.request(
+            'open-ils.acq',
+            'open-ils.acq.invoice.print.html',
+            this.auth.token(), rows.map( invoice => invoice.id() )
+        ).subscribe(
+            (res) => {
+                if (this.evt.parse(res)) {
+                    console.error(res);
+                    this.printfail.open();
+                } else {
+                    html +=  res.template_output().data();
+                }
+            },
+            (err: unknown) => {
+                console.error(err);
+                this.printfail.open();
+            },
+            () => this.printer.print({
+                text: html,
+                printContext: 'default'
+            })
+        );
     }
 
 }

@@ -15,8 +15,8 @@ import {PatronContextService} from './patron.service';
 import {ProgressInlineComponent} from '@eg/share/dialog/progress-inline.component';
 
 @Component({
-  templateUrl: 'perms.component.html',
-  selector: 'eg-patron-perms'
+    templateUrl: 'perms.component.html',
+    selector: 'eg-patron-perms'
 })
 export class PatronPermsComponent implements OnInit, AfterViewInit {
 
@@ -48,7 +48,7 @@ export class PatronPermsComponent implements OnInit, AfterViewInit {
     ngOnInit() {
 
         this.workableOrgs = this.org.filterList({canHaveUsers: true})
-        .sort((o1, o2) => o1.shortname() < o2.shortname() ? -1 : 1);
+            .sort((o1, o2) => o1.shortname() < o2.shortname() ? -1 : 1);
 
         const depths = {};
         this.org.list().forEach(org => depths[org.ou_type().depth()] = true);
@@ -59,36 +59,36 @@ export class PatronPermsComponent implements OnInit, AfterViewInit {
 
         return this.reload().toPromise()
 
-        .then(_ => { // All permissions
-            this.progress.increment();
-            return this.pcrud.retrieveAll('ppl', {order_by: {ppl: 'code'}})
-            .pipe(tap(perm => this.allPerms.push(perm))).toPromise();
-        })
-
-        .then(_ => { // My permissions
-            this.progress.increment();
-            return this.net.request(
-                'open-ils.actor',
-                'open-ils.actor.permissions.user_perms.retrieve',
-                this.auth.token()).toPromise()
-            .then(maps => {
+            .then(_ => { // All permissions
                 this.progress.increment();
-                maps.forEach(m => this.myPermMaps[m.perm()] = m);
-            });
-        })
+                return this.pcrud.retrieveAll('ppl', {order_by: {ppl: 'code'}})
+                    .pipe(tap(perm => this.allPerms.push(perm))).toPromise();
+            })
 
-        .then(_ => {
-            this.progress.increment();
-            return this.perms.hasWorkPermAt(['ASSIGN_WORK_ORG_UNIT'], true);
-        })
+            .then(_ => { // My permissions
+                this.progress.increment();
+                return this.net.request(
+                    'open-ils.actor',
+                    'open-ils.actor.permissions.user_perms.retrieve',
+                    this.auth.token()).toPromise()
+                    .then(maps => {
+                        this.progress.increment();
+                        maps.forEach(m => this.myPermMaps[m.perm()] = m);
+                    });
+            })
 
-        .then(perms => {
-            this.progress.increment();
-            const orgIds = perms.ASSIGN_WORK_ORG_UNIT;
-            orgIds.forEach(id => this.canAssignWorkOrgs[id] = true);
-        })
+            .then(_ => {
+                this.progress.increment();
+                return this.perms.hasWorkPermAt(['ASSIGN_WORK_ORG_UNIT'], true);
+            })
 
-        .then(_ => this.loading = false);
+            .then(perms => {
+                this.progress.increment();
+                const orgIds = perms.ASSIGN_WORK_ORG_UNIT;
+                orgIds.forEach(id => this.canAssignWorkOrgs[id] = true);
+            })
+
+            .then(_ => this.loading = false);
     }
 
     reload(): Observable<any> {
@@ -235,8 +235,8 @@ export class PatronPermsComponent implements OnInit, AfterViewInit {
                 this.auth.token(), permMaps
             );
         }))
-        .pipe(concatMap(_ => this.reload()))
-        .pipe(finalize(() => this.loading = false)).subscribe();
+            .pipe(concatMap(_ => this.reload()))
+            .pipe(finalize(() => this.loading = false)).subscribe();
     }
 
     cannotSave(): boolean {

@@ -6,14 +6,14 @@ import {SearchFilterGroupEntriesComponent} from './search-filter-group-entries.c
 const routes: Routes = [{
     path: ':id',
     component: SearchFilterGroupEntriesComponent
-  }, {
+}, {
     path: '',
     component: SearchFilterGroupComponent
 }];
 
 @NgModule({
-  imports: [RouterModule.forChild(routes)],
-  exports: [RouterModule]
+    imports: [RouterModule.forChild(routes)],
+    exports: [RouterModule]
 })
 
 export class SearchFilterGroupRoutingModule {}

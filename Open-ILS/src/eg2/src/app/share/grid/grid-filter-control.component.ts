@@ -1,16 +1,16 @@
+/* eslint-disable eqeqeq */
 import {Component, Input, OnInit, QueryList, ViewChild, ViewChildren} from '@angular/core';
 import {GridContext, GridColumn} from './grid';
 import {IdlObject} from '@eg/core/idl.service';
-import {ComboboxComponent} from '@eg/share/combobox/combobox.component';
+import {ComboboxComponent, ComboboxEntry} from '@eg/share/combobox/combobox.component';
 import {DateSelectComponent} from '@eg/share/date-select/date-select.component';
 import {OrgSelectComponent} from '@eg/share/org-select/org-select.component';
 import {OrgService} from '@eg/core/org.service';
 import {NgbDropdown} from '@ng-bootstrap/ng-bootstrap';
-import {ComboboxEntry} from '@eg/share/combobox/combobox.component';
 
 @Component({
-  selector: 'eg-grid-filter-control',
-  templateUrl: './grid-filter-control.component.html'
+    selector: 'eg-grid-filter-control',
+    templateUrl: './grid-filter-control.component.html'
 })
 
 export class GridFilterControlComponent implements OnInit {
@@ -35,7 +35,7 @@ export class GridFilterControlComponent implements OnInit {
 
     ngOnInit() {
         if (this.col.filterValue !== undefined) {
-           this.applyFilter(this.col);
+            this.applyFilter(this.col);
         }
     }
 
@@ -96,6 +96,7 @@ export class GridFilterControlComponent implements OnInit {
             Number(parts[0]), Number(parts[1]) - 1, Number(parts[2]));
     }
 
+    /* eslint-disable no-magic-numbers */
     applyDateFilter(col: GridColumn) {
         const dateStr = this.dateSelectOne.currentAsYmd();
         const endDateStr =
@@ -229,6 +230,7 @@ export class GridFilterControlComponent implements OnInit {
             this.closeDropdown();
         }
     }
+    /* eslint-enable no-magic-numbers */
 
     clearDateFilter(col: GridColumn) {
         delete this.context.dataSource.filters[col.name];

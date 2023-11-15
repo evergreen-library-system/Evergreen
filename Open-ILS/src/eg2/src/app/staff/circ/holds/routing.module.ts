@@ -3,13 +3,13 @@ import {RouterModule, Routes} from '@angular/router';
 import {HoldsPullListComponent} from './pull-list.component';
 
 const routes: Routes = [{
-  path: 'pull-list',
-  component: HoldsPullListComponent
+    path: 'pull-list',
+    component: HoldsPullListComponent
 }];
 
 @NgModule({
-  imports: [RouterModule.forChild(routes)],
-  exports: [RouterModule]
+    imports: [RouterModule.forChild(routes)],
+    exports: [RouterModule]
 })
 
 export class HoldsUiRoutingModule {}

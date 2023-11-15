@@ -5,7 +5,7 @@ import {AuthService} from '@eg/core/auth.service';
 import {EventGridComponent} from './event-grid.component';
 
 @Component({
-  templateUrl: 'event-log.component.html'
+    templateUrl: 'event-log.component.html'
 })
 
 export class EventLogComponent implements OnInit {

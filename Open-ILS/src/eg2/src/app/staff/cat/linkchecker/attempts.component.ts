@@ -10,7 +10,7 @@ import {Pager} from '@eg/share/util/pager';
 import {PcrudService} from '@eg/core/pcrud.service';
 
 @Component({
-  templateUrl: 'attempts.component.html'
+    templateUrl: 'attempts.component.html'
 })
 export class LinkCheckerAttemptsComponent implements OnInit {
 
@@ -28,6 +28,7 @@ export class LinkCheckerAttemptsComponent implements OnInit {
         'uvsbrem' : ['target_biblio_record_entry'],
         'bre' : ['simple_record']
     };
+    // eslint-disable-next-line no-magic-numbers
     attemptsFleshDepth = 4;
     attemptsIdlClassDef: any;
     attemptsPKeyField: string;
@@ -35,7 +36,7 @@ export class LinkCheckerAttemptsComponent implements OnInit {
     attemptsPermaCrud: any;
     attemptsPerms: string;
 
-    alertMessage: string = '';
+    alertMessage = '';
 
     @ViewChild('grid', { static: true }) grid: GridComponent;
     dataSource: GridDataSource = new GridDataSource();
@@ -71,7 +72,7 @@ export class LinkCheckerAttemptsComponent implements OnInit {
                 } else if (params.sessions) {
                     // Initialize this.batches
                     this.batches = [];
-                    var batchSearch = {};
+                    const batchSearch = {};
                     batchSearch[this.batchesSessionField] = JSON.parse(params.sessions);
                     // Return the pcrud.search observable
                     return this.pcrud.search(this.batchesIdlClass,batchSearch).pipe(
@@ -82,7 +83,7 @@ export class LinkCheckerAttemptsComponent implements OnInit {
                             this.batches = Array.from(new Set(this.batches));
                             this.grid.reload();
                         }),
-                        catchError((err) => {
+                        catchError((err: unknown) => {
                             console.log('pcrud.search.uvs err', err);
                             // Properly handle error, return an observable that immediately completes
                             return of(null);
@@ -104,13 +105,13 @@ export class LinkCheckerAttemptsComponent implements OnInit {
     gridSelectionChange(keys: string[]) {
         this.noSelectedRows = (keys.length === 0);
         this.oneSelectedRow = (keys.length === 1);
-        //var rows = this.grid.context.getSelectedRows();
+        // var rows = this.grid.context.getSelectedRows();
     }
 
     initDataSource() {
         this.dataSource.getRows = (pager: Pager, sort: any[]) => {
 
-            let query: any = {}
+            const query: any = {};
 
             if (this.batches) {
                 query[this.attemptsBatchField] = this.batches;

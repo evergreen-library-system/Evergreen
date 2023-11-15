@@ -80,7 +80,7 @@ export class BillingService {
         creditCardParams?: CreditCardPaymentParams,
         addPatronCredit?: number): Promise<PaymentResponse> {
 
-       return this.net.request(
+        return this.net.request(
             'open-ils.circ',
             'open-ils.circ.money.payment',
             this.auth.token(), {
@@ -93,16 +93,16 @@ export class BillingService {
                 cc_args: creditCardParams
             }, patronLastXactId).toPromise()
 
-        .then(response => {
+            .then(response => {
 
-            const evt = this.evt.parse(response);
-            if (evt) {
-                console.error(evt);
-                return Promise.reject(evt);
-            }
+                const evt = this.evt.parse(response);
+                if (evt) {
+                    console.error(evt);
+                    return Promise.reject(evt);
+                }
 
-            return response;
-        });
+                return response;
+            });
     }
 }
 

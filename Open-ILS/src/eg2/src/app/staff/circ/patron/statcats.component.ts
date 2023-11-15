@@ -13,8 +13,8 @@ import {PatronService} from '@eg/staff/share/patron/patron.service';
 import {PatronContextService} from './patron.service';
 
 @Component({
-  templateUrl: 'statcats.component.html',
-  selector: 'eg-patron-statcats'
+    templateUrl: 'statcats.component.html',
+    selector: 'eg-patron-statcats'
 })
 export class PatronStatCatsComponent implements OnInit {
 
@@ -38,18 +38,18 @@ export class PatronStatCatsComponent implements OnInit {
             'open-ils.actor',
             'open-ils.actor.user.fleshed.retrieve',
             this.auth.token(), this.patronId, ['stat_cat_entries']).toPromise()
-        .then(user => {
-            const catIds = user.stat_cat_entries().map(e => e.stat_cat());
-            if (catIds.length === 0) { return; }
+            .then(user => {
+                const catIds = user.stat_cat_entries().map(e => e.stat_cat());
+                if (catIds.length === 0) { return; }
 
-            this.pcrud.search('actsc', {id: catIds})
-            .subscribe(cat => {
-                const map = user.stat_cat_entries()
-                    .filter(e => e.stat_cat() === cat.id())[0];
-                map.stat_cat(cat);
-                cat.owner(this.org.get(cat.owner()));
-                this.catMaps.push(map);
+                this.pcrud.search('actsc', {id: catIds})
+                    .subscribe(cat => {
+                        const map = user.stat_cat_entries()
+                            .filter(e => e.stat_cat() === cat.id())[0];
+                        map.stat_cat(cat);
+                        cat.owner(this.org.get(cat.owner()));
+                        this.catMaps.push(map);
+                    });
             });
-        });
     }
 }

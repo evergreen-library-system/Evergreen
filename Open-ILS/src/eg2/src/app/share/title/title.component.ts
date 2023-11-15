@@ -12,8 +12,8 @@ import {StringComponent} from '@eg/share/string/string.component';
 */
 
 @Component({
-  selector: 'eg-title',
-  templateUrl: 'title.component.html'
+    selector: 'eg-title',
+    templateUrl: 'title.component.html'
 })
 
 export class TitleComponent implements AfterViewInit {
@@ -48,7 +48,7 @@ export class TitleComponent implements AfterViewInit {
 
         setTimeout(() => {
             this.titleString.current({pfx: this.pfx, sfx: this.sfx})
-            .then(txt => this.title.setTitle(txt));
+                .then(txt => this.title.setTitle(txt));
         });
     }
 }

@@ -10,7 +10,7 @@ import {InvoiceResultsComponent} from './invoice-results.component';
 import {PicklistResultsComponent} from './picklist-results.component';
 
 @Component({
-  templateUrl: './acq-search.component.html'
+    templateUrl: './acq-search.component.html'
 })
 
 export class AcqSearchComponent implements OnInit, OnDestroy {
@@ -74,10 +74,13 @@ export class AcqSearchComponent implements OnInit, OnDestroy {
             if (routeEvent instanceof NavigationEnd) {
                 // force reset of grid data source if we're navigating from
                 // a search tab to the same search tab
+                // eslint-disable-next-line eqeqeq
                 if (this.previousUrl != null) {
                     const prevRoute = this.previousUrl.match(/acq\/search\/([a-z]+)/);
                     const newRoute = routeEvent.url.match(/acq\/search\/([a-z]+)/);
+                    // eslint-disable-next-line eqeqeq
                     const prevTab = prevRoute  == null ? 'lineitems' : prevRoute[1];
+                    // eslint-disable-next-line eqeqeq
                     const newTab = newRoute  == null ? 'lineitems' : newRoute[1];
                     if (prevTab === newTab) {
                         switch (newTab) {

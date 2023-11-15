@@ -13,7 +13,7 @@ import {ServerStoreService} from '@eg/core/server-store.service';
 import {PatronService} from '@eg/staff/share/patron/patron.service';
 import {PatronContextService, BillGridEntry} from './patron.service';
 import {PatronSearch, PatronSearchComponent
-    } from '@eg/staff/share/patron/search.component';
+} from '@eg/staff/share/patron/search.component';
 import {EditToolbarComponent} from './edit-toolbar.component';
 import {EditComponent} from './edit.component';
 import {ConfirmDialogComponent} from '@eg/share/dialog/confirm.component';
@@ -24,8 +24,8 @@ const MAIN_TABS =
     ['checkout', 'items_out', 'holds', 'bills', 'messages', 'edit', 'search'];
 
 @Component({
-  templateUrl: 'patron.component.html',
-  styleUrls: ['patron.component.css']
+    templateUrl: 'patron.component.html',
+    styleUrls: ['patron.component.css']
 })
 export class PatronComponent implements OnInit {
 
@@ -46,7 +46,7 @@ export class PatronComponent implements OnInit {
     @ViewChild('patronEditor') private patronEditor: EditComponent;
 
     @ViewChild('pendingChangesDialog')
-        private pendingChangesDialog: ConfirmDialogComponent;
+    private pendingChangesDialog: ConfirmDialogComponent;
 
     @ViewChild('purgeConfirm1') private purgeConfirm1: ConfirmDialogComponent;
     @ViewChild('purgeConfirm2') private purgeConfirm2: ConfirmDialogComponent;
@@ -99,7 +99,7 @@ export class PatronComponent implements OnInit {
     load() {
         this.loading = true;
         this.fetchSettings()
-        .then(_ => this.loading = false);
+            .then(_ => this.loading = false);
     }
 
     fetchSettings(): Promise<any> {
@@ -163,7 +163,7 @@ export class PatronComponent implements OnInit {
 
                 if (this.patronId !== prevId) { // different patron
                     this.changePatron(this.patronId)
-                    .then(_ => this.routeToAlertsPane());
+                        .then(_ => this.routeToAlertsPane());
 
                 } else {
                     // Patron already loaded, most likely from the search tab.
@@ -253,7 +253,7 @@ export class PatronComponent implements OnInit {
             this.context.summary.alerts.hasAlerts() &&
             !this.context.patronAlertsShown()) {
 
-           this.router.navigate(['/staff/circ/patron', this.patronId, 'alerts']);
+            this.router.navigate(['/staff/circ/patron', this.patronId, 'alerts']);
         }
     }
 
@@ -282,46 +282,46 @@ export class PatronComponent implements OnInit {
     purgeAccount() {
 
         this.purgeConfirm1.open().toPromise()
-        .then(confirmed => {
-            if (confirmed) {
-                return this.purgeConfirm2.open().toPromise();
-            }
-        })
-        .then(confirmed => {
-            if (confirmed) {
-                return this.net.request(
-                    'open-ils.actor',
-                    'open-ils.actor.user.has_work_perm_at',
-                    this.auth.token(), 'STAFF_LOGIN', this.patronId
-                ).toPromise();
-            }
-        })
-        .then(permOrgs => {
-            if (permOrgs) {
-                if (permOrgs.length === 0) { // non-staff
-                    return this.doThePurge();
-                } else {
-                    return this.handleStaffPurge();
+            .then(confirmed => {
+                if (confirmed) {
+                    return this.purgeConfirm2.open().toPromise();
                 }
-            }
-        });
+            })
+            .then(confirmed => {
+                if (confirmed) {
+                    return this.net.request(
+                        'open-ils.actor',
+                        'open-ils.actor.user.has_work_perm_at',
+                        this.auth.token(), 'STAFF_LOGIN', this.patronId
+                    ).toPromise();
+                }
+            })
+            .then(permOrgs => {
+                if (permOrgs) {
+                    if (permOrgs.length === 0) { // non-staff
+                        return this.doThePurge();
+                    } else {
+                        return this.handleStaffPurge();
+                    }
+                }
+            });
     }
 
     handleStaffPurge(): Promise<any> {
 
         return this.purgeStaffDialog.open().toPromise()
-        .then(barcode => {
-            if (barcode) {
-                return this.pcrud.search('ac', {barcode: barcode}).toPromise();
-            }
-        })
-        .then(card => {
-            if (card) {
-                return this.doThePurge(card.usr());
-            } else {
-                return this.purgeBadBarcode.open();
-            }
-        });
+            .then(barcode => {
+                if (barcode) {
+                    return this.pcrud.search('ac', {barcode: barcode}).toPromise();
+                }
+            })
+            .then(card => {
+                if (card) {
+                    return this.doThePurge(card.usr());
+                } else {
+                    return this.purgeBadBarcode.open();
+                }
+            });
     }
 
     doThePurge(destUserId?: number, override?: boolean): Promise<any> {
@@ -330,25 +330,25 @@ export class PatronComponent implements OnInit {
 
         return this.net.request('open-ils.actor', method,
             this.auth.token(), this.patronId, destUserId).toPromise()
-        .then(resp => {
+            .then(resp => {
 
-            const evt = this.evt.parse(resp);
-            if (evt) {
-                if (evt.textcode === 'ACTOR_USER_DELETE_OPEN_XACTS') {
-                    return this.purgeConfirmOverride.open().toPromise()
-                    .then(confirmed => {
-                        if (confirmed) {
-                            return this.doThePurge(destUserId, true);
-                        }
-                    });
+                const evt = this.evt.parse(resp);
+                if (evt) {
+                    if (evt.textcode === 'ACTOR_USER_DELETE_OPEN_XACTS') {
+                        return this.purgeConfirmOverride.open().toPromise()
+                            .then(confirmed => {
+                                if (confirmed) {
+                                    return this.doThePurge(destUserId, true);
+                                }
+                            });
+                    } else {
+                        alert(evt);
+                    }
                 } else {
-                    alert(evt);
+                    this.context.summary = null;
+                    this.router.navigate(['/staff/circ/patron/search']);
                 }
-            } else {
-                this.context.summary = null;
-                this.router.navigate(['/staff/circ/patron/search']);
-            }
-        });
+            });
     }
 
     counts(part: string, field: string): number {

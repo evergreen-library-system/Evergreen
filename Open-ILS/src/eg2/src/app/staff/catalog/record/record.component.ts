@@ -1,15 +1,13 @@
-import {Component, OnInit, Input, ViewChild, HostListener} from '@angular/core';
+import {Component, OnInit, ViewChild, HostListener} from '@angular/core';
 import {NgbNav, NgbNavChangeEvent} from '@ng-bootstrap/ng-bootstrap';
 import {Router, ActivatedRoute, ParamMap} from '@angular/router';
 import {PcrudService} from '@eg/core/pcrud.service';
 import {IdlObject} from '@eg/core/idl.service';
 import {AuthService} from '@eg/core/auth.service';
-import {CatalogSearchContext, CatalogSearchState} from '@eg/share/catalog/search-context';
+import {CatalogSearchContext} from '@eg/share/catalog/search-context';
 import {CatalogService} from '@eg/share/catalog/catalog.service';
 import {BibRecordService, BibRecordSummary} from '@eg/share/catalog/bib-record.service';
 import {StaffCatalogService} from '../catalog.service';
-import {BibSummaryComponent} from '@eg/staff/share/bib-summary/bib-summary.component';
-import {BibStaffViewComponent} from '@eg/staff/share/bib-staff-view/bib-staff-view.component';
 import {AddedContentComponent} from '@eg/staff/catalog/content/added-content.component';
 import {StoreService} from '@eg/core/store.service';
 import {ConfirmDialogComponent} from '@eg/share/dialog/confirm.component';
@@ -19,15 +17,15 @@ import {HoldingsService} from '@eg/staff/share/holdings/holdings.service';
 import { ServerStoreService } from '@eg/core/server-store.service';
 
 @Component({
-  selector: 'eg-catalog-record',
-  templateUrl: 'record.component.html',
-  styleUrls: ['record.component.css']
+    selector: 'eg-catalog-record',
+    templateUrl: 'record.component.html',
+    styleUrls: ['record.component.css']
 })
 export class RecordComponent implements OnInit {
 
     recordId: number;
     recordTab: string;
-    added_content_activated: boolean = false;
+    added_content_activated = false;
     added_content_sources: string[] = [];
     summary: BibRecordSummary;
     searchContext: CatalogSearchContext;
@@ -62,7 +60,7 @@ export class RecordComponent implements OnInit {
         this.defaultTab =
             this.store.getLocalItem('eg.cat.default_record_tab')
             || 'item_table';
-        
+
         // Watch for URL record ID changes
         // This includes the initial route.
         // When applying the default configured tab, no navigation occurs
@@ -164,11 +162,11 @@ export class RecordComponent implements OnInit {
             this.recordId,
             this.searchContext.searchOrg.id(),
             this.searchContext.isStaff).toPromise()
-        .then(summary => {
-            this.summary =
+            .then(summary => {
+                this.summary =
                 this.staffCat.currentDetailRecordSummary = summary;
-            this.activateAddedContent();
-        });
+                this.activateAddedContent();
+            });
     }
 
     // Lets us intercept the summary object and augment it with
@@ -227,6 +225,7 @@ export class RecordComponent implements OnInit {
             'staff.added_content.novelistselect.profile',
             'staff.added_content.novelistselect.passwd'
         ]).then(settings => {
+            // eslint-disable-next-line eqeqeq
             const activate = !!(Object.values(settings).filter(v => !!v).length == 2);
             this.added_content_activated ||= activate;
 

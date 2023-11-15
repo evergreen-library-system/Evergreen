@@ -13,8 +13,8 @@ export class CompositeNewPointValues {
 }
 
 @Component({
-  selector: 'eg-composite-new-point',
-  templateUrl: 'composite-new.component.html'
+    selector: 'eg-composite-new-point',
+    templateUrl: 'composite-new.component.html'
 })
 export class CompositeNewPointComponent implements OnInit {
 
@@ -46,10 +46,10 @@ export class CompositeNewPointComponent implements OnInit {
 
     ngOnInit() {
         this.pcrud.retrieveAll('crad', {order_by: {crad: 'label'}})
-        .subscribe(attr => {
-            this.attrTypeDefs.push(attr);
-            this.attrTypes.push({id: attr.name(), label: attr.label()});
-        });
+            .subscribe(attr => {
+                this.attrTypeDefs.push(attr);
+                this.attrTypes.push({id: attr.name(), label: attr.label()});
+            });
     }
 
     typeChange(evt) {
@@ -66,7 +66,7 @@ export class CompositeNewPointComponent implements OnInit {
                 this.attrValDefs.push(data);
                 this.attrVals.push({id: data.code(), label: data.value()});
             },
-            err => {
+            (err: unknown) => {
                 console.debug(err);
                 this.attrVals = [];
                 this.attrValDefs = [];

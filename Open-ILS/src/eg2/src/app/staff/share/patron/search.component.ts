@@ -15,7 +15,7 @@ import {BucketDialogComponent} from '@eg/staff/share/buckets/bucket-dialog.compo
 import {PatronMergeDialogComponent} from './merge-dialog.component';
 
 const DEFAULT_SORT = [
-   'family_name ASC',
+    'family_name ASC',
     'first_given_name ASC',
     'second_given_name ASC',
     'dob DESC'
@@ -45,8 +45,8 @@ export interface PatronSearch {
 }
 
 @Component({
-  selector: 'eg-patron-search',
-  templateUrl: './search.component.html'
+    selector: 'eg-patron-search',
+    templateUrl: './search.component.html'
 })
 
 export class PatronSearchComponent implements OnInit, AfterViewInit {
@@ -314,6 +314,7 @@ export class PatronSearchComponent implements OnInit, AfterViewInit {
 
                 if (!field.match(/year/)) {
                     // force day/month to be 2 digits
+                    // eslint-disable-next-line no-magic-numbers
                     chunk.value = ('0' + value).slice(-2);
                 }
                 break;

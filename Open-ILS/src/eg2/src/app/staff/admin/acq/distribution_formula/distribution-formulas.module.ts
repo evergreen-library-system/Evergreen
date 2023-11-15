@@ -7,20 +7,20 @@ import {DistributionFormulaEditDialogComponent} from './distribution-formula-edi
 import {ItemLocationSelectModule} from '@eg/share/item-location-select/item-location-select.module';
 
 @NgModule({
-  declarations: [
-    DistributionFormulasComponent,
-    DistributionFormulaEditDialogComponent
-  ],
-  imports: [
-    StaffCommonModule,
-    AdminCommonModule,
-    ItemLocationSelectModule,
-    DistributionFormulasRoutingModule
-  ],
-  exports: [
-  ],
-  providers: [
-  ]
+    declarations: [
+        DistributionFormulasComponent,
+        DistributionFormulaEditDialogComponent
+    ],
+    imports: [
+        StaffCommonModule,
+        AdminCommonModule,
+        ItemLocationSelectModule,
+        DistributionFormulasRoutingModule
+    ],
+    exports: [
+    ],
+    providers: [
+    ]
 })
 
 export class DistributionFormulasModule {

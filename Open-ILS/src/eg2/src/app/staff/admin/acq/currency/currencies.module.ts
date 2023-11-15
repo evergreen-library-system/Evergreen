@@ -6,19 +6,19 @@ import {CurrenciesComponent} from './currencies.component';
 import {ExchangeRatesDialogComponent} from './exchange-rates-dialog.component';
 
 @NgModule({
-  declarations: [
-    CurrenciesComponent,
-    ExchangeRatesDialogComponent
-  ],
-  imports: [
-    StaffCommonModule,
-    AdminCommonModule,
-    CurrenciesRoutingModule
-  ],
-  exports: [
-  ],
-  providers: [
-  ]
+    declarations: [
+        CurrenciesComponent,
+        ExchangeRatesDialogComponent
+    ],
+    imports: [
+        StaffCommonModule,
+        AdminCommonModule,
+        CurrenciesRoutingModule
+    ],
+    exports: [
+    ],
+    providers: [
+    ]
 })
 
 export class CurrenciesModule {

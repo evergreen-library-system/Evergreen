@@ -71,23 +71,23 @@ export class Tree {
 
         const recurseTree =
             (node: TreeNode, depth: number, hidden: boolean) => {
-            if (!node) { return; }
+                if (!node) { return; }
 
-            node.depth = depth++;
-            this.idMap[node.id + ''] = node;
+                node.depth = depth++;
+                this.idMap[node.id + ''] = node;
 
-            if (hidden) {
+                if (hidden) {
                 // it could be confusing for a hidden node to be selected.
-                node.selected = false;
-            }
+                    node.selected = false;
+                }
 
-            if (hidden && filterHidden) {
+                if (hidden && filterHidden) {
                 // Avoid adding hidden child nodes to the list.
-            } else {
-                nodes.push(node);
-                node.children.forEach(n => recurseTree(n, depth, !node.expanded));
-            }
-        };
+                } else {
+                    nodes.push(node);
+                    node.children.forEach(n => recurseTree(n, depth, !node.expanded));
+                }
+            };
 
         recurseTree(this.rootNode, 0, false);
         return nodes;
@@ -105,7 +105,7 @@ export class Tree {
 
     findNodesByFieldAndValue(field: string, value: any): TreeNode[] {
         const list = this.nodeList();
-        let found = [];
+        const found = [];
         for (let idx = 0; idx < list.length; idx++) {
             if (list[idx][field] === value) {
                 found.push( list[idx] );
@@ -171,7 +171,7 @@ export class Tree {
     selectNodes(nodes: TreeNode[]) {
         this.nodeList().forEach(n => n.selected = false);
         nodes.forEach(node => {
-            let foundNode = this.findNode(node.id);
+            const foundNode = this.findNode(node.id);
             if (foundNode) {
                 foundNode.selected = true;
             }

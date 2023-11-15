@@ -8,7 +8,6 @@ import {PcrudService} from './pcrud.service';
 import {StoreService} from './store.service';
 import {OrgService} from './org.service';
 import {LocaleService} from './locale.service';
-import {Location} from '@angular/common';
 import {FormatService} from './format.service';
 import {HatchService} from './hatch.service';
 import {SpyLocation} from '@angular/common/testing';

@@ -1,5 +1,4 @@
-import {Component, Input, Output, OnInit, AfterViewInit, EventEmitter,
-    ViewChild, OnDestroy} from '@angular/core';
+import {Component, Input, OnInit, ViewChild} from '@angular/core';
 import {filter} from 'rxjs/operators';
 import {IdlService} from '@eg/core/idl.service';
 import {NetService} from '@eg/core/net.service';
@@ -17,9 +16,9 @@ import {PhysCharDialogComponent} from './phys-char-dialog.component';
  */
 
 @Component({
-  selector: 'eg-marc-rich-editor',
-  templateUrl: './rich-editor.component.html',
-  styleUrls: ['rich-editor.component.css']
+    selector: 'eg-marc-rich-editor',
+    templateUrl: './rich-editor.component.html',
+    styleUrls: ['rich-editor.component.css']
 })
 
 export class MarcRichEditorComponent implements OnInit {
@@ -29,6 +28,7 @@ export class MarcRichEditorComponent implements OnInit {
 
     dataLoaded: boolean;
     showHelp: boolean;
+    // eslint-disable-next-line no-magic-numbers
     randId = Math.floor(Math.random() * 100000);
     stackSubfields: boolean;
     controlledBibTags: string[] = [];
@@ -50,14 +50,14 @@ export class MarcRichEditorComponent implements OnInit {
     ngOnInit() {
 
         this.store.getItem('cat.marcedit.stack_subfields')
-        .then(stack => this.stackSubfields = stack);
+            .then(stack => this.stackSubfields = stack);
 
         this.init().then(_ =>
             this.context.recordChange.subscribe(__ => this.init()));
 
         // Changing the Type fixed field means loading new meta-metadata.
         this.record.fixedFieldChange.pipe(filter(code => code === 'Type'))
-        .subscribe(_ => this.init());
+            .subscribe(_ => this.init());
     }
 
     init(): Promise<any> {
@@ -124,26 +124,26 @@ export class MarcRichEditorComponent implements OnInit {
         const fields = [];
 
         this.record.fields.filter(f => this.isControlledBibTag(f.tag))
-        .forEach(f => {
-            f.authValid = false;
-            fields.push({
-                id: f.fieldId, // ignored and echoed by server
-                tag: f.tag,
-                ind1: f.ind1,
-                ind2: f.ind2,
-                subfields: f.subfields.map(sf => [sf[0], sf[1]])
+            .forEach(f => {
+                f.authValid = false;
+                fields.push({
+                    id: f.fieldId, // ignored and echoed by server
+                    tag: f.tag,
+                    ind1: f.ind1,
+                    ind2: f.ind2,
+                    subfields: f.subfields.map(sf => [sf[0], sf[1]])
+                });
             });
-        });
 
         this.net.request('open-ils.cat',
             'open-ils.cat.authority.validate.bib_field', fields)
-        .subscribe(checkedField => {
-            const bibField = this.record.fields
-                .filter(f => f.fieldId === +checkedField.id)[0];
+            .subscribe(checkedField => {
+                const bibField = this.record.fields
+                    .filter(f => f.fieldId === +checkedField.id)[0];
 
-            bibField.authChecked = true;
-            bibField.authValid = checkedField.valid;
-        });
+                bibField.authChecked = true;
+                bibField.authValid = checkedField.valid;
+            });
     }
 
     isControlledBibTag(tag: string): boolean {

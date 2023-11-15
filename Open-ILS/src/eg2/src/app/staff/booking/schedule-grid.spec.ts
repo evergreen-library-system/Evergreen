@@ -26,8 +26,8 @@ describe('ScheduleGridService', () => {
                 'barcode1': [{patronLabel: 'Joe', patronId: 1, reservationId: 3}],
                 'barcode2': [{patronLabel: 'Jill', patronId: 2, reservationId: 5}],
                 'barcode3': [{patronLabel: 'James', patronId: 3, reservationId: 12},
-                             {patronLabel: 'Juanes', patronId: 4, reservationId: 18}]
-             }
+                    {patronLabel: 'Juanes', patronId: 4, reservationId: 18}]
+            }
         };
         expect(service.resourceAvailabilityIcon(busyRow, 3).icon).toBe('event_busy');
     });
@@ -37,7 +37,7 @@ describe('ScheduleGridService', () => {
             'time': moment(),
             'patrons': {
                 'barcode3': [{patronLabel: 'James', patronId: 3, reservationId: 11},
-                             {patronLabel: 'Juanes', patronId: 4, reservationId: 17}]
+                    {patronLabel: 'Juanes', patronId: 4, reservationId: 17}]
             }
         };
         expect(service.resourceAvailabilityIcon(rowWithAvailability, 3).icon).toBe('event_available');

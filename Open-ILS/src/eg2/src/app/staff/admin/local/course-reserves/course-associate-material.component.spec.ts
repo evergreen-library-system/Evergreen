@@ -55,8 +55,8 @@ describe('CourseAssociateMaterialComponent', () => {
 
     beforeEach(() => {
         component = new CourseAssociateMaterialComponent(authServiceSpy, courseServiceSpy,
-                                                         netServiceSpy, pcrudServiceSpy,
-                                                         toastServiceSpy, permServiceSpy, modalSpy);
+            netServiceSpy, pcrudServiceSpy,
+            toastServiceSpy, permServiceSpy, modalSpy);
         component.confirmOtherLibraryDialog = dialogComponentSpy;
         component.currentCourse = mockCourse;
     });
@@ -67,14 +67,15 @@ describe('CourseAssociateMaterialComponent', () => {
         });
 
         describe('item circ_lib is different from course owning lib', () => {
-            it("attempts to change item circ_lib to the course's library", waitForAsync(() => {
+            it('attempts to change item circ_lib to the course\'s library', waitForAsync(() => {
                 const paramsWithCircLib = {
                     barcode: '123',
                     relationship: 'required reading',
                     isModifyingLibrary: true,
                     tempLibrary: 22, // the Library that owns the course, rather than the item's circ_lib
                     currentCourse: mockCourse,
-                    isModifyingCallNumber: undefined, isModifyingCircMod: undefined, isModifyingLocation: undefined, isModifyingStatus: undefined,
+                    isModifyingCallNumber: undefined, isModifyingCircMod: undefined,
+                    isModifyingLocation: undefined, isModifyingStatus: undefined,
                     tempCircMod: undefined, tempLocation: undefined, tempStatus: undefined
                 };
                 component.associateItem('123', 'required reading');
@@ -91,7 +92,7 @@ describe('CourseAssociateMaterialComponent', () => {
                 }, 500);
             })));
 
-            it("sets the owning library's shortname in the UI", (waitForAsync(() => {
+            it('sets the owning library\'s shortname in the UI', (waitForAsync(() => {
                 component.associateItem('123', 'required reading');
                 setTimeout(() => { // wait for the subscribe() to do its work
                     expect(component.itemCircLib).toBe('greatLibrary');

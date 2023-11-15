@@ -1,3 +1,4 @@
+/* eslint-disable no-case-declarations, no-magic-numbers, no-shadow */
 import {Component, Input, OnInit, AfterViewInit, ViewChild,
     EventEmitter, Output, QueryList, ViewChildren} from '@angular/core';
 import {SafeUrl} from '@angular/platform-browser';
@@ -10,26 +11,26 @@ import {VolCopyService} from './volcopy.service';
 import {FormatService} from '@eg/core/format.service';
 import {StringComponent} from '@eg/share/string/string.component';
 import {CopyAlertsDialogComponent
-    } from '@eg/staff/share/holdings/copy-alerts-dialog.component';
+} from '@eg/staff/share/holdings/copy-alerts-dialog.component';
 import {CopyTagsDialogComponent
-    } from '@eg/staff/share/holdings/copy-tags-dialog.component';
+} from '@eg/staff/share/holdings/copy-tags-dialog.component';
 import {CopyNotesDialogComponent
-    } from '@eg/staff/share/holdings/copy-notes-dialog.component';
+} from '@eg/staff/share/holdings/copy-notes-dialog.component';
 import {ComboboxComponent, ComboboxEntry} from '@eg/share/combobox/combobox.component';
 import {BatchItemAttrComponent, BatchChangeSelection
-    } from '@eg/staff/share/holdings/batch-item-attr.component';
+} from '@eg/staff/share/holdings/batch-item-attr.component';
 import {FileExportService} from '@eg/share/util/file-export.service';
 import {ToastService} from '@eg/share/toast/toast.service';
 
 @Component({
-  selector: 'eg-copy-attrs',
-  templateUrl: 'copy-attrs.component.html',
+    selector: 'eg-copy-attrs',
+    templateUrl: 'copy-attrs.component.html',
 
-  // Match the header of the batch attrs component
-  styles: [
-    `.batch-header {background-color: #EBF4FA;}`,
-    `.template-row {background-color: #EBF4FA;}`
-  ]
+    // Match the header of the batch attrs component
+    styles: [
+        '.batch-header {background-color: #EBF4FA;}',
+        '.template-row {background-color: #EBF4FA;}'
+    ]
 })
 export class CopyAttrsComponent implements OnInit, AfterViewInit {
 
@@ -72,13 +73,13 @@ export class CopyAttrsComponent implements OnInit, AfterViewInit {
         deletedHoldingsTemplate: StringComponent;
 
     @ViewChild('copyAlertsDialog', {static: false})
-        private copyAlertsDialog: CopyAlertsDialogComponent;
+    private copyAlertsDialog: CopyAlertsDialogComponent;
 
     @ViewChild('copyTagsDialog', {static: false})
-        private copyTagsDialog: CopyTagsDialogComponent;
+    private copyTagsDialog: CopyTagsDialogComponent;
 
     @ViewChild('copyNotesDialog', {static: false})
-        private copyNotesDialog: CopyNotesDialogComponent;
+    private copyNotesDialog: CopyNotesDialogComponent;
 
     @ViewChild('copyTemplateCbox', {static: false})
         copyTemplateCbox: ComboboxComponent;
@@ -255,7 +256,7 @@ export class CopyAttrsComponent implements OnInit, AfterViewInit {
     }
 
     copyWantsChange(copy: IdlObject, field: string,
-            changeSelection: BatchChangeSelection): boolean {
+        changeSelection: BatchChangeSelection): boolean {
         const disValue = this.getFieldDisplayValue(field, copy);
         return changeSelection[disValue] === true;
     }
@@ -426,7 +427,7 @@ export class CopyAttrsComponent implements OnInit, AfterViewInit {
 
             if ((!changes.newAlerts || changes.newAlerts.length === 0) &&
                 (!changes.changedAlerts || changes.changedAlerts.length === 0)
-               ) {
+            ) {
                 return;
             }
 
@@ -509,7 +510,7 @@ export class CopyAttrsComponent implements OnInit, AfterViewInit {
 
             if ((!changes.newNotes || changes.newNotes.length === 0) &&
                 (!changes.delNotes || changes.delNotes.length === 0)
-               ) {
+            ) {
                 return;
             }
 
@@ -574,12 +575,12 @@ export class CopyAttrsComponent implements OnInit, AfterViewInit {
                             if(a.alert_type === curAlert.alert_type() &&
                                a.temp === curAlert.temp() &&
                                a.note === curAlert.note() ) {
-                                console.log("Already have this alert",a); //identical alert exists.
-                                dupskip = 1;   
-                               }
+                                console.log('Already have this alert',a); // identical alert exists.
+                                dupskip = 1;
+                            }
                         });
-                        if(dupskip) return; //skip copy for this new alert
-                        
+                        if(dupskip) {return;} // skip copy for this new alert
+
                         const newAlert = this.idl.create('aca');
                         newAlert.isnew(true);
                         newAlert.copy(copy.id());
@@ -694,12 +695,12 @@ export class CopyAttrsComponent implements OnInit, AfterViewInit {
 
             try {
                 const template = JSON.parse(reader.result as string);
-                var theKeys = Object.keys(template);
+                const theKeys = Object.keys(template);
                 for(let i = 0; i < theKeys.length; i++){
-                    var name = theKeys[i];
+                    const name = theKeys[i];
                     this.volcopy.templates[name]=template[name];
-                };
-                        } catch (E) {
+                }
+            } catch (E) {
                 console.error('Invalid Item Attribute template', E);
                 return;
             }

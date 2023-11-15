@@ -7,8 +7,8 @@ import {CatalogSearchContext, CatalogSearchState} from '@eg/share/catalog/search
 import {StaffCatalogService} from '../catalog.service';
 
 @Component({
-  selector: 'eg-catalog-browse-results',
-  templateUrl: 'results.component.html'
+    selector: 'eg-catalog-browse-results',
+    templateUrl: 'results.component.html'
 })
 export class BrowseResultsComponent implements OnInit, OnDestroy {
 

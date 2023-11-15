@@ -48,7 +48,7 @@ interface EditSession {
 }
 
 @Component({
-  templateUrl: 'volcopy.component.html'
+    templateUrl: 'volcopy.component.html'
 })
 export class VolCopyComponent implements OnInit {
 
@@ -134,20 +134,20 @@ export class VolCopyComponent implements OnInit {
         this.context.reset();
 
         return this.volcopy.load()
-        .then(_ => this.fetchHoldings(copyIds))
-        .then(_ => this.volcopy.applyVolLabels(
-            this.context.volNodes().map(n => n.target)))
-        .then(_ => this.context.sortHoldings())
-        .then(_ => this.context.setRecordId())
-        .then(_ => {
+            .then(_ => this.fetchHoldings(copyIds))
+            .then(_ => this.volcopy.applyVolLabels(
+                this.context.volNodes().map(n => n.target)))
+            .then(_ => this.context.sortHoldings())
+            .then(_ => this.context.setRecordId())
+            .then(_ => {
             // unified display has no 'attrs' tab
-            if (this.volcopy.defaults.values.unified_display
+                if (this.volcopy.defaults.values.unified_display
                 && this.tab === 'attrs') {
-                this.tab = 'holdings';
-                this.routeToTab();
-            }
-        })
-        .then(_ => this.loading = false);
+                    this.tab = 'holdings';
+                    this.routeToTab();
+                }
+            })
+            .then(_ => this.loading = false);
     }
 
     fetchHoldings(copyIds?: number[]): Promise<any> {
@@ -199,47 +199,47 @@ export class VolCopyComponent implements OnInit {
     fetchSession(session: string): Promise<any> {
 
         return this.cache.getItem(session, 'edit-these-copies')
-        .then((editSession: EditSession) => {
+            .then((editSession: EditSession) => {
 
-            if (!editSession) {
-                this.loading = false;
-                this.sessionExpired = true;
-                return Promise.reject('Session Expired');
-            }
-
-            console.debug('Edit Session', editSession);
-
-            this.context.recordId = editSession.record_id;
-
-            if (editSession.copies && editSession.copies.length > 0) {
-                return this.fetchCopies(editSession.copies);
-            }
-
-            const volsToFetch = [];
-            const volsToCreate = [];
-            editSession.raw.forEach((volData: CallNumData) => {
-                this.context.fastAdd = volData.fast_add === true;
-
-                if (volData.callnumber > 0) {
-                    volsToFetch.push(volData);
-                } else {
-                    volsToCreate.push(volData);
+                if (!editSession) {
+                    this.loading = false;
+                    this.sessionExpired = true;
+                    return Promise.reject('Session Expired');
                 }
+
+                console.debug('Edit Session', editSession);
+
+                this.context.recordId = editSession.record_id;
+
+                if (editSession.copies && editSession.copies.length > 0) {
+                    return this.fetchCopies(editSession.copies);
+                }
+
+                const volsToFetch = [];
+                const volsToCreate = [];
+                editSession.raw.forEach((volData: CallNumData) => {
+                    this.context.fastAdd = volData.fast_add === true;
+
+                    if (volData.callnumber > 0) {
+                        volsToFetch.push(volData);
+                    } else {
+                        volsToCreate.push(volData);
+                    }
+                });
+
+                let promise = Promise.resolve();
+                if (volsToFetch.length > 0) {
+                    promise = promise.then(_ =>
+                        this.fetchVolsStubCopies(volsToFetch));
+                }
+
+                if (volsToCreate.length > 0) {
+                    promise = promise.then(_ =>
+                        this.createVolsStubCopies(volsToCreate));
+                }
+
+                return promise;
             });
-
-            let promise = Promise.resolve();
-            if (volsToFetch.length > 0) {
-                promise = promise.then(_ =>
-                    this.fetchVolsStubCopies(volsToFetch));
-            }
-
-            if (volsToCreate.length > 0) {
-                promise = promise.then(_ =>
-                    this.createVolsStubCopies(volsToCreate));
-            }
-
-            return promise;
-        });
     }
 
     // Creating new vols.  Each gets a stub copy.
@@ -261,7 +261,7 @@ export class VolCopyComponent implements OnInit {
         });
 
         return this.addStubCopies(vols, volDataList)
-        .then(_ => this.volcopy.setVolClassLabels(vols));
+            .then(_ => this.volcopy.setVolClassLabels(vols));
     }
 
     // Fetch vols by ID, but instead of retrieving their copies
@@ -272,8 +272,8 @@ export class VolCopyComponent implements OnInit {
         const vols = [];
 
         return this.pcrud.search('acn', {id: volIds})
-        .pipe(tap((vol: IdlObject) => vols.push(vol))).toPromise()
-        .then(_ => this.addStubCopies(vols, volDataList));
+            .pipe(tap((vol: IdlObject) => vols.push(vol))).toPromise()
+            .then(_ => this.addStubCopies(vols, volDataList));
     }
 
     // Add a stub copy to each vol using data from the edit session.
@@ -298,8 +298,8 @@ export class VolCopyComponent implements OnInit {
         const ids = [].concat(copyIds);
         if (ids.length === 0) { return Promise.resolve(); }
         return this.pcrud.search('acp', {id: ids}, COPY_FLESH)
-        .pipe(tap(copy => this.context.findOrCreateCopyNode(copy)))
-        .toPromise();
+            .pipe(tap(copy => this.context.findOrCreateCopyNode(copy)))
+            .toPromise();
     }
 
     // Fetch call numbers and linked copies by call number ids.
@@ -308,13 +308,13 @@ export class VolCopyComponent implements OnInit {
         if (ids.length === 0) { return Promise.resolve(); }
 
         return this.pcrud.search('acn', {id: ids})
-        .pipe(tap(vol => this.context.findOrCreateVolNode(vol)))
-        .toPromise().then(_ => {
-             return this.pcrud.search('acp',
-                {call_number: ids, deleted: 'f'}, COPY_FLESH
-            ).pipe(tap(copy => this.context.findOrCreateCopyNode(copy))
-            ).toPromise();
-        });
+            .pipe(tap(vol => this.context.findOrCreateVolNode(vol)))
+            .toPromise().then(_ => {
+                return this.pcrud.search('acp',
+                    {call_number: ids, deleted: 'f'}, COPY_FLESH
+                ).pipe(tap(copy => this.context.findOrCreateCopyNode(copy))
+                ).toPromise();
+            });
     }
 
     // Fetch call numbers and copies by record ids.
@@ -367,7 +367,7 @@ export class VolCopyComponent implements OnInit {
                 }
             });
 
-           newVol.copies(copies);
+            newVol.copies(copies);
 
             if (newVol.ischanged() || newVol.isnew() || copies.length > 0) {
                 volumes.push(newVol);

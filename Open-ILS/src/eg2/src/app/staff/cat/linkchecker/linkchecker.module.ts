@@ -11,22 +11,22 @@ import {HttpClientModule} from '@angular/common/http';
 import {OrgFamilySelectModule} from '@eg/share/org-family-select/org-family-select.module';
 
 @NgModule({
-  declarations: [
-    LinkCheckerComponent,
-    LinkCheckerUrlsComponent,
-    LinkCheckerAttemptsComponent,
-    NewSessionDialogComponent
-  ],
-  imports: [
-    StaffCommonModule,
-    AdminCommonModule,
-    HttpClientModule,
-    CommonWidgetsModule,
-    OrgFamilySelectModule,
-    LinkCheckerRoutingModule
-  ],
-  providers: [
-  ]
+    declarations: [
+        LinkCheckerComponent,
+        LinkCheckerUrlsComponent,
+        LinkCheckerAttemptsComponent,
+        NewSessionDialogComponent
+    ],
+    imports: [
+        StaffCommonModule,
+        AdminCommonModule,
+        HttpClientModule,
+        CommonWidgetsModule,
+        OrgFamilySelectModule,
+        LinkCheckerRoutingModule
+    ],
+    providers: [
+    ]
 })
 
 export class LinkCheckerModule {

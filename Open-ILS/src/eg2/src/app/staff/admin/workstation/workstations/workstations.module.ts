@@ -4,13 +4,13 @@ import {WorkstationsRoutingModule} from './routing.module';
 import {WorkstationsComponent} from './workstations.component';
 
 @NgModule({
-  declarations: [
-    WorkstationsComponent,
-  ],
-  imports: [
-    StaffCommonModule,
-    WorkstationsRoutingModule
-  ]
+    declarations: [
+        WorkstationsComponent,
+    ],
+    imports: [
+        StaffCommonModule,
+        WorkstationsRoutingModule
+    ]
 })
 
 export class ManageWorkstationsModule {}

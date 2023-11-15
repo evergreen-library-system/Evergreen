@@ -1,15 +1,15 @@
 import {Component, OnInit, Input} from '@angular/core';
 import {OrgService} from '@eg/core/org.service';
 import {BibRecordService, BibRecordSummary
-    } from '@eg/share/catalog/bib-record.service';
+} from '@eg/share/catalog/bib-record.service';
 import {ServerStoreService} from '@eg/core/server-store.service';
 import {CatalogService} from '@eg/share/catalog/catalog.service';
 import {StaffCatalogService} from '@eg/staff/catalog/catalog.service';
 
 @Component({
-  selector: 'eg-bib-staff-view',
-  templateUrl: 'bib-staff-view.component.html',
-  styleUrls: ['bib-staff-view.component.css']
+    selector: 'eg-bib-staff-view',
+    templateUrl: 'bib-staff-view.component.html',
+    styleUrls: ['bib-staff-view.component.css']
 })
 export class BibStaffViewComponent implements OnInit {
 
@@ -55,14 +55,14 @@ export class BibStaffViewComponent implements OnInit {
     ngOnInit() {
 
         this.store.getItem('eg.cat.record.staff-view.collapse')
-        .then(value => this.expand = !value)
-        .then(_ => this.cat.fetchCcvms())
-        .then(_ => {
-            if (this.recId) {
+            .then(value => this.expand = !value)
+            .then(_ => this.cat.fetchCcvms())
+            .then(_ => {
+                if (this.recId) {
                 // ignore any existing this.summary, always refetch
-                return this.loadSummary();
-            }
-        }).then(_ => this.initDone = true);
+                    return this.loadSummary();
+                }
+            }).then(_ => this.initDone = true);
     }
 
     saveExpandState() {
@@ -75,10 +75,10 @@ export class BibStaffViewComponent implements OnInit {
             this.staffCat.searchContext.searchOrg.id(),
             true // isStaff
         ).toPromise()
-        .then(summary => {
-            this.summary = summary;
-            return summary.getBibCallNumber();
-        });
+            .then(summary => {
+                this.summary = summary;
+                return summary.getBibCallNumber();
+            });
     }
 
     orgName(orgId: number): string {

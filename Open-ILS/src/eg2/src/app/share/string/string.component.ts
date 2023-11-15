@@ -1,4 +1,4 @@
-/*j
+/* j
  * <eg-string #helloStr text="Hello, {{name}}" i18n-text></eg-string>
  *
  * import {StringComponent} from '@eg/share/string.component';
@@ -11,8 +11,8 @@ import {Component, Input, OnInit, ElementRef, TemplateRef} from '@angular/core';
 import {StringService} from '@eg/share/string/string.service';
 
 @Component({
-  selector: 'eg-string',
-  template: `
+    selector: 'eg-string',
+    template: `
     <span style='display:none'>
       <ng-container *ngIf="template">
         <ng-container *ngTemplateOutlet="template; context:ctx"></ng-container>

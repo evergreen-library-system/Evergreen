@@ -6,13 +6,13 @@ import {Component, forwardRef} from '@angular/core';
 import {ControlValueAccessor, NG_VALUE_ACCESSOR} from '@angular/forms';
 
 @Component({
-  selector: 'eg-file-reader',
-  templateUrl: './file-reader.component.html',
-  providers: [{
-    provide: NG_VALUE_ACCESSOR,
-    useExisting: forwardRef(() => FileReaderComponent),
-    multi: true
-  }]
+    selector: 'eg-file-reader',
+    templateUrl: './file-reader.component.html',
+    providers: [{
+        provide: NG_VALUE_ACCESSOR,
+        useExisting: forwardRef(() => FileReaderComponent),
+        multi: true
+    }]
 })
 export class FileReaderComponent implements ControlValueAccessor {
 

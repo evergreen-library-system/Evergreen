@@ -60,10 +60,10 @@ export class PicklistUploadService {
         orderBy[cls] = 'id';
         return this.pcrud.retrieveAll(cls,
             {order_by: orderBy}, {atomic: true}).toPromise()
-        .then(list => {
-            this.attrDefs[dtype] = list;
-            return list;
-        });
+            .then(list => {
+                this.attrDefs[dtype] = list;
+                return list;
+            });
     }
 
     getMergeProfiles(): Promise<IdlObject[]> {
@@ -74,10 +74,10 @@ export class PicklistUploadService {
         const owners = this.org.ancestors(this.auth.user().ws_ou(), true);
         return this.pcrud.search('vmp',
             {owner: owners}, {order_by: {vmp: ['name']}}, {atomic: true})
-        .toPromise().then(profiles => {
-            this.mergeProfiles = profiles;
-            return profiles;
-        });
+            .toPromise().then(profiles => {
+                this.mergeProfiles = profiles;
+                return profiles;
+            });
     }
 
     getSelectionLists(): Promise<IdlObject[]> {
@@ -88,10 +88,10 @@ export class PicklistUploadService {
         const owners = this.auth.user().id();
         return this.pcrud.search('acqpl',
             {owner: owners}, {order_by: {acqpl: ['name']}}, {atomic: true})
-        .toPromise().then(lists => {
-            this.selectionLists = lists;
-            return lists;
-        });
+            .toPromise().then(lists => {
+                this.selectionLists = lists;
+                return lists;
+            });
     }
 
     getAllQueues(qtype: string): Promise<IdlObject[]> {
@@ -103,7 +103,7 @@ export class PicklistUploadService {
 
         return this.net.request(
             'open-ils.vandelay',
-            `open-ils.vandelay.bib_queue.owner.retrieve`,
+            'open-ils.vandelay.bib_queue.owner.retrieve',
             this.auth.token()
         ).pipe(tap(
             queue => this.allQueues[qtype].push(queue)
@@ -116,8 +116,8 @@ export class PicklistUploadService {
         }
 
         return this.pcrud.retrieveAll('cbs',
-          {order_by: {cbs: 'id'}},
-          {atomic: true}
+            {order_by: {cbs: 'id'}},
+            {atomic: true}
         ).toPromise().then(sources => {
             this.bibSources = sources;
             return sources;
@@ -138,8 +138,8 @@ export class PicklistUploadService {
 
     getFiscalYears(org: number): Promise<IdlObject[]> {
         return this.pcrud.retrieveAll('acqfy',
-          {order_by: {acqfy: 'year'}},
-          {atomic: true}
+            {order_by: {acqfy: 'year'}},
+            {atomic: true}
         ).toPromise().then(years => {
             this.fiscalYears = years.filter( y => y.calendar() === this.org.get(org).fiscal_calendar());
             // if there are no entries, inject a special entry for the current year
@@ -162,10 +162,10 @@ export class PicklistUploadService {
 
         const owners = this.org.ancestors(this.auth.user().ws_ou(), true);
         return this.pcrud.search('viiad', {owner: owners}, {}, {atomic: true})
-        .toPromise().then(defs => {
-            this.importItemAttrDefs = defs;
-            return defs;
-        });
+            .toPromise().then(defs => {
+                this.importItemAttrDefs = defs;
+                return defs;
+            });
     }
 
     getMatchSets(mtype: string): Promise<IdlObject[]> {
@@ -182,10 +182,10 @@ export class PicklistUploadService {
 
         return this.pcrud.search('vms',
             {owner: owners, mtype: mstype}, {}, {atomic: true})
-        .toPromise().then(sets => {
-            this.matchSets[mtype] = sets;
-            return sets;
-        });
+            .toPromise().then(sets => {
+                this.matchSets[mtype] = sets;
+                return sets;
+            });
     }
 
 
@@ -195,7 +195,7 @@ export class PicklistUploadService {
         importDefId: number,
         matchSet: number): Promise<number> {
 
-        const method = `open-ils.vandelay.bib_queue.create`;
+        const method = 'open-ils.vandelay.bib_queue.create';
         queueType = 'acq';
 
 

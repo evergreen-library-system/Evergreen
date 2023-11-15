@@ -1,13 +1,12 @@
 import {Component, Input, OnInit, AfterViewInit, ViewChild} from '@angular/core';
-import {Router, ActivatedRoute, ParamMap} from '@angular/router';
+import {Router, ActivatedRoute} from '@angular/router';
 import {from, empty, range} from 'rxjs';
-import {concatMap, tap, takeLast} from 'rxjs/operators';
-import {NgbNav, NgbNavChangeEvent} from '@ng-bootstrap/ng-bootstrap';
+import {concatMap, tap} from 'rxjs/operators';
 import {IdlObject, IdlService} from '@eg/core/idl.service';
 import {EventService} from '@eg/core/event.service';
 import {OrgService} from '@eg/core/org.service';
 import {NetService} from '@eg/core/net.service';
-import {PcrudService, PcrudContext} from '@eg/core/pcrud.service';
+import {PcrudService} from '@eg/core/pcrud.service';
 import {AuthService} from '@eg/core/auth.service';
 import {ServerStoreService} from '@eg/core/server-store.service';
 import {PatronService} from '@eg/staff/share/patron/patron.service';
@@ -15,13 +14,13 @@ import {PatronContextService} from './patron.service';
 import {GridDataSource, GridColumn, GridCellTextGenerator, GridRowFlairEntry} from '@eg/share/grid/grid';
 import {GridComponent} from '@eg/share/grid/grid.component';
 import {Pager} from '@eg/share/util/pager';
-import {CircService, CircDisplayInfo} from '@eg/staff/share/circ/circ.service';
+import {CircService} from '@eg/staff/share/circ/circ.service';
 import {PrintService} from '@eg/share/print/print.service';
 import {PromptDialogComponent} from '@eg/share/dialog/prompt.component';
 import {AlertDialogComponent} from '@eg/share/dialog/alert.component';
 import {ConfirmDialogComponent} from '@eg/share/dialog/confirm.component';
 import {CreditCardDialogComponent
-    } from '@eg/staff/share/billing/credit-card-dialog.component';
+} from '@eg/staff/share/billing/credit-card-dialog.component';
 import {BillingService, CreditCardPaymentParams} from '@eg/staff/share/billing/billing.service';
 import {AddBillingDialogComponent} from '@eg/staff/share/billing/billing-dialog.component';
 import {AudioService} from '@eg/share/util/audio.service';
@@ -30,9 +29,9 @@ import {GridFlatDataService} from '@eg/share/grid/grid-flat-data.service';
 import {WorkLogService} from '@eg/staff/share/worklog/worklog.service';
 
 @Component({
-  templateUrl: 'bills.component.html',
-  selector: 'eg-patron-bills',
-  styleUrls: ['bills.component.css']
+    templateUrl: 'bills.component.html',
+    selector: 'eg-patron-bills',
+    styleUrls: ['bills.component.css']
 })
 export class BillsComponent implements OnInit, AfterViewInit {
 
@@ -51,6 +50,7 @@ export class BillsComponent implements OnInit, AfterViewInit {
     ccPaymentParams: CreditCardPaymentParams;
     disableAutoPrint = false;
 
+    // eslint-disable-next-line no-magic-numbers
     maxPayAmount = 100000;
     warnPayAmount = 1000;
     voidAmount = 0;
@@ -138,25 +138,25 @@ export class BillsComponent implements OnInit, AfterViewInit {
         this.gridDataSource.getRows = (pager: Pager, sort: any[]) => {
 
             const query: any = {
-               usr: this.patronId,
-               xact_finish: null,
-               balance_owed: {'<>' : 0}
+                usr: this.patronId,
+                xact_finish: null,
+                balance_owed: {'<>' : 0}
             };
 
             return this.flatData.getRows(
                 this.billGrid.context, query, pager, sort)
-            .pipe(tap(row => {
-                row.paymentPending = 0;
-                row.billingLocation =
+                .pipe(tap(row => {
+                    row.paymentPending = 0;
+                    row.billingLocation =
                     row['grocery.billing_location.shortname'] ||
                     row['circulation.circ_lib.shortname'];
-            }));
+                }));
         };
 
         this.pcrud.retrieve('mowbus', this.patronId).toPromise()
         // Summary will be null for users with no billing history.
-        .then(summary => this.summary = summary || this.idl.create('mowbus'))
-        .then(_ => this.loadSettings());
+            .then(summary => this.summary = summary || this.idl.create('mowbus'))
+            .then(_ => this.loadSettings());
     }
 
     circIsOverdue(row: any): boolean {
@@ -180,6 +180,7 @@ export class BillsComponent implements OnInit, AfterViewInit {
             'eg.circ.bills.annotatepayment'
 
         ]).then(sets => {
+            // eslint-disable-next-line no-magic-numbers
             this.maxPayAmount = sets['ui.circ.billing.amount_limit'] || 100000;
             this.warnPayAmount = sets['ui.circ.billing.amount_warn'] || 1000;
             this.receiptOnPayment = sets['circ.bills.receiptonpay'];
@@ -200,10 +201,10 @@ export class BillsComponent implements OnInit, AfterViewInit {
         // Recaclulate the amount owed per selected transaction as the
         // grid rows selections change.
         this.billGrid.context.rowSelector.selectionChange
-        .subscribe(_ => {
-            this.refunding = false;
-            this.updatePendingColumn();
-        });
+            .subscribe(_ => {
+                this.refunding = false;
+                this.updatePendingColumn();
+            });
 
         this.focusPayAmount();
     }
@@ -309,49 +310,49 @@ export class BillsComponent implements OnInit, AfterViewInit {
         const payments = this.compilePayments();
 
         this.verifyPayAmount()
-        .then(_ => this.annotate())
-        .then(_ => this.getCcParams())
-        .then(_ => {
-            return this.billing.applyPayment(
-                this.patronId,
-                this.patron().last_xact_id(),
-                this.paymentType,
-                payments,
-                this.paymentNote,
-                this.checkNumber,
-                this.ccPaymentParams,
-                this.convertChangeToCredit ? this.pendingChange() : null
-            );
-        })
-        .then(resp => {
-            this.worklog.record({
-                user: this.patron().family_name(),
-                patron_id: this.patron().id(),
-                amount: this.pendingPayment(),
-                action: 'paid_bill'
-            });
-            this.patron().last_xact_id(resp.last_xact_id);
-            return this.handlePayReceipt(payments, resp.payments);
-        })
+            .then(_ => this.annotate())
+            .then(_ => this.getCcParams())
+            .then(_ => {
+                return this.billing.applyPayment(
+                    this.patronId,
+                    this.patron().last_xact_id(),
+                    this.paymentType,
+                    payments,
+                    this.paymentNote,
+                    this.checkNumber,
+                    this.ccPaymentParams,
+                    this.convertChangeToCredit ? this.pendingChange() : null
+                );
+            })
+            .then(resp => {
+                this.worklog.record({
+                    user: this.patron().family_name(),
+                    patron_id: this.patron().id(),
+                    amount: this.pendingPayment(),
+                    action: 'paid_bill'
+                });
+                this.patron().last_xact_id(resp.last_xact_id);
+                return this.handlePayReceipt(payments, resp.payments);
+            })
 
-        .then(_ => this.context.refreshPatron())
+            .then(_ => this.context.refreshPatron())
 
         // refresh affected xact IDs
-        .then(_ => this.billGrid.reload())
+            .then(_ => this.billGrid.reload())
 
-        .then(_ => {
-            this.paymentAmount = null;
-            this.focusPayAmount();
-        })
+            .then(_ => {
+                this.paymentAmount = null;
+                this.focusPayAmount();
+            })
 
-        .catch(msg => {
-            this.reportError(msg);
-            console.debug('Payment Canceled or Failed:', msg);
-        })
-        .finally(() => {
-            this.applyingPayment = false;
-            this.refunding = false;
-        });
+            .catch(msg => {
+                this.reportError(msg);
+                console.debug('Payment Canceled or Failed:', msg);
+            })
+            .finally(() => {
+                this.applyingPayment = false;
+                this.refunding = false;
+            });
     }
 
     compilePayments(): Array<Array<number>> { // [ [xactId, payAmount], ... ]
@@ -404,17 +405,17 @@ export class BillsComponent implements OnInit, AfterViewInit {
         if (!this.annotatePayment) { return Promise.resolve(); }
 
         return this.annotateDialog.open().toPromise()
-        .then(value => {
-            if (!value) {
+            .then(value => {
+                if (!value) {
                 // TODO: there is no way in PromptDialog to
                 // differentiate between canceling the dialog and
                 // submitting the dialog with no value.  In this case,
                 // if the dialog is submitted with no value, we may want
                 // to leave the dialog open so a value can be applied.
-                return Promise.reject('No annotation supplied');
-            }
-            this.paymentNote = value;
-        });
+                    return Promise.reject('No annotation supplied');
+                }
+                this.paymentNote = value;
+            });
     }
 
     updatePendingColumn() {
@@ -535,20 +536,20 @@ export class BillsComponent implements OnInit, AfterViewInit {
         const xactsChanged = [];
 
         from(xactIds)
-        .pipe(concatMap(id => {
-            this.billingDialog.xactId = id;
-            return this.billingDialog.open();
-        }))
-        .pipe(tap(data => {
-            if (data) {
-                xactsChanged.push(data.xactId);
-            }
-        }))
-        .subscribe(null, null, () => {
-            if (xactsChanged.length > 0) {
-                this.billGrid.reload();
-            }
-        });
+            .pipe(concatMap(id => {
+                this.billingDialog.xactId = id;
+                return this.billingDialog.open();
+            }))
+            .pipe(tap(data => {
+                if (data) {
+                    xactsChanged.push(data.xactId);
+                }
+            }))
+            .subscribe(null, null, () => {
+                if (xactsChanged.length > 0) {
+                    this.billGrid.reload();
+                }
+            });
     }
 
     voidBillings(rows: any[]) {
@@ -563,41 +564,41 @@ export class BillsComponent implements OnInit, AfterViewInit {
         // Grab the billings
         from(xactIds).pipe(concatMap(xactId => {
             return this.pcrud.search('mb', {xact: xactId}, {}, {authoritative: true})
-            .pipe(tap(billing => {
-                if (billing.voided() === 'f') {
-                    cents += billing.amount() * 100;
-                    billIds.push(billing.id());
-                }
-            }));
+                .pipe(tap(billing => {
+                    if (billing.voided() === 'f') {
+                        cents += billing.amount() * 100;
+                        billIds.push(billing.id());
+                    }
+                }));
         })).toPromise()
 
         // Confirm the void action
-        .then(_ => {
-            this.voidAmount = cents / 100;
-            return this.voidBillsDialog.open().toPromise();
-        })
+            .then(_ => {
+                this.voidAmount = cents / 100;
+                return this.voidBillsDialog.open().toPromise();
+            })
 
         // Do the void
-        .then(confirmed => {
-            if (!confirmed) { return empty(); }
+            .then(confirmed => {
+                if (!confirmed) { return empty(); }
 
-            return this.net.requestWithParamList(
-                'open-ils.circ',
-                'open-ils.circ.money.billing.void',
-                [this.auth.token()].concat(billIds) // positional params
-            ).toPromise();
-        })
+                return this.net.requestWithParamList(
+                    'open-ils.circ',
+                    'open-ils.circ.money.billing.void',
+                    [this.auth.token()].concat(billIds) // positional params
+                ).toPromise();
+            })
 
         // Clean up and refresh data
-        .then(resp => {
-            if (!resp || this.reportError(resp)) { return; }
+            .then(resp => {
+                if (!resp || this.reportError(resp)) { return; }
 
-            this.sessionVoided = (this.sessionVoided * 100 + cents) / 100;
-            this.voidAmount = 0;
+                this.sessionVoided = (this.sessionVoided * 100 + cents) / 100;
+                this.voidAmount = 0;
 
-            this.context.refreshPatron()
-            .then(_ => this.billGrid.reload());
-        });
+                this.context.refreshPatron()
+                    .then(_ => this.billGrid.reload());
+            });
     }
 
     adjustToZero(rows: any[]) {
@@ -613,10 +614,11 @@ export class BillsComponent implements OnInit, AfterViewInit {
                 'open-ils.circ',
                 'open-ils.circ.money.billable_xact.adjust_to_zero',
                 this.auth.token(), xactIds
+            // eslint-disable-next-line rxjs/no-nested-subscribe
             ).subscribe(resp => {
                 if (!this.reportError(resp)) {
                     this.context.refreshPatron()
-                    .then(_ => this.billGrid.reload());
+                        .then(_ => this.billGrid.reload());
                 }
             });
         });

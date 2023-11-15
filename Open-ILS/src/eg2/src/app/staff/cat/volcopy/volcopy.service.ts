@@ -82,19 +82,19 @@ export class VolCopyService {
             const key = Object.keys(dataset)[0];
             this.commonData[key] = dataset[key];
         })).toPromise()
-        .then(_ => this.ingestCommonData())
+            .then(_ => this.ingestCommonData())
 
         // These will come up later -- prefetch.
-        .then(_ => this.serverStore.getItemBatch([
-            'cat.copy.templates',
-            'eg.cat.volcopy.defaults',
-            'eg.cat.record.summary.collapse'
-        ]))
+            .then(_ => this.serverStore.getItemBatch([
+                'cat.copy.templates',
+                'eg.cat.volcopy.defaults',
+                'eg.cat.record.summary.collapse'
+            ]))
 
-        .then(_ => this.holdings.getMagicCopyStatuses())
-        .then(stats => this.magicCopyStats = stats)
-        .then(_ => this.fetchDefaults())
-        .then(_ => this.fetchTemplates());
+            .then(_ => this.holdings.getMagicCopyStatuses())
+            .then(stats => this.magicCopyStats = stats)
+            .then(_ => this.fetchDefaults())
+            .then(_ => this.fetchTemplates());
     }
 
     ingestCommonData() {
@@ -132,18 +132,18 @@ export class VolCopyService {
     fetchTemplates(): Promise<any> {
 
         return this.serverStore.getItem('cat.copy.templates')
-        .then(templates => {
+            .then(templates => {
 
-            if (!templates) { return null; }
+                if (!templates) { return null; }
 
-            this.templates = templates;
+                this.templates = templates;
 
-            this.templateNames = Object.keys(templates)
-            .sort((n1, n2) => n1 < n2 ? -1 : 1)
-            .map(name => ({id: name, label: name}));
+                this.templateNames = Object.keys(templates)
+                    .sort((n1, n2) => n1 < n2 ? -1 : 1)
+                    .map(name => ({id: name, label: name}));
 
-            this.store.removeLocalItem('cat.copy.templates');
-        });
+                this.store.removeLocalItem('cat.copy.templates');
+            });
     }
 
 
@@ -227,7 +227,7 @@ export class VolCopyService {
         copy.copy_alerts([]);
         copy.stat_cat_entries([]);
 
-        copy.barcode(options.barcode || "");
+        copy.barcode(options.barcode || '');
 
         return copy;
     }
@@ -238,7 +238,7 @@ export class VolCopyService {
     setVolClassLabels(vols: IdlObject[]): Promise<any> {
 
         return this.applyVolClasses(vols)
-        .then(_ => this.applyVolLabels(vols));
+            .then(_ => this.applyVolLabels(vols));
     }
 
     // Apply label_class values to any vols that need it based either on
@@ -268,23 +268,23 @@ export class VolCopyService {
             // apply to the volumes owned by that lib.
 
             Object.keys(orgIds).map(orgId => Number(orgId))
-            .forEach(orgId => {
-                promise = promise.then(_ => {
+                .forEach(orgId => {
+                    promise = promise.then(_ => {
 
-                    return this.org.settings(
-                        'cat.default_classification_scheme', orgId)
-                    .then(sets => {
+                        return this.org.settings(
+                            'cat.default_classification_scheme', orgId)
+                            .then(sets => {
 
-                        const orgVols = vols.filter(v => v.owning_lib() === orgId);
-                        orgVols.forEach(vol => {
-                            vol.label_class(
-				// Strip quotes resulting from old style ou settings
-                                Number(sets['cat.default_classification_scheme']) || 1
-                            );
-                        });
+                                const orgVols = vols.filter(v => v.owning_lib() === orgId);
+                                orgVols.forEach(vol => {
+                                    vol.label_class(
+                                        // Strip quotes resulting from old style ou settings
+                                        Number(sets['cat.default_classification_scheme']) || 1
+                                    );
+                                });
+                            });
                     });
                 });
-            });
         }
 
         return promise;
@@ -316,25 +316,25 @@ export class VolCopyService {
                     'open-ils.cat.biblio.record.marc_cn.retrieve',
                     vol.record(), vol.label_class()).toPromise()
 
-                .then(cnList => {
+                    .then(cnList => {
                     // Use '_' as a placeholder to indicate when a
                     // vol has already been addressed.
-                    let label = '_';
+                        let label = '_';
 
-                    if (cnList.length > 0) {
-                        const field = Object.keys(cnList[0])[0];
-                        label = cnList[0][field];
-                    }
-
-                    // Avoid making duplicate marc_cn calls by applying
-                    // the label to all vols that apply.
-                    vols.forEach(vol2 => {
-                        if (vol2.record() === vol.record() &&
-                            vol2.label_class() === vol.label_class()) {
-                            vol.label(label);
+                        if (cnList.length > 0) {
+                            const field = Object.keys(cnList[0])[0];
+                            label = cnList[0][field];
                         }
+
+                        // Avoid making duplicate marc_cn calls by applying
+                        // the label to all vols that apply.
+                        vols.forEach(vol2 => {
+                            if (vol2.record() === vol.record() &&
+                            vol2.label_class() === vol.label_class()) {
+                                vol.label(label);
+                            }
+                        });
                     });
-                });
             });
         });
 
@@ -364,16 +364,17 @@ export class VolCopyService {
         Object.keys(orgs).forEach(org => {
             promise = promise.then(_ => {
                 return this.org.settings(setting, +org)
-                .then(sets => {
-                    orgs[org] = sets[setting] || (fastAdd ? 0 : 5);
-                });
+                    .then(sets => {
+                        // eslint-disable-next-line no-magic-numbers
+                        orgs[org] = sets[setting] || (fastAdd ? 0 : 5);
+                    });
             });
         });
 
         promise.then(_ => {
             Object.keys(orgs).forEach(org => {
                 copies.filter(copy => copy.circ_lib() === +org)
-                .forEach(copy => copy.status(orgs[org]));
+                    .forEach(copy => copy.status(orgs[org]));
             });
         });
 
@@ -409,24 +410,24 @@ export class VolCopyService {
 
         this.pcrud.search('bmp',
             {record: recordIds, deleted: 'f'})
-        .subscribe(
-            part => {
-                if (!this.bibParts[part.record()]) {
-                    this.bibParts[part.record()] = [];
-                }
-                this.bibParts[part.record()].push(part);
-            },
-            err => {},
-            () => {
-                recordIds.forEach(bibId => {
-                    if (this.bibParts[bibId]) {
-                        this.bibParts[bibId] = this.bibParts[bibId]
-                        .sort((p1, p2) =>
-                            p1.label_sortkey() < p2.label_sortkey() ? -1 : 1);
+            .subscribe(
+                part => {
+                    if (!this.bibParts[part.record()]) {
+                        this.bibParts[part.record()] = [];
                     }
-                });
-            }
-        );
+                    this.bibParts[part.record()].push(part);
+                },
+                (err: unknown) => {},
+                () => {
+                    recordIds.forEach(bibId => {
+                        if (this.bibParts[bibId]) {
+                            this.bibParts[bibId] = this.bibParts[bibId]
+                                .sort((p1, p2) =>
+                                    p1.label_sortkey() < p2.label_sortkey() ? -1 : 1);
+                        }
+                    });
+                }
+            );
     }
 
 

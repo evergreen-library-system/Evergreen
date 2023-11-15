@@ -11,8 +11,8 @@ import {ComboboxEntry} from '@eg/share/combobox/combobox.component';
 import {StringComponent} from '@eg/share/string/string.component';
 
 @Component({
-  selector: 'eg-add-to-carousel-dialog',
-  templateUrl: './add-to-carousel-dialog.component.html'
+    selector: 'eg-add-to-carousel-dialog',
+    templateUrl: './add-to-carousel-dialog.component.html'
 })
 
 
@@ -49,6 +49,7 @@ export class AddToCarouselDialogComponent extends DialogComponent implements OnI
                 'open-ils.actor',
                 'open-ils.actor.carousel.retrieve_manual_by_staff',
                 this.auth.token()
+            // eslint-disable-next-line rxjs/no-nested-subscribe
             ).subscribe(carousels => this.carousels = carousels);
         });
 
@@ -65,17 +66,17 @@ export class AddToCarouselDialogComponent extends DialogComponent implements OnI
                 this.selectedCarousel.value['id'],
                 this.recordIds
             ).pipe(takeLast(1))
-            .subscribe(
-                result => {
-                    const evt = this.evt.parse(result);
-                    if (evt) {
-                        this.errorMsg.current().then(m => this.toast.danger(m));
-                    } else {
-                        this.successMsg.current().then(m => this.toast.success(m));
-                        this.close(true);
+                .subscribe(
+                    result => {
+                        const evt = this.evt.parse(result);
+                        if (evt) {
+                            this.errorMsg.current().then(m => this.toast.danger(m));
+                        } else {
+                            this.successMsg.current().then(m => this.toast.success(m));
+                            this.close(true);
+                        }
                     }
-                }
-            );
+                );
         };
     }
 

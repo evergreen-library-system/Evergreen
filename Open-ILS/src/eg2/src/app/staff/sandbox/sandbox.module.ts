@@ -11,22 +11,22 @@ import {ItemLocationSelectModule} from '@eg/share/item-location-select/item-loca
 import {PatronModule} from '@eg/staff/share/patron/patron.module';
 
 @NgModule({
-  declarations: [
-    SandboxComponent
-  ],
-  imports: [
-    StaffCommonModule,
-    TranslateModule,
-    FmRecordEditorModule,
-    OrgFamilySelectModule,
-    ItemLocationSelectModule,
-    SandboxRoutingModule,
-    ReactiveFormsModule,
-    PatronModule
-  ],
-  providers: [
-    SampleDataService
-  ]
+    declarations: [
+        SandboxComponent
+    ],
+    imports: [
+        StaffCommonModule,
+        TranslateModule,
+        FmRecordEditorModule,
+        OrgFamilySelectModule,
+        ItemLocationSelectModule,
+        SandboxRoutingModule,
+        ReactiveFormsModule,
+        PatronModule
+    ],
+    providers: [
+        SampleDataService
+    ]
 })
 
 export class SandboxModule {

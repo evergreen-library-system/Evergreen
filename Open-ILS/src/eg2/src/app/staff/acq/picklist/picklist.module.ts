@@ -10,20 +10,20 @@ import {HttpClientModule} from '@angular/common/http';
 import {AcqCommonModule} from '../acq-common.module';
 
 @NgModule({
-  declarations: [
-    PicklistComponent,
-    PicklistSummaryComponent
-  ],
-  imports: [
-    StaffCommonModule,
-    CatalogCommonModule,
-    LineitemModule,
-    HoldingsModule,
-    PicklistRoutingModule,
-    HttpClientModule,
-    AcqCommonModule
-  ],
-  providers: []
+    declarations: [
+        PicklistComponent,
+        PicklistSummaryComponent
+    ],
+    imports: [
+        StaffCommonModule,
+        CatalogCommonModule,
+        LineitemModule,
+        HoldingsModule,
+        PicklistRoutingModule,
+        HttpClientModule,
+        AcqCommonModule
+    ],
+    providers: []
 })
 
 export class PicklistModule {}

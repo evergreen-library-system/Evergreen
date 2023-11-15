@@ -18,28 +18,28 @@ import {PicklistUploadService} from '../picklist/upload.service';
 import {DisencumberChargeDialogComponent} from './disencumber-charge-dialog.component';
 
 @NgModule({
-  declarations: [
-    PoComponent,
-    PoSummaryComponent,
-    PoHistoryComponent,
-    PoEdiMessagesComponent,
-    PoNotesComponent,
-    PoCreateComponent,
-    PoChargesComponent,
-    PrintComponent,
-    DisencumberChargeDialogComponent
-  ],
-  imports: [
-    StaffCommonModule,
-    CatalogCommonModule,
-    LineitemModule,
-    HoldingsModule,
-    PoRoutingModule
-  ],
-  providers: [
-    PoService,
-    PicklistUploadService
-  ]
+    declarations: [
+        PoComponent,
+        PoSummaryComponent,
+        PoHistoryComponent,
+        PoEdiMessagesComponent,
+        PoNotesComponent,
+        PoCreateComponent,
+        PoChargesComponent,
+        PrintComponent,
+        DisencumberChargeDialogComponent
+    ],
+    imports: [
+        StaffCommonModule,
+        CatalogCommonModule,
+        LineitemModule,
+        HoldingsModule,
+        PoRoutingModule
+    ],
+    providers: [
+        PoService,
+        PicklistUploadService
+    ]
 })
 
 export class PoModule {

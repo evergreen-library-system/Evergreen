@@ -12,8 +12,8 @@ import {CourseService} from '@eg/staff/share/course.service';
 import {PermService} from '@eg/core/perm.service';
 
 @Component({
-  selector: 'eg-catalog-copies',
-  templateUrl: 'copies.component.html'
+    selector: 'eg-catalog-copies',
+    templateUrl: 'copies.component.html'
 })
 export class CopiesComponent implements OnInit {
 

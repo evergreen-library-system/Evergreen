@@ -53,7 +53,7 @@ import {GridManageFiltersDialogComponent} from './grid-manage-filters-dialog.com
         GridToolbarActionComponent
     ],
     providers: [
-      GridFlatDataService
+        GridFlatDataService
     ]
 })
 

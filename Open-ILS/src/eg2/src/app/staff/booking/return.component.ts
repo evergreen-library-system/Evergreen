@@ -14,7 +14,7 @@ import {PatronBarcodeValidator} from '@eg/share/validators/patron_barcode_valida
 
 
 @Component({
-  templateUrl: './return.component.html'
+    templateUrl: './return.component.html'
 })
 
 export class ReturnComponent implements OnInit, OnDestroy {
@@ -73,7 +73,7 @@ export class ReturnComponent implements OnInit, OnDestroy {
                     }
                 })
             )
-            .subscribe());
+                .subscribe());
 
         this.subscriptions.push(
             this.resourceBarcode.valueChanges.pipe(
@@ -103,50 +103,50 @@ export class ReturnComponent implements OnInit, OnDestroy {
 
         this.handleNavChange = ($event) => {
             this.store.setItem('eg.booking.return.tab', $event.nextId)
-            .then(() => {
-                this.router.navigate(['/staff', 'booking', 'return']);
-                this.findPatron.patchValue({resourceBarcode: ''});
-                this.patronId = null;
-            });
+                .then(() => {
+                    this.router.navigate(['/staff', 'booking', 'return']);
+                    this.findPatron.patchValue({resourceBarcode: ''});
+                    this.patronId = null;
+                });
         };
     }
 
     handleParams$ = (params: ParamMap): Observable<any> => {
-      this.patronId = +params.get('patron_id');
-      if (this.patronId) {
-          return this.pcrud.search('au', {
-              'id': this.patronId,
-          }, {
-              limit: 1,
-              flesh: 1,
-              flesh_fields: {'au': ['card']}
-          }).pipe(tap(
-              (resp) => {
-                  this.tabs.select('patron_tab');
-                  this.findPatron.patchValue({patronBarcode: resp.card().barcode()});
-                  this.refreshGrids();
-              }, (err) => { console.debug(err); }
-          ));
-      } else {
-          return from(this.store.getItem('eg.booking.return.tab'))
-              .pipe(tap(tab => {
-                  if (tab) { this.tabs.select(tab); }
-          }));
-      }
-    }
+        this.patronId = +params.get('patron_id');
+        if (this.patronId) {
+            return this.pcrud.search('au', {
+                'id': this.patronId,
+            }, {
+                limit: 1,
+                flesh: 1,
+                flesh_fields: {'au': ['card']}
+            }).pipe(tap(
+                (resp) => {
+                    this.tabs.select('patron_tab');
+                    this.findPatron.patchValue({patronBarcode: resp.card().barcode()});
+                    this.refreshGrids();
+                }, (err: unknown) => { console.debug(err); }
+            ));
+        } else {
+            return from(this.store.getItem('eg.booking.return.tab'))
+                .pipe(tap(tab => {
+                    if (tab) { this.tabs.select(tab); }
+                }));
+        }
+    };
     refreshGrids = (): void => {
         this.grids.forEach (grid => grid.reloadGrid());
-    }
+    };
     get patronBarcode() {
-      return this.findPatron.get('patronBarcode');
+        return this.findPatron.get('patronBarcode');
     }
     get resourceBarcode() {
-      return this.findPatron.get('resourceBarcode');
+        return this.findPatron.get('resourceBarcode');
     }
 
     ngOnDestroy(): void {
-      this.subscriptions.forEach((subscription) => {
-          subscription.unsubscribe();
-      });
+        this.subscriptions.forEach((subscription) => {
+            subscription.unsubscribe();
+        });
     }
 }

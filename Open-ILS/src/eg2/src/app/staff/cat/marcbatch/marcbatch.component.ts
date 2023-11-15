@@ -1,4 +1,4 @@
-import {Component, OnInit, ViewChild, Renderer2} from '@angular/core';
+import {Component, OnInit, Renderer2} from '@angular/core';
 import {Router, ActivatedRoute, ParamMap} from '@angular/router';
 import {HttpClient} from '@angular/common/http';
 import {tap} from 'rxjs/operators';
@@ -6,7 +6,7 @@ import {NetService} from '@eg/core/net.service';
 import {AuthService} from '@eg/core/auth.service';
 import {PcrudService} from '@eg/core/pcrud.service';
 import {ComboboxEntry} from '@eg/share/combobox/combobox.component';
-import {MarcRecord, MarcField} from '@eg/staff/share/marc-edit/marcrecord';
+import {MarcRecord} from '@eg/staff/share/marc-edit/marcrecord';
 import {AnonCacheService} from '@eg/share/util/anon-cache.service';
 import {ServerStoreService} from '@eg/core/server-store.service';
 
@@ -23,7 +23,7 @@ interface TemplateRule {
 }
 
 @Component({
-  templateUrl: 'marcbatch.component.html'
+    templateUrl: 'marcbatch.component.html'
 })
 export class MarcBatchComponent implements OnInit {
 
@@ -146,6 +146,7 @@ export class MarcBatchComponent implements OnInit {
                 return breaker.split(/\n/).length + 1;
             }
         }
+        // eslint-disable-next-line no-magic-numbers
         return 3;
     }
 
@@ -172,8 +173,8 @@ export class MarcBatchComponent implements OnInit {
 
         ).pipe(tap(buckets => {
             this.buckets = buckets
-            .sort((b1, b2) => b1.name() < b2.name() ? -1 : 1)
-            .map(b => ({id: b.id(), label: b.name()}));
+                .sort((b1, b2) => b1.name() < b2.name() ? -1 : 1)
+                .map(b => ({id: b.id(), label: b.name()}));
 
         })).toPromise();
     }
@@ -183,7 +184,7 @@ export class MarcBatchComponent implements OnInit {
     }
 
     fileSelected($event) {
-       this.csvFile = $event.target.files[0];
+        this.csvFile = $event.target.files[0];
     }
 
     disableSave(): boolean {
@@ -248,34 +249,34 @@ export class MarcBatchComponent implements OnInit {
 
         return this.http.post(
             MERGE_TEMPLATE_PATH, formData, {responseType: 'text'})
-        .pipe(tap(cacheKey => this.session = cacheKey))
-        .toPromise();
+            .pipe(tap(cacheKey => this.session = cacheKey))
+            .toPromise();
     }
 
     pollProgress(): Promise<any> {
         console.debug('Polling session ', this.session);
 
         return this.cache.getItem(this.session, 'batch_edit_progress')
-        .then(progress => {
+            .then(progress => {
             // {"success":"t","complete":1,"failed":0,"succeeded":252}
 
-            if (!progress) {
-                console.error('No batch edit session found for ', this.session);
-                return;
-            }
+                if (!progress) {
+                    console.error('No batch edit session found for ', this.session);
+                    return;
+                }
 
-            this.progressValue = progress.succeeded;
-            this.progressMax = progress.total;
-            this.numSucceeded = progress.succeeded;
-            this.numFailed = progress.failed;
+                this.progressValue = progress.succeeded;
+                this.progressMax = progress.total;
+                this.numSucceeded = progress.succeeded;
+                this.numFailed = progress.failed;
 
-            if (progress.complete) {
-                this.processing = false;
-                return;
-            }
+                if (progress.complete) {
+                    this.processing = false;
+                    return;
+                }
 
-            setTimeout(() => this.pollProgress(), SESSION_POLL_INTERVAL * 1000);
-        });
+                setTimeout(() => this.pollProgress(), SESSION_POLL_INTERVAL * 1000);
+            });
     }
 }
 

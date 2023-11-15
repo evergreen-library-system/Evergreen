@@ -5,8 +5,8 @@ import {IdlService, IdlObject} from '@eg/core/idl.service';
 import {ComboboxEntry} from '@eg/share/combobox/combobox.component';
 
 @Component({
-  selector: 'eg-acq-add-to-po-dialog',
-  templateUrl: './add-to-po-dialog.component.html'
+    selector: 'eg-acq-add-to-po-dialog',
+    templateUrl: './add-to-po-dialog.component.html'
 })
 
 export class AddToPoDialogComponent extends DialogComponent {

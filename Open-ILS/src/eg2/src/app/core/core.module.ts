@@ -9,24 +9,24 @@ import {CommonModule, DatePipe, DecimalPipe} from '@angular/common';
 import {FormatValuePipe, OrgDateInContextPipe, DueDatePipe} from './format.service';
 
 @NgModule({
-  declarations: [
-    FormatValuePipe,
-    OrgDateInContextPipe,
-    DueDatePipe
-  ],
-  imports: [
-    CommonModule
-  ],
-  exports: [
-    CommonModule,
-    FormatValuePipe,
-    OrgDateInContextPipe,
-    DueDatePipe
-  ],
-  providers: [
-    DatePipe,
-    DecimalPipe
-  ]
+    declarations: [
+        FormatValuePipe,
+        OrgDateInContextPipe,
+        DueDatePipe
+    ],
+    imports: [
+        CommonModule
+    ],
+    exports: [
+        CommonModule,
+        FormatValuePipe,
+        OrgDateInContextPipe,
+        DueDatePipe
+    ],
+    providers: [
+        DatePipe,
+        DecimalPipe
+    ]
 })
 
 export class EgCoreModule {}

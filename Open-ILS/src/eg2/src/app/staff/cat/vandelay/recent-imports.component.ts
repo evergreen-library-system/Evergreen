@@ -11,6 +11,7 @@ import {VandelayService} from './vandelay.service';
 export class RecentImportsComponent implements OnInit {
 
     trackers: IdlObject[];
+    // eslint-disable-next-line no-magic-numbers
     refreshInterval = 2000; // ms
     sinceDate: string;
     pollTimeout: any;
@@ -69,72 +70,72 @@ export class RecentImportsComponent implements OnInit {
         };
 
         this.pcrud.search('vst', query, {order_by: {vst: 'create_time'}})
-        .subscribe(
-            tracker => {
+            .subscribe(
+                tracker => {
                 // The screen flickers less if the tracker array is
                 // updated inline instead of rebuilt every time.
 
-                const existing =
+                    const existing =
                     this.trackers.filter(t => t.id() === tracker.id())[0];
 
-                if (existing) {
-                    existing.update_time(tracker.update_time());
-                    existing.state(tracker.state());
-                    existing.total_actions(tracker.total_actions());
-                    existing.actions_performed(tracker.actions_performed());
-                } else {
+                    if (existing) {
+                        existing.update_time(tracker.update_time());
+                        existing.state(tracker.state());
+                        existing.total_actions(tracker.total_actions());
+                        existing.actions_performed(tracker.actions_performed());
+                    } else {
 
-                    // Only show the import tracker when both an enqueue
-                    // and import tracker exist for a given session.
-                    const sameSes = this.trackers.filter(
-                        t => t.session_key() === tracker.session_key())[0];
+                        // Only show the import tracker when both an enqueue
+                        // and import tracker exist for a given session.
+                        const sameSes = this.trackers.filter(
+                            t => t.session_key() === tracker.session_key())[0];
 
-                    if (sameSes) {
-                        if (sameSes.action_type() === 'enqueue') {
+                        if (sameSes) {
+                            if (sameSes.action_type() === 'enqueue') {
                             // Remove the enqueueu tracker
 
-                            for (let idx = 0; idx < this.trackers.length; idx++) {
-                                const trkr = this.trackers[idx];
-                                if (trkr.id() === sameSes.id()) {
-                                    console.debug(
-                                        `removing tracker ${trkr.id()} from the list`);
-                                    this.trackers.splice(idx, 1);
-                                    break;
+                                for (let idx = 0; idx < this.trackers.length; idx++) {
+                                    const trkr = this.trackers[idx];
+                                    if (trkr.id() === sameSes.id()) {
+                                        console.debug(
+                                            `removing tracker ${trkr.id()} from the list`);
+                                        this.trackers.splice(idx, 1);
+                                        break;
+                                    }
                                 }
-                            }
-                       } else if (sameSes.action_type() === 'import') {
+                            } else if (sameSes.action_type() === 'import') {
                             // Avoid adding the new enqueue tracker
-                            return;
+                                return;
+                            }
                         }
+
+                        console.debug(`adding tracker ${tracker.id()} to list`);
+
+                        this.trackers.unshift(tracker);
+                        this.fleshTrackerQueue(tracker);
                     }
-
-                    console.debug(`adding tracker ${tracker.id()} to list`);
-
-                    this.trackers.unshift(tracker);
-                    this.fleshTrackerQueue(tracker);
-                }
-            },
-            err => {},
-            ()  => {
-                const active =
+                },
+                (err: unknown) => {},
+                ()  => {
+                    const active =
                     this.trackers.filter(t => t.state() === 'active');
 
-                // Continue updating the display with updated tracker
-                // data as long as we have any active trackers.
-                if (active.length > 0) {
-                    this.pollTimeout = setTimeout(
-                        () => this.pollTrackers(), this.refreshInterval);
-                } else {
-                    this.pollTimeout = null;
+                    // Continue updating the display with updated tracker
+                    // data as long as we have any active trackers.
+                    if (active.length > 0) {
+                        this.pollTimeout = setTimeout(
+                            () => this.pollTrackers(), this.refreshInterval);
+                    } else {
+                        this.pollTimeout = null;
+                    }
                 }
-            }
-        );
+            );
     }
 
     fleshTrackerQueue(tracker: IdlObject) {
         const qClass = tracker.record_type() === 'bib' ? 'vbq' : 'vaq';
         this.pcrud.retrieve(qClass, tracker.queue())
-        .subscribe(queue => tracker.queue(queue));
+            .subscribe(queue => tracker.queue(queue));
     }
 
 }

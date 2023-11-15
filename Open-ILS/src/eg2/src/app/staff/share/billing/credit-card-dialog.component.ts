@@ -18,8 +18,8 @@ import {BillingService, CreditCardPaymentParams} from './billing.service';
 /* Dialog for collecting credit card payment information */
 
 @Component({
-  selector: 'eg-credit-card-dialog',
-  templateUrl: 'credit-card-dialog.component.html'
+    selector: 'eg-credit-card-dialog',
+    templateUrl: 'credit-card-dialog.component.html'
 })
 
 export class CreditCardDialogComponent
@@ -66,14 +66,14 @@ export class CreditCardDialogComponent
             this.supportsExternal = false;
 
             this.serverStore.getItem('credit.processor.default')
-            .then(processor => {
-                if (processor && processor !== 'Stripe') {
-                    this.supportsExternal = true;
-                    this.args.where_process = 1;
-                } else {
-                    this.args.where_process = 0;
-                }
-            });
+                .then(processor => {
+                    if (processor && processor !== 'Stripe') {
+                        this.supportsExternal = true;
+                        this.args.where_process = 1;
+                    } else {
+                        this.args.where_process = 0;
+                    }
+                });
         });
     }
 

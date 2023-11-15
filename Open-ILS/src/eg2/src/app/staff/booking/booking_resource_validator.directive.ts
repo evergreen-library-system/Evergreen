@@ -14,11 +14,11 @@ export class BookingResourceBarcodeValidator implements AsyncValidator {
         return this.pcrud.search('brsrc',
             {'barcode' : control.value},
             {'limit': 1}).pipe(
-                switchMap(() => of(null)),
-                catchError((err) => {
-                    return of({ resourceBarcode: 'No resource found with that barcode' });
-                }));
-    }
+            switchMap(() => of(null)),
+            catchError((err: unknown) => {
+                return of({ resourceBarcode: 'No resource found with that barcode' });
+            }));
+    };
 }
 
 @Directive({
@@ -37,6 +37,6 @@ export class BookingResourceBarcodeValidatorDirective {
 
     validate = (control: FormControl) => {
         this.validator.validate(control);
-    }
+    };
 }
 

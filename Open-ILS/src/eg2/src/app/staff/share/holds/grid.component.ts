@@ -8,18 +8,18 @@ import {OrgService} from '@eg/core/org.service';
 import {AuthService} from '@eg/core/auth.service';
 import {Pager} from '@eg/share/util/pager';
 import {ServerStoreService} from '@eg/core/server-store.service';
-import {GridDataSource, GridColumn, GridCellTextGenerator} from '@eg/share/grid/grid';
+import {GridDataSource, GridCellTextGenerator} from '@eg/share/grid/grid';
 import {GridComponent} from '@eg/share/grid/grid.component';
 import {ProgressDialogComponent} from '@eg/share/dialog/progress.component';
 import {ConfirmDialogComponent} from '@eg/share/dialog/confirm.component';
 import {MarkDamagedDialogComponent
-    } from '@eg/staff/share/holdings/mark-damaged-dialog.component';
+} from '@eg/staff/share/holdings/mark-damaged-dialog.component';
 import {MarkMissingDialogComponent
-    } from '@eg/staff/share/holdings/mark-missing-dialog.component';
+} from '@eg/staff/share/holdings/mark-missing-dialog.component';
 import {MarkDiscardDialogComponent
-    } from '@eg/staff/share/holdings/mark-discard-dialog.component';
+} from '@eg/staff/share/holdings/mark-discard-dialog.component';
 import {HoldRetargetDialogComponent
-    } from '@eg/staff/share/holds/retarget-dialog.component';
+} from '@eg/staff/share/holds/retarget-dialog.component';
 import {HoldTransferDialogComponent} from './transfer-dialog.component';
 import {HoldCancelDialogComponent} from './cancel-dialog.component';
 import {HoldManageDialogComponent} from './manage-dialog.component';
@@ -32,9 +32,9 @@ import {HoldCopyLocationsDialogComponent} from './copy-locations-dialog.componen
 /** Holds grid with access to detail page and other actions */
 
 @Component({
-  selector: 'eg-holds-grid',
-  templateUrl: 'grid.component.html',
-  styles: ['.input-group > .form-control { width: auto; flex-grow: 0; }']
+    selector: 'eg-holds-grid',
+    templateUrl: 'grid.component.html',
+    styles: ['.input-group > .form-control { width: auto; flex-grow: 0; }']
 })
 export class HoldsGridComponent implements OnInit {
 
@@ -103,28 +103,28 @@ export class HoldsGridComponent implements OnInit {
 
     @ViewChild('holdsGrid', { static: false }) private holdsGrid: GridComponent;
     @ViewChild('progressDialog', { static: true })
-        private progressDialog: ProgressDialogComponent;
+    private progressDialog: ProgressDialogComponent;
     @ViewChild('transferDialog', { static: true })
-        private transferDialog: HoldTransferDialogComponent;
+    private transferDialog: HoldTransferDialogComponent;
     @ViewChild('markDamagedDialog', { static: true })
-        private markDamagedDialog: MarkDamagedDialogComponent;
+    private markDamagedDialog: MarkDamagedDialogComponent;
     @ViewChild('markMissingDialog', { static: true })
-        private markMissingDialog: MarkMissingDialogComponent;
+    private markMissingDialog: MarkMissingDialogComponent;
     @ViewChild('markDiscardDialog')
-        private markDiscardDialog: MarkDiscardDialogComponent;
+    private markDiscardDialog: MarkDiscardDialogComponent;
     @ViewChild('retargetDialog', { static: true })
-        private retargetDialog: HoldRetargetDialogComponent;
+    private retargetDialog: HoldRetargetDialogComponent;
     @ViewChild('cancelDialog', { static: true })
-        private cancelDialog: HoldCancelDialogComponent;
+    private cancelDialog: HoldCancelDialogComponent;
     @ViewChild('manageDialog', { static: true })
-        private manageDialog: HoldManageDialogComponent;
+    private manageDialog: HoldManageDialogComponent;
     @ViewChild('uncancelDialog') private uncancelDialog: ConfirmDialogComponent;
     @ViewChild('copyLocationsDialog')
-        private copyLocationsDialog: HoldCopyLocationsDialogComponent;
+    private copyLocationsDialog: HoldCopyLocationsDialogComponent;
     @ViewChild('clearCopyLocationsDialog')
-        private clearCopyLocationsDialog: ConfirmDialogComponent;
+    private clearCopyLocationsDialog: ConfirmDialogComponent;
     @ViewChild('pullPickupLibFilter')
-        private pullPickupLibFilter: OrgSelectComponent;
+    private pullPickupLibFilter: OrgSelectComponent;
 
     // Bib record ID.
     _recordId: number;
@@ -238,7 +238,7 @@ export class HoldsGridComponent implements OnInit {
                 // data fetches until it has settled on a default value.
                 // Once the final value is applied, its onchange will
                 // fire and we'll be back here with plCompLoaded=true.
-                if (!this.plCompLoaded) return of([]);
+                if (!this.plCompLoaded) {return of([]);}
             }
 
             sort = sort.length > 0 ? sort : this.defaultSort;
@@ -248,6 +248,7 @@ export class HoldsGridComponent implements OnInit {
         // Text-ify function for cells that use display templates.
         this.cellTextGenerator = {
             title: row => row.title,
+            // eslint-disable-next-line eqeqeq
             cp_barcode: row => (row.cp_barcode == null) ? '' : row.cp_barcode,
             current_item: row => row.current_copy ? row.cp_barcode : '',
             requested_item: row => this.isCopyHold(row) ? row.cp_barcode : '',
@@ -315,7 +316,7 @@ export class HoldsGridComponent implements OnInit {
     }
 
     clearCopyLocations(): void {
-        if (!this.copyLocationEntries.length) return;
+        if (!this.copyLocationEntries.length) {return;}
         this.clearCopyLocationsDialog.open().subscribe(data => {
             if (data) {
                 this.copyLocationClass = 'acpl';
@@ -384,7 +385,7 @@ export class HoldsGridComponent implements OnInit {
 
             // There are aliases for these (cp_status, cp_circ_lib),
             // but the API complains when I use them.
-            filters['cp.status'] = {"in":{"select":{"ccs":["id"]},"from":"ccs","where":{"holdable":'t',"is_available":'t'}}};
+            filters['cp.status'] = {'in':{'select':{'ccs':['id']},'from':'ccs','where':{'holdable':'t','is_available':'t'}}};
             filters['cp.circ_lib'] = this.pullListOrg;
             // Avoid deleted copies AND this uses a database index on copy circ_lib where deleted is false.
             filters['cp.deleted'] = 'f';
@@ -400,24 +401,24 @@ export class HoldsGridComponent implements OnInit {
 
 
         if (this.hopeless) {
-          filters['hopeless_holds'] = {
-            'start_date' : this._showHopelessAfter
-              ? (
-                  // FIXME -- consistency desired, string or object
-                  typeof this._showHopelessAfter === 'object'
-                  ? this._showHopelessAfter.toISOString()
-                  : this._showHopelessAfter
-                )
-              : '1970-01-01T00:00:00.000Z',
-            'end_date' : this._showHopelessBefore
-              ? (
-                  // FIXME -- consistency desired, string or object
-                  typeof this._showHopelessBefore === 'object'
-                  ? this._showHopelessBefore.toISOString()
-                  : this._showHopelessBefore
-                )
-              : (new Date()).toISOString()
-          };
+            filters['hopeless_holds'] = {
+                'start_date' : this._showHopelessAfter
+                    ? (
+                // FIXME -- consistency desired, string or object
+                        typeof this._showHopelessAfter === 'object'
+                            ? this._showHopelessAfter.toISOString()
+                            : this._showHopelessAfter
+                    )
+                    : '1970-01-01T00:00:00.000Z',
+                'end_date' : this._showHopelessBefore
+                    ? (
+                // FIXME -- consistency desired, string or object
+                        typeof this._showHopelessBefore === 'object'
+                            ? this._showHopelessBefore.toISOString()
+                            : this._showHopelessBefore
+                    )
+                    : (new Date()).toISOString()
+            };
         }
 
         if (this.recordId) {
@@ -489,7 +490,7 @@ export class HoldsGridComponent implements OnInit {
                     observer.next(holdData);
                 }
             },
-            err => {
+            (err: unknown) => {
                 this.progressDialog.close();
                 observer.error(err);
             },
@@ -505,9 +506,9 @@ export class HoldsGridComponent implements OnInit {
     metaRecordHoldsSelected(rows: IdlObject[]) {
         let found = false;
         rows.forEach( row => {
-           if (row.hold_type === 'M') {
-             found = true;
-           }
+            if (row.hold_type === 'M') {
+                found = true;
+            }
         });
         return found;
     }
@@ -515,9 +516,9 @@ export class HoldsGridComponent implements OnInit {
     nonTitleHoldsSelected(rows: IdlObject[]) {
         let found = false;
         rows.forEach( row => {
-           if (row.hold_type !== 'T') {
-             found = true;
-           }
+            if (row.hold_type !== 'T') {
+                found = true;
+            }
         });
         return found;
     }
@@ -582,28 +583,28 @@ export class HoldsGridComponent implements OnInit {
         // Doesn't work in Typescript currently without compiler option:
         //   const bibIds = [...new Set( rows.map(r => r.record_id) )];
         const bibIds = Array.from(
-          new Set( rows.filter(r => r.hold_type !== 'M').map(r => r.record_id) ));
+            new Set( rows.filter(r => r.hold_type !== 'M').map(r => r.record_id) ));
         bibIds.forEach( bibId => {
-          const url =
+            const url =
               '/eg/staff/acq/legacy/lineitem/related/' + bibId + '?target=bib';
-          window.open(url, '_blank');
+            window.open(url, '_blank');
         });
     }
 
     addVolume(rows: any[]) {
         const bibIds = Array.from(
-          new Set( rows.filter(r => r.hold_type !== 'M').map(r => r.record_id) ));
+            new Set( rows.filter(r => r.hold_type !== 'M').map(r => r.record_id) ));
         bibIds.forEach( bibId => {
-          this.holdings.spawnAddHoldingsUi(bibId);
+            this.holdings.spawnAddHoldingsUi(bibId);
         });
     }
 
     showTitle(rows: any[]) {
         const bibIds = Array.from(new Set( rows.map(r => r.record_id) ));
         bibIds.forEach( bibId => {
-          // const url = '/eg/staff/cat/catalog/record/' + bibId;
-          const url = '/eg2/staff/catalog/record/' + bibId;
-          window.open(url, '_blank');
+            // const url = '/eg/staff/cat/catalog/record/' + bibId;
+            const url = '/eg2/staff/catalog/record/' + bibId;
+            window.open(url, '_blank');
         });
     }
 
@@ -652,7 +653,7 @@ export class HoldsGridComponent implements OnInit {
                     if (ok) { rowsModified = true; }
                     return markNext(ids);
                 },
-                dismiss => markNext(ids)
+                (dismiss: unknown) => markNext(ids)
             );
         };
 
@@ -734,6 +735,7 @@ export class HoldsGridComponent implements OnInit {
                     'open-ils.circ.hold.uncancel',
                     this.auth.token(), holdId
                 );
+            // eslint-disable-next-line rxjs/no-nested-subscribe
             })).subscribe(
                 resp => {
                     if (Number(resp) !== 1) {

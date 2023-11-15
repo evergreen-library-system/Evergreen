@@ -1,15 +1,13 @@
 import {Component, OnInit, Output, Input, ViewChild, EventEmitter} from '@angular/core';
-import {Router, ActivatedRoute, ParamMap} from '@angular/router';
-import {Observable, empty, of, from} from 'rxjs';
-import {map, concat, ignoreElements, last, tap, mergeMap, switchMap, concatMap} from 'rxjs/operators';
+import {Observable, empty, from} from 'rxjs';
+import {map, concat, ignoreElements, tap, concatMap} from 'rxjs/operators';
 import {IdlObject} from '@eg/core/idl.service';
 import {OrgService} from '@eg/core/org.service';
 import {NetService} from '@eg/core/net.service';
 import {AuthService} from '@eg/core/auth.service';
 import {PcrudService} from '@eg/core/pcrud.service';
-import {CheckoutParams, CheckoutResult, CheckinParams, CheckinResult,
+import {CheckoutParams, CheckinParams, CheckinResult,
     CircDisplayInfo, CircService} from './circ.service';
-import {PromptDialogComponent} from '@eg/share/dialog/prompt.component';
 import {ProgressDialogComponent} from '@eg/share/dialog/progress.component';
 import {ConfirmDialogComponent} from '@eg/share/dialog/confirm.component';
 import {GridDataSource, GridColumn, GridCellTextGenerator,
@@ -20,13 +18,12 @@ import {StoreService} from '@eg/core/store.service';
 import {ServerStoreService} from '@eg/core/server-store.service';
 import {AudioService} from '@eg/share/util/audio.service';
 import {CopyAlertsDialogComponent
-    } from '@eg/staff/share/holdings/copy-alerts-dialog.component';
-import {ArrayUtil} from '@eg/share/util/array';
+} from '@eg/staff/share/holdings/copy-alerts-dialog.component';
 import {PrintService} from '@eg/share/print/print.service';
 import {StringComponent} from '@eg/share/string/string.component';
 import {DueDateDialogComponent} from './due-date-dialog.component';
 import {MarkDamagedDialogComponent
-    } from '@eg/staff/share/holdings/mark-damaged-dialog.component';
+} from '@eg/staff/share/holdings/mark-damaged-dialog.component';
 import {ClaimsReturnedDialogComponent} from './claims-returned-dialog.component';
 import {ToastService} from '@eg/share/toast/toast.service';
 import {AddBillingDialogComponent} from '@eg/staff/share/billing/billing-dialog.component';
@@ -47,25 +44,25 @@ export interface CircGridEntry extends CircDisplayInfo {
 
 const CIRC_FLESH_DEPTH = 4;
 const CIRC_FLESH_FIELDS = {
-  circ: ['target_copy', 'workstation', 'checkin_workstation', 'circ_lib'],
-  acp:  [
-    'call_number',
-    'holds_count',
-    'status',
-    'circ_lib',
-    'location',
-    'floating',
-    'age_protect',
-    'parts'
-  ],
-  acpm: ['part'],
-  acn:  ['record', 'owning_lib', 'prefix', 'suffix'],
-  bre:  ['wide_display_entry']
+    circ: ['target_copy', 'workstation', 'checkin_workstation', 'circ_lib'],
+    acp:  [
+        'call_number',
+        'holds_count',
+        'status',
+        'circ_lib',
+        'location',
+        'floating',
+        'age_protect',
+        'parts'
+    ],
+    acpm: ['part'],
+    acn:  ['record', 'owning_lib', 'prefix', 'suffix'],
+    bre:  ['wide_display_entry']
 };
 
 @Component({
-  templateUrl: 'grid.component.html',
-  selector: 'eg-circ-grid'
+    templateUrl: 'grid.component.html',
+    selector: 'eg-circ-grid'
 })
 export class CircGridComponent implements OnInit {
 
@@ -96,22 +93,22 @@ export class CircGridComponent implements OnInit {
     @ViewChild('overdueString') private overdueString: StringComponent;
     @ViewChild('circGrid') private circGrid: GridComponent;
     @ViewChild('copyAlertsDialog')
-        private copyAlertsDialog: CopyAlertsDialogComponent;
+    private copyAlertsDialog: CopyAlertsDialogComponent;
     @ViewChild('dueDateDialog') private dueDateDialog: DueDateDialogComponent;
     @ViewChild('markDamagedDialog')
-        private markDamagedDialog: MarkDamagedDialogComponent;
+    private markDamagedDialog: MarkDamagedDialogComponent;
     @ViewChild('itemsOutConfirm')
-        private itemsOutConfirm: ConfirmDialogComponent;
+    private itemsOutConfirm: ConfirmDialogComponent;
     @ViewChild('claimsReturnedConfirm')
-        private claimsReturnedConfirm: ConfirmDialogComponent;
+    private claimsReturnedConfirm: ConfirmDialogComponent;
     @ViewChild('claimsNeverConfirm')
-        private claimsNeverConfirm: ConfirmDialogComponent;
+    private claimsNeverConfirm: ConfirmDialogComponent;
     @ViewChild('progressDialog')
-        private progressDialog: ProgressDialogComponent;
+    private progressDialog: ProgressDialogComponent;
     @ViewChild('claimsReturnedDialog')
-        private claimsReturnedDialog: ClaimsReturnedDialogComponent;
+    private claimsReturnedDialog: ClaimsReturnedDialogComponent;
     @ViewChild('addBillingDialog')
-        private addBillingDialog: AddBillingDialogComponent;
+    private addBillingDialog: AddBillingDialogComponent;
 
     constructor(
         private org: OrgService,
@@ -324,6 +321,7 @@ export class CircGridComponent implements OnInit {
                     'open-ils.circ.circulation.due_date.update',
                     this.auth.token(), id, isoDate
                 );
+            // eslint-disable-next-line rxjs/no-nested-subscribe
             })).subscribe(
                 circ => {
                     const row = rows.filter(r => r.circ.id() === circ.id())[0];
@@ -332,7 +330,7 @@ export class CircGridComponent implements OnInit {
                     delete row.overdue; // it will recalculate
                     dialog.increment();
                 },
-                err  => console.log(err),
+                (err: unknown)  => console.log(err),
                 ()   => {
                     dialog.close();
                     this.emitReloadRequest();
@@ -360,6 +358,7 @@ export class CircGridComponent implements OnInit {
     }
 
     markDamaged(rows: CircGridEntry[]) {
+        // eslint-disable-next-line no-magic-numbers
         const copyIds = this.getCopyIds(rows, 14 /* ignore damaged */);
 
         if (copyIds.length === 0) { return; }
@@ -374,10 +373,10 @@ export class CircGridComponent implements OnInit {
             this.markDamagedDialog.copyId = ids.pop();
 
             return this.markDamagedDialog.open({size: 'lg'})
-            .toPromise().then(ok => {
-                if (ok) { rowsModified = true; }
-                return markNext(ids);
-            });
+                .toPromise().then(ok => {
+                    if (ok) { rowsModified = true; }
+                    return markNext(ids);
+                });
         };
 
         markNext(copyIds).then(_ => {
@@ -405,20 +404,20 @@ export class CircGridComponent implements OnInit {
         let refreshNeeded = false;
 
         return this.circ.renewBatch(this.getCopyIds(rows))
-        .subscribe(
-            result => {
-                dialog.increment();
-                // Value can be null when dialogs are canceled
-                if (result) { refreshNeeded = true; }
-            },
-            err => this.reportError(err),
-            () => {
-                dialog.close();
-                if (refreshNeeded) {
-                    this.emitReloadRequest();
+            .subscribe(
+                result => {
+                    dialog.increment();
+                    // Value can be null when dialogs are canceled
+                    if (result) { refreshNeeded = true; }
+                },
+                (err: unknown) => this.reportError(err),
+                () => {
+                    dialog.close();
+                    if (refreshNeeded) {
+                        this.emitReloadRequest();
+                    }
                 }
-            }
-        );
+            );
     }
 
     renewWithDate(rows: any) {
@@ -432,12 +431,13 @@ export class CircGridComponent implements OnInit {
             const params: CheckoutParams = {due_date: isoDate};
 
             let refreshNeeded = false;
+            // eslint-disable-next-line rxjs/no-nested-subscribe
             this.circ.renewBatch(ids).subscribe(
                 resp => {
                     if (resp.success) { refreshNeeded = true; }
                     dialog.increment();
                 },
-                err => this.reportError(err),
+                (err: unknown) => this.reportError(err),
                 () => {
                     dialog.close();
                     if (refreshNeeded) {
@@ -457,17 +457,17 @@ export class CircGridComponent implements OnInit {
 
         let changesApplied = false;
         return this.circ.checkinBatch(this.getCopyIds(rows), params)
-        .pipe(tap(
-            result => {
-                if (result) { changesApplied = true; }
-                dialog.increment();
-            },
-            err => this.reportError(err),
-            () => {
-                dialog.close();
-                if (changesApplied && !noReload) { this.emitReloadRequest(); }
-            }
-        ));
+            .pipe(tap(
+                result => {
+                    if (result) { changesApplied = true; }
+                    dialog.increment();
+                },
+                (err: unknown) => this.reportError(err),
+                () => {
+                    dialog.close();
+                    if (changesApplied && !noReload) { this.emitReloadRequest(); }
+                }
+            ));
     }
 
     markLost(rows: CircGridEntry[]) {
@@ -482,7 +482,7 @@ export class CircGridComponent implements OnInit {
             );
         })).subscribe(
             result => dialog.increment(),
-            err => this.reportError(err),
+            (err: unknown) => this.reportError(err),
             () => {
                 dialog.close();
                 this.emitReloadRequest();
@@ -518,9 +518,10 @@ export class CircGridComponent implements OnInit {
 
             this.circ.checkinBatch(
                 this.getCopyIds(rows), {claims_never_checked_out: true}
+            // eslint-disable-next-line rxjs/no-nested-subscribe
             ).subscribe(
                 result => dialog.increment(),
-                err => this.reportError(err),
+                (err: unknown) => this.reportError(err),
                 () => {
                     dialog.close();
                     this.emitReloadRequest();
@@ -534,21 +535,21 @@ export class CircGridComponent implements OnInit {
         let changesApplied = false;
 
         from(this.getCircIds(rows))
-        .pipe(concatMap(id => {
-            this.addBillingDialog.xactId = id;
-            return this.addBillingDialog.open();
-        }))
-        .subscribe(
-            changes => {
-                if (changes) { changesApplied = true; }
-            },
-            err => this.reportError(err),
-            ()  => {
-                if (changesApplied) {
-                    this.emitReloadRequest();
+            .pipe(concatMap(id => {
+                this.addBillingDialog.xactId = id;
+                return this.addBillingDialog.open();
+            }))
+            .subscribe(
+                changes => {
+                    if (changes) { changesApplied = true; }
+                },
+                (err: unknown) => this.reportError(err),
+                ()  => {
+                    if (changesApplied) {
+                        this.emitReloadRequest();
+                    }
                 }
-            }
-        );
+            );
     }
 
     showRecentCircs(rows: CircGridEntry[]) {

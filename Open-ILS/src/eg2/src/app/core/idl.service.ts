@@ -1,7 +1,7 @@
 import {Injectable} from '@angular/core';
 
 // Added globally by /IDL2js
-declare var _preload_fieldmapper_IDL: Object;
+declare var _preload_fieldmapper_IDL: Object; // eslint-disable-line no-var
 
 /**
  * Every IDL object class implements this interface.

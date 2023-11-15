@@ -42,18 +42,18 @@ export class ServerStoreService {
             'open-ils.actor.settings.apply.user_or_ws',
             this.auth.token(), setting)
 
-        .toPromise().then(appliedCount => {
+            .toPromise().then(appliedCount => {
 
-            if (Number(appliedCount) <= 0) { // no value applied
-                return Promise.reject(
-                    `No user or workstation setting type exists for: "${key}".\n` +
+                if (Number(appliedCount) <= 0) { // no value applied
+                    return Promise.reject(
+                        `No user or workstation setting type exists for: "${key}".\n` +
                     'Create a ws/user setting type or use setLocalItem() to ' +
                     'store the value locally.'
-                );
-            }
+                    );
+                }
 
-            return this.addSettingsToDb(setting);
-        });
+                return this.addSettingsToDb(setting);
+            });
     }
 
     // Returns a single setting value
@@ -111,36 +111,36 @@ export class ServerStoreService {
         });
 
         return this.getSettingsFromDb(dbKeys) // Also appends to local cache.
-        .then(dbValues => values = Object.assign(values, dbValues))
-        .then(_ => {
+            .then(dbValues => values = Object.assign(values, dbValues))
+            .then(_ => {
 
-            const serverKeys = [];
-            keys.forEach(key => {
-                if (!Object.keys(values).includes(key)) {
-                    serverKeys.push(key);
-                }
-            });
+                const serverKeys = [];
+                keys.forEach(key => {
+                    if (!Object.keys(values).includes(key)) {
+                        serverKeys.push(key);
+                    }
+                });
 
-            if (serverKeys.length === 0) { return values; }
+                if (serverKeys.length === 0) { return values; }
 
-            return this.net.request(
-                'open-ils.actor',
-                'open-ils.actor.settings.retrieve',
-                serverKeys, this.auth.token()
+                return this.net.request(
+                    'open-ils.actor',
+                    'open-ils.actor.settings.retrieve',
+                    serverKeys, this.auth.token()
 
-            ).pipe(tap((summary: ServerSettingSummary) => {
-                this.cache[summary.name] =
+                ).pipe(tap((summary: ServerSettingSummary) => {
+                    this.cache[summary.name] =
                     values[summary.name] = summary.value;
 
-            })).toPromise().then(__ => {
+                })).toPromise().then(__ => {
 
-                const dbSets: any = {};
-                serverKeys.forEach(sKey => dbSets[sKey] = values[sKey]);
+                    const dbSets: any = {};
+                    serverKeys.forEach(sKey => dbSets[sKey] = values[sKey]);
 
-                return this.addSettingsToDb(dbSets);
+                    return this.addSettingsToDb(dbSets);
 
+                });
             });
-        });
     }
 
     removeItem(key: string): Promise<any> {

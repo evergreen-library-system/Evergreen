@@ -1,11 +1,10 @@
 import {Injectable, EventEmitter, TemplateRef} from '@angular/core';
-import {tap} from 'rxjs/operators';
 import {StoreService} from '@eg/core/store.service';
 import {LocaleService} from '@eg/core/locale.service';
 import {AuthService} from '@eg/core/auth.service';
 
-declare var js2JSON: (jsThing: any) => string;
-declare var OpenSRF;
+declare var js2JSON: (jsThing: any) => string; // eslint-disable-line no-var
+declare var OpenSRF; // eslint-disable-line no-var
 
 const PRINT_TEMPLATE_PATH = '/print_template';
 
@@ -87,6 +86,7 @@ export class PrintService {
             formData.append('client_timezone', OpenSRF.tz);
         }
 
+        /* eslint-disable no-magic-numbers */
         return new Promise((resolve, reject) => {
             const xhttp = new XMLHttpRequest();
             xhttp.onreadystatechange = function() {
@@ -106,6 +106,7 @@ export class PrintService {
             xhttp.open('POST', PRINT_TEMPLATE_PATH, true);
             xhttp.send(formData);
         });
+        /* eslint-enable no-magic-numbers */
 
     }
 }

@@ -12,9 +12,9 @@ import {BasketService} from '@eg/share/catalog/basket.service';
 import {CourseService} from '@eg/staff/share/course.service';
 
 @Component({
-  selector: 'eg-catalog-result-record',
-  templateUrl: 'record.component.html',
-  styleUrls: ['record.component.css']
+    selector: 'eg-catalog-result-record',
+    templateUrl: 'record.component.html',
+    styleUrls: ['record.component.css']
 })
 export class ResultRecordComponent implements OnInit, OnDestroy {
 

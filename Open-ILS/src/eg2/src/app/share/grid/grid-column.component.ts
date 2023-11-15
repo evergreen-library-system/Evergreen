@@ -3,8 +3,8 @@ import {GridColumn} from './grid';
 import {GridComponent} from './grid.component';
 
 @Component({
-  selector: 'eg-grid-column',
-  template: '<ng-template></ng-template>'
+    selector: 'eg-grid-column',
+    template: '<ng-template></ng-template>'
 })
 
 export class GridColumnComponent implements OnInit {

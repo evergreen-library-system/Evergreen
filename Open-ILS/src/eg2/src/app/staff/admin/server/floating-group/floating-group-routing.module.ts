@@ -6,14 +6,14 @@ import {FloatingGroupComponent} from './floating-group.component';
 const routes: Routes = [{
     path: ':id',
     component: EditFloatingGroupComponent
-  }, {
+}, {
     path: '',
     component: FloatingGroupComponent
 }];
 
 @NgModule({
-  imports: [RouterModule.forChild(routes)],
-  exports: [RouterModule]
+    imports: [RouterModule.forChild(routes)],
+    exports: [RouterModule]
 })
 
 export class FloatingGroupRoutingModule {}

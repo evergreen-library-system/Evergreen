@@ -20,12 +20,12 @@ import {map, mergeMap} from 'rxjs/operators';
 import {Observable, forkJoin, of} from 'rxjs';
 
 @Component({
-  selector: 'eg-fund-details-dialog',
-  templateUrl: './fund-details-dialog.component.html'
+    selector: 'eg-fund-details-dialog',
+    templateUrl: './fund-details-dialog.component.html'
 })
 
 export class FundDetailsDialogComponent
-  extends DialogComponent implements OnInit {
+    extends DialogComponent implements OnInit {
 
     @Input() fundId: number;
     fund: IdlObject;
@@ -174,7 +174,7 @@ export class FundDetailsDialogComponent
             });
 
             return this.pcrud.search(idlClass, search, searchOps, reqOps)
-            .pipe(mergeMap((row) => this.doExtraFleshing(row)));
+                .pipe(mergeMap((row) => this.doExtraFleshing(row)));
         };
 
         return gridSource;
@@ -241,7 +241,7 @@ export class FundDetailsDialogComponent
                     .then(str => this.toast.success(str));
                 this._initRecord();
             },
-            error => {
+            (error: unknown) => {
                 this.updateFailedString.current()
                     .then(str => this.toast.danger(str));
             }
@@ -258,12 +258,12 @@ export class FundDetailsDialogComponent
         this.allocateToFundDialog.hiddenFieldsList = ['id', 'fund', 'allocator', 'create_time'];
         this.allocateToFundDialog.fieldOrder = 'funding_source,amount,note';
         this.allocateToFundDialog.open().subscribe(
-             result => {
+            result => {
                 this.successString.current()
                     .then(str => this.toast.success(str));
                 this._initRecord();
             },
-            error => {
+            (error: unknown) => {
                 this.updateFailedString.current()
                     .then(str => this.toast.danger(str));
             }

@@ -1,4 +1,5 @@
-import {Injectable, EventEmitter} from '@angular/core';
+/* eslint-disable no-magic-numbers */
+import {Injectable} from '@angular/core';
 import {OrgService} from '@eg/core/org.service';
 
 /*

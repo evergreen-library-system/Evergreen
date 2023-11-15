@@ -1,3 +1,4 @@
+/* eslint-disable rxjs/no-nested-subscribe */
 import { Observable, merge, throwError } from 'rxjs';
 import { tap, switchMap } from 'rxjs/operators';
 import {Injectable} from '@angular/core';
@@ -69,20 +70,20 @@ export class CourseService {
         return new Promise((resolve, reject) => {
 
             return this.pcrud.search('acmcm', {item: copy_id})
-            .subscribe(materials => {
-                if (materials) {
-                    id_list.push(materials.course());
-                }
-            }, err => {
-                console.debug(err);
-                reject(err);
-            }, () => {
-                if (id_list.length) {
-                    return this.getCourses(id_list).then(courses => {
-                        resolve(courses);
-                    });
-                }
-            });
+                .subscribe(materials => {
+                    if (materials) {
+                        id_list.push(materials.course());
+                    }
+                }, (err: unknown) => {
+                    console.debug(err);
+                    reject(err);
+                }, () => {
+                    if (id_list.length) {
+                        return this.getCourses(id_list).then(courses => {
+                            resolve(courses);
+                        });
+                    }
+                });
         });
     }
 
@@ -106,11 +107,11 @@ export class CourseService {
         ).pipe(tap(material => {
             courseIds.add(material.course());
         })).toPromise()
-        .then(() => {
-            if (courseIds.size) {
-                return this.getCourses(Array.from(courseIds));
-            }
-        });
+            .then(() => {
+                if (courseIds.size) {
+                    return this.getCourses(Array.from(courseIds));
+                }
+            });
     }
 
     // Creating a new acmcm Entry
@@ -173,14 +174,14 @@ export class CourseService {
 
             this.pcrud.search('acmcm', {course: course_ids}).subscribe(material => {
                 deleteRequest$.push(this.net.request(
-                  'open-ils.courses', 'open-ils.courses.detach_material',
-                  this.auth.token(), material.id()));
-            }, err => {
+                    'open-ils.courses', 'open-ils.courses.detach_material',
+                    this.auth.token(), material.id()));
+            }, (err: unknown) => {
                 reject(err);
             }, () => {
                 merge(...deleteRequest$).subscribe(val => {
                     console.log(val);
-                }, err => {
+                }, (err: unknown) => {
                     reject(err);
                 }, () => {
                     resolve(courses);
@@ -212,26 +213,26 @@ export class CourseService {
                 u.course(user_ids);
                 this.pcrud.autoApply(user).subscribe(res => {
                     console.debug(res);
-                }, err => {
+                }, (err: unknown) => {
                     reject(err);
                 }, () => {
                     resolve(user);
                 });
-            }, err => {
+            }, (err: unknown) => {
                 reject(err);
             }, () => {
                 resolve(user_ids);
             });
         });
     }
-    
+
     removeNonPublicUsers(courseID: Number) {
         return new Promise((resolve, reject) => {
             const acmcu_ids = [];
-            
+
             this.getUsers([courseID]).subscribe(nonPublicUser => {
-                if(nonPublicUser && nonPublicUser.usr_role().is_public() !== 't') acmcu_ids.push(nonPublicUser.id());
-            }, err => {
+                if(nonPublicUser && nonPublicUser.usr_role().is_public() !== 't') {acmcu_ids.push(nonPublicUser.id());}
+            }, (err: unknown) => {
                 reject(err);
             }, () => {
                 resolve(acmcu_ids);
@@ -240,11 +241,11 @@ export class CourseService {
                         userToDelete.isdeleted(true);
                         this.pcrud.autoApply(userToDelete).subscribe(val => {
                             console.debug('deleted: ' + val);
-                        }, err => {
-                            console.log("Error: " + err);
+                        }, (err: unknown) => {
+                            console.log('Error: ' + err);
                             reject(err);
                         }, () => {
-                            console.log("Resolving");
+                            console.log('Resolving');
                             resolve(userToDelete);
                         });
                     });
@@ -269,7 +270,7 @@ export class CourseService {
             // Not using open-ils.cat.transfer_copies_to_volume,
             // because we don't necessarily want acp.circ_lib and
             // acn.owning_lib to match in this scenario
-            item.call_number(res.acn_id)
+            item.call_number(res.acn_id);
             return this.pcrud.update(item);
         }));
 

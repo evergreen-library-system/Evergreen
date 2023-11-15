@@ -1,25 +1,22 @@
-import {Component, Input, ViewChild, TemplateRef, OnInit} from '@angular/core';
+import {Component, Input, ViewChild, OnInit} from '@angular/core';
 import {DialogComponent} from '@eg/share/dialog/dialog.component';
-import {NgForm} from '@angular/forms';
 import {IdlService, IdlObject} from '@eg/core/idl.service';
 import {EventService} from '@eg/core/event.service';
 import {NetService} from '@eg/core/net.service';
 import {AuthService} from '@eg/core/auth.service';
 import {PcrudService} from '@eg/core/pcrud.service';
-import {GridDataSource} from '@eg/share/grid/grid';
-import {Pager} from '@eg/share/util/pager';
 import {NgbModal} from '@ng-bootstrap/ng-bootstrap';
 import {StringComponent} from '@eg/share/string/string.component';
 import {ToastService} from '@eg/share/toast/toast.service';
 import {PermService} from '@eg/core/perm.service';
 
 @Component({
-  selector: 'eg-exchange-rates-dialog',
-  templateUrl: './exchange-rates-dialog.component.html'
+    selector: 'eg-exchange-rates-dialog',
+    templateUrl: './exchange-rates-dialog.component.html'
 })
 
 export class ExchangeRatesDialogComponent
-  extends DialogComponent implements OnInit {
+    extends DialogComponent implements OnInit {
 
     @Input() currencyCode: string;
     currency: IdlObject;
@@ -72,21 +69,23 @@ export class ExchangeRatesDialogComponent
             flesh_fields: {'acqexr': ['to_currency']},
         }, {}).subscribe(
             exr => this.existingRatios[exr.to_currency().code()] = exr,
-            err => {},
+            (err: unknown) => {},
             () => this.pcrud.search('acqexr', { to_currency: this.currencyCode }, {
-                                     flesh: 1,
-                                     flesh_fields: {'acqexr': ['from_currency']},
-                                   }, {}).subscribe(
-                    exr => this.existingInverseRatios[exr.from_currency().code()] = exr,
-                    err => {},
-                    () =>  this.pcrud.search('acqct', { code: { '!=': this.currencyCode } },
-                                            { order_by: 'code ASC' }, { atomic: true })
-                                           .subscribe(
-                                             currs => this.otherCurrencies = currs,
-                                             err => {},
-                                           () => { this._mergeCurrenciesAndRates(); this.doneLoading = true; }
-                                           )
+                flesh: 1,
+                flesh_fields: {'acqexr': ['from_currency']},
+            // eslint-disable-next-line rxjs/no-nested-subscribe
+            }, {}).subscribe(
+                exr => this.existingInverseRatios[exr.from_currency().code()] = exr,
+                (err: unknown) => {},
+                () =>  this.pcrud.search('acqct', { code: { '!=': this.currencyCode } },
+                    { order_by: 'code ASC' }, { atomic: true })
+                    // eslint-disable-next-line rxjs/no-nested-subscribe
+                    .subscribe(
+                        currs => this.otherCurrencies = currs,
+                        (err: unknown) => {},
+                        () => { this._mergeCurrenciesAndRates(); this.doneLoading = true; }
                     )
+            )
         );
     }
 

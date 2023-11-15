@@ -11,8 +11,8 @@ import {LineitemService} from '../lineitem/lineitem.service';
 import {PrintService} from '@eg/share/print/print.service';
 
 @Component({
-  selector: 'eg-acq-manage-claims-dialog',
-  templateUrl: './manage-claims-dialog.component.html'
+    selector: 'eg-acq-manage-claims-dialog',
+    templateUrl: './manage-claims-dialog.component.html'
 })
 
 export class ManageClaimsDialogComponent extends DialogComponent {
@@ -72,8 +72,8 @@ export class ManageClaimsDialogComponent extends DialogComponent {
     claimItems() {
         if (!this.canPerformClaim()) { return; }
         const lidsToClaim = this.li.lineitem_details()
-                                .filter(x => x._selected_for_claim)
-                                .map(x => x.id());
+            .filter(x => x._selected_for_claim)
+            .map(x => x.id());
         this.net.request(
             'open-ils.acq',
             'open-ils.acq.claim.lineitem_detail.atomic',

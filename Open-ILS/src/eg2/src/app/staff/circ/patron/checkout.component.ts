@@ -1,8 +1,7 @@
-import {Component, OnInit, AfterViewInit, Input, ViewChild} from '@angular/core';
-import {Router, ActivatedRoute, ParamMap} from '@angular/router';
+import {Component, OnInit, AfterViewInit, ViewChild} from '@angular/core';
+import {Router} from '@angular/router';
 import {Subscription, Observable, empty, of, from} from 'rxjs';
-import {tap, switchMap} from 'rxjs/operators';
-import {NgbNav, NgbNavChangeEvent} from '@ng-bootstrap/ng-bootstrap';
+import {switchMap} from 'rxjs/operators';
 import {IdlObject} from '@eg/core/idl.service';
 import {OrgService} from '@eg/core/org.service';
 import {PcrudService} from '@eg/core/pcrud.service';
@@ -10,18 +9,18 @@ import {NetService} from '@eg/core/net.service';
 import {PatronService} from '@eg/staff/share/patron/patron.service';
 import {PatronContextService, CircGridEntry} from './patron.service';
 import {CheckoutParams, CheckoutResult, CircService
-    } from '@eg/staff/share/circ/circ.service';
+} from '@eg/staff/share/circ/circ.service';
 import {PromptDialogComponent} from '@eg/share/dialog/prompt.component';
-import {GridDataSource, GridColumn, GridCellTextGenerator} from '@eg/share/grid/grid';
+import {GridDataSource, GridCellTextGenerator} from '@eg/share/grid/grid';
 import {GridComponent} from '@eg/share/grid/grid.component';
 import {Pager} from '@eg/share/util/pager';
 import {StoreService} from '@eg/core/store.service';
 import {ServerStoreService} from '@eg/core/server-store.service';
 import {AudioService} from '@eg/share/util/audio.service';
 import {CopyAlertsDialogComponent
-    } from '@eg/staff/share/holdings/copy-alerts-dialog.component';
+} from '@eg/staff/share/holdings/copy-alerts-dialog.component';
 import {BarcodeSelectComponent
-    } from '@eg/staff/share/barcodes/barcode-select.component';
+} from '@eg/staff/share/barcodes/barcode-select.component';
 import {ToastService} from '@eg/share/toast/toast.service';
 import {StringComponent} from '@eg/share/string/string.component';
 import {AuthService} from '@eg/core/auth.service';
@@ -30,12 +29,13 @@ import {PrintService} from '@eg/share/print/print.service';
 const SESSION_DUE_DATE = 'eg.circ.checkout.is_until_logout';
 
 @Component({
-  templateUrl: 'checkout.component.html',
-  selector: 'eg-patron-checkout'
+    templateUrl: 'checkout.component.html',
+    selector: 'eg-patron-checkout'
 })
 export class CheckoutComponent implements OnInit, AfterViewInit {
     static autoId = 0;
 
+    // eslint-disable-next-line no-magic-numbers
     maxNoncats = 99; // Matches AngJS version
     checkoutNoncat: IdlObject = null;
     checkoutBarcode = '';
@@ -50,15 +50,15 @@ export class CheckoutComponent implements OnInit, AfterViewInit {
     private copiesInFlight: {[barcode: string]: boolean} = {};
 
     @ViewChild('nonCatCount')
-        private nonCatCount: PromptDialogComponent;
+    private nonCatCount: PromptDialogComponent;
     @ViewChild('checkoutsGrid')
-        private checkoutsGrid: GridComponent;
+    private checkoutsGrid: GridComponent;
     @ViewChild('copyAlertsDialog')
-        private copyAlertsDialog: CopyAlertsDialogComponent;
+    private copyAlertsDialog: CopyAlertsDialogComponent;
     @ViewChild('barcodeSelect')
-        private barcodeSelect: BarcodeSelectComponent;
+    private barcodeSelect: BarcodeSelectComponent;
     @ViewChild('receiptEmailed')
-        private receiptEmailed: StringComponent;
+    private receiptEmailed: StringComponent;
 
     constructor(
         private router: Router,
@@ -93,15 +93,15 @@ export class CheckoutComponent implements OnInit, AfterViewInit {
         }
 
         this.serverStore.getItem('circ.staff_client.do_not_auto_attempt_print')
-        .then(noPrint => {
-            this.printOnComplete = !(
-                noPrint &&
+            .then(noPrint => {
+                this.printOnComplete = !(
+                    noPrint &&
                 noPrint.includes('Checkout')
-            );
-        });
+                );
+            });
 
         this.serverStore.getItem('circ.checkout.strict_barcode')
-        .then(strict => this.strictBarcode = strict);
+            .then(strict => this.strictBarcode = strict);
     }
 
     ngAfterViewInit() {
@@ -139,16 +139,16 @@ export class CheckoutComponent implements OnInit, AfterViewInit {
             if (this.dueDateOptions > 0) { params.due_date = this.dueDate; }
 
             return this.barcodeSelect.getBarcode('asset', this.checkoutBarcode)
-            .then(selection => {
-                if (selection) {
-                    params.copy_id = selection.id;
-                    params.copy_barcode = selection.barcode;
-                    return params;
-                } else {
+                .then(selection => {
+                    if (selection) {
+                        params.copy_id = selection.id;
+                        params.copy_barcode = selection.barcode;
+                        return params;
+                    } else {
                     // User canceled the multi-match selection dialog.
-                    return null;
-                }
-            });
+                        return null;
+                    }
+                });
         }
 
         return Promise.resolve(null);
@@ -181,16 +181,16 @@ export class CheckoutComponent implements OnInit, AfterViewInit {
             return this.circ.checkout(collectedParams);
         })
 
-        .then((result: CheckoutResult) => {
-            if (result && result.success) {
-                this.gridifyResult(result);
-            }
-            delete this.copiesInFlight[barcode];
-            this.resetForm();
-            return result;
-        })
+            .then((result: CheckoutResult) => {
+                if (result && result.success) {
+                    this.gridifyResult(result);
+                }
+                delete this.copiesInFlight[barcode];
+                this.resetForm();
+                return result;
+            })
 
-        .finally(() => delete this.copiesInFlight[barcode]);
+            .finally(() => delete this.copiesInFlight[barcode]);
     }
 
     resetForm() {
@@ -242,22 +242,22 @@ export class CheckoutComponent implements OnInit, AfterViewInit {
 
     noncatPrompt(): Observable<number> {
         return this.nonCatCount.open()
-        .pipe(switchMap(count => {
+            .pipe(switchMap(count => {
 
-            if (count === null || count === undefined) {
-                return empty(); // dialog canceled
-            }
+                if (count === null || count === undefined) {
+                    return empty(); // dialog canceled
+                }
 
-            // Even though the prompt has a type and min/max values,
-            // users can still manually enter bogus values.
-            count = Number(count);
-            if (count > 0 && count < this.maxNoncats) {
-                return of(count);
-            } else {
+                // Even though the prompt has a type and min/max values,
+                // users can still manually enter bogus values.
+                count = Number(count);
+                if (count > 0 && count < this.maxNoncats) {
+                    return of(count);
+                } else {
                 // Bogus value.  Try again
-                return this.noncatPrompt();
-            }
-        }));
+                    return this.noncatPrompt();
+                }
+            }));
     }
 
     setDueDate(iso: string) {
@@ -388,9 +388,9 @@ export class CheckoutComponent implements OnInit, AfterViewInit {
             // Wait for the print job to be queued before redirecting
             const sub: Subscription =
                 this.printer.printJobQueued$.subscribe(_ => {
-                sub.unsubscribe();
-                this.doneRedirect();
-            });
+                    sub.unsubscribe();
+                    this.doneRedirect();
+                });
         }
 
         this.printer.print({

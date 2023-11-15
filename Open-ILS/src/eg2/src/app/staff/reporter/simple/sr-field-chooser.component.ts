@@ -30,7 +30,7 @@ export class SRFieldChooserComponent {
     }
 
     fieldIsSelected(field: IdlObject) {
-     return this.selectedFields.findIndex(el => el.name === field.name) > -1;
+        return this.selectedFields.findIndex(el => el.name === field.name) > -1;
     }
 
     hideField(field: IdlObject) {
@@ -73,19 +73,19 @@ export class SRFieldChooserComponent {
 
     moveUp(idx: number) {
         if ( idx > 0 ) { // should always be the case, but we check anyway
-        const hold: IdlObject = this.selectedFields[idx - 1];
-        this.selectedFields[idx - 1] = this.selectedFields[idx];
-        this.selectedFields[idx] = hold;
-        this.selectedFieldsChange.emit(this.selectedFields);
+            const hold: IdlObject = this.selectedFields[idx - 1];
+            this.selectedFields[idx - 1] = this.selectedFields[idx];
+            this.selectedFields[idx] = hold;
+            this.selectedFieldsChange.emit(this.selectedFields);
         }
     }
 
     moveDown(idx: number) {
         if ( idx < this.selectedFields.length ) { // see above comment
-        const hold: IdlObject = this.selectedFields[idx + 1];
-        this.selectedFields[idx + 1] = this.selectedFields[idx];
-        this.selectedFields[idx] = hold;
-        this.selectedFieldsChange.emit(this.selectedFields);
+            const hold: IdlObject = this.selectedFields[idx + 1];
+            this.selectedFields[idx + 1] = this.selectedFields[idx];
+            this.selectedFields[idx] = hold;
+            this.selectedFieldsChange.emit(this.selectedFields);
         }
     }
 

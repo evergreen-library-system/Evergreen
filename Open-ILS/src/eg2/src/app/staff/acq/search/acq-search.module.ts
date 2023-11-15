@@ -15,24 +15,24 @@ import {AcqSearchService} from './acq-search.service';
 import {LineitemModule} from '@eg/staff/acq/lineitem/lineitem.module';
 
 @NgModule({
-  declarations: [
-    AcqSearchComponent,
-    AcqSearchFormComponent,
-    LineitemResultsComponent,
-    PurchaseOrderResultsComponent,
-    InvoiceResultsComponent,
-    PicklistResultsComponent,
-    PicklistCreateDialogComponent,
-    PicklistCloneDialogComponent,
-    PicklistDeleteDialogComponent,
-    PicklistMergeDialogComponent
-  ],
-  imports: [
-    StaffCommonModule,
-    AcqSearchRoutingModule,
-    LineitemModule
-  ],
-  providers: [AcqSearchService]
+    declarations: [
+        AcqSearchComponent,
+        AcqSearchFormComponent,
+        LineitemResultsComponent,
+        PurchaseOrderResultsComponent,
+        InvoiceResultsComponent,
+        PicklistResultsComponent,
+        PicklistCreateDialogComponent,
+        PicklistCloneDialogComponent,
+        PicklistDeleteDialogComponent,
+        PicklistMergeDialogComponent
+    ],
+    imports: [
+        StaffCommonModule,
+        AcqSearchRoutingModule,
+        LineitemModule
+    ],
+    providers: [AcqSearchService]
 })
 
 export class AcqSearchModule {

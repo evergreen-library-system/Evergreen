@@ -5,12 +5,12 @@ import {PcrudService} from '@eg/core/pcrud.service';
 import {NgbModal} from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
-  selector: 'eg-edi-attr-set-edit-dialog',
-  templateUrl: './edi-attr-set-edit-dialog.component.html'
+    selector: 'eg-edi-attr-set-edit-dialog',
+    templateUrl: './edi-attr-set-edit-dialog.component.html'
 })
 
 export class EdiAttrSetEditDialogComponent
-  extends DialogComponent implements OnInit {
+    extends DialogComponent implements OnInit {
 
     @Input() mode = 'create';
     @Input() attrSetId: number;
@@ -127,12 +127,13 @@ export class EdiAttrSetEditDialogComponent
                     }
                 });
             }
+            // eslint-disable-next-line rxjs/no-nested-subscribe
             this.pcrud.autoApply(updates).subscribe(
                 ret => this.close(true),
-                err => this.close(err),
+                (err: unknown) => this.close(err),
                 () => this.close(true)
             );
-        }, err => this.close(false));
+        }, (err: unknown) => this.close(false));
     }
 
 }

@@ -19,8 +19,8 @@ const PERMS = ['UPDATE_PATRON_ACTIVE_CARD', 'UPDATE_PATRON_PRIMARY_CARD'];
 /* Add/Remove Secondary Groups */
 
 @Component({
-  selector: 'eg-patron-barcodes',
-  templateUrl: 'barcodes.component.html'
+    selector: 'eg-patron-barcodes',
+    templateUrl: 'barcodes.component.html'
 })
 
 export class PatronBarcodesDialogComponent extends DialogComponent {

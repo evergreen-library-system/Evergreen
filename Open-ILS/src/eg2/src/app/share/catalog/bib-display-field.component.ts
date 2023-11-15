@@ -12,10 +12,10 @@ import {BibRecordSummary} from '@eg/share/catalog/bib-record.service';
 const PAD_SPACE = ' '; // U+2007
 
 @Component({
-  selector: 'eg-bib-display-field',
-  templateUrl: 'bib-display-field.component.html',
-  styleUrls: ['bib-display-field.component.css'],
-  encapsulation: ViewEncapsulation.None // required for search highlighting
+    selector: 'eg-bib-display-field',
+    templateUrl: 'bib-display-field.component.html',
+    styleUrls: ['bib-display-field.component.css'],
+    encapsulation: ViewEncapsulation.None // required for search highlighting
 })
 export class BibDisplayFieldComponent {
 

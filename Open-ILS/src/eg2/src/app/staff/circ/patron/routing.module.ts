@@ -12,56 +12,56 @@ const routes: Routes = [{
     path: '',
     pathMatch: 'full',
     redirectTo: 'search'
-  }, {
+}, {
     path: 'event-log',
     loadChildren: () =>
-      import('./event-log/event-log.module').then(m => m.EventLogModule)
-  }, {
+        import('./event-log/event-log.module').then(m => m.EventLogModule)
+}, {
     path: 'register',
     component: RegisterPatronComponent,
     resolve: {resolver : PatronResolver}
-  }, {
+}, {
     path: 'last',
     component: LastPatronComponent,
     resolve: {resolver : PatronResolver}
-  }, {
+}, {
     path: 'register/clone/:cloneId',
     component: RegisterPatronComponent,
     resolve: {resolver : PatronResolver}
-  }, {
+}, {
     path: 'register/stage/:stageUsername',
     component: RegisterPatronComponent,
     resolve: {resolver : PatronResolver}
-  }, {
+}, {
     path: 'credentials',
     component: TestPatronPasswordComponent
-  }, {
+}, {
     path: 'search',
     component: PatronComponent,
     resolve: {resolver : PatronResolver}
-  }, {
+}, {
     path: 'search/recents',
     component: PatronComponent,
     resolve: {resolver : PatronResolver},
     data: {showRecentPatrons: true}
-  }, {
+}, {
     path: 'bcsearch',
     component: BcSearchComponent
-  }, {
+}, {
     path: 'bcsearch/:barcode',
     component: BcSearchComponent
-  }, {
+}, {
     path: ':id',
     redirectTo: ':id/checkout'
-  }, {
+}, {
     path: ':id/:tab/:xactId/statement',
     component: PatronComponent,
     resolve: {resolver : PatronResolver}
-  }, {
+}, {
     path: ':id/:tab/history/:billingHistoryTab',
     component: PatronComponent,
     resolve: {resolver : PatronResolver}
-  }, {
+}, {
     path: ':id/:tab',
     component: PatronComponent,
     resolve: {resolver : PatronResolver},
@@ -69,8 +69,8 @@ const routes: Routes = [{
 }];
 
 @NgModule({
-  imports: [RouterModule.forChild(routes)],
-  exports: [RouterModule]
+    imports: [RouterModule.forChild(routes)],
+    exports: [RouterModule]
 })
 
 export class PatronRoutingModule {}

@@ -1,6 +1,6 @@
-import {Component, OnInit, Input, Output, ViewChild} from '@angular/core';
-import {merge, from, Observable} from 'rxjs';
-import {tap, take, switchMap} from 'rxjs/operators';
+import {Component, OnInit, Input, ViewChild} from '@angular/core';
+import {Observable} from 'rxjs';
+import {tap, switchMap} from 'rxjs/operators';
 import {IdlService, IdlObject} from '@eg/core/idl.service';
 import {OrgService} from '@eg/core/org.service';
 import {ServerStoreService} from '@eg/core/server-store.service';
@@ -22,8 +22,8 @@ import {StringComponent} from '@eg/share/string/string.component';
  */
 
 @Component({
-  selector: 'eg-patron-penalty-dialog',
-  templateUrl: 'penalty-dialog.component.html'
+    selector: 'eg-patron-penalty-dialog',
+    templateUrl: 'penalty-dialog.component.html'
 })
 
 export class PatronPenaltyDialogComponent
@@ -32,9 +32,11 @@ export class PatronPenaltyDialogComponent
     @Input() patronId: number;
     @Input() penaltyNote = '';
 
+    /* eslint-disable no-magic-numbers */
     ALERT_NOTE = 20;
     SILENT_NOTE = 21;
     STAFF_CHR = 25;
+    /* eslint-enable no-magic-numbers */
 
     penalty: IdlObject; // modifying an existing penalty
     penaltyTypes: IdlObject[];
@@ -65,6 +67,7 @@ export class PatronPenaltyDialogComponent
 
     ngOnInit() {
         this.onOpen$.subscribe(_ =>
+            // eslint-disable-next-line rxjs/no-nested-subscribe
             this.init().subscribe(__ => this.dataLoaded = true));
     }
 
@@ -93,7 +96,7 @@ export class PatronPenaltyDialogComponent
         }
 
         this.store.getItem('ui.staff.require_initials.patron_standing_penalty')
-        .then(require => this.requireInitials = require);
+            .then(require => this.requireInitials = require);
 
         const obs1 = this.pcrud.retrieve('au', this.patronId)
             .pipe(tap(usr => this.patron = usr));
@@ -103,10 +106,10 @@ export class PatronPenaltyDialogComponent
         return obs1.pipe(switchMap(_ => {
             return this.pcrud.search('csp', {id: {'>': 100}}, {}, {atomic: true})
 
-            .pipe(tap(ptypes => {
-                this.penaltyTypes =
+                .pipe(tap(ptypes => {
+                    this.penaltyTypes =
                     ptypes.sort((a, b) => a.label() < b.label() ? -1 : 1);
-            }));
+                }));
         }));
     }
 
@@ -118,16 +121,16 @@ export class PatronPenaltyDialogComponent
             this.penaltyTypeFromSelect || this.penaltyTypeFromButton);
 
         this.pcrud.update(this.penalty).toPromise()
-        .then(ok => {
-            if (!ok) {
-                this.errorMsg.current().then(msg => this.toast.danger(msg));
-                this.error('Update failed', true);
-            } else {
-                this.successMsg.current().then(msg => this.toast.success(msg));
-                this.penalty = null;
-                this.close(ok);
-            }
-        });
+            .then(ok => {
+                if (!ok) {
+                    this.errorMsg.current().then(msg => this.toast.danger(msg));
+                    this.error('Update failed', true);
+                } else {
+                    this.successMsg.current().then(msg => this.toast.success(msg));
+                    this.penalty = null;
+                    this.close(ok);
+                }
+            });
     }
 
     apply() {

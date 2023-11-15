@@ -1,3 +1,4 @@
+/* eslint-disable rxjs/no-implicit-any-catch, rxjs/no-nested-subscribe */
 import {Component, Input, OnInit, TemplateRef, ViewChild} from '@angular/core';
 import {ActivatedRoute} from '@angular/router';
 import {Location} from '@angular/common';
@@ -14,7 +15,7 @@ import {OrgService} from '@eg/core/org.service';
 import {PermService} from '@eg/core/perm.service';
 import {AuthService} from '@eg/core/auth.service';
 import {FmRecordEditorComponent, FmFieldOptions
-    } from '@eg/share/fm-editor/fm-editor.component';
+} from '@eg/share/fm-editor/fm-editor.component';
 import {StringComponent} from '@eg/share/string/string.component';
 import {OrgFamily} from '@eg/share/org-family-select/org-family-select.component';
 
@@ -380,7 +381,7 @@ export class AdminPageComponent implements OnInit {
                     this.grid.reload();
                     resolve(result);
                 },
-                error => {
+                (error: unknown) => {
                     this.updateFailedString.current()
                         .then(str => this.toast.danger(str));
                     reject(error);
@@ -409,7 +410,7 @@ export class AdminPageComponent implements OnInit {
                 this.undeleteSuccessString.current()
                     .then(str => this.toast.success(str));
             },
-            err => {
+            (err: unknown) => {
                 this.undeleteFailedString.current()
                     .then(str => this.toast.danger(str));
             },
@@ -426,7 +427,7 @@ export class AdminPageComponent implements OnInit {
                         this.deleteSuccessString.current()
                             .then(str => this.toast.success(str));
                     },
-                    err => {
+                    (err: unknown) => {
                         this.deleteFailedString.current()
                             .then(str => this.toast.danger(str));
                     },
@@ -478,7 +479,7 @@ export class AdminPageComponent implements OnInit {
                     .then(str => this.toast.success(str));
                 this.grid.reload();
             },
-            rejection => {
+            (rejection: any) => {
                 if (!rejection.dismissed) {
                     this.createErrString.current()
                         .then(str => this.toast.danger(str));
@@ -573,7 +574,7 @@ export class AdminPageComponent implements OnInit {
 
         const localField =
             cf.reltype === 'has_many' ?
-            (linkClass.field_map[cf.key].key || this.pkeyField) : cf.name;
+                (linkClass.field_map[cf.key].key || this.pkeyField) : cf.name;
 
         return row[localField]();
     }

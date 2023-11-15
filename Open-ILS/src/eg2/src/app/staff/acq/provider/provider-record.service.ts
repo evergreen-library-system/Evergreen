@@ -1,6 +1,5 @@
 import {Injectable} from '@angular/core';
-import {Observable} from 'rxjs';
-import {Subject} from 'rxjs';
+import {Observable, Subject} from 'rxjs';
 import {map, defaultIfEmpty} from 'rxjs/operators';
 import {PcrudService} from '@eg/core/pcrud.service';
 import {IdlService, IdlObject} from '@eg/core/idl.service';
@@ -73,16 +72,16 @@ export class ProviderRecordService {
             {
                 flesh: 3,
                 flesh_fields: { acqpro:   [
-                                            'attributes', 'holdings_subfields', 'contacts',
-                                            'addresses', 'provider_notes',
-                                            'edi_accounts', 'currency_type', 'edi_default'
-                                          ],
-                                acqpa:    ['provider'],
-                                acqpc:    ['provider', 'addresses'],
-                                acqphsm:  ['provider'],
-                                acqlipad: ['provider'],
-                                acqedi:   ['attr_set', 'provider'],
-                              }
+                    'attributes', 'holdings_subfields', 'contacts',
+                    'addresses', 'provider_notes',
+                    'edi_accounts', 'currency_type', 'edi_default'
+                ],
+                acqpa:    ['provider'],
+                acqpc:    ['provider', 'addresses'],
+                acqphsm:  ['provider'],
+                acqlipad: ['provider'],
+                acqedi:   ['attr_set', 'provider'],
+                }
             },
             {}
         ).pipe(defaultIfEmpty(emptyGuard), map(acqpro => {
@@ -117,19 +116,19 @@ export class ProviderRecordService {
 
     checkIfCanDelete(prov: ProviderRecord) {
         this.pcrud.search('acqpo', { provider: prov.id }, { limit: 1 }).toPromise()
-        .then(acqpo => {
-            if (!acqpo || acqpo.length === 0) {
-                this.pcrud.search('jub', { provider: prov.id }, { limit: 1 }).toPromise()
-                .then(jub => {
-                    if (!jub || jub.length === 0) {
-                        this.pcrud.search('acqinv', { provider: prov.id }, { limit: 1 }).toPromise()
-                        .then(acqinv => {
-                            prov.canDelete = true;
+            .then(acqpo => {
+                if (!acqpo || acqpo.length === 0) {
+                    this.pcrud.search('jub', { provider: prov.id }, { limit: 1 }).toPromise()
+                        .then(jub => {
+                            if (!jub || jub.length === 0) {
+                                this.pcrud.search('acqinv', { provider: prov.id }, { limit: 1 }).toPromise()
+                                    .then(acqinv => {
+                                        prov.canDelete = true;
+                                    });
+                            }
                         });
-                    }
-                });
-            }
-        });
+                }
+            });
     }
 
     checkIfCanAdmin(prov: ProviderRecord) {
@@ -170,7 +169,7 @@ export class ProviderRecordService {
                 result => {
                     resolve();
                 },
-                error => {
+                (error: unknown) => {
                     reject();
                 },
             );

@@ -1,13 +1,10 @@
 import {Component, OnInit, AfterViewInit} from '@angular/core';
-import {Observable} from 'rxjs';
-import {map, take} from 'rxjs/operators';
 import {ActivatedRoute, ParamMap} from '@angular/router';
-import {IdlObject} from '@eg/core/idl.service';
+import {IdlObject, IdlService} from '@eg/core/idl.service';
 import {NetService} from '@eg/core/net.service';
 import {AuthService} from '@eg/core/auth.service';
 import {ServerStoreService} from '@eg/core/server-store.service';
 import {PcrudService} from '@eg/core/pcrud.service';
-import {IdlService} from '@eg/core/idl.service';
 import {OrgService} from '@eg/core/org.service';
 import {PrintService} from '@eg/share/print/print.service';
 import {BroadcastService} from '@eg/share/util/broadcast.service';
@@ -34,7 +31,7 @@ const ORDER_IDENT_ATTRS = [
 ];
 
 @Component({
-  templateUrl: 'print.component.html'
+    templateUrl: 'print.component.html'
 })
 export class PrintComponent implements OnInit, AfterViewInit {
 
@@ -90,10 +87,10 @@ export class PrintComponent implements OnInit, AfterViewInit {
                 flesh_notes: true
             }
         })
-        .then(po => this.po = po)
-        .then(_ => this.sortLineItems())
-        .then(_ => this.populatePreview())
-        .then(_ => this.initDone = true);
+            .then(po => this.po = po)
+            .then(_ => this.sortLineItems())
+            .then(_ => this.populatePreview())
+            .then(_ => this.initDone = true);
     }
 
     sortLineItems(): Promise<any> {
@@ -126,8 +123,8 @@ export class PrintComponent implements OnInit, AfterViewInit {
         ).toPromise().then(response => {
             this.outlet.innerHTML = response.template_output().data();
         });
-// TODO: add enough fleshing so that server-side print templates can be used
-/*
+        // TODO: add enough fleshing so that server-side print templates can be used
+        /*
         return this.printer.compileRemoteTemplate({
             templateName: 'purchase_order',
             printContext: 'default',
@@ -152,12 +149,12 @@ export class PrintComponent implements OnInit, AfterViewInit {
 
         return this.net.request('open-ils.acq',
             'open-ils.acq.lineitem_note.cud.batch', this.auth.token(), notes)
-        .toPromise().then(_ => {
-            this.broadcaster.broadcast(
-                'eg.acq.lineitem.notes.update', {
-                lineitems: notes.map(n => Number(n.lineitem()))
+            .toPromise().then(_ => {
+                this.broadcaster.broadcast(
+                    'eg.acq.lineitem.notes.update', {
+                        lineitems: notes.map(n => Number(n.lineitem()))
+                    });
             });
-        });
     }
 
     printPo(closeTab?: boolean) {
@@ -171,6 +168,7 @@ export class PrintComponent implements OnInit, AfterViewInit {
                     setTimeout(() => {
                         window.close();
                         sub.unsubscribe();
+                    // eslint-disable-next-line no-magic-numbers
                     }, 2000); // allow for a time cushion past queueing.
                 }
             });
@@ -186,8 +184,8 @@ export class PrintComponent implements OnInit, AfterViewInit {
                 text: response.template_output().data()
             });
         });
-// TODO: add enough fleshing so that server-side print templates can be used
-/*
+        // TODO: add enough fleshing so that server-side print templates can be used
+        /*
         this.printer.print({
             templateName: 'purchase_order',
             printContext: 'default',

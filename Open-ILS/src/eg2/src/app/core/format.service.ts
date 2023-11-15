@@ -1,3 +1,4 @@
+/* eslint-disable no-case-declarations, no-magic-numbers */
 import {Injectable, Pipe, PipeTransform} from '@angular/core';
 import {DatePipe, DecimalPipe, getLocaleDateFormat, getLocaleTimeFormat, getLocaleDateTimeFormat, FormatWidth} from '@angular/common';
 import {IdlService, IdlObject} from '@eg/core/idl.service';
@@ -11,7 +12,7 @@ import {DateUtil} from '@eg/share/util/date';
  * Format IDL vield values for display.
  */
 
-declare var OpenSRF;
+declare var OpenSRF; // eslint-disable-line no-var
 
 export interface FormatParams {
     value: any;
@@ -214,7 +215,7 @@ export class FormatService {
         this.tzCache[orgId] = null;
 
         this.org.settings(['lib.timezone'], orgId)
-        .then(sets => this.tzCache[orgId] = sets['lib.timezone']);
+            .then(sets => this.tzCache[orgId] = sets['lib.timezone']);
 
         // Use the local timezone while we wait for the real value
         // to load from the server.
@@ -264,7 +265,7 @@ export class FormatService {
                 }
                 return moment.tz(date, format, false, timezone);
             }
-        return moment(new Date(date), timezone);
+            return moment(new Date(date), timezone);
         }
     }
 
@@ -286,7 +287,7 @@ export class FormatService {
                 original = template
                     .replace('{1}', date)
                     .replace('{0}', time)
-                    .replace(/\'(\w+)\'/, '[$1]');
+                    .replace(/'(\w+)'/, '[$1]');
                 break;
             }
             case 'medium': {
@@ -296,7 +297,7 @@ export class FormatService {
                 original = template
                     .replace('{1}', date)
                     .replace('{0}', time)
-                    .replace(/\'(\w+)\'/, '[$1]');
+                    .replace(/'(\w+)'/, '[$1]');
                 break;
             }
             case 'long': {
@@ -306,7 +307,7 @@ export class FormatService {
                 original = template
                     .replace('{1}', date)
                     .replace('{0}', time)
-                    .replace(/\'(\w+)\'/, '[$1]');
+                    .replace(/'(\w+)'/, '[$1]');
                 break;
             }
             case 'full': {
@@ -316,7 +317,7 @@ export class FormatService {
                 original = template
                     .replace('{1}', date)
                     .replace('{0}', time)
-                    .replace(/\'(\w+)\'/, '[$1]');
+                    .replace(/'(\w+)'/, '[$1]');
                 break;
             }
             case 'shortDate': {

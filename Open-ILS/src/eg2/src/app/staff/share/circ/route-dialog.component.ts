@@ -1,23 +1,19 @@
-import {Component, OnInit, Output, Input, ViewChild, EventEmitter} from '@angular/core';
-import {empty, of, from, Observable} from 'rxjs';
-import {tap, concatMap} from 'rxjs/operators';
-import {IdlService, IdlObject} from '@eg/core/idl.service';
+import {Component} from '@angular/core';
+import {of, from, Observable} from 'rxjs';
+import {concatMap} from 'rxjs/operators';
 import {PcrudService} from '@eg/core/pcrud.service';
 import {OrgService} from '@eg/core/org.service';
-import {CircService} from './circ.service';
-import {StringComponent} from '@eg/share/string/string.component';
-import {AlertDialogComponent} from '@eg/share/dialog/alert.component';
+import {CircService, CheckinResult} from './circ.service';
 import {NgbModal, NgbModalOptions} from '@ng-bootstrap/ng-bootstrap';
 import {DialogComponent} from '@eg/share/dialog/dialog.component';
-import {CheckinResult} from './circ.service';
 import {ServerStoreService} from '@eg/core/server-store.service';
 import {PrintService} from '@eg/share/print/print.service';
 
 /** Route Item Dialog */
 
 @Component({
-  templateUrl: 'route-dialog.component.html',
-  selector: 'eg-circ-route-dialog'
+    templateUrl: 'route-dialog.component.html',
+    selector: 'eg-circ-route-dialog'
 })
 export class RouteDialogComponent extends DialogComponent {
 
@@ -43,23 +39,23 @@ export class RouteDialogComponent extends DialogComponent {
 
         return from(this.applySettings())
 
-        .pipe(concatMap(exit => {
-            return from(
-                this.collectData().then(exit2 => {
+            .pipe(concatMap(exit => {
+                return from(
+                    this.collectData().then(exit2 => {
                     // If either applySettings or collectData() tell us
                     // to exit, make it so.
-                    return exit || exit2;
-                })
-            );
-        }))
+                        return exit || exit2;
+                    })
+                );
+            }))
 
-        .pipe(concatMap(exit => {
-            if (exit) {
-                return of(exit);
-            } else {
-                return super.open(ops);
-            }
-        }));
+            .pipe(concatMap(exit => {
+                if (exit) {
+                    return of(exit);
+                } else {
+                    return super.open(ops);
+                }
+            }));
     }
 
     collectData(): Promise<boolean> {
@@ -74,25 +70,25 @@ export class RouteDialogComponent extends DialogComponent {
             // regardless of what data the server returns in the payload.
 
             promise = promise.then(_ => this.circ.findCopyTransit(this.checkin))
-            .then(transit => {
-                this.checkin.transit = transit;
-                this.checkin.destOrg = transit.dest();
-                this.checkin.routeTo = transit.dest().shortname();
-                return this.circ.getOrgAddr(this.checkin.destOrg.id(), 'holds_address');
-            })
-            .then(addr => {
-                this.checkin.destAddress = addr;
-                return this.org.settings('lib.courier_code', this.checkin.destOrg.id());
-            })
+                .then(transit => {
+                    this.checkin.transit = transit;
+                    this.checkin.destOrg = transit.dest();
+                    this.checkin.routeTo = transit.dest().shortname();
+                    return this.circ.getOrgAddr(this.checkin.destOrg.id(), 'holds_address');
+                })
+                .then(addr => {
+                    this.checkin.destAddress = addr;
+                    return this.org.settings('lib.courier_code', this.checkin.destOrg.id());
+                })
 
-            .then(sets => this.checkin.destCourierCode = sets['lib.courier_code']);
+                .then(sets => this.checkin.destCourierCode = sets['lib.courier_code']);
         }
 
         if (hold) {
             promise = promise.then(_ => {
                 return this.pcrud.retrieve('au', hold.usr(),
                     {flesh: 1, flesh_fields : {'au' : ['card']}}).toPromise()
-                .then(patron => this.checkin.patron = patron);
+                    .then(patron => this.checkin.patron = patron);
             });
         }
 
@@ -139,7 +135,7 @@ export class RouteDialogComponent extends DialogComponent {
                     autoPrintArr.includes('Transit Slip');
             }
         })
-        .then(_ => this.noAutoPrint[this.slip]);
+            .then(_ => this.noAutoPrint[this.slip]);
     }
 
     print(): Promise<any> {

@@ -13,13 +13,13 @@ import {OrgService} from '@eg/core/org.service';
 import {OfflineService} from '@eg/staff/share/offline.service';
 
 @Component({
-  styleUrls: ['./login.component.css'],
-  templateUrl : './login.component.html'
+    styleUrls: ['./login.component.css'],
+    templateUrl : './login.component.html'
 })
 export class StaffLoginComponent implements OnInit {
 
     @ViewChild('password')
-    passwordInput: ElementRef;
+        passwordInput: ElementRef;
     workstations: any[];
     loginFailed: boolean;
     routeTo: string;
@@ -28,10 +28,10 @@ export class StaffLoginComponent implements OnInit {
     ariaDescription: string = $localize`Your password is not visible.`;
 
     args = {
-      username : '',
-      password : '',
-      workstation : '',
-      type : 'staff'
+        username : '',
+        password : '',
+        workstation : '',
+        type : 'staff'
     };
 
     constructor(
@@ -63,13 +63,13 @@ export class StaffLoginComponent implements OnInit {
         this.renderer.selectRootElement('#username').focus();
 
         this.store.getWorkstations()
-        .then(wsList => {
-            this.workstations = wsList;
-            return this.store.getDefaultWorkstation();
-        }).then(def => {
-            this.args.workstation = def;
-            this.applyWorkstation();
-        });
+            .then(wsList => {
+                this.workstations = wsList;
+                return this.store.getDefaultWorkstation();
+            }).then(def => {
+                this.args.workstation = def;
+                this.applyWorkstation();
+            });
 
         this.offline.pendingXactsDate().then(d => this.pendingXactsDate = d);
     }
@@ -115,15 +115,15 @@ export class StaffLoginComponent implements OnInit {
 
                     this.offline.refreshOfflineData()
                     // Initial login clears cached org unit settings.
-                    .then(_ => this.org.clearCachedSettings())
-                    .then(_ => {
+                        .then(_ => this.org.clearCachedSettings())
+                        .then(_ => {
 
-                        // Force reload of the app after a successful login.
-                        // This allows the route resolver to re-run with a
-                        // valid auth token and workstation.
-                        window.location.href =
+                            // Force reload of the app after a successful login.
+                            // This allows the route resolver to re-run with a
+                            // valid auth token and workstation.
+                            window.location.href =
                             this.ngLocation.prepareExternalUrl(url);
-                    });
+                        });
                 }
             },
             notOk => {
@@ -134,8 +134,8 @@ export class StaffLoginComponent implements OnInit {
 
     togglePasswordVisibility() {
         this.passwordVisible = !this.passwordVisible;
-        if(this.passwordVisible) this.ariaDescription = $localize`Your password is visible!`;
-        else this.ariaDescription = $localize`Your password is not visible.`;
+        // eslint-disable-next-line max-len
+        if(this.passwordVisible) {this.ariaDescription = $localize`Your password is visible!`;} else {this.ariaDescription = $localize`Your password is not visible.`;}
         this.passwordInput.nativeElement.focus();
     }
 

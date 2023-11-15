@@ -11,22 +11,22 @@ import {ItemLocationSelectModule} from '@eg/share/item-location-select/item-loca
 import {VolCopyConfigComponent} from './config.component';
 
 @NgModule({
-  declarations: [
-    VolCopyComponent,
-    VolEditComponent,
-    CopyAttrsComponent,
-    VolCopyConfigComponent
-  ],
-  imports: [
-    StaffCommonModule,
-    CommonWidgetsModule,
-    HoldingsModule,
-    VolCopyRoutingModule,
-    ItemLocationSelectModule
-  ],
-  providers: [
-    VolCopyService
-  ]
+    declarations: [
+        VolCopyComponent,
+        VolEditComponent,
+        CopyAttrsComponent,
+        VolCopyConfigComponent
+    ],
+    imports: [
+        StaffCommonModule,
+        CommonWidgetsModule,
+        HoldingsModule,
+        VolCopyRoutingModule,
+        ItemLocationSelectModule
+    ],
+    providers: [
+        VolCopyService
+    ]
 })
 
 export class VolCopyModule {

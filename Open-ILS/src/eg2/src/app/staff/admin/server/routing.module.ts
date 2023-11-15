@@ -19,19 +19,19 @@ const routes: Routes = [{
 }, {
     path: 'config/coded_value_map',
     loadChildren: () =>
-      import('./coded-value-maps/coded-value-maps.module').then(m => m.CodedValueMapsModule)
+        import('./coded-value-maps/coded-value-maps.module').then(m => m.CodedValueMapsModule)
 }, {
     path: 'config/record_attr_definition',
     loadChildren: () =>
-      import('./record-attr-definitions/record-attr-definitions.module').then(m => m.RecordAttrDefinitionsModule)
+        import('./record-attr-definitions/record-attr-definitions.module').then(m => m.RecordAttrDefinitionsModule)
 }, {
     path: 'authority/control_set_authority_field',
     loadChildren: () =>
-      import('./control-set-authority-fields/control-set-authority-fields.module').then(m => m.CSAuthorityFieldsModule)
+        import('./control-set-authority-fields/control-set-authority-fields.module').then(m => m.CSAuthorityFieldsModule)
 }, {
     path: 'config/floating_group',
     loadChildren: () =>
-      import('./floating-group/floating-group.module').then(m => m.FloatingGroupModule)
+        import('./floating-group/floating-group.module').then(m => m.FloatingGroupModule)
 }, {
     path: 'config/hard_due_date',
     component: BasicAdminPageComponent,
@@ -45,12 +45,12 @@ const routes: Routes = [{
     component: PrintTemplateComponent
 }, {
     path: 'config/rule_recurring_fine',
-    component: BasicAdminPageComponent,
-    data: [{
-        schema: 'config',
-        table: 'rule_recurring_fine',
-        fieldOrder: 'name,low,normal,high,recurrence_interval,grace_period'
-    }]
+    component: BasicAdminPageComponent,
+    data: [{
+        schema: 'config',
+        table: 'rule_recurring_fine',
+        fieldOrder: 'name,low,normal,high,recurrence_interval,grace_period'
+    }]
 }, {
     path: 'config/z3950_source',
     component: BasicAdminPageComponent,
@@ -65,7 +65,7 @@ const routes: Routes = [{
 }, {
     path: 'actor/org_unit',
     loadChildren: () =>
-      import('./org-unit.module').then(m => m.OrgUnitModule)
+        import('./org-unit.module').then(m => m.OrgUnitModule)
 }, {
     path: 'actor/org_unit_proximity_adjustment',
     component: BasicAdminPageComponent,
@@ -87,8 +87,8 @@ const routes: Routes = [{
 }];
 
 @NgModule({
-  imports: [RouterModule.forChild(routes)],
-  exports: [RouterModule]
+    imports: [RouterModule.forChild(routes)],
+    exports: [RouterModule]
 })
 
 export class AdminServerRoutingModule {}

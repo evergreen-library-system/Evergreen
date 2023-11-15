@@ -7,7 +7,7 @@ import {ActivatedRoute, ParamMap} from '@angular/router';
 
 
 @Component({
-  templateUrl: 'picklist.component.html'
+    templateUrl: 'picklist.component.html'
 })
 export class PicklistComponent implements OnInit {
 

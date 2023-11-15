@@ -10,8 +10,8 @@ import {StoreService} from '@eg/core/store.service';
 const HOLD_FOR_PATRON_KEY = 'eg.circ.patron_hold_target';
 
 @Component({
-  templateUrl: 'holds.component.html',
-  selector: 'eg-patron-holds'
+    templateUrl: 'holds.component.html',
+    selector: 'eg-patron-holds'
 })
 export class HoldsComponent {
 

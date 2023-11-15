@@ -2,8 +2,8 @@ import {Component, Input, OnInit} from '@angular/core';
 import {GridContext, GridColumn, GridColumnSet} from './grid';
 
 @Component({
-  selector: 'eg-grid-column-width',
-  templateUrl: './grid-column-width.component.html'
+    selector: 'eg-grid-column-width',
+    templateUrl: './grid-column-width.component.html'
 })
 
 export class GridColumnWidthComponent implements OnInit {

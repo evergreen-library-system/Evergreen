@@ -10,8 +10,8 @@ import {TagTableService} from './tagtable.service';
  */
 
 @Component({
-  selector: 'eg-fixed-fields-editor',
-  templateUrl: './fixed-fields-editor.component.html'
+    selector: 'eg-fixed-fields-editor',
+    templateUrl: './fixed-fields-editor.component.html'
 })
 
 export class FixedFieldsEditorComponent {

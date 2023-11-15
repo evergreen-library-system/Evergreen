@@ -4,12 +4,12 @@ import {NgForm, NG_VALIDATORS} from '@angular/forms';
 import {NgbModal} from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
-  selector: 'eg-clone-portal-entries-dialog',
-  templateUrl: './clone-portal-entries-dialog.component.html'
+    selector: 'eg-clone-portal-entries-dialog',
+    templateUrl: './clone-portal-entries-dialog.component.html'
 })
 
 export class ClonePortalEntriesDialogComponent
-  extends DialogComponent implements OnInit {
+    extends DialogComponent implements OnInit {
 
     result = { };
 

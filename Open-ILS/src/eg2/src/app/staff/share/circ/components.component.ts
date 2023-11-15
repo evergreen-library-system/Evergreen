@@ -8,7 +8,7 @@ import {OpenCircDialogComponent} from './open-circ-dialog.component';
 import {RouteDialogComponent} from './route-dialog.component';
 import {CopyInTransitDialogComponent} from './in-transit-dialog.component';
 import {CopyAlertManagerDialogComponent
-    } from '@eg/staff/share/holdings/copy-alert-manager.component';
+} from '@eg/staff/share/holdings/copy-alert-manager.component';
 import {BadBarcodeDialogComponent} from './bad-barcode-dialog.component';
 
 /* Container component for sub-components used by circulation actions.
@@ -19,8 +19,8 @@ import {BadBarcodeDialogComponent} from './bad-barcode-dialog.component';
  * */
 
 @Component({
-  templateUrl: 'components.component.html',
-  selector: 'eg-circ-components'
+    templateUrl: 'components.component.html',
+    selector: 'eg-circ-components'
 })
 export class CircComponentsComponent {
 

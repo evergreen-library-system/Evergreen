@@ -10,8 +10,8 @@ import {StringService} from '@eg/share/string/string.service';
  */
 
 @Component({
-  templateUrl: 'events-dialog.component.html',
-  selector: 'eg-circ-events-dialog'
+    templateUrl: 'events-dialog.component.html',
+    selector: 'eg-circ-events-dialog'
 })
 export class CircEventsComponent extends DialogComponent implements OnInit {
 

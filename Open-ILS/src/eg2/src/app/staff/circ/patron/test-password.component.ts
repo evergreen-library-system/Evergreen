@@ -13,8 +13,8 @@ import {PatronService} from '@eg/staff/share/patron/patron.service';
 import {PatronContextService} from './patron.service';
 
 @Component({
-  templateUrl: 'test-password.component.html',
-  selector: 'eg-patron-test-password'
+    templateUrl: 'test-password.component.html',
+    selector: 'eg-patron-test-password'
 })
 export class TestPatronPasswordComponent implements OnInit, AfterViewInit {
 
@@ -39,11 +39,11 @@ export class TestPatronPasswordComponent implements OnInit, AfterViewInit {
         if (this.patronId) {
             this.patronService.getById(this.patronId,
                 {flesh: 1, flesh_fields: {au: ['card']}})
-            .then(p => {
-                this.patron = p;
-                this.username = p.usrname();
-                this.barcode = p.card().barcode();
-            });
+                .then(p => {
+                    this.patron = p;
+                    this.username = p.usrname();
+                    this.barcode = p.card().barcode();
+                });
         }
     }
 
@@ -78,20 +78,20 @@ export class TestPatronPasswordComponent implements OnInit, AfterViewInit {
             'open-ils.actor.verify_user_password', this.auth.token(),
             this.barcode, this.username, null, this.password)
 
-        .subscribe(resp => {
-            const evt = this.evt.parse(resp);
+            .subscribe(resp => {
+                const evt = this.evt.parse(resp);
 
-            this.password = null;
+                this.password = null;
 
-            if (evt) {
-                console.error(evt);
-                alert(evt);
-            } else if (Number(resp) === 1) {
-                this.verified = true;
-            } else {
-                this.verified = false;
-            }
-        });
+                if (evt) {
+                    console.error(evt);
+                    alert(evt);
+                } else if (Number(resp) === 1) {
+                    this.verified = true;
+                } else {
+                    this.verified = false;
+                }
+            });
     }
 }
 

@@ -17,8 +17,8 @@ import {StringComponent} from '@eg/share/string/string.component';
  */
 
 @Component({
-  selector: 'eg-bucket-dialog',
-  templateUrl: 'bucket-dialog.component.html'
+    selector: 'eg-bucket-dialog',
+    templateUrl: 'bucket-dialog.component.html'
 })
 
 export class BucketDialogComponent extends DialogComponent implements OnInit {
@@ -68,6 +68,7 @@ export class BucketDialogComponent extends DialogComponent implements OnInit {
                 'open-ils.actor.container.retrieve_by_class.authoritative',
                 this.auth.token(), this.auth.user().id(),
                 this.bucketClass, this.bucketType
+            // eslint-disable-next-line rxjs/no-nested-subscribe
             ).subscribe(buckets => this.buckets = buckets);
         });
     }
@@ -118,18 +119,18 @@ export class BucketDialogComponent extends DialogComponent implements OnInit {
             'open-ils.actor.container.flesh',
             this.auth.token(), this.bucketClass,
             this.sharedBucketId)
-        .pipe(switchMap((resp) => {
-            const evt = this.evt.parse(resp);
-            if (evt) {
-                this.toast.danger(evt.toString());
-                return throwError(evt);
-            } else {
-                this.sharedBucketName = resp.name();
-                return this.confirmAddToShared.open();
-            }
-        })).subscribe(() => {
-            this.addToBucket(this.sharedBucketId);
-        });
+            .pipe(switchMap((resp) => {
+                const evt = this.evt.parse(resp);
+                if (evt) {
+                    this.toast.danger(evt.toString());
+                    return throwError(evt);
+                } else {
+                    this.sharedBucketName = resp.name();
+                    return this.confirmAddToShared.open();
+                }
+            })).subscribe(() => {
+                this.addToBucket(this.sharedBucketId);
+            });
     }
 
     bucketChanged(entry: ComboboxEntry) {

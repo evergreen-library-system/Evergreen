@@ -13,13 +13,13 @@ import {GridToolbarComponent} from './grid-toolbar.component';
  */
 
 @Component({
-  selector: 'eg-grid',
-  templateUrl: './grid.component.html',
-  styleUrls: ['grid.component.css'],
-  // share grid css globally once imported so all grid component CSS
-  // can live in grid.component.css and to avoid multiple copies of
-  // the CSS when multiple grids are displayed.
-  encapsulation: ViewEncapsulation.None
+    selector: 'eg-grid',
+    templateUrl: './grid.component.html',
+    styleUrls: ['grid.component.css'],
+    // share grid css globally once imported so all grid component CSS
+    // can live in grid.component.css and to avoid multiple copies of
+    // the CSS when multiple grids are displayed.
+    encapsulation: ViewEncapsulation.None
 })
 
 export class GridComponent implements OnInit, AfterViewInit, OnDestroy {
@@ -255,13 +255,14 @@ export class GridComponent implements OnInit, AfterViewInit, OnDestroy {
     }
 
     ngOnDestroy() {
+        // eslint-disable-next-line rxjs/no-subject-unsubscribe
         this.context.rowSelector.selectionChange.unsubscribe();
         this.context.destroy();
     }
 
     print = () => {
         this.toolbar.printHtml();
-    }
+    };
 
     reload() {
         this.context.reload();

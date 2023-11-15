@@ -7,8 +7,8 @@ import {GridPrintComponent} from './grid-print.component';
 import {GridColumn} from './grid';
 
 @Component({
-  selector: 'eg-grid-toolbar',
-  templateUrl: 'grid-toolbar.component.html'
+    selector: 'eg-grid-toolbar',
+    templateUrl: 'grid-toolbar.component.html'
 })
 
 export class GridToolbarComponent implements OnInit, AfterViewInit {
@@ -42,18 +42,18 @@ export class GridToolbarComponent implements OnInit, AfterViewInit {
         const actions = this.gridContext.toolbarActions;
 
         const unGrouped = actions.filter(a => !a.group)
-        .sort((a, b) => {
-            return a.label < b.label ? -1 : 1;
-        });
+            .sort((a, b) => {
+                return a.label < b.label ? -1 : 1;
+            });
 
         const grouped = actions.filter(a => Boolean(a.group))
-        .sort((a, b) => {
-            if (a.group === b.group) {
-                return a.label < b.label ? -1 : 1;
-            } else {
-                return a.group < b.group ? -1 : 1;
-            }
-        });
+            .sort((a, b) => {
+                if (a.group === b.group) {
+                    return a.label < b.label ? -1 : 1;
+                } else {
+                    return a.group < b.group ? -1 : 1;
+                }
+            });
 
         // Insert group markers for rendering
         const seen: any = {};
@@ -112,7 +112,7 @@ export class GridToolbarComponent implements OnInit, AfterViewInit {
                 this.csvExportUrl = null;
                 this.csvExportFileName = '';
                 this.csvExportInProgress = false;
-               }, 500
+            }, 500 // eslint-disable-line no-magic-numbers
             );
             return;
         }

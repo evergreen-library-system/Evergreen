@@ -3,13 +3,13 @@ import {RouterModule, Routes} from '@angular/router';
 import {PrintersComponent} from './printers.component';
 
 const routes: Routes = [{
-  path: '',
-  component: PrintersComponent
+    path: '',
+    component: PrintersComponent
 }];
 
 @NgModule({
-  imports: [RouterModule.forChild(routes)],
-  exports: [RouterModule]
+    imports: [RouterModule.forChild(routes)],
+    exports: [RouterModule]
 })
 
 export class PrintersRoutingModule {

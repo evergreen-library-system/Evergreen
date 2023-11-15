@@ -1,3 +1,4 @@
+/* eslint-disable no-shadow, @typescript-eslint/member-ordering */
 import {Component, Input, OnDestroy, OnInit, Renderer2} from '@angular/core';
 import {Observable, Subject, of, OperatorFunction} from 'rxjs';
 import {DialogComponent} from '@eg/share/dialog/dialog.component';
@@ -10,8 +11,8 @@ import {catchError, debounceTime, distinctUntilChanged, exhaustMap, map, takeUnt
 interface PermEntry { id: number; label: string; }
 
 @Component({
-  selector: 'eg-perm-group-map-dialog',
-  templateUrl: './perm-group-map-dialog.component.html'
+    selector: 'eg-perm-group-map-dialog',
+    templateUrl: './perm-group-map-dialog.component.html'
 })
 
 /**
@@ -76,6 +77,7 @@ export class PermGroupMapDialogComponent
     // Find entries whose code or description match the search term
     private permEntriesOperator(): OperatorFunction<string, PermEntry[]> {
         return term$ => term$.pipe(
+            // eslint-disable-next-line no-magic-numbers
             debounceTime(300),
             map(term => (term ?? '').toLowerCase()),
             distinctUntilChanged(),
@@ -84,13 +86,13 @@ export class PermGroupMapDialogComponent
     }
 
     private permEntryResults(term: string): PermEntry[] {
-        if (/^\s*$/.test(term)) return [];
+        if (/^\s*$/.test(term)) {return [];}
 
         return this.trimmedPerms.reduce<PermEntry[]>((entries, p) => {
             if ((p.code().toLowerCase().includes(term) ||
                 (p.description() || '').toLowerCase().includes(term)) &&
                 !this.selectedPermEntries.find(s => s.id === p.id())
-            ) entries.push({ id: p.id(), label: p.code() });
+            ) {entries.push({ id: p.id(), label: p.code() });}
             return entries;
         }, []);
     }
@@ -121,7 +123,7 @@ export class PermGroupMapDialogComponent
         const el = this.renderer.selectRootElement(
             '#select-perms'
         );
-        if (el) el.focus();
+        if (el) {el.focus();}
     }
 
     select(event: NgbTypeaheadSelectItemEvent<PermEntry>): void {
@@ -135,8 +137,7 @@ export class PermGroupMapDialogComponent
     remove(index: number): void {
         this.newPermMaps.removeAt(index);
         this.selectedPermEntries.splice(index, 1);
-        if (!this.selectedPermEntries.length)
-            this.focusPermSelector();
+        if (!this.selectedPermEntries.length) {this.focusPermSelector();}
     }
 
     create(): Observable<boolean> {

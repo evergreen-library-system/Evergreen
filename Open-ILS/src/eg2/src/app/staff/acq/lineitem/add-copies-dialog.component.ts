@@ -5,8 +5,8 @@ import {IdlService, IdlObject} from '@eg/core/idl.service';
 import {ComboboxEntry} from '@eg/share/combobox/combobox.component';
 
 @Component({
-  selector: 'eg-acq-add-copies-dialog',
-  templateUrl: './add-copies-dialog.component.html'
+    selector: 'eg-acq-add-copies-dialog',
+    templateUrl: './add-copies-dialog.component.html'
 })
 
 export class AddCopiesDialogComponent extends DialogComponent {

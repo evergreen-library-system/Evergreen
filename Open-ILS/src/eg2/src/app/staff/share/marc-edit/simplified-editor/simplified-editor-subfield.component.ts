@@ -7,8 +7,8 @@ import {MarcSimplifiedEditorFieldComponent} from './simplified-editor-field.comp
  */
 
 @Component({
-  selector: 'eg-marc-simplified-editor-subfield',
-  template: ''
+    selector: 'eg-marc-simplified-editor-subfield',
+    template: ''
 })
 export class MarcSimplifiedEditorSubfieldComponent implements OnInit {
 
@@ -18,7 +18,7 @@ export class MarcSimplifiedEditorSubfieldComponent implements OnInit {
   constructor(@Host() private field: MarcSimplifiedEditorFieldComponent) {}
 
   ngOnInit() {
-    this.field.addSubfield(this.code, this.defaultValue);
+      this.field.addSubfield(this.code, this.defaultValue);
   }
 
 }

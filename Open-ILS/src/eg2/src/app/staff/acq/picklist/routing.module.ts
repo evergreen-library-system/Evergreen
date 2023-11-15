@@ -16,36 +16,36 @@ const routes: Routes = [{
     path: 'brief-record',
     component: BriefRecordComponent
 }, {
-  path: 'upload',
-  component: UploadComponent
+    path: 'upload',
+    component: UploadComponent
 }, {
-  path: ':picklistId',
-  component: PicklistComponent,
-  children : [{
-    path: '',
-    component: LineitemListComponent
-  }, {
-    path: 'brief-record',
-    component: BriefRecordComponent
-  }, {
-    path: 'lineitem/:lineitemId/detail',
-    component: LineitemDetailComponent
-  }, {
-    path: 'lineitem/:lineitemId/history',
-    component: LineitemHistoryComponent
-  }, {
-    path: 'lineitem/:lineitemId/items',
-    component: LineitemCopiesComponent
-  }, {
-    path: 'lineitem/:lineitemId/worksheet',
-    component: LineitemWorksheetComponent
-  }]
+    path: ':picklistId',
+    component: PicklistComponent,
+    children : [{
+        path: '',
+        component: LineitemListComponent
+    }, {
+        path: 'brief-record',
+        component: BriefRecordComponent
+    }, {
+        path: 'lineitem/:lineitemId/detail',
+        component: LineitemDetailComponent
+    }, {
+        path: 'lineitem/:lineitemId/history',
+        component: LineitemHistoryComponent
+    }, {
+        path: 'lineitem/:lineitemId/items',
+        component: LineitemCopiesComponent
+    }, {
+        path: 'lineitem/:lineitemId/worksheet',
+        component: LineitemWorksheetComponent
+    }]
 }];
 
 @NgModule({
-  imports: [RouterModule.forChild(routes)],
-  exports: [RouterModule],
-  providers: [VandelayService, PicklistUploadService]
+    imports: [RouterModule.forChild(routes)],
+    exports: [RouterModule],
+    providers: [VandelayService, PicklistUploadService]
 })
 
 export class PicklistRoutingModule {}

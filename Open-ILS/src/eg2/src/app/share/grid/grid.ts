@@ -59,9 +59,9 @@ export class GridColumn {
 
     getCellContext(row: any) {
         return {
-          col: this,
-          row: row,
-          userContext: this.cellContext
+            col: this,
+            row: row,
+            userContext: this.cellContext
         };
     }
 
@@ -100,7 +100,7 @@ export class GridColumn {
             'filterInputDisabled': this.filterInputDisabled,
             'filterIncludeOrgAncestors': this.filterIncludeOrgAncestors,
             'filterIncludeOrgDescendants': this.filterIncludeOrgDescendants
-        }
+        };
     }
 
     clone(): GridColumn {
@@ -189,13 +189,13 @@ export class GridColumnSet {
         if (!classObj) { return; }
 
         const pathParts = dotpath.split(/\./);
-        //let oldField;
+        // let oldField;
 
         // find the IDL class definition for the last element in the
         // path before the .*
         // An empty pathParts means expand the root class
         pathParts.forEach((part, pathIdx) => {
-            //oldField = idlField;
+            // oldField = idlField;
             idlField = classObj.field_map[part];
 
             // unless we're at the end of the list, this field should
@@ -431,10 +431,12 @@ export class GridColumnSet {
         let targetIdx = -1;
         let sourceIdx = -1;
         this.columns.forEach((col, idx) => {
-            if (col.name === target.name) { targetIdx = idx; }});
+            if (col.name === target.name) { targetIdx = idx; }
+        });
 
         this.columns.forEach((col, idx) => {
-            if (col.name === source.name) { sourceIdx = idx; }});
+            if (col.name === source.name) { sourceIdx = idx; }
+        });
 
         if (sourceIdx >= 0) {
             this.columns.splice(sourceIdx, 1);
@@ -447,7 +449,8 @@ export class GridColumnSet {
     moveVisibleToFront() {
         const newCols = this.displayColumns();
         this.columns.forEach(col => {
-            if (!col.visible) { newCols.push(col); }});
+            if (!col.visible) { newCols.push(col); }
+        });
         this.columns = newCols;
     }
 
@@ -455,7 +458,7 @@ export class GridColumnSet {
         let srcIdx:number, targetIdx:number;
 
         this.columns.forEach((c, i) => {
-          if (c.name === col.name) { srcIdx = i; }
+            if (c.name === col.name) { srcIdx = i; }
         });
 
         targetIdx = srcIdx + diff;
@@ -740,33 +743,33 @@ export class GridContext {
     // Load initial settings and data.
     initData() {
         this.applyGridConfig()
-        .then(() => this.dataSource.requestPage(this.pager))
-        .then(() => this.listenToPager());
+            .then(() => this.dataSource.requestPage(this.pager))
+            .then(() => this.listenToPager());
     }
 
     destroy() {
         this.ignorePager();
     }
 
-	async applyGridConfig(): Promise<void> {
-		try {
-			const conf = await this.getGridConfig(this.persistKey);
-			let columns = [];
-			if (conf) {
-				columns = conf.columns;
-				if (conf.limit && !this.disablePaging) {
-					this.pager.limit = conf.limit;
-				}
-				this.applyToolbarActionVisibility(conf.hideToolbarActions);
-			}
+    async applyGridConfig(): Promise<void> {
+        try {
+            const conf = await this.getGridConfig(this.persistKey);
+            let columns = [];
+            if (conf) {
+                columns = conf.columns;
+                if (conf.limit && !this.disablePaging) {
+                    this.pager.limit = conf.limit;
+                }
+                this.applyToolbarActionVisibility(conf.hideToolbarActions);
+            }
 
-			// This is called regardless of the presence of saved
-			// settings so defaults can be applied.
-			this.columnSet.applyColumnSettings(columns);
-		} catch (error) {
-			console.error('Error applying grid config:', error);
-		}
-	}
+            // This is called regardless of the presence of saved
+            // settings so defaults can be applied.
+            this.columnSet.applyColumnSettings(columns);
+        } catch (error) {
+            console.error('Error applying grid config:', error);
+        }
+    }
 
 
     applyToolbarActionVisibility(hidden: string[]) {
@@ -1176,7 +1179,7 @@ export class GridContext {
 
         const promise = // load the next page of data if needed
             (pos === (this.pager.offset + this.pager.limit - 1)) ?
-            this.toNextPage() : Promise.resolve();
+                this.toNextPage() : Promise.resolve();
 
         promise.then(
             () => {
@@ -1256,16 +1259,16 @@ export class GridContext {
         return flatRow;
     }
 
-	getAllRowsAsText(): Observable<any> {
-		return new Observable((observer: any) => {
-			this.getAllRows().then(() => {
-				this.dataSource.data.forEach(row => {
-					observer.next(this.getRowAsFlatText(row));
-				});
-				observer.complete();
-			});
-		});
-	}
+    getAllRowsAsText(): Observable<any> {
+        return new Observable((observer: any) => {
+            this.getAllRows().then(() => {
+                this.dataSource.data.forEach(row => {
+                    observer.next(this.getRowAsFlatText(row));
+                });
+                observer.complete();
+            });
+        });
+    }
 
     removeFilters(): void {
         this.dataSource.filters = {};
@@ -1277,7 +1280,7 @@ export class GridContext {
         const obj = {
             'filters' : this.dataSource.filters, // filters isn't 100% reversible to column filter values, so...
             'controls' : Object.fromEntries(new Map( this.columnSet.columns.map( c => [c.name, c.getFilter()] ) ))
-        }
+        };
         this.store.getItem('eg.grid.filters.' + this.persistKey).then( setting => {
             console.log('grid: saveFilters, setting = ', setting);
             setting ||= {};
@@ -1313,7 +1316,7 @@ export class GridContext {
                 if (obj) {
                     this.dataSource.filters = obj.filters;
                     Object.keys(obj.controls).forEach( col_name => {
-                        let col = this.columnSet.columns.find(c => c.name === col_name);
+                        const col = this.columnSet.columns.find(c => c.name === col_name);
                         if (col) {
                             col.loadFilter( obj.controls[col_name] );
                         }
@@ -1338,6 +1341,7 @@ export class GridContext {
 
         // CSV header
         columns.forEach(col => {
+            // eslint-disable-next-line no-unused-expressions
             csvStr += this.valueToCsv(col.label),
             csvStr += ',';
         });
@@ -1353,7 +1357,7 @@ export class GridContext {
                     });
                     csvStr = csvStr.replace(/,$/, '\n');
                 },
-                error: err => { console.log('grid: in gridToCsv',err); },
+                error: (err: unknown) => { console.log('grid: in gridToCsv',err); },
                 complete: ()  => resolve(csvStr)
             });
         });
@@ -1366,7 +1370,7 @@ export class GridContext {
         str = '' + str;
         if (!str) { return ''; }
         str = str.replace(/\n/g, '');
-        if (str.match(/\,/) || str.match(/"/)) {
+        if (str.match(/,/) || str.match(/"/)) {
             str = str.replace(/"/g, '""');
             str = '"' + str + '"';
         }
@@ -1377,7 +1381,7 @@ export class GridContext {
         if (!this.columnSet.idlClass) { return; }
 
         const pkeyField = this.idl.classes[this.columnSet.idlClass].pkey;
-        //const specifiedColumnOrder = this.autoGeneratedColumnOrder ?
+        // const specifiedColumnOrder = this.autoGeneratedColumnOrder ?
         //    this.autoGeneratedColumnOrder.split(/,/) : [];
 
         // generate columns for all non-virtual fields on the IDL class
@@ -1535,7 +1539,7 @@ export class GridDataSource {
                     // retrieved one row doesn't mean we're done
                     this.retrievalError = false;
                 },
-                error: err => {
+                error: (err: unknown) => {
                     console.error(`grid getRows() error ${err}`);
                     this.requestingData = false;
                     this.retrievalError = true;

@@ -1,19 +1,16 @@
-import {Component, Input, OnInit, ViewChild} from '@angular/core';
-import {FormControl} from '@angular/forms';
-import {takeLast, finalize} from 'rxjs/operators';
+/* eslint-disable no-self-assign */
+import {Component, Input, OnInit} from '@angular/core';
 import {DialogComponent} from '@eg/share/dialog/dialog.component';
 import {AuthService} from '@eg/core/auth.service';
 import {NetService} from '@eg/core/net.service';
 import {EventService} from '@eg/core/event.service';
 import {ToastService} from '@eg/share/toast/toast.service';
 import {NgbModal} from '@ng-bootstrap/ng-bootstrap';
-import {ComboboxEntry} from '@eg/share/combobox/combobox.component';
-import {StringComponent} from '@eg/share/string/string.component';
-import {HttpClient, HttpResponse, HttpErrorResponse, HttpEventType} from '@angular/common/http';
+import {HttpClient, HttpResponse} from '@angular/common/http';
 
 @Component({
-  selector: 'eg-upload-jacket-image-dialog',
-  templateUrl: './upload-jacket-image-dialog.component.html'
+    selector: 'eg-upload-jacket-image-dialog',
+    templateUrl: './upload-jacket-image-dialog.component.html'
 })
 
 
@@ -94,35 +91,35 @@ export class UploadJacketImageDialogComponent extends DialogComponent implements
             });
 
             upload$.subscribe(
-              x => {
-                console.debug('Jacket upload: ' , x);
-                if (x instanceof HttpResponse) {
-                    console.debug('yay', x.body);
-                    if (x.body.toString() !== '1') {
-                        this.uploading = false;
-                        this.errorUploading = true;
+                x => {
+                    console.debug('Jacket upload: ' , x);
+                    if (x instanceof HttpResponse) {
+                        console.debug('yay', x.body);
+                        if (x.body.toString() !== '1') {
+                            this.uploading = false;
+                            this.errorUploading = true;
+                        }
+                        switch (x.body) {
+                            case 'session not found': this.errorAuthentication = true; break;
+                            case 'permission denied': this.errorAuthorization = true; break;
+                            case 'invalid compression level': this.errorCompressionConfig = true; break;
+                            case 'bib not found': this.errorNotFound = true; break;
+                            case 'jacket location not configured': this.errorLocationConfig = true; break;
+                            case 'unable to open file for writing': this.errorWritingFile = true; break;
+                            case 'file too large': this.errorSize = true; break;
+                            case 'parse error': this.errorParsing = true; break;
+                            case 'upload error': this.errorGeneric = true; break;
+                            default: this.errorGeneric = true; break;
+                        }
                     }
-                    switch (x.body) {
-                        case 'session not found': this.errorAuthentication = true; break;
-                        case 'permission denied': this.errorAuthorization = true; break;
-                        case 'invalid compression level': this.errorCompressionConfig = true; break;
-                        case 'bib not found': this.errorNotFound = true; break;
-                        case 'jacket location not configured': this.errorLocationConfig = true; break;
-                        case 'unable to open file for writing': this.errorWritingFile = true; break;
-                        case 'file too large': this.errorSize = true; break;
-                        case 'parse error': this.errorParsing = true; break;
-                        case 'upload error': this.errorGeneric = true; break;
-                        default: this.errorGeneric = true; break;
-                    }
-                }
-              },
-              err => {
-                this.uploading = false;
-                this.errorUploading = true;
-                this.errorGeneric = true;
-                console.error('jacket upload error: ' , err);
-              },
-              () => this.refreshPage()
+                },
+                (err: unknown) => {
+                    this.uploading = false;
+                    this.errorUploading = true;
+                    this.errorGeneric = true;
+                    console.error('jacket upload error: ' , err);
+                },
+                () => this.refreshPage()
             );
         }
     }

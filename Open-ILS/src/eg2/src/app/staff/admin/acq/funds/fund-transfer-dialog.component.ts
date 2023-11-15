@@ -1,29 +1,25 @@
-import {Component, Input, ViewChild, TemplateRef, OnInit} from '@angular/core';
+import {Component, Input, ViewChild, OnInit} from '@angular/core';
 import {DialogComponent} from '@eg/share/dialog/dialog.component';
-import {NgForm} from '@angular/forms';
 import {IdlService, IdlObject} from '@eg/core/idl.service';
 import {EventService} from '@eg/core/event.service';
 import {NetService} from '@eg/core/net.service';
 import {AuthService} from '@eg/core/auth.service';
 import {PcrudService} from '@eg/core/pcrud.service';
-import {GridDataSource} from '@eg/share/grid/grid';
-import {Pager} from '@eg/share/util/pager';
 import {NgbModal} from '@ng-bootstrap/ng-bootstrap';
 import {StringComponent} from '@eg/share/string/string.component';
 import {ToastService} from '@eg/share/toast/toast.service';
 import {PermService} from '@eg/core/perm.service';
-import {ComboboxComponent} from '@eg/share/combobox/combobox.component';
-import {ComboboxEntry} from '@eg/share/combobox/combobox.component';
+import {ComboboxComponent, ComboboxEntry} from '@eg/share/combobox/combobox.component';
 import {Observable} from 'rxjs';
 import {map} from 'rxjs/operators';
 
 @Component({
-  selector: 'eg-fund-transfer-dialog',
-  templateUrl: './fund-transfer-dialog.component.html'
+    selector: 'eg-fund-transfer-dialog',
+    templateUrl: './fund-transfer-dialog.component.html'
 })
 
 export class FundTransferDialogComponent
-  extends DialogComponent implements OnInit {
+    extends DialogComponent implements OnInit {
 
     @Input() sourceFund: IdlObject;
     doneLoading = false;
@@ -80,7 +76,7 @@ export class FundTransferDialogComponent
     private _initRecord() {
         this.doneLoading = false;
         this.destFund = { id: null }; // destFund is a ComoboxEntry, so
-                                      // we need to clear it like this
+        // we need to clear it like this
         this.sourceAmount = null;
         this.note = null;
         this.doneLoading = true;
@@ -102,7 +98,7 @@ export class FundTransferDialogComponent
                     .then(str => this.toast.success(str));
                 this.close(true);
             },
-            res => {
+            (res: unknown) => {
                 this.updateFailedString.current()
                     .then(str => this.toast.danger(str));
                 this.close(false);

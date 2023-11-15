@@ -20,8 +20,8 @@ import {PrintService} from '@eg/share/print/print.service';
 /** Route Item Dialog */
 
 @Component({
-  templateUrl: 'cancel-transit-dialog.component.html',
-  selector: 'eg-cancel-transit-dialog'
+    templateUrl: 'cancel-transit-dialog.component.html',
+    selector: 'eg-cancel-transit-dialog'
 })
 export class CancelTransitDialogComponent extends DialogComponent implements OnInit {
 

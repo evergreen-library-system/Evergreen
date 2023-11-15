@@ -1,14 +1,14 @@
+/* eslint-disable no-self-assign, no-magic-numbers */
 import {Component, Input, OnInit, OnDestroy, ViewChild} from '@angular/core';
 import {Router} from '@angular/router';
-import {of, Observable, Subscription} from 'rxjs';
-import {tap, take, map} from 'rxjs/operators';
+import {Subscription} from 'rxjs';
+import {tap} from 'rxjs/operators';
 import {IdlObject, IdlService} from '@eg/core/idl.service';
 import {NetService} from '@eg/core/net.service';
 import {AuthService} from '@eg/core/auth.service';
 import {OrgService} from '@eg/core/org.service';
 import {PcrudService} from '@eg/core/pcrud.service';
 import {ServerStoreService} from '@eg/core/server-store.service';
-import {ComboboxEntry, ComboboxComponent} from '@eg/share/combobox/combobox.component';
 import {ProgressDialogComponent} from '@eg/share/dialog/progress.component';
 import {EventService, EgEvent} from '@eg/core/event.service';
 import {ConfirmDialogComponent} from '@eg/share/dialog/confirm.component';
@@ -22,9 +22,9 @@ const PO_ACTIVATION_WARNINGS = [
 ];
 
 @Component({
-  templateUrl: 'summary.component.html',
-  styleUrls: [ './summary.component.css' ],
-  selector: 'eg-acq-po-summary'
+    templateUrl: 'summary.component.html',
+    styleUrls: [ './summary.component.css' ],
+    selector: 'eg-acq-po-summary'
 })
 export class PoSummaryComponent implements OnInit, OnDestroy {
 
@@ -84,8 +84,8 @@ export class PoSummaryComponent implements OnInit, OnDestroy {
         // Re-check for activation blocks if the LI service tells us
         // something significant happened.
         this.stateChangeSub = this.liService.activateStateChange
-        .pipe(tap(_ => this.poService.getFleshedPo(this.poId, {toCache: true})))
-        .subscribe(_ => this.setCanActivate());
+            .pipe(tap(_ => this.poService.getFleshedPo(this.poId, {toCache: true})))
+            .subscribe(_ => this.setCanActivate());
     }
 
     ngOnDestroy() {
@@ -98,7 +98,7 @@ export class PoSummaryComponent implements OnInit, OnDestroy {
         return this.poService.currentPo;
     }
 
-    load(useCache: boolean = true): Promise<any> {
+    load(useCache = true): Promise<any> {
         if (!this.poId) { return Promise.resolve(); }
 
         this.dupeResults.dupeFound = false;
@@ -110,28 +110,28 @@ export class PoSummaryComponent implements OnInit, OnDestroy {
         }
 
         return this.poService.getFleshedPo(this.poId, {fromCache: useCache, toCache: true})
-        .then(po => {
+            .then(po => {
 
-            // EDI message count
-            return this.pcrud.search('acqedim',
-                {purchase_order: this.poId}, {}, {idlist: true, atomic: true}
-            ).toPromise().then(ids => this.ediMessageCount = ids.length);
+                // EDI message count
+                return this.pcrud.search('acqedim',
+                    {purchase_order: this.poId}, {}, {idlist: true, atomic: true}
+                ).toPromise().then(ids => this.ediMessageCount = ids.length);
 
-        })
-        .then(_ => {
+            })
+            .then(_ => {
 
-            // Invoice count
-            return this.net.request('open-ils.acq',
-                'open-ils.acq.invoice.unified_search.atomic',
-                this.auth.token(), {acqpo: [{id: this.poId}]},
-                null, null, {id_list: true}
-            ).toPromise().then(ids => this.invoiceCount = ids.length);
+                // Invoice count
+                return this.net.request('open-ils.acq',
+                    'open-ils.acq.invoice.unified_search.atomic',
+                    this.auth.token(), {acqpo: [{id: this.poId}]},
+                    null, null, {id_list: true}
+                ).toPromise().then(ids => this.invoiceCount = ids.length);
 
-        })
-        .then(_ => this.setCanActivate())
-        .then(_ => this.setCanFinalize())
-        .then(_ => this.loadUiPrefs())
-        .then(_ => this.activatePoIfRequested());
+            })
+            .then(_ => this.setCanActivate())
+            .then(_ => this.setCanFinalize())
+            .then(_ => this.loadUiPrefs())
+            .then(_ => this.activatePoIfRequested());
     }
 
     // Can run via Enter or blur.  If it just ran via Enter, avoid
@@ -197,6 +197,7 @@ export class PoSummaryComponent implements OnInit, OnDestroy {
             this.net.request('open-ils.acq',
                 'open-ils.acq.purchase_order.cancel',
                 this.auth.token(), this.poId, reason
+            // eslint-disable-next-line rxjs/no-nested-subscribe
             ).subscribe(resp => {
                 this.progressDialog.close();
 
@@ -306,14 +307,14 @@ export class PoSummaryComponent implements OnInit, OnDestroy {
                 }
             });
         }
-   }
+    }
 
     _doActualActivate(vandelay: any, options: any) {
         this.activationEvent = null;
         this.progressDialog.open();
         this.progressDialog.update({max: this.po().lineitem_count() * 3});
 
-         this.net.request(
+        this.net.request(
             'open-ils.acq',
             'open-ils.acq.purchase_order.activate',
             this.auth.token(), this.poId, vandelay, options
@@ -361,14 +362,14 @@ export class PoSummaryComponent implements OnInit, OnDestroy {
 
         this.pcrud.search('aiit',
             {code: invTypes, blanket: 't'}, {limit: 1})
-        .subscribe(_ => this.canFinalize = true);
+            .subscribe(_ => this.canFinalize = true);
     }
 
     loadUiPrefs() {
         return this.store.getItemBatch(['ui.staff.acq.show_deprecated_links'])
-        .then(settings => {
-            this.showLegacyLinks = settings['ui.staff.acq.show_deprecated_links'];
-        });
+            .then(settings => {
+                this.showLegacyLinks = settings['ui.staff.acq.show_deprecated_links'];
+            });
     }
 
     activatePoIfRequested() {
@@ -385,6 +386,7 @@ export class PoSummaryComponent implements OnInit, OnDestroy {
             this.net.request('open-ils.acq',
                 'open-ils.acq.purchase_order.blanket.finalize',
                 this.auth.token(), this.poId
+            // eslint-disable-next-line rxjs/no-nested-subscribe
             ).subscribe(resp => {
                 if (Number(resp) === 1) {
                     location.href = location.href;

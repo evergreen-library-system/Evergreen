@@ -15,64 +15,64 @@ import {MatchSetComponent} from './match-set.component';
 import {RecentImportsComponent} from './recent-imports.component';
 
 const routes: Routes = [{
-  path: '',
-  component: VandelayComponent,
-  children: [{
     path: '',
-    pathMatch: 'full',
-    redirectTo: 'import'
-  }, {
-    path: 'import',
-    component: ImportComponent
-  }, {
-    path: 'export',
-    component: ExportComponent
-  }, {
-    path: 'export/basket',
-    component: ExportComponent
-  }, {
-    path: 'queue',
-    component: QueueListComponent
-  }, {
-    path: 'queue/:qtype/:id',
-    component: QueueComponent
-  }, {
-    path: 'queue/:qtype/:id/record/:recordId',
-    component: QueuedRecordComponent
-  }, {
-    path: 'queue/:qtype/:id/record/:recordId/:recordTab',
-    component: QueuedRecordComponent
-  }, {
-    path: 'queue/:qtype/:id/items',
-    component: QueueItemsComponent
-  }, {
-    path: 'display_attrs',
-    component: DisplayAttrsComponent
-  }, {
-    path: 'display_attrs/:atype',
-    component: DisplayAttrsComponent
-  }, {
-    path: 'merge_profiles',
-    component: MergeProfilesComponent
-  }, {
-    path: 'holdings_profiles',
-    component: HoldingsProfilesComponent
-  }, {
-    path: 'match_sets',
-    component: MatchSetListComponent
-  }, {
-    path: 'match_sets/:id/:matchSetTab',
-    component: MatchSetComponent
-  }, {
-    path: 'active_imports',
-    component: RecentImportsComponent
-  }]
+    component: VandelayComponent,
+    children: [{
+        path: '',
+        pathMatch: 'full',
+        redirectTo: 'import'
+    }, {
+        path: 'import',
+        component: ImportComponent
+    }, {
+        path: 'export',
+        component: ExportComponent
+    }, {
+        path: 'export/basket',
+        component: ExportComponent
+    }, {
+        path: 'queue',
+        component: QueueListComponent
+    }, {
+        path: 'queue/:qtype/:id',
+        component: QueueComponent
+    }, {
+        path: 'queue/:qtype/:id/record/:recordId',
+        component: QueuedRecordComponent
+    }, {
+        path: 'queue/:qtype/:id/record/:recordId/:recordTab',
+        component: QueuedRecordComponent
+    }, {
+        path: 'queue/:qtype/:id/items',
+        component: QueueItemsComponent
+    }, {
+        path: 'display_attrs',
+        component: DisplayAttrsComponent
+    }, {
+        path: 'display_attrs/:atype',
+        component: DisplayAttrsComponent
+    }, {
+        path: 'merge_profiles',
+        component: MergeProfilesComponent
+    }, {
+        path: 'holdings_profiles',
+        component: HoldingsProfilesComponent
+    }, {
+        path: 'match_sets',
+        component: MatchSetListComponent
+    }, {
+        path: 'match_sets/:id/:matchSetTab',
+        component: MatchSetComponent
+    }, {
+        path: 'active_imports',
+        component: RecentImportsComponent
+    }]
 }];
 
 @NgModule({
-  imports: [RouterModule.forChild(routes)],
-  exports: [RouterModule],
-  providers: []
+    imports: [RouterModule.forChild(routes)],
+    exports: [RouterModule],
+    providers: []
 })
 
 export class VandelayRoutingModule {}

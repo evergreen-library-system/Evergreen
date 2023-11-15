@@ -10,7 +10,7 @@ import {GridDataSource} from '@eg/share/grid/grid';
 import {VandelayService} from './vandelay.service';
 
 @Component({
-  templateUrl: 'queue-list.component.html'
+    templateUrl: 'queue-list.component.html'
 })
 export class QueueListComponent {
 

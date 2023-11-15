@@ -33,46 +33,46 @@ import {StringModule} from '@eg/share/string/string.module';
 
 
 @NgModule({
-  declarations: [
-    PrintComponent,
-    DialogComponent,
-    AlertDialogComponent,
-    ConfirmDialogComponent,
-    PromptDialogComponent,
-    ProgressInlineComponent,
-    ProgressDialogComponent,
-    ToastComponent,
-    BoolDisplayComponent,
-    BackButtonComponent,
-  ],
-  imports: [
-    CommonModule,
-    FormsModule,
-    ReactiveFormsModule,
-    RouterModule,
-    NgbModule,
-    EgCoreModule,
-    StringModule
-  ],
-  exports: [
-    CommonModule,
-    RouterModule,
-    NgbModule,
-    FormsModule,
-    EgCoreModule,
-    StringModule,
-    ReactiveFormsModule,
-    PrintComponent,
-    DialogComponent,
-    AlertDialogComponent,
-    ConfirmDialogComponent,
-    PromptDialogComponent,
-    ProgressInlineComponent,
-    ProgressDialogComponent,
-    BoolDisplayComponent,
-    BackButtonComponent,
-    ToastComponent
-  ]
+    declarations: [
+        PrintComponent,
+        DialogComponent,
+        AlertDialogComponent,
+        ConfirmDialogComponent,
+        PromptDialogComponent,
+        ProgressInlineComponent,
+        ProgressDialogComponent,
+        ToastComponent,
+        BoolDisplayComponent,
+        BackButtonComponent,
+    ],
+    imports: [
+        CommonModule,
+        FormsModule,
+        ReactiveFormsModule,
+        RouterModule,
+        NgbModule,
+        EgCoreModule,
+        StringModule
+    ],
+    exports: [
+        CommonModule,
+        RouterModule,
+        NgbModule,
+        FormsModule,
+        EgCoreModule,
+        StringModule,
+        ReactiveFormsModule,
+        PrintComponent,
+        DialogComponent,
+        AlertDialogComponent,
+        ConfirmDialogComponent,
+        PromptDialogComponent,
+        ProgressInlineComponent,
+        ProgressDialogComponent,
+        BoolDisplayComponent,
+        BackButtonComponent,
+        ToastComponent
+    ]
 })
 
 export class EgCommonModule {

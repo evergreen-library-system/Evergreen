@@ -3,7 +3,7 @@ import {Router, ActivatedRoute, ParamMap} from '@angular/router';
 import {NgbNav, NgbNavChangeEvent} from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
-  templateUrl: 'display-attrs.component.html'
+    templateUrl: 'display-attrs.component.html'
 })
 export class DisplayAttrsComponent {
 

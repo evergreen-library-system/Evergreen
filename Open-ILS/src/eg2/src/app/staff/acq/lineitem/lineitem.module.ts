@@ -2,7 +2,7 @@ import {NgModule} from '@angular/core';
 import {StaffCommonModule} from '@eg/staff/common.module';
 import {HttpClientModule} from '@angular/common/http';
 import {ItemLocationSelectModule
-    } from '@eg/share/item-location-select/item-location-select.module';
+} from '@eg/share/item-location-select/item-location-select.module';
 import {LineitemWorksheetComponent} from './worksheet.component';
 import {LineitemService} from './lineitem.service';
 import {PoService} from '../po/po.service';
@@ -32,54 +32,54 @@ import {MarcEditModule} from '@eg/staff/share/marc-edit/marc-edit.module';
 import {AcqCommonModule} from '../acq-common.module';
 
 @NgModule({
-  declarations: [
-    LineitemComponent,
-    LineitemListComponent,
-    LineitemNotesComponent,
-    LineitemDetailComponent,
-    LineitemCopiesComponent,
-    LineitemOrderSummaryComponent,
-    LineitemBatchCopiesComponent,
-    LineitemCopyAttrsComponent,
-    LineitemHistoryComponent,
-    CancelDialogComponent,
-    AddToPoDialogComponent,
-    DeleteLineitemsDialogComponent,
-    AddCopiesDialogComponent,
-    BibFinderDialogComponent,
-    BatchUpdateCopiesDialogComponent,
-    LinkInvoiceDialogComponent,
-    ExportAttributesDialogComponent,
-    ClaimPolicyDialogComponent,
-    ManageClaimsDialogComponent,
-    LineitemAlertDialogComponent,
-    BriefRecordComponent,
-    CreateAssetsComponent,
-    LineitemWorksheetComponent
-  ],
-  exports: [
-    LineitemListComponent,
-    CancelDialogComponent,
-    AddToPoDialogComponent,
-    DeleteLineitemsDialogComponent,
-    AddCopiesDialogComponent,
-    LinkInvoiceDialogComponent,
-    ExportAttributesDialogComponent,
-    ClaimPolicyDialogComponent,
-    ManageClaimsDialogComponent,
-    LineitemAlertDialogComponent
-  ],
-  imports: [
-    StaffCommonModule,
-    ItemLocationSelectModule,
-    MarcEditModule,
-    HttpClientModule,
-    AcqCommonModule
-  ],
-  providers: [
-    LineitemService,
-    PoService
-  ]
+    declarations: [
+        LineitemComponent,
+        LineitemListComponent,
+        LineitemNotesComponent,
+        LineitemDetailComponent,
+        LineitemCopiesComponent,
+        LineitemOrderSummaryComponent,
+        LineitemBatchCopiesComponent,
+        LineitemCopyAttrsComponent,
+        LineitemHistoryComponent,
+        CancelDialogComponent,
+        AddToPoDialogComponent,
+        DeleteLineitemsDialogComponent,
+        AddCopiesDialogComponent,
+        BibFinderDialogComponent,
+        BatchUpdateCopiesDialogComponent,
+        LinkInvoiceDialogComponent,
+        ExportAttributesDialogComponent,
+        ClaimPolicyDialogComponent,
+        ManageClaimsDialogComponent,
+        LineitemAlertDialogComponent,
+        BriefRecordComponent,
+        CreateAssetsComponent,
+        LineitemWorksheetComponent
+    ],
+    exports: [
+        LineitemListComponent,
+        CancelDialogComponent,
+        AddToPoDialogComponent,
+        DeleteLineitemsDialogComponent,
+        AddCopiesDialogComponent,
+        LinkInvoiceDialogComponent,
+        ExportAttributesDialogComponent,
+        ClaimPolicyDialogComponent,
+        ManageClaimsDialogComponent,
+        LineitemAlertDialogComponent
+    ],
+    imports: [
+        StaffCommonModule,
+        ItemLocationSelectModule,
+        MarcEditModule,
+        HttpClientModule,
+        AcqCommonModule
+    ],
+    providers: [
+        LineitemService,
+        PoService
+    ]
 })
 
 export class LineitemModule {

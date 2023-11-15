@@ -71,12 +71,12 @@ export class SearchFilterGroupEntriesComponent implements OnInit {
                     this.grid.reload();
                 }
             },
-            error => {
+            (error: unknown) => {
                 this.createErrString.current()
                     .then(str => this.toast.danger(str));
             }
         );
-    }
+    };
 
     editQuery = (event) => {
         const firstRecord = event[0];
@@ -97,12 +97,12 @@ export class SearchFilterGroupEntriesComponent implements OnInit {
                     this.grid.reload();
                 }
             },
-            error => {
+            (error: unknown) => {
                 this.updateFailedString.current()
                     .then(str => this.toast.danger(str));
             }
         );
-    }
+    };
 
     deleteSelected = (idlThings: IdlObject[]) => {
         idlThings.forEach(idlThing => idlThing.isdeleted(true));
@@ -112,11 +112,11 @@ export class SearchFilterGroupEntriesComponent implements OnInit {
                 this.deleteSuccessString.current()
                     .then(str => this.toast.success(str));
             },
-            err => {
+            (err: unknown) => {
                 this.deleteFailedString.current()
                     .then(str => this.toast.danger(str));
             },
             ()  => this.grid.reload()
         );
-    }
+    };
 }

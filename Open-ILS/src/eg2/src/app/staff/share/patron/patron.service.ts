@@ -94,7 +94,7 @@ export class PatronService {
             'open-ils.actor',
             'open-ils.actor.get_barcodes',
             this.auth.token(), this.auth.user().ws_ou(),
-           'actor', barcode.trim());
+            'actor', barcode.trim());
     }
 
     // XXX: This assumes the provided barcode only matches a single patron.
@@ -105,21 +105,21 @@ export class PatronService {
     // of a user ('au') retrieval, not a barcode ('ac') retrieval.
     getByBarcode(barcode: string, pcrudOps?: any): Promise<IdlObject> {
         return this.bcSearch(barcode).toPromise()
-        .then(barcodes => {
-            if (!barcodes) { return null; }
+            .then(barcodes => {
+                if (!barcodes) { return null; }
 
-            // Use the first successful barcode response.
-            // Use for-loop for early exit since we have async
-            // action within the loop.
-            for (let i = 0; i < barcodes.length; i++) {
-                const bc = barcodes[i];
-                if (!this.evt.parse(bc)) {
-                    return this.getById(bc.id, pcrudOps);
+                // Use the first successful barcode response.
+                // Use for-loop for early exit since we have async
+                // action within the loop.
+                for (let i = 0; i < barcodes.length; i++) {
+                    const bc = barcodes[i];
+                    if (!this.evt.parse(bc)) {
+                        return this.getById(bc.id, pcrudOps);
+                    }
                 }
-            }
 
-            return null;
-        });
+                return null;
+            });
     }
 
     getById(id: number, pcrudOps?: any): Promise<IdlObject> {
@@ -154,17 +154,17 @@ export class PatronService {
         }
 
         return this.org.settings(['circ.patron_expires_soon_warning'])
-        .then(setting => {
-            const days = setting['circ.patron_expires_soon_warning'];
+            .then(setting => {
+                const days = setting['circ.patron_expires_soon_warning'];
 
-            if (Number(days)) {
-                const preExpire = new Date();
-                preExpire.setDate(preExpire.getDate() + Number(days));
-                if (expire < preExpire) { return 'soon'; }
-            }
+                if (Number(days)) {
+                    const preExpire = new Date();
+                    preExpire.setDate(preExpire.getDate() + Number(days));
+                    if (expire < preExpire) { return 'soon'; }
+                }
 
-            return null;
-        });
+                return null;
+            });
     }
 
     getIdentTypes(): Promise<IdlObject[]> {
@@ -174,7 +174,7 @@ export class PatronService {
 
         return this.pcrud.retrieveAll('cit',
             {order_by: {cit: ['name']}}, {atomic: true})
-        .toPromise().then(types => this.identTypes = types);
+            .toPromise().then(types => this.identTypes = types);
     }
 
     getInetLevels(): Promise<IdlObject[]> {
@@ -184,7 +184,7 @@ export class PatronService {
 
         return this.pcrud.retrieveAll('cnal',
             {order_by: {cit: ['name']}}, {atomic: true})
-        .toPromise().then(levels => this.inetLevels = levels);
+            .toPromise().then(levels => this.inetLevels = levels);
     }
 
     getProfileGroups(): Promise<IdlObject[]> {
@@ -194,7 +194,7 @@ export class PatronService {
 
         return this.pcrud.retrieveAll('pgt',
             {order_by: {cit: ['name']}}, {atomic: true})
-        .toPromise().then(types => this.profileGroups = types);
+            .toPromise().then(types => this.profileGroups = types);
     }
 
     getSmsCarriers(): Promise<IdlObject[]> {
@@ -206,7 +206,7 @@ export class PatronService {
         return this.pcrud.search(
             'csc', {active: 't'}, {order_by: {csc: 'name'}})
             .pipe(tap(carrier => this.smsCarriers.push(carrier))
-        ).toPromise().then(_ => this.smsCarriers);
+            ).toPromise().then(_ => this.smsCarriers);
     }
 
     // Local stat cats fleshed with entries; sorted.
@@ -238,17 +238,17 @@ export class PatronService {
         const orgIds = this.org.fullPath(this.auth.user().ws_ou(), true);
 
         return this.pcrud.search('asv', {
-                owner: orgIds,
-                start_date: {'<=': 'now'},
-                end_date: {'>=': 'now'}
-            }, {
-                flesh: 2,
-                flesh_fields: {
-                    asv: ['questions'],
-                    asvq: ['answers']
-                }
-            },
-            {atomic : true}
+            owner: orgIds,
+            start_date: {'<=': 'now'},
+            end_date: {'>=': 'now'}
+        }, {
+            flesh: 2,
+            flesh_fields: {
+                asv: ['questions'],
+                asvq: ['answers']
+            }
+        },
+        {atomic : true}
         ).toPromise().then(surveys => {
             return this.surveys =
                 surveys.sort((s1, s2) => s1.name() < s2.name() ? -1 : 1);
@@ -261,8 +261,8 @@ export class PatronService {
         let noTallyClaimsReturned, tallyLost;
 
         return this.store.getItemBatch([
-          'circ.do_not_tally_claims_returned',
-          'circ.tally_lost'
+            'circ.do_not_tally_claims_returned',
+            'circ.tally_lost'
 
         ]).then(settings => {
 
@@ -337,15 +337,15 @@ export class PatronService {
             .filter(p => p.standing_penalty().staff_alert() === 't');
 
         return this.testExpire(patron)
-        .then(value => {
-            if (value === 'expired') {
-                alerts.accountExpired = true;
-            } else if (value === 'soon') {
-                alerts.accountExpiresSoon = true;
-            }
+            .then(value => {
+                if (value === 'expired') {
+                    alerts.accountExpired = true;
+                } else if (value === 'soon') {
+                    alerts.accountExpiresSoon = true;
+                }
 
-            return alerts;
-        });
+                return alerts;
+            });
     }
 
     patronStatusColor(patron: IdlObject, summary: PatronSummary): string {
@@ -359,7 +359,7 @@ export class PatronService {
         }
 
         if (summary.stats.fines.balance_owed > 0) {
-           return 'PATRON_HAS_BILLS';
+            return 'PATRON_HAS_BILLS';
         }
 
         if (summary.stats.checkouts.overdue > 0) {
@@ -367,7 +367,7 @@ export class PatronService {
         }
 
         if (summary.alerts.accountExpired || summary.alerts.accountExpiresSoon) {
-          return 'PATRON_EXPIRED';
+            return 'PATRON_EXPIRED';
         }
 
         if (patron.notes().length > 0) {

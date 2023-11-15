@@ -21,8 +21,8 @@ import * as moment from 'moment-timezone';
 import { datesInOrderValidator } from '@eg/share/validators/dates_in_order_validator.directive';
 
 @Component({
-  selector: 'eg-create-reservation-dialog',
-  templateUrl: './create-reservation-dialog.component.html'
+    selector: 'eg-create-reservation-dialog',
+    templateUrl: './create-reservation-dialog.component.html'
 })
 
 export class CreateReservationDialogComponent
@@ -115,8 +115,8 @@ export class CreateReservationDialogComponent
                         this.toast.success('Reservation successfully created');
                         console.debug(response);
                         this.close();
-                   }
-                }, error: (response) => {
+                    }
+                }, error: (response: unknown) => {
                     console.warn(response);
                     this.fail.open();
                 }, complete: () => this.reservationRequestCompleted.emit(true)
@@ -143,18 +143,18 @@ export class CreateReservationDialogComponent
                         this.auth.token(),
                         this.auth.user().ws_ou(),
                         'actor', this.patronBarcode.value.trim()).pipe(
-                            single(),
-                            switchMap((result) => {
-                                return this.pcrud.retrieve('au', result[0]['id']).pipe(
-                                    switchMap((au) => {
-                                        return of({
-                                            first_given_name: au.first_given_name(),
-                                            second_given_name: au.second_given_name(),
-                                            family_name: au.family_name()});
-                                    })
-                                );
-                            })
-                        );
+                        single(),
+                        switchMap((result) => {
+                            return this.pcrud.retrieve('au', result[0]['id']).pipe(
+                                switchMap((au) => {
+                                    return of({
+                                        first_given_name: au.first_given_name(),
+                                        second_given_name: au.second_given_name(),
+                                        family_name: au.family_name()});
+                                })
+                            );
+                        })
+                    );
                 } else {
                     return of({
                         first_given_name: '',
@@ -168,7 +168,7 @@ export class CreateReservationDialogComponent
 
     setDefaultTimes(times: moment.Moment[], granularity: number) {
         this.create.patchValue({startTime: moment.min(times),
-        endTime: moment.max(times).clone().add(granularity, 'minutes')
+            endTime: moment.max(times).clone().add(granularity, 'minutes')
         });
     }
 
@@ -180,12 +180,12 @@ export class CreateReservationDialogComponent
             this.auth.user().ws_ou(),
             'actor', this.patronBarcode.value
         ).subscribe((patron) => this.router.navigate(['/staff', 'booking', 'manage_reservations', 'by_patron', patron[0]['id']]));
-    }
+    };
 
     addBresvAndOpenPatronReservations = (): void => {
         this.addBresv$()
-        .subscribe(() => this.openPatronReservations());
-    }
+            .subscribe(() => this.openPatronReservations());
+    };
 
     searchPatrons() {
         this.patronSearch.open({size: 'xl'}).toPromise().then(
@@ -210,7 +210,7 @@ export class CreateReservationDialogComponent
     }
 
     get resourceListSelection() {
-      return this.create.get('resourceList').value;
+        return this.create.get('resourceList').value;
     }
 
     get selectedTimes() {

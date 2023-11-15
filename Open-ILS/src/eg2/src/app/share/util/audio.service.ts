@@ -68,7 +68,7 @@ export class AudioService {
                 }
 
                 // Fall through to the next (more generic) option
-                path = path.replace(/\.[^\.]+$/, '');
+                path = path.replace(/\.[^.]+$/, '');
                 this.playUrl(path, origPath);
             };
         });

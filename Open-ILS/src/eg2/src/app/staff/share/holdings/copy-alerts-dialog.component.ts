@@ -22,8 +22,8 @@ export interface CopyAlertsChanges {
 }
 
 @Component({
-  selector: 'eg-copy-alerts-dialog',
-  templateUrl: 'copy-alerts-dialog.component.html'
+    selector: 'eg-copy-alerts-dialog',
+    templateUrl: 'copy-alerts-dialog.component.html'
 })
 
 export class CopyAlertsDialogComponent
@@ -98,10 +98,10 @@ export class CopyAlertsDialogComponent
         // Observerify data loading
         const obs = from(
             this.getAlertTypes()
-            .then(_ => this.getCopies())
-            .then(_ => this.mode === 'manage' ? this.getCopyAlerts() : null)
-            .then(_ => this.getDefaultAlertType())
-            .then(_ => { if (this.defaultAlertType) { this.newAlert.alert_type(this.defaultAlertType) } })
+                .then(_ => this.getCopies())
+                .then(_ => this.mode === 'manage' ? this.getCopyAlerts() : null)
+                .then(_ => this.getDefaultAlertType())
+                .then(_ => { if (this.defaultAlertType) { this.newAlert.alert_type(this.defaultAlertType); } })
         );
 
         // Return open() observable to caller
@@ -112,9 +112,9 @@ export class CopyAlertsDialogComponent
         if (this.alertTypes) { return Promise.resolve(); }
 
         return this.pcrud.retrieveAll('ccat',
-        {   active: true,
-            scope_org: this.org.ancestors(this.auth.user().ws_ou(), true)
-        }, {atomic: true}
+            {   active: true,
+                scope_org: this.org.ancestors(this.auth.user().ws_ou(), true)
+            }, {atomic: true}
         ).toPromise().then(alerts => {
             this.alertTypes = alerts.map(a => ({id: a.id(), label: a.name()}));
         });
@@ -127,13 +127,13 @@ export class CopyAlertsDialogComponent
         if (ids.length === 0) { return Promise.resolve(); }
 
         return this.pcrud.search('acp', {id: this.copyIds}, {}, {atomic: true})
-        .toPromise().then(copies => {
-            this.copies = copies;
-            copies.forEach(c => c.copy_alerts([]));
-            if (this.mode === 'manage') {
-                this.copy = copies[0];
-            }
-        });
+            .toPromise().then(copies => {
+                this.copies = copies;
+                copies.forEach(c => c.copy_alerts([]));
+                if (this.mode === 'manage') {
+                    this.copy = copies[0];
+                }
+            });
     }
 
     // Copy alerts for the selected copies which have not been
@@ -145,18 +145,18 @@ export class CopyAlertsDialogComponent
         return this.pcrud.search('aca',
             {copy: this.copyIds, ack_time: null, alert_type: typeIds},
             {}, {atomic: true})
-        .toPromise().then(alerts => {
-            alerts.forEach(a => {
-                const copy = this.copies.filter(c => c.id() === a.copy())[0];
-                copy.copy_alerts().push(a);
+            .toPromise().then(alerts => {
+                alerts.forEach(a => {
+                    const copy = this.copies.filter(c => c.id() === a.copy())[0];
+                    copy.copy_alerts().push(a);
+                });
             });
-        });
     }
 
     getDefaultAlertType(): Promise<any> {
         this.defaultAlertType = null;
         // TODO fetching the default item alert type from holdings editor
-        //      defaults had previously been handled via methods from 
+        //      defaults had previously been handled via methods from
         //      VolCopyService. However, as described in LP#2044051, this
         //      caused significant issues with dependency injection.
         //      Consequently, some refactoring may be in order so that

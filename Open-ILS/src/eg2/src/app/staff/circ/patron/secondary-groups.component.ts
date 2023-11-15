@@ -15,8 +15,8 @@ import {StringComponent} from '@eg/share/string/string.component';
 /* Add/Remove Secondary Groups */
 
 @Component({
-  selector: 'eg-patron-secondary-groups',
-  templateUrl: 'secondary-groups.component.html'
+    selector: 'eg-patron-secondary-groups',
+    templateUrl: 'secondary-groups.component.html'
 })
 
 export class SecondaryGroupsDialogComponent

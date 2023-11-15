@@ -12,9 +12,9 @@ import {ConfirmDialogComponent} from '@eg/share/dialog/confirm.component';
 import {VolCopyService} from './volcopy.service';
 
 @Component({
-  selector: 'eg-vol-edit',
-  templateUrl: 'vol-edit.component.html',
-  styleUrls: ['vol-edit.component.css']
+    selector: 'eg-vol-edit',
+    templateUrl: 'vol-edit.component.html',
+    styleUrls: ['vol-edit.component.css']
 })
 
 
@@ -92,18 +92,19 @@ export class VolEditComponent implements OnInit {
         this.volcopy.genBarcodesRequested.subscribe(() => this.generateBarcodes());
 
         this.volcopy.fetchRecordVolLabels(this.context.recordId)
-        .then(labels => this.recordVolLabels = labels)
-        .then(_ => this.volcopy.fetchBibParts(this.context.getRecordIds()))
-        .then(_ => this.addStubCopies())
+            .then(labels => this.recordVolLabels = labels)
+            .then(_ => this.volcopy.fetchBibParts(this.context.getRecordIds()))
+            .then(_ => this.addStubCopies())
         // It's possible the loaded data is not strictly allowed,
         // e.g. empty string call number labels
-        .then(_ => this.emitSaveChange(true));
+            .then(_ => this.emitSaveChange(true));
 
         // Check to see if call number label is required
         this.org.settings('cat.require_call_number_labels')
-            .then(settings => {this.requireCNL =
+            .then(settings => {
+                this.requireCNL =
                 Boolean(settings['cat.require_call_number_labels']);
-        });
+            });
     }
 
     copyStatLabel(copy: IdlObject): string {
@@ -129,6 +130,7 @@ export class VolEditComponent implements OnInit {
             return 0;
         }
         let value = this.flexSettings[column];
+        // eslint-disable-next-line no-magic-numbers
         if (this.expand === column) { value = value * 3; }
         return value;
     }
@@ -272,7 +274,7 @@ export class VolEditComponent implements OnInit {
 
                 newPart =
                     this.volcopy.bibParts[copy.call_number().record()]
-                    .filter(p => p.id() === entry.id)[0];
+                        .filter(p => p.id() === entry.id)[0];
 
                 // Nothing to change?
                 if (part && part.id() === newPart.id()) { return; }
@@ -336,7 +338,7 @@ export class VolEditComponent implements OnInit {
         });
 
         this.renderer.selectRootElement(
-                '#barcode-input-' + (nextId || firstId)).select();
+            '#barcode-input-' + (nextId || firstId)).select();
     }
 
     barcodeCanChange(copy: IdlObject): boolean {
@@ -349,15 +351,15 @@ export class VolEditComponent implements OnInit {
         // Autogen only replaces barcodes for items which are in
         // certain statuses.
         const copies = this.context.copyList()
-        .filter((copy, idx) => {
+            .filter((copy, idx) => {
             // During autogen we do not replace the first item,
             // so it's status is not relevant.
-            return idx === 0 || this.barcodeCanChange(copy);
-        });
+                return idx === 0 || this.barcodeCanChange(copy);
+            });
 
         if (copies.length > 1) { // seed barcode will always be present
             this.proceedWithAutogen(copies)
-            .then(_ => this.autoBarcodeInProgress = false);
+                .then(_ => this.autoBarcodeInProgress = false);
         }
     }
 
@@ -415,7 +417,7 @@ export class VolEditComponent implements OnInit {
                 resp => {
                     if (resp) { copy._dupe_barcode = true; }
                 },
-                err => {},
+                (err: unknown) => {},
                 () => this.emitSaveChange()
             );
         }
@@ -593,6 +595,7 @@ export class VolEditComponent implements OnInit {
 
             // If call number label is not required, then require prefix
             if (!vol.label()) {
+                // eslint-disable-next-line eqeqeq
                 if (this.requireCNL == true) {
                     return !(
                         vol.label()

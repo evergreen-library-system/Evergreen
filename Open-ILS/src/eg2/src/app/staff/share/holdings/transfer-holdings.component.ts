@@ -11,8 +11,8 @@ import {ProgressDialogComponent} from '@eg/share/dialog/progress.component';
 /* Transfer holdings (AKA asset.call_number) to a target bib record. */
 
 @Component({
-  selector: 'eg-transfer-holdings',
-  templateUrl: 'transfer-holdings.component.html'
+    selector: 'eg-transfer-holdings',
+    templateUrl: 'transfer-holdings.component.html'
 })
 
 export class TransferHoldingsComponent {
@@ -31,16 +31,16 @@ export class TransferHoldingsComponent {
     @Input() targetOrgId: number;
 
     @ViewChild('successMsg', {static: false})
-        private successMsg: StringComponent;
+    private successMsg: StringComponent;
 
     @ViewChild('noTargetMsg', {static: false})
-        private noTargetMsg: StringComponent;
+    private noTargetMsg: StringComponent;
 
     @ViewChild('alertDialog', {static: false})
-        private alertDialog: AlertDialogComponent;
+    private alertDialog: AlertDialogComponent;
 
     @ViewChild('progressDialog', {static: false})
-        private progressDialog: ProgressDialogComponent;
+    private progressDialog: ProgressDialogComponent;
 
     eventDesc: string;
 
@@ -91,10 +91,10 @@ export class TransferHoldingsComponent {
         this.progressDialog.open();
 
         return this.performTransfers(transferVols)
-        .then(res => {
-            this.progressDialog.close();
-            return res;
-        });
+            .then(res => {
+                this.progressDialog.close();
+                return res;
+            });
     }
 
     performTransfers(transferVols: any): Promise<Boolean> {
@@ -120,7 +120,7 @@ export class TransferHoldingsComponent {
 
                 // Failure -- stop short there to avoid alert storm.
                 return this.alertDialog.open().toPromise()
-                .then(_ => { this.eventDesc = ''; return false; });
+                    .then(_ => { this.eventDesc = ''; return false; });
             }
 
             this.progressDialog.increment();

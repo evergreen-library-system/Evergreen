@@ -1,20 +1,20 @@
+/* eslint-disable no-magic-numbers */
 import {Component, Input, OnInit, OnDestroy} from '@angular/core';
 import {ActivatedRoute, Router, ParamMap} from '@angular/router';
 import {Subscription} from 'rxjs';
 import {IdlObject} from '@eg/core/idl.service';
 import {PcrudService} from '@eg/core/pcrud.service';
 import {CatalogService} from '@eg/share/catalog/catalog.service';
-import {BibRecordService} from '@eg/share/catalog/bib-record.service';
+import {BibRecordService, BibRecordSummary} from '@eg/share/catalog/bib-record.service';
 import {CatalogUrlService} from '@eg/share/catalog/catalog-url.service';
 import {CatalogSearchContext, CatalogSearchState} from '@eg/share/catalog/search-context';
 import {StaffCatalogService} from '../catalog.service';
-import {BibRecordSummary} from '@eg/share/catalog/bib-record.service';
 import {OrgService} from '@eg/core/org.service';
 
 @Component({
-  selector: 'eg-catalog-cn-browse-results',
-  templateUrl: 'results.component.html',
-  styleUrls: ['results.component.css']
+    selector: 'eg-catalog-cn-browse-results',
+    templateUrl: 'results.component.html',
+    styleUrls: ['results.component.css']
 })
 export class CnBrowseResultsComponent implements OnInit, OnDestroy {
 

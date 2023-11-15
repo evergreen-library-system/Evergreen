@@ -5,9 +5,9 @@ import {StoreService} from '@eg/core/store.service';
 import {OrgFamily} from '@eg/share/org-family-select/org-family-select.component';
 
 @Component({
-  selector: 'eg-acq-provider-search-form',
-  styleUrls: ['acq-provider-search-form.component.css'],
-  templateUrl: './acq-provider-search-form.component.html'
+    selector: 'eg-acq-provider-search-form',
+    styleUrls: ['acq-provider-search-form.component.css'],
+    templateUrl: './acq-provider-search-form.component.html'
 })
 
 export class AcqProviderSearchFormComponent implements OnInit {

@@ -11,7 +11,7 @@ import {PcrudService} from '@eg/core/pcrud.service';
 import {ProgressDialogComponent} from '@eg/share/dialog/progress.component';
 
 @Component({
-  templateUrl: 'urls.component.html'
+    templateUrl: 'urls.component.html'
 })
 export class LinkCheckerUrlsComponent implements OnInit {
 
@@ -27,6 +27,7 @@ export class LinkCheckerUrlsComponent implements OnInit {
         'uvsbrem' : ['target_biblio_record_entry'],
         'bre' : ['simple_record']
     };
+    // eslint-disable-next-line no-magic-numbers
     urlsFleshDepth = 3;
     urlsIdlClassDef: any;
     urlsPKeyField: string;
@@ -34,10 +35,10 @@ export class LinkCheckerUrlsComponent implements OnInit {
     urlsPermaCrud: any;
     urlsPerms: string;
 
-    alertMessage: string = '';
+    alertMessage = '';
 
     @ViewChild('progress', { static: true }) private progress: ProgressDialogComponent;
-    progressText: string = '';
+    progressText = '';
 
     @ViewChild('grid', { static: true }) grid: GridComponent;
     dataSource: GridDataSource = new GridDataSource();
@@ -60,6 +61,7 @@ export class LinkCheckerUrlsComponent implements OnInit {
             if (params.sessions) {
                 this.sessions = JSON.parse( params.sessions );
                 this.grid.reload();
+                // eslint-disable-next-line rxjs/no-nested-subscribe
                 this.pcrud.search(this.sessionIdlClass, { id: this.sessions }).subscribe((n) => {
                     this.session_names.push(n.name());
                     this.cdr.detectChanges();
@@ -80,19 +82,19 @@ export class LinkCheckerUrlsComponent implements OnInit {
 
         this.initDataSource();
         this.gridSelectionChange( [] );
-        //console.log('phasefx',this);
+        // console.log('phasefx',this);
     }
 
     gridSelectionChange(keys: string[]) {
         this.noSelectedRows = (keys.length === 0);
         this.oneSelectedRow = (keys.length === 1);
-        //var rows = this.grid.context.getSelectedRows();
+        // var rows = this.grid.context.getSelectedRows();
     }
 
     initDataSource() {
         this.dataSource.getRows = (pager: Pager, sort: any[]) => {
 
-            let query: any = {}
+            const query: any = {};
 
             if (this.sessions) {
                 query[this.urlsSessionField] = this.sessions;
@@ -129,7 +131,7 @@ export class LinkCheckerUrlsComponent implements OnInit {
     }
 
     verifyUrlsFilteredForSession(rows: any[], ses_ids: any[]) {
-        var ses_id = ses_ids.pop();
+        const ses_id = ses_ids.pop();
         if (ses_id) {
             if (rows === null) {
                 this.resetProgressMeter($localize`Verifying all URLs for Session ${ses_id}...`);
@@ -153,7 +155,7 @@ export class LinkCheckerUrlsComponent implements OnInit {
                         this.newBatches.push(res.attempt.id());
                     }
                 },
-                error: (err) => {
+                error: (err: unknown) => {
                     this.stopProgressMeter();
                     console.log('err',err);
                 },
@@ -169,9 +171,9 @@ export class LinkCheckerUrlsComponent implements OnInit {
         }
     }
 
-    verifySelectedUrls() {  
+    verifySelectedUrls() {
         const rows = this.grid.context.getSelectedRows();
-        let session_ids = Array.from( new Set( rows.map(x => Number(x.session)) ) );
+        const session_ids = Array.from( new Set( rows.map(x => Number(x.session)) ) );
         this.startProgressMeter($localize`Verifying selected URLs for Sessions ${session_ids}...`);
         this.verifyUrlsFilteredForSession(rows,session_ids);
     }

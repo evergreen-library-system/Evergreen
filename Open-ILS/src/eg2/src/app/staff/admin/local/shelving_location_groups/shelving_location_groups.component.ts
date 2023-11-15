@@ -47,7 +47,7 @@ export class ShelvingLocationGroupsComponent implements OnInit {
         private idl: IdlService,
         private perm: PermService
     ) {
-       this.permissions = [];
+        this.permissions = [];
     }
 
     ngOnInit() {
@@ -61,7 +61,7 @@ export class ShelvingLocationGroupsComponent implements OnInit {
     checkCurrentPermissions = () => {
         this.hasPermission =
             (this.permissions.indexOf(this.selectedOrgId) !== -1);
-    }
+    };
 
     createLocationGroup = () => {
         this.editDialog.mode = 'create';
@@ -91,17 +91,17 @@ export class ShelvingLocationGroupsComponent implements OnInit {
                     this.sortLocationGroups();
                 }
                 console.debug('Record editor performed action');
-            }, err => {
+            }, (err: unknown) => {
                 console.debug(err);
             }
         );
-    }
+    };
 
     processLocationGroup = (locationGroup) => {
         locationGroup.isVisible = (locationGroup.opac_visible() === 't');
         locationGroup.posit = locationGroup.pos();
         locationGroup.name = locationGroup.name();
-    }
+    };
 
     editLocationGroup = (group) => {
         this.editDialog.mode = 'update';
@@ -111,12 +111,12 @@ export class ShelvingLocationGroupsComponent implements OnInit {
                 console.debug('Record editor performed action');
                 this.loadLocationGroups();
             },
-            err => {
+            (err: unknown) => {
                 console.debug(err);
             },
             () => console.debug('Dialog closed')
         );
-    }
+    };
 
     deleteLocationGroup = (locationGroupToDelete) => {
         const idToDelete = locationGroupToDelete.id();
@@ -128,13 +128,13 @@ export class ShelvingLocationGroupsComponent implements OnInit {
                     }
                 });
             },
-            err => console.debug(err)
+            (err: unknown) => console.debug(err)
         );
-    }
+    };
 
     sortLocationGroups = () => {
         this.locationGroups.sort((a, b) => (a.posit > b.posit) ? 1 : -1);
-    }
+    };
 
     loadLocationGroups = () => {
         this.locationGroups = [];
@@ -145,7 +145,7 @@ export class ShelvingLocationGroupsComponent implements OnInit {
         }).subscribe(data => {
             this.processLocationGroup(data);
             this.locationGroups.push(data);
-        }, (error) => {
+        }, (error: unknown) => {
             console.debug(error);
         }, () => {
             this.sortLocationGroups();
@@ -154,19 +154,19 @@ export class ShelvingLocationGroupsComponent implements OnInit {
             }
             this.loadGroupEntries();
         });
-    }
+    };
 
     changeSelectedLocationGroup = (group) => {
         this.selectedLocationGroup.selected = false;
         this.markAsSelected(group);
         this.loadGroupEntries();
-    }
+    };
 
     markAsSelected = (locationGroup) => {
         this.selectedLocationGroup = locationGroup;
         this.selectedLocationGroup.selected = true;
         this.selectedLocationGroupId = locationGroup.id();
-    }
+    };
 
     loadGroupEntries = () => {
         this.groupEntries = [];
@@ -181,12 +181,12 @@ export class ShelvingLocationGroupsComponent implements OnInit {
             data.label = (data.shortname + data.name).replace(/\W/g, '');
             data.checked = false;
             this.groupEntries.push(data);
-        }, (error) => {
+        }, (error: unknown) => {
             console.debug(error);
         }, () => {
             this.loadShelvingLocations();
         });
-    }
+    };
 
     loadShelvingLocations = () => {
         let orgList = this.org.fullPath(this.selectedOrgId, false);
@@ -200,35 +200,35 @@ export class ShelvingLocationGroupsComponent implements OnInit {
             (group) => group.location().id());
         this.shelvingLocations = [];
         this.pcrud.search('acpl', {owning_lib : orgList, deleted: 'f'})
-        .subscribe(data => {
-            data.name = data.name();
-            data.shortname = this.org.get(data.owning_lib()).shortname();
-            // remove all non-alphanumeric chars to make label a valid id
-            data.label = (data.shortname + data.name).replace(/\W/g, '');
-            data.checked = false;
-            if (groupEntryIds.indexOf(data.id()) === -1) {
-                data.hidden = false;
-            } else {
-                data.hidden = true;
-            }
-            this.shelvingLocations.push(data);
-        }, (error) => {
-            console.debug(error);
-        }, () => {
-            this.shelvingLocations.sort(function(a, b) {
-                return a.name < b.name ? -1 : 1;
-            });
-            const sortedShelvingLocations = [];
-            // order our array primarily by location
-            orgList.forEach(member => {
-                const currentLocationArray = this.shelvingLocations.filter((loc) => {
-                    return (member === loc.owning_lib());
+            .subscribe(data => {
+                data.name = data.name();
+                data.shortname = this.org.get(data.owning_lib()).shortname();
+                // remove all non-alphanumeric chars to make label a valid id
+                data.label = (data.shortname + data.name).replace(/\W/g, '');
+                data.checked = false;
+                if (groupEntryIds.indexOf(data.id()) === -1) {
+                    data.hidden = false;
+                } else {
+                    data.hidden = true;
+                }
+                this.shelvingLocations.push(data);
+            }, (error: unknown) => {
+                console.debug(error);
+            }, () => {
+                this.shelvingLocations.sort(function(a, b) {
+                    return a.name < b.name ? -1 : 1;
                 });
-                Array.prototype.push.apply(sortedShelvingLocations, currentLocationArray);
+                const sortedShelvingLocations = [];
+                // order our array primarily by location
+                orgList.forEach(member => {
+                    const currentLocationArray = this.shelvingLocations.filter((loc) => {
+                        return (member === loc.owning_lib());
+                    });
+                    Array.prototype.push.apply(sortedShelvingLocations, currentLocationArray);
+                });
+                this.shelvingLocations = sortedShelvingLocations;
             });
-            this.shelvingLocations = sortedShelvingLocations;
-        });
-    }
+    };
 
     addEntries = () => {
         const checkedEntries = this.shelvingLocations.filter((entry) => {
@@ -251,13 +251,13 @@ export class ShelvingLocationGroupsComponent implements OnInit {
                     this.addedGroupEntriesSuccess.current().then(msg =>
                         this.toast.success(msg));
                 },
-                err => {
+                (err: unknown) => {
                     console.debug(err);
                     this.addedGroupEntriesFailure.current().then(msg => this.toast.warning(msg));
                 }
             );
         });
-    }
+    };
 
     removeEntries = () => {
         const checkedEntries = this.groupEntries.filter((entry) => {
@@ -285,28 +285,28 @@ export class ShelvingLocationGroupsComponent implements OnInit {
                 });
                 this.removedGroupEntriesSuccess.current().then(msg =>
                     this.toast.success(msg));
-            }, (error) => {
+            }, (error: unknown) => {
                 console.debug(error);
                 this.removedGroupEntriesFailure.current().then(msg =>
                     this.toast.warning(msg));
             }
         );
-    }
+    };
 
     orgOnChange = (org: IdlObject): void => {
         this.selectedOrg = org;
         this.selectedOrgId = org.id();
         this.loadLocationGroups();
         this.checkCurrentPermissions();
-    }
+    };
 
     onDragStart = (event, locationGroup) => {
         this.draggedElement = locationGroup;
-    }
+    };
 
     onDragOver = (event) => {
         event.preventDefault();
-    }
+    };
 
     onDragEnter = (event, locationGroup) => {
         this.dragTarget = locationGroup;
@@ -320,7 +320,7 @@ export class ShelvingLocationGroupsComponent implements OnInit {
                 event.target.parentElement.style.borderTop = '1px solid black';
             }
         }
-    }
+    };
 
     onDragDrop = (event, index) => {
         // do nothing if element is dragged onto itself
@@ -330,7 +330,7 @@ export class ShelvingLocationGroupsComponent implements OnInit {
         event.target.parentElement.style.borderTop = 'none';
         this.draggedElement = null;
         this.dragTarget = null;
-    }
+    };
 
     assignNewPositions (index) {
         const endingPos = this.dragTarget.posit;
@@ -356,7 +356,7 @@ export class ShelvingLocationGroupsComponent implements OnInit {
             ok => {
                 console.debug('Record editor performed action');
             },
-            err => {
+            (err: unknown) => {
                 console.debug(err);
                 errorHappened = true;
             },

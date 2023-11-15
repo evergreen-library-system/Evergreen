@@ -49,9 +49,9 @@ export class TreeComponent {
         return this._tree;
     }
 
-    @Input() showSelectors: boolean = false; // the checkboxes, etc.
-    @Input() disableRootSelector: boolean = false; // checkbox at the top of the tree
-    @Input() toggleOnClick: boolean = false; // selectNode vs toggleNodeSelection
+    @Input() showSelectors = false; // the checkboxes, etc.
+    @Input() disableRootSelector = false; // checkbox at the top of the tree
+    @Input() toggleOnClick = false; // selectNode vs toggleNodeSelection
     @Input() rowTrailingTemplate: TemplateRef<any>;
 
     @Output() nodeClicked: EventEmitter<TreeNode>;
@@ -83,7 +83,7 @@ export class TreeComponent {
         // If needed, add logic here to handle the case where
         // a node's checkbox was clicked.
         // since ngModel is node.selected, we don't need to set it ourselves
-        //this.handleNodeClick(node);
+        // this.handleNodeClick(node);
         this.nodeClicked.emit(node);
     }
 

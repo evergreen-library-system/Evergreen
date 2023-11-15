@@ -2,8 +2,8 @@ import {Component, Input, Host, OnInit} from '@angular/core';
 import {ComboboxComponent} from './combobox.component';
 
 @Component({
-  selector: 'eg-combobox-entry',
-  template: '<ng-template></ng-template>'
+    selector: 'eg-combobox-entry',
+    template: '<ng-template></ng-template>'
 })
 export class ComboboxEntryComponent implements OnInit {
 

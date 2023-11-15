@@ -14,8 +14,8 @@ import {StringComponent} from '@eg/share/string/string.component';
  */
 
 @Component({
-  selector: 'eg-hold-retarget-dialog',
-  templateUrl: 'retarget-dialog.component.html'
+    selector: 'eg-hold-retarget-dialog',
+    templateUrl: 'retarget-dialog.component.html'
 })
 
 export class HoldRetargetDialogComponent

@@ -6,8 +6,8 @@ import {OrgService} from '@eg/core/org.service';
 import {AuthService} from '@eg/core/auth.service';
 
 @Component({
-  templateUrl: 'notes.component.html',
-  selector: 'eg-po-notes'
+    templateUrl: 'notes.component.html',
+    selector: 'eg-po-notes'
 })
 export class PoNotesComponent implements AfterViewInit {
 

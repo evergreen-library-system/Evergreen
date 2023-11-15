@@ -23,6 +23,7 @@ interface SharedWorker extends AbstractWorker {
     port: MessagePort;
 }
 
+// eslint-disable-next-line no-redeclare, no-var
 declare var SharedWorker: {
     prototype: SharedWorker;
     new (scriptUrl: any, name?: any): SharedWorker;
@@ -173,17 +174,17 @@ export class DbStoreService {
 
             this.relayRequest({schema: schema, action: 'createSchema'})
 
-            .then(_ =>
-                this.relayRequest({schema: schema, action: 'connect'}))
+                .then(_ =>
+                    this.relayRequest({schema: schema, action: 'connect'}))
 
-            .then(
-                _ => {
-                    this.schemasConnected[schema] = true;
-                    delete this.schemasInProgress[schema];
-                    resolve(null);
-                },
-                err => reject(err)
-            );
+                .then(
+                    _ => {
+                        this.schemasConnected[schema] = true;
+                        delete this.schemasInProgress[schema];
+                        resolve(null);
+                    },
+                    err => reject(err)
+                );
         });
 
         return this.schemasInProgress[schema] = promise;

@@ -16,12 +16,12 @@ import {GridComponent} from '@eg/share/grid/grid.component';
 import {OrgService} from '@eg/core/org.service';
 
 @Component({
-  selector: 'eg-funding-source-transactions-dialog',
-  templateUrl: './funding-source-transactions-dialog.component.html'
+    selector: 'eg-funding-source-transactions-dialog',
+    templateUrl: './funding-source-transactions-dialog.component.html'
 })
 
 export class FundingSourceTransactionsDialogComponent
-  extends DialogComponent implements OnInit {
+    extends DialogComponent implements OnInit {
 
     @Input() fundingSourceId: number;
     @Input() activeTab = 'credits';
@@ -125,12 +125,12 @@ export class FundingSourceTransactionsDialogComponent
         this.applyCreditDialog.hiddenFieldsList = ['id', 'funding_source'];
         this.applyCreditDialog.fieldOrder = 'amount,note,effective_date,deadline_date';
         this.applyCreditDialog.open().subscribe(
-             result => {
+            result => {
                 this.successString.current()
                     .then(str => this.toast.success(str));
                 grid.reload();
             },
-            error => {
+            (error: unknown) => {
                 this.updateFailedString.current()
                     .then(str => this.toast.danger(str));
             }
@@ -147,12 +147,12 @@ export class FundingSourceTransactionsDialogComponent
         this.allocateToFundDialog.hiddenFieldsList = ['id', 'funding_source', 'allocator', 'create_time'];
         this.allocateToFundDialog.fieldOrder = 'fund,amount,note';
         this.allocateToFundDialog.open().subscribe(
-             result => {
+            result => {
                 this.successString.current()
                     .then(str => this.toast.success(str));
                 grid.reload();
             },
-            error => {
+            (error: unknown) => {
                 this.updateFailedString.current()
                     .then(str => this.toast.danger(str));
             }

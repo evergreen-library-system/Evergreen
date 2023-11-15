@@ -1,4 +1,5 @@
-import {Injectable, EventEmitter} from '@angular/core';
+/* eslint-disable eqeqeq, no-shadow */
+import {Injectable} from '@angular/core';
 
 export type PrintContext = 'default' | 'receipt' | 'label' | 'mail' | 'offline';
 
@@ -117,6 +118,7 @@ export class HatchService {
         msg.message = data.message;
         msg.status = Number(data.status);
 
+        // eslint-disable-next-line no-magic-numbers
         if (msg.status === 200) {
             msg.resolver(msg);
         } else {
@@ -167,18 +169,18 @@ export class HatchService {
 
         const msg = new HatchMessage({action: 'printers'});
         return this.sendRequest(msg).then((m: HatchMessage) => m.response)
-        .then(
-            printers => {
-                this.printers =
+            .then(
+                printers => {
+                    this.printers =
                     printers.sort((p1, p2) => p1.name < p2.name ? -1 : 1)
-                    .concat(this.printers);
+                        .concat(this.printers);
 
-                return this.printers;
-            },
-            err => {
-                return this.printers;
-            }
-        );
+                    return this.printers;
+                },
+                err => {
+                    return this.printers;
+                }
+            );
     }
 }
 

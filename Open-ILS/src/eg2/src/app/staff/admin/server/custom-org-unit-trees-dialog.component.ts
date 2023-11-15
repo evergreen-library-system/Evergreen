@@ -1,11 +1,12 @@
+/* eslint-disable no-empty */
 import {Component, Input} from '@angular/core';
 import {DialogComponent} from '@eg/share/dialog/dialog.component';
 import {Tree, TreeNode} from '@eg/share/tree/tree';
 import {NgbModal} from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
-  selector: 'eg-custom-org-unit-trees-dialog',
-  templateUrl: './custom-org-unit-trees-dialog.component.html'
+    selector: 'eg-custom-org-unit-trees-dialog',
+    templateUrl: './custom-org-unit-trees-dialog.component.html'
 })
 
 export class CustomOrgUnitTreesDialogComponent
@@ -14,7 +15,7 @@ export class CustomOrgUnitTreesDialogComponent
     @Input() customTree: Tree;
     @Input() nodeToMove: TreeNode;
 
-    moveNodeHereDisabled: boolean = false;
+    moveNodeHereDisabled = false;
 
     constructor(
         private modal: NgbModal

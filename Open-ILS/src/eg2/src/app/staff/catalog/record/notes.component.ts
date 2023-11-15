@@ -9,8 +9,8 @@ import {GridComponent} from '@eg/share/grid/grid.component';
 import {FmRecordEditorComponent} from '@eg/share/fm-editor/fm-editor.component';
 
 @Component({
-  selector: 'eg-catalog-record-notes',
-  templateUrl: 'notes.component.html'
+    selector: 'eg-catalog-record-notes',
+    templateUrl: 'notes.component.html'
 })
 export class NotesComponent implements OnInit {
 
@@ -85,6 +85,7 @@ export class NotesComponent implements OnInit {
                 this.editDialog.mode = 'update';
                 this.editDialog.recordId = note.id();
                 this.editDialog.open()
+                    // eslint-disable-next-line rxjs/no-nested-subscribe
                     .subscribe(ok => this.notesGrid.reload());
             }
         );
@@ -103,7 +104,7 @@ export class NotesComponent implements OnInit {
             notes.forEach(note => note.isdeleted(true));
             this.pcrud.autoApply(notes).subscribe(
                 val => {},
-                err => {},
+                (err: unknown) => {},
                 ()  => this.notesGrid.reload()
             );
         };

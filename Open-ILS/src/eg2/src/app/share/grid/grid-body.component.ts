@@ -4,8 +4,8 @@ import {GridComponent} from './grid.component';
 import {NgbPopover} from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
-  selector: 'eg-grid-body',
-  templateUrl: './grid-body.component.html'
+    selector: 'eg-grid-body',
+    templateUrl: './grid-body.component.html'
 })
 
 export class GridBodyComponent {
@@ -44,13 +44,13 @@ export class GridBodyComponent {
             case 'ArrowLeft':
             case 'PageUp':
                 this.context.toPrevPage()
-                .then(ok => this.context.selectFirstRow(), err => {});
+                    .then(ok => this.context.selectFirstRow(), err => {});
                 evt.stopPropagation();
                 break;
             case 'ArrowRight':
             case 'PageDown':
                 this.context.toNextPage()
-                .then(ok => this.context.selectFirstRow(), err => {});
+                    .then(ok => this.context.selectFirstRow(), err => {});
                 evt.stopPropagation();
                 break;
             case 'a':

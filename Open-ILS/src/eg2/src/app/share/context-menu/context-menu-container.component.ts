@@ -3,12 +3,12 @@ import {Component, Input, Output, EventEmitter, OnInit, ViewChild,
 import {ContextMenuService, ContextMenu, ContextMenuEntry} from './context-menu.service';
 
 @Component({
-  selector: 'eg-context-menu-container',
-  templateUrl: './context-menu-container.component.html',
-  styleUrls: ['context-menu-container.component.css'],
-  /* Our CSS affects the style of the popover, which may
+    selector: 'eg-context-menu-container',
+    templateUrl: './context-menu-container.component.html',
+    styleUrls: ['context-menu-container.component.css'],
+    /* Our CSS affects the style of the popover, which may
    * be beyond our reach for standard view encapsulation */
-  encapsulation: ViewEncapsulation.None
+    encapsulation: ViewEncapsulation.None
 })
 
 export class ContextMenuContainerComponent implements OnInit, AfterViewInit {
@@ -21,8 +21,8 @@ export class ContextMenuContainerComponent implements OnInit, AfterViewInit {
     ngOnInit() {
         this.menuService.showMenuRequest.subscribe(
             (menu: ContextMenu) => {
-            this.menuEntries = menu.entries;
-        });
+                this.menuEntries = menu.entries;
+            });
     }
 
     ngAfterViewInit() {

@@ -1,7 +1,4 @@
-import {Component, OnInit, Input, ViewChild, ViewEncapsulation} from '@angular/core';
-import {Router} from '@angular/router';
-import {Observable, Observer, of} from 'rxjs';
-import {map} from 'rxjs/operators';
+import {Component, OnInit, Input, ViewChild} from '@angular/core';
 import {FmRecordEditorComponent} from '@eg/share/fm-editor/fm-editor.component';
 import {GridDataSource} from '@eg/share/grid/grid';
 import {GridComponent} from '@eg/share/grid/grid.component';
@@ -11,7 +8,6 @@ import {IdlObject, IdlService} from '@eg/core/idl.service';
 import {PcrudService} from '@eg/core/pcrud.service';
 import {StringComponent} from '@eg/share/string/string.component';
 import {ToastService} from '@eg/share/toast/toast.service';
-import {OrgFamily} from '@eg/share/org-family-select/org-family-select.component';
 
 @Component({
     templateUrl: './field-documentation.component.html'
@@ -161,7 +157,7 @@ export class FieldDocumentationComponent implements OnInit {
                     .then(str => this.toast.success(str));
                 this.setGrid();
                 resolve(result);
-            }, error => {
+            }, (error: unknown) => {
                 this.updateFailedString.current()
                     .then(str => this.toast.danger(str));
             });
@@ -191,7 +187,8 @@ export class FieldDocumentationComponent implements OnInit {
                     .then(str => this.toast.success(str));
                 this.setGrid();
             },
-            rejection => {
+            // eslint-disable-next-line rxjs/no-implicit-any-catch
+            (rejection: any) => {
                 if (!rejection.dismissed) {
                     this.createFailedString.current()
                         .then(str => this.toast.danger(str));

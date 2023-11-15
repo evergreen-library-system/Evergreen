@@ -9,20 +9,20 @@ import {HoldsUiRoutingModule} from './routing.module';
 import {HoldsPullListComponent} from './pull-list.component';
 
 @NgModule({
-  declarations: [
-    HoldsPullListComponent
-  ],
-  imports: [
-    StaffCommonModule,
-    FmRecordEditorModule,
-    HoldsModule,
-    HoldingsModule,
-    BookingModule,
-    PatronModule,
-    HoldsUiRoutingModule
-  ],
-  providers: [
-  ]
+    declarations: [
+        HoldsPullListComponent
+    ],
+    imports: [
+        StaffCommonModule,
+        FmRecordEditorModule,
+        HoldsModule,
+        HoldingsModule,
+        BookingModule,
+        PatronModule,
+        HoldsUiRoutingModule
+    ],
+    providers: [
+    ]
 })
 
 export class HoldsUiModule {}

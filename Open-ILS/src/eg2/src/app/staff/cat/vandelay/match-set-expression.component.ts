@@ -9,8 +9,8 @@ import {StringService} from '@eg/share/string/string.service';
 import {MatchSetNewPointComponent} from './match-set-new-point.component';
 
 @Component({
-  selector: 'eg-match-set-expression',
-  templateUrl: 'match-set-expression.component.html'
+    selector: 'eg-match-set-expression',
+    templateUrl: 'match-set-expression.component.html'
 })
 export class MatchSetExpressionComponent {
 

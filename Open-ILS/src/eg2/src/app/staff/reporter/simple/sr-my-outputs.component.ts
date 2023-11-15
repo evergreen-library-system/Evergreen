@@ -60,25 +60,25 @@ export class SROutputsComponent implements OnInit {
     deleteOutputs(rows: any[]) {
         if ( rows.length <= 0 ) { return; }
         this.confirmDeleteString.current({ num: rows.length })
-        .then(str => {
-            this.confirmDeleteDialog.dialogBody = str;
-            this.confirmDeleteDialog.open()
-            .subscribe(confirmed => {
-                if ( confirmed ) { this.doDeleteOutputs(rows.map(x => x._rs)); }
+            .then(str => {
+                this.confirmDeleteDialog.dialogBody = str;
+                this.confirmDeleteDialog.open()
+                    .subscribe(confirmed => {
+                        if ( confirmed ) { this.doDeleteOutputs(rows.map(x => x._rs)); }
+                    });
             });
-        });
     }
 
     doDeleteOutputs(outs: IdlObject[]) {
         const deletedCount = outs.length;
         this.pcrud.remove(outs).toPromise()
-        .then(res => {
-            this.outputsGrid.reload();
-            this.deletedString.current({num: outs.length})
-            .then(str => {
-                this.toast.success(str);
+            .then(res => {
+                this.outputsGrid.reload();
+                this.deletedString.current({num: outs.length})
+                    .then(str => {
+                        this.toast.success(str);
+                    });
             });
-        });
 
     }
 

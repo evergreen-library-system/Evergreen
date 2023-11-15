@@ -7,24 +7,24 @@ import {ManageAuthorityComponent} from './manage.component';
 const routes: Routes = [{
     path: 'edit',
     component: AuthorityMarcEditComponent
-  }, {
+}, {
     path: 'edit/:id',
     component: AuthorityMarcEditComponent
-  }, {
+}, {
     path: 'browse',
     component: BrowseAuthorityComponent
-  }, {
+}, {
     path: 'manage/:id/:tab',
     component: ManageAuthorityComponent
-  }, {
+}, {
     path: 'manage/:id/:tab',
     component: ManageAuthorityComponent
 }];
 
 @NgModule({
-  imports: [RouterModule.forChild(routes)],
-  exports: [RouterModule],
-  providers: []
+    imports: [RouterModule.forChild(routes)],
+    exports: [RouterModule],
+    providers: []
 })
 
 export class AuthorityRoutingModule {}

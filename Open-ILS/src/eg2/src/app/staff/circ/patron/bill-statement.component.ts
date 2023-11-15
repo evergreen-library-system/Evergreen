@@ -21,15 +21,15 @@ import {PromptDialogComponent} from '@eg/share/dialog/prompt.component';
 import {AlertDialogComponent} from '@eg/share/dialog/alert.component';
 import {ConfirmDialogComponent} from '@eg/share/dialog/confirm.component';
 import {CreditCardDialogComponent
-    } from '@eg/staff/share/billing/credit-card-dialog.component';
+} from '@eg/staff/share/billing/credit-card-dialog.component';
 import {BillingService, CreditCardPaymentParams} from '@eg/staff/share/billing/billing.service';
 import {AddBillingDialogComponent} from '@eg/staff/share/billing/billing-dialog.component';
 import {AudioService} from '@eg/share/util/audio.service';
 import {ToastService} from '@eg/share/toast/toast.service';
 
 @Component({
-  templateUrl: 'bill-statement.component.html',
-  selector: 'eg-patron-bill-statement'
+    templateUrl: 'bill-statement.component.html',
+    selector: 'eg-patron-bill-statement'
 })
 export class BillStatementComponent implements OnInit {
 
@@ -120,14 +120,14 @@ export class BillStatementComponent implements OnInit {
 
             this.net.requestWithParamList(
                 'open-ils.circ', method, [this.auth.token(), value].concat(ids))
-            .toPromise().then(resp => {
-                const evt = this.evt.parse(resp);
-                if (evt) {
-                    console.error(evt);
-                } else {
-                    rows.forEach(r => r.note(value));
-                }
-            });
+                .toPromise().then(resp => {
+                    const evt = this.evt.parse(resp);
+                    if (evt) {
+                        console.error(evt);
+                    } else {
+                        rows.forEach(r => r.note(value));
+                    }
+                });
         });
     }
 
@@ -148,15 +148,15 @@ export class BillStatementComponent implements OnInit {
                 'open-ils.circ',
                 'open-ils.circ.money.billing.void',
                 [this.auth.token()].concat(ids)).toPromise()
-            .then(resp => {
-                const evt = this.evt.parse(resp);
-                if (evt) {
-                    console.error(evt);
-                } else {
-                    this.context.refreshPatron();
-                    this.billingGrid.reload();
-                }
-            });
+                .then(resp => {
+                    const evt = this.evt.parse(resp);
+                    if (evt) {
+                        console.error(evt);
+                    } else {
+                        this.context.refreshPatron();
+                        this.billingGrid.reload();
+                    }
+                });
         });
     }
 

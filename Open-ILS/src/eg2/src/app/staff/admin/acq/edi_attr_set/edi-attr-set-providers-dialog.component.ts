@@ -3,12 +3,12 @@ import {DialogComponent} from '@eg/share/dialog/dialog.component';
 import {NgbModal} from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
-  selector: 'eg-edi-attr-set-providers-dialog',
-  templateUrl: './edi-attr-set-providers-dialog.component.html'
+    selector: 'eg-edi-attr-set-providers-dialog',
+    templateUrl: './edi-attr-set-providers-dialog.component.html'
 })
 
 export class EdiAttrSetProvidersDialogComponent
-  extends DialogComponent {
+    extends DialogComponent {
 
     @Input() attrSetId: number;
 

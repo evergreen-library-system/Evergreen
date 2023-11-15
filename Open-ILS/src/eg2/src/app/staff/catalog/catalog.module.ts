@@ -40,51 +40,51 @@ import {WorkLogModule} from '@eg/staff/share/worklog/worklog.module';
 import {VolCopyModule} from '@eg/staff/cat/volcopy/volcopy.module';
 
 @NgModule({
-  declarations: [
-    CatalogComponent,
-    ResultsComponent,
-    RecordComponent,
-    CopiesComponent,
-    SearchFormComponent,
-    ResultRecordComponent,
-    ResultFacetsComponent,
-    ResultPaginationComponent,
-    RecordPaginationComponent,
-    RecordActionsComponent,
-    BasketActionsComponent,
-    HoldComponent,
-    PartsComponent,
-    NotesComponent,
-    AddToCarouselDialogComponent,
-    UploadJacketImageDialogComponent,
-    PartMergeDialogComponent,
-    BrowseComponent,
-    BrowseResultsComponent,
-    ConjoinedComponent,
-    HoldingsMaintenanceComponent,
-    SearchTemplatesComponent,
-    CnBrowseComponent,
-    PreferencesComponent,
-    CnBrowseResultsComponent,
-    BrowsePagerComponent
-  ],
-  imports: [
-    StaffCommonModule,
-    FmRecordEditorModule,
-    CatalogRoutingModule,
-    HoldsModule,
-    HoldingsModule,
-    BookingModule,
-    PatronModule,
-    MarcEditModule,
-    HttpClientModule,
-    BarcodesModule,
-    WorkLogModule,
-    VolCopyModule
-  ],
-  providers: [
-    StaffCatalogService
-  ]
+    declarations: [
+        CatalogComponent,
+        ResultsComponent,
+        RecordComponent,
+        CopiesComponent,
+        SearchFormComponent,
+        ResultRecordComponent,
+        ResultFacetsComponent,
+        ResultPaginationComponent,
+        RecordPaginationComponent,
+        RecordActionsComponent,
+        BasketActionsComponent,
+        HoldComponent,
+        PartsComponent,
+        NotesComponent,
+        AddToCarouselDialogComponent,
+        UploadJacketImageDialogComponent,
+        PartMergeDialogComponent,
+        BrowseComponent,
+        BrowseResultsComponent,
+        ConjoinedComponent,
+        HoldingsMaintenanceComponent,
+        SearchTemplatesComponent,
+        CnBrowseComponent,
+        PreferencesComponent,
+        CnBrowseResultsComponent,
+        BrowsePagerComponent
+    ],
+    imports: [
+        StaffCommonModule,
+        FmRecordEditorModule,
+        CatalogRoutingModule,
+        HoldsModule,
+        HoldingsModule,
+        BookingModule,
+        PatronModule,
+        MarcEditModule,
+        HttpClientModule,
+        BarcodesModule,
+        WorkLogModule,
+        VolCopyModule
+    ],
+    providers: [
+        StaffCatalogService
+    ]
 })
 
 export class CatalogModule {

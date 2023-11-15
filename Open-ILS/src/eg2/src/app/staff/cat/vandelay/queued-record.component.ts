@@ -5,7 +5,7 @@ import {PcrudService} from '@eg/core/pcrud.service';
 import {IdlObject} from '@eg/core/idl.service';
 
 @Component({
-  templateUrl: 'queued-record.component.html'
+    templateUrl: 'queued-record.component.html'
 })
 export class QueuedRecordComponent {
 
@@ -49,7 +49,7 @@ export class QueuedRecordComponent {
     loadRecord() {
         this.queuedRecord = null;
         this.pcrud.retrieve((this.queueType === 'bib' ? 'vqbr' : 'vqar'), this.recordId)
-        .subscribe(rec => this.queuedRecord = rec);
+            .subscribe(rec => this.queuedRecord = rec);
     }
 
     handleMarcRecordSaved(saveEvent: any) {

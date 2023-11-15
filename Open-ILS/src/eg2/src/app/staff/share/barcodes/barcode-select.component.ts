@@ -33,8 +33,8 @@ export interface BarcodeSelectResult {
 }
 
 @Component({
-  selector: 'eg-barcode-select',
-  templateUrl: './barcode-select.component.html',
+    selector: 'eg-barcode-select',
+    templateUrl: './barcode-select.component.html',
 })
 
 export class BarcodeSelectComponent extends DialogComponent {
@@ -79,7 +79,7 @@ export class BarcodeSelectComponent extends DialogComponent {
             id: null
         };
 
-       let promise = this.net.request(
+        let promise = this.net.request(
             'open-ils.actor',
             'open-ils.actor.get_barcodes',
             this.auth.token(), this.auth.user().ws_ou(),

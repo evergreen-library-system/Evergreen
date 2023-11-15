@@ -15,7 +15,7 @@ import {PermService} from '@eg/core/perm.service';
 import {StringComponent} from '@eg/share/string/string.component';
 
 @Component({
-  templateUrl: 'linkchecker.component.html'
+    templateUrl: 'linkchecker.component.html'
 })
 export class LinkCheckerComponent implements OnInit {
 
@@ -82,23 +82,23 @@ export class LinkCheckerComponent implements OnInit {
         this.checkCreateBatchPerms();
 
         this.initDataSource();
-        this.gridSelectionChange( [] ); 
+        this.gridSelectionChange( [] );
     }
 
     viewSessionUrls() {
-        var rows = this.grid.context.getSelectedRows();
+        const rows = this.grid.context.getSelectedRows();
         const ids = Array.from( new Set( rows.map(x => Number(x.session_id)) ) );
         this.router.navigate(['/staff/cat/linkchecker/urls/'], { queryParams: { sessions: JSON.stringify(ids) } });
     }
 
     viewSessionAttempts() {
-        var rows = this.grid.context.getSelectedRows();
+        const rows = this.grid.context.getSelectedRows();
         const ids = Array.from( new Set( rows.map(x => Number(x.session_id)) ) );
         this.router.navigate(['/staff/cat/linkchecker/attempts/'], { queryParams: { sessions: JSON.stringify(ids) } });
     }
 
     viewBatchAttempts() {
-        var rows = this.grid.context.getSelectedRows();
+        const rows = this.grid.context.getSelectedRows();
         const ids = Array.from( new Set( rows.map(x => Number(x.batch_id)) ) );
         this.router.navigate(['/staff/cat/linkchecker/attempts/'], { queryParams: { batches: JSON.stringify(ids) } });
     }
@@ -109,7 +109,7 @@ export class LinkCheckerComponent implements OnInit {
     }
 
     gridSelectionChange(keys: string[]) {
-        var rows = this.grid.context.getSelectedRows();
+        const rows = this.grid.context.getSelectedRows();
         console.log('keys.length = ' + keys.length + ', rows.length = ' + rows.length);
 
         this.noSelectedRows = (rows.length === 0);
@@ -153,9 +153,9 @@ export class LinkCheckerComponent implements OnInit {
         });
     }
 
-	newSessionWrapper(optionalSessionToClone?: any) {
+    newSessionWrapper(optionalSessionToClone?: any) {
         this.newSessionDialog.sessionToClone = optionalSessionToClone;
-		this.newSessionDialog.open({size: 'lg'}).subscribe( (res) => {
+        this.newSessionDialog.open({size: 'lg'}).subscribe( (res) => {
             let alertMessage = '';
             console.log('new dialog res', res);
             if (res['sessionId']) {
@@ -164,7 +164,7 @@ export class LinkCheckerComponent implements OnInit {
                     + $localize`Title Hits = ` + res['number_of_hits'] + '\n'
                     + $localize`URLs Extracted = ` + res['urls_extracted'] + '\n'
                     + $localize`URLs Verified = ` + res['verified_total_processed'] + '\n';
-                //window.alert(alertMessage);
+                // window.alert(alertMessage);
             }
             if (res && res['sessionId']) {
                 if (res['viewURLs'] && res['urls_extracted'] > 0) {
@@ -178,38 +178,39 @@ export class LinkCheckerComponent implements OnInit {
                 }
             }
         });
-	}
+    }
 
     cloneSelectedSession() {
-        var rows = this.grid.context.getSelectedRows();
-		if (rows.length !== 1) { return; }
+        const rows = this.grid.context.getSelectedRows();
+        if (rows.length !== 1) { return; }
         this.newSessionWrapper(rows[0]);
     }
 
-	deleteSelectedSessions() {
-        var rows = this.grid.context.getSelectedRows();
-		if (rows.length === 0) { return; }
+    deleteSelectedSessions() {
+        const rows = this.grid.context.getSelectedRows();
+        if (rows.length === 0) { return; }
 
-		this.deleteSessionConfirmDialog.open().subscribe(doIt => {
-			if (!doIt) { return; }
+        this.deleteSessionConfirmDialog.open().subscribe(doIt => {
+            if (!doIt) { return; }
 
-            var session_ids = rows.map(r => r.session_id );
+            const session_ids = rows.map(r => r.session_id );
 
-            var that = this;
+            const that = this;
             function delete_next(ids: number[]) {
-                var id = ids.pop();
+                const id = ids.pop();
                 if (id) {
                     that.net.request(
                         'open-ils.url_verify',
                         'open-ils.url_verify.session.delete',
                         that.auth.token(),
                         id,
+                    // eslint-disable-next-line rxjs/no-nested-subscribe
                     ).subscribe({
                         next: (res) => {
                             console.log('session.delete res', res);
                             // toast
                         },
-                        error: (err) => {
+                        error: (err: unknown) => {
                             console.log('session.delete err', err);
                             // toast
                         },
@@ -224,14 +225,14 @@ export class LinkCheckerComponent implements OnInit {
             }
 
             delete_next(session_ids);
-            
-		});
-	}
+
+        });
+    }
 
     initDataSource() {
         this.dataSource.getRows = (pager: Pager, sort: any[]) => {
 
-            let query: any = {}
+            const query: any = {};
 
             if (this.searchOrgs || this.contextOrg) {
                 query[this.viewOrgField] =

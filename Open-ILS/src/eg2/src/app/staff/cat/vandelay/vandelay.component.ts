@@ -4,7 +4,7 @@ import {take} from 'rxjs/operators';
 import {VandelayService} from './vandelay.service';
 
 @Component({
-  templateUrl: 'vandelay.component.html'
+    templateUrl: 'vandelay.component.html'
 })
 export class VandelayComponent {
     tab: string;
@@ -21,7 +21,8 @@ export class VandelayComponent {
         this.router.events.subscribe(routeEvent => {
             if (routeEvent instanceof NavigationEnd) {
                 this.route.firstChild.url.pipe(take(1))
-                .subscribe(segments => this.tab = segments[0].path);
+                    // eslint-disable-next-line rxjs/no-nested-subscribe
+                    .subscribe(segments => this.tab = segments[0].path);
             }
         });
     }

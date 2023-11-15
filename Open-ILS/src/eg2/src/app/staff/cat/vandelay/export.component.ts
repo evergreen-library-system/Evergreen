@@ -1,8 +1,8 @@
 import {Component, AfterViewInit, ViewChild, Renderer2, OnInit} from '@angular/core';
 import {ActivatedRoute} from '@angular/router';
 import {NgbPanelChangeEvent} from '@ng-bootstrap/ng-bootstrap';
-import {HttpClient, HttpRequest, HttpEventType} from '@angular/common/http';
-import {HttpResponse, HttpErrorResponse} from '@angular/common/http';
+import {HttpClient, HttpRequest, HttpEventType,
+    HttpResponse, HttpErrorResponse} from '@angular/common/http';
 import {saveAs} from 'file-saver';
 import {AuthService} from '@eg/core/auth.service';
 import {ToastService} from '@eg/share/toast/toast.service';
@@ -12,7 +12,7 @@ import {BasketService} from '@eg/share/catalog/basket.service';
 
 
 @Component({
-  templateUrl: 'export.component.html'
+    templateUrl: 'export.component.html'
 })
 export class ExportComponent implements AfterViewInit, OnInit {
 
@@ -31,7 +31,7 @@ export class ExportComponent implements AfterViewInit, OnInit {
 
     @ViewChild('fileSelector', { static: false }) private fileSelector;
     @ViewChild('exportProgress', { static: true })
-        private exportProgress: ProgressInlineComponent;
+    private exportProgress: ProgressInlineComponent;
 
     constructor(
         private renderer: Renderer2,
@@ -52,10 +52,10 @@ export class ExportComponent implements AfterViewInit, OnInit {
         const segments = this.route.snapshot.url.length;
         if (segments > 0 &&
             this.route.snapshot.url[segments - 1].path === 'basket') {
-                this.exportingBasket = true;
-                this.basket.getRecordIds().then(
-                    ids => this.basketRecords = ids
-                );
+            this.exportingBasket = true;
+            this.basket.getRecordIds().then(
+                ids => this.basketRecords = ids
+            );
         }
     }
 
@@ -84,7 +84,7 @@ export class ExportComponent implements AfterViewInit, OnInit {
     }
 
     fileSelected($event) {
-       this.selectedFile = $event.target.files[0];
+        this.selectedFile = $event.target.files[0];
     }
 
     hasNeededData(): boolean {
@@ -161,6 +161,7 @@ export class ExportComponent implements AfterViewInit, OnInit {
                 }
             },
 
+            // eslint-disable-next-line rxjs/no-implicit-any-catch
             (err: HttpErrorResponse) => {
                 console.error(err);
                 this.toast.danger(err.error);

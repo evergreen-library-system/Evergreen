@@ -1,6 +1,6 @@
 import {Injectable, EventEmitter} from '@angular/core';
 import {Observable, from, concat, empty} from 'rxjs';
-import {switchMap, map, tap, merge} from 'rxjs/operators';
+import {switchMap, map, tap} from 'rxjs/operators';
 import {IdlObject, IdlService} from '@eg/core/idl.service';
 import {NetService} from '@eg/core/net.service';
 import {AuthService} from '@eg/core/auth.service';
@@ -300,7 +300,7 @@ export class LineitemService {
         }
 
         return this.pcrud.retrieveAll('acqliad', {}, {atomic: true})
-        .toPromise().then(defs => this.liAttrDefs = defs);
+            .toPromise().then(defs => this.liAttrDefs = defs);
     }
 
     updateLiDetails(li: IdlObject): Observable<BatchLineitemUpdateStruct> {
@@ -312,8 +312,8 @@ export class LineitemService {
             // Ensure we have the updated fund/loc/mod values before
             // sending the copies off to be updated and then re-drawn.
             this.fetchFunds(lids.map(lid => lid.fund()))
-            .then(_ => this.fetchLocations(lids.map(lid => lid.location())))
-            .then(_ => this.fetchCircMods(lids.map(lid => lid.circ_modifier())))
+                .then(_ => this.fetchLocations(lids.map(lid => lid.location())))
+                .then(_ => this.fetchCircMods(lids.map(lid => lid.circ_modifier())))
 
         ).pipe(switchMap(_ =>
             this.net.request(
@@ -333,8 +333,8 @@ export class LineitemService {
             // Ensure we have the updated fund/loc/mod values before
             // sending the copies off to be updated and then re-drawn.
             this.fetchFunds(lids.map(lid => lid.fund()))
-            .then(_ => this.fetchLocations(lids.map(lid => lid.location())))
-            .then(_ => this.fetchCircMods(lids.map(lid => lid.circ_modifier())))
+                .then(_ => this.fetchLocations(lids.map(lid => lid.location())))
+                .then(_ => this.fetchCircMods(lids.map(lid => lid.circ_modifier())))
 
         ).pipe(switchMap(_ =>
             this.net.request(
@@ -371,11 +371,11 @@ export class LineitemService {
         if (fundIds.length === 0) { return Promise.resolve(); }
 
         return this.pcrud.search('acqf', {id: fundIds})
-        .pipe(tap(fund => {
-            this.fundCache[fund.id()] = fund;
-            this.batchOptionWanted.emit(
-                {fund: {id: fund.id(), label: fund.code(), fm: fund}});
-        })).toPromise();
+            .pipe(tap(fund => {
+                this.fundCache[fund.id()] = fund;
+                this.batchOptionWanted.emit(
+                    {fund: {id: fund.id(), label: fund.code(), fm: fund}});
+            })).toPromise();
     }
 
     fetchCircMods(circMods: string[]): Promise<any> {
@@ -385,11 +385,11 @@ export class LineitemService {
         if (circMods.length === 0) { return Promise.resolve(); }
 
         return this.pcrud.search('ccm', {code: circMods})
-        .pipe(tap(mod => {
-            this.circModCache[mod.code()] = mod;
-            this.batchOptionWanted.emit({circ_modifier:
+            .pipe(tap(mod => {
+                this.circModCache[mod.code()] = mod;
+                this.batchOptionWanted.emit({circ_modifier:
                 {id: mod.code(), label: mod.code(), fm: mod}});
-        })).toPromise();
+            })).toPromise();
     }
 
     fetchLocations(locIds: number[]): Promise<any> {
@@ -397,11 +397,11 @@ export class LineitemService {
         if (locIds.length === 0) { return Promise.resolve(); }
 
         return this.pcrud.search('acpl', {id: locIds})
-        .pipe(tap(loc => {
-            this.loc.locationCache[loc.id()] = loc;
-            this.batchOptionWanted.emit({location:
+            .pipe(tap(loc => {
+                this.loc.locationCache[loc.id()] = loc;
+                this.batchOptionWanted.emit({location:
                 {id: loc.id(), label: loc.name(), fm: loc}});
-        })).toPromise();
+            })).toPromise();
     }
 
     // Order disposition of a single lineitem detail
@@ -433,9 +433,9 @@ export class LineitemService {
     // convenience function for sorting values
     nullableCompare(a_val: any, b_val: any): number {
         return   a_val === b_val ?  0 :
-                 a_val === null  ?  1 :
-                 b_val === null  ? -1 :
-                 this.naturalCollator.compare(a_val, b_val);
+            a_val === null  ?  1 :
+                b_val === null  ? -1 :
+                    this.naturalCollator.compare(a_val, b_val);
     }
 
     // Given a line item, get its sort key
@@ -444,23 +444,18 @@ export class LineitemService {
         switch (field) {
             case 'li_id':
                 return li.id();
-                break;
             case 'title':
                 vals = li.attributes().filter(x => x.attr_name() === 'title');
                 return vals.length ? vals[0].attr_value().replace(/^(a|an|the|el|la) /i, '') : null;
-                break;
             case 'author':
                 vals = li.attributes().filter(x => x.attr_name() === 'author');
                 return vals.length ? vals[0].attr_value() : null;
-                break;
             case 'publisher':
                 vals = li.attributes().filter(x => x.attr_name() === 'publisher');
                 return vals.length ? vals[0].attr_value() : null;
-                break;
             case 'order_ident':
                 vals = li.attributes().filter(x => ORDER_IDENT_ATTRS.includes(x.attr_name()));
                 return vals.length ? vals[0].attr_value() : null;
-                break;
             default:
                 return li.id();
         }
@@ -471,7 +466,7 @@ export class LineitemService {
         const values: string[] = [];
         this.getFleshedLineitems(ids, { fromCache: true }).subscribe(
             li => values.push(this.getFirstAttributeValue(li.lineitem, attr, 'lineitem_marc_attr_definition')),
-            err => {},
+            (err: unknown) => {},
             () => {
                 const filtered = values.filter(x => x !== '');
                 saveAs(

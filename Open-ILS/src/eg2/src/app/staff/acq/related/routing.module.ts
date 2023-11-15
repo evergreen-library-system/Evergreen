@@ -9,33 +9,33 @@ import {LineitemWorksheetComponent} from '../lineitem/worksheet.component';
 import {RelatedComponent} from './related.component';
 
 const routes: Routes = [{
-  path: ':recordId',
-  component: RelatedComponent,
-  children : [{
-    path: '',
-    component: LineitemListComponent
-  }, {
-    path: 'brief-record',
-    component: BriefRecordComponent
-  }, {
-    path: 'lineitem/:lineitemId/detail',
-    component: LineitemDetailComponent
-  }, {
-    path: 'lineitem/:lineitemId/history',
-    component: LineitemHistoryComponent
-  }, {
-    path: 'lineitem/:lineitemId/items',
-    component: LineitemCopiesComponent
-  }, {
-    path: 'lineitem/:lineitemId/worksheet',
-    component: LineitemWorksheetComponent
-  }]
+    path: ':recordId',
+    component: RelatedComponent,
+    children : [{
+        path: '',
+        component: LineitemListComponent
+    }, {
+        path: 'brief-record',
+        component: BriefRecordComponent
+    }, {
+        path: 'lineitem/:lineitemId/detail',
+        component: LineitemDetailComponent
+    }, {
+        path: 'lineitem/:lineitemId/history',
+        component: LineitemHistoryComponent
+    }, {
+        path: 'lineitem/:lineitemId/items',
+        component: LineitemCopiesComponent
+    }, {
+        path: 'lineitem/:lineitemId/worksheet',
+        component: LineitemWorksheetComponent
+    }]
 }];
 
 @NgModule({
-  imports: [RouterModule.forChild(routes)],
-  exports: [RouterModule],
-  providers: []
+    imports: [RouterModule.forChild(routes)],
+    exports: [RouterModule],
+    providers: []
 })
 
 export class RelatedRoutingModule {}

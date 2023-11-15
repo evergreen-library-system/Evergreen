@@ -20,7 +20,7 @@ import {AlertDialogComponent} from '@eg/share/dialog/alert.component';
 import {ConfirmDialogComponent} from '@eg/share/dialog/confirm.component';
 
 @Component({
-  templateUrl: 'register.component.html'
+    templateUrl: 'register.component.html'
 })
 export class RegisterPatronComponent implements OnInit {
 

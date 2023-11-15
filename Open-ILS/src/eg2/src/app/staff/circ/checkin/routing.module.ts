@@ -5,15 +5,15 @@ import {CheckinComponent} from './checkin.component';
 const routes: Routes = [{
     path: '',
     component: CheckinComponent
-  }, {
+}, {
     path: 'capture',
     component: CheckinComponent,
     data: {capture: true}
 }];
 
 @NgModule({
-  imports: [RouterModule.forChild(routes)],
-  exports: [RouterModule]
+    imports: [RouterModule.forChild(routes)],
+    exports: [RouterModule]
 })
 
 export class CheckinRoutingModule {}

@@ -2,8 +2,8 @@ import {Component} from '@angular/core';
 import {DialogComponent} from '@eg/share/dialog/dialog.component';
 
 @Component({
-  selector: 'eg-no-timezone-set-dialog',
-  templateUrl: './no-timezone-set.component.html'
+    selector: 'eg-no-timezone-set-dialog',
+    templateUrl: './no-timezone-set.component.html'
 })
 
 /**

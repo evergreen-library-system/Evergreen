@@ -1,9 +1,7 @@
+/* eslint-disable no-bitwise, no-magic-numbers */
 import {Component, OnInit, Input, ViewChild} from '@angular/core';
-import {Router, ActivatedRoute, ParamMap} from '@angular/router';
-import {Observable, empty, of, from} from 'rxjs';
-import {tap, switchMap} from 'rxjs/operators';
-import {NgbNav, NgbNavChangeEvent} from '@ng-bootstrap/ng-bootstrap';
-import {IdlObject} from '@eg/core/idl.service';
+import {tap} from 'rxjs/operators';
+import {NgbNavChangeEvent} from '@ng-bootstrap/ng-bootstrap';
 import {OrgService} from '@eg/core/org.service';
 import {NetService} from '@eg/core/net.service';
 import {PcrudService} from '@eg/core/pcrud.service';
@@ -11,19 +9,14 @@ import {AuthService} from '@eg/core/auth.service';
 import {PatronService} from '@eg/staff/share/patron/patron.service';
 import {PatronContextService} from './patron.service';
 import {CheckoutResult, CircService} from '@eg/staff/share/circ/circ.service';
-import {PromptDialogComponent} from '@eg/share/dialog/prompt.component';
-import {GridDataSource, GridColumn, GridCellTextGenerator} from '@eg/share/grid/grid';
-import {GridComponent} from '@eg/share/grid/grid.component';
 import {StoreService} from '@eg/core/store.service';
 import {ServerStoreService} from '@eg/core/server-store.service';
 import {AudioService} from '@eg/share/util/audio.service';
-import {CopyAlertsDialogComponent
-    } from '@eg/staff/share/holdings/copy-alerts-dialog.component';
 import {CircGridComponent, CircGridEntry} from '@eg/staff/share/circ/grid.component';
 
 @Component({
-  templateUrl: 'items.component.html',
-  selector: 'eg-patron-items'
+    templateUrl: 'items.component.html',
+    selector: 'eg-patron-items'
 })
 export class ItemsComponent implements OnInit {
 
@@ -69,10 +62,10 @@ export class ItemsComponent implements OnInit {
 
         if (firstLoad) {
             return this.applyDisplaySettings()
-            .then(_ => this.loadTab(this.itemsTab));
+                .then(_ => this.loadTab(this.itemsTab));
         } else {
             return this.loadTab(this.itemsTab)
-            .then(_ => this.context.refreshPatron());
+                .then(_ => this.context.refreshPatron());
         }
     }
 
@@ -131,7 +124,7 @@ export class ItemsComponent implements OnInit {
                     // ever appear in the alternate list, so we can hide
                     // the alternate list from the UI.
                     this.displayAltList = false;
-               }
+                }
             }
         });
     }
@@ -182,14 +175,14 @@ export class ItemsComponent implements OnInit {
 
     loadMainGrid(): Promise<any> {
         return this.getCircIds()
-        .then(_ => this.checkoutsGrid.load(this.mainList).toPromise())
-        .then(_ => this.checkoutsGrid.reloadGrid());
+            .then(_ => this.checkoutsGrid.load(this.mainList).toPromise())
+            .then(_ => this.checkoutsGrid.reloadGrid());
     }
 
     loadAltGrid(): Promise<any> {
         return this.getCircIds()
-        .then(_ => this.otherGrid.load(this.altList).toPromise())
-        .then(_ => this.otherGrid.reloadGrid());
+            .then(_ => this.otherGrid.load(this.altList).toPromise())
+            .then(_ => this.otherGrid.reloadGrid());
     }
 
     loadNonCatGrid(): Promise<any> {
@@ -199,20 +192,20 @@ export class ItemsComponent implements OnInit {
             'open-ils.circ.open_non_cataloged_circulation.user.batch.authoritative',
             this.auth.token(), this.patronId)
 
-        .pipe(tap(circ => {
-            const entry: CircGridEntry = {
-                index: `ancc-${circ.id()}`,
-                title: circ.item_type().name(),
-                dueDate: circ.duedate(),
-                copy: null,
-                author: '',
-                isbn: ''
-            };
+            .pipe(tap(circ => {
+                const entry: CircGridEntry = {
+                    index: `ancc-${circ.id()}`,
+                    title: circ.item_type().name(),
+                    dueDate: circ.duedate(),
+                    copy: null,
+                    author: '',
+                    isbn: ''
+                };
 
-            this.nonCatGrid.appendGridEntry(entry);
-        })).toPromise()
+                this.nonCatGrid.appendGridEntry(entry);
+            })).toPromise()
 
-        .then(_ => this.nonCatGrid.reloadGrid());
+            .then(_ => this.nonCatGrid.reloadGrid());
     }
 }
 

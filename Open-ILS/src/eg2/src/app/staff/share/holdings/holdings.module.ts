@@ -20,20 +20,20 @@ import { FmRecordEditorModule } from '@eg/share/fm-editor/fm-editor.module';
 
 @NgModule({
     declarations: [
-      MarkDamagedDialogComponent,
-      MarkMissingDialogComponent,
-      MarkDiscardDialogComponent,
-      CopyAlertsDialogComponent,
-      CopyTagsDialogComponent,
-      CopyNotesDialogComponent,
-      CopyNotesEditComponent,
-      ReplaceBarcodeDialogComponent,
-      DeleteHoldingDialogComponent,
-      ConjoinedItemsDialogComponent,
-      TransferItemsComponent,
-      TransferHoldingsComponent,
-      BatchItemAttrComponent,
-      CopyAlertManagerDialogComponent
+        MarkDamagedDialogComponent,
+        MarkMissingDialogComponent,
+        MarkDiscardDialogComponent,
+        CopyAlertsDialogComponent,
+        CopyTagsDialogComponent,
+        CopyNotesDialogComponent,
+        CopyNotesEditComponent,
+        ReplaceBarcodeDialogComponent,
+        DeleteHoldingDialogComponent,
+        ConjoinedItemsDialogComponent,
+        TransferItemsComponent,
+        TransferHoldingsComponent,
+        BatchItemAttrComponent,
+        CopyAlertManagerDialogComponent
     ],
     imports: [
         StaffCommonModule,
@@ -41,19 +41,19 @@ import { FmRecordEditorModule } from '@eg/share/fm-editor/fm-editor.module';
         FmRecordEditorModule
     ],
     exports: [
-      MarkDamagedDialogComponent,
-      MarkMissingDialogComponent,
-      MarkDiscardDialogComponent,
-      CopyAlertsDialogComponent,
-      CopyTagsDialogComponent,
-      CopyNotesDialogComponent,
-      ReplaceBarcodeDialogComponent,
-      DeleteHoldingDialogComponent,
-      ConjoinedItemsDialogComponent,
-      TransferItemsComponent,
-      TransferHoldingsComponent,
-      BatchItemAttrComponent,
-      CopyAlertManagerDialogComponent
+        MarkDamagedDialogComponent,
+        MarkMissingDialogComponent,
+        MarkDiscardDialogComponent,
+        CopyAlertsDialogComponent,
+        CopyTagsDialogComponent,
+        CopyNotesDialogComponent,
+        ReplaceBarcodeDialogComponent,
+        DeleteHoldingDialogComponent,
+        ConjoinedItemsDialogComponent,
+        TransferItemsComponent,
+        TransferHoldingsComponent,
+        BatchItemAttrComponent,
+        CopyAlertManagerDialogComponent
     ],
     providers: [
         HoldingsService

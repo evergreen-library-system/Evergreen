@@ -69,11 +69,11 @@ export class BasketService {
         const cacheKey = this.store.getLoginSessionItem(BASKET_CACHE_KEY_COOKIE);
 
         return this.anonCache.setItem(cacheKey, BASKET_CACHE_ATTR, this.idList)
-        .then(key => {
-            this.store.setLoginSessionItem(BASKET_CACHE_KEY_COOKIE, key);
-            this.onChange.emit(this.idList);
-            return this.idList;
-        });
+            .then(key => {
+                this.store.setLoginSessionItem(BASKET_CACHE_KEY_COOKIE, key);
+                this.onChange.emit(this.idList);
+                return this.idList;
+            });
     }
 
     addRecordIds(ids: number[]): Promise<number[]> {

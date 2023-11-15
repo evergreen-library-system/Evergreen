@@ -2,7 +2,7 @@ import {EventEmitter} from '@angular/core';
 
 /* Wrapper class for our external MARC21.Record JS library. */
 
-declare var MARC21;
+declare var MARC21; // eslint-disable-line no-var
 
 // MARC breaker delimiter
 const DELIMITER = '$';
@@ -54,7 +54,7 @@ export class MarcRecord {
     }
 
     get fields(): MarcField[] {
-       return this.record.fields;
+        return this.record.fields;
     }
 
     set fields(f: MarcField[]) {
@@ -104,6 +104,7 @@ export class MarcRecord {
     // Stamp field IDs the the initial isCtrlField state.
     stampFieldId(field: MarcField) {
         if (!field.fieldId) {
+            // eslint-disable-next-line no-magic-numbers
             field.fieldId = Math.floor(Math.random() * 10000000);
         }
 

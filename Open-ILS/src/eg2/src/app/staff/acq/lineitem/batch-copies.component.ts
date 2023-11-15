@@ -1,13 +1,9 @@
 import {Component, OnInit, Input, Output, EventEmitter, ViewChild} from '@angular/core';
-import {tap} from 'rxjs/operators';
-import {Pager} from '@eg/share/util/pager';
 import {IdlObject, IdlService} from '@eg/core/idl.service';
 import {EventService} from '@eg/core/event.service';
 import {NetService} from '@eg/core/net.service';
 import {AuthService} from '@eg/core/auth.service';
 import {LineitemService} from './lineitem.service';
-import {ComboboxEntry} from '@eg/share/combobox/combobox.component';
-import {LineitemCopyAttrsComponent} from './copy-attrs.component';
 import {CancelDialogComponent} from './cancel-dialog.component';
 import {LineitemAlertDialogComponent} from './lineitem-alert-dialog.component';
 
@@ -21,9 +17,9 @@ const BATCH_FIELDS = [
 ];
 
 @Component({
-  templateUrl: 'batch-copies.component.html',
-  selector: 'eg-lineitem-batch-copies',
-  styleUrls: ['batch-copies.component.css']
+    templateUrl: 'batch-copies.component.html',
+    selector: 'eg-lineitem-batch-copies',
+    styleUrls: ['batch-copies.component.css']
 })
 export class LineitemBatchCopiesComponent implements OnInit {
 
@@ -86,13 +82,13 @@ export class LineitemBatchCopiesComponent implements OnInit {
 
     refreshLineitem() {
         this.liService.getFleshedLineitems([this.lineitem.id()], {toCache: true})
-        .subscribe(liStruct => this.lineitem = liStruct.lineitem);
+            .subscribe(liStruct => this.lineitem = liStruct.lineitem);
     }
 
     handleActionResponse(resp: any) {
         const evt = this.evt.parse(resp);
         if (evt) {
-          alert(evt);
+            alert(evt);
         } else if (resp) {
             this.refreshLineitem();
         }
@@ -104,6 +100,7 @@ export class LineitemBatchCopiesComponent implements OnInit {
             this.net.request('open-ils.acq',
                 'open-ils.acq.lineitem_detail.cancel',
                 this.auth.token(), copy.id(), reason
+            // eslint-disable-next-line rxjs/no-nested-subscribe
             ).subscribe(ok => this.handleActionResponse(ok));
         });
     }

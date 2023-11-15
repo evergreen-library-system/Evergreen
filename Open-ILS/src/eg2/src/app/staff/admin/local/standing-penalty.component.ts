@@ -89,7 +89,7 @@ export class StandingPenaltyComponent implements OnInit {
                     this.deleteSuccessString.current()
                         .then(str => this.toast.success(str));
                 },
-                err => {
+                (err: unknown) => {
                     this.deleteFailedString.current()
                         .then(str => this.toast.danger(str));
                 },
@@ -108,14 +108,14 @@ export class StandingPenaltyComponent implements OnInit {
             return true;
         }
         return false;
-    }
+    };
 
     cspGridCellClassCallback = (row: any, col: GridColumn): string => {
         if (col.name === 'id' && row.a[0] < 100) {
             return 'text-danger';
         }
         return '';
-    }
+    };
 
     showEditDialog(standingPenalty: IdlObject): Promise<any> {
         this.editDialog.mode = 'update';
@@ -128,7 +128,7 @@ export class StandingPenaltyComponent implements OnInit {
                     this.grid.reload();
                     resolve(result);
                 },
-                error => {
+                (error: unknown) => {
                     this.updateFailedString.current()
                         .then(str => this.toast.danger(str));
                     reject(error);
@@ -161,7 +161,8 @@ export class StandingPenaltyComponent implements OnInit {
                     .then(str => this.toast.success(str));
                 this.grid.reload();
             },
-            rejection => {
+            // eslint-disable-next-line rxjs/no-implicit-any-catch
+            (rejection: any) => {
                 if (!rejection.dismissed) {
                     this.createErrString.current()
                         .then(str => this.toast.danger(str));

@@ -1,4 +1,4 @@
-import {Component, Input, ViewChild, OnInit} from '@angular/core';
+import {Component, ViewChild, OnInit} from '@angular/core';
 import {Location} from '@angular/common';
 import {FormatService} from '@eg/core/format.service';
 import {AdminPageComponent} from '@eg/staff/share/admin-page/admin-page.component';
@@ -12,7 +12,6 @@ import {AuthService} from '@eg/core/auth.service';
 import {NetService} from '@eg/core/net.service';
 import {GridCellTextGenerator} from '@eg/share/grid/grid';
 import {StringComponent} from '@eg/share/string/string.component';
-import {FmRecordEditorComponent} from '@eg/share/fm-editor/fm-editor.component';
 
 @Component({
     templateUrl: './admin-carousel.component.html'
@@ -83,10 +82,10 @@ export class AdminCarouselComponent extends AdminPageComponent implements OnInit
         this.editSelected = (carouselFields: IdlObject[]) => {
             // Edit each IDL thing one at a time
             const editOneThing = (carousel: IdlObject) => {
-            if (!carousel) { return; }
+                if (!carousel) { return; }
 
-            this.showEditDialog(carousel).then(
-                () => editOneThing(carouselFields.shift()));
+                this.showEditDialog(carousel).then(
+                    () => editOneThing(carouselFields.shift()));
             };
 
             editOneThing(carouselFields.shift());
@@ -98,7 +97,7 @@ export class AdminCarouselComponent extends AdminPageComponent implements OnInit
             }
             rec.editor(this.auth.user().id());
             rec.edit_time('now');
-    
+
             // convert empty string to nulls as needed
             // for int[] columns
             if (rec.owning_lib_filter() === '') {
@@ -108,12 +107,13 @@ export class AdminCarouselComponent extends AdminPageComponent implements OnInit
                 rec.copy_location_filter(null);
             }
         };
-    
+
         this.postSave = (rec: IdlObject) => {
             if (rec._isfieldmapper) {
                 // if we got an actual IdlObject back, the
                 // record had just been created, not just
                 // edited. therefore, we probably need
+                // eslint-disable-next-line eqeqeq
                 if (rec.bucket() == null) {
                     const bucket = this.idl.create('cbreb');
                     bucket.owner(this.auth.user().id());
@@ -135,13 +135,14 @@ export class AdminCarouselComponent extends AdminPageComponent implements OnInit
                             rec.bucket(newBucket);
                             this.pcrud.create(ccou).subscribe(
                                 ok => {
+                                    // eslint-disable-next-line rxjs/no-nested-subscribe
                                     this.pcrud.update(rec).subscribe(
                                         ok2 => console.debug('updated'),
-                                        err => console.error(err),
+                                        (err: unknown) => console.error(err),
                                         () => { this.grid.reload(); }
                                     );
                                 },
-                                err => console.error(err),
+                                (err: unknown) => console.error(err),
                                 () => { this.grid.reload(); }
                             );
                         }

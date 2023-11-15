@@ -8,41 +8,41 @@ import {PullListComponent} from './pull-list.component';
 import {ReturnComponent} from './return.component';
 
 const routes: Routes = [{
-  path: 'create_reservation',
+    path: 'create_reservation',
     children: [
-      {path: '', component: CreateReservationComponent},
-      {path: 'for_patron/:patron_id', component: CreateReservationComponent},
-      {path: 'for_resource/:resource_barcode', component: CreateReservationComponent},
-  ]}, {
-  path: 'manage_reservations',
+        {path: '', component: CreateReservationComponent},
+        {path: 'for_patron/:patron_id', component: CreateReservationComponent},
+        {path: 'for_resource/:resource_barcode', component: CreateReservationComponent},
+    ]}, {
+    path: 'manage_reservations',
     children: [
-      {path: '', component: ManageReservationsComponent},
-      {path: 'by_patron/:patron_id', component: ManageReservationsComponent},
-      {path: 'by_resource/:resource_barcode', component: ManageReservationsComponent},
-      {path: 'by_resource_type/:resource_type_id', component: ManageReservationsComponent},
-  ]}, {
-  path: 'capture',
-  component: CaptureComponent
-  }, {
-  path: 'pickup',
+        {path: '', component: ManageReservationsComponent},
+        {path: 'by_patron/:patron_id', component: ManageReservationsComponent},
+        {path: 'by_resource/:resource_barcode', component: ManageReservationsComponent},
+        {path: 'by_resource_type/:resource_type_id', component: ManageReservationsComponent},
+    ]}, {
+    path: 'capture',
+    component: CaptureComponent
+}, {
+    path: 'pickup',
     children: [
-      {path: '', component: PickupComponent},
-      {path: 'by_patron/:patron_id', component: PickupComponent},
-  ]}, {
-  path: 'pull_list',
-  component: PullListComponent
-  }, {
-  path: 'return',
+        {path: '', component: PickupComponent},
+        {path: 'by_patron/:patron_id', component: PickupComponent},
+    ]}, {
+    path: 'pull_list',
+    component: PullListComponent
+}, {
+    path: 'return',
     children: [
-      {path: '', component: ReturnComponent},
-      {path: 'by_patron/:patron_id', component: ReturnComponent},
-  ]},
-  ];
+        {path: '', component: ReturnComponent},
+        {path: 'by_patron/:patron_id', component: ReturnComponent},
+    ]},
+];
 
 @NgModule({
-  imports: [RouterModule.forChild(routes)],
-  exports: [RouterModule],
-  providers: []
+    imports: [RouterModule.forChild(routes)],
+    exports: [RouterModule],
+    providers: []
 })
 
 export class BookingRoutingModule {}

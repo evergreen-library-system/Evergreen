@@ -1,32 +1,31 @@
-import {Component, ViewChild, OnInit, AfterViewInit, HostListener} from '@angular/core';
+/* eslint-disable no-magic-numbers */
+import {Component, ViewChild, OnInit, AfterViewInit} from '@angular/core';
 import {Location} from '@angular/common';
-import {Router, ActivatedRoute, ParamMap} from '@angular/router';
+import {Router, ActivatedRoute} from '@angular/router';
 import {empty, from} from 'rxjs';
 import {concatMap} from 'rxjs/operators';
-import {IdlObject, IdlService} from '@eg/core/idl.service';
+import {IdlObject} from '@eg/core/idl.service';
 import {NetService} from '@eg/core/net.service';
 import {OrgService} from '@eg/core/org.service';
 import {AuthService} from '@eg/core/auth.service';
 import {ServerStoreService} from '@eg/core/server-store.service';
 import {PatronService} from '@eg/staff/share/patron/patron.service';
-import {GridDataSource, GridColumn, GridCellTextGenerator} from '@eg/share/grid/grid';
+import {GridDataSource, GridCellTextGenerator} from '@eg/share/grid/grid';
 import {GridComponent} from '@eg/share/grid/grid.component';
 import {Pager} from '@eg/share/util/pager';
 import {CircService, CircDisplayInfo, CheckoutParams, CheckoutResult
-    } from '@eg/staff/share/circ/circ.service';
+} from '@eg/staff/share/circ/circ.service';
 import {BarcodeSelectComponent
-    } from '@eg/staff/share/barcodes/barcode-select.component';
+} from '@eg/staff/share/barcodes/barcode-select.component';
 import {PrintService} from '@eg/share/print/print.service';
 import {MarkDamagedDialogComponent
-    } from '@eg/staff/share/holdings/mark-damaged-dialog.component';
+} from '@eg/staff/share/holdings/mark-damaged-dialog.component';
 import {CopyAlertsDialogComponent
-    } from '@eg/staff/share/holdings/copy-alerts-dialog.component';
-import {BucketDialogComponent
-    } from '@eg/staff/share/buckets/bucket-dialog.component';
+} from '@eg/staff/share/holdings/copy-alerts-dialog.component';
 import {ToastService} from '@eg/share/toast/toast.service';
 import {StringComponent} from '@eg/share/string/string.component';
 import {CancelTransitDialogComponent
-    } from '@eg/staff/share/circ/cancel-transit-dialog.component';
+} from '@eg/staff/share/circ/cancel-transit-dialog.component';
 import {HoldingsService} from '@eg/staff/share/holdings/holdings.service';
 import {AnonCacheService} from '@eg/share/util/anon-cache.service';
 
@@ -39,8 +38,8 @@ interface RenewGridEntry extends CheckoutResult {
 const TRIM_LIST_TO = 20;
 
 @Component({
-  templateUrl: 'renew.component.html',
-  styleUrls: ['renew.component.css']
+    templateUrl: 'renew.component.html',
+    styleUrls: ['renew.component.css']
 })
 export class RenewComponent implements OnInit, AfterViewInit {
     renewals: RenewGridEntry[] = [];
@@ -89,9 +88,9 @@ export class RenewComponent implements OnInit, AfterViewInit {
         };
 
         this.store.getItemBatch(['circ.renew.strict_barcode'])
-        .then(sets => {
-            this.strictBarcode = sets['circ.renew.strict_barcode'];
-        }).then(_ => this.circ.applySettings());
+            .then(sets => {
+                this.strictBarcode = sets['circ.renew.strict_barcode'];
+            }).then(_ => this.circ.applySettings());
     }
 
     ngAfterViewInit() {
@@ -120,16 +119,16 @@ export class RenewComponent implements OnInit, AfterViewInit {
             return this.circ.renew(collectedParams);
         })
 
-        .then((result: CheckoutResult) => {
-            if (result && result.success) {
-                this.gridifyResult(result);
-            }
-            delete this.copiesInFlight[this.barcode];
-            this.resetForm();
-            return result;
-        })
+            .then((result: CheckoutResult) => {
+                if (result && result.success) {
+                    this.gridifyResult(result);
+                }
+                delete this.copiesInFlight[this.barcode];
+                this.resetForm();
+                return result;
+            })
 
-        .finally(() => delete this.copiesInFlight[this.barcode]);
+            .finally(() => delete this.copiesInFlight[this.barcode]);
     }
 
     collectParams(): Promise<CheckoutParams> {
@@ -141,16 +140,16 @@ export class RenewComponent implements OnInit, AfterViewInit {
         };
 
         return this.barcodeSelect.getBarcode('asset', this.barcode)
-        .then(selection => {
-            if (selection) {
-                params.copy_id = selection.id;
-                params.copy_barcode = selection.barcode;
-                return params;
-            } else {
+            .then(selection => {
+                if (selection) {
+                    params.copy_id = selection.id;
+                    params.copy_barcode = selection.barcode;
+                    return params;
+                } else {
                 // User canceled the multi-match selection dialog.
-                return null;
-            }
-        });
+                    return null;
+                }
+            });
     }
 
     resetForm() {
@@ -261,23 +260,23 @@ export class RenewComponent implements OnInit, AfterViewInit {
         from(rows).pipe(concatMap(row => {
             return from(
                 this.circ.findCopyTransit(row)
-                .then(transit => row.transit = transit)
+                    .then(transit => row.transit = transit)
             );
         }))
-        .pipe(concatMap(_ => {
+            .pipe(concatMap(_ => {
 
-            const ids = rows
-                .filter(row => Boolean(row.transit))
-                .map(row => row.transit.id());
+                const ids = rows
+                    .filter(row => Boolean(row.transit))
+                    .map(row => row.transit.id());
 
-            if (ids.length > 0) {
-                this.cancelTransitDialog.transitIds = ids;
-                return this.cancelTransitDialog.open();
-            } else {
-                return empty();
-            }
+                if (ids.length > 0) {
+                    this.cancelTransitDialog.transitIds = ids;
+                    return this.cancelTransitDialog.open();
+                } else {
+                    return empty();
+                }
 
-        })).subscribe();
+            })).subscribe();
     }
 
     showRecentCircs(rows: RenewGridEntry[]) {

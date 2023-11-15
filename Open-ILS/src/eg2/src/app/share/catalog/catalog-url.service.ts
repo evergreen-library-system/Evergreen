@@ -1,8 +1,8 @@
+/* eslint-disable no-cond-assign */
 import {Injectable} from '@angular/core';
 import {ParamMap} from '@angular/router';
 import {OrgService} from '@eg/core/org.service';
-import {CatalogSearchContext, FacetFilter} from './search-context';
-import {CATALOG_CCVM_FILTERS} from './search-context';
+import {CatalogSearchContext, FacetFilter, CATALOG_CCVM_FILTERS} from './search-context';
 import {HashParams} from '@eg/share/util/hash-params';
 
 @Injectable()
@@ -36,12 +36,12 @@ export class CatalogUrlService {
 
         // These fields can be copied directly into place
         ['limit', 'offset', 'sort', 'global', 'showBasket', 'sort']
-        .forEach(field => {
-            if (context[field]) {
+            .forEach(field => {
+                if (context[field]) {
                 // Only propagate applied values to the URL.
-                params[field] = context[field];
-            }
-        });
+                    params[field] = context[field];
+                }
+            });
 
         if (context.marcSearch.isSearchable()) {
             const ms = context.marcSearch;
@@ -83,11 +83,11 @@ export class CatalogUrlService {
             ['format', 'available', 'hasBrowseEntry', 'date1',
                 'date2', 'dateOp', 'groupByMetarecord', 'fromMetarecord',
                 'onReserveFilter', 'onReserveFilterNegated']
-            .forEach(field => {
-                if (ts[field]) {
-                    params[field] = ts[field];
-                }
-            });
+                .forEach(field => {
+                    if (ts[field]) {
+                        params[field] = ts[field];
+                    }
+                });
 
             ts.query.forEach((val, idx) => {
                 if (val !== '') {
@@ -224,11 +224,11 @@ export class CatalogUrlService {
             ['format', 'available', 'date1', 'date2',
                 'dateOp', 'groupByMetarecord', 'fromMetarecord',
                 'onReserve']
-            .forEach(field => {
-                if (params.has(field)) {
-                    ts[field] = params.get(field);
-                }
-            });
+                .forEach(field => {
+                    if (params.has(field)) {
+                        ts[field] = params.get(field);
+                    }
+                });
 
             // Arrays
             ['query', 'fieldClass', 'joinOp', 'matchOp'].forEach(field => {

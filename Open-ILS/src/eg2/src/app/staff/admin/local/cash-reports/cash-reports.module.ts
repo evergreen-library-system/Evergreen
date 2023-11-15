@@ -5,18 +5,18 @@ import {CashReportsComponent} from './cash-reports.component';
 import {CashReportsRoutingModule} from './routing.module';
 
 @NgModule({
-  declarations: [
-    CashReportsComponent
-  ],
-  imports: [
-    StaffCommonModule,
-    TreeModule,
-    CashReportsRoutingModule
-  ],
-  exports: [
-  ],
-  providers: [
-  ]
+    declarations: [
+        CashReportsComponent
+    ],
+    imports: [
+        StaffCommonModule,
+        TreeModule,
+        CashReportsRoutingModule
+    ],
+    exports: [
+    ],
+    providers: [
+    ]
 })
 
 export class CashReportsModule {

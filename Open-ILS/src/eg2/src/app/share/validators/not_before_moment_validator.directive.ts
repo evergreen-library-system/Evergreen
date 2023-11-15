@@ -1,6 +1,5 @@
 import {Directive, Input} from '@angular/core';
-import {NG_VALIDATORS, AbstractControl, FormControl, ValidationErrors, ValidatorFn} from '@angular/forms';
-import {Injectable} from '@angular/core';
+import {NG_VALIDATORS, AbstractControl, ValidatorFn} from '@angular/forms';
 
 import * as moment from 'moment-timezone';
 

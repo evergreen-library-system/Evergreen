@@ -24,7 +24,7 @@ export class PoEdiMessagesComponent implements OnInit {
         this.route.parent.paramMap.subscribe((params: ParamMap) => {
             this.poId = +params.get('poId');
         });
-   }
+    }
 
     getEdiMessages(pager: Pager, sort: any) {
         if (!this.poId) { return empty(); }

@@ -2,8 +2,8 @@ import {Component, Input, ViewChild, TemplateRef} from '@angular/core';
 import {DialogComponent} from '@eg/share/dialog/dialog.component';
 
 @Component({
-  selector: 'eg-confirm-dialog',
-  templateUrl: './confirm.component.html'
+    selector: 'eg-confirm-dialog',
+    templateUrl: './confirm.component.html'
 })
 
 /**

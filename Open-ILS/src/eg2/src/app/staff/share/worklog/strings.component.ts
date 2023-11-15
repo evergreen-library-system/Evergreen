@@ -10,8 +10,8 @@ import {WorkLogService, WorkLogEntry} from './worklog.service';
 
 
 @Component({
-  templateUrl: 'strings.component.html',
-  selector: 'eg-worklog-strings-components'
+    templateUrl: 'strings.component.html',
+    selector: 'eg-worklog-strings-components'
 })
 export class WorkLogStringsComponent {
 

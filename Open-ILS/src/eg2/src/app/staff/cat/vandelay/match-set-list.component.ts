@@ -6,11 +6,11 @@ import {PcrudService} from '@eg/core/pcrud.service';
 import {OrgService} from '@eg/core/org.service';
 import {AuthService} from '@eg/core/auth.service';
 import {GridComponent} from '@eg/share/grid/grid.component';
-import {GridDataSource, GridColumn, GridCellTextGenerator} from '@eg/share/grid/grid';
+import {GridDataSource, GridCellTextGenerator} from '@eg/share/grid/grid';
 import {FmRecordEditorComponent} from '@eg/share/fm-editor/fm-editor.component';
 
 @Component({
-  templateUrl: 'match-set-list.component.html'
+    templateUrl: 'match-set-list.component.html'
 })
 export class MatchSetListComponent implements AfterViewInit {
 
@@ -55,7 +55,7 @@ export class MatchSetListComponent implements AfterViewInit {
             matchSets.forEach(matchSet => matchSet.isdeleted(true));
             this.pcrud.autoApply(matchSets).subscribe(
                 val => console.debug('deleted: ' + val),
-                err => {},
+                (err: unknown) => {},
                 ()  => this.grid.reload()
             );
         };
@@ -67,6 +67,7 @@ export class MatchSetListComponent implements AfterViewInit {
                 this.editDialog.mode = 'update';
                 this.editDialog.recordId = matchSet.id();
                 this.editDialog.open({size: 'lg'})
+                    // eslint-disable-next-line rxjs/no-nested-subscribe
                     .subscribe(() => this.grid.reload());
             }
         );

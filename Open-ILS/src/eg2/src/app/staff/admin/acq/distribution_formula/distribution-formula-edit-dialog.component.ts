@@ -1,25 +1,24 @@
-import {Component, Input, ViewChild, TemplateRef, OnInit} from '@angular/core';
+/* eslint-disable eqeqeq, no-magic-numbers */
+import {Component, Input, ViewChild, OnInit} from '@angular/core';
 import {DialogComponent} from '@eg/share/dialog/dialog.component';
-import {NgForm, NG_VALIDATORS} from '@angular/forms';
 import {IdlService, IdlObject} from '@eg/core/idl.service';
 import {EventService} from '@eg/core/event.service';
 import {OrgService} from '@eg/core/org.service';
 import {NetService} from '@eg/core/net.service';
 import {AuthService} from '@eg/core/auth.service';
 import {PcrudService} from '@eg/core/pcrud.service';
-import {Pager} from '@eg/share/util/pager';
 import {NgbModal} from '@ng-bootstrap/ng-bootstrap';
 import {StringComponent} from '@eg/share/string/string.component';
 import {ToastService} from '@eg/share/toast/toast.service';
 import {PermService} from '@eg/core/perm.service';
 
 @Component({
-  selector: 'eg-distribution-formula-edit-dialog',
-  templateUrl: './distribution-formula-edit-dialog.component.html'
+    selector: 'eg-distribution-formula-edit-dialog',
+    templateUrl: './distribution-formula-edit-dialog.component.html'
 })
 
 export class DistributionFormulaEditDialogComponent
-  extends DialogComponent implements OnInit {
+    extends DialogComponent implements OnInit {
 
     @Input() mode = 'create';
     @Input() formulaId: number;
@@ -138,7 +137,7 @@ export class DistributionFormulaEditDialogComponent
                         entry.location() == null &&
                         entry.circ_modifier() == null &&
                         entry.collection_code() == null
-                       ) {
+                    ) {
                         // this is a pointless entry; ignore
                         return;
                     }
@@ -194,12 +193,13 @@ export class DistributionFormulaEditDialogComponent
                     updates.unshift(entry); // deletions have to be processed first
                 }
             });
+            // eslint-disable-next-line rxjs/no-nested-subscribe
             this.pcrud.autoApply(updates).subscribe(
                 ret => {},
-                err => this.close(err),
+                (err: unknown) => this.close(err),
                 () => this.close(true)
             );
-        }, err => this.close(false));
+        }, (err: unknown) => this.close(false));
     }
 
 }

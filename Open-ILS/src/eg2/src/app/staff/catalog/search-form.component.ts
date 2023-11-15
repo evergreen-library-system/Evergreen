@@ -22,9 +22,9 @@ const COLLAPSE_ON_PAGES = [
 ];
 
 @Component({
-  selector: 'eg-catalog-search-form',
-  styleUrls: ['search-form.component.css'],
-  templateUrl: 'search-form.component.html'
+    selector: 'eg-catalog-search-form',
+    styleUrls: ['search-form.component.css'],
+    templateUrl: 'search-form.component.html'
 })
 export class SearchFormComponent implements OnInit, AfterViewInit {
 
@@ -78,10 +78,10 @@ export class SearchFormComponent implements OnInit, AfterViewInit {
         });
 
         this.store.getItem('eg.catalog.search.form.open')
-        .then(value => this.showSearchFormSetting = value);
+            .then(value => this.showSearchFormSetting = value);
 
         this.store.getItem('eg.staffcat.course_materials_selector')
-        .then(value => this.showCourseFilter = value);
+            .then(value => this.showCourseFilter = value);
     }
 
     // Are we on a page where the form is allowed to be collapsed.
@@ -188,7 +188,7 @@ export class SearchFormComponent implements OnInit, AfterViewInit {
             // Note the error is thrown from selectRootElement(), not the
             // call to .focus() on a null reference.
             this.renderer.selectRootElement(selector).focus();
-        } catch (E) {}
+        } catch (E) { /* empty */ }
     }
 
     /**
@@ -226,7 +226,7 @@ export class SearchFormComponent implements OnInit, AfterViewInit {
     orgOnChange = (org: IdlObject): void => {
         this.context.searchOrg = org;
         this.refreshCopyLocations();
-    }
+    };
 
     refreshCopyLocations() {
         if (!this.showFilters()) { return; }
@@ -294,7 +294,7 @@ export class SearchFormComponent implements OnInit, AfterViewInit {
 
     // https://stackoverflow.com/questions/42322968/angular2-dynamic-input-field-lose-focus-when-input-changes
     trackByIdx(index: any, item: any) {
-       return index;
+        return index;
     }
 
     searchIsActive(): boolean {

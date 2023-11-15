@@ -1,16 +1,16 @@
 import { IdlService, IdlObject } from './../../../core/idl.service';
-import { QueryList } from "@angular/core";
-import { waitForAsync } from "@angular/core/testing";
-import { AuthService } from "@eg/core/auth.service";
-import { FormatService } from "@eg/core/format.service";
-import { OrgService } from "@eg/core/org.service";
-import { StoreService } from "@eg/core/store.service";
-import { ComboboxComponent } from "@eg/share/combobox/combobox.component";
-import { ToastService } from "@eg/share/toast/toast.service";
-import { FileExportService } from "@eg/share/util/file-export.service";
-import { CopyAttrsComponent } from "./copy-attrs.component";
-import { VolCopyContext } from "./volcopy";
-import { VolCopyService } from "./volcopy.service";
+import { QueryList } from '@angular/core';
+import { waitForAsync } from '@angular/core/testing';
+import { AuthService } from '@eg/core/auth.service';
+import { FormatService } from '@eg/core/format.service';
+import { OrgService } from '@eg/core/org.service';
+import { StoreService } from '@eg/core/store.service';
+import { ComboboxComponent } from '@eg/share/combobox/combobox.component';
+import { ToastService } from '@eg/share/toast/toast.service';
+import { FileExportService } from '@eg/share/util/file-export.service';
+import { CopyAttrsComponent } from './copy-attrs.component';
+import { VolCopyContext } from './volcopy';
+import { VolCopyService } from './volcopy.service';
 
 describe('CopyAttrsComponent', () => {
     let component: CopyAttrsComponent;
@@ -33,7 +33,7 @@ describe('CopyAttrsComponent', () => {
     describe('#applyTemplate', () => {
         describe('status field', () => {
             it('does not apply a magic status to an item', waitForAsync(() => {
-                let template = { "status": 1 };
+                const template = { 'status': 1 };
                 volCopyServiceMock.templates = [template];
                 volCopyServiceMock.copyStatIsMagic.and.returnValue(true);
                 component.batchAttrs = new QueryList();
@@ -49,7 +49,8 @@ describe('CopyAttrsComponent', () => {
     describe('#applyCopyValue', () => {
         it('does not override a magic status', () => {
             volCopyServiceMock.copyStatIsMagic.and.returnValue(true);
-            const item = jasmine.createSpyObj<IdlObject>(['ischanged'], {'status': () => {1}});
+            // eslint-disable-next-line no-unused-expressions
+            const item = jasmine.createSpyObj<IdlObject>(['ischanged'], {'status': () => {1;}});
             const contextMock = jasmine.createSpyObj<VolCopyContext>(['copyList']);
             contextMock.copyList.and.returnValue([item]);
             component.context = contextMock;

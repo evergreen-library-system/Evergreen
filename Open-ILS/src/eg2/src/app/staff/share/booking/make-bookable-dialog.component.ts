@@ -15,8 +15,8 @@ import {StringComponent} from '@eg/share/string/string.component';
  */
 
 @Component({
-  selector: 'eg-make-bookable-dialog',
-  templateUrl: 'make-bookable-dialog.component.html'
+    selector: 'eg-make-bookable-dialog',
+    templateUrl: 'make-bookable-dialog.component.html'
 })
 export class MakeBookableDialogComponent
     extends DialogComponent implements OnInit, OnDestroy {
@@ -48,6 +48,7 @@ export class MakeBookableDialogComponent
     }
 
     ngOnInit() {
+        // eslint-disable-next-line rxjs/no-async-subscribe
         this.onOpenSub = this.onOpen$.subscribe(async () => {
             this.numSucceeded = 0;
             this.numFailed = 0;
@@ -93,10 +94,10 @@ export class MakeBookableDialogComponent
                 // for the first copy to get the owning library
                 this.pcrud.retrieve('acp', this.copyIds[0],
                     {flesh: 1, flesh_fields: {acp: ['call_number']}})
-                .toPromise().then(copy => {
-                    this.newResourceOrg = copy.call_number().owning_lib();
-                    this.updateComplete = true;
-                });
+                    .toPromise().then(copy => {
+                        this.newResourceOrg = copy.call_number().owning_lib();
+                        this.updateComplete = true;
+                    });
             },
             err => {
                 console.error(err);

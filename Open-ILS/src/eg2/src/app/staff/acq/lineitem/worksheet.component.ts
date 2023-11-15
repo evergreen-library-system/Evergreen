@@ -1,5 +1,4 @@
 import {Component, OnInit, AfterViewInit} from '@angular/core';
-import {map, take} from 'rxjs/operators';
 import {ActivatedRoute, ParamMap} from '@angular/router';
 import {IdlObject} from '@eg/core/idl.service';
 import {NetService} from '@eg/core/net.service';
@@ -10,7 +9,7 @@ import {LineitemService} from './lineitem.service';
 import {PrintService} from '@eg/share/print/print.service';
 
 @Component({
-  templateUrl: 'worksheet.component.html'
+    templateUrl: 'worksheet.component.html'
 })
 export class LineitemWorksheetComponent implements OnInit, AfterViewInit {
 
@@ -65,9 +64,9 @@ export class LineitemWorksheetComponent implements OnInit, AfterViewInit {
                 flesh_formulas: true
             }
         ).toPromise()
-        .then(li => this.lineitem = li)
-        .then(_ => this.getRemainingData())
-        .then(_ => this.populatePreview());
+            .then(li => this.lineitem = li)
+            .then(_ => this.getRemainingData())
+            .then(_ => this.populatePreview());
     }
 
     getRemainingData(): Promise<any> {
@@ -108,6 +107,7 @@ export class LineitemWorksheetComponent implements OnInit, AfterViewInit {
                         setTimeout(() => {
                             window.close();
                             sub.unsubscribe();
+                        // eslint-disable-next-line no-magic-numbers
                         }, 2000); // allow for a time cushion past queueing.
                     }
                 }

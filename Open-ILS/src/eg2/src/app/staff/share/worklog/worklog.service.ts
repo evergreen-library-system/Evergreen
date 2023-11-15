@@ -1,6 +1,5 @@
 import {Injectable} from '@angular/core';
 import {AuthService} from '@eg/core/auth.service';
-import {StringService} from '@eg/share/string/string.service';
 import {ServerStoreService} from '@eg/core/server-store.service';
 import {StoreService} from '@eg/core/store.service';
 import {WorkLogStringsComponent} from './strings.component';
@@ -37,6 +36,7 @@ export class WorkLogService {
             'ui.admin.work_log.max_entries',
             'ui.admin.patron_log.max_entries'
         ]).then(sets => {
+            // eslint-disable-next-line no-magic-numbers
             this.maxEntries = sets['ui.admin.work_log.max_entries'] || 20;
             this.maxPatrons = sets['ui.admin.patron_log.max_entries'] || 10;
         });
@@ -46,13 +46,11 @@ export class WorkLogService {
 
         if (this.maxEntries === null) {
             throw new Error('WorkLogService.loadSettings() required');
-            return;
         }
 
         if (this.workLogStrings  === null) {
             throw new Error(
                 'Add <eg-worklog-strings-components/> to your component for worklog support');
-            return;
         }
 
         entry.when = new Date();

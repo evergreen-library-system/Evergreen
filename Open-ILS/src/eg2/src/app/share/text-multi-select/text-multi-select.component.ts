@@ -1,14 +1,12 @@
 /**
  * <eg-text-multi-select (onChange)="handler($event)"></eg-multi-select> // $event is an array
  */
-import {Component, OnInit, Input, Output, ViewChild, EventEmitter, ViewChildren, QueryList, ElementRef} from '@angular/core';
-import {map} from 'rxjs/operators';
-import {Observable, of, Subject} from 'rxjs';
+import {Component, OnInit, Input, Output, EventEmitter, ViewChildren, QueryList, ElementRef} from '@angular/core';
 
 @Component({
-  selector: 'eg-text-multi-select',
-  templateUrl: './text-multi-select.component.html',
-  styles: [`
+    selector: 'eg-text-multi-select',
+    templateUrl: './text-multi-select.component.html',
+    styles: [`
     .icons {margin-left:-18px}
     .material-icons {font-size: 16px;font-weight:bold}
     .eg-text-multi-select-row { display: grid; grid-template-columns: 1fr min-content; gap: .75rem; }
@@ -20,8 +18,9 @@ export class TextMultiSelectComponent implements OnInit {
     entrylist: string[];
 
     @Input() startValue: Array<string>;
+    // eslint-disable-next-line no-magic-numbers
     @Input() domId: string = 'TMSC-' + Number(Math.random() * 10000);
-    @Input() disabled: boolean = false;
+    @Input() disabled = false;
 
     @Output() onChange: EventEmitter<string[]>;
 

@@ -1,9 +1,6 @@
-import {Directive, forwardRef} from '@angular/core';
-import {NG_VALIDATORS, AbstractControl, FormControl, ValidationErrors, Validator} from '@angular/forms';
+import {Directive, Injectable} from '@angular/core';
+import {NG_VALIDATORS, FormControl, Validator} from '@angular/forms';
 import {FormatService} from '@eg/core/format.service';
-import {EmptyError, Observable, of} from 'rxjs';
-import {single, switchMap, catchError} from 'rxjs/operators';
-import {Injectable} from '@angular/core';
 
 @Injectable({providedIn: 'root'})
 export class DatetimeValidator implements Validator {
@@ -18,7 +15,7 @@ export class DatetimeValidator implements Validator {
             return {datetimeParseError: err.message};
         }
         return null;
-    }
+    };
 }
 
 @Directive({
@@ -36,6 +33,6 @@ export class DatetimeValidatorDirective {
 
     validate = (control: FormControl) => {
         this.dtv.validate(control);
-    }
+    };
 }
 

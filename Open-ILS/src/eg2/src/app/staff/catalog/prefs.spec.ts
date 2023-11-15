@@ -1,12 +1,12 @@
-import { ServerStoreService } from "@eg/core/server-store.service";
-import { PreferencesComponent } from "./prefs.component";
-import { ToastService } from "@eg/share/toast/toast.service";
-import { StaffCatalogService } from "./catalog.service";
+import { ServerStoreService } from '@eg/core/server-store.service';
+import { PreferencesComponent } from './prefs.component';
+import { ToastService } from '@eg/share/toast/toast.service';
+import { StaffCatalogService } from './catalog.service';
 
 let component: PreferencesComponent;
-let mockToast = jasmine.createSpyObj<ToastService>(['success']);
-let mockStaffCat = jasmine.createSpyObj<StaffCatalogService>(['createContext']);
-let mockStore = jasmine.createSpyObj<ServerStoreService>(['getItemBatch']);
+const mockToast = jasmine.createSpyObj<ToastService>(['success']);
+const mockStaffCat = jasmine.createSpyObj<StaffCatalogService>(['createContext']);
+const mockStore = jasmine.createSpyObj<ServerStoreService>(['getItemBatch']);
 
 describe('prefs.component', () => {
     describe('#showCoursePreferences', () => {
@@ -21,6 +21,6 @@ describe('prefs.component', () => {
             component = new PreferencesComponent(mockStore, mockToast, mockStaffCat);
             await component.ngOnInit();
             expect(component.showCoursePreferences()).toBe(false);
-        })
+        });
     });
 });

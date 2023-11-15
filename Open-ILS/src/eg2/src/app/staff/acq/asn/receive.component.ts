@@ -21,7 +21,7 @@ interface ReceiveResponse {
 }
 
 @Component({
-  templateUrl: 'receive.component.html'
+    templateUrl: 'receive.component.html'
 })
 export class AsnReceiveComponent implements OnInit {
 
@@ -106,7 +106,7 @@ export class AsnReceiveComponent implements OnInit {
             {flesh: 1, flesh_fields: {acqsn: ['entries', 'provider']}}
         ).subscribe(
             sn => this.containers.push(sn),
-            _ => {},
+            (_: unknown) => {},
             () => {
                 this.findingContainer = false;
 
@@ -147,18 +147,18 @@ export class AsnReceiveComponent implements OnInit {
         }
 
         return this.li.getFleshedLineitems(entries.map(e => e.lineitem()), {})
-        .pipe(tap(li_struct => {
+            .pipe(tap(li_struct => {
             // Flesh the lineitems directly in the shipment entry
-            const entry = entries.filter(e => e.lineitem() === li_struct.id)[0];
-            entry.lineitem(li_struct.lineitem);
-        })).toPromise()
-        .then(_ => {
-            this.entries = entries;
-            this.loadingContainer = false;
-            if (this.grid) { // Hidden during receiveOnScan
-                this.grid.reload();
-            }
-        });
+                const entry = entries.filter(e => e.lineitem() === li_struct.id)[0];
+                entry.lineitem(li_struct.lineitem);
+            })).toPromise()
+            .then(_ => {
+                this.entries = entries;
+                this.loadingContainer = false;
+                if (this.grid) { // Hidden during receiveOnScan
+                    this.grid.reload();
+                }
+            });
     }
 
     openLi(row: any) {

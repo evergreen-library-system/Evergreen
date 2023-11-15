@@ -17,8 +17,8 @@ import {AuthorityMergeDialogComponent} from './merge-dialog.component';
 /* Find, merge, and edit authority records */
 
 @Component({
-  templateUrl: 'browse.component.html',
-  styles: [`#offset-input { width: 4em; }`]
+    templateUrl: 'browse.component.html',
+    styles: ['#offset-input { width: 4em; }']
 })
 export class BrowseAuthorityComponent implements OnInit {
 
@@ -52,21 +52,21 @@ export class BrowseAuthorityComponent implements OnInit {
         this.dataSource.getRows =
             (pager: Pager, sort: any): Observable<any> => {
 
-            if (this.authorityAxis) {
-                this.browse.authorityAxis = this.authorityAxis.id;
+                if (this.authorityAxis) {
+                    this.browse.authorityAxis = this.authorityAxis.id;
 
-            } else {
-                // Our browse service may have cached search params
-                if (this.browse.authorityAxis) {
-                    this.axisCbox.selectedId = this.browse.authorityAxis;
-                    this.authorityAxis = this.axisCbox.selected;
                 } else {
-                    return EMPTY;
+                // Our browse service may have cached search params
+                    if (this.browse.authorityAxis) {
+                        this.axisCbox.selectedId = this.browse.authorityAxis;
+                        this.authorityAxis = this.axisCbox.selected;
+                    } else {
+                        return EMPTY;
+                    }
                 }
-            }
 
-            return this.browse.loadAuthorities();
-        };
+                return this.browse.loadAuthorities();
+            };
 
         this.cellTextGenerator = {
             heading: row => row.heading

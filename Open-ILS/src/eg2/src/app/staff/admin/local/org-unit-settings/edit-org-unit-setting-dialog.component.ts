@@ -4,8 +4,8 @@ import {IdlObject} from '@eg/core/idl.service';
 import {NgbModal} from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
-  selector: 'eg-admin-edit-org-unit-setting-dialog',
-  templateUrl: './edit-org-unit-setting-dialog.component.html'
+    selector: 'eg-admin-edit-org-unit-setting-dialog',
+    templateUrl: './edit-org-unit-setting-dialog.component.html'
 })
 
 export class EditOuSettingDialogComponent extends DialogComponent {

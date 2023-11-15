@@ -73,7 +73,7 @@ export class CourseTermMapGridComponent implements OnInit {
                             owning_lib: this.org.ancestors(fullCourseObject.owning_lib(), true)
                         },
                         {order_by: {'acmt': 'name'}}
-                       );
+                    );
                 }), map(courseTerm => {
                     return {id: courseTerm.id(), label: courseTerm.name()};
                 }));
@@ -90,7 +90,7 @@ export class CourseTermMapGridComponent implements OnInit {
             termMaps.forEach(termMap => termMap.isdeleted(true));
             this.pcrud.autoApply(termMaps).subscribe(
                 val => console.debug('deleted: ' + val),
-                err => {},
+                (err: unknown) => {},
                 ()  => this.grid.reload()
             );
         };

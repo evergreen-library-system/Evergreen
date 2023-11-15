@@ -30,7 +30,7 @@ export class StaffNavComponent implements OnInit, OnDestroy {
     showAngularAcq: boolean;
     curbsideEnabled: boolean;
     showAngularCirc = false;
-    maxRecentPatrons: number = 1;
+    maxRecentPatrons = 1;
 
     @ViewChild('navOpChange', {static: false}) opChange: OpChangeComponent;
     @ViewChild('confirmLogout', { static: true }) confirmLogout: ConfirmDialogComponent;
@@ -54,7 +54,7 @@ export class StaffNavComponent implements OnInit, OnDestroy {
 
         this.locale.supportedLocales().subscribe(
             l => this.locales.push(l),
-            err => {},
+            (err: unknown) => {},
             () => {
                 this.currentLocale = this.locales.filter(
                     l => l.code() === this.locale.currentLocaleCode())[0];
@@ -68,16 +68,16 @@ export class StaffNavComponent implements OnInit, OnDestroy {
             // Note these are all pre-cached by our resolver.
             // Batching not required.
             this.org.settings('ui.staff.traditional_catalog.enabled')
-            .then(settings => this.showTraditionalCatalog =
+                .then(settings => this.showTraditionalCatalog =
                 Boolean(settings['ui.staff.traditional_catalog.enabled']));
 
             this.org.settings('circ.curbside')
-            .then(settings => this.curbsideEnabled =
+                .then(settings => this.curbsideEnabled =
                 Boolean(settings['circ.curbside']));
 
             this.org.settings('ui.staff.max_recent_patrons')
-            .then(settings => this.maxRecentPatrons =
-                settings['ui.staff.max_recent_patrons'] ?? 1)
+                .then(settings => this.maxRecentPatrons =
+                settings['ui.staff.max_recent_patrons'] ?? 1);
 
             // Do we show the angular circ menu?
             // TODO remove these once Angular Circ takes over.
@@ -87,7 +87,7 @@ export class StaffNavComponent implements OnInit, OnDestroy {
             this.org.settings(angSet).then(s => {
                 if (s[angSet]) {
                     return this.perm.hasWorkPermHere([angPerm])
-                    .then(perms => perms[angPerm]);
+                        .then(perms => perms[angPerm]);
                 } else {
                     return false;
                 }
@@ -135,7 +135,7 @@ export class StaffNavComponent implements OnInit, OnDestroy {
     maybeLogout() {
         this.confirmLogout.open().subscribe(confirmed => {
             if (!confirmed) { return; }
-            
+
             this.logout();
         });
     }

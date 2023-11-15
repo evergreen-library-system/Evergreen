@@ -1,6 +1,5 @@
-import {Component, OnInit, Input, Output, EventEmitter} from '@angular/core';
-import {Router, ActivatedRoute, ParamMap} from '@angular/router';
-import {NgbNav, NgbNavChangeEvent} from '@ng-bootstrap/ng-bootstrap';
+/* eslint-disable no-shadow */
+import {Component, OnInit, Input, EventEmitter} from '@angular/core';
 import {tap} from 'rxjs/operators';
 import {OrgService} from '@eg/core/org.service';
 import {IdlService, IdlObject} from '@eg/core/idl.service';
@@ -25,11 +24,11 @@ interface DupeSearch {
 }
 
 @Component({
-  templateUrl: 'edit-toolbar.component.html',
-  selector: 'eg-patron-edit-toolbar',
-  styles: [
-    `.pointer-not-allowed:hover { cursor: not-allowed }`
-  ]
+    templateUrl: 'edit-toolbar.component.html',
+    selector: 'eg-patron-edit-toolbar',
+    styles: [
+        '.pointer-not-allowed:hover { cursor: not-allowed }'
+    ]
 })
 export class EditToolbarComponent implements OnInit {
 

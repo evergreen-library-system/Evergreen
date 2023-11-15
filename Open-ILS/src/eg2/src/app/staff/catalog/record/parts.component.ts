@@ -10,8 +10,8 @@ import {FmRecordEditorComponent} from '@eg/share/fm-editor/fm-editor.component';
 import {PartMergeDialogComponent} from './part-merge-dialog.component';
 
 @Component({
-  selector: 'eg-catalog-record-parts',
-  templateUrl: 'parts.component.html'
+    selector: 'eg-catalog-record-parts',
+    templateUrl: 'parts.component.html'
 })
 export class PartsComponent implements OnInit {
 
@@ -86,6 +86,7 @@ export class PartsComponent implements OnInit {
                 this.editDialog.mode = 'update';
                 this.editDialog.recordId = part.id();
                 this.editDialog.open()
+                    // eslint-disable-next-line rxjs/no-nested-subscribe
                     .subscribe(ok => this.partsGrid.reload());
             }
         );
@@ -104,7 +105,7 @@ export class PartsComponent implements OnInit {
             parts.forEach(part => part.isdeleted(true));
             this.pcrud.autoApply(parts).subscribe(
                 val => console.debug('deleted: ' + val),
-                err => {},
+                (err: unknown) => {},
                 ()  => this.partsGrid.reload()
             );
         };

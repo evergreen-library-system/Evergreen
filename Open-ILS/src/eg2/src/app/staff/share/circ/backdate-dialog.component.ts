@@ -8,8 +8,8 @@ import {AuthService} from '@eg/core/auth.service';
 import {EventService} from '@eg/core/event.service';
 
 @Component({
-  templateUrl: 'backdate-dialog.component.html',
-  selector: 'eg-backdate-dialog'
+    templateUrl: 'backdate-dialog.component.html',
+    selector: 'eg-backdate-dialog'
 })
 export class BackdateDialogComponent extends DialogComponent implements OnInit {
 
@@ -38,7 +38,7 @@ export class BackdateDialogComponent extends DialogComponent implements OnInit {
             this.auth.token(), this.circIds, this.backdate
         ).subscribe(
             res => this.updateCount++,
-            err => console.error(err),
+            (err: unknown) => console.error(err),
             ()  => this.close(this.backdate)
         );
     }

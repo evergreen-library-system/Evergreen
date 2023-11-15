@@ -3,8 +3,8 @@ import {GridToolbarButton} from './grid';
 import {GridComponent} from './grid.component';
 
 @Component({
-  selector: 'eg-grid-toolbar-button',
-  template: '<ng-template></ng-template>'
+    selector: 'eg-grid-toolbar-button',
+    template: '<ng-template></ng-template>'
 })
 
 export class GridToolbarButtonComponent implements OnInit {
@@ -13,8 +13,8 @@ export class GridToolbarButtonComponent implements OnInit {
     @Input() label: string;
 
     // These are optional labels that can come before and after the button
-    @Input() adjacentPreceedingLabel: string = '';
-    @Input() adjacentSubsequentLabel: string = '';
+    @Input() adjacentPreceedingLabel = '';
+    @Input() adjacentSubsequentLabel = '';
 
     // Register to click events
     @Output() onClick: EventEmitter<any>;

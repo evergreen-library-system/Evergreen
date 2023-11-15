@@ -1,5 +1,5 @@
-import * as moment from "moment";
-import { DateTimeSelectComponent } from "./datetime-select.component";
+import * as moment from 'moment';
+import { DateTimeSelectComponent } from './datetime-select.component';
 
 
 describe('DateTimeSelectComponent', () => {

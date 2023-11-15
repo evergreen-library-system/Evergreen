@@ -10,8 +10,8 @@ import {ToastService} from '@eg/share/toast/toast.service';
 import {HoldingsService} from '@eg/staff/share/holdings/holdings.service';
 
 @Component({
-  selector: 'eg-catalog-record-actions',
-  templateUrl: 'actions.component.html'
+    selector: 'eg-catalog-record-actions',
+    templateUrl: 'actions.component.html'
 })
 export class RecordActionsComponent implements OnInit {
 
@@ -24,8 +24,8 @@ export class RecordActionsComponent implements OnInit {
 
     targets = {
         conjoined: {
-          key: 'eg.cat.marked_conjoined_record',
-          current: null
+            key: 'eg.cat.marked_conjoined_record',
+            current: null
         },
         overlay: {
             key: 'eg.cat.marked_overlay_record',
@@ -39,8 +39,8 @@ export class RecordActionsComponent implements OnInit {
             key: 'eg.cat.transfer_target_record',
             current: null,
             clear: [ // Clear these values on mark.
-              'eg.cat.transfer_target_lib',
-              'eg.cat.transfer_target_vol'
+                'eg.cat.transfer_target_lib',
+                'eg.cat.transfer_target_vol'
             ]
         }
     };

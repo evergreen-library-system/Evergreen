@@ -3,9 +3,8 @@ import {Router, ActivatedRoute} from '@angular/router';
 import {map, concatMap} from 'rxjs/operators';
 import {from} from 'rxjs';
 import {AuthService} from '@eg/core/auth.service';
-import {IdlObject, IdlService} from '@eg/core/idl.service';
+import {IdlService} from '@eg/core/idl.service';
 import {PcrudService} from '@eg/core/pcrud.service';
-import {Pager} from '@eg/share/util/pager';
 import {GridComponent} from '@eg/share/grid/grid.component';
 import {GridDataSource, GridCellTextGenerator} from '@eg/share/grid/grid';
 import {SimpleReporterService, SRTemplate} from './simple-reporter.service';
@@ -55,11 +54,11 @@ export class SRReportsComponent implements OnInit {
         this.gridSource = this.srSvc.getReportsDatasource();
 
         this.editSelected = ($event) => {
-                this.router.navigate(['edit', $event[0].rt_id], { relativeTo: this.route });
+            this.router.navigate(['edit', $event[0].rt_id], { relativeTo: this.route });
         };
 
         this.newReport = ($event) => {
-                this.router.navigate(['new'], { relativeTo: this.route });
+            this.router.navigate(['new'], { relativeTo: this.route });
         };
     }
 
@@ -78,45 +77,46 @@ export class SRReportsComponent implements OnInit {
         let failures = 0;
 
         this.deleteString.current({ct: rows.length})
-        .then(str => {
-            this.deleteDialog.dialogBody = str;
-            this.deleteDialog.open()
-            .subscribe(confirmed => {
-                if ( confirmed ) {
-                    from(rows.map(x => x.rt_id)).pipe(concatMap(rt_id =>
-                        this.net.request(
-                            'open-ils.reporter',
-                            'open-ils.reporter.template.delete.cascade',
-                            this.auth.token(),
-                            rt_id
-                        ).pipe(map(res => ({
-                            result: res,
-                            rt_id: rt_id
-                        })))
-                    )).subscribe(
-                        (res) => {
-                            if (Number(res.result) === 2) {
-                                successes++;
-                            } else {
-                                failures++;
-                            }
-                        },
-                        (err) => {},
-                        () => {
-                            if (successes === rows.length) {
-                                this.deleteSuccessString.current({ct: successes}).then(str2 => { this.toast.success(str2); });
-                            } else if (failures && !successes) {
-                                this.deleteFailureString.current({ct: failures}).then(str2 => { this.toast.danger(str2); });
-                            } else {
-                                this.mixedResultsString.current({fail: failures, success: successes})
-                                    .then(str2 => { this.toast.warning(str2); });
-                            }
-                            this.reportsGrid.reload();
-                         }
-                    );
-                }
+            .then(str => {
+                this.deleteDialog.dialogBody = str;
+                this.deleteDialog.open()
+                    .subscribe(confirmed => {
+                        if ( confirmed ) {
+                            from(rows.map(x => x.rt_id)).pipe(concatMap(rt_id =>
+                                this.net.request(
+                                    'open-ils.reporter',
+                                    'open-ils.reporter.template.delete.cascade',
+                                    this.auth.token(),
+                                    rt_id
+                                ).pipe(map(res => ({
+                                    result: res,
+                                    rt_id: rt_id
+                                })))
+                            // eslint-disable-next-line rxjs/no-nested-subscribe
+                            )).subscribe(
+                                (res) => {
+                                    if (Number(res.result) === 2) {
+                                        successes++;
+                                    } else {
+                                        failures++;
+                                    }
+                                },
+                                (err: unknown) => {},
+                                () => {
+                                    if (successes === rows.length) {
+                                        this.deleteSuccessString.current({ct: successes}).then(str2 => { this.toast.success(str2); });
+                                    } else if (failures && !successes) {
+                                        this.deleteFailureString.current({ct: failures}).then(str2 => { this.toast.danger(str2); });
+                                    } else {
+                                        this.mixedResultsString.current({fail: failures, success: successes})
+                                            .then(str2 => { this.toast.warning(str2); });
+                                    }
+                                    this.reportsGrid.reload();
+                                }
+                            );
+                        }
+                    });
             });
-        });
     }
 
     cloneSelected(row: any) {
@@ -126,40 +126,40 @@ export class SRReportsComponent implements OnInit {
         const rt_row = row[0];
 
         this.cloneString.current({old: rt_row.name})
-        .then(str => {
-            this.cloneDialog.dialogBody = str;
-            this.cloneDialog.promptValue = rt_row.name + ' (Clone)';
-            this.cloneDialog.open()
-            .subscribe(new_name => {
-                if ( new_name ) {
-                    this.srSvc.loadTemplate(rt_row.rt_id)
-                    .then(idl => {
-                        // build a new clone
-                        const new_templ = new SRTemplate(idl);
-                        new_templ.name = new_name;
-                        new_templ.id = -1;
-                        new_templ.isNew = true;
-                        new_templ.create_time = null;
-                        new_templ.runNow = 'now';
-                        new_templ.runTime = null;
+            .then(str => {
+                this.cloneDialog.dialogBody = str;
+                this.cloneDialog.promptValue = rt_row.name + ' (Clone)';
+                this.cloneDialog.open()
+                    .subscribe(new_name => {
+                        if ( new_name ) {
+                            this.srSvc.loadTemplate(rt_row.rt_id)
+                                .then(idl => {
+                                    // build a new clone
+                                    const new_templ = new SRTemplate(idl);
+                                    new_templ.name = new_name;
+                                    new_templ.id = -1;
+                                    new_templ.isNew = true;
+                                    new_templ.create_time = null;
+                                    new_templ.runNow = 'now';
+                                    new_templ.runTime = null;
 
-                        // and save it
-                        this.srSvc.saveTemplate(new_templ, false)
-                        .then(rt => {
-                            this.router.navigate(['edit', rt.id()], { relativeTo: this.route });
-                        },
-                        err => {
-                            this.templateSaveErrorString.current()
-                            .then(errstr => {
-                                this.toast.danger(errstr + err);
-                                console.error('Error saving template: %o', err);
-                            });
-                        });
+                                    // and save it
+                                    this.srSvc.saveTemplate(new_templ, false)
+                                        .then(rt => {
+                                            this.router.navigate(['edit', rt.id()], { relativeTo: this.route });
+                                        },
+                                        err => {
+                                            this.templateSaveErrorString.current()
+                                                .then(errstr => {
+                                                    this.toast.danger(errstr + err);
+                                                    console.error('Error saving template: %o', err);
+                                                });
+                                        });
 
+                                });
+                        }
                     });
-                }
             });
-        });
     }
 
 }

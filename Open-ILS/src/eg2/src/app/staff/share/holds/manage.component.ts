@@ -1,8 +1,6 @@
-import {Component, OnInit, Input, Output, ViewChild, EventEmitter} from '@angular/core';
+import {Component, OnInit, Input, Output, EventEmitter} from '@angular/core';
 import {IdlObject, IdlService} from '@eg/core/idl.service';
-import {NetService} from '@eg/core/net.service';
 import {OrgService} from '@eg/core/org.service';
-import {AuthService} from '@eg/core/auth.service';
 import {PcrudService} from '@eg/core/pcrud.service';
 import {ComboboxEntry} from '@eg/share/combobox/combobox.component';
 import {HoldsService} from './holds.service';
@@ -10,8 +8,8 @@ import {HoldsService} from './holds.service';
 /** Edit holds in single or batch mode. */
 
 @Component({
-  selector: 'eg-hold-manage',
-  templateUrl: 'manage.component.html'
+    selector: 'eg-hold-manage',
+    templateUrl: 'manage.component.html'
 })
 export class HoldManageComponent implements OnInit {
 
@@ -45,12 +43,12 @@ export class HoldManageComponent implements OnInit {
             if (!this.smsEnabled) { return; }
 
             this.pcrud.search('csc', {active: 't'}, {order_by: {csc: 'name'}})
-            .subscribe(carrier => {
-                this.smsCarriers.push({
-                    id: carrier.id(),
-                    label: carrier.name()
+                .subscribe(carrier => {
+                    this.smsCarriers.push({
+                        id: carrier.id(),
+                        label: carrier.name()
+                    });
                 });
-            });
         });
 
         this.fetchHold();
@@ -75,7 +73,7 @@ export class HoldManageComponent implements OnInit {
         } else {
             // Form values are stored in the one hold we're editing.
             this.pcrud.retrieve('ahr', this.holdIds[0])
-            .subscribe(hold => this.hold = hold);
+                .subscribe(hold => this.hold = hold);
         }
     }
 
@@ -102,17 +100,17 @@ export class HoldManageComponent implements OnInit {
 
             const holds: IdlObject[] = [];
             this.pcrud.search('ahr', {id: this.holdIds})
-            .subscribe(
-                hold => {
+                .subscribe(
+                    hold => {
                     // Copy form fields to each hold to update.
-                    fields.forEach(field => hold[field](this.hold[field]()));
-                    holds.push(hold);
-                },
-                err => {},
-                ()  => {
-                    this.saveBatch(holds);
-                }
-            );
+                        fields.forEach(field => hold[field](this.hold[field]()));
+                        holds.push(hold);
+                    },
+                    (err: unknown) => {},
+                    ()  => {
+                        this.saveBatch(holds);
+                    }
+                );
         } else {
             this.saveBatch([this.hold]);
         }
@@ -121,25 +119,25 @@ export class HoldManageComponent implements OnInit {
     saveBatch(holds: IdlObject[]) {
         let successCount = 0;
         this.holds.updateHolds(holds)
-        .subscribe(
-            res  => {
-                if (Number(res) > 0) {
-                    successCount++;
-                    console.debug('hold update succeeded with ', res);
-                } else {
+            .subscribe(
+                res  => {
+                    if (Number(res) > 0) {
+                        successCount++;
+                        console.debug('hold update succeeded with ', res);
+                    } else {
                     // TODO: toast?
-                }
-            },
-            err => console.error('hold update failed with ', err),
-            ()  => {
-                if (successCount === holds.length) {
-                    this.onComplete.emit(true);
-                } else {
+                    }
+                },
+                (err: unknown) => console.error('hold update failed with ', err),
+                ()  => {
+                    if (successCount === holds.length) {
+                        this.onComplete.emit(true);
+                    } else {
                     // TODO: toast?
-                    console.error('Some holds failed to update');
+                        console.error('Some holds failed to update');
+                    }
                 }
-            }
-        );
+            );
     }
 
     exit() {

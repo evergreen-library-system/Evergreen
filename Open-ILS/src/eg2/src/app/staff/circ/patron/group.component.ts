@@ -1,27 +1,25 @@
-import {Component, Input, OnInit, AfterViewInit, ViewChild} from '@angular/core';
+import {Component, Input, OnInit, ViewChild} from '@angular/core';
 import {Location} from '@angular/common';
-import {Router, ActivatedRoute, ParamMap} from '@angular/router';
-import {of, from, empty, range} from 'rxjs';
-import {concatMap, map, tap, takeLast} from 'rxjs/operators';
-import {NgbNav, NgbNavChangeEvent} from '@ng-bootstrap/ng-bootstrap';
+import {Router} from '@angular/router';
+import {from} from 'rxjs';
+import {concatMap} from 'rxjs/operators';
 import {IdlObject} from '@eg/core/idl.service';
 import {EventService} from '@eg/core/event.service';
 import {OrgService} from '@eg/core/org.service';
 import {NetService} from '@eg/core/net.service';
-import {PcrudService, PcrudContext} from '@eg/core/pcrud.service';
+import {PcrudService} from '@eg/core/pcrud.service';
 import {AuthService} from '@eg/core/auth.service';
 import {PatronService} from '@eg/staff/share/patron/patron.service';
 import {PatronContextService} from './patron.service';
-import {GridDataSource, GridColumn, GridCellTextGenerator} from '@eg/share/grid/grid';
+import {GridDataSource, GridCellTextGenerator} from '@eg/share/grid/grid';
 import {GridComponent} from '@eg/share/grid/grid.component';
 import {Pager} from '@eg/share/util/pager';
 import {PromptDialogComponent} from '@eg/share/dialog/prompt.component';
 import {AlertDialogComponent} from '@eg/share/dialog/alert.component';
-import {ConfirmDialogComponent} from '@eg/share/dialog/confirm.component';
 
 @Component({
-  templateUrl: 'group.component.html',
-  selector: 'eg-patron-group'
+    templateUrl: 'group.component.html',
+    selector: 'eg-patron-group'
 })
 export class PatronGroupComponent implements OnInit {
 
@@ -64,7 +62,7 @@ export class PatronGroupComponent implements OnInit {
 
         } else {
             this.patronService.getById(this.patronId)
-            .then(patron => this.getGroupUsers(patron.usrgroup()));
+                .then(patron => this.getGroupUsers(patron.usrgroup()));
         }
     }
 
@@ -76,20 +74,20 @@ export class PatronGroupComponent implements OnInit {
             {usrgroup: usergroup, deleted: 'f'},
             {flesh: 1, flesh_fields: {au: ['card']}},
             {authoritative: true})
-        .pipe(concatMap(u => {
+            .pipe(concatMap(u => {
 
-            const promise = this.patronService.getVitalStats(u)
-            .then(stats => {
-                this.totalOwed += stats.fines.balance_owed;
-                this.totalOut += stats.checkouts.total_out;
-                this.totalOverdue += stats.checkouts.overdue;
-                u._stats = stats;
-                this.patrons.push(u);
-            });
+                const promise = this.patronService.getVitalStats(u)
+                    .then(stats => {
+                        this.totalOwed += stats.fines.balance_owed;
+                        this.totalOut += stats.checkouts.total_out;
+                        this.totalOverdue += stats.checkouts.overdue;
+                        u._stats = stats;
+                        this.patrons.push(u);
+                    });
 
-            return from(promise);
+                return from(promise);
 
-        })).toPromise().then(_ => this.groupGrid.reload());
+            })).toPromise().then(_ => this.groupGrid.reload());
     }
 
     // If rows are present, we are moving selected rows to a different group
@@ -102,44 +100,45 @@ export class PatronGroupComponent implements OnInit {
             if (!barcode) { return null; }
 
             this.patronService.getByBarcode(barcode)
-            .then(resp => {
-                if (resp === null) {
-                    this.userNotFoundDialog.open();
-                    return null;
-                }
+                .then(resp => {
+                    if (resp === null) {
+                        this.userNotFoundDialog.open();
+                        return null;
+                    }
 
-                let users: IdlObject[] = [resp];
-                let usergroup: number = this.usergroup;
-                if (rows) {
-                    users = rows;
-                    usergroup = resp.usrgroup();
-                }
+                    let users: IdlObject[] = [resp];
+                    let usergroup: number = this.usergroup;
+                    if (rows) {
+                        users = rows;
+                        usergroup = resp.usrgroup();
+                    }
 
-                let allOk = true;
-                from(users).pipe(concatMap(user => {
+                    let allOk = true;
+                    from(users).pipe(concatMap(user => {
 
-                    user.usrgroup(usergroup);
-                    user.ischanged(true);
+                        user.usrgroup(usergroup);
+                        user.ischanged(true);
 
-                    return this.net.request(
-                        'open-ils.actor',
-                        'open-ils.actor.patron.update',
-                        this.auth.token(), user
+                        return this.net.request(
+                            'open-ils.actor',
+                            'open-ils.actor.patron.update',
+                            this.auth.token(), user
+                        );
+                    // eslint-disable-next-line rxjs/no-nested-subscribe
+                    })).subscribe(
+                        resp2 => { if (this.evt.parse(resp2)) { allOk = false; } },
+                        (err: unknown) => console.error(err),
+                        () => { if (allOk) { this.refresh(); } }
                     );
-                })).subscribe(
-                    resp2 => { if (this.evt.parse(resp2)) { allOk = false; } },
-                    err => console.error(err),
-                    () => { if (allOk) { this.refresh(); } }
-                );
-            });
+                });
         });
     }
 
     refresh() {
         this.context.refreshPatron()
-        .then(_ => this.usergroup = this.context.summary.patron.usrgroup())
-        .then(_ => this.getGroupUsers(this.usergroup))
-        .then(_ => this.groupGrid.reload());
+            .then(_ => this.usergroup = this.context.summary.patron.usrgroup())
+            .then(_ => this.getGroupUsers(this.usergroup))
+            .then(_ => this.groupGrid.reload());
     }
 
     removeSelected(rows: IdlObject[]) {
@@ -151,7 +150,7 @@ export class PatronGroupComponent implements OnInit {
                 this.auth.token(), id, true
             );
         }))
-        .subscribe(null, null, () => this.refresh());
+            .subscribe(null, null, () => this.refresh());
     }
 
     onRowActivate(row: IdlObject) {

@@ -6,7 +6,7 @@ import {Subject} from 'rxjs';
 import {takeUntil} from 'rxjs/operators';
 
 @Component({
-  templateUrl: 'catalog.component.html'
+    templateUrl: 'catalog.component.html'
 })
 export class CatalogComponent implements OnInit, OnDestroy {
 

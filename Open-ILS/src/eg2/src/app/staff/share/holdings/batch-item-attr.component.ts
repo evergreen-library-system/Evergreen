@@ -1,6 +1,6 @@
-import {Component, OnInit, Input, Output, ViewChild, TemplateRef,
+/* eslint-disable no-magic-numbers */
+import {Component, OnInit, Input, Output, TemplateRef,
     EventEmitter} from '@angular/core';
-import {StringComponent} from '@eg/share/string/string.component';
 
 /**
  * Displays attribute values and associated copy counts for managing
@@ -15,12 +15,12 @@ export interface BatchChangeSelection {
 }
 
 @Component({
-  selector: 'eg-batch-item-attr',
-  templateUrl: 'batch-item-attr.component.html',
-  styles: [
-    `.header { background-color: #d9edf7; }`,
-    `.has-changes { background-color: #dff0d8; }`
-  ]
+    selector: 'eg-batch-item-attr',
+    templateUrl: 'batch-item-attr.component.html',
+    styles: [
+        '.header { background-color: #d9edf7; }',
+        '.has-changes { background-color: #dff0d8; }'
+    ]
 })
 
 export class BatchItemAttrComponent {

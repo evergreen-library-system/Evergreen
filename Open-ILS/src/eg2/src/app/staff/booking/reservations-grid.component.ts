@@ -45,7 +45,7 @@ export class ReservationsGridComponent implements OnChanges, OnInit {
     @ViewChild('grid', { static: true }) grid: GridComponent;
     @ViewChild('editDialog', { static: true }) editDialog: FmRecordEditorComponent;
     @ViewChild('confirmCancelReservationDialog', { static: true })
-        private cancelReservationDialog: CancelReservationDialogComponent;
+    private cancelReservationDialog: CancelReservationDialogComponent;
     @ViewChild('noTimezoneSetDialog', { static: true }) noTimezoneSetDialog: NoTimezoneSetComponent;
 
     editSelected: (rows: IdlObject[]) => void;
@@ -150,7 +150,8 @@ export class ReservationsGridComponent implements OnChanges, OnInit {
                 this.showEditDialog(thing).then(
                     () => editOneThing(idlThings.shift()));
             };
-           editOneThing(idlThings.shift()); };
+            editOneThing(idlThings.shift());
+        };
 
         this.cancelSelected = (reservations: IdlObject[]) => {
             this.cancelReservationDialog.open(reservations.map(reservation => reservation.id()));
@@ -183,7 +184,7 @@ export class ReservationsGridComponent implements OnChanges, OnInit {
         this.notOneCatalogedItemSelected = (rows: IdlObject[]) => {
             return this.actions.notOneUniqueSelected(
                 rows.filter(row => (row.current_resource() && 't' === row.target_resource_type().catalog_item()))
-                .map(row => row.current_resource().id())
+                    .map(row => row.current_resource().id())
             );
         };
         this.cancelNotAppropriate = (rows: IdlObject[]) =>
@@ -208,6 +209,7 @@ export class ReservationsGridComponent implements OnChanges, OnInit {
                 return true;
             } else {
                 rows.forEach(row => {
+                    // eslint-disable-next-line eqeqeq
                     if ((null == row.pickup_time()) || row.return_time()) { return true; }
                 });
             }
@@ -238,29 +240,30 @@ export class ReservationsGridComponent implements OnChanges, OnInit {
 
         this.pickupResource = (reservation: IdlObject) => {
             return this.net.request(
-               'open-ils.circ',
-               'open-ils.circ.reservation.pickup',
-               this.auth.token(),
-                   {'patron_barcode': reservation.usr().card().barcode(), 'reservation': reservation})
-               .pipe(tap(
-                   () => {
-                       this.pickedUpResource.emit(reservation);
-                       this.grid.reload(); },
-               ));
+                'open-ils.circ',
+                'open-ils.circ.reservation.pickup',
+                this.auth.token(),
+                {'patron_barcode': reservation.usr().card().barcode(), 'reservation': reservation})
+                .pipe(tap(
+                    () => {
+                        this.pickedUpResource.emit(reservation);
+                        this.grid.reload();
+                    },
+                ));
         };
 
         this.returnResource = (reservation: IdlObject) => {
             return this.net.request(
-               'open-ils.circ',
-               'open-ils.circ.reservation.return',
-               this.auth.token(),
-               {'patron_barcode': this.patronBarcode, 'reservation': reservation})
-               .pipe(tap(
-                   () => {
-                       this.returnedResource.emit(reservation);
-                       this.grid.reload();
-                   },
-               ));
+                'open-ils.circ',
+                'open-ils.circ.reservation.return',
+                this.auth.token(),
+                {'patron_barcode': this.patronBarcode, 'reservation': reservation})
+                .pipe(tap(
+                    () => {
+                        this.returnedResource.emit(reservation);
+                        this.grid.reload();
+                    },
+                ));
         };
 
         this.listReadOnlyFields = () => {
@@ -304,7 +307,7 @@ export class ReservationsGridComponent implements OnChanges, OnInit {
                 return of(row);
             })
         );
-    }
+    };
 
     showEditDialog(idlThing: IdlObject) {
         this.editDialog.recordId = idlThing.id();
@@ -316,7 +319,7 @@ export class ReservationsGridComponent implements OnChanges, OnInit {
                     this.grid.reload();
                     resolve(ok);
                 },
-                rejection => {}
+                (rejection: unknown) => {}
             );
         });
     }

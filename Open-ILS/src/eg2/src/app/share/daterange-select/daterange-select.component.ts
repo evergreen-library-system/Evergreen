@@ -34,7 +34,7 @@ export class DateRangeSelectComponent implements ControlValueAccessor, OnInit {
     // Function to disable certain dates
     @Input() markDisabled:
         (date: NgbDate, current: { year: number; month: number; }) => boolean =
-        (date: NgbDate, current: { year: number; month: number; }) => false
+            (date: NgbDate, current: { year: number; month: number; }) => false;
 
     onChange = (_: any) => {};
     onTouched = () => {};

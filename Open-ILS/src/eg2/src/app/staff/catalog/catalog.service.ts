@@ -90,10 +90,10 @@ export class StaffCatalogService {
 
         if (this.holdForBarcode) {
             this.patron.getByBarcode(this.holdForBarcode)
-            .then(user => {
-                this.holdForUser = user;
-                this.holdForChange.emit();
-            });
+                .then(user => {
+                    this.holdForUser = user;
+                    this.holdForChange.emit();
+                });
         } else {
             // In case the session item was cleared from another component.
             this.clearHoldPatron();
@@ -104,14 +104,14 @@ export class StaffCatalogService {
         this.applySearchDefaults();
     }
 
-    clearHoldPatron(broadcast: boolean = true) {
+    clearHoldPatron(broadcast = true) {
         const removedTarget = this.holdForBarcode;
 
         this.holdForUser = null;
         this.holdForBarcode = null;
         this.store.removeLoginSessionItem(HOLD_FOR_PATRON_KEY);
         this.holdForChange.emit();
-        if (!broadcast) return;
+        if (!broadcast) {return;}
 
         // clear hold patron on other tabs
         this.broadcaster.broadcast(
@@ -192,7 +192,7 @@ export class StaffCatalogService {
         params.ridx = '' + this.routeIndex++;
 
         this.router.navigate(
-          ['/staff/catalog/search'], {queryParams: params});
+            ['/staff/catalog/search'], {queryParams: params});
     }
 
     /**

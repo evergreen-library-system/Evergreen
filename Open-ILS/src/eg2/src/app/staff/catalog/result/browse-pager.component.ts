@@ -14,8 +14,8 @@ interface BrowsePage {
 }
 
 @Component({
-  selector: 'eg-catalog-browse-pager',
-  templateUrl: 'browse-pager.component.html'
+    selector: 'eg-catalog-browse-pager',
+    templateUrl: 'browse-pager.component.html'
 })
 export class BrowsePagerComponent implements OnInit {
 
@@ -89,57 +89,57 @@ export class BrowsePagerComponent implements OnInit {
         this.browseLoading = true;
 
         return this.cat.browse(ctx)
-        .pipe(tap(result => results.push(result)))
-        .toPromise().then(_ => {
-            if (results.length === 0) { return; }
+            .pipe(tap(result => results.push(result)))
+            .toPromise().then(_ => {
+                if (results.length === 0) { return; }
 
-            // At the end of the data set, final pivots are not present
-            let leftPivot = null;
-            let rightPivot = null;
-            if (results[0].pivot_point) {
-                leftPivot = results.shift().pivot_point;
-            }
-            if (results[results.length - 1].pivot_point) {
-               rightPivot = results.pop().pivot_point;
-            }
+                // At the end of the data set, final pivots are not present
+                let leftPivot = null;
+                let rightPivot = null;
+                if (results[0].pivot_point) {
+                    leftPivot = results.shift().pivot_point;
+                }
+                if (results[results.length - 1].pivot_point) {
+                    rightPivot = results.pop().pivot_point;
+                }
 
-            // We only care about entries with bib record sources
-            let keepEntries = results.filter(e => Boolean(e.sources));
+                // We only care about entries with bib record sources
+                let keepEntries = results.filter(e => Boolean(e.sources));
 
-            if (leftPivot === null || rightPivot === null) {
+                if (leftPivot === null || rightPivot === null) {
                 // When you reach the edge of the data set, you can get
                 // the same browse entries from different API calls.
                 // From what I can tell, the last page will always have
                 // a half page of entries, even if you've already seen some
                 // of them in the previous page.  Trim the dupes since they
                 // affect the logic.
-                const keep = [];
-                keepEntries.forEach(e => {
-                    if (!this.getEntryPage(e.browse_entry)) {
-                        keep.push(e);
-                    }
-                });
-                keepEntries = keep;
-            }
+                    const keep = [];
+                    keepEntries.forEach(e => {
+                        if (!this.getEntryPage(e.browse_entry)) {
+                            keep.push(e);
+                        }
+                    });
+                    keepEntries = keep;
+                }
 
-            const page: BrowsePage = {
-                leftPivot: leftPivot,
-                rightPivot: rightPivot,
-                entries: keepEntries
-            };
+                const page: BrowsePage = {
+                    leftPivot: leftPivot,
+                    rightPivot: rightPivot,
+                    entries: keepEntries
+                };
 
-            if (prev) {
-                this.staffCat.browsePagerData.unshift(page);
-            } else {
-                this.staffCat.browsePagerData.push(page);
-            }
-            this.browseLoading = false;
-        });
+                if (prev) {
+                    this.staffCat.browsePagerData.unshift(page);
+                } else {
+                    this.staffCat.browsePagerData.push(page);
+                }
+                this.browseLoading = false;
+            });
     }
 
     // Collect enough browse data to display previous, current, and
     // next heading.  This can mean fetching an additional page of data.
-    setPrevNext(take2: boolean = false): Promise<any> {
+    setPrevNext(take2 = false): Promise<any> {
 
         let previous: any;
         const mbeId = this.pageEntryId();

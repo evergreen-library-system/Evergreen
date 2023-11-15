@@ -1,3 +1,4 @@
+/* eslint-disable no-empty, no-magic-numbers */
 import {Injectable, EventEmitter} from '@angular/core';
 import {Observable} from 'rxjs';
 import {map, tap, finalize} from 'rxjs/operators';
@@ -6,10 +7,9 @@ import {UnapiService} from '@eg/share/catalog/unapi.service';
 import {IdlService, IdlObject} from '@eg/core/idl.service';
 import {NetService} from '@eg/core/net.service';
 import {PcrudService} from '@eg/core/pcrud.service';
-import {CatalogSearchContext, CatalogSearchState} from './search-context';
+import {CatalogSearchContext, CatalogSearchState, CATALOG_CCVM_FILTERS} from './search-context';
 import {BibRecordService, BibRecordSummary} from './bib-record.service';
 import {BasketService} from './basket.service';
-import {CATALOG_CCVM_FILTERS} from './search-context';
 
 @Injectable()
 export class CatalogService {
@@ -122,14 +122,14 @@ export class CatalogService {
         const queryStruct = ctx.compileMarcSearchArgs();
 
         return this.net.request('open-ils.search', method, queryStruct)
-        .toPromise().then(result => {
+            .toPromise().then(result => {
             // Match the query search return format
-            result.ids = result.ids.map(id => [id]);
+                result.ids = result.ids.map(id => [id]);
 
-            this.applyResultData(ctx, result);
-            ctx.searchState = CatalogSearchState.COMPLETE;
-            this.onSearchComplete.emit(ctx);
-        });
+                this.applyResultData(ctx, result);
+                ctx.searchState = CatalogSearchState.COMPLETE;
+                this.onSearchComplete.emit(ctx);
+            });
     }
 
     termSearch(ctx: CatalogSearchContext): Promise<void> {
@@ -165,12 +165,12 @@ export class CatalogService {
                 offset : ctx.pager.offset
             }, fullQuery, true
         ).toPromise()
-        .then(result => this.applyResultData(ctx, result))
-        .then(_ => this.fetchFieldHighlights(ctx))
-        .then(_ => {
-            ctx.searchState = CatalogSearchState.COMPLETE;
-            this.onSearchComplete.emit(ctx);
-        });
+            .then(result => this.applyResultData(ctx, result))
+            .then(_ => this.fetchFieldHighlights(ctx))
+            .then(_ => {
+                ctx.searchState = CatalogSearchState.COMPLETE;
+                this.onSearchComplete.emit(ctx);
+            });
     }
 
     // When showing titles linked to a browse entry, fetch
@@ -183,7 +183,7 @@ export class CatalogService {
         const cmfId = parts[1];
 
         this.pcrud.retrieve('mbe', mbeId)
-        .subscribe(mbe => ctx.termSearch.browseEntry = mbe);
+            .subscribe(mbe => ctx.termSearch.browseEntry = mbe);
     }
 
     applyResultData(ctx: CatalogSearchContext, result: any): void {

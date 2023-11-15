@@ -4,15 +4,15 @@ import {ShelvingLocationGroupsComponent} from './shelving_location_groups.compon
 import {ShelvingLocationGroupsRoutingModule} from './shelving_location_groups_routing.module';
 
 @NgModule({
-  declarations: [
-    ShelvingLocationGroupsComponent,
-  ],
-  imports: [
-    AdminCommonModule,
-    ShelvingLocationGroupsRoutingModule,
-  ],
-  exports: [],
-  providers: []
+    declarations: [
+        ShelvingLocationGroupsComponent,
+    ],
+    imports: [
+        AdminCommonModule,
+        ShelvingLocationGroupsRoutingModule,
+    ],
+    exports: [],
+    providers: []
 })
 
 export class ShelvingLocationGroupsModule {}

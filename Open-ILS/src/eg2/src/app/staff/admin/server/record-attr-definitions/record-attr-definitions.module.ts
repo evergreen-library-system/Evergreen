@@ -6,19 +6,19 @@ import {RecordAttrDefinitionsRoutingModule} from './record-attr-definitions-rout
 import {AdminPageModule} from '@eg/staff/share/admin-page/admin-page.module';
 
 @NgModule({
-  declarations: [
-    RecordAttrDefinitionsComponent
-  ],
-  imports: [
-    StaffCommonModule,
-    FmRecordEditorModule,
-    AdminPageModule,
-    RecordAttrDefinitionsRoutingModule
-  ],
-  exports: [
-  ],
-  providers: [
-  ]
+    declarations: [
+        RecordAttrDefinitionsComponent
+    ],
+    imports: [
+        StaffCommonModule,
+        FmRecordEditorModule,
+        AdminPageModule,
+        RecordAttrDefinitionsRoutingModule
+    ],
+    exports: [
+    ],
+    providers: [
+    ]
 })
 
 export class RecordAttrDefinitionsModule {

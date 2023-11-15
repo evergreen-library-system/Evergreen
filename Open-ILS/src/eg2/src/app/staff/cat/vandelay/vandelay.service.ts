@@ -21,8 +21,8 @@ export class VandelayImportSelection {
     overlayMap: {[qrId: number]: /* breId */ number};
 
     constructor() {
-       this.recordIds = [];
-       this.overlayMap = {};
+        this.recordIds = [];
+        this.overlayMap = {};
     }
 }
 
@@ -74,10 +74,10 @@ export class VandelayService {
         orderBy[cls] = 'id';
         return this.pcrud.retrieveAll(cls,
             {order_by: orderBy}, {atomic: true}).toPromise()
-        .then(list => {
-            this.attrDefs[dtype] = list;
-            return list;
-        });
+            .then(list => {
+                this.attrDefs[dtype] = list;
+                return list;
+            });
     }
 
     getMergeProfiles(): Promise<IdlObject[]> {
@@ -88,10 +88,10 @@ export class VandelayService {
         const owners = this.org.ancestors(this.auth.user().ws_ou(), true);
         return this.pcrud.search('vmp',
             {owner: owners}, {order_by: {vmp: ['name']}}, {atomic: true})
-        .toPromise().then(profiles => {
-            this.mergeProfiles = profiles;
-            return profiles;
-        });
+            .toPromise().then(profiles => {
+                this.mergeProfiles = profiles;
+                return profiles;
+            });
     }
 
     // Returns a promise resolved with the list of queues.
@@ -118,8 +118,8 @@ export class VandelayService {
         }
 
         return this.pcrud.retrieveAll('cbs',
-          {order_by: {cbs: 'id'}},
-          {atomic: true}
+            {order_by: {cbs: 'id'}},
+            {atomic: true}
         ).toPromise().then(sources => {
             this.bibSources = sources;
             return sources;
@@ -133,10 +133,10 @@ export class VandelayService {
 
         const owners = this.org.ancestors(this.auth.user().ws_ou(), true);
         return this.pcrud.search('viiad', {owner: owners}, {}, {atomic: true})
-        .toPromise().then(defs => {
-            this.importItemAttrDefs = defs;
-            return defs;
-        });
+            .toPromise().then(defs => {
+                this.importItemAttrDefs = defs;
+                return defs;
+            });
     }
 
     // todo: differentiate between biblio and authority a la queue api
@@ -154,10 +154,10 @@ export class VandelayService {
 
         return this.pcrud.search('vms',
             {owner: owners, mtype: mstype}, {}, {atomic: true})
-        .toPromise().then(sets => {
-            this.matchSets[mtype] = sets;
-            return sets;
-        });
+            .toPromise().then(sets => {
+                this.matchSets[mtype] = sets;
+                return sets;
+            });
     }
 
     getBibBuckets(): Promise<IdlObject[]> {
@@ -180,10 +180,10 @@ export class VandelayService {
             return Promise.resolve(this.copyStatuses);
         }
         return this.pcrud.retrieveAll('ccs', {}, {atomic: true})
-        .toPromise().then(stats => {
-            this.copyStatuses = stats;
-            return stats;
-        });
+            .toPromise().then(stats => {
+                this.copyStatuses = stats;
+                return stats;
+            });
     }
 
     getBibTrashGroups(): Promise<any> {
@@ -239,7 +239,7 @@ export class VandelayService {
     }
 
     getQueuedRecords(queueId: number, queueType: string,
-      options?: any, limitToMatches?: boolean): Observable<any> {
+        options?: any, limitToMatches?: boolean): Observable<any> {
 
         const qtype = queueType.match(/bib/) ? 'bib' : 'auth';
 
@@ -279,7 +279,7 @@ export class VandelayService {
                     saveName
                 );
             },
-            err  => {
+            (err: unknown)  => {
                 console.error(err);
             }
         );
@@ -303,6 +303,7 @@ export class VandelayService {
                 if (tracker && tracker.state() === 'active') {
                     observer.next(tracker);
                     setTimeout(() =>
+                        // eslint-disable-next-line no-magic-numbers
                         this.getNextSessionTracker(id, observer), 2000);
                 } else {
                     console.debug(

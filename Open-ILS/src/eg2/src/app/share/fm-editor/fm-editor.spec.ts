@@ -1,12 +1,12 @@
-import { IdlService } from "@eg/core/idl.service";
-import { NgbModal } from "@ng-bootstrap/ng-bootstrap";
-import { ToastService } from "@eg/share/toast/toast.service";
-import { FmRecordEditorComponent } from "./fm-editor.component"
-import { FormatService } from "@eg/core/format.service";
-import { OrgService } from "@eg/core/org.service";
-import { PcrudService } from "@eg/core/pcrud.service";
-import { waitForAsync } from "@angular/core/testing";
-import { of } from "rxjs";
+import { IdlService } from '@eg/core/idl.service';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { ToastService } from '@eg/share/toast/toast.service';
+import { FmRecordEditorComponent } from './fm-editor.component';
+import { FormatService } from '@eg/core/format.service';
+import { OrgService } from '@eg/core/org.service';
+import { PcrudService } from '@eg/core/pcrud.service';
+import { waitForAsync } from '@angular/core/testing';
+import { of } from 'rxjs';
 
 describe('FmRecordEditorComponent', () => {
     let component: FmRecordEditorComponent;
@@ -47,7 +47,7 @@ describe('FmRecordEditorComponent', () => {
             mockModal, mockIdl, mockToast, mockFormat, mockOrg, mockPcrud
         );
 
-    })
+    });
     describe('hidden fields', () => {
         it('fetches only one row of linked values', waitForAsync(() => {
             component.idlClass = 'mock';
@@ -60,7 +60,7 @@ describe('FmRecordEditorComponent', () => {
             setTimeout(() => {
                 expect(mockPcrud.retrieve).toHaveBeenCalledWith('mock', 123);
                 expect(mockPcrud.retrieve).toHaveBeenCalledWith('linked', 456);
-            }, 100)
+            }, 100);
         }));
     });
 });

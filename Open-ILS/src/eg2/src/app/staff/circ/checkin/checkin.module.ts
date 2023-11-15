@@ -13,24 +13,24 @@ import {CheckinComponent} from './checkin.component';
 import {WorkLogModule} from '@eg/staff/share/worklog/worklog.module';
 
 @NgModule({
-  declarations: [
-    CheckinComponent
-  ],
-  imports: [
-    StaffCommonModule,
-    CheckinRoutingModule,
-    FmRecordEditorModule,
-    BillingModule,
-    CircModule,
-    HoldsModule,
-    HoldingsModule,
-    BookingModule,
-    PatronModule,
-    BarcodesModule,
-    WorkLogModule
-  ],
-  providers: [
-  ]
+    declarations: [
+        CheckinComponent
+    ],
+    imports: [
+        StaffCommonModule,
+        CheckinRoutingModule,
+        FmRecordEditorModule,
+        BillingModule,
+        CircModule,
+        HoldsModule,
+        HoldingsModule,
+        BookingModule,
+        PatronModule,
+        BarcodesModule,
+        WorkLogModule
+    ],
+    providers: [
+    ]
 })
 
 export class CheckinModule {}

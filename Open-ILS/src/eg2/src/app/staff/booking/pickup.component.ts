@@ -13,7 +13,7 @@ import {PatronBarcodeValidator} from '@eg/share/validators/patron_barcode_valida
 
 
 @Component({
-  templateUrl: './pickup.component.html'
+    templateUrl: './pickup.component.html'
 })
 
 export class PickupComponent implements OnInit, OnDestroy {
@@ -83,10 +83,11 @@ export class PickupComponent implements OnInit, OnDestroy {
                     }
                 })
             )
-            .subscribe());
+                .subscribe());
 
 
         this.store.getItem('eg.booking.pickup.ready.only_show_captured').then(onlyCaptured => {
+            // eslint-disable-next-line eqeqeq
             if (onlyCaptured != null) { this.onlyShowCaptured = onlyCaptured; }
         });
         this.handleShowCapturedChange = () => {

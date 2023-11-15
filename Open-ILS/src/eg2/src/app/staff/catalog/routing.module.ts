@@ -11,42 +11,42 @@ import {CanDeactivateGuard} from '@eg/share/util/can-deactivate.guard';
 import {PreferencesComponent} from './prefs.component';
 
 const routes: Routes = [{
-  path: '',
-  component: CatalogComponent,
-  resolve: {catResolver : CatalogResolver},
-  children : [{
-    path: 'search',
-    component: ResultsComponent
-  }, {
-    path: 'record/:id',
-    component: RecordComponent
-  }, {
-    path: 'hold/:type',
-    component: HoldComponent
-  }, {
-    path: 'record/:id/:tab',
-    component: RecordComponent,
-    canDeactivate: [CanDeactivateGuard]
-  }]}, {
+    path: '',
+    component: CatalogComponent,
+    resolve: {catResolver : CatalogResolver},
+    children : [{
+        path: 'search',
+        component: ResultsComponent
+    }, {
+        path: 'record/:id',
+        component: RecordComponent
+    }, {
+        path: 'hold/:type',
+        component: HoldComponent
+    }, {
+        path: 'record/:id/:tab',
+        component: RecordComponent,
+        canDeactivate: [CanDeactivateGuard]
+    }]}, {
     // Browse is a top-level UI
     path: 'browse',
     component: BrowseComponent,
     resolve: {catResolver : CatalogResolver}
-  }, {
+}, {
     path: 'cnbrowse',
     component: CnBrowseComponent,
     resolve: {catResolver : CatalogResolver}
-  }, {
+}, {
     path: 'prefs',
     component: PreferencesComponent,
     resolve: {catResolver : CatalogResolver}
-  }
+}
 ];
 
 @NgModule({
-  imports: [RouterModule.forChild(routes)],
-  exports: [RouterModule],
-  providers: [CatalogResolver]
+    imports: [RouterModule.forChild(routes)],
+    exports: [RouterModule],
+    providers: [CatalogResolver]
 })
 
 export class CatalogRoutingModule {}

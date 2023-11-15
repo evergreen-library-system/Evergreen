@@ -15,28 +15,28 @@ import {CourseTermMapGridComponent} from './course-term-map-grid.component';
 import {TermListComponent} from './course-term-grid.component';
 
 @NgModule({
-  declarations: [
-    CourseListComponent,
-    CoursePageComponent,
-    CourseAssociateMaterialComponent,
-    CourseAssociateUsersComponent,
-    CourseTermMapComponent,
-    CourseTermMapGridComponent,
-    TermListComponent
-  ],
-  imports: [
-    StaffCommonModule,
-    AdminCommonModule,
-    CourseReservesRoutingModule,
-    ItemLocationSelectModule,
-    MarcSimplifiedEditorModule,
-    PatronModule,
-    TreeModule
-  ],
-  exports: [
-  ],
-  providers: [
-  ]
+    declarations: [
+        CourseListComponent,
+        CoursePageComponent,
+        CourseAssociateMaterialComponent,
+        CourseAssociateUsersComponent,
+        CourseTermMapComponent,
+        CourseTermMapGridComponent,
+        TermListComponent
+    ],
+    imports: [
+        StaffCommonModule,
+        AdminCommonModule,
+        CourseReservesRoutingModule,
+        ItemLocationSelectModule,
+        MarcSimplifiedEditorModule,
+        PatronModule,
+        TreeModule
+    ],
+    exports: [
+    ],
+    providers: [
+    ]
 })
 
 export class CourseReservesModule {

@@ -5,8 +5,8 @@ import {IdlService, IdlObject} from '@eg/core/idl.service';
 import {ComboboxEntry} from '@eg/share/combobox/combobox.component';
 
 @Component({
-  selector: 'eg-acq-claim-policy-dialog',
-  templateUrl: './claim-policy-dialog.component.html'
+    selector: 'eg-acq-claim-policy-dialog',
+    templateUrl: './claim-policy-dialog.component.html'
 })
 
 export class ClaimPolicyDialogComponent extends DialogComponent {

@@ -45,7 +45,7 @@ export class FundsManagerComponent extends AdminPageComponent implements OnInit,
         pcrud: PcrudService,
         perm: PermService,
         private perm2: PermService, // need copy because perm is private to base
-                                    // component
+        // component
         toast: ToastService,
         private net: NetService
     ) {
@@ -133,7 +133,7 @@ export class FundsManagerComponent extends AdminPageComponent implements OnInit,
         if (this.startId) {
             this.pcrud.retrieve('acqf', this.startId).subscribe(
                 acqf => this.openFundDetailsDialog([acqf]),
-                err => {},
+                (err: unknown) => {},
                 () => this.startId = null
             );
         }
@@ -156,7 +156,7 @@ export class FundsManagerComponent extends AdminPageComponent implements OnInit,
             this.fundDetailsDialog.fundId = rows[0].id();
             this.fundDetailsDialog.open({size: 'xl'}).subscribe(
                 result => this.grid.reload(),
-                error => this.grid.reload(),
+                (error: unknown) => this.grid.reload(),
                 () => this.grid.reload()
             );
         }
@@ -170,7 +170,7 @@ export class FundsManagerComponent extends AdminPageComponent implements OnInit,
         this.fundRolloverDialog.contextOrgId = this.searchOrgs.primaryOrgId;
         this.fundRolloverDialog.open({size: 'lg'}).subscribe(
             ok => {},
-            err => {},
+            (err: unknown) => {},
             () => this.grid.reload()
         );
     }

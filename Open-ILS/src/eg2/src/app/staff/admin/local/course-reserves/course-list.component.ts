@@ -15,10 +15,10 @@ import {OrgService} from '@eg/core/org.service';
 import {OrgFamily} from '@eg/share/org-family-select/org-family-select.component';
 
 import {CourseAssociateMaterialComponent
-    } from './course-associate-material.component';
+} from './course-associate-material.component';
 
 import {CourseAssociateUsersComponent
-    } from './course-associate-users.component';
+} from './course-associate-users.component';
 
 @Component({
     templateUrl: './course-list.component.html',
@@ -42,9 +42,9 @@ export class CourseListComponent implements OnInit, AfterViewInit {
     @ViewChild('duplicateFailedString', { static: true }) duplicateFailedString: StringComponent;
     @ViewChild('duplicateSuccessString', { static: true }) duplicateSuccessString: StringComponent;
     @ViewChild('courseMaterialDialog', {static: true})
-        private courseMaterialDialog: CourseAssociateMaterialComponent;
+    private courseMaterialDialog: CourseAssociateMaterialComponent;
     @ViewChild('courseUserDialog', {static: true})
-        private courseUserDialog: CourseAssociateUsersComponent;
+    private courseUserDialog: CourseAssociateUsersComponent;
 
     @Input() sortField: string;
     @Input() idlClass = 'acmc';
@@ -120,11 +120,12 @@ export class CourseListComponent implements OnInit, AfterViewInit {
     navigateToCoursePage(id_arr: IdlObject[]) {
         if (typeof id_arr === 'number') { id_arr = [id_arr]; }
         const urls = [];
-        id_arr.forEach(id => {console.log(this.router.url);
+        id_arr.forEach(id => {
+            console.log(this.router.url);
             urls.push([this.locale.currentLocaleCode() + this.router.url + '/' +  id]);
         });
         if (id_arr.length === 1) {
-        this.router.navigate([this.router.url + '/' + id_arr[0]]);
+            this.router.navigate([this.router.url + '/' + id_arr[0]]);
         } else {
             urls.forEach(url => {
                 window.open(url);
@@ -144,7 +145,8 @@ export class CourseListComponent implements OnInit, AfterViewInit {
                     .then(str => this.toast.success(str));
                 this.grid.reload();
             },
-            rejection => {
+            // eslint-disable-next-line rxjs/no-implicit-any-catch
+            (rejection: any) => {
                 if (!rejection.dismissed) {
                     this.createErrString.current()
                         .then(str => this.toast.danger(str));
@@ -176,7 +178,7 @@ export class CourseListComponent implements OnInit, AfterViewInit {
                     console.debug('archived: ' + val);
                     this.archiveSuccessString.current()
                         .then(str => this.toast.success(str));
-                }, err => {
+                }, (err: unknown) => {
                     this.archiveFailedString.current()
                         .then(str => this.toast.danger(str));
                 }, () => {
@@ -185,10 +187,12 @@ export class CourseListComponent implements OnInit, AfterViewInit {
             );
         });
     }
-    
+
     courseArchiveableOrNot(course: IdlObject[], archiveBool) {
         course.forEach(courseToMod => {
-            if (archiveBool == false) return courseToMod.is_archived() == 't';
+            // eslint-disable-next-line eqeqeq
+            if (archiveBool == false) {return courseToMod.is_archived() == 't';}
+            // eslint-disable-next-line eqeqeq
             return courseToMod.is_archived() == 'f';
         });
     }
@@ -205,7 +209,7 @@ export class CourseListComponent implements OnInit, AfterViewInit {
                 console.debug('archived: ' + val);
                 this.unarchiveSuccessString.current()
                     .then(str => this.toast.success(str));
-            }, err => {
+            }, (err: unknown) => {
                 this.unarchiveFailedString.current()
                     .then(str => this.toast.danger(str));
             }, () => {
@@ -245,7 +249,7 @@ export class CourseListComponent implements OnInit, AfterViewInit {
                     this.deleteSuccessString.current()
                         .then(str => this.toast.success(str));
                 },
-                err => {
+                (err: unknown) => {
                     this.deleteFailedString.current()
                         .then(str => this.toast.danger(str));
                 },

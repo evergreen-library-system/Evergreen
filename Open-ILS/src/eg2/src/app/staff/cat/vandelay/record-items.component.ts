@@ -8,8 +8,8 @@ import {GridDataSource} from '@eg/share/grid/grid';
 import {VandelayService} from './vandelay.service';
 
 @Component({
-  selector: 'eg-queued-record-items',
-  templateUrl: 'record-items.component.html'
+    selector: 'eg-queued-record-items',
+    templateUrl: 'record-items.component.html'
 })
 export class RecordItemsComponent {
 

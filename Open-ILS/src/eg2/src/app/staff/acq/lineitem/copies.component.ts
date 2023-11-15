@@ -1,5 +1,5 @@
 import {Component, OnInit, AfterViewInit, Input, Output, EventEmitter,
-  ViewChild} from '@angular/core';
+    ViewChild} from '@angular/core';
 import {Router, ActivatedRoute, ParamMap} from '@angular/router';
 import {Observable, of} from 'rxjs';
 import {tap, map} from 'rxjs/operators';
@@ -28,8 +28,8 @@ interface FormulaApplication {
 }
 
 @Component({
-  selector: 'eg-lineitem-copies',
-  templateUrl: 'copies.component.html'
+    selector: 'eg-lineitem-copies',
+    templateUrl: 'copies.component.html'
 })
 export class LineitemCopiesComponent implements OnInit, AfterViewInit {
 
@@ -115,12 +115,12 @@ export class LineitemCopiesComponent implements OnInit, AfterViewInit {
             return Promise.resolve(true);
         } else {
             return this.liService.getFleshedLineitems([this.lineitemId], params)
-            .pipe(tap(liStruct => this.lineitem = liStruct.lineitem)).toPromise()
-            .then(_ => {
-                this.liLocked =
+                .pipe(tap(liStruct => this.lineitem = liStruct.lineitem)).toPromise()
+                .then(_ => {
+                    this.liLocked =
                 this.lineitem.state().match(/on-order|received|cancelled/);
-            })
-            .then(_ => this.applyCount());
+                })
+                .then(_ => this.applyCount());
         }
     }
 
@@ -160,36 +160,36 @@ export class LineitemCopiesComponent implements OnInit, AfterViewInit {
 
         this.pcrud.retrieve('acqdf', id,
             {flesh: 1, flesh_fields: {acqdf: ['entries']}})
-        .subscribe(formula => {
+            .subscribe(formula => {
 
-            formula.entries(
-                formula.entries().sort((e1, e2) =>
-                    e1.position() < e2.position() ? -1 : 1));
+                formula.entries(
+                    formula.entries().sort((e1, e2) =>
+                        e1.position() < e2.position() ? -1 : 1));
 
-            let rowIdx = this.formulaOffset - 1;
+                let rowIdx = this.formulaOffset - 1;
 
-            while (++rowIdx < copies.length) {
-                this.formulateOneCopy(formula, rowIdx, true);
-            }
-
-            // No new values will be applied
-            if (!Object.keys(this.formulaValues)) { return; }
-
-            this.fetchFormulaValues().then(_ => {
-
-                let applied = 0;
-                let rowIdx2 = this.formulaOffset - 1;
-
-                while (++rowIdx2 < copies.length) {
-                    applied += this.formulateOneCopy(formula, rowIdx2);
+                while (++rowIdx < copies.length) {
+                    this.formulateOneCopy(formula, rowIdx, true);
                 }
 
-                if (applied) {
-                    this.formulaOffset += applied;
-                    this.saveAppliedFormula(formula);
-                }
+                // No new values will be applied
+                if (!Object.keys(this.formulaValues)) { return; }
+
+                this.fetchFormulaValues().then(_ => {
+
+                    let applied = 0;
+                    let rowIdx2 = this.formulaOffset - 1;
+
+                    while (++rowIdx2 < copies.length) {
+                        applied += this.formulateOneCopy(formula, rowIdx2);
+                    }
+
+                    if (applied) {
+                        this.formulaOffset += applied;
+                        this.saveAppliedFormula(formula);
+                    }
+                });
             });
-        });
     }
 
     saveAppliedFormula(formula: IdlObject) {
@@ -286,7 +286,7 @@ export class LineitemCopiesComponent implements OnInit, AfterViewInit {
                 this.progressMax = struct.total;
                 this.progressValue++;
             },
-            err => {},
+            (err: unknown) => {},
             () => this.load({toCache: true}).then(_ => {
                 this.liService.activateStateChange.emit(this.lineitem.id());
                 this.saving = false;
@@ -299,7 +299,7 @@ export class LineitemCopiesComponent implements OnInit, AfterViewInit {
         this.pcrud.remove(formula).subscribe(_ => {
             this.lineitem.distribution_formulas(
                 this.lineitem.distribution_formulas()
-                .filter(f => f.id() !== formula.id())
+                    .filter(f => f.id() !== formula.id())
             );
         });
     }

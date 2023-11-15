@@ -17,8 +17,8 @@ import {ConfirmDialogComponent} from '@eg/share/dialog/confirm.component';
  */
 
 @Component({
-  selector: 'eg-delete-holding-dialog',
-  templateUrl: 'delete-volcopy-dialog.component.html'
+    selector: 'eg-delete-holding-dialog',
+    templateUrl: 'delete-volcopy-dialog.component.html'
 })
 
 export class DeleteHoldingDialogComponent
@@ -42,13 +42,13 @@ export class DeleteHoldingDialogComponent
     deleteEventDesc: string;
 
     @ViewChild('successMsg', { static: true })
-        private successMsg: StringComponent;
+    private successMsg: StringComponent;
 
     @ViewChild('errorMsg', { static: true })
-        private errorMsg: StringComponent;
+    private errorMsg: StringComponent;
 
     @ViewChild('confirmOverride', {static: false})
-        private confirmOverride: ConfirmDialogComponent;
+    private confirmOverride: ConfirmDialogComponent;
 
     constructor(
         private modal: NgbModal, // required for passing to parent
