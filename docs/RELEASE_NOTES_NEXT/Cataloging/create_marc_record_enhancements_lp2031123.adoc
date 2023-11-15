@@ -1,1 +1,0 @@
-* Hide the help button when the flat text editor is enabled since it doesn't do anything in that mode. (https://bugs.launchpad.net/evergreen/+bug/2031123[Bug 2031123])

@@ -1,1 +1,0 @@
-* Focus on the template selector on load, and set unique page title for interface. (https://bugs.launchpad.net/evergreen/+bug/2031043[Bug 2031043])

@@ -1,9 +1,0 @@
-* Fix an issue where auto-renewal events can overwhelm open-ils.trigger drones (LP#2030915)
-* Adds a new database view for open non-cataloged circulations: action.open_non_cataloged_circulation (LP#2019974)
-* Improve the performance of the marc_export support script, particularly when items are included (LP#2041364)
-* Add a --batch-size option to the marc_export support script to better control resource usage (LP#2041364)
-* Reimplementation of Cataloging -> Link Checker in Angular. Changed a few things hopefully for the better:
-  - Relabeled URL Verification Attempts to Batches
-  - Relabeled URL Verifications to Attempts
-  - Main grid display combines Sessions and Batches.
-

@@ -1,8 +1,0 @@
-== Support Script: marc_export default encoding changed to UTF-8 ==
-
-The default file encoding output when using the *marc_export* script is
-now *UTF-8* instead of *MARC8*.  After upgrading check your use of the
-*marc_export* script to ensure that if you need an encoding other than 
-*UTF-8* you specify it with the argument *--encoding*.  This change has
-the possiblity of breaking your workflow. 
-https://bugs.launchpad.net/evergreen/+bug/2015758[Bug #2015758]

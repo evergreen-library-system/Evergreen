@@ -1,7 +1,0 @@
-Interface for Fiscal Years and Calendars
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-A new interface is now available for users to manage fiscal years and calendars. It is accessible via Administration>Acquisitions Administration>Fiscal Years and Calendars.
-
-To add or edit fiscal calendars and years, a user must have the ADMIN_ACQ_FISCAL_YEAR permission.
-
-Org units by default use the 'Default' fiscal calendar. If new fiscal calendars are created and users wish their associated fiscal years to be visible in the 'Year' drop down of other interfaces, the Fiscal Calendar must be updated to use the new fiscal calendar in the org unit.
