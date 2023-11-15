@@ -11,10 +11,10 @@
             <eg-staff-banner bannerText="Location Groups" i18n-bannerText>
             </eg-staff-banner>
             <div class="text-center">          
-                <div class="btn btn-outline-dark mb-3 ms-2" (click)="createLocationGroup()" 
+                <button type="button" class="btn btn-outline-dark mb-3 ms-2" (click)="createLocationGroup()" 
                     *ngIf="hasPermission">
                     New Location Group                     
-                </div>
+                </button>
                 <div class="btn btn-outline-dark mb-3 ms-2 disabled"
                     *ngIf="!hasPermission">
                     New Location Group                     

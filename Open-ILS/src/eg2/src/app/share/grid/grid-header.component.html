@@ -27,14 +27,14 @@
     (dragleave)="onColumnDragLeave($event, col)"
     [ngClass]="{'dragover' : col.isDragTarget}"
     class="eg-grid-cell eg-grid-header-cell" [ngStyle]="{flex:col.flex}">
-    <a class="sortable label-with-material-icon" *ngIf="col.isSortable"
+    <button type="button" class="btn btn-link sortable label-with-material-icon" *ngIf="col.isSortable"
       (click)="sortOneColumn(col)">
       <span class="eg-grid-header-cell-sort-label">{{col.headerLabel}}</span>
       <span class="material-icons eg-grid-header-cell-sort-arrow"
         *ngIf="isColumnSorting(col, 'ASC')">arrow_upwards</span>
       <span class="material-icons eg-grid-header-cell-sort-arrow"
         *ngIf="isColumnSorting(col, 'DESC')">arrow_downwards</span>
-    </a>
+    </button>
     <span *ngIf="!col.isSortable">{{col.headerLabel}}</span>
   </div>
 </div>
