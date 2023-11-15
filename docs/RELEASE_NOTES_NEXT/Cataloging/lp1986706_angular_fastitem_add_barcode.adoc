@@ -1,1 +1,0 @@
-* Barcode transfered to new copy in volume editor in Angular interface for fast item add. https://bugs.launchpad.net/evergreen/+bug/1986706[Bug 1986706]

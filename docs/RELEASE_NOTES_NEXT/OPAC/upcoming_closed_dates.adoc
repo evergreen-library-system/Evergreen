@@ -1,5 +1,0 @@
-== Display Upcoming Closures in OPAC ==
-
-Adds display of upcoming closures (as entered in
-the Closed Dates Editor) to the library information
-pages in the OPAC.

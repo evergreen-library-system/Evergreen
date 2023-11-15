@@ -1,1 +1,0 @@
-* Add shortcut key (Ctrl+E) to jump to the flat text editor textbox. (https://bugs.launchpad.net/evergreen/+bug/2031177[Bug 2031177])

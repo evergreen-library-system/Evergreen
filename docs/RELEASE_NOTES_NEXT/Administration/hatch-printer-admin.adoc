@@ -1,7 +1,0 @@
-== Hatch Print Config Angular Port ==
-The Hatch printer settings interface has been ported to Angular.
-
-The checkbox to enable Hatch printing has also been moved from the 
-separate (now-retired) "Print Service (Hatch)" interface into the newly 
-Angularized "Hatch (Print Service) Printer Settings" interface.
-

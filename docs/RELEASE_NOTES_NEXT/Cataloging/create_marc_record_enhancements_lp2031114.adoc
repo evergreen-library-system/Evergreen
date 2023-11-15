@@ -1,1 +1,0 @@
-* Focus on item add checkbox and switch to call number input after activation. (https://bugs.launchpad.net/evergreen/+bug/2031114[Bug 2031114])

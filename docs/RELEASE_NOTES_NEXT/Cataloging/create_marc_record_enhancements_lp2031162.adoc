@@ -1,1 +1,0 @@
-* Add keyboard shortcut (Ctrl+s) to save in the flat text editor. (https://bugs.launchpad.net/evergreen/+bug/2031162[Bug 2031162])

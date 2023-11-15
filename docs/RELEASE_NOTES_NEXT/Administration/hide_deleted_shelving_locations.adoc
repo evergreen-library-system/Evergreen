@@ -1,5 +1,0 @@
-== Shelving Locations Editor: Hide deleted shelving locations by default ==
-
-In the Shelving Locations Editor under Local Administration, a filter to hide 
-deleted locations is applied by default. Clicking the Remove Filters button or 
-Clearing the filter on the Is Deleted column will reveal the deleted locations.
