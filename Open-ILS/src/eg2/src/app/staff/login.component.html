@@ -21,6 +21,8 @@
           </div>
         </div>
 
+        <!-- ESLint is right only because the ARIA spec hasn't been updated yet -->
+        <!-- eslint-disable @angular-eslint/template/accessibility-valid-aria -->
         <div class="row row-cols-auto mt-3">
           <label class="form-label col-form-label col-4 text-end fw-bold" for="password" i18n>Password</label>
           <div class="col-8">
@@ -48,6 +50,7 @@
             </div>
           </div>
         </div>
+        <!-- eslint-enable @angular-eslint/template/accessibility-valid-aria -->
 
         <div class="row row-cols-auto mt-3" *ngIf="workstations && workstations.length">
           <label class="form-label col-form-label col-4 text-end fw-bold" for="workstation" i18n>Workstation</label>
