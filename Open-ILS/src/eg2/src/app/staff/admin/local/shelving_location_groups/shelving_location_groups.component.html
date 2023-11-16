@@ -1,3 +1,6 @@
+<!-- TODO: re-enable these ESLint rules when #2042879 is resolved -->
+<!-- eslint-disable @angular-eslint/template/click-events-have-key-events, @angular-eslint/template/accessibility-interactive-supports-focus -->
+
 <div class="row">
     <label for="context-ou" class="form-label me-3" i18n>Shelving Location Groups</label>
     <eg-org-select id="context-ou" (onChange)="orgOnChange($event)" [initialOrgId]="1"></eg-org-select>     
@@ -175,3 +178,5 @@
 <eg-string #changeOrderSuccess i18n-text text="Changed Location Group order"></eg-string>
 <eg-string #changeOrderFailure i18n-text 
     text="Error when trying to change Location Group Order"></eg-string>
+
+<!-- eslint-enable @angular-eslint/template/click-events-have-key-events, @angular-eslint/template/accessibility-interactive-supports-focus -->
