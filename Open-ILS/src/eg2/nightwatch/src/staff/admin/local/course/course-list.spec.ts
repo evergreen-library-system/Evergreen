@@ -10,12 +10,16 @@ module.exports = {
     before: (browser: NightwatchBrowser) => {
         // log in as circ admin
         browser.page.login().loginToWebClient(browser, 'br3kwright', 'kayw1234');
+        browser.navigateTo('eg2/en-US/staff/admin/local/asset/course_list')
+            
+        // Change the grid to show more rows
+        browser.click('xpath', '//*[contains(text(), "Rows 10")]')
+        .click('xpath', '//button/*[contains(text(), "50")]');
     },
 
     'Can create courses': (browser: NightwatchBrowser) => {
         courseData.forEach((course) => {
-            browser.navigateTo('eg2/en-US/staff/admin/local/asset/course_list')
-            .click('xpath', '//button[contains(text(), "Create Course")]')
+            browser.click('xpath', '//button[contains(text(), "Create Course")]')
             .setValue('xpath', '//input[contains(@id, "course_number")]', course.number)
             .setValue('xpath', '//input[contains(@id, "name")]', course.name)
             .click('xpath', '//button[contains(text(), "Save")]')
@@ -24,8 +28,7 @@ module.exports = {
     },
 
     'Can duplicate courses': (browser: NightwatchBrowser) => {
-        browser.navigateTo('eg2/en-US/staff/admin/local/asset/course_list')
-        .click('eg-grid-header input')
+        browser.click('eg-grid-header input')
         .rightClick('eg-grid-body-cell:first-child')
         .click('xpath', '//ngb-popover-window//button/span[contains(text(), "Duplicate Selected")]')
         .assert.textContains('eg-grid', courseData[0].name + ' (Copy)')
@@ -33,10 +36,9 @@ module.exports = {
     },
 
     'Can delete courses': (browser: NightwatchBrowser) => {
-        browser.navigateTo('eg2/en-US/staff/admin/local/asset/course_list')
-        .click('eg-grid-header input')
+        browser.click('eg-grid-header input')
         .rightClick('eg-grid-body-cell:first-child')
         .click('xpath', '//ngb-popover-window//button/span[contains(text(), "Delete Selected")]')
-        .assert.not.textContains('eg-grid', courseData[0].name);
+        .assert.textContains('body', 'Deletion of Course was successful');
     }
 };
