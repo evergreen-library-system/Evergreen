@@ -12,9 +12,4 @@ VALUES (
     )
 );
 
-INSERT INTO config.record_attr_definition (name, label, description)
-VALUES ('on_reserve',
-        oils_i18n_gettext('on_reserve', 'Course materials', 'crad', 'label'),
-        oils_i18n_gettext('on_reserve', 'Course materials', 'crad', 'description'));
-
 COMMIT;
