@@ -95,11 +95,11 @@
                 [%- END %]
                 [%- IF ctx.user.email %]
                     <span class='light_border'>
-                    <a href="#" class="btn btn-sm btn-action" onclick="sendTestEmail(
+                    <button type="button" class="btn btn-link btn-sm btn-action" onclick="sendTestEmail(
                         [% ctx.user.id %], '[% ctx.authtoken %]')"
                         title="[% l('Send Test Email') %]">
                         <i class="fas fa-envelope"></i> [% l('Send Test Email') %]
-                    </a>
+                    </button>
                     </span>
                 [%- END %]
                 </td>
