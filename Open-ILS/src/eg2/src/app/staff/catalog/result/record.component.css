@@ -157,3 +157,13 @@ table td {
     font-weight: normal;
     display: block;
 }
+
+.no-copies-transcendant {
+    background-color: rgba(var(--bs-warning-rgb), .2);
+    color: var(--bs-dark);
+}
+
+.no-copies {
+    background-color: rgba(var(--bs-info-rgb), .2);
+    color: var(--bs-dark);
+}
