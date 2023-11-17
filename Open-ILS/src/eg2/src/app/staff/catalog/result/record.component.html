@@ -147,8 +147,8 @@
         <div class="row" [ngClass]="{'pt-2':copyIndex > 0}"
           *ngFor="let copyCount of getHoldingsSummaries(); let copyIdx = index"
 		  [ngClass]="{
-            'text-dark bg-warning' : copyCount.count === 0 && (copyCount.transcendant === 0 || !copyCount.transcendant),
-			'bg-info' : copyCount.count === 0
+            'no-copies-transcendant' : copyCount.count === 0 && (copyCount.transcendant === 0 || !copyCount.transcendant),
+			      'no-copies' : copyCount.count === 0
             }">
           <div class="float-left text-left w-50">
             <span class="pr-1">
