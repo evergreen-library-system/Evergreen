@@ -515,13 +515,6 @@ VALUES (
     )
 );
 
-INSERT INTO config.record_attr_definition (name, label, description)
-VALUES ('on_reserve',
-        oils_i18n_gettext('on_reserve', 'Course materials', 'crad', 'label'),
-        oils_i18n_gettext('on_reserve', 'Course materials', 'crad', 'description'));
-
-
-
 SELECT evergreen.upgrade_deps_block_check('1394', :eg_version);
 
 ALTER TABLE url_verify.url_selector
@@ -632,6 +625,10 @@ DELETE FROM config.org_unit_setting_type WHERE name IN (
     'search.symspell.pg_trgm.weight',
     'search.symspell.soundex.weight'
 );
+
+SELECT evergreen.upgrade_deps_block_check('1396', :eg_version);
+
+-- intent of this change done by editing the one for 1393
 
 COMMIT;
 
