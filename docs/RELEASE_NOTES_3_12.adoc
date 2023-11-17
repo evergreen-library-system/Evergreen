@@ -5,6 +5,40 @@
 
 == Upgrade notes ==
 
+=== Removal of OpenSRF Legacy JSON Gateway ===
+
+The OpenSRF Legacy JSON Gateway is deprecated and will been removed from OpenSRF.  This
+requires removing any references to it in the Apache configuration.
+
+This means removing references to "OSRFGatewayLegacyJSON" in 
+/etc/apache2/eg_vhost.conf.
+
+Example patch:
+
+[source,diff]
+------------------------------------------------------------------------------
+-# XXX Note, it's important to explicitly set the JSON encoding style 
+-# (OSRFGatewayLegacyJSON), since the default encoding style will likely change 
+-# with OpenSRF 1.0
+-# ----------------------------------------------------------------------------------
+-# OpenSRF JSON legacy gateway
+-# ----------------------------------------------------------------------------------
+-<Location /gateway>
+-    SetHandler osrf_json_gateway_module
+-    OSRFGatewayLegacyJSON "true"
+-    Require all granted 
+-</Location>
+-# ----------------------------------------------------------------------------------
+-# New-style OpenSRF JSON gateway
++# OpenSRF JSON gateway
+ # ----------------------------------------------------------------------------------
+ <Location /osrf-gateway-v1>
+     SetHandler osrf_json_gateway_module
+-    OSRFGatewayLegacyJSON "false"
+     Require all granted
+ </Location>
+------------------------------------------------------------------------------
+
 == New Features ==
 
 :leveloffset: +2
@@ -13,9 +47,9 @@
 = Acquisitions =
 
 
-Interface for Fiscal Years and Calendars
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-A new interface is now available for users to manage fiscal years and calendars. It is accessible via Administration>Acquisitions Administration>Fiscal Years and Calendars.
+== Interface for Fiscal Years and Calendars ==
+
+A new interface is now available for users to manage fiscal years and calendars. It is accessible via Administration -> Acquisitions Administration -> Fiscal Years and Calendars.
 
 To add or edit fiscal calendars and years, a user must have the ADMIN_ACQ_FISCAL_YEAR permission.
 
@@ -49,8 +83,7 @@ block:
 
 
 
-Change in AutoRenew Event Definition Default Delay
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+== Change in AutoRenew Event Definition Default Delay ==
 
 The delay for the AutoRenew event has been changed from -23 hours to
 -24 hours and 1 minute.  The previous values of -23 hours for the
@@ -64,7 +97,7 @@ new interval settings guarantee that all circulations for a given 24
 hour period are selected with no gap.
 
 A database upgrade script is provided to alter any event definitions
-using the Circ::Autorenew reactor and the previous default delay
+using the `Circ::Autorenew` reactor and the previous default delay
 values to the new settings.  If you have customized or added any event
 definitions using this reactor, you should double check that they are
 correct after an upgrade.
@@ -154,11 +187,10 @@ https://bugs.launchpad.net/evergreen/+bug/2029256[Bug #2029256]
 Some of these steps are part of a standard install, included here
 for completeness.
 
-=== NOTE ===
-
-Most of these steps are done automatically when installing OpenSRF and 
+NOTE: Most of these steps are done automatically when installing OpenSRF and 
 Evergreen from scratch.  It may be easier for some (and less error 
 prone) to install new servers than to upgrade existing ones.
+
 
 === Assumptions ===
 
@@ -314,14 +346,9 @@ osrf_control -l --restart-all
 sudo systemctl restart apache2 nginx websocketd-osrf
 ---------------------------------------------------------------------------    
 
-== Done! ==
+*Done!*
 
-
-
-
-== Upgrade Note ==
-
-=== Removal of OpenSRF Legacy JSON Gateway ===
+=== Upgrade Note: Removal of OpenSRF Legacy JSON Gateway ===
 
 The OpenSRF Legacy JSON Gateway is deprecated and will been removed from OpenSRF.  This
 requires removing any references to it in the Apache configuration.
@@ -357,6 +384,8 @@ Example patch:
 
 
 
+
+
 = API =
 
 
@@ -367,13 +396,10 @@ Example patch:
 
 = Cataloging =
 
-
-==== Cataloging ====
-
-.Create MARC Record Interface Enhancements
+== Create MARC Record Interface Enhancements ==
 
 
-* Add a global keyboard shortcut for Create MARC Record of Ctrl+F3. https://bugs.launchpad.net/evergreen/+bug/2031040([Bug 2031040])
+* Add a global keyboard shortcut for Create MARC Record of Ctrl+F3. (https://bugs.launchpad.net/evergreen/+bug/2031040[Bug 2031040])
 
 * Focus on the template selector on load, and set unique page title for interface. (https://bugs.launchpad.net/evergreen/+bug/2031043[Bug 2031043])
 
@@ -385,7 +411,7 @@ Example patch:
 
 * Add shortcut key (Ctrl+E) to jump to the flat text editor textbox. (https://bugs.launchpad.net/evergreen/+bug/2031177[Bug 2031177])
 
-== Cataloging ==
+== Default Item Alert Type ==
 
 Staff can now set a default item alert type for new item
 alerts.  To do this:
@@ -398,9 +424,33 @@ that you use most frequently.
 . The setting takes effect immediately, no need to save
 it.
 
+== Added Content Tab in Staff Catalog ==
 
+Adds an Added Content tab to the record details page in the angular staff catalog.
 
-* Barcode transfered to new copy in volume editor in Angular interface for fast item add. https://bugs.launchpad.net/evergreen/+bug/1986706[Bug 1986706]
+ *  The new Added Content tab currently supports only NoveList Select added content.
+ *  NoveList Select subscribers will need to request credentials specifying the staff client url from NoveList for the library settings, separate from the credentials used in the OPAC.
+
+=== Added Content Library Settings ===
+
+The following Library Settings control the behavior of the Added Content tab
+
+  * Staff Client added content: NoveList Select API version (not required)
+  * Staff Client added content: NoveList Select profile/user (
+  * Staff Client added content: NoveList Select key/password
+  * URL Override for NoveList Select added content javascript (not required)
+
+The following new permission controls the ability to setting the URL Override library setting
+
+  * UPDATE_ADDED_CONTENT_URL
+  
+
+=== Added Content Tab Behavior ===
+
+  * If no NoveList settings are present for the OU level, the Added Content tab does not appear.
+  * If NoveList is set up but the bib record lacks ISBNs, or there is no NoveList content available for the work, the tab appears but it will say "No Added Content" and its star will be empty and gray.
+  * If NoveList is set up and content is available, the tab's star will be gold and filled in. It may take a few seconds to change when you first load the record. It will load in the background while you are viewing any other tab in the record.
+
 
 
 
@@ -459,8 +509,8 @@ new unique code (G-) that replaces the old
 (UA-) code and this will also need to be updated in
 config.tt2.
 
-New Setting for Default URI Notes
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+== New Setting for Default URI Notes ==
+
 If a URI does not have a 856$z defining a note to display next to
 it in the OPAC you can use the opac.uri_default_note_text setting
 to define one.
@@ -498,7 +548,7 @@ This change only affects newly created carousels.  Existing manual carousels wil
 need to be edited via the Carousels Administration screen.
 
 
-= Course Reserve Search Filter =
+== Course Reserve Search Filter ==
 
 This filter allows users to limit their search to records that are
     attached to courses at particular libraries, like so:
@@ -544,31 +594,7 @@ navigating links in the template editor.
 
 = Miscellaneous =
 
-== Added Content Tab in Staff Catalog ==
-
-Adds an Added Content tab to the record details page in the angular staff catalog.
-
- *  The new Added Content tab currently supports only NoveList Select added content.
- *  NoveList Select subscribers will need to request credentials specifying the staff client url from NoveList for the library settings, separate from the credentials used in the OPAC.
-
-=== Added Content Library Settings ===
-
-The following Library Settings control the behavior of the Added Content tab
-
-  * Staff Client added content: NoveList Select API version (not required)
-  * Staff Client added content: NoveList Select profile/user (
-  * Staff Client added content: NoveList Select key/password
-  * URL Override for NoveList Select added content javascript (not required)
-
-The following new permission controls the ability to setting the URL Override library setting
-
-  * UPDATE_ADDED_CONTENT_URL
-
-=== Added Content Tab Behavior ===
-
-  * If no NoveList settings are present for the OU level, the Added Content tab does not appear.
-  * If NoveList is set up but the bib record lacks ISBNs, or there is no NoveList content available for the work, the tab appears but it will say "No Added Content" and its star will be empty and gray.
-  * If NoveList is set up and content is available, the tab's star will be gold and filled in. It may take a few seconds to change when you first load the record. It will load in the background while you are viewing any other tab in the record.
+* Barcode transfered to new copy in volume editor in Angular interface for fast item add (https://bugs.launchpad.net/evergreen/+bug/1986706[Bug 1986706])
 * Fix an issue where auto-renewal events can overwhelm open-ils.trigger drones (LP#2030915)
 * Adds a new database view for open non-cataloged circulations: action.open_non_cataloged_circulation (LP#2019974)
 * Improve the performance of the marc_export support script, particularly when items are included (LP#2041364)
@@ -587,19 +613,87 @@ The Evergreen project would like to acknowledge the following
 organizations that commissioned developments in this release of
 Evergreen:
 
-TODO
+* King County Library System
+* NOBLE (North of Boston Library Exchange)
 
 We would also like to thank the following individuals who contributed
-code, translations, documentations patches and tests to this release of
+code, translations, documentation, and testing to this release of
 Evergreen:
 
-TODO
+* John Amundson
+* Scott Angel
+* Jason Boyer
+* Dan Briem
+* Christine Burns
+* Eva Cerniňáková
+* Galen Charlton
+* Garry Collum
+* Elizabeth Davis
+* Jeff Davis
+* Ruth Frasur Davis
+* Bill Erickson
+* Jason Etheridge
+* Robin Fitch
+* Blake Graham-Henderson
+* Rogan Hamby
+* Lena Hernandez
+* Kyle Huckins
+* Linda Jansova
+* Brian Kennedy
+* Stephanie Leary
+* Shula Link
+* Tiffany Little
+* Mary Llewellyn
+* Llewellyn Marshall
+* Steven Mayo
+* Terran McCanna
+* Gina Monti
+* Christine Morgan
+* Michele Morgan
+* Susan Morrison
+* Lauren Mous
+* Andrea Buntz Neiman
+* Jennifer Pringle
+* Simone Rauscher
+* Mike Rylander
+* Jane Sandberg
+* Chris Sharp
+* Jason Stephenson
+* Josh Stompro
+* Elizabeth Thomsen
+* Beth Willis
+* Carol Witt
 
 
 We also thank the following organizations whose employees contributed
-patches:
+patches and documentation:
 
-TODO
+* BC Libraries Cooperative
+* Bibliomation
+* Catalyte
+* CW MARS
+* Equinox Open Library Initiative
+* Georgia Public Library Service (PINES)
+* Grimsby Public Library
+* Kenton County Public Library
+* King County Library System
+* Lake Agassiz Regional Library
+* MOBIUS
+* NOBLE
+* Princeton University
+* Sigio
+* Westchester Library System
+
+Thank you also to the release team & build managers:
+
+* Galen Charlton (Equinox Open Library Initiative)
+* Garry Collum (Kenton County Public Library)
+* Ruth Frasur Davis (Evergreen Indiana / Evergreen Community Development Initiative)
+* Blake Graham-Henderson (MOBIUS)
+* Michele Morgan (NOBLE)
+* Terran McCanna (PINES)
+* Andrea Buntz Neiman (Equinox Open Library Initiative)
+* Jane Sandberg (independent)
 
 We regret any omissions.  If a contributor has been inadvertently
 missed, please open a bug at http://bugs.launchpad.net/evergreen/
