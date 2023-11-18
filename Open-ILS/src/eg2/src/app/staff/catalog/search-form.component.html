@@ -177,7 +177,7 @@
                     <span class="ps-1" i18n>Exclude Electronic Resources</span>
                   </label>
                 </div>
-              <div class="pt-2">
+              <div class="pt-2" *ngIf="showCourseFilter">
                   <label for="reserveCombobox" i18n class="align-self-center mr-2">Reserves materials</label>
                   <eg-combobox (onChange)="reserveComboboxChange($event.id)"
                                selectedId="any" [allowFreeText]="false" class="pl-1">
