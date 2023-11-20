@@ -21,7 +21,7 @@
   <!-- ps-* is doubled for added impact -->
   <div class="ps-{{row.locationDepth}}">
     <span class="ps-{{row.locationDepth}}">
-      <button type="button" class="label-with-material-icon" (click)="userContext.toggleExpandRow(row)">
+      <button type="button" class="btn btn-link text-decoration-none label-with-material-icon" (click)="userContext.toggleExpandRow(row)">
         <!--  leave the icons in place for all node types, but make them
               invisible when they are not needed. -->
         <span *ngIf="row.treeNode.expanded"
