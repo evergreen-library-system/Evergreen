@@ -421,14 +421,11 @@
   </div>
 
   <div class="row pt-1 pb-1 mt-1" *ngIf="showField('au.home_ou')">
-    <label for="au-home_ou-input" class="org-unit-select-label visually-hidden">
     <ng-container 
       *ngTemplateOutlet="fieldLabel; context: {args: {field: 'home_ou'}}">
     </ng-container>
-    </label>
     <div class="col-lg-3">
       <eg-org-select
-        labelClass="visually-hidden"
         domId="au-home_ou-input"
         fieldName="au-home_ou-input"
         [initialOrgId]="patron.home_ou()"
@@ -518,7 +515,6 @@
     </ng-container>
     <div class="col-lg-3">
       <eg-org-select
-        labelClass="visually-hidden"
         domId="cust-opac.default_pickup_location-input"
         fieldName="cust-opac.default_pickup_location-input"
         [initialOrgId]="userSettings['opac.default_pickup_location']"

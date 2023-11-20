@@ -37,6 +37,7 @@
     <div class="col-lg-6">
       <ng-container *ngIf="orgField">
         <eg-org-family-select
+          ariaLabel="Org Unit" i18n-ariaLabel
           [persistKey]="contextOrgSelectorPersistKey"
           [limitPerms]="viewPerms" 
           [selectedOrgId]="contextOrg.id()"

@@ -11,8 +11,9 @@
     <hr class="p-1" />
   </div>
   <div class="form-group">
+    <label class="form-label" for="order-agency-input" i18n>Ordering Agency</label>
     <eg-org-select (onChange)="orgChange($event)" domId="order-agency-input"
-    labelText="Ordering Agency" i18n-labelText [limitPerms]="['CREATE_PURCHASE_ORDER']">
+    [limitPerms]="['CREATE_PURCHASE_ORDER']">
     </eg-org-select>
   </div>
   <div class="form-group">

@@ -1,6 +1,6 @@
 <div class="row">
-    <div style="font-size: 24px;" class="me-3">Shelving Location Groups</div>
-    <eg-org-select (onChange)="orgOnChange($event)" [initialOrgId]="1"></eg-org-select>     
+    <label for="context-ou" class="form-label me-3" i18n>Shelving Location Groups</label>
+    <eg-org-select id="context-ou" (onChange)="orgOnChange($event)" [initialOrgId]="1"></eg-org-select>     
 </div>
 <div class="row">
     <p>Location groups can be re-ordered by dragging and dropping.</p>

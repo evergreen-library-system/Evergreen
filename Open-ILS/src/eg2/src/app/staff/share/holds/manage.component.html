@@ -17,7 +17,6 @@
       <!-- TODO: filter orgs as needed -->
       <eg-org-select 
         domId="pickupLibSelect"
-        labelClass="visually-hidden"
         [initialOrgId]="hold.pickup_lib()"
         [disabled]="isBatch() && !activeFields.pickup_lib"
         (onChange)="pickupLibChanged($event)">

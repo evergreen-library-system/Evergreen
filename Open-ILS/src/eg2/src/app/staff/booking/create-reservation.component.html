@@ -42,8 +42,15 @@
                 </eg-combobox>
               </div>
               <div class="col">
-                <eg-org-family-select [hideAncestorSelector]="true" labelText="Owning library" i18n-labelText formControlName="owningLibrary">
-                </eg-org-family-select>
+                <div class="input-group">
+                  <label class="form-label input-group-text" for="owningLibrary" i18n>Owning library</label>
+                  <eg-org-family-select 
+                    [hideAncestorSelector]="true" 
+                    domId="owningLibrary"
+                    ariaLabel="Owning library" i18n-ariaLabel 
+                    formControlName="owningLibrary">
+                  </eg-org-family-select>
+                </div>
               </div>
             </div>
           </div>

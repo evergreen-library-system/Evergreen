@@ -9,7 +9,7 @@
       </div>
       <div class="col-5">
         <label for="context_library" class="form-label" i18n>Owned by</label>
-        <eg-org-select
+        <eg-org-select domId="context_library"
           [applyDefault]="true" [disabled]="disabled"
           (onChange)="acplContextOrgId = $event.id()">
         </eg-org-select>

@@ -10,7 +10,7 @@
   <div class="flex-1 p-1">
     <eg-org-select #owningLibSelect placeholder="Owning Branch..." 
       i18n-placeholder [readOnly]="fieldIsDisabled('owning_lib')"
-      labelText="Owning Branch" i18n-labelText labelClass="visually-hidden"
+      ariaLabel="Owning Branch" i18n-ariaLabel
       [applyOrgId]="copy.owning_lib()"
       [limitPerms]="['CREATE_PICKLIST','CREATE_PURCHASE_ORDER']"
       (onChange)="valueChange('owning_lib', $event)">

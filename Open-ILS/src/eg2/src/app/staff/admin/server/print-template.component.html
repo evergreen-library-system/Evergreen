@@ -18,7 +18,7 @@
     <eg-org-family-select
       [selectedOrgId]="initialOrg"
       [limitPerms]="['ADMIN_PRINT_TEMPLATE']"
-      labelText="Owner" i18n-labelText
+      ariaLabel="Owner" i18n-ariaLabel
       (ngModelChange)="orgOnChange($event)"
       ngModel #orgFamily="ngModel">
     </eg-org-family-select>

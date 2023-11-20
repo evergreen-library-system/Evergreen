@@ -8,7 +8,7 @@
       <input i18n-placeholder placeholder="Code" [ngModelOptions]="{standalone: true}" [(ngModel)]="providerCode" type="text" class="form-control" />
     </div>
     <div class="col-auto">
-      <eg-org-family-select i18n-labelText labelText="Owner"
+      <eg-org-family-select i18n-ariaLabel ariaLabel="Owner"
         [limitPerms]="['VIEW_PROVIDER','MANAGE_PROVIDER','ADMIN_PROVIDER']"
         [ngModelOptions]="{standalone: true}" [(ngModel)]="providerOwners">
       </eg-org-family-select>

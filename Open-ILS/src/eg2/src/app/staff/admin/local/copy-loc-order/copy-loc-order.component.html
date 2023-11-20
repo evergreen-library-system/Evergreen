@@ -5,8 +5,8 @@
 
 <div class="row">
   <div class="col-lg-12 d-flex">
-    
-      <eg-org-select labelText="Context Org Unit" i18n-labelText labelClass="mr-2"
+      <label for="context_library" class="mr-2" i18n>Context Org Unit</label>
+      <eg-org-select domId="context_library"
         (onChange)="orgChanged($event)" [initialOrgId]="contextOrg">
       </eg-org-select>
     
