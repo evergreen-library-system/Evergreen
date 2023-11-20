@@ -5,7 +5,8 @@
 <form [formGroup]="pullListCriteria" class="row">
   <div class="col-md-4">
     <div class="input-group">
-      <eg-org-select domId="ou" [applyDefault]="true" labelText="Library:" labelClass="input-group-text"
+      <label for="ou" class="form-label input-group-text" i18n>Library</label>
+      <eg-org-select domId="ou" [applyDefault]="true"
         (onChange)="handleOrgChange($event)"
         [disableOrgs]="disableOrgs()" [hideOrgs]="disableOrgs()">
       </eg-org-select>

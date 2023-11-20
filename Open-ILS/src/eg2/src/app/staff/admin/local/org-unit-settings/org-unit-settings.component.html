@@ -16,8 +16,8 @@
 <div class="row mt-3">
   <div class="col-md-3">
     <div class="input-group">
-        <div class="input-group-text" i18n>Context Location</div>
-        <eg-org-select [initialOrg]="contextOrg"
+        <label for="context-ou" class="form-label input-group-text" i18n>Context Location</label>
+        <eg-org-select [initialOrg]="contextOrg" id="context-ou"
           (onChange)="contextOrgChanged($event)">
         </eg-org-select>
     </div>

@@ -2,12 +2,11 @@
 <div class="d-flex mb-3">
   <div>
     <div class="input-group">
-      <div class="input-group-prepend">
-        <label for="contextOrgSelect" i18n class="input-group-text">Owner</label>
-      </div>
+      <label for="contextOrgSelect" i18n class="form-label input-group-text">
+        Owner
+      </label>
       <eg-org-select
         domId="contextOrgSelect"
-        labelClass="visually-hidden"
         [initialOrg]="contextOrg"
         (onChange)="orgOnChange($event)">
       </eg-org-select>

@@ -18,10 +18,9 @@
     <div class="row mt-3">
         <div class="col-md-6">
             <div class="input-group">
-                <div class="input-group-prepend">
-                    <eg-org-select labelText="Context" i18n-labelText labelClass="input-group-text"
-                    [initialOrg]="entryContext" (onChange)="entryContext = $event"></eg-org-select>
-                </div>
+              <label for="context-ou" class="form-label input-group-text" i18n>Context</label>
+                <eg-org-select domId="context-ou"
+                [initialOrg]="entryContext" (onChange)="entryContext = $event"></eg-org-select>
             </div>
         </div>
     </div>

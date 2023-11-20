@@ -29,6 +29,7 @@
 
 <ng-container *ngIf="orgField">
   <eg-org-family-select
+    ariaLabel="Org Unit" i18n-ariaLabel
     [limitPerms]="viewPerms"
     [selectedOrgId]="contextOrg.id()"
     [(ngModel)]="searchOrgs"

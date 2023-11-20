@@ -166,8 +166,7 @@
     <div *ngIf="displayAttr('circ_lib')">
       <ng-template #circLibTemplate>
         <eg-org-select 
-          domId="circ_lib-input"
-          labelClass="visually-hidden"
+          domId="circ_lib-input" [ariaLabel]="copyFieldLabel('circ_lib')"
           (onChange)="values['circ_lib'] = $event ? $event.id() : null"
           [hideOrgs]="volcopy.hideVolOrgs"
           [limitPerms]="['UPDATE_COPY']">
@@ -181,8 +180,7 @@
     <div *ngIf="displayAttr('owning_lib')">
       <ng-template #owningLibTemplate>
         <eg-org-select 
-          domId="owning_lib-input"
-          labelClass="visually-hidden"
+          domId="owning_lib-input" [ariaLabel]="olLabel.text"
           (onChange)="values['owning_lib'] = $event ? $event.id() : null"
           [hideOrgs]="volcopy.hideVolOrgs"
           [limitPerms]="['UPDATE_COPY']">
@@ -452,11 +450,10 @@
 
     <div class="border rounded m-1" *ngIf="displayAttr('statcat_filter')">
       <div class="batch-header font-weight-bold p-2">
-        <label for="statcat_filter-select" i18n>Stat Cat Filter</label>
+        <label for="statcat_filter-select" class="form-label" i18n>Stat Cat Filter</label>
       </div>
       <div class="p-1">
         <eg-org-select
-          labelClass="visually-hidden"
           domId="statcat_filter-select"
           placeholder="Stat Cat Filter..." i18n-placeholder
           [initialOrgId]="statCatFilter"

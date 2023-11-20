@@ -4,14 +4,9 @@
 <div class="row mt-3">
   <div class="col-lg-4">
     <div class="input-group">
-      <div class="input-group-prepend">
-        <div class="input-group-text">
-          <label for="contextOrgSelect" class="form-label" i18n>Holdings Maintenance</label>
-        </div>
-      </div>
+      <label for="contextOrgSelect" class="form-label input-group-text" i18n>Holdings Maintenance</label>
       <eg-org-select [initialOrg]="contextOrg"
         domId="contextOrgSelect"
-        labelClass="visually-hidden"
         persistKey="catalog.holdings"
         (onChange)="contextOrgChanged($event)"
         [orgClassCallback]="orgClassCallback">

@@ -160,12 +160,11 @@
    <button class="btn btn-info" (click)="testToast()">Test Toast Message</button>
   </div>
   <div class="col-lg-2">
-    <label for="limitPermsSelect" class="org-unit-select-label" i18n>Org select with limit perms</label>
+    <label for="limitPermsSelect" class="form-label org-unit-select-label" i18n>Org select with limit perms</label>
   </div>
   <div class="col-lg-2">
     <eg-org-select 
       domId="limitPermsSelect"
-      labelClass="visually-hidden"
       [limitPerms]="['REGISTER_WORKSTATION']">
     </eg-org-select>
   </div>
@@ -284,7 +283,7 @@
 <ngb-accordion>
   <ngb-panel title="Open me for comboboxes">
     <ng-template ngbPanelContent>
-      <eg-org-select></eg-org-select>
+      <eg-org-select ariaLabel="Org Unit" i18n-ariaLabel></eg-org-select>
       <eg-combobox>
         <eg-combobox-entry entryId="bib" entryLabel="Bibliographic Records"
           i18n-entryLabel></eg-combobox-entry>
@@ -438,7 +437,7 @@
       <div class="card-text">
         <eg-org-family-select
           formControlName="badOrgSelector"
-          labelText="Choose the fanciest libraries">
+          ariaLabel="Choose the fanciest libraries" i18n-ariaLabel>
         </eg-org-family-select>
         <div *ngIf="!badOrgForm.valid" class="alert alert-danger">
           <span class="material-icons" aria-hidden="true">error</span>
@@ -500,7 +499,7 @@
 <div class="m-4">
   <div class="col-lg-4">
     <h4>
-      <label for="styledOrgSelect" class="org-unit-select-label" i18n>Org Unit Selector With Styled Orgs</label>
+      <label for="styledOrgSelect" class="form-label org-unit-select-label" i18n>Org Unit Selector With Styled Orgs</label>
     </h4>
     <eg-org-select domId="styledOrgSelect" [orgClassCallback]="orgClassCallback" labelClass="visually-hidden">
     </eg-org-select>

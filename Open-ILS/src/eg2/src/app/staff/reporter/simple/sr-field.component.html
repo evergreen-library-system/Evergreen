@@ -144,6 +144,7 @@
         <div [ngSwitch]="field.transform.final_datatype || field.datatype">
           <div *ngSwitchCase="'org_unit'">
             <eg-org-family-select
+              ariaLabel="Org Unit" i18n-ariaLabel
               (onChange)="setOrgFamilyValue($event)"
               [selectedOrgId]="field._org_family_primaryOrgId"
               [ancestorSelectorChecked]="field._org_family_includeAncestors"

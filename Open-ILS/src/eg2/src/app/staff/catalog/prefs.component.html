@@ -12,7 +12,7 @@
     </label>
   </div>
   <div class="col-lg-2">
-    <eg-org-select domId="default-lib-selector" labelClass="visually-hidden"
+    <eg-org-select domId="default-lib-selector"
       (onChange)="orgChanged($event, 'eg.search.search_lib')"
       [applyOrgId]="settings['eg.search.search_lib']">
     </eg-org-select>
@@ -33,7 +33,7 @@
     </label>
   </div>
   <div class="col-lg-2">
-    <eg-org-select domId="pref-lib-selector" labelClass="visually-hidden"
+    <eg-org-select domId="pref-lib-selector"
       (onChange)="orgChanged($event, 'eg.search.pref_lib')"
       [applyOrgId]="settings['eg.search.pref_lib']">
     </eg-org-select>

@@ -57,8 +57,6 @@
           <label class="input-group-text form-control" for="pickupLibSelect" i18n>Pickup Library</label>
           <eg-org-select 
             domId="pickupLibSelect"
-            labelText="Pickup Library" i18n-labelText
-            labelClass="visually-hidden"
             [persistKey]="persistKey" 
             [fallbackOrg]="pickupLib"
             (componentLoaded)="plCompLoaded = true" 
@@ -74,8 +72,6 @@
           <label class="input-group-text form-label" for="pullListOrgSelect" i18n>View Pull List For:</label>
           <eg-org-select 
             domId="pullListOrgSelect"
-            labelText="View Pull List For:" i18n-labelText
-            labelClass="visually-hidden"
             [initialOrgId]="pullListOrg"
             (onChange)="pullListOrgChanged($event)">
           </eg-org-select>
@@ -83,12 +79,10 @@
       </div>
       <div class="col-lg-3 mb-2" *ngIf="pullListSettingsLoaded()">
         <div class="input-group">
-          <label for="pull-pickup-lib-filter" class="input-group-text"
+          <label for="pull-pickup-lib-filter" class="form-label input-group-text"
             i18n>Pickup Library:
           </label>
           <eg-org-select domId="pull-pickup-lib-filter"
-            labelText="Pickup Library:" i18n-labelText
-            labelClass="visually-hidden"
             #pullPickupLibFilter [initialOrg]="pickupLib"
             (componentLoaded)="pullPickupLibLoaded()"
             (onChange)="pullPickupLibChanged($event)">

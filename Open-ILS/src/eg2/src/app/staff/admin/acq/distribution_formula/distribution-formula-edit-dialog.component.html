@@ -24,8 +24,6 @@
             placeholder="Owner..."
             i18n-placeholder
             domId="formula-owner"
-            labelText="Formula Owner" i18n-labelText
-            labelClass="col-sm-1 col-form-owner"
             [applyOrgId]="formula.owner()"
             [limitPerms]="['ADMIN_ACQ_DISTRIB_FORMULA']"
             (onChange)="formula.owner($event); myForm.form.markAsDirty()">
@@ -54,6 +52,8 @@
           <eg-org-select
             placeholder="Owning Library..."
             i18n-placeholder
+            ariaLabel="Owning Library..."
+            i18n-ariaLabel
             domId="entry-owning-lib-{{idx}}"
             [applyOrgId]="entry.owning_lib()"
             [limitPerms]="['ADMIN_ACQ_DISTRIB_FORMULA']"
