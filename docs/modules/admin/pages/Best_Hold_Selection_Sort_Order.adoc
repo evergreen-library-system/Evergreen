@@ -2,8 +2,7 @@
 = Best-Hold Selection Sort Order =
 :toc:
 
-Best-Hold Selection Sort Order allows libraries to configure customized rules for Evergreen to use to select the best hold to fill at opportunistic capture.  When an item is captured for a hold upon check-in, Evergreen evaluates the holds in the system that the item could fill.  Evergreen uses a set of rules, or a Best-Hold Selection Sort Order, to determine the best hold to fill with the item.  In previous version of Evergreen, there were two sets of rules for Evergreen to use to determine the best hold to fulfill: Traditional and FIFO (First In, First Out).  Traditional uses Org Unit Proximity to identify the nearest hold to fill.  FIFO follows a strict order of first-in, first-out rules.  This feature allows new, custom Best-Hold Selection Sort Orders to be created.  Existing Best-Hold Selection Sort Orders can also be modified.
-
+When an item is captured for a hold upon check-in, Evergreen evaluates the holds in the system that the item could fill. Evergreen then uses a set of rules, or a Best-Hold Selection Sort Order, to determine the best hold to fill with the item.  Best-Hold Selection Sort Order (BHSSO) allows libraries to configure customized rules, whether by creating new sets of rules or modifying existing ones,  for Evergreen to use to select the best hold to fill at opportunistic capture. These rules is that they answer the question, “What is important to your library when ordering holds to be filled?” BHSSOs are created in *Administration* → *Server Administration* → *Best-Hold Selection Sort Order*. A BHSSO is then set per organizational unit under *Local Administration* → *Library Settings Editor* → *Best-hold selection sort order*.
 
 == Preconfigured Best-Hold Orders ==
 Evergreen comes with seven preconfigured Best-Hold Selection Sort Orders to choose from:
@@ -16,19 +15,76 @@ Evergreen comes with seven preconfigured Best-Hold Selection Sort Orders to choo
 * FIFO with Holds-go-home
 * FIFO with Holds-always-go-home
 
-The Holds-go-home and Holds-always-go-home options allow libraries to determine how long they want to allow items to transit outside of the item’s home library, before it must return to its home library to fulfill any holds that are to be picked up there.  Libraries can set this time limit in the library setting *Holds: Max foreign-circulation time*.  The Library Settings Editor can be found under *Administration -> Local Administration ->  Library Settings Editor*.  
+*Traditional*
 
-The Holds-chase-home-lib-patrons option is new in 3.5 and it gives primary ranking to a new weight, _Owning Lib to Patron Home Lib Proximity_, which looks at the proximity between Item Owning Library and Patron Home Library. The remaining default rakings in Holds-chase-home-lib-patrons are in the same order as the default rankings for Traditional with Holds-always-go-home.
+* Uses xref:Org_Unit_Proximity_Adjustments.adoc[Org Unit Proximity] to identify the nearest hold to fill, prioritizing holds where the check-in/capture library is the same as the pickup library.
+* Can help fill holds more efficiently and reduce transit of items.
+* Holds are not filled in order they were placed.
+
+*FIFO (First In, First Out)*
+
+* Follows a strict order of first-in, first-out rules.
+* Prioritizes the hold request time and fills holds in order of request time.
+* Can increase transits of items.
+
+_Holds Go Home_ and _Holds Always Go Home_ allow libraries to determine how long they want to allow items to transit outside of the item’s home library, before it must return to its home library to fulfill any holds that are to be picked up there. Libraries can set this time limit in the library setting Holds: Max foreign-circulation time.  Both Holds Go Home and Holds Always Go Home prioritize holds of patrons at the item-owning library. They can be used with Traditional and FIFO, though with FIFO, this means some holds will not be filled in strict FIFO order.
+
+*Holds Go Home*
+
+* If a hold has been placed by a patron at the item’s owning library, and the item has not filled a hold for an owning library patron within the interval configured in “Max foreign-circulation time,” the item will go “home” to fill that patron’s hold.  
+
+*Holds Always Go Home*
+
+* If a hold has been placed by a patron at the item’s owning library, the next time the item is captured it will go “home” to fill that patron’s hold.
+
+*Traditional with Holds-chase-home-patrons*
+
+* First introduced in 3.5.
+* Gives primary ranking to the Owning Lib to Patron Home Lib Proximity weight, which looks at the proximity between item-owning library and patron home library.
+* Prioritizes holds for patrons whose home library is the same as the item-owning library, regardless of pickup library.
+* This BHSSO may be useful for library systems that resource share and allow patrons to pick up holds at any branch or library within the resource sharing system, but want to ensure that their items are filling holds for their patrons first.
+
+.Preconfigured Weights for Best-Hold Selection Sort Orders
+[options="header,footer"]
+|=======================
+|ID|Name|Capture Lib to Pickup Lib Proximity|Circ Lib to Request Lib Proximity|Owning Lib to Patron Home Lib Proximity|Adjusted Circ Lib to Pickup Lib Proximity|Adjusted Capture Location to Pickup Lib Proximity|Hold Priority|Hold Cut-in-line State|Hold Selection Depth|Copy Has Circulated From Home Lately|Hold Request Time|Copy Has Been Home At All Lately
+|1|Traditional|2| | |3|1|4|5|6| |7| 
+|2|Traditional with Holds-always-go-home|3|1| |4|2|5|6|7| |8| 
+|3|Traditional with Holds-go-home|3| | |4|2|5|6|7|1|8| 
+|4|FIFO|5|6| |7| |1|2|4|8|3| 
+|5|FIFO with Holds-always-go-home|6|1| |7| |2|3|5|4|8| 
+|6|FIFO with Holds-go-home|6|8| |7| |2|3|5|1|4| 
+|7|Traditional with Holds-chase-home-lib-patrons|4|2|1|5|3|6|7|8| |9| 
+|=======================
+
+== Best-Hold Selection Sort Order Criteria ==
+
+* *Adjusted Capture Location to Pickup Lib Proximity* - The adjusted org unit proximity between the capture library and pickup library.
+* *Adjusted Circ Lib to Pickup Lib Proximity* - The adjusted org unit proximity between the circulation library and pickup library.
+* *Capture Lib to Pickup Lib Proximity* - The default org unit proximity between the capture library and pickup library.
+* *Circ Lib to Request Lib Proximity* - The default org unit proximity between the circulating library and request library.
+* *Copy Has Been Home At All Lately* - Tests whether the item has been at its owning library during the time frame set in the Library Settings Editor called “Max foreign-circulation time.”  It looks for * completed transits to the owning library within the time frame specified.
+* *Copy Has Circulated From Home Lately* - Tests whether the item has circulated at its owning library during the time frame set in the Library Settings Editor called “Max foreign-circulation time.” 
+* *Hold Cut-in-line State* - Looks for holds that have been manually set to the top of the holds queue.
+* *Hold Priority* - Looks at the Hold Priority field in the permission group configuration of the user receiving the hold.
+* *Hold Request Time* - Looks at the timestamp for when the hold request was created.
+* *Hold Selection Depth* - For boundary-restricted holds, this prioritizes more restricted holds over less restricted.
+* *Owning Lib to Patron Home Lib Proximity* - The default org unit proximity between the item-owning library and patron home library. 
+
+The adjusted org unit proximities are determined through *Server Administration* → *Org Unit Proximity Adjustments*.
 
 == Create a New Best-Hold Selection Sort Order ==
 To create a new Best-Hold Selection Sort Order, go to *Administration -> Server Administration ->  Best-Hold Selection Sort Order*.  
 
 . Click *New Best-Hold Sort Order*.
++
+image::Best_Hold_Selection_Sort_Order/create_new_bhsso.png[New Best-Hold Selection Sort Order]
++
 . Assign your Best-Hold Selection Sort Order a *Name*.
 . Next, use the numeric selectors next to each field to set the order that you would like Evergreen to check when looking for the best hold to fill with an item at opportunistic capture.
 . Click *Save* to create your custom Best-Hold Selection Sort Order.  
 
-image::media/new_bhsso.png[New Best-Hold Selection Sort Order]
+image::Best_Hold_Selection_Sort_Order/new_bhsso.png[New Best-Hold Selection Sort Order]
 
 
 == Edit an Existing Best-Hold Selection Sort Order ==
@@ -37,10 +93,19 @@ To edit an existing Best-Hold Selection Sort Order, go to *Administration -> Ser
 . Find the Sort Order that you want to edit in the grid
 . Select the row you need to edit and access the _Actions Menu_. The _Actions Menu_ can be accessed in the upper right of the grid or by right-clicking the row.
 . Choose _Edit Selected_. You can also access the Edit feature by double-clicking on a grid row. 
++
+image::Best_Hold_Selection_Sort_Order/edit_selected_bhsso.png[Edit Best-Hold Selection Sort Order]
++
 . Next, use the numeric selectors next to each field to set the new order that you would like Evergreen to check when looking for the best hold to fill with an item at opportunistic capture.
 . Click *Save* to save your edits.  
 
-image::media/edit_bhsso.png[Edit Best-Hold Selection Sort Order]
+image::Best_Hold_Selection_Sort_Order/edit_bhsso.png[Edit Best-Hold Selection Sort Order]
+
+=== Tips for Customizing the New Best-Hold Selection Sort Order ===
+
+* The lower the number, the more important the criteria.
+* Not all criteria need to be used within a BHSSO configuration.
+* Hold Request Time can be viewed as the “tie-breaking” criteria.
 
 == Choosing the Best-Hold Selection Sort Order ==
 The Best-Hold Selection Sort Order can be set for an Org Unit in the *Library Settings Editor*.  
@@ -53,10 +118,10 @@ To select the Best-Hold Selection Sort Order that your Org Unit will use:
 . Select the Best-hold selection sort order, or *Value*, from the drop down menu.
 . Click *Update Setting*. 
 
-image::media/bhsso_libsetting.png[Best-hold selection in the Library Settings Editor]
+image::Best_Hold_Selection_Sort_Order/bhsso_libsetting.png[Best-hold selection in the Library Settings Editor]
 
 
-== Permissions to use this Feature ==
+== Permissions to Use This Feature ==
 To administer the custom Best-Hold Selection Sort Order interface, you need the following permission:
 
 * ADMIN_HOLD_CAPTURE_SORT
