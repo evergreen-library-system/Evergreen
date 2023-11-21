@@ -18,6 +18,7 @@ use OpenSRF::Utils::Logger qw/$logger/;
 use OpenSRF::System;
 use OpenSRF::AppSession;
 use OpenSRF::Utils::SettingsClient;
+use OpenILS::Utils::Fieldmapper;
 use OpenILS::Reporter::SQLBuilder;
 use POSIX;
 use GD::Graph::pie;
@@ -32,6 +33,7 @@ use open ':utf8';
 my ($config, $sleep_interval, $lockfile, $daemon) = ('SYSCONFDIR/opensrf_core.xml', 10, '/tmp/reporter-LOCK');
 
 my $opt_count;
+my $opt_minimum_repsec_version;
 my $opt_max_rows_for_charts;
 my $opt_statement_timeout;
 my $opt_resultset_limit;
@@ -41,6 +43,7 @@ GetOptions(
 	"sleep=i"	=> \$sleep_interval,
 	"concurrency=i"	=> \$opt_count,
 	"max-rows-for-charts=i" => \$opt_max_rows_for_charts,
+	"minimum-repsec-version=i" => \$opt_minimum_repsec_version,
 	"resultset-limit=i" => \$opt_resultset_limit,
 	"statement-timeout=i" => \$opt_statement_timeout,
 	"bootstrap|boostrap=s"	=> \$config,
@@ -56,6 +59,8 @@ OpenSRF::System->bootstrap_client( config_file => $config );
 my (%data_db, %state_db);
 
 my $sc = OpenSRF::Utils::SettingsClient->new;
+my $idl = $sc->config_value("IDL");
+Fieldmapper->import(IDL => $idl);
 
 $data_db{db_driver} = $sc->config_value( reporter => setup => database => 'driver' );
 $data_db{db_host}   = $sc->config_value( reporter => setup => database => 'host' );
@@ -117,6 +122,10 @@ my $resultset_limit     = $opt_resultset_limit //
                           $sc->config_value( reporter => setup => 'resultset_limit' ) //
                           0;
 $resultset_limit = 0 unless $resultset_limit =~ /^\d+$/; # 0 means no limit
+my $minimum_repsec_version = $opt_minimum_repsec_version //
+                             $sc->config_value( reporter => setup => 'minimum_repsec_version' ) //
+                             7;
+$minimum_repsec_version = 7 unless $minimum_repsec_version =~ /^\d+$/; # 7 is the template version that introduced repsec functionality
 
 # What follows is an emperically-derived magic number; if
 # the row count is larger than this, the table-sorting JavaScript
@@ -195,6 +204,9 @@ while (my $r = $sth->fetchrow_hashref) {
 	$r->{report} = $s3;
 
 	my $b = OpenILS::Reporter::SQLBuilder->new;
+	$b->minimum_repsec_version($minimum_repsec_version) if $minimum_repsec_version;
+	$b->runner($r->{runner});
+
 	my $report_data = OpenSRF::Utils::JSON->JSON2perl( $r->{report}->{data} );
 	$b->register_params( $report_data );
 

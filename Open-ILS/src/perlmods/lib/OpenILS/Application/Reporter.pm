@@ -10,6 +10,40 @@ my $U = "OpenILS::Application::AppUtils";
 
 
 __PACKAGE__->register_method(
+    api_name => 'open-ils.reporter.output_visible',
+    method => 'output_visible'
+);
+
+sub output_visible {
+    my( $self, $conn, $auth, $output_id, @perms) = @_;
+
+    @perms = grep { $_ ne 'VIEW_REPORT_OUTPUT' } @perms;
+    push @perms, 'VIEW_REPORT_OUTPUT'; # required permission
+
+    my $e = new_rstore_editor(xact=>1, authtoken=>$auth);
+    return 0 unless $e->checkauth;
+
+    my $output = $e->retrieve_reporter_schedule($output_id);
+    return 1 if $output->runner == $e->requestor->id; # you can see your own
+
+    my $output_folder = $e->retrieve_reporter_output_folder($output->folder);
+    return 1 if $output_folder->owner == $e->requestor->id; # you can see ones in your folders
+
+    if ($U->is_true($output_folder->shared)) {
+        return 0 if $U->check_user_perms(
+            $e->requestor->id,
+            $output_folder->share_with,
+            @perms
+        );
+
+        return 1; # check_user_perms returns the first permission that failed
+    }
+
+    return 0;
+}
+
+
+__PACKAGE__->register_method(
     api_name => 'open-ils.reporter.folder.create',
     method => 'create_folder'
 );

@@ -1326,11 +1326,11 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 	</class>
 
 
-	<class id="ateo" controller="open-ils.cstore open-ils.pcrud" oils_obj:fieldmapper="action_trigger::event_output" oils_persist:tablename="action_trigger.event_output" reporter:label="Event Output">
-		<fields oils_persist:primary="id" oils_persist:sequence="action_trigger.event_output_id_seq">
+	<class id="ateo" controller="open-ils.cstore open-ils.pcrud" oils_obj:fieldmapper="action_trigger::event_output" oils_persist:tablename="action_trigger.event_output" reporter:label="Event Output" repsec:restriction_function="evergreen.hint_opt_in_check" repsec:restriction_function_parameters="ateo:id:$runner:{VIEW_USER}" repsec:projection_function="evergreen.hint_opt_in_check" repsec:projection_function_parameters="ateo:id:$runner:{VIEW_USER}">
+		<fields oils_persist:primary="id" oils_persist:sequence="action_trigger.event_output_id_seq" repsec:redact_skip_function_default="evergreen.hint_opt_in_check" repsec:redact_skip_function_parameters_default="ateo:id:$runner:{VIEW_USER}">
 			<field reporter:label="Output ID" name="id" reporter:datatype="id"/>
 			<field reporter:label="Create Date/Time" name="create_time" reporter:datatype="timestamp"/>
-			<field reporter:label="Data" name="data" reporter:datatype="text" oils_obj:required="true"/>
+			<field reporter:label="Data" name="data" repsec:redact="true" reporter:datatype="text" oils_obj:required="true"/>
 			<field reporter:label="Is Error" name="is_error" reporter:datatype="bool"/>
 			<field reporter:label="Events" name="events" oils_persist:virtual="true" reporter:datatype="link"/>
 			<field reporter:label="Error Events" name="error_events" oils_persist:virtual="true" reporter:datatype="link"/>
@@ -2615,10 +2615,10 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 			<link field="usr" reltype="has_a" key="id" map="" class="au"/>
 		</links>
 	</class>
-	<class id="aus" controller="open-ils.cstore open-ils.pcrud" oils_obj:fieldmapper="actor::user_setting" oils_persist:tablename="actor.usr_setting" reporter:label="User Setting">
-		<fields oils_persist:primary="id" oils_persist:sequence="actor.usr_setting_id_seq">
-			<field reporter:label="Setting ID" name="id" reporter:datatype="id"/>
-			<field reporter:label="Name" name="name" reporter:datatype="link" oils_obj:required="true"/>
+	<class id="aus" controller="open-ils.cstore open-ils.pcrud" oils_obj:fieldmapper="actor::user_setting" oils_persist:tablename="actor.usr_setting" reporter:label="User Setting" repsec:restriction_function="evergreen.direct_opt_in_check" repsec:restriction_function_parameters="usr:$runner:{VIEW_USER}">
+		<fields oils_persist:primary="id" oils_persist:sequence="actor.usr_setting_id_seq" repsec:redact_default="true" repsec:redact_skip_function_default="evergreen.direct_opt_in_check" repsec:redact_skip_function_parameters_default="usr:$runner:{VIEW_USER}">
+			<field reporter:label="Setting ID" name="id" repsec:redact="false" reporter:datatype="id"/>
+			<field reporter:label="Name" name="name" repsec:redact="false" reporter:datatype="link" oils_obj:required="true"/>
 			<field reporter:label="User" name="usr" reporter:datatype="link" oils_obj:required="true"/>
 			<field reporter:label="Value" name="value" reporter:datatype="text" oils_obj:required="true"/>
 		</fields>
@@ -4078,8 +4078,8 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 			</actions>
 		</permacrud>
 	</class>
-	<class id="au" controller="open-ils.cstore open-ils.pcrud" oils_obj:fieldmapper="actor::user" oils_persist:tablename="actor.usr" reporter:core="true" reporter:label="ILS User">
-		<fields oils_persist:primary="id" oils_persist:sequence="actor.usr_id_seq">
+	<class id="au" controller="open-ils.cstore open-ils.pcrud" oils_obj:fieldmapper="actor::user" oils_persist:tablename="actor.usr" reporter:core="true" reporter:label="ILS User" repsec:restriction_function="evergreen.direct_opt_in_check" repsec:restriction_function_parameters="id:$runner:{VIEW_USER}" repsec:projection_function="evergreen.direct_opt_in_check" repsec:projection_function_parameters="id:$runner:{VIEW_USER}">
+		<fields oils_persist:primary="id" oils_persist:sequence="actor.usr_id_seq" repsec:redact_default="true" repsec:redact_skip_function_default="evergreen.direct_opt_in_check" repsec:redact_skip_function_parameters_default="id:$runner:{VIEW_USER}">
 			<field reporter:label="All Addresses" name="addresses" oils_persist:virtual="true" reporter:datatype="link"/>
 			<field reporter:label="All Library Cards" name="cards" oils_persist:virtual="true" reporter:datatype="link"/>
 			<field reporter:label="All Circulations" name="checkouts" oils_persist:virtual="true" reporter:datatype="link"/>
@@ -4108,7 +4108,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 			<field reporter:label="Last Name" name="family_name" reporter:datatype="text" oils_obj:required="true"/>
 			<field reporter:label="First Name" name="first_given_name" reporter:datatype="text" oils_obj:required="true"/>
 			<field reporter:label="Home Library" name="home_ou" reporter:datatype="org_unit" oils_obj:required="true"/>
-			<field reporter:label="User ID" name="id" reporter:datatype="id" reporter:selector="usrname"/>
+			<field reporter:label="User ID" name="id" repsec:redact="false" reporter:datatype="id" reporter:selector="usrname"/>
 			<field reporter:label="Primary Identification Type" name="ident_type" reporter:datatype="link" oils_obj:required="true"/>
 			<field reporter:label="Secondary Identification Type" name="ident_type2" reporter:datatype="link"/>
 			<field reporter:label="Primary Identification" name="ident_value" reporter:datatype="text"/>
@@ -4215,13 +4215,12 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 			</actions>
 		</permacrud>
 	</class>
-	<class id="auact" controller="open-ils.cstore open-ils.pcrud" oils_obj:fieldmapper="actor::usr_activity" oils_persist:tablename="actor.usr_activity" reporter:label="User Activity">
+	<class id="auact" controller="open-ils.cstore open-ils.pcrud" oils_obj:fieldmapper="actor::usr_activity" oils_persist:tablename="actor.usr_activity" reporter:label="User Activity" repsec:restriction_function="evergreen.direct_opt_in_check" repsec:restriction_function_parameters="usr:$runner:{VIEW_USER}" repsec:projection_function="evergreen.direct_opt_in_check" repsec:projection_function_parameters="usr:$runner:{VIEW_USER}">
 		<fields oils_persist:primary="id" oils_persist:sequence="actor.usr_activity_id_seq">
 			<field name="id" reporter:label="ID" reporter:datatype="id"/>
 			<field name="usr" reporter:label="User" reporter:datatype="link"/>
 			<field name="etype" reporter:label="Activity Type" reporter:datatype="link" oils_obj:required="true"/>
 			<field name="event_time" reporter:label="Event Time" reporter:datatype="timestamp"/>
-			<field name="event_data" reporter:label="Event Data" reporter:datatype="text" suppress_controller="open-ils.pcrud open-ils.reporter-store"/>
 		</fields>
 		<links>
 			<link field="usr" reltype="has_a" key="id" map="" class="au"/>
@@ -4841,22 +4840,22 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 			</actions>
 		</permacrud>
 	</class>
-	<class id="aua" controller="open-ils.cstore open-ils.pcrud" oils_obj:fieldmapper="actor::user_address" oils_persist:tablename="actor.usr_address" reporter:label="User Address">
-		<fields oils_persist:primary="id" oils_persist:sequence="actor.usr_address_id_seq">
-			<field reporter:label="Type" name="address_type" reporter:datatype="text"/>
+	<class id="aua" controller="open-ils.cstore open-ils.pcrud" oils_obj:fieldmapper="actor::user_address" oils_persist:tablename="actor.usr_address" reporter:label="User Address" repsec:restriction_function="evergreen.direct_opt_in_check" repsec:restriction_function_parameters="usr:$runner:{VIEW_USER}">
+		<fields oils_persist:primary="id" oils_persist:sequence="actor.usr_address_id_seq" repsec:redact_default="true" repsec:redact_skip_function_default="evergreen.direct_opt_in_check" repsec:redact_skip_function_parameters_default="usr:$runner:{VIEW_USER}">
+			<field reporter:label="Type" name="address_type" repsec:redact="false" reporter:datatype="text"/>
 			<field reporter:label="City" name="city" reporter:datatype="text" oils_obj:required="true"/>
 			<field reporter:label="Country" name="country" reporter:datatype="text" oils_obj:required="true"/>
 			<field reporter:label="County" name="county" reporter:datatype="text"/>
-			<field reporter:label="Address ID" name="id" reporter:datatype="id"/>
+			<field reporter:label="Address ID" name="id" repsec:redact="false" reporter:datatype="id"/>
 			<field reporter:label="Postal Code" name="post_code" reporter:datatype="text" oils_obj:required="true"/>
 			<field reporter:label="State" name="state" reporter:datatype="text"/>
 			<field reporter:label="Street (1)" name="street1" reporter:datatype="text" oils_obj:required="true"/>
 			<field reporter:label="Street (2)" name="street2" reporter:datatype="text"/>
-			<field reporter:label="User" name="usr" reporter:datatype="link" oils_obj:required="true"/>
-			<field reporter:label="Valid Address?" name="valid" reporter:datatype="bool"/>
+			<field reporter:label="User" name="usr" repsec:redact="false" reporter:datatype="link" oils_obj:required="true"/>
+			<field reporter:label="Valid Address?" name="valid" repsec:redact="false" reporter:datatype="bool"/>
 			<field reporter:label="Within City Limits?" name="within_city_limits" reporter:datatype="bool"/>
-			<field reporter:label="Replaces" name="replaces" reporter:datatype="link"/>
-			<field reporter:label="Pending" name="pending" reporter:datatype="bool"/>
+			<field reporter:label="Replaces" name="replaces" repsec:redact="false" reporter:datatype="link"/>
+			<field reporter:label="Pending" name="pending" repsec:redact="false" reporter:datatype="bool"/>
 		</fields>
 		<links>
 			<link field="usr" reltype="has_a" key="id" map="" class="au"/>
@@ -5150,7 +5149,7 @@ SELECT  usr,
 	</class>
 	<class id="aacct" controller="open-ils.cstore open-ils.pcrud" oils_obj:fieldmapper="action::all_circulation_combined_types" oils_persist:tablename="action.all_circulation_combined_types" reporter:core="true" reporter:label="All Circulation Combined Types" oils_persist:readonly="true">
 		<fields>
-			<field reporter:label="Checkout / Renewal Library" name="circ_lib" reporter:datatype="org_unit"/>
+			<field reporter:label="Circulating Library" name="circ_lib" reporter:datatype="org_unit"/>
 			<field reporter:label="Circulating Staff" name="circ_staff" reporter:datatype="link"/>
 			<field reporter:label="Circ ID" name="id" reporter:datatype="int"/>
 			<field reporter:label="Checkout Date/Time" name="xact_start" reporter:datatype="timestamp"/>
@@ -5173,7 +5172,7 @@ SELECT  usr,
 			<field reporter:label="Check In Library" name="checkin_lib" reporter:datatype="org_unit"/>
 			<field reporter:label="Check In Staff" name="checkin_staff" reporter:datatype="link"/>
 			<field reporter:label="Check In Date/Time" name="checkin_time" reporter:datatype="timestamp"/>
-			<field reporter:label="Checkout / Renewal Library" name="circ_lib" reporter:datatype="org_unit"/>
+			<field reporter:label="Circulating Library" name="circ_lib" reporter:datatype="org_unit"/>
 			<field reporter:label="Circulating Staff" name="circ_staff" reporter:datatype="link"/>
 			<field reporter:label="Desk Renewal" name="desk_renewal" reporter:datatype="bool"/>
 			<field reporter:label="Due Date/Time" name="due_date" reporter:datatype="timestamp"/>
@@ -5249,7 +5248,7 @@ SELECT  usr,
 			<field reporter:label="Check In Library" name="checkin_lib" reporter:datatype="org_unit"/>
 			<field reporter:label="Check In Staff" name="checkin_staff" reporter:datatype="link"/>
 			<field reporter:label="Check In Date/Time" name="checkin_time" reporter:datatype="timestamp"/>
-			<field reporter:label="Checkout / Renewal Library" name="circ_lib" reporter:datatype="org_unit"/>
+			<field reporter:label="Circulating Library" name="circ_lib" reporter:datatype="org_unit"/>
 			<field reporter:label="Circulating Staff" name="circ_staff" reporter:datatype="link"/>
 			<field reporter:label="Desk Renewal" name="desk_renewal" reporter:datatype="bool"/>
 			<field reporter:label="Due Date/Time" name="due_date" reporter:datatype="timestamp"/>
@@ -5340,7 +5339,7 @@ SELECT  usr,
 			<field reporter:label="Check In Library" name="checkin_lib" reporter:datatype="org_unit"/>
 			<field reporter:label="Check In Staff" name="checkin_staff" reporter:datatype="link"/>
 			<field reporter:label="Check In Date/Time" name="checkin_time" reporter:datatype="timestamp"/>
-			<field reporter:label="Checkout / Renewal Library" name="circ_lib" reporter:datatype="org_unit" oils_obj:required="true"/>
+			<field reporter:label="Circulating Library" name="circ_lib" reporter:datatype="org_unit" oils_obj:required="true"/>
 			<field reporter:label="Circulating Staff" name="circ_staff" reporter:datatype="link" oils_obj:required="true"/>
 			<field reporter:label="Desk Renewal" name="desk_renewal" reporter:datatype="bool" oils_obj:required="true"/>
 			<field reporter:label="Due Date/Time" name="due_date" reporter:datatype="timestamp"/>
@@ -7386,86 +7385,6 @@ SELECT  usr,
 			</actions>
 		</permacrud>
 	</class>
-	<class id="mfaf" controller="open-ils.cstore open-ils.pcrud" oils_obj:fieldmapper="config::mfa_factor" oils_persist:tablename="config.mfa_factor" reporter:label="MFA Factor" oils_persist:readonly="true">
-		<fields oils_persist:primary="name">
-			<field reporter:label="Name" name="name" reporter:datatype="text" reporter:selector="label" oils_obj:required="true"/>
-			<field reporter:label="Label" name="label" reporter:datatype="text" oils_obj:required="true" oils_persist:i18n="true"/>
-			<field reporter:label="Description" name="description" reporter:datatype="text" oils_obj:required="true" oils_persist:i18n="true"/>
-		</fields>
-		<permacrud xmlns="http://open-ils.org/spec/opensrf/IDL/permacrud/v1">
-			<actions>
-				<retrieve permission="STAFF_LOGIN" global_required="true"/>
-			</actions>
-		</permacrud>
-	</class>
-	<class id="aumx" controller="open-ils.cstore open-ils.pcrud" oils_obj:fieldmapper="actor::usr_mfa_exception" oils_persist:tablename="actor.usr_mfa_exception" reporter:label="MFA User Exception">
-		<fields oils_persist:primary="id" oils_persist:sequence="actor.usr_mfa_exception_id_seq">
-			<field reporter:label="Exception ID" name="id" reporter:datatype="id"/>
-			<field reporter:label="User" name="usr" reporter:datatype="link" oils_obj:required="true"/>
-			<field reporter:label="Ingress" name="ingress" reporter:datatype="text"/>
-		</fields>
-		<links>
-			<link field="usr" reltype="has_a" key="id" map="" class="au"/>
-		</links>
-		<permacrud xmlns="http://open-ils.org/spec/opensrf/IDL/permacrud/v1">
-			<actions>
-				<create permission="ADMIN_MFA">
-					<context link="usr" field="home_ou"/>
-				</create>
-				<retrieve permission="STAFF_LOGIN">
-					<context link="usr" field="home_ou"/>
-				</retrieve>
-				<update permission="ADMIN_MFA">
-					<context link="usr" field="home_ou"/>
-				</update>
-				<delete permission="ADMIN_MFA">
-					<context link="usr" field="home_ou"/>
-				</delete>
-			</actions>
-		</permacrud>
-	</class>
-	<class id="aumfm" controller="open-ils.cstore open-ils.pcrud" oils_obj:fieldmapper="actor::usr_mfa_factor_map" oils_persist:tablename="actor.usr_mfa_factor_map" reporter:label="MFA User Factor Map">
-		<fields oils_persist:primary="id" oils_persist:sequence="actor.usr_mfa_factor_map_id_seq">
-			<field reporter:label="Mapping ID" name="id" reporter:datatype="id"/>
-			<field reporter:label="User" name="usr" reporter:datatype="link" oils_obj:required="true"/>
-			<field reporter:label="Factor" name="factor" reporter:datatype="link" oils_obj:required="true"/>
-			<field reporter:label="Purpose" name="purpose" reporter:datatype="text" oils_obj:required="true"/>
-			<field reporter:label="Time Added" name="add_time" reporter:datatype="timestamp" oils_obj:required="true"/>
-		</fields>
-		<links>
-			<link field="usr" reltype="has_a" key="id" map="" class="au"/>
-			<link field="factor" reltype="has_a" key="name" map="" class="mfaf"/>
-		</links>
-		<permacrud xmlns="http://open-ils.org/spec/opensrf/IDL/permacrud/v1" ignore_object_perms="true">
-			<actions>
-				<retrieve permission="STAFF_LOGIN">
-					<context link="usr" field="home_ou"/>
-				</retrieve>
-				<delete permission="REMOVE_USER_MFA">
-					<context link="usr" field="home_ou"/>
-				</delete>
-			</actions>
-		</permacrud>
-	</class>
-	<class id="pgmfm" controller="open-ils.cstore open-ils.pcrud" oils_obj:fieldmapper="permission::group_mfa_factor_map" oils_persist:tablename="permission.group_mfa_factor_map" reporter:label="MFA Group Factor Map">
-		<fields oils_persist:primary="id" oils_persist:sequence="permission.group_mfa_factor_map_id_seq">
-			<field reporter:label="Mapping ID" name="id" reporter:datatype="id"/>
-			<field reporter:label="Group" name="grp" reporter:datatype="link" oils_obj:required="true"/>
-			<field reporter:label="Factor" name="factor" reporter:datatype="link" oils_obj:required="true"/>
-		</fields>
-		<links>
-			<link field="grp" reltype="has_a" key="id" map="" class="pgt"/>
-			<link field="factor" reltype="has_a" key="name" map="" class="mfaf"/>
-		</links>
-		<permacrud xmlns="http://open-ils.org/spec/opensrf/IDL/permacrud/v1">
-			<actions>
-				<create   permission="ADMIN_MFA" global_required="true"/>
-				<retrieve permission="STAFF_LOGIN" global_required="true"/>
-				<update   permission="ADMIN_MFA" global_required="true"/>
-				<delete   permission="ADMIN_MFA" global_required="true"/>
-			</actions>
-		</permacrud>
-	</class>
 	<class id="ac" controller="open-ils.cstore open-ils.pcrud" oils_obj:fieldmapper="actor::card" oils_persist:tablename="actor.card" reporter:label="Library Card">
 		<fields oils_persist:primary="id" oils_persist:sequence="actor.card_id_seq">
 			<field reporter:label="IsActive?" name="active" reporter:datatype="bool"/>
@@ -8469,8 +8388,6 @@ SELECT  usr,
 			<field reporter:label="Required Permission" name="application_perm" reporter:datatype="text"/>
 			<field reporter:label="Is User Group" name="usergroup" reporter:datatype="bool"/>
 			<field reporter:label="Hold Priority" name="hold_priority" reporter:datatype="int"/>
-			<field reporter:label="MFA Allowed?" name="mfa_allowed" reporter:datatype="bool"/>
-			<field reporter:label="MFA Required?" name="mfa_required" reporter:datatype="bool"/>
 		</fields>
 		<links>
 			<link field="parent" reltype="has_a" key="id" map="" class="pgt"/>
@@ -8628,10 +8545,10 @@ SELECT  usr,
 			<link field="field" reltype="has_a" key="id" map="" class="cmf"/>
 		</links>
 	</class>
-	<class id="actscecm" controller="open-ils.cstore" oils_obj:fieldmapper="actor::stat_cat_entry_user_map" oils_persist:tablename="actor.stat_cat_entry_usr_map" reporter:label="User Statistical Category Entry">
-		<fields oils_persist:primary="id" oils_persist:sequence="actor.stat_cat_entry_usr_map_id_seq">
-			<field reporter:label="Entry ID" name="id" reporter:datatype="id"/>
-			<field reporter:label="Statistical Category" name="stat_cat" reporter:datatype="link" oils_obj:required="true"/>
+	<class id="actscecm" controller="open-ils.cstore" oils_obj:fieldmapper="actor::stat_cat_entry_user_map" oils_persist:tablename="actor.stat_cat_entry_usr_map" reporter:label="User Statistical Category Entry" repsec:restriction_function="evergreen.direct_opt_in_check" repsec:restriction_function_parameters="target_usr:$runner:{VIEW_USER}" repsec:projection_function="evergreen.direct_opt_in_check" repsec:projection_function_parameters="target_usr:$runner:{VIEW_USER}">
+		<fields oils_persist:primary="id" oils_persist:sequence="actor.stat_cat_entry_usr_map_id_seq" repsec:redact_default="true" repsec:redact_skip_function_default="evergreen.direct_opt_in_check" repsec:redact_skip_function_parameters_default="target_usr:$runner:{VIEW_USER}">
+			<field reporter:label="Entry ID" name="id" repsec:redact="false" reporter:datatype="id"/>
+			<field reporter:label="Statistical Category" name="stat_cat" repsec:redact="false" reporter:datatype="link" oils_obj:required="true"/>
 			<field reporter:label="Entry Text" name="stat_cat_entry" reporter:datatype="text" oils_obj:required="true"/>
 			<field reporter:label="User" name="target_usr" reporter:datatype="link" oils_obj:required="true"/>
 		</fields>
@@ -9189,19 +9106,6 @@ SELECT  usr,
 				<delete permission="DELETE_TRANSLATION" global_required="true"/>
 			</actions>
 		</permacrud>
-	</class>
-	<class id="i18ns" controller="open-ils.cstore open-ils.pcrud" oils_obj:fieldmapper="config::i18n_string" oils_persist:tablename="config.i18n_string" oils_persist:field_safe="true" reporter:label="i18n String">
-		<fields oils_persist:primary="id" oils_persist:sequence="config.i18n_string_id_seq">
-			<field name="id" reporter:datatype="id" />
-			<field name="context" reporter:datatype="text"/>
-			<field name="string" reporter:datatype="text" oils_persist:i18n="true"/>
-		</fields>
-        <permacrud xmlns="http://open-ils.org/spec/opensrf/IDL/permacrud/v1">
-            <actions>
-                <retrieve />
-                <update permission="UPDATE_TRANSLATION" global_required="true"/>
-            </actions>
-        </permacrud>
 	</class>
 	<class id="fdoc" controller="open-ils.cstore open-ils.pcrud" oils_obj:fieldmapper="config::idl_field_doc" oils_persist:tablename="config.idl_field_doc" oils_persist:field_safe="true" reporter:label="IDL Field Doc">
 		<fields oils_persist:primary="id" oils_persist:sequence="config.idl_field_doc_id_seq">
@@ -13127,37 +13031,38 @@ SELECT  usr,
 
 	<class id="rhcrpbapd" controller="open-ils.cstore open-ils.pcrud open-ils.reporter-store" oils_obj:fieldmapper="reporter::hold_copy_ratio_per_bib_and_pickup_desc" oils_persist:readonly="true" reporter:label="Hold/Item Ratio per Bib and Pickup Library (and Descendants) ">
 		<oils_persist:source_definition><![CDATA[
-			WITH flat_org_tree AS (
-				SELECT  a.id, ARRAY_AGG(d.id) AS descendants
-				  FROM  actor.org_unit a,
-				        actor.org_unit_descendants(a.id) d
-				  GROUP BY 1
-			), counts_at_ou AS (
+				WITH counts_at_ou AS (
 				SELECT a.id, a.pickup_lib_or_desc, a.holds_at_or_below, b.copy_count_at_or_below
 				FROM
 					(SELECT rhrr.bib_record AS id,
 							aou.id AS pickup_lib_or_desc,
 							COUNT(DISTINCT ahr.id) AS holds_at_or_below
-					   FROM action.hold_request ahr
+					   FROM actor.org_unit aou
+							JOIN actor.org_unit_type aout ON (aou.ou_type = aout.id),
+							action.hold_request ahr
 							JOIN reporter.hold_request_record rhrr USING (id)
-							JOIN action.hold_copy_map ahcm ON (ahr.id = ahcm.hold)
-							JOIN asset.copy ac ON (ahcm.target_copy = ac.id)
-							JOIN flat_org_tree aou ON (array_position(aou.descendants,ac.circ_lib) IS NOT NULL AND array_position(aou.descendants,ahr.pickup_lib) IS NOT NULL)
+							LEFT JOIN action.hold_copy_map ahcm ON (ahr.id = ahcm.hold)
+							LEFT JOIN asset.copy ac ON (ahcm.target_copy = ac.id)
 					  WHERE ahr.cancel_time IS NULL AND ahr.fulfillment_time IS NULL
+							AND ac.circ_lib IN (SELECT id FROM actor.org_unit_descendants(aou.id))
+							AND (actor.org_unit_ancestor_at_depth(ahr.pickup_lib,aout.depth)).id = (actor.org_unit_ancestor_at_depth(ac.circ_lib,aout.depth)).id
 					  GROUP BY 1, 2
 				) a
 				JOIN
 					(SELECT rhrr.bib_record AS id,
 							aou.id AS pickup_lib_or_desc,
 							COALESCE(COUNT(DISTINCT ahcm.target_copy),0) AS copy_count_at_or_below
-					   FROM action.hold_request ahr
+					   FROM actor.org_unit aou
+							JOIN actor.org_unit_type aout ON (aou.ou_type = aout.id),
+							action.hold_request ahr
 							JOIN reporter.hold_request_record rhrr USING (id)
-							JOIN action.hold_copy_map ahcm ON (ahr.id = ahcm.hold)
-							JOIN asset.copy ac ON (ahcm.target_copy = ac.id)
-							JOIN flat_org_tree aou ON (array_position(aou.descendants,ac.circ_lib) IS NOT NULL AND array_position(aou.descendants,ahr.pickup_lib) IS NOT NULL)
+							LEFT JOIN action.hold_copy_map ahcm ON (ahr.id = ahcm.hold)
+							LEFT JOIN asset.copy ac ON (ahcm.target_copy = ac.id)
 					  WHERE ahr.cancel_time IS NULL AND ahr.fulfillment_time IS NULL AND ahr.capture_time IS NULL AND NOT ahr.frozen
 							-- Comment out the next line to count copies included from other bibs by metarecord holds
 							AND ahr.hold_type != 'M'
+							AND ac.circ_lib IN (SELECT id FROM actor.org_unit_descendants(aou.id))
+							AND (actor.org_unit_ancestor_at_depth(ahr.pickup_lib,aout.depth)).id = (actor.org_unit_ancestor_at_depth(ac.circ_lib,aout.depth)).id
 					  GROUP BY 1, 2
 				) b
 				USING (id,pickup_lib_or_desc)
@@ -13617,7 +13522,7 @@ SELECT  usr,
 			<field reporter:label="Check In Library" name="checkin_lib" reporter:datatype="org_unit"/>
 			<field reporter:label="Check In Staff" name="checkin_staff" reporter:datatype="link"/>
 			<field reporter:label="Check In Date/Time" name="checkin_time" reporter:datatype="timestamp"/>
-			<field reporter:label="Checkout / Renewal Library" name="circ_lib" reporter:datatype="org_unit"/>
+			<field reporter:label="Circulating Library" name="circ_lib" reporter:datatype="org_unit"/>
 			<field reporter:label="Circulating Staff" name="circ_staff" reporter:datatype="link"/>
 			<field reporter:label="Desk Renewal" name="desk_renewal" reporter:datatype="bool"/>
 			<field reporter:label="Due Date/Time" name="due_date" reporter:datatype="timestamp"/>
@@ -13739,10 +13644,10 @@ SELECT  usr,
 		</links>
 	</class>
 
-	<class id="rmocbbcol" controller="open-ils.reporter-store" oils_obj:fieldmapper="reporter::money::open_circ_balance_by_circ_and_owning_lib" oils_persist:tablename="money.open_circ_balance_by_circ_and_owning_lib" reporter:core="true" reporter:label="Open Circulation Billing by Checkout Library and Owning Library">
+	<class id="rmocbbcol" controller="open-ils.reporter-store" oils_obj:fieldmapper="reporter::money::open_circ_balance_by_circ_and_owning_lib" oils_persist:tablename="money.open_circ_balance_by_circ_and_owning_lib" reporter:core="true" reporter:label="Open Circulation Billing by Circulating Library and Owning Library">
 		<fields oils_persist:primary="id">
 			<field reporter:label="Circulation ID" name="id" reporter:datatype="link"/>
-			<field reporter:label="Checkout / Renewal Library" name="circ_lib" reporter:datatype="org_unit"/>
+			<field reporter:label="Circulating Library" name="circ_lib" reporter:datatype="org_unit"/>
 			<field reporter:label="Owning Library" name="owning_lib" reporter:datatype="org_unit"/>
 			<field reporter:label="Billing Type" name="billing_type" reporter:datatype="text"/>
 			<field reporter:label="Total Billed" name="billed" reporter:datatype="money"/>
@@ -13754,9 +13659,9 @@ SELECT  usr,
 		</links>
 	</class>
 
-	<class id="rmobbcol" controller="open-ils.reporter-store" oils_obj:fieldmapper="reporter::money::open_balance_by_circ_and_owning_lib" oils_persist:tablename="money.open_balance_by_circ_and_owning_lib" reporter:core="true" reporter:label="Open Circulation Balance by Checkout Library and Owning Library">
+	<class id="rmobbcol" controller="open-ils.reporter-store" oils_obj:fieldmapper="reporter::money::open_balance_by_circ_and_owning_lib" oils_persist:tablename="money.open_balance_by_circ_and_owning_lib" reporter:core="true" reporter:label="Open Circulation Balance by Circulating Library and Owning Library">
 		<fields oils_persist:primary="circ_lib">
-			<field reporter:label="Checkout / Renewal Library" name="circ_lib" reporter:datatype="org_unit"/>
+			<field reporter:label="Circulating Library" name="circ_lib" reporter:datatype="org_unit"/>
 			<field reporter:label="Owning Library" name="owning_lib" reporter:datatype="org_unit"/>
 			<field reporter:label="Billing Types" name="billing_types" reporter:datatype="text"/>
 			<field reporter:label="Balance" name="balance" reporter:datatype="money"/>
@@ -15736,45 +15641,45 @@ SELECT  usr,
 		</permacrud>
 	</class>
 
-	<class id="ahrrr" controller="open-ils.cstore open-ils.pcrud" oils_obj:fieldmapper="action::hold_request_reset_reason" oils_persist:tablename="action.hold_request_reset_reason" reporter:label="Hold Request Reset Reason" oils_persist:field_safe="true">
-		<fields oils_persist:primary="id" oils_persist:sequence="action.hold_request_reset_reason_id_seq">
-			<field name="id" reporter:selector="name" reporter:datatype="id" reporter:label="ID"/>
-			<field name="name"  reporter:datatype="text" oils_persist:i18n="true" reporter:label="Name"/>
-			<field name="manual" reporter:datatype="bool" reporter:label="Manual"/>
-		</fields>
-		<permacrud xmlns="http://open-ils.org/spec/opensrf/IDL/permacrud/v1">
-			<actions>
-				<retrieve/>
-			</actions>
-		</permacrud>
-	</class>
+       <class id="ahrrr" controller="open-ils.cstore open-ils.pcrud" oils_obj:fieldmapper="action::hold_request_reset_reason" oils_persist:tablename="action.hold_request_reset_reason" reporter:label="Hold Request Reset Reason" oils_persist:field_safe="true">
+               <fields oils_persist:primary="id" oils_persist:sequence="action.hold_request_reset_reason_id_seq">
+                       <field name="id" reporter:selector="name" reporter:datatype="id" reporter:label="ID"/>
+                       <field name="name"  reporter:datatype="text" oils_persist:i18n="true" reporter:label="Name"/>
+                       <field name="manual" reporter:datatype="bool" reporter:label="Manual"/>
+               </fields>
+               <permacrud xmlns="http://open-ils.org/spec/opensrf/IDL/permacrud/v1">
+                       <actions>
+                               <retrieve/>
+                       </actions>
+               </permacrud>
+       </class>
 
-	<class id="ahrrre" controller="open-ils.cstore open-ils.pcrud" oils_obj:fieldmapper="action::hold_request_reset_reason_entry" oils_persist:tablename="action.hold_request_reset_reason_entry" reporter:label="Hold Request Reset Reason Entry" oils_persist:field_safe="true">
-		<fields oils_persist:primary="id" oils_persist:sequence="action.hold_request_reset_reason_entry_id_seq">
-			<field name="id" reporter:datatype="id" reporter:label="ID"/>
-			<field name="hold" reporter:label="ID" reporter:datatype="link"/>
-			<field name="reset_reason" reporter:label="ID" reporter:datatype="link"/>
-			<field name="reset_time" reporter:datatype="timestamp" reporter:label="Reset Date/Time"/>
-			<field name="note" reporter:datatype="text" oils_persist:i18n="true" reporter:label="Note"/>
-			<field name="requestor" reporter:label="Resetting User" reporter:datatype="link"/>
-			<field name="requestor_workstation" reporter:label="Resetting User Workstation" reporter:datatype="link"/>
-			<field name="previous_copy" reporter:label="Previous Copy" reporter:datatype="link"/>
-		</fields>
-		<links>
-			<link field="hold" reltype="has_a" key="id" map="" class="ahr"/>
-			<link field="reset_reason" reltype="has_a" key="id" map="" class="ahrrr"/>
-			<link field="requestor" reltype="has_a" key="id" map="" class="au"/>
-			<link field="requestor_workstation" reltype="has_a" key="id" map="" class="aws"/>
-			<link field="previous_copy" reltype="has_a" key="id" map="" class="acp"/>
-		</links>
-		<permacrud xmlns="http://open-ils.org/spec/opensrf/IDL/permacrud/v1">
-			<actions>
-				<retrieve permission="VIEW_HOLD">
-					<context link="hold" field="pickup_lib"/>
-				</retrieve>
-			</actions>
-		</permacrud>
-	</class>
+       <class id="ahrrre" controller="open-ils.cstore open-ils.pcrud" oils_obj:fieldmapper="action::hold_request_reset_reason_entry" oils_persist:tablename="action.hold_request_reset_reason_entry" reporter:label="Hold Request Reset Reason Entry" oils_persist:field_safe="true">
+               <fields oils_persist:primary="id" oils_persist:sequence="action.hold_request_reset_reason_entry_id_seq">
+                       <field name="id" reporter:datatype="id" reporter:label="ID"/>
+                       <field name="hold" reporter:label="ID" reporter:datatype="link"/>
+                       <field name="reset_reason" reporter:label="ID" reporter:datatype="link"/>
+                       <field name="reset_time" reporter:datatype="timestamp" reporter:label="Reset Date/Time"/>
+                       <field name="note" reporter:datatype="text" oils_persist:i18n="true" reporter:label="Note"/>
+                       <field name="requestor" reporter:label="Resetting User" reporter:datatype="link"/>
+                       <field name="requestor_workstation" reporter:label="Resetting User Workstation" reporter:datatype="link"/>
+                       <field name="previous_copy" reporter:label="Previous Copy" reporter:datatype="link"/>
+               </fields>
+               <links>
+                       <link field="hold" reltype="has_a" key="id" map="" class="ahr"/>
+                       <link field="reset_reason" reltype="has_a" key="id" map="" class="ahrrr"/>
+                       <link field="requestor" reltype="has_a" key="id" map="" class="au"/>
+                       <link field="requestor_workstation" reltype="has_a" key="id" map="" class="aws"/>
+                       <link field="previous_copy" reltype="has_a" key="id" map="" class="acp"/>
+               </links>
+               <permacrud xmlns="http://open-ils.org/spec/opensrf/IDL/permacrud/v1">
+                       <actions>
+                               <retrieve permission="VIEW_HOLD">
+                                       <context link="hold" field="pickup_lib"/>
+                               </retrieve>
+                       </actions>
+               </permacrud>
+       </class>
 
 
 	<class id="coauf" controller="open-ils.cstore open-ils.pcrud" oils_obj:fieldmapper="config::openathens_uid_field" oils_persist:tablename="config.openathens_uid_field" reporter:label="OpenAthens unique identifiers">
@@ -15837,7 +15742,7 @@ SELECT  usr,
 		</permacrud>
 	</class>
 
-	<class id="acqr_inv_totals" controller="open-ils.reporter" oils_persist:readonly="true" reporter:label="Invoice Totals">
+	<class id="acqr_inv_totals" controller="open-ils.reporter" oils_persist:virtual="true" reporter:label="Invoice Totals">
 		<oils_persist:source_definition><![CDATA[
 			WITH invoice_entry_totals AS (
 				SELECT acqinv.id,
@@ -15876,7 +15781,7 @@ SELECT  usr,
 		</links>
 	</class>
 
-	<class id="acqr_debit_by_fund" controller="open-ils.reporter" oils_persist:readonly="true" reporter:label="Invoice Debits by Fund">
+	<class id="acqr_debit_by_fund" controller="open-ils.reporter" oils_persist:virtual="true" reporter:label="Invoice Debits by Fund">
 		<oils_persist:source_definition><![CDATA[
 			WITH invoice_funds AS (
 				SELECT invoice, fund, COALESCE(amount, 0.00)::NUMERIC(8,2) AS amount, encumbrance
@@ -15903,7 +15808,7 @@ SELECT  usr,
 		</links>
 	</class>
 
-	<class id="acqr_debit_by_fund_tag" controller="open-ils.reporter" oils_persist:readonly="true" reporter:label="Invoice Debits by Fund Tag">
+	<class id="acqr_debit_by_fund_tag" controller="open-ils.reporter" oils_persist:virtual="true" reporter:label="Invoice Debits by Fund Tag">
 		<oils_persist:source_definition><![CDATA[
 			WITH invoice_funds AS (
 				SELECT invoice, fund, COALESCE(amount, 0.00)::NUMERIC(8,2) AS amount, encumbrance

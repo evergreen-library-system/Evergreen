@@ -26,6 +26,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
  xmlns:oils_persist="http://open-ils.org/spec/opensrf/IDL/persistence/v1"
  xmlns:oils_obj="http://open-ils.org/spec/opensrf/IDL/objects/v1"
  xmlns:reporter="http://open-ils.org/spec/opensrf/IDL/reporter/v1"
+ xmlns:repsec="http://open-ils.org/spec/opensrf/IDL/reporter/v1/security"
  xmlns:sr="http://open-ils.org/spec/opensrf/IDL/simple-reporter/v1"
  xmlns:crud="http://open-ils.org/spec/opensrf/IDL/permacrud/v1"
  targetNamespace="http://opensrf.org/spec/IDL/base/v1"
@@ -41,6 +42,9 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 
 <xs:import namespace="http://open-ils.org/spec/opensrf/IDL/reporter/v1"
  schemaLocation="reporter.xsd"/>
+
+<xs:import namespace="http://open-ils.org/spec/opensrf/IDL/reporter/v1/security"
+ schemaLocation="reporter-security.xsd"/>
 
 <xs:import namespace="http://open-ils.org/spec/opensrf/IDL/simple-reporter/v1"
  schemaLocation="simple-reporter.xsd"/>
@@ -73,6 +77,10 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
   <xs:attribute ref="sr:force_filter"/>
   <xs:attribute ref="sr:force_filtervalues"/>
   <xs:attribute ref="sr:org_filter_field"/>
+  <xs:attribute ref="repsec:redact"/>
+  <xs:attribute ref="repsec:redact_with"/>
+  <xs:attribute ref="repsec:redact_skip_function"/>
+  <xs:attribute ref="repsec:redact_skip_function_parameters"/>
   <xs:attribute name="field_groups"/>
   <xs:attribute name="config_field"/>
  </xs:complexType>
@@ -89,6 +97,8 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
   <xs:attribute name="class" type="xs:string" use="required"/>
   <xs:attribute ref="reporter:label"/>
   <xs:attribute ref="sr:org_filter_field"/>
+  <xs:attribute ref="repsec:projection_function"/>
+  <xs:attribute ref="repsec:projection_function_parameters"/>
  </xs:complexType>
 </xs:element>
 
@@ -99,6 +109,10 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
   </xs:sequence>
   <xs:attribute ref="oils_persist:primary"/>
   <xs:attribute ref="oils_persist:sequence"/>
+  <xs:attribute ref="repsec:redact_default"/>
+  <xs:attribute ref="repsec:redact_with_default"/>
+  <xs:attribute ref="repsec:redact_skip_function_default"/>
+  <xs:attribute ref="repsec:redact_skip_function_parameters_default"/>
  </xs:complexType>
 </xs:element>
 
@@ -145,6 +159,10 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
   <xs:attribute ref="oils_persist:restrict_primary"/>
   <xs:attribute ref="reporter:core"/>
   <xs:attribute ref="reporter:label"/>
+  <xs:attribute ref="repsec:projection_function"/>
+  <xs:attribute ref="repsec:projection_function_parameters"/>
+  <xs:attribute ref="repsec:restriction_function"/>
+  <xs:attribute ref="repsec:restriction_function_parameters"/>
  </xs:complexType>
 </xs:element>
 

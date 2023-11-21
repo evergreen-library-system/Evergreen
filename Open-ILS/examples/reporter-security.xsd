@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<!--
+
+Copyright (C) 2023 Equinox Open Library Initiative, Inc
+Mike Rylander <mrylander@gmail.com>
+
+This program is free software; you can redistribute it and/or
+modify it under the terms of the GNU General Public License
+as published by the Free Software Foundation; either version 2
+of the License, or (at your option) any later version.
+
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with this program; if not, write to the Free Software
+Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
+
+-->
+
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
+ xmlns="http://open-ils.org/spec/opensrf/IDL/reporter/v1/security"
+ targetNamespace="http://open-ils.org/spec/opensrf/IDL/reporter/v1/security"
+ elementFormDefault="unqualified"
+ attributeFormDefault="unqualified"
+>
+
+<!-- Applied to the <field> element (<fields> for the *_default variants) to encode:
+ * @redact                          : true or false; whether redaction is on for the field.
+ * @redact_with                     : Value (same data type as the column) to replace the data with, instead of NULL.
+ * @redact_skip_function            : Function that causes redaction to be /SKIPPED/ if it returns TRUE.
+ * @redact_skip_function_parameters : Parameters to the above function. A colon-separated list where:
+        - a bare string that is an extant column name for the class passes that column value to the function
+        - the string '$runner' (no quotes) passes the user id of the staff member that scheduled the report
+        - anything else is passed as an untyped dollar-quoted literal. Useful for passing arrays of parameter names.
+-->
+<xs:attribute name="redact" type="xs:boolean"/>
+<xs:attribute name="redact_with" type="xs:string"/>
+<xs:attribute name="redact_skip_function" type="xs:string"/>
+<xs:attribute name="redact_skip_function_parameters" type="xs:string"/>
+
+<xs:attribute name="redact_default" type="xs:boolean"/>
+<xs:attribute name="redact_with_default" type="xs:string"/>
+<xs:attribute name="redact_skip_function_default" type="xs:string"/>
+<xs:attribute name="redact_skip_function_parameters_default" type="xs:string"/>
+
+<!-- Generates WHERE-lelvel conditional clauses when applied to the <class> element to indicate:
+ * @restriction_function            : Function call to add to the WHERE clause when the class is the core report class.
+ * @restriction_function_parameters : Parameters to the above function. A colon-separated list where:
+        - a bare string that is an extant column name for the class passes that column value to the function
+        - the string '$runner' (no quotes) passes the user id of the staff member that scheduled the report
+        - anything else is passed as an untyped dollar-quoted literal. Useful for passing arrays of parameter names.
+-->
+<xs:attribute name="restriction_function" type="xs:string"/>
+<xs:attribute name="restriction_function_parameters" type="xs:string"/>
+
+<!-- Generates JOIN-level conditional clauses.
+     Used on the <class> and/or <link> elements. When added to the <class> element, the function will be added
+     to the JOIN conditions when the class is on the /right hand side/ of a join.  When added to the <link> element,
+     the function will be added to the JOIN conditions when the table is on the /left hand side/ of a join.
+ * @projection_function            : Function call added to the WHERE clause when the class is the core report class.
+ * @projection_function_parameters : Parameters to the above function. A colon-separated list where:
+        - a bare string that is an extant column name for the class passes that column value to the function
+        - the string '$runner' (no quotes) passes the user id of the staff member that scheduled the report
+        - anything else is passed as an untyped dollar-quoted literal. Useful for passing arrays of parameter names.
+-->
+<xs:attribute name="projection_function" type="xs:string"/>
+<xs:attribute name="projection_function_parameters" type="xs:string"/>
+
+</xs:schema>

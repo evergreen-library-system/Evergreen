@@ -1388,7 +1388,7 @@ export class ReporterService {
         };
         const reportTemplate = {
             simple_report: simpleReport,
-            version: 6,
+            version: 7,
             doc_url: templ.doc_url,
             core_class: fmClass,
             'from': {

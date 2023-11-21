@@ -58,7 +58,11 @@ sub load_fields {
     if( ! defined( $sequence ) ) {
         $sequence = '';
     }
-    my $primary   = get_attribute( $field_attr_list, 'oils_persist:primary' );
+    my $primary                                   = get_attribute( $field_attr_list, 'oils_persist:primary' );
+    my $redact_default                           = get_attribute( $field_attr_list, 'repsec:redact_default' ) || 'false';
+    my $redact_with_default                           = get_attribute( $field_attr_list, 'repsec:redact_with_default' );
+    my $redact_skip_function_default               = get_attribute( $field_attr_list, 'repsec:redact_skip_function_default' );
+    my $redact_skip_function_parameters_default = get_attribute( $field_attr_list, 'repsec:redact_skip_function_parameters_default' );
 
     # Load attributes into the Fieldmapper ----------------------
 
@@ -84,11 +88,20 @@ sub load_fields {
             my $selector = get_attribute( $attribute_list, 'reporter:selector' );
             my $datatype = get_attribute( $attribute_list, 'reporter:datatype' );
 
+            my $redact                          = get_attribute( $attribute_list, 'repsec:redact' ) || $redact_default;
+            my $redact_with                     = get_attribute( $attribute_list, 'repsec:redact_with' ) || $redact_with_default;
+            my $redact_skip_function            = get_attribute( $attribute_list, 'repsec:redact_skip_function' ) || $redact_skip_function_default;
+            my $redact_skip_function_parameters = get_attribute( $attribute_list, 'repsec:redact_skip_function_parameters' ) || $redact_skip_function_parameters_default;
+
             $$fieldmap{$fm}{fields}{ $name } =
                 { virtual => ( $virtual eq 'true' ) ? 1 : 0,
                   required => ( $required eq 'true' ) ? 1 : 0,
                   position => $array_position,
                   datatype => $datatype,
+                  reporter_redact             => ($redact eq 'true') ? 1 : 0,
+                  reporter_redact_with        => $redact_with,
+                  reporter_redact_skip        => $redact_skip_function,
+                  reporter_redact_skip_params => $redact_skip_function_parameters,
                 };
 
             $$fieldmap{$fm}{fields}{ $name }{validate} = qr/$validate/ if (defined($validate));
@@ -129,12 +142,16 @@ sub load_links {
             my $key     = get_attribute( $attribute_list, 'key' );
             my $class   = get_attribute( $attribute_list, 'class' );
             my $map     = get_attribute( $attribute_list, 'map' );
+            my $repsec_project_func = get_attribute( $attribute_list, 'repsec:projection_function' );
+            my $repsec_project_func_params = get_attribute( $attribute_list, 'repsec:projection_function_parameters' );
 
             $$fieldmap{$fm}{links}{ $field } =
                 { class   => $class,
                   reltype => $reltype,
                   key     => $key,
-                  map     => $map
+                  map     => $map,
+                  reporter_join_function => $repsec_project_func,
+                  reporter_join_parameters => $repsec_project_func_params,
                 };
         }
     }
@@ -162,6 +179,11 @@ sub load_class {
     my $restrict_primary = get_attribute( $attribute_list, 'oils_persist:restrict_primary' );
     my $field_safe = get_attribute( $attribute_list, 'oils_persist:field_safe' );
 
+    my $repsec_restrict_func = get_attribute( $attribute_list, 'repsec:restriction_function' );
+    my $repsec_restrict_func_params = get_attribute( $attribute_list, 'repsec:restriction_function_parameters' );
+    my $repsec_project_func = get_attribute( $attribute_list, 'repsec:projection_function' );
+    my $repsec_project_func_params = get_attribute( $attribute_list, 'repsec:projection_function_parameters' );
+
     # Load the attributes into the Fieldmapper --------------------
 
     $log->debug("Building Fieldmapper class for [$fm] from IDL");
@@ -172,6 +194,11 @@ sub load_class {
     $$fieldmap{$fm}{ controller }       = [ split ' ', $controller ];
     $$fieldmap{$fm}{ restrict_primary } = $restrict_primary;
     $$fieldmap{$fm}{ field_safe }       = $field_safe;
+
+    $$fieldmap{$fm}{ reporter_where_function } = $repsec_restrict_func;
+    $$fieldmap{$fm}{ reporter_where_parameters } = $repsec_restrict_func_params;
+    $$fieldmap{$fm}{ reporter_join_function } = $repsec_project_func;
+    $$fieldmap{$fm}{ reporter_join_parameters } = $repsec_project_func_params;
 
     # Load fields and links
 

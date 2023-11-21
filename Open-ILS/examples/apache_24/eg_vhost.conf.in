@@ -509,6 +509,7 @@ RewriteRule .? - [E=locale:%{HTTP:Accept-Language}]
     AuthName "Report Login"
     PerlOptions +GlobalRequest
     PerlSetVar OILSProxyPermissions "VIEW_REPORT_OUTPUT"
+    PerlSetVar OILSProxyContextMode "reporter"
     PerlAuthenHandler OpenILS::WWW::Proxy::Authen
     Require valid-user
     Options +ExecCGI
