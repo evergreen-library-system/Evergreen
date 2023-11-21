@@ -663,7 +663,7 @@ function($scope , $routeParams , $location , $window , $q , egCore , egHolds , e
     // 'catalog' tab.
     function get_default_record_tab() {
         var tab = egCore.hatch.getLocalItem('eg.cat.default_record_tab');
-        if (!tab || tab === 'item_table') { return 'catalog'; }
+        if (!tab || tab === 'item_table' || tab === 'staff_view' || tab === 'added-content' || tab === 'bibnotes' || tab === 'cnbrowse') { return 'catalog'; }
         return tab;
     }
 
