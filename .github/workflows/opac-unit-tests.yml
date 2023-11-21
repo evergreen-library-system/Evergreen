@@ -1,0 +1,30 @@
+name: Run OPAC unit tests
+on:
+  push:
+    paths:
+      - 'Open-ILS/web/**'
+      - 'Open-ILS/web/**'
+  pull_request:
+    paths:
+      - 'Open-ILS/web/**'
+      - 'Open-ILS/web/**'
+  schedule:
+    - cron: '0 0 * * *'
+defaults:
+  run:
+    working-directory: Open-ILS/web/opac/deps
+jobs:
+  test:
+    name: Run OPAC unit tests
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 18
+          cache: 'npm'
+          cache-dependency-path: Open-ILS/web/opac/deps/package-lock.json
+      - name: Install dependencies
+        run: npm ci --ignore-scripts
+      - name: Run tests
+        run: npm run test
