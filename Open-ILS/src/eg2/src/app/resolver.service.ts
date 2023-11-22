@@ -32,11 +32,8 @@ export class BaseResolver implements Resolve<Promise<void>> {
         OpenSRF.locale = this.locale.currentLocaleCode();
 
         this.idl.parseIdl();
+        this.pcrud.setAuthoritative();
 
-        return this.pcrud.setAuthoritative()
-        .then(enabled => {
-            console.debug('Authoritative API support enabled=' + enabled);
-            return this.org.fetchOrgs();
-        });
+        return this.org.fetchOrgs();
     }
 }

@@ -317,7 +317,7 @@ export class PcrudContext {
 
 @Injectable({providedIn: 'root'})
 export class PcrudService {
-    static useAuthoritative = false;
+    static useAuthoritative = true;
 
     constructor(
         private idl: IdlService,
@@ -367,7 +367,7 @@ export class PcrudService {
         return this.newContext().autoApply(list);
     }
 
-    setAuthoritative(): Promise<boolean> {
+    setAuthoritative(): void {
         const key = 'eg.sys.use_authoritative';
 
         // Track the value as clearable on login/logout.
@@ -377,18 +377,26 @@ export class PcrudService {
 
         if (typeof enabled === 'boolean') {
             PcrudService.useAuthoritative = enabled;
-            return Promise.resolve(enabled);
+        } else {
+            this.net.request(
+                'open-ils.actor',
+                'opensrf.open-ils.system.use_authoritative'
+            ).subscribe({
+                next: enabled => {
+                    enabled = Boolean(Number(enabled));
+                    PcrudService.useAuthoritative = enabled;
+                    this.store.setLoginSessionItem(key, enabled);
+                    console.debug('authoriative check function returned a value of ', enabled)
+                    return enabled;
+                },
+                error: err => {
+                    PcrudService.useAuthoritative = true;
+                    this.store.setLoginSessionItem(key, true);
+                    console.debug('authoriative check function failed somehow, assuming TRUE')
+                },
+                complete: () => console.debug('authoriative check function complete')
+            });
         }
-
-        return this.net.request(
-            'open-ils.actor',
-            'opensrf.open-ils.system.use_authoritative'
-        ).toPromise().then(enabled => {
-            enabled = Boolean(Number(enabled));
-            PcrudService.useAuthoritative = enabled;
-            this.store.setLoginSessionItem(key, enabled);
-            return enabled;
-        });
     }
 }
 
