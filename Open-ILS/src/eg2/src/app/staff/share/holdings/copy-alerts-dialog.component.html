@@ -21,7 +21,7 @@
         <eg-combobox [entries]="alertTypes" 
           i18n-placeholder placeholder="Select Alert Type..."
           domId="item-alert-type"
-          [selectedId]="newAlert.alert_type() || volcopy.defaults.values.item_alert_type"
+          [selectedId]="newAlert.alert_type() || defaultAlertType"
           [mandatory]="true"
           (onChange)="newAlert.alert_type($event ? $event.id : null)">
         </eg-combobox>

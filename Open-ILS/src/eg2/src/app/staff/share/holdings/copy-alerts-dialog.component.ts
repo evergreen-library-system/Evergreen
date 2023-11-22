@@ -10,7 +10,7 @@ import {StringComponent} from '@eg/share/string/string.component';
 import {DialogComponent} from '@eg/share/dialog/dialog.component';
 import {NgbModal, NgbModalOptions} from '@ng-bootstrap/ng-bootstrap';
 import {ComboboxEntry} from '@eg/share/combobox/combobox.component';
-import {VolCopyService} from '@eg/staff/cat/volcopy/volcopy.service';
+import {ServerStoreService} from '@eg/core/server-store.service';
 
 /**
  * Dialog for managing copy alerts.
@@ -49,6 +49,7 @@ export class CopyAlertsDialogComponent
     newAlerts: IdlObject[];
     autoId = -1;
     changesMade: boolean;
+    defaultAlertType: number;
 
     @ViewChild('successMsg', { static: true }) private successMsg: StringComponent;
     @ViewChild('errorMsg', { static: true }) private errorMsg: StringComponent;
@@ -60,7 +61,7 @@ export class CopyAlertsDialogComponent
         private pcrud: PcrudService,
         private org: OrgService,
         private auth: AuthService,
-        private volcopy: VolCopyService) {
+        private serverStore: ServerStoreService) {
         super(modal); // required for subclassing
         this.copyIds = [];
         this.copies = [];
@@ -75,8 +76,8 @@ export class CopyAlertsDialogComponent
         this.copy = null;
         this.copies = [];
         this.newAlert = this.idl.create('aca');
-        if (this.volcopy.defaults.values?.item_alert_type) {
-            this.newAlert.alert_type(this.volcopy.defaults.values.item_alert_type);
+        if (this.defaultAlertType) {
+            this.newAlert.alert_type(this.defaultAlertType);
         }
         this.newAlerts = [];
         this.newAlert.create_staff(this.auth.user().id());
@@ -99,6 +100,8 @@ export class CopyAlertsDialogComponent
             this.getAlertTypes()
             .then(_ => this.getCopies())
             .then(_ => this.mode === 'manage' ? this.getCopyAlerts() : null)
+            .then(_ => this.getDefaultAlertType())
+            .then(_ => { if (this.defaultAlertType) { this.newAlert.alert_type(this.defaultAlertType) } })
         );
 
         // Return open() observable to caller
@@ -148,6 +151,24 @@ export class CopyAlertsDialogComponent
                 copy.copy_alerts().push(a);
             });
         });
+    }
+
+    getDefaultAlertType(): Promise<any> {
+        this.defaultAlertType = null;
+        // TODO fetching the default item alert type from holdings editor
+        //      defaults had previously been handled via methods from 
+        //      VolCopyService. However, as described in LP#2044051, this
+        //      caused significant issues with dependency injection.
+        //      Consequently, some refactoring may be in order so that
+        //      such default values can be managed via a more self-contained
+        //      service.
+        return this.serverStore.getItem('eg.cat.volcopy.defaults').then(
+            (defaults) => {
+                if (defaults.values?.item_alert_type) {
+                    this.defaultAlertType = defaults.values.item_alert_type;
+                }
+            }
+        );
     }
 
     getAlertTypeLabel(alert: IdlObject): string {
