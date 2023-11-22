@@ -1,5 +1,6 @@
+[[tests]]
 = Tests =
-
+:toc:
 
 Click *Administration* -> *Workstation* -> *Tests*
 
@@ -17,7 +18,7 @@ image::workstation/latency-test.png[]
 *Average Latency* - Indicates how long it takes for your workstation to communicate with Evergreen servers.
 
 
-= Disable Sounds =
+== Disable Sounds ==
 
 
 Click *Administration* -> *Workstation*
