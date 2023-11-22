@@ -56,7 +56,7 @@ Database tables are associated with xref:reports:reporter_create_templates.adoc#
 Some tables and fields in the database still use the term _copy_ while the preferred term _item_ is used throughout the staff client.
 ======
 
-==== ILS User Table ====
+=== ILS User Table ===
 
 This table contains patron/user records. Important fields in this table include:
 
@@ -69,7 +69,7 @@ This table contains patron/user records. Important fields in this table include:
 
 To find more information about patrons, follow the links to the _Current Library Card_ table for patron's current barcode, the _Circulation_ table to find the circulation history, and the _Mailing Address_, _Physical Address_, and _Main Profile Group_, etc.
 
-==== Item Table ====
+=== Item Table ===
 
 This table contains item records. Important fields in this table include:
 
@@ -88,12 +88,12 @@ For circulation information follow the link to the _Circulations_ table.
 
 For basic bibliographic information, follow the link to the _Call Number/Volume_ table. From here, go to the _Bib Record_ table and then select _Simple Records Extracts_. Title, Author, ISBN, ISSN, Publisher, Publication Year, and Record ID can be found in this table.
 
-==== Bibliographic Record Table ====
+=== Bibliographic Record Table ===
 
 This table contains title information. In most cases you will want the basic bibliographic information, which is found within the _Simple Record Extract_ table. When linking from other tables you usually have to link through the _Call Number/Volume_ table to find the _Bib Record_ table.
 
 
-==== Circulation Table ====
+=== Circulation Table ===
 
 This table contains circulation records, including pre-catalogd item circulations.
 
@@ -116,19 +116,19 @@ For patron information, follow the link to the _Patron_ table.
 
 For item information, follow the link to the _Circulating Item_ table.
 
-==== In-house Use Table ====
+=== In-house Use Table ===
 
 This table contains in-house use records for cataloged items. These in-house circulations are done via the xref:circulation:circulating_items_web_client.adoc#_in_house_use_f6[In-House Use] interface.
 
 For item information, follow the link to the _Item_ table.
 
-==== Non-catalogd Circulation Table ====
+=== Non-catalogd Circulation Table ===
 
 This table contains circulations for xref:admin:circing_uncataloged_materials.adoc#_non_cataloged_item_settings[non-cataloged items]. 
 
 For Non-catalogd item type information, follow the link to the _Non-cat Item Type_ table.
 
-==== Non-catalogd In-house Use Table ====
+=== Non-catalogd In-house Use Table ===
 
 This table contains in-house use records for non-cataloged items. 
 
@@ -136,7 +136,7 @@ These in-house circulations are done via the xref:circulation:circulating_items_
 
 For Non-catalogd item type information, follow the link to the _Item Type_ table.
 
-==== Hold Request Table ====
+=== Hold Request Table ===
 
 This table contains hold records for holds that are waiting to be filled or waiting to be picked up.
 
@@ -166,13 +166,13 @@ Important date/time fields in this table include:
 
 For notification information, follow the link to the _Notifications_ table. This table includes Notification Date/Time which indicates when the automatic notification was sent.
 
-==== Copy Transit Table ====
+=== Copy Transit Table ===
 
 This table contains records of item transits. Records are created in this table both when an item is sent back to its circulating library as well as when it is sent to another library to fill a hold.
 
 For item information, follow the link to the _Transited Copy_ table.
  
-==== Hold Transit Table ====
+=== Hold Transit Table ===
 
 This table contains records of item transits specifically when the item is transiting to fill a hold. 
 
@@ -180,13 +180,13 @@ For item information, follow the link to the _Transited Copy_ table.
 
 For hold information, follow the link to the _Hold requiring transit_ table.
 
-==== Billing Line Item Table ====
+=== Billing Line Item Table ===
 
 This table contains all the billing line items such as each day's overdue fines and the manually created bills. 
 
 The records in this table are viewable on the Full Details screen on Bills tab in a patron's account in the staff client.
  
-==== Billable Transaction with Billing Location Table ====
+=== Billable Transaction with Billing Location Table ===
 
 This table contains the summary records of billings and payments. 
 
@@ -198,7 +198,7 @@ Important fields in this table include:
 * Transaction Start Time - the check out time for circulation-related bills and the creation time for manually created bills
 * Transaction Finish Time - the time the bill is resolved by being paid, refunded, or adjusted to zero
 
-==== Payments: All Table ====
+=== Payments: All Table ===
 
 This table contains ALL payment records. 
 
@@ -206,14 +206,14 @@ When a payment is made in the staff client, payment records are created. This co
 
 One bill may be resolved by multiple payments. One payment may resolve multiple bills.
  
-==== Payments: Brick-and-mortar Table ====
+=== Payments: Brick-and-mortar Table ===
 
 This table contains all payments made at the circulation desk through staff.
 
-==== Payments: Desk Table ====
+=== Payments: Desk Table ===
 
 This table contains payments made using the payment type Cash, Check, Credit Card, or Debit Card.
  
-==== Payments: Non-drawer Staff Table ====
+=== Payments: Non-drawer Staff Table ===
 
 This table contains payments made using the payment type Patron Credit, Work, Forgive, or Goods.
