@@ -368,8 +368,13 @@ export class PcrudService {
     }
 
     setAuthoritative(): Promise<boolean> {
+        const key = 'eg.sys.use_authoritative';
 
-        const enabled = this.store.getLocalItem('eg.sys.use_authoritative');
+        // Track the value as clearable on login/logout.
+        this.store.addLoginSessionKey(key);
+
+        const enabled = this.store.getLoginSessionItem(key);
+
         if (typeof enabled === 'boolean') {
             PcrudService.useAuthoritative = enabled;
             return Promise.resolve(enabled);
@@ -381,7 +386,7 @@ export class PcrudService {
         ).toPromise().then(enabled => {
             enabled = Boolean(Number(enabled));
             PcrudService.useAuthoritative = enabled;
-            this.store.setLocalItem('eg.sys.use_authoritative', enabled);
+            this.store.setLoginSessionItem(key, enabled);
             return enabled;
         });
     }
