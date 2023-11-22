@@ -1,9 +1,13 @@
-= Evergreen 3.12 Beta Release Notes =
+= Evergreen 3.12 RC Release Notes =
 :toc:
 :numbered:
 :toclevels: 3
 
 == Upgrade notes ==
+
+=== AutoRenew Event Definition default delay ===
+
+Upgrade script required for change in AutoRenew Event Definition default delay
 
 === Removal of OpenSRF Legacy JSON Gateway ===
 
@@ -44,12 +48,29 @@ Example patch:
 :leveloffset: +2
 
 
+= Accessibility =
+
+* Revamped OPAC search autosuggest (https://bugs.launchpad.net/evergreen/+bug/1187993[Bug 1187993])
+* Added empty alt text for OPAC book covers and format icons to eliminate redundant screen reader announcements of item titles and formats (https://bugs.launchpad.net/evergreen/+bug/1965985[Bug 1965985])
+* Added text alternatives for all icons and images in the staff interface (https://bugs.launchpad.net/evergreen/+bug/1818086[Bug 1818086], https://bugs.launchpad.net/evergreen/+bug/1833726[Bug 1833726], https://bugs.launchpad.net/evergreen/+bug/2042492[Bug 2042492])
+* Improved color contrast for links, buttons, and form inputs throughout the staff interface (https://bugs.launchpad.net/evergreen/+bug/2018326[Bug 2018326], https://bugs.launchpad.net/evergreen/+bug/2019735[Bug 2019735], https://bugs.launchpad.net/evergreen/+bug/2028088[Bug 2028088], https://bugs.launchpad.net/evergreen/+bug/2043238[Bug 2043238], https://bugs.launchpad.net/evergreen/+bug/2043847[Bug 2043847])
+* Added keyboard support for all buttons in the Angular staff interfaces (https://bugs.launchpad.net/evergreen/+bug/2039310[Bug 2039310], https://bugs.launchpad.net/evergreen/+bug/2040303[Bug 2040303], https://bugs.launchpad.net/evergreen/+bug/2043424[Bug 2043424], https://bugs.launchpad.net/evergreen/+bug/1850473[Bug 1850473])
+* Form fields are properly labeled in all core UI components in staff interface (https://bugs.launchpad.net/evergreen/+bug/1999158[Bug 1999158], https://bugs.launchpad.net/evergreen/+bug/2009853[Bug 20009853], https://bugs.launchpad.net/evergreen/+bug/2043421[Bug 2043421], https://bugs.launchpad.net/evergreen/+bug/2019031[Bug 2019031], https://bugs.launchpad.net/evergreen/+bug/2039606[Bug 2039606])
+* Added form field labels for staff catalog search preferences (https://bugs.launchpad.net/evergreen/+bug/2036313[Bug 2036313])
+* Added form field labels for patron survey question administration (https://bugs.launchpad.net/evergreen/+bug/2040186[Bug 2040186])
+* Improved landmarks and headings for screen reader navigation in staff catalog (https://bugs.launchpad.net/evergreen/+bug/2039483[Bug 2039483])
+* Improved table navigation for staff catalog shelving locations (https://bugs.launchpad.net/evergreen/+bug/2016742[Bug 2016742]), cash reports in administration (https://bugs.launchpad.net/evergreen/+bug/2039311[Bug 2039311]), and patron survey answers (https://bugs.launchpad.net/evergreen/+bug/2040184[Bug 2040184])
+* Improved screen reader announcement of repetitive links in staff catalog items table (https://bugs.launchpad.net/evergreen/+bug/2016343[Bug 2016343])
+* Automated accessibility tests for developers (https://bugs.launchpad.net/evergreen/+bug/2035535[Bug 2035535])
+
 = Acquisitions =
 
 
 == Interface for Fiscal Years and Calendars ==
 
-A new interface is now available for users to manage fiscal years and calendars. It is accessible via Administration -> Acquisitions Administration -> Fiscal Years and Calendars.
+https://bugs.launchpad.net/evergreen/+bug/1956510[Bug 1956510]
+
+A new interface is now available for users to manage fiscal years and calendars . It is accessible via Administration -> Acquisitions Administration -> Fiscal Years and Calendars.
 
 To add or edit fiscal calendars and years, a user must have the ADMIN_ACQ_FISCAL_YEAR permission.
 
@@ -60,6 +81,8 @@ Org units by default use the 'Default' fiscal calendar. If new fiscal calendars 
 
 
 == Optional Evergreen "Authoritative" API Support ==
+
+https://bugs.launchpad.net/evergreen/+bug/2012402[Bug 2012402]
 
 Previous versions of Evergreen supported "authoritative" API calls by default.
 These are API calls which force database reads to go the primary database
@@ -85,6 +108,8 @@ block:
 
 == Change in AutoRenew Event Definition Default Delay ==
 
+https://bugs.launchpad.net/bugs/1899976[Bug 1899976]
+
 The delay for the AutoRenew event has been changed from -23 hours to
 -24 hours and 1 minute.  The previous values of -23 hours for the
 delay and -1 minute for the max_delay left a gap of approximately 1
@@ -103,7 +128,12 @@ definitions using this reactor, you should double check that they are
 correct after an upgrade.
 
 
+
+
 == Hatch Print Config Angular Port ==
+
+https://bugs.launchpad.net/bugs/1965326[Bug 1965326]
+
 The Hatch printer settings interface has been ported to Angular.
 
 The checkbox to enable Hatch printing has also been moved from the 
@@ -111,18 +141,26 @@ separate (now-retired) "Print Service (Hatch)" interface into the newly
 Angularized "Hatch (Print Service) Printer Settings" interface.
 
 
-
 == Shelving Locations Editor: Hide deleted shelving locations by default ==
+
+https://bugs.launchpad.net/evergreen/+bug/1917092[Bug 1917092]
 
 In the Shelving Locations Editor under Local Administration, a filter to hide 
 deleted locations is applied by default. Clicking the Remove Filters button or 
 Clearing the filter on the Is Deleted column will reveal the deleted locations.
 
+== Hostname URL building ==
 
-* Fixed issue loading some AngularJS interfaces when hostname starts with *staff* or *eg*. https://bugs.launchpad.net/evergreen/+bug/1862834[Bug 1862834]
+https://bugs.launchpad.net/evergreen/+bug/1862834[Bug 1862834]
+
+Fixed issue loading some AngularJS interfaces when hostname starts with *staff* or *eg*
 
 
-== --852 option for marc_export ==
+== marc_export script improvments ==
+
+=== --852 option for marc_export ===
+
+https://bugs.launchpad.net/evergreen/+bug/2041364[Bug 2041364]
 
 The new `--852b` switch (when used in conjunction with `--items`)
 takes the following values:
@@ -143,17 +181,10 @@ takes the following values:
 ----
 
 
-== Support Script: marc_export default encoding changed to UTF-8 ==
 
-The default file encoding output when using the *marc_export* script is
-now *UTF-8* instead of *MARC8*.  After upgrading check your use of the
-*marc_export* script to ensure that if you need an encoding other than 
-*UTF-8* you specify it with the argument *--encoding*.  This change has
-the possiblity of breaking your workflow. 
-https://bugs.launchpad.net/evergreen/+bug/2015758[Bug #2015758]
+=== --exclude-hidden option for marc_export ===
 
-
-== --exclude-hidden option for marc_export ==
+https://bugs.launchpad.net/evergreen/+bug/2015484[Bug 2015484]
 
 The `--exclude-hidden` option, when used in conjunction with
 `--items`, will not emit 852 fields for items if they are hidden
@@ -174,15 +205,36 @@ visible items, it will be excluded from the output.
 ----
 
 
-== Support Script: marc_export sorting bib output ==
+
+=== marc_export sorting bib output ===
+
+https://bugs.launchpad.net/evergreen/+bug/2029256[Bug #2029256]
 
 The *marc_export* script will now sort the bib record output
 by the bib record ID so that the records in the export file
 are in a consistant order. 
-https://bugs.launchpad.net/evergreen/+bug/2029256[Bug #2029256]
 
+
+
+=== marc_export default encoding changed to UTF-8 ===
+
+https://bugs.launchpad.net/evergreen/+bug/2015758[Bug #2015758]
+
+The default file encoding output when using the *marc_export* script is
+now *UTF-8* instead of *MARC8*.  After upgrading check your use of the
+*marc_export* script to ensure that if you need an encoding other than 
+*UTF-8* you specify it with the argument *--encoding*.  This change has
+the possiblity of breaking your workflow. 
+
+== Custom Org Unit Trees interface ported to Angular ==
+
+https://bugs.launchpad.net/evergreen/+bug/1993825[Bug 1993825]
+
+Reimplemented the Admin Custom Org Unit trees interface in Angular.
 
 == Upgrading to Evergreen/OpenSRF Redis ==
+
+https://bugs.launchpad.net/evergreen/+bug/2041431[Bug 2041431], https://bugs.launchpad.net/evergreen/+bug/2017941[Bug 2017941]
 
 Some of these steps are part of a standard install, included here
 for completeness.
@@ -388,6 +440,9 @@ Example patch:
 
 = API =
 
+== Carousel API Improvements ==
+
+https://bugs.launchpad.net/bugs/2017673[Bug 2017673]
 
 * The open-ils.actor.carousel.retrieve_by_org API now returns the carousel's default name in addition to the override name.
 * The open-ils.actor.carousel.get_contents API now returns the item author as well as title.
@@ -413,6 +468,8 @@ Example patch:
 
 == Default Item Alert Type ==
 
+https://bugs.launchpad.net/bugs/2017673[Bug 2017673]
+
 Staff can now set a default item alert type for new item
 alerts.  To do this:
 
@@ -424,7 +481,11 @@ that you use most frequently.
 . The setting takes effect immediately, no need to save
 it.
 
+
+
 == Added Content Tab in Staff Catalog ==
+
+https://bugs.launchpad.net/bugs/1991294[Bug 1991294]
 
 Adds an Added Content tab to the record details page in the angular staff catalog.
 
@@ -451,13 +512,23 @@ The following new permission controls the ability to setting the URL Override li
   * If NoveList is set up but the bib record lacks ISBNs, or there is no NoveList content available for the work, the tab appears but it will say "No Added Content" and its star will be empty and gray.
   * If NoveList is set up and content is available, the tab's star will be gold and filled in. It may take a few seconds to change when you first load the record. It will load in the background while you are viewing any other tab in the record.
 
+== Link Checker ported to Angular ==
 
+https://bugs.launchpad.net/evergreen/+bug/1993824[Bug 1993824]
 
+Reimplementation of Cataloging -> Link Checker in Angular.
+
+* Relabeled URL Verification Attempts to Batches
+* Relabeled URL Verifications to Attempts
+* Main grid display combines Sessions and Batches.
+* Added a Filter Groups feature to allow users to name and save grid filter groups
 
 = Circulation =
 
 
 == Expansion of Copy Statuses Eligible to Fill Holds ==
+
+https://bugs.launchpad.net/bugs/1904737[Bug 1904737]
 
 Copies with a status that has both the `holdable` and `is_available`
 fields set to `true` are now elibible to fill holds.  This was
@@ -468,6 +539,8 @@ pull list or target holds.
 
 
 == Add filters to Holds Pull List ==
+
+https://bugs.launchpad.net/bugs/1968070[Bug 1968070]
 
 Two new filter comboboxes have been added to the Holds Pull List, one to filter by Pickup Library
 and one to filter by Shelving Locations / Shelving Location Groups. The Print Full List and
@@ -483,6 +556,8 @@ holds in the same section of the library every day.
 
 == Print Selected Rows ==
 
+https://bugs.launchpad.net/bugs/2037128[Bug 2037128]
+
 Grids throughout the staff client now have an option
 to print only rows that the user has selected, rather
 than printing all rows in the grid.
@@ -491,13 +566,19 @@ than printing all rows in the grid.
 
 == Add Survey Responses to Patron Data Print Template ==
 
+(https://bugs.launchpad.net/bugs/1994057[Bug 1994057]
+
 Includes most recent response to each available survey question on
 the Patron Data print template. 
 
 
+==
+
 = OPAC =
 
 == Google Analytics 4 Update ==
+
+https://bugs.launchpad.net/bugs/2019972[Bug 2019972]
 
 Google is transitioning from Universal Analytics
 to GA4 during the Summer of 2023, which requires
@@ -510,6 +591,8 @@ new unique code (G-) that replaces the old
 config.tt2.
 
 == New Setting for Default URI Notes ==
+
+https://bugs.launchpad.net/bugs/1812241[Bug 1812241]
 
 If a URI does not have a 856$z defining a note to display next to
 it in the OPAC you can use the opac.uri_default_note_text setting
@@ -524,6 +607,8 @@ resources that shouldn't receive the default note.
 
 == Improve OPAC URI link purpose display and coverage ==
 
+https://bugs.launchpad.net/bugs/1992827[Bug 1992827]
+
 Previously, the logic used in the OPAC and staff client to display
 non-located URIs was slightly different. In particular, the staff client
 included any 856 with an ind2 value of 0, 1, or 2, and provided a label
@@ -535,9 +620,9 @@ Now the OPAC displays non-located URIs in the same ways as the staff
 client, including those with an ind2 value of 2 and displaying a
 descriptive purpose with the link.
 
-
-
 == Editing manual carousels via the original bucket ==
+
+https://bugs.launchpad.net/evergreen/+bug/1920234[Bug 1920234]
 
 Creating a carousel from a bucket no longer creates a new "System-created bucket".  When
 a new carousel is generated from a record bucket, any changes made to the bucket will be
@@ -549,6 +634,8 @@ need to be edited via the Carousels Administration screen.
 
 
 == Course Reserve Search Filter ==
+
+https://bugs.launchpad.net/bugs/1895699[Bug 1895699]
 
 This filter allows users to limit their search to records that are
     attached to courses at particular libraries, like so:
@@ -569,6 +656,8 @@ catalog as well.
 
 == Display Upcoming Closures in OPAC ==
 
+https://bugs.launchpad.net/bugs/2017913[Bug 2017913]
+
 Adds display of upcoming closures (as entered in
 the Closed Dates Editor) to the library information
 pages in the OPAC.
@@ -578,6 +667,8 @@ pages in the OPAC.
 
 
 == Reporting Sources for Invoice Totals ==
+
+https://bugs.launchpad.net/bugs/2036842[Bug 2036842]
 
 Three new reporting sources are available to permit reporting
 on the total amount of invoices, including both line items and
@@ -595,10 +686,9 @@ navigating links in the template editor.
 = Miscellaneous =
 
 * Barcode transfered to new copy in volume editor in Angular interface for fast item add (https://bugs.launchpad.net/evergreen/+bug/1986706[Bug 1986706])
-* Fix an issue where auto-renewal events can overwhelm open-ils.trigger drones (LP#2030915)
-* Adds a new database view for open non-cataloged circulations: action.open_non_cataloged_circulation (LP#2019974)
-* Improve the performance of the marc_export support script, particularly when items are included (LP#2041364)
-* Add a --batch-size option to the marc_export support script to better control resource usage (LP#2041364)
+* Fix an issue where auto-renewal events can overwhelm open-ils.trigger drones (https://bugs.launchpad.net/evergreen/+bug/2030915[Bug 2030915])
+* Adds a new database view for open non-cataloged circulations: action.open_non_cataloged_circulation (https://bugs.launchpad.net/evergreen/+bug/2019974[Bug 2019974])
+
 * Reimplementation of Cataloging -> Link Checker in Angular. Changed a few things hopefully for the better:
   - Relabeled URL Verification Attempts to Batches
   - Relabeled URL Verifications to Attempts
@@ -647,6 +737,7 @@ Evergreen:
 * Llewellyn Marshall
 * Steven Mayo
 * Terran McCanna
+* Karen McDonald
 * Gina Monti
 * Christine Morgan
 * Michele Morgan
@@ -690,8 +781,9 @@ Thank you also to the release team & build managers:
 * Garry Collum (Kenton County Public Library)
 * Ruth Frasur Davis (Evergreen Indiana / Evergreen Community Development Initiative)
 * Blake Graham-Henderson (MOBIUS)
-* Michele Morgan (NOBLE)
+* Stephanie Leary (Equinox Open Library Initiative)
 * Terran McCanna (PINES)
+* Michele Morgan (NOBLE)
 * Andrea Buntz Neiman (Equinox Open Library Initiative)
 * Jane Sandberg (independent)
 
