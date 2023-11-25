@@ -1,0 +1,793 @@
+= Evergreen 3.12 RC Release Notes =
+:toc:
+:numbered:
+:toclevels: 3
+
+== Upgrade notes ==
+
+=== AutoRenew Event Definition default delay ===
+
+Upgrade script required for change in AutoRenew Event Definition default delay
+
+=== Removal of OpenSRF Legacy JSON Gateway ===
+
+The OpenSRF Legacy JSON Gateway is deprecated and will been removed from OpenSRF.  This
+requires removing any references to it in the Apache configuration.
+
+This means removing references to "OSRFGatewayLegacyJSON" in 
+/etc/apache2/eg_vhost.conf.
+
+Example patch:
+
+[source,diff]
+------------------------------------------------------------------------------
+-# XXX Note, it's important to explicitly set the JSON encoding style 
+-# (OSRFGatewayLegacyJSON), since the default encoding style will likely change 
+-# with OpenSRF 1.0
+-# ----------------------------------------------------------------------------------
+-# OpenSRF JSON legacy gateway
+-# ----------------------------------------------------------------------------------
+-<Location /gateway>
+-    SetHandler osrf_json_gateway_module
+-    OSRFGatewayLegacyJSON "true"
+-    Require all granted 
+-</Location>
+-# ----------------------------------------------------------------------------------
+-# New-style OpenSRF JSON gateway
++# OpenSRF JSON gateway
+ # ----------------------------------------------------------------------------------
+ <Location /osrf-gateway-v1>
+     SetHandler osrf_json_gateway_module
+-    OSRFGatewayLegacyJSON "false"
+     Require all granted
+ </Location>
+------------------------------------------------------------------------------
+
+== New Features ==
+
+:leveloffset: +2
+
+
+= Accessibility =
+
+* Revamped OPAC search autosuggest (https://bugs.launchpad.net/evergreen/+bug/1187993[Bug 1187993])
+* Added empty alt text for OPAC book covers and format icons to eliminate redundant screen reader announcements of item titles and formats (https://bugs.launchpad.net/evergreen/+bug/1965985[Bug 1965985])
+* Added text alternatives for all icons and images in the staff interface (https://bugs.launchpad.net/evergreen/+bug/1818086[Bug 1818086], https://bugs.launchpad.net/evergreen/+bug/1833726[Bug 1833726], https://bugs.launchpad.net/evergreen/+bug/2042492[Bug 2042492])
+* Improved color contrast for links, buttons, and form inputs throughout the staff interface (https://bugs.launchpad.net/evergreen/+bug/2018326[Bug 2018326], https://bugs.launchpad.net/evergreen/+bug/2019735[Bug 2019735], https://bugs.launchpad.net/evergreen/+bug/2028088[Bug 2028088], https://bugs.launchpad.net/evergreen/+bug/2043238[Bug 2043238], https://bugs.launchpad.net/evergreen/+bug/2043847[Bug 2043847])
+* Added keyboard support for all buttons in the Angular staff interfaces (https://bugs.launchpad.net/evergreen/+bug/2039310[Bug 2039310], https://bugs.launchpad.net/evergreen/+bug/2040303[Bug 2040303], https://bugs.launchpad.net/evergreen/+bug/2043424[Bug 2043424], https://bugs.launchpad.net/evergreen/+bug/1850473[Bug 1850473])
+* Form fields are properly labeled in all core UI components in staff interface (https://bugs.launchpad.net/evergreen/+bug/1999158[Bug 1999158], https://bugs.launchpad.net/evergreen/+bug/2009853[Bug 20009853], https://bugs.launchpad.net/evergreen/+bug/2043421[Bug 2043421], https://bugs.launchpad.net/evergreen/+bug/2019031[Bug 2019031], https://bugs.launchpad.net/evergreen/+bug/2039606[Bug 2039606])
+* Added form field labels for staff catalog search preferences (https://bugs.launchpad.net/evergreen/+bug/2036313[Bug 2036313])
+* Added form field labels for patron survey question administration (https://bugs.launchpad.net/evergreen/+bug/2040186[Bug 2040186])
+* Improved landmarks and headings for screen reader navigation in staff catalog (https://bugs.launchpad.net/evergreen/+bug/2039483[Bug 2039483])
+* Improved table navigation for staff catalog shelving locations (https://bugs.launchpad.net/evergreen/+bug/2016742[Bug 2016742]), cash reports in administration (https://bugs.launchpad.net/evergreen/+bug/2039311[Bug 2039311]), and patron survey answers (https://bugs.launchpad.net/evergreen/+bug/2040184[Bug 2040184])
+* Improved screen reader announcement of repetitive links in staff catalog items table (https://bugs.launchpad.net/evergreen/+bug/2016343[Bug 2016343])
+* Automated accessibility tests for developers (https://bugs.launchpad.net/evergreen/+bug/2035535[Bug 2035535])
+
+= Acquisitions =
+
+
+== Interface for Fiscal Years and Calendars ==
+
+https://bugs.launchpad.net/evergreen/+bug/1956510[Bug 1956510]
+
+A new interface is now available for users to manage fiscal years and calendars . It is accessible via Administration -> Acquisitions Administration -> Fiscal Years and Calendars.
+
+To add or edit fiscal calendars and years, a user must have the ADMIN_ACQ_FISCAL_YEAR permission.
+
+Org units by default use the 'Default' fiscal calendar. If new fiscal calendars are created and users wish their associated fiscal years to be visible in the 'Year' drop down of other interfaces, the Fiscal Calendar must be updated to use the new fiscal calendar in the org unit.
+
+
+= Administration =
+
+
+== Optional Evergreen "Authoritative" API Support ==
+
+https://bugs.launchpad.net/evergreen/+bug/2012402[Bug 2012402]
+
+Previous versions of Evergreen supported "authoritative" API calls by default.
+These are API calls which force database reads to go the primary database
+instead of a pooled replica.
+
+Going forward, this functionality will be disabled by default, but may be
+enabled via a new opensrf.xml setting.
+
+If your site uses database pooling, with Evergreen actively reading from
+replicas, add this setting to your opensrf.xml file within the <default/>
+block:
+
+[source,xml]
+----
+<opensrf version='0.0.3'>
+  <default>
+    <uses_pooled_read_replica_dbs>true</uses_pooled_read_replica_dbs>
+<!-- ... -->
+----
+
+
+
+
+== Change in AutoRenew Event Definition Default Delay ==
+
+https://bugs.launchpad.net/bugs/1899976[Bug 1899976]
+
+The delay for the AutoRenew event has been changed from -23 hours to
+-24 hours and 1 minute.  The previous values of -23 hours for the
+delay and -1 minute for the max_delay left a gap of approximately 1
+hour where items would not auto-renew if they fell due during that
+time.  Depending upon the time that the AutoRenew event runner is
+scheduled to run, this gap may never turn up.  However, all it takes
+is a misconfigured client (i.e. an incorrect timezone setting) or a
+manually edited due date on a circulation for this to turn up.  The
+new interval settings guarantee that all circulations for a given 24
+hour period are selected with no gap.
+
+A database upgrade script is provided to alter any event definitions
+using the `Circ::Autorenew` reactor and the previous default delay
+values to the new settings.  If you have customized or added any event
+definitions using this reactor, you should double check that they are
+correct after an upgrade.
+
+
+
+
+== Hatch Print Config Angular Port ==
+
+https://bugs.launchpad.net/bugs/1965326[Bug 1965326]
+
+The Hatch printer settings interface has been ported to Angular.
+
+The checkbox to enable Hatch printing has also been moved from the 
+separate (now-retired) "Print Service (Hatch)" interface into the newly 
+Angularized "Hatch (Print Service) Printer Settings" interface.
+
+
+== Shelving Locations Editor: Hide deleted shelving locations by default ==
+
+https://bugs.launchpad.net/evergreen/+bug/1917092[Bug 1917092]
+
+In the Shelving Locations Editor under Local Administration, a filter to hide 
+deleted locations is applied by default. Clicking the Remove Filters button or 
+Clearing the filter on the Is Deleted column will reveal the deleted locations.
+
+== Hostname URL building ==
+
+https://bugs.launchpad.net/evergreen/+bug/1862834[Bug 1862834]
+
+Fixed issue loading some AngularJS interfaces when hostname starts with *staff* or *eg*
+
+
+== marc_export script improvments ==
+
+=== --852 option for marc_export ===
+
+https://bugs.launchpad.net/evergreen/+bug/2041364[Bug 2041364]
+
+The new `--852b` switch (when used in conjunction with `--items`)
+takes the following values:
+
+ * circ_lib - emit the item circulation library in 852$b
+ * owning_lib - emit the owning library in 852$b
+ * both - emit owning lib and circ lib as separate repeats
+   of $b. This is both the default and legacy behavior.
+
+[source]
+----
+ --852b             Accepts 'owning_lib', 'circ_lib', or 'both' to
+                    control whether the 852 in exported embedded
+                    holdings has the owning library, the circulation
+                    library, or both in separate repeats of the .
+                    If not supplied, defaults to 'both', which is the
+                    legacy behavior.
+----
+
+
+
+=== --exclude-hidden option for marc_export ===
+
+https://bugs.launchpad.net/evergreen/+bug/2015484[Bug 2015484]
+
+The `--exclude-hidden` option, when used in conjunction with
+`--items`, will not emit 852 fields for items if they are hidden
+from in the OPAC in any of the four ways that this can be
+specified in Evergreen. If a bib therefore ends up with no
+visible items, it will be excluded from the output.
+
+[source]
+----
+ --exclude-hidden   Exclude records and items if the item is not
+                    OPAC-visible per its org unit, status, shelving,
+                    location, or flag on the item record. This option
+                    is effective only if the --library and/or --items
+                    flags are supplied. This option takes precedence;
+                    for example, if the org unit specified by --library
+                    is not OPAC-visible, its records will not be included
+                    in the export.
+----
+
+
+
+=== marc_export sorting bib output ===
+
+https://bugs.launchpad.net/evergreen/+bug/2029256[Bug #2029256]
+
+The *marc_export* script will now sort the bib record output
+by the bib record ID so that the records in the export file
+are in a consistant order. 
+
+
+
+=== marc_export default encoding changed to UTF-8 ===
+
+https://bugs.launchpad.net/evergreen/+bug/2015758[Bug #2015758]
+
+The default file encoding output when using the *marc_export* script is
+now *UTF-8* instead of *MARC8*.  After upgrading check your use of the
+*marc_export* script to ensure that if you need an encoding other than 
+*UTF-8* you specify it with the argument *--encoding*.  This change has
+the possiblity of breaking your workflow. 
+
+== Custom Org Unit Trees interface ported to Angular ==
+
+https://bugs.launchpad.net/evergreen/+bug/1993825[Bug 1993825]
+
+Reimplemented the Admin Custom Org Unit trees interface in Angular.
+
+== Upgrading to Evergreen/OpenSRF Redis ==
+
+https://bugs.launchpad.net/evergreen/+bug/2041431[Bug 2041431], https://bugs.launchpad.net/evergreen/+bug/2017941[Bug 2017941]
+
+Some of these steps are part of a standard install, included here
+for completeness.
+
+NOTE: Most of these steps are done automatically when installing OpenSRF and 
+Evergreen from scratch.  It may be easier for some (and less error 
+prone) to install new servers than to upgrade existing ones.
+
+
+=== Assumptions ===
+
+* Evergreen/OpenSRF are installed in the default /openils directory.
+* Assumes a single machine 'localhost' install.
+
+=== Install ===
+
+* From within the dowload / checkout directory
+* ${OSNAME} might be, for example, 'ubuntu-jammy'
+
+==== Install Prerequisites ====
+
+[source,sh]
+------------------------------------------------------------------------------
+sudo make -f OpenSRF/src/extras/Makefile.install ${OSNAME}
+sudo make -f Evergreen/Open-ILS/src/extras/Makefile.install ${OSNAME}
+------------------------------------------------------------------------------
+
+==== Install Opensrf & Evergreen ====
+
+[source,sh]
+------------------------------------------------------------------------------
+cd OpenSRF
+make clean all
+sudo make install
+
+# ----
+
+cd ../Evergreen
+make clean all
+sudo make install
+------------------------------------------------------------------------------
+
+=== Configure ===
+
+==== configure opensrf_core.xml ====
+
+===== Create a local redis-accounts.txt file =====
+
+Redis passwords are generated at install time and stored in 
+'redis-accounts.txt.example'.  Make a local copy to retain our passwords.
+The defaults will be locally generated, unique, and safe to use.
+
+[source,sh]
+------------------------------------------------------------------------------
+cd /openils/conf
+cp redis-accounts.txt.example redis-accounts.txt
+------------------------------------------------------------------------------
+
+===== Copy Redis passwords into opensrf_core.xml =====
+
+Passwords are defined for 'opensrf', 'router', and 'gateway'.
+
+Example redis-accounts.txt entry for the 'opensrf' account:
+
+[source,sh]
+------------------------------------------------------------------------------
+ACL SETUSER opensrf reset
+ACL SETUSER opensrf on >1f129912-b38a-4c42-910f-521e0651b7b9
+ACL SETUSER opensrf -@all +lpop +blpop +rpush +del ~opensrf:router:* ~opensrf:service:* ~opensrf:client:*
+------------------------------------------------------------------------------
+
+The 'opensrf' account password for the example above is
+'1f129912-b38a-4c42-910f-521e0651b7b9'.  Copy this value into opensrf_core.xml
+
+[source,xml]
+------------------------------------------------------------------------------
+    <domain>private.localhost</domain>                                         
+    <username>opensrf</username>                                               
+    <passwd>1f129912-b38a-4c42-910f-521e0651b7b9</passwd> 
+------------------------------------------------------------------------------
+
+Repeat this process for the 'router' and 'gateway' accounts.  There will
+be one password entry for 'gateway' and 2 password entries for 'router'.
+
+===== Update Gateway Username =====
+
+Going forward, the username for the <gateway/> section will be 'gateway'.
+
+Example:
+
+[source,xml]
+------------------------------------------------------------------------------
+  <gateway>
+    ...
+    <username>gateway</username>
+    <passwd>a9080f2e-3504-4d38-9179-8e3d06c53bfd</passwd>
+    <port>6379</port>
+    <loglevel>3</loglevel>
+    ...
+  </gateway>
+------------------------------------------------------------------------------
+
+===== Update the Port =====
+
+Update occurrences of port '5222' (i.e. your local ejabberd port) with
+the default Redis port '6379'. There will be 4 occurrences by default.
+
+Example:
+
+[source,xml]
+------------------------------------------------------------------------------
+    <domain>private.localhost</domain>
+    <username>opensrf</username>
+    <passwd>1f129912-b38a-4c42-910f-521e0651b7b9</passwd>
+    <port>6379</port>
+------------------------------------------------------------------------------
+
+
+==== Update /etc/hosts ====
+
+To avoid requiring Redis listen on multiple IP addresses, change the
+'public' and 'private' hosts in /etc/hosts to use the same IP.
+
+[source,sh]
+------------------------------------------------------------------------------
+127.0.0.1 localhost public.localhost private.localhost
+------------------------------------------------------------------------------
+
+==== Configure Redis ====
+
+Disable message persistence by modifying the Redis 'save' setting.
+
+* Open `/etc/redis/redis.conf` and make the following                            
+** Apply a save value of ""
+** Disable existing definitions for the 'save' value.
+
+[source, bash]                                                                 
+---------------------------------------------------------------------------    
+# Snapshotting can be completely disabled with a single empty string argument  
+# as in following example:                                                     
+#                                                                              
+save ""                                                                        
+
+# save 900 1
+# save 300 10
+# save 60 10000
+---------------------------------------------------------------------------    
+                                                                              
+Restart the Redis server to make the changes take effect:                   
+                                                                              
+[source,sh]
+---------------------------------------------------------------------------    
+sudo systemctl restart redis-server                                                   
+---------------------------------------------------------------------------    
+
+==== Restart Everything ====
+
+[source,sh]
+---------------------------------------------------------------------------    
+osrf_control -l --restart-all
+sudo systemctl restart apache2 nginx websocketd-osrf
+---------------------------------------------------------------------------    
+
+*Done!*
+
+=== Upgrade Note: Removal of OpenSRF Legacy JSON Gateway ===
+
+The OpenSRF Legacy JSON Gateway is deprecated and will been removed from OpenSRF.  This
+requires removing any references to it in the Apache configuration.
+
+This means removing references to "OSRFGatewayLegacyJSON" in 
+/etc/apache2/eg_vhost.conf.
+
+Example patch:
+
+[source,diff]
+------------------------------------------------------------------------------
+-# XXX Note, it's important to explicitly set the JSON encoding style 
+-# (OSRFGatewayLegacyJSON), since the default encoding style will likely change 
+-# with OpenSRF 1.0
+-# ----------------------------------------------------------------------------------
+-# OpenSRF JSON legacy gateway
+-# ----------------------------------------------------------------------------------
+-<Location /gateway>
+-    SetHandler osrf_json_gateway_module
+-    OSRFGatewayLegacyJSON "true"
+-    Require all granted 
+-</Location>
+-# ----------------------------------------------------------------------------------
+-# New-style OpenSRF JSON gateway
++# OpenSRF JSON gateway
+ # ----------------------------------------------------------------------------------
+ <Location /osrf-gateway-v1>
+     SetHandler osrf_json_gateway_module
+-    OSRFGatewayLegacyJSON "false"
+     Require all granted
+ </Location>
+------------------------------------------------------------------------------
+
+
+
+
+
+= API =
+
+== Carousel API Improvements ==
+
+https://bugs.launchpad.net/bugs/2017673[Bug 2017673]
+
+* The open-ils.actor.carousel.retrieve_by_org API now returns the carousel's default name in addition to the override name.
+* The open-ils.actor.carousel.get_contents API now returns the item author as well as title.
+
+
+
+= Cataloging =
+
+== Create MARC Record Interface Enhancements ==
+
+
+* Add a global keyboard shortcut for Create MARC Record of Ctrl+F3. (https://bugs.launchpad.net/evergreen/+bug/2031040[Bug 2031040])
+
+* Focus on the template selector on load, and set unique page title for interface. (https://bugs.launchpad.net/evergreen/+bug/2031043[Bug 2031043])
+
+* Focus on item add checkbox and switch to call number input after activation. (https://bugs.launchpad.net/evergreen/+bug/2031114[Bug 2031114])
+
+* Hide the help button when the flat text editor is enabled since it doesn't do anything in that mode. (https://bugs.launchpad.net/evergreen/+bug/2031123[Bug 2031123])
+
+* Add keyboard shortcut (Ctrl+s) to save in the flat text editor. (https://bugs.launchpad.net/evergreen/+bug/2031162[Bug 2031162])
+
+* Add shortcut key (Ctrl+E) to jump to the flat text editor textbox. (https://bugs.launchpad.net/evergreen/+bug/2031177[Bug 2031177])
+
+== Default Item Alert Type ==
+
+https://bugs.launchpad.net/bugs/2017673[Bug 2017673]
+
+Staff can now set a default item alert type for new item
+alerts.  To do this:
+
+. Open the holdings editor
+. Select the Preferences tab.  
+. Under the "Item Attribute Settings" heading, use the
+"Default Item Alert Type" dropdown to choose the type
+that you use most frequently.
+. The setting takes effect immediately, no need to save
+it.
+
+
+
+== Added Content Tab in Staff Catalog ==
+
+https://bugs.launchpad.net/bugs/1991294[Bug 1991294]
+
+Adds an Added Content tab to the record details page in the angular staff catalog.
+
+ *  The new Added Content tab currently supports only NoveList Select added content.
+ *  NoveList Select subscribers will need to request credentials specifying the staff client url from NoveList for the library settings, separate from the credentials used in the OPAC.
+
+=== Added Content Library Settings ===
+
+The following Library Settings control the behavior of the Added Content tab
+
+  * Staff Client added content: NoveList Select API version (not required)
+  * Staff Client added content: NoveList Select profile/user (
+  * Staff Client added content: NoveList Select key/password
+  * URL Override for NoveList Select added content javascript (not required)
+
+The following new permission controls the ability to setting the URL Override library setting
+
+  * UPDATE_ADDED_CONTENT_URL
+  
+
+=== Added Content Tab Behavior ===
+
+  * If no NoveList settings are present for the OU level, the Added Content tab does not appear.
+  * If NoveList is set up but the bib record lacks ISBNs, or there is no NoveList content available for the work, the tab appears but it will say "No Added Content" and its star will be empty and gray.
+  * If NoveList is set up and content is available, the tab's star will be gold and filled in. It may take a few seconds to change when you first load the record. It will load in the background while you are viewing any other tab in the record.
+
+== Link Checker ported to Angular ==
+
+https://bugs.launchpad.net/evergreen/+bug/1993824[Bug 1993824]
+
+Reimplementation of Cataloging -> Link Checker in Angular.
+
+* Relabeled URL Verification Attempts to Batches
+* Relabeled URL Verifications to Attempts
+* Main grid display combines Sessions and Batches.
+* Added a Filter Groups feature to allow users to name and save grid filter groups
+
+= Circulation =
+
+
+== Expansion of Copy Statuses Eligible to Fill Holds ==
+
+https://bugs.launchpad.net/bugs/1904737[Bug 1904737]
+
+Copies with a status that has both the `holdable` and `is_available`
+fields set to `true` are now elibible to fill holds.  This was
+previously limited to copies with a "magical" status of 0 or 7.  The
+change expands the copies that can fill holds and affords better
+control over what copies with what statuses will appear on the holds
+pull list or target holds.
+
+
+== Add filters to Holds Pull List ==
+
+https://bugs.launchpad.net/bugs/1968070[Bug 1968070]
+
+Two new filter comboboxes have been added to the Holds Pull List, one to filter by Pickup Library
+and one to filter by Shelving Locations / Shelving Location Groups. The Print Full List and
+Download CSV actions respect the new filters, which will improve usability for libraries with
+large pull lists who need to split the list into sections for multiple staff to work on. The
+settings are also sticky, which will make it easier for individuals who always work on pulling
+holds in the same section of the library every day.
+ 
+
+
+= Client =
+
+
+== Print Selected Rows ==
+
+https://bugs.launchpad.net/bugs/2037128[Bug 2037128]
+
+Grids throughout the staff client now have an option
+to print only rows that the user has selected, rather
+than printing all rows in the grid.
+
+
+
+== Add Survey Responses to Patron Data Print Template ==
+
+(https://bugs.launchpad.net/bugs/1994057[Bug 1994057]
+
+Includes most recent response to each available survey question on
+the Patron Data print template. 
+
+
+==
+
+= OPAC =
+
+== Google Analytics 4 Update ==
+
+https://bugs.launchpad.net/bugs/2019972[Bug 2019972]
+
+Google is transitioning from Universal Analytics
+to GA4 during the Summer of 2023, which requires
+an update to the Javascript that is embedded in the 
+public catalog pages. 
+
+Note that Google requires each site to set up a
+new unique code (G-) that replaces the old
+(UA-) code and this will also need to be updated in
+config.tt2.
+
+== New Setting for Default URI Notes ==
+
+https://bugs.launchpad.net/bugs/1812241[Bug 1812241]
+
+If a URI does not have a 856$z defining a note to display next to
+it in the OPAC you can use the opac.uri_default_note_text setting
+to define one.
+
+This feature helps to save catalogers time.  If your library has
+a note that should be added to a wide range of electronic resources,
+rather than applying the note to all applicable records, you can set
+this setting to an appropriate value, and add an 856$z note for any
+resources that shouldn't receive the default note.
+
+
+== Improve OPAC URI link purpose display and coverage ==
+
+https://bugs.launchpad.net/bugs/1992827[Bug 1992827]
+
+Previously, the logic used in the OPAC and staff client to display
+non-located URIs was slightly different. In particular, the staff client
+included any 856 with an ind2 value of 0, 1, or 2, and provided a label
+indicating the purpose of the URI based on the ind2 value. The OPAC, on
+the other hand, only displayed 856s with an ind2 of 0 or 1, and did
+not distinguish the purpose.
+
+Now the OPAC displays non-located URIs in the same ways as the staff
+client, including those with an ind2 value of 2 and displaying a
+descriptive purpose with the link.
+
+== Editing manual carousels via the original bucket ==
+
+https://bugs.launchpad.net/evergreen/+bug/1920234[Bug 1920234]
+
+Creating a carousel from a bucket no longer creates a new "System-created bucket".  When
+a new carousel is generated from a record bucket, any changes made to the bucket will be
+automatically reflected in the carousel. Staff no longer need to go to the Carousels
+Administration screen to make these changes.
+
+This change only affects newly created carousels.  Existing manual carousels will still
+need to be edited via the Carousels Administration screen.
+
+
+== Course Reserve Search Filter ==
+
+https://bugs.launchpad.net/bugs/1895699[Bug 1895699]
+
+This filter allows users to limit their search to records that are
+    attached to courses at particular libraries, like so:
+    
+        biology on_reserve(5, 10)
+    
+The filter can also be negated to search for records that are not
+attached to a course:
+    
+        biology -on_reserve(5)
+
+If an organization is opted into the Course Materials module, this
+filter will appear on the search results page of the public catalog.
+Staff at these organizations will have a new option in their
+staff catalog search preferences to enable this filter in the staff
+catalog as well.
+
+
+== Display Upcoming Closures in OPAC ==
+
+https://bugs.launchpad.net/bugs/2017913[Bug 2017913]
+
+Adds display of upcoming closures (as entered in
+the Closed Dates Editor) to the library information
+pages in the OPAC.
+
+
+= Reports =
+
+
+== Reporting Sources for Invoice Totals ==
+
+https://bugs.launchpad.net/bugs/2036842[Bug 2036842]
+
+Three new reporting sources are available to permit reporting
+on the total amount of invoices, including both line items and
+direct charges. The sources are:
+
+  * Invoice Totals
+  * Invoice Debits by Fund
+  * Invoice Debits by Fund Tag
+
+These sources are meant to be used as the base source of a report,
+with any additional fields and tables of interest brought via
+navigating links in the template editor.
+
+
+= Miscellaneous =
+
+* Barcode transfered to new copy in volume editor in Angular interface for fast item add (https://bugs.launchpad.net/evergreen/+bug/1986706[Bug 1986706])
+* Fix an issue where auto-renewal events can overwhelm open-ils.trigger drones (https://bugs.launchpad.net/evergreen/+bug/2030915[Bug 2030915])
+* Adds a new database view for open non-cataloged circulations: action.open_non_cataloged_circulation (https://bugs.launchpad.net/evergreen/+bug/2019974[Bug 2019974])
+
+* Reimplementation of Cataloging -> Link Checker in Angular. Changed a few things hopefully for the better:
+  - Relabeled URL Verification Attempts to Batches
+  - Relabeled URL Verifications to Attempts
+  - Main grid display combines Sessions and Batches.
+
+
+:leveloffset: 0
+
+
+== Acknowledgments ==
+The Evergreen project would like to acknowledge the following
+organizations that commissioned developments in this release of
+Evergreen:
+
+* King County Library System
+* NOBLE (North of Boston Library Exchange)
+
+We would also like to thank the following individuals who contributed
+code, translations, documentation, and testing to this release of
+Evergreen:
+
+* John Amundson
+* Scott Angel
+* Jason Boyer
+* Dan Briem
+* Christine Burns
+* Eva Cerniňáková
+* Galen Charlton
+* Garry Collum
+* Elizabeth Davis
+* Jeff Davis
+* Ruth Frasur Davis
+* Bill Erickson
+* Jason Etheridge
+* Robin Fitch
+* Blake Graham-Henderson
+* Rogan Hamby
+* Lena Hernandez
+* Kyle Huckins
+* Linda Jansova
+* Brian Kennedy
+* Stephanie Leary
+* Shula Link
+* Tiffany Little
+* Mary Llewellyn
+* Llewellyn Marshall
+* Steven Mayo
+* Terran McCanna
+* Karen MacDonald
+* Gina Monti
+* Christine Morgan
+* Michele Morgan
+* Susan Morrison
+* Lauren Mous
+* Andrea Buntz Neiman
+* Jennifer Pringle
+* Simone Rauscher
+* Mike Rylander
+* Jane Sandberg
+* Chris Sharp
+* Jason Stephenson
+* Josh Stompro
+* Elizabeth Thomsen
+* Beth Willis
+* Carol Witt
+
+
+We also thank the following organizations whose employees contributed
+patches and documentation:
+
+* BC Libraries Cooperative
+* Bibliomation
+* Catalyte
+* CW MARS
+* Equinox Open Library Initiative
+* Georgia Public Library Service (PINES)
+* Grimsby Public Library
+* Kenton County Public Library
+* King County Library System
+* Lake Agassiz Regional Library
+* MOBIUS
+* NOBLE
+* Princeton University
+* Sigio
+* Westchester Library System
+
+Thank you also to the release team & build managers:
+
+* Galen Charlton (Equinox Open Library Initiative)
+* Garry Collum (Kenton County Public Library)
+* Ruth Frasur Davis (Evergreen Indiana / Evergreen Community Development Initiative)
+* Blake Graham-Henderson (MOBIUS)
+* Stephanie Leary (Equinox Open Library Initiative)
+* Terran McCanna (PINES)
+* Michele Morgan (NOBLE)
+* Andrea Buntz Neiman (Equinox Open Library Initiative)
+* Jane Sandberg (independent)
+
+We regret any omissions.  If a contributor has been inadvertently
+missed, please open a bug at http://bugs.launchpad.net/evergreen/
+with a correction.
+
