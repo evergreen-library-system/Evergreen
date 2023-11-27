@@ -1,1 +1,4 @@
 
+* Remove deprecated method "open-ils.serial.bib.summary_statements".
+  As an upgrade note, any site that is still keeping the legacy JSPAC
+  running will experience more degradation of its functionality.
