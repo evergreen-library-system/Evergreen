@@ -3,13 +3,108 @@
   font-size: 1rem; /* defaults to 1.5 */
 }
 
-::ng-deep .lost-row {
-  color: #FFF;
-  background-color: #800000 !important;
+/* low-level red alerts */
+::ng-deep .eg-grid-row.less-intense-alert:not(.selected) {
+  color: var(--bs-body-color);
+  background-color: rgba(var(--bs-red-rgb), 0.10);
+  border-color: rgba(var(--bs-red-rgb), 0.15);
+  border-left: 10px solid var(--bs-red);
+  padding-left: 0;
 }
 
-::ng-deep .longoverdue-row {
-  color: #000;
-  background-color: #FFE1A8 !important;
+::ng-deep .eg-grid-row.less-intense-alert.selected {
+  color: var(--bs-body-color);
+  background-color: rgba(var(--bs-red-rgb), 0.15);
+  border-color: rgba(var(--bs-red-rgb), 0.20);
+  border-left: 10px solid var(--bs-red);
+  padding-left: 0;
 }
 
+/* icon color for low-level red alerts */
+::ng-deep .eg-grid-row.less-intense-alert .eg-grid-flair-cell {
+  color: var(--bs-red-600);
+  border-color: var(--bs-red-600);
+}
+
+/* high-level red alerts */
+::ng-deep .eg-grid-row.lost-row {
+  color: var(--bs-body-color);
+  background-color: rgba(var(--bs-red-rgb), 0.25);
+  border-color: rgba(var(--bs-red-rgb), 0.30);
+  border-left: 10px solid var(--bs-red-600);
+  padding-left: 0;
+}
+
+::ng-deep .eg-grid-row.lost-row.selected {
+  color: var(--bs-body-color);
+  background-color: rgba(var(--bs-red-rgb), 0.30);
+  border-color: rgba(var(--bs-red-rgb), 0.35);
+  border-left: 10px solid var(--bs-red-600);
+  padding-left: 0;
+}
+
+/* icon color for high-level red alerts and link color for both reds */
+::ng-deep .eg-grid-row.less-intense-alert a,
+::ng-deep .eg-grid-row.lost-row a,
+::ng-deep .eg-grid-row.lost-row .eg-grid-flair-cell {
+  color: var(--bs-red-700);
+  border-color: var(--bs-red-700);
+}
+
+/* orange alerts */
+::ng-deep .eg-grid-row.overdue-row {
+  color: var(--bs-body-color);
+  background-color: rgba(var(--bs-orange-rgb), 0.10);
+  border-color: rgba(var(--bs-orange-rgb), 0.15);
+  border-left: 10px solid var(--bs-orange);
+  padding-left: 0;
+}
+
+::ng-deep .eg-grid-row.overdue-row.selected {
+  color: var(--bs-body-color);
+  background-color: rgba(var(--bs-orange-rgb), 0.15);
+  border-color: rgba(var(--bs-orange-rgb), 0.20);
+  border-left: 10px solid var(--bs-orange);
+  padding-left: 0;
+}
+
+::ng-deep .eg-grid-row.longoverdue-row {
+  color: var(--bs-body-color);
+  background-color: rgba(var(--bs-orange-rgb), 0.25);
+  border-color: rgba(var(--bs-orange-rgb), 0.30);
+  border-left: 10px solid var(--bs-orange-600);
+  padding-left: 0;
+}
+
+::ng-deep .eg-grid-row.longoverdue-row.selected {
+  color: var(--bs-body-color);
+  background-color: rgba(var(--bs-orange-rgb), 0.30);
+  border-color: rgba(var(--bs-orange-rgb), 0.35);
+  border-left: 10px solid var(--bs-orange-600);
+  padding-left: 0;
+}
+
+/* link color for orange alerts */
+::ng-deep .eg-grid-row.overdue-row a,
+::ng-deep .eg-grid-row.longoverdue-row a {
+  color: var(--bs-orange-700);
+  border-color: var(--bs-orange-700);
+}
+
+/* icon color for orange alerts */
+::ng-deep .eg-grid-row.overdue-row .eg-grid-flair-cell {
+  color: var(--bs-orange-600);
+}
+
+::ng-deep .eg-grid-row.longoverdue-row .eg-grid-flair-cell {
+  color: var(--bs-orange-700);
+}
+
+/* reset tooltip colors */
+::ng-deep .eg-grid-row.less-intense-alert .tooltip .tooltip-inner a,
+::ng-deep .eg-grid-row.lost-row .tooltip .tooltip-inner a,
+::ng-deep .eg-grid-row.overdue-row .tooltip .tooltip-inner a,
+::ng-deep .eg-grid-row.longoverdue-row .tooltip .tooltip-inner a {
+  color: var(--bs-white);
+  text-decoration: none;
+}

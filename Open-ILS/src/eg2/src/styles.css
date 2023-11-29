@@ -23,6 +23,9 @@
   --bs-red-rgb: 220,53,69;
   --bs-red-600: #B02A37;
   --bs-red-700: #58151C;
+  --bs-orange-rgb: 253, 126, 20;
+  --bs-orange-600: #CA6510;
+  --bs-orange-700: #653208;
 }
 
 /** BS default fonts are huge */
