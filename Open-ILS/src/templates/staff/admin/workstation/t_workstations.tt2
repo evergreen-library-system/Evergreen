@@ -25,8 +25,8 @@
       </eg-org-selector>
     </div>
     <div class="col-md-4">
+      <label class="form-label" for="register-new-workstation-name">[% l('Workstation Name') %]</label>
       <div class="input-group">
-        <label class="form-label" for="register-new-workstation-name">[% l('Workstation Name') %]</label>
         <input type='text' class='form-control' id="register-new-workstation-name"
           title="[% l('Workstation Name') %]"
           placeholder="[% l('Workstation Name') %]"
