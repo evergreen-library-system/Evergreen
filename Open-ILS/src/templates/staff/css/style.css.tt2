@@ -1,3 +1,25 @@
+:root {
+  --bs-blue: #0A58CA; /* $blue-600 in BS5 */
+  --primary: #0A58CA;
+  --bs-blue-rgb: 10,88,202;
+  --bs-primary-rgb: 10,88,202;
+  --bs-green: #198754; /* $green ($green-500) in BS5 */
+  --success: #198754;
+  --bs-green-rgb: 25,135,84;
+  --bs-success-rgb: 25,135,84;
+  --bs-cyan: #087990; /* $cyan-700 in BS5 */
+  --info: #087990;
+  --bs-cyan-rgb: 8,121,144;
+  --bs-info-rgb: 8,121,144;
+  --bs-red: #dc3545;
+  --bs-red-rgb: 220,53,69;
+  --bs-red-600: #B02A37;
+  --bs-red-700: #58151C;
+  --bs-orange-rgb: 253, 126, 20;
+  --bs-orange-600: #CA6510;
+  --bs-orange-700: #653208;
+}
+
 /* Create some padding at bottom of the page for breathing room */
 body { padding-bottom: 50px; }
 
@@ -357,35 +379,56 @@ table.list tr.selected td { /* deprecated? */
 }
 
 /* patron bill row-highlighting */
+/* background colors are !important because Bootstrap 4 table striping is greedy */
 .overdue-row {
-  color: #FFF;
-  background-color: #EB0000 !important;
+  color: var(--bs-body);
+  background-color: rgba(var(--bs-red-rgb), 0.10) !important;
+  border-left: 2px solid var(--bs-red);
+  padding-left: 0;
 }
-.overdue-row a:link, .overdue-row a:visited, .lost-row a:link, .lost-row a:visited {
-  color: #B8ECFF;
-}
-
-.overdue-row a:visited, .lost-row a:visited {
-  color: #DDDDDD;
+.overdue-row a:link, .overdue-row a:visited,
+.overdue-row .eg-grid-cell-stock-status {
+  color: var(--bs-red-700);
+  border-color: var(--bs-red-700);
 }
 
 .longoverdue-row {
-  color: #000;
-  background-color: #FFE1A8 !important;
+  color: var(--bs-body);
+  background-color: rgba(var(--bs-orange-rgb), 0.25) !important;
+  border-left: 2px solid var(--bs-orange-600);
+  padding-left: 0;
 }
-.lost-row {
-  color: #FFF;
-  background-color: #800000 !important;
 
+.longoverdue-row a:link, .longoverdue-row a:visited,
+.longoverdue-row .eg-grid-cell-stock-status {
+  color: var(--bs-orange-700);
+  border-color: var(--bs-orange-700);
 }
+
+.lost-row {
+  color: var(--bs-body);
+  background-color: rgba(var(--bs-red-rgb), 0.25) !important;
+  border-left: 2px solid var(--bs-red-600);
+  padding-left: 0;
+}
+
+.lost-row a:link, .lost-row a:visited,
+.lost-row .eg-grid-cell-stock-status {
+  color: var(--bs-red-700);
+  border-color: var(--bs-red-700);
+}
+
 .eg-grid-row-selected.overdue-row {
-  background-color: #CF0000 !important;
+  background-color: rgba(var(--bs-red-rgb), 0.15) !important;
+  border-left: 2px solid var(--bs-red);
 }
 .eg-grid-row-selected.longoverdue-row {
-  background-color: #FFCF75 !important;
+  background-color: rgba(var(--bs-orange-rgb), 0.30) !important;
+  border-left: 2px solid var(--bs-orange);
 }
 .eg-grid-row-selected.lost-row {
-  background-color: #5C0000 !important;
+  background-color: rgba(var(--bs-red-rgb), 0.30) !important;
+  border-left: 2px solid var(--bs-red-600);
 }
 
 .eg-grid-cell-content::selection {
