@@ -50,30 +50,66 @@ function maybeToggleNumCopies(obj) {
 //Doublecheck whether their default pickup library is valid. Should only be invalid if pulled from disabled home library when the page loads, but adding more checks just in case
 function checkValidPickupLib()
 {
-    var org_selector = document.getElementById('pickup_lib');
+    let org_selector = document.getElementById('pickup_lib');
     if (org_selector != null && org_selector[org_selector.selectedIndex].disabled == true) {
-        org_selector.style.backgroundColor= "#FFF1A5";
-        org_selector.invalid = true;
-        document.getElementById("pickup-lib-warning").hidden = false;
-        document.getElementById("place_hold_submit").disabled = true;
+
+        //Are they at the default message or the warning?
+        if (org_selector[org_selector.selectedIndex].value == -1){
+            document.getElementById("place_hold_submit").disabled = true;
+            org_selector.style.backgroundColor= "#FFF1A5";
+            org_selector.invalid = true;
+        }
+        else{
+            org_selector.style.backgroundColor= "#FFF1A5";
+            org_selector.invalid = true;
+            document.getElementById("pickup-lib-unavailable-warning").hidden = false;
+            document.getElementById("place_hold_submit").disabled = true;
+        }
     }
     else {
         org_selector.invalid = false;
         org_selector.style.backgroundColor = "#fff";
-        document.getElementById("pickup-lib-warning").hidden = true;
+        document.getElementById("pickup-lib-unavailable-warning").hidden = true;
         document.getElementById("place_hold_submit").disabled = false;
     }
 }
 
+//Create and add a generic option for the start of the selector
+function createDefaultOption()
+{
+    let org_selector = document.getElementById('pickup_lib');
+
+    let null_option = document.createElement("option");
+    null_option.innerText = "[% l('Choose a pickup location') %]";
+    null_option.disabled = true;
+    null_option.value = -1;
+    null_option.style.backgroundColor = "#fff";
+    org_selector.add(null_option, 0);
+}
+
 //Check if org valid once when the page loads and then every time you change it could be valid again, so check again
 document.addEventListener("DOMContentLoaded", () => {
-    checkValidPickupLib(); 
-    document.getElementById('pickup_lib').addEventListener("change", checkValidPickupLib);
+    let org_selector = document.getElementById('pickup_lib');
 
     //Keep original colors of org unit dropdown for the sake of readability
-    let options = document.getElementById('pickup_lib').children;
-    for (let i = 0; i < options.length; i++)
+    let options = org_selector.children;
+    //We also need the list of all orgs in the list
+    let lib_ids = Array(options.length).fill(0);
+    for (let i = 0; i < options.length; i++){
         options[i].style.backgroundColor= "#fff";
+        lib_ids[i] = options[i].value;
+    }
+
+    //If the user's default pickup library is not in the dropdown (probably due to being hidden from the OPAC)
+    let default_lib = [% GET ctx.default_pickup_lib %];
+    if (!lib_ids.includes(default_lib.toString())){
+        //Create and use the default message instead
+        createDefaultOption();
+        org_selector.selectedIndex = 0;
+    }
+
+    checkValidPickupLib(); 
+    document.getElementById('pickup_lib').addEventListener("change", checkValidPickupLib);
 
     });
 
@@ -265,9 +301,9 @@ document.addEventListener("DOMContentLoaded", () => {
                 INCLUDE build_org_selector name='pickup_lib'
                     value=ctx.default_pickup_lib id=org_select_id
                     can_have_vols_only=1 hold_pickup_lib=1 %]
-            <label id="pickup-lib-warning" for="[% org_select_id %]" class= "font-weight-bold" style= "color: #D0343A" aria-live="polite" hidden>[% l('* Pickup location unavailable. Please choose a different pickup location.') %]</label>
-             
-
+            <label id="pickup-lib-unavailable-warning" for="[% org_select_id %]" class= "font-weight-bold" style= "color: #D0343A" aria-live="polite" hidden>[% l('* Pickup location unavailable. Please choose a different pickup location.') %]</label>
+            <!-- <label id="choose-pickup-lib-warning" for ="[% org_select_id %]" class="font-weight-light" aria-live="polite" hidden>[% l('* Please choose a pickup location') %]</label>             
+            -->
             
         </p>
 
