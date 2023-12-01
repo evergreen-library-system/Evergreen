@@ -4,43 +4,81 @@
 
 indexterm:[reports, cloning]
 
-In Evergreen, reports are run from templates that can be used multiple times. Library staff can create their own templates or clone templates from other users, or clone their own templates to make changes or modifications to the template.
+In Evergreen, reports are run from templates that can be used multiple times. 
+Library staff can create their own templates or clone templates from other users
+ or clone their own templates to make changes or modifications to the template.
 
-When creating a new template it is a good idea to review the shared templates first: even if the exact template you need does not exist it is often faster to modify an existing template than to build a brand new one. A Local System Administrator account is required to clone templates from the Shared Folders section and save them to My Folders.
+When creating a new template, it is a good idea to review the shared templates 
+first: even if the exact template you need does not exist it is often faster 
+to modify an existing template than to build a brand new one. A Local System 
+Administrator account is required to clone templates from the Shared Folders 
+section and save them to My Folders.
 
-The steps below assume you have already created at least one folder in _Templates_. If you have not done so, please see xref:reports:reporter_folder.adoc#creating_folders[Creating Folders].
+The steps below assume you have already created at least one folder in _Templates_.
+ If you have not done so, please see 
+ xref:reports:reporter_folder.adoc#creating_folders[Creating Folders].
+
+[[clone_known_folder]]
+== Cloning from a Known Folder Location ==
 
 . Navigate to *Administration -> Reports*.
-. In the _Shared Folders_ section select the arrow beside the _Templates_ folder to see the shared template folders. Use the arrows to expand the folder tree until you find the folder containing
-the template you would like to clone.
+. In the _Shared Folders_ section select the caret beside the _Templates_ folder
+ to see the shared template folders. Use the carets to expand the folder tree 
+ until you find the folder containing the template you would like to clone.
 +
-image::images/reporter_cloning_shared_templates/clone-report-template-1.png[Folder Tree]
+image::reporter_cloning_shared_templates/shared_folders.png["Screenshot of folder sections, My Folders and Shared Folders. The Templates and Reports folder are expanded under Shared Folders and a sub-folder under Templates is selected."]
 +
 . Select the folder name to display the contents.
-+
-image::images/reporter_cloning_shared_templates/clone-report-template-2.png[Selected Folder]
-+
 . Check the box beside the template you wish to clone.
-. From the drop-down menu choose _Clone selected template_. Select *Submit*. 
-+
-image::images/reporter_cloning_shared_templates/clone-report-template-3.png[Clone Selected Template]
+. Right click or use the *Actions* menu to select *Clone Template*. 
 +
 [TIP]
 =====
-By default Evergreen only displays the first 10 items in any folder. To view all content, change the _Limit output to_ setting from _10_ to _All_. Be aware that this may cause performance issues in large-data systems.
+By default, Evergreen only displays the first 10 items in any folder. To view all
+ content, change the _Rows_ grid setting from _10_ to a higher number. Be aware 
+ that using _100_ may cause performance issues in large-data systems.
 =====
 +
-. Select the name of your folder where you'd like to save the cloned template and then click _Select Folder_. 
+. In the _Clone Template_ modal that opens enter a name for your template. 
+By default, the system will take the original name and add _(Clone)_ to the end.
+. Select *Confirm*.
 +
-image::images/reporter_cloning_shared_templates/clone-report-template-4.png[Select Folder]
+image::reporter_cloning_shared_templates/clone_template_modal.png["Screenshot of the Clone Template modal. Text reads, Enter a new name for the clone of: Undeleted Items. In the name field the system has auto-populated, Undeleted Items (Clone)."]
 +
-. The template editor will open. For information on modifying templates, see the section on xref:reporter_modifying_templates.adoc[Modifying Templates].
-. Update the template name and/or template description if desired.
-. Select *Save Template*. Once a template is saved it is not possible to edit the template. To make changes, clone a template and change the clone.
-+
-image::images/reporter_cloning_shared_templates/clone-report-template-5.png[Save Template]
-+
-. A pop-up will appear confirming that you wish to save the template. Select *OK/Continue*.
+. The template editor will open. For information on modifying templates, see 
+the section on xref:reporter_modifying_templates.adoc[Modifying Templates].
+. Update the *Template Name* and/or *Template Description* if desired.
+. Select *Save*. Once a template is saved it is not possible to edit the template.
+ To make changes, clone a template and change the clone.
 . The template can now be found in the folder you saved it in.
+
+[[template_search]]
+== Searching for Templates ==
+
+If you do not know the home folder for a template you desire, or if you want to 
+explore templates shared by other accounts, you can use the reporter search function.
+
+. Navigate to *Administration -> Reports*.
+. Select the *Search* tab located above _My Folders_.
 +
-image::images/reporter_cloning_shared_templates/clone-report-template-6.png[Folder View]
+image::reporter_cloning_shared_templates/template_search.png[Screenshot of the Browse and Search tabs above the My Folders area.]
++
+. Enter a search term in the field *Search Templates for String*.
+. Scope you search to _Name_, _Description_, or _All Fields_.
+. Limit your search to a particular folder using the carets beside the folder
+ tree to locate your targeted folder, or leave the search at the _All Folders_
+ level. 
++
+image::reporter_cloning_shared_templates/search_results.png["Screenshot of a template search. In the left pane the search term Undeleted has been entered. The search is of all fields and through all available folders. In the right pane is a typical grid view with several search results. The line for the first result, named Undeleted Items is selected. The Owner field indicates it was created by admin."]
++ 
+. Select your desired template and right click or use your *Actions* menu to 
+select *Clone Template*. 
+. In the _Clone Template_ modal that opens enter a name for your template. 
+By default, the system will take the original name and add _(Clone)_ to the end.
+. Select *Confirm*.
+. The template editor will open. For information on modifying templates, see 
+the section on xref:reporter_modifying_templates.adoc[Modifying Templates].
+. Update the template name and/or template description if desired.
+. Select *Save*. Once a template is saved it is not possible to edit the template.
+ To make changes, clone a template and change the clone.
+. The template can now be found in the folder you saved it in.

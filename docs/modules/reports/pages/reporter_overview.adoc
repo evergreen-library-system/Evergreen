@@ -4,7 +4,17 @@
 
 indexterm:[reports, reports permissions, permissions]
 
-It is possible to report on almost every field in every table in the Evergreen database. 
+[TIP]
+=====
+The documentation that follows focuses primarily on the more robust Advanced 
+Reporter. For users that wish to prioritize ease of use over reporting power, 
+the xref:reports:simple_reports.adoc#simple_reports_interface[Simple Reports Interface] 
+guides a user through a streamlined reports creation wizard and intentionally
+ curtails the extensive options available in the main Reports interface. 
+=====
+
+It is possible to report on almost every field in every table in the Evergreen
+ database using the Advanced Reporter. 
 
 There are three main components used by the reporter:
 
@@ -12,28 +22,50 @@ There are three main components used by the reporter:
 * report definition
 * report output
 
-These components are saved in xref:reports:reporter_folder.adoc[folders] specific to the user account. Users can xref:reports:reporter_folder.adoc#sharing_folders[share their folders] to allow others to clone templates and view report definitions and output, but only the owning staff account can manage the contents of their folders.
+These components are saved in xref:reports:reporter_folder.adoc[folders] specific
+ to the user account. Users can xref:reports:reporter_folder.adoc#sharing_folders[share their folders]
+ to allow others to clone templates and view report definitions and output, but
+ only the owning staff account can manage the contents of their folders.
 
 [TIP]
 =====
-Know which library staff at your library have recurring reports set up and make sure to stop those reports when the staff member leaves your library.  
+Know which library staff at your library have recurring reports set up and make
+ sure to stop those reports when the staff member leaves your library.  
 
-Once a library staff account is closed it is no longer possible to access the reporter via the staff client and you will require assistance from your Evergreen System Administrator to stop any recurring reports run by the library staff account.
+Once a library staff account is closed it is no longer possible to access the 
+reporter via the staff client and you will require assistance from your 
+Evergreen System Administrator to stop any recurring reports run by the library
+ staff account.
 =====
 
-Report templates tell Evergreen what fields are to be displayed in the report output and
-what conditions to filter on in the database. These templates 
-allow you to run a report more than once, without building it anew every time. Templates may be shared for commonly needed reports. These templates can be xref:reports:reporter_cloning_shared_templates.adoc[cloned] and used as is or xref:reports:reporter_modifying_templates.adoc[modified] by library staff. Library staff can also xref:reports:reporter_create_templates.adoc[create new report templates]. Successfully creating a new template generally requires a solid understanding of Evergreen and the xref:reports:reporter_evergreen_database.adoc[Evergreen database]. 
+Report templates tell Evergreen what fields are to be displayed in the report 
+output and what conditions to filter on in the database. These templates allow 
+you to run a report more than once, without building it anew every time. 
+Templates may be shared for commonly needed reports. These templates can be 
+xref:reports:reporter_cloning_shared_templates.adoc[cloned] and used as is or 
+xref:reports:reporter_modifying_templates.adoc[modified] by library staff. 
+Library staff can also xref:reports:reporter_create_templates.adoc[create new report templates]. 
+Successfully creating a new template generally requires a solid understanding
+ of Evergreen and the xref:reports:reporter_evergreen_database.adoc[Evergreen database]. 
 
-When a xref:reports:reporter_basics.adoc#running_reports[report is run] Evergreen looks at the values defined for the filters in the report definition and then goes through the database and gathers the records that meet the conditions into an output file. The output file can be viewed via the reporter within the staff client or via a link in the report completion email. See xref:reports:reporter_basics.adoc#viewing_report_output[Viewing Report Output] for more information.
+When a xref:reports:reporter_basics.adoc#running_reports[report is run] Evergreen
+ looks at the values defined for the filters in the report definition and then 
+ goes through the database and gathers the records that meet the conditions into
+ an output file. The output file can be viewed via the reporter within the staff 
+ client or via a link in the report completion email. See 
+ xref:reports:reporter_basics.adoc#viewing_report_output[Viewing Report Output]
+ for more information.
 
 == Accessing the Reporter ==
 
 The Reports interface is accessed in Evergreen by going to *Administration -> Reports*.
 
-image::reporter_overview/accessing-reports-1.png[Accessing Reports]
+image::reporter_overview/accessing_reporter.png[Screenshot of the menu bar. The Administration menu is expanded to show the Reports option selected near the bottom.]
 
-Users without reporter permissions granted to their staff account will see the message _You do 
-not have sufficient permissions to run reports_.
+Users without reporter permissions granted to their staff account will see the 
+message _You do not have sufficient permissions to run reports_ in the lower 
+corner of the screen. The *Change Operator* modal will open with the message 
+_Permission denied. Please enter credentials for an account that has the 
+RUN_REPORTS,VIEW_REPORT_OUTPUT permission._
 
-image::reporter_overview/accessing-reports-2.png[Reports Permission Denied]
+image::reporter_overview/reports_permission_denied.png["Screenshot of the Change Operator modal. Alert message described above is in a yellow banner. There are fields for Username, Password, Login Type and buttons for OK/Continue and Cancel."]

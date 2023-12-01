@@ -8,7 +8,7 @@ additional data sources.
 
 The Evergreen reporter module does not build and execute SQL queries directly, 
 but instead uses a data abstraction layer called *Fieldmapper* to mediate queries 
-on the Evergreen database.Fieldmapper is also used by other core Evergreen DAO 
+on the Evergreen database. Fieldmapper is also used by other core Evergreen DAO 
 services, including cstore and permacrud. The configuration file _fm_IDL.xml_ 
 contains the mapping between _Fieldmapper_ class definitions and the database. 
 The _fm_IDL.xml_ file is located in the _/openils/conf_ directory.
@@ -16,7 +16,7 @@ The _fm_IDL.xml_ file is located in the _/openils/conf_ directory.
 indexterm:[fm_IDL.xml]
 
 There are 3 basic steps to adding a new data source. Each step will be discussed 
-in more detail in the
+in more detail in the following sections.
 
 . Create a PostgreSQL query, view, or table that will provide the data for your 
 data source.
@@ -43,17 +43,17 @@ indexterm:[PostgreSQL]
 You need to decide whether you will create your data source as a query, a view, 
 or a table.
 
-. Create a query if you are planning to access this data source only through the 
+* Create a query if you are planning to access this data source only through the 
 Evergreen reporter and/or cstore code that you write. You will use this query to 
 create an IDL only view.
-. Create a view if you are planning to access this data source through other 
+* Create a view if you are planning to access this data source through other 
 methods in addition to the Evergreen reporter, or if you may need to do 
 performance tuning to optimize your query.
-. You may also need to use an additional table as part of your data source if 
+* You may also need to use an additional table as part of your data source if 
 you have additional data that's not included in the base Evergreen, or if you 
 need to use a table to store the results of a query for performance reasons.
 
-To develop and test queries, views, and tables, you will need
+To develop and test queries, views, and tables, you will need:
 
 * Access to the Evergreen PostgreSQL database at the command line. This is 
 normally the psql application. You 
@@ -61,8 +61,8 @@ can access the Postgres documentation at the
 https://www.postgresql.org/docs/[Official Postgres documentation] for 
 more information about PostgreSQL.
 * Knowledge of the Evergreen database structure for the data that you want to 
-access. You can find this information by looking at the Evergreen schema
-http://docs.evergreen-ils.org/2.2/schema/[Evergreen schema] 
+access. You can find this information by looking at the 
+http://docs.evergreen-ils.org/2.2/schema/[Evergreen schema].
 
 indexterm:[database schema]
 
@@ -120,7 +120,7 @@ indexterm:[report sources]
 
 You will need to add the following attributes for the class definition:
 
-* *id*. You should follow a consistent naming convention for your class names 
+* *id* – You should follow a consistent naming convention for your class names 
 that won't create conflicts in the future with any standard classes added in 
 future upgrades. Evergreen normally names each class with the first letter of 
 each word in the schema and table names. You may want to add a local prefix or 
@@ -128,22 +128,22 @@ suffix to your local class names.
 * *controller=”open-ils.cstore”*
 * *oils_obj:fieldmapper=”extend_reporter::long_name_of_view”*
 * *oils_persist.readonly=”true”*
-* *reporter:core=”true”* (if you want this to show up as a “core” reporting source)
-* *reporter:label*. This is the name that will appear on the data source list in 
+* *reporter:core=”true”* – (if you want this to show up as a “core” reporting source)
+* *reporter:label* – This is the name that will appear on the data source list in 
 the Evergreen reporter.
-* *oils_persist:source_definition*. If this is an IDL-only view, add the SQL query 
+* *oils_persist:source_definition* – If this is an IDL-only view, add the SQL query 
 here. You don't need this attribute if your class is based on a PostgreSQL view 
 or table.
-* *oils_persist:tablename="schemaname.viewname or tablename"* If this class is 
+* *oils_persist:tablename="schemaname.viewname or tablename"* – If this class is 
 based on a PostgreSQL view or table, add the table name here. You don't need 
 this attribute is your class is an IDL-only view.
 
 For each column in the view or query output, add field element and set the 
 following attributes. The fields should be wrapped with _<field> </field>_:
 
-* *reporter:label*. This is the name that appears in the Evergreen reporter.
-* *name*. This should match the column name in the view or query output.
-* *reporter:datatype* (which can be id, bool, money, org_unit, int, number, 
+* *reporter:label* – This is the name that appears in the Evergreen reporter.
+* *name* – This should match the column name in the view or query output.
+* *reporter:datatype* – (which can be id, bool, money, org_unit, int, number, 
 interval, float, text, timestamp, or link)
 
 For each linking field, add a link element with the following attributes. The 
@@ -256,5 +256,5 @@ opensrf-perl.pl -l -action restart -service open-ils.reporter \
 ------------
 +
 . Restart the Evergreen staff client, or use *Admin --> For Developers -->
-  Clear Cache*
+  Clear Cache*.
 

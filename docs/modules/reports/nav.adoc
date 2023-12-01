@@ -1,17 +1,17 @@
 * xref:reports:introduction.adoc[Reports]
 ** xref:reports:reporter_overview.adoc[Reports Overview]
-** xref:reports:reporter_folder.adoc[Reports Folders]
-** xref:reports:reporter_basics.adoc[Reporter Basics]
-** xref:reports:reporter_create_templates.adoc[Creating Report Templates]
-** xref:reports:reporter_cloning_shared_templates.adoc[Cloning Shared Templates]
-** xref:reports:reporter_modifying_templates.adoc[Modifying Report Templates]
 ** xref:reports:reporter_template_terminology.adoc[Report Template Terminology]
 ** xref:reports:reporter_evergreen_database.adoc[Reports and the Evergreen Database]
-** xref:reports:report_sources.adoc[Specific Report Sources]
-** xref:reports:simple_reports.adoc[Simple Reports Interface]
+** Using the Advanced Reporter
+*** xref:reports:reporter_folder.adoc[Reports Folders]
+*** xref:reports:reporter_basics.adoc[Reporter Basics]
+*** xref:reports:reporter_cloning_shared_templates.adoc[Cloning Shared Templates]
+*** xref:reports:reporter_create_templates.adoc[Creating Report Templates]
+*** xref:reports:report_sources.adoc[Specific Report Sources]
 ** Advanced Reports Administration
 *** xref:reports:reporter_add_data_source.adoc[Adding Data Sources to Reporter]
 *** xref:reports:reporter_export_usingpgAdmin.adoc[Exporting Report Templates Using phpPgAdmin]
 *** xref:reports:reporter_daemon.adoc[Starting and Stopping the Reporter Daemon]
+** xref:reports:simple_reports.adoc[Simple Reports Interface]
 
 

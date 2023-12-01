@@ -4,56 +4,86 @@
 
 indexterm:[database, report templates, nullability]
 
-When you use Evergreen, you are creating and updating records within the Evergreen database. Evergreen's reporter enables you to create reports to extract those records from the database. Understanding some basics about the Evergreen database and how records are created and/or updated when tasks are performed on the staff client and public catalog will help you when working with the reporter.
+When you use Evergreen, you are creating and updating records within the 
+Evergreen database. Evergreen's reporter enables you to create reports to 
+extract those records from the database. Understanding some basics about the 
+Evergreen  database and how records are created and/or updated when tasks are
+ performed  on the staff client and public catalog will help you when working
+ with the reporter.
  
-Various kinds of data are used by Evergreen to enable you to perform routine actions in Evergreen such as checking out an item, registering a patron, or placing a hold. Data such as patron names, address, patron barcodes, item barcodes, shelving locations, statuses, item prices, check out dates, due dates, check in dates, and more are saved in the Evergreen database. This data must be organized in an efficient and effective way to make sure it can be stored and retrieved easily.
+Various kinds of data are used by Evergreen to enable you to perform routine 
+actions in Evergreen such as checking out an item, registering a patron, or 
+placing a hold. Data such as patron names, address, patron barcodes, item 
+barcodes, shelving locations, statuses, item prices, check out dates, due dates,
+ check in dates, and more are saved in the Evergreen database. This data must be
+ organized in an efficient and effective way to make sure it can be stored and 
+ retrieved easily.
  
-Evergreen uses various tables to keep each type of records. You can visualize a table as a spreadsheet: a specified number of columns with an unlimited number of rows. Each column is called a field in the database terminology, and each row is a record.
+Evergreen uses various tables to keep each type of records. You can visualize a
+ table as a spreadsheet: a specified number of columns with an unlimited number
+ of rows. Each column is called a field in the database terminology, and each 
+ row is a record.
 
-There are many tables in Evergreen's database. Each table contains certain type of records, and the information you see displayed on any interface in the staff client is likely coming from more than one table. For example, in a patron account, you can find the patron's names, address, phone number, barcode, main (profile) permission group, etc., all displaying as one record on the _Edit_ tab of the patron's account. However, in the database, the patron's address, barcode, and main (profile) permission group are saved in separate tables. You don't need to know which tables the information is being pulled from when editing a patron record on the staff client, but you do need to know when creating a report template involving patron information.
+There are many tables in Evergreen's database. Each table contains certain type
+ of records, and the information you see displayed on any interface in the staff
+ client is likely coming from more than one table. For example, in a patron 
+ account, you can find the patron's names, address, phone number, barcode, main
+ (profile) permission group, etc., all displaying as one record on the *Edit* tab
+ of the patron's account. However, in the database, the patron's address, barcode,
+ and main (profile) permission group are saved in separate tables. You don't need
+ to know which tables the information is being pulled from when editing a patron
+ record on the staff client, but you do need to know when creating a report 
+ template involving patron information.
  
-Since various information about one patron is saved in separate tables, there has to be a way to match the information about one patron correctly to make sure all the information is about the same patron. Evergreen does this by assigning each patron with a unique database ID and recording the database ID in every related table. So by recording the ID of a record in another table, two tables are connected. Some database IDs, such as patron and bibliographic, are visible in the staff client, others can only be seen within the database.
+Since various information about one patron is saved in separate tables, there 
+has to be a way to match the information about one patron correctly to make sure
+ all the information is about the same patron. Evergreen does this by assigning
+ each patron with a unique database ID and recording the database ID in every 
+ related table. So by recording the ID of a record in another table, two tables
+ are connected. Some database IDs, such as patron and bibliographic, are visible
+ in the staff client, others can only be seen within the database.
 
-The connections among many tables are premade by the reporter. You just need to follow the link to find the data saved in the related table. Below is a simplified diagram showing the connections among some commonly used tables which can be a guide for you to find various fields in different tables. 
+The connections among many tables are premade by the reporter. You just need to
+ follow the link to find the data saved in the related table. Below is a 
+ simplified diagram showing the connections among some commonly used tables 
+ which can be a guide for you to find various fields in different tables. 
 
 **Simplified Diagram of the Tables and Connections Among Them**
 
-image::reporter_evergreen_database/reports-evergreen-database-1.png[scaledwidth="75%",alt="Database Diagram"]
+image::reporter_evergreen_database/evergreen-database.png[scaledwidth="75%",alt="Database diagram showing the tabels with some primary fields. There are a large number of arrows connecting the tables by ID fields. Highly connected tables are at the center of the diagram and less connected tables are twoards the edges. The details of the connections follow. Each connection is only listed once beginning at the more frequently used side. Circulation is connected to Billing and Billable Transactions by Circ ID. Ciculation is also connected to Item by Item ID, to ILS User (Patron) by Patron ID, and Org Unit (library) by Circ Library ID. ILS User is connected to Stat Cat entry User Map, Hold Request, Billable Transactions, Billing, and Circulation by Patron ID. ILS User (Patron) is connected to is connected to Card by Card ID. ILS User (Patron) is connected to Org Unit (Library) by Home Library ID. ILS User is connected to Address by Address ID. Item is connected to Circulation and Hold Request by Item ID. Item is connected to Call Number by Call Number ID. Item is connected to Org Unit (Library) by Circ Library ID. Item is connected to Item Status by Status ID. Item is connected to Shelving Location by Shelving Location ID. Billing is connected to Billable Transactions by Circ ID. Bibliographic Record is connected to Hold Request and Call Number by Bib ID. Stat Cat Entry User Map is connected to Statistical Category."]
 
 [TIP]
 =====
-Some tables do not link directly with each other. For example, there is not a direct link between the ILS User (patron) table and the item table. Instead, these tables link to each other via other tables such as the circulation table and the hold request table.
+Some tables do not link directly with each other. For example, there is not a 
+direct link between the ILS User (patron) table and the item table. Instead, 
+these tables link to each other via other tables such as the circulation table
+ and the hold request table.
 =====
 
-The connections between tables are called joins. Evergreen uses the default join when creating report templates which is usually what you need for a template. When working with data that can be null (have no value), you may need to use xref:reports:reporter_create_template.adoc#report_nullability[nullability], which allows you to control the type of join used to link two tables. 
+The connections between tables are called joins. Evergreen uses a default join
+ when creating report templates which is usually what you need for a template. 
+ When working with data that can be null (have no value), you may want to use 
+ xref:reports:reporter_create_template.adoc#report_nullability[nullability], 
+ which allows you to create an inner join on your selected table. 
 
-To find out what the default join is for a table, you can view the current fieldmapper on your own site through a browser: 
-
-`https://[your domain].org/reports/fm_IDL.xml`
-
-. Search for the name of the source.
-. Find the column you're interested in and take note of the value for _Name_.
-. Search the page for the _Name_ and look for it to appear in a <links> section.
-. The reltype indicates the join.
-+
-"has_a" = inner join
-+
-"has_many" or "might_have" = left outer join
-
-When you create a template, you are writing a SQL (structured query language) query that will run on the Evergreen database.
+When you create a template, you are writing a SQL (structured query language) 
+query that will run on the Evergreen database.
 
 This can be viewed in the report output by selecting *Debugging Info*.
 
-image::reporter_evergreen_database/reports-evergreen-database-2.png[Debugging Info]
+image::reporter_evergreen_database/debugging_output.png[Screenshot of the Output view. At the top is the report name and description. Below that are links for Tabular Output, CSV Output, and Debugging Info. The Debugging Info link is highlighted.]
 
 [[commonly_used_tables]]
 == Commonly Used Tables ==
 
-Database tables are associated with xref:reports:reporter_create_templates.adoc#report_core_source[Core Sources] in the Reporter.
+Database tables are associated with 
+xref:reports:reporter_create_templates.adoc#report_core_source[Sources] 
+in the Reporter.
 
 [NOTE]
 ======
-Some tables and fields in the database still use the term _copy_ while the preferred term _item_ is used throughout the staff client.
+Some tables and fields in the database still use the term _copy_ while the 
+preferred term _item_ is used throughout the staff client.
 ======
 
 === ILS User Table ===
@@ -67,7 +97,10 @@ This table contains patron/user records. Important fields in this table include:
 * Privilege Expiration Date
 * Record Creation Date/Time
 
-To find more information about patrons, follow the links to the _Current Library Card_ table for patron's current barcode, the _Circulation_ table to find the circulation history, and the _Mailing Address_, _Physical Address_, and _Main Profile Group_, etc.
+To find more information about patrons, follow the links to the _Current 
+Library Card_ table for patron's current barcode, the _Circulation_ table to f
+ind the circulation history, and the _Mailing Address_, _Physical Address_, and
+ _Main Profile Group_, etc.
 
 === Item Table ===
 
@@ -80,17 +113,28 @@ This table contains item records. Important fields in this table include:
 * Last Edit Date/Time
 * Price
 
-Pre-catalogd item information including Dummy ISBN, Precat Dummy Title, and Precat Dummy Author is also in this table. When a pre-catalogd item is checked out, an item record is created. If the barcode is already in the table and the item is not marked deleted, the item record will be updated with the new title, author, etc.
+Pre-catalogd item information including Dummy ISBN, Precat Dummy Title, and 
+Precat Dummy Author is also in this table. When a pre-catalogd item is checked
+ out, an item record is created. If the barcode is already in the table and the
+ item is not marked deleted, the item record will be updated with the new 
+ title, author, etc.
 
-To find more information about items, follow the links to the _Circulation Modifier_ table, the _Copy Status_ table, and the _shelving location_ table.
+To find more information about items, follow the links to the _Circulation 
+Modifier_ table, the _Copy Status_ table, and the _shelving location_ table.
 
 For circulation information follow the link to the _Circulations_ table.
 
-For basic bibliographic information, follow the link to the _Call Number/Volume_ table. From here, go to the _Bib Record_ table and then select _Simple Records Extracts_. Title, Author, ISBN, ISSN, Publisher, Publication Year, and Record ID can be found in this table.
+For basic bibliographic information, follow the link to the _Call Number/Volume_
+ table. From here, go to the _Bib Record_ table and then select _Simple Records
+ Extracts_. Title, Author, ISBN, ISSN, Publisher, Publication Year, and Record 
+ ID can be found in this table.
 
 === Bibliographic Record Table ===
 
-This table contains title information. In most cases you will want the basic bibliographic information, which is found within the _Simple Record Extract_ table. When linking from other tables you usually have to link through the _Call Number/Volume_ table to find the _Bib Record_ table.
+This table contains title information. In most cases you will want the basic 
+bibliographic information, which is found within the _Simple Record Extract_ 
+table. When linking from other tables you usually have to link through the _Call
+ Number/Volume_ table to find the _Bib Record_ table.
 
 
 === Circulation Table ===
@@ -99,7 +143,8 @@ This table contains circulation records, including pre-catalogd item circulation
 
 [NOTE]
 ======
-When an item is checked out, a circulation record is created. When an item is renewed, the existing circulation record is closed and another circulation record is created.
+When an item is checked out, a circulation record is created. When an item is 
+renewed, the existing circulation record is closed and another circulation record is created.
 ====== 
 
 Important date/time fields in this table include:
@@ -107,10 +152,17 @@ Important date/time fields in this table include:
 * Checkout Date/Time - the time when an item is checked out
 * Checkin Date/Time - the effective date when the item is treated as checked in
 * Checkin Scan Date/Time - the time when the check-in action is taken
-* Due Date/Time - For all daily loans the due time is 23:59:59 of the day in the local time zone. Hourly loans have a specific time with time zone information.
-* Fine Stops Date/Time - the date when the Maximum Fine limit has been reached, or the item is returned, marked lost, or claimed returned. After this date, the fine generator will not create new overdue fines for this circulation.
-* Record Creation Date/Time - the date and time when the circulation record is created. For online checkouts, it is the same as Checkout Date/Time. For offline checkouts, this date is the offline transaction processing date.
-* Transaction Finish Date/Time - the date when the bills linked to this checkout have been resolved. For a regular checkout without bills, this field is filled with the check in time when the item is returned.
+* Due Date/Time - For all daily loans the due time is 23:59:59 of the day in the
+ local time zone. Hourly loans have a specific time with time zone information.
+* Fine Stops Date/Time - the date when the Maximum Fine limit has been reached,
+ or the item is returned, marked lost, or claimed returned. After this date, the
+ fine generator will not create new overdue fines for this circulation.
+* Record Creation Date/Time - the date and time when the circulation record is
+ created. For online checkouts, it is the same as Checkout Date/Time. For offline
+ checkouts, this date is the offline transaction processing date.
+* Transaction Finish Date/Time - the date when the bills linked to this checkout
+ have been resolved. For a regular checkout without bills, this field is filled
+ with the check in time when the item is returned.
  
 For patron information, follow the link to the _Patron_ table.
 
@@ -118,63 +170,89 @@ For item information, follow the link to the _Circulating Item_ table.
 
 === In-house Use Table ===
 
-This table contains in-house use records for cataloged items. These in-house circulations are done via the xref:circulation:circulating_items_web_client.adoc#_in_house_use_f6[In-House Use] interface.
+This table contains in-house use records for cataloged items. These in-house 
+circulations are done via the 
+xref:circulation:circulating_items_web_client.adoc#_in_house_use_f6[In-House Use] interface.
 
 For item information, follow the link to the _Item_ table.
 
 === Non-catalogd Circulation Table ===
 
-This table contains circulations for xref:admin:circing_uncataloged_materials.adoc#_non_cataloged_item_settings[non-cataloged items]. 
+This table contains circulations for 
+xref:admin:circing_uncataloged_materials.adoc#_non_cataloged_item_settings[non-cataloged items]. 
 
-For Non-catalogd item type information, follow the link to the _Non-cat Item Type_ table.
+For Non-catalogd item type information, follow the link to the _Non-cat Item 
+Type_ table.
 
 === Non-catalogd In-house Use Table ===
 
 This table contains in-house use records for non-cataloged items. 
 
-These in-house circulations are done via the xref:circulation:circulating_items_web_client.adoc#_in_house_use_f6[In-House Use] interface.
+These in-house circulations are done via the 
+xref:circulation:circulating_items_web_client.adoc#_in_house_use_f6[In-House Use] interface.
 
 For Non-catalogd item type information, follow the link to the _Item Type_ table.
 
 === Hold Request Table ===
 
-This table contains hold records for holds that are waiting to be filled or waiting to be picked up.
+This table contains hold records for holds that are waiting to be filled or 
+waiting to be picked up.
 
 For patron information, follow the link to the _Hold User_ table.
 
-For information on who placed the hold, follow the link to the _Requesting User_ table. The requesting user will either be the patron or a staff member if they placed the hold for the patron.
+For information on who placed the hold, follow the link to the _Requesting 
+User_ table. The requesting user will either be the patron or a staff member if they placed the hold for the patron.
 
-For information on the items that can be used to fill a hold, follow the link to the _Hold Copy Map_. Outside of the reporter, this is referred to as the Eligible Copies table.
+For information on the items that can be used to fill a hold, follow the link
+ to the _Hold Copy Map_. Outside of the reporter, this is referred to as the 
+ Eligible Copies table.
 
 [TIP]
 ======
-Target Object ID is shown as a link, but there is no linked table in the Source pane. Depending on the type of hold the value in this field could be a bibliographic record ID, a call number record ID or an item record ID. This is one of the rare cases where you would select a link field to use for your display field.
+Target Object ID is shown as a link, but there is no linked table in the Source 
+pane. Depending on the type of hold the value in this field could be a bibliographic
+ record ID, a call number record ID or an item record ID. This is one of the rare
+ cases where you would select a link field to use for your display field.
 ======
 
 Important date/time fields in this table include:
 
 * Activation Date - the date on which a suspended hold will be activated
-* Capture Date/Time - the time when the hold is captured for the hold shelf or sent into transit
+* Capture Date/Time - the time when the hold is captured for the hold shelf or 
+sent into transit
 * Fulfillment Date/Time - the time when the on hold item is checked out
-* Hopeless Date - the date a hold became “hopeless,” or unfillable, due to all available copies becoming unavailable
+* Hopeless Date - the date a hold became “hopeless,” or unfillable, due to all 
+available copies becoming unavailable
 * Hold Cancel Date/Time - the time when the hold is canceled
-* Hold Expire Date/Time - this could be the date calculated based on your library's default Hold Expire Interval or a selected date when placing the hold
-* Last Targeting Date/Time - the last time the hold targeting program checked for an item to fill the hold. Usually the time will match the Hold Request Time, as the hold targeter will generally check every 24 hours. It is usually not useful for reporting, but it can serve as an indicator of whether or not the request time has been edited.
-* Request Date/Time - Usually this is when the hold is placed but it is editable on the staff client. So sometimes this may be the request time chosen by the staff.
-* Shelf Expire Time - the date based on the Shelf Time and your library's Default Hold Shelf Expire Interval
+* Hold Expire Date/Time - this could be the date calculated based on your 
+library's default Hold Expire Interval or a selected date when placing the hold
+* Last Targeting Date/Time - the last time the hold targeting program checked 
+for an item to fill the hold. Usually the time will match the Hold Request Time, 
+as the hold targeter will generally check every 24 hours. It is usually not 
+useful for reporting, but it can serve as an indicator of whether or not the 
+request time has been edited.
+* Request Date/Time - Usually this is when the hold is placed but it is editable
+ on the staff client. So sometimes this may be the request time chosen by the staff.
+* Shelf Expire Time - the date based on the Shelf Time and your library's Default 
+Hold Shelf Expire Interval
 * Shelf Time - the time the item's status is updated to On Hold Shelf
 
-For notification information, follow the link to the _Notifications_ table. This table includes Notification Date/Time which indicates when the automatic notification was sent.
+For notification information, follow the link to the _Notifications_ table. This 
+table includes Notification Date/Time which indicates when the automatic 
+notification was sent.
 
 === Copy Transit Table ===
 
-This table contains records of item transits. Records are created in this table both when an item is sent back to its circulating library as well as when it is sent to another library to fill a hold.
+This table contains records of item transits. Records are created in this table
+ both when an item is sent back to its circulating library as well as when it is
+ sent to another library to fill a hold.
 
 For item information, follow the link to the _Transited Copy_ table.
  
 === Hold Transit Table ===
 
-This table contains records of item transits specifically when the item is transiting to fill a hold. 
+This table contains records of item transits specifically when the item is 
+transiting to fill a hold. 
 
 For item information, follow the link to the _Transited Copy_ table.
 
@@ -182,27 +260,37 @@ For hold information, follow the link to the _Hold requiring transit_ table.
 
 === Billing Line Item Table ===
 
-This table contains all the billing line items such as each day's overdue fines and the manually created bills. 
+This table contains all the billing line items such as each day's overdue fines
+ and the manually created bills. 
 
-The records in this table are viewable on the Full Details screen on Bills tab in a patron's account in the staff client.
+The records in this table are viewable on the Full Details screen on Bills tab 
+in a patron's account in the staff client.
  
 === Billable Transaction with Billing Location Table ===
 
 This table contains the summary records of billings and payments. 
 
-Most of the information in these records is displayed on the xref:circulation:billing.adoc[Bills] tab or xref:circulation:billing.adoc#_bill_history[Bills History] screen. The records are updated when either the related billings or payments are updated.
+Most of the information in these records is displayed on the 
+xref:circulation:billing.adoc[Bills] tab or 
+xref:circulation:billing.adoc#_bill_history[Bills History] screen. The records
+ are updated when either the related billings or payments are updated.
 
 Important fields in this table include:
 
-* Transaction ID - the bill ID and also the circulation record ID for circulation bills
-* Transaction Start Time - the check out time for circulation-related bills and the creation time for manually created bills
-* Transaction Finish Time - the time the bill is resolved by being paid, refunded, or adjusted to zero
+* Transaction ID - the bill ID and also the circulation record ID for 
+circulation bills
+* Transaction Start Time - the check out time for circulation-related bills and
+ the creation time for manually created bills
+* Transaction Finish Time - the time the bill is resolved by being paid, refunded,
+ or adjusted to zero
 
 === Payments: All Table ===
 
 This table contains ALL payment records. 
 
-When a payment is made in the staff client, payment records are created. This could be one record or multiple depending on the number of bills resolved or partially resolved by the payment. 
+When a payment is made in the staff client, payment records are created. This 
+could be one record or multiple depending on the number of bills resolved or 
+partially resolved by the payment. 
 
 One bill may be resolved by multiple payments. One payment may resolve multiple bills.
  
@@ -212,8 +300,10 @@ This table contains all payments made at the circulation desk through staff.
 
 === Payments: Desk Table ===
 
-This table contains payments made using the payment type Cash, Check, Credit Card, or Debit Card.
+This table contains payments made using the payment type Cash, Check, Credit 
+Card, or Debit Card.
  
 === Payments: Non-drawer Staff Table ===
 
-This table contains payments made using the payment type Patron Credit, Work, Forgive, or Goods.
+This table contains payments made using the payment type Patron Credit, Work, 
+Forgive, or Goods.

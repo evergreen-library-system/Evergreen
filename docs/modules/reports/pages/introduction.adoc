@@ -3,10 +3,18 @@
 
 Learn how to create and use reports in Evergreen.
 
-Here are a few videos on running Reports in Evergreen. 
+[NOTE]
+======
+The following videos demonstrate running Advanced Reports in Evergreen. These presentations 
+both feature the older version of the Advanced Reporter interface; the reporter was
+Angularized in 2024. The videos will still be helpful in understanding how to best 
+query the database. 
 
-https://youtu.be/Ej9C-erZWmg[Making the most of Evergreen Reports] : by Chris Sharp, GA Pines, at Evergreen International Online Pre-Conference 2021.
-https://youtu.be/cNoxPPgGoR4[Understanding Evergreen Reports] : by Chris Sharp, GA Pines at Evergreen International Online Conference 2020
+* https://youtu.be/Ej9C-erZWmg[Making the most of Evergreen Reports] : by Chris
+Sharp, GA Pines, at Evergreen International Online Pre-Conference 2021.
+* https://youtu.be/cNoxPPgGoR4[Understanding Evergreen Reports] : by Chris Sharp,
+GA Pines at Evergreen International Online Conference 2020.
+======
 
-If you want to know more about reporting using the Reporter, join the https://wiki.evergreen-ils.org/doku.php?id=evergreen-reports:rig[Reports Interest Group]
-
+If you want to know more about reporting using the Reporter, join the
+https://wiki.evergreen-ils.org/doku.php?id=evergreen-reports:rig[Reports Interest Group].
