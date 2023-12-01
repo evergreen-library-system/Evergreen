@@ -5,6 +5,7 @@
 In this section is documentation about specific reporting sources in Evergreen.
 
 [[hold_copy_bib_homelib]]
-== Hold/Copy Ratio per Bib and Home Library
+== Hold/Copy Ratio per Bib and Home Library ==
 
-This report source allows you to break out counts by patron home library (versions 3.8+).
+This report source allows you to break out counts by patron home library 
+(versions 3.8+).

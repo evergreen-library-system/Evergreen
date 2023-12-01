@@ -18,7 +18,7 @@ To access the Simple Reports interface, select *Administration → Simple
 Reports*. You will see an interface with two tabs, *My Reports* and *My
 Outputs*.
 
-image::simple_reports/sr_my_reports.png[My Reports]
+image::simple_reports/sr_my_reports.png["Screenshot of the Simple Reports interface. At top left are tabs for My Reports and My Outputs with My Reports selected. Below that are buttons for Remove Filters and New. To the right are the standard grid view buttons. The grid view shows a number of reports with columns labeled. Report Name, Date Created, Last Edited, Last Run, Next Run, and Recurring?"]
 
 [[sr_my_reports]]
 === My Reports ===
@@ -67,7 +67,7 @@ associated with the Simple Report.
 [[sr_my_outputs]]
 === My Outputs ===
 
-image::simple_reports/sr_my_outputs.png[My Outputs]
+image::simple_reports/sr_my_outputs.png["Screenshot of the My Outputs tab view. Just below the tabs are buttons for Remove Filters and Refresh. To the right of the buttons are the normal grid view button options. Below that are a list of outputs in a grid view. The columns are labeled Report, Finish Time, and Output. Each line in the output column has buttons for HTML and CSV."]
 
 The My Outputs tab shows outputs from your reports. Outputs are tied to
 user accounts regardless of workstation. Actions available from this tab
@@ -132,7 +132,7 @@ monetary transactions
 To create a new Simple Report, click the *New* button from the My
 Reports tab.
 
-image::simple_reports/sr_new_report.png[New Simple Report]
+image::simple_reports/sr_new_report.png[Screenshot of the top of the Simple Reports interface. The My Reports tab is selected and the New button just below the tabs is selected.]
 
 
 You will be prompted to select a report type (report types are described
@@ -151,7 +151,7 @@ must give your report a unique name in order to save it. Reports will
 not run until output options are set and *Save and Schedule Report* is
 selected.
 
-image::simple_reports/sr_display_fields.png[Display Fields]
+image::simple_reports/sr_display_fields.png["Screenshot of the Display Fields tab. At the top of the screen the Report Type Weeding has been selected. The left section shows top level options for Common Fields, Date Fields, Inventory Fields, Call Number and Title Fields, Libraries, and All Fields. At the right is an empty area labeled Field Display Order."]
 
 The *Display Fields* tab lets you select the fields and their display
 order (i.e., column order) for your report. Depending on which report
@@ -184,13 +184,13 @@ from the left-hand menu to expand its list of fields, and select the
 checkbox next to each field that you want to display as a column in your
 report.
 
-image::simple_reports/sr_select_display_fields.png[Select Display Fields]
+image::simple_reports/sr_select_display_fields.png["Screenshot of the Display Fields tab. The Common Fields option is open showing a list of field options. The field Circulating Library Short (Policy) Name is checked. On the right under the Field Display Order area, Three options are displayed. Circulating Library Short (Policy) Name, Barcode, and Shelving Location."]
 
 
 As you select fields from the left, they will appear on the right under
 *Field Display Order*.
 
-image::simple_reports/sr_field_display_order.png[Field Display Order]
+image::simple_reports/sr_field_display_order.png["Screenshot of the Field Display Order area described below. Three fields are selected, Library Shelving Location, and Title. All have a Transform of Raw Data."]
 
 
 * You can remove a field by clicking the minus button on the left of this
@@ -213,9 +213,6 @@ separately, in the *Output Order* tab.
 Once you have selected your display fields, click on the *Output Order*
 tab. This tab allows you to assign individual column sort orders.
 
-image::simple_reports/sr_output_order.png[Output Order]
-
-
 On the left side of the screen you can rename columns, adjust
 transforms, and reorder your columns in this tab in the same way you can
 in the *Field Display Order* tab.
@@ -226,6 +223,8 @@ third, etc. The sorting is independent of the column display order,
 which is an important difference from the standard Evergreen Reports
 interface.
 
+image::simple_reports/sr_output_order.png["Screenshot of the Output Order screen described above. Each column displays three fields. On the left are Library, Shelving Location, and Title. On the right are Library, Shelving Location, and Call Number."]
+
 In the example above, the first three columns to display will be
 _Library_, _Shelving Location_, and then _Title_, but the report will
 sort first by _Library_, then by _Shelving Location_, and then by _Call
@@ -235,15 +234,13 @@ To set sort order on a column, select the *Direction* dropdown. Choose
 _Ascending_ or _Descending_ for each column. Sort order will typically
 default to Ascending.
 
-image::simple_reports/sr_sort_order.png[Sort Order]
+image::simple_reports/sr_sort_order.png["Screenshot of the Field Sort Order area with two fields added, Library and Shelving Location. The Direction drop-down is open on Library to show the two options, 'Ascending (1, 2, a, b, A, B)' and 'Descending (B, A, b, a, 2, 1)"]
 
 Once you have established your sort orders, select the *Filters* tab.
 This tab allows you to apply filters to your report. Note that some
 fields are hidden from display but available for filtering, and
 vice-versa; and there may be multiple display fields for the same data
-(i.e.various names, shortnames, etc.) but only one field for filtering.
-
-image::simple_reports/sr_filters.png[Filters]
+(i.e. various names, shortnames, etc.) but only one field for filtering.
 
 As in the Display Fields tab, the Filters tab has an accordion menu on
 the left which groups types of fields. Note that *Suggested Filters* are
@@ -256,7 +253,7 @@ On the right, the columns you have selected for display in your report
 will show under *Fields Selected for Display*, and your filter choices
 will show under *Filter Fields and Values*.
 
-image::simple_reports/sr_filter_fields.png[Filter Fields]
+image::simple_reports/sr_filters.png["Screenshot of the Filters tab as described above. No filters selected yet, so the Filter Fields and Values area is empty."]
 
 * You can remove a filter field by clicking the minus button on the left
 of this area. You can also remove a field by unchecking it from the
@@ -282,6 +279,8 @@ populate a dropdown for selection
 ** _Contains Matching Substring_ - the report output will include rows
 matching the substring listed in the filter value.
 
+image::simple_reports/sr_filter_fields.png["Screenshot of the Display Fields tab described above. The Filter Fields and Values area shows three selected fields. The Transform and Operator fields are to the right of the field name. Further to the right are the Filter Value fields. Filer Value is formatted in a different way on each field depending on the combination of selected field, Transform, and Operator."]
+
 In the example above, there are three filters on the report:
 
 * Owning Library | In List | BR1, BR2 - the report will only show items
@@ -305,7 +304,7 @@ Date/Time in its name, use the Age transform, and then choose you
 interval (hours, days, weeks, months,
 years):
 +
-image::simple_reports/sr_relative_date.png[Relative Date Filter]
+image::simple_reports/sr_relative_date.png["Screenshot of the filter Fields and Values area with one filter field, 'Circulation Start Date/Time.' The selected Transform is Age and the Operator is Equals. The Filter value is formatted as a integer field paired with a drop down for unit of time. The value is set at 1 month."]
 +
 
 Once you have chosen your filters, select the *Output Options* tab.
@@ -315,7 +314,7 @@ report output, including recurrence and scheduling options, as well as
 an option to email report output. Schedule times default to 15-minute
 intervals but can be typed over if a different time is desired.
 
-image::simple_reports/sr_output_options.png[Output Options]
+image::simple_reports/sr_output_options.png["Screenshot of the Output Options tab. 'Choose your output formats' has checkboxes for Excel Output, CSV Output, HTML Output, Bar Chart, and Line Chart. 'Recurrence' has a checkbox for Recurring Report? and an integer field for Recurrence Interval, with a drop-down menu for time unit. It currently shows Days. 'Scheduling' has radio buttons for Run Report Now and Schedule Report for Later. Email has a text field for Email Address."]
 
 Once you click *Save and Schedule Report*, your report will be saved and
 either run immediately or scheduled to be run, and you will be taken

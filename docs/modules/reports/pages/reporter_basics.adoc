@@ -1,14 +1,16 @@
 = Reporter Basics =
 :page-aliases: reporter_running_recurring_reports.adoc, reporter_generating_reports.adoc, reporter_view_output.adoc
-
 :toc:
 
 indexterm:[reports]
 
 The basic steps to using Evergreen's reporter are:
 
-. Create a template. See xref:reports:reporter_create_templates.adoc[Creating Report Templates].
-.. Alternatively, find a template and clone it into your folders if it was created by another user. See xref:reports:reporter_cloning_shared_templates.adoc[Cloning Report Templates].
+. Create a template. 
+See xref:reports:reporter_create_templates.adoc[Creating Report Templates].
+.. Alternatively, find a template and clone it into your folders if it was 
+created by another user. 
+See xref:reports:reporter_cloning_shared_templates.adoc[Cloning Report Templates].
 . Run the report, also referred to as creating a report definition.
 . View your output either through the staff client or via your email.
 
@@ -17,106 +19,143 @@ The basic steps to using Evergreen's reporter are:
 
 indexterm:[running reports, creating reports, reports]
 
-You can run one-off reports on demand or schedule recurring reports to run automatically. To run the report, you fill out the reports form which creates a report definition, which tells Evergreen how to run the report, what information to include, and what type of output to provide you with.
+You can run one-off reports on demand or schedule recurring reports to run 
+automatically. To run the report, you fill out the reports form to create a 
+report definition, which tells Evergreen how to run the report, what information
+ to include, and what type of output to provide you with.
 
 . Navigate to *Administration -> Reports*.
-. In the _My Folders_ section select the arrow beside the _Templates_ folder to see your template folders. Use the arrows to expand the folder tree until you find the folder containing the template you would like to use for your report.
-+
-image::reporter_basics/reports-run-1.png[Folder Tree]
-+
+. In the _My Folders_ section at the left of the screen, select the caret beside
+ the _Templates_ folder to see your template folders. Use the carets to expand 
+ the folder tree until you find the folder containing the template you would like
+ to use for your report.
 . Select a folder name to display the contents.
 +
-image::reporter_basics/reports-run-2.png[Folder Selection]
+image::reporter_basics/template_selection.png["A screenshot of a subfolder in the left pane under My Folders has been highlighted. On the right, the check mark next to a template has been selected."]
 +
-. Check the box beside the template you wish to use.
-. _Create a new report from selected template_ will be selected by default. Select *Submit*. 
+. Double click on the desired template name or check the box beside the template
+ you wish to use and then right click or use the *Actions* menu to select
+ _New Report_.
+. Enter a name for your report. Report names must be unique, or the report cannot
+ be saved.
 +
-image::reporter_basics/reports-run-3.png[Create New Report]
+[TIP]
+=====
+A best practice for naming reports is to use the same name as the template you
+ used. This makes it easy to track outputs and reports back to the template used.
+ If multiple reports are made from the same template, the format of 'template 
+ name' - 'report characteristic' can make those reports easy to track.
+=====
 +
-. Enter a name for your report. Report names must be unique or the report cannot be saved.
+. Optionally, enter a description for your report.
 +
-Optionally, enter a description for your report.
+image::reporter_basics/report_description.png[Screenshot of the editable Report Name and Report Description fields on the left and the non-editable fields of Template Name and Template Description on the right. The report description reads 'Counts by permission group for Example Branch 4.']
 +
-image::reporter_basics/reports-run-4.png[Report Description]
+. The display columns selected in the template are listed on the _Columns_ tab.
+ You can navigate between tabs by clicking on the tabs or by using the *Previous*
+ and *Next* buttons at the bottom of the screen.
 +
-. The display columns included in the output are listed as Report columns.
+image::reporter_basics/reports_columns.png[Screenshot of the columns tab on the report. Tabs are between the report name/description and the list of column fields.]
 +
-Pivot Label Column and Pivot Data Column are optional. Pivot tables are a different way to view data. If you currently use pivot tables to manipulate report data in Microsoft Excel, it is better to select an Excel output and continue using pivot tables in Excel. Please note that pivot tables are only suitable for some types of result data.
+. On the _Filters_ tab, enter values for any filters. For more information on 
+filter values, see 
+xref:reports:reporter_basics.adoc#report_filters[Report Filters], below.
 +
-image::reporter_basics/reports-run-5.png[Pivot Label and Pivot Data]
-+
-. Choose the Reports folder you would like to save the reports definition in.
-+
-image::reporter_basics/reports-run-6.png[Folder Selection]
-+
-. Enter values for any filters. For more information on filter values, see xref:reports:reporter_basics.adoc#report_filters[Report Filters], below.
-+
-image::reporter_basics/reports-run-7.png[Report Filter Values]
+image::reporter_basics/report_filters.png["Screenshot of the Filters tab. One of the filters, Org Unit ID shows an org unit tree under the filter value column. One of the branches is checked."]
 +
 [NOTE]
 ======
-Instead of scrolling through the options in the filter lists, you can select one of the visible options and then on your keyboard press the letter the option you want starts with. This will jump you to that spot in the list.
+Instead of scrolling through the options in the filter lists, you can place
+ your cursor in the filter value box and then on your keyboard start typing the
+ first few letters that the option you want starts with. This will limit your 
+ list to just those options that match what you have typed.
 
-You can also multi-select options using SHIFT + click to select contiguous list elements, or CTRL + click to select non-contiguous list elements.
+Make sure you use the *Add* button after choosing each filter value to actually
+ add it to your filter choices.
 ======
 +
-. Select the checkboxes to select the types of output you would like.
-. Select the _Calculate grouping subtotals_ checkbox to add an unlabeled row or column with the subtotals for each grouping and an unlabeled grand total row or column. Please note, group subtotals and grand totals will only be useful with some reports.
+
 +
-image::reporter_basics/reports-run-8.png[Select Output Options]
+image::reporter_basics/layout_sheduling_options.png[Screenshot of the Layout and Scheduling tab. Across the top are pivot options. Along the left is a column of output checkboxes. Below are scheduling options. Below that is a field for email addresses. On the right are two folder trees to select the report folder and output folder.]
 +
-. Leave the recurring and run time options as is unless you are running a recurring report. See xref:reports:reporter_basics.adoc#recurring_reports[Recurring Reports], below.
-+
-image::reporter_basics/reports-run-9.png[Select Recurrence Interval]
-+
-. Optionally, enter an email address to send the report completion notification to. By default this 
-field will contain the email address saved in your staff account. Additional addresses can be added 
-separated by a comma.
-+
-image::reporter_basics/reports-run-10.png[Email Output]
+. On the _Layout and Scheduling_ tab you can make a number of choices about the
+ final output. 
+.. *Pivot Label Column* and *Pivot Data Column* are optional. Pivot tables are
+ a different way to view data. If you currently use pivot tables to manipulate
+ report data in Microsoft Excel, it is better to select an Excel output and 
+ continue using pivot tables in Excel. Note that pivot tables are only suitable
+ for some types of result data.
+.. Select the checkboxes to _Choose your output format(s)_. Multiple options may
+ be selected.
+... Select the _Calculate grouping subtotals_ checkbox to add an unlabeled row
+ or column with the subtotals for each grouping and an unlabeled grand total row
+ or column. Note, group subtotals and grand totals will only be useful with some
+ reports.
+... _Excel output_ will create a file to export the data to Excel.
+... _CSV Output_ will create a data file in comma-separated values format. This
+ is the file format required to do a batch load on the *Item Status* screen.
+... _HTML Output_ creates a simple table view of the data that is viewable in 
+your browser environment. _HTML Output_ is sometimes referred to as tabular output.
+... _Bar Chart_ will create a very simple bar chart of your data. Note, bar 
+charts will only be useful with some reports.
+... _Line Chart_ will create a very simple line chart of your data. Note, line
+ charts will only be useful with some reports.
+.. Leave the _Recurrence_ and _Scheduling_ options as is unless you are running
+ a recurring report. See 
+ xref:reports:reporter_basics.adoc#recurring_reports[Recurring Reports], below.
+.. Optionally, enter an email address to send the report completion notification
+ to. By default, this 
+field will contain the email address saved in your staff account. Additional 
+addresses can be added separated by a comma.
 +
 [NOTE]
 ======
-The email will contain a link to the password-protected report output. Only staff members with permissions to view reports or have full access to the reporter will be able to open the report output.
+The email will contain a link to the password-protected report output. Only 
+staff members with permissions to view reports or have full access to the 
+reporter will be able to open the report output.
 ======
 +
-. Choose the Output folder you would like to save the report output in and then select *Save Report*.
-+
-image::reporter_basics/reports-run-11.png[Select Output Folder]
-+
-. A pop-up appears confirming the report has been saved. Select _OK_.
-. Unless you have set a specific run time, the report will run right away. If your report has not 
-completed after 15 minutes, you may need to contact your system administrator.
-. Once the report is complete, you can view your output. See xref:reports:reporter_basics.adoc#viewing_report_output[Viewing Report Output], below. 
+.. On the right side of the screen, Choose the _Report Folder_ and _Output Folder_
+ you would like to save the report and output in and then select *Save Report*.
+. A confirmation will appear in the lower right of the screen indicating that 
+the report has successfully saved. 
+. Unless you have set a specific run time, the report will run right away. If 
+your report has not completed after 15 minutes, you may need to contact your system administrator.
+. Once the report is complete, you can view your output. See 
+xref:reports:reporter_basics.adoc#viewing_report_output[Viewing Report Output], 
+below. 
 
 [[report_filters]]
 === Report Filters ===
 
 indexterm:[report filters, reports]
 
-The filters in a report template allow library staff to set the parameters on which the report runs. The
-ability to select values for certain filters when running a report means a single report template can 
-be used multiple times to generate reports on slightly different data. For example, the same report 
-template can be used to generate separate lists of items using particular circulation modifiers.
+The filters in a report template allow library staff to set the parameters on 
+which the report runs. The ability to select values for certain filters when 
+running a report means a single report template can be used multiple times to
+ generate reports on slightly different data. For example, the same report 
+template can be used to generate separate lists of items using particular 
+circulation modifiers.
 
 [[hardcoded_filters]]
 ==== Hardcoded Filters ====
 
-Hardcoded filters are set when the report template is created. These filters cannot be changed when 
-running a report. Common hardcoded filters include:
+Hardcoded filters are set when the report template is created. These filters 
+cannot be changed when running a report. Common hardcoded filters include:
 
 [options="header"]
 |===
 |Column |Transform |Action |User Params |Description 
-|Bibliographic Record -> Record ID |Raw Data |Not in list |-1 | Exclude all records where
-the bibliographic record ID is -1 which is all pre-cat records.
-|Call Number/Volume -> Call Number/Volume ID |Raw Data |Not in list |-1 | Exclude all records where
-the call number ID is -1 which is all pre-cat records.
-|Circulation -> Check In Date/Time |Date |Is NULL| |Include only items that have not been checked in.
-|Circulation -> Circulating Item -> Copy Status -> Name |Raw Data |Equals | name of an item status | Include
-only items that are in the specified item status.
-|Circulation -> Fine Stop Reason |Raw Data |Not in list |LOST | Exclude items that have stopped generating
-fines because they have been set to lost.
+|Bibliographic Record -> Record ID |Raw Data |Not in list |-1 | Exclude all 
+records where the bibliographic record ID is -1 which is all pre-cat records.
+|Call Number/Volume -> Call Number/Volume ID |Raw Data |Not in list |-1 | 
+Exclude all records where the call number ID is -1 which is all pre-cat records.
+|Circulation -> Check In Date/Time |Date |Is NULL| |Include only items that have
+ not been checked in.
+|Circulation -> Circulating Item -> Copy Status -> Name |Raw Data |Equals | name
+ of an item status | Include only items that are in the specified item status.
+|Circulation -> Fine Stop Reason |Raw Data |Not in list |LOST | Exclude items
+ that have stopped generating fines because they have been set to lost.
 |Item -> Is Deleted |Raw Data |Equals |f | Include only non-deleted items.
 |ILS User -> Is Deleted |Raw Data |Equals |f | Include only non-deleted patrons.
 |===
@@ -124,105 +163,170 @@ fines because they have been set to lost.
 [[report_date_filters]]
 ==== Date Filters ====
 
-Date filters are generally set up to be a specific date, a specific month, or a date range. Date filters
-may include tips about how the dates should be entered. For instance, in a date range, the earlier
-date should always be entered in the first date box.
+Date filters are generally set up to be a specific date, a specific month, or 
+a date range. Date filters may include tips about how the dates should be 
+entered. For instance, in a date range, the earlier date should always be 
+entered in the first date box.
 
-image::reporter_basics/reports-filters-1.png[Date Filters]
+image::reporter_basics/reports-filters-1.png["Screenshot of a checkin Scan date/time date filter. Operator of between, filter values selected for the first and last dat of 2023. Transform is date. Highlighted in the lower left is a hint, enter the earlier date in the first box."]
 
-If you'd like to include all possible data for your library in a report that specifies a time range, 
-enter between "1900-01-01" and "today's date".
+If you'd like to include all possible data for your library in a report that 
+specifies a time range, enter between "1900-01-01" and "today's date".
 
-When running recurring reports it's very important to use _Relative Dates_ in your filters. This will allow Evergreen to calculate the time period to report on each time it runs the report. A relative date of 1 month ago will generate a new report each month on the previous month's data; a real date of November 2022 will generate the same report each month with the data from November 2022. 
+The transforms selected for the date filters will also control how users intend 
+to use the results or present the options at the report definition stage.
+
+* If you want a date picker widget, use the Raw Data or Date transform.
+* If you want to filter based primarily on a comparison between the run time of
+ the report and a timestamp column, use the Date, Month, or Year transform, and
+ select Relative time value.
+* If you want to filter based on the age of the timestamp stored in a column at 
+report run time, use the Age transform.
+* All other transforms have their uses, but the first 3 rules will cover almost 
+all cases.
+
+When running recurring reports, it's very important to use _Relative Dates_ in 
+your filters. This will allow Evergreen to calculate the time period to report
+ on each time it runs the report. A relative date of 1 month ago will generate
+ a new report each month on the previous month's data; a real date of November
+ 2022 will generate the same report each month with the data from November 2022. 
 
 [TIP]
 =====
-You can set up recurring monthly reports to show comparative data from one year ago. To do this, select relative dates of 1 month ago and 13 months ago.
+You can set up recurring monthly reports to show comparative data from one year
+ ago. To do this, select relative dates of 1 month ago and 13 months ago.
 =====
 
-Use the drop-down menu to switch from _Real Date_ to _Relative Date_. For a report filtering on month, you will be able to indicate how many months ago the report should look at.
+Use the _Relative time value_ checkbox under _Filter value_ to switch from a 
+specific real date to a relative date. For a report filtering on month, you will
+ be able to indicate how many months ago the report should look at.
 
-image::reporter_basics/reports-filters-2.png[Relative Date Filter]
+image::reporter_basics/reports-filters-2.png[Screenshot of a checkin scan date/time. The relative time value box is selected. Instead of date fields with a calendar pickers there are fields for number of days ago.]
 
 [[report_library_filters]]
 ==== Library Filters ====
 
-All report templates used by libraries should include a library filter. This filter can look at the library specified in a variety of fields in the data including the checkout library, circulation library, owning library, patron's home library, and organizational unit.
+All report templates used by libraries should include a library filter. This 
+filter can look at the library specified in a variety of fields in the data 
+including the checkout library, circulation library, owning library, patron's
+ home library, and organizational unit.
 
-image::reporter_basics/reports-filters-3.png[Select Library Filter]
+image::reporter_basics/reports-filters-3.png["Screenshot of an organizational unit id filter. The filter value is displayed as a tree with checkboxes next to the unit names. In the lower left corner there is a highlighted hint that reads, check boxes for your library branch(es)"]
 
-This filter is important as it allows staff to restrict the data in the report output to only data relevant to their library.
+This filter is important as it allows staff to restrict the data in the report 
+output to only data relevant to their library.
 
-Multi-branch libraries can add specific branches or all of their branches to the list to get a report including data from the select branches.
+Multi-branch libraries can add specific branches or all of their branches to the
+ list to get a report including data from the selected branches.
 
 [[report_other_filters]]
 ==== Other Filters ====
 
-While many filters will require staff to select values from a given list, some filters will require staff to type a value into the filter _User Params_ field. In those cases field hints or xref:reports:reporter_create_templates.adoc#changing_column_documentation[column documentation] can be used to indicate how the text should be entered so that Evergreen can use the value and generate usable report output.
+While many filters will require staff to select values from a given list, some 
+filters will require staff to type a value into the _Filter value_ field. In 
+those cases, field hints, or 
+xref:reports:reporter_create_templates.adoc#changing_column_documentation[column documentation], 
+can be used to indicate how the text should be entered so that Evergreen can 
+use the value and generate usable report output.
 
-image::reporter_basics/reports-filters-4.png[Field Hint for User Name]
+image::reporter_basics/reports-filters-4.png["Screenshot of an OPAC/Staff Client Username filter. The filter value field is a blank text field with an Add button next to it. If the lower left is a highlighted hint, enter one or more user names (e.g. br4dickinson) and click Add"]
 
-Some report templates will have just hardcoded filters and a single library filter that requires staff to enter a value while other reports will have multiple filters where staff need to enter values for the library, dates, and patron or item data.
+Some reports will have just hardcoded filters defined at the template level and
+ a single library filter that requires staff to enter a value, while other 
+ reports will have multiple filters where staff need to enter values for the 
+ library, dates, and patron or item data.
 
-image::reporter_basics/reports-filters-5.png[Multiple Filters]
+image::reporter_basics/reports-filters-5.png["Screenshot of three filters, creation date/time, is deleted, and OPAC/staff client username. Two of them have hints provided. The middle 'is deleted' had its value set at the template level and so there are no fields for users to specify."]
 
 [[recurring_reports]]
 === Recurring Reports ===
 
 indexterm:[recurring reports, reports]
 
-Save time by scheduling recurring reports to run your regular reports automatically. Monthly circulation and patron registration statistics are good candidates for recurring reports.
+Save time by scheduling recurring reports to run your regular reports 
+automatically. Monthly circulation and patron registration statistics are good
+ candidates for recurring reports.
 
-Staff with access to the reporter can set up recurring reports to email a link to the password-protected report output to another staff member.
+Staff with access to the reporter can set up recurring reports to email a link
+ to the password-protected report output to another staff member.
 
-To set up a recurring report, follow the procedure in xref:reports:reporter_basics.adoc#running_reports[Running a Report], above, until you reach step 11 and then follow the steps below.
+To set up a recurring report, follow the procedure in 
+xref:reports:reporter_basics.adoc#running_reports[Running a Report], above, 
+until you reach the _Recurrence_ and _Scheduling_ sections and then follow 
+the steps below.
  
-. Select the box for _Recurring Report_.
-. Select your desired _Recurrence Interval_. Reports can run on a daily, weekly, or monthly interval.
+. Select the box for _Recurring Report?_.
+. In the now visible _Recurrence Interval_ field enter your desired interval. 
+Reports can run on a hourly, daily, weekly, monthly, or yearly interval.
 +
 [TIP] 
 =====
-The recurrence interval should correspond to the date filter. For example, if the template filters on a date instead of month, a recurring report running with a monthly interval may miss a day or capture an extra day's data. See xref:reporter_basics.adoc#report_date_filters[Date Filters] for more information on working with date filters on a recurring report.
+The recurrence interval should correspond to the date filter. For example, if 
+the template filters on a date (month, day, and year) instead of month, a 
+recurring report running with a monthly interval may miss a day or capture an 
+extra day's data. See xref:reporter_basics.adoc#report_date_filters[Date Filters]
+ for more information on working with date filters on a recurring report.
 =====
 +
-. Check the box beside the date and set the date of the first run of the report.
+. Select _Schedule Report for Later_ and in the new date field set the date and 
+time of the first run of the report.
 +
-image::reporter_basics/reports-recurring-1.png[Recurring Reports]
+image::reporter_basics/recurring_reports.png["Screenshot showing a checked box for recurring report and a recurrence interval of 6 months. The schedule report for later radio button is selected and in the date field 2 am on January 1, 2023, is entered."]
 +
 [NOTE]
 ======
-Best practice is to always set recurring reports to run in the early hours of the morning (1:00 a.m. to 4:00 a.m. server time).
+Best practice is to always set recurring reports to run in the early hours of 
+the morning (1:00 a.m. to 4:00 a.m. server time).
 
-Monthly recurring reports MUST be set to run on the 1st of the next month in order to capture all monthly data.
+Monthly recurring reports must be set to run on the 1st of the next month in 
+order to capture all monthly data.
 ======
 +
-. Enter an email address to send the report completion notification to. By default this field will contain the email address saved in your staff account. Additional addresses can be added separated by a comma.
+. Enter an email address to send the report completion notification to. By 
+default, this field will contain the email address saved in your staff account.
+ Additional addresses can be added separated by a comma.
 +
-image::reporter_basics/reports-run-10.png[Email Output]
+image::reporter_basics/email_address.png[Screenshot of the email address field. Two addresses have been added. There is a comma but no space between the two.]
 +
 [NOTE]
 ======
-The email will contain a link to the password-protected report output. Only staff members with permissions to view reports or full access to the reporter will be able to open the report output.
+The email will contain a link to the password-protected report output. Only 
+staff members with permissions to view reports or full access to the reporter 
+will be able to open the report output.
 ======
 +
-. Choose the Output folder you would like to save the report output in and then select *Save Report*.
+. On the right side of the screen, Choose the _Report Folder_ and _Output 
+Folder_ you would like to save the report and output in and then select 
+*Save and Schedule Report*.
 +
-image::reporter_basics/reports-run-11.png[Select Output Location]
+image::reporter_basics/report_and_output_folders.png[Screenshot of two side by side expanded folder trees. The Circulations sub-folder on both is highlighted. At the top Circulations is displayed in bold font to indicate the selected option.]
 +
-. A pop-up appears confirming the report has been saved. Select *OK*.
-. Unless you have set a specific run time the report will run right away. If your report has not completed after 15 minutes, please contact your Evergreen administrator.
-. Once the report is complete you can view your output. See Viewing Report Output, below.
+. A confirmation will appear in the lower right corner of the screen with _Report
+ Saved Successfully_. 
+. Unless you have set a specific run time the report will run right away. If 
+your report has not completed after 15 minutes, please contact your Evergreen 
+administrator.
+. Once the report is complete you can view your output. See 
+xref:reports:reporter_basics.adoc#viewing_report_output[Viewing Report Output]
+, below.
  
 [[viewing_report_output]]
 == Viewing Report Output ==
 
 indexterm:[reports, report output]
 
-Once a report is finished, the output is stored in the specified _Output_ folder and will remain there until deleted. Your system administrator may have a script that automatically deletes report output after a certain period of time. 
+Once a report is finished, the output is stored in the specified _Outputs_ folder
+ and will remain there until deleted. Your system administrator may have a script
+ that automatically deletes report output after a certain period of time. 
 
-If an email address was included in the report definition, Evergreen will send an email containing a link to the password-protected report output. Only staff members with permissions to view reports or full access to the reporter will be able to open the report output in either the staff client or via the email link.
+If an email address was included in the report definition, Evergreen will send an 
+email containing a link to the password-protected report output. Only staff members
+ with permissions to view reports or full access to the reporter will be able to
+ open the report output in either the staff client or via the email link.
 
-Unless you have set a specific run time, reports generally take a few minutes to complete depending on the size of the report. If your report still shows as pending in your output folder after 15 minutes, you may need to contact your system administrator.
+complete depending on the size of the report. If your report still shows as 
+pending in your output folder after 15 minutes, you may need to contact your 
+system administrator.
 
 [[viewing_output_in_interface]]
 === Viewing Output via the Reports Interface ===
@@ -230,103 +334,123 @@ Unless you have set a specific run time, reports generally take a few minutes to
 indexterm:[report output, reports]
 
 . Navigate to *Administration -> Reports*.
-. In the _My Folders_ section select the arrow beside the _Output_ folder to see your output folders. Use the arrows to expand the folder tree until you find the folder containing the output you'd like to view.
-+
-image::reporter_basics/report-output-1.png[Output Folders]
-+
+. In the _My Folders_ section select the caret beside the _Outputs_ folder to 
+see your output folders. Use the carets to expand the folder tree until you find
+ the folder containing the output you'd like to view.
 . Select the folder name to display the contents.
 +
-image::reporter_basics/report-output-2.png[Selected Output Folder]
+image::reporter_basics/outputs_folder_contents.png["Screenshot of an opened output folder. On the left are the expanded folders tor templates, reports, and outputs with an output folder selected. The right side of the screen is separated into horizontal sections. At the top, under Output in folder: is the name of the folder and buttons for folder-level actions. Next is a Pending section with a grid view. Under that is a Complete section with another grid view. There is one result under the complete section."]
 +
-. Output will display either under _Pending Items_ or _Completed Items_. Select the folder name again to refresh if your output hasn't completed yet.
-. Check the box beside the output you would like to view.
-. _View report output_ will be selected by default. Select *Submit*.
+. Output will display either under _Pending_ or _Complete_. Use the *Refresh 
+Grids* button at the top of the screen or the *Refresh* button under each 
+section if your output hasn't completed yet.
+. Double click on the line for the output you would like to view or check the 
+box beside the completed output you would like to view and right click or use 
+the *Actions* menu to _View Output_.
+. The report output will open in a new browser tab.
+. The report name and description will display as well as links to the output 
+options you selected when running the report. The URL can be shared with other 
+library staff who have reporter permissions.
 +
-image::reporter_basics/report-output-3.png[Submit Button]
+image::reporter_basics/output_new_tab.png["Screenshot of the output tab info as described above. In addition to links to output formats, there is a link to debugging info."]
 +
-. The report output will open in a new browser window.
+If _Bar Charts_ and/or _Line Charts_ were selected in the output options and 
+the data can be shown in those forms, the bar and/or line chart will display.
 +
-The report name and description will display as well as links to the output options selected when running the report. The URL can be shared with other library staff who have reporter permissions.
+image::reporter_basics/report-output-5.png[Screenshot of a bar chart with red bars on a grey background. X axis is shelving locations and y axis is unlabeled numbers.]
 +
-image::reporter_basics/report-output-4.png[Output Window]
+. Select *Excel Output* or *CSV Output* to download the output as a file that
+ can be opened in a spreadsheet program.
+. Select *Tabular Output* to view the output in the browser. The *Tabular 
+Output* is the same as the *HTML Output* selected at the report definition level.
+ The tabular output will display and can be sorted by selecting a column heading.
 +
-If _Bar Charts_ and/or _Line Charts_ were selected in the output options and the data can be shown in those forms, the bar and/or line chart will display.
+image::reporter_basics/report-output-6.png[Screenshot of a simple chart with two columns. Headers are Shelving Location and Circ Count. There is a small caret pointing up next to the Shelving Location header to indicate an A-to-Z sort on that column's contents.]
 +
-image::reporter_basics/report-output-5.png[Bar Chart Display]
-+
-. Select *Excel Output* or *CSV Output* to download the output as a file that can be opened in a spreadsheet program. You will be prompted to open or save the output file.
-. Select *Tabular Output* to view the output in the browser.
-+
-The tabular output will display and can be sorted by selecting a column heading.
-+
-image::reporter_basics/report-output-6.png[Tabular Output]
+[NOTE]
+=====
+On the Outputs folder view of completed outputs, the buttons under the Output
+ column will allow you to interact with the various files and views without 
+ first having to use the View Output option to open a new tab. 
+=====
+
+image::reporter_basics/output_buttons.png["Screenshot of the completed report outputs. The top one is selected. The last column, Output, is highlighted and shows four buttons. Buttons are for HTML, CSV, Line Chart, and Bar Chart."]
 
 [[viewing_output_via_email]]
 === Viewing Output via the Email Link ===
 
 indexterm:[report output, reports]
 
-. In your email program open the email with the subject _Report finished: <Your report name - template used>"_.
-. The body of the email will include the run time, the name of the report, the name of the template used for the report, the URL for accessing the report, and in some cases a URL for documentation related to the report template.
+. In your email program open the email with the subject _Report finished: <Your 
+report name - template used>_.
+.. The body of the email will include the run time, the name of the report, the
+ name of the template used for the report, the URL for accessing the report, and
+ in some cases a URL for documentation related to the report template.
+. Select the report URL.
 +
-Select the report URL.
+image::reporter_basics/report-output-email-1.png["Screenshot of the body of a report output email. It has descriptive information such as report run time and name. It then provides a URL to view the report."]
 +
-image::reporter_basics/report-output-email-1.png[Report Output Email]
+. A pop-up will appear asking for your Evergreen staff username and password. 
+Enter your credentials and select *Sign In*.
 +
-. A pop-up will appear asking for your Evergreen staff username and password. Enter your credentials and select *Sign In*.
-+
-image::reporter_basics/report-output-email-2.png[Output Sign In]
+image::reporter_basics/report-output-email-2.png[Screenshot of a sign in modal with username and password fields. The sign in button is highlighted.]
 +
 [NOTE]
 ======
-Opening subsequent report URLs will not prompt for an additional sign-in until the browser is closed.
+Opening subsequent report URLs will not prompt for an additional sign-in until 
+the browser is closed.
 
-Staff accounts without permissions to use the reporter or view report output will not be able to sign in.
+Staff accounts without permissions to use the reporter or view report output 
+will not be able to sign in.
 ======
 +
-. The report output will open in a new browser window.
-+
-The report name and description will display as well as links to the output options selected when running the report. The URL can be shared with other library staff who have reporter permissions.
-+
-image::reporter_basics/report-output-4.png[Output Window]
-+
-If _Bar Charts_ and/or _Line Charts_ were selected in the output options and the data can be shown in those forms, the bar and/or line chart will display.
-+
-image::reporter_basics/report-output-5.png[Bar Chart Display]
-+
-. Select *Excel Output* or *CSV Output* to download the output as a file that can be opened in a 
-spreadsheet program. You will be prompted to open or save the output file.
-. Select *Tabular Output* to view the output in the browser.
-+
-The tabular output will display and can be sorted by selecting a column heading.
-+
-image::reporter_basics/report-output-6.png[Tabular Output]
+. The report output will open in a new browser tab. The report name and 
+description will display as well as links to the output options selected when 
+running the report. The URL can be shared with other library staff who have 
+reporter permissions. From here the display and options will behave as described
+ above in xref:reports:reporter_basics.adoc#viewing_report_output[Viewing Report Output].
 
 [[maintainting_reports_data]]
 == Maintaining Reports Data ==
 
 indexterm:[reports, reports data]
 
-Saved report templates will stay in the database forever unless deleted by the template owner. Check with your system administrator to determine whether report definitions and output are deleted on a scheduled basis. 
+Saved report templates will stay in the database forever unless deleted by the
+ template owner. Check with your system administrator to determine whether 
+ report definitions and outputs are deleted on a scheduled basis. 
 
-When a template or report definition is deleted, all the linked definitions and output files are also deleted. If you have shared your template and/or created a recurring report using your template, you will not be able to delete your template. This is why it is important for all users to clone templates into their own folders before running reports.
+When a template or report definition is deleted, all the linked definitions and 
+output files are also deleted. If you have shared your template and/or created a 
+recurring report using your template, you will not be able to delete your template.
+ This is why it is important for all users to clone templates into their own 
+ folders before running reports.
 
-It is recommended that you download output you need to keep as CSV or Excel output and save it locally on your computer hard drive or a shared drive.
+It is recommended that you download outputs you need to keep as CSV or Excel 
+output and save it locally on your computer hard drive or a shared drive.
 
 [[maintaining_reports_templates]]
 == Maintaining Your Report Templates ==
 
 indexterm:[reports, reports templates]
 
-As Evergreen evolves from version to version, the database tables sometimes change and report templates should be periodically reviewed to ensure that they are running correctly and efficiently. It is especially recommended to review templates following an upgrade. You can check the create time of a template in the template folder grid.
+As Evergreen evolves from version to version, the database tables sometimes 
+change, and report templates should be periodically reviewed to ensure that 
+they are running correctly and efficiently. It is especially recommended to 
+review templates following an upgrade. You can check the create time of a 
+template in the template folder grid.
 
-image::reporter_basics/report-maintain-templates-1.png[Create Time]
+image::reporter_basics/template_create_date.png["Screenshot of a template in a grid view. Columns displayed are Name, Description, Documentation, Date Created, and Owner. The date created column is highlighted."]
 
-If you are modifying existing templates or creating your own templates, it is recommended that you delete interim versions of the template created while working on the template. This makes it easier to be sure you are using the correct version of the template.
+If you are modifying existing templates or creating your own templates, it is 
+recommended that you delete any interim versions of the template created while 
+working towards the final version of the template. This makes it easier to be 
+sure you are using the correct version of the template.
 
 [TIP]
 =====
-System Administrators should periodically review the scheduled and common reports and shared templates to ensure consistent usage. And example of a report to show templates in use can be seen on the https://wiki.evergreen-ils.org/doku.php?id=evergreen-reports:templates:reports[Evergreen Reports Wiki].
+System Administrators should periodically review the scheduled and common reports
+ and shared templates to ensure consistent usage. An example of a report to show 
+ templates in use can be seen on the https://wiki.evergreen-ils.org/doku.php?id=evergreen-reports:templates:reports[Evergreen Reports Wiki].
 =====
 
 [[deleting_report_templates]]
@@ -336,113 +460,157 @@ indexterm:[reports, reports templates, deleting templates]
 
 [CAUTION]
 =========
-Deleting a template will delete all report definitions and outputs linked to the template. Make sure
+Deleting a template will delete all report definitions and outputs linked to 
+the template. Make sure
 any data you need to keep is downloaded and saved locally before deleting.
 =========
 
-. Navigate to *Administration -> Reports* 
-. In the _My Folders_ section select the arrow beside the _Templates_ folder to see your template folders. Continue to use the arrows to expand the folder tree until you find the folder containing the template(s) you would like to delete.
-+
-image::reporter_basics/reports-run-1.png[Folder Tree]
-+
+. Navigate to *Administration -> Reports*. 
+. In the _My Folders_ section select the caret beside the _Templates_ folder to
+ see your template folders. Continue to use the carets to expand the folder tree
+ until you find the folder containing the template(s) you would like to delete.
 . Select the folder name to display the contents.
-+
-image::reporter_basics/reports-run-2.png[Selected Folder]
-+
 . Select the box beside the template(s) you wish to delete.
-. From the drop down menu select _Delete selected templates(s)_. Select *Submit*. 
 +
-image::reporter_basics/reports-delete-template-1.png[Submit button]
+image::reporter_basics/select_template_delete.png["Screenshot of the templates area. On the left bar the template folders are expanded to show a selected sub-folder. In the right pane, a template line has been selected."]
 +
-. A pop up will appear warning you that deleting the template will delete your attached reports and
-output. Select *OK*.
-. A pop up appears to confirm the deletion. Select *OK*.
+. Right click on the selected line or use the *Actions* menu and select *Delete
+ Selected*. 
+. A pop-up will appear warning you that deleting the template will delete your 
+attached reports and
+output. Select *Confirm*.
+. A confirmation will be displayed  in the lower right corner of the screen. 
 
 [NOTE]
 ======
-If you have shared your template and/or created a recurring report from your template, you will not be able to delete your template. This is why it is important for all users to clone templates into their own folders before running reports.
+If you have shared your template and/or created a recurring report from your
+ template, you will not be able to delete your template until those reports 
+ have been deleted. This is why it is important for all users to clone templates
+ into their own folders before running reports.
 ======
-
 
 [[viewing_report_definition]]
 === Viewing a Report Definition ===
 
 indexterm:[reports, reports definitions]
 
-You can view the report definitions for the reports you've run. This can be helpful if you need to check
+You can view the report definitions for the reports you've run. This can be 
+helpful if you need to check
 what values you entered in for the filters.
 
-. Navigate to *Administration -> Reports*
-. In the _My Folders_ section, select the arrow beside the _Reports_ folder to see your reports folders. Continue to use the arrows to expand the folder tree until you find the folder containing the report you would like to view.
-+
-image::reporter_basics/reports-view-report-def-1.png[Reports Folder]
-+
+. Navigate to *Administration -> Reports*.
+. In the _My Folders_ section, select the caret beside the _Reports_ folder to
+ see your reports folders. Continue to use the carets to expand the folder tree 
+ until you find the folder containing the report you would like to view.
 . Select the folder name to display the contents.
-+
-image::reporter_basics/reports-view-report-def-2.png[Selected Folder]
-+
 . Select the *View* link beside the report definition you would like to view.
 +
-image::reporter_basics/reports-view-report-def-3.png[View Report]
+image::reporter_basics/view_report.png[Screenshot of the reports grid view. A report has been selected and the actions menu is open to show View Report selected.]
 +
-. The report definition will display and you can view the information that was entered. The fields are grayed out as they cannot be edited from this screen.
+. The report definition will display, and you can view the information that was
+ entered. The fields are grayed out as they cannot be edited from this screen.
 +
-image::reporter_basics/reports-view-report-def-4.png[Report View]
-+
-. Report definitions can also be viewed through the applicable output folder by selecting the report output's name and then Selecting *View*.
-+
-image::reporter_basics/reports-view-report-def-5.png[View Report from Output Folder]
+image::reporter_basics/report_view_only.png[Screenshot of a report opened to the filters tab. Both the filter fields and the report name and description are greyed out.]
 
 [[editing_report_definition]]
 === Editing a Report Definition ===
 
 indexterm:[reports, reports definitions]
 
-You can edit the report definitions for reports you've run. This can be helpful if you want to run a new report with a slight change.
+You can edit the report definitions for reports you've run; this will change the
+ report definition for any future scheduled runs. To make a new, additional, 
+ version of the report, you should clone the report. This functionality was 
+ previously done with a *Save as New* button in the old reporter. 
 
-. Navigate to *Administration -> Reports*
-. In the _My Folders_ section select the arrow beside the _Reports_ folder to see your reports folders. Continue to use the arrows to expand the folder tree until you find the folder containing the report you would like to view.
-+
-image::reporter_basics/reports-view-report-def-1.png[Reports Folder]
-+
+To edit a report for future scheduled runs:
+
+. Navigate to *Administration -> Reports*.
+. In the _My Folders_ section select the caret beside the _Reports_ folder to 
+see your reports folders. Continue to use the carets to expand the folder tree 
+until you find the folder containing the report you would like to view.
 . Select the folder name to display the contents.
+. Select the line for the report you wish to modify. Right click or use the 
+*Actions* menu to select *Edit Report*.
+. The report definition will display, and you can edit the values entered as 
+desired. 
+. Once edits are complete, select *Save* or *Save and Schedule Report*.
+
+[NOTE]
+=====
+The button options, Save and Save and Schedule Report, have slightly different 
+functions. Save just saves the edited/updated report definition but Save and 
+Schedule creates a new run of the report as well. With Save and Schedule, the 
+existing future run will be removed and a new one will be created in its place,
+ with the new scheduling and output options that are selected.
+=====
+
+To create a new version of the report:
+
+. Navigate to *Administration -> Reports*.
+. In the _My Folders_ section select the caret beside the _Reports_ folder to see
+ your reports folders. Continue to use the carets to expand the folder tree until
+ you find the folder containing the report you would like to view.
+. Select the folder name to display the contents.
+. Select the line for the report you wish to modify. Right click or use the 
+*Actions* menu to select *Clone Report*.
+. The report definition will display, and you can edit the values entered as 
+desired. 
+. Your report must have a unique name. The system will automatically add 
+_(Clone)_ to the end of the report name. This can be removed, and the report
+ renamed as desired. 
+. Once edits are complete, select *Save and Schedule Report*
+
+
+[[moving_report_definitions]]
+=== Moving Report Definitions and Output ===
+
+indexterm:[reports, reports definitions, moving reports]
+
+Templates, report definitions, and report outputs can all be moved between the
+ folders you have created under _My Folders_. 
+
+. Navigate to *Administration -> Reports*.
+. In the _My Folders_ section select the caret beside the _Reports_ folder to 
+see your reports folders. Continue to use the carets to expand the folder tree
+ until you find the folder containing the report you would like to view.
+. Select the folder name to display the contents.
+. Select the line for the report(s) you wish to move. Right click or use the 
+*Actions* menu to select *Move Selected*.
+. A popup will open and show the current folder as well as the folder tree so t
+hat you can select the destination folder. 
 +
-image::reporter_basics/reports-view-report-def-2.png[Selected Folder]
+image::reporter_basics/move_report.png[Screenshot of the Move modal. At the top is 'Move from: (current folder) and 'Move to:' Then the folder tree is displayed to select the target destination folder.]
 +
-. Select the *Edit* link beside the report definition you would like to edit.
-+
-image::reporter_basics/reports-edit-report-def-1.png[Edit Report]
-+
-. The report definition will display and you can edit the values entered as desired. You must give the report a new unique name or it will not save.
-. Select *Save As New* to run a new report with the new values.
-+
-image::reporter_basics/reports-edit-report-def-2.png[Save As New]
-+
-. A pop-up appears confirming the report has been saved. Select *OK*.
+. Select *Save*. A confirmation of the move will be displayed in the lower right
+ corner of the screen. 
 
 [[deleting_report_definitions]]
 === Deleting Report Definitions and Output ===
 
 indexterm:[reports, reports definitions, deleting reports]
 
-Report definitions and output that you no longer need can be deleted from within the appropriate reports or output folder. 
+Report definitions and output that you no longer need can be deleted from within
+ the appropriate reports or output folder. 
 
 [CAUTION]
 =========
-Before deleting, ensure that any needed report output has been downloaded and saved locally. 
+Before deleting, ensure that any needed report output has been downloaded and 
+saved locally. 
 
-Reports that capture a historic snapshot or moment in time, such as a count of items in each shelving location, or a count of patrons on a past date, cannot be re-created.
+Reports that capture a historic snapshot or moment in time, such as a count of 
+items in each shelving location, or a count of patrons on a past date, cannot 
+be re-created.
 =========
 
-. In the appropriate _Reports_ or _Output_ folder, select the box for the definition or output you wish to delete.
-. From the dropdown menu select _Delete selected report(s)_ or _Delete selected output(s)_ depending on which folder type you are working in.
-. Select *Submit*
-+
-image::reporter_basics/reports-delete-report-1.png[Submit Button]
-+
-. A pop-up will appear asking you to confirm that you wish to delete your selection. When deleting report definitions, you will also be warned that the attached output will also be deleted. Select *OK*.
-. A pop-up appears confirming the report definition or output has been deleted. Select *OK*.
+. In the appropriate _Reports_ or _Outputs_ folder, select the box for the 
+definition(s) or output(s) you wish to delete.
+. Right click or use the *Actions* menu to select _Delete selected_.
+. A confirmation pop-up will open asking for confirmation that you want to 
+delete the report and associated outputs. Click *Confirm*. 
+. A message appears in the bottom right of the screen confirming the report 
+definition and output has been deleted.
 
-Recurring reports can be stopped by deleting the relevant report definition or the pending output.
+Recurring reports can be stopped by deleting the relevant report definition 
+or the pending output.
 
-image::reporter_basics/reports-delete-report-2.png[Pending Reports]
+image::reporter_basics/delete_pending.png[Screenshot of the pending output area. An output line has been selected and the Actions menu is open to show Delete Selected.]
