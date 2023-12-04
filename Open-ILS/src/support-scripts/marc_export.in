@@ -415,6 +415,7 @@ sub new {
     $self->{breClass} = Fieldmapper::class_for_hint('bre');
     $self->{acnClass} = Fieldmapper::class_for_hint('acn');
     $self->{acpClass} = Fieldmapper::class_for_hint('acp');
+    $self->{acpnClass} = Fieldmapper::class_for_hint('acpn');
     $self->{sreClass} = Fieldmapper::class_for_hint('sre');
     $self->{acnpClass} = Fieldmapper::class_for_hint('acnp');
     $self->{acnsClass} = Fieldmapper::class_for_hint('acns');
@@ -736,7 +737,8 @@ sub next {
                                     ($U->is_true($acp->ref()) ? (x => 'reference') : ()),
                                     (!$U->is_true($acp->holdable()) ? (x => 'unholdable') : ()),
                                     (!$U->is_true($acp->circulate()) ? (x => 'noncirculating') : ()),
-                                    (!$U->is_true($acp->opac_visible()) ? (x => 'hidden') : ())
+                                    (!$U->is_true($acp->opac_visible()) ? (x => 'hidden') : ()),
+                                    ((defined($acp->notes()) && @{$acp->notes()}) ? map {(z => ($_->title()) ? $_->title() . ": " . $_->value() : $_->value())} @{$acp->notes()} : ())
                                 ));
                         };
                         if ($@) {
@@ -1025,6 +1027,10 @@ sub acps_for_bre {
                 $_->status($statuses->{$_->status()});
                 $_->call_number->prefix($prefixes->{$acn->prefix()});
                 $_->call_number->suffix($suffixes->{$acn->suffix()});
+                my @acpns = $self->public_acpns_for_acp($_);
+                if (@acpns) {
+                    $_->notes(\@acpns);
+                }
             }
             return @acps;
         }
@@ -1034,7 +1040,27 @@ sub acps_for_bre {
     return undef;
 }
 
-# Retreive an array for sre objects when the --mfhd option is used.
+# Retrieves an array of public copy notes for a given copy
+sub public_acpns_for_acp {
+    my $self = shift;
+    my $acp = shift;
+    $acp = $acp->id() if (ref($acp));
+    unless ($self->{acpnHandle}) {
+        my $query = "select " . join(',', $self->{acpnClass}->real_fields());
+        $query .= " from asset.copy_note where pub is true";
+        $query .= " and owning_copy = ? and value <> ''";
+        $self->{acpnHandle} = $self->{handle}->prepare($query);
+    }
+    if ($self->{acpnHandle}->execute($acp)) {
+        my $result = $self->{acpnHandle}->fetchall_arrayref( {} );
+        if ($result && @{$result}) {
+            return map {$self->{acpnClass}->from_bare_hash($_)} @{$result};
+        }
+    }
+    return ();
+}
+
+# Retrieve an array of sre objects when the --mfhd option is used.
 sub sres_for_bre {
     my $self = shift;
     my $bre = shift;
