@@ -1,0 +1,12 @@
+== marc_export Exports Public Copy Notes ==
+
+Public copy notes are now exported by `marc_export` in the 852
+subfield z when the `--items` option is used.
+
+== marc_export Exports Public Copy Tags ==
+
+Public copy tags are now exported by `marc_export` in the 852
+subfield z when the `--items` option is used.
+
+To distinguish copy tags from copy notes, the tags have the tag type
+label and ": " prepended to the value.

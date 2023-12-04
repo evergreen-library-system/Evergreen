@@ -416,6 +416,7 @@ sub new {
     $self->{acnClass} = Fieldmapper::class_for_hint('acn');
     $self->{acpClass} = Fieldmapper::class_for_hint('acp');
     $self->{acpnClass} = Fieldmapper::class_for_hint('acpn');
+    $self->{acptClass} = Fieldmapper::class_for_hint('acpt');
     $self->{sreClass} = Fieldmapper::class_for_hint('sre');
     $self->{acnpClass} = Fieldmapper::class_for_hint('acnp');
     $self->{acnsClass} = Fieldmapper::class_for_hint('acns');
@@ -738,6 +739,7 @@ sub next {
                                     (!$U->is_true($acp->holdable()) ? (x => 'unholdable') : ()),
                                     (!$U->is_true($acp->circulate()) ? (x => 'noncirculating') : ()),
                                     (!$U->is_true($acp->opac_visible()) ? (x => 'hidden') : ()),
+                                    ((defined($acp->tags()) && @{$acp->tags()}) ? map {(z => $_->value())} @{$acp->tags()} : ()),
                                     ((defined($acp->notes()) && @{$acp->notes()}) ? map {(z => ($_->title()) ? $_->title() . ": " . $_->value() : $_->value())} @{$acp->notes()} : ())
                                 ));
                         };
@@ -1027,6 +1029,10 @@ sub acps_for_bre {
                 $_->status($statuses->{$_->status()});
                 $_->call_number->prefix($prefixes->{$acn->prefix()});
                 $_->call_number->suffix($suffixes->{$acn->suffix()});
+                my @acpts = $self->public_acpts_for_acp($_);
+                if (@acpts) {
+                    $_->tags(\@acpts);
+                }
                 my @acpns = $self->public_acpns_for_acp($_);
                 if (@acpns) {
                     $_->notes(\@acpns);
@@ -1055,6 +1061,29 @@ sub public_acpns_for_acp {
         my $result = $self->{acpnHandle}->fetchall_arrayref( {} );
         if ($result && @{$result}) {
             return map {$self->{acpnClass}->from_bare_hash($_)} @{$result};
+        }
+    }
+    return ();
+}
+
+# Retrieves an array of public copy tags for a given copy
+sub public_acpts_for_acp {
+    my $self = shift;
+    my $acp = shift;
+    $acp = $acp->id() if (ref($acp));
+    unless ($self->{acptHandle}) {
+        my $query = "select " . join(',', map {"copy_tag." . $_} $self->{acptClass}->real_fields());
+        $query .= " from asset.copy_tag join asset.copy_tag_copy_map as map";
+        $query .= " on copy_tag.id = map.tag and map.copy = ?";
+        $query .= " join config.copy_tag_type on copy_tag_type.code = copy_tag.tag_type";
+        $query .= " where pub is true and value <> ''";
+        $query =~ s/copy_tag\.value/copy_tag_type.label || ': ' || copy_tag.value as "value"/;
+        $self->{acptHandle} = $self->{handle}->prepare($query);
+    }
+    if ($self->{acptHandle}->execute($acp)) {
+        my $result = $self->{acptHandle}->fetchall_arrayref( {} );
+        if ($result && @{$result}) {
+            return map {$self->{acptClass}->from_bare_hash($_)} @{$result};
         }
     }
     return ();
