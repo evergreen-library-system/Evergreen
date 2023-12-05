@@ -1,0 +1,4 @@
+== Angular Quick Receive ==
+
+The Angular Staff Catalog now has a Serials Quick Receive feature,
+similar to the one from the traditional catalog.
