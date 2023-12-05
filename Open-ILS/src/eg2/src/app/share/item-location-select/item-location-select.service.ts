@@ -1,10 +1,5 @@
-import {Injectable, EventEmitter} from '@angular/core';
-import {Observable} from 'rxjs';
-import {switchMap, map} from 'rxjs/operators';
-import {IdlObject, IdlService} from '@eg/core/idl.service';
-import {NetService} from '@eg/core/net.service';
-import {AuthService} from '@eg/core/auth.service';
-import {PcrudService} from '@eg/core/pcrud.service';
+import {Injectable} from '@angular/core';
+import {IdlObject} from '@eg/core/idl.service';
 
 @Injectable()
 export class ItemLocationService {
