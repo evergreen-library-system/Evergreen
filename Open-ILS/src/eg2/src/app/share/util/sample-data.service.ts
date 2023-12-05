@@ -101,6 +101,21 @@ const DATA = {
             xact_start: new Date().toISOString(),
             xact_type: 'circulation'
         }
+    ],
+    sstr: [
+        {id: 1},
+        {id: 2, routing_label: 'Send to interested parties'}
+    ],
+    sdist: [
+        {label: 'Our library\'s copy'}
+    ],
+    siss: [
+        {label: 'volume 1, issue 1'},
+        {label: 'Special issue'}
+    ],
+    srlu: [
+        {department: 'Circulation'},
+        {department: 'Reference', note: 'Please recycle when done'}
     ]
 };
 

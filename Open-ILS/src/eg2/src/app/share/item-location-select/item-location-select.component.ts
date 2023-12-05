@@ -257,6 +257,7 @@ implements OnInit, AfterViewInit, ControlValueAccessor {
         this.propagateChange(id);
         this.valueChange.emit(id ? this.loc.locationCache[id] : null);
         this.entryChange.emit(entry ? entry : null);
+        this.propagateTouch();
     }
 
     writeValue(id: number) {
