@@ -558,7 +558,7 @@ export class CopyAttrsComponent implements OnInit, AfterViewInit {
                 // classification (label_class).  These all use numeric
                 // values as defaults.
                 Object.keys(value).forEach(field => {
-                    let newVal = value[field];
+                    const newVal = value[field];
 
                     if (field === 'classification') {
                         field = 'label_class';
@@ -567,7 +567,7 @@ export class CopyAttrsComponent implements OnInit, AfterViewInit {
                     this.context.volNodes().forEach(volNode => {
                         if (Number(volNode.target[field]())) {
                             volNode.target[field](newVal);
-			    volNode.target.ischanged(true);
+                            volNode.target.ischanged(true);
                         }
                     });
                 });
@@ -689,23 +689,23 @@ export class CopyAttrsComponent implements OnInit, AfterViewInit {
                     typeof value === 'object' ?  value.id() : value;
             }
         });
-        
-        //Volume attributes that are stored in the template.
-        //prefix, suffix and Classification
-        //Do we actually want to loop through all volumes for this?
+
+        // Volume attributes that are stored in the template.
+        // prefix, suffix and Classification
+        // Do we actually want to loop through all volumes for this?
         this.context.volNodes().forEach(volNode => {
             const vol = volNode.target;
-            if(vol.ischanged()){ //Something was changed
+            if(vol.ischanged()){ // Something was changed
                 template.callnumber = {};
                 ['label_class','prefix','suffix'].forEach(field => {
-                    
+
                     template.callnumber[field] = vol[field]();
                 });
             }
-            console.log("Template:",template);
-            //volNode.target.forEach(field=>{
+            console.log('Template:',template);
+            // volNode.target.forEach(field=>{
             //    console.log("Saving Volume info to template",field);
-            //});
+            // });
         });
 
         this.volcopy.templates[name] = template;
