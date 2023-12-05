@@ -20,7 +20,7 @@ image::media/serials_sub0.PNG[An example bibliographic record with the Serials m
 . From a bibliographic record, go to *Serials->Manage Subscriptions*, view the _Manage Subscriptions_ tab. 
 . Within the _Manage Subscriptions_ tab, create a new subscription by clicking *New Subscription*.  The subscription editor will appear:
 .. Select the _Owning Library for_ the subscription.  The owning library indicates the organizational unit(s) whose staff can use this subscription. The rule of parental inheritance applies to this list. For example, if a system is made the owner of a subscription, then users, with appropriate permissions, at the branches within the system could also use this subscription.  This field is required.
-.. Enter the date that the subscription begins in the _Start Dat_e field. This field is required.
+.. Enter the date that the subscription begins in the _Start Date_ field. This field is required.
 .. An _End Date_ for the subscription may also be entered, but it is not required.
 .. Optionally, enter an _Expected Offset_.  This is the difference between the nominal publishing date of an issue and the date that you expect to receive your copy. For example, if an issue is published the first day of each month, but you receive the copy two days prior to the publication date, then enter "-2 days" into this field.
 .. Next, create a Distribution for the subscription by selecting the Library for the distribution.  Distributions identify the branches that will receive copies of a serial.
