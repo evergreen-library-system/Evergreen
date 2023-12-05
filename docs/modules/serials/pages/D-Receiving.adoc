@@ -2,22 +2,28 @@
 :toc:
 Issues can be received through the _Manage Issues_ tab or through the _Quick Receive_ option located in the bibliographic record display.  While receiving, staff can select if issues should be barcoded during receipt.
 
+Receiving issues requires the RECEIVE_SERIAL permission.
 
 == Quick Receive ==
+
+indexterm:[serials,quick receive]
+
 . From a serials record in the catalog, go to *Serials->Quick Receive*.
-. A dialog box will appear.  Select the _Library_ and _Subscription_ for which you are receiving issues from the drop down menu and click *OK/Continue*.
-. A _Receive items_ dialog box will appear with the next expected issue.
+. Select the _Library_ and _Subscription_ for which you are receiving issues from the drop down menu and click *Continue*.
+. A _Receive items_ table will appear with the next expected issue(s).
 .. To receive the item(s) and barcode them:
-... The _Copy Location_ and _Circulation Modifier_ will be pre-populated from the Receive Template associated with the Distribution.  Changes can be made to the pre-populated information.
-.... Note: Copy location, call number, and circulation modifier can be applied to multiple copies in batch using the batch modify.
+... The _Shelving Location_ and _Circulation Modifier_ will be pre-populated from the Receive Template associated with the Distribution.  Changes can be made to the pre-populated information.
+.... Note: Shelving location, call number, and circulation modifier can be applied to multiple copies in batch using the batch modify.
 ... *Call Number*: Enter a call number.  Any item with a barcode must also have a call number.
 ... *Barcode*:  Scan in the barcode that will be affixed to the issue.
 ... The box adjacent to _Receive the issue_ will be checked by default.
 ... Check the box adjacent to _Routing List_ to print an existing routing list.
 ... Click *Save* to receive the issue.  The Status of the issue will update to "Received" and a Date Received will be recorded.  The barcoded copy will now appear in the holdings area of the catalog and the Holdings Summary in the Issues Held tab in the catalog will reflect the newly received issue.
 .. To receive the item(s) without barcoding them:
-... Uncheck the box adjacent to _Barcode Items_ and click *Save*.  The Holdings Summary in the Issues Held tab in the catalog will reflect the newly received issue.
+... Uncheck the box adjacent to _Barcode Items_ and click *Save*.  The Manage Issues tab in the catalog will reflect the newly received issue.
 
+If the distribution does not have a receive template, you may only receive the item(s)
+without barcoding them.  There is no need to uncheck any box in this case.
 
 image::media/serials_sub9.PNG["Quick receive items dialog box with options for copying location, call number, and circulation modifier."]
 
