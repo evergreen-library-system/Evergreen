@@ -4,9 +4,13 @@
     "outDir": "../out-tsc/app",
     "types": []
   },
+  "include": [
+    "**/*.ts"
+  ],
   "exclude": [
     "test.ts",
     "**/*.spec.ts",
+    "test_data/mock_generators.ts",
     "environments/environment.prod.ts"
   ]
 }
