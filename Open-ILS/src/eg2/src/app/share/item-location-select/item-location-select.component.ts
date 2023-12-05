@@ -1,15 +1,14 @@
 import {Component, OnInit, AfterViewInit, Input, Output, ViewChild,
     EventEmitter, forwardRef} from '@angular/core';
-import {ControlValueAccessor, FormGroup, FormControl, NG_VALUE_ACCESSOR} from '@angular/forms';
+import {ControlValueAccessor, NG_VALUE_ACCESSOR} from '@angular/forms';
 import {Observable, from, of} from 'rxjs';
-import {tap, map, switchMap} from 'rxjs/operators';
+import {map, switchMap} from 'rxjs/operators';
 import {IdlObject} from '@eg/core/idl.service';
 import {OrgService} from '@eg/core/org.service';
 import {AuthService} from '@eg/core/auth.service';
 import {PermService} from '@eg/core/perm.service';
 import {PcrudService} from '@eg/core/pcrud.service';
 import {ComboboxComponent, ComboboxEntry} from '@eg/share/combobox/combobox.component';
-import {StringComponent} from '@eg/share/string/string.component';
 import {ItemLocationService} from './item-location-select.service';
 
 /**
@@ -100,8 +99,14 @@ implements OnInit, AfterViewInit, ControlValueAccessor {
     // trick the combobox into thinking a valid value had been applied
     @Input() showUnsetString = true;
 
+    // Optionally override the <Unset> string
+    @Input() unsetString = $localize`<Unset>`;
+
+    // Optionally provide an aria-labelledby for the input.  This should be one or more
+    // space-delimited ids of elements that describe this item-location-select.
+    @Input() ariaLabelledby: string;
+
     @ViewChild('comboBox', {static: false}) comboBox: ComboboxComponent;
-    @ViewChild('unsetString', {static: false}) unsetString: StringComponent;
 
     @Input() startId: number = null;
     filterOrgs: number[] = [];
@@ -172,7 +177,7 @@ implements OnInit, AfterViewInit, ControlValueAccessor {
         const entries: ComboboxEntry[] = [];
 
         if (!this.required && this.showUnsetString) {
-            entries.push({id: null, label: this.unsetString.text});
+            entries.push({id: null, label: this.unsetString});
         }
 
         return this.pcrud.search('acpl', search, {order_by: {acpl: 'name'}}
@@ -223,7 +228,7 @@ implements OnInit, AfterViewInit, ControlValueAccessor {
 
         return new Observable<ComboboxEntry>(observer => {
             if (!this.required && this.showUnsetString) {
-                observer.next({id: null, label: this.unsetString.text});
+                observer.next({id: null, label: this.unsetString});
             }
 
             this.pcrud.search('acpl', search, {order_by: {acpl: 'name'}}

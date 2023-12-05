@@ -9,10 +9,9 @@ import {Component, OnInit, Input, Output, ViewChild,
     OnChanges, SimpleChanges,
     TemplateRef, EventEmitter, ElementRef, forwardRef} from '@angular/core';
 import {ControlValueAccessor, NG_VALUE_ACCESSOR} from '@angular/forms';
-import {Observable, of, Subject} from 'rxjs';
-import {map, tap, reduce, mergeMap, mapTo, debounceTime, distinctUntilChanged, merge, filter} from 'rxjs/operators';
+import {EMPTY, Observable, of, Subject} from 'rxjs';
+import {map, mergeMap, mapTo, debounceTime, distinctUntilChanged, merge, filter, mergeWith} from 'rxjs/operators';
 import {NgbTypeahead, NgbTypeaheadSelectItemEvent} from '@ng-bootstrap/ng-bootstrap';
-import {StoreService} from '@eg/core/store.service';
 import {IdlService, IdlObject} from '@eg/core/idl.service';
 import {PcrudService} from '@eg/core/pcrud.service';
 import {OrgService} from '@eg/core/org.service';
@@ -114,6 +113,13 @@ implements ControlValueAccessor, OnInit, AfterViewInit, OnChanges {
     @Input() idlBaseQuery: any = null;
     @Input() startIdFiresOnChange: boolean;
 
+    @Input() searchInId = false;
+
+    // If provided, the default pcrud-based async data source
+    // will also add an entry with an ID of null and this label.
+    // Be sure to mark it for translation.
+    @Input() unsetString: string;
+
     // This will be appended to the async data retrieval query
     // when fetching objects by idlClass.
     @Input() idlQueryAnd: {[field: string]: any};
@@ -204,6 +210,14 @@ implements ControlValueAccessor, OnInit, AfterViewInit, OnChanges {
     // When provided use this as the display template for each entry.
     @Input() displayTemplate: TemplateRef<any>;
 
+    // For propagating focus/blur events coming from the input element
+    @Output() inputFocused: EventEmitter<void>;
+    @Output() inputBlurred: EventEmitter<void>;
+
+    // Optionally provide an aria-labelledby for the input.  This should be one or more
+    // space-delimited ids of elements that describe this combobox.
+    @Input() ariaLabelledby: string;
+
     // Emitted when the value is changed via UI.
     // When the UI value is cleared, null is emitted.
     @Output() onChange: EventEmitter<ComboboxEntry>;
@@ -221,7 +235,6 @@ implements ControlValueAccessor, OnInit, AfterViewInit, OnChanges {
 
     constructor(
       private elm: ElementRef,
-      private store: StoreService,
       private idl: IdlService,
       private pcrud: PcrudService,
       private org: OrgService,
@@ -293,6 +306,9 @@ implements ControlValueAccessor, OnInit, AfterViewInit, OnChanges {
                     extra_args['order_by'][this.idlClass] = field;
                 }
                 extra_args['limit'] = 100;
+
+                // If the unsetString is provided, emit a null entry
+                const unsetOption$ = this.unsetString ? of({id: null, label: this.unsetString}) : EMPTY;
                 if (this.idlIncludeLibraryInLabel) {
                     extra_args['flesh'] = 1;
                     const flesh_fields: Object = {};
@@ -304,11 +320,11 @@ implements ControlValueAccessor, OnInit, AfterViewInit, OnChanges {
                             label: this.getFmRecordLabel(data),
                             fm: data
                         };
-                    }));
+                    }), mergeWith(unsetOption$));
                 } else {
                     return this.pcrud.search(this.idlClass, args, extra_args).pipe(map(data => {
                         return {id: data[pkeyField](), label: this.getFmRecordLabel(data), fm: data};
-                    }));
+                    }), mergeWith(unsetOption$));
                 }
             };
         }

@@ -4,11 +4,10 @@
     ({{orgName(r.userdata.owning_lib())}})</ng-container>
 </ng-template>
 
-<eg-string #unsetString text="<Unset>" i18n-text></eg-string>
-
 <eg-combobox #comboBox
   [asyncDataSource]="loadAsync ? getLocationsAsyncHandler : null"
   [domId]="domId"
+  [ariaLabelledby]="ariaLabelledby"
   [startId]="startId"
   [disabled]="disabled"
   [readOnly]="readOnly"
