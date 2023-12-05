@@ -4,129 +4,98 @@
 <eg-patron-merge-dialog #mergeDialog>
 </eg-patron-merge-dialog>
 
-<div class="patron-search-form">
-  <div class="row m-0 mb-2">
-    <div class="col-lg-2 ps-1 pe-1">
-      <input class="form-control" type="text" id='focus-this-input'
-        i18n-aria-label aria-label="Last Name" (keyup.enter)="go()"
-        i18n-placeholder placeholder="Last Name"
-        [(ngModel)]="search.family_name"/>
-    </div>
-    <div class="col-lg-2 ps-1 pe-1">
-      <input class="form-control" type="text" (keyup.enter)="go()"
-        i18n-aria-label aria-label="First Name"
-        i18n-placeholder placeholder="First Name"
-        [(ngModel)]="search.first_given_name"/>
-    </div>
-    <div class="col-lg-2 ps-1 pe-1">
-      <input class="form-control" type="text" (keyup.enter)="go()"
-        i18n-aria-label aria-label="Middle Name"
-        i18n-placeholder placeholder="Middle Name"
-        [(ngModel)]="search.second_given_name"/>
-    </div>
-    <div class="col-lg-2 ps-1 pe-1">
-      <input class="form-control" type="text" (keyup.enter)="go()"
-        i18n-aria-label aria-label="Name Keywords"
-        i18n-placeholder placeholder="Name Keywords"
-        [(ngModel)]="search.name"/>
-    </div>
-    <div class="col-lg-2 ps-1 pe-1">
-      <button type="button" class="btn btn-success w-100" (click)="go()" i18n>Search</button>
-    </div>
-    <div class="col-lg-2 ps-1 pe-1">
+<div class="patron-search-container">
+  <div class="patron-search-form" [ngClass]="{'form-expanded':expandForm}">
+
+    <div class="actions-more">
       <button (click)="toggleExpandForm()" type="button"
-        class="btn btn-outline-dark ms-2 label-with-material-icon"
+        class="btn btn-sm btn-outline-dark ms-2 label-with-material-icon"
         i18n-aria-label aria-label="Toggle Expanded Form Display"
         i18n-title title="Toggle Expanded Form Display">
         <span class="material-icons" aria-hidden="true">{{expandForm ? 'arrow_drop_up' : 'arrow_drop_down'}}</span>
       </button>
     </div>
-  </div>
+
+      <input class="form-control form-control-sm" type="text" id='focus-this-input'
+        i18n-aria-label aria-label="Last Name" (keyup.enter)="go()"
+        i18n-placeholder placeholder="Last Name"
+        [(ngModel)]="search.family_name"/>
+    
+      <input class="form-control form-control-sm" type="text" (keyup.enter)="go()"
+        i18n-aria-label aria-label="First Name"
+        i18n-placeholder placeholder="First Name"
+        [(ngModel)]="search.first_given_name"/>
+    
+      <input class="form-control form-control-sm" type="text" (keyup.enter)="go()"
+        i18n-aria-label aria-label="Middle Name"
+        i18n-placeholder placeholder="Middle Name"
+        [(ngModel)]="search.second_given_name"/>
+    
+      <input class="form-control form-control-sm" type="text" (keyup.enter)="go()"
+        i18n-aria-label aria-label="Name Keywords"
+        i18n-placeholder placeholder="Name Keywords"
+        [(ngModel)]="search.name"/>
 
   <ng-container *ngIf="expandForm">
-    <div class="row m-0 mb-2">
-      <div class="col-lg-2 ps-1 pe-1">
-        <input class="form-control" type="text" (keyup.enter)="go()"
+        <input class="form-control form-control-sm" type="text" (keyup.enter)="go()"
           i18n-aria-label aria-label="Barcode"
           i18n-placeholder placeholder="Barcode"
           [(ngModel)]="search.card"/>
-      </div>
-      <div class="col-lg-2 ps-1 pe-1">
-        <input class="form-control" type="text" (keyup.enter)="go()"
+
+        <input class="form-control form-control-sm" type="text" (keyup.enter)="go()"
           i18n-aria-label aria-label="Alias"
           i18n-placeholder placeholder="Alias"
           [(ngModel)]="search.alias"/>
-      </div>
-      <div class="col-lg-2 ps-1 pe-1">
-        <input class="form-control" type="text" (keyup.enter)="go()"
+
+        <input class="form-control form-control-sm" type="text" (keyup.enter)="go()"
           i18n-aria-label aria-label="Username"
           i18n-placeholder placeholder="Username"
           [(ngModel)]="search.usrname"/>
-      </div>
-      <div class="col-lg-2 ps-1 pe-1">
-        <input class="form-control" type="text" (keyup.enter)="go()"
+
+        <input class="form-control form-control-sm" type="text" (keyup.enter)="go()"
           i18n-aria-label aria-label="Email"
           i18n-placeholder placeholder="Email"
           [(ngModel)]="search.email"/>
-      </div>
-      <div class="col-lg-2 ps-1 pe-1">
-        <button type="button" class="btn btn-normal w-100" (click)="clear()" i18n>Clear Form</button>
-      </div>
-      <div class="col-lg-2 ps-1 pe-1">
-      </div>
-    </div>
-    <div class="row m-0 mb-2">
-      <div class="col-lg-2 ps-1 pe-1">
-        <input class="form-control" type="text" (keyup.enter)="go()"
+
+        <input class="form-control form-control-sm" type="text" (keyup.enter)="go()"
           i18n-aria-label aria-label="Identification"
           i18n-placeholder placeholder="Identification"
           [(ngModel)]="search.ident"/>
-      </div>
-      <div class="col-lg-2 ps-1 pe-1">
-        <input class="form-control" type="text" (keyup.enter)="go()"
+
+        <input class="form-control form-control-sm" type="text" (keyup.enter)="go()"
           i18n-aria-label aria-label="Phone"
           i18n-placeholder placeholder="Phone"
           [(ngModel)]="search.phone"/>
-      </div>
-      <div class="col-lg-2 ps-1 pe-1">
-        <input class="form-control" type="text" (keyup.enter)="go()"
+
+        <input class="form-control form-control-sm" type="text" (keyup.enter)="go()"
           i18n-aria-label aria-label="Street 1"
           i18n-placeholder placeholder="Street 1"
           [(ngModel)]="search.street1"/>
-      </div>
-      <div class="col-lg-2 ps-1 pe-1">
-        <input class="form-control" type="text" (keyup.enter)="go()"
+
+        <input class="form-control form-control-sm" type="text" (keyup.enter)="go()"
           i18n-aria-label aria-label="Street 2"
           i18n-placeholder placeholder="Street 2"
           [(ngModel)]="search.street2"/>
-      </div>
-      <div class="col-lg-2 ps-1 pe-1">
-        <input class="form-control" type="text" (keyup.enter)="go()"
+
+        <input class="form-control form-control-sm" type="text" (keyup.enter)="go()"
           i18n-aria-label aria-label="City"
           i18n-placeholder placeholder="City"
           [(ngModel)]="search.city"/>
-      </div>
-      <div class="col-lg-2 ps-1 pe-1"></div>
-    </div>
-    <div class="row m-0 mb-2">
-      <div class="col-lg-2 ps-1 pe-1">
-        <input class="form-control" type="text" (keyup.enter)="go()"
+
+        <input class="form-control form-control-sm" type="text" (keyup.enter)="go()"
           i18n-aria-label aria-label="State"
           i18n-placeholder placeholder="State"
           [(ngModel)]="search.state"/>
-      </div>
-      <div class="col-lg-2 ps-1 pe-1">
-        <input class="form-control" type="text" (keyup.enter)="go()"
+
+        <input class="form-control form-control-sm" type="text" (keyup.enter)="go()"
           i18n-aria-label aria-label="Post Code"
           i18n-placeholder placeholder="Post Code"
           [(ngModel)]="search.post_code"/>
-      </div>
-      <div class="col-lg-2 ps-1 pe-1">
+
         <eg-profile-select [useDisplayEntries]="true" 
           [(ngModel)]="search.profile">
         </eg-profile-select>
-      </div>
-      <div class="col-lg-2 ps-1 pe-1">
+
         <eg-org-select (onChange)="searchOrg = $event"
           persistKey="patron.search"
           [fallbackOrg]="org.root()"
@@ -134,41 +103,32 @@
           ariaLabel="Home Library" i18n-ariaLabel>
         </eg-org-select>
         <!-- home org -->
-      </div>
-      <div class="col-lg-2 ps-1 pe-1">
-        <input class="form-control" type="text" (keyup.enter)="go()"
+
+        <input class="form-control form-control-sm" type="text" (keyup.enter)="go()"
           i18n-aria-label aria-label="Guardian"
           i18n-placeholder placeholder="Guardian"
           [(ngModel)]="search.guardian"/>
-      </div>
-      <div class="col-lg-2 ps-1 pe-1"></div>
-    </div>
-    <div class="row m-0 mb-2">
-      <div class="col-lg-2 ps-1 pe-1">
-        <input class="form-control" type="text" (keyup.enter)="go()"
+
+        <input class="form-control form-control-sm" type="text" (keyup.enter)="go()"
           i18n-aria-label aria-label="DOB Year"
           i18n-placeholder placeholder="DOB Year"
           [(ngModel)]="search.dob_year"/>
-      </div>
-      <div class="col-lg-2 ps-1 pe-1">
-        <input class="form-control" type="text" (keyup.enter)="go()"
+
+        <input class="form-control form-control-sm" type="text" (keyup.enter)="go()"
           i18n-aria-label aria-label="DOB Month"
           i18n-placeholder placeholder="DOB Month"
           [(ngModel)]="search.dob_month"/>
-      </div>
-      <div class="col-lg-2 ps-1 pe-1">
-        <input class="form-control" type="text" (keyup.enter)="go()"
+
+        <input class="form-control form-control-sm" type="text" (keyup.enter)="go()"
           i18n-aria-label aria-label="DOB Day"
           i18n-placeholder placeholder="DOB Day"
           [(ngModel)]="search.dob_day"/>
-      </div>
-      <div class="col-lg-2 ps-1 pe-1">
-        <input class="form-control" type="text" (keyup.enter)="go()"
+
+        <input class="form-control form-control-sm" type="text" (keyup.enter)="go()"
           i18n-aria-label aria-label="Database ID"
           i18n-placeholder placeholder="Database ID"
           [(ngModel)]="search.id"/>
-      </div>
-      <div class="col-lg-3">
+      
         <div class="form-check form-check-inline">
           <input class="form-check-input" type="checkbox" 
             (change)="toggleIncludeInactive()"
@@ -177,10 +137,15 @@
             Include Inactive
           </label>
         </div>
-      </div>
-      <div class="col-lg-1"></div>
-    </div>
+
   </ng-container><!-- expand form -->
+
+  <div class="actions-reset" *ngIf="expandForm">
+    <button type="button" class="btn btn-destroy" (click)="clear()" i18n>Clear Form</button>
+  </div>
+  <div class="actions-search">
+    <button type="button" class="btn btn-success" (click)="go()" i18n>Search</button>
+  </div>
 </div>
 
 <ng-template #barcodeTemplate let-r="row">

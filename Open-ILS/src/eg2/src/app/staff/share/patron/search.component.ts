@@ -46,7 +46,8 @@ export interface PatronSearch {
 
 @Component({
     selector: 'eg-patron-search',
-    templateUrl: './search.component.html'
+    templateUrl: './search.component.html',
+    styleUrls: ['search.component.css']
 })
 
 export class PatronSearchComponent implements OnInit, AfterViewInit {
