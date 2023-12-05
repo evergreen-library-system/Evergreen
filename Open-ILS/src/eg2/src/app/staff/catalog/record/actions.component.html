@@ -46,6 +46,9 @@
     <button type="button" class="btn btn-outline-primary" id="actionsForSerials"
       ngbDropdownToggle i18n>Serials</button>
     <div ngbDropdownMenu aria-labelledby="actionsForSerials">
+      <a ngbDropdownItem class="dropdown-item"
+         routerLink="/staff/serials/{{recId}}/quick-receive"
+         i18n="Serials Quick Receive feature">Quick Receive</a>
       <a ngbDropdownItem class="dropdown-item" href="/eg/staff/serials/{{recId}}" i18n>
         Manage Subscriptions
       </a>

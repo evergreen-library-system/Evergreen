@@ -74,6 +74,10 @@ const routes: Routes = [{
         path: 'admin',
         loadChildren: () =>
             import('./admin/routing.module').then(m => m.AdminRoutingModule)
+    }, {
+        path: 'serials',
+        loadChildren: () =>
+            import('./serials/routing.module').then(m => m.SerialsRoutingModule)
     }]
 }];
 

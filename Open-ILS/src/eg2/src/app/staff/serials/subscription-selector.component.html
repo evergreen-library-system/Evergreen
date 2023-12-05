@@ -1,0 +1,17 @@
+<label for="owningOrgUnit" i18n>Owning Library</label>
+<eg-org-family-select includeAncestors="true" domId="owningOrgUnit"
+(onChange)="findSubscriptions()"
+includeDescendants="true" [(ngModel)]="selectedOrgUnits"></eg-org-family-select>
+<ng-container *ngIf="loaded && subscriptionList?.length">
+    <label for="subscriptions" i18n>Subscription</label>
+    <select class="form-select" id="subscriptions" [(ngModel)]="selectedSubscription">
+        <option *ngFor="let subscription of subscriptionList" [ngValue]="subscription.id">
+            {{ subscription.label }}
+        </option>
+    </select>
+    <button (click)="emitSelectedSubscription()" type="submit" class="btn btn-primary mt-2" i18n>Continue</button>
+</ng-container>
+
+<div class="alert alert-primary" *ngIf="loaded && !subscriptionList?.length" i18n>
+    There is no serials subscription for this record at this location.
+</div>
