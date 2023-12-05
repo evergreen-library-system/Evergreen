@@ -747,7 +747,7 @@ implements ControlValueAccessor, OnInit, AfterViewInit, OnChanges {
     writeValue(value: ComboboxEntry) {
         //console.debug('writeValue: ', value);
         if (value !== undefined && value !== null) {
-            this.startId = value.id;
+            this.selectedId = value.id;
             this.applySelection();
         }
     }

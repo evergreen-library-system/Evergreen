@@ -82,5 +82,19 @@ export class DateUtil {
             day: Number(parts[2])
         };
     }
+
+    // Return a string in the format -0700 or +0200,
+    // like what we might see at the end of a timestamp
+    // in a pcrud message from OpenSRF
+    static getOpenSrfTzOffsetString(): string {
+        const offsetInMinutes = new Date().getTimezoneOffset();
+
+        // Confusingly, if getTimezoneOffset returns a negative number,
+        // it means that it is *after* UTC, and should get a plus sign.
+        const sign = offsetInMinutes < 0 ? '+' : '-';
+        const hours = Math.floor(Math.abs(offsetInMinutes / 60));
+        const minutes = Math.abs(offsetInMinutes % 60);
+        return sign + String(hours).padStart(2, '0') + String(minutes).padStart(2, '0');
+    }
 }
 

@@ -1,0 +1,18 @@
+<eg-staff-banner i18n-bannerText="Serials Quick Receive feature" bannerText="Quick Receive"></eg-staff-banner>
+<div class="row">
+    <eg-back-button label="Return to record" i18n-label></eg-back-button>
+</div>
+<div class="row mt-5" *ngIf="fleshedSitems">
+    <eg-serials-receive [sitems]="fleshedSitems" [bibRecordId]="bibRecordId"
+        (cancel)="clearSelection()">
+    </eg-serials-receive>
+</div>
+<div class="row mt-5" *ngIf="!fleshedSitems">
+    <div role="alert">
+        <ng-container *ngIf="noReceivableItems">
+            <p i18n>This subscription doesn't have any expected items.</p>
+            <p><a href="/eg/staff/serials/{{bibRecordId}}/issues" i18n>Predict new issues or add a special issue?</a></p>
+        </ng-container>
+    </div>
+    <eg-subscription-selector [bibRecordId]="bibRecordId" (subscriptionSelected)="checkForExpectedItems($event)"></eg-subscription-selector>
+</div>

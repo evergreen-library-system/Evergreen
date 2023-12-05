@@ -1,0 +1,8 @@
+<dt>
+    <span *ngIf="note.alert() === 't'"
+          class="material-icons"
+          aria-label="Important: "
+          i18n-aria-label>warning</span>
+    {{ note.title() }}
+</dt>
+<dd>{{ note.value() }}</dd>

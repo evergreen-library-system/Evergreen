@@ -1,7 +1,6 @@
-import {Component, OnInit, ViewChild, TemplateRef} from '@angular/core';
+import {Component, OnInit, ViewChild} from '@angular/core';
 import {Observable} from 'rxjs';
 import {map} from 'rxjs/operators';
-import {ActivatedRoute} from '@angular/router';
 import {IdlService, IdlObject} from '@eg/core/idl.service';
 import {PcrudService} from '@eg/core/pcrud.service';
 import {AuthService} from '@eg/core/auth.service';
@@ -11,7 +10,7 @@ import {ComboboxComponent, ComboboxEntry
 } from '@eg/share/combobox/combobox.component';
 import {PrintService} from '@eg/share/print/print.service';
 import {LocaleService} from '@eg/core/locale.service';
-import {NgbNav, NgbNavChangeEvent} from '@ng-bootstrap/ng-bootstrap';
+import {NgbNavChangeEvent} from '@ng-bootstrap/ng-bootstrap';
 import {FmRecordEditorComponent} from '@eg/share/fm-editor/fm-editor.component';
 import {SampleDataService} from '@eg/share/util/sample-data.service';
 import {OrgFamily} from '@eg/share/org-family-select/org-family-select.component';
@@ -52,11 +51,11 @@ export class PrintTemplateComponent implements OnInit {
         holds_for_bib: {},
         bills_current: {},
         bills_payment: {},
-        hold_shelf_slip: {}
+        hold_shelf_slip: {},
+        serials_routing_list: {},
     };
 
     constructor(
-        private route: ActivatedRoute,
         private idl: IdlService,
         private org: OrgService,
         private pcrud: PcrudService,
@@ -86,7 +85,7 @@ export class PrintTemplateComponent implements OnInit {
         // vanilla hashes are easier to work with in the admin UI.
 
         // Classes for which sample data exists
-        const classes = ['au', 'ac', 'aua', 'ahr', 'acp', 'mwde', 'mbt', 'mbts'];
+        const classes = ['au', 'ac', 'aua', 'ahr', 'acp', 'mwde', 'mbt', 'mbts', 'siss', 'sstr', 'sdist', 'srlu'];
         const samples: any = {};
         classes.forEach(class_ => samples[class_] =
             this.idl.toHash(this.samples.listOfThings(class_, 10)));
@@ -168,6 +167,22 @@ export class PrintTemplateComponent implements OnInit {
             Object.assign({}, this.sampleData.hold_shelf_slip);
         this.sampleData.hold_transit_slip.checkin.destOrg =
             this.org.list()[0];
+
+        // Serials routing list
+        this.sampleData.serials_routing_list = {
+            stream: samples.sstr[0],
+            issuance: samples.siss[0],
+            distribution: samples.sdist[0],
+            routing_list: [
+                {reader: patron},
+                {department: 'Circulation'},
+                {department: 'Reference', note: 'Please recycle when done'}
+            ],
+            title: 'Tengwestië: The online journal of the Elvish Linguistic Fellowship'
+        };
+        this.sampleData.serials_routing_list.distribution.holding_lib = this.org.list()[0];
+        this.sampleData.serials_routing_list.routing_list[0].reader = this.idl.clone(samples.au[0]);
+        this.sampleData.serials_routing_list.routing_list[0].reader.mailing_address = samples.aua[0];
     }
 
     onNavChange(evt: NgbNavChangeEvent) {

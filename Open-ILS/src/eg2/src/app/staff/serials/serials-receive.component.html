@@ -1,0 +1,209 @@
+<div class="alert alert-info" *ngIf="!anyItemsWithReceiveUnitTemplate">
+    <p i18n>This distribution does not have a receive template, so we cannot barcode the issue.</p>
+    <p i18n>You may still receive without barcoding.</p>
+    <p i18n>Other options:</p>
+    <ul>
+        <li><a href="/eg/staff/admin/serials/templates" i18n>Create a new template</a></li>
+        <li><a href="/eg/staff/serials/{{bibRecordId}}" i18n>Add an existing template to the distribution.</a></li>
+    </ul>
+</div>
+
+<!-- don't do anything on the submit event, since it might be
+     inadvertently fired when a user scans a barcode -->
+<form [formGroup]="tableForm" (submit)="false">
+    <div class="row" formGroupName="barcodeOptions" *ngIf="anyItemsWithReceiveUnitTemplate">
+        <div class="form-check">
+            <input class="form-check-input" type="checkbox" formControlName="barcodeItems" id="barcodeItems">
+            <label class="form-check-label" for="barcodeItems" i18n>
+              Barcode items
+            </label>
+        </div>
+        <div class="form-check">
+            <input class="form-check-input" type="checkbox" formControlName="autoGenerate" id="autoGenerate">
+            <label class="form-check-label" for="autoGenerate" i18n>
+              Automatically generate barcodes
+            </label>
+        </div>          
+    </div>
+    <table *ngIf="sitems" class="table caption-top">
+        <caption i18n>Recievable items</caption>
+        <thead>
+            <th scope="col" i18n class="visually-hidden">Row number</th>
+            <th scope="col" i18n>Library</th>
+            <th scope="col" i18n id="issuance">Issuance</th>
+            <th scope="col" i18n id="notes">Notes</th>
+            <th scope="col" i18n id="prefix" *ngIf="showBarcodeFields">Call number prefix</th>
+            <th scope="col" i18n id="callnumber" *ngIf="showBarcodeFields">Call number</th>
+            <th scope="col" i18n id="suffix" *ngIf="showBarcodeFields">Call number suffix</th>
+            <th scope="col" i18n id="location" *ngIf="showBarcodeFields">Shelving location</th>
+            <th scope="col" i18n id="modifier" *ngIf="showBarcodeFields">Circulation modifier</th>
+            <th scope="col" i18n id="barcode" *ngIf="showBarcodeFields">Barcode</th>
+            <th scope="col" i18n id="receive">Receive this issue?</th>
+            <th *ngIf="anyItemsWithRoutingList" scope="col" i18n id="routing">Print routing list for this issue?</th>
+        </thead>
+        <tbody>
+
+            <!-- batch actions -->
+            <ng-container *ngIf="anyItemsWithReceiveUnitTemplate" formGroupName="batch">
+                <tr *ngIf="showBarcodeFields" class="table-secondary">
+                    <td class="visually-hidden" id="batch-description" i18n>Batch</td>
+                    <td colspan="3" i18n><!-- these fields are not editable, so no batch controls --></td>
+                    <td>
+                        <eg-combobox ariaLabelledby="batch-description prefix"
+                            [asyncSupportsEmptyTermClick]="true"
+                            idlClass="acnp"
+                            idlField="label"
+                            formControlName="prefix">
+                        </eg-combobox>
+                    </td>
+                    <td>
+                        <eg-combobox ariaLabelledby="batch-description callnumber"
+                            [asyncSupportsEmptyTermClick]="true"
+                            idlClass="acn"
+                            idlField="label"
+                            [idlBaseQuery]="{'record':{'=':bibRecordId}}"
+                            [allowFreeText]="true"
+                            formControlName="callnumber">
+                        </eg-combobox>
+                    </td>
+                    <td>
+                        <eg-combobox ariaLabelledby="batch-description suffix"
+                            [asyncSupportsEmptyTermClick]="true"
+                            idlClass="acns"
+                            idlField="label"
+                            formControlName="suffix">
+                        </eg-combobox>
+                    </td>
+                    <td>
+                        <eg-item-location-select ariaLabelledby="batch-description location"
+                          unsetString="Template default" i18n-unsetString
+                          formControlName="location">
+                        </eg-item-location-select>
+                    </td>
+                    <td>
+                        <eg-combobox idlClass="ccm"
+                            unsetString="Template default" i18n-unsetString
+                            ariaLabelledby="batch-description modifier"
+                            [asyncSupportsEmptyTermClick]="true"
+                            formControlName="modifier">
+                        </eg-combobox>
+                    </td>
+                    <td>
+                        <input aria-labelledby="batch-description barcode"
+                            class="form-control"
+                            type="text"
+                            formControlName="barcode">
+                    </td>
+                    <td colspan="2">
+                        <button type="button" class="btn btn-outline-dark"
+                            (click)="handleApplyBatch()" i18n
+                            id="apply-batch">Apply to the following { sitems.length, plural, =1 {issue} other {issues} }</button>
+                    </td>
+                </tr>    
+            </ng-container>
+
+            <ng-container formArrayName="items">
+                <!-- individual items -->
+                <tr *ngFor="let item of tableForm.get('items').controls; index as rowNumber" [formGroupName]="rowNumber">
+                    <td class="visually-hidden" id="row-{{rowNumber}}">{{ rowNumber }}</td>
+                    <td>{{ sitems[rowNumber].stream().distribution().holding_lib().shortname() }}</td>
+                    <td>{{ sitems[rowNumber].issuance().label() }}</td>
+                    <td>
+                        <dl *ngIf="notesForSitem(sitems[rowNumber])">
+                            <eg-serials-note [note]="note" *ngFor="let note of notesForSitem(sitems[rowNumber])"></eg-serials-note>
+                        </dl>
+                    </td>
+
+                    <ng-container *ngIf="showBarcodeFields">
+                        <ng-container *ngIf="sitems[rowNumber].stream().distribution().receive_unit_template(); else noTemplateForRow">
+                            <td>
+                                <eg-combobox ariaLabelledby="row-{{rowNumber}} prefix"
+                                    [asyncSupportsEmptyTermClick]="true"
+                                    idlClass="acnp"
+                                    idlField="label"
+                                    formControlName="prefix">
+                                </eg-combobox>
+                            </td>
+                            <td>
+                                <eg-combobox ariaLabelledby="row-{{rowNumber}} prefix"
+                                    [asyncSupportsEmptyTermClick]="true"
+                                    idlClass="acn"
+                                    idlField="label"
+                                    [idlBaseQuery]="{'record':{'=':bibRecordId}}"
+                                    [allowFreeText]="true"
+                                    formControlName="callnumber">
+                                </eg-combobox>
+                            </td>
+                            <td>
+                                <eg-combobox ariaLabelledby="row-{{rowNumber}} suffix"
+                                    [asyncSupportsEmptyTermClick]="true"
+                                    idlClass="acns"
+                                    idlField="label"
+                                    formControlName="suffix">
+                                </eg-combobox>
+                            </td>
+                            <td>
+                                <eg-item-location-select ariaLabelledby="row-{{rowNumber}} location"
+                                [startId]="sitems[rowNumber].stream().distribution().receive_unit_template().circ_modifier()"
+                                unsetString="Template default" i18n-unsetString
+                                formControlName="location">
+                                </eg-item-location-select>
+                            </td>
+                            <td>
+                                <eg-combobox idlClass="ccm"
+                                    unsetString="Template default" i18n-unsetString
+                                    ariaLabelledby="row-{{rowNumber}} modifier"
+                                    [selectedId]="sitems[rowNumber].stream().distribution().receive_unit_template().circ_modifier()"
+                                    [asyncSupportsEmptyTermClick]="true"
+                                    formControlName="modifier">
+                                </eg-combobox>
+                            </td>
+                            <td>
+                                <input attr.aria-labelledby="row-{{rowNumber}} barcode"
+                                    class="form-control"
+                                    type="text"
+                                    formControlName="barcode">
+                            </td>
+                        </ng-container>
+                        <ng-template #noTemplateForRow>
+                            <td colspan="6" i18n>This distribution does not have a receive template, so we cannot barcode the issue.</td>
+                        </ng-template>
+                    </ng-container>
+
+                    <td>
+                        <input type="checkbox" attr.aria-labelledby="row-{{rowNumber}} receive"
+                            formControlName="receive">
+                    </td>
+                    <td *ngIf="anyItemsWithRoutingList">
+                        <input *ngIf="sitems[rowNumber].stream().routing_list_users()?.length; else noRoutingList"
+                            type="checkbox"
+                            attr.aria-labelledby="row-{{rowNumber}} routing"
+                            formControlName="routing">
+                        <ng-template #noRoutingList i18n>
+                            No routing list is configured for this stream.
+                        </ng-template>
+                    </td>
+                </tr>
+            </ng-container>
+        </tbody>
+    </table>
+    <div class="d-grid gap-2 d-md-flex mt-3">
+        <button type="button" class="btn btn-normal m-1" (click)="cancel.emit()" i18n>Cancel</button>
+        <button type="submit"
+            id="receive-button"
+            class="btn btn-primary m-1"
+            (click)="handleReceive()"
+            [disabled]="!tableForm.valid || !anyItemsSelectedForReceive"
+            i18n>
+            Receive
+        </button>
+        <button *ngIf="anyItemsWithRoutingList"
+            type="submit"
+            class="btn btn-primary m-1"
+            (click)="handleReceiveAndPrint()"
+            [disabled]="!tableForm.valid || !anyItemsSelectedForReceive"
+            i18n>
+            Receive and print routing list
+        </button>
+    </div>
+</form>
