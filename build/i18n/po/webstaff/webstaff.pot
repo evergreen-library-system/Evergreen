@@ -236,12 +236,12 @@ msgstr ""
 msgid "%1, %2 %3"
 msgstr ""
 
-#. ("{{hold.usr().family_name()}}", "{{hold.usr().first_given_name()}}", "{{hold.usr().second_given_name()}}", "{{hold.usr().card().barcode()}}")
-#. ("{{hold.requestor().family_name()}}", "{{hold.requestor().first_given_name()}}", "{{hold.requestor().second_given_name()}}", "{{hold.requestor().card().barcode()}}")
+#. ("{{user.family_name()}}", "{{user.first_given_name()}}", "{{user.second_given_name()}}", "{{user.card().barcode()}}")
 #. ("{{circ.usr().family_name()}}", "{{circ.usr().first_given_name()}}", "{{circ.usr().second_given_name()}}", "{{circ.usr().card().barcode()}}")
 #. ("{{prev_circ_usr.family_name()}}", "{{prev_circ_usr.first_given_name()}}", "{{prev_circ_usr.second_given_name()}}", "{{prev_circ_usr.card().barcode()}}")
+#. ("{{hold.usr().family_name()}}", "{{hold.usr().first_given_name()}}", "{{hold.usr().second_given_name()}}", "{{hold.usr().card().barcode()}}")
+#. ("{{hold.requestor().family_name()}}", "{{hold.requestor().first_given_name()}}", "{{hold.requestor().second_given_name()}}", "{{hold.requestor().card().barcode()}}")
 #. ("{{extra.user_obj.family_name}}", "{{extra.user_obj.first_given_name}}", "{{extra.user_obj.second_given_name}}", "{{extra.user_obj.home_ou.shortname}}")
-#. ("{{user.family_name()}}", "{{user.first_given_name()}}", "{{user.second_given_name()}}", "{{user.card().barcode()}}")
 #: ../../Open-ILS/src/templates/staff/acq/requests/t_edit.tt2:27 ../../Open-ILS/src/templates/staff/cat/item/t_circ_list_pane.tt2:27 ../../Open-ILS/src/templates/staff/cat/item/t_circs_pane.tt2:118 ../../Open-ILS/src/templates/staff/cat/item/t_circs_pane.tt2:18 ../../Open-ILS/src/templates/staff/cat/item/t_holds_pane.tt2:17 ../../Open-ILS/src/templates/staff/cat/item/t_holds_pane.tt2:30 ../../Open-ILS/src/templates/staff/circ/patron/t_move_to_group_dialog.tt2:16
 msgid "%1, %2 %3 : %4"
 msgstr ""
@@ -1307,8 +1307,8 @@ msgid "Barcode: %1 Checkin date: %2"
 msgstr ""
 
 #. ("{{checkout.copy.barcode}}", "{{checkout.circ.due_date | egDueDate:$root.egDateAndTimeFormat:checkout.circ.circ_lib:checkout.circ.duration}}")
-#. ("{{renewal.copy.barcode}}", "{{renewal.circ.due_date | egDueDate:$root.egDateAndTimeFormat:renewal.circ.circ_lib:renewal.circ.duration}}")
 #. ("{{checkout.barcode}}", "{{checkout.due_date | date:\"short\"}}")
+#. ("{{renewal.copy.barcode}}", "{{renewal.circ.due_date | egDueDate:$root.egDateAndTimeFormat:renewal.circ.circ_lib:renewal.circ.duration}}")
 #: ../../Open-ILS/src/templates/staff/share/print_templates/t_checkout.tt2:47 ../../Open-ILS/src/templates/staff/share/print_templates/t_items_out.tt2:43 ../../Open-ILS/src/templates/staff/share/print_templates/t_offline_renew.tt2:16 ../../Open-ILS/src/templates/staff/share/print_templates/t_renew.tt2:27
 msgid "Barcode: %1 Due: %2"
 msgstr ""
@@ -1374,8 +1374,8 @@ msgstr ""
 msgid "Between"
 msgstr ""
 
-#. ("{{lead_id}}")
 #. ("{{record_id}}")
+#. ("{{lead_id}}")
 #: ../../Open-ILS/src/templates/staff/cat/bucket/record/t_merge_records.tt2:49 ../../Open-ILS/src/templates/staff/cat/catalog/index.tt2:66
 msgid "Bib %1"
 msgstr ""
@@ -5777,6 +5777,10 @@ msgstr ""
 msgid "Level %1"
 msgstr ""
 
+#: ../../Open-ILS/src/templates/staff/admin/workstation/t_workstations.tt2:20
+msgid "Library"
+msgstr ""
+
 #: ../../Open-ILS/src/templates/staff/serials/t_batch_receive.tt2:40
 msgid "Library : Distribution/Stream"
 msgstr ""
@@ -6155,7 +6159,7 @@ msgstr ""
 msgid "Mark"
 msgstr ""
 
-#: ../../Open-ILS/src/templates/staff/admin/workstation/t_workstations.tt2:64
+#: ../../Open-ILS/src/templates/staff/admin/workstation/t_workstations.tt2:66
 msgid "Mark As Default"
 msgstr ""
 
@@ -8511,7 +8515,7 @@ msgstr ""
 msgid "Refunds Available:"
 msgstr ""
 
-#: ../../Open-ILS/src/templates/staff/admin/workstation/t_workstations.tt2:35
+#: ../../Open-ILS/src/templates/staff/admin/workstation/t_workstations.tt2:37
 msgid "Register"
 msgstr ""
 
@@ -8567,7 +8571,7 @@ msgstr ""
 msgid "Remote Accounts"
 msgstr ""
 
-#: ../../Open-ILS/src/templates/staff/admin/workstation/t_workstations.tt2:69 ../../Open-ILS/src/templates/staff/cat/bucket/copy/t_apply_tags.tt2:11 ../../Open-ILS/src/templates/staff/cat/volcopy/t_copy_notes.tt2:69 ../../Open-ILS/src/templates/staff/cat/volcopy/t_copy_tags.tt2:11 ../../Open-ILS/src/templates/staff/serials/t_subscription_manager.tt2:53 ../../Open-ILS/src/templates/staff/serials/t_subscription_manager.tt2:89 ../../Open-ILS/src/templates/staff/share/t_copy_alert_manager_dialog.tt2:19
+#: ../../Open-ILS/src/templates/staff/admin/workstation/t_workstations.tt2:71 ../../Open-ILS/src/templates/staff/cat/bucket/copy/t_apply_tags.tt2:11 ../../Open-ILS/src/templates/staff/cat/volcopy/t_copy_notes.tt2:69 ../../Open-ILS/src/templates/staff/cat/volcopy/t_copy_tags.tt2:11 ../../Open-ILS/src/templates/staff/serials/t_subscription_manager.tt2:53 ../../Open-ILS/src/templates/staff/serials/t_subscription_manager.tt2:89 ../../Open-ILS/src/templates/staff/share/t_copy_alert_manager_dialog.tt2:19
 msgid "Remove"
 msgstr ""
 
@@ -10063,8 +10067,8 @@ msgstr ""
 msgid "TCN"
 msgstr ""
 
-#. ("{{overlay_target_tcn}}")
 #. ("{{local_overlay_target_tcn}}")
+#. ("{{overlay_target_tcn}}")
 #: ../../Open-ILS/src/templates/staff/cat/z3950/t_list.tt2:78 ../../Open-ILS/src/templates/staff/cat/z3950/t_overlay.tt2:21
 msgid "TCN %1"
 msgstr ""
@@ -10941,7 +10945,7 @@ msgstr ""
 msgid "Use Library Setting"
 msgstr ""
 
-#: ../../Open-ILS/src/templates/staff/admin/workstation/t_workstations.tt2:61
+#: ../../Open-ILS/src/templates/staff/admin/workstation/t_workstations.tt2:63
 msgid "Use Now"
 msgstr ""
 
@@ -11420,7 +11424,7 @@ msgstr ""
 msgid "Workstation Administration"
 msgstr ""
 
-#: ../../Open-ILS/src/templates/staff/admin/workstation/t_workstations.tt2:29 ../../Open-ILS/src/templates/staff/admin/workstation/t_workstations.tt2:30
+#: ../../Open-ILS/src/templates/staff/admin/workstation/t_workstations.tt2:28 ../../Open-ILS/src/templates/staff/admin/workstation/t_workstations.tt2:31 ../../Open-ILS/src/templates/staff/admin/workstation/t_workstations.tt2:32
 msgid "Workstation Name"
 msgstr ""
 
@@ -11432,7 +11436,11 @@ msgstr ""
 msgid "Workstation name already exists.  Use it anyway?"
 msgstr ""
 
-#: ../../Open-ILS/src/templates/staff/admin/workstation/t_workstations.tt2:44
+#: ../../Open-ILS/src/templates/staff/admin/workstation/t_workstations.tt2:2
+msgid "Workstations"
+msgstr ""
+
+#: ../../Open-ILS/src/templates/staff/admin/workstation/t_workstations.tt2:46
 msgid "Workstations Registered With This Browser"
 msgstr ""
 
