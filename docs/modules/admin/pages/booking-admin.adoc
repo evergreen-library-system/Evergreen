@@ -21,47 +21,36 @@ You need to create resource types and resource attributes (features of the resou
 
 image::media/booking-create-resourcetype_webclient-1.png[]
 
-2) A list of current resource types will appear. Use Back and Next buttons to browse the whole list.
-
-image::media/booking-create-resourcetype-2.png[]
+2) A list of current resource types will appear (if any).
 
 [NOTE]
 You may also see cataloged items in the list. Those items have been marked bookable or booked before.
 
+3) To create a new resource type, click New Resource Type towards the top of the screen.
 
-3) To create a new resource type, click New Resource Type in the top right corner, .
-
-image::media/booking-create-resourcetype-3.png[]
+image::booking/new_resource_type_button.png[]
 
 4) A box will appear in which you create your new type of resource.
 
-image::media/booking-create-bookable-1.png[]
+image::booking/new_resource_type_form.png[]
 
-* Resource Type Name - Give your resource a name.
-* Fine Interval - How often will fines be charged? This period can be input in several ways:
-
-[NOTE]
-====================================================================
+* *Catalog Item*: Boolean checkbox.
+* *Fine Amount*: The amount that will be charged at each Fine Interval.
+* *Fine Interval*: How often will fines be charged?  This period can be input in several ways:
 ** second(s), minute(s), hour(s), day(s), week(s), month(s), year(s)
 ** sec(s), min(s)
 ** s, m, h
-** 00:00:30, 00:01:00, 01:00:00
-====================================================================
-
-* Fine Amount - The amount that will be charged at each Fine Interval.
-* Owning Library - The home library of the resource.
-* Catalog Item - (Function not currently available.)
-* Transferable - This allows the item to be transferred between libraries.
-* Inter-booking and Inter-circulation Interval - The amount of time required by your library between the return of a resource and a new reservation for the resource. This interval uses * the same input conventions as the Fine Interval.
-* Max Fine Amount - The amount at which fines will stop generating.
+** 00:30:00, 00:01:00, 01:00:00
+* *Inter-booking and Inter-circulation Interval*: _need an explanation_
+* *Max Fine Amount*: Enter a max fine amount.
+* *Owning Library*: The home library of the resource.
+* *Resource Type ID*: Will populate after you save.
+* *Resource Type Name*: Give your resource a name. 
+* *Transferable*: Boolean checkbox.
 
 5) Click Save when you have entered the needed information.
 
-image::media/booking-create-resourcetype-4.png[]
-
 6) The new resource type will appear in the list.
-
-image::media/booking-create-resourcetype-5.png[]
 
 === Create New Resource Attribute ===
 
@@ -69,14 +58,17 @@ image::media/booking-create-resourcetype-5.png[]
 
 2) Click New Resource Attribute in the top right corner.
 
-3) A box will appear in which you can add the attributes of the resource. Attributes are categories of descriptive information that are provided to the staff member when the booking request is made. For example, an attribute of a projector may be the type of projector. Other attributes might be the number of seats available in a room, or the computing platform of a laptop.
+image::booking/new_resource_attr_button.png[]
 
-image::media/booking-create-bookable-2.png[]
+3) A box will appear in which you can add the attributes of the resource. Attributes are categories of descriptive information that are provided to the staff member when the booking request is made. For example, an attribute of a laptop may be the type of laptop. Other attributes might be the number of seats available in a room, or a kind of projector.
 
-* Resource Attribute Name - Give your attribute a name.
-* Owning Library - The home library of the resource.
-* Resource Type - Type in the first letter to list then choose the Resource Type to which the Attribute is applicable.
-* Is Required - (Function not currently available.)
+image::booking/resource_attr_form.png[]
+
+* *Is Required*: Boolean checkbox.
+* *Owning Library*
+* *Resource Attribute ID*: This will populate when the form is saved.
+* *Resource Attribute Name*: Choose a unique name  for the attribute.
+* *Resource Type*: Dropdown selection.
 
 4) Click Save when the necessary information has been entered.
 
@@ -91,13 +83,16 @@ One resource type may have multiple attributes. You may repeat the above procedu
 
 2) Click New Resource Attribute Value in the top right corner.
 
+image::booking/new_resource_attr_value_button.png[]
+
 3) A box will appear in which you assign a value to a particular attribute. Values can be numbers, words, or a combination of them, that describe the particular aspects of the resource that have been defined as Attributes. As all values appear on the same list for selection, values should be as unique as possible. For example, a laptop may have a computing platform that is either PC or Mac.
 
-image::media/booking-create-bookable-3.png[]
+image::booking/resource_attr_value_form.png[]
 
-* Owning Library - The home library of the resource.
-* Resource Attribute - The attribute you wish to assign the value to.
-* Valid Value - Enter the value for your attribute.
+* *Owning Library*: The home library of the resource.
+* *Resource Attribute*: The attribute you wish to assign the value to.
+* *Resource Attribute Value ID*: This will populate after you save.
+* *Valid Value*: Enter the value for your attribute.
 
 4) Click Save when the required information has been added.
 
@@ -105,25 +100,55 @@ image::media/booking-create-bookable-3.png[]
 
 === Create New Resource ===
 
-1) Add items to a resource type. Click Administration -> Booking Administration -> Resources.
+1) Select Administration -> Booking Administration -> Resource.
 
-2) Click New Resource in the top right corner.
+2) A list of current resources will appear (if any).
 
-3) A box will appear. Add information for the resource.
+3) To create a new resource type, click New Resource towards the top of the screen.
 
-image::media/booking-create-bookable-4.png[]
+image::booking/new_resource_button.png[]
 
-* Owning Library - The home library of the resource.
-* Resource Type - Type in the first letter of the resource type's name to list then select the resource type for your item.
-* Barcode - Barcode for the resource.
-* Overbook - This allows a single item to be reserved, picked up, and returned by multiple patrons during overlapping or identical time periods.
-* Is Deposit Required - (Function not currently available.)
-* Deposit Amount - (Function not currently available.)
-* User Fee - (Function not currently available.)
+4) A box will appear in which you create your new type of resource.
 
-4) Click Save when the required information has been added.
+image::booking/record_edit_resource.png[]
 
-5) The resource will appear in the list.
+* *Barcode*: Enter the barcode of the item.
+* *Deposit Amount*: If a deposit is needed to book, enter it here.
+* *Is Deposit Required?*: Boolean checkbox.
+* *Overbook*: Boolean checkbox.
+* *Owning Library*: The home library of the resource.
+* *Resource ID*: This populates after saving.
+* *Resource Type*: Dropdown list.
+* *User Fee*: Enter a fee if needed.
+
+5) Click Save when you have entered the needed information.
+
+6) The resource will appear in the list.
+
+[NOTE]
+One resource type may have multiple resources attached.
+
+=== Create New Resource Attribute ===
+
+1) Select Administration -> Booking Administration -> Resource Attributes.
+
+2) Click New Resource Attribute in the top right corner.
+
+image::booking/new_resource_attr_button.png[]
+
+3) A box will appear in which you can add the attributes of the resource. Attributes are categories of descriptive information that are provided to the staff member when the booking request is made. For example, an attribute of a laptop may be the type of laptop. Other attributes might be the number of seats available in a room, or a kind of projector.
+
+image::booking/resource_attr_form.png[]
+
+* *Is Required*: Boolean checkbox.
+* *Owning Library*
+* *Resource Attribute ID*: This will populate when the form is saved.
+* *Resource Attribute Name*: Choose a unique name  for the attribute.
+* *Resource Type*: Dropdown selection.
+
+4) Click Save when the necessary information has been entered.
+
+5) The added attribute will appear in the list.
 
 [NOTE]
 One resource type may have multiple resources attached.
@@ -134,13 +159,16 @@ One resource type may have multiple resources attached.
 
 2) Click New Resource Attribute Map in the right top corner.
 
+image::booking/new_map_button.png[]
+
 3) A box will appear in which you will map your attributes and values to your resources.
 
-image::media/booking-create-bookable-5.png[]
+image::booking/map_forms.png[]
 
-* Resource - Enter the barcode of your resource.
-* Resource Attribute - Select an attribute that belongs to the Resource Type.
-* Attribute Value - Select a value that belongs to your chosen attribute and describes your resource. If your attribute and value do not belong together you will be unable to save.
+* *Attribute Value*: Dropdown menu.
+* *Resource*: Dropdown menu.
+* *Resource Attribute*: Dropdown menu.
+* *Resource Attribute Map ID*: Populates after you save.
 
 4) Click Save once you have entered the required information.
 
