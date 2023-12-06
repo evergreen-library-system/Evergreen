@@ -102,15 +102,7 @@ image::booking/resource_attr_value_form.png[]
 
 1) Select Administration -> Booking Administration -> Resource.
 
-image::media/booking-create-resourcetype_webclient-1.png[]
-
-2) A list of current resource types will appear (if any).
-
-image::booking/resource_config.png[]
-
-[NOTE]
-You may also see cataloged items in the list. Those items have been marked bookable or booked before.
-
+2) A list of current resources will appear (if any).
 
 3) To create a new resource type, click New Resource towards the top of the screen.
 
@@ -131,7 +123,10 @@ image::booking/record_edit_resource.png[]
 
 5) Click Save when you have entered the needed information.
 
-6) The new resource type will appear in the list.
+6) The resource will appear in the list.
+
+[NOTE]
+One resource type may have multiple resources attached.
 
 === Create New Resource Attribute ===
 
