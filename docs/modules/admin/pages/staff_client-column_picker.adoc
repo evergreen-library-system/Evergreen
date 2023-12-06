@@ -32,13 +32,3 @@ browser and are not connected with a specific login or registered
 workstation. Each computer will need to be configured separately.
 
 image::media/column_picker_web_save.png[column_picker_web_save]
-
-
-Some lists have a different design, and some of them can also be customized.
-Simply right-click the header row of any of the columns, and the column
-picker will appear. When you are finished customizing the display, scroll
-to the bottom of the Column Picker window and click *Save*.
-
-image::media/column_picker_dojo.png[column_picker_dojo]
-
-
