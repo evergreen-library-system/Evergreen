@@ -4,6 +4,16 @@
       <legend class="mb-0" i18n><h1>Sign In</h1></legend>
       <hr class="mt-1"/>
       <form (ngSubmit)="handleSubmit()" #loginForm="ngForm" class="form-validated">
+       
+        <div *ngIf="loginFailed" id="form-error-summary" class="row">
+          <div class="col">
+            <p class="alert alert-danger label-with-material-icon w-100">
+              <span class="material-icons" aria-hidden="true"
+                title="Error" i18n-title>report</span>
+              <span class="ms-1" i18n>Login Failed</span>
+            </p>
+          </div>
+        </div>
 
         <div class="row row-cols-auto">
           <label class="form-label col-form-label fw-bold col-4 text-end" for="username" i18n>Username</label>
@@ -14,6 +24,7 @@
               id="username"
               name="username"
               required
+              aria-describedby="form-error-summary"
               autocomplete="username"
               i18n-placeholder
               placeholder="Username"
@@ -21,8 +32,6 @@
           </div>
         </div>
 
-        <!-- ESLint is right only because the ARIA spec hasn't been updated yet -->
-        <!-- eslint-disable @angular-eslint/template/accessibility-valid-aria -->
         <div class="row row-cols-auto mt-3">
           <label class="form-label col-form-label col-4 text-end fw-bold" for="password" i18n>Password</label>
           <div class="col-8">
@@ -38,7 +47,7 @@
                 i18n-placeholder
                 placeholder="Password"
                 spellcheck="false"
-                [attr.aria-description]="ariaDescription"
+                aria-describedby="form-error-summary password-visibility"
                 [(ngModel)]="args.password"/>
               <button id="show_password" class="input-group-text pointer"
                 type="button" 
@@ -47,11 +56,12 @@
                 i18n-aria-label i18n-title (click)="togglePasswordVisibility()" >
                 <span class="material-icons" aria-hidden="true">{{ passwordVisible ? 'visibility' : 'visibility_off' }}</span>
               </button>
+              <p id="password-visibility" class="visually-hidden" *ngIf="!passwordVisible" i18n>Your password is not visible.</p>
+              <p id="password-visibility" class="visually-hidden" *ngIf="passwordVisible" i18n>Your password is visible.</p>
             </div>
           </div>
         </div>
-        <!-- eslint-enable @angular-eslint/template/accessibility-valid-aria -->
-
+       
         <div class="row row-cols-auto mt-3" *ngIf="workstations && workstations.length">
           <label class="form-label col-form-label col-4 text-end fw-bold" for="workstation" i18n>Workstation</label>
           <div class="col-8">
@@ -59,6 +69,7 @@
               class="form-control"
               id="workstation"
               name="workstation"
+              aria-describedby="form-error-summary"
               required
               [(ngModel)]="args.workstation">
               <option *ngFor="let ws of workstations" [value]="ws.name">
@@ -71,9 +82,6 @@
         <div class="row row-cols-auto mt-3">
           <div class="col-2 offset-4">
             <button type="submit" class="btn btn-outline-dark" i18n>Sign In</button>
-          </div>
-          <div class="col-4" *ngIf="loginFailed">
-            <div class="badge rounded-pill bg-warning p-2" i18n>Login Failed</div>
           </div>
         </div>
 

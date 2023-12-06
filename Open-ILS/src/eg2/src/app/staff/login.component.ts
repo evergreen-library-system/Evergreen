@@ -25,7 +25,6 @@ export class StaffLoginComponent implements OnInit {
     routeTo: string;
     pendingXactsDate: Date;
     passwordVisible: boolean;
-    ariaDescription: string = $localize`Your password is not visible.`;
 
     args = {
         username : '',
@@ -134,8 +133,6 @@ export class StaffLoginComponent implements OnInit {
 
     togglePasswordVisibility() {
         this.passwordVisible = !this.passwordVisible;
-        // eslint-disable-next-line max-len
-        if(this.passwordVisible) {this.ariaDescription = $localize`Your password is visible!`;} else {this.ariaDescription = $localize`Your password is not visible.`;}
         this.passwordInput.nativeElement.focus();
     }
 
