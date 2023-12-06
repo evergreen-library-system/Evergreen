@@ -164,13 +164,16 @@ One resource type may have multiple resources attached.
 
 2) Click New Resource Attribute Map in the right top corner.
 
+image::booking/new_map_button.png[]
+
 3) A box will appear in which you will map your attributes and values to your resources.
 
-image::media/booking-create-bookable-5.png[]
+image::booking/map_forms.png[]
 
-* Resource - Enter the barcode of your resource.
-* Resource Attribute - Select an attribute that belongs to the Resource Type.
-* Attribute Value - Select a value that belongs to your chosen attribute and describes your resource. If your attribute and value do not belong together you will be unable to save.
+* *Attribute Value*: Dropdown menu.
+* *Resource*: Dropdown menu.
+* *Resource Attribute*: Dropdown menu.
+* *Resource Attribute Map ID*: Populates after you save.
 
 4) Click Save once you have entered the required information.
 
