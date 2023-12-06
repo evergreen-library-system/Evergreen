@@ -48,8 +48,6 @@ but the ones I'm finding aren't quite cutting it..*/
 }
 
 /* let search form elements fill their containers w/ slight padding */
-#patron-search-form-row {margin-left: 0px;}
-#patron-search-form div.col-md-2 { padding: 2px; }
 #patron-search-form input:not([type="checkbox"]) { width: 100%; }
 #patron-search-form .eg-org-selector,
 #patron-search-form .eg-org-selector button,
@@ -59,6 +57,61 @@ but the ones I'm finding aren't quite cutting it..*/
   text-align: left
 }
 
+.patron-search-container {
+  container-type: inline-size;
+}
+
+/* mobile-first layout: flexbox */
+.patron-search-form {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: start;
+  gap: 0.5rem;
+}
+
+/* Bootstrap sm breakpoint */
+@container (min-width: 576px) {
+  .patron-search-form > * {
+    flex-basis: 40%;
+  }
+
+  .actions-more {
+    position: absolute;
+    right: 0;
+    top: 0;
+  }
+}
+
+/* not a Bootstrap breakpoint, but where col-lg-9 can break */
+@container (min-width: 680px) {
+  .patron-search-form {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr) max-content;
+    grid-template-rows: repeat(5, auto);
+  }
+
+  .actions-more {
+    position: revert;
+  }
+}
+
+/* place in the next to last column, first row */
+.actions-search {
+  grid-row: 1;
+  grid-column: 5;
+}
+
+/* place in the next to last column, second row */
+.actions-reset {
+  grid-row: 2;
+  grid-column: 5;
+}
+
+/* place in the last column, spanning all rows */
+.actions-more {
+  grid-column: 6;
+  grid-row: 1 / 5;
+}
 
 #patron-payments-spreadsheet {
   margin-top: 10px;

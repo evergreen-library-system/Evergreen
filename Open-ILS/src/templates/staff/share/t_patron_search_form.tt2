@@ -1,122 +1,74 @@
-
-<!-- TODO: inputs need sr-only labels
-   <label class="sr-only" for="input-id">label</label>
--->
-
 <div class="row" id="patron-search-form-row">
   <div class="col-md-11">
+    <div class="patron-search-container">
+
     <form ng-submit="search(searchArgs)" id="patron-search-form" 
-        role="form" class="form-horizontal">
+         class="form-horizontal patron-search-form">
+      <div class="actions-more">
+        <button class="btn btn-default" ng-click="applyShowExtras($event, true)" 
+          ng-mouseover="setLastFormElement()" aria-label="[% l('Show More Fields') %]"
+          title="[% l('Show More Fields') %]" ng-show="!showExtras">
+          <span class="glyphicon glyphicon-circle-arrow-down"></span>
+        </button>
+        <button class="btn btn-default" ng-click="applyShowExtras($event, false)" 
+          ng-mouseover="setLastFormElement()" aria-label="[% l('Show Fewer Fields') %]"
+          title="[% l('Show Fewer Fields') %]" ng-show="showExtras">
+          <span class="glyphicon glyphicon-circle-arrow-up"></span>
+        </button>
+      </div>
 
-      <div class="form-group">
-
-        <div class="col-md-2">
           <input type="text" class="form-control" 
             aria-label="[% l('Last Name') %]"
             focus-me="focusMe"
             ng-model="searchArgs.family_name" placeholder="[% l('Last Name') %]"/>
-        </div>
 
-        <div class="col-md-2">
           <input type="text" class="form-control" 
             aria-label="[% l('First Name') %]"
             ng-model="searchArgs.first_given_name" placeholder="[% l('First Name') %]"/>
-        </div>
 
-        <div class="col-md-2">
           <input type="text" class="form-control" 
             aria-label="[% l('Middle Name') %]"
             ng-model="searchArgs.second_given_name" placeholder="[% l('Middle Name') %]"/>
-        </div>
 
-        <div class="col-md-2">
           <input type="text" class="form-control" ng-model="searchArgs.name"
             aria-label="[% l('Name Keywords') %]"
             placeholder="[% l('Name Keywords') %]" title="[% l('Name Keywords') %]"/>
-        </div>
-
-        <div class="col-md-2" ng-mouseover="setLastFormElement()">
-          <input type="submit" class="btn btn-primary" value="[% l('Search') %]"
-            aria-label="[% l('Search') %]"/>
-        </div>
-
-
-        <div class="col-md-2">
-          <button class="btn btn-default" ng-click="applyShowExtras($event, true)" 
-            ng-mouseover="setLastFormElement()" aria-label="[% l('Show More Fields') %]"
-            title="[% l('Show More Fields') %]" ng-show="!showExtras">
-            <span class="glyphicon glyphicon-circle-arrow-down"></span>
-          </button>
-          <button class="btn btn-default" ng-click="applyShowExtras($event, false)" 
-            ng-mouseover="setLastFormElement()" aria-label="[% l('Show Fewer Fields') %]"
-            title="[% l('Show Fewer Fields') %]" ng-show="showExtras">
-            <span class="glyphicon glyphicon-circle-arrow-up"></span>
-          </button>
-        </div>
-      </div>
-
-      <div class="form-group" ng-show="showExtras">
-        <div class="col-md-2">
-          <input type="text" class="form-control" aria-label="[% l('Barcode') %]"
-            ng-model="searchArgs.card"
-            placeholder="[% l('Barcode') %]"/>
-        </div>
-        <div class="col-md-2">
-          <input type="text" class="form-control" aria-label="[% l('Alias') %]"
+        
+          <input ng-show="showExtras" type="text" class="form-control" aria-label="[% l('Barcode') %]"
+            ng-model="searchArgs.card" placeholder="[% l('Barcode') %]"/>
+        
+          <input ng-show="showExtras" type="text" class="form-control" aria-label="[% l('Alias') %]"
             ng-model="searchArgs.alias" placeholder="[% l('Alias') %]"/>
-        </div>
-        <div class="col-md-2">
-          <input type="text" class="form-control" aria-label="[% l('Username') %]"
+        
+          <input ng-show="showExtras" type="text" class="form-control" aria-label="[% l('Username') %]"
             ng-model="searchArgs.usrname" placeholder="[% l('Username') %]"/>
-        </div>
-        <div class="col-md-2">
-          <input type="text" class="form-control" aria-label="[% l('Email') %]"
+        
+          <input ng-show="showExtras" type="text" class="form-control" aria-label="[% l('Email') %]"
             ng-model="searchArgs.email" placeholder="[% l('Email') %]"/>
-        </div>
-        <div class="col-md-2" ng-mouseover="setLastFormElement()">
-          <input type="reset" class="btn btn-primary" ng-click="clearForm()" 
-            aria-label="[% l('Clear Form') %]" value="[% l('Clear Form') %]"/>
-        </div>
-      </div>
 
-      <div class="form-group" ng-show="showExtras">
-        <div class="col-md-2">
-          <input type="text" class="form-control" aria-label="[% l('Identification') %]"
+          <input ng-show="showExtras" type="text" class="form-control" aria-label="[% l('Identification') %]"
             ng-model="searchArgs.ident" placeholder="[% l('Identification') %]"/>
-        </div>
 
-        <div class="col-md-2">
-          <input type="text" class="form-control" aria-label="[% l('Phone') %]"
+          <input ng-show="showExtras" type="text" class="form-control" aria-label="[% l('Phone') %]"
             ng-model="searchArgs.phone" placeholder="[% l('Phone') %]"/>
-        </div>
-        <div class="col-md-2">
-          <input type="text" class="form-control" aria-label="[% l('Street 1') %]"
+        
+          <input ng-show="showExtras" type="text" class="form-control" aria-label="[% l('Street 1') %]"
             ng-model="searchArgs.street1" placeholder="[% l('Street 1') %]"/>
-        </div>
-        <div class="col-md-2">
-          <input type="text" class="form-control" aria-label="[% l('Street 2') %]"
+        
+          <input ng-show="showExtras" type="text" class="form-control" aria-label="[% l('Street 2') %]"
             ng-model="searchArgs.street2" placeholder="[% l('Street 2') %]"/>
-        </div>
-        <div class="col-md-2">
-          <input type="text" class="form-control" aria-label="[% l('City') %]"
+        
+          <input ng-show="showExtras" type="text" class="form-control" aria-label="[% l('City') %]"
             ng-model="searchArgs.city" placeholder="[% l('City') %]"/>
-        </div>
-      </div>
-
-      <div class="form-group" ng-show="showExtras">
-        <div class="col-md-2">
-          <input type="text" class="form-control" ng-model="searchArgs.state" 
+ 
+          <input ng-show="showExtras" type="text" class="form-control" ng-model="searchArgs.state" 
             aria-label="[% l('State') %]"
             placeholder="[% l('State') %]" title="[% l('State') %]"/>
-        </div>
 
-        <div class="col-md-2">
-          <input type="text" class="form-control" ng-model="searchArgs.post_code" 
+          <input ng-show="showExtras" type="text" class="form-control" ng-model="searchArgs.post_code" 
             aria-label="[% l('Post Code') %]"
             placeholder="[% l('Post Code') %]" title="[% l('Post Code') %]"/>
-        </div>
 
-        <div class="col-md-2">
           <!--
           <input type="text" class="form-control"  
             placeholder="[% l('Profile Group') %]"
@@ -125,7 +77,7 @@
             typeahead-editable="false" />
             -->
 
-            <div class="btn-group patron-search-selector" uib-dropdown>
+            <div ng-show="showExtras" class="btn-group patron-search-selector" uib-dropdown>
               <button type="button" class="btn btn-default" uib-dropdown-toggle>
                 <span style="padding-right: 5px;">{{searchArgs.profile.name() || "[% l('Profile Group') %]"}}</span>
                 <span class="caret"></span>
@@ -138,49 +90,46 @@
                 </li>
               </ul>
             </div>
-        </div>
 
-        <div class="col-md-2">
-          <eg-org-selector label="[% l('Home Library') %]" org-aria="[% l('Home Library') %]"
+          <eg-org-selector  ng-show="showExtras" label="[% l('Home Library') %]" org-aria="[% l('Home Library') %]"
             selected="searchArgs.home_ou" sticky-setting="eg.circ.patron.search.ou">
           </eg-org-selector>
-        </div>
 
-        <div class="col-md-2">
-          <input type="text" class="form-control" aria-label="[% l('Parent/Guardian') %]"
+          <input ng-show="showExtras" type="text" class="form-control" aria-label="[% l('Parent/Guardian') %]"
             ng-model="searchArgs.guardian" placeholder="[% l('Parent/Guardian') %]"/>
-        </div>
-      </div>
-      <div class="form-group" ng-show="showExtras">
-        <div class="col-md-2">
-            <input type="text" class="form-control" ng-model="searchArgs.dob_year"
+
+            <input ng-show="showExtras" type="text" class="form-control" ng-model="searchArgs.dob_year"
             aria-label="[% l('DOB Year') %]"
             placeholder="[% l('DOB Year') %]" title="[% l('DOB Year') %]"/>
-        </div>
-        <div class="col-md-2">
-            <input type="text" class="form-control" ng-model="searchArgs.dob_month"
+        
+            <input ng-show="showExtras" type="text" class="form-control" ng-model="searchArgs.dob_month"
             aria-label="[% l('DOB Month') %]"
             placeholder="[% l('DOB Month') %]" title="[% l('DOB Month') %]"/>
-        </div>
-        <div class="col-md-2">
-            <input type="text" class="form-control" ng-model="searchArgs.dob_day"
+        
+            <input ng-show="showExtras" type="text" class="form-control" ng-model="searchArgs.dob_day"
             aria-label="[% l('DOB Day') %]"
             placeholder="[% l('DOB Day') %]" title="[% l('DOB Day') %]"/>
-        </div>
-        <div class="col-md-2">
-          <input type="text" class="form-control" aria-label="[% l('Database ID') %]"
+        
+          <input ng-show="showExtras" type="text" class="form-control" aria-label="[% l('Database ID') %]"
             ng-model="searchArgs.id" placeholder="[% l('Database ID') %]"/>
-        </div>
-        <div class="col-md-2">
-          <div class="checkbox">
+          <div ng-show="showExtras" class="checkbox">
             <label id="includeInactive">
               <input type="checkbox" aria-labelledby="includeInactive"
                 ng-model="searchArgs.inactive" ng-change="onSearchInactiveChanged()"/>
               [% l('Include Inactive?') %]
             </label>
           </div>
-        </div>
+
+      <div ng-show="showExtras" class="actions-reset" ng-show="showExtras" ng-mouseover="setLastFormElement()">
+        <input type="reset" class="btn btn-destroy" ng-click="clearForm()" 
+          aria-label="[% l('Clear Form') %]" value="[% l('Clear Form') %]"/>
       </div>
+      <div class="actions-search" ng-mouseover="setLastFormElement()">
+        <input type="submit" class="btn btn-primary" value="[% l('Search') %]"
+        aria-label="[% l('Search') %]"/>
+      </div>
+
     </form>
+    </div>
   </div>
 </div>
