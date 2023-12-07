@@ -30,7 +30,7 @@
     <div class="clear-both"></div> <br/>
 
     <div class="header_middle">
-        <span id="acct_prefs_header">[% l('Account Information and Preferences') %]</span>
+        <span id="acct_prefs_header">[% l('Personal Information and Preferences') %]</span>
         <span class="float-right"> 
             <a class="hide_me" href="#">[% l('Export List') %]</a><!-- what does this do? -->
         </span>
