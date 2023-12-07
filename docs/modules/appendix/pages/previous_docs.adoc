@@ -1,5 +1,6 @@
 = Older Evergreen documentation
 :toc:
+
 == Evergreen 3.5
 
 . https://olddocs.evergreen-ils.org/docs/3.5/[Consolidated documentation (HTML)]
