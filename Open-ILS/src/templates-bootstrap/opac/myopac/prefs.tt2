@@ -5,7 +5,7 @@
     prefs_page = 'prefs';
     can_call_action_trigger = 'true' %]
 
-<h3>[% l('Account Information and Preferences') %]</h3>
+<h3>[% l('Personal Information and Preferences') %]</h3>
 <div id="acct_info_main">
     <table title="[% l('Account preference') %]" class='light_border table table-hover'>
         <tbody id='myopac_summary_tbody'>
