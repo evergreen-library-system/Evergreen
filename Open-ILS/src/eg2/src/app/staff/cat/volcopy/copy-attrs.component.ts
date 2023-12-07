@@ -1,11 +1,13 @@
 /* eslint-disable no-case-declarations, no-magic-numbers, no-shadow */
-import {Component, Input, OnInit, AfterViewInit, ViewChild,
+import {Component, Input, OnInit, OnDestroy, AfterViewInit, ViewChild,
     EventEmitter, Output, QueryList, ViewChildren} from '@angular/core';
+import {Subscription,Observable} from 'rxjs';
 import {SafeUrl} from '@angular/platform-browser';
 import {IdlObject, IdlService} from '@eg/core/idl.service';
 import {OrgService} from '@eg/core/org.service';
 import {StoreService} from '@eg/core/store.service';
 import {AuthService} from '@eg/core/auth.service';
+import {PermService} from '@eg/core/perm.service';
 import {VolCopyContext} from './volcopy';
 import {VolCopyService} from './volcopy.service';
 import {FormatService} from '@eg/core/format.service';
@@ -32,9 +34,11 @@ import {ToastService} from '@eg/share/toast/toast.service';
         '.template-row {background-color: #EBF4FA;}'
     ]
 })
-export class CopyAttrsComponent implements OnInit, AfterViewInit {
+export class CopyAttrsComponent implements OnInit, OnDestroy, AfterViewInit {
 
     @Input() context: VolCopyContext;
+    @Input() contextChanged: Observable<VolCopyContext>;
+    private contextSubscription: Subscription;
 
     // Batch values applied from the form.
     // Some values are scalar, some IdlObjects depending on copy fleshyness.
@@ -90,10 +94,13 @@ export class CopyAttrsComponent implements OnInit, AfterViewInit {
     // Emitted when the save-ability of this form changes.
     @Output() canSaveChange: EventEmitter<boolean> = new EventEmitter<boolean>();
 
+    userMayEdit = true;
+
     constructor(
         private idl: IdlService,
         private org: OrgService,
         private auth: AuthService,
+        private perm: PermService,
         private format: FormatService,
         private store: StoreService,
         private fileExport: FileExportService,
@@ -102,7 +109,39 @@ export class CopyAttrsComponent implements OnInit, AfterViewInit {
     ) { }
 
     ngOnInit() {
+        this.handleBroadcasts();
+        this.setDefaults();
+        this.evaluatePermissions();
+    }
+
+    ngOnDestroy() {
+        if (this.contextSubscription) {
+            this.contextSubscription.unsubscribe();
+        }
+    }
+
+    handleBroadcasts() {
+        if (this.context) {
+            this.contextSubscription = this.contextChanged.subscribe(updatedContext => {
+                this.evaluatePermissions();
+            });
+        }
+    }
+
+    setDefaults() {
         this.statCatFilter = this.volcopy.defaults.values.statcat_filter;
+    }
+
+    evaluatePermissions() {
+        this.perm.hasWorkPermAt(['UPDATE_COPY'], true)
+            .then(orgs => {
+                this.userMayEdit = this.context.getOwningLibIds().every(owningLib =>
+                    orgs['UPDATE_COPY'].includes(owningLib)
+                );
+            })
+            .catch(error => {
+                console.error('Error testing perms & owning libs:',error);
+            });
     }
 
     ngAfterViewInit() {

@@ -5,6 +5,7 @@
       <span *ngIf="dialogTitle">{{dialogTitle}}</span>
     </h4>
     <div class="alert alert-danger">{{dialogBody}}</div>
+    <ng-content><!-- Place for projected content; for example: <eg-alert-dialog><ul><li>render me too!</li></ul></eg-alert-dialog> --></ng-content>
   </div>
   <div class="modal-footer">
     <button type="button" class="btn btn-success" 

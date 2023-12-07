@@ -80,6 +80,22 @@ export class VolCopyContext {
         return Object.keys(idHash).map(id => Number(id));
     }
 
+    // Returns IDs for all volume owning libs represented in our holdings tree.
+    getOwningLibIds(): number[] {
+        try {
+            const idHash: {[id: number]: boolean} = {};
+
+            this.volNodes().forEach(volNode => {
+                idHash[volNode.target.owning_lib()] = true;
+            });
+
+            return Object.keys(idHash).map(id => Number(id));
+        } catch (error) {
+            console.error('Error in getOwningLibIds:', error);
+            return [];
+        }
+    }
+
     // When working on exactly one record, set our recordId value.
     setRecordId() {
         if (!this.recordId) {

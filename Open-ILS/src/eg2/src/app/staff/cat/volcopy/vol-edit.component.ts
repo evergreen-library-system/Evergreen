@@ -633,7 +633,6 @@ export class VolEditComponent implements OnInit {
         });
     }
 
-
     toggleBatchVisibility() {
         this.volcopy.defaults.visible.batch_actions =
             !this.volcopy.defaults.visible.batch_actions;

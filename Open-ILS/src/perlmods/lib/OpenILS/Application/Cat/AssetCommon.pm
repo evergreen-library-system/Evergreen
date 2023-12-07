@@ -50,6 +50,9 @@ sub fix_copy_price {
 sub create_copy {
     my($class, $editor, $vol, $copy) = @_;
 
+    return $editor->event unless
+        $editor->allowed('CREATE_COPY', $class->copy_perm_org($vol, $copy));
+
     my $existing = $editor->search_asset_copy(
         { barcode => $copy->barcode, deleted => 'f' } );
     
@@ -403,6 +406,16 @@ sub check_hold_retarget {
     push(@$retarget_holds, @$hold_ids);
 }
 
+# TODO: get Booking.pm to use this shared method
+sub fetch_copies_by_ids {
+    my ($class, $e, $copy_ids) = @_;
+    my $results = $e->search_asset_copy([
+        {id => $copy_ids},
+        {flesh => 1, flesh_fields => {acp => ['call_number']}}
+    ]);
+    return $results if ref($results) eq 'ARRAY';
+    return [];
+}
 
 # this does the actual work
 sub update_fleshed_copies {
@@ -417,19 +430,34 @@ sub update_fleshed_copies {
     my %cache;
     $cache{$vol->id} = $vol if $vol;
 
-    for my $copy (@$copies) {
+    sub process_copy {
+        my ($original_copy, $cache_ref, $editor, $class, $logger) = @_;
 
-        my $copyid = $copy->id;
+        my $copyid = $original_copy->id;
         $logger->info("vol-update: inspecting copy $copyid");
 
-        if( !($vol = $cache{$copy->call_number}) ) {
-            $vol = $cache{$copy->call_number} = 
-                $editor->retrieve_asset_call_number($copy->call_number);
+        my $vol;
+        if (!($vol = $cache_ref->{$original_copy->call_number})) {
+            $vol = $cache_ref->{$original_copy->call_number} =
+                $editor->retrieve_asset_call_number($original_copy->call_number);
             return $editor->event unless $vol;
         }
 
-        return $editor->event unless 
-            $editor->allowed('UPDATE_COPY', $class->copy_perm_org($vol, $copy));
+        return $editor->event unless
+            $editor->allowed('UPDATE_COPY', $class->copy_perm_org($vol, $original_copy));
+
+        return; # return nothing if all checks pass
+    }
+
+    my $original_copies = $class->fetch_copies_by_ids( $editor, map { $_->id } @$copies );
+    for my $original_copy (@$original_copies) {
+        my $event = process_copy($original_copy, \%cache, $editor, $class, $logger);
+        return $event if $event;
+    }
+
+    for my $copy (@$copies) {
+        my $event = process_copy($copy, \%cache, $editor, $class, $logger);
+        return $event if $event;
 
         $copy->editor($editor->requestor->id);
         $copy->edit_date('now');

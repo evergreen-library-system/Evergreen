@@ -67,6 +67,7 @@ export class StoreService {
     }
 
     setSessionItem(key: string, val: any, isJson?: boolean): void {
+        console.log(`Setting session item: key=${key}, value=`, val, `isJson=${isJson}`);
         if (!isJson) {
             val = JSON.stringify(val);
         }

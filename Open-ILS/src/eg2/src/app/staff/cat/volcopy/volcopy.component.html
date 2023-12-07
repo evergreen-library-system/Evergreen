@@ -5,6 +5,33 @@
   i18n-dialogBoby  dialogBody="Unsaved changes will be lost.  Continue navigation?">
 </eg-confirm-dialog>
 
+<eg-alert-dialog #uneditableItemsDialog
+  i18n-dialogTitle dialogTitle="Uneditable Items"
+  i18n-dialogBody dialogBody="Just a reminder, these items were not edited for lack of an adequately scoped UPDATE_COPY permission.">
+  <ul>
+    <li *ngFor="let node of not_allowed_vols">
+      <div class="ps-2 fw-bold">
+        {{cnPrefixName(node.target.prefix())}}
+        {{node.target.label()}}
+        {{cnSuffixName(node.target.suffix())}}
+        @ {{orgName(node.target.owning_lib())}}
+      </div>
+      <ul>
+        <li *ngFor="let child of node.children">{{ child.target.barcode() }} @ {{orgName(child.target.circ_lib())}}</li>
+      </ul>
+    </li>
+  </ul>
+</eg-alert-dialog>
+
+<eg-vol-copy-permission-dialog #permDialog></eg-vol-copy-permission-dialog>
+
+<eg-op-change #volEditOpChange
+  i18n-failMessage
+  i18n-successMessage
+  failMessage="Operator Change Failed"
+  successMessage="Operator Change Succeeded">
+</eg-op-change>
+
 <div class="row" *ngIf="sessionExpired">
   <div class="col-lg-6 mt-4 offset-lg-3 alert alert-danger d-flex justify-content-center" i18n>
     Holdings Editor Session Expired
@@ -28,7 +55,7 @@
         </div>
         <ng-container *ngIf="volcopy.defaults.values.unified_display">
           <div class="mt-2">
-            <eg-copy-attrs [context]="context" #copyAttrs
+            <eg-copy-attrs [context]="context" [contextChanged]="contextChange.asObservable()" #copyAttrs
               (canSaveChange)="attrsCanSaveChange($event)"></eg-copy-attrs>
           </div>
         </ng-container>
@@ -39,7 +66,7 @@
         <a role="tab" ngbNavLink i18n>Item Attributes</a>
         <ng-template ngbNavContent>
           <div class="mt-2">
-            <eg-copy-attrs [context]="context" #copyAttrs
+            <eg-copy-attrs [context]="context" [contextChanged]="contextChange.asObservable()" #copyAttrs
               (canSaveChange)="attrsCanSaveChange($event)"></eg-copy-attrs>
           </div>
         </ng-template>

@@ -1,15 +1,21 @@
 import {Component, OnInit, ViewChild, HostListener} from '@angular/core';
 import {Router, ActivatedRoute, ParamMap} from '@angular/router';
-import {tap} from 'rxjs/operators';
+import {BehaviorSubject, from, Observable, of} from 'rxjs';
+import {catchError, finalize, switchMap, tap, map} from 'rxjs/operators';
 import {IdlObject, IdlService} from '@eg/core/idl.service';
 import {EventService} from '@eg/core/event.service';
 import {OrgService} from '@eg/core/org.service';
 import {NetService} from '@eg/core/net.service';
 import {AuthService} from '@eg/core/auth.service';
+import {PermService} from '@eg/core/perm.service';
 import {PcrudService} from '@eg/core/pcrud.service';
+import {StoreService} from '@eg/core/store.service';
 import {HoldingsService, CallNumData} from '@eg/staff/share/holdings/holdings.service';
 import {VolCopyContext} from './volcopy';
 import {ConfirmDialogComponent} from '@eg/share/dialog/confirm.component';
+import {AlertDialogComponent} from '@eg/share/dialog/alert.component';
+import {VolCopyPermissionDialogComponent} from './vol-copy-permission-dialog.component';
+import {OpChangeComponent} from '@eg/staff/share/op-change/op-change.component';
 import {AnonCacheService} from '@eg/share/util/anon-cache.service';
 import {VolCopyService} from './volcopy.service';
 import {NgbNavChangeEvent} from '@ng-bootstrap/ng-bootstrap';
@@ -53,6 +59,9 @@ interface EditSession {
 export class VolCopyComponent implements OnInit {
 
     context: VolCopyContext;
+    private contextChange = new BehaviorSubject<VolCopyContext>(null);
+    // or this.context instead of null, but subscribers will get the broadcast during init
+    contextChanged = this.contextChange.asObservable();
     loading = true;
     sessionExpired = false;
 
@@ -66,10 +75,17 @@ export class VolCopyComponent implements OnInit {
     changesPendingForStatusBar = false;
     routingAllowed = false;
 
+    not_allowed_vols = [];
+
     @ViewChild('pendingChangesDialog', {static: false})
         pendingChangesDialog: ConfirmDialogComponent;
 
     @ViewChild('copyAttrs', {static: false}) copyAttrs: CopyAttrsComponent;
+
+    @ViewChild('permDialog') permDialog: VolCopyPermissionDialogComponent;
+    @ViewChild('uneditableItemsDialog') uneditableItemsDialog: AlertDialogComponent;
+
+    @ViewChild('volEditOpChange', {static: false}) volEditOpChange: OpChangeComponent;
 
     constructor(
         private router: Router,
@@ -79,7 +95,9 @@ export class VolCopyComponent implements OnInit {
         private org: OrgService,
         private net: NetService,
         private auth: AuthService,
+        private perm: PermService,
         private pcrud: PcrudService,
+        private store: StoreService,
         private cache: AnonCacheService,
         private broadcaster: BroadcastService,
         private holdings: HoldingsService,
@@ -87,8 +105,128 @@ export class VolCopyComponent implements OnInit {
     ) { }
 
     ngOnInit() {
+        console.log('VolCopyComponent, this',this);
         this.route.paramMap.subscribe(
             (params: ParamMap) => this.negotiateRoute(params));
+    }
+
+    orgName(orgId: number): string {
+        return this.org.get(orgId).shortname();
+    }
+
+    cnPrefixName(id_or_obj: any): string {
+        try {
+            return id_or_obj.label();
+        } catch(E) {
+            return this.volcopy.commonData.acn_prefix[id_or_obj]?.label() || '';
+        }
+    }
+
+    cnSuffixName(id_or_obj: any): string {
+        try {
+            return id_or_obj.label();
+        } catch(E) {
+            return this.volcopy.commonData.acn_suffix[id_or_obj]?.label() || '';
+        }
+    }
+
+    localOpChange(): Observable<any> {  // Use the correct type instead of `any`
+        const modalRef = this.volEditOpChange.open();
+
+        console.log('VolCopyComponent, localOpChange, modalRef', modalRef);
+
+        return modalRef.pipe(
+            tap({
+                next: res => console.log('VolCopyComponent, OpChangeComponent emission', res),
+                error: (err: unknown) => console.error('VolCopyComponent, OpChangeComponent error', err),
+                complete: () => console.log('VolCopyComponent, OpChangeComponent complete')
+            }),
+            finalize(() => {
+                const opChangeData = { instigated: true, key: this.target + ':' + this.targetId };
+                this.store.setSessionItem('opChangeInfo', opChangeData, false);
+
+                // eslint-disable-next-line no-self-assign
+                location.href = location.href; // my favorite sledgehammer
+                // since we're communicating with broadcasts, this seems safe
+            })
+        );
+    }
+
+    localOpRestore() {
+        // Restoring the original state
+        const opChangeInfo = this.store.getSessionItem('opChangeInfo');
+        console.log('VolCopyComponent, localOpRestore, opChangInfo', opChangeInfo);
+        if (opChangeInfo?.instigated && opChangeInfo.key === this.target + ':' + this.targetId) {
+            console.log('VolCopyComponent, localOpRestore, key matches');
+            // Restore original operator
+            try {
+                this.volEditOpChange.restore();
+                this.store.removeSessionItem('opChangeInfo');
+            } catch(E) {
+                window.alert(E);
+            }
+        } else {
+            console.error('VolCopyComponent, localOpRestore, key does not match');
+        }
+    }
+
+    closeWindow() {
+        this.localOpRestore();
+        window.close();
+    }
+
+    determineModal() {
+        const itemCount = this.context.copyList().length;
+        console.log('VolCopyComponent, itemCount', itemCount);
+        if (itemCount <= 1) { return; } // skip dialog if only 1 item (or zero?!)
+        from(this.perm.hasWorkPermAt(['UPDATE_COPY'], true))
+            .pipe(
+                switchMap(orgs => {
+
+                    const owning_libs = this.context.getOwningLibIds();
+                    const has_perm_for_each = owning_libs.every(owningLib => orgs['UPDATE_COPY'].includes(owningLib));
+
+                    console.log('VolCopyComponent, hasWorkPermAt', orgs);
+                    console.log('VolCopyComponent, owning libs', owning_libs);
+                    console.log('VolCopyComponent, has perm for every lib? ', has_perm_for_each);
+
+                    if (!has_perm_for_each) {
+                        return this.permDialog.open().pipe(
+                            map(dispatch => ({ dispatch, orgs }))
+                        );
+                    } else {
+                        // Return an observable that completes without emitting if no dialog is needed
+                        return of({dispatch: null, orgs});
+                    }
+                }),
+                switchMap(({dispatch, orgs}) => {
+                    console.log('VolCopyComponent, permDialog dispatch',dispatch);
+                    if (dispatch === 'option-exit') {
+                        // dialog was either X'ed out or "Exit Editor" was clicked.
+                        this.closeWindow();
+                        return of(null);
+                    } else if (dispatch === 'option-filter') {
+                        // "Only show permissible items."
+                        const allowed_vols = this.context.volNodes().filter(n => orgs['UPDATE_COPY'].includes( n.target.owning_lib()));
+                        this.not_allowed_vols = this.context.volNodes()
+                            .filter(n => !orgs['UPDATE_COPY'].includes( n.target.owning_lib()));
+                        this.not_allowed_vols.forEach(n => this.context.removeVolNode(n.target.id()));
+                        if (this.not_allowed_vols.length > 0) {
+                            this.contextChange.next(this.context);
+                        }
+                        return of(null);
+                    } else if (dispatch === 'option-changeop') {
+                        // "Change Operator and try again."
+                        return this.localOpChange();
+                    }
+                    // option-readonly ("Read-only view for all items")
+                    // is really the default behavior for mixed permissions,
+                    // so just pass through
+                    return of(null);
+                }),
+                finalize( () => {
+                })
+            ).subscribe(); // need this to start an Observable
     }
 
     negotiateRoute(params: ParamMap) {
@@ -125,7 +263,7 @@ export class VolCopyComponent implements OnInit {
         } else {
             // Avoid refetching the data during route changes.
             this.volcopy.currentContext = this.context;
-            this.load();
+            this.load().then( _ => { this.determineModal(); } );
         }
     }
 
@@ -341,6 +479,11 @@ export class VolCopyComponent implements OnInit {
         // of the other way around, which is what we have here.
         const volumes: IdlObject[] = [];
 
+        if (this.not_allowed_vols.length > 0) {
+            // remind staff about these items that were filtered out
+            this.uneditableItemsDialog.open();
+        }
+
         this.context.volNodes().forEach(volNode => {
             const newVol = this.idl.clone(volNode.target);
             const copies: IdlObject[] = [];
@@ -431,7 +574,7 @@ export class VolCopyComponent implements OnInit {
 
             if (close) {
                 return this.openPrintLabels(copyIds)
-                    .then(_ => setTimeout(() => window.close()));
+                    .then(_ => setTimeout(() => this.closeWindow()));
             }
 
             return this.load(Object.keys(ids).map(id => Number(id)));

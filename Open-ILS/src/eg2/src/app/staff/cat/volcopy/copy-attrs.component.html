@@ -32,6 +32,7 @@
   <eg-batch-item-attr 
     [name]="field" 
     [label]="label || copyFieldLabel(field)"
+    [readOnly]="!userMayEdit"
     [valueRequired]="required"
     [displayAs]="displayAs"
     [editInputDomId]="field + '-input'"
@@ -334,6 +335,7 @@
       </ng-template>
       <eg-batch-item-attr label="Alert Message" i18n-label
         editInputDomId="alert-message-input"
+        [readOnly]="!userMayEdit"
         [editTemplate]="alertMessageTemplate"
         [labelCounts]="itemAttrCounts('alert_message')"
         (changesSaved)="applyCopyValue('alert_message')">
@@ -477,6 +479,7 @@
         </ng-template>
         <eg-batch-item-attr label="{{cat.name()}} ({{orgSn(cat.owner())}})" i18n-label
           name="stat_cat_{{cat.id()}}" editInputDomId="stat-cat-input-{{cat.id()}}"
+          [readOnly]="!userMayEdit"
           [valueRequired]="cat.required() === 't'"
           [editTemplate]="statCatTemplate"
           [labelCounts]="statCatCounts(cat.id())"

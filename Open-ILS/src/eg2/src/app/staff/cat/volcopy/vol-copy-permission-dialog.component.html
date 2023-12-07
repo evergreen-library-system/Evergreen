@@ -1,0 +1,36 @@
+<ng-template #dialogContent>
+  <form class="form-validated">
+    <div class="modal-header">
+      <h3 class="modal-title" i18n>Mixed Permissions</h3>
+      <button type="button" class="btn-close btn-close-white"
+        i18n-aria-label aria-label="Close" (click)="close('option-exit')"></button>
+    </div>
+    <div class="modal-body">
+      <h4 i18n>UPDATE_COPY permission missing for one or more of these items. Please select an action:</h4>
+          <div class="form-check">
+            <input class="form-check-input" type="radio" name="option" id="option-filter"
+              value="option-filter" [(ngModel)]="dispatch">
+            <label class="form-label form-check-label" for="option-filter">Only show permissible items.</label>
+          </div>
+
+          <div class="form-check">
+            <input class="form-check-input" type="radio" name="option" id="option-readonly"
+              value="option-readonly" [(ngModel)]="dispatch">
+            <label class="form-label form-check-label" for="option-readonly">Read-only view for all items.</label>
+          </div>
+
+          <div class="form-check">
+            <input class="form-check-input" type="radio" name="option" id="option-changeop"
+              value="option-changeop" [(ngModel)]="dispatch">
+            <label class="form-label form-check-label" for="option-changeop">Change Operator and try again.</label>
+          </div>
+    </div>
+    <div class="modal-footer">
+      <button type="button" class="btn btn-success" [disabled]="!dispatch" 
+        (click)="close(dispatch)" i18n>Proceed</button>
+      <button type="button" class="btn btn-warning"
+        (click)="close('option-exit')" i18n>Exit Editor</button>
+    </div>
+  </form>
+</ng-template>
+
