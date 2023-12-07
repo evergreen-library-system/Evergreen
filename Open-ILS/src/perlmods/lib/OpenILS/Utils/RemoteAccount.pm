@@ -669,7 +669,7 @@ sub _ftp {
     }
 
     my @login_args = ();
-    foreach (qw/remote_user remote_password remote_account/) {
+    foreach (qw/remote_user remote_password/) {
         $self->{$_} or last;
         push @login_args, $self->{$_};
     }
