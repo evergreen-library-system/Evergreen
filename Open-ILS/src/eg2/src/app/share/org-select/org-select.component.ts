@@ -129,12 +129,14 @@ export class OrgSelectComponent implements OnInit {
     // This WILL NOT result in an onChange event firing.
     @Input() set applyOrg(org: IdlObject) {
         this.selected = org ? this.formatForDisplay(org) : null;
+        this.updateValidity(this.selectedOrgId())
     }
 
     // Modify the selected org unit by ID via data binding.
     // This WILL NOT result in an onChange event firing.
     @Input() set applyOrgId(id: number) {
         this.selected = id ? this.formatForDisplay(this.org.get(id)) : null;
+        this.updateValidity(this.selectedOrgId())
     }
 
     // Limit org unit display to those where the logged in user
@@ -311,7 +313,8 @@ export class OrgSelectComponent implements OnInit {
     // Fired by the typeahead to inform us of a change.
     orgChanged(selEvent: NgbTypeaheadSelectItemEvent) {
         // console.debug('org unit change occurred ' + selEvent.item);
-        this.onChange.emit(this.org.get(selEvent.item.id));
+        let newOrg = selEvent.item.id;
+        this.onChange.emit(this.org.get(newOrg));
 
         if (this.persistKey && this.valueFromSetting !== selEvent.item.id) {
             // persistKey is active.  Update the persisted value when changed.
@@ -320,6 +323,29 @@ export class OrgSelectComponent implements OnInit {
             this.valueFromSetting = selEvent.item.id;
             this.serverStore.setItem(key, this.valueFromSetting);
         }
+    }
+
+    //Modifies the classlist of the input to show a visual change. I don't think angular forms notice this but I don't understand angular forms to do it properly :(
+    updateValidity(newOrg: number)
+    {
+        if (newOrg && this.required)
+        {
+            const node = document.getElementById(`${this.domId}`);
+            if (this.isValidOrg(newOrg))
+                node.classList.replace("ng-invalid", "ng-valid");
+            else
+                node.classList.replace("ng-valid", "ng-invalid");
+        }
+    }
+
+    isValidOrg(org: any) : boolean{
+        if (!org)
+            return false;
+
+        if (this.disableOrgs.includes(org))
+            return false;
+
+        return true;
     }
 
     // Remove the tree-padding spaces when matching.
