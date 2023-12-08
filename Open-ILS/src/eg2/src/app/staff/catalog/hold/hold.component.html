@@ -93,7 +93,7 @@
         </div>
         <div class="col-lg-6">
           <eg-org-select domId="pickupLibSelect" (onChange)="pickupLib = $event ? $event.id() : null"
-            [disableOrgs]="disableOrgs" [applyOrgId]="pickupLib"></eg-org-select>
+            [disableOrgs]="disableOrgs" [applyOrgId]="pickupLib" [required]="true"></eg-org-select>
         </div>
       </div>
       <div class="row mt-2">
