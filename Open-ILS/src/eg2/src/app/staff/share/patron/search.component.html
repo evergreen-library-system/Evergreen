@@ -159,6 +159,7 @@
 <div class="patron-search-grid mt-4">
   <eg-grid #searchGrid idlClass="au" 
     persistKey="circ.patron.search"
+    flairColumnHeader="Status" i18n-flairColumnHeader
     (rowSelectionChange)="gridSelectionChange($event)"
     (onRowActivate)="rowsActivated($event)"
     [dataSource]="dataSource" 

@@ -13,6 +13,7 @@ import {GridDataSource} from '@eg/share/grid/grid';
 import {Pager} from '@eg/share/util/pager';
 import {BucketDialogComponent} from '@eg/staff/share/buckets/bucket-dialog.component';
 import {PatronMergeDialogComponent} from './merge-dialog.component';
+import {FormatService} from '@eg/core/format.service';
 
 const DEFAULT_SORT = [
     'family_name ASC',
@@ -28,6 +29,9 @@ const DEFAULT_FLESH = [
 ];
 
 const EXPAND_FORM = 'eg.circ.patron.search.show_extras';
+const SHOW_NAMES = 'eg.circ.patron.search.show_names';
+const SHOW_IDS = 'eg.circ.patron.search.show_ids';
+const SHOW_ADDRESS = 'eg.circ.patron.search.show_address';
 const INCLUDE_INACTIVE = 'eg.circ.patron.search.include_inactive';
 
 export interface PatronSearchField {
@@ -80,6 +84,9 @@ export class PatronSearchComponent implements OnInit, AfterViewInit {
     search: any = {};
     searchOrg: IdlObject;
     expandForm: boolean;
+    show_names: boolean = true;
+    show_ids: boolean = false;
+    show_address: boolean = false;
     dataSource: GridDataSource;
     profileGroups: IdlObject[] = [];
 
@@ -88,7 +95,8 @@ export class PatronSearchComponent implements OnInit, AfterViewInit {
         private net: NetService,
         public org: OrgService,
         private auth: AuthService,
-        private store: ServerStoreService
+        private store: ServerStoreService,
+        private format: FormatService
     ) {
         this.patronsActivated = new EventEmitter<any>();
         this.selectionChange = new EventEmitter<number[]>();
@@ -115,15 +123,21 @@ export class PatronSearchComponent implements OnInit, AfterViewInit {
         });
 
         this.searchOrg = this.org.root();
-        this.store.getItemBatch([EXPAND_FORM, INCLUDE_INACTIVE])
+        /*
+        this.store.getItemBatch([SHOW_NAMES, SHOW_IDS, SHOW_ADDRESS, INCLUDE_INACTIVE])
             .then(settings => {
-                this.expandForm = settings[EXPAND_FORM];
+                this.show_names = settings[SHOW_NAMES];
+                this.show_ids = settings[SHOW_IDS];
+                this.show_address = settings[SHOW_ADDRESS];
                 this.search.inactive = settings[INCLUDE_INACTIVE];
             });
+        /**/
+        this.search.inactive = true;
     }
 
     ngAfterViewInit() {
-        const node = document.getElementById('focus-this-input');
+        // TODO: use egAutofocus
+        const node = document.getElementById('family_name');
         if (node) { node.focus(); }
     }
 
@@ -134,6 +148,14 @@ export class PatronSearchComponent implements OnInit, AfterViewInit {
         } else {
             this.store.removeItem(EXPAND_FORM);
         }
+    }
+
+    saveSearchFields() {
+        /*
+        this.store.setItem(SHOW_NAMES, this.show_names);
+        this.store.setItem(SHOW_IDS, this.show_ids);
+        this.store.setItem(SHOW_ADDRESS, this.show_address);
+        /**/
     }
 
     toggleIncludeInactive() {

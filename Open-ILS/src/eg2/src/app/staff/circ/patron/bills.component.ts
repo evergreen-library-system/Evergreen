@@ -127,11 +127,11 @@ export class BillsComponent implements OnInit, AfterViewInit {
 
         this.rowFlairCallback = (row: any): GridRowFlairEntry => {
             if (row['circulation.stop_fines'] === 'LOST') {
-                return {icon: 'help'};
+                return {icon: 'help', title: 'Status: Lost'};
             } else if (row['circulation.stop_fines'] === 'LONGOVERDUE') {
-                return {icon: 'priority-high'};
+                return {icon: 'priority-high', title: 'Status: Long Overdue'};
             } else if (this.circIsOverdue(row)) {
-                return {icon: 'schedule'};
+                return {icon: 'schedule', title: 'Status: Overdue'};
             }
         };
 

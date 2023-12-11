@@ -24,6 +24,8 @@
 .bg-warning:before,
 .text-danger:before {
     font-family: "Material Icons";
+    font-size: 1.6rem;
     font-weight: normal;
-    vertical-align: sub;
+    line-height: 1.2rem;
+    vertical-align: middle;
 }

@@ -48,6 +48,9 @@ export class ProfileSelectComponent implements ControlValueAccessor, OnInit {
 
     @Input() required = false;
 
+    // Pass domId to combobox if given
+    @Input() domId?: string;
+
     cboxEntries: ComboboxEntry[] = [];
     profiles: {[id: number]: IdlObject} = {};
 

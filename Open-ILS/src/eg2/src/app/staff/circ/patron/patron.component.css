@@ -1,3 +1,17 @@
+.svg-icon-button {
+  padding-top: 0.375rem;
+}
+
+.svg-icon-button svg {
+  fill: var(--bs-dark);
+  height: var(--bs-body-line-height);
+  width: var(--bs-body-line-height);
+}
+
+.svg-icon-button:hover svg,
+.svg-icon-button:focus svg {
+  fill: var(--primary);
+}
 
 ::ng-deep legend {
   font-size: 1rem; /* defaults to 1.5 */

@@ -1,6 +1,10 @@
-
-
-.patron-edit-container {
-  
+.address-row + .address-row {
+  border-top: 2px solid var(--bs-gray-400);
+  padding-top: 0.5rem;
 }
 
+.address-row h5 {
+  color: var(--bs-dark);
+  font-size: 1.15rem;
+  font-weight: 600;
+}

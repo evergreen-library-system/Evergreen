@@ -42,10 +42,7 @@
 </eg-prompt-dialog>
 
 <ng-container *ngIf="context.summary">
-  <eg-staff-banner i18n-bannerText bannerText="Patron: 
-    {{patronService.namePart(context.summary.patron, 'family_name')}}, 
-    {{patronService.namePart(context.summary.patron, 'first_given_name')}} 
-    {{patronService.namePart(context.summary.patron, 'second_given_name')}}">
+  <eg-staff-banner i18n-bannerText [bannerText]="patronTitle()">
   </eg-staff-banner>
 </ng-container>
 
@@ -71,19 +68,34 @@
         [activeId]="patronTab" (navChange)="beforeTabChange($event)">
 
         <ng-container *ngIf="patronTab !== 'search'">
-          <li ngbDropdown ngbNavItem="toggle">
-            <button type="button" class="nav-link" (click)="toggleSummaryPane(); false"
+          <li ngbDropdown ngbNavItem="toggle" role="presentation">
+            <button type="button" class="nav-link svg-icon-button" (click)="toggleSummaryPane(); false" ngbDropdownItem
               [title]="showSummaryPane() ? 'Hide Summary Pane' : 'Show Summary Pane'" i18n-title
               [attr.aria-label]="showSummaryPane() ? 'Hide Summary Pane' : 'Show Summary Pane'" i18n-aria-label>
-              <span class="material-icons" aria-hidden="true">{{showSummaryPane() ? 'fullscreen' : 'fullscreen_exit'}}</span>
+              <!-- Our Material Icons set is missing some icons. Using SVG: -->
+              <span class="mat-icon-in-button" aria-hidden="true">
+                <!-- left_panel_open in SVG -->
+                <ng-container *ngIf="showSummaryPane()">
+                  <svg xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 -960 960 960" width="24">
+                    <path d="M500-640v320l160-160-160-160ZM200-120q-33 0-56.5-23.5T120-200v-560q0-33 23.5-56.5T200-840h560q33 0 56.5 23.5T840-760v560q0 33-23.5 56.5T760-120H200Zm120-80v-560H200v560h120Zm80 0h360v-560H400v560Zm-80 0H200h120Z"/>
+                  </svg>
+                </ng-container>
+                <!-- left_panel_close in SVG -->
+                <ng-container *ngIf="!showSummaryPane()">
+                  <svg xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 -960 960 960" width="24">
+                    <path d="M660-320v-320L500-480l160 160ZM200-120q-33 0-56.5-23.5T120-200v-560q0-33 23.5-56.5T200-840h560q33 0 56.5 23.5T840-760v560q0 33-23.5 56.5T760-120H200Zm120-80v-560H200v560h120Zm80 0h360v-560H400v560Zm-80 0H200h120Z"/>
+                  </svg>
+                </ng-container>
+              </span>
             </button>
           </li>
         </ng-container>
 
         <li role="presentation" ngbNavItem="checkout" [disabled]="!context.summary">
-          <a role="tab" ngbNavLink (click)="navItemClick('checkout', $event)"
-            routerLink="/staff/circ/patron/{{patronId}}/checkout" i18n>Check Out</a>
+          <button role="tab" ngbNavLink (click)="navItemClick('checkout', $event)"
+            routerLink="/staff/circ/patron/{{patronId}}/checkout" i18n>Check Out</button>
           <ng-template ngbNavContent>
+            <eg-title i18n-prefix [prefix]="patronTitle('Check Out Patron')"></eg-title>
             <div class="">
               <eg-patron-checkout></eg-patron-checkout> 
             </div>
@@ -91,11 +103,13 @@
         </li>
 
         <li role="presentation" ngbNavItem="items_out" [disabled]="!context.summary">
-          <a role="tab" ngbNavLink (click)="navItemClick('items_out', $event)"
+          <button role="tab" ngbNavLink (click)="navItemClick('items_out', $event)"
+            [attr.aria-live]="'polite'" [attr.aria-atomic]="'true'"
             routerLink="/staff/circ/patron/{{patronId}}/items_out" i18n>
             Items Out ({{counts('checkouts', 'total_out')}})
-          </a>
+          </button>
           <ng-template ngbNavContent>
+            <eg-title i18n-prefix [prefix]="patronTitle('Items Out ('+counts('checkouts', 'total_out')+') for Patron')"></eg-title>
             <div class="">
               <eg-patron-items [patronId]="patronId"></eg-patron-items>
             </div>
@@ -103,24 +117,28 @@
         </li>
 
         <li role="presentation" ngbNavItem="holds" [disabled]="!context.summary">
-          <a role="tab" ngbNavLink (click)="navItemClick('holds', $event)"
+          <button role="tab" ngbNavLink (click)="navItemClick('holds', $event)"
+            [attr.aria-live]="'polite'" [attr.aria-atomic]="'true'"
             routerLink="/staff/circ/patron/{{patronId}}/holds" i18n>
             Holds ({{counts('holds', 'ready')}} / {{counts('holds', 'total')}})
-          </a>
+          </button>
           <ng-template ngbNavContent>
+            <eg-title i18n-prefix [prefix]="patronTitle('Holds ('+this.counts('holds', 'ready')+' / '+this.counts('holds', 'total')+') for Patron')"></eg-title>
             <eg-patron-holds></eg-patron-holds>
           </ng-template>
         </li>
 
         <li role="presentation" ngbNavItem="bills" [disabled]="!context.summary">
-          <a role="tab" ngbNavLink (click)="navItemClick('bills', $event)"
+          <button role="tab" ngbNavLink (click)="navItemClick('bills', $event)"
+            [attr.aria-live]="'polite'" [attr.aria-atomic]="'true'"
             routerLink="/staff/circ/patron/{{patronId}}/bills" i18n>
             Bills 
             <span [ngClass]="{'text-danger': counts('fines', 'balance_owed') > 0}">
               ({{counts('fines', 'balance_owed') | currency}})
             </span>
-          </a>
+          </button>
           <ng-template ngbNavContent>
+            <eg-title i18n-prefix [prefix]="patronTitle('Patron', 'Bills')"></eg-title>
             <ng-container *ngIf="statementXact">
               <eg-patron-bill-statement [patronId]="patronId" [xactId]="statementXact">
               </eg-patron-bill-statement>
@@ -136,9 +154,10 @@
         </li>
 
         <li role="presentation" ngbNavItem="messages" [disabled]="!context.summary">
-          <a role="tab" ngbNavLink (click)="navItemClick('messages', $event)"
-            routerLink="/staff/circ/patron/{{patronId}}/messages" i18n>Messages</a>
+          <button role="tab" ngbNavLink (click)="navItemClick('messages', $event)"
+            routerLink="/staff/circ/patron/{{patronId}}/messages" i18n>Messages</button>
           <ng-template ngbNavContent>
+            <eg-title i18n-prefix [prefix]="patronTitle('Messages for Patron')"></eg-title>
             <div class="">
               <eg-patron-messages [patronId]="patronId"></eg-patron-messages>
             </div>
@@ -146,17 +165,17 @@
         </li>
 
         <li role="presentation" ngbNavItem="edit" [disabled]="!context.summary">
-          <a role="tab" ngbNavLink (click)="navItemClick('edit', $event)"
-            routerLink="/staff/circ/patron/{{patronId}}/edit" i18n>Edit</a>
+          <button role="tab" ngbNavLink (click)="navItemClick('edit', $event)"
+            routerLink="/staff/circ/patron/{{patronId}}/edit" i18n>Edit</button>
           <ng-template ngbNavContent>
+            <eg-title i18n-prefix [prefix]="patronTitle('Edit Patron')"></eg-title>
             <eg-patron-edit #patronEditor [patronId]="patronId" [toolbar]="editorToolbar">
             </eg-patron-edit> 
           </ng-template>
         </li>
 
-        <li ngbDropdown ngbNavItem="other" [disabled]="!context.summary">
-          <a [attr.href]="context.summary ? '' : null" 
-            (click)="false" class="nav-link" ngbDropdownToggle>Other</a>
+        <li ngbDropdown ngbNavItem="other" role="presentation" [disabled]="!context.summary">
+          <button class="nav-link" ngbDropdownToggle>Other</button>
           <div ngbDropdownMenu>
             <a routerLink="/staff/circ/patron/{{patronId}}/alerts" 
               ngbDropdownItem i18n>Alerts and Messages</a>
@@ -189,33 +208,39 @@
               target="_top"
               ngbDropdownItem i18n>Booking: Pick Up Reservations</a>
             <a routerLink="/staff/booking/return/by_patron/{{patronId}}"
-              target="_top" ngbDropdownItem i18n>Booking: Return</a>
-            <button type="button" href (click)="purgeAccount(); false"
+              target="_top" ngbDropdownItem i18n>Booking: Return Reservations</a>
+            <button type="button" (click)="purgeAccount(); false"
               [disabled]="disablePurge()"
               ngbDropdownItem i18n>Completely Purge Account</button>
           </div>
           <ng-template ngbNavContent>
             <ng-container [ngSwitch]="altTab">
               <div *ngSwitchCase="'alerts'">
+                <eg-title i18n-prefix [prefix]="patronTitle('Alerts for Patron')"></eg-title>
                 <eg-patron-alerts></eg-patron-alerts>
               </div>
               <div *ngSwitchCase="'credentials'">
+                <eg-title i18n-prefix [prefix]="patronTitle('Credentials for Patron')"></eg-title>
                 <eg-patron-test-password [patronId]="patronId">
                 </eg-patron-test-password>
               </div>
               <div *ngSwitchCase="'surveys'">
+                <eg-title i18n-prefix [prefix]="patronTitle('Surveys for Patron')"></eg-title>
                 <eg-patron-survey-responses [patronId]="patronId">
                 </eg-patron-survey-responses>
               </div>
               <div *ngSwitchCase="'stat_cats'">
+                <eg-title i18n-prefix [prefix]="patronTitle('Statistical Categories for Patron')"></eg-title>
                 <eg-patron-statcats [patronId]="patronId">
                 </eg-patron-statcats>
               </div>
               <div *ngSwitchCase="'group'">
+                <eg-title i18n-prefix [prefix]="patronTitle('Groups for Patron')"></eg-title>
                 <eg-patron-group [patronId]="patronId">
                 </eg-patron-group>
               </div>
               <div *ngSwitchCase="'perms'">
+                <eg-title i18n-prefix [prefix]="patronTitle('Permissions for Patron')"></eg-title>
                 <eg-patron-perms [patronId]="patronId">
                 </eg-patron-perms>
               </div>
@@ -224,10 +249,10 @@
         </li>
 
         <li role="presentation" ngbNavItem="search" class="ms-auto">
-          <a role="tab" ngbNavLink (click)="navItemClick('search', $event)"
-            routerLink="/staff/circ/patron/search" i18n>Patron Search</a>
+          <button role="tab" ngbNavLink (click)="navItemClick('search', $event)"
+            routerLink="/staff/circ/patron/search" i18n>Patron Search</button>
           <ng-template ngbNavContent>
-            <div class="">
+            <div>
               <eg-patron-search
                 [patronIds]="recentPatronIds()"
                 [startWithSearch]="context.lastPatronSearch"

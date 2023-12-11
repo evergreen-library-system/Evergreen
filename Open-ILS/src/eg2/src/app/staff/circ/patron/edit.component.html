@@ -56,7 +56,7 @@
 
 <!-- IDL-generated field labels.  Override with args.overrideLabel -->
 <ng-template #fieldLabel let-args="args">
-  <div class="col-lg-3 field-label">
+  <div class="col-lg-{{args.columns || 3}} field-label">
     <label class="form-label" for="{{getClass(args.cls)}}-{{args.field}}-input">
       {{getFieldLabel(getClass(args.cls), args.field, args.overrideLabel)}}
     </label>
@@ -68,7 +68,7 @@
 </ng-template>
 
 <ng-template #userSettingLabel let-args="args">
-  <div class="col-lg-3 field-label">
+  <div class="col-lg-{{args.columns || 3}} field-label">
     <label class="form-label" for="cust-{{args.settingName}}-input">
       {{userSettingTypes[args.settingName].label()}}
     </label>
@@ -77,7 +77,7 @@
 
 <!-- text / number / email inputs -->
 <ng-template #fieldInput let-args="args">
-  <div class="col-lg-3">
+  <div class="col-lg-{{args.columns || 3}}">
     <input 
       type="{{args.type || 'text'}}"
       class="form-control" 
@@ -95,7 +95,7 @@
 
 <!-- checkbox inputs -->
 <ng-template #fieldCheckbox let-args="args">
-  <div class="col-lg-3">
+  <div class="col-lg-{{args.columns || 3}}">
     <input 
       type="checkbox"
       class="form-check-input ms-0"
@@ -112,7 +112,7 @@
 
 <!-- combobox inputs -->
 <ng-template #fieldCombobox let-args="args">
-  <div class="col-lg-3">
+  <div class="col-lg-{{args.columns || 3}}">
     <eg-combobox [entries]="args.entries"
       name="{{getClass(args.cls)}}-{{args.field}}-input"
       domId="{{getClass(args.cls)}}-{{args.field}}-input"
@@ -131,7 +131,7 @@
   <div class="row pt-1 pb-1 mt-1">
     <ng-container *ngTemplateOutlet="userSettingLabel; context: {args: args}">
     </ng-container>
-    <div class="col-lg-3">
+    <div class="col-lg-{{args.columns || 3}}">
       <input 
         type="checkbox"
         class="form-check-input ms-0"
@@ -146,7 +146,7 @@
 </ng-template>
 
 <ng-template #userSettingInput let-args="args">
-  <div class="col-lg-3">
+  <div class="col-lg-{{args.columns || 3}}">
     <input 
       type="{{args.type || 'text'}}"
       class="form-control"
@@ -196,7 +196,7 @@
 <!-- The List O' Fields -->
 
 <div class="mt-3 striped-rows-even patron-edit-container form-validated" *ngIf="patron && showForm">
-
+  <h2 class="visually-hidden" i18n>Edit Patron</h2>
   <div class="row pt-1 pb-1 mt-1" *ngIf="showField('ac.barcode')">
     <ng-container *ngTemplateOutlet="fieldLabel; 
       context: {args: {cls: 'ac', path: 'card', field: 'barcode'}}">
@@ -214,7 +214,7 @@
           See All
         </button>
       </ng-container>
-      <span *ngIf="dupeBarcode" class="text-danger fw-bold ms-2" i18n>
+      <span *ngIf="dupeBarcode" class="alert alert-danger fw-bold ms-2" i18n>
         Barcode is already in use
       </span>
     </div>
@@ -226,7 +226,7 @@
     <ng-container *ngTemplateOutlet="fieldInput; context: {args: {field: 'usrname'}}">
     </ng-container>
     <div class="col-lg-6">
-      <span *ngIf="dupeUsername" class="text-danger fw-bold ms-2" i18n>
+      <span *ngIf="dupeUsername" class="alert alert-danger fw-bold ms-2" i18n>
         Username is already in use
       </span>
     </div>
@@ -245,57 +245,48 @@
     </div>
   </div>
 
-  <!-- Name / Preferred Name Tabs -->
-  <ul ngbNav #nameNav="ngbNav" class="nav-tabs" [(activeId)]="nameTab" [keyboard]="true" [roles]="false" role="tablist">
-    <li role="presentation" ngbNavItem="primary">
-      <a role="tab" ngbNavLink i18n>Primary Name</a>
-      <ng-template ngbNavContent>
+  <div class="row pt-1 pb-1 mt-1">
+    <div class="col-lg-6">
+      <div class="alert alert-success pt-2 pb-2 mt-3 mb-3 d-flex">
+        <h4 i18n>Primary Name</h4>
+      </div>
         <ng-container *ngTemplateOutlet="fieldRow; context: 
-          {args: {template: fieldInput, field: 'prefix'}}">
+          {args: {template: fieldInput, field: 'prefix', columns: 6}}">
         </ng-container>
         <ng-container *ngTemplateOutlet="fieldRow; context: 
-          {args: {template: fieldInput, field: 'first_given_name'}}">
+          {args: {template: fieldInput, field: 'first_given_name', columns: 6}}">
         </ng-container>
         <ng-container *ngTemplateOutlet="fieldRow; context: 
-          {args: {template: fieldInput, field: 'second_given_name'}}">
+          {args: {template: fieldInput, field: 'second_given_name', columns: 6}}">
         </ng-container>
         <ng-container *ngTemplateOutlet="fieldRow; context: 
-          {args: {template: fieldInput, field: 'family_name'}}">
+          {args: {template: fieldInput, field: 'family_name', columns: 6}}">
         </ng-container>
         <ng-container *ngTemplateOutlet="fieldRow; context: 
-          {args: {template: fieldInput, field: 'suffix'}}">
+          {args: {template: fieldInput, field: 'suffix', columns: 6}}">
         </ng-container>
-      </ng-template>
-    </li>
-    <li role="presentation" ngbNavItem="preferred">
-      <a role="tab" ngbNavLink i18n>Preferred Name</a>
-      <ng-template ngbNavContent>
+    </div>
+    <div class="col-lg-6">
+      <div class="alert alert-success pt-2 pb-2 mt-3 mb-3 d-flex">
+        <h4 i18n>Preferred Name</h4>
+      </div>
         <ng-container *ngTemplateOutlet="fieldRow; context: 
-          {args: {template: fieldInput, field: 'pref_prefix'}}">
-        </ng-container>
-        <ng-container *ngTemplateOutlet="fieldRow; context: 
-          {args: {template: fieldInput, field: 'pref_first_given_name'}}">
+          {args: {template: fieldInput, field: 'pref_prefix', columns: 6}}">
         </ng-container>
         <ng-container *ngTemplateOutlet="fieldRow; context: 
-          {args: {template: fieldInput, field: 'pref_second_given_name'}}">
+          {args: {template: fieldInput, field: 'pref_first_given_name', columns: 6}}">
         </ng-container>
         <ng-container *ngTemplateOutlet="fieldRow; context: 
-          {args: {template: fieldInput, field: 'pref_family_name'}}">
+          {args: {template: fieldInput, field: 'pref_second_given_name', columns: 6}}">
         </ng-container>
         <ng-container *ngTemplateOutlet="fieldRow; context: 
-          {args: {template: fieldInput, field: 'pref_suffix'}}">
+          {args: {template: fieldInput, field: 'pref_family_name', columns: 6}}">
         </ng-container>
-      </ng-template>
-    </li>
-  </ul>
-
-  <!-- Container div for name / pref name tabs -->
-  <div class="border rounded p-2" [ngClass]="{
-    'border-primary': nameTab === 'primary', 
-    'border-success': nameTab === 'preferred'}">
-    <div [ngbNavOutlet]="nameNav"></div>
+        <ng-container *ngTemplateOutlet="fieldRow; context: 
+          {args: {template: fieldInput, field: 'pref_suffix', columns: 6}}">
+        </ng-container>
+    </div>
   </div>
-
   <div class="row pt-1 pb-1 mt-1" *ngIf="showField('au.name_keywords')">
     <ng-container 
       *ngTemplateOutlet="fieldLabel; context: {args: {field: 'name_keywords'}}">
@@ -376,13 +367,6 @@
       </ng-container>
     </div>
   </div>
-
-  <ng-container 
-    *ngIf="userSettingTypes['circ.send_email_checkout_receipts'] && showField('au.email')">
-    <ng-container *ngTemplateOutlet="userSettingsCheckboxRow; context: 
-      {args: {settingName: 'circ.send_email_checkout_receipts'}}">
-    </ng-container>
-  </ng-container>
 
   <div class="row pt-1 pb-1 mt-1">
     <ng-container 
@@ -517,7 +501,7 @@
   </ng-container>
 
   <div class="alert alert-success pt-2 pb-2 mt-3 mb-3 d-flex">
-    <div class="m-auto fw-bold" i18n>User Settings</div>
+    <h4 class="m-auto" i18n>User Settings</h4>
   </div>
 
   <ng-container *ngTemplateOutlet="userSettingInputRow; context: 
@@ -546,23 +530,23 @@
     </ng-container>
     <div class="col-lg-3">
       <div class="form-check form-check-inline me-2">
-        <input class="form-check-input" type="checkbox" name="hold-notify-phone" 
-          id="hold-notify-phone" [(ngModel)]="holdNotifyTypes.phone"
+        <input class="form-check-input" type="checkbox" name="hold-notify-phone-usersetting" 
+          id="hold-notify-phone-usersetting" [(ngModel)]="holdNotifyTypes.phone"
           (ngModelChange)="emitSaveState()"/>
-        <label class="form-label form-check-label" for="hold-notify-phone" i18n>Phone</label>
+        <label class="form-label form-check-label" for="hold-notify-phone-usersetting" i18n>Phone</label>
       </div>
       <div class="form-check form-check-inline me-2">
-        <input class="form-check-input" type="checkbox" name="hold-notify-email" 
-          id="hold-notify-email" [(ngModel)]="holdNotifyTypes.email"
+        <input class="form-check-input" type="checkbox" name="hold-notify-email-usersetting" 
+          id="hold-notify-email-usersetting" [(ngModel)]="holdNotifyTypes.email"
           (ngModelChange)="emitSaveState()"/>
-        <label class="form-label form-check-label" for="hold-notify-email" i18n>Email</label>
+        <label class="form-label form-check-label" for="hold-notify-email-usersetting" i18n>Email</label>
       </div>
       <div class="form-check form-check-inline me-2" 
         *ngIf="context.settingsCache['sms.enable']">
-        <input class="form-check-input" type="checkbox" name="hold-notify-sms" 
-          id="hold-notify-sms" [(ngModel)]="holdNotifyTypes.sms"
+        <input class="form-check-input" type="checkbox" name="hold-notify-sms-usersetting" 
+          id="hold-notify-sms-usersetting" [(ngModel)]="holdNotifyTypes.sms"
           (ngModelChange)="emitSaveState()"/>
-        <label class="form-label form-check-label" for="hold-notify-sms" i18n>SMS</label>
+        <label class="form-label form-check-label" for="hold-notify-sms-usersetting" i18n>SMS</label>
       </div>
     </div>
   </div>
@@ -669,12 +653,12 @@
           </div>
         </div>
         <div class="ms-3">
-          <button type="button" class="btn btn-danger material-icon-button" 
+          <button type="button" class="btn btn-destroy material-icon-button" 
             [ngClass]="{'invisible': waiver.isdeleted()}"
             (click)="removeWaiver(waiver)" type="button"
             i18n-aria-label aria-label="Remove Privacy Waiver"
             i18n-title title="Remove Privacy Waiver">
-            <span class="text-danger material-icons" aria-hidden="true">delete</span>
+            <span class="material-icons" aria-hidden="true">delete</span>
           </button>
         </div>
         <div class="ms-2" *ngIf="index === patron.waiver_entries().length - 1">
@@ -690,34 +674,33 @@
   </ng-container>
 
   <div class="alert alert-success pt-2 pb-2 mt-3 mb-3 d-flex">
-    <div class="m-auto fw-bold" i18n>Addresses</div>
+    <h4 class="m-auto" i18n>Addresses</h4>
   </div>
 
   <ng-container *ngFor="let addr of patron.addresses(); let index = index">
-    <div class="mb-2" *ngIf="!addr.isdeleted()">
-
-      <div class="alert alert-info p-1">
-        <div class="row">
-          <div class="col-lg-3" i18n>Address #{{index + 1}}</div>
-          <div class="col-lg-9">
-            <div class="form-check form-check-inline me-2">
-              <input class="form-check-input" type="checkbox" 
-                name="addr-{{addr.id()}}-mailing" id="addr-{{addr.id()}}-mailing" 
-                [ngModel]="patron.mailing_address() && addr.id() === patron.mailing_address().id()"
-                (ngModelChange)="setAddrType('mailing', addr, $event)"/>
-              <label class="form-label form-check-label" 
-                for="addr-{{addr.id()}}-mailing" i18n>Mailing</label>
-            </div>
-            <div class="form-check form-check-inline me-2">
-              <input class="form-check-input" type="checkbox" 
-                name="addr-{{addr.id()}}-billing" id="addr-{{addr.id()}}-billing" 
-                [ngModel]="patron.billing_address() && addr.id() === patron.billing_address().id()"
-                (ngModelChange)="setAddrType('billing', addr, $event)"/>
-              <label class="form-label form-check-label" 
-                for="addr-{{addr.id()}}-billing" i18n>Physical</label>
-            </div>
-            <button type="button" class="btn btn-danger" (click)="deleteAddr(addr)" i18n>Delete</button>
+    <div class="mb-2 address-row" *ngIf="!addr.isdeleted()">
+      <div class="row">
+        <div class="col-lg-3">
+          <h5 i18n="Patron edit form address heading">Address #{{index + 1}}</h5>
+        </div>
+        <div class="col-lg-9">
+          <div class="form-check form-check-inline me-2">
+            <input class="form-check-input" type="checkbox" 
+              name="addr-{{addr.id()}}-mailing" id="addr-{{addr.id()}}-mailing" 
+              [ngModel]="patron.mailing_address() && addr.id() === patron.mailing_address().id()"
+              (ngModelChange)="setAddrType('mailing', addr, $event)"/>
+            <label class="form-label form-check-label" 
+              for="addr-{{addr.id()}}-mailing" i18n>Mailing</label>
           </div>
+          <div class="form-check form-check-inline me-2">
+            <input class="form-check-input" type="checkbox" 
+              name="addr-{{addr.id()}}-billing" id="addr-{{addr.id()}}-billing" 
+              [ngModel]="patron.billing_address() && addr.id() === patron.billing_address().id()"
+              (ngModelChange)="setAddrType('billing', addr, $event)"/>
+            <label class="form-label form-check-label" 
+              for="addr-{{addr.id()}}-billing" i18n>Physical</label>
+          </div>
+          <button type="button" class="btn btn-destroy" (click)="deleteAddr(addr)" i18n>Delete</button>
         </div>
       </div>
       <ng-container *ngTemplateOutlet="fieldRow; context: {args: {template: 
@@ -757,7 +740,7 @@
 
   <ng-container *ngIf="showField('stat_cats') && statCats.length > 0">
     <div class="alert alert-success pt-2 pb-2 mt-3 mb-3 d-flex">
-      <div class="m-auto fw-bold" i18n>Statistical Categories</div>
+      <h4 class="m-auto" i18n>Statistical Categories</h4>
     </div>
 
     <div class="row pt-1 pb-1 mt-1" *ngFor="let stat of statCats">
@@ -781,7 +764,7 @@
 
   <ng-container *ngIf="showField('surveys') && surveys.length > 0">
     <div class="alert alert-success pt-2 pb-2 mt-2 mb-2 d-flex">
-      <div class="m-auto fw-bold" i18n>Surveys</div>
+      <h4 class="m-auto" i18n>Surveys</h4>
     </div>
     <div class="card pt-1 pb-1 mt-1" *ngFor="let survey of surveys">
       <div class="card-header">{{survey.name()}}</div>

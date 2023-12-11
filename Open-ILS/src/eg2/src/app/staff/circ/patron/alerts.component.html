@@ -1,8 +1,6 @@
 
 <div *ngIf="alerts()">
 
-  <img class="mt-n4" src="/images/stop_sign.png" alt="" />
-
   <div class="alert alert-info" *ngIf="alerts().holdsReady > 0" i18n>
     Holds available: {{alerts().holdsReady}}
   </div>
