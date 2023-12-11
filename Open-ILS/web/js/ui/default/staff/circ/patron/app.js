@@ -243,6 +243,10 @@ function($scope,  $q , $location , $filter , egCore , egNet , egUser , egAlertDi
         return Boolean($location.path().match(/patron\/\d+\/edit$/));
     }
 
+    $scope.alert_penalties = function() {
+        return patronSvc.alert_penalties;
+    }
+
     // To support the fixed position patron edit actions bar,
     // its markup has to live outside the scope of the patron 
     // edit controller.  Insert a scope blob here that can be
@@ -251,9 +255,6 @@ function($scope,  $q , $location , $filter , egCore , egNet , egUser , egAlertDi
 
     // returns true if a redirect occurs
     function redirectToAlertPanel() {
-
-        $scope.alert_penalties = 
-            function() {return patronSvc.alert_penalties}
 
         if (patronSvc.alertsShown()) return false;
 
