@@ -46,111 +46,99 @@
 <!-- SUMMARY  -->
 
 <ng-container *ngIf="summary">
-  <div class="row border-bottom border-secondary pb-2 pt-2 mb-4">
-    <div class="col-lg-3 pe-0 me-0 border-end">
-      <div class="d-flex pt-1 pb-1 striped">
-        <div class="flex-4" i18n>Total Owed:</div>
-        <div class="flex-1"
-          [ngClass]="{'fw-bold' : summary.balance_owed() > 0}">
-          {{summary.balance_owed() || 0 | currency}}</div>
-      </div>
-      <div class="d-flex pt-1 pb-1">
-        <div class="flex-4" i18n>Total Billed:</div>
-        <div class="flex-1">{{summary.total_owed() || 0 | currency}}</div>
-      </div>
-      <div class="d-flex pt-1 pb-1 striped">
-        <div class="flex-4" i18n>Total Paid/Credited:</div>
-        <div class="flex-1">{{summary.total_paid() || 0 | currency}}</div>
-      </div>
-    </div>
-
-    <div class="col-lg-3 pe-0 me-0 border-end">
-      <div class="d-flex pt-1 pb-1 striped">
-        <div class="flex-4" i18n>Owed for Selected:</div>
-        <div class="flex-1">{{owedSelected() | currency}}</div>
-      </div>
-      <div class="d-flex pt-1 pb-1">
-        <div class="flex-4" i18n>Billed for Selected:</div>
-        <div class="flex-1">{{billedSelected() | currency}}</div>
-      </div>
-      <div class="d-flex pt-1 pb-1 striped">
-        <div class="flex-4" i18n>Paid/Credited for Selected:</div>
-        <div class="flex-1">{{paidSelected() | currency}}</div>
-      </div>
-    </div>
-
-    <div class="col-lg-3 pe-0 me-0 border-end">
-      <div class="d-flex pt-1 pb-1 striped">
-        <div class="flex-4" i18n>Refunds Available:</div>
-        <div class="flex-1">{{refundsAvailable() | currency}}</div>
-      </div>
-      <div class="d-flex pt-1 pb-1">
-        <div class="flex-4" i18n>Credit Available:</div>
-        <div class="flex-1">{{patron().credit_forward_balance() | currency}}</div>
-      </div>
-      <div class="d-flex pt-1 pb-1 striped">
-        <div class="flex-4" i18n>Session Voided:</div>
-        <div class="flex-1">{{sessionVoided | currency}}</div>
-      </div>
-    </div>
-
-    <div class="col-lg-3 pe-0 me-0">
-      <div class="d-flex pt-1 pb-1 striped">
-        <div class="flex-4">&nbsp;</div>
-        <div class="flex-1">&nbsp;</div>
-      </div>
-      <div class="d-flex pt-1 pb-1">
-        <div class="flex-4" i18n>Pending Payment:</div>
-        <div class="flex-1 fw-bold">{{pendingPayment() | currency}}</div>
-      </div>
-      <div class="d-flex pt-1 pb-1 striped">
-        <div class="flex-4" i18n>Pending Change:</div>
-        <div class="flex-1 fw-bold">{{pendingChange() | currency}}</div>
-      </div>
-    </div>
-  </div>
+  <ul class="list-unstyled patron-bills-summary">
+    <li [ngClass]="{'balance_owed' : summary.balance_owed() > 0}">
+      <span i18n>Total Owed:</span>
+      <span class="money">{{summary.balance_owed() || 0 | currency}}</span>
+    </li>
+    <li>
+      <span i18n>Total Billed:</span>
+      <span class="money">{{summary.total_owed() || 0 | currency}}</span>
+    </li>
+    <li>
+      <span i18n>Total Paid/Credited:</span>
+      <span class="money">{{summary.total_paid() || 0 | currency}}</span>
+    </li>
+    <li>
+      <span i18n>Owed for Selected:</span>
+      <span class="money">{{owedSelected() | currency}}</span>
+    </li>
+    <li>
+      <span i18n>Billed for Selected:</span>
+      <span class="money">{{billedSelected() | currency}}</span>
+    </li>
+    <li>
+      <span i18n>Paid/Credited for Selected:</span>
+      <span class="money">{{paidSelected() | currency}}</span>
+    </li>
+    <li>
+      <span i18n>Refunds Available:</span>
+      <span class="money">{{refundsAvailable() | currency}}</span>
+    </li>
+    <li>
+      <span i18n>Credit Available:</span>
+      <span class="money">{{patron().credit_forward_balance() | currency}}</span>
+    </li>
+    <li>
+      <span i18n>Session Voided:</span>
+      <span class="money">{{sessionVoided | currency}}</span>
+    </li>
+    <li class="pending">
+      <span i18n>Pending Payment:</span>
+      <span class="money">{{pendingPayment() | currency}}</span>
+    </li>
+    <li>
+      &nbsp;
+    </li>
+    <li class="pending">
+      <span i18n>Pending Change:</span>
+      <span class="money">{{pendingChange() | currency}}</span>
+    </li>
+  </ul>
 </ng-container>
 
 <!-- BILL PAY FORM -->
 
-<h3 i18n>Pay Bill</h3>
-
-<div class="row bg-light border border-dark rounded pt-2 pb-2 mt-2 mb-4 payment-form">
-  <div class="col-lg-12 d-flex form-inline form-validated">
-    <div class="flex-1"></div>
-    <div class="ms-2"><label class="form-label" for="payment-type" i18n>Payment Type:</label></div>
-    <div class="ms-1">
-      <select [(ngModel)]="paymentType" class="form-control" id="payment-type">
-        <option value="cash_payment" i18n>Cash</option>
-        <option value="check_payment" i18n>Check</option>
-        <option value="credit_card_payment" i18n>Credit Card</option>
-        <option value="debit_card_payment" i18n>Debit Card</option>
-        <option value="credit_payment" i18n>Patron Credit</option>
-        <option value="work_payment" i18n>Work</option>
-        <option value="forgive_payment" i18n>Forgive</option>
-        <option value="goods_payment" i18n>Goods</option>
-      </select>
-    </div>
-    <div class="ms-2"><label class="form-label" for="check-number" i18n>Check Number:</label></div>
-    <div class="ms-1">
-      <input type="text" class="form-control" [(ngModel)]="checkNumber"
-        id="check-number" [disabled]="paymentType !== 'check_payment'"/>
-    </div>
-    <div class="ms-2"><label class="form-label" for="pay-amount" i18n>Payment Received:</label></div>
-    <div class="ms-1">
-      <input type="number" class="form-control" [(ngModel)]="paymentAmount"
-        (ngModelChange)="updatePendingColumn()" id="pay-amount" [min]="0"/>
-    </div>
-    <div class="ms-2 form-check form-check-inline">
+<div class="row row-cols-auto g-2 align-items-end py-2 mt-2 mb-4 payment-form form-validated">
+  <div class="col-12">
+    <h3 i18n>Pay Bill</h3>
+  </div>
+  <div class="col-3">
+    <label class="form-label" for="payment-type" i18n>Payment Type:</label>
+    <select [(ngModel)]="paymentType" class="form-control" id="payment-type">
+      <option value="cash_payment" i18n>Cash</option>
+      <option value="check_payment" i18n>Check</option>
+      <option value="credit_card_payment" i18n>Credit Card</option>
+      <option value="debit_card_payment" i18n>Debit Card</option>
+      <option value="credit_payment" i18n>Patron Credit</option>
+      <option value="work_payment" i18n>Work</option>
+      <option value="forgive_payment" i18n>Forgive</option>
+      <option value="goods_payment" i18n>Goods</option>
+    </select>
+  </div>
+  <div class="col-3">
+    <label class="form-label" for="check-number" i18n>Check Number:</label>
+    <input type="text" class="form-control" [(ngModel)]="checkNumber"
+      id="check-number" [disabled]="paymentType !== 'check_payment'"/>
+  </div>
+  <div class="col-3">
+    <label class="form-label" for="pay-amount" i18n>Payment Received:</label>
+    <input type="number" class="form-control" [(ngModel)]="paymentAmount"
+      (ngModelChange)="updatePendingColumn()" id="pay-amount" [min]="0"/>
+  </div>
+  <div class="col">
+    <div class="form-check form-check-inline">
       <input class="form-check-input" type="checkbox"
-        (ngModelChange)="applySetting('eg.circ.bills.annotatepayment', $event)"
-        id="annotate" [(ngModel)]="annotatePayment"/>
-      <label class="form-label form-check-label" for="annotate" i18n>Annotate</label>
+      (ngModelChange)="applySetting('eg.circ.bills.annotatepayment', $event)"
+      id="annotate" [(ngModel)]="annotatePayment"/>
+    <label class="form-label form-check-label" for="annotate" i18n>Annotate</label>
     </div>
-    <div class="ms-2">
-      <button type="button" class="btn btn-outline-dark" (click)="applyPayment()"
-        [disabled]="disablePayment()" i18n>Apply Payment</button>
-    </div>
+  </div>
+  <div class="col">
+    <button type="button" class="btn" (click)="applyPayment()"
+      [ngClass]="{'btn-success': !disablePayment(),
+                  'btn-normal': disablePayment()}"
+      [disabled]="disablePayment()" i18n>Apply Payment</button>
   </div>
 </div>
 
@@ -178,6 +166,8 @@
   [rowClassCallback]="rowClassCallback"
   [rowFlairIsEnabled]="true"
   [rowFlairCallback]="rowFlairCallback"
+  flairColumnHeader="Account Status" 
+  i18n-flairColumnHeader="Patron billing table icon column header"
   [cellTextGenerator]="cellTextGenerator">
 
   <eg-grid-toolbar-button i18n-label label="Add Billing"
@@ -328,8 +318,7 @@
 
 <div class="row mt-2">
   <div class="col-lg-12 d-flex">
-    <div class="flex-1"></div>
-    <div class="d-flex flex-colum justify-content-end">
+    <div class="d-flex flex-column ms-auto align-items-center justify-content-end">
       <div class="form-check form-check-inline">
       <input class="form-check-input" type="checkbox" id="patron-credit-cbox"
         [(ngModel)]="convertChangeToCredit"/>
@@ -338,7 +327,7 @@
       </label>
       </div>
     </div>
-    <div class="d-flex flex-colum justify-content-end">
+    <div class="d-flex flex-column justify-content-end">
       <div class="form-check form-check-inline ms-2">
       <input class="form-check-input" type="checkbox" id="receipt-on-payment-cbox"
         (ngModelChange)="applySetting('circ.bills.receiptonpay', $event)"
@@ -350,8 +339,8 @@
     </div>
     <div class="form-inline ms-2">
       <div class="input-group">
-        <span class="input-group-text" i18n># Receipts</span>
-        <input type="number" class="form-control num-receipts" [(ngModel)]="numReceipts"/>
+        <label for="numreceipts" class="form-label input-group-text" i18n># Receipts</label>
+        <input type="number" class="form-control num-receipts" id="numreceipts" [(ngModel)]="numReceipts"/>
       </div>
     </div>
   </div>

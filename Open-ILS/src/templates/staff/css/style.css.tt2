@@ -299,12 +299,18 @@ table.list tr.selected td { /* deprecated? */
 
 /* patron bill row-highlighting */
 /* background colors are !important because Bootstrap 4 table striping is greedy */
+/* background colors are !important because Bootstrap 4 table striping is greedy */
 .overdue-row {
   color: var(--bs-body);
   background-color: rgba(var(--bs-red-rgb), 0.10) !important;
   border-left: 2px solid var(--bs-red);
   padding-left: 0;
+  color: var(--bs-body);
+  background-color: rgba(var(--bs-red-rgb), 0.10) !important;
+  border-left: 2px solid var(--bs-red);
+  padding-left: 0;
 }
+
 .overdue-row a:link, .overdue-row a:visited,
 .overdue-row .eg-grid-cell-stock-status {
   color: var(--badge-danger-color);
@@ -313,7 +319,7 @@ table.list tr.selected td { /* deprecated? */
 
 .longoverdue-row {
   color: var(--bs-body);
-  background-color: rgba(var(--bs-orange-rgb), 0.25) !important;
+  background-color: rgba(var(--bs-orange-rgb), 0.18) !important;
   border-left: 2px solid var(--bs-orange-600);
   padding-left: 0;
 }
@@ -326,7 +332,7 @@ table.list tr.selected td { /* deprecated? */
 
 .lost-row {
   color: var(--bs-body);
-  background-color: rgba(var(--bs-red-rgb), 0.25) !important;
+  background-color: rgba(var(--bs-red-rgb), 0.15) !important;
   border-left: 2px solid var(--bs-red-600);
   padding-left: 0;
 }
@@ -337,16 +343,17 @@ table.list tr.selected td { /* deprecated? */
   border-color: var(--bs-red-700);
 }
 
+
 .eg-grid-row-selected.overdue-row {
-  background-color: rgba(var(--bs-red-rgb), 0.15) !important;
+  background-color: rgba(var(--bs-red-rgb), 0.20) !important;
   border-left: 2px solid var(--bs-red);
 }
 .eg-grid-row-selected.longoverdue-row {
-  background-color: rgba(var(--bs-orange-rgb), 0.30) !important;
+  background-color: rgba(var(--bs-orange-rgb), 0.15) !important;
   border-left: 2px solid var(--bs-orange);
 }
 .eg-grid-row-selected.lost-row {
-  background-color: rgba(var(--bs-red-rgb), 0.30) !important;
+  background-color: rgba(var(--bs-red-rgb), 0.25) !important;
   border-left: 2px solid var(--bs-red-600);
 }
 

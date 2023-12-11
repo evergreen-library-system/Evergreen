@@ -82,7 +82,7 @@
 </div>
 
 <div class="row mb-3 pb-3 border-bottom">
-  <div class="col-lg-12 d-flex">
+  <div class="col-lg-12 d-flex align-items-center">
     <div class="form-inline">
       <div class="input-group">
         <span class="input-group-text" i18n>Barcode</span>
@@ -96,7 +96,7 @@
       </div>
     </div>
     <div class="col-lg-2">
-      <div class="form-check form-check-inline">
+      <div class="form-check form-check-inline ms-2">
         <input class="form-check-input" type="checkbox" 
           (ngModelChange)="toggleStrictBarcode($event)"
           id="strict-barcode-cbox" [(ngModel)]="strictBarcode"/>
@@ -305,9 +305,9 @@
       <div class="form-check form-check-inline">
         <input class="form-check-input" type="checkbox" 
           (ngModelChange)="toggleStrictBarcode($event)"
-          id="strict-barcode-cbox" [(ngModel)]="strictBarcode"/>
+          id="strict-barcode-cbox2" [(ngModel)]="strictBarcode"/>
         <label class="form-label form-check-label" 
-          for="strict-barcode-cbox" i18n>Strict Barcode</label>
+          for="strict-barcode-cbox2" i18n>Strict Barcode</label>
       </div>
     </div>
     <div>

@@ -7,8 +7,9 @@ import {PatronService, PatronAlerts} from '@eg/staff/share/patron/patron.service
 import {PatronContextService} from './patron.service';
 
 @Component({
-    templateUrl: 'alerts.component.html',
-    selector: 'eg-patron-alerts'
+  templateUrl: 'alerts.component.html',
+  selector: 'eg-patron-alerts',
+  styleUrls: ['./alerts.component.css']
 })
 export class PatronAlertsComponent {
 

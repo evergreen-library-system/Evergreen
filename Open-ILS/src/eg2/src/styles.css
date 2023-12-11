@@ -48,6 +48,16 @@ h5 {font-size: .95rem}
   text-align: end;
 }
 
+/* Use when headings are wanted for accessibility but text size should look normal and we don't want default margins */
+.text-normal {
+  color: var(--bs-body-color);
+  font-size: .88rem;
+  font-weight: var(--bs-body-font-weight);
+  line-height: var(--bs-body-line-height);
+  margin: 0;
+  padding: 0;
+}
+
 /** Use a default link color that achieves WCAG AA
  *  color contrast against a white background
  */

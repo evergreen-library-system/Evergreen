@@ -1,13 +1,45 @@
 
 <div class="patron-summary-container">
 
-  <div class="row d-flex patron-status-color rounded {{patronStatusColor()}}">
-    <div class="flex-1 pt-1 {{patronStatusColor()}}">
-      <h4 class="fw-bold" i18n>
+  <div class="row d-flex">
+    <div class="flex-1 pt-1">
+      <h2 class="text-dark fw-bold" i18n>
         {{patronService.namePart(p(), 'family_name')}}, 
         {{patronService.namePart(p(), 'first_given_name')}} 
         {{patronService.namePart(p(), 'second_given_name')}}
-      </h4>
+      </h2>
+
+      <div class="patron-status">
+        <h3 class="visually-hidden" i18n>Status</h3>
+        <ng-container *ngFor="let code of patronStatusCodes()">
+          <span class="badge {{code}}" [ngSwitch]="code">
+            <span i18n="Patron status" *ngSwitchCase="'PATRON_BARRED'">Barred</span>
+            <span i18n="Patron status" *ngSwitchCase="'PATRON_HAS_ALERT'">Alert</span>
+            <span i18n="Patron status" *ngSwitchCase="'PATRON_HAS_STAFF_ALERT'">Staff Alert</span>
+            <span i18n="Patron status" *ngSwitchCase="'PATRON_JUVENILE'">Juvenile</span>
+            <span i18n="Patron status" *ngSwitchCase="'PATRON_EXPIRED'">Expired</span>
+            <span i18n="Patron status" *ngSwitchCase="'PATRON_INACTIVE'">Inactive</span>
+            <span i18n="Patron status" *ngSwitchCase="'PATRON_EXCEEDS_CHECKOUT_COUNT'">Exceeds Checkouts</span>
+            <span i18n="Patron status" *ngSwitchCase="'PATRON_EXCEEDS_OVERDUE_COUNT'">Exceeds Overdues</span>
+            <span i18n="Patron status" *ngSwitchCase="'PATRON_EXCEEDS_LONGOVERDUE_COUNT'">Exceeds Long Overdues</span>
+            <span i18n="Patron status" *ngSwitchCase="'PATRON_EXCEEDS_LOST_COUNT'">Exceeds Lost</span>
+            <span i18n="Patron status" *ngSwitchCase="'PATRON_EXCEEDS_FINES'">Exceeds Fines</span>
+            <span i18n="Patron status" *ngSwitchCase="'MULTIPLE_PENALTIES'">Penalties ({{penalties}})</span>
+            <span i18n="Patron status" *ngSwitchCase="'ONE_PENALTY'">Penalty (1)</span>
+            <span i18n="Patron status" *ngSwitchCase="'NO_PENALTIES'">No Penalties</span>
+            <span i18n="Patron status" *ngSwitchCase="'PATRON_HAS_BILLS'">Bills ({{summary.stats.fines.balance_owed | currency}})</span>
+            <span i18n="Patron status" *ngSwitchCase="'PATRON_HAS_OVERDUES'">Overdue ({{summary.stats.checkouts.overdue}})</span>
+            <span i18n="Patron status" *ngSwitchCase="'PATRON_HAS_LOST'">Lost ({{summary.stats.checkouts.lost}})</span>
+            <span i18n="Patron status" *ngSwitchCase="'PATRON_HAS_NOTES'">Notes ({{p().notes().length}})</span>
+            <span i18n="Patron status" *ngSwitchCase="'INVALID_PATRON_ADDRESS'">Invalid Address</span>
+            <span i18n="Patron status" *ngSwitchCase="'INVALID_PATRON_EMAIL_ADDRESS'">Invalid Email</span>
+            <span i18n="Patron status" *ngSwitchCase="'INVALID_PATRON_DAY_PHONE'">Invalid Phone</span>
+            <span i18n="Patron status" *ngSwitchCase="'INVALID_PATRON_EVENING_PHONE'">Invalid Phone</span>
+            <span i18n="Patron status" *ngSwitchCase="'INVALID_PATRON_OTHER_PHONE'">Invalid Phone</span>
+            <span i18n="Patron status" *ngSwitchCase="'PATRON_IN_COLLECTIONS'">In Collections</span>
+          </span>
+        </ng-container>
+      </div>
     </div>
   </div>
 
@@ -24,6 +56,7 @@
     </div>
   </div>
 
+  <h3 class="visually-hidden" i18n>Penalties</h3>
   <div class="row mb-1 alert alert-anger p-0" 
     *ngFor="let pen of summary.alerts.alertPenalties">
     <div class="col-lg-9"
@@ -33,6 +66,7 @@
     <div class="col-lg-3">{{pen.set_date() | date:'shortDate'}}</div>
   </div>
 
+  <h3 class="visually-hidden" i18n>Account Summary</h3>
   <div class="row mb-1">
     <div class="col-lg-5" i18n>Profile</div>
     <div class="col-lg-7">{{p().profile().name()}}</div>
@@ -46,8 +80,8 @@
     <div class="col-lg-7">{{p().net_access_level().name()}}</div>
   </div>
   <div class="row mb-1">
-    <div class="col-lg-5" i18n>
-      <button type="button" class="btn btn-link" (click)="showDob = !showDob">Date of Birth</button>
+    <div class="col-lg-5">
+      <button type="button" class="btn btn-link p-0" (click)="showDob = !showDob" i18n>Date of Birth</button>
     </div>
     <div class="col-lg-7">
       <ng-container *ngIf="showDob">{{p().dob() | date}}</ng-container>
@@ -176,6 +210,7 @@
     <div class="col-lg-7">{{p().name_keywords()}}</div> 
   </div>
 
+  <h3 class="visually-hidden" i18n>Waivers</h3>
   <ng-container *ngIf="p().waiver_entries().length">
     <hr class="m-1"/>
     <div class="row mb-1 alert alert-info p-0">
@@ -196,21 +231,28 @@
 
   <hr class="m-1"/>
 
+  <h3 class="visually-hidden" i18n>Addresses</h3>
   <div class="row mb-1" *ngFor="let addr of p().addresses()">
     <div class="col-lg-12">
-      <fieldset>
-        <legend class="d-flex" [ngClass]="{'alert alert-danger p-0': addr.valid() === 'f'}">
-          <div class="flex-1">{{addr.address_type()}}</div>
+      <div class="border p-2">
+        <div class="d-flex" [ngClass]="{'alert alert-danger p-0': addr.valid() === 'f'}">
+          <h4 class="flex-1 text-normal">
+            <ng-container *ngIf="addr.valid() === 'f'">
+              <span class="material-icons">warning</span>
+              <span i18n>Address is invalid</span>
+            </ng-container>
+            {{addr.address_type()}}
+          </h4>
           <div>
-            <button type="button" class="btn btn-link me-2" 
+            <button class="btn btn-link me-2" type="button"
               (click)="copyAddress(addr)" i18n>copy</button>
-            <button type="button" class="btn btn-link me-2"
+            <button class="btn btn-link me-2" type="button"
               (click)="printAddress(addr)" i18n>print</button>
           </div>
-        </legend>
+        </div>
         <div i18n>{{addr.street1()}} {{addr.street2()}}</div>
         <div i18n>{{addr.city()}}, {{addr.state()}} {{addr.post_code()}}</div>
-      </fieldset>
+      </div>
 
       <!-- hidden textare used only for copying the text -->
       <textarea id="patron-address-copy-{{addr.id()}}" rows="2"              

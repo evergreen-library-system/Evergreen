@@ -13,8 +13,9 @@ import {PatronService} from '@eg/staff/share/patron/patron.service';
 import {PatronContextService} from './patron.service';
 
 @Component({
-    templateUrl: 'surveys.component.html',
-    selector: 'eg-patron-survey-responses'
+  templateUrl: 'surveys.component.html',
+  selector: 'eg-patron-survey-responses',
+  styles: ['thead th { padding: 0.5rem; }']
 })
 export class PatronSurveyResponsesComponent implements OnInit {
 

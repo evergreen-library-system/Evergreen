@@ -1,0 +1,6 @@
+.alert:before {
+  content: "\e99a"; /* "dangerous" symbol / stop sign */
+  font-family: "Material Icons"; 
+  font-weight: normal;
+  vertical-align: sub;
+}

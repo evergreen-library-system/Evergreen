@@ -1,53 +1,90 @@
-:host {
-  
-  --css-yellow: #FFFF00; /* TODO: REPLACE (Patron has alert border) */
-  --eg-orange-1: #FF6633; 
-  --eg-orange-2: #CC3300; 
-  --eg-red-3: #a6424c;
-  --eg-red-3-rgb: 166,66,76;
-  --eg-red-4: #9f2723;
-  --eg-red-4-rgb: 159,39,35;
-  --eg-red-5: #800000; 
-  --eg-blue-2: #66FFFF;
-
-
-  --bills-striped-bg: var(--bs-black-rgb, 0.03); 
-  --patron-lost-row: var(--bs-light);
-  --patron-lost-row-bg: var(--eg-red-5); 
-  --patron-summary-row-odd-bg: var(--bs-card-bg); 
-  --patron-status-archived: var(--status-archived);
-  --patron-status-barred: var(--eg-orange-2); 
-  --patron-status-exceeds-something: var(--eg-purple); 
-  --patron-status-has-bills: var(--eg-brown-3); 
-  --patron-status-has-lost: var(--eg-brown-3); 
-  --patron-status-has-overdues: var(--eg-brown-3); 
-  --patron-status-inactive: var(--inactive); 
-  --patron-status-multiple-penalties: var(--eg-orange-1); 
-  --patron-status-one-penalty: var(--eg-blue-2); 
-  --long-overdue-row: var(--bs-body-color);
-  --long-overdue-row-bg: var(--bs-yellow-250); 
+.alert-danger,
+.alert-danger .material-icons {
+  background: #f8d7da;
+  color: #58151c;
 }
 
 .patron-summary-container .row:nth-child(odd):not(.alert) {
   background-color: var(--patron-summary-row-odd-bg);
 }
 
-.patron-status-color { border: 2px solid transparent; padding: 3px; padding-left: 5px;}
-.patron-status-color.NO_PENALTIES  { border-color: var(--success-border); }
-.patron-status-color.ONE_PENALTY  { border-color: var(--patron-status-one-penalty); }
-.patron-status-color.MULTIPLE_PENALTIES  { border-color: var(--patron-status-multiple-penalties); }
-.patron-status-color.PATRON_HAS_STAFF_ALERT  { border-color: var(--bs-blue-700); }
-.patron-status-color.PATRON_HAS_BILLS  { border-color: var(--patron-status-has-bills); }
-.patron-status-color.PATRON_HAS_OVERDUES  { border-color: var(--patron-status-has-overdues); }
-.patron-status-color.PATRON_HAS_LOST  { border-color: var(--patron-status-has-lost); }
-.patron-status-color.PATRON_EXCEEDS_CHECKOUT_COUNT  { border-color: var(--patron-status-exceeds-something); }
-.patron-status-color.PATRON_EXCEEDS_OVERDUE_COUNT  { border-color: var(--patron-status-exceeds-something); }
-.patron-status-color.PATRON_EXCEEDS_FINES  { border-color: var(--patron-status-exceeds-something); }
-.patron-status-color.PATRON_HAS_ALERT  { border-color: var(--css-yellow); }
-.patron-status-color.PATRON_INACTIVE  { border-color: var(--patron-status-inactive); }
-.patron-status-color.PATRON_EXPIRED  { border-color: var(--patron-status-archived); }
-.patron-status-color.PATRON_BARRED  { border-color: var(--patron-status-barred); }
-.patron-status-color.PATRON_JUVENILE  { border-color: var(--css-light-cyan); }
+/* PATRON STATUS COLORS */
 
+.patron-status .badge {
+  font-size: inherit;
+  margin: 0 .5rem .5rem 0;
+}
+/* --badge-info */
+.PATRON_HAS_NOTES { 
+  background: #cff4fc;
+  color: #032830;
+}
+ /* BS Purple */
+.PATRON_EXCEEDS_LOST_COUNT,
+.PATRON_EXCEEDS_CHECKOUT_COUNT,
+.PATRON_EXCEEDS_OVERDUE_COUNT,
+.PATRON_EXCEEDS_LONGOVERDUE_COUNT,
+.PATRON_EXCEEDS_FINES  { 
+  background: #E2D9F3;
+  color: #2C1A4D; 
+}
+/* --badge-success */
+.NO_PENALTIES {
+  background: #dff0d8;
+  color: #003B35;
+}
+/* --badge-warning */
+.ONE_PENALTY,
+.PATRON_HAS_BILLS,
+.PATRON_HAS_OVERDUES,
+.INVALID_PATRON_ADDRESS
+.INVALID_PATRON_EMAIL_ADDRESS,
+.INVALID_PATRON_DAY_PHONE,
+.INVALID_PATRON_EVENING_PHONE,
+.INVALID_PATRON_OTHER_PHONE {
+  background: #FFF3CE;
+  color: #653208;
+}
+/* Bootstrap orange */
+.MULTIPLE_PENALTIES,
+.PATRON_HAS_LOST,
+.PATRON_IN_COLLECTIONS { 
+  background: #FFE5D0;
+  color: #653208;
+}
+/* --badge-secondary */
+.PATRON_INACTIVE,
+.PATRON_EXPIRED  { 
+  background: #dee2e6;
+  color: #212529;
+}
+/* --badge-danger */
+.PATRON_BARRED,
+.PATRON_HAS_ALERT,
+.PATRON_HAS_STAFF_ALERT  { 
+  background: #f8d7da;
+  color: #58151c;
+}
+.PATRON_BARRED {
+  font-weight: bold;
+}
+/* --badge-primary */
+.PATRON_JUVENILE  { 
+  background: #cfe2ff;
+  color: #062C65;
+}
 
+/* Statuses with warning icon */
+.PATRON_HAS_STAFF_ALERT:before,
+.PATRON_BARRED:before,
+.PATRON_HAS_ALERT:before,
+.PATRON_EXPIRED:before {
+    content: "\e002";
+    font-family: "Material Icons";
+    font-size: inherit;
+    font-weight: normal;
+    line-height: .75;
+    margin-right: .25rem;
+    vertical-align: bottom;
+}
 

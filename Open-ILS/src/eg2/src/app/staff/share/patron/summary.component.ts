@@ -29,6 +29,7 @@ export class PatronSummaryComponent implements OnInit {
 
     showDobDefault = false;
     showDob = false;
+    penalties: number = 0;
 
     constructor(
         private org: OrgService,
@@ -107,32 +108,34 @@ export class PatronSummaryComponent implements OnInit {
         return org ? org.shortname() : '';
     }
 
-    patronStatusColor(): string {
+    patronStatusCodes(): string[] {
 
         const patron = this.p();
 
+        let codes = [];
+
         if (patron.barred() === 't') {
-            return 'PATRON_BARRED';
+            codes.push('PATRON_BARRED');
         }
 
         if (patron.active() === 'f') {
-            return 'PATRON_INACTIVE';
+            codes.push('PATRON_INACTIVE');
         }
 
         if (this.summary.stats.fines.balance_owed > 0) {
-            return 'PATRON_HAS_BILLS';
+            codes.push('PATRON_HAS_BILLS');
         }
 
         if (this.summary.stats.checkouts.overdue > 0) {
-            return 'PATRON_HAS_OVERDUES';
+            codes.push('PATRON_HAS_OVERDUES');
         }
 
         if (patron.notes().length > 0) {
-            return 'PATRON_HAS_NOTES';
+            codes.push('PATRON_HAS_NOTES');
         }
 
         if (this.summary.stats.checkouts.lost > 0) {
-            return 'PATRON_HAS_LOST';
+            codes.push('PATRON_HAS_LOST');
         }
 
         let penalty: string;
@@ -143,8 +146,7 @@ export class PatronSummaryComponent implements OnInit {
 
             if (p.standing_penalty().staff_alert() === 't' ||
                 p.standing_penalty().block_list()) {
-                penalty = 'PATRON_HAS_STAFF_ALERT';
-                return true;
+                codes.push('PATRON_HAS_STAFF_ALERT');
             }
 
             const name = p.standing_penalty();
@@ -154,23 +156,31 @@ export class PatronSummaryComponent implements OnInit {
                 case 'PATRON_EXCEEDS_OVERDUE_COUNT':
                 case 'PATRON_EXCEEDS_FINES':
                     penalty = name;
-                    return true;
+                    codes.push(name);
             }
         });
 
-        if (penalty) { return penalty; }
-
-        if (penaltyCount === 1) {
-            return 'ONE_PENALTY';
-        } else if (penaltyCount > 1) {
-            return 'MULTIPLE_PENALTIES';
+        if (penaltyCount > 1) {
+            codes.push('MULTIPLE_PENALTIES');
         }
+        else if (penaltyCount === 1) {
+            codes.push('ONE_PENALTY');
+        }
+        else {
+            codes.push('NO_PENALTIES');
+        }
+
+        this.penalties = penaltyCount;
 
         if (patron.juvenile() === 't') {
-            return 'PATRON_JUVENILE';
+            codes.push('PATRON_JUVENILE');
         }
 
-        return 'NO_PENALTIES';
+        if (this.summary.alerts.accountExpired || this.summary.alerts.accountExpiresSoon) {
+            codes.push('PATRON_EXPIRED');
+        }
+
+        return codes;
     }
 }
 

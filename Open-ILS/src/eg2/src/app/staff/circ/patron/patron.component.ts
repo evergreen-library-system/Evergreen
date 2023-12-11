@@ -363,5 +363,18 @@ export class PatronComponent implements OnInit {
         this.context.summary = null;
         this.patronId = null;
     }
+
+    patronTitle(prefix: string = "Patron", suffix?: string) {
+        if (!this.context.summary) return;
+
+        const name = this.patronService.namePart(this.context.summary.patron, 'family_name') + ', ' + 
+            this.patronService.namePart(this.context.summary.patron, 'first_given_name') + ' ' + 
+            this.patronService.namePart(this.context.summary.patron, 'second_given_name');
+    
+        if (suffix)
+            return [prefix, name, suffix].join(": ");
+        else
+            return [prefix, name].join(": ");
+    }
 }
 

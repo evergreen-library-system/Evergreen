@@ -1,26 +1,24 @@
 
-<div class="card mt-2" *ngFor="let survey of surveys">
-  <div class="card-header">{{survey.survey.name()}}</div>
-  <ul class="list-group list-group-flush">
-    <li class="list-group-item">
-      <div class="row">
-        <div class="col-lg-4 fw-bold" i18n>Question</div>
-        <div class="col-lg-4 fw-bold" i18n>Response</div>
-        <div class="col-lg-4 fw-bold" i18n>Last Answered</div>
-      </div>
-    </li>
-    <li class="list-group-item" *ngFor="let response of survey.responses">
-      <div class="row">
-        <div class="col-lg-4">
+<div class="mt-2" *ngFor="let survey of surveys">
+  <h2 class="text-dark">{{survey.survey.name()}}</h2>
+  <table class="table table-striped">
+    <thead>
+      <th scope="col" i18n="Patron survey responses table header">Question</th>
+      <th scope="col" i18n="Patron survey responses table header">Response</th>
+      <th scope="col" i18n="Patron survey responses table header">Last Answered</th>
+    </thead>
+    <tbody>
+      <tr *ngFor="let response of survey.responses">
+        <td>
           {{response.question().question()}}
-        </div>
-        <div class="col-lg-4">
+        </td>
+        <td>
           {{response.answer().answer()}}
-        </div>
-        <div class="col-lg-4">
+        </td>
+        <td>
           {{response.answer_date() | date:'short'}}
-        </div>
-      </div>
-    </li>
-  </ul>
+        </td>
+      </tr>
+    </tbody>
+  </table>
 </div>
