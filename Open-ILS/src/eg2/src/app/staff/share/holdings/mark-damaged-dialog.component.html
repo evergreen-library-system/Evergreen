@@ -87,13 +87,13 @@
   </div>
   <div class="modal-footer">
     <ng-container *ngIf="!chargeResponse">
-      <button type="button" class="btn btn-warning" 
+      <button type="button" class="btn btn-normal" 
         (click)="close(false)" i18n>Cancel</button>
       <button type="button" class="btn btn-success" 
         (click)="markDamaged({})" i18n>Mark Damaged</button>
     </ng-container>
     <ng-container *ngIf="chargeResponse">
-      <button type="button" class="btn btn-warning" 
+      <button type="button" class="btn btn-normal" 
         (click)="close(false)" i18n>Cancel</button>
       <button type="button" class="btn btn-info me-2" 
         (click)="amountChangeRequested = true" i18n>Change Amount</button>

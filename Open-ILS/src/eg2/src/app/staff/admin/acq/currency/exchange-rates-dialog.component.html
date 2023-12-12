@@ -39,9 +39,9 @@
       <button type="button" class="btn btn-info" [disabled]="!(exrForm?.dirty)"
         (click)="save()" i18n>Save</button>
       </ng-container>
-    <button type="button" class="btn btn-warning" *ngIf="canUpdate"
+    <button type="button" class="btn btn-normal" *ngIf="canUpdate"
       (click)="close()" i18n>Cancel</button>
-    <button type="button" class="btn btn-warning" *ngIf="!canUpdate"
+    <button type="button" class="btn btn-normal" *ngIf="!canUpdate"
       (click)="close()" i18n>Close</button>
   </div>
 </ng-template>

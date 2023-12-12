@@ -25,7 +25,7 @@
         Patron exceeds claims returned count.  Force this action?
       </div>
       <div>
-        <button type="button" class="btn btn-warning me-2" 
+        <button type="button" class="btn btn-normal me-2" 
           (click)="confirmExceeds()" i18n>Confirm</button>
       </div>
     </div>
@@ -34,7 +34,7 @@
     <button type="button" class="btn btn-success" 
       [disabled]="!returnDate || patronExceeds"
       (click)="modifyBatch()" i18n>Submit</button>
-    <button type="button" class="btn btn-warning"
+    <button type="button" class="btn btn-normal"
       (click)="close()" i18n>Cancel</button>
   </div>
 </ng-template>
