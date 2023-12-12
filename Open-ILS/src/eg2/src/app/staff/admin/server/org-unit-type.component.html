@@ -41,7 +41,7 @@
         <div class="col-lg-9">
           <button type="button" class="btn btn-info me-2" (click)="edit()" i18n>Edit</button>
           <button type="button" class="btn btn-info me-2" (click)="addChild()" i18n>Add Child</button>
-          <button type="button" class="btn btn-warning me-2" (click)="remove()"
+          <button type="button" class="btn btn-destroy me-2" (click)="remove()"
             [disabled]="selected.callerData.aout.children().length > 0 || selected.callerData.orgCount > 0" i18n>Delete</button>
         </div>
       </div>

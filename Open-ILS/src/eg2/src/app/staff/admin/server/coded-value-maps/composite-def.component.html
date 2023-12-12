@@ -19,7 +19,7 @@
 <div class="row">
   <div class="col-lg-6">
     <div class="d-flex mb-4" *ngIf="tree">
-      <button type="button" class="btn btn-warning me-2" (click)="deleteNode()"
+      <button type="button" class="btn btn-destroy me-2" (click)="deleteNode()"
         [disabled]="!hasSelectedNode()" i18n>
         Remove Selected Node
       </button>

@@ -35,7 +35,9 @@
       <button type="button" class="btn btn-success" (click)="processItem()" i18n>
         Mark Item as Missing Pieces?
       </button>
-      <button type="button" class="btn btn-warning ms-2" (click)="reset()">
+      <button type="button" class="btn ms-2" (click)="reset()"
+        [ngClass]="{'btn-destroy': itemProcessed,
+                    'btn-normal': !itemProcessed }">
         <ng-container *ngIf="!itemProcessed" i18n>Cancel</ng-container>
         <ng-container *ngIf="itemProcessed" i18n>Reset Form</ng-container>
       </button>

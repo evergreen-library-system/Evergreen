@@ -57,7 +57,7 @@
   <div class="col-lg-5">
     <ng-container *ngIf="tree">
       <div class="d-flex">
-        <button type="button" class="btn btn-warning me-1" (click)="deleteNode()" 
+        <button type="button" class="btn btn-destroy me-1" (click)="deleteNode()" 
           [disabled]="!hasSelectedNode() || isRootNode()" i18n>
           Remove Selected Node
         </button>

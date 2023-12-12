@@ -20,7 +20,7 @@
               <div class="input-group m-2">
                 <input type="text" id="patron-barcode-value" class="form-control" formControlName="patronBarcode">
                 <div class="input-group-button">
-                  <button type="button" *ngIf="patronBarcode.value" class="btn btn-warning" (click)="removeFilters()" i18n><span class="material-icons" aria-hidden="true">delete</span> Remove filter</button>
+                  <button type="button" *ngIf="patronBarcode.value" class="btn btn-destroy" (click)="removeFilters()" i18n><span class="material-icons" aria-hidden="true">delete</span> Remove filter</button>
                 </div>
               </div>
             </div>
@@ -37,7 +37,7 @@
                   <label class="form-label input-group-text" for="resource-barcode-value" i18n>Resource barcode</label>
                 <input type="text" id="resource-barcode-value" class="form-control" formControlName="resourceBarcode">
                 <div class="input-group-button">
-                  <button type="button" *ngIf="resourceBarcode.value" class="btn btn-warning" (click)="removeFilters()">
+                  <button type="button" *ngIf="resourceBarcode.value" class="btn btn-destroy" (click)="removeFilters()">
                     <span class="material-icons" aria-hidden="true">delete</span> 
                     <span i18n>Remove filter</span>
                   </button>
@@ -57,7 +57,7 @@
                   <label class="form-label input-group-text" for="resource-type-value" i18n>Resource type</label>
                 <eg-combobox domId="resource-type-value" formControlName="resourceType" idlClass="brt" [asyncSupportsEmptyTermClick]="true"></eg-combobox>
                 <div class="input-group-button">
-                  <button type="button" class="btn btn-warning" (click)="removeFilters()">
+                  <button type="button" class="btn btn-destroy" (click)="removeFilters()">
                     <span class="material-icons" aria-hidden="true">delete</span> 
                     <span i18n>Remove filter</span>
                   </button>

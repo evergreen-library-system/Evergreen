@@ -31,7 +31,7 @@
     <div class="row mt-2" *ngFor="let grp of pendingGroups">
       <div class="col-lg-6">{{grp.name()}}</div>
       <div class="col-lg-6">
-        <button type="button" class="btn btn-warning" 
+        <button type="button" class="btn btn-destroy" 
           (click)="removePending(grp)" i18n>Remove Pending</button>
       </div>
     </div>
@@ -48,7 +48,7 @@
   <div class="modal-footer">
     <button type="button" class="btn btn-success"
       (click)="applyChanges()" i18n>Apply Changes</button>
-    <button type="button" class="btn btn-warning"
+    <button type="button" class="btn btn-normal"
       (click)="close()" i18n>Cancel</button>
   </div>
 </ng-template>

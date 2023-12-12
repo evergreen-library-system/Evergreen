@@ -226,12 +226,12 @@
     <ng-container *ngIf="isDialog()">
       <button type="button" class="btn btn-success" *ngIf="mode === 'view'"
         (click)="closeEditor()" i18n>Close</button>
-      <button type="button" class="btn btn-warning ms-2" *ngIf="mode !== 'view'"
+      <button type="button" class="btn btn-normal ms-2" *ngIf="mode !== 'view'"
         (click)="cancel()" i18n>Cancel</button>
     </ng-container>
 
     <ng-container *ngIf="showDelete && mode !== 'view'">
-      <button type="button" class="btn btn-warning" (click)="remove()"
+      <button type="button" class="btn btn-destroy" (click)="remove()"
         [disabled]="record && record.isnew()" i18n>Delete</button>
     </ng-container>
 

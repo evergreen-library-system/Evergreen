@@ -363,7 +363,7 @@
                 <div ngbDropdown>
                   <button class="btn btn-outline-dark btn-sm" ngbDropdownToggle type="button"
                     title="Order Identifier Type" i18n-title [disabled]="!canEditIdent(li)"
-                    [ngClass]="{'btn-warning': !selectedIdent(li)}">
+                    [ngClass]="{'text-danger': !selectedIdent(li)}">
                     <ng-container *ngIf="orderIdentTypes[li.id()]==='isbn'" i18n>ISBN</ng-container>
                     <ng-container *ngIf="orderIdentTypes[li.id()]==='issn'" i18n>ISSN</ng-container>
                     <ng-container *ngIf="orderIdentTypes[li.id()]==='upc'" i18n>UPC</ng-container>

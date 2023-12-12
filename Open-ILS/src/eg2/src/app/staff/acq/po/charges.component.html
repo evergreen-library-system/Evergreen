@@ -78,9 +78,9 @@
     <div class="flex-2 p-1">
       <button type="button" *ngIf="canModify" [disabled]="!(charge.isnew() || charge.ischanged())" class="btn btn-success btn-sm" 
         (click)="saveCharge(charge)" i18n>Save</button>
-      <button type="button" *ngIf="canModify" [disabled]="charge.isnew()" class="btn btn-outline-dark btn-sm ms-1" 
+      <button type="button" *ngIf="canModify" [disabled]="charge.isnew()" class="btn btn-normal btn-sm ms-1" 
         (click)="charge.ischanged(true)" i18n>Edit</button>
-      <button type="button" class="btn btn-warning btn-sm ms-1" 
+      <button type="button" class="btn btn-destroy btn-sm ms-1" 
         (click)="disencumberCharge(charge)" *ngIf="canDisencumber(charge)" i18n>Disencumber</button>
       <button type="button" class="btn btn-danger btn-sm ms-1" 
         (click)="removeCharge(charge)" *ngIf="canDelete(charge)" i18n>Remove</button>
