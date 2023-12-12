@@ -32,7 +32,7 @@
     <div class="modal-footer">
       <input type="submit" class="btn btn-primary"
           ng-click="ok(args)" value="[% l('Export') %]"/>
-      <button class="btn btn-warning" 
+      <button class="btn btn-normal" 
           ng-click="cancel()">[% l('Cancel') %]</button>
     </div>
   </div> <!-- modal-content -->

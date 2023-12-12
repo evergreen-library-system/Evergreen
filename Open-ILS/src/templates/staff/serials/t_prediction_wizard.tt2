@@ -1,7 +1,7 @@
 <div>
    <div class="pull-right">
       <div>
-        <button class="btn btn-warning" ng-click="tab.active = tab.active - 1"
+        <button class="btn btn-normal" ng-click="tab.active = tab.active - 1"
                 ng-disabled="tab.active <= 0">
             [% l('Back') %]
         </button>
@@ -68,12 +68,12 @@
                   </div>
                 </div>
                 <div class="col-md-3" ng-if="$last">
-                  <button class="btn btn-warning btn-sm"
+                  <button class="btn btn-destroy btn-sm"
                       ng-if="pattern.enum_levels.length > 1"
                       ng-click="pattern.drop_enum_level()">
                       [% l('Remove Level') %]
                   </button>
-                  <button class="btn btn-warning btn-sm"
+                  <button class="btn btn-normal btn-sm"
                       ng-disabled="pattern.enum_levels.length >= 6"
                       ng-click="pattern.add_enum_level()">
                       [% l('Add Level') %]
@@ -123,12 +123,12 @@
                   </div>
                 </div>
                 <div class="col-md-3" ng-if="$last">
-                  <button class="btn btn-warning btn-sm"
+                  <button class="btn btn-destroy btn-sm"
                       ng-if="pattern.alt_enum_levels.length > 1"
                       ng-click="pattern.drop_alt_enum_level()">
                       [% l('Remove Level') %]
                   </button>
-                  <button class="btn btn-warning btn-sm" 
+                  <button class="btn btn-normal btn-sm" 
                       ng-disabled="pattern.alt_enum_levels.length >= 2"
                       ng-click="pattern.add_alt_enum_level()">
                       [% l('Add Level') %]
@@ -163,8 +163,8 @@
              <eg-month-day-selector day="chg.day" month="chg.month" ng-if="chg.type == 'date'"  ></eg-month-day-selector>
            </div>
            <div class="col-md-2">
-              <button ng-click="pattern.remove_calendar_change($index)" class="btn btn-sm btn-warning">[% l('Delete') %]</button>
-              <button ng-click="pattern.add_calendar_change()" ng-hide="!$last" class="btn btn-sm btn-warning">[% l('Add more') %]</button>
+              <button ng-click="pattern.remove_calendar_change($index)" class="btn btn-sm btn-destroy">[% l('Delete') %]</button>
+              <button ng-click="pattern.add_calendar_change()" ng-hide="!$last" class="btn btn-sm btn-normal">[% l('Add more') %]</button>
            </div>
          </div>
          </div>
@@ -197,10 +197,10 @@
               <input type="checkbox" ng-model="chron.display_caption"></input>
             </div>
             <div class="col-md-4">
-              <button ng-if="$index > 0 && $last" ng-click="pattern.drop_chron_level()" class="btn btn-sm btn-warning">
+              <button ng-if="$index > 0 && $last" ng-click="pattern.drop_chron_level()" class="btn btn-sm btn-destroy">
                 [% l('Remove Level') %]
               </button>
-              <button ng-if="$last && pattern.chron_levels.length < 4" ng-click="pattern.add_chron_level()" class="btn btn-sm btn-warning">
+              <button ng-if="$last && pattern.chron_levels.length < 4" ng-click="pattern.add_chron_level()" class="btn btn-sm btn-normal">
                 [% l('Add Level') %]
               </button>
             </div>
@@ -319,11 +319,11 @@
             <div class="row pad-vert" ng-repeat="reg in pattern.regularity">
                <div class="col-md-2">
                  <button ng-click="pattern.remove_regularity($index)"
-                         class="btn btn-sm btn-warning">
+                         class="btn btn-sm btn-destroy">
                    [% l('Remove Regularity') %]
                  </button>
                  <button ng-if="$last" ng-click="pattern.add_regularity()"
-                         class="btn btn-sm btn-warning">
+                         class="btn btn-sm btn-normal">
                    [% l('Add Regularity') %]
                  </button>
                </div>
@@ -401,11 +401,11 @@
                    </div>
                    <div class="col-md-4">
                      <button  ng-click="pattern.remove_regularity_part(reg, $index)"
-                             class="btn btn-xs btn-warning">
+                             class="btn btn-xs btn-destroy">
                        [% l('Remove Part') %]
                      </button>
                      <button ng-if="$last" ng-click="pattern.add_regularity_part(reg)"
-                             class="btn btn-xs btn-warning">
+                             class="btn btn-xs btn-normal">
                        [% l('Add Part') %]
                      </button>
                    </div>

@@ -9,6 +9,6 @@
         on-save="ok" in-place-mode="true" record-type="sre" save-label="[% l('Save') %]" />
   </div>
   <div class="modal-footer">
-    <button class="btn btn-warning" ng-click="cancel()">[% l('Cancel') %]</button>
+    <button class="btn btn-normal" ng-click="cancel()">[% l('Cancel') %]</button>
   </div>
 </div>

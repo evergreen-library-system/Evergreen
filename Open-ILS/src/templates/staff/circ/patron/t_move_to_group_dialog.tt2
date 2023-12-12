@@ -23,7 +23,7 @@
   </div>
   <div class="modal-footer">
     <button ng-disabled="outbound && !selected.length" class="btn btn-primary" ng-click="ok()">[% l('Move User') %]</button>
-    <button class="btn btn-warning" ng-click="cancel()">[% l('Cancel') %]</button>
+    <button class="btn btn-normal" ng-click="cancel()">[% l('Cancel') %]</button>
   </div>
 </div>
  

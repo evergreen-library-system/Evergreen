@@ -54,7 +54,7 @@ This does not affect circulation policy.
     </div>
     <div class="modal-footer">
       <input type="submit" class="btn btn-primary" value="[% l('Apply Changes') %]"/>
-      <button class="btn btn-warning" ng-click="cancel()">[% l('Cancel') %]</button>
+      <button class="btn btn-normal" ng-click="cancel()">[% l('Cancel') %]</button>
     </div>
   </div> <!-- modal-content -->
 </form>

@@ -19,7 +19,7 @@
   <div class="modal-footer">
     <input type="submit" class="btn btn-primary" 
         ng-disabled="form.$invalid" value="[% l('OK') %]"/>
-    <button class="btn btn-warning" 
+    <button class="btn btn-normal" 
       ng-click="cancel($event)">[% l('Cancel') %]</button>
   </div>
 </form>

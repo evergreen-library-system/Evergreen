@@ -108,7 +108,7 @@
           <input type="submit" class="btn btn-primary"
             ng-disabled="(args.pub && args.read_date) || args.deleted || !args.org || args.stop_date"
             ng-hide="args.stop_date" value="[% l('OK') %]"/>
-          <button class="btn btn-warning" ng-click="cancel($event)">[% l('Cancel') %]</button>
+          <button class="btn btn-normal" ng-click="cancel($event)">[% l('Cancel') %]</button>
         </div>
       </div>
     </div>

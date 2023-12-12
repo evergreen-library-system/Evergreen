@@ -19,7 +19,7 @@
     [% dialog_footer %]
     <input type="submit" class="btn btn-primary" 
       ng-click="ok()" value="[% l('Create') %]"/>
-    <button class="btn btn-warning" 
+    <button class="btn btn-normal" 
       ng-click="cancel()">[% l('Cancel') %]</button>
   </div>
 </div>

@@ -24,7 +24,7 @@
         <div class="modal-footer">
             <input type="submit" ng-disabled="form.$invalid"
                 class="btn btn-primary" value="[% l('Cancel Requests') %]"/>
-            <button class="btn btn-warning"
+            <button class="btn btn-normal"
                 ng-click="cancel()">[% l('Abort Cancellation') %]</button>
         </div>
     </div> <!-- modal-content -->

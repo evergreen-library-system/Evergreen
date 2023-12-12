@@ -14,7 +14,7 @@
   <div class="modal-footer">
     <input type="submit" class="btn btn-primary" ng-click="ok()"
         value="[% l('Force this action?') %]"/>
-    <button class="btn btn-warning" 
+    <button class="btn btn-normal" 
       ng-click="cancel()">[% l('Cancel') %]</button>
   </div>
 </div>

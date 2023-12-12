@@ -49,5 +49,5 @@
       ng-class="{active: mode == 'waive'}" ng-click="btnWaiveFees()">[% l('No Charge') %]</label>
   </div>
   <button class="btn btn-primary" ng-disabled="showBill && (billArgs.charge == null || billArgs.charge && !billArgs.type)" ng-click="ok()">[% l('Submit') %]</button>
-  <button class="btn btn-warning" ng-click="cancel()">[% l('Cancel') %]</button>
+  <button class="btn btn-normal" ng-click="cancel()">[% l('Cancel') %]</button>
 </div>

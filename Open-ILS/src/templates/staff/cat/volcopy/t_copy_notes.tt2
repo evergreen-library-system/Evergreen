@@ -33,7 +33,7 @@
         </div>
         <div class="col-md-10 pull-right">
           <input type="submit" class="btn btn-primary" value="[% l('OK') %]"/>
-          <button class="btn btn-warning" ng-click="cancel($event)">[% l('Cancel') %]</button>
+          <button class="btn btn-normal" ng-click="cancel($event)">[% l('Cancel') %]</button>
         </div>
       </div>
 
@@ -66,7 +66,7 @@
               </label>
             </div>
             <div class="col-md-3">
-              <button type="button" ng-click="n.isdeleted(1)" class="btn btn-warning">[% l('Remove') %]</button>
+              <button type="button" ng-click="n.isdeleted(1)" class="btn btn-destroy">[% l('Remove') %]</button>
             </div>
           </div>
           <div class="row pad-vert">

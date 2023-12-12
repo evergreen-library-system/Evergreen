@@ -233,7 +233,7 @@
         <div class="modal-footer">
             <input type="submit" ng-hide="mode=='view'" ng-disabled="form.$invalid"
                 class="btn btn-primary" value="[% l('Save') %]"/>
-            <button class="btn btn-warning"
+            <button class="btn btn-normal"
                 ng-click="cancel()">[% l('Cancel') %]</button>
         </div>
     </div> <!-- modal-content -->

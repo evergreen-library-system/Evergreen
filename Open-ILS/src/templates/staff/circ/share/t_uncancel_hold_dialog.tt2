@@ -10,7 +10,7 @@
     <div class="modal-body"></div>
     <div class="modal-footer">
       <input type="submit" class="btn btn-success" value="[% l('Uncancel Hold') %]"/>
-      <button class="btn btn-warning" ng-click="cancel($event)">[% l('Exit') %]</button>
+      <button class="btn btn-normal" ng-click="cancel($event)">[% l('Exit') %]</button>
     </div>
   </div>
 </div>

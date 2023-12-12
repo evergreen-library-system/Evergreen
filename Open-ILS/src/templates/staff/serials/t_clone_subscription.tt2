@@ -52,6 +52,6 @@
         <input
             ng-disabled="!args.which_radio_button||(args.which_radio_button=='different_bib'&&(!args.bib_id||bibNotFound))"
             type="submit" class="btn btn-primary" value="[% l('OK') %]"/>
-        <button class="btn btn-warning" ng-click="cancel()">[% l('Cancel') %]</button>
+        <button class="btn btn-normal" ng-click="cancel()">[% l('Cancel') %]</button>
     </div>
 </form>

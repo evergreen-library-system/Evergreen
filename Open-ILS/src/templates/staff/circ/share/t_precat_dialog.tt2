@@ -45,7 +45,7 @@
       <div class="modal-footer">
         <button type="button" class="btn btn-primary" ng-click="ok(precatArgs)"
             ng-disabled="!can_create_precats">[% l('Precat Checkout') %]</button>
-        <button type="button" class="btn btn-warning" ng-click="cancel()"
+        <button type="button" class="btn btn-normal" ng-click="cancel()"
             ng-class="{disabled : actionPending}">[% l('Cancel') %]</button>
       </div>
     </div> <!-- modal-content -->

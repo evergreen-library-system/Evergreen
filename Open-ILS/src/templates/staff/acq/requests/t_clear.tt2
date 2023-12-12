@@ -18,7 +18,7 @@
         <div class="modal-footer">
             <input type="submit" ng-disabled="form.$invalid"
                 class="btn btn-primary" value="[% l('Clear Requests') %]"/>
-            <button class="btn btn-warning"
+            <button class="btn btn-normal"
                 ng-click="cancel()">[% l('Abort Clear Requests') %]</button>
         </div>
     </div> <!-- modal-content -->

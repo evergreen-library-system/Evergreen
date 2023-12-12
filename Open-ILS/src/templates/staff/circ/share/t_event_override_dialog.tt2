@@ -41,7 +41,7 @@
         value="[% l('Force Action?') %]"/>
     <button class="btn" 
       ng-click="skip($event)">[% l('Skip?') %]</button>
-    <button class="btn btn-warning" 
+    <button class="btn btn-normal" 
       ng-click="cancel($event)">[% l('Cancel') %]</button>
   </div>
 </form>

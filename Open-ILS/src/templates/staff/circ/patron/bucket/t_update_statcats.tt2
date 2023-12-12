@@ -42,7 +42,7 @@ progress:before {
     <div class="modal-footer">
       <input type="submit" class="btn btn-primary" 
           ng-disabled="form.$invalid" value="[% l('Apply Changes') %]"/>
-      <button class="btn btn-warning" ng-click="cancel()"
+      <button class="btn btn-normal" ng-click="cancel()"
           ng-class="{disabled : actionPending}">[% l('Cancel') %]</button>
     </div>
     <div class="modal-body" ng-show='running'>

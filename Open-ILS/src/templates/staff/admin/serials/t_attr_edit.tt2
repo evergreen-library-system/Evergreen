@@ -36,7 +36,7 @@
             <div class="btn-group pull-right">
                 <button class="btn btn-default" ng-click="clearWorking()" type="button">[% l('Clear') %]</button>
                 <button class="btn btn-primary" ng-disabled="working.name=='' || working.loan_duration == null || working.fine_level == null" ng-click="saveTemplate()" type="button">[% l('Save') %]</label>
-                <button class="btn btn-warning" ng-click="close_modal()" type="button">[% l('Close') %]</label>
+                <button class="btn btn-normal" ng-click="close_modal()" type="button">[% l('Close') %]</label>
             </div>
         </div>
     </div>

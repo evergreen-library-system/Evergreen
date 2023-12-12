@@ -42,13 +42,13 @@
         <input class="form-control" type="text" ng-model="ssub.expected_date_offset"></input>
       </div>
       <div class="form-group col-sm-1">
-        <button class="btn btn-sm btn-warning" ng-click="add_distribution(ssub, true)">[% l('Add distribution') %]</button>
+        <button class="btn btn-sm btn-normal" ng-click="add_distribution(ssub, true)">[% l('Add distribution') %]</button>
       </div>
     </div>
     <div class="row form-inline pad-vert" ng-repeat="sdist in ssub.distributions">
       <div class="row">
         <div class="col-sm-1">
-            <button class="btn btn-xs btn-danger" ng-if="sdist._isnew && ssub.distributions.length > 1"
+            <button class="btn btn-xs btn-destroy" ng-if="sdist._isnew && ssub.distributions.length > 1"
                     ng-click="remove_pending_distribution(ssub, sdist)"
             >[% l('Remove') %]</button>
         </div>
@@ -98,7 +98,7 @@
     <div class="row form-inline pad-vert"></div>
   </div>
   <div class="row form-inline">
-    <button class="btn btn-warning pull-left" ng-click="add_subscription()">[% l('New Subscription') %]</button>
+    <button class="btn btn-normal pull-left" ng-click="add_subscription()">[% l('New Subscription') %]</button>
     <div class="btn-group pull-right">
       <button class="btn btn-default" ng-disabled="!ssubform.$dirty" ng-click="abort_changes(ssubform)">[% l('Cancel') %]</button>
       <button class="btn btn-primary" ng-disabled="!ssubform.$dirty" ng-click="save_subscriptions(ssubform)">[% l('Save') %]</button>

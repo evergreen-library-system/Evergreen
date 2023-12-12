@@ -51,7 +51,7 @@
       </div>
       <div class="row">
         <div class="col-xs-12">
-          <button class="btn btn-sm btn-warning"
+          <button class="btn btn-sm btn-destroy"
             ng-disabled="col.handlers.wasHandled(item['slot_id'])"
             ng-click="col.handlers.mark_unstaged(item['slot_id'])">
             [% l('Set Back to To Be Staged') %]

@@ -113,6 +113,6 @@
     </button>
     <input type="submit" class="btn btn-primary" ng-disabled="!model_has_changed"
         value="[% l('Update') %]"></input>
-    <button class="btn btn-warning" ng-click="cancel()">[% l('Cancel') %]</button>
+    <button class="btn btn-normal" ng-click="cancel()">[% l('Cancel') %]</button>
 </div>
 </form>

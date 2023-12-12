@@ -10,7 +10,7 @@
     [% dialog_footer %]
     <input type="submit" class="btn btn-primary"
       ng-click="capture()" value="[% l('Capture') %]"/>
-    <button class="btn btn-warning"
+    <button class="btn btn-normal"
       ng-click="nocapture()">[% l('Do Not Capture') %]</button>
   </div>
 </div>

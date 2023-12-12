@@ -21,7 +21,7 @@
     <input type="submit" class="btn btn-primary" 
       ng-click="ok()" value="{{ ok_button_label || '[% l("Select") %]'}}"
       ng-disabled="need_one_selected()"/>
-    <button class="btn btn-warning" 
+    <button class="btn btn-normal" 
       ng-click="cancel()">{{ cancel_button_label || "[% l('Cancel') %]"}}</button>
   </div>
 </div>

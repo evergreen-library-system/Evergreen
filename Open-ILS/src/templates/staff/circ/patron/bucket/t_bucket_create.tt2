@@ -30,7 +30,7 @@
     <div class="modal-footer">
       <input type="submit" ng-disabled="form.$invalid" 
           class="btn btn-primary" value="[% l('Create Bucket') %]"/>
-      <button class="btn btn-warning" ng-click="cancel()">[% l('Cancel') %]</button>
+      <button class="btn btn-normal" ng-click="cancel()">[% l('Cancel') %]</button>
     </div>
   </div> <!-- modal-content -->
 </form>

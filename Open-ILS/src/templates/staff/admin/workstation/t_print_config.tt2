@@ -101,7 +101,7 @@
             </div><!-- col -->
             <div class="col-md-4">
               <span class="pad-right-min">
-                <button class="btn btn-warning" 
+                <button class="btn btn-destroy" 
                   ng-click="resetPrinterSettings(context)">
                   [% l('Reset Form') %]
                 </button>

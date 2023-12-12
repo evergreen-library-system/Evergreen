@@ -17,7 +17,7 @@ Choose Cancel to try again, or Accept to use barcode <b>[_1]</b> anyway.
   <div class="modal-footer">
     <input type="submit" class="btn btn-primary" 
       ng-click="ok()" value="[% l('Accept Barcode') %]"/>
-    <button class="btn btn-warning" 
+    <button class="btn btn-normal" 
       ng-click="cancel()">[% l('Cancel') %]</button>
   </div>
 </div>

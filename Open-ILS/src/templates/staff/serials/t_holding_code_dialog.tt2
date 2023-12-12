@@ -93,7 +93,7 @@
     </div>
     <div class="col-md-5">
       <input type="submit" class="btn btn-primary" value='{{ save_label || "[% l('Save') %]" }}'></input>
-      <button class="btn btn-warning" ng-click="cancel()">[% l('Cancel') %]</button>
+      <button class="btn btn-normal" ng-click="cancel()">[% l('Cancel') %]</button>
     </div>
   </div>
 </div>

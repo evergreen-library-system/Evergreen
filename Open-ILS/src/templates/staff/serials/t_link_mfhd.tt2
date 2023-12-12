@@ -30,6 +30,6 @@
             </select>
         </div>
         <input type="submit" class="btn btn-primary" value="[% l('OK') %]" ng-disabled="!args.which_mfhd"/>
-        <button class="btn btn-warning" ng-click="cancel()">[% l('Cancel') %]</button>
+        <button class="btn btn-normal" ng-click="cancel()">[% l('Cancel') %]</button>
     </div>
 </form>

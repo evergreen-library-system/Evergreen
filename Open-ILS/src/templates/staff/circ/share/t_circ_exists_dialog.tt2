@@ -34,7 +34,7 @@
                 value="[% l('Normal Checkin then Checkout') %]"/>
             <input ng-if="sameUser" type="submit" class="btn btn-primary" 
                 value="[% l('Renew') %]"/>
-            <button class="btn btn-warning" 
+            <button class="btn btn-normal" 
                 ng-click="cancel($event)">[% l('Cancel') %]</button>
         </div>
       </div>

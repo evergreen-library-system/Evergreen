@@ -44,7 +44,7 @@
         ng-click="apply()">[% l('Apply Changes') %]</button>
     </span>
     <span class="pad-right">
-      <button class="btn btn-warning" 
+      <button class="btn btn-destroy" 
         ng-disabled="cur_attr_set_uses || save_in_progress"
         ng-click="remove()">[% l('Delete Attribute Set') %]</button>
     </span>

@@ -17,7 +17,7 @@
     </div>
   </div>
   <div class="modal-footer">
-    <button class="btn btn-warning" ng-click="cancel()">[% l('Cancel') %]</button>
+    <button class="btn btn-normal" ng-click="cancel()">[% l('Cancel') %]</button>
   </div>
 </div>
 

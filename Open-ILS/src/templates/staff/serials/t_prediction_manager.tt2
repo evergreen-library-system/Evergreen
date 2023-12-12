@@ -4,9 +4,9 @@
 
 <div>
   <div class="form-inline pad-vert">
-    <button class="btn btn-warning" ng-click="startNewScap()">[% l('Add New') %]</button>
-    <button class="btn btn-warning" ng-click="importScapFromBibRecord()" ng-disabled="!has_pattern_to_import">[% l('Import from Bibliographic and/or MFHD Records') %]</button>
-    <button class="btn btn-warning" ng-click="importScapFromSpt()">[% l('Create from Template') %]</button>
+    <button class="btn btn-normal" ng-click="startNewScap()">[% l('Add New') %]</button>
+    <button class="btn btn-normal" ng-click="importScapFromBibRecord()" ng-disabled="!has_pattern_to_import">[% l('Import from Bibliographic and/or MFHD Records') %]</button>
+    <button class="btn btn-normal" ng-click="importScapFromSpt()">[% l('Create from Template') %]</button>
     <select class="form-control" ng-model="active_pattern_template.id" ng-options="spt.id as spt.name for spt in pattern_templates | orderBy:'name'"> 
     </select>
   </div>

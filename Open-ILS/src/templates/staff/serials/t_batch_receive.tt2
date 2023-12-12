@@ -176,7 +176,7 @@
     <div class="col-md-8"></div>
     <div class="col-md-4">
       <input type="submit" class="btn btn-primary" ng-disabled="batch_receive_form.$error.required.length" value='{{ save_label || "[% l('Save') %]" }}'></input>
-      <button class="btn btn-warning" ng-click="cancel()">[% l('Cancel') %]</button>
+      <button class="btn btn-normal" ng-click="cancel()">[% l('Cancel') %]</button>
     </div>
   </div>
 </div>

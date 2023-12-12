@@ -13,6 +13,6 @@
   <div class="modal-footer">
     <input type="submit" ng-click="ok()"
         class="btn btn-primary" value="[% l('Done') %]"/>
-    <button class="btn btn-warning" ng-click="cancel()">[% l('Cancel') %]</button>
+    <button class="btn btn-normal" ng-click="cancel()">[% l('Cancel') %]</button>
   </div>
 </div>

@@ -78,7 +78,7 @@
   <div class="modal-footer">
     <input type="button" class="btn btn-primary"
       ng-click="print()" value="[% l('Print') %]"/>
-    <input type="submit" class="btn btn-warning"
+    <input type="submit" class="btn btn-normal"
       ng-click="ok()" value="[% l('Do Not Print') %]"/>
   </div>
 </div>
