@@ -10,6 +10,8 @@ import {PcrudService} from '@eg/core/pcrud.service';
 import {ComboboxEntry} from '@eg/share/combobox/combobox.component';
 import {PoService} from './po.service';
 import {DisencumberChargeDialogComponent} from './disencumber-charge-dialog.component';
+import {PermService} from '@eg/core/perm.service';
+
 
 @Component({
   templateUrl: 'charges.component.html',
@@ -21,7 +23,7 @@ export class PoChargesComponent implements OnInit, OnDestroy {
     canModify = false;
     autoId = -1;
     poSubscription: Subscription;
-    owners: number[];
+    owners: number[] = [];
 
     @ViewChild('disencumberChargeDialog') disencumberChargeDialog: DisencumberChargeDialogComponent;
 
@@ -32,7 +34,8 @@ export class PoChargesComponent implements OnInit, OnDestroy {
         private auth: AuthService,
         private pcrud: PcrudService,
         private org: OrgService,
-        public  poService: PoService
+        public  poService: PoService,
+        private perm: PermService
     ) {}
 
     ngOnInit() {
@@ -48,7 +51,15 @@ export class PoChargesComponent implements OnInit, OnDestroy {
             this.canModify = this.po().order_date() ? false : true;
         });
 
-        this.owners = this.org.ancestors(this.auth.user().ws_ou(), true);
+        this.perm.hasWorkPermAt(['MANAGE_FUND','CREATE_PURCHASE_ORDER'],true).then((perm) => {
+            this.owners.concat(perm['MANAGE_FUND']);
+
+            perm['CREATE_PURCHASE_ORDER'].forEach(ou => {
+                if(!this.owners.includes(ou)) {
+                    this.owners.push(ou);
+                }
+            });
+            });
     }
 
     ngOnDestroy() {
