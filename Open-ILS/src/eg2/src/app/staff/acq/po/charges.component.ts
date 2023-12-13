@@ -10,10 +10,12 @@ import {PcrudService} from '@eg/core/pcrud.service';
 import {ComboboxEntry} from '@eg/share/combobox/combobox.component';
 import {PoService} from './po.service';
 import {DisencumberChargeDialogComponent} from './disencumber-charge-dialog.component';
+import {PermService} from '@eg/core/perm.service';
+
 
 @Component({
-    templateUrl: 'charges.component.html',
-    selector: 'eg-acq-po-charges'
+  templateUrl: 'charges.component.html',
+  selector: 'eg-acq-po-charges'
 })
 export class PoChargesComponent implements OnInit, OnDestroy {
 
@@ -21,7 +23,7 @@ export class PoChargesComponent implements OnInit, OnDestroy {
     canModify = false;
     autoId = -1;
     poSubscription: Subscription;
-    owners: number[];
+    owners: number[] = [];
 
     @ViewChild('disencumberChargeDialog') disencumberChargeDialog: DisencumberChargeDialogComponent;
 
@@ -32,7 +34,8 @@ export class PoChargesComponent implements OnInit, OnDestroy {
         private auth: AuthService,
         private pcrud: PcrudService,
         private org: OrgService,
-        public  poService: PoService
+        public  poService: PoService,
+        private perm: PermService
     ) {}
 
     ngOnInit() {
@@ -48,7 +51,15 @@ export class PoChargesComponent implements OnInit, OnDestroy {
             this.canModify = this.po().order_date() ? false : true;
         });
 
-        this.owners = this.org.ancestors(this.auth.user().ws_ou(), true);
+        this.perm.hasWorkPermAt(['MANAGE_FUND','CREATE_PURCHASE_ORDER'],true).then((perm) => {
+            this.owners.concat(perm['MANAGE_FUND']);
+
+            perm['CREATE_PURCHASE_ORDER'].forEach(ou => {
+                if(!this.owners.includes(ou)) {
+                    this.owners.push(ou);
+                }
+            });
+            });
     }
 
     ngOnDestroy() {
@@ -77,17 +88,17 @@ export class PoChargesComponent implements OnInit, OnDestroy {
         if (charge.isnew()) {
             charge.id(undefined);
             this.pcrud.create(charge).toPromise()
-                .then(item => {
-                    charge.id(item.id());
-                    charge.isnew(false);
-                })
-                .then(_ => this.poService.refreshOrderSummary());
+            .then(item => {
+                charge.id(item.id());
+                charge.isnew(false);
+            })
+            .then(_ => this.poService.refreshOrderSummary());
         } else if (charge.ischanged()) {
             this.pcrud.update(charge).toPromise()
-                .then(item => {
-                    charge.ischanged(false);
-                })
-                .then(_ => this.poService.refreshOrderSummary());
+            .then(item => {
+                charge.ischanged(false);
+            })
+            .then(_ => this.poService.refreshOrderSummary());
         }
     }
 
@@ -105,12 +116,12 @@ export class PoChargesComponent implements OnInit, OnDestroy {
         }
         if (debit.invoice_entry()) {
             return false; // we shouldn't actually be a po_item that is
-            // linked to an invoice_entry, but if we are,
-            // do NOT touch
+                          // linked to an invoice_entry, but if we are,
+                          // do NOT touch
         }
         if (debit.invoice_items() && debit.invoice_items().length) {
             return false; // we're linked to an invoice item, so the disposition of the
-            // invoice entry should govern things
+                          // invoice entry should govern things
         }
         if (Number(debit.amount()) === 0) {
             return false; // we're already at zero
@@ -129,12 +140,12 @@ export class PoChargesComponent implements OnInit, OnDestroy {
         }
         if (debit && debit.invoice_entry()) {
             return false; // we shouldn't actually be a po_item that is
-            // linked to an invoice_entry, but if we are,
-            // do NOT touch
+                          // linked to an invoice_entry, but if we are,
+                          // do NOT touch
         }
         if (debit && debit.invoice_items() && debit.invoice_items().length) {
             return false; // we're linked to an invoice item, so the disposition of the
-            // invoice entry should govern things
+                          // invoice entry should govern things
         }
         return true; // we're likely OK to delete
     }

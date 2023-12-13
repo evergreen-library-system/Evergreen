@@ -9,11 +9,12 @@ import {LineitemService, COPY_ORDER_DISPOSITION} from './lineitem.service';
 import {ComboboxComponent, ComboboxEntry} from '@eg/share/combobox/combobox.component';
 import {ItemLocationService} from '@eg/share/item-location-select/item-location-select.service';
 import {ItemLocationSelectComponent} from '@eg/share/item-location-select/item-location-select.component';
+import {PermService} from '@eg/core/perm.service';
 
 @Component({
-    templateUrl: 'copy-attrs.component.html',
-    styleUrls: ['copy-attrs.component.css'],
-    selector: 'eg-lineitem-copy-attrs'
+  templateUrl: 'copy-attrs.component.html',
+  styleUrls: ['copy-attrs.component.css'],
+  selector: 'eg-lineitem-copy-attrs'
 })
 export class LineitemCopyAttrsComponent implements OnInit {
 
@@ -29,7 +30,7 @@ export class LineitemCopyAttrsComponent implements OnInit {
     _fundBalanceCache: string[] = [];
     _inflight: Promise<string>[] = [];
     circModEntries: ComboboxEntry[];
-    owners: number[];
+    owners: number[] = [];
 
     private _copy: IdlObject;
     @Input() set copy(c: IdlObject) { // acqlid
@@ -76,12 +77,28 @@ export class LineitemCopyAttrsComponent implements OnInit {
         private auth: AuthService,
         private org: OrgService,
         private loc: ItemLocationService,
-        private liService: LineitemService
+        private liService: LineitemService,
+        private perm: PermService
     ) {}
 
     ngOnInit() {
 
-        this.owners = this.org.ancestors(this.auth.user().ws_ou(), true);
+        this.perm.hasWorkPermAt(['MANAGE_FUND','CREATE_PURCHASE_ORDER','CREATE_PICKLIST'],true).then((perm) => {
+            this.owners.concat(perm['MANAGE_FUND']);
+
+            perm['CREATE_PURCHASE_ORDER'].forEach(ou => {
+                if(!this.owners.includes(ou)) {
+                    this.owners.push(ou);
+                }
+            });
+
+            perm['CREATE_PICKLIST'].forEach(ou => {
+                if(!this.owners.includes(ou)) {
+                    this.owners.push(ou);
+                }
+            });
+            });
+        
 
         if (this.gatherParamsOnly) {
             this.batchMode = false;
@@ -181,7 +198,7 @@ export class LineitemCopyAttrsComponent implements OnInit {
                 id: fund.id(),
                 label: fund.code() + ' (' + fund.year() + ')' +
                        ' (' + this.getOrgShortname(fund.org()) + ')',
-                fm: fund
+                 fm: fund
             }];
         }
 
