@@ -1,5 +1,5 @@
---Upgrade Script for 3.11.1 to 3.12-beta
-\set eg_version '''3.12-beta'''
+--Upgrade Script for 3.11.1 to 3.12.0
+\set eg_version '''3.12.0'''
 BEGIN;
 INSERT INTO config.upgrade_log (version, applied_to) VALUES ('3.12-beta', :eg_version);
 
