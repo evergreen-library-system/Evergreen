@@ -1,1 +1,0 @@
-* Fix an issue where auto-renewal events can overwhelm open-ils.trigger drones (LP#2030915)
