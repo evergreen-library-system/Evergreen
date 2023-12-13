@@ -549,6 +549,10 @@ msgstr ""
 msgid "Annotator"
 msgstr ""
 
+#: ../../Open-ILS/src/templates/opac/parts/relators.tt2:2
+msgid "Announcer"
+msgstr ""
+
 #: ../../Open-ILS/src/templates/opac/course/results.tt2:27 ../../Open-ILS/src/templates/opac/results.tt2:50
 msgid "Another Search"
 msgstr ""
@@ -651,6 +655,14 @@ msgstr ""
 
 #: ../../Open-ILS/src/templates/opac/parts/config.tt2:3
 msgid "Audience"
+msgstr ""
+
+#: ../../Open-ILS/src/templates/opac/parts/relators.tt2:2
+msgid "Audio engineer"
+msgstr ""
+
+#: ../../Open-ILS/src/templates/opac/parts/relators.tt2:2
+msgid "Audio producer"
 msgstr ""
 
 #: ../../Open-ILS/src/templates/opac/myopac/generic_payment_form.tt2:90
@@ -843,6 +855,10 @@ msgstr ""
 msgid "Blurb writer"
 msgstr ""
 
+#: ../../Open-ILS/src/templates/opac/parts/relators.tt2:2
+msgid "Book artist"
+msgstr ""
+
 #: ../../Open-ILS/src/templates/opac/parts/misc_util.tt2:850
 msgid "Book cover"
 msgstr ""
@@ -960,6 +976,10 @@ msgstr ""
 msgid "Calligrapher"
 msgstr ""
 
+#: ../../Open-ILS/src/templates/opac/parts/relators.tt2:2
+msgid "Camera operator"
+msgstr ""
+
 #: ../../Open-ILS/src/templates/opac/mylist/clear.tt2:16 ../../Open-ILS/src/templates/opac/mylist/email.tt2:20 ../../Open-ILS/src/templates/opac/mylist/print.tt2:20 ../../Open-ILS/src/templates/opac/myopac/generic_payment_form.tt2:117 ../../Open-ILS/src/templates/opac/myopac/holds.tt2:86 ../../Open-ILS/src/templates/opac/myopac/last_chance_form.tt2:12 ../../Open-ILS/src/templates/opac/myopac/last_chance_form.tt2:55 ../../Open-ILS/src/templates/opac/myopac/lists.tt2:79 ../../Open-ILS/src/templates/opac/myopac/lists.tt2:80 ../../Open-ILS/src/templates/opac/myopac/prefs_settings.tt2:22 ../../Open-ILS/src/templates/opac/myopac/smartpay_payment_form.tt2:3 ../../Open-ILS/src/templates/opac/myopac/stripe_payment_form.tt2:105 ../../Open-ILS/src/templates/opac/parts/place_hold.tt2:314 ../../Open-ILS/src/templates/opac/parts/place_hold_result.tt2:151
 msgid "Cancel"
 msgstr ""
@@ -1002,6 +1022,10 @@ msgstr ""
 
 #: ../../Open-ILS/src/templates/opac/parts/relators.tt2:2
 msgid "Caster"
+msgstr ""
+
+#: ../../Open-ILS/src/templates/opac/parts/relators.tt2:2
+msgid "Casting director"
 msgstr ""
 
 #: ../../Open-ILS/src/templates/opac/parts/base.tt2:58
@@ -1521,6 +1545,10 @@ msgid "Custom Email Subject: "
 msgstr ""
 
 #: ../../Open-ILS/src/templates/opac/parts/relators.tt2:2
+msgid "DJ"
+msgstr ""
+
+#: ../../Open-ILS/src/templates/opac/parts/relators.tt2:2
 msgid "Dancer"
 msgstr ""
 
@@ -1769,6 +1797,10 @@ msgid "Draftsman"
 msgstr ""
 
 #: ../../Open-ILS/src/templates/opac/parts/relators.tt2:2
+msgid "Dubbing director"
+msgstr ""
+
+#: ../../Open-ILS/src/templates/opac/parts/relators.tt2:2
 msgid "Dubious author"
 msgstr ""
 
@@ -1871,6 +1903,10 @@ msgstr ""
 
 #: ../../Open-ILS/src/templates/opac/parts/relators.tt2:2
 msgid "Editor of moving image work"
+msgstr ""
+
+#: ../../Open-ILS/src/templates/opac/parts/relators.tt2:2
+msgid "Editorial director"
 msgstr ""
 
 #: ../../Open-ILS/src/templates/opac/parts/relators.tt2:2
@@ -2200,6 +2236,10 @@ msgstr ""
 
 #: ../../Open-ILS/src/templates/opac/parts/relators.tt2:2
 msgid "Former owner"
+msgstr ""
+
+#: ../../Open-ILS/src/templates/opac/parts/relators.tt2:2
+msgid "Founder"
 msgstr ""
 
 #. ("<time property=\"opens\" content=\"' _ date.format(open, { 'format' => '%H:%M:%S' }) _ '\">' _ date.format(open) _ '</time>", "<time property=\"closes\" content=\"' _ date.format(close, { 'format' => '%H:%M:%S' }) _ '\">' _ date.format(close) _ '</time>")
@@ -2915,6 +2955,10 @@ msgid "Make Default List"
 msgstr ""
 
 #: ../../Open-ILS/src/templates/opac/parts/relators.tt2:2
+msgid "Makeup artist"
+msgstr ""
+
+#: ../../Open-ILS/src/templates/opac/parts/relators.tt2:2
 msgid "Manufacture place"
 msgstr ""
 
@@ -3012,6 +3056,10 @@ msgstr ""
 msgid "Missing"
 msgstr ""
 
+#: ../../Open-ILS/src/templates/opac/parts/relators.tt2:2
+msgid "Mixing engineer"
+msgstr ""
+
 #: ../../Open-ILS/src/templates/opac/parts/sms_carrier_selector.tt2:21
 msgid "Mobile carrier"
 msgstr ""
@@ -3067,6 +3115,10 @@ msgstr ""
 
 #: ../../Open-ILS/src/templates/opac/parts/relators.tt2:2
 msgid "Music copyist"
+msgstr ""
+
+#: ../../Open-ILS/src/templates/opac/parts/relators.tt2:2
+msgid "Music programmer"
 msgstr ""
 
 #: ../../Open-ILS/src/templates/opac/parts/relators.tt2:2
@@ -3161,6 +3213,10 @@ msgstr ""
 
 #: ../../Open-ILS/src/templates/opac/password_reset.tt2:35
 msgid "New password:"
+msgstr ""
+
+#: ../../Open-ILS/src/templates/opac/parts/relators.tt2:2
+msgid "News anchor"
 msgstr ""
 
 #: ../../Open-ILS/src/templates/opac/browse.tt2:90 ../../Open-ILS/src/templates/opac/course_browse.tt2:97 ../../Open-ILS/src/templates/opac/myopac/circ_history.tt2:46 ../../Open-ILS/src/templates/opac/myopac/generic_payment_form.tt2:116 ../../Open-ILS/src/templates/opac/myopac/hold_history.tt2:59 ../../Open-ILS/src/templates/opac/myopac/holds.tt2:67 ../../Open-ILS/src/templates/opac/myopac/lists.tt2:142 ../../Open-ILS/src/templates/opac/myopac/lists.tt2:479 ../../Open-ILS/src/templates/opac/myopac/main_payments.tt2:19 ../../Open-ILS/src/templates/opac/myopac/messages/list.tt2:20 ../../Open-ILS/src/templates/opac/parts/record/issues-db.tt2:197 ../../Open-ILS/src/templates/opac/parts/record/navigation.tt2:38 ../../Open-ILS/src/templates/opac/parts/result/paginate.tt2:58
@@ -3334,6 +3390,10 @@ msgstr ""
 
 #: ../../Open-ILS/src/templates/opac/parts/course/body.tt2:87 ../../Open-ILS/src/templates/opac/parts/record/issues-mfhd.tt2:5
 msgid "Online"
+msgstr ""
+
+#: ../../Open-ILS/src/templates/opac/parts/relators.tt2:2
+msgid "Onscreen participant"
 msgstr ""
 
 #: ../../Open-ILS/src/templates/opac/parts/relators.tt2:2
@@ -3972,6 +4032,10 @@ msgstr ""
 msgid "Radio producer"
 msgstr ""
 
+#: ../../Open-ILS/src/templates/opac/parts/relators.tt2:2
+msgid "Rapporteur"
+msgstr ""
+
 #: ../../Open-ILS/src/templates/opac/password_reset.tt2:39
 msgid "Re-enter new password:"
 msgstr ""
@@ -4063,6 +4127,10 @@ msgstr ""
 
 #: ../../Open-ILS/src/templates/opac/parts/course/body.tt2:73
 msgid "Relationship"
+msgstr ""
+
+#: ../../Open-ILS/src/templates/opac/parts/relators.tt2:2
+msgid "Remix artist"
 msgstr ""
 
 #. ((crad.description || crad.label))
@@ -4769,6 +4837,10 @@ msgstr ""
 msgid "Skip warning when adding to temporary book list?"
 msgstr ""
 
+#: ../../Open-ILS/src/templates/opac/parts/relators.tt2:2
+msgid "Software developer"
+msgstr ""
+
 #. ("<q>' _ qhtml _ '</q>", fmt_bookbag)
 #: ../../Open-ILS/src/templates/opac/parts/result/lowhits.tt2:10
 msgid "Sorry, no entries were found for %1 within %2."
@@ -4844,12 +4916,20 @@ msgstr ""
 msgid "Sound designer"
 msgstr ""
 
+#: ../../Open-ILS/src/templates/opac/parts/relators.tt2:2
+msgid "Sound engineer"
+msgstr ""
+
 #: ../../Open-ILS/src/templates/opac/parts/record/contents.tt2:2
 msgid "Source of Description Note: "
 msgstr ""
 
 #: ../../Open-ILS/src/templates/opac/parts/relators.tt2:2
 msgid "Speaker"
+msgstr ""
+
+#: ../../Open-ILS/src/templates/opac/parts/relators.tt2:2
+msgid "Special effects provider"
 msgstr ""
 
 #: ../../Open-ILS/src/templates/opac/parts/relators.tt2:2
@@ -5051,7 +5131,19 @@ msgid "Television director"
 msgstr ""
 
 #: ../../Open-ILS/src/templates/opac/parts/relators.tt2:2
+msgid "Television guest"
+msgstr ""
+
+#: ../../Open-ILS/src/templates/opac/parts/relators.tt2:2
+msgid "Television host"
+msgstr ""
+
+#: ../../Open-ILS/src/templates/opac/parts/relators.tt2:2
 msgid "Television producer"
+msgstr ""
+
+#: ../../Open-ILS/src/templates/opac/parts/relators.tt2:2
+msgid "Television writer"
 msgstr ""
 
 #: ../../Open-ILS/src/templates/opac/parts/record/contents.tt2:2
@@ -5439,6 +5531,10 @@ msgstr ""
 
 #: ../../Open-ILS/src/templates/opac/parts/login/help.tt2:8
 msgid "Visit our FAQs section for answers to common questions about how to use your account."
+msgstr ""
+
+#: ../../Open-ILS/src/templates/opac/parts/relators.tt2:2
+msgid "Visual effects provider"
 msgstr ""
 
 #: ../../Open-ILS/src/templates/opac/parts/relators.tt2:2
