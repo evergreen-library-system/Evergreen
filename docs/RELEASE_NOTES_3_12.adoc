@@ -1,4 +1,4 @@
-= Evergreen 3.12 RC Release Notes =
+= Evergreen 3.12 Release Notes =
 :toc:
 :numbered:
 :toclevels: 3
@@ -688,17 +688,18 @@ navigating links in the template editor.
 * Barcode transfered to new copy in volume editor in Angular interface for fast item add (https://bugs.launchpad.net/evergreen/+bug/1986706[Bug 1986706])
 * Fix an issue where auto-renewal events can overwhelm open-ils.trigger drones (https://bugs.launchpad.net/evergreen/+bug/2030915[Bug 2030915])
 * Adds a new database view for open non-cataloged circulations: action.open_non_cataloged_circulation (https://bugs.launchpad.net/evergreen/+bug/2019974[Bug 2019974])
-
 * Reimplementation of Cataloging -> Link Checker in Angular. Changed a few things hopefully for the better:
-  - Relabeled URL Verification Attempts to Batches
-  - Relabeled URL Verifications to Attempts
-  - Main grid display combines Sessions and Batches.
+** Relabeled URL Verification Attempts to Batches
+** Relabeled URL Verifications to Attempts
+** Main grid display combines Sessions and Batches.
+* New Angular linting rules (https://bugs.launchpad.net/evergreen/+bug/1850473[Bug 1850473])
 
 
 :leveloffset: 0
 
 
 == Acknowledgments ==
+
 The Evergreen project would like to acknowledge the following
 organizations that commissioned developments in this release of
 Evergreen:
@@ -782,6 +783,7 @@ Thank you also to the release team & build managers:
 * Ruth Frasur Davis (Evergreen Indiana / Evergreen Community Development Initiative)
 * Blake Graham-Henderson (MOBIUS)
 * Stephanie Leary (Equinox Open Library Initiative)
+* Steven Mayo (PINES)
 * Terran McCanna (PINES)
 * Michele Morgan (NOBLE)
 * Andrea Buntz Neiman (Equinox Open Library Initiative)
