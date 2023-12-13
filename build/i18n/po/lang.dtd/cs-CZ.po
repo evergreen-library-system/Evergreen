@@ -3,18 +3,18 @@ msgstr ""
 "Project-Id-Version: Evergreen 1.4\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2018-09-18 16:05-0400\n"
-"PO-Revision-Date: 2023-05-05 21:40+0000\n"
+"PO-Revision-Date: 2023-08-03 06:28+0000\n"
 "Last-Translator: Eva Cerninakova <Unknown>\n"
 "Language-Team: UISK <LL@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2023-05-06 05:03+0000\n"
-"X-Generator: Launchpad (build 90e2150bef31b411d7bae5c4032c7e320fcaaec8)\n"
-"X-Poedit-Language: Czech\n"
-"X-Poedit-Country: CZECH REPUBLIC\n"
-"X-Accelerator-Marker: &\n"
+"X-Launchpad-Export-Date: 2023-08-04 04:57+0000\n"
+"X-Generator: Launchpad (build 6a25791a70c738891354c9239ccb07c6c99f87b3)\n"
 "X-Poedit-SourceCharset: utf-8\n"
+"X-Accelerator-Marker: &\n"
+"X-Poedit-Country: CZECH REPUBLIC\n"
+"X-Poedit-Language: Czech\n"
 
 #: lang.version
 msgid "remote v1"
@@ -13173,7 +13173,7 @@ msgstr "Knihovna plnící rezervaci"
 
 #: staff.patron.holds_overlay.circ_lib.label
 msgid "Item Circulating Library"
-msgstr "Knihovna půjčující exemplář"
+msgstr "Knihovna půjčující jednotku"
 
 #: staff.patron.holds_overlay.owning_lib.label
 msgid "Volume Owning Library"
