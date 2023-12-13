@@ -4,18 +4,18 @@ msgstr ""
 "Project-Id-Version: Evergreen ILS > patron.properties.po\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2017-05-25 00:15-0400\n"
-"PO-Revision-Date: 2021-04-09 01:18+0000\n"
+"PO-Revision-Date: 2023-11-16 05:10+0000\n"
 "Last-Translator: Jennifer Pringle <Unknown>\n"
 "Language-Team: <warren.layton@gmail.com>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2023-05-05 04:47+0000\n"
-"X-Generator: Launchpad (build 90e2150bef31b411d7bae5c4032c7e320fcaaec8)\n"
-"X-Accelerator-Marker: &\n"
-"X-Poedit-SourceCharset: UTF-8\n"
-"X-Poedit-Country: CANADA\n"
+"X-Launchpad-Export-Date: 2023-11-17 05:37+0000\n"
+"X-Generator: Launchpad (build f1e537f62ee3967c2b3f24dd10eacf1696334fe6)\n"
 "X-Poedit-Language: English\n"
+"X-Poedit-Country: CANADA\n"
+"X-Poedit-SourceCharset: UTF-8\n"
+"X-Accelerator-Marker: &\n"
 
 #: staff.patron.barcode_entry.user_permission_editor
 msgid "User Permission Editor"
@@ -2073,25 +2073,3 @@ msgstr "Available / Total (Behind Desk)"
 #: staff.patron.summary.hold_counts
 msgid "Available / Total"
 msgstr "Available / Total"
-
-#~ msgctxt "staff.patron.bills.handle_refund.confirm_message"
-#~ msgid "Check here to confirm this message"
-#~ msgstr "Check here to confirm this message"
-
-#~ msgid "Patron account is INACTIVE.<br/><br/>"
-#~ msgstr "Patron account is INACTIVE.<br/><br/>"
-
-#~ msgid "Patron account is BARRED.<br/><br/>"
-#~ msgstr "Patron account is BARRED.<br/><br/>"
-
-#~ msgid "Patron account retrieved with an INACTIVE card.<br/><br/>"
-#~ msgstr "Patron account retrieved with an INACTIVE card.<br/><br/>"
-
-#~ msgid "Alert message: \"%1$s\"<br/><br/>"
-#~ msgstr "Alert message: \"%1$s\"<br/><br/>"
-
-#~ msgid "Record ID: %1$s Create Date: %2$s "
-#~ msgstr "Record ID: %1$s Create Date: %2$s "
-
-#~ msgid "Patron account is EXPIRED.<br/><br/>"
-#~ msgstr "Patron account is EXPIRED.<br/><br/>"
