@@ -3,6 +3,205 @@
 :numbered:
 :toclevels: 4
 
+== Evergreen 3.10.4 ==
+
+This release contains bug fixes improving on Evergreen 3.10.3.
+
+=== Bug Fixes ===
+
+==== Accessibility ====
+
+* Screen readers skip Angular grid checkbox, row number, and flair icon cells (https://bugs.launchpad.net/bugs/2038230[Bug 2038230])
+* The icon column (status-column) in the patron bills interface needs to convey its meaning to assistive technologies too (https://bugs.launchpad.net/bugs/1818086[Bug 1818086])
+* Report output modal - visual accessibility issues (https://bugs.launchpad.net/bugs/2037666[Bug 2037666])
+* ARIA labels needed in date select, datetime select (https://bugs.launchpad.net/bugs/2043421[Bug 2043421])
+* Accessibility Improvements Needed in the Catalog (https://bugs.launchpad.net/bugs/1965985[Bug 1965985])
+
+
+==== Acquisitions ====
+
+* wishlist: better way to ID funds at warning or stop percentages (https://bugs.launchpad.net/bugs/1984007[Bug 1984007])
+* Actually install the edi pusher and fetcher scripts (https://bugs.launchpad.net/bugs/2034969[Bug 2034969])
+* legacy acq search: lineitem search results can prevent editing copies (https://bugs.launchpad.net/bugs/2036840[Bug 2036840])
+* Line item deleting silently fails if selection list is owned by another user (https://bugs.launchpad.net/bugs/1966096[Bug 1966096])
+
+
+==== Administration ====
+
+* Single Day Emergency Closings Fail to Update Due Dates Correctly (https://bugs.launchpad.net/bugs/1818912[Bug 1818912])
+* One Hour Gap in Default Autorenewal Delays (https://bugs.launchpad.net/bugs/1899976[Bug 1899976])
+* Single Sign On (Shibboleth) + Bootstrap OPAC (https://bugs.launchpad.net/bugs/1917083[Bug 1917083])
+* Shelving location ID 1 cannot be modified (https://bugs.launchpad.net/bugs/2023314[Bug 2023314])
+* Hours of Operation Always Displays All Closed Tooltip  (https://bugs.launchpad.net/bugs/2042962[Bug 2042962])
+* eg_db_config can fail depending on ~/.psqlrc contents (https://bugs.launchpad.net/bugs/2023418[Bug 2023418])
+
+
+==== Booking ====
+
+* Booking: Overlapping bookings allowed (https://bugs.launchpad.net/bugs/1804066[Bug 1804066])
+
+
+==== Carousels ====
+
+* Carousels - Carousels Can't be Created or Edited (https://bugs.launchpad.net/bugs/2039612[Bug 2039612])
+* The "prev" and "next" navigation buttons in carousels are not translated.  (https://bugs.launchpad.net/bugs/2033067[Bug 2033067])
+
+
+==== Cataloging ====
+
+* Fixed Fields Grid in Enhanced MARC Editor Not Updated on Save (https://bugs.launchpad.net/bugs/2015163[Bug 2015163])
+* Fast Item Add Not Working from MARC Edit (https://bugs.launchpad.net/bugs/1986706[Bug 1986706])
+* Create MARC Record - Jump to Flat Editor - Keyboard Shortcut (https://bugs.launchpad.net/bugs/2031177[Bug 2031177])
+* Create MARC Record - Flat Editor - Keyboard Shortcut for Saving (https://bugs.launchpad.net/bugs/2031162[Bug 2031162])
+* Create MARC Record - Hide help button for flat editor (https://bugs.launchpad.net/bugs/2031123[Bug 2031123])
+* Create MARC Record - focus on item add and call number (https://bugs.launchpad.net/bugs/2031114[Bug 2031114])
+* WebClient - Create MARC Record - Select Template Focus and Page Name (https://bugs.launchpad.net/bugs/2031043[Bug 2031043])
+* WebClient - Create MARC Record - Keyboard Shortcut (https://bugs.launchpad.net/bugs/2031040[Bug 2031040])
+* Angular Holdings Editor uses old terminology (https://bugs.launchpad.net/bugs/1983424[Bug 1983424])
+* Enable spellcheck for angular MARC edit screens (https://bugs.launchpad.net/bugs/1947906[Bug 1947906])
+* Reapplying item template with alert or note results in multiple alerts and/or notes (https://bugs.launchpad.net/bugs/1855144[Bug 1855144])
+* angular MARC editor tab does not display record source value (https://bugs.launchpad.net/bugs/1927870[Bug 1927870])
+* Angular: can no longer double click on item to open editor (https://bugs.launchpad.net/bugs/1908568[Bug 1908568])
+* MARC Batch Import/Export Queue: Links to the Staff Catalogue should open in a new tab (https://bugs.launchpad.net/bugs/2040305[Bug 2040305])
+
+
+
+==== Circulation ====
+
+* Placing holds fails unintuitively when preferred pickup location is disabled via org unit setting opac.holds.org_unit_not_pickup_lib (https://bugs.launchpad.net/bugs/1477154[Bug 1477154])
+* Sort direction for selection depth wrong when doing best-hold selection (https://bugs.launchpad.net/bugs/2023338[Bug 2023338])
+* Autorenewal Can Overwhelm open-ils.trigger Service Drones (https://bugs.launchpad.net/bugs/2030915[Bug 2030915])
+* Preferred name not listed as available to receipts (https://bugs.launchpad.net/bugs/1841635[Bug 1841635])
+* Angular: the Mark Damaged and Mark Missing dialogs are missing some i18n directives (https://bugs.launchpad.net/bugs/1840990[Bug 1840990])
+* Check Out Fails Silently if Operating Hours of Operation Set to Closed 7 Days a Week (https://bugs.launchpad.net/bugs/1944601[Bug 1944601])
+* Cash Reports - Label Totals Wrapping Unnecessarily Early (https://bugs.launchpad.net/bugs/2039311[Bug 2039311])
+* Display of survey results in patron account formatted incorrectly (https://bugs.launchpad.net/bugs/2040184[Bug 2040184])
+* Concerns about functionality of Mark item Missing from Items Out (https://bugs.launchpad.net/bugs/1998605[Bug 1998605])
+* Circulation->Retrieve Recent Patrons can have duplicate entries (https://bugs.launchpad.net/bugs/2009281[Bug 2009281])
+
+
+
+==== Course materials ====
+
+* Course Materials: Browse for course not working (https://bugs.launchpad.net/bugs/1913815[Bug 1913815])
+* Blank or Wildcard Search for Course by Instructor Fails (https://bugs.launchpad.net/bugs/1968754[Bug 1968754])
+* OPAC course reserves link display shouldn't depend on search library (https://bugs.launchpad.net/bugs/2035389[Bug 2035389])
+
+
+==== Client ====
+
+* Logging out on a page with a pcrud call floods browser with errors (https://bugs.launchpad.net/bugs/2002693[Bug 2002693])
+* Web staff client does not work properly when Czech is switched on (https://bugs.launchpad.net/bugs/2032753[Bug 2032753])
+* Staff Client eg grid not sorting alphabetically (https://bugs.launchpad.net/bugs/1912840[Bug 1912840])
+* Link/button issue in clipboard dialog component (https://bugs.launchpad.net/bugs/2043424[Bug 2043424])
+
+
+==== Documentation ====
+
+* Docs: Update "Conjoined Items" section for web client (https://bugs.launchpad.net/bugs/1775930[Bug 1775930])
+* Documentation - Web Services - Add on Z39.50 and OAI-PMH (https://bugs.launchpad.net/bugs/2031935[Bug 2031935])
+* Documentation - Floating Feature Documentation (https://bugs.launchpad.net/bugs/2033655[Bug 2033655])
+* Carousel docs list the wrong admin screen for Carousel Library Mapping (https://bugs.launchpad.net/bugs/2038779[Bug 2038779])
+* marc_export documentation sql example fix (https://bugs.launchpad.net/bugs/2029160[Bug 2029160])
+* Define Permissions (https://bugs.launchpad.net/bugs/1842957[Bug 1842957])
+* Docs: Remove old docs from landing page (https://bugs.launchpad.net/bugs/2040313[Bug 2040313])
+* Docs: Item Status Info Missing (https://bugs.launchpad.net/bugs/2022100[Bug 2022100])
+
+
+
+==== General ====
+
+* open-ils.actor.container.retrieve_by_class doesn't properly handle missing bucketOwnerId (https://bugs.launchpad.net/bugs/2036265[Bug 2036265])
+
+
+==== OAI-PMH ====
+
+* OAI-PMH - Config repository name extra space (https://bugs.launchpad.net/bugs/2030523[Bug 2030523])
+
+
+
+==== Public catalog ====
+
+* Bootstrap OPAC: Only show current addresses (https://bugs.launchpad.net/bugs/1939309[Bug 1939309])
+* Request a Card link missing on login form (https://bugs.launchpad.net/bugs/2039114[Bug 2039114])
+* Button in Patron Messages interface in OPAC are not translatable (https://bugs.launchpad.net/bugs/1919501[Bug 1919501])
+* Bootstrap Opac: Personal Information Page contains Links as Buttons (https://bugs.launchpad.net/bugs/2040314[Bug 2040314])
+* Marking org unit as non-visible in the OPAC defaults patrons' preferred pickup locations to the first org unit (https://bugs.launchpad.net/bugs/2043127[Bug 2043127])
+
+
+==== Reports ====
+
+* Unable to schedule a Report at 8 AM (https://bugs.launchpad.net/bugs/2039186[Bug 2039186])
+
+
+==== Staff catalog ====
+
+* Placeholders  in search form in  staff catalog appears untranslated (https://bugs.launchpad.net/bugs/1920126[Bug 1920126])
+* Copy count highlight color contrast in staff catalog search results (https://bugs.launchpad.net/bugs/2043847[Bug 2043847])
+
+
+=== Further details on bug fixes ===
+
+==== Change in AutoRenew Event Definition Default Delay ====
+
+The delay for the AutoRenew event has been changed from -23 hours to
+-24 hours and 1 minute.  The previous values of -23 hours for the
+delay and -1 minute for the max_delay left a gap of approximately 1
+hour where items would not auto-renew if they fell due during that
+time.  Depending upon the time that the AutoRenew event runner is
+scheduled to run, this gap may never turn up.  However, all it takes
+is a misconfigured client (i.e. an incorrect timezone setting) or a
+manually edited due date on a circulation for this to turn up.  The
+new interval settings guarantee that all circulations for a given 24
+hour period are selected with no gap.
+
+A database upgrade script is provided to alter any event definitions
+using the Circ::Autorenew reactor and the previous default delay
+values to the new settings.  If you have customized or added any event
+definitions using this reactor, you should double check that they are
+correct after an upgrade.
+
+
+=== Acknowledgements ===
+
+We would like to thank the following individuals who contributed code,
+testing and documentation patches to the 3.10.4 point release of Evergreen:
+
+
+* Scott Angel
+* Jason Boyer
+* Dan Briem
+* Andrea Buntz Neiman
+* Eva Cerniňáková
+* Galen Charlton
+* Garry Collum
+* Jeff Davis
+* Robin Fitch
+* Blake Graham-Henderson
+* Lena Hernandez
+* Kyle Huckins
+* Linda Jansova
+* Angela Kilsdonk
+* Stephanie Leary
+* Mary Llewellyn
+* Llewellyn Marshall
+* Steven Mayo
+* Terran McCanna
+* Gina Monti
+* Susan Morrison
+* Lauren Mous
+* Christine Morgan
+* Michele Morgan
+* Jennifer Pringle
+* Simone Rauscher
+* Mike Rylander
+* Jane Sandberg
+* Chris Sharp
+* Jason Stephenson
+* Josh Stompro
+* Beth Willis
+
+
 == Evergreen 3.10.3 ==
 
 This release contains bug fixes improving on Evergreen 3.10.2.
