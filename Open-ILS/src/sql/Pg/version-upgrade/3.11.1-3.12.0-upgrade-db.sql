@@ -75,7 +75,7 @@ BEGIN
 END;
 $function$;
 
-CREATE TRIGGER acpl_validate_edit BEFORE UPDATE ON asset.copy_location FOR EACH ROW EXECUTE FUNCTION asset.copy_location_validate_edit();
+CREATE TRIGGER acpl_validate_edit BEFORE UPDATE ON asset.copy_location FOR EACH ROW EXECUTE PROCEDURE asset.copy_location_validate_edit();
 
 
 
