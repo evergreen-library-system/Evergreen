@@ -27,8 +27,6 @@ my $output = "usmarc";
 my $U = 'OpenILS::Application::AppUtils'; 
 
 my $sclient;
-my %services;
-my $default_service;
 
 __PACKAGE__->register_method(
     method    => 'apply_credentials',
@@ -141,6 +139,10 @@ sub fetch_service_defs {
 
     my $editor_with_authtoken = shift;
 
+    # TODO Evergreen stopped shipping Z39.50 target definitions
+    #      in opensrf.xml all the way back in 2012 (see LP#950067).
+    #      Enough time may have passed to just remove the settings
+    #      lookup.
     my $hash = $sclient->config_value('z3950', 'services');
 
     # overlay config file values with in-db values
@@ -213,7 +215,6 @@ sub fetch_service_defs {
         }
     }
 
-    %services = %$hash; # cache these internally so we can actually use the db-configured sources
     return $hash;
 }
 
@@ -224,7 +225,6 @@ sub fetch_service_defs {
 # -------------------------------------------------------------------
 sub child_init {
     $sclient = OpenSRF::Utils::SettingsClient->new();
-    $default_service = $sclient->config_value("z3950", "default" );
 }
 
 
@@ -232,8 +232,6 @@ sub child_init {
 # High-level class based search. 
 # -------------------------------------------------------------------
 sub do_class_search {
-
-    fetch_service_defs() unless (scalar(keys(%services)));
 
     my $self = shift;
     my $conn = shift;
@@ -316,14 +314,13 @@ sub do_class_search {
 # -------------------------------------------------------------------
 sub do_service_search {
 
-    fetch_service_defs() unless (scalar(keys(%services)));
-
     my $self = shift;
     my $conn = shift;
     my $auth = shift;
     my $args = shift;
-    
-    my $info = $services{$$args{service}};
+
+    my $services = fetch_service_defs();
+    my $info = $services->{$$args{service}};
 
     $$args{host} = $$info{host};
     $$args{port} = $$info{port};
@@ -340,8 +337,6 @@ sub do_service_search {
 # data must be provided to this method
 # -------------------------------------------------------------------
 sub do_search {
-
-    fetch_service_defs() unless (scalar(keys(%services)));
 
     my $self = shift;
     my $conn = shift;
@@ -372,7 +367,8 @@ sub do_search {
     my $username = $$args{username} || $creds->{username} || "";
     my $password = $$args{password} || $creds->{password} || "";
 
-    my $tformat = $services{$args->{service}}->{transmission_format} || $output;
+    my $services = fetch_service_defs();
+    my $tformat = $services->{$args->{service}}->{transmission_format} || $output;
 
     $logger->info("z3950: connecting to server $host:$port:$db as $username");
 
@@ -424,15 +420,14 @@ sub do_search {
 # -------------------------------------------------------------------
 sub process_results {
 
-    fetch_service_defs() unless (scalar(keys(%services)));
-
     my $results = shift;
     my $limit = shift || 10;
     my $offset = shift || 0;
     my $service = shift;
 
-    my $rformat = $services{$service}->{record_format};
-    my $tformat = $services{$service}->{transmission_format} || $output;
+    my $services = fetch_service_defs();
+    my $rformat = $services->{$service}->{record_format};
+    my $tformat = $services->{$service}->{transmission_format} || $output;
 
     $results->option(elementSetName => $rformat);
     $results->option(preferredRecordSyntax => $tformat);
@@ -508,8 +503,6 @@ sub process_results {
 # -------------------------------------------------------------------
 sub compile_query {
 
-    fetch_service_defs() unless (scalar(keys(%services)));
-
     my $separator = shift;
     my $service = shift;
     my $hash = shift;
@@ -523,13 +516,14 @@ sub compile_query {
     # "code" is the bib-1 "use attribute", "format" is the bib-1 
     # "structure attribute"
     # -------------------------------------------------------------------
+    my $services = fetch_service_defs();
     for( keys %$hash ) {
-        next unless ( exists $services{$service}->{attrs}->{$_} );
-        $str .= '@attr 1=' . $services{$service}->{attrs}->{$_}->{code} . # add the use attribute
-            ' @attr 4=' . $services{$service}->{attrs}->{$_}->{format}; # add the structure attribute
-        if (exists $services{$service}->{attrs}->{$_}->{truncation}
-                && $services{$service}->{attrs}->{$_}->{truncation} >= 0) {
-            $str .= ' @attr 5=' . $services{$service}->{attrs}->{$_}->{truncation};
+        next unless ( exists $services->{$service}->{attrs}->{$_} );
+        $str .= '@attr 1=' . $services->{$service}->{attrs}->{$_}->{code} . # add the use attribute
+            ' @attr 4=' . $services->{$service}->{attrs}->{$_}->{format}; # add the structure attribute
+        if (exists $services->{$service}->{attrs}->{$_}->{truncation}
+                && $services->{$service}->{attrs}->{$_}->{truncation} >= 0) {
+            $str .= ' @attr 5=' . $services->{$service}->{attrs}->{$_}->{truncation};
         }
         $str .= " \"" . $$hash{$_} . "\" "; # add the search term
     }
