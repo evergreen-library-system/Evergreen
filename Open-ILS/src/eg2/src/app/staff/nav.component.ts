@@ -1,4 +1,4 @@
-import {Component, OnInit, OnDestroy, ViewChild} from '@angular/core';
+import {Component, OnInit, OnDestroy, QueryList, ViewChild, ViewChildren} from '@angular/core';
 import {ActivatedRoute, Router} from '@angular/router';
 import {Location} from '@angular/common';
 import {Subscription} from 'rxjs';
@@ -12,6 +12,7 @@ import {NetRequest, NetService} from '@eg/core/net.service';
 import {OpChangeComponent} from '@eg/staff/share/op-change/op-change.component';
 import {PermService} from '@eg/core/perm.service';
 import {ConfirmDialogComponent} from '@eg/share/dialog/confirm.component';
+import {NgbCollapseModule, NgbDropdown} from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
     selector: 'eg-staff-nav-bar',
@@ -32,8 +33,12 @@ export class StaffNavComponent implements OnInit, OnDestroy {
     showAngularCirc = false;
     maxRecentPatrons = 1;
 
+    // Menu toggle
+    isMenuCollapsed = true;
+
     @ViewChild('navOpChange', {static: false}) opChange: OpChangeComponent;
     @ViewChild('confirmLogout', { static: true }) confirmLogout: ConfirmDialogComponent;
+    @ViewChildren(NgbDropdown) dropdowns: QueryList<NgbDropdown>;
     permFailedSub: Subscription;
 
     constructor(
@@ -157,6 +162,10 @@ export class StaffNavComponent implements OnInit, OnDestroy {
         if (recId) {
             this.router.navigate(['/staff/catalog/record/' + recId]);
         }
+    }
+
+    closeDropdowns() {
+        this.dropdowns?.forEach(x => x.close());
     }
 }
 
