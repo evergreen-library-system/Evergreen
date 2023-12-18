@@ -3,39 +3,48 @@
   dialogBody="Are you sure you want to log out?" i18n-dialogBody>
 </eg-confirm-dialog>
 
-<nav id="staff-navbar" class="navbar fixed-top navbar-expand navbar-default" aria-label="Main Navigation" i18n-aria-label>
-  <div class="collapse navbar-collapse">
-    <div class="navbar-nav">
-      <div class="nav-item">
-        <a class="nav-link with-material-icon nav-link-home" 
-          routerLinkActive="active" ariaCurrentWhenActive="page" routerLink="/staff/"
-          aria-label="Home" i18n-aria-label="Home button aria label@@navbar-home-button-aria-label"
-          egAccessKey keyCtx="navbar" i18n-keySpec i18n-keyDesc
-          keySpec="alt+h" keyDesc="Navigate Home">
-          <span class="material-icons" aria-hidden="true">home</span>
-          <span class="visually-hidden" i18n>Home</span>
-        </a>
-      </div>
-    </div>
+<nav id="staff-navbar" class="navbar fixed-top navbar-expand-lg navbar-default" aria-label="Main Navigation" i18n-aria-label>
+<div class="container-fluid">
+    <a class="navbar-brand nav-link with-material-icon nav-link-home" 
+    routerLinkActive="active" ariaCurrentWhenActive="page" routerLink="/staff/" (click)="closeDropdowns"
+    aria-label="Home" i18n-aria-label="Home button aria label@@navbar-home-button-aria-label"
+    egAccessKey keyCtx="navbar" i18n-keySpec i18n-keyDesc
+    keySpec="alt+h" keyDesc="Navigate Home">
+    <span class="material-icons" aria-hidden="true">home</span>
+    <span class="visually-hidden" i18n>Home</span>
+  </a>
+  <button class="navbar-toggler text-light" type="button" (click)="isMenuCollapsed = !isMenuCollapsed">&#9776;</button>
 
+  <div [ngbCollapse]="isMenuCollapsed" class="collapse navbar-collapse">
     <div class="navbar-nav">
       <div ngbDropdown class="nav-item dropdown">
         <button type="button" ngbDropdownToggle i18n class="nav-link dropdown-toggle">
           Search
         </button>
         <div class="dropdown-menu" ngbDropdownMenu>
-          <a class="dropdown-item" ngbDropdownItem  href="/eg/staff/circ/patron/search"
+          <a class="dropdown-item" ngbDropdownItem href="/eg/staff/circ/patron/search"
+            (click)="isMenuCollapsed = true" 
+            (keydown.space)="isMenuCollapsed = true" 
+            (keydown.enter)="isMenuCollapsed = true"
             egAccessKey keyCtx="navbar" i18n-keySpec i18n-keyDesc
             keySpec="alt+s f4" keyDesc="Patron Search">
             <span class="material-icons" aria-hidden="true">person</span>
             <span i18n>Search for Patrons</span>
           </a>
-          <a class="dropdown-item" ngbDropdownItem  href="/eg/staff/cat/item/search">
+          <a class="dropdown-item" ngbDropdownItem 
+            (click)="isMenuCollapsed = true" 
+            (keydown.space)="isMenuCollapsed = true" 
+            (keydown.enter)="isMenuCollapsed = true"
+            href="/eg/staff/cat/item/search">
             <span class="material-icons" aria-hidden="true">assignment</span>
             <span i18n>Search for Items by Barcode</span>
           </a>
-          <a class="dropdown-item" ngbDropdownItem routerLinkActive="active" 
+          <a class="dropdown-item" ngbDropdownItem 
+           routerLinkActive="active" 
             ariaCurrentWhenActive="page" routerLink="/staff/catalog"
+            (click)="isMenuCollapsed = true" 
+            (keydown.space)="isMenuCollapsed = true" 
+            (keydown.enter)="isMenuCollapsed = true"
             egAccessKey keyCtx="navbar" i18n-keySpec i18n-keyDesc
             keySpec="f3" keyDesc="Catalog">
             <span class="material-icons" aria-hidden="true">search</span>
@@ -52,107 +61,175 @@
         </button>
         <div class="dropdown-menu" ngbDropdownMenu>
           <a class="dropdown-item" ngbDropdownItem  href="/eg/staff/circ/patron/bcsearch"
+            (click)="isMenuCollapsed = true" 
+            (keydown.space)="isMenuCollapsed = true" 
+            (keydown.enter)="isMenuCollapsed = true"
             egAccessKey keyCtx="navbar" i18n-keySpec i18n-keyDesc
             keySpec="f1" keyDesc="Checkout">
             <span class="material-icons" aria-hidden="true">trending_up</span>
             <span i18n>Check Out</span>
           </a>
           <a class="dropdown-item" ngbDropdownItem  href="/eg/staff/circ/checkin/checkin"
+            (click)="isMenuCollapsed = true" 
+            (keydown.space)="isMenuCollapsed = true" 
+            (keydown.enter)="isMenuCollapsed = true"  
             egAccessKey keyCtx="navbar" i18n-keySpec i18n-keyDesc
             keySpec="f2" keyDesc="Checkin">
             <span class="material-icons" aria-hidden="true">trending_down</span>
             <span i18n>Check In</span>
           </a>
           <a class="dropdown-item" ngbDropdownItem  href="/eg/staff/circ/checkin/capture"
+            (click)="isMenuCollapsed = true" 
+            (keydown.space)="isMenuCollapsed = true" 
+            (keydown.enter)="isMenuCollapsed = true"  
             egAccessKey keyCtx="navbar" i18n-keySpec i18n-keyDesc
             keySpec="shift+f2" keyDesc="Capture Holds">
             <span class="material-icons" aria-hidden="true">pin_drop</span>
             <span i18n>Capture Holds</span>
           </a>
           <a class="dropdown-item" ngbDropdownItem routerLinkActive="active" 
-            ariaCurrentWhenActive="page" routerLink="/staff/circ/holds/pull-list">
+            ariaCurrentWhenActive="page" routerLink="/staff/circ/holds/pull-list"
+            (click)="isMenuCollapsed = true" 
+            (keydown.space)="isMenuCollapsed = true" 
+            (keydown.enter)="isMenuCollapsed = true">
             <span class="material-icons" aria-hidden="true">view_list</span>
             <span i18n>Pull List for Hold Requests</span>
           </a>
           <a class="dropdown-item" ngbDropdownItem  href="/eg/staff/circ/renew/renew"
+            (click)="isMenuCollapsed = true" 
+            (keydown.space)="isMenuCollapsed = true" 
+            (keydown.enter)="isMenuCollapsed = true"  
             egAccessKey keyCtx="navbar" i18n-keySpec i18n-keyDesc
             keySpec="ctrl+f2" keyDesc="Renew Items">
             <span class="material-icons" aria-hidden="true">autorenew</span>
             <span i18n>Renew Items</span>
           </a>
           <a class="dropdown-item" ngbDropdownItem  href="/eg/staff/circ/patron/register"
+            (click)="isMenuCollapsed = true" 
+            (keydown.space)="isMenuCollapsed = true" 
+            (keydown.enter)="isMenuCollapsed = true"  
             egAccessKey keyCtx="navbar" i18n-keySpec i18n-keyDesc
             keySpec="shift+f1" keyDesc="Register Patron">
             <span class="material-icons" aria-hidden="true">person_add</span>
             <span i18n>Register Patron</span>
           </a>
           <a *ngIf="maxRecentPatrons" class="dropdown-item" ngbDropdownItem  href="/eg/staff/circ/patron/last"
+            (click)="isMenuCollapsed = true" 
+            (keydown.space)="isMenuCollapsed = true" 
+            (keydown.enter)="isMenuCollapsed = true"  
             egAccessKey keyCtx="navbar" i18n-keySpec i18n-keyDesc
             keySpec="f8" keyDesc="Retrieve Last Patron">
             <span class="material-icons" aria-hidden="true">redo</span>
             <span i18n>Retrieve Last Patron</span>
           </a>
-          <a *ngIf="maxRecentPatrons > 1" class="dropdown-item" ngbDropdownItem  href="/eg/staff/circ/patron/search?show_recent=1">
+          <a *ngIf="maxRecentPatrons > 1" class="dropdown-item" ngbDropdownItem  
+            href="/eg/staff/circ/patron/search?show_recent=1"
+            (click)="isMenuCollapsed = true" 
+            (keydown.space)="isMenuCollapsed = true" 
+            (keydown.enter)="isMenuCollapsed = true">
             <span class="material-icons" aria-hidden="true">redo</span>
             <span i18n>Retrieve Recent Patrons</span>
           </a>
-          <a class="dropdown-item" ngbDropdownItem  href="/eg/staff/circ/patron/pending/list">
+          <a class="dropdown-item" ngbDropdownItem  
+            (click)="isMenuCollapsed = true" 
+            (keydown.space)="isMenuCollapsed = true" 
+            (keydown.enter)="isMenuCollapsed = true"
+            href="/eg/staff/circ/patron/pending/list">
             <span class="material-icons" aria-hidden="true">thumb_up</span>
             <span i18n>Pending Patrons</span>
           </a>
-          <a class="dropdown-item" ngbDropdownItem  href="/eg/staff/circ/patron/bucket/view">
+          <a class="dropdown-item" ngbDropdownItem  
+            href="/eg/staff/circ/patron/bucket/view"
+            (click)="isMenuCollapsed = true" 
+            (keydown.space)="isMenuCollapsed = true" 
+            (keydown.enter)="isMenuCollapsed = true">
             <span class="material-icons" aria-hidden="true">list</span>
             <span i18n>User Buckets</span>
           </a>
-          <a class="dropdown-item" ngbDropdownItem  href="/eg/staff/cat/bucket/batch_hold/list">
+          <a class="dropdown-item" ngbDropdownItem  
+            href="/eg/staff/cat/bucket/batch_hold/list"
+            (click)="isMenuCollapsed = true" 
+            (keydown.space)="isMenuCollapsed = true" 
+            (keydown.enter)="isMenuCollapsed = true">
             <span class="material-icons" aria-hidden="true">list</span>
             <span i18n>Hold Groups</span>
           </a>
           <div class="dropdown-divider"></div>
-          <a class="dropdown-item" ngbDropdownItem  href="/eg/staff/circ/patron/credentials">
+          <a class="dropdown-item" ngbDropdownItem  
+            href="/eg/staff/circ/patron/credentials"
+            (click)="isMenuCollapsed = true" 
+            (keydown.space)="isMenuCollapsed = true" 
+            (keydown.enter)="isMenuCollapsed = true">
             <span class="material-icons" aria-hidden="true">check_circle</span>
             <span i18n>Verify Credentials</span>
           </a>
-          <a class="dropdown-item" ngbDropdownItem  href="/eg/staff/circ/in_house_use/index"
+          <a class="dropdown-item" ngbDropdownItem href="/eg/staff/circ/in_house_use/index"
+            (click)="isMenuCollapsed = true" 
+            (keydown.space)="isMenuCollapsed = true" 
+            (keydown.enter)="isMenuCollapsed = true" 
             egAccessKey keyCtx="navbar" i18n-keySpec i18n-keyDesc
             keySpec="f6" keyDesc="Record In-House Use">
             <span class="material-icons" aria-hidden="true">playlist_add</span>
             <span i18n>Record In-House Use</span>
           </a>
-          <a class="dropdown-item" ngbDropdownItem  href="/eg/staff/circ/holds/shelf">
+          <a class="dropdown-item" ngbDropdownItem  
+            href="/eg/staff/circ/holds/shelf"
+            (click)="isMenuCollapsed = true" 
+            (keydown.space)="isMenuCollapsed = true" 
+            (keydown.enter)="isMenuCollapsed = true">
             <span class="material-icons" aria-hidden="true">format_list_bulleted</span>
             <span i18n>Holds Shelf</span>
           </a>
           <div class="dropdown-divider"></div>
-          <a class="dropdown-item" ngbDropdownItem  href="/eg/staff/cat/item/replace_barcode/index">
+          <a class="dropdown-item" ngbDropdownItem  
+            href="/eg/staff/cat/item/replace_barcode/index"
+            (click)="isMenuCollapsed = true" 
+            (keydown.space)="isMenuCollapsed = true" 
+            (keydown.enter)="isMenuCollapsed = true">
             <span class="material-icons" aria-hidden="true">library_books</span>
             <span i18n>Replace Barcode</span>
           </a>
           <a class="dropdown-item" ngbDropdownItem  href="/eg/staff/cat/item/search"
+            (click)="isMenuCollapsed = true" 
+            (keydown.space)="isMenuCollapsed = true" 
+            (keydown.enter)="isMenuCollapsed = true"  
             egAccessKey keyCtx="navbar" i18n-keySpec i18n-keyDesc
             keySpec="f5" keyDesc="Navigate To Item Status">
             <span class="material-icons" aria-hidden="true">question_answer</span>
             <span i18n>Item Status</span>
           </a>
           <a class="dropdown-item" ngbDropdownItem routerLinkActive="active" 
-            ariaCurrentWhenActive="page" routerLink="/staff/cat/item/missing_pieces">
+            ariaCurrentWhenActive="page" 
+            routerLink="/staff/cat/item/missing_pieces"
+            (click)="isMenuCollapsed = true" 
+            (keydown.space)="isMenuCollapsed = true" 
+            (keydown.enter)="isMenuCollapsed = true">
             <span class="material-icons" aria-hidden="true">grid_on</span>
             <span i18n>Scan Item as Missing Pieces</span>
           </a>
           <div class="dropdown-divider"></div>
-          <button type="button" class="dropdown-item" ngbDropdownItem  (click)="reprintLast()"
+          <button type="button" class="dropdown-item" ngbDropdownItem  
+            (click)="reprintLast(); isMenuCollapsed = true" 
             egAccessKey keyCtx="navbar" i18n-keySpec i18n-keyDesc
             keySpec="f9" keyDesc="Reprint Last Receipt">
             <span class="material-icons" aria-hidden="true">redo</span>
             <span i18n>Reprint Last Receipt</span>
           </button>
           <div class="dropdown-divider"></div>
-          <a class="dropdown-item" ngbDropdownItem  href="/eg/staff/offline-interface">
+          <a class="dropdown-item" ngbDropdownItem  
+            href="/eg/staff/offline-interface"
+            (click)="isMenuCollapsed = true" 
+            (keydown.space)="isMenuCollapsed = true" 
+            (keydown.enter)="isMenuCollapsed = true">
             <span class="material-icons" aria-hidden="true">signal_wifi_off</span>
             <span i18n>Offline Circulation</span>
           </a>
           <div *ngIf="curbsideEnabled" class="dropdown-divider"></div>
-          <a *ngIf="curbsideEnabled" class="dropdown-item" href="/eg/staff/circ/curbside/index">
+          <a *ngIf="curbsideEnabled" class="dropdown-item" 
+            href="/eg/staff/circ/curbside/index"
+            (click)="isMenuCollapsed = true" 
+            (keydown.space)="isMenuCollapsed = true" 
+            (keydown.enter)="isMenuCollapsed = true">
             <span class="material-icons">directions_bus</span>
             <span i18n>Curbside Pickup</span>
           </a>
@@ -162,43 +239,67 @@
 
     <div class="navbar-nav" *ngIf="showAngularCirc">
       <div ngbDropdown class="nav-item dropdown">
-        <button type="button" ngbDropdownToggle i18n class="nav-link dropdown-toggle">
+        <button type="button" ngbDropdownToggle i18n 
+          class="nav-link dropdown-toggle">
           Circulation (Experimental)
         </button>
         <div class="dropdown-menu" ngbDropdownMenu>
-          <a class="dropdown-item" ngbDropdownItem routerLinkActive="active" 
-            ariaCurrentWhenActive="page" routerLink="/staff/circ/patron/search">
+          <a class="dropdown-item" ngbDropdownItem
+           routerLinkActive="active" 
+            ariaCurrentWhenActive="page" routerLink="/staff/circ/patron/search"
+            (click)="isMenuCollapsed = true" 
+            (keydown.space)="isMenuCollapsed = true" 
+            (keydown.enter)="isMenuCollapsed = true">
             <span class="material-icons" aria-hidden="true">person</span>
             <span i18n>Search for Patrons</span>
           </a>
-          <a class="dropdown-item" ngbDropdownItem routerLinkActive="active" 
+          <a class="dropdown-item" ngbDropdownItem
+           routerLinkActive="active" 
             ariaCurrentWhenActive="page" routerLink="/staff/circ/patron/bcsearch"
+            (click)="isMenuCollapsed = true" 
+            (keydown.space)="isMenuCollapsed = true" 
+            (keydown.enter)="isMenuCollapsed = true"  
             egAccessKey keyCtx="navbar" i18n-keySpec i18n-keyDesc
             keySpec="f1" keyDesc="Checkout">
             <span class="material-icons" aria-hidden="true">trending_up</span>
             <span i18n>Check Out</span>
           </a>
-          <a class="dropdown-item" ngbDropdownItem routerLinkActive="active" 
+          <a class="dropdown-item" ngbDropdownItem
+           routerLinkActive="active" 
             ariaCurrentWhenActive="page" routerLink="/staff/circ/checkin"
+            (click)="isMenuCollapsed = true" 
+            (keydown.space)="isMenuCollapsed = true" 
+            (keydown.enter)="isMenuCollapsed = true"
             egAccessKey keyCtx="navbar" i18n-keySpec i18n-keyDesc
             keySpec="f2" keyDesc="Checkin">
             <span class="material-icons" aria-hidden="true">trending_down</span>
             <span i18n>Check In</span>
           </a>
-          <a class="dropdown-item" ngbDropdownItem routerLinkActive="active" 
+          <a class="dropdown-item" ngbDropdownItem
+           routerLinkActive="active" 
             ariaCurrentWhenActive="page" routerLink="/staff/circ/checkin/capture"
+            (click)="isMenuCollapsed = true" 
+            (keydown.space)="isMenuCollapsed = true" 
+            (keydown.enter)="isMenuCollapsed = true"  
             egAccessKey keyCtx="navbar" i18n-keySpec i18n-keyDesc
             keySpec="shift+f2" keyDesc="Capture Holds">
             <span class="material-icons" aria-hidden="true">pin_drop</span>
             <span i18n>Capture Holds</span>
           </a>
-          <a class="dropdown-item" ngbDropdownItem routerLinkActive="active" 
-            ariaCurrentWhenActive="page" routerLink="/staff/circ/holds/pull-list">
+          <a class="dropdown-item" ngbDropdownItem
+           routerLinkActive="active" 
+            ariaCurrentWhenActive="page" routerLink="/staff/circ/holds/pull-list"
+            (click)="isMenuCollapsed = true" 
+            (keydown.space)="isMenuCollapsed = true" 
+            (keydown.enter)="isMenuCollapsed = true">
             <span class="material-icons" aria-hidden="true">view_list</span>
             <span i18n>Pull List for Hold Requests</span>
           </a>
           <a class="dropdown-item" ngbDropdownItem routerLinkActive="active" 
             ariaCurrentWhenActive="page" routerLink="/staff/circ/renew"
+            (click)="isMenuCollapsed = true" 
+            (keydown.space)="isMenuCollapsed = true" 
+            (keydown.enter)="isMenuCollapsed = true"  
             egAccessKey keyCtx="navbar" i18n-keySpec i18n-keyDesc
             keySpec="ctrl+f2" keyDesc="Renew Items">
             <span class="material-icons" aria-hidden="true">autorenew</span>
@@ -206,6 +307,9 @@
           </a>
           <a class="dropdown-item" ngbDropdownItem routerLinkActive="active" 
             ariaCurrentWhenActive="page" routerLink="/staff/circ/patron/register"
+            (click)="isMenuCollapsed = true" 
+            (keydown.space)="isMenuCollapsed = true" 
+            (keydown.enter)="isMenuCollapsed = true"  
             egAccessKey keyCtx="navbar" i18n-keySpec i18n-keyDesc
             keySpec="shift+f1" keyDesc="Register Patron">
             <span class="material-icons" aria-hidden="true">person_add</span>
@@ -214,6 +318,9 @@
           <a *ngIf="maxRecentPatrons" class="dropdown-item" ngbDropdownItem 
             routerLinkActive="active" ariaCurrentWhenActive="page" 
             routerLink="/staff/circ/patron/last"
+            (click)="isMenuCollapsed = true" 
+            (keydown.space)="isMenuCollapsed = true" 
+            (keydown.enter)="isMenuCollapsed = true" 
             egAccessKey keyCtx="navbar" i18n-keySpec i18n-keyDesc
             keySpec="f8" keyDesc="Retrieve Last Patron">
             <span class="material-icons" aria-hidden="true">redo</span>
@@ -222,6 +329,9 @@
           <a *ngIf="maxRecentPatrons > 1" class="dropdown-item" ngbDropdownItem 
             routerLinkActive="active" ariaCurrentWhenActive="page" 
             routerLink="/staff/circ/patron/search/recents"
+            (click)="isMenuCollapsed = true" 
+            (keydown.space)="isMenuCollapsed = true" 
+            (keydown.enter)="isMenuCollapsed = true"
             egAccessKey keyCtx="navbar" i18n-keySpec i18n-keyDesc
             keySpec="shift+f4" keyDesc="Retrieve Recent Patrons">
             <span class="material-icons" aria-hidden="true">redo</span>
@@ -229,6 +339,9 @@
           </a>
           <a class="dropdown-item" ngbDropdownItem routerLinkActive="active" 
             ariaCurrentWhenActive="page" routerLink="/staff/circ/patron/credentials"
+            (click)="isMenuCollapsed = true" 
+            (keydown.space)="isMenuCollapsed = true" 
+            (keydown.enter)="isMenuCollapsed = true"  
             egAccessKey keyCtx="navbar" i18n-keySpec i18n-keyDesc
             keySpec="alt+c" keyDesc="Verify Patron Credentials">
             <span class="material-icons" aria-hidden="true">check_circle</span>
@@ -248,46 +361,72 @@
         <div class="dropdown-menu" ngbDropdownMenu>
 
           <a class="dropdown-item" ngbDropdownItem routerLinkActive="active" 
-            ariaCurrentWhenActive="page" routerLink="/staff/catalog/search"
+            ariaCurrentWhenActive="page" 
+            routerLink="/staff/catalog/search"
+            (click)="isMenuCollapsed = true" 
+            (keydown.space)="isMenuCollapsed = true" 
+            (keydown.enter)="isMenuCollapsed = true"
             egAccessKey keyCtx="navbar"i18n-keySpec i18n-keyDesc
             keySpec="f3" keyDesc="Catalog">
             <span class="material-icons" aria-hidden="true">search</span>
             <span i18n>Search the Catalog</span>
           </a>
-          <a *ngIf="showTraditionalCatalog" href="/eg/staff/cat/catalog/index" class="dropdown-item">
+          <a *ngIf="showTraditionalCatalog" class="dropdown-item"
+            href="/eg/staff/cat/catalog/index" 
+            (click)="isMenuCollapsed = true" 
+            (keydown.space)="isMenuCollapsed = true" 
+            (keydown.enter)="isMenuCollapsed = true">
             <span class="material-icons" aria-hidden="true">search</span>
             <span i18n>Search the Catalog (Traditional)</span>
           </a>
           <a class="dropdown-item" ngbDropdownItem  href="/eg/staff/cat/item/search"
+            (click)="isMenuCollapsed = true" 
+            (keydown.space)="isMenuCollapsed = true" 
+            (keydown.enter)="isMenuCollapsed = true"  
             egAccessKey keyCtx="navbar" i18n-keySpec i18n-keyDesc
             keySpec="f5" keyDesc="Navigate To Item Status">
             <span class="material-icons" aria-hidden="true">question_answer</span>
             <span i18n>Item Status</span>
           </a>
           <div class="dropdown-divider"></div>
-          <a href="/eg/staff/cat/bucket/record/view" ngbDropdownItem class="dropdown-item">
+          <a ngbDropdownItem class="dropdown-item"
+            href="/eg/staff/cat/bucket/record/view" 
+            (click)="isMenuCollapsed = true" 
+            (keydown.space)="isMenuCollapsed = true" 
+            (keydown.enter)="isMenuCollapsed = true">
             <span class="material-icons" aria-hidden="true">list</span>
             <span i18n>Record Buckets</span>
           </a>
-          <a href="/eg/staff/cat/bucket/copy/view" ngbDropdownItem class="dropdown-item">
+          <a ngbDropdownItem class="dropdown-item"
+            href="/eg/staff/cat/bucket/copy/view"
+            (click)="isMenuCollapsed = true" 
+            (keydown.space)="isMenuCollapsed = true" 
+            (keydown.enter)="isMenuCollapsed = true">
             <span class="material-icons" aria-hidden="true">list</span>
             <span i18n>Item Buckets</span>
           </a>
           <div class="dropdown-divider"></div>
-          <a routerLinkActive="active" ariaCurrentWhenActive="page" 
-            routerLink="/staff/cat/bib-from/id" ngbDropdownItem class="dropdown-item">
+          <a ngbDropdownItem class="dropdown-item"
+            routerLink="/staff/cat/bib-from/id"
+            routerLinkActive="active" ariaCurrentWhenActive="page"
+            (click)="isMenuCollapsed = true" 
+            (keydown.space)="isMenuCollapsed = true" 
+            (keydown.enter)="isMenuCollapsed = true">
             <span class="material-icons" aria-hidden="true">collections</span>
             <span i18n>Retrieve Bib Record by ID</span>
           </a>
           <a routerLinkActive="active" ariaCurrentWhenActive="page" 
             routerLink="/staff/cat/bib-from/tcn" ngbDropdownItem class="dropdown-item"
+            (click)="isMenuCollapsed = true" 
+            (keydown.space)="isMenuCollapsed = true" 
+            (keydown.enter)="isMenuCollapsed = true"  
             egAccessKey keyCtx="navbar" i18n-keySpec i18n-keyDesc
             keySpec="shift+f3" keyDesc="Retrieve Bib Record by TCN">
             <span class="material-icons" aria-hidden="true">collections_bookmark</span>
             <span i18n>Retrieve Bib Record by TCN</span>
           </a>
           <button type="button" class="dropdown-item" ngbDropdownItem 
-            (click)="retrieveLastRecord()"
+            (click)="retrieveLastRecord(); isMenuCollapsed = true" 
             egAccessKey keyCtx="navbar" i18n-keySpec i18n-keyDesc
             keySpec="shift+f8" keyDesc="Retrieve Last Bib Record">
             <span class="material-icons" aria-hidden="true">redo</span>
@@ -295,39 +434,66 @@
           </button>
           <div class="dropdown-divider"></div>
           <a href="/eg/staff/cat/catalog/new_bib" ngbDropdownItem class="dropdown-item"
+            (click)="isMenuCollapsed = true" 
+            (keydown.space)="isMenuCollapsed = true" 
+            (keydown.enter)="isMenuCollapsed = true"  
             egAccessKey keyCtx="navbar" i18n-keySpec i18n-keyDesc
             keySpec="ctrl+f3" keyDesc="Create New MARC Record">
             <span class="material-icons" aria-hidden="true">add</span>
             <span i18n>Create New MARC Record</span>
           </a>
-          <a href="/eg/staff/cat/z3950/index" ngbDropdownItem class="dropdown-item">
+          <a ngbDropdownItem class="dropdown-item"
+            href="/eg/staff/cat/z3950/index"
+            (click)="isMenuCollapsed = true" 
+            (keydown.space)="isMenuCollapsed = true" 
+            (keydown.enter)="isMenuCollapsed = true">
             <span class="material-icons" aria-hidden="true">cloud_download</span>
             <span i18n>Import Record from Z39.50</span>
           </a>
-          <a routerLinkActive="active" ariaCurrentWhenActive="page" 
-            routerLink="/staff/cat/vandelay/import" ngbDropdownItem class="dropdown-item">
+          <a ngbDropdownItem class="dropdown-item"
+            routerLinkActive="active" ariaCurrentWhenActive="page" 
+            routerLink="/staff/cat/vandelay/import"
+            (click)="isMenuCollapsed = true" 
+            (keydown.space)="isMenuCollapsed = true" 
+            (keydown.enter)="isMenuCollapsed = true">
             <span class="material-icons" aria-hidden="true">import_export</span>
             <span i18n>MARC Batch Import/Export</span>
           </a>
-          <a routerLinkActive="active" ariaCurrentWhenActive="page" 
-            routerLink="/staff/cat/marcbatch" ngbDropdownItem class="dropdown-item">
+          <a ngbDropdownItem class="dropdown-item"
+            routerLink="/staff/cat/marcbatch"
+            routerLinkActive="active" ariaCurrentWhenActive="page" 
+            (click)="isMenuCollapsed = true" 
+            (keydown.space)="isMenuCollapsed = true" 
+            (keydown.enter)="isMenuCollapsed = true">
             <span class="material-icons" aria-hidden="true">format_paint</span>
             <span i18n>MARC Batch Edit</span>
           </a>
           <div class="dropdown-divider"></div>
-          <a routerLinkActive="active" ariaCurrentWhenActive="page" 
-            routerLink="/staff/cat/linkchecker" ngbDropdownItem class="dropdown-item">
+          <a ngbDropdownItem class="dropdown-item"
+            routerLink="/staff/cat/linkchecker" 
+            routerLinkActive="active" ariaCurrentWhenActive="page" 
+            (click)="isMenuCollapsed = true" 
+            (keydown.space)="isMenuCollapsed = true" 
+            (keydown.enter)="isMenuCollapsed = true">
             <span class="material-icons" aria-hidden="true">link</span>
             <span i18n>Link Checker</span>
           </a>
           <div class="dropdown-divider"></div>
-          <a routerLinkActive="active" ariaCurrentWhenActive="page" 
-            routerLink="/staff/cat/authority/browse" ngbDropdownItem class="dropdown-item">
+          <a ngbDropdownItem class="dropdown-item"
+            routerLinkActive="active" ariaCurrentWhenActive="page" 
+            routerLink="/staff/cat/authority/browse" 
+            (click)="isMenuCollapsed = true" 
+            (keydown.space)="isMenuCollapsed = true" 
+            (keydown.enter)="isMenuCollapsed = true">
             <span class="material-icons" aria-hidden="true">lock</span>
             <span i18n>Manage Authorities</span>
           </a>
-          <a routerLinkActive="active" ariaCurrentWhenActive="page" 
-            routerLink="/staff/cat/authority/edit" ngbDropdownItem class="dropdown-item">
+          <a ngbDropdownItem class="dropdown-item"
+            routerLinkActive="active" ariaCurrentWhenActive="page" 
+            routerLink="/staff/cat/authority/edit"
+            (click)="isMenuCollapsed = true" 
+            (keydown.space)="isMenuCollapsed = true" 
+            (keydown.enter)="isMenuCollapsed = true">
             <span class="material-icons" aria-hidden="true">collections</span>
             <span i18n>Retrieve Authority Record by ID</span>
           </a>
@@ -344,76 +510,119 @@
         </button>
         <div class="dropdown-menu" ngbDropdownMenu>
           <a class="dropdown-item" ngbDropdownItem routerLinkActive="active" 
-            ariaCurrentWhenActive="page" routerLink="/staff/acq/search">
+            ariaCurrentWhenActive="page" routerLink="/staff/acq/search"
+            (click)="isMenuCollapsed = true" 
+            (keydown.space)="isMenuCollapsed = true" 
+            (keydown.enter)="isMenuCollapsed = true">
             <span class="material-icons" aria-hidden="true">search</span>
             <span i18n>General Search</span>
           </a>
           <div class="dropdown-divider"></div>
           <a class="dropdown-item" ngbDropdownItem routerLinkActive="active" 
-            ariaCurrentWhenActive="page" routerLink="/staff/acq/provider">
+            ariaCurrentWhenActive="page" routerLink="/staff/acq/provider"
+            (click)="isMenuCollapsed = true" 
+            (keydown.space)="isMenuCollapsed = true" 
+            (keydown.enter)="isMenuCollapsed = true">
             <span class="material-icons" aria-hidden="true">search</span>
             <span i18n>Provider Search</span>
           </a>
           <div class="dropdown-divider"></div>
           <a class="dropdown-item" ngbDropdownItem routerLinkActive="active" 
-            ariaCurrentWhenActive="page" routerLink="/staff/acq/search/selectionlists">
+            ariaCurrentWhenActive="page" routerLink="/staff/acq/search/selectionlists"
+            (click)="isMenuCollapsed = true" 
+            (keydown.space)="isMenuCollapsed = true" 
+            (keydown.enter)="isMenuCollapsed = true">
             <span class="material-icons" aria-hidden="true">view_list</span>
             <span i18n>Selection Lists</span>
           </a>
           <a class="dropdown-item" ngbDropdownItem  
-            href="/eg/staff/acq/legacy/picklist/brief_record">
+            href="/eg/staff/acq/legacy/picklist/brief_record"
+            (click)="isMenuCollapsed = true" 
+            (keydown.space)="isMenuCollapsed = true" 
+            (keydown.enter)="isMenuCollapsed = true">
             <span class="material-icons" aria-hidden="true">edit</span>
             <span i18n>New Brief Record</span>
           </a>
           <a class="dropdown-item" ngbDropdownItem  
-            href="/eg/staff/acq/requests/list">
+            href="/eg/staff/acq/requests/list"
+            (click)="isMenuCollapsed = true" 
+            (keydown.space)="isMenuCollapsed = true" 
+            (keydown.enter)="isMenuCollapsed = true">
             <span class="material-icons" aria-hidden="true">thumb_up</span>
             <span i18n>Patron Requests</span>
           </a>
           <a class="dropdown-item" ngbDropdownItem  
-            href="/eg/staff/acq/legacy/picklist/bib_search">
+            href="/eg/staff/acq/legacy/picklist/bib_search"
+            (click)="isMenuCollapsed = true" 
+            (keydown.space)="isMenuCollapsed = true" 
+            (keydown.enter)="isMenuCollapsed = true">
             <span class="material-icons" aria-hidden="true">cloud_download</span>
             <span i18n>MARC Federated Search</span>
           </a>
           <a class="dropdown-item" ngbDropdownItem  
-            href="/eg/staff/acq/legacy/picklist/from_bib">
+            href="/eg/staff/acq/legacy/picklist/from_bib"
+            (click)="isMenuCollapsed = true" 
+            (keydown.space)="isMenuCollapsed = true" 
+            (keydown.enter)="isMenuCollapsed = true">
             <span class="material-icons" aria-hidden="true">trending_down</span>
             <span i18n>Load Catalog Record IDs</span>
           </a>
           <div class="dropdown-divider"></div>
           <a class="dropdown-item" ngbDropdownItem routerLinkActive="active" 
-            ariaCurrentWhenActive="page" routerLink="/staff/acq/picklist/upload">
+              ariaCurrentWhenActive="page" routerLink="/staff/acq/picklist/upload"
+            (click)="isMenuCollapsed = true" 
+            (keydown.space)="isMenuCollapsed = true" 
+            (keydown.enter)="isMenuCollapsed = true">
           <span class="material-icons" aria-hidden="true">cloud_upload</span>
           <span i18n>Load MARC Order Records</span>
         </a>
           <a class="dropdown-item" ngbDropdownItem routerLinkActive="active" 
-            ariaCurrentWhenActive="page" routerLink="/staff/acq/search/purchaseorders">
+            ariaCurrentWhenActive="page" routerLink="/staff/acq/search/purchaseorders"
+            (click)="isMenuCollapsed = true" 
+            (keydown.space)="isMenuCollapsed = true" 
+            (keydown.enter)="isMenuCollapsed = true">
             <span class="material-icons" aria-hidden="true">shopping_cart</span>
             <span i18n>Purchase Orders</span>
           </a>
-          <a class="dropdown-item" ngbDropdownItem routerLinkActive="active" 
-            ariaCurrentWhenActive="page" routerLink="/staff/acq/po/create">
+          <a class="dropdown-item" ngbDropdownItem
+           routerLinkActive="active" 
+            ariaCurrentWhenActive="page" routerLink="/staff/acq/po/create"
+            (click)="isMenuCollapsed = true" 
+            (keydown.space)="isMenuCollapsed = true" 
+            (keydown.enter)="isMenuCollapsed = true">
             <span class="material-icons" aria-hidden="true">add_shopping_cart</span>
             <span i18n>Create Purchase Order</span>
           </a>
           <div class="dropdown-divider"></div>
           <a class="dropdown-item" ngbDropdownItem  
-            href="/eg/staff/acq/legacy/financial/claim_eligible">
+            href="/eg/staff/acq/legacy/financial/claim_eligible"
+            (click)="isMenuCollapsed = true" 
+            (keydown.space)="isMenuCollapsed = true" 
+            (keydown.enter)="isMenuCollapsed = true">
             <span class="material-icons" aria-hidden="true">contact_phone</span>
             <span i18n>Claim-Ready Items</span>
           </a>
           <a class="dropdown-item" ngbDropdownItem routerLinkActive="active" 
-            ariaCurrentWhenActive="page" routerLink="/staff/acq/asn/receive">
+            ariaCurrentWhenActive="page" routerLink="/staff/acq/asn/receive"
+            (click)="isMenuCollapsed = true" 
+            (keydown.space)="isMenuCollapsed = true" 
+            (keydown.enter)="isMenuCollapsed = true">
             <span class="material-icons" aria-hidden="true">archive</span>
             <span i18n>Receive Shipment</span>
           </a>
           <a class="dropdown-item" ngbDropdownItem routerLinkActive="active" 
-            ariaCurrentWhenActive="page" routerLink="/staff/acq/search/invoices">
+            ariaCurrentWhenActive="page" routerLink="/staff/acq/search/invoices"
+            (click)="isMenuCollapsed = true" 
+            (keydown.space)="isMenuCollapsed = true" 
+            (keydown.enter)="isMenuCollapsed = true">
             <span class="material-icons" aria-hidden="true">attach_money</span>
             <span i18n>Invoices</span>
           </a>
           <a class="dropdown-item" ngbDropdownItem  
-            href="/eg/staff/acq/legacy/invoice/view?create=1">
+            href="/eg/staff/acq/legacy/invoice/view?create=1"
+            (click)="isMenuCollapsed = true" 
+            (keydown.space)="isMenuCollapsed = true" 
+            (keydown.enter)="isMenuCollapsed = true">
             <span class="material-icons" aria-hidden="true">monetization_on</span>
             <span i18n>Create Invoice</span>
           </a>
@@ -428,32 +637,56 @@
         </button>
         <div class="dropdown-menu" ngbDropdownMenu>
           <a class="dropdown-item" ngbDropdownItem routerLinkActive="active" 
-            ariaCurrentWhenActive="page" routerLink="/staff/booking/create_reservation">
+            ariaCurrentWhenActive="page" 
+            routerLink="/staff/booking/create_reservation"
+            (click)="isMenuCollapsed = true" 
+            (keydown.space)="isMenuCollapsed = true" 
+            (keydown.enter)="isMenuCollapsed = true">
             <span class="material-icons" aria-hidden="true">add</span>
             <span i18n>Create Reservations</span>
           </a>
           <a class="dropdown-item" ngbDropdownItem routerLinkActive="active" 
-            ariaCurrentWhenActive="page" routerLink="/staff/booking/pull_list">
+            ariaCurrentWhenActive="page" 
+            routerLink="/staff/booking/pull_list"
+            (click)="isMenuCollapsed = true" 
+            (keydown.space)="isMenuCollapsed = true" 
+            (keydown.enter)="isMenuCollapsed = true">
             <span class="material-icons" aria-hidden="true">list</span>
             <span i18n>Pull List</span>
           </a>
           <a class="dropdown-item" ngbDropdownItem routerLinkActive="active" 
-            ariaCurrentWhenActive="page" routerLink="/staff/booking/capture">
+            ariaCurrentWhenActive="page" 
+            routerLink="/staff/booking/capture"
+            (click)="isMenuCollapsed = true" 
+            (keydown.space)="isMenuCollapsed = true" 
+            (keydown.enter)="isMenuCollapsed = true">
             <span class="material-icons" aria-hidden="true">pin_drop</span>
             <span i18n>Capture Resources</span>
           </a>
-          <a class="dropdown-item" ngbDropdownItem routerLinkActive="active" 
-            ariaCurrentWhenActive="page" routerLink="/staff/booking/pickup">
+          <a class="dropdown-item" ngbDropdownItem
+           routerLinkActive="active" 
+            ariaCurrentWhenActive="page" routerLink="/staff/booking/pickup"
+            (click)="isMenuCollapsed = true" 
+            (keydown.space)="isMenuCollapsed = true" 
+            (keydown.enter)="isMenuCollapsed = true">
             <span class="material-icons" aria-hidden="true">trending_up</span>
             <span i18n>Pick Up Reservations</span>
           </a>
           <a class="dropdown-item" ngbDropdownItem routerLinkActive="active" 
-            ariaCurrentWhenActive="page" routerLink="/staff/booking/return">
+            ariaCurrentWhenActive="page" 
+            routerLink="/staff/booking/return"
+            (click)="isMenuCollapsed = true" 
+            (keydown.space)="isMenuCollapsed = true" 
+            (keydown.enter)="isMenuCollapsed = true">
             <span class="material-icons" aria-hidden="true">trending_down</span>
             <span i18n>Return Reservations</span>
           </a>
-          <a class="dropdown-item" ngbDropdownItem routerLinkActive="active" 
-            ariaCurrentWhenActive="page" routerLink="/staff/booking/manage_reservations">
+          <a class="dropdown-item" ngbDropdownItem
+           routerLinkActive="active" 
+            ariaCurrentWhenActive="page" routerLink="/staff/booking/manage_reservations"
+            (click)="isMenuCollapsed = true" 
+            (keydown.space)="isMenuCollapsed = true" 
+            (keydown.enter)="isMenuCollapsed = true">
             <span class="material-icons" aria-hidden="true">layers</span>
             <span i18n>Manage Reservations</span>
           </a>
@@ -467,52 +700,88 @@
           Administration
         </button>
         <div class="dropdown-menu" ngbDropdownMenu>
-          <a class="dropdown-item" ngbDropdownItem  href="/eg/staff/admin/workstation/index">
+          <a class="dropdown-item" ngbDropdownItem  
+            href="/eg/staff/admin/workstation/index"
+            (click)="isMenuCollapsed = true" 
+            (keydown.space)="isMenuCollapsed = true" 
+            (keydown.enter)="isMenuCollapsed = true">
             <span class="material-icons" aria-hidden="true">computer</span>
             <span i18n>Workstation</span>
           </a>
           <!--
           Leaving here as a reminder this UI exists.
           <a class="dropdown-item" ngbDropdownItem routerLinkActive="active" 
-            ariaCurrentWhenActive="page" routerLink="/staff/admin/workstation/workstations/manage">
+            ariaCurrentWhenActive="page" routerLink="/staff/admin/workstation/workstations/manage"
+              (click)="isMenuCollapsed = true" 
+              (keydown.space)="isMenuCollapsed = true" 
+              (keydown.enter)="isMenuCollapsed = true">
             <span class="material-icons" aria-hidden="true">computer</span>
             <span i18n>Registered Workstations</span>
           </a>
           -->
-          <a class="dropdown-item" ngbDropdownItem  href="/eg/staff/admin/user_perms">
+          <a class="dropdown-item" ngbDropdownItem
+            href="/eg/staff/admin/user_perms"
+            (click)="isMenuCollapsed = true" 
+            (keydown.space)="isMenuCollapsed = true" 
+            (keydown.enter)="isMenuCollapsed = true">
             <span class="material-icons" aria-hidden="true">person</span>
             <span i18n>User Permission Editor</span>
           </a>
           <a class="dropdown-item" ngbDropdownItem routerLinkActive="active" 
-            ariaCurrentWhenActive="page" routerLink="/staff/admin/server/splash">
+          ariaCurrentWhenActive="page" routerLink="/staff/admin/server/splash"
+            (click)="isMenuCollapsed = true" 
+            (keydown.space)="isMenuCollapsed = true" 
+            (keydown.enter)="isMenuCollapsed = true">
             <span class="material-icons" aria-hidden="true">account_balance</span>
             <span i18n>Server Administration</span>
           </a>
-          <a class="dropdown-item" ngbDropdownItem routerLinkActive="active" 
-            ariaCurrentWhenActive="page" routerLink="/staff/admin/local/splash">
+          <a class="dropdown-item" ngbDropdownItem
+           routerLinkActive="active" 
+            ariaCurrentWhenActive="page" routerLink="/staff/admin/local/splash"
+            (click)="isMenuCollapsed = true" 
+            (keydown.space)="isMenuCollapsed = true" 
+            (keydown.enter)="isMenuCollapsed = true">
             <span class="material-icons" aria-hidden="true">landscape</span>
             <span i18n>Local Administration</span>
           </a>
           <a class="dropdown-item" ngbDropdownItem routerLinkActive="active" 
-            ariaCurrentWhenActive="page" routerLink="/staff/admin/acq/splash">
+          ariaCurrentWhenActive="page" routerLink="/staff/admin/acq/splash"
+            (click)="isMenuCollapsed = true" 
+            (keydown.space)="isMenuCollapsed = true" 
+            (keydown.enter)="isMenuCollapsed = true">
             <span class="material-icons" aria-hidden="true">attach_money</span>
             <span i18n>Acquisitions Administration</span>
           </a>
-          <a class="dropdown-item" ngbDropdownItem  href="/eg/staff/admin/serials/index">
+          <a class="dropdown-item" ngbDropdownItem
+            href="/eg/staff/admin/serials/index"
+            (click)="isMenuCollapsed = true" 
+            (keydown.space)="isMenuCollapsed = true" 
+            (keydown.enter)="isMenuCollapsed = true">
             <span class="material-icons" aria-hidden="true">layers</span>
             <span i18n>Serials Administration</span>
           </a>
           <a class="dropdown-item" ngbDropdownItem routerLinkActive="active" 
-            ariaCurrentWhenActive="page" routerLink="/staff/admin/booking/splash">
+          ariaCurrentWhenActive="page" routerLink="/staff/admin/booking/splash"
+            (click)="isMenuCollapsed = true" 
+            (keydown.space)="isMenuCollapsed = true" 
+            (keydown.enter)="isMenuCollapsed = true">
             <span class="material-icons" aria-hidden="true">business_center</span>
             <span i18n>Booking Administration</span>
           </a>
-          <a class="dropdown-item" ngbDropdownItem  href="/eg/staff/reporter/legacy/main">
+          <a class="dropdown-item" ngbDropdownItem
+            href="/eg/staff/reporter/legacy/main"
+            (click)="isMenuCollapsed = true" 
+            (keydown.space)="isMenuCollapsed = true" 
+            (keydown.enter)="isMenuCollapsed = true">
             <span class="material-icons" aria-hidden="true">insert_chart</span>
             <span i18n>Reports</span>
           </a>
-          <a class="dropdown-item" ngbDropdownItem routerLinkActive="active" 
-            ariaCurrentWhenActive="page" routerLink="/staff/reporter/simple">
+          <a class="dropdown-item" ngbDropdownItem
+           routerLinkActive="active" 
+            ariaCurrentWhenActive="page" routerLink="/staff/reporter/simple"
+            (click)="isMenuCollapsed = true" 
+            (keydown.space)="isMenuCollapsed = true" 
+            (keydown.enter)="isMenuCollapsed = true">
             <span class="material-icons" aria-hidden="true">insert_chart</span>
             <span i18n>Simple Reports</span>
           </a>
@@ -521,20 +790,22 @@
     </div>
 
 
-    <div class="navbar-nav me-auto"></div>
-    <div class="navbar-nav navbar-user" *ngIf="user()">
+    <div class="navbar-nav navbar-user ms-auto" *ngIf="user()">
       <span i18n>{{user()}} &#64; {{workstation()}}</span>
     </div>
     <div class="navbar-nav" *ngIf="locales.length > 1 && currentLocale">
-      <div ngbDropdown class="nav-item dropdown" display="dynamic">
+      <div [ngbDropdown]="!isMenuCollapsed" class="nav-item" 
+        [ngClass]="{'dropdown': !isMenuCollapsed}" display="dynamic">
         <button type="button" ngbDropdownToggle i18n i18n-title
           title="Select Locale"
           class="nav-link dropdown-toggle no-caret with-material-icon">
           <i class="material-icons" aria-hidden="true">flag</i>
           <span>{{currentLocale.name()}}</span>
         </button>
-        <div class="dropdown-menu" ngbDropdownMenu>
-          <button type="button" class="dropdown-item" ngbDropdownItem  (click)="setLocale(locale)" 
+        <div [ngClass]="{'dropdown-menu': isMenuCollapsed}" 
+          [ngbDropdownMenu]="isMenuCollapsed">
+          <button type="button" class="dropdown-item" ngbDropdownItem
+            (click)="setLocale(locale); isMenuCollapsed = true" 
             [ngClass]="{disabled: currentLocale.code() === locale.code()}"
             *ngFor="let locale of locales">
             <span class="material-icons" aria-hidden="true">add_location</span>
@@ -544,38 +815,53 @@
       </div>
     </div>
     <div class="navbar-nav" *ngIf="user()">
-      <div ngbDropdown class="nav-item dropdown" display="dynamic">
-        <button ngbDropdownToggle type="button" 
+      <div ngbDropdown class="dropdown-menu" 
+        class="nav-item" display="dynamic">
+        <!-- Desktop button: list icon, no caret, no words -->
+        <button ngbDropdownToggle *ngIf="isMenuCollapsed" type="button"
           i18n-title title="Log out and more..."
           i18n-aria-label aria-label="Log out and more..."
           class="nav-link dropdown-toggle no-caret with-material-icon">
-          <i class="material-icons" aria-hidden="true">list</i>
+          <span class="d-none d-lg-inline material-icons" aria-hidden="true">list</span>
         </button>
-        <div class="dropdown-menu dropdown-menu-right" ngbDropdownMenu>
+        <!-- Mobile button: no icon, caret, words -->
+        <button ngbDropdownToggle *ngIf="!isMenuCollapsed" type="button"
+          class="nav-link dropdown-toggle">
+          <span i18n>Account</span>
+        </button>
+        <div ngbDropdownMenu class="dropdown-menu dropdown-menu-right navbar-admin">
           <eg-op-change #navOpChange
             i18n-failMessage
             i18n-successMessage
             failMessage="Operator Change Failed"
             successMessage="Operator Change Succeeded">
           </eg-op-change>
-          <button type="button" class="dropdown-item" ngbDropdownItem  *ngIf="!opChangeActive()" 
-            (click)="navOpChange.open()">
+          <button type="button" *ngIf="!opChangeActive()" 
+            ngbDropdownItem class="dropdown-item" 
+            (click)="navOpChange.open(); isMenuCollapsed = true">
             <span class="material-icons" aria-hidden="true">transform</span>
             <span i18n>Change Operator</span>
           </button>
           <button type="button" *ngIf="opChangeActive()" class="dropdown-item" ngbDropdownItem
-            (click)="navOpChange.restore()">
+            (click)="navOpChange.restore(); isMenuCollapsed = true">
             <span class="material-icons" aria-hidden="true">transform</span>
             <span i18n>Restore Operator</span>
           </button>
-          <button type="button" class="dropdown-item" ngbDropdownItem  (click)="maybeLogout()"
+          <button type="button" class="dropdown-item" ngbDropdownItem  
+              (click)="maybeLogout(); isMenuCollapsed = true" 
+              (keydown.space)="isMenuCollapsed = true" 
+              (keydown.enter)="isMenuCollapsed = true"
               egAccessKey keyCtx="navbar" i18n-keySpec i18n-keyDesc
               keySpec="alt+shift+q" keyDesc="Logout (Quit)">
             <span class="material-icons" aria-hidden="true">lock_outline</span>
             <span i18n>Logout</span>
           </button>
-          <a class="dropdown-item" ngbDropdownItem routerLinkActive="active" 
-            ariaCurrentWhenActive="page" routerLink="/staff/about">
+          <a class="dropdown-item" ngbDropdownItem
+           routerLinkActive="active" 
+            ariaCurrentWhenActive="page" routerLink="/staff/about"
+            (click)="isMenuCollapsed = true" 
+            (keydown.space)="isMenuCollapsed = true" 
+            (keydown.enter)="isMenuCollapsed = true">
             <span class="material-icons" aria-hidden="true">info_outline</span>
             <span i18n>About</span>
           </a>
@@ -583,5 +869,6 @@
       </div>
     </div>
   </div>
+</div>
 </nav>
 
