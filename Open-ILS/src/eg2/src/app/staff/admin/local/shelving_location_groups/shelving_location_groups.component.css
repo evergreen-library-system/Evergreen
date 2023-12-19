@@ -1,0 +1,57 @@
+.list-striped.list-border {
+  border-top: 2px solid currentColor;
+}
+
+.list-striped li:nth-child(odd) { 
+  background-color: rgba(0, 0, 100, 0.05);
+}
+
+li .form-check {
+  margin-bottom: 0;
+}
+
+table {
+  --bs-table-striped-bg: rgba(0, 0, 100, 0.05);
+  --bs-table-active-bg: rgba(var(--bs-blue-rgb), 0.15);
+}
+
+tbody th,
+tbody td {
+  vertical-align: middle;
+}
+
+table .numeric {
+  font-variant-numeric: tabular-nums lining-nums;
+  padding-right: 2rem;
+  text-align: right;
+}
+
+tr.drag-target th, 
+tr.drag-target td {
+  border-top: 2px solid var(--bs-primary);
+  background-color: rgba(var(--bs-blue-rgb), 0.15);
+}
+
+.actions .btn-group {
+  display: flex;
+  gap: 0.5rem;
+  justify-content: flex-end;
+  align-items: center;
+}
+
+th .btn-link,
+.actions .btn-group .btn-link {
+  padding: 0;
+  margin: 0;
+}
+
+.actions .btn-group > .btn.btn-link {
+  flex-basis: min-content;
+  flex-grow: 0;
+}
+
+tr.locationGroup:hover,
+.btn-move:hover, 
+.btn-move:focus { 
+  cursor: move; 
+}

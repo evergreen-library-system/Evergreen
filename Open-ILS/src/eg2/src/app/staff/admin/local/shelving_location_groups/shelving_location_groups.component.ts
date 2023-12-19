@@ -1,4 +1,5 @@
 import {Component, OnInit, Input, ViewChild} from '@angular/core';
+import {finalize} from 'rxjs/operators';
 import {IdlService, IdlObject} from '@eg/core/idl.service';
 import {OrgService} from '@eg/core/org.service';
 import {PcrudService} from '@eg/core/pcrud.service';
@@ -8,7 +9,8 @@ import {ToastService} from '@eg/share/toast/toast.service';
 import {PermService} from '@eg/core/perm.service';
 
 @Component({
-    templateUrl: './shelving_location_groups.component.html'
+    templateUrl: './shelving_location_groups.component.html',
+    styleUrls: ['./shelving_location_groups.component.css']
 })
 
 export class ShelvingLocationGroupsComponent implements OnInit {
@@ -22,6 +24,9 @@ export class ShelvingLocationGroupsComponent implements OnInit {
     selectedLocationGroup: IdlObject;
     permissions: number[];
     hasPermission = false;
+    _loadingShelvingLocations = false;
+    _loadingGroupEntries = false;
+    _loadingLocationGroups = false;
     draggedElement: IdlObject;
     dragTarget: IdlObject;
     defaultNewRecord: IdlObject;
@@ -137,23 +142,26 @@ export class ShelvingLocationGroupsComponent implements OnInit {
     };
 
     loadLocationGroups = () => {
+        if (this._loadingLocationGroups) {return;}
+        this._loadingLocationGroups = true;
         this.locationGroups = [];
         this.pcrud.search('acplg', {owner: this.selectedOrgId}, {
             flesh: 1,
             flesh_fields: {acplg: ['opac_visible', 'pos', 'name']},
             order_by: {acplg: 'owner'}
-        }).subscribe(data => {
-            this.processLocationGroup(data);
-            this.locationGroups.push(data);
-        }, (error: unknown) => {
-            console.debug(error);
-        }, () => {
-            this.sortLocationGroups();
-            if (this.locationGroups.length) {
-                this.markAsSelected(this.locationGroups[0]);
-            }
-            this.loadGroupEntries();
-        });
+        }).pipe(finalize(() => this._loadingLocationGroups = false))
+            .subscribe(data => {
+                this.processLocationGroup(data);
+                this.locationGroups.push(data);
+            }, (error: unknown) => {
+                console.debug(error);
+            }, () => {
+                this.sortLocationGroups();
+                if (this.locationGroups.length) {
+                    this.markAsSelected(this.locationGroups[0]);
+                }
+                this.loadGroupEntries();
+            });
     };
 
     changeSelectedLocationGroup = (group) => {
@@ -169,26 +177,31 @@ export class ShelvingLocationGroupsComponent implements OnInit {
     };
 
     loadGroupEntries = () => {
+        if (this._loadingGroupEntries) {return;}
+        this._loadingGroupEntries = true;
         this.groupEntries = [];
         this.pcrud.search('acplgm', {lgroup: this.selectedLocationGroupId}, {
             flesh: 1,
             flesh_fields: {acplgm: ['location']},
             order_by: {acplgm: ['location']}
-        }).subscribe(data => {
-            data.name = data.location().name();
-            data.shortname = this.org.get(data.location().owning_lib()).shortname();
-            // remove all non-alphanumeric chars to make label a valid id
-            data.label = (data.shortname + data.name).replace(/\W/g, '');
-            data.checked = false;
-            this.groupEntries.push(data);
-        }, (error: unknown) => {
-            console.debug(error);
-        }, () => {
-            this.loadShelvingLocations();
-        });
+        }).pipe(finalize(() => this._loadingGroupEntries = false))
+            .subscribe(data => {
+                data.name = data.location().name();
+                data.shortname = this.org.get(data.location().owning_lib()).shortname();
+                // remove all non-alphanumeric chars to make label a valid id
+                data.label = (data.shortname + data.name).replace(/\W/g, '');
+                data.checked = false;
+                this.groupEntries.push(data);
+            }, (error: unknown) => {
+                console.debug(error);
+            }, () => {
+                this.loadShelvingLocations();
+            });
     };
 
     loadShelvingLocations = () => {
+        if (this._loadingShelvingLocations) {return;}
+        this._loadingShelvingLocations = true;
         let orgList = this.org.fullPath(this.selectedOrgId, false);
         orgList.sort(function(a, b) {
             return a.ou_type().depth() < b.ou_type().depth() ? -1 : 1;
@@ -200,6 +213,7 @@ export class ShelvingLocationGroupsComponent implements OnInit {
             (group) => group.location().id());
         this.shelvingLocations = [];
         this.pcrud.search('acpl', {owning_lib : orgList, deleted: 'f'})
+            .pipe(finalize(() => this._loadingShelvingLocations = false))
             .subscribe(data => {
                 data.name = data.name();
                 data.shortname = this.org.get(data.owning_lib()).shortname();
@@ -211,7 +225,7 @@ export class ShelvingLocationGroupsComponent implements OnInit {
                 } else {
                     data.hidden = true;
                 }
-                this.shelvingLocations.push(data);
+                if (!data.hidden) {this.shelvingLocations.push(data);}
             }, (error: unknown) => {
                 console.debug(error);
             }, () => {
@@ -230,10 +244,20 @@ export class ShelvingLocationGroupsComponent implements OnInit {
             });
     };
 
-    addEntries = () => {
-        const checkedEntries = this.shelvingLocations.filter((entry) => {
+    addEntryCount() {
+        if (this.entriesToAdd() && this.entriesToAdd().length > 0) {return this.entriesToAdd().length;}
+    }
+
+    entriesToAdd() {
+        if (!this.shelvingLocations) {return;}
+
+        return this.shelvingLocations.filter((entry) => {
             return entry.checked;
         });
+    }
+
+    addEntries = () => {
+        const checkedEntries = this.entriesToAdd();
         checkedEntries.forEach((entry) => {
             const newGroupEntry = this.idl.create('acplgm');
             newGroupEntry.location(entry);
@@ -259,10 +283,20 @@ export class ShelvingLocationGroupsComponent implements OnInit {
         });
     };
 
-    removeEntries = () => {
-        const checkedEntries = this.groupEntries.filter((entry) => {
+    removeEntryCount() {
+        if (this.entriesToRemove() && this.entriesToRemove().length > 0) {return this.entriesToRemove().length;}
+    }
+
+    entriesToRemove() {
+        if (!this.groupEntries) {return;}
+
+        return this.groupEntries.filter((entry) => {
             return entry.checked;
         });
+    }
+
+    removeEntries = () => {
+        const checkedEntries = this.entriesToRemove();
         this.pcrud.remove(checkedEntries).subscribe(
             idRemoved => {
                 idRemoved = parseInt(idRemoved, 10);
@@ -300,6 +334,28 @@ export class ShelvingLocationGroupsComponent implements OnInit {
         this.checkCurrentPermissions();
     };
 
+    moveUp($event, group, index) {
+        $event.preventDefault();
+        if (index === 0) {
+            return;
+        }
+
+        this.draggedElement = group;
+        this.assignNewPositions(index, index - 1);
+        setTimeout($event.target.focus());
+    }
+
+    moveDown($event, group, index) {
+        $event.preventDefault();
+        if (index === this.locationGroups.length - 1) {
+            return;
+        }
+
+        this.draggedElement = group;
+        this.assignNewPositions(index, index + 1);
+        setTimeout($event.target.focus());
+    }
+
     onDragStart = (event, locationGroup) => {
         this.draggedElement = locationGroup;
     };
@@ -310,39 +366,43 @@ export class ShelvingLocationGroupsComponent implements OnInit {
 
     onDragEnter = (event, locationGroup) => {
         this.dragTarget = locationGroup;
-        // remove border where we previously were dragging
-        if (event.relatedTarget) {
-            event.relatedTarget.parentElement.style.borderTop = 'none';
-        }
-        // add border above target location group
-        if (event.target.parentElement !== null) {
-            if (event.target.parentElement.classList.contains('locationGroup')) {
-                event.target.parentElement.style.borderTop = '1px solid black';
-            }
-        }
     };
 
     onDragDrop = (event, index) => {
         // do nothing if element is dragged onto itself
-        if (this.draggedElement !== this.dragTarget) {
-            this.assignNewPositions(index);
+        if (this.draggedElement === this.dragTarget) {
+            this.dragTarget = null;
+            return;
         }
-        event.target.parentElement.style.borderTop = 'none';
+
+        const moveFrom = this.locationGroups.indexOf(this.draggedElement);
+        const moveTo = this.locationGroups.indexOf(this.dragTarget);
+        // clear styles before everything else
         this.draggedElement = null;
         this.dragTarget = null;
+        this.assignNewPositions(moveFrom, moveTo);
     };
 
-    assignNewPositions (index) {
-        const endingPos = this.dragTarget.posit;
+    assignNewPositions(moveFrom, moveTo) {
+        if (moveTo > this.locationGroups.length) {
+            moveTo = this.locationGroups.length;
+        }
+        // console.debug("Moving ", moveFrom, " to ", moveTo);
+        this.locationGroups.splice(moveTo, 0, this.locationGroups.splice(moveFrom, 1)[0]);
+
+        // find the position of the group before the first one we changed
+        let newPosition = -1;
+        const firstIndex = Math.min(moveFrom, moveTo);
+        if (firstIndex > 0) {
+            newPosition = this.locationGroups[firstIndex - 1].posit;
+        }
+
+        const lastIndex = Math.max(moveFrom, moveTo);
+
         const locationGroupsToUpdate = [];
-        this.draggedElement.pos(endingPos);
-        this.draggedElement.posit = endingPos;
-        locationGroupsToUpdate.push(this.draggedElement);
-        // add 1 to the position of all groups after the one we inserted
-        for (let i = index; i < this.locationGroups.length; i++) {
-            // we already processed the item being dragged; skip it
-            if (this.locationGroups[i] === this.draggedElement) { continue; }
-            const newPosition = this.locationGroups[i].posit + 1;
+        // add 1 to the position of all groups from the earliest one we changed
+        for (let i = firstIndex; i <= lastIndex; i++) {
+            newPosition++;
             this.locationGroups[i].pos(newPosition);
             this.locationGroups[i].posit = newPosition;
             locationGroupsToUpdate.push(this.locationGroups[i]);
@@ -363,11 +423,15 @@ export class ShelvingLocationGroupsComponent implements OnInit {
             () => {
                 this.sortLocationGroups();
                 if (errorHappened) {
-                    this.changeOrderFailure.current().then(msg =>
-                        this.toast.warning(msg));
+                    this.changeOrderFailure.current().then(msg => {
+                        this.toast.warning(msg);
+                        console.debug(msg);
+                    });
                 } else {
-                    this.changeOrderSuccess.current().then(msg =>
-                        this.toast.success(msg));
+                    this.changeOrderSuccess.current().then(msg => {
+                        this.toast.success(msg);
+                        console.debug(msg);
+                    });
                 }
             }
         );

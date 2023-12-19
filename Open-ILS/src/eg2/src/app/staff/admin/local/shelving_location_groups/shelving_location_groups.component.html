@@ -1,166 +1,157 @@
-<!-- TODO: re-enable these ESLint rules when #2042879 is resolved -->
-<!-- eslint-disable @angular-eslint/template/click-events-have-key-events, @angular-eslint/template/accessibility-interactive-supports-focus -->
+<eg-staff-banner bannerText="Shelving Location Groups" i18n-bannerText>
+</eg-staff-banner>
 
-<div class="row">
-    <label for="context-ou" class="form-label me-3" i18n>Shelving Location Groups</label>
-    <eg-org-select id="context-ou" (onChange)="orgOnChange($event)" [initialOrgId]="1"></eg-org-select>     
-</div>
-<div class="row">
-    <p>Location groups can be re-ordered by dragging and dropping.</p>
-</div>
-<div style="height: 450px;">
-    <div class="row h-100">
-        <div class="col-lg-6 h-100">
-            <eg-staff-banner bannerText="Location Groups" i18n-bannerText>
-            </eg-staff-banner>
-            <div class="text-center">          
-                <button type="button" class="btn btn-outline-dark mb-3 ms-2" (click)="createLocationGroup()" 
-                    *ngIf="hasPermission">
-                    New Location Group                     
-                </button>
-                <div class="btn btn-outline-dark mb-3 ms-2 disabled"
-                    *ngIf="!hasPermission">
-                    New Location Group                     
-                </div>
-            </div>
-            <div class="row">
-                <div class="col-lg-6 h-100 p-2 text-center">
-                    <span class="align-middle fw-bold">Name</span>
-                </div>
-                <div class="col-lg-1 h-100 p-2 text-center">
-                    <span class="align-middle fw-bold">Pos</span>
-                </div>
-                <div class="col-lg-2 h-100 p-2 text-center">
-                    <span class="align-middle fw-bold">Visible?</span>
-                </div>
-                <div class="col-lg-3">    
-                </div>
-            </div>
-            
-            <div *ngFor="let group of locationGroups; let dragIndex = index" 
-                class="d-flex flex-row locationGroup"
-                onmouseover="this.style.cursor='move'" 
-                draggable="true"
-                (dragstart)="onDragStart($event, group)"
-                (dragenter)="onDragEnter($event, group)" 
-                (dragover)="onDragOver($event)" 
-                (drop)="onDragDrop($event, dragIndex)">
-                <div *ngIf="group.selected"
-                    class="col-lg-6 h-100 p-2 bg-warning border border-dark">
-                    <span class="align-middle">{{group.name}}</span>
-                </div>
-                <div *ngIf="!group.selected" class="col-lg-6 h-100 p-2" 
-                    (click)='changeSelectedLocationGroup(group)'>
-                    <span class="align-middle">{{group.name}}</span>
-                </div>
-                <div class="col-lg-1 h-100 p-2 text-center">
-                    <span class="align-middle">{{group.posit}}</span>
-                </div>
-                <div class="col-lg-2 h-100 p-2 text-center">
-                    <span *ngIf="group.isVisible" class="align-middle text-success">
-                        Visible
-                    </span>
-                    <span *ngIf="!group.isVisible" class="align-middle text-danger">
-                        Not Visible
-                    </span>
-                </div>
-                <div class="col-lg-3 h-100 btn-group p-2">
-                    <span *ngIf="hasPermission"
-                        class="btn btn-sm btn-outline-dark me-1" 
-                        (click)="editLocationGroup(group)">
-                        Edit
-                    </span>
-                    <span *ngIf="!hasPermission" 
-                        class="btn btn-sm btn-outline-dark me-1 disabled">
-                        Edit
-                    </span>
-                    <span *ngIf="hasPermission"
-                        class="btn btn-sm btn-danger me-2" 
-                        (click)="deleteLocationGroup(group)">
-                        Delete
-                    </span>
-                    <span *ngIf="!hasPermission"
-                        class="btn btn-sm btn-danger me-2 disabled">
-                        Delete
-                    </span>
-                    <span class="align-middle">
-                        <svg class="pt-2" xmlns="http://www.w3.org/2000/svg" width="24" 
-                            height="24" viewBox="0 0 24 24">
-                            <path fill="none" d="M0 0h24v24H0V0z"/><path d="M11 18c0 
-                            1.1-.9 2-2 2s-2-.9-2-2 .9-2 2-2 2 .9 2 2zm-2-8c-1.1 0-2 
-                            .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zm0-6c-1.1 0-2 .9-2 2s.9
-                            2 2 2 2-.9 2-2-.9-2-2-2zm6 4c1.1 0 2-.9 2-2s-.9-2-2-2-2 
-                            .9-2 2 .9 2 2 2zm0 2c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 
-                            2-2-.9-2-2-2zm0 6c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 
-                            2-2-.9-2-2-2z"/>
-                        </svg>
-                        <!-- As of Nov 2019 drag_indicator not included in library -->
-                        <!-- <span class="material-icons pt-2">drag_indicator</span> -->
-                    </span>
-                </div>
-            </div>
+<div class="row justify-content-between mb-3">
+    <div class="col-md-6">
+        <div class="form-inline hstack mb-3">
+            <label for="context-ou" class="form-label me-3" i18n>Shelving Location Groups for:</label> 
+            <eg-org-select domId="context-ou" (onChange)="orgOnChange($event)" [initialOrgId]="1"></eg-org-select>  
         </div>
-        <div class="col-lg-3 h-100">
-            <eg-staff-banner bannerText="Group Entries" i18n-bannerText></eg-staff-banner>
-            <div class="text-center">
-                <div class="btn btn-outline-dark mb-2" (click)="removeEntries()">
-                    Remove &rarr;
-                </div>
-            </div>
-            <div class="row overflow-auto h-100">
-                <table class="table table-striped col-lg-10 offset-lg-1">
-                    <thead></thead>
-                    <tbody>
-                        <tr *ngFor="let group of groupEntries" class="row">
-                            <td>
-                                <input
+    </div>
+    <div class="col-md-6 text-end">
+        <button type="button" class="btn btn-primary ms-auto mb-3" 
+            (click)="hasPermission ? createLocationGroup() : null" 
+            [ngClass]="{'disabled': !hasPermission}" i18n>
+            New Location Group                     
+        </button>
+    </div>
+</div>
+<!--
+<pre>{{shelvingLocations | json}}</pre>
+-->
+<div class="row">
+    <div class="col-lg-6">
+        <h2 i18n>Location Groups</h2>
+        <p i18n>Location groups can be re-ordered by dragging and dropping.</p>
+    
+        <table class="table table-sm">
+            <thead>
+                <tr>
+                    <th scope="col" i18n="Shelving location groups">Name</th>
+                    <th scope="col" i18n="Shelving location groups" class="numeric">Position</th>
+                    <th scope="col" i18n="Shelving location groups">OPAC Visible?</th>
+                    <th scope="col" i18n="Shelving location groups" class="text-end">Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let group of locationGroups; let dragIndex = index" 
+                    class="locationGroup" 
+                    [ngClass]="{'table-active': group.selected,
+                        'drag-target': group.id() === dragTarget?.id()}"
+                    draggable="true"
+                    (dragstart)="onDragStart($event, group)"
+                    (dragenter)="onDragEnter($event, group)" 
+                    (dragover)="onDragOver($event)" 
+                    (drop)="onDragDrop($event, dragIndex)">
+                    <th scope="row" id="locationGroup-{{group.id()}}">
+                        <button type="button" class="btn btn-link text-start" title="Manage entries for {{group.name}}" i18n-title
+                        (click)="changeSelectedLocationGroup(group)">
+                            {{group.name}}
+                        </button>
+                    </th>
+                    <td class="numeric">
+                        {{group.posit}}
+                    </td>
+                    <td *ngIf="group.isVisible" class="text-success fw-bold" i18n="Shelving location groups">Visible</td>
+                    <td *ngIf="!group.isVisible" class="text-secondary" i18n="Shelving location groups">Not Visible</td>
+                    <td class="actions text-end">
+                        <div class="btn-group">
+                            <button type="button" *ngIf="hasPermission"
+                                class="btn btn-link" 
+                                attr.aria-describedby="locationGroup-{{group.id()}}"
+                                title="Edit {{group.name}}" i18n-title
+                                (click)="editLocationGroup(group)"
+                                i18n="Shelving location groups">
+                                Edit
+                            </button>
+                            
+                            <button type="button" *ngIf="hasPermission"
+                                class="btn btn-link text-danger" 
+                                attr.aria-describedby="locationGroup-{{group.id()}}"
+                                title="Delete {{group.name}}" i18n-title
+                                (click)="deleteLocationGroup(group)"
+                                i18n="Shelving location groups">
+                                Delete
+                            </button>
+
+                            <button type="button" class="btn btn-link btn-move text-dark"
+                                (keydown.arrowup)="moveUp($event, group, dragIndex)"
+                                (keydown.arrowdown)="moveDown($event, group, dragIndex)"
+                                attr.aria-label="Move {{group.name}}" i18n-aria-label
+                                id="moveGroup{{group.id()}}">
+                                <span class="material-icons mat-icon-in-button" aria-hidden="true" 
+                                    title="Move {{group.name}}" i18n-title>open_with</span>
+                            </button>
+                        </div>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+        
+    </div>
+    <div class="col-lg-6">
+        <div class="row">
+            <div class="col-sm-6">
+                <h2>
+                    <span i18n>Shelving Locations in Group:</span>
+                    <span *ngIf="selectedLocationGroupId"> {{selectedLocationGroup.name}}</span>
+                </h2>
+                <button type="button" class="btn btn-destroy mx-auto mb-1" (click)="removeEntries()"
+                    i18n="Shelving location group entries">
+                    Remove {{removeEntryCount()}} from group &rarr;
+                </button>
+                <ul class="list-unstyled list-striped list-border mt-4">
+                    <li *ngFor="let group of groupEntries" class="border px-2 py-1">
+                        <div class="form-check">
+                            <input
                                 type="checkbox" 
-                                class="me-2"
+                                class="form-check-input"
                                 [(ngModel)]="group.checked"
                                 [checked]="group.checked"
                                 id="{{group.label}}" /> 
-                                <label class="form-label" for="{{group.label}}">
-                                    {{group.shortname}} &nbsp; {{group.name}}
-                                </label>
-                            </td>
-                        </tr>
-                    </tbody>
-                </table>
+                            <label class="form-label form-check-label m-0" for="{{group.label}}">
+                                {{group.shortname}} &nbsp; {{group.name}}
+                            </label>
+                        </div>
+                    </li>
+                </ul>
+                <button *ngIf="groupEntries.length" type="button" class="btn btn-destroy mx-auto mb-1" (click)="removeEntries()"
+                    i18n="Shelving location group entries">
+                    Remove {{removeEntryCount()}} from group &rarr;
+                </button>
             </div>
-        </div>
-        <div class="col-lg-3 h-100">
-            <eg-staff-banner bannerText="Shelving Locations" i18n-bannerText>
-            </eg-staff-banner>
-            <div class="text-center">
-                <div class="btn btn-outline-dark mb-2" (click)="addEntries()">
-                    &larr; Add
-                </div>
-            </div>
-            <div  class="row overflow-auto h-100">
-                <table class="table table-striped col-lg-10 offset-lg-1">
-                    <thead></thead>
-                    <tbody>
-                        <ng-container *ngFor="let location of shelvingLocations" >
-                            <tr class="row" *ngIf="!location.hidden">
-                                <td>
-                                    <input
-                                    type="checkbox" 
-                                    class="me-2"
-                                    [(ngModel)]="location.checked"
-                                    [checked]="location.checked"
-                                    id="{{location.label}}" /> 
-                                    <label class="form-label" for="{{location.label}}">
-                                        {{location.shortname}} &nbsp; {{location.name}}
-                                    </label>
-                                </td>
-                            </tr>
-                        </ng-container>               
-                    </tbody>
-                </table>
+
+            <div class="col-sm-6">
+                <h2 i18n>All Shelving Locations</h2>
+                <button type="button" class="btn btn-normal mb-1" (click)="addEntries()" 
+                    i18n="Shelving locations">
+                    &larr; Add {{addEntryCount()}} to group
+                </button>
+                <ul class="list-unstyled list-striped list-border mt-4">
+                    <li *ngFor="let location of shelvingLocations" 
+                        class="border px-2 py-1">
+                        <div class="form-check">
+                            <input
+                            type="checkbox" 
+                            class="form-check-input"
+                            [(ngModel)]="location.checked"
+                            [checked]="location.checked"
+                            id="{{location.label}}" /> 
+                            <label class="form-label form-check-label m-0" for="{{location.label}}">
+                                {{location.shortname}} &nbsp; {{location.name}}
+                            </label>
+                        </div>
+                    </li>
+                </ul>
+                <button type="button" class="btn btn-normal mb-1" (click)="addEntries()" 
+                    i18n="Shelving locations">
+                    &larr; Add {{addEntryCount()}} to group
+                </button>
             </div>
         </div>
     </div>
 </div>
+
 
 <eg-fm-record-editor #editDialog hiddenFieldsList="id" idlClass="acplg" 
     readonlyFields="owner"
@@ -178,5 +169,3 @@
 <eg-string #changeOrderSuccess i18n-text text="Changed Location Group order"></eg-string>
 <eg-string #changeOrderFailure i18n-text 
     text="Error when trying to change Location Group Order"></eg-string>
-
-<!-- eslint-enable @angular-eslint/template/click-events-have-key-events, @angular-eslint/template/accessibility-interactive-supports-focus -->
