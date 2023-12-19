@@ -8,7 +8,7 @@
     <div class="navbar-nav">
       <div class="nav-item">
         <a class="nav-link with-material-icon nav-link-home" 
-          routerLink="/staff/"
+          routerLinkActive="active" ariaCurrentWhenActive="page" routerLink="/staff/"
           aria-label="Home" i18n-aria-label="Home button aria label@@navbar-home-button-aria-label"
           egAccessKey keyCtx="navbar" i18n-keySpec i18n-keyDesc
           keySpec="alt+h" keyDesc="Navigate Home">
@@ -34,7 +34,8 @@
             <span class="material-icons" aria-hidden="true">assignment</span>
             <span i18n>Search for Items by Barcode</span>
           </a>
-          <a class="dropdown-item" ngbDropdownItem  routerLink="/staff/catalog"
+          <a class="dropdown-item" ngbDropdownItem routerLinkActive="active" 
+            ariaCurrentWhenActive="page" routerLink="/staff/catalog"
             egAccessKey keyCtx="navbar" i18n-keySpec i18n-keyDesc
             keySpec="f3" keyDesc="Catalog">
             <span class="material-icons" aria-hidden="true">search</span>
@@ -68,7 +69,8 @@
             <span class="material-icons" aria-hidden="true">pin_drop</span>
             <span i18n>Capture Holds</span>
           </a>
-          <a class="dropdown-item" ngbDropdownItem  routerLink="/staff/circ/holds/pull-list">
+          <a class="dropdown-item" ngbDropdownItem routerLinkActive="active" 
+            ariaCurrentWhenActive="page" routerLink="/staff/circ/holds/pull-list">
             <span class="material-icons" aria-hidden="true">view_list</span>
             <span i18n>Pull List for Hold Requests</span>
           </a>
@@ -132,7 +134,8 @@
             <span class="material-icons" aria-hidden="true">question_answer</span>
             <span i18n>Item Status</span>
           </a>
-          <a class="dropdown-item" ngbDropdownItem  routerLink="/staff/cat/item/missing_pieces">
+          <a class="dropdown-item" ngbDropdownItem routerLinkActive="active" 
+            ariaCurrentWhenActive="page" routerLink="/staff/cat/item/missing_pieces">
             <span class="material-icons" aria-hidden="true">grid_on</span>
             <span i18n>Scan Item as Missing Pieces</span>
           </a>
@@ -163,57 +166,69 @@
           Circulation (Experimental)
         </button>
         <div class="dropdown-menu" ngbDropdownMenu>
-          <a class="dropdown-item" ngbDropdownItem  routerLink="/staff/circ/patron/search">
+          <a class="dropdown-item" ngbDropdownItem routerLinkActive="active" 
+            ariaCurrentWhenActive="page" routerLink="/staff/circ/patron/search">
             <span class="material-icons" aria-hidden="true">person</span>
             <span i18n>Search for Patrons</span>
           </a>
-          <a class="dropdown-item" ngbDropdownItem  routerLink="/staff/circ/patron/bcsearch"
+          <a class="dropdown-item" ngbDropdownItem routerLinkActive="active" 
+            ariaCurrentWhenActive="page" routerLink="/staff/circ/patron/bcsearch"
             egAccessKey keyCtx="navbar" i18n-keySpec i18n-keyDesc
             keySpec="f1" keyDesc="Checkout">
             <span class="material-icons" aria-hidden="true">trending_up</span>
             <span i18n>Check Out</span>
           </a>
-          <a class="dropdown-item" ngbDropdownItem  routerLink="/staff/circ/checkin"
+          <a class="dropdown-item" ngbDropdownItem routerLinkActive="active" 
+            ariaCurrentWhenActive="page" routerLink="/staff/circ/checkin"
             egAccessKey keyCtx="navbar" i18n-keySpec i18n-keyDesc
             keySpec="f2" keyDesc="Checkin">
             <span class="material-icons" aria-hidden="true">trending_down</span>
             <span i18n>Check In</span>
           </a>
-          <a class="dropdown-item" ngbDropdownItem  routerLink="/staff/circ/checkin/capture"
+          <a class="dropdown-item" ngbDropdownItem routerLinkActive="active" 
+            ariaCurrentWhenActive="page" routerLink="/staff/circ/checkin/capture"
             egAccessKey keyCtx="navbar" i18n-keySpec i18n-keyDesc
             keySpec="shift+f2" keyDesc="Capture Holds">
             <span class="material-icons" aria-hidden="true">pin_drop</span>
             <span i18n>Capture Holds</span>
           </a>
-          <a class="dropdown-item" ngbDropdownItem  routerLink="/staff/circ/holds/pull-list">
+          <a class="dropdown-item" ngbDropdownItem routerLinkActive="active" 
+            ariaCurrentWhenActive="page" routerLink="/staff/circ/holds/pull-list">
             <span class="material-icons" aria-hidden="true">view_list</span>
             <span i18n>Pull List for Hold Requests</span>
           </a>
-          <a class="dropdown-item" ngbDropdownItem  routerLink="/staff/circ/renew"
+          <a class="dropdown-item" ngbDropdownItem routerLinkActive="active" 
+            ariaCurrentWhenActive="page" routerLink="/staff/circ/renew"
             egAccessKey keyCtx="navbar" i18n-keySpec i18n-keyDesc
             keySpec="ctrl+f2" keyDesc="Renew Items">
             <span class="material-icons" aria-hidden="true">autorenew</span>
             <span i18n>Renew Items</span>
           </a>
-          <a class="dropdown-item" ngbDropdownItem  routerLink="/staff/circ/patron/register"
+          <a class="dropdown-item" ngbDropdownItem routerLinkActive="active" 
+            ariaCurrentWhenActive="page" routerLink="/staff/circ/patron/register"
             egAccessKey keyCtx="navbar" i18n-keySpec i18n-keyDesc
             keySpec="shift+f1" keyDesc="Register Patron">
             <span class="material-icons" aria-hidden="true">person_add</span>
             <span i18n>Register Patron</span>
           </a>
-          <a *ngIf="maxRecentPatrons" class="dropdown-item" ngbDropdownItem  routerLink="/staff/circ/patron/last"
+          <a *ngIf="maxRecentPatrons" class="dropdown-item" ngbDropdownItem 
+            routerLinkActive="active" ariaCurrentWhenActive="page" 
+            routerLink="/staff/circ/patron/last"
             egAccessKey keyCtx="navbar" i18n-keySpec i18n-keyDesc
             keySpec="f8" keyDesc="Retrieve Last Patron">
             <span class="material-icons" aria-hidden="true">redo</span>
             <span i18n>Retrieve Last Patron</span>
           </a>
-          <a *ngIf="maxRecentPatrons > 1" class="dropdown-item" ngbDropdownItem  routerLink="/staff/circ/patron/search/recents"
+          <a *ngIf="maxRecentPatrons > 1" class="dropdown-item" ngbDropdownItem 
+            routerLinkActive="active" ariaCurrentWhenActive="page" 
+            routerLink="/staff/circ/patron/search/recents"
             egAccessKey keyCtx="navbar" i18n-keySpec i18n-keyDesc
             keySpec="shift+f4" keyDesc="Retrieve Recent Patrons">
             <span class="material-icons" aria-hidden="true">redo</span>
             <span i18n>Retrieve Recent Patrons</span>
           </a>
-          <a class="dropdown-item" ngbDropdownItem  routerLink="/staff/circ/patron/credentials"
+          <a class="dropdown-item" ngbDropdownItem routerLinkActive="active" 
+            ariaCurrentWhenActive="page" routerLink="/staff/circ/patron/credentials"
             egAccessKey keyCtx="navbar" i18n-keySpec i18n-keyDesc
             keySpec="alt+c" keyDesc="Verify Patron Credentials">
             <span class="material-icons" aria-hidden="true">check_circle</span>
@@ -232,7 +247,8 @@
         </button>
         <div class="dropdown-menu" ngbDropdownMenu>
 
-          <a class="dropdown-item" ngbDropdownItem  routerLink="/staff/catalog/search"
+          <a class="dropdown-item" ngbDropdownItem routerLinkActive="active" 
+            ariaCurrentWhenActive="page" routerLink="/staff/catalog/search"
             egAccessKey keyCtx="navbar"i18n-keySpec i18n-keyDesc
             keySpec="f3" keyDesc="Catalog">
             <span class="material-icons" aria-hidden="true">search</span>
@@ -258,11 +274,13 @@
             <span i18n>Item Buckets</span>
           </a>
           <div class="dropdown-divider"></div>
-          <a routerLink="/staff/cat/bib-from/id" ngbDropdownItem class="dropdown-item">
+          <a routerLinkActive="active" ariaCurrentWhenActive="page" 
+            routerLink="/staff/cat/bib-from/id" ngbDropdownItem class="dropdown-item">
             <span class="material-icons" aria-hidden="true">collections</span>
             <span i18n>Retrieve Bib Record by ID</span>
           </a>
-          <a routerLink="/staff/cat/bib-from/tcn" ngbDropdownItem class="dropdown-item"
+          <a routerLinkActive="active" ariaCurrentWhenActive="page" 
+            routerLink="/staff/cat/bib-from/tcn" ngbDropdownItem class="dropdown-item"
             egAccessKey keyCtx="navbar" i18n-keySpec i18n-keyDesc
             keySpec="shift+f3" keyDesc="Retrieve Bib Record by TCN">
             <span class="material-icons" aria-hidden="true">collections_bookmark</span>
@@ -286,25 +304,30 @@
             <span class="material-icons" aria-hidden="true">cloud_download</span>
             <span i18n>Import Record from Z39.50</span>
           </a>
-          <a routerLink="/staff/cat/vandelay/import" ngbDropdownItem class="dropdown-item">
+          <a routerLinkActive="active" ariaCurrentWhenActive="page" 
+            routerLink="/staff/cat/vandelay/import" ngbDropdownItem class="dropdown-item">
             <span class="material-icons" aria-hidden="true">import_export</span>
             <span i18n>MARC Batch Import/Export</span>
           </a>
-          <a routerLink="/staff/cat/marcbatch" ngbDropdownItem class="dropdown-item">
+          <a routerLinkActive="active" ariaCurrentWhenActive="page" 
+            routerLink="/staff/cat/marcbatch" ngbDropdownItem class="dropdown-item">
             <span class="material-icons" aria-hidden="true">format_paint</span>
             <span i18n>MARC Batch Edit</span>
           </a>
           <div class="dropdown-divider"></div>
-          <a routerLink="/staff/cat/linkchecker" ngbDropdownItem class="dropdown-item">
+          <a routerLinkActive="active" ariaCurrentWhenActive="page" 
+            routerLink="/staff/cat/linkchecker" ngbDropdownItem class="dropdown-item">
             <span class="material-icons" aria-hidden="true">link</span>
             <span i18n>Link Checker</span>
           </a>
           <div class="dropdown-divider"></div>
-          <a routerLink="/staff/cat/authority/browse" ngbDropdownItem class="dropdown-item">
+          <a routerLinkActive="active" ariaCurrentWhenActive="page" 
+            routerLink="/staff/cat/authority/browse" ngbDropdownItem class="dropdown-item">
             <span class="material-icons" aria-hidden="true">lock</span>
             <span i18n>Manage Authorities</span>
           </a>
-          <a routerLink="/staff/cat/authority/edit" ngbDropdownItem class="dropdown-item">
+          <a routerLinkActive="active" ariaCurrentWhenActive="page" 
+            routerLink="/staff/cat/authority/edit" ngbDropdownItem class="dropdown-item">
             <span class="material-icons" aria-hidden="true">collections</span>
             <span i18n>Retrieve Authority Record by ID</span>
           </a>
@@ -320,20 +343,20 @@
           Acquisitions
         </button>
         <div class="dropdown-menu" ngbDropdownMenu>
-          <a class="dropdown-item" ngbDropdownItem  
-            routerLink="/staff/acq/search">
+          <a class="dropdown-item" ngbDropdownItem routerLinkActive="active" 
+            ariaCurrentWhenActive="page" routerLink="/staff/acq/search">
             <span class="material-icons" aria-hidden="true">search</span>
             <span i18n>General Search</span>
           </a>
           <div class="dropdown-divider"></div>
-          <a class="dropdown-item" ngbDropdownItem  
-            routerLink="/staff/acq/provider">
+          <a class="dropdown-item" ngbDropdownItem routerLinkActive="active" 
+            ariaCurrentWhenActive="page" routerLink="/staff/acq/provider">
             <span class="material-icons" aria-hidden="true">search</span>
             <span i18n>Provider Search</span>
           </a>
           <div class="dropdown-divider"></div>
-          <a class="dropdown-item" ngbDropdownItem 
-            routerLink="/staff/acq/search/selectionlists">
+          <a class="dropdown-item" ngbDropdownItem routerLinkActive="active" 
+            ariaCurrentWhenActive="page" routerLink="/staff/acq/search/selectionlists">
             <span class="material-icons" aria-hidden="true">view_list</span>
             <span i18n>Selection Lists</span>
           </a>
@@ -358,17 +381,18 @@
             <span i18n>Load Catalog Record IDs</span>
           </a>
           <div class="dropdown-divider"></div>
-          <a class="dropdown-item" ngbDropdownItem  
-          routerLink="/staff/acq/picklist/upload">
+          <a class="dropdown-item" ngbDropdownItem routerLinkActive="active" 
+            ariaCurrentWhenActive="page" routerLink="/staff/acq/picklist/upload">
           <span class="material-icons" aria-hidden="true">cloud_upload</span>
           <span i18n>Load MARC Order Records</span>
         </a>
-          <a class="dropdown-item" ngbDropdownItem 
-            routerLink="/staff/acq/search/purchaseorders">
+          <a class="dropdown-item" ngbDropdownItem routerLinkActive="active" 
+            ariaCurrentWhenActive="page" routerLink="/staff/acq/search/purchaseorders">
             <span class="material-icons" aria-hidden="true">shopping_cart</span>
             <span i18n>Purchase Orders</span>
           </a>
-          <a class="dropdown-item" ngbDropdownItem  routerLink="/staff/acq/po/create">
+          <a class="dropdown-item" ngbDropdownItem routerLinkActive="active" 
+            ariaCurrentWhenActive="page" routerLink="/staff/acq/po/create">
             <span class="material-icons" aria-hidden="true">add_shopping_cart</span>
             <span i18n>Create Purchase Order</span>
           </a>
@@ -378,13 +402,13 @@
             <span class="material-icons" aria-hidden="true">contact_phone</span>
             <span i18n>Claim-Ready Items</span>
           </a>
-          <a class="dropdown-item" ngbDropdownItem 
-            routerLink="/staff/acq/asn/receive">
+          <a class="dropdown-item" ngbDropdownItem routerLinkActive="active" 
+            ariaCurrentWhenActive="page" routerLink="/staff/acq/asn/receive">
             <span class="material-icons" aria-hidden="true">archive</span>
             <span i18n>Receive Shipment</span>
           </a>
-          <a class="dropdown-item" ngbDropdownItem 
-            routerLink="/staff/acq/search/invoices">
+          <a class="dropdown-item" ngbDropdownItem routerLinkActive="active" 
+            ariaCurrentWhenActive="page" routerLink="/staff/acq/search/invoices">
             <span class="material-icons" aria-hidden="true">attach_money</span>
             <span i18n>Invoices</span>
           </a>
@@ -403,27 +427,33 @@
           Booking
         </button>
         <div class="dropdown-menu" ngbDropdownMenu>
-          <a class="dropdown-item" ngbDropdownItem  routerLink="/staff/booking/create_reservation">
+          <a class="dropdown-item" ngbDropdownItem routerLinkActive="active" 
+            ariaCurrentWhenActive="page" routerLink="/staff/booking/create_reservation">
             <span class="material-icons" aria-hidden="true">add</span>
             <span i18n>Create Reservations</span>
           </a>
-          <a class="dropdown-item" ngbDropdownItem  routerLink="/staff/booking/pull_list">
+          <a class="dropdown-item" ngbDropdownItem routerLinkActive="active" 
+            ariaCurrentWhenActive="page" routerLink="/staff/booking/pull_list">
             <span class="material-icons" aria-hidden="true">list</span>
             <span i18n>Pull List</span>
           </a>
-          <a class="dropdown-item" ngbDropdownItem  routerLink="/staff/booking/capture">
+          <a class="dropdown-item" ngbDropdownItem routerLinkActive="active" 
+            ariaCurrentWhenActive="page" routerLink="/staff/booking/capture">
             <span class="material-icons" aria-hidden="true">pin_drop</span>
             <span i18n>Capture Resources</span>
           </a>
-          <a class="dropdown-item" ngbDropdownItem  routerLink="/staff/booking/pickup">
+          <a class="dropdown-item" ngbDropdownItem routerLinkActive="active" 
+            ariaCurrentWhenActive="page" routerLink="/staff/booking/pickup">
             <span class="material-icons" aria-hidden="true">trending_up</span>
             <span i18n>Pick Up Reservations</span>
           </a>
-          <a class="dropdown-item" ngbDropdownItem  routerLink="/staff/booking/return">
+          <a class="dropdown-item" ngbDropdownItem routerLinkActive="active" 
+            ariaCurrentWhenActive="page" routerLink="/staff/booking/return">
             <span class="material-icons" aria-hidden="true">trending_down</span>
             <span i18n>Return Reservations</span>
           </a>
-          <a class="dropdown-item" ngbDropdownItem  routerLink="/staff/booking/manage_reservations">
+          <a class="dropdown-item" ngbDropdownItem routerLinkActive="active" 
+            ariaCurrentWhenActive="page" routerLink="/staff/booking/manage_reservations">
             <span class="material-icons" aria-hidden="true">layers</span>
             <span i18n>Manage Reservations</span>
           </a>
@@ -443,8 +473,8 @@
           </a>
           <!--
           Leaving here as a reminder this UI exists.
-          <a class="dropdown-item" ngbDropdownItem 
-              routerLink="/staff/admin/workstation/workstations/manage">
+          <a class="dropdown-item" ngbDropdownItem routerLinkActive="active" 
+            ariaCurrentWhenActive="page" routerLink="/staff/admin/workstation/workstations/manage">
             <span class="material-icons" aria-hidden="true">computer</span>
             <span i18n>Registered Workstations</span>
           </a>
@@ -453,17 +483,18 @@
             <span class="material-icons" aria-hidden="true">person</span>
             <span i18n>User Permission Editor</span>
           </a>
-          <a class="dropdown-item" ngbDropdownItem 
-              routerLink="/staff/admin/server/splash">
+          <a class="dropdown-item" ngbDropdownItem routerLinkActive="active" 
+            ariaCurrentWhenActive="page" routerLink="/staff/admin/server/splash">
             <span class="material-icons" aria-hidden="true">account_balance</span>
             <span i18n>Server Administration</span>
           </a>
-          <a class="dropdown-item" ngbDropdownItem  routerLink="/staff/admin/local/splash">
+          <a class="dropdown-item" ngbDropdownItem routerLinkActive="active" 
+            ariaCurrentWhenActive="page" routerLink="/staff/admin/local/splash">
             <span class="material-icons" aria-hidden="true">landscape</span>
             <span i18n>Local Administration</span>
           </a>
-          <a class="dropdown-item" ngbDropdownItem 
-              routerLink="/staff/admin/acq/splash">
+          <a class="dropdown-item" ngbDropdownItem routerLinkActive="active" 
+            ariaCurrentWhenActive="page" routerLink="/staff/admin/acq/splash">
             <span class="material-icons" aria-hidden="true">attach_money</span>
             <span i18n>Acquisitions Administration</span>
           </a>
@@ -471,8 +502,8 @@
             <span class="material-icons" aria-hidden="true">layers</span>
             <span i18n>Serials Administration</span>
           </a>
-          <a class="dropdown-item" ngbDropdownItem 
-              routerLink="/staff/admin/booking/splash">
+          <a class="dropdown-item" ngbDropdownItem routerLinkActive="active" 
+            ariaCurrentWhenActive="page" routerLink="/staff/admin/booking/splash">
             <span class="material-icons" aria-hidden="true">business_center</span>
             <span i18n>Booking Administration</span>
           </a>
@@ -480,7 +511,8 @@
             <span class="material-icons" aria-hidden="true">insert_chart</span>
             <span i18n>Reports</span>
           </a>
-          <a class="dropdown-item" ngbDropdownItem  routerLink="/staff/reporter/simple">
+          <a class="dropdown-item" ngbDropdownItem routerLinkActive="active" 
+            ariaCurrentWhenActive="page" routerLink="/staff/reporter/simple">
             <span class="material-icons" aria-hidden="true">insert_chart</span>
             <span i18n>Simple Reports</span>
           </a>
@@ -491,7 +523,7 @@
 
     <div class="navbar-nav me-auto"></div>
     <div class="navbar-nav navbar-user" *ngIf="user()">
-      <span i18n>{{user()}} @ {{workstation()}}</span>
+      <span i18n>{{user()}} &#64; {{workstation()}}</span>
     </div>
     <div class="navbar-nav" *ngIf="locales.length > 1 && currentLocale">
       <div ngbDropdown class="nav-item dropdown" display="dynamic">
@@ -542,7 +574,8 @@
             <span class="material-icons" aria-hidden="true">lock_outline</span>
             <span i18n>Logout</span>
           </button>
-          <a class="dropdown-item" ngbDropdownItem  routerLink="/staff/about">
+          <a class="dropdown-item" ngbDropdownItem routerLinkActive="active" 
+            ariaCurrentWhenActive="page" routerLink="/staff/about">
             <span class="material-icons" aria-hidden="true">info_outline</span>
             <span i18n>About</span>
           </a>

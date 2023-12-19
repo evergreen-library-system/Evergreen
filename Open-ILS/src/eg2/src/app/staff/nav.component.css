@@ -93,6 +93,11 @@
     outline: 2px solid rgba(255, 255, 204, 0.75);
 }
 
+#staff-navbar .dropdown-item.active, 
+#staff-navbar .dropdown-item:active {
+    background-color: rgba(var(--bs-green-rgb), 0.15);
+}
+
 #staff-navbar>.open .nav-link {
     border-bottom: 0;
     border-top: 2px solid rgba(223, 240, 216, 0.4);
