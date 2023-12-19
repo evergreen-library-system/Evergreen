@@ -2210,7 +2210,7 @@ SELECT  h.id, h.request_time, h.capture_time, h.fulfillment_time, h.checkin_time
         (SELECT name FROM config.sms_carrier WHERE id = h.sms_carrier) AS "sms_carrier",
         h.frozen, h.thaw_date, h.shelf_time, h.cut_in_line, h.mint_condition,
         h.shelf_expire_time, h.current_shelf_lib, h.behind_desk, h.hopeless_date,
-        cuc.barcode as canceled_by, caw.name as canceling_ws,
+        h.canceled_by, h.canceling_ws,
 
         CASE WHEN h.cancel_time IS NOT NULL THEN 6
              WHEN h.frozen AND h.capture_time IS NULL THEN 7
@@ -2316,6 +2316,8 @@ SELECT  h.id, h.request_time, h.capture_time, h.fulfillment_time, h.checkin_time
         ru.last_update_time AS rusr_last_update_time,
 
         ruc.id AS rucard_id, ruc.barcode AS rucard_barcode, ruc.usr AS rucard_usr, ruc.active AS rucard_active,
+        cuc.barcode AS canceled_by_barcode, cu.usrname AS canceled_by_usrname,
+        caw.name as canceling_ws_name,
 
         cp.id AS cp_id, cp.circ_lib AS cp_circ_lib, cp.creator AS cp_creator, cp.call_number AS cp_call_number,
         cp.editor AS cp_editor, cp.create_date AS cp_create_date, cp.edit_date AS cp_edit_date,

@@ -38,6 +38,14 @@ export class OpChangeComponent
         );
     }
 
+    my_close() {
+        if (this.requestToEscalate) {
+            this.requestToEscalate.observer.error('Operation canceled');
+            delete this.requestToEscalate;
+        }
+        this.close(); // dialog close
+    }
+
     login(): Promise<any> {
         if (!(this.username && this.password)) {
             return Promise.reject('Missing Params');

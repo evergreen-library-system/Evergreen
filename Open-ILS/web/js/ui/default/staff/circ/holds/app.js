@@ -427,7 +427,7 @@ function($scope , $q , $routeParams , $window , $location , egCore ,
     // when the detail hold is fetched (and updated), update the bib
     // record summary display record id.
     $scope.set_hold = function(hold_data) {
-        $scope.detail_hold_record_id = hold_data.mvr.doc_id();
+        $scope.detail_hold_record_id = hold_data.bre_id;
     }
 
     // By default, this action is hidded from the UI, but leaving it

@@ -219,6 +219,7 @@ BEGIN
     UPDATE action.hold_request SET usr = dest_usr WHERE usr = src_usr;
     UPDATE action.hold_request SET fulfillment_staff = dest_usr WHERE fulfillment_staff = src_usr;
     UPDATE action.hold_request SET requestor = dest_usr WHERE requestor = src_usr;
+    UPDATE action.hold_request SET canceled_by = dest_usr WHERE canceled_by = src_usr;
     UPDATE action.hold_notification SET notify_staff = dest_usr WHERE notify_staff = src_usr;
 
     UPDATE action.in_house_use SET staff = dest_usr WHERE staff = src_usr;
@@ -471,6 +472,7 @@ BEGIN
 	UPDATE action.hold_notification SET notify_staff = dest_usr WHERE notify_staff = src_usr;
 	UPDATE action.hold_request SET fulfillment_staff = dest_usr WHERE fulfillment_staff = src_usr;
 	UPDATE action.hold_request SET requestor = dest_usr WHERE requestor = src_usr;
+	UPDATE action.hold_request SET canceled_by = dest_usr WHERE canceled_by = src_usr;
 	DELETE FROM action.hold_request WHERE usr = src_usr;
 	UPDATE action.in_house_use SET staff = dest_usr WHERE staff = src_usr;
 	UPDATE action.non_cat_in_house_use SET staff = dest_usr WHERE staff = src_usr;

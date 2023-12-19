@@ -466,6 +466,14 @@ export class VolCopyComponent implements OnInit {
         ).toPromise().then(volIds => this.fetchVols(volIds));
     }
 
+    handleClosure(copyIds) {
+        if (close) {
+            return this.openPrintLabels(copyIds)
+                .then(_ => setTimeout(() => this.closeWindow()));
+        } else {
+            return this.load(copyIds);
+        }
+    }
 
     save(close?: boolean): Promise<any> {
         this.loading = true;
@@ -478,11 +486,6 @@ export class VolCopyComponent implements OnInit {
         // Volume update API wants volumes fleshed with copies, instead
         // of the other way around, which is what we have here.
         const volumes: IdlObject[] = [];
-
-        if (this.not_allowed_vols.length > 0) {
-            // remind staff about these items that were filtered out
-            this.uneditableItemsDialog.open();
-        }
 
         this.context.volNodes().forEach(volNode => {
             const newVol = this.idl.clone(volNode.target);
@@ -560,9 +563,8 @@ export class VolCopyComponent implements OnInit {
         }
 
         return promise.then(copyIds => {
-
             // In addition to the copies edited in this update call,
-            // reload any other copies that were previously loaded.
+            // reload any other copies that were previously loaded (and permitted).
             const ids: any = {}; // dedupe
             this.context.copyList()
                 .map(c => c.id())
@@ -572,18 +574,38 @@ export class VolCopyComponent implements OnInit {
 
             copyIds = Object.keys(ids).map(id => Number(id));
 
-            if (close) {
-                return this.openPrintLabels(copyIds)
-                    .then(_ => setTimeout(() => this.closeWindow()));
-            }
+            const processCopies = () => {
+                if (close) {
+                    return this.handleClosure(copyIds);
+                }
+                return this.load(Object.keys(ids).map(id => Number(id)));
+            };
 
-            return this.load(Object.keys(ids).map(id => Number(id)));
+            if (this.not_allowed_vols.length > 0) {
+                // Open dialog and wait for it to close before continuing
+                // Alert dialogs don't emit anything, so roll our own promise for the chain
+                return new Promise(resolve => {
+                    this.uneditableItemsDialog.open().subscribe({
+                        complete: () => {
+                            resolve(processCopies());
+                        }
+                    });
+                });
+            } else {
+                return processCopies();
+            }
 
         }).then(_ => {
             this.loading = false;
             this.changesPending = false;
             this.changesPendingForStatusBar = false;
+        }).catch(error => {
+            console.log('VolCopyComponent, save() error',error);
+            // the likely "error" has already been presented via the operator change dialog
+            this.loading = false;
+            return Promise.resolve();
         });
+
     }
 
     broadcastChanges(volumes: IdlObject[]) {
@@ -635,6 +657,9 @@ export class VolCopyComponent implements OnInit {
             this.broadcastChanges(volumes);
 
             return copyIds;
+        }).catch(error => {
+            console.log('VolCopyComponent, saveApi() error',error);
+            return Promise.reject(error);
         });
     }
 

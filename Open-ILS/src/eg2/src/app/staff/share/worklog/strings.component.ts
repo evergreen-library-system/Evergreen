@@ -21,6 +21,7 @@ export class WorkLogStringsComponent {
     @ViewChild('worklog_noncat_checkout') worklog_noncat_checkout: StringComponent;
     @ViewChild('worklog_renew') worklog_renew: StringComponent;
     @ViewChild('worklog_requested_hold') worklog_requested_hold: StringComponent;
+    @ViewChild('worklog_canceled_hold') worklog_canceled_hold: StringComponent;
     @ViewChild('worklog_edited_patron') worklog_edited_patron: StringComponent;
     @ViewChild('worklog_registered_patron') worklog_registered_patron: StringComponent;
     @ViewChild('worklog_paid_bill') worklog_paid_bill: StringComponent;

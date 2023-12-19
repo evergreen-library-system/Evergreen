@@ -716,7 +716,39 @@ export class CircService {
                                 holdId,
                                 5, // staff forced
                                 'Item checked out by other patron' // FIXME I18n
-                            ).toPromise();
+                            ).toPromise().then(netRequestResp => {
+                                const evt = this.evt.parse(netRequestResp);
+                                if (evt) {
+                                    this.audio.play('warning.hold.cancel_failed');
+                                    console.error('unable to cancel hold: ' + evt.toString());
+                                } else {
+                                    this.net.request(
+                                        'open-ils.circ', 'open-ils.circ.hold.details.retrieve',
+                                        this.auth.token(), holdId, {
+                                            'suppress_notices': true,
+                                            'suppress_transits': true,
+                                            'suppress_mvr' : true,
+                                            'include_usr' : true
+                                        }).toPromise().then(details => {
+                                        //console.log('details', details);
+                                        const entry: WorkLogEntry = {
+                                            'action' : 'canceled_hold',
+                                            'hold_id' : holdId,
+                                            'patron_id' : details.hold.usr().id(),
+                                            'user' : details.patron_last,
+                                            'item' : details.copy ? details.copy.barcode() : null,
+                                            'item_id' : details.copy ? details.copy.id() : null
+                                        };
+                                        this.worklog.record(entry);
+                                    }).catch(error => {
+                                        console.error('Error retrieving hold details for Work Log', error);
+                                    });
+                                }
+                                // worklog is just a side-effect, so we return the result of the previous link in the chain
+                                return netRequestResp;
+                            }).catch(error => {
+                                console.error('Error in hold cancelation:', error);
+                            });
                         });
                     }
                 }

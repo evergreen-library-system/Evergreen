@@ -12,6 +12,7 @@ function($scope,  $q,  $routeParams,  egCore,  egUser,  patronSvc,
     $scope.initTab('holds', $routeParams.id);
     $scope.holds_display = 'main';
     $scope.detail_hold_id = $routeParams.hold_id;
+    $scope.gridControls = {};
     $scope.grid_actions = egHoldGridActions;
 
     function refresh_all() {
@@ -58,6 +59,7 @@ function($scope,  $q,  $routeParams,  egCore,  egUser,  patronSvc,
         //var ids = patronSvc.hold_ids.slice(offset, offset + count); 
         return egHolds.fetch_holds(patronSvc.hold_ids).then(null, null,
             function(hold_data) { 
+                console.log('fetchHolds, hold_data',hold_data);
                 egCirc.flesh_copy_circ_library(hold_data.copy);
                 patronSvc.holds.push(hold_data);
                 return hold_data;
@@ -65,7 +67,7 @@ function($scope,  $q,  $routeParams,  egCore,  egUser,  patronSvc,
         );
     }
 
-    provider.get = function(offset, count) {
+    /*provider.get = function(offset, count) {
 
         // see if we have the requested range cached
         if (patronSvc.holds[offset]) {
@@ -112,6 +114,110 @@ function($scope,  $q,  $routeParams,  egCore,  egUser,  patronSvc,
         });
 
         return deferred.promise;
+    }*/
+    provider.get = function(offset, count) {
+        console.log('get, this', this);
+        console.log('$scope', $scope);
+
+        // see if we have the requested range cached
+        if (patronSvc.holds[offset]) {
+            return provider.arrayNotifier(patronSvc.holds, offset, count);
+        }
+
+        hold_count = 0;
+        patronSvc.holds = [];
+        var restrictions = {
+                cancel_time      : null,
+                fulfillment_time  : null,
+                'h.usr': $scope.patron_id
+        };
+        if ($scope.holds_display == 'alt') {
+            restrictions['cancel_time'] = { not : null };
+        }
+        console.log('restrictions',restrictions);
+
+        var order_by = [{ shelf_expire_time : null }];
+
+        // NOTE: Server sorting is currently disabled entirely by the 
+        // first clause in this 'if'.   This is perfectly fine because
+        // clientsort always runs inside the arrayNotifier implementation
+        // in the egGrid code.   However, in order to retain the memory
+        // of sorting constraints placed on us by the current server-side
+        // code, an initial "cannot sort these" array and test is added
+        // here.  An alternate implementation might be to map fields to
+        // query positions, thus allowing positional ORDER BY clauses.
+        // With as many fields as the wide hold object has, this is
+        // non-trivial at the moment.
+        if (false && provider.sort && provider.sort.length) {
+            // A list of fields we can't sort on the server side.  That's ok, because
+            // the grid is marked clientsort, so it always re-sorts in the browser.
+            var cannot_sort = [
+                'relative_queue_position',
+                'default_estimated_wait',
+                'min_estimated_wait',
+                'potentials',
+                'other_holds',
+                'total_wait_time',
+                'notification_count',
+                'last_notification_time',
+                'is_staff_hold',
+                'copy_location_order_position',
+                'hold_status',
+                'clear_me',
+                'usr_alias_or_display_name',
+                'usr_display_name',
+                'usr_alias_or_first_given_name'
+            ];
+
+            order_by = [];
+            angular.forEach(provider.sort, function (c) {
+                if (!angular.isObject(c)) {
+                    if (c.match(/^hold\./)) {
+                        var i = c.replace('hold.','');
+                        if (cannot_sort.includes(i)) return;
+                        var ob = {};
+                        ob[i] = null;
+                        order_by.push(ob);
+                    }
+                } else {
+                    var i = Object.keys(c)[0];
+                    var direction = c[i];
+                    if (i.match(/^hold\./)) {
+                        i = i.replace('hold.','');
+                        if (cannot_sort.includes(i)) return;
+                        var ob = {}
+                        ob[i] = {dir:direction};
+                        order_by.push(ob);
+                    }
+                }
+            });
+        }
+
+        // egProgressDialog.open({max : 1, value : 0});
+        var first = true;
+        return egHolds.fetch_wide_holds(
+            restrictions,
+            order_by
+        ).then(function () {
+                return provider.arrayNotifier(patronSvc.holds, offset, count);
+            },
+            null,
+            function(hold_data) { 
+                if (first) {
+                    hold_count = hold_data;
+                    first = false;
+                    // egProgressDialog.update({max:hold_count});
+                } else {
+                    // egProgressDialog.increment();
+                    var new_item = { id : hold_data.id, hold : hold_data };
+                    new_item.status_string =
+                        egCore.strings['HOLD_STATUS_' + hold_data.hold_status]
+                        || hold_data.hold_status;
+
+                    patronSvc.holds.push(new_item);
+                }
+            }
+        )/*.finally(egProgressDialog.close)*/;
     }
 
     $scope.print = function() {
@@ -136,7 +242,7 @@ function($scope,  $q,  $routeParams,  egCore,  egUser,  patronSvc,
     $scope.detail_view = function(action, user_data, items) {
         if (h = items[0]) {
             $location.path('/circ/patron/' + 
-                $scope.patron_id + '/holds/' + h.hold.id());
+                $scope.patron_id + '/holds/' + h.id);
         }
     }
 
@@ -155,7 +261,7 @@ function($scope,  $q,  $routeParams,  egCore,  egUser,  patronSvc,
     // when the detail hold is fetched (and updated), update the bib
     // record summary display record id.
     $scope.set_hold = function(hold_data) {
-        $scope.detail_hold_record_id = hold_data.mvr.doc_id();
+        $scope.detail_hold_record_id = hold_data.bre_id;
     }
 
 }])

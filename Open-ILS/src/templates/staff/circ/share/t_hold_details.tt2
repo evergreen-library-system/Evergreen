@@ -53,13 +53,12 @@
   <div class="flex-cell well">{{hold.cancel_note()}}</div>
 </div>
 <div class="flex-row">
+  <div class="flex-cell">[% l('Canceling Staff') %]</div>
+  <div class="flex-cell well">{{hold.canceled_by().usrname()}}</div>
+  <div class="flex-cell">[% l('Canceling Workstation') %]</div>
+  <div class="flex-cell well">{{hold.canceling_ws().name()}}</div>
   <div class="flex-cell">[% l('Hopeless Date') %]</div>
   <div class="flex-cell well">{{hold.hopeless_date() | date:$root.egDateAndTimeFormat}}</div>
-  <!-- for balance -->
-  <div class="flex-cell"></div>
-  <div class="flex-cell well"></div>
-  <div class="flex-cell"></div>
-  <div class="flex-cell well"></div>
 </div>
 
 <ul class="nav nav-tabs pad-vert" ng-init="detail_tab='notes'">

@@ -6,8 +6,8 @@ angular.module('egCoreMod')
 
 .factory('egHolds',
 
-       ['$uibModal','$q','egCore','egConfirmDialog','egAlertDialog',
-function($uibModal , $q , egCore , egConfirmDialog , egAlertDialog) {
+       ['$uibModal','$q','egCore','egConfirmDialog','egAlertDialog','egWorkLog',
+function($uibModal , $q , egCore , egConfirmDialog , egAlertDialog , egWorkLog) {
 
     var service = {};
 
@@ -105,6 +105,29 @@ function($uibModal , $q , egCore , egConfirmDialog , egAlertDialog) {
                                         'warning.hold.cancel_failed');
                                     console.error('unable to cancel hold: ' 
                                         + evt.toString());
+                                } else {
+                                    egCore.net.request(
+                                        'open-ils.circ', 'open-ils.circ.hold.details.retrieve',
+                                        egCore.auth.token(), hold_id, {
+                                            'suppress_notices': true,
+                                            'suppress_transits': true,
+                                            'suppress_mvr' : true,
+                                            'include_usr' : true
+                                    }).then(function(details) {
+                                        //console.log('details', details);
+                                        egWorkLog.record(
+                                            egCore.strings.EG_WORK_LOG_CANCELED_HOLD
+                                            ,{
+                                                'action' : 'canceled_hold',
+                                                'method' : 'open-ils.circ.hold.cancel',
+                                                'hold_id' : hold_id,
+                                                'patron_id' : details.hold.usr().id(),
+                                                'user' : details.patron_last,
+                                                'item' : details.copy ? details.copy.barcode() : null,
+                                                'item_id' : details.copy ? details.copy.id() : null
+                                            }
+                                        );
+                                    });
                                 }
                                 cancel_one();
                             });
@@ -499,6 +522,11 @@ function($uibModal , $q , egCore , egConfirmDialog , egAlertDialog) {
             egCore.pcrud.retrieve('au',hold.requestor()).then(function(u) { hold.requestor(u) });
         }
 
+        if (hold.canceled_by() && typeof hold.canceled_by() != 'object') {
+            console.debug('fetching hold canceled_by');
+            egCore.pcrud.retrieve('au',hold.canceled_by()).then(function(u) { hold.canceled_by(u) });
+        }
+
         if (hold.cancel_cause() && typeof hold.cancel_cause() != 'object') {
             console.debug('fetching hold cancel cause');
             egCore.pcrud.retrieve('ahrcc',hold.cancel_cause()).then(function(c) { hold.cancel_cause(c) });
@@ -594,7 +622,7 @@ function($window , $location , $timeout , egCore , egHolds , egCirc) {
         return egHolds.cancel_holds(hold_ids).then(service.refresh);
     }
 
-    service.cancel_wide_hold = function(items) {
+    service.cancel_hold_wide = function(items) {
         var hold_ids = items.filter(function(item) {
             return !item.hold.cancel_time;
         }).map(function(item) {return item.hold.id});
@@ -610,7 +638,7 @@ function($window , $location , $timeout , egCore , egHolds , egCirc) {
         return egHolds.uncancel_holds(hold_ids).then(service.refresh);
     }
 
-    service.uncancel_wide_hold = function(items) {
+    service.uncancel_hold_wide = function(items) {
         var hold_ids = items.filter(function(item) {
             return item.hold.cancel_time;
         }).map(function(item) {return item.hold.id});
@@ -846,7 +874,7 @@ function($window , $location , $timeout , egCore , egHolds , egCirc) {
                             function(val, key) { $scope[key] = val });
 
                         // fetch + flesh the cancel_cause if needed
-                        if ($scope.hold.cancel_time()) {
+                        if ($scope.hold.cancel_cause() && typeof $scope.hold.cancel_cause() != 'object') {
                             egHolds.get_cancel_reasons().then(function() {
                                 // egHolds caches the causes in egEnv
                                 $scope.hold.cancel_cause(

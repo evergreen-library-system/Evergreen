@@ -2,6 +2,7 @@
   id-field="id"
   features="clientsort,allowAll"
   items-provider="gridDataProvider"
+  grid-controls="gridControls"
   persist-key="circ.patron.holds"
   dateformat="{{$root.egDateAndTimeFormat}}">
 
@@ -10,88 +11,186 @@
   <eg-grid-menu-item handler="detail_view" 
     label="[% l('Detail View') %]"></eg-grid-menu-item>
 
-  <eg-grid-action handler="grid_actions.show_recent_circs"
+  <eg-grid-action handler="grid_actions.show_recent_circs_wide"
     label="[% l('Show Last Few Circulations') %]"></eg-grid-action>
-  <eg-grid-action handler="grid_actions.show_holds_for_title"
+  <eg-grid-action handler="grid_actions.show_holds_for_title_wide"
     label="[% l('Show Holds for Title') %]"></eg-grid-action>
   <eg-grid-action divider="true"></eg-grid-action>
-  <eg-grid-action handler="grid_actions.set_copy_quality"
+  <eg-grid-action handler="grid_actions.set_copy_quality_wide"
     label="[% l('Set Desired Item Quality') %]"></eg-grid-action>
-  <eg-grid-action handler="grid_actions.edit_pickup_lib"
+  <eg-grid-action handler="grid_actions.edit_pickup_lib_wide"
     label="[% l('Edit Pickup Library') %]"></eg-grid-action>
-  <eg-grid-action handler="grid_actions.edit_notify_prefs"
+  <eg-grid-action handler="grid_actions.edit_notify_prefs_wide"
     label="[% l('Edit Notification Settings') %]"></eg-grid-action>
-  <eg-grid-action handler="grid_actions.edit_dates"
+  <eg-grid-action handler="grid_actions.edit_dates_wide"
     label="[% l('Edit Hold Dates') %]"></eg-grid-action>
-  <eg-grid-action handler="grid_actions.activate"
+  <eg-grid-action handler="grid_actions.activate_wide"
     label="[% l('Activate') %]"></eg-grid-action>
-  <eg-grid-action handler="grid_actions.suspend"
+  <eg-grid-action handler="grid_actions.suspend_wide"
     label="[% l('Suspend') %]"></eg-grid-action>
-  <eg-grid-action handler="grid_actions.set_top_of_queue"
+  <eg-grid-action handler="grid_actions.set_top_of_queue_wide"
     label="[% l('Set Top of Queue') %]"></eg-grid-action>
-  <eg-grid-action handler="grid_actions.clear_top_of_queue"
+  <eg-grid-action handler="grid_actions.clear_top_of_queue_wide"
     label="[% l('Un-Set Top of Queue') %]"></eg-grid-action>
-  <eg-grid-action handler="grid_actions.transfer_to_marked_title"
+  <eg-grid-action handler="grid_actions.transfer_to_marked_title_wide"
     label="[% l('Transfer To Marked Title') %]"></eg-grid-action>
-  <eg-grid-action handler="grid_actions.mark_damaged"
+  <eg-grid-action handler="grid_actions.mark_damaged_wide"
     label="[% l('Mark Item Damaged') %]"></eg-grid-action>
-  <eg-grid-action handler="grid_actions.mark_discard"
+  <eg-grid-action handler="grid_actions.mark_discard_wide"
     label="[% l('Mark Item Discard/Weed') %]"></eg-grid-action>
-  <eg-grid-action handler="grid_actions.mark_missing"
+  <eg-grid-action handler="grid_actions.mark_missing_wide"
     label="[% l('Mark Item Missing') %]"></eg-grid-action>
   <eg-grid-action divider="true"></eg-grid-action>
-  <eg-grid-action handler="grid_actions.retarget"
+  <eg-grid-action handler="grid_actions.retarget_wide"
     label="[% l('Find Another Target') %]"></eg-grid-action>
-  <eg-grid-action handler="grid_actions.cancel_hold" hide="hide_cancel_hold"
+  <eg-grid-action handler="grid_actions.cancel_hold_wide" hide="hide_cancel_hold"
     label="[% l('Cancel Hold') %]"></eg-grid-action>
-  <eg-grid-action handler="grid_actions.uncancel_hold" hide="hide_uncancel_hold"
+  <eg-grid-action handler="grid_actions.uncancel_hold_wide" hide="hide_uncancel_hold"
     label="[% l('Uncancel Hold') %]"></eg-grid-action>
 
   <eg-grid-field label="[% l('Hold ID') %]" path='hold.id'></eg-grid-field>
   <eg-grid-field label="[% l('Current Item') %]" 
-    path='hold.current_copy.barcode'>
-    <a href="./cat/item/{{item.hold.current_copy().id()}}/summary" target="_self">
-      {{item.hold.current_copy().barcode()}}
+    path='hold.cp_barcode'>
+    <a href="./cat/item/{{item.hold.cp_id}}/summary" target="_self">
+      {{item.hold.cp_barcode}}
     </a>
   </eg-grid-field>
 
-  <eg-grid-field label="[% l('Circulation Modifier') %]" path="copy.circ_modifier" hidden></eg-grid-field>
-  <eg-grid-field label="[% l('Circulation Library') %]" path="copy.circ_lib.shortname" hidden></eg-grid-field>
-  <eg-grid-field label="[% l('Patron Barcode') %]" path="patron_barcode" hidden>{{item.patron_barcode}}</eg-grid-field>
-  <eg-grid-field label="[% l('Patron alias') %]" path="patron_alias" hidden>{{item.patron_alias}}</eg-grid-field>
   <eg-grid-field label="[% l('Request Date') %]" path='hold.request_time' datatype="timestamp"></eg-grid-field>
   <eg-grid-field label="[% l('Capture Date') %]" path='hold.capture_time' datatype="timestamp"></eg-grid-field>
   <eg-grid-field label="[% l('Available Date') %]" path='hold.shelf_time' datatype="timestamp"></eg-grid-field>
   <eg-grid-field label="[% l('Hold Type') %]" path='hold.hold_type'></eg-grid-field>
-  <eg-grid-field label="[% l('Pickup Library') %]" path='hold.pickup_lib.shortname'></eg-grid-field>
+  <eg-grid-field label="[% l('Pickup Library') %]" path='hold.pl_shortname'></eg-grid-field>
+  <eg-grid-field label="[% l('Post-Clear') %]" path='post_clear'></eg-grid-field>
 
-  <eg-grid-field label="[% l('Title') %]" path='mvr.title'>
-    <a href="/eg2/staff/catalog/record/{{item.mvr.doc_id()}}">
-      {{item.mvr.title()}}
+  <eg-grid-field label="[% l('Title') %]" path='hold.title'>
+    <a href="/eg2/staff/catalog/record/{{item.hold.record_id}}">
+      {{item.hold.title}}
     </a>
   </eg-grid-field>
 
-  <eg-grid-field label="[% l('Author') %]" path='mvr.author'></eg-grid-field>
-  <eg-grid-field label="[% l('Potential Items') %]" path='potential_copies'></eg-grid-field>
+  <eg-grid-field label="[% l('Author') %]" path='hold.author'></eg-grid-field>
+  <eg-grid-field label="[% l('Potential Items') %]" path='hold.potentials'></eg-grid-field>
   <eg-grid-field label="[% l('Status') %]" path='status_string'></eg-grid-field>
 
-  <eg-grid-field label="[% l('Queue Position') %]" path='queue_position' hidden></eg-grid-field>
-  <eg-grid-field label="[% l('Cancel Cause') %]" path='hold.cancel_cause.label' hidden></eg-grid-field>
-  <eg-grid-field path='hold.*' parent-idl-class="ahr" ignore="current_copy" hidden></eg-grid-field>
-  <eg-grid-field path='copy.*' parent-idl-class="acp" hidden></eg-grid-field>
+  <eg-grid-field label="[% l('Queue Position') %]" path='hold.relative_queue_position' hidden></eg-grid-field>
+  <eg-grid-field label="[% l('Item Status') %]" path="hold.cs_name" hidden></eg-grid-field>
 
-  <eg-grid-field path='hold.usr.id' parent-idl-class="ahr" label="[% l('User ID') %]" hidden></eg-grid-field>
-  <eg-grid-field path='hold.usr.usrname' parent-idl-class="ahr" label="[% l('Username') %]" hidden></eg-grid-field>
-  <eg-grid-field path='hold.usr.first_given_name' parent-idl-class="ahr" label="[% l('First Name') %]" hidden></eg-grid-field>
-  <eg-grid-field path='hold.usr.family_name' parent-idl-class="ahr" label="[% l('Last Name') %]" hidden></eg-grid-field>
-  <eg-grid-field path='hold.requestor.id' parent-idl-class="ahr" label="[% l('Requestor ID') %]" hidden></eg-grid-field>
-  <eg-grid-field path='hold.requestor.usrname' parent-idl-class="ahr" label="[% l('Requestor Username') %]" hidden></eg-grid-field>
-  <eg-grid-field path='hold.sms_carrier.name' parent-idl-class="ahr" label="[% l('Notifications SMS Carrier') %]" hidden></eg-grid-field>
-  <eg-grid-field path='hold.sms_carrier' label="[% l('SMS Carrier') %]" hidden></eg-grid-field>
+  <eg-grid-field label="[% l('Fulfillment Date/Time') %]" path='hold.fulfillment_time' datatype="timestamp" hidden></eg-grid-field>
+  <eg-grid-field label="[% l('Checkin Time') %]" path='hold.checkin_time' datatype="timestamp" hidden></eg-grid-field>
+  <eg-grid-field label="[% l('Return Time') %]" path='hold.return_time' datatype="timestamp" hidden></eg-grid-field>
+  <eg-grid-field label="[% l('Last Targeting Date/Time') %]" path='hold.prev_check_time' datatype="timestamp" hidden></eg-grid-field>
+  <eg-grid-field label="[% l('Expire Time') %]" path='hold.expire_time' datatype="timestamp" hidden></eg-grid-field>
+  <eg-grid-field label="[% l('Hold Cancel Date/Time') %]" path='hold.cancel_time' datatype="timestamp" hidden></eg-grid-field>
+  <eg-grid-field label="[% l('Cancelation note') %]" path='hold.cancel_note' hidden></eg-grid-field>
+  <eg-grid-field label="[% l('Hold Canceling Staff') %]" path='hold.canceled_by_usrname' hidden></eg-grid-field>
+  <eg-grid-field label="[% l('Hold Canceling Workstation') %]" path='hold.canceling_ws_name' hidden></eg-grid-field>
+  <eg-grid-field label="[% l('Hold Target') %]" path='hold.target' hidden></eg-grid-field>
+  <eg-grid-field label="[% l('Current Copy') %]" path='hold.current_copy' hidden></eg-grid-field>
+  <eg-grid-field label="[% l('Fulfilling Staff') %]" path='hold.fulfillment_staff' hidden></eg-grid-field>
+  <eg-grid-field label="[% l('Fulfilling Library') %]" path='hold.fulfillment_lib' hidden></eg-grid-field>
+  <eg-grid-field label="[% l('Requesting Library') %]" path='hold.request_lib' hidden></eg-grid-field>
+  <eg-grid-field label="[% l('Requesting User') %]" path='hold.requestor' hidden></eg-grid-field>
+  <eg-grid-field label="[% l('User') %]" path='hold.usr' hidden></eg-grid-field>
+  <eg-grid-field label="[% l('Selection Library') %]" path='hold.selection_ou' hidden></eg-grid-field>
+  <eg-grid-field label="[% l('Item Selection Depth') %]" path='hold.selection_depth' hidden></eg-grid-field>
+  <eg-grid-field label="[% l('Holdable Formats (for M-type hold)') %]" path='hold.holdable_formats' hidden></eg-grid-field>
+  <eg-grid-field label="[% l('Notifications Phone Number') %]" path='hold.phone_notify' hidden></eg-grid-field>
+  <eg-grid-field label="[% l('Notifications SMS Number') %]" path='hold.sms_notify' hidden></eg-grid-field>
+  <eg-grid-field label="[% l('Notify by Email?') %]" path='hold.email_notify' datatype="bool" hidden></eg-grid-field>
+  <eg-grid-field label="[% l('SMS Carrier') %]" path='hold.sms_carrier' hidden></eg-grid-field>
+  <eg-grid-field label="[% l('Currently Frozen') %]" path='hold.frozen' datatype="bool" hidden></eg-grid-field>
+  <eg-grid-field label="[% l('Activation Date') %]" path='hold.thaw_date' datatype="timestamp" hidden></eg-grid-field>
+  <eg-grid-field label="[% l('Top of Queue') %]" path='hold.cut_in_line' datatype="bool" hidden></eg-grid-field>
+  <eg-grid-field label="[% l('Is Mint Condition') %]" path='hold.mint_condition' datatype="bool" hidden></eg-grid-field>
+  <eg-grid-field label="[% l('Shelf Expire Time') %]" path='hold.shelf_expire_time' datatype="timestamp" hidden></eg-grid-field>
+  <eg-grid-field label="[% l('Current Shelf Library') %]" path='hold.current_shelf_lib' hidden></eg-grid-field>
+  <eg-grid-field label="[% l('Behind Desk') %]" path='hold.behind_desk' datatype="bool" hidden></eg-grid-field>
+  <eg-grid-field label="[% l('Hopeless Date') %]" path='hold.hopeless_date' datatype="timestamp" hidden></eg-grid-field>
+  <eg-grid-field label="[% l('Status') %]" path='hold.hold_status' hidden></eg-grid-field>
+  <eg-grid-field label="[% l('Clearable') %]" path='hold.clear_me' datatype="bool" hidden></eg-grid-field>
+  <eg-grid-field label="[% l('Is Staff-placed Hold') %]" path='hold.is_staff_hold' datatype="bool" hidden></eg-grid-field>
+  <eg-grid-field label="[% l('Cancelation Cause ID') %]" path='hold.cc_id' hidden></eg-grid-field>
+  <eg-grid-field label="[% l('Cancelation Cause') %]" path='hold.cc_label' hidden></eg-grid-field>
+  <eg-grid-field label="[% l('Pickup Library') %]" path='hold.pl_shortname'></eg-grid-field>
+  <eg-grid-field label="[% l('Pickup Library Name') %]" path='hold.pl_name' hidden></eg-grid-field>
+  <eg-grid-field label="[% l('Pickup Library Email') %]" path='hold.pl_email' hidden></eg-grid-field>
+  <eg-grid-field label="[% l('Pickup Library Phone') %]" path='hold.pl_phone' hidden></eg-grid-field>
+  <eg-grid-field label="[% l('Pickup Library Opac Visible') %]" path='hold.pl_opac_visible' hidden></eg-grid-field>
+  <eg-grid-field label="[% l('Transit ID') %]" path='hold.tr_id' hidden></eg-grid-field>
+  <eg-grid-field label="[% l('Transit Send Time') %]" path='hold.tr_source_send_time' datatype="timestamp" hidden></eg-grid-field>
+  <eg-grid-field label="[% l('Transit Receive Time') %]" path='hold.tr_dest_recv_time' datatype="timestamp" hidden></eg-grid-field>
+  <eg-grid-field label="[% l('Transit Copy') %]" path='hold.tr_target_copy' hidden></eg-grid-field>
+  <eg-grid-field label="[% l('Transit Source') %]" path='hold.tr_source' hidden></eg-grid-field>
+  <eg-grid-field label="[% l('Transit Destination') %]" path='hold.tr_dest' hidden></eg-grid-field>
+  <eg-grid-field label="[% l('Transit Copy Status') %]" path='hold.tr_copy_status' hidden></eg-grid-field>
+  <eg-grid-field label="[% l('Transit Hold') %]" path='hold.tr_hold' hidden></eg-grid-field>
+  <eg-grid-field label="[% l('Transit Cancel Time') %]" path='hold.tr_cancel_time' datatype="timestamp" hidden></eg-grid-field>
+  <eg-grid-field label="[% l('Hold Note Count') %]" path='hold.note_count' hidden></eg-grid-field>
+  <eg-grid-field label="[% l('User Display Name') %]" path='hold.usr_display_name' hidden></eg-grid-field>
+  <eg-grid-field label="[% l('User Alias') %]" path='hold.usr_alias' hidden></eg-grid-field>
+  <eg-grid-field label="[% l('User Alias or Display Name') %]" path='hold.usr_alias_or_display_name' hidden></eg-grid-field>
+  <eg-grid-field label="[% l('User Barcode') %]" path='hold.ucard_barcode' hidden></eg-grid-field>
+  <eg-grid-field label="[% l('Requestor Username') %]" path='hold.rusr_usrname' hidden></eg-grid-field>
+  <eg-grid-field label="[% l('Copy ID') %]" path='hold.cp_id' hidden></eg-grid-field>
+  <eg-grid-field label="[% l('Copy Number on Volume') %]" path='hold.cp_copy_number' hidden></eg-grid-field>
+  <eg-grid-field label="[% l('Fine Level') %]" path='hold.cp_fine_level' hidden></eg-grid-field>
+  <eg-grid-field label="[% l('Can Circulate') %]" path='hold.cp_circulate' datatype="bool" hidden></eg-grid-field>
+  <eg-grid-field label="[% l('Deposit Amount') %]" path='hold.cp_deposit_amount' datatype="bool" hidden></eg-grid-field>
+  <eg-grid-field label="[% l('Is Deposit Required') %]" path='hold.cp_deposit' datatype="bool" hidden></eg-grid-field>
+  <eg-grid-field label="[% l('Is Reference') %]" path='hold.cp_ref' datatype="bool" hidden></eg-grid-field>
+  <eg-grid-field label="[% l('Is Holdable') %]" path='hold.cp_holdable' datatype="bool" hidden></eg-grid-field>
+  <eg-grid-field label="[% l('Price') %]" path='hold.cp_price' hidden></eg-grid-field>
+  <eg-grid-field label="[% l('Copy Barcode') %]" path='hold.cp_barcode' hidden></eg-grid-field>
+  <eg-grid-field label="[% l('Circulation Modifier') %]" path='hold.cp_circ_modifier' hidden></eg-grid-field>
+  <eg-grid-field label="[% l('Circulate as MARC Type') %]" path='hold.cp_circ_as_type' hidden></eg-grid-field>
+  <eg-grid-field label="[% l('Precat Dummy Title') %]" path='hold.cp_dummy_title' hidden></eg-grid-field>
+  <eg-grid-field label="[% l('Precat Dummy Author') %]" path='hold.cp_dummy_author' hidden></eg-grid-field>
+  <eg-grid-field label="[% l('Copy Alert Message (deprecated)') %]" path='hold.cp_alert_message' hidden></eg-grid-field>
+  <eg-grid-field label="[% l('Copy OPAC Visible') %]" path='hold.cp_opac_visible' datatype="bool" hidden></eg-grid-field>
+  <eg-grid-field label="[% l('Copy Deleted') %]" path='hold.cp_deleted' datatype="bool" hidden></eg-grid-field>
+  <eg-grid-field label="[% l('Floating Group') %]" path='hold.cp_floating' hidden></eg-grid-field>
+  <eg-grid-field label="[% l('Precat Dummy ISBN') %]" path='hold.cp_dummy_isbn' hidden></eg-grid-field>
+  <eg-grid-field label="[% l('Copy Status Change Time') %]" path='hold.cp_status_change_time' datatype="timestamp" hidden></eg-grid-field>
+  <eg-grid-field label="[% l('Copy Active Date') %]" path='hold.cp_active_date' datatype="timestamp" hidden></eg-grid-field>
+  <eg-grid-field label="[% l('Copy Is Mint Condition') %]" path='hold.cp_mint_condition' datatype="bool" hidden></eg-grid-field>
+  <eg-grid-field label="[% l('Cost') %]" path='hold.cp_cost' hidden></eg-grid-field>
+  <eg-grid-field label="[% l('Copy Status') %]" path='hold.cs_name' hidden></eg-grid-field>
+  <eg-grid-field label="[% l('Status Is Holdable') %]" path='hold.cs_holdable' datatype="bool" hidden></eg-grid-field>
+  <eg-grid-field label="[% l('Status Is OPAC Visible') %]" path='hold.cs_opac_visible' datatype="bool" hidden></eg-grid-field>
+  <eg-grid-field label="[% l('Status Is Copy-Active') %]" path='hold.cs_copy_active' datatype="bool" hidden></eg-grid-field>
+  <eg-grid-field label="[% l('Status Is Deleted') %]" path='hold.cs_restrict_copy_delete' datatype="bool" hidden></eg-grid-field>
+  <eg-grid-field label="[% l('Status Is Available') %]" path='hold.cs_is_available' datatype="bool" hidden></eg-grid-field>
+  <eg-grid-field label="[% l('Issuance Label') %]" path='hold.issuance_label' hidden></eg-grid-field>
+  <eg-grid-field label="[% l('Call Number ID') %]" path='hold.cn_id' hidden></eg-grid-field>
+  <eg-grid-field label="[% l('CN Label') %]" path='hold.cn_label' hidden></eg-grid-field>
+  <eg-grid-field label="[% l('CN Label Class') %]" path='hold.cn_label_class' hidden></eg-grid-field>
+  <eg-grid-field label="[% l('CN Sort Key') %]" path='hold.cn_label_sortkey' hidden></eg-grid-field>
+  <eg-grid-field label="[% l('Part ID') %]" path='hold.p_id' hidden></eg-grid-field>
+  <eg-grid-field label="[% l('Part Label') %]" path='hold.p_label' hidden></eg-grid-field>
+  <eg-grid-field label="[% l('Part Sort Key') %]" path='hold.p_label_sortkey' hidden></eg-grid-field>
+  <eg-grid-field label="[% l('Part Is Deleted') %]" path='hold.p_deleted' datatype="bool" hidden></eg-grid-field>
+  <eg-grid-field label="[% l('CN Full Label') %]" path='hold.cn_full_label' hidden></eg-grid-field>
+  <eg-grid-field label="[% l('Record ID') %]" path='hold.record_id' hidden></eg-grid-field>
+  <eg-grid-field label="[% l('Copy Location ID') %]" path='hold.acpl_id' hidden></eg-grid-field>
+  <eg-grid-field label="[% l('Copy Location') %]" path='hold.acpl_name' hidden></eg-grid-field>
+  <eg-grid-field label="[% l('Copy Location Holdable') %]" path='hold.acpl_holdable' datatype="bool" hidden></eg-grid-field>
+  <eg-grid-field label="[% l('Copy Location Hold-Verify') %]" path='hold.acpl_hold_verify' datatype="bool" hidden></eg-grid-field>
+  <eg-grid-field label="[% l('Copy Location OPAC Visible') %]" path='hold.acpl_opac_visible' datatype="bool" hidden></eg-grid-field>
+  <eg-grid-field label="[% l('Copy Location Can Circulate') %]" path='hold.acpl_circulate' datatype="bool" hidden></eg-grid-field>
+  <eg-grid-field label="[% l('Copy Location Prefix') %]" path='hold.acpl_label_prefix' hidden></eg-grid-field>
+  <eg-grid-field label="[% l('Copy Location Suffix') %]" path='hold.acpl_label_suffix' hidden></eg-grid-field>
+  <eg-grid-field label="[% l('Copy Location Checkin Alert') %]" path='hold.acpl_checkin_alert' datatype="bool" hidden></eg-grid-field>
+  <eg-grid-field label="[% l('Copy Location Is Deleted') %]" path='hold.acpl_deleted' datatype="bool" hidden></eg-grid-field>
+  <eg-grid-field label="[% l('Copy Location URL') %]" path='hold.acpl_url' hidden></eg-grid-field>
+  <eg-grid-field label="[% l('Copy Location Order') %]" path='hold.copy_location_order_position' hidden></eg-grid-field>
+  <eg-grid-field label="[% l('Default Estimated Wait Time') %]" path='hold.default_estimated_wait' hidden></eg-grid-field>
+  <eg-grid-field label="[% l('Minimum Estimated Wait Time') %]" path='hold.min_estimated_wait' hidden></eg-grid-field>
+  <eg-grid-field label="[% l('Peer Hold Count') %]" path='hold.other_holds' hidden></eg-grid-field>
+  <eg-grid-field label="[% l('Total Wait Time') %]" path='hold.total_wait_time' hidden></eg-grid-field>
+  <eg-grid-field label="[% l('Notify Count') %]" path='hold.notification_count' hidden></eg-grid-field>
+  <eg-grid-field label="[% l('Last Notify Time') %]" path='hold.last_notification_time' datatype="timestamp" hidden></eg-grid-field>
 
-  <eg-grid-field path='part.label' parent-idl-class="bmp" label="[% l('Part') %]" hidden></eg-grid-field>
-  <eg-grid-field path='volume.*' parent-idl-class="acn" hidden></eg-grid-field>
-  <eg-grid-field path='mvr.*' parent-idl-class="mvr" hidden></eg-grid-field>
 </eg-grid>
 
 <div class="flex-row pad-vert">

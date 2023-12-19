@@ -3786,7 +3786,7 @@ sub uber_hold_impl {
     my($e, $hold_id, $args) = @_;
     $args ||= {};
 
-    my $flesh_fields = ['current_copy', 'usr', 'notes'];
+    my $flesh_fields = ['current_copy', 'usr', 'notes', 'canceling_ws'];
     push (@$flesh_fields, 'requestor') if $args->{include_requestor};
     push (@$flesh_fields, 'cancel_cause') if $args->{include_cancel_cause};
     push (@$flesh_fields, 'sms_carrier') if $args->{include_sms_carrier};

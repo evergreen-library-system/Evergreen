@@ -1646,18 +1646,24 @@ https://stackoverflow.com/questions/24764802/angular-js-automatically-focus-inpu
             entry['patron_id'] = data.response.data.au.id();
         }
         if (data.action == 'requested_hold'
+            || data.action == 'canceled_hold'
             || data.action == 'edited_patron'
             || data.action == 'registered_patron'
             || data.action == 'paid_bill') {
             entry['patron_id'] = data.patron_id;
         }
-        if (data.action == 'requested_hold') {
+        if (data.action == 'requested_hold'
+            || data.action == 'canceled_hold') {
             entry['hold_id'] = data.hold_id;
         }
         if (data.action == 'paid_bill') {
             entry['amount'] = data.total_amount;
         }
-
+        if (data.action == 'canceled_hold') {
+            entry['item_id'] = data.item_id;
+            entry['item'] = data.item;
+            entry['user'] = data.user;
+        }
         workLog.push( entry );
         if (workLog.length > max_entries) workLog.shift();
         egCore.hatch.setLocalItem('eg.work_log',workLog); // hatch JSONifies the data, so should be okay re: memory leaks?

@@ -12,6 +12,7 @@ import {HoldManageDialogComponent} from './manage-dialog.component';
 import {HoldNoteDialogComponent} from './note-dialog.component';
 import {HoldNotifyDialogComponent} from './notify-dialog.component';
 import {HoldCopyLocationsDialogComponent} from './copy-locations-dialog.component';
+import {WorkLogModule} from '@eg/staff/share/worklog/worklog.module';
 
 @NgModule({
     declarations: [
@@ -28,7 +29,8 @@ import {HoldCopyLocationsDialogComponent} from './copy-locations-dialog.componen
     ],
     imports: [
         StaffCommonModule,
-        HoldingsModule
+        HoldingsModule,
+        WorkLogModule
     ],
     exports: [
         HoldsGridComponent,

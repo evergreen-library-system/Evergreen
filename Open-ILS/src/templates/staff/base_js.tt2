@@ -128,6 +128,7 @@ UpUp.start({
     s.EG_WORK_LOG_FORGIVE_PAYMENT = '[% l('Forgive Payment') %]';
     s.EG_WORK_LOG_GOODS_PAYMENT = '[% l('Goods Payment') %]';
     s.EG_WORK_LOG_REQUESTED_HOLD = '[% l('Hold Request') %]';
+    s.EG_WORK_LOG_CANCELED_HOLD = '[% l('Hold Cancelation') %]';
     s.EG_CONFIRM_DELETE_RECORD_TITLE = '[% l('Confirm Record Deletion') %]';
     s.EG_CONFIRM_DELETE_RECORD_BODY = "[% l('Delete record {{id}}?') %]";
     s.OP_CHANGE_SUCCESS = "[% l('Operator Change Succeeded') %]";

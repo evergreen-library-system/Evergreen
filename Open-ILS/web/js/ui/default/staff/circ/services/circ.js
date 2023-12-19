@@ -850,7 +850,37 @@ function($uibModal , $q , egCore , egAlertDialog , egConfirmDialog,  egAddCopyAl
                             egCore.auth.token(), $scope.holdID,
                             5, // staff forced
                             'Item checked out by other patron' // FIXME I18n
-                        );
+                        ).then(function(resp) {
+                            if (evt = egCore.evt.parse(resp)) {
+                                egCore.audio.play(
+                                    'warning.hold.cancel_failed');
+                                console.error('unable to cancel hold: ' 
+                                    + evt.toString());
+                            } else {
+                                egCore.net.request(
+                                    'open-ils.circ', 'open-ils.circ.hold.details.retrieve',
+                                    egCore.auth.token(), $scope.holdID, {
+                                        'suppress_notices': true,
+                                        'suppress_transits': true,
+                                        'suppress_mvr' : true,
+                                        'include_usr' : true
+                                }).then(function(details) {
+                                    //console.log('details', details);
+                                    egWorkLog.record(
+                                        egCore.strings.EG_WORK_LOG_CANCELED_HOLD
+                                        ,{
+                                            'action' : 'canceled_hold',
+                                            'method' : 'open-ils.circ.hold.cancel',
+                                            'hold_id' : $scope.holdID,
+                                            'patron_id' : details.hold.usr().id(),
+                                            'user' : details.patron_last,
+                                            'item' : details.copy ? details.copy.barcode() : null,
+                                            'item_id' : details.copy ? details.copy.id() : null
+                                        }
+                                    );
+                                });
+                            }
+                        });
                     }
                     $uibModalInstance.close();
                 }
