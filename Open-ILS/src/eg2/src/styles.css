@@ -291,6 +291,25 @@ option[disabled] {
   min-height: 1rem;
 }
 
+/* Bootstrap's focus "outline" is a faint box shadow. The buttons have
+   color-specific shadows, so let's leave those alone. */
+:not(button):not(.btn):focus, 
+:not(button):not(.btn):focus-visible {
+  outline: 0.25rem solid rgba(13, 110, 253, 0.75);
+  outline-offset: 0;
+  --moz-outline-radius: 0.25rem;
+}
+
+.form-control:focus,
+.form-control:focus-visible {
+  box-shadow: unset;
+  outline: 0.25rem solid rgba(13, 110, 253, 0.75) !important;
+}
+
+input[type="checkbox"]:focus {
+  outline-offset: 0.1rem;
+}
+
 /**
  * Only display the print container when printing
  */

@@ -86,12 +86,11 @@
 }
 
 /* restore outline focus removed by Bootstrap */
-.dropdown-toggle:focus,
-.dropdown-item:focus {
-    /* Firefox */
-    outline: 2px auto highlight;
-    /* Safari/Chromium */
-    outline: 2px auto -webkit-focus-ring-color;
+/* blend Evergreen green with #ffc for highlight */
+#staff-navbar .nav-link.dropdown-toggle:focus,
+#staff-navbar .nav-link.dropdown-item:focus,
+#staff-navbar .nav-link-home:focus {
+    outline: 2px solid rgba(255, 255, 204, 0.75);
 }
 
 #staff-navbar>.open .nav-link {
