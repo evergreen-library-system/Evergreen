@@ -8,7 +8,7 @@
       persistKey="admin.local.negative_balances"
       (componentLoaded)="contextOrgLoaded = true"
       [initialOrg]="contextOrg"
-      (onChange)="orgChnaged($event)">
+      (onChange)="orgChanged($event)">
     </eg-org-select>
   </div>
 </div>
@@ -20,7 +20,7 @@
 </ng-template>
 
 <eg-grid #grid idlClass="au" [dataSource]="dataSource"
-  persistKey="admin.local.negative_balances"
+  persistKey="admin.local.negative_balances" [cellTextGenerator]="cellTextGenerator"
   showFields="balance_owed,last_billing_activity,barcode,family_name,first_given_name,dob,barred">
 
   <eg-grid-column name="barcode" [cellTemplate]="barcodeTmpl"
