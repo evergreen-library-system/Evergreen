@@ -25,6 +25,7 @@ export class NegativeBalancesComponent implements OnInit {
     dataSource: GridDataSource = new GridDataSource();
     contextOrg: IdlObject;
     contextOrgLoaded = false;
+    cellTextGenerator: GridCellTextGenerator;
 
     @ViewChild('grid') private grid: GridComponent;
 
@@ -41,13 +42,17 @@ export class NegativeBalancesComponent implements OnInit {
     ngOnInit() {
         this.contextOrg = this.org.get(this.auth.user().ws_ou());
 
+        this.cellTextGenerator = {
+            barcode: row => row.card().barcode()
+        };
+
         this.dataSource.getRows = (pager: Pager, sort: any[]) => {
 
             if (!this.contextOrgLoaded) {
                 // Still determining the default context org unit.
                 return EMPTY;
             }
-
+           
             return this.net.request(
                 'open-ils.actor',
                 'open-ils.actor.users.negative_balance',
@@ -66,7 +71,7 @@ export class NegativeBalancesComponent implements OnInit {
         };
     }
 
-    orgChnaged(org: IdlObject) {
+    orgChanged(org: IdlObject) {
         if (org) {
             this.contextOrg = org;
             this.grid.reload();
