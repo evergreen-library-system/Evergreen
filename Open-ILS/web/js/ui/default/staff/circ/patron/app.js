@@ -1056,7 +1056,7 @@ function($scope , $q , $routeParams,  egCore , $uibModal , egConfirmDialog , pat
     }
 
     $scope.createPenalty = function() {
-        egCirc.create_penalty(usr_id).then(function() {
+        egCirc.create_note(usr_id).then(function() {
             activeGrid.refresh();
             // force a refresh of the user, since they may now
             // have blocking penalties, etc.
@@ -1114,7 +1114,7 @@ function($scope , $q , $routeParams,  egCore , $uibModal , egConfirmDialog , pat
         }
         $q.all(promises).then(function() {
             angular.forEach(pairs, function(pair) {
-                egCirc.edit_penalty(ausp_objs[pair.ausp_id],aum_objs[pair.aum_id]).then(function() {
+                egCirc.edit_note(ausp_objs[pair.ausp_id],aum_objs[pair.aum_id]).then(function() {
                     activeGrid.refresh();
                     // force a refresh of the user, since they may now
                     // have blocking penalties, etc.

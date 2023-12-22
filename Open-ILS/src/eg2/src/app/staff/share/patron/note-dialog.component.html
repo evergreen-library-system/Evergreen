@@ -1,0 +1,120 @@
+<eg-string #successMsg i18n-text text="Note Successfully Updated"></eg-string>
+<eg-string #errorMsg i18n-text text="Failed To Update Note"></eg-string>
+
+<ng-template #dialogContent>
+  <form #fmEditForm="ngForm" class="form-validated common-form striped-odd">
+    <div class="modal-header">
+      <h4 *ngIf="dataLoaded" class="modal-title">
+        <span *ngIf="note?.stop_date()" i18n>Archived Note</span>
+        <span *ngIf="!note?.stop_date()" i18n>Create or Edit Note</span>
+      </h4>
+    </div>
+    <div class="modal-body" *ngIf="dataLoaded">
+      <div class="row d-flex p-3">
+        <div class="col">
+          <span i18n>
+            Note for patron <b>{{patron?.family_name()}}, {{patron?.first_given_name()}}</b>
+          </span>
+        </div>
+      </div>
+      <div class="row d-flex p-3">
+        <div class="col">
+          <div class="btn-group" role="group" [attr.aria-label]="'Note types'" i18n-aria-label>
+            <button type="button" class="btn {{buttonClass(SILENT_NOTE)}}" 
+            [disabled]="readOnly || note?.stop_date()" (click)="set_penalty(SILENT_NOTE)" i18n>Note</button> 
+<button type="button" class="btn {{buttonClass(ALERT_NOTE)}}" 
+            [disabled]="readOnly || note?.stop_date()" (click)="set_penalty(ALERT_NOTE)" i18n >Alert</button> 
+<button type="button" class="btn {{buttonClass(STAFF_CHR)}}" 
+            [disabled]="readOnly || note?.stop_date()" (click)="set_penalty(STAFF_CHR)" i18n>Block</button> 
+          </div>
+        </div>
+      </div>
+      <div class="row d-flex p-3">
+        <div class="col-md-6">
+          <label for="penalty_type" i18n>Penalty Type</label>
+          <eg-combobox name="penaltyTypeId" [selectedId]="penaltyTypeId"
+            [disabled]="readOnly || (note?.pub() && note.read_date()) || note?.isdeleted() || note?.stop_date()"
+            [(ngModel)]="penaltyTypeFromSelect" (onChange)="set_penalty($event?.id)"
+            [entries]="cbPenaltyTypeEntries" [asyncSupportsEmptyTermClick]="true">
+          </eg-combobox>
+          <output>
+            <b i18n>Penalty:</b><span>&nbsp;{{currentPenaltyLabel()}}</span>
+          </output>
+        </div>
+        <div class="col-md-6">
+          <div>
+            <label for="org_depth" i18n>Org Depth</label>
+            <eg-org-depth-selector domId="org_depth" [contextOrgId]="auth.user().ws_ou()" (depthChange)="onDepthChange($event)"
+              [disabled]="readOnly || (note?.pub() && note.read_date()) || note?.isdeleted() || note?.stop_date()">
+            </eg-org-depth-selector>
+            <output>
+              <b i18n>Location:</b><span>&nbsp;{{org_unit | formatValue:'org_unit'}}</span>
+            </output>
+          </div>
+        </div>
+      </div>
+      <div class="row align-items-center" *ngIf="dataLoaded">
+        <div class="col-md-3">
+          <div class="form-check">
+            <input type="checkbox" class="form-check-input"
+              name="pub" id="note_public_check"
+              [disabled]="readOnly || (note?.pub() && note.read_date()) || note?.isdeleted() || note?.stop_date()"
+              [(ngModel)]="pub" />
+            <label for="note_public_check" class="form-check-label" i18n>Patron Visible</label>
+          </div>
+        </div>
+        <div class="col-md-3">
+          <output *ngIf="pub && note?.read_date()" i18n>
+            Read on {{note?.read_date() | date:'short'}}
+          </output>
+          <output *ngIf="pub && !note?.read_date()" i18n>
+            Unread
+          </output>
+        </div>
+        <div class="col-md-3">
+          <output *ngIf="note?.edit_date()" i18n>
+            Edited on {{note?.edit_date() | date:'short'}} by {{note?.editor()?.usrname()}}
+          </output>
+          <output *ngIf="note?.stop_date()" i18n>
+            Archived on {{note?.stop_date() | date:'short'}}
+          </output>
+        </div>
+        <div class="col-md-3">
+          <output class="patron-summary-alert" *ngIf="note?.isdeleted()" i18n>
+            Deleted
+          </output>
+        </div>
+      </div>
+      <div class="form-group row pad-vert">
+        <div class="col-md-12">
+          <label for="note_title" i18n>Note Title</label>
+          <textarea class="form-control" id="note_title" name="title" [(ngModel)]="title"
+            [disabled]="readOnly || (note?.pub() && note.read_date()) || note?.isdeleted() || note?.stop_date()">
+          </textarea>
+        </div>
+      </div>
+      <div class="form-group row pad-vert">
+        <div class="col-md-12">
+          <label for="note_text" i18n>Note Text</label>
+          <textarea class="form-control" id="note_text" name="note" [(ngModel)]="message"
+            [disabled]="readOnly || (note?.pub() && note.read_date()) || note?.isdeleted() || note?.stop_date()">
+          </textarea>
+        </div>
+      </div>
+    </div>
+    <div class="modal-footer flex">
+      <div *ngIf="!dataLoaded">
+        <div class="col-lg-6 offset-lg-3">
+          <eg-progress-inline></eg-progress-inline>
+        </div>
+      </div>
+      <ng-container *ngIf="dataLoaded">
+        <button type="button" class="btn btn-normal" 
+                              (click)="close()" i18n>Cancel</button>
+        <button type="button" class="btn btn-primary ms-auto" 
+                              [disabled]="readOnly || !title" (click)="apply()" i18n>Save</button>
+        
+      </ng-container>
+    </div>
+  </form>
+</ng-template>

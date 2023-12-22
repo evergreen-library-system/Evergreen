@@ -5,7 +5,7 @@ import {PatronService} from './patron.service';
 import {PatronSearchComponent} from './search.component';
 import {PatronSearchDialogComponent} from './search-dialog.component';
 import {ProfileSelectComponent} from './profile-select.component';
-import {PatronPenaltyDialogComponent} from './penalty-dialog.component';
+import {PatronNoteDialogComponent} from './note-dialog.component';
 import {BarcodesModule} from '@eg/staff/share/barcodes/barcodes.module';
 import {PatronMergeDialogComponent} from './merge-dialog.component';
 import {PatronSummaryComponent} from './summary.component';
@@ -17,7 +17,7 @@ import {PatronSummaryComponent} from './summary.component';
         ProfileSelectComponent,
         PatronSummaryComponent,
         PatronMergeDialogComponent,
-        PatronPenaltyDialogComponent
+        PatronNoteDialogComponent
     ],
     imports: [
         StaffCommonModule,
@@ -30,7 +30,7 @@ import {PatronSummaryComponent} from './summary.component';
         ProfileSelectComponent,
         PatronSummaryComponent,
         PatronMergeDialogComponent,
-        PatronPenaltyDialogComponent
+        PatronNoteDialogComponent
     ],
     providers: [
         PatronService

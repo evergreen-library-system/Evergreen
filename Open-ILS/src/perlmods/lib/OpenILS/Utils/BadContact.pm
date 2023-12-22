@@ -104,7 +104,7 @@ sub mark_users_contact_invalid {
             $message .= ' ' . $addl_note;
         }
 
-        my ($result) = $U->simplereq('open-ils.actor', 'open-ils.actor.user.penalty.apply',
+        my ($result) = $U->simplereq('open-ils.actor', 'open-ils.actor.user.note.apply',
             $editor->authtoken,
             $usr_penalty,
             { message => $message }

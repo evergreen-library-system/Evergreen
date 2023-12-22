@@ -41,6 +41,7 @@ export class PatronAlerts {
     retrievedWithInactive = false;
     invalidAddress = false;
     alertPenalties: IdlObject[] = [];
+    allPenalties: IdlObject[] = [];
 
     hasAlerts(): boolean {
         return (
@@ -335,6 +336,7 @@ export class PatronService {
             .filter(a => a.valid() === 'f').length > 0;
         alerts.alertPenalties = patron.standing_penalties()
             .filter(p => p.standing_penalty().staff_alert() === 't');
+        alerts.allPenalties = patron.standing_penalties();
 
         return this.testExpire(patron)
             .then(value => {

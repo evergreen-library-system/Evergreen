@@ -1058,7 +1058,7 @@ function(egCore , egOrg , egCirc , $uibModal , $q , $timeout , $window , ngToast
             // apply patron penalty
             if (payload.circ) {
                 promise.then(function() {
-                    egCirc.create_penalty(payload.circ.usr())
+                    egCirc.create_note(payload.circ.usr())
                 });
             }
 

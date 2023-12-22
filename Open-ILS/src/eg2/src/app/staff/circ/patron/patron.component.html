@@ -155,9 +155,9 @@
 
         <li role="presentation" ngbNavItem="messages" [disabled]="!context.summary">
           <button role="tab" ngbNavLink (click)="navItemClick('messages', $event)"
-            routerLink="/staff/circ/patron/{{patronId}}/messages" i18n>Messages</button>
+            routerLink="/staff/circ/patron/{{patronId}}/messages" i18n>Notes ({{context.summary?.alerts?.allPenalties?.length}})</button>
           <ng-template ngbNavContent>
-            <eg-title i18n-prefix [prefix]="patronTitle('Messages for Patron')"></eg-title>
+            <eg-title i18n-prefix [prefix]="patronTitle('Notes for Patron')"></eg-title>
             <div class="">
               <eg-patron-messages [patronId]="patronId"></eg-patron-messages>
             </div>
@@ -178,13 +178,9 @@
           <button class="nav-link" ngbDropdownToggle>Other</button>
           <div ngbDropdownMenu>
             <a routerLink="/staff/circ/patron/{{patronId}}/alerts" 
-              ngbDropdownItem i18n>Alerts and Messages</a>
-            <a routerLink="/staff/circ/patron/{{patronId}}/notes" [disabled]="true"
-              ngbDropdownItem i18n>Notes</a>
+              ngbDropdownItem i18n>Display Alerts</a>
             <a routerLink="/staff/circ/patron/{{patronId}}/triggered_events" [disabled]="true"
               ngbDropdownItem i18n>Triggered Events / Notifications</a>
-            <a routerLink="/staff/circ/patron/{{patronId}}/message_center" [disabled]="true"
-              ngbDropdownItem i18n>Message Center</a>
             <a routerLink="/staff/circ/patron/{{patronId}}/stat_cats"
               ngbDropdownItem i18n>Statistical Categories</a>
             <a routerLink="/staff/circ/patron/{{patronId}}/surveys"
