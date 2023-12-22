@@ -18,6 +18,7 @@ import {FmRecordEditorComponent} from '@eg/share/fm-editor/fm-editor.component';
 import {NgbDate} from '@ng-bootstrap/ng-bootstrap';
 import {FormGroup, FormControl} from '@angular/forms';
 import {ConfirmDialogComponent} from '@eg/share/dialog/confirm.component';
+import {PatronNoteDialogComponent} from '@eg/staff/share/patron/note-dialog.component';
 import {FormatService} from '@eg/core/format.service';
 import {StringComponent} from '@eg/share/string/string.component';
 import {GridComponent} from '@eg/share/grid/grid.component';
@@ -54,7 +55,7 @@ export class SandboxComponent implements OnInit {
     @ViewChild('bresvEditor', { static: true })
     private bresvEditor: FmRecordEditorComponent;
 
-    @ViewChild('penaltyDialog', {static: false}) penaltyDialog;
+    @ViewChild('noteDialog', {static: false}) noteDialog: PatronNoteDialogComponent;
 
 
     // @ViewChild('helloStr') private helloStr: StringComponent;
@@ -505,9 +506,9 @@ export class SandboxComponent implements OnInit {
         });
     }
 
-    openPenalty() {
-        this.penaltyDialog.open()
-            .subscribe(val => console.log('penalty value', val));
+    openNote() {
+        this.noteDialog.open()
+            .subscribe(val => console.log('note value', val));
     }
 }
 

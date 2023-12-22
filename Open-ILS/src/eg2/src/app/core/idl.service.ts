@@ -241,17 +241,23 @@ export class IdlService {
         return obj1[pkeyField]() === obj2[pkeyField]();
     }
 
-    pkeyValue(obj: any): any {
-        if (!obj || typeof obj === 'number') { return obj; }
+    pkeyValue(obj: IdlObject | number | string): any {
+        if (!obj || typeof obj === 'number' || typeof obj === 'string') {
+            return obj;
+        }
+
         try {
             const idlClass = obj.classname;
-            const pkeyField = this.classes[idlClass].pkey || 'id';
-            return obj[pkeyField]();
-        } catch(E) {
-            if (typeof obj === 'object') {
-                console.log('Error returning pkey value', obj);
+            const pkeyField = this.classes[idlClass]?.pkey || 'id'; // default to 'id' if pkey is not defined
+            if (typeof obj[pkeyField] === 'function') {
+                return obj[pkeyField]();
+            } else {
+                console.error(`Expected a function for pkey but got ${typeof obj[pkeyField]}. pkeyField, obj`,pkeyField,obj);
+                return undefined;
             }
-            return obj;
+        } catch (E) {
+            console.error('Error returning pkey value', obj, E);
+            return undefined;
         }
     }
 
@@ -289,9 +295,12 @@ export class IdlService {
         if (typeof value === 'string') {
             if (value === 't') { return true; }
             if (value === 'f') { return false; }
-            return null;
+        }
+        // back to normal Javascript truthy, but "cast" to boolean
+        if (value) {
+            return true;
         } else {
-            return value;
+            return false;
         }
     }
 }

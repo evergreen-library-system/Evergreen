@@ -1,17 +1,18 @@
 
-<eg-patron-penalty-dialog [patronId]="patronId" #penaltyDialog>
-</eg-patron-penalty-dialog>
+<eg-patron-note-dialog [patronId]="patronId" #noteDialog>
+</eg-patron-note-dialog>
 
 <div class="row mb-2">
   <div class="col-lg-12">
-    <h2 class="text-dark" i18n>Penalties and Messages</h2>
+    <h2 class="text-dark" i18n>Notes</h2>
   </div>
 </div>
 
-<eg-grid #mainGrid idlClass="ausp" [dataSource]="mainDataSource"
-  [showDeclaredFieldsOnly]="true" persistKey="circ.patron.staff_messages">
-  <eg-grid-toolbar-button i18n-label label="Apply Penalty / Message"
-    (onClick)="applyPenalty()">
+<eg-grid #mainGrid idlClass="aump" [dataSource]="mainDataSource"
+  [showDeclaredFieldsOnly]="true" showFields="label,title,message"
+  (onRowActivate)="modify($event)" persistKey="circ.patron.staff_messages">
+  <eg-grid-toolbar-button i18n-label label="Create Note"
+    (onClick)="applyNote()">
   <eg-grid-toolbar-action (onClick)="archive($event)"
     label="Archive Selected" i18n-label></eg-grid-toolbar-action>
   <eg-grid-toolbar-action (onClick)="remove($event)"
@@ -19,40 +20,73 @@
   <eg-grid-toolbar-action (onClick)="modify($event)"
     label="Modify Selected" i18n-label></eg-grid-toolbar-action>
   </eg-grid-toolbar-button>
-
-  <eg-grid-column path="set_date"
-    i18n-label label="Applied On" [datePlusTime]="true"></eg-grid-column>
-  <eg-grid-column i18n-label label="Label" path="standing_penalty.label">
-  </eg-grid-column>
-  <eg-grid-column i18n-label label="Note" path="note"></eg-grid-column>
+  <eg-grid-column path="read_date"></eg-grid-column>
+  <eg-grid-column path="deleted" required hidden></eg-grid-column>
+  <eg-grid-column path="usr.usrname" i18n-label label="User" required hidden></eg-grid-column>
+  <eg-grid-column path="message" i18n-label label="Note Text"></eg-grid-column>
+  <eg-grid-column path="title"></eg-grid-column>
+  <eg-grid-column path="pub"></eg-grid-column>
+  <eg-grid-column path="stop_date" hidden></eg-grid-column>
+  <eg-grid-column path="editor.usrname" i18n-label label="Editor" required hidden></eg-grid-column>
+  <eg-grid-column path="edit_date" hidden></eg-grid-column>
+  <eg-grid-column path="staff.usrname" i18n-label label="Staff" required></eg-grid-column>
+  <eg-grid-column path="standing_penalty.name" required i18n-label label="Note Name"></eg-grid-column>
+  <eg-grid-column path="standing_penalty.block_list" required hidden></eg-grid-column>
+  <eg-grid-column path="standing_penalty.*" hidden></eg-grid-column>
+  <eg-grid-column path="org_unit.shortname" i18n-label label="Location" required></eg-grid-column>
+  <eg-grid-column path="create_date"></eg-grid-column>
+  <eg-grid-column path="ausp_id" required hidden></eg-grid-column>
+  <eg-grid-column path="aum_id" required hidden></eg-grid-column>
+  <eg-grid-column path="id" required hidden></eg-grid-column>
 </eg-grid>
 
 <div class="row mt-5 mb-2">
-  <div class="col-lg-4">
-    <h3 i18n>Archived Penalties / Messages</h3>
+  <div class="col-lg-12">
+    <h3 class="semibold" i18n>Archived Notes</h3>
+    <div class="me-3 row g-2 align-items-center">
+      <div class="col-auto">
+        <label for="archived-notes-start" class="form-label col-form-label" i18n>Start Date:</label>
+      </div>
+      <div class="col-auto">
+        <eg-date-select [initialIso]="startDateYmd" domId="archived-notes-start"
+          (onChangeAsIso)="dateChange($event, true)"></eg-date-select>
+      </div>
+      <div class="col-auto">
+        <label for="archived-notes-end" class="form-label col-form-label ms-2" i18n>End Date:</label>
+      </div>
+      <div class="col-auto">
+        <eg-date-select [initialIso]="endDateYmd" domId="archived-notes-end"
+          (onChangeAsIso)="dateChange($event, false)"></eg-date-select>
+      </div>
+    </div>
   </div>
-  <div class="col-lg-4 form-inline">
-    <label class="form-label me-2" i18n>Start Date:</label>
-    <eg-date-select [initialIso]="startDateYmd"
-      (onChangeAsIso)="dateChange($event, true)"></eg-date-select>
-  </div>
-  <div class="col-lg-4 form-inline">
-    <label class="form-label me-2" i18n>End Date:</label>
-    <eg-date-select [initialIso]="endDateYmd" 
-      (onChangeAsIso)="dateChange($event, false)"></eg-date-select>
-  </div>
+  
 </div>
 
-<eg-grid #archiveGrid idlClass="ausp" [dataSource]="archiveDataSource"
-  [showDeclaredFieldsOnly]="true" persistKey="circ.patron.archived_messages">
+<eg-grid #archiveGrid idlClass="aump" [dataSource]="archiveDataSource"
+  [showDeclaredFieldsOnly]="true" showFields="label,title,message"
+  [filterable]="true" persistKey="circ.patron.archived_messages">
   <eg-grid-toolbar-action (onClick)="remove($event)"
     label="Delete Selected" i18n-label></eg-grid-toolbar-action>
   <eg-grid-toolbar-action (onClick)="unArchive($event)"
     label="Un-Archive Selected" i18n-label></eg-grid-toolbar-action>
-  <eg-grid-column path="set_date"
-    i18n-label label="Applied On" [datePlusTime]="true"></eg-grid-column>
-  <eg-grid-column i18n-label label="Label" path="standing_penalty.label">
-  </eg-grid-column>
-  <eg-grid-column i18n-label label="Note" path="note"></eg-grid-column>
+  <eg-grid-column path="read_date"></eg-grid-column>
+  <eg-grid-column path="deleted" required hidden></eg-grid-column>
+  <eg-grid-column path="usr.usrname" i18n-label label="User" required hidden></eg-grid-column>
+  <eg-grid-column path="message" i18n-label label="Note Text"></eg-grid-column>
+  <eg-grid-column path="title"></eg-grid-column>
+  <eg-grid-column path="pub"></eg-grid-column>
+  <eg-grid-column path="stop_date" hidden></eg-grid-column>
+  <eg-grid-column path="editor.usrname" i18n-label label="Editor" required hidden></eg-grid-column>
+  <eg-grid-column path="edit_date" hidden></eg-grid-column>
+  <eg-grid-column path="staff.usrname" i18n-label label="Staff" required></eg-grid-column>
+  <eg-grid-column path="standing_penalty.name" required i18n-label label="Penalty Name"></eg-grid-column>
+  <eg-grid-column path="standing_penalty.block_list" required hidden></eg-grid-column>
+  <eg-grid-column path="standing_penalty.*" hidden></eg-grid-column>
+  <eg-grid-column path="org_unit.shortname" i18n-label label="Location" required></eg-grid-column>
+  <eg-grid-column path="create_date"></eg-grid-column>
+  <eg-grid-column path="ausp_id" required hidden></eg-grid-column>
+  <eg-grid-column path="aum_id" required hidden></eg-grid-column>
+  <eg-grid-column path="id" required hidden></eg-grid-column>
 </eg-grid>
 

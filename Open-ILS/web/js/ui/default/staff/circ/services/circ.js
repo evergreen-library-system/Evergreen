@@ -2193,7 +2193,7 @@ function($uibModal , $q , egCore , egAlertDialog , egConfirmDialog,  egAddCopyAl
         });
     }
 
-    function generate_penalty_dialog_watch_callback($scope,egCore,allPenalties) {
+    function generate_note_dialog_watch_callback($scope,egCore,allPenalties) {
         return function(newval) {
             if (newval) {
                 var selected_penalty = allPenalties.filter(function(p) {
@@ -2217,7 +2217,7 @@ function($uibModal , $q , egCore , egAlertDialog , egConfirmDialog,  egAddCopyAl
         };
     }
 
-    service.create_penalty = function(user_id) {
+    service.create_note = function(user_id) {
         return $uibModal.open({
             templateUrl: './circ/share/t_new_message_dialog',
             backdrop: 'static',
@@ -2252,8 +2252,8 @@ function($uibModal , $q , egCore , egAlertDialog , egConfirmDialog,  egAddCopyAl
                     $uibModalInstance.dismiss();
                     $event.preventDefault();
                 }
-                $scope.$watch('args.penalty', generate_penalty_dialog_watch_callback($scope,egCore,allPenalties));
-                $scope.$watch('args.custom_penalty', generate_penalty_dialog_watch_callback($scope,egCore,allPenalties));
+                $scope.$watch('args.penalty', generate_note_dialog_watch_callback($scope,egCore,allPenalties));
+                $scope.$watch('args.custom_penalty', generate_note_dialog_watch_callback($scope,egCore,allPenalties));
                 $scope.$watch('args.custom_depth', function(org_depth) {
                     if (org_depth || org_depth == 0) {
                         egCore.net.request(
@@ -2293,7 +2293,7 @@ function($uibModal , $q , egCore , egAlertDialog , egConfirmDialog,  egAddCopyAl
 
                 return egCore.net.request(
                     'open-ils.actor',
-                    'open-ils.actor.user.penalty.apply',
+                    'open-ils.actor.user.note.apply',
                     egCore.auth.token(), pen, msg
                 );
             }
@@ -2301,7 +2301,7 @@ function($uibModal , $q , egCore , egAlertDialog , egConfirmDialog,  egAddCopyAl
     }
 
     // assumes, for now anyway,  penalty type is fleshed onto usr_penalty.
-    service.edit_penalty = function(pen,aum) {
+    service.edit_note = function(pen,aum) {
         return $uibModal.open({
             templateUrl: './circ/share/t_new_message_dialog',
             backdrop: 'static',
@@ -2380,8 +2380,8 @@ function($uibModal , $q , egCore , egAlertDialog , egConfirmDialog,  egAddCopyAl
                     $uibModalInstance.dismiss();
                     $event.preventDefault();
                 }
-                $scope.$watch('args.penalty', generate_penalty_dialog_watch_callback($scope,egCore,allPenalties));
-                $scope.$watch('args.custom_penalty', generate_penalty_dialog_watch_callback($scope,egCore,allPenalties));
+                $scope.$watch('args.penalty', generate_note_dialog_watch_callback($scope,egCore,allPenalties));
+                $scope.$watch('args.custom_penalty', generate_note_dialog_watch_callback($scope,egCore,allPenalties));
                 $scope.$watch('args.custom_depth', function(org_depth) {
                     if (org_depth || org_depth == 0) {
                         if (org_depth > $scope.workstation_depth) {
@@ -2419,7 +2419,7 @@ function($uibModal , $q , egCore , egAlertDialog , egConfirmDialog,  egAddCopyAl
                 }
                 return egCore.net.request(
                     'open-ils.actor',
-                    'open-ils.actor.user.penalty.modify',
+                    'open-ils.actor.user.note.modify',
                     egCore.auth.token(), pen, aum
                 );
             }

@@ -189,10 +189,10 @@
     <span class="visually-hidden">Select email or print receipt options</span>
   </button>
   <div ngbDropdownMenu>
-    <button ngbDropdownItem (click)="doneRedirect()" i18n>No Receipt</button>
-    <button ngbDropdownItem (click)="emailReceipt(true)" 
+    <button type="button" ngbDropdownItem (click)="doneRedirect()" i18n>No Receipt</button>
+    <button type="button" ngbDropdownItem (click)="emailReceipt(true)" 
       [disabled]="!mayEmailReceipt()" i18n>Email Receipt</button>
-    <button ngbDropdownItem 
+    <button type="button" ngbDropdownItem 
       (click)="printReceipt(true)" i18n>Print Receipt</button>
   </div>
 </div>

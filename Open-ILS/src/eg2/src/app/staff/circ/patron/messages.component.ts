@@ -1,6 +1,6 @@
-import {Component, ViewChild, OnInit, Input, AfterViewInit} from '@angular/core';
-import {empty, from} from 'rxjs';
-import {concatMap, tap} from 'rxjs/operators';
+import {Component, ViewChild, OnInit, OnDestroy, Input, AfterViewInit} from '@angular/core';
+import {forkJoin, Subscription, empty, EMPTY, from, lastValueFrom} from 'rxjs';
+import {defaultIfEmpty, catchError, concatMap, switchMap, tap} from 'rxjs/operators';
 import {IdlObject} from '@eg/core/idl.service';
 import {NetService} from '@eg/core/net.service';
 import {OrgService} from '@eg/core/org.service';
@@ -13,14 +13,21 @@ import {GridDataSource, GridColumn, GridCellTextGenerator} from '@eg/share/grid/
 import {GridComponent} from '@eg/share/grid/grid.component';
 import {Pager} from '@eg/share/util/pager';
 import {DateUtil} from '@eg/share/util/date';
-import {PatronPenaltyDialogComponent
-} from '@eg/staff/share/patron/penalty-dialog.component';
+import {PatronNoteDialogComponent
+} from '@eg/staff/share/patron/note-dialog.component';
+
+// eslint-disable-next-line no-shadow
+enum NoteAction {
+    Archive,
+    Unarchive,
+    Remove
+}
 
 @Component({
     selector: 'eg-patron-messages',
     templateUrl: 'messages.component.html'
 })
-export class PatronMessagesComponent implements OnInit {
+export class PatronMessagesComponent implements OnInit, OnDestroy {
 
     @Input() patronId: number;
 
@@ -32,8 +39,10 @@ export class PatronMessagesComponent implements OnInit {
 
     @ViewChild('mainGrid') private mainGrid: GridComponent;
     @ViewChild('archiveGrid') private archiveGrid: GridComponent;
-    @ViewChild('penaltyDialog')
-    private penaltyDialog: PatronPenaltyDialogComponent;
+    @ViewChild('noteDialog')
+    private noteDialog: PatronNoteDialogComponent;
+
+    private subscriptions = new Subscription();
 
     constructor(
         private org: OrgService,
@@ -57,16 +66,16 @@ export class PatronMessagesComponent implements OnInit {
         const flesh = {
             flesh: 1,
             flesh_fields: {
-                ausp: ['standing_penalty', 'staff']
+                aump: ['standing_penalty', 'editor', 'staff']
             },
             order_by: {}
         };
 
         this.mainDataSource.getRows = (pager: Pager, sort: any[]) => {
 
-            const orderBy: any = {ausp: 'set_date'};
+            const orderBy: any = {aump: 'create_date'};
             if (sort.length) {
-                orderBy.ausp = sort[0].name + ' ' + sort[0].dir;
+                orderBy.aump = sort[0].name + ' ' + sort[0].dir;
             }
 
             const query = {
@@ -79,26 +88,31 @@ export class PatronMessagesComponent implements OnInit {
             };
 
             flesh.order_by = orderBy;
-            return this.pcrud.search('ausp', query, flesh, {authoritative: true});
+            return this.pcrud.search('aump', query, flesh, {authoritative: true});
         };
 
         this.archiveDataSource.getRows = (pager: Pager, sort: any[]) => {
-            const orderBy: any = {ausp: 'set_date'};
+            const orderBy: any = {aump: 'create_date'};
             if (sort.length) {
-                orderBy.ausp = sort[0].name + ' ' + sort[0].dir;
+                orderBy.aump = sort[0].name + ' ' + sort[0].dir;
             }
 
             const query = {
                 usr: this.patronId,
                 org_unit: orgIds,
                 stop_date: {'<' : 'now'},
-                set_date: {between: this.dateRange()}
+                create_date: {between: this.dateRange()}
             };
 
             flesh.order_by = orderBy;
 
-            return this.pcrud.search('ausp', query, flesh, {authoritative: true});
+            return this.pcrud.search('aump', query, flesh, {authoritative: true});
         };
+    }
+
+    ngOnDestroy(): void {
+        // This will unsubscribe from all child subscriptions that we added at once
+        this.subscriptions.unsubscribe();
     }
 
     dateRange(): string[] {
@@ -120,9 +134,9 @@ export class PatronMessagesComponent implements OnInit {
         this.archiveGrid.reload();
     }
 
-    applyPenalty() {
-        this.penaltyDialog.penalty = null;
-        this.penaltyDialog.open({size: 'lg'}).subscribe(changes => {
+    applyNote() {
+        this.noteDialog.note = null;
+        this.noteDialog.open({size: 'lg'}).subscribe(changes => {
             if (changes) {
                 this.context.refreshPatron()
                     .then(_ => this.mainGrid.reload());
@@ -130,46 +144,103 @@ export class PatronMessagesComponent implements OnInit {
         });
     }
 
-    unArchive(penalties: IdlObject[]) {
-        penalties.forEach(p => p.stop_date(null));
-        this.pcrud.update(penalties).toPromise()
-            .then(_ => this.context.refreshPatron())
-            .then(_ => {
-                this.mainGrid.reload();
-                this.archiveGrid.reload();
-            });
-    }
-
-    archive(penalties: IdlObject[]) {
-        penalties.forEach(p => p.stop_date('now'));
-        this.pcrud.update(penalties).toPromise()
-            .then(_ => {
-                this.mainGrid.reload();
-                this.archiveGrid.reload();
-            });
-    }
-
-    remove(penalties: IdlObject[]) {
-        this.pcrud.remove(penalties).toPromise()
-            .then(_ => {
-                this.mainGrid.reload();
-                this.archiveGrid.reload();
-            });
-    }
-
-    modify(penalties: IdlObject[]) {
+    modify(notes: IdlObject | IdlObject[]) {
+        console.debug('MessageComponent: modify(), notes', notes);
         let modified = false;
-        from(penalties).pipe(concatMap(penalty => {
-            this.penaltyDialog.penalty = penalty;
-            return this.penaltyDialog.open({size: 'lg'}).pipe(tap(changed => {
-                if (changed) { modified = true; }
-            }));
-        })).toPromise().then(_ => {
+        const notesArray = Array.isArray(notes) ? notes : [notes];
+
+        const dialogSequence$ = from(notesArray).pipe(
+            concatMap(note => {
+                this.noteDialog.note = note;
+                return this.noteDialog.open({size: 'lg'}).pipe(
+                    tap(changed => {
+                        if (changed) {
+                            modified = true;
+                        }
+                    }),
+                    defaultIfEmpty(false)  // Provides a default value if no emission occurs
+                );
+            })
+        );
+
+        lastValueFrom(dialogSequence$).then(() => {
             if (modified) {
                 this.mainGrid.reload();
                 this.archiveGrid.reload();
             }
+        }).catch(error => {
+            console.error('Error processing penalties:', error);
         });
+    }
+
+    handleNotes(notes: IdlObject[], action: NoteAction, className: string, idMethodName: string): void {
+        this.subscriptions.add(
+            this.pcrud.search(className, { id: notes.map(note => note[idMethodName]()) }, {}, {atomic: true}).pipe(
+                tap(objects => {
+                    // Handle stop_date based on action
+                    if (action === NoteAction.Archive || action === NoteAction.Unarchive) {
+                        const stopDate = action === NoteAction.Archive ? 'now' : null;
+                        objects.forEach(obj => obj.stop_date(stopDate));
+                    }
+                }),
+                switchMap(objects => {
+                    // Determine the operation based on action
+                    switch (action) {
+                        case NoteAction.Archive:
+                        case NoteAction.Unarchive:
+                            return this.pcrud.update(objects);
+                        case NoteAction.Remove:
+                            return this.pcrud.remove(objects);
+                    }
+                }),
+                catchError((error: unknown) => {
+                    console.error(`MessagesComponent: Error handling ${className} for action ${action}:`, error);
+                    return EMPTY;
+                })
+            ).subscribe({
+                next: _ => {
+                    this.context.refreshPatron().then(() => {
+                        this.mainGrid.reload();
+                        this.archiveGrid.reload();
+                    });
+                },
+                error: (err: unknown) => {
+                    console.error(`MessagesComponent: Failed to handle ${className}:`, err);
+                }
+            })
+        );
+    }
+
+    handlePenalties(notes: IdlObject[], action: NoteAction): void {
+        this.handleNotes(notes, action, 'ausp', 'ausp_id');
+    }
+
+    handleMessages(notes: IdlObject[], action: NoteAction): void {
+        this.handleNotes(notes, action, 'aum', 'aum_id');
+    }
+
+    archive(notes: IdlObject[]): void {
+        if (notes.length === 0 || !window.confirm($localize`Archive the selected notes?`)) {
+            return;
+        }
+        this.handlePenalties(notes, NoteAction.Archive);
+        this.handleMessages(notes, NoteAction.Archive);
+    }
+
+    unArchive(notes: IdlObject[]): void {
+        if (notes.length === 0 || !window.confirm($localize`Unarchive the selected notes?`)) {
+            return;
+        }
+        this.handlePenalties(notes, NoteAction.Unarchive);
+        this.handleMessages(notes, NoteAction.Unarchive);
+    }
+
+    remove(notes: IdlObject[]): void {
+        if (notes.length === 0 || !window.confirm($localize`Remove the selected notes?`)) {
+            return;
+        }
+        this.handlePenalties(notes, NoteAction.Remove);
+        this.handleMessages(notes, NoteAction.Remove);
     }
 }
 

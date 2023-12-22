@@ -3076,11 +3076,16 @@ sub update_penalties {
 
 
 __PACKAGE__->register_method(
-    method   => "apply_penalty",
+    method   => "apply_note",
     api_name => "open-ils.actor.user.penalty.apply"
 );
 
-sub apply_penalty {
+__PACKAGE__->register_method(
+    method   => "apply_note",
+    api_name => "open-ils.actor.user.note.apply"
+);
+
+sub apply_note {
     my($self, $conn, $auth, $penalty, $msg) = @_;
 
     $msg ||= {};
@@ -3124,6 +3129,11 @@ __PACKAGE__->register_method(
     api_name => "open-ils.actor.user.penalty.modify"
 );
 
+__PACKAGE__->register_method(
+    method   => "modify_penalty",
+    api_name => "open-ils.actor.user.note.modify"
+);
+
 sub modify_penalty {
     my($self, $conn, $auth, $penalty, $usr_msg) = @_;
 
@@ -3159,7 +3169,12 @@ sub modify_penalty {
 
 __PACKAGE__->register_method(
     method   => "remove_penalty",
-    api_name => "open-ils.actor.user.penalty.remove"
+    api_name => "open-ils.actor.user.note.remove"
+);
+
+__PACKAGE__->register_method(
+    method   => "remove_penalty",
+    api_name => "open-ils.actor.user.note.remove"
 );
 
 sub remove_penalty {
@@ -3176,7 +3191,7 @@ sub remove_penalty {
 
 __PACKAGE__->register_method(
     method   => "update_penalty_note",
-    api_name => "open-ils.actor.user.penalty.note.update"
+    api_name => "open-ils.actor.user.note.note.update"
 );
 
 sub update_penalty_note {

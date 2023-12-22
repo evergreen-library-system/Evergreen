@@ -1143,7 +1143,7 @@ sub block {
     };
     my $penalty_result = $U->simplereq(
       'open-ils.actor',
-      'open-ils.actor.user.penalty.apply', $e->authtoken, $penalty, $msg);
+      'open-ils.actor.user.note.apply', $e->authtoken, $penalty, $msg);
     if( my $result_code = $U->event_code($penalty_result) ) {
         my $textcode = $penalty_result->{textcode};
         syslog('LOG_ERR', "OILS: Block: patron penalty failed: %s", $textcode);

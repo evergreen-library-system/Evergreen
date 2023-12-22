@@ -49,7 +49,7 @@ sub apply_staff_chr_to_patron_with_msg {
     };
     my $r = $apputils->simplereq(
         'open-ils.actor',
-        'open-ils.actor.user.penalty.apply',
+        'open-ils.actor.user.note.apply',
         $script->authtoken,
         $penalty,
         $msg
@@ -66,7 +66,7 @@ sub remove_staff_chr_from_patron {
     my $penalty = shift;
     return $apputils->simplereq(
         'open-ils.actor',
-        'open-ils.actor.user.penalty.remove',
+        'open-ils.actor.user.note.remove',
         $script->authtoken,
         $penalty
     );

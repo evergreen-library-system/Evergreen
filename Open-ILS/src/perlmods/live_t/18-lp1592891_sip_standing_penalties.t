@@ -46,7 +46,7 @@ sub apply_penalty_to_patron {
     #$penalty->note('LP 1592891 SIP standing penalties test');
     my $r = $apputils->simplereq(
         'open-ils.actor',
-        'open-ils.actor.user.penalty.apply',
+        'open-ils.actor.user.note.apply',
         $script->authtoken,
         $penalty
     );
@@ -62,7 +62,7 @@ sub remove_penalty_from_patron {
     my $penalty = shift;
     return $apputils->simplereq(
         'open-ils.actor',
-        'open-ils.actor.user.penalty.remove',
+        'open-ils.actor.user.note.remove',
         $script->authtoken,
         $penalty
     );

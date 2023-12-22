@@ -7,7 +7,7 @@ import {NetService} from '@eg/core/net.service';
 import {PrintService} from '@eg/share/print/print.service';
 import {HoldingsService} from '@eg/staff/share/holdings/holdings.service';
 import {EventService} from '@eg/core/event.service';
-import {PatronPenaltyDialogComponent} from '@eg/staff/share/patron/penalty-dialog.component';
+import {PatronNoteDialogComponent} from '@eg/staff/share/patron/note-dialog.component';
 
 @Component({
     templateUrl: 'missing-pieces.component.html'
@@ -23,8 +23,8 @@ export class MarkItemMissingPiecesComponent implements AfterViewInit {
     noSuchItem = false;
     itemProcessed = false;
 
-    @ViewChild('penaltyDialog', {static: false})
-        penaltyDialog: PatronPenaltyDialogComponent;
+    @ViewChild('noteDialog', {static: false})
+        noteDialog: PatronNoteDialogComponent;
 
     constructor(
         private route: ActivatedRoute,
@@ -153,10 +153,10 @@ export class MarkItemMissingPiecesComponent implements AfterViewInit {
             }
 
             if (payload.circ) {
-                this.penaltyDialog.patronId = payload.circ.usr();
+                this.noteDialog.patronId = payload.circ.usr();
                 // eslint-disable-next-line rxjs/no-nested-subscribe
-                this.penaltyDialog.open().subscribe(
-                    penId => console.debug('Applied penalty ', penId),
+                this.noteDialog.open().subscribe(
+                    penId => console.debug('Applied note ', penId),
                     (err: unknown) => {},
                     () => this.selectInput()
                 );
