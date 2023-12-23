@@ -4,6 +4,7 @@
 indexterm:[staff client, configuration]
 indexterm:[workstation, configuration]
 indexterm:[configuration]
+indexterm:[permission]
 
 == Copy Editor: Copy Location Name First ==
 
@@ -116,3 +117,26 @@ instead.
 ====================================
 
 include::latency.adoc[]
+
+== Workstation Permissions/User Settings ==
+
+indexterm:[permission]
+
+=== Browser Client Settings & Preferences Stored on the Server ===
+
+As of Evergreen 3.2, a permission has been added to allow which accounts can apply values to workstation settings. Ultimately, this will prevent users from having to reset their settings everytime they register a new workstation.  This can especially be helpful post-system upgrade so workstation settings can be restored and applied automatically.
+
+Here is the workstation script to add the permission manually:
+----
+INSERT INTO permission.grp_perm_map (grp, perm, depth)
+VALUES (
+    (SELECT id FROM permission.grp_tree WHERE name = 'Staff'), -- name may vary
+    (SELECT id FROM permission.perm_list WHERE code =
+'APPLY_WORKSTATION_SETTING'),
+    0 -- or 1, 2, etc.
+);
+---- 
+
+What this will do is create a workstation setting that will also match with what was previously stored in the browser either by localStorage or by Hatch.
+
+https://evergreen-ils.org/documentation/release/RELEASE_NOTES_3_2.html#_browser_client_settings_amp_preferences_stored_on_the_server[Evergreen admins should look to these release notes for more information.]
