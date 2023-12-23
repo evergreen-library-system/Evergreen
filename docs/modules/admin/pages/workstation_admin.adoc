@@ -4,7 +4,6 @@
 indexterm:[staff client, configuration]
 indexterm:[workstation, configuration]
 indexterm:[configuration]
-indexterm:[permission]
 
 == Copy Editor: Copy Location Name First ==
 
@@ -119,8 +118,6 @@ instead.
 include::latency.adoc[]
 
 == Workstation Permissions/User Settings ==
-
-indexterm:[permission]
 
 === Browser Client Settings & Preferences Stored on the Server ===
 
