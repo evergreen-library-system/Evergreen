@@ -189,9 +189,9 @@ consortium.
 *Example 1*
 
 |==============================================
-|org_unit|duration_rule|recurring_fine_rule|max_fine_rule|
-|0|CONS|21_day_2_renew|0c_pd|0d_max_fine|
-|1|SYS1|NULL|25_cents|3_dollars|
+|org_unit|duration_rule|recurring_fine_rule|max_fine_rule
+|0|CONS|21_day_2_renew|0c_pd|0d_max_fine
+|1|SYS1|NULL|25_cents|3_dollars
 |==============================================
  
 In this example, the consortium has decided on a 21_day_2_renew loan rule for
@@ -202,10 +202,10 @@ default circulation duration.
 *Example 2*
 
 |==============================================
-|org_unit|grp|circ_modifier|circulate|duration_rule|recurring_fine_rule|max_fine_rule|
-|0|CONS|Users|book|TRUE|21_day_2_renew|5_cents|2_dollars|
-|1|CONS|Users|dvd|FALSE|14_day_1_renew|25_cents|5_dollars|
-|2|CONS|Users|music|TRUE|14_day_1_renew|10_cents|3_dollars|
+|org_unit|grp|circ_modifier|circulate|duration_rule|recurring_fine_rule|max_fine_rule
+|0|CONS|Users|book|TRUE|21_day_2_renew|5_cents|2_dollars
+|1|CONS|Users|dvd|FALSE|14_day_1_renew|25_cents|5_dollars
+|2|CONS|Users|music|TRUE|14_day_1_renew|10_cents|3_dollars
 |==============================================
 
 This example includes a basic set of fields and creates a situation where items
@@ -215,13 +215,13 @@ will not circulate. The associated rules would apply during checkouts.
 *Example 3*
 
 |==============================================
-|org_unit|grp|circ_modifier|circulate|duration_rule|recurring_fine_rule|max_fine_rule|
-|0|CONS|Users|book|TRUE|21_day_2_renew|5_cents|2_dollars|
-|1|CONS|Users|dvd|FALSE|14_day_1_renew|25_cents|5_dollars|
-|2|SYS1|Adult|dvd|TRUE|14_day_1_renew|25_cents|5_dollars|
-|3|CONS|Users|music|TRUE|14_day_2_renew|10_cents|3_dollars|
-|4|SYS2|Users|music|FALSE|14_day_2_renew|10_cents|3_dollars|
-|5|BR3|Users|music|TRUE|14_day_2_renew|10_cents|3_dollars|
+|org_unit|grp|circ_modifier|circulate|duration_rule|recurring_fine_rule|max_fine_rule
+|0|CONS|Users|book|TRUE|21_day_2_renew|5_cents|2_dollars
+|1|CONS|Users|dvd|FALSE|14_day_1_renew|25_cents|5_dollars
+|2|SYS1|Adult|dvd|TRUE|14_day_1_renew|25_cents|5_dollars
+|3|CONS|Users|music|TRUE|14_day_2_renew|10_cents|3_dollars
+|4|SYS2|Users|music|FALSE|14_day_2_renew|10_cents|3_dollars
+|5|BR3|Users|music|TRUE|14_day_2_renew|10_cents|3_dollars
 |==============================================
 
 This example builds on the earlier example and adds some more complicated
