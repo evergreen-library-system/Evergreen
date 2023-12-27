@@ -2022,11 +2022,14 @@ sub retrieve_copy {
             ->request(
                 "open-ils.cstore.direct.asset.copy.retrieve",
                 $cpid,
-                { flesh     => 2,
+                { flesh     => 3,
                   flesh_fields  => {
                             acn => [qw/owning_lib record prefix suffix/],
-                            acp => [qw/call_number location status circ_lib stat_cat_entries notes parts/],
+                            acp => [qw/call_number location status circ_lib stat_cat_entries notes parts tags/],
                             asce => [qw/stat_cat/],
+                            acptcm => [qw/tag/],
+                            acpt => [qw/tag_type/],
+
                     }
                 })
             ->gather(1))
@@ -2070,8 +2073,10 @@ sub retrieve_callnumber {
                   flesh_fields  => {
                             acn => [qw/owning_lib record copies uri_maps prefix suffix/],
                             auricnm => [qw/uri/],
-                            acp => [qw/location status circ_lib stat_cat_entries notes parts/],
+                            acp => [qw/location status circ_lib stat_cat_entries notes parts tags/],
                             asce => [qw/stat_cat/],
+                            acptcm => [qw/tag/],
+                            acpt => [qw/tag_type/],
                     }
                 })
             ->gather(1))
@@ -2332,8 +2337,10 @@ sub new_record_holdings {
           flesh_fields  => {
                     acn => [qw/copies owning_lib uri_maps prefix suffix/],
                     auricnm => [qw/uri/],
-                    acp => [qw/circ_lib location status stat_cat_entries notes parts/],
+                    acp => [qw/circ_lib location status stat_cat_entries notes parts tags/],
                     asce    => [qw/stat_cat/],
+                    acptcm => [qw/tag/],
+                    acpt => [qw/tag_type/],
                 },
           ( $limit > -1 ? ( limit  => $limit  ) : () ),
           ( $offset     ? ( offset => $offset ) : () ),
@@ -2404,9 +2411,11 @@ sub new_record_holdings {
                     sdist   => [qw/basic_summary supplement_summary index_summary streams holding_lib/],
                     sstr    => [qw/items/],
                     sitem   => [qw/notes unit/],
-                    sunit   => [qw/notes location status circ_lib stat_cat_entries call_number/],
+                    sunit   => [qw/notes location status circ_lib stat_cat_entries call_number tags/],
                     asce    => [qw/stat_cat/],
                     acn => [qw/owning_lib prefix suffix/],
+                    acptcm => [qw/tag/],
+                    acpt => [qw/tag_type/],
                 },
           ( $limit > -1 ? ( limit  => $limit  ) : () ),
           ( $offset     ? ( offset => $offset ) : () ),
@@ -3669,6 +3678,20 @@ sub as_xml {
         $xml .= "      <notes/>\n";
     }
 
+    if (ref($self->obj->tags) && $self->obj->tags) {
+        $xml .= "        <tags>\n";
+        for my $map ( @{$self->obj->tags} ) {
+            my $tag = $map->tag;
+            next unless ( $tag->pub eq 't' );
+            my $tag_type = $tag->tag_type;
+            $xml .= sprintf('        <tag type="%s">%s</tag>', $self->escape($tag_type->label), $self->escape($tag->value));
+            $xml .= "\n";
+        }
+        $xml .= "        </tags>\n";
+    } else {
+        $xml .= "      <tags/>\n";
+    }
+
     $xml .= OpenILS::Application::SuperCat::unAPI->new( $self->obj->issuance )->as_xml({ %$args, no_items=>1 }) if (!$args->{no_issuance});
     $xml .= OpenILS::Application::SuperCat::unAPI->new( $self->obj->stream )->as_xml({ %$args, no_items=>1 }) if (!$args->{no_stream});
     $xml .= OpenILS::Application::SuperCat::unAPI->new( $self->obj->unit )->as_xml({ %$args, no_items=>1, no_volumes=>1 }) if ($self->obj->unit && !$args->{no_unit});
@@ -3717,6 +3740,21 @@ sub as_xml {
     }
 
     $xml .= "        </copy_notes>\n";
+
+    if (ref($self->obj->tags) && $self->obj->tags) {
+        $xml .= "        <copy_tags>\n";
+        for my $map ( @{$self->obj->tags} ) {
+            my $tag = $map->tag;
+            next unless ( $tag->pub eq 't' );
+            my $tag_type = $tag->tag_type;
+            $xml .= sprintf('        <copy_tag type="%s">%s</copy_tag>', $self->escape($tag_type->label), $self->escape($tag->value));
+            $xml .= "\n";
+        }
+        $xml .= "        </copy_tags>\n";
+    } else {
+        $xml .= "      <copy_tags/>\n";
+    }
+
     $xml .= "        <statcats>\n";
 
     if (ref($self->obj->stat_cat_entries) && $self->obj->stat_cat_entries) {
@@ -3848,6 +3886,21 @@ sub as_xml {
     }
 
     $xml .= "        </copy_notes>\n";
+
+    if (ref($self->obj->tags) && $self->obj->tags) {
+        $xml .= "        <copy_tags>\n";
+        for my $map ( @{$self->obj->tags} ) {
+            my $tag = $map->tag;
+            next unless ( $tag->pub eq 't' );
+            my $tag_type = $tag->tag_type;
+            $xml .= sprintf('        <copy_tag type="%s">%s</copy_tag>', $self->escape($tag_type->label), $self->escape($tag->value));
+            $xml .= "\n";
+        }
+        $xml .= "        </copy_tags>\n";
+    } else {
+        $xml .= "      <copy_tags/>\n";
+    }
+
     $xml .= "        <statcats>\n";
 
     if (ref($self->obj->stat_cat_entries) && $self->obj->stat_cat_entries) {

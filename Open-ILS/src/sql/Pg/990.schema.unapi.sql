@@ -1034,6 +1034,21 @@ CREATE OR REPLACE FUNCTION unapi.acpn ( obj_id BIGINT, format TEXT,  ename TEXT,
           WHERE id = $1;
 $F$ LANGUAGE SQL STABLE;
 
+CREATE OR REPLACE FUNCTION unapi.acpt ( obj_id BIGINT, format TEXT,  ename TEXT, includes TEXT[], org TEXT, depth INT DEFAULT NULL, slimit HSTORE DEFAULT NULL, soffset HSTORE DEFAULT NULL, include_xmlns BOOL DEFAULT TRUE ) RETURNS XML AS $F$
+        SELECT  XMLELEMENT(
+                    name copy_tag,
+                    XMLATTRIBUTES(
+                        CASE WHEN $9 THEN 'http://open-ils.org/spec/holdings/v1' ELSE NULL END AS xmlns,
+                        copy_tag_type.label AS type
+                    ),
+                    copy_tag.value
+                )
+          FROM  asset.copy_tag
+          JOIN  config.copy_tag_type
+          ON    copy_tag_type.code = copy_tag.tag_type
+          WHERE copy_tag.id = $1;
+$F$ LANGUAGE SQL STABLE;
+
 CREATE OR REPLACE FUNCTION unapi.ascecm ( obj_id BIGINT, format TEXT,  ename TEXT, includes TEXT[], org TEXT, depth INT DEFAULT NULL, slimit HSTORE DEFAULT NULL, soffset HSTORE DEFAULT NULL, include_xmlns BOOL DEFAULT TRUE ) RETURNS XML AS $F$
         SELECT  XMLELEMENT(
                     name statcat,
@@ -1110,6 +1125,18 @@ CREATE OR REPLACE FUNCTION unapi.acp ( obj_id BIGINT, format TEXT,  ename TEXT, 
                             )
                         ELSE NULL
                     END,
+                    CASE
+                        WHEN ('acpt' = ANY ($4)) THEN
+                            XMLELEMENT( name copy_tags,
+                                (SELECT XMLAGG(acpt) FROM (
+                                    SELECT  unapi.acpt( copy_tag.id, 'xml', 'copy_tag', array_remove($4,'acp'), $5, $6, $7, $8, FALSE)
+                                      FROM  asset.copy_tag_copy_map
+                                      JOIN asset.copy_tag ON copy_tag.id = copy_tag_copy_map.tag
+                                      WHERE copy_tag_copy_map.copy = cp.id AND copy_tag.pub
+                                )x)
+                            )
+                        ELSE NULL
+                    END,
                     CASE 
                         WHEN ('ascecm' = ANY ($4)) THEN
                             XMLELEMENT( name statcats,
@@ -1129,7 +1156,6 @@ CREATE OR REPLACE FUNCTION unapi.acp ( obj_id BIGINT, format TEXT,  ename TEXT, 
                                       FROM  biblio.peer_bib_copy_map
                                       WHERE target_copy = cp.id
                                 )x)
-
                             )
                         ELSE NULL
                     END,
@@ -1190,6 +1216,18 @@ CREATE OR REPLACE FUNCTION unapi.sunit ( obj_id BIGINT, format TEXT,  ename TEXT
                                     SELECT  unapi.acpn( id, 'xml', 'copy_note', array_remove( array_remove($4,'acp'),'sunit'), $5, $6, $7, $8, FALSE)
                                       FROM  asset.copy_note
                                       WHERE owning_copy = cp.id AND pub
+                                )x)
+                            ELSE NULL
+                        END
+                    ),
+                    XMLELEMENT( name copy_tags,
+                        CASE
+                            WHEN ('acpt' = ANY ($4)) THEN
+                                (SELECT XMLAGG(acpt) FROM (
+                                    SELECT  unapi.acpt( copy_tag.id, 'xml', 'copy_tag', array_remove( array_remove($4,'acp'),'sunit'), $5, $6, $7, $8, FALSE)
+                                      FROM  asset.copy_tag_copy_map
+                                      JOIN  asset.copy_tag ON copy_tag.id = copy_tag_copy_map.tag
+                                      WHERE copy_tag_copy_map.copy = cp.id AND copy_tag.pub
                                 )x)
                             ELSE NULL
                         END
