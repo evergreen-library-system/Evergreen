@@ -2026,6 +2026,7 @@ sub retrieve_copy {
                   flesh_fields  => {
                             acn => [qw/owning_lib record prefix suffix/],
                             acp => [qw/call_number location status circ_lib stat_cat_entries notes parts/],
+                            asce => [qw/stat_cat/],
                     }
                 })
             ->gather(1))
@@ -2070,6 +2071,7 @@ sub retrieve_callnumber {
                             acn => [qw/owning_lib record copies uri_maps prefix suffix/],
                             auricnm => [qw/uri/],
                             acp => [qw/location status circ_lib stat_cat_entries notes parts/],
+                            asce => [qw/stat_cat/],
                     }
                 })
             ->gather(1))

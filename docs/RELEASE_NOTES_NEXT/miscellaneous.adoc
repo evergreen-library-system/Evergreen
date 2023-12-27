@@ -1,3 +1,4 @@
 * Improve the performance of the marc_export support script, particularly when items are included (LP#2041364)
 * Add a --batch-size option to the marc_export support script to better control resource usage (LP#2041364)
 * Fixes the fine level check on the asset.copy_template table, still used by serials. [Lp 1384796](https://bugs.launchpad.net/evergreen/+bug/1384796)
+* Fix an Apache internal server error in SuperCat when retrieving copies or call numbers with statistical categories. [Lp 2047587](https://bugs.launchpad.net/evergreen/+bug/2047587)
