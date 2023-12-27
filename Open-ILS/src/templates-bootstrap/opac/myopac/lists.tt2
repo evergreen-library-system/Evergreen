@@ -396,7 +396,7 @@
                 [% END %]
                 [% IF CGI.param("edit_notes") == bbag.id %]
                 <tr class="mobile_hide">
-                    <td colspan="6"><!-- All space left of notes column --></td>
+                    <td colspan="7"><!-- All space left of notes column --></td>
                     <td class="save-notes">
                         [%- INCLUDE "opac/parts/preserve_params.tt2"; %]
                         <input type="hidden" name="bbid" value="[% CGI.param('bbid') | html %]" />
