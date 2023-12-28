@@ -48,6 +48,7 @@
 .. Serials staff https://olddocs.evergreen-ils.org/docs/reorg/3.2/serials/[(HTML)] https://olddocs.evergreen-ils.org/docs/reorg/3.2/serials/Evergreen_Documentation.pdf[(PDF)] https://olddocs.evergreen-ils.org/docs/reorg/3.2/serials/Evergreen_Documentation.epub[(EPUB)]
 .. System administration from the command line https://olddocs.evergreen-ils.org/docs/reorg/3.2/command_line_admin/[(HTML)] https://olddocs.evergreen-ils.org/docs/reorg/3.2/command_line_admin/Evergreen_Documentation.pdf[(PDF)] https://olddocs.evergreen-ils.org/docs/reorg/3.2/command_line_admin/Evergreen_Documentation.epub[(EPUB)]
 .. System administration from the staff client https://olddocs.evergreen-ils.org/docs/reorg/3.2/staff_client_admin/[(HTML)] https://olddocs.evergreen-ils.org/docs/reorg/3.2/staff_client_admin/Evergreen_Documentation.pdf[(PDF)] https://olddocs.evergreen-ils.org/docs/reorg/3.2/staff_client_admin/Evergreen_Documentation.epub[(EPUB)]
+. https://olddocs.evergreen-ils.org/3.2_schema/[DB Schema]
 
 == Evergreen 3.1
 
