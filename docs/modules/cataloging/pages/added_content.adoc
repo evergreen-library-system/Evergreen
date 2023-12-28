@@ -1,0 +1,21 @@
+= Added Content Tab =
+
+indexterm:[added content, NoveList]
+
+As of 3.12, there is a tab in the Angular staff client bibliographic record to display added content. Currently this only supports NoveList added content. 
+
+There is dynamic styling on this tab that changes depending on whether or not added content is available for the record. The tab will read 'Added Content' and show a solid yellow star if added content is present, and it will read 'No Added Content' with an outlined empty star if there is no added content present. The tab honors the existing Set Default View workstation setting.
+
+image::added_content/added_content_tab.png[Added Content Tab]
+
+This work also added four new library settings to control the source of the content:
+
+* Staff Client added content: NoveList Select URL
+* Staff Client added content: NoveList Select profile/user
+* Staff Client added content: NoveList Select key/password
+* URL Override for NoveList Select added content javascript
+** This can be used to override the script store's URL in case of future breaking changes to the service.
+
+The workstation location organizational unit will determine which library settings apply. 
+
+Because NoveList Select depends on an external JavaScript file to load its data, this feature includes a new script loading service and a script store containing the names and paths of scripts that may be loaded into the Angular interfaces. In addition to the NoveList Select script provided by EBSCO, there is a helper script to insert it into the Added Content tab panel and adjust the progress, success, and error messages(both visible and ARIA live regions).
