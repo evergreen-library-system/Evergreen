@@ -1,10 +1,6 @@
-= Tests =
-
+= Latency =
 
 Click *Administration* -> *Workstation* -> *Tests*
-
-== Latency Test ==
-
 
 This will measure the websocket latency between your workstation client and the Evergreen server.
 
@@ -15,20 +11,3 @@ This will measure the websocket latency between your workstation client and the 
 image::workstation/latency-test.png[]
 
 *Average Latency* - Indicates how long it takes for your workstation to communicate with Evergreen servers.
-
-
-= Disable Sounds =
-
-
-Click *Administration* -> *Workstation*
-
-.Disable Sounds
-. Check the box for *Disable Sounds* to turn off the staff client Sounds.
-
-.Test Sounds
-. Click the buttons to test the staff client sounds.
-. Distinct sounds will be played for each event.
-.. *Success*
-.. *Info*
-.. *Warning*
-.. *Error*
