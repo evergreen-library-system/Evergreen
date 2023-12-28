@@ -1,78 +1,89 @@
 = Link Checker =
 :toc:
 
-The Link Checker enables you to verify the validity of URLs stored in MARC records.  
-The ability to verify URLs would benefit locations with large electronic resource collections.
+The Link Checker enables you to verify the validity of URLs stored in MARC records. In Link Checker, you can construct a search (a *Session*) that will specify a set of records from which to extract URLs. Each session also has sets of verification attempts (a *Batch*) where these URLs are tested & reported on as functional or nonfunctional. Each Session can have many Batches.
+
+The Link Checker interface defaults to scoping at the workstation organizational unit but you can change this as well as select ancestors or descendants of the selected location.
+
+This feature is located at *Cataloging* -> *Link Checker* and using it requires the URL_VERIFY permission.
 
 == Search for URLs ==
 
-Search for MARC records that contain URLs that you want to verify.
+image::link_checker/lc_sessions_grid.png[Link Checker Sessions grid]
 
-. Click *Cataloging* -> *Link Checker*.
-. Click *New Link Checker Session*.
-. Create a session name.  Note that each session must have a unique name.
-. Select a search scope from the drop down menu. Records that would be retrieved by searching 
-Example Branch 1 (BR1) in an OPAC search would also be retrieved here.  For example, 
-a record that describes an electronic resource with a URL in the 856 $u and an org unit code, 
-such as BR1, in the 856 $9, would be retrieved by a search of relevant keywords.  Also, records 
-that contain a URL without the $9 subfield, but also have physical copies at BR1, would be 
-retrieved.  Note that you can skip this step if you enter the org unit code of the location 
-that you want to search in the *Search* field.
+To search for MARC records that contain URLs that you want to verify, select *New Session*. A modal will open.
+
+image::link_checker/lc_session_modal.png[Create Link Checker Session modal]
+
+. _Name_ (required) - The name of your Link Checker Session. Names must be unique.
+. _Owning Library_ (required) - This will default to the library of your workstation registration.
+. _Search Scope_ - This is the location where you want your search to look for bibs. Link Checker will look for locations of physical copies as well as 856$9 designations. 
+.. Records that would be retrieved by searching Example Branch 1 (BR1) in an OPAC search will be retrieved here. 
+.. For example, a record that describes an electronic resource with a URL in the 856$u and an org unit code, such as BR1, in the 856$9, would be retrieved by a search of relevant keywords. 
+.. Records that contain a URL without the $9 subfield, but also have physical copies at BR1, would be retrieved.
+.. This search will honor the `opac.located_uri.act_as_copy` global flag when determining whether a bib should be retrieved. If this flag is false, bibs with located URIs (856$9) will only be retrieved if the specific org unit is specified in the search. If this flag is true, child org units will also be considered in the search.
+.. Note that you can skip this step if you enter the org unit code of the location that you want to search in the _Search_ field below.
+. _Saved Searches_ - these are saved search strings that will include a bib-level audience search parameter. They can be edited at the database level.
+.. Children’s Materials - audience(a,b,c)
+.. Young Adult Materials - audience(j,d)
+.. General/Adult Materials - audience(e,f,g)
+. _Search_ - This is your search string. It will include the search scope set above. This search string uses the same advanced search syntax as record buckets.
+.. See xref:cataloging/record_buckets.adoc#_from_the_record_bucket_interface[Record Buckets documentation] for more information on the search syntax.
 . Enter search terms to retrieve records with URLs that you want to verify.  You can also add 
 a location filter, such as BR1.
-. You may further limit your search by selecting a saved search.  Saved searches are filters made 
-up of specific criteria, such as shelving location or audience.  Adding a saved search to your 
-keyword search will narrow your search for records with URLs.  This step is optional.
-. Enter tags and subfields that contain URLs in the appropriate boxes.  Click *Add* after you enter 
-the data in the fields.  You can add multiple tags and subfields by repeating this process. Evergreen 
-will search for records that match your search terms, and then, from the set that it retrieves, it 
-will extract any URLs from all of the tag/subfield locations you have specified for the session.
-. To view and manually verify the URLs that Evergreen retrieves, leave the *Process Immediately* button 
-unchecked.  If you want Evergreen to automatically verify the URLs that it retrieves, then check the box to *Process Immediately*.
-. Click *Begin* to process your search.
+.. Search examples:
+... site(CONS) au:tolkien
+... site(CONS) kw:cello
+... site(BR1) ti:cello concertos
+... site(BR2) kw:concerto au:brahms
+. _URL Selectors_ (required) - This tells your search in which MARC field/subfield set  to look for URLs. It defaults to MARC tag 856 and subfield u, but you can change this or add additional tag/subfield combinations to search. 
+. Once you have established your search parameters, select *Create Session and Test All URLs* to create the session and batch. Evergreen will search for records that match your search terms, and then, from the set that it retrieves, it will extract any URLs from all of the tag/subfield locations you have specified for the session.
+. You will see a confirmation of the Session ID, the number of record hits, the number of URLs extracted, and the number of URLs verified.
 
-image::media/Link_Checker1.jpg[Link_Checker1]   
+image::link_checker/lc_batch_results.png[Batch Results]
 
+If you wish to create the session and test URLs later, select *Create Session*. You can later go back and select the session to create a batch and test URLs. Select *Cancel* to exit without saving.
    
 == View Your Results ==
 
-If you do not click *Process Immediately*, then you must select the links that you want to verify, and click 
-*Verify Selected URLs*.  If you click *Process Immediately*, then you skip this step, and Evergreen 
-jumps directly to the results of the verification attempts as seen in the next step.
+*View Session URLs* will take you to a list of URLs pulled from the bibs identified in your searches for selected sessions. From this interface you can select all or a subset of URLs and select *Verify Selected URLs* to create a new batch and verify (or re-verify) the URLs.
 
-image::media/Link_Checker2.jpg[Link_Checker2]   
+image::link_checker/lc_session_results.png[View Session URLs]
 
-Evergreen displays the results of the verification attempts, including the tags that you searched, 
-the URLs that Evergreen retrieved, the Bib Record ID, the request and result time, and the result code and text.
+*View Session Attempts* will take you to a list of all verification attempts for selected sessions. This will include verification attempts from different batches.
 
-image::media/Link_Checker6.jpg[Link_Checker6]  
+image::link_checker/lc_session_attempts.png[View Session Attempts]
+
+*View Batch Attempts* will take you to a list of verification attempts for selected batches. This grid shows the tags that you searched, the URLs that Evergreen retrieved, the Bib Record ID, the request and result time, and the result code and text, among other information. If a URL is redirected, Evergreen will verify the redirect as well and will record the URL ID of the redirect in the _Redirected To_ column.
+
+image::link_checker/lc_batch_attempts.png[View Batch Attempts]
+
 
 == Manage Your Sessions ==
+
+=== Actions Menu === 
+
+Actions in the main Actions Menu include *Copy to Clipboard*, *Clone Selected Session*, and *Delete Selected Sessions*. You can select multiple sessions to delete. Deleting a session will delete all of its associated information including batches and verification attempts. As is standard in eg2 grids, there are also options to manage column display, column widths, and download grid CSV, among others.
 
 === Edit Columns ===
 
 You can use the *Column Picker* to add and remove columns on any of the *Link Checker* interfaces.  
-To access the *Column Picker*, right click on any of the column headings.  The columns are saved to your user account.
-  
-
-=== Clone Sessions ===
-
-You can clone sessions that you run frequently or that have frequently-used parameters that 
-need only minor adjustments to create new searches.  To clone a session:
-
-. Click *Cataloging* -> *Link Checker*.
-. In the Session ID column, click *Clone*.  A copy of the parameters of that search will appear.
+To access the *Column Picker*, select the gear icon in the upper right of the grid.
 
 
-=== View Verification Attempts ===
+=== Manage Filters === 
 
-To view the results of a verification attempt after you have closed the session, click *Cataloging* -> *Link Checker*.  
-Your link checker sessions appear in a list.  To view the results of a session, click the *Open* link in the Session ID column.  
+*Manage Filters* opens a modal with a new filter groups feature. This feature lets you save and load sets of one or many column filters. Manage Filters is available on all Link Checker grids.
 
-Click *Filter* to refine the results on this page.  To add a filter:
+For example, if you want to create a filter set on the main Link Checker grid for Sessions searching CONS and run in 2023, you would apply the following two column filters:
 
-. Select a column from the first drop down menu.
-. Select an operator from the second drop down menu.
-. A third field will appear.  Enter the appropriate text.
-. Click *Apply* to apply the filter to your current results.  Click *Save Filters* to save the filter to your user account for later use.  
+* Start Time between 2023-01-01 and 2023-12-31
+* Search Constraints contains CONS
 
+Then, you would select *Manage Filters*, enter a name in the box labeled _Save As_, and then click _Save Active Filters_. This will save your filter set for future use.
+
+image::link_checker/lc_manage_grid_filters.png[Grid Filters Modal]
+
+From the same modal you can also use _Remove Filters_ to clear any current filter selections, _Load Filter Set_ to load a previously saved filter set, and _Delete Filter Set_ to delete a previously saved filter set. 
+
+All filter sets for a grid are saved as a server workstation preference.
