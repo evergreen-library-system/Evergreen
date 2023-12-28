@@ -3,4 +3,5 @@
 ** xref:development:pgtap.adoc[Developing with pgTAP tests]
 ** xref:development:intro_opensrf.adoc[Easing gently into OpenSRF]
 ** xref:development:updating_translations_launchpad.adoc[Updating translations using Launchpad]
+** https://wiki.evergreen-ils.org/doku.php?id=newdevs:db:schemas:3.10_schma[Database Schema v3.10 - external link]
 
