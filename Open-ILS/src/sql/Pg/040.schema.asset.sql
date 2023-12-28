@@ -551,7 +551,7 @@ CREATE TABLE asset.copy_template (
 	loan_duration  INT      CONSTRAINT valid_loan_duration CHECK (
 	                            loan_duration IS NULL OR loan_duration IN (1,2,3)),
 	fine_level     INT      CONSTRAINT valid_fine_level CHECK (
-	                            fine_level IS NULL OR loan_duration IN (1,2,3)),
+	                            fine_level IS NULL OR fine_level IN (1,2,3)),
 	age_protect    INT,
 	circulate      BOOL,
 	deposit        BOOL,
