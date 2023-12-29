@@ -48,7 +48,10 @@ sub update_survey {
 
     my $e = new_editor(authtoken => $auth, xact => 1);
     return $e->die_event unless $e->checkauth;
-    return $e->die_event unless $e->allowed('ADMIN_SURVEY', $survey->owner);
+
+    # For some reason, after editing a survey once, $survey->owner becomes the value that was in $survey->owner->id. This deals with that.
+    my $owner = ref($survey->owner) ? $survey->owner->id : $survey-> owner;
+    return $e->die_event unless $e->allowed('UPDATE_SURVEY', $owner) or $e->allowed('ADMIN_SURVEY', $owner);  
 
     my $questions = $survey->questions || [];
 
@@ -533,7 +536,8 @@ sub delete_survey {
 
     my $survey = $e->retrieve_action_survey($survey_id) 
         or return $e->die_event;
-    return $e->die_event unless $e->allowed('ADMIN_SURVEY', $survey->owner);
+    my $owner = ref($survey->owner) ? $survey->owner->id : $survey->owner;
+    return $e->die_event unless $e->allowed('DELETE_SURVEY', $owner) or $e->allowed('ADMIN_SURVEY', $owner);
 
     my $questions = $e->search_action_survey_question({survey => $survey_id});
     my @answers;
