@@ -52,7 +52,7 @@ export class NegativeBalancesComponent implements OnInit {
                 // Still determining the default context org unit.
                 return EMPTY;
             }
-           
+
             return this.net.request(
                 'open-ils.actor',
                 'open-ils.actor.users.negative_balance',
