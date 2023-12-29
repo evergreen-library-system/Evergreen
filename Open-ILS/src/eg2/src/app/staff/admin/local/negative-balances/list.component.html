@@ -19,19 +19,24 @@
   </a>
 </ng-template>
 
-<eg-grid #grid idlClass="au" [dataSource]="dataSource"
-  persistKey="admin.local.negative_balances" [cellTextGenerator]="cellTextGenerator"
-  showFields="balance_owed,last_billing_activity,barcode,family_name,first_given_name,dob,barred">
+<eg-grid #grid idlClass="au" [dataSource]="dataSource" persistKey="admin.local.negative_balances"
+  [cellTextGenerator]="cellTextGenerator" [sortable]="true" [useLocalSort]="true"
+  [showDeclaredFieldsOnly]="true">
 
-  <eg-grid-column name="barcode" [cellTemplate]="barcodeTmpl"
-    i18n-label label="Barcode"></eg-grid-column>
+  <eg-grid-column name="barcode" [cellTemplate]="barcodeTmpl" i18n-label
+    [sortable]="false" label="Barcode"></eg-grid-column>
 
   <eg-grid-column name="balance_owed" path="_extras.balance_owed"
     datatype="money" i18n-label label="Balance Owed"></eg-grid-column>
 
+  <eg-grid-column path="family_name" label="Last Name" i18n-label></eg-grid-column>
+
+  <eg-grid-column path="first_given_name" label="First Name" i18n-label></eg-grid-column>
+
   <eg-grid-column name="last_billing_activity" path="_extras.last_billing_activity"
     datatype="timestamp" [datePlusTime]="true" i18n-label label="Last Billing Activity">
   </eg-grid-column>
+
 </eg-grid>
 
 
