@@ -46,6 +46,7 @@
       <div><label  class="form-label fw-bold" i18n>Prefix</label></div>
       <div>
         <eg-combobox [smallFormControl]="true" [(ngModel)]="batchVolPrefix">
+          <eg-combobox-entry [entryId]="-1" entryLabel="<None>" i18n-entryLabel></eg-combobox-entry>
           <eg-combobox-entry *ngFor="let pfx of volcopy.commonData.acn_prefix"
             [entryId]="pfx.id()" [entryLabel]="pfx.label()">
           </eg-combobox-entry>
@@ -73,6 +74,7 @@
       <div><label class="form-label fw-bold" i18n>Suffix</label></div>
       <div>
         <eg-combobox [smallFormControl]="true" [(ngModel)]="batchVolSuffix">
+          <eg-combobox-entry [entryId]="-1" entryLabel="<None>" i18n-entryLabel></eg-combobox-entry>
           <eg-combobox-entry *ngFor="let sfx of volcopy.commonData.acn_suffix"
             [entryId]="sfx.id()" [entryLabel]="sfx.label()">
           </eg-combobox-entry>
