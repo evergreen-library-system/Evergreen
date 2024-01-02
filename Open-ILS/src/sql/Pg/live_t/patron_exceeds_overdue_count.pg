@@ -1,0 +1,48 @@
+BEGIN;
+
+SELECT plan(3);
+
+SELECT is(
+    fail_part,
+    NULL,
+    'When no penalty on the account, it does not return MAX_ITEMS failure'
+) FROM action.item_user_circ_test(
+    7, -- org unit
+    2351, -- item
+    1); -- patron
+
+-- Add a PATRON_EXCEEDS_OVERDUE_COUNT standing penalty to this patron
+-- at the circulating org_unit
+INSERT INTO actor.usr_standing_penalty (id, org_unit, usr, standing_penalty)
+    VALUES (
+        9999, -- id
+        7, -- org unit
+        1, -- patron
+        2 -- penalty (PATRON_EXCEEDS_OVERDUE_COUNT)
+    );
+
+SELECT is(
+    fail_part,
+    'PATRON_EXCEEDS_OVERDUE_COUNT',
+    'When patron has the PATRON_EXCEEDS_OVERDUE_COUNT penalty, it returns a descriptive failure'
+) FROM action.item_user_circ_test(
+    7, -- org unit
+    2351, -- item
+    1); -- patron;
+
+-- Let's try again, this time with the PATRON_EXCEEDS_OVERDUE_COUNT
+-- standing penalty at the consortium level
+UPDATE actor.usr_standing_penalty
+    SET org_unit = 1
+    WHERE id = 9999;
+
+SELECT is(
+    fail_part,
+    'PATRON_EXCEEDS_OVERDUE_COUNT',
+    'When patron has the PATRON_EXCEEDS_OVERDUE_COUNT penalty, it returns a descriptive failure'
+) FROM action.item_user_circ_test(
+    7, -- org unit
+    2351, -- item
+    1); -- patron;
+
+ROLLBACK;

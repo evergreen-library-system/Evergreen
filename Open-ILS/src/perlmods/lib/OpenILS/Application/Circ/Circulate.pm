@@ -1305,6 +1305,12 @@ sub run_indb_circ_test {
     my $self = shift;
     return $self->matrix_test_result if $self->matrix_test_result;
 
+    # Before we run the database function, let's make sure that the patron's
+    # threshold-based penalties are up-to-date, so that the database function
+    # can take them into consideration.
+    my @threshold_based_penalties = qw(PATRON_EXCEEDS_FINES PATRON_EXCEEDS_OVERDUE_COUNT PATRON_EXCEEDS_CHECKOUT_COUNT PATRON_EXCEEDS_LOST_COUNT);
+    OpenILS::Utils::Penalty->calculate_penalties($self->editor, $self->patron->id, $self->circ_lib, @threshold_based_penalties);
+
     my $dbfunc = ($self->is_renewal) ? 
         'action.item_user_renew_test' : 'action.item_user_circ_test';
 

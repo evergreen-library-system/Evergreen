@@ -17,6 +17,7 @@ Additional penalties that can be configured with Group Penalty Thresholds includ
 If your system uses custom penalties, you can set thresholds for them in the Group Penalty Threshold interface as well. See the documentation on xref:admin:lsa-standing_penalties.adoc#custom_penalties[custom penalties] for more information.
 
 Accounts that meet or exceed penalty thresholds display an alert message when opened and require staff overrides for blocked transactions.
+If a patron exceeds the configured threshold, Evergreen will show an alert when a staff member attempts to check out another item to them.
 
 To configure which circulation actions are blocked by each penalty, navigate to *Administration->Local Administration->Standing Penalties* and refer to the documentation for xref:admin:lsa-standing_penalties.adoc[Standing Penalties]. Note that the Org Depth of the standing penalty matters if your Group Penalty Threshold is not at the top of the organization tree. If you want all penalty blocks to take effect everywhere, you will need to set the standing penalty Org Depth to 0, otherwise penalty blocks will only apply at the level they are mapped to a threshold.
 
