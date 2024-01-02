@@ -1,0 +1,33 @@
+BEGIN;
+
+SELECT plan(2);
+
+--- Set the PATRON_EXCEEDS_OVERDUE_COUNT threshold to 1
+UPDATE permission.grp_penalty_threshold AS pgpt
+    SET threshold=1
+    FROM config.standing_penalty AS csp
+    WHERE csp.name = 'PATRON_EXCEEDS_OVERDUE_COUNT'
+    AND csp.id=pgpt.penalty;
+
+SELECT is_empty(
+    'SELECT * FROM actor.calculate_system_penalties(1, 7)',
+    'When no overdue items are out, the user does not get a PATRON_EXCEEDS_OVERDUE_COUNT penalty');
+
+-- Add two overdue circulations to this patron's account, exceeding the threshold of 1
+INSERT INTO action.circulation (usr, circ_lib, target_copy, due_date,
+    circ_staff, renewal_remaining, grace_period, duration_rule,
+    recurring_fine_rule, max_fine_rule)
+    VALUES (1, 7, 1857,  current_date - interval '2 year',
+        1, 1, '1 day', 1,
+        1, 1),
+        (1, 7, 1858,  current_date - interval '2 year',
+        1, 1, '1 day', 1,
+        1, 1);
+
+SELECT is(
+    standing_penalty,
+    2, -- PATRON_EXCEEDS_OVERDUE_COUNT
+    'When over the PATRON_EXCEEDS_OVERDUE_COUNT threshold, it returns a PATRON_EXCEEDS_OVERDUE_COUNT penalty'
+) FROM actor.calculate_system_penalties(1, 7);
+
+ROLLBACK;
