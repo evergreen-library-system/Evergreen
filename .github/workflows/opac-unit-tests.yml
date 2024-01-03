@@ -3,13 +3,9 @@ on:
   push:
     paths:
       - 'Open-ILS/web/**'
-      - 'Open-ILS/web/**'
   pull_request:
     paths:
       - 'Open-ILS/web/**'
-      - 'Open-ILS/web/**'
-  schedule:
-    - cron: '0 0 * * *'
 defaults:
   run:
     working-directory: Open-ILS/web/opac/deps
