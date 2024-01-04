@@ -13,12 +13,27 @@
 # MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 # GNU General Public License for more details.
 # ---------------------------------------------------------------
-
+#
+# To run this script on Windows:
+# 1. Install Strawberry Perl from https://strawberryperl.com/
+# 2. Install Node from https://nodejs.org
+# 3. Open a new cmd window
+# 4. Clone the Evergreen git repository if you don't have it already.  Instructions
+#    can be found at https://wiki.evergreen-ils.org/doku.php?id=newdevs:git:install
+# 5. In your cmd window, `cd` into the Evergreen docs directory.  For example, if
+#    your local copy of the Evergreen repo is at C:\Users\me\projects\Evergreen, type
+#    `cd \Users\me\projects\Evergreen\docs` (without the backticks) into the cmd window.
+# 6. In your cmd window, run `generate_docs.pl --base-url http://example.com`
+# 7. In a browser, open the docs/output.html file.  For examle, if your local
+#    copy of the Evergreen repo is at C:\Users\me\projects\Evergreen, type
+#    file:///C:/Users/me/projects/Evergreen/docs/output/docs/output/index.html
+#    into your browser's URL bar.
 
 use Getopt::Long;
 use Cwd;
 use File::Path;
 use Data::Dumper;
+use File::Copy;
 
 my $base_url;
 my $tmp_space = './build';
@@ -104,10 +119,10 @@ exec_system_cmd("cd $tmp_space/antora-ui && npm install gulp-cli");
 
 exec_system_cmd("cd $tmp_space/antora-ui && npm install");
 
-exec_system_cmd("cd $tmp_space/antora-ui && ./node_modules/.bin/gulp build && ./node_modules/.bin/gulp pack");
+exec_system_cmd("cd $tmp_space/antora-ui && npx gulp build && npx gulp pack");
 
 
-exec_system_cmd("cp site.yml site-working.yml");
+copy('site.yml', 'site-working.yml');
 
 # Deal with root URL Antora configuration
 rewrite_yml($base_url,"site/url","site-working.yml");
@@ -128,7 +143,8 @@ unlink('package-lock.json');
 exec_system_cmd('npm install antora@' . $antora_version . ' @antora/lunr-extension@^1.0.0-alpha.8');
 
 # Now, finally, let's build the site
-exec_system_cmd('NODE_PATH="$(npm root)" ./node_modules/@antora/cli/bin/antora site-working.yml');
+local $ENV{NODE_PATH} = `npm root`;
+exec_system_cmd('npx antora site-working.yml');
 
 print "Success: your site files are available at " . $html_output . " and can be moved into place for access at " . $base_url . "\n";
 
