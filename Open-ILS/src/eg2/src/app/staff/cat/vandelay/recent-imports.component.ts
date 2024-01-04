@@ -13,6 +13,7 @@ import {VandelayService} from './vandelay.service';
 export class RecentImportsComponent implements OnInit {
 
     trackers: IdlObject[];
+    // eslint-disable-next-line no-magic-numbers
     refreshInterval = 2000; // ms
     sinceDate: string;
     pollTimeout: any;
@@ -71,21 +72,21 @@ export class RecentImportsComponent implements OnInit {
         };
 
         this.pcrud.search('vst', query, {order_by: {vst: 'create_time'}})
-        .pipe(tap(tracker => this.trackTheTracker(tracker)))
-        .pipe(concatMap(tracker => this.fleshTrackerQueue(tracker)))
-        .toPromise().then(_ => {
-            const active =
+            .pipe(tap(tracker => this.trackTheTracker(tracker)))
+            .pipe(concatMap(tracker => this.fleshTrackerQueue(tracker)))
+            .toPromise().then(_ => {
+                const active =
                 this.trackers.filter(t => t.state() === 'active');
 
-            // Continue updating the display with updated tracker
-            // data as long as we have any active trackers.
-            if (active.length > 0) {
-                this.pollTimeout = setTimeout(
-                    () => this.pollTrackers(), this.refreshInterval);
-            } else {
-                this.pollTimeout = null;
-            }
-        });
+                // Continue updating the display with updated tracker
+                // data as long as we have any active trackers.
+                if (active.length > 0) {
+                    this.pollTimeout = setTimeout(
+                        () => this.pollTrackers(), this.refreshInterval);
+                } else {
+                    this.pollTimeout = null;
+                }
+            });
     }
 
     trackTheTracker(tracker: IdlObject) {
@@ -115,7 +116,7 @@ export class RecentImportsComponent implements OnInit {
                             break;
                         }
                     }
-               } else if (sameSes.action_type() === 'import') {
+                } else if (sameSes.action_type() === 'import') {
                     // Avoid adding the new enqueue tracker
                     return;
                 }
@@ -128,6 +129,6 @@ export class RecentImportsComponent implements OnInit {
     fleshTrackerQueue(tracker: IdlObject): Observable<any> {
         const qClass = tracker.record_type() === 'bib' ? 'vbq' : 'vaq';
         return this.pcrud.retrieve(qClass, tracker.queue())
-        .pipe(tap(queue => tracker.queue(queue)));
+            .pipe(tap(queue => tracker.queue(queue)));
     }
 }
