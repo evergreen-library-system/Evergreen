@@ -1,88 +1,191 @@
-= Statistical Categories Editor =
+= Statistical Categories Editors =
 :toc:
 
-This is where you configure your statistical categories (stat cats).  Stat cats are a way to save and report on additional information that doesn't fit elsewhere in Evergreen's default records.  It is possible to have stat cats for copies or patrons.
+The Statistical Categories Editors are split into two interfaces, one for items and one for patrons, and are where you configure your statistical categories (stat cats). Stat cats are a way to save and report on additional information that doesn't fit elsewhere in Evergreen's default records.
 
-1. Click *Administration -> Local Administration ->  Statistical Categories Editor.*
+An organizational unit (consortium, library system branch library, sub library, etc.) may create their own categories and entries, or supplement categories defined by a higher-level org unit with their own entries.
 
-2. To create a new stat cat, enter the name of the category and select either _patron_ or _copy_ from the *Type* dropdown menu. Each category type has a number of options you may set.
+== Item Statistical Categories ==
 
-*Copy Statistical Categories*
+Item stat cats appear in the _Holdings Editor_. You might use item stat cats to track books you have bought from a specific vendor, or donations.
 
-Copy stat cats appear in the _Holdings Editor_. You might use copy stat cats to track books you have bought from a specific vendor, or donations.
+=== Creating an Item Stat Cat ===
 
-An example of the _Create a new statistical category_ controls for copies:
+To create a new item stat cat,
 
-image::media/lsa-statcat-1.png[Create copy stat cat]
+. Go to *Administration -> Local Administration -> Statistical Categories Editor - Item*.
 
-* _OPAC Visibility_:  Should the category be displayed in the OPAC?
-* _Required_:  Must the category be assigned a value when editing the item attributes?
-* _Archive with Circs_:  Should the category and its values for the copy be archived with circulation data?
-* _SIP Field_:  Select the SIP field identifier that will contain the category and its value
-* _SIP Format_:  Specify the SIP format string
+. Click *New Statistical Category Editor - Item*.
 
-Some sample copy stat cats:
+image::media/statcat_item_new.png[Create new item stat cat]
 
-image::media/lsa-statcat-2.png[Sample copy stat cats]
+[start=3]
+. The editor will open, where you can set the following:
++
+* _Name_: This is what will appear in the Holdings Editor.
+* _Owning Library_: Select the library for which the stat cat applies.
+* _Required_: Select this option if the category must be assigned a value when editing the item attributes.
+* _OPAC Visible_: Select this option if the category should be displayed in the OPAC.
+* _Checkout Archive_: Select this option if the category and its values for the item should be archived with circulation data.
+* _SIP Field_: Select the SIP field identifier that will contain the category and its value (if applicable).
+* _SIP Format_: Specify the SIP format string (if applicable).
 
-To add an entry, select _Add_.  Due to a known bug, individual entries for stat cats cannot be edited in the web client.  
+image::media/statcat_item_form.png[Item stat cat editor form]
 
-Stat cats can be edited or deleted by clicking on _Edit_.  
+[start=4]
+. Click *Save*. 
 
-This is how the copy stat cats appear in the _Holdings Editor_:
 
-image::media/lsa-statcat-3.png[Stat cats in Holdings Editor]
+=== Creating Entries for an Item Stat Cat ===
 
-You can use the _Filter by Library_ selector to display copy stat cats owned by a particular library:
+Entries are the values that will appear in the category’s dropdown menu in the Holdings Editor. To add entries for the stat cat,
 
-image::media/lsa-statcat-3a.png[Stat cat library selector]
+. Click the *Entries* link on the category’s row. 
 
-*Patron Statistical Categories*
+image::media/statcat_item_entries.png[Item stat cat entries link]
 
-Patron stat cats can be used to keep track of information such as a patron's school affiliation, membership in a group like the Friends of the Library, or patron preferences. They appear in the fourth section of the _Patron Registration_ or _Edit Patron_ screen, under the label _Statistical Categories_.
+[start=2]
+. Click *New Statistical Category Entry - Item* and input the value and owning library.
 
-An example of the _Create a new statistical category_ controls for patrons:
+image::media/statcat_item_new_entry.png[New item stat cat entry]
 
-image::media/lsa-statcat-4.png[Create patron stat cat]
+[start=3]
+. Input the value and owning library, and  then click *Save*.
 
-* _OPAC Visibility_:  Should the category be displayed in the OPAC?
-* _Required_:  Must the category be assigned a value when registering a new patron or editing an existing one?
-* _Archive with Circs_:  Should the category and its values for the patron be archived with circulation data?
-* _Allow Free Text_:  May the person registering/editing the patron information supply their own value for the category?
-* _Show in Summary_:  Display the category and its value in the patron summary view?
-* _SIP Field_:  Select the SIP field identifier that will contain the category and its value
-* _SIP Format_:  Specify the SIP format string
+image::media/statcat_item_entry_form.png[Item stat cat entry form]
+
+Repeat steps 2 and 3 until all values you would like to appear in the dropdown list for the stat cat are entered.
+
+To return back to the main category page, click the *Return* button at the top right-hand corner of the screen.
+
+image::media/statcat_item_return_button.png[Return button]
+
+=== Assigning an Item Stat Cat ===
+
+This is how item stat cats appear in the _Holdings Editor_:
+
+image::media/statcat_holdings_editor.png[Item stat cats in Holdings Editor]
+
+You can use the _Stat Cat Filter_ selector to display item stat cats owned by a particular library:
+
+image::media/statcat_filter_holdings_editor.png[Item stat cat library filter]
+
+To assign a stat cat to an item, click the field under the category name to open the dropdown menu.
+
+image::media/statcat_item_dropdown.png[Item stat cat dropdown menu]
+
+Select the value and click *Apply*.
+
+image::media/statcat_item_apply.png[Apply item stat cat]
+To remove a stat cat value from an item, click the field under the category name and click *Clear*.
+
+image::media/statcat_item_clear.png[Clear item stat cat]
+
+
+== Patron Statistical Categories ==
+
+Patron stat cats can be used to keep track of information such as a patron's school affiliation, membership in a group like the Friends of the Library, or patron preferences. They appear in the fourth section of the _Patron Registration_ or _Edit Patron_ screen, under the label _Statistical Categories_. Managing patron stat cats involves the same process as item stat cats, with a few slight differences.
+
+=== Creating a Patron Stat Cat ===
+
+To create a new patron stat cat,
+
+. Go to *Administration -> Local Administration -> Statistical Categories Editor - Patron*.
+
+. Click *New Statistical Category Editor - Patron*.
+
+image::media/statcat_patron_new.png[Create new patron stat cat]
+
+[start=3]
+. The editor will open, where you can set the following:
++
+* _Name_: This is what will appear in the patron’s account.
+* _Owning Library_: Select the library for which the stat cat applies.
+* _Required_: Select this option if the category must be assigned a value when editing a patron’s account.
+* _OPAC Visible_: Select this option if the category should be displayed in the patron’s account in the OPAC.
+* _User Summary_: Select this option if the category and its value should be displayed in the patron summary view.
+* _Free Text_: Select this option if the user can supply their own value for the category in a patron’s account.
+* _Checkout Archive_: Select this option if the category and its values for the item should be archived with circulation data.
+* _SIP Field_: Select the SIP field identifier that will contain the category and its value (if applicable).
+* _SIP Format_: Specify the SIP format string (if applicable).
+
+image::media/statcat_patron_form.png[Patron stat cat editor form]
+
+[start=4]
+. Click *Save*. 
 
 [WARNING]
 .WARNING
 =====================================
-If you make a category *required* and also *disallow free text*, make sure that you populate an entry list for the category so that the user may select a value.  Failure to do so will result in an unsubmittable patron registration/edit form!
+If you make a category *Required* and also disallow *Free Text*, make sure that you populate an entry list for the category so that the user may select a value. Failure to do so will result in an unsubmittable patron registration/edit form.
 =====================================
 
-Some sample patron stat cats:
+=== Creating Entries for a Patron Stat Cat ===
 
-image::media/lsa-statcat-5.png[Sample patron stat cats]
+Entries for patron stat cats are the values that will appear in the category’s dropdown menu in the patron’s account. To add entries for the stat cat:
 
-To add an entry, click on _Add_ in the category row under the _Add Entry_ column:
+. Click the *Entries* link on the category’s row. 
 
-image::media/lsa-statcat-6.png[Add patron category entry]  
+image::media/statcat_patron_entries.png[Patron stat cat entries link]
 
-Stat cats can be edited or deleted by clicking on _Edit_.  
+[start=2]
+. Click *New Statistical Category Entry - Patron* and input the value and owning library.
 
-Due to a known bug, individual entries for stat cats cannot be edited in the web client.  
+image::media/statcat_patron_new_entry.png[New patron stat cat entry]
 
-An *organizational unit* (consortium, library system branch library, sub library, etc.) may create their own categories and entries, or supplement categories defined by a higher-level org unit with their own entries.
+[start=3]
+. Input the value and owning library, and  then click *Save*.
 
-An entry can be set as the *default* entry for a category and for an org unit.  If an entry is set as the default, it will be automatically selected in the patron edit screen, provided no other value has been previously set for the patron. Only one default may be set per category for any given org unit.
+image::media/statcat_patron_entry_form.png[Patron stat cat entry form]
 
-Lower-level org unit defaults override defaults set for higher-level org units;  but in the absence of a default set for a given org unit, the nearest parent org unit default will be selected.
+Repeat steps 2 through 3 until all values you would like to appear in the dropdown list for the stat cat are entered.
 
-Default entries for the focus location org unit are marked with an asterisk in the entry dropdowns.
+To return back to the main category page, click the *Return* button at the top right-hand corner of the screen.
+
+image::media/statcat_patron_return_button.png[Return button]
+
+=== Assigning a Patron Stat Cat ===
 
 This is how patron stat cats appear in the patron registration/edit screen:
 
 image::media/lsa-statcat-8.png[Patron stat cats in registration screen]
 
-The yellow highlight denotes a stat cat that is required, and you will not be allowed to save or create a patron unless a value is entered.
+To assign a stat cat, click the option from the dropdown menu, or input a value in the text field if Free Text is allowed, and click *Save* at the top of the edit screen.
+The yellow highlight denotes a stat cat that is required. You will not be allowed to save or create a patron unless a value is entered.
 
-To remove a stat cat value, select the text in the right-hand box and use your keyboard's backspace or delete key.
+== Editing and Deleting Item and Patron Stat Cats ==
+
+In both the item and patron stat cat interfaces, stat cats can be edited by clicking on the category, clicking the *Actions* icon, and selecting *Edit Selected*
+
+Stat cats can be deleted by clicking on the category, clicking the *Actions* icon, and selecting *Delete Selected*
+
+image::media/statcat_actions.png[Stat cat actions menu] 
+
+[NOTE]
+========================
+*NOTE* Due to a known bug, individual entries for stat cats cannot be edited or deleted in the web client. 
+========================
+
+== Permissions ==
+
+The following permissions are needed to manage item stat cats:
+
+* CREATE_COPY_STAT_CAT
+* CREATE_COPY_STAT_CAT_ENTRY
+* CREATE_COPY_STAT_CAT_ENTRY_MAP
+* DELETE_COPY_STAT_CAT
+* DELETE_COPY_STAT_CAT_ENTRY
+* DELETE_COPY_STAT_CAT_ENTRY_MAP
+* UPDATE_COPY_STAT_CAT
+* UPDATE_COPY_STAT_CAT_ENTRY
+
+The following permissions are needed to manage patron stat cats:
+
+* CREATE_PATRON_STAT_CAT
+* CREATE_PATRON_STAT_CAT_ENTRY
+* CREATE_PATRON_STAT_CAT_ENTRY_MAP
+* DELETE_PATRON_STAT_CAT
+* DELETE_PATRON_STAT_CAT_ENTRY
+* DELETE_PATRON_STAT_CAT_ENTRY_MAP
+* UPDATE_PATRON_STAT_CAT
+* UPDATE_PATRON_STAT_CAT_ENTRY
