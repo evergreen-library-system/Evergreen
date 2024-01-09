@@ -94,6 +94,7 @@
         </ng-container>
 
         <div class="flex-1"> </div>
+        <p *ngIf="changesPendingForStatusBar" class="alert alert-warning" i18n>Changes Pending</p>
         <button type="button" class="btn btn-outline-dark" (click)="save(false, true)" 
           [ngClass]="{'border-danger': isNotSaveable()}"
           [disabled]="isNotSaveable()" i18n>Apply All &amp; Save</button>

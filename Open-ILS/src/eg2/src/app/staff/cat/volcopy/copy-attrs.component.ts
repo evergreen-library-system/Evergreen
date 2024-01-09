@@ -431,6 +431,10 @@ export class CopyAttrsComponent implements OnInit, AfterViewInit {
                 return;
             }
 
+            if (changes.newAlerts || changes.changedAlerts) {
+                this.emitSaveChange();
+            }
+
             if (changes.newAlerts) {
                 this.context.copyList().forEach(copy => {
                     changes.newAlerts.forEach(newAlert => {
@@ -443,18 +447,20 @@ export class CopyAttrsComponent implements OnInit, AfterViewInit {
                     });
                 });
             }
-            if (changes.changedAlerts && this.context.copyList().length === 1) {
-                const copy = this.context.copyList()[0];
-                changes.changedAlerts.forEach(alert => {
-                    const existing = copy.copy_alerts().filter(a => a.id() === alert.id())[0];
-                    if (existing) {
-                        existing.ischanged(true);
-                        existing.alert_type(alert.alert_type());
-                        existing.temp(alert.temp());
-                        existing.ack_time(alert.ack_time());
-                        existing.ack_staff(alert.ack_staff());
-                        copy.ischanged(true);
-                    }
+            if (changes.changedAlerts) {
+                this.context.copyList().forEach(copy => {
+                    changes.changedAlerts.forEach(alert => {
+                        const matching = copy.copy_alerts().filter(a => a.id() === alert.id());
+                        matching.forEach( existing => {
+                            existing.ischanged(true);
+                            existing.alert_type(alert.alert_type());
+                            existing.temp(alert.temp());
+                            existing.ack_time(alert.ack_time());
+                            existing.ack_staff(alert.ack_staff());
+                            existing.note(alert.note());
+                            copy.ischanged(true);
+                        });
+                    });
                 });
             }
         });

@@ -51,6 +51,7 @@
 <eg-string key="staff.holdings.copyalert.CHECKIN.CLAIMSNEVERCHECKEDOUT"
   i18n-text text="Item was marked claims never checked out"></eg-string>
 
+<eg-copy-alerts-dialog #copyAlertsDialog></eg-copy-alerts-dialog>
 
 <ng-template #dialogContent>
   <div class="modal-header">
@@ -89,8 +90,12 @@
     </div>
 
   </div>
-  <div class="modal-footer">
-    <button type="button" class="btn btn-success me-2" (click)="ok()" i18n>OK/Continue</button>
-    <button type="button" class="btn btn-secondary" (click)="close()" i18n>Cancel</button>
+  <div class="modal-footer d-flex justify-content-between">
+    <button type="button" class="btn btn-secondary" (click)="openItemAlerts()" i18n>Manage Alerts</button>
+    <span *ngIf="newAlertsAdded" i18n>Alert Set Modified</span>
+    <div>
+      <button type="button" class="btn btn-success me-2" (click)="ok()" i18n>OK/Continue</button>
+      <button type="button" class="btn btn-secondary" (click)="close()" i18n>Cancel</button>
+    </div>
   </div>
 </ng-template>

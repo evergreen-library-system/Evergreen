@@ -8,7 +8,8 @@
         <span i18n>Adding alerts for {{copyIds.length}} item(s).</span>
       </ng-container>
       <ng-container *ngIf="mode === 'manage'">
-        <span i18n>Managing alerts for item {{copies[0].barcode()}}</span>
+        <span *ngIf="!inBatch()" i18n>Managing alerts for item {{copies.length ? copies[0].barcode() : ''}}</span>
+        <span *ngIf="inBatch()" i18n>Managing alerts in common for {{copyIds.length}} item(s).</span>
       </ng-container>
       <span i18n></span>
     </h4>
@@ -63,9 +64,11 @@
     </div>
 
     <ng-container *ngIf="mode === 'manage'">
-      <!-- in manage mode list all of the alerts linked to the copy -->
+      <!-- eventually we'll always be in 'manage' mode -->
+      <!-- if not in batch, list all the pertinent alerts linked to the copy -->
+      <!-- if in batch, use the alertsInCommon variable instead for some proxy alerts -->
       <div class="row mt-2" 
-        *ngFor="let alert of copy.copy_alerts()">
+        *ngFor="let alert of inBatch() ? alertsInCommon : (copies.length ? copies[0].copy_alerts() : [])">
         <div class="col-lg-12 pb-2"><hr/></div>
         <div class="col-lg-4">
           <eg-combobox [entries]="alertTypes" [selectedId]="alert.alert_type()"
@@ -73,7 +76,7 @@
             [mandatory]="true"
             (onChange)="alert.alert_type($event ? $event.id : null); alert.ischanged(true)">
           </eg-combobox>
-          <div class="ps-2 pt-2" i18n>
+          <div *ngIf="!inBatch()" class="ps-2 pt-2" i18n>
             Added: {{alert.create_time() | date:'shortDate'}}
           </div>
         </div>

@@ -14,6 +14,7 @@ import {DialogComponent} from '@eg/share/dialog/dialog.component';
 import {NgbModal, NgbModalOptions} from '@ng-bootstrap/ng-bootstrap';
 import {ComboboxEntry} from '@eg/share/combobox/combobox.component';
 import {HoldingsService} from './holdings.service';
+import {CopyAlertsDialogComponent} from '@eg/staff/share/holdings/copy-alerts-dialog.component';
 
 /**
  * Dialog for managing copy alerts.
@@ -31,6 +32,9 @@ export class CopyAlertManagerDialogComponent extends DialogComponent {
     alerts: IdlObject[];
     nextStatuses: IdlObject[];
     nextStatus: number;
+    newAlertsAdded = false;
+
+    @ViewChild('copyAlertsDialog') private copyAlertsDialog: CopyAlertsDialogComponent;
 
     constructor(
         private modal: NgbModal,
@@ -42,11 +46,12 @@ export class CopyAlertManagerDialogComponent extends DialogComponent {
         private auth: AuthService,
         private strings: StringService,
         private holdings: HoldingsService
-    ) { super(modal); }
+    ) { super(modal); console.log('CopyAlertManagerDialogComponent, this',this); }
 
     open(ops?: NgbModalOptions): Observable<any> {
 
         this.nextStatus = null;
+        this.newAlertsAdded = false;
 
         let promise = Promise.resolve(null);
         this.alerts.forEach(copyAlert =>
@@ -115,6 +120,7 @@ export class CopyAlertManagerDialogComponent extends DialogComponent {
     }
 
     ok() {
+        this.newAlertsAdded = false;
         const acks: IdlObject[] = [];
         this.alerts.forEach(copyAlert => {
 
@@ -132,6 +138,20 @@ export class CopyAlertManagerDialogComponent extends DialogComponent {
                 this.close({nextStatus: this.nextStatus});
             }
         });
+    }
+
+    openItemAlerts() {
+        const copyIds = [ this.alerts[0].copy() ];
+        this.copyAlertsDialog.copyIds = copyIds;
+        this.copyAlertsDialog.mode = 'manage';
+        this.copyAlertsDialog.open({size: 'lg'}).subscribe(
+            changes => {
+                if (!changes) { return; }
+                if (changes.newAlerts.length > 0 || changes.changedAlerts.length > 0) {
+                    this.newAlertsAdded = true;
+                }
+            }
+        );
     }
 }
 

@@ -63,6 +63,7 @@ export class VolCopyComponent implements OnInit {
     volsCanSave = true;
     attrsCanSave = true;
     changesPending = false;
+    changesPendingForStatusBar = false;
     routingAllowed = false;
 
     @ViewChild('pendingChangesDialog', {static: false})
@@ -438,6 +439,7 @@ export class VolCopyComponent implements OnInit {
         }).then(_ => {
             this.loading = false;
             this.changesPending = false;
+            this.changesPendingForStatusBar = false;
         });
     }
 
@@ -536,11 +538,13 @@ export class VolCopyComponent implements OnInit {
     volsCanSaveChange(can: boolean) {
         this.volsCanSave = can;
         this.changesPending = true;
+        this.changesPendingForStatusBar = true;
     }
 
     attrsCanSaveChange(can: boolean) {
         this.attrsCanSave = can;
         this.changesPending = true;
+        this.changesPendingForStatusBar = true;
     }
 
     @HostListener('window:beforeunload', ['$event'])
@@ -563,6 +567,9 @@ export class VolCopyComponent implements OnInit {
         // unless new changes are made.  The 'editing' value will reset
         // since the attrs component is getting destroyed.
         this.changesPending = false;
+        // But don't do this for the indicator in the status bar, only Save does that
+        // (or reset, if that ever gets reimplemented)
+        // this.changesPendingForStatusBar = false;
 
         if ($event) { // window.onbeforeunload
             $event.preventDefault();
