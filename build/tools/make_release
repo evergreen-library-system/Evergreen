@@ -414,6 +414,9 @@ if [ "$BUILD_BROWSER_CLIENT" == "YES" ]; then
     ng build --configuration production --localize true
     # npm cache is big and unnecessary in the final build. remove it.
     rm -rf node_modules 
+    # similarly, the .angular directory, which includes the build
+    # cache, need not be shipped in the release tarball
+    rm -rf .angular
     cd ../../../../ # release dir
 
 else
