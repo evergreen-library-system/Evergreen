@@ -5,4 +5,5 @@
 ** xref:acquisitions:invoices.adoc[Invoices]
 ** xref:acquisitions:purchase_requests_management.adoc[Managing patron purchase requests]
 ** xref:acquisitions:blanket.adoc["Blanket" Orders]
+** xref:acquisitions:claim_ready_items.adoc[Claim Ready Items]
 

@@ -6,218 +6,165 @@
 indexterm:[MARC records,importing,using the staff client]
 
 [[batchimport]]
-The cataloging module includes an enhanced MARC Batch Import interface for
-loading MARC (and MARCXML) records. In general, it can handle batches up to 5,000 records
-without a problem. This interface allows you to specify match points
-between incoming and existing records, to specify MARC fields that should be
-overlaid or preserved, and to only overlay records if the incoming record is
-of higher quality than the existing record. Records are added to a queue where
-you can apply filters that enable you to generate any errors that may have
-occurred during import. You can print, email or export your queue as a CSV file.
+
+The cataloging module includes a MARC Batch Import interface for loading MARC (and MARCXML) records. In general, it can handle batches up to 5,000 records without a problem. This interface allows you to specify matchpoints between incoming and existing records, to specify MARC fields that should be overlaid or preserved, and to only overlay records if the incoming record is of higher quality than the existing record. Records are added to a queue where you can apply filters that enable you to generate any errors that may have occurred during import. You can print, email, or export your queue as a CSV file.
+
+You can control whether you are presented with the options for Bibliographic import, Acquisitions Import, or both by setting the Library Setting _ACQ: Which import tab(s) display in general Import/Export?_. Accepted setting values are: "cat" for Import for Cataloging, "acq" for Import for Acquisitions, "both" or unset to display both. The examples below show the _Import for Cataloging_ option. The Import for Acquisitions option embeds the xref:acquisitions:vandelay_acquisitions_integration.adoc[Load MARC Order Records interface], which is separately documented.
 
 == Permissions ==
 
-To use match sets to import records, you will need the following permission:
+Permissions to use this interface include:
 
-ADMIN_IMPORT_MATCH_SET
+* IMPORT_MARC - Using batch importer to create new bib records requires the IMPORT_MARC permission. If the permission fails, the queued record will fail import and be stamped with a 'import.record.perm_failure' import error.
+* IMPORT_ACQ_LINEITEM_BIB_RECORD_UPLOAD - This allows interfaces leveraging the batch importer, such as Acquisitions, to create a higher barrier to entry. This permission prevents users from creating new bib records directly from the ACQ vendor MARC file upload interface.
+* CREATE_BIB_IMPORT_QUEUE - Permits creating an import queue for bibliographic records.
+* CREATE_AUTHORITY_IMPORT_QUEUE - Permits creating an import queue for authority records.
+* ADMIN_IMPORT_MATCH_SET - Permits the use of match sents in record import.
 
 
 == Record Display Attributes ==
 
-This feature enables you to specify the tags and subfields that will display in
-records that appear in the import queue. 
+This feature enables you to specify the tags and subfields that will display in records that appear in the import queue. You can set different attributes for bibliographic records and authority records.
 
+Evergreen is configured with standard defaults for these attributes.
+
+image::batch_importing_MARC/record__display_attributes.jpg[Record Display Attributes]
 
 [[matchsets]]
 == Record Match Sets ==
 
-This feature enables you to create custom match points that you can use to
-accurately match incoming records with existing catalog records.  
-  
+This feature enables you to create custom match points that you can use to accurately match incoming records with existing catalog records. 
+ 
 === Creating a Match Set ===
 
-In this example, to demonstrate matching on record attributes and MARC tags and
-subfields, we will create a record match set that defines a match based on the
-title of the record, in either the 240 or 245, and the fixed field, Lang.  You
-can add multiple record attributes and MARC tags to customize a record match
-set.
+In this example, to demonstrate matching on record attributes and MARC tags and subfields, we will create a record match set that defines a match based on the title of the record, in either the 240 or 245, and the fixed field, Lang. You can add multiple record attributes and MARC tags to customize a record match set.
  
-
-. Click *Cataloging -> MARC Batch Import/Export*.
-
-. Create a new record match set.  Click *Record Match Sets -> New Match Set*.
-
+. Navigate to *Cataloging -> MARC Batch Import/Export*.
+. Create a new record match set. Select *Record Match Sets -> New Match Set*.
 . Enter a name for the record match set.
-
-. Select an *Owning Library* from the drop down menu.  Staff with permissions
-at this location will be able to use this record match set.
-
-. Select a *Match Set Type* from the drop down menu.  You can create a match
-set for authority records or bibliographic records.
-
+. Select an _Owning Library_ from the drop down menu. Staff with permissions at this location will be able to use this record match set.
+. Select a _Match Set Type_ from the drop down menu. You can create a match set for authority records or bibliographic records.
 . Click *Save*.
 +
-image::batch_importing_MARC/new_record_match.jpg[New Record Match]
+image::batch_importing_MARC/new_record_match.jpg[New Record Match Set]
++
 
-. The screen will refresh to list the record match set that you created. Click
-the link to the record match set.
+The screen will refresh to list the record match set that you created. From the _Name_ column, select the link to your record match set.
 
-. Create an expression that will define the match points for the incoming
-record.  You can choose from two areas to create a match: *Record Attribute* or
-*MARC Tag and Subfield*.  You can use the Boolean operators AND and OR to
-combine these elements to create a match set.
+Next, create an expression that will define the match points for the incoming record. You can choose from two areas to create a match: _Record Attribute_ or _MARC Tag and Subfield_. You can use the Boolean operators AND and OR to combine these elements to create a match set.
 
-. Select a *Record Attribute* from the drop-down menu.
+To use _Record Attribute_ match points:
 
-. Enter a *Match Score.*  The *Match Score* indicates the relative importance
-of that match point as Evergreen evaluates an incoming record against an
-existing record. You can enter any integer into this field.  The number that
-you enter is only important as it relates to other match points.  Recommended
-practice is that you create a match score of one (1) for the least important
-match point and assign increasing match points to the power of 2 to working
-points in increasing importance.
-
-. Check the *Negate?* box if you want to negate the match point. Checking
-this box would be the equivalent of applying a Boolean operator of NOT to the
-match point.
+. Select a _Record Attribute_ from the drop-down menu.
+. Enter a _Match Score._ 
+* The match score indicates the relative importance of that match point as Evergreen evaluates an incoming record against an existing record. 
+* You can enter any integer into this field. The number that you enter is only important as it relates to other match points. 
+* Recommended practice is that you create a match score of one (1) for the least important match point and assign increasing match points                                                     by powers of 2 to indicate match points with increasing importance (e.g., scores of 1, 2, 4, 8).
+. Select the _Negate?_ checkbox if you want to negate the match point. Selecting this checkbox would be the equivalent of applying a Boolean operator of NOT to the match point.
 +
 image::batch_importing_MARC/record_attribute.jpg[Record Attribute]
-
++
 . Select an operator from the expression tree to the right.
+. Select _Add to Selected Node_. Once this is selected, the tree will refresh and update with the new expression.
 
-. Click *Add to Selected Node*.  Once this is selected, the tree will refresh and update with the new expression.
+If you wish to add another expression, enter another Boolean operator to further refine your match set.
 
-. Enter another *Boolean Operator* to further refine your match set.
-
-. Click *Boolean Operator*.
-
-. Select the *OR* operator from the drop down menu.
-
-. Click *Add to Selected Node*.  The operator will appear on the tree.
+. Select _Boolean Operator*._
+. Select the _OR_ operator from the drop down menu.
+. Select _Add to Selected Node_. The operator will appear on the tree.
 +
 image::batch_importing_MARC/operator.jpg[Operators]
++
 
-. Click *MARC Tag and Subfield*.
+To use _MARC Tag and Subfield_ match points:
 
-. Enter a *MARC tag* on which you want the records to match.
-
-. Enter a *subfield* on which you want the records to match.
-
-. Enter a *Match Score.*  The *Match Score* indicates the relative importance
-of that match point as Evergreen evaluates an incoming record against an
-existing record. You can enter any integer into this field.  The number that
-you enter is only important as it relates to other match points.  Recommended
-practice is that you create a match score of one (1) for the least important
-match point and assign increasing match points to the power of 2 to working
-points in increasing importance.
-
-. Check the *Negate?* box if you want to negate the match point.  Checking
-this box would be the equivalent of applying a Boolean operator of NOT to the
-match point.
-
-. Click *Add to Selected Node*.  Once this is selected, the tree will refresh and update with the new expression.
+. Select _MARC Tag and Subfield_
+. Enter a _MARC tag_ on which you want the records to match.
+. Enter a _Subfield_ on which you want the records to match.
+. Enter a _Match Score._ 
+* The match score indicates the relative importance of that match point as Evergreen evaluates an incoming record against an existing record. 
+* You can enter any integer into this field. The number that you enter is only important as it relates to other match points. 
+* Recommended practice is that you create a match score of one (1) for the least important match point and assign increasing match points by powers of 2 to indicate match points with increasing importance (e.g., scores of 1, 2, 4, 8).
+. Select the _Negate?_ checkbox if you want to negate the match point. Selecting this checkbox would be the equivalent of applying a Boolean operator of NOT to the match point.
+. Select *Add to Selected Node*. Once this is selected, the tree will refresh and update with the new expression.
 +
 image::batch_importing_MARC/marc_tag_and_subfield.jpg[MARC Tag and Subfield]
++
 
 === Replace Mode ===
 
-Replace Mode enables you to replace an existing part of the expression tree
-with a new record attribute, MARC tag, or Boolean operator.  For example, if
-the top of the tree is AND, in Replace Mode, you could change that to an OR.
+Replace Mode enables you to replace an existing part of the expression tree with a new record attribute, MARC tag, or Boolean operator. For example, if the top of the tree is AND, in Replace Mode, you could change that to an OR.
 
 . Create a working match point.
-
-. Click on an expression in the tree to edit.
-
+. Select an expression in the tree to edit.
 . Make any changes in the form.
-
-. Click *Replace Selected Node*.
+. Select _Replace Selected Node_.
 +
 image::batch_importing_MARC/replace_node.jpg[Replacing Nodes]
-
++
 . The updated change will display in the tree.
-
 
 === Quality Metrics ===
 
-. Set the *Quality Metrics for this Match Set*.  Quality metrics are used to
-determine the overall quality of a record.  Each metric is given a weight and
-the total quality value for a record is equal to the sum of all metrics that
-apply to that record.  For example, a record that has been cataloged thoroughly
-and contains accurate data would be more valuable than one of poor quality. You
-may want to ensure that the incoming record is of the same or better quality
-than the record that currently exists in your catalog; otherwise, you may want
-the match to fail.  The quality metric is optional.
+Quality metrics are used to determine the overall quality of a record. Each metric is given a weight and the total quality value for a record is equal to the sum of all metrics that apply to that record. For example, a record that has been cataloged thoroughly and contains accurate data would be more valuable than one of poor quality. You may want to ensure that the incoming record is of the same or better quality than the record that currently exists in your catalog; otherwise, you may want the match to fail. The quality metric is optional.
 
-. You can create quality metrics based on the record attribute or the MARC Tag
-and Subfield.
+You can create quality metrics based on the record attribute or the MARC Tag and Subfield.
 
-. Click *Record Attribute.*
-
-. Select an attribute from the drop down menu.
-
-. Enter a value for the attribute.
-
-. Enter a match score.  You can enter any integer into this field. The number
-that you enter is only important as it relates to other quality values for the
-current configuration.  Higher scores would indicate increasing quality of
-incoming records. You can, as in the expression match score, increase the
-quality points by increasing subsequent records by a power of 2 (two).
-
-. Click *Add*.
+. From within the Record Match Sets interface, select the _Match Set Quality Metrics_ tab.
+. Select the _Record Attribute_ button.
+. Select a _Record Attribute_ from the drop down menu.
+. Enter a _Value_ for the attribute.
+. Enter a _Match Score_. 
+* You can enter any integer into this field. The number that you enter is only important as it relates to other quality values for the current configuration. Higher scores would indicate increasing quality of incoming records. 
+* Recommended practice is that you create a match score of one (1) for the least important match point and assign increasing match points by powers of 2 to indicate match points with increasing importance (e.g., scores of 1, 2, 4, 8).
+. Select _Add_.
 +
 image::batch_importing_MARC/match_set_quality.jpg[Match Set Quality]
++
+
+You can add quality metrics based on data in MARC fields and subfields as well.
 
 == Merge/Overlay Profiles ==
 
 If Evergreen finds a match for an incoming record in the database, you need to identify which fields should be replaced, which should be preserved, and which should be added to the record.
-Click the Merge/Overlay Profiles button to create a profile that contains this information.
+
+Select *Merge/Overlay Profiles* to create a profile that contains this information.
 
 You can use these profiles when importing records through the MARC Batch Importer or Acquisitions Load MARC Order Records interface.
 
-You can create a new profile by clicking the New Merge Profile button. Available options for handling the fields include:
+You can create a new profile by selecting the _New Bib Import Merge Profile_ button. Available options for handling the fields include:
 
-. _Preserve specification_ - fields in the existing record that should be preserved.
-
-. _Replace specification_ - fields in existing record that should be replaced by those in the incoming record.
-
-. _Add specification_ - fields from incoming record that should be added to existing record (in addition to any already there.)
-
-. _Remove specification_ - fields that should be removed from incoming record.
-
-. _Update bib source_ - If this value is false, just the bibliographic data will be updated when you overlay a new MARC record.  If it is true, then Evergreen will also update
-the record's bib source to the one you select on import; the last edit date to the date the new record is imported, and the last editor to the person who imported the new
-record.
+* _Preserve specification_ - fields in the existing record that should be preserved.
+* _Replace specification_ - fields in existing record that should be replaced by those in the incoming record.
+* _Add specification_ - fields from incoming record that should be appended to existing record.
+* _Remove specification_ - fields that should be removed from incoming record.
+* _Update bib source_ - If this value is false, just the bibliographic data will be updated when you overlay a new MARC record. If it is true, then Evergreen will also update the record's bib source to the one you select on import; the last edit date to the date the new record is imported; and the last editor to the person who imported the new record.
 
 You can add multiple tags to the specification options, separating each tag with a comma.
 
-
 == Import Item Attributes ==
-If you are importing items with your records, you will need to map the data in
-your holdings tag to fields in the item record. Click the *Holdings Import
-Profile* button to map this information.
 
-. Click the *New Definition* button to create a new mapping for the holdings tag.
-. Add a *Name* for the definition.
-. Use the *Tag* field to identify the MARC tag that contains your holdings
-  information.
-. Add the subfields that contain specific item information to the appropriate
-  item field.
-. At a minimum, you should add the subfields that identify the *Circulating
-Library*, the *Owning Library*, the *Call Number* and the *Barcode*.
+If you are importing items with your records, you will need to map the data in your MARC holdings tag to fields in the item record. This interface allows you to specify subfield codes or XPATH queries to define where item data lives.
 
-NOTE: All fields (except for Name and Tag) can contain a MARC subfield code
-(such as "a") or an XPATH query. You can also use the
-related library settings to set defaults for some of these fields.
+Select *Holdings Import Profiles* to map this information.
 
-image::media/batch_import_profile.png[Partial Screenshot of a Holdings Import Profile]
+. Select the _New Import Item Attribute Definition_ button to create a new mapping for the holdings tag.
+. Enter a _Name_ for the definition.
+. Use the _Tag_ field to identify the MARC tag that contains your holdings information.
+. Add the subfields that contain specific item information to the corresponding item field. 
+* At a minimum, you should add the subfields that identify the _Circulating Library_, the _Owning Library_, the _Call Number_, and the _Barcode_.
+* See Table 1, below, for more information about Item Attributes.
 
-.Holdings Import Profile Fields
+NOTE: All fields (except for Name and Tag) can contain a MARC subfield code (such as "a") or an XPATH query. You can also use the related library settings to set defaults for some of these fields.
+
+image::media/import_item_attribute_definition.png[New Import Item Attribute Definition]
+
+.Holdings Item Attribute Definitions
 [options="header"]
 |=============================
 |Field | Recommended | Description
-|Alert Message||
-|Barcode | Yes |
+|Alert Message| No | This field is deprecated
+|Barcode | Yes | 
 |Call Number | Yes |
 |Circulate ||
 |Circulate As MARC Type ||
@@ -247,144 +194,113 @@ identify the MARC tag that contains your holdings information.
 
 |=============================
 
+Additionally, Evergreen can create an item-level record for each copy. If an item barcode, call number, shelving location, or circulation modifier is not set in the embedded holdings, Evergreen will apply a default value based on the configured Library Settings. A default prefix can be applied to the auto-generated call numbers and item barcodes.
+
+See the section below on Default Values for Item Import.
 
 == Import Records ==
 
-The *Import Records* interface incorporates record match sets, quality metrics,
-more merging options, and improved ways to manage your queue.  In this example,
-we will import a batch of records.  One of the records in the queue will
-contain a matching record in the catalog that is of lower quality than the
-incoming record.  We will import the record according to the guidelines set by
-our record match set, quality metrics, and merge/overlay choices that we will
-select.
+The Import Records interface incorporates record match sets, quality metrics, more merging options, and improved ways to manage your queue. 
 
-. Save or upload a template.
+Fields below are generally listed in the order of top to bottom, left to right as they appear in the interface.
 
-. Select a *Record Type* from the drop down menu.
+image::batch_importing_MARC/marc_importer_full.png[Importing Records interface]
 
-. Create a queue to which you can upload your records, or add you records to
-an existing queue.  Queues are linked to match sets and a holdings import
-profile. You cannot change a holdings import or record match set for a queue.
+First, set your import parameters in the _MARC File Upload_ section of the interface.
 
-. Select a *Record Match Set* from the drop down menu.
-
-. Select a *Holdings Import Profile* if you want to import holdings that are
-attached to your records.
-
-. Select a *Merge Profile*.  Merge profiles enable you to specify which tags
-should be removed or preserved in incoming records.
-
-. Select an *Insufficient Quality Fall-Through Profile* if desired.  This
-field enables you to indicate that if the inbound record does not meet the
-configured quality standards, then you may still import the record using an
-alternate merge profile.  This field is typically used for selecting a merge
-profile that allows the user to import holdings attached to a lower quality
-record without replacing the existing (target) record with the incoming record.
-This field is optional.  
-
-. Enter a *Best/Single Match Minimum Quality Ratio.*  Divide the incoming
-record quality score by the record quality score of the best match that might
-exist in the catalog.  By default, Evergreen will assign any record a quality
-score of 1 (one).  If you want to ensure that the inbound record is only
-imported when it has a higher quality than the best match, then you must enter
-a ratio that is higher than 1.  For example, if you want the incoming record to
-have twice the quality of an existing record, then you should enter a 2 (two)
-in this field.  If you want to bypass all quality restraints, enter a 0 (zero)
-in this field.
-
-. Make an *Optional Session Name* if desired.
-
-. *Remove MARC Field Groups* if applicable. 
-
-. Select a *Record Source* from the drop down menu.
-
-. Select from *Limit Matches to Bucket* if desired.
-
-. Select *Import Non-Matching Records* if applicable.
-
-. Choose one of the following import options if you want to auto-import
-records:
-
-..*Merge on Exact Match (901c)* - Use if you're reloading exported records from the system to match on the record ID.
-
-.. *Merge on Single Match* - Using the Record Match Set, Evergreen will only
-attempt to perform the merge/overlay action if only one match was found in the
-catalog.
-
-.. *Merge on Best Match* - If more than one match is found in the catalog for a
-given record, Evergreen will attempt to perform the merge/overlay action with
-the best match as defined by the match score and quality metric.
+. Select a _Record Type_ from the drop down menu.
+. Select a _Record Source_ from the drop down menu.
+. Select a _Record Match Set_ from the drop down menu.
+. Select a specific bucket in _Limit Matches to Bucket_ if desired.
+. Select a _Holdings Import Profile_ if you want to import holdings that are attached to your records.
+. Select _Import Non-Matching Records_ if you want records to be imported from your file even if they don't have a match. 
+. Select a _Merge Profile_. Merge profiles enable you to specify which tags should be removed or preserved in incoming records.
+. Select an _Insufficient Quality Fall-Through Profile_ if desired. 
+* This field enables you to indicate that if the inbound record does not meet the configured quality standards, then you may still import the record using an alternate merge profile.
+* This field is typically used for selecting a merge profile that allows the user to import holdings attached to a lower quality record without replacing the existing (target) record with the incoming record. 
+. Enter a _Best/Single Match Minimum Quality Ratio_. 
+* Divide the incoming record quality score by the record quality score of the best match that might exist in the catalog. By default, Evergreen will assign any record a quality score of 1 (one). 
+* If you want to ensure that the inbound record is only imported when it has a higher quality than the best match, then you must enter a ratio that is higher than 1. For example, if you want the incoming record to have twice the quality of an existing record, then you should enter a 2 (two) in this field. If you want to bypass all quality restraints, enter a 0 (zero) in this field.
 +
-NOTE: Quality ratio affects only the *Merge on Single Match* and *Merge on Best
-Match* options.
-
-. Choose *Auto-overlay In-process Acquisitions Items* if you want to overlay temporary copies that were created by the Acquisitions module.  The system will attempt to overlay copies that:
-
-* have associated lineitem details (that is, they were created by the acquisitions process),
-* that lineitem detail has the same owning_lib as the incoming copy's owning_lib, and
-* the current copy associated with that lineitem detail is _In process_.
-
-. *Browse* to find the appropriate file, and click *Upload*.  The file will
-be uploaded to a queue. The file can be in either MARC or MARCXML format.
+NOTE: Quality ratio affects only the *Merge on Single Match* and *Merge on Best Match* options.
 +
-image::batch_importing_MARC/import_record.jpg[Importing Records]
+. Choose one of the following import options if you want to auto-import records:
+.. _Merge on Exact Match (901c)_ - Use if you're reloading exported records from the system to match on the record ID.
+.. _Merge on Single Match_ - Using the Record Match Set, Evergreen will attempt to perform the merge/overlay action if one and only one match was found in the catalog.
+.. _Merge on Best Match_ - If more than one match is found in the catalog for a given record, Evergreen will attempt to perform the merge/overlay action with the best match as defined by the match score and quality metric.
+. Make an _Optional Session Name_ if desired.
+. Select _Auto-overlay In-process Acquisitions Items_ if you want to overlay temporary copies that were created by the Acquisitions module. The system will attempt to overlay copies where:
+* Copies have associated line item details (i.e., they were created by the acquisitions process); AND
+* Said line item detail has the same owning_lib as the incoming copy's owning_lib; AND
+* The current copy associated with that line item detail is in the status _In process_.
+. Select a _Remove MARC Field Groups_ set, if applicable. 
+* Select _Auto-overlay On-order Cataloging Items_ if you wish to overlay your items in On Order status with the items in your import file.
+* Select _Use Org Unit Matching in Copy to Determine Best Match_ if you want the importer to match incoming copies to on order copies in the same Org Unit. This is used in conjunction with _Auto-overlay On-order Cataloging Items_. 
 
-. The screen will display records that have been uploaded to your queue. Above
-the table there are three sections:
-  * *Queue Actions* lists common actions for this queue. _Export Non-Imported
-Records_ will export a MARC file of records that failed to import, allowing
-those records to be edited as needed and imported separately. (Those
-records can be viewed by clicking the _Limit to Non-Imported Records_
-filter.)
-  * *Queue Summary* shows a brief summary of the records included in the queue.
-  * *Queue Filters* provides options for limiting which records display in the
-table.
+Once you have set your import parameters, you can set your upload parameters.
+
+. Enter the name of a new or existing queue to which you can upload your records. Queues are linked to match sets and a holdings import profile. You cannot change a holdings import or record match set for a queue.
+. Select a file to upload to the queue from your computer using _File to Upload_. The file can be in either MARC (*.mrc) or MARCXML (*.xml)format.
+. If you wish to have the import processed as a background import, select the _Request Background Import_ checkbox and enter an email address for import notifications. See more about background import below.
 +
-image::media/Batch_Importing_MARC_Records15.jpg[Batch_Importing_MARC_Records15]
-
-. If Evergreen indicates that matching records exist, then click the
-*Matches* link to view the matching records.  Check the box adjacent to the
-existing record that you want to merge with the incoming record. 
+image::batch_importing_MARC/background_import.png[Background import options]
 +
-image::media/Batch_Importing_MARC_Records10.jpg[Batch_Importing_MARC_Records10]
+. Select the _Upload_ button to import your file to youe selected queue.
+. You will see three progress bars: Upload Progress, Enqueue Progress, and Import Progress. Once all three have completed, you will see a button labeled *Go To Queue*.
 
-. Click *Back to Import Queue*.
+The *Go To Queue* button will take you to the _Inspect Queue_ interface which will show you records that have been uploaded to your queue.
 
-. Check the boxes of the records that you want to import, and click *Import
-Selected Records*, or click *Import All Records*.
+image::batch_importing_MARC/view_import_queue.png[Inspect Queue Interface]
 
-. A pop up window will offer you the same import choices that were present on
-the *Import Records* screen.  You can choose one of the import options, or
-click *Import*.
+Above the grid there are two sections, as well as a set of quick filter options:
+
+* _Queue Summary_ shows a brief summary of the records and items included in the queue, including counts of import successes and failures for both records and items in the queue.
+* _Queue Actions_ lists common actions for the queue. 
+** _Export Non-Imported Records_ will export a MARC file of records that failed to import, allowing those records to be edited as needed and imported separately. These records can be viewed by selecting the _Limit to Non-Imported Records_ filter.)
+* The three checkboxes above the grid are _Queue Filters_ which provide options to limit which records display in the grid.
+
+If Evergreen indicates that matching records exist for a particular record, you will see a hyperlinked numeral in the _Matches_ dolumn. If this record was also not imported, take the following steps to resolve the match:
+
+. Select the hyperlinked numeral to view the matching records. 
+. If the record in the queue is not yet imported, lick in the _Merge Target_ column to instruct Evergreen that you want to merge the existing record and the incoming record. 
 +
-image::media/marc_batch_import_popup.png[Batch Importing MARC Records Popup]
-
-. The screen will refresh.  The *Queue Summary* indicates that the record was
-imported.  The *Import Time* column records the date that the record was
-imported. Also, the *Imported As* column should now display the database ID (also known as the bib record number) for the imported record.
+image::batch_importing_MARC/merge_target.png[Select Merge Target]
 +
-image::media/Batch_Importing_MARC_Records12.jpg[Batch_Importing_MARC_Records12] 
-
-. You can confirm that the record was imported by using the value of the *Imported As* column by selecting the menu *Cataloging* -> *Retrieve title by database ID* and using the supplied *Imported As* number. Alternatively, you can search the catalog to confirm that the record was imported.
+. Select *Return to Queue*, and repeat as necessary for other matched non-imported records.
+. Once complete, check the boxes of the records that you want to import, and select *Import
+Selected Records*
 +
-image::media/Batch_Importing_MARC_Records14.jpg[Batch_Importing_MARC_Records14] 
+NOTE: In this case, it is recommended that you apply the _Non-Imported Records_ filter. 
++
 
+[[background_import]]
+=== Background Import Feature ===
 
+As of *VERSION*, Evergreen supports a feature to let imports be processed in the background.
+
+If you selected _Request Background Import_ in your queue options, after upload you will see a notification saying _Upload Complete for Background Import_ and a link labeled *Background Import Management.* This will open a new tab with a grid showing details of all Background Imports associated with your username.
+
+You can also access the Background Import Management page at *Cataloging -> MARC Barch Import/Export -> Background Imports*.   
+
+image::batch_importing_MARC/background_import_review.png[Background Import Reiew]. 
+
+This interface shows a grid that includes:
+
+* A link to inspect the queue(s) marked for background import
+* The owner, workstation, and notification email for the background import.
+* The request time, complete time, and state (new, running, or complete) of the background import.
+* The type of background import - bib = bibliographic import and acq = acquisitions import.
+* Statistics about the number of records and items in the background import, and successes and failures for each.
+* A Parameters column, that includes the import parameter information in the form of a JSON blob. 
+
+[[default_item_import_values]]
 == Default Values for Item Import ==
 
-Evergreen now supports additional functionality for importing items through *Cataloging* -> *MARC Batch Import/Export*.  When items are imported via a *Holdings Import Profile* in *Cataloging* -> *MARC Batch Import/Export*, Evergreen will create an item-level record for each copy.  If an item barcode, call number, shelving location, or circulation modifier is not set in the embedded holdings, Evergreen will apply a default value based on the configured Library Settings.  A default prefix can be applied to the auto-generated call numbers and item barcodes.
+The following xref:admin:librarysettings.adoc[Library Settings] can be configured to apply these default values to imported items:
 
-The following *Library Settings* can be configured to apply these default values to imported items:
-
-* *Vandelay: Generate Default Barcodes* —Auto-generate default item barcodes when no item barcode is present
-
-* *Vandelay: Default Barcode Prefix* —Apply this prefix to any auto-generated item barcodes
-
-* *Vandelay: Generate Default Call Numbers* —Auto-generate default item call numbers when no item call number is present
-
-* *Vandelay: Default Call Number Prefix* —Apply this prefix to any auto-generated item call numbers
-
-* *Vandelay: Default Copy Location* —Default copy location value for imported items
-
-* *Vandelay: Default Circulation Modifier* —Default circulation modifier value for imported items
-
+* _Vandelay: Generate Default Barcodes_ - Auto-generate default item barcodes when no item barcode is present
+* _Vandelay: Default Barcode Prefix_ - Apply this prefix to any auto-generated item barcodes
+* _Vandelay: Generate Default Call Numbers_ - Auto-generate default item call numbers when no item call number is present
+* _Vandelay: Default Call Number Prefix_ - Apply this prefix to any auto-generated item call numbers
+* _Vandelay: Default Copy Location_ - Default copy location value for imported items
+* _Vandelay: Default Circulation Modifier_ - Default circulation modifier value for imported items

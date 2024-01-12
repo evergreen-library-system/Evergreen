@@ -1,0 +1,30 @@
+= Claim Ready Items =
+:toc:
+
+== Introduction ==
+
+When items are eligible for claiming, they will appear in the Claim Ready Items interface, which can be accessed via *Acquisitions -> Claim Ready Items*. Currently, all claiming is manual and users will need to take an action based on the claim policy.
+
+Items can also be claimed from a purchase order, which is described in the xref:acquisitions:selection_lists_po.adoc#claiming_line_items[Claiming Line Items] section of the purchase orders documentation.
+
+To set up parameters and policies for claiming, please see the xref:admin:acquisitions_admin.adoc#acq_claiming[Claiming] section of the acquisitions administration documentation.
+
+== Claiming ==
+
+For each line item on the claims list, you can claim either selected individual items or all items associated with a line item.
+
+To see current items on the claims list, navigate to *Acquisitions -> Claim Ready Items*. You will see a list filtered to show line items where the ordering agency is equal to your workstation location. If you have permissions to view items from other locations, you can click into the box with the location shortname and select a different location from the dropdown.
+
+image::claim_ready_items/claim_ready_items.png[Claim ready items interface]
+
+At the top, you can select all items in the page or all items regardless of page. You can also select indivudual line items. You will only be able to claim non-received items.
+
+Once you have selected your line items, click the _Claim Selected Lineitems_ button to claim all eligible line items along with their child items.
+
+image::claim_ready_items/claim_selected_lineitems.png[Claim selected line items]
+
+If you wish to claim individual line items, you can also click the _Claim This_ button on a line item. This will claim all non-received claim-eligible items associated with that line item.
+
+If you wish to claim selected items from a line item, you can expand either all or selected line items and then choose specific items to claim. Once you have selected all items to claim, click the _Claim Selected Items_ button at the top of the page.
+
+image::claim_ready_items/claim_selected_items.png[Claim selected items]

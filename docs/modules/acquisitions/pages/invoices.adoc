@@ -5,328 +5,257 @@
 
 indexterm:[acquisitions,invoices]
 
-You can create invoices for purchase orders, individual line items, and blanket purchases. You can also link existing invoices to purchase order.
+You can create invoices for purchase orders, individual line items, and blanket purchases. You can also link existing invoices to purchase orders. Additionaly, you can add specific line items to an invoice from the purchase order or acquisitions search results screen. You can also search for relevant line items from within the invoices interface. You can also add all line items from an entire purchase order to an invoice or you can create a blanket invoice for items that are not  attached to a purchase order.
 
-You can invoice items before you receive the items if desired. You can also
-reopen closed invoices, and you can print all invoices.
+You can invoice items before you receive the items if desired. You can also reopen closed invoices, and you can print invoices.
 
-== Creating invoices and adding line items ==
-You can add specific line items to an invoice from the PO or acquisitions
-search results screen. You can also search for relevant line items from within 
-the invoice interface. In addition, you can add all line items from an entire
-Purchase order to an invoice or you can create a blanket invoice for items that are not 
-attached to a purchase order.
+[[creating_invoices]]
+== Creating invoices ==
 
+To create a new blank invoice, navigate to *Acquisitions -> Create Invoice*.
+
+Invoices are laid out in three main sections from top to bottom.
+
+The first section is the summary section.
+
+image::invoices/invoice_summary.png[Invoice summary section]
+
+The summary section contains the following fields, some for entry and other which are read-only:
+
+* _Vendor Invoice ID_ (required) - This number may be listed on the paper invoice sent from your vendor, or may be an internal identifier. This field must be unique.
+* _Provider_ (required) - Select a provider, if this field is empty. If you have created an invoice from a purchase order this field will be generated from the purchase order and is entered by default.
+* _Shipper_ (required) - This defaults to the provider that was entered in the provider field.
+* _Receive Method_ (required) - Select a receive method. The system will default to _Paper_.
+* _Receiver_ (required) - The receiver defaults to the branch at which your workstation is registered. You can change the receiver by selecting a different org unit.
+*_Invoice Type_ (optional) - This is a free text field.
+* _Payment Method_ (optional) - Select a payment method. Payment methods are set in xref:acquisitions_admin.adoc#_invoice_payment_method[Acquisitions Administration].
+* _Payment Auth_ (optional) - This is a free text field.
+* _Note_ (optional) - This is a free text field.
+* _Invoice Date_ (required) - This default as the date that you create the invoice. You can change the date by clicking in the field or using the calendar picker.
+* _Close Date_ - This will show the date an invoice was closed. It is empty in the case of an open invoice.
+* _Closed By_ - This will show the staff member who closed the invoice. It is empty in the case of an open invoice.
+* _Saved Data Summary_ - After saving an invoice, this section will show the current total billed, total encumbrances, total paid, and balance owed of all invoice items.
+* _Fund Summary_ - After an invoice is closed, this will show the totals for each fund billed in the invoice.
+
+The next section is the line items section. This section also contains tabs to navigate to batch receive, search, and print preview.
+
+image::invoices/invoice_line_items.png[Invoice line items section]
+
+When this section is populated with line items, you can use the filter and sort options or expand / collapse all or selected line items. For more information on these filter and sort options, please see the xref:selection_lists_po.adoc#line_item_batch_actions[Line Items documentation].
+
+Along with the title and author of the line items is a summary of copies ordered, received, invoiced, claimed, and cancelled. You can also view the amounts estimated, encumbered, and paid for each line item. Finally, each line item has a line item ID, and links to the selection list (if used) and the purchase order. In the example below, the line item ID is 563 and the purchase order is 71. There is no selection list on this example.
+
+image::invoices/invoice_line_items_expanded.png[Line item details on the invoice]
+
+Evergreen automatically enters the number of items that were ordered in the _# Invoiced_ and _# Paid_ fields. You  may adjust these quantities as needed.
+
+Evergreen will also pull over line item prices from the purchase order. If you need to change this amount, enter the amount that the organization was billed. This entry will automatically propagate to the _Paid_ field. The _Per Copy_ field calculates the cost of each copy by dividing the amount that was billed by the number of copies for which the library paid.
+
+If you wish to detach an existing line item from an invoice, select the _Detach_ button to the right of the paid fields.
+
+image::invoices/invoice_detach.png[Detach a line item from an invoice]
+
+The line item styling will update to show a dashed black border. If you wish to reattach the item, click 
+_Reattach_. The detatched status will not be saved until you select the _Save_ button at the top or bottom of the invoice.
+
+image::invoices/invoice_reattach.png[Reattach a line item to an invoice]
+
+The last section of the invoice page is the direct charges section. You have the option to add charge types if applicable. Charge types are additional charges that can be selected from the drop-down menu. Common charge types include taxes and handling fees. This is also the section where you would create a blanket invoice, so documentation for this section is below in xref:invoices.adoc#create_blanket_invoice[Creating a blanket invoice].
+
+You can edit direct charges as long as the invoice is open. Any changes to direct charges will not be saved until you select _Save_ at the top or bottom of the invoice.
+
+[[li_search_from_invoice]]
+=== Search for line items from an invoice ===
+
+You can open an invoice, search for line items from the invoice, and add your search results to a new or existing invoice. This feature is especially useful when you want to populate an invoice with line items from multiple purchase orders.
+
+. Navigate to _Acquisitions_ -> _Create Invoice_, or open an existing invoice.
+. Select the _Search_ tab to add line items to an invoice.
+. Search criteria will default to the following:
+.. Item Count is greater than or equal to 1
+.. Line Item Status is not cancelled
+.. Line Item Provider is equal to the Provider selected in the invoice, if the _Limit to Invoiceable Items_ checkbox is selected.
+. Add additional search search criteria if you wish.
+. The _Limit to Invoiceable Items_ checkbox is selected by default. 
++
+[NOTE]
+Invoiceable items are those that are on order, have not been cancelled, and have not yet been invoiced. Evergreen also filters out items that have already been added to an invoice. Finally, if this box is checked, and if your entered the invoice details at the top of the screen.
++
+. The _Keep results between searches_ checkbox is deselected by default. When this checkbox is deselected, new search results will replace previous results in the grid. Check this box for the search results list to build with each subsequent search. This option is useful for libraries that might search for line items by scanning an ISBN. Several ISBNs can be scanned and then the entire result set can be selected and moved to the invoice in a batch.
+. Once you have your search criteria established, select the _Search_ button.
++
+image::invoices/invoice_li_search.png[Search for lineitems from an invoice]
++
+. By default, results are sorted by line item number. Click on column headers to change the sort.
+. Select one or many line item(s) to add to your invoice. The rows that you selected will be highlighted.
+. Once you have selected all desired line items from your search results, click the button _Add Selected Items to Invoice_. 
+. Select the _Invoice Line Items_ tab to return to the main invoice view.
+. Evergreen automatically enters the number of items that were ordered and their prices in the _# Invoiced_, _# Paid_, _Billed_, and _Paid_ fields. Adjust these quantities as needed.
+- Note that if the _Billed_ and _Paid_ fields come over as null, you can enter a billed price that will propagate to the paid price. Changes to non-null values will not propagate between these fields.
+. The _Price Per Item_ field calculates the cost of each copy by dividing the amount that was billed by the number of copies for which the library paid.
+
+image::invoices/price_per_item.png[Invoice line item showing price per item calculation]
+
+[[create_invoice_from_po]]
+=== Create an invoice from a purchase order ===
+
+You can create an invoice for all of the line items on a purchase order, after the purchase order is activated. 
+
+. Navigate to a purchase order.
+. From the purchase order summary, you have three options to create an invoice:
+- _Create Invoice_ - this creates an invoice from all line items + direct charges. Line item prices will carry over, but direct charge prices will not.
+- _Create Invoice with PO prices_ - this creates an invoice from all line items + direct charges, including prices for line items and direct charges.
+- _Legacy Create Invoice_ - this opens the legacy (Dojo) invoices interface. This interface is no longer actively being maintained. You will only see this option if you have the Library Setting _Display Links to Deprecated Acquisitions Interfaces_ set to TRUE for your workstation location.
+. Once you are in the invoice interface, follow the instructions listed above under xref:invoices.adoc#creating_invoices[Creating Invoices].
+. You have four options for saving an invoice.
+- Select _Save_ to save the changes you have made while staying in the current invoice. If your invoice will exceed the fund warning or fund stop balance, you will see a warning to that effect. If you exceed the stop balance, you will need to correct the overage before saving the invoice.
+- Select _New Invoice_ to save the changes you have made and to replace the current invoice with a new invoice so that you can continue invoicing items.
+- Select _Prorate_ to save the invoice and prorate any additional charges, such as taxes, across funds, if multiple funds have been used to pay the invoice.
++
+[NOTE]
+Prorating will only be applied to charge types that have the _Prorate?_ flag set to true. This setting can be adjusted via _Administration_ -> _Acquisitions Administration_ -> _Invoice Item Types_.
++
+- Select _Close Invoice_. Choose this option when you have completed the invoice. This option will also save any changes that have been made. Funds will be disencumbered when the invoice is closed.
+. You can re-open a closed invoice by selecting the _Re-open invoice_ button. This button appears on closed invoices.
+
+[[create_blanket_invoice]]
 === Creating a blanket invoice ===
 
 You can create a blanket invoice for purchases that are not attached to a purchase order.
 
-. Click _Acquisitions_ -> _Create invoice_.
-. Enter the invoice information in the top half of the screen.
-. To add charges for materials not attached to a purchase order, click _Add
-Charge..._ This functionality may also be used to add shipping, tax, and other fees.
-. Select a charge type from the drop-down menu.
+. Navigate to _Acquisitions_ -> _Create invoice_.
+. Enter the invoice information in the top part of the screen.
+. Scroll to the bottom of the screen to the section labeled _Direct Charges, Taxes, Fees, etc._ and select the _New Charge_ button.
+- This functionality may also be used to add shipping, tax, and other fees.
+. Select a charge type from the drop-down menu. This field is required.
 +
 [NOTE]
-New charge types can be added via _Administration_ -> _Acquisitions
-Administration_ -> _Invoice Item Types_.
+New charge types can be added via _Administration_ -> _Acquisitions Administration_ -> _Invoice Item Types_.
 +
-. Select a fund from the drop-down menu.
-. Enter a _Title/Description_ of the resource.
-. Enter the amount that you were billed.
-. Enter the amount that you paid.
+. Select a fund from the drop-down menu. This field is required for all non-proratable charge types.
+- Charge types that are proratable will be not be permitted to select a fund, since they will be prorated across all funds on the invoice.
++
+[NOTE]
+There is a known issue with prorated fund types. Since purchase orders require all direct charges to have a fund type, even proratable funds, invoices do not permit a fund selection for proratable charge types. The latter is the correct behavior, but be aware that this can cause a discrepancy in the invoice summary calculation.
++  
+. Enter a _Title/Description_ of the resource, if applicable.
+. Enter an _Author_, if applicable.
+. Enter a _Note_, if applicable.
+. Enter the amount that you were billed. This field is required.
+. Enter the amount that you paid. This field is required.
 . Save the invoice.
 
-image::media/acq_invoice_blanket.png[Blanket invoice]
+image::invoices/blanket_invoice.png[Blanket Invoice]
 
-=== Adding line items from a Purchase Order or search results screen to an invoice ===
+You can edit direct charges as long as the invoice is open. Any changes to direct charges will not be saved until you select _Save_ at the top or bottom of the invoice.
 
-You can create an invoice or add line items to an invoice directly from a
-Purchase Order or an acquisitions search results screen. 
+[[create_invoice_for_li]]
+=== Creating an invoice for specific line items ===
 
-. Place a checkmark in the box for selected line items from the Purchase Order' or acquisitions search results page.
-. If you are creating a new invoice, click _Actions_ -> _Create Invoice From
-Selected Line Items_.  Enter the invoice information in the top half of the
-screen.
-. If you are adding the line items to an existing invoice, click _Actions_ ->
-_Link Selected Line Items to Invoice_. Enter the Invoice # and Provider and
-then click the _Link_ button.
-. Evergreen automatically enters the number of items that was ordered in
-the # Invoiced and # Paid fields. Adjust these quantities as needed.
-. Enter the amount that the organization was billed. This entry will
-automatically propagate to the Paid field.
+You can create an invoice or add line items to an invoice directly from a purchase order. 
+
+. Navigate to your purchase order.
+. Place a checkmark in the box for selected line items in the purchase order.
+. If you are creating a new invoice for your selected items, navigate to _Actions_ -> _Create Invoice From Selected Line Items_. Enter the invoice information in the top half of the screen. Proceed with the instructions listed above under xref:invoices.adoc#creating_invoices[Creating Invoices].
+. If you are adding the line items to an existing invoice, navigate to _Actions_ ->
+_Link Selected Line Items to Invoice_. Select the Provider and then the Invoice from the dropdowns, then select the _Link Invoice_ button.
++
+image::invoices/link_lineitems_to_invoice.png[Link Line Items to Invoice]
++
+. Evergreen automatically enters the number of items that were ordered and their prices in the _# Invoiced_, _# Paid_, _Billed_, and _Paid_ fields. Adjust these quantities as needed.
+- Note that if the _Billed_ and _Paid_ fields come over as null, you can enter a billed price that will propagate to the paid price. Changes to non-null values will not propagate between these fields.
 . You have the option to add charge types if applicable. Charge types are
 additional charges that can be selected from the drop-down menu. Common charge
 types include taxes and handling fees.
 . You have four options for saving an invoice.
-
-- Click _Save_ to save the changes you have made while staying in the current
-invoice.
-- Click _Save & Clear_ to save the changes you have made and to replace the 
-current invoice with a new invoice so that you can continue invoicing items.
-- Click _Prorate_ to save the invoice and prorate any additional charges, such
-as taxes, across funds, if multiple funds have been used to pay the invoice.
-
+- Select _Save_ to save the changes you have made while staying in the current invoice. If your invoice will exceed the fund warning or fund stop balance, you will see a warning to that effect. If you exceed the stop balance, you will need to correct the overage before saving the invoice.
+- Select _New Invoice_ to save the changes you have made and to replace the current invoice with a new invoice so that you can continue invoicing items.
+- Select _Prorate_ to save the invoice and prorate any additional charges, such as taxes, across funds, if multiple funds have been used to pay the invoice.
 +
 [NOTE]
-Prorating will only be applied to charge types that have the _Prorate?_ flag set
-to true. This setting can be adjusted via _Administration_ ->
-_Acquisitions Administration_ -> _Invoice Item Types_.
+Prorating will only be applied to charge types that have the _Prorate?_ flag set to true. This setting can be adjusted via _Administration_ -> _Acquisitions Administration_ -> _Invoice Item Types_.
 +
+- Select _Close Invoice_. Choose this option when you have completed the invoice. This option will also save any changes that have been made. Funds will be disencumbered when the invoice is closed.
+. You can re-open a closed invoice by selecting the _Re-open invoice_ button. This button appears on closed invoices.
 
-- Click _Close_. Choose this option when you have completed the invoice. This
-option will also save any changes that have been made.  Funds will be disencumbered when the invoice is closed.
+[[create_invoice_from_search]]
+=== Creating an invoice from line items in acquisitions search ===
 
-. You can re-open a closed invoice by clicking the link, _Re-open invoice_. This
-link appears at the bottom of a closed invoice.
+You can create an invoice or add line items to an invoice directly from the line search results screen in the acquisitions general search interface. 
 
-=== Search for line items from an invoice ===
-
-indexterm:[acquisitions,lineitems,searching for]
-indexterm:[acquisitions,invoices,searching for lineitems]
-
-You can open an invoice, search for line items from
-the invoice, and add your search results to a new or existing invoice.  This
-feature is especially useful when you want to populate an invoice with line
-items from multiple purchase orders.
-
-In this example, we'll add line items to a new invoice:
-
-indexterm:[acquisitions,lineitems,adding]
-
-. Click _Acquisitions_ -> _Create Invoice_.
-. An invoice summary appears at the top of the invoice and includes the number
-of line items on the invoice and the expected cost of the items.  This number
-will change as we add line items to the invoice.
-. Enter the invoice details (optional).  If you do not enter the invoice
-details, then Evergreen will populate the _Provider_ and _Receiver_ fields with
-information from the line items.  
+. Navigate to _Acquisitions -> General Search -> Line Items Search_ and perform a line items search.
+. Place a checkmark in the box for selected line items from the search results grid.
+. If you are creating a new invoice, either right click or navigate to the actions menu and select _Create Invoice From Selected Line Items_. Enter the invoice information in the top half of the screen. Proceed with the instructions listed above under xref:invoices.adoc#creating_invoices[Creating Invoices]
+. If you are adding the line items to an existing invoice, either right click or navigate to the actions menu and select
+_Link Selected Line Items to Invoice_. Select the Provider and then the Invoice from the dropdowns, then select the _Link Invoice_ button.
 +
-NOTE: If you do not want to display the details, click _Hide Details_.
+image::invoices/link_lineitems_to_invoice.png[Link Line Items to Invoice]
 +
-image::media/Search_for_line_items_from_an_invoice1.jpg[Search_for_line_items_from_an_invoice1]
-+
-. Click the _Search_ tab to add line items to an invoice.
-. Select your search criteria from the drop-down menu.  
-. On the right side of the screen, _Limit to Invoiceable Items_ is checked by
-default.  Invoiceable items are those that are on order, have not been
-cancelled, and have not yet been invoiced.  Evergreen also filters out items
-that have already been added to an invoice.  Finally, if this box is checked,
-and if your entered the invoice details at the top of the screen, then Evergreen
-will filter your search for items that have the same provider as the one that
-you entered.  If you have not entered the invoice details, then Evergreen
-removes this limit.  
-. Sort by title (optional).  By default, results are listed by line item
-number.  Check this box to sort by ascending title.
-. Building the results list progressively (optional). By default, new search
-results will replace previous results on the screen. Check this box for the
-search results list to build with each subsequent search. This option is useful
-for libraries that might search for line items by scanning an ISBN. Several
-ISBNs can be scanned and then the entire result set can be selected and moved
-to the invoice in a batch.
-. Click _Search_.
-+    
-image::media/Search_for_line_items_from_an_invoice2.jpg[Search_for_line_items_from_an_invoice2]
-+
-. Use the _Next_ button to page through results, or select a line item(s), and
-click _Add Selected Items to Invoice_.
-.The rows that you selected are highlighted, and the invoice summary at the
-top of the screen updates.
-+
-image::media/Search_for_line_items_from_an_invoice3.jpg[Search_for_line_items_from_an_invoice3]
-+
-. Click the _Invoice_ tab to see the updated invoice.
-. Evergreen automatically enters the number of items that was ordered in the
-# Invoiced and # Paid fields. Adjust these quantities as needed.
-. Enter the amount that the organization was billed. This entry will
-automatically propagate to the Paid field. The _Per Copy_ field calculates the
-cost of each copy by dividing the amount that was billed by the number of
-copies for which the library paid.
-
-image::media/Search_for_line_items_from_an_invoice5.jpg[Search_for_line_items_from_an_invoice5]
-
-=== Create an invoice for a purchase order ===
-
-You can create an invoice for all of the line items on a purchase order. With
-the exception of fields with drop-down menus, no limitations on the data that you enter exist.
-
-. Open a purchase order.
-. Click _Create Invoice_.
-. Enter a Vendor Invoice ID. This number may be listed on the paper invoice
-sent from your vendor.
-. Choose a Receive Method from the drop-down menu. The system will default to
-_Paper_.
-. The Provider is generated from the purchase order and is entered by default.
-. Enter a note (optional).
-. Select a payment method from the drop-down menu (optional).
-. The Invoice Date is entered by default as the date that you create the
-invoice. You can change the date by clicking in the field. A calendar drops
-down.
-. Enter an Invoice Type (optional).
-. The Shipper defaults to the provider that was entered in the purchase order.
-. Enter a Payment Authorization (optional).
-. The Receiver defaults to the branch at which your workstation is registered.
-You can change the receiver by selecting an org unit from the drop-down menu.
-+
-[NOTE]
-The bibliographic line items are listed in the next section of the invoice.
-Along with the _title_ and _author_ of the line items is a _summary of copies
-ordered, received, invoiced, claimed,_ and _cancelled_. You can also view the
-_amounts estimated, encumbered,_ and _paid_ for each line item. Finally, each
-line item has a _line item ID_ and links to the _selection list_ (if used) and
-the _purchase order_.
-+
-. Evergreen automatically enters the number of items that was ordered in the
-# Invoiced and # Paid fields. Adjust these quantities as needed.
-. Enter the amount that the organization was billed. This entry will
-automatically propagate to the Paid field. The _Per Copy_ field calculates the
-cost of each copy by dividing the amount that was billed by the number of
-copies for which the library paid.
-. You have the option to add charge types if applicable. Charge types are
-additional charges that can be selected from the drop-down menu. Common charge
-types include taxes and handling fees.
+. Evergreen automatically enters the number of items that were ordered and their prices in the _# Invoiced_, _# Paid_, _Billed_, and _Paid_ fields. Adjust these quantities as needed.
+- Note that if the _Billed_ and _Paid_ fields come over as null, you can enter a billed price that will propagate to the paid price. Changes to non-null values will not propagate between these fields.
+. You have the option to add charge types if applicable. Charge types are additional charges that can be selected from the drop-down menu. Common charge types include taxes and handling fees.
 . You have four options for saving an invoice.
-
-- Click _Save_ to save the changes you have made while staying in the current
-invoice.
-- Click _Save & Clear_ to save the changes you have made and to replace the
-current invoice with a new invoice so that you can continue invoicing items.
-- Click _Prorate_ to save the invoice and prorate any additional charges, such
-as taxes, across funds, if multiple funds have been used to pay the invoice.
-
+- Select _Save_ to save the changes you have made while staying in the current invoice. If your invoice will exceed the fund warning or fund stop balance, you will see a warning to that effect. If you exceed the stop balance, you will need to correct the overage before saving the invoice.
+- Select _New Invoice_ to save the changes you have made and to replace the current invoice with a new invoice so that you can continue invoicing items.
+- Select _Prorate_ to save the invoice and prorate any additional charges, such as taxes, across funds, if multiple funds have been used to pay the invoice.
 +
 [NOTE]
-Prorating will only be applied to charge types that have the Prorate? flag set
-to true. This setting can be adjusted via _Administration_ ->
-_Acquisitions Administration_ -> _Invoice Item Types_.
+Prorating will only be applied to charge types that have the _Prorate?_ flag set to true. This setting can be adjusted via _Administration_ -> _Acquisitions Administration_ -> _Invoice Item Types_.
 +
+- Select _Close Invoice_. Choose this option when you have completed the invoice. This option will also save any changes that have been made. Funds will be disencumbered when the invoice is closed.
+. You can re-open a closed invoice by selecting the _Re-open invoice_ button. This button appears on closed invoices.
 
-- Click _Close_. Choose this option when you have completed the invoice. This
-option will also save any changes that have been made.  Funds will be disencumbered when the invoice is closed.
-
-. You can re-open a closed invoice by clicking the link, _Re-open invoice_. This
-link appears at the bottom of a closed invoice.
-
+[[link_invoice_to_po]]
 === Link an existing invoice to a purchase order ===
 
-You can use the link invoice feature to link an existing invoice to a purchase
-order. For example, an invoice is received for a shipment with items on
-purchase order #1 and purchase order #2. When the invoice arrives, purchase
-order #1 is retrieved, and the invoice is created. To receive the items on
-purchase order #2, simply link the invoice to the purchase order. You do not
-need to recreate it.
+You can use the link invoice feature to link an existing invoice to a purchase order. For example, an invoice is received for a shipment with items on purchase order #1 and purchase order #2. When the invoice arrives, purchase order #1 is retrieved, and the invoice is created. To receive the items on purchase order #2, simply link the invoice to the purchase order. You do not need to recreate it.
 
 . Open a purchase order.
-. Click _Link Invoice_.
-. Enter the Invoice # and the Provider of the invoice to which you wish to link.
-. Click _Link_.
+. Select _Link Invoice_.
+. Select the Provider and then the Invoice from the dropdowns, then select the _Link Invoice_ button.
 
-image::media/acq_invoice_link.png[Link Invoice]
+[[electronic_invoicing]]
+== Electronic invoicing (EDI) ==
 
-== Electronic Invoicing ==
+Evergreen can receive electronic invoices from providers. To access an electronic invoice, you must:
 
-indexterm:[acquisitions,invoices,electronic]
-
-Evergreen can receive electronic invoices from providers.  To
-access an electronic invoice, you must:
-
-. Configure EDI for your provider.
+. Configure EDI for your provider. See the xref:acquisitions_admin.adoc#acq_edi[Acquisitions Administration documentation] for more information.
 . Evergreen will receive invoices electronically from the provider.
-. Click _Acquisitions_ -> _Open Invoices_ to view a list of open invoices, or
-use the _General Search_ to retrieve invoices.  Click a hyperlinked invoice
-number to view the invoice.
+. Navigate to _Acquisitions_ -> Invoices_ to view a list of open invoices, or use the _General Search_ to retrieve invoices. Click the hyperlinked invoice ID in the _Vendor Invoice ID_ field to view the invoice.
 
-image::media/Electronic_invoicing1.jpg[Electronic_invoicing1]
-
+[[viewing_invoice]]
 == View an invoice ==
 
-You can view an invoice in one of four ways: view open invoices; view invoices
-on a purchase order; view invoices by searching specific invoice fields; view
-invoices attached to a line item.
+You can view an invoice in one of four ways: view open invoices; view invoices on a purchase order; view invoices by searching specific invoice fields; view invoices attached to a line item.
 
-. To view open invoices, click _Acquisitions_ -> _Open invoices_. This opens
-the Acquisitions Search screen. The default fields search for open invoices.
-Click _Search_.
+. To view open invoices, navigate to _Acquisitions_ -> _Invoices_. This opens the Acquisitions Search screen. The default fields search for open invoices at your workstation library.Click _Search_.
 +
-image::media/acq_invoice_view.png[Open Invoice Search]
+image::invoices/invoices_search.png[Open Invoice Search]
 +
-. To view invoices on a purchase order, open a purchase order and click the
-_View Invoices_ link. The number in parentheses indicates the number of
-invoices that are attached to the purchase order.
+. To view invoices on a purchase order, open a purchase order and select the _Invoices_ link. The number in parentheses indicates the number of invoices that are attached to the purchase order.
 +
-image::media/acq_invoice_view-2.png[View Invoices from PO]
+image::invoices/invoices_from_po.png[View Invoices from PO]
 +
-. To view invoices by searching specific invoice fields, see the section on
-searching the acquisitions module.
-. To view invoices for a line item, see the section on line item invoices.
+. To view invoices by searching specific invoice fields, see the section on xref:acquisitons_search.adoc[Acquisitions General Search].
+. To view invoices for a line item, see the section above on xref:invoices.adoc#create_invoice_for_li[line item invoices].
 
-== Receive Items From an Invoice ==
+[[receive_from_invoice]]
+== Receive items from an invoice ==
 
-This feature enables users to receive items from an invoice.  Staff can receive individual copies, or they can receive items in batch.
+This feature enables users to receive items from an invoice. Staff can receive individual copies, or they can receive items in batch. As of Evergreen *VERSION*, these interfaces are combined.
 
-=== Receive Items in Batch (List Mode) ===
+You can choose per line item whether you want to receive a count of items on an line item (formerly known as list mode, or batch mode), or receive specific items (formerly known as numeric mode). The latter is helpful if you have vendor-provided barcodes on incoming items.
 
-In this example, we have created a purchase order, added line items and copies, and activated the purchase order.  We will create an invoice from the purchase order, receive items, and invoice them.  We will receive the items in batch from the invoice.
+You can also choose to receive all line items in the page, or all line items on the invoice.
 
-1) Retrieve a purchase order.
+. Navigate to an invoice that has unreceived items.
+. Select the _Batch Receive_tab.
+. For each line item, you can choose to receive any or all items.
+.. To receive all items on a line item, select the checkbox next to the line item title.
+.. To select items to receive, select either a count or specific items on the line item:
+... To receive a count of items, enter a number in the _Receiving_ box that is equal or less than the number of unreceived copies.
+... To receive specific copies, expand the line item and select the checkbox on each item you want to receive.
+. If you have selected only line items, the _Receive Selected Lineitems_ button will be activated. Click this button to receive your selected line items.
+If you have selected individual items from line items, the _Receive Selected Items_ button will be activated. Click this button to receive your selected items.
 
-2) Click *Create Invoice*.
-
-image::media/Receive_Items_From_an_Invoice1.jpg[Receive_Items_From_an_Invoice1]
-
-3) The blank invoice appears.  In the top half of the invoice, enter descriptive information about the invoice.  In the bottom half of the invoice, enter the number of items for which you were invoiced, the amount that you were billed, and the amount that you paid.
-
-
-image::media/Receive_Items_From_an_Invoice2.jpg[Receive_Items_From_an_Invoice2]
-
-
-4) Click *Save*.  You must choose a save option before you can receive items.
-
-
-5) The screen refreshes.  In the top right corner of the screen, click *Receive Items*.
-
-
-6) The *Acquisitions Invoice Receiving* screen opens.  By default, this screen enables users to receive items in batch, or *Numeric Mode*.  You can select the number of copies that you want to receive; you are not receiving specific copies in this mode. 
-
-
-7) Select the number of copies that you want to receive.  By default, the number that you invoiced will appear.  In this example, we will receive one copy of each title.
-
-
-NOTE: You cannot receive fewer items than 0 (zero) or more items than the number that you ordered.
-
-
-8) Click *Receive Selected Copies*.
-
-
-image::media/Receive_Items_From_an_Invoice4.jpg[Receive_Items_From_an_Invoice4]
-
-
-9) When you are finished receiving items, close the screen.  You can repeat this process as you receive more copies.
-
-
-
-=== Receive Specific Copies (Numeric Mode) ===
-
-In this example, we have created a purchase order, added line items and copies, and activated the purchase order.  We will create an invoice from the purchase order, receive items, and invoice them. We will receive specific copies from the invoice.  This function may be useful to libraries who purchase items that have been barcoded by their vendor. 
-
-
-1) Complete steps 1-5 in the previous section.
-
-2) The *Acquisitions Invoice Receiving* screen by default enables user to receive items in batch, or *Numeric Mode*.  Click *Use List Mode* to receive specific copies.
-
-3) Select the check boxes adjacent to the copies that you want to receive.  Leave unchecked the copies that you do not want to receive.
-
-4) Click *Receive Selected Copies*.  
-
-image::media/Receive_Items_From_an_Invoice5.jpg[Receive_Items_From_an_Invoice5]
-
-
-The screen will refresh.  Copies that have not yet been received remain on the screen so that you can receive them when they arrive.
-
-
-5) When all copies on an invoice have been received, a message confirms that no copies remain to be received.
-
-6) The purchase order records that all items have been received.
-
-image::media/Receive_Items_From_an_Invoice7.jpg[Receive_Items_From_an_Invoice7]
-
+image::invoices/invoice_batch_receive.png[Invoice Batch Receive]

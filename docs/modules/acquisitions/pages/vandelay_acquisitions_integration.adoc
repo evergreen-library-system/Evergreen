@@ -7,16 +7,20 @@ The Acquisitions Load MARC Order Record interface enables you to add MARC record
 
 Leveraging the match sets available in the cataloging MARC Batch Import interface, you can also utilize record matching mechanisms to prevent the creation of duplicate records.
 
-Permissions to use this feature are:
+Permissions to use this feature include:
 
 * IMPORT_MARC - Using batch importer to create new bib records requires the IMPORT_MARC permission. If the permission fails, the queued record will fail import and be stamped with a 'import.record.perm_failure' import error.
 * IMPORT_ACQ_LINEITEM_BIB_RECORD_UPLOAD - This allows interfaces leveraging the batch importer, such as Acquisitions, to create a higher barrier to entry. This permission prevents users from creating new bib records directly from the ACQ vendor MARC file upload interface.
+* CREATE_BIB_IMPORT_QUEUE - Permits creating an import queue for bibliographic records.
+* CREATE_AUTHORITY_IMPORT_QUEUE - Permits creating an import queue for authority records.
+* ADMIN_IMPORT_MATCH_SET - Permits the use of match sents in record import.
 * CREATE_PICKLIST - if you wish to create a selection list from your upload, you need this permission.
 * CREATE_PURCHASE_ORDER - if you wish to create a purchase order from your upload, you need this permission.
+ 
 
-Select *Acquisitions -> Load MARC Order Records* to open the Load MARC Order Records interface.
+Navigate *Acquisitions -> Load MARC Order Records* to open the Load MARC Order Records interface.
 
-image::vandelay_acquisitions_integration/acq_load_marc_order_records.png[Load MARC Order Records Interface]
+image::vandelay_acquisitions_integration/lmor_background_import.png[Load MARC Order Records Interface]
 
 == Upload Defaults ==
 
@@ -97,7 +101,11 @@ Once you have entered the above settings, you will need to create a new queue or
 .. If you wish to create a new queue, type the queue name in the field.
 .. Queue names must be unique.
 . In the _File to Upload_ field, select the _Choose File_ button to open a file browse window. Select the file you wish to upload and select *Open*.
-. Select the *Upload* button at the bottom of the interface in order toupload your file according to the parameters you set.
+. If you wish to have the import processed as a background import, select the _Request Background Import_ checkbox and enter an email address for import notifications.
++
+image::vandelay_acquisitions_integration/background_import.png[Background import options]
++
+. Select the *Upload* button at the bottom of the interface in order toupload your file according to the parameters you set. 
 . When the upload finishes, you will see Upload Complete at the bottom of the screen. You will see a link to open your queue, and depending on whether you created a selection list and/or a purchase order, you will also see link(s) to open those.
 +
 image::vandelay_acquisitions_integration/acq_lmor_complete.png[Upload Complete]
@@ -105,8 +113,10 @@ image::vandelay_acquisitions_integration/acq_lmor_complete.png[Upload Complete]
 .. Select *Queue* to open a new tab and show your queue in the MARC Batch Import/Export interface.
 .. If you created or added to a selection list as part of this upload, you will see the option for *Selection List*. This link will open a new tab and show you your selection list.
 .. If you created a purchase order as part of this upload, you will see the option for *Purchase Order*. This link will open a new tab and show you your purchase order.
+. If you selected _Request Background Import_, after upload you will see a notification saying _Upload Complete for Background Import_ and a link labeled *Background Import Management.* This will open a new tab with a grid showing details of all Background Imports associated with your username.
+.. You can also access the Background Import Management page at *Cataloging -> MARC Barch Import/Export -> Background Imports*. There is additional documentation at xref:cataloging:batch_importing_MARC.adoc#background_imports[Background Imports].         
 
-*NOTE:* Depending on the size of your upload file and selected match parameters, the upload may take some time to fully process.
+NOTE: Depending on the size of your upload file and selected match parameters, the upload may take some time to fully process. If you have set background import, you can navigate away from the import interface and you will get an email when the import completes. Since there is no way to prevent outside edits to a purchase order if it is currently processing a background import, users need to be aware that particularly for big orders, they should communicate with fellow Acquisitions and/or Cataloging staff to avoid accidentally duplicating effort and/or entries.
 
 == Use Cases for Load MARC Order Records ==
 

@@ -1,35 +1,74 @@
-= Overlay Existing Catalog Record via Z39.50 Import =
+= Importing and Overlaying Records via Z39.50 =
+:page-aliases: cataloging/pages/overlay_record_3950_import.adoc
 :toc:
 
-This feature enables you to replace a catalog record with a record obtained through a Z39.50 search.  No new permissions or administrative settings are needed to use this feature.
+== Introduction ==
 
-*To Overlay an Existing Record via Z39.50 Import:*
+The Z39.50 interface in Evergreen allows you to import records either to create a new record or overlay an existing record.
 
-. Click *Cataloging -> Import Record from Z39.50*
-. Select at least one of the *Service and Credentials* to have the search fields appear.  You can also click on *Save as Default* if you want the same *Service and Credentials* saved for the future.
-. Enter search terms in the *Query* window in the top left panel.
-. Click *Search*. 
+To configure various aspects of Z39.50 please see the following documentation:
+
+* xref:admin:z3950_servers.adoc[Z39.50 Servers]
+* xref:admin:MARC_Import_Remove_Fields.adoc[MARC Import Remove Fields]
+* xref:cataloging:batch_importing_MARC.adoc#matchsets[Record Match Sets]
+* xref:cataloging:batch_importing_MARC.adoc#_mergeoverlay_profiles[Merge and Overlay Profiles]
+
+== Overlaying an Existing Record ==
+
+This feature enables you to replace a catalog record with a record obtained through a Z39.50 search. 
+
+To Overlay an Existing Record via Z39.50 Import:
+
+. Navigate to *Cataloging -> Import Record from Z39.50*
+. Select at least one of the _Services and Credentials_ to have the search fields appear.  You can also select _Save as Default_ if you want the same services and credentials saved for the future.
+. Enter search terms in the _Search Query_ section in the top right.
+. Select any _Remove Field Groups_ options if you have those configured.
+. Select the _Submit_ button at the bottom-left of the search form. 
 +
-image::overlay/search.png[]
+image::overlay/z3950_search_form.png[Z39.50 search form - top portion]
 +
 . The results will appear in the lower window.
++
+image::overlay/z3950_search_results.png[Z39.50 search results grid]
++
+.. You can sort or the results set by clicking column headers. Note that this will only sort results that are already fetched from the local catalog or remote server.
 . Select the record in the local catalog that you wish to overlay.
-. Click *Mark Local Result as Overlay Target*.  A confirmation will show as a message above the results table in the top right hand corner.
-+
-image::overlay/mark_local_overlay.jpg[]
-+
+. Select _Mark for Overlay_.  A confirmation will show as a message above the _Mark for Overlay_ button.
 . Select the record that you want to replace the existing catalog record.
-. Click on *View Marc* to check on that record.
+. Select _View Marc_ to see a MARC display of the record.
 +
-image::overlay/view_marc.jpg[]
+image::overlay/z3950_view_marc.png[View MARC Record from Z39.50 interface]
 +
-. If the record is correct, click *Overlay*.  This option will only be executable if you are highlighting the potential incoming record.
+. If the record is correct, close the MARC view and select _Overlay_. This option will only be executable if you have the incoming record selected.
+. The records that you selected will open in a modal for comparison. Select an overlay profile from the dropdown.
 +
-image::overlay/overlay.jpg[]
+image::overlay/z3950_overlay_record.png[Record comparison modal]
 +
-.The records that you selected will open in a prompt.  Make any desired changes to the record in a separate window with Marc Editor and come back to this screen when ready to overlay.  Select a profile and click *Overlay*.
+.. If you need to make changes to the incoming record, select the _Edit Z39.50 Record_ button. This will open a MARC editor view. 
+.. Make your changes to the incoming record and select _Save Changes_ to close the MARC editor view.
+. Once you are ready, select the _Merge and Overlay_ button at the bottom-right of the modal.
+. The record will appear in a new browser tab, and the overlay target will be cleared, resulting in the message "No record marked for overlay" displaying at the top of the Z39.50 results grid.
+
+== Importing a New Records ==
+
+To import a new record via Z39.50, follow the directions below:
+
+. Navigate to *Cataloging -> Import Record from Z39.50*
+. Select at least one of the _Services and Credentials_ to have the search fields appear.  You can also select _Save as Default_ if you want the same services and credentials saved for the future.
+. Enter search terms in the _Search Query_ section in the top right.
+. Select any _Remove Field Groups_ options if you have those configured.
+. Select the _Submit_ button at the bottom-left of the search form. 
+. The results will appear in the lower window.
+.. You can sort or the results set by clicking column headers. Note that this will only sort results that are already fetched from the local catalog or remote server.
+. Select the record that you wish to import.
+. Select _View Marc_ to see a MARC display of the record.
+. If the record is correct, close the MARC view and select _Import_. You will get a confirmation of the record import, along with its local ID number and an option _Go to record_ which will open the record in a new browser tab.
+. If you wish to make edits to the record before importing, select _Edit then Import_. This will open a MARC editor view. 
+.. Make your changes to the incoming record.
+.. Add items to the record, if desired, by selecting the _Add Item_ checkbox at the upper-left and entering a call number and barcode.
+.. Select _Save Changes_ to save your changes and/or added item.
+.. Select _Import Record_ at the bottom-right of the MARC editor view.
 +
-image::overlay/overlay_confirmation.jpg[]
+image::overlay/z3950_import_record.png[Import record via Z39.50]
 +
-. The record will appear in a new tab in OPAC view.
-. When overlayed, a message over the result table will display "No record marked for overlay."
+.. You will get a confirmation of the record import, along with its local ID number and an option _Go to record_ which will open the record in a new browser tab.

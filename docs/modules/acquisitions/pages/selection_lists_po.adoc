@@ -711,7 +711,7 @@ To view your purchase orders, navigate to *Acquisitions -> Purchase Orders*. Thi
 
 You can change this default search to include other search parameters. For more information please see the xref:acquisitions:acquisitions_search.adoc#default_acquisitions_search[Creating a New Default Search] documentation.
 
-You can also use the Acquisitions Search interface to search for & retrieve purchase orders created by other users. For more information please see thexref:acquisitions:acquisitions_search.adoc[Acquisitions Search] documentation.
+You can also use the Acquisitions Search interface to search for & retrieve purchase orders created by other users. For more information please see the xref:acquisitions:acquisitions_search.adoc[Acquisitions Search] documentation.
 
 [[create_purchase_order]]
 === Creating a Purchase Order ===
@@ -958,7 +958,8 @@ cancel reason will be calculated based on the following:
 
 Claiming lets you apply a claim policy to selected line items. Claiming policies are set up in xref:admin:acquisitions_admin.adoc#acq_claiming[Acquisitions Administration].
 
-*NOTE:* You will not have the option to mark selected line items claimed until sufficient time has passed according to your claim policy. Applying a claim policy does not initiate a claim, it simply tells the system what to do when or if a claim is initiated.
+[NOTE]
+You will not have the option to mark selected line items claimed until sufficient time has passed according to your claim policy. Applying a claim policy does not initiate a claim, it simply tells the system what to do when or if a claim is initiated.
 
 The default claim policy associated with each Provider is automatically assigned to line items and items ordered from the provider, or you can choose to assign another claim policy to a line item.
 
@@ -977,7 +978,7 @@ image::selection_lists_po/acq_po_claim_item.png[Line Item Action: Claims]
 
 A dialog will open allowing you to initiate a new claim against the line item. Select the item barcode(s) you wish to claim, select the _Claim Type_, and enter a _Claim Note_ if you wish. Click *Claim Selected* to mark the selected item(s) as claimed. Click *Exit Dialog* to exit without claiming the item(s)
 
-image::selection_lists_po/acq_po_apply_claim_item_modal.png[Mark Item as Claimed]
+image::selection_lists_po/acq_po_claim_item_modal.png[Mark Item as Claimed]
 
 Claiming can be done in batch via the *Acquisitions -> Claim Ready Items* interface.
 
@@ -997,16 +998,27 @@ Please see the xref:acquisitions:invoices.adoc[Invoicing] documentation for spec
 
 Brief records are short bibliographic records with minimal information that are often used as placeholder records until items are received. Brief records can be added to selection lists or purchase orders and can be imported into the catalog. You can add brief records to new or existing selection lists. You can add brief records to new, pending or on-order purchase orders.
 
-[[add_brief_records_selection_list]]
-=== Add brief records to a selection list ===
+[[add_brief_records_acq_menu]]
+=== Add brief records from the Acquisitions Menu ===
 
-. Select *Acquisitions -> New Brief Record*.
-.. This version of the brief record interface is still in Dojo.
-. Choose a selection list from the drop down menu, or enter the name of a new selection list.
+. Navigate to *Acquisitions -> New Brief Record*.
++
+image::selection_lists_po/acq_menu_add_brief_record.png[Add Brief Record from Acquisitions Menu]
++
+. Choose a selection list from the drop down menu, or enter the name of a new selection list. Alternatively, choose a purchase order from the dropdown menu.
+. Optionally, select a bibliographic template from the dropdown.
+.. You may also select _Set Default_ to set a default template to use in the brief record interface.
++
+NOTE: The brief record interface is less forgiving of malformed XML than the full MARC editor is, so if you encounter errors in the brief record interface with bibliographic templates that are functional in the MARC editor, check your templates for correct XML.
++
 . Enter bibliographic information in the desired fields.
-. Select *Save Record*.
+. Select *Add Record*.
 
-Alternatively, you can also add brief records from within an existing selection list.
+
+[[add_brief_records_selection_list]]
+=== Add brief records within a selection list ===
+
+You can also add brief records from within an existing selection list.
 
 . Open or create a selection list. See the section on xref:acquisitions:selection_lists_po.adoc#selection_lists[selection lists] for more information.
 . Select _Actions_ and then *Add Brief Record*.
@@ -1017,7 +1029,7 @@ image::selection_lists_po/acq_new_brief_record.png[Action: Add New Brief Record]
 . Select *Add Record* to add the record to your selection list.
 
 [[add_brief_records_purchase_orders]]
-=== Add brief records to purchase orders ===
+=== Add brief records within a purchase order ===
 
 You can also add brief records to new or existing purchase orders.
 
@@ -1034,14 +1046,46 @@ image::selection_lists_po/acq_new_brief_record.png[Action: Add New Brief Record]
 
 The MARC Federated Search interface enables you to import bibliographic records into a selection list or purchase order from a Z39.50 source.
 
-As of version 3.10 this interface is still in Dojo.
+As of *VERSION* this interface has been updated to Angular. 
 
 . Naviate to *Acquisitions* -> *MARC Federated Search*.
-. Select the boxes of z39.50 services that you want to search. Your local Evergreen catalog is checked by default. Select _Submit_.
 +
-image::selection_lists_po/acq_marc_fed_search_form.png[MARC Federated Search Form]
+image::selection_lists_po/marc_fed_search_angular.png[MARC Federated Search Interface]
 +
-. A list of results will appear. Select the _Copies_ link to add copy information to the line item.
-. Select the _Notes_ link to add notes or line item alerts to the line item. 
-. Enter a price in the _Estimated Price_ field.
-. You can save the line item(s) to a selection list by selecting the line item and then in the upper-left select *Actions -> Save Items to Selection List*. You can also create a purchase order from the line item(s) by selecting the line item and then in the upper-left select *Actions -> Create Purchase Order*.
+. Select at least one of the _Services and Credentials_ to have the search fields appear.  You can also select _Save as Default_ if you want the same services and credentials saved for the future.
+. Enter search terms in the _Search Query_ section in the top-right.
+. Select any _Remove Field Groups_ options if you have those configured.
+. Select the _Submit_ button at the bottom-left of the search form. 
+. The results will appear in the lower window.
++
+image::selection_lists_po/marc_fed_search_results.png[MARC Federated Search results grid]
++
+.. You can sort or the results set by clicking column headers. Note that this will only sort results that are already fetched from the local catalog or remote server.
+. Select the record that you wish to add to a purchase order or selection list.
+. Select _View Marc_ to see a MARC display of the record.
+. If the record is correct, close the MARC view and select either _Add to Selection List_ or _Add to Purchase Order_.
+. For _Add to Selection List_, you will see a modal asking you to choose an existing selection list or name a new selection list. You will only see selection lists that you have permission to view. If you create a new selection list, its name must be unique.
+.. If you wish to edit the incoming record, select _Edit incoming MARC_.
+If you wish to make edits to the record before importing, select _Edit then Import_. This will open a MARC editor view. 
+.. Make your changes to the incoming record.
+.. Add items to the record, if desired, by selecting the _Add Item_ checkbox at the upper-left and entering a call number and barcode.
+.. Select _Save Changes_ in the upper right to save your changes and/or added item.
+.. Select _Done_ in the lower right to close the MARC editor view.
+.. In the _Add to Selection List_ modal, select _Continue_.
+.. You will get a confirmation that the selection list was updated, and you will have the option to _Go to Selection List_ to open the selection list in a new browser tab, or close the modal and go _Back to results_.
+. For _Add to Purchase Order_, you will see a modal asking you to choose an existing purchase order or name a new purchase order. You will only see purchase orders that you have permission to view. If you create a new purchase order, its name must be unique and you must select an Ordering Agency and a Provider.
+.. If you wish to edit the incoming record, select _Edit incoming MARC_.
+If you wish to make edits to the record before importing, select _Edit then Import_. This will open a MARC editor view. 
+.. Make your changes to the incoming record.
+.. Add items to the record, if desired, by selecting the _Add Item_ checkbox at the upper-left and entering a call number and barcode.
+.. Select _Save Changes_ in the upper right to save your changes and/or added item.
+.. Select _Done_ in the lower right to close the MARC editor view.
+.. In the _Add to Purchase Order_ modal, select _Continue_.
+.. You will get a confirmation that the purchase order was updated, and you will have the option to _Go to Purchase Order_ to open the purchase order in a new browser tab, or close the modal and go _Back to results_.
+
+NOTE: Certain charachters, like $ (dollar sign), that appear in a MARC record can cause import errors in this interface. Remove the $ charachter(s) from your MARC record and reattempt the import.
+
+Additional documentation can be seen elsewhere:
+
+* xref:cataloging:overlay_record_3950_import.adoc[Importing and Overlaying Z39.50 Records]
+* xref:admin:z3950_servers.adoc[Configuring Z39.50 Servers]
