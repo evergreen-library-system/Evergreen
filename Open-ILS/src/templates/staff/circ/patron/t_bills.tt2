@@ -111,6 +111,7 @@ not sure what's up, there. -->
       <label>
         <input type="checkbox" ng-model="convert_to_credit.isChecked">
         [% l('Convert Change to Patron Credit') %]
+        <eg-help-popover help-text="[% l('Applies any remaining amount after payment to the patron account for future use.') %]">
       </label>
     </div>
   </div>
