@@ -571,7 +571,18 @@
                         res.link = res.note;
                         res.note = '';
                     END;
-                    args.uris.push(res);
+
+                    # Unique-ify the URI list because multiple $9's on the same link can cause dupes.
+                    found_u = 0;
+                    FOR test_u IN args.uris;
+                        IF test_u.href == res.href AND test_u.link == res.link AND test_u.note == res.note;
+                            found_u = 1;
+                            LAST;
+                        END;
+                    END;
+                    IF NOT found_u;
+                        args.uris.push(res);
+                    END;
 
                     IF ebook_api.ebook_test.enabled == 'true';
                         IF !args.ebook_test_id;
