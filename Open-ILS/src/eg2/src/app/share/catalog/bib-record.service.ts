@@ -138,7 +138,6 @@ export class BibRecordService {
                 summary.attributes = bibSummary.attributes;
                 summary.holdCount = bibSummary.hold_count;
                 summary.holdingsSummary = bibSummary.copy_counts;
-                summary.eResourceUrls = bibSummary.urls;
                 summary.copies = bibSummary.copies;
                 summary.firstCallNumber = bibSummary.first_call_number;
                 summary.prefOuHoldingsSummary = bibSummary.pref_ou_copy_counts;
@@ -146,6 +145,14 @@ export class BibRecordService {
                 summary.isHoldable = bibSummary.record.deleted() === 'f'
                 && bibSummary.has_holdable_copy
                 || this.allowUnfillableHolds;
+
+                // De-duplicate urls, frequently caused by multiple subfield 9's
+                bibSummary.urls.forEach(function (elb, indb, aryb) {
+                    if(summary.eResourceUrls.every((els, inds, arys) =>
+                        elb.href !== els.href || elb.note !== els.note || elb.label !== els.label)) {
+                        summary.eResourceUrls.push(elb);
+                    }
+                });
 
                 return summary;
             }));
