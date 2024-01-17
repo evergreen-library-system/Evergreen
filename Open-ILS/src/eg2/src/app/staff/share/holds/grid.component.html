@@ -172,7 +172,7 @@
       </ng-template>
       <eg-grid-column i18n-label label="Title" [hidden]="true" name='title'
         [cellTemplate]="titleTmpl"></eg-grid-column>
-
+      <eg-grid-column i18n-label label="Publication Year" path='pubdate' [hidden]="true"></eg-grid-column>
       <ng-template #barcodeTmpl let-hold="row" let-col="col">
         <a href="/eg/staff/cat/item/{{hold.cp_id}}/summary" target="_blank">
           <ng-container *ngIf="col.name === 'current_item' && hold.current_copy">
