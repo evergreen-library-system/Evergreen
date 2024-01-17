@@ -2200,7 +2200,8 @@ sub wide_hold_data {
 WITH
     t_field AS (SELECT field FROM config.display_field_map WHERE name = 'title'),
     a_field AS (SELECT field FROM config.display_field_map WHERE name = 'author'),
-    s_field AS (SELECT field FROM config.display_field_map WHERE name = 'series_title')
+    s_field AS (SELECT field FROM config.display_field_map WHERE name = 'series_title'),
+    y_field AS (SELECT field FROM config.display_field_map WHERE name = 'pubdate')
 SELECT  h.id, h.request_time, h.capture_time, h.fulfillment_time, h.checkin_time,
         h.return_time, h.prev_check_time, h.expire_time, h.cancel_time, h.cancel_cause,
         h.cancel_note, h.target, h.current_copy, h.fulfillment_staff, h.fulfillment_lib,
@@ -2348,6 +2349,7 @@ SELECT  h.id, h.request_time, h.capture_time, h.fulfillment_time, h.checkin_time
         t.value AS title,
         a.value AS author,
         s.value AS series_title,
+        y.value AS pubdate,
 
         acpl.id AS acpl_id, acpl.name AS acpl_name, acpl.owning_lib AS acpl_owning_lib, acpl.holdable AS acpl_holdable,
         acpl.hold_verify AS acpl_hold_verify, acpl.opac_visible AS acpl_opac_visible, acpl.circulate AS acpl_circulate,
@@ -2391,6 +2393,7 @@ SELECT  h.id, h.request_time, h.capture_time, h.fulfillment_time, h.checkin_time
         JOIN t_field ON TRUE
         JOIN a_field ON TRUE
         JOIN s_field ON TRUE
+        JOIN y_field ON TRUE
         LEFT JOIN action.hold_request_cancel_cause cc ON (h.cancel_cause = cc.id)
         LEFT JOIN biblio.monograph_part p ON (h.hold_type = 'P' AND p.id = h.target)
         LEFT JOIN serial.issuance siss ON (h.hold_type = 'I' AND siss.id = h.target)
@@ -2413,6 +2416,7 @@ SELECT  h.id, h.request_time, h.capture_time, h.fulfillment_time, h.checkin_time
         LEFT JOIN LATERAL (SELECT FIRST(value) AS value FROM metabib.display_entry WHERE source = r.bib_record AND field = t_field.field) t ON TRUE
         LEFT JOIN LATERAL (SELECT FIRST(value) AS value FROM metabib.display_entry WHERE source = r.bib_record AND field = a_field.field) a ON TRUE
         LEFT JOIN LATERAL (SELECT FIRST(value) AS value FROM metabib.display_entry WHERE source = r.bib_record AND field = s_field.field) s ON TRUE
+        LEFT JOIN LATERAL (SELECT FIRST(value) AS value FROM metabib.display_entry WHERE source = r.bib_record AND field = y_field.field) y ON TRUE
         LEFT JOIN LATERAL actor.org_unit_ancestor_setting('circ.holds.default_estimated_wait_interval',u.home_ou) AS default_estimated_wait_interval ON TRUE
         LEFT JOIN LATERAL actor.org_unit_ancestor_setting('circ.holds.min_estimated_wait_interval',u.home_ou) AS min_estimated_wait_interval ON TRUE
         LEFT JOIN LATERAL actor.org_unit_ancestor_setting('circ.hold_shelf_status_delay',h.pickup_lib) AS hold_wait_time ON TRUE,
