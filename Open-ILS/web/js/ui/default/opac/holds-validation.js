@@ -22,15 +22,14 @@ function validateMethodSelections (alertMethodCboxes) {
     var inputNames = { e: "email_address", ph: "phone_notify", sms: "sms_notify", carrier: "sms_carrier"};
     resetBackgrounds(inputNames);
 
-    //PINES variable:
-    var anyCheckbox = 0;
+    //Number of notification methods used
+    var numNotifications = 0;
 
     //Array.from(alertMethodCboxes).forEach(function(cbox){
     for (var i = 0; i < alertMethodCboxes.length; i++){
         var cbox = alertMethodCboxes[i];
         if (cbox.checked && !cbox.disabled) {
-            //PINES check
-            anyCheckbox = anyCheckbox + 1;
+            numNotifications = numNotifications + 1;
             switch(cbox.id){
                 case "email_notify_checkbox":
                     needsEmail = true;
@@ -62,9 +61,9 @@ function validateMethodSelections (alertMethodCboxes) {
     }
 
     var isFormOK = emailOK && phoneOK && smsOK;
-    //PINES customization
+
     //return { isValid: isFormOK, culpritNames : culprits };
-    return { isValid: isFormOK, culpritNames : culprits, anyCheckbox : anyCheckbox };
+    return { isValid: isFormOK, culpritNames : culprits, numNotifications : numNotifications };
 }
 
 function confirmMultipleHolds() {
@@ -132,10 +131,10 @@ function validateHoldForm() {
     if (res.isValid) {
         var result = confirmMultipleHolds();
         
-        //PINES custom check for notification options
-        if (res.anyCheckbox == 0) {
-            var anyCheckboxResponse = confirm("    No notification options are selected.    \n     Are you sure you want to continue?");
-            if (anyCheckboxResponse == false) {
+        //Check for notification options
+        if (res.numNotifications == 0) {
+            var numNotificationsResponse = confirm("    No notification options are selected.    \n     Are you sure you want to continue?");
+            if (numNotificationsResponse == false) {
                 return false;
             }
         }
