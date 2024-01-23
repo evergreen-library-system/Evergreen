@@ -9,7 +9,7 @@
   </div>
   <div class="modal-body">
     <div class="col-md-12">
-      <input ng-keyup="$event.keyCode == 13 ? ok() : null" type='text' ng-model="args.value" class="form-control" focus-me="focus"/>
+      <input ng-keydown="$event.keyCode == 13 ? ok() : null" type='text' ng-model="args.value" class="form-control" focus-me="focus"/>
     </div>
   </div>
   <div class="modal-footer">
