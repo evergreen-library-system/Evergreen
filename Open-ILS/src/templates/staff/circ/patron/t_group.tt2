@@ -45,6 +45,7 @@
   <eg-grid-field path="pref_family_name" hidden></eg-grid-field>
   <eg-grid-field path="pref_first_given_name" hidden></eg-grid-field>
   <eg-grid-field path="pref_second_given_name" hidden></eg-grid-field>
+  <eg-grid-field path="expire_date" dateformat="{{$root.egDateFormat}}" datatype="timestamp" hidden></eg-grid-field>
   <!-- needed for query, sorting -->
   <eg-grid-field path="id" hidden required></eg-grid-field>
   <eg-grid-field path="usrgroup" hidden required></eg-grid-field>
