@@ -23,11 +23,13 @@
 # 5. In your cmd window, `cd` into the Evergreen docs directory.  For example, if
 #    your local copy of the Evergreen repo is at C:\Users\me\projects\Evergreen, type
 #    `cd \Users\me\projects\Evergreen\docs` (without the backticks) into the cmd window.
-# 6. In your cmd window, run `generate_docs.pl --base-url http://example.com`
+# 6. In your cmd window, type: perl generate_docs.pl --base-url http://example.com
 # 7. In a browser, open the docs/output.html file.  For examle, if your local
 #    copy of the Evergreen repo is at C:\Users\me\projects\Evergreen, type
 #    file:///C:/Users/me/projects/Evergreen/docs/output/docs/output/index.html
 #    into your browser's URL bar.
+# 8. If you click on the "Evergreen Documentation" phrase at the top, you will get an
+#    error because it will link you to "example.com". Don't click on that :)
 
 use Getopt::Long;
 use Cwd;
