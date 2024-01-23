@@ -239,7 +239,30 @@ export class HoldsGridComponent implements OnInit {
             current_item: row => row.current_copy ? row.cp_barcode : '',
             requested_item: row => this.isCopyHold(row) ? row.cp_barcode : '',
             ucard_barcode: row => row.ucard_barcode,
-            hold_status: row => row.hold_status // TODO labels
+            status_string: row => {
+                switch (row.hold_status) {
+                    case 1:
+                        return $localize`Waiting for Item`;
+                    case 2:
+                        return $localize`Waiting for Capture`;
+                    case 3:
+                        return $localize`In Transit`;
+                    case 4:
+                        return $localize`Ready for Pickup`;
+                    case 5:
+                        return $localize`Hold Shelf Delay`;
+                    case 6:
+                        return $localize`Canceled`;
+                    case 7:
+                        return $localize`Suspended`;
+                    case 8:
+                        return $localize`Wrong Shelf`;
+                    case 9:
+                        return $localize`Fulfilled`;
+                    default:
+                        return $localize`Unknown Error`;
+                }
+            }
         };
     }
 
