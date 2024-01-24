@@ -1986,7 +1986,11 @@ INSERT INTO permission.perm_list ( id, code, description ) VALUES
  ( 646, 'CREATE_USER_BUCKET', oils_i18n_gettext(646,
     'Allow a user to create a User Bucket', 'ppl', 'description')),
  ( 647, 'UPDATE_ADDED_CONTENT_URL', oils_i18n_gettext(647,
-    'Update the NoveList added-content javascript URL', 'ppl', 'description'))
+    'Update the NoveList added-content javascript URL', 'ppl', 'description')),
+ ( 648, 'ADMIN_BIB_BUCKET', oils_i18n_gettext(648,
+    'Administer bibliographic record buckets', 'ppl', 'description')),
+ ( 649, 'CREATE_BIB_BUCKET', oils_i18n_gettext(649,
+    'Create bibliographic record buckets', 'ppl', 'description'))
 ;
 
 SELECT SETVAL('permission.perm_list_id_seq'::TEXT, 1000);
