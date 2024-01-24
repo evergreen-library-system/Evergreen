@@ -4,16 +4,16 @@
 <eg-patron-penalty-dialog #penaltyDialog></eg-patron-penalty-dialog>
 
 <div class="row">
-  <div class="col-lg-12 form-inline">
+  <div class="col-lg-4 form-inline">
     <div class="input-group">
       <span class="input-group-text" id='barcode-label' i18n>Barcode</span>
       <input type="text" class="form-control" id="item-barcode-input" 
         (keydown)="noSuchItem=false; true;"
         (keyup.enter)="getItemByBarcode()" [(ngModel)]="itemBarcode" 
         aria-describedby="barcode-label"/>
+      <button type="button" class="btn btn-outline-dark"
+        (click)="getItemByBarcode()" i18n>Submit</button>
     </div>
-    <button type="button" class="btn btn-outline-dark" 
-      (click)="getItemByBarcode()" i18n>Submit</button>
   </div>
 </div>
 
