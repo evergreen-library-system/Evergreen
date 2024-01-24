@@ -137,7 +137,7 @@
     <eg-grid #holdsGrid [dataSource]="gridDataSource" [sortable]="true"
       [useLocalSort]="enablePreFetch" [cellTextGenerator]="cellTextGenerator"
       [showFields]="showFields"
-      [multiSortable]="true" [persistKey]="persistKey"
+      [persistKey]="persistKey"
       (onRowActivate)="showDetail($event)">
 
       <eg-grid-toolbar-button *ngIf="pullListOrg" 
@@ -255,10 +255,10 @@
         </a>
       </ng-template>
       <eg-grid-column i18n-label label="Current Item" name='current_item'
-        [cellTemplate]="barcodeTmpl">
+        [cellTemplate]="barcodeTmpl" [sortable]="false">
       </eg-grid-column>
       <eg-grid-column i18n-label label="Requested Item" name='requested_item'
-        [cellTemplate]="barcodeTmpl">
+        [cellTemplate]="barcodeTmpl" [sortable]="false">
       </eg-grid-column>
       <eg-grid-column i18n-label label="Pickup Library" path='pl_shortname'></eg-grid-column>
       <eg-grid-column i18n-label label="Hold Type" path='hold_type'></eg-grid-column>
@@ -282,7 +282,8 @@
       <eg-grid-column i18n-label label="Available Date" path='shelf_time'
           datatype="timestamp" [datePlusTime]="true"></eg-grid-column>
 
-      <eg-grid-column i18n-label label="Hold Status" [cellTemplate]="statusTemplate" name="hold_status">
+      <eg-grid-column i18n-label label="Hold Status" [cellTemplate]="statusTemplate" name="status_string"
+        [sortable]="false">
       </eg-grid-column>
       <eg-grid-column i18n-label label="Queue Position"
           path='relative_queue_position' [hidden]="true" datatype="int"></eg-grid-column>
