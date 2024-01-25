@@ -241,6 +241,7 @@ export class HoldsGridComponent implements OnInit {
             ucard_barcode: row => row.ucard_barcode,
             status_string: row => {
                 switch (row.hold_status) {
+                    /* eslint-disable no-magic-numbers */
                     case 1:
                         return $localize`Waiting for Item`;
                     case 2:
@@ -261,6 +262,7 @@ export class HoldsGridComponent implements OnInit {
                         return $localize`Fulfilled`;
                     default:
                         return $localize`Unknown Error`;
+                    /* eslint-enable no-magic-numbers */
                 }
             }
         };
