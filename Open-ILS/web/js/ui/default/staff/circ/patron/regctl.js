@@ -2152,6 +2152,12 @@ function($scope , $routeParams , $q , $uibModal , $window , egCore ,
         });
     }
 
+    $scope.clear_pulib = function() {
+        if (!$scope.user_settings) return; // still rendering
+        $scope.patron._pickup_lib = null;
+        $scope.user_settings['opac.default_pickup_location'] = null;
+    }
+
     $scope.handle_pulib_changed = function(org) {
         if (!$scope.user_settings) return; // still rendering
         $scope.user_settings['opac.default_pickup_location'] = org.id();
