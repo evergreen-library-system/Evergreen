@@ -751,6 +751,11 @@ within the "form" by name for validation.
       onchange="handle_pulib_changed">
     </eg-org-selector>
   </div>
+  <div class="col-md-3">
+    <button class="btn btn-default" ng-click="clear_pulib()" type="button"
+      ng-disabled="!patron._pickup_lib">
+      [% l('Clear Default Pickup Location') %]</button>
+  </div>
 </div>
 
 <div class="row reg-field-row" 
