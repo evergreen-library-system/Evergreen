@@ -538,7 +538,7 @@ To create a new Fund:
 
 . Go to _Administration -> Acquisitions Administration -> Fund Administration_.
 . Go to the _Funds_ tab and click the _New Fund_ button.
-. Enter a Name for the fund. No limits exist on the number of charactersthat can be entered in this field.
+. Enter a Name for the fund. No limits exist on the number of characters that can be entered in this field.
 . Create a Code for the fund. No limits exist on the number of characters that can be entered in this field.
 . Enter a Year for the fund. This can be a fiscal year or a calendar year. The format of the year is YYYY. The year entry is restricted to a range of 10 years before through 10 years after the current year.
 . Select an Org Unit from the drop-down menu. The org unit indicates the organizational units whose staff can use this fund. This menu is populated with the Short (Policy) Name codes that you created for your libraries in the organizational units tree (See Administration -> Server Administration -> Organizational Units).
@@ -611,7 +611,11 @@ image::media/propagate_rollover_ang.png[Propagate and Rollover]
 To perform the year end closeout of funds:
 
 . Go to _Administration -> Acquisitions Administration -> Fund Administration_.
-. Click _Fund Propagation and Rollover_.
+. Review your current funds.
+.. Confirm that the correct Org Unit is selected.
+.. Double check the Year Filter.  It defaults to the current year, so you may need to switch back to a previous year to view funds that have not been rolled over yet.  If the list is blank, check this.
+.. Double check that the correct funds have Propagate and Rollover set. 
+. Click _Fiscal Propagation and Rollover_.
 . Verify the Context Org Unit for the close out operation.
 . Select the Year that you want to close out.
 . Include funds from descendant Org Units: check this box if you want to include funds owned by descendant org units of the Context Org Unit.
@@ -824,7 +828,7 @@ To delete a Provider account:
 . The Delete Provider button on the left-hand side of the screen will become active when viewing the account details. Select *Delete Provider*.
 .. The Provider cannot be deleted if it has Invoices, Line Items, or Purchase Orders attached to it.
 
-[[provider_searc]]
+[[provider_search]]
 === Provider Search ===
 
 The Provider Search interface allows you to search for acquisitions provider accounts that have been created in your Evergreen system. Providers can be searched by a variety of criteria including Name, Code, Owning Library, and Contact information. The search will default to all Providers owned at the workstation’s Organizational Unit. The Search form can be shown or hidden using the toggle button on the upper-right.
