@@ -17,7 +17,7 @@ TAG_ONLY=NO # -t
 BUILD_ONLY=NO # -b
 UPGRADE_PREVIEW=NO # -r
 SKIP_I18N=NO # -i
-BUILD_BROWSER_CLIENT=NO # -c
+SKIP_BUILD_BROWSER_CLIENT=NO # -C
 PG_HOST=NONE # -H
 PG_USER=NONE # -U
 PG_PASS=NONE # -P
@@ -27,7 +27,7 @@ PG_PORT=NONE # -O
 [ "$(which osrf_config)" ] && OSRF_JS_PATH="$(osrf_config --libdir)/javascript";
 
 
-while getopts ":hv:f:F:nptbrij:cH:D:U:P:O:" opt; do
+while getopts ":hv:f:F:nptbrij:CH:D:U:P:O:" opt; do
     case $opt in
         v)
             VERSION=$OPTARG
@@ -60,8 +60,8 @@ while getopts ":hv:f:F:nptbrij:cH:D:U:P:O:" opt; do
         j)
             OSRF_JS_PATH="$OPTARG"
         ;;
-        c)
-            BUILD_BROWSER_CLIENT=YES
+        C)
+            SKIP_BUILD_BROWSER_CLIENT=YES
         ;;
         H)
             PG_HOST="$OPTARG"
@@ -95,7 +95,7 @@ while getopts ":hv:f:F:nptbrij:cH:D:U:P:O:" opt; do
             echo "   -r prompt to preview upgrade SQL in editor before committing."
             echo "   -i skip i18n; primarily useful for (quickly) testing this script."
             echo "   -j opensrf javascript library path.  If osrf_config is found, the value derived from osrf_config --libdir."
-            echo "   -c build the browser client;  requires nodejs"
+            echo "   -C Skip building the browser client. Useful only if all you want to do is generate the DB update script."
             echo "   -H Postgres [H]ostname (optional)"
             echo "   -D Postgres [D]atabase name (optional)"
             echo "   -U Postgres [U]sername (optional)"
@@ -375,7 +375,7 @@ tar xzf ../dojo.tgz -C Open-ILS/web/js/dojo/
 
 echo "Prepping server download files"
 
-if [ "$BUILD_BROWSER_CLIENT" == "YES" ]; then
+if [ "$SKIP_BUILD_BROWSER_CLIENT" == "NO" ]; then
     # AngularJS staff client
     cd ../../../
     echo "Building AngularJS browser staff client"
