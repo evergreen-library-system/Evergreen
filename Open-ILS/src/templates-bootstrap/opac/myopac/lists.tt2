@@ -201,29 +201,6 @@
                 </div>
             </form>
 
-
-            [% IF ctx.is_staff %]
-            <div class="bookbag-controls">
-                <button
-                    type="submit"
-                    onclick='
-                       var path =
-                          "oils://remote/xul/server/cat/bucketz39_dialog.xul";
-                        window.openDialog(
-                            xulG.url_prefix(path),
-                            "bucketz39_dialog",
-                            "width=800,height=500",
-                            "[% ctx.user.id %]",
-                            "[% ctx.authtoken %]",
-                            "[% ctx.user.ws_ou %]",
-                            "[% bbag.id %]",
-                            xulG
-                        )'
-                    value="[% l('Locate Z39.50 Matches') %]"
-                ><i class="fas fa-external-link-alt" aria-hidden="true"></i></button>
-            </div>
-            [% END %]
-
             [% IF bbag.pub == 't'; %]
             <div class="bookbag-controls">
                 <a class="btn btn-sm btn-opac m-1" href='[%-
