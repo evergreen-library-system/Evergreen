@@ -18,7 +18,6 @@ BUILD_ONLY=NO # -b
 UPGRADE_PREVIEW=NO # -r
 SKIP_I18N=NO # -i
 BUILD_BROWSER_CLIENT=NO # -c
-SKIP_XUL=NO # -x
 PG_HOST=NONE # -H
 PG_USER=NONE # -U
 PG_PASS=NONE # -P
@@ -28,7 +27,7 @@ PG_PORT=NONE # -O
 [ "$(which osrf_config)" ] && OSRF_JS_PATH="$(osrf_config --libdir)/javascript";
 
 
-while getopts ":hv:f:F:nptbrij:cxH:D:U:P:O:" opt; do
+while getopts ":hv:f:F:nptbrij:cH:D:U:P:O:" opt; do
     case $opt in
         v)
             VERSION=$OPTARG
@@ -64,9 +63,6 @@ while getopts ":hv:f:F:nptbrij:cxH:D:U:P:O:" opt; do
         c)
             BUILD_BROWSER_CLIENT=YES
         ;;
-        x)
-            SKIP_XUL=YES
-        ;;
         H)
             PG_HOST="$OPTARG"
         ;;
@@ -100,7 +96,6 @@ while getopts ":hv:f:F:nptbrij:cxH:D:U:P:O:" opt; do
             echo "   -i skip i18n; primarily useful for (quickly) testing this script."
             echo "   -j opensrf javascript library path.  If osrf_config is found, the value derived from osrf_config --libdir."
             echo "   -c build the browser client;  requires nodejs"
-            echo "   -x skip building the XUL client"
             echo "   -H Postgres [H]ostname (optional)"
             echo "   -D Postgres [D]atabase name (optional)"
             echo "   -U Postgres [U]sername (optional)"
@@ -229,11 +224,6 @@ if [ "$PREV_BRANCH" != "PACKAGE" ]; then
     echo "Applying to Application.pm - HEAD -> $DASH_VERSION"
     echo "Alt: $SHORT_DASH_VERSION -> $DASH_VERSION"
     sed -i -e "s/\"$SHORT_DASH_VERSION[^\"]*\"/\"$DASH_VERSION\"/" -e "s/\"HEAD\"/\"$DASH_VERSION\"/" $GIT_ABS/Open-ILS/src/perlmods/lib/OpenILS/Application.pm
-
-    if [ -f "$GIT_ABS/Open-ILS/xul/staff_client/windowssetup.nsi" ]; then
-        echo "Applying to windowssetup.nsi - Master -> $SHORT_VERSION"
-        sed -i "s/Master/$SHORT_VERSION/" $GIT_ABS/Open-ILS/xul/staff_client/windowssetup.nsi
-    fi
 
     echo "Applying to README:"
 
@@ -383,11 +373,6 @@ if [ ! -f "../dojo.tgz" ]; then
 fi
 tar xzf ../dojo.tgz -C Open-ILS/web/js/dojo/
 
-# set version for later
-cd Open-ILS/xul/staff_client
-XULRUNNER_VERSION=`grep '^XULRUNNER_VERSION' Makefile.am`
-XULRUNNER_VERSION=${XULRUNNER_VERSION##XULRUNNER_VERSION=}
-
 echo "Prepping server download files"
 
 if [ "$BUILD_BROWSER_CLIENT" == "YES" ]; then
@@ -428,35 +413,6 @@ tar czf Evergreen-ILS-$VERSION.tar.gz Evergreen-ILS-$VERSION/
 md5sum Evergreen-ILS-$VERSION.tar.gz > Evergreen-ILS-$VERSION.tar.gz.md5
 if [ $PREV_BRANCH != "PACKAGE" ]; then # We need to have tagged to do this ;)
     cp Evergreen-ILS-$VERSION/ChangeLog ChangeLog-$PREV_VERSION-$VERSION
-fi
-
-if [ "$SKIP_XUL" = "NO" ]; then
-    echo "Running enough of configure to build staff client"
-    cd Evergreen-ILS-$VERSION/
-    ./configure --disable-core --disable-web --disable-updates --disable-apache-modules --disable-reporter
-
-    echo "Building Release Staff Clients"
-    cd Open-ILS/xul/staff_client
-
-    echo "Grabbing XULRunner (to avoid issues with version changes)"
-    wget http://ftp.mozilla.org/pub/mozilla.org/xulrunner/releases/$XULRUNNER_VERSION/runtimes/xulrunner-$XULRUNNER_VERSION.en-US.win32.zip
-    wget http://ftp.mozilla.org/pub/mozilla.org/xulrunner/releases/$XULRUNNER_VERSION/runtimes/xulrunner-$XULRUNNER_VERSION.en-US.linux-i686.tar.bz2
-    wget http://ftp.mozilla.org/pub/mozilla.org/xulrunner/releases/$XULRUNNER_VERSION/runtimes/xulrunner-$XULRUNNER_VERSION.en-US.linux-x86_64.tar.bz2
-
-    make rigrelease
-    make STAFF_CLIENT_STAMP_ID=rel_$UNDER_VERSION OPENSRF_JSLIBS="$OSRF_JS_PATH" build
-    make win-client
-    mv evergreen_staff_client_setup.exe ../../../../evergreen-setup-$VERSION.exe
-    make linux32-client
-    mv evergreen_staff_client_i686.tar.bz2 ../../../../evergreen-client-${VERSION}_i686.tar.bz2
-    make linux64-client
-    mv evergreen_staff_client_x86_64.tar.bz2 ../../../../evergreen-client-${VERSION}_x86_64.tar.bz2
-    cd ../../../../
-    md5sum evergreen-setup-$VERSION.exe > evergreen-setup-$VERSION.exe.md5
-    md5sum evergreen-client-${VERSION}_i686.tar.bz2 > evergreen-client-${VERSION}_i686.tar.bz2.md5
-    md5sum evergreen-client-${VERSION}_x86_64.tar.bz2 > evergreen-client-${VERSION}_x86_64.tar.bz2.md5
-else
-    echo "Skipping XULRunner staff client build"
 fi
 
 echo "Removing build directory"
