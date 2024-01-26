@@ -27,9 +27,9 @@ Evergreen comes with seven preconfigured Best-Hold Selection Sort Orders to choo
 * Prioritizes the hold request time and fills holds in order of request time.
 * Can increase transits of items.
 
-_Holds Go Home_ and _Holds Always Go Home_ allow libraries to determine how long they want to allow items to transit outside of the item’s home library, before it must return to its home library to fulfill any holds that are to be picked up there. Libraries can set this time limit in the library setting Holds: Max foreign-circulation time.  Both Holds Go Home and Holds Always Go Home prioritize holds of patrons at the item-owning library. They can be used with Traditional and FIFO, though with FIFO, this means some holds will not be filled in strict FIFO order.
-
 *Holds Go Home*
+
+_Holds Go Home_ and _Holds Always Go Home_ allow libraries to determine how long they want to allow items to transit outside of the item’s home library, before it must return to its home library to fulfill any holds that are to be picked up there. Libraries can set this time limit in the library setting Holds: Max foreign-circulation time.  Both Holds Go Home and Holds Always Go Home prioritize holds of patrons at the item-owning library. They can be used with Traditional and FIFO, though with FIFO, this means some holds will not be filled in strict FIFO order.
 
 * If a hold has been placed by a patron at the item’s owning library, and the item has not filled a hold for an owning library patron within the interval configured in “Max foreign-circulation time,” the item will go “home” to fill that patron’s hold.  
 
