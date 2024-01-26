@@ -3684,7 +3684,7 @@ sub as_xml {
             my $tag = $map->tag;
             next unless ( $tag->pub eq 't' );
             my $tag_type = $tag->tag_type;
-            $xml .= sprintf('        <tag type="%s">%s</tag>', $self->escape($tag_type->label), $self->escape($tag->value));
+            $xml .= sprintf('        <tag type="%s"%s>%s</tag>', $self->escape($tag_type->label), ($tag->url) ? ' url="' . $self->escape($tag->url) . '"' : '', $self->escape($tag->value));
             $xml .= "\n";
         }
         $xml .= "        </tags>\n";
@@ -3747,7 +3747,7 @@ sub as_xml {
             my $tag = $map->tag;
             next unless ( $tag->pub eq 't' );
             my $tag_type = $tag->tag_type;
-            $xml .= sprintf('        <copy_tag type="%s">%s</copy_tag>', $self->escape($tag_type->label), $self->escape($tag->value));
+            $xml .= sprintf('        <copy_tag type="%s"%s>%s</copy_tag>', $self->escape($tag_type->label), ($tag->url) ? ' url="' . $self->escape($tag->url) . '"' : '', $self->escape($tag->value));
             $xml .= "\n";
         }
         $xml .= "        </copy_tags>\n";
@@ -3893,7 +3893,7 @@ sub as_xml {
             my $tag = $map->tag;
             next unless ( $tag->pub eq 't' );
             my $tag_type = $tag->tag_type;
-            $xml .= sprintf('        <copy_tag type="%s">%s</copy_tag>', $self->escape($tag_type->label), $self->escape($tag->value));
+            $xml .= sprintf('        <copy_tag type="%s"%s>%s</copy_tag>', $self->escape($tag_type->label), ($tag->url) ? ' url="' . $self->escape($tag->url) . '"' : '', $self->escape($tag->value));
             $xml .= "\n";
         }
         $xml .= "        </copy_tags>\n";

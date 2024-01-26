@@ -1039,7 +1039,8 @@ CREATE OR REPLACE FUNCTION unapi.acpt ( obj_id BIGINT, format TEXT,  ename TEXT,
                     name copy_tag,
                     XMLATTRIBUTES(
                         CASE WHEN $9 THEN 'http://open-ils.org/spec/holdings/v1' ELSE NULL END AS xmlns,
-                        copy_tag_type.label AS type
+                        copy_tag_type.label AS type,
+                        copy_tag.url AS url
                     ),
                     copy_tag.value
                 )
