@@ -739,6 +739,7 @@ sub next {
                                     (!$U->is_true($acp->holdable()) ? (x => 'unholdable') : ()),
                                     (!$U->is_true($acp->circulate()) ? (x => 'noncirculating') : ()),
                                     (!$U->is_true($acp->opac_visible()) ? (x => 'hidden') : ()),
+                                    ((defined($acp->tags()) && @{$acp->tags()}) ? map {($_->url()) ? (u => $_->url()) : ()} @{$acp->tags()} : ()),
                                     ((defined($acp->tags()) && @{$acp->tags()}) ? map {(z => $_->value())} @{$acp->tags()} : ()),
                                     ((defined($acp->notes()) && @{$acp->notes()}) ? map {(z => ($_->title()) ? $_->title() . ": " . $_->value() : $_->value())} @{$acp->notes()} : ())
                                 ));
@@ -1077,6 +1078,7 @@ sub public_acpts_for_acp {
         $query .= " on copy_tag.id = map.tag and map.copy = ?";
         $query .= " join config.copy_tag_type on copy_tag_type.code = copy_tag.tag_type";
         $query .= " where pub is true and value <> ''";
+        $query .= " order by url nulls last";
         $query =~ s/copy_tag\.value/copy_tag_type.label || ': ' || copy_tag.value as "value"/;
         $self->{acptHandle} = $self->{handle}->prepare($query);
     }

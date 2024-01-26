@@ -1,12 +1,10 @@
-== marc_export Exports Public Copy Notes ==
+== marc_export Exports Public Copy Notes and Copy Tags ==
 
-Public copy notes are now exported by `marc_export` in the 852
-subfield z when the `--items` option is used.
+Public copy notes and tags are now exported by `marc_export` in the
+852 subfield z when the `--items` option is used.
 
-== marc_export Exports Public Copy Tags ==
-
-Public copy tags are now exported by `marc_export` in the 852
-subfield z when the `--items` option is used.
-
-To distinguish copy tags from copy notes, the tags have the tag type
-label and ": " prepended to the value.
+Copy tags come before copy notes, and tags with a URL come before
+those without.  The URL of a copy tag (if any) is added to 852
+subfield u.  The copy tags are ordered such that the first subfield z
+should correspond to the first subfield u and so on if there is more
+than one URL.
