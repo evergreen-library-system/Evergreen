@@ -41,7 +41,6 @@ uninstall-hook:
 
 webcore-install:
 	$(MKDIR_P) $(DESTDIR)$(WEBDIR)
-	$(MKDIR_P) $(DESTDIR)$(WEBDIR)/opac/extras/slimpac/
 	$(MKDIR_P) $(DESTDIR)$(WEBDIR)/standalone/
 	$(MKDIR_P) $(opacextrasdir)
 	$(MKDIR_P) $(DESTDIR)$(reportsdir)

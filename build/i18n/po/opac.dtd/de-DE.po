@@ -2483,52 +2483,6 @@ msgid "Go!"
 msgstr "Los!"
 
 #. =================================================================
-#. Slimpac Simple Search
-#. =================================================================
-#: slimpac.language.select
-msgid "Select language"
-msgstr "Sprache wählen"
-
-#: slimpac.start.title
-msgid "Simple Search"
-msgstr "Einfache Suche"
-
-#: slimpac.start.nowSearching
-msgid "Now searching: "
-msgstr "Sucht gerade: "
-
-#: slimpac.start.dynamic
-msgid "Dynamic Catalog"
-msgstr "Dynamischer Katalog"
-
-#. =================================================================
-#. Slimpac Advanced Search
-#. =================================================================
-#: slimpac.advanced.language
-msgid "Item Language"
-msgstr "Sprache des Gegenstands"
-
-#: slimpac.advanced.create_date
-msgid "Record Creation Date"
-msgstr "Eintragserstellungsdatum"
-
-#: slimpac.advanced.edit_date
-msgid "Record Edit Date"
-msgstr "Eintragsbearbeitungsdatum"
-
-#: opac.image_provided
-msgid "Image provided by"
-msgstr "Bild bereitstellt von"
-
-#: vendor.name
-msgid "Amazon"
-msgstr "Amazon"
-
-#: vendor.base_link
-msgid "http://amazon.com/dp/"
-msgstr "http://amazon.com/dp/"
-
-#. =================================================================
 #. Selfcheck
 #. =================================================================
 #: selfck.staff_login_label
@@ -2755,31 +2709,6 @@ msgstr "Das Kundenkonto konnte nicht gefunden werden"
 #: circ.fail_part.transit_range
 msgid "The item cannot transit this far"
 msgstr "Dieser Gegenstand kann nicht so weit reisen"
-
-#~ msgid ""
-#~ "JavaScript must be enabled in order for you to use the regular Evergreen "
-#~ "Catalog. \n"
-#~ "However, it seems JavaScript is either disabled or not supported by your "
-#~ "browser. \n"
-#~ "To use the regular Evergreen Catalog, enable JavaScript by changing your "
-#~ "browser options, then \n"
-#~ "<a style='color: blue; text-decoration: underline;' href='/'>try again</a>. "
-#~ "\n"
-#~ "<br/><br/>Alternatively, you can use the basic HTML-only catalog \n"
-#~ "<a style='color: blue; text-decoration: underline;' "
-#~ "href='/opac/extras/slimpac/start.html'>here</a>."
-#~ msgstr ""
-#~ "JavaScript muss aktiviert sein, damit Sie den normalen Evergreen Katalog "
-#~ "benutzen können. \n"
-#~ "Es scheint, als ob JavaScript entweder deaktiviert ist oder nicht von Ihrem "
-#~ "Browser unterstützt wird. \n"
-#~ "Aktivieren Sie JavaScript, um den normalen Evergreen Katalog zu benutzen, "
-#~ "indem Sie Ihre Browsereinstellungen verändern, dann \n"
-#~ "<a style='color: blue; text-decoration: underline;' href='/'>versuchen Sie "
-#~ "es erneut</a>. \n"
-#~ "<br/><br/>Alternativ können Sie unseren HTML-Katalog \n"
-#~ "<a style='color: blue; text-decoration: underline;' "
-#~ "href='/opac/extras/slimpac/start.html'>hier</a> benutzen."
 
 #~ msgid ""
 #~ "Login failed. The username or password provided was not valid. \n"

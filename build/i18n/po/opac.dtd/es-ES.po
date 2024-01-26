@@ -2496,52 +2496,6 @@ msgid "Go!"
 msgstr "Vaya!"
 
 #. =================================================================
-#. Slimpac Simple Search
-#. =================================================================
-#: slimpac.language.select
-msgid "Select language"
-msgstr "Seleccionar el idioma."
-
-#: slimpac.start.title
-msgid "Simple Search"
-msgstr "Búsqueda sencilla"
-
-#: slimpac.start.nowSearching
-msgid "Now searching: "
-msgstr "Ahora buscar: "
-
-#: slimpac.start.dynamic
-msgid "Dynamic Catalog"
-msgstr "Catálogo dinámico"
-
-#. =================================================================
-#. Slimpac Advanced Search
-#. =================================================================
-#: slimpac.advanced.language
-msgid "Item Language"
-msgstr "Idioma de artículo"
-
-#: slimpac.advanced.create_date
-msgid "Record Creation Date"
-msgstr "Fecha sin precedentes de Creación"
-
-#: slimpac.advanced.edit_date
-msgid "Record Edit Date"
-msgstr "El registro Redacta la Fecha"
-
-#: opac.image_provided
-msgid "Image provided by"
-msgstr "La imagen proporcionado por"
-
-#: vendor.name
-msgid "Amazon"
-msgstr "Amazon"
-
-#: vendor.base_link
-msgid "http://amazon.com/dp/"
-msgstr "http://amazon.com/dp/"
-
-#. =================================================================
 #. Selfcheck
 #. =================================================================
 #: selfck.staff_login_label
@@ -2766,32 +2720,6 @@ msgstr "El elemento no puede transitar hasta aqui."
 #~ msgstr ""
 #~ "El nombre de usuario no puede tener espacios ni tener el formato de un "
 #~ "código de barras"
-
-#~ msgid ""
-#~ "JavaScript must be enabled in order for you to use the regular Evergreen "
-#~ "Catalog. \n"
-#~ "However, it seems JavaScript is either disabled or not supported by your "
-#~ "browser. \n"
-#~ "To use the regular Evergreen Catalog, enable JavaScript by changing your "
-#~ "browser options, then \n"
-#~ "<a style='color: blue; text-decoration: underline;' href='/'>try again</a>. "
-#~ "\n"
-#~ "<br/><br/>Alternatively, you can use the basic HTML-only catalog \n"
-#~ "<a style='color: blue; text-decoration: underline;' "
-#~ "href='/opac/extras/slimpac/start.html'>here</a>."
-#~ msgstr ""
-#~ "El javascript debe ser permitido en la orden para usted utilizar el Catálogo "
-#~ "De hoja perenne regular. \n"
-#~ "Sin embargo, parece Javascript o es incapacitado o no es apoyado por su "
-#~ "navegador. \n"
-#~ "Para utilizar el Catálogo De hoja perenne regular, permita Javascript "
-#~ "cambiando sus opciones de navegador, entonces \n"
-#~ "<a style='color: blue; text-decoration: underline;' href='/'>trate otra "
-#~ "vez</a>. \n"
-#~ "<br/><br/>Alternativamente, puede utilizar el protocolo de transferencia de "
-#~ "hipertexto-UNICO catálogo básico \n"
-#~ "<a style='color: blue; text-decoration: underline;' "
-#~ "href='/opac/extras/slimpac/start.html'>aquí</a>."
 
 #~ msgid ""
 #~ "Login failed. The username or password provided was not valid. \n"

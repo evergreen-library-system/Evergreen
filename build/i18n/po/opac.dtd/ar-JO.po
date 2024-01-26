@@ -2447,52 +2447,6 @@ msgid "Go!"
 msgstr "الذهاب!"
 
 #. =================================================================
-#. Slimpac Simple Search
-#. =================================================================
-#: slimpac.language.select
-msgid "Select language"
-msgstr "اختيار اللغة"
-
-#: slimpac.start.title
-msgid "Simple Search"
-msgstr "البحث البسيط"
-
-#: slimpac.start.nowSearching
-msgid "Now searching: "
-msgstr "الآن يتم البحث: "
-
-#: slimpac.start.dynamic
-msgid "Dynamic Catalog"
-msgstr "الكتالوج/الفهرس الديناميكي"
-
-#. =================================================================
-#. Slimpac Advanced Search
-#. =================================================================
-#: slimpac.advanced.language
-msgid "Item Language"
-msgstr "لغة النُسخة"
-
-#: slimpac.advanced.create_date
-msgid "Record Creation Date"
-msgstr "تاريخ إنشاء التسجيلة"
-
-#: slimpac.advanced.edit_date
-msgid "Record Edit Date"
-msgstr "تاريخ تعديل التسجيلة"
-
-#: opac.image_provided
-msgid "Image provided by"
-msgstr "الصورة المُقدَمَة مِن قبل"
-
-#: vendor.name
-msgid "Amazon"
-msgstr "أَمازون"
-
-#: vendor.base_link
-msgid "http://amazon.com/dp/"
-msgstr "http://amazon.com/dp/"
-
-#. =================================================================
 #. Selfcheck
 #. =================================================================
 #: selfck.staff_login_label

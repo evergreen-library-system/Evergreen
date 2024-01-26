@@ -53,7 +53,6 @@ PerlChildInitHandler OpenILS::WWW::RemoteAuth::child_init
 # Remove the language portion from the URL
 # ----------------------------------------------------------------------------------
 AliasMatch ^/opac/.*/skin/(.*)/(.*)/(.*) @localstatedir@/web/opac/skin/$1/$2/$3
-AliasMatch ^/opac/.*/extras/slimpac/(.*) @localstatedir@/web/opac/extras/slimpac/$1
 AliasMatch ^/opac/.*/extras/selfcheck/(.*) @localstatedir@/web/opac/extras/selfcheck/$1
 
 

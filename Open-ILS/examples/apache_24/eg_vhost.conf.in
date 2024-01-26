@@ -35,13 +35,6 @@ RewriteRule ^/eg/staff/reporter/legacy/main$ https://%{HTTP_HOST}/eg2/staff/repo
 #    allow from all
 #</LocationMatch>
 
-
-# ----------------------------------------------------------------------------------
-# Assign a default locale to the accessible OPAC
-# ----------------------------------------------------------------------------------
-RewriteRule ^/opac/extras/slimpac/start.html$ %{REQUEST_SCHEME}://%{HTTP_HOST}/opac/en-US/extras/slimpac/start.html [R=301,L]
-RewriteRule ^/opac/extras/slimpac/advanced.html$ %{REQUEST_SCHEME}://%{HTTP_HOST}/opac/en-US/extras/slimpac/advanced.html [R=301,L]
-
 # ----------------------------------------------------------------------------------
 # Configure the gateway and translator
 # ----------------------------------------------------------------------------------
@@ -279,10 +272,6 @@ Options -Indexes
 </LocationMatch>
 
 RewriteCond %{QUERY_STRING} locale=([^&]*)
-RewriteRule ^/opac/[a-z]{2}-[A-Z]{2}/extras/slimpac/(.*)$ %{REQUEST_SCHEME}://%{HTTP_HOST}/opac/%1/extras/slimpac/$1? [redirect]
-<LocationMatch /opac/[a-z]{2}-[A-Z]{2}/extras/slimpac/>
-    AddOutputFilter INCLUDES;XMLENT .html
-</LocationMatch>
 
 # ----------------------------------------------------------------------------------
 # Run server-side XUL and XHTML through xmlent to load the correct XML entities
@@ -811,9 +800,6 @@ RewriteRule ^/openurl$ ${openurl:%1} [NE,PT]
     # There are problems with XMLENT and mod_deflate - so lets disable it
     # This is where we don't have a pre-existing LocationMatch directive earlier
     <LocationMatch /opac/.*\.xml$>
-        SetEnv no-gzip
-    </LocationMatch>
-    <LocationMatch /opac/[a-z]{2}-[A-Z]{2}/extras/slimpac/.*\.html$>
         SetEnv no-gzip
     </LocationMatch>
     <LocationMatch /reports/.*\.xhtml$>

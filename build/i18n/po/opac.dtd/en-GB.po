@@ -2459,52 +2459,6 @@ msgid "Go!"
 msgstr "Go!"
 
 #. =================================================================
-#. Slimpac Simple Search
-#. =================================================================
-#: slimpac.language.select
-msgid "Select language"
-msgstr "Select language"
-
-#: slimpac.start.title
-msgid "Simple Search"
-msgstr "Simple Search"
-
-#: slimpac.start.nowSearching
-msgid "Now searching: "
-msgstr "Now searching: "
-
-#: slimpac.start.dynamic
-msgid "Dynamic Catalog"
-msgstr "Dynamic Catalogue"
-
-#. =================================================================
-#. Slimpac Advanced Search
-#. =================================================================
-#: slimpac.advanced.language
-msgid "Item Language"
-msgstr "Item Language"
-
-#: slimpac.advanced.create_date
-msgid "Record Creation Date"
-msgstr "Record Creation Date"
-
-#: slimpac.advanced.edit_date
-msgid "Record Edit Date"
-msgstr "Record Edit Date"
-
-#: opac.image_provided
-msgid "Image provided by"
-msgstr "Image provided by"
-
-#: vendor.name
-msgid "Amazon"
-msgstr "Amazon"
-
-#: vendor.base_link
-msgid "http://amazon.com/dp/"
-msgstr "http://amazon.co.uk/dp/"
-
-#. =================================================================
 #. Selfcheck
 #. =================================================================
 #: selfck.staff_login_label
@@ -2722,31 +2676,6 @@ msgstr "The system could not find this patron"
 #: circ.fail_part.transit_range
 msgid "The item cannot transit this far"
 msgstr "The item cannot transit this far"
-
-#~ msgid ""
-#~ "JavaScript must be enabled in order for you to use the regular Evergreen "
-#~ "Catalog. \n"
-#~ "However, it seems JavaScript is either disabled or not supported by your "
-#~ "browser. \n"
-#~ "To use the regular Evergreen Catalog, enable JavaScript by changing your "
-#~ "browser options, then \n"
-#~ "<a style='color: blue; text-decoration: underline;' href='/'>try again</a>. "
-#~ "\n"
-#~ "<br/><br/>Alternatively, you can use the basic HTML-only catalog \n"
-#~ "<a style='color: blue; text-decoration: underline;' "
-#~ "href='/opac/extras/slimpac/start.html'>here</a>."
-#~ msgstr ""
-#~ "JavaScript must be enabled in order for you to use the regular Evergreen "
-#~ "Catalogue. \n"
-#~ "However, it seems JavaScript is either disabled or not supported by your "
-#~ "browser. \n"
-#~ "To use the regular Evergreen Catalogue, enable JavaScript by changing your "
-#~ "browser options, then \n"
-#~ "<a style='color: blue; text-decoration: underline;' href='/'>try again</a>. "
-#~ "\n"
-#~ "<br/><br/>Alternatively, you can use the basic HTML-only catalogue \n"
-#~ "<a style='color: blue; text-decoration: underline;' "
-#~ "href='/opac/extras/slimpac/start.html'>here</a>."
 
 #~ msgid "Username cannot contain spaces or have the same format as a barcode"
 #~ msgstr "Username cannot contain spaces or have the same format as a barcode"

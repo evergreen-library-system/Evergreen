@@ -2479,52 +2479,6 @@ msgid "Go!"
 msgstr "Ir!"
 
 #. =================================================================
-#. Slimpac Simple Search
-#. =================================================================
-#: slimpac.language.select
-msgid "Select language"
-msgstr "Selecionar idioma"
-
-#: slimpac.start.title
-msgid "Simple Search"
-msgstr "Pesquisa Simples"
-
-#: slimpac.start.nowSearching
-msgid "Now searching: "
-msgstr "Pesquisando agora: "
-
-#: slimpac.start.dynamic
-msgid "Dynamic Catalog"
-msgstr "Catálogo Dinâmico"
-
-#. =================================================================
-#. Slimpac Advanced Search
-#. =================================================================
-#: slimpac.advanced.language
-msgid "Item Language"
-msgstr "Idioma do Item"
-
-#: slimpac.advanced.create_date
-msgid "Record Creation Date"
-msgstr "Data de Criação do Registro"
-
-#: slimpac.advanced.edit_date
-msgid "Record Edit Date"
-msgstr "Data de Edição do Registro"
-
-#: opac.image_provided
-msgid "Image provided by"
-msgstr "Imagem fornecida por"
-
-#: vendor.name
-msgid "Amazon"
-msgstr "Amazon"
-
-#: vendor.base_link
-msgid "http://amazon.com/dp/"
-msgstr "http://amazon.com/dp/"
-
-#. =================================================================
 #. Selfcheck
 #. =================================================================
 #: selfck.staff_login_label
@@ -2761,26 +2715,3 @@ msgstr "Este item não pode transitar para esta distância"
 #~ msgid "Copyright &#xA9; 2006-2010 Georgia Public Library Service, and others"
 #~ msgstr ""
 #~ "Copyright &#xA9; 2006-2010 Georgia Public Library Service, and others"
-
-#~ msgid ""
-#~ "JavaScript must be enabled in order for you to use the regular Evergreen "
-#~ "Catalog. \n"
-#~ "However, it seems JavaScript is either disabled or not supported by your "
-#~ "browser. \n"
-#~ "To use the regular Evergreen Catalog, enable JavaScript by changing your "
-#~ "browser options, then \n"
-#~ "<a style='color: blue; text-decoration: underline;' href='/'>try again</a>. "
-#~ "\n"
-#~ "<br/><br/>Alternatively, you can use the basic HTML-only catalog \n"
-#~ "<a style='color: blue; text-decoration: underline;' "
-#~ "href='/opac/extras/slimpac/start.html'>here</a>."
-#~ msgstr ""
-#~ "O JavaScript deve estar ativado para que você possa usar o Catálogo regular "
-#~ "Evisualizargreen. n No entanto, aparentemente o JavaScript está desativado "
-#~ "ou não é suportado pelo seu navegador. n Para usar o Catálogo regular "
-#~ "Evisualizargreen, ative o JavaScript alterando as opções do navegador e em "
-#~ "seguida, n<a style='color: blue; text-decoration: underline;' href='/'> "
-#~ "tente novamente </ a>.  n<br/> <br/> Alternativamente, você pode usar "
-#~ "interface básica HTML-pura para o catálogo  n<a style='color: blue; text-"
-#~ "decoration: underline;' href='/opac/extras/slimpac/start.html'> clicando "
-#~ "aqui </ a>."

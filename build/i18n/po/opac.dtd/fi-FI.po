@@ -430,28 +430,6 @@ msgstr "Asenna nyt!"
 msgid "Don't ask me again"
 msgstr "Älä kysy uudelleen"
 
-#: home.js.disabled
-msgid ""
-"JavaScript must be enabled in order for you to use the regular Evergreen "
-"Catalog. \n"
-"However, it seems JavaScript is either disabled or not supported by your "
-"browser. \n"
-"To use the regular Evergreen Catalog, enable JavaScript by changing your "
-"browser options, then \n"
-"<a style='color: blue; text-decoration: underline;' href='/'>try again</a>. "
-"\n"
-"<br/><br/>Alternatively, you can use the basic HTML-only catalog: "
-msgstr ""
-"JavaScriptin on oltava käytössä, jotta voit käyttää tavallista Evergreen-"
-"tietokantaa. \n"
-"Näyttää kuitenkin siltä, että selaimesi ei joko tue JavaScriptiä tai se on "
-"pois käytöstä. Ota JavaScript käyttöön muokkaamalla selaimesi asetuksia ja \n"
-"<a style='color: blue; text-decoration: underline;' href='/'>yritä "
-"uudelleen</a>. \n"
-"<br/><br/>Vaihtoehtoisesti voit käyttää perus-HTML-tietokantaa \n"
-"<a style='color: blue; text-decoration: underline;' "
-"href='/opac/extras/slimpac/start.html'>täällä</a>. "
-
 #. =================================================================
 #. MyOPAC bookbag page
 #. =================================================================
@@ -2456,52 +2434,6 @@ msgstr ""
 #: button.go
 msgid "Go!"
 msgstr "Siirry!"
-
-#. =================================================================
-#. Slimpac Simple Search
-#. =================================================================
-#: slimpac.language.select
-msgid "Select language"
-msgstr "Valitse kieli"
-
-#: slimpac.start.title
-msgid "Simple Search"
-msgstr "Yksinkertainen haku"
-
-#: slimpac.start.nowSearching
-msgid "Now searching: "
-msgstr "Etsitään nyt: "
-
-#: slimpac.start.dynamic
-msgid "Dynamic Catalog"
-msgstr "Dynaaminen tietokanta"
-
-#. =================================================================
-#. Slimpac Advanced Search
-#. =================================================================
-#: slimpac.advanced.language
-msgid "Item Language"
-msgstr "Aineiston kieli"
-
-#: slimpac.advanced.create_date
-msgid "Record Creation Date"
-msgstr "Tietueen luomispäivä"
-
-#: slimpac.advanced.edit_date
-msgid "Record Edit Date"
-msgstr "Tietueen muokkauspäivä"
-
-#: opac.image_provided
-msgid "Image provided by"
-msgstr "Kuvan toimittaja:"
-
-#: vendor.name
-msgid "Amazon"
-msgstr "Amazon"
-
-#: vendor.base_link
-msgid "http://amazon.com/dp/"
-msgstr "http://amazon.com/dp/"
 
 #. =================================================================
 #. Selfcheck

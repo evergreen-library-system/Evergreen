@@ -38,13 +38,6 @@ msgstr "Բոլոր ձեւաչափերը"
 msgid "Go!"
 msgstr "Առա՛ջ"
 
-#. =================================================================
-#. Slimpac Simple Search
-#. =================================================================
-#: slimpac.language.select
-msgid "Select language"
-msgstr "Ընտրե՛ք լեզուն"
-
 # =================================================================
 # Some generic stuff
 #. =================================================================
@@ -2514,49 +2507,6 @@ msgstr ""
 "Գաղտնաբառերը զգայուն են ընտրությանը։ Սեղմիր քո Caps-Lock ստեղնը և նորից "
 "փորձիր կամ դիմիր գրադարանավարին։"
 
-# =================================================================
-# Slimpac Simple Search
-#: slimpac.start.title
-msgid "Simple Search"
-msgstr "Հասարակ փնտրում"
-
-#: slimpac.start.nowSearching
-msgid "Now searching: "
-msgstr "Հիմա որոնում է։ "
-
-#: slimpac.start.dynamic
-msgid "Dynamic Catalog"
-msgstr "Դինամիկ քարտարան"
-
-# =================================================================
-# Slimpac Advanced Search
-#. =================================================================
-#. Slimpac Advanced Search
-#. =================================================================
-#: slimpac.advanced.language
-msgid "Item Language"
-msgstr "Նյութի լեզու"
-
-#: slimpac.advanced.create_date
-msgid "Record Creation Date"
-msgstr "Գրառման ստեղծման ամսաթիվ"
-
-#: slimpac.advanced.edit_date
-msgid "Record Edit Date"
-msgstr "Գրառման խմբագրման ամսաթիվ"
-
-#: opac.image_provided
-msgid "Image provided by"
-msgstr "Նկարը ապահովել է"
-
-#: vendor.name
-msgid "Amazon"
-msgstr "Ամազոն"
-
-#: vendor.base_link
-msgid "http://amazon.com/dp/"
-msgstr "http://amazon.com/dp/"
-
 #. =================================================================
 #. Selfcheck
 #. =================================================================
@@ -2776,29 +2726,6 @@ msgstr "Համակարգը չի կարող գտնել այս ընթերցողի�
 #: circ.fail_part.transit_range
 msgid "The item cannot transit this far"
 msgstr "Նյութը չի կարել դնել տրանզիտ"
-
-#~ msgid ""
-#~ "JavaScript must be enabled in order for you to use the regular Evergreen "
-#~ "Catalog. \n"
-#~ "However, it seems JavaScript is either disabled or not supported by your "
-#~ "browser. \n"
-#~ "To use the regular Evergreen Catalog, enable JavaScript by changing your "
-#~ "browser options, then \n"
-#~ "<a style='color: blue; text-decoration: underline;' href='/'>try again</a>. "
-#~ "\n"
-#~ "<br/><br/>Alternatively, you can use the basic HTML-only catalog \n"
-#~ "<a style='color: blue; text-decoration: underline;' "
-#~ "href='/opac/extras/slimpac/start.html'>here</a>."
-#~ msgstr ""
-#~ "JavaScript-ը պետք է թույլատրված լինի որպեսզի կարողանաս օգտագործել Evergreen-"
-#~ "ի սովորական քարտարանը։ \n"
-#~ "Համենայնդեպս թվում է որ JavaScript-ը արգելափակված է կամ քո դիտակի ւողմից չի "
-#~ "աջակցվում։ \n"
-#~ "Evergreen-ի սովորական քարտարանի օգտագործման համար թույլատրիր JavaScript-ը "
-#~ "փոխելով քո դիտակի ընտրությունները, ապա \n"
-#~ "<a style='color: blue; text-decoration: underline;' href='/'>փորձիր "
-#~ "նորից</a>.\n"
-#~ "<br/><br/>Որպես այլընտրանք կարող ես օգտագործել հիմնական միայն HTML-քարտարանը։"
 
 #~ msgid "Username cannot contain spaces or have the same format as a barcode"
 #~ msgstr ""

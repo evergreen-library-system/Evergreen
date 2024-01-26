@@ -1645,7 +1645,6 @@ sub create_record_feed {
         $node->id($item_tag);
         #$node->update_ts(clean_ISO8601($record->edit_date));
         $node->link(alternate => $feed->unapi . "?id=$item_tag&format=opac" => 'text/html') if ($flesh > 0);
-        $node->link(slimpac => $feed->unapi . "?id=$item_tag&format=htmlholdings-full" => 'text/html') if ($flesh > 0);
         $node->link(opac => $feed->unapi . "?id=$item_tag&format=opac") if ($flesh > 0);
         $node->link(unapi => $feed->unapi . "?id=$item_tag") if ($flesh);
         $node->link('unapi-id' => $item_tag) if ($flesh);

@@ -2351,52 +2351,6 @@ msgid "Go!"
 msgstr "Anem !"
 
 #. =================================================================
-#. Slimpac Simple Search
-#. =================================================================
-#: slimpac.language.select
-msgid "Select language"
-msgstr ""
-
-#: slimpac.start.title
-msgid "Simple Search"
-msgstr ""
-
-#: slimpac.start.nowSearching
-msgid "Now searching: "
-msgstr ""
-
-#: slimpac.start.dynamic
-msgid "Dynamic Catalog"
-msgstr ""
-
-#. =================================================================
-#. Slimpac Advanced Search
-#. =================================================================
-#: slimpac.advanced.language
-msgid "Item Language"
-msgstr ""
-
-#: slimpac.advanced.create_date
-msgid "Record Creation Date"
-msgstr ""
-
-#: slimpac.advanced.edit_date
-msgid "Record Edit Date"
-msgstr ""
-
-#: opac.image_provided
-msgid "Image provided by"
-msgstr ""
-
-#: vendor.name
-msgid "Amazon"
-msgstr "Amazon"
-
-#: vendor.base_link
-msgid "http://amazon.com/dp/"
-msgstr "http://amazon.com/dp/"
-
-#. =================================================================
 #. Selfcheck
 #. =================================================================
 #: selfck.staff_login_label

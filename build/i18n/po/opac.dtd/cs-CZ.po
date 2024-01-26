@@ -2460,52 +2460,6 @@ msgid "Go!"
 msgstr "Potvrdit!"
 
 #. =================================================================
-#. Slimpac Simple Search
-#. =================================================================
-#: slimpac.language.select
-msgid "Select language"
-msgstr "Vyberte jazyk"
-
-#: slimpac.start.title
-msgid "Simple Search"
-msgstr "Jednoduché vyhledávání"
-
-#: slimpac.start.nowSearching
-msgid "Now searching: "
-msgstr "Vyhledávám v knihovně: "
-
-#: slimpac.start.dynamic
-msgid "Dynamic Catalog"
-msgstr "Zobrazit záznam v katalogu"
-
-#. =================================================================
-#. Slimpac Advanced Search
-#. =================================================================
-#: slimpac.advanced.language
-msgid "Item Language"
-msgstr "Jazyk exempláře"
-
-#: slimpac.advanced.create_date
-msgid "Record Creation Date"
-msgstr "Datum vytvoření záznamu"
-
-#: slimpac.advanced.edit_date
-msgid "Record Edit Date"
-msgstr "Datum editace záznamu"
-
-#: opac.image_provided
-msgid "Image provided by"
-msgstr "Obrázek poskytl"
-
-#: vendor.name
-msgid "Amazon"
-msgstr "Amazon"
-
-#: vendor.base_link
-msgid "http://amazon.com/dp/"
-msgstr "http://amazon.com/dp/"
-
-#. =================================================================
 #. Selfcheck
 #. =================================================================
 #: selfck.staff_login_label
@@ -2726,29 +2680,6 @@ msgstr "Systém tohoto čtenáře nenalezl."
 #: circ.fail_part.transit_range
 msgid "The item cannot transit this far"
 msgstr "Exemplář není možné přesunout tak daleko"
-
-#~ msgid ""
-#~ "JavaScript must be enabled in order for you to use the regular Evergreen "
-#~ "Catalog. \n"
-#~ "However, it seems JavaScript is either disabled or not supported by your "
-#~ "browser. \n"
-#~ "To use the regular Evergreen Catalog, enable JavaScript by changing your "
-#~ "browser options, then \n"
-#~ "<a style='color: blue; text-decoration: underline;' href='/'>try again</a>. "
-#~ "\n"
-#~ "<br/><br/>Alternatively, you can use the basic HTML-only catalog \n"
-#~ "<a style='color: blue; text-decoration: underline;' "
-#~ "href='/opac/extras/slimpac/start.html'>here</a>."
-#~ msgstr ""
-#~ "K prohlížení katalogu Evergreen musíte mít povolený JavaScript. \n"
-#~ "Zdá se, že máte buď zakázaný JavaScript, nebo ho Váš prohlížeč nepodporuje. "
-#~ "\n"
-#~ "K použití katalogu povolte JavaScript změnou nastavení v prohlížeči, potom \n"
-#~ "<a style='color: blue; text-decoration: underline;' href='/'>zkuste "
-#~ "znovu</a>. \n"
-#~ "<br/><br/>Další možnost je použití katalogu v režimu HTML \n"
-#~ "<a style='color: blue; text-decoration: underline;' "
-#~ "href='/opac/extras/slimpac/start.html'>zde</a>."
 
 #~ msgid ""
 #~ "Login failed. The username or password provided was not valid. \n"

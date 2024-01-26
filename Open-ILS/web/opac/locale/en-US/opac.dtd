@@ -667,26 +667,6 @@ Passwords are case-sensitive.  Check your Caps-Lock key and try again or contact
 <!ENTITY button.go "Go!">
 
 <!--	================================================================= 
-	Slimpac Simple Search
-	================================================================= -->
-<!ENTITY slimpac.language.select "Select language">
-
-<!ENTITY slimpac.start.title "Simple Search">
-<!ENTITY slimpac.start.nowSearching "Now searching: ">
-<!ENTITY slimpac.start.dynamic "Dynamic Catalog">
-
-<!--	================================================================= 
-	Slimpac Advanced Search
-	================================================================= -->
-<!ENTITY slimpac.advanced.language "Item Language">
-<!ENTITY slimpac.advanced.create_date "Record Creation Date">
-<!ENTITY slimpac.advanced.edit_date "Record Edit Date">
-
-<!ENTITY opac.image_provided "Image provided by">
-<!ENTITY vendor.name "Amazon">
-<!ENTITY vendor.base_link "http://amazon.com/dp/">
-
-<!--	================================================================= 
 	Selfcheck
 	================================================================= -->
 <!ENTITY selfck.staff_login_label "Staff login">
