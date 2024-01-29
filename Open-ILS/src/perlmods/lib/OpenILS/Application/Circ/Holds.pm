@@ -2886,7 +2886,8 @@ sub _check_title_hold_is_possible {
     my $part_required = 0;
     my $parts = $e->search_biblio_monograph_part(
         {
-            record => $titleid
+            record => $titleid,
+            deleted => 'f'
         }, {idlist=>1} );
 
     if (@$parts) {
