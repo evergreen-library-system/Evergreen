@@ -13,7 +13,7 @@
   <span class="ms-1 me-1" i18n> | </span>
   <span i18n>{{li.order_summary().encumbrance_amount() | currency}} Encumbered</span>
   <span class="ms-1 me-1" i18n> | </span>
-  <span [ngClass]="{'text-danger': paidOff()}" i18n>
+  <span [ngClass]="{'fw-bold text-danger': paidOff()}" i18n>
     {{li.order_summary().paid_amount() | currency}} Paid
   </span>
 </ng-container>
