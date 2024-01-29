@@ -74,6 +74,7 @@
 .eg-grid-header-cell-sort-label {
   cursor: pointer;
   text-decoration: underline;
+  font-weight: bold;
 }
 
 .eg-grid-header-cell-sort-arrow {
