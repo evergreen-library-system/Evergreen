@@ -1,4 +1,5 @@
 import {Component, OnInit, Input, ViewChild} from '@angular/core';
+import {DateUtil} from '@eg/share/util/date';
 import {GridComponent} from '@eg/share/grid/grid.component';
 import {GridDataSource, GridCellTextGenerator} from '@eg/share/grid/grid';
 import {IdlService} from '@eg/core/idl.service';
@@ -69,7 +70,8 @@ export class CashReportsComponent implements OnInit {
             this.net.request(
                 'open-ils.circ',
                 'open-ils.circ.money.org_unit.desk_payments',
-                this.auth.token(), this.selectedOrg.id(), this.startDate.toISOString().split('T')[0], this.endDate.toISOString().split('T')[0]));
+                this.auth.token(), this.selectedOrg.id(),
+                DateUtil.localYmdFromDate(this.startDate), DateUtil.localYmdFromDate(this.endDate)));
 
         this.fillGridData(this.userIdlClass, 'userPaymentDataSource',
             this.net.request(
