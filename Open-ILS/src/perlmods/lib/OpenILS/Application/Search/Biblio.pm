@@ -3161,6 +3161,7 @@ sub catalog_record_summary {
 
     $holdable_method = $self->method_lookup($holdable_method); # local method
 
+    my %MR_summary_cache;
     for my $rec_id (@$record_ids) {
 
         my $response = $is_meta ? 
@@ -3183,34 +3184,45 @@ sub catalog_record_summary {
 
             $response->{staff_view_metabib_records} = \@metabib_records;
 
-            my $attributes = $U->get_bre_attrs(\@metabib_records);
+            my $metabib_attr = {};
+            my $attributes;
+            if ($response->{staff_view_metabib_id} and $MR_summary_cache{$response->{staff_view_metabib_id}}) {
+                $metabib_attr = $MR_summary_cache{$response->{staff_view_metabib_id}};
+            } else {
+                $attributes = $U->get_bre_attrs(\@metabib_records);
+            }
+
             # we get "243":{
             #       "srce":{
             #         "code":" ",
             #         "label":"National bibliographic agency"
             #       }, ...}
-            my $metabib_attr = {};
 
-            foreach my $bib_id ( keys %{ $attributes } ) {
-                foreach my $ctype ( keys %{ $attributes->{$bib_id} } ) {
-                    # we want {
-                    #   "srce":{ " ": { "label": "National bibliographic agency", "count" : 1 } },
-                    #       ...
-                    #   }
-                    my $current_code = $attributes->{$bib_id}->{$ctype}->{code};
-                    my $code_label = $attributes->{$bib_id}->{$ctype}->{label};
-                    $metabib_attr->{$ctype} = {} unless $metabib_attr->{$ctype};
-                    if (! $metabib_attr->{$ctype}->{ $current_code }) {
-                        $metabib_attr->{$ctype}->{ $current_code } = {
-                            "label" => $code_label,
-                            "count" => 1
+            if ($attributes) {
+                foreach my $bib_id ( keys %{ $attributes } ) {
+                    foreach my $ctype ( keys %{ $attributes->{$bib_id} } ) {
+                        # we want {
+                        #   "srce":{ " ": { "label": "National bibliographic agency", "count" : 1 } },
+                        #       ...
+                        #   }
+                        my $current_code = $attributes->{$bib_id}->{$ctype}->{code};
+                        my $code_label = $attributes->{$bib_id}->{$ctype}->{label};
+                        $metabib_attr->{$ctype} = {} unless $metabib_attr->{$ctype};
+                        if (! $metabib_attr->{$ctype}->{ $current_code }) {
+                            $metabib_attr->{$ctype}->{ $current_code } = {
+                                "label" => $code_label,
+                                "count" => 1
+                            }
+                        } else {
+                            $metabib_attr->{$ctype}->{ $current_code }->{count}++;
                         }
-                    } else {
-                        $metabib_attr->{$ctype}->{ $current_code }->{count}++;
                     }
                 }
             }
 
+            if ($response->{staff_view_metabib_id}) {
+                $MR_summary_cache{$response->{staff_view_metabib_id}} = $metabib_attr;
+            }
             $response->{staff_view_metabib_attributes} = $metabib_attr;
         }
 
