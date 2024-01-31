@@ -8,7 +8,11 @@
 <eg-string key="catalog.record.toast.holdingTransfer"
   i18n-text text="Holding Transfer Target Set"></eg-string>
 <eg-string key="catalog.record.toast.cleared"
-  text="Record Marks Cleared"></eg-string>
+  i18n-text text="Record Marks Cleared"></eg-string>
+<eg-string key="catalog.record.toast.clearAddedContentCache"
+  i18n-text text="Added Content Cache Cleared"></eg-string>
+<eg-string key="catalog.record.toast.clearAddedContentCacheFailed"
+  i18n-text text="Failed to Clear Added Content Cache"></eg-string>
 
 <eg-bucket-dialog #recordBucketDialog bucketClass="biblio" [itemIds]="[recId]">
 </eg-bucket-dialog>
@@ -88,6 +92,9 @@
       </button>
       <button type="button" ngbDropdownItem class="dropdown-item" (click)="jacketImageDialog.open({size: 'lg'})">
         <span i18n>Upload Cover Image</span>
+      </button>
+      <button type="button" ngbDropdownItem class="dropdown-item" (click)="clearAddedContentCache()">
+        <span i18n>Clear Added Content Cache</span>
       </button>
       <a ngbDropdownItem class="dropdown-item" target="_blank" routerLink="/staff/acq/related/{{recId}}">
         <span i18n>View/Place Orders</span>
