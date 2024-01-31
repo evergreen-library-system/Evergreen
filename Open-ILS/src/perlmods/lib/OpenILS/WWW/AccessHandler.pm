@@ -47,6 +47,7 @@ sub handler {
 
     # We could use CGI....but that creates issues if post data may be submitted
     my $auth_ses = ($r->headers_in->get('Cookie') =~ /(?:^|\s)ses=([^;]*)/)[0];
+    $auth_ses = ($r->headers_in->get('Cookie') =~ /(?:^|\s)eg.auth.token=%22([^;]*)%22/)[0] unless $auth_ses;
     my $user = _verify_login($auth_ses);
 
     if (!defined($user)) {
