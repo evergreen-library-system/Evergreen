@@ -349,8 +349,8 @@ export class LineitemResultsComponent implements OnInit {
     }
 
     markReceived(rows: IdlObject[]) {
-        // must be on-order
-        const lis = rows.filter(l => l.state() === 'on-order');
+        // must be on-order or cancelled
+        const lis = rows.filter(l => l.state() === 'on-order' || l.state() === 'cancelled');
         if (lis.length === 0) {
             this.noActionableLIs.open();
             return;
