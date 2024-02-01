@@ -46,7 +46,7 @@ All other penalties are manually applied by a staff member or via a specific sta
 
 For any penalties that use threshold values, you can configure those threshold values in *Administration -> Local Administration-> Group Penalty Thresholds*. Refer to documentation for xref:local_admin:group_penalty_thresholds.adoc[Group Penalty Thresholds].
 
-For information on how to manually apply penalties to a patron account, see the xref:circulation:circulation_patron_records_web_client.html#_alerts[Alerts and Blocks] documentation.
+For information on how to manually apply penalties to a patron account, see the xref:circulation:circulation_patron_records_web_client.adoc#_alerts[Alerts and Blocks] documentation.
 
 [[blocked_actions]]
 == Blocked Actions ==
