@@ -17,7 +17,7 @@ To create a new item stat cat,
 
 . Click *New Statistical Category Editor - Item*.
 
-image::media/statcat_item_new.png[Create new item stat cat]
+image::lsa-statcat/statcat_item_new.png[Create new item stat cat]
 
 [start=3]
 . The editor will open, where you can set the following:
@@ -30,7 +30,7 @@ image::media/statcat_item_new.png[Create new item stat cat]
 * _SIP Field_: Select the SIP field identifier that will contain the category and its value (if applicable).
 * _SIP Format_: Specify the SIP format string (if applicable).
 
-image::media/statcat_item_form.png[Item stat cat editor form]
+image::lsa-statcat/statcat_item_form.png[Item stat cat editor form]
 
 [start=4]
 . Click *Save*. 
@@ -42,44 +42,44 @@ Entries are the values that will appear in the category’s dropdown menu in the
 
 . Click the *Entries* link on the category’s row. 
 
-image::media/statcat_item_entries.png[Item stat cat entries link]
+image::lsa-statcat/statcat_item_entries.png[Item stat cat entries link]
 
 [start=2]
 . Click *New Statistical Category Entry - Item* and input the value and owning library.
 
-image::media/statcat_item_new_entry.png[New item stat cat entry]
+image::lsa-statcat/statcat_item_new_entry.png[New item stat cat entry]
 
 [start=3]
 . Input the value and owning library, and  then click *Save*.
 
-image::media/statcat_item_entry_form.png[Item stat cat entry form]
+image::lsa-statcat/statcat_item_entry_form.png[Item stat cat entry form]
 
 Repeat steps 2 and 3 until all values you would like to appear in the dropdown list for the stat cat are entered.
 
 To return back to the main category page, click the *Return* button at the top right-hand corner of the screen.
 
-image::media/statcat_item_return_button.png[Return button]
+image::lsa-statcat/statcat_item_return_button.png[Return button]
 
 === Assigning an Item Stat Cat ===
 
 This is how item stat cats appear in the _Holdings Editor_:
 
-image::media/statcat_holdings_editor.png[Item stat cats in Holdings Editor]
+image::lsa-statcat/statcat_holdings_editor.png[Item stat cats in Holdings Editor]
 
 You can use the _Stat Cat Filter_ selector to display item stat cats owned by a particular library:
 
-image::media/statcat_filter_holdings_editor.png[Item stat cat library filter]
+image::lsa-statcat/statcat_filter_holdings_editor.png[Item stat cat library filter]
 
 To assign a stat cat to an item, click the field under the category name to open the dropdown menu.
 
-image::media/statcat_item_dropdown.png[Item stat cat dropdown menu]
+image::lsa-statcat/statcat_item_dropdown.png[Item stat cat dropdown menu]
 
 Select the value and click *Apply*.
 
-image::media/statcat_item_apply.png[Apply item stat cat]
+image::lsa-statcat/statcat_item_apply.png[Apply item stat cat]
 To remove a stat cat value from an item, click the field under the category name and click *Clear*.
 
-image::media/statcat_item_clear.png[Clear item stat cat]
+image::lsa-statcat/statcat_item_clear.png[Clear item stat cat]
 
 
 == Patron Statistical Categories ==
@@ -94,7 +94,7 @@ To create a new patron stat cat,
 
 . Click *New Statistical Category Editor - Patron*.
 
-image::media/statcat_patron_new.png[Create new patron stat cat]
+image::lsa-statcat/statcat_patron_new.png[Create new patron stat cat]
 
 [start=3]
 . The editor will open, where you can set the following:
@@ -109,7 +109,7 @@ image::media/statcat_patron_new.png[Create new patron stat cat]
 * _SIP Field_: Select the SIP field identifier that will contain the category and its value (if applicable).
 * _SIP Format_: Specify the SIP format string (if applicable).
 
-image::media/statcat_patron_form.png[Patron stat cat editor form]
+image::lsa-statcat/statcat_patron_form.png[Patron stat cat editor form]
 
 [start=4]
 . Click *Save*. 
@@ -126,23 +126,23 @@ Entries for patron stat cats are the values that will appear in the category’s
 
 . Click the *Entries* link on the category’s row. 
 
-image::media/statcat_patron_entries.png[Patron stat cat entries link]
+image::lsa-statcat/statcat_patron_entries.png[Patron stat cat entries link]
 
 [start=2]
 . Click *New Statistical Category Entry - Patron* and input the value and owning library.
 
-image::media/statcat_patron_new_entry.png[New patron stat cat entry]
+image::lsa-statcat/statcat_patron_new_entry.png[New patron stat cat entry]
 
 [start=3]
 . Input the value and owning library, and  then click *Save*.
 
-image::media/statcat_patron_entry_form.png[Patron stat cat entry form]
+image::lsa-statcat/statcat_patron_entry_form.png[Patron stat cat entry form]
 
 Repeat steps 2 through 3 until all values you would like to appear in the dropdown list for the stat cat are entered.
 
 To return back to the main category page, click the *Return* button at the top right-hand corner of the screen.
 
-image::media/statcat_patron_return_button.png[Return button]
+image::lsa-statcat/statcat_patron_return_button.png[Return button]
 
 === Assigning a Patron Stat Cat ===
 
@@ -159,7 +159,7 @@ In both the item and patron stat cat interfaces, stat cats can be edited by clic
 
 Stat cats can be deleted by clicking on the category, clicking the *Actions* icon, and selecting *Delete Selected*
 
-image::media/statcat_actions.png[Stat cat actions menu] 
+image::lsa-statcat/statcat_actions.png[Stat cat actions menu] 
 
 [NOTE]
 ========================
