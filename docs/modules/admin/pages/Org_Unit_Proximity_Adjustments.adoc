@@ -15,7 +15,7 @@ Org Unit Proximity between BR1 and BR4 = 4
 Org Unit Proximity Adjustments allow libraries to customize the distances between org units, which provides
 more control over which libraries are looked at when targeting copies to fill a hold.  Evergreen can also be
 configured to take Org Unit Proximity Adjustments into account during opportunistic capture through the
-creation of a custom Best-Hold Selection Sort Order.  See documentation xref:admin:Best_Hold_Selection_Sort_Order[here]
+creation of a custom Best-Hold Selection Sort Order.  See documentation xref:admin:Best_Hold_Selection_Sort_Order.adoc[here]
 for more information on Best-Hold Selection Sort Order. 
  
 An Org Unit Proximity Adjustment can be created to tell Evergreen which libraries to look at first for items to fill a hold or which library to look at last.  This may be useful for accounting for true transit costs or physical distances between libraries.  It can also be used to identify libraries that have special lending agreements or preferences.  Org Unit Proximity Adjustments can be created for all holds between two org units, or they can be created for holds on specific Shelving Locations and Circulation Modifiers.  

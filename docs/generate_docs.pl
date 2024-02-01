@@ -25,7 +25,7 @@ my $tmp_space = './build';
 my $html_output = './output';
 my $antoraui_git = 'git://git.evergreen-ils.org/eg-antora.git';
 my $antoraui_git_branch = 'main';
-my $antora_version = '2.3';
+my $antora_version = '3.1.7';
 my $help;
 
 
@@ -115,10 +115,10 @@ rewrite_yml("$html_output","output/dir","site-working.yml");
 rewrite_yml("$tmp_space/antora-ui/build/ui-bundle.zip","ui/bundle/url","site-working.yml");
 
 #npm install antora
-exec_system_cmd('npm install @antora/cli@' . $antora_version . ' @antora/site-generator-default@' . $antora_version . ' antora-lunr antora-site-generator-lunr');
+exec_system_cmd('npm install antora@' . $antora_version . ' @antora/lunr-extension@^1.0.0-alpha.8');
 
 # Now, finally, let's build the site
-exec_system_cmd('DOCSEARCH_INDEX_VERSION=latest DOCSEARCH_ENABLED=true DOCSEARCH_ENGINE=lunr NODE_PATH="$(npm root)" ./node_modules/@antora/cli/bin/antora --generator antora-site-generator-lunr site-working.yml');
+exec_system_cmd('DOCSEARCH_INDEX_VERSION=latest NODE_PATH="$(npm root)" ./node_modules/@antora/cli/bin/antora --extension @antora/lunr-extension site-working.yml');
 
 print "Success: your site files are available at " . $html_output . " and can be moved into place for access at " . $base_url . "\n";
 
