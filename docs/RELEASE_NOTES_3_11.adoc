@@ -3,6 +3,384 @@
 :numbered:
 :toclevels: 3
 
+== Evergreen  3.11.3 ==
+
+This release contains bug fixes improving on Evergreen 3.11.2.
+
+=== Upgrade Notes ===
+
+* (https://bugs.launchpad.net/evergreen/+bug/1384796[Bug 1384796]) requires a database update
+* (https://bugs.launchpad.net/evergreen/+bug/2046575[Bug 2046575]) require a database update
+
+=== Bug Fixes ===
+
+==== Accessibility ====
+
+* Restores search result pagination link button padding in staff catalog (https://bugs.launchpad.net/evergreen/+bug/2042358[Bug 2042358])
+
+
+==== Acquisitions ====
+
+* Fixes issue with Expand All button on Purchase Order pages (https://bugs.launchpad.net/evergreen/+bug/2049654[Bug 2049654])
+* Fixes ability to use enter key to submit the Acquisitions General Search form (https://bugs.launchpad.net/evergreen/+bug/2049780[Bug 2049780])
+
+
+==== Administration ====
+
+* Fixes an erroneous constraint on asset.copy_template (https://bugs.launchpad.net/evergreen/+bug/1384796[Bug 1384796])
+* Fixes copy stat cat fleshing in SuperCat (https://bugs.launchpad.net/evergreen/+bug/2047587[Bug 2047587])
+* A fix to reduce size of release tarball by not shipping the Angular build cache (https://bugs.launchpad.net/evergreen/+bug/2048907[Bug 2048907])
+* Improves the performance of the marc_export support script, particularly when items are included and adds a --batch-size option to the marc_export support script to better control resource usage (https://bugs.launchpad.net/evergreen/+bug/2041364[Bug 2041364])
+
+
+
+==== Cataloging ====
+
+* Fixes an issue in MARC Batch Import / Export where queue data was fetched in parallel, causing excessive pcrud calls (https://bugs.launchpad.net/evergreen/+bug/1945003[Bug 1945003])
+* Restores the <NONE> selection to prefix and suffix dropdowns in Angular holdings editor Batch Actions (https://bugs.launchpad.net/evergreen/+bug/1998413[Bug 1998413])
+
+
+==== Circulation ====
+
+* Adds publication year to Angular Pull List (https://bugs.launchpad.net/evergreen/+bug/2049673[Bug 2049673])
+* Fixes issue with alerts not displaying upon the initial load of the Patron interface (https://bugs.launchpad.net/evergreen/+bug/1980273[Bug 1980273])
+* Holds grid can now print / download the Hold Status column (https://bugs.launchpad.net/evergreen/+bug/2051038[Bug 2051038])
+* Enables clearing the default pickup location in the patron editor (https://bugs.launchpad.net/evergreen/+bug/1939154[Bug 1939154])
+
+
+==== Client ====
+
+* Fixes a printing issue on Patrons With Negative Balances admin page (https://bugs.launchpad.net/evergreen/+bug/2047168[Bug 20471668])
+* Fixes cropping on Reports icon in splash page (https://bugs.launchpad.net/evergreen/+bug/2046970[Bug 2046970])
+* Adds ability to save the column settings on the patron and item
+stat cat entries (https://bugs.launchpad.net/evergreen/+bug/2046575[Bug 2046575])
+* Improvements to Hours of Operation notes field (https://bugs.launchpad.net/evergreen/+bug/2036296[Bug 2036296])
+
+==== Developer ====
+
+* Removes make_release -x option to build XUL client; make_release now builds the browser client by default (https://bugs.launchpad.net/evergreen/+bug/2051370[Bug 2051370])
+
+==== Documentation ====
+
+* Fixes a typo in Booking Reservation docs (https://bugs.launchpad.net/evergreen/+bug/2045569[Bug 2045569])
+* Screenshot & layout updates for Booking Admin, Best Hold Selection Sort Order, Statistical Categories, and Column Picker docs (https://bugs.launchpad.net/evergreen/+bug/1933852[Bug 1933852], https://bugs.launchpad.net/evergreen/+bug/2045802[Bug 2045802], https://bugs.launchpad.net/evergreen/+bug/1426120[Bug 1426120], https://bugs.launchpad.net/evergreen/+bug/2048132[Bug 2048132] and https://bugs.launchpad.net/evergreen/+bug/2045805[Bug 2045805])
+* Updates to Self Check Docs (https://bugs.launchpad.net/evergreen/+bug/1494736[Bug 1494736])
+* Updates to Circulation Policy Docs (https://bugs.launchpad.net/evergreen/+bug/1906847[Bug 1906847])
+* Updates to Workstation User Settings docs (https://bugs.launchpad.net/evergreen/+bug/2011455[Bug 2011455])
+* Updates to Emergency Closing Handler documentation (https://bugs.launchpad.net/evergreen/+bug/1871692[Bug 1871692])
+
+
+
+==== General ====
+
+* Fixes an issue where the progress bar would not close in Firefox (https://bugs.launchpad.net/evergreen/+bug/1739638[Bug 1739638])
+
+
+== Public catalog ====
+
+* Removes non-functional staff-only "Locate Z39.50 Matches" buttons from OPAC templates (https://bugs.launchpad.net/evergreen/+bug/2021903[Bug 2021903])
+
+
+
+
+==== Staff catalog ====
+
+* Makes the Hold Status, Current Item, and Requested Item Columns non-sortable on Angular holds grids to avoid errors (https://bugs.launchpad.net/evergreen/+bug/1889133[Bug 1889133])
+* Fixes a tab display error in the Traditional Staff Catalog (https://bugs.launchpad.net/evergreen/+bug/2047714[Bug 2047714])
+* Fixes crash when displaying Staff View for a deleted record that has no metarecord mappings (https://bugs.launchpad.net/evergreen/+bug/2039229[Bug 2039229])
+* Improves speed of searching for and displaying titles that are members of large metarecord sets (https://bugs.launchpad.net/evergreen/+bug/2051708[Bug 2051708])
+
+
+=== Acknowledgements ===
+
+We would like to thank the following individuals who contributed code,
+testing, documentation, and patches to the 3.11.3 point release of Evergreen:
+
+
+* Jason Boyer
+* Dan Briem
+* Galen Charlton
+* Garry Collum
+* Jeff Davis
+* Ruth Frasur Davis
+* Bill Erickson
+* Blake Graham-Henderson
+* Stephanie Leary
+* Shula Link
+* Tiffany Little
+* Steven Mayo
+* Terran McCanna
+* Gina Monti
+* Michele Morgan
+* Susan Morrison
+* Andrea Buntz Neiman
+* Mike Rylander
+* Jane Sandberg
+* Chris Sharp
+* Jason Stephenson
+* Josh Stompro
+* Jessica Woolford
+
+
+
+
+
+
+
+
+
+
+== Evergreen  3.11.2 ==
+
+This release contains bug fixes improving on Evergreen 3.11.1.
+
+=== Bug Fixes ===
+
+==== Accessibility ====
+
+* Auto suggest causes significant accessibility issues for using basic search in some browsers (https://bugs.launchpad.net/bugs/1187993[Bug 1187993])
+* Web Staff Client - accessibility and button names (https://bugs.launchpad.net/bugs/1615714[Bug 1615714])
+* Screen readers skip Angular grid checkbox, row number, and flair icon cells (https://bugs.launchpad.net/bugs/2038230[Bug 2038230])
+* The icon column (status-column) in the patron bills interface needs to convey its meaning to assistive technologies too (https://bugs.launchpad.net/bugs/1818086[Bug 1818086])
+* add_circle_outline and remove_circle_outline icons in Marc Search tab need text alternatives (https://bugs.launchpad.net/bugs/2042492[Bug 2042492])
+* Accessibility Improvements Needed in the Catalog (https://bugs.launchpad.net/bugs/1965985[Bug 1965985])
+* form labels needed in edit-org-unit-setting-dialog (https://bugs.launchpad.net/bugs/2009853[Bug 2009853])
+* Search Preferences: labels and form fields are not associated with each other (https://bugs.launchpad.net/bugs/2036313[Bug 2036313])
+* Report output modal - visual accessibility issues (https://bugs.launchpad.net/bugs/2037666[Bug 2037666])
+* ARIA labels needed in date select, datetime select (https://bugs.launchpad.net/bugs/2043421[Bug 2043421])
+* Increase color contrast on Angular staff tab links (https://bugs.launchpad.net/bugs/2043238[Bug 2043238])
+* Line item checkbox IDs are numeric; need prefix (https://bugs.launchpad.net/bugs/2019031[Bug 2019031])
+* Add aria-describedby when multiple links have identical text (https://bugs.launchpad.net/bugs/2016343[Bug 2016343])
+
+
+==== Acquisitions ====
+
+* Better way to ID funds at warning or stop percentages (https://bugs.launchpad.net/bugs/1984007[Bug 1984007])
+* Line Item Alert Types Not Scoped in Purchase Orders (https://bugs.launchpad.net/bugs/2030820[Bug 2030820])
+* Alert Type Drop Down Duplicated (https://bugs.launchpad.net/bugs/2030821[Bug 2030821])
+* Unable to search by Line Item- Evergreen Bib ID (https://bugs.launchpad.net/bugs/1914297[Bug 1914297])
+* Actually install the edi pusher and fetcher scripts (https://bugs.launchpad.net/bugs/2034969[Bug 2034969])
+* legacy acq search: lineitem search results can prevent editing copies (https://bugs.launchpad.net/bugs/2036840[Bug 2036840])
+* When Adding a Brief Record If You Double Click "Add Record" Two Line Items Are Created (https://bugs.launchpad.net/bugs/2040336[Bug 2040336])
+* Line item deleting silently fails if selection list is owned by another user (https://bugs.launchpad.net/bugs/1966096[Bug 1966096])
+* Line item alert comments and note text have the same id (https://bugs.launchpad.net/bugs/2009093[Bug 2009093])
+* Drop Downs Don't Work Well in View/Place Orders (https://bugs.launchpad.net/bugs/2040319[Bug 2040319])
+
+
+==== Administration ====
+
+* Single Day Emergency Closings Fail to Update Due Dates Correctly (https://bugs.launchpad.net/bugs/1818912[Bug 1818912])
+* Fixed issue loading some AngularJS interfaces when hostname starts with *staff* or *eg* (https://bugs.launchpad.net/bugs/1862834[Bug 1862834])
+* Ability to filter out deleted shelving locations in Shelving Locations Editor (https://bugs.launchpad.net/bugs/1917092[Bug 1917092])
+* Single Sign On (Shibboleth) + Bootstrap OPAC (https://bugs.launchpad.net/bugs/1917083[Bug 1917083])
+* Missing IDL field for stop_blocked_user on config.hold_matrix_matchpoint (https://bugs.launchpad.net/bugs/2028012[Bug 2028012])
+* Library Settings Editor - History Link Missing Cursor Change (https://bugs.launchpad.net/bugs/2039306[Bug 2039306])
+* Shelving location ID 1 cannot be modified (https://bugs.launchpad.net/bugs/2023314[Bug 2023314])
+* Edit Survey Q&A button styles have gone awry (https://bugs.launchpad.net/bugs/2040186[Bug 2040186])
+* eg_db_config can fail depending on ~/.psqlrc contents (https://bugs.launchpad.net/bugs/2023418[Bug 2023418])
+* Rename New Statistical Categories Editors (https://bugs.launchpad.net/bugs/2023579[Bug 2023579])
+
+
+==== Booking ====
+
+* Booking: attempting to create a reservation for a single item freezes the browser (https://bugs.launchpad.net/bugs/2032717[Bug 2032717])
+* Booking: Overlapping bookings allowed (https://bugs.launchpad.net/bugs/1804066[Bug 1804066])
+
+
+==== Carousels ====
+
+* Carousels - Carousels Can't be Created or Edited (https://bugs.launchpad.net/bugs/2039612[Bug 2039612])
+* The "prev" and "next" navigation buttons in carousels are not translated.  (https://bugs.launchpad.net/bugs/2033067[Bug 2033067])
+* Carousels - Add buttons in New Carousels Very Large (https://bugs.launchpad.net/bugs/2039606[Bug 2039606])
+
+
+==== Cataloging ====
+
+* Angular Holdings Editor uses old terminology (https://bugs.launchpad.net/bugs/1983424[Bug 1983424])
+* Fixed Fields Grid in Enhanced MARC Editor Not Updated on Save (https://bugs.launchpad.net/bugs/2015163[Bug 2015163])
+* Fast Item Add Not Working from MARC Edit (https://bugs.launchpad.net/bugs/1986706[Bug 1986706])
+* setting Default Search Pane fails in Angular 3.11 catalogue (https://bugs.launchpad.net/bugs/2007603[Bug 2007603])
+* New Holdings Editor Ignores "Default Classification Scheme" Library Setting (https://bugs.launchpad.net/bugs/1960885[Bug 1960885])
+* WebClient - Create MARC Record - Keyboard Shortcut (https://bugs.launchpad.net/bugs/2031040[Bug 2031040])
+* WebClient - Create MARC Record - Select Template Focus and Page Name (https://bugs.launchpad.net/bugs/2031043[Bug 2031043])
+* Create MARC Record - focus on item add and call number (https://bugs.launchpad.net/bugs/2031114[Bug 2031114])
+* Create MARC Record - Hide help button for flat editor (https://bugs.launchpad.net/bugs/2031123[Bug 2031123])
+* Create MARC Record - Flat Editor - Keyboard Shortcut for Saving (https://bugs.launchpad.net/bugs/2031162[Bug 2031162])
+* Create MARC Record - Jump to Flat Editor - Keyboard Shortcut (https://bugs.launchpad.net/bugs/2031177[Bug 2031177])
+* MARC Batch Import/Export Queue - Some Actions No Longer Show as Links (https://bugs.launchpad.net/bugs/2039310[Bug 2039310])
+* angular MARC editor tab does not display record source value (https://bugs.launchpad.net/bugs/1927870[Bug 1927870])
+* Enable spellcheck for angular MARC edit screens (https://bugs.launchpad.net/bugs/1947906[Bug 1947906])
+* Angular: can no longer double click on item to open editor (https://bugs.launchpad.net/bugs/1908568[Bug 1908568])
+* Stack Subfields are not stacking properly anymore (https://bugs.launchpad.net/bugs/2040528[Bug 2040528])
+* MARC Batch Import/Export Queue: Links to the Staff Catalogue should open in a new tab (https://bugs.launchpad.net/bugs/2040305[Bug 2040305])
+* Record Match Sets: Buttons Out of Alignment When Creating a New Match Set (https://bugs.launchpad.net/bugs/2040303[Bug 2040303])
+* Wide buttons in Record Match Sets (https://bugs.launchpad.net/bugs/2043134[Bug 2043134])
+* Reapplying item template with alert or note results in multiple alerts and/or notes (https://bugs.launchpad.net/bugs/1855144[Bug 1855144])
+
+
+==== Circulation ====
+
+* Placing holds fails unintuitively when preferred pickup location is disabled via org unit setting opac.holds.org_unit_not_pickup_lib (https://bugs.launchpad.net/bugs/1477154[Bug 1477154])
+* Preferred name not listed as available to receipts (https://bugs.launchpad.net/bugs/1841635[Bug 1841635])
+* Make more strings available for translation in the Mark Damaged and Mark Missing dialogs (https://bugs.launchpad.net/bugs/1840990[Bug 1840990])
+* Check Out Fails Silently if Operating Hours of Operation Set to Closed 7 Days a Week (https://bugs.launchpad.net/bugs/1944601[Bug 1944601])
+* One Hour Gap in Default Autorenewal Delays (https://bugs.launchpad.net/bugs/1899976[Bug 1899976])
+* Sort direction for selection depth wrong when doing best-hold selection (https://bugs.launchpad.net/bugs/2023338[Bug 2023338])
+* Cash Reports allows start date after end date (https://bugs.launchpad.net/bugs/2002343[Bug 2002343])
+* Autorenewal Can Overwhelm open-ils.trigger Service Drones (https://bugs.launchpad.net/bugs/2030915[Bug 2030915])
+* Cash Reports - Label Totals Wrapping Unnecessarily Early (https://bugs.launchpad.net/bugs/2039311[Bug 2039311])
+* Display of survey results in patron account formatted incorrectly (https://bugs.launchpad.net/bugs/2040184[Bug 2040184])
+* Concerns about functionality of Mark item Missing from Items Out (https://bugs.launchpad.net/bugs/1998605[Bug 1998605])
+* Circulation->Retrieve Recent Patrons can have duplicate entries (https://bugs.launchpad.net/bugs/2009281[Bug 2009281])
+* View Holds: Need To be Able To Tell Where The Item Is Coming From (https://bugs.launchpad.net/bugs/2040312[Bug 2040312])
+
+
+==== Course materials ====
+
+* Browse for course not working (https://bugs.launchpad.net/bugs/1913815[Bug 1913815])
+* Blank or Wildcard Search for Course by Instructor Fails (https://bugs.launchpad.net/bugs/1968754[Bug 1968754])
+* OPAC course reserves link display shouldn't depend on search library (https://bugs.launchpad.net/bugs/2035389[Bug 2035389])
+
+
+==== Client ====
+
+* Logging out on a page with a pcrud call floods browser with errors (https://bugs.launchpad.net/bugs/2002693[Bug 2002693])
+* Web staff client does not work properly when Czech is switched on (https://bugs.launchpad.net/bugs/2032753[Bug 2032753])
+* angular: add keyboard support to eg-grid options menu (https://bugs.launchpad.net/bugs/1828575[Bug 1828575])
+* Staff Client eg grid not sorting alphabetically (https://bugs.launchpad.net/bugs/1912840[Bug 1912840])
+* Link/button issue in clipboard dialog component (https://bugs.launchpad.net/bugs/2043424[Bug 2043424])
+
+
+==== Documentation ====
+
+* marc_export documentation sql example fix (https://bugs.launchpad.net/bugs/2029160[Bug 2029160])
+* Update "Conjoined Items" section for web client (https://bugs.launchpad.net/bugs/1775930[Bug 1775930])
+* Web Services - Add on Z39.50 and OAI-PMH (https://bugs.launchpad.net/bugs/2031935[Bug 2031935])
+* Floating Feature Documentation (https://bugs.launchpad.net/bugs/2033655[Bug 2033655])
+* Define Permissions (https://bugs.launchpad.net/bugs/1842957[Bug 1842957])
+* Remove old docs from landing page (https://bugs.launchpad.net/bugs/2040313[Bug 2040313])
+* Carousel docs list the wrong admin screen for Carousel Library Mapping (https://bugs.launchpad.net/bugs/2038779[Bug 2038779])
+* Item Status Info Missing (https://bugs.launchpad.net/bugs/2022100[Bug 2022100])
+
+
+
+==== General ====
+
+* open-ils.actor.container.retrieve_by_class doesn't properly handle missing bucketOwnerId (https://bugs.launchpad.net/bugs/2036265[Bug 2036265])
+* Unusual strings in POEditor (https://bugs.launchpad.net/bugs/2045078[Bug 2045078])
+* 2023-06 package-lock.json updates (main and rel_3_11) (https://bugs.launchpad.net/bugs/2022939[Bug 2022939])
+* docs/package.json should be .gitignored (https://bugs.launchpad.net/bugs/2035383[Bug 2035383])
+
+
+==== OAI-PMH ====
+
+* Config repository name extra space (https://bugs.launchpad.net/bugs/2030523[Bug 2030523])
+
+
+==== Public catalog ====
+
+* Request a Card link missing on login form (https://bugs.launchpad.net/bugs/2039114[Bug 2039114])
+* Button in Patron Messages interface in OPAC are not translatable (https://bugs.launchpad.net/bugs/1919501[Bug 1919501])
+* Bootstrap Opac: Personal Information Page contains Links as Buttons (https://bugs.launchpad.net/bugs/2040314[Bug 2040314])
+* Marking org unit as non-visible in the OPAC defaults patrons' preferred pickup locations to the first org unit (https://bugs.launchpad.net/bugs/2043127[Bug 2043127])
+
+
+==== Reports ====
+
+* Unable to schedule a Report at 8 AM (https://bugs.launchpad.net/bugs/2039186[Bug 2039186])
+
+
+==== Search ====
+
+* Search suggestions can make searches very slow in 3.11 (https://bugs.launchpad.net/bugs/2038472[Bug 2038472])
+* Bootstrap OPAC: Only show current addresses (https://bugs.launchpad.net/bugs/1939309[Bug 1939309])
+
+
+==== Staff catalog ====
+
+* Angular Staff Catalogue: More Link Missing from Facets (https://bugs.launchpad.net/bugs/1934018[Bug 1934018])
+* Exclude Electronic Resources Check Box Can't Be Selected in Staff Catalogue (https://bugs.launchpad.net/bugs/2036297[Bug 2036297])
+* Staff Catalog: Default Search and Preferred Library  settings are deleted when Search Preference page is loaded (https://bugs.launchpad.net/bugs/2037685[Bug 2037685])
+* Use table for shelving locations in staff catalog (https://bugs.launchpad.net/bugs/2016742[Bug 2016742])
+* Placeholders  in search form in  staff catalog appears untranslated (https://bugs.launchpad.net/bugs/1920126[Bug 1920126])
+* Some components of the staff client search result interface appears untranslated (https://bugs.launchpad.net/bugs/1920230[Bug 1920230])
+* Copy count highlight color contrast in staff catalog search results (https://bugs.launchpad.net/bugs/2043847[Bug 2043847])
+
+
+=== Further details on bug fixes ===
+
+==== Change in AutoRenew Event Definition Default Delay ====
+
+The delay for the AutoRenew event has been changed from -23 hours to
+-24 hours and 1 minute.  The previous values of -23 hours for the
+delay and -1 minute for the max_delay left a gap of approximately 1
+hour where items would not auto-renew if they fell due during that
+time.  Depending upon the time that the AutoRenew event runner is
+scheduled to run, this gap may never turn up.  However, all it takes
+is a misconfigured client (i.e. an incorrect timezone setting) or a
+manually edited due date on a circulation for this to turn up.  The
+new interval settings guarantee that all circulations for a given 24
+hour period are selected with no gap.
+
+A database upgrade script is provided to alter any event definitions
+using the Circ::Autorenew reactor and the previous default delay
+values to the new settings.  If you have customized or added any event
+definitions using this reactor, you should double check that they are
+correct after an upgrade.
+
+==== Shelving Locations Editor: Hide deleted shelving locations by default ====
+
+In the Shelving Locations Editor under Local Administration, a filter to hide 
+deleted locations is applied by default. Clicking the Remove Filters button or 
+Clearing the filter on the Is Deleted column will reveal the deleted locations.
+
+
+=== Acknowledgements ===
+
+We would like to thank the following individuals who contributed code,
+testing and documentation patches to the 3.11.2 point release of Evergreen:
+
+
+* Scott Angel
+* Jason Boyer
+* Eva Cerniňáková
+* Galen Charlton
+* Jeff Davis
+* Dan Briem
+* Andrea Buntz Neiman
+* Garry Collum
+* Elizabeth Davis
+* Ruth Davis
+* Bill Erickson
+* Robin Fitch
+* Blake Graham-Henderson
+* Lena Hernandez
+* Kyle Huckins
+* Linda Jansova
+* Brian Kennedy
+* Angela Kilsdonk
+* Stephanie Leary
+* Mary Llewellyn
+* Llewellyn Marshall
+* Steven Mayo
+* Terran McCanna
+* Gina Monti
+* Christine Morgan
+* Michele Morgan
+* Susan Morrison
+* Lauren Mous
+* Jennifer Pringle
+* Simone Rauscher
+* Mike Rylander
+* Jane Sandberg
+* Chris Sharp
+* Jason Stephenson
+* Josh Stompro
+* Elizabeth Thomsen
+* Beth Willis
+* Carol Witt
+
+
 == Evergreen 3.11.1 ==
 
 This release contains bug fixes improving on Evergreen 3.11.0.

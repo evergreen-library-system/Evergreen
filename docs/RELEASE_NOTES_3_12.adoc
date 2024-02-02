@@ -3,6 +3,141 @@
 :numbered:
 :toclevels: 3
 
+== Evergreen  3.12.1 ==
+
+This release contains bug fixes improving on Evergreen 3.12.0.
+
+=== Upgrade Notes ===
+
+* (https://bugs.launchpad.net/evergreen/+bug/1384796[Bug 1384796]) requires a database update
+* (https://bugs.launchpad.net/evergreen/+bug/2046575[Bug 2046575]) require a database update
+
+=== Bug Fixes ===
+
+
+==== Accessibility ====
+
+* Fixes placing of login error message & adds ARIA labeling to login screen (https://bugs.launchpad.net/evergreen/+bug/1839364[Bug 1839364])
+
+
+==== Acquisitions ====
+
+* Fixes issue with Expand All button on Purchase Order pages (https://bugs.launchpad.net/evergreen/+bug/2049654[Bug 2049654])
+
+
+==== Administration ====
+
+* Fixes an erroneous constraint on asset.copy_template (https://bugs.launchpad.net/evergreen/+bug/1384796[Bug 1384796])
+* Fixes copy stat cat fleshing in SuperCat (https://bugs.launchpad.net/evergreen/+bug/2047587[Bug 2047587])
+* A fix to reduce size of release tarball by not shipping the Angular build cache (https://bugs.launchpad.net/evergreen/+bug/2048907[Bug 2048907])
+
+
+
+==== Cataloging ====
+
+* Fixes an issue in MARC Batch Import / Export where queue data was fetched in parallel, causing excessive pcrud calls (https://bugs.launchpad.net/evergreen/+bug/1945003[Bug 1945003])
+* Restores the <NONE> selection to prefix and suffix dropdowns in Angular holdings editor Batch Actions (https://bugs.launchpad.net/evergreen/+bug/1998413[Bug 1998413])
+
+==== Circulation ====
+
+* Adds publication year to Angular Pull List (https://bugs.launchpad.net/evergreen/+bug/2049673[Bug 2049673])
+* Fixes issue with alerts not displaying upon the initial load of the Patron interface (https://bugs.launchpad.net/evergreen/+bug/1980273[Bug 1980273])
+* Holds grid can now print / download the Hold Status column (https://bugs.launchpad.net/evergreen/+bug/2051038[Bug 2051038])
+* Enables clearing the default pickup location in the patron editor (https://bugs.launchpad.net/evergreen/+bug/1939154[Bug 1939154])
+
+
+
+==== Client ====
+
+* Fixes a printing issue on Patrons With Negative Balances admin page (https://bugs.launchpad.net/evergreen/+bug/2047168[Bug 20471668])
+* Fixes cropping on Reports icon in splash page (https://bugs.launchpad.net/evergreen/+bug/2046970[Bug 2046970])
+* Adds ability to save the column settings on the patron and item
+stat cat entries (https://bugs.launchpad.net/evergreen/+bug/2046575[Bug 2046575])
+* Improvements to Hours of Operation notes field (https://bugs.launchpad.net/evergreen/+bug/2036296[Bug 2036296])
+
+==== Developer ====
+
+* Removes make_release -x option to build XUL client; make_release now builds the browser client by default (https://bugs.launchpad.net/evergreen/+bug/2051370[Bug 2051370])
+
+==== Documentation ====
+
+* Fixes a typo in Booking Reservation docs (https://bugs.launchpad.net/evergreen/+bug/2045569[Bug 2045569])
+* Screenshot & layout updates for Booking Admin, Best Hold Selection Sort Order, Statistical Categories, and Column Picker docs (https://bugs.launchpad.net/evergreen/+bug/1933852[Bug 1933852], https://bugs.launchpad.net/evergreen/+bug/2045802[Bug 2045802], https://bugs.launchpad.net/evergreen/+bug/1426120[Bug 1426120], https://bugs.launchpad.net/evergreen/+bug/2048132[Bug 2048132] and https://bugs.launchpad.net/evergreen/+bug/2045805[Bug 2045805])
+* Updates to Self Check Docs (https://bugs.launchpad.net/evergreen/+bug/1494736[Bug 1494736])
+* Updates to Circulation Policy Docs (https://bugs.launchpad.net/evergreen/+bug/1906847[Bug 1906847])
+* Updates to Workstation User Settings docs (https://bugs.launchpad.net/evergreen/+bug/2011455[Bug 2011455])
+* Documentation for Added Content Tab feature
+* Documentation for Angular Link Checker feature
+* Documentation for Angular Custom Org Unit Trees feature
+* Updates to Emergency Closing Handler documentation (https://bugs.launchpad.net/evergreen/+bug/1871692[Bug 1871692])
+
+
+
+==== General ====
+
+* Fixes an issue where the progress bar would not close in Firefox (https://bugs.launchpad.net/evergreen/+bug/1739638[Bug 1739638])
+
+
+==== Public catalog ====
+
+* Removes non-functional staff-only "Locate Z39.50 Matches" buttons from OPAC templates (https://bugs.launchpad.net/evergreen/+bug/2021903[Bug 2021903])
+
+
+
+==== Staff catalog ====
+
+* Makes the Hold Status, Current Item, and Requested Item Columns non-sortable on Angular holds grids to avoid errors (https://bugs.launchpad.net/evergreen/+bug/1889133[Bug 1889133])
+* Fixes a tab display error in the Traditional Staff Catalog (https://bugs.launchpad.net/evergreen/+bug/2047714[Bug 2047714])
+* Fixes crash when displaying Staff View for a deleted record that has no metarecord mappings (https://bugs.launchpad.net/evergreen/+bug/2039229[Bug 2039229])
+* Improves speed of searching for and displaying titles that are members of large metarecord sets (https://bugs.launchpad.net/evergreen/+bug/2051708[Bug 2051708])
+
+
+
+=== Acknowledgements ===
+
+We would like to thank the following individuals who contributed code,
+testing, documentation, and patches to the 3.12.1 point release of Evergreen:
+
+
+* Jason Boyer
+* Dan Briem
+* Galen Charlton
+* Jeff Davis
+* Ruth Frasur Davis
+* Bill Erickson
+* Blake Graham-Henderson
+* Stephanie Leary
+* Shula Link
+* Tiffany Little
+* Steven Mayo
+* Terran McCanna
+* Gina Monti
+* Michele Morgan
+* Susan Morrison
+* Andrea Buntz Neiman
+* Mike Rylander
+* Jane Sandberg
+* Chris Sharp
+* Jason Stephenson
+* Jessica Woolford
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 == Upgrade notes ==
 
 === AutoRenew Event Definition default delay ===
