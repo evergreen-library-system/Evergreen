@@ -1,3 +1,1048 @@
-Evergreen doesn't keep a GNU-style ChangeLog except in release tarballs.
-Those seeking a change log are encouraged to run 'git log -v', or read
-it online at: http://git.evergreen-ils.org/?p=Evergreen.git;a=log
+commit b095d42c3f93d876c5c897210f504ddadb846bf9
+Author: Jason Stephenson <jason@sigio.com>
+Date:   Fri Feb 2 20:38:41 2024 +0000
+
+    Bumping Perl version string for 3.11.3
+    
+    Signed-off-by: Jason Stephenson <jason@sigio.com>
+
+1	1	Open-ILS/src/perlmods/lib/OpenILS.pm
+
+commit 3367cff3565dbecc998ce2759327068fcb4fa82c
+Author: Jason Stephenson <jason@sigio.com>
+Date:   Fri Feb 2 20:30:11 2024 +0000
+
+    Translation updates - newpot
+    
+    Signed-off-by: Jason Stephenson <jason@sigio.com>
+
+194	162	build/i18n/po/bootstrap-opac/bootstrap-opac.pot
+11	1	build/i18n/po/db.seed/db.seed.pot
+3318	3310	build/i18n/po/fm_IDL.dtd/fm_IDL.dtd.pot
+111	107	build/i18n/po/tpac/tpac.pot
+183	135	build/i18n/po/webstaff/webstaff.pot
+
+commit 76d694978495fcc772025b32e897c1f3bfa7a09d
+Author: Andrea Buntz Neiman <abneiman@equinoxinitiative.org>
+Date:   Fri Feb 2 11:58:00 2024 -0500
+
+    Docs: draft release notes for 3.11.3
+    
+    Signed-off-by: Andrea Buntz Neiman <abneiman@equinoxinitiative.org>
+
+127	0	docs/RELEASE_NOTES_3_11.adoc
+
+commit b12079a774f7294569b88308c25159b5eb1b592c
+Author: Jane Sandberg <js7389@princeton.edu>
+Date:   Thu Feb 1 16:48:37 2024 -0800
+
+    LP#2051370 (follow-up) run make_release steps in the correct directory
+    
+    Signed-off-by: Jane Sandberg <js7389@princeton.edu>
+
+3	4	build/tools/make_release
+
+commit 2bec1e78b425a9198301113b0bb9b23e87227b42
+Author: Galen Charlton <gmc@equinoxOLI.org>
+Date:   Fri Jan 26 09:34:15 2024 -0500
+
+    LP#2051370: have make_release build browser client by default
+    
+    This patch replace the -c switch (to build the browser client) with
+    a -C switch to _skip_ building the browser client. Release tarballs
+    should always have the browser client, so the main reason to use -C
+    is just to create the initial DB update script.
+    
+    To test
+    -------
+    [1] Apply patch. Verify that make_release now advertises a -C
+        switch.
+    [2] Run make_release without -C; it should build the browser client.
+    [3] Run make_release with -C; the browser client build should be skipped.
+    
+    Release-note: [Developer] make_release now builds the browser client by default.
+    
+    Signed-off-by: Galen Charlton <gmc@equinoxOLI.org>
+    Signed-off-by: Jane Sandberg <js7389@princeton.edu>
+
+6	6	build/tools/make_release
+
+commit 9877df6bee53a3921880f10b835ffdd06f92d8ed
+Author: Galen Charlton <gmc@equinoxOLI.org>
+Date:   Fri Jan 26 09:24:49 2024 -0500
+
+    LP#2051370: remove make_release option to build XUL client
+    
+    This patch removes the -x option in make_release to build
+    the XUL client, which has ceased to be, is an ex-client. It
+    doesn't remove the dependencies and subordinate Makefile
+    that would permit manually building the XUL client; that will
+    happen later.
+    
+    Release-note: [Developer] Remove make_release -x option to build XUL client
+    
+    To test
+    -------
+    [1] Install the patch and verify that make_release does not
+        advertise an option to build the XUL client.
+    [2] Run a build and verify that it works.
+    
+    Signed-off-by: Galen Charlton <gmc@equinoxOLI.org>
+    Signed-off-by: Jane Sandberg <js7389@princeton.edu>
+
+1	45	build/tools/make_release
+
+commit 1b8ffc8c2e70ba124e5320517b8c0467f740b337
+Author: Susan Morrison <smorrison@georgialibraries.org>
+Date:   Thu Feb 1 10:10:10 2024 -0500
+
+    Docs: LP2048132 follow up for image syntax
+    
+    Updated image syntax for all but one image to pull from correct image folder.
+    
+    Signed-off-by: Susan Morrison <smorrison@georgialibraries.org>
+    Signed-off-by: Andrea Buntz Neiman <abneiman@equinoxinitiative.org>
+
+18	18	docs/modules/admin/pages/lsa-statcat.adoc
+
+commit 750c78caec4cb231f6b1d1d0b6a0aad3cac973d3
+Author: Susan Morrison <smorrison@georgialibraries.org>
+Date:   Fri Jan 5 13:40:54 2024 -0500
+
+    Docs: Update statistical categories documenation to reflect Angular upgrades
+    
+    LP2048132: https://bugs.launchpad.net/evergreen/+bug/2048132
+    
+    Signed-off-by: Susan Morrison <smorrison@georgialibraries.org>
+    Signed-off-by: Andrea Buntz Neiman <abneiman@equinoxinitiative.org>
+
+-	-	docs/modules/admin/assets/images/lsa-statcat/statcat_actions.png
+-	-	docs/modules/admin/assets/images/lsa-statcat/statcat_filter_holdings_editor.png
+-	-	docs/modules/admin/assets/images/lsa-statcat/statcat_holdings_editor.png
+-	-	docs/modules/admin/assets/images/lsa-statcat/statcat_item_apply.png
+-	-	docs/modules/admin/assets/images/lsa-statcat/statcat_item_clear.png
+-	-	docs/modules/admin/assets/images/lsa-statcat/statcat_item_dropdown.png
+-	-	docs/modules/admin/assets/images/lsa-statcat/statcat_item_entries.png
+-	-	docs/modules/admin/assets/images/lsa-statcat/statcat_item_entry_form.png
+-	-	docs/modules/admin/assets/images/lsa-statcat/statcat_item_form.png
+-	-	docs/modules/admin/assets/images/lsa-statcat/statcat_item_new.png
+-	-	docs/modules/admin/assets/images/lsa-statcat/statcat_item_new_entry.png
+-	-	docs/modules/admin/assets/images/lsa-statcat/statcat_item_return_button.png
+-	-	docs/modules/admin/assets/images/lsa-statcat/statcat_patron_actions.png
+-	-	docs/modules/admin/assets/images/lsa-statcat/statcat_patron_entries.png
+-	-	docs/modules/admin/assets/images/lsa-statcat/statcat_patron_entry_form.png
+-	-	docs/modules/admin/assets/images/lsa-statcat/statcat_patron_form.png
+-	-	docs/modules/admin/assets/images/lsa-statcat/statcat_patron_new.png
+-	-	docs/modules/admin/assets/images/lsa-statcat/statcat_patron_new_entry.png
+-	-	docs/modules/admin/assets/images/lsa-statcat/statcat_patron_return_button.png
+148	45	docs/modules/admin/pages/lsa-statcat.adoc
+ create mode 100644 docs/modules/admin/assets/images/lsa-statcat/statcat_actions.png
+ create mode 100644 docs/modules/admin/assets/images/lsa-statcat/statcat_filter_holdings_editor.png
+ create mode 100644 docs/modules/admin/assets/images/lsa-statcat/statcat_holdings_editor.png
+ create mode 100644 docs/modules/admin/assets/images/lsa-statcat/statcat_item_apply.png
+ create mode 100644 docs/modules/admin/assets/images/lsa-statcat/statcat_item_clear.png
+ create mode 100644 docs/modules/admin/assets/images/lsa-statcat/statcat_item_dropdown.png
+ create mode 100644 docs/modules/admin/assets/images/lsa-statcat/statcat_item_entries.png
+ create mode 100644 docs/modules/admin/assets/images/lsa-statcat/statcat_item_entry_form.png
+ create mode 100644 docs/modules/admin/assets/images/lsa-statcat/statcat_item_form.png
+ create mode 100644 docs/modules/admin/assets/images/lsa-statcat/statcat_item_new.png
+ create mode 100644 docs/modules/admin/assets/images/lsa-statcat/statcat_item_new_entry.png
+ create mode 100644 docs/modules/admin/assets/images/lsa-statcat/statcat_item_return_button.png
+ create mode 100644 docs/modules/admin/assets/images/lsa-statcat/statcat_patron_actions.png
+ create mode 100644 docs/modules/admin/assets/images/lsa-statcat/statcat_patron_entries.png
+ create mode 100644 docs/modules/admin/assets/images/lsa-statcat/statcat_patron_entry_form.png
+ create mode 100644 docs/modules/admin/assets/images/lsa-statcat/statcat_patron_form.png
+ create mode 100644 docs/modules/admin/assets/images/lsa-statcat/statcat_patron_new.png
+ create mode 100644 docs/modules/admin/assets/images/lsa-statcat/statcat_patron_new_entry.png
+ create mode 100644 docs/modules/admin/assets/images/lsa-statcat/statcat_patron_return_button.png
+
+commit c8f9aa29883e26dbd35592b4dd812e0703db2d6c
+Author: Susan Morrison <smorrison@georgialibraries.org>
+Date:   Fri Jan 5 11:24:29 2024 -0500
+
+    Docs: Update emergency_closing_handler.adoc
+    
+    For LP1871692: https://bugs.launchpad.net/evergreen/+bug/1871692
+    
+    Signed-off-by: Susan Morrison <smorrison@georgialibraries.org>
+    Signed-off-by: Andrea Buntz Neiman <abneiman@equinoxinitiative.org>
+
+27	8	docs/modules/admin/pages/emergency_closing_handler.adoc
+
+commit e7808da79a6f7fb2330efb407256b01e4f9d0b44
+Author: Chris Sharp <csharp@georgialibraries.org>
+Date:   Fri Jan 26 10:51:10 2024 -0500
+
+    LP#2021903: remove "Locate Z39.50 Matches" buttons from OPAC
+    
+    Remove non-functional buttons that previously retrieved matches from
+    the Z39.50 XUL UI.  See https://bugs.launchpad.net/evergreen/+bug/1798847
+    for the request to recreate this feature in our current UI.
+    
+    Release-note: Remove non-functional staff-only "Locate Z39.50 Matches" buttons from OPAC templates.
+    
+    Signed-off-by: Chris Sharp <csharp@georgialibraries.org>
+    Signed-off-by: Galen Charlton <gmc@equinoxOLI.org>
+
+0	23	Open-ILS/src/templates-bootstrap/opac/myopac/lists.tt2
+0	21	Open-ILS/src/templates/opac/myopac/lists.tt2
+
+commit 35209df090ef82689eff5413310c6f6c4a66b6e6
+Author: Gina Monti <gmonti@biblio.org>
+Date:   Fri Jan 26 13:52:44 2024 -0500
+
+    Docs: LP1426120 Best Hold Selection Sort Order updates
+    
+    Changing some things around for flow.
+    
+    Signed-off-by: Gina Monti <gmonti@biblio.org>
+    Signed-off-by: Jessica Woolford <jwoolford@biblio.org>
+    Signed-off-by: Andrea Buntz Neiman <abneiman@equinoxinitiative.org>
+
+2	2	docs/modules/admin/pages/Best_Hold_Selection_Sort_Order.adoc
+
+commit bde084b0ab9e638e495b5be6d6f1cd1e2663df59
+Author: Galen Charlton <gmc@equinoxOLI.org>
+Date:   Wed Jan 3 10:34:37 2024 -0500
+
+    LP#2036296: always show note field in Hours of Operation form
+    
+    This patch removes the checkbox to show or hide the notes
+    fields in the hours of operation editor in favor of always
+    displaying them.
+    
+    This patch also adjusts the label to indicate that the note
+    is optional and ensures that the label is properly bound to
+    each note input.
+    
+    Signed-off-by: Galen Charlton <gmc@equinoxOLI.org>
+    Signed-off-by: Gina Monti <gmonti@biblio.org>
+    Signed-off-by: Jason Boyer <JBoyer@equinoxOLI.org>
+
+8	15	Open-ILS/src/eg2/src/app/staff/admin/server/org-unit.component.html
+
+commit 0bbb647e7348f1ccb66a58b44f8d31af6fb83578
+Author: Galen Charlton <gmc@equinoxOLI.org>
+Date:   Thu Jan 25 10:36:24 2024 -0500
+
+    LP#1939154: allow clearing default pickup lib in AngularJS patron editor
+    
+    This patch adds a "Clear Default Hold Pickup Location" button
+    to enable removing that user-setting. This works around an issue
+    with the AngularJS OU selector where it doesn't pass an event
+    to signify to calling code that the user has de-selected any OUs.
+    
+    To test
+    -------
+    [1] Apply the patch.
+    [2] Use the AngularJS editor to add and clear the default
+        pickup library for a patron.
+    [3] Verify that the changes are saved and displayed as
+        expected.
+    
+    Release-note: Enable clearing the default pickup location in the patron editor.
+    
+    Signed-off-by: Galen Charlton <gmc@equinoxOLI.org>
+    Signed-off-by: Jane Sandberg <sandbergja@gmail.com>
+    Signed-off-by: Jason Boyer <JBoyer@equinoxOLI.org>
+
+5	0	Open-ILS/src/templates/staff/circ/patron/t_edit.tt2
+6	0	Open-ILS/web/js/ui/default/staff/circ/patron/regctl.js
+
+commit eaaf489d8a9da0e4972927db72c320f17364ce2c
+Author: Jason Stephenson <jason@sigio.com>
+Date:   Tue Jan 30 14:41:16 2024 -0500
+
+    LP1998413: Add release note
+    
+    Signed-off-by: Jason Stephenson <jason@sigio.com>
+
+6	0	docs/RELEASE_NOTES_NEXT/Cataloging/holdings_editor_batch_actions.adoc
+ create mode 100644 docs/RELEASE_NOTES_NEXT/Cataloging/holdings_editor_batch_actions.adoc
+
+commit fc841d5a78bc3e7c5091dc91009f8346c9218a3b
+Author: Michele Morgan <mmorgan@noblenet.org>
+Date:   Fri Dec 29 16:30:45 2023 +0000
+
+    LP1998413 - Holdings Editor Batch Actions restore <None> prefix/suffix option
+    
+    Restores the <NONE> selection to prefix and suffix dropdowns in Angular holdings editor Batch Actions
+    
+    Signed-off-by: Michele Morgan <mmorgan@noblenet.org>
+    Signed-off-by: Jason Stephenson <jason@sigio.com>
+
+2	0	Open-ILS/src/eg2/src/app/staff/cat/volcopy/vol-edit.component.html
+
+commit bf34d9076db5ba6bbed559f8782718e9c803118c
+Author: Mike Rylander <mrylander@gmail.com>
+Date:   Tue Jan 30 10:42:03 2024 -0500
+
+    LP#2051708: Cache MR summary calculations
+    
+    As part of the angularization of the staff catalog, new logic was
+    added to the bib summary API that gathers record attributes for the
+    constituent records of a result's metarecord. For very large
+    metarecords (~100+ constituents) this can be very slow, and when a
+    search returns many bibs from the same metarecord, the underlying
+    data is retrieved separately for each bib.
+    
+    This commit creates a temporary local cache to avoid repeating the
+    caclulation of MR summary data on the same result set page.
+    
+    Release-note: Improve speed of searching for and displaying (in Staff View) titles that are members of large metarecord sets.
+    
+    Signed-off-by: Mike Rylander <mrylander@gmail.com>
+    Signed-off-by: Galen Charlton <gmc@equinoxOLI.org>
+    Signed-off-by: Jason Boyer <JBoyer@equinoxOLI.org>
+
+29	17	Open-ILS/src/perlmods/lib/OpenILS/Application/Search/Biblio.pm
+
+commit e2282e8b069a971009a3b555cfb76e917e2e8935
+Author: Jeff Davis <jdavis@sitka.bclibraries.ca>
+Date:   Tue Oct 17 14:25:10 2023 -0700
+
+    LP#2039229: handle staff view for bibs without metarecord mappings
+    
+    Release-note: Fix crash when displaying Staff View for a deleted record that has no metarecord mappings.
+    
+    Signed-off-by: Jeff Davis <jdavis@sitka.bclibraries.ca>
+    Signed-off-by: Mike Rylander <mrylander@gmail.com>
+    Signed-off-by: Galen Charlton <gmc@equinoxOLI.org>
+    Signed-off-by: Jason Boyer <JBoyer@equinoxOLI.org>
+
+36	29	Open-ILS/src/perlmods/lib/OpenILS/Application/Search/Biblio.pm
+
+commit d6fd238d0b14b4af53a5cde5d0b5637f92ed9869
+Author: Stephanie Leary <stephanie.leary@equinoxoli.org>
+Date:   Tue Oct 31 20:24:52 2023 +0000
+
+    LP2042358 Restore result pagination link padding
+    
+    Restores the record search result pagination link button padding lost in
+    the changes for bug 1615714.
+    
+    Release-note: Restore search result pagination link button padding in staff catalog
+    
+    Signed-off-by: Stephanie Leary <stephanie.leary@equinoxoli.org>
+    Signed-off-by: Terran McCanna <tmccanna@georgialibraries.org>
+    Signed-off-by: Galen Charlton <gmc@equinoxOLI.org>
+
+13	0	Open-ILS/src/eg2/src/app/staff/catalog/record/pagination.component.css
+2	1	Open-ILS/src/eg2/src/app/staff/catalog/record/pagination.component.ts
+ create mode 100644 Open-ILS/src/eg2/src/app/staff/catalog/record/pagination.component.css
+
+commit 33a2d4ef67a944ea453b278bfed6413abb8ce08e
+Author: Jane Sandberg <js7389@princeton.edu>
+Date:   Mon Jan 29 11:30:23 2024 -0800
+
+    LP2046575: stamp upgrade script
+    
+    Signed-off-by: Jane Sandberg <js7389@princeton.edu>
+
+1	1	Open-ILS/src/sql/Pg/002.schema.config.sql
+2	2	Open-ILS/src/sql/Pg/upgrade/{XXXX.data.stat_cat_entry_grids_persist_cwst.sql => 1400.data.stat_cat_entry_grids_persist_cwst.sql}
+ rename Open-ILS/src/sql/Pg/upgrade/{XXXX.data.stat_cat_entry_grids_persist_cwst.sql => 1400.data.stat_cat_entry_grids_persist_cwst.sql} (88%)
+
+commit 786870ec92f3fdba160352fd63676e55d2acf60b
+Author: Terran McCanna <tmccanna@georgialibraries.org>
+Date:   Tue Jan 2 15:01:15 2024 -0500
+
+    LP2046575 Angular Stat Cat Entries Grid Settings Do Not Save
+    
+    Adds ability to save the column settings on the patron and item
+    stat cat entries. (The main stat cat save grid options were already
+    in place, but the entries grid options were not.)
+    
+    Signed-off-by: Terran McCanna <tmccanna@georgialibraries.org>
+    Signed-off-by: Jane Sandberg <js7389@princeton.edu>
+    Signed-off-by: Steven Mayo <smayo@georgialibraries.org>
+    Signed-off-by: Ruth Frasur Davis <rfrasur@library.in.gov>
+    Signed-off-by: Stephanie Leary <stephanie.leary@equinoxoli.org>
+
+16	0	Open-ILS/src/sql/Pg/950.data.seed-values.sql
+22	0	Open-ILS/src/sql/Pg/upgrade/XXXX.data.stat_cat_entry_grids_persist_cwst.sql
+ create mode 100644 Open-ILS/src/sql/Pg/upgrade/XXXX.data.stat_cat_entry_grids_persist_cwst.sql
+
+commit eaeb8cd7fac7bee2e40aee4e401721e494e1dae8
+Author: Galen Charlton <gmc@equinoxOLI.org>
+Date:   Wed Jan 24 16:26:29 2024 -0500
+
+    LP#2049780: fix ability to use enter key to submit acquisitions search
+    
+    This patch fixes an issue where using the enter key on the Acquisitions
+    General Search form would collapse the search form rather than
+    submit the search.
+    
+    This is an issue _only_ on rel_3_11; a patch for bug 1850473
+    addresses the issue in main and rel_3_12.
+    
+    To test
+    -------
+    [1] On a 3.11.2 system, use the enter key to submit an acquisitions
+        search.
+    [2] Note that the search form collapses.
+    [3] Apply the patch and repeat step 1. This time, using the enter
+        key to submit the search will work.
+    
+    Release-note: Fix ability to use enter key to submit the Acquisitions General Search form.
+    
+    Signed-off-by: Galen Charlton <gmc@equinoxOLI.org>
+    Signed-off-by: Garry Collum <gcollum@gmail.com>
+
+2	2	Open-ILS/src/eg2/src/app/staff/acq/search/acq-search-form.component.html
+
+commit 9fc3295121b35ee9c4354ee50946cc5530fa2157
+Author: Galen Charlton <gmc@equinoxOLI.org>
+Date:   Wed Jan 10 09:47:11 2024 -0500
+
+    LP#2048907: remove .angular from release tarballs
+    
+    This patch removes the eg2 .angular directory, which
+    contains build artifacts incuding the Angular build
+    cache, in the course of building release tarballs.
+    
+    Release-note: Reduce size of release tarball by not shipping the Angular build cache
+    
+    To test
+    -------
+    [1] Apply the patch and use make_release to build a
+        tarball.
+    [2] Verify that the tarball is smaller.
+    [3] Verify that the Angular staff interface still works
+        in an Evergreen instance installed from the tarball .
+    
+    Signed-off-by: Galen Charlton <gmc@equinoxOLI.org>
+    Signed-off-by: Jane Sandberg <sandbergja@gmail.com>
+
+3	0	build/tools/make_release
+
+commit 7b29cd4f5546c059d44a39826170fce389670efd
+Author: Galen Charlton <gmc@equinoxOLI.org>
+Date:   Thu Jan 25 09:19:59 2024 -0500
+
+    LP#2051038: (follow-up) quell lint warning
+    
+    Signed-off-by: Galen Charlton <gmc@equinoxOLI.org>
+
+2	0	Open-ILS/src/eg2/src/app/staff/share/holds/grid.component.ts
+
+commit 5930240d26b4628e4d0222fcae85bb3b356155a8
+Author: Terran McCanna <tmccanna@georgialibraries.org>
+Date:   Tue Jan 23 17:47:10 2024 -0500
+
+    LP2051038 Printing Holds Grid prints hold status number instead of text
+    
+    The display text for the Hold Status column is locally derived for each
+    Hold Status number in the template, but the typescript file only sees
+    the number so that's what it prints/downloads.
+    
+    This adds the same wording that is in the template to the CellTextGenerator
+    so that the download / print will match. (Note that LP2051037 suggests
+    moving the wording into a table so that this type of redundancy could be
+    resolved.)
+    
+    Release-note: Holds grid can now print / download the Hold Status column.
+    
+    Signed-off-by: Terran McCanna <tmccanna@georgialibraries.org>
+    Signed-off-by: Galen Charlton <gmc@equinoxOLI.org>
+
+24	1	Open-ILS/src/eg2/src/app/staff/share/holds/grid.component.ts
+
+commit 2355c42728ef0cbc610b881674e6c5473789801a
+Author: Galen Charlton <gmc@equinoxOLI.org>
+Date:   Wed Jan 24 11:46:55 2024 -0500
+
+    LP#1889133: (follow-up) fix multiSortable
+    
+    If the grid has multiSortable enabled but also has columns
+    that should not be sortable, those columns should get both
+    [sortable] and [multiSortable] set to "true" in the
+    <eg-grid-column> element.
+    
+    Signed-off-by: Galen Charlton <gmc@equinoxOLI.org>
+
+4	4	Open-ILS/src/eg2/src/app/staff/share/holds/grid.component.html
+
+commit 8bff7fc5c6bcdf44002b6182856388a186548952
+Author: Terran McCanna <tmccanna@georgialibraries.org>
+Date:   Wed Jan 24 10:59:18 2024 -0500
+
+    LP1889133 Follow Up
+    
+    This partially reverts the previous LP1889133 commit which changed the
+    eg-grid-column name in order to make it sortable. By changing the name,
+    it would break prior locally saved grid settings. So, this keeps the
+    column label change, but reverts the name change and instead makes the
+    column non-sortable.
+    
+    The Current Item and Requested Item columns on this grid also threw ugly
+    errors when trying to sort by them, so I also made them non-sortable.
+    
+    Release-note: Make the Hold Status, Current Item, and Requested Item Columns non-sortable on Angular holds grids to avoid errors.
+    
+    Signed-off-by: Terran McCanna <tmccanna@georgialibraries.org>
+    Signed-off-by: Galen Charlton <gmc@equinoxOLI.org>
+
+5	4	Open-ILS/src/eg2/src/app/staff/share/holds/grid.component.html
+
+commit 9f4925e8a867b27eef708a4802a3d2f4b0043088
+Author: Bill Erickson <berickxx@gmail.com>
+Date:   Fri Sep 24 14:12:00 2021 -0400
+
+    LP1945003 Vand. session tracker serialize pcrud calls
+    
+    Avoid making batches of parallel PCRUD requests in the Vandelay ->
+    Recent Sessions UI when fetching queue data.
+    
+    Release-note: Serialize PCRUD requests on the MARC Batch Import/Export Recent Sessions page to avoid excessive PCRUD calls
+    
+    Signed-off-by: Bill Erickson <berickxx@gmail.com>
+    Signed-off-by: Galen Charlton <gmc@equinoxOLI.org>
+
+53	60	Open-ILS/src/eg2/src/app/staff/cat/vandelay/recent-imports.component.ts
+
+commit 4d9d72b2919fccf99c90d9fd0fbe6263c774569b
+Author: Gina Monti <gmonti@biblio.org>
+Date:   Wed Jan 17 11:31:05 2024 -0500
+
+    LP#2049654: fix Expand All button icon on purchase order page
+    
+    This patch fixes a problem where the button to expand or contract
+    the list of line items on a purchase order was not displaying
+    the logo when it was in the contracted state.
+    
+    Release-note: Fix display of Expand All button's icon on purchase order page
+    
+    Signed-off-by: Gina Monti <gmonti@biblio.org>
+    Signed-off-by: Tiffany Little <tlittle@georgialibraries.org>
+    Signed-off-by: Galen Charlton <gmc@equinoxOLI.org>
+
+1	1	Open-ILS/src/eg2/src/app/staff/acq/lineitem/lineitem-list.component.html
+
+commit 59bfad2fe65ba801bd1686d3849cf689f839ce67
+Author: Galen Charlton <gmc@equinoxOLI.org>
+Date:   Mon Dec 11 11:15:13 2023 -0500
+
+    LP#1980273: ensure patron alerts are displayed in AngularJS patron summary
+    
+    This patch ensures that any staff alerts on a patron record are
+    included in the itemized display in the patron summary when
+    selecting a patron from search results (as opposed to fully
+    opening the patron record).
+    
+    To test
+    -------
+    [1] Set up a patron with a note that display an alert to staff.
+    [2] Perform a search for the patron.
+    [3] From search results, select but do not open the patron. (E.g.,
+        single-click the row rather than double-click it).
+    [4] Note that the patron's name is set to red in the patron summary
+        but that the list of alerts is not displayed below the patron name.
+    [5] Open the patron (e.g., by double-clicking it). The patron summary
+        will now itemize the list.
+    [6] Apply the patch and perform steps 2 and 3. This time, the alerts
+        should be itemized in the patron summary.
+    
+    Release-note: Ensure alerts are displayed in the patron summary when selecting a record from patron search results.
+    
+    Signed-off-by: Galen Charlton <gmc@equinoxOLI.org>
+    Signed-off-by: Jason Boyer <JBoyer@equinoxOLI.org>
+    Signed-off-by: Galen Charlton <gmc@equinoxOLI.org>
+
+4	3	Open-ILS/web/js/ui/default/staff/circ/patron/app.js
+
+commit be1e44d14e434ef40b149c31bc591cf733f6a03d
+Author: Jason Stephenson <jason@sigio.com>
+Date:   Wed Dec 27 14:45:52 2023 -0500
+
+    LP20474587 Fix copy stat cat fleshing in SuperCat
+    
+    Fix an internal server error caused by lack of fleshed stat cats when
+    retrieving copies or call numbers via SuperCat.
+    
+    To reproduce this bug visit the locations below on an Evergreen
+    installation where copy stat cats are in use.  Be sure to pick a copy
+    id or call number with copies that have stat cats assigned.
+    
+    /opac/extras/supercat/retrieve/marcxml/acn/<call number id>
+    
+    or
+    
+    /opac/extras/supercat/retrieve/marcxml/acp/<copy_id>
+    
+    Before this patch, visiting either should produce an internal server
+    error.
+    
+    Afater applying this patch and reinstalling Evergreen, you should get
+    the expected ouput, including any OPAC visible stat cat entries.
+    
+    Release-note: Fix an Apache internal server error in SuperCat when retrieving copies or call numbers with statistical categories.
+    
+    Signed-off-by: Jason Stephenson <jason@sigio.com>
+    Signed-off-by: Galen Charlton <gmc@equinoxOLI.org>
+
+2	0	Open-ILS/src/perlmods/lib/OpenILS/Application/SuperCat.pm
+1	0	docs/RELEASE_NOTES_NEXT/miscellaneous.adoc
+
+commit d3116e8debf0dc616597b8aea8e56c95d06b70f7
+Author: Michele Morgan <mmorgan@noblenet.org>
+Date:   Tue Nov 21 15:58:30 2023 -0500
+
+    LP2047714 - Fix tab defaults in Traditional catalog
+    
+    Redirects default tab choices of staff_view, added-content, bibnotes,
+    cnbrowse to catalog when viewing the traditional staff catalog.
+    
+    Signed-off-by: Michele Morgan <mmorgan@noblenet.org>
+    Signed-off-by: Galen Charlton <gmc@equinoxOLI.org>
+
+1	1	Open-ILS/web/js/ui/default/staff/cat/catalog/app.js
+
+commit f16f39975a5d825cedee03105be34938df8b4666
+Author: Michele Morgan <mmorgan@noblenet.org>
+Date:   Mon Aug 22 12:42:44 2022 -0400
+
+    LP1889133 - Angular Staff Catalog: Error sorting by Hold Status
+    
+    Renames the column from "Status" to "Hold Status" and fixes the sorting
+    error. Note that sorting now occurs by the hold status number, not by
+    its associated display text because the text is locally produced by the
+    UI, not by the database.
+    
+    Release-note: Hold Status in holds grid is now sortable. (lp1889133)
+    
+    Signed-off-by: Michele Morgan <mmorgan@noblenet.org>
+    Signed-off-by: Terran McCanna <tmccanna@georgialibraries.org>
+
+1	1	Open-ILS/src/eg2/src/app/staff/share/holds/grid.component.html
+
+commit 6abcbed61e781b4bd8eafa1b2eb8e734e948f6e9
+Author: Michele Morgan <mmorgan@noblenet.org>
+Date:   Wed Jan 17 19:25:44 2024 +0000
+
+    LP2049673 - Add publication date to pull list
+    
+    Adds the publication date to wide holds and as an option in the grid.
+    
+    Release-note: Pull list now includes Publication year. Print template code: [% hold.pubdate %] (lp2049673)
+    
+    Signed-off-by: Michele Morgan <mmorgan@noblenet.org>
+    Signed-off-by: Terran McCanna <tmccanna@georgialibraries.org>
+    Signed-off-by: Stephanie Leary <stephanie.leary@equinoxoli.org>
+    Signed-off-by: Steven Mayo <smayo@georgialibraries.org>
+    Signed-off-by: Ruth Frasur Davis <rfrasur@library.in.gov>
+    Signed-off-by: Jane Sandberg <js7389@princeton.edu>
+    Signed-off-by: blake <blake@mobiusconsortium.org>
+    Signed off by: Shula Link <slink@gchrl.org>
+
+1	1	Open-ILS/src/eg2/src/app/staff/share/holds/grid.component.html
+5	1	Open-ILS/src/perlmods/lib/OpenILS/Application/Storage/Publisher/action.pm
+
+commit eda0e67bb47d2af3ba52b16f7be695e65cfc4633
+Author: Galen Charlton <gmc@equinoxOLI.org>
+Date:   Wed Jan 3 15:35:15 2024 -0500
+
+    LP#2044141 (follow-up) tweaks to OPAC tests GitHub action
+    
+    - remove schedule entry; no immediate reason why we
+      would need to run this more frequently than upon
+      a push that updates the relevant files
+    - clean up more duplication
+    
+    Signed-off-by: Galen Charlton <gmc@equinoxOLI.org>
+
+0	4	.github/workflows/opac-unit-tests.yml
+
+commit 8d9b3e52846f15956fc59968f15d378a5ab260e3
+Author: Jane Sandberg <sandbergja@gmail.com>
+Date:   Tue Nov 21 06:48:35 2023 -0800
+
+    LP2044141: Run javascript unit tests in github actions
+    
+    Signed-off-by: Jane Sandberg <sandbergja@gmail.com>
+    Signed-off-by: Galen Charlton <gmc@equinoxOLI.org>
+
+30	0	.github/workflows/opac-unit-tests.yml
+ create mode 100644 .github/workflows/opac-unit-tests.yml
+
+commit a2c03b791e4483066347b4ccd243ae56ee19c8c0
+Author: Steven Mayo <smayo@georgialibraries.org>
+Date:   Tue Dec 19 11:54:09 2023 -0500
+
+    LP#2046970 Poorly Cropped Reports Icon
+    
+    Improved the cropping on the default reports icon, reports.png
+    
+    Steps to test:
+    [1] Go to the staff splash screen
+    [2] Observe the icons
+    
+    Release-note: Fix cropping of reports icon on staff interface splash page
+    
+    Signed-off-by: Steven Mayo <smayo@georgialibraries.org>
+    Signed-off-by: Galen Charlton <gmc@equinoxOLI.org>
+
+-	-	Open-ILS/web/images/portal/reports.png
+
+commit 20050c64c1cb53e0983f4912ca65f35ba7023b2b
+Author: Galen Charlton <gmc@equinoxOLI.org>
+Date:   Wed Jan 3 09:58:55 2024 -0500
+
+    LP#1384796: stamp DB update
+    
+    Signed-off-by: Galen Charlton <gmc@equinoxOLI.org>
+
+1	1	Open-ILS/src/sql/Pg/002.schema.config.sql
+1	1	Open-ILS/src/sql/Pg/upgrade/{XXXX.schema.copy_template_fine_level_constaint.sql => 1399.schema.copy_template_fine_level_constaint.sql}
+ rename Open-ILS/src/sql/Pg/upgrade/{XXXX.schema.copy_template_fine_level_constaint.sql => 1399.schema.copy_template_fine_level_constaint.sql} (75%)
+
+commit 0e88db908c6e1695d9b95c80b62501ddd5af7703
+Author: Jason Stephenson <jason@sigio.com>
+Date:   Thu Dec 28 10:29:49 2023 -0500
+
+    LP1384796: Fix asset.copy_template valid_fine_level constraint
+    
+    The "valid_fine_level" constraint on the asset.copy_template has been
+    erroneously defined to check the load_duration column.  This commit
+    fixes it so that the constraint looks at the fine_level column as it
+    should.
+    
+    This commit adds the database upgrade, a miscellaneous release note,
+    as well as the main schema change.
+    
+    To test the patch, simply look at the asset.copy_template table in the
+    database before and after applying the database upgrade.  The
+    valid_fine_level constraint should reference the fine_level column
+    after the patch.
+    
+    The code is based on a patch submitted by Tim Faile.
+    
+    Signed-off-by: Jason Stephenson <jason@sigio.com>
+    Signed-off-by: Jane Sandberg <js7389@princeton.edu>
+    Signed-off-by: Galen Charlton <gmc@equinoxOLI.org>
+
+1	1	Open-ILS/src/sql/Pg/040.schema.asset.sql
+9	0	Open-ILS/src/sql/Pg/upgrade/XXXX.schema.copy_template_fine_level_constaint.sql
+1	0	docs/RELEASE_NOTES_NEXT/miscellaneous.adoc
+ create mode 100644 Open-ILS/src/sql/Pg/upgrade/XXXX.schema.copy_template_fine_level_constaint.sql
+
+commit b863e72f6fd9bc43a5dfaed03003678ecf2e3a86
+Author: Jane Sandberg <sandbergja@gmail.com>
+Date:   Fri Dec 29 06:06:43 2023 -0800
+
+    LP2047168 follow-up: ng lint --fix
+    
+    Signed-off-by: Jane Sandberg <sandbergja@gmail.com>
+
+1	1	Open-ILS/src/eg2/src/app/staff/admin/local/negative-balances/list.component.ts
+
+commit 70164b61d83a72f89b2ea5f4a2312b61431b4bc3
+Author: Terran McCanna <tmccanna@georgialibraries.org>
+Date:   Thu Dec 21 17:53:13 2023 -0500
+
+    LP2047168 Patrons with Negative Balances Not Printing Barcode
+    
+    Makes patron barcodes appear when printing or downloading the grid.
+    
+    Signed-off-by: Terran McCanna <tmccanna@georgialibraries.org>
+    Signed-off-by: Jane Sandberg <js7389@princeton.edu>
+
+2	2	Open-ILS/src/eg2/src/app/staff/admin/local/negative-balances/list.component.html
+7	2	Open-ILS/src/eg2/src/app/staff/admin/local/negative-balances/list.component.ts
+
+commit 0d4a4a26e303abe29285589959a7cfb7c5cb6f0d
+Author: Andrea Buntz Neiman <abneiman@equinoxinitiative.org>
+Date:   Thu Dec 28 16:16:59 2023 -0500
+
+    Docs: removing XUL elements from ws-admin page
+    
+    Signed-off-by: Andrea Buntz Neiman <abneiman@equinoxinitiative.org>
+
+2	23	docs/modules/admin/pages/latency.adoc
+14	94	docs/modules/admin/pages/workstation_admin.adoc
+
+commit c5f6b12b7e2237d2ec42fc2245c0e78275c67322
+Author: Gina Monti <gmonti@biblio.org>
+Date:   Sat Dec 23 11:09:51 2023 -0500
+
+    Docs: LP2011455 Workstation user settings
+    
+    Adds information on browser preferences stored on server permissions.
+    
+    Signed-off-by: Gina Monti <gmonti@biblio.org>
+    Signed-off-by: Andrea Buntz Neiman <abneiman@equinoxinitiative.org>
+
+21	0	docs/modules/admin/pages/workstation_admin.adoc
+
+commit 57985c08827fe5820354130006842d23043ba99f
+Author: Gina Monti <gmonti@biblio.org>
+Date:   Sat Dec 23 10:23:18 2023 -0500
+
+    Docs: LP1906847 circ policy update
+    
+    Corrections recommended by this ticket:
+    https://bugs.launchpad.net/evergreen/+bug/1906847
+    
+    I also decided to reformat the example circ policy images to be tables because these aren't technically direct screenshots to the interface and it'll be much easier to edit if we need to down the road.
+    
+    Signed-off-by: Gina Monti <gmonti@biblio.org>
+    Signed-off-by: Andrea Buntz Neiman <abneiman@equinoxinitiative.org>
+
+-	-	docs/modules/admin_initial_setup/assets/images/media/circ_example1.png
+-	-	docs/modules/admin_initial_setup/assets/images/media/circ_example2.png
+-	-	docs/modules/admin_initial_setup/assets/images/media/circ_example3.png
+20	3	docs/modules/admin_initial_setup/pages/borrowing_items.adoc
+ delete mode 100644 docs/modules/admin_initial_setup/assets/images/media/circ_example1.png
+ delete mode 100644 docs/modules/admin_initial_setup/assets/images/media/circ_example2.png
+ delete mode 100644 docs/modules/admin_initial_setup/assets/images/media/circ_example3.png
+
+commit 84fd4a9333ecbf5d7561521ba51adf4330783704
+Author: Andrea Buntz Neiman <abneiman@equinoxinitiative.org>
+Date:   Thu Dec 28 15:03:05 2023 -0500
+
+    Docs: updating DB schema links
+    
+    Signed-off-by: Andrea Buntz Neiman <abneiman@equinoxinitiative.org>
+
+1	0	docs/modules/appendix/pages/previous_docs.adoc
+1	0	docs/modules/development/nav.adoc
+
+commit 684f7761dcaaa8755f6a4a5dbf99fcef9f8e96be
+Author: Gina Monti <gmonti@biblio.org>
+Date:   Mon Oct 4 13:53:52 2021 -0400
+
+    Docs: LP1494736 Updates to self-check docs
+    
+    Gives info on how to auto-log into interface, where to edit receipts, and file paths for customizing interface.
+    
+    Signed-off-by: Gina Monti <gmonti@biblio.org>
+    Signed-off-by: Andrea Buntz Neiman <abneiman@equinoxinitiative.org>
+
+7	0	docs/modules/circulation/pages/self_check_configuration.adoc
+
+commit d2e7d8093c211b94d32de49d663abca5eb0e5e67
+Author: Gina Monti <gmonti@biblio.org>
+Date:   Wed Dec 6 14:57:21 2023 -0500
+
+    Docs: LP2045805 Updates to column picker docs
+    
+    Taking out this section.  It's Dojo and I think it was probably left in here by accident.  Above paragraph already addresses this.
+    
+    Signed-off-by: Gina Monti <gmonti@biblio.org>
+    Signed-off-by: Andrea Buntz Neiman <abneiman@equinoxinitiative.org>
+
+0	10	docs/modules/admin/pages/staff_client-column_picker.adoc
+
+commit 4e78087c713feb3e1afa4a882a139081cf815d23
+Author: Gina Monti <gmonti@biblio.org>
+Date:   Wed Dec 6 14:34:14 2023 -0500
+
+    Docs: LP2045802 library settings screenshot update
+    
+    Signed-off-by: Gina Monti <gmonti@biblio.org>
+    Signed-off-by: Andrea Buntz Neiman <abneiman@equinoxinitiative.org>
+
+-	-	docs/modules/admin/assets/images/Best_Hold_Selection_Sort_Order/lib_setting_sort_order.png
+1	1	docs/modules/admin/pages/Best_Hold_Selection_Sort_Order.adoc
+ create mode 100644 docs/modules/admin/assets/images/Best_Hold_Selection_Sort_Order/lib_setting_sort_order.png
+
+commit a9776b218ceca883e4ffa60691a9341089879e33
+Author: Gina Monti <gmonti@biblio.org>
+Date:   Wed Dec 6 11:22:14 2023 -0500
+
+    Docs: LP 1933852 Booking Module redone
+    
+    Revamp of booking module docs
+    
+    Signed-off-by: Gina Monti <gmonti@biblio.org>
+    Signed-off-by: Andrea Buntz Neiman <abneiman@equinoxinitiative.org>
+
+-	-	docs/modules/admin/assets/images/booking/map_forms.png
+-	-	docs/modules/admin/assets/images/booking/new_map_button.png
+-	-	docs/modules/admin/assets/images/booking/new_resource_attr_button.png
+-	-	docs/modules/admin/assets/images/booking/new_resource_attr_value_button.png
+-	-	docs/modules/admin/assets/images/booking/new_resource_button.png
+-	-	docs/modules/admin/assets/images/booking/new_resource_type_button.png
+-	-	docs/modules/admin/assets/images/booking/new_resource_type_form.png
+-	-	docs/modules/admin/assets/images/booking/record_edit_resource.png
+-	-	docs/modules/admin/assets/images/booking/resource_attr_form.png
+-	-	docs/modules/admin/assets/images/booking/resource_attr_value_form.png
+-	-	docs/modules/admin/assets/images/booking/resource_config.png
+80	52	docs/modules/admin/pages/booking-admin.adoc
+ create mode 100644 docs/modules/admin/assets/images/booking/map_forms.png
+ create mode 100644 docs/modules/admin/assets/images/booking/new_map_button.png
+ create mode 100644 docs/modules/admin/assets/images/booking/new_resource_attr_button.png
+ create mode 100644 docs/modules/admin/assets/images/booking/new_resource_attr_value_button.png
+ create mode 100644 docs/modules/admin/assets/images/booking/new_resource_button.png
+ create mode 100644 docs/modules/admin/assets/images/booking/new_resource_type_button.png
+ create mode 100644 docs/modules/admin/assets/images/booking/new_resource_type_form.png
+ create mode 100644 docs/modules/admin/assets/images/booking/record_edit_resource.png
+ create mode 100644 docs/modules/admin/assets/images/booking/resource_attr_form.png
+ create mode 100644 docs/modules/admin/assets/images/booking/resource_attr_value_form.png
+ create mode 100644 docs/modules/admin/assets/images/booking/resource_config.png
+
+commit 3289160f29cbe1ca90df1d70029e61deceb5a1b3
+Author: Jason Stephenson <jason@sigio.com>
+Date:   Tue Oct 31 13:30:19 2023 -0400
+
+    LP2041364: Add release notes
+    
+    Add 2 lines to the miscellaneous.adoc release notes for the
+    marc_export script improvements.
+    
+    Signed-off-by: Jason Stephenson <jason@sigio.com>
+    Signed-off-by: Jane Sandberg <js7389@princeton.edu>
+
+2	0	docs/RELEASE_NOTES_NEXT/miscellaneous.adoc
+ create mode 100644 docs/RELEASE_NOTES_NEXT/miscellaneous.adoc
+
+commit e6813517feea075a472f2fe3ab588cca472c2ae5
+Author: Jason Stephenson <jason@sigio.com>
+Date:   Tue Oct 31 13:04:58 2023 -0400
+
+    LP2041364: Remove extra whitespace
+    
+    Delete unnecessary trailing whitespace on a couple lines of
+    marc_export.in.
+    
+    Signed-off-by: Jason Stephenson <jason@sigio.com>
+    Signed-off-by: Jane Sandberg <js7389@princeton.edu>
+
+2	2	Open-ILS/src/support-scripts/marc_export.in
+
+commit 56de87917d878b5596df30d4509ddd29cd92e019
+Author: Josh Stompro <stomproj@larl.org>
+Date:   Mon Oct 30 14:57:48 2023 -0500
+
+    LP#2041364 - Switch to hash lookups instead of arrays.
+    
+    Switched the lookups for orgs, shelves, affixes and statuses from arrays
+    to hashes, so grep calls are not needed.
+    
+    This performs much faster in my testing, removing about a minute from
+    my 10 minute run time.
+    
+    Also includes setting up a prepared statement for acp query.
+    
+    Signed-off-by: Josh Stompro <stomproj@larl.org>
+    Signed-off-by: Jason Stephenson <jason@sigio.com>
+    Signed-off-by: Jane Sandberg <js7389@princeton.edu>
+
+65	61	Open-ILS/src/support-scripts/marc_export.in
+
+commit 4fd2b9b7555efd59b65fda55a884fe629f5b94dc
+Author: Jason Stephenson <jason@sigio.com>
+Date:   Mon Oct 30 13:29:30 2023 -0400
+
+    LP2041364: Fix a mistake in the marc_export error reporting code
+    
+    While working on marc_export performance, I stumbled upon the fact
+    that the error reporting for the wrong --type export would actually
+    report the formats. This commit fixes the error reporting to use the
+    correct variable for types.
+    
+    Signed-off-by: Jason Stephenson <jason@sigio.com>
+    Signed-off-by: Jane Sandberg <js7389@princeton.edu>
+
+1	1	Open-ILS/src/support-scripts/marc_export.in
+
+commit 0398c17c6970cc52d49db7ffa81a736954573ff3
+Author: Jason Stephenson <jason@sigio.com>
+Date:   Mon Oct 30 13:27:13 2023 -0400
+
+    LP2041364: Refactor marc_export cursor code
+    
+    Refactor the cursor code in marc_export to be more transparent to the
+    internal code.
+    
+    Add the cursor code the Marque::Authority extractor.
+    
+    Add a --batch-size option to specify how many rows to fetch from the
+    cursor at once. The default is 10000.
+    
+    Signed-off-by: Jason Stephenson <jason@sigio.com>
+    Signed-off-by: Jane Sandberg <js7389@princeton.edu>
+
+37	10	Open-ILS/src/support-scripts/marc_export.in
+
+commit af06b93a50bb885152fe6d1dfbb31ef38d435d64
+Author: Josh Stompro <stomproj@larl.org>
+Date:   Fri Oct 27 15:37:46 2023 -0500
+
+    LP#2041364 - Use a cursor to load 10000 bibs at a time.
+    
+    Keeps memory usage down to a more reasonable level.
+    
+    Signed-off-by: Josh Stompro <stomproj@larl.org>
+    Signed-off-by: Jason Stephenson <jason@sigio.com>
+    Signed-off-by: Jane Sandberg <js7389@princeton.edu>
+
+9	1	Open-ILS/src/support-scripts/marc_export.in
+
+commit 216e0b191977809ddb759ba4bdc852be6a10709c
+Author: Jason Stephenson <jason@sigio.com>
+Date:   Fri Oct 27 15:22:54 2023 -0400
+
+    LP2041364: Attempt to speed up 852 insertion in marc_export
+    
+    Instead of using MARC::Record->insert_grouped_field on the list of all
+    item tags (852), we now do insert_grouped_field only on the first item
+    tag and then use MARC::Record->insert_fields_after for the remainder
+    of the list. According to some testing this can provide a 78% speed
+    increase when adding item tags to records with many items.
+    
+    Signed-off-by: Jason Stephenson <jason@sigio.com>
+    Signed-off-by: Jane Sandberg <js7389@princeton.edu>
+
+32	18	Open-ILS/src/support-scripts/marc_export.in
+
+commit 9b3338c058f87a5384cc70a6c39a9c261c651f8a
+Author: Dan Briem <dbriem@wlsmail.org>
+Date:   Thu Oct 19 21:20:28 2023 +0000
+
+    LP#1739638 AngularJS CSV Download Progress Bar Won't Close
+    
+    Delays text preparation for printing or CSV generation until
+    after the progress dialog opens, preventing the dialog from
+    remaining open if the data resolves before it opens and
+    triggers the close action prematurely.
+    
+    To test:
+    - open a populated AngularJS grid
+    - refresh the page (behavior is more likely after refresh)
+    - click Download Full CSV or Print Full Grid on the toolbar
+    - note the progress dialog doesn't close
+    - apply patch, repeat steps, and note the dialog closes
+    
+    Signed-off-by: Dan Briem <dbriem@wlsmail.org>
+    Signed-off-by: Steven Mayo <smayo@georgialibraries.org>
+    Signed-off-by: Galen Charlton <gmc@equinoxOLI.org>
+
+21	20	Open-ILS/web/js/ui/default/staff/services/grid.js
+
+commit 3e916438c1929d6f91ccd713518aea9902265894
+Author: Gina Monti <gmonti@biblio.org>
+Date:   Wed Dec 6 14:07:43 2023 -0500
+
+    LP #2045569: Typo in 'Create Reservation'
+    
+    [1] Create a reservation under 'Booking'.
+    [2] Search for a resource type that isn't at a owning library.
+    [3] Observe that it says 'resources' instead of 'resource' in the
+    message below the form.
+    
+    Signed-off-by: Gina Monti <gmonti@biblio.org>
+    Signed-off-by: Galen Charlton <gmc@equinoxOLI.org>
+
+1	1	Open-ILS/src/eg2/src/app/staff/booking/create-reservation.component.html
+
+commit 2c616aa27a2eb40996e974987f41a9c45873b365
+Author: Jason Stephenson <jason@sigio.com>
+Date:   Thu Dec 14 10:46:03 2023 -0500
+
+    Forwad port 3.11.1-3.11.2 database upgrade
+    
+    Signed-off-by: Jason Stephenson <jason@sigio.com>
+
+432	0	Open-ILS/src/sql/Pg/version-upgrade/3.11.1-3.11.2-upgrade-db.sql
+ create mode 100644 Open-ILS/src/sql/Pg/version-upgrade/3.11.1-3.11.2-upgrade-db.sql
