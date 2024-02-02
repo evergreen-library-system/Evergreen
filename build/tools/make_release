@@ -1,6 +1,7 @@
 #!/bin/bash
 
 GIT_ABS=`git rev-parse --show-toplevel`
+RELEASE_DIR=$GIT_ABS/../release/
 GIT_BRANCH=`git rev-parse --abbrev-ref HEAD | sed 's|.*/||'`
 HEADURLBASE="http://git.evergreen-ils.org/?p=Evergreen.git;a=shortlog;h=refs/heads/tags/"
 HEADURL="$HEADURLBASE$GIT_BRANCH"
@@ -377,7 +378,7 @@ echo "Prepping server download files"
 
 if [ "$SKIP_BUILD_BROWSER_CLIENT" == "NO" ]; then
     # AngularJS staff client
-    cd ../../../
+    cd $RELEASE_DIR/Evergreen-ILS-$VERSION
     echo "Building AngularJS browser staff client"
     cd Open-ILS/web/js/ui/default/staff/
     npm install   # fetch build dependencies
@@ -402,13 +403,11 @@ if [ "$SKIP_BUILD_BROWSER_CLIENT" == "NO" ]; then
     # similarly, the .angular directory, which includes the build
     # cache, need not be shipped in the release tarball
     rm -rf .angular
-    cd ../../../../ # release dir
-
 else
     echo "Skipping browser client build"
-    cd ../../../../
 fi
 
+cd $RELEASE_DIR
 tar czf Evergreen-ILS-$VERSION.tar.gz Evergreen-ILS-$VERSION/
 md5sum Evergreen-ILS-$VERSION.tar.gz > Evergreen-ILS-$VERSION.tar.gz.md5
 if [ $PREV_BRANCH != "PACKAGE" ]; then # We need to have tagged to do this ;)
