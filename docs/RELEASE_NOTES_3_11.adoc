@@ -76,7 +76,7 @@ stat cat entries (https://bugs.launchpad.net/evergreen/+bug/2046575[Bug 2046575]
 * Fixes an issue where the progress bar would not close in Firefox (https://bugs.launchpad.net/evergreen/+bug/1739638[Bug 1739638])
 
 
-== Public catalog ====
+==== Public catalog ====
 
 * Removes non-functional staff-only "Locate Z39.50 Matches" buttons from OPAC templates (https://bugs.launchpad.net/evergreen/+bug/2021903[Bug 2021903])
 
