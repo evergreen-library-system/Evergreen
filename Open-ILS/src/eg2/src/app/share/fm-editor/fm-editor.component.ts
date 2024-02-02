@@ -663,6 +663,10 @@ export class FmRecordEditorComponent
             return 'timestamp-timepicker';
         }
 
+        if (this.idlDef.pkey === field.name && !this.pkeyIsEditable) {
+            return 'readonly';
+        }
+
         // Some widgets handle readOnly for us.
         if (   field.datatype === 'timestamp'
             || field.datatype === 'org_unit'

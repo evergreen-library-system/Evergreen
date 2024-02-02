@@ -7175,6 +7175,9 @@ SELECT  usr,
 			<field reporter:label="Subordinate Organizational Units" name="children" oils_persist:virtual="true" reporter:datatype="org_unit"/>
 			<field reporter:label="Billing Address" name="billing_address" reporter:datatype="link"/>
 			<field reporter:label="Holds Receiving Address" name="holds_address" reporter:datatype="link"/>
+			<!-- @reporter:datatype="org_unit" is correct for the "id" field, and necessary for the reporter as implied by
+				 the XML namespace of the attr. Instead, @name == parent::fields/@oils_persist:primary is the proper test
+				 for "this field is the identifier column" -->
 			<field reporter:label="Organizational Unit ID" name="id" reporter:datatype="org_unit" reporter:selector="shortname"/>
 			<field reporter:label="ILL Receiving Address" name="ill_address" reporter:datatype="link"/>
 			<field reporter:label="Mailing Address" name="mailing_address" reporter:datatype="link"/>
