@@ -3,6 +3,8 @@
 
 Learn how to create and use reports in Evergreen.
 
+If you are using the web client, please see updated reports documentation https://docs.evergreen-ils.org/docs/3.12/reports/introduction.html[here]. This documentation includes new screenshots and updated organization, and is relevant to Evergreen versions 3.10 through 3.12.
+
 Here are a few videos on running Reports in Evergreen. 
 
 https://youtu.be/Ej9C-erZWmg[Making the most of Evergreen Reports] : by Chris Sharp, GA Pines, at Evergreen International Online Pre-Conference 2021.
