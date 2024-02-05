@@ -117,8 +117,9 @@ image::actiontriggers/event_def_details.png[Event Definition Details]
 A quick and easy way to create new action triggers is to clone an existing action trigger.
 =========
 
-[[creating_alternate_message_templates]]
+
 === Creating Alternate Message Templates ===
+
 indexterm:[Localization, Notices, Localized Notices]
 
 As of version 3.9 there is the ability to create alternate templates for Action Triggers that will generate locale specific out for Action Triggers.  If you send notices in multiple languages, we recommend putting some words to that effect in your notice templates.  The template, message and message title can all be localized.  To use the feature the following UI elements have been added:
