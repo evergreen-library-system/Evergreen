@@ -1,3 +1,0 @@
-* xref:course:introduction.adoc[Course Materials Module]
-** xref:course:searching.adoc[Searching]
-

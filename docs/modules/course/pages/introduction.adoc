@@ -1,9 +1,0 @@
-= Acquisitions =
-:toc:
-
-== Initial Configuration ==
-
-Go to Administration > Local Administration > Library Settings Editor. Find the
-setting called "Opt Org Unit into the Course Materials Module".  Set it to True
-for your Org Unit.
-
