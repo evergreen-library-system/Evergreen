@@ -28,7 +28,7 @@ image::link_checker/lc_session_modal.png[Create Link Checker Session modal]
 .. Young Adult Materials - audience(j,d)
 .. General/Adult Materials - audience(e,f,g)
 . _Search_ - This is your search string. It will include the search scope set above. This search string uses the same advanced search syntax as record buckets.
-.. See xref:cataloging/record_buckets.adoc#_from_the_record_bucket_interface[Record Buckets documentation] for more information on the search syntax.
+.. See xref:cataloging:record_buckets.adoc#_from_the_record_bucket_interface[Record Buckets documentation] for more information on the search syntax.
 . Enter search terms to retrieve records with URLs that you want to verify.  You can also add 
 a location filter, such as BR1.
 .. Search examples:
