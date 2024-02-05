@@ -1,3 +1,4 @@
 * xref:course_materials:introduction.adoc[Course materials module]
 ** xref:course_materials:administration.adoc[Course materials administration]
 ** xref:course_materials:materials.adoc[Adding materials to courses]
+** xref:course_materials:searching.adoc[Searching for courses]
