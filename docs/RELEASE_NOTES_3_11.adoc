@@ -9,8 +9,8 @@ This release contains bug fixes improving on Evergreen 3.11.2.
 
 === Upgrade Notes ===
 
-* (https://bugs.launchpad.net/evergreen/+bug/1384796[Bug 1384796]) requires a database update
-* (https://bugs.launchpad.net/evergreen/+bug/2046575[Bug 2046575]) require a database update
+* https://bugs.launchpad.net/evergreen/+bug/1384796[Bug 1384796] requires a database update
+* https://bugs.launchpad.net/evergreen/+bug/2046575[Bug 2046575] requires a database update
 
 === Bug Fixes ===
 
@@ -63,7 +63,7 @@ stat cat entries (https://bugs.launchpad.net/evergreen/+bug/2046575[Bug 2046575]
 ==== Documentation ====
 
 * Fixes a typo in Booking Reservation docs (https://bugs.launchpad.net/evergreen/+bug/2045569[Bug 2045569])
-* Screenshot & layout updates for Booking Admin, Best Hold Selection Sort Order, Statistical Categories, and Column Picker docs (https://bugs.launchpad.net/evergreen/+bug/1933852[Bug 1933852], https://bugs.launchpad.net/evergreen/+bug/2045802[Bug 2045802], https://bugs.launchpad.net/evergreen/+bug/1426120[Bug 1426120], https://bugs.launchpad.net/evergreen/+bug/2048132[Bug 2048132] and https://bugs.launchpad.net/evergreen/+bug/2045805[Bug 2045805])
+* Screenshot & layout updates for Booking Admin, Best Hold Selection Sort Order, Statistical Categories, and Column Picker docs (https://bugs.launchpad.net/evergreen/+bug/1933852[Bug 1933852], https://bugs.launchpad.net/evergreen/+bug/2045802[Bug 2045802], https://bugs.launchpad.net/evergreen/+bug/1426120[Bug 1426120], https://bugs.launchpad.net/evergreen/+bug/2048132[Bug 2048132], and https://bugs.launchpad.net/evergreen/+bug/2045805[Bug 2045805])
 * Updates to Self Check Docs (https://bugs.launchpad.net/evergreen/+bug/1494736[Bug 1494736])
 * Updates to Circulation Policy Docs (https://bugs.launchpad.net/evergreen/+bug/1906847[Bug 1906847])
 * Updates to Workstation User Settings docs (https://bugs.launchpad.net/evergreen/+bug/2011455[Bug 2011455])
@@ -1041,6 +1041,7 @@ Evergreen:
 * Tiffany Little
 * Mary Llewellyn
 * Debbie Luchenbill
+* Karen MacDonald
 * Llewellyn Marshall
 * Terran McCanna
 * Chrystal Messam
