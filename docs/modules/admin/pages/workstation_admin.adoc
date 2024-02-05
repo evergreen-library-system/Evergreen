@@ -9,11 +9,11 @@ indexterm:[configuration]
 
 === Disable Sounds ===
 
-. Navigate to *Administration -> Workstation*.
+. Select *Administration -> Workstation*.
 . To turn off the system sounds, like the noise that happens when a patron
 with a block is retrieved, check the _disable sound_ box.
 +
-image::workstation_admin/workstation_disable_sounds.png[disable sound]
+image::workstation/workstation_disable_sounds.png[disable sound]
 
 === Test Sounds ===
 
@@ -31,19 +31,11 @@ indexterm:[staff client, printers]
 
 See the xref:admin:receipt_template_editor.adoc[Receipt Template Editor documentation].
 
-== Latency ==
+:leveloffset: -1
 
-Click *Administration* -> *Workstation* -> *Tests*
+include::latency.adoc[]
 
-This will measure the websocket latency between your workstation client and the Evergreen server.
-
-. Click *Start Test* to run the test
-. Click *Copy to Clipboard* to copy the results
-. Click *Clear* to clear the results
-
-image::workstation_admin/latency-test.png[Latency test]
-
-*Average Latency* - Indicates how long it takes for your workstation to communicate with Evergreen servers.
+:leveloffset: +1
 
 == Workstation Permissions/User Settings ==
 

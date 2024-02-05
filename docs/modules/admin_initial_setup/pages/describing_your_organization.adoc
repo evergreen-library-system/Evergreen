@@ -153,13 +153,17 @@ To create an organizational unit and manage the Main Settings:
 * UPDATE_ORG_UNIT
 * DELETE_ORG_UNIT
 
+
 To manage Addresses:
 
 * CREATE_ORG_ADDRESS
 * UPDATE_ORG_ADDRESS
 * DELETE_ORG_ADDRESS
 
-NOTE: There is a current bug for the DELETE_ORG_ADDRESS permission where it is not required to delete an address. To delete an address, only the UPDATE_ORG_UNIT permission is needed at this time.
+[NOTE]
+====
+There is a current bug for the DELETE_ORG_ADDRESS permission where it is not required to delete an address. To delete an address, only the UPDATE_ORG_UNIT permission is needed at this time.
+====
 
 To manage Hours of Operation:
 

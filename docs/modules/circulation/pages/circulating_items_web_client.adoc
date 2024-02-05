@@ -289,7 +289,11 @@ image::circulating_items_web_client/mark-claims-never-checked-out-1.png[]
 . A pop-up appears where staff can confirm that they wish to mark the item by clicking *OK/Continue*.
 . The item is checked in and set to _Missing_. The item is no longer associated with the patron's account.
 
-NOTE: Libraries may wish to routinely run reports on items with the status of _Missing_ so they can be searched for and replaced/deleted as appropriate.
+[NOTE]
+====
+Libraries may wish to routinely run reports on items with the status of _Missing_ so they can be searched for
+and replaced/deleted as appropriate.
+====
 
 === Claims Returned ===
 
