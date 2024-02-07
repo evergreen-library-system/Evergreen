@@ -201,7 +201,13 @@ function oilsRptIdObjects(node) {
 	if(!node) node = document.documentElement;
 	if( node.nodeType != 1 ) return;
 	var id = node.getAttribute('id');
-	if( id ) eval("DOM."+id+"=$('"+id+"');");
+	/* Create node references only for IDs that are likely
+	   valid function names. This avoids an issue where
+	   the interface fails to load if the DOM contains
+	   elements with a hyphen in their ID. For example,
+	   a script element loaded by the BitWarden browser
+	   plugin - see LP#2052567 */
+	if( id && id.match(/^[A-Za-z][0-9A-Za-z_]*$/) ) eval("DOM."+id+"=$('"+id+"');");
 	var children = node.childNodes;
 	for( var c = 0; c < children.length; c++ ) 
 		oilsRptIdObjects(children[c]);
