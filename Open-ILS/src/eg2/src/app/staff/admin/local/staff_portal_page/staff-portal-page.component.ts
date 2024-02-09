@@ -71,7 +71,7 @@ export class AdminStaffPortalPageComponent extends AdminPageComponent implements
     deleteSelected(idlThings: IdlObject[]) {
         this.delConfirm.open().subscribe(confirmed => {
             if (!confirmed) { return; }
-            super.deleteSelected(idlThings);
+            super.doDelete(idlThings);
         });
     }
 

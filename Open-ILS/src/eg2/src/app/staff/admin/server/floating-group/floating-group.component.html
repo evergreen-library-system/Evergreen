@@ -9,6 +9,12 @@
 <eg-string #deleteSuccessString i18n-text 
   text="Delete of Floating Group succeeded"></eg-string>
 
+<eg-confirm-dialog #delConfirm
+  i18n-dialogTitle i18n-dialogBody
+  dialogTitle="Delete?"
+  dialogBody="Delete floating group?">
+</eg-confirm-dialog>
+
 <eg-grid #grid idlClass="cfg" [dataSource]="gridDataSource" [sortable]="true"
   (onRowActivate)="showEditDialog($event)">
   <eg-grid-toolbar-button
