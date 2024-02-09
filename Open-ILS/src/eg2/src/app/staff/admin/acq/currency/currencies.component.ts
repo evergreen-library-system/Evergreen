@@ -138,7 +138,7 @@ export class CurrenciesComponent extends AdminPageComponent implements OnInit {
                         // eslint-disable-next-line rxjs/no-nested-subscribe
                         this.confirmDel.open().subscribe(confirmed => {
                             if (!confirmed) { return; }
-                            super.deleteSelected([ rows[0] ]);
+                            super.doDelete([ rows[0] ]);
                         });
                     } else {
                         this.alertDialog.open();
