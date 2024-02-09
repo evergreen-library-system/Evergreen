@@ -12,7 +12,7 @@ import {AuthService} from '@eg/core/auth.service';
 import {NetService} from '@eg/core/net.service';
 import {GridCellTextGenerator} from '@eg/share/grid/grid';
 import {StringComponent} from '@eg/share/string/string.component';
-import {FmRecordEditorComponent} from '@eg/share/fm-editor/fm-editor.component';
+import {ConfirmDialogComponent} from '@eg/share/dialog/confirm.component';
 
 @Component({
     templateUrl: './admin-carousel.component.html'
@@ -32,7 +32,8 @@ export class AdminCarouselComponent extends AdminPageComponent implements OnInit
 
     @ViewChild('refreshString', { static: true }) refreshString: StringComponent;
     @ViewChild('refreshErrString', { static: true }) refreshErrString: StringComponent;
-
+    @ViewChild('delConfirm', { static: true }) delConfirm: ConfirmDialogComponent;
+    
     constructor(
         route: ActivatedRoute,
         ngLocation: Location,
@@ -62,7 +63,10 @@ export class AdminCarouselComponent extends AdminPageComponent implements OnInit
         };
 
         this.deleteSelected = (idlThings: IdlObject[]) => {
-            super.deleteSelected(idlThings);
+            this.delConfirm.open().subscribe(confirmed => {
+                if (!confirmed) { return; }
+                super.doDelete(idlThings);
+            });
         };
 
         this.refreshSelected = (idlThings: IdlObject[]) =>  {

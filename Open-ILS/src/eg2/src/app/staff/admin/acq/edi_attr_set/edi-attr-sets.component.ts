@@ -133,7 +133,7 @@ export class EdiAttrSetsComponent extends AdminPageComponent implements OnInit {
             } else {
                 this.confirmDel.open().subscribe(confirmed => {
                     if (!confirmed) { return; }
-                    super.deleteSelected([ rows[0] ]);
+                    super.doDelete([ rows[0] ]);
                 });
             }
         }

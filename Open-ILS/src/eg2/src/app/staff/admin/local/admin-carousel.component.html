@@ -27,6 +27,12 @@
 <ng-template #refreshErrStrTmpl i18n let-name="name">{{name}} is manual and cannot be refreshed automatically.</ng-template>
 <eg-string #refreshErrString [template]="refreshErrStrTmpl"></eg-string>
 
+<eg-confirm-dialog #delConfirm
+  i18n-dialogTitle i18n-dialogBody
+  dialogTitle="Delete?"
+  dialogBody="Delete carousel?">
+</eg-confirm-dialog>
+
 <ng-container *ngIf="orgField">
   <eg-org-family-select
     [limitPerms]="viewPerms"

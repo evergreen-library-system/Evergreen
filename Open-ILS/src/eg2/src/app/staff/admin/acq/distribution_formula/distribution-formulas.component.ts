@@ -179,7 +179,7 @@ export class DistributionFormulasComponent extends AdminPageComponent implements
                     if (can) {
                         this.confirmDel.open().subscribe(confirmed => {
                             if (!confirmed) { return; }
-                            super.deleteSelected([ rows[0] ]);
+                            super.doDelete([ rows[0] ]);
                         });
                     } else {
                         this.alertDialog.open();

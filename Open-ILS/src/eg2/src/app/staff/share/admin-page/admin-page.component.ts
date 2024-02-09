@@ -420,20 +420,24 @@ export class AdminPageComponent implements OnInit {
     deleteSelected(idlThings: IdlObject[]) {
         this.deleteConfirmDialog.open().subscribe(confirmed => {
             if ( confirmed ) {
-                idlThings.forEach(idlThing => idlThing.isdeleted(true));
-                this.pcrud.autoApply(idlThings).subscribe(
-                    val => {
-                        this.deleteSuccessString.current()
-                            .then(str => this.toast.success(str));
-                    },
-                    err => {
-                        this.deleteFailedString.current()
-                            .then(str => this.toast.danger(str));
-                    },
-                    ()  => this.grid.reload()
-                );
+                this.doDelete(idlThings);
             }
         });
+    }
+
+    doDelete(idlThings: IdlObject[]){
+        idlThings.forEach(idlThing => idlThing.isdeleted(true));
+        this.pcrud.autoApply(idlThings).subscribe(
+            val => {
+                this.deleteSuccessString.current()
+                    .then(str => this.toast.success(str));
+            },
+            (err: unknown) => {
+                this.deleteFailedString.current()
+                    .then(str => this.toast.danger(str));
+            },
+            ()  => this.grid.reload()
+        );
     }
 
     shouldDisableDelete(rows: IdlObject[]): boolean {
