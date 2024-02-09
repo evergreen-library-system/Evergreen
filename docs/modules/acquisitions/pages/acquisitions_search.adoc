@@ -14,9 +14,24 @@ The Acquisitions Search interface defaults to the _Line Item Search_ tab. Here y
 
 The search results consist of line items and provide links to the provider account, bibliographic record in the catalog, associated purchase order, purchase requests, and any associated invoices. Clicking on the linked Lineitem ID will bring you to the highlighted line item on the associated purchase order. All links open in a new tab.
 
-image::media/acq_li_search.png[Line Items Search]
+image::acquisitions_search/acq_li_search.png[Line Items Search]
 
-Currently no actions can be taken with Line Item search results. The full integration of action functionality will be added by pending development to the acquisitions module. There is a link in the top-right corner to access the *Legacy Search Interface*. All actions can still be accessed here.
+Several actions can be take from the line items search results grid:
+
+* Add Selected to Purchase Order
+* Apply Claim Policy
+* Cancel Selected
+* Create Invoice from Selected Line Items
+* Create Purchas Order From Selected Line Items
+* Deleted Selected
+* Export Single Attribute List
+* Link Selected Line Items to Invoice
+* Mark Ready for Order
+* Mark Ready for Selector
+* Mark Selected Line Items as Received
+* Un-receive Selected Line Items
+
+image::acquisitions_search/acq_li_search_actions.png[Line Items Search Actions]
 
 [[purchase_order_search]]
 === Purchase Order Search ===
@@ -31,7 +46,7 @@ You can construct a new one-time search instead of using the default search or s
 
 The search results will consist of purchase orders and provide links to the purchase order and the associated provider account. All links open in a new tab.
 
-image::media/acq_po_search.png[Purchase Order Search]
+image::acquisitions_search/acq_po_search.png[Purchase Order Search]
 
 Currently no actions can be taken with Purchase Order search results. The full integration of action functionality will be added by pending development to the acquisitions module. There is a link in the top-right corner to access the *Legacy Search Interface*. All actions can still be accessed here.
 
@@ -49,7 +64,7 @@ You can construct a new one-time search instead of using the default search or s
 
 The search results consist of invoices and provide links to the invoice, the provider account, and the shipper account associated with the invoice. All links open in a new tab.
 
-image::media/acq_inv_search.png[Invoice Search]
+image::acquisitions_search/acq_inv_search.png[Invoice Search]
 
 Invoices can be printed in this interface by right-clicking on the row of the invoice you want to print to access the _Actions for Selected Rows_ menu and selecting *Print Selected Invoices*. Multiple invoices can be printed at the same time by checking the boxes of the invoices you want to print and then right-clicking to access the _Actions for Selected Rows_ menu and selecting *Print Selected Invoices*. 
 
@@ -65,7 +80,7 @@ You can construct a new one-time search instead of using the default search or s
 
 The search results will consist of selection lists and provide a link to the selection list via the Name column.
 
-image::media/acq_sl_search.png[Selection Lists Search]
+image::acquisitions_search/acq_sl_search.png[Selection Lists Search]
 
 From the selection list search results you can take the following actions:
 
@@ -132,7 +147,7 @@ As part of transitioning the General Search interface to Angular, several change
 . Searches based on an organizational unit value, such as _Selection List - Org Unit_ and _Purchase Order - Ordering Agency_ search only the org unit selected by default and do not use inheritance in the search. If search results spanning multiple branches/systems are needed, then a broader search can be performed. The search results can be filtered using the relevant org unit column and can be adjusted in the filter to include ancestor and/or descendant org units
 
 +
-image::media/acq_ou_filter.png[Org Unit Column Filter]
+image::acquisitions_search/acq_ou_filter.png[Org Unit Column Filter]
 +
 
 . Dropdown menus for the search fields will retrieve a maximum of 100 rows at a time. This is especially useful for the user related search fields such as _Purchase Order - Creator_. For typeahead dropdowns, the list will continue to be refined as the user continues to type.
