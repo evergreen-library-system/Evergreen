@@ -25,13 +25,14 @@
 
 <div class="row gx-0 row-cols-auto ms-0 me-0">
 
-  <a target="_blank" [attr.href]="patronViewUrl">
-    <button type="button" class="btn btn-outline-primary ms-1" i18n>Patron View</button>
+  <a target="_blank" [attr.href]="patronViewUrl"
+    class="btn btn-outline-primary ms-1" i18n>
+    Patron View
   </a>
 
   <a routerLink="/staff/catalog/hold/T" [queryParams]="{target: recId}"
-    *ngIf="isHoldable">
-    <button class="btn btn-outline-primary ms-1" i18n>Place Hold</button>
+    *ngIf="isHoldable" class="btn btn-outline-primary ms-1" i18n>
+    Place Hold
   </a>
   <button class="btn btn-outline-secondary ms-1" *ngIf="!isHoldable" disabled i18n>
     Place Hold
