@@ -85,7 +85,7 @@ export class CatalogResolver implements Resolve<Promise<any[]>> {
             if (settings['cat.patron_view_discovery_layer_url']) {
                 this.staffCat.patronViewUrl =
                     settings['cat.patron_view_discovery_layer_url'];
-            };
+            }
         });
     }
 }
