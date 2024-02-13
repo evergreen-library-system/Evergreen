@@ -27,5 +27,5 @@ After turning on the feature, you may need to restart memcached and other servic
 . Enter search terms into the basic search field.  Evergreen will automatically suggest search terms.
 . Select a suggestion to view records that are linked to this suggestion. 
 
-image::media/Auto_Suggest_in_Catalog_Search1.jpg[Auto_Suggest_in_Catalog_Search1]
+image::autosuggest/autosuggest_search.png[Auto Suggests in Search]
 
