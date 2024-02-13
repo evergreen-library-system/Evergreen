@@ -122,6 +122,7 @@ export class ListBoxCombobox {
     this.listbox.id = this.listboxId;
 
     this.isOpen = false;
+    this.currentRowNumber = null; // null meaning that no suggestion is currently selected
     this.#addEventListeners();
     this.fieldCache = fieldCache;
 
@@ -220,6 +221,7 @@ export class ListBoxCombobox {
     if (this.isOpen) {
       if (this.currentRowNumber === 0) {
         this.#closeSuggestionsList();
+        this.currentRowNumber = null;
       } else if (this.currentRowNumber !== null) {
         this.setFocus(this.currentRowNumber - 1);
       } else {
@@ -255,9 +257,12 @@ export class ListBoxCombobox {
     this.input.setAttribute('aria-expanded', true);
   }
   #selectAndSubmit() {
-    this.input.value = this.#currentSuggestionText();
-    const qtype = document.getElementById('qtype');
-    if (qtype) { qtype.value = this.#currentSearchClass(); }
+    if (this.currentRowNumber !== null) {
+      // munge search only if a suggestion is actually selected
+      this.input.value = this.#currentSuggestionText();
+      const qtype = document.getElementById('qtype');
+      if (qtype) { qtype.value = this.#currentSearchClass(); }
+    }
     this.input.closest('form').submit();
     this.#closeSuggestionsList();
   }
