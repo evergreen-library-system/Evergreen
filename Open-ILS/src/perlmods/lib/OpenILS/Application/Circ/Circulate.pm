@@ -6,6 +6,7 @@ use OpenSRF::AppSession;
 use OpenSRF::Utils::SettingsClient;
 use OpenSRF::Utils::Logger qw(:logger);
 use OpenSRF::Utils::Config;
+use OpenILS::Utils::CStoreEditor qw/:funcs/;
 use OpenILS::Const qw/:const/;
 use OpenILS::Application::AppUtils;
 use DateTime;
@@ -168,6 +169,14 @@ sub run_method {
         OpenILS::Application::Circ::Circulator->new($auth, %$args);
 
     return circ_events($circulator) if $circulator->bail_out;
+
+    # Before we run the requested method, let's make sure that the patron's
+    # threshold-based penalties are up-to-date, so that the method can take
+    # take them into consideration.
+    my $penalty_editor = new_editor(xact => 1, authtoken => $auth);
+    return $penalty_editor->event unless( $penalty_editor->checkauth );
+    OpenILS::Utils::Penalty->calculate_penalties($penalty_editor, $args->{patron_id}, $circulator->circ_lib);
+    $penalty_editor->commit;
 
     $circulator->use_booking(determine_booking_status());
 
@@ -1305,12 +1314,6 @@ sub run_indb_circ_test {
     my $self = shift;
     return $self->matrix_test_result if $self->matrix_test_result;
 
-    # Before we run the database function, let's make sure that the patron's
-    # threshold-based penalties are up-to-date, so that the database function
-    # can take them into consideration.
-    my @threshold_based_penalties = qw(PATRON_EXCEEDS_FINES PATRON_EXCEEDS_OVERDUE_COUNT PATRON_EXCEEDS_CHECKOUT_COUNT PATRON_EXCEEDS_LOST_COUNT);
-    OpenILS::Utils::Penalty->calculate_penalties($self->editor, $self->patron->id, $self->circ_lib, @threshold_based_penalties);
-
     my $dbfunc = ($self->is_renewal) ? 
         'action.item_user_renew_test' : 'action.item_user_circ_test';
 
@@ -1666,8 +1669,8 @@ sub do_checkout {
     return if $self->bail_out;
 
     # ------------------------------------------------------------------------------
-    # Update the patron penalty info in the DB.  Run it for permit-overrides 
-    # since the penalties are not updated during the permit phase
+    # Update the patron penalty info in the DB, now that the item is checked out and
+    # may cause the patron to reach certain thresholds.
     # ------------------------------------------------------------------------------
     OpenILS::Utils::Penalty->calculate_penalties($self->editor, $self->patron->id, $self->circ_lib);
 

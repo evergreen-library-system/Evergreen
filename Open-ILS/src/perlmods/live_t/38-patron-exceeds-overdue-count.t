@@ -66,7 +66,13 @@ subtest('Setup', sub {
 });
 
 subtest('Attempt to checkout another item', sub {
-    plan tests => 1;
+    plan tests => 4;
+    my $penalties_on_account = $e->search_actor_user_standing_penalty({usr => BR4_PATRON_ID});
+    is(
+        scalar @{ $penalties_on_account },
+        0,
+        'Patron starts without any penalties'
+    );
     my $checkout_resp = $script->do_checkout({
         patron => BR4_PATRON_ID,
         barcode => ITEM_BARCODE});
@@ -74,6 +80,18 @@ subtest('Attempt to checkout another item', sub {
         $checkout_resp->{textcode},
         'PATRON_EXCEEDS_OVERDUE_COUNT',
         'Attempted checkout returned a PATRON_EXCEEDS_OVERDUE_COUNT event'
+    );
+        # Search for new penalties on the patron account
+    $penalties_on_account = $e->search_actor_user_standing_penalty({usr => BR4_PATRON_ID});
+    is(
+        scalar @{ $penalties_on_account },
+        1,
+        'Patron received a new penalty'
+    );
+    is(
+        $penalties_on_account->[0]->standing_penalty,
+        2,
+        'Patron received the PATRON_EXCEEDS_OVERDUE_COUNT penalty'
     );
 });
 
