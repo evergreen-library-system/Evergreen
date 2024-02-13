@@ -33,7 +33,7 @@ export class AdminCarouselComponent extends AdminPageComponent implements OnInit
     @ViewChild('refreshString', { static: true }) refreshString: StringComponent;
     @ViewChild('refreshErrString', { static: true }) refreshErrString: StringComponent;
     @ViewChild('delConfirm', { static: true }) delConfirm: ConfirmDialogComponent;
-    
+
     constructor(
         route: ActivatedRoute,
         ngLocation: Location,
