@@ -55,6 +55,16 @@ Before you scan the item, select the *Specific Due Date* checkbox. Enter the dat
 
 image::media/specify_due_date1_web_client.png[]
 
+=== Strict Barcode ===
+
+The 'Strict Barcode' checkbox can appear next to barcode inputs on the checkout, checkin, renewal, and offline circulation pages.
+
+If checked, it will examine the barcode value to see if it contains only digits and meets the "Mod10" checkdigit algorithm. This checkdigit algorithm is often used by library barcodes that use the "Codabar" symbology.
+
+If the barcode does not meet the conditions, a "bad barcode" alert will be displayed. Staff are given the option to accept and continue using the barcode as input.
+"Strict Barcode" is only useful for libraries whose barcodes use the Mod10 checkdigit algorithm. However, several other checkdigit algorithms and symbologies are in use by libraries.
+
+image::circulating_items_web_client/strict_barcode.png[Example of Strict Barcode Checkbox]
 
 === Email Checkout Receipts ===
 
