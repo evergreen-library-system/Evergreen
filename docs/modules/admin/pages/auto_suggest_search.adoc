@@ -9,17 +9,16 @@ this suggestion. This feature is not turned on by default.  You must turn it on 
 == Enabling this Feature ==
 
 . To enable this feature, click *Administration* -> *Server Administration* -> *Global Flags*.
-. Scroll down to item 10, OPAC.
+. Click *Filter* under *Name*.  Choose *Is Exactly* and search 'opac.use_autosuggest'. 
 . Double click anywhere in the row to edit the fields.
 . Check the box adjacent to *Enabled* to turn on the feature.
-. The *Value* field is optional.  If you checked *Enabled* in step 4, and you leave this field empty, then Evergreen will only suggest searches for which there are any corresponding MARC records.
 +
-NOTE: If you checked *Enabled* in step 4, and you enter the string, *opac_visible*, into this field, then Evergreen will suggest searches for which 
+NOTE: If you checked *Enabled* in step 4, and it should autofill *opac_visible* under *Value*. Evergreen will suggest searches for which 
 there are matching MARC records with copies within your search scope.  For example, it will suggest MARC records with copies at your branch.
 +
 . Click *Save.*
 
-image::media/Auto_Suggest_in_Catalog_Search2.jpg[Auto_Suggest_in_Catalog_Search2]
+image::autosuggest/global_flag_autosuggest.png[Global Flag Setting for Auto Suggest]
 
 After turning on the feature, you may need to restart memcached and other services.
 
