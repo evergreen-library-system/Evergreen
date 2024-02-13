@@ -618,7 +618,12 @@ sub cancel_hold_list {
     return undef;
 }
 
-
+sub test_perm_against_original_owning_lib {
+    my($class, $editor, $perm, $vid) = @_;
+    my $vol = $editor->retrieve_asset_call_number($vid) or return $editor->event;
+    return $editor->die_event unless $editor->allowed($perm, $vol->owning_lib);
+    return 1;
+}
 
 sub create_volume {
     my($class, $override, $editor, $vol) = @_;
@@ -714,7 +719,7 @@ sub find_or_create_volume {
     # -----------------------------------------------------------------
     # Otherwise, create a new volume with the given attributes
     # -----------------------------------------------------------------
-    return (undef, $e->die_event) unless $e->allowed('UPDATE_VOLUME', $org_id);
+    return (undef, $e->die_event) unless $e->allowed('CREATE_VOLUME', $org_id);
 
     $vol = Fieldmapper::asset::call_number->new;
     $vol->owning_lib($org_id);

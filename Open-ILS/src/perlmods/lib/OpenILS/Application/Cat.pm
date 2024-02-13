@@ -1222,6 +1222,8 @@ sub fleshed_volume_update {
             $logger->info("vol-update: deleting volume");
             return $editor->die_event unless
                 $editor->allowed('UPDATE_VOLUME', $vol->owning_lib);
+            return $editor->die_event unless
+                $assetcom->test_perm_against_original_owning_lib( $editor, 'UPDATE_VOLUME', $vol->id);
 
             if(my $evt = $assetcom->delete_volume($editor, $vol, $oargs, $$options{force_delete_copies})) {
                 $editor->rollback;
@@ -1233,6 +1235,8 @@ sub fleshed_volume_update {
 
         } elsif( $vol->isnew ) {
             $logger->info("vol-update: creating volume");
+            return $editor->die_event unless
+                $editor->allowed('CREATE_VOLUME', $vol->owning_lib);
             ($vol,$evt) = $assetcom->create_volume( $auto_merge_vols ? { all => 1} : $oargs, $editor, $vol );
             return $evt if $evt;
 
@@ -1313,6 +1317,8 @@ sub update_volume {
 
     return {evt => $editor->event} unless
         $editor->allowed('UPDATE_VOLUME', $vol->owning_lib);
+    return {evt => $editor->event} unless
+        $assetcom->test_perm_against_original_owning_lib( $editor, 'UPDATE_VOLUME', $vol->id);
 
     return {evt => $evt} 
         if ( $evt = OpenILS::Application::Cat::AssetCommon->org_cannot_have_vols($editor, $vol->owning_lib) );
@@ -1415,6 +1421,15 @@ sub batch_volume_transfer {
 
     my $vols = $e->batch_retrieve_asset_call_number($vol_ids);
     my @seen;
+
+    my %owning_lib_set;
+    for my $vol (@$vols) {
+        $owning_lib_set{$vol->owning_lib} = 1;  # Build the set of unique owning libs
+    }
+    for my $org_key (keys %owning_lib_set) {
+        # So we're testing the perm against the original owning libraries, and not just the destination
+        return $e->event unless $e->allowed('UPDATE_VOLUME', $org_key); 
+    }
 
    my @rec_ids;
 
