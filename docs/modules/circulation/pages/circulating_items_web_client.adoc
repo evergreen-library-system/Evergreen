@@ -55,6 +55,11 @@ Before you scan the item, select the *Specific Due Date* checkbox. Enter the dat
 
 image::media/specify_due_date1_web_client.png[]
 
+=== Strict Barcode ===
+
+Throughout Evergreen, you'll find a *Strict Barcode* checkbox next to the input field.  This is used in situations when you want to make sure the system reads the full barcode and not a partial scan.  It also checks 14-digit codabar barcodes with checkdigit.
+
+image::circulating_items_web_client/strict_barcode.png[Example of Strict Barcode Checkbox]
 
 === Email Checkout Receipts ===
 
