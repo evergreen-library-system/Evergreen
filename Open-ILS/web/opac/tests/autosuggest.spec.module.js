@@ -200,6 +200,23 @@ describe('ListBoxComponent', () => {
                 expect(global.document.getElementById('search-autosuggest-listbox').innerHTML).toBe('');
                 expect(form.submit).toHaveBeenCalled();
             });
+            it('supplying search, then pressing enter without choosing a suggestion submits the form without error', async () => {
+                mockGlobals();
+                const combobox = new ListBoxCombobox('search', mockFieldCache);
+                combobox.attach();
+                await combobox.displaySuggestions();
+                const input = global.document.getElementById('search');
+                input.value = 'cats';
+                const form = global.document.querySelector('form');
+                spyOn(form, 'submit');
+
+                const event = new global.window.KeyboardEvent('keyup', { 'key': 'Enter', 'bubbles': true});
+                global.document.getElementById('search').dispatchEvent(event);
+
+                expect(input.value).toBe('cats');
+                expect(global.document.getElementById('search-autosuggest-listbox').innerHTML).toBe('');
+                expect(form.submit).toHaveBeenCalled();
+            });
             ['#search-autosuggest-listbox-1', '#search-autosuggest-listbox-1-term',
              '#search-autosuggest-listbox-1-term .oils_AS',
              '#search-autosuggest-listbox-1-class'].forEach((selector) => {
