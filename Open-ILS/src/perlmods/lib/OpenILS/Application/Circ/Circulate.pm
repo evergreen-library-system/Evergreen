@@ -1313,6 +1313,11 @@ sub run_indb_circ_test {
     # This takes place in a separate cstore editor and db transaction, so that
     # even if the circulation fails and its transaction is rolled back, any
     # newly calculated penalties remain on the patron's account.
+    #
+    # Note that this depends on the PostgreSQL transaction isolation level
+    # being "read committed" (which it is by default); if it were "repeatable
+    # read" or "serializable", the in-DB circ/renew test that follows would not
+    # see the updated penalties.
     my $penalty_editor = new_editor(xact => 1, authtoken => $self->editor->authtoken);
     return $penalty_editor->event unless( $penalty_editor->checkauth );
     OpenILS::Utils::Penalty->calculate_penalties($penalty_editor, $self->patron->id, $self->circ_lib);
