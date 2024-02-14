@@ -26,6 +26,7 @@ After this global flag is enabled, it's recommended to:
 ----
 memcdump --servers localhost | grep ^EGWeb | xargs -n 1 memcrm --servers localhost
 ----
+[start=2]
 . Restart or reload Apache on all webservers.
 
 == Using this Feature ==
