@@ -14,8 +14,13 @@ export DEB_PGSQL_COMMON_MODS = \
 	libxml-libxml-perl \
 	libxml-libxslt-perl
 
+# NOTE: The 4 '*redis*' packages are also installed by OpenSRF+Redis
 export DEBS = \
 	$(DEB_PGSQL_COMMON_MODS) \
+	redis-server\
+	redis-tools\
+	libredis-perl\
+	libhiredis-dev\
 	apache2-dev\
 	aspell\
 	aspell-en\
