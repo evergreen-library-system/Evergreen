@@ -170,14 +170,6 @@ sub run_method {
 
     return circ_events($circulator) if $circulator->bail_out;
 
-    # Before we run the requested method, let's make sure that the patron's
-    # threshold-based penalties are up-to-date, so that the method can take
-    # take them into consideration.
-    my $penalty_editor = new_editor(xact => 1, authtoken => $auth);
-    return $penalty_editor->event unless( $penalty_editor->checkauth );
-    OpenILS::Utils::Penalty->calculate_penalties($penalty_editor, $args->{patron_id}, $circulator->circ_lib);
-    $penalty_editor->commit;
-
     $circulator->use_booking(determine_booking_status());
 
     # --------------------------------------------------------------------------
@@ -1313,6 +1305,18 @@ sub matrix_test_result_events {
 sub run_indb_circ_test {
     my $self = shift;
     return $self->matrix_test_result if $self->matrix_test_result;
+
+    # Before we run the database function, let's make sure that the patron's
+    # threshold-based penalties are up-to-date, so that the database function
+    # can take them into consideration.
+    #
+    # This takes place in a separate cstore editor and db transaction, so that
+    # even if the circulation fails and its transaction is rolled back, any
+    # newly calculated penalties remain on the patron's account.
+    my $penalty_editor = new_editor(xact => 1, authtoken => $self->editor->authtoken);
+    return $penalty_editor->event unless( $penalty_editor->checkauth );
+    OpenILS::Utils::Penalty->calculate_penalties($penalty_editor, $self->patron->id, $self->circ_lib);
+    $penalty_editor->commit;
 
     my $dbfunc = ($self->is_renewal) ? 
         'action.item_user_renew_test' : 'action.item_user_circ_test';
