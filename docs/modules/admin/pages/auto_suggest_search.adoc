@@ -20,13 +20,13 @@ there are matching MARC records with copies within your search scope.  For examp
 
 image::autosuggest/global_flag_autosuggest.png[Global Flag Setting for Auto Suggest]
 
-After turning on the feature, it's recommended to:
+After this global flag is enabled, it's recommended to:
 
+. Remove cached values of global flags and other settings from memcached. You can use this command, replacing `localhost` with the location of your memcached server:
+----
+memcdump --servers localhost | grep ^EGWeb | xargs -n 1 memcrm --servers localhost
+----
 . Restart or reload Apache on all webservers.
-. Restart memcached.  You can use this command:
-----
-memcdump --servers localhost|grep open-ils.search | xargs -n 1 memcrm --servers localhost
-----
 
 == Using this Feature ==
 
