@@ -170,6 +170,12 @@ export class ListBoxCombobox {
         this.#closeSuggestionsList();
       }
     });
+    this.input.addEventListener('blur', async () => {
+      if (this.isOpen) {
+        this.currentRowNumber = null;
+        this.#closeSuggestionsList();
+      }
+    });
   }
   #addGridEventListeners() {
     this.listbox.addEventListener('click', (event) => {
