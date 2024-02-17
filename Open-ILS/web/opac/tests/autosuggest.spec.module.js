@@ -182,6 +182,17 @@ describe('ListBoxComponent', () => {
                 expect(input.getAttribute('aria-expanded')).toBe('false');
                 expect(global.document.getElementById('search-autosuggest-listbox').innerHTML).toBe('');
             });
+            it('moving focus away from an open listbox\'s input closes the listbox',  async () => {
+                mockGlobals();
+                const combobox = new ListBoxCombobox('search', mockFieldCache);
+                combobox.attach();
+                await combobox.displaySuggestions();
+                const input = global.document.getElementById('search');
+                expect(input.getAttribute('aria-expanded')).toBe('true');
+                input.dispatchEvent(new global.window.Event('blur'));
+                expect(input.getAttribute('aria-expanded')).toBe('false');
+                expect(global.document.getElementById('search-autosuggest-listbox').innerHTML).toBe('');
+            });
             it('focusing an option then pressing enter chooses the term, dismisses the listbox, and submits the form', async () => {
                 mockGlobals();
                 const combobox = new ListBoxCombobox('search', mockFieldCache);
