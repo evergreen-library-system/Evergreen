@@ -3374,6 +3374,12 @@ sub get_one_metarecord_summary {
     $response->{metabib_id} = $rec_id;
     $response->{metabib_records} = [map {$_->source} @$maps];
 
+    # Find the sum of record note counts for all mapped bib records
+    my @record_ids = map {$_->source} @$maps;
+    my $notes = $e->search_biblio_record_note({ record => \@record_ids });
+    my $record_note_count = scalar(@{ $notes });
+    $response->{record_note_count} = $record_note_count;
+
     my @other_bibs = map {$_->source} grep {$_->source != $bre_id} @$maps;
 
     # Augment the record attributes with those of all of the records
@@ -3403,7 +3409,7 @@ sub get_one_record_summary {
         }
     }]) or return {};
 
-    # Compressed display fields are pachaged as JSON
+    # Compressed display fields are packaged as JSON
     my $display = {};
     $display->{$_->name} = OpenSRF::Utils::JSON->JSON2perl($_->value)
         foreach @{$bre->compressed_display_entries};
@@ -3417,6 +3423,10 @@ sub get_one_record_summary {
     }
     $attributes->{$_} = [keys %{$attributes->{$_}}] for keys %$attributes;
 
+    # Find the count of record notes on this record
+    my $notes = $e->search_biblio_record_note({ record => $rec_id });
+    my $record_note_count = scalar(@{ $notes });
+
     # clear bulk
     $bre->clear_marc;
     $bre->clear_mattrs;
@@ -3427,7 +3437,8 @@ sub get_one_record_summary {
         record => $bre,
         display => $display,
         attributes => $attributes,
-        urls => get_one_rec_urls($self, $e, $org_id, $rec_id)
+        urls => get_one_rec_urls($self, $e, $org_id, $rec_id),
+        record_note_count => $record_note_count
     };
 }
 

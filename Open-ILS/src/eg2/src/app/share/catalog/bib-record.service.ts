@@ -1,11 +1,9 @@
 import {Injectable} from '@angular/core';
 import {Observable, from} from 'rxjs';
-import {mergeMap, map, tap} from 'rxjs/operators';
+import {map} from 'rxjs/operators';
 import {OrgService} from '@eg/core/org.service';
-import {UnapiService} from '@eg/share/catalog/unapi.service';
-import {IdlService, IdlObject} from '@eg/core/idl.service';
+import {IdlObject} from '@eg/core/idl.service';
 import {NetService} from '@eg/core/net.service';
-import {PcrudService} from '@eg/core/pcrud.service';
 import {PermService} from '@eg/core/perm.service';
 
 export const NAMESPACE_MAPS = {
@@ -48,6 +46,7 @@ export class BibRecordSummary {
     holdingsSummary: HoldingsSummary[];
     prefOuHoldingsSummary: HoldingsSummary[];
     holdCount: number;
+    recordNoteCount: number;
     bibCallNumber: string;
     firstCallNumber: string;
     net: NetService;
@@ -99,11 +98,8 @@ export class BibRecordService {
     allowUnfillableHolds: boolean;
 
     constructor(
-        private idl: IdlService,
         private net: NetService,
         private org: OrgService,
-        private unapi: UnapiService,
-        private pcrud: PcrudService,
         private perm: PermService
     ) {
         this.userCache = {};
@@ -136,7 +132,8 @@ export class BibRecordService {
                 summary.staffViewMetabibAttributes = bibSummary.staff_view_metabib_attributes;
                 summary.display = bibSummary.display;
                 summary.attributes = bibSummary.attributes;
-                summary.holdCount = bibSummary.hold_count;
+                summary.holdCount = Number(bibSummary.hold_count);
+                summary.recordNoteCount = Number(bibSummary.record_note_count);
                 summary.holdingsSummary = bibSummary.copy_counts;
                 summary.copies = bibSummary.copies;
                 summary.firstCallNumber = bibSummary.first_call_number;

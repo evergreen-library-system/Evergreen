@@ -2,7 +2,6 @@ import {Injectable, EventEmitter, NgZone} from '@angular/core';
 import {Router, ActivatedRoute} from '@angular/router';
 import {IdlObject} from '@eg/core/idl.service';
 import {OrgService} from '@eg/core/org.service';
-import {CatalogService} from '@eg/share/catalog/catalog.service';
 import {CatalogUrlService} from '@eg/share/catalog/catalog-url.service';
 import {CatalogSearchContext} from '@eg/share/catalog/search-context';
 import {BibRecordSummary} from '@eg/share/catalog/bib-record.service';
@@ -74,7 +73,6 @@ export class StaffCatalogService {
         private route: ActivatedRoute,
         private store: StoreService,
         private org: OrgService,
-        private cat: CatalogService,
         private patron: PatronService,
         private catUrl: CatalogUrlService,
         private broadcaster: BroadcastService,

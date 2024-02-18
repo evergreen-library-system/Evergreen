@@ -1,11 +1,9 @@
 import {Component, OnInit, ViewChild, HostListener} from '@angular/core';
 import {NgbNav, NgbNavChangeEvent} from '@ng-bootstrap/ng-bootstrap';
 import {Router, ActivatedRoute, ParamMap} from '@angular/router';
-import {PcrudService} from '@eg/core/pcrud.service';
 import {IdlObject} from '@eg/core/idl.service';
 import {AuthService} from '@eg/core/auth.service';
 import {CatalogSearchContext} from '@eg/share/catalog/search-context';
-import {CatalogService} from '@eg/share/catalog/catalog.service';
 import {BibRecordService, BibRecordSummary} from '@eg/share/catalog/bib-record.service';
 import {StaffCatalogService} from '../catalog.service';
 import {AddedContentComponent} from '@eg/staff/catalog/content/added-content.component';
@@ -44,10 +42,8 @@ export class RecordComponent implements OnInit {
     constructor(
         private router: Router,
         private route: ActivatedRoute,
-        private pcrud: PcrudService,
         private auth: AuthService,
         private bib: BibRecordService,
-        private cat: CatalogService,
         private staffCat: StaffCatalogService,
         private holdings: HoldingsService,
         private store: StoreService,

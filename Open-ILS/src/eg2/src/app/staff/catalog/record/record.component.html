@@ -57,12 +57,12 @@
         <h2><a ngbNavLink role="tab">
           <span id="added-content-data" style="display: none;">
             <span i18n>Added Content</span>
-            <span class="material-icons added-content text-warning" aria-hidden="true">star</span>
+            <span class="material-icons tab-icon text-warning" aria-hidden="true">star</span>
           </span>
       
           <span id="added-content-no-data" style="display: inline;">
             <span i18n>No Added Content</span>
-            <span class="material-icons added-content text-muted" aria-hidden="true">star_outline</span>
+            <span class="material-icons tab-icon text-muted" aria-hidden="true">star_outline</span>
           </span>
         </a></h2>
         <ng-template ngbNavContent>
@@ -96,9 +96,19 @@
         </ng-template>
       </li>
       <li role="presentation" [ngbNavItem]="'bibnotes'" [destroyOnHide]="true">
-        <h2><a i18n ngbNavLink role="tab">Record Notes</a></h2>
+        <h2>
+          <a ngbNavLink role="tab" *ngIf="summary?.recordNoteCount; else noRecordNotes">
+            <span class="material-icons tab-icon" aria-hidden="true">edit_note</span>
+            <span i18n>Record Notes</span>
+            <span class="badge bg-warning text-dark fw-bold">({{summary.recordNoteCount}})</span>
+          </a>
+          <ng-template #noRecordNotes>
+            <a i18n ngbNavLink role="tab">Record Notes</a>
+          </ng-template>
+        </h2>
         <ng-template ngbNavContent>
-          <eg-catalog-record-notes [recordId]="recordId">
+          <eg-catalog-record-notes [recordId]="recordId"
+            (noteCountUpdated)="summary.recordNoteCount = $event">
           </eg-catalog-record-notes>
         </ng-template>
       </li>
