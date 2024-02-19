@@ -12,9 +12,9 @@ import {ItemLocationSelectComponent} from '@eg/share/item-location-select/item-l
 import {PermService} from '@eg/core/perm.service';
 
 @Component({
-  templateUrl: 'copy-attrs.component.html',
-  styleUrls: ['copy-attrs.component.css'],
-  selector: 'eg-lineitem-copy-attrs'
+    templateUrl: 'copy-attrs.component.html',
+    styleUrls: ['copy-attrs.component.css'],
+    selector: 'eg-lineitem-copy-attrs'
 })
 export class LineitemCopyAttrsComponent implements OnInit {
 
@@ -97,8 +97,8 @@ export class LineitemCopyAttrsComponent implements OnInit {
                     this.owners.push(ou);
                 }
             });
-            });
-        
+        });
+
 
         if (this.gatherParamsOnly) {
             this.batchMode = false;
@@ -198,7 +198,7 @@ export class LineitemCopyAttrsComponent implements OnInit {
                 id: fund.id(),
                 label: fund.code() + ' (' + fund.year() + ')' +
                        ' (' + this.getOrgShortname(fund.org()) + ')',
-                 fm: fund
+                fm: fund
             }];
         }
 
