@@ -115,13 +115,15 @@ export class PoChargesComponent implements OnInit, OnDestroy {
             return false; // that which is expended cannot be disencumbered
         }
         if (debit.invoice_entry()) {
-            return false; // we shouldn't actually be a po_item that is
+            // we shouldn't actually be a po_item that is
             // linked to an invoice_entry, but if we are,
             // do NOT touch
+            return false;
         }
         if (debit.invoice_items() && debit.invoice_items().length) {
-            return false; // we're linked to an invoice item, so the disposition of the
+            // we're linked to an invoice item, so the disposition of the
             // invoice entry should govern things
+            return false;
         }
         if (Number(debit.amount()) === 0) {
             return false; // we're already at zero
@@ -144,8 +146,9 @@ export class PoChargesComponent implements OnInit, OnDestroy {
             // do NOT touch
         }
         if (debit && debit.invoice_items() && debit.invoice_items().length) {
-            return false; // we're linked to an invoice item, so the disposition of the
+            // we're linked to an invoice item, so the disposition of the
             // invoice entry should govern things
+            return false;
         }
         return true; // we're likely OK to delete
     }
