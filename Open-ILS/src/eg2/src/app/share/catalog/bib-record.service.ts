@@ -147,9 +147,9 @@ export class BibRecordService {
                 || this.allowUnfillableHolds;
 
                 // De-duplicate urls, frequently caused by multiple subfield 9's
-								// Note that .forEach() and .every() pass their callback functions the
-								// parameters (element, index, array) such that element = array[index]
-								// and they need to be distinctly named when sharing scope.
+                // Note that .forEach() and .every() pass their callback functions the
+                // parameters (element, index, array) such that element = array[index]
+                // and they need to be distinctly named when sharing scope.
                 bibSummary.urls.forEach(function (elb, indb, aryb) {
                     if(summary.eResourceUrls.every((els, inds, arys) =>
                         elb.href !== els.href || elb.note !== els.note || elb.label !== els.label)) {
