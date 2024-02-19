@@ -626,6 +626,15 @@ DELETE FROM config.org_unit_setting_type WHERE name IN (
     'search.symspell.soundex.weight'
 );
 
+DELETE FROM config.org_unit_setting_type_log WHERE field_name IN (
+    'opac.did_you_mean.low_result_threshold',
+    'opac.did_you_mean.max_suggestions',
+    'search.symspell.keyboard_distance.weight',
+    'search.symspell.min_suggestion_use_threshold',
+    'search.symspell.pg_trgm.weight',
+    'search.symspell.soundex.weight'
+);
+
 SELECT evergreen.upgrade_deps_block_check('1396', :eg_version);
 
 -- intent of this change done by editing the one for 1393
