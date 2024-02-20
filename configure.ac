@@ -212,13 +212,19 @@ AC_ARG_WITH([redis-accounts],
 [REDIS_ACCOUNTS=$sysconfdir/redis-accounts.txt])
 AC_SUBST([REDIS_ACCOUNTS])
 
-OPENSRF_BUS_PASSWORD=$(grep 'ACL SETUSER opensrf on >' ${REDIS_ACCOUNTS} | cut -d'>' -f2)
-GATEWAY_BUS_PASSWORD=$(grep 'ACL SETUSER gateway on >' ${REDIS_ACCOUNTS} | cut -d'>' -f2)
-ROUTER_BUS_PASSWORD=$(grep 'ACL SETUSER router on >' ${REDIS_ACCOUNTS} | cut -d'>' -f2)
-
-AC_SUBST([OPENSRF_BUS_PASSWORD])
-AC_SUBST([GATEWAY_BUS_PASSWORD])
-AC_SUBST([ROUTER_BUS_PASSWORD])
+# Skip password propagation if there is no password field.
+AC_CHECK_FILE(
+    [$REDIS_ACCOUNTS],
+    [
+        OPENSRF_BUS_PASSWORD=$(grep 'ACL SETUSER opensrf on >' ${REDIS_ACCOUNTS} | cut -d'>' -f2),
+        GATEWAY_BUS_PASSWORD=$(grep 'ACL SETUSER gateway on >' ${REDIS_ACCOUNTS} | cut -d'>' -f2),
+        ROUTER_BUS_PASSWORD=$(grep 'ACL SETUSER router on >' ${REDIS_ACCOUNTS} | cut -d'>' -f2),
+        AC_SUBST([OPENSRF_BUS_PASSWORD]),
+        AC_SUBST([GATEWAY_BUS_PASSWORD]),
+        AC_SUBST([ROUTER_BUS_PASSWORD])
+    ],
+    [AC_MSG_RESULT(Skipping Redis accounts password propagation)]
+)
 
 AM_CONDITIONAL(CHECK_TESTS, test x$enable_tests = xyes)
 
