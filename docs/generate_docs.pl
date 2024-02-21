@@ -48,7 +48,7 @@ sub help
     --tmp-space ../../tmp
     --html-output /var/www/html
     --antora-ui-repo git://git.evergreen-ils.org/eg-antora.git
-    --antora-version 2.3
+    --antora-version 3.1.7
 
     You must specify
     --base-url                                    [URL where html output is expected to be available eg: http//examplesite.org/docs]
@@ -56,7 +56,7 @@ sub help
     --html-output                                 [Path for the generated HTML files, defaults to ./output]
     --antora-ui-repo                              [Antora-UI repository for the built UI, defaults to git://git.evergreen-ils.org/eg-antora.git]
     --antora-ui-repo-branch                       [OPTIONAL: Antora-UI repository checkout branch, Defaults to "main"]
-    --antora-version                              [Target version of antora, defaults to 2.3]
+    --antora-version                              [Target version of antora, defaults to 3.1.7]
 
 HELP
     exit;
@@ -113,6 +113,16 @@ exec_system_cmd("cp site.yml site-working.yml");
 rewrite_yml($base_url,"site/url","site-working.yml");
 rewrite_yml("$html_output","output/dir","site-working.yml");
 rewrite_yml("$tmp_space/antora-ui/build/ui-bundle.zip","ui/bundle/url","site-working.yml");
+
+# clean up before installing Antora - it was observed during the
+# upgrade from 2.3 to 3.1.7 that a package.json node_modules
+# from 2.3 could cause the older version of the CLI to be
+# used instead of the new one
+if (-d 'node_modules') {
+    rmtree('node_modules');
+}
+unlink('package.json');
+unlink('package-lock.json');
 
 #npm install antora
 exec_system_cmd('npm install antora@' . $antora_version . ' @antora/lunr-extension@^1.0.0-alpha.8');
