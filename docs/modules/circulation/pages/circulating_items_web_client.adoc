@@ -57,7 +57,7 @@ image::media/specify_due_date1_web_client.png[]
 
 === Strict Barcode ===
 
-Throughout Evergreen, you'll find a *Strict Barcode* checkbox next to the input field.  This is used in situations when you want to make sure the system reads the full barcode and not a partial scan.  It also checks 14-digit codabar barcodes with checkdigit.
+Throughout Evergreen, you'll find a *Strict Barcode* checkbox next to the input field. When the checkbox is checked Evergreen will alert with a bad barcode message anytime a barcode that is not 14 digit codabar is scanned. Library staff are given an option to accept and continue using the bad barcode. This is used in situations where library staff want to capture items with barcodes that are not 14 digit codabar.
 
 image::circulating_items_web_client/strict_barcode.png[Example of Strict Barcode Checkbox]
 
