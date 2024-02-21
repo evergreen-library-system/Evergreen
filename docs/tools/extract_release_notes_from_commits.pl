@@ -85,7 +85,7 @@ print "==== Miscellaneous Release Notes ====\n\n";
 foreach my $commit (split /\0/, $commits, -1) {
     my @lines = split /\n/, $commit, -1;
 
-    shift @lines; # ignore the first ilne
+    shift @lines; # ignore the first line
     my ($author) = (shift(@lines) =~ /^Author:\s+(.*?) </);
     $authors{$author}++ if $author;
     shift @lines; # ignore the author date
@@ -98,22 +98,32 @@ foreach my $commit (split /\0/, $commits, -1) {
     $bugnum //= 'unknown';
     my @notes = ();
     foreach my $line (@lines) {
-        if ($line =~ /^\s*release.notes*(.*)/i) {
+        if ($line =~ /^\s*release-notes*:(.*)/i) {
             my $note = $1;
             $note =~ s/^\s+//;
             $note =~ s/^://;
             $note =~ s/^\s+//;
             $note =~ s/\s+$//;
             push @notes, $note if $note;
-        } elsif ($line =~ /^\s+signed-off-by:\s*(.*?)\s*</i) {
-            $reviewers{$1}++;
+        } elsif ($line =~ /^\s*signed-off-by:\s*(.*?)$/i) {
+            my $reviewer = $1;
+            $reviewer =~ s/\<.*$//;
+            $reviewer =~ s/^\s+//;
+            $reviewer =~ s/\s+$//;
+            $reviewers{$reviewer}++ if $reviewer;
         } elsif ($line =~ /^\s+sponsored-by:\s*(.*?)\s*$/i) {
-            $sponsors{$1}++;
+            $sponsors{$1}++ if $1;
+        } elsif ($line =~ /^\s+co-authored-by:\s*(.*?)\s*$/i) {
+            my $coauthor = $1;
+            $coauthor =~ s/<.*$//;
+            $coauthor =~ s/^\s+//;
+            $coauthor =~ s/\s+$//;
+            $authors{$coauthor}++ if $coauthor;
         } 
     }
     foreach my $note (@notes) {
         if ($bugnum =~ /^\d+$/) {
-            print "* https://bugs.launchpad.net/evergreen/+bug/${bugnum}[Bug $bugnum]: $note\n";
+            print "* $note (https://bugs.launchpad.net/evergreen/+bug/${bugnum}[Bug $bugnum])\n";
         } else {
             print "* $note\n";
         }
