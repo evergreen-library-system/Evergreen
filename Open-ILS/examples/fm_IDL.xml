@@ -1487,7 +1487,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 		</fields>
 		<links>
 			<link field="event_def" reltype="has_a" key="id" map="" class="atevdef"/>
-			<link field="locale" relteype="has_a" key="code" map="" class="i18n_l"/>
+			<link field="locale" reltype="has_a" key="code" map="" class="i18n_l"/>
 		</links>
 		<permacrud xmlns="http://open-ils.org/spec/opensrf/IDL/permacrud/v1">
 			<actions>
@@ -7336,7 +7336,6 @@ SELECT  usr,
 			<actions>
 				<create permission="CREATE_COPY_STAT_CAT" context_field="owner"/>
 				<retrieve permission="STAFF_LOGIN" global_required="true"/>
-				<retrieve/>
 				<update permission="UPDATE_COPY_STAT_CAT" context_field="owner"/>
 				<delete permission="DELETE_COPY_STAT_CAT" context_field="owner"/>
 			</actions>
