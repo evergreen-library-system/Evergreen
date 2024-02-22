@@ -1,0 +1,42 @@
+== IDL Improvements and Clean Up ==
+
+The IDL (fm_IDL.xml) has undergone improvement and clean up.
+
+More fields have been marked required.  Required fields are that those
+that come from a database table, have a "NOT NULL" constraint in the
+schema, and do not have a default value assigned in the database.
+This change has the advantage of making it easier for the Angular
+staff client to identify required fields and prevent bad data from
+being entered in many interfaces.
+
+Classes that are read-only and virtual were ignored, since they cannot
+be updated.  Virtual fields were also skipped for similar reasons.
+
+No attempt was made to validate whether or not existing required
+fields should be required.  If a field was required before these
+changes, it should still be required now.
+
+Line wrap and spacing have been updated to match the output of
+libxml2.
+
+Spaces used for indentation have been replaced with tabs using the vim
+and Emacs setting of 4 spaces per tab.
+
+Two schema validation errors have been corrected:
+
+ 1. A typo of "relteype" was corrected to "reltype."
+
+ 2. An extra "retrieve" permissions entry was removed from the asc
+ class.
+
+If you have custom IDL entries, you will want to make sure that you
+merge with this update and check for conflicts.  It would be a good
+idea to validate your merged IDL with the schema file:
+
+----
+xmllint --schema Open-ILS/examples/fm_IDL.xsd Open-ILS/examples/fm_IDL.xml
+----
+
+For maintaining future compatibility and ease of merging, you may want
+to ensure that your custom IDL entries follow the above formatting
+guidelines.
