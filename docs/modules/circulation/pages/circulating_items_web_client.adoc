@@ -57,7 +57,12 @@ image::media/specify_due_date1_web_client.png[]
 
 === Strict Barcode ===
 
-Throughout Evergreen, you'll find a *Strict Barcode* checkbox next to the input field. When the checkbox is checked Evergreen will alert with a bad barcode message anytime a barcode that is not 14 digit codabar is scanned. Library staff are given an option to accept and continue using the bad barcode. This is used in situations where library staff want to capture items with barcodes that are not 14 digit codabar.
+The 'Strict Barcode' checkbox can appear next to barcode inputs on the checkout, checkin, renewal, and offline circulation pages.
+
+If checked, it will examine the barcode value to see if it contains only digits and meets the "Mod10" checkdigit algorithm. This checkdigit algorithm is often used by library barcodes that use the "Codabar" symbology.
+
+If the barcode does not meet the conditions, a "bad barcode" alert will be displayed. Staff are given the option to accept and continue using the barcode as input.
+"Strict Barcode" is only useful for libraries whose barcodes use the Mod10 checkdigit algorithm. However, several other checkdigit algorithms and symbologies are in use by libraries.
 
 image::circulating_items_web_client/strict_barcode.png[Example of Strict Barcode Checkbox]
 
