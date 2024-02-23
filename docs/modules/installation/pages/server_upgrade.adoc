@@ -98,31 +98,11 @@ make install
 ------------------------------------------------------------
 +
 
-**Note** that this version of Evergreen does not use the legacy XUL staff
-client by default, but if you wish to use a versioned XUL staff client, you
-can supply `STAFF_CLIENT_STAMP` during the `make install` step like this:
-+
-[source, bash]
-------------------------------------------------------------
-cd /home/opensrf/Evergreen-ILS-3.11.0
-make STAFF_CLIENT_STAMP_ID=rel_3_11_0 install
-------------------------------------------------------------
-+
 . As the *root* user, change all files to be owned by the opensrf user and group:
 +
 [source, bash]
 ------------------------------------------------------------
 chown -R opensrf:opensrf /openils
-------------------------------------------------------------
-+
-. (Optional, only if you are using the legacy staff client)
-  As the *opensrf* user, update the server symlink in /openils/var/web/xul/:
-+
-[source, bash]
-------------------------------------------------------------
-cd /openils/var/web/xul/
-rm server
-ln -sf rel_3_11_0/server server
 ------------------------------------------------------------
 +
 . As the *opensrf* user, update opensrf_core.xml and opensrf.xml by copying the
