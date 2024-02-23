@@ -34,9 +34,7 @@ This release contains bug fixes improving on Evergreen 3.12.1.
 * Adds missing bib bucket IDL permissions, fixes carousel admin interface (https://bugs.launchpad.net/evergreen/+bug/2051140[Bug 2051140])
 
 
-==== Cataloging ====
 
-* 
 
 ==== Circulation ====
 
@@ -44,9 +42,7 @@ This release contains bug fixes improving on Evergreen 3.12.1.
 * Fixes bug that allowed one checkout after a patron had reached a group penalty threshold, for example PATRON_EXCEEDS_OVERDUE_COUNT or PATRON_EXCEEDS_CHECKOUT_COUNT (https://bugs.launchpad.net/evergreen/+bug/1890822[Bug 1890822])
 
 
-==== Client ====
 
-* 
 
 ==== Developer ====
 
