@@ -859,7 +859,7 @@ msgstr ""
 msgid "Book artist"
 msgstr ""
 
-#: ../../Open-ILS/src/templates/opac/parts/misc_util.tt2:850
+#: ../../Open-ILS/src/templates/opac/parts/misc_util.tt2:861
 msgid "Book cover"
 msgstr ""
 
@@ -4045,7 +4045,7 @@ msgstr ""
 msgid "Read Less"
 msgstr ""
 
-#: ../../Open-ILS/src/templates/opac/i18n_strings.tt2:25 ../../Open-ILS/src/templates/opac/parts/misc_util.tt2:886
+#: ../../Open-ILS/src/templates/opac/i18n_strings.tt2:25 ../../Open-ILS/src/templates/opac/parts/misc_util.tt2:897
 msgid "Read More"
 msgstr ""
 
@@ -5815,11 +5815,11 @@ msgstr ""
 msgid "here"
 msgstr ""
 
-#: ../../Open-ILS/src/templates/opac/parts/misc_util.tt2:859
+#: ../../Open-ILS/src/templates/opac/parts/misc_util.tt2:870
 msgid "next"
 msgstr ""
 
-#: ../../Open-ILS/src/templates/opac/parts/misc_util.tt2:858
+#: ../../Open-ILS/src/templates/opac/parts/misc_util.tt2:869
 msgid "prev"
 msgstr ""
 
