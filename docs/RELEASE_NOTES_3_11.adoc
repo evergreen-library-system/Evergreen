@@ -3,6 +3,100 @@
 :numbered:
 :toclevels: 3
 
+== Evergreen  3.11.4 ==
+
+This release contains bug fixes improving on Evergreen 3.11.3.
+
+=== Upgrade Notes ===
+
+* https://bugs.launchpad.net/evergreen/+bug/2019207[Bug 2019207] requires a database update
+
+=== Bug Fixes ===
+
+==== Accessibility ====
+
+* Removes extra tab stops when navigating bib record actions in staff client using keyboard (https://bugs.launchpad.net/evergreen/+bug/2052960[Bug 2052960])
+
+
+==== Acquisitions ====
+
+*  The fund dropdowns for line items and direct charges on purchase orders now display funds that user has permission to use, fixing a regression (https://bugs.launchpad.net/evergreen/+bug/2040637[Bug 2040637)
+
+
+==== Administration ====
+
+* Adds a new org unit setting that configures the discovery layer URL opened by the Patron View button on a staff catalog record (https://bugs.launchpad.net/evergreen/+bug/2019207[Bug 2019207])
+* Fixes misconfigured delete dialogs and adds dialogs where they were missing (https://bugs.launchpad.net/evergreen/+bug/2043508[Bug 2043508])
+
+
+
+==== Circulation ====
+
+* Patch ensures that when "Require Monographic Part when Present" is in effect, that deleted monograph parts are not taken into account when checking whether a title-level hold is possible (https://bugs.launchpad.net/evergreen/+bug/2051557[Bug 2051557])
+* Fixes bug that allowed one checkout after a patron had reached a group penalty threshold, for example PATRON_EXCEEDS_OVERDUE_COUNT or PATRON_EXCEEDS_CHECKOUT_COUNT (https://bugs.launchpad.net/evergreen/+bug/1890822[Bug 1890822])
+
+
+
+==== Documentation ====
+
+* Updates to autosuggest documentation (https://bugs.launchpad.net/evergreen/+bug/2053047[Bug 2053047])
+
+
+
+==== General ====
+
+* Expands the Concerto test data set (https://bugs.launchpad.net/evergreen/+bug/2023690[Bug 2023690])
+
+
+==== Public catalog ====
+
+* Restores ability to submit basic OPAC search by hitting enter in search input (https://bugs.launchpad.net/evergreen/+bug/2053035[Bug 2053035])
+* Closes autosuggest dropdown in the public catalog when it loses focus (https://bugs.launchpad.net/evergreen/+bug/2054128[Big 2054128])
+
+
+
+
+==== Staff catalog ====
+
+* Adds a "Clear Added Content Cache" item to the Other Actions menu in the staff catalog record page (https://bugs.launchpad.net/evergreen/+bug/1939162[Bug 1939162])
+
+
+=== Acknowledgements ===
+
+We would like to thank the following individuals who contributed code,
+testing, documentation, and patches to the 3.11.4 point release of Evergreen:
+
+
+* Jason Boyer
+* Dan Briem
+* Galen Charlton
+* Elizabeth Davis
+* Ruth Frasur Davis
+* Jason Etheridge
+* Blake Graham-Henderson
+* Stephanie Leary
+* Tiffany Little
+* Llewellyn Marshall
+* Stephen Mayo
+* Terran McCanna
+* Gina Monti
+* Susan Morrison
+* Andrea Buntz Neiman
+* Jane Sandberg
+* Chris Sharp
+* Jason Stephenson
+
+We would also like to thank the following organizations that sponsored development in this point release:
+
+* Pennsylvania Integrated Library System (PaILS)
+
+
+
+
+
+
+
+
 == Evergreen  3.11.3 ==
 
 This release contains bug fixes improving on Evergreen 3.11.2.
