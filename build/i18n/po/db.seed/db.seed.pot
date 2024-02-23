@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Evergreen 1.4\n"
 "Report-Msgid-Bugs-To: open-ils-dev@list.georgialibraries.org\n"
-"POT-Creation-Date: 2023-05-17 16:58:02-0400\n"
+"POT-Creation-Date: 2024-02-23 12:00:19-0400\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -19821,4 +19821,27 @@ msgid ""
 "automatically removed if they have paid down their balance below the "
 "threshold for their group. Use of this feature will likely require "
 "configuration and coordination with an external collection agency."
+msgstr ""
+
+# id::cwst.label__eg.grid.admin.local.actor.stat_cat_entry
+#: 950.data.seed-values.sql:23476
+msgid "Grid Config: admin.local.actor.stat_cat_entry"
+msgstr ""
+
+# id::cwst.label__eg.grid.admin.local.asset.stat_cat_entry
+#: 950.data.seed-values.sql:23483
+msgid "Grid Config: admin.local.asset.stat_cat_entry"
+msgstr ""
+
+# id::coust.label__cat.patron_view_discovery_layer_url
+#: 950.data.seed-values.sql:23495
+msgid "Patron view discovery layer URL"
+msgstr ""
+
+# id::coust.description__cat.patron_view_discovery_layer_url
+#: 950.data.seed-values.sql:23501
+msgid ""
+"URL for displaying an item in the \"patron view\" discovery layer with a "
+"placeholder for the bib record ID: {eg_record_id}. For example: "
+"https://example.com/Record/{eg_record_id}"
 msgstr ""
