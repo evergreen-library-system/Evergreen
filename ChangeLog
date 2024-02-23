@@ -1,3 +1,719 @@
-Evergreen doesn't keep a GNU-style ChangeLog except in release tarballs.
-Those seeking a change log are encouraged to run 'git log -v', or read
-it online at: http://git.evergreen-ils.org/?p=Evergreen.git;a=log
+commit e1a0eb680824ba403163225376aea46e453fc126
+Author: Jane Sandberg <js7389@princeton.edu>
+Date:   Fri Feb 23 16:52:14 2024 -0600
+
+    bumping Perl version string for 3.12.2
+    
+    Signed-off-by: Jane Sandberg <js7389@princeton.edu>
+
+1	1	Open-ILS/src/perlmods/lib/OpenILS.pm
+
+commit f93f79bc856fbae36471d34a873956fd5759cc5e
+Author: Andrea Buntz Neiman <abneiman@equinoxinitiative.org>
+Date:   Fri Feb 23 11:25:17 2024 -0500
+
+    Docs: Release Notes for 3.11.4
+    
+    Signed-off-by: Andrea Buntz Neiman <abneiman@equinoxinitiative.org>
+    Signed-off-by: Jane Sandberg <js7389@princeton.edu>
+
+94	0	docs/RELEASE_NOTES_3_11.adoc
+
+commit 56f8cc0e789412116dfabbaa24f92340b39d1156
+Author: Jane Sandberg <js7389@princeton.edu>
+Date:   Fri Feb 23 11:57:37 2024 -0600
+
+    Translation updates - newpot
+    
+    Signed-off-by: Jane Sandberg <js7389@princeton.edu>
+
+4	4	build/i18n/po/bootstrap-opac/bootstrap-opac.pot
+3203	3180	build/i18n/po/db.seed/db.seed.pot
+4	4	build/i18n/po/tpac/tpac.pot
+
+commit 87c6a2d2ff747813066173c94242de22bf6c7b6c
+Author: Andrea Buntz Neiman <abneiman@equinoxinitiative.org>
+Date:   Fri Feb 23 11:41:56 2024 -0500
+
+    Docs: follow up commit on Release Notes for 3.12.2
+    
+    Signed-off-by: Andrea Buntz Neiman <abneiman@equinoxinitiative.org>
+    Signed-off-by: Jane Sandberg <js7389@princeton.edu>
+
+0	4	docs/RELEASE_NOTES_3_12.adoc
+
+commit 4b7eadfe2d810ce2a889b4e96e5a3a3ae8e089ac
+Author: Andrea Buntz Neiman <abneiman@equinoxinitiative.org>
+Date:   Fri Feb 23 11:40:28 2024 -0500
+
+    Docs: Release Notes for 3.12.2
+    
+    Signed-off-by: Andrea Buntz Neiman <abneiman@equinoxinitiative.org>
+    Signed-off-by: Jane Sandberg <js7389@princeton.edu>
+
+105	0	docs/RELEASE_NOTES_3_12.adoc
+
+commit 766ba04bee351a73df222ef09f8f4eee6f324a79
+Author: Andrea Buntz Neiman <abneiman@equinoxinitiative.org>
+Date:   Wed Feb 21 09:43:20 2024 -0500
+
+    Docs: removing dead link from acq nav
+    
+    Signed-off-by: Andrea Buntz Neiman <abneiman@equinoxinitiative.org>
+
+0	1	docs/modules/acquisitions/nav.adoc
+
+commit 28c2b1f0900ca2f28f4f130ffd257942ee5ceee1
+Author: Gina Monti <gmonti@biblio.org>
+Date:   Tue Feb 13 11:42:30 2024 -0500
+
+    Docs: LP2053047 autosuggest update
+    
+    Updating page with some info.
+    
+    Signed-off-by: Gina Monti <gmonti@biblio.org>
+    Signed-off-by: Galen Charlton <gmc@equinoxOLI.org>
+    Signed-off-by: Andrea Buntz Neiman <abneiman@equinoxinitiative.org>
+
+-	-	docs/modules/admin/assets/images/autosuggest/autosuggest_search.png
+-	-	docs/modules/admin/assets/images/autosuggest/global_flag_autosuggest.png
+38	32	docs/modules/admin/pages/auto_suggest_search.adoc
+ create mode 100644 docs/modules/admin/assets/images/autosuggest/autosuggest_search.png
+ create mode 100644 docs/modules/admin/assets/images/autosuggest/global_flag_autosuggest.png
+
+commit af3f1a27680d7451f34f1df411183b4c7e66c472
+Author: Jane Sandberg <js7389@princeton.edu>
+Date:   Mon Feb 19 14:38:18 2024 -0800
+
+    LP1582720: follow-up: ng lint --fix
+    
+    Signed-off-by: Jane Sandberg <js7389@princeton.edu>
+
+3	3	Open-ILS/src/eg2/src/app/share/catalog/bib-record.service.ts
+
+commit de36565be46e803967c18f7409026bc8eb2de52f
+Author: Jason Boyer <JBoyer@equinoxOLI.org>
+Date:   Thu Jan 25 14:20:57 2024 -0500
+
+    LP1582720: Clarify Staff Client Uniquification
+    
+    Signed-off-by: Jason Boyer <JBoyer@equinoxOLI.org>
+    Signed-off-by: Jane Sandberg <js7389@princeton.edu>
+
+3	0	Open-ILS/src/eg2/src/app/share/catalog/bib-record.service.ts
+
+commit 979ec723875f6455036d6fb6c26347999d97d904
+Author: Jason Boyer <JBoyer@equinoxOLI.org>
+Date:   Wed Jan 17 10:52:23 2024 -0500
+
+    LP1582720: Ignore Duplicate Scoped URIs - Staff
+    
+    When displaying scoped URI call numbers (subfield 9's), ignore duplicate
+    URIs that can be caused by multiple subfield 9's on the same link.
+    
+    Signed-off-by: Jason Boyer <JBoyer@equinoxOLI.org>
+    Signed-off-by: Jane Sandberg <js7389@princeton.edu>
+
+8	1	Open-ILS/src/eg2/src/app/share/catalog/bib-record.service.ts
+
+commit 8f98c8bdc5f312e6f0a0cf4d6f14f593669e5197
+Author: Jason Boyer <JBoyer@equinoxOLI.org>
+Date:   Wed Jan 17 08:55:55 2024 -0500
+
+    LP1582720: Ignore Duplicate Scoped URIs - TPAC
+    
+    When displaying scoped URI call numbers (subfield 9's), ignore duplicate
+    URIs that can be caused by multiple subfield 9's on the same link.
+    
+    Signed-off-by: Jason Boyer <JBoyer@equinoxOLI.org>
+    Signed-off-by: Jane Sandberg <js7389@princeton.edu>
+
+12	1	Open-ILS/src/templates/opac/parts/misc_util.tt2
+
+commit 758e0d4ee590cfe8fe7be610a5e7454556bcc9f9
+Author: Jason Boyer <JBoyer@equinoxOLI.org>
+Date:   Tue Jan 16 16:05:50 2024 -0500
+
+    LP1582720: Ignore Duplicate Scoped URIs - BPAC
+    
+    When displaying scoped URI call numbers (subfield 9's), ignore duplicate
+    URIs that can be caused by multiple subfield 9's on the same link.
+    
+    Release-note: (OPAC) Ignore duplicate links from 856 fields with multiple $9's
+    Signed-off-by: Jason Boyer <JBoyer@equinoxOLI.org>
+    Signed-off-by: Jane Sandberg <js7389@princeton.edu>
+
+12	1	Open-ILS/src/templates-bootstrap/opac/parts/misc_util.tt2
+
+commit ae72bad6cb66aab71594d98252b76efb0cbe34d6
+Author: Stephanie Leary <stephanie.leary@equinoxoli.org>
+Date:   Mon Feb 12 19:03:32 2024 +0000
+
+    LP2052960 Remove button markup from record actions
+    
+    Removes errant <button> elements that were nested inside the Patron View
+    and Place Hold links (in the bib record actions row of buttons below the
+    summary box). Buttons inside links are unnecessary and created an extra
+    tab stop when navigating the page via keyboard. Classes have been moved
+    to the <a> element to retain styling.
+    
+    Release-note: Remove extra tab stops when navigating bib record actions in staff client using keyboard
+    
+    Signed-off-by: Stephanie Leary <stephanie.leary@equinoxoli.org>
+    Signed-off-by: Galen Charlton <gmc@equinoxOLI.org>
+    Signed-off-by: Jane Sandberg <js7389@princeton.edu>
+
+5	4	Open-ILS/src/eg2/src/app/staff/catalog/record/actions.component.html
+
+commit 4fdc80f0efbfa43bcae6f75c559267f622967b34
+Author: Galen Charlton <gmc@equinoxOLI.org>
+Date:   Sat Feb 17 11:13:11 2024 -0500
+
+    LP#2054128: OPAC autosuggest now gets closed when input loses focus
+    
+    This patch ensure that the autosuggest list goes away when
+    the basic search box in the OPAC loses focus. Otherwise, it
+    can obscure controls that the user is trying to interact with.
+    
+    To test
+    -------
+    [1] Enter a search term in the OPAC and observe that the
+        dropdown of suggestions appears.
+    [2] Tab or click away from the input. Note that the dropdown
+        remains open.
+    [3] Apply the patch and repeat steps 2 and 3. This time, the
+        dropdown should get closed.
+    
+    Release-note: Close autosuggest dropdown in the public catalog when it loses focus.
+    
+    Signed-off-by: Galen Charlton <gmc@equinoxOLI.org>
+    Signed-off-by: Jane Sandberg <js7389@princeton.edu>
+
+6	0	Open-ILS/web/js/ui/default/opac/autosuggest.module.js
+11	0	Open-ILS/web/opac/tests/autosuggest.spec.module.js
+
+commit 89cf1bc1659d6363a89deb573265b5ed502bfb6c
+Author: Galen Charlton <gmc@equinoxOLI.org>
+Date:   Tue Feb 13 11:52:50 2024 -0500
+
+    LP#2053035: return ability to submit OPAC basic search via enter
+    
+    This patch fixes an issue with the current autosuggest implementation
+    that prevented submitting the form while focus is on the main
+    text input.
+    
+    To test
+    -------
+    [1] Apply patch. Do the following tests using both keyboard
+        and mouse navigation.
+    [2] Verify that submitting a search without selecting any
+        of the suggested terms works.
+    [3] Verify that submitting a search after selecting one
+        of the suggestions works.
+    [4] Verify that submitting the search after using the keyboard
+        to navigate the selections, but ultimately not choosing
+        any of them, works.
+    [5] Run automated tests, e.g., by running
+    
+        npx jasmine Open-ILS/web/opac/tests/autosuggest.spec.module.js
+    
+    Release-note: Restore ability to submit basic OPAC search by hitting enter in search input.
+    
+    Signed-off-by: Galen Charlton <gmc@equinoxOLI.org>
+    Signed-off-by: Jane Sandberg <js7389@princeton.edu>
+    Signed-off-by: Steven Mayo <smayo@georgialibraries.org>
+    Signed-off-by: blake <blake@mobiusconsortium.org>
+
+8	3	Open-ILS/web/js/ui/default/opac/autosuggest.module.js
+17	0	Open-ILS/web/opac/tests/autosuggest.spec.module.js
+
+commit 5d74d2872b1d1809ee71b2ec6307c0447a20b161
+Author: Chris Sharp <csharp@georgialibraries.org>
+Date:   Sun Nov 12 12:19:24 2023 -0500
+
+    LP#1901932: Do not add unused org settings to enhanced dataset.
+    
+    Signed-off-by: Chris Sharp <csharp@georgialibraries.org>
+    Signed-off-by: Jane Sandberg <js7389@princeton.edu>
+    Signed-off-by: Steven Mayo <smayo@georgialibraries.org>
+
+0	9	Open-ILS/tests/datasets/sql/concerto_enhanced/config.org_unit_setting_type.sql
+0	3	Open-ILS/tests/datasets/sql/concerto_enhanced/load_all.sql
+ delete mode 100644 Open-ILS/tests/datasets/sql/concerto_enhanced/config.org_unit_setting_type.sql
+
+commit d05ffc6aa3b0d703e9c94b233cd7a77e50cdc8e9
+Author: blake <blake@mobiusconsortium.org>
+Date:   Wed May 17 10:48:11 2023 -0500
+
+    LP#1901932 Enhancing the enhanced concerto dataset
+    
+    - A date carry forward feature that carry's the various date columns
+    forward based upon the difference between today's date and the create_date
+    for asset.call_number in the dataset. Which is the default. This can be
+    skipped with with: psql -v skip_date_carry='1' -f load_all.sql
+    
+    - Expansion of special cases for certain tables:
+    config.metabib_class, config.org_unit_setting_type, config.global_flag.
+    
+    - Dropping these tables from consideration:
+    acq.acq_lineitem_history, acq.acq_purchase_order_history, permission.perm_list
+    
+    Signed-off-by: blake <blake@mobiusconsortium.org>
+    Signed-off-by: Chris Sharp <csharp@georgialibraries.org>
+    
+    Adding seq
+    
+    Signed-off-by: blake <blake@mobiusconsortium.org>
+    Signed-off-by: Jane Sandberg <js7389@princeton.edu>
+    Signed-off-by: Steven Mayo <smayo@georgialibraries.org>
+
+323	12	Open-ILS/src/support-scripts/make_concerto_from_evergreen_db.pl
+0	344	Open-ILS/tests/datasets/sql/concerto_enhanced/acq.acq_lineitem_history.sql
+0	8	Open-ILS/tests/datasets/sql/concerto_enhanced/acq.acq_purchase_order_history.sql
+1821	1821	Open-ILS/tests/datasets/sql/concerto_enhanced/asset.call_number.sql
+1	0	Open-ILS/tests/datasets/sql/concerto_enhanced/asset.uri.sql
+9	0	Open-ILS/tests/datasets/sql/concerto_enhanced/config.org_unit_setting_type.sql
+50	20	Open-ILS/tests/datasets/sql/concerto_enhanced/config.upgrade_log.sql
+287	9	Open-ILS/tests/datasets/sql/concerto_enhanced/load_all.sql
+ delete mode 100644 Open-ILS/tests/datasets/sql/concerto_enhanced/acq.acq_lineitem_history.sql
+ delete mode 100644 Open-ILS/tests/datasets/sql/concerto_enhanced/acq.acq_purchase_order_history.sql
+ create mode 100644 Open-ILS/tests/datasets/sql/concerto_enhanced/config.org_unit_setting_type.sql
+
+commit 2930d6fc0052efb2100fc3e4fce06a2fbe41844c
+Author: Jason Boyer <JBoyer@equinoxOLI.org>
+Date:   Wed Jan 31 13:23:03 2024 -0500
+
+    LP#1939162 Followup: 2 Cookie 4 Auth
+    
+    AccessHandler.pm did not look for the newer eg.auth.token session cookie
+    so it was not possible to clear the added content cache unless the old ses
+    cookie was somehow set first. Now AccessHandler.pm will look for both cookie
+    names.
+    
+    Signed-off-by: Jason Boyer <JBoyer@equinoxOLI.org>
+    Signed-off-by: Galen Charlton <gmc@equinoxOLI.org>
+
+1	0	Open-ILS/src/perlmods/lib/OpenILS/WWW/AccessHandler.pm
+
+commit 77385be147184a003c4ecd457e9e4cc3b48ca2fa
+Author: Galen Charlton <gmc@equinoxOLI.org>
+Date:   Wed Jan 31 11:04:11 2024 -0500
+
+    LP#1939162: add option to clear added content cache to Angular staff catalog
+    
+    This patch restores the ability to clear the added content cache
+    to the staff catalog by adding a "Clear Added Content Cache" item
+    to the Other Actions menu on the Angular staff catalog record page.
+    
+    As with the former embedded staff catalog, clearing the added content
+    cache does not result in the staff catalog attempting to automaticaly
+    reload the cover image; the user will still need to reload the page
+    to see if the change has taken effect. Improving that behavior would
+    be for a separate bug.
+    
+    This patch also includes a fix to tag an unrelated string for
+    localization.
+    
+    To test
+    -------
+    [1] Ensure that at an added content handler is active.
+    [2] Install the patch.
+    [3] Navigate to a bib record in the Angular staff catalog.
+    [4] Observe that there is a Clear Added Content Cache item
+        in the Other Actions menu.
+    [5] Click it and note that a toast stating that the cache was
+        cleared is displayed.
+    [6] (extra credit) Test while making changes to the record (say
+        to the ISBN) that would result in a different cover image
+        being provided by the added content source.
+    [7] (extra credit) Update opensrf.xml to remove the added content
+        handler, restart services and Apache, then try the cache-clearing
+        action. This time, toast should be displayed stating that the
+        action failed.
+    
+    Release-note: Adds a "Clear Added Content Cache" item to the Other Actions menu in the staff catalog record page.
+    
+    Signed-off-by: Galen Charlton <gmc@equinoxOLI.org>
+    Signed-off-by: Jason Boyer <JBoyer@equinoxOLI.org>
+    Signed-off-by: Galen Charlton <gmc@equinoxOLI.org>
+
+8	1	Open-ILS/src/eg2/src/app/staff/catalog/record/actions.component.html
+20	1	Open-ILS/src/eg2/src/app/staff/catalog/record/actions.component.ts
+
+commit 3435600938c2b43d788b8cef8d4042a68feb09ee
+Author: Galen Charlton <gmc@equinoxOLI.org>
+Date:   Mon Feb 19 09:19:12 2024 -0500
+
+    LP#2040637: (follow-up) adjust formatting of some comments
+    
+    Side-step the current lint rules not accepting comments indented like
+    this:
+    
+        do_something(); // comment on the thing...
+                        // and continue the comment like this
+    
+    Signed-off-by: Galen Charlton <gmc@equinoxOLI.org>
+
+6	3	Open-ILS/src/eg2/src/app/staff/acq/po/charges.component.ts
+
+commit 1e4b5220867c3f6c8030f9fad039e2e5ad635669
+Author: Galen Charlton <gmc@equinoxOLI.org>
+Date:   Mon Feb 19 09:06:57 2024 -0500
+
+    LP#2040637: (follow-up) fix ng lint whitespace issues
+    
+    Signed-off-by: Galen Charlton <gmc@equinoxOLI.org>
+
+6	6	Open-ILS/src/eg2/src/app/staff/acq/lineitem/copy-attrs.component.ts
+18	18	Open-ILS/src/eg2/src/app/staff/acq/po/charges.component.ts
+
+commit 5a5c6dfe6a9ef046abd0acf14da43969191aa8a4
+Author: Tiffany Little <tlittle@georgialibraries.org>
+Date:   Wed Dec 13 16:30:21 2023 -0500
+
+    LP2040637 Reverse fund dropdown regression
+    
+    Returns Dojo behavior of compiling fund view based on perms rather than work OU.
+    
+    Release-note: The fund dropdowns for line items and direct charges on purchase orders now display funds that user has permission to use.
+    
+    Signed-off-by: Tiffany Little <tlittle@georgialibraries.org>
+    Signed-off-by: Elizabeth Davis <elizabeth.davis@sparkpa.org>
+    Signed-off-by: Galen Charlton <gmc@equinoxOLI.org>
+
+24	7	Open-ILS/src/eg2/src/app/staff/acq/lineitem/copy-attrs.component.ts
+31	20	Open-ILS/src/eg2/src/app/staff/acq/po/charges.component.ts
+
+commit a0f540a81418976d6afa4ce335b756235def48e3
+Author: Galen Charlton <gmc@equinoxOLI.org>
+Date:   Thu Feb 15 10:09:08 2024 -0500
+
+    LP#2053245: fix Angular staff client test failure
+    
+    The patch for bug 2045581 ensured that eg-org-family-select's ariaLabel
+    attribute would propagate to the enclosed eg-org-select, but did not
+    update a mock in eg-org-family-select's tests. This patch fixes that.
+    
+    Release-note: [Developer] Fixes test failure in Angular staff client
+    
+    Signed-off-by: Galen Charlton <gmc@equinoxOLI.org>
+
+1	0	Open-ILS/src/eg2/src/app/share/org-family-select/org-family-select.component.spec.ts
+
+commit 337b7353f5540299d71c83b9bd14e2b75f66bf79
+Author: Galen Charlton <gmc@equinoxOLI.org>
+Date:   Wed Feb 14 09:28:03 2024 -0500
+
+    LP#1890822: (follow-up) update comments and documentation
+    
+    This patch adds a comment to clarify that the database transaction
+    isolation level must be "read committed" (as is the default for Pg)
+    in order for penalties created in one transaction to be seen by another
+    one. It also extends the documentation to cover behavior for SIP2
+    checkouts and renewals.
+    
+    Signed-off-by: Galen Charlton <gmc@equinoxOLI.org>
+
+5	0	Open-ILS/src/perlmods/lib/OpenILS/Application/Circ/Circulate.pm
+4	2	docs/modules/local_admin/pages/group_penalty_thresholds.adoc
+
+commit 03be01891fb84f0d904151d8cb58836b8524d356
+Author: Jane Sandberg <sandbergja@gmail.com>
+Date:   Tue Feb 13 16:05:12 2024 -0800
+
+    LP1890822: move penalty check back to run_indb_circ_test
+    
+    This ensures that it is still called for SIP2 checkouts
+    and renewals.
+    
+    Signed-off-by: Jane Sandberg <sandbergja@gmail.com>
+    Signed-off-by: Galen Charlton <gmc@equinoxOLI.org>
+
+12	8	Open-ILS/src/perlmods/lib/OpenILS/Application/Circ/Circulate.pm
+
+commit 84bcf33da55a36a19ec44183da180e74e71a9d27
+Author: Jane Sandberg <sandbergja@gmail.com>
+Date:   Tue Feb 13 13:44:37 2024 -0800
+
+    LP1890822: incorporate feedback from review
+    
+    * Put the penalty calculation in its own transaction, so
+      applicable penalties remain on the patron account, even
+      if the circulation is canceled.
+    * Don't hard-code a list of threshold-based penalties in
+      the penalty calculation call.  calculate_penalties only
+      concerns itself with threshold-based penalties anyway,
+      so there was no need to enumerate them (and I missed
+      two anyway).
+    * Update a comment to better match the new state of affairs.
+    
+    Signed-off-by: Jane Sandberg <sandbergja@gmail.com>
+    Signed-off-by: Galen Charlton <gmc@equinoxOLI.org>
+
+11	8	Open-ILS/src/perlmods/lib/OpenILS/Application/Circ/Circulate.pm
+19	1	Open-ILS/src/perlmods/live_t/38-patron-exceeds-overdue-count.t
+
+commit dc35cfe5158ff1b57d349c556be1c39557c1de63
+Author: Jane Sandberg <sandbergja@gmail.com>
+Date:   Mon Jan 1 19:33:58 2024 -0800
+
+    LP1890822: Don't checkout in cases where a patron is eligible for a penalty, but hasn't received it yet
+    
+    To test:
+    1. In Local Admin > Group Penalty Threshold, set the
+       PATRON_EXCEEDS_OVERDUE_COUNT threshold to 1.
+    2. Find a patron who has more than 1 overdue.
+    3. Try to check another item out to the patron.
+    4. Confirm that you get an alert PATRON_EXCEEDS_OVERDUE_COUNT
+       and the item does not check out.
+    
+    Note that this adds a penalty check to the checkout logic, rather than
+    to the patron retrieval logic as suggested in
+    https://bugs.launchpad.net/evergreen/+bug/1983621, since this will also
+    address SIP checkouts.
+    
+    Also adds characterization tests for relevant stored procedures.
+    
+    Release-note: Fix bug that allowed one checkout after a patron had reached a group penalty threshold, for example PATRON_EXCEEDS_OVERDUE_COUNT or PATRON_EXCEEDS_CHECKOUT_COUNT.
+    
+    Signed-off-by: Jane Sandberg <sandbergja@gmail.com>
+    Sponsored-by: PaILS
+    Signed-off-by: Elizabeth Davis <elizabeth.davis@sparkpa.org>
+    Signed-off-by: Galen Charlton <gmc@equinoxOLI.org>
+
+6	0	Open-ILS/src/perlmods/lib/OpenILS/Application/Circ/Circulate.pm
+145	0	Open-ILS/src/perlmods/live_t/38-patron-circ-limit-set.t
+136	0	Open-ILS/src/perlmods/live_t/38-patron-exceeds-checkout-count.t
+110	0	Open-ILS/src/perlmods/live_t/38-patron-exceeds-overdue-count.t
+33	0	Open-ILS/src/sql/Pg/live_t/calculate_system_penalties.pg
+48	0	Open-ILS/src/sql/Pg/live_t/patron_exceeds_overdue_count.pg
+1	0	docs/modules/local_admin/pages/group_penalty_thresholds.adoc
+ create mode 100644 Open-ILS/src/perlmods/live_t/38-patron-circ-limit-set.t
+ create mode 100644 Open-ILS/src/perlmods/live_t/38-patron-exceeds-checkout-count.t
+ create mode 100644 Open-ILS/src/perlmods/live_t/38-patron-exceeds-overdue-count.t
+ create mode 100644 Open-ILS/src/sql/Pg/live_t/calculate_system_penalties.pg
+ create mode 100644 Open-ILS/src/sql/Pg/live_t/patron_exceeds_overdue_count.pg
+
+commit 662dcaa5b99da47846b92c38e275a0744707c17d
+Author: Jason Boyer <JBoyer@equinoxOLI.org>
+Date:   Wed Feb 14 08:52:17 2024 -0500
+
+    LP 2017941: Followup to fix buster builds
+    
+    Debian buster is still supported, so it should still build correctly,
+    even when not using OpenSRF+Redis.
+    
+    Signed-off-by: Jason Boyer <JBoyer@equinoxOLI.org>
+
+5	0	Open-ILS/src/extras/install/Makefile.debian-buster
+
+commit 4a1c77518bf046c4498e967c84151a6a27fa4455
+Author: Jane Sandberg <sandbergja@gmail.com>
+Date:   Tue Feb 13 15:28:36 2024 -0800
+
+    LP#2043508 follow-up: ng lint --fix
+    
+    Signed-off-by: Jane Sandberg <sandbergja@gmail.com>
+
+1	1	Open-ILS/src/eg2/src/app/staff/admin/local/admin-carousel.component.ts
+
+commit 42099938237aa8a23e270601b671009a1287a709
+Author: Llewellyn Marshall <llewellyn.marshall@ncdcr.gov>
+Date:   Fri Feb 9 16:36:10 2024 -0500
+
+    LP#2043508 fix misconfigured delete dialogs and add dialogs where they were missing.
+    
+    Signed-off-by: Llewellyn Marshall <llewellyn.marshall@ncdcr.gov>
+    Signed-off-by: Terran McCanna <tmccanna@georgialibraries.org>
+    Signed-off-by: Susan Morrison <smorrison@georgialibraries.org>
+    Signed-off-by: Jane Sandberg <sandbergja@gmail.com>
+
+1	1	Open-ILS/src/eg2/src/app/staff/admin/acq/currency/currencies.component.ts
+1	1	Open-ILS/src/eg2/src/app/staff/admin/acq/distribution_formula/distribution-formulas.component.ts
+1	1	Open-ILS/src/eg2/src/app/staff/admin/acq/edi_attr_set/edi-attr-sets.component.ts
+6	0	Open-ILS/src/eg2/src/app/staff/admin/local/admin-carousel.component.html
+7	2	Open-ILS/src/eg2/src/app/staff/admin/local/admin-carousel.component.ts
+1	1	Open-ILS/src/eg2/src/app/staff/admin/local/staff_portal_page/staff-portal-page.component.ts
+6	0	Open-ILS/src/eg2/src/app/staff/admin/server/floating-group/floating-group.component.html
+7	2	Open-ILS/src/eg2/src/app/staff/admin/server/floating-group/floating-group.component.ts
+16	12	Open-ILS/src/eg2/src/app/staff/share/admin-page/admin-page.component.ts
+
+commit 72fb1f5c40e946c524b153c3c91c7e9cd04aca8a
+Author: Galen Charlton <gmc@equinoxOLI.org>
+Date:   Mon Feb 12 12:18:01 2024 -0500
+
+    LP#2019207: stamp DB update
+    
+    Signed-off-by: Galen Charlton <gmc@equinoxOLI.org>
+
+1	1	Open-ILS/src/sql/Pg/002.schema.config.sql
+1	1	Open-ILS/src/sql/Pg/upgrade/{XXXX.data.catalog_patron_view_discovery_url.sql => 1402.data.catalog_patron_view_discovery_url.sql}
+ rename Open-ILS/src/sql/Pg/upgrade/{XXXX.data.catalog_patron_view_discovery_url.sql => 1402.data.catalog_patron_view_discovery_url.sql} (90%)
+
+commit 9aec7322a540c2defd01186a67dc6ed2e6f25bff
+Author: Galen Charlton <gmc@equinoxOLI.org>
+Date:   Mon Feb 12 12:09:17 2024 -0500
+
+    LP#2019207: (follow-up) fix lint
+    
+    Signed-off-by: Galen Charlton <gmc@equinoxOLI.org>
+
+1	1	Open-ILS/src/eg2/src/app/staff/catalog/catalog.service.ts
+1	1	Open-ILS/src/eg2/src/app/staff/catalog/resolver.service.ts
+
+commit 6d991f2a2d24e49534a0b7932a20c74c42df21ff
+Author: Dan Briem <dbriem@wlsmail.org>
+Date:   Sat Oct 21 19:16:26 2023 +0000
+
+    LP#2019207 Patron View Discovery Layer URL
+    
+    A new org unit setting configures the discovery layer URL opened
+    by the Patron View button on a staff catalog record.
+    
+    The placeholder to include for the record ID is {eg_record_id}.
+    
+    Example format: https://example.com/Record/{eg_record_id}
+    
+    Signed-off-by: Dan Briem <dbriem@wlsmail.org>
+    Signed-off-by: Jason Stephenson <jason@sigio.com>
+    Signed-off-by: Galen Charlton <gmc@equinoxOLI.org>
+
+3	0	Open-ILS/src/eg2/src/app/staff/catalog/catalog.service.ts
+1	1	Open-ILS/src/eg2/src/app/staff/catalog/record/actions.component.html
+9	0	Open-ILS/src/eg2/src/app/staff/catalog/record/actions.component.ts
+5	0	Open-ILS/src/eg2/src/app/staff/catalog/resolver.service.ts
+21	1	Open-ILS/src/sql/Pg/950.data.seed-values.sql
+25	0	Open-ILS/src/sql/Pg/upgrade/XXXX.data.catalog_patron_view_discovery_url.sql
+7	0	docs/RELEASE_NOTES_NEXT/Cataloging/lp2019207_patron_view_discovery_layer.adoc
+ create mode 100644 Open-ILS/src/sql/Pg/upgrade/XXXX.data.catalog_patron_view_discovery_url.sql
+ create mode 100644 docs/RELEASE_NOTES_NEXT/Cataloging/lp2019207_patron_view_discovery_layer.adoc
+
+commit 32b40dfb7b60f41d55d7e05f76ecfa31cad722e6
+Author: Andrea Buntz Neiman <abneiman@equinoxinitiative.org>
+Date:   Fri Feb 9 12:37:52 2024 -0500
+
+    Docs: corrections to acquisitions_search.adoc
+    
+    Signed-off-by: Andrea Buntz Neiman <abneiman@equinoxinitiative.org>
+
+-	-	docs/modules/acquisitions/assets/images/{media => acquisitions_search}/acq_inv_search.png
+-	-	docs/modules/acquisitions/assets/images/{media => acquisitions_search}/acq_li_search.png
+-	-	docs/modules/acquisitions/assets/images/acquisitions_search/acq_li_search_actions.png
+-	-	docs/modules/acquisitions/assets/images/{media => acquisitions_search}/acq_ou_filter.png
+-	-	docs/modules/acquisitions/assets/images/{media => acquisitions_search}/acq_po_search.png
+-	-	docs/modules/acquisitions/assets/images/{media => acquisitions_search}/acq_sl_search.png
+21	6	docs/modules/acquisitions/pages/acquisitions_search.adoc
+ rename docs/modules/acquisitions/assets/images/{media => acquisitions_search}/acq_inv_search.png (100%)
+ rename docs/modules/acquisitions/assets/images/{media => acquisitions_search}/acq_li_search.png (100%)
+ create mode 100644 docs/modules/acquisitions/assets/images/acquisitions_search/acq_li_search_actions.png
+ rename docs/modules/acquisitions/assets/images/{media => acquisitions_search}/acq_ou_filter.png (100%)
+ rename docs/modules/acquisitions/assets/images/{media => acquisitions_search}/acq_po_search.png (100%)
+ rename docs/modules/acquisitions/assets/images/{media => acquisitions_search}/acq_sl_search.png (100%)
+
+commit 8b2791d7691967a857a13b1db0c7c3daace2ff6f
+Author: Galen Charlton <gmc@equinoxOLI.org>
+Date:   Mon Jan 29 10:49:24 2024 -0500
+
+    LP#2051557: ignore deleted monograph parts when checking title holds
+    
+    This patch ensures that when "Require Monographic Part when Present"
+    is in effect, that deleted monograph parts are not taken into
+    account when checking whether a title-level hold is possible.
+    
+    To test
+    -------
+    [1] Set up a bibliographic record that has at least one monograph
+        part, then delete that part.
+    [2] Turn on the "Require Monographic Part when Present" library setting.
+    [3] Attempt to place a title-level hold on the record. Note that the
+        following error is returned: "Require Monographic Part when Present"
+    [4] Apply the patch and repeat step 3. This time, the hold should
+        go through.
+    
+    Release-note: Ignore deleted monograp parts when checking title holds while "Require Monographic Part when Present" is on.
+    
+    Signed-off-by: Galen Charlton <gmc@equinoxOLI.org>
+    Signed-off-by: Ruth Frasur Davis <rfrasur@library.in.gov>
+    Signed-off-by: Jason Etheridge <phasefx@gmail.com>
+
+2	1	Open-ILS/src/perlmods/lib/OpenILS/Application/Circ/Holds.pm
+
+commit 8be7ddcba0c93f6667d8dc5ab4f53168ff8f6fb3
+Author: Andrea Buntz Neiman <abneiman@equinoxinitiative.org>
+Date:   Mon Feb 5 16:39:27 2024 -0500
+
+    Docs: Course materials navigation corrections
+    
+    Signed-off-by: Andrea Buntz Neiman <abneiman@equinoxinitiative.org>
+
+0	4	docs/modules/course/_attributes.adoc
+0	3	docs/modules/course/nav.adoc
+0	9	docs/modules/course/pages/introduction.adoc
+1	0	docs/modules/course_materials/nav.adoc
+0	0	docs/modules/{course => course_materials}/pages/searching.adoc
+ delete mode 100644 docs/modules/course/_attributes.adoc
+ delete mode 100644 docs/modules/course/nav.adoc
+ delete mode 100644 docs/modules/course/pages/introduction.adoc
+ rename docs/modules/{course => course_materials}/pages/searching.adoc (100%)
+
+commit 87257902676f02241730262ea1b9325cfc393d0b
+Author: Andrea Buntz Neiman <abneiman@equinoxinitiative.org>
+Date:   Mon Feb 5 16:16:28 2024 -0500
+
+    Docs: link checker xref correction
+    
+    Signed-off-by: Andrea Buntz Neiman <abneiman@equinoxinitiative.org>
+
+1	1	docs/modules/cataloging/pages/link_checker.adoc
+
+commit b8ed867b0cc5caff4d51c4870563da07831a0777
+Author: blake <blake@mobiusconsortium.org>
+Date:   Mon Feb 5 13:54:25 2024 -0600
+
+    LP2051140: Stamping DB Upgrade
+    
+    Signed-off-by: blake <blake@mobiusconsortium.org>
+
+1	1	Open-ILS/src/sql/Pg/002.schema.config.sql
+1	1	Open-ILS/src/sql/Pg/upgrade/{xxxx.data.lp2051140_missing_bucket_perms.sql => 1401.data.lp2051140_missing_bucket_perms.sql}
+ rename Open-ILS/src/sql/Pg/upgrade/{xxxx.data.lp2051140_missing_bucket_perms.sql => 1401.data.lp2051140_missing_bucket_perms.sql} (89%)
+
+commit ed361a004cdcff651f47bda16276dfa33cf8280d
+Author: Llewellyn Marshall <llewellyn.marshall@ncdcr.gov>
+Date:   Wed Jan 24 11:30:31 2024 -0500
+
+    LP2051140: Adding missing bib bucket IDL permissions
+    
+    Release-Note: Adds missing bib bucket IDL permissions, fixes carousel admin interface
+    
+    Signed-off-by: Llewellyn Marshall <llewellyn.marshall@ncdcr.gov>
+    Signed-off-by: Terran McCanna <tmccanna@georgialibraries.org>
+    Signed-off-by: Michele Morgan <mmorgan@noblenet.org>
+    Signed-off-by: Jane Sandberg <js7389@princeton.edu>
+    Signed-off-by: blake <blake@mobiusconsortium.org>
+
+5	1	Open-ILS/src/sql/Pg/950.data.seed-values.sql
+23	0	Open-ILS/src/sql/Pg/upgrade/xxxx.data.lp2051140_missing_bucket_perms.sql
+ create mode 100644 Open-ILS/src/sql/Pg/upgrade/xxxx.data.lp2051140_missing_bucket_perms.sql
+
+commit 7ea6f3da6a467a510e74f3277af7a6cbebe1e56f
+Author: Andrea Buntz Neiman <abneiman@equinoxinitiative.org>
+Date:   Mon Feb 5 14:40:03 2024 -0500
+
+    Docs: corrections to 3.11 and 3.12 release notes
+    
+    Signed-off-by: Andrea Buntz Neiman <abneiman@equinoxinitiative.org>
+
+4	3	docs/RELEASE_NOTES_3_11.adoc
+3	3	docs/RELEASE_NOTES_3_12.adoc
+
+commit da265b447360063a79abde285f374245a542c3f2
+Author: Jane Sandberg <js7389@princeton.edu>
+Date:   Fri Feb 2 13:18:13 2024 -0600
+
+    Forward-port 3.12.1 upgrade script
+    
+    Signed-off-by: Jane Sandberg <js7389@princeton.edu>
+
+36	0	Open-ILS/src/sql/Pg/version-upgrade/3.12.0-3.12.1-upgrade-db.sql
+ create mode 100644 Open-ILS/src/sql/Pg/version-upgrade/3.12.0-3.12.1-upgrade-db.sql
