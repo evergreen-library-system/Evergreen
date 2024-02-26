@@ -1998,7 +1998,11 @@ INSERT INTO permission.perm_list ( id, code, description ) VALUES
  ( 652, 'CREATE_BACKGROUND_IMPORT', oils_i18n_gettext(652,
     'Create background record import jobs', 'ppl', 'description')),
  ( 653, 'UPDATE_BACKGROUND_IMPORT', oils_i18n_gettext(653,
-    'Update background record import jobs', 'ppl', 'description'))
+    'Update background record import jobs', 'ppl', 'description')),
+ ( 654, 'VIEW_SHIPMENT_NOTIFICATION', oils_i18n_gettext(654,
+    'View shipment notifications', 'ppl', 'description')),
+ ( 655, 'MANAGE_SHIPMENT_NOTIFICATION', oils_i18n_gettext(655,
+    'Manage shipment notifications', 'ppl', 'description'))
 ;
 
 SELECT SETVAL('permission.perm_list_id_seq'::TEXT, 1000);
