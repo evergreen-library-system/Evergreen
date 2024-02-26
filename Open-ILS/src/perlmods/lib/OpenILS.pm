@@ -6,6 +6,6 @@ OpenILS - Client and server support for the Evergreen open source library system
 
 =cut
 
-our $VERSION = '3.1100';
+our $VERSION = '3.1104';
 
 1;
