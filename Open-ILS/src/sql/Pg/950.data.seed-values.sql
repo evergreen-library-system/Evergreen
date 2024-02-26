@@ -1978,7 +1978,11 @@ INSERT INTO permission.perm_list ( id, code, description ) VALUES
  ( 642, 'UPDATE_COPY_BARCODE', oils_i18n_gettext(642,
     'Update the barcode for an item.', 'ppl', 'description')),
  ( 643, 'VIEW_HOLD_PULL_LIST', oils_i18n_gettext(643,
-    'View hold pull list', 'ppl', 'description'))
+    'View hold pull list', 'ppl', 'description')),
+ ( 654, 'VIEW_SHIPMENT_NOTIFICATION', oils_i18n_gettext(654,
+    'View shipment notifications', 'ppl', 'description')),
+ ( 655, 'MANAGE_SHIPMENT_NOTIFICATION', oils_i18n_gettext(655,
+    'Manage shipment notifications', 'ppl', 'description'))
 ;
 
 SELECT SETVAL('permission.perm_list_id_seq'::TEXT, 1000);
