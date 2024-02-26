@@ -1990,7 +1990,11 @@ INSERT INTO permission.perm_list ( id, code, description ) VALUES
  ( 648, 'ADMIN_BIB_BUCKET', oils_i18n_gettext(648,
     'Administer bibliographic record buckets', 'ppl', 'description')),
  ( 649, 'CREATE_BIB_BUCKET', oils_i18n_gettext(649,
-    'Create bibliographic record buckets', 'ppl', 'description'))
+    'Create bibliographic record buckets', 'ppl', 'description')),
+ ( 654, 'VIEW_SHIPMENT_NOTIFICATION', oils_i18n_gettext(654,
+    'View shipment notifications', 'ppl', 'description')),
+ ( 655, 'MANAGE_SHIPMENT_NOTIFICATION', oils_i18n_gettext(655,
+    'Manage shipment notifications', 'ppl', 'description'))
 ;
 
 SELECT SETVAL('permission.perm_list_id_seq'::TEXT, 1000);
