@@ -23,7 +23,7 @@ This release contains bug fixes improving on Evergreen 3.12.1.
 
 ==== Acquisitions ====
 
-* The fund dropdowns for line items and direct charges on purchase orders now display funds that user has permission to use, fixing a regression (https://bugs.launchpad.net/evergreen/+bug/2040637[Bug 2040637)
+* The fund dropdowns for line items and direct charges on purchase orders now display funds that user has permission to use, fixing a regression (https://bugs.launchpad.net/evergreen/+bug/2040637[Bug 2040637])
 
 
 ==== Administration ====
