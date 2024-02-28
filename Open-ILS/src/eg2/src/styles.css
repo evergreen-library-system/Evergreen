@@ -291,10 +291,13 @@ option[disabled] {
   min-height: 1rem;
 }
 
-/* Bootstrap's focus "outline" is a faint box shadow. The buttons have
-   color-specific shadows, so let's leave those alone. */
-:not(button):not(.btn):focus, 
-:not(button):not(.btn):focus-visible {
+/* Bootstrap's focus "outline" is a faint box shadow. Buttons have
+   color-specific shadows, so let's leave those alone except for
+   ones that are dropdown items. */
+:not(button):not(.btn):focus,
+:not(button):not(.btn):focus-visible,
+button.dropdown-item:focus,
+button.dropdown-item:focus-visible {
   outline: 0.25rem solid rgba(13, 110, 253, 0.75);
   outline-offset: 0;
   --moz-outline-radius: 0.25rem;
