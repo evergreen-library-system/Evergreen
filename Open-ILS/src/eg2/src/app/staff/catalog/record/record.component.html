@@ -98,9 +98,8 @@
       <li role="presentation" [ngbNavItem]="'bibnotes'" [destroyOnHide]="true">
         <h2>
           <a ngbNavLink role="tab" *ngIf="summary?.recordNoteCount; else noRecordNotes">
-            <span class="material-icons tab-icon" aria-hidden="true">edit_note</span>
-            <span i18n>Record Notes</span>
-            <span class="badge bg-warning text-dark fw-bold">({{summary.recordNoteCount}})</span>
+            <span i18n>Record Notes</span>&nbsp;
+            <span class="badge text-bg-primary fw-bold">({{summary.recordNoteCount}})</span>
           </a>
           <ng-template #noRecordNotes>
             <a i18n ngbNavLink role="tab">Record Notes</a>

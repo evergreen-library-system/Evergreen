@@ -51,7 +51,7 @@ describe('RecordComponent', () => {
 
     it('displays the number of record notes in the tab', () => {
         fixture.detectChanges();
-        expect(fixture.nativeElement.innerText).toContain('Record Notes (8)');
+        expect(fixture.nativeElement.innerText).toMatch(/Record Notes\s+\(8\)/);
     });
 
 });
