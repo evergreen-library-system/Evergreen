@@ -10,6 +10,9 @@
 .fm-form-input-and-help .form-text {
   flex-basis: 100%;
   margin-bottom: .25rem;
+  font-size: 1em;
+  color: #555;
+  font-style: italic;
 }
 .input-group-text { 
   padding: .125rem .375rem; 
