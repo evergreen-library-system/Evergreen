@@ -93,21 +93,6 @@ export class VolEditComponent implements OnInit {
 
         this.volcopy.genBarcodesRequested.subscribe(() => this.generateBarcodes());
 
-        this.volcopy.fetchRecordVolLabels(this.context.recordId)
-            .then(labels => this.recordVolLabels = labels)
-            .then(_ => this.volcopy.fetchBibParts(this.context.getRecordIds()))
-            .then(_ => this.addStubCopies())
-        // It's possible the loaded data is not strictly allowed,
-        // e.g. empty string call number labels
-            .then(_ => this.emitSaveChange(true));
-
-        // Check to see if call number label is required
-        this.org.settings('cat.require_call_number_labels')
-            .then(settings => {
-                this.requireCNL =
-                Boolean(settings['cat.require_call_number_labels']);
-            });
-
         // Check for each org if a part is required
         for (const orgId of this.context.getOwningLibIds()) {
             this.org.settings('circ.holds.ui_require_monographic_part_when_present', orgId)
@@ -115,6 +100,20 @@ export class VolEditComponent implements OnInit {
                     this.requirePartsOrgMap[orgId] = Boolean(settings['circ.holds.ui_require_monographic_part_when_present']);
                 });
         }
+
+        // Check to see if call number label is required
+        this.org.settings('cat.require_call_number_labels')
+            .then(settings => {
+                this.requireCNL =
+                Boolean(settings['cat.require_call_number_labels']);
+            })
+            .then(() => this.volcopy.fetchRecordVolLabels(this.context.recordId))
+            .then(labels => this.recordVolLabels = labels)
+            .then(_ => this.volcopy.fetchBibParts(this.context.getRecordIds()))
+            .then(_ => this.addStubCopies())
+        // It's possible the loaded data is not strictly allowed,
+        // e.g. empty string call number labels
+            .then(_ => this.emitSaveChange(true));
     }
 
     copyStatLabel(copy: IdlObject): string {
