@@ -1,0 +1,87 @@
+name: Run pgtap tests
+on:
+  push:
+    paths:
+      - '.github/workflows/**'
+      - 'Open-ILS/src/sql/**'
+      - 'Open-ILS/tests/datasets/**'
+  pull_request:
+    paths:
+      - '.github/workflows/**'
+      - 'Open-ILS/src/sql/**'
+      - 'Open-ILS/tests/datasets/**'
+  workflow_dispatch:
+
+env:
+  PGHOST: localhost
+  PGPASSWORD: postgres
+  PGPORT: 5432
+  PGUSER: postgres
+
+jobs:
+  pgtap:
+    name: Run PgTap tests
+    runs-on: ubuntu-22.04
+    strategy:
+      matrix:
+        pg-version: [13, 14, 15, 16]
+      fail-fast: false
+    steps:
+      - uses: actions/checkout@v4
+
+      # The Github actions jammy image comes with postgres 14 installed.  To test other postgres
+      # versions, we need to remove 14 first
+      - name: Delete the postgres 14 cluster that comes with the github actions ubuntu image
+        run: sudo pg_dropcluster --stop 14 main
+        if: matrix.pg-version != 14
+      - name: Remove any postgres that is already installed in the github actions ubuntu image
+        run: sudo apt remove -y postgres*
+        if: matrix.pg-version != 14
+
+      # Next, let's install dependencies
+      - name: Install postgres and dependencies
+        run: sudo make -f Open-ILS/src/extras/Makefile.install postgres-server-ubuntu-jammy-${{ matrix.pg-version }}
+      - name: Install libdbi-perl
+        run: sudo apt update && sudo apt install -y libdbi-perl
+      - name: Install pg_prove
+        run: sudo cpan -T TAP::Parser::SourceHandler::pgTAP
+        env:
+          SHELL: /bin/bash
+      - name: Checkout the pgtap repository
+        uses: actions/checkout@v4
+        with:
+          repository: theory/pgtap
+          path: pgtap
+          ref: v1.3.2
+
+      # Start up postgres
+      - name: start postgres cluster
+        run: sudo pg_ctlcluster ${{ matrix.pg-version }} main start
+      - name: change postgres to a known password
+        run: sudo -u postgres psql -c "ALTER USER postgres WITH PASSWORD '$PGPASSWORD'"
+
+      # Create the needed database, extensions, schema, and data
+      - name: Install database extensions
+        run: psql --file create_database_extensions.sql -v db_name=evergreen
+        working-directory: Open-ILS/src/sql/Pg
+      - name: Install pgtap extension
+        working-directory: pgtap
+        run: make && psql --dbname evergreen --file sql/pgtap.sql
+      - name: Build database
+        run: "./build-db.sh $PGHOST $PGPORT evergreen $PGUSER $PGPASSWORD 1"
+        working-directory: Open-ILS/src/sql/Pg
+      - name: Load sample data
+        run: psql --dbname evergreen --file load_all.sql
+        working-directory: Open-ILS/tests/datasets/sql/concerto
+
+      # Now, let's run the tests!
+      - name: Run pgtap tests
+        run: pg_prove --dbname evergreen t
+        working-directory: Open-ILS/src/sql/Pg
+      - name: Run pgtap regression tests
+        run: pg_prove --dbname evergreen t/regress
+        working-directory: Open-ILS/src/sql/Pg
+      - name: Run pgtap live tests
+        run: pg_prove --dbname evergreen live_t
+        working-directory: Open-ILS/src/sql/Pg
+
