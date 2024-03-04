@@ -18,11 +18,15 @@
     </div>
     <div class="row pt-1" *ngFor="let col of columnSet.columns"
       [ngClass]="{visible : col.visible}">
-      <button type="button" class="btn" class="col-lg-1" (click)="toggleVisibility(col)">
-        <span *ngIf="col.visible" class="badge badge-success" aria-label="Visible" i18n-aria-label>&#x2713;</span>
-        <span *ngIf="!col.visible" class="badge badge-warning" aria-label="Hidden" i18n-aria-label>&#x2717;</span>
-      </button>
-      <button type="button" class="btn" class="col-lg-3" (click)="toggleVisibility(col)">{{col.label}}</button>
+      <div class="col-lg-1">
+        <button type="button" class="btn" (click)="toggleVisibility(col)">
+          <span *ngIf="col.visible" class="badge badge-success" aria-label="Visible" i18n-aria-label>&#x2713;</span>
+          <span *ngIf="!col.visible" class="badge badge-warning" aria-label="Hidden" i18n-aria-label>&#x2717;</span>
+        </button>
+      </div>
+      <div class="col-lg-3">
+        <button type="button" class="btn" (click)="toggleVisibility(col)">{{col.label}}</button>
+      </div>
       <div class="col-lg-1">
         <button type="button" class="btn" title="Move column up" i18n-title aria-label="Move column up" i18n-aria-label
           (click)="columnSet.moveColumn(col, -1)">
