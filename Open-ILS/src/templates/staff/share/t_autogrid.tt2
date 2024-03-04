@@ -165,7 +165,7 @@
       <button type="button" 
         class="btn btn-default" uib-dropdown-toggle
         aria-label="[% l('Grid Options') %]">
-        <span class="caret"></span>
+        <span class="glyphicon glyphicon-cog"></span>
       </button>
       <ul class="pull-right eg-grid-column-picker" uib-dropdown-menu>
         <li>
