@@ -977,7 +977,8 @@ MARC21.Record._ff_pos = {
             MIX : {start : 23, len : 1, def : ' ' },
             MAP : {start : 29, len : 1, def : ' ' },
             SCO : {start : 23, len : 1, def : ' ' },
-            REC : {start : 23, len : 1, def : ' ' }
+            REC : {start : 23, len : 1, def : ' ' },
+            COM : {start : 23, len : 1, def : ' ' }
         },
         _6 : {
             BKS : {start : 6, len : 1, def : ' ' },
@@ -986,7 +987,8 @@ MARC21.Record._ff_pos = {
             MIX : {start : 6, len : 1, def : ' ' },
             MAP : {start : 12, len : 1, def : ' ' },
             SCO : {start : 6, len : 1, def : ' ' },
-            REC : {start : 6, len : 1, def : ' ' }
+            REC : {start : 6, len : 1, def : ' ' },
+            COM : {start : 6, len : 1, def : ' ' }
         }
     },
     Freq : {
