@@ -8,7 +8,8 @@
           <div class="card mb-2 p-0" [ngClass]="{'list-truncate': this.displayFullFacets.indexOf(facetConf.facetClass+'-'+name) < 0}">
             <div class="card-header d-flex align-items-start justify-content-between">
               <h3>{{searchContext.result.facetData[facetConf.facetClass][name].cmfLabel}}</h3>
-              <button (click)="facetToggle(name, facetConf.facetClass)" i18n-title
+              <button type="button" *ngIf="searchContext.result.facetData[facetConf.facetClass][name].valueList.length > 5"
+                (click)="facetToggle(name, facetConf.facetClass)" i18n-title
                 title="Show {{displayFullFacets.indexOf(facetConf.facetClass+'-'+name) < 0 ? searchContext.result.facetData[facetConf.facetClass][name].valueList.length : 5}}"
                 class="btn btn-link p-0" i18n>
                 {{displayFullFacets.indexOf(facetConf.facetClass+'-'+name) < 0 ? 'More' : 'Less'}}
