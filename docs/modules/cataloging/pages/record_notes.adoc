@@ -10,5 +10,8 @@ that allow users to work with record notes:
 * `UPDATE_RECORD_NOTE`
 * `DELETE_RECORD_NOTE`
 
+These permissions must be assigned at the global
+level to grant staff access to those functions.
+
 If there are notes on a record, the Record Notes
 tab will show a count of the record's notes.
