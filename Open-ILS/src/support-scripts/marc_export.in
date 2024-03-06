@@ -1047,6 +1047,11 @@ sub acps_for_bre {
                 $_->status($statuses->{$_->status()});
                 $_->call_number->prefix($prefixes->{$acn->prefix()});
                 $_->call_number->suffix($suffixes->{$acn->suffix()});
+                # Replace the item's opac_visible to account for
+                # status and location.
+                $_->opac_visible(($U->is_true($_->opac_visible())
+                                  && $U->is_true($_->location->opac_visible())
+                                  && $U->is_true($_->status->opac_visible())));
             }
             return @acps;
         }
