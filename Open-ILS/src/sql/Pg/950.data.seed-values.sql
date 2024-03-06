@@ -23674,6 +23674,15 @@ INSERT INTO config.global_flag (name, enabled, label) VALUES (
 
 UPDATE config.global_flag SET value = '20' WHERE name = 'ingest.queued.max_threads';
 
+INSERT INTO config.global_flag  (name, label, enabled)
+    VALUES (
+        'opac.eresources.link_click_tracking',
+        oils_i18n_gettext('opac.eresources.link_click_tracking',
+                          'Track clicks on eresources links.  Before enabling this global flag, be sure that you are monitoring disk space on your database server and have a cron job set up to delete click records after the desired retention interval.',
+                          'cgf', 'label'),
+        FALSE
+    );
+
 INSERT INTO config.org_unit_setting_type (name, label, grp, description, datatype, fm_class) VALUES
 (   'circ.custom_penalty_override.PATRON_EXCEEDS_FINES',
     oils_i18n_gettext('circ.custom_penalty_override.PATRON_EXCEEDS_FINES',

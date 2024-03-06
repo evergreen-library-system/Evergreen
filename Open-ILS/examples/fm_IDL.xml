@@ -15895,6 +15895,42 @@ SELECT  usr,
 		</permacrud>
 	</class>
 
+	<class id="aelc"
+		controller="open-ils.cstore"
+		oils_obj:fieldmapper="action::eresource_link_click"
+		oils_persist:tablename="action.eresource_link_click"
+		reporter:label="Eresource link clicks">
+		<fields oils_persist:primary="id" oils_persist:sequence="action.eresource_link_click_id_seq">
+			<field reporter:label="ID" name="id" reporter:datatype="id" />
+			<field reporter:label="Date/time of click" name="clicked_at" reporter:datatype="timestamp" oils_obj:required="true"/>
+			<field reporter:label="URL" name="url" reporter:datatype="text" oils_obj:required="true"/>
+			<field reporter:label="Record" name="record" reporter:datatype="link"/>
+			<field reporter:label="Courses" name="courses" oils_persist:virtual="true" reporter:datatype="link"/>
+		</fields>
+		<links>
+			<link field="record" reltype="has_a" key="id" map="" class="bre"/>
+			<link field="courses" reltype="has_many" key="click" map="" class="aelcc"/>
+		</links>
+	</class>
+
+	<class id="aelcc"
+		controller="open-ils.cstore"
+		oils_obj:fieldmapper="action::eresource_link_click_course"
+		oils_persist:tablename="action.eresource_link_click_course"
+		reporter:label="Eresource link click-course mapping">
+		<fields oils_persist:primary="id" oils_persist:sequence="action.eresource_link_click_course_id_seq">
+			<field reporter:label="ID" name="id" reporter:datatype="id" />
+			<field reporter:label="Click" name="click" reporter:datatype="link" oils_obj:required="true"/>
+			<field reporter:label="Course" name="course" reporter:datatype="link"/>
+			<field reporter:label="Course name" name="course_name" reporter:datatype="text" oils_obj:required="true"/>
+			<field reporter:label="Course number" name="course_number" reporter:datatype="text" oils_obj:required="true"/>
+		</fields>
+		<links>
+			<link field="click" reltype="has_a" key="id" map="" class="aelc"/>
+			<link field="course" reltype="has_a" key="id" map="" class="acmc"/>
+		</links>
+	</class>
+
 	<class id="acqr_inv_totals" controller="open-ils.reporter" oils_persist:readonly="true" reporter:label="Invoice Totals">
 		<oils_persist:source_definition><![CDATA[
 			WITH invoice_entry_totals AS (
