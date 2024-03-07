@@ -1,0 +1,88 @@
+= Search Results =
+:toc:
+
+The results of a search appear below the search form. 
+
+The number of results returned by the search appears in the top-left corner in parentheses beside the _Search Results_ label. 
+
+Facets appear to the left side of the page.
+
+Result details are listed to the right of the facets.
+
+image::search_results/search_results.png[Screenshot of search results, as described above.]
+
+== Result Details == 
+
+Each result contains three kinds of information: item description, holdings information, and record history. 
+
+This information appears in the listed order from left to right in each result, as shown in the image below.
+
+image::search_results/result_details.png[Screenshot of a single result with the different kinds of information highlighted, as described above.]
+
+Each result also contains a green *Place Hold* button that allows you to place a title or part level hold on the item. 
+
+=== Item Description ===
+
+The item description, also called the physical summary, appears on the left side of each search result. It contains the following information:
+
+* Cover image
+* Title and author
+* Format with descriptive icon
+* Call number
+* Physical description
+* Edition
+* Publisher
+* ISBN
+
+All information except for the cover image and call number is taken from the item's MARC record.
+
+Selecting an item's title or cover image will take you to that item's bibliographic record.
+
+Selecting an item's author will conduct a search for that author.
+
+=== Holdings Information ===
+
+Holdings information appears to the right of the item description. Each line contains information that is specific to the location listed after the @ symbol.
+
+The first number on each line is the number of copies on a given record at the specified location that have the status "Available" or "Reshelving." The second number is the total number of copies owned by the specified location.
+
+TIP: The consortium or highest-level location always appears on the first line. The library chosen in the _Library Selector_ determines what will be displayed on the next line or lines. The workstation's preferred library, if set, will appear last, if different from the preceding lines.
+
+.Example
+****
+In the image above, the consortium (CONS) owns 18 copies of _Ready Player One_. However, only 17 copies are currently marked "Available" or "Reshelving." Similarly, Branch 2 (BR2) owns 2 copies, but only 1 copy is currently available.
+****
+
+The title control number (TCN) and the total number of holds on the record are displayed to the right of the location holdings information.
+
+=== Record History ===
+
+The history of the record appears on the right side of the search result. You can see when the record was created, who created it, when the record was last edited, and who last edited it.
+
+=== Show More Details ===
+
+Select _Show More Details_ above the first search result to display shelving location information for each item on the Search Results page.
+
+image::search_results/show_more_details.png[Screenshot with the Show More Details button highlighted, as described above.]
+
+NOTE: The _Show More Details_ button will change to say _Show Fewer Details_ when selected.
+
+Shelving location information will appear in a table below the item description.
+
+image::search_results/more_details.png[Screenshot showing shelving location information in a search result, as described above.]
+
+If the consortium is selected in the Library Selector, the table will show information in alphabetical order by branch. 
+
+If a Preferred Library is set for this workstation, the Preferred Library will appear first.
+
+If a branch is selected in the Library Selector, only information for the branch will be displayed.
+
+== Facets == 
+
+Facets appear on the left side of the Search Results page. These facets are grouped by categories such as author, subject, genre, series, and more. Each category contains the most common information in your search results' MARC records. 
+
+image::search_results/facets.png[Screenshot with the facets panel highlughted, as described above.]
+
+Select a facet within a given category to limit the search results to the selected facet.
+
+Select the facet again to remove your selection.
