@@ -1,0 +1,7 @@
+* xref:staff_catalog:introduction.adoc[Staff Catalog]
+** xref:staff_catalog:accessing_the_catalog.adoc[Accessing the Catalog]
+** xref:staff_catalog:searching_the_catalog.adoc[Searching the Catalog]
+** xref:staff_catalog:search_templates.adoc[Search Templates]
+** xref:staff_catalog:search_results.adoc[Search Results]
+** xref:staff_catalog:bibliographic_records.adoc[Bibliographic Records]
+** xref:staff_catalog:basket.adoc[Basket]

@@ -1,0 +1,10 @@
+= Introduction =
+
+In this part you will find:
+
+* xref:staff_catalog:accessing_the_catalog.adoc[How to access the Staff Catalog.]
+* xref:staff_catalog:searching_the_catalog.adoc[How to search the Staff Catalog.]
+* xref:staff_catalog:search_templates.adoc[How to create and use search templates.]
+* xref:staff_catalog:search_results.adoc[How to navigate and use search results.]
+* xref:staff_catalog:bibliographic_records.adoc[How to use bibliographic records.]
+* xref:staff_catalog:basket.adoc[How to use the basket.]
