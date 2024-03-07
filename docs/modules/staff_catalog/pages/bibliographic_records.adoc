@@ -1,0 +1,341 @@
+= Bibliographic Records (Record Details) =
+:toc:
+
+Each item in the catalog is linked to a bibliographic record. This record contains detailed information about the item. You can also perform a number of actions from a bibliographic record.
+
+Access an item's bibliographic record by finding the item in the _Staff Catalog_, then selecting the item's title or cover image. 
+
+You may also access an item's record by clicking its title any time it is hyperlinked, such as on a patron's account or on the _Item Status_ page.
+
+There may be multiple records for a given title if the title has multiple editions, formats, or publishers in your catalog. Differences in cataloging practices between libraries could also result in multiple records for the same title. 
+
+[TIP]
+====
+Select _Show Search Form_ in the top-right corner of a bibliographic record page to display the search form. If the search form is displayed, the button will say _Hide Search Form_. Select this button to hide the search form.
+
+The search form is filled by information in your URL. This information will still be present in the search form if you accessed the record from a search results page or by selecting a link that contained search information.
+
+image::bibliographic_records/show_search_form.png[Screenshot of the Show Search Form button, as described above.]
+====
+
+== Record Summary ==
+
+The top panel in a record is the _Record Summary_. This contains the following information:
+
+* _Format_: The type of item, such as book, DVD, or large print book. This appears above the cover image.
+* _Cover Image_: Image of the cover of the specific version of the item on this record. Note that clicking the cover image will open the image file in your browser.
+* _Title_: The title is a hyperlink. Selecting the title will direct you to the record with no other information in the URL. This is useful for sharing the record.
+* _Author_: The author's name exactly as it appears in the MARC record.
+* _Bibliographic Call Number_: This is pulled from the MARC record, so it may different from any call number used in your library or consortium.
+* _Edition_
+* _Publication Date_
+* _Record Owner_
+* _TCN_: Title Control Number
+* _Database ID_
+* _Created On_ Date
+* _Created By_ User: The user's Evergreen account is linked here.
+* _Last Edited By_ User: The user's Evergreen account is linked here.
+* _Last Edited On_ Date
+
+image::bibliographic_records/record_summary.png[Screenshot of the Record Summary for Ready Player One containing the information described above.]
+
+Select the caret (^) icon in the top-right corner of the _Record Summary_ to collapse the record summary panel. Only the title, edition, TCN, and Created By user will be shown.
+
+Select the icon again to expand the record summary panel.
+
+== Results Navigation ==
+
+If you accessed the bibliographic record through a search, you can navigate to the records for other results from your search directly from this record. Use the buttons below the _Record Summary_ to the left to navigate your search results.
+
+image::bibliographic_records/results_navigation.png[Screenshot of a bibliographic record with the Results Navigation buttons highlighted, as described above.]
+
+The following buttons are available:
+
+* _Start_: View the record for the first search result.
+* _Previous_: View the record for the search result before this one.
+* _Next_: View the record for the search result after this one.
+* _End_: View the record for the last search result.
+* _Back to Results (# / #)_: Return to the search results page. The first number indicates the position of the current record in the search results. The second number indicates the total number of results.
+
+NOTE: If there was only one search result, or if you access the record through any method besides a catalog search, the _Results Navigation_ buttons may not be available.
+
+== Record Actions ==
+
+Action buttons are located below the _Record Summary_ to the right.
+
+image::bibliographic_records/record_actions.png[Screenshot of a record summary with the record actions buttons highlighted, as described above.]
+
+You can use the following actions:
+
+* *Patron View*: The record will open in the patron catalog (OPAC) in a new tab. You will not be logged in to Evergreen in this new tab. You must return to your staff tab to continue using staff features.
+* *Place Hold*: The _Place Hold_ screen will appear in the current tab. You may place a title or part level hold. Select *Return* to return to the record.
+* *Add Holdings*: The _Holdings Editor_ for the current record will open in a new tab. Users with the appropriate permissions can begin the process of adding a new holding (item). 
+* *Serials*: A dropdown menu opens with the options *Manage Serials* and *Manage MFHDs*. Both options take you to the _Serials_ page for the current record with the selected pane open.
+* *Mark For...*: A dropdown menu opens with the options _Conjoined Items_, _Overlay Target_, _Title Hold Transfer_, _Holding Transfer_, and _Reset Record Marks_. Cataloging primarily use these to complete a variety of cataloging tasks. Circulation staff may use the _Title Hold Transfer_ option to transfer a hold to a different hold request while preserving the other hold details. _Reset Record Marks_ removes all marks.
+* *Other Actions*: A dropdown menu opens with the following options:
+** *Add To Bucket*: The _Add Item # to Bucket_ window opens. You may add the record to an existing, new, or shared record bucket.
+** *Add To Carousel*: The _Add to Carousel_ window opens. You may add the record to an existing carousel or create a new carousel.
+** *Upload Cover Image*: The _Upload Cover Image_ window opens. You may upload a cover image for the current record.
+** *View/Place Orders*: The _Line Items Related to Bib Record_ page in the _Acquisitions_ module opens in a new tab.
+
+== Record Views ==
+
+The _Record Views_ appear below _Results Navigation_ and _Record Actions_ buttons. The _Item Table_ tab is selected by default.
+
+image::bibliographic_records/record_tabs.png[Screenshot of a bibliographic record with the record views list highlighted, as described above. The tabs appear in the order they are listed below.]
+
+To change the tab that is selected by default, navigate to the tab of your choice, then select the _Set Default View_ button located above the tabs to the right of the page.
+
+=== Staff View ===
+
+The _Staff View_ tab contains information from the MARC record in a human-readable format. It includes title, author, edition, publisher, type of resource, physical description, ISBN, hold and copy counts, subjects, genre, and formats and editions information.
+
+Selecting any of the hyperlinked information will run the appropriate search.
+
+=== Item Table ===
+
+The _Item Table_ tab displays a table of all holdings related to the record. The table is organized alphabetically by library.
+
+If a preferred library is not set for the workstation, only items in the library chosen in the _Library Selector_ will be shown. 
+
+If a preferred library is set for the workstation, items in that library will appear in the list when available, but may not be at the top.
+
+Some columns in this table contain links that will let you complete the indicated actions.
+
+To change what information is displayed in the table, see more results, and select other options, see xref:staff_catalog:bibliographic_records.adoc#grid_options[Grid Options].
+
+TIP: For a more detailed view of holdings with the ability to use actions, see xref:staff_catalog:bibliographic_records.adoc#holdings_view[Holdings View].
+
+=== MARC Edit ===
+
+The _MARC Edit_ tab allows users with appropriate permissions to modify fixed fields and tags in the MARC record. 
+
+This tab allows users to pick between the _Enhanced MARC Editor_ and the _Flat Text Editor_. 
+
+Use the xref:staff_catalog:bibliographic_records.adoc#marc_view[MARC View] tab for a printer-friendly version of the MARC record.
+
+=== MARC View ===
+
+The _MARC View_ tab shows a non-editable version of the MARC record.
+
+You may print the MARC record from this tab by selecting the _Print Page_ button located to the left of the page below the record views list.
+
+This tab can give users quick access to basic information about a title, but the xref:staff_catalog:bibliographic_records.adoc#staff_view[Staff View] tab may be more useful.
+
+=== Record Notes ===
+
+The _Record Notes_ tab allows users with appropriate permissions to keep notes on a record. This may be useful when a record is under review.
+
+Create a new note by selecting _New Rcord Note_ below the record views list. The _Record Editor: Bib Record Note_ window opens. Enter your note in the _Note_ text box and select _Save_. All other information is generated automatically. Your note is added to the table.
+
+Sort the list in ascending order by creation date or note contents by selecting _Creation Date_ or _Note_. Sort the list in descening order by selecting the appropriate button again.
+
+Filter the notes by creation date or note contents by selecting _Filter_ below the _Creation Date_ or _Note_ column. A menu opens. Select an operator and criteria, then select _Apply Filter_. Select _Close_ to close the filter menu.
+
+To remove filters, select _Remove Filters_ below the record views list.
+
+To delete a note:
+
+. Select a note from the list by checking the checkbox to the left of the note. You may select multiple notes, or select the checkbox at the top of the table to select all notes. 
+. Select the _Actions for Selected Rows_ button located below the record views list. It is the first button to the right of the _New Record Note_ button. 
+. Select _Delete Selected_. The selected note is deleted.
+
+image::bibliographic_records/delete_note.png[Screenshote showing the Delete Selected button, as described above.]
+
+To change what information is displayed in the table, see more results, and select other options, see xref:staff_catalog:bibliographic_records.adoc#grid_options[Grid Options].
+
+=== View Holds ===
+
+The _View Holds_ tab lists all holds on the record. The total number of holds on a record is displayed below the record views list to the left of the page.
+
+Select a library from the _Pickup Library_ menu to filter the holds by pickup library. By default, this is the library selected in the _Library Selector_. 
+
+To perform an action on a hold:
+
+. Select a hold by checking the checkbox to the left of the hold. You may select multipe holds, or select all holds in the list by checking the checkbox at the top of the table.
+. Select the _Actions for Selected Rows_ button located below the record views list. It is the left-most button in the group of buttons to the right of the page.
+. Select an action from the list. Some common actions include _Cancel Hold_, _Modify Hold_, and _Retrieve Patron_.
+
+image::bibliographic_records/hold_action.png[Screenshot of the hold actions menu, as described above.]
+
+Sort holds by any column heading in ascending order by clicking the column heading. Sort the holds in descending order by clicking the heading again.
+
+To change what information is displayed in the table, see more results, and select other options, see xref:staff_catalog:bibliographic_records.adoc#grid_options[Grid Options].
+
+=== Monograph Parts ===
+
+The _Monograph Parts_ tab allows users with the appropriate permissions manage parts associated with a record. 
+
+To add a new part:
+
+. Select _New Monograph Part_ below the record views list to the left of the screen. The _Record Editor: Monograph Parts_ window opens.
+. Enter the label for the new part in the _label_ text box.
+. Select _Save_. The ID is generated automatically and the part is added to the table.
+
+To delete or merge parts:
+
+. Select a part by checking the checkbox to the left of the part. You may select multipe parts, or select all parts in the list by checking the checkbox at the top of the table.
+. Select the _Actions for Selected Rows_ button located below the record views list. It is the first button to the right of the _New Monograph Part_ button.
+. Select an option from the menu.
+** _Delete Selected_: The selected part is deleted.
+** _Merge Selected_: The _Merge Monograph Parts_ window opens. Select a lead part by checking a checkbox. Select _Merge_. All selected parts are merged into the lead part.
+
+image::bibliographic_records/part_actions.png[Screenshot of the Monograph Parts tab with the parts actions menu highlighted, as described above.]
+
+Sort parts by any column heading in ascending order by clicking the column heading. Sort the parts in descending order by clicking the heading again.
+
+To change what information is displayed in the table, see more results, and select other options, see xref:staff_catalog:bibliographic_records.adoc#grid_options[Grid Options].
+
+=== Holdings View ===
+
+The _Holdings View_ tab displays detailed item and call number information. It also allows users with appropriate permissions to perform actions on holdings.
+
+To perform actions from the _Holdings View_:
+
+. Select the appropriate library in the _Holdings Maintenance_ menu that appears below the record views list. The table will update to reflect your selection. The library chosen in the _Library Selector_ will be chosen by default.
+. Check or uncheck the checkboxes below the _Holdings Maintenance_ text box to match your preferences. 
+. In the table, expand or collapse rows by selecting arrow in the _Location/Barcode_ column.
+. Select items by checking the checkbox on the left side of the item's row.
+. Select an action from the _Actions for Selected Rows_ menu. This menu is the left-most button in the group of three butons to the right of the page above the table.
+
+image::bibliographic_records/holdings_actions.png[Screenshot of the Holdings View with the actions menu displayed, as described above.]
+
+To change what information is displayed in the table, see more results, and select other options, see xref:staff_catalog:bibliographic_records.adoc#grid_options[Grid Options].
+
+=== Conjoined Items ===
+
+The _Conjoined Items_ view allows users with appropriate permissions to manage conjoined items from the bibliographic record. 
+
+To perform any actions, first select conjoined items from the table by checking the checkbox located on the left side of the row.
+
+To change the type of the selected conjoined items:
+
+. Select the _Change Type_ button located above the table to the left of the page. The _Attach/Modify # Conjoined Item(s)_ window opens.
+. Selected a peer trype from the _Peer Type_ dropdown menu.
+. Select _Attach/Modify_. A confirmation message appears at the bottom of the screen.
+
+To unlink items:
+
+. Select the _Actions for Selected Rows_ menu. This is the next button to the right of the _Change Type_ button above the table.
+. Select _Unlink_. The selected items are unlinked.
+
+Sort items by any column heading in ascending order by clicking the column heading. Sort the items in descending order by clicking the heading again.
+
+To change what information is displayed in the table, see more results, and select other options, see xref:staff_catalog:bibliographic_records.adoc#grid_options[Grid Options].
+
+=== Shelf Browse ===
+
+The _Shelf Browse_ view displays tiles containing records for other items appearing before and after the selected record by call number.
+
+Select _Back_ or _Next_, located above and below the results to the left of the page, to view more results.
+
+== Grid Options ==
+
+Many parts of Evergreen use tables, also called grids, to display information. All grids can be navigated and modified using the same buttons, even if the available buttons or options might change between grids.
+
+To illustrate the various grid options, we will look at the _Record Notes_ view on a bibliographic record because it shows all of the available grid options and features. All other grids will work similarly, even if not all features are used.
+
+Most grid options can be access through the buttons located on top of the table to the right of the page.
+
+image::bibliographic_records/grid_options.png[Screenshot of the Record Notes view with the grid options buttons highlighted, as described above.]
+
+=== Grid Actions ===
+
+Some grids allow you to perform actions on items selected in the grid.
+
+To perform actions, you must first select items in the grid. Select items by checking the checkbox on the left side of the item's row. You may select all items on the current page of a grid by checking the checkbox at the top of the grid. 
+
+IMPORTANT: Selecting the checkbox at the top of the grid will only select items on the current page. To select more items, you may navigate to other pages and make additional selections, or change the number of rows that appear on each page. See xref:staff_catalog/bibliographic_records.adoc#navigating_grids[Navigating Grids].
+
+Then select the _Actions for Selected Rows_ button and choose an action.
+
+image::bibliographic_records/grid_actions.png[Screenshot of the Record Notes view with the Actions button highlighted. The Actions button is located above the table, in the group of buttons to the right. It is the left-most button in that group.]
+
+=== Navigating Grids ===
+
+There are four buttons that help you see different results and navigate through the results. 
+
+image::bibliographic_records/navigating_grids.png[The second, third, fourth, and fifth grid options buttons highlighted.]
+
+Change the number of results that appear on a page by making a selection from the _Rows_ dropdown menu. You may choose 5, 10, 25, 50, or 100. The grid updates automatically.
+
+Advance to the next page of results by selecting the > (right caret) button.
+
+Return to the previous page of results by selecting the < (left caret) button.
+
+Return to the first page of results by selecting the |< button (pipe-left caret) button. 
+
+=== Grid View Options ===
+
+To expand rows vertically, select the downward caret. The button will change to a caret (^). Rows will expand to accommodate overflowing text. 
+
+To collapse rows vertically, select the caret (^). The button will change to a downward caret. Rows will collapse to a single line and overflowing text will be replaced with an ellipsis.
+
+image::bibliographic_records/expand_vert.png[Screenshot of the grid options buttons with the down caret button highlighted, which is secod from the right.]
+
+To access more grid options, select the gear button. A menu opens.
+
+image::bibliographic_records/grid_options_menu.png[Screenshot showing the gear button selected, as described above. The menu is descibed below.]
+
+_Manage Columns_: The _Grid Columns Configurations_ window opens. Changes are applied automatically.
+
+* Make columns visible or invisible by checking or unchecking boxes in the _Visible_ column.
+* Change the order of columns be selecting buttons in the _Move Up_, _Move Down_, _First Visible_, and _Last Visible_ columns. Top columns will appear to the left on the grid, and bottom column will appear to the right.
+* Select _Move Visible Columns To Top_ to gather all columns marked _Visible_ to the top of the window.
+* Select _Close_ when you are finished.
+
+_Manage Column Widths_: The _Expand_ and _Shrink_ options appear above the results in the table. 
+
+* To make a column wider, select the arrow in the _Expand_ row in the desired column.
+* To make a column narrower, select the arrow in the _Shrink_ row in the desired column.
+* To hide the _Expand_ and _Shrink_ options, select the _Manage Column Widths_ button again.
+
+_Manage Actions Menu_: This will change the options that appear in the _Actions for Selected Rows_ menu. The _Grid Menu Configuration_ menu opens. Check or uncheck the checkbox in the _Visible_ column to show or hide the menu item. Select _Close_ when finished.
+
+_Save Grid Settings_: Save all grid settings to the workstation. Other users of this workstation will have the same grid settings. Your grid settings will not appear if you log on to a different workstation.
+
+_Reset Columns_: Resets the columns the the default settings. This does not affect your saved settings.
+
+_Download Full CSV_: Downloads a comma separated values (CSV) file of all grid information. Only visible columns will be included. All rows, even if they are not shown on the current page, will be included.
+
+_Print Full Grid_: Prepares a printer-friendly table containing all grid information. Only visible columns will be included. All rows, even if they are not visible on the current page, will be included. 
+
+_Print Selected Rows_: Prepares a printer-friendly table containing only selected rows. Only visible columns will be included. 
+
+_Column Selections_: All available columns are listed at the bottom of the menu. Visible columns have a green check next to them. Hidden columns have a yellow x next to them. To toggle the visibility of a column, select the column name in the menu. The menu closes and the change is applied.
+
+image::bibliographic_records/column_selections.png[Screenshot of the grid view options menu with the column names highlighted, as described above.]
+
+=== Sorting ===
+
+Some grids allow you to sort the grid by column. If this is possible, the column headings will be formatted as hyperlinks. That is, they will be blue and underlined. 
+
+To sort the grid by a given column in ascending order (0-9, a-z), select the column heading. An up arrow will appear in the selected column heading. The grid will be sorted automatically.
+
+To sort the grid by a given column in descending order (z-a, 0-9), select the same column heading twice. A down arrow will appear in the selected column heading. The grid will be sorted automatically.
+
+To remove your sorting selections, refresh the page. This may erase your other grid selections.
+
+.Example
+****
+This grid is sorted in descending order by the column _Note_. Notice that entries beginning with letters appear first in z-a order, then entries beginning with numbers appear in 9-0 order.
+
+image::bibliographic_records/sort_grid.png[Screenshot of a grid showing notes sorted as described above. The Note column has a down arrow beside it and is highlighted.]
+****
+
+=== Filters ===
+
+If filters are available, a row will appear between the column headings and the grid contents with the word _Filter_ and a filter symbol in each column.
+
+To apply a filter:
+
+. Select _Filter_ in the desired column. The filter menu opens.
+. Choose an operator. This will determine how your filter will be applied. Options will vary depending on the kind of data contained in the column.
+. Enter a filter criteria in the empty text box.
+. Select _Apply Filter_. The filter menu closes and the filter is apllied.
+
+To close the _Filter_ menu without applying the filter, select _Close_.
+
+To clear a filter from a particular column, select _Filter_ then select _Clear Filter_. The _Filter_ menu closes and the filter is cleared.
+
+To clear all filters, select _Remove Filters_ above the table to the left.
