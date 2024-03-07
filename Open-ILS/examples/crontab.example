@@ -103,5 +103,10 @@ EG_BIN_DIR = /openils/bin
 # Clean out action.hold_request_reset_reason_entry table
 0 1 * * * . ~/.bashrc && $EG_BIN_DIR/purge_hold_reset_reason_entries.srfsh
 
+# Delete old link click analytics that are no longer needed after
+# the given number of days (365 by default)
+#0 1 * * * cd /openils/bin && /usr/bin/perl ./delete_old_eresource_link_clicks.pl > /dev/null
+
+
 # TODO: add other entries
 

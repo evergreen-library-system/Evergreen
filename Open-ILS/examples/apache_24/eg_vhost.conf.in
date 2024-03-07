@@ -85,6 +85,14 @@ OSRFTranslatorConfig @sysconfdir@/opensrf_core.xml
     Require all granted 
 </Location>
 
+# Eresource link click tracker
+<Location /opac/extras/eresource_link_click_track>
+    SetHandler perl-script
+    PerlHandler OpenILS::WWW::EResourceLinkClick
+    PerlSendHeader On
+    Require all granted
+</Location>
+
 # Flattener service
 <Location /opac/extras/flattener>
     SetHandler perl-script

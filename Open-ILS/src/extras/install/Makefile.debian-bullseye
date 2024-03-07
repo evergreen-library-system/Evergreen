@@ -118,7 +118,8 @@ export CPAN_MODULES = \
 	Email::Send \
 	Pass::OTP \
 	Authen::WebAuthn \
-	Locale::Country
+	Locale::Country \
+	Duadua
 
 export CPAN_MODULES_FORCE = \
 	Business::Stripe \

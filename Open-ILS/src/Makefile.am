@@ -84,6 +84,7 @@ core_scripts =   $(examples)/oils_ctl.sh \
 		 $(supportscr)/pingest.pl \
 		 $(supportscr)/ingest_ctl \
 		 $(supportscr)/background_import_mgr.pl \
+		 $(supportscr)/delete_old_eresource_link_clicks.pl \
 		 $(supportscr)/edi_fetcher.pl \
 		 $(supportscr)/edi_order_pusher.pl \
 		 $(supportscr)/edi_pusher.pl \

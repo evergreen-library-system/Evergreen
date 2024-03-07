@@ -118,7 +118,8 @@ export CPAN_MODULES = \
 	String::KeyboardDistance \
 	Pass::OTP \
 	Authen::WebAuthn \
-	Text::Levenshtein::Damerau::XS
+	Text::Levenshtein::Damerau::XS \
+	Duadua
 
 export CPAN_MODULES_FORCE = \
 	Business::Stripe \

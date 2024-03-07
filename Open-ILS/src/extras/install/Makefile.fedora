@@ -92,7 +92,8 @@ export CPAN_MODULES = \
 	Config::General \
 	Pass::OTP \
 	Authen::WebAuthn \
-	Rose::URI
+	Rose::URI \
+	Duadua
 
 export CPAN_MODULES_FORCE = \
 	Business::Stripe \
