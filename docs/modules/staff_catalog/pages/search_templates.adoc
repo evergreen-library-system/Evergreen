@@ -1,0 +1,53 @@
+= Search Templates =
+:toc:
+
+Search templates all you to save search options and inputs for future use.
+
+You may create a search template using any xref:staff_catalog:searching_the_catalog.adoc#search_panes[search pane]. However, since the Keyword Search pane contains the most options, search templates are most useful on this pane. 
+
+You can follow these same instructions to make templates for any search pane.
+
+To access the Search Templates menu, select _Search Templates_ below the Library Selector in the top-right corner of the Staff Catalog page. A dropdown menu opens.
+
+image::staff_catalog/search_templates.png[The Search Templates menu is hihglighted below the Library Selector, as described above.]
+
+== Creating a Template ==
+
+To create a search template, first make all desired selections. You may make selections in the following fields: Format, Catalog Field, Matching, Sort Results, and Publication Year. 
+
+You may also add additional search rows. If you use multiple search rows, you may also make a selection in the Join With field.
+
+IMPORTANT: Filters and checkbox selections _will not_ be saved in a search template.
+
+.Example
+**** 
+This example contains selections in all possible fields. This would be a useful template for helping patrons find newer books.
+
+image:staff_catalog/search_template_example.png[The Keyword Search pane containing two search rows with the following fields highlighted, which contain the indicated selections: Format - All Books, Catalog Field - Title, Matching - Contains Phrase, Join With - Or, Catalog Field - Author, Matching - Contains, Sort Results - Newest to Oldest, Publication Year is - After 2000.]
+****
+
+Then select _Search Templates_ -> _Save Template_. The _Template Name_ dialog box appears. Enter a brief, descriptive name and select _Save_. This template will now appear on the _Search Templates_ menu.
+
+TIP: Use a unique name that describes the search settings.
+
+image:staff_catalog/save_template.png[Save Template dialog box with the following text: Books by Title or Auth after 2000]
+
+== Using a Template ==
+
+To use a saved template, select _Search Templates_ located below the Library Selector in the top-right corner. A dropdown menu opens.
+
+Then, select a template from the list below the gray dividing line.
+
+The current template, if any, appears in bold.
+
+image:staff_catalog/using_a_template.png[The Search Templates dropdown menu, which contains three options, then a list of saved templates after a gray dividing line. The list of saved templates is highlighted. The first three options are: Save Template, Delete Selected, and Delete All Templates.]
+
+== Deleting a Template ==
+
+To delete search templates, select _Search Templates_ located below the Library Selector in the top-right corner. 
+
+To delete the current template, which will be shown in bold on this dropdown menu, select _Delete Selected_. The _Confirm Delete_ dialog box will open. Select _Confirm_. The template is deleted.
+
+To delete all saved templates, select _Delete All Templates_. The _Confirm Delete All_ dialog box will open. Select _Confirm_. All templates are deleted.
+
+image:staff_catalog/delete_templates.png[]
