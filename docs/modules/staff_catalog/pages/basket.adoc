@@ -15,7 +15,7 @@ To add a record to the basket, first find the record by conducting a search in t
 
 Then, check the checkbox that appears between the result number and the cover image of the desired result. The record is added to your basket, and the number next to the _Basket Actions_ button in the search form increases.
 
-image:staff_catalog/add_basket.png[Screenshot of the Staff Catalog page with the box checked as described above. The Basket Actions button is highlighted.]
+image:staff_catalog/basket/add_basket.png[Screenshot of the Staff Catalog page with the box checked as described above. The Basket Actions button is highlighted.]
 
 To add all records on the page, check the checkbox between the search form and the search results. All results on the page are selected.
 
@@ -25,7 +25,7 @@ To add all search results, select _Basket Actions_ in the search form below the 
 
 CAUTION: If your search returned many results, this action may take a long time.
 
-image:staff_catalog/all_results.png[Screenshot the search form with Add All Search Results in the Basket Actions menu highlighted, as described above.]
+image:staff_catalog/basket/all_results.png[Screenshot the search form with Add All Search Results in the Basket Actions menu highlighted, as described above.]
 
 == Removing Records from the Basket ==
 
@@ -39,7 +39,7 @@ To view a basket, select the basket icon in the search form, located to the left
 
 You may also select _Basket Actions_ -> _View Basket_. The basket opens.
 
-image:staff_catalog/view_basket.png[Screenshot of the search form with the basket icon and the View Basket menu option highlighted, as described above.]
+image:staff_catalog/basket/view_basket.png[Screenshot of the search form with the basket icon and the View Basket menu option highlighted, as described above.]
 
 Records appear in the basket exactly as they appear in the search results. However, _Facets_ are unavailable in the basket.
 

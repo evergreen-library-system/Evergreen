@@ -9,7 +9,7 @@ Facets appear to the left side of the page.
 
 Result details are listed to the right of the facets.
 
-image:staff_catalog/search_results.png[Screenshot of search results, as described above.]
+image:staff_catalog/search_results/search_results.png[Screenshot of search results, as described above.]
 
 == Result Details == 
 
@@ -17,7 +17,7 @@ Each result contains three kinds of information: item description, holdings info
 
 This information appears in the listed order from left to right in each result, as shown in the image below.
 
-image:staff_catalog/result_details.png[Screenshot of a single result with the different kinds of information highlighted, as described above.]
+image:staff_catalog/search_results/result_details.png[Screenshot of a single result with the different kinds of information highlighted, as described above.]
 
 Each result also contains a green *Place Hold* button that allows you to place a title or part level hold on the item. 
 
@@ -63,13 +63,13 @@ The history of the record appears on the right side of the search result. You ca
 
 Select _Show More Details_ above the first search result to display shelving location information for each item on the Search Results page.
 
-image:staff_catalog/show_more_details.png[Screenshot with the Show More Details button highlighted, as described above.]
+image:staff_catalog/search_results/show_more_details.png[Screenshot with the Show More Details button highlighted, as described above.]
 
 NOTE: The _Show More Details_ button will change to say _Show Fewer Details_ when selected.
 
 Shelving location information will appear in a table below the item description.
 
-image:staff_catalog/more_details.png[Screenshot showing shelving location information in a search result, as described above.]
+image:staff_catalog/search_results/more_details.png[Screenshot showing shelving location information in a search result, as described above.]
 
 If the consortium is selected in the Library Selector, the table will show information in alphabetical order by branch. 
 
@@ -81,7 +81,7 @@ If a branch is selected in the Library Selector, only information for the branch
 
 Facets appear on the left side of the Search Results page. These facets are grouped by categories such as author, subject, genre, series, and more. Each category contains the most common information in your search results' MARC records. 
 
-image:staff_catalog/facets.png[Screenshot with the facets panel highlughted, as described above.]
+image:staff_catalog/search_results/facets.png[Screenshot with the facets panel highlughted, as described above.]
 
 Select a facet within a given category to limit the search results to the selected facet.
 
