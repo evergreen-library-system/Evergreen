@@ -8,5 +8,6 @@
 ** xref:opac:advanced_features.adoc[Bibliographic Search Enhancements]
 ** xref:opac:tpac_meta_record_holds.adoc[TPAC Metarecord Search and Metarecord Level Holds]
 ** xref:opac:linked_libraries.adoc[Library Information Pages]
+** xref:opac:eresource_link_click_track.adoc[Eresource Link Click Tracking]
 ** xref:opac:opensearch.adoc[Adding Evergreen Search to Web Browsers]
 ** xref:opac:search_form.adoc[Adding an Evergreen search form to a web page]
