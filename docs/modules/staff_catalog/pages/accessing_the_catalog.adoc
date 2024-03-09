@@ -9,7 +9,7 @@ TIP: The Staff Catalog page may also be accessed by pressing the F3 key any time
 
 On the splash page, enter a keyword into the text box in the _Item Search and Cataloging_ section, then select *Search Catalog*. The Staff Catalog page opens with the results of the keyword search for your default search library.
 
-image::staff_catalog/accessing_the_catalog/access_catalog_splash.png[The Item Search and Cataloging section of the splash page with the search bar highlighted.]
+image::accessing_the_catalog/access_catalog_splash.png[The Item Search and Cataloging section of the splash page with the search bar highlighted.]
 
 TIP: You can change your default search library any time in your workstation's xref:staff_catalog:searching_the_catalog.adoc#search_preferences[Search Preferences].
 
@@ -17,11 +17,11 @@ TIP: You can change your default search library any time in your workstation's x
 
 On the Menu Bar, select *Search* -> *Search the Catalog*. The Staff Catalog page opens.
 
-image::staff_catalog/accessing_the_catalog/access_catalog_search.png[Search menu with Search the Catalog highlighted.]
+image::accessing_the_catalog/access_catalog_search.png[Search menu with Search the Catalog highlighted.]
 
 == From the Cataloging Menu ==
 
 On the Menu Bar, select *Cataloging* -> *Search the Catalog*. The Staff Catalog page opens.
 
-image::staff_catalog/accessing_the_catalog/access_catalog_cataloging.png[Cataloging menu with Search the Catalog highlighted.]
+image::accessing_the_catalog/access_catalog_cataloging.png[Cataloging menu with Search the Catalog highlighted.]
 

@@ -15,7 +15,7 @@ Select _Show Search Form_ in the top-right corner of a bibliographic record page
 
 The search form is filled by information in your URL. This information will still be present in the search form if you accessed the record from a search results page or by selecting a link that contained search information.
 
-image:staff_catalog/bibliographic_records/show_search_form.png[Screenshot of the Show Search Form button, as described above.]
+image::bibliographic_records/show_search_form.png[Screenshot of the Show Search Form button, as described above.]
 ====
 
 == Record Summary ==
@@ -37,7 +37,7 @@ The top panel in a record is the _Record Summary_. This contains the following i
 * _Last Edited By_ User: The user's Evergreen account is linked here.
 * _Last Edited On_ Date
 
-image:staff_catalog/bibliographic_records/record_summary.png[Screenshot of the Record Summary for Ready Player One containing the information described above.]
+image::bibliographic_records/record_summary.png[Screenshot of the Record Summary for Ready Player One containing the information described above.]
 
 Select the caret (^) icon in the top-right corner of the _Record Summary_ to collapse the record summary panel. Only the title, edition, TCN, and Created By user will be shown.
 
@@ -47,7 +47,7 @@ Select the icon again to expand the record summary panel.
 
 If you accessed the bibliographic record through a search, you can navigate to the records for other results from your search directly from this record. Use the buttons below the _Record Summary_ to the left to navigate your search results.
 
-image:staff_catalog/bibliographic_records/results_navigation.png[Screenshot of a bibliographic record with the Results Navigation buttons highlighted, as described above.]
+image::bibliographic_records/results_navigation.png[Screenshot of a bibliographic record with the Results Navigation buttons highlighted, as described above.]
 
 The following buttons are available:
 
@@ -63,7 +63,7 @@ NOTE: If there was only one search result, or if you access the record through a
 
 Action buttons are located below the _Record Summary_ to the right.
 
-image:staff_catalog/bibliographic_records/record_actions.png[Screenshot of a record summary with the record actions buttons highlighted, as described above.]
+image::bibliographic_records/record_actions.png[Screenshot of a record summary with the record actions buttons highlighted, as described above.]
 
 You can use the following actions:
 
@@ -82,7 +82,7 @@ You can use the following actions:
 
 The _Record Views_ appear below _Results Navigation_ and _Record Actions_ buttons. The _Item Table_ tab is selected by default.
 
-image:staff_catalog/bibliographic_records/record_tabs.png[Screenshot of a bibliographic record with the record views list highlighted, as described above. The tabs appear in the order they are listed below.]
+image::bibliographic_records/record_tabs.png[Screenshot of a bibliographic record with the record views list highlighted, as described above. The tabs appear in the order they are listed below.]
 
 To change the tab that is selected by default, navigate to the tab of your choice, then select the _Set Default View_ button located above the tabs to the right of the page.
 
@@ -140,7 +140,7 @@ To delete a note:
 . Select the _Actions for Selected Rows_ button located below the record views list. It is the first button to the right of the _New Record Note_ button. 
 . Select _Delete Selected_. The selected note is deleted.
 
-image:staff_catalog/bibliographic_records/delete_note.png[Screenshote showing the Delete Selected button, as described above.]
+image::bibliographic_records/delete_note.png[Screenshote showing the Delete Selected button, as described above.]
 
 To change what information is displayed in the table, see more results, and select other options, see xref:staff_catalog:bibliographic_records.adoc#grid_options[Grid Options].
 
@@ -156,7 +156,7 @@ To perform an action on a hold:
 . Select the _Actions for Selected Rows_ button located below the record views list. It is the left-most button in the group of buttons to the right of the page.
 . Select an action from the list. Some common actions include _Cancel Hold_, _Modify Hold_, and _Retrieve Patron_.
 
-image:staff_catalog/bibliographic_records/hold_action.png[Screenshot of the hold actions menu, as described above.]
+image::bibliographic_records/hold_action.png[Screenshot of the hold actions menu, as described above.]
 
 Sort holds by any column heading in ascending order by clicking the column heading. Sort the holds in descending order by clicking the heading again.
 
@@ -180,7 +180,7 @@ To delete or merge parts:
 ** _Delete Selected_: The selected part is deleted.
 ** _Merge Selected_: The _Merge Monograph Parts_ window opens. Select a lead part by checking a checkbox. Select _Merge_. All selected parts are merged into the lead part.
 
-image:staff_catalog/bibliographic_records/part_actions.png[Screenshot of the Monograph Parts tab with the parts actions menu highlighted, as described above.]
+image::bibliographic_records/part_actions.png[Screenshot of the Monograph Parts tab with the parts actions menu highlighted, as described above.]
 
 Sort parts by any column heading in ascending order by clicking the column heading. Sort the parts in descending order by clicking the heading again.
 
@@ -198,7 +198,7 @@ To perform actions from the _Holdings View_:
 . Select items by checking the checkbox on the left side of the item's row.
 . Select an action from the _Actions for Selected Rows_ menu. This menu is the left-most button in the group of three butons to the right of the page above the table.
 
-image:staff_catalog/bibliographic_records/holdings_actions.png[Screenshot of the Holdings View with the actions menu displayed, as described above.]
+image::bibliographic_records/holdings_actions.png[Screenshot of the Holdings View with the actions menu displayed, as described above.]
 
 To change what information is displayed in the table, see more results, and select other options, see xref:staff_catalog:bibliographic_records.adoc#grid_options[Grid Options].
 
@@ -237,7 +237,7 @@ To illustrate the various grid options, we will look at the _Record Notes_ view 
 
 Most grid options can be access through the buttons located on top of the table to the right of the page.
 
-image:staff_catalog/bibliographic_records/grid_options.png[Screenshot of the Record Notes view with the grid options buttons highlighted, as described above.]
+image::bibliographic_records/grid_options.png[Screenshot of the Record Notes view with the grid options buttons highlighted, as described above.]
 
 === Grid Actions ===
 
@@ -249,13 +249,13 @@ IMPORTANT: Selecting the checkbox at the top of the grid will only select items 
 
 Then select the _Actions for Selected Rows_ button and choose an action.
 
-image:staff_catalog/bibliographic_records/grid_actions.png[Screenshot of the Record Notes view with the Actions button highlighted. The Actions button is located above the table, in the group of buttons to the right. It is the left-most button in that group.]
+image::bibliographic_records/grid_actions.png[Screenshot of the Record Notes view with the Actions button highlighted. The Actions button is located above the table, in the group of buttons to the right. It is the left-most button in that group.]
 
 === Navigating Grids ===
 
 There are four buttons that help you see different results and navigate through the results. 
 
-image:staff_catalog/bibliographic_records/navigating_grids.png[The second, third, fourth, and fifth grid options buttons highlighted.]
+image::bibliographic_records/navigating_grids.png[The second, third, fourth, and fifth grid options buttons highlighted.]
 
 Change the number of results that appear on a page by making a selection from the _Rows_ dropdown menu. You may choose 5, 10, 25, 50, or 100. The grid updates automatically.
 
@@ -271,11 +271,11 @@ To expand rows vertically, select the downward caret. The button will change to 
 
 To collapse rows vertically, select the caret (^). The button will change to a downward caret. Rows will collapse to a single line and overflowing text will be replaced with an ellipsis.
 
-image:staff_catalog/bibliographic_records/expand_vert.png[Screenshot of the grid options buttons with the down caret button highlighted, which is secod from the right.]
+image::bibliographic_records/expand_vert.png[Screenshot of the grid options buttons with the down caret button highlighted, which is secod from the right.]
 
 To access more grid options, select the gear button. A menu opens.
 
-image:staff_catalog/bibliographic_records/grid_options_menu.png[Screenshot showing the gear button selected, as described above. The menu is descibed below.]
+image::bibliographic_records/grid_options_menu.png[Screenshot showing the gear button selected, as described above. The menu is descibed below.]
 
 _Manage Columns_: The _Grid Columns Configurations_ window opens. Changes are applied automatically.
 
@@ -304,7 +304,7 @@ _Print Selected Rows_: Prepares a printer-friendly table containing only selecte
 
 _Column Selections_: All available columns are listed at the bottom of the menu. Visible columns have a green check next to them. Hidden columns have a yellow x next to them. To toggle the visibility of a column, select the column name in the menu. The menu closes and the change is applied.
 
-image:staff_catalog/bibliographic_records/column_selections.png[Screenshot of the grid view options menu with the column names highlighted, as described above.]
+image::bibliographic_records/column_selections.png[Screenshot of the grid view options menu with the column names highlighted, as described above.]
 
 === Sorting ===
 
@@ -320,7 +320,7 @@ To remove your sorting selections, refresh the page. This may erase your other g
 ****
 This grid is sorted in descending order by the column _Note_. Notice that entries beginning with letters appear first in z-a order, then entries beginning with numbers appear in 9-0 order.
 
-image:staff_catalog/bibliographic_records/sort_grid.png[Screenshot of a grid showing notes sorted as described above. The Note column has a down arrow beside it and is highlighted.]
+image::bibliographic_records/sort_grid.png[Screenshot of a grid showing notes sorted as described above. The Note column has a down arrow beside it and is highlighted.]
 ****
 
 === Filters ===
