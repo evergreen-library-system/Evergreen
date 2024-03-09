@@ -208,6 +208,13 @@ var aou_hash = {
 <script type="text/javascript">if ($('client_tz_id')) { $('client_tz_id').value = OpenSRF.tz }</script>
 [%- END; # want_dojo -%]
 
+[% IF eresource_click_track.enabled == "t"; %]
+<script type="module">
+  import {EresourceClickTrack} from '[% ctx.media_prefix %]/js/ui/default/opac/eresource_click_tracker.module.js';
+  new EresourceClickTrack().setup('.uri_link');
+</script>
+[% END; # eresource_click_track %]
+
 [%- IF ctx.max_cart_size; %]
 <script type="text/javascript">var max_cart_size = [% ctx.max_cart_size %];</script>
 [%- END; %]

@@ -351,7 +351,7 @@ END;
                                                                 <td valign='top'>
                                                                     <strong>[% l('Electronic resource') %]</strong>
                                                                 </td>
-                                                                <td><a href="[% uri.href | html %]" class="uri_link" target="_blank" rel="noopener">[% uri.link | html %]</a>
+                                                                <td><a href="[% uri.href | html %]" class="uri_link" target="_blank" data-record-id="[% rec.bre_id %]" rel="noopener">[% uri.link | html %]</a>
                                                                     [%- IF uri.note -%]
                                                                         [%- '- <span property="description">' _ uri.note _ '</span>' %]
                                                                     [%- ELSE -%]

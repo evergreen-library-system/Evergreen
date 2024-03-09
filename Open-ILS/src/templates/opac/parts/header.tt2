@@ -137,6 +137,8 @@
         want_dojo = 1;
     END;
 
+    eresource_click_track = ctx.get_cgf("opac.eresources.link_click_tracking");
+
     # ... and for interfaces that require manual trigger of action triggers
     IF can_call_action_trigger == 'true';
         want_dojo = 1;
