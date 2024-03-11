@@ -128,7 +128,7 @@ unlink('package-lock.json');
 exec_system_cmd('npm install antora@' . $antora_version . ' @antora/lunr-extension@^1.0.0-alpha.8');
 
 # Now, finally, let's build the site
-exec_system_cmd('DOCSEARCH_INDEX_VERSION=latest NODE_PATH="$(npm root)" ./node_modules/@antora/cli/bin/antora --extension @antora/lunr-extension site-working.yml');
+exec_system_cmd('NODE_PATH="$(npm root)" ./node_modules/@antora/cli/bin/antora site-working.yml');
 
 print "Success: your site files are available at " . $html_output . " and can be moved into place for access at " . $base_url . "\n";
 
