@@ -78,7 +78,7 @@ export class CashReportsComponent implements OnInit {
                 'open-ils.circ',
                 'open-ils.circ.money.org_unit.user_payments',
                 this.auth.token(), this.selectedOrg.id(),
-                this.startDate.toISOString().split('T')[0], this.endDate.toISOString().split('T')[0]));
+                DateUtil.localYmdFromDate(this.startDate), DateUtil.localYmdFromDate(this.endDate)));
     }
 
     fillGridData(idlClass, dataSource, data) {
