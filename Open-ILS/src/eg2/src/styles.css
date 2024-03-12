@@ -801,3 +801,26 @@ a {
 .tooltip .tooltip-inner a {
   color: inherit;
 }
+
+/* Drop shadows for dropdown menus and active tabs */
+.nav-tabs .nav-link {
+  background-color: #f5f5f5;
+  border-color: #ddd;
+  padding: 0.5rem 0.85rem;
+}
+
+.nav-tabs .nav-link.hover, 
+.nav-tabs .nav-link:hover {
+  background-color: #fff;
+}
+
+.nav-tabs .nav-link.active, 
+.nav-tabs .nav-link:active {
+  background-color: #fff;
+  border-color: #aaa #aaa #fff;
+  box-shadow: 0 -0.2rem 0.5rem rgba(0, 0, 0, 0.07);
+}
+
+.dropdown-menu.show {
+  box-shadow: 0 0.1em 0.5em rgba(0, 0, 0, 0.3);
+}
