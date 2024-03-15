@@ -150,18 +150,19 @@
 
 == Evergreen 2.1
 
-. https://olddocs.evergreen-ils.org/2.1/index.html[(HTML)]
-. https://olddocs.evergreen-ils.org/2.1/Evergreen_Documentation.pdf[(PDF)]
+. https://olddocs.evergreen-ils.org/2.1/html/index.html[(HTML)]
+. https://olddocs.evergreen-ils.org/2.1/pdf/Evergreen_Documentation.pdf[(PDF)]
 
 == Evergreen 2.0
 
-. https://olddocs.evergreen-ils.org/2.0/index.html[(HTML)]
-. https://olddocs.evergreen-ils.org/2.0/Evergreen_Documentation.pdf[(PDF)]
+. https://olddocs.evergreen-ils.org/2.0/draft/html/index.html[(HTML)]
+. https://olddocs.evergreen-ils.org/2.0/draft/pdf/Evergreen_Documentation.pdf[(PDF)]
+
 
 == Evergreen 1.6
 
-. https://olddocs.evergreen-ils.org/1.6/draft/html/index.html[(HTML)]
-. https://olddocs.evergreen-ils.org/1.6/draft/pdf/Evergreen_Documentation.pdf.html[(PDF)]
+// . https://olddocs.evergreen-ils.org/1.6/draft/html/index.html[(HTML)]
+. https://olddocs.evergreen-ils.org/1.6/draft/pdf/Evergreen_Documentation.pdf [(PDF)]
 
 == Evergreen in Action
 
