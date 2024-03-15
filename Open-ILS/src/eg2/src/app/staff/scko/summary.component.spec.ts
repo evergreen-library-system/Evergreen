@@ -1,6 +1,6 @@
-import { IdlObject } from "@eg/core/idl.service";
-import { SckoService } from "./scko.service";
-import { SckoSummaryComponent } from "./summary.component";
+import { IdlObject } from '@eg/core/idl.service';
+import { SckoService } from './scko.service';
+import { SckoSummaryComponent } from './summary.component';
 
 
 let patron: IdlObject;
@@ -56,5 +56,5 @@ describe('SummaryComponent', () => {
             const component = new SckoSummaryComponent(mockService);
             expect(component.canEmail()).toEqual(false);
         });
-    })
+    });
 });

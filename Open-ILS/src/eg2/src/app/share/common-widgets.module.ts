@@ -23,7 +23,6 @@ import { CredentialInputComponent } from './util/credential-input.component';
 
 
 @NgModule({
-<<<<<<< HEAD
     declarations: [
         ComboboxComponent,
         ComboboxEntryComponent,

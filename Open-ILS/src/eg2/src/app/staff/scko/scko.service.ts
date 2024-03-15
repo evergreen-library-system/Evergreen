@@ -15,6 +15,10 @@ import {AudioService} from '@eg/share/util/audio.service';
 import {StringService} from '@eg/share/string/string.service';
 import {PcrudService} from '@eg/core/pcrud.service';
 
+const LOST = 3;
+const WARNING_TIMEOUT = 20;
+const PATRON_IDLE_TIMEOUT = 160;
+
 export interface ActionContext {
     barcode?: string; // item
     username?: string; // patron username or barcode
@@ -42,10 +46,10 @@ interface SessionCheckout {
 
 const CIRC_FLESH_DEPTH = 4;
 const CIRC_FLESH_FIELDS = {
-  circ: ['target_copy'],
-  acp:  ['call_number'],
-  acn:  ['record'],
-  bre:  ['flat_display_entries']
+    circ: ['target_copy'],
+    acp:  ['call_number'],
+    acn:  ['record'],
+    bre:  ['flat_display_entries']
 };
 
 @Injectable({providedIn: 'root'})
@@ -60,7 +64,7 @@ export class SckoService {
     patronPasswordRequired = false;
     patronIdleTimeout: number;
     patronTimeoutId: number;
-    logoutWarningTimeout = 20;
+    logoutWarningTimeout = WARNING_TIMEOUT;
     logoutWarningTimerId: number;
 
     alertAudio = false;
@@ -108,56 +112,56 @@ export class SckoService {
 
         return this.auth.testAuthToken()
 
-        .then(_ => {
+            .then(_ => {
 
-            // Note we cannot use server-store unless we are logged
-            // in with a workstation.
-            return this.org.settings([
-                'opac.barcode_regex',
-                'circ.selfcheck.patron_login_timeout',
-                'circ.selfcheck.auto_override_checkout_events',
-                'circ.selfcheck.patron_password_required',
-                'circ.checkout_auto_renew_age',
-                'circ.selfcheck.workstation_required',
-                'circ.selfcheck.alert.popup',
-                'circ.selfcheck.alert.sound',
-                'credit.payments.allow',
-                'circ.selfcheck.block_checkout_on_copy_status'
-            ]);
+                // Note we cannot use server-store unless we are logged
+                // in with a workstation.
+                return this.org.settings([
+                    'opac.barcode_regex',
+                    'circ.selfcheck.patron_login_timeout',
+                    'circ.selfcheck.auto_override_checkout_events',
+                    'circ.selfcheck.patron_password_required',
+                    'circ.checkout_auto_renew_age',
+                    'circ.selfcheck.workstation_required',
+                    'circ.selfcheck.alert.popup',
+                    'circ.selfcheck.alert.sound',
+                    'credit.payments.allow',
+                    'circ.selfcheck.block_checkout_on_copy_status'
+                ]);
 
-        }).then(sets => {
-            this.orgSettings = sets;
+            }).then(sets => {
+                this.orgSettings = sets;
 
-            const regPattern = sets['opac.barcode_regex'] || /^\d/;
-            this.barcodeRegex = new RegExp(regPattern);
-            this.patronPasswordRequired =
-                sets['circ.selfcheck.patron_password_required'];
+                const regPattern = sets['opac.barcode_regex'] || /^\d/;
+                this.barcodeRegex = new RegExp(regPattern);
+                this.patronPasswordRequired =
+                    sets['circ.selfcheck.patron_password_required'];
 
-            this.alertAudio = sets['circ.selfcheck.alert.sound'];
-            this.alertPopup = sets['circ.selfcheck.alert.popup'];
+                this.alertAudio = sets['circ.selfcheck.alert.sound'];
+                this.alertPopup = sets['circ.selfcheck.alert.popup'];
 
-            this.overrideCheckoutEvents =
-                sets['circ.selfcheck.auto_override_checkout_events'] || [];
+                this.overrideCheckoutEvents =
+                    sets['circ.selfcheck.auto_override_checkout_events'] || [];
 
-            this.blockStatuses =
-                sets['circ.selfcheck.block_checkout_on_copy_status'] ?
-                sets['circ.selfcheck.block_checkout_on_copy_status'].map(s => Number(s)) :
-                [];
+                this.blockStatuses =
+                    sets['circ.selfcheck.block_checkout_on_copy_status'] ?
+                        sets['circ.selfcheck.block_checkout_on_copy_status'].map(s => Number(s)) :
+                        [];
 
-            this.patronIdleTimeout =
-                Number(sets['circ.selfcheck.patron_login_timeout'] || 160);
+                this.patronIdleTimeout =
+                    Number(sets['circ.selfcheck.patron_login_timeout'] || PATRON_IDLE_TIMEOUT);
 
-            // Load a patron by barcode via URL params.
-            // Useful for development.
-            const username = this.route.snapshot.queryParamMap.get('patron');
+                // Load a patron by barcode via URL params.
+                // Useful for development.
+                const username = this.route.snapshot.queryParamMap.get('patron');
 
-            if (username && !this.patronPasswordRequired) {
-                return this.loadPatron(username);
-            } else {
-                // Go to the base checkout page by default.
-                this.router.navigate(['/staff/selfcheck']);
-            }
-        }).catch(_ => {}); // console errors
+                if (username && !this.patronPasswordRequired) {
+                    return this.loadPatron(username);
+                } else {
+                    // Go to the base checkout page by default.
+                    this.router.navigate(['/staff/selfcheck']);
+                }
+            }).catch(_ => {}); // console errors
     }
 
     getFleshedCircs(circIds: number[]): Observable<IdlObject> {
@@ -195,13 +199,14 @@ export class SckoService {
             'open-ils.actor.verify_user_password',
             this.auth.token(), barcode, username, null, password)
 
-        .toPromise().then(verified => {
-            if (Number(verified) === 1) {
-                return this.fetchPatron(username, barcode);
-            } else {
-                return Promise.reject('Bad password');
-            }
-        });
+            .toPromise()
+            .then(verified => {
+                if (Number(verified) === 1) {
+                    return this.fetchPatron(username, barcode);
+                } else {
+                    return Promise.reject('Bad password');
+                }
+            });
     }
 
     fetchPatron(username: string, barcode: string): Promise<any> {
@@ -211,22 +216,22 @@ export class SckoService {
             'open-ils.actor.user.retrieve_id_by_barcode_or_username',
             this.auth.token(), barcode, username).toPromise()
 
-        .then(patronId => {
+            .then(patronId => {
 
-            const evt = this.evt.parse(patronId);
+                const evt = this.evt.parse(patronId);
 
-            if (evt || !patronId) {
-                console.error('Cannot find user: ', evt);
-                return Promise.reject('User not found');
-            }
+                if (evt || !patronId) {
+                    console.error('Cannot find user: ', evt);
+                    return Promise.reject('User not found');
+                }
 
-            return this.patrons.getFleshedById(patronId);
-        })
-        .then(patron => this.patronSummary = new PatronSummary(patron))
-        .then(_ => this.patrons.getVitalStats(this.patronSummary.patron))
-        .then(stats => this.patronSummary.stats = stats)
-        .then(_ => this.resetPatronTimeout())
-        .then(_ => this.patronLoaded.emit());
+                return this.patrons.getFleshedById(patronId);
+            })
+            .then(patron => this.patronSummary = new PatronSummary(patron))
+            .then(_ => this.patrons.getVitalStats(this.patronSummary.patron))
+            .then(stats => this.patronSummary.stats = stats)
+            .then(_ => this.resetPatronTimeout())
+            .then(_ => this.patronLoaded.emit());
     }
 
     resetPatronTimeout() {
@@ -301,34 +306,34 @@ export class SckoService {
 
         return this.net.request(
             'open-ils.circ', method, this.auth.token(), {
-            patron_id: this.patronSummary.id,
-            copy_barcode: barcode
-        }).toPromise()
+                patron_id: this.patronSummary.id,
+                copy_barcode: barcode
+            }).toPromise()
 
-        .then(result => {
+            .then(result => {
 
-            console.debug('CO returned', result);
+                console.debug('CO returned', result);
 
-            return this.handleCheckoutResult(result, barcode, 'checkout');
+                return this.handleCheckoutResult(result, barcode, 'checkout');
 
-        }).then(ctx => {
-            console.debug('handleCheckoutResult returned', ctx);
+            }).then(ctx => {
+                console.debug('handleCheckoutResult returned', ctx);
 
-            if (ctx.override) {
-                return this.checkout(barcode, true);
-            } else if (ctx.redo) {
-                return this.checkout(barcode);
-            } else if (ctx.renew) {
-                return this.renew(barcode);
-            }
+                if (ctx.override) {
+                    return this.checkout(barcode, true);
+                } else if (ctx.redo) {
+                    return this.checkout(barcode);
+                } else if (ctx.renew) {
+                    return this.renew(barcode);
+                }
 
-            return ctx;
+                return ctx;
 
-        // Checkout actions always takes us back to the main page
-        // so we can see our items out in progress.
-        })
-        .then(ctx => this.notifyPatron(ctx))
-        .finally(() => this.router.navigate(['/staff/selfcheck']));
+            // Checkout actions always takes us back to the main page
+            // so we can see our items out in progress.
+            })
+            .then(ctx => this.notifyPatron(ctx))
+            .finally(() => this.router.navigate(['/staff/selfcheck']));
     }
 
     renew(barcode: string,
@@ -339,24 +344,25 @@ export class SckoService {
 
         return this.net.request(
             'open-ils.circ', method, this.auth.token(), {
-            patron_id: this.patronSummary.id,
-            copy_barcode: barcode
-        }).toPromise()
-
-        .then(result => {
-            console.debug('Renew returned', result);
-
-            return this.handleCheckoutResult(result, barcode, 'renew', external);
-
-        }).then(ctx => {
-            console.debug('handleCheckoutResult returned', ctx);
-
-            if (ctx.override) {
-                return this.renew(barcode, true, external);
+                patron_id: this.patronSummary.id,
+                copy_barcode: barcode
             }
+        )
+            .toPromise()
+            .then(result => {
+                console.debug('Renew returned', result);
 
-            return ctx;
-        });
+                return this.handleCheckoutResult(result, barcode, 'renew', external);
+
+            }).then(ctx => {
+                console.debug('handleCheckoutResult returned', ctx);
+
+                if (ctx.override) {
+                    return this.renew(barcode, true, external);
+                }
+
+                return ctx;
+            });
     }
 
     notifyPatron(ctx: ActionContext) {
@@ -375,15 +381,15 @@ export class SckoService {
         if (!ctx.displayText) { return; }
 
         this.strings.interpolate(ctx.displayText, {ctx: ctx})
-        .then(str => {
-            this.statusDisplayText = str;
-            console.debug('Displaying text to user:', str);
+            .then(str => {
+                this.statusDisplayText = str;
+                console.debug('Displaying text to user:', str);
 
-            if (this.alertPopup && ctx.shouldPopup && str) {
-                this.alertDialog.dialogBody = str;
-                this.alertDialog.open().toPromise();
-            }
-        });
+                if (this.alertPopup && ctx.shouldPopup && str) {
+                    this.alertDialog.dialogBody = str;
+                    this.alertDialog.open().toPromise();
+                }
+            });
     }
 
     handleCheckoutResult(result: any, barcode: string,
@@ -446,16 +452,16 @@ export class SckoService {
                 // Flesh the previous circ so we can show the title,
                 // etc. in the receipt.
                 return this.getFleshedCirc(ctx.payload.old_circ.id())
-                .then(oldCirc => {
-                    ctx.previousCirc = oldCirc;
-                    return ctx;
-                });
+                    .then(oldCirc => {
+                        ctx.previousCirc = oldCirc;
+                        return ctx;
+                    });
             }
         }
 
         // LOST items can be checked in and made usable if configured.
         if (ctx.payload.copy
-            && Number(ctx.payload.copy.status()) === /* LOST */ 3
+            && Number(ctx.payload.copy.status()) === LOST
             && this.overrideCheckoutEvents.length
             && this.overrideCheckoutEvents.includes('COPY_STATUS_LOST')) {
 
@@ -568,11 +574,11 @@ export class SckoService {
                 'open-ils.circ.transit.abort',
                 this.auth.token(), {barcode: barcode}).toPromise()
 
-            .then(resp => {
+                .then(resp => {
 
-                console.debug('Transit abort returned', resp);
-                return Number(resp) === 1;
-            });
+                    console.debug('Transit abort returned', resp);
+                    return Number(resp) === 1;
+                });
         }
 
         promise = promise.then(ok => {
@@ -685,7 +691,7 @@ export class SckoService {
 
         const entry =
             circ.target_copy().call_number().record().flat_display_entries()
-            .filter(e => e.name() === field)[0];
+                .filter(e => e.name() === field)[0];
 
         return entry ? entry.value() : '';
     }

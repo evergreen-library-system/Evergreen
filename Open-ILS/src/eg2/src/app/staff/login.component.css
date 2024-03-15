@@ -1,0 +1,8 @@
+#show_password {
+    border-left: 0px;
+    border-radius: 0px 4px 4px 0px;
+}
+
+#show_password span.material-icons {
+   font-size: 21px;
+}
