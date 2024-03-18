@@ -459,10 +459,13 @@ NAD+SU+$c{provider_id}::92'
 CUX+2:$c{currency_type}:9'
 EDI
 
-    # EDI lineitem segments
-    $edi .= $self->build_lineitem_segments($_) for @lis;
-
     my $li_count = scalar(@lis);
+
+    # EDI lineitem segments
+    for (my $i = 0; $i <= $li_count; $i++) {
+        $lis[$i]->{seq_id} = $i + 1;
+        $edi .= $self->build_lineitem_segments($lis[$i]);
+    }
 
     # Count the number of segments in the EDI message by counting the
     # number of newlines.  Add to count for lines below, not including
@@ -503,9 +506,14 @@ sub build_lineitem_segments {
     my $idqual = $li_hash->{idqual};
     my $quantity = $li_hash->{quantity};
     my $price = $li_hash->{estimated_unit_price};
+    my $seq_id = $li_hash->{seq_id};
+
+    # enumerate lineitems using Evergreen's internal lineitem ID,
+    # unless the vendor wants us to enumerate them sequentially
+    $seq_id = $id unless $c{edi_attrs}->{LINEITEM_SEQUENTIAL_ID};
 
     # Line item identifier segments
-    my $edi = "LIN+$id++$idval:$idqual'\n";
+    my $edi = "LIN+$seq_id++$idval:$idqual'\n";
     $edi .= "PIA+5+$idval:$idqual'\n";
 
     $edi .= $self->IMD('BTI', $li_hash->{title});

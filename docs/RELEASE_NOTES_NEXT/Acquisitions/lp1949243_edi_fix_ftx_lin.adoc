@@ -1,0 +1,9 @@
+== EDI Attribute Added for Enumerating Lineitems Sequentially ==
+
+Historically, Evergreen's EDI output has used the internal lineitem ID as the
+line sequence number in LIN lines.  Some vendors (e.g. ULS) would prefer LIN to
+use a sequentially assigned number instead.  A new EDI attribute, "Lineitems
+Are Enumerated Sequentially," has been added to support that.  See
+[LP 1949243](https://bugs.launchpad.net/evergreen/+bug/1949243) for further
+discussion.
+

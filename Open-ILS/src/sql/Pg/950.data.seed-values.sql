@@ -18614,7 +18614,10 @@ INSERT INTO acq.edi_attr (key, label) VALUES
         'Lineitem Identifier Fields (LIN/PIA) Use Vendor-Encoded ID Value When Available', 'aea', 'label')),
     ('LINEITEM_REF_ID_ONLY',
         oils_i18n_gettext('LINEITEM_REF_ID_ONLY',
-        'Lineitem Reference Field (RFF) Uses Lineitem ID Only', 'aea', 'label'))
+        'Lineitem Reference Field (RFF) Uses Lineitem ID Only', 'aea', 'label')),
+    ('LINEITEM_SEQUENTIAL_ID',
+        oils_i18n_gettext('LINEITEM_SEQUENTIAL_ID',
+        'Lineitems Are Enumerated Sequentially', 'aea', 'label'))
 
 ;
 
