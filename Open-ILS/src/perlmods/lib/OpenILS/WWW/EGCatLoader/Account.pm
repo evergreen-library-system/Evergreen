@@ -2363,9 +2363,19 @@ sub load_myopac_payment_form {
             if ($self->ctx->{get_org_setting}->($e->requestor->home_ou, 'credit.processor.stripe.enabled')) {
                 my $skey = $self->ctx->{get_org_setting}->($e->requestor->home_ou, 'credit.processor.stripe.secretkey');
                 my $currency = $self->ctx->{get_org_setting}->($e->requestor->home_ou, 'credit.processor.stripe.currency');
-                my $stripe = Business::Stripe->new(-api_key => $skey);
+                my $amount = $self->ctx->{fines}->{balance_owed} * 100;
+
+                # generate an idempotency key from the list of transactions to prevent duplicates;
+                # if the list is empty, use (userID, YYYY-mm-dd, amount)
+                my @payment_xacts = ($self->cgi->param('xact'), $self->cgi->param('xact_misc'));
+                my $idempotency_key = md5_hex(scalar(@payment_xacts)
+                    ? join(',', sort(@payment_xacts))
+                    : join(',', $self->ctx->{user}->id, DateTime->now->strftime('%F'), $amount));
+                my $default_headers = HTTP::Headers->new('Idempotency-Key' => $idempotency_key);
+                my $stripe = Business::Stripe->new(-api_key => $skey, -ua_args => { default_headers => $default_headers } );
+
                 my $intent = $stripe->api('post', 'payment_intents',
-                    amount                => $self->ctx->{fines}->{balance_owed} * 100,
+                    amount                => $amount,
                     currency              => $currency || 'usd',
                     description           => 'User Database ID: ' . $self->ctx->{user}->id
                 );
