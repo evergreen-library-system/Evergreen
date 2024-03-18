@@ -527,7 +527,7 @@ sub build_lineitem_segments {
 
     for my $note (@{$li_hash->{notes}}) {
         if ($note) {
-            $edi .= "FTX+LIN+1+$note'\n"
+            $edi .= "FTX+LIN+1++$note'\n"
         } else {
             $edi .= "FTX+LIN+1'\n"
         }
