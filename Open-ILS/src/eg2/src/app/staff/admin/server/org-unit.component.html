@@ -48,13 +48,13 @@
               [mode]="currentOrg().isnew() ? 'create': 'update'" [hideBanner]="true" 
               (recordSaved)="orgSaved($event)" displayMode="inline" 
               (recordDeleted)="orgDeleted()"
-              readonlyFields="parent,parent_ou" [preloadLinkedValues]="true"
+              readonlyFields="parent,parent_ou,id" [preloadLinkedValues]="true"
               [fieldOptions]="{ou_type: {customValues: orgTypeOptions()}}"
               [record]="currentOrg().isnew() ? currentOrg() : null"
               [recordId]="currentOrg().isnew() ? null : currentOrg().id()"
               [showDelete]="!orgHasChildren()"
-              fieldOrder="parent_ou,ou_type,name,shortname,phone,email,opac_visible,fiscal_calendar"
-              hiddenFields="id,billing_address,mailing_address,holds_address,ill_address">
+              fieldOrder="parent_ou,ou_type,name,shortname,id,phone,email,opac_visible,fiscal_calendar"
+              hiddenFields="billing_address,mailing_address,holds_address,ill_address">
               <eg-fm-record-editor-action label="Add Child" i18n-label 
                 [disabled]="orgChildTypes().length === 0 || currentOrg().isnew()"
                 buttonCss="btn-outline-info"
