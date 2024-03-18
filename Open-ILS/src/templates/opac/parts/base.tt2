@@ -18,7 +18,7 @@
         [% END %]
 
         [% IF ctx.get_org_setting(ctx.search_ou, 'opac.patron.custom_css') %]
-            [% custom_css = ctx.get_org_setting(ctx.search_ou, 'opac.patron.custom_css') %]
+            [% custom_css = ctx.defang_string(ctx.get_org_setting(ctx.search_ou, 'opac.patron.custom_css')) %]
         [% '<style>'; custom_css ; '</style>' %]                                          
         [% END %]
 
