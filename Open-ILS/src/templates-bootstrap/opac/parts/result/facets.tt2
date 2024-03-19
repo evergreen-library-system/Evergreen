@@ -89,14 +89,25 @@ FOR facet IN sorted_facets;
                     # Link removes the facet from the set of selected facets.
                 %]
                     <div class="facet_template facet_template_selected">
+                        <div class="facet" aria-hidden="true">
+                            [% IF new_facets.size == 0 %]
+                              <a title="[% l('Remove filter') %]"
+                                href="[% mkurl('', {}, ['facet']) %]" rel="nofollow" vocab="" tabindex="-1">
+                                <i class="fas fa-times"></i></a>
+                            [% ELSE %]
+                              <a title="[% l('Remove filter') %]"
+                                href="[% mkurl('', {facet => new_facets}) %]" rel="nofollow" vocab="" tabindex="-1">
+                                <i class="fas fa-times"></i></a>
+                            [% END %]
+                        </div>
                         <div class="facet">
                             [% IF new_facets.size == 0 %]
                             <a
-                              title="[% l('Show all results, not just those matching this term') %]"
+                              title="[% l('Remove filter') %]"
                               href="[% mkurl('', {}, ['facet']) %]" rel="nofollow" vocab="">[% display_value %]</a>
                             [% ELSE %]
                             <a
-                              title="[% l('Expand to also show results not matching this term') %]"
+                              title="[% l('Remove filter') %]"
                               href="[% mkurl('', {facet => new_facets}) %]" rel="nofollow" vocab="">[% display_value %]</a>
                             [% END %]
                         </div>
