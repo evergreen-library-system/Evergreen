@@ -100,7 +100,7 @@ const routes: Routes = [{
 }, {
     path: 'sip/account',
     loadChildren: () =>
-      import('./sip/account.module').then(m => m.SipAccountModule)
+        import('./sip/account.module').then(m => m.SipAccountModule)
 }, {
     path: 'sip/screen_message',
     component: BasicAdminPageComponent,

@@ -123,10 +123,10 @@ export class SipAccountComponent implements OnInit {
     fetchGroups() {
         this.pcrud.retrieveAll('sipsetg',
             {order_by: {sipsetg: 'label'}}, {atomic: true})
-        .subscribe(grps => {
-            this.settingGroups =
-                grps.map(g => ({id: g.id(), label: g.label()}));
-        });
+            .subscribe(grps => {
+                this.settingGroups =
+                    grps.map(g => ({id: g.id(), label: g.label()}));
+            });
     }
 
     loadAccount(): Observable<any> {
@@ -153,12 +153,12 @@ export class SipAccountComponent implements OnInit {
 
         this.pcrud.retrieve('sipsetg', entry.id,
             {flesh: 1, flesh_fields: {sipsetg: ['settings']}})
-        .subscribe(grp => {
-            this.account.setting_group(grp);
-            if (this.settingGrid) {
-                this.settingGrid.reload();
-            }
-        });
+            .subscribe(grp => {
+                this.account.setting_group(grp);
+                if (this.settingGrid) {
+                    this.settingGrid.reload();
+                }
+            });
     }
 
     usrChanged(entry: ComboboxEntry) {
@@ -196,7 +196,7 @@ export class SipAccountComponent implements OnInit {
             modified.ischanged(true);
 
             this.pcrud.autoApply(settings.concat(modified)).toPromise()
-            .then(_ => this.refreshAccount());
+                .then(_ => this.refreshAccount());
         });
     }
 
@@ -220,27 +220,27 @@ export class SipAccountComponent implements OnInit {
 
         this.net.request('open-ils.sip2',
             'open-ils.sip2.account.cud', this.auth.token(), account)
-        .subscribe(acc => {
+            .subscribe(acc => {
 
-            const evt = this.evt.parse(acc);
+                const evt = this.evt.parse(acc);
 
-            if (evt) {
-                console.error(evt);
-                this.strings.strings['staff.admin.sip.account.failed']
-                .resolver({}).then(text => this.toast.danger(text));
-                return;
-            }
+                if (evt) {
+                    console.error(evt);
+                    this.strings.strings['staff.admin.sip.account.failed']
+                        .resolver({}).then(text => this.toast.danger(text));
+                    return;
+                }
 
-            this.strings.strings['staff.admin.sip.account.saved']
-            .resolver({}).then(text => this.toast.success(text));
+                this.strings.strings['staff.admin.sip.account.saved']
+                    .resolver({}).then(text => this.toast.success(text));
 
-            if (this.createMode) {
-                this.router.navigate(
-                    [`/staff/admin/server/sip/account/${acc.id()}`]);
-            } else {
-                this.refreshAccount();
-            }
-        });
+                if (this.createMode) {
+                    this.router.navigate(
+                        [`/staff/admin/server/sip/account/${acc.id()}`]);
+                } else {
+                    this.refreshAccount();
+                }
+            });
     }
 
     sipUsernameChange(evt: Event) {
@@ -254,7 +254,7 @@ export class SipAccountComponent implements OnInit {
             search.id = {'!=': this.accountId};
         }
         this.pcrud.search('sipacc', search)
-        .subscribe(existing => this.dupeSipUser = true);
+            .subscribe(existing => this.dupeSipUser = true);
     }
 
     editFirstSetting(rows: any) {
@@ -278,10 +278,11 @@ export class SipAccountComponent implements OnInit {
         if (row.setting_group() === 1) { return; }
 
         this.settingDialog.record = this.idl.clone(row);
-        this.settingDialog.open().subscribe(
-            ok => this.refreshAccount(),
-            err => {} // todo toast
-        );
+        this.settingDialog.open()
+            .subscribe(
+                ok => this.refreshAccount(),
+                (err: unknown) => console.error(err)
+            );
     }
 
 

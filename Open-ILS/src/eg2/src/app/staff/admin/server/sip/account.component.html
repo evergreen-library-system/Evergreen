@@ -7,7 +7,7 @@
 
 
 <a routerLink="/staff/admin/server/sip/account">
-  <button class="btn btn-outline-dark label-with-material-icon">
+  <button type="button" class="btn btn-outline-dark label-with-material-icon">
     <span class="material-icons">reply</span>
     <span i18n>SIP Accounts</span>
   </button>
@@ -15,7 +15,7 @@
 
 <ng-container *ngIf="!createMode">
   <a routerLink="/staff/admin/server/sip/account/new">
-    <button class="btn btn-outline-dark label-with-material-icon ml-2">
+    <button type="button" class="btn btn-outline-dark label-with-material-icon ml-2">
       <span class="material-icons">add</span>
       <span i18n>New Account</span>
     </button>
@@ -66,10 +66,10 @@
           [selectedId]="account.setting_group() ? account.setting_group().id() : null"
           [entries]="settingGroups" (onChange)="grpChanged($event)">
         </eg-combobox>
-        <button class="btn btn-outline-info ml-2" 
+        <button type="button" class="btn btn-outline-info ml-2" 
           [disabled]="!account.setting_group()" (click)="openCloneDialog()" 
           i18n>Clone</button>
-        <button class="btn btn-outline-danger ml-2" (click)="openDeleteDialog()" 
+        <button type="button" class="btn btn-outline-danger ml-2" (click)="openDeleteDialog()" 
           [disabled]="!account.setting_group() || account.setting_group().id() === 1" 
           i18n>Delete</button>
       </div>
@@ -79,7 +79,7 @@
       <div class="form-inline">
         <input type="text" class="form-control"
           [ngModel]="account.sip_username()" (change)="sipUsernameChange($event)">
-        <button class="btn btn-outline-dark ml-2" 
+        <button type="button" class="btn btn-outline-dark ml-2" 
           [ngClass]="{'border-danger' : createMode && !account.sip_password()}"
           (click)="setPassword()">Set Password</button>
         <span *ngIf="dupeSipUser" class="alert alert-danger ml-1 mt-2 p-1" i18n>

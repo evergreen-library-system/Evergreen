@@ -64,7 +64,7 @@ export class SipAccountListComponent implements OnInit {
     }
 
     newAccount() {
-        this.router.navigate([`/staff/admin/server/sip/account/new`]);
+        this.router.navigate(['/staff/admin/server/sip/account/new']);
     }
 
     deleteSelected(rows: any[]) {

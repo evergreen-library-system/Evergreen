@@ -6,19 +6,19 @@ import {SipAccountComponent} from './account.component';
 import {DeleteGroupDialogComponent} from './delete-group-dialog.component';
 
 @NgModule({
-  declarations: [
-    SipAccountComponent,
-    SipAccountListComponent,
-    DeleteGroupDialogComponent
-  ],
-  imports: [
-    AdminCommonModule,
-    SipAccountRoutingModule
-  ],
-  exports: [
-  ],
-  providers: [
-  ]
+    declarations: [
+        SipAccountComponent,
+        SipAccountListComponent,
+        DeleteGroupDialogComponent
+    ],
+    imports: [
+        AdminCommonModule,
+        SipAccountRoutingModule
+    ],
+    exports: [
+    ],
+    providers: [
+    ]
 })
 
 export class SipAccountModule {
