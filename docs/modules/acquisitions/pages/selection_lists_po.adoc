@@ -148,7 +148,7 @@ A purchase order is marked received once all of its line items are marked either
 
 Line items show a large amount of detail about the titles and items that are in various stages of the Acquisitions process. Line items are filterable and sortable. You can perform actions on a single line item, several line items, or all line items. You can also expand the line item display to show details of a single line item or all line items.
 
-For specific selection list actions, see the documentation covering xref:acquisitions/selection_lists_po.adoc#selection_lists[Selection Lists]. For specific purchase order actions, see xref:acquisitions/selection_lists_po.adoc#purchase_order_actions[Purchase Order Actions]. Below we will describe Line Item Batch Actions that apply to both selection lists and purchase orders.
+For specific selection list actions, see the documentation covering xref:acquisitions:selection_lists_po.adoc#selection_lists[Selection Lists]. For specific purchase order actions, see xref:acquisitions:selection_lists_po.adoc#purchase_order_actions[Purchase Order Actions]. Below we will describe Line Item Batch Actions that apply to both selection lists and purchase orders.
 
 [[expand_line_item_display]]
 ==== Expand Line Item Display ====
@@ -245,7 +245,7 @@ The screen will refresh and your deleted line items will be removed fromthe list
 [[add_items_to_selected_line_items]]
 ==== Add Items to Selected Line Items ====
 
-Line items must have at least one individual item attached for an order to be activated. You may add items to individual line items or to a group of selected line items. Items may be added up until the point a line item is marked as on order. To add items to a single line item, see below under xref:acquisitions/selection_lists_po.adoc#item_details_interface[Item Details Interface].
+Line items must have at least one individual item attached for an order to be activated. You may add items to individual line items or to a group of selected line items. Items may be added up until the point a line item is marked as on order. To add items to a single line item, see below under xref:acquisitions:selection_lists_po.adoc#item_details_interface[Item Details Interface].
 
 To add items in batch to one, several, or all line items, take the
 following steps:
@@ -269,7 +269,7 @@ dropdown and then select _Apply_.
 ... Distribution formulas allow you to specify the number of items that should be distributed to specific branches. They can also serve as templates allowing you to predefine settings for your items.
 ... Note that if you make any individual item or batch updates, those values will override values set by the distribution formula.
 ... You will only see distribution formulas permitted by your permissions and working location(s).
-... For more information on creating a distribution formula, see the documentation on xref:admin/acquisitions_admin.adoc#acq_distribution_formulas[Distribution Formulas].
+... For more information on creating a distribution formula, see the documentation on xref:admin:acquisitions_admin.adoc#acq_distribution_formulas[Distribution Formulas].
 .. All fields in this modal can be edited independently of one another. You may have Library Settings in play to set default values, and therefore may not need to set values here. Fields available in the interface include:
 ... Owning Branch
 ... Shelving Location
@@ -309,7 +309,7 @@ image::selection_lists_po/acq_batch_update_items_modal.png[Batch Update Items Mo
 ... Distribution formulas allow you to specify the number of items that should be distributed to specific branches. They can also serve as templates allowing you to predefine settings for your items.
 ... Note that if you make any individual item or batch updates, those values will override values set by the distribution formula.
 ... You will only see distribution formulas permitted by your permissions and working location(s).
-... For more information on creating a distribution formula, see the documentation on xref:admin/acquisitions_admin.adoc#acq_distribution_formulas[Distribution Formulas].
+... For more information on creating a distribution formula, see the documentation on xref:admin:acquisitions_admin.adoc#acq_distribution_formulas[Distribution Formulas].
 .. All fields in this modal can be edited independently of one another. You may have Library Settings in play to set default values, and therefore may not need to set values here. Fields available in the interface include:
 ... Owning Branch
 ... Shelving Location
@@ -343,7 +343,7 @@ image::selection_lists_po/acq_export_attribute_list_modal.png[Export Attribute L
 +
 . A text file containing a list of your selected attributes will be downloaded.
 
-Note that you can select attributes to export independent of the Line Item Order Identifier, but attributes must be in the xref:acquisitions/selection_lists_po.adoc#line_item_bibliographic_info[Line Item Bibliographic Record] in order to be available for export and download. If a line item is missing an attribute, that line item will be skipped for purposes of the export.
+Note that you can select attributes to export independent of the Line Item Order Identifier, but attributes must be in the xref:acquisitions:selection_lists_po.adoc#line_item_bibliographic_info[Line Item Bibliographic Record] in order to be available for export and download. If a line item is missing an attribute, that line item will be skipped for purposes of the export.
 
 [[line_item_details]]
 === Line Item Details ===
@@ -395,9 +395,9 @@ This line item shows:
 ** Link to Purchase Order or Selection List - if your purchase order was generated from a selection list, you will see a link here to open the selection list. Similarly, the selection list will show a link to the purchase order.
 ** _Request(s)_ - select this to open a new tab that will show any patron purchase requests associated with this line item.
 ** _Invoice(s)_ - select this to open an Acquisitions Search window with a search scoped to display all invoices associated with the line item ID. From the search results you can open and view details of a particular invoice.
-*** For more information see the xref:acquisitions/acquisitions_search.adoc[Acqisitions Search] documentation.
+*** For more information see the xref:acquisitions:acquisitions_search.adoc[Acquisitions Search] documentation.
 ** _Claim Policy_ - this will show the claim policy associated with the line item. 
-*** For more information see the xref:admin/acquisitions_admin.adoc#acq_claiming[Claim Policy] documentation.
+*** For more information see the xref:admin:acquisitions_admin.adoc#acq_claiming[Claim Policy] documentation.
 ** Provider - the name of the Provider is displayed. Selecting the Provider name will open the Provider Details interface.
 ** _Import Queue_ - if your line item is associated with an import queue, this will open the import queue in a new tab
 
@@ -474,13 +474,13 @@ Details available in the interface include:
 * Call Number
 * Barcode
 
-All elements except Barcode can be applied in batch using the Batch Update line. Select your desired values from the dropdowns and then select _Batch Update_ to apply those values to all items. If you do not assign call numbers and barcodes to items, they will be assigned placeholder values when you activate a purchase order. For more information see xref:acquisitions/selection_lists_po.adoc#activating_purchase_order[Activating a Purchase Order], below.
+All elements except Barcode can be applied in batch using the Batch Update line. Select your desired values from the dropdowns and then select _Batch Update_ to apply those values to all items. If you do not assign call numbers and barcodes to items, they will be assigned placeholder values when you activate a purchase order. For more information see xref:acquisitions:selection_lists_po.adoc#activating_purchase_order[Activating a Purchase Order], below.
 
 You can also choose to use a distribution formula in this interface. Distribution formulas allow you to specify the number of items that should be distributed to specific branches. They can also serve as templates allowing you to predefine settings for your items.
 
 Select a distribution formula from the dropdown and then select _Apply_. Note that if you make any individual item or batch updates, those values will override values set by the distribution formula.
 
-For more information on creating a distribution formula, see the documentation on xref:admin/acquisitions_admin.adoc#acq_distribution_formulas[Distribution Formulas].
+For more information on creating a distribution formula, see the documentation on xref:admin:acquisitions_admin.adoc#acq_distribution_formulas[Distribution Formulas].
 
 Items which are on order may be marked as received from the worksheet using the _Mark Received_ link or canceled using the _Cancel_ link.
 
@@ -497,7 +497,7 @@ You will see any existing notes or alerts as well as an option to create a new n
 
 Notes are free text and if you are using EDI they can be sent to the vendor by selecting the Vendor Public checkbox. For non-EDI orders, notes would need to be manually entered on the vendor’s ordering site.
 
-Alerts are chosen from a dropdown. An alert will create a pop up notice when an item with an alert is received. Alert values are set in xref:admin/acquisitions_admin.adoc#create_a_line_item_alert[Acquisitions Administration].
+Alerts are chosen from a dropdown. An alert will create a pop up notice when an item with an alert is received. Alert values are set in xref:admin:acquisitions_admin.adoc#create_a_line_item_alert[Acquisitions Administration].
 
 To delete a line item alert, select Delete on the right hand side. You will not get a confirmation dialog, so make sure you really want to delete the note or alert!
 
@@ -521,7 +521,7 @@ Line item actions include:
 * _Open Holdings View_ - this opens the catalog Holdings View for the linked catalog record.
 ** This action is only available after you have records loaded in the local catalog.
 * _Claims_ - this will open a dialog showing existing claims made against the line item and/or allowing you to claim items if they meet the criteria established by the claim policy associated with that line item.
-** For more information see the xref:admin/acquisitions_admin.adoc#acq_claiming[Claim Policy] documentation.
+** For more information see the xref:admin:acquisitions_admin.adoc#acq_claiming[Claim Policy] documentation.
 * _View History_ - this opens a grid displaying the history of the line item, including timestamps and usernames of editors.
 
 [[selection_lists]]
@@ -529,14 +529,14 @@ Line item actions include:
 
 Selection lists allow you to create, manage, and save lists of items that you may want to purchase. To view your selection lists, navigate to *Acquisitions -> Selection Lists*. This will take you to the Acquisitions Search interface with the tab _Selection List Search_ selected, and a search will automatically be executed for all selection lists owned by the logged-in user.
 
-You can change this default search to include other search parameters. For more information please see the documentation on xref:acquisitions/acquisitions_search.adoc#default_acquisitions_search[Creating a New Default Search].
+You can change this default search to include other search parameters. For more information please see the documentation on xref:acquisitions:acquisitions_search.adoc#default_acquisitions_search[Creating a New Default Search].
 
-You can also use the Acquisitions Search interface to search for and retrieve selection lists created by other users. For more information please see the xref:acquisitions/acquisitions_search.adoc[Acqisitions Search] documentation.
+You can also use the Acquisitions Search interface to search for and retrieve selection lists created by other users. For more information please see the xref:acquisitions:acquisitions_search.adoc[Acquisitions Search] documentation.
 
 [[create_selection_list]]
 === Create a Selection List ===
 
-Selection lists can be created in four areas within Acquisitions. Selection lists can be created when you xref:acquisitions/selection_lists_po.adoc#add_brief_records_selection_list[add brief records], use the xref:acquisitions/vandelay_acquisitions_integration.adoc[Load MARC Order Records] interface, or find records through xref:acquisitions/selection_lists_po.adoc#marc_federated_search[MARC Federated Search]. In each of these interfaces, you will be able to add records to a new or existing selection list.
+Selection lists can be created in four areas within Acquisitions. Selection lists can be created when you xref:acquisitions:selection_lists_po.adoc#add_brief_records_selection_list[add brief records], use the xref:acquisitions:vandelay_acquisitions_integration.adoc[Load MARC Order Records] interface, or find records through xref:acquisitions:selection_lists_po.adoc#marc_federated_search[MARC Federated Search]. In each of these interfaces, you will be able to add records to a new or existing selection list.
 
 Selection lists can also be created through the selection lists search interface:
 
@@ -617,12 +617,12 @@ image::selection_lists_po/acq_delete_selection_list_modal.png[Delte Selection Li
 You can add line items to a selection list in one of several ways:
 
 * Add a brief record from within the selection list itself.
-* Add a xref:acquisitions/selection_lists_po.adoc#add_brief_records_selection_list[brief record] from the New Brief Record interface.
-* Upload MARC order records from the xref:acquisitions/vandelay_acquisitions_integration.adoc[Load MARC Order Records] interface.
-* Add records through the xref:acquisitions/selection_lists_po.adoc#marc_federated_search[MARC Federated Search] interface.
+* Add a xref:acquisitions:selection_lists_po.adoc#add_brief_records_selection_list[brief record] from the New Brief Record interface.
+* Upload MARC order records from the xref:acquisitions:vandelay_acquisitions_integration.adoc[Load MARC Order Records] interface.
+* Add records through the xref:acquisitions:selection_lists_po.adoc#marc_federated_search[MARC Federated Search] interface.
 * Use the View/Place Orders menu item from the bibliographic record in the staff catalog.
 ** Note that this will put you in the old Dojo interface and you will need to know the name of your existing selection list to enter it in the typeahead.
-* From the xref:acquisitions/purchase_requests_management.adoc[ Patron Requests] interface.
+* From the xref:acquisitions:purchase_requests_management.adoc[ Patron Requests] interface.
 
 To add a line item from within a selection list:
 
@@ -693,7 +693,7 @@ image::selection_lists_po/acq_create_po.png[Create Purchase Order Form]
 . Once you have filled out the fields, click *Create*.
 .. If you did not select _Import Bibs and Create Copies_, you will be taken to the purchase order interface and all line items will be in the status Pending-Order.
 .. If you did select _Import Bibs and Create Copies_, you will be presented with a record import interface to import records from a file at the time of your purchase order creation.
-... This interface is similar to the xref:cataloging/batch_importing_MARC.adoc[MARC Batch Import/Export] and xref:acquisitions/vandelay_acquisitions_integration.adoc[Load MARC Order Records] interfaces. Please see documentation about those interfaces for more information.
+... This interface is similar to the xref:cataloging:batch_importing_MARC.adoc[MARC Batch Import/Export] and xref:acquisitions:vandelay_acquisitions_integration.adoc[Load MARC Order Records] interfaces. Please see documentation about those interfaces for more information.
 ... Once you have loaded your records, you will see your purchase order with all line items in the status Pending-Order.
 
 You can only link selection list line items to one purchase order. If you attempt to create a purchase order from selection list line items that are already part of a purchase order, those line items will be ignored when creating the purchase order and you will see the following warning message in the Create Purchase Order interface:
@@ -709,14 +709,14 @@ Purchase orders allow you to keep track of orders and, if EDI is enabled, commun
 
 To view your purchase orders, navigate to *Acquisitions -> Purchase Orders*. This will take you to the Acquisitions Search interface with the tab _Purchase Orders Search_ selected, and a search will automatically be executed for all purchase orders owned by the logged-in user.
 
-You can change this default search to include other search parameters. For more information please see the xref:acquisitions/acquisitions_search.adoc#default_acquisitions_search[Creating a New Default Search] documentation.
+You can change this default search to include other search parameters. For more information please see the xref:acquisitions:acquisitions_search.adoc#default_acquisitions_search[Creating a New Default Search] documentation.
 
-You can also use the Acquisitions Search interface to search for & retrieve purchase orders created by other users. For more information please see thexref:acquisitions/acquisitions_search.adoc[Acquisitions Search] documentation.
+You can also use the Acquisitions Search interface to search for & retrieve purchase orders created by other users. For more information please see thexref:acquisitions:acquisitions_search.adoc[Acquisitions Search] documentation.
 
 [[create_purchase_order]]
 === Creating a Purchase Order ===
 
-You can create a purchase order from a xref:acquisitions/selection_lists_po.adoc#send_selection_list_to_po[selection list], from the xref:acquisitions/vandelay_acquisitions_integration.adoc[Load MARC Order Records] interface, or you can create a new purchase order from scratch.
+You can create a purchase order from a xref:acquisitions:selection_lists_po.adoc#send_selection_list_to_po[selection list], from the xref:acquisitions:vandelay_acquisitions_integration.adoc[Load MARC Order Records] interface, or you can create a new purchase order from scratch.
 
 To create a new purchase order from scratch:
 
@@ -804,17 +804,17 @@ include:
 * _Un-Receive Selected Line Items_ - this will mark selected items as “un-received” and return them to an on order status.
 * _Cancel Selected Line Items_ - this will open a dialog asking you to confirm the cancellation and select a cancel or delay reason. Choose your cancel or delay reason from the dropdown, and select *Apply* to cancel or delay the selected line items with the chosen reason.
 * _Apply Claim Policy to Selected Line Items_ - this will open a dialog asking you to choose the claim policy to apply to your selected line items. Choose your claim policy from the dropdown, and select *Apply*. Note that by default, the provider’s claim policy will be used on a purchase order.
-* _Create Invoice from Selected Line Items_ - this will open a new tab with an invoice made up of your selected line items. See the xref:acquisitions/invoices.adoc[Invoices documentation] for more information.
+* _Create Invoice from Selected Line Items_ - this will open a new tab with an invoice made up of your selected line items. See the xref:acquisitions:invoices.adoc[Invoices documentation] for more information.
 * _Link Selected Line Items to Invoice_ - this will open a dialog asking you to select a provider and invoice number. Select Link Invoice to link your selected line items to the chosen invoice.
 
 All of these actions, except _Load Bibs and Items_, will be applied to selected line items. You can select one, several, or all line items.
 
-Actions that apply to line items regardless of whether they are in a selection list or purchase order are detailed above, under xref:acquisitions/selection_lists_po.adoc#line_item_actions[Line Item Actions].
+Actions that apply to line items regardless of whether they are in a selection list or purchase order are detailed above, under xref:acquisitions:selection_lists_po.adoc#line_item_actions[Line Item Actions].
 
 [[add_line_items_to_po]]
 === Adding Line Items to a Purchase Order ===
 
-If you created your purchase order from a selection list or from the xref:acquisitions/vandelay_acquisitions_integration.adoc[Load MARC Order Records] interface, your purchase order will already have line item information listed.
+If you created your purchase order from a selection list or from the xref:acquisitions:vandelay_acquisitions_integration.adoc[Load MARC Order Records] interface, your purchase order will already have line item information listed.
 
 To add individual line items from within a purchase order:
 
@@ -844,7 +844,7 @@ You can add direct charges to a purchase order. Direct charges are not associate
 Direct charges can be created for taxes, shipping fees, handling fees, blanket orders, or other reasons. To create a new direct charge, scroll to the bottom of the purchase order and select *New Charge*.
 
 * _Charge Type_ (required) - the type of direct charge
-** Direct charge types are set in xref:admin/acquisitions_admin.adoc#_invoice_item_type[Acquisitions Administration -> Invoice Item Types]
+** Direct charge types are set in xref:admin:acquisitions_admin.adoc#_invoice_item_type[Acquisitions Administration -> Invoice Item Types]
 * _Fund_ (required) - the fund to which the charge is assigned
 * _Title / Description_ - a free text field describing the direct charge
 * _Author_ - if an author is associated with the direct charge, enter that information here
@@ -866,7 +866,7 @@ select circumstances:
 * The fund debit is not already zero
 * The fund debit is not already linked to an invoice
 
-To see how direct charges are used with blanket orders, see the xref:acquisitions/blanket.adoc[Blanket Orders] documentation.
+To see how direct charges are used with blanket orders, see the xref:acquisitions:blanket.adoc[Blanket Orders] documentation.
 
 [[activating_purchase_order]]
 === Activating a Purchase Order ===
@@ -902,7 +902,7 @@ After you click Activate Order, you will be presented with the record import int
 
 image::selection_lists_po/acq_load_records_and_activate.png[Load Records and Activate Purchase Order]
 
-Loading parameters include templates, matching options, and quality parameters in the same manner that the regular xref:cataloging/batch_importing_MARC.adoc[MARC Batch Import/Export] tool uses.
+Loading parameters include templates, matching options, and quality parameters in the same manner that the regular xref:cataloging:batch_importing_MARC.adoc[MARC Batch Import/Export] tool uses.
 
 *NOTE:* This interface will create records and items based on the information already included with the line items. For example, if your line items only contain brief record information, this is what will be loaded into the catalog.
 
@@ -922,7 +922,7 @@ image::selection_lists_po/acq_po_receive_unreceive.png[Un-Receive Selected Line 
 [[canceling_or_delaying_line_items]]
 === Canceling or Delaying Line Items ===
 
-Line items may also be marked as Canceled or Delayed. Cancel and delay reasons and parameters are set up in xref:admin/acquisitions_admin.adoc#_canceldelay_reasons[Acquisitions Administration].
+Line items may also be marked as Canceled or Delayed. Cancel and delay reasons and parameters are set up in xref:admin:acquisitions_admin.adoc#_canceldelay_reasons[Acquisitions Administration].
 
 To cancel line items or mark them delayed, select one, several, or all line items in the purchase order:
 
@@ -956,7 +956,7 @@ cancel reason will be calculated based on the following:
 [[claiming_line_items]]
 === Claiming Line Items ===
 
-Claiming lets you apply a claim policy to selected line items. Claiming policies are set up in xref:admin/acquisitions_admin.adoc#acq_claiming[Acquisitions Administration].
+Claiming lets you apply a claim policy to selected line items. Claiming policies are set up in xref:admin:acquisitions_admin.adoc#acq_claiming[Acquisitions Administration].
 
 *NOTE:* You will not have the option to mark selected line items claimed until sufficient time has passed according to your claim policy. Applying a claim policy does not initiate a claim, it simply tells the system what to do when or if a claim is initiated.
 
@@ -990,7 +990,7 @@ To view invoices linked to a purchase order, open a purchase order and select _I
 
 image::selection_lists_po/acq_po_invoicing.png[Purchase Order Invoice]
 
-Please see the xref:acquisitions/invoices.adoc[Invoicing] documentation for specific information about invoicing.
+Please see the xref:acquisitions:invoices.adoc[Invoicing] documentation for specific information about invoicing.
 
 [[brief_records]]
 == Brief Records ==
@@ -1008,7 +1008,7 @@ Brief records are short bibliographic records with minimal information that are 
 
 Alternatively, you can also add brief records from within an existing selection list.
 
-. Open or create a selection list. See the section on xref:acquisitions/selection_lists_po.adoc#selection_lists[selection lists] for more information.
+. Open or create a selection list. See the section on xref:acquisitions:selection_lists_po.adoc#selection_lists[selection lists] for more information.
 . Select _Actions_ and then *Add Brief Record*.
 +
 image::selection_lists_po/acq_new_brief_record.png[Action: Add New Brief Record]
@@ -1021,7 +1021,7 @@ image::selection_lists_po/acq_new_brief_record.png[Action: Add New Brief Record]
 
 You can also add brief records to new or existing purchase orders.
 
-. Open or create a purchase order. See the section on xref:acquisitions/selection_lists_po.adoc#purchase_orders[purchase orders] for more information.
+. Open or create a purchase order. See the section on xref:acquisitions:selection_lists_po.adoc#purchase_orders[purchase orders] for more information.
 . Select _Actions_ and then *Add Brief Record*.
 +
 image::selection_lists_po/acq_new_brief_record.png[Action: Add New Brief Record]
