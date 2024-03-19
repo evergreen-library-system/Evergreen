@@ -15637,7 +15637,6 @@ SELECT  usr,
 				<delete permission="SIP_ADMIN" global_required="true"/>
 			</actions>
 		</permacrud>
->>>>>>> a8a7d791061 (LP1901930 SIP2Mediator back-end support & release notes)
 	</class>
 
 	<class id="coauf" controller="open-ils.cstore open-ils.pcrud" oils_obj:fieldmapper="config::openathens_uid_field" oils_persist:tablename="config.openathens_uid_field" reporter:label="OpenAthens unique identifiers">
