@@ -142,14 +142,14 @@ describe('SerialsReceiveComponent', () => {
                         copy_locations: {1089: 180}});
             }));
             it('sets the issuance unit to -1', fakeAsync(() => {
-                component.receiveItems$().subscribe()
+                component.receiveItems$().subscribe();
                 tick();
                 expect(sitem.unit).toHaveBeenCalledWith(-1);
             }));
             describe('when barcode mode is off', () => {
                 it('does not set the issuance unit to -1', fakeAsync(() => {
                     component.barcodeModeOn = false;
-                    component.receiveItems$().subscribe()
+                    component.receiveItems$().subscribe();
                     tick();
                     expect(sitem.unit).not.toHaveBeenCalledWith(-1);
                 }));
