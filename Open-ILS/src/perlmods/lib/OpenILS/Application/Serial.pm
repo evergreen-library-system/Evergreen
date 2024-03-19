@@ -1642,6 +1642,9 @@ sub _find_or_create_call_number {
     my ($prefix,$suffix) = ('','');
     if (ref($cn_string)) {
         ($prefix,$cn_string,$suffix) = @$cn_string;
+        # the affix labels can never be NULL/undef
+        $prefix //= '';
+        $suffix //= '';
     }
 
     my $existing = $e->search_asset_call_number([{
