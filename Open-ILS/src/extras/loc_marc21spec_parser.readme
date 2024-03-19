@@ -1,0 +1,53 @@
+requires BeautifulSoup (python3-bs4)
+
+usage:
+
+```
+# Create or update our mirror
+wget -m -np https://www.loc.gov/marc/bibliographic/
+wget -m -np https://www.loc.gov/marc/authority/
+# handle protocol relative URLs
+( cd www.loc.gov/marc ; grep -oP '(?<=href=")//www\.loc\.gov[^"]*' ./bibliographic/ -r) > protocol_relative_urls.01.txt
+( cd www.loc.gov/marc ; grep -oP '(?<=href=")//www\.loc\.gov[^"]*' ./authority/ -r) >> protocol_relative_urls.01.txt
+cut -f2- -d: protocol_relative_urls.01.txt | egrep 'html$' | egrep 'bibliographic|authority' | grep concise | sort | uniq > protocol_relative_urls.02.txt
+sed 's|^//|https://|' protocol_relative_urls.02.txt > protocol_relative_urls.03.txt
+(mkdir -p remaining_html ; cd remaining_html ; wget -i protocol_relative_urls.03.txt)
+
+shopt -s extglob
+
+# Remove *.sql from previous runs if needed
+rm $(ls !(functions_etc|combined.upsert).sql)
+
+# Create new SQL grouped by date(s) available
+./loc_marc21spec_parser.py www.loc.gov/marc/*/concise/*.html remaining_html/* 2>&1 | tee out
+
+# Should generate files like this:
+ls !(functions_etc|combined.upsert).sql
+2007.sql  2010.sql        April_2016.sql     December_2020.sql  July_2022.sql  May_2017.sql  November_2016.sql  November_2021.sql
+2008.sql  April_2014.sql  April_2018.sql     December_2022.sql  June_2021.sql  May_2019.sql  November_2018.sql  September_2011.sql
+2009.sql  April_2015.sql  December_2017.sql  December_2023.sql  June_2023.sql  May_2020.sql  November_2019.sql  September_2013.sql
+
+# See what changed
+git diff
+
+# New combined.upsert.sql
+cat functions_etc.sql !(functions_etc|combined.upsert).sql > combined.upsert.sql
+
+# Or all in one for convenient iterative development:
+rm $(ls !(functions_etc|combined.upsert).sql) ; (./loc_marc21spec_parser.py www.loc.gov/marc/*/concise/*.html remaining_html/* > out) ; (cat functions_etc.sql !(functions_etc|combined.upsert|test_config_marc_field).sql > combined.upsert.sql)
+
+# we also have a test for missing config.marc_field entries for the datafields we processed
+psql -f test_config_marc_field.sql
+
+# load them up
+# option A:
+echo 'COMMIT;' >> combined.upsert.sql
+psql -f combined.upsert.sql
+
+# option B:
+psql
+evergreen=# \i combined.upsert.sql
+evergreen=# -- check things out
+evergreen=# COMMIT;
+
+```
