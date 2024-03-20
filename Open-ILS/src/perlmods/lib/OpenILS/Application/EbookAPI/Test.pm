@@ -224,14 +224,14 @@ sub do_holdings_lookup {
     if ($title_id eq '001' || $title_id eq '002') {
         $holdings->{copies_owned} = 1;
         $holdings->{copies_available} = 0;
-        push @{$holdings->{formats}}, 'ebook';
+        push @{$holdings->{formats}}, { name => 'ebook' };
     }
 
     # 003 is available.
     if ($title_id eq '003') {
         $holdings->{copies_owned} = 1;
         $holdings->{copies_available} = 1;
-        push @{$holdings->{formats}}, 'ebook';
+        push @{$holdings->{formats}}, { name => 'ebook' };
     }
 
     # All other title IDs are unknown.
