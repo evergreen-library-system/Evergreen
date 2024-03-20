@@ -21933,6 +21933,19 @@ VALUES (
     )
 );
 
+INSERT INTO config.global_flag (name, enabled, value, label)
+VALUES (
+    'search.max_suggestion_search_terms',
+    TRUE,
+    3,
+    oils_i18n_gettext(
+        'search.max_suggestion_search_terms',
+        'Limit suggestion generation to searches with this many terms or less',
+        'cgf',
+        'label'
+    )
+);
+
 INSERT INTO config.internal_flag (name, value, enabled) VALUES ('symspell.prefix_length', '6', TRUE);
 INSERT INTO config.internal_flag (name, value, enabled) VALUES ('symspell.max_edit_distance', '3', TRUE);
 
