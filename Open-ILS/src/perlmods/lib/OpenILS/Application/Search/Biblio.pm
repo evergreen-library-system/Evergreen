@@ -1314,10 +1314,18 @@ sub staged_search {
         my $class_settings = $editor->retrieve_config_metabib_class($class);
         $field_list ||= [];
 
+        my $term_count = split(/\s+/, $term); # count of words in the search
+
+        # longest search, in words, we will suggest for. default = 3
+        my $max_terms = $editor->search_config_global_flag({name=>'search.max_suggestion_search_terms',enabled=>'t'})->[0];
+        $max_terms = $max_terms ? $max_terms->value : 3;
+
         if ( # search did not provide enough hits and settings
              # for this class want more than 0 suggestions
+             # and there are not too many words in the search
             $global_summary->{visible} <= $class_settings->low_result_threshold
             and $class_settings->max_suggestions != 0
+            and $term_count <= $max_terms
         ) {
             my $suggestion_verbosity = $class_settings->symspell_suggestion_verbosity;
             if ($class_settings->max_suggestions == -1) { # special value that means "only best suggestion, and not always"
