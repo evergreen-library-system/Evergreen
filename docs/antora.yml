@@ -10,6 +10,7 @@ nav:
 - modules/local_admin/nav.adoc
 - modules/acquisitions/nav.adoc
 - modules/cataloging/nav.adoc
+- modules/staff_catalog/nav.adoc
 - modules/serials/nav.adoc
 - modules/circulation/nav.adoc
 - modules/reports/nav.adoc
