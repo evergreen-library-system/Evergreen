@@ -6,7 +6,7 @@
 </div>
 <div class="row" id="acq-search-page">
   <div class="col-lg-12">
-    <ul ngbNav #acqSearchTabs="ngbNav" class="nav-tabs" [keyboard]="true" [roles]="false" role="tablist" [(activeId)]="searchType" (navChange)="onTabChange($event)">
+    <ul ngbNav #acqSearchTabs="ngbNav" class="nav-tabs card-nav-tabs" [keyboard]="true" [roles]="false" role="tablist" [(activeId)]="searchType" (navChange)="onTabChange($event)">
       <li role="presentation" [ngbNavItem]="'lineitems'">
         <a role="tab" ngbNavLink i18n>Line Items Search</a>
         <ng-template ngbNavContent><eg-lineitem-results [initialSearchTerms]="urlSearchTerms"></eg-lineitem-results></ng-template>

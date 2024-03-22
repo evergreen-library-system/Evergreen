@@ -926,8 +926,10 @@ a {
 }
 
 .nav-tabs .nav-link.hover, 
-.nav-tabs .nav-link:hover {
+.nav-tabs .nav-link:hover,
+.nav-tabs.card-nav-tabs .nav-link:hover {
   background-color: #fff;
+  border-color: #ddd;
 }
 
 .nav-tabs .nav-link.active, 
@@ -935,6 +937,17 @@ a {
   background-color: #fff;
   border-color: #aaa #aaa #fff;
   box-shadow: 0 -0.2rem 0.5rem rgba(0, 0, 0, 0.07);
+}
+
+/* tabs on cards should match the card */
+.nav-tabs.card-nav-tabs .nav-link {
+  background-color: #f0f0f0;
+}
+
+.nav-tabs.card-nav-tabs .nav-link:active
+.nav-tabs.card-nav-tabs .nav-link.active {
+  background: #f5f5f5;
+  border-color: #aaa #aaa #f5f5f5;
 }
 
 .dropdown-menu.show {

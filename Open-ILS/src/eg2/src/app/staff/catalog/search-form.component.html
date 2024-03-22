@@ -33,7 +33,7 @@
   
   <div *ngIf="!hideForm()" class="row px-2 pt-3 pb-1 mb-1" role="search">
   <div class="col-lg-8">
-    <ul ngbNav #searchTabs="ngbNav" [activeId]="searchTab" (navChange)="onNavChange($event)" [keyboard]="true" [roles]="false" role="tablist" class="nav-tabs">
+    <ul ngbNav #searchTabs="ngbNav" [activeId]="searchTab" (navChange)="onNavChange($event)" [keyboard]="true" [roles]="false" role="tablist" class="nav-tabs card-nav-tabs">
       <li role="presentation" [ngbNavItem]="'term'">
         <a i18n ngbNavLink role="tab">Keyword Search</a>
         <ng-template ngbNavContent>
