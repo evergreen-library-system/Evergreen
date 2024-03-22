@@ -41,7 +41,7 @@ sub perform_checkin {
 
     my $args = {
         copy_barcode => $params{item_barcode},
-        hold_as_transit => $config->{checkin_hold_as_transit}
+        hold_as_transit => $config->{settings}->{checkin_hold_as_transit}
     };
 
     if (my $backdate = $params{return_date}) {
@@ -68,7 +68,7 @@ sub perform_checkin {
     my $textcode = $event->{textcode};
     my $payload = $event->{payload} || {};
 
-    return 1 if !$override && $config->{"checkin.override.$textcode"};
+    return 1 if !$override && $config->{settings}->{"checkin.override.$textcode"};
 
     my $circ = $payload->{circ};
     my $copy = $payload->{copy};

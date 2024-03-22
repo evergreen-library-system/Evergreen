@@ -162,7 +162,7 @@ sub get_hold_ids {
     } else {
 
         $holds_where->{current_shelf_lib} = {'=' => {'+ahr' => 'pickup_lib'}} 
-            if $session->config->{msg64_hold_items_available};
+            if $session->config->{settings}->{msg64_hold_items_available};
     }
 
     my $query = {
@@ -223,7 +223,7 @@ sub add_hold_items {
     my ($session, $details, $offset, $limit, $unavailable) = @_;
 
     my $patron = $details->{patron};
-    my $format = $session->config->{msg64_hold_datatype} || '';
+    my $format = $session->config->{settings}->{msg64_hold_datatype} || '';
     my $hold_ids = $unavailable ? 
         $details->{unavailable_hold_ids} : $details->{hold_ids};
 
@@ -343,7 +343,17 @@ sub find_copy_for_hold {
         {call_number => $hold->target, deleted => 'f'}, 
         {limit => 1}])->[0] if $hold->hold_type eq 'V';
 
+    if ($hold->hold_type eq 'I') {
+        my $iss = $e->search_serial_item({issuance => $hold->target})->[0];
+        return $e->retrieve_asset_copy($iss->unit);
+    }
+
     my $bre_ids = [$hold->target];
+
+    if ($hold->hold_type eq 'P') {
+        my $part = $e->retrieve_biblio_monograph_part($hold->target);
+        $bre_ids = [$part->record];
+    }
 
     if ($hold->hold_type eq 'M') {
         # find all of the bibs that link to the target metarecord
@@ -382,7 +392,7 @@ sub set_patron_privileges {
 
     # Non-expired patrons are allowed all privileges when 
     # patron_status_permit_all is true.
-    return if $session->config->{patron_status_permit_all};
+    return if $session->config->{settings}->{patron_status_permit_all};
 
     my $penalties = get_patron_penalties($session, $patron);
 
@@ -407,7 +417,7 @@ sub set_patron_privileges {
     $details->{holds_denied} = ($blocked || grep {$_ =~ /HOLD/} @block_tags);
 
     # Ignore loan-related blocks?
-    return if $session->config->{patron_status_permit_loans};
+    return if $session->config->{settings}->{patron_status_permit_loans};
 
     $details->{charge_denied} = ($blocked || grep {$_ =~ /CIRC/} @block_tags);
     $details->{renew_denied} = ($blocked || grep {$_ =~ /RENEW/} @block_tags);

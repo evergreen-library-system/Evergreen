@@ -119,10 +119,16 @@ VALUES (
         'Patron circulation data may be returned as either "title" or "barcode"',
         'sipset', 'description')
 ), (
-    1, 'msg64_hold_items_available', '"title"',
+    1, 'msg64_hold_datatype', '"title"',
+    oils_i18n_gettext(
+        (SELECT id FROM sip.setting WHERE name = 'msg64_hold_datatype'),
+        'Patron holds data may be returned as either "title" or "barcode"',
+        'sipset', 'description')
+), (
+    1, 'msg64_hold_items_available', 'false',
     oils_i18n_gettext(
         (SELECT id FROM sip.setting WHERE name = 'msg64_hold_items_available'),
-        'Patron holds data may be returned as either "title" or "barcode"',
+        'Only return information on available holds'
         'sipset', 'description')
 ), (
     1, 'checkout.override.COPY_ALERT_MESSAGE', 'true',

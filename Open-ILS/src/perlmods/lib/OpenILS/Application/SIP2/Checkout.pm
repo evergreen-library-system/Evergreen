@@ -106,7 +106,7 @@ sub perform_checkout {
                         ->parse_datetime(clean_ISO8601($circ->due_date));
 
                 $circ_details->{due_date} =
-                    $config->{due_date_use_sip_date_format} ?
+                    $config->{settings}->{due_date_use_sip_date_format} ?
                     $SC->sipdate($due_date) :
                     $due_date->strftime('%F %T');
 
@@ -115,7 +115,7 @@ sub perform_checkout {
         }
 
         if (!$override) {
-            if ($config->{"$action.override.$textcode"}) {
+            if ($config->{settings}->{"$action.override.$textcode"}) {
                 # Event type is configured for override;
                 return 1;
 

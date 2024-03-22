@@ -69,7 +69,7 @@ sub get_item_details {
             parse_datetime(clean_ISO8601($details->{circ}->due_date));
 
         $details->{due_date} =
-            $config->{due_date_use_sip_date_format} ?
+            $config->{settings}->{due_date_use_sip_date_format} ?
             $SC->sipdate($due_date) :
             $due_date->strftime('%F %T');
     }
