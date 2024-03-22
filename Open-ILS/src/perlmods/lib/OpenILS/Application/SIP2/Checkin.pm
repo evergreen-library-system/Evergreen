@@ -51,7 +51,7 @@ sub perform_checkin {
     }
 
     $args->{circ_lib} = 
-        $SC->org_id_from_sn($session, $params{corrent_loc}) 
+        $SC->org_id_from_sn($session, $params{current_loc}) 
         || $session->editor->requestor->ws_ou;
 
     my $method = 'open-ils.circ.checkin';
