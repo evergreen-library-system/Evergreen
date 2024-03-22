@@ -53,6 +53,11 @@ sub handler {
 
     init();
 
+    # This should not be necessary, but fixes an issue where log
+    # traces were the same for the duration of a handler, when we
+    # need it to be different per SIP message.
+    $logger->mk_osrf_xid;
+
     my $seskey = $cgi->param('session');
     my $msg_json = $cgi->param('message');
 
@@ -95,9 +100,20 @@ sub handler {
         return Apache2::Const::HTTP_BAD_REQUEST;
     }
 
+    filter_output($session_filters, $response);
+
     $r->content_type('application/json');
+    $r->print($json->encode($response));
+
+    return Apache2::Const::OK;
+}
+
+# Scrub and/or replace values in SIP fields based on SIP field filter definitions.
+sub filter_output {
+    my ($session_filters, $response) = @_;
+
     # response = $VAR1 = {'fields' => [{'AO' => 'example'},{'BX' => 'YYYNYNYYNYYNNNYN'}],'fixed_fields' => ['Y','Y','Y','Y','N','N','999','999','20220706    154418','2.00'],'code' => '98'};
-    #my $filters = { 'field' => [ { 'identifier' => 'AE', 'replace_with' => 'John Doe' }, { 'replace_with' => 'Jane Doe', 'identifier' => 'AE' } ] };
+    # my $filters = { 'field' => [ { 'identifier' => 'AE', 'replace_with' => 'John Doe' }, { 'replace_with' => 'Jane Doe', 'identifier' => 'AE' } ] };
 
     sub find_field_config {
         my $filters = shift;
@@ -130,8 +146,6 @@ sub handler {
             @{ $response->{fields} }
         ];
     }
-    $r->print($json->encode($response));
-    return Apache2::Const::OK;
 }
 
 1;
