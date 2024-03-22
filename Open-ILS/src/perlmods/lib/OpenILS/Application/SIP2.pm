@@ -477,14 +477,14 @@ sub handle_renew {
 }
 
 sub checkout_renew_common {
-    my ($session, $message, $is_renewal) = @_;
+    my ($session, $message, $is_renew_request) = @_;
     my $config = $session->config;
 
     my $patron_barcode = $SC->get_field_value($message, 'AA');
     my $item_barcode = $SC->get_field_value($message, 'AB');
     my $fee_ack = $SC->get_field_value($message, 'BO');
 
-    my $code = $is_renewal ? '30' : '12';
+    my $code = $is_renew_request ? '30' : '12';
     my $stub = {
         code => $code,
         fixed_fields => [
@@ -512,6 +512,18 @@ sub checkout_renew_common {
         $session, barcode => $patron_barcode);
     
     return $stub unless $patron_details;
+
+    my $is_renewal = $is_renew_request;
+    my $renew_allowed = $message->{fixed_fields}->[0] eq 'Y';
+
+    if (!$is_renewal && $renew_allowed) {
+        # A checkout can become a renewal if the checkout request allows
+        # it and the item in question is currently checked out to the
+        # patron making the request.
+        if (my $circ = $item_details->{circ}) {
+            $is_renewal = $circ->usr->id == $patron_details->{patron}->id;
+        }
+    }
 
     my $circ_details = OpenILS::Application::SIP2::Checkout->checkout(
         $session, 
