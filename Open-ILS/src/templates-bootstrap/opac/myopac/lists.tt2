@@ -201,6 +201,10 @@
                 </div>
             </form>
 
+            <div class="bookbag-controls">
+                <button class="btn btn-action btn-sm m-1" data-toggle="collapse" data-target="#bbag-edit-div-[% bbag.id %]"><i class="fa fa-edit" aria-hidden="true"></i> [% l('Edit List') %]</button>
+            </div>
+
             [% IF bbag.pub == 't'; %]
             <div class="bookbag-controls">
                 <a class="btn btn-sm btn-opac m-1" href='[%-
@@ -210,13 +214,8 @@
                         1
                     )
                 -%]'><i class="fas fa-glasses" aria-hidden="true"></i> [% l('View in Catalog') %]</a>
-
             </div>
-               [% END %]
-
-            <div class="bookbag-controls">
-                <button class="btn btn-action btn-sm m-1" data-toggle="collapse" data-target="#bbag-edit-div-[% bbag.id %]"><i class="fa fa-edit" aria-hidden="true"></i> [% l('Edit List') %]</button>
-            </div>
+            [% END %]
 
                     </div>
                 <div class="col-3">
