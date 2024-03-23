@@ -159,8 +159,11 @@ IF authtimeout AND !ctx.is_staff %]
 
 [% INCLUDE "opac/parts/acjs.tt2" IF ctx.page == 'record' %]
 [% IF ctx.page == 'advanced' %]
-<script
-    src="[% ctx.media_prefix %]/js/ui/default/opac/copyloc.js[% ctx.cache_key %]"></script>
+<script type="module">
+  import {apply_adv_copy_locations} from '[% ctx.media_prefix %]/js/ui/default/opac/copyloc.module.js';
+  document.addEventListener('DOMContentLoaded', () => apply_adv_copy_locations(), {once: true});
+  document.getElementById('adv_org_selector').addEventListener('change', () => apply_adv_copy_locations());
+</script>
 [% END %]
 
 [% IF ebook_api.enabled == 'true' %]
