@@ -4,29 +4,41 @@ export function apply_adv_copy_locations() {
     // patron selected org
     var sel = document.getElementById('adv_org_selector');
     var selected_id = sel.value;
-    var org_unit = window.aou_hash[selected_id];
+    if (org_unit_is_selected(sel)) {
+        var org_unit = window.aou_hash[selected_id];
 
-    var display_orgs = [];
+        var display_orgs = [];
 
-    function collect_parent_orgs(org_id) {
-        if (!org_id) return;
-        display_orgs.push(org_id);
-        collect_parent_orgs(window.aou_hash[org_id].parent_ou);
+        // eslint-disable-next-line no-inner-declarations
+        function collect_parent_orgs(org_id) {
+            if (!org_id) return;
+            display_orgs.push(org_id);
+            collect_parent_orgs(window.aou_hash[org_id].parent_ou);
+        }
+
+        display_orgs.push(org_unit.id);
+        collect_parent_orgs(org_unit.parent_ou);
+        fetch_adv_copy_locations_by_org(display_orgs);
+    } else if (shelving_location_group_is_selected(sel)) {
+        // The UI has shelving location group ids in the format
+        // 3:2, where 3 is the owning org id and 2 is the location
+        // group id.  To query fielder, we only need the location
+        // group id.
+        const group_id = selected_id.split(':')[1];
+        fetch_adv_copy_locations_by_group(group_id);
     }
-
-    display_orgs.push(org_unit.id);
-    collect_parent_orgs(org_unit.parent_ou);
-    fetch_adv_copy_locations(display_orgs);
 }
 
-function fetch_adv_copy_locations(org_ids) {
-
+function fetch_adv_copy_locations_by_org(org_ids) {
     var params = [{
         cache : 1,
         fields : ['name', 'id', 'owning_lib'],
         query : {owning_lib : org_ids, opac_visible : 't', deleted : 'f'}
     }];
+    send_and_process_fielder_query(params);
+}
 
+function send_and_process_fielder_query(params) {
     new window.OpenSRF.ClientSession('open-ils.fielder').request({
         method: 'open-ils.fielder.acpl.atomic',
         params: params,
@@ -46,6 +58,28 @@ function fetch_adv_copy_locations(org_ids) {
             }
         }
     }).send();
+}
+
+function fetch_adv_copy_locations_by_group(group_id) {
+    const params = [{
+        cache : 1,
+        fields : ['name', 'id', 'owning_lib'],
+        // open-ils.fielder.acpl.atomic unfortunately
+        // can't do JOINs, so we will use a subquery
+        // instead
+        query : {
+            opac_visible : 't',
+            deleted : 'f',
+            id: {
+                in: {
+                    from:"acplgm",
+                    select:{"acplgm":["location"]},
+                    "where":{"lgroup": group_id}
+                }
+            }
+        }
+    }];
+    send_and_process_fielder_query(params);
 }
 
 function render_adv_copy_locations_new(locations) {
@@ -127,4 +161,13 @@ function render_adv_copy_locations(locations) {
         sel.append(option);
     });
 }
+
+}
+
+function org_unit_is_selected(sel) {
+    return sel.selectedOptions?.[0]?.classList?.contains('org_unit');
+}
+
+function shelving_location_group_is_selected(sel) {
+    return sel.selectedOptions?.[0]?.classList?.contains('loc_grp');
 }
