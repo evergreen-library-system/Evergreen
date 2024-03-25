@@ -173,22 +173,22 @@ FOR field_def IN register_fields;
               [% FOREACH element IN dob_order.split('') %]
                 [% SWITCH element %]
                   [% CASE 'M' %]
-                    <div class="form-group">
+                    <div class="form-group mr-1">
                         <input type="text" class="form-control" size="2" id='dob-month'
                             name='dob-month' value='[% value || CGI.param(field_path) | html %]' [% IF require %]required[% END %] />
-                        <label for="dob-month" class="form-text">[% l('Month') %]</label>
+                        <label for="dob-month" class="form-text small mb-0">[% l('Month') %]</label>
                     </div>
                   [% CASE 'D' %]
-                    <div class="form-group">
-                        <input type="text" class="form-control ml-1 mr-1" size="2" id='dob-day'
+                    <div class="form-group mr-1">
+                        <input type="text" class="form-control" size="2" id='dob-day'
                             name='dob-day' value='[% value || CGI.param(field_path) | html %]' [% IF require %]required[% END %] />
-                        <label for="dob-day" class="form-text">[% l('Day') %]</label>
+                        <label for="dob-day" class="form-text small mb-0">[% l('Day') %]</label>
                     </div>
                   [% CASE 'Y' %]
-                    <div class="form-group">
+                    <div class="form-group m-1">
                         <input type="text" class="form-control" size="4" id='dob-year'
                         name='dob-year' value='[% value || CGI.param(field_path) | html %]' [% IF require %]required[% END %] />
-                        <label for="dob-year" class="form-text">[% l('Year') %]</label>
+                        <label for="dob-year" class="form-text small mb-0">[% l('Year') %]</label>
                     </div>
                 [% END %]
               [% END %]
