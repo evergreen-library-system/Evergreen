@@ -408,21 +408,12 @@ sub put_sftp {
 sub get_sftp {
     my $self = shift;
     my $remote_filename = $self->{get_args}->[0];
-    my $filename = $self->_sftp->get(@{$self->{get_args}});
-    if ($self->_sftp->error or not $filename) {
+    my $filename = $self->{get_args}->[1];
+    my $success = $self->_sftp->get(@{$self->{get_args}});
+    if ($self->_sftp->error or not $success) {
         $logger->error(
             $self->_error(
                 "get from", $self->remote_host, "failed with error: $self->_sftp->error"
-            )
-        );
-        return;
-    }
-    if (!defined(${$filename->sref})) {
-        # the underlying scalar is still undef, so Net::SFTP::Foreign must have
-        # successfully retrieved an empty file... which we should skip
-        $logger->error(
-            $self->_error(
-                "get $remote_filename from", $self->remote_host, ": remote file is zero-length"
             )
         );
         return;
@@ -445,24 +436,22 @@ sub ls_sftp {   # returns full path like: dir/path/file.ext
     my @list;
 
     foreach (@_) {
-        my @part;
         my ($dirpath, $regex) = $self->glob_parse($_);
         my $dirtarget = $dirpath || $_;
         $dirtarget =~ s/\/+$//;
-        eval { @part = $self->_ftp->ls($dirtarget) };      # this ls returns relative/path/filenames.  defer filename glob filtering for below.
-        if ($@) {
+        my @part = @{$self->_sftp->ls($dirtarget, names_only=>1, no_wanted => qr/^\.+$/)};
+        if ($self->_sftp->error) {
             $logger->error(
                 $self->_error(
-                    "ls from",  $self->remote_host, "failed with error: $@"
+                    "ls from",  $self->remote_host, "failed with error: " . $self->_sftp->error
                 )
             );
             next;
         }
-        if ($dirtarget and $dirtarget ne '.' and $dirtarget ne './' and
-            $self->_ftp->dir($dirtarget)) {
+        if ($dirtarget and $dirtarget ne '.' and $dirtarget ne './') {
             foreach my $file (@part) {   # we ensure full(er) path
                 $file =~ /^$dirtarget\// and next;
-                $logger->debug("ls_ftp: prepending $dirtarget/ to $file");
+                $logger->debug("ls_sftp: prepending $dirtarget/ to $file");
                 $file = File::Spec->catdir($dirtarget, $file);
             }
         }
@@ -473,7 +462,7 @@ sub ls_sftp {   # returns full path like: dir/path/file.ext
             @part = grep {
                         my ($vol, $dir, $file) = File::Spec->splitpath($_);
                         $file =~ /$regex/
-                    } @part;  
+                    } @part;
             $logger->info("FTP ls: Glob regex($regex) matches " . scalar(@part) . " of $count files");
         } #  else {$logger->info("FTP ls: No Glob regex in '$_'.  Just a regular ls");}
         push @list, @part;
