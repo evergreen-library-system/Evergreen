@@ -88,12 +88,18 @@ export class ResultsComponent implements OnInit, OnDestroy {
         }
     }
 
-    // Jump to record page if only a single hit is returned
-    // and the jump is enabled by library setting
+    // For non-metarecord searches, jump to record page if only a
+    // single hit is returned and the jump is enabled by library setting.
+    // Unlike the OPAC version of jump-on-single-hit, the staff version
+    // does not attempt to jump to the bib if it is the single member
+    // of a sole metarecord returned by a metarecord search.
     jumpIfNecessary() {
         const ids = this.searchContext.currentResultIds();
-        if (this.staffCat.jumpOnSingleHit && ids.length === 1) {
-           // this.router.navigate(['/staff/catalog/record/' + ids[0], { queryParams: this.catUrl.toUrlParams(this.searchContext) }]);
+        if (
+            this.staffCat.jumpOnSingleHit &&
+            ids.length === 1 &&
+            !this.searchContext.termSearch.isMetarecordSearch()
+        ) {
             this.router.navigate(['/staff/catalog/record/' + ids[0]], {queryParamsHandling: 'merge'});
         }
     }
