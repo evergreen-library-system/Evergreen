@@ -377,7 +377,8 @@ sub glob_parse {
 sub _sftp {
     my $self = shift;
     $self->{sftp} and return $self->{sftp};     # caching
-    my $sftp = Net::SFTP::Foreign->new($self->remote_host, user => $self->remote_user, password => $self->remote_password);
+    my $sftp = Net::SFTP::Foreign->new($self->remote_host, user => $self->remote_user, password => $self->remote_password,
+                                       more => [-o => "StrictHostKeyChecking=no"]);
     $sftp->error and $logger->error("SFTP connect FAILED: " . $sftp->error);
     return $self->{sftp} = $sftp;
 }
