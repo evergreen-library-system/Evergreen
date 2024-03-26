@@ -537,8 +537,9 @@ export class HoldComponent implements OnInit {
         if (!this.user || this.placeHoldsClicked || this.activeDateInvalid) {
             return false;
         }
-        if (!this.pickupLib || this.disableOrgs.includes(this.pickupLib))
+        if (!this.pickupLib || this.disableOrgs.includes(this.pickupLib)) {
             return false;
+        }
         if (this.notifySms) {
             if (!this.smsValue.length || !this.smsCbox?.selectedId) {
                 return false;
