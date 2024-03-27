@@ -11,6 +11,7 @@ import {PcrudService} from '@eg/core/pcrud.service';
 import {CatalogSearchContext, CatalogSearchState, CATALOG_CCVM_FILTERS} from './search-context';
 import {BibRecordService, BibRecordSummary} from './bib-record.service';
 import {BasketService} from './basket.service';
+import { ServerStoreService } from '@eg/core/server-store.service';
 
 @Injectable()
 export class CatalogService {
@@ -21,6 +22,8 @@ export class CatalogService {
     copyLocationGroups: IdlObject[];
     libraryGroups: IdlObject[];
     combineLibraryAndLocationGroups: boolean;
+    useSearchHighlight: boolean;
+    useSearchHighlightDefault = true;
 
     // Keep a reference to the most recently retrieved facet data,
     // since facet data is consistent across a given search.
@@ -38,7 +41,9 @@ export class CatalogService {
         private unapi: UnapiService,
         private pcrud: PcrudService,
         private bibService: BibRecordService,
-        private basket: BasketService
+        private basket: BasketService,
+        private store: ServerStoreService
+
     ) {
         this.net.request(
             'open-ils.search',
@@ -46,7 +51,7 @@ export class CatalogService {
         ).toPromise().then(combine => this.combineLibraryAndLocationGroups = !!combine);
 
         this.onSearchComplete = new EventEmitter<CatalogSearchContext>();
-
+        store.getItem('ui.show_search_highlight').then(result => {this.useSearchHighlight = result ?? this.useSearchHighlightDefault;});
     }
 
     search(ctx: CatalogSearchContext): Promise<void> {
@@ -270,6 +275,11 @@ export class CatalogService {
             (hlMap = hlMap.highlight_map)   &&
             (hlMap.length > 0)) {
         } else { return Promise.resolve(); }
+
+        // Return unmodified results if the user's settings disable highlighting
+        if (this.useSearchHighlight === false){
+            return Promise.resolve();
+        }
 
         let ids;
         if (ctx.getHighlightsFor) {

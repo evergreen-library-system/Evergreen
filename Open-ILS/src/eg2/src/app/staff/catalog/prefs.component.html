@@ -91,19 +91,39 @@
   </div>
   <div class="col-lg-2">
     <div class="checkbox ps-3 pt-2">
-      <label>
-        <input type="checkbox"
+      <input type="checkbox"
           id="electronic-resources-pref"
           aria-describedby="electronic-resources-pref-description"
           (change)="checkboxChanged('eg.staffcat.exclude_electronic')"
           [(ngModel)]="settings['eg.staffcat.exclude_electronic']">
-        <span class="ps-1" i18n></span>
-      </label>
     </div>
   </div>
   <div class="col-lg-6" i18n id="electronic-resources-pref-description">
     Add the 'Exclude Electronic Resources' checkbox to the main search form.
   </div>
+</div>
+
+<div class="row border-bottom border-secondary p-2 m-2">
+  <div class="col-lg-2 offset-lg-1">
+    <label for="pref-show-search-highlight" class="form-label fw-bold" i18n>
+      Highlight Search Terms
+    </label>
+  </div>
+  <div class="col-lg-2">
+    <div class="checkbox ps-3 pt-2">
+      <input type="checkbox"
+          id="pref-show-search-highlight"
+          aria-describedby="pref-show-search-highlight-description"
+          (change)="checkboxChanged('ui.show_search_highlight')"
+          [(ngModel)]="settings['ui.show_search_highlight']"
+          (ngModelChange)="settings['ui.show_search_highlight'] ?? true"
+          >
+    </div>
+  </div>
+  <div class="col-lg-6" i18n id="pref-show-search-highlight-description">
+    Whether to highlight the search terms in the results of a keyword search.
+  </div>
+
 </div>
 
 <div class="row border-bottom border-secondary p-2 m-2" *ngIf="showCoursePreferences()">
