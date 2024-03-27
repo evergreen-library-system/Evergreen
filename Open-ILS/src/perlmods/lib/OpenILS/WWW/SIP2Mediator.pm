@@ -100,52 +100,10 @@ sub handler {
         return Apache2::Const::HTTP_BAD_REQUEST;
     }
 
-    filter_output($session_filters, $response);
-
     $r->content_type('application/json');
     $r->print($json->encode($response));
 
     return Apache2::Const::OK;
-}
-
-# Scrub and/or replace values in SIP fields based on SIP field filter definitions.
-sub filter_output {
-    my ($session_filters, $response) = @_;
-
-    # response = $VAR1 = {'fields' => [{'AO' => 'example'},{'BX' => 'YYYNYNYYNYYNNNYN'}],'fixed_fields' => ['Y','Y','Y','Y','N','N','999','999','20220706    154418','2.00'],'code' => '98'};
-    # my $filters = { 'field' => [ { 'identifier' => 'AE', 'replace_with' => 'John Doe' }, { 'replace_with' => 'Jane Doe', 'identifier' => 'AE' } ] };
-
-    sub find_field_config {
-        my $filters = shift;
-        my $field_id = shift;
-        my @relavent_field_configs = grep { $_->identifier eq $field_id && $_->enabled eq 't' } @{ $filters };
-        # since we can't do anything complicated yet, let's just return the first match
-        return @relavent_field_configs ? $relavent_field_configs[0] : undef;
-    }
-
-    if (defined $session_filters && defined $response->{fields} && ref $response->{fields} eq 'ARRAY') {
-        $response->{fields} = [
-            grep {
-                my $keep = 1;
-                my @fids = keys(%{$_});
-                my $fid = $fids[0];
-                my $field_config = find_field_config( $session_filters, $fid );
-                if ($field_config && $field_config->strip eq 't') {
-                    $keep = 0; # strip the entire field
-                }
-                $keep; # or not
-            }
-            map {
-                my @fids = keys(%{$_});
-                my $fid = $fids[0];
-                my $field_config = find_field_config( $session_filters, $fid );
-                $field_config && defined $field_config->replace_with
-                    ? { $fid => $field_config->replace_with }
-                    : $_;
-            }
-            @{ $response->{fields} }
-        ];
-    }
 }
 
 1;

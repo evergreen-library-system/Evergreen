@@ -88,6 +88,9 @@ sub dispatch_sip2_request {
 
     my $msg = $MESSAGE_MAP->{$msg_code}->($session, $message);
 
+    # Scrub/replace values
+    filter_response_message($session, $msg);
+
     if ($msg_code ne '97' && # Don't cache the resend response
         $session->config->{settings}->{support_acs_resend_messages}) {
 
@@ -97,6 +100,52 @@ sub dispatch_sip2_request {
     }
 
     return $msg;
+}
+
+# Scrub and/or replace values in SIP fields based on SIP field 
+# filter definitions.
+#
+# For Example:
+#   Response: {'fields' => [{'AE' => 'Jane Doe'}, ...],'fixed_fields' => [...],'code' => '98'};
+#   Filters: {'field' => [{'identifier' => 'AE', 'replace_with' => 'John Doe'}, ...]}
+sub filter_response_message {
+    my ($session, $response) = @_;
+
+    my $session_filters = $session->filters;
+
+    if (!$session_filters || !$response->{fields} || ref $response->{fields} ne 'ARRAY') {
+        return;
+    }
+
+    sub find_field_config {
+        my $filters = shift;
+        my $field_id = shift;
+        my @relavent_field_configs = grep { $_->identifier eq $field_id && $_->enabled eq 't' } @{ $filters };
+        # since we can't do anything complicated yet, let's just return the first match
+        return @relavent_field_configs ? $relavent_field_configs[0] : undef;
+    }
+
+    $response->{fields} = [
+        grep {
+            my $keep = 1;
+            my @fids = keys(%{$_});
+            my $fid = $fids[0];
+            my $field_config = find_field_config( $session_filters, $fid );
+            if ($field_config && $field_config->strip eq 't') {
+                $keep = 0; # strip the entire field
+            }
+            $keep; # or not
+        }
+        map {
+            my @fids = keys(%{$_});
+            my $fid = $fids[0];
+            my $field_config = find_field_config( $session_filters, $fid );
+            $field_config && defined $field_config->replace_with
+                ? { $fid => $field_config->replace_with }
+                : $_;
+        }
+        @{ $response->{fields} }
+    ];
 }
 
 sub handle_end_session {
