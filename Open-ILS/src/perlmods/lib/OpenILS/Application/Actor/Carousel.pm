@@ -11,6 +11,7 @@ use OpenSRF::Utils::SettingsClient;
 use OpenSRF::Utils::Cache;
 use Digest::MD5 qw(md5_hex);
 use OpenSRF::Utils::JSON;
+use List::MoreUtils qw(uniq);
 
 my $apputils = "OpenILS::Application::AppUtils";
 my $U = $apputils;
@@ -248,7 +249,7 @@ __PACKAGE__->register_method(
               desc => 'A name for the new carousel',
               type => 'string' },
             { name => 'items',
-              desc => 'Array of copy locations to filter copies by, optional and can be undef.',
+              desc => 'Array of item ids.',
               type => 'array' }
         ],
         return => {
@@ -305,7 +306,7 @@ sub _acp_ids_to_bre_ids {
         {id => $item_ids},
         {flesh => 1, flesh_fields => {acp => ['call_number']}}
     ]);
-    my @bre_ids = map { $_->call_number->record } @$items;
+    my @bre_ids = uniq( map { $_->call_number->record } @$items );
     return \@bre_ids;
 }
 
