@@ -1,7 +1,7 @@
 #!perl
 
 use strict; use warnings;
-use Test::More tests => 2;
+use Test::More tests => 3;
 use OpenILS::Utils::TestUtils;
 use OpenILS::Utils::CStoreEditor qw/:funcs/;
 use OpenILS::Application::AppUtils;
@@ -75,3 +75,34 @@ subtest 'can associate a carousel with an existing record bucket' => sub {
     $results = $e->search_container_biblio_record_entry_bucket({id => $bucket_id});
     is(scalar(@{ $results }), 0, 'Successfully deleted bucket');
 };
+
+subtest('creating carousel from items', sub {
+    plan tests => 1;
+
+    subtest('when items are attached to the same bib record', sub {
+        plan tests => 1;
+        my @item_ids = ( 1, 101, 201, 501 ); # 4 items that are all attached to the same bib record
+        my $carousel_id = $apputils->simplereq('open-ils.actor',
+                                               'open-ils.actor.carousel.create_carousel_from_items',
+                                               $authtoken,
+                                               'Here is my new carousel',
+                                               \@item_ids);
+        my $carousel = $e->retrieve_container_carousel($carousel_id);
+        my $bucket = $apputils->simplereq('open-ils.actor',
+                                          'open-ils.actor.container.flesh.authoritative',
+                                          $authtoken,
+                                          'biblio',
+                                          $carousel->bucket);
+        is(scalar(@{ $bucket->items }), 1, 'duplicate records are only added once');
+    });
+});
+
+my $carousel = $e->search_container_carousel({name => 'Here is my new carousel'})->[0];
+$apputils->simplereq('open-ils.actor',
+                        'open-ils.actor.container.full_delete',
+                        $authtoken,
+                        'biblio',
+                        $carousel->bucket);
+$e->xact_begin;
+$e->delete_container_carousel($carousel);
+$e->xact_commit;
