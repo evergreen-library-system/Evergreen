@@ -42,6 +42,7 @@ This release contains bug fixes improving on Evergreen 3.11.4.
 === Cataloging ===
 
 * Fixes problem where "Form" value could not be saved in MARC editor for electronic resources. (https://bugs.launchpad.net/evergreen/+bug/2056204[Bug 2056204])
+* Improves performance of item refresh after batch editing (https://bugs.launchpad.net/evergreen/+bug/1821094[Bug 1821094])
 
 === Circulation === 
 
@@ -112,6 +113,7 @@ testing, documentation, and patches to the 3.11.5 point release of Evergreen:
 * Steven Mayo
 * Susan Morrison
 * Terran McCanna
+* Jennifer Weston
 
 
 
