@@ -58,7 +58,7 @@ autoreconf -i
     If you are running an older version of these distributions, you may want 
     to upgrade before upgrading Evergreen. For instructions on upgrading these
     distributions, visit the Debian or Ubuntu websites.
-  * **OpenSRF**: The minimum supported version of OpenSRF is 3.2.0.
+  * **OpenSRF**: The minimum supported version of OpenSRF is 3.2.4.
 
 
 Evergreen has a number of prerequisite packages that must be installed
