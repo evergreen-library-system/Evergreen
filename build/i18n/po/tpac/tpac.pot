@@ -262,10 +262,6 @@ msgstr ""
 msgid "Account Home"
 msgstr ""
 
-#: ../../Open-ILS/src/templates/opac/parts/myopac/prefs_base.tt2:33
-msgid "Account Information and Preferences"
-msgstr ""
-
 #: ../../Open-ILS/src/templates/opac/login.tt2:1 ../../Open-ILS/src/templates/opac/login.tt2:6
 msgid "Account Login"
 msgstr ""
@@ -3595,6 +3591,10 @@ msgstr ""
 
 #: ../../Open-ILS/src/templates/opac/parts/myopac/prefs_base.tt2:4
 msgid "Personal Information"
+msgstr ""
+
+#: ../../Open-ILS/src/templates/opac/parts/myopac/prefs_base.tt2:33
+msgid "Personal Information and Preferences"
 msgstr ""
 
 #: ../../Open-ILS/src/templates/opac/parts/hold_notify.tt2:18
