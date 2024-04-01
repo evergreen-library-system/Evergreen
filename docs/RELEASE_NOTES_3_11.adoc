@@ -3,6 +3,118 @@
 :numbered:
 :toclevels: 3
 
+== Evergreen 3.11.5 ==
+
+This release contains bug fixes improving on Evergreen 3.11.4.
+
+=== Upgrade Notes ===
+
+* https://bugs.launchpad.net/evergreen/+bug/2040514[Bug 2040514] requires two new prerequisite Perl modules. These can be installed by running the prerequisite installation for your Linux distribution. Please see the https://evergreen-ils.org/documentation/install/README_3_12.html#_installing_prerequisites[Evergreen installation instructions] for more information.
+* https://bugs.launchpad.net/evergreen/+bug/2028095[Bug 2028095] requires a database update
+* https://bugs.launchpad.net/evergreen/+bug/1909585[Bug 1909585] requires a database update
+
+=== Accessibility ===
+
+* Increases the visibility of focus outlines in the Angular staff client (https://bugs.launchpad.net/evergreen/+bug/1828463[Bug 1828463])
+
+
+=== Acquisitions ===
+
+* Fixes for SFTP Transfer of EDI Order Data - This repairs the SFTP transfer mechanism so that it should work with most vendors who require usernames and passwords for authentication. To switch from FTP to SFTP, edit the EDI account's host entry to begin with "sftp://" instead of "ftp://". Check with your EDI vendor before making this change. They may have additional requirements. This fix requires two new Perl modules; see Upgrade Notes above. (https://bugs.launchpad.net/evergreen/+bug/2040514[Bug 2040514])
+* Fixes EDI error when PO ordering agency has no mailing address (https://bugs.launchpad.net/evergreen/+bug/2016188[Bug 2016188])
+
+=== Administration ===
+
+* Fixes bug that could cause the Cash Reports page to display payments for the wrong day. (https://bugs.launchpad.net/evergreen/+bug/2051599[Bug 2051599])
+* Adds HTML::defang to the opac.patron.custom_css Library Setting (https://bugs.launchpad.net/evergreen/+bug/1869971[Bug 1869971])
+* Fixes issue with _Patrons with Negative Balances_ interface where a deleted patron with a negative balance would break the interface (https://bugs.launchpad.net/evergreen/+bug/2039725[Bug 2039725])
+* Sets a useful group of default columns in the _Patrons with Negative Balances_ interface (https://bugs.launchpad.net/evergreen/+bug/2047704[Bug 2047704])
+* Teaches `marc_export` to generate an error if given an empty ID file (https://bugs.launchpad.net/evergreen/+bug/1329872[Bug1329872])
+* Makes it possible to display the org unit ID as a number on Angular record editor forms for editing org units (https://bugs.launchpad.net/evergreen/+bug/2051944[Bug 2051944])
+* Displays Org Unit ID in Org Config interface. (https://bugs.launchpad.net/evergreen/+bug/2051879[Bug 2051879])
+* Improves description of the "How to set default owning library for auto-created line item items" Library Setting (https://bugs.launchpad.net/evergreen/+bug/2028095[Bug 2028095])
+* Silences some "Use of uninitialized value" log entries from catalog search (https://bugs.launchpad.net/evergreen/+bug/2043045[Bug 2043045])
+
+=== Catalog ===
+
+* Show the More/Less toggle on facet display in the staff catalog only when a facet has more than five entries. (https://bugs.launchpad.net/evergreen/+bug/2046974[Bug 2046974])
+
+=== Cataloging ===
+
+* Fixes problem where "Form" value could not be saved in MARC editor for electronic resources. (https://bugs.launchpad.net/evergreen/+bug/2056204[Bug 2056204])
+
+=== Circulation === 
+
+* Adds privilege expiration date column to Group Member Details table (https://bugs.launchpad.net/evergreen/+bug/1779743[Bug 1779743])
+* Fixes annotate payment when using keyboard navigation (https://bugs.launchpad.net/evergreen/+bug/2047158[Bug 2047158])
+* Adds help button for 'Convert change to patron credit' on patron bills (https://bugs.launchpad.net/evergreen/+bug/1929596[Bug 1929596])
+
+=== Documentation ===
+
+* Improves documentation of Fiscal Propagation and Rollover (https://bugs.launchpad.net/evergreen/+bug/2049774[Bug 2049774])
+* Updates the version of Antora used to build the documentation (https://bugs.launchpad.net/evergreen/+bug/2036328[Bug 2036328])
+* Updates documentation to include information about strict barcode (https://bugs.launchpad.net/evergreen/+bug/2053050[Bug 2053050])
+* Adds documentation for the Angular staff catalog, based on documentation produced by Indiana Evergreen.
+* Allow Windows users to generate the Evergreen manual locally. (https://bugs.launchpad.net/evergreen/+bug/1930099[Bug 1930099])
+
+=== OPAC ===
+
+* Adds 245$n and 245$p to the title field in public catalog list CSV download, to better distinguish between multiple titles in the same series. (https://bugs.launchpad.net/evergreen/+bug/1909585[Bug 1909585])
+* Changes "Account Information and Preferences" in areas of the OPAC to "Personal Information and Preferences" (https://bugs.launchpad.net/evergreen/+bug/1980138[Bug 1980138])
+* Clarify button text in public catalog New List interface. (https://bugs.launchpad.net/evergreen/+bug/2047589[Bug 2047589])
+* Fixes placement of Save Notes button in public catalog My Lists page (https://bugs.launchpad.net/evergreen/+bug/2047588[Bug 2047588])
+* Changes button order in OPAC My Lists (https://bugs.launchpad.net/evergreen/+bug/2047592[Bug 2047592])
+
+=== SIP ===
+
+* Adds code to flesh part level holds and issuance holds information in SIP/Patron.pm (https://bugs.launchpad.net/evergreen/+bug/1525394[Bug 1525394])
+
+
+=== Staff Client ===
+
+* Fixes issue with logging out of multiple tab in AngularJS client pages (https://bugs.launchpad.net/evergreen/+bug/2034617[Bug 2034617])
+* Ensures that both AngularJS and Angular grids use a gear icon for the grid settings menu. (https://bugs.launchpad.net/evergreen/+bug/1803788[Bug 1803788])
+* Fixes issue where Reports interface would not load if the BitWarden browser plugin is installed (https://bugs.launchpad.net/evergreen/+bug/2052567[Bug 2052567])
+
+==== Third Party Services ====
+
+* Adds idempotency to Stripe to prevent duplicate payments (https://bugs.launchpad.net/evergreen/+bug/2057948[Bug 2057948])
+
+=== Acknowledgements ===
+
+We would like to thank the following individuals who contributed code,
+testing, documentation, and patches to the 3.11.5 point release of Evergreen:
+
+* Andrea Buntz Neiman
+* Bill Erickson
+* Blake Graham-Henderson
+* Brett French
+* Chris Sharp
+* Christine Morgan
+* Debbie Luchenbill
+* Eva Cerniňáková
+* Galen Charlton
+* Gina Monti
+* Jane Sandberg
+* Jason Boyer
+* Jason Stephenson
+* Jeff Davis
+* Jennifer Pringle
+* Josh Stompro
+* Ken Cox
+* Lena Hernandez
+* Michele Morgan
+* Mike Rylander
+* Robin Fitch
+* Rogan Hamby
+* Spencer Pennington
+* Stephanie Leary
+* Steven Mayo
+* Susan Morrison
+* Terran McCanna
+
+
+
 == Evergreen  3.11.4 ==
 
 This release contains bug fixes improving on Evergreen 3.11.3.
