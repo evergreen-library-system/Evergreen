@@ -80,6 +80,7 @@ For maintaining future compatibility and ease of merging, you may want to ensure
 
 * Fixes problem where "Form" value could not be saved in MARC editor for electronic resources. (https://bugs.launchpad.net/evergreen/+bug/2056204[Bug 2056204])
 * Numerous fixes to edits in item alerts: Fixes invocation of (Manage) Item Alerts dialog in Holdings Editor; Adds batch edit for Item Alerts in Holdings Editor; Alerts get grouped together for editing if they are mostly identical; Adds Manage Alerts button to Item Alerts dialog during alert display in Angular ("eg2") interfaces; Fixes TypeError: defaults is null exception for missing Default Item Alert Type preference; Adds a Changes Pending indicator for Holdings Editor (https://bugs.launchpad.net/evergreen/+bug/2012971[Bug 2012971])
+* Improves performance of item refresh after batch editing (https://bugs.launchpad.net/evergreen/+bug/1821094[Bug 1821094])
 
 === Circulation === 
 
@@ -157,6 +158,7 @@ testing, documentation, and patches to the 3.12.3 point release of Evergreen:
 * Steven Mayo
 * Susan Morrison
 * Terran McCanna
+* Jennifer Weston
 
 == Evergreen  3.12.2 ==
 
