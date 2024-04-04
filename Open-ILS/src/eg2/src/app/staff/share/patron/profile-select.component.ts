@@ -95,7 +95,7 @@ export class ProfileSelectComponent implements ControlValueAccessor, OnInit {
 
         return this.pcrud.search('pgtde',
             {org: this.org.ancestors(this.auth.user().ws_ou(), true)},
-            {flesh: 1, flesh_fields: {'pgtde': ['grp']}},
+            {flesh: 1, flesh_fields: {'pgtde': ['grp', 'children']}, 'order_by':{'pgtde':'position desc'}},
             {atomic: true}
 
         ).toPromise().then(groups => {
