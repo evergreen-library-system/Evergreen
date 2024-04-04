@@ -14,6 +14,16 @@
     background-color: #e1efeb;
 }
 
+.eg-grid-idlfield-owner_label .btn-link {
+    padding: 0;
+    text-align: left;
+}
+
+/* hide it, but let it take up space so the text stays even with the parent node */
+.leaf .material-icons {
+    visibility: hidden;
+}
+
 /* Add additional classes for more deeply nested org unit hierarchies */
 /* e.g.
 .holdings-org-row-0 {}

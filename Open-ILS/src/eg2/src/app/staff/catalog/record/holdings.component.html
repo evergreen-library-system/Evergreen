@@ -18,21 +18,17 @@
 <!-- Location / Barcode cell template -->
 
 <ng-template #locationTemplate let-row="row" let-userContext="userContext">
-  <!-- ps-* is doubled for added impact -->
-  <div class="ps-{{row.locationDepth}}">
-    <span class="ps-{{row.locationDepth}}">
+  <div [ngStyle]="{'padding-left': (0.5 * getRowPaddingDepth(row)) + 'rem'}"
+    [ngClass]="{'leaf': row.copy || row.treeNode.children.length === 0}">
       <button type="button" class="btn btn-link text-decoration-none label-with-material-icon" (click)="userContext.toggleExpandRow(row)">
         <!--  leave the icons in place for all node types, but make them
               invisible when they are not needed. -->
         <span *ngIf="row.treeNode.expanded"
-          [ngClass]="{invisible: row.copy || row.treeNode.children.length === 0}"
           class="material-icons p-0 m-0" aria-hidden="true">keyboard_arrow_down</span>
         <span *ngIf="!row.treeNode.expanded"
-          [ngClass]="{invisible: row.copy || row.treeNode.children.length === 0}"
           class="material-icons p-0 m-0" aria-hidden="true">keyboard_arrow_right</span>
-        <span>{{row.locationLabel}}</span>
+        <span class="locationLabel">{{row.locationLabel}}</span>
       </button>
-    </span>
   </div>
 </ng-template>
 
@@ -251,9 +247,9 @@
     </eg-grid-column>
     <eg-grid-column path="callNum.id" [hidden]="true" label="Call Number ID" i18n-label>
     </eg-grid-column>
-    <eg-grid-column name="owner_label" [flex]="4"
+    <eg-grid-column name="owner_label"
       [cellTemplate]="locationTemplate" [cellContext]="gridTemplateContext" 
-      label="Location/Barcode" [disableTooltip]="true" i18n-label>
+      label="Location / Barcode" i18n-label>
     </eg-grid-column>
     <eg-grid-column path="callNumCount" datatype="number" label="Call Numbers" i18n-label>
     </eg-grid-column>

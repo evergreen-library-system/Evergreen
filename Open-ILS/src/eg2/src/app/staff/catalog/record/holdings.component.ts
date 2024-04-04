@@ -354,6 +354,15 @@ export class HoldingsMaintenanceComponent implements OnInit {
         this.holdingsGrid.reload();
     }
 
+    getRowPaddingDepth(row) {
+        let depth = row.locationDepth;
+        // let leaf nodes line up with their parents
+        if (row.copy || row.treeNode.children.length === 0) {
+            depth = depth - 1;
+        }
+        return depth;
+    }
+
     onRowActivate(row: any) {
         if (row.copy) {
             this.openHoldingEdit([row], true, false);
