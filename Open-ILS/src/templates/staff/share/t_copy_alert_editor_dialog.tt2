@@ -25,7 +25,7 @@
             <div class="col-md-3">
               <label>
                 <input type="checkbox" ng-model="acked" ng-change="(acked ? a.ack_time('now') : a.ack_time(null)) && a.ischanged(1)"/>
-                [% l('Clear?') %]
+                [% l('Delete') %]
               </label>
             </div>
           </div>
