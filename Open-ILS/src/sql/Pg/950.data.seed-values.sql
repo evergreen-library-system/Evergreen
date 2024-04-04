@@ -24039,7 +24039,7 @@ VALUES (
     1, 'msg64_hold_items_available', 'false',
     oils_i18n_gettext(
         (SELECT id FROM sip.setting WHERE name = 'msg64_hold_items_available'),
-        'Only return information on available holds'
+        'Only return information on available holds',
         'sipset', 'description')
 ), (
     1, 'checkout.override.COPY_ALERT_MESSAGE', 'true',
