@@ -516,7 +516,7 @@ angular.module('egCoreMod')
 
     service.searchPermGroupEntries = function(org) {
         return egCore.pcrud.search('pgtde', {org: org, parent: null},
-            {flesh: -1, flesh_fields: {pgtde: ['grp', 'children']}}, {atomic: true}
+            {flesh: -1, flesh_fields: {pgtde: ['grp', 'children']}, 'order_by':{'pgtde':'position desc'}}, {atomic: true}
         ).then(function(treeArray) {
             if (!treeArray.length && egCore.org.get(org).parent_ou()) {
                 return service.searchPermGroupEntries(egCore.org.get(org).parent_ou());
