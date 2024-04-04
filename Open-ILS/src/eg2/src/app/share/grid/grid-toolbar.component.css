@@ -1,0 +1,52 @@
+.eg-grid-toolbar {
+  display: flex;
+}
+
+.eg-grid-toolbar .dropdown-menu {
+  width: max-content;
+}
+
+.eg-grid-toolbar .material-icons {
+  vertical-align: top;
+}
+
+.eg-grid-toolbar .label-with-material-icon {
+  align-items: flex-start;
+  display: flex;
+  flex-wrap: nowrap;
+  white-space: wrap;
+}
+
+/* Kind of hacky -- only way to get a toolbar button with no 
+ * mat icon to line up horizontally with mat icon buttons */
+.eg-grid-toolbar .text-button {
+  padding-top: 11px;
+  padding-bottom: 11px;
+}
+
+/* make buttons and links match when focused */
+.eg-grid-toolbar .dropdown-item:focus,
+.eg-grid-toolbar .dropdown-item:hover,
+.eg-grid-column-config-dialog button:focus,
+.eg-grid-column-width-config button:focus {
+  outline: 2px solid var(--primary);
+}
+
+.button-adjacent-label {
+    vertical-align: inherit;
+    cursor: auto;
+}
+
+.button-adjacent-label.disabled {
+    opacity: .65;
+}
+
+.eg-grid-toolbar .dropdown h2,
+.eg-grid-toolbar .dropdown h3 {
+  color: inherit;
+  font-size: inherit;
+  font-weight: 600;
+  margin: 0 0 0.5rem;
+  padding: 0;
+  line-height: inherit;
+}

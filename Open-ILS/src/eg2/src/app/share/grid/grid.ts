@@ -1,7 +1,7 @@
 /**
  * Collection of grid related classses and interfaces.
  */
-import {TemplateRef, EventEmitter, QueryList} from '@angular/core';
+import {TemplateRef, EventEmitter, AfterViewInit, QueryList} from '@angular/core';
 import {Observable, Subscription} from 'rxjs';
 import {IdlService, IdlObject} from '@eg/core/idl.service';
 import {OrgService} from '@eg/core/org.service';
@@ -17,7 +17,8 @@ export class GridColumn {
     path: string;
     label: string;
     headerLabel: string;
-    flex: number;
+    size?: number;
+    resizeStart?: number = 0;
     align: string;
     hidden: boolean;
     visible: boolean;
@@ -109,7 +110,7 @@ export class GridColumn {
         col.name = this.name;
         col.path = this.path;
         col.label = this.label;
-        col.flex = this.flex;
+        col.size = this.size;
         col.required = this.required;
         col.hidden = this.hidden;
         col.asyncSupportsEmptyTermClick = this.asyncSupportsEmptyTermClick;
@@ -350,9 +351,9 @@ export class GridColumnSet {
 
     reset() {
         this.columns.forEach(col => {
-            col.flex = 2;
             col.sort = 0;
-            col.align = 'left';
+            col.align = '';
+            col.size = null;
             col.visible = this.stockVisible.includes(col.name);
         });
     }
@@ -374,8 +375,7 @@ export class GridColumnSet {
         }
 
         if (!col.name) { col.name = col.path; }
-        if (!col.flex) { col.flex = 2; }
-        if (!col.align) { col.align = 'left'; }
+        if (!col.align) { col.align = ''; }
         if (!col.label) { col.label = col.name; }
         if (!col.datatype) { col.datatype = 'text'; }
         if (!col.isAuto) { col.headerLabel = col.label; }
@@ -415,7 +415,9 @@ export class GridColumnSet {
         const visible = this.columns.filter(c => c.visible);
         const invisible = this.columns.filter(c => !c.visible);
 
-        visible.sort((a, b) => a.label < b.label ? -1 : 1);
+        // Preserve user-configured sort order for visible columns
+        // visible.sort((a, b) => a.label < b.label ? -1 : 1);
+        // Sort invisible columns alphabetically
         invisible.sort((a, b) => a.label < b.label ? -1 : 1);
 
         return visible.concat(invisible);
@@ -480,8 +482,11 @@ export class GridColumnSet {
         }
 
         // Splice column out of old position, insert at new position.
+        /*
         this.columns.splice(srcIdx, 1);
         this.columns.splice(targetIdx, 0, col);
+        /**/
+        this.columns.splice(targetIdx, 0, this.columns.splice(srcIdx, 1)[0]);
     }
 
     compileSaveObject(): GridColumnPersistConf[] {
@@ -489,9 +494,22 @@ export class GridColumnSet {
         // scrunch the data down to just the needed info.
         return this.displayColumns().map(col => {
             const c: GridColumnPersistConf = {name : col.name};
-            if (col.align !== 'left') { c.align = col.align; }
-            if (col.flex !== 2) { c.flex = Number(col.flex); }
-            if (Number(col.sort)) { c.sort = Number(col.sort); }
+            if (col.align !== '') {
+                c.align = col.align;
+            } else {
+                c.align = null;
+            }
+
+            if (Number(col.size) && col.size > 0) {
+                c.size = col.size;
+            } else {
+                c.size = null;
+            }
+
+            if (Number(col.sort)) {
+                c.sort = Number(col.sort);
+            }
+
             return c;
         });
     }
@@ -531,7 +549,7 @@ export class GridColumnSet {
 
             col.visible = true;
             if (colConf.align) { col.align = colConf.align; }
-            if (colConf.flex)  { col.flex = Number(colConf.flex); }
+            if (colConf.size) { col.size = Number(colConf.size); }
             if (colConf.sort)  { col.sort = Number(colConf.sort); }
 
             // Add to new columns array, avoid dupes.
@@ -647,7 +665,7 @@ export interface GridRowFlairEntry {
 
 export class GridColumnPersistConf {
     name: string;
-    flex?: number;
+    size?: number;
     sort?: number;
     align?: string;
 }
@@ -691,11 +709,14 @@ export class GridContext {
     defaultVisibleFields: string[];
     defaultHiddenFields: string[];
     ignoredFields: string[];
-    overflowCells: boolean;
+    truncateCells: boolean;
     disablePaging: boolean;
     showDeclaredFieldsOnly: boolean;
     cellTextGenerator: GridCellTextGenerator;
     reloadOnColumnChange: boolean;
+    charWidth: number;
+    currentResizeCol: GridColumn;
+    currentResizeTarget: any;
 
     // Allow calling code to know when the select-all-rows-in-page
     // action has occurred.
@@ -896,6 +917,13 @@ export class GridContext {
         });
     }
 
+    // Returns true if the provided column is sorting in the
+    // specified direction.
+    isColumnSorting(col: GridColumn, dir: string): boolean {
+        const sort = this.dataSource.sort.filter(c => c.name === col.name)[0];
+        return sort && sort.dir === dir;
+    }
+
     getRowIndex(row: any): any {
         const col = this.columnSet.indexColumn;
         if (!col) {
@@ -1058,7 +1086,16 @@ export class GridContext {
             if (col.cellTemplate) {
                 return ''; // avoid 'undefined' values
             } else {
-                return this.getRowColumnValue(row, col);
+                const str = this.getRowColumnValue(row, col);
+                switch (col.name) {
+                    case 'name':
+                    case 'url':
+                    case 'email':
+                        // TODO: insert <wbr> around punctuation
+                        break;
+                    default: break;
+                }
+                return str;
             }
         }
     }
@@ -1444,6 +1481,94 @@ export class GridContext {
     columnHasTextGenerator(col: GridColumn): boolean {
         return this.cellTextGenerator && col.name in this.cellTextGenerator;
     }
+
+    setClassNames(row: any, col: GridColumn): string {
+        const classes = [];
+
+        /* set initial classes from specific grids' callbacks */
+        if (this.cellClassCallback && row && col) {
+            classes.push(this.cellClassCallback(row, col));
+        }
+
+        /* Base classes */
+        if (col.datatype) {classes.push('eg-grid-type-' + col.datatype);}
+        if (col.name) {classes.push('eg-grid-idlfield-' + col.name.replaceAll('.', '_'));}
+        if (col.idlClass) {classes.push('eg-grid-idlclass-' + col.idlClass);}
+        if (col.path) {classes.push('eg-grid-path-' + col.path.replaceAll('.', '_'));}
+
+        /* TODO: pass idlclass to IDL service and find out whether this column is the primary key */
+        /*
+            if (primary)
+                classes.push('primary-key');
+        */
+
+        /* Name-based formats */
+        if (col.name.endsWith('count') || col.name.endsWith('Count')) {classes.push('numeric');}
+
+        switch (col.name) {
+            case 'callnumber':
+            case 'barcode':
+                classes.push('alphanumeric');
+                break;
+            default:
+                break;
+        }
+
+        let val;
+
+        /* Type-based formats */
+        switch (col.datatype) {
+            case 'money':
+                classes.push('numeric');
+                // get raw value
+                if (col.path) {
+                    val = this.nestedItemFieldValue(row, col);
+                } else if (col.name && row && typeof row === 'object' && col.name in row) {
+                    val = this.getObjectFieldValue(row, col.name);
+                }
+                if (Number(val) < 0) {
+                    classes.push('negative-money-amount');
+                }
+                break;
+            case 'int':
+            case 'float':
+            case 'number':
+                classes.push('numeric');
+                break;
+            case 'id':
+                classes.push('alphanumeric');
+                break;
+            default:
+                break;
+        }
+
+        /* preserve alignment, if set */
+        switch (col.align) {
+            case 'left':
+                classes.push('text-start');
+                break;
+            case 'right':
+                classes.push('text-end');
+                break;
+            case 'center':
+                classes.push('text-center');
+                break;
+            default:
+                break;
+        }
+
+        if (col.isDragTarget) {
+            classes.push('dragover');
+        }
+
+        if (this.isColumnSorting(col, 'ASC') || this.isColumnSorting(col, 'DESC')) {
+            classes.push('eg-grid-col-sorted');
+        }
+
+        // smush into object for ngClass
+        return classes.reduce((classname, key) => ({ ...classname, [key]: true}), {});
+    }
+
 }
 
 

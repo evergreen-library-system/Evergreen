@@ -1,0 +1,56 @@
+.eg-grid-header-cell {
+  padding: 0.2rem 0.5rem 0.2rem 0;
+}
+
+.eg-grid-header-cell.align,
+.eg-grid-header-cell.visibility {
+  padding-left: 0.5rem;
+}
+
+.eg-grid-column-config tbody th,
+.eg-grid-column-config td {
+  vertical-align: middle;
+}
+
+.btn-check + .btn-sm,
+.col-align-clear.btn-sm,
+.actions .btn-sm {
+  opacity: 0.75;
+}
+
+.btn-check + .btn-sm:hover,
+.btn-check + .btn-sm:focus,
+.col-align-clear.btn-sm:hover,
+.col-align-clear.btn-sm:focus {
+  background-color: rgba(0, 0, 0, 0.05);
+  opacity: 1;
+}
+
+.btn-check:active + .btn-sm, 
+.btn-check:checked + .btn-sm,
+.col-align-clear.btn-sm:active {
+  background-color: rgba(0, 0, 0, 0.08);
+  opacity: 1;
+}
+
+.actions .btn-sm:hover,
+.actions .btn-sm:focus,
+.actions .btn-sm:active {
+  opacity: 1;
+}
+
+input[type="number"].form-control { 
+  max-width: 14ch; 
+}
+
+.btn-sm .material-icons {
+  font-size: clamp(20px, 1.2rem, 1lh);
+}
+
+.col-align-clear.btn-sm .material-icons {
+  font-size: 1rem;
+}
+
+.eg-grid-header-cell.actions {
+  text-align: end;
+}

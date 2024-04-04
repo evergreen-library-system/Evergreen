@@ -1,21 +1,16 @@
-
-<span *ngIf="!column.cellTemplate"
-  [ngbTooltip]="column.disableTooltip ? null : context.getRowColumnValue(row, column)"
+<div *ngIf="!column.cellTemplate"
+  [ngbTooltip]="(!context.truncateCells || column.disableTooltip) ? null : context.getRowColumnValue(row, column)"
   placement="top-left"
-  class="{{context.cellClassCallback(row, column)}}"
   triggers="mouseenter:mouseleave">
   <ng-container *ngIf="column.datatype === 'bool'">
     <eg-bool [value]="context.getRowColumnValue(row, column)"
       [ternary]="column.ternaryBool">
     </eg-bool>
   </ng-container>
-  <ng-container *ngIf="column.datatype !== 'bool'">
-    {{context.getRowColumnValue(row, column)}}
-  </ng-container>
-</span>
-<span *ngIf="column.cellTemplate" 
-  class="{{context.cellClassCallback(row, column)}}"
-  [ngbTooltip]="column.disableTooltip ? null : column.cellTemplate"
+  <div *ngIf="column.datatype !== 'bool'" [innerHTML]="breakWords(context.getRowColumnValue(row, column))"></div>
+</div>
+<div *ngIf="column.cellTemplate" 
+  [ngbTooltip]="(!context.truncateCells || column.disableTooltip) ? null : column.cellTemplate"
   placement="top-left"
   #tooltip="ngbTooltip" 
   (mouseenter)="tooltip.open(column.getCellContext(row))"
@@ -23,5 +18,5 @@
   <ng-container #templateContainer
     *ngTemplateOutlet="column.cellTemplate; context: column.getCellContext(row)">
   </ng-container> 
-</span>
+</div>
 

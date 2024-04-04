@@ -1,54 +1,60 @@
+<!-- note that colgroups are set up in grid.component.html -->
 
-<div role="row" class="eg-grid-row eg-grid-header-row">
+<tr role="row" class="eg-grid-row eg-grid-header-row">
   <ng-container *ngIf="!context.disableSelect">
-    <div role="columnheader"
-      class="eg-grid-cell eg-grid-header-cell eg-grid-checkbox-cell eg-grid-cell-skinny">
-      <input type='checkbox' (click)="handleBatchSelect($event)"
-        i18n-aria-label aria-label="All rows"
-        [(ngModel)]="batchRowCheckbox">
-    </div>
+    <th scope="col" role="columnheader"
+      class="eg-grid-cell eg-grid-header-cell eg-grid-checkbox-cell">
+      <div class="eg-grid-cell-contents">
+        <input type='checkbox' (click)="handleBatchSelect($event)"
+          i18n-aria-label aria-label="All rows"
+          [(ngModel)]="batchRowCheckbox">
+      </div>
+    </th>
   </ng-container>
-  <div role="columnheader"
-    class="eg-grid-cell eg-grid-header-cell eg-grid-number-cell eg-grid-cell-skinny">
-    <span i18n="number|Row Number Header">#</span>
-  </div>
-  <div *ngIf="context.rowFlairIsEnabled"
-    role="columnheader"
+  <th scope="col" role="columnheader" id="row-number-header-{{context.persistKey ? context.persistKey.replaceAll('.', '_') : ''}}"
+    class="eg-grid-cell eg-grid-header-cell eg-grid-number-cell alphanumeric">
+    <div class="eg-grid-cell-contents">
+      <span i18n="number|Row Number Header" title="Row Number" i18n-title>#</span>
+    </div>
+  </th>
+  <th *ngIf="context.rowFlairIsEnabled" scope="col" role="columnheader"
     class="eg-grid-cell eg-grid-header-cell eg-grid-flair-cell">
-    <span class="material-icons" aria-hidden="true" title="Notifications" i18n-title>notifications</span>
-    <span class="visually-hidden" i18n>Notifications</span>
-  </div>
-  <div role="columnheader"
-    *ngFor="let col of context.columnSet.displayColumns()"
-    draggable="true"
-    (dragstart)="dragColumn = col"
+    <div class="eg-grid-cell-contents">
+      <span class="material-icons">notifications</span>
+    </div>
+  </th>
+  <th *ngFor="let col of context.columnSet.displayColumns()"
+    scope="col" role="columnheader"
     (drop)="onColumnDrop(col)"
     (dragover)="onColumnDragEnter($event, col)"
     (dragleave)="onColumnDragLeave($event, col)"
-    [ngClass]="{'dragover' : col.isDragTarget}"
-    class="eg-grid-cell eg-grid-header-cell" [ngStyle]="{flex:col.flex}">
-    <button type="button" class="btn btn-link sortable label-with-material-icon" *ngIf="col.isSortable"
-      (click)="sortOneColumn(col)">
-      <span class="eg-grid-header-cell-sort-label">{{col.headerLabel}}</span>
-      <span class="material-icons eg-grid-header-cell-sort-arrow"
-        *ngIf="isColumnSorting(col, 'ASC')">arrow_upwards</span>
-      <span class="material-icons eg-grid-header-cell-sort-arrow"
-        *ngIf="isColumnSorting(col, 'DESC')">arrow_downwards</span>
-    </button>
-    <span *ngIf="!col.isSortable">{{col.headerLabel}}</span>
-  </div>
-</div>
-<div *ngIf="context.isFilterable"
-  class="eg-grid-row eg-grid-filter-controls-row">
-  <ng-container *ngIf="!context.disableSelect">
-    <div class="eg-grid-cell eg-grid-header-cell eg-grid-cell-skinny"></div>
-  </ng-container>
-  <div class="eg-grid-cell eg-grid-header-cell eg-grid-cell-skinny"></div>
-  <div *ngIf="context.rowFlairIsEnabled" 
-    class="eg-grid-cell eg-grid-header-cell"></div>
+    [style.width.ch]="col.size"
+    class="eg-grid-cell eg-grid-header-cell"
+    [ngClass]="context.setClassNames(row, col)"
+    [attr.aria-sort]="ariaSortDirection(col)">
+    <div class="eg-grid-cell-contents" 
+      draggable="true"
+      (dragstart)="dragColumn = col">
+      <button type="button" class="sortable btn d-inline p-0 header-label" *ngIf="col.isSortable"
+        (click)="sortOneColumn(col)">
+        <span class="eg-grid-header-cell-sort-label" title="Sort by {{col.headerLabel}}" i18n-title>{{col.headerLabel}}</span>
+        <span class="material-icons eg-grid-header-cell-sort-arrow"
+          *ngIf="context.isColumnSorting(col, 'ASC')">arrow_upwards</span>
+        <span class="material-icons eg-grid-header-cell-sort-arrow"
+          *ngIf="context.isColumnSorting(col, 'DESC')">arrow_downwards</span>
+      </button>
+      <span *ngIf="!col.isSortable" class="header-label">{{col.headerLabel}}</span>
 
-  <div *ngFor="let col of context.columnSet.displayColumns()" 
-    class="eg-grid-cell eg-grid-filter-control-cell" [ngStyle]="{flex:col.flex}">
-    <eg-grid-filter-control [context]="context" [col]="col"></eg-grid-filter-control>
-  </div>
-</div>
+      <ng-container *ngIf="context.isFilterable">
+        <eg-grid-filter-control [context]="context" [col]="col"></eg-grid-filter-control>
+      </ng-container>
+    </div>
+
+      <button #colResizeButton type="button" class="col-resize"
+        (keydown)="columnStepMove($event, col)"
+        (blur)="blurHandler($event)">
+        <span class="visually-hidden" i18n>Adjust {{col.headerLabel}} width</span>
+      </button>
+    
+  </th>
+</tr>

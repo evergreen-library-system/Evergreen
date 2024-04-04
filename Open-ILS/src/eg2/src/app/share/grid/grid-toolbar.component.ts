@@ -2,19 +2,18 @@ import {AfterViewInit, ChangeDetectorRef, Component, Input, OnInit} from '@angul
 import {Router} from '@angular/router';
 import {DomSanitizer, SafeUrl} from '@angular/platform-browser';
 import {GridToolbarButton, GridToolbarAction, GridContext} from '@eg/share/grid/grid';
-import {GridColumnWidthComponent} from './grid-column-width.component';
 import {GridPrintComponent} from './grid-print.component';
 import {GridColumn} from './grid';
 
 @Component({
     selector: 'eg-grid-toolbar',
-    templateUrl: 'grid-toolbar.component.html'
+    templateUrl: 'grid-toolbar.component.html',
+    styleUrls: ['grid-toolbar.component.css']
 })
 
 export class GridToolbarComponent implements OnInit, AfterViewInit {
 
     @Input() gridContext: GridContext;
-    @Input() colWidthConfig: GridColumnWidthComponent;
     @Input() gridPrinter: GridPrintComponent;
     @Input() disableSaveSettings = false;
 
@@ -78,8 +77,6 @@ export class GridToolbarComponent implements OnInit, AfterViewInit {
         // depending on perms.
 
         this.gridContext.saveGridConfig().then(
-            // hide the with config after saving
-            ok => this.colWidthConfig.isVisible = false,
             err => console.error(`Error saving columns: ${err}`)
         );
     }

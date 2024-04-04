@@ -1,16 +1,10 @@
-<!-- uses dropdown menu CSS for easy stying, but it's not a dropdown -->
-<ng-template #contextMenu let-gridContext="gridContext">
-  <eg-grid-toolbar-actions-menu [gridContext]="gridContext" [viaContextMenu]="true">
-  </eg-grid-toolbar-actions-menu>
-</ng-template>
-
-<div class="eg-grid-body" tabindex="0" (keydown)="onGridKeyDown($event)">
-  <div role="row" class="eg-grid-row eg-grid-body-row {{context.rowClassCallback(row)}}"
+  <tr role="row" class="eg-grid-row eg-grid-body-row {{context.rowClassCallback(row)}}"
     [ngClass]="{'selected': context.rowSelector.contains(context.getRowIndex(row))}"
     *ngFor="let row of context.dataSource.getPageOfRows(context.pager); let idx = index">
 
     <ng-container *ngIf="!context.disableSelect">
-      <div role="gridcell" class="eg-grid-cell eg-grid-checkbox-cell eg-grid-cell-skinny">
+      <td role="gridcell" class="eg-grid-cell eg-grid-checkbox-cell">
+        <div class="eg-grid-cell-contents">
         <input type='checkbox' 
           [ngModel]="context.rowSelector.indexes[context.getRowIndex(row)]"
           (ngModelChange)="context.rowSelector.toggle(context.getRowIndex(row))"
@@ -21,47 +15,55 @@
           [ngbPopover]="contextMenu"
           placement="right"
           triggers="manual">
-      </div>
+        </div>
+      </td>
     </ng-container>
-    <div role="gridcell" class="eg-grid-cell eg-grid-number-cell eg-grid-cell-skinny-2">
-      {{context.pager.rowNumber(idx)}}
-    </div>
-    <div role="gridcell" *ngIf="context.rowFlairIsEnabled" class="eg-grid-cell eg-grid-flair-cell">
+    <td role="gridcell" class="eg-grid-cell eg-grid-number-cell alphanumeric">
+      <div class="eg-grid-cell-contents">{{context.pager.rowNumber(idx)}}</div>
+    </td>
+    <td role="gridcell" *ngIf="context.rowFlairIsEnabled" class="eg-grid-cell eg-grid-flair-cell">
       <!-- using *ngIf allows us to assign the flair callback to a value,
             obviating the need for multiple calls of the same function -->
       <ng-container *ngIf="context.rowFlairCallback(row); let flair">
         <ng-container *ngIf="flair.icon">
-          <span class="material-icons" aria-hidden="true"
-            title="{{flair.title}}" i18n-title>
-            {{flair.icon}}
-          </span>
-          <span *ngIf="flair.title" class="visually-hidden" i18n>{{flair.title}}</span>
+          <div class="eg-grid-cell-contents">
+            <span class="material-icons" aria-hidden="true"
+              title="{{flair.title}}" i18n-title>
+              {{flair.icon}}
+            </span>
+          </div>
         </ng-container>
       </ng-container>
-    </div>
+    </td>
     <!-- contextMenu applied to cells instead of rows so the position
          of the popover is close to the mouse.  As of writing, no way
-         to position the popover at the mouse -->
+         to position the popover at the mouse. -->
+    <!-- aria-describedby is removed to prevent the entire context menu 
+        from being read after the cell contents -->
     <!-- Silencing ESLint because this (click) action has a keyboard-
          compatible equivalent elsewhere -->
     <!-- eslint-disable @angular-eslint/template/click-events-have-key-events, @angular-eslint/template/accessibility-interactive-supports-focus -->
-    <div role="gridcell" class="eg-grid-cell eg-grid-body-cell"
-      [ngStyle]="{flex:col.flex}"
-      [ngClass]="{'eg-grid-cell-overflow': context.overflowCells}"
-      (dblclick)="onRowDblClick(row)"
-      (click)="onRowClick($event, row, idx)"
-      #rowContextMenu="ngbPopover"
-      popoverTitle="Actions for Selected Rows" i18n-popoverTitle
-      (contextmenu)="onRowContextClick($event, row, rowContextMenu)"
-      [ngbPopover]="contextMenu"
-      placement="bottom"
-      triggers="manual"
-      *ngFor="let col of context.columnSet.displayColumns()">
-
-      <eg-grid-body-cell [context]="context" [row]="row" [column]="col">
-      </eg-grid-body-cell>
-    </div>
+    <td role="gridcell" *ngFor="let col of context.columnSet.displayColumns()"
+      class="eg-grid-cell eg-grid-body-cell"
+      [ngClass]="context.setClassNames(row, col)">
+        <div class="eg-grid-cell-contents" (dblclick)="onRowDblClick(row)"
+          (click)="onRowClick($event, row, idx)"
+          #rowContextMenu="ngbPopover"
+          popoverTitle="Actions for Selected Rows" i18n-popoverTitle
+          (contextmenu)="onRowContextClick($event, row, rowContextMenu)"
+          [ngbPopover]="contextMenu" [attr.aria-describedby]="null"
+          placement="bottom"
+          triggers="manual">  
+          <eg-grid-body-cell [context]="context" [row]="row" [column]="col">
+          </eg-grid-body-cell>
+        </div>
     <!-- eslint-enable @angular-eslint/template/click-events-have-key-events, @angular-eslint/template/accessibility-interactive-supports-focus -->
-  </div>
-</div>
+      </td>
+
+      <!-- This is set to visually-hidden so its presence in a <tr> doesn't disrupt table columns -->
+      <ng-template class="visually-hidden" #contextMenu let-gridContext="gridContext">
+        <eg-grid-toolbar-actions-menu [gridContext]="gridContext" [viaContextMenu]="true">
+        </eg-grid-toolbar-actions-menu>
+      </ng-template>
+  </tr>
 

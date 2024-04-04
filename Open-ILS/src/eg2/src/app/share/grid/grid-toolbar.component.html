@@ -118,27 +118,28 @@
   </ng-container><!-- if disablePaging-->
 
 
-  <button type="button" *ngIf="!gridContext.overflowCells"
-    class="btn btn-outline-dark me-1"
-    title="Expand Cells Vertically" i18n-title
-    aria-label="Expand Cells Vertically" i18n-aria-label
-    (click)="gridContext.overflowCells=!gridContext.overflowCells">
+  <button type="button" *ngIf="gridContext.truncateCells"
+    class="btn btn-outline-dark active me-1"
+    title="Allow cell contents to wrap" i18n-title
+    aria-label="Allow cell contents to wrap" i18n-aria-label
+    (click)="gridContext.truncateCells=!gridContext.truncateCells">
     <span aria-hidden="true"
       class="material-icons mat-icon-in-button">expand_more</span>
-    </button>
+  </button>
 
-  <button type="button" *ngIf="gridContext.overflowCells" 
+  <button type="button" *ngIf="!gridContext.truncateCells" 
     class="btn btn-outline-dark me-1"
-    title="Condense Cells Vertically" i18n-title 
-    aria-label="Condense Cells Vertically" i18n-aria-label
-    (click)="gridContext.overflowCells=!gridContext.overflowCells">
-    <span *ngIf="gridContext.overflowCells" aria-hidden="true"
+    title="Truncate cell contents to one line" i18n-title 
+    aria-label="Truncate cell contents to one line" i18n-aria-label
+    (click)="gridContext.truncateCells=!gridContext.truncateCells">
+    <span aria-hidden="true"
       class="material-icons mat-icon-in-button">expand_less</span>
   </button>
 
   <eg-grid-column-config #columnConfDialog [gridContext]="gridContext">
   </eg-grid-column-config>
   <div ngbDropdown placement="bottom-right">
+    <h2 class="visually-hidden" i18n>Grid Settings</h2>
     <button ngbDropdownToggle class="btn btn-outline-dark no-dropdown-caret" type="button"
       title="Show Grid Options" i18n-title aria-label="Show Grid Options" i18n-aria-label>
       <span class="material-icons mat-icon-in-button" aria-hidden="true">settings</span>
@@ -148,11 +149,6 @@
         (click)="columnConfDialog.open({size:'lg'})" type="button">
         <span class="material-icons" aria-hidden="true">build</span>
         <span class="ms-2" i18n>Manage Columns</span>
-      </button>
-      <button nbgDropdownItem class="dropdown-item label-with-material-icon"
-        (click)="colWidthConfig.isVisible = !colWidthConfig.isVisible" type="button">
-        <span class="material-icons" aria-hidden="true">compare_arrows</span>
-        <span class="ms-2" i18n>Manage Column Widths</span>
       </button>
       <button nbgDropdownItem class="dropdown-item label-with-material-icon" type="button"
         [disabled]="gridContext.toolbarActions.length === 0" (click)="toolbarActionsEditor.open().subscribe()">
@@ -189,15 +185,16 @@
       </button>
   
       <div class="dropdown-divider"></div>
-  
-      <button nbgDropdownItem class="dropdown-item label-with-material-icon" (click)="toggleVisibility(col)"
-        *ngFor="let col of gridContext.columnSet.sortForColPicker()" type="button">
-        <!-- Note that the ARIA labels describe the action that will happen when the button
-          is pressed, not the current state indicated by the badge -->
-        <span *ngIf="col.visible" class="badge badge-success" aria-label="Hide" i18n-aria-label>&#x2713;</span>
-        <span *ngIf="!col.visible" class="badge badge-warning" aria-label="Show" i18n-aria-label>&#x2717;</span>
-        <span class="ms-2">{{col.label}}</span>
-      </button>
+      <h3 class="ps-3" i18n>Columns</h3>
+      <ul class="list-unstyled ps-3">
+        <li *ngFor="let col of gridContext.columnSet.sortForColPicker()" class="form-check">
+          <label>
+            <input type="checkbox" class="form-check-input" 
+              [checked]="col.visible" (click)="toggleVisibility(col)">
+              {{col.label}}
+          </label>
+        </li>
+      </ul>
   
     </div>
   </div>

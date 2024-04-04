@@ -13,7 +13,7 @@ export class GridColumnComponent implements OnInit {
     @Input() name: string;
     @Input() path: string;
     @Input() label: string;
-    @Input() flex: number;
+    @Input() size: number;
     // is this the index field?
     @Input() index: boolean;
 
@@ -70,7 +70,7 @@ export class GridColumnComponent implements OnInit {
         col.name = this.name;
         col.path = this.path;
         col.label = this.label;
-        col.flex = this.flex;
+        col.size = this.size;
         col.required = this.required;
         col.hidden = this.hidden === true;
         col.asyncSupportsEmptyTermClick = this.asyncSupportsEmptyTermClick === true;

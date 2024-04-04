@@ -2,69 +2,129 @@
   <div class="modal-header">
     <h4 class="modal-title" i18n>Grid Columns Configuration</h4>
     <button type="button" class="btn-close btn-close-white" 
-      i18n-aria-label aria-label="Close" (click)="close()"></button>
+      i18n-aria-label [attr.aria-label]="'Close'" (click)="close()"></button>
   </div>
   <div class="modal-body eg-grid-column-config-dialog">
+    <table role="table" class="eg-grid table table-striped eg-grid-column-config">
+      <thead role="rowgroup">
+        <tr role="row" id="dropzone-start" 
+          class="eg-grid-row eg-grid-header-row row-dropzone"
+          (drop)="onRowDrop($event)"
+          (dragover)="onRowDragEnter($event)"
+          (dragleave)="onRowDragLeave($event)">
+          <th class="eg-grid-header-cell visibility" scope="col" role="columnheader" id="visibility-header" i18n>
+            Visible
+          </th>
+          <th class="eg-grid-header-cell name" scope="col" role="columnheader" i18n>
+            Column Name
+          </th>
+          <th class="eg-grid-header-cell align" scope="col" role="columnheader" i18n>
+            Align
+          </th>
+          <th class="eg-grid-header-cell" scope="col" role="columnheader" i18n>
+            Width (Characters)
+          </th>
+          <th class="eg-grid-header-cell" scope="col" role="columnheader" 
+            *ngIf="columnSet.isMultiSortable" i18n>
+            Sort Priority
+          </th>
+          <th class="eg-grid-header-cell actions" scope="col" role="columnheader" i18n>
+            Move
+          </th>
+        </tr>
+      </thead>
+      <tbody role="rowgroup">
+        <tr *ngFor="let col of columnSet.columns"
+          role="row"
+          id="col-{{col.name}}"
+          class="row-draggable"
+          draggable="true"
+          (dragstart)="onRowDragStart($event, col)"
+          (drop)="onRowDrop($event)"
+          (dragover)="onRowDragEnter($event)"
+          (dragleave)="onRowDragLeave($event)">
+        <td class="eg-grid-cell eg-grid-checkbox-cell">
+          <input type="checkbox" class="form-check-input" 
+            [checked]="col.visible" (click)="toggleVisibility(col)"
+            attr.aria-labelledby="visibility-header name-{{col.name}}">
+        </td>
+        <th role="rowheader" scope="row" id="name-{{col.name}}" class="name eg-grid-cell" i18n>
+          {{col.label}}
+        </th>
 
-    <div class="row">
-      <div class="col-lg-1 eg-grid-header-cell" i18n>Visible</div>
-      <div class="col-lg-3 eg-grid-header-cell" i18n>Column Name</div>
-      <div class="col-lg-1 eg-grid-header-cell" i18n>Move Up</div>
-      <div class="col-lg-1 eg-grid-header-cell" i18n>Move Down</div>
-      <div class="col-lg-2 eg-grid-header-cell" i18n>First Visible</div>
-      <div class="col-lg-2 eg-grid-header-cell" i18n>Last Visible</div>
-      <div class="col-lg-2 eg-grid-header-cell" 
-        *ngIf="columnSet.isMultiSortable" i18n>Sort Priority</div>
-    </div>
-    <div class="row pt-1" *ngFor="let col of columnSet.columns"
-      [ngClass]="{visible : col.visible}">
-      <div class="col-lg-1">
-        <button type="button" class="btn" (click)="toggleVisibility(col)">
-          <span *ngIf="col.visible" class="badge badge-success" aria-label="Visible" i18n-aria-label>&#x2713;</span>
-          <span *ngIf="!col.visible" class="badge badge-warning" aria-label="Hidden" i18n-aria-label>&#x2717;</span>
-        </button>
-      </div>
-      <div class="col-lg-3">
-        <button type="button" class="btn" (click)="toggleVisibility(col)">{{col.label}}</button>
-      </div>
-      <div class="col-lg-1">
-        <button type="button" class="btn" title="Move column up" i18n-title aria-label="Move column up" i18n-aria-label
-          (click)="columnSet.moveColumn(col, -1)">
-          <span class="material-icons" aria-hidden="true">arrow_upward</span>
-        </button>
-      </div>
-      <div class="col-lg-1">
-        <button type="button" class="btn" title="Move column down" i18n-title aria-label="Move column down" i18n-aria-label
-          (click)="columnSet.moveColumn(col, 1)">
-          <span class="material-icons" aria-hidden="true">arrow_downward</span>
-        </button>
-      </div>
-      <div class="col-lg-2">
-        <button type="button" class="btn" title="Make first visible" i18n-title aria-label="Make first visible" i18n-aria-label
-          (click)="columnSet.moveColumn(col, -10000)">
-          <span class="material-icons" aria-hidden="true">vertical_align_top</span>
-        </button>
-      </div>
-      <div class="col-lg-2">
-        <button type="button" class="btn" title="Make last visible" i18n-title aria-label="Make last visible" i18n-aria-label
-          (click)="columnSet.moveColumn(col, 10000)">
-          <span class="material-icons" aria-hidden="true">vertical_align_bottom</span>
-        </button>
-      </div>
-      <div class="col-lg-2" *ngIf="columnSet.isMultiSortable">
-        <div *ngIf="col.isMultiSortable">
-          <input type='number' [(ngModel)]="col.sort"
-            title="Sort Priority / Direction" i18n-title style='width:2.8em'/>
-        </div>
-      </div>
+        <td class="eg-grid-cell">
+          <div class="btn-group" role="group" aria-label="Alignment options">
+            <input type="radio" class="btn-check" name="align" value="left" id="align-left-{{col.name}}" autocomplete="off" [(ngModel)]="col.align" [checked]="col.align === 'left'">
+            <label class="btn btn-sm" for="align-left-{{col.name}}">
+              <span class="material-icons" aria-hidden="true" title="Left" i18n-title="Grid column alignment">format_align_left</span>
+              <span class="visually-hidden" i18n>Left</span>
+            </label>
+          
+            <input type="radio" class="btn-check" name="align" value="center" id="align-center-{{col.name}}" autocomplete="off" [(ngModel)]="col.align" [checked]="col.align === 'center'">
+            <label class="btn btn-sm" for="align-center-{{col.name}}">
+              <span class="material-icons" aria-hidden="true" title="Center" i18n-title="Grid column alignment">format_align_center</span>
+              <span class="visually-hidden" i18n>Center</span>
+            </label>
+          
+            <input type="radio" class="btn-check" name="align" value="right" id="align-right-{{col.name}}" autocomplete="off" [(ngModel)]="col.align" [checked]="col.align === 'right'">
+            <label class="btn btn-sm" for="align-right-{{col.name}}">
+              <span class="material-icons" aria-hidden="true" title="Right" i18n-title="Grid column alignment">format_align_right</span>
+              <span class="visually-hidden" i18n>Right</span>
+            </label>
 
-    </div>
+            <button type="button" class="btn btn-sm col-align-clear" (click)="col.align = null">
+              <span class="material-icons" aria-hidden="true" title="Reset alignment to default" i18n-title="Grid column alignment">close</span>
+              <span class="visually-hidden" i18n>Reset alignment to default</span>
+            </button>
+          </div>
+        </td>
+
+        <td class="eg-grid-cell">
+          <span class="input-group">
+            <input type='number' [(ngModel)]="col.size" class="form-control"
+              attr.aria-label="{{col.label}} column width'" i18n-aria-label />
+          </span>
+        </td>
+
+        <td class="eg-grid-cell" *ngIf="columnSet.isMultiSortable">
+          <span *ngIf="col.isMultiSortable">
+            <input type='number' [(ngModel)]="col.sort" class="form-control"
+            attr.aria-label="{{col.label}} sort priority'" i18n-aria-label />
+          </span>
+        </td>
+  
+        <td class="eg-grid-cell actions">
+          <button type="button" class="btn btn-sm" attr.aria-label="Make {{col.label}} first visible" i18n-aria-label
+            (click)="moveColumn(col, -10000);">
+            <span class="material-icons" aria-hidden="true" title="Make {{col.label}} first visible" i18n-title>vertical_align_top</span>
+          </button>
+
+          <button type="button" class="btn btn-sm" attr.aria-label="Make {{col.label}} last visible" i18n-aria-label
+            (click)="moveColumn(col, 10000);">
+            <span class="material-icons" aria-hidden="true" title="Make {{col.label}} last visible" i18n-title>vertical_align_bottom</span>
+          </button>
+
+          <button type="button" class="btn btn-sm move" id="move-btn-{{col.name}}"
+            (keydown.arrowup)="moveColumn(col, -1);" (keydown.arrowdown)="moveColumn(col, 1)"
+            attr.aria-label="Move {{col.label}} up or down with arrow keys, or drag row" i18n-aria-label>
+            <span class="material-icons mat-icon-in-button" aria-hidden="true"
+            title="Move {{col.label}} up or down with arrow keys, or drag row" i18n-title>open_with</span>
+          </button>
+        </td>
+      </tr>
+      </tbody>
+    </table>
+
   </div>
-  <div class="modal-footer">
-    <button type="button" class="btn btn-info" (click)="columnSet.moveVisibleToFront()">
+  <div class="modal-footer d-flex flex-row-reverse">
+    <button type="button" class="btn btn-success ms-2" 
+      (click)="saveGridConfig()" i18n>Save</button>
+
+    <button type="button" class="btn btn-info" (click)="columnSet.moveVisibleToFront()" i18n>
       Move Visible Columns To Top
     </button>
-    <button type="button" class="btn btn-success ms-2" 
+
+    <button type="button" class="btn btn-normal me-auto" 
       (click)="close('confirmed')" i18n>Close</button>
   </div>
 </ng-template>

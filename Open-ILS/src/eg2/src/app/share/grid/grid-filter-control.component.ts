@@ -10,7 +10,8 @@ import {NgbDropdown} from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
     selector: 'eg-grid-filter-control',
-    templateUrl: './grid-filter-control.component.html'
+    templateUrl: './grid-filter-control.component.html',
+    styleUrls: ['grid-filter-control.component.css']
 })
 
 export class GridFilterControlComponent implements OnInit {

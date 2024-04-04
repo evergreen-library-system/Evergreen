@@ -1,12 +1,12 @@
-
 <!-- drop-down toggle link -->
 <ng-template #dropdownToggle>
-  <span i18n>Filter</span>
   <ng-container *ngIf="!col.isFiltered">
-    <span class="material-icons mat-icon-in-button">filter_list</span>
+    <span id="filter_toggle_{{col.name}}" i18n hidden>Filter by {{col.headerLabel}}</span>
+    <span class="material-icons mat-icon-in-button" attr.aria-hidden="true" title="Filter by {{col.headerLabel}}" i18n-title>filter_list</span>
   </ng-container>
   <ng-container *ngIf="col.isFiltered">
-    <span class="material-icons mat-icon-in-button">create</span>
+    <span id="filter_toggle_{{col.name}}" i18n hidden>Edit {{col.headerLabel}} filter</span>
+    <span class="material-icons mat-icon-in-button" attr.aria-hidden="true" title="Edit {{col.headerLabel}} filter" i18n-title>create</span>
   </ng-container>
 </ng-template>
 
@@ -40,9 +40,9 @@
   <div [ngSwitch]="col.datatype">
     <div *ngSwitchCase="'link'">
       <div class="input-group">
-        <div ngbDropdown container="body" class="d-inline-block p-1" [autoClose]="false" placement="bottom-left" 
+        <div ngbDropdown container="body" class="d-inline-block py-1" autoClose="outside" placement="bottom-left" 
           [ngClass]="{'border rounded border-secondary eg-grid-col-is-filtered' : col.isFiltered}">
-          <button type="button" ngbDropdownToggle class="no-dropdown-caret text-dark btn">
+          <button type="button" ngbDropdownToggle class="no-dropdown-caret btn">
             <ng-container *ngTemplateOutlet="dropdownToggle"></ng-container>
           </button>
           <div ngbDropdownMenu class="eg-grid-filter-menu">
@@ -62,9 +62,9 @@
     </div>
     <div *ngSwitchCase="'bool'">
       <div class="input-group">
-        <div ngbDropdown container="body" class="d-inline-block p-1" autoClose="outside" placement="bottom-left" 
+        <div ngbDropdown container="body" class="d-inline-block py-1" autoClose="outside" placement="bottom-left" 
           [ngClass]="{'border rounded border-secondary eg-grid-col-is-filtered' : col.isFiltered}">
-          <button type="button" ngbDropdownToggle class="no-dropdown-caret text-dark btn">
+          <button type="button" ngbDropdownToggle class="no-dropdown-caret btn">
             <ng-container *ngTemplateOutlet="dropdownToggle"></ng-container>
           </button>
           <div ngbDropdownMenu class="eg-grid-filter-menu">
@@ -86,9 +86,9 @@
     </div>
     <div *ngSwitchCase="'text'">
       <div class="input-group">
-        <div ngbDropdown container="body" class="d-inline-block p-1" autoClose="outside" placement="bottom-left" 
+        <div ngbDropdown container="body" class="d-inline-block py-1" autoClose="outside" placement="bottom-left" 
           [ngClass]="{'border rounded border-secondary eg-grid-col-is-filtered' : col.isFiltered}">
-          <button type="button" ngbDropdownToggle class="no-dropdown-caret text-dark btn">
+          <button type="button" ngbDropdownToggle class="no-dropdown-caret btn">
             <ng-container *ngTemplateOutlet="dropdownToggle"></ng-container>
           </button>
           <div ngbDropdownMenu class="eg-grid-filter-menu">
@@ -125,9 +125,9 @@
     </div>
     <div *ngSwitchCase="'int'">
       <div class="input-group">
-        <div ngbDropdown container="body" class="d-inline-block p-1" autoClose="outside" placement="bottom-left" 
+        <div ngbDropdown container="body" class="d-inline-block py-1" autoClose="outside" placement="bottom-left" 
           [ngClass]="{'border rounded border-secondary eg-grid-col-is-filtered' : col.isFiltered}">
-          <button type="button" ngbDropdownToggle class="no-dropdown-caret text-dark btn">
+          <button type="button" ngbDropdownToggle class="no-dropdown-caret btn">
             <ng-container *ngTemplateOutlet="dropdownToggle"></ng-container>
           </button>
           <div ngbDropdownMenu class="eg-grid-filter-menu">
@@ -149,9 +149,9 @@
     </div>
     <div *ngSwitchCase="'id'">
       <div class="input-group">
-        <div ngbDropdown container="body" class="d-inline-block p-1" autoClose="outside" placement="bottom-left" 
+        <div ngbDropdown container="body" class="d-inline-block py-1" autoClose="outside" placement="bottom-left" 
           [ngClass]="{'border rounded border-secondary eg-grid-col-is-filtered' : col.isFiltered}">
-          <button type="button" ngbDropdownToggle class="no-dropdown-caret text-dark btn">
+          <button type="button" ngbDropdownToggle class="no-dropdown-caret btn">
             <ng-container *ngTemplateOutlet="dropdownToggle"></ng-container>
           </button>
           <div ngbDropdownMenu class="eg-grid-filter-menu">
@@ -173,9 +173,9 @@
     </div>
     <div *ngSwitchCase="'float'">
       <div class="input-group">
-        <div ngbDropdown container="body" class="d-inline-block p-1" autoClose="outside" placement="bottom-left" 
+        <div ngbDropdown container="body" class="d-inline-block py-1" autoClose="outside" placement="bottom-left" 
           [ngClass]="{'border rounded border-secondary eg-grid-col-is-filtered' : col.isFiltered}">
-          <button type="button" ngbDropdownToggle class="no-dropdown-caret text-dark btn">
+          <button type="button" ngbDropdownToggle class="no-dropdown-caret btn">
             <ng-container *ngTemplateOutlet="dropdownToggle"></ng-container>
           </button>
           <div ngbDropdownMenu class="eg-grid-filter-menu">
@@ -197,9 +197,9 @@
     </div>
     <div *ngSwitchCase="'money'">
       <div class="input-group">
-        <div ngbDropdown container="body" class="d-inline-block p-1" autoClose="outside" placement="bottom-left" 
+        <div ngbDropdown container="body" class="d-inline-block py-1" autoClose="outside" placement="bottom-left" 
           [ngClass]="{'border rounded border-secondary eg-grid-col-is-filtered' : col.isFiltered}">
-          <button type="button" ngbDropdownToggle class="no-dropdown-caret text-dark btn">
+          <button type="button" ngbDropdownToggle class="no-dropdown-caret btn">
             <ng-container *ngTemplateOutlet="dropdownToggle"></ng-container>
           </button>
           <div ngbDropdownMenu class="eg-grid-filter-menu">
@@ -221,12 +221,12 @@
     </div>
     <div *ngSwitchCase="'timestamp'">
       <div class="input-group">
-        <!-- [autoClose]="false" because editing the date widgets, which open
+        <!-- autoClose="outside" because editing the date widgets, which open
              their open popups, registers to the dropdown as clicking 
              outside the dropdown -->
-        <div ngbDropdown container="body" class="d-inline-block p-1" [autoClose]="false" placement="bottom-left" 
+        <div ngbDropdown container="body" class="d-inline-block py-1" autoClose="outside" placement="bottom-left" 
           [ngClass]="{'border rounded border-secondary eg-grid-col-is-filtered' : col.isFiltered}">
-          <button type="button" ngbDropdownToggle class="no-dropdown-caret text-dark btn">
+          <button type="button" ngbDropdownToggle class="no-dropdown-caret btn">
             <ng-container *ngTemplateOutlet="dropdownToggle"></ng-container>
           </button>
           <div ngbDropdownMenu class="eg-grid-filter-menu">
@@ -266,9 +266,9 @@
     </div>
     <div *ngSwitchCase="'org_unit'">
       <div class="input-group">
-        <div ngbDropdown container="body" class="d-inline-block p-1" [autoClose]="false" placement="bottom-left" 
+        <div ngbDropdown container="body" class="d-inline-block py-1" autoClose="outside" placement="bottom-left" 
           [ngClass]="{'border rounded border-secondary eg-grid-col-is-filtered' : col.isFiltered}">
-          <button type="button" ngbDropdownToggle class="no-dropdown-caret text-dark btn">
+          <button type="button" ngbDropdownToggle class="no-dropdown-caret btn">
             <ng-container *ngTemplateOutlet="dropdownToggle"></ng-container>
           </button>
           <div ngbDropdownMenu class="eg-grid-filter-menu">

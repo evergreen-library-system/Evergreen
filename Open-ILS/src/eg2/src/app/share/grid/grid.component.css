@@ -1,27 +1,75 @@
+.eg-grid-wrapper {
+  margin-bottom: 1rem;
+  padding-bottom: 1rem;
+  overflow-x: auto;
+  overflow-y: clip;
+  resize: horizontal;
+  width: auto;
+}
+
+/* Show just enough of the column config dropdown, if it exists */
+.eg-grid-wrapper:has(eg-grid-column-config) {
+  min-height: 300px;
+}
+
+/* Not quite so loud on focus */
+.eg-grid-wrapper:focus,
+.eg-grid:focus, /* for keyboard events */
+.eg-grid-body:focus,
+.eg-grid-body-row:focus,
+.eg-grid-body-row.selected:focus,
+.eg-grid-row:focus,
+.eg-grid-cell:focus {
+  outline: none !important;
+}
+
+.eg-grid-wrapper:focus-visible {
+  outline: 2px solid rgba(var(--bs-primary-rgb), 0.25);
+  outline-offset: 5px;
+}
+
+/* Undo Bootstrap table width and margin */
+table.table.eg-grid {
+  margin-bottom: 0;
+  width: 100%;
+}
 
 .eg-grid {
-    width: 100%;
-    color: rgba(0,0,0,.87); 
+  caption-side: block-start;
+  table-layout: auto;
+  white-space: normal; 
 }
+
+.eg-grid > :not(:first-child) {
+  border-top: revert;
+}
+
+.eg-grid caption {
+  color: var(--bs-body-color);
+}
+
+.eg-grid.eg-grid-empty,
+.eg-grid.eg-grid-error {
+  caption-side: block-end;
+}
+
+.eg-grid.eg-grid-empty caption,
+.eg-grid.eg-grid-error caption {
+  font-style: italic;
+  font-weight: 600;
+  text-align: center;
+}
+
+/* ROW STYLES */
     
 .eg-grid-row {
-    display: flex;
-    border-bottom: 1px solid rgba(0,0,0,.12);
-    padding-left: 10px;
-    padding-right: 10px;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.12);
 }
 
-.eg-grid-header-row {
-  /* matches bootstrap card-header css */
-  background-color: rgba(0,0,0,.03);
-  border-bottom: 1px solid rgba(0,0,0,.125);
-}
-
-.eg-grid-body {
-    outline: none; /* for keyboard events */
-}
-
-.eg-grid-body-row {
+.eg-grid.border-0 .eg-grid-row,
+.eg-grid.border-0 .eg-grid-row th,
+.eg-grid.border-0 .eg-grid-row td {
+  border-bottom: none;
 }
 
 .eg-grid-body-row.selected, 
@@ -31,141 +79,45 @@
   border-color: #b8daff;
 }
 
-.eg-grid-cell {
-    flex: 2; /* applied per column */
-    padding: 6px;
-    white-space: nowrap;
-    text-overflow: ellipsis;
-    overflow: hidden;
+.eg-grid .row-dropzone {
+  height: 1px;
 }
 
-/* allow tooltips to be wider than the default 200px */
-.eg-grid-cell .tooltip-inner {
-  max-width: 400px; 
+.eg-grid .row-dropzone.active,
+.eg-grid .row-draggable.active {
+  border-bottom: 2px solid var(--primary);
+  min-height: 1lh;
 }
 
-/* in overflow mode, allow white space to wrap so the 
- * full contents of the cell can be seen inline.  leaving 
- * text-overflow and overlow as-is means long strings with
- * no space will still be truncated with ellipses to avoid
- * inconsistent grid column widths
- */
-.eg-grid-cell-overflow {
-    white-space: normal;
-}
 
-.eg-grid-body-cell {
-}
+/* HEADER STYLES */
+/* See below this section for padding, alignment, and IDL-based widths */
 
-.eg-grid-body-cell a[href] {
-    text-decoration: underline !important;
+.eg-grid-header-row {
+  /* matches bootstrap card-header css */
+  background-color: rgba(0, 0, 0, 0.03);
+  border-bottom: 0.1rem solid rgba(0, 0, 0, 0.125);
 }
 
 .eg-grid-header-cell {
-  font-weight: bold;
+  font-weight: 600;
+  position: relative;
   white-space: normal;
 }
 
-.eg-grid-header-cell.dragover {
-    background-color: #cce5ff;
-    border-color: #b8daff;
+/* Let users shrink columns past longest word in header. Only resized columns have [style] */
+.eg-grid-header-cell[style] {
+  word-break: break-all;
 }
 
-.eg-grid-header-cell-sort-label {
-  cursor: pointer;
-  text-decoration: underline;
-  font-weight: bold;
-}
-
-.eg-grid-header-cell-sort-arrow {
-  font-size: 14px;
-}
-
-.eg-grid-toolbar {
+.eg-grid-header-cell .eg-grid-cell-contents {
   display: flex;
-}
-
-.eg-grid-toolbar .material-icons {
-  font-size: 20px;
-}
-
-/* Kind of hacky -- only way to get a toolbar button with no 
- * mat icon to line up horizontally with mat icon buttons */
-.eg-grid-toolbar .text-button {
-  padding-top: 11px;
-  padding-bottom: 11px;
-}
-
-/* make buttons and links match when focused */
-.eg-grid-toolbar .dropdown-item:focus,
-.eg-grid-toolbar .dropdown-item:hover,
-.eg-grid-column-config-dialog button:focus,
-.eg-grid-column-width-config button:focus {
-  outline: 2px solid var(--primary);
-}
-
-.button-adjacent-label {
-    vertical-align: inherit;
-    cursor: auto;
-}
-
-.button-adjacent-label.disabled {
-    opacity: .65;
-}
-
-.eg-grid-cell-skinny {
-  width: 2em;
-  text-align: center;
-  flex: none;
-}
-
-.eg-grid-cell-skinny-2 {
-  width: 2.6em;
-  flex: none;
-}
-
-.eg-grid-flair-cell {
-  /* mat icons currently 22px, unclear why it needs this much space */
-  width: 34px; 
-  text-align: center;
-  flex: none;
-}
-
-/* depends on width of .eg-grid-cell-skinny */
-.eg-grid-column-width-header {
-  width: 4.6em;
-  text-align: center;
-  flex: none;
-  display: inline-flex;
-  vertical-align: middle;
-  align-items: center;
-}
-
-.eg-grid-column-width-config .eg-grid-cell {
-    border-left: 2px dashed grey;
-}
-
-.eg-grid-column-width-icon {
-  cursor: pointer;
-  font-size: 18px;
-  color: #007bff;
-}
-
-.eg-grid-column-config-dialog {
-  height: auto;
-  max-height: 400px;
-  overflow: auto;
-  box-shadow: none;
-}
-
-.eg-grid-filter-control-cell {
-  white-space: normal;
-}
-.eg-grid-col-is-filtered {
-    background: lightblue;
-}
-.eg-grid-filter-menu {
-  min-width: 17rem;
+  flex-wrap: wrap;
+  flex-basis: 100%;
+  align-content: flex-end;
+  height: 100%;
+  vertical-align: bottom;
+  width: calc(100% - 2px); /* Chrome won't let us overlap the draggable with the resize handle */
 }
 
 .eg-grid-sticky-header {
@@ -175,20 +127,254 @@
   z-index: 1;
 }
 
-.eg-grid-filter-operator {
-  font-style: italic;
+.eg-grid-header-cell > *[draggable=true] {
+  cursor: grab;
 }
 
-/* override the dropdown menu effects for the filter menus */
-.eg-grid-filter-menu .dropdown-item:active {
-  color: #212529;
-  background-color: transparent;
+.eg-grid-header-cell.dragover {
+  background-color: #cce5ff;
+  border-color: #b8daff;
 }
-.eg-grid-filter-menu .dropdown-item:hover {
-  background-color: transparent;
+
+.eg-grid-header-cell .header-label,
+.eg-grid-header-cell.eg-grid-checkbox-cell input[type="checkbox"] {
+  flex-basis: 100%;
+}
+
+.eg-grid-header-cell.eg-grid-checkbox-cell {
+  padding-bottom: 0.15rem;
+}
+
+.eg-grid-header-cell.eg-grid-checkbox-cell .eg-grid-cell-contents {
+  width: 100%;
+}
+
+/* FILTERED */
+.eg-grid-col-is-filtered {
+  background: lightblue;
+}
+
+/* align headers for non-filterable columns with those that have filter buttons */
+.eg-grid:has(.eg-grid-filter-control) .eg-grid-header-cell:not(
+  :has(.eg-grid-filter-control .input-group),
+  .eg-grid-checkbox-cell,
+  .eg-grid-number-cell,
+  .eg-grid-flair-cell ) .eg-grid-cell-contents .header-label {
+  margin-bottom: calc(28px + 0.5rem); /* size of mat icon + 0.25rem padding * 2 */
+}
+
+/* SORT CONTROLS */
+thead th.eg-grid-col-sorted,
+td.eg-grid-col-sorted {
+  background-color: rgba(var(--bs-blue-rgb), 0.1);
+}
+
+/* Additive highlight for sorted column in selected row */
+.eg-grid-body-row.selected .eg-grid-col-sorted {
+  background-color: rgba(var(--bs-blue-rgb), 0.04);
+}
+
+.eg-grid-header-cell .btn.sortable {
+  color: #084298;
+  font-weight: bold;
+  text-align: inherit;
+}
+
+.eg-grid-header-cell-sort-label {
+  cursor: pointer;
+  text-decoration: underline;
+  font-weight: bold;
+}
+
+.sortable .eg-grid-header-cell-sort-arrow {
+  display: inline;
+  font-size: 1.2rem;
+  margin-inline-start: 0.15rem;
+}
+
+/* RESIZE CONTROLS */
+.col-resize {
+  display: block;
+  background: transparent;
+  border: 0;
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 2ch;
+  height: 100%;
+  cursor: col-resize;
+}
+
+.col-resize:hover,
+.col-resize:focus-visible,
+.resizing {
+  background-color: rgba(0,0,225,0.05);
+  border-right: 2px solid var(--primary);
+  cursor: col-resize;
+  outline: 2px solid transparent;
+}
+
+/* BODY CELL STYLES */
+/*
+Padding should be set on .eg-grid-cell-contents rather than its parent <td>.
+This div exists to house the popovers, and should take up the full unpadded
+height and width of the cell.
+/**/
+
+.eg-grid td,
+.eg-grid tbody th {
+  font-weight: normal;
+  vertical-align: top;
+  white-space: normal;
+  overflow-wrap: anywhere;
+}
+
+/* override Bootstrap's padding on <td> and <th> */
+.table > :not(caption) > * > * {
+  padding: 0;
+}
+
+.eg-grid-cell-contents {
+  padding: 0.2rem 0.5rem;
+}
+
+.eg-grid.compact .eg-grid-cell-contents {
+  line-height: 1.4;
+  padding: 0.1rem 0.75rem 0.1rem 0.25rem;
+}
+
+.eg-grid.wide .eg-grid-cell-contents {
+  padding: 0.5rem;
+}
+
+/* TRUNCATED MODE / TOOLTIPS / POPOVERS */
+.eg-grid-cell-truncate tbody .eg-grid-cell {
+  height: 1.25lh;
+  overflow: clip;
+}
+
+/* Give a visual indication that the contents have been clipped */
+.eg-grid-cell-truncate .eg-grid-cell {
+  border-right: 2px dashed var(--bs-gray-400);
+}
+
+/* Buttons need to be shorter in truncated mode */
+.eg-grid-cell-truncate .eg-grid-cell-contents .btn {
+  line-height: 1.35;
+  padding: 0 0.75rem;
 }
 
 /* Popovers have a too-narrow max-width.  Override it */
 .popover {
     max-width: initial;
+}
+
+/* Popovers' container needs to be inside <td> and should be the same size */
+tbody .eg-grid-cell-contents {
+  height: 100%;
+  width: 100%;
+}
+
+/* allow tooltips to be wider than the default 200px */
+.eg-grid-cell .tooltip-inner {
+  max-width: 400px; 
+}
+
+/* Firefox td > div height fix for .eg-grid-cell-contents */
+
+.eg-grid tr, 
+.eg-grid th, 
+.eg-grid td {
+  height: 100%;
+}
+
+
+/* GRID COLUMN WIDTH AND ALIGNMENT */
+/* 
+Sets up column widths and text alignment for eg-grid tables according to
+datatype, column name, and IDL class. Use more specific combinations in
+components' CSS to override the default width.
+
+User-set alignment uses built-in Bootstrap classes. Listed last, they can
+override name- and type-based defaults set here. 
+
+Do not set min-width! This prevents users from resizing columns narrower.
+
+See setClassNames() in grid.ts 
+/**/
+
+.eg-grid-col-utilities col {
+  min-width: 4ch;
+}
+
+.eg-grid-checkbox-cell,
+.eg-grid-flair-cell {
+  text-align: center;
+  width: 2rem;
+}
+
+.eg-grid-number-cell {
+  width: 2rem; /* may be pushed wider by contents, below */
+}
+
+.eg-grid-number-cell .eg-grid-cell-contents {
+  width: max-content;
+}
+
+.eg-grid .actions {
+  text-align: end;
+}
+
+.eg-grid .numeric {
+  font-variant-numeric: tabular-nums lining-nums;
+  text-align: end;
+  overflow-wrap: break-word;
+}
+
+/* right-aligned cells should have most of their padding on the left in compact mode */
+.eg-grid.compact .numeric .eg-grid-cell-contents {
+  padding: 0.1rem 0.25rem 0.1rem 0.75rem;
+}
+
+/* align filter icons with cell contents */
+.eg-grid-header-cell.actions .eg-grid-cell-contents,
+.eg-grid-header-cell.numeric .eg-grid-cell-contents,
+.eg-grid-header-cell.text-right .eg-grid-cell-contents {
+  justify-content: end;
+}
+
+/* These contain numbers we might want to compare vertically, but should not be aligned right */
+.eg-grid .alphanumeric,
+.eg-grid-type-timestamp {
+  font-variant-numeric: tabular-nums lining-nums;
+}
+
+/* IDL Field = column name */
+
+.eg-grid-idlfield-name {
+  hyphens: none !important;
+  /* width: 30ch; */
+}
+
+th.eg-grid-idlfield-barcode,
+th.eg-grid-idlfield-patron_barcode,
+th.eg-grid-idlfield-copy_barcode,
+th.eg-grid-idlfield-container_code,
+th.eg-grid-idlfield-barcode_primary,
+th.eg-grid-idlfield-barcode_active,
+th.eg-grid-idlfield-barcode_all {
+  font-variant-numeric: tabular-nums lining-nums;
+  width: 16ch;
+}
+
+/* <td> only, not the headers: */
+td.eg-grid-idlfield-datatype {
+  font-family: monospace;
+  font-size: 0.85rem;
+}
+
+td.eg-grid-idlfield-url,
+td.eg-grid-idlfield-email {
+  overflow-wrap: anywhere;
+  word-break: break-all; /* prevents hyphens */
 }

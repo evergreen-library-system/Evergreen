@@ -1,10 +1,11 @@
+/* eslint-disable @angular-eslint/component-selector */
 import {Component, Input, Host} from '@angular/core';
 import {GridContext} from './grid';
 import {GridComponent} from './grid.component';
 import {NgbPopover} from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
-    selector: 'eg-grid-body',
+    selector: 'tbody.eg-grid-body',
     templateUrl: './grid-body.component.html'
 })
 
@@ -18,61 +19,6 @@ export class GridBodyComponent {
 
     constructor(@Host() private grid: GridComponent) {
         this.contextMenus = [];
-    }
-
-    // Not using @HostListener because it only works globally.
-    onGridKeyDown(evt: KeyboardEvent) {
-        switch (evt.key) {
-            case 'ArrowUp':
-                if (evt.shiftKey) {
-                    // Extend selection up one row
-                    this.context.selectMultiRowsPrevious();
-                } else {
-                    this.context.selectPreviousRow();
-                }
-                evt.stopPropagation();
-                break;
-            case 'ArrowDown':
-                if (evt.shiftKey) {
-                    // Extend selection down one row
-                    this.context.selectMultiRowsNext();
-                } else {
-                    this.context.selectNextRow();
-                }
-                evt.stopPropagation();
-                break;
-            case 'ArrowLeft':
-            case 'PageUp':
-                this.context.toPrevPage()
-                    .then(ok => this.context.selectFirstRow(), err => {});
-                evt.stopPropagation();
-                break;
-            case 'ArrowRight':
-            case 'PageDown':
-                this.context.toNextPage()
-                    .then(ok => this.context.selectFirstRow(), err => {});
-                evt.stopPropagation();
-                break;
-            case 'a':
-                // control-a means select all visible rows.
-                // For consistency, select all rows in the current page only.
-                if (evt.ctrlKey) {
-                    this.context.rowSelector.clear();
-                    this.context.selectRowsInPage();
-                    evt.preventDefault();
-                }
-                break;
-
-            case 'Enter':
-                if (this.context.lastSelectedIndex) {
-                    this.grid.onRowActivate.emit(
-                        this.context.getRowByIndex(
-                            this.context.lastSelectedIndex)
-                    );
-                }
-                evt.stopPropagation();
-                break;
-        }
     }
 
     handleRowClick($event: any, row: any) {

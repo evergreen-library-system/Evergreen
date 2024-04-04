@@ -5,30 +5,41 @@
       i18n-aria-label aria-label="Close" (click)="close()"></button>
   </div>
   <div class="modal-body">
-    <div class="row">
-      <div class="col-lg-9 eg-grid-header-cell" i18n>Menu Item</div>
-      <div class="col-lg-3 eg-grid-header-cell" i18n>Visible</div>
-    </div>
-    <div class="row pt-1" *ngFor="let action of gridContext.toolbarActions">
-      <ng-container *ngIf="action.isGroup">
-        <div class="col-lg-12 fw-bold fst-italic">{{action.label}}</div>
-      </ng-container>
-      <ng-container *ngIf="action.isSeparator">
-        <div class="col-lg-12 dropdown-divider"></div>
-      </ng-container>
-      <ng-container *ngIf="!action.isGroup && !action.isSeparator">
-        <div class="col-lg-9">
-          <button type="button" class="btn btn-sm" [ngClass]="{'ps-2': action.group}"
-            (click)="showHideClicked(action)">{{action.label}}</button>
-        </div>
-        <div class="col-lg-3">
-          <button type="button" class="btn btn-sm" (click)="showHideClicked(action)">
-            <span *ngIf="!action.hidden" class="badge badge-success">&#x2713;</span>
-            <span *ngIf="action.hidden" class="badge badge-warning">&#x2717;</span>
-          </button>
-        </div>
-      </ng-container>
-    </div>
+    <!-- This table needs borders turned off so you can see the dividers -->
+    <table class="table eg-grid border-0">
+      <thead>
+        <tr class="eg-grid-header-row">
+          <th scope="col" class="eg-grid-header-cell" i18n>Visible</th>
+          <th scope="col" class="eg-grid-header-cell" i18n>Menu Item</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr class="eg-grid-row" 
+          *ngFor="let action of gridContext.toolbarActions; index as i">
+
+          <ng-container *ngIf="action.isGroup">
+            <td colspan="2" class="fw-bold fst-italic">{{action.label}}</td>
+          </ng-container>
+
+          <ng-container *ngIf="action.isSeparator">
+            <td colspan="2">
+              <div class="dropdown-divider"></div>
+            </td>
+          </ng-container>
+
+          <ng-container *ngIf="!action.isGroup && !action.isSeparator">
+            <th scope="row" class="eg-grid-cell eg-grid-checkbox-cell">
+              <input type="checkbox" id="toolbarAction-{{i}}"
+                (click)="showHideClicked(action)" [checked]="!action.hidden" />
+            </th>
+            <td class="eg-grid-cell eg-grid-body-cell px-2">
+              <label for="toolbarAction-{{i}}">{{action.label}}</label>
+            </td>
+          </ng-container>
+        </tr>
+      </tbody>
+    </table>
+
   </div>
   <div class="modal-footer">
     <button type="button" class="btn btn-success ms-2" 

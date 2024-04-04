@@ -141,6 +141,8 @@ export class GridComponent implements OnInit, AfterViewInit, OnDestroy {
     @Input() reloadOnColumnChange = false;
 
     context: GridContext;
+    private static id = 0;
+    gridDomId = 'eg-grid-';
 
     // These events are emitted from our grid-body component.
     // They are defined here for ease of access to the caller.
@@ -168,8 +170,10 @@ export class GridComponent implements OnInit, AfterViewInit, OnDestroy {
     ngOnInit() {
 
         if (!this.dataSource) {
-            throw new Error('<eg-grid/> requires a [dataSource]');
+            throw new Error('[egGrid] requires a [dataSource]');
         }
+
+        this.gridDomId += GridComponent.id++;
 
         this.context.idlClass = this.idlClass;
         this.context.dataSource = this.dataSource;
@@ -221,22 +225,7 @@ export class GridComponent implements OnInit, AfterViewInit, OnDestroy {
         this.context.rowClassCallback =
             this.rowClassCallback || function () { return ''; };
         this.context.cellClassCallback =
-            this.cellClassCallback ||
-            function (row: any, col: GridColumn) {
-                if (col.datatype === 'money') {
-                    // get raw value
-                    let val;
-                    if (col.path) {
-                        val = this.nestedItemFieldValue(row, col);
-                    } else if (col.name in row) {
-                        val = this.getObjectFieldValue(row, col.name);
-                    }
-                    if (Number(val) < 0) {
-                        return 'negative-money-amount';
-                    }
-                }
-                return '';
-            };
+            this.cellClassCallback || function () { return ''; };
 
         this.context.rowSelector.selectionChange.subscribe(
             keys => this.rowSelectionChange.emit(keys)
@@ -271,6 +260,75 @@ export class GridComponent implements OnInit, AfterViewInit, OnDestroy {
         this.context.reloadWithoutPagerReset();
     }
 
+    // Not using @HostListener because it only works globally.
+    onGridKeyDown(evt: KeyboardEvent) {
+        switch (evt.key) {
+            case 'ArrowUp':
+                if (evt.shiftKey) {
+                    // Extend selection up one row
+                    this.context.selectMultiRowsPrevious();
+                } else {
+                    this.context.selectPreviousRow();
+                }
+                evt.stopPropagation();
+                break;
+            case 'ArrowDown':
+                if (evt.shiftKey) {
+                    // Extend selection down one row
+                    this.context.selectMultiRowsNext();
+                } else {
+                    this.context.selectNextRow();
+                }
+                evt.stopPropagation();
+                break;
+            case 'ArrowLeft':
+                // skip if the key has been pressed on a column resize handle
+                // see keyboard events in grid-header component
+                if (!this.context.currentResizeCol) {
+                    this.context.toPrevPage()
+                        .then(ok => this.context.selectFirstRow(), err => {});
+                    evt.stopPropagation();
+                }
+                break;
+            case 'PageUp':
+                this.context.toPrevPage()
+                    .then(ok => this.context.selectFirstRow(), err => {});
+                evt.stopPropagation();
+                break;
+            case 'ArrowRight':
+                // skip if the key has been pressed on a column resize handle
+                if (!this.context.currentResizeCol) {
+                    this.context.toNextPage()
+                        .then(ok => this.context.selectFirstRow(), err => {});
+                    evt.stopPropagation();
+                }
+                break;
+            case 'PageDown':
+                this.context.toNextPage()
+                    .then(ok => this.context.selectFirstRow(), err => {});
+                evt.stopPropagation();
+                break;
+            case 'a':
+                // control-a means select all visible rows.
+                // For consistency, select all rows in the current page only.
+                if (evt.ctrlKey) {
+                    this.context.rowSelector.clear();
+                    this.context.selectRowsInPage();
+                    evt.preventDefault();
+                }
+                break;
+
+            case 'Enter':
+                if (this.context.lastSelectedIndex) {
+                    this.onRowActivate.emit(
+                        this.context.getRowByIndex(
+                            this.context.lastSelectedIndex)
+                    );
+                }
+                evt.stopPropagation();
+                break;
+        }
+    }
 
 }
 
