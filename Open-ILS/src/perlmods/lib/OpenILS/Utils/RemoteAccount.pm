@@ -385,8 +385,8 @@ sub _sftp {
 
 sub put_sftp {
     my $self = shift;
-    my $filename = $self->_sftp->put(@{$self->{put_args}}); 
-    if ($self->_sftp->error or not $filename) {
+    my $res = $self->_sftp->put(@{$self->{put_args}});
+    if ($self->_sftp->error or not $res) {
         $logger->error(
             $self->_error(
                 "SFTP put to", $self->remote_host, "failed with error: $self->_sftp->error"
@@ -394,15 +394,14 @@ sub put_sftp {
         );
         return;
     }
-    
-    $self->remote_file($filename);
+
     $logger->info(
         _pkg(
             "successfully sent", $self->remote_host, $self->local_file, "-->",
-            $filename
+            $self->remote_file
         )
     );
-    return $filename;
+    return $self->remote_file;
 }
 
 sub get_sftp {
