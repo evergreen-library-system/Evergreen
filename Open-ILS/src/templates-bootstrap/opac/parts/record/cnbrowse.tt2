@@ -62,5 +62,18 @@
             [% END; IF tr_open %]</tr>[% END %]
             </tbody>
         </table>
+
+        <hr />
+
+        <div class="row">
+            <div class="col-3">
+                <a class='np_nav_link classic_link btn btn-outline-primary' href="[% mkurl('', {cnoffset => cnoffset - 1}) %]#cnbrowse">[% l("&lt;&lt; Previous Page") %]</a>
+            </div>
+
+            <div class="col-3 text-right">
+                <a class='np_nav_link classic_link btn btn-outline-primary' href="[% mkurl('', {cnoffset => cnoffset + 1}) %]#cnbrowse">[% l("Next Page &gt;&gt;") %]</a>
+            </div>
+        </div>
+
     </div>
 </div>
