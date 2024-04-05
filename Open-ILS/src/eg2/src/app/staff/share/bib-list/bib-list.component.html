@@ -9,23 +9,23 @@
   [cellTextGenerator]="cellTextGenerator" [persistKey]="gridPersistKey"
   [showDeclaredFieldsOnly]="true">
 
-  <eg-grid-column name="id" label="ID" i18n-label flex="1" [sortable]="true"></eg-grid-column>
+  <eg-grid-column name="id" label="ID" i18n-label [sortable]="true"></eg-grid-column>
 
   <eg-grid-column name="title" [cellTemplate]="titleTemplate"
-    label="Title" i18n-label flex="3"></eg-grid-column>
+    label="Title" i18n-label></eg-grid-column>
 
   <eg-grid-column name="author" label="Author" i18n-label></eg-grid-column>
 
   <eg-grid-column name="creator" label="Creator" i18n-label [sortable]="false"
-    path="biblio_record.creator.usrname" flex="1"></eg-grid-column>
+    path="biblio_record.creator.usrname"></eg-grid-column>
 
   <eg-grid-column name="create_date" label="Create Date" i18n-label
-    [sortable]="false" path="biblio_record.create_date" flex="1"></eg-grid-column>
+    [sortable]="false" path="biblio_record.create_date"></eg-grid-column>
 
   <eg-grid-column name="editor" label="Editor" i18n-label [sortable]="false"
-    path="biblio_record.editor.usrname" flex="1"></eg-grid-column>
+    path="biblio_record.editor.usrname"></eg-grid-column>
 
   <eg-grid-column name="edit_date" label="Edit Date" i18n-label
-    [sortable]="false" path="biblio_record.edit_date" flex="1"></eg-grid-column>
+    [sortable]="false" path="biblio_record.edit_date"></eg-grid-column>
 
 </eg-grid>

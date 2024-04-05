@@ -66,25 +66,25 @@
     (onClick)="openMergeDialog()"></eg-grid-toolbar-action>
 
   <eg-grid-column name="id" label="ID" path="authority.id" i18n-label 
-    [index]="true" flex="1"></eg-grid-column>
+    [index]="true"></eg-grid-column>
   <eg-grid-column name="link_count" label="Linked Bibs" 
-    i18n-label flex="1"></eg-grid-column>
-  <eg-grid-column name="heading" label="Heading" i18n-label flex="3"
+    i18n-label></eg-grid-column>
+  <eg-grid-column name="heading" label="Heading" i18n-label
     [cellTemplate]="headingTemplate"></eg-grid-column>
   <eg-grid-column name="control_set" path="authority.control_set.name" 
-    label="Control Set" i18n-label flex="1"></eg-grid-column>
-  <eg-grid-column name="thesaurus" label="Thesaurus (Short Code)" i18n-label flex="1"></eg-grid-column>
+    label="Control Set" i18n-label></eg-grid-column>
+  <eg-grid-column name="thesaurus" label="Thesaurus (Short Code)" i18n-label></eg-grid-column>
   <eg-grid-column name="thesaurus_code" label="Thesaurus"
-    i18n-label flex="1"></eg-grid-column>
+    i18n-label></eg-grid-column>
   <eg-grid-column name="creator" label="Creator" i18n-label
-    path="authority.creator.usrname" flex="1"></eg-grid-column>
+    path="authority.creator.usrname"></eg-grid-column>
   <eg-grid-column name="create_date" label="Create Date" i18n-label
-    path="authority.create_date" flex="1" datatype="timestamp"></eg-grid-column>
+    path="authority.create_date" datatype="timestamp"></eg-grid-column>
   <eg-grid-column name="edit_date" label="Edit Date" i18n-label
-    path="authority.edit_date" flex="1" datatype="timestamp"></eg-grid-column>
+    path="authority.edit_date" datatype="timestamp"></eg-grid-column>
   <eg-grid-column name="source" label="Source" i18n-label [hidden]="true"
-    path="authority.source" flex="1"></eg-grid-column>
+    path="authority.source"></eg-grid-column>
   <eg-grid-column name="owner" label="Owner" i18n-label [hidden]="true"
-    path="owner" flex="1"></eg-grid-column>
+    path="owner"></eg-grid-column>
 </eg-grid>
 

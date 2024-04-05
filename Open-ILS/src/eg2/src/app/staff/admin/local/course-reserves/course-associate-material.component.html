@@ -205,7 +205,7 @@
           </eg-grid-toolbar-action>
           <eg-grid-column path="id" [index]=true [hidden]="true" label="ID" i18n-label></eg-grid-column>
           <eg-grid-column label="Barcode" i18n-label name="barcode" [cellTemplate]="barcodeCellTemplate"></eg-grid-column>
-          <eg-grid-column label="Title" i18n-label name="title" flex="3" [cellTemplate]="titleCellTemplate"></eg-grid-column>
+          <eg-grid-column label="Title" i18n-label name="title" [cellTemplate]="titleCellTemplate"></eg-grid-column>
           <eg-grid-column path="item.call_number.label" label="Call Number" i18n-label></eg-grid-column>
           <eg-grid-column path="item.call_number.prefix.label" [hidden]="true" label="Call Number Prefix" i18n-label hidden>
           </eg-grid-column>
