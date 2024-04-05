@@ -97,6 +97,10 @@ function search_modifier_onchange(type, checkbox, submitOnChange) {
         search_box.value = search_box.value.replace(reg, "");
     }
 
+    // Still alter the CGI params when the box is unchecked using a hidden input (to turn off highlighting too)
+    if (type == "show_highlight" && checkbox.checked)
+        document.getElementById("show_highlight_hidden").disabled = true;
+
     if (submitOnChange) {  
         checkbox.form.submit(); 
     }

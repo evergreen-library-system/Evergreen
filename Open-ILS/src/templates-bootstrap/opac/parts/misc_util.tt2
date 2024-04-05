@@ -109,8 +109,9 @@
         args.display_fields = {};
         args.hl = {};
 
+        PROCESS set_show_highlight;
         args.hl_field = 'highlight';
-        IF CGI.param('no_highlight') || search.no_highlight;
+        IF !show_highlight;
             args.hl_field = 'value';
         END;
         hl_field = args.hl_field;
@@ -910,7 +911,7 @@
 [% END -%]
 [% END -%]
 
-[% BLOCK show_cover %]
+[%- BLOCK show_cover -%]
     <td>
     <span class="sr-only">[% l('Cover Image') %]</span>
     [% IF obalkyknih_cz.enabled == 'true' %]
@@ -926,6 +927,21 @@
     </a>
     </td>
 [% END %]
+
+[%- BLOCK set_show_highlight;
+    show_highlight = CGI.param("show_highlight");
+    IF show_highlight == "";
+        highlight_setting = 'ui.show_search_highlight';
+        show_highlight = ctx.user_setting_map.$highlight_setting;
+        IF show_highlight == "";
+            show_highlight = search.default_highlight;
+            IF show_highlight == "";
+                show_highlight = 1;
+            END;
+        END;
+    END;
+END
+-%]
 
 
 

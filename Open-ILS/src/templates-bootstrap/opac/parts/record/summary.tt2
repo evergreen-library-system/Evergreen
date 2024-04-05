@@ -450,18 +450,17 @@ ctx.metalinks.push('
                     </a>
               
                 [% END %]
-                [% IF !search.no_highlight %]
+                [% PROCESS set_show_highlight %]
                
-                    [% IF CGI.param('no_highlight') %]
-                    <a class="btn btn-action no-dec" role="button" href="[% mkurl('', {}, ['no_highlight']) %]">
+                    [% IF !show_highlight %]
+                    <a class="btn btn-action no-dec" role="button" href="[% mkurl('', {show_highlight => '1'}) %]">
                         [% ELSE %]
-                        <a href="[% mkurl('', {no_highlight => '1'}) %]" class="btn btn-action" role="button">
+                        <a href="[% mkurl('', {show_highlight => '0'}) %]" class="btn btn-action" role="button">
                             [% END %]
                             <i class="fas fa-highlighter" aria-hidden="true"></i>
-                            [% CGI.param('no_highlight') ? l('Enable Highlighting') : l('Disable Highlighting') %]
+                            [% !show_highlight ? l('Enable Highlighting') : l('Disable Highlighting') %]
                         </a>
               
-                [% END %]
                 [%- IF ctx.is_staff %]
                 
                     <a href="[% ctx.media_prefix %]/opac/extras/ac/clearcache/all/r/[% ctx.bre_id | uri %]"

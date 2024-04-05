@@ -91,14 +91,17 @@
                     <!-- ===== Checkboxes ===== -->
                     <div class="search-check">
 
-                     [%- IF !search.no_highlight %]
+                    [%- IF !search.hide_highlight -%] 
+                        [% PROCESS set_show_highlight %]
 
                         <div class="search-filter m-2">
-                            <label for="no_highlight">
-                            <input type="checkbox" id="no_highlight" name="no_highlight" value="1"
-                                onchange="search_modifier_onchange('no_highlight', this, true)"
-                                [% CGI.param('no_highlight').size ? ' checked="checked"' : '' %] />
-                            [% l('Disable Highlighting') %]
+                            <label for="show_highlight">
+                            <!-- Must use a hidden checkbox to send the url parameter when the box is unchecked too -->
+                            <input type="hidden" id="show_highlight_hidden" name ="show_highlight" value="0">
+                            <input type="checkbox" id="show_highlight" name="show_highlight" value="1"
+                                onchange="search_modifier_onchange('show_highlight', this, true)"
+                                [%- IF show_highlight -%] checked="checked" [% END %] />
+                            [% l('Enable Highlighting') %]
                             </label>
                         </div>
                         [% END %]

@@ -78,6 +78,22 @@
                         %]
                     </td>
                 </tr>
+
+                [%- setting = 'ui.show_search_highlight'; -%]
+                <tr>
+                    [%- highlight_name = l('Highlight search terms?') -%]
+                    <td><label for = '[% setting %]'>[% highlight_name %]</label></td>
+                    <td>
+                        <input id='[% setting %]' name='[% setting %]'
+                            type="checkbox" title='[% highlight_name %]'
+                            [% highlight_setting = 'ui.show_search_highlight' %]
+                            [% user_setting = ctx.user_setting_map.$highlight_setting %]
+                            [% IF user_setting || (user_setting == "" && search.default_highlight) %]
+                            checked='checked'
+                            [% END %]/>
+                    </td>
+                </tr>
+
                 [%- setting = 'history.circ.retention_start' -%]
                 <tr>
                     [% circ_name = l('Keep history of checked out items?') %]

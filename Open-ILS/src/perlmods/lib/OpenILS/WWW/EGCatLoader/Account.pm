@@ -847,6 +847,7 @@ sub load_myopac_prefs_settings {
         opac.default_search_location
         opac.default_pickup_location
         opac.temporary_list_no_warn
+        ui.show_search_highlight
     /;
 
     my $stat = $self->_load_user_with_prefs;
@@ -891,6 +892,15 @@ sub load_myopac_prefs_settings {
         my $val = $self->cgi->param($key);
         $settings{$key}= $val unless $$set_map{$key} eq $val;
     }
+
+    # Set search highlight to a boolean so it's simple to check after retrieval
+    # Also set it to false if we didn't receive it because html form didn't send it,
+    # but the user would've seen the setting and saved with it false
+
+    if ($settings{'ui.show_search_highlight'} eq 'on'){
+        $settings{'ui.show_search_highlight'} = JSON::true; }
+    else {
+        $settings{'ui.show_search_highlight'} = JSON::false;}
 
     # Used by the settings update form when warning on history delete.
     my $clear_circ_history = 0;

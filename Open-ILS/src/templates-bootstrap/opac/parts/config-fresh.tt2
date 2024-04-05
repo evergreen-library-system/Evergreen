@@ -181,8 +181,9 @@ search.basic_config = {
 # Make metarecord search the default.
 #search.metarecord_default = 1;
 
-# Disable search term highlighting
-#search.no_highlight = 1;
+# Whether to show highlighting by default or hide it by default (overwritten when the user has a non-null setting and is logged in or searches with the url parameters
+# 0 to hide highlighting by default, 1 to show it. Defaults to 1 when null.
+search.default_highlight = 1;
 
 ##############################################################################
 # Show Google Book Previews
