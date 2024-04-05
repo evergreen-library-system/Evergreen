@@ -18,6 +18,13 @@
 
 <form method='post' id='account-update-preferred-name' autocomplete='off'>
     <table>
+        <tr><td>[% l('Current Preferred Name') %]</td><td>[% l(
+            HUMAN_NAME_FORMAT,
+            ctx.user.pref_prefix || ctx.user.prefix,
+            ctx.user.pref_first_given_name || ctx.user.first_given_name,
+            ctx.user.pref_second_given_name || ctx.user.second_given_name,
+            ctx.user.pref_family_name || ctx.user.family_name,
+            ctx.user.pref_suffix || ctx.user.suffix) | html %]</td></tr>
         <tr><td><label for="current_pw">[% l('Current Password') %]</label></td><td><input type='password' name='current_pw' id='current_pw' class="form-control" /></td></tr>
         <tr><td><label for='pref-prefix'>[% l('New Preferred Prefix') %]</label></td><td><input type='text' name='pref_prefix' id='pref_prefix' class="form-control" /></td></tr>
         <tr><td><label for='pref-first-given-name'>[% l('New Preferred First Name') %]</label></td><td><input type='text' name='pref_first_given_name' id='pref_first_given_name' class="form-control" /></td></tr>

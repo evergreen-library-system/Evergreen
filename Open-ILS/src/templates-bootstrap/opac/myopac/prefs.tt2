@@ -14,13 +14,12 @@
                     class='color_4 light_border'>[% l("Preferred Name") %]</td>
 
                 <td class='light_border'>[% l(
-                        HUMAN_NAME_FORMAT,
-                        ctx.user.pref_prefix,
-                        ctx.user.pref_first_given_name,
-                        ctx.user.pref_second_given_name,
-                        ctx.user.pref_family_name,
-                        ctx.user.pref_suffix
-                        ) | html %]</td>
+                    HUMAN_NAME_FORMAT,
+                    ctx.user.pref_prefix || ctx.user.prefix,
+                    ctx.user.pref_first_given_name || ctx.user.first_given_name,
+                    ctx.user.pref_second_given_name || ctx.user.second_given_name,
+                    ctx.user.pref_family_name || ctx.user.family_name,
+                    ctx.user.pref_suffix || ctx.user.suffix) | html %]</td>
 
                 <td class='light_border'><a class="btn btn-sm btn-action" href='update_preferred_name'
                     title="[% l('Change Preferred Name') %]"><i class="fas fa-user-cog"></i>[% l("Change") %]</a>

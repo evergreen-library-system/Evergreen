@@ -3029,7 +3029,10 @@ sub load_myopac_update_preferred_name {
         $self->ctx->{user}->$_($opac_vals{$_});
     }
 
-    return $self->generic_redirect($self->apache->unparsed_uri);
+    my $url = $self->apache->unparsed_uri;
+    $url =~ s/update_preferred_name/prefs/;
+
+    return $self->generic_redirect($url);
 
 }
 
