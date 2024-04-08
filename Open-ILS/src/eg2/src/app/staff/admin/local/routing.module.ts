@@ -81,6 +81,16 @@ const routes: Routes = [{
     path: 'config/ui_staff_portal_page_entry',
     component: AdminStaffPortalPageComponent
 }, {
+    path: 'rating/badge',
+    component: BasicAdminPageComponent,
+    data: [{
+        schema: 'rating',
+        table: 'badge',
+        fieldOrder: 'name,description,scope,weight,horizon_age,importance_age,importance_interval,' +
+	      'importance_scale,percentile,attr_filter,circ_mod_filter,src_filter,loc_grp_filter,' +
+          'recalc_interval,fixed_rating,discard,last_calc,popularity_parameter'
+    }]
+}, {
     path: 'action/survey',
     loadChildren: () =>
         import('./survey/survey.module').then(m => m.SurveyModule)
