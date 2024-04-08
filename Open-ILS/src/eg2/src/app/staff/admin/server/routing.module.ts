@@ -32,6 +32,14 @@ const routes: Routes = [{
     path: 'config/print_template',
     component: PrintTemplateComponent
 }, {
+    path: 'config/rule_max_fine',
+    component: BasicAdminPageComponent,
+    data: [{
+        schema: 'config',
+        table: 'rule_max_fine',
+        fieldOrder: 'name,amount,is_percent,id'
+    }]
+}, {
     path: 'config/rule_recurring_fine',
     component: BasicAdminPageComponent,
     data: [{
