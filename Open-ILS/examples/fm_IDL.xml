@@ -14014,7 +14014,7 @@ SELECT  usr,
 			<field reporter:label="Automatically Managed?" name="automatic" reporter:datatype="bool"/>
 			<field reporter:label="Filter By Age?" name="filter_by_age" reporter:datatype="bool"/>
 			<field reporter:label="Filter By Item Owning Library?" name="filter_by_copy_owning_lib" reporter:datatype="bool"/>
-			<field reporter:label="Filter By Item Location?" name="filter_by_copy_location" reporter:datatype="bool"/>
+			<field reporter:label="Filter By Shelving Location?" name="filter_by_copy_location" reporter:datatype="bool"/>
 		</fields>
 		<permacrud xmlns="http://open-ils.org/spec/opensrf/IDL/permacrud/v1">
 			<actions>
