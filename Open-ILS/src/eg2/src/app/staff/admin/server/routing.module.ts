@@ -60,6 +60,14 @@ const routes: Routes = [{
         fieldOrder: 'name,low,normal,high,recurrence_interval,grace_period'
     }]
 }, {
+    path: 'config/rule_circ_duration',
+    component: BasicAdminPageComponent,
+    data: [{
+        schema: 'config',
+        table: 'rule_circ_duration',
+        fieldOrder: 'name,shrt,normal,extended,max_renewals,max_auto_renewals'
+    }]
+}, {
     path: 'config/z3950_source',
     component: BasicAdminPageComponent,
     data: [{
