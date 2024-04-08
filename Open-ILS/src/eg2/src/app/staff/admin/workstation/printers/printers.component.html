@@ -19,11 +19,13 @@
 
   <div class="d-flex m-2 p-2 border rounded">
     <div class="p-2" i18n>Hatch Status:</div>
-    <div class="p-2 text-success label-with-material-icon" *ngIf="hatchConnected()" i18n>
-      Connected <span class="material-icons">done</span>
+    <div class="p-2 badge-success label-with-material-icon" *ngIf="hatchConnected()">
+      <span class="material-icons" aria-hidden="true">done</span>
+      <span i18n>Connected</span>
     </div>
-    <div class="p-2 text-warning label-with-material-icon" *ngIf="!hatchConnected()" i18n>
-      Not Connected <span class="material-icons">close</span>
+    <div class="p-2 badge-warning label-with-material-icon" *ngIf="!hatchConnected()">
+      <span class="material-icons" aria-hidden="true">warning</span>
+      <span i18n>Not Connected</span>
     </div>
     <label for="use-hatch" class="p-2" i18n>Use Hatch for Printing?</label>
     <div class="p-2">
@@ -31,7 +33,7 @@
         (ngModelChange)="hatchPrintChange($event)"
         [(ngModel)]="useHatchPrinting"/>
     </div>
-    <div class="p-2 ps-2 text-danger" i18n *ngIf="useHatchPrinting === false">
+    <div class="p-2 ps-2 badge-danger" i18n *ngIf="useHatchPrinting === false">
       Printer settings below will have no effect.
     </div>
   </div>
