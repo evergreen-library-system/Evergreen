@@ -21,8 +21,8 @@ const routes: Routes = [{
         fieldOrder: 'description,active,item_owning_ou,item_circ_ou,circ_modifier,' +
 	      'marc_type,marc_form,marc_bib_level,marc_vr_format,ref_flag,item_age,' +
 	      'user_home_ou,usr_grp,stop_blocked_user,holdable,age_hold_protect_rule,' +
-	      'max_holds,include_frozen_holds,request_ou,pickup_ou,requestor_grp,' +
-	      'strict_ou_match,transit_range,distance_is_from_owner,id'
+	      'max_holds,include_frozen_holds,request_ou,pickup_ou,,strict_ou_match,' +
+          'transit_range,distance_is_from_owner,requestor_grp,id'
     }]
 }, {
     path: 'actor/address_alert',

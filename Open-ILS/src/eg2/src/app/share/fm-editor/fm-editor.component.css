@@ -20,3 +20,22 @@
 .input-group-text .material-icons { 
   line-height: inherit; 
 }
+
+/* Extra styling for logical field grouping on specific modals. In the Hold Policies
+example below, chmm is the fieldmapper's class ID and item_owning_ou is the first
+field name in a section that should have special row styling. */
+
+.row {
+  --section-border: 2px dotted var(--bs-gray-900);
+  --section-padding: 2.5rem;
+}
+
+/* Modal for Local Admin > Hold Policies */
+.chmm .row.item_owning_ou,
+.chmm .row.user_home_ou,
+.chmm .row.holdable,
+.chmm .row.requestor_grp {
+  border-top: var(--section-border);
+  padding-top: var(--section-padding);
+}
+
