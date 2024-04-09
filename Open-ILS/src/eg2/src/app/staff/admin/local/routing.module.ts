@@ -14,7 +14,16 @@ const routes: Routes = [{
 }, {
     path: 'config/hold_matrix_matchpoint',
     component: BasicAdminPageComponent,
-    data: [{schema: 'config', table: 'hold_matrix_matchpoint', disableOrgFilter: true}]
+    data: [{
+        schema: 'config',
+        table: 'hold_matrix_matchpoint',
+        disableOrgFilter: true,
+        fieldOrder: 'description,active,item_owning_ou,item_circ_ou,circ_modifier,' +
+	      'marc_type,marc_form,marc_bib_level,marc_vr_format,ref_flag,item_age,' +
+	      'user_home_ou,usr_grp,stop_blocked_user,holdable,age_hold_protect_rule,' +
+	      'max_holds,include_frozen_holds,request_ou,pickup_ou,requestor_grp,' +
+	      'strict_ou_match,transit_range,distance_is_from_owner,id'
+    }]
 }, {
     path: 'actor/address_alert',
     component: AddressAlertComponent
