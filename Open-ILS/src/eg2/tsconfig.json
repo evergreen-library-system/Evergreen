@@ -18,7 +18,7 @@
       "node_modules/@types"
     ],
     "lib": [
-      "ESNext",
+      "ES2021",
       "dom"
     ]
   }
