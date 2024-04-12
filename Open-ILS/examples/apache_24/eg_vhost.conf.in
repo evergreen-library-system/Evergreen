@@ -14,6 +14,11 @@ RewriteRule ^/$ %{REQUEST_SCHEME}://%{HTTP_HOST}/eg/opac/home [R=301,L]
 RewriteRule ^/eg/staff$ https://%{HTTP_HOST}/eg/staff/ [R=301,L]
 
 # ----------------------------------------------------------------------------------
+# Redirect legacy reporter interface to the Angular version
+# ----------------------------------------------------------------------------------
+RewriteRule ^/eg/staff/reporter/legacy/main$ https://%{HTTP_HOST}/eg2/staff/reporter/full [R=301,L]
+
+# ----------------------------------------------------------------------------------
 # Point / to the IP address redirector
 # ----------------------------------------------------------------------------------
 #<LocationMatch ^/$>
