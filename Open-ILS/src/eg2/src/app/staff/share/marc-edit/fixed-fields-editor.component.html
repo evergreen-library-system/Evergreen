@@ -2,36 +2,43 @@
   
   <div class="ff-row row">
     <div class="col-md-2 col-sm-4">
+      <!-- Type of Record = Leader / 06 -->
       <eg-fixed-field i18n-fieldLabel [context]="context" 
       fieldCode="Type" fieldLabel="Type"></eg-fixed-field>
     </div>
 
     <div class="col-md-2 col-sm-4" *ngIf="context.recordType === 'authority'">
+      <!-- Record Update in Process = Authority 008 / 31 -->
       <eg-fixed-field i18n-fieldLabel [context]="context" 
       fieldCode="UpdStatus" fieldLabel="UpdStatus"></eg-fixed-field>
     </div>
   
     <div class="col-md-2 col-sm-4">
+      <!-- Encoding Level = Leader / 17 -->
       <eg-fixed-field i18n-fieldLabel [context]="context" 
       fieldCode="ELvl" fieldLabel="ELvl"></eg-fixed-field>
     </div>
   
     <div class="col-md-2 col-sm-4">
+      <!-- Cataloging Source = 008 / 39 -->
       <eg-fixed-field i18n-fieldLabel [context]="context" 
       fieldCode="Srce" fieldLabel="Srce"></eg-fixed-field>
     </div>
     
     <div class="col-md-2 col-sm-4">
+      <!-- Target Audience = 008 / 22 or 006 / 05 -->
       <eg-fixed-field i18n-fieldLabel [context]="context" 
       fieldCode="Audn" fieldLabel="Audn"></eg-fixed-field>
     </div>
   
     <div class="col-md-2 col-sm-4">
+      <!-- Type of Control = Leader / 08 -->
       <eg-fixed-field i18n-fieldLabel [context]="context" 
       fieldCode="Ctrl" fieldLabel="Ctrl"></eg-fixed-field>
     </div>
   
     <div class="col-md-2 col-sm-4">
+      <!-- Language Code = 008 / 35-37 -->
       <eg-fixed-field i18n-fieldLabel [context]="context" 
       fieldCode="Lang" fieldLabel="Lang"></eg-fixed-field>
     </div>
@@ -39,22 +46,25 @@
 
   <div class="ff-row row" *ngIf="context.recordType === 'authority'">
     <div class="col-md-2 col-sm-4">
+      <!-- Romanization Scheme = Authority 008 / 07 -->
       <eg-fixed-field i18n-fieldLabel [context]="context" 
       fieldCode="Roman" fieldLabel="Roman"></eg-fixed-field>
     </div>
 
     <div class="col-md-2 col-sm-4">
-      <!-- Reference Evaluation = 008 / 29 -->
+      <!-- Reference Evaluation = Authority 008 / 29 -->
       <eg-fixed-field i18n-fieldLabel [context]="context" 
       fieldCode="RefStatus" fieldLabel="RefStatus"></eg-fixed-field>
     </div>
 
     <div class="col-md-2 col-sm-4">
+      <!-- Modified Record = Authority 008 / 38 -->
       <eg-fixed-field i18n-fieldLabel [context]="context" 
       fieldCode="ModRec" fieldLabel="ModRec"></eg-fixed-field>
     </div>
 
     <div class="col-md-2 col-sm-4">
+      <!-- Heading Use - Main or Added Entry = Authority 008 / 32 -->
       <eg-fixed-field i18n-fieldLabel [context]="context" 
       fieldCode="NameUse" fieldLabel="NameUse"></eg-fixed-field>
     </div>
@@ -62,21 +72,25 @@
 
   <div class="ff-row row" *ngIf="context.recordType === 'authority'">
     <div class="col-md-2 col-sm-4">
+      <!-- Government Agency = Authority 008 / 28 -->
       <eg-fixed-field i18n-fieldLabel [context]="context" 
       fieldCode="GovtAgn" fieldLabel="GovtAgn"></eg-fixed-field>
     </div>
 
     <div class="col-md-2 col-sm-4">
+      <!-- Record Status = Authority Leader / 05 -->
       <eg-fixed-field i18n-fieldLabel [context]="context" 
       fieldCode="Status" fieldLabel="Status"></eg-fixed-field>
     </div>
 
     <div class="col-md-2 col-sm-4">
+      <!-- Subject Heading System or Thesaurus = Authority 008 / 11 -->
       <eg-fixed-field i18n-fieldLabel [context]="context" 
       fieldCode="Subj" fieldLabel="Subj"></eg-fixed-field>
     </div>
 
     <div class="col-md-2 col-sm-4">
+      <!-- Heading Use Code - Subject Added Entry = Authority 008 / 15 -->
       <eg-fixed-field i18n-fieldLabel [context]="context" 
       fieldCode="SubjUse" fieldLabel="SubjUse"></eg-fixed-field>
     </div>
@@ -84,23 +98,26 @@
 
   <div class="ff-row row" *ngIf="context.recordType === 'authority'">
     <div class="col-md-2 col-sm-4">
+      <!-- Type of Series = Authority 008 / 12 -->
       <eg-fixed-field i18n-fieldLabel [context]="context" 
       fieldCode="Series" fieldLabel="Series"></eg-fixed-field>
     </div>
 
     <div class="col-md-2 col-sm-4">
-        <!-- Kind of Record = 008 / 09 -->
+        <!-- Kind of Record = Authority 008 / 09 -->
         <!-- Auth/ref in Connexion -->
         <eg-fixed-field i18n-fieldLabel [context]="context" 
         fieldCode="Kind" fieldLabel="Kind"></eg-fixed-field>
       </div>
     
     <div class="col-md-2 col-sm-4" *ngIf="context.recordType !== 'authority'">
+      <!-- Direct or Indirect Geographic Subdivision = Authority 008 / 06 -->
       <eg-fixed-field i18n-fieldLabel [context]="context" 
       fieldCode="GeoDiv" fieldLabel="GeoDiv"></eg-fixed-field>
     </div>
 
     <div class="col-md-2 col-sm-4" *ngIf="context.recordType !== 'authority'">
+      <!-- Heading Use - Series Added Entry = Authority 008 / 16 -->
       <eg-fixed-field i18n-fieldLabel [context]="context" 
       fieldCode="SerUse" fieldLabel="SerUse"></eg-fixed-field>
     </div>
@@ -108,22 +125,26 @@
 
   <div class="ff-row row" *ngIf="context.recordType === 'authority'">
     <div class="col-md-2 col-sm-4">
+      <!-- Numbered or Unnumbered Series = Authority 008 /13 -->
       <eg-fixed-field i18n-fieldLabel [context]="context" 
       fieldCode="SerNum" fieldLabel="SerNum"></eg-fixed-field>
     </div>
 
     <div class="col-md-2 col-sm-4">
+      <!-- Undifferentiated Personal Name = Authority 008 / 32 -->
       <eg-fixed-field i18n-fieldLabel [context]="context" 
       fieldCode="Name" fieldLabel="Name"></eg-fixed-field>
     </div>
 
     <div class="col-md-2 col-sm-4">
       <!-- Subdiv tp in Connexion -->
+      <!-- Type of Subject Subdivistion = Authority 008 / 17 -->
       <eg-fixed-field i18n-fieldLabel [context]="context" 
       fieldCode="TypeSubd" fieldLabel="TypeSubd"></eg-fixed-field>
     </div>
 
     <div class="col-md-2 col-sm-4">
+      <!-- Descriptive Cataloging Rules = Authority 008 / 10 -->
       <eg-fixed-field i18n-fieldLabel [context]="context" 
       fieldCode="Rules" fieldLabel="Rules"></eg-fixed-field>
     </div>
@@ -131,203 +152,242 @@
 
   <div class="ff-row row">
     <div class="col-md-2 col-sm-4">
+      <!-- Bibliographic Level = Leader / 07 -->
       <eg-fixed-field i18n-fieldLabel [context]="context" 
       fieldCode="BLvl" fieldLabel="BLvl"></eg-fixed-field>
     </div>
   
     <div class="col-md-2 col-sm-4">
+      <!-- Form of Item = 008 / 23 or 006 / 06 ; MAP / VIS = 008 / 29 or 006 / 12 -->
       <eg-fixed-field i18n-fieldLabel [context]="context" 
       fieldCode="Form" fieldLabel="Form"></eg-fixed-field>
     </div>
   
     <div class="col-md-2 col-sm-4">
+      <!-- Conference Publication = 008 / 29 or 006 / 12 -->
       <eg-fixed-field i18n-fieldLabel [context]="context" 
       fieldCode="Conf" fieldLabel="Conf"></eg-fixed-field>
     </div>
   
     <div class="col-md-2 col-sm-4">
-      <eg-fixed-field i18n-fieldLabel [context]="context" 
+     <!-- Biography = 008 / 34 or 006 / 17 -->
+     <eg-fixed-field i18n-fieldLabel [context]="context" 
       fieldCode="Biog" fieldLabel="Biog"></eg-fixed-field>
     </div>
   
     <div class="col-md-2 col-sm-4">
+      <!-- Modified Record = 008 / 38 -->
       <eg-fixed-field i18n-fieldLabel [context]="context" 
       fieldCode="MRec" fieldLabel="MRec"></eg-fixed-field>
     </div>
   
     <div class="col-md-2 col-sm-4">
+      <!-- Country of Publication, etc. = 008 / 15-17 -->
       <eg-fixed-field i18n-fieldLabel [context]="context" 
       fieldCode="Ctry" fieldLabel="Ctry"></eg-fixed-field>
     </div>
   </div>
   <div class="ff-row row">
     <div class="col-md-2 col-sm-4">
+      <!-- Entry Convention = 008 / 34 or 006/17 -->
       <eg-fixed-field i18n-fieldLabel [context]="context" 
       fieldCode="s_l" fieldLabel="s_l"></eg-fixed-field>
     </div>
   
     <div class="col-md-2 col-sm-4">
+      <!-- Nature of Contents = BKS: 008 / 24-27 or 006 / 07-10 ; CNR: 008 / 25-27 or 006 / 08-10 -->
       <eg-fixed-field i18n-fieldLabel [context]="context" 
       fieldCode="Cont" fieldLabel="Cont"></eg-fixed-field>
     </div>
   
     <div class="col-md-2 col-sm-4">
+      <!-- Government Publication = 008 / 28 or 006 / 11 -->
       <eg-fixed-field i18n-fieldLabel [context]="context" 
       fieldCode="GPub" fieldLabel="GPub"></eg-fixed-field>
     </div>
   
     <div class="col-md-2 col-sm-4">
+      <!-- Literary Form = 008 / 33 or 006 / 16 -->
       <eg-fixed-field i18n-fieldLabel [context]="context" 
       fieldCode="LitF" fieldLabel="LitF"></eg-fixed-field>
     </div>
   
     <div class="col-md-2 col-sm-4">
+      <!-- Index = 008 / 31 or 006 / 14 -->
       <eg-fixed-field i18n-fieldLabel [context]="context" 
       fieldCode="Indx" fieldLabel="Indx"></eg-fixed-field>
     </div>
   
     <div class="col-md-2 col-sm-4">
+      <!-- Original Alphabet or Script of Title = 008 / 33 or 006 / 16 -->
       <eg-fixed-field i18n-fieldLabel [context]="context" 
       fieldCode="Alph" fieldLabel="Alph"></eg-fixed-field>
     </div>
   </div>
   <div class="ff-row row">
     <div class="col-md-2 col-sm-4">
+      <!-- Descriptive Cataloging Form = Leader / 18 -->
       <eg-fixed-field i18n-fieldLabel [context]="context" 
       fieldCode="Desc" fieldLabel="Desc"></eg-fixed-field>
     </div>
   
     <div class="col-md-2 col-sm-4">
+      <!-- Illustrations = 008 / 18-21 or 006 / 01-04 -->
       <eg-fixed-field i18n-fieldLabel [context]="context" 
       fieldCode="Ills" fieldLabel="Ills"></eg-fixed-field>
     </div>
   
     <div class="col-md-2 col-sm-4">
+      <!-- Festschrift = 008 / 30 or 006 / 13 -->
       <eg-fixed-field i18n-fieldLabel [context]="context" 
       fieldCode="Fest" fieldLabel="Fest"></eg-fixed-field>
     </div>
   
     <div class="col-md-2 col-sm-4">
+      <!-- Type of Date / Publication Status = 008 / 06 -->
       <eg-fixed-field i18n-fieldLabel [context]="context" 
       fieldCode="DtSt" fieldLabel="DtSt"></eg-fixed-field>
     </div>
   
     <div class="col-md-2 col-sm-4">
+      <!-- Date 1 = 008 / 07-10 -->
       <eg-fixed-field i18n-fieldLabel [context]="context" 
       fieldCode="Date1" fieldLabel="Date1"></eg-fixed-field>
     </div>
   
     <div class="col-md-2 col-sm-4">
+      <!-- Date 2 = 008 / 11-14 -->
       <eg-fixed-field i18n-fieldLabel [context]="context" 
       fieldCode="Date2" fieldLabel="Date2"></eg-fixed-field>
     </div>
   </div>
   <div class="ff-row row">
     <div class="col-md-2 col-sm-4">
+      <!-- Type of Continuing Resource = 008 / 21 or 006 / 04 -->
       <eg-fixed-field i18n-fieldLabel [context]="context" 
       fieldCode="SrTp" fieldLabel="SrTp"></eg-fixed-field>
     </div>
   
     <div class="col-md-2 col-sm-4">
+      <!-- Regularity = 008 / 19 or 006 / 02 -->
       <eg-fixed-field i18n-fieldLabel [context]="context" 
       fieldCode="Regl" fieldLabel="Regl"></eg-fixed-field>
     </div>
   
     <div class="col-md-2 col-sm-4">
+      <!-- Form of Original Item = 008 / 22 or 006 / 05 -->
       <eg-fixed-field i18n-fieldLabel [context]="context" 
       fieldCode="Orig" fieldLabel="Orig"></eg-fixed-field>
     </div>
   
     <div class="col-md-2 col-sm-4">
+      <!-- Frequency = 008 / 18 or 006 / 01 -->
       <eg-fixed-field i18n-fieldLabel [context]="context" 
       fieldCode="Freq" fieldLabel="Freq"></eg-fixed-field>
     </div>
   
     <div class="col-md-2 col-sm-4">
+      <!-- Nature of Entire Work = 008 / 24 or 006 / 07 -->
       <eg-fixed-field i18n-fieldLabel [context]="context" 
       fieldCode="EntW" fieldLabel="EntW"></eg-fixed-field>
     </div>
   </div>
   <div class="ff-row row">
     <div class="col-md-2 col-sm-4">
+      <!-- Transposition and Arrangement = 008 / 33 or 006 / 16 -->
       <eg-fixed-field i18n-fieldLabel [context]="context" 
       fieldCode="TrAr" fieldLabel="TrAr"></eg-fixed-field>
     </div>
   
     <div class="col-md-2 col-sm-4">
+      <!-- Music Parts = 008 / 21 or 006 / 04 -->
       <eg-fixed-field i18n-fieldLabel [context]="context" 
       fieldCode="Part" fieldLabel="Part"></eg-fixed-field>
     </div>
   
     <div class="col-md-2 col-sm-4">
+      <!-- Literary Text for Sound Recordings = 008 / 30-31 or 006 / 13-14 --> 
       <eg-fixed-field i18n-fieldLabel [context]="context" 
       fieldCode="LTxt" fieldLabel="LTxt"></eg-fixed-field>
     </div>
   
     <div class="col-md-2 col-sm-4">
+      <!-- Format of Music = 008 / 20 or 006 / 03 -->
       <eg-fixed-field i18n-fieldLabel [context]="context" 
       fieldCode="FMus" fieldLabel="FMus"></eg-fixed-field>
     </div>
   
     <div class="col-md-2 col-sm-4">
+      <!-- Accompanying Matter = 008 / 24-29 or 006 / 07-12 -->
       <eg-fixed-field i18n-fieldLabel [context]="context" 
       fieldCode="AccM" fieldLabel="AccM"></eg-fixed-field>
     </div>
   
     <div class="col-md-2 col-sm-4">
+      <!-- Form of Composition = 008 / 18-19 or 006 / 01-02 -->
       <eg-fixed-field i18n-fieldLabel [context]="context" 
       fieldCode="Comp" fieldLabel="Comp"></eg-fixed-field>
     </div>
   </div>
   <div class="ff-row row">
     <div class="col-md-2 col-sm-4">
+      <!-- Special Format Characteristics = 008 / 33-34 or 006 / 16-17 -->
       <eg-fixed-field i18n-fieldLabel [context]="context" 
       fieldCode="SpFm" fieldLabel="SpFm"></eg-fixed-field>
     </div>
   
     <div class="col-md-2 col-sm-4">
+      <!-- Relief = 008 / 18-21 or 006 / 01-04 -->
       <eg-fixed-field i18n-fieldLabel [context]="context" 
       fieldCode="Relf" fieldLabel="Relf"></eg-fixed-field>
     </div>
   
     <div class="col-md-2 col-sm-4">
+      <!-- Projection = 008 / 22-23 or 006 / 05-06 -->
       <eg-fixed-field i18n-fieldLabel [context]="context" 
       fieldCode="Proj" fieldLabel="Proj"></eg-fixed-field>
     </div>
   
     <div class="col-md-2 col-sm-4">
+      <!-- Type of Cartographic Material = 008 / 25 or 006 / 08 -->
       <eg-fixed-field i18n-fieldLabel [context]="context" 
       fieldCode="CrTp" fieldLabel="CrTp"></eg-fixed-field>
     </div>
   </div>
   <div class="ff-row row">
     <div class="col-md-2 col-sm-4">
+      <!-- Type of Visual Material = 008 / 33 or 006 / 16 -->
       <eg-fixed-field i18n-fieldLabel [context]="context" 
       fieldCode="TMat" fieldLabel="TMat"></eg-fixed-field>
     </div>
   
     <div class="col-md-2 col-sm-4">
+      <!-- Running Time = 008 / 18-20 or 006 / 01-03 -->
       <eg-fixed-field i18n-fieldLabel [context]="context" 
       fieldCode="Time" fieldLabel="Time"></eg-fixed-field>
     </div>
   
     <div class="col-md-2 col-sm-4">
-      <eg-fixed-field i18n-fieldLabel [context]="context" 
+     <!-- Technique = 008 / 34 or 006 / 17 -->
+     <eg-fixed-field i18n-fieldLabel [context]="context" 
       fieldCode="Tech" fieldLabel="Tech"></eg-fixed-field>
     </div>
   
     <div class="col-md-2 col-sm-4">
+      <!-- Type of Computer File = 008 / 26 or 006 / 09 -->
       <eg-fixed-field i18n-fieldLabel [context]="context" 
       fieldCode="File" fieldLabel="File"></eg-fixed-field>
     </div>
   </div>
   <div class="ff-row row" *ngIf="context.recordType !== 'authority'">
     <div class="col-md-2 col-sm-4">
+      <!-- Type of Record = Authority Leader / 06 -->
       <eg-fixed-field i18n-fieldLabel [context]="context" 
       fieldCode="Type_tbmfhd" fieldLabel="Type_tbmfhd"></eg-fixed-field>
     </div>
   
     <div class="col-md-2 col-sm-4">
+      <!-- Encoding Level = Authority Leader / 17 -->
       <eg-fixed-field i18n-fieldLabel [context]="context" 
       fieldCode="ELvl_tbmfhd" fieldLabel="ELvl_tbmfhd"></eg-fixed-field>
     </div>
@@ -338,69 +398,83 @@
     </div>
   
     <div class="col-md-2 col-sm-4">
+      <!-- Direct or Indirect Geographic Subdivision = Authority 008 / 06 -->
       <eg-fixed-field i18n-fieldLabel [context]="context" 
       fieldCode="GeoDiv" fieldLabel="GeoDiv"></eg-fixed-field>
     </div>
   
     <div class="col-md-2 col-sm-4">
+      <!-- Romanization Scheme = Authority 008 / 07 -->
       <eg-fixed-field i18n-fieldLabel [context]="context" 
       fieldCode="Roman" fieldLabel="Roman"></eg-fixed-field>
     </div>
   
     <div class="col-md-2 col-sm-4">
+      <!-- Language of Catalog = Authority 008 / 08 -->
       <eg-fixed-field i18n-fieldLabel [context]="context" 
       fieldCode="CatLang" fieldLabel="CatLang"></eg-fixed-field>
     </div>
   </div>
   <div class="ff-row row" *ngIf="context.recordType !== 'authority'">
     <div class="col-md-2 col-sm-4">
-      <!-- Kind of Record = 008 / 09 -->
+      <!-- Kind of Record = Authority 008 / 09 -->
+      <!-- Auth/ref in Connexion -->
       <eg-fixed-field i18n-fieldLabel [context]="context" 
       fieldCode="Kind" fieldLabel="Kind"></eg-fixed-field>
     </div>
   
     <div class="col-md-2 col-sm-4">
+      <!-- Descriptive Cataloging Rules = Authority 008 / 10 -->
       <eg-fixed-field i18n-fieldLabel [context]="context" 
       fieldCode="Rules" fieldLabel="Rules"></eg-fixed-field>
     </div>
   
     <div class="col-md-2 col-sm-4">
+      <!-- Subject Heading System or Thesaurus = Authority 008 / 11 -->
       <eg-fixed-field i18n-fieldLabel [context]="context" 
       fieldCode="Subj" fieldLabel="Subj"></eg-fixed-field>
     </div>
   
     <div class="col-md-2 col-sm-4">
+      <!-- Type of Series = Authority 008 / 12 -->
       <eg-fixed-field i18n-fieldLabel [context]="context" 
       fieldCode="Series" fieldLabel="Series"></eg-fixed-field>
     </div>
   
     <div class="col-md-2 col-sm-4">
+      <!-- Numbered or Unnumbered Series = Authority 008 /13 -->
       <eg-fixed-field i18n-fieldLabel [context]="context" 
       fieldCode="SerNum" fieldLabel="SerNum"></eg-fixed-field>
     </div>
   
     <div class="col-md-2 col-sm-4">
+      <!-- Heading Use - Main or Added Entry = Authority 008 / 32 -->
       <eg-fixed-field i18n-fieldLabel [context]="context" 
       fieldCode="NameUse" fieldLabel="NameUse"></eg-fixed-field>
     </div>
   </div>
   <div class="ff-row row" *ngIf="context.recordType !== 'authority'">
     <div class="col-md-2 col-sm-4">
+      <!-- Heading Use Code - Subject Added Entry = Authority 008 / 15 -->
       <eg-fixed-field i18n-fieldLabel [context]="context" 
       fieldCode="SubjUse" fieldLabel="SubjUse"></eg-fixed-field>
     </div>
   
     <div class="col-md-2 col-sm-4">
+      <!-- Heading Use - Series Added Entry = Authority 008 / 16 -->
       <eg-fixed-field i18n-fieldLabel [context]="context" 
       fieldCode="SerUse" fieldLabel="SerUse"></eg-fixed-field>
     </div>
   
     <div class="col-md-2 col-sm-4">
+      <!-- Subdiv tp in Connexion -->
+      <!-- Type of Subject Subdivistion = Authority 008 / 17 -->
       <eg-fixed-field i18n-fieldLabel [context]="context" 
       fieldCode="TypeSubd" fieldLabel="TypeSubd"></eg-fixed-field>
     </div>
   
     <div class="col-md-2 col-sm-4">
+      <!-- Government Agency = Authority 008 / 28 -->
       <eg-fixed-field i18n-fieldLabel [context]="context" 
       fieldCode="GovtAgn" fieldLabel="GovtAgn"></eg-fixed-field>
     </div>
@@ -412,22 +486,26 @@
     </div>
   
     <div class="col-md-2 col-sm-4">
+      <!-- Record Update in Process = Authority 008 / 31 -->
       <eg-fixed-field i18n-fieldLabel [context]="context" 
       fieldCode="UpdStatus" fieldLabel="UpdStatus"></eg-fixed-field>
     </div>
   </div>
   <div class="ff-row row" *ngIf="context.recordType !== 'authority'">
     <div class="col-md-2 col-sm-4">
+      <!-- Undifferentiated Personal Name = Authority 008 / 32 -->
       <eg-fixed-field i18n-fieldLabel [context]="context" 
       fieldCode="Name" fieldLabel="Name"></eg-fixed-field>
     </div>
   
     <div class="col-md-2 col-sm-4">
+      <!-- Record Status = Authority Leader / 05 -->
       <eg-fixed-field i18n-fieldLabel [context]="context" 
       fieldCode="Status" fieldLabel="Status"></eg-fixed-field>
     </div>
   
     <div class="col-md-2 col-sm-4">
+      <!-- Modified Record = Authority 008 / 38 -->
       <eg-fixed-field i18n-fieldLabel [context]="context" 
       fieldCode="ModRec" fieldLabel="ModRec"></eg-fixed-field>
     </div>
