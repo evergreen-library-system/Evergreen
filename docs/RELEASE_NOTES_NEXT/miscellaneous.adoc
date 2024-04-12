@@ -1,2 +1,5 @@
  * Fixes the fine level check on the asset.copy_template table, still used by serials. [Lp 1384796](https://bugs.launchpad.net/evergreen/+bug/1384796)
  * Fix an Apache internal server error in SuperCat when retrieving copies or call numbers with statistical categories. [Lp 2047587](https://bugs.launchpad.net/evergreen/+bug/2047587)
+ * Log staff user for canceled holds [Lp 1963541](https://bugs.launchpad.net/evergreen/+bug/1963541)
+ * Tighten permission checks for CREATE_COPY, UPDATE_COPY, CREATE_VOLUME, and UPDATE_VOLUME [Lp 1763811](https://bugs.launchpad.net/evergreen/+bug/1763811) [Lp 2018491](https://bugs.launchpad.net/evergreen/+bug/2018491)
+ * Read-only view for Holdings Editor if lacking an appropriately scoped UPDATE_COPY permission for all items being edited. Mixed Permission dialog if the permission only covers some of the items being edited. Actions from the dialog: Only show permissible items, Read-only view for all items, and Change Operator and try again. [Lp 1932062](https://bugs.launchpad.net/evergreen/+bug/1932062)
