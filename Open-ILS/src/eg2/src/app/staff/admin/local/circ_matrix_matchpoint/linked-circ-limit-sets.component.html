@@ -45,24 +45,36 @@
             </div>
         </ng-container>
     </ng-container>
-    <div class="input-group mt-3 col-md-12">
-        <label for="limit-set-name" i18n>Circ Limit Set Name</label>
-        <eg-combobox 
-            name="linkedLimitName"
-            domId="limit-set-name"
-            idlClass="ccls" 
-            idlField="name" 
-            asyncSupportsEmptyTermClick="true"
-            (onChange)="onChange($event)">
+    <div class="form-group mt-3">
+      <label for="limit-set-name" class="col-form-label" i18n>Circ Limit Set Name</label>
+      (<a target="_blank" href="/eg2/staff/admin/local/config/circ_limit_set" class="btn btn-link" i18n>Admin</a>)
+      <eg-help-popover
+        i18n-helpText
+        helpText="Use the Admin link or Local Admin -> Circulation Limit Sets to Create a Link Limit Set"
+      ></eg-help-popover>
+      <div class="input-group">
+        <eg-combobox
+          name="linkedLimitName"
+          domId="limit-set-name"
+          idlClass="ccls"
+          idlField="name"
+          asyncSupportsEmptyTermClick="true"
+          (onChange)="onChange($event)"
+          class="form-control"
+        >
         </eg-combobox>
         <div class="input-group-append">
-            <button
-                type="button"
-                class="btn btn-info"
-                (click)="addLinkedSet()"
-                i18n-title title="Add" i18n>Add
-            </button>
-            <eg-help-popover i18n-helpText helpText="Go to Local Admin -> Circulation Limit Sets to Create a Link Limit Set" ></eg-help-popover>
+          <button
+            type="button"
+            class="btn btn-info"
+            (click)="addLinkedSet()"
+            i18n-title
+            title="Add"
+            i18n
+          >
+            Add
+          </button>
         </div>
+      </div>
     </div>
 </div>
