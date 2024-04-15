@@ -391,6 +391,18 @@ img {
     margin: 2em 0;
 }
 
+#topnav_logo_image {
+    color: #fff;
+    fill: #fff;
+    height: 2.2rem;
+    margin-top: -0.85rem;
+    width: auto;
+}
+
+.navbar a.navbar-brand {
+    margin-right: 0;
+}
+
 #homesearch_main_logo {
     padding-top: 60px;
     margin: auto;
@@ -2084,6 +2096,24 @@ div#facet_sidebar {
     font-size: [% css_fonts.size_small %];
     margin: 5px 0;
     text-align: center;
+}
+
+#footer_logo {
+    fill: #fff;
+    line-height: 2.6em;
+}
+
+#footer_logo > a {
+    display: inline-block;
+}
+
+#footer_logo_image {
+    color: #fff;    
+    width: auto;
+    height: 2em;
+    position: relative;
+    top: -.4em;
+    margin-left: .15rem;
 }
 
 .color_4 {
@@ -3865,7 +3895,7 @@ label[for*=expert_]
     background-position: center; /* Center the image */
     background-repeat: no-repeat; /* Do not repeat the image */
     background-size: contain; /* Resize the background image to cover the entire container */
-    background-image: url("[% ctx.media_prefix %]/images/Evergreen-Final-Logo.png");
+    background-image: url("[% ctx.media_prefix %]/images/evergreen-round-logo.svg");
 
 }
 

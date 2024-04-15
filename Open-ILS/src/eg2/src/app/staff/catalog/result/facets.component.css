@@ -14,3 +14,10 @@
 .list-truncate .list-group-item:nth-child(n+6) {
   display: none;
 }
+
+@media (forced-colors: active) or (prefers-contrast: forced) {
+  .card .card-header,
+  .card .list-group-item {
+      border: 0;
+  }
+}
