@@ -10,6 +10,12 @@ use Data::Dumper;
 $Data::Dumper::Indent = 0;
 my $U = 'OpenILS::Application::AppUtils';
 
+# We will construct DOB from the individual components
+sub construct_dob {
+    my $self = shift;
+    return $self->cgi->param('dob-year') . '-' . $self->cgi->param('dob-month') . '-' . $self->cgi->param('dob-day');
+}
+
 sub load_patron_reg {
     my $self = shift;
     my $ctx = $self->ctx;
@@ -36,6 +42,7 @@ sub load_patron_reg {
     # user
     foreach (grep /^stgu\./, $cgi->param) {
         my $val = $cgi->param($_);
+        if ($_ eq 'stgu.dob') { $val = $self->construct_dob(); }
         $self->inspect_register_value($_, $val);
         s/^stgu\.//g;
         $user->$_($val);

@@ -138,6 +138,13 @@ FOR field_def IN register_fields;
     example = ctx.register.settings.$fclass.$fname.example;
     value = ctx.register.values.$fclass.$fname;
 
+    IF fname == 'dob';
+        dateparts = String(value).split('-');
+        dob_year = datepart.item(0);
+        dob_month = datepart.item(1);
+        dob_day = datepart.item(2);
+    END;
+
     invalid_require = ctx.register.invalid.$fclass.$fname.require;
     invalid_regex = ctx.register.invalid.$fclass.$fname.regex;
 
@@ -157,6 +164,13 @@ FOR field_def IN register_fields;
         </label>
         <div class="col-md-6">
             [% IF fname == "dob"; %]
+            <!-- we just use this hidden input to tell the middle layer there is a dob -->
+            <input
+                class='form-control'
+                type='hidden'
+                id='stgu.dob'
+                name='stgu.dob'
+                value='kludge'/>
             [% USE String %]
             [% DEFAULT dob_order = 'MDY' %]
             [% IF ctx.register.settings.dob_order %]
@@ -169,25 +183,25 @@ FOR field_def IN register_fields;
               [% END %]
             [% END %]
             <!-- dob_order: [% dob_order %] -->
-            <div class="d-flex dob-form-group">
+              <div class="d-flex dob-form-group">
               [% FOREACH element IN dob_order.split('') %]
                 [% SWITCH element %]
                   [% CASE 'M' %]
                     <div class="form-group mr-1">
-                        <input type="text" class="form-control" size="2" id='dob-month'
-                            name='dob-month' value='[% value || CGI.param(field_path) | html %]' [% IF require %]required[% END %] />
+                        <input type="number" class="form-control" size="2" id='dob-month'
+                            name='dob-month' value='[% dob_month || CGI.param("dob-month") | html %]' [% IF require %]required[% END %] />
                         <label for="dob-month" class="form-text small mb-0">[% l('Month') %]</label>
                     </div>
                   [% CASE 'D' %]
                     <div class="form-group mr-1">
-                        <input type="text" class="form-control" size="2" id='dob-day'
-                            name='dob-day' value='[% value || CGI.param(field_path) | html %]' [% IF require %]required[% END %] />
+                        <input type="number" class="form-control" size="2" id='dob-day'
+                            name='dob-day' value='[% dob_day || CGI.param("dob-day") | html %]' [% IF require %]required[% END %] />
                         <label for="dob-day" class="form-text small mb-0">[% l('Day') %]</label>
                     </div>
                   [% CASE 'Y' %]
                     <div class="form-group m-1">
-                        <input type="text" class="form-control" size="4" id='dob-year'
-                        name='dob-year' value='[% value || CGI.param(field_path) | html %]' [% IF require %]required[% END %] />
+                        <input type="number" class="form-control" size="4" id='dob-year'
+                        name='dob-year' value='[% dob_year || CGI.param("dob-year") | html %]' [% IF require %]required[% END %] />
                         <label for="dob-year" class="form-text small mb-0">[% l('Year') %]</label>
                     </div>
                 [% END %]
