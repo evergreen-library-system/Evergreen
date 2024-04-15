@@ -38,8 +38,8 @@
     <div id="footer_logo">
         [% l('Powered by') %]
         <a href="http://evergreen-ils.org">
-            <img id="footer_logo_image" src="[% ctx.media_prefix %]/opac/images/eg_tiny_logo.png[% ctx.cache_key %]"
-                alt="[% l('Evergreen') %]"
+            <img id="footer_logo_image" src="[% ctx.media_prefix %]/images/evergreen-logo-white.svg[% ctx.cache_key %]"
+                alt="[% l('Evergreen') %]" class="eg-logo" role="img"
             />
         </a>
     </div>

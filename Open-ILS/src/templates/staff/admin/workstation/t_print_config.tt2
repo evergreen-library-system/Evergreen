@@ -449,7 +449,7 @@ ng-init="htmlPrintContent='
   <style>p { color: blue }</style>
   <h2>[% l('Test HTML Print') %]</h2>
   <br/>
-  <img src=\'https://[% ctx.hostname %]/opac/images/main_logo.png\' width=\'140\' height=\'24\'/>
+  <img src=\'https://[% ctx.hostname %]/images/evergreen-logo.svg\' width=\'140\' height=\'24\'/>
   <p>[% l('Welcome, Stranger!') %]</p>
   <p>{{value1}}</p>
   <p>{{value2}}</p>

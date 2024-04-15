@@ -7,7 +7,8 @@ import {StringComponent} from '@eg/share/string/string.component';
 import {Router} from '@angular/router';
 
 @Component({
-    templateUrl: 'splash.component.html'
+    templateUrl: 'splash.component.html',
+    styles: ['.eg-logo { max-width: 400px; margin: 30px 0; }']
 })
 
 export class StaffSplashComponent implements OnInit {
