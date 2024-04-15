@@ -1,6 +1,6 @@
 <div id='oils-selfck-user-banner'></div>
 <div id='oils-selfck-logo-div'>
-    <img src='[% ctx.media_prefix %]/images/self_eg_logo.png'/>
+    <img src='[% ctx.media_prefix %]/images/evergreen-logo-white.svg' alt="Evergreen" role="img" class="eg-logo"/>
 </div>
 <br/>
 <br/>

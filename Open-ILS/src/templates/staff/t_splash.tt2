@@ -1,7 +1,7 @@
 <div class="container">
   <div class="row">
     <div class="col-md-12 text-center">
-      <img src="[% ctx.media_prefix %]/images/portal/logo.png" alt="Evergreen" />
+      <img src="[% ctx.media_prefix %]/images/evergreen-logo.svg" role="img" alt="Evergreen" />
       <h1 class="sr-only" i18n>Evergreen Staff Client Home Page</h1>
     </div>
   </div>

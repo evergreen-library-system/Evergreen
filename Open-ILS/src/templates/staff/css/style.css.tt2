@@ -593,3 +593,36 @@ eg-grid-field {
 [%# 
 vim: ft=css 
 %]
+
+@media (forced-colors: active) or (prefers-contrast: forced) {
+  .uib-increment .btn,
+  .uib-decrement .btn {
+    border: 0;
+  }
+
+  #top-navbar.navbar-default .navbar-nav > .dropdown > a:hover .caret,
+  #top-navbar.navbar-default .navbar-nav > .dropdown > a:focus .caret,
+  #top-navbar.navbar-default .navbar-nav > .dropdown > a .caret,
+  .dropdown .caret {
+    border: 0;
+    height: unset;
+    width: unset;
+  }
+
+  .dropdown .caret:after,
+  #top-navbar.navbar-default .navbar-nav > .dropdown > a .caret:after {
+    border: 0;
+    content:"\e252"; /* triangle-bottom */
+    font-family: "Glyphicons Halflings";
+    font-size: 0.9rem;
+    line-height: 1;
+    margin-inline-start: .5ch;
+    vertical-align: middle;
+  }
+
+  .dropdown.open .caret:after,
+  #top-navbar.navbar-default .navbar-nav > .dropdown.open > a .caret:after {
+    border: 0;
+    content:"\e253"; /* triangle-top */
+  }
+}

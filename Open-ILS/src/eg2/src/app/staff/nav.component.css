@@ -157,3 +157,17 @@ Based on the hidden-sm class selector in Bootstrap. */
         display: none !important
     }
 }
+
+@media (forced-colors: active) or (prefers-contrast: forced) {
+    #staff-navbar {
+        border-bottom: 1px solid transparent;
+    }
+    
+    #staff-navbar .nav-link:hover,
+    #staff-navbar .nav-link:focus,
+    #staff-navbar button.dropdown-toggle,
+    #staff-navbar button.dropdown-toggle:hover,
+    #staff-navbar button.dropdown-toggle:focus {
+        border: 0;
+    }
+}

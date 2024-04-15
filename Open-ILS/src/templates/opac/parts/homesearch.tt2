@@ -1,5 +1,5 @@
 <div id="homesearch_main_logo">
-    <img id="homesearch_main_logo_image" src="[% ctx.media_prefix %]/opac/images/main_logo.png[% ctx.cache_key %]"
-        [% img_alt(l('Evergreen Logo')) %]/>
+    <img id="homesearch_main_logo_image" src="[% ctx.media_prefix %]/images/evergreen-logo.svg[% ctx.cache_key %]"
+        [% img_alt(l('Evergreen Logo')) %] role="img" class="eg-logo"/>
 </div>
 [% PROCESS carousels %]

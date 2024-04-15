@@ -801,3 +801,27 @@ a {
 .tooltip .tooltip-inner a {
   color: inherit;
 }
+
+@media (forced-colors: active) or (prefers-contrast: forced) {
+  .alert,
+  .btn-link {
+    border: 0;
+  }
+
+  .btn:focus {
+    box-shadow: unset;
+    outline: 0.2rem solid transparent;
+  }
+
+  .dropdown-toggle:after {
+    border: 0;
+    content: "\e5c5"; /* arrow_drop_down */
+    font-family: "Material Icons";
+    vertical-align: middle;
+  }
+
+  .dropdown.show .dropdown-toggle:after,
+  .dropdown.open .dropdown-toggle:after {
+    content: "\e5c7"; /* arrow_drop_up */
+  }
+}
