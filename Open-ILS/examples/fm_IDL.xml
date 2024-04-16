@@ -7302,6 +7302,7 @@ SELECT  usr,
 			<field reporter:label="Email Address" name="email" reporter:datatype="text"/>
 			<field reporter:label="Phone Number" name="phone" reporter:datatype="text"/>
 			<field reporter:label="OPAC Visible" name="opac_visible" reporter:datatype="bool"/>
+			<field reporter:label="Staff Catalog Visible" name="staff_catalog_visible" reporter:datatype="bool"/>
 			<field reporter:label="Fiscal Calendar" name="fiscal_calendar" reporter:datatype="link" oils_obj:required="true"/>
 			<field reporter:label="Users" name="users" oils_persist:virtual="true" reporter:datatype="link"/>
 			<field reporter:label="Closed Dates" name="closed_dates" oils_persist:virtual="true" reporter:datatype="link"/>

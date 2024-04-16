@@ -1,0 +1,29 @@
+BEGIN;
+
+SELECT plan(3);
+
+SELECT results_eq(
+    'SELECT org_unit FROM asset.staff_ou_record_copy_count(4, 254)',
+    $$VALUES (1), (2), (4)$$,
+    'staff_ou_record_copy_count returns all ancestors who are staff_catalog_visisble'
+);
+
+UPDATE actor.org_unit SET staff_catalog_visible = FALSE WHERE id=2;
+
+SELECT results_eq(
+    'SELECT org_unit FROM asset.staff_ou_record_copy_count(4, 254)',
+    $$VALUES (1), (4)$$,
+    'staff_ou_record_copy_count does not include ancestors who are not staff_catalog_visisble'
+);
+
+UPDATE actor.org_unit SET staff_catalog_visible = FALSE WHERE id=4;
+
+SELECT results_eq(
+    'SELECT org_unit FROM asset.staff_ou_record_copy_count(4, 254)',
+    $$VALUES (1)$$,
+    'staff_ou_record_copy_count does not even include the requested OU if it is not staff_catalog_visisble'
+);
+
+SELECT * FROM finish();
+ROLLBACK;
+

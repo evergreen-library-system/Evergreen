@@ -22248,6 +22248,14 @@ INSERT INTO config.global_flag (name, enabled, label)
             'cgf',
             'label'
         )
+    ), (
+        'staff.search.shelving_location_groups_with_orgs', TRUE,
+        oils_i18n_gettext(
+            'staff.search.shelving_location_groups_with_orgs',
+            'Staff Catalog Search: Display shelving location groups inside the Organizational Unit Selector',
+            'cgf',
+            'label'
+        )
 );
 
 INSERT INTO config.global_flag (name, enabled, value, label)

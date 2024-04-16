@@ -1,0 +1,16 @@
+<ng-template #displayTemplate let-node="result">{{treeNodeAsText(node)}}</ng-template>
+
+<input type="text"
+       class="form-control"
+       [(ngModel)]="selectedNode"
+       (focus)="focus$.next($any($event).target.value)"
+	(click)="click$.next($any($event).target.value)"
+       (selectItem)="emitNodeSelected($event)"
+       [ngbTypeahead]="filter"
+       [selectOnExact]="true"
+       [resultTemplate]="displayTemplate"
+       [inputFormatter]="inputFormatter"
+       [attr.placeholder]="placeholder"
+       [attr.aria-label]="ariaLabel"
+       [attr.id]="domId"
+       #instance="ngbTypeahead" />

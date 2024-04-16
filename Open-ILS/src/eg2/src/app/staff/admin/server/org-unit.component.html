@@ -53,7 +53,7 @@
               [record]="currentOrg().isnew() ? currentOrg() : null"
               [recordId]="currentOrg().isnew() ? null : currentOrg().id()"
               [showDelete]="!orgHasChildren()"
-              fieldOrder="parent_ou,ou_type,name,shortname,id,phone,email,opac_visible,fiscal_calendar"
+              fieldOrder="parent_ou,ou_type,name,shortname,id,phone,email,opac_visible,staff_catalog_visible,fiscal_calendar"
               hiddenFields="billing_address,mailing_address,holds_address,ill_address">
               <eg-fm-record-editor-action label="Add Child" i18n-label 
                 [disabled]="orgChildTypes().length === 0 || currentOrg().isnew()"

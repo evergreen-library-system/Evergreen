@@ -1,0 +1,9 @@
+<eg-tree-combobox
+    [tree]="tree"
+    placeholder="Library"
+    (nodeSelected$)="emitOrgChanged($event)"
+    [defaultNode]="initialOrgNode"
+    i18n-placeholder
+    ariaLabel="Library"
+    domId="search-org-selector"
+    i18n-ariaLabel></eg-tree-combobox>

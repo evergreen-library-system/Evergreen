@@ -377,6 +377,7 @@ CREATE TABLE actor.org_unit (
 	email		TEXT,
 	phone		TEXT,
 	opac_visible	BOOL	NOT NULL DEFAULT TRUE,
+    staff_catalog_visible BOOL NOT NULL DEFAULT TRUE,
 	fiscal_calendar INT     NOT NULL DEFAULT 1   -- foreign key constraint to be added later
 );
 CREATE INDEX actor_org_unit_parent_ou_idx ON actor.org_unit (parent_ou);

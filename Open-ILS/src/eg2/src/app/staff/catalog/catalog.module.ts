@@ -39,6 +39,7 @@ import {BarcodesModule} from '@eg/staff/share/barcodes/barcodes.module';
 import {WorkLogModule} from '@eg/staff/share/worklog/worklog.module';
 import {VolCopyModule} from '@eg/staff/cat/volcopy/volcopy.module';
 import { SortOrderSelectComponent } from './sort-order-select/sort-order-select.component';
+import { CatalogOrgSelectComponent } from './catalog-org-select/catalog-org-select.component';
 
 @NgModule({
     declarations: [
@@ -82,7 +83,8 @@ import { SortOrderSelectComponent } from './sort-order-select/sort-order-select.
         HttpClientModule,
         BarcodesModule,
         WorkLogModule,
-        VolCopyModule
+        VolCopyModule,
+        CatalogOrgSelectComponent
     ],
     providers: [
         StaffCatalogService

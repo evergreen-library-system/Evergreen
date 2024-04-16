@@ -263,10 +263,15 @@ export class SearchFormComponent implements OnInit, AfterViewInit {
     }
 
     orgOnChange = (org: IdlObject): void => {
-        this.context.searchOrg = org;
-        this.refreshCopyLocations();
-        this.refreshCopyLocationGroups();
-        this.refreshLibraryGroups();
+        if (org.classname === 'acplg') {
+            this.context.termSearch.locationGroupOrLasso = `location_groups(${org.id()})`;
+        } else {
+            this.context.termSearch.locationGroupOrLasso = '';
+            this.context.searchOrg = org;
+            this.refreshCopyLocations();
+            this.refreshCopyLocationGroups();
+            this.refreshLibraryGroups();
+        }
     }
 
     sortOrderChange = (sortMethod: string) : void => {

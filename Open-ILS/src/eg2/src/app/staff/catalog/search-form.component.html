@@ -448,12 +448,7 @@
     <div class="row">
       <div class="col-lg-9">
         <label i18n class="form-label select-label" for="search-org-selector">Search in Library</label>
-        <eg-org-select domId="search-org-selector"
-          (onChange)="orgOnChange($event)"
-          [initialOrg]="context.searchOrg"
-          [placeholder]="'Library'" i18n-placeholder
-          ariaLabel="Library" i18n-ariaLabel>
-        </eg-org-select>
+        <eg-catalog-org-select (orgChanged$)="orgOnChange($event)" [initialOrg]="context.searchOrg"></eg-catalog-org-select>
         <ng-container *ngIf="libraryGroups.length || (copyLocationGroups.length && combineLibraryAndLocationGroups)">
           <label i18n class="form-label select-label mt-3" for="locationGroupOrLasso-selector">
               Library Group {{ combineLibraryAndLocationGroups ? 'or Shelving Location Group' : ''}}

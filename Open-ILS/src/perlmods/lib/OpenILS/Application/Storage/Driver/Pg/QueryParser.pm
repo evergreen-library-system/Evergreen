@@ -1216,13 +1216,14 @@ SQL
 sub is_org_visible {
     my $org = shift;
     if ( defined($org) ) {
-        return 0 if (!$U->is_true($org->opac_visible));
-
         my $non_inherited_vis_gf = shift || $U->get_global_flag('opac.org_unit.non_inherited_visibility');
+        my $method = shift || 'opac_visible';
+        return 0 if (!$U->is_true($org->$method));
+
         return 1 if ($U->is_true($non_inherited_vis_gf->enabled));
 
         while ($org = $org->parent_ou) {
-            return 0 if (!$U->is_true($org->opac_visible));
+            return 0 if (!$U->is_true($org->$method));
         }
         return 1; 
     }  else {
@@ -1521,11 +1522,10 @@ sub flatten {
     my $aorgs = $U->get_org_ancestors($site_org->id);
 
     flesh_parents($ot);
-    if (!$self->find_modifier('staff')) {
-        my $non_inherited_vis_gf = $U->get_global_flag('opac.org_unit.non_inherited_visibility');
-        $dorgs = [ grep { is_org_visible($U->find_org($ot,$_), $non_inherited_vis_gf) } @$dorgs ];
-        $aorgs = [ grep { is_org_visible($U->find_org($ot,$_), $non_inherited_vis_gf) } @$aorgs ];
-    }
+    my $visibility_method = ($self->find_modifier('staff')) ? 'staff_catalog_visible' : 'opac_visible';
+    my $non_inherited_vis_gf = $U->get_global_flag('opac.org_unit.non_inherited_visibility');
+    $dorgs = [ grep { is_org_visible($U->find_org($ot,$_), $non_inherited_vis_gf, $visibility_method) } @$dorgs ];
+    $aorgs = [ grep { is_org_visible($U->find_org($ot,$_), $non_inherited_vis_gf, $visibility_method) } @$aorgs ];
     unflesh_parents($ot);
 
     push @{$vis_filter{'c_attr'}},

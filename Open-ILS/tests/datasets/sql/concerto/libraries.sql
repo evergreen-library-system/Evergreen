@@ -14,6 +14,10 @@ INSERT INTO actor.org_unit (id, parent_ou, ou_type, shortname, name) VALUES
     (8, 4, 4, 'SL1', oils_i18n_gettext(8, 'Example Sub-library 1', 'aou', 'name'));
 INSERT INTO actor.org_unit (id, parent_ou, ou_type, shortname, name) VALUES 
     (9, 6, 5, 'BM1', oils_i18n_gettext(9, 'Example Bookmobile 1', 'aou', 'name'));
+INSERT INTO actor.org_unit (id, parent_ou, ou_type, shortname, name) VALUES
+    (10, 1, 2, 'SYS3', oils_i18n_gettext(10, 'Example System 3', 'aou', 'name'));
+INSERT INTO actor.org_unit (id, parent_ou, ou_type, shortname, name, staff_catalog_visible) VALUES
+    (11, 10, 3, 'BR5', oils_i18n_gettext(10, 'Example Branch 5', 'aou', 'name'), FALSE);
 
 INSERT INTO actor.org_lasso (id, name, global) VALUES (1000001, 'Even Branches', FALSE);
 INSERT INTO actor.org_lasso_map (lasso, org_unit) VALUES (1000001, 5), (1000001, 7);

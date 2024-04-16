@@ -1,0 +1,57 @@
+== Org Unit Staff Catalog Visibility ==
+
+You can now set org units as visible or not visible in the
+staff catalog.  By default, all org units are visible in the
+staff catalog.
+
+To change the visibility:
+
+. Go to Administration -> System Administration -> Organizational Units.
+. Choose the org unit you'd like to change.
+. Check or uncheck the Staff Catalog Visible checkbox as needed.
+. Save your changes.
+. Run the autogen.sh script to allow your changes to take effect.
+
+Org units that are not staff catalog visible will not appear in
+the following locations:
+
+* The library selector on the staff catalog search form.
+* In search results in the staff catalog.
+* In item counts in the staff catalog search results and Record Staff View tabs.
+
+All org units will continue to be visible in the Holdings View, other
+admin screens, and reports.
+
+These visibility settings meet a few use cases:
+
+* De-cluttering an org selector with single-branch libraries, for which searching
+  at the system level is exactly the same as searching at the branch level.  This
+  can be achieved by marking the system as not visible, and the branch as visible.
+* Hiding org units that are no longer used.
+* Hiding org units that are used for resource sharing, but which do not need to
+  be searched.
+* Evergreen installations that want the library selector in the staff catalog
+  to match the one in the public catalog.  This can be achieved by making sure
+  that all orgs have matching OPAC visible and Staff Catalog visible settings.
+
+== Shelving Location Groups in Staff Catalog Library Selector ==
+
+Shelving Location Groups are now included in the Library Selector of
+the Staff Catalog search form.  This gives staff a similar experience
+to that of patrons.
+
+To remove shelving location groups from the staff catalog library selector:
+
+. Go to Administration -> Server Administration -> Global Flags.
+. Set the `staff.search.shelving_location_groups_with_orgs` global flag to False.
+. Press your browser's Refresh button.
+
+This does not remove shelving location groups from their current home in the library groups
+selector by default.  However, you can remove them from the library groups selector if desired:
+
+. Go to Administration -> Server Administration -> Global Flags.
+. Set the `staff.search.shelving_location_groups_with_lassos` global flag to False.
+. Press your browser's Refresh button.
+
+By combining these global flags, your Evergreen installation can include shelving location groups
+in either selector, both, or neither, according to your needs.

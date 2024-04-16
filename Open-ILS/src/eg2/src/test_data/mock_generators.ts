@@ -1,4 +1,5 @@
 import { AuthService } from '@eg/core/auth.service';
+import { GlobalFlagService } from '@eg/core/global-flag.service';
 import { IdlObject, IdlService } from '@eg/core/idl.service';
 import { NetService } from '@eg/core/net.service';
 import { PcrudService } from '@eg/core/pcrud.service';
@@ -11,11 +12,12 @@ import { SerialsService } from '@eg/staff/serials/serials.service';
 import { HoldsService } from '@eg/staff/share/holds/holds.service';
 import { PatronService } from '@eg/staff/share/patron/patron.service';
 import { EMPTY, from, of } from 'rxjs';
+import { from, of } from 'rxjs';
 
 // Convenience functions that generate mock data for use in automated tests
 export class MockGenerators {
-    static idlObject(keysAndValues: {[key: string]: any}) {
-        const object = jasmine.createSpyObj<IdlObject>(Object.keys(keysAndValues));
+    static idlObject(keysAndValues: {[key: string]: any}, classname?: string) {
+        const object = jasmine.createSpyObj<IdlObject>(Object.keys(keysAndValues), {classname: classname});
         Object.keys(keysAndValues).forEach((key) => {
             object[key].and.returnValue(keysAndValues[key]);
         });
@@ -41,6 +43,21 @@ export class MockGenerators {
             result: { success: true, holdId: 303 }
         }));
         service.getHoldTargetMeta.and.returnValue(EMPTY);
+        return service;
+    }
+
+    static globalFlagService(flags: BasicGlobalFlag[]) {
+        const service = jasmine.createSpyObj<GlobalFlagService>(['enabled', 'retrieve']);
+        service.enabled.and.callFake((name) => of(flags.find(flag => flag.name === name).enabled));
+        service.retrieve.and.callFake((name) => {
+            const flagData = flags.find(flag => flag.name === name);
+            return of(this.idlObject({
+                name: flagData.name,
+                enabled: flagData.enabled ? 't' : 'f',
+                label: flagData.label,
+                value: flagData.value
+            }));
+        });
         return service;
     }
 
@@ -95,11 +112,7 @@ export class MockGenerators {
         const methods = ['search', 'retrieve', 'retrieveAll', 'create', 'update', 'remove'];
         const pcrud = jasmine.createSpyObj<PcrudService>(['search', 'retrieve', 'retrieveAll', 'create', 'update', 'remove']);
         methods.forEach((method) => {
-            if (returnValues[method]) {
-                pcrud[method].and.returnValue(from(returnValues[method]));
-            } else {
-                pcrud[method].and.returnValue(of());
-            }
+            pcrud[method].and.returnValue(from(returnValues[method] || []));
         });
         return pcrud;
     }
@@ -145,4 +158,11 @@ export class MockGenerators {
             settings: () => Promise.resolve(null),
         };
     }
+}
+
+interface BasicGlobalFlag {
+    name: string;
+    enabled: boolean;
+    label?: string;
+    value?: string;
 }

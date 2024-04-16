@@ -52,6 +52,7 @@ export class TreeNode {
         if ('childrenCB' in values) { this.childrenCB = values.childrenCB; }
         if ('expanded' in values) { this.expanded = values.expanded; }
         if ('stateFlag' in values) { this.stateFlag= values.stateFlag; }
+        if ('depth' in values) { this.depth = values.depth; }
         if ('callerData' in values) { this.callerData = values.callerData; }
 
         if (this.expanded) {
@@ -91,6 +92,11 @@ export class TreeNode {
         clonedNode.children = this.children.map(child => child.clone(overlay));
         clonedNode.children.forEach(child => child.parent = clonedNode);
         return clonedNode;
+    }
+
+    addChild(child: TreeNode): void {
+        child.depth = this.depth + 1;
+        this.children.push(child);
     }
 }
 
@@ -139,12 +145,14 @@ export class Tree {
     }
 
     // Returns a list of tree nodes
-    nodeList(filterHidden?: boolean): TreeNode[] {
+    nodeList(filterHidden?: boolean, keepOriginalOrder = false): TreeNode[] {
         if (!filterHidden) {
             if (!Object.values(this.idMap).length) {
                 return this.descendants(this.rootNode);
+            } else if (!keepOriginalOrder) {
+                // This option returns the nodes in order by ID, rather than their original order
+                return Object.values(this.idMap);
             }
-            return Object.values(this.idMap);
         }
         return this.descendants(this.rootNode, filterHidden);
     }
@@ -183,7 +191,7 @@ export class Tree {
             }
         };
 
-        recurseTree(node, node.depth, false);
+        recurseTree(node, (node?.depth || 0), false);
         return nodes;
     }
 
