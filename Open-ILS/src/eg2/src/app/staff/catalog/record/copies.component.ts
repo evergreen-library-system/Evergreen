@@ -21,6 +21,7 @@ export class CopiesComponent implements OnInit {
     initDone = false;
     usingCourseModule = false;
     editableCopyLibs: number[] = [];
+    editableCNLibs: number[] = [];
     gridDataSource: GridDataSource;
     copyContext: any; // grid context
     @ViewChild('copyGrid', { static: true }) copyGrid: GridComponent;
@@ -53,10 +54,11 @@ export class CopiesComponent implements OnInit {
             this.usingCourseModule = res;
         });
 
-        this.perm.hasWorkPermAt(['UPDATE_COPY'], true)
+        this.perm.hasWorkPermAt(['UPDATE_COPY','UPDATE_VOLUME'], true)
             .then(result => {
                 this.editableCopyLibs = result.UPDATE_COPY as number[];
-            });
+                this.editableCNLibs = result.UPDATE_VOLUME as number[];
+        });
 
         this.gridDataSource.getRows = (pager: Pager, sort: any[]) => {
             // sorting not currently supported
@@ -68,6 +70,11 @@ export class CopiesComponent implements OnInit {
                 return this.editableCopyLibs.some(lib => {
                     return copy.circ_lib === lib
                         || copy.call_number_owning_lib === lib;
+                });
+            },
+            editableCN: (copy: any) => {
+                return this.editableCNLibs.some(lib => {
+                    return copy.call_number_owning_lib === lib;
                 });
             },
             holdable: (copy: any) => {
