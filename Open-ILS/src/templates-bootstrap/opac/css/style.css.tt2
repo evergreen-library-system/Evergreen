@@ -2982,6 +2982,11 @@ a.preflib_change {
     [% END -%]
 }
 
+.dob-form-group input:invalid:not(:focus) {
+    outline: 0.25rem solid red;
+    box-shadow: none;
+}
+
 .patron-reg-invalid {
     font-weight: bold;
     color: red;
