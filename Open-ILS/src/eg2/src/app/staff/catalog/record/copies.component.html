@@ -1,12 +1,14 @@
-<ng-template #cnTemplate let-copy="row">
+<ng-template #cnTemplate let-copy="row" let-context="userContext">
     <div id="copy-callnumber-{{copy.call_number}}">
     {{copy.call_number_prefix_label}}
     <span id="copy-callnumber-label-{{copy.call_number_label}}">{{copy.call_number_label}}</span>
     {{copy.call_number_suffix_label}}
     </div>
   <div>
-    <a routerLink="/staff/cat/volcopy/holdings/callnumber/{{copy.call_number}}"
+    <ng-container *ngIf="context.editableCN(copy)">
+      <a routerLink="/staff/cat/volcopy/holdings/callnumber/{{copy.call_number}}"
       target="_blank" i18n attr.aria-describedby="copy-callnumber-label-{{copy.call_number_label}}">Edit</a> 
+    </ng-container>
   </div>
 </ng-template>
 
@@ -68,7 +70,7 @@
     <eg-grid-column i18n-label label="Location" path="circ_lib" datatype="org_unit">
     </eg-grid-column>
     <eg-grid-column i18n-label label="Call Number / Item Notes" name="callnumber" 
-      [cellTemplate]="cnTemplate">
+      [cellTemplate]="cnTemplate" [cellContext]="copyContext">
     </eg-grid-column>
     <eg-grid-column i18n-label label="Part" path="part_label" name="monograph_part">
     </eg-grid-column>
