@@ -1982,7 +1982,9 @@ INSERT INTO permission.perm_list ( id, code, description ) VALUES
  ( 654, 'VIEW_SHIPMENT_NOTIFICATION', oils_i18n_gettext(654,
     'View shipment notifications', 'ppl', 'description')),
  ( 655, 'MANAGE_SHIPMENT_NOTIFICATION', oils_i18n_gettext(655,
-    'Manage shipment notifications', 'ppl', 'description'))
+    'Manage shipment notifications', 'ppl', 'description')),
+ ( 656,'PATRON_BARRED.override', oils_i18n_gettext(656,
+     'Override the PATRON_BARRED event', 'ppl', 'description'))
 ;
 
 SELECT SETVAL('permission.perm_list_id_seq'::TEXT, 1000);
