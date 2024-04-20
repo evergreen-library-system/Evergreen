@@ -11,6 +11,8 @@
 
 <eg-phys-char-dialog #physCharDialog></eg-phys-char-dialog>
 
+<eg-charmap-dialog #charMapDialog></eg-charmap-dialog>
+
 <ng-template #subfieldChunk let-field="field" let-subfield="subfield" let-tabIndex="tabIndex">
 
   <!-- move these around depending on whether we are stacking subfields -->
@@ -129,7 +131,9 @@
           </div>
           <!-- Single buttons -->
           <button type="button" class="btn btn-secondary" (click)="validate()" i18n>Validate</button>
-          <button type="button" class="btn btn-secondary" [ngClass]="{active: context.showHelp}" (click)="context.showHelp = !context.showHelp" i18n>Help</button>
+          <button type="button" class="btn btn-secondary" (click)="showCharMap($event)" egAccessKey keyCtx="MARC Editor" i18n-keySpec i18n-keyDesc
+          keySpec="ctrl+s" keyDesc="Special Characters Map" i18n>Special Characters</button>
+          <button type="button" class="btn btn-secondary ms-auto" [ngClass]="{active: context.showHelp}" (click)="context.showHelp = !context.showHelp" i18n>Help</button>
         </div>
       
     </div>

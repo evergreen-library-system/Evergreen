@@ -9,6 +9,7 @@ import {MarcRecord, MarcField, MarcSubfield} from './marcrecord';
 import {MarcEditContext} from './editor-context';
 import {AuthorityLinkingDialogComponent} from './authority-linking-dialog.component';
 import {PhysCharDialogComponent} from './phys-char-dialog.component';
+import {CharMapDialogComponent} from './charmap/charmap-dialog.component';
 
 
 /**
@@ -41,6 +42,9 @@ export class MarcRichEditorComponent implements OnInit {
 
     @ViewChild('physCharDialog', {static: false})
         physCharDialog: PhysCharDialogComponent;
+
+    @ViewChild('charMapDialog', {static: false})
+        CharMapDialog: CharMapDialogComponent;
 
     constructor(
         private idl: IdlService,
@@ -453,6 +457,12 @@ export class MarcRichEditorComponent implements OnInit {
                 }
             }
         );
+    }
+
+    showCharMap($event) {
+        // prevent S key from being picked up by the modal's keydown listener
+        $event.preventDefault();
+        this.CharMapDialog.open({size: 'xl'}).subscribe();
     }
 
     showHelp(field) {

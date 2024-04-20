@@ -1,0 +1,126 @@
+::ng-deep .modal.show .modal-dialog.modal-xl {
+  max-width: 49rem;
+}
+
+.flex-char-wrap {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  margin: 0.75rem auto 0;
+  max-width: min-content;
+}
+
+.flex-char,
+.flex-char ul {
+  display: flex;
+  flex-wrap: nowrap;
+}
+
+.flex-char ul,
+.flex-char li {
+  margin: 0;
+  padding: 0;
+}
+
+.flex-char h3 {
+  background-color: var(--info);
+  border: 1px solid var(--info);
+  border-radius: 0;
+  color: #fff;
+  display: block;
+  font-size: 1.4rem;
+  font-weight: 600;
+  line-height: 1.5;
+  margin: 2px 1px;
+  padding: 0.05rem 0.25rem;
+  text-align: center;
+  width: 2rem;
+}
+
+.flex-char li .btn-normal {
+  border-radius: 0;
+  font-weight: normal;
+  font-size: 1.4rem;
+  margin: 2px 1px;
+  padding: 0.05rem 0.25rem;
+  position: relative;
+  width: 2rem;
+}
+
+.btn.btn-link {
+  vertical-align: unset;
+}
+
+.btn:focus,
+.btn:focus-visible {
+  outline: 0.25rem solid rgba(13, 110, 253, 0.75);
+  z-index: 1;
+}
+
+h3:focus,
+h3:focus-visible {
+  outline: 0.25rem solid rgba(var(--bs-warning-rgb), 0.75) !important;
+  z-index: 1;
+}
+
+.unicode thead th {
+  text-align: center;
+}
+
+.unicode thead th:first-child {
+  font-style: italic;
+  font-weight: normal;
+}
+
+.unicode th {
+  background-color: var(--info);
+  color: #fff;
+  border: 2px solid #fff;
+}
+
+.unicode.eg-grid tbody th {
+  vertical-align: middle;
+  padding-inline: 0.5rem; 
+  font-weight: 600;
+}
+
+.unicode td .btn-normal {
+  border-radius: 0;
+  font-size: 1.4rem;
+  font-weight: 400;
+  padding: 0.2rem 0.4rem;
+  width: 100%;
+}
+
+.modal-body {
+  position: relative;
+}
+
+#copyAnnouncement {
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 100%;
+  width: 100%;
+  max-height: 95vh;
+  display: grid;
+  place-items: center;
+  background-color: rgba(0,0,0,0.75);
+  color: white;
+  text-shadow: 0 1px 1rem rgba(0,0,0,0.75);
+  z-index: 10;
+}
+
+#copyAnnouncement span {
+  font-size: 2rem;
+  font-weight: bold;
+}
+
+@media screen and (max-width: 480px) {
+  .flex-char-wrap {
+    display: unset;
+  }
+  .flex-char ul {
+    flex-wrap: wrap;
+  }
+}
