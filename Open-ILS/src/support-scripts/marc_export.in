@@ -108,7 +108,8 @@ sub new {
                'uris',
                'debug',
                'pipe',
-               'batch-size=i');
+               'batch-size=i',
+               'check-leader');
 
     if ($opts{help}) {
         print <<"HELP";
@@ -149,6 +150,9 @@ Usage: $0 [options]
                     sometimes speed up the extraction. Finding the
                     best value for your situation requires
                     experimentation.
+--check-leader      Ensure all leaders are exactly 24 characters long
+                    via adding or removing characters to maximize compatability
+                    with other systems.
 
  Additional options for type = 'BIBLIO':
  --items or -i      Include items (holdings) in the output
@@ -629,6 +633,24 @@ sub next {
                     import MARC::File::XML; # Reset SAX Parser.
                     return $self->next();
                 }
+
+                # Set the Leader to 24 characters if needed
+                if (length($marc->leader()) != 24 && $Marque::config->option_value('check-leader')) {
+                    warn("Warning: modifying Leader of record " . $r->id());
+                    # Don't try to be too smart, but if it's over 20 characters we throw out
+                    # everything after that to make sure the last 4 characters are '4500' and
+                    # the indicator count and subfield size ('22') are in the correct place
+                    my $tmplleader = '00000nam a2200000u  4500';
+                    my $fixleader = $marc->leader();
+
+                    if (length($fixleader) > 20) {
+                        $fixleader = substr $fixleader, 0, 20;
+                    }
+                    $fixleader = $fixleader . substr $tmplleader, (length($fixleader) - length($tmplleader));
+                    $fixleader = (substr $fixleader, 0, 10) . '22' . (substr $fixleader, -12);
+                    $marc->leader($fixleader);
+                }
+
                 if ($Marque::config->option_value('replace_001')) {
                     my $tcn = $marc->field('001');
                     if ($tcn) {
@@ -1151,6 +1173,24 @@ sub next {
                 import MARC::File::XML; # Reset SAX Parser.
                 return $self->next();
             }
+
+            # Set the Leader to 24 characters if needed
+            if (length($marc->leader()) != 24 && $Marque::config->option_value('check-leader')) {
+                warn("Warning: Modifying Leader of record " . $r->id());
+                # Don't try to be too smart, but if it's over 20 characters we throw out
+                # everything after that to make sure the last 4 characters are '4500' and
+                # the indicator count and subfield size ('22') are in the correct place
+                my $tmplleader = '00000nz  a2200000o  4500';
+                my $fixleader = $marc->leader();
+
+                if (length($fixleader) > 20) {
+                    $fixleader = substr $fixleader, 0, 20;
+                }
+                $fixleader = $fixleader . substr $tmplleader, (length($fixleader) - length($tmplleader));
+                $fixleader = (substr $fixleader, 0, 10) . '22' . (substr $fixleader, -12);
+                $marc->leader($fixleader);
+            }
+
             if ($Marque::config->option_value('replace_001')) {
                 my $tcn = $marc->field('001');
                 if ($tcn) {
