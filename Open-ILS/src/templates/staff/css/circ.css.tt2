@@ -59,6 +59,8 @@ but the ones I'm finding aren't quite cutting it..*/
 
 .patron-search-container {
   container-type: inline-size;
+  position: relative;
+  z-index: 1;
 }
 
 /* mobile-first layout: flexbox */
