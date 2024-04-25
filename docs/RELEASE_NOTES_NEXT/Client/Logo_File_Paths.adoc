@@ -1,0 +1,13 @@
+== SVG Logos in Staff Client ==
+
+The Evergreen logo images have been updated to the SVG format for clarity and
+improved support for viewing on dark backgrounds (i.e. forced colors mode).
+
+=== Developer Notes ===
+
+Paths to the Evergreen logo files have changed. OPAC customizations that include
+the Evergreen logo should update to the new SVG files:
+
+  * Open-ILS/web/images/evergreen-logo.svg
+  * Open-ILS/web/images/evergreen-logo-white.svg
+  * Open-ILS/web/images/evergreen-round-logo.svg
