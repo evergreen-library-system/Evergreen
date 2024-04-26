@@ -1,0 +1,21 @@
+== Angular Reporter rewrite ==
+
+All existing Reporter interfaces, except for the actual report output, have
+been reimplemented using Angular to match the rest of the staff client.  In
+addition to the updated and improved interfaces, additional functionality is
+now available:
+
+  * Field display order and output sort order are now separated, and can be controlled independently
+  * Nullability has been simplified, presenting the template creator with a choice between INNER join (linked required on both tables) and LEFT join (only the "parent" table is required to have a contributing row)
+  * Staff can see the list of Reports that make use of a Template, and the list of Outputs that are generated from a Report
+  * Where supported by the backend services, all Browse and Search grids used in the report management interfaces are sortable in ways other than by relevant timestamp, and many are now filterable using standard egGrid filters
+
+Significant portions of the UI are inherited from the Simple Reporter
+implementation.  Additionally, many existing UI elements have been enhanced to
+add supporting functionality, and any new functionality is available for use in
+other interfaces.
+
+=== Existing templates ===
+
+Care has been taken to allow existing templates to function properly in the new interface implementation.  However, because the internal structure of the templates have changed, it is possible that some existing templates may need to be recreated.  
+
