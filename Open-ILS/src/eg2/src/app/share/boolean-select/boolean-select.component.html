@@ -9,6 +9,7 @@
     [required]="required"
     [disabled]="disabled"
     [id]="name + '-' + option.value"
+    [attr.aria-describedby]="idPrefix + '-' + name + '-help'"
   />
   <label [for]="name + '-' + option.value">{{ option.label }}</label>
 </div>

@@ -171,9 +171,7 @@
                 </ng-container>
 
                 <ng-container *ngSwitchCase="'bool'">
-                  <input
-                    class="form-check"
-                    type="checkbox"
+                  <eg-bool-select
                     name="{{field.name}}"
                     id="{{idPrefix}}-{{field.name}}"
                     [attr.aria-describedby]="field.helpText ? idPrefix+'-'+field.name+'-help' : null"
