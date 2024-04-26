@@ -1,3 +1,13 @@
 label {
   margin-left: 8px;
 }
+
+/* Style for required field indication
+.required label {
+  color: red;
+}
+*/
+
+.required input {
+  outline: 1px solid red; /* Adds a red outline around the radio button */
+}

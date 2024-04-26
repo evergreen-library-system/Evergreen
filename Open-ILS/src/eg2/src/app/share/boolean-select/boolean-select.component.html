@@ -1,4 +1,4 @@
-<div *ngFor="let option of options; let i = index">
+<div *ngFor="let option of options; let i = index" [ngClass]="{'required': required}">
   <input
     type="radio"
     [name]="name"
@@ -9,6 +9,7 @@
     [required]="required"
     [disabled]="disabled"
     [id]="name + '-' + option.value"
+    [attr.aria-required]="required ? 'true' : 'false'"
     [attr.aria-describedby]="idPrefix + '-' + name + '-help'"
   />
   <label [for]="name + '-' + option.value">{{ option.label }}</label>

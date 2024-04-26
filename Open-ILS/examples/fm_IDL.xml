@@ -2134,7 +2134,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 		<fields oils_persist:primary="id" oils_persist:sequence="config.circ_matrix_matchpoint_id_seq">
 			<field reporter:label="Matchpoint ID" name="id" reporter:datatype="id"/>
 			<field reporter:label="Renewal?" name="is_renewal" reporter:datatype="bool"/>
-			<field reporter:label="Active?" name="active" reporter:datatype="bool"/>
+			<field reporter:label="Active?" name="active" reporter:datatype="bool" oils_obj:required="true"/>
 			<field reporter:label="Checkout Library" name="org_unit" reporter:datatype="org_unit" oils_obj:required="true"/>
 			<field reporter:label="Item Circ Library" name="copy_circ_lib" reporter:datatype="org_unit"/>
 			<field reporter:label="Item Owning Library" name="copy_owning_lib" reporter:datatype="org_unit"/>
