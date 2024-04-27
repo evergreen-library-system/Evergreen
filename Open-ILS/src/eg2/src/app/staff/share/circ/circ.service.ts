@@ -730,7 +730,7 @@ export class CircService {
                                             'suppress_mvr' : true,
                                             'include_usr' : true
                                         }).toPromise().then(details => {
-                                        //console.log('details', details);
+                                        // console.log('details', details);
                                         const entry: WorkLogEntry = {
                                             'action' : 'canceled_hold',
                                             'hold_id' : holdId,

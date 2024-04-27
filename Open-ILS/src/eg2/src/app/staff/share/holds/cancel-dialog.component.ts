@@ -107,7 +107,7 @@ export class HoldCancelDialogComponent
                     'include_usr': true
                 }).toPromise();
 
-            //console.log('details', details);
+            // console.log('details', details);
             const entry: WorkLogEntry = {
                 'action': 'canceled_hold',
                 'hold_id': holdId,
