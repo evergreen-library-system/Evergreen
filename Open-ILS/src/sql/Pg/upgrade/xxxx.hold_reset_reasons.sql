@@ -4,38 +4,20 @@ SELECT evergreen.upgrade_deps_block_check('XXXX', :eg_version);
 
 
 CREATE TABLE action.hold_request_reset_reason (
-    id serial NOT NULL,
+    id SERIAL NOT NULL PRIMARY KEY,
     manual BOOLEAN,
-    name TEXT,
-    CONSTRAINT hold_request_reset_reason_pkey PRIMARY KEY (id),
-    CONSTRAINT hold_request_reset_reason_name_key UNIQUE (name)
+    name TEXT UNIQUE
 );
 
 CREATE TABLE action.hold_request_reset_reason_entry (
-    id serial NOT NULL,
-    hold int,
-    reset_reason int,
-    note text,
-    reset_time timestamp with time zone,
-    previous_copy bigint,
-    requestor int,
-    requestor_workstation int,
-    CONSTRAINT hold_request_reset_reason_entry_pkey PRIMARY KEY (id),
-    CONSTRAINT action_hold_request_reset_reason_entry_reason_fkey FOREIGN KEY (reset_reason)
-        REFERENCES action.hold_request_reset_reason (id) MATCH SIMPLE
-        ON UPDATE NO ACTION ON DELETE NO ACTION DEFERRABLE INITIALLY DEFERRED,
-    CONSTRAINT action_hold_request_reset_reason_entry_previous_copy_fkey FOREIGN KEY (previous_copy)
-        REFERENCES asset.copy (id) MATCH SIMPLE
-        ON UPDATE NO ACTION ON DELETE NO ACTION DEFERRABLE INITIALLY DEFERRED,
-    CONSTRAINT action_hold_request_reset_reason_entry_requestor_fkey FOREIGN KEY (requestor)
-        REFERENCES actor.usr (id) MATCH SIMPLE
-        ON UPDATE NO ACTION ON DELETE NO ACTION DEFERRABLE INITIALLY DEFERRED,
-    CONSTRAINT action_hold_request_reset_reason_entry_req_workstation_fkey FOREIGN KEY (requestor_workstation)
-        REFERENCES actor.workstation (id) MATCH SIMPLE
-        ON UPDATE NO ACTION ON DELETE NO ACTION DEFERRABLE INITIALLY DEFERRED,
-    CONSTRAINT action_hold_request_reset_reason_entry_hold_fkey FOREIGN KEY (hold)
-        REFERENCES action.hold_request (id) MATCH SIMPLE
-        ON UPDATE NO ACTION ON DELETE NO ACTION DEFERRABLE INITIALLY DEFERRED
+    id SERIAL NOT NULL PRIMARY KEY,
+    hold INT REFERENCES action.hold_request (id) DEFERRABLE INITIALLY DEFERRED,
+    reset_reason INT REFERENCES action.hold_request_reset_reason (id) DEFERRABLE INITIALLY DEFERRED,
+    note TEXT,
+    reset_time TIMESTAMP WITH TIME ZONE,
+    previous_copy BIGINT REFERENCES asset.copy (id) DEFERRABLE INITIALLY DEFERRED,
+    requestor INT REFERENCES actor.usr (id) DEFERRABLE INITIALLY DEFERRED,
+    requestor_workstation INT REFERENCES actor.workstation (id) DEFERRABLE INITIALLY DEFERRED
 );
 
 CREATE INDEX ahrrre_hold_idx ON action.hold_request_reset_reason_entry (hold);
