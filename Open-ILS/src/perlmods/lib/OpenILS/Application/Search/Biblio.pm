@@ -1089,6 +1089,15 @@ sub the_quest_for_knowledge {
 
 
 __PACKAGE__->register_method(
+    method    => 'staff_location_groups_with_lassos',
+    api_name  => 'open-ils.search.staff.location_groups_with_lassos',
+);
+sub staff_location_groups_with_lassos {
+    my $flag = new_editor()->retrieve_config_global_flag('staff.search.shelving_location_groups_with_lassos');
+    return $flag ? $flag->enabled eq 't' : 0;
+}
+
+__PACKAGE__->register_method(
     method    => 'staged_search',
     api_name  => 'open-ils.search.biblio.multiclass.staged',
     signature => {

@@ -19,6 +19,7 @@ export class CatalogService {
     copyLocations: IdlObject[];
     copyLocationGroups: IdlObject[];
     libraryGroups: IdlObject[];
+    combineLibraryAndLocationGroups: boolean;
 
     // Keep a reference to the most recently retrieved facet data,
     // since facet data is consistent across a given search.
@@ -38,6 +39,11 @@ export class CatalogService {
         private bibService: BibRecordService,
         private basket: BasketService
     ) {
+        this.net.request(
+            'open-ils.search',
+            'open-ils.search.staff.location_groups_with_lassos'
+        ).toPromise().then(combine => this.combineLibraryAndLocationGroups = !!combine);
+
         this.onSearchComplete = new EventEmitter<CatalogSearchContext>();
 
     }

@@ -472,24 +472,27 @@
           [placeholder]="'Library'" i18n-placeholder
           ariaLabel="Library" i18n-ariaLabel>
         </eg-org-select>
-        
-        <label i18n class="form-label select-label mt-3" for="locationGroupOrLasso-selector">Library Group or Shelving Location Group</label>
-        <select class="form-control"
-            id="locationGroupOrLasso-selector"
-            name="locationGroupOrLasso"
-            [(ngModel)]="context.termSearch.locationGroupOrLasso"
-            [disabled]="!lassoAndLocationGroupsAllowed() || this.context.termSearch.copyLocations[0] !== ''">
-          <option *ngIf="context.termSearch.locationGroupOrLasso" value="" i18n>No Group Restriction</option>
-          <optgroup *ngIf="libraryGroups.length > 0" i18n-label label="Library Groups">
-            <option *ngFor="let lasso of libraryGroups" value="lasso({{lasso.id()}})">{{lasso.name()}}</option>
-          </optgroup>
-          <optgroup *ngIf="copyLocationGroups.length > 0" i18n-label label="Shelving Location Groups">
-            <option *ngFor="let grp of copyLocationGroups" value="location_groups({{grp.id()}})">{{grp.name()}}</option>
-          </optgroup>
-        </select>
-        <p *ngIf="this.context.termSearch.copyLocations[0] !== ''" class="form-text mx-1 my-0">
-          <i i18n>Clear the individual Shelving Location selections in the advanced search filters to search by Library Group or Shelving Location Group</i>
-        </p>
+        <ng-container *ngIf="libraryGroups.length || (copyLocationGroups.length && combineLibraryAndLocationGroups)">
+          <label i18n class="form-label select-label mt-3" for="locationGroupOrLasso-selector">
+              Library Group {{ combineLibraryAndLocationGroups ? 'or Shelving Location Group' : ''}}
+          </label>
+          <select class="form-control"
+              id="locationGroupOrLasso-selector"
+              name="locationGroupOrLasso"
+              [(ngModel)]="context.termSearch.locationGroupOrLasso"
+              [disabled]="!lassoAndLocationGroupsAllowed() || context.termSearch.copyLocations[0] !== ''">
+            <option *ngIf="context.termSearch.locationGroupOrLasso" value="" i18n>No Group Restriction</option>
+            <optgroup *ngIf="libraryGroups.length > 0" i18n-label label="Library Groups">
+              <option *ngFor="let lasso of libraryGroups" value="lasso({{lasso.id()}})">{{lasso.name()}}</option>
+            </optgroup>
+            <optgroup *ngIf="combineLibraryAndLocationGroups && copyLocationGroups.length > 0" i18n-label label="Shelving Location Groups">
+              <option *ngFor="let grp of copyLocationGroups" value="location_groups({{grp.id()}})">{{grp.name()}}</option>
+            </optgroup>
+          </select>
+          <p *ngIf="combineLibraryAndLocationGroups && context.termSearch.copyLocations[0] !== ''" class="form-text mx-1 my-0">
+            <i i18n>Clear the individual Shelving Location selections in the advanced search filters to search by Library Group or Shelving Location Group</i>
+          </p>
+        </ng-container>
       </div>
     
       <div class="col-lg-3 pt-1">

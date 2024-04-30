@@ -21966,6 +21966,17 @@ VALUES (
     )
 );
 
+INSERT INTO config.global_flag (name, enabled, label)
+    VALUES (
+        'staff.search.shelving_location_groups_with_lassos', TRUE,
+        oils_i18n_gettext(
+            'staff.search.shelving_location_groups_with_lassos',
+            'Staff Catalog Search: Display shelving location groups with library groups',
+            'cgf',
+            'label'
+        )
+);
+
 INSERT INTO config.internal_flag (name, value, enabled) VALUES ('symspell.prefix_length', '6', TRUE);
 INSERT INTO config.internal_flag (name, value, enabled) VALUES ('symspell.max_edit_distance', '3', TRUE);
 

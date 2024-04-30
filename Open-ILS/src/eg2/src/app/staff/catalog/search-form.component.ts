@@ -37,6 +37,7 @@ export class SearchFormComponent implements OnInit, AfterViewInit {
     copyLocations: IdlObject[];
     copyLocationGroups: IdlObject[];
     searchTab: string;
+    combineLibraryAndLocationGroups: boolean;
 
     refreshingLibraryGroups: boolean = false;
     refreshingCopyLocationGroups: boolean = false;
@@ -70,6 +71,7 @@ export class SearchFormComponent implements OnInit, AfterViewInit {
         this.ccvmMap = this.cat.ccvmMap;
         this.cmfMap = this.cat.cmfMap;
         this.context = this.staffCat.searchContext;
+        this.combineLibraryAndLocationGroups = this.cat.combineLibraryAndLocationGroups
 
         // Start with advanced search options open
         // if any filters are active.
