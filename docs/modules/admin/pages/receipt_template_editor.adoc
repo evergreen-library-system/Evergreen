@@ -59,11 +59,11 @@ To edit a Receipt:
   Printer Settings can be set at *Administration -> Workstation -> Printer
   Settings*.
 +    
-image::media/receipt1.png[select checkout]
+image::receipt_template_editor/receipt1.png[select checkout]
 +
 . Make edits to the Receipt on the right hand side.
 +    
-image::media/receipt2.png[receipt screen]
+image::receipt_template_editor/receipt2.png[receipt screen]
 +
 . Click out of the section you are editing to see what your changes will look
   right on the Left hand side. 

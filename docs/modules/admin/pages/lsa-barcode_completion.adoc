@@ -34,29 +34,29 @@ descendants of that org unit.
 The admin interface for Barcode Completion is located under *Administration* 
 -> *Local Administration* -> *Barcode Completion*.
 
-image::media/lsa-barcode_completion_admin.png[Barcode Completion Admin List]
+image::barcode_completion/lsa-barcode_completion_admin.png[Barcode Completion Admin List]
 
 The barcode completion functionality is available at the following interfaces.
 
 === Check Out Step 1: Lookup Patron by Barcode ===
 
-image::media/Barcode_Checkout_Patron_Barcode.png[Patron Barcode Lookup for Checking Out]
+image::barcode_completion/Barcode_Checkout_Patron_Barcode.png[Patron Barcode Lookup for Checking Out]
 
 === Check Out Step 2: Scanning Item Barcodes ===
 
-image::media/Barcode_Checkout_Item_Barcode.png[Item Barcode at Check Out]
+image::barcode_completion/Barcode_Checkout_Item_Barcode.png[Item Barcode at Check Out]
 
 === Staff Client Place Hold from Catalog ===
 
-image::media/Barcode_OPAC_Staff_Place_Hold.png[Patron Barcode Lookup for Staff Placing Hold]
+image::barcode_completion/Barcode_OPAC_Staff_Place_Hold.png[Patron Barcode Lookup for Staff Placing Hold]
  
 === Check In ===
 
-image::media/Barcode_Check_In.png[Item Barcode at Check In]
+image::barcode_completion/Barcode_Check_In.png[Item Barcode at Check In]
 
 === Item Status ===
 
-image::media/Barcode_Item_Status.png[Item Barcode at Item Status screen]
+image::barcode_completion/Barcode_Item_Status.png[Item Barcode at Item Status screen]
 
 
 NOTE: Barcode completion is also available during check out if library
@@ -75,7 +75,7 @@ as valid barcodes, you will receive a list of all the barcodes that match all
 the rules that you have configured.  It doesn't stop after the first rule 
 that matches, or after the first valid barcode is found.
 
-image::media/lsa-barcode_completion_multiple.png[Barcode Completion Multiple Matches]
+image::barcode_completion/lsa-barcode_completion_multiple.png[Barcode Completion Multiple Matches]
 
 == Barcode Completion Data Fields ==
 
