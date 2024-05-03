@@ -94,7 +94,7 @@ indexterm:[acquisitions,claiming]
 
 The Claiming interface enables you to create claim policies and specify the action(s) that users should take to claim items.  Claim policies can be associated with a particular vendor or lineitems on a PO.  When items are eligible for claiming, they will appear in _Acquisitions -> Claim Ready Items_. Currently, all claiming is manual and users will need to take an action based on the claim policy. 
 
-image::media/claiming1.PNG[Claiming]
+image::acq_funds/claiming1.PNG[Claiming]
 
 [[acq_claim_policy]]
 === Create a claim policy ===
@@ -173,7 +173,7 @@ indexterm:[acquisitions,currency types]
 
 Currency types can be created to represent the various currencies a library may use for purchasing and acquisitions.  Currency types are applied to funds in the administrative module (Administration -> Acquisitions Administration -> Fund Administration -> Funds). When a fund is applied to a copy or line item for purchase, the item will be purchased in the currency associated with that fund.
 
-image::media/currency1.PNG[Currencies and Exchange Rates]
+image::acq_funds/currency1.PNG[Currencies and Exchange Rates]
 
 
 === Create a currency type ===
@@ -186,7 +186,7 @@ image::media/currency1.PNG[Currencies and Exchange Rates]
 
 . Click _Save_.
 
-image::media/currency2.PNG[Create a New Currency Type]
+image::acq_funds/currency2.PNG[Create a New Currency Type]
 
 
 === Edit a currency type ===
@@ -215,7 +215,7 @@ automatically calculate exchange rates for purchases.
 
 . Click _Save_.
 
-image::media/currency3.PNG[Create a New Exchange Rate]
+image::acq_funds/currency3.PNG[Create a New Exchange Rate]
 
 Evergreen assumes that the currency of the purchasing fund is identical to the currency of the provider, but it provides for two unique situations: 
 . If the currency of the fund that is used for the purchase is different from the currency of the provider as listed in the provider profile, then Evergreen will use the exchange rate to calculate the price of the item in the currency of the fund and debit the fund accordingly. 
@@ -262,7 +262,7 @@ needed.
 
 . Click _Save_ when the distribution formula is complete. 
 
-image::media/distformula1.PNG[Create a New Distribution Formula]
+image::acq_funds/distformula1.PNG[Create a New Distribution Formula]
 
 The Distribution Formula may now be applied to lineitems on a Purchase Order to streamline the ordering process.
 
@@ -304,7 +304,7 @@ top organization unit.
 . Enter your library's SAN in the field labeled _SAN_.
 . Click _Save_.
 
-image::media/library_san_angular.png[Enter Library SAN]
+image::acq_funds/library_san_angular.png[Enter Library SAN]
 
 
 ==== Entering a Provider's SAN ====
@@ -314,12 +314,12 @@ These steps need to be repeated for every provider with which EDI is used.
 . In Evergreen select _Administration_ -> _Acquisitions Administration_ -> _Providers_.
 . Double click in the grid line of the provider you would like to edit.
 +
-image::media/provider_san_ang_1.png[Enter Provider SAN]
+image::acq_funds/provider_san_ang_1.png[Enter Provider SAN]
 
 . Scroll down to see the field labeled _SAN_ and enter your provider's SAN.
 . Click _Save_.
 +
-image::media/provider_san_ang_2.png[Enter Provider SAN]
+image::acq_funds/provider_san_ang_2.png[Enter Provider SAN]
 
 === Create an EDI Account ===
 
@@ -585,7 +585,7 @@ Credits can be applied to funds from funding sources. The credits that you apply
 . Click _Save_.
 . The amount specified will be moved from the Funding Source to the Fund and you will see this reflected in the Allocation Total in the Fund Details Summary tab and in the Allocations tab.
 
-image::acq_funds/allocate_to_fund_ang.png[Allocate to Fund]
+image::media/allocate_to_fund_ang.png[Allocate to Fund]
 
 ==== Transfer money between funds ====
 
