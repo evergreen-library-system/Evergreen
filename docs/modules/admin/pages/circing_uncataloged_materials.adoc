@@ -63,7 +63,7 @@ back-issues, but not wish to catalog them.
   not affect how these materials circulate.
 . Click the _Create_ button when you are done.
 
-image::media/noncataloged_type_add.png[]
+image::circ_uncats/noncataloged_type_add.png[]
 
 === Deleting a non-cataloged type ===
 

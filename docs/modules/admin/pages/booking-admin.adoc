@@ -19,7 +19,7 @@ You need to create resource types and resource attributes (features of the resou
 
 1) Select Administration -> Booking Administration -> Resource Types.
 
-image::media/booking-create-resourcetype_webclient-1.png[]
+image::booking/booking-create-resourcetype_webclient-1.png[]
 
 2) A list of current resource types will appear (if any).
 
@@ -179,7 +179,7 @@ A resource may have multiple attributes and values. Repeat the above steps to ma
 
 Once all attributes have been mapped your resource will be part of a hierarchy similar to the example below.
 
-image::media/booking-create-bookable-6.png[]
+image::booking/booking-create-bookable-6.png[]
 
 
 == Editing Non-Bibliographic Resources ==

@@ -18,7 +18,7 @@ To configure call number prefixes:
 
 
 
-image::media/Call_Number_Prefixes_and_Suffixes_2_21.jpg[Call_Number_Prefixes_and_Suffixes_2_21]
+image::cn_prefix_suffix/Call_Number_Prefixes_and_Suffixes_2_21.jpg[Call_Number_Prefixes_and_Suffixes_2_21]
 
 
 
@@ -35,7 +35,7 @@ To configure call number suffixes:
 5. Click *Save*.
 
 
-image::media/Call_Number_Prefixes_and_Suffixes_2_22.jpg[Call_Number_Prefixes_and_Suffixes_2_22]
+image::cn_prefix_suffix/Call_Number_Prefixes_and_Suffixes_2_22.jpg[Call_Number_Prefixes_and_Suffixes_2_22]
 
 
 == Apply Call Number Prefixes and Suffixes ==
