@@ -447,7 +447,7 @@ indexterm:[acquisitions,funds]
 
 Fund Administration provides a unified interface for configuring your funding sources, purchasing funds, and optional fund tags. To access Fund Administration, go to _Administration -> Acquisitions Administration -> Fund Administration_. This interface has three tabs: Funds, Funding Sources, and Fund Tags. Negative numbers in these interfaces are styled in red.
 
-image::media/funds1.PNG[Fund Administration]
+image::acq_funds/funds1.PNG[Fund Administration]
 
 === Funding Sources ===
 
@@ -486,7 +486,7 @@ To apply a credit to a funding source:
 . Enter an Effective Date and a Deadline Date for the credit.
 . Click _Save_ to apply the credit amount to the funding source.
 
-image::media/allocate_credit_ang.png[Allocate Credits to Funding Source]
+image::acq_funds/allocate_credit_ang.png[Allocate Credits to Funding Source]
 
 ==== Allocate credits to funds ====
 
@@ -510,11 +510,11 @@ To Access the Funding Source Details:
 . Either option will bring you to the Funding Source Details screen where you can select the Credits tab or Allocations tab to view a list of transactions.
 * View Credits
 +
-image::media/view_credits_ang.png[View Credits]
+image::acq_funds/view_credits_ang.png[View Credits]
 +
 * View Allocations
 +
-image::media/view_allocations_ang.png[View Allocations]
+image::acq_funds/view_allocations_ang.png[View Allocations]
 +
 
 
@@ -554,7 +554,7 @@ To create a new Fund:
 .. The balance warning percent gives you a warning that the fund is low. You can specify any percent. For example, if you want to spend 90 percent of your funds and be warned when the fund has only 10 percent of its balance remaining, then enter 90 in the field. When the fund reaches its balance warning percent, it will appear in yellow when you apply funds to copies.
 .  Click _Save_.
 
-image::media/funds2.PNG[Create a New Fund]
+image::acq_funds/funds2.PNG[Create a New Fund]
 
 ==== Track balances and expenditures ====
 
@@ -570,7 +570,7 @@ The Summary allows you to track the following:
 * Spent Total - The total spent is calculated by adding the cost of items that have been invoiced. It does not include encumbrances.
 *Encumbrance Total - The total encumbered is calculated by adding all encumbrances.
 
-image::media/funds3.PNG[Fund Details Summary]
+image::acq_funds/funds3.PNG[Fund Details Summary]
 
 From this interface, you can also Transfer Money between Funds and Create an Allocation to a Fund from a Funding Source.
 
@@ -585,7 +585,7 @@ Credits can be applied to funds from funding sources. The credits that you apply
 . Click _Save_.
 . The amount specified will be moved from the Funding Source to the Fund and you will see this reflected in the Allocation Total in the Fund Details Summary tab and in the Allocations tab.
 
-image::media/allocate_to_fund_ang.png[Allocate to Fund]
+image::acq_funds/allocate_to_fund_ang.png[Allocate to Fund]
 
 ==== Transfer money between funds ====
 
