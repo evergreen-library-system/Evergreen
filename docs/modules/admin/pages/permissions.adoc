@@ -20,7 +20,7 @@ New staff accounts are created in much the same way as patron accounts, using
 _Circulation -> Register Patron_ or *Shift+F1*. Select one of the staff
 profiles from the _Profile Group_ drop-down menu.
 
-image::media/permissions_1a.png[Permission Group dropdown in patron account]
+image::permissions/permissions_1a.png[Permission Group dropdown in patron account]
 
 Each new staff account must be assigned a _Working Location_ which determines
 its access level in staff client interfaces.
@@ -29,7 +29,7 @@ its access level in staff client interfaces.
 (retrieve patron) or *F4* (patron search).
 . Select _Other -> User Permission Editor_
 +
-image::media/permissions_1.png[Click User Permission Editor in the Patron's Other menu]
+image::permissions/permissions_1.png[Click User Permission Editor in the Patron's Other menu]
 +
 . Place a check in the box next to the desired working location, then scroll to
 the bottom of the display and click _Save_.
@@ -62,7 +62,7 @@ Editor_
 permissions cannot be edited because they are either a) already granted to the 
 account, or b) not available to any staff account, including LSAs.
 +
-image::media/profile-5.png[profile-5]
+image::permissions/profile-5.png[profile-5]
 +
 1) List of permission names.
 +
@@ -77,11 +77,11 @@ other accounts (not recommended).
 . To allow processing of offline transactions check the Applied column next to
 _OFFLINE_EXECUTE_.
 +
-image::media/profile-6.png[profile-6]
+image::permissions/profile-6.png[profile-6]
 +
 . Scroll down and click Save to apply the changes.
 +
-image::media/profile-7.png[profile-7]
+image::permissions/profile-7.png[profile-7]
 
 
 

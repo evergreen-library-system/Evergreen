@@ -66,7 +66,7 @@ wish for this status to set the active date for new items.
 . Click _Save Changes_ at the bottom of the screen to save changes to the new
 status.
 
-image::media/copy_status_add.png[Adding item statuses]
+image::copy_status/copy_status_add.png[Adding item statuses]
 
 == Deleting Item Statuses ==
 
@@ -75,7 +75,7 @@ status.
 . Click _Delete Selected_.
 . Click _OK_ to verify.
 
-image::media/copy_status_delete.png[Deleting item statuses]
+image::copy_status/copy_status_delete.png[Deleting item statuses]
 
 [NOTE]
 You will not be able to delete statuses if items currently exist with that
@@ -90,4 +90,4 @@ item's active date, check or uncheck the relevant checkbox.
 
 . Once you have finished editing the statuses, remember to click Save Changes.
 
-image::media/copy_status_edit.png[Editing item statuses]
+image::copy_status/copy_status_edit.png[Editing item statuses]

@@ -94,7 +94,7 @@ indexterm:[acquisitions,claiming]
 
 The Claiming interface enables you to create claim policies and specify the action(s) that users should take to claim items.  Claim policies can be associated with a particular vendor or lineitems on a PO.  When items are eligible for claiming, they will appear in _Acquisitions -> Claim Ready Items_. Currently, all claiming is manual and users will need to take an action based on the claim policy. 
 
-image::media/claiming1.PNG[Claiming]
+image::acq_funds/claiming1.PNG[Claiming]
 
 [[acq_claim_policy]]
 === Create a claim policy ===
@@ -173,7 +173,7 @@ indexterm:[acquisitions,currency types]
 
 Currency types can be created to represent the various currencies a library may use for purchasing and acquisitions.  Currency types are applied to funds in the administrative module (Administration -> Acquisitions Administration -> Fund Administration -> Funds). When a fund is applied to a copy or line item for purchase, the item will be purchased in the currency associated with that fund.
 
-image::media/currency1.PNG[Currencies and Exchange Rates]
+image::acq_funds/currency1.PNG[Currencies and Exchange Rates]
 
 
 === Create a currency type ===
@@ -186,7 +186,7 @@ image::media/currency1.PNG[Currencies and Exchange Rates]
 
 . Click _Save_.
 
-image::media/currency2.PNG[Create a New Currency Type]
+image::acq_funds/currency2.PNG[Create a New Currency Type]
 
 
 === Edit a currency type ===
@@ -215,7 +215,7 @@ automatically calculate exchange rates for purchases.
 
 . Click _Save_.
 
-image::media/currency3.PNG[Create a New Exchange Rate]
+image::acq_funds/currency3.PNG[Create a New Exchange Rate]
 
 Evergreen assumes that the currency of the purchasing fund is identical to the currency of the provider, but it provides for two unique situations: 
 . If the currency of the fund that is used for the purchase is different from the currency of the provider as listed in the provider profile, then Evergreen will use the exchange rate to calculate the price of the item in the currency of the fund and debit the fund accordingly. 
@@ -262,7 +262,7 @@ needed.
 
 . Click _Save_ when the distribution formula is complete. 
 
-image::media/distformula1.PNG[Create a New Distribution Formula]
+image::acq_funds/distformula1.PNG[Create a New Distribution Formula]
 
 The Distribution Formula may now be applied to lineitems on a Purchase Order to streamline the ordering process.
 
@@ -304,7 +304,7 @@ top organization unit.
 . Enter your library's SAN in the field labeled _SAN_.
 . Click _Save_.
 
-image::media/library_san_angular.png[Enter Library SAN]
+image::acq_funds/library_san_angular.png[Enter Library SAN]
 
 
 ==== Entering a Provider's SAN ====
@@ -314,12 +314,12 @@ These steps need to be repeated for every provider with which EDI is used.
 . In Evergreen select _Administration_ -> _Acquisitions Administration_ -> _Providers_.
 . Double click in the grid line of the provider you would like to edit.
 +
-image::media/provider_san_ang_1.png[Enter Provider SAN]
+image::acq_funds/provider_san_ang_1.png[Enter Provider SAN]
 
 . Scroll down to see the field labeled _SAN_ and enter your provider's SAN.
 . Click _Save_.
 +
-image::media/provider_san_ang_2.png[Enter Provider SAN]
+image::acq_funds/provider_san_ang_2.png[Enter Provider SAN]
 
 === Create an EDI Account ===
 
@@ -337,7 +337,7 @@ CAUTION: You *must* create your provider before you create an EDI account for th
 . In Evergreen select _Administration_ -> _Acquisitions Administration_ -> _EDI Accounts_.
 . Click _New EDI Account_. A pop-up will appear.
 +
-image::media/new_edi_account_ang.png[Create EDI Account]
+image::acq_funds/new_edi_account_ang.png[Create EDI Account]
 
 . Fill in the following fields:
 * In the _Label_ field, enter a name for the EDI account. This field is required.
@@ -370,7 +370,7 @@ it contains files that the vendor is sending to Evergreen.  However,
 from Evergreen's perspective, these files are incoming.
 +
 * If your Provider requires the use of an Attributes set, check the box next to _Use EDI Attributes_ and select the correct Attributes set from the _EDI Attributes Set_ dropdown. 
-image::media/new_edi_account_ang_2.png[Create EDI Account]
+image::acq_funds/new_edi_account_ang_2.png[Create EDI Account]
  
 . Click _Save_.
 
@@ -392,7 +392,7 @@ These stock EDI Attribute Sets can be modified depending on EDI configuration ne
 
 EDI Attribute Sets are linked to EDI Accounts in _Administration -> Acquisitions Administration -> EDI Accounts_.
 
-image::media/edi_attribute_sets_ang.png[EDI Attribute Sets]
+image::acq_funds/edi_attribute_sets_ang.png[EDI Attribute Sets]
 
 ==== View or modify existing EDI Attribute Set configuration ====
 
@@ -447,7 +447,7 @@ indexterm:[acquisitions,funds]
 
 Fund Administration provides a unified interface for configuring your funding sources, purchasing funds, and optional fund tags. To access Fund Administration, go to _Administration -> Acquisitions Administration -> Fund Administration_. This interface has three tabs: Funds, Funding Sources, and Fund Tags. Negative numbers in these interfaces are styled in red.
 
-image::media/funds1.PNG[Fund Administration]
+image::acq_funds/funds1.PNG[Fund Administration]
 
 === Funding Sources ===
 
@@ -486,7 +486,7 @@ To apply a credit to a funding source:
 . Enter an Effective Date and a Deadline Date for the credit.
 . Click _Save_ to apply the credit amount to the funding source.
 
-image::media/allocate_credit_ang.png[Allocate Credits to Funding Source]
+image::acq_funds/allocate_credit_ang.png[Allocate Credits to Funding Source]
 
 ==== Allocate credits to funds ====
 
@@ -498,7 +498,7 @@ If you have already set up your funds, you can allocate money from a funding sou
 . Enter a Note. This field is optional.
 . Click _Save_.
 
-image::media/allocate_credit_funds_ang.png[Allocate Credits to Funds]
+image::acq_funds/allocate_credit_funds_ang.png[Allocate Credits to Funds]
 
 ==== Track debits and credits ====
 
@@ -510,11 +510,11 @@ To Access the Funding Source Details:
 . Either option will bring you to the Funding Source Details screen where you can select the Credits tab or Allocations tab to view a list of transactions.
 * View Credits
 +
-image::media/view_credits_ang.png[View Credits]
+image::acq_funds/view_credits_ang.png[View Credits]
 +
 * View Allocations
 +
-image::media/view_allocations_ang.png[View Allocations]
+image::acq_funds/view_allocations_ang.png[View Allocations]
 +
 
 
@@ -554,7 +554,7 @@ To create a new Fund:
 .. The balance warning percent gives you a warning that the fund is low. You can specify any percent. For example, if you want to spend 90 percent of your funds and be warned when the fund has only 10 percent of its balance remaining, then enter 90 in the field. When the fund reaches its balance warning percent, it will appear in yellow when you apply funds to copies.
 .  Click _Save_.
 
-image::media/funds2.PNG[Create a New Fund]
+image::acq_funds/funds2.PNG[Create a New Fund]
 
 ==== Track balances and expenditures ====
 
@@ -570,7 +570,7 @@ The Summary allows you to track the following:
 * Spent Total - The total spent is calculated by adding the cost of items that have been invoiced. It does not include encumbrances.
 *Encumbrance Total - The total encumbered is calculated by adding all encumbrances.
 
-image::media/funds3.PNG[Fund Details Summary]
+image::acq_funds/funds3.PNG[Fund Details Summary]
 
 From this interface, you can also Transfer Money between Funds and Create an Allocation to a Fund from a Funding Source.
 
@@ -585,7 +585,7 @@ Credits can be applied to funds from funding sources. The credits that you apply
 . Click _Save_.
 . The amount specified will be moved from the Funding Source to the Fund and you will see this reflected in the Allocation Total in the Fund Details Summary tab and in the Allocations tab.
 
-image::media/allocate_to_fund_ang.png[Allocate to Fund]
+image::acq_funds/allocate_to_fund_ang.png[Allocate to Fund]
 
 ==== Transfer money between funds ====
 
@@ -598,7 +598,7 @@ The money that you allocate to funds can be transferred between funds if desired
 . Click _Transfer_.
 . The amount specified will be moved between the Funds and you will see this reflected in the Allocation Total in the Fund Details Summary tab and in the Transfers tab.
 
-image::media/transfer_funds_ang.png[Transfer Funds]
+image::acq_funds/transfer_funds_ang.png[Transfer Funds]
 
 NOTE: If the source fund has allocations from multiple funding sources, the fund transfer function will sometimes split the transfer allocation between the funding sources.
 
@@ -606,7 +606,7 @@ NOTE: If the source fund has allocations from multiple funding sources, the fund
 
 The Fiscal Propagation and Rollover operation allows you to deactivate funds for the current year and create analogous funds for the next year. It transfers encumbrances to the analogous funds, and it rolls over any remaining funds if you checked the rollover box when creating the fund.
 
-image::media/propagate_rollover_ang.png[Propagate and Rollover]
+image::acq_funds/propagate_rollover_ang.png[Propagate and Rollover]
 
 To perform the year end closeout of funds:
 
@@ -626,7 +626,7 @@ To perform the year end closeout of funds:
 . Click _Process_.
 . Evergreen will begin the propagation process. Evergreen will make a clone of each fund, but it will increment the year by 1.
 
-image::media/acq_fy_closeout.png[Fiscal Year Closeout]
+image::acq_funds/acq_fy_closeout.png[Fiscal Year Closeout]
 
 
 === Fund Tags ===
@@ -644,7 +644,7 @@ To create a fund tag:
 . Select a Fund Tag Owner from the drop-down menu. The owner indicates the organizational unit(s) whose staff can use this fund tag. This menu is populated with the Short (Policy) Name codes that you created for your libraries in the organizational units tree (See Administration->Server Administration->Organizational Units).
 . Click _Save_.
 
-image::media/fund_tags_ang_1.png[Create a Fund Tag]
+image::acq_funds/fund_tags_ang_1.png[Create a Fund Tag]
 
 ==== Add a Fund Tag to a Fund ====
 
@@ -659,7 +659,7 @@ To add a fund tag to a specific fund:
 . To remove a tag, click the trash can icon next to the tag. You will see a toast in the lower right corner of the screen confirming that the tag has been removed.
 . Click _Close_.
 
-image::media/fund_tags_ang_2.png[Apply Tag to Fund]
+image::acq_funds/fund_tags_ang_2.png[Apply Tag to Fund]
 
 === Fund Reporting ===
 
@@ -771,7 +771,7 @@ Providers in the Evergreen Acquisitions module represent the vendors or provider
 
 The Providers interface in the Acquisitions module allows libraries to create accounts for each provider or vendor from which they purchase materials. Provider accounts can be accessed by going to Administration -> Acquisitions Administration -> Providers. They can also be searched by going to Acquisitions -> Provider Search. 
 
-image::media/provider_search.png[Provider search]
+image::acq_funds/provider_search.png[Provider search]
 
 [[create_provider]]
 === Create a Provider Account ===
@@ -791,7 +791,7 @@ To create a new Provider Account, follow one of the paths listed above to retrie
 .. _Prepayment Required_: indicate if prepayment is required for orders with this provider. (optional)
 . Select *Save*.
 +
-image::media/new_provider.png[Create a new provider]
+image::acq_funds/new_provider.png[Create a new provider]
 +
 . The new Provider account will appear. On the left hand side of the screen, you will see a summary of the account. In the main screen there will be several tabs.
 .. _Provider_: this tab contains the information from the New Provider form, as well as fields for additional contact information such as Phone, Fax, and Email. Information in this tab is editable if you have appropriate permissions.
@@ -816,7 +816,7 @@ image::media/new_provider.png[Create a new provider]
 .. _Invoices_: this tab will display invoices associated with this Provider account.
 .. _POs_: this tab will display purchase orders associated with this Provider account.
 
-image::media/provider_detail.png[Provider detail]
+image::acq_funds/provider_detail.png[Provider detail]
 
 [[delete_provider]]
 === Delete a Provider Account ===
@@ -835,7 +835,7 @@ The Provider Search interface allows you to search for acquisitions provider acc
 
 The Provider Search will limit values in the Organizational Unit Selector to those locations where the user has one or more of the permissions VIEW_PROVIDER, ADMIN_PROVIDER, or MANAGE_PROVIDER.
 
-image::media/provider_search_results.png[Provider search results]
+image::acq_funds/provider_search_results.png[Provider search results]
 
 The search results consist of Provider accounts. Single-click on a row to view the Provider while leaving the search form visible. Double-click on a row to view the Provider and hide the search form. 
 

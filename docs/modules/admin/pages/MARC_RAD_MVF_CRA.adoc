@@ -37,7 +37,7 @@ attribute definitions as a model.
 
 Multi Valued Fields allows for the capturing of multi-valued elements of a bibliographic record. Through the use of Multi Valued Fields, Evergreen recognizes that records are capable of storing multiple values. Multi Valued Fields are represented in the Record Attribute Definitions interface by a column named *Multi-valued?*. With *Multi-valued?* set to *True*, Evergreen will recognize the bibliographic records in the database that have multiple values mapping to the record attribute definition; it will also track and search on those values in the catalog. This feature will be particularly handy for bibliographic records representing a Blu-ray / DVD combo pack, since both format types can be displayed in the OPAC (if both formats were cataloged in the record).
 
-image::media/radmvcolumn_1.jpg[]
+image::marc_rad_mvf_cra/radmvcolumn_1.jpg[]
 
 To edit an existing record attribute definition and set the *Multi-valued?* field to *True*:
 
@@ -47,19 +47,19 @@ To edit an existing record attribute definition and set the *Multi-valued?* fiel
 .  Select the *Multi-valued?* checkbox
 .  Click *Save*
 
-image::media/editrad_2.jpg[]
+image::marc_rad_mvf_cra/editrad_2.jpg[]
 
 === Composite Record Attributes ===
 
 Composite Record Attributes build on top of Evergreen’s ability to support record attributes that contain multiple entries. The Composite Record Attributes feature enables administrators to take a record attribute definition and apply a more complicated and nested form of structure to that particular record attribute. Two new Record Attribute Definitions columns have been added to facilitate the management of the Composite Record Attributes. The *Composite attribute?* column designates whether or not a particular record attribute definition is also a composite record attribute. The *Coded Value Maps* column contains a *Manage* link in each row that allows users to manage the Coded Value Maps for the record attributes.
 
-image::media/radcvmcacolumns_3.jpg[]
+image::marc_rad_mvf_cra/radcvmcacolumns_3.jpg[]
 
 === Coded Value Maps ===
 
 To manage the Coded Value Maps of a particular record attribute definition, click the *Manage* link located under the Coded Value Maps column for that record attribute. This will open the Coded Value Maps interface. What administrators see on the Coded Value Maps screen does not define the structure of the composite record attribute; they must go into the *Composite Attribute Entry Definitions* screen to view this information.
 
-image::media/cvmpage_4.jpg[]
+image::marc_rad_mvf_cra/cvmpage_4.jpg[]
 
 Within the Coded Value Maps screen, there is a column named *Composite Definition*. The *Composite Definition* column contains a *Manage* link that allows users to configure and to edit Composite Record Attribute definitions. In order to enable the *Manage* link (i.e. have the *Manage* link display as an option under the *Composite Definition* column), the *Composite attribute?* column (located back in the Record Attributes Definition page) must be set to *True*.
 
@@ -71,7 +71,7 @@ To edit an existing record attribute definition and set the *Composite attribute
 .   Select the *Composite attribute?* checkbox
 .   Click *Save*
 
-image::media/radcatrue_5.jpg[]
+image::marc_rad_mvf_cra/radcatrue_5.jpg[]
 
 Now that the *Composite attribute?* value is set to *True*, click on the *Manage* link located under the *Coded Value Maps* column for the edited record attribute definition. Back in the Coded Value Maps screen, a *Manage* link should now be exposed under the *Composite Definition* column. Clicking on a specific coded value’s *Manage* link will take the user into the *Composite Attribute Entry Definitions* screen for that specified coded value.
 
@@ -81,7 +81,7 @@ The Composite Attribute Entry Definitions screen is where administrators can loc
 
 The top of the Composite Attribute Entry Definitions screen shows a parenthetically defined view of the *Composite Data Expression*. Below the Composite Data Expression is the *Composite Data Tree*. The Composite Data Tree is structured off of Boolean Operators, including the support of NOT operations. This nested form can be as deeply defined as it needs to be within the site’s database.
 
-image::media/caed_6.jpg[]
+image::marc_rad_mvf_cra/caed_6.jpg[]
 
 To modify the *Composite Attribute Entry Definition*, any Boolean Operator can be deleted or have a coded value appended to it. The appended coded value can be any number of Coded Value Maps from any other Record Attribute Definition. So, administrators can choose from all the other existing record attribute definitions and create new nested structures to define entirely new data types.
 
@@ -95,7 +95,7 @@ To modify the *Composite Attribute Entry Definition*:
 .  The *Composite Data Expression* should now include the modification
 .  Once all modifications have been made, click *Save Changes* on the Composite Attribute Entry Definitions page
 
-image::media/modifycde_7.jpg[]
+image::marc_rad_mvf_cra/modifycde_7.jpg[]
 
 === Search and Icon Formats ===
 
@@ -110,62 +110,62 @@ The definitions use the <<anchor-1,fixed field types>> at the end of this docume
 [width="60%", cols="<,<,<"]
 |====
 |*Icon* |*Search Label/Icon Label* |*Definition*
-|image:media/blu-ray.png[] | Blu-ray | VR Format:s
-|image:media/book.png[] | All books/Book | Item Type: a,t
+|image:marc_rad_mvf_cra/blu-ray.png[Blu-Ray Icon] | Blu-ray | VR Format:s
+|image:marc_rad_mvf_cra/book.png[Book Icon] | All books/Book | Item Type: a,t
 
 Bib Level: a,c,d,m
 
 NOT: Item Form: a,b,c,f,o,q,r,s _[,d]_ 
-|image:media/braille.png[] | Braille |  Item Type: a
+|image:marc_rad_mvf_cra/braille.png[Braille Icon] | Braille |  Item Type: a
 
 Item Form: f 
-|image:media/casaudiobook.png[] | Cassette audiobook |  Item Type: i
+|image:marc_rad_mvf_cra/casaudiobook.png[Cassette Audiobook Icon] | Cassette audiobook |  Item Type: i
 
 SR Format: l 
-|image:media/casmusic.png[] | Audiocassette music recording | Item Type: j
+|image:marc_rad_mvf_cra/casmusic.png[Audiocassette music recording icon] | Audiocassette music recording | Item Type: j
 
 SR Format: l 
-|image:media/cdaudiobook.png[] | CD audiobook | Item Type: i
+|image:marc_rad_mvf_cra/cdaudiobook.png[CD audiobook icon] | CD audiobook | Item Type: i
 
 SR Format: f 
-|image:media/cdmusic.png[] | CD music recording | Item Type: j
+|image:marc_rad_mvf_cra/cdmusic.png[CD music recording icon] | CD music recording | Item Type: j
 
 SR Format: f 
-|image:media/dvd.png[] | DVD |  VR Format: v 
-|image:media/eaudio.png[] | E-audio | Item Type: i
+|image:marc_rad_mvf_cra/dvd.png[DVD icon] | DVD |  VR Format: v 
+|image:marc_rad_mvf_cra/eaudio.png[E-audio icon] | E-audio | Item Type: i
 
 Item Form: o,q,s 
-|image:media/ebook.png[]| E-book | Item Type: a,t
+|image:marc_rad_mvf_cra/ebook.png[E-book icon]| E-book | Item Type: a,t
 
 Bib Level: a,c,d,m
 
 Item Form: o,q,s 
-|image:media/equip.png[] | Equipment, games, toys |  Item Type: r 
-|image:media/evideo.png[] | E-video | Item Type: g
+|image:marc_rad_mvf_cra/equip.png[Equipment icon] | Equipment, games, toys |  Item Type: r 
+|image:marc_rad_mvf_cra/evideo.png[E-video icon] | E-video | Item Type: g
 
 Item Form: o,q,s 
-|image:media/kit.png[] | Kit |  Item Type: o,p 
-|image:media/lpbook.png[] | Large print book | Item Type: a,t
+|image:marc_rad_mvf_cra/kit.png[Kit icon] | Kit |  Item Type: o,p 
+|image:marc_rad_mvf_cra/lpbook.png[Large print book icon] | Large print book | Item Type: a,t
 
 Bib Level: a,c,d,m
 
 Item Form: d 
-|image:media/map.png[] | Map |  Item Type: e,f 
-|image:media/microform.png[] | Microform |  Item Form: a,b,c 
-|image:media/music.png[] | All music/Music sound recording (unknown format) | Item Type: j
+|image:marc_rad_mvf_cra/map.png[Map icon] | Map |  Item Type: e,f 
+|image:marc_rad_mvf_cra/microform.png[Microform icon] | Microform |  Item Form: a,b,c 
+|image:marc_rad_mvf_cra/music.png[All music or music sound recording icon] | All music/Music sound recording (unknown format) | Item Type: j
 
 _[NOT: SR Format: a,b,c,d,e,f,l]_ 
-|image:media/phonomusic.png[] | Phonograph music recording | Item Type: j
+|image:marc_rad_mvf_cra/phonomusic.png[Phonograph music recording icon] | Phonograph music recording | Item Type: j
 
 SR Format: a,b,c,d,e 
-|image:media/phonospoken.png[] | Phonograph spoken recording | Item Type: i
+|image:marc_rad_mvf_cra/phonospoken.png[Phonograph spoken recording icon] | Phonograph spoken recording | Item Type: i
 
 SR Format: a,b,c,d,e 
-|image:media/picture.png[] | Picture | Item type: k
-|image:media/score.png[] | Music score | Item type: c,d
-|image:media/serial.png[] | Serials and magazines |  Bib Level: b,s 
-|image:media/software.png[] | Software and video games |  Item Type: m 
-|image:media/vhs.png[] | VHS | VR Format: b
+|image:marc_rad_mvf_cra/picture.png[Picture icon] | Picture | Item type: k
+|image:marc_rad_mvf_cra/score.png[Music score icon] | Music score | Item type: c,d
+|image:marc_rad_mvf_cra/serial.png[Serials and magazines icon] | Serials and magazines |  Bib Level: b,s 
+|image:marc_rad_mvf_cra/software.png[Software and video games icon] | Software and video games |  Item Type: m 
+|image:marc_rad_mvf_cra/vhs.png[VHS icon] | VHS | VR Format: b
 |====
 
 [[anchor-2]]
