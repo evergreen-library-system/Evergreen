@@ -37,9 +37,9 @@ Item Tags are associated with a Item Tag Type and are used to configure the list
 .. *Owner*: the organizational unit that can see and use the item tag type.
 . Click *Save* and the new Item Tag Type will appear in the list.  Next create the associated Item Tags.
 
-image::media/copytags1.PNG[Create Item Tag Types]
+image::copy_tags/copytags1.PNG[Create Item Tag Types]
 
-image::media/copytags2.PNG[Item Tag Types Grid View]
+image::copy_tags/copytags2.PNG[Item Tag Types Grid View]
 
 === Create Item Tags ===
 
@@ -53,9 +53,9 @@ image::media/copytags2.PNG[Item Tag Types Grid View]
 .. *Owner*: select the organization unit at which this tag can be seen and used.
 . Click *Save* and the new Item Tag will appear in the list.
 
-image::media/copytags3.PNG[Create Item Tags]
+image::copy_tags/copytags3.PNG[Create Item Tags]
 
-image::media/copytags4.PNG[Item Tags Grid View]
+image::copy_tags/copytags4.PNG[Item Tags Grid View]
 
 
 == Managing Item Tags ==
