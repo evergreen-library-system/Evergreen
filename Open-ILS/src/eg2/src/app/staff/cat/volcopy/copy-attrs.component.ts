@@ -30,8 +30,8 @@ import {ToastService} from '@eg/share/toast/toast.service';
 
     // Match the header of the batch attrs component
     styles: [
-        '.batch-header {background-color: #EBF4FA;}',
-        '.template-row {background-color: #EBF4FA;}'
+        '.batch-header {background-color: var(--batch-item-attr-header-bg);}',
+        '.template-row {background-color: #007a54;}'
     ]
 })
 export class CopyAttrsComponent implements OnInit, OnDestroy, AfterViewInit {

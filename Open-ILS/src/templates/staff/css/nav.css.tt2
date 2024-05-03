@@ -1,0 +1,94 @@
+/* #region navbar*/
+/* --------------------------------------------------------------------------
+ * Simple default navbar style adjustements to apply the Evergreen color.
+ * Mostly matches the styling on the angular navbar
+ */
+:root {
+    --nav-link-color: light-dark(white, var(--bs-gray-100));
+    --nav-link-hover: light-dark(white, var(--bs-gray-100));
+    --nav-bg: var(--staff-navbar-b);
+    --nav-border-hover: var(--bs-gray-300); 
+    --nav-hover-bg: light-dark(rgba(var(--success-text-light-rgb), 0.1), rgba(211, 231, 190, 0.1)); 
+    --nav-hover-border-bottom: light-dark(rgba(222, 226, 230, 0.4), rgba(6, 34, 25, 0.2));
+    --nav-dropdown-color: var(--bs-body-color);
+    --nav-dropdown-bg: var(--bs-body-bg-alt);
+    --nav-dropdown-bg-hover: light-dark(rgba(var(--bs-green-rgb), .10), var(--bs-green-800));
+    
+    --divider: 1px solid light-dark(#e5e5e5, #151515);
+}
+
+#top-navbar.navbar-default {
+  background: -webkit-linear-gradient(var(--staff-navbar-a), var(--staff-navbar-b));
+  background-color: var(--nav-bg);
+  color: var(--nav-link-color);
+  font-size: 14px;
+  padding: 0 0.5rem;
+  border-bottom-color: transparent;
+  margin-bottom: 0px;
+  padding-top: 4px;
+  padding-left: 20px;
+  padding-right: 20px;
+}
+#top-navbar.navbar-default .navbar-nav>li>a {
+  color: var(--nav-link-color);
+  border-bottom: 2px solid transparent;
+  border-radius: .3em;
+  padding: 8px;
+  margin-top: 4px;
+}
+#top-navbar.navbar-default .navbar-nav>li:not(.hidden-sm)>a:hover {
+  color: var(--nav-link-hover);
+  background-color: var(--nav-hover-bg);
+  border-bottom: 2px solid var(--nav-hover-border-bottom);
+  border-radius: .3em;
+}
+
+#top-navbar.navbar-default .dropdown:hover,
+#top-navbar.navbar-default .dropdown-menu a:hover {
+    color: var(--nav-dropdown-color);
+}
+
+#top-navbar.navbar-default .dropdown-menu a{
+  color: var(--bs-body-color);
+  background-color: var(--nav-dropdown-bg);
+}
+
+#top-navbar.navbar-default .dropdown-menu a:hover{
+  color: var(--nav-dropdown);
+  background-color: var(--nav-dropdown-bg-hover);
+}
+#top-navbar.navbar-default .dropdown-menu .divider{
+  background-color: var(--border);
+}
+
+#top-navbar.navbar-default .navbar-nav > .open > a,
+#top-navbar.navbar-default .navbar-nav > .open > a:focus,
+#top-navbar.navbar-default .navbar-nav > .open > a:hover {
+    background-color: var(--nav-bg);
+}
+#top-navbar.navbar-default .dropdown-menu {
+  background-color: var(--nav-dropdown-bg);
+    border-top: 0;
+    border-top-left-radius: 0;
+    border-top-right-radius: 0;
+    margin-top: 2px;
+}
+
+#top-navbar.navbar-default .dropdown-toggle .caret {
+    border-top-color: var(--nav-link-color);
+    border-bottom-color: var(--nav-link-color);
+}
+#top-navbar.navbar-default .dropdown-toggle:hover .caret,
+#top-navbar.navbar-default .dropdown.open .caret {
+    border-top-color: var(--nav-border-hover);
+    border-bottom-color: var(--nav-border-hover);
+}
+
+/* Make the dropdown line up */
+#top-navbar.navbar-default .dropdown-menu{
+  margin-top: 5px;
+  padding-top: 8px;
+  padding-bottom: 8px;
+}
+
+/* #endregion */

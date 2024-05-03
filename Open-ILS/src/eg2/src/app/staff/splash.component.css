@@ -1,0 +1,34 @@
+:host {
+  --splash-card-header: light-dark(var(--evergreen), var(--bs-gray-400));
+  --splash-card-header-bg: light-dark(#dff0d8, var(--bs-body-bg-alt));
+  --splash-card-header-border: light-dark(#d6e9c6, var(--bs-body-bg-highlight));
+  --bs-card-bg: var(--bs-body-bg);
+}
+
+.eg-logo { 
+  max-width: 400px; 
+  margin: 30px 0; 
+}
+
+[data-bs-theme="dark"] img.eg-logo {
+  filter: brightness(90%);
+}
+
+.card {
+  background-color: var(--bs-card-bg);
+  border-color: light-dark(var(--border), var(--staff-navbar-a));
+}
+
+.card-body, .card-body .list-group-item {
+  background-color: var(--bs-card-bg);
+}
+
+.card-header {
+  background-color: var(--splash-card-header-bg);
+  border-color: var(--splash-card-header-border);
+}
+
+.card-header h2 {
+  color: var(--splash-card-header);
+  margin: 0 0 0.1rem;
+}

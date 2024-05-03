@@ -1,3 +1,13 @@
+:host {
+  --lineitem-delayed: light-dark(var(--bs-blue-150), var(--bs-blue-900-desat));
+  --lineitem-new: light-dark(var(--bs-yellow-025), var(--bs-yellow-900)); 
+  --lineitem-on-order: light-dark(var(--bs-gray-200), var(--bs-gray-800)); 
+  --lineitem-order-pending: light-dark(var(--bs-yellow-050), var(--bs-yellow-900)); 
+  --lineitem-order-ready: light-dark(var(--bs-gray-150), var(--bs-gray-900)); 
+  --lineitem-ready: light-dark(var(--bs-gray-100), var(--bs-gray-900)); 
+  --lineitem-received: light-dark(var(--bs-gray-200), var(--bs-gray-800));
+  --invoice-deleted: light-dark(var(--bs-gray-300), var(--bs-gray-700));
+}
 
 .jacket-wrapper {
   width: 70px;
@@ -9,16 +19,16 @@
 input[type="text"].form-control-sm { border-width: 1px; }
 
 .invoice-entry-deleted {
-    border: thick dotted black !important;
-    background-color: #DDDDDD;
+    border: thick dotted var(--black) !important;
+    background-color: var(--invoice-deleted);
 }
 
 .invoice-entry {
-    border: black solid black;
+    border: var(--black) solid var(--black);
 }
 
 a.disabled {
-    color: black;
+    color: var(--bs-dropdown-link-disabled-color);
     pointer-events: none;
 }
 
@@ -27,7 +37,7 @@ a.disabled {
 }
 
 .batch-copy-row:nth-child(even) {
-  background-color: rgba(0,0,0,.03);
+  background-color: var(--row-even-bg);
 }
 
 /* Kind of hacky -- only way to get a toolbar button with no 
@@ -38,13 +48,13 @@ a.disabled {
 }
 
 
-.li-state-new { background-color: #FFFFEE; }
-.li-state-selector-ready { background-color: #FFEEEE; }
-.li-state-order-ready { background-color: #EEEEEE; }
-.li-state-pending-order { background-color: #EEEEDD; }
-.li-state-on-order { background-color: #EEDDDD; }
-.li-state-received { background-color: #DDDDDD; }
-.li-state-delayed { background-color: #B3D9FF; }
+.li-state-new { background-color: var(--lineitem-new); }
+.li-state-selector-ready { background-color: var(--lineitem-ready); }
+.li-state-order-ready { background-color: var(--lineitem-order-ready); }
+.li-state-pending-order { background-color: var(--lineitem-order-pending); }
+.li-state-on-order { background-color: var(--lineitem-on-order); }
+.li-state-received { background-color: var(--lineitem-received); }
+.li-state-delayed { background-color: var(--lineitem-delayed); }
 
 .btn-link {
   color: var(--primary);
@@ -52,10 +62,10 @@ a.disabled {
 }
 
 .btn-link:hover {
-  color: #0848A5;
+  color: var(--primary-hover);
   text-decoration: underline;
 }
 
 .invoice-entry .btn-destroy {
-  box-shadow: 0 0 2px black;
+  box-shadow: 0 0 2px var(--box-shadow);
 }

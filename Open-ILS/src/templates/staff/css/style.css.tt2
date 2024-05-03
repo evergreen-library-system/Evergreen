@@ -1,55 +1,23 @@
-:root {
-  --bs-blue: #0A58CA; /* $blue-600 in BS5 */
-  --primary: #0A58CA;
-  --bs-blue-rgb: 10,88,202;
-  --bs-primary-rgb: 10,88,202;
-  --bs-green: #198754; /* $green ($green-500) in BS5 */
-  --success: #198754;
-  --bs-green-rgb: 25,135,84;
-  --bs-success-rgb: 25,135,84;
-  --bs-cyan: #087990; /* $cyan-700 in BS5 */
-  --info: #087990;
-  --bs-cyan-rgb: 8,121,144;
-  --bs-info-rgb: 8,121,144;
-  --bs-red: #dc3545;
-  --bs-red-rgb: 220,53,69;
-  --bs-red-600: #B02A37;
-  --bs-red-700: #58151C;
-  --bs-orange-rgb: 253, 126, 20;
-  --bs-orange-600: #CA6510;
-  --bs-orange-700: #653208;
-}
-
 /* Create some padding at bottom of the page for breathing room */
 body { padding-bottom: 50px; }
 
-/* --------------------------------------------------------------------------
- * Simple default navbar style adjustements to apply the Evergreen color.
- * TODO: style other components to match EG color scheme
- */
-#top-navbar.navbar-default {
-    background: -webkit-linear-gradient(#00593d, #007a54);
-    background-color: #007a54;
-    color: #fff;
+a.skip-nav:not(:focus):not(:hover) {
+    transform: translateY(-4em);
+    opacity: 0;
 }
-#top-navbar.navbar-default .navbar-nav>li>a {
-    color: #fff;
-}
-#top-navbar.navbar-default .navbar-nav>li>a:hover {
-    color: #ddd;
-}
-#top-navbar.navbar-default .navbar-nav > .open > a,
-#top-navbar.navbar-default .navbar-nav > .open > a:focus,
-#top-navbar.navbar-default .navbar-nav > .open > a:hover {
-    background-color: #7a7a7a;
-}
-#top-navbar.navbar-default .navbar-nav>.dropdown>a .caret {
-    border-top-color: #fff;
-    border-bottom-color: #fff;
-}
-#top-navbar.navbar-default .navbar-nav>.dropdown>a:hover .caret {
-    border-top-color: #ddd;
-    border-bottom-color: #ddd;
+
+a.skip-nav {
+    background-color: var(--bs-body-bg);
+    border: 1px solid #0D7764;
+    color: #0D7764;
+    margin: 0;
+    padding: 1em;
+    position: absolute;
+    z-index: 2000;
+    left: 0;
+    top: 0;
+    width: auto;
+    transition: transform 0.15s ease-out, opacity 0.15s ease-out;
 }
 
 #top-navbar ul.dropdown-menu > li > a {
@@ -59,8 +27,6 @@ body { padding-bottom: 50px; }
 
 #top-navbar ul.dropdown-menu > li > a > kbd {
   margin-inline-start: auto;
-  background-color: #e8e8e8;
-  color: #000;
 }
 
 #top-navbar ul.dropdown-menu li a:has(kbd) > span:not(.glyphicon):last-of-type {
@@ -76,18 +42,18 @@ a.skip-nav:not(:focus):not(:hover) {
     opacity: 0;
 }
 
-a.skip-nav {
-    background-color: #fff;
-    border: 1px solid #0D7764;
-    color: #0D7764;
-    margin: 0;
-    padding: 1em;
-    position: absolute;
-    z-index: 2000;
-    left: 0;
-    top: 0;
-    width: auto;
-    transition: transform 0.15s ease-out, opacity 0.15s ease-out;
+.skip-nav {
+  background-color: var(--bs-body-bg);
+  border: 1px solid var(--evergreen);
+  color: var(--evergreen);
+  margin: 0;
+  padding: 1em;
+  position: absolute;
+  z-index: 2000;
+  left: 0;
+  top: 0;
+  width: auto;
+  transition: transform 0.15s ease-out, opacity 0.15s ease-out;
 }
 
 /* Hatch / WebSockets / Etc. connectivity status indicator */
@@ -96,9 +62,22 @@ a.skip-nav {
 }
 
 body {
-    color: #000; /* note: this is not comprehensive; changing Bootstrap's
+    color: var(--bs-body-color); /* note: this is not comprehensive; changing Bootstrap's
                     default text color from #333 to #000 would require
                     more work */
+    background-color: var(--bs-body-bg);
+}
+
+kbd {
+  background-color: var(--bs-light);
+  border-radius: .2rem;
+  border: none;
+  box-shadow: 1px 1px 1px rgba(var(--box-shadow), 0.2);
+  color: var(--bs-body-color);
+  margin: 0 .2em;
+  /* :first-letter requires a block-level element */
+  display: inline-block;
+  padding: .3rem .6rem;
 }
 
 /* --------------------------------------------------------------------------
@@ -120,6 +99,12 @@ body {
  * version 0.6.0 look right with Bootstrap CSS 3.0
  */
 .nav, .pagination, .carousel a { cursor: pointer; }
+
+/* Overwrite Bootstrap's definition so the area around hovered buttons doesn't look bad in dark mode */
+.nav>li>a:hover {
+  color: var(--primary-hover);
+  background-color: light-dark(var(--bs-gray-200), var(--bs-gray-900));
+}
 /*
 .modal {
     display: block;
@@ -138,21 +123,27 @@ body {
 }
 */
 
+.modal-content {
+  background-color: var(--bs-body-bg);
+}
+.modal-header .close,
+.modal-header .close:hover {
+  color: var(--modal-header-color);
+  opacity: 1;
+  text-shadow: none;
+}
+
 /* --------------------------------------------------------------------------
 /* Form Validation CSS - http://docs.angularjs.org/guide/forms
  * TODO: these colors are harsh and don't fit the EG color scheme
  */
-.form-validated input.ng-invalid.ng-dirty {
-  background-color: #FA787E;
-}
-.form-validated input.ng-valid.ng-dirty {
-  background-color: #78FA89;
-}
+.form-validated input.ng-invalid.ng-dirty,
 .form-validated textarea.ng-invalid.ng-dirty {
-  background-color: #FA787E;
+  background-color: light-dark(#FA787E, var(--bs-red-900));
 }
+.form-validated input.ng-valid.ng-dirty,
 .form-validated textarea.ng-valid.ng-dirty {
-  background-color: #78FA89;
+  background-color: var(--form-success-bg);
 }
 
 /* --------------------------------------------------------------------------
@@ -162,7 +153,7 @@ body {
 /* change default link color to provide adequate contrast */
 
 a {
-   color: #255a88;
+   color: var(--primary);
 }
 
 
@@ -182,7 +173,7 @@ a.disabled {
 
 table.list tr.selected td { /* deprecated? */
     color: #2a6496;
-    background-color: #F5F5F5;
+    background-color:  var(--bs-light);
 }
 
 .pad-horiz {padding : 0px 10px 0px 10px; }
@@ -226,7 +217,7 @@ table.list tr.selected td { /* deprecated? */
     filter: alpha(opacity=0);
     opacity: 0;
     outline: none;
-    background: white;
+    background: var(--bs-body-bg-alt);
     cursor: inherit;
     display: block;
 }
@@ -267,7 +258,7 @@ table.list tr.selected td { /* deprecated? */
 /* eg-help-popover directive doesn't need a border around its <button> */
 .no-border.glyphicon-question-sign,
 .no-border.glyphicon-info-sign {
-  border-color: #fff;
+  border-color: var(--bs-body-bg);
 }
 
 /* bootstrap alerts are heavily padded.  use this to reduce */
@@ -275,7 +266,7 @@ table.list tr.selected td { /* deprecated? */
 
 /* text displayed inside a <progressbar>, typically the max/progress values */
 .progressbar-text {
-  color:black;
+  color:var(--bs-body-color);
   white-space:nowrap;
 }
 
@@ -293,7 +284,7 @@ table.list tr.selected td { /* deprecated? */
 /* Useful for grid-like things that aren't proper grids.
  * Mimics the grids color scheme. */
 .selected-row {
-  background-color: rgb(248, 248, 248);
+  background-color: var(--bs-light);
 }
 
 /* Reduces the vertical space added by form-group's.  Especially useful
@@ -304,117 +295,7 @@ table.list tr.selected td { /* deprecated? */
 } 
 
 
-/* ----------------------------------------------------------------------
- * Grid
- * ---------------------------------------------------------------------- */
 
-.eg-grid-primary-label {
-  font-weight: bold;
-  font-size: 120%;
-  margin-right: 2em;
-}
-
-/* odd/even row styling */
-.eg-grid-content-body > div:nth-child(odd):not(.eg-grid-row-selected) {
-  background-color: rgb(248, 248, 248);
-}
-
-.eg-grid-row {
-  width: 100%;
-  display: flex;
-  border: 1px solid #ccc;
-}
-
-.eg-grid-row:not(.eg-grid-header-row):not(.eg-grid-conf-row) {
-  /* TODO: remove, pretty sure this is no longer needed w/ nowrap */
-  /*height: 1.8em;*/
-}
-
-.eg-grid-action-row {
-  border: none;
-  /* margin should not have to be this large; something's up */
-  margin-bottom: 12px;
-}
-
-.eg-grid-header-row { 
-  font-weight: bold; 
-}
-
-.eg-grid-header-row > .eg-grid-cell {
-  border-right: 1px solid #CCC;
-  text-align: center;
-
-  /* vertically align header cell text by treating 
-     each header cell as a vertical flex container */
-  display:flex;
-  flex-direction:column;
-  justify-content:flex-end;
-}
-
-.eg-grid-cell {
-  /* avoid text flowing into adjacent cells */
-  white-space: nowrap;
-  text-overflow: ellipsis;
-  overflow: hidden;
-}
-
-/* in config display, make cells more obvious */
-.eg-grid-as-conf .eg-grid-row {
-  border: 1px solid #777;
-}
-.eg-grid-as-conf .eg-grid-cell {
-  border-right: 1px solid #777;
-}
-
-/* stock columns need fixed-width controls */
-.eg-grid-cell-stock {
-  width: 2.2em;
-  text-align: center;
-}
-
-/* the conf header must be twice the stock flex */
-.eg-grid-cell-conf-header {
-  width: 4.4em;
-  font-weight: bold;
-}
-
-.eg-grid-cell-stock-status {
-  width: 4.4em;
-  text-align: center;
-}
-
-/* the conf header must be 4x the stock width when status is present */
-.eg-grid-cell-conf-header-status {
-  width: 8.8em;
-  font-weight: bold;
-}
-
-.eg-grid-row-selected {
-  color: #000;
-  background-color: rgb(201, 221, 225);
-  border-bottom: 1px solid #888;
-}
-
-/* Improve ::selection styling by only allowing selection on text
- * content cells within the main body of the grid.  Otherwise, the browser 
- * styles row background and text (all dark blue?) when shift-click or 
- * click-drag is used.
- */
-.eg-grid-content-body .eg-grid-row {
-  user-select:none;
-  -moz-user-select: none;
-  -webkit-user-select: none;
-}
-.eg-grid-content-body .eg-grid-cell-content {
-  user-select:text;
-  -moz-user-select: text;
-  -webkit-user-select: text;
-}
-.eg-grid-cell-content::-moz-selection {
-  color: #000;
-  background: rgb(201, 221, 225);
-  border-bottom: 1px solid #888;
-}
 
 /* patron bill row-highlighting */
 /* background colors are !important because Bootstrap 4 table striping is greedy */
@@ -426,8 +307,8 @@ table.list tr.selected td { /* deprecated? */
 }
 .overdue-row a:link, .overdue-row a:visited,
 .overdue-row .eg-grid-cell-stock-status {
-  color: var(--bs-red-700);
-  border-color: var(--bs-red-700);
+  color: var(--badge-danger-color);
+  border-color: var(--badge-danger-color);
 }
 
 .longoverdue-row {
@@ -439,7 +320,7 @@ table.list tr.selected td { /* deprecated? */
 
 .longoverdue-row a:link, .longoverdue-row a:visited,
 .longoverdue-row .eg-grid-cell-stock-status {
-  color: var(--bs-orange-700);
+  color: light-dark(var(--bs-orange-700), var(--bs-yellow-600));
   border-color: var(--bs-orange-700);
 }
 
@@ -452,7 +333,7 @@ table.list tr.selected td { /* deprecated? */
 
 .lost-row a:link, .lost-row a:visited,
 .lost-row .eg-grid-cell-stock-status {
-  color: var(--bs-red-700);
+  color: var(--badge-danger-color);
   border-color: var(--bs-red-700);
 }
 
@@ -469,118 +350,15 @@ table.list tr.selected td { /* deprecated? */
   border-left: 2px solid var(--bs-red-600);
 }
 
-.eg-grid-cell-content::selection {
-  color: #000;
-  background: rgb(201, 221, 225);
-  border-bottom: 1px solid #888;
-}
-.eg-grid-cell-content a {
-  text-decoration: underline;
-}
 
-.eg-grid-conf-cell-entry {
-  width:98%;
-  text-align:center;
-  padding: 3px;
-}
-
-.eg-grid-conf-cell-entry:not(:first-child) {
-  border-top:1px solid #ccc;
-}
-
-.eg-grid-conf-row {
-  background-color: #dff0d8;
-  border-color: #d6e9c6;
-}
-
-.eg-grid-conf-row:first-child {
-  /* alignment fix; account for one missing border */
-  padding-right: 1px;
-}
-
-.eg-grid-column-move-handle:hover {
-  cursor: move;
-}
-
-.eg-grid-column-move-handle-active,
-.eg-grid-column-move-handle-active:active {
-  /* similar to label-primary, sans padding */
-  background-color: rgb(66, 139, 202);
-  color: #fff;
-}
-
-.eg-grid-col-hover {
-  /* similar to label-success, sans padding */
-  background-color: rgb(92, 184, 92);
-  color: #fff;
-}
-
-.eg-grid-column-resize-handle {
-  height: 100%;
-}
-.eg-grid-column-resize-handle:hover {
-  cursor: col-resize;
-}
-
-/* for these to be useful, they would have to be applied 
- * to the dragover targets.  not yet done */
-.eg-grid-column-resize-handle-west {
-  cursor: w-resize;
-}
-.eg-grid-column-resize-handle-east {
-  cursor: e-resize;
-}
-
-.eg-grid-column-last-mod {
-  background-color: #78FA89;
-}
-
-.eg-grid-menu-item {
-  margin-right: 10px;
-}
-
-
-/* hack to make the header columns line up with the content columns
-   when the scroll bar is visible along the right side of the content
-   columns. TODO: if this varies enough by browser, we'll need to
-   calculate the width instead. */
-/*
-.eg-grid-scroll > .eg-grid-header-row, 
-.eg-grid-scroll > .eg-grid-conf-row { 
-  padding-right: 15px;
-}
-.eg-grid-scroll > .eg-grid-content-body {
-  overflow-y:scroll; 
-  height: 600px; 
-}
-*/
-.eg-grid-column-picker {
-  height: auto;
-  max-height: 400px;
-  overflow: auto;
-  box-shadow: none;
-}
-
-.eg-grid-tooltip {
-  font-size: 110%;
-}
-/* avoid visited "blue" links over black background */
-.eg-grid-tooltip a {
-  color: white;
-}
-
-
-/* ----------------------------------------------------------------------
- * /Grid
- * ---------------------------------------------------------------------- */
 
 
 /* simple flex container for consistent-width cell-based structures */
 .flex-container-striped > .flex-row:nth-child(odd) {
-  background-color: #f5f5f5;
+  background-color: var(--row-even-bg);
 }
 .flex-container-bordered .flex-cell {
-  border-bottom: 1px solid #ddd;
+  border-bottom: 1px solid var(--border);
 }
 .flex-row {
   display: flex;
@@ -616,12 +394,6 @@ table.list tr.selected td { /* deprecated? */
   }
   .eg-grid-row {
     flex-direction: column;
-  }
-  #top-navbar.navbar-default .navbar-nav>li>ul>li>a {
-    color: #eee;
-  }
-  #top-navbar.navbar-default .navbar-nav>li>ul>li>a:hover {
-    color: #000;
   }
 }
 
@@ -671,9 +443,484 @@ eg-grid-field {
   max-width: 400px;
 }
 
-[%# 
-vim: ft=css 
-%]
+.svg-icon {
+  display: inline-block;
+  vertical-align: middle;
+}
+
+.svg-icon svg {
+  max-height: 1lh;
+  max-width: 1lh;
+  vertical-align: bottom;
+  margin-right: .25rem;
+}
+
+
+/* DARK MODE */
+/* Bootstrap has some background colors set instead of using their own body
+background/text variables. Crash override. We can remove this in Bootstrap 5.3.
+/**/
+.accordion-item, .accordion-button,
+.card,
+.eg-grid-content-body > div:nth-child(2n+1):not(.eg-grid-row-selected),
+.list-group-item,
+.panel, .panel-body,
+#patron-fixed-tabs,
+.patron-summary-container .row:nth-child(2n+1):not(.alert),
+.table {
+    background: var(--bs-body-bg);
+    border-color: var(--border);
+    color: var(--bs-body-color);
+}
+
+.bg-light, .bg-white,
+[data-bs-theme="dark"] .btn-light:active,
+[data-bs-theme="dark"] .btn-outline-dark:active {
+  background: inherit !important;
+  color: inherit !important;
+}
+
+legend,
+.eg-grid-cell {
+    color: var(--bs-body-color);
+}
+
+input, textarea, select, option,
+.accordion-button:not(.collapsed),
+.alert-info,
+.btn-outline-dark,
+.btn-default,
+.btn-light,
+.btn-light.dropdown-toggle,
+.card-header,
+.eg-grid-header,
+.eg-grid-sticky-header,
+.form-control, .form-control:focus, .form-select, .form-check-input,
+.panel-header,
+#patron-summary-grid div.row:nth-child(2n+1),
+.popover, 
+.popover-body,
+.popover-body .dropdown-item,
+.tooltip-inner,
+.well {
+    background: light-dark(white, var(--bs-gray-950));
+    border-color: var(--border);
+    color: var(--bs-body-color);
+}
+
+.btn.btn-default:focus,
+.btn.btn-default:active {
+  color: var(--bs-text-highlight);
+  background-color: var(--bs-body-bg-highlight);
+}
+
+.popover-header {
+  background-color: var(--popover-header-bg);
+  color: var(--bs-body-color);
+}
+
+.bs-popover-auto[data-popper-placement^="top"] .popover-header::before, 
+.bs-popover-top .popover-header::before,
+.bs-popover-auto[data-popper-placement^="top"] > .popover-arrow::after, 
+.bs-popover-top > .popover-arrow:after  {
+  border-top-color: var(--border);
+}
+
+.bs-popover-auto[data-popper-placement^="left"] .popover-header::before, 
+.bs-popover-left .popover-header::before,
+.bs-popover-auto[data-popper-placement^="left"] > .popover-arrow::after, 
+.bs-popover-left > .popover-arrow:after {
+  border-left-color: var(--border);
+}
+
+.bs-popover-auto[data-popper-placement^="right"] .popover-header::before, 
+.bs-popover-right .popover-header::before,
+.bs-popover-auto[data-popper-placement^="right"] > .popover-arrow::after, 
+.bs-popover-right > .popover-arrow:after {
+  border-right-color: var(--border);
+}
+
+.bs-popover-auto[data-popper-placement^="bottom"] .popover-header::before, 
+.bs-popover-bottom .popover-header::before,
+.bs-popover-auto[data-popper-placement^="bottom"] > .popover-arrow::after, 
+.bs-popover-bottom > .popover-arrow:after {
+  border-bottom-color: var(--border);
+}
+
+.patron-summary-alert, .patron-summary-alert-small {
+    background: inherit;
+    color: light-dark(var(--bs-red-300), var(--bs-red-700));
+}
+
+[data-bs-theme="dark"] .alert {
+  border: none;
+}
+
+[data-bs-theme="dark"] .alert-primary:has(h1) {
+  background-color: transparent;
+  color: var(--bs-body-color);
+}
+
+[data-bs-theme="dark"] .text-dark {
+  color: var(--bs-body-color) !important;
+}
+
+[data-bs-theme="dark"] .text-danger {
+  color: var(--danger-color) !important;
+}
+
+[data-bs-theme="dark"] .border {
+  border: 1px solid var(--border) !important;
+}
+
+[data-bs-theme="dark"] .btn-outline-dark:disabled {
+  border-color: var(--border);
+  color: var(--border);
+}
+
+
+/* Less intense, WCAG AAA-compliant badges */
+.badge {
+  font-weight: 400;
+  font-size: .9em;
+  line-height: .9em;
+  padding-top: .15em;
+}
+
+.alert-primary,
+.badge-primary,
+.badge.text-bg-primary {
+  background: var(--badge-bg);
+  color: var(--badge-color);
+  border-color: var(--primary-border);
+}
+
+.badge-secondary,
+.badge.text-bg-secondary {
+  background: light-dark(var(--bs-gray-300), var(--bs-gray-700));
+  color: var(--bs-body-color);
+}
+
+.alert-success,
+.badge-success,
+.badge.text-bg-success {
+  background: var(--badge-success-bg);
+  color: var(--success-color);
+  border-color: var(--success-border);
+}
+
+.alert-danger,
+.badge-danger,
+.badge.text-bg-danger {
+  background: var(--badge-danger-bg);
+  color: var(--danger-color);
+  border-color: var(--danger-border);
+}
+
+.alert-warning,
+.badge-warning,
+.badge.text-bg-warning {
+  background: var(--badge-warning-bg);
+  color: var(--warning-color);
+  border-color: var(--wawrning-border);
+}
+
+.alert-info,
+.badge-info,
+.badge.text-bg-info {
+  background: var(--badge-info-bg);
+  color: var(--badge-info-color);
+  border-color: var(--info-border);
+}
+
+.badge-light,
+.badge.text-bg-light {
+  background: var(--bs-gray-200);
+  color: var(--bs-gray-900);
+}
+
+.badge-dark,
+.badge.text-bg-dark {
+  color: var(--bs-black);
+  background: var(--bs-gray-500);
+}
+
+/* Accessible button colors */
+
+.btn {
+  color: var(--bs-body-color);
+}
+.btn:hover {
+  color: var(--bs-text-highlight);
+  background-color: var(--bs-body-bg-highlight)
+}
+
+.btn.btn-link {
+  color: inherit;
+  background-color: transparent;
+}
+
+.btn-light:hover,
+.btn-light:focus,
+.show > .btn-light.dropdown-toggle {
+  background-color: light-dark(var(--bs-gray-100), var(--bs-body-bg-alt));
+  color: light-dark(var(--bs-secondary), var(--bs-gray-100));
+  border-color: light-dark(var(--bs-secondary), var(--bs-gray-100));
+}
+
+.btn-outline-secondary:hover,
+.btn-outline-secondary:focus {
+  color: light-dark(var(--bs-secondary), var(--bs-gray-200));
+  background-color: transparent;
+}
+
+.btn.btn-warning,
+.btn.btn-outline-warning {
+  background: var(--badge-warning-bg);
+  border-color: var(--warning-border);
+  color: var(--bs-body-color);
+}
+
+.btn.btn-warning.hover,
+.btn.btn-warning:hover {
+  background-color: var(--badge-warning-selected-bg);
+}
+
+/* other colors' focus state shadows do not need to change */
+.btn.btn-warning.focus,
+.btn.btn-warning:focus {
+  border-color: var(--warning-border-hover);
+  box-shadow: 0 0 0 .2rem var(--warning-shadow);
+}
+
+.btn-primary {
+  background-color: var(--primary);
+  border-color: var(--primary-border);
+  color: var(--bs-white);
+}
+
+.btn-primary:hover,
+.btn-primary.hover,
+.btn-primary:focus,
+.btn-primary.focus,
+.btn-check:active + .btn-primary, 
+.btn-check:checked + .btn-primary, 
+.btn-primary.active,
+.show > .btn-primary.dropdown-toggle {
+  background-color: var(--primary-hover);
+  border-color: var(--primary-border);
+  color: var(--bs-white);
+}
+
+.btn-outline-primary {
+  background-color: var(--bs-body-bg);
+  border-color: var(--primary-border);
+  color: var(--primary-border);
+}
+
+.btn-outline-primary:hover,
+.btn-outline-primary.hover,
+.btn-outline-primary:focus,
+.btn-outline-primary.focus {
+  background-color: var(--bs-body-bg);
+  border-color: var(--primary-border);
+  color: var(--primary-border);
+}
+
+.btn-primary.disabled,
+.btn-primary:disabled {
+  /* We actually want white here because black is too low-contrast in dark mode */
+  color: var(--bs-white);
+  background-color: var(--primary-disabled);
+  border-color: var(--primary-disabled);
+}
+
+.btn-primary.disabled:hover,
+.btn-primary:disabled:hover {
+  color: var(--bs-white);
+  /* background-color: var(--bs-red-600); */
+  border-color: var(--primary-disabled);
+}
+
+.btn-outline-primary.disabled,
+.btn-outline-primary:disabled {
+  color: var(--primary-disabled);
+  background-color: var(--bs-body-bg);
+  border-color: var(--primary-disabled);
+}
+
+.btn-info {
+  background-color: var(--badge-info-bg);
+  border-color: var(--info);
+}
+
+.btn-info:hover,
+.btn-info.hover,
+.btn-info:focus,
+.btn-info.focus,
+.btn-check:active + .btn-info, 
+.btn-check:checked + .btn-info, 
+.btn-info.active,
+.show > .btn-info.dropdown-toggle {
+  background-color: var(--badge-info-bg);
+  border-color: var(--info-hover);
+}
+
+.btn-info.disabled, .btn-info:disabled {
+  background-color: rgba(var(--bs-info-rgb), 0.5);
+  border-color: rgba(var(--bs-info-rgb), 0.5);
+}
+
+.btn-outline-info {
+  background-color: var(--bs-body-bg);
+  border-color: var(--info-border);
+  color: var(--bs-body-color);
+}
+
+.btn-outline-info:hover,
+.btn-outline-info.hover,
+.btn-outline-info:focus,
+.btn-outline-info.focus,
+.btn-check:active+.btn-info,
+.btn-check:checked+.btn-info,
+.btn-info.active,
+.btn-info:active,
+.show>.btn-info.dropdown-toggle {
+  color: var(--bs-body-color);
+  background-color: var(--badge-info-bg);
+  border-color: var(--info-border);
+}
+
+.btn-info.disabled,
+.btn-info:disabled {
+  color: var(--bs-white);
+  background-color: var(--info-disabled);
+  border-color: var(--info-disabled);
+}
+
+.btn-outline-info.disabled,
+.btn-outline-info:disabled {
+  color: var(--info-disabled);
+  background-color: var(--bs-body-bg);
+  border-color: var(--info-disabled);
+}
+
+.btn-success {
+  background-color: var(--success);
+  border-color: var(--success-border);
+  color: var(--success-color);
+}
+
+.btn-success:hover,
+.btn-success.hover,
+.btn-success:focus,
+.btn-success.focus, 
+.btn-check:active + .btn-success, 
+.btn-check:checked + .btn-success, 
+.btn-success.active,
+.show > .btn-success.dropdown-toggle {
+  background-color: var(--success-hover);
+  border-color: var(--success-hover);
+  color: var(--success-hover-color);
+}
+
+.btn-outline-success {
+  background-color: var(--bs-body-bg);
+  border-color: var(--success);
+  color: var(--success-color);
+}
+
+.btn-outline-success:hover,
+.btn-outline-success.hover,
+.btn-outline-success:focus,
+.btn-outline-success.focus {
+  background-color: var(--bs-body-bg);
+  border-color: var(--success-hover);
+  color: var(--success-hover-color);
+}
+
+.btn-success.disabled,
+.btn-success:disabled {
+  color: var(--bs-white);
+  background-color: var(--success-disabled);
+  border-color: var(--success-disabled);
+}
+
+.btn-outline-success.disabled,
+.btn-outline-success:disabled {
+  color: var(--success-disabled);
+  background-color: var(--bs-body-bg);
+  border-color: var(--success-disabled);
+}
+
+.btn-danger {
+  background-color: var(--badge-danger-bg);
+  border-color: var(--danger);
+  color: var(--bs-body-color);
+}
+
+.btn-danger:hover,
+.btn-danger:focus {
+  background-color: var(--badge-danger-selected-bg);
+}
+
+/* Also have to overwrite bootstrap for dark mode for these */
+.form-control::placeholder {
+  color: light-dark(var(--bs-gray-550), var(--bs-gray-600));
+}
+.form-control[disabled], .form-control[readonly]{
+  background-color: var(--bs-body-bg-highlight);
+}
+
+.dropdown-menu:has(li>a){
+  background-color: var(--bs-body-bg);
+}
+.dropdown-menu>li>a,
+.dropdown-menu>li>a:hover,
+.dropdown-menu>li>a:focus {
+  color: var(--bs-dark);
+  padding: 1px 8px;
+}
+
+.dropdown-menu>li>a:focus,
+.dropdown-menu>li>a:hover {
+  background-color: var(--bs-body-bg-alt);
+}
+
+.dropdown-menu.uib-datepicker-popup {
+  background-color: var(--bs-white);
+}
+
+
+button.dropdown-toggle:hover,
+button.dropdown-toggle:focus,
+.open>button.btn-default.dropdown-toggle,
+.open>button.btn-default.dropdown-toggle:focus,
+.open>button.btn-default.dropdown-toggle:hover{
+  color: var(--bs-text-highlight);
+  background-color: var(--bs-body-bg-highlight);
+}
+
+.btn.btn-default:active {
+  color: light-dark(var(--bs-gray-800), var(--bs-gray-150));
+  background-color: light-dark(#e6e6e6, var(--bs-gray-800));
+  border-color: #adadad
+}
+
+.nav-tabs>li.active>a, 
+.nav-tabs>li.active>a:focus, 
+.nav-tabs>li.active>a:hover {
+  background-color: var(--white);
+  color: light-dark(#555, var(--bs-gray-400));
+}
+
+.input-group-addon {
+  color: var(--bs-text-highlight);
+  background-color: var(--bs-body-bg-highlight);
+  border-color: var(--border-thick);
+  border-right-color: var(--border);
+}
+
 
 @media (forced-colors: active) or (prefers-contrast: forced) {
   .uib-increment .btn,
@@ -707,3 +954,7 @@ vim: ft=css
     content:"\e253"; /* triangle-top */
   }
 }
+
+[%# 
+vim: ft=css 
+%]

@@ -7,13 +7,13 @@
 
 .fund-balance-state-stop,
 button.dropdown-item:has(.fund-balance-state-stop) {
-    background-color: #f8d7da;
-    color: #842029;
+    background-color: var(--badge-danger-bg);
+    color: var(--badge-danger-color);
     font-weight: bold;
 }
 
 button.dropdown-item.active:has(.fund-balance-state-stop) {
-    background-color: #F1AFB5;
+    background-color: var(--badge-danger-selected-bg);
 }
 
 /* show octagon/stop ! ("report") icon */
@@ -27,13 +27,13 @@ button.dropdown-item.active:has(.fund-balance-state-stop) {
 
 .fund-balance-state-warning,
 button.dropdown-item:has(.fund-balance-state-warning) {
-    background-color: #ffe69c;
-    color: #984C0C;
+    background-color: var(--badge-warning-bg);
+    color: var(--badge-warning-color);
     font-weight: bold;
 }
 
 button.dropdown-item.active:has(.fund-balance-state-warning) {
-    background-color: #FFDA6A;
+    background-color: var(--badge-warning-selected-bg);
 }
 
 /* show triangle ! ("warning") icon */

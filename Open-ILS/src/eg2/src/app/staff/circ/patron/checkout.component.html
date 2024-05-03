@@ -19,7 +19,7 @@
       <div class="input-group">
         <div class="input-group-text">
           <div ngbDropdown>
-            <button type="button" ngbDropdownToggle class="btn btn-outline-dark" id="checkout-button">
+            <button type="button" ngbDropdownToggle class="btn" id="checkout-button">
               <ng-container *ngIf="!checkoutNoncat" i18n>Barcode</ng-container>
               <ng-container *ngIf="checkoutNoncat">{{checkoutNoncat.name()}}</ng-container>
             </button>
@@ -38,7 +38,7 @@
           [(ngModel)]="checkoutBarcode" [disabled]="checkoutNoncat !== null"
           i18n-aria-label aria-label="Barcode Input" (keydown.enter)="checkout()" />
         <div class="input-group-text">
-          <button type="button" class="btn btn-outline-dark" (keydown.enter)="checkout()" 
+          <button type="button" class="btn" (keydown.enter)="checkout()" 
             (click)="checkout()" i18n>Submit</button>
         </div>
       </div>

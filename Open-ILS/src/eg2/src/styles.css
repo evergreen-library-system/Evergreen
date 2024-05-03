@@ -1,4 +1,5 @@
 /* You can add global styles to this file, and also import other style files */
+/* Colors are defined in styles-colors.css */
 
 /* bootstrap CSS only -- JS bits come from ng-bootstrap */
 @import '~bootstrap/dist/css/bootstrap.min.css';
@@ -6,49 +7,7 @@
 /* Locally served material icon fonts  */
 @import '~material-design-icons-iconfont/dist/material-design-icons.css';
 
-/* BS default colors lack sufficient contrast for accessibility */
 :root {
-  --blue: #0A58CA; /* $blue-600 in BS5 */
-  --primary: #0A58CA;
-  --bs-blue-rgb: 10,88,202;
-  --bs-primary-rgb: 10,88,202;
-  --green: #198754; /* $green ($green-500) in BS5 */
-  --success: #198754;
-  --bs-green-rgb: 25,135,84;
-  --bs-success-rgb: 25,135,84;
-  --cyan: #087990; /* $cyan-700 in BS5 */
-  --info: #087990;
-  --bs-cyan-rgb: 8,121,144;
-  --bs-info-rgb: 8,121,144;
-  --bs-red-rgb: 220,53,69;
-  --bs-red-600: #B02A37;
-  --bs-red-700: #58151C;
-  --bs-orange-rgb: 253, 126, 20;
-  --bs-orange-600: #CA6510;
-  --bs-orange-700: #653208;
-  /* Revised gray scales */
-  --gray-050: hsla(223, 25%, 96%, 1);
-  --gray-100: hsla(223, 25%, 93%, 1);
-  --gray-125: hsla(223, 25%, 91%, 1);
-  --gray-150: hsla(223, 25%, 89%, 1);
-  --gray-175: hsla(223, 25%, 87%, 1);
-  --gray-200: hsla(223, 25%, 84%, 1);
-  --gray-250: hsla(223, 25%, 79%, 1);
-  --gray-300: hsla(223, 20%, 74%, 1);
-  --gray-350: hsla(223, 20%, 69%, 1);
-  --gray-400: hsla(223, 20%, 64%, 1);
-  --gray-450: hsla(223, 20%, 59%, 1);
-  --gray-500: hsla(223, 20%, 54%, 1);
-  --gray-550: hsla(223, 15%, 49%, 1);
-  --gray-600: hsla(223, 15%, 44%, 1);
-  --gray-650: hsla(223, 15%, 39%, 1);
-  --gray-700: hsla(223, 15%, 34%, 1);
-  --gray-750: hsla(223, 15%, 29%, 1);
-  --gray-800: hsla(223, 15%, 24%, 1);
-  --gray-850: hsla(223, 15%, 19%, 1);
-  --gray-900: hsla(223, 15%, 14%, 1);
-  --gray-950: hsla(223, 15%, 9%, 1);
-
   /* Spacing options, based on bootstrap's spacing utility
      classes, see
      https://getbootstrap.com/docs/5.0/utilities/spacing/ */
@@ -65,16 +24,17 @@ body, .form-control, .btn, .input-group-text {
    * The default BS4 font of 1rem is comically large.
    */
   font-size: .88rem;
-}
+  }
 h1 {
   font-size: 1.25rem;
   font-weight: normal;
-  margin: 0
+  margin: 0;
+  color: light-dark(var(--bs-blue-700), white);
 }
 h2 {
   font-size: 1.25rem;
   font-weight: 550;
-  color: #0D7764;
+  color: var(--evergreen);
 }
 h3 {font-size: 1.15rem}
 h4 {font-size: 1.05rem}
@@ -85,45 +45,28 @@ h5 {font-size: .95rem}
 /** Use a default link color that achieves WCAG AA
  *  color contrast against a white background
  */
-a { 
-  border-color: #0A58CA;
-  color: #0A58CA; 
+a,
+.nav-link { 
+  border-color: var(--primary-border);
+  color: var(--primary);
 }
 
 a:focus,
-a:hover { 
-  border-color: #0848A5;
-  color: #0848A5; 
-}
-
-.nav-link {
-  color: #0A58CA;
+a:hover,
+.nav-link:focus,
+.nav-link:hover {
+  border-color: var(--primary-hover);
+  color: var(--primary-hover);
 }
 
 .btn-link {
-  color: #0A58CA;
+  color: var(--primary);
   padding: inherit;
 }
 
 .btn-link:focus,
-.btn-link:hover,
-.nav-link:focus,
-.nav-link:hover {
-  color: #0848A5;
-}
-
-/** Ang5 routes on clicks to href's with no values, so we can't have
- * bare href's to force anchor styling.  Use this for anchors w/ no href.
- * TODO: should we style all of them?  a:not([href]) ....
- * */
- .no-href {
-  color: #0A58CA;
-  cursor: pointer;
-}
-
-.no-href:hover {
-  border-color: #0848A5;
-  color: #0848A5; 
+.btn-link:hover {
+  color: var(--primary-hover);
 }
 
 /** BS has flex utility classes, but none for specifying flex widths.
@@ -163,9 +106,9 @@ a:hover {
   flex: 1;
   display: flex;
   align-items: center;
-  background-color: #f5f5f5;
+  background-color: light-dark( var(--bs-gray-100), var(--bs-gray-900) );
   border-radius: 5px;
-  box-shadow: inset 0 1px 1px rgba(0,0,0,.05);
+  box-shadow: inset 0 1px 1px rgba(var(--bs-black-rgb), 0.5);
   padding: 4px;
   margin: 4px;
   min-height: 40px;
@@ -177,16 +120,16 @@ a:hover {
 
 /* copies color/border/elements from above sans position elements */
 .well-like {
-  background-color: #f5f5f5;
+  background-color: light-dark( var(--bs-gray-100), var(--bs-gray-900) );
   border-radius: 5px;
-  box-shadow: inset 0 1px 1px rgba(0,0,0,.05);
+  box-shadow: inset 0 1px 1px rgba(var(--bs-black-rgb), 0.5);
 }
 
 /* usefuf for mat-icon buttons without any background or borders */
 .material-icon-button {
   /* Transparent background */
   border: none;
-  background-color: rgba(0, 0, 0, 0.0);
+  background-color: transparent;
   padding-left: .25rem;
   padding-right: .25rem; /* default .5rem */
 }
@@ -268,15 +211,15 @@ a:hover {
  */
 .form-validated .ng-valid[required]:not(eg-combobox):not(eg-date-select), 
 .form-validated .ng-valid.required, input[formcontrolname].ng-valid.required {
-  border-left: 5px solid #78FA89;
+  border-left: 5px solid var(--form-valid);
 }
 .form-validated .ng-invalid:not(form):not(eg-combobox):not(eg-date-select),
 input[formcontrolname].ng-invalid {
-  border-left: 5px solid #FA787E;
+  border-left: 5px solid var(--form-invalid);
 }
 
 .invalid {
-  border-left: 5px solid #FA787E;
+  border-left: 5px solid var(--form-invalid);
 }
 
 /* Typical form CSS.
@@ -301,26 +244,26 @@ input[formcontrolname].ng-invalid {
 .common-form.striped-even .row:nth-child(even),
   .striped-rows-even .row:nth-child(even) {
 
-  background-color: rgba(0,0,0,.03);
-  border-top: 1px solid rgba(0,0,0,.125);
-  border-bottom: 1px solid rgba(0,0,0,.125);
+  background-color: var(--common-form-bg);
+  border-top: 1px solid var(--common-form-border);
+  border-bottom: 1px solid var(--common-form-border);
 }
 
 .common-form.striped-odd .row:nth-child(odd),
   .striped-rows-odd .row:nth-child(odd) {
 
-  background-color: rgba(0,0,0,.03);
-  border-top: 1px solid rgba(0,0,0,.125);
-  border-bottom: 1px solid rgba(0,0,0,.125);
+  background-color: var(--common-form-bg);
+  border-top: 1px solid var(--common-form-border);
+  border-bottom: 1px solid var(--common-form-border);
 }
 
 option[disabled] {
-  color: rgba(0,0,0,.3);
+  color: light-dark(rgba(0,0,0, 0.3), rgba(255,255,255, 0.6));
 }
 
 .form-check-input[type=checkbox] {
   border-width: 2px;
-  border-color: rgba(0, 0, 0, .4);
+  border-color: var(--form-check-border);
   min-width: 1rem;
   min-height: 1rem;
 }
@@ -332,15 +275,23 @@ option[disabled] {
 :not(button):not(.btn):focus-visible,
 button.dropdown-item:focus,
 button.dropdown-item:focus-visible {
-  outline: 0.25rem solid rgba(13, 110, 253, 0.75);
+  outline: 0.25rem solid rgba(var(--primary-focus-outline-rgb), 0.75);
   outline-offset: 0;
   --moz-outline-radius: 0.25rem;
+}
+
+.form-control::placeholder {
+  color: light-dark(var(--bs-gray-500), var(--bs-gray-600));
 }
 
 .form-control:focus,
 .form-control:focus-visible {
   box-shadow: unset;
-  outline: 0.25rem solid rgba(13, 110, 253, 0.75) !important;
+  outline: 0.25rem solid rgba(var(--primary-focus-outline-rgb), 0.75) !important;
+}
+
+.form-control:disabled {
+    background-color: var(--bs-body-bg-highlight);
 }
 
 input[type="checkbox"]:focus {
@@ -365,6 +316,11 @@ input[type="checkbox"]:focus {
   #eg-print-container {display: block}
   #eg-print-container div {display: block}
   #eg-print-container pre {border: none}
+  
+  /* Always print in light mode */
+  :root {
+    color-scheme: light !important;
+  }
 }
 
 /**
@@ -380,28 +336,19 @@ body>.dropdown-menu {z-index: 2100;}
  * in the component's CSS file.
  */
 .ngb-dp-day:not(.disabled) .daterange-day.focused {
-  background-color: #e6e6e6;
+  background-color: var(--bs-gray-200);
 }
 .ngb-dp-day:not(.disabled) .daterange-day.range, .ngb-dp-day:not(.disabled) .daterange-day:hover {
-  background-color: #129a78;
-  color: white;
-  font-size: 1.4em;
+  background-color: var(--primary);
+  color: light-dark(white, black);
 }
 .ngb-dp-day:not(.disabled) .daterange-day.faded {
-  background-color: #c9efe4;
-  color: black;
+  background-color: var(--bs-body-bg-highlight);
+  color: var(--bs-black);
 }
 
-/* Washed out version of the Bootstrap 'info' background.
- * Useful for blocking out sections of a page/form without it 
- * being so intensely colorful */
 .bg-faint {
-  /*background-color: rgb(204, 229, 255, 0.3);*/
-
-  /* d9edf7 */
-  /*background-color: rgb(217, 237, 247, 0.5);*/
-
-  background-color: rgba(0,0,0,.03);
+  background-color: var(--bs-body-bg);
 }
 
 /* Allow for larger XL dialogs */
@@ -411,18 +358,18 @@ body>.dropdown-menu {z-index: 2100;}
 
 /* Default modal background color */
 .modal-header {
-  background-color: var(--info);
+  background-color: var(--modal-header-bg);
 }
 
 /* Contrast for dialog titles */
 .modal-header .modal-title {
-  color: #fff;
+  color: var(--modal-header-color);
   font-weight: 600;
 }
 
 .modal-header .close,
 .modal-header .close:hover {
-  color: #fff;
+  color: var(--modal-header-color);
   opacity: 1;
   text-shadow: none;
 }
@@ -430,6 +377,17 @@ body>.dropdown-menu {z-index: 2100;}
 .modal-header .close:not(:disabled):not(.disabled):focus, 
 .modal-header .close:not(:disabled):not(.disabled):hover {
   opacity: 1;
+}
+
+.modal-content {
+  background-color: var(--bs-body-bg-alt);
+  color: var(--bs-body-color);
+}
+
+.modal-header,
+.modal-content,
+.modal-footer {
+  border-color: var(--border);
 }
 
 /**
@@ -448,7 +406,7 @@ body>.dropdown-menu {z-index: 2100;}
  *    breaks a lot of styles.
  */
 #acq-search-page ngbNav .nav.nav-tabs {
-  background-color: rgb(247, 247, 247);
+  background-color: var(--nav-tab-bg);
 }
 
 /**
@@ -457,13 +415,24 @@ body>.dropdown-menu {z-index: 2100;}
  * preferable to just add the CSS to the worksheet component,
  * but untl a well-supported alternative to ng-deep comes along...
  */
-#worksheet-outlet thead th { font-weight: bold; background-color: #ccc; text-align: center; border-bottom: 1px #000 solid; border-right: 1px #000 solid; padding: 0 
-6px; }
-#worksheet-outlet tbody td { text-align: left; vertical-align: top; border: 1px #999 inset; padding: 0 2px; }
+#worksheet-outlet thead th { 
+  font-weight: bold; 
+  background-color: var(--bs-gray-400); 
+  text-align: center; 
+  border-bottom: 1px var(--bs-black) solid; 
+  border-right: 1px var(--bs-black) solid; 
+  padding: 0 6px; 
+}
+#worksheet-outlet tbody td { 
+  text-align: left; 
+  vertical-align: top; 
+  border: 1px var(--bs-gray-500) inset; 
+  padding: 0 2px; 
+}
 
 /* style for negative monetary values */
 .negative-money-amount {
-    color: red;
+    color: var(--danger);
 }
 
 input.medium {
@@ -473,39 +442,65 @@ input.medium {
 input.small {
   width: 4em;
 }
-
 /* 
  * Created initially for styled grid rows where full 'bg-danger' CSS is
  * intense and not especially readable, more so when rows are stacked.
  * http://web-accessibility.carnegiemuseums.org/design/color/
  */
-.less-intense-alert {
-  background-color: #f9dede;
-  color: #212121;
+ .less-intense-alert {
+  background-color: var(--badge-danger-bg);
+  color: var(--bs-dark);
 }
 
 /* Accessible button colors */
 
+/* TODO */
 button.input-group-text.text-danger {
-  color: #C92235 !important;
+  color: var(--bs-danger) !important;
+}
+
+.btn {
+  color: var(--bs-body-color);
+}
+
+.btn.btn-link {
+  color: inherit;
+  background-color: transparent;
+}
+
+.btn-light:hover,
+.btn-light:focus,
+.show > .btn-light.dropdown-toggle {
+  background-color: light-dark(var(--bs-gray-100), var(--bs-body-bg-alt));
+  color: light-dark(var(--bs-secondary), var(--bs-gray-100));
+  border-color: light-dark(var(--bs-secondary), var(--bs-gray-100));
+}
+
+.btn-outline-secondary:hover,
+.btn-outline-secondary:focus {
+  color: light-dark(var(--bs-secondary), var(--bs-gray-200));
+  background-color: transparent;
 }
 
 .btn-warning,
 .btn-outline-warning {
-  border-color: #BB8402;
+  background: var(--badge-warning-bg);
+  border-color: var(--warning-border);
+  color: var(--bs-body-color);
 }
 
 /* other colors' focus state shadows do not need to change */
 .btn-warning.focus,
 .btn-warning:focus {
-  border-color: #FFC107;
-  box-shadow: 0 0 0 .2rem rgba(255, 205, 57,.5);
+  background-color: var(--badge-warning-hover-bg);
+  border-color: var(--warning-border-hover);
+  box-shadow: 0 0 0 .2rem var(--warning-shadow);
 }
 
 .btn-primary {
-  background-color: #0A58CA;
-  border-color: #0A58CA;
-  color: #fff;
+  background-color: var(--primary);
+  border-color: var(--primary-border);
+  color: var(--bs-white);
 }
 
 .btn-primary:hover,
@@ -516,44 +511,42 @@ button.input-group-text.text-danger {
 .btn-check:checked + .btn-primary, 
 .btn-primary.active,
 .show > .btn-primary.dropdown-toggle {
-  background-color: #0848A5;
-  border-color: #0848A5;
-  color: #fff;
+  background-color: var(--primary-hover);
+  border-color: var(--primary-border);
+  color: var(--bs-white);
 }
 
 .btn-outline-primary {
-  background-color: #fff;
-  border-color: #0A58CA;
-  color: #0A58CA;
+  background-color: var(--bs-body-bg);
+  border-color: var(--primary-border);
+  color: var(--primary-border);
 }
 
 .btn-outline-primary:hover,
 .btn-outline-primary.hover,
 .btn-outline-primary:focus,
 .btn-outline-primary.focus {
-  background-color: #fff;
-  border-color: #0848A5;
-  color: #0848A5;
+  background-color: var(--bs-body-bg);
+  border-color: var(--primary-border);
+  color: var(--primary-border);
 }
 
 .btn-primary.disabled,
 .btn-primary:disabled {
-  color: #fff;
-  background-color: #156EF4;
-  border-color: #156EF4;
+  color: var(--bs-white);
 }
 
 .btn-outline-primary.disabled,
 .btn-outline-primary:disabled {
-  color: #156EF4;
-  background-color: #fff;
-  border-color: #156EF4;
+  color: var(--primary-disabled);
+  background-color: var(--bs-body-bg);
+  border-color: var(--primary-disabled);
 }
 
 .btn-info {
-  background-color: #087990;
-  border-color: #087990;
-  color: #fff;
+  background-color: var(--badge-info-bg);
+  border-color: var(--info-border);
+  color: var(--black);
 }
 
 .btn-info:hover,
@@ -564,21 +557,21 @@ button.input-group-text.text-danger {
 .btn-check:checked + .btn-info, 
 .btn-info.active,
 .show > .btn-info.dropdown-toggle {
-  background-color: #076376;
-  border-color: #076376;
-  color: #fff;
+  background-color: var(--info-hover);
+  border-color: var(--info-border);
+  color: var(--black);
 }
 
 .btn-info.disabled, .btn-info:disabled {
   background-color: rgba(var(--bs-info-rgb), 0.5);
   border-color: rgba(var(--bs-info-rgb), 0.5);
-  color: #fff;
+  color: var(--bs-white);
 }
 
 .btn-outline-info {
-  background-color: #fff;
-  border-color: #087990;
-  color: #087990;
+  background-color: var(--bs-body-bg);
+  border-color: var(--info-border);
+  color: var(--bs-body-color);
 }
 
 .btn-outline-info:hover,
@@ -590,29 +583,29 @@ button.input-group-text.text-danger {
 .btn-info.active,
 .btn-info:active,
 .show>.btn-info.dropdown-toggle {
-  color: #fff;
-  background-color: #076376;
-  border-color: #076376;
+  color: var(--bs-body-color);
+  background-color: var(--badge-info-bg);
+  border-color: var(--info-border);
 }
 
 .btn-info.disabled,
 .btn-info:disabled {
-  color: #fff;
-  background-color: #0A92AE;
-  border-color: #0A92AE;
+  color: var(--bs-white);
+  background-color: var(--info-disabled);
+  border-color: var(--info-disabled);
 }
 
 .btn-outline-info.disabled,
 .btn-outline-info:disabled {
-  color: #0A92AE;
-  background-color: #fff;
-  border-color: #0A92AE;
+  color: var(--info-disabled);
+  background-color: var(--bs-body-bg);
+  border-color: var(--info-disabled);
 }
 
 .btn-success {
-  background-color: #198754;
-  border-color: #198754;
-  color: #fff;
+  background-color: var(--success);
+  border-color: var(--success-border);
+  color: var(--success-color);
 }
 
 .btn-success:hover,
@@ -623,79 +616,101 @@ button.input-group-text.text-danger {
 .btn-check:checked + .btn-success, 
 .btn-success.active,
 .show > .btn-success.dropdown-toggle {
-  background-color: #157146;
-  border-color: #157146;
-  color: #fff;
+  background-color: var(--success-hover);
+  border-color: var(--success-hover);
+  color: var(--success-hover-color);
 }
 
 .btn-outline-success {
-  background-color: #fff;
-  border-color: #198754;
-  color: #198754;
+  background-color: var(--bs-body-bg);
+  border-color: var(--success);
+  color: var(--success-color);
 }
 
 .btn-outline-success:hover,
 .btn-outline-success.hover,
 .btn-outline-success:focus,
 .btn-outline-success.focus {
-  background-color: #fff;
-  border-color: #157146;
-  color: #157146;
+  background-color: var(--bs-body-bg);
+  border-color: var(--success-hover);
+  color: var(--success-hover-color);
 }
 
 .btn-success.disabled,
 .btn-success:disabled {
-  color: #fff;
-  background-color: #1D9F63;
-  border-color: #1D9F63;
+  color: var(--bs-white);
+  background-color: var(--success-disabled);
+  border-color: var(--success-disabled);
+}
+
+.btn-danger {
+  background-color: var(--badge-danger-bg);
+  border-color: var(--danger);
+  color: var(--bs-body-color);
+}
+
+.btn-danger:hover,
+.btn-danger:focus {
+  background-color: var(--badge-danger-selected-bg);
+}
+
+.btn-danger {
+  background-color: var(--badge-danger-bg);
+  border-color: var(--danger);
+  color: var(--bs-body-color);
+}
+
+.btn-danger:hover,
+.btn-danger:focus {
+  background-color: var(--badge-danger-selected-bg);
 }
 
 .btn-outline-success.disabled,
 .btn-outline-success:disabled {
-  color: #1D9F63;
-  background-color: #fff;
-  border-color: #1D9F63;
+  color: var(--success-disabled);
+  background-color: var(--bs-body-bg);
+  border-color: var(--success-disabled);
 }
 
 .btn-normal,
 .btn-destroy,
 .btn-outline-normal:hover,
-.btn-outline-normal:focus {
-  color: var(--bs-gray-900);
-  background-color: var(--bs-gray-200);
-  border: 1px solid var(--bs-gray-400);
+.btn-outline-normal:focus,
+.input-group-text {
+  color: var(--btn-gray-color);
+  background-color: var(--btn-gray-bg);
+  border: 1px solid var(--btn-gray-border);
 }
 
 .btn-normal:hover,
 .btn-normal:focus,
 .btn-normal:active {
-  color: var(--bs-gray-900);
-  background-color: var(--bs-gray-300);
-  border: 1px solid var(--bs-gray-400);
+  color: var(--btn-gray-color);
+  background-color: var(--btn-gray-bg-hover);
+  border: 1px solid var(--btn-gray-border);
 }
 
 .btn-outline-normal,
 .btn-outline-destroy {
-  color: var(--bs-gray-900);
+  color: var(--btn-gray-color);
   background-color: transparent;
-  border: 1px solid var(--bs-gray-400);
+  border: 1px solid var(--btn-gray-border);
 }
 
 .btn-outline-normal:hover,
 .btn-outline-normal:focus,
 .btn-outline-normal:active {
-  color: var(--bs-gray-900);
-  background-color: var(--bs-gray-200);
-  border: 1px solid var(--bs-gray-400);
+  color: var(--btn-gray-color);
+  background-color: var(--btn-gray-bg);
+  border: 1px solid var(--btn-gray-border);
 }
 
 .btn-outline-normal:hover,
 .btn-outline-normal:focus {
-  color: var(--bs-gray-900);
-  background-color: var(--bs-gray-200);
-  border: 1px solid var(--bs-gray-400);
+  color: var(--btn-gray-color);
+  background-color: var(--btn-gray-bg);
+  border: 1px solid var(--btn-gray-border);
 }
-
 .btn-normal[disabled],
 .btn-destroy[disabled] {
   color: var(--bs-gray-700);
@@ -726,7 +741,7 @@ button.input-group-text.text-danger {
 }
 
 .btn-destroy:active {
-  color: #fff;
+  color:  var(--bs-white);
   background-color: var(--bs-red);
   border: 1px solid var(--bs-red-700);
 }
@@ -793,6 +808,101 @@ button.focus-border:focus-visible {
 
 .btn-normal[disabled],
 .btn-destroy[disabled] {
+  color: var(--bs-body-color-disabled);
+  background-color: var(--btn-gray-bg);
+  border: 1px solid var(--btn-gray-bg-hover);
+}
+
+.btn-outline-normal[disabled],
+.btn-outline-destroy[disabled] {
+  color: var(--bs-body-color-disabled);
+  background-color: transparent;
+  border: 1px solid var(--btn-gray-bg-hover);
+}
+
+.btn-link.btn-destroy {
+  background-color: transparent;
+  border-color: transparent;
+}
+
+.btn-destroy:hover,
+.btn-destroy:focus,
+.btn-link.btn-destroy:hover,
+.btn-link.btn-destroy:focus {
+  color: var(--danger-color);
+  background-color: light-dark(var(--bs-gray-300), var(--bs-gray-800));
+  border: 1px solid var(--danger-border);
+  box-shadow: 0 0 0 .25rem rgba(var(--bs-red-rgb), 0.25);
+}
+
+.btn-destroy:active {
+  color: var(--white);
+  background-color: var(--danger);
+  border: 1px solid var(--danger-border);
+}
+
+.btn-link.btn-destroy:active {
+  color: var(--danger-color);
+  background-color: transparent;
+  border: 1px solid var(--danger-border);
+}
+
+.btn-outline-destroy:hover,
+.btn-outline-destroy:focus {
+  color: var(--danger-color);
+  background-color: transparent;
+  border: 1px solid var(--danger-border);
+  box-shadow: 0 0 0 .25rem rgba(var(--bs-red-rgb), 0.25);
+}
+
+.btn-outline-destroy:active {
+  color: var(--danger-color);
+  background-color: transparent;
+  border: 1px solid var(--danger-border);
+}
+
+/* inset a solid outline instead of using Bootstrap's box-shadow style */
+button.focus-border:focus,
+button.focus-border:focus-visible {
+    box-shadow: none;
+    outline: 3px solid rgba(var(--primary-focus-outline-rgb), 0.75);
+    outline-offset: -3px;
+}
+
+.btn-normal,
+.btn-destroy,
+.btn-outline-normal:hover,
+.btn-outline-normal:focus {
+  color: var(--bs-gray-900);
+  background-color: var(--bs-gray-200);
+  border: 1px solid var(--bs-gray-400);
+}
+
+.btn-normal:hover,
+.btn-normal:focus,
+.btn-normal:active {
+  color: var(--bs-gray-900);
+  background-color: var(--bs-gray-300);
+  border: 1px solid var(--bs-gray-400);
+}
+
+.btn-outline-normal,
+.btn-outline-destroy {
+  color: var(--bs-gray-900);
+  background-color: transparent;
+  border: 1px solid var(--bs-gray-400);
+}
+
+.btn-outline-normal:hover,
+.btn-outline-normal:focus,
+.btn-outline-normal:active {
+  color: var(--bs-gray-900);
+  background-color: var(--bs-gray-200);
+  border: 1px solid var(--bs-gray-400);
+}
+
+.btn-normal[disabled],
+.btn-destroy[disabled] {
   color: var(--bs-gray-700);
   background-color: var(--bs-gray-200);
   border: 1px solid var(--bs-gray-300);
@@ -821,7 +931,7 @@ button.focus-border:focus-visible {
 }
 
 .btn-destroy:active {
-  color: #fff;
+  color: var(--bs-white);
   background-color: var(--bs-red);
   border: 1px solid var(--bs-red-700);
 }
@@ -862,52 +972,57 @@ button.focus-border:focus-visible {
   padding-top: .15em;
 }
 
+.alert-primary,
 .badge-primary,
 .badge.text-bg-primary {
-  background: #cfe2ff;
-  color: #062C65;
+  background: var(--badge-bg);
+  color: var(--badge-color);
 }
 
 .badge-secondary,
 .badge.text-bg-secondary {
-  background: #dee2e6;
-  color: #212529;
+  background: light-dark(var(--bs-gray-300), var(--bs-gray-700));
+  color: var(--bs-body-color);
 }
 
+.alert-success,
 .badge-success,
 .badge.text-bg-success {
-  background: #dff0d8;
-  color: #003B35;
+  background: var(--badge-success-bg);
+  color: var(--badge-success-color);
 }
 
+.alert-danger,
 .badge-danger,
 .badge.text-bg-danger {
-  background: #f8d7da;
-  color: #58151c;
+  background: var(--badge-danger-bg);
+  color: var(--danger-color);
 }
 
+.alert-warning,
 .badge-warning,
 .badge.text-bg-warning {
-  background: #ffe69c;
-  color: #723809;
+  background: var(--badge-warning-bg);
+  color: var(--warning-color);
 }
 
+.alert-info,
 .badge-info,
 .badge.text-bg-info {
-  background: #cff4fc;
-  color: #032830;
+  background: var(--badge-info-bg);
+  color: var(--badge-info-color);
 }
 
 .badge-light,
 .badge.text-bg-light {
-  background: #e9ecef;
-  color: #212529;
+  background: var(--bs-gray-200);
+  color: var(--bs-gray-900);
 }
 
 .badge-dark,
 .badge.text-bg-dark {
-  color: #000;
-  background: #adb5bd;
+  color: var(--bs-black);
+  background: var(--bs-gray-500);
 }
 
 /* 
@@ -951,38 +1066,186 @@ a {
 
 /* Drop shadows for dropdown menus and active tabs */
 .nav-tabs .nav-link {
-  background-color: #f5f5f5;
-  border-color: #ddd;
+  background-color: var(--bs-body-bg);
+  border-color: var(--border);
   padding: 0.5rem 0.85rem;
 }
 
 .nav-tabs .nav-link.hover, 
 .nav-tabs .nav-link:hover,
 .nav-tabs.card-nav-tabs .nav-link:hover {
-  background-color: #fff;
-  border-color: #ddd;
+  background-color: var(--bs-body-bg-highlight);
+  border-color: var(--border);
 }
 
 .nav-tabs .nav-link.active, 
 .nav-tabs .nav-link:active {
-  background-color: #fff;
-  border-color: #aaa #aaa #fff;
+  background-color: var(--bs-white);
+  border-color: var(--border) var(--border) var(--bs-body-bg-alt);
   box-shadow: 0 -0.2rem 0.5rem rgba(0, 0, 0, 0.07);
 }
 
+[data-bs-theme="dark"] .nav-tabs .nav-link.active, 
+[data-bs-theme="dark"] .nav-tabs .nav-link:active {
+  color: var(--bs-body-color);
+  background-color: var(--bs-body-bg-highlight);
+  border: 1px solid var(--btn-gray-border);
+  box-shadow: 0 -0.2rem 0.5rem rgba(var(--box-shadow), 0.65);
+}
+
+[data-bs-theme="dark"] .nav-tabs .nav-link {
+  border-bottom-color: var(--btn-gray-border);
+}
 /* tabs on cards should match the card */
 .nav-tabs.card-nav-tabs .nav-link {
-  background-color: #f0f0f0;
+  background-color: light-dark(var(--bs-gray-125), var(--bs-body-bg));
 }
 
 .nav-tabs.card-nav-tabs .nav-link:active
 .nav-tabs.card-nav-tabs .nav-link.active {
-  background: #f5f5f5;
-  border-color: #aaa #aaa #f5f5f5;
+  background: light-dark(var(--bs-gray-110), var(--bs-body-bg-alt));
+  border-color: var(--bs-gray-500) var(--bs-gray-500) var(--bs-body-bg-alt);
 }
 
 .dropdown-menu.show {
-  box-shadow: 0 0.1em 0.5em rgba(0, 0, 0, 0.3);
+  box-shadow: 0 0.1em 0.5em rgba(var(--box-shadow), 0.3);
+}
+
+/* DARK MODE */
+/* Bootstrap has some background colors set instead of using their own body
+background/text variables. Crash override. We can remove this in Bootstrap 5.3.
+/**/
+.accordion-item, .accordion-button,
+.card,
+.eg-grid-content-body > div:nth-child(2n+1):not(.eg-grid-row-selected),
+.list-group-item,
+.panel, .panel-body,
+#patron-fixed-tabs,
+.patron-summary-container .row:nth-child(2n+1):not(.alert),
+.table {
+    background: var(--bs-body-bg);
+    border-color: var(--border);
+    color: var(--bs-body-color);
+}
+
+.bg-light, .bg-white,
+[data-bs-theme="dark"] .btn-light:active,
+[data-bs-theme="dark"] .btn-outline-dark:active {
+  background: inherit !important;
+  color: inherit !important;
+}
+
+legend,
+.eg-grid-cell {
+    color: var(--bs-body-color);
+}
+
+input, textarea, select, option,
+.accordion-button:not(.collapsed),
+.alert-info,
+.btn-outline-dark,
+.btn-default,
+.btn-light,
+.btn-light.dropdown-toggle,
+.card-header,
+.eg-grid-header,
+.eg-grid-sticky-header,
+.form-control, .form-control:focus, .form-select, .form-check-input,
+.panel-header,
+#patron-summary-grid div.row:nth-child(2n+1),
+.popover, 
+.popover-body,
+.tooltip-inner,
+.well {
+    background: var(--bs-body-bg-alt);
+    border-color: var(--border);
+    color: var(--bs-body-color);
+}
+
+.dropdown-item {
+  display: block;
+  width: 100%;
+  padding: .25rem 1rem;
+  clear: both;
+  font-weight: 400;
+  text-align: inherit;
+  text-decoration: none;
+  white-space: nowrap;
+  border: 0;
+  background-color: var(--bs-body-bg);
+  border-color: var(--border);
+  color: var(--bs-body-color);
+}
+
+.dropdown-divider {
+  height: 0;
+  margin: .5rem 0;
+  overflow: hidden;
+  border-top: 1px solid var(--border-thick);
+}
+
+.popover-header {
+  background-color: var(--popover-header-bg);
+  color: var(--bs-body-color);
+}
+
+.bs-popover-auto[data-popper-placement^="top"] .popover-header::before, 
+.bs-popover-top .popover-header::before,
+.bs-popover-auto[data-popper-placement^="top"] > .popover-arrow::after, 
+.bs-popover-top > .popover-arrow:after  {
+  border-top-color: var(--border);
+}
+
+.bs-popover-auto[data-popper-placement^="left"] .popover-header::before, 
+.bs-popover-left .popover-header::before,
+.bs-popover-auto[data-popper-placement^="left"] > .popover-arrow::after, 
+.bs-popover-left > .popover-arrow:after {
+  border-left-color: var(--border);
+}
+
+.bs-popover-auto[data-popper-placement^="right"] .popover-header::before, 
+.bs-popover-right .popover-header::before,
+.bs-popover-auto[data-popper-placement^="right"] > .popover-arrow::after, 
+.bs-popover-right > .popover-arrow:after {
+  border-right-color: var(--border);
+}
+
+.bs-popover-auto[data-popper-placement^="bottom"] .popover-header::before, 
+.bs-popover-bottom .popover-header::before,
+.bs-popover-auto[data-popper-placement^="bottom"] > .popover-arrow::after, 
+.bs-popover-bottom > .popover-arrow:after {
+  border-bottom-color: var(--border);
+}
+
+.patron-summary-alert, .patron-summary-alert-small {
+    background: inherit;
+    color: light-dark(var(--bs-red-300), var(--bs-red-700));
+}
+
+[data-bs-theme="dark"] .alert {
+  border: none;
+}
+
+[data-bs-theme="dark"] .alert-primary:has(h1) {
+  background-color: transparent;
+  color: var(--bs-body-color);
+}
+
+[data-bs-theme="dark"] .text-dark {
+  color: var(--bs-body-color) !important;
+}
+
+[data-bs-theme="dark"] .text-danger {
+  color: var(--danger-color) !important;
+}
+
+[data-bs-theme="dark"] .border {
+  border: 1px solid var(--border) !important;
+}
+
+[data-bs-theme="dark"] .btn-outline-dark:disabled {
+  border-color: var(--border);
+  color: var(--border);
 }
 
 @media (forced-colors: active) or (prefers-contrast: forced) {
@@ -998,13 +1261,13 @@ a {
 
   .dropdown-toggle:after {
     border: 0;
-    content: "\e5c5"; /* arrow_drop_down */
+    content: "\e5c5"; 
     font-family: "Material Icons";
     vertical-align: middle;
   }
 
   .dropdown.show .dropdown-toggle:after,
   .dropdown.open .dropdown-toggle:after {
-    content: "\e5c7"; /* arrow_drop_up */
+    content: "\e5c7";
   }
 }

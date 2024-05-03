@@ -23,5 +23,5 @@
 }
 
 .eg-context-menu .popover-body .menu-entry:hover {
-  background-color: #f8f9fa; 
+  background-color: var(--popover-menu-hover); 
 }

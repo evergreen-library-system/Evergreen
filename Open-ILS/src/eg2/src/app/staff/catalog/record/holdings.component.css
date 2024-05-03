@@ -1,17 +1,26 @@
-/*
-.holdings-copy-row {
+/* using component selector because of ViewEncapsulation.None */
+eg-holdings-maintenance {
+    --holdings-org-row-color: light-dark(var(--bs-gray-100), var(--bs-gray-200));
+    --holdings-org-row-bg: light-dark(#c9efe4, var(--bs-gray-900));
+    --holdings-call-num-bg: light-dark( #b4f8d3, #151515);
 }
-*/
+
+.table.eg-grid > :not(caption) > * > * {
+    background-color: unset;
+}
 
 /* colors are based on "Evergreen Green", tinted and desaturated */
 
-.holdings-callNum-row {
-    background-color: #c9efe4;
+.eg-grid-body-row.holdings-callNum-row,
+.eg-grid-body-row.holdings-callNum-row.selected {
+    background-color: var(--holdings-call-num-bg);
+    background-color: var(--holdings-call-num-bg);
 }
 
-.holdings-org-row {
-    color: rgba(0, 0, 0, .8);
-    background-color: #e1efeb;
+.eg-grid-body-row.holdings-org-row,
+.eg-grid-body-row.holdings-org-row.selected {
+    color: var(--holdings-org-row-color);
+    background-color: var(--holdings-org-row-bg);
 }
 
 .eg-grid-idlfield-owner_label .btn-link {
@@ -24,8 +33,15 @@
     visibility: hidden;
 }
 
-/* Add additional classes for more deeply nested org unit hierarchies */
-/* e.g.
-.holdings-org-row-0 {}
-.holdings-org-row-1 {}
-*/
+.eg-grid-idlfield-owner_label .btn-link {
+    padding: 0;
+    text-align: left;
+}
+
+/* hide it, but let it take up space so the text stays even with the parent node */
+.leaf .material-icons {
+    visibility: hidden;
+}
+
+
+

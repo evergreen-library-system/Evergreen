@@ -1,7 +1,7 @@
 #acq-provider-summary-pane {
   border-radius: 0px 0px 7px 7px;
-  background-color: rgb(247, 247, 247);
-  box-shadow: 1px 2px 3px -1px rgba(0, 0, 0, .2);
+  background-color: var(--bs-card-bg);
+  box-shadow: 1px 2px 3px -1px rgba(var(--box-shadow), 0.2);
 }
 .row { border-bottom: dotted thin; }
 .row.provider_id { }
@@ -23,5 +23,5 @@
 .row.provider_default_copy_count { display: none; }
 .row.provider_contacts { }
 .provider_contact_role { font-style: italic; }
-.provider_primary_contact { color: red; }
+.provider_primary_contact { color: var(--danger-color); }
 .row.provider_provider_notes { display: none; }

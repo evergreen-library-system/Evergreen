@@ -18,8 +18,8 @@ export interface BatchChangeSelection {
     selector: 'eg-batch-item-attr',
     templateUrl: 'batch-item-attr.component.html',
     styles: [
-        '.header { background-color: #d9edf7; }',
-        '.has-changes { background-color: #dff0d8; }'
+        '.header { background-color: var(--batch-item-attr-header-bg); }',
+        '.has-changes { background-color: var(--green-light); }'
     ]
 })
 

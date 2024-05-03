@@ -17,7 +17,7 @@
 					.marc_tag_ind {}
 					.marc_subfields {}
 					.marc_subfield_code { 
-						color: blue; 
+						color: var(--primary); 
 						padding-left: 5px;
 						padding-right: 5px; 
 					}

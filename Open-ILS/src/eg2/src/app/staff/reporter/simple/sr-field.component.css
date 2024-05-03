@@ -1,5 +1,5 @@
 .sr-field-container {
-  border-bottom: 1px solid lightgray;
+  border-bottom: 1px solid var(--border);
   padding: .5em .75em;
   margin-bottom: .75em;
 }

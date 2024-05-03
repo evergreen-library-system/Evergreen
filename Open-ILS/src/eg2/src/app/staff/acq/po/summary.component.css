@@ -1,8 +1,8 @@
 /* summary.component.css */
 
 .text-danger {
-    background-color: #f8d7da;
-    color: #842029 !important;
+    background-color: var(--badge-danger-bg);
+    color: var(--danger-color) !important;
     font-weight: bold;
     padding: 0 .25rem;
 }
@@ -12,8 +12,8 @@
 }
 
 .bg-warning {
-    background-color: #ffe69c !important;
-    color: #984C0C;
+    background-color: var(--badge-warning-bg) !important;
+    color: var(--badge-warning);
     font-weight: bold;
 }
 

@@ -1,37 +1,45 @@
 /* eg-marc-editor background set in parent record.component.css */
 
 .nav-tabs {
-  background-color: var(--gray-125);
-  border-color: var(--gray-250);
-  padding-left: 0.5rem; /* separate active tab from page background */
+  background-color: var(--bs-body-bg);
+  border-color: var(--border);
+  padding-inline-start: 0.5rem; /* separate active tab from page background */
 }
 
 .nav-tabs .nav-link {
-  background-color: var(--gray-100);
-  border-color: var(--gray-250);
-  color: #084DB4;
+  background-color: var(--bs-body-bg);
+  border-color: var(--bs-body-bg-alt);
+  color: light-dark(var(--bs-blue-650), var(--bs-blue-400));
 }
 
 .nav-tabs .nav-link.active {
-  background: linear-gradient(var(--gray-050) 35%, var(--gray-125));
-  border-color: var(--gray-300) var(--gray-400) var(--gray-125);
-  color:var(--gray-900);
+  background: light-dark(
+    linear-gradient(var(--bs-gray-100) 35%, var(--bs-gray-150)),
+    linear-gradient(var(--bs-gray-900) 35%, var(--bs-gray-850))
+  );
+  border-color: light-dark(
+    var(--bs-gray-100) var(--bs-gray-500) var(--bs-gray-100),
+    var(--bs-gray-900) var(--bs-gray-500) var(--bs-gray-900)
+  );
+  color:var(--bs-body-color);
 }
 
 .nav-tabs .nav-link:hover,
 .nav-tabs .nav-link:focus {
-  background-color: var(--gray-100);
-  border-color: var(--gray-600) var(--gray-600) var(--gray-100);
+  background-color: light-dark(var(--bs-gray-100), var(--bs-gray-900));
+  border-color: light-dark(
+    var(--bs-gray-600) var(--bs-gray-600) var(--bs-gray-100),
+    var(--bs-gray-400) var(--bs-gray-400) var(--bs-gray-900)
+  );
 }
 
-
 .btn-destroy {
-  background-color: var(--gray-550);
-  color: white;
+  background-color: light-dark(var(--bs-gray-300), var(--bs-gray-700));
+  color: var(--white);
 }
 
 .btn-destroy:hover,
 .btn-destroy:focus {
-  background-color: var(--bs-danger);
-  color: white;
+  background-color: var(--danger);
+  color: var(--white);
 }

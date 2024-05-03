@@ -1,0 +1,218 @@
+/* ----------------------------------------------------------------------
+ * Grid
+ * ---------------------------------------------------------------------- */
+
+
+.eg-grid-primary-label {
+  font-weight: bold;
+  font-size: 120%;
+  margin-right: 2em;
+}
+
+/* odd/even row styling */
+.eg-grid-content-body > div:nth-child(odd):not(.eg-grid-row-selected) {
+  background-color: var(--bs-body-bg-alt);
+}
+
+.eg-grid-row {
+  width: 100%;
+  display: flex;
+  border: 1px solid var(--grid-borders);
+}
+
+.eg-grid-row:not(.eg-grid-header-row):not(.eg-grid-conf-row) {
+  /* TODO: remove, pretty sure this is no longer needed w/ nowrap */
+  /*height: 1.8em;*/
+}
+
+.eg-grid-action-row {
+  border: none;
+  /* margin should not have to be this large; something's up */
+  margin-bottom: 12px;
+}
+
+.eg-grid-header-row {
+  font-weight: bold;
+  background-color: var(--grid-header-row);
+}
+
+.eg-grid-header-row > .eg-grid-cell {
+  border-right: 1px solid var(--grid-borders);
+  text-align: center;
+
+  /* vertically align header cell text by treating 
+     each header cell as a vertical flex container */
+  display:flex;
+  flex-direction:column;
+  justify-content:flex-end;
+}
+
+.eg-grid-cell {
+  /* avoid text flowing into adjacent cells */
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  overflow: hidden;
+}
+
+/* in config display, make cells more obvious */
+.eg-grid-as-conf .eg-grid-row {
+  border: 1px solid #777;
+}
+.eg-grid-as-conf .eg-grid-cell {
+  border-right: 1px solid #777;
+}
+
+/* stock columns need fixed-width controls */
+.eg-grid-cell-stock {
+  width: 2.2em;
+  text-align: center;
+}
+
+/* the conf header must be twice the stock flex */
+.eg-grid-cell-conf-header {
+  width: 4.4em;
+  font-weight: bold;
+}
+
+.eg-grid-cell-stock-status {
+  width: 4.4em;
+  text-align: center;
+}
+
+/* the conf header must be 4x the stock width when status is present */
+.eg-grid-cell-conf-header-status {
+  width: 8.8em;
+  font-weight: bold;
+}
+
+.eg-grid-row-selected {
+  color: var(--grid-row-selected);
+  background-color: var(--grid-row-selected-bg);
+  border-bottom: 1px solid var(--grid-row-selected-border);
+}
+
+/* Improve ::selection styling by only allowing selection on text
+ * content cells within the main body of the grid.  Otherwise, the browser 
+ * styles row background and text (all dark blue?) when shift-click or 
+ * click-drag is used.
+ */
+.eg-grid-content-body .eg-grid-row {
+  user-select:none;
+  -moz-user-select: none;
+  -webkit-user-select: none;
+}
+.eg-grid-content-body .eg-grid-cell-content {
+  user-select:text;
+  -moz-user-select: text;
+  -webkit-user-select: text;
+}
+.eg-grid-cell-content::-moz-selection {
+  color: #000;
+  background: rgb(201, 221, 225);
+  border-bottom: 1px solid #888;
+}
+
+.eg-grid-cell-content::selection {
+    color: #000;
+    background: rgb(201, 221, 225);
+    border-bottom: 1px solid #888;
+  }
+  .eg-grid-cell-content a {
+    text-decoration: underline;
+  }
+  
+  .eg-grid-conf-cell-entry {
+    width:98%;
+    text-align:center;
+    padding: 3px;
+  }
+  
+  .eg-grid-conf-cell-entry:not(:first-child) {
+    border-top:1px solid #ccc;
+  }
+  
+  .eg-grid-conf-row {
+    background-color: #dff0d8;
+    border-color: #d6e9c6;
+  }
+  
+  .eg-grid-conf-row:first-child {
+    /* alignment fix; account for one missing border */
+    padding-right: 1px;
+  }
+  
+  .eg-grid-column-move-handle:hover {
+    cursor: move;
+  }
+  
+  .eg-grid-column-move-handle-active,
+  .eg-grid-column-move-handle-active:active {
+    /* similar to label-primary, sans padding */
+    background-color: rgb(66, 139, 202);
+    color: #fff;
+  }
+  
+  .eg-grid-col-hover {
+    /* similar to label-success, sans padding */
+    background-color: rgb(92, 184, 92);
+    color: #fff;
+  }
+  
+  .eg-grid-column-resize-handle {
+    height: 100%;
+  }
+  .eg-grid-column-resize-handle:hover {
+    cursor: col-resize;
+  }
+  
+  /* for these to be useful, they would have to be applied 
+   * to the dragover targets.  not yet done */
+  .eg-grid-column-resize-handle-west {
+    cursor: w-resize;
+  }
+  .eg-grid-column-resize-handle-east {
+    cursor: e-resize;
+  }
+  
+  .eg-grid-column-last-mod {
+    background-color: #78FA89;
+  }
+  
+  .eg-grid-menu-item {
+    margin-right: 10px;
+  }
+  
+  
+  /* hack to make the header columns line up with the content columns
+     when the scroll bar is visible along the right side of the content
+     columns. TODO: if this varies enough by browser, we'll need to
+     calculate the width instead. */
+  /*
+  .eg-grid-scroll > .eg-grid-header-row, 
+  .eg-grid-scroll > .eg-grid-conf-row { 
+    padding-right: 15px;
+  }
+  .eg-grid-scroll > .eg-grid-content-body {
+    overflow-y:scroll; 
+    height: 600px; 
+  }
+  */
+  .eg-grid-column-picker {
+    height: auto;
+    max-height: 400px;
+    overflow: auto;
+    box-shadow: none;
+  }
+  
+  .eg-grid-tooltip {
+    font-size: 110%;
+  }
+  /* avoid visited "blue" links over black background */
+  .eg-grid-tooltip a {
+    color: white;
+  }
+  
+  
+  /* ----------------------------------------------------------------------
+   * /Grid
+   * ---------------------------------------------------------------------- */

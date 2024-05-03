@@ -1,5 +1,5 @@
 #acq-search-form {
   border-radius: 0px 0px 7px 7px;
-  background-color: rgb(247, 247, 247);
-  box-shadow: 1px 2px 3px -1px rgba(0, 0, 0, .2);
+  background-color: var(--bs-card-bg);
+  box-shadow: 1px 2px 3px -1px rgba(var(--box-shadow), 0.2);
 }

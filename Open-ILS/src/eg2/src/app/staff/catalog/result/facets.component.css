@@ -1,5 +1,5 @@
 .facet-selected {
-  background-color: #DDD;
+  background-color: var(--bs-gray-300);
 }
 
 .card {

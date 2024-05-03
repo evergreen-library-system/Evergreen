@@ -1,5 +1,5 @@
 #staff-catalog-results-container h2 {
-    color: #212529;
+    color: var(--bs-body-color);
     font-size: 1.15rem;
     font-weight: 500;
 }

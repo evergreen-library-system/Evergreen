@@ -1,3 +1,8 @@
+:host {
+  --vol-edit-clear-icons: var(--bs-gray-550);
+  --vol-row-bg: var(--bs-row-alt);
+  --vol-row-border: var(--eg-blue-11); 
+}
 
 input[type="number"] {
   /* visually accomodates numbers in the hundreds */
@@ -5,14 +10,14 @@ input[type="number"] {
 }
 
 .vol-row {
-  background-color: rgba(0,0,0,.03);
-  border-top: 1px solid #d9edf7;
-  border-bottom: 1px solid #d9edf7;
+  background-color: var(--vol-row-bg);
+  border-top: 1px solid var(--vol-row-border);
+  border-bottom: 1px solid var(--vol-row-border);
 }
 
 .clear-button {
   border: none;
-  background-color: rgba(0, 0, 0, 0.0);
+  background-color:var(--rgba-clear);
   padding-left: .25rem;
   padding-right: .25rem;
   line-height: inherit;
@@ -20,7 +25,7 @@ input[type="number"] {
 
 .clear-button .material-icons {
   font-size: 15px;
-  color: grey;
+  color: var(--vol-edit-clear-icons);
 }
 
 

@@ -33,7 +33,7 @@
             {{callNumber.prefix().label()}}
             {{callNumber.label()}}
             {{callNumber.suffix().label()}}
-            @ {{orgName(callNumber.owning_lib())}}
+            &#64; {{orgName(callNumber.owning_lib())}}
           </div>
         </ng-container>
         <div class="flex-1 ps-2">
@@ -163,7 +163,7 @@
             </span>
           </div>
           <div class="float-start w-50">
-            @ {{orgName(copyCount.org_unit)}}
+            &#64; {{orgName(copyCount.org_unit)}}
           </div>
         </div>
       </div>
@@ -245,7 +245,7 @@
       </div>
     </div><!-- row -->
     <div class="row" *ngIf="searchContext.showResultExtras && summary.copies">
-      <div class="shelving-locations" role="region" aria-describedby="caption{{index}}" tabindex="0">
+      <div class="shelving-locations" role="region" [attr.aria-describedby]="'caption'+index" tabindex="0">
         <table class="table" role="table" *ngIf="summary.copies.length">
           <caption id="caption{{index}}" *ngIf="summary.copies.length">
               <span i18n="Shelving locations table heading">Shelving Locations</span>

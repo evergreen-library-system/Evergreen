@@ -859,6 +859,41 @@
         </div>
       </div>
     </div>
+    <div class="navbar-nav" [ngClass]="{'ms-auto': !user()}">
+      <div ngbDropdown class="nav-item dropdown color-mode-toggle" display="dynamic">
+        <button type="button" ngbDropdownToggle class="nav-link dropdown-toggle with-material-icon">
+          <ng-container *ngIf="colorMode == 'light'">
+            <span class="material-icons" aria-hidden="true">light_mode</span>
+            <span class="visually-hidden" i18n>Current color mode: Light</span>
+          </ng-container>
+          <ng-container *ngIf="colorMode == 'dark'">
+            <span class="material-icons" aria-hidden="true">nightlight</span>
+            <span class="visually-hidden" i18n>Current color mode: Dark</span>
+          </ng-container>
+          <ng-container *ngIf="!colorMode || colorMode == 'auto'">
+            <span class="material-icons" aria-hidden="true">brightness_medium</span>
+            <span class="visually-hidden" i18n>Current color mode: Auto</span>
+          </ng-container>
+        </button>
+        <div class="dropdown-menu color-mode" ngbDropdownMenu>
+          <button type="button" class="dropdown-item" ngbDropdownItem
+            (click)="changeColorMode('light')">
+            <span class="material-icons" aria-hidden="true">light_mode</span>
+            <span i18n>Light</span>
+          </button>
+          <button type="button" class="dropdown-item" ngbDropdownItem
+            (click)="changeColorMode('dark')">
+            <span class="material-icons" aria-hidden="true">nightlight</span>
+            <span i18n>Dark</span>
+          </button>
+          <button type="button" class="dropdown-item" ngbDropdownItem
+            (click)="changeColorMode('auto')">
+            <span class="material-icons" aria-hidden="true">brightness_medium</span>
+            <span i18n>Auto</span>
+          </button>
+        </div>
+      </div>
+    </div>
     <div class="navbar-nav" *ngIf="user()">
       <div ngbDropdown class="dropdown-menu" 
         class="nav-item" display="dynamic">
@@ -930,6 +965,7 @@
         </div>
       </div>
     </div>
+    
   </div>
 </div>
 </nav>

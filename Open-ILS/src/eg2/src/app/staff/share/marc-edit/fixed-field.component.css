@@ -16,6 +16,6 @@
 }
 
 :host .popover-body .menu-entry:hover {
-  background-color: #f8f9fa; /* bootstrap color */
+  background-color: var(--popover-menu-hover); /* bootstrap color */
 }
 

@@ -47,7 +47,7 @@
 ::ng-deep .eg-grid-row.less-intense-alert a,
 ::ng-deep .eg-grid-row.lost-row a,
 ::ng-deep .eg-grid-row.lost-row .eg-grid-flair-cell {
-  color: var(--bs-red-700);
+  color: var(--danger-color);
   border-color: var(--bs-red-700);
 }
 
@@ -87,7 +87,7 @@
 /* link color for orange alerts */
 ::ng-deep .eg-grid-row.overdue-row a,
 ::ng-deep .eg-grid-row.longoverdue-row a {
-  color: var(--bs-orange-700);
+  color: light-dark(var(--bs-orange-700), var(--bs-yellow-300));
   border-color: var(--bs-orange-700);
 }
 

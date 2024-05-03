@@ -1,24 +1,53 @@
+:host {
+  
+  --css-yellow: #FFFF00; /* TODO: REPLACE (Patron has alert border) */
+  --eg-orange-1: #FF6633; 
+  --eg-orange-2: #CC3300; 
+  --eg-red-3: #a6424c;
+  --eg-red-3-rgb: 166,66,76;
+  --eg-red-4: #9f2723;
+  --eg-red-4-rgb: 159,39,35;
+  --eg-red-5: #800000; 
+  --eg-blue-2: #66FFFF;
+
+
+  --bills-striped-bg: var(--bs-black-rgb, 0.03); 
+  --patron-lost-row: var(--bs-light);
+  --patron-lost-row-bg: var(--eg-red-5); 
+  --patron-summary-row-odd-bg: var(--bs-card-bg); 
+  --patron-status-archived: var(--status-archived);
+  --patron-status-barred: var(--eg-orange-2); 
+  --patron-status-exceeds-something: var(--eg-purple); 
+  --patron-status-has-bills: var(--eg-brown-3); 
+  --patron-status-has-lost: var(--eg-brown-3); 
+  --patron-status-has-overdues: var(--eg-brown-3); 
+  --patron-status-inactive: var(--inactive); 
+  --patron-status-multiple-penalties: var(--eg-orange-1); 
+  --patron-status-one-penalty: var(--eg-blue-2); 
+  --long-overdue-row: var(--bs-body-color);
+  --long-overdue-row-bg: var(--bs-yellow-250); 
+}
 
 .patron-summary-container .row:nth-child(odd):not(.alert) {
-  background-color: rgb(248, 248, 248);
+  background-color: var(--patron-summary-row-odd-bg);
 }
 
 .patron-status-color { border: 2px solid transparent; padding: 3px; padding-left: 5px;}
-.patron-status-color.NO_PENALTIES  { border-color: lime; }
-.patron-status-color.ONE_PENALTY  { border-color: #66FFFF; }
-.patron-status-color.MULTIPLE_PENALTIES  { border-color: #FF6633; }
-.patron-status-color.PATRON_HAS_STAFF_ALERT  { border-color: blue; }
-.patron-status-color.PATRON_HAS_BILLS  { border-color: #FFC266; }
-.patron-status-color.PATRON_HAS_OVERDUES  { border-color: #FFC266; }
-.patron-status-color.PATRON_HAS_LOST  { border-color: #FFC266; }
-.patron-status-color.PATRON_EXCEEDS_CHECKOUT_COUNT  { border-color: #C99DFF; }
-.patron-status-color.PATRON_EXCEEDS_OVERDUE_COUNT  { border-color: #C99DFF; }
-.patron-status-color.PATRON_EXCEEDS_FINES  { border-color: #C99DFF; }
-.patron-status-color.PATRON_HAS_ALERT  { border-color: yellow; }
-.patron-status-color.PATRON_INACTIVE  { border-color: #333333; }
-.patron-status-color.PATRON_EXPIRED  { border-color: #666666; }
-.patron-status-color.PATRON_BARRED  { border-color: #CC3300; }
-.patron-status-color.PATRON_JUVENILE  { border-color: lightblue; }
+.patron-status-color.NO_PENALTIES  { border-color: var(--success-border); }
+.patron-status-color.ONE_PENALTY  { border-color: var(--patron-status-one-penalty); }
+.patron-status-color.MULTIPLE_PENALTIES  { border-color: var(--patron-status-multiple-penalties); }
+.patron-status-color.PATRON_HAS_STAFF_ALERT  { border-color: var(--bs-blue-700); }
+.patron-status-color.PATRON_HAS_BILLS  { border-color: var(--patron-status-has-bills); }
+.patron-status-color.PATRON_HAS_OVERDUES  { border-color: var(--patron-status-has-overdues); }
+.patron-status-color.PATRON_HAS_LOST  { border-color: var(--patron-status-has-lost); }
+.patron-status-color.PATRON_EXCEEDS_CHECKOUT_COUNT  { border-color: var(--patron-status-exceeds-something); }
+.patron-status-color.PATRON_EXCEEDS_OVERDUE_COUNT  { border-color: var(--patron-status-exceeds-something); }
+.patron-status-color.PATRON_EXCEEDS_FINES  { border-color: var(--patron-status-exceeds-something); }
+.patron-status-color.PATRON_HAS_ALERT  { border-color: var(--css-yellow); }
+.patron-status-color.PATRON_INACTIVE  { border-color: var(--patron-status-inactive); }
+.patron-status-color.PATRON_EXPIRED  { border-color: var(--patron-status-archived); }
+.patron-status-color.PATRON_BARRED  { border-color: var(--patron-status-barred); }
+.patron-status-color.PATRON_JUVENILE  { border-color: var(--css-light-cyan); }
 
 
 

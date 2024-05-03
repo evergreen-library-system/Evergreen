@@ -1,6 +1,7 @@
 <!doctype html>
 [%- PROCESS 'staff/config.tt2' %]
 <html lang="[% ctx.eg_locale %]"
+    [% IF ctx.color_mode %] data-bs-theme="[% ctx.color_mode %]" class="color-mode-[% ctx.color_mode %]"[% END %]
     [%- IF ctx.page_app %] ng-app="[% ctx.page_app %]"[% END -%]
     [%- IF ctx.page_ctrl %] ng-controller="[% ctx.page_ctrl %]"[% END %]>
   <head>
@@ -27,7 +28,11 @@
     <link rel="stylesheet" href="[% WEB_BUILD_PATH %]/css/evergreen-staff-client-deps.[% EVERGREEN_VERSION %].min.css" />
     [% END %]
     <link rel="stylesheet" href="[% ctx.base_path %]/staff/css/cat.css" />
+    <link rel="stylesheet" href="[% ctx.base_path %]/staff/css/styles-colors.css" />
     <link rel="stylesheet" href="[% ctx.base_path %]/staff/css/style.css" />
+    <link rel="stylesheet" href="[% ctx.base_path %]/staff/css/nav.css" />
+    <link rel="stylesheet" href="[% ctx.base_path %]/staff/css/grid.css" />
+    
   </head>
   <body>
     <toast></toast>

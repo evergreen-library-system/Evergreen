@@ -21,7 +21,7 @@
 }
 
 .eg-tree-node-expandy .material-icons {
-  color: black;
+  color: var(--black);
   font-size: 16px;
 }
 
@@ -31,8 +31,13 @@
 
 /* from ACQB, may not be needed */
 .eg-tree-node-wrapper.active {
-  background-color: rgba(0,0,0,.03);
-  border: 1px solid rgba(0,0,0,.125);
+  background-color: var(--common-form-bg);
+  border: 1px solid var(--border);
+  font-style: italic;
+}
+
+.eg-tree-node-nochild {
+  border-left: 2px dashed var(--border);
 }
 
 /* from ACQB, may not be needed */
@@ -72,7 +77,7 @@
 }
 
 .eg-tree-branch .eg-tree-node.active > .eg-tree-node-wrapper {
-  background-color: rgba(0,0,0,.03);
+  background-color: light-dark(rgba(var(--box-shadow).03), rgba(255,255,255, .1));
   border: 1px solid var(--bs-gray-400);
 }
 

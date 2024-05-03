@@ -20,7 +20,7 @@
 }
 
 [role="region"][aria-labelledby][tabindex]:focus-visible table {
-    outline: 2px solid #0A58CA;
+    outline: 2px solid var(--eg-blue-21);
     outline-offset: 5px;
 }
 
@@ -34,7 +34,7 @@
 }
 
 table caption {
-    color: #000;
+    color: var(--bs-body-color);
     font-weight: bold;
     caption-side: top;
 }
@@ -60,11 +60,11 @@ table.wide td {
 }
 
 table thead th {
-    border-bottom: 1px solid rgba(0, 0, 0, .125);
+    border-bottom: 1px solid var(--grid-borders);
 }
 
 table th {
-    background-color: rgba(0, 0, 0, .03);
+    background-color: var(--grid-header-row);
     font-weight: 600;
     vertical-align: bottom;
 }

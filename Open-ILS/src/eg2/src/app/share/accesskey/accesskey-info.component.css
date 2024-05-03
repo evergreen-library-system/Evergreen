@@ -3,11 +3,11 @@
 }
 
 .accesskey-info .row:nth-of-type(odd) {
-    background: #f4f4f4;
+    background: var(--keyboard-info-row-odd);
 }
 
 .accesskey-info .row.shortcut-info {
-    background: #fff;
+    background: var(--keyboard-info-row-even);
     font-style: italic;
 }
 
@@ -20,11 +20,11 @@
 }
 
 kbd {
-    background-color:#e4e4e7;
+    background-color: var(--bs-light);
     border-radius:.2rem;
     border: none;
-    box-shadow: 1px 1px 1px rgba(0,0,10,0.5);
-    color: #000;
+    box-shadow: 1px 1px 1px rgba(var(--box-shadow), 0.5);
+    color: var(--bs-body-color);
     margin: 0 .2em;
     /* :first-letter requires a block-level element */
     display: inline-block;

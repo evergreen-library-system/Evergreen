@@ -1,4 +1,4 @@
 .course-archived {
-  color: #666;
+  color: var(--status-archived);
   font-style: italic;
 }

@@ -37,6 +37,7 @@ export class StaffNavComponent implements OnInit, OnDestroy {
 
     // Menu toggle
     isMenuCollapsed = true;
+    colorMode: 'auto' | 'light' | 'dark' = 'auto';
 
     @ViewChild('navOpChange', {static: false}) opChange: OpChangeComponent;
     @ViewChild('confirmLogout', { static: true }) confirmLogout: ConfirmDialogComponent;
@@ -96,6 +97,18 @@ export class StaffNavComponent implements OnInit, OnDestroy {
                 .then(settings => this.maxRecentPatrons =
                 settings['ui.staff.max_recent_patrons'] ?? 1);
 
+            const darkModePreference = window.matchMedia("(prefers-color-scheme: dark)");
+            darkModePreference.addEventListener('change', () => {
+                // Don't change color mode while printing
+                if (!window.matchMedia("print").matches) {
+                    this.setColorMode();
+                }
+
+            });
+
+            this.colorMode = this.store.getLocalItem('eg.ui.general.colormode') ?? 'auto';
+            this.setColorMode();
+
             // Do we show the angular circ menu?
             // TODO remove these once Angular Circ takes over.
             const angSet = 'ui.staff.angular_circ.enabled';
@@ -143,6 +156,27 @@ export class StaffNavComponent implements OnInit, OnDestroy {
 
     ws_ou() {
         return this.auth.user() ? this.auth.user().ws_ou() : '';
+    }
+
+    setColorMode() {
+        if ('auto' === this.colorMode) {
+            document.documentElement.setAttribute('data-bs-theme', (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light'));
+        }
+        else {
+            document.documentElement.setAttribute('data-bs-theme', this.colorMode);
+        }
+    }
+    
+    changeColorMode(mode: any) {
+        if ( 'light' === mode || 'dark' === mode || 'auto' === mode ) {
+            this.colorMode = mode;
+            this.store.setLocalItem('eg.ui.general.colormode', mode);
+        }
+        else {
+            this.colorMode = 'auto';
+            this.store.removeLocalItem('eg.ui.general.colormode');
+        }
+        this.setColorMode();
     }
 
     setLocale(locale: any) {

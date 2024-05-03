@@ -237,7 +237,7 @@
       <eg-grid-column i18n-label label="Author" path='author' [hidden]="true"></eg-grid-column>
       <eg-grid-column i18n-label label="Series Title" path='series_title' [hidden]="true"></eg-grid-column>
       <ng-template #titleTmpl let-hold="row">
-        <a class="no-href" routerLink="/staff/catalog/record/{{hold.record_id}}" target="_blank">
+        <a routerLink="/staff/catalog/record/{{hold.record_id}}" target="_blank">
           {{hold.title}}
         </a>
       </ng-template>

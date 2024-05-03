@@ -1,3 +1,4 @@
+
 .eg-grid-wrapper {
   margin-bottom: 1rem;
   padding-bottom: 1rem;
@@ -35,9 +36,11 @@ table.table.eg-grid {
 }
 
 .eg-grid {
-  caption-side: block-start;
-  table-layout: auto;
-  white-space: normal; 
+    width: 100%;
+    color: var(--grid);
+    caption-side: block-start;
+    table-layout: auto;
+    white-space: normal;  
 }
 
 .eg-grid > :not(:first-child) {
@@ -74,9 +77,15 @@ table.table.eg-grid {
 
 .eg-grid-body-row.selected, 
 .eg-grid-column-config-dialog .visible {
-  color: #004085;
-  background-color: #cce5ff;
-  border-color: #b8daff;
+  color: var(--grid-row-selected);
+  background-color: var(--grid-row-selected-bg);
+  border-color: var(--grid-row-selected-border);
+}
+
+/* Overpower the scss rule undoing our grid selection */
+.eg-grid-body-row.selected .eg-grid-cell {
+  background-color: inherit;
+  color: inherit;
 }
 
 .eg-grid .row-dropzone {
@@ -188,7 +197,7 @@ table.table.eg-grid {
 .eg-grid-column-width-icon {
   cursor: pointer;
   font-size: 18px;
-  color: #007bff;
+  color: var(--primary);
 }
 
 .eg-grid-column-config-dialog {
@@ -202,7 +211,7 @@ table.table.eg-grid {
   white-space: normal;
 }
 .eg-grid-col-is-filtered {
-    background: lightblue;
+    background: rgba(var(--bs-blue-600-rgb), .12);
 }
 .eg-grid-filter-menu {
   min-width: 17rem;
@@ -211,7 +220,6 @@ table.table.eg-grid {
 .eg-grid-sticky-header {
   position: sticky;
   top: 50px;
-  background: white;
   z-index: 1;
 }
 
@@ -220,8 +228,8 @@ table.table.eg-grid {
 }
 
 .eg-grid-header-cell.dragover {
-  background-color: #cce5ff;
-  border-color: #b8daff;
+  background-color: var(--grid-row-selected-bg);
+  border-color: var(--grid-row-selected-border)
 }
 
 .eg-grid-header-cell .header-label,
@@ -237,9 +245,13 @@ table.table.eg-grid {
   width: 100%;
 }
 
-/* FILTERED */
-.eg-grid-col-is-filtered {
-  background: lightblue;
+.eg-grid thead .eg-grid-header-row {
+  border-bottom: 2px solid var(--grid-borders);
+  background-color: var(--bs-body-bg-alt);
+}
+
+.eg-grid thead .eg-grid-header-row th{
+  background-color: var(--bs-body-bg-alt);
 }
 
 /* align headers for non-filterable columns with those that have filter buttons */
@@ -263,7 +275,7 @@ td.eg-grid-col-sorted {
 }
 
 .eg-grid-header-cell .btn.sortable {
-  color: #084298;
+  color: var(--grid-header-button);
   font-weight: bold;
   text-align: inherit;
 }
@@ -374,6 +386,12 @@ tbody .eg-grid-cell-contents {
 .eg-grid th, 
 .eg-grid td {
   height: 100%;
+}
+
+
+eg-grid-toolbar-actions-menu .dropdown-item:focus,
+eg-grid-toolbar-actions-menu .dropdown-item:hover {
+  background-color: var(--bs-body-bg-highlight);
 }
 
 

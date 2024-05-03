@@ -50,7 +50,7 @@ export class PrintersComponent implements OnInit {
 12345678901234567890123456789012345678901234567890123456790`;
 
     testHtml = `<div style="padding: 10px;">
-  <style>p { color: blue }</style>
+  <style>p { color: var(--bs-blue-700) }</style>
   <h2>Test HTML Print</h2>
   <br/>
   <p><b>More Content</b></p>

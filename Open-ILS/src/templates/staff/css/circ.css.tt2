@@ -6,26 +6,31 @@
 }
 
 /** style to make a grid look like a striped table */
-#patron-summary-grid div.row {padding: 3px; border-right: 2px solid rgb(248, 248, 248);}
-#patron-summary-grid div.row:nth-child(odd) {background-color: rgb(248, 248, 248);}
+#patron-summary-grid div.row {
+  padding: 3px; 
+  border-right: 2px solid var(--common-form-border);
+}
+#patron-summary-grid div.row:nth-child(odd) {
+  background-color: var(--common-form-bg);
+}
 
 /* there are bootstrap tyles for error, warning, etc., 
 but the ones I'm finding aren't quite cutting it..*/
-.patron-summary-alert {color: red; font-weight:bold}
-.patron-summary-alert-small {color: red; background-color: white;}
-.patron-summary-divider { border-top: 1px solid #CCC}
+.patron-summary-alert {color: var(--danger); font-weight:bold}
+.patron-summary-alert-small {color: var(--badge-danger-color); background-color: var(--badge-danger-bg);}
+.patron-summary-divider { border-top: 1px solid var(--border);}
 .patron-summary-act-link {font-size: .8em;}
 .patron-summary-has-notes:hover, .patron-summary-has-notes:visited{ text-decoration: none; }
 
 .patron-summary-pref-name {
   padding-left: 6px;
-  color: #5cb85c;
+  color: light-dark(var(--bs-green-600), var(--bs-green-400));
 }
 
 /* Tag icon used for name keywords shouldn't look like a link */
 
 .glyphicon-tags, .glyphicon-tags:hover, .glyphicon-tags:focus {
-  color: #333;
+  color: var(--bs-body-color);
   text-decoration: none;
 }
 
@@ -40,7 +45,7 @@ but the ones I'm finding aren't quite cutting it..*/
 
 #patron-fixed-tabs {
     z-index: 4;
-    background-color: rgba(255,255,255,1);
+    background-color: var(--bs-body-bg);
 }
 
 .patron-name-header {
@@ -132,10 +137,10 @@ but the ones I'm finding aren't quite cutting it..*/
 
 #hold-notify-settings div.row { margin-top: 12px; }
 #hold-notify-settings div.row:not(.header-row):nth-child(odd) {
-  background-color: rgb(248, 248, 248);
+  background-color: var(--bs-body-bg-alt);
 }
 #hold-notify-settings div.row:not(.header-row) {
-  border-bottom: 1px solid #CCC;
+  border-bottom: 1px solid var(--border);
 }
 
 /* -- patron registration -- */
@@ -199,7 +204,7 @@ but the ones I'm finding aren't quite cutting it..*/
     padding-top: 20px;
     padding-bottom: 10px;
     z-index: 1;
-    background-color: rgba(255,255,255,1);
+    background-color: var(--bs-body-bg);
 }
 
 .patron-reg-actions-bar {
@@ -217,7 +222,7 @@ but the ones I'm finding aren't quite cutting it..*/
  * but consider revisiting. */
 .patron-reg-validation-alert {
   font-weight: bold;
-  color: red;
+  color: var(--danger);
 }
 
 /* Angular applies these classes based on the field's 
@@ -226,8 +231,8 @@ but the ones I'm finding aren't quite cutting it..*/
 #patron-reg-container .ng-invalid,
 #patron-reg-container .ng-invalid-required,
 #patron-pay-by-credit-form .ng-invalid {
-  background-color: yellow;
-  color: red;
+  background-color: light-dark(var(--badge-warning-bg), rgba(var(--bs-yellow-400-rgba), 0.1));
+  color: var(--badge-danger-color);
 }
 
 .patron-reg-names-separator {
@@ -236,7 +241,7 @@ but the ones I'm finding aren't quite cutting it..*/
 }
 
 .patron-reg-pref-names {
-  background-color: rgb(215, 215, 215);
+  background-color: light-dark(var(--bs-gray-200), var(--bs-gray-900));
 }
 
 .patron-reg-example-btn {
@@ -244,7 +249,7 @@ but the ones I'm finding aren't quite cutting it..*/
 }
 
 .patron-reg-pending-address {
-  border:2px dashed #d9e8f9;
+  border:2px dashed var(--border);
   -moz-border-radius: 10px;
   padding: 10px;
   margin-bottom: 5px;

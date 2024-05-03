@@ -1,7 +1,7 @@
 .sr-name-empty {
-  border-left: 5px solid #FA787E;
+  border-left: 5px solid var(--form-invalid);
 }
 
 .sr-name-notempty {
-  border-left: 5px solid #78FA89;
+  border-left: 5px solid var(--form-valid);
 }

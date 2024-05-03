@@ -11,3 +11,9 @@
 .page-item:last-child .btn-link {
     border-bottom-right-radius: .25rem;
 }
+
+.pagination .page-item.disabled .page-link {
+    background-color: var(--bs-body-bg-alt);
+    border-color: var(--border);
+    color: var(--bs-body-color-disabled); 
+}

@@ -1,3 +1,7 @@
+:host {
+  --daterange-today-border: light-dark(#129a78, var(--bs-blue-900));
+}
+
 .daterange-day {
   text-align: center;
   padding: 0.185rem 0.25rem;
@@ -7,6 +11,6 @@
 }
 
 .today {
-  border: solid 2px #129a78;
+  border: solid 2px var(--daterange-today-border);
   border-radius: 5px;
 }

@@ -69,6 +69,24 @@ angular.module('egCoreMod')
                     }
                 }
 
+
+                $scope.setColorMode = function() {
+                    if ( $scope.color_mode === 'auto') {
+                        document.documentElement.setAttribute('data-bs-theme', (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light'));
+                    }
+                    else {
+                        $window.document.documentElement.setAttribute('data-bs-theme', $scope.color_mode);
+                    }
+                }
+                
+                $scope.changeColorMode = function(mode) {
+
+                    console.log("Color mode is now: ", mode);
+                    $scope.color_mode = mode;
+                    egCore.hatch.setLocalItem('eg.ui.general.colormode', mode);
+                    $scope.setColorMode();
+                }
+
                 $scope.applyLocale = function(locale) {
                     // EGWeb.pm can change the locale for us w/ the right param
                     // Note: avoid using $location.search() to derive a new
@@ -121,6 +139,17 @@ angular.module('egCoreMod')
                             $scope.user_id = egCore.auth.user().id();
                             $scope.ws_ou = egCore.auth.user().ws_ou();
                             $scope.workstation = egCore.auth.workstation();
+
+                            $scope.color_mode = egCore.hatch.getLocalItem('eg.ui.general.colormode');
+
+                            if (!$scope.color_mode) {
+                                $scope.color_mode = 'auto';
+                            }
+
+                            const darkModePreference = window.matchMedia("(prefers-color-scheme: dark)");
+                            darkModePreference.addEventListener("change", $scope.setColorMode);
+                            
+                            $scope.setColorMode();
 
                             egCore.org.settings([
                                 'ui.staff.max_recent_patrons',
