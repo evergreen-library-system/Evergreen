@@ -1,7 +1,8 @@
 
-import {Component, OnInit, Input, Output, EventEmitter} from '@angular/core';
+import {Component, OnInit, Input, Output, EventEmitter, ViewChild} from '@angular/core';
 import { IdlService} from '@eg/core/idl.service';
 import {ToastService} from '@eg/share/toast/toast.service';
+import { ComboboxComponent } from '@eg/share/combobox/combobox.component';
 
 class LinkedLimitSetObjects {
     linkedLimitSet: any;
@@ -24,6 +25,8 @@ export class LinkedCircLimitSetsComponent implements OnInit {
     linkedSet: any;
     showLinkLimitSets: boolean;
 
+    @ViewChild('combobox') combobox: ComboboxComponent;
+
     constructor(
         private idl: IdlService,
         private toast: ToastService
@@ -31,7 +34,19 @@ export class LinkedCircLimitSetsComponent implements OnInit {
         this.outputLinkedLimitSet = new EventEmitter();
     }
 
-    ngOnInit() {}
+    ngOnInit() {
+        console.debug('LinkedCircLimitSetsComponent, ngOnInit(), this',this);
+    }
+
+    reset() {
+        this.usedSetLimitList = {};
+        this.linkedSetList = [];
+        this.linkedSet = null;
+        if (this.combobox) { // lifecycle issues here; this method gets called on page load
+            console.debug('LinkedCircLimitSetsComponent, reset(), this.combobox', this.combobox);
+            this.combobox.selectedId = null;
+        }
+    }
 
     displayLinkedLimitSets() {
         this.createEmptyLimitSetObject();

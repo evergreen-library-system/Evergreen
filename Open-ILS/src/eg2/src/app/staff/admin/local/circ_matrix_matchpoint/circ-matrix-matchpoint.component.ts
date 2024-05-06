@@ -191,8 +191,8 @@ export class CircMatrixMatchpointComponent implements OnInit {
     }
 
     clearLinkedCircLimitSets() {
-        this.limitSetsComponent.usedSetLimitList = {};
-        this.limitSetsComponent.linkedSetList = [];
+        console.debug('clearLinkedCircLimitSets',this.limitSetsComponent);
+        this.limitSetsComponent.reset();
         this.linkedLimitSets = [];
     }
 
