@@ -30,7 +30,7 @@ box.
 +
 . Click *Save*.
 
-image::media/closed_dates.png[]
+image::closed_dates/closed_dates.png[Closed Dates]
 
 Now that your organizational structure is established, you can begin
 configuring permissions for the staff users of your Evergreen system.
