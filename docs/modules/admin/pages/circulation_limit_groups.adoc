@@ -31,7 +31,7 @@ ancestors and descendants of the owning library.
 . Enter a brief *Description* of the circulation limit set.
 . Click *Save*.
 
-image::media/Maximum_Checkout_by_Copy_Location1.jpg[Maximum_Checkout_by_Copy_Location1]
+image::circ_limit_groups/Maximum_Checkout_by_Copy_Location1.jpg[Maximum_Checkout_by_Copy_Location1]
 
 To link the circulation limit set to a circulation policy:
  
@@ -43,4 +43,4 @@ policy.
 . Click *Add*.
 . Click *Save*.
 
-image::media/Maximum_Checkout_by_Copy_Location2.jpg[Maximum_Checkout_by_Copy_Location2]
+image::circ_limit_groups/Maximum_Checkout_by_Copy_Location2.jpg[Maximum_Checkout_by_Copy_Location2]
