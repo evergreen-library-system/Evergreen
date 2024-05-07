@@ -213,7 +213,7 @@ function($scope , $q , $routeParams , $window , $location , egCore , egHolds , e
         'ui.hide_clear_these_holds_button'
     ).then(function(settings) {
         if (settings['ui.hide_clear_these_holds_button'])
-            $scope.hide_clear_holds = true;
+            $scope.hide_clear_holds = function() {return true}
     });
 
     // udpate the in-grid hold with the clear-shelf cached response info.
