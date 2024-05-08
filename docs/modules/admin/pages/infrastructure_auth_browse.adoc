@@ -19,7 +19,7 @@ images::auth_browse/auth_browse_infra1.png[]
 
 Individual heading field definitions can be edited like this:
 
-images::media/auth_browse_infra2.png[]
+images::auth_browse/auth_browse_infra2.png[]
 
 The available fields are:
 
