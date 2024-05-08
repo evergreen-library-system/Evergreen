@@ -207,7 +207,10 @@ implements OnInit, AfterViewInit, OnDestroy {
 
             case 'ffld':
                 this.applyFFOptions();
-                if (['Cont','Date1','Date2','Ills','Time'].includes(this.fixedFieldCode)) {
+                // these fixed fields can include multiple values (which doesn't work well with combobox) or free text
+                // TODO: remove check for AUT when authorities fixed field data is populated
+                const complexFields = ['AccM','Cont','Date1','Date2','Ills','LTxt','Relf','SpFm','Time'];
+                if (complexFields.includes(this.fixedFieldCode) || this.record.recordType() === 'AUT' ) {
                     this.suggest = false;
                 }
                 break;
