@@ -15,7 +15,7 @@ An interface for configuring authority headings is available in Server Administr
 
 When navigated to, the interface looks like this:
 
-images::media/auth_browse_infra1.png[]
+images::auth_browse/auth_browse_infra1.png[]
 
 Individual heading field definitions can be edited like this:
 
