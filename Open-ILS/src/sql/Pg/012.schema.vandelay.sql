@@ -2555,5 +2555,18 @@ CREATE TABLE vandelay.session_tracker (
         CHECK (record_type IN ('bib', 'authority'))
 );
 
+CREATE TABLE vandelay.background_import (
+    id              SERIAL      PRIMARY KEY,
+    owner           INT         NOT NULL REFERENCES actor.usr (id) ON DELETE CASCADE DEFERRABLE INITIALLY DEFERRED,
+    workstation     INT         REFERENCES actor.workstation (id) ON DELETE SET NULL DEFERRABLE INITIALLY DEFERRED,
+    import_type     TEXT        NOT NULL DEFAULT 'bib' CHECK (import_type IN ('bib','acq','authority')),
+    params          TEXT,
+    email           TEXT,
+    state           TEXT        NOT NULL DEFAULT 'new' CHECK (state IN ('new','running','complete')),
+    request_time    TIMESTAMPTZ NOT NULL DEFAULT NOW(),
+    complete_time   TIMESTAMPTZ,
+    queue           BIGINT      -- no fkey, could be either bib_queue or authority_queue, based on import_type
+);
+
 COMMIT;
 
