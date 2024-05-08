@@ -5,12 +5,12 @@
     <form ng-submit="search(searchArgs)" id="patron-search-form" 
          class="form-horizontal patron-search-form">
       <div class="actions-more">
-        <button class="btn btn-default" ng-click="applyShowExtras($event, true)" 
+        <button type="button" class="btn btn-default" ng-click="applyShowExtras($event, true)" 
           ng-mouseover="setLastFormElement()" aria-label="[% l('Show More Fields') %]"
           title="[% l('Show More Fields') %]" ng-show="!showExtras">
           <span class="glyphicon glyphicon-circle-arrow-down"></span>
         </button>
-        <button class="btn btn-default" ng-click="applyShowExtras($event, false)" 
+        <button type="button" class="btn btn-default" ng-click="applyShowExtras($event, false)" 
           ng-mouseover="setLastFormElement()" aria-label="[% l('Show Fewer Fields') %]"
           title="[% l('Show Fewer Fields') %]" ng-show="showExtras">
           <span class="glyphicon glyphicon-circle-arrow-up"></span>
