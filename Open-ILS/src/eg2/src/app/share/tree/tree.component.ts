@@ -40,7 +40,7 @@ export class TreeComponent {
 
     _nodeList: any = [];
     _tree: Tree;
-    @Input() disabled: boolean = false; // disables /changing/ state flag or emitting selection events
+    @Input() disabled = false; // disables /changing/ state flag or emitting selection events
     @Input() set tree(t: Tree) {
         if (t) {
             this._tree = t;
@@ -90,7 +90,7 @@ export class TreeComponent {
         }
     }
 
-/*  // Maybe for later
+    /*  // Maybe for later
     treeFocusEvent($event: any) {
         console.log("Tree Focus:", $event);
         //this.showFocusableElements($event.target);
@@ -103,25 +103,24 @@ export class TreeComponent {
 */
 
     treeKeyEvent(node: TreeNode, $event: any) {
-		const DOMind = this._nodeList.indexOf(node);
-		const visibleNL = this.visibleNodeList.toArray();
+        const DOMind = this._nodeList.indexOf(node);
+        const visibleNL = this.visibleNodeList.toArray();
 
-        console.log("Node index: " + DOMind + "; Key pressed: ", $event.code);
-        if (!$event.key || $event.repeat || $event.code == "Tab") return;
+        console.log('Node index: ' + DOMind + '; Key pressed: ', $event.code);
+        if (!$event.key || $event.repeat || $event.code == 'Tab') {return;}
 
         // arrow keys are required to operate these form fields
-        if ($event.target.tagName.toLowerCase() == 'select' || $event.target.tagName.toLowerCase() == 'textarea') return;
+        if ($event.target.tagName.toLowerCase() == 'select' || $event.target.tagName.toLowerCase() == 'textarea') {return;}
 
         switch ($event.key) {
             case 'Enter':
             case 'Space':
-				this.handleNodeClick(node);
+                this.handleNodeClick(node);
                 $event.stopPropagation();
                 $event.preventDefault();
                 break;
             case 'ArrowRight':
-	       		if (node.children.length)
-					node.expanded = true;
+	       		if (node.children.length) {node.expanded = true;}
                 $event.stopPropagation();
                 $event.preventDefault();
                 break;
@@ -131,20 +130,20 @@ export class TreeComponent {
                 $event.preventDefault();
                 break;
             case 'ArrowDown':
-				if (visibleNL.length > DOMind + 1) {
-					const nextTargetNode = this._nodeList[DOMind + 1];
-					const target = visibleNL.filter(v => v.nativeElement.id == this._tree.treeId + '-' + nextTargetNode.id)[0];
+                if (visibleNL.length > DOMind + 1) {
+                    const nextTargetNode = this._nodeList[DOMind + 1];
+                    const target = visibleNL.filter(v => v.nativeElement.id == this._tree.treeId + '-' + nextTargetNode.id)[0];
 	        		target.nativeElement.focus();
-				}
+                }
                 $event.stopPropagation();
                 $event.preventDefault();
                 break;
             case 'ArrowUp':
-				if (DOMind > 0) {
-					const prevTargetNode = this._nodeList[DOMind - 1];
-					const target = visibleNL.filter(v => v.nativeElement.id == this._tree.treeId + '-' + prevTargetNode.id)[0];
+                if (DOMind > 0) {
+                    const prevTargetNode = this._nodeList[DOMind - 1];
+                    const target = visibleNL.filter(v => v.nativeElement.id == this._tree.treeId + '-' + prevTargetNode.id)[0];
 	        		target.nativeElement.focus();
-				}
+                }
                 $event.stopPropagation();
                 $event.preventDefault();
                 break;

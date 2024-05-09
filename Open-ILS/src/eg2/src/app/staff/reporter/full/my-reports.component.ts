@@ -73,10 +73,10 @@ export class ReportReportsComponent implements OnInit {
     }
 
     newReport(rows) {
-        let path = ['define', 'new', rows[0].rt_id];
+        const path = ['define', 'new', rows[0].rt_id];
 
         if (this.currentFolder) {
-           path.push(this.currentFolder.id());
+            path.push(this.currentFolder.id());
         }
 
         this.router.navigate(path, { relativeTo: this.route });
@@ -84,45 +84,45 @@ export class ReportReportsComponent implements OnInit {
 
     renameFolder($event) {
         this.renameString.current({old: this.currentFolder.name()})
-        .then(str => {
-            this.renameDialog.dialogBody = str;
-            this.renameDialog.promptValue = this.currentFolder.name();
-            this.renameDialog.open().subscribe(new_name => {
-                if ( new_name ) {
-                    this.RSvc.renameReportFolder(new_name);
-                }
+            .then(str => {
+                this.renameDialog.dialogBody = str;
+                this.renameDialog.promptValue = this.currentFolder.name();
+                this.renameDialog.open().subscribe(new_name => {
+                    if ( new_name ) {
+                        this.RSvc.renameReportFolder(new_name);
+                    }
+                });
             });
-        })
     }
 
     newSubfolder($event) {
         this.newSubfolderString.current({old: this.currentFolder.name()})
-        .then(str => {
-            this.newSubfolderDialog.dialogBody = str;
-            this.newSubfolderDialog.promptValue = this.RSvc.lastNewFolderName || this.currentFolder.name();
-            this.newSubfolderDialog.open().subscribe( new_name => {
-                if ( new_name ) {
-                    this.RSvc.newSubfolder(new_name, this.currentFolder);
-                }
+            .then(str => {
+                this.newSubfolderDialog.dialogBody = str;
+                this.newSubfolderDialog.promptValue = this.RSvc.lastNewFolderName || this.currentFolder.name();
+                this.newSubfolderDialog.open().subscribe( new_name => {
+                    if ( new_name ) {
+                        this.RSvc.newSubfolder(new_name, this.currentFolder);
+                    }
+                });
             });
-        })
     }
 
     moveSelected(rows) {
-		return this.changeFolderDialog.open().subscribe( new_folder => {
-			if ( new_folder ) {
-				let t_objs = rows.map(r => r._rr);
-				this.RSvc.updateContainingFolder(t_objs, new_folder).subscribe(
-					_ => {},
-					e => {},
-					() => this.reportsGrid.reload()
-				);
-			}
-		});
-	}
+        return this.changeFolderDialog.open().subscribe( new_folder => {
+            if ( new_folder ) {
+                const t_objs = rows.map(r => r._rr);
+                this.RSvc.updateContainingFolder(t_objs, new_folder).subscribe(
+                    _ => {},
+                    (e: unknown) => {},
+                    () => this.reportsGrid.reload()
+                );
+            }
+        });
+    }
 
     deleteFolder($event) {
-       return this.deleteFolderConfirm.open().subscribe( c => {
+        return this.deleteFolderConfirm.open().subscribe( c => {
             if (c) {
                 this.RSvc.deleteFolder(this.currentFolder);
                 this.currentFolder = null;
@@ -132,7 +132,7 @@ export class ReportReportsComponent implements OnInit {
     }
 
     shareFolder($event) {
-		return this.shareOrgDialog.open().subscribe( org => {
+        return this.shareOrgDialog.open().subscribe( org => {
             if ( org ) {
             	this.RSvc.shareFolder(this.currentFolder, org);
         	}
@@ -140,7 +140,7 @@ export class ReportReportsComponent implements OnInit {
     }
 
     unshareFolder($event) {
-		return this.RSvc.unshareFolder(this.currentFolder);
+        return this.RSvc.unshareFolder(this.currentFolder);
     }
 
     zeroSelectedRows(rows: any) {
@@ -158,45 +158,45 @@ export class ReportReportsComponent implements OnInit {
         let failures = 0;
 
         this.deleteString.current({ct: rows.length})
-        .then(str => {
-            this.deleteDialog.dialogBody = str;
-            this.deleteDialog.open()
-            .subscribe(confirmed => {
-                if ( confirmed ) {
-                    from(rows.map(x => x.rr_id)).pipe(concatMap(rr_id =>
-                        this.net.request(
-                            'open-ils.reporter',
-                            'open-ils.reporter.report.delete.cascade',
-                            this.auth.token(),
-                            rr_id
-                        ).pipe(map(res => ({
-                            result: res,
-                            rr_id: rr_id
-                        })))
-                    )).subscribe(
-                        (res) => {
-                            if (Number(res.result) === 2) {
-                                successes++;
-                            } else {
-                                failures++;
-                            }
-                        },
-                        (err) => {},
-                        () => {
-                            if (successes === rows.length) {
-                                this.deleteSuccessString.current({ct: successes}).then(str2 => { this.toast.success(str2); });
-                            } else if (failures && !successes) {
-                                this.deleteFailureString.current({ct: failures}).then(str2 => { this.toast.danger(str2); });
-                            } else {
-                                this.mixedResultsString.current({fail: failures, success: successes})
-                                    .then(str2 => { this.toast.warning(str2); });
-                            }
-                            this.reportsGrid.reload();
-                         }
-                    );
-                }
+            .then(str => {
+                this.deleteDialog.dialogBody = str;
+                this.deleteDialog.open()
+                    .subscribe(confirmed => {
+                        if ( confirmed ) {
+                            from(rows.map(x => x.rr_id)).pipe(concatMap(rr_id =>
+                                this.net.request(
+                                    'open-ils.reporter',
+                                    'open-ils.reporter.report.delete.cascade',
+                                    this.auth.token(),
+                                    rr_id
+                                ).pipe(map(res => ({
+                                    result: res,
+                                    rr_id: rr_id
+                                })))
+                            )).subscribe(
+                                (res) => {
+                                    if (Number(res.result) === 2) {
+                                        successes++;
+                                    } else {
+                                        failures++;
+                                    }
+                                },
+                                (err: unknown) => {},
+                                () => {
+                                    if (successes === rows.length) {
+                                        this.deleteSuccessString.current({ct: successes}).then(str2 => { this.toast.success(str2); });
+                                    } else if (failures && !successes) {
+                                        this.deleteFailureString.current({ct: failures}).then(str2 => { this.toast.danger(str2); });
+                                    } else {
+                                        this.mixedResultsString.current({fail: failures, success: successes})
+                                            .then(str2 => { this.toast.warning(str2); });
+                                    }
+                                    this.reportsGrid.reload();
+                                }
+                            );
+                        }
+                    });
             });
-        });
     }
 
     openSelected(type, id) {

@@ -123,7 +123,7 @@ const routes: Routes = [{
 }, {
     path: 'config/circ_matrix_matchpoint',
     loadChildren: () =>
-      import('./circ_matrix_matchpoint/circ-matrix-matchpoint.module').then(m => m.CircMatrixMatchpointModule)
+        import('./circ_matrix_matchpoint/circ-matrix-matchpoint.module').then(m => m.CircMatrixMatchpointModule)
 }, {
     path: 'asset/stat_cat',
     component: BasicAdminPageComponent,

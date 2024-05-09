@@ -19,9 +19,9 @@ export class CircMatrixMatchpointDialogComponent extends DialogComponent impleme
 
     constructor(
         private modal: NgbModal // required for passing to parent
-        ) {
+    ) {
         super(modal);
-      }
+    }
 
     ngOnInit() {
     }

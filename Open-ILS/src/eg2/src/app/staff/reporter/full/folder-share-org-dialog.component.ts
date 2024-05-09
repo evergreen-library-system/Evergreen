@@ -6,8 +6,8 @@ import {OrgService} from '@eg/core/org.service';
 import {AuthService} from '@eg/core/auth.service';
 
 @Component({
-  selector: 'folder-share-org-dialog',
-  templateUrl: './folder-share-org-dialog.component.html'
+    selector: 'folder-share-org-dialog',
+    templateUrl: './folder-share-org-dialog.component.html'
 })
 
 export class FolderShareOrgDialogComponent extends DialogComponent {

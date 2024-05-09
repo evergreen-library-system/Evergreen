@@ -18,8 +18,8 @@ import {OrgService} from '@eg/core/org.service';
 import {OrgFamily} from '@eg/share/org-family-select/org-family-select.component';
 
   @Component({
-    templateUrl: './circ-matrix-matchpoint.component.html'
-})
+      templateUrl: './circ-matrix-matchpoint.component.html'
+  })
 export class CircMatrixMatchpointComponent implements OnInit {
     recId: number;
     orgField = 'org_unit';
@@ -225,7 +225,7 @@ export class CircMatrixMatchpointComponent implements OnInit {
                     this.grid.reload();
                     resolve(result);
                 },
-                error => {
+                (error: unknown) => {
                     this.updateFailedString.current()
                         .then(str => this.toast.danger(str));
                     reject(error);
@@ -250,7 +250,7 @@ export class CircMatrixMatchpointComponent implements OnInit {
                 this.limitSetsComponent.showLinkLimitSets = false;
                 this.grid.reload();
             },
-            rejection => {
+            (rejection: unknown) => {
                 if (!rejection.dismissed) {
                     this.createErrString.current()
                         .then(str => this.toast.danger(str));

@@ -76,19 +76,19 @@ export class ReporterFieldChooserComponent {
 
     moveUp(idx: number) {
         if ( idx > 0 ) { // should always be the case, but we check anyway
-        const hold: IdlObject = this.selectedFields[idx - 1];
-        this.selectedFields[idx - 1] = this.selectedFields[idx];
-        this.selectedFields[idx] = hold;
-        this.selectedFieldsChange.emit(this.selectedFields);
+            const hold: IdlObject = this.selectedFields[idx - 1];
+            this.selectedFields[idx - 1] = this.selectedFields[idx];
+            this.selectedFields[idx] = hold;
+            this.selectedFieldsChange.emit(this.selectedFields);
         }
     }
 
     moveDown(idx: number) {
         if ( idx < this.selectedFields.length ) { // see above comment
-        const hold: IdlObject = this.selectedFields[idx + 1];
-        this.selectedFields[idx + 1] = this.selectedFields[idx];
-        this.selectedFields[idx] = hold;
-        this.selectedFieldsChange.emit(this.selectedFields);
+            const hold: IdlObject = this.selectedFields[idx + 1];
+            this.selectedFields[idx + 1] = this.selectedFields[idx];
+            this.selectedFields[idx] = hold;
+            this.selectedFieldsChange.emit(this.selectedFields);
         }
     }
 

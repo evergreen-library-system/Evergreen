@@ -452,21 +452,21 @@ implements ControlValueAccessor, OnInit, AfterViewInit, OnChanges {
     // Called by combobox-entry.component
     addEntry(entry: ComboboxEntry) {
 
-      if (!this.isDuplicateEntry(entry)) {
-        this.entrylist.push(entry);
-      }
+        if (!this.isDuplicateEntry(entry)) {
+            this.entrylist.push(entry);
+        }
 
-      this.applySelection();
+        this.applySelection();
     }
 
     // I don't think we have anything enforcing unique id's here, so We could
     // conceivably have multiple entries with the same id but different labels.
     // Thus, check both together as a composite key.
     isDuplicateEntry(entry: ComboboxEntry) {
-      return this.entrylist.some(e => 
-        e.id === entry.id && 
+        return this.entrylist.some(e =>
+            e.id === entry.id &&
         e.label === entry.label
-      );
+        );
     }
 
     // Manually set the selected value by ID.

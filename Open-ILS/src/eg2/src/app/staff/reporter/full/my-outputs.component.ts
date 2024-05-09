@@ -71,7 +71,7 @@ export class FullReporterOutputsComponent implements OnInit {
     }
 
     goToOutput(rows) {
-       window.open(this.outputPath(rows[0], 'report-data.html'), '_blank');
+        window.open(this.outputPath(rows[0], 'report-data.html'), '_blank');
     }
 
     zeroSelectedRows(rows: any) {
@@ -83,7 +83,7 @@ export class FullReporterOutputsComponent implements OnInit {
     }
 
     deleteFolder() {
-       return this.deleteFolderConfirm.open().subscribe( c => {
+        return this.deleteFolderConfirm.open().subscribe( c => {
             if (c) {
                 this.RSvc.deleteFolder(this.currentFolder);
                 this.currentFolder = null;
@@ -95,10 +95,10 @@ export class FullReporterOutputsComponent implements OnInit {
     moveSelected(rows) {
         return this.changeFolderDialog.open().subscribe( new_folder => {
             if ( new_folder ) {
-                let t_objs = rows.map(r => r._rs);
+                const t_objs = rows.map(r => r._rs);
                 this.RSvc.updateContainingFolder(t_objs, new_folder).subscribe(
                     _ => {},
-                    e => {},
+                    (e: unknown) => {},
                     () => this.refreshGridsFromOutputs(t_objs)
                 );
             }
@@ -107,28 +107,28 @@ export class FullReporterOutputsComponent implements OnInit {
 
     renameFolder($event) {
         this.renameString.current({old: this.currentFolder.name()})
-        .then(str => {
-            this.renameDialog.dialogBody = str;
-            this.renameDialog.promptValue = this.currentFolder.name();
-            this.renameDialog.open().subscribe(new_name => {
-                if ( new_name ) {
-                    this.RSvc.renameOutputFolder(new_name);
-                }
+            .then(str => {
+                this.renameDialog.dialogBody = str;
+                this.renameDialog.promptValue = this.currentFolder.name();
+                this.renameDialog.open().subscribe(new_name => {
+                    if ( new_name ) {
+                        this.RSvc.renameOutputFolder(new_name);
+                    }
+                });
             });
-        })
     }
 
     newSubfolder($event) {
         this.newSubfolderString.current({old: this.currentFolder.name()})
-        .then(str => {
-            this.newSubfolderDialog.dialogBody = str;
-            this.newSubfolderDialog.promptValue = this.RSvc.lastNewFolderName || this.currentFolder.name();
-            this.newSubfolderDialog.open().subscribe( new_name => {
-                if ( new_name ) {
-                    this.RSvc.newSubfolder(new_name, this.currentFolder);
-                }
+            .then(str => {
+                this.newSubfolderDialog.dialogBody = str;
+                this.newSubfolderDialog.promptValue = this.RSvc.lastNewFolderName || this.currentFolder.name();
+                this.newSubfolderDialog.open().subscribe( new_name => {
+                    if ( new_name ) {
+                        this.RSvc.newSubfolder(new_name, this.currentFolder);
+                    }
+                });
             });
-        })
     }
     shareFolder($event) {
         return this.shareOrgDialog.open().subscribe( org => {
@@ -145,17 +145,17 @@ export class FullReporterOutputsComponent implements OnInit {
     deleteOutputs(rows: any[]) {
         if ( rows.length <= 0 ) { return; }
         this.confirmDeleteString.current({ num: rows.length })
-        .then(str => {
-            this.confirmDeleteDialog.dialogBody = str;
-            this.confirmDeleteDialog.open()
-            .subscribe(confirmed => {
-                if ( confirmed ) { this.doDeleteOutputs(rows.map(x => x._rs)); }
+            .then(str => {
+                this.confirmDeleteDialog.dialogBody = str;
+                this.confirmDeleteDialog.open()
+                    .subscribe(confirmed => {
+                        if ( confirmed ) { this.doDeleteOutputs(rows.map(x => x._rs)); }
+                    });
             });
-        });
     }
 
-	refreshGridsFromOutputs(outs: IdlObject[]) {
-        let gridsToRefresh = [];
+    refreshGridsFromOutputs(outs: IdlObject[]) {
+        const gridsToRefresh = [];
 
         if (outs.filter(r => !!r.start_time()).length > 0) {
             gridsToRefresh.push(this.completeOutputsGrid);
@@ -166,17 +166,17 @@ export class FullReporterOutputsComponent implements OnInit {
         }
 
         gridsToRefresh.forEach(g => g.reload());
-	}
+    }
 
     doDeleteOutputs(outs: IdlObject[]) {
         this.pcrud.remove(outs).toPromise()
-        .then(res => {
-            this.deletedString.current({num: outs.length})
-            .then(str => {
-                this.toast.success(str);
-				this.refreshGridsFromOutputs(outs);
+            .then(res => {
+                this.deletedString.current({num: outs.length})
+                    .then(str => {
+                        this.toast.success(str);
+                        this.refreshGridsFromOutputs(outs);
+                    });
             });
-        });
 
     }
 

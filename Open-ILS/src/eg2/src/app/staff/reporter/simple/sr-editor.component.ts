@@ -195,18 +195,18 @@ export class SREditorComponent implements OnInit {
         this.templ.name = this.name;
 
         this.srSvc.saveSimpleTemplate(this.templ, scheduleNow)
-        .then(rt => {
-            this._isDirty = false;
-            // It appears that calling pcrud.create will return the newly created object,
-            // while pcrud.update just gives you back the id of the updated object.
-            if ( typeof rt === 'object' ) {
-                this.templ = new SRTemplate(rt); // pick up the id and create_time fields
-            }
-            this.templateSavedString.current()
-            .then(str => {
-                this.toast.success(str);
-            });
-            if (scheduleNow) {
+            .then(rt => {
+                this._isDirty = false;
+                // It appears that calling pcrud.create will return the newly created object,
+                // while pcrud.update just gives you back the id of the updated object.
+                if ( typeof rt === 'object' ) {
+                    this.templ = new SRTemplate(rt); // pick up the id and create_time fields
+                }
+                this.templateSavedString.current()
+                    .then(str => {
+                        this.toast.success(str);
+                    });
+                if (scheduleNow) {
                 // we're done, so jump to the main page
                     this.router.navigate(['/staff/reporter/simple']);
                 } else if (this.isNew) {

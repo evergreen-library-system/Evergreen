@@ -33,7 +33,7 @@ export class MultiSelectComponent implements OnInit {
     @Input() startValue: string;
     // eslint-disable-next-line no-magic-numbers
     @Input() domId: string = 'MSC-' + Number(Math.random() * 10000);
-    @Input() disabled: boolean = false;
+    @Input() disabled = false;
 
     @Output() onChange: EventEmitter<string>;
 

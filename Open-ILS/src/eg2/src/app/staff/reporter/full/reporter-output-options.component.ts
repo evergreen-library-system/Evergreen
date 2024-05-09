@@ -4,14 +4,14 @@ import {ReporterService, SRTemplate} from '../share/reporter.service';
 import * as moment from 'moment-timezone';
 
 @Component({
-  selector: 'eg-reporter-output-options',
-  templateUrl: './reporter-output-options.component.html'
+    selector: 'eg-reporter-output-options',
+    templateUrl: './reporter-output-options.component.html'
 })
 
 export class ReporterOutputOptionsComponent {
 
-    @Input() advancedMode: boolean = false;
-    @Input() disabled: boolean = false;
+    @Input() advancedMode = false;
+    @Input() disabled = false;
     @Input() templ: SRTemplate;
     @Input() readyToSchedule: () => boolean;
     @Input() saveTemplate: (args: any) => void;

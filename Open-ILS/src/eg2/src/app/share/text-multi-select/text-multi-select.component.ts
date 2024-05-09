@@ -22,7 +22,7 @@ export class TextMultiSelectComponent implements OnInit {
     @Input() startValue: Array<string>;
     // eslint-disable-next-line no-magic-numbers
     @Input() domId: string = 'TMSC-' + Number(Math.random() * 10000);
-    @Input() disabled: boolean = false;
+    @Input() disabled = false;
 
     @Output() onChange: EventEmitter<string[]>;
 

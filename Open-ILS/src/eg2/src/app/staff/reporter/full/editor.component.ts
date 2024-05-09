@@ -19,8 +19,8 @@ import {Tree, TreeNode} from '@eg/share/tree/tree';
 
 export class FullReporterEditorComponent implements OnInit {
 
-	currentIdlTree: Tree = null;
-	currentIdlNode: TreeNode = null;
+    currentIdlTree: Tree = null;
+    currentIdlNode: TreeNode = null;
     rptType = '';
     oldRptType = '';
     name = '';
@@ -60,10 +60,10 @@ export class FullReporterEditorComponent implements OnInit {
         public RSvc: ReporterService
     ) {
         const folderParam = this.route.snapshot.paramMap.get('folder');
-		if (folderParam) {
-			this.pcrud
-				.retrieve('rtf', folderParam)
-				.subscribe(fldr => this.folder = this.RSvc.templateFolder = fldr);
+        if (folderParam) {
+            this.pcrud
+                .retrieve('rtf', folderParam)
+                .subscribe(fldr => this.folder = this.RSvc.templateFolder = fldr);
         }
 
         const id = this.route.snapshot.paramMap.get('id');
@@ -83,21 +83,21 @@ export class FullReporterEditorComponent implements OnInit {
 
     ngOnInit() {
         this._setPageTitle();
-		if (!this.folder) {
-			this.folderTree = this.RSvc.myFolderTrees.templates;
-		}
+        if (!this.folder) {
+            this.folderTree = this.RSvc.myFolderTrees.templates;
+        }
     }
 
     _setPageTitle() {
-         if ( this.isNew ) {
+        if ( this.isNew ) {
             this.newTitleString.current()
-            .then(str => this.pageTitle = str );
+                .then(str => this.pageTitle = str );
         } else if (this.isClone) {
             this.cloneTitleString.current()
-            .then(str => this.pageTitle = str );
+                .then(str => this.pageTitle = str );
         } else {
             this.editTitleString.current()
-            .then(str => this.pageTitle = str );
+                .then(str => this.pageTitle = str );
         }
     }
 
@@ -168,97 +168,98 @@ export class FullReporterEditorComponent implements OnInit {
             this.templ = new SRTemplate();
             this.templ.fmClass = this.rptType;
             this._isDirty = true;
-			this.currentIdlTree = null;
+            this.currentIdlTree = null;
     		this.treeFromRptType();
             this.reloadFields(this.rptType);
         } else {
             return this.changeTypeDialog.open()
-            .subscribe(confirmed => {
-                if ( confirmed ) {
-                    this.oldRptType = this.rptType;
-                    this.templ = new SRTemplate();
-                    this.templ.fmClass = this.rptType;
-                    this._isDirty = true;
-					this.currentIdlTree = null;
+                .subscribe(confirmed => {
+                    if ( confirmed ) {
+                        this.oldRptType = this.rptType;
+                        this.templ = new SRTemplate();
+                        this.templ.fmClass = this.rptType;
+                        this._isDirty = true;
+                        this.currentIdlTree = null;
     				this.treeFromRptType();
-					this.reloadFields(this.rptType);
-                } else {
-                    this.rptType = this.oldRptType;
-                }
-            });
+                        this.reloadFields(this.rptType);
+                    } else {
+                        this.rptType = this.oldRptType;
+                    }
+                });
         }
     }
 
-	idlTreeNodeSelected (node: TreeNode) {
-		this.currentIdlNode = node;
-		this.reloadFields(node.callerData.fmClass);
-		console.log('Tree node selected:', node);
-	}
+    idlTreeNodeSelected (node: TreeNode) {
+        this.currentIdlNode = node;
+        this.reloadFields(node.callerData.fmClass);
+        console.log('Tree node selected:', node);
+    }
 
-	folderNodeSelected (node: TreeNode) {
-		this.folder = node.callerData.folderIdl;
-		this.RSvc.templateFolder = this.folder;
-		this.location.go(this.location.path() + '/' + this.folder.id());
-		console.log('folder node selected:', node);
-	}
+    folderNodeSelected (node: TreeNode) {
+        this.folder = node.callerData.folderIdl;
+        this.RSvc.templateFolder = this.folder;
+        this.location.go(this.location.path() + '/' + this.folder.id());
+        console.log('folder node selected:', node);
+    }
 
-	idlTreeNodeRequired (node: TreeNode) {
-		this.reloadFields(this.currentIdlNode.callerData.fmClass);
-		console.log('Tree node required flag:', node);
-	}
+    idlTreeNodeRequired (node: TreeNode) {
+        this.reloadFields(this.currentIdlNode.callerData.fmClass);
+        console.log('Tree node required flag:', node);
+    }
 
     treeFromRptType() {
-		if (!this.rptType || this.currentIdlTree) return;
+        if (!this.rptType || this.currentIdlTree) {return;}
 
-		const get_kids  = (node: TreeNode) => {
-			const idl_class = this.idl.classes[node.callerData.fmClass];
-			const parent_id = node.id;
+        const get_kids  = (node: TreeNode) => {
+            const idl_class = this.idl.classes[node.callerData.fmClass];
+            const parent_id = node.id;
 
-			const kids = [];
-			const linked = [];
-			const nonlinked = [];
-			idl_class.fields.sort( (a,b) => a.label.localeCompare(b.label) ).forEach(f => {
-				if (f.class)
-					kids.push(
-						new TreeNode({
-							id: parent_id + '.' + f.name + ':' + f.key + '@' + f.class,
-							stateFlag: false,
-							stateFlagLabel: $localize`Require INNER join between ${node.label} and ${f.label}?`,
+            const kids = [];
+            const linked = [];
+            const nonlinked = [];
+            idl_class.fields.sort( (a,b) => a.label.localeCompare(b.label) ).forEach(f => {
+                if (f.class) {
+                    kids.push(
+                        new TreeNode({
+                            id: parent_id + '.' + f.name + ':' + f.key + '@' + f.class,
+                            stateFlag: false,
+                            stateFlagLabel: $localize`Require INNER join between ${node.label} and ${f.label}?`,
         					label: f.label || f.name,
-							expanded: false,
-							childrenCB: get_kids,
+                            expanded: false,
+                            childrenCB: get_kids,
 				            callerData: {
-								parent_id: parent_id,
+                                parent_id: parent_id,
 			    	    		fmClass: f.class,
 			    	    		fmField: {
-									key: f.key,
-									name: ['has_many','might_have'].includes(f.reltype) ? idl_class.pkey : f.name,
-									reltype: f.reltype,
-									class: f.class // field on parent; (stateFlag ? '' : LEFT) JOIN fmclass.tablename ON (fmField.name [lhs] = fmField.key [rhs])
-								}
-							}
-						})
-					);
-			});
+                                    key: f.key,
+                                    name: ['has_many','might_have'].includes(f.reltype) ? idl_class.pkey : f.name,
+                                    reltype: f.reltype,
+                                    class: f.class // field on parent; (stateFlag ? '' : LEFT) JOIN fmclass.tablename ON (fmField.name [lhs] = fmField.key [rhs])
+                                }
+                            }
+                        })
+                    );
+                }
+            });
 
-			return kids;
-		};
+            return kids;
+        };
 
         const core_class = this.idl.classes[this.rptType];
 
         const node: TreeNode = new TreeNode({
             id: core_class.name,
             label: core_class.label || core_class.name,
-			selected: true,
-			childrenCB: get_kids,
+            selected: true,
+            childrenCB: get_kids,
             callerData: {
-				fmClass: core_class.name
-			}
+                fmClass: core_class.name
+            }
         });
 
-		this.currentIdlTree = new Tree(node);
-		this.currentIdlNode = node;
-		this.currentIdlTree.nodeList(true);
+        this.currentIdlTree = new Tree(node);
+        this.currentIdlNode = node;
+        this.currentIdlTree.nodeList(true);
     }
 
     dirty() {
@@ -275,7 +276,7 @@ export class FullReporterEditorComponent implements OnInit {
 
     readyToSchedule = () => {
         return ( this.readyToSave() && this.templ.displayFields.length > 0 );
-    }
+    };
 
     canLeaveEditor() {
         if ( this.isDirty() ) {
@@ -287,16 +288,16 @@ export class FullReporterEditorComponent implements OnInit {
 
     loadTemplate(id: number) {
         return this.RSvc.loadTemplate(id)
-        .then(idl => {
-            this.templ = new SRTemplate(idl, true); // Second param says "template only", don't look at previous report definitions
-            this.templ.isNew = this.isNew || this.isClone; // this forces a new ID
-            this.name = this.templ.name;
-            this.doc_url = this.templ.doc_url;
-            this.description = this.templ.description;
-            this.rptType = this.templ.fmClass;
-            this.oldRptType = this.templ.fmClass;
+            .then(idl => {
+                this.templ = new SRTemplate(idl, true); // Second param says "template only", don't look at previous report definitions
+                this.templ.isNew = this.isNew || this.isClone; // this forces a new ID
+                this.name = this.templ.name;
+                this.doc_url = this.templ.doc_url;
+                this.description = this.templ.description;
+                this.rptType = this.templ.fmClass;
+                this.oldRptType = this.templ.fmClass;
     		this.treeFromRptType();
-        });
+            });
     }
 
     saveTemplate = (scheduleNow) => {
@@ -305,43 +306,43 @@ export class FullReporterEditorComponent implements OnInit {
         this.templ.description = this.description;
 
         this.RSvc.saveTemplate(this.templ)
-        .then(rt => {
-            this._isDirty = false;
-            // It appears that calling pcrud.create will return the newly created object,
-            // while pcrud.update just gives you back the id of the updated object.
-            if ( typeof rt === 'object' ) {
-                this.templ = new SRTemplate(rt); // pick up the id and create_time fields
-            }
-            this.templateSavedString.current()
-            .then(str => {
-                this.toast.success(str);
-            });
-            if (scheduleNow) {
+            .then(rt => {
+                this._isDirty = false;
+                // It appears that calling pcrud.create will return the newly created object,
+                // while pcrud.update just gives you back the id of the updated object.
+                if ( typeof rt === 'object' ) {
+                    this.templ = new SRTemplate(rt); // pick up the id and create_time fields
+                }
+                this.templateSavedString.current()
+                    .then(str => {
+                        this.toast.success(str);
+                    });
+                if (scheduleNow) {
                 // we're done, so jump to the main page
-                this.RSvc.currentFolderType = null;
-                this.router.navigate(['/staff/reporter/full']);
-            } else if (this.isNew || this.isClone) {
+                    this.RSvc.currentFolderType = null;
+                    this.router.navigate(['/staff/reporter/full']);
+                } else if (this.isNew || this.isClone) {
                 // we've successfully saved, so we're no longer new
                 // adjust page title...
-                this.isNew = false;
-                this._setPageTitle();
-                // ... and make the URL say that we're editing
-                let folder_path = '';
-                if (this.folder) {
-                    folder_path = '/' + this.folder.id();
+                    this.isNew = false;
+                    this._setPageTitle();
+                    // ... and make the URL say that we're editing
+                    let folder_path = '';
+                    if (this.folder) {
+                        folder_path = '/' + this.folder.id();
+                    }
+                    const url = this.router.createUrlTree(['/staff/reporter/full/edit/' + this.templ.id + folder_path]).toString();
+                    this.location.go(url); // go without reloading
                 }
-                const url = this.router.createUrlTree(['/staff/reporter/full/edit/' + this.templ.id + folder_path]).toString();
-                this.location.go(url); // go without reloading
-            }
-        },
-        err => {
-            this.templateSaveErrorString.current()
-            .then(str => {
-                this.toast.danger(str + err);
-                console.error('Error saving template: %o', err);
+            },
+            err => {
+                this.templateSaveErrorString.current()
+                    .then(str => {
+                        this.toast.danger(str + err);
+                        console.error('Error saving template: %o', err);
+                    });
             });
-        });
-    }
+    };
 
     closeForm() {
         this.RSvc.currentFolderType = null;

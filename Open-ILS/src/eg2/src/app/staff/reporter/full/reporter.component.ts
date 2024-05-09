@@ -15,7 +15,7 @@ import {Tree, TreeNode} from '@eg/share/tree/tree';
 
 @Component({
     templateUrl: './reporter.component.html',
-		styleUrls: ['./reporter.component.css'],
+    styleUrls: ['./reporter.component.css'],
 })
 
 export class FullReporterComponent implements OnInit {
@@ -24,16 +24,16 @@ export class FullReporterComponent implements OnInit {
 	@ViewChild('promptNewFolder', { static: true }) newFolderDialog: PromptDialogComponent;
 
 	templateSearchFolder: IdlObject = null;
-	templateSearchString: string = '';
-	templateSearchField: string = '';
+	templateSearchString = '';
+	templateSearchField = '';
 
 	currentFolder: IdlObject = null;
 
-	managableFolderType: boolean = false;
+	managableFolderType = false;
 	rerenderGridArea: Array<number> = [1];
 	rerenderSearchArea: Array<number> = [1];
 
-    constructor(
+	constructor(
         private route: ActivatedRoute,
         private router: Router,
         private location: Location,
@@ -42,54 +42,54 @@ export class FullReporterComponent implements OnInit {
         private idl: IdlService,
         private pcrud: PcrudService,
         public RSvc: ReporterService
-    ) {
-    }
+	) {
+	}
 
 	getMyFolders() {
-		return this.RSvc.myFolderTrees;
+	    return this.RSvc.myFolderTrees;
 	}
 
 	searchGridRender() {
-        this.RSvc.currentFolderType = 'rtf';
-		this.rerenderSearchArea[0]++;
+	    this.RSvc.currentFolderType = 'rtf';
+	    this.rerenderSearchArea[0]++;
 	}
 
 	templateSearchFolderNodeSelected(node) {
-		if (node.callerData.folderIdl || node.id === 'my-templates') { // selecting an extant folder
-			this.templateSearchFolder = node.callerData.folderIdl;
-			this.searchGridRender();
-		} else {
-			node.toggleExpand();
-		}
+	    if (node.callerData.folderIdl || node.id === 'my-templates') { // selecting an extant folder
+	        this.templateSearchFolder = node.callerData.folderIdl;
+	        this.searchGridRender();
+	    } else {
+	        node.toggleExpand();
+	    }
 	}
 
 	folderNodeSelected(node) {
-		if (node.callerData.folderIdl) { // selecting an extant folder
-			this.RSvc.currentFolderType = node.callerData.folderIdl.classname;
-			switch (this.RSvc.currentFolderType) {
-				case 'rtf':
-					this.currentFolder = this.RSvc.templateFolder = node.callerData.folderIdl;
-					break;
-				case 'rrf':
-					this.currentFolder = this.RSvc.reportFolder = node.callerData.folderIdl;
-					break;
-				case 'rof':
-					this.currentFolder = this.RSvc.outputFolder = node.callerData.folderIdl;
-					break;
-			}
-		} else {
-			this.RSvc.currentFolderType = node.callerData.type + '-manager'
-			if (node.id.match(/^shared-by/)) {
-				node.toggleExpand();
-			}
-		}
-		this.managableFolderType = node.stateFlag;
-		this.rerenderGridArea[0]++;
+	    if (node.callerData.folderIdl) { // selecting an extant folder
+	        this.RSvc.currentFolderType = node.callerData.folderIdl.classname;
+	        switch (this.RSvc.currentFolderType) {
+	            case 'rtf':
+	                this.currentFolder = this.RSvc.templateFolder = node.callerData.folderIdl;
+	                break;
+	            case 'rrf':
+	                this.currentFolder = this.RSvc.reportFolder = node.callerData.folderIdl;
+	                break;
+	            case 'rof':
+	                this.currentFolder = this.RSvc.outputFolder = node.callerData.folderIdl;
+	                break;
+	        }
+	    } else {
+	        this.RSvc.currentFolderType = node.callerData.type + '-manager';
+	        if (node.id.match(/^shared-by/)) {
+	            node.toggleExpand();
+	        }
+	    }
+	    this.managableFolderType = node.stateFlag;
+	    this.rerenderGridArea[0]++;
 	}
 
-    newFolder($event) {
-		let new_type = this.RSvc.currentFolderType.split('-')[0];
-		if (new_type) {
+	newFolder($event) {
+	    const new_type = this.RSvc.currentFolderType.split('-')[0];
+	    if (new_type) {
 	        this.newFolderString.current({})
     	    .then(str => {
 	            this.newFolderDialog.dialogBody = str;
@@ -99,14 +99,14 @@ export class FullReporterComponent implements OnInit {
                 	    this.RSvc.newTypedFolder(new_name, new_type);
 	                }
     	        });
-        	})
-		}
-    }
-
-	getSharedFolders() {
-		return this.RSvc.sharedFolderTrees;
+        	});
+	    }
 	}
 
-    ngOnInit() {
-    }
+	getSharedFolders() {
+	    return this.RSvc.sharedFolderTrees;
+	}
+
+	ngOnInit() {
+	}
 }

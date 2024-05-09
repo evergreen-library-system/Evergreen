@@ -18,7 +18,7 @@ import {ReporterService, SRTemplate} from '../share/reporter.service';
 
 export class FullReporterDefinitionComponent implements OnInit {
 
-	selectedTab = 'rptFilterFields';
+    selectedTab = 'rptFilterFields';
     rptType = '';
     oldRptType = '';
     name = '';
@@ -78,25 +78,25 @@ export class FullReporterDefinitionComponent implements OnInit {
         }
     }
 
-	changeToTab = tab => this.selectedTab = tab;
+    changeToTab = tab => this.selectedTab = tab;
 
     ngOnInit() {
         this._setPageTitle();
     }
 
     _setPageTitle() {
-         if ( this.isNew ) {
+        if ( this.isNew ) {
             this.newTitleString.current()
-            .then(str => this.pageTitle = str );
+                .then(str => this.pageTitle = str );
         } else if (this.isClone) {
             this.cloneTitleString.current()
-            .then(str => this.pageTitle = str );
+                .then(str => this.pageTitle = str );
         } else if (this.isView) {
             this.viewTitleString.current()
-            .then(str => this.pageTitle = str );
+                .then(str => this.pageTitle = str );
         } else {
             this.editTitleString.current()
-            .then(str => this.pageTitle = str );
+                .then(str => this.pageTitle = str );
         }
     }
 
@@ -116,19 +116,19 @@ export class FullReporterDefinitionComponent implements OnInit {
         } else if (typeof x === 'object') {
             return Object.keys(x).length > 0;
         }
-        return !!x
+        return !!x;
     }
 
     filtersWithoutValues () {
         return this.templ.filterFields.filter( f => {
-            if (f.with_value_input) return false;
-            if (f.operator.arity == 0) return false; // is [not] null
+            if (f.with_value_input) {return false;}
+            if (f.operator.arity == 0) {return false;} // is [not] null
             if (f.datatype == 'text'
                 && f.operator.arity == 1
                 && f.hasOwnProperty('filter_value')
                 && f.filter_value !== null
-            ) return false; // text comparator, value not null
-            return !this.setOrHasLength(f.filter_value)
+            ) {return false;} // text comparator, value not null
+            return !this.setOrHasLength(f.filter_value);
         });
     }
 
@@ -142,7 +142,7 @@ export class FullReporterDefinitionComponent implements OnInit {
 
     readyToSchedule = () => {
         return ( this.readyToSave() && this.templ.displayFields.length > 0 && this.RSvc.outputFolder);
-    }
+    };
 
     hideField(field: IdlObject) {
         if ( typeof field.hide_from === 'undefined' ) {
@@ -161,66 +161,66 @@ export class FullReporterDefinitionComponent implements OnInit {
 
     loadTemplate(id: number) {
         return this.RSvc.loadTemplate(id)
-        .then(idl => {
-            this.templ = new SRTemplate(idl, true);
-            this.name = this.templ.name;
-            this.rptType = this.templ.fmClass;
-            this.oldRptType = this.templ.fmClass;
-        });
+            .then(idl => {
+                this.templ = new SRTemplate(idl, true);
+                this.name = this.templ.name;
+                this.rptType = this.templ.fmClass;
+                this.oldRptType = this.templ.fmClass;
+            });
     }
 
     loadReport(id: number) {
         return this.RSvc.loadReport(id)
-        .then(idl => {
-            let t = idl.template();
-            idl.template(t.id());
-            t.reports([idl]);
+            .then(idl => {
+                const t = idl.template();
+                idl.template(t.id());
+                t.reports([idl]);
 
-            this.RSvc.reportFolder = this.RSvc
-                                        .myFolderTrees
-                                        .reports
-                                        .findNode(idl.folder())
-                                        .callerData
-                                        .folderIdl;
+                this.RSvc.reportFolder = this.RSvc
+                    .myFolderTrees
+                    .reports
+                    .findNode(idl.folder())
+                    .callerData
+                    .folderIdl;
 
-            this.reportIdl = idl;
-            this.templ = new SRTemplate(t);
-            this.templ.rrIdl = idl;
-            this.name = idl.name();
-            this.description = idl.description();
+                this.reportIdl = idl;
+                this.templ = new SRTemplate(t);
+                this.templ.rrIdl = idl;
+                this.name = idl.name();
+                this.description = idl.description();
 
-            this.rptType = this.templ.fmClass;
-            this.oldRptType = this.templ.fmClass;
-        });
+                this.rptType = this.templ.fmClass;
+                this.oldRptType = this.templ.fmClass;
+            });
     }
 
-    saveAndScheduleDefinition(leaveNow: boolean = true) {
+    saveAndScheduleDefinition(leaveNow = true) {
         this.saveDefinition(leaveNow, true);
     }
 
-    saveDefinition(leaveNow: boolean = true, scheduleNow: boolean = false) {
+    saveDefinition(leaveNow = true, scheduleNow = false) {
 
         this.RSvc.saveReportDefinition(this.templ, this.name, this.description, this.isEdit, scheduleNow)
-        .then(
-            rr => {
-                this._isDirty = false;
-                this.templateSavedString.current()
-                .then(str => {
-                    this.toast.success(str);
-                });
-                if (leaveNow) {
-                    this.RSvc.currentFolderType = null;
-                    this.router.navigate(['/staff/reporter/full']);
+            .then(
+                rr => {
+                    this._isDirty = false;
+                    this.templateSavedString.current()
+                        .then(str => {
+                            this.toast.success(str);
+                        });
+                    if (leaveNow) {
+                        this.RSvc.currentFolderType = null;
+                        this.router.navigate(['/staff/reporter/full']);
+                    }
+                },
+                err => {
+                    this.templateSaveErrorString.current()
+                        .then(str => {
+                            this.toast.danger(str + err);
+                            console.error('Error saving report definition: %o', err);
+                        });
                 }
-            },
-            err => {
-                this.templateSaveErrorString.current()
-                .then(str => {
-                    this.toast.danger(str + err);
-                    console.error('Error saving report definition: %o', err);
-                });
-            }
-        );
+            );
     }
 
     closeForm() {

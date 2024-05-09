@@ -55,7 +55,7 @@
     
       </div>
       <div class="col-lg-9">
-    	<div *ngIf="RSvc.currentFolderType == 'rtf-manager'">
+    	<div *ngIf="RSvc.currentFolderType === 'rtf-manager'">
     	  <div *ngIf="managableFolderType">
     		<button type="button" class="btn btn-outline-dark ms-1" i18n (click)="newFolder()">Add top-level template folder</button>
     	  </div>
@@ -63,7 +63,7 @@
 					<p i18n>These folders are shared with you. You cannot manage them.</p>
 				</div>
     	</div>
-    	<div *ngIf="RSvc.currentFolderType == 'rrf-manager'">
+    	<div *ngIf="RSvc.currentFolderType === 'rrf-manager'">
     	  <div *ngIf="managableFolderType">
     		<button type="button" class="btn btn-outline-dark ms-1" i18n (click)="newFolder()">Add top-level report folder</button>
     	  </div>
@@ -71,7 +71,7 @@
 					<p i18n>These folders are shared with you. You cannot manage them.</p>
 				</div>
     	</div>
-    	<div *ngIf="RSvc.currentFolderType == 'rof-manager'">
+    	<div *ngIf="RSvc.currentFolderType === 'rof-manager'">
     	  <div *ngIf="managableFolderType">
     		<button type="button" class="btn btn-outline-dark ms-1" i18n (click)="newFolder()">Add top-level output folder</button>
     	  </div>
@@ -80,11 +80,11 @@
 				</div>
     	</div>
     	<div *ngFor="let i of rerenderGridArea">
-    		<eg-reporter-templates *ngIf="RSvc.currentFolderType == 'rtf'" [currentFolder]="currentFolder"></eg-reporter-templates>
-    		<eg-reporter-reports *ngIf="RSvc.currentFolderType == 'rrf'" [currentFolder]="currentFolder"></eg-reporter-reports>
-    		<eg-reporter-reports *ngIf="RSvc.currentFolderType == 'rrf-from-rt'" [searchTemplate]="RSvc.selectedTemplate"></eg-reporter-reports>
-    		<eg-reporter-outputs *ngIf="RSvc.currentFolderType == 'rof'" [currentFolder]="currentFolder"></eg-reporter-outputs>
-    		<eg-reporter-outputs *ngIf="RSvc.currentFolderType == 'rof-from-rr'" [searchReport]="RSvc.selectedReport"></eg-reporter-outputs>
+    		<eg-reporter-templates *ngIf="RSvc.currentFolderType === 'rtf'" [currentFolder]="currentFolder"></eg-reporter-templates>
+    		<eg-reporter-reports *ngIf="RSvc.currentFolderType === 'rrf'" [currentFolder]="currentFolder"></eg-reporter-reports>
+    		<eg-reporter-reports *ngIf="RSvc.currentFolderType === 'rrf-from-rt'" [searchTemplate]="RSvc.selectedTemplate"></eg-reporter-reports>
+    		<eg-reporter-outputs *ngIf="RSvc.currentFolderType === 'rof'" [currentFolder]="currentFolder"></eg-reporter-outputs>
+    		<eg-reporter-outputs *ngIf="RSvc.currentFolderType === 'rof-from-rr'" [searchReport]="RSvc.selectedReport"></eg-reporter-outputs>
     	</div>
       </div>
     </div>
@@ -125,11 +125,11 @@
 					[searchString]="templateSearchString"
 					[searchField]="templateSearchField"
 				></eg-reporter-templates>
-        <div class="mt-2 outline-dark" *ngIf="RSvc.currentFolderType == 'rrf-from-rt'">
+        <div class="mt-2 outline-dark" *ngIf="RSvc.currentFolderType === 'rrf-from-rt'">
             <br/><hr/><br/>
       		<eg-reporter-reports [searchTemplate]="RSvc.selectedTemplate"></eg-reporter-reports>
         </div>
-        <div class="mt-2 outline-dark" *ngIf="RSvc.currentFolderType == 'rof-from-rr'">
+        <div class="mt-2 outline-dark" *ngIf="RSvc.currentFolderType === 'rof-from-rr'">
             <br/><hr/><br/>
        		<eg-reporter-outputs [searchReport]="RSvc.selectedReport"></eg-reporter-outputs>
         </div>

@@ -1,6 +1,6 @@
 <div class="chooser-row">
 
-<ngb-accordion *ngIf="editorMode != 'definition'" #fieldChooser="ngbAccordion" [closeOthers]="true" class="col-md-3" activeIds="all">
+<ngb-accordion *ngIf="editorMode !== 'definition'" #fieldChooser="ngbAccordion" [closeOthers]="true" class="col-md-3" activeIds="all">
 
   <ngb-panel *ngIf="fieldType === 'filter' && hasFilterSuggestions()" id="suggested_filters" title="Suggested Filters" i18n-title>
     <ng-template ngbPanelContent>

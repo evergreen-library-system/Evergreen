@@ -203,7 +203,7 @@ export class CustomOrgUnitTreesComponent implements OnInit {
         // this.custom_selected = $event;
         this.custom_tree.selectNode($event);
         // console.debug('custom: custom_nodeChecked',typeof $event);
-        //console.debug('custom: selected node: ', $event);
+        // console.debug('custom: selected node: ', $event);
     }
 
     isCopyNodesAllowed(): boolean {

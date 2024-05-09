@@ -8,20 +8,20 @@ import {LinkedCircLimitSetsComponent} from './linked-circ-limit-sets.component';
 import {CircMatrixMatchpointDialogComponent} from './circ-matrix-matchpoint-dialog.component';
 
 @NgModule({
-  declarations: [
-    CircMatrixMatchpointComponent,
-    LinkedCircLimitSetsComponent,
-    CircMatrixMatchpointDialogComponent
-  ],
-  imports: [
-    AdminCommonModule,
-    CircMatrixMatchpointRoutingModule,
-    TreeModule
-  ],
-  exports: [
-  ],
-  providers: [
-  ]
+    declarations: [
+        CircMatrixMatchpointComponent,
+        LinkedCircLimitSetsComponent,
+        CircMatrixMatchpointDialogComponent
+    ],
+    imports: [
+        AdminCommonModule,
+        CircMatrixMatchpointRoutingModule,
+        TreeModule
+    ],
+    exports: [
+    ],
+    providers: [
+    ]
 })
 
 export class CircMatrixMatchpointModule {

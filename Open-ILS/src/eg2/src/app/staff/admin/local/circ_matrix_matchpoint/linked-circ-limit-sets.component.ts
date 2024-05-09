@@ -31,7 +31,7 @@ export class LinkedCircLimitSetsComponent implements OnInit {
     constructor(
         private idl: IdlService,
         private toast: ToastService
-        ) {
+    ) {
         this.outputLinkedLimitSet = new EventEmitter();
     }
 

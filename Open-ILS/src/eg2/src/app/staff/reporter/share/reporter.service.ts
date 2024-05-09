@@ -1,6 +1,6 @@
 import {Injectable} from '@angular/core';
 import {Router, Resolve, RouterStateSnapshot,
-                ActivatedRouteSnapshot} from '@angular/router';
+    ActivatedRouteSnapshot} from '@angular/router';
 import * as moment from 'moment-timezone';
 import {Md5} from 'ts-md5';
 import {map, switchMap, mergeMap, defaultIfEmpty, last} from 'rxjs/operators';
@@ -33,18 +33,18 @@ const OILS_RPT_DTYPE_NONE = '';
 const OILS_RPT_DTYPE_NULL = null;
 
 const OILS_RPT_DTYPE_ALL = [
-	OILS_RPT_DTYPE_STRING,
-	OILS_RPT_DTYPE_MONEY,
-	OILS_RPT_DTYPE_INT,
-	OILS_RPT_DTYPE_ID,
-	OILS_RPT_DTYPE_FLOAT,
-	OILS_RPT_DTYPE_TIMESTAMP,
-	OILS_RPT_DTYPE_BOOL,
-	OILS_RPT_DTYPE_OU,
-	OILS_RPT_DTYPE_NONE,
-	OILS_RPT_DTYPE_NULL,
-	OILS_RPT_DTYPE_INTERVAL,
-	OILS_RPT_DTYPE_LINK
+    OILS_RPT_DTYPE_STRING,
+    OILS_RPT_DTYPE_MONEY,
+    OILS_RPT_DTYPE_INT,
+    OILS_RPT_DTYPE_ID,
+    OILS_RPT_DTYPE_FLOAT,
+    OILS_RPT_DTYPE_TIMESTAMP,
+    OILS_RPT_DTYPE_BOOL,
+    OILS_RPT_DTYPE_OU,
+    OILS_RPT_DTYPE_NONE,
+    OILS_RPT_DTYPE_NULL,
+    OILS_RPT_DTYPE_INTERVAL,
+    OILS_RPT_DTYPE_LINK
 ];
 const OILS_RPT_DTYPE_NOT_ID =   [OILS_RPT_DTYPE_STRING,OILS_RPT_DTYPE_MONEY,OILS_RPT_DTYPE_INT,OILS_RPT_DTYPE_FLOAT,OILS_RPT_DTYPE_TIMESTAMP];
 const OILS_RPT_DTYPE_NOT_BOOL = [OILS_RPT_DTYPE_STRING,OILS_RPT_DTYPE_MONEY,OILS_RPT_DTYPE_INT,OILS_RPT_DTYPE_FLOAT,OILS_RPT_DTYPE_TIMESTAMP,OILS_RPT_DTYPE_ID,OILS_RPT_DTYPE_OU,OILS_RPT_DTYPE_LINK];
@@ -247,7 +247,7 @@ const transforms = [
         aggregate: true
     },
     // "Simple" would be to only offer the choice that's almost always what you mean.
-    /*{
+    /* {
         name: 'count',
         aggregate: true
     },*/
@@ -294,7 +294,7 @@ const operators = [
         name: '<> any'
     },
     // If I had a dollar for every time someone wanted a case sensitive substring search, I might be able to buy a coffee.
-    /*{
+    /* {
         name: 'like',
         arity: 1,
         datatypes: ['text']
@@ -396,23 +396,23 @@ export class SRTemplate {
     email = '';
     pivotLabel = '';
     pivotData = 0;
-    doRollup: boolean = false;
+    doRollup = false;
     runNow = 'now';
     runTime: moment.Moment = null;
 
-	aggregateDisplayFields() {
-		return this.displayFields.filter(f => f.transform.aggregate);
-	}
+    aggregateDisplayFields() {
+        return this.displayFields.filter(f => f.transform.aggregate);
+    }
 
-	nonAggregateDisplayFields() {
-		return this.displayFields.filter(f => !f.transform.aggregate);
-	}
+    nonAggregateDisplayFields() {
+        return this.displayFields.filter(f => !f.transform.aggregate);
+    }
 
     findFilterfieldByPlaceholder (ph) {
         return this.filterFields.filter(f => f.filter_placeholder === ph)[0];
     }
 
-    constructor(idlObj: IdlObject = null, templateOnly: boolean = false) {
+    constructor(idlObj: IdlObject = null, templateOnly = false) {
         if ( idlObj !== null ) {
             this.isNew = false;
             this.id = Number(idlObj.id());
@@ -439,7 +439,7 @@ export class SRTemplate {
 
                     const arData = JSON.parse(activeReport.data());
                     Object.keys(arData).forEach(maybePlaceholder => {
-                        let ffield = this.findFilterfieldByPlaceholder(maybePlaceholder);
+                        const ffield = this.findFilterfieldByPlaceholder(maybePlaceholder);
                         if (ffield) {
                             ffield.filter_value = arData[maybePlaceholder];
                             if (ffield.filter_value) {
@@ -484,17 +484,17 @@ export class SRTemplate {
 })
 export class ReporterService {
 
-    currentFolderType: string = '';
+    currentFolderType = '';
     selectedTemplate: IdlObject = null;
     selectedReport: IdlObject = null;
 
-    lastNewFolderName: string = '';
+    lastNewFolderName = '';
     templateFolderList: IdlObject[] = [];
     reportFolderList: IdlObject[] = [];
     outputFolderList: IdlObject[] = [];
 
-	myFolderTrees = { templates: null, reports: null, outputs: null };
-	sharedFolderTrees = { templates: null, reports: null, outputs: null };
+    myFolderTrees = { templates: null, reports: null, outputs: null };
+    sharedFolderTrees = { templates: null, reports: null, outputs: null };
 
     templateSearchFolderTree: Tree = null;
 
@@ -510,7 +510,7 @@ export class ReporterService {
         private org: OrgService,
         private net: NetService
     ) {
-		this.reloadFolders();
+        this.reloadFolders();
     }
 
     canDeleteFolder(fldr, gridDS) {
@@ -532,18 +532,18 @@ export class ReporterService {
         }
 
         return this.net.request(
-			'open-ils.reporter',
-			'open-ils.reporter.folder.delete',
-			this.auth.token(), type, fldr.id()
+            'open-ils.reporter',
+            'open-ils.reporter.folder.delete',
+            this.auth.token(), type, fldr.id()
         ).pipe(map(res => {
             if ( this.evt.parse(res) ) {
                 throw new Error(res);
             }
             return res;
         })).subscribe(
-			f => {},
-			e => { alert('ah!' + e) },
-			() => this.reloadFolders()
+            f => {},
+            (e: unknown) => { alert('ah!' + e); },
+            () => this.reloadFolders()
         );
     }
 
@@ -563,63 +563,63 @@ export class ReporterService {
         return this.folderListByType(type).find(f => f.id() == id);
     }
 
-	folderIsMine(f: IdlObject): boolean {
-		return !!(f.owner().id() == this.auth.user().id());
-	}
+    folderIsMine(f: IdlObject): boolean {
+        return !!(f.owner().id() == this.auth.user().id());
+    }
 
-	renameReportFolder(new_name) {
-		return this.renameFolder(new_name, this.reportFolder);
-	}
+    renameReportFolder(new_name) {
+        return this.renameFolder(new_name, this.reportFolder);
+    }
 
-	renameTemplateFolder(new_name) {
-		return this.renameFolder(new_name, this.templateFolder);
-	}
+    renameTemplateFolder(new_name) {
+        return this.renameFolder(new_name, this.templateFolder);
+    }
 
-	renameOutputFolder(new_name) {
-		return this.renameFolder(new_name, this.outputFolder);
-	}
+    renameOutputFolder(new_name) {
+        return this.renameFolder(new_name, this.outputFolder);
+    }
 
-	renameFolder(new_name, fldr) {
-		if (fldr && new_name) {
-			fldr.name(new_name);
-			return this.pcrud.update(fldr)
-				.subscribe(
-				f => {},
-				e => { alert('ah!' + e) },
-				() => this.reloadFolders()
-			);
-		}
-		return of(fldr);
-	}
+    renameFolder(new_name, fldr) {
+        if (fldr && new_name) {
+            fldr.name(new_name);
+            return this.pcrud.update(fldr)
+                .subscribe(
+                    f => {},
+                    (e: unknown) => { alert('ah!' + e); },
+                    () => this.reloadFolders()
+                );
+        }
+        return of(fldr);
+    }
 
-	shareFolder(fldr, org) {
-		if (fldr && org) {
-			fldr.share_with(this.org.get(org).id());
-			fldr.shared('t');
-			return this.pcrud.update(fldr)
-				.subscribe(
-				f => {},
-				e => { alert('ah!' + e) },
-				() => this.reloadFolders()
-			);
-		}
-		return of(fldr);
-	}
+    shareFolder(fldr, org) {
+        if (fldr && org) {
+            fldr.share_with(this.org.get(org).id());
+            fldr.shared('t');
+            return this.pcrud.update(fldr)
+                .subscribe(
+                    f => {},
+                    (e: unknown) => { alert('ah!' + e); },
+                    () => this.reloadFolders()
+                );
+        }
+        return of(fldr);
+    }
 
-	unshareFolder(fldr) {
-		if (fldr) {
-			fldr.shared('f');
-			return this.pcrud.update(fldr)
-				.subscribe(
-				f => {},
-				e => { alert('ah!' + e) },
-				() => this.reloadFolders()
-			);
-		}
-		return of(fldr);
-	}
+    unshareFolder(fldr) {
+        if (fldr) {
+            fldr.shared('f');
+            return this.pcrud.update(fldr)
+                .subscribe(
+                    f => {},
+                    (e: unknown) => { alert('ah!' + e); },
+                    () => this.reloadFolders()
+                );
+        }
+        return of(fldr);
+    }
 
-	updateContainingFolder(obj_list: IdlObject[], fldr: IdlObject) {
+    updateContainingFolder(obj_list: IdlObject[], fldr: IdlObject) {
         console.log('before fetch and change:',obj_list);
         return this.pcrud.search(
             obj_list[0].classname,
@@ -628,230 +628,230 @@ export class ReporterService {
         ).pipe(mergeMap(fresh_objs => {
             fresh_objs.forEach(o => {
     	    	o.folder(fldr.id());
-            })
+            });
             console.log('after fetch and change:',fresh_objs);
 		    return this.pcrud.update(fresh_objs).pipe(last());
         }));
 
-	}
+    }
 
-	newSubfolder(new_name, fldr: IdlObject) {
-		if (new_name) {
-			const new_folder = this.idl.create(fldr.classname);
-			new_folder.isnew(true);
-			new_folder.name(new_name);
-			new_folder.owner(this.auth.user().id());
-			if (fldr) {
-				new_folder.parent(fldr.id());
-			}
-			return this.pcrud.create(new_folder).subscribe(
-				f => this.lastNewFolderName = new_name,
-				e => { alert('ah!' + e) },
-				() => this.reloadFolders()
-			);
-		}
-		return of();
-	}
+    newSubfolder(new_name, fldr: IdlObject) {
+        if (new_name) {
+            const new_folder = this.idl.create(fldr.classname);
+            new_folder.isnew(true);
+            new_folder.name(new_name);
+            new_folder.owner(this.auth.user().id());
+            if (fldr) {
+                new_folder.parent(fldr.id());
+            }
+            return this.pcrud.create(new_folder).subscribe(
+                f => this.lastNewFolderName = new_name,
+                (e: unknown) => { alert('ah!' + e); },
+                () => this.reloadFolders()
+            );
+        }
+        return of();
+    }
 
-	newTypedFolder(new_name, ftype) {
-		if (new_name) {
-			const new_folder = this.idl.create(ftype);
-			new_folder.isnew(true);
-			new_folder.name(new_name);
-			new_folder.owner(this.auth.user().id());
-			return this.pcrud.create(new_folder).subscribe(
-				f => this.lastNewFolderName = new_name,
-				e => { alert('ah!' + e) },
-				() => this.reloadFolders()
-			);
-		}
-		return of();
-	}
+    newTypedFolder(new_name, ftype) {
+        if (new_name) {
+            const new_folder = this.idl.create(ftype);
+            new_folder.isnew(true);
+            new_folder.name(new_name);
+            new_folder.owner(this.auth.user().id());
+            return this.pcrud.create(new_folder).subscribe(
+                f => this.lastNewFolderName = new_name,
+                (e: unknown) => { alert('ah!' + e); },
+                () => this.reloadFolders()
+            );
+        }
+        return of();
+    }
 
-	newOutputFolder(new_name, fldr?: IdlObject) {
-		return this.newTypedFolder(new_name, fldr?.classname || 'rof');
-	}
+    newOutputFolder(new_name, fldr?: IdlObject) {
+        return this.newTypedFolder(new_name, fldr?.classname || 'rof');
+    }
 
-	newReportFolder(new_name, fldr?: IdlObject) {
-		return this.newTypedFolder(new_name, fldr?.classname || 'rrf');
-	}
+    newReportFolder(new_name, fldr?: IdlObject) {
+        return this.newTypedFolder(new_name, fldr?.classname || 'rrf');
+    }
 
-	newTemplateFolder(new_name, fldr?: IdlObject) {
-		return this.newTypedFolder(new_name, fldr?.classname || 'rtf');
-	}
+    newTemplateFolder(new_name, fldr?: IdlObject) {
+        return this.newTypedFolder(new_name, fldr?.classname || 'rtf');
+    }
 
     reloadFolders(): Promise<any[]> {
 
-		this.templateSearchFolderTree = new Tree(new TreeNode({
+        this.templateSearchFolderTree = new Tree(new TreeNode({
 	    	id: 'my-templates',
 		    label: $localize`All Folders`,
-			children: [],
+            children: [],
 		    callerData: {}
-		}));
+        }));
 
-		this.myFolderTrees = {
-			templates: new Tree(new TreeNode({
+        this.myFolderTrees = {
+            templates: new Tree(new TreeNode({
     	    	id: 'my-templates',
 			    label: $localize`Templates`,
-				stateFlag: true,
-				children: [],
+                stateFlag: true,
+                children: [],
 			    callerData: { type: 'rtf' }
-			})),
+            })),
 
-			reports: new Tree(new TreeNode({
+            reports: new Tree(new TreeNode({
     	    	id: 'my-reports',
 			    label: $localize`Reports`,
-				stateFlag: true,
-				children: [],
+                stateFlag: true,
+                children: [],
 			    callerData: { type: 'rrf' }
-			})),
+            })),
 
-			outputs: new Tree(new TreeNode({
+            outputs: new Tree(new TreeNode({
     	    	id: 'my-outputs',
 			    label: $localize`Outputs`,
-				stateFlag: true,
-				children: [],
+                stateFlag: true,
+                children: [],
 			    callerData: { type: 'rof' }
-			}))
-		};
+            }))
+        };
 
-		this.sharedFolderTrees = {
-			templates: new Tree(new TreeNode({
+        this.sharedFolderTrees = {
+            templates: new Tree(new TreeNode({
         		id: 'shared-templates',
 		    	label: $localize`Templates`,
-				stateFlag: false,
-				children: [],
+                stateFlag: false,
+                children: [],
 			    callerData: { type: 'rtf' }
-			})),
+            })),
 
-			reports: new Tree(new TreeNode({
+            reports: new Tree(new TreeNode({
     	    	id: 'shared-reports',
 			    label: $localize`Reports`,
-				stateFlag: false,
-				children: [],
+                stateFlag: false,
+                children: [],
 			    callerData: { type: 'rrf' }
-			})),
+            })),
 
-			outputs: new Tree(new TreeNode({
+            outputs: new Tree(new TreeNode({
     	    	id: 'shared-outputs',
 			    label: $localize`Outputs`,
-				stateFlag: false,
-				children: [],
+                stateFlag: false,
+                children: [],
 			    callerData: { type: 'rof' }
-			}))
-		};
-	
+            }))
+        };
+
         return Promise.all([
             new Promise<void>((resolve, reject) => {
                 this.net.request(
-					'open-ils.reporter',
-					'open-ils.reporter.folder.visible.retrieve',
-					this.auth.token(),
-					'template').toPromise()
-                .then(fldrs => {
+                    'open-ils.reporter',
+                    'open-ils.reporter.folder.visible.retrieve',
+                    this.auth.token(),
+                    'template').toPromise()
+                    .then(fldrs => {
 
-					this.treeifyFolders(this.templateSearchFolderTree, fldrs, false);
-                    resolve();
-				})
+                        this.treeifyFolders(this.templateSearchFolderTree, fldrs, false);
+                        resolve();
+                    });
             }),
             new Promise<void>((resolve, reject) => {
                 this.net.request(
-					'open-ils.reporter',
-					'open-ils.reporter.folder.visible.retrieve',
-					this.auth.token(),
-					'template').toPromise()
-                .then(fldrs => {
-					this.templateFolderList = fldrs;
-					let mine = fldrs.filter(f => f.owner().id() == this.auth.user().id());
-					let shared = fldrs.filter(f => f.owner().id() != this.auth.user().id());
+                    'open-ils.reporter',
+                    'open-ils.reporter.folder.visible.retrieve',
+                    this.auth.token(),
+                    'template').toPromise()
+                    .then(fldrs => {
+                        this.templateFolderList = fldrs;
+                        const mine = fldrs.filter(f => f.owner().id() == this.auth.user().id());
+                        const shared = fldrs.filter(f => f.owner().id() != this.auth.user().id());
 
-					this.treeifyFolders(this.myFolderTrees.templates, mine, true);
-					this.treeifyFolders(this.sharedFolderTrees.templates, shared, false);
+                        this.treeifyFolders(this.myFolderTrees.templates, mine, true);
+                        this.treeifyFolders(this.sharedFolderTrees.templates, shared, false);
 
-                    resolve();
-				})
+                        resolve();
+                    });
             }),
             new Promise<void>((resolve, reject) => {
                 this.net.request(
-					'open-ils.reporter',
-					'open-ils.reporter.folder.visible.retrieve',
-					this.auth.token(),
-					'report').toPromise()
-                .then(fldrs => {
-					this.reportFolderList = fldrs;
-					let mine = fldrs.filter(f => f.owner().id() == this.auth.user().id());
-					let shared = fldrs.filter(f => f.owner().id() != this.auth.user().id());
+                    'open-ils.reporter',
+                    'open-ils.reporter.folder.visible.retrieve',
+                    this.auth.token(),
+                    'report').toPromise()
+                    .then(fldrs => {
+                        this.reportFolderList = fldrs;
+                        const mine = fldrs.filter(f => f.owner().id() == this.auth.user().id());
+                        const shared = fldrs.filter(f => f.owner().id() != this.auth.user().id());
 
-					this.treeifyFolders(this.myFolderTrees.reports, mine, true);
-					this.treeifyFolders(this.sharedFolderTrees.reports, shared, false);
+                        this.treeifyFolders(this.myFolderTrees.reports, mine, true);
+                        this.treeifyFolders(this.sharedFolderTrees.reports, shared, false);
 
-                    resolve();
-				})
+                        resolve();
+                    });
             }),
             new Promise<void>((resolve, reject) => {
                 this.net.request(
-					'open-ils.reporter',
-					'open-ils.reporter.folder.visible.retrieve',
-					this.auth.token(),
-					'output').toPromise()
-                .then(fldrs => {
-					this.outputFolderList = fldrs;
-					let mine = fldrs.filter(f => f.owner().id() == this.auth.user().id());
-					let shared = fldrs.filter(f => f.owner().id() != this.auth.user().id());
+                    'open-ils.reporter',
+                    'open-ils.reporter.folder.visible.retrieve',
+                    this.auth.token(),
+                    'output').toPromise()
+                    .then(fldrs => {
+                        this.outputFolderList = fldrs;
+                        const mine = fldrs.filter(f => f.owner().id() == this.auth.user().id());
+                        const shared = fldrs.filter(f => f.owner().id() != this.auth.user().id());
 
-					this.treeifyFolders(this.myFolderTrees.outputs, mine, true);
-					this.treeifyFolders(this.sharedFolderTrees.outputs, shared, false);
+                        this.treeifyFolders(this.myFolderTrees.outputs, mine, true);
+                        this.treeifyFolders(this.sharedFolderTrees.outputs, shared, false);
 
-                    resolve();
-				})
+                        resolve();
+                    });
             })
         ]);
 
     }
 
-    tempFolderTree (tree_type, mine: boolean = true, shared: boolean = false, expanded: boolean = false) {
+    tempFolderTree (tree_type, mine = true, shared = false, expanded = false) {
         let flist = [];
         let label = '';
         switch (tree_type) {
             case 'rtf':
-                    flist = this.templateFolderList;
-                    label = $localize`Templates`;
-                    break;
+                flist = this.templateFolderList;
+                label = $localize`Templates`;
+                break;
             case 'rrf':
-                    flist = this.reportFolderList;
-                    label = $localize`Reports`;
-                    break;
+                flist = this.reportFolderList;
+                label = $localize`Reports`;
+                break;
             case 'rof':
-                    flist = this.outputFolderList;
-                    label = $localize`Folders`;
-                    break;
+                flist = this.outputFolderList;
+                label = $localize`Folders`;
+                break;
             default:
-                    break;
-        };
+                break;
+        }
 
-		let mine_list = flist.filter(f => f.owner().id() == this.auth.user().id());
-		let shared_list = flist.filter(f => f.owner().id() != this.auth.user().id());
+        const mine_list = flist.filter(f => f.owner().id() == this.auth.user().id());
+        const shared_list = flist.filter(f => f.owner().id() != this.auth.user().id());
 
         flist = [];
 
-        if (mine) flist = flist.concat(mine_list);
-        if (shared) flist = flist.concat(shared_list);
+        if (mine) {flist = flist.concat(mine_list);}
+        if (shared) {flist = flist.concat(shared_list);}
 
-        let temp_tree = new Tree(new TreeNode({
+        const temp_tree = new Tree(new TreeNode({
 	    	id: 'temp-tree',
 		    label: label,
-			children: [],
+            children: [],
 		    callerData: {}
-		}));
+        }));
 
-		this.treeifyFolders(temp_tree, flist, false);
-        if (expanded) temp_tree.expandAll();
+        this.treeifyFolders(temp_tree, flist, false);
+        if (expanded) {temp_tree.expandAll();}
         return temp_tree;
     }
 
-	treeifyFolders (tree, folders, state) {
-		while (folders.length) {
-			let f = folders.shift();
+    treeifyFolders (tree, folders, state) {
+        while (folders.length) {
+            const f = folders.shift();
 
             let current_root = tree.rootNode;
 
@@ -859,7 +859,7 @@ export class ReporterService {
             if (f.shared() === 't' && f.share_with()) {
                 sharedLabel = ' (' + this.org.get(f.share_with()).shortname() + ')';
                 if ( f.owner().id() != this.auth.user().id() ) { // shared with me, not by me
-                    let shared_folder_id = 'shared-by-' + f.owner().id();
+                    const shared_folder_id = 'shared-by-' + f.owner().id();
                     current_root = tree.findNode(shared_folder_id);
                     if (!current_root) {
                         current_root = new TreeNode({
@@ -877,39 +877,39 @@ export class ReporterService {
                 }
             }
 
-			if (f.parent()) { // not a top folder
-				let p = tree.findNode(f.parent());
-				if (!p) {
-					// if the parent is NOT somewhere in the list waiting to be inserted...
-					if (folders.filter(x => x.id() == f.parent()).length == 0) {
-						// .. just make it parentless, it's a shared folder but we don't have the parent shared
-						f.parent(null);
-					}
-					folders.push(f);
-				} else {
-					p.children.push(new TreeNode({
-						id: f.id(),
-						label: f.name() + sharedLabel,
+            if (f.parent()) { // not a top folder
+                const p = tree.findNode(f.parent());
+                if (!p) {
+                    // if the parent is NOT somewhere in the list waiting to be inserted...
+                    if (folders.filter(x => x.id() == f.parent()).length == 0) {
+                        // .. just make it parentless, it's a shared folder but we don't have the parent shared
+                        f.parent(null);
+                    }
+                    folders.push(f);
+                } else {
+                    p.children.push(new TreeNode({
+                        id: f.id(),
+                        label: f.name() + sharedLabel,
                         expanded: false,
-						stateFlag: state,
-						callerData: {
-							folderIdl: f
-						}
-					}));
-				}
-			} else { // no parent defined, add to the root's kids
-				current_root.children.push(new TreeNode({
-					id: f.id(),
-					label: f.name() + sharedLabel,
+                        stateFlag: state,
+                        callerData: {
+                            folderIdl: f
+                        }
+                    }));
+                }
+            } else { // no parent defined, add to the root's kids
+                current_root.children.push(new TreeNode({
+                    id: f.id(),
+                    label: f.name() + sharedLabel,
                     expanded: false,
-					stateFlag: state,
-					callerData: {
-						folderIdl: f
-					}
-				}));
-			}
-		}
-	}
+                    stateFlag: state,
+                    callerData: {
+                        folderIdl: f
+                    }
+                }));
+            }
+        }
+    }
 
     _initSRFolders(): Promise<any[]> {
         if (this.templateFolder &&
@@ -923,48 +923,48 @@ export class ReporterService {
             new Promise<void>((resolve, reject) => {
                 // Verify folders exist, create if not
                 this.getDefaultSRFolder('rtf')
-                .then(f => {
-                    if (f) {
-                        this.templateFolder = f;
-                        resolve();
-                    } else {
-                        this.createDefaultSRFolder('rtf')
-                        .then(n => {
-                            this.templateFolder = n;
+                    .then(f => {
+                        if (f) {
+                            this.templateFolder = f;
                             resolve();
-                        });
-                    }
-                });
+                        } else {
+                            this.createDefaultSRFolder('rtf')
+                                .then(n => {
+                                    this.templateFolder = n;
+                                    resolve();
+                                });
+                        }
+                    });
             }),
             new Promise<void>((resolve, reject) => {
                 this.getDefaultSRFolder('rrf')
-                .then(f => {
-                    if (f) {
-                        this.reportFolder = f;
-                        resolve();
-                    } else {
-                        this.createDefaultSRFolder('rrf')
-                        .then(n => {
-                            this.reportFolder = n;
+                    .then(f => {
+                        if (f) {
+                            this.reportFolder = f;
                             resolve();
-                        });
-                    }
-                });
+                        } else {
+                            this.createDefaultSRFolder('rrf')
+                                .then(n => {
+                                    this.reportFolder = n;
+                                    resolve();
+                                });
+                        }
+                    });
             }),
             new Promise<void>((resolve, reject) => {
                 this.getDefaultSRFolder('rof')
-                .then(f => {
-                    if (f) {
-                        resolve();
-                        this.outputFolder = f;
-                    } else {
-                        this.createDefaultSRFolder('rof')
-                        .then(n => {
-                            this.outputFolder = n;
+                    .then(f => {
+                        if (f) {
                             resolve();
-                        });
-                    }
-                });
+                            this.outputFolder = f;
+                        } else {
+                            this.createDefaultSRFolder('rof')
+                                .then(n => {
+                                    this.outputFolder = n;
+                                    resolve();
+                                });
+                        }
+                    });
             })
         ]);
     }
@@ -973,7 +973,7 @@ export class ReporterService {
         const ret = [];
         Object.values(this.idl.classes).forEach(c => {
             if (c && typeof c['core'] !== 'undefined' && c['core']) {
-                if (typeof c['label'] === 'undefined') c['label'] = c['name'];
+                if (typeof c['label'] === 'undefined') {c['label'] = c['name'];}
                 ret.push(c);
             }
         });
@@ -985,8 +985,8 @@ export class ReporterService {
         Object.values(this.idl.classes).forEach(c => {
             if (c && typeof c['core'] === 'undefined' || !c['core']) {
                 if (typeof c['virtual'] === 'undefined' || !c['virtual']) {
-                    if (typeof c['label'] === 'undefined') c['label'] = c['name'];
-                    ret.push(c)
+                    if (typeof c['label'] === 'undefined') {c['label'] = c['name'];}
+                    ret.push(c);
                 }
             }
         });
@@ -998,7 +998,7 @@ export class ReporterService {
         transforms.forEach(el => {
             if ( typeof el.datatypes === 'undefined' ||
             (el.datatypes.findIndex(dt => dt === datatype) > -1) ) {
-                if (onlySimple && !el.simple) return;
+                if (onlySimple && !el.simple) {return;}
                 ret.push(el);
             }
         });
@@ -1028,7 +1028,7 @@ export class ReporterService {
     }
 
     getTransformByName(name: string) {
-        if (!name) return this.defaultTransform();
+        if (!name) {return this.defaultTransform();}
         return { ...transforms[transforms.findIndex(el => el.name === name)] };
     }
 
@@ -1062,13 +1062,13 @@ export class ReporterService {
     getFolders(fmClass: string): Promise<IdlObject> {
         return this.pcrud.search(fmClass,
             { owner: this.auth.user().id(), 'simple_reporter': 'f', name: defaultSRFolderName },
-        {}).toPromise();
+            {}).toPromise();
     }
 
     getDefaultSRFolder(fmClass: string): Promise<IdlObject> {
         return this.pcrud.search(fmClass,
             { owner: this.auth.user().id(), 'simple_reporter': 't', name: defaultSRFolderName },
-        {}).toPromise();
+            {}).toPromise();
     }
 
     createDefaultSRFolder(fmClass: string): Promise<IdlObject> {
@@ -1090,23 +1090,23 @@ export class ReporterService {
         };
 
         return this.net.request(
-			'open-ils.reporter',
-			'open-ils.reporter.template.retrieve',
-			this.auth.token(), id, searchOps
+            'open-ils.reporter',
+            'open-ils.reporter.template.retrieve',
+            this.auth.token(), id, searchOps
         ).toPromise().then(t => {
-			const rtData = JSON.parse(t.data());
-			if (rtData.version < 5) {
-				this.upgradeXULTemplateData(t);
-			}
+            const rtData = JSON.parse(t.data());
+            if (rtData.version < 5) {
+                this.upgradeXULTemplateData(t);
+            }
 
-			if (rtData.version < 6) {
-				if (!rtData.simple_report) { // truly an old report
-					this.upgradeAngJSTemplateData(t);
-				} // else it is a Simple Reporter template, just leave it be
-			}
+            if (rtData.version < 6) {
+                if (!rtData.simple_report) { // truly an old report
+                    this.upgradeAngJSTemplateData(t);
+                } // else it is a Simple Reporter template, just leave it be
+            }
 
-			return t;
-		});
+            return t;
+        });
     }
 
     loadReport(id: number): Promise<IdlObject> {
@@ -1117,22 +1117,22 @@ export class ReporterService {
             }
         };
         return this.net.request(
-			'open-ils.reporter',
-			'open-ils.reporter.report.retrieve',
-			this.auth.token(), id, searchOps
+            'open-ils.reporter',
+            'open-ils.reporter.report.retrieve',
+            this.auth.token(), id, searchOps
         ).toPromise();
     }
 
     saveTemplate(
         templ: SRTemplate,
-        scheduleNow: boolean = false
+        scheduleNow = false
     ): Promise<any> { // IdlObject or Number? It depends!
         return this.saveSimpleTemplate(templ,scheduleNow,false);
     }
 
     buildReportData(
         templ: SRTemplate,
-        isSimple: boolean = false
+        isSimple = false
     ) {
         const rrData = {};
         rrData['__pivot_label'] = templ.pivotLabel;
@@ -1143,7 +1143,7 @@ export class ReporterService {
             if (isSimple || !el.with_value_input) {
                 rrData[el.filter_placeholder] = el.force_filtervalues ? el.force_filtervalues : el.filter_value;
                 if (el.datatype === 'org_unit' && el.operator.name === '= any') { // special case for org selector
-                    let final_value = { transform: "Bare", params: rrData[el.filter_placeholder] };
+                    const final_value = { transform: 'Bare', params: rrData[el.filter_placeholder] };
                     final_value['_org_family_primaryOrgId'] = el._org_family_primaryOrgId;
                     final_value['_org_family_includeAncestors'] = el._org_family_includeAncestors;
                     final_value['_org_family_includeDescendants'] = el._org_family_includeDescendants;
@@ -1157,8 +1157,8 @@ export class ReporterService {
 
     saveSimpleTemplate(
         templ: SRTemplate,
-        scheduleNow: boolean = false,
-        isSimple?: boolean 
+        scheduleNow = false,
+        isSimple?: boolean
     ): Promise<any> { // IdlObject or Number? It depends!
         isSimple ??= true; // can't initialize an optional param in the definition, do it here
 
@@ -1166,7 +1166,7 @@ export class ReporterService {
         const rrData = this.buildReportData(templ, isSimple);
 
         const rtIdl = this.idl.create('rt');
-        if (!templ.isNew) rtIdl.id(templ.id);
+        if (!templ.isNew) {rtIdl.id(templ.id);}
         rtIdl.isnew(!!(templ.isNew));
         rtIdl.name(templ.name);
         rtIdl.create_time(templ.create_time);
@@ -1185,68 +1185,68 @@ export class ReporterService {
             rrIdl.folder(this.reportFolder.id());
             rrIdl.template(templ.id);
             rrIdl.create_time('now'); // rr create time is serving as the edit time
-                                      // of the SR template as a whole
+            // of the SR template as a whole
 
             rrIdl.recur(templ.recurring ? 't' : 'f');
             rrIdl.recurrence(templ.recurrence);
         }
 
         return this.pcrud.search('rt', { name: rtIdl.name(), folder: rtIdl.folder() })
-        .pipe(defaultIfEmpty(rtIdl), map(existing => {
-            if (templ.isNew && existing.id() !== rtIdl.id()) { // oh no! dup name
-                throw new Error(': Duplicate Name');
-            }
+            .pipe(defaultIfEmpty(rtIdl), map(existing => {
+                if (templ.isNew && existing.id() !== rtIdl.id()) { // oh no! dup name
+                    throw new Error(': Duplicate Name');
+                }
 
-            if (templ.isNew) { // 
-                return this.pcrud.create(rtIdl).pipe(mergeMap(rt => {
-                    if (isSimple) {
-                        rrIdl.template(rt.id());
-                        // after saving the rr, return an Observable of the rt
-                        // to the caller
-                        return this.pcrud.create(rrIdl).pipe(mergeMap(
-                            rr => this.scheduleReport(templ, rr, scheduleNow).pipe(mergeMap(rs => of(rt)))
-                        ));
-                    }
-
-                    return of(rt);
-                })).toPromise();
-            } else if (!isSimple) { // edit mode, NOT simple reporter
-                return this.pcrud.update(rtIdl).pipe(mergeMap(_ => of(rtIdl))).toPromise();
-            } else {
-                const emptyRR = this.idl.create('rr');
-                emptyRR.id('no_rr');
-                return this.pcrud.update(rtIdl).pipe(mergeMap(rtId => {
-                    // we may or may not have the rr already created, so
-                    // test and act accordingly
-                    return this.pcrud.search('rr', { template: rtId }).pipe(defaultIfEmpty(emptyRR), mergeMap(rr => {
-                        if (rr.id() === 'no_rr') {
-                            rrIdl.isnew(true);
-                            return this.pcrud.create(rrIdl).pipe(mergeMap(rr2 =>
-                                this.scheduleReport(templ, rr2, scheduleNow).pipe(mergeMap(rs => of(rtId)))
-                            ));
-                        } else {
-                            rr.create_time('now'); // rr create time is serving as the
-                                                                         // edit time of the SR template as a whole
-                            rr.recur(templ.recurring ? 't' : 'f');
-                            rr.recurrence(templ.recurrence);
-                            rr.data(rrIdl.data());
-                            return this.pcrud.update(rr).pipe(mergeMap(
-                                rr2 => this.scheduleReport(templ, rr, scheduleNow).pipe(mergeMap(rs => of(rtId) ))
+                if (templ.isNew) { //
+                    return this.pcrud.create(rtIdl).pipe(mergeMap(rt => {
+                        if (isSimple) {
+                            rrIdl.template(rt.id());
+                            // after saving the rr, return an Observable of the rt
+                            // to the caller
+                            return this.pcrud.create(rrIdl).pipe(mergeMap(
+                                rr => this.scheduleReport(templ, rr, scheduleNow).pipe(mergeMap(rs => of(rt)))
                             ));
                         }
-                    }));
-                })).toPromise();
-                
-            }
-        })).toPromise();
+
+                        return of(rt);
+                    })).toPromise();
+                } else if (!isSimple) { // edit mode, NOT simple reporter
+                    return this.pcrud.update(rtIdl).pipe(mergeMap(_ => of(rtIdl))).toPromise();
+                } else {
+                    const emptyRR = this.idl.create('rr');
+                    emptyRR.id('no_rr');
+                    return this.pcrud.update(rtIdl).pipe(mergeMap(rtId => {
+                    // we may or may not have the rr already created, so
+                    // test and act accordingly
+                        return this.pcrud.search('rr', { template: rtId }).pipe(defaultIfEmpty(emptyRR), mergeMap(rr => {
+                            if (rr.id() === 'no_rr') {
+                                rrIdl.isnew(true);
+                                return this.pcrud.create(rrIdl).pipe(mergeMap(rr2 =>
+                                    this.scheduleReport(templ, rr2, scheduleNow).pipe(mergeMap(rs => of(rtId)))
+                                ));
+                            } else {
+                                rr.create_time('now'); // rr create time is serving as the
+                                // edit time of the SR template as a whole
+                                rr.recur(templ.recurring ? 't' : 'f');
+                                rr.recurrence(templ.recurrence);
+                                rr.data(rrIdl.data());
+                                return this.pcrud.update(rr).pipe(mergeMap(
+                                    rr2 => this.scheduleReport(templ, rr, scheduleNow).pipe(mergeMap(rs => of(rtId) ))
+                                ));
+                            }
+                        }));
+                    })).toPromise();
+
+                }
+            })).toPromise();
     }
 
     saveReportDefinition (
         templ: SRTemplate,
         name: string,
         description: string,
-        editExisting: boolean = false,
-        scheduleNow: boolean = true
+        editExisting = false,
+        scheduleNow = true
     ): Promise<any> { // IdlObject or Number? It depends!
 
         const rrData = this.buildReportData(templ);
@@ -1278,13 +1278,13 @@ export class ReporterService {
             emptyRR.id('no_rr');
             return this.pcrud.search('rr', { name: rrIdl.name(), folder: rrIdl.folder() })
                 .pipe(defaultIfEmpty(emptyRR), mergeMap(existing => {
-                    console.log("Searched for duplicate rr object: ", existing);
+                    console.log('Searched for duplicate rr object: ', existing);
                     if (existing.id() !== 'no_rr') { // oh no! dup name
                         throw new Error(': Duplicate Name');
                     }
 
                     return this.pcrud.create(rrIdl).pipe(mergeMap(rr2 => {
-                        console.log("Saved rr object: ", rr2);
+                        console.log('Saved rr object: ', rr2);
                         return this.scheduleReport(templ, rr2, scheduleNow).pipe(mergeMap(rs => of(templ.id)));
                     }));
 
@@ -1295,7 +1295,7 @@ export class ReporterService {
     scheduleReport(templ: SRTemplate, rr: IdlObject, scheduleNow: boolean): Observable<IdlObject> {
         const rs = this.idl.create('rs');
         if (!scheduleNow) {
-                return of(rs); // return a placeholder
+            return of(rs); // return a placeholder
         }
         rs.isnew(true);
         rs.report(rr.id());
@@ -1321,8 +1321,8 @@ export class ReporterService {
                 old_rs.forEach(x => x.isdeleted(true));
                 old_rs.push(rs);
                 return this.pcrud.autoApply(old_rs).pipe(last()); // note that we don't care
-                                                                  // what the last one processed
-                                                                  // actually is
+                // what the last one processed
+                // actually is
             } else {
                 return this.pcrud.create(rs);
             }
@@ -1334,7 +1334,7 @@ export class ReporterService {
     // existing template builder.
     buildTemplateData(
         templ: SRTemplate,
-        isSimple: boolean = false
+        isSimple = false
     ) {
         const fmClass = templ.fmClass;
         const localClasses = this.idl.classes;
@@ -1361,20 +1361,20 @@ export class ReporterService {
                 table: sourceClass.source ?? sourceClass.table,
                 idlclass: fmClass,
                 label: sourceClass.label,
-				join: {}
+                join: {}
             },
             select: [],
             where: [],
             having: [],
             order_by: [],
-			relations: {}
+            relations: {}
         };
 
-		reportTemplate.relations[md5Name] = {...reportTemplate['from']};
+        reportTemplate.relations[md5Name] = {...reportTemplate['from']};
 
         // fill in select[] and make sure FROM paths are set
         templ.displayFields.forEach((el, idx) => {
-            let rel_md5Name = makePathHash(el.path); // Just the one with SR since there are no joins
+            const rel_md5Name = makePathHash(el.path); // Just the one with SR since there are no joins
 
             reportTemplate.select.push({
                 alias: el.alias,
@@ -1387,13 +1387,13 @@ export class ReporterService {
                 }
             });
 
-			reify_from_clause_relations(el,reportTemplate);
+            reify_from_clause_relations(el,reportTemplate);
 
         }); // select[]
 
         // where[] and having[] are the same save for aggregate == true
         templ.filterFields.forEach((el, idx) => {
-            let rel_md5Name = makePathHash(el.path); // Just the one with SR since there are no joins
+            const rel_md5Name = makePathHash(el.path); // Just the one with SR since there are no joins
             let whereObj = {};
 
             whereObj = {
@@ -1407,7 +1407,7 @@ export class ReporterService {
                 condition: {}
             };
 
-			reify_from_clause_relations(el,reportTemplate);
+            reify_from_clause_relations(el,reportTemplate);
 
             if (isSimple || !el.with_value_input) {
                 if (el.operator.arity > 0) {
@@ -1452,7 +1452,7 @@ export class ReporterService {
 
         return reportTemplate;
 
-		// ---- End of logic ----
+        // ---- End of logic ----
 
         function makePathHash(treeNodeList) {
             if (!treeNodeList) {
@@ -1463,197 +1463,197 @@ export class ReporterService {
     	    treeNodeList.forEach((n,i) => {
 	            if (i) {
             	    pathHash += ' -> ';
-	            	if (n.stateFlag) pathHash += ' [Required]';
+	            	if (n.stateFlag) {pathHash += ' [Required]';}
         	    }
     	        pathHash += n.callerData.fmClass;
         	});
-			return Md5.hashStr(pathHash)
+            return Md5.hashStr(pathHash);
 	    }
 
-		function reify_from_clause_relations (el, reportTemplate) {
-            if (!el.path) return;
+        function reify_from_clause_relations (el, reportTemplate) {
+            if (!el.path) {return;}
 
             let remaining_steps = el.path.length - 1;
             let step_ind = 0;
             let from_branch = reportTemplate['from'];
-			let steps_so_far = [];
+            const steps_so_far = [];
             do { // loop through the path objects (TreeNode list) to set up joins
-                let step = el.path[step_ind];
-				steps_so_far.push(step);
+                const step = el.path[step_ind];
+                steps_so_far.push(step);
 
-				let step_hash = makePathHash(steps_so_far);
-				if (step.callerData.fmField) { // we're past the top of the join path
-					let step_field_name = step.callerData.fmField.name;
-					let new_join_path_key = step_field_name + '-' + step_hash;
-					let step_table = localClasses[step.callerData.fmClass];
+                const step_hash = makePathHash(steps_so_far);
+                if (step.callerData.fmField) { // we're past the top of the join path
+                    const step_field_name = step.callerData.fmField.name;
+                    const new_join_path_key = step_field_name + '-' + step_hash;
+                    const step_table = localClasses[step.callerData.fmClass];
 
-					from_branch['join'] ??= {};
-					if (!from_branch['join'][new_join_path_key]) {
-						from_branch['join'][new_join_path_key] = {
-							type: (step.stateFlag ? 'inner' : 'left'),
-							key: step.callerData.fmField.key,
-							alias: step_hash,
-							idlclass: step.callerData.fmField.class,
-							label: el.path_label,
-							table:  step_table.source ?? step_table.table
-						};
-						console.log("adding "+(step.stateFlag ? 'inner' : 'left')+"-join branch for path key: " + new_join_path_key);
-					}
+                    from_branch['join'] ??= {};
+                    if (!from_branch['join'][new_join_path_key]) {
+                        from_branch['join'][new_join_path_key] = {
+                            type: (step.stateFlag ? 'inner' : 'left'),
+                            key: step.callerData.fmField.key,
+                            alias: step_hash,
+                            idlclass: step.callerData.fmField.class,
+                            label: el.path_label,
+                            table:  step_table.source ?? step_table.table
+                        };
+                        console.log('adding '+(step.stateFlag ? 'inner' : 'left')+'-join branch for path key: ' + new_join_path_key);
+                    }
 
-					reportTemplate.relations[step_hash] = from_branch['join'][new_join_path_key];
-					from_branch = from_branch['join'][new_join_path_key];
-				}
+                    reportTemplate.relations[step_hash] = from_branch['join'][new_join_path_key];
+                    from_branch = from_branch['join'][new_join_path_key];
+                }
 
-				step_ind++;
+                step_ind++;
             } while (remaining_steps--);
-		}
+        }
 
     }
 
     upgradeAngJSTemplateData = function(template: IdlObject) {
 
-		let newSRTempl = new SRTemplate();
-		newSRTempl.isNew = false;
-		newSRTempl.id = template.id();
-		newSRTempl.create_time = template.create_time();
-		newSRTempl.name = template.name();
-		newSRTempl.description = template.description();
+        const newSRTempl = new SRTemplate();
+        newSRTempl.isNew = false;
+        newSRTempl.id = template.id();
+        newSRTempl.create_time = template.create_time();
+        newSRTempl.name = template.name();
+        newSRTempl.description = template.description();
 
         const oldData = JSON.parse(template.data());
         newSRTempl.fmClass = oldData.core_class;
-        newSRTempl.doc_url = oldData.doc_url
+        newSRTempl.doc_url = oldData.doc_url;
 
         const md5Name = Md5.hashStr(newSRTempl.fmClass); // Just the one with SR since there are no joins
 
-		let dF = [];
-		oldData.display_cols.forEach(c => {
-			let converted_path = convertAngJSPathForCol(c);
-			if (c.transform?.transform === 'count') {
-				c.transform.transform = 'count_distinct'; // we only do count_distinct now
-			}
+        const dF = [];
+        oldData.display_cols.forEach(c => {
+            const converted_path = convertAngJSPathForCol(c);
+            if (c.transform?.transform === 'count') {
+                c.transform.transform = 'count_distinct'; // we only do count_distinct now
+            }
 
-			dF.push({
-				class: converted_path[converted_path.length - 1].classname,
-				name: c.name,
-				label: c.label,
-				alias: c.alias || c.label || c.name,
-				field_doc: c.doc_text,
-				field_doc_supplied: !!c.doc_text,
-				datatype: c.datatype,
-				path_label: c.path_label,
-				treeNodeId: c.path_label.replace(/\s+/g, '_') + '_' + c.name,
-				transform: this.getTransformByName(c.transform.transform),
-				path: converted_path,
-				relation: makePathHashOrNull(converted_path) || md5Name
-			});
-		});
+            dF.push({
+                class: converted_path[converted_path.length - 1].classname,
+                name: c.name,
+                label: c.label,
+                alias: c.alias || c.label || c.name,
+                field_doc: c.doc_text,
+                field_doc_supplied: !!c.doc_text,
+                datatype: c.datatype,
+                path_label: c.path_label,
+                treeNodeId: c.path_label.replace(/\s+/g, '_') + '_' + c.name,
+                transform: this.getTransformByName(c.transform.transform),
+                path: converted_path,
+                relation: makePathHashOrNull(converted_path) || md5Name
+            });
+        });
 
-		let fF = [];
-		oldData.filter_cols.forEach(c => {
-			let converted_path = convertAngJSPathForCol(c);
-			if (c.transform?.transform === 'count') {
-				c.transform.transform = 'count_distinct'; // we only do count_distinct now
-			}
+        const fF = [];
+        oldData.filter_cols.forEach(c => {
+            const converted_path = convertAngJSPathForCol(c);
+            if (c.transform?.transform === 'count') {
+                c.transform.transform = 'count_distinct'; // we only do count_distinct now
+            }
 
-			let valid_operators = this.getOperatorsForDatatype(c.datatype);
-			if (!valid_operators.map(t => t.name).includes(c.operator.operator)) {
-				// XXX special case for bool and org_unit '='
-				if (['bool','org_unit'].includes(c.datatype)
+            const valid_operators = this.getOperatorsForDatatype(c.datatype);
+            if (!valid_operators.map(t => t.name).includes(c.operator.operator)) {
+                // XXX special case for bool and org_unit '='
+                if (['bool','org_unit'].includes(c.datatype)
 					&& c.operator.op === '='
-				) {
-					c.operator.op = '= any';
-					if (typeof c.value !== 'undefined') {
-						c.value = '{' + c.value + '}';
-					}
-				}
-			}
+                ) {
+                    c.operator.op = '= any';
+                    if (typeof c.value !== 'undefined') {
+                        c.value = '{' + c.value + '}';
+                    }
+                }
+            }
 
-            let our_operator = this.getOperatorByName(c.operator.op);
+            const our_operator = this.getOperatorByName(c.operator.op);
             let our_value = c.value;
-            if (!our_value && our_operator.arity == 2) our_value = []; // between needs an array
+            if (!our_value && our_operator.arity == 2) {our_value = [];} // between needs an array
 
-			fF.push({
-				class: converted_path[converted_path.length - 1].classname,
-				name: c.name,
-				label: c.label,
-				field_doc: c.doc_text,
-				field_doc_supplied: !!c.doc_text,
-				datatype: c.datatype,
-				treeNodeId: c.path_label.replace(/\s+/g, '_') + '_' + c.name,
-				transform: this.getTransformByName(c.transform.transform),
-				operator: our_operator,
-				path: converted_path,
-				relation: makePathHashOrNull(converted_path) || md5Name,
-				with_value_input: (typeof c.value === 'undefined') ? false : true,
-				filter_value: our_value
-			});
-		});
+            fF.push({
+                class: converted_path[converted_path.length - 1].classname,
+                name: c.name,
+                label: c.label,
+                field_doc: c.doc_text,
+                field_doc_supplied: !!c.doc_text,
+                datatype: c.datatype,
+                treeNodeId: c.path_label.replace(/\s+/g, '_') + '_' + c.name,
+                transform: this.getTransformByName(c.transform.transform),
+                operator: our_operator,
+                path: converted_path,
+                relation: makePathHashOrNull(converted_path) || md5Name,
+                with_value_input: (typeof c.value === 'undefined') ? false : true,
+                filter_value: our_value
+            });
+        });
 
-		newSRTempl.displayFields = dF;
-		newSRTempl.filterFields = fF;
+        newSRTempl.displayFields = dF;
+        newSRTempl.filterFields = fF;
         newSRTempl.orderByNames = dF.map(d => d.treeNodeId),
 
-		template.data(JSON.stringify(this.buildTemplateData(newSRTempl)));
-		return template;
+        template.data(JSON.stringify(this.buildTemplateData(newSRTempl)));
+        return template;
 
-		// ---- End of logic ----
+        // ---- End of logic ----
 
-		function convertAngJSPathForCol(oldCol) {
-			let newPath = [];
-			oldCol.path.forEach((old,ind) => {
-				let newPathNode = {
-					label: old.label,
-					stateFlag: (old.jtype === 'inner') ? true : false,
-					callerData: { fmClass: old.classname }
-				};
-				if (old.uplink) {
-					newPathNode.callerData['fmField'] = {
-						key: old.uplink.key, // my pkey
-						name: old.uplink.name, // field from left side of join
-						reltype: old.uplink.reltype, // reltype from link from left side of join
-						class: newPathNode.callerData.fmClass // same as fmClass
-					};
-				}
+        function convertAngJSPathForCol(oldCol) {
+            const newPath = [];
+            oldCol.path.forEach((old,ind) => {
+                const newPathNode = {
+                    label: old.label,
+                    stateFlag: (old.jtype === 'inner') ? true : false,
+                    callerData: { fmClass: old.classname }
+                };
+                if (old.uplink) {
+                    newPathNode.callerData['fmField'] = {
+                        key: old.uplink.key, // my pkey
+                        name: old.uplink.name, // field from left side of join
+                        reltype: old.uplink.reltype, // reltype from link from left side of join
+                        class: newPathNode.callerData.fmClass // same as fmClass
+                    };
+                }
 
-				newPath.push(newPathNode);
-			});
+                newPath.push(newPathNode);
+            });
 
-			return newPath;
-		}
+            return newPath;
+        }
 
         function makePathHashOrNull(treeNodeList) {
-			if (!treeNodeList || treeNodeList.length <= 1) {
-				return null;
-			}
+            if (!treeNodeList || treeNodeList.length <= 1) {
+                return null;
+            }
 
         	let pathHash = '';
     	    treeNodeList.forEach((n,i) => {
 	            if (i) {
             	    pathHash += ' -> ';
-	            	if (n.stateFlag) pathHash += ' [Required]';
+	            	if (n.stateFlag) {pathHash += ' [Required]';}
         	    }
     	        pathHash += n.callerData.fmClass;
         	});
-			return Md5.hashStr(pathHash)
+            return Md5.hashStr(pathHash);
 	    }
 
-	}
+    };
 
     upgradeXULTemplateData = function(template: IdlObject) {
-		// handy for (copied) non-arrow closures below, which can't use "this"
+        // handy for (copied) non-arrow closures below, which can't use "this"
         const localIdl = this.idl;
 
         template.name(template.name() + ' (converted from XUL)');
-        let template_data = JSON.parse(template.data());
+        const template_data = JSON.parse(template.data());
 
         template_data.upgraded_from ??= [];
         template_data.upgraded_from.push(template_data.version);
-		
+
         template_data.version = 5;
 
         let order_by;
-        let rels = [];
-        for (let key in template_data.rel_cache) {
+        const rels = [];
+        for (const key in template_data.rel_cache) {
             if (key == 'order_by') {
                 order_by = template_data.rel_cache[key];
             } else {
@@ -1662,7 +1662,7 @@ export class ReporterService {
         }
 
         // preserve the old select order for the display cols
-        let sel_order = {};
+        const sel_order = {};
         template_data.select.map(function(val, idx) {
             // set key to unique value easily derived from relcache
             sel_order[val.relation + val.column.colname] = idx;
@@ -1677,28 +1677,26 @@ export class ReporterService {
             _buildCols(rel, 'aggfilter_tab', template_data.filter_cols?.length);
         });
 
-        template_data['display_cols'].sort(function(a, b){return a.index - b.index});
+        template_data['display_cols'].sort(function(a, b){return a.index - b.index;});
 
-		template.data(JSON.stringify(template_data));
-		return template;
+        template.data(JSON.stringify(template_data));
+        return template;
 
-		// ---- End of logic ----
+        // ---- End of logic ----
 
         function buildNode (cls, args) {
-            if (!cls) return null;
+            if (!cls) {return null;}
 
-            var n = localIdl.classes[cls];
-            if (!n) return null;
+            const n = localIdl.classes[cls];
+            if (!n) {return null;}
 
-            if (!args)
-                args = { label : n.label };
+            if (!args) {args = { label : n.label };}
 
             args.id = cls;
-            if (args.from)
-                args.id = args.from + '.' + args.id;
+            if (args.from) {args.id = args.from + '.' + args.id;}
 
             return Object.assign( args, {
-                //idl     : localIdl.constructors[cls], // commented out because we don't need it, but here's how to do what v5 did
+                // idl     : localIdl.constructors[cls], // commented out because we don't need it, but here's how to do what v5 did
                 uplink  : args.link,
                 classname: cls,
                 struct  : n,
@@ -1710,24 +1708,24 @@ export class ReporterService {
         }
 
         function _convertPath(orig, rel) {
-            let newPath = [];
+            const newPath = [];
 
-            let table_path = rel.path.split(/\./);
-            if (table_path.length > 1 || rel.path.indexOf('-') > -1) table_path.push( rel.idlclass );
+            const table_path = rel.path.split(/\./);
+            if (table_path.length > 1 || rel.path.indexOf('-') > -1) {table_path.push( rel.idlclass );}
 
-            let prev_type = '';
+            const prev_type = '';
             let prev_link = '';
             table_path.forEach(function(link) {
-                let cls = link.split(/-/)[0];
-                let fld = link.split(/-/)[1];
-                let args = {
+                const cls = link.split(/-/)[0];
+                const fld = link.split(/-/)[1];
+                const args = {
                     label : localIdl.classes[cls].label
-                }
+                };
                 if (prev_link != '') {
-                    let link_parts = prev_link.split(/-/);
+                    const link_parts = prev_link.split(/-/);
                     args['from'] = link_parts[0];
-                    let join_parts = link_parts[1].split(/>/);
-                    let prev_col = join_parts[0];
+                    const join_parts = link_parts[1].split(/>/);
+                    const prev_col = join_parts[0];
                     localIdl.classes[prev_link.split(/-/)[0]].fields.forEach(function(f) {
                         if (prev_col == f.name) {
                             args['link'] = {...f};
@@ -1742,23 +1740,23 @@ export class ReporterService {
 
         }
 
-        function _buildCols(rel, tab_type, col_idx: number = 0) {
+        function _buildCols(rel, tab_type, col_idx = 0) {
 
-            let col_type = (tab_type === 'dis_tab') ?  'display_cols' : 'filter_cols';
+            const col_type = (tab_type === 'dis_tab') ?  'display_cols' : 'filter_cols';
 
-            for (let col_key in rel.fields[tab_type]) {
-                let orig = rel.fields[tab_type][col_key];
-                let col_obj = {
+            for (const col_key in rel.fields[tab_type]) {
+                const orig = rel.fields[tab_type][col_key];
+                const col_obj = {
                     name        : orig.colname,
                     path        : _convertPath(orig, rel),
                     label       : orig.alias,
                     datatype    : orig.datatype,
                     doc_text    : orig.field_doc,
                     transform   : {
-                                    label     : orig.transform_label,
-                                    transform : orig.transform,
-                                    aggregate : (orig.aggregate == "undefined") ? undefined : orig.aggregate  // old structure sometimes has undefined as a quoted string
-                                  },
+                        label     : orig.transform_label,
+                        transform : orig.transform,
+                        aggregate : (orig.aggregate == 'undefined') ? undefined : orig.aggregate  // old structure sometimes has undefined as a quoted string
+                    },
                     path_label  : rel.label.replace('::', '->')
                 };
                 if (col_type == 'filter_cols') {
@@ -1778,17 +1776,17 @@ export class ReporterService {
             }
         }
 
-    }
+    };
 
     getPendingOutputDatasource(o: IdlObject = null) {
         return this.getOutputDatasource(false,o);
-	}
+    }
 
     getCompleteOutputDatasource(o: IdlObject = null) {
         return this.getOutputDatasource(true,o);
-	}
+    }
 
-    getOutputDatasource(withComplete: boolean = true, sourceFilterObject?: IdlObject) {
+    getOutputDatasource(withComplete = true, sourceFilterObject?: IdlObject) {
         const gridSource = new GridDataSource();
 
         gridSource.getRows = (pager: Pager, sort?: any[]) => {
@@ -1807,9 +1805,9 @@ export class ReporterService {
             }
 
             return this.net.request(
-				'open-ils.reporter',
-				'open-ils.reporter.schedule.retrieve_by_folder',
-				this.auth.token(), query, null /* no limit ... cannot offset in the API */, withComplete
+                'open-ils.reporter',
+                'open-ils.reporter.schedule.retrieve_by_folder',
+                this.auth.token(), query, null /* no limit ... cannot offset in the API */, withComplete
             ).pipe(
                 map((rows: any[]) => rows.slice(pager.offset, pager.offset + pager.limit)),
                 map((rows: any[]) => rows.map(row => {
@@ -1829,13 +1827,13 @@ export class ReporterService {
                 })),
                 switchMap((rows: any[]) => from(rows))
             );
-		};
+        };
 
-		return gridSource;
-	}
+        return gridSource;
+    }
 
 
-    getSOutputDatasource(withPending: boolean = false, withComplete: boolean = true, sourceFilterObject?: IdlObject) {
+    getSOutputDatasource(withPending = false, withComplete = true, sourceFilterObject?: IdlObject) {
         const gridSource = new GridDataSource();
         let output_source = 'rcr';
 
@@ -1901,26 +1899,26 @@ export class ReporterService {
             }
 
             return this.pcrud.search(output_source, query, searchOpts)
-            .pipe(map(row => {
-                if ( this.evt.parse(row) ) {
-                    throw new Error(row);
-                } else {
-                    return {
-                        simple_name: withPending ? row.report().template().name() : row.template_name(),
-                        template_name: withPending ? row.report().template().name() : row.template_name(),
-                        report_name: withPending ? row.report().name() : row.report_name(),
-                        complete_time: row.complete_time(),
-                        start_time: row.start_time(),
-                        run_time: row.run_time(),
-                        id: withPending ? row.id() : row.run().id(),
-                        report_id: withPending ? row.report().id() : row.report(),
-                        template_id: withPending ? row.report().template().id() : row.template(),
-                        error_code: withPending ? row.error_code() : row.run().error_code(),
-                        error_text:withPending ? row.error_text() :  row.run().error_text(),
-                        _rs: withPending ? row : row.run()
-                    };
-                }
-            }));
+                .pipe(map(row => {
+                    if ( this.evt.parse(row) ) {
+                        throw new Error(row);
+                    } else {
+                        return {
+                            simple_name: withPending ? row.report().template().name() : row.template_name(),
+                            template_name: withPending ? row.report().template().name() : row.template_name(),
+                            report_name: withPending ? row.report().name() : row.report_name(),
+                            complete_time: row.complete_time(),
+                            start_time: row.start_time(),
+                            run_time: row.run_time(),
+                            id: withPending ? row.id() : row.run().id(),
+                            report_id: withPending ? row.report().id() : row.report(),
+                            template_id: withPending ? row.report().template().id() : row.template(),
+                            error_code: withPending ? row.error_code() : row.run().error_code(),
+                            error_text:withPending ? row.error_text() :  row.run().error_text(),
+                            _rs: withPending ? row : row.run()
+                        };
+                    }
+                }));
 
         };
 
@@ -1931,20 +1929,20 @@ export class ReporterService {
         const gridSource = new GridDataSource();
 
         gridSource.getRows = (pager: Pager, sort: any[]) => {
-            if (!str) return of();
+            if (!str) {return of();}
             let fields = null;
-            if (field) fields = [field];
+            if (field) {fields = [field];}
 
             return this.net.request(
-				'open-ils.reporter',
-				'open-ils.reporter.search.templates',
-				this.auth.token(), {
+                'open-ils.reporter',
+                'open-ils.reporter.search.templates',
+                this.auth.token(), {
                     query : str,
                     folder: fldr?.id(),
                     fields : fields
                 }
             ).pipe(map(row => {
-			    let rowData = JSON.parse(row.data());
+			    const rowData = JSON.parse(row.data());
                 return {
                     name: row.name(),
                     rt_id: row.id(),
@@ -1957,10 +1955,10 @@ export class ReporterService {
                     _rt: row
                 };
             }));
-		};
+        };
 
-		return gridSource;
-	}
+        return gridSource;
+    }
 
     getTemplatesDatasource() {
         const gridSource = new GridDataSource();
@@ -1989,13 +1987,13 @@ export class ReporterService {
             });
 
             return this.net.request(
-				'open-ils.reporter',
-				'open-ils.reporter.folder_data.retrieve.stream',
-				this.auth.token(), 'template', query,
+                'open-ils.reporter',
+                'open-ils.reporter.folder_data.retrieve.stream',
+                this.auth.token(), 'template', query,
                 pager.limit, pager.offset, orderBy
             ).pipe(map(row => {
-                let rowData = JSON.parse(row.data());
-                let rowFolder = this.templateFolderList.find(f => f.id() === row.folder());
+                const rowData = JSON.parse(row.data());
+                const rowFolder = this.templateFolderList.find(f => f.id() === row.folder());
 
                 return {
                     name: row.name(),
@@ -2009,10 +2007,10 @@ export class ReporterService {
                     _rt: row
                 };
             }));
-		};
+        };
 
-		return gridSource;
-	}
+        return gridSource;
+    }
 
     getReportsDatasource(sourceFilterObject?: IdlObject) {
         const gridSource = new GridDataSource();
@@ -2049,19 +2047,19 @@ export class ReporterService {
             });
 
             return this.net.request(
-				'open-ils.reporter',
-				'open-ils.reporter.folder_data.retrieve.stream',
-				this.auth.token(), 'report', query,
+                'open-ils.reporter',
+                'open-ils.reporter.folder_data.retrieve.stream',
+                this.auth.token(), 'report', query,
                 pager.limit, pager.offset, orderBy
             ).pipe(mergeMap(row => {
-                let rowFolder = this.reportFolderList.find(f => f.id() === row.folder());
+                const rowFolder = this.reportFolderList.find(f => f.id() === row.folder());
 
                 return this.net.request(
                     'open-ils.reporter',
                     'open-ils.reporter.template.retrieve',
 				    this.auth.token(), row.template()
                 ).pipe(map(t => {
-				    let rowData = JSON.parse(t.data());
+				    const rowData = JSON.parse(t.data());
 
                     return {
                         name: row.name(),
@@ -2078,10 +2076,10 @@ export class ReporterService {
                     };
                 }));
             }));
-		};
+        };
 
-		return gridSource;
-	}
+        return gridSource;
+    }
 
     getSReportsDatasource() {
         const gridSource = new GridDataSource();
@@ -2187,59 +2185,59 @@ export class ReporterService {
 @Injectable()
 export class SimpleReporterServiceResolver implements Resolve<Promise<any[]>> {
 
-        constructor(
+    constructor(
                 private router: Router,
                 private perm: PermService,
                 private svc: ReporterService
-        ) {}
+    ) {}
 
-        resolve(
-                route: ActivatedRouteSnapshot,
-                state: RouterStateSnapshot): Promise<any[]> {
+    resolve(
+        route: ActivatedRouteSnapshot,
+        state: RouterStateSnapshot): Promise<any[]> {
 
-                return from(this.perm.hasWorkPermHere('RUN_SIMPLE_REPORTS')).pipe(mergeMap(
-                        permResult => {
-                                if (permResult['RUN_SIMPLE_REPORTS']) {
-                                        return Promise.all([
-                                                this.svc._initSRFolders()
-                                        ]);
-                                } else {
-                                        this.router.navigate(['/staff/no_permission']);
-                                        return EMPTY;
-                                }
-                        }
-                )).toPromise();
-        }
+        return from(this.perm.hasWorkPermHere('RUN_SIMPLE_REPORTS')).pipe(mergeMap(
+            permResult => {
+                if (permResult['RUN_SIMPLE_REPORTS']) {
+                    return Promise.all([
+                        this.svc._initSRFolders()
+                    ]);
+                } else {
+                    this.router.navigate(['/staff/no_permission']);
+                    return EMPTY;
+                }
+            }
+        )).toPromise();
+    }
 
 }
 
 @Injectable()
 export class FullReporterServiceResolver implements Resolve<Promise<any[]>> {
 
-        constructor(
+    constructor(
                 private router: Router,
                 private perm: PermService,
                 private svc: ReporterService
-        ) {}
+    ) {}
 
-        resolve(
-                route: ActivatedRouteSnapshot,
-                state: RouterStateSnapshot): Promise<any[]> {
+    resolve(
+        route: ActivatedRouteSnapshot,
+        state: RouterStateSnapshot): Promise<any[]> {
 
-                return from(this.perm.hasWorkPermHere('RUN_REPORTS')).pipe(mergeMap(
-                        permResult => {
-                                if (permResult['RUN_REPORTS']) {
-                                        return EMPTY; // XXX short circuit
-                                        return Promise.all([
-                                                //this.svc._initFolders()
-                                        ]);
-                                } else {
-                                        this.router.navigate(['/staff/no_permission']);
-                                        return EMPTY;
-                                }
-                        }
-                )).toPromise();
-        }
+        return from(this.perm.hasWorkPermHere('RUN_REPORTS')).pipe(mergeMap(
+            permResult => {
+                if (permResult['RUN_REPORTS']) {
+                    return EMPTY; // XXX short circuit
+                    return Promise.all([
+                        // this.svc._initFolders()
+                    ]);
+                } else {
+                    this.router.navigate(['/staff/no_permission']);
+                    return EMPTY;
+                }
+            }
+        )).toPromise();
+    }
 
 }
 

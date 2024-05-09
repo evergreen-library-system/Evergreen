@@ -49,7 +49,7 @@
     <div *ngIf="withTransforms" class="reporter-field-xform">
 
       <label for="TR-{{pathId}}" class="form-label" i18n>Transform</label>
-      <select id="TR-{{pathId}}" class="form-select" (change)="transformChange($event)" [disabled]="disabled || field.force_transform || editorMode == 'report'">
+      <select id="TR-{{pathId}}" class="form-select" (change)="transformChange($event)" [disabled]="disabled || field.force_transform || editorMode === 'report'">
         <option *ngFor="let t of transforms" value="{{t.name}}" selected="{{ field.transform.name === t.name ? 'selected' : '' }}">
           <span *ngIf="t.name === 'Bare'" i18n>Raw Data</span>
           <span *ngIf="t.name === 'upper'" i18n>Upper Case</span>
@@ -97,7 +97,7 @@
     <div *ngIf="withOperators" class="reporter-field-value row">
      <div class="col">
      <label for="OP-{{pathId}}" class="form-label" i18n>Operator</label>
-     <select id="OP-{{pathId}}" class="form-select" (change)="operatorChange($event)" [disabled]="disabled || field.force_operator || editorMode == 'report'">
+     <select id="OP-{{pathId}}" class="form-select" (change)="operatorChange($event)" [disabled]="disabled || field.force_operator || editorMode === 'report'">
        <option *ngFor="let o of operators" value="{{o.name}}" selected="{{ field.operator.name === o.name ? 'selected' : '' }}">
          <span *ngIf="o.name === '= any'" i18n>Equals</span> {{ '' // this and the next are used for bools only }}
          <span *ngIf="o.name === '<> any'" i18n>Does Not Equal</span>

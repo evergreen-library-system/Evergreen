@@ -5,8 +5,8 @@ import {ReporterService} from '../share/reporter.service';
 import {NgbModal} from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
-  selector: 'change-folder-dialog',
-  templateUrl: './change-folder-dialog.component.html'
+    selector: 'change-folder-dialog',
+    templateUrl: './change-folder-dialog.component.html'
 })
 
 export class ChangeFolderDialogComponent extends DialogComponent {

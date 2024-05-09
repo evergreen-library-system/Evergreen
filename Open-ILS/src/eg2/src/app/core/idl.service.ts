@@ -137,7 +137,7 @@ export class IdlService {
     // Given a field on an IDL class, returns the name of the field
     // on the linked class that acts as the selector for the linked class.
     // Returns null if no selector is found or the field is not a link.
-    getLinkSelector(fmClass: string, field: string, strict: boolean = false): string {
+    getLinkSelector(fmClass: string, field: string, strict = false): string {
         let fieldDef = this.classes[fmClass].field_map[field];
 
         if (!fieldDef) {
@@ -164,7 +164,7 @@ export class IdlService {
     // defined, use 'name' if it exists as a field on the class. As
     // a last ditch fallback, if there's no selector but the primary
     // key is a text field, use that.
-    getClassSelector(idlClass: string, strict: boolean = false): string {
+    getClassSelector(idlClass: string, strict = false): string {
 
         if (idlClass) {
             const classDef = this.classes[idlClass];

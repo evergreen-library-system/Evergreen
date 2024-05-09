@@ -122,7 +122,7 @@ export class Tree {
                     node.children = node.childrenCB(node);
                     node.childrenCB = null;
                 }
-            
+
                 node.children.forEach(n => recurseTree(n, depth, !node.expanded));
             }
         };
@@ -176,12 +176,12 @@ export class Tree {
     }
 
     findNodePath(node: TreeNode) {
-        let path = [];
+        const path = [];
         do {
-            let pnode = {...node};
-            delete pnode['children']
-            delete pnode['childrenCB']
-            path.push({...pnode})
+            const pnode = {...node};
+            delete pnode['children'];
+            delete pnode['childrenCB'];
+            path.push({...pnode});
         } while (node = this.findParentNode(node));
         return path.reverse();
     }

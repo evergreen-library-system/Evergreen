@@ -31,7 +31,7 @@ export class OrgFamilySelectComponent implements ControlValueAccessor, OnInit {
     @Input() ariaLabel?: string;
 
     // Global "disabled" flag
-    @Input() disabled: boolean = false;
+    @Input() disabled = false;
 
     // The label for this input
     @Input() labelText = 'Library';

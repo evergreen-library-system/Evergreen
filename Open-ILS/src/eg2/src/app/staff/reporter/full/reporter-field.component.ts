@@ -11,7 +11,7 @@ import {Md5} from 'ts-md5';
     selector: 'eg-reporter-field',
     templateUrl: './reporter-field.component.html',
     styleUrls: ['./reporter-field.component.css'],
-	encapsulation: ViewEncapsulation.None
+    encapsulation: ViewEncapsulation.None
 })
 export class ReporterFieldComponent implements OnInit {
 
@@ -23,9 +23,9 @@ export class ReporterFieldComponent implements OnInit {
     pathId = '';
     origDatatype = '';
     orgTree: Tree = null;
-	advancedMode: boolean = false;
-	supplyHint: boolean = false;
-    relativeTransform: boolean = false;
+    advancedMode = false;
+    supplyHint = false;
+    relativeTransform = false;
 
     @Input() editorMode = 'template';
     @Input() field: IdlObject = null;
@@ -81,7 +81,7 @@ export class ReporterFieldComponent implements OnInit {
         if (this.field.path) {
             this.makePathLabel();
 
-            let fmField = this.getFMFieldFromPathEnd()
+            const fmField = this.getFMFieldFromPathEnd();
 
             if (this.field.datatype === 'id') { // pkey somewhere, do we treat it like a link?
                 if (fmField && this.field.path.length > 1
@@ -101,8 +101,8 @@ export class ReporterFieldComponent implements OnInit {
 
             this.org.sortTree('name');
 
-            let preselected = this.field.filter_value || [];
-            let node = new TreeNode({
+            const preselected = this.field.filter_value || [];
+            const node = new TreeNode({
                 id       : this.org.root().id(),
                 label    : this.org.root().name(),
                 expanded : false,
@@ -123,12 +123,12 @@ export class ReporterFieldComponent implements OnInit {
         if (this.field.transform.relative_time_input_transform) {
             if (Array.isArray(this.field.filter_value)) {
                 if (typeof this.field.filter_value[0] === 'object') {
-                    already_collected_rel_time_input = 
+                    already_collected_rel_time_input =
                         this.field.transform.relativeTransform =
                         !!(this.field.filter_value[0]?.transform?.match(/^relative_/).length > 0);
                 }
             } else if (typeof this.field.filter_value === 'object') {
-                already_collected_rel_time_input = 
+                already_collected_rel_time_input =
                     this.field.transform.relativeTransform =
                     !!(this.field.filter_value?.transform?.match(/^relative_/).length > 0);
             }
@@ -140,33 +140,33 @@ export class ReporterFieldComponent implements OnInit {
         if (this.field.transform.relativeTransform && !already_collected_rel_time_input) {
             this.clearFilterValue();
         }
-                                        
+
         if (this.field.field_doc_supplied) {
             this.supplyHint = true;
         }
     }
 
     getFMFieldFromPathEnd() {
-        if (!this.field.path) return null;
+        if (!this.field.path) {return null;}
         return this.field.path[this.field.path.length - 1].callerData?.fmField;
     }
 
-	toggleSupplyHint() {
-		if (!this.supplyHint) { // reversed... ugh
-			this.field.field_doc ??= '';
-			this.field.field_doc_supplied = true;
-			if (!this.field.field_doc && this.field.path?.length ) {
-				this.getFieldDoc().then(d => this.field.field_doc = d?.string());
-			}
-		} else {
-			this.field.field_doc_supplied = false;
-			this.field.field_doc = '';
-		}
-	}
+    toggleSupplyHint() {
+        if (!this.supplyHint) { // reversed... ugh
+            this.field.field_doc ??= '';
+            this.field.field_doc_supplied = true;
+            if (!this.field.field_doc && this.field.path?.length ) {
+                this.getFieldDoc().then(d => this.field.field_doc = d?.string());
+            }
+        } else {
+            this.field.field_doc_supplied = false;
+            this.field.field_doc = '';
+        }
+    }
 
     treeifyOrg(node, preselected) {
         this.org.get(node.id).children().forEach(x => {
-            let new_node = new TreeNode({
+            const new_node = new TreeNode({
                 id      : x.id(),
                 label   : x.name(),
                 expanded: false,
@@ -181,12 +181,12 @@ export class ReporterFieldComponent implements OnInit {
 
     getFieldDoc(): Promise<any> {
         return this.pcrud.search(
-			'fdoc',
-			{ owner   : this.wsContextOrgs,
+            'fdoc',
+            { owner   : this.wsContextOrgs,
 			  fm_class: this.field.path[this.field.path.length - 1].id,
 			  field   : this.field.name
-			}
-		).toPromise();
+            }
+        ).toPromise();
     }
 
     combineLabelAndStateClick (node: TreeNode) {
@@ -205,7 +205,7 @@ export class ReporterFieldComponent implements OnInit {
                 this.pathLabel += ' -> ';
             }
             this.pathLabel += n.label;
-            if (n.stateFlag) this.pathLabel += ' (Required)';
+            if (n.stateFlag) {this.pathLabel += ' (Required)';}
         });
         this.pathLabel += ' -> ' + (this.field.label || this.field.name);
         this.field.path_label = this.pathLabel;
