@@ -1,5 +1,51 @@
-.svg-icon-button {
-  padding-top: 0.375rem;
+#patron-grid {
+  display: grid;
+  grid-gap: 1rem;
+  grid-template-columns: min-content 2fr;
+  grid-template-rows: minmax(0, auto);
+  grid-template-areas:
+    "nav summary"
+    "nav data";
+}
+
+#patron-grid.show-nav {
+  grid-gap: 2rem;
+  grid-template-columns: 1fr 5fr;
+}
+
+@media screen and (min-width: 768px) {
+  /* if the button toggle is all that's showing */
+  #patron-grid:not(.show-nav) {
+    grid-template-columns: 2.4rem 5fr;
+  }
+
+  /* if the nav is not showing, it should not take up space */
+  #patron-grid:has(.patron-search-form) {
+    grid-template-columns: 0 5fr;
+    column-gap: 1rem;
+  }
+
+  #patron-grid.show-nav {
+    grid-gap: 0 2rem;
+    grid-template-columns: 1fr 5fr;
+  }
+}
+
+#patron-summary {
+  grid-area: summary;
+  position: relative;
+}
+
+#patron-tabs {
+  grid-area: data;
+}
+
+#patron-nav {
+  grid-area: nav;
+}
+
+.patron-nav-toggle {
+  padding: 0.375rem 0.125rem;
 }
 
 .svg-icon-button svg {
@@ -13,8 +59,14 @@
   fill: var(--primary);
 }
 
-::ng-deep legend {
-  font-size: 1rem; /* defaults to 1.5 */
+.show-nav #patron-nav .nav-tabs {
+  position: static;
+}
+
+#patron-nav .nav-tabs {
+  border-bottom: none;
+  position: absolute;
+  left: -9999px;
 }
 
 /* low-level red alerts */

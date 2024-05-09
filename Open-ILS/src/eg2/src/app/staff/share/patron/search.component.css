@@ -4,55 +4,64 @@
 
 /* mobile-first layout: flexbox */
 .patron-search-form {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: flex-start;
+  padding-top: 0.75rem;
+}
+
+/* Setting flex size manually because Bootstrap doesn't support 5 columns */
+.patron-search-form .row-cols-auto > .col.form-group {
+  flex: 0 0 100%; /* mobile */
+}
+
+@media screen and (min-width: 540px) {
+  .patron-search-form .row-cols-auto > .col.form-group {
+    flex: 0 0 50%; /* tablet */
+  }
+}
+
+@media screen and (min-width: 820px) {
+  .patron-search-form .row-cols-auto > .col.form-group {
+    flex: 0 0 20%; /* desktop */
+  }
+}
+
+.patron-search-form .form-label {
+  font-weight: 600;
+  margin-bottom: 0.1rem;
+}
+
+.patron-search-options {
   gap: 0.5rem;
 }
 
-/* Bootstrap sm breakpoint */
-@container (min-width: 576px) {
-  .patron-search-form > * {
-    flex-basis: 40%;
-  }
-
-  .actions-more {
-    position: absolute;
-    right: 0;
-    top: 0;
-  }
+.patron-id .input-group-text {
+  padding: 0.15rem 0.5rem;
 }
 
-/* not a Bootstrap breakpoint, but where col-lg-9 can break */
-@container (min-width: 680px) {
-  .patron-search-form {
-    display: grid;
-    grid-template-columns: repeat(5, 1fr) max-content;
-  }
-
-  .form-expanded .patron-search-form {
-    grid-template-rows: repeat(5, auto);
-  }
-
-  .actions-more {
-    position: revert;
-  }
+.input-group-text svg {
+  max-height: 1lh;
+  font-size: 1rem;
 }
 
-/* place in the next to last column, first row */
-.actions-search {
-  grid-row: 1;
-  grid-column: 5;
+/* Each DOB field is its own flexbox using order to place labels below inputs */
+.patron-dob {
+  display: flex;
+  flex-basis: min-content;
+  flex-grow: 0;
+  flex-wrap: wrap;
+  width: auto;
 }
 
-/* place in the next to last column, second row */
-.form-expanded .actions-reset {
-  grid-row: 2;
-  grid-column: 5;
+.patron-dob label {
+  order: 2;
+  width: 100%;
+  margin-inline-start: 0.25rem;
 }
 
-/* place in the last column, spanning all rows */
-.actions-more {
-  grid-column: 6;
-  grid-row: 1 / 5;
+.patron-dob input {
+  order: 1;
+}
+
+.patron-dob .form-text {
+  color: var(--bs-body-color);
+  font-weight: normal;
 }

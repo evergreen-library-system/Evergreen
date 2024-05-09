@@ -4,147 +4,206 @@
 <eg-patron-merge-dialog #mergeDialog>
 </eg-patron-merge-dialog>
 
-<div class="patron-search-container">
-  <div class="patron-search-form" [ngClass]="{'form-expanded':expandForm}">
+<div class="patron-search-container mb-5">
+  <div class="row row-cols-auto border-bottom">
+    <div class="col flex-grow-1">
+      <h2 i18n>Patron Search</h2>
+    </div>
+    <div class="col form-group align-self-center">
+      <div class="form-check form-check-inline">
+        <input class="form-check-input" type="checkbox" 
+          (change)="toggleIncludeInactive()"
+          id="include-inactive" [(ngModel)]="search.inactive">
+        <label class="form-label form-check-label" for="include-inactive" i18n>
+          Include Inactive
+        </label>
+      </div>
+    </div>
+    <div class="col form-group hstack align-items-start patron-search-options">
+      <div class="form-check-inline">
+        <h3 class="text-normal form-check-label" i18n>Advanced search fields:</h3>
+      </div>
+      <div class="form-check form-check-inline">
+        <input class="form-check-input" type="checkbox" [(ngModel)]="show_names" id="show_name_fields" (change)="toggleNameFields()">
+        <label class="form-check-label" for="show_name_fields" i18n>Name, Guardian</label>
+      </div>
+      <div class="form-check form-check-inline">
+        <input class="form-check-input" type="checkbox" [(ngModel)]="show_address" id="show_address_fields" (change)="toggleAddressFields()">
+        <label class="form-check-label" for="show_address_fields" i18n>Phone, Address</label>
+      </div>
+      <div class="form-check form-check-inline">
+        <input class="form-check-input" type="checkbox" [(ngModel)]="show_ids" id="show_id_fields" (change)="toggleIDFields()">
+        <label class="form-check-label" for="show_id_fields" i18n>ID, Email, Date of Birth</label>
+      </div>
+    </div>
+  </div>
+  
+  <div class="patron-search-form">
+    
+    <div class="row row-cols-auto form-group patron-extras patron-home-group">
 
-    <div class="actions-more">
-      <button (click)="toggleExpandForm()" type="button"
-        class="btn btn-sm btn-outline-dark ms-2 label-with-material-icon"
-        i18n-aria-label aria-label="Toggle Expanded Form Display"
-        i18n-title title="Toggle Expanded Form Display">
-        <span class="material-icons" aria-hidden="true">{{expandForm ? 'arrow_drop_up' : 'arrow_drop_down'}}</span>
-      </button>
+      <div class="col form-group patron-id">
+        <label class="form-label" for="card" i18n>Barcode / Card</label>
+        <div class="input-group seamless">
+          <span class="input-group-text">
+            <!-- 'barcode' Material Icon -->
+            <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="currentColor">
+              <path d="M40-200v-560h80v560H40Zm120 0v-560h80v560h-80Zm120
+                0v-560h40v560h-40Zm120 0v-560h80v560h-80Zm120
+                0v-560h120v560H520Zm160 0v-560h40v560h-40Zm120
+                0v-560h120v560H800Z"/>
+            </svg>
+          </span>
+          <input class="form-control form-control-sm" type="text" id="card" (keyup.enter)="go()"
+            [(ngModel)]="search.card" />
+        </div>
+      </div>
+
+      <div class="col form-group patron-name">
+        <label class="form-label" for="family_name" i18n>Last Name</label>
+        <input class="form-control form-control-sm" type="text" id="family_name" 
+          [(ngModel)]="search.family_name" (keyup.enter)="go()"/>
+      </div>
+      <div class="col form-group patron-name">
+        <label class="form-label" for="first_given_name" i18n>First Name</label>
+        <input class="form-control form-control-sm" type="text" id="first_given_name" (keyup.enter)="go()"
+          [(ngModel)]="search.first_given_name"/>
+      </div>
+      
+      <div class="col form-group patron-extras">
+        <label class="form-label" for="profile_group" i18n>Profile Group</label>
+        <eg-profile-select [useDisplayEntries]="true" 
+          [(ngModel)]="search.profile" domId="profile_group">
+        </eg-profile-select>
+      </div>
+      
+    <div class="col form-group patron-extras patron-home-group">
+      <label class="form-label" for="home_OU" i18n>Home Library</label>
+      <eg-org-select (onChange)="searchOrg = $event"
+        persistKey="patron.search" domId="home_OU"
+        [fallbackOrg]="org.root()">
+      </eg-org-select>
+      <!-- home org -->
+    </div>
+    </div>
+      
+    <div class="row row-cols-auto mt-2" [ngClass]="{'d-none': !show_names}">
+      <div class="col form-group patron-name">
+        <label class="form-label" for="name_keywords" i18n>Name Keywords</label>
+        <input class="form-control form-control-sm" type="text" id="name_keywords" (keyup.enter)="go()"
+          [(ngModel)]="search.name"/>
+      </div>
+      <div class="col form-group patron-name">
+        <label class="form-label" for="second_given_name" i18n>Middle Name</label>
+        <input class="form-control form-control-sm" type="text" id="second_given_name" (keyup.enter)="go()"
+          [(ngModel)]="search.second_given_name"/>
+      </div>
+      <div class="col form-group patron-name">
+        <label class="form-label" for="alias" i18n>Alias</label>
+        <input class="form-control form-control-sm" type="text" id="alias" (keyup.enter)="go()"
+          [(ngModel)]="search.alias"/>
+      </div>
+      <div class="col form-group patron-name">
+        <label class="form-label" for="guardian" i18n>Guardian</label>
+        <input class="form-control form-control-sm" type="text" id="guardian" (keyup.enter)="go()"
+          [(ngModel)]="search.guardian"/>
+      </div>
+    </div>
+      
+    <div class="row row-cols-auto mt-2" [ngClass]="{'d-none': !show_address}">
+      <div class="col form-group patron-address">
+        <label class="form-label" for="phone" i18n>Phone</label>
+        <input class="form-control form-control-sm" type="text" id="phone" (keyup.enter)="go()"
+          [(ngModel)]="search.phone"/>
+      </div>
+      <div class="col form-group patron-address">
+        <label class="form-label" for="street1" i18n>Street 1</label>
+        <input class="form-control form-control-sm" type="text" id="street1" (keyup.enter)="go()"
+          [(ngModel)]="search.street1"/>
+      </div>
+      <div class="col form-group patron-address">
+        <label class="form-label" for="street2" i18n>Street 2</label>
+        <input class="form-control form-control-sm" type="text" id="street2" (keyup.enter)="go()"
+          [(ngModel)]="search.street2"/>
+      </div>
+      <div class="col form-group patron-address">
+        <label class="form-label" for="city" i18n>City</label>
+        <input class="form-control form-control-sm" type="text" id="city" (keyup.enter)="go()"
+          [(ngModel)]="search.city"/>
+      </div>
+      <div class="col form-group hstack">
+          <div class="form-group me-2 patron-address locale-{{locale.currentLocaleCode()}}">
+            <label class="form-label" for="state" i18n>State</label>
+            <input class="form-control form-control-sm" type="text" id="state" (keyup.enter)="go()"
+              [(ngModel)]="search.state" [size]="locale.currentLocaleCode() === 'en-US' ? 2 : null" />
+          </div>
+          <div class="form-group patron-address flex-grow-1">
+            <label class="form-label" for="post_code" i18n>Post Code</label>
+            <input class="form-control form-control-sm" type="text" id="post_code" (keyup.enter)="go()"
+              [(ngModel)]="search.post_code" />
+          </div>
+      </div>
+    </div>
+    
+    <div class="row row-cols-auto mt-2"  [ngClass]="{'d-none': !show_ids}">
+
+      <div class="col form-group patron-id">
+        <label class="form-label" for="usrname" i18n>Username</label>
+        <input class="form-control form-control-sm" type="text" id="usrname" (keyup.enter)="go()"
+          [(ngModel)]="search.usrname"/>
+      </div>
+      <div class="col form-group patron-id">
+        <label class="form-label" for="email" i18n>Email</label>
+        <input class="form-control form-control-sm" type="text" id="email" (keyup.enter)="go()"
+          [(ngModel)]="search.email"/>
+      </div>
+      <div class="col form-group patron-id">
+        <label class="form-label" for="db_id" i18n>Database ID</label>
+        <input class="form-control form-control-sm" type="text" id="db_id" (keyup.enter)="go()"
+          [(ngModel)]="search.id"/>
+      </div>
+      <div class="col form-group patron-id">
+        <label class="form-label" for="ident" i18n>Identification</label>
+        <input class="form-control form-control-sm" type="text" id="ident" (keyup.enter)="go()"
+          [(ngModel)]="search.ident"/>
+      </div>
+      <div class="col form-group patron-id patron-dob-group">
+        <div class="form-label" i18n>Date of Birth</div>
+        <div class="patron-dob-group d-flex align-items-start">
+          
+          <div *ngIf="locale.currentLocaleCode() === 'en-US'" class="form-group patron-id patron-dob me-2">
+            <label class="form-label form-text" for="dob_month" i18n>Month</label>
+            <input class="form-control form-control-sm w-auto" type="text" id="dob_month" (keyup.enter)="go()"
+              [(ngModel)]="search.dob_month" size="2" />
+          </div>
+          
+          <div class="form-group patron-id patron-dob me-2">
+            <label class="form-label form-text" for="dob_day" i18n>Day</label>
+            <input class="form-control form-control-sm w-auto" type="text" id="dob_day" (keyup.enter)="go()"
+              [(ngModel)]="search.dob_day" size="2" />
+          </div>
+
+          <div *ngIf="locale.currentLocaleCode() !== 'en-US'" class="form-group patron-id patron-dob me-2">
+            <label class="form-label form-text" for="dob_month" i18n>Month</label>
+            <input class="form-control form-control-sm w-auto" type="text" id="dob_month" (keyup.enter)="go()"
+              [(ngModel)]="search.dob_month" size="2" />
+          </div>
+          
+          <div class="form-group patron-id patron-dob">
+            <label class="form-label form-text" for="dob_year" i18n>Year</label>
+            <input class="form-control form-control-sm w-auto" type="text" id="dob_year" (keyup.enter)="go()"
+              [(ngModel)]="search.dob_year" size="4" />
+          </div>
+        </div>
+      </div>
     </div>
 
-      <input class="form-control form-control-sm" type="text" id='focus-this-input'
-        i18n-aria-label aria-label="Last Name" (keyup.enter)="go()"
-        i18n-placeholder placeholder="Last Name"
-        [(ngModel)]="search.family_name"/>
-    
-      <input class="form-control form-control-sm" type="text" (keyup.enter)="go()"
-        i18n-aria-label aria-label="First Name"
-        i18n-placeholder placeholder="First Name"
-        [(ngModel)]="search.first_given_name"/>
-    
-      <input class="form-control form-control-sm" type="text" (keyup.enter)="go()"
-        i18n-aria-label aria-label="Middle Name"
-        i18n-placeholder placeholder="Middle Name"
-        [(ngModel)]="search.second_given_name"/>
-    
-      <input class="form-control form-control-sm" type="text" (keyup.enter)="go()"
-        i18n-aria-label aria-label="Name Keywords"
-        i18n-placeholder placeholder="Name Keywords"
-        [(ngModel)]="search.name"/>
-
-  <ng-container *ngIf="expandForm">
-        <input class="form-control form-control-sm" type="text" (keyup.enter)="go()"
-          i18n-aria-label aria-label="Barcode"
-          i18n-placeholder placeholder="Barcode"
-          [(ngModel)]="search.card"/>
-
-        <input class="form-control form-control-sm" type="text" (keyup.enter)="go()"
-          i18n-aria-label aria-label="Alias"
-          i18n-placeholder placeholder="Alias"
-          [(ngModel)]="search.alias"/>
-
-        <input class="form-control form-control-sm" type="text" (keyup.enter)="go()"
-          i18n-aria-label aria-label="Username"
-          i18n-placeholder placeholder="Username"
-          [(ngModel)]="search.usrname"/>
-
-        <input class="form-control form-control-sm" type="text" (keyup.enter)="go()"
-          i18n-aria-label aria-label="Email"
-          i18n-placeholder placeholder="Email"
-          [(ngModel)]="search.email"/>
-
-        <input class="form-control form-control-sm" type="text" (keyup.enter)="go()"
-          i18n-aria-label aria-label="Identification"
-          i18n-placeholder placeholder="Identification"
-          [(ngModel)]="search.ident"/>
-
-        <input class="form-control form-control-sm" type="text" (keyup.enter)="go()"
-          i18n-aria-label aria-label="Phone"
-          i18n-placeholder placeholder="Phone"
-          [(ngModel)]="search.phone"/>
-
-        <input class="form-control form-control-sm" type="text" (keyup.enter)="go()"
-          i18n-aria-label aria-label="Street 1"
-          i18n-placeholder placeholder="Street 1"
-          [(ngModel)]="search.street1"/>
-
-        <input class="form-control form-control-sm" type="text" (keyup.enter)="go()"
-          i18n-aria-label aria-label="Street 2"
-          i18n-placeholder placeholder="Street 2"
-          [(ngModel)]="search.street2"/>
-
-        <input class="form-control form-control-sm" type="text" (keyup.enter)="go()"
-          i18n-aria-label aria-label="City"
-          i18n-placeholder placeholder="City"
-          [(ngModel)]="search.city"/>
-
-        <input class="form-control form-control-sm" type="text" (keyup.enter)="go()"
-          i18n-aria-label aria-label="State"
-          i18n-placeholder placeholder="State"
-          [(ngModel)]="search.state"/>
-
-        <input class="form-control form-control-sm" type="text" (keyup.enter)="go()"
-          i18n-aria-label aria-label="Post Code"
-          i18n-placeholder placeholder="Post Code"
-          [(ngModel)]="search.post_code"/>
-
-        <eg-profile-select [useDisplayEntries]="true" 
-          [(ngModel)]="search.profile">
-        </eg-profile-select>
-
-        <eg-org-select (onChange)="searchOrg = $event"
-          persistKey="patron.search"
-          [fallbackOrg]="org.root()"
-          i18n-placeholder placeholder="Home Library"
-          ariaLabel="Home Library" i18n-ariaLabel>
-        </eg-org-select>
-        <!-- home org -->
-
-        <input class="form-control form-control-sm" type="text" (keyup.enter)="go()"
-          i18n-aria-label aria-label="Guardian"
-          i18n-placeholder placeholder="Guardian"
-          [(ngModel)]="search.guardian"/>
-
-        <input class="form-control form-control-sm" type="text" (keyup.enter)="go()"
-          i18n-aria-label aria-label="DOB Year"
-          i18n-placeholder placeholder="DOB Year"
-          [(ngModel)]="search.dob_year"/>
-
-        <input class="form-control form-control-sm" type="text" (keyup.enter)="go()"
-          i18n-aria-label aria-label="DOB Month"
-          i18n-placeholder placeholder="DOB Month"
-          [(ngModel)]="search.dob_month"/>
-
-        <input class="form-control form-control-sm" type="text" (keyup.enter)="go()"
-          i18n-aria-label aria-label="DOB Day"
-          i18n-placeholder placeholder="DOB Day"
-          [(ngModel)]="search.dob_day"/>
-
-        <input class="form-control form-control-sm" type="text" (keyup.enter)="go()"
-          i18n-aria-label aria-label="Database ID"
-          i18n-placeholder placeholder="Database ID"
-          [(ngModel)]="search.id"/>
-      
-        <div class="form-check form-check-inline">
-          <input class="form-check-input" type="checkbox" 
-            (change)="toggleIncludeInactive()"
-            id="include-inactive" [(ngModel)]="search.inactive">
-          <label class="form-label form-check-label" for="include-inactive" i18n>
-            Include Inactive
-          </label>
-        </div>
-
-  </ng-container><!-- expand form -->
-
-  <div class="actions-reset" *ngIf="expandForm">
-    <button type="button" class="btn btn-destroy" (click)="clear()" i18n>Clear Form</button>
-  </div>
-  <div class="actions-search">
-    <button type="button" class="btn btn-success" (click)="go()" i18n>Search</button>
+    <div class="row mt-3 patron-search-options">
+      <div class="col text-end">
+        <button type="reset" class="btn btn-destroy me-2" (click)="clear()" i18n>Clear Form</button>
+        <button type="submit" class="btn btn-primary ms-2" (click)="go()" i18n>Search</button>
+      </div>
+    </div>
   </div>
 </div>
 
