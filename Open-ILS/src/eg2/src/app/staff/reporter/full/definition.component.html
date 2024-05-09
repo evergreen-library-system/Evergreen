@@ -34,7 +34,7 @@
     <label class="form-label" for="template-name" i18n>Template Name</label>
   </div>
   <div class="col-lg-3">
-    <input disabled id="template-name" class="form-control" [ngModel]="templ.name"/>
+    <input *ngIf="templ" disabled id="template-name" class="form-control" [ngModel]="templ.name"/>
   </div>
 </div>
 
@@ -50,7 +50,7 @@
     <label class="form-label" for="template-description" i18n>Template Description</label>
   </div>
   <div class="col-lg-3">
-    <input disabled id="template-description" class="form-control" [ngModel]="templ.description"/>
+    <input *ngIf="templ" disabled id="template-description" class="form-control" [ngModel]="templ.description"/>
   </div>
 </div>
 
