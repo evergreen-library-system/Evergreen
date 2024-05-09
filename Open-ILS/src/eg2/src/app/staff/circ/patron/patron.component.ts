@@ -19,9 +19,7 @@ import {EditComponent} from './edit.component';
 import {ConfirmDialogComponent} from '@eg/share/dialog/confirm.component';
 import {PromptDialogComponent} from '@eg/share/dialog/prompt.component';
 import {AlertDialogComponent} from '@eg/share/dialog/alert.component';
-
-const MAIN_TABS =
-    ['checkout', 'items_out', 'holds', 'bills', 'messages', 'edit', 'search'];
+import {PatronStatCatsComponent} from '@eg/staff/circ/patron/statcats.component';
 
 @Component({
     templateUrl: 'patron.component.html',
@@ -35,6 +33,7 @@ export class PatronComponent implements OnInit {
     statementXact: number;
     billingHistoryTab: string;
     showSummary = true;
+    showNav = true;
     loading = true;
     showRecentPatrons = false;
 
@@ -69,6 +68,7 @@ export class PatronComponent implements OnInit {
     ) {}
 
     ngOnInit() {
+        this.patronTab = 'search';
         this.watchForTabChange();
         this.load();
     }
@@ -142,13 +142,6 @@ export class PatronComponent implements OnInit {
             this.statementXact = +params.get('xactId');
             this.billingHistoryTab = params.get('billingHistoryTab');
 
-            if (MAIN_TABS.includes(this.patronTab)) {
-                this.altTab = null;
-            } else {
-                this.altTab = this.patronTab;
-                this.patronTab = 'other';
-            }
-
             // Clear all previous patron data when returning to the
             // search from after other patron-level navigation.
             if (this.patronTab === 'search') {
@@ -197,6 +190,8 @@ export class PatronComponent implements OnInit {
     }
 
     routeToTab(tab?: string, newWindow?: boolean) {
+        if (tab === 'purge') {return;}
+
         let url = '/staff/circ/patron/';
 
         tab = tab || this.patronTab;
@@ -229,6 +224,15 @@ export class PatronComponent implements OnInit {
         this.serverStore.setItem( // collapse is the opposite of show
             'eg.circ.patron.summary.collapse', this.showSummary);
         this.showSummary = !this.showSummary;
+    }
+
+    toggleNavPane() {
+        /* TODO: wire up this setting */
+        /*
+        this.serverStore.setItem( // collapse is the opposite of show
+            'eg.circ.patron.nav.collapse', this.showNav);
+        /**/
+        this.showNav = !this.showNav;
     }
 
     // Patron row single-clicked in the grid.  Load the patron without
@@ -364,17 +368,14 @@ export class PatronComponent implements OnInit {
         this.patronId = null;
     }
 
-    patronTitle(prefix: string = "Patron", suffix?: string) {
-        if (!this.context.summary) return;
+    patronTitle(prefix = 'Patron', suffix?: string) {
+        if (!this.context.summary) {return;}
 
-        const name = this.patronService.namePart(this.context.summary.patron, 'family_name') + ', ' + 
-            this.patronService.namePart(this.context.summary.patron, 'first_given_name') + ' ' + 
+        const name = this.patronService.namePart(this.context.summary.patron, 'family_name') + ', ' +
+            this.patronService.namePart(this.context.summary.patron, 'first_given_name') + ' ' +
             this.patronService.namePart(this.context.summary.patron, 'second_given_name');
-    
-        if (suffix)
-            return [prefix, name, suffix].join(": ");
-        else
-            return [prefix, name].join(": ");
+
+        if (suffix) {return [prefix, name, suffix].join(': ');} else {return [prefix, name].join(': ');}
     }
 }
 

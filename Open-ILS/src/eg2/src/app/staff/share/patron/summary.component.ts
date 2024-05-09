@@ -29,7 +29,9 @@ export class PatronSummaryComponent implements OnInit {
 
     showDobDefault = false;
     showDob = false;
-    penalties: number = 0;
+    penalties = 0;
+
+    @Input() showSummaryPane = true;
 
     constructor(
         private org: OrgService,
@@ -112,7 +114,7 @@ export class PatronSummaryComponent implements OnInit {
 
         const patron = this.p();
 
-        let codes = [];
+        const codes = [];
 
         if (patron.barred() === 't') {
             codes.push('PATRON_BARRED');
@@ -143,7 +145,6 @@ export class PatronSummaryComponent implements OnInit {
 
         patron.standing_penalties().some(p => {
             penaltyCount++;
-
             if (p.standing_penalty().staff_alert() === 't' ||
                 p.standing_penalty().block_list()) {
                 codes.push('PATRON_HAS_STAFF_ALERT');
@@ -162,11 +163,9 @@ export class PatronSummaryComponent implements OnInit {
 
         if (penaltyCount > 1) {
             codes.push('MULTIPLE_PENALTIES');
-        }
-        else if (penaltyCount === 1) {
+        } else if (penaltyCount === 1) {
             codes.push('ONE_PENALTY');
-        }
-        else {
+        } else {
             codes.push('NO_PENALTIES');
         }
 

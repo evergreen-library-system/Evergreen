@@ -14,6 +14,7 @@ import {Pager} from '@eg/share/util/pager';
 import {BucketDialogComponent} from '@eg/staff/share/buckets/bucket-dialog.component';
 import {PatronMergeDialogComponent} from './merge-dialog.component';
 import {FormatService} from '@eg/core/format.service';
+import {LocaleService} from '@eg/core/locale.service';
 
 const DEFAULT_SORT = [
     'family_name ASC',
@@ -28,7 +29,7 @@ const DEFAULT_FLESH = [
     'notes', 'profile'
 ];
 
-const EXPAND_FORM = 'eg.circ.patron.search.show_extras';
+// const EXPAND_FORM = 'eg.circ.patron.search.show_extras';
 const SHOW_NAMES = 'eg.circ.patron.search.show_names';
 const SHOW_IDS = 'eg.circ.patron.search.show_ids';
 const SHOW_ADDRESS = 'eg.circ.patron.search.show_address';
@@ -83,10 +84,10 @@ export class PatronSearchComponent implements OnInit, AfterViewInit {
 
     search: any = {};
     searchOrg: IdlObject;
-    expandForm: boolean;
-    show_names: boolean = true;
-    show_ids: boolean = false;
-    show_address: boolean = false;
+    show_names: boolean;
+    show_ids: boolean;
+    show_address: boolean;
+
     dataSource: GridDataSource;
     profileGroups: IdlObject[] = [];
 
@@ -96,7 +97,8 @@ export class PatronSearchComponent implements OnInit, AfterViewInit {
         public org: OrgService,
         private auth: AuthService,
         private store: ServerStoreService,
-        private format: FormatService
+        private format: FormatService,
+        public locale: LocaleService
     ) {
         this.patronsActivated = new EventEmitter<any>();
         this.selectionChange = new EventEmitter<number[]>();
@@ -123,7 +125,7 @@ export class PatronSearchComponent implements OnInit, AfterViewInit {
         });
 
         this.searchOrg = this.org.root();
-        /*
+
         this.store.getItemBatch([SHOW_NAMES, SHOW_IDS, SHOW_ADDRESS, INCLUDE_INACTIVE])
             .then(settings => {
                 this.show_names = settings[SHOW_NAMES];
@@ -131,31 +133,36 @@ export class PatronSearchComponent implements OnInit, AfterViewInit {
                 this.show_address = settings[SHOW_ADDRESS];
                 this.search.inactive = settings[INCLUDE_INACTIVE];
             });
-        /**/
         this.search.inactive = true;
     }
 
     ngAfterViewInit() {
-        // TODO: use egAutofocus
-        const node = document.getElementById('family_name');
+        const node = document.getElementById('card');
         if (node) { node.focus(); }
     }
 
-    toggleExpandForm() {
-        this.expandForm = !this.expandForm;
-        if (this.expandForm) {
-            this.store.setItem(EXPAND_FORM, true);
+    toggleNameFields() {
+        if (this.show_names) { // value set by ngModel
+            this.store.setItem(SHOW_NAMES, true);
         } else {
-            this.store.removeItem(EXPAND_FORM);
+            this.store.removeItem(SHOW_NAMES);
         }
     }
 
-    saveSearchFields() {
-        /*
-        this.store.setItem(SHOW_NAMES, this.show_names);
-        this.store.setItem(SHOW_IDS, this.show_ids);
-        this.store.setItem(SHOW_ADDRESS, this.show_address);
-        /**/
+    toggleAddressFields() {
+        if (this.show_address) { // value set by ngModel
+            this.store.setItem(SHOW_ADDRESS, true);
+        } else {
+            this.store.removeItem(SHOW_ADDRESS);
+        }
+    }
+
+    toggleIDFields() {
+        if (this.show_ids) { // value set by ngModel
+            this.store.setItem(SHOW_IDS, true);
+        } else {
+            this.store.removeItem(SHOW_IDS);
+        }
     }
 
     toggleIncludeInactive() {

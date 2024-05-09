@@ -1,12 +1,93 @@
+
+.patron-summary-container {
+  border-radius: 0.5rem;
+  box-shadow: 
+    0.25rem 1px  1rem rgba(0,0,100,0.2), 
+    0.25rem 1rem 1rem rgba(0,0,100,0.1);
+    padding: 1rem;
+}
+
+.account-sections {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem 2rem;
+}
+
+.account-col {
+  flex-basis: calc(25% - 2rem);
+}
+
+.account-col dl {
+  column-gap: 1rem;
+  display: grid;
+  grid-template-columns: max-content auto;
+}
+
+.account-col dl > div {
+  display: grid;
+  grid-column: 1 / -1;
+  grid-template-columns: subgrid;
+  margin: 0 0 0.15rem;
+  padding: 0 0.25rem;
+}
+
+.account-col dt {
+  font-weight: normal;
+  grid-column: 1;
+  margin: 0;
+}
+
+.account-col dd {
+  grid-column: 2;
+  margin: 0;
+  text-align: end;
+}
+
+.datetime,
+.numeric {
+  font-variant-numeric: lining-nums tabular-nums;
+}
+
 .alert-danger,
 .alert-danger .material-icons {
   background: #f8d7da;
   color: #58151c;
 }
 
-.patron-summary-container .row:nth-child(odd):not(.alert) {
-  background-color: var(--patron-summary-row-odd-bg);
+dl .alert {
+  margin-bottom: 0;
 }
+
+.account-address address {
+  font-style: normal;
+}
+
+.account-address .material-icons {
+  font-size: 1.2rem;
+}
+
+.address-type {
+  font-weight: 600;
+  text-transform: capitalize;
+}
+
+.alert-penalties {
+  background: rgba(0,0,100,0.08);
+  border-radius: 0.35rem;
+  color: #212529;
+  margin: 0 0 1rem;
+  padding: 0.25rem;
+}
+
+.alert-penalties h3 {
+  font-weight: 600;
+  margin: 0.25rem 0 0.5rem;
+}
+
+.alert-penalties .row {
+  padding: 0.25rem 0;
+}
+
 
 /* PATRON STATUS COLORS */
 
@@ -75,16 +156,15 @@
 }
 
 /* Statuses with warning icon */
-.PATRON_HAS_STAFF_ALERT:before,
-.PATRON_BARRED:before,
-.PATRON_HAS_ALERT:before,
-.PATRON_EXPIRED:before {
+.PATRON_HAS_STAFF_ALERT:not(:is(dl > *)):before,
+.PATRON_BARRED:not(:is(dl > *)):before,
+.PATRON_HAS_ALERT:not(:is(dl > *)):before,
+.PATRON_EXPIRED:not(:is(dl > *)):before {
     content: "\e002";
     font-family: "Material Icons";
     font-size: inherit;
     font-weight: normal;
     line-height: .75;
     margin-right: .25rem;
-    vertical-align: bottom;
 }
 
