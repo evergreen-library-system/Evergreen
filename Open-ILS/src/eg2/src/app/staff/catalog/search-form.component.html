@@ -352,7 +352,7 @@
             </div>
             <div class="col">
               <input name="ident-value" id='ident-query-input' 
-                type="text" class="form-control"
+                type="search" class="form-control"
                 [(ngModel)]="context.identSearch.value"
                 (keyup.enter)="searchByForm()"
                 placeholder="Numeric Query..." i18n-placeholder />
@@ -382,7 +382,7 @@
                 </div>
                 <label class="form-label col-form-label"  for="marc-value-{{idx}}" i18n>Value</label>
                 <div class="col ps-0">
-                  <input class="form-control ms-0" type="text" name="marc-value-{{idx}}"
+                  <input class="form-control ms-0" type="search" name="marc-value-{{idx}}"
                     [(ngModel)]="context.marcSearch.values[idx]" 
                     (keyup.enter)="searchByForm()"/>
                 </div>
@@ -431,7 +431,7 @@
             </div>
             <label class="form-label col-form-label" for="query"> starting with </label>
             <div class="col ps-0">
-              <input type="text" class="form-control" 
+              <input type="search" class="form-control" 
                 id='browse-term-input' name="query"
                 [(ngModel)]="context.browseSearch.value"
                 (keyup.enter)="searchByForm()"
@@ -448,7 +448,7 @@
               Browse Call Numbers starting with 
             </label>
             <div class="col ps-0">
-              <input type="text" class="form-control ms-2" 
+              <input type="search" class="form-control ms-2" 
                 id='cnbrowse-term-input' name="query"
                 [(ngModel)]="context.cnBrowseSearch.value"
                 (keyup.enter)="searchByForm()"
