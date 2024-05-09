@@ -1221,7 +1221,10 @@ export class ReporterService {
                         return this.pcrud.search('rr', { template: rtId }).pipe(defaultIfEmpty(emptyRR), mergeMap(rr => {
                             if (rr.id() === 'no_rr') {
                                 rrIdl.isnew(true);
-                                return this.pcrud.create(rrIdl).pipe(mergeMap(rr2 =>
+                                // Wrap the create() in a Promise to guarantee the observable
+                                // completes and the related pcrud transaction is committed
+                                // before the call to create the linked schedule is made.
+                                return from(this.pcrud.create(rrIdl).toPromise()).pipe(mergeMap(rr2 =>
                                     this.scheduleReport(templ, rr2, scheduleNow).pipe(mergeMap(rs => of(rtId)))
                                 ));
                             } else {
