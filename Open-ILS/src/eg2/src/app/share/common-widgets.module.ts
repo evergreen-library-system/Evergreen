@@ -13,6 +13,7 @@ import {ComboboxEntryComponent} from '@eg/share/combobox/combobox-entry.componen
 import {DateSelectComponent} from '@eg/share/date-select/date-select.component';
 import {BooleanSelectComponent} from '@eg/share/boolean-select/boolean-select.component';
 import {OrgSelectComponent} from '@eg/share/org-select/org-select.component';
+import {DepthSelectComponent} from '@eg/share/depth-select/depth-select.component';
 import {DateRangeSelectComponent} from '@eg/share/daterange-select/daterange-select.component';
 import {DateTimeSelectComponent} from '@eg/share/datetime-select/datetime-select.component';
 import {ContextMenuModule} from '@eg/share/context-menu/context-menu.module';
@@ -29,6 +30,7 @@ import { CredentialInputComponent } from './util/credential-input.component';
         DateSelectComponent,
         BooleanSelectComponent,
         OrgSelectComponent,
+        DepthSelectComponent,
         DateRangeSelectComponent,
         DateTimeSelectComponent,
         FileReaderComponent,
@@ -55,6 +57,7 @@ import { CredentialInputComponent } from './util/credential-input.component';
         DateSelectComponent,
         BooleanSelectComponent,
         OrgSelectComponent,
+        DepthSelectComponent,
         DateRangeSelectComponent,
         DateTimeSelectComponent,
         ClipboardDialogComponent,
