@@ -1,7 +1,7 @@
 
 BEGIN;
 
--- SELECT evergreen.upgrade_deps_block_check('TODO', :eg_version);
+SELECT evergreen.upgrade_deps_block_check('1412', :eg_version);
 
 DROP SCHEMA IF EXISTS sip CASCADE;
 
