@@ -61,7 +61,10 @@ export class GridComponent implements OnInit, AfterViewInit, OnDestroy {
     // row-specific flair (material icons).
     @Input() rowFlairIsEnabled: boolean;
 
-    // Returns a material icon name to display in the flar column
+    // Title (visible only in tooltip) for the flair column header
+    @Input() flairColumnHeader: string = $localize `Notifications`;
+
+    // Returns a material icon name to display in the flair column
     // (if enabled) for the given row.
     @Input() rowFlairCallback: (row: any) => GridRowFlairEntry;
 
@@ -192,6 +195,7 @@ export class GridComponent implements OnInit, AfterViewInit, OnDestroy {
         this.context.rowFlairIsEnabled = this.rowFlairIsEnabled  === true;
         this.context.showDeclaredFieldsOnly = this.showDeclaredFieldsOnly;
         this.context.rowFlairCallback = this.rowFlairCallback;
+        this.context.flairColumnHeader = this.flairColumnHeader;
         this.context.toolbarLabel = this.toolbarLabel;
         this.context.disablePaging = this.disablePaging === true;
         this.context.cellTextGenerator = this.cellTextGenerator;
