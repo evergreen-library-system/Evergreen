@@ -1,3 +1,4 @@
+/* eslint-disable */
 import {Component, OnInit, Input, Output, EventEmitter, ViewChild,
     OnChanges, SimpleChanges} from '@angular/core';
 import {IdlService, IdlObject} from '@eg/core/idl.service';

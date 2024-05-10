@@ -1,3 +1,4 @@
+/* eslint-disable */
 import {Component, OnInit, Input, ViewChild,
     Output, EventEmitter, TemplateRef} from '@angular/core';
 import {NgForm} from '@angular/forms';

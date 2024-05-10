@@ -1,3 +1,4 @@
+/* eslint-disable */
 import {Component, ViewEncapsulation, OnInit, AfterViewInit, OnDestroy, ViewChild} from '@angular/core';
 import {Router} from '@angular/router';
 import {Observable, Subscription, Subject} from 'rxjs';

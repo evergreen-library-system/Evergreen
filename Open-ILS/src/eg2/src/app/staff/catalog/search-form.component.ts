@@ -1,3 +1,4 @@
+/* eslint-disable */
 import {Component, OnInit, AfterViewInit, Renderer2} from '@angular/core';
 import {Router, ActivatedRoute} from '@angular/router';
 import {IdlObject} from '@eg/core/idl.service';

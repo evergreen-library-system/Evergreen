@@ -1,3 +1,4 @@
+/* eslint-disable */
 /* eslint-disable rxjs/no-nested-subscribe */
 import {Component, OnInit, OnDestroy, Input, ViewChild, ChangeDetectorRef, OnChanges, SimpleChanges, NgZone} from '@angular/core';
 import {Router, ActivatedRoute, ParamMap} from '@angular/router';

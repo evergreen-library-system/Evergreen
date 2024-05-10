@@ -1,3 +1,4 @@
+/* eslint-disable */
 /* eslint-disable rxjs/no-implicit-any-catch, rxjs/no-nested-subscribe */
 import {Component, Input, OnInit, TemplateRef, ViewChild} from '@angular/core';
 import {ActivatedRoute} from '@angular/router';

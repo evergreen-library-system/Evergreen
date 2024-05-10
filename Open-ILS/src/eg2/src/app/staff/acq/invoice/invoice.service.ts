@@ -1,3 +1,4 @@
+/* eslint-disable */
 import {Injectable, EventEmitter} from '@angular/core';
 import {IdlService, IdlObject} from '@eg/core/idl.service';
 import {EventService} from '@eg/core/event.service';

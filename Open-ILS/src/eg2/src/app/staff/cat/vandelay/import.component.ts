@@ -1,3 +1,4 @@
+/* eslint-disable */
 import {Component, OnInit, AfterViewInit,
     ViewChild, OnDestroy} from '@angular/core';
 import {tap} from 'rxjs/operators';

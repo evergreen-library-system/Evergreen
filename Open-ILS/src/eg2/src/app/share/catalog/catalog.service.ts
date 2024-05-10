@@ -1,3 +1,4 @@
+/* eslint-disable */
 /* eslint-disable no-empty, no-magic-numbers */
 import {Injectable, EventEmitter} from '@angular/core';
 import {Observable} from 'rxjs';

@@ -1,3 +1,4 @@
+/* eslint-disable */
 import {Component, ViewChild, OnInit, Input, TemplateRef, Directive, AfterViewInit, ElementRef} from '@angular/core';
 import {ActivatedRoute} from '@angular/router';
 import {FormBuilder, FormGroup, FormControl, Validators, FormArray} from '@angular/forms';

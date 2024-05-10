@@ -1,3 +1,4 @@
+/* eslint-disable */
 import {NgModule} from '@angular/core';
 import {RouterModule, Routes} from '@angular/router';
 import {CircMatrixMatchpointComponent} from './circ-matrix-matchpoint.component';

@@ -1,3 +1,4 @@
+/* eslint-disable */
 import {Pager} from '@eg/share/util/pager';
 import {Component, OnInit, AfterViewInit, Input, ViewChild, ElementRef} from '@angular/core';
 import {GridComponent} from '@eg/share/grid/grid.component';

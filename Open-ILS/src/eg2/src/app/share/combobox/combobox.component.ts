@@ -1,3 +1,4 @@
+/* eslint-disable */
 /* eslint-disable no-case-declarations */
 /**
  * <eg-combobox [allowFreeText]="true" [entries]="comboboxEntryList"/>

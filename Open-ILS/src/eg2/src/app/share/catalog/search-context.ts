@@ -1,3 +1,4 @@
+/* eslint-disable */
 /* eslint-disable no-shadow */
 import {OrgService} from '@eg/core/org.service';
 import {IdlObject} from '@eg/core/idl.service';

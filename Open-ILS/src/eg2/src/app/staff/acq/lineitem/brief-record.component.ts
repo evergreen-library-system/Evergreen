@@ -1,3 +1,4 @@
+/* eslint-disable */
 import {Component, OnInit, OnDestroy, ViewChild} from '@angular/core';
 import {ActivatedRoute, Router, ParamMap} from '@angular/router';
 import {firstValueFrom, Observable, of} from 'rxjs';

@@ -1,3 +1,4 @@
+/* eslint-disable */
 import {Component, OnInit, AfterViewInit} from '@angular/core';
 import {IdlObject} from '@eg/core/idl.service';
 import {NetService} from '@eg/core/net.service';

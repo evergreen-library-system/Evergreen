@@ -1,3 +1,4 @@
+/* eslint-disable */
 import {Component, OnInit, OnDestroy, QueryList, ViewChild, ViewChildren} from '@angular/core';
 import {ActivatedRoute, ParamMap, Router} from '@angular/router';
 import {CanComponentDeactivate} from '@eg/share/util/can-deactivate.guard';

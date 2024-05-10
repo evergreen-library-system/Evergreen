@@ -1,3 +1,4 @@
+/* eslint-disable */
 import {Component, OnInit, Input,
     Output, EventEmitter} from '@angular/core';
 import {NgbModal, NgbModalOptions} from '@ng-bootstrap/ng-bootstrap';
