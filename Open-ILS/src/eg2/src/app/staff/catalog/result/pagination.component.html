@@ -2,27 +2,30 @@
 Using bare BS pagination instead of ng-bootstrap, which seemed 
 unnecessary given we have to track paging externally anyway.
 -->
+<nav aria-label="Pages of Search Results" i18n-aria-label>
 <ul class="pagination">
   <li class="page-item" 
     [ngClass]="{disabled : searchContext.pager.isFirstPage()}">
-    <a (click)="prevPage()" (keydown.enter)="prevPage()"
-      class="page-link" tabindex="0" 
-      i18n-aria-label
-      aria-label="Previous">
-      <span aria-hidden="true">&laquo;</span>
-    </a>
+    <button type="button" class="page-link" (click)="prevPage()"
+      aria-label="Previous Page" i18n-aria-label>
+      <span aria-hidden="true" i18n="Staff catalog paging: previous page marker">&laquo;</span>
+    </button>
   </li>
   <li class="page-item" 
     *ngFor="let page of currentPageList()"
     [ngClass]="{active : searchContext.pager.currentPage() === page}">
-    <a class="page-link" tabindex="0" (click)="setPage(page)" (keydown.enter)="setPage(page)">
-      {{page}} <span class="visually-hidden" i18n>(current)</span></a>
+    <button type="button" class="page-link" (click)="setPage(page)"
+      [attr.aria-label]="'Page ' + page" 
+      i18n-aria-label="ARIA label: page number with prefix, for screen readers"
+      [attr.aria-current]="searchContext.pager.currentPage() === page ? 'page' : null">
+      {{page}}</button>
   </li>
   <li class="page-item" 
     [ngClass]="{disabled : searchContext.pager.isLastPage()}">
-    <a (click)="nextPage()" (keydown.enter)="nextPage()"
-      class="page-link" tabindex="0" aria-label="Next" i18n-aria-label>
-      <span aria-hidden="true">&raquo;</span>
-    </a>
+    <button type="button" class="page-link" (click)="nextPage()"
+      aria-label="Next Page" i18n-aria-label>
+      <span aria-hidden="true" i18n="Staff catalog paging: next page marker">&raquo;</span>
+    </button>
   </li>
 </ul>
+</nav>
