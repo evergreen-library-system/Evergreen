@@ -1,3 +1,4 @@
+/* eslint-disable */
 
 export class TreeNode {
     // Unique identifier

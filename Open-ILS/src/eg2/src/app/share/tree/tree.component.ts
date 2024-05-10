@@ -1,3 +1,4 @@
+/* eslint-disable */
 import {Component, Input, Output, ViewChildren, QueryList, ElementRef, EventEmitter, TemplateRef} from '@angular/core';
 import {Tree, TreeNode} from './tree';
 

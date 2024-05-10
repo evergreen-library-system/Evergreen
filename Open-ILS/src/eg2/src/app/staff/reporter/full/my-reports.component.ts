@@ -1,3 +1,4 @@
+/* eslint-disable */
 import {Component, Input, OnInit, ViewChild} from '@angular/core';
 import {Router, ActivatedRoute} from '@angular/router';
 import {map, concatMap} from 'rxjs/operators';

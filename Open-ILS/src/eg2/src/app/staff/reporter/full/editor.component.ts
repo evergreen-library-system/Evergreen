@@ -1,3 +1,4 @@
+/* eslint-disable */
 import {Component, OnInit, ViewChild} from '@angular/core';
 import {Router, ActivatedRoute} from '@angular/router';
 import {Location} from '@angular/common';

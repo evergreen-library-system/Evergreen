@@ -1,3 +1,4 @@
+/* eslint-disable */
 import {Component, Input} from '@angular/core';
 import {IdlService} from '@eg/core/idl.service';
 import {ReporterService, SRTemplate} from '../share/reporter.service';

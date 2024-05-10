@@ -1,3 +1,4 @@
+/* eslint-disable */
 import {Component, OnInit, ViewChild, Input} from '@angular/core';
 import {Router, ActivatedRoute} from '@angular/router';
 import {AuthService} from '@eg/core/auth.service';

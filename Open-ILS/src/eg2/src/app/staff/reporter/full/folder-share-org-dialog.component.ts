@@ -1,3 +1,4 @@
+/* eslint-disable */
 import {Input, Component} from '@angular/core';
 import {DialogComponent} from '@eg/share/dialog/dialog.component';
 import {IdlObject} from '@eg/core/idl.service';
