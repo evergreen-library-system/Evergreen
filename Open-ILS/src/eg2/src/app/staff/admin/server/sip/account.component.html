@@ -15,7 +15,7 @@
 
 <ng-container *ngIf="!createMode">
   <a routerLink="/staff/admin/server/sip/account/new">
-    <button type="button" class="btn btn-outline-dark label-with-material-icon ml-2">
+    <button type="button" class="btn btn-outline-dark label-with-material-icon ms-2">
       <span class="material-icons">add</span>
       <span i18n>New Account</span>
     </button>
@@ -61,30 +61,42 @@
     </ng-template>
 
     <ng-template #grpTemplate>
-      <div class="form-inline">
-        <eg-combobox #grpCbox required="true" 
-          [selectedId]="account.setting_group() ? account.setting_group().id() : null"
-          [entries]="settingGroups" (onChange)="grpChanged($event)">
-        </eg-combobox>
-        <button type="button" class="btn btn-outline-info ml-2" 
-          [disabled]="!account.setting_group()" (click)="openCloneDialog()" 
-          i18n>Clone</button>
-        <button type="button" class="btn btn-outline-danger ml-2" (click)="openDeleteDialog()" 
-          [disabled]="!account.setting_group() || account.setting_group().id() === 1" 
-          i18n>Delete</button>
+      <div class="d-flex">
+        <div class="flex-1">
+          <eg-combobox #grpCbox required="true" 
+            [selectedId]="account.setting_group() ? account.setting_group().id() : null"
+            [entries]="settingGroups" (onChange)="grpChanged($event)">
+          </eg-combobox>
+        </div>
+        <div class="flex-1">
+          <button type="button" class="btn btn-outline-info ms-2" 
+            [disabled]="!account.setting_group()" (click)="openCloneDialog()" 
+            i18n>Clone</button>
+          <button type="button" class="btn btn-outline-danger ms-2" (click)="openDeleteDialog()" 
+            [disabled]="!account.setting_group() || account.setting_group().id() === 1" 
+            i18n>Delete</button>
+        </div>
       </div>
     </ng-template>
 
     <ng-template #sipUsernameTemplate>
-      <div class="form-inline">
-        <input type="text" class="form-control"
-          [ngModel]="account.sip_username()" (change)="sipUsernameChange($event)">
-        <button type="button" class="btn btn-outline-dark ml-2" 
-          [ngClass]="{'border-danger' : createMode && !account.sip_password()}"
-          (click)="setPassword()">Set Password</button>
-        <span *ngIf="dupeSipUser" class="alert alert-danger ml-1 mt-2 p-1" i18n>
-          Username In Use
-        </span>
+      <div class="d-flex">
+        <div class="flex-1">
+          <input type="text" class="form-control"
+            [ngModel]="account.sip_username()" (change)="sipUsernameChange($event)">
+        </div>
+        <div class="flex-1 d-flex">
+          <div class="flex-1">
+            <button type="button" class="btn btn-outline-dark ms-2" 
+              [ngClass]="{'border-danger' : createMode && !account.sip_password()}"
+              (click)="setPassword()">Set Password</button>
+          </div>
+          <div class="flex-1">
+            <div *ngIf="dupeSipUser" class="alert alert-danger p-1" i18n>
+              Username In Use
+            </div>
+          </div>
+        </div>
       </div>
     </ng-template>
 
