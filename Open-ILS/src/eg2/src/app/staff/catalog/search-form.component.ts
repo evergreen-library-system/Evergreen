@@ -52,6 +52,8 @@ export class SearchFormComponent implements OnInit, AfterViewInit {
     // course module
     showCourseFilter = false;
 
+    sortMethodSetting: string;
+
 
     constructor(
         private renderer: Renderer2,
@@ -72,7 +74,8 @@ export class SearchFormComponent implements OnInit, AfterViewInit {
         this.ccvmMap = this.cat.ccvmMap;
         this.cmfMap = this.cat.cmfMap;
         this.context = this.staffCat.searchContext;
-        this.combineLibraryAndLocationGroups = this.cat.combineLibraryAndLocationGroups
+        this.combineLibraryAndLocationGroups = this.cat.combineLibraryAndLocationGroups;
+        this.sortMethodSetting = this.context.sort;
 
         // Start with advanced search options open
         // if any filters are active.
@@ -256,6 +259,10 @@ export class SearchFormComponent implements OnInit, AfterViewInit {
         this.refreshCopyLocationGroups();
         this.refreshLibraryGroups();
     }
+
+    sortOrderChange = (sortMethod: string) : void => {
+        this.context.sort = sortMethod;
+    };
 
     refreshCopyLocations() {
         if (!this.showFilters()) { return; }

@@ -45,6 +45,9 @@ export class CatalogResolver implements Resolve<Promise<any[]>> {
             'eg.search.search_lib',
             'eg.search.pref_lib',
             'eg.search.adv_pane',
+            'eg.search.sort_order',
+            'eg.search.available_only',
+            'eg.search.group_formats',
             'eg.catalog.results.count',
             'cat.holdings_show_empty_org',
             'cat.holdings_show_empty',
@@ -70,6 +73,9 @@ export class CatalogResolver implements Resolve<Promise<any[]>> {
             this.staffCat.prefOrg =
                 this.org.get(settings['eg.search.pref_lib']);
             this.staffCat.defaultTab = settings['eg.search.adv_pane'];
+            this.staffCat.defaultSortOrder = settings['eg.search.sort_order'];
+            this.staffCat.defaultAvailableOnly = settings['eg.search.available_only'];
+            this.staffCat.defaultGroupFormats = settings['eg.search.group_formats'];
             if (settings['eg.catalog.results.count']) {
                 this.staffCat.defaultSearchLimit =
                   Number(settings['eg.catalog.results.count']);

@@ -131,25 +131,7 @@
           <div class="mt-3 gx-3 row row-cols-auto align-items-end">
               <div class="col form-inline-group">
                 <label i18n class="form-label select-label" for="context-sort">Sort Results</label>
-                <select class="form-select me-2" id="context-sort" [(ngModel)]="context.sort">
-                  <option value='' i18n>Sort by Relevance</option>
-                  <optgroup label="Sort by Title" i18n-label>
-                    <option value='titlesort' i18n>Title: A to Z</option>
-                    <option value='titlesort.descending' i18n>Title: Z to A</option>
-                  </optgroup>
-                  <optgroup label="Sort by Author" i18n-label>
-                    <option value='authorsort' i18n>Author: A to Z</option>
-                    <option value='authorsort.descending' i18n>Author: Z to A</option>
-                  </optgroup>
-                  <optgroup label="Sort by Publication Date" i18n-label>
-                    <option value='pubdate.descending' i18n>Date: Newest to Oldest</option>
-                    <option value='pubdate' i18n>Date: Oldest to Newest</option>
-                  </optgroup>
-                  <optgroup label="Sort by Popularity" i18n-label>
-                    <option value='popularity' i18n>Most Popular</option>
-                    <option value='poprel' i18n>Popularity Adjusted Relevance</option>
-                  </optgroup>
-                </select>
+                <eg-sort-order-select [sortOrder]="sortMethodSetting" (sortOrderChange)="sortOrderChange($event)"></eg-sort-order-select>
               </div>
               <div class="col form-check form-check-inline ms-2 pt-2">
                   <label class="form-label form-check-label" for="context-termSearch-available">

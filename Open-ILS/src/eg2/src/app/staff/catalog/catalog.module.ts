@@ -38,6 +38,7 @@ import {HttpClientModule} from '@angular/common/http';
 import {BarcodesModule} from '@eg/staff/share/barcodes/barcodes.module';
 import {WorkLogModule} from '@eg/staff/share/worklog/worklog.module';
 import {VolCopyModule} from '@eg/staff/cat/volcopy/volcopy.module';
+import { SortOrderSelectComponent } from './sort-order-select/sort-order-select.component';
 
 @NgModule({
     declarations: [
@@ -66,7 +67,8 @@ import {VolCopyModule} from '@eg/staff/cat/volcopy/volcopy.module';
         CnBrowseComponent,
         PreferencesComponent,
         CnBrowseResultsComponent,
-        BrowsePagerComponent
+        BrowsePagerComponent,
+        SortOrderSelectComponent
     ],
     imports: [
         StaffCommonModule,

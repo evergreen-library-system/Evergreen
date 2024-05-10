@@ -69,6 +69,52 @@
 
 <div class="row border-bottom border-secondary p-2 m-2">
   <div class="col-lg-2 offset-lg-1">
+    <label for="pref-sort-order" class="form-label fw-bold" i18n>
+      Default Sort Order
+    </label>
+  </div>
+  <div class="col-lg-2">
+    <eg-sort-order-select [id]="pref-sort-order" [(sortOrder)]="settings['eg.search.sort_order']" [name]="sort_order"
+    (sortOrderChange)="sortOrderChanged($event)">
+    </eg-sort-order-select>
+  </div>
+  <div class="col-lg-6" i18n>
+    The default way to Sort Results upon opening a keyword search
+  </div>
+</div>
+
+<div class="row border-bottom border-secondary p-2 m-2">
+  <div class="col-lg-2 offset-lg-1">
+    <label for="pref-limit-to-available" class="form-label fw-bold" i18n>
+      Default Limit to Available
+    </label>
+  </div>
+  <div class="col-lg-2">
+    <input id="pref-limit-to-available" type="checkbox" [(ngModel)]="settings['eg.search.available_only']" 
+    (change)="checkboxChanged('eg.search.available_only')">
+  </div>
+  <div class="col-lg-6" i18n>
+    Should the 'Limit to Available' search setting be checked by default?
+  </div>
+</div>
+
+<div class="row border-bottom border-secondary p-2 m-2">
+  <div class="col-lg-2 offset-lg-1">
+    <label for="pref-group-formats" class="form-label fw-bold" i18n>
+      Default Group Formats/Editions
+    </label>
+  </div>
+  <div class="col-lg-2">
+    <input type="checkbox" id="pref-group-formats" [(ngModel)]="settings['eg.search.group_formats']"
+    (change)="checkboxChanged('eg.search.group_formats')">
+  </div>
+  <div class="col-lg-6" i18n>
+    Should the 'Group by Formats/Editions' search setting be checked by default?
+  </div>
+</div>
+
+<div class="row border-bottom border-secondary p-2 m-2">
+  <div class="col-lg-2 offset-lg-1">
     <label for="pref-lib-per-page" class="form-label fw-bold" i18n>
       Search Results Per Page
     </label>

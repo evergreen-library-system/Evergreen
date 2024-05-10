@@ -194,7 +194,10 @@ export class CatalogTermContext {
     format: string;
     locationGroupOrLasso = '';
     lasso: string;
-    available = false;
+
+    // Need this to start as unitialized so catalog service knows whether to apply the defaults over it
+    available : boolean;
+    defaultAvailable = false;
     onReserveFilter = false;
     onReserveFilterNegated = false;
     ccvmFilters: {[ccvmCode: string]: string[]};
@@ -203,6 +206,7 @@ export class CatalogTermContext {
 
     // True when searching for metarecords
     groupByMetarecord: boolean;
+    defaultGroupByMetarecord : boolean;
 
     // Filter results by records which link to this metarecord ID.
     fromMetarecord: number;
@@ -342,6 +346,7 @@ export class CatalogSearchContext {
 
     // Attributes that are used across different contexts.
     sort: string;
+    defaultSort: string;
     isStaff: boolean;
     showBasket: boolean;
     searchOrg: IdlObject;
@@ -422,7 +427,7 @@ export class CatalogSearchContext {
      */
     reset(): void {
         this.pager.offset = 0;
-        this.sort = '';
+        this.sort = '' || this.defaultSort;
         this.showBasket = false;
         this.result = new CatalogSearchResults();
         this.resultIds = [];

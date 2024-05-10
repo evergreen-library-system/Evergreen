@@ -24,6 +24,9 @@ export class StaffCatalogService {
     routeIndex = 0;
     defaultSearchOrg: IdlObject;
     defaultSearchLimit: number;
+    defaultSortOrder : string;
+    defaultAvailableOnly : boolean;
+    defaultGroupFormats : boolean;
     // Track the current template through route changes.
     selectedTemplate: string;
 
@@ -167,6 +170,21 @@ export class StaffCatalogService {
         if (!this.searchContext.pager.limit) {
             this.searchContext.pager.limit = this.defaultSearchLimit || 10;
         }
+
+        if (!this.searchContext.sort) {
+            this.searchContext.sort = this.defaultSortOrder;
+        }
+        this.searchContext.defaultSort = this.defaultSortOrder;
+
+        if (this.defaultAvailableOnly && this.searchContext.termSearch.available === undefined) {
+            this.searchContext.termSearch.available = this.defaultAvailableOnly;
+        }
+        this.searchContext.termSearch.defaultAvailable = this.defaultAvailableOnly;
+
+        if (this.defaultGroupFormats && this.searchContext.termSearch.groupByMetarecord === undefined){
+            this.searchContext.termSearch.groupByMetarecord = this.defaultGroupFormats;
+        }
+        this.searchContext.termSearch.defaultGroupByMetarecord = this.defaultGroupFormats;
     }
 
     /**

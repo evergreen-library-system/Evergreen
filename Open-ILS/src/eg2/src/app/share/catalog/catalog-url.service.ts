@@ -80,14 +80,22 @@ export class CatalogUrlService {
             params.joinOp = [];
             params.matchOp = [];
 
-            ['format', 'available', 'hasBrowseEntry', 'date1',
-                'date2', 'dateOp', 'groupByMetarecord', 'fromMetarecord',
+            ['format', 'hasBrowseEntry', 'date1',
+                'date2', 'dateOp', 'fromMetarecord',
                 'onReserveFilter', 'onReserveFilterNegated']
                 .forEach(field => {
                     if (ts[field]) {
                         params[field] = ts[field];
                     }
                 });
+
+            // Add these two to the URL if they should override their defaults
+            if (ts.defaultAvailable != ts.available) {
+                params['available'] = ts.available;
+            }
+            if (ts.defaultGroupByMetarecord != ts.groupByMetarecord) {
+                params['groupByMetarecord'] = ts.groupByMetarecord;
+            }
 
             ts.query.forEach((val, idx) => {
                 if (val !== '') {
@@ -221,14 +229,20 @@ export class CatalogUrlService {
         } else if (params.has('query')) {
 
             // Scalars
-            ['format', 'available', 'date1', 'date2',
-                'dateOp', 'groupByMetarecord', 'fromMetarecord',
-                'onReserve']
+            ['format', 'date1', 'date2',
+                'dateOp',  'fromMetarecord', 'onReserve']
                 .forEach(field => {
                     if (params.has(field)) {
                         ts[field] = params.get(field);
                     }
                 });
+
+            // Boolean scalars that might be false
+            ['available', 'groupByMetarecord'].forEach(field => {
+                if (params.has(field)){
+                    ts[field] = JSON.parse(params.get(field));
+                }
+            });
 
             // Arrays
             ['query', 'fieldClass', 'joinOp', 'matchOp'].forEach(field => {

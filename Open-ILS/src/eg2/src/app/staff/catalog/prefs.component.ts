@@ -13,6 +13,9 @@ const CATALOG_PREFS = [
     'eg.search.search_lib',
     'eg.search.pref_lib',
     'eg.search.adv_pane',
+    'eg.search.sort_order',
+    'eg.search.available_only',
+    'eg.search.group_formats',
     'eg.catalog.results.count',
     'eg.staffcat.exclude_electronic',
     'ui.show_search_highlight',
@@ -77,6 +80,10 @@ export class PreferencesComponent implements OnInit {
             });
     }
 
+    sortOrderChanged(sort_order : string){
+        this.updateValue('eg.search.sort_order', sort_order || null);
+    }
+
     checkboxChanged(setting: string) {
         const value = this.settings[setting];
         if (setting === 'ui.show_search_highlight') {
@@ -88,7 +95,9 @@ export class PreferencesComponent implements OnInit {
         if (setting === 'eg.staffcat.exclude_electronic') {
             this.staffCat.showExcludeElectronic = value;
         }
+
     }
+
 
     updateValue(setting: string, value: any): Promise<any> {
         const promise = (value === null) ?

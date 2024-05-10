@@ -1,0 +1,24 @@
+<select class="form-select me-2" 
+  [id]="id" 
+  [(ngModel)]='_sortOrder' 
+  [name]="name"
+  (change)="change()"
+  >
+    <option value='relevance' i18n>Sort by Relevance</option>
+    <optgroup label="Sort by Title" i18n-label>
+      <option value='titlesort' i18n>Title: A to Z</option>
+      <option value='titlesort.descending' i18n>Title: Z to A</option>
+    </optgroup>
+    <optgroup label="Sort by Author" i18n-label>
+      <option value='authorsort' i18n>Author: A to Z</option>
+      <option value='authorsort.descending' i18n>Author: Z to A</option>
+    </optgroup>
+    <optgroup label="Sort by Publication Date" i18n-label>
+      <option value='pubdate.descending' i18n>Date: Newest to Oldest</option>
+      <option value='pubdate' i18n>Date: Oldest to Newest</option>
+    </optgroup>
+    <optgroup label="Sort by Popularity" i18n-label>
+      <option value='popularity' i18n>Most Popular</option>
+      <option value='poprel' i18n>Popularity Adjusted Relevance</option>
+    </optgroup>
+  </select>
