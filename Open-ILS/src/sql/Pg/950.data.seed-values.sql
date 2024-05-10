@@ -22406,7 +22406,7 @@ VALUES
 ,   ( 9, 3, 0, 'header',        oils_i18n_gettext( 9, 'Administration', 'cusppe', 'label'), NULL, NULL, 1)
 ,   (10, 3, 1, 'link',          oils_i18n_gettext(10, 'Evergreen Documentation', 'cusppe', 'label'), '/images/portal/helpdesk.png', 'https://docs.evergreen-ils.org', 1)
 ,   (11, 3, 2, 'menuitem',      oils_i18n_gettext(11, 'Workstation Administration', 'cusppe', 'label'), '/images/portal/helpdesk.png', '/eg/staff/admin/workstation/index', 1)
-,   (12, 3, 3, 'menuitem',      oils_i18n_gettext(12, 'Reports', 'cusppe', 'label'), '/images/portal/reports.png', '/eg/staff/reporter/legacy/main', 1)
+,   (12, 3, 3, 'menuitem',      oils_i18n_gettext(12, 'Reports', 'cusppe', 'label'), '/images/portal/reports.png', '/eg2/staff/reporter/full', 1)
 ;
 
 SELECT setval('config.ui_staff_portal_page_entry_id_seq', 100);
@@ -23949,3 +23949,19 @@ INSERT INTO config.org_unit_setting_type (
   ),
   'string'
 );
+
+INSERT INTO config.workstation_setting_type (name, grp, datatype, label)
+VALUES (
+    'eg.grid.reporter.full.outputs.pending', 'gui', 'object', 
+    oils_i18n_gettext( 'eg.grid.reporter.full.outputs.pending', 'Pending report output grid settings', 'cwst', 'label')
+), (
+    'eg.grid.reporter.full.outputs.complete', 'gui', 'object', 
+    oils_i18n_gettext( 'eg.grid.reporter.full.outputs.complete', 'Completed report output grid settings', 'cwst', 'label')
+), (
+    'eg.grid.reporter.full.templates', 'gui', 'object', 
+    oils_i18n_gettext( 'eg.grid.reporter.full.templates', 'Report template grid settings', 'cwst', 'label')
+), (
+    'eg.grid.reporter.full.reports', 'gui', 'object', 
+    oils_i18n_gettext( 'eg.grid.reporter.full.reports', 'Report definition grid settings', 'cwst', 'label')
+);
+
