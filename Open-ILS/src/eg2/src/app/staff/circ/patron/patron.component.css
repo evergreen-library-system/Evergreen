@@ -1,3 +1,9 @@
+table.table.eg-grid > :not(caption) > * > *,
+table.table.eg-grid > :not(caption) > tbody > tr.eg-grid-row {
+  background-color: inherit !important;
+  color: inherit;
+}
+
 #patron-grid {
   display: grid;
   grid-gap: 1rem;
@@ -69,44 +75,56 @@
   left: -9999px;
 }
 
+/* set up borders on the bills grid, just in case some have alerts */
+::ng-deep .grid-key-circ_patron_bills .eg-grid-row .eg-grid-cell:first-of-type {
+  border-left: 5px solid transparent;
+}
+
 /* low-level red alerts */
 ::ng-deep .eg-grid-row.less-intense-alert:not(.selected) {
   color: var(--bs-body-color);
-  background-color: rgba(var(--bs-red-rgb), 0.10);
+  --bs-table-bg: rgba(var(--bs-red-rgb), 0.10);
   border-color: rgba(var(--bs-red-rgb), 0.15);
-  border-left: 10px solid var(--bs-red);
-  padding-left: 0;
+}
+
+::ng-deep .eg-grid-row.less-intense-alert:not(.selected) .eg-grid-cell:first-of-type {
+  border-left: 5px solid var(--bs-red);
 }
 
 ::ng-deep .eg-grid-row.less-intense-alert.selected {
   color: var(--bs-body-color);
-  background-color: rgba(var(--bs-red-rgb), 0.15);
+  --bs-table-bg: rgba(var(--bs-red-rgb), 0.15);
   border-color: rgba(var(--bs-red-rgb), 0.20);
-  border-left: 10px solid var(--bs-red);
-  padding-left: 0;
+}
+
+::ng-deep .eg-grid-row.less-intense-alert.selected .eg-grid-cell:first-of-type {
+  border-left: 5px solid var(--bs-red);
 }
 
 /* icon color for low-level red alerts */
 ::ng-deep .eg-grid-row.less-intense-alert .eg-grid-flair-cell {
   color: var(--bs-red-600);
-  border-color: var(--bs-red-600);
 }
 
 /* high-level red alerts */
 ::ng-deep .eg-grid-row.lost-row {
   color: var(--bs-body-color);
-  background-color: rgba(var(--bs-red-rgb), 0.25);
+  --bs-table-bg: rgba(var(--bs-red-rgb), 0.25);
   border-color: rgba(var(--bs-red-rgb), 0.30);
-  border-left: 10px solid var(--bs-red-600);
-  padding-left: 0;
+}
+
+::ng-deep .eg-grid-row.lost-row .eg-grid-cell:first-of-type {
+  border-left: 5px solid var(--bs-red-600);
 }
 
 ::ng-deep .eg-grid-row.lost-row.selected {
   color: var(--bs-body-color);
-  background-color: rgba(var(--bs-red-rgb), 0.30);
+  --bs-table-bg: rgba(var(--bs-red-rgb), 0.30);
   border-color: rgba(var(--bs-red-rgb), 0.35);
-  border-left: 10px solid var(--bs-red-600);
-  padding-left: 0;
+}
+
+::ng-deep .eg-grid-row.lost-row.selected .eg-grid-cell:first-of-type {
+  border-left: 5px solid var(--bs-red-600);
 }
 
 /* icon color for high-level red alerts and link color for both reds */
@@ -117,37 +135,49 @@
   border-color: var(--bs-red-700);
 }
 
+::ng-deep .eg-grid-row.lost-row .eg-grid-flair-cell {
+  color: var(--bs-red-700);
+}
+
 /* orange alerts */
 ::ng-deep .eg-grid-row.overdue-row {
   color: var(--bs-body-color);
-  background-color: rgba(var(--bs-orange-rgb), 0.10);
+  --bs-table-bg: rgba(var(--bs-orange-rgb), 0.10);
   border-color: rgba(var(--bs-orange-rgb), 0.15);
-  border-left: 10px solid var(--bs-orange);
-  padding-left: 0;
+}
+
+::ng-deep .eg-grid-row.overdue-row .eg-grid-cell:first-of-type {
+  border-left: 5px solid var(--bs-orange);
 }
 
 ::ng-deep .eg-grid-row.overdue-row.selected {
   color: var(--bs-body-color);
-  background-color: rgba(var(--bs-orange-rgb), 0.15);
+  --bs-table-bg: rgba(var(--bs-orange-rgb), 0.15);
   border-color: rgba(var(--bs-orange-rgb), 0.20);
-  border-left: 10px solid var(--bs-orange);
-  padding-left: 0;
+}
+
+::ng-deep .eg-grid-row.overdue-row.selected .eg-grid-cell:first-of-type {
+  border-left: 5px solid var(--bs-orange);
 }
 
 ::ng-deep .eg-grid-row.longoverdue-row {
   color: var(--bs-body-color);
-  background-color: rgba(var(--bs-orange-rgb), 0.25);
+  --bs-table-bg: rgba(var(--bs-orange-rgb), 0.25);
   border-color: rgba(var(--bs-orange-rgb), 0.30);
-  border-left: 10px solid var(--bs-orange-600);
-  padding-left: 0;
+}
+
+::ng-deep .eg-grid-row.longoverdue-row .eg-grid-cell:first-of-type {
+  border-left: 5px solid var(--bs-orange-600);
 }
 
 ::ng-deep .eg-grid-row.longoverdue-row.selected {
   color: var(--bs-body-color);
-  background-color: rgba(var(--bs-orange-rgb), 0.30);
+  --bs-table-bg: rgba(var(--bs-orange-rgb), 0.30);
   border-color: rgba(var(--bs-orange-rgb), 0.35);
-  border-left: 10px solid var(--bs-orange-600);
-  padding-left: 0;
+}
+
+::ng-deep .eg-grid-row.longoverdue-row.selected .eg-grid-cell:first-of-type {
+  border-left: 5px solid var(--bs-orange-600);
 }
 
 /* link color for orange alerts */
