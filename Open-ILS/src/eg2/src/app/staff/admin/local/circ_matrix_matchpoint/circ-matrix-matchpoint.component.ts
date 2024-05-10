@@ -251,7 +251,7 @@ export class CircMatrixMatchpointComponent implements OnInit {
                 this.grid.reload();
             },
             (rejection: unknown) => {
-                if (!rejection.dismissed) {
+                if (!(rejection as any).dismissed) {
                     this.createErrString.current()
                         .then(str => this.toast.danger(str));
                 }
