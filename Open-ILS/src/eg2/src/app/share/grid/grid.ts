@@ -703,6 +703,7 @@ export class GridContext {
     lastSelectedIndex: any;
     pageChanges: Subscription;
     rowFlairIsEnabled: boolean;
+    flairColumnHeader: string;
     rowFlairCallback: (row: any) => GridRowFlairEntry;
     rowClassCallback: (row: any) => string;
     cellClassCallback: (row: any, col: GridColumn) => string;
