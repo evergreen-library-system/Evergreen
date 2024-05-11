@@ -11,6 +11,7 @@ import {OrgService} from '@eg/core/org.service';
     template: ''
 })
 class MockOrgSelectComponent {
+    @Input() disabled?: boolean;
     @Input() domId: string;
     @Input() limitPerms: string;
     @Input() ariaLabel?: string;

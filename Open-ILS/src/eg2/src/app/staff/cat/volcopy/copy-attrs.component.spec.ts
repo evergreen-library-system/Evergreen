@@ -25,7 +25,7 @@ describe('CopyAttrsComponent', () => {
 
     beforeEach(() => {
         component = new CopyAttrsComponent(idlMock, orgMock, authServiceMock,
-            formatServiceMock, storeServiceMock, fileExportServiceMock,
+            null, formatServiceMock, storeServiceMock, fileExportServiceMock,
             toastServiceMock, volCopyServiceMock);
         component.copyTemplateCbox = jasmine.createSpyObj<ComboboxComponent>(['entries']);
         component.copyTemplateCbox.selected = {id: 0};
