@@ -23825,8 +23825,8 @@ INSERT INTO action_trigger.hook (key, core_type, passive, description) VALUES
    oils_i18n_gettext('vandelay.background_import.completed','A Import/Overlay background job was completed','ath', 'description')
 );
 
-INSERT INTO action_trigger.event_definition (id, active, owner, name, hook, validator, reactor, group_field, usr_field, template)
-    VALUES (120, 'f', 1, 'Vandelay Background Import Requested', 'vandelay.background_import.requested', 'NOOP_True', 'SendEmail', 'email', 'owner',
+INSERT INTO action_trigger.event_definition (active, owner, name, hook, validator, reactor, group_field, usr_field, template)
+    VALUES ('f', 1, 'Vandelay Background Import Requested', 'vandelay.background_import.requested', 'NOOP_True', 'SendEmail', 'email', 'owner',
 $$
 [%- USE date -%]
 [%- hostname = '' # set this in order to generate a link -%]
@@ -23858,8 +23858,8 @@ Auto-Submitted: auto-generated
 
 $$);
 
-INSERT INTO action_trigger.event_definition (id, active, owner, name, hook, validator, reactor, group_field, usr_field, template)
-    VALUES (121, 'f', 1, 'Vandelay Background Import Completed', 'vandelay.background_import.completed', 'NOOP_True', 'SendEmail', 'email', 'owner',
+INSERT INTO action_trigger.event_definition (active, owner, name, hook, validator, reactor, group_field, usr_field, template)
+    VALUES ('f', 1, 'Vandelay Background Import Completed', 'vandelay.background_import.completed', 'NOOP_True', 'SendEmail', 'email', 'owner',
 $$
 [%- USE date -%]
 [%- hostname = '' # set this in order to generate a link -%]
