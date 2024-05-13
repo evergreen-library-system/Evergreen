@@ -12,7 +12,7 @@ Multilingual searches can be conducted by constructing searches using specific l
 
 The language filter can be appended to any search.  For example, a title search for _pippi longstocking item_lang(eng,swe)_ will search for English or Swedish language publications of the title.
 
-image::media/multilingual_search1.png[]
+image::multilingual_search/multilingual_search1.png[]
 
 == Search Syntax ==
 
@@ -50,7 +50,7 @@ To conduct a search for materials that do not contain at least of the of the lan
 
 Within the Advanced Search interface, multiple languages can be selected from the Language filter by holding down the Ctrl key on the keyboard and selecting the desired languages.  This will apply a Boolean OR operator to the language filters.
 
-image::media/multilingual_search2.PNG[]
+image::multilingual_search/multilingual_search2.PNG[]
 
 
 == Adding Subfields to the Index ==
@@ -63,5 +63,5 @@ Additional subfields for the 041 tag, such as h, j, k, and n, can be added to th
 . In the _MARC Subfields_ field, add the subfields you want included in the index.
 . Click *Save*.
 
-image::media/multilingual_search3.PNG[]
+image::multilingual_search/multilingual_search3.PNG[]
 
