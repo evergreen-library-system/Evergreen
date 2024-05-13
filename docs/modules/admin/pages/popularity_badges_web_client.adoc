@@ -107,14 +107,14 @@ This popularity badge will rate bibliographic records based on the number of hol
 
 If a keyword search for harry potter is conducted and the sort option "Most Popular" is selected, Evergreen will apply the popularity rankings earned from badges to the search results.
 
-image::media/popbadge1_web_client.PNG[popularity badge search]
+image::pop_badges/popbadge1_web_client.PNG[popularity badge search]
 
 Title search: harry potter.  Sort by: Most Popular.
 
-image::media/popbadge2_web_client.PNG[popularity badge search results]
+image::pop_badges/popbadge2_web_client.PNG[popularity badge search results]
 
 The popularity badge also appears in the bibliographic record display in the catalog.  The name of the badge earned by the record and the popularity rating are displayed in the Record Details.
 
 A popularity badge of 5.0/5.0 has been applied to the most popular bibliographic records where the search term "harry potter" is found in the title.  In the image above, the popularity badge has identified records from the Harry Potter series by J.K. Rowling as the most popular titles matching the search and has listed them first in the search results.
 
-image::media/popbadge3_web_client.PNG[popularity badge bib record display]
+image::pop_badges/popbadge3_web_client.PNG[popularity badge bib record display]
