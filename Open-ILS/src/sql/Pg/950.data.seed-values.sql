@@ -23996,100 +23996,101 @@ INSERT INTO sip.setting (setting_group, name, value, description)
 VALUES (
     1, 'currency', '"USD"',
     oils_i18n_gettext(
-        (SELECT id FROM sip.setting WHERE name = 'currency'),
+        1,
         'Monetary amounts are reported in this currency',
         'sipset', 'description')
 ), (
     1, 'av_format', '"eg_legacy"',
     oils_i18n_gettext(
-        (SELECT id FROM sip.setting WHERE name = 'av_format'),
+        2,
         'AV Format. Options: eg_legacy, 3m, swyer_a, swyer_b',
         'sipset', 'description')
 ), (
     1, 'due_date_use_sip_date_format', 'false',
     oils_i18n_gettext(
-        (SELECT id FROM sip.setting WHERE name = 'due_date_use_sip_date_format'),
+        3,
         'Due date uses 18-char date format (YYYYMMDDZZZZHHMMSS).  Otherwise "YYYY-MM-DD HH:MM:SS',
         'sipset', 'description')
 ), (
     1, 'patron_status_permit_loans', 'false',
     oils_i18n_gettext(
-        (SELECT id FROM sip.setting WHERE name = 'patron_status_permit_loans'),
+        4,
         'Checkout and renewal are allowed even when penalties blocking these actions exist',
         'sipset', 'description')
 ), (
     1, 'patron_status_permit_all', 'false',
     oils_i18n_gettext(
-        (SELECT id FROM sip.setting WHERE name = 'patron_status_permit_all'),
+        5,
         'Holds, checkouts, and renewals allowed regardless of blocking penalties',
         'sipset', 'description')
 ), (
     1, 'default_activity_who', 'null',
     oils_i18n_gettext(
-        (SELECT id FROM sip.setting WHERE name = 'default_activity_who'),
+        6,
         'Patron holds data may be returned as either "title" or "barcode"',
         'sipset', 'description')
 ), (
     1, 'msg64_summary_datatype', '"title"',
     oils_i18n_gettext(
-        (SELECT id FROM sip.setting WHERE name = 'msg64_summary_datatype'),
+        7,
         'Patron circulation data may be returned as either "title" or "barcode"',
         'sipset', 'description')
 ), (
     1, 'msg64_hold_datatype', '"title"',
     oils_i18n_gettext(
-        (SELECT id FROM sip.setting WHERE name = 'msg64_hold_datatype'),
+        8,
         'Patron holds data may be returned as either "title" or "barcode"',
         'sipset', 'description')
 ), (
     1, 'msg64_hold_items_available', 'false',
     oils_i18n_gettext(
-        (SELECT id FROM sip.setting WHERE name = 'msg64_hold_items_available'),
+        9,
         'Only return information on available holds',
         'sipset', 'description')
 ), (
     1, 'checkout.override.COPY_ALERT_MESSAGE', 'true',
     oils_i18n_gettext(
-        (SELECT id FROM sip.setting WHERE name = 'checkout.override.COPY_ALERT_MESSAGE'),
+        10,
         'Checkout override copy alert message',
         'sipset', 'description')
 ), (
     1, 'checkout.override.COPY_NOT_AVAILABLE', 'true',
     oils_i18n_gettext(
-        (SELECT id FROM sip.setting WHERE name = 'checkout.override.COPY_NOT_AVAILABLE'),
+        11,
         'Checkout override copy not available message',
         'sipset', 'description')
 ), (
     1, 'checkin.override.COPY_ALERT_MESSAGE', 'true',
     oils_i18n_gettext(
-        (SELECT id FROM sip.setting WHERE name = 'checkin.override.COPY_ALERT_MESSAGE'),
+        12,
         'Checkin override copy alert message',
         'sipset', 'description')
 ), (
     1, 'checkin.override.COPY_BAD_STATUS', 'true',
     oils_i18n_gettext(
-        (SELECT id FROM sip.setting WHERE name = 'checkin.override.COPY_BAD_STATUS'),
+        13,
         'Checkin override bad copy status',
         'sipset', 'description')
 ), (
     1, 'checkin.override.COPY_STATUS_MISSING', 'true',
     oils_i18n_gettext(
-        (SELECT id FROM sip.setting WHERE name = 'checkin.override.COPY_STATUS_MISSING'),
+        14,
         'Checkin override copy status missing',
         'sipset', 'description')
 ), (
     1, 'checkin_hold_as_transit', 'false',
     oils_i18n_gettext(
-        (SELECT id FROM sip.setting WHERE name = 'checkin_hold_as_transit'),
+        15,
         'Checkin local holds as transits',
         'sipset', 'description')
 ), (
     1, 'support_acs_resend_messages', 'false',
     oils_i18n_gettext(
-        (SELECT id FROM sip.setting WHERE name = 'support_acs_resend_messages'),
+        16,
         'Support ACS Resend Messages (code 97)',
         'sipset', 'description')
 );
+SELECT setval( 'sip.setting_id_seq', 1000 );
 
 INSERT INTO sip.screen_message (key, message) VALUES (
     'checkout.open_circ_exists', 
