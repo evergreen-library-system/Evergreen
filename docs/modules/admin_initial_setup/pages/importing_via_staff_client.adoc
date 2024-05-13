@@ -79,7 +79,7 @@ working points in increasing importance.
 . After creating a match point, drag the completed match point under the folder
   with the appropriately-named Boolean folder under the Expression tree.
 +
-image::media/create_match_sets.png[Creating a Match Point]
+image::importing_staff_client/create_match_sets.png[Creating a Match Point]
 . Click *Save Changes to Expression*.
 
 === Quality Metrics ===
@@ -91,7 +91,7 @@ records and to make importing decisions based on quality.
   as your quality metric.
 * The encoding level record attribute can be one indicator of record quality.
 
-image::media/record_quality_metrics.png[Quality Metric Grid]
+image::importing_staff_client/record_quality_metrics.png[Quality Metric Grid]
 
 === Import Item Attributes ===
 If you are importing items with your records, you will need to map the data in
@@ -112,7 +112,7 @@ NOTE: All fields (except for Name and Tag) can contain a MARC subfield code
 (such as "a") or an XPATH query. You can also use the
 xref:admin:librarysettings.adoc#lse-vandelay[related library settings] to set defaults for some of these fields.
 
-image::media/batch_import_profile.png[Partial Screenshot of a Holdings Import Profile]
+image::importing_staff_client/batch_import_profile.png[Partial Screenshot of a Holdings Import Profile]
 
 
 === Overlay/Merge Profiles ===
