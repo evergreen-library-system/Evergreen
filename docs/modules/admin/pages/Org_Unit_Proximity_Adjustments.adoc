@@ -9,7 +9,7 @@ the hold.  One factor that the hold targeter uses to choose the best item to fil
 or proximity, between the capturing library and the pickup library for the request.  The proximity is based
 on the number of steps through the org tree that it takes to get from one org unit to another.
 
-image::media/Org_Unit_Prox_Adj1.png[Org Unit Proximity]
+image::org_unit_prox/Org_Unit_Prox_Adj1.png[Org Unit Proximity]
 Org Unit Proximity between BR1 and BR4 = 4
 
 Org Unit Proximity Adjustments allow libraries to customize the distances between org units, which provides
@@ -39,7 +39,7 @@ Relative proximity adjustments allows the proximity between org units to be trea
 . Enter the *Proximity Adjustment* between the *Item Circulating Library* and the *Request Library*.
 . Click *Save*.
 
-image::media/Org_Unit_Prox_Adj2.png[Org Unit Proximity Adjustment]
+image::org_unit_prox/Org_Unit_Prox_Adj2.png[Org Unit Proximity Adjustment]
 
 This will create a one-way proximity adjustment between Org Units.  In this example this adjustment will apply to items requested at by a patron BR4 and filled at BR1.  To create the reciprocal proximity adjustment, for items requested at BR1 and filled at BR4, create a second proximity adjustment between the two Org Units.
 
