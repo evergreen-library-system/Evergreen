@@ -48,7 +48,7 @@ client and the catalog, but it will remain in the database. This allows you to
 treat a shelving location as deleted without losing statistical information for
 circulations related to that shelving location.
 
-image::media/copy_locations_editor.png[screenshot of Shelving Location Editor]
+image::borrowing_items/copy_locations_editor.png[screenshot of Shelving Location Editor]
 
 * Shelving locations can also be used as a data element in circulation policies. 
 
@@ -72,7 +72,7 @@ identify the maximum renewals that can be placed on an item.
 You can find Circulation Duration Rules by navigating to *Administration
 -> Server Administration -> Circulation Duration Rules*. 
 
-image::media/circ_duration_rules.jpg[]
+image::borrowing_items/circ_duration_rules.jpg[]
 
 *Recurring fine* describes the amount assessed for daily and hourly fines as
 well as fines set for other regular intervals. You can also identify any grace
@@ -81,7 +81,7 @@ periods that should be applied before the fine starts accruing.
 You can find Recurring Fine Rules by navigating to *Administration -> Server
 Administration -> Circulation Recurring Fine Rules*.
 
-image::media/circ_recurring_fine_rules.jpg[]
+image::borrowing_items/circ_recurring_fine_rules.jpg[]
 
 *Max fine* describes the maximum amount of fines that will be assessed for a
 specific circulation. Set the *Is Percent* field to True if the maximum fine
@@ -90,7 +90,7 @@ should be a percentage of the item's price.
 You can find Circ Max Fine Rules by navigating to *Administration -> Server
 Administration -> Circulation Max Fine Rules*.
 
-image::media/circ_max_fine_rules.jpg[]
+image::borrowing_items/circ_max_fine_rules.jpg[]
 
 These rules generally cause the most variation between organizational units.
 
