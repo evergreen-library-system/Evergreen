@@ -12,7 +12,7 @@ Patron Requests can be used to track purchase suggestions from patrons in Evergr
 . Go to *Acquisitions -> Patron Requests*.  This interface is scoped by Patron Home Library and will default to the library your workstation is registered to. 
 .. Requests can also be placed directly through a patron account, in which case the interface will scope to the patron ID.
 +
-image::media/patronrequests_requestgrid.PNG[Patron Requests Grid]
+image::purchase_requests/patronrequests_requestgrid.PNG[Patron Requests Grid]
 +
 . Click *Create Request* and a modal with the patron request form will appear.
 . Create the request by filling out the following information:
@@ -38,7 +38,7 @@ image::media/patronrequests_requestgrid.PNG[Patron Requests Grid]
 .. _Other Info_
 . Click *Save* at the bottom of the form.
  
-image::media/patronrequests_requestform.PNG[Patron Requests Form]
+image::purchase_requests/patronrequests_requestform.PNG[Patron Requests Form]
 
 
 == Actions for Requests ==
