@@ -23,4 +23,4 @@ More details can be found in the Staff Client System Administration manual.
 
 The following diagram shows how the workflow functions in Evergreen. One of the differences in this process you should notice is that when creating a selection list on the vendor site, libraries will be downloading and importing the vendor bibs and item records.
 
-image::media/acq_workflow.jpg[workflow diagram]
+image::intro/acq_workflow.jpg[workflow diagram]
