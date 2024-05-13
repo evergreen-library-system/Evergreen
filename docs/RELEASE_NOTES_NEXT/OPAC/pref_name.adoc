@@ -1,6 +1,0 @@
-== Allow Patrons to Edit Preferred Name ==
-
-This change builds upon the existing staff client 
-preferred name functionality to allow patrons to 
-edit their preferred names directly through OPAC > 
-My Account > Preferences > Personal Information. 

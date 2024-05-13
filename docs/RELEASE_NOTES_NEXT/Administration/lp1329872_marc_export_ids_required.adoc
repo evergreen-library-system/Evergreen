@@ -1,7 +1,0 @@
-== Support Scripts: marc_export check for required IDs ==
-
-The *marc_export* script will now exit if it expects to be
-passed IDs and they are not found.  Previously it would
-continue on as if you wanted all records in the system in 
-that situation. 
-https://bugs.launchpad.net/evergreen/+bug/1329872[Bug #1329872]

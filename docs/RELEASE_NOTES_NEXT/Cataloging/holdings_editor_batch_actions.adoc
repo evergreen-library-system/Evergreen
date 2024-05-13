@@ -1,6 +1,0 @@
-== Holdings Editor Batch Action &lt;None&gt; Option Restored ==
-
-The &lt;None&gt; option has been restored for prefix and suffix fields
-in the Holdings Editor's Batch Actions.  See
-[Lp 1998413](https://bugs.launchpad.net/evergreen/+bug/1998413).
-
