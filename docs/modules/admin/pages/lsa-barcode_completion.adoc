@@ -34,7 +34,7 @@ descendants of that org unit.
 The admin interface for Barcode Completion is located under *Administration* 
 -> *Local Administration* -> *Barcode Completion*.
 
-image::media/lsa-barcode_completion_admin.png[Barcode Completion Admin List]
+image::barcode_completion/lsa-barcode_completion_admin.png[Barcode Completion Admin List]
 
 The barcode completion functionality is available at the following interfaces.
 
