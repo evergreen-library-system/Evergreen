@@ -16,7 +16,7 @@ To configure the number of recent staff searches:
 . Enter the number of searches that you wish to save in the *Value* field.  
 . Click *Update Setting*
 
-image::media/Saved_Catalog_Searches_2_21.jpg[Saved_Catalog_Searches_2_21]
+image::recent_searches/Saved_Catalog_Searches_2_21.jpg[Saved_Catalog_Searches_2_21]
 
 
 NOTE: To retain this setting, the system administrator must restart the web server.
@@ -37,4 +37,4 @@ Evergreen will save staff searches that are entered through either the basic or 
 . Enter a search term in either the basic or advanced search fields.
 . Your search results for the current search will appear in the middle of the screen.  The most recent searches will appear on the left side of the screen.
 
-image::media/Saved_Catalog_Searches_2_22.jpg[Saved_Catalog_Searches_2_22]
+image::recent_searches/Saved_Catalog_Searches_2_22.jpg[Saved_Catalog_Searches_2_22]
