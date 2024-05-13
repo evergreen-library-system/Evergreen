@@ -186,11 +186,11 @@ permission to login to Evergreen.
 . Click _Edit_.
 . Click _Secondary Groups_, located to the right of the _Main (Profile) Permission Group_.
 +
-image::media/sup-permissions-1_web_client.png[Secondary Permissions Group]
+image::describing_your_people/sup-permissions-1_web_client.png[Secondary Permissions Group]
 +
 . From the dropdown menu select one of the secondary permission groups.
 +
-image::media/sup-permissions-2_web_client.png[Secondary Permission Group List]
+image::describing_your_people/sup-permissions-2_web_client.png[Secondary Permission Group List]
 +
 . Click _Add_.
 . Click _Apply Changes_.
@@ -202,15 +202,15 @@ image::media/sup-permissions-2_web_client.png[Secondary Permission Group List]
 . Click _Edit_.
 . Click _Secondary Groups_, located to the right of the _Main (Profile) Permission Group_.
 +
-image::media/sup-permissions-1_web_client.png[Secondary Permissions Group]
+image::describing_your_people/sup-permissions-1_web_client.png[Secondary Permissions Group]
 +
 . Click _Delete_ beside the permission group you would like to remove.
 +
-image::media/sup-permissions-4_web_client.png[Secondary Permissions Group Delete]
+image::describing_your_people/sup-permissions-4_web_client.png[Secondary Permissions Group Delete]
 +
 . Click _Apply Changes_.
 +
-image::media/sup-permissions-5_web_client.png[Secondary Permissions Group Save]
+image::describing_your_people/sup-permissions-5_web_client.png[Secondary Permissions Group Save]
 +
 . Click _Save_ in the top right hand corner of the _Edit Screen_ to save the user's account.
 
