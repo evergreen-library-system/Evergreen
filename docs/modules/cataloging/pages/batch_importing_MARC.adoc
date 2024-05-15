@@ -28,7 +28,7 @@ This feature enables you to specify the tags and subfields that will display in 
 
 Evergreen is configured with standard defaults for these attributes.
 
-image::batch_importing_MARC/record__display_attributes.jpg[Record Display Attributes]
+image::batch_importing_MARC/record_display_attributes.png[Record Display Attributes]
 
 [[matchsets]]
 == Record Match Sets ==
