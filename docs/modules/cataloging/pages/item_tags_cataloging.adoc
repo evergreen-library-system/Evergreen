@@ -13,15 +13,15 @@ Item Tags can be added to existing items or to new items as they are cataloged. 
 
 . In the _Holdings Editor_, click on *Item Tags*.  A dialog box called _Manage Item Tags_ will appear.
 
-image::media/item_tag_button.png[Location of Item Tag Button]
+image::item_tags/item_tag_button.png[Location of Item Tag Button]
 
 . Select the *Tag Type* from the drop down menu and start typing in the Tag field to bring up tag suggestions from the existing item tags.  Select the tag and click *Add Tag*, then click *OK*.
 ..    If you are cataloging a new item, make any other changes to the item record.
 . Click *Save & Exit*.  The item tag will now appear in the catalog.
 
-image::media/manage_item_tags.png[Assigning an Item Tag]
+image::item_tags/manage_item_tags.png[Assigning an Item Tag]
 
-image::media/copytags7.PNG[Item Tags in the OPAC]
+image::item_tags/copytags7.PNG[Item Tags in the OPAC]
 
 == Creating and Applying a Item Tag During Cataloging ==
 
@@ -39,7 +39,7 @@ To remove an item tag from a item:
 . Click *Remove* next to the tag you would like to remove, and click *OK*.
 . Click *Save & Exit*.  The item tag will now be removed from the catalog.
 
-image::media/remove_item_tag.png[Removing an Item Tag]
+image::item_tags/remove_item_tag.png[Removing an Item Tag]
 
 
 == Adding Item Tags to Items in Batch ==
@@ -50,7 +50,7 @@ Item tags can be added to multiple items in batch using _Item Buckets_.  After a
 . Select the items to which you want to add the item tag and go to *Actions->Apply Tags* or right-click and select *Apply Tags*.  The _Apply Item Tags_ dialog box will appear.
 . Select the *Tag Type* and enter the *Tag*.  Click *Add Tag*, then click *OK*.  The item tag will now be attached to the items.
 
-image::media/copytags9.PNG[Item Bucket View]
+image::item_tags/copytags9.PNG[Item Bucket View]
 
 NOTE: It is not possible to remove tags using the Item Bucket interface.
 
@@ -62,11 +62,11 @@ Item Tags can be searched in the public catalog if searching has been enabled vi
 
 *Basic Search*
 
-image::media/copytags10.png[Digital Bookplates Search Field Location in Basic Search]
+image::item_tags/copytags10.png[Digital Bookplates Search Field Location in Basic Search]
 
 *Advanced Search*
 
-image::media/copytags11.png[Digital Bookplates Search Field Location in Advanced Search]
+image::item_tags/copytags11.png[Digital Bookplates Search Field Location in Advanced Search]
 
 
 === Keyword Search ===
