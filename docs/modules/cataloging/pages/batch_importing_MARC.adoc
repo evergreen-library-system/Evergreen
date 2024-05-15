@@ -157,7 +157,7 @@ Select *Holdings Import Profiles* to map this information.
 
 NOTE: All fields (except for Name and Tag) can contain a MARC subfield code (such as "a") or an XPATH query. You can also use the related library settings to set defaults for some of these fields.
 
-image::media/import_item_attribute_definition.png[New Import Item Attribute Definition]
+image::batch_importing_MARC/import_item_attribute_definition.png[New Import Item Attribute Definition]
 
 .Holdings Item Attribute Definitions
 [options="header"]

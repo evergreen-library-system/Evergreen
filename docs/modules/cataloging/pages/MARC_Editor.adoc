@@ -68,17 +68,17 @@ The Evergreen database contains information from the Library of Congress’s MAR
 . Make sure that the Flat-Text Editor checkbox is not selected and that you are not using the Flat-Text Editor interface.
 . Right-click on the value control for the fixed field that needs to be edited.
 +
-image::media/ffrc1_2.12.jpg[Right click on the fixed field input labeled Form]
+image::marc_editor/ffrc1_2.12.jpg[Right click on the fixed field input labeled Form]
 +
 . Select the appropriate value for the fixed field from the menu options.
 +
-image::media/ffrc2_2.12.jpg[One of the options in the Form fixed field context menu is r - Regular print reproduction]
+image::marc_editor/ffrc2_2.12.jpg[One of the options in the Form fixed field context menu is r - Regular print reproduction]
 +
 . Continue editing the MARC record, as needed. Once you are finished editing the record, click *Save*.
 
 Changing the values in the fixed fields will also update the appropriate position in the Leader or 008 Field and other applicable fields (such as the 006 Field).
 
-image::media/ffrc3_2.12.jpg[Selecting r in the context menu resulted in an r being placed in the 008 field later in the MARC Record display]
+image::marc_editor/ffrc3_2.12.jpg[Selecting r in the context menu resulted in an r being placed in the 008 field later in the MARC Record display]
 
 MARC Editor users retain the option of leaving the fixed field value blank or entering special values (such as # or | ).
 
@@ -104,7 +104,7 @@ You can delete MARC records using the MARC Editor.
 . Click the *Delete* button.
 . In the modal window, click the *OK/Continue* button to remove the MARC record.
 
-image::media/marc_delete_record_3_3.png[The Delete button is located in the Marc Edit tab]
+image::marc_editor/marc_delete_record_3_3.png[The Delete button is located in the Marc Edit tab]
 
 === MARC Tag-table Service ===
 The tag tables for the web staff client MARC editor are
@@ -127,11 +127,11 @@ MARC Tag Tables can be found under Administration -> Server Administration -> MA
 
 MARC Tag Tables Grid:
 
-image::media/MARC_Tag_Tables_Grid.PNG[Grid view of MARC Tag Tables]
+image::marc_editor/MARC_Tag_Tables_Grid.PNG[Grid view of MARC Tag Tables]
 
 MARC Tag Tables Detail:
 
-image::media/MARC_Tag_Tables_Detail.PNG[Detail view of MARC Tag Tables]
+image::marc_editor/MARC_Tag_Tables_Detail.PNG[Detail view of MARC Tag Tables]
 
 The initial seed data for the in-database tag table is
 derived from the current tooltips XML file.
@@ -146,12 +146,12 @@ The MARC 007 Field Physical Characteristics Wizard enables catalogers to interac
 . Make sure that the Flat-Text Editor checkbox is not selected and that you are not using the Flat-Text Editor interface.
 . Right-click in the MARC field column.
 +
-image::media/pcw1_2.12.jpg[]
+image::marc_editor/pcw1_2.12.jpg[]
 +
 . Click *Add/Replace 007*. The 007 row will appear in the record.
 . Click the chain link icon to the right of the field.
 +
-image::media/pcw2_2.12.jpg[]
+image::marc_editor/pcw2_2.12.jpg[]
 +
 . Click *Physical Characteristics Wizard*.
 
@@ -167,19 +167,19 @@ Once the Category of Material is selected, click *Next*.
 
 Evergreen will display the result of each selection in the preview above. The affected character will be in red.
 
-image::media/pcw3_2.12.jpg[]
+image::marc_editor/pcw3_2.12.jpg[]
 
 By clicking either the *Previous* or *Next* buttons, the user may step forward and backward, as needed, through the various positions in the 007 field.
 
 Once the user enters all of the applicable values for the 007 field and is ready to exit the wizard, click *Save*.
 
-image::media/pcw4_2.12.jpg[]
+image::marc_editor/pcw4_2.12.jpg[]
 
 All of the values selected will be stored and displayed within the 007 field of the bibliographic record.
 
-image::media/pcw5_2.12.jpg[]
+image::marc_editor/pcw5_2.12.jpg[]
 
 Continue editing the MARC record, as needed. Once the user is finished editing the record, click *Save*.
 
-image::media/pcw6_2.12.jpg[]
+image::marc_editor/pcw6_2.12.jpg[]
 

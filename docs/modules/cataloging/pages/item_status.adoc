@@ -83,7 +83,7 @@ Starting in 3.4, this action has an Honor User Preferences checkbox which does t
 
 Also beginning with 3.4, a Title Hold option has been added to the Hold Type menu.  This will create one title-level hold request for each unique title associated with the items that were selected when Request Items was invoked.
 
-image::media/request_from_item_status.png[Request from Item Status]
+image::item_status/request_from_item_status.png[Request from Item Status]
 
 Success and Failure toasts have also been added based on what happens after the Request Items interface has closed.
 

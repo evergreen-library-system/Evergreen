@@ -29,7 +29,7 @@ To add a monograph part to an existing record in the catalog:
 
 . Click the *Manage Parts* tab.
 +
-image::media/manage_parts_menu.jpg[Menu: Manage Parts]
+image::mono_parts/manage_parts_menu.jpg[Menu: Manage Parts]
 
 . Click the *New Monograph Part* button
 
@@ -37,7 +37,7 @@ image::media/manage_parts_menu.jpg[Menu: Manage Parts]
 and click *Save*.  This will create a list of monograph parts from which
 you can choose when you create holdings.
 +
-image::media/monograph_parts2.jpg[monograph_parts2]
+image::mono_parts/monograph_parts2.jpg[monograph_parts2]
 
 . Add holdings.  To add holdings to your workstation
 library, click the *Add Holdings* button in the *Record Summary* area above the tabs.
@@ -46,7 +46,7 @@ To add holdings to your workstation library or other libraries,
 click the *Holdings View* tab, right-click the appropriate
 library, and choose *Add -> Call numbers and Items*.
 +
-image::media/monograph_parts3.jpg[monograph_parts3]
+image::mono_parts/monograph_parts3.jpg[monograph_parts3]
 
 . The Holdings Editor opens. Enter the number of call numbers
 that you want to add to the catalog and the call number description.
@@ -55,11 +55,11 @@ that you want to add to the catalog and the call number description.
 
 . Choose the part label from the *Part* drop down menu.
 +
-image::media/monograph_parts4.jpg[monograph_parts4]
+image::mono_parts/monograph_parts4.jpg[monograph_parts4]
 
 . Apply a template to the items, or edit fields in the *Working Items* section below.
 +
-image::media/monograph_parts5.jpg[monograph_parts5]
+image::mono_parts/monograph_parts5.jpg[monograph_parts5]
 
 . Click *Store Selected* when those items are ready.
 
@@ -73,7 +73,7 @@ NOTE: If you are only making one set of changes, you can simply click
 . The *Holdings View* tab now shows the new part information. These fields
 also appear in the OPAC View.
 +
-image::media/manage_parts_opac.png[Catalog Record showing items with part details]
+image::mono_parts/manage_parts_opac.png[Catalog Record showing items with part details]
 
 == Monograph Part Merging ==
 
