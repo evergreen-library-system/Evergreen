@@ -216,11 +216,11 @@ AC_SUBST([REDIS_ACCOUNTS])
 AC_CHECK_FILE(
     [$REDIS_ACCOUNTS],
     [
-        OPENSRF_BUS_PASSWORD=$(grep 'ACL SETUSER opensrf on >' ${REDIS_ACCOUNTS} | cut -d'>' -f2),
-        GATEWAY_BUS_PASSWORD=$(grep 'ACL SETUSER gateway on >' ${REDIS_ACCOUNTS} | cut -d'>' -f2),
-        ROUTER_BUS_PASSWORD=$(grep 'ACL SETUSER router on >' ${REDIS_ACCOUNTS} | cut -d'>' -f2),
-        AC_SUBST([OPENSRF_BUS_PASSWORD]),
-        AC_SUBST([GATEWAY_BUS_PASSWORD]),
+        OPENSRF_BUS_PASSWORD=$(grep 'ACL SETUSER opensrf on >' ${REDIS_ACCOUNTS} | cut -d'>' -f2)
+        GATEWAY_BUS_PASSWORD=$(grep 'ACL SETUSER gateway on >' ${REDIS_ACCOUNTS} | cut -d'>' -f2)
+        ROUTER_BUS_PASSWORD=$(grep 'ACL SETUSER router on >' ${REDIS_ACCOUNTS} | cut -d'>' -f2)
+        AC_SUBST([OPENSRF_BUS_PASSWORD])
+        AC_SUBST([GATEWAY_BUS_PASSWORD])
         AC_SUBST([ROUTER_BUS_PASSWORD])
     ],
     [AC_MSG_RESULT(Skipping Redis accounts password propagation)]
