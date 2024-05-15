@@ -28,7 +28,7 @@ This feature enables you to specify the tags and subfields that will display in 
 
 Evergreen is configured with standard defaults for these attributes.
 
-image::batch_importing_MARC/record__display_attributes.jpg[Record Display Attributes]
+image::batch_importing_MARC/record_display_attributes.png[Record Display Attributes]
 
 [[matchsets]]
 == Record Match Sets ==
@@ -157,7 +157,7 @@ Select *Holdings Import Profiles* to map this information.
 
 NOTE: All fields (except for Name and Tag) can contain a MARC subfield code (such as "a") or an XPATH query. You can also use the related library settings to set defaults for some of these fields.
 
-image::media/import_item_attribute_definition.png[New Import Item Attribute Definition]
+image::batch_importing_MARC/import_item_attribute_definition.png[New Import Item Attribute Definition]
 
 .Holdings Item Attribute Definitions
 [options="header"]

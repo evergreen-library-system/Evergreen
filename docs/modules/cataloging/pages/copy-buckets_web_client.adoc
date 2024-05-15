@@ -5,7 +5,7 @@ Item buckets are containers copy records can be put into to easily perform batch
 
 The _Item Bucket_ interface is accessed by going to *Cataloguing* -> *Copy Buckets*.
 
-image::media/copy-bucket-2.png[Cataloguing Menu]
+image::copy_buckets/copy-bucket-2.png[Cataloguing Menu]
 
 NOTE: The words _copy_ and _item_ are used interchangeably in Evergreen. 
 
@@ -18,15 +18,15 @@ a catalog search or from within the _Item Status_ interface.  For information on
 
 1. In the _Item Bucket_ interface on the click *Buckets* in either the _Pending Copies_ or _Bucket View_ tab.
 +
-image::media/copy-bucket-new-1.png[Item Bucket Interface]
+image::copy_buckets/copy-bucket-new-1.png[Item Bucket Interface]
 +
 2. From the drop down menu select *New Bucket*.
 +
-image::media/copy-bucket-new-2.png[Item Bucket Interface]
+image::copy_buckets/copy-bucket-new-2.png[Item Bucket Interface]
 +
 3. Enter a _Name_ and a _Description_ (optional) for your bucket and click *Create Bucket*.  
 +
-image::media/copy-bucket-new-3.png[Item Bucket Interface]
+image::copy_buckets/copy-bucket-new-3.png[Item Bucket Interface]
 +
 The bucket can also be set as _Publicly Visible_ at this time. 
 
@@ -36,17 +36,17 @@ NOTE: The functionality for making buckets publicly visible does not appear to b
 
 1. In the _Item Bucket_ interface click *Buckets* in either the _Pending Copies_ or _Bucket View_ tab.
 +
-image::media/copy-bucket-new-1.png[Item Bucket Interface]
+image::copy_buckets/copy-bucket-new-1.png[Item Bucket Interface]
 +
 2. From the drop down menu select the bucket you would like to edit.  The bucket will load in the interface.
 3. Click on *Buckets*.
 4. From the drop down menu select *Edit Bucket*.
 +
-image::media/copy-bucket-edit-1.png[Item Bucket Interface]
+image::copy_buckets/copy-bucket-edit-1.png[Item Bucket Interface]
 +
 5. Update the desired information and click *Apply Changes*.  
 +
-image::media/copy-bucket-edit-2.png[Item Bucket Interface]
+image::copy_buckets/copy-bucket-edit-2.png[Item Bucket Interface]
 
 NOTE: The functionality for making buckets publicly visible does not appear to be in place at this time.
 
@@ -56,37 +56,37 @@ NOTE: The functionality for making buckets publicly visible does not appear to b
 
 1. With the bucket open, look at the URL for the bucket ID.  Share this ID with the staff member who needs access to this bucket.
 
-image::media/copy-bucket-share-1.png[Bucket ID URL]
+image::copy_buckets/copy-bucket-share-1.png[Bucket ID URL]
 
 ==== Opening a Shared Bucket ====
 
 . In the _Item Bucket_ interface click *Buckets* in either the _Pending Copies_ or _Bucket View_ tab.
 +
-image::media/copy-bucket-new-1.png[Item Bucket Interface]
+image::copy_buckets/copy-bucket-new-1.png[Item Bucket Interface]
 +
 . From the drop down menu select *Shared Bucket*.
 +
-image::media/copy-bucket-share-2.png[Item Bucket Interface]
+image::copy_buckets/copy-bucket-share-2.png[Item Bucket Interface]
 +
 . Enter the bucket ID and click *Load Bucket*.
 +
-image::media/copy-bucket-share-3.png[Item Bucket Interface]
+image::copy_buckets/copy-bucket-share-3.png[Item Bucket Interface]
 +
 . The shared bucket will display and can be worked with the same as any bucket you own.
 +
-image::media/copy-bucket-share-4.png[Item Bucket Interface]
+image::copy_buckets/copy-bucket-share-4.png[Item Bucket Interface]
 
 === Deleting Item Buckets ===
 
 1. In the _Item Bucket_ interface click *Buckets* in either the _Pending Copies_ or _Bucket View_ tab.
 +
-image::media/copy-bucket-new-1.png[Item Bucket Interface]
+image::copy_buckets/copy-bucket-new-1.png[Item Bucket Interface]
 +
 2. From the drop down menu select the bucket you would like to delete.  The bucket will load in the interface.
 3. Click on *Buckets*.
 4. From the drop down menu select *Delete Bucket*.
 +
-image::media/copy-bucket-delete-1.png[Item Bucket Interface]
+image::copy_buckets/copy-bucket-delete-1.png[Item Bucket Interface]
 +
 5. On the confirmation pop up click *Delete Bucket*.
 6. Refresh your screen.
@@ -98,27 +98,27 @@ image::media/copy-bucket-delete-1.png[Item Bucket Interface]
 
 1. In the _Item Bucket_ interface click on the *Pending Copies* tab.
 +
-image::media/copy-bucket-pending-1.png[Item Bucket Interface]
+image::copy_buckets/copy-bucket-pending-1.png[Item Bucket Interface]
 +
 2. Scan in all of the items you wish to add to the bucket.
 +
-image::media/copy-bucket-pending-3.png[Item Bucket Interface]
+image::copy_buckets/copy-bucket-pending-3.png[Item Bucket Interface]
 +
 3. Click on *Buckets*.
 4. From the drop down menu select the bucket you wish to add the items to.
 Alternatively you can create a *New Bucket* (link back to Item Bucket Interface section of Creating Copy Buckets).
 +
-image::media/copy-bucket-pending-2.png[Item Bucket Interface]
+image::copy_buckets/copy-bucket-pending-2.png[Item Bucket Interface]
 +
 5. Use the check boxes to select the item(s) you wish to add to the bucket.
 6. Click *Actions*.
 7. From the drop down menu select *Add To Bucket*.
 +
-image::media/copy-bucket-pending-4.png[Item Bucket Interface]
+image::copy_buckets/copy-bucket-pending-4.png[Item Bucket Interface]
 +
 8. The number of items in the bucket, displayed beside the bucket name, will update as will the number on the *Bucket View* tab.
 +
-image::media/copy-bucket-pending-5.png[Item Bucket Interface]
+image::copy_buckets/copy-bucket-pending-5.png[Item Bucket Interface]
 
 NOTE: Once you have added your selected items to a bucket you can deselect them, select other items on your pending list, and add those items to a different bucket.
 
@@ -128,18 +128,18 @@ NOTE: Once you have added your selected items to a bucket you can deselect them,
 1. Retrieve the title through a catalog search.
 2. If it is not your default view click on the *Holdings View* tab.
 +
-image::media/copy-bucket-cat-1.png[Holdings View]
+image::copy_buckets/copy-bucket-cat-1.png[Holdings View]
 +
 3. Use the check boxes to select the item(s) you would like to add to the bucket.
 4. Click *Actions*.
 5. From the drop down menu select *Add Items to Bucket*
 +
-image::media/copy-bucket-cat-2.png[Holdings View]
+image::copy_buckets/copy-bucket-cat-2.png[Holdings View]
 +
 6. Enter a name for your bucket or select an existing from the drop down menu.
 7. Click *Add To New Bucket* or *Add To Selected Bucket*.
 +
-image::media/copy-bucket-cat-3.png[Item Bucket Interface]
+image::copy_buckets/copy-bucket-cat-3.png[Item Bucket Interface]
 +
 8. Repeat steps 1 through 7 to add additional items.
 
@@ -159,18 +159,18 @@ side of the screen is checked.
 
 . Open the _Item Bucket_ interface.  By default you are on the *Bucket View* tab.
 +
-image::media/copy-bucket-remove-1.png[Item Bucket Interface]
+image::copy_buckets/copy-bucket-remove-1.png[Item Bucket Interface]
 +
 . Click on *Buckets*.
 . From the drop down menu select the bucket containing the item(s) you would like to remove.
 +
-image::media/copy-bucket-remove-2.png[Item Bucket Interface]
+image::copy_buckets/copy-bucket-remove-2.png[Item Bucket Interface]
 +
 . Use the check boxes to select the item(s) you wish to remove from the bucket.
 . Click *Actions*.
 . From the drop down menu select *Remove Selected Copies from Bucket*.
 +
-image::media/copy-bucket-remove-3.png[Item Bucket Interface]
+image::copy_buckets/copy-bucket-remove-3.png[Item Bucket Interface]
 +
 . Your bucket will reload and the selected item(s) will no longer be in the bucket.
 
@@ -178,47 +178,47 @@ image::media/copy-bucket-remove-3.png[Item Bucket Interface]
 
 . Open the _Item Bucket_ interface.  By default you are on the *Bucket View* tab.
 +
-image::media/copy-bucket-remove-1.png[Item Bucket Interface]
+image::copy_buckets/copy-bucket-remove-1.png[Item Bucket Interface]
 +
 . Click on *Buckets*.
 . From the drop down menu select the bucket containing the item(s) you would like to edit.
 +
-image::media/copy-bucket-remove-2.png[Item Bucket Interface]
+image::copy_buckets/copy-bucket-remove-2.png[Item Bucket Interface]
 +
 . Use the check boxes to select the item(s) you wish to edit.
 . Click *Actions*.
 . From the drop down menu select *Edit Selected Copies*.
 +
-image::media/copy-bucket-edit-copy-1.png[Item Bucket Interface]
+image::copy_buckets/copy-bucket-edit-copy-1.png[Item Bucket Interface]
 +
 . The _Copy Editor_ will open in a new tab.  Make your edits and then click *Save and Exit*.
 +
-image::media/copy-bucket-edit-copy-2.png[Item Bucket Interface]
+image::copy_buckets/copy-bucket-edit-copy-2.png[Item Bucket Interface]
 +
 . Your items have been updated.
 +
-image::media/copy-bucket-edit-copy-3.png[Item Bucket Interface]
+image::copy_buckets/copy-bucket-edit-copy-3.png[Item Bucket Interface]
 
 == Deleting Copies from the Catalog ==
 
 . Open the _Item Bucket_ interface.  By default you are on the *Bucket View* tab.
 +
-image::media/copy-bucket-remove-1.png[Item Bucket Interface]
+image::copy_buckets/copy-bucket-remove-1.png[Item Bucket Interface]
 +
 . Click on *Buckets*.
 . From the drop down menu select the bucket containing the item(s) you would like to delete from the catalog.
 +
-image::media/copy-bucket-remove-2.png[Item Bucket Interface]
+image::copy_buckets/copy-bucket-remove-2.png[Item Bucket Interface]
 +
 . Use the check boxes to select the item(s) you wish to delete.
 . Click *Actions*.
 . From the drop down menu select *Delete Selected Copies from Catalog*.
 +
-image::media/copy-bucket-delete-copy-1.png[Item Bucket Interface]
+image::copy_buckets/copy-bucket-delete-copy-1.png[Item Bucket Interface]
 +
 . On the confirmation pop up click *OK/Continue*.
 +
-image::media/copy-bucket-delete-copy-2.png[Item Bucket Interface]
+image::copy_buckets/copy-bucket-delete-copy-2.png[Item Bucket Interface]
 +
 . The items have been deleted from the catalog.
 
@@ -227,22 +227,22 @@ image::media/copy-bucket-delete-copy-2.png[Item Bucket Interface]
 
 . Open the _Item Bucket_ interface.  By default you are on the *Bucket View* tab.
 +
-image::media/copy-bucket-remove-1.png[Item Bucket Interface]
+image::copy_buckets/copy-bucket-remove-1.png[Item Bucket Interface]
 +
 . Click on *Buckets*.
 . From the drop down menu select the bucket containing the item(s) you would like to place a hold on.
 +
-image::media/copy-bucket-remove-2.png[Item Bucket Interface]
+image::copy_buckets/copy-bucket-remove-2.png[Item Bucket Interface]
 +
 . Use the check boxes to select the item(s) you wish to delete.
 . Click *Actions*.
 . From the drop down menu select *Request Selected Copies*.
 +
-image::media/copy-bucket-request-1.png[Item Bucket Interface]
+image::copy_buckets/copy-bucket-request-1.png[Item Bucket Interface]
 +
 . Enter the barcode for the patron who the hold is for. By default the system enters the barcode of the account logged into the client.
 +
-image::media/copy-bucket-request-2.png[Item Bucket Interface]
+image::copy_buckets/copy-bucket-request-2.png[Item Bucket Interface]
 +
 . Select the correct _Pickup Library_.
 . Select the correct _Hold Type_. (More explanation of the hold types needed here.)
@@ -255,32 +255,32 @@ image::media/copy-bucket-request-2.png[Item Bucket Interface]
 1. Retrieve the title through a catalog search.
 2. If it is not your default view click on the *Holdings View* tab.
 +
-image::media/copy-bucket-cat-1.png[Holdings View]
+image::copy_buckets/copy-bucket-cat-1.png[Holdings View]
 +
 3. Use the check boxes to select the volume you would like to transfer the item(s) to.
 4. Click *Actions*.
 5. From the drop down menu select *Volume as Item Transfer Destination*
 +
-image::media/copy-bucket-transfer-1.png[Holdings View]
+image::copy_buckets/copy-bucket-transfer-1.png[Holdings View]
 +
 6. Open the _Item Bucket_ interface.  By default you are on the *Bucket View* tab.
 +
-image::media/copy-bucket-remove-1.png[Item Bucket Interface]
+image::copy_buckets/copy-bucket-remove-1.png[Item Bucket Interface]
 +
 7. Click on *Buckets*.
 8. From the drop down menu select the bucket containing the item(s) you would like to transfer to the volume.
 +
-image::media/copy-bucket-remove-2.png[Item Bucket Interface]
+image::copy_buckets/copy-bucket-remove-2.png[Item Bucket Interface]
 +
 9. Use the check boxes to select the item(s) you wish to transfer.
 10. Click *Actions*.
 11. From the drop down menu select *Transfer Selected Copies to Marked Volume*.
 +
-image::media/copy-bucket-transfer-2.png[Item Bucket Interface]
+image::copy_buckets/copy-bucket-transfer-2.png[Item Bucket Interface]
 +
 12. The item(s) is transferred.
 +
-image::media/copy-bucket-transfer-3.png[Item Bucket Interface]
+image::copy_buckets/copy-bucket-transfer-3.png[Item Bucket Interface]
 
 
 
