@@ -518,9 +518,47 @@ vim:et:ts=4:sw=4:
                 </app_settings>
             </open-ils.auth_internal>
 
+            <!-- Authentication MFA server -->
+            <open-ils.auth_mfa>
+                <keepalive>5</keepalive>
+                <stateless>1</stateless>
+                <language>perl</language>
+                <implementation>OpenILS::Application::MultiFactorAuth</implementation>
+                <max_requests>1000</max_requests>
 
+                <unix_config>
+                    <max_requests>1000</max_requests>
+                    <unix_log>open-ils.auth_mfa.log</unix_log>
+                    <unix_sock>open-ils.auth_mfa.sock</unix_sock>
+                    <unix_pid>open-ils.auth_mfa.pid</unix_pid>
+                    <min_children>1</min_children>
+                    <max_children>15</max_children>
+                    <min_spare_children>1</min_spare_children>
+                    <max_spare_children>5</max_spare_children>
+                </unix_config>
 
-            <!-- Authentication proxy server -->
+                <app_settings>
+                    <!-- 'enabled' is the master switch; set to 'true' to enable MFA -->
+                    <enabled>false</enabled>
+                    <factors>
+                        <totp>
+                            <enabled>true</enabled>
+                            <fuzziness>1</fuzziness>
+                        </totp>
+                        <sms>
+                            <enabled>false</enabled>
+                        </sms>
+                        <email>
+                            <enabled>false</enabled>
+                        </email>
+                        <webauthn>
+                            <enabled>true</enabled>
+                        </webauthn>
+                    </factors>
+                </app_settings>
+            </open-ils.auth_mfa>
+
+             <!-- Authentication proxy server -->
             <open-ils.auth_proxy>
                 <keepalive>5</keepalive>
                 <stateless>1</stateless>
@@ -1483,6 +1521,7 @@ vim:et:ts=4:sw=4:
                 <appname>open-ils.auth</appname> 
                 <appname>open-ils.auth_internal</appname>
                 <appname>open-ils.auth_proxy</appname> 
+                <appname>open-ils.auth_mfa</appname> 
                 <appname>open-ils.storage</appname>  
                 <appname>open-ils.justintime</appname>  
                 <appname>open-ils.cstore</appname>  

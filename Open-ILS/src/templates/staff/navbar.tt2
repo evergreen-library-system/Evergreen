@@ -745,6 +745,12 @@
               <span>[% l('Log Out') %]</span>
             </a>
           </li>
+          <li ng-if="mfaAllowed">
+            <a href="/eg2/staff/mfa">
+              <span class="glyphicon glyphicon-bell" aria-hidden="true"></span>
+              [% l('Multi-factor Authentication') %]
+            </a>
+          </li>
           <li>
             <a href="./about" target="_self">
               <span class="glyphicon glyphicon-question-sign" aria-hidden="true"></span>

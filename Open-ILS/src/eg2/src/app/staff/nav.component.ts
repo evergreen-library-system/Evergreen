@@ -31,6 +31,7 @@ export class StaffNavComponent implements OnInit, OnDestroy {
     showTraditionalCatalog = true;
     showAngularAcq: boolean;
     curbsideEnabled: boolean;
+    mfaAllowed: boolean;
     showAngularCirc = false;
     maxRecentPatrons = 1;
 
@@ -58,8 +59,16 @@ export class StaffNavComponent implements OnInit, OnDestroy {
         this.locales = [];
     }
 
-    ngOnInit() {
+    getHomeLink(): string {
+        let homeLink = '/staff/';
+        if (this.auth.provisional()) {
+            homeLink = homeLink + 'login';
+        }
+        return homeLink;
+    }
 
+    ngOnInit() {
+        this.mfaAllowed = this.auth.mfaAllowed();
         this.locale.supportedLocales().subscribe(
             l => this.locales.push(l),
             (err: unknown) => {},

@@ -1,0 +1,232 @@
+<div class="container pt-5">
+  <div class="col-lg-8 offset-lg-2">
+    <div *ngIf="loading" class="row" role="status">
+      <h1 class="mb-2" i18n>Loading configured secondary authentication factors...</h1>
+    </div>
+    <div *ngIf="!loading" class="row" role="status">
+      <div class="col">
+        <h1 class="mb-2" i18n>Available secondary authentication factors</h1>
+      </div>
+    </div>
+    <div *ngIf="!loading" class="row">
+      <div class="col-md-4">
+        <ul ngbNav class="nav-tabs flex-column" #mfaNav="ngbNav"
+          [keyboard]="true" [roles]="false" role="tablist"
+          [activeId]="active_factor">
+
+          <li *ngIf="showFactor('webauthn')" role="presentation" ngbNavItem="webauthn">
+
+            <button type="button" role="tab" ngbNavLink>
+              <div class="me-1">{{factor_details.webauthn.label()}}</div>
+              <span *ngIf="factorsConfiguredHere().includes('webauthn')" class="badge badge-success" i18n="MFA factor is configured">Configured</span>
+            </button>
+
+            <ng-template ngbNavContent>
+              <h2>{{factor_details.webauthn.label()}}</h2>
+              <p class="fst-italic">{{factor_details.webauthn.description()}}</p>
+
+              <p i18n="MFA explanation: WebAuthn devices">Your WebAuthen device will ask for verification.</p>
+
+              <div *ngIf="factorsConfiguredHere().includes('webauthn')">
+
+                <p *ngIf="provisional">
+                  <button class="btn input-group-text btn-primary" type="button" (click)="initFactor('webauthn',hostname)" i18n>Confirm</button>
+                </p>
+                <p *ngIf="!provisional">
+                  <button *ngIf="!webauthn_remove_init" type="button" (click)="initFactorRemoval('webauthn',hostname)" class="btn input-group-text btn-destroy" i18n>Remove All</button>
+                  <button *ngIf="webauthn_remove_init" type="button" (click)="removeFactor('webauthn',hostname)" class="btn input-group-text btn-destroy" i18n>Confirm Removal</button>
+                </p>
+              </div>
+
+              <p *ngIf="!factorsConfiguredHere().includes('webauthn') || (!provisional && factor_flags.webauthn.multicred)">
+                <button type="button" (click)="initFactorSetup('webauthn',hostname)" class="btn input-group-text btn-primary">
+                  <span *ngIf="!hostnameCoveredByRP()" i18n>Enable</span>
+                  <span *ngIf="hostnameCoveredByRP()" i18n>Enable Additional</span>
+                </button>
+              </p>
+            </ng-template>
+
+          </li>
+
+          <li *ngIf="showFactor('totp')" role="presentation" ngbNavItem="totp">
+
+            <button type="button" role="tab" ngbNavLink>
+              <div class="me-1">{{factor_details.totp.label()}}</div>
+              <span *ngIf="factorsConfiguredHere().includes('totp')" class="badge badge-success" i18n="MFA factor is configured">Configured</span>
+            </button>
+
+            <ng-template ngbNavContent>
+              <h2>{{factor_details.totp.label()}}</h2>
+              <p class="fst-italic">{{factor_details.totp.description()}}</p>
+
+              <p i18n="MFA explanation: TOTP apps">
+                You will receive a <b>{{factor_flags.totp.digits.value()}}-digit code</b> from your authentication app.
+                The code will be valid for <b>{{humanizeDuration(factor_flags.totp.period.value())}}</b>.
+              </p>
+
+              <form *ngIf="factorsConfiguredHere().includes('totp')">
+                <p i18n>
+                  Provide the current one-time code from your authentication app
+                  in order to {{ provisional ? 'confirm' : 'remove' }} this secondary authentication factor
+                </p>
+                <div class="input-group">
+                  <label for="totp_code" class="form-label input-group-text" i18n>{{ factor_flags.totp.digits.value() }} digit code:</label>
+                  <input #totp_code id="totp_code" type="text" inputmode="decimal" autocomplete="one-time-code" />
+                  <button *ngIf="provisional"  type="submit" class="btn input-group-text btn-primary" (click)="validateFactor('totp', totp_code.value)" i18n="MFA factor confirmation">Confirm</button>
+                  <button *ngIf="!provisional" type="submit" class="btn input-group-text btn-destroy" (click)="removeFactor('totp', totp_code.value)" i18n="MFA factor removal">Remove</button>
+                </div>
+              </form>
+
+              <form *ngIf="!factorsConfiguredHere().includes('totp')">
+                <div *ngIf="!totp_uri"><button type="submit" class="btn btn-primary" (click)="initFactorSetup('totp')" i18n>Enable</button></div>
+                <div *ngIf="totp_uri">
+                  <div class="qrcodeImage"><qrcode [width]="200" [qrdata]="totp_uri" [allowEmptyString]="false" [cssClass]="'center'"/></div>
+                  <p i18n>
+                    Scan this QR Code in your authentication app and provide the current
+                    {{ factor_flags.totp.digits.value() }} digit one-time code from
+                    {{ factor_flags.totp.issuer.value() }} in order to confirm this secondary authentication factor
+                  </p>
+                  <div class="input-group">
+                    <label for="totp_code" class="form-label input-group-text" i18n>{{ factor_flags.totp.digits.value() }} digit code:</label>
+                    <input #totp_code id="totp_code" class="form-control" type="text" inputmode="decimal" autocomplete="one-time-code"/>
+                    <button type="submit" class="btn input-group-text btn-primary" (click)="completeFactorSetup('totp', totp_code.value)" i18n="MFA one-time code confirmation">Confirm</button>
+                  </div>
+                </div>
+              </form>
+            </ng-template>
+
+          </li>
+
+          <li *ngIf="showFactor('email')" role="presentation" ngbNavItem="email">
+
+            <button type="button" role="tab" ngbNavLink>
+              <div class="me-1">{{factor_details.email.label()}}</div>
+              <span *ngIf="factorsConfiguredHere().includes('email')" class="badge badge-success" i18n="MFA factor is configured">Configured</span>
+            </button>
+
+            <ng-template ngbNavContent>
+              <h2>{{factor_details.email.label()}}</h2>
+              <p i18n="MFA explanation: email">
+                You will receive an email from <b>{{factor_flags.email.issuer.value()}}</b> containing a <b>{{factor_flags.email.digits.value()}}-digit code</b>.
+                The code will be valid for <b>{{humanizeDuration(factor_flags.email.period.value())}}</b>.
+              </p>
+
+              <form *ngIf="factorsConfiguredHere().includes('email')">
+                <button type="button" class="btn" [ngClass]="{'btn-primary': !email_otp_sent, 'btn-normal': email_otp_sent}"
+                 (click)="provisional ? initFactor('email') : initFactorRemoval('email')" i18n>
+                    {{ email_otp_sent ? 'Resend' : 'Send'}} One-time Code
+                </button>
+                <div *ngIf="email_otp_sent">
+                  <p i18n>
+                    Provide the current One-time code sent to your email address
+                    in order to {{ provisional ? 'confirm' : 'remove' }} this secondary authentication factor
+                  </p>
+                  <label for="totp_code" class="form-label" i18n>{{ factor_flags.email.digits.value() }} digit code:</label>
+                  <input #totp_code id="totp_code" type="text" inputmode="decimal" autocomplete="one-time-code" placeholder="one-time code" i18n-placeholder/>
+                  <button *ngIf="provisional"  type="submit" class="btn btn-primary" (click)="validateFactor('email', totp_code.value)" i18n="MFA factor confirmation">Confirm</button>
+                  <button *ngIf="!provisional" type="submit" class="btn btn-destroy" (click)="removeFactor('email', totp_code.value)" i18n="MFA factor removal">Remove</button>
+                </div>
+              </form>
+
+              <form *ngIf="!factorsConfiguredHere().includes('email')">
+                <div *ngIf="!email_otp_sent" class="input-group">
+                  <label for="email_addr" class="form-label input-group-text" i18n="Email for MFA code">Email address:</label>
+                  <input #email_addr id="email_addr" class="form-control" type="email" inputmode="email" autocomplete="email" />
+                  <button type="submit" class="btn input-group-text" [ngClass]="{'btn-primary': !email_otp_sent}"
+                   (click)="initFactorSetup('email',email_addr.value)" i18n>Enable</button>
+                </div>
+                <div *ngIf="email_otp_sent">
+                  <p i18n>
+                    Provide the initial One-time code sent to your email address
+                    in order to confirm configuration of this secondary authentication factor
+                  </p>
+                  <label for="totp_code" class="form-label" i18n>{{ factor_flags.email.digits.value() }} digit code:</label>
+                  <input #totp_code id="totp_code" type="text" inputmode="decimal" autocomplete="one-time-code" />
+                  <button type="submit" class="btn btn-primary" (click)="completeFactorSetup('email', totp_code.value)" i18n="MFA one-time code confirmation">Confirm</button>
+                </div>
+              </form>
+            </ng-template>
+
+          </li>
+
+          <li *ngIf="showFactor('sms')" role="presentation" ngbNavItem="sms">
+
+            <button type="button" role="tab" ngbNavLink>
+              <div class="me-1">{{factor_details.sms.label()}}</div>
+              <span *ngIf="factorsConfiguredHere().includes('sms')" class="badge badge-success" i18n>Configured</span>
+            </button>
+
+            <ng-template ngbNavContent>
+              <h2>{{factor_details.sms.label()}}</h2>
+              <p i18n="MFA explanation: SMS">
+                You will receive a text message from <b>{{factor_flags.sms.issuer.value()}}</b> containing a <b>{{factor_flags.sms.digits.value()}}-digit code</b>.
+                The code will be valid for <b>{{humanizeDuration(factor_flags.sms.period.value())}}</b>.
+              </p>
+
+              <form *ngIf="factorsConfiguredHere().includes('sms')">
+                <button type="button" class="btn" [ngClass]="{'btn-primary': !sms_otp_sent, 'btn-normal': sms_otp_sent}"
+                  (click)="provisional ? initFactor('sms') : initFactorRemoval('sms')" i18n>{{ sms_otp_sent ? 'Resend' : 'Send'}} One-time Code</button>
+                <div *ngIf="sms_otp_sent">
+                  <p i18n>Provide the current One-time code sent your SMS phone number in order to {{ provisional ? 'confirm' : 'remove' }} this factor</p>
+                  <div class="input-group">
+                    <label for="totp_code" class="form-label input-group-text" i18n>{{ factor_flags.sms.digits.value() }} digit code:</label>
+                    <input #totp_code id="totp_code" type="text" class="form-control" inputmode="decimal" autocomplete="one-time-code" />
+                    <button *ngIf="provisional"  type="submit" class="btn input-group-text btn-primary" (click)="validateFactor('sms', totp_code.value)" i18n>Confirm</button>
+                    <button *ngIf="!provisional" type="submit" class="btn input-group-text btn-destroy" (click)="removeFactor('sms', totp_code.value)" i18n>Remove</button>
+                  </div>
+                  
+                </div>
+              </form>
+
+              <form *ngIf="!factorsConfiguredHere().includes('sms')">
+                <div *ngIf="!sms_otp_sent">
+                  <div>
+                    <div class="input-group mt-2">
+                      <label for="sms_phone" class="form-label input-group-text" i18n>Phone number:</label>
+                      <input #sms_phone id="sms_phone" class="form-control" type="tel" inputmode="tel" autocomplete="tel"/>
+                    </div>
+                    <div class="input-group mt-2">
+                      <label for="sms_carrier" class="form-label input-group-text" i18n>Mobile carrier:</label>
+                      <select #sms_carrier id="sms_carrier" class="form-control">
+                        <option value='' i18n="MFA SMS carrier selection">Select your carrier...</option>
+                        <option *ngFor="let c of sms_carriers" value="{{c.id()}}">{{c.name()}} ({{c.region()}})</option>
+                      </select>
+                    </div>
+                  
+                    <button
+                      [disabled]="!sms_phone.value.length"
+                      type="submit"
+                      class="btn btn-primary mt-2"
+                      (click)="initFactorSetup('sms',{phone: sms_phone.value, carrier: sms_carrier.value})"
+                      i18n>Enable</button>
+                  </div>
+                </div>
+                <div *ngIf="sms_otp_sent">
+                  <p i18n>
+                    Provide the initial One-time code sent to your email address
+                    in order to confirm configuration of this secondary authentication factor
+                  </p>
+                  <div class="input-group">
+                    <label for="totp_code" class="form-label input-group-text" i18n>{{ factor_flags.sms.digits.value() }} digit code:</label>
+                    <input #totp_code id="totp_code" class="form-control" type="text" inputmode="decimal" autocomplete="one-time-code" />
+                    <button type="submit" class="btn input-group-text btn-primary" (click)="completeFactorSetup('sms', totp_code.value)" i18n>Confirm</button>
+                  </div>
+                </div>
+              </form>
+            </ng-template>
+
+          </li>
+
+      </ul>
+      </div>
+      <div class="col-md-8" [ngbNavOutlet]="mfaNav"></div>
+    </div>
+
+  </div>
+  <div class="row">
+    <div class="col mt-3 offset-lg-2">
+      <button *ngIf="provisional && !required_for_token && factorsConfiguredHere().length === 0" type="button" class="btn btn-normal" (click)="upgradeSession()" i18n>Skip for now...</button>
+    </div>
+  </div>
+
+</div>

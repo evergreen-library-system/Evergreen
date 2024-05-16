@@ -725,7 +725,8 @@ CREATE TABLE actor.usr_activity (
     id          BIGSERIAL   PRIMARY KEY,
     usr         INT         REFERENCES actor.usr (id) ON DELETE SET NULL,
     etype       INT         NOT NULL REFERENCES config.usr_activity_type (id),
-    event_time  TIMESTAMPTZ NOT NULL DEFAULT NOW()
+    event_time  TIMESTAMPTZ NOT NULL DEFAULT NOW(),
+    event_data  TEXT
 );
 CREATE INDEX usr_activity_usr_idx ON actor.usr_activity (usr);
 
@@ -1316,5 +1317,201 @@ CREATE TABLE actor.usr_privacy_waiver (
     checkout_items BOOL DEFAULT FALSE
 );
 CREATE INDEX actor_usr_privacy_waiver_usr_idx ON actor.usr_privacy_waiver (usr);
+
+CREATE TABLE actor.usr_mfa_factor_map (
+    id          SERIAL  PRIMARY KEY,
+    usr         BIGINT  NOT NULL REFERENCES actor.usr (id) DEFERRABLE INITIALLY DEFERRED,
+    factor      TEXT    NOT NULL REFERENCES config.mfa_factor (name) DEFERRABLE INITIALLY DEFERRED,
+    purpose     TEXT    NOT NULL DEFAULT 'mfa', -- mfa || login, for now
+    add_time    TIMESTAMPTZ NOT NULL DEFAULT NOW()
+);
+CREATE UNIQUE INDEX factor_purpose_usr_once ON actor.usr_mfa_factor_map (usr, purpose, factor);
+
+----- OTP URI destroyer: Removes the TOTP password entry if the user knows the secret NOW -----
+CREATE OR REPLACE FUNCTION actor.remove_otpauth_uri(
+    usr_id INT,
+    otype TEXT,
+    purpose TEXT,
+    proof TEXT,
+    fuzziness INT DEFAULT 1
+) RETURNS BOOL AS $f$
+
+use Pass::OTP;
+use Pass::OTP::URI;
+
+my $usr_id = shift;
+my $otype = shift;
+my $purpose = shift;
+my $proof = shift;
+my $fuzziness_width = shift // 1;
+
+if ($otype eq 'webauthn') { # nothing to prove
+    my $waq = spi_prepare('DELETE FROM actor.passwd WHERE usr = $1 AND passwd_type = $2 || $$-$$ || $3;', 'INTEGER', 'TEXT', 'TEXT');
+    my $res = spi_exec_prepared($waq, $usr_id, $otype, $purpose);
+    spi_freeplan($waq);
+    return 1;
+}
+
+# Normalize the proof value
+$proof =~ s/\D//g;
+return 0 unless $proof; # all-0s is not valid
+
+my $q = spi_prepare('SELECT actor.otpauth_uri($1, $2, $3) AS uri;', 'INTEGER', 'TEXT', 'TEXT');
+my $otp_uri = spi_exec_prepared($q, {limit => 1}, $usr_id, $otype, $purpose)->{rows}[0]{uri};
+spi_freeplan($q);
+
+return 0 unless $otp_uri;
+
+my %otp_config = Pass::OTP::URI::parse($otp_uri);
+
+for my $fuzziness ( -$fuzziness_width .. $fuzziness_width ) {
+    $otp_config{'start-time'} = $otp_config{period} * $fuzziness;
+    my $otp_code = Pass::OTP::otp(%otp_config);
+    if ($otp_code eq $proof) {
+        $q = spi_prepare('DELETE FROM actor.passwd WHERE usr = $1 AND passwd_type = $2 || $$-$$ || $3;', 'INTEGER', 'TEXT', 'TEXT');
+        my $res = spi_exec_prepared($q, $usr_id, $otype, $purpose);
+        spi_freeplan($q);
+        return 1;
+    }
+}
+
+return 0;
+$f$ LANGUAGE PLPERLU;
+
+----- OTP proof generator: find the TOTP code, optionally with fuzziness -----
+CREATE OR REPLACE FUNCTION actor.otpauth_uri_get_proof(
+    otp_uri TEXT,
+    fuzziness INT DEFAULT 0
+) RETURNS TABLE ( period_step INT, proof TEXT) AS $f$
+
+use Pass::OTP;
+use Pass::OTP::URI;
+
+my $otp_uri = shift;
+my $fuzziness_width = shift // 0;
+
+return undef unless $otp_uri;
+
+my %otp_config = Pass::OTP::URI::parse($otp_uri);
+return undef unless $otp_config{type};
+
+for my $fuzziness ( -$fuzziness_width .. $fuzziness_width ) {
+    $otp_config{'start-time'} = $otp_config{period} * $fuzziness;
+    return_next({period_step => $fuzziness, proof => Pass::OTP::otp(%otp_config)});
+}
+
+return undef;
+
+$f$ LANGUAGE PLPERLU;
+
+CREATE OR REPLACE FUNCTION actor.otpauth_uri_get_proof(
+    usr_id INT,
+    otype TEXT,
+    purpose TEXT,
+    fuzziness INT DEFAULT 0
+) RETURNS TABLE ( period_step INT, proof TEXT) AS $f$
+BEGIN
+    RETURN QUERY
+      SELECT * FROM actor.otpauth_uri_get_proof( actor.otpauth_uri($1, $2, $3), $4 );
+    RETURN;
+END;
+$f$ LANGUAGE PLPGSQL;
+
+----- TOTP URI generator: Saves the secret on the first call for each user ID -----
+CREATE OR REPLACE FUNCTION actor.otpauth_uri(
+    usr_id INT,
+    otype TEXT DEFAULT 'totp',
+    purpose TEXT DEFAULT 'mfa',
+    additional_params HSTORE DEFAULT ''::HSTORE -- this can be used to pass a start-time parameter to offset totp calc
+) RETURNS TEXT AS $f$
+DECLARE
+    issuer      TEXT := 'Evergreen';
+    algorithm   TEXT := 'SHA1';
+    digits      TEXT := '6';
+    period      TEXT := '30';
+    counter     TEXT := '0';
+    otp_secret  TEXT;
+    otp_params  HSTORE;
+    uri         TEXT;
+    param_name  TEXT;
+    uri_otype  TEXT;
+BEGIN
+
+    IF additional_params IS NULL THEN additional_params = ''::HSTORE; END IF;
+
+    -- we're going to be a bit strict here, for now
+    IF otype NOT IN ('webauthn','email','sms','totp','hotp') THEN RETURN NULL; END IF;
+    IF purpose NOT IN ('mfa','login') THEN RETURN NULL; END IF;
+
+    uri_otype := otype;
+    IF otype NOT IN ('totp','hotp') THEN
+        uri_otype := 'totp'; -- others are time-based, but with different settings
+    END IF;
+
+    -- protect "our" keys
+    additional_params := additional_params - ARRAY['issuer','algorithm','digits','period'];
+
+    SELECT passwd, salt::HSTORE INTO otp_secret, otp_params FROM actor.passwd WHERE usr = usr_id AND passwd_type = otype || '-' || purpose;
+
+    IF NOT FOUND THEN
+
+        issuer := COALESCE(
+            (SELECT value FROM config.internal_flag WHERE name = otype||'.'||purpose||'.issuer' AND enabled),
+            issuer
+        );
+
+        algorithm := COALESCE(
+            (SELECT value FROM config.internal_flag WHERE name = otype||'.'||purpose||'.algorithm' AND enabled),
+            algorithm
+        );
+
+        digits := COALESCE(
+            (SELECT value FROM config.internal_flag WHERE name = otype||'.'||purpose||'.digits' AND enabled),
+            digits
+        );
+
+        period := COALESCE(
+            (SELECT value FROM config.internal_flag WHERE name = otype||'.'||purpose||'.period' AND enabled),
+            period
+        );
+
+        otp_params := HSTORE('counter', counter)
+                      || HSTORE('issuer', issuer)
+                      || HSTORE('algorithm', UPPER(algorithm))
+                      || HSTORE('digits', digits)
+                      || HSTORE('period', period);
+
+        IF additional_params ? 'counter' THEN
+            otp_params := otp_params - 'counter';
+        END IF;
+
+        otp_params := additional_params || otp_params;
+
+        WITH new_secret AS (
+            INSERT INTO actor.passwd (usr, salt, passwd, passwd_type)
+                VALUES (usr_id, otp_params::TEXT, gen_random_uuid()::TEXT, otype || '-' || purpose)
+                RETURNING passwd, salt
+        ) SELECT passwd, salt::HSTORE INTO otp_secret, otp_params FROM new_secret;
+
+    ELSE
+        otp_params := otp_params - akeys(additional_params); -- remove what we're receiving
+        otp_params := additional_params || otp_params;
+        IF additional_params != ''::HSTORE THEN -- new additional params were passed, let's save the salt again
+            UPDATE actor.passwd SET salt = otp_params::TEXT WHERE usr = usr_id AND passwd_type = otype || '-' || purpose;
+        END IF;
+    END IF;
+
+
+    uri :=  'otpauth://' || uri_otype || '/' || evergreen.uri_escape(otp_params -> 'issuer') || ':' || usr_id::TEXT
+            ||'?secret='    || evergreen.encode_base32(otp_secret);
+
+    FOREACH param_name IN ARRAY akeys(otp_params) LOOP
+        uri := uri || '&' || evergreen.uri_escape(param_name) || '=' || evergreen.uri_escape(otp_params -> param_name);
+    END LOOP;
+
+    RETURN uri;
+END;
+$f$ LANGUAGE PLPGSQL;
+
 
 COMMIT;

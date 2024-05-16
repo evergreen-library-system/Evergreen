@@ -95,5 +95,35 @@ CREATE OR REPLACE FUNCTION evergreen.unaccent_and_squash ( IN arg text) RETURNS 
 	END;
 $$ LANGUAGE PLPGSQL;
 
+----- Support functions for encoding WebAuthn -----
+CREATE OR REPLACE FUNCTION evergreen.gen_random_bytes_b64 (INT) RETURNS TEXT AS $f$
+    SELECT encode(gen_random_bytes($1),'base64');
+$f$ STRICT IMMUTABLE LANGUAGE SQL;
+
+
+----- Support functions for encoding URLs -----
+CREATE OR REPLACE FUNCTION evergreen.encode_base32 (TEXT) RETURNS TEXT AS $f$
+  use MIME::Base32;
+  my $input = shift;
+  return encode_base32($input);
+$f$ STRICT IMMUTABLE LANGUAGE PLPERLU;
+
+CREATE OR REPLACE FUNCTION evergreen.decode_base32 (TEXT) RETURNS TEXT AS $f$
+  use MIME::Base32;
+  my $input = shift;
+  return decode_base32($input);
+$f$ STRICT IMMUTABLE LANGUAGE PLPERLU;
+
+CREATE OR REPLACE FUNCTION evergreen.uri_escape (TEXT) RETURNS TEXT AS $f$
+  use URI::Escape;
+  my $input = shift;
+  return uri_escape_utf8($input);
+$f$ STRICT IMMUTABLE LANGUAGE PLPERLU;
+
+CREATE OR REPLACE FUNCTION evergreen.uri_unescape (TEXT) RETURNS TEXT AS $f$
+  my $input = shift;
+  $input =~ s/%([0-9A-Fa-f]{2})/chr(hex($1))/eg; # inline the RE, it is 700% faster than URI::Escape::uri_unescape
+  return $input;
+$f$ STRICT IMMUTABLE LANGUAGE PLPERLU;
 
 COMMIT;

@@ -1116,7 +1116,7 @@ CREATE TABLE config.sms_carrier (
     active          BOOLEAN DEFAULT TRUE
 );
 
-CREATE TYPE config.usr_activity_group AS ENUM ('authen','authz','circ','hold','search');
+CREATE TYPE config.usr_activity_group AS ENUM ('authen','authz','circ','hold','search','mfa');
 
 CREATE TABLE config.usr_activity_type (
     id          SERIAL                      PRIMARY KEY, 
@@ -1461,6 +1461,12 @@ CREATE TABLE config.openathens_identity (
     release_email               BOOL    NOT NULL DEFAULT false,
     release_home_ou             BOOL    NOT NULL DEFAULT false,
     release_barcode             BOOL    NOT NULL DEFAULT false
+);
+
+CREATE TABLE config.mfa_factor (
+    name        TEXT    PRIMARY KEY,
+    label       TEXT    NOT NULL,
+    description TEXT    NOT NULL
 );
 
 COMMIT;

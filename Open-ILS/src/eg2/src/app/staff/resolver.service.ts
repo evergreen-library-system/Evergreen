@@ -12,6 +12,7 @@ import {FormatService} from '@eg/core/format.service';
 import {HatchService} from '@eg/core/hatch.service';
 
 const LOGIN_PATH = '/staff/login';
+const MFA_PATH = '/staff/mfa';
 const WS_MANAGE_PATH = '/staff/admin/workstation/workstations/manage';
 
 // Define these at the staff application level so they will be honored
@@ -120,10 +121,27 @@ export class StaffResolver implements Resolve<Observable<any>> {
     // A page that's not the login page was requested without a
     // valid auth token.  Send the caller back to the login page.
     handleInvalidToken(state: RouterStateSnapshot): void {
-        console.debug('StaffResolver: authtoken is not valid');
-        // state.url is the eg2 path, not a full URL.
-        this.router.navigate([LOGIN_PATH], {queryParams: {routeTo: state.url}});
-        this.observer.error('invalid or no auth token');
+        if (this.auth.provisional()) {
+            console.debug('StaffResolver: authtoken is provisional, MFA required');
+            // We have a provisional token, but we need to upgrade it. Send
+            // the user to the MFA config-or-choose UI.
+
+            const path = state.url.split('?')[0];
+            if (path !== MFA_PATH) {
+                // Redirect to MFA if we're not already on our way there
+                this.router.navigate([MFA_PATH], {queryParams: {routeTo: state.url}});
+                this.observer.complete();
+            } else {
+                // If we are, however, we're actually fine.  Proceed.
+                this.observer.next(true);
+                this.observer.complete();
+            }
+        } else {
+            console.debug('StaffResolver: authtoken is not valid');
+            // state.url is the eg2 path, not a full URL.
+            this.router.navigate([LOGIN_PATH], {queryParams: {routeTo: state.url}});
+            this.observer.error('invalid or no auth token');
+        }
     }
 
     handleInvalidWorkstation(path: string): void {

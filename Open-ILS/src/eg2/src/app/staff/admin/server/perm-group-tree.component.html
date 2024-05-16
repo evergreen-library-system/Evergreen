@@ -112,8 +112,23 @@
                 <label class="form-label" i18n>User Group?: </label>
               </div>
               <div class="col-lg-8 fw-bold">
-                <!-- TODO: replace with <eg-bool/> when merged -->
-                {{selected.callerData.usergroup() === 't'}}
+                <eg-bool [value]="selected.callerData.usergroup()"/>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-lg-4">
+                <label class="form-label" i18n>Multi-factor Authentication is allowed?: </label>
+              </div>
+              <div class="col-lg-8 fw-bold">
+                <eg-bool [value]="selected.callerData.mfa_allowed()"/>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-lg-4">
+                <label class="form-label" i18n>Multi-factor Authentication is required?: </label>
+              </div>
+              <div class="col-lg-8 fw-bold">
+                <eg-bool [value]="selected.callerData.mfa_required()"/>
               </div>
             </div>
             <div class="row">
@@ -234,6 +249,46 @@
                 Apply Changes
               </button>
             </div>
+          </ng-template>
+        </li>
+        <li *ngIf="mfa_enabled" role="presentation" [ngbNavItem]="'mfa'">
+          <a i18n ngbNavLink role="tab">Group MFA Factors</a>
+
+          <ng-template ngbNavContent>
+            <div class="row fw-bold">
+              <div class="col-lg-5" i18n>Factor</div>
+              <div class="col-lg-2" i18n>Available</div>
+              <div class="col-lg-2" i18n>Assigned directly</div>
+            </div>
+
+            <div class="row" *ngFor="let factor of allAvailableFactors()">
+              <div class="col-lg-5">
+                <p>{{factor.label()}}</p>
+                <p class="small">{{factor.description()}}</p>
+              </div>
+
+              <div class="col-lg-2">
+                <!-- factorAssignedAt() returns the closest group (including "us") that has the factor -->
+                <eg-bool [value]="!!factorAssignedAt(factor)" />
+                <div *ngIf="factorAssignedAt(factor) && factorAssignedAt(factor).id() !== selected.callerData.id()"
+                   class="badge badge-secondary">
+                  Inherited from group:
+                  <button type="button" class="btn btn-link m-0 p-0" (click)="selectGroup(factorAssignedAt(factor).id())">
+                    {{factorAssignedAt(factor).name()}}
+                  </button>
+                </div>
+              </div>
+
+              <div class="col-lg-2">
+               <div class="d-flex justify-content-center p-1 rounded border border-info">
+                 <input type="checkbox" class="align-middle"
+                   i18n-title title="Directly assigned?"
+                   [ngModel]="factorAssignedAt(factor)?.id() === selected.callerData.id()"
+                   (ngModelChange)="toggleFactorForSelected($event,factor)"/>
+               </div>
+              </div>
+            </div>
+
           </ng-template>
         </li>
       </ul>

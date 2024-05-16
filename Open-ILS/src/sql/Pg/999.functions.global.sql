@@ -2070,11 +2070,12 @@ $$ LANGUAGE SQL;
 
 -- given a set of activity criteria, finds the best
 -- activity type and inserts the activity entry
-CREATE OR REPLACE FUNCTION actor.insert_usr_activity (
+CREATE OR REPLACE FUNCTION actor.insert_usr_activity(
         usr INT,
-        ewho TEXT, 
-        ewhat TEXT, 
-        ehow TEXT
+        ewho TEXT,
+        ewhat TEXT,
+        ehow TEXT,
+        edata TEXT DEFAULT NULL
     ) RETURNS SETOF actor.usr_activity AS $$
 DECLARE
     new_row actor.usr_activity%ROWTYPE;
@@ -2082,8 +2083,9 @@ BEGIN
     SELECT id INTO new_row.etype FROM actor.usr_activity_get_type(ewho, ewhat, ehow);
     IF FOUND THEN
         new_row.usr := usr;
-        INSERT INTO actor.usr_activity (usr, etype) 
-            VALUES (usr, new_row.etype)
+        new_row.event_data := edata;
+        INSERT INTO actor.usr_activity (usr, etype, event_data)
+            VALUES (usr, new_row.etype, new_row.event_data)
             RETURNING * INTO new_row;
         RETURN NEXT new_row;
     END IF;

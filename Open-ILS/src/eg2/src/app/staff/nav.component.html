@@ -8,7 +8,7 @@
 <nav id="staff-navbar" class="navbar fixed-top navbar-expand-lg navbar-default" aria-label="Main Navigation" i18n-aria-label>
 <div class="container-fluid">
     <a class="navbar-brand nav-link with-material-icon nav-link-home" 
-    routerLinkActive="active" ariaCurrentWhenActive="page" routerLink="/staff/" (click)="closeDropdowns"
+    routerLinkActive="active" ariaCurrentWhenActive="page" [routerLink]="getHomeLink()" (click)="closeDropdowns"
     aria-label="Home" i18n-aria-label="Home button aria label@@navbar-home-button-aria-label"
     egAccessKey keyCtx="navbar" i18n-keySpec i18n-keyDesc
     keySpec="alt+h" keyDesc="Navigate Home">
@@ -902,6 +902,15 @@
             <span class="material-icons" aria-hidden="true" title="Logout: Alt+Shift+Q">lock_outline</span>
             <span i18n>Logout</span>
           </button>
+          <a *ngIf="mfaAllowed" class="dropdown-item" ngbDropdownItem
+           routerLinkActive="active" 
+            ariaCurrentWhenActive="page" routerLink="/staff/mfa"
+            (click)="isMenuCollapsed = true" 
+            (keydown.space)="isMenuCollapsed = true" 
+            (keydown.enter)="isMenuCollapsed = true">
+            <span class="material-icons" aria-hidden="true">security</span>
+            <span i18n>Multi-factor Authentication</span>
+          </a>
           <a class="dropdown-item" ngbDropdownItem
            routerLinkActive="active" 
             ariaCurrentWhenActive="page" routerLink="/staff/about"

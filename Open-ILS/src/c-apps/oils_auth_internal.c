@@ -11,6 +11,7 @@
 #include "openils/oils_constants.h"
 #include "openils/oils_event.h"
 
+#define OILS_PROVISIONAL_AUTH_CACHE_PRFX "oils_provisional_auth_"
 #define OILS_AUTH_CACHE_PRFX "oils_auth_"
 #define OILS_AUTH_COUNT_SFFX "_count"
 
@@ -56,6 +57,33 @@ int osrfAppInitialize() {
         "Adds a user to the authentication cache to indicate "
         "the user is authenticated", 1, 0 
     );
+
+    osrfAppRegisterMethod(
+        MODULENAME,
+        "open-ils.auth_internal.session.upgrade_provisional",
+        "oilsAuthInternalUpgradeProvisionalSession",
+        "Upgrades a provisional session object to a full session.  "
+        "Returns SUCCESS oilsEvent when the provisional session "
+        "was found, otherwise returns OILS_EVENT_NO_SESSION.  "
+        "PARAMS( authToken )", 1, 0
+    );
+
+    osrfAppRegisterMethod(
+        MODULENAME,
+        "open-ils.auth_internal.session.retrieve_provisional",
+        "oilsAuthInternalProvisionalSessionRetrieve",
+        "Pass in the provisional auth token and this retrieves the "
+        "session object.  Unlike the similar public service method, "
+        "the auth timeout is never reset and the full session"
+        "object is always returned.  "
+        "PARAMS( authToken )", 1, 0 );
+
+    osrfAppRegisterMethod(
+        MODULENAME,
+        "open-ils.auth_internal.session.delete_provisional",
+        "oilsAuthInternalProvisionalSessionDelete",
+        "Destroys the given login session.  "
+        "PARAMS( authToken )",  1, 0 );
 
     osrfAppRegisterMethod(
         MODULENAME,
@@ -276,6 +304,8 @@ static oilsEvent* oilsAuthCheckLoginPerm(osrfMethodContext* ctx,
                            location / context used for timeout, etc. settings.
         - "login_type"  -- login type (opac, staff, temp, persist)
         - "workstation" -- workstation name
+        - "provisional" -- request the creation of a provisional session
+                           which can later be upgraded to a full session
 
 */
 int oilsAuthInternalCreateSession(osrfMethodContext* ctx) {
@@ -287,10 +317,16 @@ int oilsAuthInternalCreateSession(osrfMethodContext* ctx) {
     const char* login_type  = jsonObjectGetString(jsonObjectGetKeyConst(args, "login_type"));
     const char* workstation = jsonObjectGetString(jsonObjectGetKeyConst(args, "workstation"));
     int org_unit            = jsonObjectGetNumber(jsonObjectGetKeyConst(args, "org_unit"));
+    int provisional         = jsonObjectGetNumber(jsonObjectGetKeyConst(args, "provisional")); // numeric bool, 0/1, 0 by default
 
     if ( !(user_id && login_type) ) {
         return osrfAppRequestRespondException( ctx->session, ctx->request,
             "Missing parameters for method: %s", ctx->method->name );
+    }
+
+    // XXX For now, ONLY staff logins can be provisional, which allows MFA
+    if (strcmp(login_type, OILS_AUTH_STAFF)) {
+        provisional = 0;
     }
 
     oilsEvent* response = NULL;
@@ -344,8 +380,9 @@ int oilsAuthInternalCreateSession(osrfMethodContext* ctx) {
         random(), (long) getpid(), time(NULL), oilsFMGetObjectId(userObj));
 
     char* authToken = md5sum(string);
+    char* authKeyPrefix = (provisional != 0) ? OILS_PROVISIONAL_AUTH_CACHE_PRFX : OILS_AUTH_CACHE_PRFX;
     char* authKey = va_list_to_string(
-        "%s%s", OILS_AUTH_CACHE_PRFX, authToken);
+        "%s%s", authKeyPrefix, authToken);
 
     oilsFMSetString(userObj, "passwd", "");
     jsonObject* cacheObj = jsonParseFmt("{\"authtime\": %ld}", timeout);
@@ -368,7 +405,7 @@ int oilsAuthInternalCreateSession(osrfMethodContext* ctx) {
     osrfCachePutObject(authKey, cacheObj, (time_t) timeout);
     jsonObjectFree(cacheObj);
     jsonObject* payload = jsonParseFmt(
-        "{\"authtoken\": \"%s\", \"authtime\": %ld}", authToken, timeout);
+        "{\"authtoken\": \"%s\", \"authtime\": %ld, \"provisional\": %ld}", authToken, timeout, provisional);
 
     response = oilsNewEvent2(OSRF_LOG_MARK, OILS_EVENT_SUCCESS, payload);
     free(string); free(authToken); free(authKey);
@@ -380,6 +417,52 @@ int oilsAuthInternalCreateSession(osrfMethodContext* ctx) {
 
     return 0;
 }
+
+int oilsAuthInternalUpgradeProvisionalSession(osrfMethodContext* ctx) {
+    OSRF_METHOD_VERIFY_CONTEXT(ctx);
+
+    oilsEvent* response = NULL;
+    const char* authToken = jsonObjectGetString( jsonObjectGetIndex(ctx->params, 0) );
+
+    if (authToken) {
+        char* authKey = va_list_to_string("%s%s", OILS_PROVISIONAL_AUTH_CACHE_PRFX, authToken);
+        jsonObject* provisionalSessionObject = osrfCacheGetObject(authKey);
+
+        if (provisionalSessionObject) { // Found the provisional session
+            // ... remove it from the provisional cache
+            osrfCacheRemove(authKey);
+            free(authKey);
+
+            // ... generate the "real" cache key and get the original timeout
+            authKey = va_list_to_string("%s%s", OILS_AUTH_CACHE_PRFX, authToken);
+            long timeout = jsonObjectGetNumber(jsonObjectGetKeyConst(provisionalSessionObject, "authtime"));
+
+            // ... add it to the "real" cache with that original timeout
+            osrfCachePutObject(authKey, provisionalSessionObject, (time_t) timeout);
+            jsonObjectFree(provisionalSessionObject);
+
+            // ... and prepare a success message
+            response = oilsNewEvent(OSRF_LOG_MARK, OILS_EVENT_SUCCESS);
+
+        } else {
+            // Provisional session not found
+            response = oilsNewEvent(OSRF_LOG_MARK, OILS_EVENT_NO_SESSION);
+        }
+
+        free(authKey);
+        free(authToken);
+
+    } else {
+        // No provisional session auth token passed to us
+        response = oilsNewEvent(OSRF_LOG_MARK, OILS_EVENT_NO_SESSION);
+    }
+
+    osrfAppRespondComplete(ctx, oilsEventToJSON(response));
+    oilsEventFree(response);
+
+    return 0;
+}
+
 
 int _checkIfExpiryDatePassed(const char *expire_date) {
 
@@ -561,6 +644,60 @@ int oilsAuthInternalValidate(osrfMethodContext* ctx) {
     osrfAppRespondComplete(ctx, oilsEventToJSON(response));
     oilsEventFree(response);
 
+    return 0;
+}
+
+int oilsAuthInternalProvisionalSessionRetrieve( osrfMethodContext* ctx ) {
+    OSRF_METHOD_VERIFY_CONTEXT(ctx);
+
+    oilsEvent* evt = NULL;
+    const char* authToken = jsonObjectGetString( jsonObjectGetIndex(ctx->params, 0));
+
+    if (authToken) {
+        // Retrieve the cached session object
+        osrfLogDebug(OSRF_LOG_MARK, "Retrieving provisional auth session: %s", authToken);
+        char* key = va_list_to_string("%s%s", OILS_PROVISIONAL_AUTH_CACHE_PRFX, authToken );
+        jsonObject* cacheObj = osrfCacheGetObject( key );
+        free(key);
+
+        if(cacheObj) {
+            // Return a copy of the cached user object
+            osrfAppRespondComplete( ctx, cacheObj);
+            jsonObjectFree(cacheObj);
+        } else {
+            // Provisional session is invalid or expired
+            evt = oilsNewEvent(OSRF_LOG_MARK, OILS_EVENT_NO_SESSION);
+            osrfAppRespondComplete( ctx, oilsEventToJSON(evt) );
+            oilsEventFree(evt);
+        }
+
+    } else {
+
+        // No provisional session auth token passed to us
+        evt = oilsNewEvent(OSRF_LOG_MARK, OILS_EVENT_NO_SESSION);
+        osrfAppRespondComplete( ctx, oilsEventToJSON(evt) );
+        oilsEventFree(evt);
+    }
+
+    return 0;
+}
+
+int oilsAuthInternalProvisionalSessionDelete( osrfMethodContext* ctx ) {
+    OSRF_METHOD_VERIFY_CONTEXT(ctx);
+
+    const char* authToken = jsonObjectGetString( jsonObjectGetIndex(ctx->params, 0) );
+    jsonObject* resp = NULL;
+
+    if( authToken ) {
+        osrfLogDebug(OSRF_LOG_MARK, "Removing provisional auth session: %s", authToken );
+        char* key = va_list_to_string("%s%s", OILS_PROVISIONAL_AUTH_CACHE_PRFX, authToken ); /**/
+        osrfCacheRemove(key);
+        resp = jsonNewObject(authToken);
+        free(key);
+    }
+
+    osrfAppRespondComplete( ctx, resp );
+    jsonObjectFree(resp);
     return 0;
 }
 

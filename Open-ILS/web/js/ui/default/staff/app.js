@@ -126,7 +126,10 @@ function($routeProvider , $locationProvider) {
                     // hand instead from the configured base path.
                     var route_to = egCore.env.basePath;
 
-                    if (result.invalid_workstation) {
+                    // First, check for MFA
+                    if (egCore.auth.provisional()) {
+                        route_to = "/eg2/staff/mfa";
+                    } else if (result.invalid_workstation) {
                         // route to WS admin page to delete the offending
                         // WS and create a new one.
                         route_to += 

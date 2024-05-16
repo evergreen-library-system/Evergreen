@@ -1,10 +1,12 @@
 import {Component, ViewChild, OnInit} from '@angular/core';
 import {map} from 'rxjs/operators';
+import {of, firstValueFrom} from 'rxjs';
 import {Tree, TreeNode} from '@eg/share/tree/tree';
 import {IdlService, IdlObject} from '@eg/core/idl.service';
 import {OrgService} from '@eg/core/org.service';
 import {AuthService} from '@eg/core/auth.service';
 import {PcrudService} from '@eg/core/pcrud.service';
+import {NetService} from '@eg/core/net.service';
 import {ToastService} from '@eg/share/toast/toast.service';
 import {StringComponent} from '@eg/share/string/string.component';
 import {ConfirmDialogComponent} from '@eg/share/dialog/confirm.component';
@@ -24,12 +26,16 @@ export class PermGroupTreeComponent implements OnInit {
 
     tree: Tree;
     selected: TreeNode;
+    allFactorMaps: IdlObject[];
     permissions: IdlObject[];
     permIdMap: {[id: number]: IdlObject};
     permEntries: ComboboxEntry[];
     permMaps: IdlObject[];
     orgDepths: number[];
     filterText: string;
+    mfa_factors: string[];
+    mfa_factor_details: any;
+    mfa_enabled = false;
 
     // Have to fetch quite a bit of data for this UI.
     loading: boolean;
@@ -51,17 +57,82 @@ export class PermGroupTreeComponent implements OnInit {
         private org: OrgService,
         private auth: AuthService,
         private pcrud: PcrudService,
+        private net: NetService,
         private toast: ToastService
     ) {
+        this.allFactorMaps = [];
+        this.mfa_factors = [];
+        this.mfa_factor_details = { factors: {}, flags: {} };
         this.permissions = [];
         this.permEntries = [];
         this.permMaps = [];
         this.permIdMap = {};
     }
 
+    async toggleFactorForSelected($event, factor) {
+        if ($event) { // creating mapping
+            try {
+                const newmap = this.idl.create('pgmfm');
+                newmap.isnew(true);
+                newmap.factor(factor.name());
+                newmap.grp(this.selected.callerData.id());
+                const done = await firstValueFrom(this.pcrud.create(newmap));
+                this.successString.current().then(str => this.toast.success(str));
+            } catch (error) {
+                console.error('Error creating factor mapping:', error);
+                this.errorString.current().then(str => this.toast.danger(str));
+            }
+        } else { // removing a mapping
+            try {
+                const oldmap = this.allFactorMaps
+                    .find(m => Number(m.grp()) === Number(this.selected.callerData.id()) && m.factor() === factor.name());
+                oldmap.isdeleted(true);
+                const done = await firstValueFrom(this.pcrud.remove(oldmap));
+                this.successString.current().then(str => this.toast.success(str));
+            } catch (error) {
+                console.error('Error creating factor mapping:', error);
+                this.errorString.current().then(str => this.toast.danger(str));
+            }
+        }
+        await this.loadFactorMaps();
+    }
+
+    selectedAncestorIds() {
+        const anc = [];
+        let n = this.selected.callerData;
+        do {
+            anc.push(n.id());
+            if (n.parent()) {
+                n = this.tree.findNode(n.parent()).callerData;
+            } else {
+                n = null;
+            }
+        } while (n);
+        return anc;
+    }
+
+    factorAssignedAt(factor): IdlObject {
+        const closest = this.selectedAncestorIds()
+            .find(grpid => this.allFactorMaps.find(m => Number(m.grp()) === Number(grpid) && m.factor() === factor.name()));
+        if (!closest) { return null; }
+        return this.tree.findNode(closest).callerData;
+    }
+
+    allAvailableFactors() {
+        return Object.values(this.mfa_factor_details.factors)
+            .sort((f1:IdlObject,f2:IdlObject) => f1.label() < f2.label() ? -1 : 1);
+    }
 
     async ngOnInit() {
         this.loading = true;
+        await this.checkMFA();
+        this.loadProgress.increment();
+        await this.loadFactorList();
+        this.loadProgress.increment();
+        await this.loadFactorObjects();
+        this.loadProgress.increment();
+        await this.loadFactorMaps();
+        this.loadProgress.increment();
         await this.loadPgtTree();
         this.loadProgress.increment();
         await this.loadPermissions();
@@ -129,11 +200,41 @@ export class PermGroupTreeComponent implements OnInit {
         return maps;
     }
 
+    async checkMFA(): Promise<any> {
+        return this.net.request(
+            'open-ils.auth_mfa', 'open-ils.auth_mfa.enabled'
+        ).toPromise().then(res => this.mfa_enabled = !!Number(res));
+    }
+
+    async loadFactorList(): Promise<any> {
+        if (!this.mfa_enabled) { return of(true).toPromise(); }
+        return this.net.request(
+            'open-ils.auth_mfa', 'open-ils.auth_mfa.enabled_factors'
+        ).toPromise().then(res => this.mfa_factors = res);
+    }
+
+    async loadFactorObjects(): Promise<any> {
+        if (this.mfa_factors.length === 0) { return of(true).toPromise(); }
+
+        return this.net.request(
+            'open-ils.auth_mfa', 'open-ils.auth_mfa.factor_details', this.mfa_factors
+        ).toPromise().then(res => this.mfa_factor_details = res);
+    }
+
     async loadPgtTree(): Promise<any> {
 
         return this.pcrud.search('pgt', {parent: null},
             {flesh: -1, flesh_fields: {pgt: ['children']}}
         ).pipe(map(pgtTree => this.ingestPgtTree(pgtTree))).toPromise();
+    }
+
+    async loadFactorMaps(): Promise<any> {
+        this.allFactorMaps = [];
+        return this.pcrud.retrieveAll('pgmfm')
+            .pipe(map(f => {
+                this.loadProgress?.increment();
+                this.allFactorMaps.push(f);
+            })).toPromise();
     }
 
     async loadPermissions(): Promise<any> {

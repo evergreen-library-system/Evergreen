@@ -1130,16 +1130,22 @@ function($scope , $q , $routeParams,  egCore , $uibModal , egConfirmDialog , pat
  * Credentials tester
  */
 .controller('PatronVerifyCredentialsCtrl',
-       ['$scope','$routeParams','$location','egCore',
-function($scope,  $routeParams , $location , egCore) {
+       ['$scope','$routeParams','$location','egCore','ngToast',
+function($scope,  $routeParams , $location , egCore , ngToast) {
+    $scope.patronId = null;
     $scope.verified = null;
     $scope.focusMe = true;
+    $scope.mappedFactors = null;
+    $scope.mfaExceptions = null;
+    $scope.allFactors = {};
+    $scope.ingressTypes = [];
 
     // called with a patron, pre-populate the form args
     $scope.initTab('other', $routeParams.id).then(
         function() {
             if ($routeParams.id && $scope.patron()) {
                 $scope.prepop = true;
+                $scope.patronId = $scope.patron().id();
                 $scope.username = $scope.patron().usrname();
                 $scope.barcode = $scope.patron().card().barcode();
             } else {
@@ -1147,8 +1153,70 @@ function($scope,  $routeParams , $location , egCore) {
                 $scope.barcode = '';
                 $scope.password = '';
             }
+
+            egCore.pcrud.retrieveAll('mfaf',{},{atomic : true})
+            .then(function(factors) {
+                angular.forEach(factors, function (f) { $scope.allFactors[f.name()] = f});
+            });
+
+            if ($scope.ingressTypes.length == 0) {
+                egCore.pcrud.retrieveAll('cuat',{},{atomic : true}) .then(function(atypes) {
+                    angular.forEach(atypes, function (t) {
+                        if (t.ehow() && !$scope.ingressTypes.includes(t.ehow())) {
+                            $scope.ingressTypes.push(t.ehow());
+                        }
+                    });
+                    $scope.ingressTypes.sort();
+                });
+            }
         }
     );
+
+    $scope.hasIngressException = function(ingress) {
+        if (!$scope.mfaExceptions) return false;
+        return !!$scope.mfaExceptions.find(e => e.ingress() === ingress);
+    }
+
+    // attempt to add an MFA exception
+    $scope.addException = function(ingress) {
+        var ex = new egCore.idl.aumx();
+        ex.usr($scope.patronId);
+        ex.ingress(ingress);
+        egCore.pcrud.create(ex).then(
+            function() { return $scope.loadFactorsAndExceptions() },
+            function() {
+                ngToast.warning(egCore.strings.ADD_EXCEPTION_FAILED);
+                ex.removed = false;
+            }
+        );
+    }
+
+    // attempt to remove configured MFA exception
+    $scope.removeException = function(ex) {
+        ex.removeAttempted = true;
+        egCore.pcrud.remove(ex).then(
+            function() {
+                ex.removed = true;
+                $scope.mfaExceptions = $scope.mfaExceptions.filter(e => !(e.id() === ex.id()));
+            },
+            function() {
+                ngToast.warning(egCore.strings.REMOVE_EXCEPTION_FAILED);
+                ex.removed = false;
+            }
+        );
+    }
+
+    // attempt to remove configured factor
+    $scope.removeFactor = function(map) {
+        map.removeAttempted = true;
+        egCore.pcrud.remove(map).then(
+            function() { map.removed = true; },
+            function() {
+                ngToast.warning(egCore.strings.REMOVE_FACTOR_FAILED);
+                map.removed = false;
+            }
+        );
+    }
 
     // verify login credentials
     $scope.verify = function() {
@@ -1167,8 +1235,38 @@ function($scope,  $routeParams , $location , egCore) {
                 alert(evt);
             } else if (resp == 1) {
                 $scope.verified = true;
+                $scope.loadFactorsAndExceptions();
             } else {
                 $scope.verified = false;
+            }
+        });
+    }
+
+    $scope.loadFactorsAndExceptions = function () {
+        $scope.mappedFactors = [];
+        $scope.mfaExceptions = [];
+        return egCore.net.request(
+            'open-ils.actor',
+            'open-ils.actor.user.retrieve_id_by_barcode_or_username',
+            egCore.auth.token(), $scope.barcode, $scope.username
+        ).then(function(resp) {
+            if (Number(resp)) {
+                $scope.patronId = resp;
+                egCore.pcrud.search('aumfm',
+                    { usr: resp }, {},
+                    { atomic: true}
+                ).then(function(factors) {
+                    $scope.mappedFactors = factors
+                }).then(function() {
+                    return egCore.pcrud.search('aumx',
+                        { usr: resp }, {},
+                        { atomic: true}
+                    ).then(function(exceptions) {
+                        $scope.mfaExceptions = exceptions.sort((a,b) => {
+                            !a.ingress() ? -1 : a.ingress() < b.ingress() ? -1 : 1;
+                        });
+                    });
+                });
             }
         });
     }

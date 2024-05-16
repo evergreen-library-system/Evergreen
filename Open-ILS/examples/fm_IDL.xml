@@ -4221,6 +4221,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 			<field name="usr" reporter:label="User" reporter:datatype="link"/>
 			<field name="etype" reporter:label="Activity Type" reporter:datatype="link" oils_obj:required="true"/>
 			<field name="event_time" reporter:label="Event Time" reporter:datatype="timestamp"/>
+			<field name="event_data" reporter:label="Event Data" reporter:datatype="text" suppress_controller="open-ils.pcrud open-ils.reporter-store"/>
 		</fields>
 		<links>
 			<link field="usr" reltype="has_a" key="id" map="" class="au"/>
@@ -7386,6 +7387,86 @@ SELECT  usr,
 			</actions>
 		</permacrud>
 	</class>
+	<class id="mfaf" controller="open-ils.cstore open-ils.pcrud" oils_obj:fieldmapper="config::mfa_factor" oils_persist:tablename="config.mfa_factor" reporter:label="MFA Factor" oils_persist:readonly="true">
+		<fields oils_persist:primary="name">
+			<field reporter:label="Name" name="name" reporter:datatype="text" reporter:selector="label" oils_obj:required="true"/>
+			<field reporter:label="Label" name="label" reporter:datatype="text" oils_obj:required="true" oils_persist:i18n="true"/>
+			<field reporter:label="Description" name="description" reporter:datatype="text" oils_obj:required="true" oils_persist:i18n="true"/>
+		</fields>
+		<permacrud xmlns="http://open-ils.org/spec/opensrf/IDL/permacrud/v1">
+			<actions>
+				<retrieve permission="STAFF_LOGIN" global_required="true"/>
+			</actions>
+		</permacrud>
+	</class>
+	<class id="aumx" controller="open-ils.cstore open-ils.pcrud" oils_obj:fieldmapper="actor::usr_mfa_exception" oils_persist:tablename="actor.usr_mfa_exception" reporter:label="MFA User Exception">
+		<fields oils_persist:primary="id" oils_persist:sequence="actor.usr_mfa_exception_id_seq">
+			<field reporter:label="Exception ID" name="id" reporter:datatype="id"/>
+			<field reporter:label="User" name="usr" reporter:datatype="link" oils_obj:required="true"/>
+			<field reporter:label="Ingress" name="ingress" reporter:datatype="text"/>
+		</fields>
+		<links>
+			<link field="usr" reltype="has_a" key="id" map="" class="au"/>
+		</links>
+		<permacrud xmlns="http://open-ils.org/spec/opensrf/IDL/permacrud/v1">
+			<actions>
+				<create permission="ADMIN_MFA">
+					<context link="usr" field="home_ou"/>
+				</create>
+				<retrieve permission="STAFF_LOGIN">
+					<context link="usr" field="home_ou"/>
+				</retrieve>
+				<update permission="ADMIN_MFA">
+					<context link="usr" field="home_ou"/>
+				</update>
+				<delete permission="ADMIN_MFA">
+					<context link="usr" field="home_ou"/>
+				</delete>
+			</actions>
+		</permacrud>
+	</class>
+	<class id="aumfm" controller="open-ils.cstore open-ils.pcrud" oils_obj:fieldmapper="actor::usr_mfa_factor_map" oils_persist:tablename="actor.usr_mfa_factor_map" reporter:label="MFA User Factor Map">
+		<fields oils_persist:primary="id" oils_persist:sequence="actor.usr_mfa_factor_map_id_seq">
+			<field reporter:label="Mapping ID" name="id" reporter:datatype="id"/>
+			<field reporter:label="User" name="usr" reporter:datatype="link" oils_obj:required="true"/>
+			<field reporter:label="Factor" name="factor" reporter:datatype="link" oils_obj:required="true"/>
+			<field reporter:label="Purpose" name="purpose" reporter:datatype="text" oils_obj:required="true"/>
+			<field reporter:label="Time Added" name="add_time" reporter:datatype="timestamp" oils_obj:required="true"/>
+		</fields>
+		<links>
+			<link field="usr" reltype="has_a" key="id" map="" class="au"/>
+			<link field="factor" reltype="has_a" key="name" map="" class="mfaf"/>
+		</links>
+		<permacrud xmlns="http://open-ils.org/spec/opensrf/IDL/permacrud/v1" ignore_object_perms="true">
+			<actions>
+				<retrieve permission="STAFF_LOGIN">
+					<context link="usr" field="home_ou"/>
+				</retrieve>
+				<delete permission="REMOVE_USER_MFA">
+					<context link="usr" field="home_ou"/>
+				</delete>
+			</actions>
+		</permacrud>
+	</class>
+	<class id="pgmfm" controller="open-ils.cstore open-ils.pcrud" oils_obj:fieldmapper="permission::group_mfa_factor_map" oils_persist:tablename="permission.group_mfa_factor_map" reporter:label="MFA Group Factor Map">
+		<fields oils_persist:primary="id" oils_persist:sequence="permission.group_mfa_factor_map_id_seq">
+			<field reporter:label="Mapping ID" name="id" reporter:datatype="id"/>
+			<field reporter:label="Group" name="grp" reporter:datatype="link" oils_obj:required="true"/>
+			<field reporter:label="Factor" name="factor" reporter:datatype="link" oils_obj:required="true"/>
+		</fields>
+		<links>
+			<link field="grp" reltype="has_a" key="id" map="" class="pgt"/>
+			<link field="factor" reltype="has_a" key="name" map="" class="mfaf"/>
+		</links>
+		<permacrud xmlns="http://open-ils.org/spec/opensrf/IDL/permacrud/v1">
+			<actions>
+				<create   permission="ADMIN_MFA" global_required="true"/>
+				<retrieve permission="STAFF_LOGIN" global_required="true"/>
+				<update   permission="ADMIN_MFA" global_required="true"/>
+				<delete   permission="ADMIN_MFA" global_required="true"/>
+			</actions>
+		</permacrud>
+	</class>
 	<class id="ac" controller="open-ils.cstore open-ils.pcrud" oils_obj:fieldmapper="actor::card" oils_persist:tablename="actor.card" reporter:label="Library Card">
 		<fields oils_persist:primary="id" oils_persist:sequence="actor.card_id_seq">
 			<field reporter:label="IsActive?" name="active" reporter:datatype="bool"/>
@@ -8389,6 +8470,8 @@ SELECT  usr,
 			<field reporter:label="Required Permission" name="application_perm" reporter:datatype="text"/>
 			<field reporter:label="Is User Group" name="usergroup" reporter:datatype="bool"/>
 			<field reporter:label="Hold Priority" name="hold_priority" reporter:datatype="int"/>
+			<field reporter:label="MFA Allowed?" name="mfa_allowed" reporter:datatype="bool"/>
+			<field reporter:label="MFA Required?" name="mfa_required" reporter:datatype="bool"/>
 		</fields>
 		<links>
 			<link field="parent" reltype="has_a" key="id" map="" class="pgt"/>

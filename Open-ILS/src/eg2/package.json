@@ -32,6 +32,7 @@
     "@ng-bootstrap/ng-bootstrap": "^14.0.0",
     "@nguniversal/express-engine": "^15.0.0",
     "bootstrap": ">=5.3.3",
+    "angularx-qrcode": "^15.0.1",
     "core-js": "^3.27.0",
     "file-saver": "^2.0.5",
     "material-design-icons-iconfont": "^6.7.0",

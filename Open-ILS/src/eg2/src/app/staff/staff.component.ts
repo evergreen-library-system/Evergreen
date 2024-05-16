@@ -6,6 +6,7 @@ import {NetService} from '@eg/core/net.service';
 import {AccessKeyService} from '@eg/share/accesskey/accesskey.service';
 import {AccessKeyInfoComponent} from '@eg/share/accesskey/accesskey-info.component';
 
+const MFA_PATH = '/staff/mfa';
 const LOGIN_PATH = '/staff/login';
 const WS_BASE_PATH = '/staff/admin/workstation/workstations/';
 const WS_MANAGE_PATH = '/staff/admin/workstation/workstations/manage';
@@ -88,6 +89,17 @@ export class StaffComponent implements OnInit {
         // We lost our authtoken, go back to the login page.
         if (!this.auth.token()) {
             this.router.navigate([LOGIN_PATH]);
+        }
+
+        // No auth checks needed for MFA page.
+        if (url.startsWith(MFA_PATH)) {
+            return;
+        }
+
+        // Provisional tokens require MFA
+        if (this.auth.provisional()) {
+            this.router.navigate([MFA_PATH]);
+            return;
         }
 
         // No workstation checks needed for workstation admin page.

@@ -92,6 +92,9 @@ angular.module('egCoreMod').run(['egStrings', function(s) {
   s.REMOVE_HOLD_SUBSCRIPTIONS = "[% l('Remove selected Hold Groups for user?') %]";
   s.PENALTY_REFRESH_FAILED = "[% l('Penalty Refresh Failed') %]";
   s.PENALTY_REFRESH_SUCCESS = "[% l('Penalty Refresh Succeeded') %]";
+  s.ADD_EXCEPTION_FAILED = "[% l('MFA Exception Addition failed: Permission denied') %]";
+  s.REMOVE_EXCEPTION_FAILED = "[% l('MFA Exception Removal failed: Permission denied') %]";
+  s.REMOVE_FACTOR_FAILED = "[% l('MFA Factor Removal failed: Permission denied') %]";
 }]);
 </script>
 

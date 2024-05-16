@@ -115,6 +115,7 @@ angular.module('egCoreMod')
                 egCore.startup.go().then(
                     function() {
                         if (egCore.auth.user()) {
+                            $scope.mfaAllowed = egCore.auth.mfaAllowed();
                             $scope.op_changed = egCore.auth.OCtoken() ? true : false;
                             $scope.username = egCore.auth.user().usrname();
                             $scope.user_id = egCore.auth.user().id();

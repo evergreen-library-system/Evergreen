@@ -25,6 +25,7 @@ export class StaffLoginComponent implements OnInit {
     routeTo: string;
     pendingXactsDate: Date;
     passwordVisible: boolean;
+    singleFactor = true;
 
     args = {
         username : '',
@@ -101,7 +102,14 @@ export class StaffLoginComponent implements OnInit {
         this.auth.login(this.args).then(
             ok => {
 
-                if (this.auth.workstationState === AuthWsState.NOT_FOUND_SERVER) {
+                if (this.auth.provisional()) {
+                    // The server is requiring MFA. Trigger that UI change.
+                    this.singleFactor = false;
+                    this.router.navigate(['/staff/mfa'], {
+                        queryParamsHandling:'merge',
+                        queryParams: { routeTo : url }
+                    });
+                } else if (this.auth.workstationState === AuthWsState.NOT_FOUND_SERVER) {
                     // User attempted to login with a workstation that is
                     // unknown to the server. Redirect to the WS admin page.
                     // Reset the WS state to avoid looping back to WS removal
@@ -129,6 +137,9 @@ export class StaffLoginComponent implements OnInit {
                 this.loginFailed = true;
             }
         );
+    }
+
+    handleMFA() {
     }
 
     togglePasswordVisibility() {

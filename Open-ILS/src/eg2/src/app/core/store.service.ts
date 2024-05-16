@@ -29,6 +29,8 @@ export class StoreService {
     loginSessionKeys: string[] = [
         'eg.auth.token',
         'eg.auth.time',
+        'eg.auth.token.provisional',
+        'eg.auth.time.provisional',
         'eg.auth.token.oc',
         'eg.auth.time.oc'
     ];

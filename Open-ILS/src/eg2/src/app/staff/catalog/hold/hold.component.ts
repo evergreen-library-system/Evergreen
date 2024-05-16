@@ -76,7 +76,7 @@ export class HoldComponent implements OnInit {
 
     currentUserBarcode: string;
     smsCarriers: ComboboxEntry[];
-    userBarcodeTimeout: number;
+    userBarcodeTimeout: any;
 
     smsEnabled: boolean;
 

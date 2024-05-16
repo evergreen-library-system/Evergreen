@@ -2004,7 +2004,11 @@ INSERT INTO permission.perm_list ( id, code, description ) VALUES
  ( 655, 'MANAGE_SHIPMENT_NOTIFICATION', oils_i18n_gettext(655,
     'Manage shipment notifications', 'ppl', 'description')),
  ( 656,'PATRON_BARRED.override', oils_i18n_gettext(656,
-     'Override the PATRON_BARRED event', 'ppl', 'description'))
+     'Override the PATRON_BARRED event', 'ppl', 'description')),
+ ( 657, 'REMOVE_USER_MFA', oils_i18n_gettext(657,
+     'Remove configured MFA factors for another user', 'ppl', 'description')),
+ ( 658, 'ADMIN_MFA', oils_i18n_gettext(658,
+     'Configure Multi-factor Authentication', 'ppl', 'description'))
 ;
 
 SELECT SETVAL('permission.perm_list_id_seq'::TEXT, 1000);
@@ -24317,4 +24321,146 @@ VALUES (
         'cwst', 'label'
     )
 );
+
+INSERT INTO config.mfa_factor (name, label, description) VALUES
+  ('webauthn', 'Web Authentication API', 'Uses external Public Key credentials to confirm authentication'),
+  ('totp', 'Time-based One-Time Password', 'For use with TOTP applications such as Google Authenticator'),
+  ('email', 'One-Time Password by Email', 'Uses a dedicated MFA email address to confirm authentication'),
+  ('sms', 'One-Time Password by SMS', 'Uses a dedicated MFA phone number and carrier to confirm authentication'),
+  ('static', 'Pre-generated backup passwords', 'Confirms authentication via pre-shared One-Time passwords')
+;
+
+INSERT INTO config.org_unit_setting_type ( name, label, description, datatype, grp, update_perm )
+    VALUES (
+        'auth.mfa_expire_interval',
+        oils_i18n_gettext(
+            'auth.mfa_expire_interval',
+            'Security: MFA recheck interval',
+            'coust',
+            'label'
+        ),
+        oils_i18n_gettext(
+            'auth.mfa_expire_interval',
+            'How long before MFA verification is required again, when MFA is required for a user.',
+            'coust',
+            'description'
+        ),
+        'interval',
+        'sec',
+        658 -- XXX Update this with the ADMIN_MFA permission id if that changes at commit time!!!
+    );
+
+INSERT into action_trigger.hook (key, core_type, description) VALUES
+( 'mfa.send_email', 'au', 'User has requested a One-Time MFA code by email'),
+( 'mfa.send_sms', 'au', 'User has requested a One-Time MFA code by SMS');
+
+INSERT INTO action_trigger.event_definition (active, owner, name, hook, validator, reactor, delay, template)
+VALUES (
+    't', 1, 'Send One-Time Password Email', 'mfa.send_email', 'NOOP_True', 'SendEmail', '00:00:00',
+$$
+[%- USE date -%]
+[%- user = target -%]
+[%- lib = target.home_ou -%]
+To: [%- user_data.email %]
+From: [%- helpers.get_org_setting(target.home_ou.id, 'org.bounced_emails') || lib.email || params.sender_email || default_sender %]
+Date: [%- date.format(date.now, '%a, %d %b %Y %T -0000', gmt => 1) %]
+Reply-To: [%- lib.email || params.sender_email || default_sender %]
+Subject: Your Library One-Time access code
+Auto-Submitted: auto-generated
+
+Dear [% user.first_given_name %] [% user.family_name %],
+
+We will never call to ask you for this code, and make sure you do not share it with anyone calling you directly.
+
+Use this code to continue logging in to your Evergreen account:
+
+One-Time code: [% user_data.otp_code %]
+
+Sincerely,
+[% user_data.issuer %] - [% lib.name %]
+
+Contact your library for more information:
+
+[% lib.name %]
+[%- SET addr = lib.mailing_address -%]
+[%- IF !addr -%] [%- SET addr = lib.billing_address -%] [%- END %]
+[% addr.street1 %] [% addr.street2 %]
+[% addr.city %], [% addr.state %]
+[% addr.post_code %]
+[% lib.phone %]
+$$);
+
+INSERT INTO action_trigger.environment (event_def, path)
+VALUES (currval('action_trigger.event_definition_id_seq'), 'home_ou'),
+       (currval('action_trigger.event_definition_id_seq'), 'home_ou.mailing_address'),
+       (currval('action_trigger.event_definition_id_seq'), 'home_ou.billing_address');
+
+INSERT INTO action_trigger.event_definition (active, owner, name, hook, validator, reactor, delay, template)
+VALUES (
+    't', 1, 'Send One-Time Password SMS', 'mfa.send_sms', 'NOOP_True', 'SendSMS', '00:00:00',
+$$
+[%- USE date -%]
+[%- user = target -%]
+[%- lib = user.home_ou -%]
+From: [%- helpers.get_org_setting(target.home_ou.id, 'org.bounced_emails') || lib.email || params.sender_email || default_sender %]
+To: [%- helpers.get_sms_gateway_email(user_data.carrier,user_data.phone) %]
+Subject: One-Time code
+
+Your [% user_data.issuer %] code is: [%user_data.otp_code %] $$);
+
+INSERT INTO action_trigger.environment (event_def, path)
+VALUES (currval('action_trigger.event_definition_id_seq'), 'home_ou');
+
+
+INSERT INTO config.usr_activity_type (id, ewhat, egroup, label)
+VALUES (31, 'confirm', 'mfa' oils_i18n_gettext(31, 'Generic MFA authentication confirmation', 'cuat', 'label'));
+
+----- Flags used to control OTP calculations -----
+INSERT INTO config.global_flag (name, label, value, enabled) VALUES
+    ('webauthn.mfa.issuer', 'WebAuthn Relying Party name for multi-factor authentication', 'Evergreen WebAuthn', TRUE),
+    ('webauthn.mfa.domain', 'WebAuthn Relying Party domain (optional base domain) for multi-factor authentication', '', TRUE),
+    ('webauthn.mfa.digits', 'WebAuthn challenge size (bytes)', '16', TRUE),
+    ('webauthn.mfa.period', 'WebAuthn challenge timeout (seconds)', '60', TRUE), -- 1 minute for WebAuthn
+    ('webauthn.mfa.multicred', 'If Enabled, allows a user to register multiple multi-factor login WebAuthn verification devices', NULL, TRUE),
+    ('webauthn.login.issuer', 'WebAuthn Relying Party name for single-factor login', 'Evergreen WebAuthn', TRUE),
+    ('webauthn.login.domain', 'WebAuthn Relying Party domain (optional base domain) for single-factor login', '', TRUE),
+    ('webauthn.login.digits', 'WebAuthn single-factor login challenge size (bytes)', '16', TRUE),
+    ('webauthn.login.period', 'WebAuthn single-factor login challenge timeout (seconds)', '60', TRUE),
+    ('webauthn.login.multicred', 'If Enabled, allows a user to register multiple single-factor login WebAuthn verification devices', NULL, TRUE),
+    ('totp.mfa.issuer', 'TOTP Issuer string for multi-factor authentication', 'Evergreen-MFA', TRUE),
+    ('totp.mfa.digits', 'TOTP code length (Google Authenticator supports only 6)', '6', TRUE),
+    ('totp.mfa.algorithm', 'TOTP code generation algorithm (Google Authenticator supports only SHA1)', 'SHA1', TRUE),
+    ('totp.mfa.period', 'TOTP code validity period in seconds  (Google Authenticator supports only 30)', '30', TRUE), -- 30 seconds for totp, but remember, fuzziness!
+    ('totp.login.issuer', 'TOTP Issuer string for single-factor login', 'Evergreen-Login', TRUE),
+    ('totp.login.digits', 'TOTP code length (Google Authenticator supports only 6)', '6', TRUE),
+    ('totp.login.algorithm', 'TOTP code generation algorithm (Google Authenticator supports only SHA1)', 'SHA1', TRUE),
+    ('totp.login.period', 'TOTP code validity period in seconds  (Google Authenticator supports only 30)', '30', TRUE),
+    ('email.mfa.issuer', 'Email Issuer string for multi-factor authentication', 'Evergreen-MFA', TRUE),
+    ('email.mfa.digits', 'Email One-Time code length for multi-factor authentication; max: 8', '6', TRUE),
+    ('email.mfa.algorithm', 'Email One-Time code algorithm for multi-factor authentication: SHA1, SHA256, SHA512', 'SHA1', TRUE),
+    ('email.mfa.period', 'Email One-Time validity period for multi-factor authentication in seconds (default: 30 minutes)', '1800', TRUE), -- 30 minutes for email
+    ('email.login.issuer', 'Email Issuer string for single-factor login', 'Evergreen-Login', TRUE),
+    ('email.login.digits', 'Email One-Time code length for single-factor login; max: 8', '6', TRUE),
+    ('email.login.algorithm', 'Email One-Time code algorithm for single-factor login: SHA1, SHA256, SHA512', 'SHA1', TRUE),
+    ('email.login.period', 'Email One-Time validity period for single-factor login in seconds (default: 30 minutes)', '1800', TRUE),
+    ('sms.mfa.issuer', 'SMS Issuer string for multi-factor authentication', 'Evergreen-MFA', TRUE),
+    ('sms.mfa.digits', 'SMS One-Time code length for multi-factor authentication; max: 8', '6', TRUE),
+    ('sms.mfa.algorithm', 'SMS One-Time code algorithm for multi-factor authentication: SHA1, SHA256, SHA512', 'SHA1', TRUE),
+    ('sms.mfa.period', 'SMS One-Time validity period for multi-factor authentication in seconds (default: 15 minutes)', '900', TRUE), -- 15 minutes for SMS
+    ('sms.login.issuer', 'SMS Issuer string for single-factor login', 'Evergreen-Login', TRUE),
+    ('sms.login.digits', 'SMS One-Time code length for single-factor login; max: 8', '6', TRUE),
+    ('sms.login.algorithm', 'SMS One-Time code algorithm for single-factor login: SHA1, SHA256, SHA512', 'SHA1', TRUE),
+    ('sms.login.period', 'SMS One-Time validity period for single-factor login in seconds (default: 15 minutes)', '900', TRUE)
+;
+
+INSERT INTO actor.passwd_type (code, name) VALUES
+    ('email-mfa', 'Time-base One-Time Password Secret for multi-factor authentication via EMail'),
+    ('email-login', 'Time-base One-Time Password Secret for single-factor login via EMail'),
+    ('sms-mfa', 'Time-base One-Time Password Secret for multi-factor authentication via SMS'),
+    ('sms-login', 'Time-base One-Time Password Secret for single-factor login via SMS'),
+    ('totp-mfa', 'Time-base One-Time Password Secret for multi-factor authentication'),
+    ('totp-login', 'Time-base One-Time Password Secret for single-factor login'),
+    ('webauthn-mfa', 'WebAuthn data for multi-factor authentication'),
+    ('webauthn-login', 'WebAuthn data for single-factor login')
+;
 

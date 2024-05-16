@@ -6,3 +6,8 @@
 #show_password span.material-icons {
    font-size: 21px;
 }
+
+.qrcodeImage {
+    display: flex;
+    flex: 1;
+}

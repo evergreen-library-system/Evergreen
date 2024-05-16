@@ -29,6 +29,13 @@ static long _oilsAuthBlockTimeout = 0;
 static long _oilsAuthBlockCount = 0;
 
 
+/* _mfaEnabledCache is used to cache the state of the answer to the question "is MFA enabled?"
+ * It starts as a 2 in order to signal that the question hasn't been answered, and once answered
+ * it is set to a truthy value of 0 for false, or 1 for true.
+ */
+static int _mfaEnabledCache = 2;
+
+
 /**
 	@brief Initialize the application by registering functions for method calls.
 	@return Zero in all cases.
@@ -605,21 +612,39 @@ static int oilsAuthLoginVerifyPassword(const osrfMethodContext* ctx,
 
 
 /*
-	Adds the authentication token to the user cache.  The timeout for the
-	auth token is based on the type of login as well as (if type=='opac')
-	the org location id.
+	Adds the authentication token to the user cache.  If MFA is enabled for
+	this Evergreen instance the token will start out as "provisional" and not
+	available for general use until the auth_internal app is told to upgrade
+	the session.  If MFA is required for this login, session upgrade happens
+	out of band after which the session is usable as normal.  If MFA is enabled
+	but NOT required for this session, the session is automatically upgraded.
+	The timeout for the auth token is based on the type of login as well as (if
+	type=='opac') the org location id.
+
 	Returns the event that should be returned to the user.
+
 	Event must be freed
 */
 static oilsEvent* oilsAuthHandleLoginOK( osrfMethodContext* ctx, jsonObject* userObj, const char* uname,
 		const char* type, int orgloc, const char* workstation ) {
 
 	oilsEvent* response = NULL;
+    if (2 == _mfaEnabledCache) { // requires a service restart, so safe to cache here
+        jsonObject* mfaEnabled = oilsUtilsQuickReqCtx(
+            ctx,
+            "open-ils.auth_mfa",
+            "open-ils.auth_mfa.enabled", NULL);
+        _mfaEnabledCache = atoi(jsonObjectGetString(mfaEnabled));
+        osrfLogInfo(OSRF_LOG_MARK, 
+            "Caching MFA-enabled status result: %d", _mfaEnabledCache);
+        jsonObjectFree(mfaEnabled);
+    }
 
     jsonObject* params = jsonNewObject(NULL);
     jsonObjectSetKey(params, "user_id", 
         jsonNewNumberObject(oilsFMGetObjectId(userObj)));
     jsonObjectSetKey(params,"org_unit", jsonNewNumberObject(orgloc));
+    jsonObjectSetKey(params,"provisional", jsonNewNumberObject(_mfaEnabledCache));
     jsonObjectSetKey(params, "login_type", jsonNewObject(type));
     if (workstation) 
         jsonObjectSetKey(params, "workstation", jsonNewObject(workstation));
@@ -632,21 +657,57 @@ static oilsEvent* oilsAuthHandleLoginOK( osrfMethodContext* ctx, jsonObject* use
 
     if (authEvt) {
 
+        const jsonObject* evtPayload = jsonObjectGetKeyConst(authEvt, "payload");
+        int is_provisional = (int) jsonObjectGetNumber( jsonObjectGetKeyConst( evtPayload, "provisional" ));
+        const char* token = jsonObjectGetString( jsonObjectGetKeyConst( evtPayload, "authtoken" ));
+
+        if (is_provisional) {
+            params = jsonNewObject(token);
+
+            jsonObject* mfaRequiredObj = oilsUtilsQuickReqCtx(
+                ctx,
+                "open-ils.auth_mfa",
+                "open-ils.auth_mfa.allowed_for_token.provisional", params);
+
+            int mfaRequired = atoi(jsonObjectGetString(mfaRequiredObj));
+            jsonObjectFree(mfaRequiredObj);
+
+            if (!mfaRequired) {
+                jsonObject* upgradeEvt = oilsUtilsQuickReqCtx(
+                    ctx,
+                    "open-ils.auth_internal",
+                    "open-ils.auth_internal.session.upgrade_provisional", params);
+
+                const char* upgradeEvtCode =
+                    jsonObjectGetString(jsonObjectGetKey(upgradeEvt, "textcode"));
+
+                if (strcmp(upgradeEvtCode, OILS_EVENT_SUCCESS)) { // did NOT get a success message
+                    jsonObjectFree(params);
+                    jsonObjectFree(authEvt);
+                    jsonObjectFree(upgradeEvt);
+                    osrfLogError(OSRF_LOG_MARK, 
+                        "Error upgrading provisional session in open-ils.auth_internal: %s", token);
+                    return response; // it's NULL here
+                }
+
+                jsonObjectFree(upgradeEvt);
+                jsonObjectRemoveKey(evtPayload, "provisional"); // so the caller knows it's "real"
+                osrfLogActivity(OSRF_LOG_MARK, "Upgraded provisional session: %s", token );
+            }
+
+            jsonObjectFree(params);
+        }
+
         response = oilsNewEvent2(
             OSRF_LOG_MARK, 
             jsonObjectGetString(jsonObjectGetKey(authEvt, "textcode")),
-            jsonObjectGetKey(authEvt, "payload")   // cloned within Event
+            evtPayload   // cloned within Event
         );
 
         osrfLogActivity(OSRF_LOG_MARK,
             "successful login: username=%s, authtoken=%s, workstation=%s",
             uname,
-            jsonObjectGetString(
-                jsonObjectGetKeyConst(
-                    jsonObjectGetKeyConst(authEvt, "payload"),
-                    "authtoken"
-                )
-            ),
+            token,
             workstation ? workstation : ""
         );
 

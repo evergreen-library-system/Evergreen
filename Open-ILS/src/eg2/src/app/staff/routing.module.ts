@@ -2,6 +2,7 @@ import {NgModule} from '@angular/core';
 import {RouterModule, Routes} from '@angular/router';
 import {StaffResolver} from './resolver.service';
 import {StaffComponent} from './staff.component';
+import {StaffMFAComponent} from './mfa.component';
 import {StaffLoginComponent} from './login.component';
 import {StaffLoginNotAllowedComponent} from './login-not-allowed.component';
 import {StaffSplashComponent} from './splash.component';
@@ -33,6 +34,9 @@ const routes: Routes = [{
     }, {
         path: 'login',
         component: StaffLoginComponent
+    }, {
+        path: 'mfa',
+        component: StaffMFAComponent
     }, {
     // Attempt to login to the staff client w/o the needed permissions
     // or work org unit.

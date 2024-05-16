@@ -14,6 +14,7 @@ PGSQL_COMMON_RPMS = \
 	perl-MARC-Record \
 	perl-MARC-XML \
 	perl-UUID-Tiny \
+	perl-Email-Valid \
 	perl-XML-LibXML \
 	perl-XML-LibXSLT
 
@@ -88,6 +89,8 @@ export CPAN_MODULES = \
 	Template::Plugin::POSIX \
 	SRU \
 	Config::General \
+	Pass::OTP \
+	Authen::WebAuthn \
 	Rose::URI
 
 export CPAN_MODULES_FORCE = \

@@ -39,7 +39,9 @@ CREATE TABLE permission.grp_tree (
 	perm_interval		INTERVAL DEFAULT '3 years'::interval NOT NULL,
 	description		TEXT,
 	application_perm	TEXT,
-	hold_priority       INT   NOT NULL DEFAULT 0
+	hold_priority       INT   NOT NULL DEFAULT 0,
+    mfa_allowed     BOOL NOT NULL DEFAULT FALSE,
+    mfa_required    BOOL NOT NULL DEFAULT FALSE
 );
 CREATE INDEX grp_tree_parent_idx ON permission.grp_tree (parent);
 
@@ -87,6 +89,12 @@ CREATE TABLE permission.usr_grp_map (
 	usr	INT	NOT NULL REFERENCES actor.usr (id) ON DELETE CASCADE DEFERRABLE INITIALLY DEFERRED,
 	grp     INT     NOT NULL REFERENCES permission.grp_tree (id) ON DELETE CASCADE DEFERRABLE INITIALLY DEFERRED,
 		CONSTRAINT usr_grp_once UNIQUE (usr,grp)
+);
+
+CREATE TABLE permission.group_mfa_factor_map (
+    id      SERIAL  PRIMARY KEY,
+    grp     INT     NOT NULL REFERENCES permission.grp_tree (id) ON DELETE CASCADE DEFERRABLE INITIALLY DEFERRED,
+    factor  TEXT    NOT NULL REFERENCES config.mfa_factor (name) ON DELETE CASCADE DEFERRABLE INITIALLY DEFERRED
 );
 
 CREATE OR REPLACE FUNCTION permission.grp_ancestors( INT ) RETURNS SETOF permission.grp_tree AS $$

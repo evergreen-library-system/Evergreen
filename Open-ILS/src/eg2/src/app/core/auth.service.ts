@@ -14,11 +14,15 @@ class AuthUser {
     workstation: string; // workstation name
     token:       string;
     authtime:    number;
+    provisional: boolean;
+    mfaAllowed:  boolean;
 
-    constructor(token: string, authtime: number, workstation?: string) {
+    constructor(token: string, authtime: number, workstation?: string, provisional?: boolean, mfaAllowed?: boolean) {
         this.token = token;
         this.workstation = workstation;
         this.authtime = authtime;
+        this.provisional = provisional;
+        this.mfaAllowed = mfaAllowed;
     }
 }
 
@@ -86,11 +90,19 @@ export class AuthService {
         return this.activeUser ? this.activeUser.authtime : 0;
     }
 
+    provisional(): boolean {
+        return this.activeUser ? this.activeUser.provisional : false;
+    }
+
+    mfaAllowed(): boolean {
+        return this.activeUser ? this.activeUser.mfaAllowed : false;
+    }
+
     // NOTE: NetService emits an event if the auth session has expired.
     // This only rejects when no authtoken is found.
     testAuthToken(): Promise<any> {
 
-        if (!this.activeUser) {
+        if (!this.activeUser?.token) {
             // Only necessary on new page loads.  During op-change,
             // for example, we already have an activeUser.
             this.activeUser = new AuthUser(
@@ -99,20 +111,41 @@ export class AuthService {
             );
         }
 
+        if (!this.activeUser?.token) { // let's try to get a provisional token
+            this.activeUser = new AuthUser(
+                this.store.getLoginSessionItem('eg.auth.token.provisional'),
+                this.store.getLoginSessionItem('eg.auth.time.provisional'),
+                null, true, true
+            );
+        }
+
         if (!this.token()) {
             return Promise.reject('no authtoken');
         }
 
+        if (this.provisional()) {
+            return Promise.reject('provisional authtoken');
+        }
+
         return this.net.request(
             'open-ils.auth',
-            'open-ils.auth.session.retrieve', this.token()).toPromise()
-            .then(user => {
+            'open-ils.auth.session.retrieve', this.token()
+        ).toPromise().then(user => {
             // NetService interceps NO_SESSION events.
             // We can only get here if the session is valid.
-                this.activeUser.user = user;
-                this.listenForLogout();
-                this.sessionPoll();
+            this.activeUser.user = user;
+            this.listenForLogout();
+            this.sessionPoll();
+        }).then(() => {
+            return this.net.request(
+                'open-ils.auth_mfa',
+                'open-ils.auth_mfa.allowed_for_token',
+                this.token()
+            ).toPromise().then(res => {
+                // cache MFA allowed-ness whenever we have to fetch the session
+                this.activeUser.mfaAllowed = Number(res) === 1;
             });
+        });
     }
 
     loginApi(args: AuthLoginArgs, service: string,
@@ -173,6 +206,23 @@ export class AuthService {
         }
     }
 
+    provisionalTokenUpgraded(): Promise<any> {
+        if (this.provisional()) {
+            this.activeUser = new AuthUser(
+                this.store.getLoginSessionItem('eg.auth.token.provisional'),
+                this.store.getLoginSessionItem('eg.auth.time.provisional'),
+                this.activeUser.workstation, false
+            );
+            this.activeUser.mfaAllowed = true;
+            this.store.removeLoginSessionItem('eg.auth.token.provisional');
+            this.store.removeLoginSessionItem('eg.auth.time.provisional');
+            this.store.setLoginSessionItem('eg.auth.token', this.token());
+            this.store.setLoginSessionItem('eg.auth.time', this.authtime());
+        }
+        // Re-fetch the user.
+        return this.testAuthToken();
+    }
+
     // Stash the login data
     handleLoginOk(args: AuthLoginArgs, evt: EgEvent, isOpChange: boolean): Promise<void> {
 
@@ -184,11 +234,18 @@ export class AuthService {
         this.activeUser = new AuthUser(
             evt.payload.authtoken,
             evt.payload.authtime,
-            args.workstation
+            args.workstation,
+            !!evt.payload.provisional,
+            !!evt.payload.provisional
         );
 
-        this.store.setLoginSessionItem('eg.auth.token', this.token());
-        this.store.setLoginSessionItem('eg.auth.time', this.authtime());
+        if (this.provisional()) {
+            this.store.setLoginSessionItem('eg.auth.token.provisional', this.token());
+            this.store.setLoginSessionItem('eg.auth.time.provisional', this.authtime());
+        } else {
+            this.store.setLoginSessionItem('eg.auth.token', this.token());
+            this.store.setLoginSessionItem('eg.auth.time', this.authtime());
+        }
 
         return Promise.resolve();
     }

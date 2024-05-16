@@ -13,6 +13,7 @@ export DEB_PGSQL_COMMON_MODS = \
 	libxml-libxml-perl \
 	libxml-libxslt-perl \
 	libmarc-xml-perl \
+	libmime-base32-perl \
 	libmarc-charset-perl
 
 # NOTE: The 4 '*redis*' packages are also installed by OpenSRF+Redis
@@ -45,6 +46,7 @@ export DEBS = \
 	libdbi1\
 	libemail-simple-perl\
 	libemail-mime-perl\
+	libemail-valid-perl\
 	libexcel-writer-xlsx-perl\
 	libgd-graph3d-perl\
 	libhttp-oai-perl\
@@ -112,6 +114,8 @@ export CPAN_MODULES = \
 	Email::Send \
 	Locale::Country \
 	String::KeyboardDistance \
+	Pass::OTP \
+	Authen::WebAuthn \
 	Text::Levenshtein::Damerau::XS
 
 export CPAN_MODULES_FORCE = \
@@ -120,6 +124,7 @@ export CPAN_MODULES_FORCE = \
 
 export CPAN_MODULES_PGSQL = \
 	String::KeyboardDistance \
+	Pass::OTP \
 	Text::Levenshtein::Damerau::XS
 
 PGSQL_APT_REPO_DEBS = \

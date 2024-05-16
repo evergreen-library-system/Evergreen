@@ -293,6 +293,8 @@ sub login {
                     workstation => $args->{workstation},
                     org_unit => $args->{org}
                 };
+                $trimmed_args->{provisional} = need_mfa($trimmed_args);
+
                 $event = &_auth_internal('user.validate', $trimmed_args);
                 if ($U->event_code($event)) { # non-zero = we didn't succeed
                     # can't recover from invalid user, return right away
@@ -311,6 +313,11 @@ sub login {
     }
     # TODO: send back some form of collected error events
     return OpenILS::Event->new( 'LOGIN_FAILED' );
+}
+
+sub need_mfa {
+    my $auth_params = shift;
+    return 0; # TODO ask open-ils.auth_mfa if we need a second factor
 }
 
 sub _auth_internal {

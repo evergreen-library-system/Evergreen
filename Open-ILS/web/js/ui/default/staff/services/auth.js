@@ -54,6 +54,16 @@ function($q , $timeout , $rootScope , $window , $location , egNet , egHatch , $i
             return this.ws;
         },
 
+        // Is this session provisional?
+        provisional : function() {
+            return this.prov;
+        },
+
+        // Is this session provisional?
+        mfaAllowed : function() {
+            return this._mfa_allowed ? true : false;
+        },
+
         // Listen for logout events in other tabs
         // Current version of phantomjs (unit tests, etc.) does not 
         // support BroadcastChannel, so just dummy it up.
@@ -87,17 +97,25 @@ function($q , $timeout , $rootScope , $window , $location , egNet , egHatch , $i
                     'open-ils.auth.session.retrieve', token)
     
                 .then(function(user) {
-                    if (user && user.classname) {
-                        // authtoken test succeeded
-                        service.user(user);
-                        service.poll();
-                        service.check_workstation(deferred);
-    
-                    } else {
-                        // authtoken test failed
-                        egHatch.clearLoginSessionItems();
-                        deferred.reject(); 
-                    }
+                    egNet.request(
+                        'open-ils.auth_mfa',
+                        'open-ils.auth_mfa.allowed_for_token',
+                        token
+                    ).then(function(res) {
+                        // cache MFA allowed-ness whenever we have to fetch the session
+                        service._mfa_allowed = Number(res) === 1;
+                    }).then(function() {
+                        if (user && user.classname) {
+                            // authtoken test succeeded
+                            service.user(user);
+                            service.poll();
+                            service.check_workstation(deferred);
+                        } else {
+                            // authtoken test failed
+                            egHatch.clearLoginSessionItems();
+                            deferred.reject();
+                        }
+                    });
                 });
             }
 
@@ -293,11 +311,17 @@ function($q , $timeout , $rootScope , $window , $location , egNet , egHatch , $i
         if (!egLovefield) {
             egLovefield = $injector.get('egLovefield');
         }
+        service.prov = evt.payload.provisional; 
         service.ws = args.workstation; 
-        egHatch.setLoginSessionItem('eg.auth.token', evt.payload.authtoken);
-        egHatch.setLoginSessionItem('eg.auth.time', evt.payload.authtime);
+        if (service.prov) {
+            egHatch.setLoginSessionItem('eg.auth.token.provisional', evt.payload.authtoken);
+            egHatch.setLoginSessionItem('eg.auth.time.provisional', evt.payload.authtime);
+        } else {
+            egHatch.setLoginSessionItem('eg.auth.token', evt.payload.authtoken);
+            egHatch.setLoginSessionItem('eg.auth.time', evt.payload.authtime);
+            service.poll();
+        }
         egLovefield.destroySettingsCache(); // force refresh of settings cache on login (LP#1848550)
-        service.poll();
     }
 
     /**

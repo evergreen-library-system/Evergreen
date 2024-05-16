@@ -357,6 +357,8 @@ osrfHash* oilsIDLInit( const char* idl_filename ) {
 							osrfHash* foreign_context = osrfNewHash();
 							osrfHashSet( action_def_hash, foreign_context, "foreign_context");
 
+							const char* local_pkey = osrfHashGet(class_def_hash, "primarykey");
+
 							xmlNodePtr _f = _a->children;
 
 							while(_f) {
@@ -374,7 +376,22 @@ osrfHash* oilsIDLInit( const char* idl_filename ) {
 									// Store pointers to elements already stored
 									// from the <link> aggregate
 									osrfHash* _flink = osrfHashGet( current_links_hash, prop_str );
-									osrfHashSet( _tmp_fcontext, osrfHashGet(_flink, "field"), "fkey" );
+									if ( // virtual field, link on pkey
+										!strcmp(
+											(char*)osrfHashGet(
+												osrfHashGet(
+													current_fields_hash,
+													osrfHashGet(_flink,"field")
+												),
+												"virtual"
+											),
+											"true"
+										)
+									) {
+										osrfHashSet( _tmp_fcontext, local_pkey, "fkey" );
+									} else {
+										osrfHashSet( _tmp_fcontext, osrfHashGet(_flink, "field"), "fkey" );
+									}
 									osrfHashSet( _tmp_fcontext, osrfHashGet(_flink, "key"), "field" );
 									xmlFree( prop_str );
 

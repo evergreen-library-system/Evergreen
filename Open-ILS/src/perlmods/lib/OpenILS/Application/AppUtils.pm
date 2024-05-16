@@ -173,6 +173,18 @@ sub check_user_session {
     return $content;
 }
 
+# retrieves a provisional user session awaiting MFA upgrade
+sub check_provisional_session {
+    my( $self, $user_session ) = @_;
+
+    my $content = $self->simplereq( 
+        'open-ils.auth_internal', 
+        'open-ils.auth_internal.session.retrieve_provisional', $user_session);
+
+    return undef if (!$content) or $self->event_code($content);
+    return $content;
+}
+
 # generic simple request returning a scalar value
 sub simplereq {
     my($self, $service, $method, @params) = @_;
@@ -1591,6 +1603,36 @@ sub get_org_ancestors {
 
     $cache->put_cache("org.ancestors.$org_id", $orgs) if $use_cache;
     return $orgs;
+}
+
+sub get_grp_ancestors {
+    my($self, $grp_id, $use_cache) = @_;
+
+    my ($cache, $grps);
+
+    if ($use_cache) {
+        $cache = OpenSRF::Utils::Cache->new("global", 0);
+        $grps = $cache->get_cache("grp.ancestors.$grp_id");
+        return $grps if $grps;
+    }
+
+    my $grp_list = OpenILS::Utils::CStoreEditor->new->json_query({
+        select => {
+            pgt => [{
+                transform => 'permission.grp_ancestors',
+                column => 'id',
+                result_field => 'id',
+                params => []
+            }],
+        },
+        from => 'pgt',
+        where => {id => $grp_id}
+    });
+
+    $grps = [ map { $_->{id} } @$grp_list ];
+
+    $cache->put_cache("grp.ancestors.$grp_id", $grps) if $use_cache;
+    return $grps;
 }
 
 sub get_org_full_path {
