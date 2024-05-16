@@ -81,7 +81,7 @@ export DEBS = \
 	libuniversal-require-perl\
 	libunix-syslog-perl\
 	libyaz-dev\
-	postgresql-client-15\
+	postgresql-client-16\
 	libsoap-lite-perl\
 	libbz2-dev\
 	libparse-recdescent-perl\
@@ -159,6 +159,12 @@ PGSQL_SERVER_DEBS_15 = \
 	postgresql-plperl-15 \
 	postgresql-server-dev-15
 
+PGSQL_SERVER_DEBS_16 = \
+	$(DEB_PGSQL_COMMON_MODS) \
+	postgresql-16 \
+	postgresql-plperl-16 \
+	postgresql-server-dev-16
+
 # note: some prereqs are repeated in the developer/packager 
 # sections to support building Evergreen packages on servers
 # where Evergreen and its prereqs are not installed.
@@ -229,6 +235,12 @@ install_postgres_server_15:
 	make -f $(DIR)/Makefile.debian DEBS="$(PGSQL_APT_REPO_DEBS)"
 	make -f $(DIR)/Makefile.debian debian_postgresql_repo
 	make -f $(DIR)/Makefile.debian DEBS="$(PGSQL_SERVER_DEBS_15)"
+	make -f $(DIR)/Makefile.common install_cpan_pgsql
+
+install_postgres_server_16:
+	make -f $(DIR)/Makefile.debian DEBS="$(PGSQL_APT_REPO_DEBS)"
+	make -f $(DIR)/Makefile.debian debian_postgresql_repo
+	make -f $(DIR)/Makefile.debian DEBS="$(PGSQL_SERVER_DEBS_16)"
 	make -f $(DIR)/Makefile.common install_cpan_pgsql
 
 # note: if/when grunt-cli is available as a

@@ -616,6 +616,28 @@ make -f Open-ILS/src/extras/Makefile.install postgres-server-ubuntu-jammy-15
 make -f Open-ILS/src/extras/Makefile.install postgres-server-ubuntu-noble-15
 ------------------------------------------------------------------------------
 
+To install PostgreSQL version 16, use the following command for your operating
+system:
+
+[WARNING]
+=========
+PostgreSQL 12+ includes a feature called "JIT" (Just-in-Time compilation).
+Do not turn on Postgres' JIT capabilities. Evergreen's queries, especially complex
+ones used for search, are intentionally tuned for non-JIT execution and JIT has
+been shown to be harmful in some circumstances.
+Recommended minimum tweak to postgresql.conf:
+jit_above_cost = -1
+=========
+
+[source, bash]
+------------------------------------------------------------------------------
+make -f Open-ILS/src/extras/Makefile.install postgres-server-debian-bookworm-16
+make -f Open-ILS/src/extras/Makefile.install postgres-server-debian-bullseye-16
+make -f Open-ILS/src/extras/Makefile.install postgres-server-debian-buster-16
+make -f Open-ILS/src/extras/Makefile.install postgres-server-ubuntu-jammy-16
+make -f Open-ILS/src/extras/Makefile.install postgres-server-ubuntu-noble-16
+------------------------------------------------------------------------------
+
 .Create the Evergreen PostgreSQL user
 
 You need to create a PostgreSQL superuser to create and access the database.
