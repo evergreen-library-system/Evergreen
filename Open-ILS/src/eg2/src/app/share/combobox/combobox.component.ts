@@ -309,6 +309,14 @@ implements ControlValueAccessor, OnInit, AfterViewInit, OnChanges {
     }
 
     ngOnInit() {
+
+        // Make [allowFreeText] a master ON switch for ngbTypeahead
+        // [editable], otherwise we don't get onChange for
+        // selectorChanged propagation
+        if (!this.isEditable && this.allowFreeText) {
+            this.isEditable = this.allowFreeText
+        }
+
         if (this.idlClass) {
             const classDef = this.idl.classes[this.idlClass];
             const pkeyField = classDef.pkey;
