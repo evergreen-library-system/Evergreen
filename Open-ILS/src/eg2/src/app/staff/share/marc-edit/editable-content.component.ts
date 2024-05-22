@@ -205,7 +205,7 @@ implements OnInit, AfterViewInit, OnDestroy {
                 this.suggest = false;
                 break;
 
-            case 'ffld':
+            case 'ffld': {
                 this.applyFFOptions();
                 // these fixed fields can include multiple values (which doesn't work well with combobox) or free text
                 // TODO: remove check for AUT when authorities fixed field data is populated
@@ -214,6 +214,7 @@ implements OnInit, AfterViewInit, OnDestroy {
                     this.suggest = false;
                 }
                 break;
+            }
 
             case 'ind1':
             case 'ind2':
