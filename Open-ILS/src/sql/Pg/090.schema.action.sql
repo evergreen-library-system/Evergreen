@@ -1970,6 +1970,9 @@ BEGIN
             RAISE WARNING 'Ingest action of % on %.record_entry % for queue entry % failed', qe.action, qe.record_type, qe.record, qe.id;
         END IF;
     ELSE
+        IF qe.record_type = 'biblio' THEN
+            PERFORM reporter.simple_rec_update(qe.record, qe.action = 'delete');
+        END IF;
         UPDATE action.ingest_queue_entry SET ingest_time = NOW() WHERE id = qe.id;
     END IF;
 
