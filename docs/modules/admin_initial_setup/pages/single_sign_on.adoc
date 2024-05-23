@@ -36,7 +36,7 @@ However, if a patron navigates directly to the URL
 `+https://<your.evergreen.domain>/eg/opac/login+`, they will be presented
 with a prompt redirecting them to the Single Sign On service:
 
-image::media/sso_only.png[Redirect to Single Sign On]
+image::sso/sso_only.png[Redirect to Single Sign On]
 
 If a location wishes to permit Evergreen-native authentication as well
 as Single Sign On authentication, the Library Setting _Allow both
@@ -44,7 +44,7 @@ Shibboleth and native OPAC authentication_ should be set to TRUE. In
 that case, a patron who navigates to the login page, or to a page
 requiring authentication, will see this:
 
-image:media/sso_and_native.png[Single Sign on and native authentication permitted]
+image:sso/sso_and_native.png[Single Sign on and native authentication permitted]
 
 == Administration
 
