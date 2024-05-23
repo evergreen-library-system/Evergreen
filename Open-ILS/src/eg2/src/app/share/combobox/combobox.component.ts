@@ -619,7 +619,6 @@ implements ControlValueAccessor, OnInit, AfterViewInit, OnChanges {
 
     // Fired by the typeahead to inform us of a change.
     selectorChanged(selEvent: NgbTypeaheadSelectItemEvent) {
-        selEvent.preventDefault();
         this.onChange.emit(selEvent.item);
         this.propagateChange(selEvent.item);
         console.debug('selectorChanged: ', selEvent);
