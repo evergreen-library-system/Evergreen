@@ -30,6 +30,9 @@ EG_BIN_DIR = /openils/bin
 # crontab format:
 # m h dom mon dow   command
 
+# Run the background Vandelay/ACQ import processor every minute
+* * * * *  . ~/.bashrc && $EG_BIN_DIR/background_import_mgr.pl --osrf-config $SRF_CORE --parallel 1
+
 # Run the hold targeter
 */15 * * * *   . ~/.bashrc && $EG_BIN_DIR/hold_targeter.pl --osrf-config $SRF_CORE
 
