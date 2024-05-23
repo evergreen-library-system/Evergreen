@@ -39,7 +39,7 @@ item a default item number of 1.
 The bibliographic record detail page displays library holdings, including the call number, shelving location, and item barcode. Within the
 staff client, the holdings list displays a column next to the item barcode(s) containing two links, *view* and *edit*.
 
-image::media/copy_edit_link_1.jpg[Copy Edit Link]
+image::volcopy_editor/copy_edit_link_1.jpg[Copy Edit Link]
 
 Clicking on the *view* link opens the *Item Status* screen for that specific item.
 
@@ -51,7 +51,7 @@ The *edit* link will only be exposed next to copies when the user has the *UPDAT
 
 Select the checkboxes or use the drop down menus to set the settings you'd like.
 
-image::media/holdings-editor-defaults-2.png[]
+image::volcopy_editor/holdings-editor-defaults-2.png[]
 
 The following settings can be set for the Holdings Details:
 
@@ -99,10 +99,10 @@ You can retrieve records in many ways, including:
 
 . In the Holdings Editor, select the *Defaults* tab.
 +
-image::media/Holdings_Editor_Defaults_Tab.png[Holdings editor defaults tab]
+image::volcopy_editor/Holdings_Editor_Defaults_Tab.png[Holdings editor defaults tab]
 +
 . On the Defaults tab, uncheck the boxes for the field(s) that you wish to hide. It is not necessary to save this screen; changes are saved automatically.
 +
-image::media/Holdings_Editor_Hide_Display_Defaults.png[Holdings editor display defaults with deselected fields]
+image::volcopy_editor/Holdings_Editor_Hide_Display_Defaults.png[Holdings editor display defaults with deselected fields]
 +
 . Select the *Edit* tab; the de-selected fields no longer appear on the holdings editor.
