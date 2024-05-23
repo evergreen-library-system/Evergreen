@@ -272,12 +272,12 @@ implements ControlValueAccessor, OnInit, AfterViewInit, OnChanges {
 
         // determines how selected items display in the <input>, if different from result
         this.formatDisplayString = (result: ComboboxEntry) => {
-            console.debug('formatDisplayString result (input):', result);
+            //console.debug('formatDisplayString result (input):', result);
             const displayField = this.inputFormatField || 'label';
 
             // trim the result string
             const display = result[displayField] || result.id;
-            console.debug('formatDisplayString display (output):', result);
+            //console.debug('formatDisplayString display (output):', result);
             if (!this.labelTrim) {return (display + '');}
             return (display + '').trim();
         };
@@ -565,13 +565,13 @@ implements ControlValueAccessor, OnInit, AfterViewInit, OnChanges {
         this.focused = true;
         this.inputFocused.emit();
         $event.preventDefault();
-        console.debug('onFocus: ', $event);
+        //console.debug('onFocus: ', $event);
     }
 
     onBlur($event) {
         this.focused = false;
 
-        console.debug('onBlur selected started as: ', this.selected);
+        //console.debug('onBlur selected started as: ', this.selected);
         // When the selected value is a string it means we have either
         // no value (user cleared the input) or a free-text value.
 
@@ -613,7 +613,7 @@ implements ControlValueAccessor, OnInit, AfterViewInit, OnChanges {
                 {item: this.selected, preventDefault: () => true});
         }
         this.inputBlurred.emit();
-        console.debug('onBlur selected is now: ', this.selected);
+        //console.debug('onBlur selected is now: ', this.selected);
         this.propagateTouch();
     }
 
@@ -621,7 +621,7 @@ implements ControlValueAccessor, OnInit, AfterViewInit, OnChanges {
     selectorChanged(selEvent: NgbTypeaheadSelectItemEvent) {
         this.onChange.emit(selEvent.item);
         this.propagateChange(selEvent.item);
-        console.debug('selectorChanged: ', selEvent);
+        //console.debug('selectorChanged: ', selEvent);
     }
 
     // Adds matching async entries to the entry list
@@ -735,7 +735,7 @@ implements ControlValueAccessor, OnInit, AfterViewInit, OnChanges {
     };
 
     writeValue(value: ComboboxEntry) {
-        console.debug('writeValue: ', value);
+        //console.debug('writeValue: ', value);
         if (value !== undefined && value !== null) {
             this.startId = value.id;
             this.applySelection();
