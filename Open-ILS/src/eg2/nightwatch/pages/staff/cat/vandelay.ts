@@ -11,14 +11,8 @@ const vandelay: PageObjectModel = {
             selector: '//button[not(@disabled) and contains(text(), "New Queued Authority Record Attribute Definition")]',
             locateStrategy: 'xpath'
         },
-        codeInput: {
-            selector: fmEditorFieldSelector('Code')
-        },
         descriptionInput: {
             selector: fmEditorFieldSelector('Description')
-        },
-        xpathInput: {
-            selector: fmEditorFieldSelector('XPath')
         },
         saveButton: {
             selector: '//button[text()="Save"]',

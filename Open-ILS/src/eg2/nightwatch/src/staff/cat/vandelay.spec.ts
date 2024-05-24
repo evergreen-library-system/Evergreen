@@ -25,11 +25,12 @@ module.exports = {
         navigateToMarcBatchImport(vandelay);
         vandelay.click('@recordDisplayAttributes')
                 .click('@authorityAttributesTab')
-                .click('@newVqradButton')
-                .setValue('@codeInput', 'lccn')
-                .setValue('@descriptionInput', 'LC control number')
-                .setValue('@xpathInput', exampleXpath)
-                .click('@saveButton')
+                .click('@newVqradButton');
+        browser.element.findByLabelText('Code').setValue('lccn');
+        browser.element.findByLabelText('Description').setValue('LC control number');
+        browser.element.findByLabelText('XPath').setValue(exampleXpath);
+        vandelay.click('@saveButton')
+        .pause()
                 .assert.textContains('div.eg-grid-body', exampleXpath);
     },
 
