@@ -18,9 +18,11 @@ module.exports = {
            .click('xpath', '//input[contains(@id, "owner")]')
            // then click the option we want from the dropdown
            .click('xpath', '//button[@class = "dropdown-item active" and contains(./span/text(), "BR1")]')
-           .setValue('xpath', '//input[contains(@id, "name")]', carouselName)
-           .click('xpath', '//input[contains(@placeholder, "Carousel Type")]')
-           .click('xpath', '//button[@class = "dropdown-item" and contains(./span/text(), "Top Circulated Items")]')
+           .setValue('xpath', '//input[contains(@id, "name")]', carouselName);
+
+    // Click the Carousel Type combobox to open the dropdown
+    browser.element.findByLabelText('Carousel Type').click();
+    browser.click('xpath', '//button[@class = "dropdown-item" and contains(./span/text(), "Top Circulated Items")]')
            .setValue('xpath', '//input[contains(@id, "max_items")]', '25')
            .click('xpath', '//button[contains(text(), "Save")]')
            .assert.textContains('eg-grid', carouselName.slice(0, 5), 'Grid has refreshed and is now showing the first part of the carousel name');
