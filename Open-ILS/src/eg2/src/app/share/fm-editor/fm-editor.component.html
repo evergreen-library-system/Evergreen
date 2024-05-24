@@ -191,7 +191,7 @@
 
                 <ng-container *ngSwitchCase="'link'">
                   <eg-combobox
-                    id="{{idPrefix}}-{{field.name}}" name="{{field.name}}"
+                    domId="{{idPrefix}}-{{field.name}}" name="{{field.name}}"
                     [attr.aria-describedby]="field.helpText ? idPrefix+'-'+field.name+'-help' : null"
                     [required]="field.isRequired()"
                     [idlClass]="field.class" [asyncSupportsEmptyTermClick]="true"
