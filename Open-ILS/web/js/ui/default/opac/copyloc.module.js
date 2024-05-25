@@ -89,11 +89,18 @@ function render_adv_copy_locations_new(locations) {
     sel.innerText = '';
 
     // collect any location values from the URL to re-populate the list
+    // first, get any fi:locations from &-separated query params
     let url_selected = new URLSearchParams(window.location.search).get('fi:locations');
+    // next, get any fi:locations from ;-separated query params
+    const fi_location_digit = /\??fi.*locations\=(\d+)/;
+    let semicolon_matches = window.location.search.split(';').filter(qstring => fi_location_digit.test(qstring)).map(qstring => fi_location_digit.exec(qstring)[1]);
     if (url_selected) {
         if (!url_selected.isArray())
             url_selected = [url_selected];
+    } else {
+        url_selected = [];
     }
+    url_selected = url_selected.concat(semicolon_matches);
 
     document.getElementById('adv_chunk_copy_location').classList.remove('hidden');
 
@@ -107,7 +114,7 @@ function render_adv_copy_locations_new(locations) {
     ulist.classList.add("adv_filters");
     // append the new list of locations
     locations.forEach(loc => {
-        const selected = (url_selected && url_selected.indexOf(''+loc.id) > -1) ? true : false;
+        const checked = (url_selected && url_selected.indexOf(''+loc.id) > -1);
 
         const li = document.createElement('li');
         li.innerHTML = `<div class="form-check">
@@ -115,7 +122,7 @@ function render_adv_copy_locations_new(locations) {
                             <input class="form-check-input"
                                    value="${loc.id}"
                                    name="fi:locations"
-                                   selected="${selected}"
+                                   ${checked ? 'checked' : ''}
                                    type="checkbox">
                             ${loc.name}
                           </label>
