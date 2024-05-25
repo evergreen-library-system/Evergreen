@@ -30,8 +30,7 @@ module.exports = {
         browser.element.findByLabelText('Description').setValue('LC control number');
         browser.element.findByLabelText('XPath').setValue(exampleXpath);
         vandelay.click('@saveButton')
-        .pause()
-                .assert.textContains('div.eg-grid-body', exampleXpath);
+                .assert.textContains('tbody.eg-grid-body', exampleXpath);
     },
 
     'Record display attribute displays in queue screen': (browser: NightwatchBrowser) => {
@@ -44,8 +43,8 @@ module.exports = {
                     .click('@uploadButton')
                     .waitForElementVisible('@goToQueueButton', 10_000)
                     .click('@goToQueueButton')
-                    .assert.textContains('div.eg-grid-header-row', 'LC control number')
-                    .assert.textContains('div.eg-grid-body', 'sh 85038796');
+                    .assert.textContains('thead.eg-grid-header', 'LC control number')
+                    .assert.textContains('tbody.eg-grid-body', 'sh 85038796');
     },
 
     'Record display attributes screen passes axe accessibility checks': (browser: NightwatchBrowser) => {
