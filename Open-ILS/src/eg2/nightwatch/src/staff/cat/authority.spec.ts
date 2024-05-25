@@ -19,12 +19,18 @@ module.exports = {
                  .click('@searchResult')
                  .click('@editTab');
         const marcEdit = browser.page.marcEdit();
-        marcEdit.waitForElementVisible('@marcTag450', 15_000)
-                .setValue('@marcTag450', '550')
-                .click('@saveChangesButton')
-                .assert.visible('#eg-toast-container')
-                .setValue('@marcTag550', '450')
-                .click('@saveChangesButton');
+        browser.waitForElementVisible('eg-marc-editor', 15_000);
+        browser.execute(() => {
+            Array.from(document.querySelectorAll('input')).find((field) => field.value === "450").value = "550";
+        });
+
+        marcEdit.click('@saveChangesButton')
+                .assert.visible('#eg-toast-container');
+
+        browser.execute(() => {
+            Array.from(document.querySelectorAll('input')).find((field) => field.value === "450").value = "550";
+        });
+        marcEdit.click('@saveChangesButton');
     },
     'Authority browse screen passes axe accessibility checks': (browser: NightwatchBrowser) => {
         navigateToEgUrl('/eg2/en-US/staff/cat/authority/browse', browser);
