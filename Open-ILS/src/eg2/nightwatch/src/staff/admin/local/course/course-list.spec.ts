@@ -28,16 +28,16 @@ module.exports = {
     },
 
     'Can duplicate courses': (browser: NightwatchBrowser) => {
-        browser.click('eg-grid-header input')
-        .rightClick('eg-grid-body-cell:first-child')
+        browser.click('thead.eg-grid-header input')
+        .rightClick('eg-grid-body-cell a')
         .click('xpath', '//ngb-popover-window//button/span[contains(text(), "Duplicate Selected")]')
         .assert.textContains('eg-grid', courseData[0].name + ' (Copy)')
         .assert.textContains('eg-grid', courseData[1].name + ' (Copy)');
     },
 
     'Can delete courses': (browser: NightwatchBrowser) => {
-        browser.click('eg-grid-header input')
-        .rightClick('eg-grid-body-cell:first-child')
+        browser.click('thead.eg-grid-header input')
+        .rightClick('eg-grid-body-cell a')
         .click('xpath', '//ngb-popover-window//button/span[contains(text(), "Delete Selected")]')
         .assert.textContains('body', 'Deletion of Course was successful');
     }
