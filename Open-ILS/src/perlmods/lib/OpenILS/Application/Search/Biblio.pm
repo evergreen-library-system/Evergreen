@@ -2482,9 +2482,7 @@ sub biblio_search_isbn {
     # so we will set our limit very high and let multiclass.query provide any
     # actual limit
     # XXX: if making this unlimited is deemed important, we might consider
-    # reworking 'open-ils.storage.id_list.biblio.record_entry.search.isbn',
-    # which is functionally deprecated at this point, or a custom call to
-    # 'open-ils.storage.biblio.multiclass.search_fts'
+    # a custom call to 'open-ils.storage.biblio.multiclass.search_fts'
 
     my $isbn_method = 'open-ils.search.biblio.multiclass.query';
     if ($self->api_name =~ m/.staff$/) {

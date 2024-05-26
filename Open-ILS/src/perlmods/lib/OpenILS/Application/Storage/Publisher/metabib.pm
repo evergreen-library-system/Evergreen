@@ -186,51 +186,6 @@ __PACKAGE__->register_method(
     cachable    => 1,
 );
 
-# XXX: this subroutine and its two registered methods are marked for 
-# deprecation, as they do not work properly in 2.x (these tags are no longer
-# normalized in mfr) and are not in known use
-sub isxn_search {
-    my $self = shift;
-    my $client = shift;
-    my $isxn = lc(shift());
-
-    $isxn =~ s/^\s*//o;
-    $isxn =~ s/\s*$//o;
-    $isxn =~ s/-//o if ($self->api_name =~ /isbn/o);
-
-    my $tag = ($self->api_name =~ /isbn/o) ? "'020' OR f.tag = '024'" : "'022'";
-
-    my $fr_table = metabib::full_rec->table;
-    my $bib_table = biblio::record_entry->table;
-
-    my $sql = <<"    SQL";
-        SELECT  DISTINCT f.record
-          FROM  $fr_table f
-            JOIN $bib_table b ON (b.id = f.record)
-          WHERE (f.tag = $tag)
-            AND f.value LIKE ?
-            AND b.deleted IS FALSE
-    SQL
-
-    my $list = metabib::full_rec->db_Main->selectcol_arrayref($sql, {}, "$isxn%");
-    $client->respond($_) for (@$list);
-    return undef;
-}
-__PACKAGE__->register_method(
-    api_name    => 'open-ils.storage.id_list.biblio.record_entry.search.isbn',
-    no_tz_force => 1,
-    method      => 'isxn_search',
-    api_level   => 1,
-    stream      => 1,
-);
-__PACKAGE__->register_method(
-    api_name    => 'open-ils.storage.id_list.biblio.record_entry.search.issn',
-    no_tz_force => 1,
-    method      => 'isxn_search',
-    api_level   => 1,
-    stream      => 1,
-);
-
 sub metarecord_copy_count {
     my $self = shift;
     my $client = shift;
