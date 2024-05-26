@@ -1,0 +1,67 @@
+BEGIN;
+
+SELECT plan(9);
+
+-- Tests for search.calculate_visibility_attribute
+
+SELECT(is(
+    (SELECT (search.calculate_visibility_attribute(321, 'owning_lib') & 321)),
+    321,
+    'bitwise comparison of the value and the calculated attr integer matches'
+));
+
+SELECT(isnt(
+    (SELECT (search.calculate_visibility_attribute(175, 'owning_lib') & 321)),
+    321,
+    'bitwise comparison does not match if you pass in a different integer'
+));
+
+SELECT(is(
+    (SELECT (search.calculate_visibility_attribute(321, 'owning_lib') >> 28)),
+    1,
+    'shifting the integer right 28 bits returns the attribute: 1 (owning_lib)'
+));
+
+SELECT(is(
+    (SELECT (search.calculate_visibility_attribute(321, 'owning_lib') & (1 << 28))),
+    (1 << 28),
+    'bitwise comparison of the attr and the calculated attr integer matches'
+));
+
+SELECT(isnt(
+    (SELECT (search.calculate_visibility_attribute(321, 'circ_lib') & (1 << 28))),
+    (1 << 28),
+    'bitwise comparison does not match if you pass in a different attr'
+));
+
+-- Tests for search.calculate_visibility_attribute_list
+
+SELECT(ok(
+    search.calculate_visibility_attribute_list('owning_lib', '{101, 123}') @@
+      search.calculate_visibility_attribute(101, 'owning_lib')::text::query_int,
+    'intarray matches a query_int for an attr+value we provided'
+));
+
+SELECT(ok(
+    search.calculate_visibility_attribute_list('owning_lib', '{101, 123}') @@
+      search.calculate_visibility_attribute(123, 'owning_lib')::text::query_int,
+    'intarray matches a query_int for an attr+value we provided'
+));
+
+SELECT(is(
+    (search.calculate_visibility_attribute_list('owning_lib', '{101, 123}') @@
+      search.calculate_visibility_attribute(150, 'owning_lib')::text::query_int),
+    FALSE,
+    'intarray does not match a different value of the same attr'
+));
+
+SELECT(is(
+    (search.calculate_visibility_attribute_list('owning_lib', '{101, 123}') @@
+      search.calculate_visibility_attribute(123, 'circ_lib')::text::query_int),
+    FALSE,
+    'intarray does not match a different attr of the same value'
+));
+
+-- Finish the tests and clean up.
+SELECT * FROM finish();
+ROLLBACK;

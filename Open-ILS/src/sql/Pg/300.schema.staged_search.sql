@@ -105,6 +105,29 @@ CREATE OR REPLACE FUNCTION search.facets_for_metarecord_set(ignore_facet_classes
     WHERE rownum <= (SELECT COALESCE((SELECT value::INT FROM config.global_flag WHERE name = 'search.max_facets_per_field' AND enabled), 1000));
 $$ LANGUAGE SQL;
 
+/*
+search.calculate_visibility_attribute returns a 4-byte (32-bit) integer that
+represents both a visibility attribute and its value. The attribute (for example,
+item status or bib source) is recorded in the 4 leftmost bits.  The value can
+take up the remaining 28 bits.
+
+Bibliographic attributes aka "b" attrs (like bib_source) are not used in the same
+context as item attributes aka "c" attrs (like owning_lib), so it's okay to re-use
+the same number to represent two different attributes, as long as one is a "b" attr
+and one is a "c" attr.
+
+One way to use these integers is to compare them using bitwise operators.  For
+example, if you have the integer 1073741837:
+  * You can shift it right 28 bits to see which attribute it is: 1073741837 >> 28,
+    which is 4: the "location" attr.
+  * You can subtract (4 << 28) from it to see the value: 1073741837 - ( 4 << 28 ) = 13,
+    so the value is 13.
+  * You can also use a bitwise AND operator to check if it is a particular value,
+    without even knowing which attr it is: 1073741837 & 13 = 13, so the value
+    is a match!
+
+For more information, see docs/TechRef/PureSQLSearch.adoc.
+*/
 CREATE OR REPLACE FUNCTION search.calculate_visibility_attribute ( value INT, attr TEXT ) RETURNS INT AS $f$
 SELECT  ((CASE $2
 
