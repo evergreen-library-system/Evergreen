@@ -90,14 +90,14 @@
 
 <ng-template #locationTemplate
     let-field="field" let-record="record">
-  <eg-multi-select idlClass="acpl" linkedLibraryLabel="owning_lib"
+  <eg-multi-select idlClass="acpl" linkedLibraryLabel="owning_lib" domId="{{field.idlClass}}-{{field.name}}"
                    [startValue]="record['copy_location_filter']()"
                    (onChange)="record['copy_location_filter']($event)">
   </eg-multi-select>
 </ng-template>
 <ng-template #orgTemplate
     let-field="field" let-record="record">
-  <eg-multi-select idlClass="aou"
+  <eg-multi-select idlClass="aou" domId="{{field.idlClass}}-{{field.name}}"
                    [startValue]="record['owning_lib_filter']()"
                    (onChange)="record['owning_lib_filter']($event)">
   </eg-multi-select>

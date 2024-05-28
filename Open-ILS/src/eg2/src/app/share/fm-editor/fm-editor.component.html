@@ -37,7 +37,9 @@
       <ng-container *ngFor="let field of fields">
       <div class="form-group row" [ngClass]="field.name">
         <div class="col-lg-3">
-          <label class="form-label" for="{{idPrefix}}-{{field.name}}">{{field.label}}</label>
+
+          <label *ngIf="inputType(field) !== 'template'" class="form-label" for="{{idPrefix}}-{{field.name}}">{{field.label}}</label>
+          <label *ngIf="inputType(field) === 'template'" class="form-label" for="{{field.idlClass}}-{{field.name}}">{{field.label}}</label>
           <eg-help-popover placement="end" *ngIf="field.helpText" helpText="{{field.helpTextValue}}"></eg-help-popover>
           <ng-container *ngIf="isSafeToNull(field)">
             <br />(<a (click)="setToNull(field)" href='javascript:;'><span i18n>Unset</span></a>)
@@ -100,7 +102,7 @@
 
                 <ng-container *ngSwitchCase="'org_unit'">
                   <eg-org-select
-                    domId="{{idPrefix}}-{{field.name}}"
+                    [domId]="idPrefix+'-'+field.name"
                     [attr.aria-describedby]="field.helpText ? idPrefix+'-'+field.name+'-help' : null"
                     persistKey="{{field.persistKey}}"
                     [limitPerms]="modePerms[mode]"
