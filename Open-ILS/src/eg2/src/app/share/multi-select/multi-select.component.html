@@ -5,14 +5,14 @@
       <div class="col-5">
         <eg-item-location-select (entryChange)="valueSelected($event)"
           [contextOrgId]="acplContextOrgId" [disabled]="disabled"
-          [includeDescendants]="acplIncludeDescendants">
+          [includeDescendants]="acplIncludeDescendants" [domId]="domId">
         </eg-item-location-select>
       </div>
       <div class="col-5">
         <label for="context_library" class="form-label" i18n>Owned by</label>
         <eg-org-select
           [applyDefault]="true" [disabled]="disabled"
-          (onChange)="acplContextOrgId = $event.id()">
+          (onChange)="acplContextOrgId = $event.id()" domId="context_library">
         </eg-org-select>
         
         <div class="form-check">
