@@ -4,25 +4,15 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2015-02-27 11:41-0400\n"
-"PO-Revision-Date: 2013-12-27 09:44+0000\n"
+"PO-Revision-Date: 2024-05-29 00:50+0000\n"
 "Last-Translator: TZ <tigran@flib.sci.am>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2023-05-05 04:45+0000\n"
-"X-Generator: Launchpad (build 90e2150bef31b411d7bae5c4032c7e320fcaaec8)\n"
+"X-Launchpad-Export-Date: 2024-05-30 06:24+0000\n"
+"X-Generator: Launchpad (build a60fb269857abd7169036a2da5afd37a6a1d41e8)\n"
 "X-Accelerator-Marker: &\n"
-
-#: common.cancel.label
-msgctxt "common.cancel.label"
-msgid "Cancel"
-msgstr "Չեղարկել"
-
-#: cat.opac.cancel
-msgctxt "cat.opac.cancel"
-msgid "Cancel"
-msgstr "Չեղարկել"
 
 #: common.exception
 msgid ""
@@ -52,6 +42,11 @@ msgstr "Լավ"
 #: common.ok.accesskey
 msgid "O"
 msgstr "O"
+
+#: common.cancel.label
+msgctxt "common.cancel.label"
+msgid "Cancel"
+msgstr "Չեղարկել"
 
 #: common.cancel.accesskey
 msgctxt "common.cancel.accesskey"
@@ -155,6 +150,11 @@ msgstr "Հետ ջնջել գրառումը"
 #: cat.opac.undelete
 msgid "Undelete"
 msgstr "Հետ ջնջել"
+
+#: cat.opac.cancel
+msgctxt "cat.opac.cancel"
+msgid "Cancel"
+msgstr "Չեղարկել"
 
 #: cat.opac.record_deleted
 msgid "Record deleted."
@@ -1537,12 +1537,3 @@ msgstr "Բացակա թույլատվություն %1$s"
 #: menu.cmd_server_admin_floating_groups.tab
 msgid "Floating Groups"
 msgstr "Լողացող խմբեր"
-
-#~ msgid "Ok"
-#~ msgstr "Լավ"
-
-#~ msgid "Cancel"
-#~ msgstr "Չեղյալ անել"
-
-#~ msgid "C"
-#~ msgstr "C"

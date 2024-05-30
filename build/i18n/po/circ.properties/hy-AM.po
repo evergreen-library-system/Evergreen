@@ -4,14 +4,14 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2017-08-15 16:41-0400\n"
-"PO-Revision-Date: 2017-08-20 08:08+0000\n"
+"PO-Revision-Date: 2024-05-29 00:50+0000\n"
 "Last-Translator: TZ <tigran@flib.sci.am>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2023-05-05 04:35+0000\n"
-"X-Generator: Launchpad (build 90e2150bef31b411d7bae5c4032c7e320fcaaec8)\n"
+"X-Launchpad-Export-Date: 2024-05-30 06:03+0000\n"
+"X-Generator: Launchpad (build a60fb269857abd7169036a2da5afd37a6a1d41e8)\n"
 "X-Accelerator-Marker: &\n"
 
 #: staff.circ.alert
@@ -2102,39 +2102,3 @@ msgstr "Տրանզիտ պատճենի վիճակի հաղորդագրությո�
 msgid "This item is in status %1$s, additional staff action may be required."
 msgstr ""
 "Այս նյութի կարգավիճակն է %1$s, կպահանջվի աշխատակազմի լրացուցիչ գործողություն։"
-
-#~ msgid "Mis-scan or non-cataloged item.  Checkout as a pre-cataloged item?"
-#~ msgstr "Սխալ սկան կամ չմուտքագրված նյութ: Սպասարկե՞լ որպես քարտագրված նյութ:"
-
-#~ msgid "Abort Transit then Checkout"
-#~ msgstr "Վիժեցրու տրանզիտը ապա դուրս տուր"
-
-#~ msgid "Are you sure sure you want to delete these items? %1$s"
-#~ msgstr "Վստա՞հ ես որ ցանկանում ես ջնջել այս նյութերը %1$s"
-
-#~ msgid ""
-#~ "You must delete all the copies on the volume before you may delete the "
-#~ "volume itself."
-#~ msgstr "Պետք է ջնջես հատորի բոլոր օրինակները, մինչ հատորը ջնջելը:"
-
-#~ msgid "Volumes deleted."
-#~ msgstr "Հատորները ջնջվել են"
-
-#~ msgid "Are you sure you would like to abort transits for copies: %1$s?"
-#~ msgstr "Վստա՞հ ես որ կցանկանաիր վիժեցնել այս օրինակների տեղափոխումը"
-
-#~ msgid "Aborting Transits"
-#~ msgstr "Տեղափոխումների վիժեցում"
-
-#~ msgid ""
-#~ "This item was no longer in transit at the time of the abort.  Perhaps this "
-#~ "happened from a stale display?"
-#~ msgstr ""
-#~ "Վիժեցման ժամանակ այս նյութը արդեն տեղափոխման մեջ չեր: Հավանաբար սա պատահել է "
-#~ "սառեցված արտածման արդյունքում:"
-
-#~ msgid "Transit not likely aborted."
-#~ msgstr "Ցանկալի չէ դադարեցնել տեխափոխումը"
-
-#~ msgid "Hold Note(s)"
-#~ msgstr "Պահման նշում(ներ)"

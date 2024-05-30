@@ -7,15 +7,15 @@ msgid ""
 msgstr ""
 "Project-Id-Version: evergreen\n"
 "Report-Msgid-Bugs-To: FULL NAME <EMAIL@ADDRESS>\n"
-"POT-Creation-Date: 2023-05-04 14:52+0000\n"
-"PO-Revision-Date: 2017-07-29 10:53+0000\n"
+"POT-Creation-Date: 2024-05-30 02:13+0000\n"
+"PO-Revision-Date: 2024-05-29 00:50+0000\n"
 "Last-Translator: TZ <tigran@flib.sci.am>\n"
 "Language-Team: Armenian <hy@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2023-05-05 04:51+0000\n"
-"X-Generator: Launchpad (build 90e2150bef31b411d7bae5c4032c7e320fcaaec8)\n"
+"X-Launchpad-Export-Date: 2024-05-30 06:04+0000\n"
+"X-Generator: Launchpad (build a60fb269857abd7169036a2da5afd37a6a1d41e8)\n"
 
 #. (i18n_vac)
 #: ../../Open-ILS/src/templates/conify/global/acq/edi_account.tt2:54
@@ -1660,15 +1660,3 @@ msgstr "mfhd"
 #: ../../Open-ILS/src/templates/conify/global/config/best_hold_order.tt2:28
 msgid "or"
 msgstr "կամ"
-
-#~ msgid "Copy Location Order"
-#~ msgstr "Պատճեի տեղաբաշխման պատվեր"
-
-#~ msgid "Copy Locations"
-#~ msgstr "Պատճեի տեղաբաշխումներ"
-
-#~ msgid "Copy Location Groups"
-#~ msgstr "Պատճենի տեղաբաշխման խմբերը"
-
-#~ msgid "Copy Location Group"
-#~ msgstr "Օրինակի տեղաբաշխման խումբ"

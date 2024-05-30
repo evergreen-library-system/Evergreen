@@ -8,14 +8,14 @@ msgstr ""
 "Project-Id-Version: evergreen\n"
 "Report-Msgid-Bugs-To: FULL NAME <EMAIL@ADDRESS>\n"
 "POT-Creation-Date: 2018-08-15 11:29-0400\n"
-"PO-Revision-Date: 2016-10-20 13:10+0000\n"
+"PO-Revision-Date: 2024-05-29 00:50+0000\n"
 "Last-Translator: Anahi Valdez <avaldez@emeralddata.net>\n"
 "Language-Team: Spanish <es@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2023-05-05 04:35+0000\n"
-"X-Generator: Launchpad (build 90e2150bef31b411d7bae5c4032c7e320fcaaec8)\n"
+"X-Launchpad-Export-Date: 2024-05-30 06:02+0000\n"
+"X-Generator: Launchpad (build a60fb269857abd7169036a2da5afd37a6a1d41e8)\n"
 
 #: bib.no_marc
 msgid "No MARC Record"
@@ -2450,60 +2450,3 @@ msgstr "Elementos:"
 #: staff.cat.bib_brief.items.available.tooltip
 msgid "%1$s available"
 msgstr "% 1 $s disponibles"
-
-#~ msgid "Volumes deleted."
-#~ msgstr "Volúmenes eliminados"
-
-#~ msgid "Record ID = %1$s"
-#~ msgstr "Registre ID = %1$s"
-
-#~ msgid ""
-#~ "You must delete all the copies on the volume before you may delete the "
-#~ "volume itself."
-#~ msgstr ""
-#~ "Debe borrar todas las copias en el volumen antes de que pueda borrar el "
-#~ "volumen."
-
-#~ msgctxt "staff.cat.copy_editor.field.floating.yes_or_true"
-#~ msgid "Yes"
-#~ msgstr "Sí"
-
-#~ msgctxt "staff.cat.copy_editor.field.floating.no_or_false"
-#~ msgid "No"
-#~ msgstr "No"
-
-#~ msgid "Record: %1$s"
-#~ msgstr "Registro: %1$s"
-
-#~ msgid "Holds transferred."
-#~ msgstr "Apartados transferidos."
-
-#~ msgid "Merge these records? (Select the \"lead\" record first)"
-#~ msgstr ""
-#~ "¿Combinar estos registros? (Seleccione el registro \"principal\" primero)"
-
-#~ msgid "Merge"
-#~ msgstr "Combinar"
-
-#~ msgid "Lead"
-#~ msgstr "Principal"
-
-#~ msgid "Lead Record? # %1$s"
-#~ msgstr "¿Registro Principal? # %1$s"
-
-#~ msgctxt "staff.cat.record_buckets.merge_records.cancel_button.label"
-#~ msgid "Cancel"
-#~ msgstr "Cancelar"
-
-#~ msgctxt "staff.cat.record_buckets.merge_records.cancel_button.accesskey"
-#~ msgid "C"
-#~ msgstr "C"
-
-#~ msgid "Records were successfully merged."
-#~ msgstr "Los registros fueron combinados."
-
-#~ msgid "Merge Aborted"
-#~ msgstr "Combinación Abortada"
-
-#~ msgid "Call Numbers"
-#~ msgstr "Números De Llamada"
