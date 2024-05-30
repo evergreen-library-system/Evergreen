@@ -1,4 +1,4 @@
-= Evergreen 3.13 Beta Release Notes =
+= Evergreen 3.13 Release Notes =
 :toc:
 :numbered:
 :toclevels: 3
