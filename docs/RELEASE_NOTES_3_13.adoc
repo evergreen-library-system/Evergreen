@@ -6,12 +6,34 @@
 == Upgrade notes ==
 
 * The fix for https://bugs.launchpad.net/evergreen/+bug/2040514[Bug 2040501] requires two new Perl modules for Evergreen: `Net::SFTP::Foreign` and `IO::Pty`.
+* The new staff client logos added in https://bugs.launchpad.net/evergreen/+bug/2049657[Bug 2049657] live in a different directory. OPAC customizations that includethe Evergreen logo should update to the new SVG files:
+** Open-ILS/web/images/evergreen-logo.svg
+** Open-ILS/web/images/evergreen-logo-white.svg
+** Open-ILS/web/images/evergreen-round-logo.svg
 
 == New Features ==
 
 :leveloffset: +2
 
 = Accessibility = 
+
+== SVG Logos in Staff Client ==
+
+The Evergreen logo images have been updated to the SVG format for clarity and
+improved support for viewing on dark backgrounds (i.e. forced colors mode). 
+
+https://bugs.launchpad.net/evergreen/+bug/2049657[Bug 2049657]
+
+=== Developer Notes ===
+
+Paths to the Evergreen logo files have changed. OPAC customizations that include
+the Evergreen logo should update to the new SVG files:
+
+  * Open-ILS/web/images/evergreen-logo.svg
+  * Open-ILS/web/images/evergreen-logo-white.svg
+  * Open-ILS/web/images/evergreen-round-logo.svg
+
+== Accessibility Miscellaneous ==
 
 Numerous accessibility bugfixes, including the following:
 
@@ -28,8 +50,9 @@ Numerous accessibility bugfixes, including the following:
 * Makes Angular nav bar responsive (https://bugs.launchpad.net/evergreen/+bug/1945498[Bug 1945498])
 * Adds skip link for Angular staff navbar (https://bugs.launchpad.net/evergreen/+bug/2017034[Bug 2017034])
 * Matches card tabs' active color to card background (https://bugs.launchpad.net/evergreen/+bug/2059046[Bug 2059046])
-* Fixes color contrast in printer settings warnings. (https://bugs.launchpad.net/evergreen/+bug/2060316[Bug 2060316])
+* Fixes color contrast in printer settings warnings (https://bugs.launchpad.net/evergreen/+bug/2060316[Bug 2060316])
 * Refactors Shelving Location Groups Admin for accessibility (https://bugs.launchpad.net/evergreen/+bug/2042879[Bug 2042879])
+* Fixes an accessibility issue in staff client forms (https://bugs.launchpad.net/evergreen/+bug/2067115[Bug 2067115])
 
 = Acquisitions =
 
@@ -107,6 +130,12 @@ Angularized the Local Administration -> Circulation Policies interface, includin
 * Displays Org Unit ID in Org Config interface. (https://bugs.launchpad.net/evergreen/+bug/2051879[Bug 2051879])
 * Fixes test failure in Angular staff client (https://bugs.launchpad.net/evergreen/+bug/2053245[Bug 2053245])
 * Fix bug that could cause the Cash Reports page to display payments for the wrong day. (https://bugs.launchpad.net/evergreen/+bug/2051599[Bug 2051599])
+* Recommendation to disable just-in-time feature of Postgres 12 (https://bugs.launchpad.net/evergreen/+bug/2042158[Bug 2042158])
+* Fix for errant comma in opensrf.xml redis configuration (https://bugs.launchpad.net/evergreen/+bug/2065817[Bug 2065817])
+* Fixes for combobox issues introduced in 3.13-beta features (https://bugs.launchpad.net/evergreen/+bug/2066934[Bug 2066934])
+* Update to Queued Ingest processing (https://bugs.launchpad.net/evergreen/+bug/2066981[Bug 2066981])
+* Fix for combobox inputs in admin interfaces (https://bugs.launchpad.net/evergreen/+bug/2067115[Bug 2067115])
+* Fix for Did You Mean searches taking too long (https://bugs.launchpad.net/evergreen/+bug/2059974[Bug 2059974])
 
 = Architecture =
 
@@ -114,7 +143,7 @@ Angularized the Local Administration -> Circulation Policies interface, includin
 
 The IDL (fm_IDL.xml) has undergone improvement and clean up.
 
-More fields have been marked required.  Required fields are that those that come from a database table, have a "NOT NULL" constraint in the schema, and do not have a default value assigned in the database.
+More fields have been marked required.  Required fields are those that come from a database table, have a "NOT NULL" constraint in the schema, and do not have a default value assigned in the database.
 
 This change has the advantage of making it easier for the Angular staff client to identify required fields and prevent bad data from being entered in many interfaces.
 
@@ -227,7 +256,7 @@ Adds the following new Library Settings for example and/or regex validation for 
 
 == Improve Button Colors in Staff Client ==
 
-Yellow is no longer used as a button color in the staff client for normal actions such as closing dialogs that do not involve a condition that actually requrires a warning.
+Yellow is no longer used as a button color in the staff client for normal actions such as closing dialogs that do not involve a condition that actually requires a warning.
 
 Instead, light grey is used as a default color for buttons that do secondary actions, with a variant that includes red upon hover or activation for actions that remove data or clear form input.
 
@@ -241,11 +270,11 @@ The `btn-warning` CSS class should be avoided in the staff interface unless need
 
 A new dropdown is available when in-scope, including globally available, Library Groups are present.  In-scope Shelving Location Groups can also optionally be presented in this dropdown.  Scoping of Library Groups and Shelving Location Groups, in this interface component, is based on and effectively replaces the selected organizational unit, such that the Library Group or Shelving Location Group takes the place of a branch of the organizational hierarchy for location filtering.
 
-When a Library Group or Shelving Location Group is seleced from this new component, specific Shelving Location selection is disabled because those filtering axes are mutually exclusive.
+When a Library Group or Shelving Location Group is selected from this new component, specific Shelving Location selection is disabled because those filtering axes are mutually exclusive.
 
 === Enabling and disabling Shelving Location Group inclusion ===
 
-This developement adds a new Global Flag called `staff.search.shelving_location_groups_with_lassos`  ("Staff Catalog Search: Display shelving location groups with library groups").  If disabled, Shelving Location Groups will not be included in new filter dropdown.  This is provided as a way to entirely separate Shelving Location Groups from this interface change in future parallel development, if desired, on an instance-by-instance basis.
+This development adds a new Global Flag called `staff.search.shelving_location_groups_with_lassos`  ("Staff Catalog Search: Display shelving location groups with library groups").  If disabled, Shelving Location Groups will not be included in new filter dropdown.  This is provided as a way to entirely separate Shelving Location Groups from this interface change in future parallel development, if desired, on an instance-by-instance basis.
 
 https://bugs.launchpad.net/evergreen/+bug/1949109[Bug 1949109]
 
@@ -266,7 +295,7 @@ https://bugs.launchpad.net/evergreen/+bug/1949109[Bug 1949109]
 
 == Creating carousels from item bucket or item status ==
 
-The item status interfaces has a new option: "Create Carousel from Selected Items".  The item bucket interface has a new option: "Create Carousel from Bucket". Both of these options allow users to create carousels, which can later be edited as needed in the Carousels Admin interface.
+The item status interface has a new option: "Create Carousel from Selected Items".  The item bucket interface has a new option: "Create Carousel from Bucket". Both of these options allow users to create carousels, which can later be edited as needed in the Carousels Admin interface.
 
 One use case for the new item bucket interface is to allow libraries to showcase existing item buckets that they have created for a holiday, program, or display.
 
@@ -344,7 +373,7 @@ This work includes a SIP Filters tool which allows an administrator to choose to
 * Allow Windows users to generate the Evergreen manual locally. (https://bugs.launchpad.net/evergreen/+bug/1930099[Bug 1930099])
 * Adds documentation for the Angular staff catalog, based on documentation produced by Indiana Evergreen.
 * Fixes issue where Reports interface would not load if the BitWarden browser plugin is installed (https://bugs.launchpad.net/evergreen/+bug/2052567[Bug 2052567])
-
+* Fixes spelling error in new Reports interface (https://bugs.launchpad.net/evergreen/+bug/2066490[Bug 2066490])
 
 :leveloffset: 0
 
@@ -406,7 +435,15 @@ We would also like to thank the following individuals who contributed code, tran
 
 We also thank the following organizations whose employees contributed patches:
 
+* Bibliomation Inc.
+* CW MARS
 * Equinox Open Library Initiative
 * Georgia Public Library Service (PINES)
+* King County Library System
+* MOBIUS
+* NC Cardinal
+* NOBLE
+* Princeton University
+* Sigio
 
 We regret any omissions.  If a contributor has been inadvertently missed, please open a bug at http://bugs.launchpad.net/evergreen/ with a correction.
