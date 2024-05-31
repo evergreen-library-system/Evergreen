@@ -131,7 +131,7 @@ Requested formats are listed in the _Holdable Part_ column in hold records. Use 
 
 After a successful hold placement, staff have the option to place another hold on the same title by clicking the link _Place another hold for this title_.  This returns to the hold screen, where a different patron's information can be entered.
 
-image::hold_management/holds_confirmation.jpg[Place another hold link]
+image::hold_management/hold_confirmation.jpg[Place another hold link]
 
 This feature can be useful for book groups or new items where a list of waiting patrons needs to be transferred into the system.
 
