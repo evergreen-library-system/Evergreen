@@ -7,19 +7,19 @@
 
 1) To check out an item click *Check Out Items* from the Circulation and Patrons toolbar, or select *Circulation* -> *Check Out*.
 
-image::media/checkout_menu_web_client.png[]
+image::circulating_items_web_client/checkout_menu_web_client.png[]
 
 2) Scan or enter patron's barcode and click *Submit* if entering barcode manually. If scanning, number is submitted automatically.
 
-image::media/retrieve_patron_web_client.png[]
+image::circulating_items_web_client/retrieve_patron_web_client.png[]
 
 3) Scan or enter item barcode manually, clicking *Submit* if manual.
 
-image::media/checkout_item_barcode_web_client.png[] 
+image::circulating_items_web_client/checkout_item_barcode_web_client.png[] 
 
 4) Due date is now displayed.
 
-image::media/due_date_display_web_client.png[]
+image::circulating_items_web_client/due_date_display_web_client.png[]
  
 5) When all items are scanned, click the *Done* button to generate slip receipt or to exit patron record if not printing slip receipts. 
 
@@ -31,7 +31,7 @@ image::media/due_date_display_web_client.png[]
 
 3) At prompt, enter the required information click *Precat Checkout*. 
 
-image::media/precat_web_client.png[]
+image::circulating_items_web_client/precat_web_client.png[]
  
 [TIP]
 On check-in, Evergreen will prompt staff to re-route the item to cataloging.
@@ -53,7 +53,7 @@ Circulation periods are pre-set. When items are checked out, due dates are autom
 
 Before you scan the item, select the *Specific Due Date* checkbox. Enter the date in yyyy-mm-dd format. This date applies to all items until you change the date, de-select the *Specific Due Date* checkbox, or quit the patron record.
 
-image::media/specify_due_date1_web_client.png[]
+image::circulating_items_web_client/specify_due_date1_web_client.png[]
 
 === Strict Barcode ===
 
@@ -74,7 +74,7 @@ This feature allows patrons to receive checkout receipts through email at the ci
 
 When a patron has opted to receive email checkout receipts by default, an envelope icon representing email will appear next to the receipt options in the Check Out screen.  A printer icon representing a physical receipt appears if the patron has not opted in to the default email receipts.
 
-image::media/ereceipts5_web_client.PNG[]
+image::circulating_items_web_client/ereceipts5_web_client.PNG[]
 
 Staff can click *Quick Receipt* and the default checkout receipt option will be triggered—an email will be sent or the receipt will print out.  The Quick Receipt option allows staff to stay in the patron account after completing the transaction.  Alternatively, staff can click *Done* to trigger the default checkout receipt and close out the patron account.  By clicking on the arrow next to the Quick Receipt or Done buttons, staff can select which receipt option to use, regardless of the selected default.  The email receipt option will be disabled if the patron account does not have an email address.
 
@@ -82,7 +82,7 @@ Staff can click *Quick Receipt* and the default checkout receipt option will be 
 
 In the Self Checkout interface, patrons will have the option to select a print or email checkout receipt, or no receipt.  The radio button for the patron's default receipt option will be selected automatically in the interface.  Patrons can select a different receipt option if desired.  The email receipt radio button will be disabled if there is no email address associated with the patron's account.
 
-image::media/ereceipts6_web_client.PNG[]
+image::circulating_items_web_client/ereceipts6_web_client.PNG[]
 
 ==== Opt In ====
 
@@ -90,25 +90,25 @@ image::media/ereceipts6_web_client.PNG[]
 
 Patrons can be opted in to receive email checkout receipts by default by library staff upon the creation of their library account.  Within the patron registration form, there is a new option below the Email Address field to select _Email checkout receipts by default?_.  Select this option if the patron wants email checkout receipts to be their default.  Save any changes.
 
-image::media/ereceipts1_web_client.PNG[]
+image::circulating_items_web_client/ereceipts1_web_client.PNG[]
 
 *Staff Mediated Opt In After Registration*
 
 Staff can also select email checkout receipts as the default option in a patron account after initial registration.  Within the patron account go to *Edit* and select _Email checkout receipts by default?_.  Make sure the patron also has an email address associated with their account.  Save any changes.
 
-image::media/ereceipts2_web_client.PNG[]
+image::circulating_items_web_client/ereceipts2_web_client.PNG[]
 
 *Patron Opt In – Self-Registration Form*
 
 If your library offers patrons the ability to request a library card through the patron self-registration form, they can select email checkout receipts by default in the initial self-registration form:
 
-image::media/ereceipts3_web_client.PNG[]
+image::circulating_items_web_client/ereceipts3_web_client.PNG[]
 
 *Patron Opt In - OPAC Account*
 
 Patrons can also opt in to receive email checkout receipts by default directly in their OPAC account.  After logging in, patrons can go to *Account Preferences->Notification Preferences* and enable _Email checkout receipts by default?_ and click *Save*.
 
-image::media/ereceipts4_web_client.PNG[]
+image::circulating_items_web_client/ereceipts4_web_client.PNG[]
 
 
 ==== Email Checkout Receipt Configuration ====
@@ -122,15 +122,15 @@ Email checkout receipts will be sent out through a Notifications/Action Trigger 
 
 1) To check in an item click *Check In Items* from the Circulation and Patrons toolbar, or select *Circulation* -> *Check In*.
 
-image::media/check_in_menu_web_client.png[]
+image::circulating_items_web_client/check_in_menu_web_client.png[]
 
 2) Scan item barcode or enter manually and click *Submit*.
 
-image::media/checkin_barcode_web_client.png[]
+image::circulating_items_web_client/checkin_barcode_web_client.png[]
  
 3) If there is an overdue fine associated with the checkin, an alert will appear at the top of the screen with a fine tally for the current checkin session. To immediately handle fine payment, click the alert to jump to the patron's bill record.
 
-image::media/overdue_checkin_web_client.png[]
+image::circulating_items_web_client/overdue_checkin_web_client.png[]
 
 4) If the checkin is an item that can fill a hold, a pop-up box will appear with patron contact information or routing information for the hold.
 
@@ -138,7 +138,7 @@ image::media/overdue_checkin_web_client.png[]
 
 6) If the item is not in a state acceptable for hold/transit (for instance, it is damaged), select the line of the item, and choose *Actions* -> *Cancel Transit*.  The item will then have a status of _Canceled Transit_ rather than _In Transit_.
 
-image::media/Check_In-Cancel_Transit.png[Actions Menu - Cancel Transit]
+image::circulating_items_web_client/Check_In-Cancel_Transit.png[Actions Menu - Cancel Transit]
 
 === Backdated check in ===
 
@@ -146,11 +146,11 @@ This is useful for clearing a book drop.
 
 1) To change effective check-in date, select *Circulation* -> *Check In Items*. In *Effective Date* field enter the date in yyyy-mm-dd format.
 
-image::media/backdate_checkin_web_client.png[]
+image::circulating_items_web_client/backdate_checkin_web_client.png[]
 
 2) The new effective date is now displayed in the red bar above the Barcode field.
 
-image::media/backdate_red_web_client.png[]
+image::circulating_items_web_client/backdate_red_web_client.png[]
 
 3) Move the cursor to the *Barcode* field. Scan the items. When finishing backdated check-in, change the *Effective Date* back to today's date.
 
@@ -160,11 +160,11 @@ After an item has been checked in, you may use the Backdate Post-Checkin functio
 
 1) Select the item on the Check In screen, click *Actions* -> *Backdate Post-Checkin*.
 
-image::media/backdate_post_checkin_web_client.png[]
+image::circulating_items_web_client/backdate_post_checkin_web_client.png[]
 
 2) In *Effective Date* field enter the date in yyyy-mm-dd format.  The check-in date will be adjusted according to the new effective check-in date.
 
-image::media/backdate_post_date_web_client.png[]
+image::circulating_items_web_client/backdate_post_date_web_client.png[]
 
 [#checkin_modifiers]
 .Checkin Modifiers
@@ -194,7 +194,7 @@ At the right bottom corner there is a *Checkin Modifiers* pop-up list. The optio
 
 These options may be selected simultaneously. The selected option is displayed in the header area.
 
-image::media/checkinmodifiers-with-inventory2.png[Web client check-in modifiers]
+image::circulating_items_web_client/checkinmodifiers-with-inventory2.png[Web client check-in modifiers]
 ===================================================
   
 == Renewal and Editing the Item's Due Date ==
@@ -205,11 +205,11 @@ Checked-out items can be renewed if your library's policy allows it. The new due
 
 1) Retrieve the patron record and go to the *Items Out* screen.
 
-image::media/items_out_click_web_client.png[]
+image::circulating_items_web_client/items_out_click_web_client.png[]
 
 2) Select the item you want to renew. Click on *Actions* -> *Renew*. If you want to renew all items in the account, click *Renew All* instead.
 
-image::media/renew_action_web_client.png[]
+image::circulating_items_web_client/renew_action_web_client.png[]
 
 3) If you want to specify the due date, click *Renew with Specific Due Date*. You will be prompted to select a due date. Once done, click *Apply*.
 
@@ -221,11 +221,11 @@ image::media/renew_action_web_client.png[]
 
 2) Scan or manually entire the item barcode.
 
-image::media/renew_item_web_client.png[]
+image::circulating_items_web_client/renew_item_web_client.png[]
 
 3) If you want to specify the due date, click *Specific Due Date* and enter a new due date in yyyy-mm-dd format.
 
-image::media/renew_item_calendar_web_client.png[]
+image::circulating_items_web_client/renew_item_calendar_web_client.png[]
 
 === Editing Due Date ===
 
@@ -233,7 +233,7 @@ image::media/renew_item_calendar_web_client.png[]
 
 2) Select the item you want to renew. Click on *Actions* -> *Edit Due Date*.
 
-image::media/edit_due_date_action_web_client.png[]
+image::circulating_items_web_client/edit_due_date_action_web_client.png[]
 
 3) Enter a new due date in yyyy-mm-dd format in the pop-up window, then click *OK*.
 
@@ -268,7 +268,7 @@ There are three possible actions in the new Override modal:
 
 An example of the new Override modal is shown below. In this example, the `PATRON_EXCEEDS_FINES` exception has been set to automatically override for subsequent items. This means that the next time Evergreen encounters this exception in this specific patron session, Evergreen will automatically attempt to override it. The `MAX_RENEWALS_REACHED` exception has NOT been set to automatically override for subsequent items. This means that the next time Evergreen encounters this exception in this specific patron session, it will ask again about an override.
 
-image::media/new_override_modal.png[New Override Modal]
+image::circulating_items_web_client/new_override_modal.png[New Override Modal]
 
 In stock Evergreen, the following states will present an exception (i.e. ask for an override) on checkout and/or renew:
 
@@ -495,15 +495,15 @@ library setting _Item Status for Missing Pieces_ is used to set this.
 
 2) Select the item. Click on *Actions* -> *Mark Lost (by Patron)*.
 
-image::media/mark_lost_web_client.png[]
+image::circulating_items_web_client/mark_lost_web_client.png[]
 
 3) The lost item now displays as lost in the *Items Checked Out* section of the patron record.
 
-image::media/lost_section_web_client.png[]
+image::circulating_items_web_client/lost_section_web_client.png[]
 
 4) The lost item also adds to the count of *Lost* items in the patron summary on the left (or top) of the screen. 
 
-image::media/patron_summary_checkouts_web_client.png[]
+image::circulating_items_web_client/patron_summary_checkouts_web_client.png[]
 
 [NOTE]
 Lost Item Billing
@@ -523,12 +523,12 @@ If you need to balance a bill with a negative amount, you need to add two dummy 
 == In-house Use (F6) ==
 1) To record in-house use, select *Circulation* -> *Record-In House Use*, click *Check Out* -> *Record In-House Use* on the circulation toolbar , or press *F6*. 
  
-image::media/record_in_house_action_web_client.png[]
+image::circulating_items_web_client/record_in_house_action_web_client.png[]
  
 2) To record in-house use for cataloged items, enter number of uses, scan 
  barcode or type barcode and click *Submit*.
  
-image::media/in_house_use_web_client.png[]
+image::circulating_items_web_client/in_house_use_web_client.png[]
  
 [NOTE]
 ====================================
@@ -539,7 +539,7 @@ There are two independent library settings that will allow copy alerts to displa
  
 3) To record in-house use for non-cataloged items, enter number of uses, choose non-cataloged type from drop-down menu, and click *Submit*.
 
-image::media/in_house_use_non_cat.png[]
+image::circulating_items_web_client/in_house_use_non_cat.png[]
  
 [NOTE] 
 The statistics of in-house use are separated from circulation statistics. The in-house use count of cataloged items is not included in the items' total use count.
@@ -791,19 +791,19 @@ The Item Status screen is very useful. Many actions can be taken by either circu
 
 1) To check the status of an item, select *Search* -> *Search for copies by Barcode*.
 
-image::media/item_status_menu_web_client.png[]
+image::circulating_items_web_client/item_status_menu_web_client.png[]
 
 2) Scan the barcode or type it and click *Submit*. The current status of the item is displayed with selected other fields. You can use the column picker to select more fields to view.
 
-image::media/item_status_barcode_web_client.png[]
+image::circulating_items_web_client/item_status_barcode_web_client.png[]
 
 3) Click the *Detail View* button and the item summary and circulation history will be displayed.
 
-image::media/item_status_altview_web_client.png[]
+image::circulating_items_web_client/item_status_altview_web_client.png[]
 
 4) Click *List View* to go back.
 
-image::media/item_status_list_view_web_client.png[]
+image::circulating_items_web_client/item_status_list_view_web_client.png[]
 
 [NOTE]
 If the item's status is "Available", the displayed due date refers to the previous circulation's due date.
@@ -816,11 +816,11 @@ Upload From File allows you to load multiple items saved in a file on your local
 
 2) Select *Detail view*.
 
-image::media/last_few_circs_action_web_client.png[]
+image::circulating_items_web_client/last_few_circs_action_web_client.png[]
 
 3) Choose *Recent Circ History*.  The item’s recent circulation history is displayed.
 
-image::media/last_few_circs_display_web_client.png[]
+image::circulating_items_web_client/last_few_circs_display_web_client.png[]
 
 4) To retrieve the patron(s) of the last circulations, click on the name of the patron.  The patron record will be displayed.
 
@@ -876,14 +876,14 @@ long-overdue items can be included on the "Items Checked Out" or "Other/Special
 Circulations" tabs of the "Items Out" view of a patron's record. These are all
 controlled by <<longoverdue_library_settings,library settings>>.
  
-image::media/long_overdue1.png[Patron Account-Long Overdue]
+image::circulating_items_web_client/long_overdue1.png[Patron Account-Long Overdue]
 
 
 *Checking in a Long Overdue item*
 
 If an item that has been marked long overdue is checked in, an alert will appear on the screen informing the staff member that the item was long overdue.  Once checked in, the item will go into the status of “In process”.  Optionally, the item price and long overdue processing fee can be voided and overdue fines can be reinstated on the patron’s account.  If the item is checked in at a library other than its home library, a library setting controls whether the item can immediately fill a hold or circulate, or if it needs to be sent to its home library for processing.
  
-image::media/long_overdue2.png[Long Overdue Checkin]
+image::circulating_items_web_client/long_overdue2.png[Long Overdue Checkin]
  
 *Notification/Action Triggers*
 
