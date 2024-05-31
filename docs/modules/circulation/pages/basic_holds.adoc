@@ -304,20 +304,61 @@ There are usually four statuses a hold may have: _Waiting for Copy_, _Waiting fo
 . *Ready-for-pick-up*: holds are captured and items are on the _Hold Shelf_ waiting for patrons to pick up. Besides capturing holds when checking in items, Evergreen matches holds with available items in your library at regular
 intervals. Once a matching copy is found, the item’s barcode number is assigned to the hold and the item is put on the _Holds Pull List_. Staff can print the _Holds Pull List_ and search for the items on shelves.
 
-. To retrieve your _Holds Pull List_, select _Circulation_ -> _Pull List for Hold Requests_.
-+
+The _Holds Pull List_ is updated constantly. Once an item on the list is no longer available or a hold on the list is captured, the items will disappear from the list. The _Holds Pull List_ should be printed at least once a day. 
+
+To retrieve your _Holds Pull List_, select _Circulation_ -> _Pull List for Hold Requests_.
+
 image::basic_holds/holds-pull-1.png[holds-pull-1]
-+
-. The _Holds Pull List_ is displayed. You may re-sort it by clicking the column labels, e.g. _Title_. You can also add fields to the display by using the column picker.
-+
-image::basic_holds/holds-pull-2.png[holds-pull-2]
-+
+
+The _Holds Pull List_ is displayed. You may re-sort it by clicking the column labels, e.g. _Title_. You can also add fields to the display by using the column picker. You may perform hold management tasks by using the _Actions_ dropdown list.
+
 [NOTE]
 ===========
 Column adjustments will only affect the screen display and the CSV download for the holds pull list. It will not affect the printable holds pull list.
 ===========
 
-. The following options are available for printing the pull list:
+===== Holds Pull List Filters =====
+
+As of 3.12, there are three ways you can filter the pull list: circulation library, pickup library, and shelving location.
+
+image::basic_holds/holds_pull_list_filters.png[Top bar of Holds Pull List with filter options]
+
+The *Circulation Library* filter (designated by "View Pull List For") will default to your workstation. You can change the library location by clicking in the field and choosing an option from the dropdown menu. Complete the same process to populate the *Pickup Library* filter. To remove the Pickup Library filter, click *Clear* next to the Pickup Library field.
+
+image::basic_holds/holds_pull_list_pick_up_library_filter_clear.png[Clear button for pick-up library filter]
+
+To add *Shelving Location* filters:
+
+. Click anywhere in the *Shelving Location* box to bring up the filter pop-up window.
++
+image::basic_holds/holds_pull_list_shelving_location_filter.png[Top bar of Holds Pull List with filter options]
++
+. Select to filter by *Shelving Locations* (this is the default) or *Shelving Location Groups*.
+. Once the selection is made, click on the dropdown. You can add multiple shelving locations by opening the dropdown and clicking on the shelving location name.
++
+image::basic_holds/holds_pull_list_filters_shelving_location_options.png[Shelving Location filter dropdown]
++
+. Once you have chosen the necessary shelving locations, you can remove any individually by clicking the *X* next to the shelving location name, or you can click *Remove All* to clear all selections at one time.
++
+image::basic_holds/holds_pull_list_filters_shelving_location_remove.png[Remove shelving location options from filter]
++
+. Once you have chosen which shelving locations you’d like to filter by, click *Apply*.
++
+image::basic_holds/holds_pull_list_filters_shelving_location_apply.png[Apply shelving location filter]
++
+. To clear shelving locations filters, click on the filter to delete them individually (step 3 above), or click *Clear* next to the filter on the main page.
++
+image::basic_holds/holds_pull_list_filters_shelving_location_clear.png[Clear shelving location filter]
++
+. A pop-up will appear asking if you’d like to clear the shelving location filter(s). Click *Confirm*.
++
+image::basic_holds/holds_pull_list_filters_shelving_location_clear_confirm.png[Confirm clearing shelving location filter]
++
+
+
+===== Printing the Holds Pull List =====
+
+The following options are available for printing the pull list:
 
 * _Print Full Pull List_ prints _Title_, _Author_, _Shelving Location_, _Call Number_ and _Item Barcode_. This method uses less paper than the alternate strategy.
 
@@ -326,10 +367,6 @@ Column adjustments will only affect the screen display and the CSV download for 
 image::basic_holds/holds-pull-4.png[holds-pull-4]
 +
 With the CSV option, if you are including barcodes in the holds pull list, you will need to take the following steps to make the barcode display properly: in Excel, select the entire barcode column, right-click and select _Format Cells_, click _Number_ as the category and then reduce the number of decimal places to 0.
-
-. You may perform hold management tasks by using the _Actions_ dropdown list.
-
-The _Holds Pull List_ is updated constantly. Once an item on the list is no longer available or a hold on the list is captured, the items will disappear from the list. The _Holds Pull List_ should be printed at least once a day.
 
 ==== Capturing Holds ====
 
@@ -814,3 +851,35 @@ image::hold_management/hold_groups_menu_opac.jpg[Hold Group Option in OPAC]
 If the patron is not part of a hold group that is patron visible,
 the *Hold Groups* option won't appear in their OPAC account menu.
 ====================
+
+
+[[hold_reset_reasons]]
+== Hold Reset Reasons
+
+indexterm:[Reset, Retarget, Reset Reason]
+
+Hold reset reasons allow staff to see when and why a hold request has been reset. Reset reasons are generated any time a hold has been reset, whether that's a manual reset from a staff member or automatically because a hold has reached the hold retarget interval. This can be very useful for debugging the hold targeter or identifying bad actors in the system.
+
+=== Types of Reset Reasons
+There are ten different types of reset reasons that can be identified.
+
+. HOLD_TIMED_OUT
+. HOLD_MANUAL_RESET
+. HOLD_BETTER_HOLD
+. HOLD_FROZEN
+. HOLD_UNFROZEN
+. HOLD_CANCELED
+. HOLD_UNCANCELED
+. HOLD_UPDATED
+. HOLD_CHECKED_OUT
+. HOLD_CHECKED_IN
+
+=== Viewing Reset Reasons
+Staff can view reset reasons for a hold via a patron's *holds* tab.
+
+. Open patron's page.
+. Click *holds* tab.
+. Select a hold to investigate.
+. Click *detail view*.
+. Click *Reset Entries*
+. Order can be reversed to show most recent resets first.
