@@ -350,43 +350,54 @@ Make note of the new password and _Save_ the patron record.  The screen will
 refresh and the new password will be suppressed from view.   
 
 
+== Inactive Patron Accounts ==
+When a patron account becomes "Inactive," a display alert is added to the account:
+
+image::circulation_patron_records_web_client/inactive_alert.png[Account alert for inactive patron account]
+
+Inactive patrons are prevented from logging into their account in the OPAC and checking out items. In the staff client, the checkout window is unusable, therefore, there is no option to override. The patron account must be marked "Active" before the patron is able to access their account and check out items.
+
+To mark a patron "Active":
+
+. Open the patron *Edit* screen.
+. Select the *Active* checkbox.
++
+image::circulation_patron_records_web_client/active_checkbox.png[Active checkbox on patron account]
++
+. Click *Save*.
+
 == Barring a Patron ==
 
 indexterm:[patrons, barring]
 
-A patron may be barred from circulation activities.  To bar a patron, retrieve
-the patron record as described in the section
-<<searching_patrons,Searching Patrons>>. 
+A patron may be barred from circulation activities.  To bar a patron:
 
-Open the patron record in edit mode as described in the section 
-<<updating_patron_information,Updating Patron Information>>.
+. Retrieve the patron record as described in the section <<searching_patrons,Searching Patrons>>. 
+. Open the patron record in edit mode as described in the section <<updating_patron_information,Updating Patron Information>>.
+. Check the box for *Barred* in the patron account.
++
+image::circulation_patron_records_web_client/circulation_patron_records-16.JPG[circulation_patron_records 16]
++
+. *Save* the user. The screen will refresh.  
 
-Check the box for _Barred_ in the patron account. 
-
-image::circulation_patron_records_web_client/circulation_patron_records-16.JPG[A screenshot of a small piece of the patron registration screen. Displayed are the fields for Internet Access Level, Active, Barred, Is Group Lead Account, and Claims-returned Count. Barred is highlighted.]
-
-_Save_ the user.  The screen will refresh.  
 
 NOTE: Barring a patron from one library bars that patron from all consortium
 member libraries. 
 
-To unbar a patron, uncheck the Barred checkbox.
+To unbar a patron, uncheck the *Barred* checkbox in the patron Edit screen and click *Save*.
 
 
 == Barred vs. Blocked ==
 
 indexterm:[patrons, barring]
 
-*Barred*: Stops patrons from using their library cards; alerts the staff that
-the patron is banned/barred from the library. The check-out functionality is
-disabled for barred patrons (NO option to override – the checkout window is
-unusable and the bar must be removed from the account before the patron is able
-to checkout items).  These patrons may still log in to the OPAC to view their
-accounts.
+*Barred*: When a patron account is marked as *Barred*, they are not able to log in to the OPAC or use their library card. If staff attempt a checkout, an alert appears notifying staff that the account is barred and providing an option to override the PATRON_BARRED event. Staff with the PATRON_BARRED.override permission can override the block.
+
+image::circulation_patron_records_web_client/patron_barred_alert.png[Patron barred alert and override option]
 
 indexterm:[patrons, blocking]
 
-*Blocked*: Often, these are system-generated blocks on patron accounts.  
+*Blocked*: Often, these are system-generated blocks on patron accounts. 
 
 Some examples:
 
