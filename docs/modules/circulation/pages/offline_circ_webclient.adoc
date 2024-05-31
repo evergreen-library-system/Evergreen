@@ -17,15 +17,15 @@ The permanent link for the Offline Circulation is *https://<yourhostname>/eg/sta
 
 If you are logged out, you will see the tab default to *Checkout* and the button on the top-right will read *Export Transactions*.
 
-image::media/offline_homepage_loggedout.png[Offline homepage logged out]
+image::offline/offline_homepage_loggedout.png[Offline homepage logged out]
 
 If you are logged in, you will see an additional tab on the left for *Session Management* and this will be the default tab.  The top-right button will read *Download Block List*.
 
-image::media/offline_homepage_loggedin.png[Offline homepage logged in]
+image::offline/offline_homepage_loggedin.png[Offline homepage logged in]
 
 If you are logged in and attempt to click on any tab other than *Session Management*, you will see a warning alerting you that you are about to enter offline mode.
 
-image::media/offline_logout_warning.png[Logout warning]
+image::offline/offline_logout_warning.png[Logout warning]
 
 This warning is not network-aware and it will appear regardless of network connection state.  You must be logged out to record offline transactions.  If you see this warning and wish to record offline transactions, click *Proceed* in order to log out.
 
@@ -48,7 +48,7 @@ Note that *Save Transactions* will save any unsaved transactions across the Offl
 
 In the screenshot, the first two items in the right-hand list are regular checkout items.  The third item is a non-cataloged item.
 
-image::media/offline_checkout.png[Offline checkout]
+image::offline/offline_checkout.png[Offline checkout]
 
 A value entered in the Due Date field will take precedence over an existing value in the Offset Dropdown; however, if you change the Offset after setting the Due Date field, the Due Date field will update to reflect the Offset value.
 
@@ -70,7 +70,7 @@ To renew items in Offline Circulation:
 . To print a receipt, check the box labelled *Print Receipt*.
 . Click *Save Transactions* in the upper-right of the screen to complete the renewal.
 
-image::media/offline_renew.png[Offline renewal]
+image::offline/offline_renew.png[Offline renewal]
 
 == In-House Use ==
 
@@ -83,7 +83,7 @@ To record in-house use transactions in *Offline Circulation*:
 . To print a receipt, check the box labelled *Print Receipt*.
 . Click *Save Transactions* in the upper-right of the screen to record the in-house use.  The date of the in-house use is automatically recorded.
 
-image::media/offline_inhouse.png[Offline in house use]
+image::offline/offline_inhouse.png[Offline in house use]
 
 == Checkin ==
 
@@ -95,7 +95,7 @@ To checkin items in Offline Circulation:
 . To print a receipt, check the box labelled *Print Receipt*.
 . Click *Save Transactions* in the upper-right of the screen when you are finished entering checkins.
 
-image::media/offline_checkin.png[Offline checkin]
+image::offline/offline_checkin.png[Offline checkin]
 
 Note that existing pre-cataloged items can be checked in through the Offline interface, but they will generate an entry in the Exceptions list when offline transactions are uploaded and processed.
 
@@ -105,7 +105,7 @@ Items targeted for holds will be captured for their holds when the offline trans
 
 Patron registration in Evergreen Offline Circulation records patron information for later upload.  In the web staff client, the Patron Registration form in Offline is the same as the regular Patron Registration interface.
 
-image::media/offline_patron_registration.png[Patron registration]
+image::offline/offline_patron_registration.png[Patron registration]
 
 All fields in the normal Patron Registration interface are available for entry.  Required fields are marked in yellow and adhere to Required Fields set in the *Library Settings Editor*.  Patron Registration defaults also adhere to settings in the *Library Settings Editor*.  Stat cats are not recognized by the Offline Interface, even if they are required.
 
@@ -122,7 +122,7 @@ To download the block list, navigate to *Circulation -> Offline Circulation* and
 
 If you attempt a checkout or a renewal for a patron on the block list, you will get a modal informing you that the patron has penalties.  Click the *Allow* button to override this and proceed with the transaction.  Click the *Reject* button to cancel the checkout or renewal.
 
-image::media/offline_patron_blocked.png[Patron blocked modal]
+image::offline/offline_patron_blocked.png[Patron blocked modal]
 
 === Exporting Offline Transactions ===
 
@@ -137,30 +137,30 @@ To export transactions while you are logged in, navigate to *Circulation -> Offl
 
 Once connectivity is restored, navigate back to your *Evergreen Login Page*.  You will see a message telling you that there are unprocessed Offline Transactions waiting for upload.
 
-image::media/offline_unprocessed.png[Login alert about unprocessed transactions]
+image::offline/offline_unprocessed.png[Login alert about unprocessed transactions]
 
 Sign in and navigate to *Circulation -> Offline Circulation*.  Since you are logged in, you will now see a *Session Management* tab to the left of the Register Patron tab.  The Session Management tab includes *Pending Transactions* and *Offline Sessions*.
 
 In the *Pending Transactions* tab you will see a list of all transactions recorded on that browser.
 
-image::media/offline_pending_xacts.png[Offline pending transactions]
+image::offline/offline_pending_xacts.png[Offline pending transactions]
 
 If you click *Clear Transactions*, you will be prompted with a warning.
 
-image::media/offline_clear_pending.png[Warning to clear offline transactions]
+image::offline/offline_clear_pending.png[Warning to clear offline transactions]
 
 If you are processing transactions right away and from the same browser you recorded them in, follow the steps below:
 
 . Click on the *Offline Sessions* tab and then on the *Create Session* button.
 . Enter a descriptive name for your session in the modal and click *OK/Continue* to proceed.  You will see your new session at the top of the *Session List*.  The Session List may be sorted ascending or descending by clicking on one of the following column headers: *Organization*, *Created By*, *Description*, *Date Created*, or *Date Completed*.  The default sort is descending by Date Created.
 +
-image::media/offline_session_list.png[Offline session list]
+image::offline/offline_session_list.png[Offline session list]
 +
 . Click *Upload* to upload everything listed in the *Pending Transactions* tab.
 . Once all transactions are uploaded, the *Upload Count* column will update to show the number of uploaded transactions.
 . Click *Process* to process the offline transactions.  Click *Refresh* to see the processing progress.  Once all transactions are processed the *Date Completed* column will be updated.
 +
-image::media/offline_processing_complete.png[Offline processing complete]
+image::offline/offline_processing_complete.png[Offline processing complete]
 +
 . Scroll to the bottom of the screen to see if there are any entries in the xref:#exceptions[*Exception List*].  Some of these may require staff follow up.  
 
@@ -195,7 +195,7 @@ These are a few notes about possible exceptions. It is not an all-inclusive list
 * If you check out a book to a patron using a previous barcode for that patron, it will cause an exception and you will have to retrieve that patron while online and re-enter the item barcode in order to checkout the item.
 * The Offline Interface can recognize blocked, barred, and expired patrons if you have downloaded the Offline Block List in the browser you are using.  You will get an error message indicating the patron status from within the Standalone Interface at check-out time.  See the section on the xref:#offline_block_list[Offline Block List] for more information.
 
-image::media/offline_exceptions.png[Offline exception list]
+image::offline/offline_exceptions.png[Offline exception list]
 
 At the right side of each exception are buttons for *Item*, *Patron*, and *Debug*. Clicking the *Item* button will retrieve the associated item in a new browser window.  Clicking on the *Patron* button will retrieve the associated patron in a new browser window.  Clicking the *Debug* button will result in a modal with detailed debugging information.
 

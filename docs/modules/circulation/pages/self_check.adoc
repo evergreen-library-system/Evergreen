@@ -16,37 +16,37 @@ check station, a staff member must initialize the interface by logging in.
   represents the host name of your Evergreen web server.
 . Log in with a staff account with circulation permissions.
 
-image::media/self-check-admin-login.png[Self Check Admin Login]
+image::self_check/self-check-admin-login.png[Self Check Admin Login]
 
 == Basic Check Out ==
 
 . Patron scans their barcode.
 +
-image::media/self_check_check_out_1.png[self check]
+image::self_check/self_check_check_out_1.png[self check]
 +               
 . _Optional_ Patron enters their account password.
 +
-image::media/self_check_check_out_2.png[self check]
+image::self_check/self_check_check_out_2.png[self check]
 +
 . Patron scans the barcodes for their items
 _OR_
 Patron places items, one at a time, on the RFID pad.
 +
-image::media/self_check_check_out_3.png[self check]
+image::self_check/self_check_check_out_3.png[self check]
 +               
 . Items will be listed below with a check out confirmation message.
 +
-image::media/self_check_check_out_4.png[self check]
+image::self_check/self_check_check_out_4.png[self check]
 +
 . If a check out fails a message will advise patrons.
 +
-image::media/self_check_error_1.png[self check]
+image::self_check/self_check_error_1.png[self check]
 +
 . Patron clicks *Logout* to print a checkout receipt and logout.
 _OR_
 Patron clicks *Logout (No Receipt)* to logout with no receipt.
 +
-image::media/self_check_check_out_5.png[self check]
+image::self_check/self_check_check_out_5.png[self check]
 +			
 [NOTE]
 ==========
@@ -54,40 +54,40 @@ If the patron forgets to logout the system will automatically log out after the 
 period specified in the library setting *Patron Login Timeout (in seconds)*.  An inactivity pop-up
 will appear to warn patrons 20 seconds before logging out.
 
-image::media/self_check_check_out_6.png[self check]
+image::self_check/self_check_check_out_6.png[self check]
 ==========
 
 == View Items Out ==
 
 . Patrons are able to view the items they currently have checked out by clicking *View Items Out*
 +
-image::media/self_check_view_items_out_1.png[self check]
+image::self_check/self_check_view_items_out_1.png[self check]
 +		
 . The items currently checked out will display with their due dates.
 Using the *Print List* button patrons can 
 print out a receipt listing all of the items they currently have checked out.
 
-image::media/self_check_view_items_out_2.png[self check]
+image::self_check/self_check_view_items_out_2.png[self check]
 
 
 == View Holds ==
 
 . Patrons are able to view their current holds by clicking *View Holds*
 +
-image::media/self_check_view_holds_1.png[self check]
+image::self_check/self_check_view_holds_1.png[self check]
 +                 
 . Items currently on hold display.  Patrons can also see which, if any, items are ready for pickup.
 +
 Using the *Print List* button patrons can print out a receipt listing all of the items they currently have on hold.
 +
-image::media/self_check_view_holds_2.png[self check]
+image::self_check/self_check_view_holds_2.png[self check]
 
 == View Fines ==
 
 . Patrons are able to view the fines they currently owe by clicking *View Details*
 +
-image::media/self_check_view_fines_1.png[self check]
+image::self_check/self_check_view_fines_1.png[self check]
 +
 . Current fines owed by the patron display. 
 
-image::media/self_check_view_fines_2.png[self check]
+image::self_check/self_check_view_fines_2.png[self check]

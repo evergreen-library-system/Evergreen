@@ -81,19 +81,19 @@ image::hold_management/patron_search_button.jpg[Patron Search]
 +
 4. A dialog box will appear with the patron search interface used elsewhere in the staff client. By default, the search scopes to your workstation org unit, and you can search by patron last name, first name, and middle name.
 +
-image::media/PlaceHold-2.JPG[]
+image::basic_holds/PlaceHold-2.JPG[]
 +
 Clicking the *arrow icon* to the right of _Clear Form_ can either expand or condense the searchable fields display which includes other patron information.
 +
-image::media/PlaceHold-3.JPG[]
+image::basic_holds/PlaceHold-3.JPG[]
 +
 5. To search for a patron, fill out the relevant search fields, and click *Search* or hit ENTER on your keyboard. Results will appear below in Patron Search Results in the lower half of the screen.
 +
-image::media/PlaceHold-4.JPG[]
+image::basic_holds/PlaceHold-4.JPG[]
 +
 6. Click the row of the desired patron account, and click *Select*.
 +
-image::media/PlaceHold-5.JPG[]
+image::basic_holds/PlaceHold-5.JPG[]
 +
 7. The dialog box will close and the selected patron's barcode will appear next to _Place Hold for patron by barcode_. This will cause the patron's hold notification preferences to appear in the relevant fields in the bottom half of the screen. Changes to the Hold Notification preferences can be made before clicking *Submit* to finish placing a hold for the patron.
 
@@ -157,12 +157,12 @@ display, the holds shelf display, and the pull list display.
 . Retrieve the patron record and go to the _Holds_ screen.
 . Highlight the hold record, then select _Actions_.
 +
-image::media/holds-managing-1.png[holds-managing-1]
+image::basic_holds/holds-managing-1.png[holds-managing-1]
 +
 . Manage the hold by choosing an action on the list.
 .. If you want to cancel the hold, click _Cancel Hold_ from the menu. You are prompted to select a reason and put in a note if required. To finish, click _Apply_.
 +
-image::media/holds-managing-2.JPG[holds-managing-2]
+image::basic_holds/holds-managing-2.JPG[holds-managing-2]
 +
 [NOTE]
 =============
@@ -177,19 +177,19 @@ Suspended holds will not be filled but its hold position will be kept. They will
 
 .. You may edit the _Activation Date_ and _Expiration Date_ by using the corresponding action on the _Actions_ dropdown menu. You will be prompted to enter the new date. Use the calendar widget to choose a date, then click _Apply_. Use the _Clear_ button to unset the date.
 +
-image::media/holds-managing-4.JPG[holds-managing-4]
+image::basic_holds/holds-managing-4.JPG[holds-managing-4]
 +
 
 .. Hold shelf expire time is automatically recorded in the hold record when a hold is filled. You may edit this time by using the _Edit Shelf Expire Time_ on the _Actions_ dropdown menu. You will be prompted to enter the new date. Use the calendar widget to choose a date, then click _Apply_.
 
 .. If you want to enable or disable phone notification or change the phone number, click _Edit Notification Settings_. You will be prompted to enter the new phone number. Make sure you enter a valid and complete phone number. The phone number is used for this hold only and can be different from the one in the patron account. It has no impact on the patron account. If you leave it blank, no phone number will be printed on the hold slip. If you want to enable or disable email notification for the hold, check _Send Emails_ on the prompt screen.
 +
-image::media/holds-managing-5_and_6.JPG[holds-managing-5_and_6]
+image::basic_holds/holds-managing-5_and_6.JPG[holds-managing-5_and_6]
 +
 
 .. Pickup location can be changed by clicking _Edit Pickup Library_. Click the dropdown list of all libraries and choose the new pickup location. Click _Submit_.
 +
-image::media/holds-managing-7.JPG[holds-managing-7]
+image::basic_holds/holds-managing-7.JPG[holds-managing-7]
 +
 [NOTE]
 ==============
@@ -199,7 +199,7 @@ Staff can change the pickup location for holds with in-transit status. Item will
 .. The item’s physical condition is recorded in the copy record as _Good_ or _Mediocre_ in the _Quality_ field. You may request that your holds be filled with copies of good quality only. Click _Set Desired Copy Quality_ on the
 _Actions_ list. Make your choice in the pop-up window.
 +
-image::media/holds-managing-8.JPG[holds-managing-8]
+image::basic_holds/holds-managing-8.JPG[holds-managing-8]
 
 
 === Transferring Holds ===
@@ -208,21 +208,21 @@ image::media/holds-managing-8.JPG[holds-managing-8]
 time preserved. To do so, you need to find the destination title and
 click _Mark for:_ -> _Title Hold Transfer_.
 +
-image::media/holds-managing-9.png[holds-managing-9]
+image::basic_holds/holds-managing-9.png[holds-managing-9]
 +
 . Select the hold you want to transfer. Click _Actions_ -> _Transfer to Marked Title_.
 +
-image::media/holds-managing-10.JPG[holds-managing-10]
+image::basic_holds/holds-managing-10.JPG[holds-managing-10]
 
 === Cancelled Holds ===
 
 . Cancelled holds can be displayed. Click the _Recently Cancelled Holds_ button on the _Holds_ screen.
 +
-image::media/holds-managing-11.JPG[holds-managing-11]
+image::basic_holds/holds-managing-11.JPG[holds-managing-11]
 +
 . You can un-cancel holds.
 +
-image::media/holds-managing-12.JPG[holds-managing-12]
+image::basic_holds/holds-managing-12.JPG[holds-managing-12]
 +
 Based on your library’s setting, hold request time can be reset when a hold is un-cancelled.
 
@@ -231,23 +231,23 @@ Based on your library’s setting, hold request time can be reset when a hold is
 
 . You can view details of a hold by selecting a hold then clicking the _Detail View_ button on the _Holds_ screen.
 +
-image::media/holds-managing-13.JPG[holds-managing-13]
+image::basic_holds/holds-managing-13.JPG[holds-managing-13]
 +
 . You may add a note to a hold in the _Detail View_.
 +
-image::media/holds-managing-14.JPG[holds-managing-14]
+image::basic_holds/holds-managing-14.JPG[holds-managing-14]
 +
 . Notes can be printed on the hold slip if the _Print on slip?_ checkbox
 is selected. Enter the message, then click _OK_.
 +
-image::media/holds-managing-15.JPG[holds-managing-15]
+image::basic_holds/holds-managing-15.JPG[holds-managing-15]
 
 
 === Displaying Queue Position ===
 
 Using the Column Picker, you can display _Queue Position_.
 
-image::media/queue_positions.jpg[holds-managing-16]
+image::basic_holds/queue_positions.jpg[holds-managing-16]
 
 
 === Managing Holds in Title Records ===
@@ -255,11 +255,11 @@ image::media/queue_positions.jpg[holds-managing-16]
 . Retrieve and display the title record in the catalog.
 . Click _Actions_ -> _View Holds_.
 +
-image::media/holds-managing-17.png[holds-managing-17]
+image::basic_holds/holds-managing-17.png[holds-managing-17]
 +
 . All holds on this title to be picked up at your library are displayed. Use the _Pickup Library_ to view holds to be picked up at other libraries.
 +
-image::media/holds-managing-18.png[holds-managing-18]
+image::basic_holds/holds-managing-18.png[holds-managing-18]
 +
 . Highlight the hold you want to edit. Choose an action from the
 _Actions_ menu. For more information see the
@@ -267,7 +267,7 @@ xref:#actions_for_selected_holds[Actions for Selected Holds] section. For
 example, you can retrieve the hold requestor’s account by selecting
 _Retrieve Patron_ from this menu.
 +
-image::media/holds-managing-19.png[holds-managing-19]
+image::basic_holds/holds-managing-19.png[holds-managing-19]
 
 
 === Retargeting Holds ===
@@ -306,11 +306,11 @@ intervals. Once a matching copy is found, the item’s barcode number is assigne
 
 . To retrieve your _Holds Pull List_, select _Circulation_ -> _Pull List for Hold Requests_.
 +
-image::media/holds-pull-1.png[holds-pull-1]
+image::basic_holds/holds-pull-1.png[holds-pull-1]
 +
 . The _Holds Pull List_ is displayed. You may re-sort it by clicking the column labels, e.g. _Title_. You can also add fields to the display by using the column picker.
 +
-image::media/holds-pull-2.png[holds-pull-2]
+image::basic_holds/holds-pull-2.png[holds-pull-2]
 +
 [NOTE]
 ===========
@@ -323,7 +323,7 @@ Column adjustments will only affect the screen display and the CSV download for 
 
 * _Download CSV_ – This option is available from the _List Actions_ button (adjacent to the _Page "#"_ button) and saves all fields in the screen display to a CSV file. This file can then be opened in Excel or another spreadsheet program. This option provides more flexibility in identifying fields that should be printed.
 +
-image::media/holds-pull-4.png[holds-pull-4]
+image::basic_holds/holds-pull-4.png[holds-pull-4]
 +
 With the CSV option, if you are including barcodes in the holds pull list, you will need to take the following steps to make the barcode display properly: in Excel, select the entire barcode column, right-click and select _Format Cells_, click _Number_ as the category and then reduce the number of decimal places to 0.
 
@@ -338,16 +338,16 @@ Holds can be captured when a checked-out item is returned (checked in) or an ite
 . To capture a hold, select _Circulation_ -> _Capture Holds_ (or press
 _Shift-F2_).
 +
-image::media/holds-pull-5.png[holds-pull-5]
+image::basic_holds/holds-pull-5.png[holds-pull-5]
 +
 . Scan or type barcode and click _Submit_.
 +
-image::media/holds-pull-6.png[holds-pull-6]
+image::basic_holds/holds-pull-6.png[holds-pull-6]
 +
 . The following hold slip is automatically printed. If your workstation
 is not setup for silent printing (via Hatch), then a print window will appear.
 +
-image::media/holds-pull-7.png[holds-pull-7]
+image::basic_holds/holds-pull-7.png[holds-pull-7]
 +
 . If the item should be sent to another location, a hold transit slip
 will be printed. If your workstation is not setup for silent printing
@@ -365,7 +365,7 @@ If an item on the holds pull list is missing or damaged, you can change its stat
 
 . From the _Holds Pull List_, right-click on the item and either select _Mark Item Missing_ or _Mark Item Damaged_.
 +
-image::media/holds-pull-9.png[holds-pull-9]
+image::basic_holds/holds-pull-9.png[holds-pull-9]
 +
 . Evergreen will update the status of the item and will immediately retarget the hold.
 
@@ -396,21 +396,21 @@ If the patron changes their contact telephone number when placing the hold, this
 
 . Items with _Ready-for-Pickup_ status are on the _Holds Shelf_. The _Holds Shelf_ can help you manage items on the holds shelf. To see the holds shelf list, select _Circulation_ -> _Holds Shelf_.
 +
-image::media/holds-clearing-1.png[holds-clearing-1]
+image::basic_holds/holds-clearing-1.png[holds-clearing-1]
 +
 . The _Holds Shelf_ is displayed. Note the _Actions_ menu is available, as in the patron record.
 +
 You can cancel stale holds here.
 +
-image::media/holds-clearing-2.png[holds-clearing-2]
+image::basic_holds/holds-clearing-2.png[holds-clearing-2]
 +
 . Use the column picker to add and remove fields from this display. Two fields you may want to display are _Shelf Expire Time_ and _Shelf Time_.
 +
-image::media/holds-clearing-3.png[holds-clearing-3]
+image::basic_holds/holds-clearing-3.png[holds-clearing-3]
 +
 . Click the _Show Clearable Holds_ button to list expired holds, wrong-shelf holds and canceled holds only. Expired holds are holds that expired before today's date.
 +
-image::media/holds-clearing-4.png[holds-clearing-4]
+image::basic_holds/holds-clearing-4.png[holds-clearing-4]
 +
 . Click the _Print Full List_ button if you need a printed list. To format the printout customize the *Holds Shelf* receipt template. This can be done in _Administration_ -> _Workstation_ -> _Print Templates_.
 
@@ -447,7 +447,7 @@ Item statuses have an additional property available called “hopeless prone,”
 
 Please note that existing hold statuses (e.g., Waiting for Item) continue to work as expected, and no additional hold statuses were created as part of the development of this feature.
 
-image::media/hopeless_prone_item_status.png[Item status configuration screen]  
+image::basic_holds/hopeless_prone_item_status.png[Item status configuration screen]  
 
 ==== Applying the Hopeless Prone Item Status Property ====
 
@@ -463,7 +463,7 @@ The Hopeless Holds interface is used to retrieve a list of unfulfillable holds a
 
 The interface displays a grid similar to that of Holds Requests, with a list of holds that are considered unfulfillable.  Requests are added to this list based on whether there is a value in the Hopeless Date field, which is stored in the `action.hold_request` table.  
 
-image::media/hopeless_holds_interface.png[Hopeless Holds page in Local Administration]
+image::basic_holds/hopeless_holds_interface.png[Hopeless Holds page in Local Administration]
 
 The hold targeter sets (or unsets) the hopeless date value for every hold request based on whether any eligible copies are found to potentially fill the hold.  The first date the hold targeter finds the request unfulfillable is entered in the Hopeless Date field and remains there until unset.  Choosing the action “Find Another Target” will reset the Hopeless Date field in addition to its usual function of triggering the hold targeter.
 
@@ -492,7 +492,7 @@ Additional actions include:
 * *Show in Catalog* - opens the selected bibliographic records in OPAC view
 * *View/Place Orders* - opens the selected bibliographic records in Acquisitions, where staff can add the titles to a selection list, add the titles to an existing purchase order, or create a new purchase order; this action is disabled if there are metarecord holds among the selected requests
 
-image::media/hopeless_holds_actions.png[Actions menu in Hopeless Holds interface]
+image::basic_holds/hopeless_holds_actions.png[Actions menu in Hopeless Holds interface]
 
 TIP: If you use a popup blocker on your browser, it must be configured to allow multiple popups.  If a user selects multiple rows and chooses an action like “Retrieve Patron,” each one appears in a new tab.
 
@@ -519,12 +519,12 @@ Libraries can also choose to give patrons the ability to opt-in to pick up holds
 When enabled, the alternate pick up location will be displayed under the
 Holds button in the patron account.
 
-image::media/custom_hold_pickup_location1.png[Custom Hold Pickup Location]
+image::basic_holds/custom_hold_pickup_location1.png[Custom Hold Pickup Location]
 
 
 If configured, patrons will see the option to opt-in to the alternate location in the _Account Preferences_ section of their OPAC Account.
 
-image::media/custom_hold_pickup_location2.jpg[OPAC Account]
+image::basic_holds/custom_hold_pickup_location2.jpg[OPAC Account]
 
 
 == Display Hold Types on Pull Lists ==
@@ -550,7 +550,7 @@ Picker appears in a pop up window.  Click the box adjacent to _Hold Type_, and
 Click _Save_. The _Simplified Pull List Interface_ will now include the hold
 type each time that you log into the staff client.
 
-image::media/Display_Hold_Types_on_Pull_Lists1.jpg[Display_Hold_Types_on_Pull_Lists1]
+image::basic_holds/Display_Hold_Types_on_Pull_Lists1.jpg[Display_Hold_Types_on_Pull_Lists1]
 
 [[hold_groups]]
 == Hold Groups
@@ -646,7 +646,7 @@ check the *Visible to Patrons?* checkbox.
 The same workflow may be used on the *Current Users* and *Add Users*
 tabs to create a new Hold Group.
 
-image::media/new_hold_group.png[Create New Hold Group]
+image::basic_holds/new_hold_group.png[Create New Hold Group]
 
 ==== Add Users to a Hold Group
 
@@ -683,7 +683,7 @@ beginning of each row or select all users with the checkbox at the list.
 to Hold Group*. The users will now appear on the *Current Users* tab as
 part of the Hold Group.
 
-image::media/add_patrons.png[Add Users to Hold Group]
+image::basic_holds/add_patrons.png[Add Users to Hold Group]
 
 ===== Add Users With Integrated Patron Search 
 
@@ -759,7 +759,7 @@ wish to place the hold.
 desired.
 . Click *Create Event*.
 
-image::media/new_hold_group_event.png[New Hold Group Event]
+image::basic_holds/new_hold_group_event.png[New Hold Group Event]
 
 ===== From Searching the Catalog
 
@@ -771,7 +771,7 @@ Placement page appears.
 the drop-down to choose the Hold Group from the
 list.
 +
-image::media/catalog_place_hold.png[Hold Group From Catalog]
+image::basic_holds/catalog_place_hold.png[Hold Group From Catalog]
 +
 . Please note that most additional hold options (e.g., choosing the pickup
 library or notification preferences) are disabled for holds placed by
@@ -795,7 +795,7 @@ Group does not cancel any holds placed through the Hold Group.
 This will open the Hold Group in the Current Users tab.
 . Click the *Hold Groups* dropdown and choose *Delete Hold Group*.
 +
-image::media/delete_hold_group.png[Delete Hold Group]
+image::basic_holds/delete_hold_group.png[Delete Hold Group]
 
 === From the My Account Interface in the OPAC
 

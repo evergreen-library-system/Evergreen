@@ -16,7 +16,7 @@ check station, a staff member must initialize the interface by logging in.
   represents the host name of your Evergreen web server.
 . Log in with a staff account with circulation permissions.
 
-image::media/self-check-admin-login.png[Self Check Admin Login]
+image::self_check/self-check-admin-login.png[Self Check Admin Login]
 
 === Setting library hours of operation ===
 When the self check prints a receipt, the default template includes the
