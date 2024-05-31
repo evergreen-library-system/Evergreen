@@ -57,11 +57,11 @@ When a patron’s holds are marked as ready for pickup in Evergreen, an email or
 
 *Curbside offer email - example*
 
-image::media/curbside_offer_email.png[Curbside offer email]
+image::curbside/curbside_offer_email.png[Curbside offer email]
 
 *Curbside offer SMS - example*
 
-image::media/curbside_offer_sms.png[Curbside offer SMS]
+image::curbside/curbside_offer_sms.png[Curbside offer SMS]
 
 If a patron has scheduled a curbside pickup appointment, an email or text/SMS notification can be sent to confirm the appointment.  This confirmation is not related to any specific hold or holds, but rather the appointment they requested, and does not use the hold-specific SMS or email notification settings.  Therefore, if the SMS notification is enabled, and the patron has SMS settings, they will receive an SMS notification.  Likewise for the email confirmation option.  It can prompt them to log into their account or call the library in order to alert staff that they have arrived for their pickup appointment.  The notice message is customizable.  
 
@@ -71,11 +71,11 @@ If a patron has scheduled a curbside pickup appointment, an email or text/SMS no
 
 *Curbside confirmation email - example*
 
-image::media/curbside_confirm_email.png[Curbside confirmation email]
+image::curbside/curbside_confirm_email.png[Curbside confirmation email]
 
 *Curbside confirmation SMS - example*
 
-image::media/curbside_confirm_sms.png[Curbside confirmation SMS]
+image::curbside/curbside_confirm_sms.png[Curbside confirmation SMS]
 
 Patrons can receive an email with a list of the items they checked out.  To receive this notice patrons must have an email address associated with their account.  This is an existing notice in Evergreen, used by the circulation interface to send email receipts on demand, that the curbside pickup workflow now also makes use of. 
 
@@ -114,23 +114,23 @@ There are several workflows that can be accommodated by this feature.  Please se
 *** Mark As Staged And Ready:  click this button to mark a group of items as staged and ready for curbside pickup.  This will move the appointment to the Staged and Ready tab.
 * Evergreen will automatically check for new appointments every 15 minutes.  If there are new appointments to display, a reminder will appear and prompt you to refresh (or reload) the screen in your browser.
 
-image::media/curbside_tbs.png[To Be Staged tab]
+image::curbside/curbside_tbs.png[To Be Staged tab]
 
 ===== Claiming an Appointment =====
 
 Claim
 
-image::media/curbside_claim.png[Claim Curbside Appoinment]
+image::curbside/curbside_claim.png[Claim Curbside Appoinment]
 
 Release Claim
 
-image::media/curbside_release_claim.png[Release Curbside Appointment]
+image::curbside/curbside_release_claim.png[Release Curbside Appointment]
 
 ===== Potential Alerts =====
 
 Patron arrived before appointment was Staged
 
-image::media/curbside_patron_arrival_alert.png[Alert for Patron Has Already Arrived]
+image::curbside/curbside_patron_arrival_alert.png[Alert for Patron Has Already Arrived]
 
 ==== Staged and Ready ====
 
@@ -149,13 +149,13 @@ image::media/curbside_patron_arrival_alert.png[Alert for Patron Has Already Arri
 *** Set Back to To Be Staged - click to move an appointment back to the To Be Staged tab.  Can be used if an appointment is accidentally advanced or otherwise needs to be reverted back to the previous stage.
 ** Evergreen will automatically check for new appointments every 15 minutes.  If there are new staged holds to display, a reminder will appear and prompt you to refresh (or reload) the screen in your browser.
 
-image::media/curbside_staged_ready.png[Staged and Ready tab]
+image::curbside/curbside_staged_ready.png[Staged and Ready tab]
 
 ===== Potential Alerts =====
 
 New holds available for pickup after initial items were staged
 
-image::media/curbside_new_holds_alert.png[Alert for holds that came in after appointment was staged]
+image::curbside/curbside_new_holds_alert.png[Alert for holds that came in after appointment was staged]
 
 ==== Patron Is Outside ====
 
@@ -175,7 +175,7 @@ Patron: The patron’s last name and barcode (link out to the patron’s account
 ** This tab may also be bypassed if a staff member takes the action to Check Out Items and Mark As Delivered in the Staged and Ready tab.
 * Evergreen will automatically check for new patron arrivals every 15 minutes.  If there are new arrivals to display, a reminder will appear and prompt you to refresh (or reload) the screen in your browser.
 
-image::media/curbside_patron_outside.png[Patron is Outside tab]
+image::curbside/curbside_patron_outside.png[Patron is Outside tab]
 
 ==== Delivered Today ====
 
@@ -188,7 +188,7 @@ image::media/curbside_patron_outside.png[Patron is Outside tab]
 *** Potential alert: If any new items were marked as Ready for Pickup after the curbside pickup appointment was Staged, but before the pickup actually took place, the new items will appear in this list with an alert to tell staff that the item came in after the appointment was staged.  This may help with troubleshooting any checkout discrepancies.
 ** No actions can be taken from this tab.
 
-image::media/curbside_delivered_today[Delivered Today tab]
+image::curbside/curbside_delivered_today.png[Delivered Today tab]
 
 ==== Schedule Pickup ====
 
@@ -207,9 +207,9 @@ To schedule a pickup appointment:
 .. The time interval of appointments based on the Library Setting “Time interval between curbside appointments”.
 . Click Save to save this appointment. You will get a confirmation message in the lower right-hand corner of the screen.
 
-image::media/curbside_appointment_patron.png[Set Patron for Curbside Appointment]
+image::curbside/curbside_appointment_patron.png[Set Patron for Curbside Appointment]
 
-image::media/curbside_appointment_time.png[Set Time for Curbside Appointment]
+image::curbside/curbside_appointment_time.png[Set Time for Curbside Appointment]
 
 ===== Edit or Cancel a Pickup =====
 
@@ -235,7 +235,7 @@ To schedule a curbside pickup appointment, patrons will select:
 ** Patrons can click *Request appointment*, to schedule their curbside pickup appointment.
 ** Or they can click *Select another date* to start over with scheduling.
 
-image::media/opac_set_curbside.png[Set Curbside Appointment in MyAccount]
+image::curbside/opac_set_curbside.png[Set Curbside Appointment in MyAccount]
 
 After a curbside pickup appointment has been scheduled, patrons can take several actions in this interface:
 
@@ -248,8 +248,8 @@ After a curbside pickup appointment has been scheduled, patrons can take several
 * Cancel appointment
 ** Patrons can cancel upcoming appointments and create a new one if needed.
 
-image::media/opac_update_curbside.png[Update Curbside Appointment in MyAccount]
+image::curbside/opac_update_curbside.png[Update Curbside Appointment in MyAccount]
 
 If the Library Setting called “Disable patron modification of curbside appointments in public catalog” is set to True, patrons will not be able to schedule curbside pickup appointments from their MyAccount.  They will need to contact the library to speak to a staff member to schedule appointments.  However, after an appointment has been scheduled, they will see a Curbside Pickup tab in MyAccount that lists their appointments.
 
-image::media/opac_curbside_disabled.png[Patron Curbside Appointments are Disabled]
+image::curbside/opac_curbside_disabled.png[Patron Curbside Appointments are Disabled]
