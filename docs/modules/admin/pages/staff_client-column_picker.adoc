@@ -3,6 +3,8 @@
 
 indexterm:[Column Picker]
 
+== Column Configuration == 
+
 From many screens and lists, you can click on the column picker
 drop-down menu to change which columns are displayed.
 
@@ -32,3 +34,28 @@ browser and are not connected with a specific login or registered
 workstation. Each computer will need to be configured separately.
 
 image::column_picker/column_picker_web_save.png[column_picker_web_save]
+
+Some lists have a different design, and some of them can also be customized.
+Simply right-click the header row of any of the columns, and the column
+picker will appear. When you are finished customizing the display, scroll
+to the bottom of the Column Picker window and click *Save*.
+
+image::column_picker/column_picker_dojo.png[column_picker_dojo]
+
+== Downloading or Printing Results ==
+
+Every grid in the staff client has the option to **Download Full CSV**, **Print Full Grid**, and **Print Selected Rows**, available from the dropdown arrow or gear icon in the function bar.
+
+image::column_picker/download_print_options.png[Column picker print and download options]
+
+*Download Full CSV* will download all of the records in the grid regardless of whether or not all of the records are currently visible. For example, if you do a patron search and retrieve 65 patrons but have your Rows set to 25, you will only see 25 patrons per page, but clicking Download Full CSV will download all 65 patron records to a CSV file, which can then be opened in Excel. When the CSV file downloads, it will download data for whatever columns you have visible.
+
+Likewise, the option for *Print Full Grid* will also print the visible columns for all of the retrieved records even if they span multiple pages.
+
+3.12 introduced the ability to print selected rows from a grid. 
+
+To do so: 
+
+. From the grid, select the rows you would like to print.
+. Click the arrow or gear icon at the top right of the grid, and click *Print Selected Rows*.
+
