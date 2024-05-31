@@ -26,12 +26,12 @@ interface. In order to view the Triggered Events Log, a staff member
 will need the `VIEW_TRIGGER_EVENT` permission either directly or by a
 group or profile membership.
 
-image::media/patron_tel_location.png[Patron Triggered Events Log Location]
+image::triggered_events/patron_tel_location.png[Patron Triggered Events Log Location]
 
 The Patron Triggered Events Log separates Hold Events and Circulation
 Events into their own tabs.
 
-image::media/patron_tel_tabs.png[Patron Tiggered Events Log Tabs]
+image::triggered_events/patron_tel_tabs.png[Patron Tiggered Events Log Tabs]
 
 The Circulation tab will display events such as predue notices, overdue
 notices, and autorenewal notices, as well as events like Mark Item Lost
@@ -48,7 +48,7 @@ so staff should use caution when using this action.
 More information about the Notifications/Actions Triggers feature in
 Evergreen, which generates patron notices, can be found xref:admin:actiontriggers.adoc[here].
 
-image::media/patron_tel_display.png[Patron Triggered Events Log Display]
+image::triggered_events/patron_tel_display.png[Patron Triggered Events Log Display]
 
 When retrieved from a patron record, the Triggered Event Log interface
 shows only patron-related events, and only specific events that have
@@ -106,12 +106,12 @@ Triggered Events Log in a new browser tab. Alternatively, from either
 the Item Status List View or Detail View, navigate to the *Actions Menu*
 and select *Show Triggered Events*.
 
-image::media/item_tel_location.png[Item Triggered Events Log Location]
+image::triggered_events/item_tel_location.png[Item Triggered Events Log Location]
 
 The rewritten Triggered Events Log separates Hold Events and Circulation
 Events into their own tabs.
 
-image:media/item_tel_display.png[Item Triggered Events Log Display]
+image:triggered_events/item_tel_display.png[Item Triggered Events Log Display]
 
 Circulation Events include predue notices, overdue notices, and
 autorenewal notices as well as events like Mark Item Lost or Mark Item
