@@ -192,13 +192,13 @@ but similar functionality is available in the Template Toolkit OPAC
 A patron who is a member of a publicly visible xref:circulation:basic_holds.adoc#hold_groups[Hold Group] will see
 a new option on the Holds menu of My Account labelled *Hold Groups*.
 
-image::media/opac_hold_groups.png[My Account Hold Groups]
+image::my_account/opac_hold_groups.png[My Account Hold Groups]
 
 If the *Hold Groups* menu item is selected, the patron will see a list
 of Hold Groups of which they are a member, as well as a link for
 removing themselves from the Hold Group.
 
-image::media/opac_remove_hg.png[Remove Me From Hold Group]
+image::my_account/opac_remove_hg.png[Remove Me From Hold Group]
 
 Only those Hold Groups that were marked by staff as “publicly visible”
 are displayed. If the patron does not belong to any publicly visible
@@ -349,23 +349,23 @@ If a patron has bills on their account and their library permits online payments
 
 After logging in to MyAccount, the patron should select the **Charges** menu item, and then select **Current Charges**.
 
-image::media/opac_current_charges.png[MyAccount Current Charges]
+image::my_account/opac_current_charges.png[MyAccount Current Charges]
 
 Next, they should (optionally) select the charges they wish to pay and then select either **Pay Selected Charges** or **Pay All Charges**.
 
-image::media/opac_select_charges.png[Select Charges]
+image::my_account/opac_select_charges.png[Select Charges]
 
 They will be prompted to enter their credit card information on the next screen. The patron should enter their credit card information and select **Submit Payment**. There is no confirmation step. Note that credit card information is not masked, so patrons should take care if they are in a public place. 
 
-image::media/opac_cc_entry.png[Credit Card Entry]
+image::my_account/opac_cc_entry.png[Credit Card Entry]
 
 There will be a processing message displayed while the payment is processed.
 
-image::media/opac_cc_inprocess.png[Credit Card Processing]
+image::my_account/opac_cc_inprocess.png[Credit Card Processing]
 
 Lastly, the patron will receive a confirmation and an option to print a receipt. 
 
-image::media/opac_cc_receipt.png[Credit Card Receipt]
+image::my_account/opac_cc_receipt.png[Credit Card Receipt]
 
 Receipts can also be printed or emailed by navigating to **Charges → Payment History** and selecting the relevant print or email option from the Payment History grid. Receipts can be configured in the xref:admin:actiontriggers.adoc[Notifications and Action Triggers] interface.
 
@@ -373,10 +373,10 @@ Receipts can also be printed or emailed by navigating to **Charges → Payment H
 
 If a credit card is declined, the patron will be given a declined message when they attempt to submit payment information.
 
-image::media/opac_cc_declined.png[Credit Card Declined]
+image::my_account/opac_cc_declined.png[Credit Card Declined]
 
 Stripe supports sending various types of error messages, including messages for an expired card, invalid CVV code, incorrect zip code, and more.
 
 If there is an error in Evergreen’s Stripe configuration, the patron will be presented with an error message when they attempt to initiate a payment. This will be displayed at the point when a patron selects either the **Pay Selected Charges** or **Pay All Charges** button, before the payment form is rendered.
 
-image::media/opac_cc_config_error.png[Configuration Error Message]
+image::my_account/opac_cc_config_error.png[Configuration Error Message]
