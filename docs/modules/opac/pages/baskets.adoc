@@ -62,7 +62,7 @@ This allows for titles within the basket to be added to an existing or new Recor
 ** To add the titles in your basket to an existing bucket, select the bucket from the _Name of existing bucket_ dropdown and click _Add to Select Bucket_.
 ** To add the titles in your basket to a new bucket, enter the name of your new bucket in the text box and click _Add to New Bucket_.
 +
-image::media/BatchActionsSearch-06.png[Add Basket Titles to Bucket]
+image::baskets/BatchActionsSearch-06.png[Add Basket Titles to Bucket]
 +
 
 == Additional Information ==
