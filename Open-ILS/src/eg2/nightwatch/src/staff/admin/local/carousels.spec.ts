@@ -17,7 +17,7 @@ module.exports = {
            // click the owner org-unit select to show the options
            .click('xpath', '//input[contains(@id, "owner")]')
            // then click the option we want from the dropdown
-           .click('xpath', '//button[@class = "dropdown-item active" and contains(./span/text(), "BR1")]')
+           .click('xpath', '//button[contains(./span/text(), "BR1")]')
            .setValue('xpath', '//input[contains(@id, "name")]', carouselName);
 
     // Click the Carousel Type combobox to open the dropdown
