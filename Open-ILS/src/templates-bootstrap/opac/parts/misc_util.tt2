@@ -821,6 +821,9 @@
         loc_value = ctx.copy_location_group ? CGI.param(loc_name)
                   : ctx.copy_location_group_org # resolved locg
                     || CGI.param(loc_name) || CGI.param('loc') || ctx.search_ou;
+        # This value should be numeric, but users could input anything.
+        # So let's remove any non-numbers to avoid potential reflected XSS vulnerabilities.
+        loc_value = loc_value.replace('\D', '');
     END;
 
 -%]
