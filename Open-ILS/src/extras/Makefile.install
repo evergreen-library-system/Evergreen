@@ -16,7 +16,7 @@
 # 	- or -
 # 	make -f Makefile.install debian-buster
 # 	- or -
-# 	make -f Makefile.install ubuntu-focal
+# 	make -f Makefile.install ubuntu-noble
 # 	- or -
 # 	make -f Makefile.install ubuntu-jammy
 # 	- or -
@@ -78,8 +78,8 @@ debian-bullseye:
 	@make -f $(DIR)/Makefile.debian-bullseye
 debian-buster:
 	@make -f $(DIR)/Makefile.debian-buster
-ubuntu-focal:
-	@make -f $(DIR)/Makefile.ubuntu-focal
+ubuntu-noble:
+	@make -f $(DIR)/Makefile.ubuntu-noble
 ubuntu-jammy:
 	@make -f $(DIR)/Makefile.ubuntu-jammy
 fedora:
@@ -121,18 +121,18 @@ postgres-server-debian-buster-14:
 	@make -f $(DIR)/Makefile.debian-buster install_postgres_server_14
 postgres-server-debian-buster-15:
 	@make -f $(DIR)/Makefile.debian-buster install_postgres_server_15
-postgres-server-ubuntu-focal-10:
-	@make -f $(DIR)/Makefile.ubuntu-focal install_postgres_server_10
-postgres-server-ubuntu-focal-11:
-	@make -f $(DIR)/Makefile.ubuntu-focal install_postgres_server_11
-postgres-server-ubuntu-focal-12:
-	@make -f $(DIR)/Makefile.ubuntu-focal install_postgres_server_12
-postgres-server-ubuntu-focal-13:
-	@make -f $(DIR)/Makefile.ubuntu-focal install_postgres_server_13
-postgres-server-ubuntu-focal-14:
-	@make -f $(DIR)/Makefile.ubuntu-focal install_postgres_server_14
-postgres-server-ubuntu-focal-15:
-	@make -f $(DIR)/Makefile.ubuntu-focal install_postgres_server_15
+postgres-server-ubuntu-noble-10:
+	@make -f $(DIR)/Makefile.ubuntu-noble install_postgres_server_10
+postgres-server-ubuntu-noble-11:
+	@make -f $(DIR)/Makefile.ubuntu-noble install_postgres_server_11
+postgres-server-ubuntu-noble-12:
+	@make -f $(DIR)/Makefile.ubuntu-noble install_postgres_server_12
+postgres-server-ubuntu-noble-13:
+	@make -f $(DIR)/Makefile.ubuntu-noble install_postgres_server_13
+postgres-server-ubuntu-noble-14:
+	@make -f $(DIR)/Makefile.ubuntu-noble install_postgres_server_14
+postgres-server-ubuntu-noble-15:
+	@make -f $(DIR)/Makefile.ubuntu-noble install_postgres_server_15
 postgres-server-ubuntu-jammy-10:
 	@make -f $(DIR)/Makefile.ubuntu-jammy install_postgres_server_10
 postgres-server-ubuntu-jammy-11:
@@ -148,8 +148,8 @@ postgres-server-ubuntu-jammy-15:
 postgres-server-fedora:
 	@make -f $(DIR)/Makefile.fedora install_postgres_server
 
-ubuntu-focal-developer:
-	@make -f $(DIR)/Makefile.ubuntu-focal install_developer
+ubuntu-noble-developer:
+	@make -f $(DIR)/Makefile.ubuntu-noble install_developer
 ubuntu-jammy-developer:
 	@make -f $(DIR)/Makefile.ubuntu-jammy install_developer
 
@@ -160,8 +160,8 @@ debian-bullseye-developer:
 debian-buster-developer:
 	@make -f $(DIR)/Makefile.debian-buster install_developer
 
-ubuntu-focal-translator:
-	@make -f $(DIR)/Makefile.ubuntu-focal install_translator
+ubuntu-noble-translator:
+	@make -f $(DIR)/Makefile.ubuntu-noble install_translator
 ubuntu-jammy-translator:
 	@make -f $(DIR)/Makefile.ubuntu-jammy install_translator
 debian-bookworm-translator:
@@ -171,8 +171,8 @@ debian-bullseye-translator:
 debian-buster-translator:
 	@make -f $(DIR)/Makefile.debian-buster install_translator
 
-ubuntu-focal-packager:
-	@make -f $(DIR)/Makefile.ubuntu-focal install_packager
+ubuntu-noble-packager:
+	@make -f $(DIR)/Makefile.ubuntu-noble install_packager
 ubuntu-jammy-packager:
 	@make -f $(DIR)/Makefile.ubuntu-jammy install_packager
 debian-bookworm-packager:
