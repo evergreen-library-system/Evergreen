@@ -14,21 +14,21 @@ of search sources in a Firefox browser:
    right box's dropdown and select the option for *Add "Example Consortium OpenSearch"*.
    The label will match the current scope.
 +
-image::media/opensearch1.png[opensearch1]
+image::opensearch/opensearch1.png[opensearch1]
 
 . At this point, it will add a new search option for the location the catalog
    is currently using. In this example, that is CONS (searching the whole
    consortium).
 +
-image::media/opensearch2.png[opensearch2]
+image::opensearch/opensearch2.png[opensearch2]
 
 . Enter search terms to begin a keyword search using this source. The next
    image illustrates an example search for "mozart" using the sample bib
    record set.
 +
-image::media/opensearch3.png[opensearch3]
+image::opensearch/opensearch3.png[opensearch3]
 
 . You can select which search source to use by clicking on the dropdown
    picker.
 +
-image::media/opensearch4.png[opensearch4]
+image::opensearch/opensearch4.png[opensearch4]
