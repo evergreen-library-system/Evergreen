@@ -7,15 +7,15 @@ msgid ""
 msgstr ""
 "Project-Id-Version: evergreen\n"
 "Report-Msgid-Bugs-To: FULL NAME <EMAIL@ADDRESS>\n"
-"POT-Creation-Date: 2023-05-04 14:55+0000\n"
-"PO-Revision-Date: 2019-12-13 23:36+0000\n"
+"POT-Creation-Date: 2024-05-30 02:19+0000\n"
+"PO-Revision-Date: 2024-05-29 00:50+0000\n"
 "Last-Translator: Andi Chandler <Unknown>\n"
 "Language-Team: English (United Kingdom) <en_GB@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2023-05-05 04:52+0000\n"
-"X-Generator: Launchpad (build 90e2150bef31b411d7bae5c4032c7e320fcaaec8)\n"
+"X-Launchpad-Export-Date: 2024-05-31 05:23+0000\n"
+"X-Generator: Launchpad (build a60fb269857abd7169036a2da5afd37a6a1d41e8)\n"
 
 #: ../../Open-ILS/src/templates/vandelay/inc/queue.tt2:104
 msgid "&#171; Previous"
@@ -219,416 +219,416 @@ msgstr "ID"
 
 #: ../../Open-ILS/src/templates/vandelay/inc/import_errors.tt2:17
 msgid "ISBN"
-msgstr ""
+msgstr "ISBN"
 
 #: ../../Open-ILS/src/templates/vandelay/inc/import_errors.tt2:18
 msgid "ISSN"
-msgstr ""
+msgstr "ISSN"
 
 #: ../../Open-ILS/src/templates/vandelay/inc/queue.tt2:281
 msgid "Import"
-msgstr ""
+msgstr "Import"
 
 #: ../../Open-ILS/src/templates/vandelay/inc/queue.tt2:16
 msgid "Import All  Records"
-msgstr ""
+msgstr "Import All  Records"
 
 #: ../../Open-ILS/src/templates/vandelay/inc/import_errors.tt2:13
 msgid "Import Error"
-msgstr ""
+msgstr "Import Error"
 
 #: ../../Open-ILS/src/templates/vandelay/inc/import_errors.tt2:9
 msgid "Import Errors"
-msgstr ""
+msgstr "Import Errors"
 
 #: ../../Open-ILS/src/templates/vandelay/inc/queue.tt2:148 ../../Open-ILS/src/templates/vandelay/inc/queue.tt2:190
 msgid "Import Failures"
-msgstr ""
+msgstr "Import Failures"
 
 #: ../../Open-ILS/src/templates/vandelay/inc/import_errors.tt2:49 ../../Open-ILS/src/templates/vandelay/inc/queue.tt2:202
 msgid "Import Items"
-msgstr ""
+msgstr "Import Items"
 
 #: ../../Open-ILS/src/templates/vandelay/inc/matches.tt2:39
 msgid "Import Matches"
-msgstr ""
+msgstr "Import Matches"
 
 #: ../../Open-ILS/src/templates/vandelay/inc/queue.tt2:214 ../../Open-ILS/src/templates/vandelay/inc/upload.tt2:63
 msgid "Import Non-Matching Records"
-msgstr ""
+msgstr "Import Non-Matching Records"
 
 #: ../../Open-ILS/src/templates/vandelay/inc/toolbar.tt2:5
 msgid "Import Records"
-msgstr ""
+msgstr "Import Records"
 
 #: ../../Open-ILS/src/templates/vandelay/inc/queue.tt2:15
 msgid "Import Selected Records"
-msgstr ""
+msgstr "Import Selected Records"
 
 #: ../../Open-ILS/src/templates/vandelay/inc/queue.tt2:152 ../../Open-ILS/src/templates/vandelay/inc/queue.tt2:194
 msgid "Import Time"
-msgstr ""
+msgstr "Import Time"
 
 #: ../../Open-ILS/src/templates/vandelay/inc/queue.tt2:153 ../../Open-ILS/src/templates/vandelay/inc/queue.tt2:195
 msgid "Imported As"
-msgstr ""
+msgstr "Imported As"
 
 #: ../../Open-ILS/src/templates/vandelay/inc/export.tt2:55
 msgid "Include holdings in Bibliographic Records"
-msgstr ""
+msgstr "Include holdings in Bibliographic Records"
 
 #: ../../Open-ILS/src/templates/vandelay/inc/toolbar.tt2:7
 msgid "Inspect Queue"
-msgstr ""
+msgstr "Inspect Queue"
 
 #: ../../Open-ILS/src/templates/vandelay/inc/queue.tt2:243 ../../Open-ILS/src/templates/vandelay/inc/upload.tt2:92
 msgid "Insufficient Quality Fall-Through Profile"
-msgstr ""
+msgstr "Insufficient Quality Fall-Through Profile"
 
 #: ../../Open-ILS/src/templates/vandelay/inc/queue.tt2:39
 msgid "Item Import Failures"
-msgstr ""
+msgstr "Item Import Failures"
 
 #: ../../Open-ILS/src/templates/vandelay/inc/queue.tt2:38
 msgid "Items Imported"
-msgstr ""
+msgstr "Items Imported"
 
 #: ../../Open-ILS/src/templates/vandelay/inc/queue.tt2:37
 msgid "Items in Queue"
-msgstr ""
+msgstr "Items in Queue"
 
 #: ../../Open-ILS/src/templates/vandelay/inc/matches.tt2:22
 msgid "Last Edit Date"
-msgstr ""
+msgstr "Last Edit Date"
 
 #: ../../Open-ILS/src/templates/vandelay/inc/upload.tt2:33
 msgid "Limit matches to bucket"
-msgstr ""
+msgstr "Limit matches to bucket"
 
 #: ../../Open-ILS/src/templates/vandelay/inc/import_errors.tt2:51
 msgid "Limit to Import Failures"
-msgstr ""
+msgstr "Limit to Import Failures"
 
 #: ../../Open-ILS/src/templates/vandelay/inc/queue.tt2:56
 msgid "Limit to Non-Imported Records"
-msgstr ""
+msgstr "Limit to Non-Imported Records"
 
 #: ../../Open-ILS/src/templates/vandelay/inc/queue.tt2:63
 msgid "Limit to Records with Import Errors"
-msgstr ""
+msgstr "Limit to Records with Import Errors"
 
 #: ../../Open-ILS/src/templates/vandelay/inc/queue.tt2:49
 msgid "Limit to Records with Matches"
-msgstr ""
+msgstr "Limit to Records with Matches"
 
 #: ../../Open-ILS/src/templates/vandelay/vandelay.tt2:9
 msgid "Loading..."
-msgstr ""
+msgstr "Loading..."
 
 #: ../../Open-ILS/src/templates/vandelay/vandelay.tt2:2
 msgid "MARC Import/Export"
-msgstr ""
+msgstr "MARC Import/Export"
 
 #: ../../Open-ILS/src/templates/vandelay/inc/marchtml.tt2:2
 msgid "MARC Record"
-msgstr ""
+msgstr "MARC Record"
 
 #: ../../Open-ILS/src/templates/vandelay/inc/export.tt2:40
 msgid "MARC XML"
-msgstr ""
+msgstr "MARC XML"
 
 #: ../../Open-ILS/src/templates/vandelay/inc/export.tt2:38
 msgid "MARC21"
-msgstr ""
+msgstr "MARC21"
 
 #: ../../Open-ILS/src/templates/vandelay/inc/export.tt2:50
 msgid "MARC8"
-msgstr ""
+msgstr "MARC8"
 
 #: ../../Open-ILS/src/templates/vandelay/inc/matches.tt2:17
 msgid "Match Score"
-msgstr ""
+msgstr "Match Score"
 
 #: ../../Open-ILS/src/templates/vandelay/inc/matches.tt2:19
 msgid "Matched Record Quality"
-msgstr ""
+msgstr "Matched Record Quality"
 
 #: ../../Open-ILS/src/templates/vandelay/inc/queue.tt2:142 ../../Open-ILS/src/templates/vandelay/inc/queue.tt2:184
 msgid "Matches"
-msgstr ""
+msgstr "Matches"
 
 #: ../../Open-ILS/src/templates/vandelay/inc/toolbar.tt2:11
 msgid "Merge / Overlay Profiles"
-msgstr ""
+msgstr "Merge / Overlay Profiles"
 
 #: ../../Open-ILS/src/templates/vandelay/inc/queue.tt2:232 ../../Open-ILS/src/templates/vandelay/inc/upload.tt2:81
 msgid "Merge On Best Match"
-msgstr ""
+msgstr "Merge On Best Match"
 
 #: ../../Open-ILS/src/templates/vandelay/inc/queue.tt2:220 ../../Open-ILS/src/templates/vandelay/inc/upload.tt2:69
 msgid "Merge On Exact Match (901c)"
-msgstr ""
+msgstr "Merge On Exact Match (901c)"
 
 #: ../../Open-ILS/src/templates/vandelay/inc/queue.tt2:226 ../../Open-ILS/src/templates/vandelay/inc/upload.tt2:75
 msgid "Merge On Single Match"
-msgstr ""
+msgstr "Merge On Single Match"
 
 #: ../../Open-ILS/src/templates/vandelay/inc/queue.tt2:207 ../../Open-ILS/src/templates/vandelay/inc/upload.tt2:57
 msgid "Merge Profile"
-msgstr ""
+msgstr "Merge Profile"
 
 #: ../../Open-ILS/src/templates/vandelay/inc/matches.tt2:8
 msgid "Merge Target"
-msgstr ""
+msgstr "Merge Target"
 
 #: ../../Open-ILS/src/templates/vandelay/inc/item_attrs.tt2:9
 msgid "New Definition"
-msgstr ""
+msgstr "New Definition"
 
 #: ../../Open-ILS/src/templates/vandelay/inc/profiles.tt2:5
 msgid "New Merge Profile"
-msgstr ""
+msgstr "New Merge Profile"
 
 #: ../../Open-ILS/src/templates/vandelay/inc/queue.tt2:239 ../../Open-ILS/src/templates/vandelay/inc/upload.tt2:88
 msgid "New Record Quality / Quality of Best Match"
-msgstr ""
+msgstr "New Record Quality / Quality of Best Match"
 
 #: ../../Open-ILS/src/templates/vandelay/inc/queue.tt2:107
 msgid "Next &#187;"
-msgstr ""
+msgstr "Next &#187;"
 
 #: ../../Open-ILS/src/templates/vandelay/inc/export.tt2:15 ../../Open-ILS/src/templates/vandelay/inc/export.tt2:20
 msgid "Or"
-msgstr ""
+msgstr "Or"
 
 #: ../../Open-ILS/src/templates/vandelay/inc/profiles.tt2:3
 msgid "Overlay / Merge Profiles"
-msgstr ""
+msgstr "Overlay / Merge Profiles"
 
 #: ../../Open-ILS/src/templates/vandelay/inc/queue.tt2:99
 msgid "Page"
-msgstr ""
+msgstr "Page"
 
 #: ../../Open-ILS/src/templates/vandelay/inc/queue.tt2:293
 msgid "Please enter the name of the bucket to append/create."
-msgstr ""
+msgstr "Please enter the name of the bucket to append/create."
 
 #: ../../Open-ILS/src/templates/vandelay/inc/import_errors.tt2:56 ../../Open-ILS/src/templates/vandelay/inc/queue.tt2:83
 msgid "Print"
-msgstr ""
+msgstr "Print"
 
 #: ../../Open-ILS/src/templates/vandelay/inc/progress.tt2:13
 msgid "Processing... "
-msgstr ""
+msgstr "Processing... "
 
 #: ../../Open-ILS/src/templates/vandelay/inc/queueselect.tt2:13
 msgid "Queue"
-msgstr ""
+msgstr "Queue"
 
 #: ../../Open-ILS/src/templates/vandelay/inc/queue.tt2:6
 msgid "Queue "
-msgstr ""
+msgstr "Queue "
 
 #: ../../Open-ILS/src/templates/vandelay/inc/queue.tt2:13
 msgid "Queue Actions"
-msgstr ""
+msgstr "Queue Actions"
 
 #: ../../Open-ILS/src/templates/vandelay/inc/queue.tt2:46
 msgid "Queue Filters"
-msgstr ""
+msgstr "Queue Filters"
 
 #: ../../Open-ILS/src/templates/vandelay/inc/queue.tt2:30
 msgid "Queue Summary"
-msgstr ""
+msgstr "Queue Summary"
 
 #: ../../Open-ILS/src/templates/vandelay/inc/queueselect.tt2:3
 msgid "Queue Type"
-msgstr ""
+msgstr "Queue Type"
 
 #: ../../Open-ILS/src/templates/vandelay/inc/matches.tt2:18
 msgid "Queued Record Quality"
-msgstr ""
+msgstr "Queued Record Quality"
 
 #: ../../Open-ILS/src/templates/vandelay/inc/export.tt2:22
 msgid "Record Bucket ID"
-msgstr ""
+msgstr "Record Bucket ID"
 
 #: ../../Open-ILS/src/templates/vandelay/inc/toolbar.tt2:9 ../../Open-ILS/src/templates/vandelay/vandelay.tt2:37
 msgid "Record Display Attributes"
-msgstr ""
+msgstr "Record Display Attributes"
 
 #: ../../Open-ILS/src/templates/vandelay/inc/export.tt2:46
 msgid "Record Encoding"
-msgstr ""
+msgstr "Record Encoding"
 
 #: ../../Open-ILS/src/templates/vandelay/inc/export.tt2:35
 msgid "Record Format"
-msgstr ""
+msgstr "Record Format"
 
 #: ../../Open-ILS/src/templates/vandelay/inc/export.tt2:17
 msgid "Record ID"
-msgstr ""
+msgstr "Record ID"
 
 #: ../../Open-ILS/src/templates/vandelay/inc/upload.tt2:54
 msgid "Record Import Actions"
-msgstr ""
+msgstr "Record Import Actions"
 
 #: ../../Open-ILS/src/templates/vandelay/inc/queue.tt2:34
 msgid "Record Import Failures"
-msgstr ""
+msgstr "Record Import Failures"
 
 #: ../../Open-ILS/src/templates/vandelay/inc/upload.tt2:28
 msgid "Record Match Set"
-msgstr ""
+msgstr "Record Match Set"
 
 #: ../../Open-ILS/src/templates/vandelay/inc/toolbar.tt2:13
 msgid "Record Match Sets"
-msgstr ""
+msgstr "Record Match Sets"
 
 #: ../../Open-ILS/src/templates/vandelay/inc/marchtml.tt2:4
 msgid "Record Saved"
-msgstr ""
+msgstr "Record Saved"
 
 #: ../../Open-ILS/src/templates/vandelay/inc/export.tt2:26 ../../Open-ILS/src/templates/vandelay/inc/upload.tt2:6
 msgid "Record Type"
-msgstr ""
+msgstr "Record Type"
 
 #: ../../Open-ILS/src/templates/vandelay/inc/queue.tt2:33
 msgid "Records Imported:"
-msgstr ""
+msgstr "Records Imported:"
 
 #: ../../Open-ILS/src/templates/vandelay/inc/queue.tt2:87
 msgid "Records Per Page"
-msgstr ""
+msgstr "Records Per Page"
 
 #: ../../Open-ILS/src/templates/vandelay/inc/queue.tt2:32
 msgid "Records in Queue:"
-msgstr ""
+msgstr "Records in Queue:"
 
 #: ../../Open-ILS/src/templates/vandelay/inc/attrs.tt2:85
 msgid "Remove"
-msgstr ""
+msgstr "Remove"
 
 #: ../../Open-ILS/src/templates/vandelay/inc/attrs.tt2:46
 msgid "Remove (advanced)"
-msgstr ""
+msgstr "Remove (advanced)"
 
 #: ../../Open-ILS/src/templates/vandelay/inc/queue.tt2:249 ../../Open-ILS/src/templates/vandelay/inc/upload.tt2:98
 msgid "Remove MARC Field Groups"
-msgstr ""
+msgstr "Remove MARC Field Groups"
 
 #: ../../Open-ILS/src/templates/vandelay/inc/export.tt2:60
 msgid "Retrieve Records"
-msgstr ""
+msgstr "Retrieve Records"
 
 #: ../../Open-ILS/src/templates/vandelay/inc/marchtml.tt2:6
 msgid "Return"
-msgstr ""
+msgstr "Return"
 
 #: ../../Open-ILS/src/templates/vandelay/inc/marchtml.tt2:3
 msgid "Save Changes"
-msgstr ""
+msgstr "Save Changes"
 
 #: ../../Open-ILS/src/templates/vandelay/inc/queueselect.tt2:2
 msgid "Select a Queue to Inspect"
-msgstr ""
+msgstr "Select a Queue to Inspect"
 
 #: ../../Open-ILS/src/templates/vandelay/inc/upload.tt2:47
 msgid "Select a Record Source"
-msgstr ""
+msgstr "Select a Record Source"
 
 #: ../../Open-ILS/src/templates/vandelay/inc/matches.tt2:23
 msgid "Source"
-msgstr ""
+msgstr "Source"
 
 #: ../../Open-ILS/src/templates/vandelay/inc/attrs.tt2:83
 msgid "Subfield"
-msgstr ""
+msgstr "Subfield"
 
 #: ../../Open-ILS/src/templates/vandelay/inc/attrs.tt2:33
 msgid "Subfield(s)"
-msgstr ""
+msgstr "Subfield(s)"
 
 #: ../../Open-ILS/src/templates/vandelay/inc/matches.tt2:33
 msgid "TCN Source"
-msgstr ""
+msgstr "TCN Source"
 
 #: ../../Open-ILS/src/templates/vandelay/inc/matches.tt2:34
 msgid "TCN Value"
-msgstr ""
+msgstr "TCN Value"
 
 #: ../../Open-ILS/src/templates/vandelay/inc/attrs.tt2:82
 msgid "Tag"
-msgstr ""
+msgstr "Tag"
 
 #: ../../Open-ILS/src/templates/vandelay/inc/attrs.tt2:24
 msgid "Tag(s)"
-msgstr ""
+msgstr "Tag(s)"
 
 #: ../../Open-ILS/src/templates/vandelay/inc/import_errors.tt2:15
 msgid "Title"
-msgstr ""
+msgstr "Title"
 
 #: ../../Open-ILS/src/templates/vandelay/inc/export.tt2:39
 msgid "UNIMARC"
-msgstr ""
+msgstr "UNIMARC"
 
 #: ../../Open-ILS/src/templates/vandelay/inc/import_errors.tt2:19
 msgid "UPC"
-msgstr ""
+msgstr "UPC"
 
 #: ../../Open-ILS/src/templates/vandelay/inc/export.tt2:49
 msgid "UTF-8"
-msgstr ""
+msgstr "UTF-8"
 
 #: ../../Open-ILS/src/templates/vandelay/inc/attrs.tt2:61
 msgid "Update"
-msgstr ""
+msgstr "Update"
 
 #: ../../Open-ILS/src/templates/vandelay/inc/upload.tt2:130
 msgid "Upload"
-msgstr ""
+msgstr "Upload"
 
 #: ../../Open-ILS/src/templates/vandelay/inc/progress.tt2:8
 msgid "Upload Status"
-msgstr ""
+msgstr "Upload Status"
 
 #: ../../Open-ILS/src/templates/vandelay/inc/progress.tt2:10
 msgid "Uploading..."
-msgstr ""
+msgstr "Uploading..."
 
 #: ../../Open-ILS/src/templates/vandelay/inc/export.tt2:5
 msgid "Use Field Number"
-msgstr ""
+msgstr "Use Field Number"
 
 #: ../../Open-ILS/src/templates/vandelay/inc/queue.tt2:270 ../../Open-ILS/src/templates/vandelay/inc/upload.tt2:118
 msgid "Use Org Unit Matching in Copy to Determine Best Match"
-msgstr ""
+msgstr "Use Org Unit Matching in Copy to Determine Best Match"
 
 #: ../../Open-ILS/src/templates/vandelay/inc/queue.tt2:17
 msgid "View Import Items"
-msgstr ""
+msgstr "View Import Items"
 
 #: ../../Open-ILS/src/templates/vandelay/inc/matches.tt2:13 ../../Open-ILS/src/templates/vandelay/inc/queue.tt2:136 ../../Open-ILS/src/templates/vandelay/inc/queue.tt2:178
 msgid "View MARC"
-msgstr ""
+msgstr "View MARC"
 
 #: ../../Open-ILS/src/templates/vandelay/inc/attrs.tt2:84
 msgid "XPath"
-msgstr ""
+msgstr "XPath"
 
 #: ../../Open-ILS/src/templates/vandelay/inc/attrs.tt2:41
 msgid "XPath (advanced)"
-msgstr ""
+msgstr "XPath (advanced)"
 
 #: ../../Open-ILS/src/templates/vandelay/inc/attrs.tt2:36
 msgid "You can enter multiple subfields, separated by spaces and/or commas"
-msgstr ""
+msgstr "You can enter multiple subfields, separated by spaces and/or commas"
 
 #: ../../Open-ILS/src/templates/vandelay/inc/attrs.tt2:27
 msgid "You can enter multiple tags, separated by spaces and/or commas"
-msgstr ""
+msgstr "You can enter multiple tags, separated by spaces and/or commas"
 
 #: ../../Open-ILS/src/templates/vandelay/inc/upload.tt2:21
 msgid "or Add to an Existing Queue"
-msgstr ""
+msgstr "or Add to an Existing Queue"
