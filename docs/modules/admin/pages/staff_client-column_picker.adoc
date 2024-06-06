@@ -6,7 +6,7 @@ indexterm:[Column Picker]
 From many screens and lists, you can click on the column picker
 drop-down menu to change which columns are displayed.
 
-image::media/column_picker_web.png[Column picker menu options]
+image::column_picker/column_picker_web.png[Column picker menu options]
 
 
 To show or hide a column, simply click the column name in the menu. For
@@ -16,14 +16,14 @@ as they are made.
 
 Columns at the top of the list will appear at the left end of the grid.
 
-image::media/column_picker_popup.png[Column picker popup window]
+image::column_picker/column_picker_popup.png[Column picker popup window]
 
 
 To adjust the width of columns, choose *Manage Column Widths* from
 the menu, then click the "Expand" or "Shrink" icons in each column.
 These can be clicked multiple times to reach the desired width.
 
-image::media/column_picker_config_widths.png[Column picker manage widths]
+image::column_picker/column_picker_config_widths.png[Column picker manage widths]
 
 
 After customizing the display you may save your changes by choosing
@@ -31,4 +31,4 @@ After customizing the display you may save your changes by choosing
 browser and are not connected with a specific login or registered
 workstation. Each computer will need to be configured separately.
 
-image::media/column_picker_web_save.png[column_picker_web_save]
+image::column_picker/column_picker_web_save.png[column_picker_web_save]

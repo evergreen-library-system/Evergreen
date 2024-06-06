@@ -13,7 +13,7 @@ Autorenewals are configured in *Administration -> Server Administration -> Circu
 
 Enter the number of automatic renewals allowed in the new field called _max_auto_renewals_.  The field called _max_renewals_ will still set the maximum number of manual renewals, whether staff or patron initiated.  Typically, the _max_renewals_ value will be greater than _max_auto_renewals_, so that even if no more autorenewals are allowed, a patron may still renew via the OPAC.
 
-image::media/autorenew_circdur.PNG[Autorenewals in Circulation Duration Rules]
+image::autorenewals/autorenew_circdur.PNG[Autorenewals in Circulation Duration Rules]
 
 The Circulation Duration Rule can then be applied to specific circulation policies (*Administration -> Local Administration -> Circulation Policies*) to implement autorenewals in Evergreen.
 
@@ -32,14 +32,14 @@ Two new action triggers have been added to Evergreen for use with autorenewals. 
 
 Sample of successful autorenewal notification:
 
-image::media/autorenew_renewnotice.PNG[Notification of Successful Autorenewal]
+image::autorenewals/autorenew_renewnotice.PNG[Notification of Successful Autorenewal]
 
 Sample of blocked autorewal notification:
 
-image::media/autorenew_norenewnotice.PNG[Notification of Blocked Autorenewal]
+image::autorenewals/autorenew_norenewnotice.PNG[Notification of Blocked Autorenewal]
 
 == Autorenewals in Patron Accounts ==
 
 A new column called _AutoRenewalsRemaining_ indicates how many autorenewals are available for a transaction.
 
-image::media/autorenew_itemsout.PNG[Autorenewals Remaining in Patron Items Out]
+image::autorenewals/autorenew_itemsout.PNG[Autorenewals Remaining in Patron Items Out]

@@ -6,7 +6,7 @@ indexterm:[Angular]
 
 As of 3.4, the Angular eg-grid has been enhanced by adding a new per-column filtering widget with many new features. This widget allows column headers as well as the filter bar to remain visible, or frozen, at the top of the screen if one scrolls down the grid.
 
-image::media/filters.png[Example of column header filters] 
+image::staff_client_column_filters/filters.png[Example of column header filters] 
 
 Various column filters can be used in combination with one another to provide a highly specific list.
 
@@ -14,11 +14,11 @@ For text-based columns, the filtering provided in this widget is case-sensitive 
 
 Each column in the filter bar has an *Operator Button* and an *Entry Box*. The Operator Button is shown on the left in the image below, and the Entry Box on the right.
 
-image::media/operator.png[Operator Button] 
+image::staff_client_column_filters/operator.png[Operator Button] 
 
 If you select the *Operator Button* you will see that each column also has an *Apply Filter* and a *Clear Filter* button.
 
-image::media/applyclear_buttons.png[Apply Filter and Clear Filter Buttons]
+image::staff_client_column_filters/applyclear_buttons.png[Apply Filter and Clear Filter Buttons]
 
 To apply a filter, enter text, date, or numeric value in the *Entry Box* then press Enter or select Apply Filter. The type of entry will depend on which column type is being used. Most columns use a default operator of _Is exactly_. For columns using a combobox, selector, or Boolean value, the filter will be applied upon selection of a value and you do not need to press Enter or select Apply Filter.
 
@@ -26,11 +26,11 @@ Operator options are different depending on the column type.
 
 The example below shows the entry box with a value of “Car” and the Operator selected is _Starts with_.
 
-image::media/filter_startswith.png[Example of Starts With filter]
+image::staff_client_column_filters/filter_startswith.png[Example of Starts With filter]
 
 The results of this filter are shown below. A column with a filter in place will show the Operator Button styled blue.
 
-image::media/filter_results_startswith.png[Results of Starts With filter]
+image::staff_client_column_filters/filter_results_startswith.png[Results of Starts With filter]
 
 Columns which use a text type have operators for:
 
@@ -70,23 +70,23 @@ Columns which are Boolean have operators for:
 
 Columns which use an Organizational Unit combobox have operators for _Is (or includes)_ and _Is not (or excludes)_. This filter also includes the ability to select Organizational Unit ancestors and/or descendants as part of the filter. The combobox will accept typeahead entry and also will show an Organization Unit dropdown if you click in the entry box.
 
-image::media/orgunit_filter.png[Organizational Unit Filter]
+image::staff_client_column_filters/orgunit_filter.png[Organizational Unit Filter]
 
 NOTE: Be aware that when using Operator types such as _Contains_, _Starts with_, or _Ends with_ there is a risk of invoking a full table scan and thus the possibility of a noticeable slowness in retrieval. This risk is less likely for _Starts with_, as many text columns already have database indexes that lend themselves to left-anchored searches.
 
 As of this writing, columns with a date data type will only accept typed entry in YYYY-MM-DD format and do not honor the date.format Organizational Unit Setting. This is a known bug. If an invalid date is entered into the Entry Box, the box will have red styling on the left to indicate this as shown in the image below.
 
-image::media/incorrect_date.png[Invalid Date Entry]
+image::staff_client_column_filters/incorrect_date.png[Invalid Date Entry]
 
 To clear a filter, select the *Clear Filter* button. You may also delete the value in the entry box and press Enter if in a text column -- other columns do not require Enter, as noted above. 
 
 There is also a *Remove Filters* button available which will remove all currently applied filters in the grid.
 
-image::media/removefilters.png[Remove All Filters]
+image::staff_client_column_filters/removefilters.png[Remove All Filters]
 
 Clicking a column header will sort the column by ascending value, and show an up arrow in the column header. Clicking the header a second time will sort by descending value, and show a down arrow in the column header. A column sorted ascending is shown below.
 
-image::media/asc_sort.png[Column sort by ascending values]
+image::staff_client_column_filters/asc_sort.png[Column sort by ascending values]
 
 As part of this project, several improvements were made to existing Angular widgets to support the grid filtering feature:
 

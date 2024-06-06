@@ -20,11 +20,11 @@ Groups*.
 
 Select *New Library Group*.
 
-image::media/new_library_group.png[New Library Group]
+image::library_groups/new_library_group.png[New Library Group]
 
 Name your Library Group.
 
-image::media/new_library_group_2.png[Naming Your New Library Group]
+image::library_groups/new_library_group_2.png[Naming Your New Library Group]
 
 [NOTE]
 ==== 
@@ -47,15 +47,15 @@ Return to *Server Administration* and select *Library Group Maps*.
 
 . Select *New Library Group Map*.
 +
-image::media/new_group_map.png[New Library Group Map]
+image::library_groups/new_group_map.png[New Library Group Map]
 +
 . Choose a *Library Group* from the dropdown.
 +
-image::media/group_map_dropdown.png[Library Group Dropdown]
+image::library_groups/group_map_dropdown.png[Library Group Dropdown]
 +
 . Choose an Organizational Unit from the selector.
 +
-image::media/group_map_ou_dropdown.png[Organizational Unit Selector]
+image::library_groups/group_map_ou_dropdown.png[Organizational Unit Selector]
 +
 . Click *Save*.
 

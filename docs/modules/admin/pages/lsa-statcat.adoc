@@ -148,7 +148,7 @@ image::lsa-statcat/statcat_patron_return_button.png[Return button]
 
 This is how patron stat cats appear in the patron registration/edit screen:
 
-image::media/lsa-statcat-8.png[Patron stat cats in registration screen]
+image::lsa-statcat/lsa-statcat-8.png[Patron stat cats in registration screen]
 
 To assign a stat cat, click the option from the dropdown menu, or input a value in the text field if Free Text is allowed, and click *Save* at the top of the edit screen.
 The yellow highlight denotes a stat cat that is required. You will not be allowed to save or create a patron unless a value is entered.

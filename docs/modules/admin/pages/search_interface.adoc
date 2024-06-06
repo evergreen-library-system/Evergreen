@@ -11,7 +11,7 @@ Value Maps*
 . Select _Type_ from the *Record Attribute Type* select box.
 . Double click on the format type you wish to edit.
 
-image::media/coded-value-1.png[Coded Value Map Format Editor]
+image::search_interface/coded-value-1.png[Coded Value Map Format Editor]
 
 To change the label for the type, enter a value in the *Search Label* field.
 

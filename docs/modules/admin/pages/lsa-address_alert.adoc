@@ -66,13 +66,13 @@ To make changes to an existing alert, double click on the alert in the list.  Th
 
 If you don't see your alerts, make sure the *"Context Org Unit"* selection box has the correct Org Unit selected.
 
-image::media/edit_address_alert.jpg[Editing an Address Alert]
+image::lsa_address_alert/edit_address_alert.jpg[Editing an Address Alert]
 
 == Deleting an Address Alert ==
 
 To delete an alert or many alerts, click the selection check-box for all alerts you would like to delete.  Then click the "Delete Selected" button at the top of the screen.
 
-image::media/delete_address_alert.jpg
+image::lsa_address_alert/delete_address_alert.jpg[Delete Address Alert]
 
 == Staff View of Address Alerts ==
 
@@ -80,7 +80,7 @@ When an Address Alert is triggered by a matching address the staff will see the 
 
 Here is an example of what staff would see.
 
-image::media/address_alert.jpg[Address Alert Staff View]
+image::lsa_address_alert/address_alert.jpg[Address Alert Staff View]
 
 == Regular Expressions / Wildcards ==
 

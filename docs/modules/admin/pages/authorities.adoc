@@ -22,7 +22,7 @@ control sets.
 To access existing control sets, click *Administration* -> *Server Administration* -> 
 *Authority Control Sets*.
 
-image::media/Authority_Server_Admin_Menu.png[Server administration authority actions]
+image::authorities/Authority_Server_Admin_Menu.png[Server administration authority actions]
 
 === Add a Control Set ===
 
@@ -32,7 +32,7 @@ image::media/Authority_Server_Admin_Menu.png[Server administration authority act
 . Add a *Name* to the control set. Enter any number of characters.
 . Click *Save*.
 
-image::media/Authority_Control_Sets1.jpg[Authority_Control_Sets1]
+image::authorities/Authority_Control_Sets1.jpg[Authority_Control_Sets1]
 
 == Thesauri ==
 
@@ -116,21 +116,21 @@ characters.
 . Add a *sorter attribute*. The sorter attribute indicates the order in which
 the results will be displayed.
 +
-image::media/Authority_Control_Sets5.jpg[Authority_Control_Sets5]
+image::authorities/Authority_Control_Sets5.jpg[Authority_Control_Sets5]
 . Assign the axis to an authority so that users can find the authority record
 when browsing authorities. Click *Administration* -> *Server Administration* -> 
 *Authority Control Sets*.
 . Choose the control set to which you will add the axis.  Click *Authority
 Fields*.
 +
-image::media/Authority_Control_Sets_Fields.png[Authority fields link]
+image::authorities/Authority_Control_Sets_Fields.png[Authority fields link]
 
 . Click the link in the *Axes* column of the tag of your choice.
 . Click *New Browse Axis-Authority Field Map*.
 . Select an *Axis* from the drop down menu.
 . Click *Save*.
 
-image::media/Authority_Control_Sets6.jpg[Authority_Control_Sets6]
+image::authorities/Authority_Control_Sets6.jpg[Authority_Control_Sets6]
 
 
 *Permissions to use this Feature*
