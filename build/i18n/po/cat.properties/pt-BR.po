@@ -8,14 +8,14 @@ msgstr ""
 "Project-Id-Version: evergreen\n"
 "Report-Msgid-Bugs-To: FULL NAME <EMAIL@ADDRESS>\n"
 "POT-Creation-Date: 2018-08-15 11:29-0400\n"
-"PO-Revision-Date: 2013-03-15 13:35+0000\n"
+"PO-Revision-Date: 2024-05-29 00:50+0000\n"
 "Last-Translator: Job Diógenes Ribeiro Borges <jobdrb@gmail.com>\n"
 "Language-Team: Brazilian Portuguese <pt_BR@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2023-05-05 04:35+0000\n"
-"X-Generator: Launchpad (build 90e2150bef31b411d7bae5c4032c7e320fcaaec8)\n"
+"X-Launchpad-Export-Date: 2024-05-31 04:55+0000\n"
+"X-Generator: Launchpad (build a60fb269857abd7169036a2da5afd37a6a1d41e8)\n"
 "X-Poedit-SourceCharset: UTF-8\n"
 "X-Poedit-Country: BRAZIL\n"
 "X-Poedit-Language: Portuguese\n"
@@ -2428,63 +2428,3 @@ msgstr "Itens:"
 #: staff.cat.bib_brief.items.available.tooltip
 msgid "%1$s available"
 msgstr "%1$s disponíveis"
-
-#~ msgid "Record ID = %1$s"
-#~ msgstr "ID do Registro = %1$s"
-
-#~ msgid ""
-#~ "You must delete all the copies on the volume before you may delete the "
-#~ "volume itself."
-#~ msgstr ""
-#~ "Você deve excluir todos os exemplares de um volume antes de excluir o "
-#~ "próprio volume."
-
-#~ msgid "Volumes deleted."
-#~ msgstr "Volumes excluídos."
-
-#~ msgid "Record: %1$s"
-#~ msgstr "Registro : %1$s"
-
-#~ msgid "Merge these records? (Select the \"lead\" record first)"
-#~ msgstr ""
-#~ "Mesclar estes registros? (Selecione primeiro o registro \"principal\")"
-
-#~ msgid "Merge"
-#~ msgstr "Mesclar"
-
-#~ msgctxt "staff.cat.record_buckets.merge_records.cancel_button.label"
-#~ msgid "Cancel"
-#~ msgstr "Cancelar"
-
-#~ msgctxt "staff.cat.record_buckets.merge_records.cancel_button.accesskey"
-#~ msgid "C"
-#~ msgstr "C"
-
-#~ msgid "Lead Record? # %1$s"
-#~ msgstr "Registro principal? # %1$s"
-
-#~ msgid "Lead"
-#~ msgstr "Principal"
-
-#~ msgid "Merge Aborted"
-#~ msgstr "Mesclagem Cancelada"
-
-#~ msgid "Records were successfully merged."
-#~ msgstr "Registros mesclados com sucesso."
-
-#~ msgid "Call Numbers"
-#~ msgstr "Números de Chamada"
-
-#~ msgctxt "staff.cat.copy_editor.field.floating.yes_or_true"
-#~ msgid "Yes"
-#~ msgstr "Sim"
-
-#~ msgctxt "staff.cat.copy_editor.field.floating.no_or_false"
-#~ msgid "No"
-#~ msgstr "Não"
-
-#~ msgid "Cancel "
-#~ msgstr "Cancelar "
-
-#~ msgid "Holds transferred."
-#~ msgstr "Reservas transferidas."
