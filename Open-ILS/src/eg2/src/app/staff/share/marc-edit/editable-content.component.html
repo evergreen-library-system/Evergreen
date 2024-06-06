@@ -25,7 +25,8 @@ Track their labels here.
     (keydown)="inputKeyDown($event)"
     (focus)="selectText()"
     (blur)="inputBlurred()"
-    (input)="bigTextValueChange()">
+    [ngModel]="getContent()"
+    (ngModelChange)="setContent($event)">
   </textarea>
 </ng-container>
 
