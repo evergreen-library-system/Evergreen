@@ -535,7 +535,7 @@ implements OnInit, AfterViewInit, OnDestroy {
 
     // Propagate textarea content into our record
     bigTextValueChange() {
-        this.setContent(this.editInput.innerText);
+        this.setContent(this.editInput.value);
     }
 
     ngAfterViewInit() {
@@ -543,7 +543,7 @@ implements OnInit, AfterViewInit, OnDestroy {
 
         // Initialize the textarea
         if (this.bigText) {
-            this.editInput.innerText = this.getContent();
+            this.editInput.value = this.getContent();
         }
 
         if (this.TagComboBox) {
