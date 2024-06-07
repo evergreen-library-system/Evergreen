@@ -2267,6 +2267,8 @@ SELECT  h.id, h.request_time, h.capture_time, h.fulfillment_time, h.checkin_time
         u.expire_date AS usr_expire_date, u.claims_never_checked_out_count AS usr_claims_never_checked_out_count,
         u.last_update_time AS usr_last_update_time,
 
+        pgt.name as pgt_name,
+
         CASE WHEN NULLIF(u.alias,'') IS NOT NULL THEN
             u.alias
         ELSE
@@ -2386,6 +2388,7 @@ SELECT  h.id, h.request_time, h.capture_time, h.fulfillment_time, h.checkin_time
   FROM  action.hold_request h
         JOIN reporter.hold_request_record r ON (r.id = h.id)
         JOIN actor.usr u ON (u.id = h.usr)
+        JOIN permission.grp_tree pgt ON (u.profile = pgt.id)
         JOIN actor.card uc ON (uc.id = u.card)
         JOIN actor.usr ru ON (ru.id = h.requestor)
         JOIN actor.card ruc ON (ruc.id = ru.card)
