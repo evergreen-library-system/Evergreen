@@ -1,6 +1,6 @@
 BEGIN;
 
-/* SELECT evergreen.upgrade_deps_block_check('XXXX', :eg_version); */
+SELECT evergreen.upgrade_deps_block_check('1419', :eg_version);
 
 INSERT INTO config.usr_setting_type (name,grp,opac_visible,label,description,datatype) VALUES (
     'ui.show_search_highlight',
