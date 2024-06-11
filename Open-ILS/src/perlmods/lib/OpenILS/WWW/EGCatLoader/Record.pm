@@ -613,6 +613,10 @@ sub load_print_or_email_preview {
     my $e = new_editor(xact => 1);
     my $old_event = $self->cgi->param('old_event');
     if ($old_event) {
+        # Make sure this is actually a bib formatting event. If not, DIE HORRIBLY
+        return Apache2::Const::HTTP_BAD_REQUEST
+             unless event_has_hook($old_event, "biblio.format.record_entry.$type");
+
         $old_event = $e->retrieve_action_trigger_event([
             $old_event,
             {flesh => 1, flesh_fields => { atev => ['template_output'] }}
@@ -649,6 +653,12 @@ sub load_print_or_email_preview {
         $list = $rec_or_list_id;
         $ctx->{bre_id} = $rec_or_list_id;
     }
+
+    $list = $self->editor->search_biblio_record_entry(
+        [{id => $list}],
+        {idlist => 1}
+    );
+    return Apache2::Const::HTTP_BAD_REQUEST unless @$list;
 
     $ctx->{sortable} = (ref($list) && @$list > 1);
 
@@ -712,11 +722,26 @@ sub load_print_or_email_preview {
     return Apache2::Const::OK;
 }
 
+sub event_has_hook {
+    my $event = shift;
+    my $hook = shift;
+
+    my $thing = $self->editor->retrieve_action_trigger_event(
+        [ $event => { flesh => 1, flesh_fields => { atev => ['event_def'] } } ]
+    );
+
+    return $thing->event_def->hook eq $hook;
+}
+
 sub load_print_record {
     my $self = shift;
 
     my $event_id = $self->ctx->{page_args}->[0]
         or return Apache2::Const::HTTP_BAD_REQUEST;
+
+    # Make sure this is actually a bib formatting event. If not, DIE HORRIBLY
+    return Apache2::Const::HTTP_BAD_REQUEST
+        unless event_has_hook($event_id, "biblio.format.record_entry.print");
 
     my $event = $self->editor->retrieve_action_trigger_event([
         $event_id,
@@ -744,6 +769,10 @@ sub load_email_record {
 
     my $event_id = $self->ctx->{page_args}->[0]
         or return Apache2::Const::HTTP_BAD_REQUEST;
+
+    # Make sure this is actually a bib formatting event. If not, DIE HORRIBLY
+    return Apache2::Const::HTTP_BAD_REQUEST
+         unless event_has_hook($event_id, "biblio.format.record_entry.email");
 
     my $e = new_editor(xact => 1, authtoken => $self->ctx->{authtoken});
     return Apache2::Const::HTTP_BAD_REQUEST
