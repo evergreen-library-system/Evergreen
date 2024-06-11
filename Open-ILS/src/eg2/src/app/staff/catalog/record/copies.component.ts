@@ -58,7 +58,7 @@ export class CopiesComponent implements OnInit {
             .then(result => {
                 this.editableCopyLibs = result.UPDATE_COPY as number[];
                 this.editableCNLibs = result.UPDATE_VOLUME as number[];
-        });
+            });
 
         this.gridDataSource.getRows = (pager: Pager, sort: any[]) => {
             // sorting not currently supported
