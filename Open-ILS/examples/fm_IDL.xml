@@ -13029,38 +13029,37 @@ SELECT  usr,
 
 	<class id="rhcrpbapd" controller="open-ils.cstore open-ils.pcrud open-ils.reporter-store" oils_obj:fieldmapper="reporter::hold_copy_ratio_per_bib_and_pickup_desc" oils_persist:readonly="true" reporter:label="Hold/Item Ratio per Bib and Pickup Library (and Descendants) ">
 		<oils_persist:source_definition><![CDATA[
-				WITH counts_at_ou AS (
+			WITH flat_org_tree AS (
+				SELECT  a.id, ARRAY_AGG(d.id) AS descendants
+				  FROM  actor.org_unit a,
+				        actor.org_unit_descendants(a.id) d
+				  GROUP BY 1
+			), counts_at_ou AS (
 				SELECT a.id, a.pickup_lib_or_desc, a.holds_at_or_below, b.copy_count_at_or_below
 				FROM
 					(SELECT rhrr.bib_record AS id,
 							aou.id AS pickup_lib_or_desc,
 							COUNT(DISTINCT ahr.id) AS holds_at_or_below
-					   FROM actor.org_unit aou
-							JOIN actor.org_unit_type aout ON (aou.ou_type = aout.id),
-							action.hold_request ahr
+					   FROM action.hold_request ahr
 							JOIN reporter.hold_request_record rhrr USING (id)
-							LEFT JOIN action.hold_copy_map ahcm ON (ahr.id = ahcm.hold)
-							LEFT JOIN asset.copy ac ON (ahcm.target_copy = ac.id)
+							JOIN action.hold_copy_map ahcm ON (ahr.id = ahcm.hold)
+							JOIN asset.copy ac ON (ahcm.target_copy = ac.id)
+							JOIN flat_org_tree aou ON (array_position(aou.descendants,ac.circ_lib) IS NOT NULL AND array_position(aou.descendants,ahr.pickup_lib) IS NOT NULL)
 					  WHERE ahr.cancel_time IS NULL AND ahr.fulfillment_time IS NULL
-							AND ac.circ_lib IN (SELECT id FROM actor.org_unit_descendants(aou.id))
-							AND (actor.org_unit_ancestor_at_depth(ahr.pickup_lib,aout.depth)).id = (actor.org_unit_ancestor_at_depth(ac.circ_lib,aout.depth)).id
 					  GROUP BY 1, 2
 				) a
 				JOIN
 					(SELECT rhrr.bib_record AS id,
 							aou.id AS pickup_lib_or_desc,
 							COALESCE(COUNT(DISTINCT ahcm.target_copy),0) AS copy_count_at_or_below
-					   FROM actor.org_unit aou
-							JOIN actor.org_unit_type aout ON (aou.ou_type = aout.id),
-							action.hold_request ahr
+					   FROM action.hold_request ahr
 							JOIN reporter.hold_request_record rhrr USING (id)
-							LEFT JOIN action.hold_copy_map ahcm ON (ahr.id = ahcm.hold)
-							LEFT JOIN asset.copy ac ON (ahcm.target_copy = ac.id)
+							JOIN action.hold_copy_map ahcm ON (ahr.id = ahcm.hold)
+							JOIN asset.copy ac ON (ahcm.target_copy = ac.id)
+							JOIN flat_org_tree aou ON (array_position(aou.descendants,ac.circ_lib) IS NOT NULL AND array_position(aou.descendants,ahr.pickup_lib) IS NOT NULL)
 					  WHERE ahr.cancel_time IS NULL AND ahr.fulfillment_time IS NULL AND ahr.capture_time IS NULL AND NOT ahr.frozen
 							-- Comment out the next line to count copies included from other bibs by metarecord holds
 							AND ahr.hold_type != 'M'
-							AND ac.circ_lib IN (SELECT id FROM actor.org_unit_descendants(aou.id))
-							AND (actor.org_unit_ancestor_at_depth(ahr.pickup_lib,aout.depth)).id = (actor.org_unit_ancestor_at_depth(ac.circ_lib,aout.depth)).id
 					  GROUP BY 1, 2
 				) b
 				USING (id,pickup_lib_or_desc)
