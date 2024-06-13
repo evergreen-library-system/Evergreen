@@ -90,9 +90,11 @@ export class CatalogUrlService {
                 });
 
             // Add these two to the URL if they should override their defaults
+            // eslint-disable-next-line eqeqeq
             if (ts.defaultAvailable != ts.available) {
                 params['available'] = ts.available;
             }
+            // eslint-disable-next-line eqeqeq
             if (ts.defaultGroupByMetarecord != ts.groupByMetarecord) {
                 params['groupByMetarecord'] = ts.groupByMetarecord;
             }
