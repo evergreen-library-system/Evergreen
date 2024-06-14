@@ -533,7 +533,10 @@ function($scope , $q , $routeParams , egCore , egConfirmDialog , $location,
             selectOnLoad = false;
             // if somehow the grid finishes rendering before our settings 
             // arrive, manually de-select everything.
-            $scope.gridControls.selectItems([]);
+            if (typeof $scope.gridControls.selectItems !== "undefined") {
+                // check to make sure grid is initialized before trying to clear selections.
+                $scope.gridControls.selectItems([]);
+            }
         }
         if (s['ui.circ.billing.amount_warn']) {
             $scope.warn_amount = Number(s['ui.circ.billing.amount_warn']);
