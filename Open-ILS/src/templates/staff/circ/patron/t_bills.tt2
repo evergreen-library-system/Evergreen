@@ -11,8 +11,8 @@
     <div class="row">
       <div class="col-md-4">[% l('Total Billed:') %]</div>
       <div class="col-md-2">{{(summary.total_owed() || 0) | currency}}</div>
-      <div class="col-md-4">[% l('Credit Available:') %]</div>
-      <div class="col-md-2">{{patron().credit_forward_balance() | currency}}</div>
+      <div class="col-md-4" ng-hide="disablePatronCredit">[% l('Credit Available:') %]</div>
+      <div class="col-md-2" ng-hide="disablePatronCredit">{{patron().credit_forward_balance() | currency}}</div>
     </div>
     <div class="row">
       <div class="col-md-4">[% l('Total Paid/Credited:') %]</div>
@@ -52,7 +52,7 @@
               <option value="check_payment">[% l('Check') %]</option>
               <option value="credit_card_payment">[% l('Credit Card') %]</option>
               <option value="debit_card_payment">[% l('Debit Card') %]</option>
-              <option value="credit_payment">[% l('Patron Credit') %]</option>
+              <option value="credit_payment" ng-hide="disablePatronCredit">[% l('Patron Credit') %]</option>
               <option value="work_payment">[% l('Work') %]</option>
               <option value="forgive_payment">[% l('Forgive') %]</option>
               <option value="goods_payment">[% l('Goods') %]</option>
