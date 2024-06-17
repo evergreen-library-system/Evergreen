@@ -74,7 +74,7 @@
     </label>
   </div>
   <div class="col-lg-2">
-    <eg-sort-order-select [id]="pref-sort-order" [(sortOrder)]="settings['eg.search.sort_order']" [name]="sort_order"
+    <eg-sort-order-select [id]="'pref-sort-order'" [(sortOrder)]="settings['eg.search.sort_order']" [name]="'sort_order'"
     (sortOrderChange)="sortOrderChanged($event)">
     </eg-sort-order-select>
   </div>

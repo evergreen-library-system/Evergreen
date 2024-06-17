@@ -15,7 +15,7 @@ import { NG_VALUE_ACCESSOR } from '@angular/forms';
 })
 export class SortOrderSelectComponent {
 
-    private _sortOrder = 'relevance';
+    _sortOrder = 'relevance';
 
     @Input()
     get sortOrder () {return this._sortOrder;}
