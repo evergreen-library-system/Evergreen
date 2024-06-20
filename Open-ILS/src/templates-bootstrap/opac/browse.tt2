@@ -37,7 +37,7 @@
                 <div id="browse-controls" class='row'>
                     <form method="get" onsubmit="$('browse-submit-spinner').className = ''; return true" class="mx-auto">
                         <input type="hidden" name="blimit"
-                            value="[% blimit %]" />
+                            value="[% blimit | html %]" />
 
                         [% control_qtype = INCLUDE "opac/parts/qtype_selector.tt2"
                             id="browse-search-class" browse_only=1 plural=1 %]
