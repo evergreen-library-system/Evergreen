@@ -615,7 +615,7 @@ sub load_print_or_email_preview {
     if ($old_event) {
         # Make sure this is actually a bib formatting event. If not, DIE HORRIBLY
         return Apache2::Const::HTTP_BAD_REQUEST
-             unless event_has_hook($old_event, "biblio.format.record_entry.$type");
+             unless $self->event_has_hook($old_event, "biblio.format.record_entry.$type");
 
         $old_event = $e->retrieve_action_trigger_event([
             $old_event,
@@ -723,6 +723,7 @@ sub load_print_or_email_preview {
 }
 
 sub event_has_hook {
+    my $self = shift;
     my $event = shift;
     my $hook = shift;
 
@@ -741,7 +742,7 @@ sub load_print_record {
 
     # Make sure this is actually a bib formatting event. If not, DIE HORRIBLY
     return Apache2::Const::HTTP_BAD_REQUEST
-        unless event_has_hook($event_id, "biblio.format.record_entry.print");
+        unless $self->event_has_hook($event_id, "biblio.format.record_entry.print");
 
     my $event = $self->editor->retrieve_action_trigger_event([
         $event_id,
@@ -772,7 +773,7 @@ sub load_email_record {
 
     # Make sure this is actually a bib formatting event. If not, DIE HORRIBLY
     return Apache2::Const::HTTP_BAD_REQUEST
-         unless event_has_hook($event_id, "biblio.format.record_entry.email");
+         unless $self->event_has_hook($event_id, "biblio.format.record_entry.email");
 
     my $e = new_editor(xact => 1, authtoken => $self->ctx->{authtoken});
     return Apache2::Const::HTTP_BAD_REQUEST
