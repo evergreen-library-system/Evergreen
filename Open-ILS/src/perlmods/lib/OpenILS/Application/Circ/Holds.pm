@@ -5359,12 +5359,14 @@ sub hold_metadata {
             }
 
             # Also fetch the available parts for bib-level holds.
-            $meta->{parts} = $e->search_biblio_monograph_part(
-                [
-                    {record => $bre->id, deleted => 'f'},
-                    {order_by => {bmp => 'label_sortkey'}}
-                ]
-            );
+            my $parts = $U->simplereq(
+                    'open-ils.search',
+                    'open-ils.search.biblio.record_hold_parts',
+                    {record => $bre->id}
+                );
+
+            # we got the ids of the parts we can hold, now grab the rest of their info from the fieldmapper
+            $meta->{parts} = [map { $e->retrieve_biblio_monograph_part($_->{'id'}) } @$parts];
 
             # T holds on records that have parts are normally OK, but if the record has
             # no non-part copies, the hold will ultimately fail.  When that happens,
