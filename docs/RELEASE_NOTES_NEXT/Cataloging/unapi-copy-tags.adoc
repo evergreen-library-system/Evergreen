@@ -3,5 +3,5 @@
 SuperCat and unAPI can now export public copy tags when copies are
 exported.
 
-To requesst the export of copy tags via unAPI, add `acpt` to the URL
+To request the export of copy tags via unAPI, add `acpt` to the URL
 "includes" section.
