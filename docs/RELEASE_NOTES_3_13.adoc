@@ -3,7 +3,46 @@
 :numbered:
 :toclevels: 3
 
-== Upgrade notes ==
+== Evergreen 3.13.1 ==
+
+This release contains bug fixes improving on Evergreen 3.13.0.
+
+This includes fixes for a critical-importance security issue and two high-importance security issues. Users are advised to upgrade as soon as possible.
+
+=== Upgrade notes ===
+
+The security patches for https://bugs.launchpad.net/evergreen/+bug/2069959[Bug 2069959] and https://bugs.launchpad.net/evergreen/+bug/2019157[Bug 2019157]
+both involve changes to OPAC Template Toolkit templates.  If you
+have customized these templates, perhaps as branding for a specific
+org unit, please review your customized version to ensure that:
+
+* the `loc_value` variable in misc_util.tt2 has non-numeric charcters removed, and
+* the `blimit` variable in browse.tt2 has the https://template-toolkit.org/docs/manual/Filters.html#section_html[html filter] applied.
+
+=== Security ===
+
+* Patch Insecure direct object reference (IDOR) vulnerability for action trigger output in OPAC list printing feature. (https://bugs.launchpad.net/evergreen/+bug/2070078[Bug 2070078])
+* Remediates a reflected Cross-site Scripting (XSS) vulnerability in the public catalog browse feature. (https://bugs.launchpad.net/evergreen/+bug/2069959[Bug 2069959])
+* Mitigate a reflected cross-site scripting (XSS) vulnerability in the public catalog. (https://bugs.launchpad.net/evergreen/+bug/2019157[Bug 2019157])
+
+=== Further reading ===
+
+To learn more about the mechanics and impact of IDOR and XSS
+vulnerabilities:
+
+* https://portswigger.net/web-security/access-control/idor[Insecure direct object references (IDOR) from PortSwigger]
+* https://portswigger.net/web-security/cross-site-scripting[Cross-site scripting (XSS) from PortSwigger]
+
+=== Contributors ===
+
+* Galen Charlton
+* Mike Rylander
+* Jane Sandberg
+* Jason Stephenson
+
+== Evergreen 3.13.0 ==
+
+=== Upgrade notes ===
 
 * The fix for https://bugs.launchpad.net/evergreen/+bug/2040514[Bug 2040501] requires two new Perl modules for Evergreen: `Net::SFTP::Foreign` and `IO::Pty`.
 * The new staff client logos added in https://bugs.launchpad.net/evergreen/+bug/2049657[Bug 2049657] live in a different directory. OPAC customizations that includethe Evergreen logo should update to the new SVG files:
@@ -12,9 +51,9 @@
 ** Open-ILS/web/images/evergreen-round-logo.svg
 * https://bugs.launchpad.net/evergreen/+bug/1949109[Bug 1949109] adds a new Global Flag called `staff.search.shelving_location_groups_with_lassos` ("Staff Catalog Search: Display shelving location groups with library groups"). If disabled, Shelving Location Groups will not be included in new filter dropdown. 
 
-== New Features ==
+=== New Features ===
 
-:leveloffset: +2
+:leveloffset: +3
 
 = Accessibility = 
 
@@ -381,7 +420,7 @@ This work includes a SIP Filters tool which allows an administrator to choose to
 :leveloffset: 0
 
 
-== Acknowledgments ==
+=== Acknowledgments ===
 
 The Evergreen project would like to acknowledge the following organizations that commissioned developments in this release of Evergreen:
 
