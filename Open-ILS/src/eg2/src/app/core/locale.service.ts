@@ -50,7 +50,7 @@ export class LocaleService {
             return of();
         }
 
-        return this.pcrud.search('i18n_l', {code: locales});
+        return this.pcrud.search('i18n_l', {code: locales}, {}, {anonymous: true});
     }
 
     // Extract the local from the URL.
