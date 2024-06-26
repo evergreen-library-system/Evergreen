@@ -3,7 +3,7 @@
 ; HM NIS Edit Wizard helper defines
 ; Old versions of makensis don't like this, moved to Makefile
 ;!define /file PRODUCT_VERSION "client/VERSION"
-!define PRODUCT_TAG "Master"
+!define PRODUCT_TAG "3.10"
 !define PRODUCT_INSTALL_TAG "${PRODUCT_TAG}"
 !define UI_IMAGESET "beta"
 ;!define UI_IMAGESET "release"
