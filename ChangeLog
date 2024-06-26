@@ -1,3 +1,197 @@
-Evergreen doesn't keep a GNU-style ChangeLog except in release tarballs.
-Those seeking a change log are encouraged to run 'git log -v', or read
-it online at: http://git.evergreen-ils.org/?p=Evergreen.git;a=log
+commit 3a4901b003b75d53c8207d37f07b0cfdc4369b4d
+Author: blake <blake@mobiusconsortium.org>
+Date:   Wed Jun 26 14:56:40 2024 -0500
+
+    fixed pg version-upgrade script numbering
+    
+    Signed-off-by: blake <blake@mobiusconsortium.org>
+
+0	0	Open-ILS/src/sql/Pg/version-upgrade/{3.13.0-3.12.1-upgrade-db.sql => 3.13.0-3.13.1-upgrade-db.sql}
+ rename Open-ILS/src/sql/Pg/version-upgrade/{3.13.0-3.12.1-upgrade-db.sql => 3.13.0-3.13.1-upgrade-db.sql} (100%)
+
+commit 738bd89159b4420f560ba1a8eff662654b583587
+Author: blake <blake@mobiusconsortium.org>
+Date:   Wed Jun 26 14:47:36 2024 -0500
+
+    fixed upgrade script naming convention
+    
+    Signed-off-by: blake <blake@mobiusconsortium.org>
+
+13	13	docs/modules/installation/pages/server_upgrade.adoc
+
+commit d35b9cb7afaa6943738f3040f05e946f70f4e0ff
+Author: Jane Sandberg <js7389@princeton.edu>
+Date:   Tue Jun 25 17:13:23 2024 -0700
+
+    docs: release notes for 3.10.5
+    
+    Signed-off-by: Jane Sandberg <js7389@princeton.edu>
+
+38	0	docs/RELEASE_NOTES_3_10.adoc
+6	0	docs/package.json
+ create mode 100644 docs/package.json
+
+commit ac75ce5e9bc0854d8ad1b446aa39f6c207a084d7
+Author: Jane Sandberg <js7389@princeton.edu>
+Date:   Tue Jun 25 17:07:50 2024 -0700
+
+    docs: release notes for 3.11.6
+    
+    Signed-off-by: Jane Sandberg <js7389@princeton.edu>
+
+38	0	docs/RELEASE_NOTES_3_11.adoc
+
+commit f7f4cecfe4aacf08247bb5cd562c64556e53b4fd
+Author: Jane Sandberg <js7389@princeton.edu>
+Date:   Tue Jun 25 17:00:35 2024 -0700
+
+    docs: release notes for 3.12.4
+    
+    Signed-off-by: Jane Sandberg <js7389@princeton.edu>
+
+38	0	docs/RELEASE_NOTES_3_12.adoc
+
+commit b429991549264b568154a9ce76c2391a006782f2
+Author: Jane Sandberg <js7389@princeton.edu>
+Date:   Tue Jun 25 16:52:22 2024 -0700
+
+    docs: release notes for 3.13.1
+    
+    Signed-off-by: Jane Sandberg <js7389@princeton.edu>
+
+44	5	docs/RELEASE_NOTES_3_13.adoc
+
+commit f6caae2bb5d9e5857d26f577eabd8314b1002e2b
+Author: Galen Charlton <gmc@equinoxOLI.org>
+Date:   Tue Jun 25 18:05:37 2024 -0400
+
+    bump up Perl version string for 3.13.1
+    
+    Signed-off-by: Galen Charlton <gmc@equinoxOLI.org>
+
+1	1	Open-ILS/src/perlmods/lib/OpenILS.pm
+
+commit 31a1c49513627c1f96d02e3042fbdb9e792a2687
+Author: Galen Charlton <gmc@equinoxOLI.org>
+Date:   Tue Jun 25 17:56:39 2024 -0400
+
+    3.13.0-3.13.1 DB update
+    
+    Signed-off-by: Galen Charlton <gmc@equinoxOLI.org>
+
+5	0	Open-ILS/src/sql/Pg/version-upgrade/3.13.0-3.12.1-upgrade-db.sql
+ create mode 100644 Open-ILS/src/sql/Pg/version-upgrade/3.13.0-3.12.1-upgrade-db.sql
+
+commit 9b469bf6e25bc3f3dbbb63313cdef83ac92a42d8
+Author: Galen Charlton <gmc@equinoxOLI.org>
+Date:   Tue Jun 25 17:55:19 2024 -0400
+
+    3.12.3-3.12.4 DB update
+    
+    Signed-off-by: Galen Charlton <gmc@equinoxOLI.org>
+
+5	0	Open-ILS/src/sql/Pg/version-upgrade/3.12.3-3.12.4-upgrade-db.sql
+ create mode 100644 Open-ILS/src/sql/Pg/version-upgrade/3.12.3-3.12.4-upgrade-db.sql
+
+commit 44eb6d17ee24e4164179ca5fe290396613ccf1b5
+Author: Galen Charlton <gmc@equinoxOLI.org>
+Date:   Tue Jun 25 17:53:50 2024 -0400
+
+    3.11.5-3.11.6 DB update
+    
+    Signed-off-by: Galen Charlton <gmc@equinoxOLI.org>
+
+5	0	Open-ILS/src/sql/Pg/version-upgrade/3.11.5-3.11.6-upgrade-db.sql
+ create mode 100644 Open-ILS/src/sql/Pg/version-upgrade/3.11.5-3.11.6-upgrade-db.sql
+
+commit c92b60478b22cf51c588418341877f96c12a053d
+Author: Galen Charlton <gmc@equinoxOLI.org>
+Date:   Tue Jun 25 17:52:31 2024 -0400
+
+    3.10.4-3.10.5 version upgrade script
+    
+    Signed-off-by: Galen Charlton <gmc@equinoxOLI.org>
+
+5	0	Open-ILS/src/sql/Pg/version-upgrade/3.10.4-3.10.5-upgrade-db.sql
+ create mode 100644 Open-ILS/src/sql/Pg/version-upgrade/3.10.4-3.10.5-upgrade-db.sql
+
+commit ea7806c13e4119fdaeb65dfee7e970a522aef661
+Author: Jane Sandberg <sandbergja@gmail.com>
+Date:   Tue Jun 4 07:08:07 2024 -0700
+
+    LP2019157: Mitigate reflected XSS vulnerability in OPAC
+    
+    To test:
+    1. If you don't already have a library group, go to Admin > Server > Library Groups and make one that is Global.
+    2. In your browser, go to [your_domain]/eg/opac/home?locg='><script>alert('bad bad bad')</script>
+    3. Note that the site executes javascript code that is passed in via the URL.
+    4. Apply this patch
+    5. Repeat step 2.
+    6. Note that the arbitrary js does not get run anymore.
+    7. Confirm that library group searching still works as expected.
+    
+    Release-note: Mitigate a reflected cross-site scripting (XSS) vulnerability in the public catalog.
+    Signed-off-by: Jane Sandberg <sandbergja@gmail.com>
+    Signed-off-by: Jason Stephenson <jason@sigio.com>
+    Signed-off-by: Galen Charlton <gmc@equinoxOLI.org>
+
+3	0	Open-ILS/src/templates-bootstrap/opac/parts/misc_util.tt2
+3	0	Open-ILS/src/templates/opac/parts/misc_util.tt2
+
+commit 225c98ff172d4ade1c6e178fcda74fdeffdd3ef5
+Author: Jane Sandberg <js7389@princeton.edu>
+Date:   Thu Jun 20 05:31:48 2024 -0700
+
+    LP2069959: Remove reflected XSS vulnerability from OPAC browse
+    
+    Release-note: Remediates a reflected Cross-site Scripting (XSS) vulnerability in the public catalog browse feature.
+    
+    With thanks to Jeff Davis, Chris Sharp, Jason Stephenson, and Galen Charlton for their work on the TPAC version
+    of this vulnerability in LP #1822630.
+    
+    To test:
+    1. Go to /eg/opac/browse?blimit="/><script>alert('BAD')</script> in your browser
+    2. If you see the notice "BAD" pop up, it means that the page is vulnerable to users adding arbitrary javascript
+    to the URL and having it run in the page.
+    
+    Signed-off-by: Jane Sandberg <js7389@princeton.edu>
+    Signed-off-by: Galen Charlton <gmc@equinoxOLI.org>
+
+1	1	Open-ILS/src/templates-bootstrap/opac/browse.tt2
+
+commit 016c9f5cc6a4c8b44cd7a35eb6eb163911904acf
+Author: Jane Sandberg <js7389@princeton.edu>
+Date:   Fri Jun 21 16:48:52 2024 -0700
+
+    lp2070078 (follow-up) make sure subroutine has access to
+    
+    Signed-off-by: Jane Sandberg <js7389@princeton.edu>
+    Signed-off-by: Galen Charlton <gmc@equinoxOLI.org>
+
+4	3	Open-ILS/src/perlmods/lib/OpenILS/WWW/EGCatLoader/Record.pm
+
+commit 6427078881a05f16ef1ba0243b0153b540ca88c5
+Author: Mike Rylander <mrylander@gmail.com>
+Date:   Tue Jun 11 11:33:00 2024 -0400
+
+    lp2070078: Check event hook before loading; Confirm bib ID(s) are actually bibs
+    
+    Release-note: Patch Insecure direct object reference (IDOR) vulnerability for action trigger output in OPAC list printing feature.
+    
+    Signed-off-by: Mike Rylander <mrylander@gmail.com>
+    Signed-off-by: Jane Sandberg <js7389@princeton.edu>
+    Signed-off-by: Galen Charlton <gmc@equinoxOLI.org>
+
+29	0	Open-ILS/src/perlmods/lib/OpenILS/WWW/EGCatLoader/Record.pm
+
+commit 174ae23f3554b088eab0970e3f828b41d4719e6e
+Author: blake <blake@mobiusconsortium.org>
+Date:   Thu Jun 20 09:29:59 2024 -0500
+
+    Forward-port 3.12.3-3.13.0 upgrade script
+    
+    Signed-off-by: blake <blake@mobiusconsortium.org>
+    Signed-off-by: Galen Charlton <gmc@equinoxOLI.org>
+
+31304	0	Open-ILS/src/sql/Pg/version-upgrade/3.12.3-3.13.0-upgrade-db.sql
+ create mode 100644 Open-ILS/src/sql/Pg/version-upgrade/3.12.3-3.13.0-upgrade-db.sql
