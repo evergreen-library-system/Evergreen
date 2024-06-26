@@ -1,3 +1,122 @@
-Evergreen doesn't keep a GNU-style ChangeLog except in release tarballs.
-Those seeking a change log are encouraged to run 'git log -v', or read
-it online at: http://git.evergreen-ils.org/?p=Evergreen.git;a=log
+commit e6a7c69a37f83896bf94fad1a63f44727cebe2de
+Author: Jane Sandberg <js7389@princeton.edu>
+Date:   Tue Jun 25 17:13:23 2024 -0700
+
+    docs: release notes for 3.10.5
+    
+    Signed-off-by: Jane Sandberg <js7389@princeton.edu>
+
+38	0	docs/RELEASE_NOTES_3_10.adoc
+6	0	docs/package.json
+ create mode 100644 docs/package.json
+
+commit 9b06337f03f3cb1af461cb4818d814314d6aab97
+Author: Jane Sandberg <js7389@princeton.edu>
+Date:   Tue Jun 25 17:07:50 2024 -0700
+
+    docs: release notes for 3.11.6
+    
+    Signed-off-by: Jane Sandberg <js7389@princeton.edu>
+
+38	0	docs/RELEASE_NOTES_3_11.adoc
+
+commit 6fe24fbfe10743e24cdd6289b3bc3dd8da924598
+Author: Galen Charlton <gmc@equinoxOLI.org>
+Date:   Tue Jun 25 18:03:25 2024 -0400
+
+    bump up Perl version number for 3.11.6
+    
+    Signed-off-by: Galen Charlton <gmc@equinoxOLI.org>
+
+1	1	Open-ILS/src/perlmods/lib/OpenILS.pm
+
+commit 7f2f56e2209f1da0dddef95bbcc97b8f8af37b09
+Author: Galen Charlton <gmc@equinoxOLI.org>
+Date:   Tue Jun 25 17:53:50 2024 -0400
+
+    3.11.5-3.11.6 DB update
+    
+    Signed-off-by: Galen Charlton <gmc@equinoxOLI.org>
+
+5	0	Open-ILS/src/sql/Pg/version-upgrade/3.11.5-3.11.6-upgrade-db.sql
+ create mode 100644 Open-ILS/src/sql/Pg/version-upgrade/3.11.5-3.11.6-upgrade-db.sql
+
+commit f1109504478ec9649bfb13cf0ba19b29d1fb63f4
+Author: Galen Charlton <gmc@equinoxOLI.org>
+Date:   Tue Jun 25 17:52:31 2024 -0400
+
+    3.10.4-3.10.5 version upgrade script
+    
+    Signed-off-by: Galen Charlton <gmc@equinoxOLI.org>
+
+5	0	Open-ILS/src/sql/Pg/version-upgrade/3.10.4-3.10.5-upgrade-db.sql
+ create mode 100644 Open-ILS/src/sql/Pg/version-upgrade/3.10.4-3.10.5-upgrade-db.sql
+
+commit 4b5559bbfef2e9417aa2e1969da9d04947f0457d
+Author: Jane Sandberg <sandbergja@gmail.com>
+Date:   Tue Jun 4 07:08:07 2024 -0700
+
+    LP2019157: Mitigate reflected XSS vulnerability in OPAC
+    
+    To test:
+    1. If you don't already have a library group, go to Admin > Server > Library Groups and make one that is Global.
+    2. In your browser, go to [your_domain]/eg/opac/home?locg='><script>alert('bad bad bad')</script>
+    3. Note that the site executes javascript code that is passed in via the URL.
+    4. Apply this patch
+    5. Repeat step 2.
+    6. Note that the arbitrary js does not get run anymore.
+    7. Confirm that library group searching still works as expected.
+    
+    Release-note: Mitigate a reflected cross-site scripting (XSS) vulnerability in the public catalog.
+    Signed-off-by: Jane Sandberg <sandbergja@gmail.com>
+    Signed-off-by: Jason Stephenson <jason@sigio.com>
+    Signed-off-by: Galen Charlton <gmc@equinoxOLI.org>
+
+3	0	Open-ILS/src/templates-bootstrap/opac/parts/misc_util.tt2
+3	0	Open-ILS/src/templates/opac/parts/misc_util.tt2
+
+commit 9466ed1071f335e08d09eb62cbbc2f4ff1687119
+Author: Jane Sandberg <js7389@princeton.edu>
+Date:   Thu Jun 20 05:31:48 2024 -0700
+
+    LP2069959: Remove reflected XSS vulnerability from OPAC browse
+    
+    Release-note: Remediates a reflected Cross-site Scripting (XSS) vulnerability in the public catalog browse feature.
+    
+    With thanks to Jeff Davis, Chris Sharp, Jason Stephenson, and Galen Charlton for their work on the TPAC version
+    of this vulnerability in LP #1822630.
+    
+    To test:
+    1. Go to /eg/opac/browse?blimit="/><script>alert('BAD')</script> in your browser
+    2. If you see the notice "BAD" pop up, it means that the page is vulnerable to users adding arbitrary javascript
+    to the URL and having it run in the page.
+    
+    Signed-off-by: Jane Sandberg <js7389@princeton.edu>
+    Signed-off-by: Galen Charlton <gmc@equinoxOLI.org>
+
+1	1	Open-ILS/src/templates-bootstrap/opac/browse.tt2
+
+commit 32a7eec5baee729c52c0d8ba3fae273175f3b119
+Author: Jane Sandberg <js7389@princeton.edu>
+Date:   Fri Jun 21 16:48:52 2024 -0700
+
+    lp2070078 (follow-up) make sure subroutine has access to
+    
+    Signed-off-by: Jane Sandberg <js7389@princeton.edu>
+    Signed-off-by: Galen Charlton <gmc@equinoxOLI.org>
+
+4	3	Open-ILS/src/perlmods/lib/OpenILS/WWW/EGCatLoader/Record.pm
+
+commit 2fe1eab63f2ccd88e8b1a796a3457e78a5b9c911
+Author: Mike Rylander <mrylander@gmail.com>
+Date:   Tue Jun 11 11:33:00 2024 -0400
+
+    lp2070078: Check event hook before loading; Confirm bib ID(s) are actually bibs
+    
+    Release-note: Patch Insecure direct object reference (IDOR) vulnerability for action trigger output in OPAC list printing feature.
+    
+    Signed-off-by: Mike Rylander <mrylander@gmail.com>
+    Signed-off-by: Jane Sandberg <js7389@princeton.edu>
+    Signed-off-by: Galen Charlton <gmc@equinoxOLI.org>
+
+29	0	Open-ILS/src/perlmods/lib/OpenILS/WWW/EGCatLoader/Record.pm
