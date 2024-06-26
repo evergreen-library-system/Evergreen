@@ -11,7 +11,6 @@ import { NgbDatepickerModule, NgbNavModule } from '@ng-bootstrap/ng-bootstrap';
 import { of } from 'rxjs';
 import { FormsModule } from '@angular/forms';
 import { DatesInOrderValidatorDirective } from '@eg/share/validators/dates_in_order_validator.directive';
-import { PrintService } from '@eg/share/print/print.service';
 
 const mockIdlObject = {a: null,
     classname: null,
@@ -36,8 +35,7 @@ describe('CashReportsComponent', () => {
                 {provide: IdlService, useValue: {}},
                 {provide: NetService, useValue: mockNet},
                 {provide: OrgService, useValue: mockOrg},
-                {provide: AuthService, useValue: mockAuth},
-                {provide: PrintService, useValue: null}
+                {provide: AuthService, useValue: mockAuth}
             ],
             imports: [
                 NgbNavModule,
