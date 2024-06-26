@@ -93,6 +93,7 @@ CREATE TRIGGER no_overlapping_deps
     FOR EACH ROW EXECUTE PROCEDURE evergreen.array_overlap_check ('deprecates');
 
 INSERT INTO config.upgrade_log (version, applied_to) VALUES ('1404', :eg_version); -- smayo/gmcharlt
+INSERT INTO config.upgrade_log (version, applied_to) VALUES ('3.12.4', :eg_version);
 
 CREATE TABLE config.bib_source (
 	id		SERIAL	PRIMARY KEY,
