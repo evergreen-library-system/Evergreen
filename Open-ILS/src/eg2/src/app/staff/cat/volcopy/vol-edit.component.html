@@ -449,10 +449,13 @@
           </ng-container>
         </div>
         <div class="p-1" [ngStyle]="{flex: flexAt(10)}">
-        <ng-container *ngIf="displayColumn('copy_part')">
+          <ng-container *ngIf="displayColumn('copy_part')">
             <eg-combobox
               [selectedId]="copyNode.target.parts()[0] ? copyNode.target.parts()[0].id() : null"
-              [smallFormControl]="true" [allowFreeText]="true"
+              [moreClasses]="'vol-edit-validity-combobox'"
+              [smallFormControl]="true"
+              [allowFreeText]="true"
+              [required]="copyRequiresParts(copyNode)"
               (onChange)="copyPartChanged(copyNode, $event)">
               <eg-combobox-entry 
                 *ngFor="let part of volcopy.bibParts[volNode.target.record()]"

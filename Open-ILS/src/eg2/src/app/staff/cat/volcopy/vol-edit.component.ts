@@ -56,6 +56,9 @@ export class VolEditComponent implements OnInit {
     // Set default for Call Number Label requirement
     requireCNL = true;
 
+    // For every org we are editing copies for, whether they require parts to be on copies if the record has parts
+    requirePartsOrgMap : {[key: number]: boolean} = {};
+
     // When adding multiple vols via add-many popover.
     addVolCount: number = null;
 
@@ -105,6 +108,14 @@ export class VolEditComponent implements OnInit {
                 this.requireCNL =
                 Boolean(settings['cat.require_call_number_labels']);
             });
+
+        // Check for each org if a part is required
+        for (const orgId of this.context.getOwningLibIds()) {
+            this.org.settings('circ.holds.ui_require_monographic_part_when_present', orgId)
+                .then(settings => {
+                    this.requirePartsOrgMap[orgId] = Boolean(settings['circ.holds.ui_require_monographic_part_when_present']);
+                });
+        }
     }
 
     copyStatLabel(copy: IdlObject): string {
@@ -120,6 +131,17 @@ export class VolEditComponent implements OnInit {
     recordHasParts(bibId: number): boolean {
         return this.volcopy.bibParts[bibId] &&
             this.volcopy.bibParts[bibId].length > 0;
+    }
+
+    copyRequiresParts(node: HoldingsTreeNode) : boolean {
+        if (['org', 'vol'].includes(node.nodeType)){
+            throw new TypeError('Invalid HoldingsTreeNode type!');
+        }
+
+        const org = node.parentNode.target.owning_lib();
+        const record = node.parentNode.target.record();
+
+        return this.recordHasParts(record) && this.requirePartsOrgMap[org];
     }
 
     // Column width (flex:x) for column by column number.
@@ -288,6 +310,8 @@ export class VolEditComponent implements OnInit {
             copy.parts([]);
             copy.ischanged(true);
         }
+
+        this.emitSaveChange();
     }
 
     batchVolApply() {
@@ -585,7 +609,15 @@ export class VolEditComponent implements OnInit {
         const copies = this.context.copyList();
 
         const badCopies = copies.filter(copy => {
-            return copy._dupe_barcode || (!copy.isnew() && !copy.barcode());
+            if (copy._dupe_barcode ||
+                (!copy.isnew() && !copy.barcode()) ||
+                (this.copyRequiresParts(this.context.findOrCreateCopyNode(copy)) && (!copy.parts() || copy.parts().length === 0))
+            ) {
+                return true;
+            } else {
+                console.log(copy.parts());
+                return false;
+            }
         }).length > 0;
 
         if (badCopies) { return false; }
