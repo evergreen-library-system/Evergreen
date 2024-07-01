@@ -211,7 +211,7 @@ sub collect_register_validation_settings {
         next unless $set =~ /regex$|show$|require$|example$/;
 
         my $val = $ctx->{get_org_setting}->($ctx_org, $set);
-        next unless $val; # no configured org setting
+        next unless defined($val); # no configured org setting
 
         # extract the field class, name, and 
         # setting type from the setting name
