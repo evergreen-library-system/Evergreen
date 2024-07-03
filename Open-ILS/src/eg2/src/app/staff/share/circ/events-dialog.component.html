@@ -45,7 +45,14 @@
                 </label>
               </div>
             </div>
-
+          </ng-container>
+          <ng-container *ngIf="evt.textcode === 'ITEM_DEPOSIT_REQUIRED'">
+            <ng-container i18n>Deposit amount</ng-container>:
+            {{evt.payload.deposit_amount() | currency}}
+          </ng-container>
+          <ng-container *ngIf="evt.textcode === 'ITEM_RENTAL_FEE_REQUIRED'">
+            <ng-container i18n>Rental fee</ng-container>:
+            {{evt.payload.deposit_amount() | currency}}
           </ng-container>
         </div>
       </div>
