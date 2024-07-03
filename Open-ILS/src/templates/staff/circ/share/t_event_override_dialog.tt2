@@ -23,6 +23,12 @@
                 [% l('Cancel this hold upon checkout?') %]</label>
             </div>
           </div>
+          <div ng-if="evt.textcode === 'ITEM_DEPOSIT_REQUIRED'">
+            [% l('Deposit amount') %]: {{evt.payload.deposit_amount() | currency}}
+          </div>
+          <div ng-if="evt.textcode === 'ITEM_RENTAL_FEE_REQUIRED'">
+            [% l('Rental fee') %]: {{evt.payload.deposit_amount() | currency}}
+          </div>
           <div ng-if="formdata.event_ui_data[evt.ilsevent].overridable">
               <label ng-class="{ 'acknowledged': formdata.nonoverridable }"><input type="checkbox" ng-disabled="formdata.nonoverridable" ng-model="formdata.event_ui_data[evt.ilsevent].checkbox"/>
                 [% l('Automatically override for subsequent items?') %]</label>
