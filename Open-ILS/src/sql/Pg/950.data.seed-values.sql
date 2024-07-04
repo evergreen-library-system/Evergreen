@@ -23700,3 +23700,13 @@ INSERT INTO config.org_unit_setting_type (
   ),
   'string'
 );
+
+INSERT into config.workstation_setting_type (name, grp, datatype, label)
+VALUES (
+    'eg.grid.admin.acq.distribution_formula', 'gui', 'object',
+    oils_i18n_gettext(
+        'eg.grid.admin.acq.distribution_formula',
+        'Grid Config: admin.acq.distribution_formula',
+        'cwst', 'label'
+    )
+);
