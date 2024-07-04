@@ -24267,3 +24267,14 @@ INSERT INTO action.hold_request_reset_reason (id, name, manual) VALUES
 (8,'HOLD_UPDATED',true),
 (9,'HOLD_CHECKED_OUT',true),
 (10,'HOLD_CHECKED_IN',true);
+
+INSERT into config.workstation_setting_type (name, grp, datatype, label)
+VALUES (
+    'eg.grid.catalog.record.conjoined', 'gui', 'object',
+    oils_i18n_gettext(
+        'eg.grid.catalog.record.conjoined',
+        'Grid Config: catalog.record.conjoined',
+        'cwst', 'label'
+    )
+);
+
