@@ -175,6 +175,20 @@ const transforms = [
 
     },
     {
+        name: 'date', // old templates use this
+        hidden: true,
+        simple: true,
+        relative_time_input_transform: 'relative_date',
+        aggregate: false,
+        final_datatype: 'timestamp',
+        datatypes: ['timestamp'],
+        regex : /^\d{4}-\d{2}-\d{2}$/,
+        hint  : 'YYYY-MM-DD',
+        cal_format : '%Y-%m-%d',
+        input_size : 10
+
+    },
+    {
         name: 'hour_trunc',
         simple: true,
         aggregate: false,
@@ -247,11 +261,13 @@ const transforms = [
         simple: true,
         aggregate: true
     },
-    // "Simple" would be to only offer the choice that's almost always what you mean.
-    /* {
+    {
         name: 'count',
+        simple: true,
+        hidden: true,
+        final_datatype: 'number',
         aggregate: true
-    },*/
+    },
     {
         name: 'count_distinct',
         simple: true,
