@@ -51,7 +51,7 @@
 
       <label for="TR-{{pathId}}" class="form-label" i18n>Transform</label>
       <select id="TR-{{pathId}}" class="form-select" (change)="transformChange($event)" [disabled]="disabled || field.force_transform || editorMode === 'report'">
-        <option *ngFor="let t of transforms" value="{{t.name}}" selected="{{ field.transform.name === t.name ? 'selected' : '' }}">
+        <option *ngFor="let t of visibleTransforms()" value="{{t.name}}" selected="{{ field.transform.name === t.name ? 'selected' : '' }}">
           <span *ngIf="t.name === 'Bare'" i18n>Raw Data</span>
           <span *ngIf="t.name === 'upper'" i18n>Upper Case</span>
           <span *ngIf="t.name === 'lower'" i18n>Lower Case</span>
@@ -66,7 +66,7 @@
           <span *ngIf="t.name === 'dow'" i18n>Day of Week</span>
           <span *ngIf="t.name === 'year_trunc'" i18n>Year</span>
           <span *ngIf="t.name === 'month_trunc'" i18n>Month</span>
-          <span *ngIf="t.name === 'date_trunc'" i18n>Date</span>
+          <span *ngIf="t.name === 'date_trunc' || t.name === 'date'" i18n>Date</span>
           <span *ngIf="t.name === 'hour_trunc'" i18n>Hour</span>
           <span *ngIf="t.name === 'quarter'" i18n>Quarter</span>
           <span *ngIf="t.name === 'months_ago'" i18n>Months Ago</span>
@@ -77,11 +77,11 @@
           <span *ngIf="t.name === 'last'" i18n>Last Value</span>
           <span *ngIf="t.name === 'min'" i18n>Minimum Value</span>
           <span *ngIf="t.name === 'max'" i18n>Maximum Value</span>
-          <span *ngIf="t.name === 'count'" i18n>Count</span>
-          <span *ngIf="t.name === 'count_distinct'" i18n>Count</span>{{ '' // This is currently the only Count transform offered; if that's changed this will need its 'Distinct' back. }}
+          <span *ngIf="t.name === 'count_distinct' || t.name === 'count'" i18n>Count</span>
           <span *ngIf="t.name === 'sum'" i18n>Sum</span>
           <span *ngIf="t.name === 'average'" i18n>Average</span>
           <span *ngIf="t.name === 'first5'" i18n>First 5 characters</span>
+          <span *ngIf="t.name === 'round'" i18n>Round</span>
         </option>
       </select>
 

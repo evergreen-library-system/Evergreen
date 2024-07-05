@@ -60,9 +60,19 @@ export class ReporterFieldComponent implements OnInit {
     ) {
     }
 
+    visibleTransforms() { return this.transforms.filter(t => !t.hidden); }
+
     ngOnInit() {
 
         if ( this.withTransforms ) {
+            if (this.field.transform?.name === 'date') {
+                this.field.transform.name = 'date_trunc'; // cleanup old templates
+            }
+
+            if (this.field.transform?.name === 'count') {
+                this.field.transform.name = 'count_distinct'; // cleanup old templates
+            }
+
             this.transforms = this.RSvc.getTransformsForDatatype(this.field.datatype);
         }
 
