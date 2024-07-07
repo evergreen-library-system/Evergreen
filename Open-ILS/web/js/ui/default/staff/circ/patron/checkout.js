@@ -215,6 +215,15 @@ function($scope , $q , $routeParams , egCore , egUser , patronSvc ,
                     patronSvc.patron_stats.checkouts.total_out++;
                 }
 
+                // update balance owed if necessary
+                if (co_resp.evt.length) {
+                    if (co_resp.evt[0].payload.deposit_billing ||
+                        co_resp.evt[0].payload.rental_billing) {
+                        patronSvc.patron_stats.fines.balance_owed
+                            = co_resp.evt[0].payload.patron_money.balance_owed();
+                    }
+                }
+
                 // copy the response event into the original grid row item
                 // note: angular.copy clobbers the destination
                 row_item.evt = co_resp.evt;
