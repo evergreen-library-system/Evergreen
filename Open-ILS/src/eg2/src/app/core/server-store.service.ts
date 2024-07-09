@@ -137,7 +137,7 @@ export class ServerStoreService {
                     const dbSets: any = {};
                     serverKeys.forEach(sKey => dbSets[sKey] = values[sKey]);
 
-                    return this.addSettingsToDb(dbSets);
+                    return this.addSettingsToDb(dbSets).then(dbVals => Object.assign(values, dbVals));
 
                 });
             });
