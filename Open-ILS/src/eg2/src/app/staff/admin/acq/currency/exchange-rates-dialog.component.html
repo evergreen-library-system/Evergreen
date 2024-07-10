@@ -6,7 +6,7 @@
     <h3 *ngIf="canUpdate" class="modal-title" i18n>Manage Exchange Rates for {{currency.code()}}: {{currency.label()}}</h3>
     <h3 *ngIf="!canUpdate" class="modal-title" i18n>View Exchange Rates for {{currency.code()}}: {{currency.label()}}</h3>
     <button type="button" class="btn-close btn-close-white"
-      i18n-aria-label aria-label="Close" (click)="close()"></button>
+      i18n-aria-label aria-label="Close dialog" (click)="close()"></button>
   </div>
   <div class="modal-body" [hidden]="!doneLoading">
     <h4 i18n>Exchange rates to other currencies: 1 {{currency?.label()}} is equal to:</h4>

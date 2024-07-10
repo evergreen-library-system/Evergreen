@@ -5,7 +5,7 @@
   <div class="modal-header" *ngIf="doneLoading">
     <h3 class="modal-title" i18n>Transfer from Fund {{sourceFund?.name()}} ({{sourceFund?.code()}} ({{sourceFund?.year()}}) ({{sourceFund?.org().shortname()}}))</h3>
     <button type="button" class="btn-close btn-close-white"
-      i18n-aria-label aria-label="Close" (click)="close()"></button>
+      i18n-aria-label aria-label="Close dialog" (click)="close()"></button>
   </div>
   <div class="modal-body" [hidden]="!doneLoading">
     <form #xfrForm="ngForm" role="form" class="form-validated common-form striped-odd">

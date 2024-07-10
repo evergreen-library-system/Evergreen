@@ -13,7 +13,7 @@
       <span *ngIf="fromBibQueue" i18n>Add Records from queue #{{fromBibQueue}} to Bucket</span>
     </h4>
     <button type="button" class="btn-close btn-close-white"
-      i18n-aria-label aria-label="Close" (click)="close()"></button>
+      i18n-aria-label aria-label="Close dialog" (click)="close()"></button>
   </div>
   <div class="modal-body">
     <ul ngbNav #bucketDialogTabs="ngbNav" class="nav-tabs" [keyboard]="true" [roles]="false" role="tablist">
