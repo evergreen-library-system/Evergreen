@@ -15,7 +15,7 @@
   <div class="modal-header">
     <h3 class="modal-title" i18n>Funding Source: {{fundingSource?.name()}}</h3>
     <button type="button" class="btn-close btn-close-white"
-      i18n-aria-label aria-label="Close" (click)="close()"></button>
+      i18n-aria-label aria-label="Close dialog" (click)="close()"></button>
   </div>
   <div class="modal-body" *ngIf="fundingSource">
     <ul ngbNav #fundingSourceTransactionsNav="ngbNav" [(activeId)]="activeTab" class="nav-tabs" [keyboard]="true" [roles]="false" role="tablist">

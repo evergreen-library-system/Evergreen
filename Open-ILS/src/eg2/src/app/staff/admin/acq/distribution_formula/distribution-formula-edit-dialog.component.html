@@ -4,7 +4,7 @@
     <h3 *ngIf="mode === 'update'" class="modal-title" i18n>Modify Distribution Formula</h3>
     <h3 *ngIf="mode === 'clone'" class="modal-title" i18n>Clone Distribution Formula (from {{clonedLabel}})</h3>
     <button type="button" class="btn-close btn-close-white"
-      i18n-aria-label aria-label="Close" (click)="close()"></button>
+      i18n-aria-label aria-label="Close dialog" (click)="close()"></button>
   </div>
   <div class="modal-body">
     <form #myForm="ngForm" class="form-validated">
