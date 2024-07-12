@@ -19,7 +19,7 @@ Issues can be received through the _Manage Issues_ tab or through the _Quick Rec
 ... Uncheck the box adjacent to _Barcode Items_ and click *Save*.  The Holdings Summary in the Issues Held tab in the catalog will reflect the newly received issue.
 
 
-image::media/serials_sub9.PNG[]
+image::media/serials_sub9.PNG[Quick receive items dialog box with options for copying location, call number, and circulation modifier.]
 
 
 == Receiving from the Manage Issues tab ==
@@ -47,7 +47,7 @@ The Manage Issues tab can be used to receive the next expected issue and to rece
 . Click *OK/Continue* to receive the issue.  The Status of the issue will update to "Received" and a Date Received will be recorded.  The Holdings Summary in the Issues Held tab in the catalog will reflect the newly received issue.
 
 
-image::media/serials_sub10.PNG[]
+image::media/serials_sub10.PNG[Receive items dialog with a message that items will be received without barcoding.]
 
 
 == Batch Receiving ==
@@ -69,7 +69,7 @@ Multiple issues can be received at the same time using the _Manage Issues_ tab.
 . Click *Save* to receive the items.  The Status of the items will update to "Received" and a Date Received will be recorded.  The barcoded items will now appear in the holdings area of the catalog and the Holdings Summary in the Issues Held tab in the catalog will reflect the newly received issues.
 
 
-image::media/serials_sub11.PNG[]
+image::media/serials_sub11.PNG[Batch receive interface within the Manage Issues tab.]
 
 
 === Receive multiple issues (no barcode) ===
