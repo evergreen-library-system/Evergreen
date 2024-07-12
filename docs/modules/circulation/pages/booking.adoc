@@ -104,15 +104,15 @@ Always capture reservations in Booking Module. Check In function in Circulation 
 
 1) In the staff client, select Booking -> Capture Resources.
 
-image::booking/booking-capture-1_web_client.png[]
+image::booking/booking-capture-1_web_client.png[Booking dropdown menu with Capture Resources highlighted.]
 
 2) Scan the item barcode or type the barcode then click Capture.
 
-image::booking/booking-capture-2_web_client.png[]
+image::booking/booking-capture-2_web_client.png[Interface for capturing resources in the Booking Module with options to scan or type the barcode and click Capture.]
 
 3) The message Capture succeeded will appear to the right. Information about the item will appear below the message. Click Print button to print a slip for the reservation.
 
-image::booking/booking-capture-3.png[]
+image::booking/booking-capture-3.png[Successful capture message with information about the item and a Print button to print a slip for the reservation.]
 
    
 == Picking Up Reservations ==
