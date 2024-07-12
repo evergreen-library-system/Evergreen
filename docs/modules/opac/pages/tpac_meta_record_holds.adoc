@@ -12,7 +12,7 @@ duplications.
 Selecting the *Group Formats and Editions* checkbox on the Advanced Search page
 allows the user to perform a metarecord search.
 
-image::tpac_meta/advsrchpg_1.jpg[]
+image::tpac_meta/advsrchpg_1.jpg[Advanced Search page with the Group Formats and Editions checkbox selected.]
 
 [TIP]
 Administrators can also configure the catalog to default to a *Group Formats and
@@ -27,7 +27,7 @@ Within the Search Results page, users can also refine their searches and filter
 on metarecord search results by selecting the *Group Formats and Editions*
 checkbox.
 
-image::tpac_meta/srchresultpg_2.jpg[]
+image::tpac_meta/srchresultpg_2.jpg[Search Results page with the Group Formats and Editions checkbox selected.]
 
 The metarecord search results will display both the representative metarecord
 bibliographic data and the combined metarecord holdings data (if the holdings
@@ -38,12 +38,12 @@ next to the title.
 
 The formats contained within the metarecord are displayed under the title.
 
-image::tpac_meta/srchresultpg2_3.jpg[]
+image::tpac_meta/srchresultpg2_3.jpg[Metarecord search results displaying representative bibliographic data and combined holdings data.]
 
 For the metarecord search result, the *Place Hold* link defaults to a metarecord
 level hold.
 
-image::tpac_meta/srchresultpg3_4.jpg[]
+image::tpac_meta/srchresultpg3_4.jpg[Place Hold link for a metarecord search result, defaulting to a metarecord level hold.]
 
 To place a metarecord level hold:
 
@@ -57,7 +57,7 @@ languages that are available.
 . Continue to enter any additional hold information (such as Pickup Location), if needed.
 . Click *Submit*.
 
-image::tpac_meta/placehold_5.jpg[]
+image::tpac_meta/placehold_5.jpg[Place Hold screen with options to select multiple formats and/or languages.]
 
 Selecting multiple formats will not place all of these formats on hold for the
 user. For example, a user cannot select CD Audiobook and Book and expect to
@@ -74,7 +74,7 @@ When users place a hold on an individual bibliographic record they will see an
 *Advanced Hold Options* link will take the users into the metarecord level hold
 feature, enabling them to select multiple formats and/or languages.
 
-image::tpac_meta/advholdoption_6.jpg[]
+image::tpac_meta/advholdoption_6.jpg["Advanced Hold Options link in the Place Hold screen, enabling selection of multiple formats and/or languages."]
 
 *Metarecord Constituent Records Page*
 
@@ -83,11 +83,11 @@ listing of the individual bibliographic records grouped within the metarecord.
 Access the Metarecord Constituent Records page by clicking on the metarecord
 title on the Search Results page.
 
-image::tpac_meta/srchresultpg4_7.jpg[]
+image::tpac_meta/srchresultpg4_7.jpg[Metarecord Constituent Records page showing a list of individual bibliographic records within the metarecord.]
 
 This will allow the user to view the results for grouped records.
 
-image::tpac_meta/recorddetailpg_8.jpg[]
+image::tpac_meta/recorddetailpg_8.jpg[Record detail page for grouped records within the Metarecord Constituent Records page.]
 
 *Show Holds on Bib*
 
@@ -100,6 +100,6 @@ To utilize the metarecord level hold feature, the Global Flag: OPAC Metarecord
 Hold Formats Attribute must be enabled and its value set at mr_hold_format,
 which is the system's default configuration.
 
-image::tpac_meta/mrholdgf_9.jpg[]
+image::tpac_meta/mrholdgf_9.jpg[Global Flag configuration for OPAC Metarecord Hold Formats Attribute set to mr_hold_format.]
 
 

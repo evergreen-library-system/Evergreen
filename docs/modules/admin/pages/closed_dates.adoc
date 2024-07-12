@@ -30,7 +30,7 @@ box.
 +
 . Click *Save*.
 
-image::closed_dates/closed_dates.png[Closed Dates]
+image::closed_dates/closed_dates.png["Closed Dates Editor interface with options to add single or multiple day closures, and an optional reason for closure."]
 
 Now that your organizational structure is established, you can begin
 configuring permissions for the staff users of your Evergreen system.

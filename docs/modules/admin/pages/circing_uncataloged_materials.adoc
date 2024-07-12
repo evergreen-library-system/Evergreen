@@ -63,7 +63,7 @@ back-issues, but not wish to catalog them.
   not affect how these materials circulate.
 . Click the _Create_ button when you are done.
 
-image::circ_uncats/noncataloged_type_add.png[]
+image::circ_uncats/noncataloged_type_add.png["Form titled 'Non Cataloged Types Editor' for creating a new non-cataloged type. Fields: name ('Donated children's books'), duration (21 Days), circulate in-house (unchecked), type (CONS), Create button."]
 
 === Deleting a non-cataloged type ===
 

@@ -20,11 +20,11 @@ Evergreen now uses a virtual index definition for the Keyword index.  This allow
 .. This interface now has a _Search Class_ filter that allows users to easily select which search class they want to view.
 . Next, locate the field for which you want to create a virtual index definition and click *Manage* under the column labeled _Data Suppliers_.
 
-image::virtual_index/vid1.PNG[]
+image::virtual_index/vid1.PNG[Interface for configuring a virtual index definition with options to manage data suppliers.]
 
 . A new tab will open that contains the interface for configuring a virtual index definition.  This interface can be used to map real index definitions for inclusion in the virtual index.
 
-image::virtual_index/vid2.PNG[]
+image::virtual_index/vid2.PNG[Modal for creating a Metabib Field Virtual Map with fields for real and virtual index definitions and weight assignment.]
 
 . To create a mapping, click *New Record*.  A modal called _Metabib Field Virtual Map_ will appear.
 . Select the _Real_ index definition and the _Virtual_ index definition to which it should be mapped.
@@ -33,7 +33,7 @@ image::virtual_index/vid2.PNG[]
 . Click *Save*.
 . Repeat steps 4-7 until all desired fields are mapped to the virtual index definition.
 
-image::virtual_index/vid3.PNG[]
+image::virtual_index/vid3.PNG[Interface showing a list of mapped fields to a virtual index definition.]
 
 Note: A service restart is required after definitions and mapping are changed.  Changes to weight only do not require a restart as they are calculated in real time.
 
@@ -43,11 +43,11 @@ Search terms are now highlighted on the main OPAC search results page, the bibli
 
 A keyword search for "piano" returns a set of search results:
 
-image::virtual_index/vid4.PNG[]
+image::virtual_index/vid4.PNG[Search results highlighting the term "piano" in the main OPAC search results page.]
 
 The search term is highlighted in the search results and indicates why the records were included in the search result set.  In this example, the search results interface shows the first three records had matching terms in the title field.
 
 Within the record detail page for "The five piano concertos", we can see the search term also matched on the General Note and Subject fields within the bibliographic record.
 
-image::virtual_index/vid5.PNG[]
+image::virtual_index/vid5.PNG[Bibliographic record detail page showing the search term "piano" highlighted in the General Note and Subject fields.]
 
