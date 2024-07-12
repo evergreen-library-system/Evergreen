@@ -51,7 +51,7 @@ The *edit* link will only be exposed next to copies when the user has the *UPDAT
 
 Select the checkboxes or use the drop down menus to set the settings you'd like.
 
-image::volcopy_editor/holdings-editor-defaults-2.png[]
+image::volcopy_editor/holdings-editor-defaults-2.png[Holdings Details Defaults settings screen with various options like Always display Holdings Details pane, Classification Scheme, Default Prefix, and more.]
 
 The following settings can be set for the Holdings Details:
 
