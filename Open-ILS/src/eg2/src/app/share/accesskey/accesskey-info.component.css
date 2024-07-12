@@ -1,17 +1,17 @@
-.modal-body .row {
+.accesskey-info .row {
     margin: 0;
 }
 
-.modal-body .row:nth-of-type(odd) {
+.accesskey-info .row:nth-of-type(odd) {
     background: #f4f4f4;
 }
 
-.modal-body .row.shortcut-info {
+.accesskey-info .row.shortcut-info {
     background: #fff;
     font-style: italic;
 }
 
-.modal-body .row-header {
+.accesskey-info .row-header {
     font-weight: bold;
 }
 
