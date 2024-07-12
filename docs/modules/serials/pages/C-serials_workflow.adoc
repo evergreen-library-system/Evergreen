@@ -12,7 +12,7 @@ To access the Serials Module, go to a serials record in the catalog, and click o
 . Create and manage MFHDs
 
 
-image::media/serials_sub0.PNG[]
+image::media/serials_sub0.PNG[An example bibliographic record with the Serials menu open.]
 
 
 == Create a Subscription ==
@@ -34,7 +34,7 @@ image::media/serials_sub0.PNG[]
 NOTE: After creating a subscription, you can use the Actions menu to take a variety of actions with the subscription, such as adding Subscription or Distribution Notes, linking it to an MFHD record, or creating routing lists.
 
 
-image::media/serials_sub1.PNG[]
+image::media/serials_sub1.PNG[Subscription editor with fields for owning library, start date, end date, expected offset, distribution library, label, OPAC display, receiving template, and stream label.]
 
 
 == Create and Manage Predictions ==
@@ -49,7 +49,7 @@ From the _Manage Predictions_ tab you can create a new prediction pattern from s
 .. Follow the steps in the section _Creating a Pattern Template_ in this documentation to create a new pattern using the wizard.
 
 
-image::media/serials_sub2.PNG[]
+image::media/serials_sub2.PNG[Manage Predictions tab with options to create a new prediction pattern or use an existing template.]
 
 
 . After creating the pattern in the wizard, click *Create*.  The new prediction pattern will now appear under Existing Prediction Patterns.
@@ -58,7 +58,7 @@ image::media/serials_sub2.PNG[]
 NOTE: You can also predict new issues from the _Manage Issues_ tab.
 
 
-image::media/serials_sub3.PNG[]
+image::media/serials_sub3.PNG[Mange Predictions tab with a new prediction pattern created. The Predict New Issues button is highlighted.]
 
 
 . A dialog box called _Predict New Issues: Initial Values_ will appear.
@@ -71,7 +71,7 @@ image::media/serials_sub3.PNG[]
 . Evergreen will generate the predictions and bring you to the _Manage Issues_ tab to review the predicted issues.
 
 
-image::media/serials_sub4.PNG[]
+image::media/serials_sub4.PNG[Predict New Issues dialog box with fields for publication date, type, enumeration labels, chronology labels, and prediction count.]
 
 
 === Predict Issues Using a Prediction Pattern Template ===
@@ -79,7 +79,7 @@ image::media/serials_sub4.PNG[]
 . _Select a template_ from the drop down menu that appears under the Add New button and click *Create from Template*.  The pattern information will appear below the drop down menu.
 
 
-image::media/serials_sub5.PNG[]
+image::media/serials_sub5.PNG[Mange Predictions tab with Create from Template button and drop down menu highlighted.]
 
 
 . If you want to use the pattern "as is" click *Create*.
@@ -105,14 +105,14 @@ Evergreen can also generate a prediction pattern from existing MFHD records atta
 . Click *Import from Bibliographic and/or MFHD Records*.
 
 
-image::media/serials_sub6.PNG[]
+image::media/serials_sub6.PNG[Manage Predictions tab with Import from Bibliographic and/or MFHD Records button highlighted.]
 
 
 . A dialog box will appear that presents the available MFHD records and the prediction pattern that will be imported.
 . Check the box adjacent to the MFHD record that you would like to import and click *Import*.  The new prediction pattern will now appear under _Existing Prediction Patterns_.
 
 
-image::media/serials_sub7.PNG[]
+image::media/serials_sub7.PNG[Import from Bibliographic and/or MFHD Records dialog box showing available MFHD records.]
 
 
 . If you want to review or modify the pattern, click *Edit Pattern*.  The Pattern Wizard will appear.
@@ -133,4 +133,4 @@ image::media/serials_sub7.PNG[]
 After generating predictions in the _Manage Predictions_ tab, you will see a list of the predicted issues in the Manage Issues tab.  A variety of actions can be taken in this tab, including receiving issues, predicting new issues, adding special issues.
 
 
-image::media/serials_sub8.PNG[]
+image::media/serials_sub8.PNG[Manage Issues tab with options for receiving issues, predicting new issues, and adding special issues.]
