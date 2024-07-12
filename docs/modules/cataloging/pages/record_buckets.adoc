@@ -108,20 +108,20 @@ Catalogers can merge or overlay records in record buckets or using records obtai
 . Create and/or select a record bucket.
 . Select the records that you want to merge, and click *Actions>Merge Selected Records*.
 +
-image::record_buckets/marcoverlay1.png[]
+image::record_buckets/marcoverlay1.png[Interface showing the option to merge selected records in record buckets.]
 +
 . The Merge Selected Records interface appears.
 . The records to be merged appear on the right side of the screen.  Click *Use as Lead Record* to select a lead record from those that need to be merged.
 +
-image::record_buckets/marcoverlay2.png[]
+image::record_buckets/marcoverlay2.png[Merge Selected Records interface with records to be merged displayed on the right side.]
 +
 . Select a merge profile from the drop down box.
 +
-image::record_buckets/marcoverlay3.png[]
+image::record_buckets/marcoverlay3.png[Dropdown box for selecting a merge profile.]
 +
 . After you select the profile, you can preview the changes that will be made to the record.
 +
-image::record_buckets/marcoverlay4.png[]
+image::record_buckets/marcoverlay4.png[Preview of changes that will be made to the record after selecting a merge profile.]
 +
 . You can change the merge profile at any time; after doing so, the result of the merge will be recalculated. The merge result will also be recalculated after editing the lead record, changing which record is to be used as lead, or removing a record from consideration.
 . When you are satisfied that you have selected the correct merge profile, click the *Merge* button in the bottom right corner.
@@ -141,17 +141,17 @@ image::record_buckets/merge_tracking.png[merge message with date]
 . Select the record, and click *MARC View*.
 . Select *Mark for: Overlay Target*.
 +
-image::record_buckets/marcoverlay5.png[]
+image::record_buckets/marcoverlay5.png[Option to mark a record for overlay target in the MARC view.]
 +
 . Click *Cataloging>Import Record from Z39.50*.
 . Search for the lead record that you want to overlay within the Z39.50 interface.
 . Select the desired record, and click *Overlay*.
 +
-image::record_buckets/marcoverlay6.png[]
+image::record_buckets/marcoverlay6.png[Z39.50 interface with the option to overlay the selected record.]
 +
 . The record that you have targeted to be overlaid, and the new record, appear side by side.
 +
-image::record_buckets/marcoverlay7.png[]
+image::record_buckets/marcoverlay7.png[Side-by-side comparison of the targeted record and the new record in the Z39.50 interface.]
 +
 . You can edit the lead record before you overlay the target. To edit the record, click the *Edit Z39.50 Record* button above the lead record.
 . The MARC editor will appear.  You can make your changes in the MARC editor, or you can select the *Flat Text Editor* to make changes.  After you have edited the record, click *Modify* in the top right corner, and then *Use Edits* in the bottom right corner. Note that the record you are editing is the version from the Z39.50 server not including any changes that would be made as a result of applying the selected merge file.

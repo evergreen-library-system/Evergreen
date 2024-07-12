@@ -37,7 +37,7 @@ attribute definitions as a model.
 
 Multi Valued Fields allows for the capturing of multi-valued elements of a bibliographic record. Through the use of Multi Valued Fields, Evergreen recognizes that records are capable of storing multiple values. Multi Valued Fields are represented in the Record Attribute Definitions interface by a column named *Multi-valued?*. With *Multi-valued?* set to *True*, Evergreen will recognize the bibliographic records in the database that have multiple values mapping to the record attribute definition; it will also track and search on those values in the catalog. This feature will be particularly handy for bibliographic records representing a Blu-ray / DVD combo pack, since both format types can be displayed in the OPAC (if both formats were cataloged in the record).
 
-image::marc_rad_mvf_cra/radmvcolumn_1.jpg[]
+image::marc_rad_mvf_cra/radmvcolumn_1.jpg[Table showing the Multi-valued? column in the Record Attribute Definitions interface.]
 
 To edit an existing record attribute definition and set the *Multi-valued?* field to *True*:
 
@@ -47,19 +47,19 @@ To edit an existing record attribute definition and set the *Multi-valued?* fiel
 .  Select the *Multi-valued?* checkbox
 .  Click *Save*
 
-image::marc_rad_mvf_cra/editrad_2.jpg[]
+image::marc_rad_mvf_cra/editrad_2.jpg[Interface for editing a record attribute definition with the Multi-valued? checkbox selected.]
 
 === Composite Record Attributes ===
 
 Composite Record Attributes build on top of Evergreen’s ability to support record attributes that contain multiple entries. The Composite Record Attributes feature enables administrators to take a record attribute definition and apply a more complicated and nested form of structure to that particular record attribute. Two new Record Attribute Definitions columns have been added to facilitate the management of the Composite Record Attributes. The *Composite attribute?* column designates whether or not a particular record attribute definition is also a composite record attribute. The *Coded Value Maps* column contains a *Manage* link in each row that allows users to manage the Coded Value Maps for the record attributes.
 
-image::marc_rad_mvf_cra/radcvmcacolumns_3.jpg[]
+image::marc_rad_mvf_cra/radcvmcacolumns_3.jpg[Table displaying Composite attribute? and Coded Value Maps columns in the Record Attribute Definitions interface.]
 
 === Coded Value Maps ===
 
 To manage the Coded Value Maps of a particular record attribute definition, click the *Manage* link located under the Coded Value Maps column for that record attribute. This will open the Coded Value Maps interface. What administrators see on the Coded Value Maps screen does not define the structure of the composite record attribute; they must go into the *Composite Attribute Entry Definitions* screen to view this information.
 
-image::marc_rad_mvf_cra/cvmpage_4.jpg[]
+image::marc_rad_mvf_cra/cvmpage_4.jpg[Coded Value Maps interface with options for managing composite definitions.]
 
 Within the Coded Value Maps screen, there is a column named *Composite Definition*. The *Composite Definition* column contains a *Manage* link that allows users to configure and to edit Composite Record Attribute definitions. In order to enable the *Manage* link (i.e. have the *Manage* link display as an option under the *Composite Definition* column), the *Composite attribute?* column (located back in the Record Attributes Definition page) must be set to *True*.
 
@@ -71,7 +71,7 @@ To edit an existing record attribute definition and set the *Composite attribute
 .   Select the *Composite attribute?* checkbox
 .   Click *Save*
 
-image::marc_rad_mvf_cra/radcatrue_5.jpg[]
+image::marc_rad_mvf_cra/radcatrue_5.jpg[Record attribute definition interface with the Composite attribute? checkbox selected.]
 
 Now that the *Composite attribute?* value is set to *True*, click on the *Manage* link located under the *Coded Value Maps* column for the edited record attribute definition. Back in the Coded Value Maps screen, a *Manage* link should now be exposed under the *Composite Definition* column. Clicking on a specific coded value’s *Manage* link will take the user into the *Composite Attribute Entry Definitions* screen for that specified coded value.
 
@@ -81,7 +81,7 @@ The Composite Attribute Entry Definitions screen is where administrators can loc
 
 The top of the Composite Attribute Entry Definitions screen shows a parenthetically defined view of the *Composite Data Expression*. Below the Composite Data Expression is the *Composite Data Tree*. The Composite Data Tree is structured off of Boolean Operators, including the support of NOT operations. This nested form can be as deeply defined as it needs to be within the site’s database.
 
-image::marc_rad_mvf_cra/caed_6.jpg[]
+image::marc_rad_mvf_cra/caed_6.jpg[Composite Attribute Entry Definitions screen showing a composite data expression and a composite data tree structured with Boolean operators.]
 
 To modify the *Composite Attribute Entry Definition*, any Boolean Operator can be deleted or have a coded value appended to it. The appended coded value can be any number of Coded Value Maps from any other Record Attribute Definition. So, administrators can choose from all the other existing record attribute definitions and create new nested structures to define entirely new data types.
 
@@ -95,7 +95,7 @@ To modify the *Composite Attribute Entry Definition*:
 .  The *Composite Data Expression* should now include the modification
 .  Once all modifications have been made, click *Save Changes* on the Composite Attribute Entry Definitions page
 
-image::marc_rad_mvf_cra/modifycde_7.jpg[]
+image::marc_rad_mvf_cra/modifycde_7.jpg[Composite Attribute Entry Definitions screen showing a composite data expression and a composite data tree structured with Boolean operators.]
 
 === Search and Icon Formats ===
 

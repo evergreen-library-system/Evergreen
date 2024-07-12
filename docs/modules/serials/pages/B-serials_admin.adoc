@@ -34,7 +34,7 @@ To create a serial copy template, go to *Administration->Serials Administration-
 . Click *Save*.
 . The new serial copy template will now appear in the list of templates.
 
-image::media/serials_ct1.PNG[]
+image::media/serials_ct1.PNG["A dialog box for creating a Serial Copy Template including fields for Circulate, Circulation Library, Shelving Location, Circulation Modifier, Loan Duration, Circulate as Type, Holdable, Age-based Hold Protection, Fine Level, Floating, Status, Reference, OPAC Visible, Price, Deposit, Deposit Amount, and Quality."]
 
 
 === Modifying a Serial Copy Template ===
@@ -85,7 +85,7 @@ To create a template, go to *Administration->Serials Administration->Prediction 
 ... When you have completed the enumerations, click *Next* in the upper right-hand corner.
 
 
-image::media/serials_wizard1.PNG[]
+image::media/serials_wizard1.PNG[Prediction Pattern Code Wizard showing the Enumeration Labels tab.]
 
 
 .. Chronology Display
@@ -97,7 +97,7 @@ image::media/serials_wizard1.PNG[]
 ... After you have completed the chronology caption, click *Next* in the upper-right hand corner.
 
 
-image::media/serials_wizard2.PNG[]
+image::media/serials_wizard2.PNG[Chronology Display tab in the Prediction Pattern Code Wizard.]
 
 
 .. MFHD Indicators
@@ -106,7 +106,7 @@ image::media/serials_wizard2.PNG[]
 ... Click *Next* in the upper right hand corner.
 
 
-image::media/serials_wizard3.PNG[]
+image::media/serials_wizard3.PNG[MFHD Indicators tab in the Prediction Pattern Code Wizard.]
 
 
 .. Frequency and Regularity
@@ -121,7 +121,7 @@ image::media/serials_wizard3.PNG[]
 ... After you have completed frequency and regularity information, click *Next* in the upper-right hand corner.
 
 
-image::media/serials_wizard4.PNG[]
+image::media/serials_wizard4.PNG[Frequency and Regularity tab in the Prediction Pattern Code Wizard.]
 
 
 .. Review
@@ -130,14 +130,14 @@ image::media/serials_wizard4.PNG[]
 ...  Click *Save*.
 
 
-image::media/serials_wizard5.PNG[]
+image::media/serials_wizard5.PNG[Review tab in the Prediction Pattern Code Wizard showing the Pattern Summary.]
 
 
 . Back in the Prediction Pattern Template dialog box, select the Owning Library, which will default to the workstation library.
 . If you want to share the template, set the Share Depth to indicate how far out into your consortium the template will be shared.
 
 
-image::media/serials_wizard6.PNG[]
+image::media/serials_wizard6.PNG[Dialog box for creating a prediction pattern template with fields for owning library and share depth.]
 
 
 . The Prediction Pattern will now appear in the list of templates and can be used to create predictions for subscriptions.

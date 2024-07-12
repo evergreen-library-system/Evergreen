@@ -28,7 +28,7 @@ image::emergency_closing/ECHClosedDatesEditorAddClosing.png[Add Closing]
 
 A pop-up will appear with fields to fill out. 
 
-image::emgerency_closing/ECHLibraryClosingConstruction.png[Create Closing for One Full Day]
+image::emergency_closing/ECHLibraryClosingConstruction.png[Create Closing for One Full Day]
 
 *Library* - Using the dropdown window, select the org unit which will be closing.
 
@@ -46,9 +46,9 @@ The _Multiple days_ and _Detailed closing_ options will display different date o
 *NOTE* There is an existing bug that pushes the due dates to the first day after the Emergency Closure even if that day is normally closed. So, if you need to enter an Emergency Closure for a Friday, but you are normally closed on Saturday and Sunday, be sure to enter the Emergency Closure for Friday through Sunday.
 ========================
 
-image::emgerency_closing/ECHLibraryClosingMultipleDays.png[Create Closing for Multiple Days]
+image::emergency_closing/ECHLibraryClosingMultipleDays.png[Create Closing for Multiple Days]
 
-image::emgerency_closing/ECHLibraryClosingDetailed.png[Create Detailed Closing]
+image::emergency_closing/ECHLibraryClosingDetailed.png[Create Detailed Closing]
 
 *Date* - Select which day or days the library will be closed. 
 
@@ -73,13 +73,13 @@ By selecting the *Emergency* checkbox, the system will void any overdue fines in
 * shelf expire times
 * booking start times
 
-image::emgerency_closing/ECHClosingSnowDay.png[Create Emergency Closing]
+image::emergency_closing/ECHClosingSnowDay.png[Create Emergency Closing]
 
 When selecting the *Process immediately* checkbox, Evergreen will enact the Emergency Closing changes immediately once the Emergency Closed Date information is saved. If Process immediately is not selected at the time of creation, staff will need to delete the original Emergency Closing and create a new one to make sure the Process immediately option is checked. If you go back to edit an entry to select the Process immediately checkbox, the Emergency processing will not occur.
 
 Upon clicking *OK*, a progress bar will appear on-screen. After completion, the Closed Dates Editor screen will update, and under the Emergency Closing Processing Summary column, the number of affected/processed Circulations, Holds, and Reservations will be listed.
 
-image::emgerency_closing/ECHLibraryClosingDone.png[Emergency Closing Processing Complete]
+image::emergency_closing/ECHLibraryClosingDone.png[Emergency Closing Processing Complete]
 
 [NOTE]
 =========================
@@ -94,7 +94,7 @@ This caveat applies to editing the dates of an Emergency Closure as well. If the
 
 To edit the Reason field of an existing Emergency Closing event, go to *Actions -> Edit closing*. 
 
-image::emgerency_closing/ECHEditClosing.png[Edit Closing]
+image::emergency_closing/ECHEditClosing.png[Edit Closing]
 
 A pop-up display will appear with the same format as creating a Closed Dates event. Once you make the changes, click *OK*. The Closed Dates Editor display will update.
 
