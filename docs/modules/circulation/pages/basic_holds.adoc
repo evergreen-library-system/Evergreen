@@ -81,19 +81,19 @@ image::hold_management/patron_search_button.jpg[Patron Search]
 +
 4. A dialog box will appear with the patron search interface used elsewhere in the staff client. By default, the search scopes to your workstation org unit, and you can search by patron last name, first name, and middle name.
 +
-image::basic_holds/PlaceHold-2.JPG[]
+image::basic_holds/PlaceHold-2.JPG[Select Patron dialog box]
 +
 Clicking the *arrow icon* to the right of _Clear Form_ can either expand or condense the searchable fields display which includes other patron information.
 +
-image::basic_holds/PlaceHold-3.JPG[]
+image::basic_holds/PlaceHold-3.JPG[Select Patron dialog box expanded to show more search fields]
 +
 5. To search for a patron, fill out the relevant search fields, and click *Search* or hit ENTER on your keyboard. Results will appear below in Patron Search Results in the lower half of the screen.
 +
-image::basic_holds/PlaceHold-4.JPG[]
+image::basic_holds/PlaceHold-4.JPG[Select Patron dialog box with search results and Search button highlighted]
 +
 6. Click the row of the desired patron account, and click *Select*.
 +
-image::basic_holds/PlaceHold-5.JPG[]
+image::basic_holds/PlaceHold-5.JPG[Select Patron dialog box with patron account selected]
 +
 7. The dialog box will close and the selected patron's barcode will appear next to _Place Hold for patron by barcode_. This will cause the patron's hold notification preferences to appear in the relevant fields in the bottom half of the screen. Changes to the Hold Notification preferences can be made before clicking *Submit* to finish placing a hold for the patron.
 

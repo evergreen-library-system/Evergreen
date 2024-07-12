@@ -72,7 +72,7 @@ identify the maximum renewals that can be placed on an item.
 You can find Circulation Duration Rules by navigating to *Administration
 -> Server Administration -> Circulation Duration Rules*. 
 
-image::borrowing_items/circ_duration_rules.jpg[]
+image::borrowing_items/circ_duration_rules.jpg[Table titled 'Circ Duration Rules' showing circulation duration rules. Columns: #: row number, name: rule name, max_renewals, shrt: short duration, normal: normal duration, extended: extended duration. Example rows: 21d_1r (1 renewal, 21 days for all durations), 14d_0r (0 renewals, 14 days for all durations).]
 
 *Recurring fine* describes the amount assessed for daily and hourly fines as
 well as fines set for other regular intervals. You can also identify any grace
@@ -81,7 +81,7 @@ periods that should be applied before the fine starts accruing.
 You can find Recurring Fine Rules by navigating to *Administration -> Server
 Administration -> Circulation Recurring Fine Rules*.
 
-image::borrowing_items/circ_recurring_fine_rules.jpg[]
+image::borrowing_items/circ_recurring_fine_rules.jpg[Table titled 'Recurring Fine Rules' showing fine rules. Columns: #: row number, name: rule name, recurrence_int: recurrence interval, low: low fine, normal: normal fine, high: high fine, grace_period. Example rows: 10c_pd (1 day, 0.10 for all fines, no grace period), 2d_pd (1 day, 2.00 for all fines, no grace period).]
 
 *Max fine* describes the maximum amount of fines that will be assessed for a
 specific circulation. Set the *Is Percent* field to True if the maximum fine
@@ -90,7 +90,7 @@ should be a percentage of the item's price.
 You can find Circ Max Fine Rules by navigating to *Administration -> Server
 Administration -> Circulation Max Fine Rules*.
 
-image::borrowing_items/circ_max_fine_rules.jpg[]
+image::borrowing_items/circ_max_fine_rules.jpg[Table titled 'Circ Max Fine Rules' showing maximum fine rules. Columns: #: row number, Rule Name, Max Fine Amount, Is Percent. Example rows: 10d_max_fine (10.00, False), 40d_max_fine (40.00, False), 999d_max_fine (999.00, False).]
 
 These rules generally cause the most variation between organizational units.
 

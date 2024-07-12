@@ -12,7 +12,7 @@ If the library receives an extra copy of an expected issue, the extra copy can b
 . The extra copy will appear in the list of issues and can be received using your typical workflow.
 
 
-image::media/serials_extra1.PNG[]
+image::media/serials_extra1.PNG[Manage Issues dialog showing the process of adding an extra copy of an expected issue.]
 
 
 == Adding Special Issues ==
@@ -28,7 +28,7 @@ If the library receives an unexpected issue of a subscription, such as Summer Is
 . The special issue will appear in the list of issues and can be received using your typical workflow.
 
 
-image::media/serials_extra2.PNG[]
+image::media/serials_extra2.PNG[Dialog box for adding a special issue with fields for publication date, type, and issuance label.]
 
 
 NOTE: A special issue may also be added as an ad hoc issue by following the instructions for Adding Extra Copies.  Enter the Publication date and Type and check the box adjacent to Ad hoc issue?  The form will update to allow you to enter an Issuance Label.

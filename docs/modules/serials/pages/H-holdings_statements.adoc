@@ -15,21 +15,21 @@ Evergreen users can create, edit and delete their own MFHD.
 . Click *Create MFHD*. 
 
 
-image::media/serials_mfhd1.PNG[]
+image::media/serials_mfhd1.PNG[Manage MFHD tab with the option to create a new MFHD record.]
 
 
 . A _Create new MFHD_ dialog box will appear.  _Select the library_ for which you are creating the MFHD record and click *Create*.
 . The MFHD record will appear in the list.  Go to *Actions->Edit MFHD* or _right-click_ on the row and select *Edit MFHD* from the drop down menu.
 
 
-image::media/serials_mfhd3.PNG[]
+image::media/serials_mfhd3.PNG[Manage MFHD tab with the option to edit a MFHD record.]
 
 
 . The MARC Editor will appear.  _Modify the MFHD record_ as needed and click *Save*.
 . The Textual Holdings statement will appear in the _Issues Held_ tab in the catalog.
 
 
-image::media/serials_mfhd6.PNG[]
+image::media/serials_mfhd6.PNG[Issues Held tree open in the catalog showing the textual holdings statement.]
 
 
 === Edit a MFHD record ===

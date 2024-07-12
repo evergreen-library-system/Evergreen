@@ -17,7 +17,7 @@ not have these permissions, ask your system administrator for assistance.
 . When you login for the first time, you will arrive at a screen asking that you
 register your workstation
 +
-image::login/web_client_workstation_registration.png[]
+image::login/web_client_workstation_registration.png[Workstation registration screen with fields to create a unique workstation name and register it.]
 +
 . Create a unique workstation name.
 . Click _Register_

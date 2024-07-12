@@ -8,7 +8,7 @@ This will measure the websocket latency between your workstation client and the 
 . Click *Copy to Clipboard* to copy the results
 . Click *Clear* to clear the results
 
-image::workstation/latency-test.png[]
+image::workstation/latency-test.png[Latency test interface showing options to start test, copy results to clipboard, and clear results.]
 
 *Average Latency* - Indicates how long it takes for your workstation to communicate with Evergreen servers.
 
