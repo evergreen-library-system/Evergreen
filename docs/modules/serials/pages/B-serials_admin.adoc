@@ -34,7 +34,7 @@ To create a serial copy template, go to *Administration->Serials Administration-
 . Click *Save*.
 . The new serial copy template will now appear in the list of templates.
 
-image::media/serials_ct1.PNG[A dialog box for creating a Serial Copy Template including fields for Circulate, Circulation Library, Shelving Location, Circulation Modifier, Loan Duration, Circulate as Type, Holdable, Age-based Hold Protection, Fine Level, Floating, Status, Reference, OPAC Visible, Price, Deposit, Deposit Amount, and Quality.]
+image::media/serials_ct1.PNG["A dialog box for creating a Serial Copy Template including fields for Circulate, Circulation Library, Shelving Location, Circulation Modifier, Loan Duration, Circulate as Type, Holdable, Age-based Hold Protection, Fine Level, Floating, Status, Reference, OPAC Visible, Price, Deposit, Deposit Amount, and Quality."]
 
 
 === Modifying a Serial Copy Template ===

@@ -74,7 +74,7 @@ When users place a hold on an individual bibliographic record they will see an
 *Advanced Hold Options* link will take the users into the metarecord level hold
 feature, enabling them to select multiple formats and/or languages.
 
-image::tpac_meta/advholdoption_6.jpg[Advanced Hold Options link in the Place Hold screen, enabling selection of multiple formats and/or languages.]
+image::tpac_meta/advholdoption_6.jpg["Advanced Hold Options link in the Place Hold screen, enabling selection of multiple formats and/or languages."]
 
 *Metarecord Constituent Records Page*
 

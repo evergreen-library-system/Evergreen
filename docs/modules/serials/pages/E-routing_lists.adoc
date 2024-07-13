@@ -13,7 +13,7 @@ Routing lists enable you to designate specific users and/or departments that ser
 . When the list is complete, click *Update*.
 
 
-image::media/serials_routing1.PNG[Dialog box for creating a routing list with fields for reader barcode, department, and note.]
+image::media/serials_routing1.PNG["Dialog box for creating a routing list with fields for reader barcode, department, and note."]
 
 
 Routing lists can be printed as items are received (see the documentation on Receiving for more information).  They can also be printed directly from the _Manage Issues_ tab in a subscription by selecting the item(s) and going to *Actions->Print routing lists* or _right-clicking_ on the item(s) and selecting *Print routing lists* from the menu.

@@ -34,7 +34,7 @@ image::media/serials_sub0.PNG[An example bibliographic record with the Serials m
 NOTE: After creating a subscription, you can use the Actions menu to take a variety of actions with the subscription, such as adding Subscription or Distribution Notes, linking it to an MFHD record, or creating routing lists.
 
 
-image::media/serials_sub1.PNG[Subscription editor with fields for owning library, start date, end date, expected offset, distribution library, label, OPAC display, receiving template, and stream label.]
+image::media/serials_sub1.PNG["Subscription editor with fields for owning library, start date, end date, expected offset, distribution library, label, OPAC display, receiving template, and stream label."]
 
 
 == Create and Manage Predictions ==
@@ -71,7 +71,7 @@ image::media/serials_sub3.PNG[Mange Predictions tab with a new prediction patter
 . Evergreen will generate the predictions and bring you to the _Manage Issues_ tab to review the predicted issues.
 
 
-image::media/serials_sub4.PNG[Predict New Issues dialog box with fields for publication date, type, enumeration labels, chronology labels, and prediction count.]
+image::media/serials_sub4.PNG["Predict New Issues dialog box with fields for publication date, type, enumeration labels, chronology labels, and prediction count."]
 
 
 === Predict Issues Using a Prediction Pattern Template ===
@@ -133,4 +133,4 @@ image::media/serials_sub7.PNG[Import from Bibliographic and/or MFHD Records dial
 After generating predictions in the _Manage Predictions_ tab, you will see a list of the predicted issues in the Manage Issues tab.  A variety of actions can be taken in this tab, including receiving issues, predicting new issues, adding special issues.
 
 
-image::media/serials_sub8.PNG[Manage Issues tab with options for receiving issues, predicting new issues, and adding special issues.]
+image::media/serials_sub8.PNG["Manage Issues tab with options for receiving issues, predicting new issues, and adding special issues."]

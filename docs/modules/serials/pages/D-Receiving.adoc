@@ -19,7 +19,7 @@ Issues can be received through the _Manage Issues_ tab or through the _Quick Rec
 ... Uncheck the box adjacent to _Barcode Items_ and click *Save*.  The Holdings Summary in the Issues Held tab in the catalog will reflect the newly received issue.
 
 
-image::media/serials_sub9.PNG[Quick receive items dialog box with options for copying location, call number, and circulation modifier.]
+image::media/serials_sub9.PNG["Quick receive items dialog box with options for copying location, call number, and circulation modifier."]
 
 
 == Receiving from the Manage Issues tab ==

@@ -19,7 +19,7 @@ You need to create resource types and resource attributes (features of the resou
 
 1) Select Administration -> Booking Administration -> Resource Types.
 
-image::booking/booking-create-resourcetype_webclient-1.png[Options in the Booking Administration menu which include Resources, Resource Attribute Values, Resource Types, Resource Attribute Maps, and Resource Attributes.]
+image::booking/booking-create-resourcetype_webclient-1.png["Options in the Booking Administration menu which include Resources, Resource Attribute Values, Resource Types, Resource Attribute Maps, and Resource Attributes."]
 
 2) A list of current resource types will appear (if any).
 
@@ -32,7 +32,7 @@ image::booking/new_resource_type_button.png[Button for creating a new resource t
 
 4) A box will appear in which you create your new type of resource.
 
-image::booking/new_resource_type_form.png[Form for creating a new resource type with fields for catalog item, fine amount, fine interval, max fine amount, owning library, resource type name, and transferable option.]
+image::booking/new_resource_type_form.png["Form for creating a new resource type with fields for catalog item, fine amount, fine interval, max fine amount, owning library, resource type name, and transferable option."]
 
 * *Catalog Item*: Boolean checkbox.
 * *Fine Amount*: The amount that will be charged at each Fine Interval.
@@ -62,7 +62,7 @@ image::booking/new_resource_attr_button.png[Button for creating a new resource a
 
 3) A box will appear in which you can add the attributes of the resource. Attributes are categories of descriptive information that are provided to the staff member when the booking request is made. For example, an attribute of a laptop may be the type of laptop. Other attributes might be the number of seats available in a room, or a kind of projector.
 
-image::booking/resource_attr_form.png[Form for assigning a value to a resource attribute with fields for is required, owning library, resource attribute ID, resource attribute name, and resource type.]
+image::booking/resource_attr_form.png["Form for assigning a value to a resource attribute with fields for is required, owning library, resource attribute ID, resource attribute name, and resource type."]
 
 * *Is Required*: Boolean checkbox.
 * *Owning Library*
@@ -87,7 +87,7 @@ image::booking/new_resource_attr_value_button.png[Button for creating a new reso
 
 3) A box will appear in which you assign a value to a particular attribute. Values can be numbers, words, or a combination of them, that describe the particular aspects of the resource that have been defined as Attributes. As all values appear on the same list for selection, values should be as unique as possible. For example, a laptop may have a computing platform that is either PC or Mac.
 
-image::booking/resource_attr_value_form.png[Form for assigning a value to a resource attribute with fields for owning library, resource attribute, and valid value.]
+image::booking/resource_attr_value_form.png["Form for assigning a value to a resource attribute with fields for owning library, resource attribute, and valid value."]
 
 * *Owning Library*: The home library of the resource.
 * *Resource Attribute*: The attribute you wish to assign the value to.
@@ -110,7 +110,7 @@ image::booking/new_resource_button.png[Button for creating a new resource.]
 
 4) A box will appear in which you create your new type of resource.
 
-image::booking/record_edit_resource.png[Form for creating a new resource with fields for barcode, deposit amount, deposit required status, overbook status, owning library, resource type, and user fee.]
+image::booking/record_edit_resource.png["Form for creating a new resource with fields for barcode, deposit amount, deposit required status, overbook status, owning library, resource type, and user fee."]
 
 * *Barcode*: Enter the barcode of the item.
 * *Deposit Amount*: If a deposit is needed to book, enter it here.
@@ -138,7 +138,7 @@ image::booking/new_resource_attr_button.png[Button for creating a new resource a
 
 3) A box will appear in which you can add the attributes of the resource. Attributes are categories of descriptive information that are provided to the staff member when the booking request is made. For example, an attribute of a laptop may be the type of laptop. Other attributes might be the number of seats available in a room, or a kind of projector.
 
-image::booking/resource_attr_form.png[Form for assigning a value to a resource attribute with fields for is required, owning library, resource attribute ID, resource attribute name, and resource type.]
+image::booking/resource_attr_form.png["Form for assigning a value to a resource attribute with fields for is required, owning library, resource attribute ID, resource attribute name, and resource type."]
 
 * *Is Required*: Boolean checkbox.
 * *Owning Library*
@@ -163,7 +163,7 @@ image::booking/new_map_button.png[Button for creating a new resource attribute m
 
 3) A box will appear in which you will map your attributes and values to your resources.
 
-image::booking/map_forms.png[Form for mapping attributes and values to resources with fields for attribute value, resource, and resource attribute.]
+image::booking/map_forms.png["Form for mapping attributes and values to resources with fields for attribute value, resource, and resource attribute."]
 
 * *Attribute Value*: Dropdown menu.
 * *Resource*: Dropdown menu.

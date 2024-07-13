@@ -367,7 +367,7 @@ _Charge processing fee for damaged items_ is included in the total.
 .. If you are not charging the patron in this particular case, click *No Charge*.
 .. Click *Submit*.
 +
-image::circulating_items_web_client/mark-damaged-2.png[Damaged item billing dialog with fields for adjusting the amount, selecting bill type, adding a note, and submitting.]
+image::circulating_items_web_client/mark-damaged-2.png["Damaged item billing dialog with fields for adjusting the amount, selecting bill type, adding a note, and submitting."]
 +
 . The item's status is updated to _Damaged_ and removed from the patron's account. If the patron has 
 been billed for the damage the bill will display in the _Bills_ tab.  The bill displays as a single charge
