@@ -3,6 +3,110 @@
 :numbered:
 :toclevels: 3
 
+== Evergreen 3.12.5 ==
+
+This release contains bug fixes improving on Evergreen 3.12.4.
+
+=== Upgrade Notes ===
+
+
+
+=== Accessibility ===
+
+* Makes Angular nav bar responsive (https://bugs.launchpad.net/evergreen/+bug/1945498[Bug 1945498])
+* SVG logos; support for forced colors mode (https://bugs.launchpad.net/evergreen/+bug/2049657[Bug 2049657])
+* Corrects current page ARIA in staff catalog pagination (https://bugs.launchpad.net/evergreen/+bug/2058747[Bug 2058747])
+* Fixes the barcode input label in Scan Item as Missing Pieces. (https://bugs.launchpad.net/evergreen/+bug/2058287[Bug 2058287])
+
+=== Acquisitions ===
+
+* Get actual remote file name when sending EDI message via SFTP. (https://bugs.launchpad.net/evergreen/+bug/2060153[Bug 2060153])
+
+
+=== Administration ===
+
+* Fixes custom permission tree display sort in the patron registration/edit screen (https://bugs.launchpad.net/evergreen/+bug/1843940[Bug 1843940])
+* Refactors Shelving Location Groups Admin for accessibility (https://bugs.launchpad.net/evergreen/+bug/2042879[Bug 2042879])
+* Remove unnecessary error message from ./configure installation step. (https://bugs.launchpad.net/evergreen/+bug/2054454[Bug 2054454])
+* Re-orders fields on Server Administration > Circulation Max Fine Rules (https://bugs.launchpad.net/evergreen/+bug/1839878[Bug 1839878])
+* Re-orders Server Admin > Circulation Duration Rules fields (https://bugs.launchpad.net/evergreen/+bug/1839875[Bug 1839875])
+* Reorders the fields for Local Admin > Statistical Categories (https://bugs.launchpad.net/evergreen/+bug/2052641[Bug 2052641])
+* Reorders fields for Local Admin > Hold Policies (https://bugs.launchpad.net/evergreen/+bug/1915464[Bug 1915464])
+* Adds field group styling option to fieldmapper editor (https://bugs.launchpad.net/evergreen/+bug/1915464[Bug 1915464])
+* Adds missing shipment notification permissions (https://bugs.launchpad.net/evergreen/+bug/2055089[Bug 2055089])
+* Add `PATRON_BARRED.override` permission if missing. (https://bugs.launchpad.net/evergreen/+bug/2062023[Bug 2062023])
+* Add a print button to the Desk and Staff User Payment grids to print the org, date range, totals, and full list. (https://bugs.launchpad.net/evergreen/+bug/2003090[Bug 2003090])
+* Fix bug that prevented action triggers from processing when granularity is an empty string. (https://bugs.launchpad.net/evergreen/+bug/2026206[Bug 2026206])
+* Corrects wording on Carousel Types interface (https://bugs.launchpad.net/evergreen/+bug/1853630[Bug 1853630])
+
+
+=== Catalog ===
+
+* Fixes problem where the staff catalog could attempt to jump to an incorrect record when performing a metarecord search that returns a single result. (https://bugs.launchpad.net/evergreen/+bug/1949214[Bug 1949214])
+* Fixes Angular Search Preferences being empty after login (https://bugs.launchpad.net/evergreen/+bug/2072430[Bug 2072430])
+
+=== Cataloging ===
+
+* Hides Edit call number link if missing permission (https://bugs.launchpad.net/evergreen/+bug/2015112[Bug 2015112])
+
+
+
+=== Documentation ===
+
+* New development tool to help prepare release notes using information from Git commits. (https://bugs.launchpad.net/evergreen/+bug/2051874[Bug 2051874])
+* Adds missing alt text to image files
+
+
+=== Self Checkout ===
+
+* Fixes issue where cover images were not displayed in the selfcheck holds list for titles that lack ISBNs. (https://bugs.launchpad.net/evergreen/+bug/2037564[Bug 2037564])
+
+
+
+=== Acknowledgements ===
+
+We would like to thank the following individuals who contributed code,
+testing, documentation, and patches to the 3.12.5 point release of Evergreen:
+
+* Andrea Buntz Neiman
+* Bill Erickson
+* Blake Graham-Henderson
+* Dan Briem
+* Elizabeth Davis
+* Galen Charlton
+* Garry Collum
+* Gina Monti
+* Ian Skelskey
+* Jane Sandberg
+* Jason Stephenson
+* Llewellyn Marshall
+* Michele Morgan
+* Mike Rylander
+* Ruth Davis
+* Scott Angel
+* Shula Link
+* Stephanie Leary
+* Steven Mayo
+* Terran McCanna
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 == Evergreen 3.12.4 ==
 
 This release contains bug fixes improving on Evergreen 3.12.3.
