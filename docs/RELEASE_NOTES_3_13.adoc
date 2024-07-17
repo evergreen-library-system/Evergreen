@@ -7,9 +7,6 @@
 
 This release contains bug fixes improving on Evergreen 3.13.1
 
-=== Upgrade Notes ===
-
-
 
 === Accessibility ===
 
@@ -43,11 +40,6 @@ This release contains bug fixes improving on Evergreen 3.13.1
 * Fixes issue with point release docs not being built (https://bugs.launchpad.net/evergreen/+bug/2072705[Bug 2072705])
 * Removes obsolete media folders in docs (https://bugs.launchpad.net/evergreen/+bug/2060219[Bug 2060219])
 * Adds missing alt text to image files
-
-
-=== Staff Client ===
-
-* Update automated tests for the staff client. (https://bugs.launchpad.net/evergreen/+bug/2069098[Bug 2069098])
 
 
 
