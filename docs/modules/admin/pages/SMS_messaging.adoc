@@ -40,14 +40,14 @@ To add or edit SMS carriers:
 . Click *Administration* -> *Server Administration* ->  *SMS Carriers*.
 . To add a new carrier, click the *New Carrier* button in the top right corner of the screen.  To edit an existing carrier, double click in any white space in the carrier's row.
 +
-image::sms_messaging/SMS_Text_Messaging3.jpg[SMS_Text_Messaging3] 
+image::sms_messaging/SMS_Text_Messaging3.png[SMS_Text_Messaging3] 
 +
 . Enter a (geographical) *Region*.
 . Enter the carrier's *Name*.
 . Enter an *Email Gateway.*  The SMS carrier can provide you with the content for this field.  The $number field is converted to the user's phone number when the text message is generated.
 . Check the *Active* box to use this SMS Carrier.
 
-image::sms_messaging/SMS_Text_Messaging4.jpg[SMS_Text_Messaging4]
+image::sms_messaging/SMS_Text_Messaging4.png[SMS_Text_Messaging4]
 
 === Configure Text Message Templates ===
 
