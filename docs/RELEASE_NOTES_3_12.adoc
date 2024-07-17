@@ -9,6 +9,8 @@ This release contains bug fixes improving on Evergreen 3.12.4.
 
 === Upgrade Notes ===
 
+* This release contains an upgrade script, which is necessary for the fixes to https://bugs.launchpad.net/evergreen/+bug/2055089[Bug 2055089],
+https://bugs.launchpad.net/evergreen/+bug/2062023[Bug 2062023], and https://bugs.launchpad.net/evergreen/+bug/2059974[Bug 2059974].
 
 
 === Accessibility ===
@@ -42,6 +44,7 @@ This release contains bug fixes improving on Evergreen 3.12.4.
 
 === Catalog ===
 
+* Mitigates a catalog search performance issue (https://bugs.launchpad.net/evergreen/+bug/2059974[Bug 2059974])
 * Fixes problem where the staff catalog could attempt to jump to an incorrect record when performing a metarecord search that returns a single result. (https://bugs.launchpad.net/evergreen/+bug/1949214[Bug 1949214])
 * Fixes Angular Search Preferences being empty after login (https://bugs.launchpad.net/evergreen/+bug/2072430[Bug 2072430])
 
