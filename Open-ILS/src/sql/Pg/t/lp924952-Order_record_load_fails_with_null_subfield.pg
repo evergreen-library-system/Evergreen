@@ -1,0 +1,76 @@
+BEGIN;
+
+SELECT plan(8);
+
+-- Insert a "good" MARC record, which can be correctly parsed by acq.extract_holding_attr_table
+INSERT INTO acq.lineitem (id, creator, editor, selector, purchase_order, marc) VALUES (200, 1, 1, 1, 1,
+'<record    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"    xsi:schemaLocation="http://www.loc.gov/MARC21/slim http://www.loc.gov/standards/marcxml/schema/MARC21slim.xsd"    xmlns="http://www.loc.gov/MARC21/slim"><datafield tag="970" ind1=" " ind2=" ">
+  <subfield code="q">1</subfield>
+  <subfield code="p">20.00</subfield>
+  <subfield code="o">RPLS-HDPL</subfield>
+  <subfield code="n">123 ABC</subfield>
+</datafield></record>');
+
+-- We get the expected values:
+-- q: 1
+-- p: 20.00
+-- o: RPLS-HDPL
+-- n: 123 ABC 
+
+SELECT is(
+  (SELECT data FROM acq.extract_holding_attr_table(200, '970') WHERE subfield='q'),
+  '1',
+  'It can find the quantity from field 970 subfield q'
+);
+
+SELECT is(
+  (SELECT data FROM acq.extract_holding_attr_table(200, '970') WHERE subfield='p'),
+  '20.00',
+  'It can find the price from field 970 subfield p'
+);
+
+SELECT is(
+  (SELECT data FROM acq.extract_holding_attr_table(200, '970') WHERE subfield='o'),
+  'RPLS-HDPL',
+  'It can find the org unit from field 970 subfield o'
+);
+
+SELECT is(
+  (SELECT data FROM acq.extract_holding_attr_table(200, '970') WHERE subfield='n'),
+  '123 ABC',
+  'It can find the call number unit from field 970 subfield n'
+);
+
+INSERT INTO acq.lineitem (id, creator, editor, selector, purchase_order, marc) VALUES (300, 1, 1, 1, 1,
+'<record    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"    xsi:schemaLocation="http://www.loc.gov/MARC21/slim http://www.loc.gov/standards/marcxml/schema/MARC21slim.xsd"    xmlns="http://www.loc.gov/MARC21/slim"><datafield tag="970" ind1=" " ind2=" ">
+  <subfield code="q"></subfield>
+  <subfield code="p">20.00</subfield>
+  <subfield code="o">RPLS-HDPL</subfield>
+  <subfield code="n">123 ABC</subfield>
+</datafield></record>');
+
+SELECT is(
+  (SELECT data FROM acq.extract_holding_attr_table(300, '970') WHERE subfield='q'),
+  NULL,
+  'It can find the quantity from field 970 subfield q'
+);
+
+SELECT is(
+  (SELECT data FROM acq.extract_holding_attr_table(300, '970') WHERE subfield='p'),
+  '20.00',
+  'It can find the quantity from field 970 subfield p'
+);
+
+SELECT is(
+  (SELECT data FROM acq.extract_holding_attr_table(300, '970') WHERE subfield='o'),
+  'RPLS-HDPL',
+  'It can find the quantity from field 970 subfield o'
+);
+
+SELECT is(
+  (SELECT data FROM acq.extract_holding_attr_table(300, '970') WHERE subfield='n'),
+  '123 ABC',
+  'It can find the quantity from field 970 subfield n'
+);
+
+ROLLBACK;
