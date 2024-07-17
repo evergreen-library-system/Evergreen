@@ -1024,14 +1024,14 @@ BEGIN
 
     FOR i IN 1 .. counter LOOP
         FOR lida IN
-            SELECT  * 
+            SELECT  *
               FROM  (   SELECT  id,i,t,v
                           FROM  oils_xpath_table(
                                     'id',
                                     'marc',
                                     'acq.lineitem',
-                                    '//*[@tag="' || tag || '"][position()=' || i || ']/*/@code|' ||
-                                        '//*[@tag="' || tag || '"][position()=' || i || ']/*[@code]',
+                                    '//*[@tag="' || tag || '"][position()=' || i || ']/*[text()]/@code|' ||
+                                        '//*[@tag="' || tag || '"][position()=' || i || ']/*[@code and text()]',
                                     'id=' || lineitem
                                 ) as t(id int,t text,v text)
                     )x
