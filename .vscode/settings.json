@@ -1,0 +1,5 @@
+{
+    "asciidoc.preview.asciidoctorAttributes": {
+        "imagesDir": "../assets/images/"
+    }
+}
