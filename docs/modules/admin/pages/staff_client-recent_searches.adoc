@@ -10,13 +10,13 @@ By default, ten searches will be saved as you search the staff client.  If you w
 To configure the number of recent staff searches:
 
 . Click *Administration -> Local Administration ->  Library Settings Editor.*
-. Scroll to *OPAC: Number of staff client saved searches to display on left side of results and record details pages*
+. Search for *OPAC: Number of staff client saved searches to display on left side of results and record details pages*
 . Click *Edit*.
 . Select a *Context* from the drop down menu.
 . Enter the number of searches that you wish to save in the *Value* field.  
 . Click *Update Setting*
 
-image::recent_searches/Saved_Catalog_Searches_2_21.jpg[Saved_Catalog_Searches_2_21]
+image::recent_searches/opac_num_saved_searches.png[Custom Saved Searches Library Setting Form]
 
 
 NOTE: To retain this setting, the system administrator must restart the web server.
@@ -35,6 +35,6 @@ To deactivate this feature:
 Evergreen will save staff searches that are entered through either the basic or advanced search fields.  To view recent staff searches:
 
 . Enter a search term in either the basic or advanced search fields.
-. Your search results for the current search will appear in the middle of the screen.  The most recent searches will appear on the left side of the screen.
+. Your search results for the current search will appear in the middle of the screen.  The most recent searches will appear on the left side of the screen under *Recent Searches* in a dropdown menu.
 
-image::recent_searches/Saved_Catalog_Searches_2_22.jpg[Saved_Catalog_Searches_2_22]
+image::recent_searches/recent_searches_staff_catalog.png[Recent Staff Searches in Dropdown]
