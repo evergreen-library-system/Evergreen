@@ -4,14 +4,14 @@ msgstr ""
 "Project-Id-Version: Evergreen ILS > cat.properties.po\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2018-08-15 11:29-0400\n"
-"PO-Revision-Date: 2015-11-20 20:25+0000\n"
+"PO-Revision-Date: 2024-05-29 00:50+0000\n"
 "Last-Translator: jplemoine <untoutseul05@free.fr>\n"
 "Language-Team: NRCan Library\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2023-05-05 04:35+0000\n"
-"X-Generator: Launchpad (build 90e2150bef31b411d7bae5c4032c7e320fcaaec8)\n"
+"X-Launchpad-Export-Date: 2024-05-31 04:55+0000\n"
+"X-Generator: Launchpad (build a60fb269857abd7169036a2da5afd37a6a1d41e8)\n"
 "X-Accelerator-Marker: &\n"
 "X-Poedit-SourceCharset: UTF-8\n"
 "X-Poedit-Country: Canada\n"
@@ -2439,63 +2439,3 @@ msgstr ""
 #: staff.cat.bib_brief.items.available.tooltip
 msgid "%1$s available"
 msgstr ""
-
-#~ msgid ""
-#~ "You must delete all the copies on the volume before you may delete the "
-#~ "volume itself."
-#~ msgstr ""
-#~ "Vous devez supprimer tous les exemplaires du volume avant de pouvoir "
-#~ "supprimer le volume lui-même."
-
-#~ msgid "Volumes deleted."
-#~ msgstr "Volumes supprimés."
-
-#~ msgid "Merge"
-#~ msgstr "Fusionner"
-
-#~ msgctxt "staff.cat.record_buckets.merge_records.cancel_button.label"
-#~ msgid "Cancel"
-#~ msgstr "Annuler"
-
-#~ msgctxt "staff.cat.record_buckets.merge_records.cancel_button.accesskey"
-#~ msgid "C"
-#~ msgstr "C"
-
-#~ msgid "Lead"
-#~ msgstr "Principal"
-
-#~ msgid "Merge Aborted"
-#~ msgstr "Fusionnement annulé"
-
-#~ msgid "Call Numbers"
-#~ msgstr "Cote"
-
-#~ msgid "Merge these records? (Select the \"lead\" record first)"
-#~ msgstr ""
-#~ "Fusionner ces notices? (Sélectionner d’abord la notice \"principale\")"
-
-#~ msgid "Lead Record? # %1$s"
-#~ msgstr "Notice principal? # %1$s"
-
-#~ msgid "Record: %1$s"
-#~ msgstr "Notice : %1$s"
-
-#~ msgid "Records were successfully merged."
-#~ msgstr "Les notices ont été fusionnés."
-
-#~ msgid "Record ID = %1$s"
-#~ msgstr "ID de l'enregistrement  =  %1$s"
-
-#~ msgctxt "staff.cat.copy_editor.field.floating.yes_or_true"
-#~ msgid "Yes"
-#~ msgstr "Oui"
-
-#~ msgctxt "staff.cat.copy_editor.field.floating.no_or_false"
-#~ msgid "No"
-#~ msgstr "Non"
-
-#~ msgid "Holds transferred."
-#~ msgstr "Articles mis en réserve transférés"
-
-#~ msgid "Cancel "
-#~ msgstr "Annuler "

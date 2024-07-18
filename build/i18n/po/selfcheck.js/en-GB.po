@@ -8,14 +8,14 @@ msgstr ""
 "Project-Id-Version: evergreen\n"
 "Report-Msgid-Bugs-To: FULL NAME <EMAIL@ADDRESS>\n"
 "POT-Creation-Date: 2023-05-04 09:23-0400\n"
-"PO-Revision-Date: 2014-02-25 14:54+0000\n"
+"PO-Revision-Date: 2024-05-29 00:50+0000\n"
 "Last-Translator: Andi Chandler <Unknown>\n"
 "Language-Team: English (United Kingdom) <en_GB@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2023-05-05 04:48+0000\n"
-"X-Generator: Launchpad (build 90e2150bef31b411d7bae5c4032c7e320fcaaec8)\n"
+"X-Launchpad-Export-Date: 2024-05-31 05:19+0000\n"
+"X-Generator: Launchpad (build a60fb269857abd7169036a2da5afd37a6a1d41e8)\n"
 
 #: selfcheck.js:TOTAL_ITEMS_SESSION
 msgid "Total items this session: ${0}."
@@ -199,7 +199,7 @@ msgstr "The system could not find any items to match this hold request"
 
 #: selfcheck.js:FAIL_PART_monographic_part_required
 msgid "Title hold request invalid when monographic part required"
-msgstr ""
+msgstr "Title hold request invalid when monographic part required"
 
 #: selfcheck.js:FAIL_PART_no_matchpoint
 msgid "System rules do not define how to handle this item"
@@ -222,18 +222,3 @@ msgstr ""
 "We cannot proceed with the payment, because your account was updated from "
 "another location.  Please refresh the interface or log out and back in to "
 "retrieve the latest account information"
-
-#~ msgid "Total fines on account: <b>$${0}</b>."
-#~ msgstr "Total fines on account: <b>$${0}</b>."
-
-#~ msgid "Total items on account:  <b>${0}</b>."
-#~ msgstr "Total items on account:  <b>${0}</b>."
-
-#~ msgid "You have <b>${0}</b> total holds."
-#~ msgstr "You have <b>${0}</b> total holds."
-
-#~ msgid "You have <b>${0}</b> item(s) ready for pickup."
-#~ msgstr "You have <b>${0}</b> item(s) ready for pickup."
-
-#~ msgid "Total items this session: <b>${0}</b>."
-#~ msgstr "Total items this session: <b>${0}</b>."
