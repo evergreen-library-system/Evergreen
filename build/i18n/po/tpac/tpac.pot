@@ -262,10 +262,6 @@ msgstr ""
 msgid "Account Home"
 msgstr ""
 
-#: ../../Open-ILS/src/templates/opac/parts/myopac/prefs_base.tt2:33
-msgid "Account Information and Preferences"
-msgstr ""
-
 #: ../../Open-ILS/src/templates/opac/login.tt2:1 ../../Open-ILS/src/templates/opac/login.tt2:6
 msgid "Account Login"
 msgstr ""
@@ -843,7 +839,7 @@ msgstr ""
 msgid "Blurb writer"
 msgstr ""
 
-#: ../../Open-ILS/src/templates/opac/parts/misc_util.tt2:844
+#: ../../Open-ILS/src/templates/opac/parts/misc_util.tt2:847
 msgid "Book cover"
 msgstr ""
 
@@ -3533,6 +3529,10 @@ msgstr ""
 msgid "Personal Information"
 msgstr ""
 
+#: ../../Open-ILS/src/templates/opac/parts/myopac/prefs_base.tt2:33
+msgid "Personal Information and Preferences"
+msgstr ""
+
 #: ../../Open-ILS/src/templates/opac/parts/hold_notify.tt2:18
 msgid "Phone"
 msgstr ""
@@ -3977,7 +3977,7 @@ msgstr ""
 msgid "Read Less"
 msgstr ""
 
-#: ../../Open-ILS/src/templates/opac/i18n_strings.tt2:25 ../../Open-ILS/src/templates/opac/parts/misc_util.tt2:880
+#: ../../Open-ILS/src/templates/opac/i18n_strings.tt2:25 ../../Open-ILS/src/templates/opac/parts/misc_util.tt2:883
 msgid "Read More"
 msgstr ""
 
@@ -5707,11 +5707,11 @@ msgstr ""
 msgid "here"
 msgstr ""
 
-#: ../../Open-ILS/src/templates/opac/parts/misc_util.tt2:853
+#: ../../Open-ILS/src/templates/opac/parts/misc_util.tt2:856
 msgid "next"
 msgstr ""
 
-#: ../../Open-ILS/src/templates/opac/parts/misc_util.tt2:852
+#: ../../Open-ILS/src/templates/opac/parts/misc_util.tt2:855
 msgid "prev"
 msgstr ""
 
