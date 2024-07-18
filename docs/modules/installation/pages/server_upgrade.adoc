@@ -43,12 +43,12 @@ osrf_control --localhost --stop-all
  .. Back up the /openils directory.
 . Upgrade OpenSRF. Download and install the latest version of OpenSRF from
 the https://evergreen-ils.org/opensrf-downloads/[OpenSRF download page].
-. As the *opensrf* user, download and extract Evergreen 3.11.0:
+. As the *opensrf* user, download and extract Evergreen 3.11.7:
 +
 [source, bash]
 -----------------------------------------------
-wget https://evergreen-ils.org/downloads/Evergreen-ILS-3.11.0.tar.gz
-tar xzf Evergreen-ILS-3.11.0.tar.gz
+wget https://evergreen-ils.org/downloads/Evergreen-ILS-3.11.7.tar.gz
+tar xzf Evergreen-ILS-3.11.7.tar.gz
 -----------------------------------------------
 +
 [NOTE]
@@ -58,7 +58,7 @@ For the latest edition of Evergreen, check the https://evergreen-ils.org/egdownl
 +
 [source, bash]
 ---------------------------------------------
-cd /home/opensrf/Evergreen-ILS-3.11.0
+cd /home/opensrf/Evergreen-ILS-3.11.7
 ---------------------------------------------
 +
 On the next command, replace `[distribution]` with one of these values for your
@@ -82,7 +82,7 @@ make -f Open-ILS/src/extras/Makefile.install [distribution]
 +
 [source, bash]
 ------------------------------------------------------------
-cd /home/opensrf/Evergreen-ILS-3.11.0
+cd /home/opensrf/Evergreen-ILS-3.11.7
 PATH=/openils/bin:$PATH ./configure --prefix=/openils --sysconfdir=/openils/conf
 make
 ------------------------------------------------------------
@@ -93,7 +93,7 @@ These instructions assume that you have also installed OpenSRF under /openils/. 
 +
 [source, bash]
 ------------------------------------------------------------
-cd /home/opensrf/Evergreen-ILS-3.11.0
+cd /home/opensrf/Evergreen-ILS-3.11.7
 make install
 ------------------------------------------------------------
 +
@@ -122,7 +122,7 @@ Copying these configuration files will remove any customizations you have made t
 +
 [source, bash]
 -------------------------------------------------------------------------
-cd /home/opensrf/Evergreen-ILS-3.11.0
+cd /home/opensrf/Evergreen-ILS-3.11.7
 perl Open-ILS/src/support-scripts/eg_db_config --update-config --service all \
 --create-offline --database evergreen --host localhost --user evergreen --password evergreen
 -------------------------------------------------------------------------
@@ -146,21 +146,21 @@ The diff command can be used to show the differences between the distribution ve
 +
 [source, bash]
 ----------------------------------------------------------
-cp /home/opensrf/Evergreen-ILS-3.11.0/Open-ILS/examples/apache/eg_startup /etc/apache2/eg_startup
+cp /home/opensrf/Evergreen-ILS-3.11.7/Open-ILS/examples/apache/eg_startup /etc/apache2/eg_startup
 ----------------------------------------------------------
 +
 .. Update /etc/apache2/eg_vhost.conf by copying the example from Open-ILS/examples/apache/eg_vhost.conf.
 +
 [source, bash]
 ----------------------------------------------------------
-cp /home/opensrf/Evergreen-ILS-3.11.0/Open-ILS/examples/apache/eg_vhost.conf /etc/apache2/eg_vhost.conf
+cp /home/opensrf/Evergreen-ILS-3.11.7/Open-ILS/examples/apache/eg_vhost.conf /etc/apache2/eg_vhost.conf
 ----------------------------------------------------------
 +
 .. Update /etc/apache2/sites-available/eg.conf by copying the example from Open-ILS/examples/apache/eg.conf.
 +
 [source, bash]
 ----------------------------------------------------------
-cp /home/opensrf/Evergreen-ILS-3.11.0/Open-ILS/examples/apache/eg.conf /etc/apache2/sites-available/eg.conf
+cp /home/opensrf/Evergreen-ILS-3.11.7/Open-ILS/examples/apache/eg.conf /etc/apache2/sites-available/eg.conf
 ----------------------------------------------------------
 
 == Upgrade the Evergreen database schema ==
@@ -216,8 +216,8 @@ as a user with the ability to connect to the database server.
 
 [source, bash]
 ----------------------------------------------------------
-cd /home/opensrf/Evergreen-ILS-3.11.0/Open-ILS/src/sql/Pg
-psql -U evergreen -h localhost -f version-upgrade/3.10.2-3.11.0-upgrade-db.sql evergreen
+cd /home/opensrf/Evergreen-ILS-3.11.7/Open-ILS/src/sql/Pg
+psql -U evergreen -h localhost -f version-upgrade/3.11.6-3.11.7-upgrade-db.sql evergreen
 ----------------------------------------------------------
 
 [TIP]
