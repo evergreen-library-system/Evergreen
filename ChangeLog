@@ -1,3 +1,2009 @@
-Evergreen doesn't keep a GNU-style ChangeLog except in release tarballs.
-Those seeking a change log are encouraged to run 'git log -v', or read
-it online at: http://git.evergreen-ils.org/?p=Evergreen.git;a=log
+commit 37e72f0fc6b4a00866ed3092ff398c7ec74ae361
+Author: Jane Sandberg <js7389@princeton.edu>
+Date:   Wed Jul 17 19:11:02 2024 -0500
+
+    bumping Perl version string for 3.12
+    
+    Signed-off-by: checkoutuser <just_need_to_satisfy_git@yoyo.com>
+
+1	1	Open-ILS/src/perlmods/lib/OpenILS.pm
+
+commit 6ec16140cfda4583f8e496cefa33a415ee7ea310
+Author: Jane Sandberg <js7389@princeton.edu>
+Date:   Wed Jul 17 19:10:00 2024 -0500
+
+    Translation updates - xtb files
+    
+    Signed-off-by: checkoutuser <just_need_to_satisfy_git@yoyo.com>
+
+907	125	Open-ILS/src/eg2/src/locale/messages.cs-CZ.xtb
+
+commit 48850644aef0a6a2be64418e46f9d77c80dfd831
+Author: Jane Sandberg <js7389@princeton.edu>
+Date:   Wed Jul 17 18:59:40 2024 -0500
+
+    Translation updates - newpot
+    
+    Signed-off-by: checkoutuser <just_need_to_satisfy_git@yoyo.com>
+
+50	54	build/i18n/po/bootstrap-opac/bootstrap-opac.pot
+3208	3188	build/i18n/po/db.seed/db.seed.pot
+3778	3778	build/i18n/po/fm_IDL.dtd/fm_IDL.dtd.pot
+9	9	build/i18n/po/tpac/tpac.pot
+73	69	build/i18n/po/webstaff/webstaff.pot
+
+commit 915b4df382abdd792392d8cb5de55fb67702980f
+Author: Jane Sandberg <js7389@princeton.edu>
+Date:   Wed Jul 17 07:32:45 2024 -0700
+
+    Add upgrade notes to release notes
+    
+    Also, add a bug fix to the Catalog section, and remove a bug fix that was later reverted
+    
+    Signed-off-by: Jane Sandberg <js7389@princeton.edu>
+
+3	1	docs/RELEASE_NOTES_3_11.adoc
+3	0	docs/RELEASE_NOTES_3_12.adoc
+
+commit 100e8bc85ca193a3f6828ecad6a213fcc31d3b4e
+Author: Andrea Buntz Neiman <abneiman@equinoxinitiative.org>
+Date:   Tue Jul 16 17:18:11 2024 -0400
+
+    Docs: Point release notes for 3.13.2, 3.12.5, and 3.11.7
+    
+    Signed-off-by: Andrea Buntz Neiman <abneiman@equinoxinitiative.org>
+
+79	0	docs/RELEASE_NOTES_3_11.adoc
+104	0	docs/RELEASE_NOTES_3_12.adoc
+
+commit 60520cbd48a1cc04f5777113a4bfae80706a504e
+Author: Terran McCanna <tmccanna@georgialibraries.org>
+Date:   Mon Apr 8 11:29:41 2024 -0400
+
+    LP1853630 Carousel Types - Shelving Location Terminology
+    
+    In the Admin > Server Admin > Carousel Types interface, changes
+     "Filter By Item Location" to "Filter by Shelving Location".
+    
+    Release-note: Corrects wording on Carousel Types interface
+    
+    Signed-off-by: Gina Monti <gmonti@biblio.org>
+    Signed-off-by: Terran McCanna <tmccanna@georgialibraries.org>
+    Signed-off-by: Jane Sandberg <js7389@princeton.edu>
+
+1	1	Open-ILS/examples/fm_IDL.xml
+
+commit 6084faf41b736de2d2303ff3b97fc0e7a1073f5b
+Author: Ian Skelskey <iskelskey@biblio.local>
+Date:   Fri Jul 12 12:25:39 2024 -0400
+
+    docs: Add alt text to images
+    
+    * docs: Fix typo in image file paths in emergency_closing_handler.adoc
+    * docs: Add alt text to images in borrowing_items.adoc
+    * docs: Add alt tags to image in docs/modules/admin/pages/circing_uncataloged_materials.adoc
+    * docs: Add alt text to images in MARC_RAD_MVF_CRA.adoc
+    * docs: Add alt text to image in latency.adoc
+    * docs: Add missing alt text to z3950_servers.adoc
+    * docs: Add alt text to images in virtual_index_defs.adoc
+    * docs: Add more descriptive alt text to image in closed_dates.adoc
+    * docs: Add missing alt text to images in web_client-login.adoc
+    * docs: Add alt text to images in booking-admin.adoc
+    * docs: Add alt text to images in multilingual_search.adoc
+    * docs: Add missing alt text to images in F-Special_issue.adoc
+    * docs: Add missing alt text to images in B-serials_admin.adoc
+    * docs: Add missing alt text to images in E-routing_lists.adoc
+    * docs: Add missing alt text to images in C-serials_workflow.adoc
+    * docs: Add missing alt text to images in H-holdings_statements.adoc
+    * docs: Add missing alt text to images in D-Receiving.adoc
+    * docs: Add missing alt text to images in tpac_meta_record_holds.adoc
+    * docs: Add missing alt text to images in booking.adoc
+    * docs: Add missing alt text to images in basic_holds.adoc
+    * docs: Add missing alt text to images in circulating_items_web_client.adoc
+    
+    Signed-off-by: Jane Sandberg <js7389@princeton.edu>
+
+7	7	docs/modules/admin/pages/MARC_RAD_MVF_CRA.adoc
+14	14	docs/modules/admin/pages/booking-admin.adoc
+1	1	docs/modules/admin/pages/circing_uncataloged_materials.adoc
+1	1	docs/modules/admin/pages/closed_dates.adoc
+6	6	docs/modules/admin/pages/emergency_closing_handler.adoc
+1	1	docs/modules/admin/pages/latency.adoc
+3	3	docs/modules/admin/pages/multilingual_search.adoc
+5	5	docs/modules/admin/pages/virtual_index_defs.adoc
+1	1	docs/modules/admin/pages/web_client-login.adoc
+2	2	docs/modules/admin/pages/z3950_servers.adoc
+3	3	docs/modules/admin_initial_setup/pages/borrowing_items.adoc
+4	4	docs/modules/circulation/pages/basic_holds.adoc
+3	3	docs/modules/circulation/pages/booking.adoc
+45	45	docs/modules/circulation/pages/circulating_items_web_client.adoc
+9	9	docs/modules/opac/pages/tpac_meta_record_holds.adoc
+7	7	docs/modules/serials/pages/B-serials_admin.adoc
+9	9	docs/modules/serials/pages/C-serials_workflow.adoc
+3	3	docs/modules/serials/pages/D-Receiving.adoc
+1	1	docs/modules/serials/pages/E-routing_lists.adoc
+2	2	docs/modules/serials/pages/F-Special_issue.adoc
+3	3	docs/modules/serials/pages/H-holdings_statements.adoc
+
+commit 710034a2e52a151ab77dd941e9eedfe6f5e0309b
+Author: Gina Monti <gmonti@biblio.org>
+Date:   Fri May 3 15:08:26 2024 -0400
+
+    Docs: LP 2060219 - Kill Media Folders
+    
+    Killing all the media folders and doing some much needed image management.  This will be a big ongoing project so I'll send a comment when this ready in the LP and in this Git Hub commit.
+    
+    * additions to providers in acq media
+    * More additions to acq admin media
+    * Deleting old files in media folder for admin acq
+    * authorities media folder change
+    * authorities: deleting older media files
+    * autorenewals: copying over media files to a new dir
+    * autorenewals: deleting old media files
+    * booking admin: new image dir
+    * booking admin: deleting old media files
+    * circing_uncatagloed_materials: new image dir
+    * circing uncat: removing old image
+    * circ limit groups: new dir
+    * circ limit groups: deleting old dir
+    * Closed Dates Admin: one image management
+    * updating line endings
+    * circ limit groups: line endings correction
+    * cn prefix suffix: image updates
+    * Copy Statuses - image management
+    * copy tags: image management
+    * emergency closing: image management
+    * authority browse image management
+    * authority browse image management
+    * syntax correction
+    * library groups admin - image management
+    * library settings admin - image management
+    * lsa address alert - image management
+    * lsa barcode completion - image management
+    * barcode completion - adding a missing screenshot
+    * barcode completion: fixing repo path
+    * lsa stat-cat: image management
+    * marc import: image management
+    * marc rad mvf cra: image management
+    * marc record attributes: image management
+    * multilingual search: image management
+    * org unit prox: image management
+    * permissions: image management
+    * popularity badges: image management
+    * receipt template editor: image management
+    * search interface: image management
+    * sms messaging: image management
+    * staff client column filters: image management
+    * staff client column filters: doc management
+    * column picker: image management
+    * recent searches, return to results, user activity: image management
+    * virtual index, web client login, z3950: image management
+    * storing old images to a different folder
+    
+    Signed-off-by: Jane Sandberg <js7389@princeton.edu>
+
+-	-	docs/modules/admin/assets/images/{media => acq_funds}/acq_fy_closeout.png
+-	-	docs/modules/admin/assets/images/{media => acq_funds}/allocate_credit_ang.png
+-	-	docs/modules/admin/assets/images/{media => acq_funds}/allocate_credit_funds_ang.png
+-	-	docs/modules/admin/assets/images/{media => acq_funds}/allocate_to_fund_ang.png
+-	-	docs/modules/admin/assets/images/{media => acq_funds}/claiming1.PNG
+-	-	docs/modules/admin/assets/images/{media => acq_funds}/currency1.PNG
+-	-	docs/modules/admin/assets/images/{media => acq_funds}/currency2.PNG
+-	-	docs/modules/admin/assets/images/{media => acq_funds}/currency3.PNG
+-	-	docs/modules/admin/assets/images/{media => acq_funds}/distformula1.PNG
+-	-	docs/modules/admin/assets/images/{media => acq_funds}/edi_attribute_sets_ang.png
+-	-	docs/modules/admin/assets/images/{media => acq_funds}/fund_tags_ang_1.png
+-	-	docs/modules/admin/assets/images/{media => acq_funds}/fund_tags_ang_2.png
+-	-	docs/modules/admin/assets/images/{media => acq_funds}/funds1.PNG
+-	-	docs/modules/admin/assets/images/{media => acq_funds}/funds2.PNG
+-	-	docs/modules/admin/assets/images/{media => acq_funds}/funds3.PNG
+-	-	docs/modules/admin/assets/images/{media => acq_funds}/library_san_angular.png
+-	-	docs/modules/admin/assets/images/{media => acq_funds}/new_edi_account_ang.png
+-	-	docs/modules/admin/assets/images/{media => acq_funds}/new_edi_account_ang_2.png
+-	-	docs/modules/admin/assets/images/{media => acq_funds}/new_provider.png
+-	-	docs/modules/admin/assets/images/{media => acq_funds}/propagate_rollover_ang.png
+-	-	docs/modules/admin/assets/images/{media => acq_funds}/provider_detail.png
+-	-	docs/modules/admin/assets/images/{media => acq_funds}/provider_san_ang_1.png
+-	-	docs/modules/admin/assets/images/{media => acq_funds}/provider_san_ang_2.png
+-	-	docs/modules/admin/assets/images/{media => acq_funds}/provider_search.png
+-	-	docs/modules/admin/assets/images/{media => acq_funds}/provider_search_results.png
+-	-	docs/modules/admin/assets/images/{media => acq_funds}/transfer_funds_ang.png
+-	-	docs/modules/admin/assets/images/{media => acq_funds}/view_allocations_ang.png
+-	-	docs/modules/admin/assets/images/{media => acq_funds}/view_credits_ang.png
+-	-	docs/modules/admin/assets/images/{media => auth_browse}/auth_browse_infra1.png
+-	-	docs/modules/admin/assets/images/{media => auth_browse}/auth_browse_infra2.png
+-	-	docs/modules/admin/assets/images/{media => authorities}/Authority_Control_Sets1.jpg
+-	-	docs/modules/admin/assets/images/{media => authorities}/Authority_Control_Sets5.jpg
+-	-	docs/modules/admin/assets/images/{media => authorities}/Authority_Control_Sets6.jpg
+-	-	docs/modules/admin/assets/images/{media => authorities}/Authority_Control_Sets_Fields.png
+-	-	docs/modules/admin/assets/images/{media => authorities}/Authority_Server_Admin_Menu.png
+-	-	docs/modules/admin/assets/images/{media => autorenewals}/autorenew_circdur.PNG
+-	-	docs/modules/admin/assets/images/{media => autorenewals}/autorenew_itemsout.PNG
+-	-	docs/modules/admin/assets/images/{media => autorenewals}/autorenew_norenewnotice.PNG
+-	-	docs/modules/admin/assets/images/{media => autorenewals}/autorenew_renewnotice.PNG
+-	-	docs/modules/admin/assets/images/{media => barcode_completion}/Barcode_Check_In.png
+-	-	docs/modules/admin/assets/images/{media => barcode_completion}/Barcode_Checkout_Item_Barcode.png
+-	-	docs/modules/admin/assets/images/{media => barcode_completion}/Barcode_Checkout_Patron_Barcode.png
+-	-	docs/modules/admin/assets/images/{media => barcode_completion}/Barcode_Item_Status.png
+-	-	docs/modules/admin/assets/images/{media => barcode_completion}/Barcode_OPAC_Staff_Place_Hold.png
+-	-	docs/modules/admin/assets/images/barcode_completion/lsa-barcode_completion_admin.png
+-	-	docs/modules/admin/assets/images/{media => barcode_completion}/lsa-barcode_completion_multiple.png
+-	-	docs/modules/admin/assets/images/{media => booking}/booking-create-bookable-6.png
+-	-	docs/modules/admin/assets/images/{media => booking}/booking-create-resourcetype_webclient-1.png
+-	-	docs/modules/admin/assets/images/{media => circ_limit_groups}/Maximum_Checkout_by_Copy_Location1.jpg
+-	-	docs/modules/admin/assets/images/{media => circ_limit_groups}/Maximum_Checkout_by_Copy_Location2.jpg
+-	-	docs/modules/admin/assets/images/{media => circ_uncats}/noncataloged_type_add.png
+-	-	docs/modules/admin/assets/images/{media => closed_dates}/closed_dates.png
+-	-	docs/modules/admin/assets/images/{media => cn_prefix_suffix}/Call_Number_Prefixes_and_Suffixes_2_21.jpg
+-	-	docs/modules/admin/assets/images/{media => cn_prefix_suffix}/Call_Number_Prefixes_and_Suffixes_2_22.jpg
+-	-	docs/modules/admin/assets/images/{media => column_picker}/column_picker_config_widths.png
+-	-	docs/modules/admin/assets/images/{media => column_picker}/column_picker_popup.png
+-	-	docs/modules/admin/assets/images/{media => column_picker}/column_picker_web.png
+-	-	docs/modules/admin/assets/images/{media => column_picker}/column_picker_web_save.png
+-	-	docs/modules/admin/assets/images/{media => copy_status}/copy_status_add.png
+-	-	docs/modules/admin/assets/images/{media => copy_status}/copy_status_delete.png
+-	-	docs/modules/admin/assets/images/{media => copy_status}/copy_status_edit.png
+-	-	docs/modules/admin/assets/images/{media => copy_tags}/copytags1.PNG
+-	-	docs/modules/admin/assets/images/{media => copy_tags}/copytags2.PNG
+-	-	docs/modules/admin/assets/images/{media => copy_tags}/copytags3.PNG
+-	-	docs/modules/admin/assets/images/{media => copy_tags}/copytags4.PNG
+-	-	docs/modules/admin/assets/images/{media => emergency_closing}/ECHClosedDatesEditorAddClosing.png
+-	-	docs/modules/admin/assets/images/{media => emergency_closing}/ECHClosingSnowDay.png
+-	-	docs/modules/admin/assets/images/{media => emergency_closing}/ECHEditClosing.png
+-	-	docs/modules/admin/assets/images/{media => emergency_closing}/ECHEditClosingModal.png
+-	-	docs/modules/admin/assets/images/{media => emergency_closing}/ECHLibraryClosingConstruction.png
+-	-	docs/modules/admin/assets/images/{media => emergency_closing}/ECHLibraryClosingDetailed.png
+-	-	docs/modules/admin/assets/images/{media => emergency_closing}/ECHLibraryClosingDone.png
+-	-	docs/modules/admin/assets/images/{media => emergency_closing}/ECHLibraryClosingMultipleDays.png
+-	-	docs/modules/admin/assets/images/{media => library_groups}/group_map_dropdown.png
+-	-	docs/modules/admin/assets/images/{media => library_groups}/group_map_ou_dropdown.png
+-	-	docs/modules/admin/assets/images/{media => library_groups}/new_group_map.png
+-	-	docs/modules/admin/assets/images/{media => library_groups}/new_library_group.png
+-	-	docs/modules/admin/assets/images/{media => library_groups}/new_library_group_2.png
+-	-	docs/modules/admin/assets/images/{media => library_settings}/lse-1.png
+-	-	docs/modules/admin/assets/images/{media => library_settings}/lse-2.png
+-	-	docs/modules/admin/assets/images/{media => library_settings}/lse-3.png
+-	-	docs/modules/admin/assets/images/{media => library_settings}/lse-4.png
+-	-	docs/modules/admin/assets/images/{media => library_settings}/lse-5.png
+-	-	docs/modules/admin/assets/images/{media => login}/web_client_workstation_registration.png
+-	-	docs/modules/admin/assets/images/{media => lsa-statcat}/lsa-statcat-8.png
+-	-	docs/modules/admin/assets/images/{media => lsa_address_alert}/address_alert.jpg
+-	-	docs/modules/admin/assets/images/{media => lsa_address_alert}/delete_address_alert.jpg
+-	-	docs/modules/admin/assets/images/{media => lsa_address_alert}/edit_address_alert.jpg
+-	-	docs/modules/admin/assets/images/{media => marc_import_remove_fields}/marc_import_remove_fields1.jpg
+-	-	docs/modules/admin/assets/images/{media => marc_import_remove_fields}/marc_import_remove_fields2.jpg
+-	-	docs/modules/admin/assets/images/{media => marc_import_remove_fields}/marc_import_remove_fields3.png
+-	-	docs/modules/admin/assets/images/{media => marc_import_remove_fields}/marc_import_remove_fields5.jpg
+-	-	docs/modules/admin/assets/images/{media => marc_rad_mvf_cra}/blu-ray.png
+-	-	docs/modules/admin/assets/images/{media => marc_rad_mvf_cra}/book.png
+-	-	docs/modules/admin/assets/images/{media => marc_rad_mvf_cra}/braille.png
+-	-	docs/modules/admin/assets/images/{media => marc_rad_mvf_cra}/caed_6.jpg
+-	-	docs/modules/admin/assets/images/{media => marc_rad_mvf_cra}/casaudiobook.png
+-	-	docs/modules/admin/assets/images/{media => marc_rad_mvf_cra}/casmusic.png
+-	-	docs/modules/admin/assets/images/{media => marc_rad_mvf_cra}/cdaudiobook.png
+-	-	docs/modules/admin/assets/images/{media => marc_rad_mvf_cra}/cdmusic.png
+-	-	docs/modules/admin/assets/images/{media => marc_rad_mvf_cra}/cvmpage_4.jpg
+-	-	docs/modules/admin/assets/images/{media => marc_rad_mvf_cra}/dvd.png
+-	-	docs/modules/admin/assets/images/{media => marc_rad_mvf_cra}/eaudio.png
+-	-	docs/modules/admin/assets/images/{media => marc_rad_mvf_cra}/ebook.png
+-	-	docs/modules/admin/assets/images/{media => marc_rad_mvf_cra}/editrad_2.jpg
+-	-	docs/modules/admin/assets/images/{media => marc_rad_mvf_cra}/equip.png
+-	-	docs/modules/admin/assets/images/{media => marc_rad_mvf_cra}/evideo.png
+-	-	docs/modules/admin/assets/images/{media => marc_rad_mvf_cra}/kit.png
+-	-	docs/modules/admin/assets/images/{media => marc_rad_mvf_cra}/lpbook.png
+-	-	docs/modules/admin/assets/images/{media => marc_rad_mvf_cra}/map.png
+-	-	docs/modules/admin/assets/images/{media => marc_rad_mvf_cra}/microform.png
+-	-	docs/modules/admin/assets/images/{media => marc_rad_mvf_cra}/modifycde_7.jpg
+-	-	docs/modules/admin/assets/images/{media => marc_rad_mvf_cra}/music.png
+-	-	docs/modules/admin/assets/images/{media => marc_rad_mvf_cra}/phonomusic.png
+-	-	docs/modules/admin/assets/images/{media => marc_rad_mvf_cra}/phonospoken.png
+-	-	docs/modules/admin/assets/images/{media => marc_rad_mvf_cra}/picture.png
+-	-	docs/modules/admin/assets/images/{media => marc_rad_mvf_cra}/radcatrue_5.jpg
+-	-	docs/modules/admin/assets/images/{media => marc_rad_mvf_cra}/radcvmcacolumns_3.jpg
+-	-	docs/modules/admin/assets/images/{media => marc_rad_mvf_cra}/radmvcolumn_1.jpg
+-	-	docs/modules/admin/assets/images/{media => marc_rad_mvf_cra}/score.png
+-	-	docs/modules/admin/assets/images/{media => marc_rad_mvf_cra}/serial.png
+-	-	docs/modules/admin/assets/images/{media => marc_rad_mvf_cra}/software.png
+-	-	docs/modules/admin/assets/images/{media => marc_rad_mvf_cra}/vhs.png
+-	-	docs/modules/admin/assets/images/{media => multilingual_search}/multilingual_search1.png
+-	-	docs/modules/admin/assets/images/{media => multilingual_search}/multilingual_search2.PNG
+-	-	docs/modules/admin/assets/images/{media => multilingual_search}/multilingual_search3.PNG
+-	-	docs/modules/admin/assets/images/{media => old_images}/Authority_Control_Sets2.jpg
+-	-	docs/modules/admin/assets/images/{media => old_images}/Authority_Control_Sets4.jpg
+-	-	docs/modules/admin/assets/images/{media => old_images}/Authority_Control_Sets_Fields_Edit.png
+-	-	docs/modules/admin/assets/images/{media => old_images}/Auto_Suggest_in_Catalog_Search1.jpg
+-	-	docs/modules/admin/assets/images/{media => old_images}/Auto_Suggest_in_Catalog_Search2.jpg
+-	-	docs/modules/admin/assets/images/{media => old_images}/Core_Source_1.jpg
+-	-	docs/modules/admin/assets/images/{media => old_images}/Expanding_the_Work_Log1.jpg
+-	-	docs/modules/admin/assets/images/{media => old_images}/Expanding_the_Work_Log2.jpg
+-	-	docs/modules/admin/assets/images/{media => old_images}/Fiscal_Rollover1.jpg
+-	-	docs/modules/admin/assets/images/{media => old_images}/acq_marc_search-2.png
+-	-	docs/modules/admin/assets/images/{media => old_images}/acq_marc_search.png
+-	-	docs/modules/admin/assets/images/{media => old_images}/best_hold_sort_order1.jpg
+-	-	docs/modules/admin/assets/images/{media => old_images}/best_hold_sort_order2.jpg
+-	-	docs/modules/admin/assets/images/{media => old_images}/bhsso_libsetting.png
+-	-	docs/modules/admin/assets/images/{media => old_images}/booking-create-bookable-1.png
+-	-	docs/modules/admin/assets/images/{media => old_images}/booking-create-bookable-2.png
+-	-	docs/modules/admin/assets/images/{media => old_images}/booking-create-bookable-3.png
+-	-	docs/modules/admin/assets/images/{media => old_images}/booking-create-bookable-4.png
+-	-	docs/modules/admin/assets/images/{media => old_images}/booking-create-bookable-5.png
+-	-	docs/modules/admin/assets/images/{media => old_images}/booking-create-resourcetype-2.png
+-	-	docs/modules/admin/assets/images/{media => old_images}/booking-create-resourcetype-3.png
+-	-	docs/modules/admin/assets/images/{media => old_images}/booking-create-resourcetype-4.png
+-	-	docs/modules/admin/assets/images/{media => old_images}/booking-create-resourcetype-5.png
+-	-	docs/modules/admin/assets/images/{media => old_images}/column_picker_dojo.png
+-	-	docs/modules/admin/assets/images/{media => old_images}/create-edi-accounts-2.png
+-	-	docs/modules/admin/assets/images/{media => old_images}/create-edi-accounts-3.png
+-	-	docs/modules/admin/assets/images/{media => old_images}/create-edi-accounts-4.png
+-	-	docs/modules/admin/assets/images/{media => old_images}/create-edi-accounts-5.png
+-	-	docs/modules/admin/assets/images/{media => old_images}/edit_bhsso.png
+-	-	docs/modules/admin/assets/images/{media => old_images}/enter-library-san-2.png
+-	-	docs/modules/admin/assets/images/{media => old_images}/enter-provider-san-1.png
+-	-	docs/modules/admin/assets/images/{media => old_images}/enter-provider-san-2.png
+-	-	docs/modules/admin/assets/images/{media => old_images}/event_def_details.png
+-	-	docs/modules/admin/assets/images/{media => old_images}/event_def_details_2.png
+-	-	docs/modules/admin/assets/images/{media => old_images}/lsa-address_alert_staff_view.png
+-	-	docs/modules/admin/assets/images/{media => old_images}/lsa-statcat-1.png
+-	-	docs/modules/admin/assets/images/{media => old_images}/lsa-statcat-2.png
+-	-	docs/modules/admin/assets/images/{media => old_images}/lsa-statcat-3.png
+-	-	docs/modules/admin/assets/images/{media => old_images}/lsa-statcat-3a.png
+-	-	docs/modules/admin/assets/images/{media => old_images}/lsa-statcat-4.png
+-	-	docs/modules/admin/assets/images/{media => old_images}/lsa-statcat-5.png
+-	-	docs/modules/admin/assets/images/{media => old_images}/lsa-statcat-6.png
+-	-	docs/modules/admin/assets/images/old_images/marc_import_remove_fields3.png
+-	-	docs/modules/admin/assets/images/{media => old_images}/new_bhsso.png
+-	-	docs/modules/admin/assets/images/{media => old_images}/new_event_def.png
+-	-	docs/modules/admin/assets/images/{media => old_images}/ope_event_defs.png
+-	-	docs/modules/admin/assets/images/{media => old_images}/ope_event_params.png
+-	-	docs/modules/admin/assets/images/{media => old_images}/test_event_def.png
+-	-	docs/modules/admin/assets/images/{media => old_images}/test_event_def_output.png
+-	-	docs/modules/admin/assets/images/{media => old_images}/workstation_admin-1.jpg
+-	-	docs/modules/admin/assets/images/{media => old_images}/workstation_admin-2.jpg
+-	-	docs/modules/admin/assets/images/{media => old_images}/workstation_admin-3.png
+-	-	docs/modules/admin/assets/images/{media => old_images}/workstation_admin-4.png
+-	-	docs/modules/admin/assets/images/{media => old_images}/workstation_admin-5.png
+-	-	docs/modules/admin/assets/images/{media => old_images}/workstation_admin-6.jpg
+-	-	docs/modules/admin/assets/images/{media => org_unit_prox}/Org_Unit_Prox_Adj1.png
+-	-	docs/modules/admin/assets/images/{media => org_unit_prox}/Org_Unit_Prox_Adj2.png
+-	-	docs/modules/admin/assets/images/{media => permissions}/permissions_1.png
+-	-	docs/modules/admin/assets/images/{media => permissions}/permissions_1a.png
+-	-	docs/modules/admin/assets/images/{media => permissions}/profile-5.png
+-	-	docs/modules/admin/assets/images/{media => permissions}/profile-6.png
+-	-	docs/modules/admin/assets/images/{media => permissions}/profile-7.png
+-	-	docs/modules/admin/assets/images/{media => pop_badges}/popbadge1_web_client.PNG
+-	-	docs/modules/admin/assets/images/{media => pop_badges}/popbadge2_web_client.PNG
+-	-	docs/modules/admin/assets/images/{media => pop_badges}/popbadge3_web_client.PNG
+-	-	docs/modules/admin/assets/images/{media => receipt_template_editor}/receipt1.png
+-	-	docs/modules/admin/assets/images/{media => receipt_template_editor}/receipt2.png
+-	-	docs/modules/admin/assets/images/{media => recent_searches}/Saved_Catalog_Searches_2_21.jpg
+-	-	docs/modules/admin/assets/images/{media => recent_searches}/Saved_Catalog_Searches_2_22.jpg
+-	-	docs/modules/admin/assets/images/{media => return_to_results}/back_to_results.png
+-	-	docs/modules/admin/assets/images/{media => search_interface}/coded-value-1.png
+-	-	docs/modules/admin/assets/images/{media => sms_messaging}/SMS_Text_Messaging1.png
+-	-	docs/modules/admin/assets/images/{media => sms_messaging}/SMS_Text_Messaging11.png
+-	-	docs/modules/admin/assets/images/{media => sms_messaging}/SMS_Text_Messaging12.jpg
+-	-	docs/modules/admin/assets/images/{media => sms_messaging}/SMS_Text_Messaging13.jpg
+-	-	docs/modules/admin/assets/images/{media => sms_messaging}/SMS_Text_Messaging2.png
+-	-	docs/modules/admin/assets/images/{media => sms_messaging}/SMS_Text_Messaging3.jpg
+-	-	docs/modules/admin/assets/images/{media => sms_messaging}/SMS_Text_Messaging4.jpg
+-	-	docs/modules/admin/assets/images/{media => sms_messaging}/SMS_Text_Messaging5.png
+-	-	docs/modules/admin/assets/images/{media => sms_messaging}/SMS_Text_Messaging6.png
+-	-	docs/modules/admin/assets/images/{media => sms_messaging}/SMS_Text_Messaging7.jpg
+-	-	docs/modules/admin/assets/images/{media => sms_messaging}/SMS_Text_Messaging8.png
+-	-	docs/modules/admin/assets/images/{media => sms_messaging}/SMS_Text_Messaging9.png
+-	-	docs/modules/admin/assets/images/{media => staff_client_column_filters}/applyclear_buttons.png
+-	-	docs/modules/admin/assets/images/{media => staff_client_column_filters}/asc_sort.png
+-	-	docs/modules/admin/assets/images/{media => staff_client_column_filters}/filter_results_startswith.png
+-	-	docs/modules/admin/assets/images/{media => staff_client_column_filters}/filter_startswith.png
+-	-	docs/modules/admin/assets/images/{media => staff_client_column_filters}/filters.png
+-	-	docs/modules/admin/assets/images/{media => staff_client_column_filters}/incorrect_date.png
+-	-	docs/modules/admin/assets/images/{media => staff_client_column_filters}/operator.png
+-	-	docs/modules/admin/assets/images/{media => staff_client_column_filters}/orgunit_filter.png
+-	-	docs/modules/admin/assets/images/{media => staff_client_column_filters}/removefilters.png
+-	-	docs/modules/admin/assets/images/{media => user_activity}/User_Activity_Types1A.jpg
+-	-	docs/modules/admin/assets/images/{media => user_activity}/User_Activity_Types2A.jpg
+-	-	docs/modules/admin/assets/images/{media => virtual_index}/vid1.PNG
+-	-	docs/modules/admin/assets/images/{media => virtual_index}/vid2.PNG
+-	-	docs/modules/admin/assets/images/{media => virtual_index}/vid3.PNG
+-	-	docs/modules/admin/assets/images/{media => virtual_index}/vid4.PNG
+-	-	docs/modules/admin/assets/images/{media => virtual_index}/vid5.PNG
+-	-	docs/modules/admin/assets/images/{media => z3950}/Restrict_Z39_50_Sources_by_Permission_Group1.jpg
+-	-	docs/modules/admin/assets/images/{media => z3950}/Restrict_Z39_50_Sources_by_Permission_Group2.png
+-	-	docs/modules/admin/assets/images/{media => z3950}/Restrict_Z39_50_Sources_by_Permission_Group3.jpg
+-	-	docs/modules/admin/assets/images/{media => z3950}/storing_z3950_credentials.jpg
+4	4	docs/modules/admin/pages/MARC_Import_Remove_Fields.adoc
+31	31	docs/modules/admin/pages/MARC_RAD_MVF_CRA.adoc
+2	2	docs/modules/admin/pages/Org_Unit_Proximity_Adjustments.adoc
+12	12	docs/modules/admin/pages/SMS_messaging.adoc
+28	28	docs/modules/admin/pages/acquisitions_admin.adoc
+5	5	docs/modules/admin/pages/authorities.adoc
+4	4	docs/modules/admin/pages/autorenewals.adoc
+2	2	docs/modules/admin/pages/booking-admin.adoc
+1	1	docs/modules/admin/pages/circing_uncataloged_materials.adoc
+2	2	docs/modules/admin/pages/circulation_limit_groups.adoc
+1	1	docs/modules/admin/pages/closed_dates.adoc
+2	2	docs/modules/admin/pages/cn_prefixes_and_suffixes.adoc
+3	3	docs/modules/admin/pages/copy_statuses.adoc
+4	4	docs/modules/admin/pages/copy_tags_admin.adoc
+8	8	docs/modules/admin/pages/emergency_closing_handler.adoc
+2	2	docs/modules/admin/pages/infrastructure_auth_browse.adoc
+5	5	docs/modules/admin/pages/library_groups_admin.adoc
+5	5	docs/modules/admin/pages/librarysettings.adoc
+3	3	docs/modules/admin/pages/lsa-address_alert.adoc
+7	7	docs/modules/admin/pages/lsa-barcode_completion.adoc
+1	1	docs/modules/admin/pages/lsa-statcat.adoc
+3	3	docs/modules/admin/pages/multilingual_search.adoc
+5	5	docs/modules/admin/pages/permissions.adoc
+3	3	docs/modules/admin/pages/popularity_badges_web_client.adoc
+2	2	docs/modules/admin/pages/receipt_template_editor.adoc
+1	1	docs/modules/admin/pages/search_interface.adoc
+9	9	docs/modules/admin/pages/staff_client-column_filters.adoc
+4	4	docs/modules/admin/pages/staff_client-column_picker.adoc
+2	2	docs/modules/admin/pages/staff_client-recent_searches.adoc
+1	1	docs/modules/admin/pages/staff_client-return_to_results_from_marc.adoc
+2	2	docs/modules/admin/pages/user_activity_type.adoc
+5	5	docs/modules/admin/pages/virtual_index_defs.adoc
+1	1	docs/modules/admin/pages/web_client-login.adoc
+4	4	docs/modules/admin/pages/z3950_servers.adoc
+ rename docs/modules/admin/assets/images/{media => acq_funds}/acq_fy_closeout.png (100%)
+ rename docs/modules/admin/assets/images/{media => acq_funds}/allocate_credit_ang.png (100%)
+ rename docs/modules/admin/assets/images/{media => acq_funds}/allocate_credit_funds_ang.png (100%)
+ rename docs/modules/admin/assets/images/{media => acq_funds}/allocate_to_fund_ang.png (100%)
+ rename docs/modules/admin/assets/images/{media => acq_funds}/claiming1.PNG (100%)
+ rename docs/modules/admin/assets/images/{media => acq_funds}/currency1.PNG (100%)
+ rename docs/modules/admin/assets/images/{media => acq_funds}/currency2.PNG (100%)
+ rename docs/modules/admin/assets/images/{media => acq_funds}/currency3.PNG (100%)
+ rename docs/modules/admin/assets/images/{media => acq_funds}/distformula1.PNG (100%)
+ rename docs/modules/admin/assets/images/{media => acq_funds}/edi_attribute_sets_ang.png (100%)
+ rename docs/modules/admin/assets/images/{media => acq_funds}/fund_tags_ang_1.png (100%)
+ rename docs/modules/admin/assets/images/{media => acq_funds}/fund_tags_ang_2.png (100%)
+ rename docs/modules/admin/assets/images/{media => acq_funds}/funds1.PNG (100%)
+ rename docs/modules/admin/assets/images/{media => acq_funds}/funds2.PNG (100%)
+ rename docs/modules/admin/assets/images/{media => acq_funds}/funds3.PNG (100%)
+ rename docs/modules/admin/assets/images/{media => acq_funds}/library_san_angular.png (100%)
+ rename docs/modules/admin/assets/images/{media => acq_funds}/new_edi_account_ang.png (100%)
+ rename docs/modules/admin/assets/images/{media => acq_funds}/new_edi_account_ang_2.png (100%)
+ rename docs/modules/admin/assets/images/{media => acq_funds}/new_provider.png (100%)
+ rename docs/modules/admin/assets/images/{media => acq_funds}/propagate_rollover_ang.png (100%)
+ rename docs/modules/admin/assets/images/{media => acq_funds}/provider_detail.png (100%)
+ rename docs/modules/admin/assets/images/{media => acq_funds}/provider_san_ang_1.png (100%)
+ rename docs/modules/admin/assets/images/{media => acq_funds}/provider_san_ang_2.png (100%)
+ rename docs/modules/admin/assets/images/{media => acq_funds}/provider_search.png (100%)
+ rename docs/modules/admin/assets/images/{media => acq_funds}/provider_search_results.png (100%)
+ rename docs/modules/admin/assets/images/{media => acq_funds}/transfer_funds_ang.png (100%)
+ rename docs/modules/admin/assets/images/{media => acq_funds}/view_allocations_ang.png (100%)
+ rename docs/modules/admin/assets/images/{media => acq_funds}/view_credits_ang.png (100%)
+ rename docs/modules/admin/assets/images/{media => auth_browse}/auth_browse_infra1.png (100%)
+ rename docs/modules/admin/assets/images/{media => auth_browse}/auth_browse_infra2.png (100%)
+ rename docs/modules/admin/assets/images/{media => authorities}/Authority_Control_Sets1.jpg (100%)
+ rename docs/modules/admin/assets/images/{media => authorities}/Authority_Control_Sets5.jpg (100%)
+ rename docs/modules/admin/assets/images/{media => authorities}/Authority_Control_Sets6.jpg (100%)
+ rename docs/modules/admin/assets/images/{media => authorities}/Authority_Control_Sets_Fields.png (100%)
+ rename docs/modules/admin/assets/images/{media => authorities}/Authority_Server_Admin_Menu.png (100%)
+ rename docs/modules/admin/assets/images/{media => autorenewals}/autorenew_circdur.PNG (100%)
+ rename docs/modules/admin/assets/images/{media => autorenewals}/autorenew_itemsout.PNG (100%)
+ rename docs/modules/admin/assets/images/{media => autorenewals}/autorenew_norenewnotice.PNG (100%)
+ rename docs/modules/admin/assets/images/{media => autorenewals}/autorenew_renewnotice.PNG (100%)
+ rename docs/modules/admin/assets/images/{media => barcode_completion}/Barcode_Check_In.png (100%)
+ rename docs/modules/admin/assets/images/{media => barcode_completion}/Barcode_Checkout_Item_Barcode.png (100%)
+ rename docs/modules/admin/assets/images/{media => barcode_completion}/Barcode_Checkout_Patron_Barcode.png (100%)
+ rename docs/modules/admin/assets/images/{media => barcode_completion}/Barcode_Item_Status.png (100%)
+ rename docs/modules/admin/assets/images/{media => barcode_completion}/Barcode_OPAC_Staff_Place_Hold.png (100%)
+ create mode 100644 docs/modules/admin/assets/images/barcode_completion/lsa-barcode_completion_admin.png
+ rename docs/modules/admin/assets/images/{media => barcode_completion}/lsa-barcode_completion_multiple.png (100%)
+ rename docs/modules/admin/assets/images/{media => booking}/booking-create-bookable-6.png (100%)
+ rename docs/modules/admin/assets/images/{media => booking}/booking-create-resourcetype_webclient-1.png (100%)
+ rename docs/modules/admin/assets/images/{media => circ_limit_groups}/Maximum_Checkout_by_Copy_Location1.jpg (100%)
+ rename docs/modules/admin/assets/images/{media => circ_limit_groups}/Maximum_Checkout_by_Copy_Location2.jpg (100%)
+ rename docs/modules/admin/assets/images/{media => circ_uncats}/noncataloged_type_add.png (100%)
+ rename docs/modules/admin/assets/images/{media => closed_dates}/closed_dates.png (100%)
+ rename docs/modules/admin/assets/images/{media => cn_prefix_suffix}/Call_Number_Prefixes_and_Suffixes_2_21.jpg (100%)
+ rename docs/modules/admin/assets/images/{media => cn_prefix_suffix}/Call_Number_Prefixes_and_Suffixes_2_22.jpg (100%)
+ rename docs/modules/admin/assets/images/{media => column_picker}/column_picker_config_widths.png (100%)
+ rename docs/modules/admin/assets/images/{media => column_picker}/column_picker_popup.png (100%)
+ rename docs/modules/admin/assets/images/{media => column_picker}/column_picker_web.png (100%)
+ rename docs/modules/admin/assets/images/{media => column_picker}/column_picker_web_save.png (100%)
+ rename docs/modules/admin/assets/images/{media => copy_status}/copy_status_add.png (100%)
+ rename docs/modules/admin/assets/images/{media => copy_status}/copy_status_delete.png (100%)
+ rename docs/modules/admin/assets/images/{media => copy_status}/copy_status_edit.png (100%)
+ rename docs/modules/admin/assets/images/{media => copy_tags}/copytags1.PNG (100%)
+ rename docs/modules/admin/assets/images/{media => copy_tags}/copytags2.PNG (100%)
+ rename docs/modules/admin/assets/images/{media => copy_tags}/copytags3.PNG (100%)
+ rename docs/modules/admin/assets/images/{media => copy_tags}/copytags4.PNG (100%)
+ rename docs/modules/admin/assets/images/{media => emergency_closing}/ECHClosedDatesEditorAddClosing.png (100%)
+ rename docs/modules/admin/assets/images/{media => emergency_closing}/ECHClosingSnowDay.png (100%)
+ rename docs/modules/admin/assets/images/{media => emergency_closing}/ECHEditClosing.png (100%)
+ rename docs/modules/admin/assets/images/{media => emergency_closing}/ECHEditClosingModal.png (100%)
+ rename docs/modules/admin/assets/images/{media => emergency_closing}/ECHLibraryClosingConstruction.png (100%)
+ rename docs/modules/admin/assets/images/{media => emergency_closing}/ECHLibraryClosingDetailed.png (100%)
+ rename docs/modules/admin/assets/images/{media => emergency_closing}/ECHLibraryClosingDone.png (100%)
+ rename docs/modules/admin/assets/images/{media => emergency_closing}/ECHLibraryClosingMultipleDays.png (100%)
+ rename docs/modules/admin/assets/images/{media => library_groups}/group_map_dropdown.png (100%)
+ rename docs/modules/admin/assets/images/{media => library_groups}/group_map_ou_dropdown.png (100%)
+ rename docs/modules/admin/assets/images/{media => library_groups}/new_group_map.png (100%)
+ rename docs/modules/admin/assets/images/{media => library_groups}/new_library_group.png (100%)
+ rename docs/modules/admin/assets/images/{media => library_groups}/new_library_group_2.png (100%)
+ rename docs/modules/admin/assets/images/{media => library_settings}/lse-1.png (100%)
+ rename docs/modules/admin/assets/images/{media => library_settings}/lse-2.png (100%)
+ rename docs/modules/admin/assets/images/{media => library_settings}/lse-3.png (100%)
+ rename docs/modules/admin/assets/images/{media => library_settings}/lse-4.png (100%)
+ rename docs/modules/admin/assets/images/{media => library_settings}/lse-5.png (100%)
+ rename docs/modules/admin/assets/images/{media => login}/web_client_workstation_registration.png (100%)
+ rename docs/modules/admin/assets/images/{media => lsa-statcat}/lsa-statcat-8.png (100%)
+ rename docs/modules/admin/assets/images/{media => lsa_address_alert}/address_alert.jpg (100%)
+ rename docs/modules/admin/assets/images/{media => lsa_address_alert}/delete_address_alert.jpg (100%)
+ rename docs/modules/admin/assets/images/{media => lsa_address_alert}/edit_address_alert.jpg (100%)
+ rename docs/modules/admin/assets/images/{media => marc_import_remove_fields}/marc_import_remove_fields1.jpg (100%)
+ rename docs/modules/admin/assets/images/{media => marc_import_remove_fields}/marc_import_remove_fields2.jpg (100%)
+ rename docs/modules/admin/assets/images/{media => marc_import_remove_fields}/marc_import_remove_fields3.png (100%)
+ rename docs/modules/admin/assets/images/{media => marc_import_remove_fields}/marc_import_remove_fields5.jpg (100%)
+ rename docs/modules/admin/assets/images/{media => marc_rad_mvf_cra}/blu-ray.png (100%)
+ rename docs/modules/admin/assets/images/{media => marc_rad_mvf_cra}/book.png (100%)
+ rename docs/modules/admin/assets/images/{media => marc_rad_mvf_cra}/braille.png (100%)
+ rename docs/modules/admin/assets/images/{media => marc_rad_mvf_cra}/caed_6.jpg (100%)
+ rename docs/modules/admin/assets/images/{media => marc_rad_mvf_cra}/casaudiobook.png (100%)
+ rename docs/modules/admin/assets/images/{media => marc_rad_mvf_cra}/casmusic.png (100%)
+ rename docs/modules/admin/assets/images/{media => marc_rad_mvf_cra}/cdaudiobook.png (100%)
+ rename docs/modules/admin/assets/images/{media => marc_rad_mvf_cra}/cdmusic.png (100%)
+ rename docs/modules/admin/assets/images/{media => marc_rad_mvf_cra}/cvmpage_4.jpg (100%)
+ rename docs/modules/admin/assets/images/{media => marc_rad_mvf_cra}/dvd.png (100%)
+ rename docs/modules/admin/assets/images/{media => marc_rad_mvf_cra}/eaudio.png (100%)
+ rename docs/modules/admin/assets/images/{media => marc_rad_mvf_cra}/ebook.png (100%)
+ rename docs/modules/admin/assets/images/{media => marc_rad_mvf_cra}/editrad_2.jpg (100%)
+ rename docs/modules/admin/assets/images/{media => marc_rad_mvf_cra}/equip.png (100%)
+ rename docs/modules/admin/assets/images/{media => marc_rad_mvf_cra}/evideo.png (100%)
+ rename docs/modules/admin/assets/images/{media => marc_rad_mvf_cra}/kit.png (100%)
+ rename docs/modules/admin/assets/images/{media => marc_rad_mvf_cra}/lpbook.png (100%)
+ rename docs/modules/admin/assets/images/{media => marc_rad_mvf_cra}/map.png (100%)
+ rename docs/modules/admin/assets/images/{media => marc_rad_mvf_cra}/microform.png (100%)
+ rename docs/modules/admin/assets/images/{media => marc_rad_mvf_cra}/modifycde_7.jpg (100%)
+ rename docs/modules/admin/assets/images/{media => marc_rad_mvf_cra}/music.png (100%)
+ rename docs/modules/admin/assets/images/{media => marc_rad_mvf_cra}/phonomusic.png (100%)
+ rename docs/modules/admin/assets/images/{media => marc_rad_mvf_cra}/phonospoken.png (100%)
+ rename docs/modules/admin/assets/images/{media => marc_rad_mvf_cra}/picture.png (100%)
+ rename docs/modules/admin/assets/images/{media => marc_rad_mvf_cra}/radcatrue_5.jpg (100%)
+ rename docs/modules/admin/assets/images/{media => marc_rad_mvf_cra}/radcvmcacolumns_3.jpg (100%)
+ rename docs/modules/admin/assets/images/{media => marc_rad_mvf_cra}/radmvcolumn_1.jpg (100%)
+ rename docs/modules/admin/assets/images/{media => marc_rad_mvf_cra}/score.png (100%)
+ rename docs/modules/admin/assets/images/{media => marc_rad_mvf_cra}/serial.png (100%)
+ rename docs/modules/admin/assets/images/{media => marc_rad_mvf_cra}/software.png (100%)
+ rename docs/modules/admin/assets/images/{media => marc_rad_mvf_cra}/vhs.png (100%)
+ rename docs/modules/admin/assets/images/{media => multilingual_search}/multilingual_search1.png (100%)
+ rename docs/modules/admin/assets/images/{media => multilingual_search}/multilingual_search2.PNG (100%)
+ rename docs/modules/admin/assets/images/{media => multilingual_search}/multilingual_search3.PNG (100%)
+ rename docs/modules/admin/assets/images/{media => old_images}/Authority_Control_Sets2.jpg (100%)
+ rename docs/modules/admin/assets/images/{media => old_images}/Authority_Control_Sets4.jpg (100%)
+ rename docs/modules/admin/assets/images/{media => old_images}/Authority_Control_Sets_Fields_Edit.png (100%)
+ rename docs/modules/admin/assets/images/{media => old_images}/Auto_Suggest_in_Catalog_Search1.jpg (100%)
+ rename docs/modules/admin/assets/images/{media => old_images}/Auto_Suggest_in_Catalog_Search2.jpg (100%)
+ rename docs/modules/admin/assets/images/{media => old_images}/Core_Source_1.jpg (100%)
+ rename docs/modules/admin/assets/images/{media => old_images}/Expanding_the_Work_Log1.jpg (100%)
+ rename docs/modules/admin/assets/images/{media => old_images}/Expanding_the_Work_Log2.jpg (100%)
+ rename docs/modules/admin/assets/images/{media => old_images}/Fiscal_Rollover1.jpg (100%)
+ rename docs/modules/admin/assets/images/{media => old_images}/acq_marc_search-2.png (100%)
+ rename docs/modules/admin/assets/images/{media => old_images}/acq_marc_search.png (100%)
+ rename docs/modules/admin/assets/images/{media => old_images}/best_hold_sort_order1.jpg (100%)
+ rename docs/modules/admin/assets/images/{media => old_images}/best_hold_sort_order2.jpg (100%)
+ rename docs/modules/admin/assets/images/{media => old_images}/bhsso_libsetting.png (100%)
+ rename docs/modules/admin/assets/images/{media => old_images}/booking-create-bookable-1.png (100%)
+ rename docs/modules/admin/assets/images/{media => old_images}/booking-create-bookable-2.png (100%)
+ rename docs/modules/admin/assets/images/{media => old_images}/booking-create-bookable-3.png (100%)
+ rename docs/modules/admin/assets/images/{media => old_images}/booking-create-bookable-4.png (100%)
+ rename docs/modules/admin/assets/images/{media => old_images}/booking-create-bookable-5.png (100%)
+ rename docs/modules/admin/assets/images/{media => old_images}/booking-create-resourcetype-2.png (100%)
+ rename docs/modules/admin/assets/images/{media => old_images}/booking-create-resourcetype-3.png (100%)
+ rename docs/modules/admin/assets/images/{media => old_images}/booking-create-resourcetype-4.png (100%)
+ rename docs/modules/admin/assets/images/{media => old_images}/booking-create-resourcetype-5.png (100%)
+ rename docs/modules/admin/assets/images/{media => old_images}/column_picker_dojo.png (100%)
+ rename docs/modules/admin/assets/images/{media => old_images}/create-edi-accounts-2.png (100%)
+ rename docs/modules/admin/assets/images/{media => old_images}/create-edi-accounts-3.png (100%)
+ rename docs/modules/admin/assets/images/{media => old_images}/create-edi-accounts-4.png (100%)
+ rename docs/modules/admin/assets/images/{media => old_images}/create-edi-accounts-5.png (100%)
+ rename docs/modules/admin/assets/images/{media => old_images}/edit_bhsso.png (100%)
+ rename docs/modules/admin/assets/images/{media => old_images}/enter-library-san-2.png (100%)
+ rename docs/modules/admin/assets/images/{media => old_images}/enter-provider-san-1.png (100%)
+ rename docs/modules/admin/assets/images/{media => old_images}/enter-provider-san-2.png (100%)
+ rename docs/modules/admin/assets/images/{media => old_images}/event_def_details.png (100%)
+ rename docs/modules/admin/assets/images/{media => old_images}/event_def_details_2.png (100%)
+ rename docs/modules/admin/assets/images/{media => old_images}/lsa-address_alert_staff_view.png (100%)
+ rename docs/modules/admin/assets/images/{media => old_images}/lsa-statcat-1.png (100%)
+ rename docs/modules/admin/assets/images/{media => old_images}/lsa-statcat-2.png (100%)
+ rename docs/modules/admin/assets/images/{media => old_images}/lsa-statcat-3.png (100%)
+ rename docs/modules/admin/assets/images/{media => old_images}/lsa-statcat-3a.png (100%)
+ rename docs/modules/admin/assets/images/{media => old_images}/lsa-statcat-4.png (100%)
+ rename docs/modules/admin/assets/images/{media => old_images}/lsa-statcat-5.png (100%)
+ rename docs/modules/admin/assets/images/{media => old_images}/lsa-statcat-6.png (100%)
+ create mode 100644 docs/modules/admin/assets/images/old_images/marc_import_remove_fields3.png
+ rename docs/modules/admin/assets/images/{media => old_images}/new_bhsso.png (100%)
+ rename docs/modules/admin/assets/images/{media => old_images}/new_event_def.png (100%)
+ rename docs/modules/admin/assets/images/{media => old_images}/ope_event_defs.png (100%)
+ rename docs/modules/admin/assets/images/{media => old_images}/ope_event_params.png (100%)
+ rename docs/modules/admin/assets/images/{media => old_images}/test_event_def.png (100%)
+ rename docs/modules/admin/assets/images/{media => old_images}/test_event_def_output.png (100%)
+ rename docs/modules/admin/assets/images/{media => old_images}/workstation_admin-1.jpg (100%)
+ rename docs/modules/admin/assets/images/{media => old_images}/workstation_admin-2.jpg (100%)
+ rename docs/modules/admin/assets/images/{media => old_images}/workstation_admin-3.png (100%)
+ rename docs/modules/admin/assets/images/{media => old_images}/workstation_admin-4.png (100%)
+ rename docs/modules/admin/assets/images/{media => old_images}/workstation_admin-5.png (100%)
+ rename docs/modules/admin/assets/images/{media => old_images}/workstation_admin-6.jpg (100%)
+ rename docs/modules/admin/assets/images/{media => org_unit_prox}/Org_Unit_Prox_Adj1.png (100%)
+ rename docs/modules/admin/assets/images/{media => org_unit_prox}/Org_Unit_Prox_Adj2.png (100%)
+ rename docs/modules/admin/assets/images/{media => permissions}/permissions_1.png (100%)
+ rename docs/modules/admin/assets/images/{media => permissions}/permissions_1a.png (100%)
+ rename docs/modules/admin/assets/images/{media => permissions}/profile-5.png (100%)
+ rename docs/modules/admin/assets/images/{media => permissions}/profile-6.png (100%)
+ rename docs/modules/admin/assets/images/{media => permissions}/profile-7.png (100%)
+ rename docs/modules/admin/assets/images/{media => pop_badges}/popbadge1_web_client.PNG (100%)
+ rename docs/modules/admin/assets/images/{media => pop_badges}/popbadge2_web_client.PNG (100%)
+ rename docs/modules/admin/assets/images/{media => pop_badges}/popbadge3_web_client.PNG (100%)
+ rename docs/modules/admin/assets/images/{media => receipt_template_editor}/receipt1.png (100%)
+ rename docs/modules/admin/assets/images/{media => receipt_template_editor}/receipt2.png (100%)
+ rename docs/modules/admin/assets/images/{media => recent_searches}/Saved_Catalog_Searches_2_21.jpg (100%)
+ rename docs/modules/admin/assets/images/{media => recent_searches}/Saved_Catalog_Searches_2_22.jpg (100%)
+ rename docs/modules/admin/assets/images/{media => return_to_results}/back_to_results.png (100%)
+ rename docs/modules/admin/assets/images/{media => search_interface}/coded-value-1.png (100%)
+ rename docs/modules/admin/assets/images/{media => sms_messaging}/SMS_Text_Messaging1.png (100%)
+ rename docs/modules/admin/assets/images/{media => sms_messaging}/SMS_Text_Messaging11.png (100%)
+ rename docs/modules/admin/assets/images/{media => sms_messaging}/SMS_Text_Messaging12.jpg (100%)
+ rename docs/modules/admin/assets/images/{media => sms_messaging}/SMS_Text_Messaging13.jpg (100%)
+ rename docs/modules/admin/assets/images/{media => sms_messaging}/SMS_Text_Messaging2.png (100%)
+ rename docs/modules/admin/assets/images/{media => sms_messaging}/SMS_Text_Messaging3.jpg (100%)
+ rename docs/modules/admin/assets/images/{media => sms_messaging}/SMS_Text_Messaging4.jpg (100%)
+ rename docs/modules/admin/assets/images/{media => sms_messaging}/SMS_Text_Messaging5.png (100%)
+ rename docs/modules/admin/assets/images/{media => sms_messaging}/SMS_Text_Messaging6.png (100%)
+ rename docs/modules/admin/assets/images/{media => sms_messaging}/SMS_Text_Messaging7.jpg (100%)
+ rename docs/modules/admin/assets/images/{media => sms_messaging}/SMS_Text_Messaging8.png (100%)
+ rename docs/modules/admin/assets/images/{media => sms_messaging}/SMS_Text_Messaging9.png (100%)
+ rename docs/modules/admin/assets/images/{media => staff_client_column_filters}/applyclear_buttons.png (100%)
+ rename docs/modules/admin/assets/images/{media => staff_client_column_filters}/asc_sort.png (100%)
+ rename docs/modules/admin/assets/images/{media => staff_client_column_filters}/filter_results_startswith.png (100%)
+ rename docs/modules/admin/assets/images/{media => staff_client_column_filters}/filter_startswith.png (100%)
+ rename docs/modules/admin/assets/images/{media => staff_client_column_filters}/filters.png (100%)
+ rename docs/modules/admin/assets/images/{media => staff_client_column_filters}/incorrect_date.png (100%)
+ rename docs/modules/admin/assets/images/{media => staff_client_column_filters}/operator.png (100%)
+ rename docs/modules/admin/assets/images/{media => staff_client_column_filters}/orgunit_filter.png (100%)
+ rename docs/modules/admin/assets/images/{media => staff_client_column_filters}/removefilters.png (100%)
+ rename docs/modules/admin/assets/images/{media => user_activity}/User_Activity_Types1A.jpg (100%)
+ rename docs/modules/admin/assets/images/{media => user_activity}/User_Activity_Types2A.jpg (100%)
+ rename docs/modules/admin/assets/images/{media => virtual_index}/vid1.PNG (100%)
+ rename docs/modules/admin/assets/images/{media => virtual_index}/vid2.PNG (100%)
+ rename docs/modules/admin/assets/images/{media => virtual_index}/vid3.PNG (100%)
+ rename docs/modules/admin/assets/images/{media => virtual_index}/vid4.PNG (100%)
+ rename docs/modules/admin/assets/images/{media => virtual_index}/vid5.PNG (100%)
+ rename docs/modules/admin/assets/images/{media => z3950}/Restrict_Z39_50_Sources_by_Permission_Group1.jpg (100%)
+ rename docs/modules/admin/assets/images/{media => z3950}/Restrict_Z39_50_Sources_by_Permission_Group2.png (100%)
+ rename docs/modules/admin/assets/images/{media => z3950}/Restrict_Z39_50_Sources_by_Permission_Group3.jpg (100%)
+ rename docs/modules/admin/assets/images/{media => z3950}/storing_z3950_credentials.jpg (100%)
+
+commit b63503df5e3c5e484dc4eb96a49f56e3c18dcdcc
+Author: Gina Monti <gmonti@biblio.org>
+Date:   Mon May 13 16:33:05 2024 -0400
+
+    Docs LP2060219 image management for acq pages
+    
+    Killing media folder and rearranging active images to other folders
+    
+    Signed-off-by: Jane Sandberg <js7389@princeton.edu>
+
+-	-	docs/modules/acquisitions/assets/images/{media => intro}/acq_workflow.jpg
+-	-	docs/modules/acquisitions/assets/images/{media => old_images}/2_10_Lineitem_Paid.png
+-	-	docs/modules/acquisitions/assets/images/{media => old_images}/2_7_Enhancements_to_Canceled2.jpg
+-	-	docs/modules/acquisitions/assets/images/{media => old_images}/2_7_Enhancements_to_Canceled4.jpg
+-	-	docs/modules/acquisitions/assets/images/{media => old_images}/Electronic_invoicing1.jpg
+-	-	docs/modules/acquisitions/assets/images/{media => old_images}/Receive_Items_From_an_Invoice1.jpg
+-	-	docs/modules/acquisitions/assets/images/{media => old_images}/Receive_Items_From_an_Invoice2.jpg
+-	-	docs/modules/acquisitions/assets/images/{media => old_images}/Receive_Items_From_an_Invoice4.jpg
+-	-	docs/modules/acquisitions/assets/images/{media => old_images}/Receive_Items_From_an_Invoice5.jpg
+-	-	docs/modules/acquisitions/assets/images/{media => old_images}/Receive_Items_From_an_Invoice7.jpg
+-	-	docs/modules/acquisitions/assets/images/{media => old_images}/Return_to_line_item1.jpg
+-	-	docs/modules/acquisitions/assets/images/{media => old_images}/Search_for_line_items_from_an_invoice1.jpg
+-	-	docs/modules/acquisitions/assets/images/{media => old_images}/Search_for_line_items_from_an_invoice2.jpg
+-	-	docs/modules/acquisitions/assets/images/{media => old_images}/Search_for_line_items_from_an_invoice3.jpg
+-	-	docs/modules/acquisitions/assets/images/{media => old_images}/Search_for_line_items_from_an_invoice5.jpg
+-	-	docs/modules/acquisitions/assets/images/{media => old_images}/Vandelay_Integration_into_Acquisitions1.jpg
+-	-	docs/modules/acquisitions/assets/images/{media => old_images}/Vandelay_Integration_into_Acquisitions2.jpg
+-	-	docs/modules/acquisitions/assets/images/{media => old_images}/Vandelay_Integration_into_Acquisitions3.jpg
+-	-	docs/modules/acquisitions/assets/images/{media => old_images}/Vandelay_Integration_into_Acquisitions4.jpg
+-	-	docs/modules/acquisitions/assets/images/{media => old_images}/Vandelay_Integration_into_Acquisitions5.jpg
+-	-	docs/modules/acquisitions/assets/images/{media => old_images}/Vandelay_Integration_into_Acquisitions6.jpg
+-	-	docs/modules/acquisitions/assets/images/{media => old_images}/Zero_Copies1.jpg
+-	-	docs/modules/acquisitions/assets/images/{media => old_images}/acq_brief_record-2.png
+-	-	docs/modules/acquisitions/assets/images/{media => old_images}/acq_brief_record.png
+-	-	docs/modules/acquisitions/assets/images/{media => old_images}/acq_invoice_blanket.png
+-	-	docs/modules/acquisitions/assets/images/{media => old_images}/acq_invoice_link.png
+-	-	docs/modules/acquisitions/assets/images/{media => old_images}/acq_invoice_view-2.png
+-	-	docs/modules/acquisitions/assets/images/{media => old_images}/acq_invoice_view.png
+-	-	docs/modules/acquisitions/assets/images/{media => old_images}/acq_marc_search-2.png
+-	-	docs/modules/acquisitions/assets/images/{media => old_images}/acq_selection_clone.png
+-	-	docs/modules/acquisitions/assets/images/{media => old_images}/acq_selection_create.png
+-	-	docs/modules/acquisitions/assets/images/{media => old_images}/acq_selection_mark_ready.png
+-	-	docs/modules/acquisitions/assets/images/{media => old_images}/acq_selection_merge.png
+-	-	docs/modules/acquisitions/assets/images/{media => old_images}/acq_upload_library_settings.png
+-	-	docs/modules/acquisitions/assets/images/{media => old_images}/display_copy_count_1.JPG
+-	-	docs/modules/acquisitions/assets/images/{media => old_images}/display_copy_count_2.JPG
+-	-	docs/modules/acquisitions/assets/images/{media => old_images}/load_marc_order_records.png
+-	-	docs/modules/acquisitions/assets/images/{media => old_images}/po_name_detection_1.JPG
+-	-	docs/modules/acquisitions/assets/images/{media => old_images}/po_name_detection_2.JPG
+-	-	docs/modules/acquisitions/assets/images/{media => old_images}/po_name_detection_3.JPG
+-	-	docs/modules/acquisitions/assets/images/{media => purchase_requests}/patronrequests_requestform.PNG
+-	-	docs/modules/acquisitions/assets/images/{media => purchase_requests}/patronrequests_requestgrid.PNG
+1	1	docs/modules/acquisitions/pages/introduction.adoc
+2	2	docs/modules/acquisitions/pages/purchase_requests_management.adoc
+ rename docs/modules/acquisitions/assets/images/{media => intro}/acq_workflow.jpg (100%)
+ rename docs/modules/acquisitions/assets/images/{media => old_images}/2_10_Lineitem_Paid.png (100%)
+ rename docs/modules/acquisitions/assets/images/{media => old_images}/2_7_Enhancements_to_Canceled2.jpg (100%)
+ rename docs/modules/acquisitions/assets/images/{media => old_images}/2_7_Enhancements_to_Canceled4.jpg (100%)
+ rename docs/modules/acquisitions/assets/images/{media => old_images}/Electronic_invoicing1.jpg (100%)
+ rename docs/modules/acquisitions/assets/images/{media => old_images}/Receive_Items_From_an_Invoice1.jpg (100%)
+ rename docs/modules/acquisitions/assets/images/{media => old_images}/Receive_Items_From_an_Invoice2.jpg (100%)
+ rename docs/modules/acquisitions/assets/images/{media => old_images}/Receive_Items_From_an_Invoice4.jpg (100%)
+ rename docs/modules/acquisitions/assets/images/{media => old_images}/Receive_Items_From_an_Invoice5.jpg (100%)
+ rename docs/modules/acquisitions/assets/images/{media => old_images}/Receive_Items_From_an_Invoice7.jpg (100%)
+ rename docs/modules/acquisitions/assets/images/{media => old_images}/Return_to_line_item1.jpg (100%)
+ rename docs/modules/acquisitions/assets/images/{media => old_images}/Search_for_line_items_from_an_invoice1.jpg (100%)
+ rename docs/modules/acquisitions/assets/images/{media => old_images}/Search_for_line_items_from_an_invoice2.jpg (100%)
+ rename docs/modules/acquisitions/assets/images/{media => old_images}/Search_for_line_items_from_an_invoice3.jpg (100%)
+ rename docs/modules/acquisitions/assets/images/{media => old_images}/Search_for_line_items_from_an_invoice5.jpg (100%)
+ rename docs/modules/acquisitions/assets/images/{media => old_images}/Vandelay_Integration_into_Acquisitions1.jpg (100%)
+ rename docs/modules/acquisitions/assets/images/{media => old_images}/Vandelay_Integration_into_Acquisitions2.jpg (100%)
+ rename docs/modules/acquisitions/assets/images/{media => old_images}/Vandelay_Integration_into_Acquisitions3.jpg (100%)
+ rename docs/modules/acquisitions/assets/images/{media => old_images}/Vandelay_Integration_into_Acquisitions4.jpg (100%)
+ rename docs/modules/acquisitions/assets/images/{media => old_images}/Vandelay_Integration_into_Acquisitions5.jpg (100%)
+ rename docs/modules/acquisitions/assets/images/{media => old_images}/Vandelay_Integration_into_Acquisitions6.jpg (100%)
+ rename docs/modules/acquisitions/assets/images/{media => old_images}/Zero_Copies1.jpg (100%)
+ rename docs/modules/acquisitions/assets/images/{media => old_images}/acq_brief_record-2.png (100%)
+ rename docs/modules/acquisitions/assets/images/{media => old_images}/acq_brief_record.png (100%)
+ rename docs/modules/acquisitions/assets/images/{media => old_images}/acq_invoice_blanket.png (100%)
+ rename docs/modules/acquisitions/assets/images/{media => old_images}/acq_invoice_link.png (100%)
+ rename docs/modules/acquisitions/assets/images/{media => old_images}/acq_invoice_view-2.png (100%)
+ rename docs/modules/acquisitions/assets/images/{media => old_images}/acq_invoice_view.png (100%)
+ rename docs/modules/acquisitions/assets/images/{media => old_images}/acq_marc_search-2.png (100%)
+ rename docs/modules/acquisitions/assets/images/{media => old_images}/acq_selection_clone.png (100%)
+ rename docs/modules/acquisitions/assets/images/{media => old_images}/acq_selection_create.png (100%)
+ rename docs/modules/acquisitions/assets/images/{media => old_images}/acq_selection_mark_ready.png (100%)
+ rename docs/modules/acquisitions/assets/images/{media => old_images}/acq_selection_merge.png (100%)
+ rename docs/modules/acquisitions/assets/images/{media => old_images}/acq_upload_library_settings.png (100%)
+ rename docs/modules/acquisitions/assets/images/{media => old_images}/display_copy_count_1.JPG (100%)
+ rename docs/modules/acquisitions/assets/images/{media => old_images}/display_copy_count_2.JPG (100%)
+ rename docs/modules/acquisitions/assets/images/{media => old_images}/load_marc_order_records.png (100%)
+ rename docs/modules/acquisitions/assets/images/{media => old_images}/po_name_detection_1.JPG (100%)
+ rename docs/modules/acquisitions/assets/images/{media => old_images}/po_name_detection_2.JPG (100%)
+ rename docs/modules/acquisitions/assets/images/{media => old_images}/po_name_detection_3.JPG (100%)
+ rename docs/modules/acquisitions/assets/images/{media => purchase_requests}/patronrequests_requestform.PNG (100%)
+ rename docs/modules/acquisitions/assets/images/{media => purchase_requests}/patronrequests_requestgrid.PNG (100%)
+
+commit 5d9e7d471fbcab0d6f3a63e2b03d604762a2ab80
+Author: Gina Monti <gmonti@biblio.org>
+Date:   Mon May 13 16:53:32 2024 -0400
+
+    Docs LP2060219 kill media folders in admin_set_up directory
+    
+    Signed-off-by: Jane Sandberg <js7389@princeton.edu>
+
+-	-	docs/modules/admin_initial_setup/assets/images/{media => borrowing_items}/circ_duration_rules.jpg
+-	-	docs/modules/admin_initial_setup/assets/images/{media => borrowing_items}/circ_max_fine_rules.jpg
+-	-	docs/modules/admin_initial_setup/assets/images/{media => borrowing_items}/circ_recurring_fine_rules.jpg
+-	-	docs/modules/admin_initial_setup/assets/images/{media => borrowing_items}/copy_locations_editor.png
+-	-	docs/modules/admin_initial_setup/assets/images/{media => describing_your_people}/sup-permissions-1_web_client.png
+-	-	docs/modules/admin_initial_setup/assets/images/{media => describing_your_people}/sup-permissions-2_web_client.png
+-	-	docs/modules/admin_initial_setup/assets/images/{media => describing_your_people}/sup-permissions-4_web_client.png
+-	-	docs/modules/admin_initial_setup/assets/images/{media => describing_your_people}/sup-permissions-5_web_client.png
+-	-	docs/modules/admin_initial_setup/assets/images/{media => designing_your_catalog}/clear-added-content-cache-1.png
+-	-	docs/modules/admin_initial_setup/assets/images/{media => designing_your_catalog}/clear-added-content-cache-2.jpg
+-	-	docs/modules/admin_initial_setup/assets/images/{media => importing_staff_client}/batch_import_profile.png
+-	-	docs/modules/admin_initial_setup/assets/images/{media => importing_staff_client}/create_match_sets.png
+-	-	docs/modules/admin_initial_setup/assets/images/{media => importing_staff_client}/record_quality_metrics.png
+-	-	docs/modules/admin_initial_setup/assets/images/{media => old_images}/order_record_loading.png
+-	-	docs/modules/admin_initial_setup/assets/images/old_images/sup-permissions-4_web_client.png
+-	-	docs/modules/admin_initial_setup/assets/images/{media => sso}/sso_and_native.png
+-	-	docs/modules/admin_initial_setup/assets/images/{media => sso}/sso_only.png
+4	4	docs/modules/admin_initial_setup/pages/borrowing_items.adoc
+5	5	docs/modules/admin_initial_setup/pages/describing_your_people.adoc
+2	2	docs/modules/admin_initial_setup/pages/designing_your_catalog.adoc
+3	3	docs/modules/admin_initial_setup/pages/importing_via_staff_client.adoc
+2	2	docs/modules/admin_initial_setup/pages/single_sign_on.adoc
+ rename docs/modules/admin_initial_setup/assets/images/{media => borrowing_items}/circ_duration_rules.jpg (100%)
+ rename docs/modules/admin_initial_setup/assets/images/{media => borrowing_items}/circ_max_fine_rules.jpg (100%)
+ rename docs/modules/admin_initial_setup/assets/images/{media => borrowing_items}/circ_recurring_fine_rules.jpg (100%)
+ rename docs/modules/admin_initial_setup/assets/images/{media => borrowing_items}/copy_locations_editor.png (100%)
+ rename docs/modules/admin_initial_setup/assets/images/{media => describing_your_people}/sup-permissions-1_web_client.png (100%)
+ rename docs/modules/admin_initial_setup/assets/images/{media => describing_your_people}/sup-permissions-2_web_client.png (100%)
+ rename docs/modules/admin_initial_setup/assets/images/{media => describing_your_people}/sup-permissions-4_web_client.png (100%)
+ rename docs/modules/admin_initial_setup/assets/images/{media => describing_your_people}/sup-permissions-5_web_client.png (100%)
+ rename docs/modules/admin_initial_setup/assets/images/{media => designing_your_catalog}/clear-added-content-cache-1.png (100%)
+ rename docs/modules/admin_initial_setup/assets/images/{media => designing_your_catalog}/clear-added-content-cache-2.jpg (100%)
+ rename docs/modules/admin_initial_setup/assets/images/{media => importing_staff_client}/batch_import_profile.png (100%)
+ rename docs/modules/admin_initial_setup/assets/images/{media => importing_staff_client}/create_match_sets.png (100%)
+ rename docs/modules/admin_initial_setup/assets/images/{media => importing_staff_client}/record_quality_metrics.png (100%)
+ rename docs/modules/admin_initial_setup/assets/images/{media => old_images}/order_record_loading.png (100%)
+ create mode 100644 docs/modules/admin_initial_setup/assets/images/old_images/sup-permissions-4_web_client.png
+ rename docs/modules/admin_initial_setup/assets/images/{media => sso}/sso_and_native.png (100%)
+ rename docs/modules/admin_initial_setup/assets/images/{media => sso}/sso_only.png (100%)
+
+commit 648efc53ea961b06e2caa55ed2ec795982551a97
+Author: Steven Mayo <smayo@georgialibraries.org>
+Date:   Tue Jul 9 11:02:27 2024 -0400
+
+    LP#2072430: Search Preferences Missing After Login
+    
+    Made server-store.service method getItemBatch() also return non-user
+    settings in the batch when looking for user settings in the database.
+    
+    Release-Note: Fixes Angular Search Preferences being empty after login
+    
+    Signed-off-by: Steven Mayo <smayo@georgialibraries.org>
+    Signed-off-by: Jane Sandberg <js7389@princeton.edu>
+
+1	1	Open-ILS/src/eg2/src/app/core/server-store.service.ts
+
+commit 53dcf95e20f3ad036a59d33e51f5011866254135
+Author: Gina Monti <gmonti@biblio.org>
+Date:   Fri May 31 14:32:28 2024 -0400
+
+    Docs LP2060219: Kill media folder for circulation pages
+    
+    Signed-off-by: Jane Sandberg <sandbergja@gmail.com>
+
+-	-	docs/modules/circulation/assets/images/{media => basic_holds}/Display_Hold_Types_on_Pull_Lists1.jpg
+-	-	docs/modules/circulation/assets/images/{media => basic_holds}/PlaceHold-2.JPG
+-	-	docs/modules/circulation/assets/images/{media => basic_holds}/PlaceHold-3.JPG
+-	-	docs/modules/circulation/assets/images/{media => basic_holds}/PlaceHold-4.JPG
+-	-	docs/modules/circulation/assets/images/{media => basic_holds}/PlaceHold-5.JPG
+-	-	docs/modules/circulation/assets/images/{media => basic_holds}/add_patrons.png
+-	-	docs/modules/circulation/assets/images/{media => basic_holds}/catalog_place_hold.png
+-	-	docs/modules/circulation/assets/images/{media => basic_holds}/custom_hold_pickup_location1.png
+-	-	docs/modules/circulation/assets/images/{media => basic_holds}/custom_hold_pickup_location2.jpg
+-	-	docs/modules/circulation/assets/images/{media => basic_holds}/delete_hold_group.png
+-	-	docs/modules/circulation/assets/images/{media => basic_holds}/holds-clearing-1.png
+-	-	docs/modules/circulation/assets/images/{media => basic_holds}/holds-clearing-2.png
+-	-	docs/modules/circulation/assets/images/{media => basic_holds}/holds-clearing-3.png
+-	-	docs/modules/circulation/assets/images/{media => basic_holds}/holds-clearing-4.png
+-	-	docs/modules/circulation/assets/images/{media => basic_holds}/holds-managing-1.png
+-	-	docs/modules/circulation/assets/images/{media => basic_holds}/holds-managing-10.JPG
+-	-	docs/modules/circulation/assets/images/{media => basic_holds}/holds-managing-11.JPG
+-	-	docs/modules/circulation/assets/images/{media => basic_holds}/holds-managing-12.JPG
+-	-	docs/modules/circulation/assets/images/{media => basic_holds}/holds-managing-13.JPG
+-	-	docs/modules/circulation/assets/images/{media => basic_holds}/holds-managing-14.JPG
+-	-	docs/modules/circulation/assets/images/{media => basic_holds}/holds-managing-15.JPG
+-	-	docs/modules/circulation/assets/images/{media => basic_holds}/holds-managing-17.png
+-	-	docs/modules/circulation/assets/images/{media => basic_holds}/holds-managing-18.png
+-	-	docs/modules/circulation/assets/images/{media => basic_holds}/holds-managing-19.png
+-	-	docs/modules/circulation/assets/images/{media => basic_holds}/holds-managing-2.JPG
+-	-	docs/modules/circulation/assets/images/{media => basic_holds}/holds-managing-4.JPG
+-	-	docs/modules/circulation/assets/images/{media => basic_holds}/holds-managing-5_and_6.JPG
+-	-	docs/modules/circulation/assets/images/{media => basic_holds}/holds-managing-7.JPG
+-	-	docs/modules/circulation/assets/images/{media => basic_holds}/holds-managing-8.JPG
+-	-	docs/modules/circulation/assets/images/{media => basic_holds}/holds-managing-9.png
+-	-	docs/modules/circulation/assets/images/{media => basic_holds}/holds-pull-1.png
+-	-	docs/modules/circulation/assets/images/{media => basic_holds}/holds-pull-2.png
+-	-	docs/modules/circulation/assets/images/{media => basic_holds}/holds-pull-4.png
+-	-	docs/modules/circulation/assets/images/{media => basic_holds}/holds-pull-5.png
+-	-	docs/modules/circulation/assets/images/{media => basic_holds}/holds-pull-6.png
+-	-	docs/modules/circulation/assets/images/{media => basic_holds}/holds-pull-7.png
+-	-	docs/modules/circulation/assets/images/{media => basic_holds}/holds-pull-9.png
+-	-	docs/modules/circulation/assets/images/{media => basic_holds}/hopeless_holds_actions.png
+-	-	docs/modules/circulation/assets/images/{media => basic_holds}/hopeless_holds_interface.png
+-	-	docs/modules/circulation/assets/images/{media => basic_holds}/hopeless_prone_item_status.png
+-	-	docs/modules/circulation/assets/images/{media => basic_holds}/new_hold_group.png
+-	-	docs/modules/circulation/assets/images/{media => basic_holds}/new_hold_group_event.png
+-	-	docs/modules/circulation/assets/images/{media => basic_holds}/queue_positions.jpg
+-	-	docs/modules/circulation/assets/images/{media => booking}/booking-capture-1_web_client.png
+-	-	docs/modules/circulation/assets/images/{media => booking}/booking-capture-2_web_client.png
+-	-	docs/modules/circulation/assets/images/{media => booking}/booking-capture-3.png
+-	-	docs/modules/circulation/assets/images/{media => circulating_items_web_client}/Check_In-Cancel_Transit.png
+-	-	docs/modules/circulation/assets/images/{media => circulating_items_web_client}/backdate_checkin_web_client.png
+-	-	docs/modules/circulation/assets/images/{media => circulating_items_web_client}/backdate_post_checkin_web_client.png
+-	-	docs/modules/circulation/assets/images/{media => circulating_items_web_client}/backdate_post_date_web_client.png
+-	-	docs/modules/circulation/assets/images/{media => circulating_items_web_client}/backdate_red_web_client.png
+-	-	docs/modules/circulation/assets/images/{media => circulating_items_web_client}/check_in_menu_web_client.png
+-	-	docs/modules/circulation/assets/images/{media => circulating_items_web_client}/checkin_barcode_web_client.png
+-	-	docs/modules/circulation/assets/images/{media => circulating_items_web_client}/checkinmodifiers-with-inventory2.png
+-	-	docs/modules/circulation/assets/images/{media => circulating_items_web_client}/checkout_item_barcode_web_client.png
+-	-	docs/modules/circulation/assets/images/{media => circulating_items_web_client}/checkout_menu_web_client.png
+-	-	docs/modules/circulation/assets/images/{media => circulating_items_web_client}/due_date_display_web_client.png
+-	-	docs/modules/circulation/assets/images/{media => circulating_items_web_client}/edit_due_date_action_web_client.png
+-	-	docs/modules/circulation/assets/images/{media => circulating_items_web_client}/ereceipts1_web_client.PNG
+-	-	docs/modules/circulation/assets/images/{media => circulating_items_web_client}/ereceipts2_web_client.PNG
+-	-	docs/modules/circulation/assets/images/{media => circulating_items_web_client}/ereceipts3_web_client.PNG
+-	-	docs/modules/circulation/assets/images/{media => circulating_items_web_client}/ereceipts4_web_client.PNG
+-	-	docs/modules/circulation/assets/images/{media => circulating_items_web_client}/ereceipts5_web_client.PNG
+-	-	docs/modules/circulation/assets/images/{media => circulating_items_web_client}/ereceipts6_web_client.PNG
+-	-	docs/modules/circulation/assets/images/{media => circulating_items_web_client}/in_house_use_non_cat.png
+-	-	docs/modules/circulation/assets/images/{media => circulating_items_web_client}/in_house_use_web_client.png
+-	-	docs/modules/circulation/assets/images/{media => circulating_items_web_client}/item_status_altview_web_client.png
+-	-	docs/modules/circulation/assets/images/{media => circulating_items_web_client}/item_status_barcode_web_client.png
+-	-	docs/modules/circulation/assets/images/{media => circulating_items_web_client}/item_status_list_view_web_client.png
+-	-	docs/modules/circulation/assets/images/{media => circulating_items_web_client}/item_status_menu_web_client.png
+-	-	docs/modules/circulation/assets/images/{media => circulating_items_web_client}/items_out_click_web_client.png
+-	-	docs/modules/circulation/assets/images/{media => circulating_items_web_client}/last_few_circs_action_web_client.png
+-	-	docs/modules/circulation/assets/images/{media => circulating_items_web_client}/last_few_circs_display_web_client.png
+-	-	docs/modules/circulation/assets/images/{media => circulating_items_web_client}/long_overdue1.png
+-	-	docs/modules/circulation/assets/images/{media => circulating_items_web_client}/long_overdue2.png
+-	-	docs/modules/circulation/assets/images/{media => circulating_items_web_client}/lost_section_web_client.png
+-	-	docs/modules/circulation/assets/images/{media => circulating_items_web_client}/mark_lost_web_client.png
+-	-	docs/modules/circulation/assets/images/{media => circulating_items_web_client}/new_override_modal.png
+-	-	docs/modules/circulation/assets/images/{media => circulating_items_web_client}/overdue_checkin_web_client.png
+-	-	docs/modules/circulation/assets/images/{media => circulating_items_web_client}/patron_summary_checkouts_web_client.png
+-	-	docs/modules/circulation/assets/images/{media => circulating_items_web_client}/precat_web_client.png
+-	-	docs/modules/circulation/assets/images/{media => circulating_items_web_client}/record_in_house_action_web_client.png
+-	-	docs/modules/circulation/assets/images/{media => circulating_items_web_client}/renew_action_web_client.png
+-	-	docs/modules/circulation/assets/images/{media => circulating_items_web_client}/renew_item_calendar_web_client.png
+-	-	docs/modules/circulation/assets/images/{media => circulating_items_web_client}/renew_item_web_client.png
+-	-	docs/modules/circulation/assets/images/{media => circulating_items_web_client}/retrieve_patron_web_client.png
+-	-	docs/modules/circulation/assets/images/{media => circulating_items_web_client}/specify_due_date1_web_client.png
+-	-	docs/modules/circulation/assets/images/{media => curbside}/curbside_appointment_patron.png
+-	-	docs/modules/circulation/assets/images/{media => curbside}/curbside_appointment_time.png
+-	-	docs/modules/circulation/assets/images/{media => curbside}/curbside_claim.png
+-	-	docs/modules/circulation/assets/images/{media => curbside}/curbside_confirm_email.png
+-	-	docs/modules/circulation/assets/images/{media => curbside}/curbside_confirm_sms.png
+-	-	docs/modules/circulation/assets/images/{media => curbside}/curbside_delivered_today.png
+-	-	docs/modules/circulation/assets/images/{media => curbside}/curbside_new_holds_alert.png
+-	-	docs/modules/circulation/assets/images/{media => curbside}/curbside_offer_email.png
+-	-	docs/modules/circulation/assets/images/{media => curbside}/curbside_offer_sms.png
+-	-	docs/modules/circulation/assets/images/{media => curbside}/curbside_patron_arrival_alert.png
+-	-	docs/modules/circulation/assets/images/{media => curbside}/curbside_patron_outside.png
+-	-	docs/modules/circulation/assets/images/{media => curbside}/curbside_release_claim.png
+-	-	docs/modules/circulation/assets/images/{media => curbside}/curbside_staged_ready.png
+-	-	docs/modules/circulation/assets/images/{media => curbside}/curbside_tbs.png
+-	-	docs/modules/circulation/assets/images/{media => curbside}/opac_curbside_disabled.png
+-	-	docs/modules/circulation/assets/images/{media => curbside}/opac_set_curbside.png
+-	-	docs/modules/circulation/assets/images/{media => curbside}/opac_update_curbside.png
+-	-	docs/modules/circulation/assets/images/{media => offline}/offline_checkin.png
+-	-	docs/modules/circulation/assets/images/{media => offline}/offline_checkout.png
+-	-	docs/modules/circulation/assets/images/{media => offline}/offline_clear_pending.png
+-	-	docs/modules/circulation/assets/images/{media => offline}/offline_exceptions.png
+-	-	docs/modules/circulation/assets/images/{media => offline}/offline_homepage_loggedin.png
+-	-	docs/modules/circulation/assets/images/{media => offline}/offline_homepage_loggedout.png
+-	-	docs/modules/circulation/assets/images/{media => offline}/offline_inhouse.png
+-	-	docs/modules/circulation/assets/images/{media => offline}/offline_logout_warning.png
+-	-	docs/modules/circulation/assets/images/{media => offline}/offline_patron_blocked.png
+-	-	docs/modules/circulation/assets/images/{media => offline}/offline_patron_registration.png
+-	-	docs/modules/circulation/assets/images/{media => offline}/offline_pending_xacts.png
+-	-	docs/modules/circulation/assets/images/{media => offline}/offline_processing_complete.png
+-	-	docs/modules/circulation/assets/images/{media => offline}/offline_renew.png
+-	-	docs/modules/circulation/assets/images/{media => offline}/offline_session_list.png
+-	-	docs/modules/circulation/assets/images/{media => offline}/offline_unprocessed.png
+-	-	docs/modules/circulation/assets/images/{media => older_images}/PlaceHold-0.JPG
+-	-	docs/modules/circulation/assets/images/{media => older_images}/PlaceHold-1.JPG
+-	-	docs/modules/circulation/assets/images/{media => older_images}/PlaceHold-6.JPG
+-	-	docs/modules/circulation/assets/images/{media => older_images}/Triggered_Events_and_Notices1.jpg
+-	-	docs/modules/circulation/assets/images/{media => older_images}/Triggered_Events_and_Notices2.jpg
+-	-	docs/modules/circulation/assets/images/{media => older_images}/Triggered_Events_and_Notices3.jpg
+-	-	docs/modules/circulation/assets/images/older_images/checkout_menu_web_client.png
+-	-	docs/modules/circulation/assets/images/{media => older_images}/circulation_patron_records-18_web_client.png
+-	-	docs/modules/circulation/assets/images/{media => older_images}/circulation_patron_records-19_web_client.png
+-	-	docs/modules/circulation/assets/images/{media => older_images}/circulation_patron_records-20.png
+-	-	docs/modules/circulation/assets/images/{media => older_images}/circulation_patron_records-23_web_client.png
+-	-	docs/modules/circulation/assets/images/{media => older_images}/circulation_patron_records-24_web_client.png
+-	-	docs/modules/circulation/assets/images/{media => older_images}/circulation_patron_records-25_web_client.png
+-	-	docs/modules/circulation/assets/images/{media => older_images}/circulation_patron_records-26_web_client.png
+-	-	docs/modules/circulation/assets/images/{media => older_images}/claimed_date_web_client.png
+-	-	docs/modules/circulation/assets/images/{media => older_images}/cr_section_web_client.png
+-	-	docs/modules/circulation/assets/images/{media => older_images}/holds-notifications-1.png
+-	-	docs/modules/circulation/assets/images/{media => older_images}/holds-notifications-2.png
+-	-	docs/modules/circulation/assets/images/older_images/holds-pull-9.png
+-	-	docs/modules/circulation/assets/images/{media => older_images}/holds_title_options.png
+-	-	docs/modules/circulation/assets/images/{media => older_images}/holds_title_options_adv.png
+-	-	docs/modules/circulation/assets/images/{media => older_images}/holds_title_searchresults.png
+-	-	docs/modules/circulation/assets/images/{media => older_images}/holds_title_success.png
+-	-	docs/modules/circulation/assets/images/{media => older_images}/mark_claims_returned_web_client.png
+-	-	docs/modules/circulation/assets/images/{media => older_images}/place-another-hold-1.png
+-	-	docs/modules/circulation/assets/images/{media => older_images}/staff-penalties-1_web_client.png
+-	-	docs/modules/circulation/assets/images/{media => older_images}/staff-penalties-2_web_client.png
+-	-	docs/modules/circulation/assets/images/{media => older_images}/staff-penalties-3_web_client.png
+-	-	docs/modules/circulation/assets/images/{media => older_images}/staff-penalties-4_web_client.png
+-	-	docs/modules/circulation/assets/images/{media => older_images}/staff-penalties-5_web_client.png
+-	-	docs/modules/circulation/assets/images/{media => older_images}/staff-penalties-6_web_client.png
+-	-	docs/modules/circulation/assets/images/{media => older_images}/staff-penalties-7_web_client.png
+-	-	docs/modules/circulation/assets/images/{media => self_check}/self-check-admin-login.png
+-	-	docs/modules/circulation/assets/images/{media => self_check}/self_check_check_out_1.png
+-	-	docs/modules/circulation/assets/images/{media => self_check}/self_check_check_out_2.png
+-	-	docs/modules/circulation/assets/images/{media => self_check}/self_check_check_out_3.png
+-	-	docs/modules/circulation/assets/images/{media => self_check}/self_check_check_out_4.png
+-	-	docs/modules/circulation/assets/images/{media => self_check}/self_check_check_out_5.png
+-	-	docs/modules/circulation/assets/images/{media => self_check}/self_check_check_out_6.png
+-	-	docs/modules/circulation/assets/images/{media => self_check}/self_check_error_1.png
+-	-	docs/modules/circulation/assets/images/{media => self_check}/self_check_view_fines_1.png
+-	-	docs/modules/circulation/assets/images/{media => self_check}/self_check_view_fines_2.png
+-	-	docs/modules/circulation/assets/images/{media => self_check}/self_check_view_holds_1.png
+-	-	docs/modules/circulation/assets/images/{media => self_check}/self_check_view_holds_2.png
+-	-	docs/modules/circulation/assets/images/{media => self_check}/self_check_view_items_out_1.png
+-	-	docs/modules/circulation/assets/images/{media => self_check}/self_check_view_items_out_2.png
+-	-	docs/modules/circulation/assets/images/{media => triggered_events}/item_tel_display.png
+-	-	docs/modules/circulation/assets/images/{media => triggered_events}/item_tel_location.png
+-	-	docs/modules/circulation/assets/images/{media => triggered_events}/patron_tel_display.png
+-	-	docs/modules/circulation/assets/images/{media => triggered_events}/patron_tel_location.png
+-	-	docs/modules/circulation/assets/images/{media => triggered_events}/patron_tel_tabs.png
+44	44	docs/modules/circulation/pages/basic_holds.adoc
+3	3	docs/modules/circulation/pages/booking.adoc
+41	41	docs/modules/circulation/pages/circulating_items_web_client.adoc
+17	17	docs/modules/circulation/pages/curbside_pickup.adoc
+15	15	docs/modules/circulation/pages/offline_circ_webclient.adoc
+14	14	docs/modules/circulation/pages/self_check.adoc
+1	1	docs/modules/circulation/pages/self_check_configuration.adoc
+5	5	docs/modules/circulation/pages/triggered_events.adoc
+ rename docs/modules/circulation/assets/images/{media => basic_holds}/Display_Hold_Types_on_Pull_Lists1.jpg (100%)
+ rename docs/modules/circulation/assets/images/{media => basic_holds}/PlaceHold-2.JPG (100%)
+ rename docs/modules/circulation/assets/images/{media => basic_holds}/PlaceHold-3.JPG (100%)
+ rename docs/modules/circulation/assets/images/{media => basic_holds}/PlaceHold-4.JPG (100%)
+ rename docs/modules/circulation/assets/images/{media => basic_holds}/PlaceHold-5.JPG (100%)
+ rename docs/modules/circulation/assets/images/{media => basic_holds}/add_patrons.png (100%)
+ rename docs/modules/circulation/assets/images/{media => basic_holds}/catalog_place_hold.png (100%)
+ rename docs/modules/circulation/assets/images/{media => basic_holds}/custom_hold_pickup_location1.png (100%)
+ rename docs/modules/circulation/assets/images/{media => basic_holds}/custom_hold_pickup_location2.jpg (100%)
+ rename docs/modules/circulation/assets/images/{media => basic_holds}/delete_hold_group.png (100%)
+ rename docs/modules/circulation/assets/images/{media => basic_holds}/holds-clearing-1.png (100%)
+ rename docs/modules/circulation/assets/images/{media => basic_holds}/holds-clearing-2.png (100%)
+ rename docs/modules/circulation/assets/images/{media => basic_holds}/holds-clearing-3.png (100%)
+ rename docs/modules/circulation/assets/images/{media => basic_holds}/holds-clearing-4.png (100%)
+ rename docs/modules/circulation/assets/images/{media => basic_holds}/holds-managing-1.png (100%)
+ rename docs/modules/circulation/assets/images/{media => basic_holds}/holds-managing-10.JPG (100%)
+ rename docs/modules/circulation/assets/images/{media => basic_holds}/holds-managing-11.JPG (100%)
+ rename docs/modules/circulation/assets/images/{media => basic_holds}/holds-managing-12.JPG (100%)
+ rename docs/modules/circulation/assets/images/{media => basic_holds}/holds-managing-13.JPG (100%)
+ rename docs/modules/circulation/assets/images/{media => basic_holds}/holds-managing-14.JPG (100%)
+ rename docs/modules/circulation/assets/images/{media => basic_holds}/holds-managing-15.JPG (100%)
+ rename docs/modules/circulation/assets/images/{media => basic_holds}/holds-managing-17.png (100%)
+ rename docs/modules/circulation/assets/images/{media => basic_holds}/holds-managing-18.png (100%)
+ rename docs/modules/circulation/assets/images/{media => basic_holds}/holds-managing-19.png (100%)
+ rename docs/modules/circulation/assets/images/{media => basic_holds}/holds-managing-2.JPG (100%)
+ rename docs/modules/circulation/assets/images/{media => basic_holds}/holds-managing-4.JPG (100%)
+ rename docs/modules/circulation/assets/images/{media => basic_holds}/holds-managing-5_and_6.JPG (100%)
+ rename docs/modules/circulation/assets/images/{media => basic_holds}/holds-managing-7.JPG (100%)
+ rename docs/modules/circulation/assets/images/{media => basic_holds}/holds-managing-8.JPG (100%)
+ rename docs/modules/circulation/assets/images/{media => basic_holds}/holds-managing-9.png (100%)
+ rename docs/modules/circulation/assets/images/{media => basic_holds}/holds-pull-1.png (100%)
+ rename docs/modules/circulation/assets/images/{media => basic_holds}/holds-pull-2.png (100%)
+ rename docs/modules/circulation/assets/images/{media => basic_holds}/holds-pull-4.png (100%)
+ rename docs/modules/circulation/assets/images/{media => basic_holds}/holds-pull-5.png (100%)
+ rename docs/modules/circulation/assets/images/{media => basic_holds}/holds-pull-6.png (100%)
+ rename docs/modules/circulation/assets/images/{media => basic_holds}/holds-pull-7.png (100%)
+ rename docs/modules/circulation/assets/images/{media => basic_holds}/holds-pull-9.png (100%)
+ rename docs/modules/circulation/assets/images/{media => basic_holds}/hopeless_holds_actions.png (100%)
+ rename docs/modules/circulation/assets/images/{media => basic_holds}/hopeless_holds_interface.png (100%)
+ rename docs/modules/circulation/assets/images/{media => basic_holds}/hopeless_prone_item_status.png (100%)
+ rename docs/modules/circulation/assets/images/{media => basic_holds}/new_hold_group.png (100%)
+ rename docs/modules/circulation/assets/images/{media => basic_holds}/new_hold_group_event.png (100%)
+ rename docs/modules/circulation/assets/images/{media => basic_holds}/queue_positions.jpg (100%)
+ rename docs/modules/circulation/assets/images/{media => booking}/booking-capture-1_web_client.png (100%)
+ rename docs/modules/circulation/assets/images/{media => booking}/booking-capture-2_web_client.png (100%)
+ rename docs/modules/circulation/assets/images/{media => booking}/booking-capture-3.png (100%)
+ rename docs/modules/circulation/assets/images/{media => circulating_items_web_client}/Check_In-Cancel_Transit.png (100%)
+ rename docs/modules/circulation/assets/images/{media => circulating_items_web_client}/backdate_checkin_web_client.png (100%)
+ rename docs/modules/circulation/assets/images/{media => circulating_items_web_client}/backdate_post_checkin_web_client.png (100%)
+ rename docs/modules/circulation/assets/images/{media => circulating_items_web_client}/backdate_post_date_web_client.png (100%)
+ rename docs/modules/circulation/assets/images/{media => circulating_items_web_client}/backdate_red_web_client.png (100%)
+ rename docs/modules/circulation/assets/images/{media => circulating_items_web_client}/check_in_menu_web_client.png (100%)
+ rename docs/modules/circulation/assets/images/{media => circulating_items_web_client}/checkin_barcode_web_client.png (100%)
+ rename docs/modules/circulation/assets/images/{media => circulating_items_web_client}/checkinmodifiers-with-inventory2.png (100%)
+ rename docs/modules/circulation/assets/images/{media => circulating_items_web_client}/checkout_item_barcode_web_client.png (100%)
+ rename docs/modules/circulation/assets/images/{media => circulating_items_web_client}/checkout_menu_web_client.png (100%)
+ rename docs/modules/circulation/assets/images/{media => circulating_items_web_client}/due_date_display_web_client.png (100%)
+ rename docs/modules/circulation/assets/images/{media => circulating_items_web_client}/edit_due_date_action_web_client.png (100%)
+ rename docs/modules/circulation/assets/images/{media => circulating_items_web_client}/ereceipts1_web_client.PNG (100%)
+ rename docs/modules/circulation/assets/images/{media => circulating_items_web_client}/ereceipts2_web_client.PNG (100%)
+ rename docs/modules/circulation/assets/images/{media => circulating_items_web_client}/ereceipts3_web_client.PNG (100%)
+ rename docs/modules/circulation/assets/images/{media => circulating_items_web_client}/ereceipts4_web_client.PNG (100%)
+ rename docs/modules/circulation/assets/images/{media => circulating_items_web_client}/ereceipts5_web_client.PNG (100%)
+ rename docs/modules/circulation/assets/images/{media => circulating_items_web_client}/ereceipts6_web_client.PNG (100%)
+ rename docs/modules/circulation/assets/images/{media => circulating_items_web_client}/in_house_use_non_cat.png (100%)
+ rename docs/modules/circulation/assets/images/{media => circulating_items_web_client}/in_house_use_web_client.png (100%)
+ rename docs/modules/circulation/assets/images/{media => circulating_items_web_client}/item_status_altview_web_client.png (100%)
+ rename docs/modules/circulation/assets/images/{media => circulating_items_web_client}/item_status_barcode_web_client.png (100%)
+ rename docs/modules/circulation/assets/images/{media => circulating_items_web_client}/item_status_list_view_web_client.png (100%)
+ rename docs/modules/circulation/assets/images/{media => circulating_items_web_client}/item_status_menu_web_client.png (100%)
+ rename docs/modules/circulation/assets/images/{media => circulating_items_web_client}/items_out_click_web_client.png (100%)
+ rename docs/modules/circulation/assets/images/{media => circulating_items_web_client}/last_few_circs_action_web_client.png (100%)
+ rename docs/modules/circulation/assets/images/{media => circulating_items_web_client}/last_few_circs_display_web_client.png (100%)
+ rename docs/modules/circulation/assets/images/{media => circulating_items_web_client}/long_overdue1.png (100%)
+ rename docs/modules/circulation/assets/images/{media => circulating_items_web_client}/long_overdue2.png (100%)
+ rename docs/modules/circulation/assets/images/{media => circulating_items_web_client}/lost_section_web_client.png (100%)
+ rename docs/modules/circulation/assets/images/{media => circulating_items_web_client}/mark_lost_web_client.png (100%)
+ rename docs/modules/circulation/assets/images/{media => circulating_items_web_client}/new_override_modal.png (100%)
+ rename docs/modules/circulation/assets/images/{media => circulating_items_web_client}/overdue_checkin_web_client.png (100%)
+ rename docs/modules/circulation/assets/images/{media => circulating_items_web_client}/patron_summary_checkouts_web_client.png (100%)
+ rename docs/modules/circulation/assets/images/{media => circulating_items_web_client}/precat_web_client.png (100%)
+ rename docs/modules/circulation/assets/images/{media => circulating_items_web_client}/record_in_house_action_web_client.png (100%)
+ rename docs/modules/circulation/assets/images/{media => circulating_items_web_client}/renew_action_web_client.png (100%)
+ rename docs/modules/circulation/assets/images/{media => circulating_items_web_client}/renew_item_calendar_web_client.png (100%)
+ rename docs/modules/circulation/assets/images/{media => circulating_items_web_client}/renew_item_web_client.png (100%)
+ rename docs/modules/circulation/assets/images/{media => circulating_items_web_client}/retrieve_patron_web_client.png (100%)
+ rename docs/modules/circulation/assets/images/{media => circulating_items_web_client}/specify_due_date1_web_client.png (100%)
+ rename docs/modules/circulation/assets/images/{media => curbside}/curbside_appointment_patron.png (100%)
+ rename docs/modules/circulation/assets/images/{media => curbside}/curbside_appointment_time.png (100%)
+ rename docs/modules/circulation/assets/images/{media => curbside}/curbside_claim.png (100%)
+ rename docs/modules/circulation/assets/images/{media => curbside}/curbside_confirm_email.png (100%)
+ rename docs/modules/circulation/assets/images/{media => curbside}/curbside_confirm_sms.png (100%)
+ rename docs/modules/circulation/assets/images/{media => curbside}/curbside_delivered_today.png (100%)
+ rename docs/modules/circulation/assets/images/{media => curbside}/curbside_new_holds_alert.png (100%)
+ rename docs/modules/circulation/assets/images/{media => curbside}/curbside_offer_email.png (100%)
+ rename docs/modules/circulation/assets/images/{media => curbside}/curbside_offer_sms.png (100%)
+ rename docs/modules/circulation/assets/images/{media => curbside}/curbside_patron_arrival_alert.png (100%)
+ rename docs/modules/circulation/assets/images/{media => curbside}/curbside_patron_outside.png (100%)
+ rename docs/modules/circulation/assets/images/{media => curbside}/curbside_release_claim.png (100%)
+ rename docs/modules/circulation/assets/images/{media => curbside}/curbside_staged_ready.png (100%)
+ rename docs/modules/circulation/assets/images/{media => curbside}/curbside_tbs.png (100%)
+ rename docs/modules/circulation/assets/images/{media => curbside}/opac_curbside_disabled.png (100%)
+ rename docs/modules/circulation/assets/images/{media => curbside}/opac_set_curbside.png (100%)
+ rename docs/modules/circulation/assets/images/{media => curbside}/opac_update_curbside.png (100%)
+ rename docs/modules/circulation/assets/images/{media => offline}/offline_checkin.png (100%)
+ rename docs/modules/circulation/assets/images/{media => offline}/offline_checkout.png (100%)
+ rename docs/modules/circulation/assets/images/{media => offline}/offline_clear_pending.png (100%)
+ rename docs/modules/circulation/assets/images/{media => offline}/offline_exceptions.png (100%)
+ rename docs/modules/circulation/assets/images/{media => offline}/offline_homepage_loggedin.png (100%)
+ rename docs/modules/circulation/assets/images/{media => offline}/offline_homepage_loggedout.png (100%)
+ rename docs/modules/circulation/assets/images/{media => offline}/offline_inhouse.png (100%)
+ rename docs/modules/circulation/assets/images/{media => offline}/offline_logout_warning.png (100%)
+ rename docs/modules/circulation/assets/images/{media => offline}/offline_patron_blocked.png (100%)
+ rename docs/modules/circulation/assets/images/{media => offline}/offline_patron_registration.png (100%)
+ rename docs/modules/circulation/assets/images/{media => offline}/offline_pending_xacts.png (100%)
+ rename docs/modules/circulation/assets/images/{media => offline}/offline_processing_complete.png (100%)
+ rename docs/modules/circulation/assets/images/{media => offline}/offline_renew.png (100%)
+ rename docs/modules/circulation/assets/images/{media => offline}/offline_session_list.png (100%)
+ rename docs/modules/circulation/assets/images/{media => offline}/offline_unprocessed.png (100%)
+ rename docs/modules/circulation/assets/images/{media => older_images}/PlaceHold-0.JPG (100%)
+ rename docs/modules/circulation/assets/images/{media => older_images}/PlaceHold-1.JPG (100%)
+ rename docs/modules/circulation/assets/images/{media => older_images}/PlaceHold-6.JPG (100%)
+ rename docs/modules/circulation/assets/images/{media => older_images}/Triggered_Events_and_Notices1.jpg (100%)
+ rename docs/modules/circulation/assets/images/{media => older_images}/Triggered_Events_and_Notices2.jpg (100%)
+ rename docs/modules/circulation/assets/images/{media => older_images}/Triggered_Events_and_Notices3.jpg (100%)
+ create mode 100644 docs/modules/circulation/assets/images/older_images/checkout_menu_web_client.png
+ rename docs/modules/circulation/assets/images/{media => older_images}/circulation_patron_records-18_web_client.png (100%)
+ rename docs/modules/circulation/assets/images/{media => older_images}/circulation_patron_records-19_web_client.png (100%)
+ rename docs/modules/circulation/assets/images/{media => older_images}/circulation_patron_records-20.png (100%)
+ rename docs/modules/circulation/assets/images/{media => older_images}/circulation_patron_records-23_web_client.png (100%)
+ rename docs/modules/circulation/assets/images/{media => older_images}/circulation_patron_records-24_web_client.png (100%)
+ rename docs/modules/circulation/assets/images/{media => older_images}/circulation_patron_records-25_web_client.png (100%)
+ rename docs/modules/circulation/assets/images/{media => older_images}/circulation_patron_records-26_web_client.png (100%)
+ rename docs/modules/circulation/assets/images/{media => older_images}/claimed_date_web_client.png (100%)
+ rename docs/modules/circulation/assets/images/{media => older_images}/cr_section_web_client.png (100%)
+ rename docs/modules/circulation/assets/images/{media => older_images}/holds-notifications-1.png (100%)
+ rename docs/modules/circulation/assets/images/{media => older_images}/holds-notifications-2.png (100%)
+ create mode 100644 docs/modules/circulation/assets/images/older_images/holds-pull-9.png
+ rename docs/modules/circulation/assets/images/{media => older_images}/holds_title_options.png (100%)
+ rename docs/modules/circulation/assets/images/{media => older_images}/holds_title_options_adv.png (100%)
+ rename docs/modules/circulation/assets/images/{media => older_images}/holds_title_searchresults.png (100%)
+ rename docs/modules/circulation/assets/images/{media => older_images}/holds_title_success.png (100%)
+ rename docs/modules/circulation/assets/images/{media => older_images}/mark_claims_returned_web_client.png (100%)
+ rename docs/modules/circulation/assets/images/{media => older_images}/place-another-hold-1.png (100%)
+ rename docs/modules/circulation/assets/images/{media => older_images}/staff-penalties-1_web_client.png (100%)
+ rename docs/modules/circulation/assets/images/{media => older_images}/staff-penalties-2_web_client.png (100%)
+ rename docs/modules/circulation/assets/images/{media => older_images}/staff-penalties-3_web_client.png (100%)
+ rename docs/modules/circulation/assets/images/{media => older_images}/staff-penalties-4_web_client.png (100%)
+ rename docs/modules/circulation/assets/images/{media => older_images}/staff-penalties-5_web_client.png (100%)
+ rename docs/modules/circulation/assets/images/{media => older_images}/staff-penalties-6_web_client.png (100%)
+ rename docs/modules/circulation/assets/images/{media => older_images}/staff-penalties-7_web_client.png (100%)
+ rename docs/modules/circulation/assets/images/{media => self_check}/self-check-admin-login.png (100%)
+ rename docs/modules/circulation/assets/images/{media => self_check}/self_check_check_out_1.png (100%)
+ rename docs/modules/circulation/assets/images/{media => self_check}/self_check_check_out_2.png (100%)
+ rename docs/modules/circulation/assets/images/{media => self_check}/self_check_check_out_3.png (100%)
+ rename docs/modules/circulation/assets/images/{media => self_check}/self_check_check_out_4.png (100%)
+ rename docs/modules/circulation/assets/images/{media => self_check}/self_check_check_out_5.png (100%)
+ rename docs/modules/circulation/assets/images/{media => self_check}/self_check_check_out_6.png (100%)
+ rename docs/modules/circulation/assets/images/{media => self_check}/self_check_error_1.png (100%)
+ rename docs/modules/circulation/assets/images/{media => self_check}/self_check_view_fines_1.png (100%)
+ rename docs/modules/circulation/assets/images/{media => self_check}/self_check_view_fines_2.png (100%)
+ rename docs/modules/circulation/assets/images/{media => self_check}/self_check_view_holds_1.png (100%)
+ rename docs/modules/circulation/assets/images/{media => self_check}/self_check_view_holds_2.png (100%)
+ rename docs/modules/circulation/assets/images/{media => self_check}/self_check_view_items_out_1.png (100%)
+ rename docs/modules/circulation/assets/images/{media => self_check}/self_check_view_items_out_2.png (100%)
+ rename docs/modules/circulation/assets/images/{media => triggered_events}/item_tel_display.png (100%)
+ rename docs/modules/circulation/assets/images/{media => triggered_events}/item_tel_location.png (100%)
+ rename docs/modules/circulation/assets/images/{media => triggered_events}/patron_tel_display.png (100%)
+ rename docs/modules/circulation/assets/images/{media => triggered_events}/patron_tel_location.png (100%)
+ rename docs/modules/circulation/assets/images/{media => triggered_events}/patron_tel_tabs.png (100%)
+
+commit e0d074c485b622fc9f860fcf7eade4e56c8919b3
+Author: Gina Monti <gmonti@biblio.org>
+Date:   Mon Jun 3 14:09:20 2024 -0400
+
+    Docs LP2060219 Kill media folders - OPAC folders
+    
+    initial file management
+    
+    Signed-off-by: Jane Sandberg <sandbergja@gmail.com>
+
+-	-	docs/modules/opac/assets/images/{media => baskets}/BatchActionsSearch-06.png
+-	-	docs/modules/opac/assets/images/{media => kpac}/Kids_OPAC1.jpg
+-	-	docs/modules/opac/assets/images/{media => kpac}/Kids_OPAC10.jpg
+-	-	docs/modules/opac/assets/images/{media => kpac}/Kids_OPAC11.jpg
+-	-	docs/modules/opac/assets/images/{media => kpac}/Kids_OPAC12.jpg
+-	-	docs/modules/opac/assets/images/{media => kpac}/Kids_OPAC13.jpg
+-	-	docs/modules/opac/assets/images/{media => kpac}/Kids_OPAC14.jpg
+-	-	docs/modules/opac/assets/images/{media => kpac}/Kids_OPAC15.jpg
+-	-	docs/modules/opac/assets/images/{media => kpac}/Kids_OPAC16.jpg
+-	-	docs/modules/opac/assets/images/{media => kpac}/Kids_OPAC17.jpg
+-	-	docs/modules/opac/assets/images/{media => kpac}/Kids_OPAC2.jpg
+-	-	docs/modules/opac/assets/images/{media => kpac}/Kids_OPAC4.jpg
+-	-	docs/modules/opac/assets/images/{media => kpac}/Kids_OPAC5.jpg
+-	-	docs/modules/opac/assets/images/{media => kpac}/Kids_OPAC6.jpg
+-	-	docs/modules/opac/assets/images/{media => kpac}/Kids_OPAC7.jpg
+-	-	docs/modules/opac/assets/images/{media => kpac}/Kids_OPAC8.jpg
+-	-	docs/modules/opac/assets/images/{media => kpac}/Kids_OPAC9.jpg
+-	-	docs/modules/opac/assets/images/{media => my_account}/opac_cc_config_error.png
+-	-	docs/modules/opac/assets/images/{media => my_account}/opac_cc_declined.png
+-	-	docs/modules/opac/assets/images/{media => my_account}/opac_cc_entry.png
+-	-	docs/modules/opac/assets/images/{media => my_account}/opac_cc_inprocess.png
+-	-	docs/modules/opac/assets/images/{media => my_account}/opac_cc_receipt.png
+-	-	docs/modules/opac/assets/images/{media => my_account}/opac_current_charges.png
+-	-	docs/modules/opac/assets/images/{media => my_account}/opac_hold_groups.png
+-	-	docs/modules/opac/assets/images/{media => my_account}/opac_remove_hg.png
+-	-	docs/modules/opac/assets/images/{media => my_account}/opac_select_charges.png
+-	-	docs/modules/opac/assets/images/{media => old_images}/BatchActionsSearch-01.png
+-	-	docs/modules/opac/assets/images/{media => old_images}/BatchActionsSearch-02.png
+-	-	docs/modules/opac/assets/images/{media => old_images}/BatchActionsSearch-03.png
+-	-	docs/modules/opac/assets/images/{media => old_images}/BatchActionsSearch-04.png
+-	-	docs/modules/opac/assets/images/{media => old_images}/My_Lists.png
+-	-	docs/modules/opac/assets/images/{media => old_images}/My_Lists1.jpg
+-	-	docs/modules/opac/assets/images/{media => old_images}/My_Lists3.jpg
+-	-	docs/modules/opac/assets/images/{media => old_images}/My_Lists6.jpg
+-	-	docs/modules/opac/assets/images/{media => old_images}/My_Lists7.jpg
+-	-	docs/modules/opac/assets/images/{media => old_images}/My_Lists_dd.png
+-	-	docs/modules/opac/assets/images/{media => old_images}/catalogue-10.png
+-	-	docs/modules/opac/assets/images/{media => old_images}/catalogue-3.png
+-	-	docs/modules/opac/assets/images/{media => old_images}/catalogue-5.png
+-	-	docs/modules/opac/assets/images/{media => old_images}/catalogue-6.png
+-	-	docs/modules/opac/assets/images/{media => old_images}/catalogue-7.png
+-	-	docs/modules/opac/assets/images/{media => old_images}/catalogue-8.png
+-	-	docs/modules/opac/assets/images/{media => old_images}/catalogue-8a.png
+-	-	docs/modules/opac/assets/images/{media => old_images}/catalogue-9.png
+-	-	docs/modules/opac/assets/images/{media => old_images}/message_center10.PNG
+-	-	docs/modules/opac/assets/images/{media => old_images}/message_center11.PNG
+-	-	docs/modules/opac/assets/images/{media => old_images}/message_center12.PNG
+-	-	docs/modules/opac/assets/images/{media => old_images}/my_list_call_numbers.png
+-	-	docs/modules/opac/assets/images/{media => old_images}/ope_email_captcha.png
+-	-	docs/modules/opac/assets/images/{media => old_images}/ope_email_logged_in.png
+-	-	docs/modules/opac/assets/images/{media => old_images}/ope_print.png
+-	-	docs/modules/opac/assets/images/{media => old_images}/ope_record_view.png
+-	-	docs/modules/opac/assets/images/{media => old_images}/other-formats-and-editions.png
+-	-	docs/modules/opac/assets/images/{media => old_images}/searchfilters1.PNG
+-	-	docs/modules/opac/assets/images/{media => old_images}/searchfilters2.PNG
+-	-	docs/modules/opac/assets/images/{media => old_images}/textcn1.png
+-	-	docs/modules/opac/assets/images/{media => old_images}/using-opac-view-permalink.png
+-	-	docs/modules/opac/assets/images/{media => opensearch}/opensearch1.png
+-	-	docs/modules/opac/assets/images/{media => opensearch}/opensearch2.png
+-	-	docs/modules/opac/assets/images/{media => opensearch}/opensearch3.png
+-	-	docs/modules/opac/assets/images/{media => opensearch}/opensearch4.png
+-	-	docs/modules/opac/assets/images/{media => tpac_meta}/advholdoption_6.jpg
+-	-	docs/modules/opac/assets/images/{media => tpac_meta}/advsrchpg_1.jpg
+-	-	docs/modules/opac/assets/images/{media => tpac_meta}/mrholdgf_9.jpg
+-	-	docs/modules/opac/assets/images/{media => tpac_meta}/placehold_5.jpg
+-	-	docs/modules/opac/assets/images/{media => tpac_meta}/recorddetailpg_8.jpg
+-	-	docs/modules/opac/assets/images/{media => tpac_meta}/srchresultpg2_3.jpg
+-	-	docs/modules/opac/assets/images/{media => tpac_meta}/srchresultpg3_4.jpg
+-	-	docs/modules/opac/assets/images/{media => tpac_meta}/srchresultpg4_7.jpg
+-	-	docs/modules/opac/assets/images/{media => tpac_meta}/srchresultpg_2.jpg
+1	1	docs/modules/opac/pages/baskets.adoc
+16	16	docs/modules/opac/pages/kids_opac.adoc
+9	9	docs/modules/opac/pages/my_account.adoc
+4	4	docs/modules/opac/pages/opensearch.adoc
+9	9	docs/modules/opac/pages/tpac_meta_record_holds.adoc
+ rename docs/modules/opac/assets/images/{media => baskets}/BatchActionsSearch-06.png (100%)
+ rename docs/modules/opac/assets/images/{media => kpac}/Kids_OPAC1.jpg (100%)
+ rename docs/modules/opac/assets/images/{media => kpac}/Kids_OPAC10.jpg (100%)
+ rename docs/modules/opac/assets/images/{media => kpac}/Kids_OPAC11.jpg (100%)
+ rename docs/modules/opac/assets/images/{media => kpac}/Kids_OPAC12.jpg (100%)
+ rename docs/modules/opac/assets/images/{media => kpac}/Kids_OPAC13.jpg (100%)
+ rename docs/modules/opac/assets/images/{media => kpac}/Kids_OPAC14.jpg (100%)
+ rename docs/modules/opac/assets/images/{media => kpac}/Kids_OPAC15.jpg (100%)
+ rename docs/modules/opac/assets/images/{media => kpac}/Kids_OPAC16.jpg (100%)
+ rename docs/modules/opac/assets/images/{media => kpac}/Kids_OPAC17.jpg (100%)
+ rename docs/modules/opac/assets/images/{media => kpac}/Kids_OPAC2.jpg (100%)
+ rename docs/modules/opac/assets/images/{media => kpac}/Kids_OPAC4.jpg (100%)
+ rename docs/modules/opac/assets/images/{media => kpac}/Kids_OPAC5.jpg (100%)
+ rename docs/modules/opac/assets/images/{media => kpac}/Kids_OPAC6.jpg (100%)
+ rename docs/modules/opac/assets/images/{media => kpac}/Kids_OPAC7.jpg (100%)
+ rename docs/modules/opac/assets/images/{media => kpac}/Kids_OPAC8.jpg (100%)
+ rename docs/modules/opac/assets/images/{media => kpac}/Kids_OPAC9.jpg (100%)
+ rename docs/modules/opac/assets/images/{media => my_account}/opac_cc_config_error.png (100%)
+ rename docs/modules/opac/assets/images/{media => my_account}/opac_cc_declined.png (100%)
+ rename docs/modules/opac/assets/images/{media => my_account}/opac_cc_entry.png (100%)
+ rename docs/modules/opac/assets/images/{media => my_account}/opac_cc_inprocess.png (100%)
+ rename docs/modules/opac/assets/images/{media => my_account}/opac_cc_receipt.png (100%)
+ rename docs/modules/opac/assets/images/{media => my_account}/opac_current_charges.png (100%)
+ rename docs/modules/opac/assets/images/{media => my_account}/opac_hold_groups.png (100%)
+ rename docs/modules/opac/assets/images/{media => my_account}/opac_remove_hg.png (100%)
+ rename docs/modules/opac/assets/images/{media => my_account}/opac_select_charges.png (100%)
+ rename docs/modules/opac/assets/images/{media => old_images}/BatchActionsSearch-01.png (100%)
+ rename docs/modules/opac/assets/images/{media => old_images}/BatchActionsSearch-02.png (100%)
+ rename docs/modules/opac/assets/images/{media => old_images}/BatchActionsSearch-03.png (100%)
+ rename docs/modules/opac/assets/images/{media => old_images}/BatchActionsSearch-04.png (100%)
+ rename docs/modules/opac/assets/images/{media => old_images}/My_Lists.png (100%)
+ rename docs/modules/opac/assets/images/{media => old_images}/My_Lists1.jpg (100%)
+ rename docs/modules/opac/assets/images/{media => old_images}/My_Lists3.jpg (100%)
+ rename docs/modules/opac/assets/images/{media => old_images}/My_Lists6.jpg (100%)
+ rename docs/modules/opac/assets/images/{media => old_images}/My_Lists7.jpg (100%)
+ rename docs/modules/opac/assets/images/{media => old_images}/My_Lists_dd.png (100%)
+ rename docs/modules/opac/assets/images/{media => old_images}/catalogue-10.png (100%)
+ rename docs/modules/opac/assets/images/{media => old_images}/catalogue-3.png (100%)
+ rename docs/modules/opac/assets/images/{media => old_images}/catalogue-5.png (100%)
+ rename docs/modules/opac/assets/images/{media => old_images}/catalogue-6.png (100%)
+ rename docs/modules/opac/assets/images/{media => old_images}/catalogue-7.png (100%)
+ rename docs/modules/opac/assets/images/{media => old_images}/catalogue-8.png (100%)
+ rename docs/modules/opac/assets/images/{media => old_images}/catalogue-8a.png (100%)
+ rename docs/modules/opac/assets/images/{media => old_images}/catalogue-9.png (100%)
+ rename docs/modules/opac/assets/images/{media => old_images}/message_center10.PNG (100%)
+ rename docs/modules/opac/assets/images/{media => old_images}/message_center11.PNG (100%)
+ rename docs/modules/opac/assets/images/{media => old_images}/message_center12.PNG (100%)
+ rename docs/modules/opac/assets/images/{media => old_images}/my_list_call_numbers.png (100%)
+ rename docs/modules/opac/assets/images/{media => old_images}/ope_email_captcha.png (100%)
+ rename docs/modules/opac/assets/images/{media => old_images}/ope_email_logged_in.png (100%)
+ rename docs/modules/opac/assets/images/{media => old_images}/ope_print.png (100%)
+ rename docs/modules/opac/assets/images/{media => old_images}/ope_record_view.png (100%)
+ rename docs/modules/opac/assets/images/{media => old_images}/other-formats-and-editions.png (100%)
+ rename docs/modules/opac/assets/images/{media => old_images}/searchfilters1.PNG (100%)
+ rename docs/modules/opac/assets/images/{media => old_images}/searchfilters2.PNG (100%)
+ rename docs/modules/opac/assets/images/{media => old_images}/textcn1.png (100%)
+ rename docs/modules/opac/assets/images/{media => old_images}/using-opac-view-permalink.png (100%)
+ rename docs/modules/opac/assets/images/{media => opensearch}/opensearch1.png (100%)
+ rename docs/modules/opac/assets/images/{media => opensearch}/opensearch2.png (100%)
+ rename docs/modules/opac/assets/images/{media => opensearch}/opensearch3.png (100%)
+ rename docs/modules/opac/assets/images/{media => opensearch}/opensearch4.png (100%)
+ rename docs/modules/opac/assets/images/{media => tpac_meta}/advholdoption_6.jpg (100%)
+ rename docs/modules/opac/assets/images/{media => tpac_meta}/advsrchpg_1.jpg (100%)
+ rename docs/modules/opac/assets/images/{media => tpac_meta}/mrholdgf_9.jpg (100%)
+ rename docs/modules/opac/assets/images/{media => tpac_meta}/placehold_5.jpg (100%)
+ rename docs/modules/opac/assets/images/{media => tpac_meta}/recorddetailpg_8.jpg (100%)
+ rename docs/modules/opac/assets/images/{media => tpac_meta}/srchresultpg2_3.jpg (100%)
+ rename docs/modules/opac/assets/images/{media => tpac_meta}/srchresultpg3_4.jpg (100%)
+ rename docs/modules/opac/assets/images/{media => tpac_meta}/srchresultpg4_7.jpg (100%)
+ rename docs/modules/opac/assets/images/{media => tpac_meta}/srchresultpg_2.jpg (100%)
+
+commit 4a8e13228617e8941a2fa95043673341091477d8
+Author: Mike Rylander <mrylander@gmail.com>
+Date:   Wed Jul 19 11:15:51 2023 -0400
+
+    LP#2026206: Treat empty or WS granularity as NULL
+    
+    When a granularity value is removed through the fieldmapper editor, the
+    field becomes blank instead of NULL.  We need to treat those as the same
+    when looking for events that should be processed "now".
+    
+    Release-note: Fix bug that prevented action triggers from processing when granularity is an empty string.
+    
+    Signed-off-by: Mike Rylander <mrylander@gmail.com>
+    Signed-off-by: Jane Sandberg <js7389@princeton.edu>
+    Signed-off-by: blake <blake@mobiusconsortium.org>
+    Signed-off-by: Scott Angel <scottangel@mobiusconsortium.org>
+    Signed-off-by: Steven Mayo <smayo@georgialibraries.org>
+    Signed-off-by: Terran McCanna <tmccanna@georgialibraries.org>
+
+1	1	Open-ILS/src/perlmods/lib/OpenILS/Application/Trigger.pm
+
+commit c4308f76f75aa3bbb68a8bc3c4047ebed1c62575
+Author: Jane Sandberg <sandbergja@gmail.com>
+Date:   Tue Jun 11 19:43:49 2024 -0400
+
+    LP2015112 follow-up: ng lint --fix
+    
+    Signed-off-by: Jane Sandberg <sandbergja@gmail.com>
+
+1	1	Open-ILS/src/eg2/src/app/staff/catalog/record/copies.component.ts
+
+commit b985216c24a2531eb604114e7ed2c16e68ead8f2
+Author: Stephanie Leary <stephanie.leary@equinoxoli.org>
+Date:   Tue May 14 14:51:40 2024 +0000
+
+    LP2058287 Label for Missing Pieces barcode input
+    
+    Fixes a label/form input ID mismatch in Circulation > Scan Item as
+    Missing Pieces.
+    
+    Release-note: Fixes the barcode input label in Scan Item as Missing Pieces.
+    
+    Signed-off-by: Stephanie Leary <stephanie.leary@equinoxoli.org>
+    Signed-off-by: Terran McCanna <tmccanna@georgialibraries.org>
+
+3	4	Open-ILS/src/eg2/src/app/staff/cat/item/missing-pieces.component.html
+
+commit db7526202146ef86ae47a8185bad9041f5aeb69e
+Author: Stephanie Leary <stephanie.leary@equinoxoli.org>
+Date:   Fri May 10 21:59:48 2024 +0000
+
+    LP2058747 Fix "(current)" in staff catalog pagination
+    
+    Corrects the staff catalog pagination's screen reader text so that only
+    the current page announces itself as current. Changes visually-hidden
+    text to ARIA labels and adds better internationalization support.
+    
+    Also corrects some link/button errors.
+    
+    Release-note: Corrects current page ARIA in staff catalog pagination
+    
+    Signed-off-by: Stephanie Leary <stephanie.leary@equinoxoli.org>
+    Signed-off-by: Terran McCanna <tmccanna@georgialibraries.org>
+    Signed-off-by: Michele Morgan <mmorgan@noblenet.org>
+    Signed-off-by: Steven Mayo <smayo@georgialibraries.org>
+
+15	12	Open-ILS/src/eg2/src/app/staff/catalog/result/pagination.component.html
+
+commit dfd4370a16774584d40f8927317f5c247af3c62e
+Author: Terran McCanna <tmccanna@georgialibraries.org>
+Date:   Wed Apr 17 15:40:41 2024 -0400
+
+    LP2015112 Hide Edit Call Number Link if Missing Permissions
+    
+    Hides the Edit call number link on the Angular staff catalog copy
+    table if the user does not have permissions to edit.
+    
+    Release-note: Hides Edit call number link if missing permission
+    
+    Signed-off-by: Terran McCanna <tmccanna@georgialibraries.org>
+    Signed-off-by: Steven Mayo <smayo@georgialibraries.org>
+    Signed-off-by: Michele Morgan <mmorgan@noblenet.org>
+
+5	3	Open-ILS/src/eg2/src/app/staff/catalog/record/copies.component.html
+9	2	Open-ILS/src/eg2/src/app/staff/catalog/record/copies.component.ts
+
+commit 2c488dc1c77d241bc381caa7c59a1142ca772434
+Author: Dan Briem <dbriem@wlsmail.org>
+Date:   Sun Jan 22 21:19:13 2023 -0500
+
+    LP#2003090 Angular Daily Cash Report Missing Print Capability
+    
+    Administration->Local Administration->Cash Reports
+    
+    Release-note: Add a print button to the Desk and Staff User Payment grids to
+    print the org, date range, totals, and full list.
+    
+    Signed-off-by: Dan Briem <dbriem@wlsmail.org>
+    Signed-off-by: Michele Morgan <mmorgan@noblenet.org>
+    Signed-off-by: Terran McCanna <tmccanna@georgialibraries.org>
+
+151	0	Open-ILS/src/eg2/src/app/staff/admin/local/cash-reports/cash-reports.component.html
+28	3	Open-ILS/src/eg2/src/app/staff/admin/local/cash-reports/cash-reports.component.ts
+
+commit a39cfd3e3ee1b6fd0aa515eaf63808a07e1873bc
+Author: Llewellyn Marshall <llewellyn.marshall@ncdcr.gov>
+Date:   Wed May 29 17:15:24 2024 -0400
+
+    LP2067640 fix mistake in retrieve coordinates test, added tests for the remaining 3 functions in geo application module
+    
+    Signed-off-by: Llewellyn Marshall <llewellyn.marshall@ncdcr.gov>
+    Signed-off-by: Jane Sandberg <js7389@princeton.edu>
+
+85	2	Open-ILS/src/perlmods/live_t/32-geosort.t
+
+commit b83cf0457d4aa89542a270a88b2fabc9d1d9cf7d
+Author: blake <blake@mobiusconsortium.org>
+Date:   Wed May 29 13:02:48 2024 -0500
+
+    LP#2059974: stamp DB update
+    
+    Signed-off-by: blake <blake@mobiusconsortium.org>
+
+1	1	Open-ILS/src/sql/Pg/002.schema.config.sql
+1	1	Open-ILS/src/sql/Pg/upgrade/{XXXX.data.restrict_suggestions.sql => 1418.data.restrict_suggestions.sql}
+ rename Open-ILS/src/sql/Pg/upgrade/{XXXX.data.restrict_suggestions.sql => 1418.data.restrict_suggestions.sql} (88%)
+
+commit eeb4126858e68712c332eed18c3a40a1c8c05d9c
+Author: Mike Rylander <mrylander@gmail.com>
+Date:   Wed Mar 20 12:24:33 2024 -0400
+
+    LP#2059974: Restrict search length for suggestions
+    
+    Long searches (many words) with few hits can cause performance issues
+    stemming from the combinatorial effect of suggestion efficacy testing.
+    IOW, things like full-title searches that match well (and therefore
+    produce few results, triggering suggestion) can cause cstore and
+    database backends to spin uselessly.
+    
+    This commit restricts searches to a three (3) term cap by default when
+    deciding whether to generate suggestions using the current
+    single-class/multi-word infrastructure.
+    
+    The term count limit can be adjusted by changing the value of the Global
+    Flag called search.max_suggestion_search_terms to be the desired
+    max-words integer value.  If the Global Flag is disabled, the default
+    value of 3 is enforced.
+    
+    This is a blunt instrument, but plans for a nuanced replacement are in
+    place for the next round of Did You Mean development.
+    
+    Signed-off-by: Mike Rylander <mrylander@gmail.com>
+    Signed-off-by: Elizabeth Davis <elizabeth.davis@sparkpa.org>
+    Signed-off-by: blake <blake@mobiusconsortium.org>
+
+8	0	Open-ILS/src/perlmods/lib/OpenILS/Application/Search/Biblio.pm
+13	0	Open-ILS/src/sql/Pg/950.data.seed-values.sql
+25	0	Open-ILS/src/sql/Pg/upgrade/XXXX.data.restrict_suggestions.sql
+ create mode 100644 Open-ILS/src/sql/Pg/upgrade/XXXX.data.restrict_suggestions.sql
+
+commit 54c1fb6714109a3e4ea8ece8d13a557432aaa3de
+Author: Stephanie Leary <stephanie.leary@equinoxoli.org>
+Date:   Thu Apr 25 21:20:35 2024 +0000
+
+    LP2049657 SVG logo file path docs
+    
+    Signed-off-by: Stephanie Leary <stephanie.leary@equinoxoli.org>
+    Signed-off-by: Jane Sandberg <sandbergja@gmail.com>
+    Signed-off-by: Steven Mayo <smayo@georgialibraries.org>
+
+13	0	docs/RELEASE_NOTES_NEXT/Client/Logo_File_Paths.adoc
+ create mode 100644 docs/RELEASE_NOTES_NEXT/Client/Logo_File_Paths.adoc
+
+commit f8f05d89146fdd76a9bafb5aab21096b8e9bd9f5
+Author: Stephanie Leary <stephanie.leary@equinoxoli.org>
+Date:   Mon Apr 15 22:06:52 2024 +0000
+
+    LP2049657 SVG logos; forced colors mode support
+    
+    Adds styles for CSS forced colors mode (and the older Windows High
+    Contrast Mode). In addition to cleanup of transparent borders and some
+    button focus styles, this alters the dropdown toggle icon in both
+    AngularJS and Angular, since these are created with angled borders in
+    the default stylesheet.
+    
+    Changes the logo image files' format from PNG to SVG for clarity and
+    improved appearance on dark page backgrounds.
+    
+    Release-note: SVG logos; support for forced colors mode
+    
+    Signed-off-by: Stephanie Leary <stephanie.leary@equinoxoli.org>
+    Signed-off-by: Jane Sandberg <sandbergja@gmail.com>
+    Signed-off-by: Steven Mayo <smayo@georgialibraries.org>
+
+7	0	Open-ILS/src/eg2/src/app/staff/catalog/result/facets.component.css
+15	1	Open-ILS/src/eg2/src/app/staff/nav.component.css
+1	1	Open-ILS/src/eg2/src/app/staff/splash.component.html
+2	1	Open-ILS/src/eg2/src/app/staff/splash.component.ts
+24	0	Open-ILS/src/eg2/src/styles.css
+31	1	Open-ILS/src/templates-bootstrap/opac/css/style.css.tt2
+2	2	Open-ILS/src/templates-bootstrap/opac/parts/footer.tt2
+1	1	Open-ILS/src/templates-bootstrap/opac/parts/topnav_logo.tt2
+1	1	Open-ILS/src/templates/circ/selfcheck/banner.tt2
+2	3	Open-ILS/src/templates/opac/parts/footer.tt2
+2	2	Open-ILS/src/templates/opac/parts/homesearch.tt2
+1	1	Open-ILS/src/templates/opac/parts/topnav_logo.tt2
+1	1	Open-ILS/src/templates/staff/admin/workstation/t_print_config.tt2
+5	1	Open-ILS/src/templates/staff/css/admin.css.tt2
+33	0	Open-ILS/src/templates/staff/css/style.css.tt2
+1	1	Open-ILS/src/templates/staff/t_splash.tt2
+140	0	Open-ILS/web/images/evergreen-logo-white.svg
+140	0	Open-ILS/web/images/evergreen-logo.svg
+147	0	Open-ILS/web/images/evergreen-round-logo.svg
+ create mode 100644 Open-ILS/web/images/evergreen-logo-white.svg
+ create mode 100644 Open-ILS/web/images/evergreen-logo.svg
+ create mode 100644 Open-ILS/web/images/evergreen-round-logo.svg
+
+commit 8eb7fac52f81348aafa60990eae2e4de678bc428
+Author: Garry Collum <gcollum@gmail.com>
+Date:   Wed Oct 11 16:29:02 2023 +0000
+
+    LP#2037564: Selfcheck cover art without ISBNS not shown
+    
+    Fixes the display of uploaded cover images in the Selfcheck holds list.
+    
+    Josh Stompro needs to get credit for this, he explained exactly how to
+    fix it in the LP bug.
+    
+    To test in concerto:
+    1. Find a bib with a cover image and download it.
+       (example search: piano concerto)
+    2. Upload the cover image to a bib that does not have a cover image.
+    3. In a patron record, place holds for these 2 titles, and one other
+       title that does not have an image.
+    4. Initialize and login to selfcheck
+       (https://[hostname]/eg/circ/selfcheck/main)
+    5. Login as the patron with holds and view the holds list. The uploaded
+       image is not displayed.
+    6. Apply the patch.
+    7. Repeat steps 4 & 5.  The uploaded image now displays.
+    
+    Release-note: Fixes issue where cover images were not displayed in the selfcheck holds list for titles that lack ISBNs.
+    
+    Signed-off-by: Garry Collum <gcollum@gmail.com>
+    Signed-off-by: Galen Charlton <gmc@equinoxOLI.org>
+
+1	1	Open-ILS/web/js/ui/default/circ/selfcheck/selfcheck.js
+
+commit 237de137088b89283d5ca91252585c4dbd2574e9
+Author: Galen Charlton <gmc@equinoxOLI.org>
+Date:   Fri May 10 16:47:39 2024 -0400
+
+    LP#2062023: stamp DB update
+    
+    Signed-off-by: Galen Charlton <gmc@equinoxOLI.org>
+
+1	1	Open-ILS/src/sql/Pg/002.schema.config.sql
+4	4	Open-ILS/src/sql/Pg/upgrade/{XXXX.data.add_permission_PATRON_BARRED_override.sql => 1415.data.add_permission_PATRON_BARRED_override.sql}
+ rename Open-ILS/src/sql/Pg/upgrade/{XXXX.data.add_permission_PATRON_BARRED_override.sql => 1415.data.add_permission_PATRON_BARRED_override.sql} (73%)
+
+commit f53109b92fcc689ff7a93a88e41df610c91df806
+Author: Steven Mayo <smayo@georgialibraries.org>
+Date:   Thu Apr 18 09:32:40 2024 -0400
+
+    LP#2062023 PATRON_BARRED.override permission missing in seed data
+    
+    Added PATRON_BARRED.override permission to seed data and with an upgrade script.
+    
+    Release-note: Add `PATRON_BARRED.override` permission if missing.
+    
+    Signed-off-by: Steven Mayo <smayo@georgialibraries.org>
+    Signed-off-by: Jane Sandberg <js7389@princeton.edu>
+    Signed-off-by: Galen Charlton <gmc@equinoxOLI.org>
+
+3	1	Open-ILS/src/sql/Pg/950.data.seed-values.sql
+14	0	Open-ILS/src/sql/Pg/upgrade/XXXX.data.add_permission_PATRON_BARRED_override.sql
+ create mode 100644 Open-ILS/src/sql/Pg/upgrade/XXXX.data.add_permission_PATRON_BARRED_override.sql
+
+commit cab51ada49a560e7f0f6dfc9a2d7502d7562dc26
+Author: Jason Stephenson <jason@sigio.com>
+Date:   Thu Apr 4 10:23:16 2024 -0400
+
+    LP2060153: Store remote file for EDI message sent via SFTP
+    
+    In a case of "Net::SFTP::Foreign is not Net::FTP," the remote filename
+    is not recorded when sending an EDI message via SFTP.  Instead, the
+    return value from the SFTP put function is stored in the remote_file
+    column of the acq.edi_message entry.  This is "1" on success and null
+    or undefined on failure.  This commit corrects that and puts the
+    remote filename in the proper place.
+    
+    To verify the bug, set up a test account to send EDI messages via SFTP
+    to another server or to another account on the local host.  Create an
+    acquisitions order with that account and then activate it.  Run the
+    EDI order pusher (edi_order_pusher.pl). Verify that the order arrived
+    in the destination location, and then check the acq.edi_message table
+    entry for this order.  The remote_file column value should be "1".
+    
+    To verify the fix, repeat the above steps with a new order. When you
+    check the acq.edi_message table, the remote_file column value should
+    now be the path to the file at the destination.
+    
+    Release-Note: Get actual remote file name when sending EDI message via SFTP.
+    
+    Signed-off-by: Jason Stephenson <jason@sigio.com>
+    Signed-off-by: Galen Charlton <gmc@equinoxOLI.org>
+
+5	6	Open-ILS/src/perlmods/lib/OpenILS/Utils/RemoteAccount.pm
+
+commit db4b811e039849b2c93b6fa2abe8f343c43562cd
+Author: Galen Charlton <gmc@equinoxOLI.org>
+Date:   Fri May 10 16:28:03 2024 -0400
+
+    LP#2055089: stamp DB update
+    
+    Signed-off-by: Galen Charlton <gmc@equinoxOLI.org>
+
+1	1	Open-ILS/src/sql/Pg/002.schema.config.sql
+1	1	Open-ILS/src/sql/Pg/upgrade/{xxxx.data.lp2055089_missing_shipment_notification_perms.sql => 1414.data.lp2055089_missing_shipment_notification_perms.sql}
+ rename Open-ILS/src/sql/Pg/upgrade/{xxxx.data.lp2055089_missing_shipment_notification_perms.sql => 1414.data.lp2055089_missing_shipment_notification_perms.sql} (91%)
+
+commit 84483f80a6cf7582bfaf9c8fa3d68e2599e4a440
+Author: Llewellyn Marshall <llewellyn.marshall@ncdcr.gov>
+Date:   Mon Feb 26 16:08:50 2024 -0500
+
+    LP2055089 Add missing shipment notification permissions
+    
+    Adds missing permissions for MANAGE_SHIPMENT_NOTIFICATION and
+    VIEW_SHIPMENT_NOTIFICATION to the seed data.
+    
+    Release-note: Adds missing shipment notification permissions
+    
+    Signed-off-by: Llewellyn Marshall <llewellyn.marshall@ncdcr.gov>
+    Signed-off-by: Terran McCanna <tmccanna@georgialibraries.org>
+    Signed-off-by: Steven Mayo <smayo@georgialibraries.org>
+    Signed-off-by: Michele Morgan <mmorgan@noblenet.org>
+    Signed-off-by: Galen Charlton <gmc@equinoxOLI.org>
+
+5	1	Open-ILS/src/sql/Pg/950.data.seed-values.sql
+23	0	Open-ILS/src/sql/Pg/upgrade/xxxx.data.lp2055089_missing_shipment_notification_perms.sql
+ create mode 100644 Open-ILS/src/sql/Pg/upgrade/xxxx.data.lp2055089_missing_shipment_notification_perms.sql
+
+commit 9adef22ce7ca22104e9fe53738efe772821ff18c
+Author: Stephanie Leary <stephanie.leary@equinoxoli.org>
+Date:   Mon Dec 18 04:13:42 2023 +0000
+
+    LP1945498 Responsive navbar for Angular staff
+    
+    Adds responsive classes and collapse toggles to the Angular staff main
+    navigation menu.
+    
+    Release-note: Makes Angular nav bar responsive
+    
+    Signed-off-by: Stephanie Leary <stephanie.leary@equinoxoli.org>
+    Signed-off-by: Terran McCanna <tmccanna@georgialibraries.org>
+
+36	7	Open-ILS/src/eg2/src/app/staff/nav.component.css
+393	106	Open-ILS/src/eg2/src/app/staff/nav.component.html
+10	1	Open-ILS/src/eg2/src/app/staff/nav.component.ts
+
+commit 32598f749ab23308652f0fd3e79cc2a199c00e2f
+Author: Jane Sandberg <sandbergja@gmail.com>
+Date:   Sat Apr 20 12:58:45 2024 -0700
+
+    LP1915464 follow-up: use spaces, not tabs; remove extra comma
+    
+    Signed-off-by: Jane Sandberg <sandbergja@gmail.com>
+
+3	3	Open-ILS/src/eg2/src/app/staff/admin/local/routing.module.ts
+
+commit 9eb7fc4ef06512f31df679685cfe405750ae1515
+Author: Stephanie Leary <stephanie.leary@equinoxoli.org>
+Date:   Tue Apr 9 14:53:43 2024 +0000
+
+    LP1915464 Hold Policies Modal Field Group Styling
+    
+    Adds the IDL class name to the fieldmapper editor form classes
+    to allow styles for individual fields.
+    
+    Applies new styling (extra space and a dotted line) to the first
+    row of each logical section of the Hold Policies modal.
+    
+    Release-note: Adds field group styling option to fieldmapper editor
+    
+    Signed-off-by: Stephanie Leary <stephanie.leary@equinoxoli.org>
+    Signed-off-by: Terran McCanna <tmccanna@georgialibraries.org>
+    Signed-off-by: Michele Morgan <mmorgan@noblenet.org>
+    Signed-off-by: Jane Sandberg <sandbergja@gmail.com>
+
+19	0	Open-ILS/src/eg2/src/app/share/fm-editor/fm-editor.component.css
+2	2	Open-ILS/src/eg2/src/app/share/fm-editor/fm-editor.component.html
+2	2	Open-ILS/src/eg2/src/app/staff/admin/local/routing.module.ts
+
+commit d632c83dfbeba7eba15d6f84099f83f331f63852
+Author: Stephanie Leary <stephanie.leary@equinoxoli.org>
+Date:   Tue Apr 9 14:53:25 2024 +0000
+
+    LP1915464 Angular Form Field Order - Hold Policies
+    
+    Attempts to apply some logical order to the extensive field list for
+    Administration > Local Administration > Hold Policies (as opposed to
+    the fields being displayed alphabetically). New order is roughly
+    Description - Active - Owning & Circ Libs - Record & Item Info -
+    User Info - Hold Info - Transit Info.
+    
+    Release-note: Reorders fields for Local Admin > Hold Policies
+    
+    Signed-off-by: Terran McCanna <tmccanna@georgialibraries.org>
+    Signed-off-by: Stephanie Leary <stephanie.leary@equinoxoli.org>
+    Signed-off-by: Michele Morgan <mmorgan@noblenet.org>
+    Signed-off-by: Jane Sandberg <sandbergja@gmail.com>
+
+10	1	Open-ILS/src/eg2/src/app/staff/admin/local/routing.module.ts
+
+commit 5fa4a15dfa90afe19f0e9116528f3022f0d7b72b
+Author: Galen Charlton <gmc@equinoxOLI.org>
+Date:   Tue Mar 26 10:38:25 2024 -0400
+
+    LP#1949214: do not jump-on-single-hit when doing metarecord search in staff catalog
+    
+    This patch fixes an issue where the staff catalog search would attempt to
+    jump to a bib record whose ID was the same as the metarecord when doing
+    a metarecord ("Group Formats/Editions") search that returns a single hit.
+    
+    Unlike the OPAC, this patch does not attempt to jump to the bib when
+    the single metarecord has only one constituent record.
+    
+    To test
+    -------
+    [1] Turn on the "Jump to details on 1 hit (staff client)" library
+        setting.
+    [2] Perform a metarecord search in the staff catalog that results in
+        a single hit. Observe that the staff catalog jumps to an incorrect
+        record (or no record at all).
+    [3] Apply the patch and repeat step to. This time, the catalog should
+        display the correct search results without attempting to jump
+        to a single record.
+    [4] Verify that the patch does not break jumping to the record when
+        doing a non-metarecord search that returns a single hit.
+    
+    Release-note: Fixes problem where the staff catalog could attempt to jump to an
+    incorrect record when performing a metarecord search that returns a single result.
+    
+    Signed-off-by: Galen Charlton <gmc@equinoxOLI.org>
+    Signed-off-by: Jane Sandberg <js7389@princeton.edu>
+
+10	4	Open-ILS/src/eg2/src/app/staff/catalog/result/results.component.ts
+
+commit 447061eef8ede6ed489d93bc57af54b0874b83ef
+Author: Jane Sandberg <js7389@princeton.edu>
+Date:   Wed Apr 17 07:57:34 2024 -0700
+
+    LP2052641 follow-up: use spaces instead of tab to keep lint happy
+    
+    Signed-off-by: Jane Sandberg <js7389@princeton.edu>
+
+1	1	Open-ILS/src/eg2/src/app/staff/admin/local/routing.module.ts
+
+commit 5fcf1ff8d69137fc01d22320336672366925a1a4
+Author: Terran McCanna <tmccanna@georgialibraries.org>
+Date:   Mon Apr 8 16:16:32 2024 -0400
+
+    LP2052641 Statistical Popularity Badge Editor Field Order
+    
+    This adjusts the order the fields appear in the grid columns and
+    in the modal for Administration > Local Administration > Statistical
+    Popularity Badges to match the order they are described in the
+    Evergreen documentation.
+    
+    Release-note: Reorders the fields for Local Admin > Statistical
+    Popularity Badges
+    
+    Signed-off-by: Terran McCanna <tmccanna@georgialibraries.org>
+    Signed-off-by: Jane Sandberg <js7389@princeton.edu>
+
+10	0	Open-ILS/src/eg2/src/app/staff/admin/local/routing.module.ts
+
+commit f7cb82a8048a77738158f065934281b67c22a984
+Author: Terran McCanna <tmccanna@georgialibraries.org>
+Date:   Mon Apr 8 12:51:00 2024 -0400
+
+    LP1839875 Circulation Duration Rule Fields - User-Friendly Order
+    
+    This applies a user-friendly order to the Administration > Server
+    Administration > Circulation Duration Rules columns and modal.
+    (Prior to this change, the fields displayed in alphabetical order.)
+    
+    Release-note: Re-orders Server Admin > Circulation Duration Rules fields
+    
+    Signed-off-by: Terran McCanna <tmccanna@georgialibraries.org>
+    Signed-off-by: Jane Sandberg <js7389@princeton.edu>
+
+8	0	Open-ILS/src/eg2/src/app/staff/admin/server/routing.module.ts
+
+commit f2c359bc7c5efc520db9d6c9c71c5aec057d7cc1
+Author: Terran McCanna <tmccanna@georgialibraries.org>
+Date:   Mon Apr 8 13:08:30 2024 -0400
+
+    LP1839878 Max Fine Rule Field Order
+    
+    This applies a more user-friendly field order to the Admin >
+    Server Admin > Circulatiuon Max Fine Rules page columns and
+    modal. (Prior to this, the order was alphabetical.)
+    
+    Release-note: Re-orders fields on Server Administration > Circulation Max Fine Rules
+    
+    Signed-off-by: Terran McCanna <tmccanna@georgialibraries.org>
+    Signed-off-by: Jane Sandberg <js7389@princeton.edu>
+
+8	0	Open-ILS/src/eg2/src/app/staff/admin/server/routing.module.ts
+
+commit 6eaea50171a1893a384d55aa80ba828a84192a60
+Author: Bill Erickson <berickxx@gmail.com>
+Date:   Tue Feb 20 12:47:10 2024 -0500
+
+    LP2054454 Skip Redis Pass Propogation when Unneeded
+    
+    Avoid error messages from ./configure when no redis accounts file is
+    present.
+    
+    --
+    To test:
+    
+    autoreconf -i
+    ./configure --prefix=/openils --sysconfdir=/openils/conf
+    --
+    
+    If no redis accounts file is present, you should only see this in the
+    config.log:
+    
+    configure:14146: result: Skipping Redis accounts password propagation
+    
+    Release-note: Remove unnecessary error message from ./configure installation step.
+    
+    Signed-off-by: Bill Erickson <berickxx@gmail.com>
+    Signed-off-by: Jane Sandberg <js7389@princeton.edu>
+
+13	7	configure.ac
+
+commit 82031e830054cc09ea3c381d6cd61dd3f7378a84
+Author: Stephanie Leary <stephanie.leary@equinoxoli.org>
+Date:   Tue Dec 19 16:04:35 2023 +0000
+
+    LP2042879 Shelving Location Groups Admin accessibility
+    
+    Fixes duplicate groups in the All Shelving Locations list.
+    
+    Corrects various accessibility issues in Admin > Local > Shelving
+    Location Groups:
+    
+    * Keyboard support for all buttons, including up/down arrow key support
+      for drag and drop
+    * Labels for all inputs, including checkboxes
+    * List and table markup, to provide context and navigation options for
+      screen reader users
+    * Headings, for screen reader navigation
+    * Responsive layout to allow content to reflow when text is zoomed in
+    
+    This also revises the drag and drop logic so that the position numbers
+    increment from the last unchanged position rather than their previous
+    value (which could result in unnecessarily large numbers).
+    
+    Release-note: Refactors Shelving Location Groups Admin for accessibility
+    
+    Signed-off-by: Stephanie Leary <stephanie.leary@equinoxoli.org>
+    Signed-off-by: Terran McCanna <tmccanna@georgialibraries.org>
+    Signed-off-by: blake <blake@mobiusconsortium.org>
+    Signed-off-by: Steven Mayo <smayo@georgialibraries.org>
+    Signed-off-by: Shula Link <slink@gchrl.org>
+
+57	0	Open-ILS/src/eg2/src/app/staff/admin/local/shelving_location_groups/shelving_location_groups.component.css
+142	153	Open-ILS/src/eg2/src/app/staff/admin/local/shelving_location_groups/shelving_location_groups.component.html
+121	57	Open-ILS/src/eg2/src/app/staff/admin/local/shelving_location_groups/shelving_location_groups.component.ts
+ create mode 100644 Open-ILS/src/eg2/src/app/staff/admin/local/shelving_location_groups/shelving_location_groups.component.css
+
+commit 81b7d3ba2397b1b61617efcdae2b0ac716e0e0f5
+Author: Michele Morgan <mmorgan@noblenet.org>
+Date:   Thu Apr 4 14:24:23 2024 +0000
+
+    LP1843940 - Permission Tree Display Sort Order
+    
+    Applies a descending sort by permission.grp_tree_display_entry.position to the pgtde pcrud call
+    
+    Release-Note: Fixes custom permission tree display sort in the patron registration/edit screen
+    
+    Signed-off-by: Michele Morgan <mmorgan@noblenet.org>
+    Signed-off-by: Terran McCanna <tmccanna@georgialibraries.org>
+    Signed-off-by: Jane Sandberg <js7389@princeton.edu>
+
+1	1	Open-ILS/src/eg2/src/app/staff/share/patron/profile-select.component.ts
+1	1	Open-ILS/web/js/ui/default/staff/circ/patron/regctl.js
+
+commit 6d8403d0e63693294c20cdb8f878017da01a80d7
+Author: Galen Charlton <gmc@equinoxOLI.org>
+Date:   Wed Feb 21 08:09:06 2024 -0500
+
+    LP#2051874: various improvements
+    
+    * Tighten up parsing of Release-notes: tags per a suggestion from Jason Stephenson
+    * Recognize Co-authored-by tags
+    * Recognize Signed-off-by tags that do not have email addresses
+    * Put bug number at the end of the notes to follow current practice
+    
+    Signed-off-by: Galen Charlton <gmc@equinoxOLI.org>
+    Signed-off-by: Andrea Buntz Neiman <abneiman@equinoxOLI.org>
+    Signed-off-by: Jane Sandberg <sandbergja@gmail.com>
+
+16	6	docs/tools/extract_release_notes_from_commits.pl
+
+commit 67536a4bdb1b99e10cbe657d0392aabea9d11b05
+Author: Galen Charlton <gmc@equinoxOLI.org>
+Date:   Wed Jan 31 14:09:49 2024 -0500
+
+    LP#2051874: new tool to help create release notes
+    
+    extract_release_notes_from_commits.pl, found in docs/tools in the
+    source tree, looks for release note, author, committer,
+    reviewer, and sponsor information from a stream of commits
+    in the branch specified by the --current-branch option
+    from the commit that is the common ancestor of the branch
+    specified by --prev-release-branch, which will normally be
+    a tag branch for a previous release.
+    
+    The output (sent to standard output) is AsciiDoc suitable for
+    pasting in release notes listing the short release notes (as
+    entered in Release-note tags in the commit messages), the
+    contributors (defined as patch authors, committers, and reviewers
+    from the Signed-off-by tags in the commit messages) and sponsors
+    (from the Sponsored-by tags in the commit messages).
+    
+    The output of this script should be proofread before publishing
+    release notes.
+    
+    Usage:
+    
+    --prev-release-branch=<Git commit reference>
+        Branch identifying the previous release to compare
+        against. Would be something like origin/tags/rel_3_12_0
+    --current-branch=<Git commit reference>
+        Branch to look for commits on. If not specified, defaults
+        to "HEAD"
+    --help
+        Print this help message
+    
+    To test
+    -------
+    [1] Ensure that your Git checkout is up to date.
+    [2] Run the tool and compare its output with what you would
+        expect from a manual inspection of the Git commit log.
+    
+    Release-note: New development tool to help prepare release notes using information from Git commits.
+    
+    Signed-off-by: Galen Charlton <gmc@equinoxOLI.org>
+    Signed-off-by: Andrea Buntz Neiman <abneiman@equinoxOLI.org>
+    Signed-off-by: Jane Sandberg <sandbergja@gmail.com>
+
+145	0	docs/tools/extract_release_notes_from_commits.pl
+ create mode 100755 docs/tools/extract_release_notes_from_commits.pl
