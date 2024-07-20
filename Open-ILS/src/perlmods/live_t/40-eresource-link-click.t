@@ -6,7 +6,7 @@ use Test::More tests => 2;
 use OpenILS::Utils::TestUtils;
 use OpenILS::Utils::CStoreEditor qw/:funcs/;
 
-diag('Test the EResourceLinkClick module');
+diag('Test the EResourceLinkClick::Click module');
 
 my $script = OpenILS::Utils::TestUtils->new();
 $script->bootstrap;
@@ -14,7 +14,7 @@ our $apputils = "OpenILS::Application::AppUtils";
 my $e = new_editor;
 $e->init;
 
-BEGIN { use_ok('OpenILS::Application::EResourceLinkClick'); }
+BEGIN { use_ok('OpenILS::WWW::EResourceLinkClick::Click'); }
 
 subtest('add_click', sub {
     plan tests => 2;
@@ -23,14 +23,14 @@ subtest('add_click', sub {
         plan tests => 2;
         set_global_flag($e, 'f');
 
-        my $response = OpenILS::Application::EResourceLinkClick->add_click(
+        my $response = OpenILS::WWW::EResourceLinkClick::Click->add_click(
             238,
             'http://example.com/ebookapi/t/001',
             'https://my-evergreen.org/eg/opac/results',
             'Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:123.0) Gecko/20100101 Firefox/123.0'
         );
 
-        is($response, OpenILS::Application::EResourceLinkClick::NotConfigured, 'says that it is not configured');
+        is($response, OpenILS::WWW::EResourceLinkClick::Click::NotConfigured, 'says that it is not configured');
         assert_no_clicks_added_to_db($e);
     });
 
@@ -41,53 +41,53 @@ subtest('add_click', sub {
         subtest('when the referer did not come from the record or results page', sub {
             plan tests => 2;
 
-            my $response = OpenILS::Application::EResourceLinkClick->add_click(
+            my $response = OpenILS::WWW::EResourceLinkClick::Click->add_click(
                 238,
                 'http://example.com/ebookapi/t/001',
                 'https://some-non-eg-site/bad-path',
                 'Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:123.0) Gecko/20100101 Firefox/123.0'
             );
 
-            is($response, OpenILS::Application::EResourceLinkClick::BadInput, 'says that the input is bad');
+            is($response, OpenILS::WWW::EResourceLinkClick::Click::BadInput, 'says that the input is bad');
             assert_no_clicks_added_to_db($e);
         });
 
         subtest('when user agent is a bot', sub {
                 plan tests => 2;
-                my $response = OpenILS::Application::EResourceLinkClick->add_click(
+                my $response = OpenILS::WWW::EResourceLinkClick::Click->add_click(
                     238,
                     'http://example.com/ebookapi/t/001',
                     'https://my-evergreen.org/eg/opac/results',
                     'Mozilla/5.0 (compatible; Googlebot/2.1; +http://www.google.com/bot.html)'
                 );
 
-                is($response, OpenILS::Application::EResourceLinkClick::BadInput, 'says that the input is bad');
+                is($response, OpenILS::WWW::EResourceLinkClick::Click::BadInput, 'says that the input is bad');
                 assert_no_clicks_added_to_db($e);
         });
 
         subtest('when url does not exist on the record in question', sub {
                 plan tests => 2;
-                my $response = OpenILS::Application::EResourceLinkClick->add_click(
+                my $response = OpenILS::WWW::EResourceLinkClick::Click->add_click(
                     238,
                     'http://not-a-real-url/not-actually/on-the-record',
                     'https://my-evergreen.org/eg/opac/results',
                     'Mozilla/5.0 (compatible; Googlebot/2.1; +http://www.google.com/bot.html)'
                 );
 
-                is($response, OpenILS::Application::EResourceLinkClick::BadInput, 'says that the input is bad');
+                is($response, OpenILS::WWW::EResourceLinkClick::Click::BadInput, 'says that the input is bad');
                 assert_no_clicks_added_to_db($e);
         });
 
         subtest('when input is valid', sub {
             plan tests => 2;
-            my $response = OpenILS::Application::EResourceLinkClick->add_click(
+            my $response = OpenILS::WWW::EResourceLinkClick::Click->add_click(
                 238,
                 'http://example.com/ebookapi/t/001',
                 'https://my-evergreen.org/eg/opac/results',
                 'Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:123.0) Gecko/20100101 Firefox/123.0'
             );
 
-            is($response, OpenILS::Application::EResourceLinkClick::Success, 'says that it is successful');
+            is($response, OpenILS::WWW::EResourceLinkClick::Click::Success, 'says that it is successful');
             my $rows = $e->search_action_eresource_link_click({record => 238});
             is(scalar(@{ $rows }), 1, 'adds the click to the database');
 
@@ -112,14 +112,14 @@ subtest('add_click', sub {
             $e->create_asset_course_module_course_materials( $acmcm );
             $e->xact_commit;
 
-            my $response = OpenILS::Application::EResourceLinkClick->add_click(
+            my $response = OpenILS::WWW::EResourceLinkClick::Click->add_click(
                 238,
                 'http://example.com/ebookapi/t/001',
                 'https://my-evergreen.org/eg/opac/results',
                 'Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:123.0) Gecko/20100101 Firefox/123.0'
             );
 
-            is($response, OpenILS::Application::EResourceLinkClick::Success, 'says that it is successful');
+            is($response, OpenILS::WWW::EResourceLinkClick::Click::Success, 'says that it is successful');
             my $rows = $e->search_action_eresource_link_click_course({course => 12345});
             is(scalar(@{ $rows }), 1, 'adds a click course mapping to the database');
             is($rows->[0]->course_name, 'Introduction to cats', 'adds the course name to the mapping');

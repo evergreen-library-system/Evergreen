@@ -1835,7 +1835,7 @@ CREATE TABLE action.eresource_link_click (
 CREATE TABLE action.eresource_link_click_course (
     id            SERIAL      PRIMARY KEY,
     click         BIGINT NOT NULL REFERENCES action.eresource_link_click (id) ON DELETE CASCADE,
-    course        INT NOT NULL, -- no REFERENCES, since the course could have been deleted
+    course        INT REFERENCES asset.course_module_course (id) ON UPDATE CASCADE ON DELETE SET NULL,
     course_name   TEXT NOT NULL,
     course_number TEXT NOT NULL
 );

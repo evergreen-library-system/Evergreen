@@ -1,0 +1,7 @@
+This OpenILS::Application Perl module namespace is generally
+reserved for modules (and module groups) that provide an OpenSRF
+application implementation.
+
+If you are writing a Perl module that does not implement
+an OpenSRF application, consider adding it to a different directory
+and namespace.

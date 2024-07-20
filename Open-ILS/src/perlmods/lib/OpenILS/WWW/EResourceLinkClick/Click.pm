@@ -1,4 +1,14 @@
-package OpenILS::Application::EResourceLinkClick;
+=head1 NAME
+
+OpenILS::WWW::EResourceLinkClick::Click.pm
+
+=head1 DESCRIPTION
+This module is responsible for validating and
+persisting information about a click on
+an eresource link.
+=cut
+
+package OpenILS::WWW::EResourceLinkClick::Click;
 use OpenILS::Application;
 use base qw/OpenILS::Application/;
 use OpenILS::Utils::CStoreEditor qw/:funcs/;
