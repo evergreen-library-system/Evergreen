@@ -361,3 +361,6 @@ Open-ILS/web/js/ui/default/staff/bower_components/
 Open-ILS/web/js/ui/default/common/build/
 Open-ILS/web/eg2/
 Open-ILS/web/opac/deps/node_modules/
+
+# Ignore O/S-specific hidden files
+.DS_Store
