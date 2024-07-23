@@ -9,9 +9,9 @@
     <eg-grid-toolbar-button [disabled]="!permissions.CREATE_MONOGRAPH_PART"
       label="New Monograph Part" i18n-label [action]="createNew">
     </eg-grid-toolbar-button>
-    <eg-grid-toolbar-action label="Merge Selected" i18n-label [action]="mergeSelected">
+    <eg-grid-toolbar-action [disabled]="!(permissions.DELETE_MONOGRAPH_PART && permissions.UPDATE_HOLD)" label="Merge Selected" i18n-label [action]="mergeSelected">
     </eg-grid-toolbar-action>
-    <eg-grid-toolbar-action label="Delete Selected" i18n-label [action]="deleteSelected">
+    <eg-grid-toolbar-action [disabled]="!permissions.DELETE_MONOGRAPH_PART" label="Delete Selected" i18n-label [action]="deleteSelected">
     </eg-grid-toolbar-action>
   </eg-grid>
   

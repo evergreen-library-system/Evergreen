@@ -59,7 +59,8 @@ export class PartsComponent implements OnInit {
         this.perm.hasWorkPermHere([
             'CREATE_MONOGRAPH_PART',
             'UPDATE_MONOGRAPH_PART',
-            'DELETE_MONOGRAPH_PART'
+            'DELETE_MONOGRAPH_PART',
+            'UPDATE_HOLD'
         ]).then(perms => this.permissions = perms);
 
         this.gridDataSource.getRows = (pager: Pager, sort: any[]) => {
