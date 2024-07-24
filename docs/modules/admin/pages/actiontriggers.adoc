@@ -84,7 +84,7 @@ image::actiontriggers/event_def_details.png[Event Definition Details]
   [%- USE date -%]
   [%- user = target.0.usr -%]
   To: [%- params.recipient_email || user.email %]
-  From: [%- helpers.get_org_setting(target.home_ou.id, 'org.bounced_emails') || lib.email || params.sender_email || default_sender %]
+  From: [%- helpers.get_org_setting(user.home_ou.id, 'org.bounced_emails') || lib.email || params.sender_email || default_sender %]
   Subject: Overdue Items Marked Lost
   Auto-Submitted: auto-generated
 
