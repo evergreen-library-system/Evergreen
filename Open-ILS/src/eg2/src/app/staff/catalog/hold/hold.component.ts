@@ -506,7 +506,7 @@ export class HoldComponent implements OnInit, OnDestroy {
             const name = setting.name();
             let value = setting.value();
 
-            if (value === '' || value === null) { return; }
+            if (value === '' || value === null || value === '""') { return; }
 
             // When fleshing 'settings' on the actor.usr object,
             // we're grabbing the raw JSON values.
