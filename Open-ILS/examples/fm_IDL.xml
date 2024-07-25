@@ -2369,14 +2369,14 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 		</links>
 		<permacrud xmlns="http://open-ils.org/spec/opensrf/IDL/permacrud/v1">
 			<actions>
-				<create permission="ADMIN_SURVEY">
+				<create permission="ADMIN_SURVEY UPDATE_SURVEY">
 					<context link="survey" field="owner"/>
 				</create>
 				<retrieve/>
-				<update permission="ADMIN_SURVEY">
+				<update permission="ADMIN_SURVEY UPDATE_SURVEY">
 					<context link="survey" field="owner"/>
 				</update>
-				<delete permission="ADMIN_SURVEY">
+				<delete permission="ADMIN_SURVEY UPDATE_SURVEY">
 					<context link="survey" field="owner"/>
 				</delete>
 			</actions>
@@ -2706,16 +2706,16 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 		</links>
 		<permacrud xmlns="http://open-ils.org/spec/opensrf/IDL/permacrud/v1">
 			<actions>
-				<create permission="ADMIN_SURVEY">
+				<create permission="ADMIN_SURVEY UPDATE_USER">
 					<context link="survey" field="owner"/>
 				</create>
 				<retrieve permission="VIEW_USER">
 					<context link="usr" field="home_ou"/>
 				</retrieve>
-				<update permission="ADMIN_SURVEY">
+				<update permission="ADMIN_SURVEY UPDATE_USER">
 					<context link="survey" field="owner"/>
 				</update>
-				<delete permission="ADMIN_SURVEY">
+				<delete permission="ADMIN_SURVEY UPDATE_USER">
 					<context link="survey" field="owner"/>
 				</delete>
 			</actions>
@@ -8398,14 +8398,14 @@ SELECT  usr,
 		</links>
 		<permacrud xmlns="http://open-ils.org/spec/opensrf/IDL/permacrud/v1">
 			<actions>
-				<create permission="ADMIN_SURVEY">
+				<create permission="ADMIN_SURVEY UPDATE_SURVEY">
 					<context link="question" jump="survey" field="owner"/>
 				</create>
 				<retrieve/>
-				<update permission="ADMIN_SURVEY">
+				<update permission="ADMIN_SURVEY UPDATE_SURVEY">
 					<context link="question" jump="survey" field="owner"/>
 				</update>
-				<delete permission="ADMIN_SURVEY">
+				<delete permission="ADMIN_SURVEY UPDATE_SURVEY">
 					<context link="question" jump="survey" field="owner"/>
 				</delete>
 			</actions>
