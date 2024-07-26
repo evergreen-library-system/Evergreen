@@ -540,7 +540,7 @@ export class HoldComponent implements OnInit {
         if (!this.pickupLib || this.disableOrgs.includes(this.pickupLib)) {
             return false;
         }
-        if (this.notifySms) {
+        if (this.smsEnabled && this.notifySms) {
             if (!this.smsValue.length || !this.smsCbox?.selectedId) {
                 return false;
             }
@@ -639,7 +639,7 @@ export class HoldComponent implements OnInit {
             override: override,
             notifyEmail: this.notifyEmail, // bool
             notifyPhone: this.notifyPhone ? this.phoneValue : null,
-            notifySms: this.notifySms ? this.smsValue : null,
+            notifySms: this.smsEnabled && this.notifySms ? this.smsValue : null,
             smsCarrier: this.smsCbox ? this.smsCbox.selectedId : null,
             thawDate: this.suspend ? this.activeDateStr : null,
             frozen: this.suspend,
