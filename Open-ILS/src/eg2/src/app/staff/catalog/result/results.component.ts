@@ -1,4 +1,4 @@
-import {Component, OnInit, OnDestroy, ViewChild, Input} from '@angular/core';
+import {Component, OnInit, OnDestroy, ViewChild, Input, HostListener} from '@angular/core';
 import {Observable, Subscription} from 'rxjs';
 import {tap, map, switchMap, distinctUntilChanged} from 'rxjs/operators';
 import {Router, ActivatedRoute, ParamMap} from '@angular/router';
@@ -11,6 +11,11 @@ import {StaffCatalogService} from '../catalog.service';
 import {IdlObject} from '@eg/core/idl.service';
 import {BasketService} from '@eg/share/catalog/basket.service';
 import {ServerStoreService} from '@eg/core/server-store.service';
+
+/* eslint-disable no-magic-numbers */
+const resultsCols = [10,12];
+const mobileWidth = 992;
+/* eslint-enable no-magic-numbers */
 
 @Component({
     selector: 'eg-catalog-results',
@@ -31,6 +36,16 @@ export class ResultsComponent implements OnInit, OnDestroy {
     routeSub: Subscription;
     basketSub: Subscription;
     showMoreDetails = false;
+    facetsCollapsed = false;
+    facetsHorizontal = 
+        window.innerWidth > mobileWidth;
+    resultsWidth: String;
+
+    @HostListener('window:resize', ['$event'])
+    onResize(event) {
+      this.facetsHorizontal = 
+        event.target.innerWidth > mobileWidth;
+    }
 
     constructor(
         private route: ActivatedRoute,
@@ -78,6 +93,9 @@ export class ResultsComponent implements OnInit, OnDestroy {
         // Watch for basket changes applied by other components.
         this.basketSub = this.basket.onChange.subscribe(
             () => this.applyRecordSelection());
+            
+        // Set how many columns the results may take.
+        this.setResultsWidth();
     }
 
     ngOnDestroy() {
@@ -181,6 +199,18 @@ export class ResultsComponent implements OnInit, OnDestroy {
         } else {
             this.basket.removeRecordIds(ids);
         }
+    }
+    
+    handleFacetShow() {
+        this.facetsCollapsed = !this.facetsCollapsed;
+        this.setResultsWidth();
+    }
+    
+    setResultsWidth(){
+        // results can take up the entire row
+        // when facets are not present
+        this.resultsWidth = 
+             'col-lg-' + resultsCols[(!this.basket || !this.facetsCollapsed ? 0 : 1)];
     }
 }
 
