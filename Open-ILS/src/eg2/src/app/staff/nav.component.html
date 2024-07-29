@@ -12,7 +12,7 @@
     aria-label="Home" i18n-aria-label="Home button aria label@@navbar-home-button-aria-label"
     egAccessKey keyCtx="navbar" i18n-keySpec i18n-keyDesc
     keySpec="alt+h" keyDesc="Navigate Home">
-    <span class="material-icons" aria-hidden="true">home</span>
+    <span class="material-icons" aria-hidden="true" title="Home: Alt+H">home</span>
     <span class="visually-hidden" i18n>Home</span>
   </a>
   <button class="navbar-toggler text-light" type="button" (click)="isMenuCollapsed = !isMenuCollapsed">&#9776;</button>
@@ -29,19 +29,20 @@
             (keydown.space)="isMenuCollapsed = true" 
             (keydown.enter)="isMenuCollapsed = true"
             egAccessKey keyCtx="navbar" i18n-keySpec i18n-keyDesc
-            keySpec="alt+s f4" keyDesc="Patron Search">
+            keySpec="f4" keyDesc="Patron Search">
             <span class="material-icons" aria-hidden="true">person</span>
             <span i18n>Search for Patrons</span>
-            <span i18n>- F4</span>
+            <kbd i18n>F4</kbd>
           </a>
-          <a class="dropdown-item" ngbDropdownItem 
+          <a class="dropdown-item" ngbDropdownItem href="/eg/staff/cat/item/search"
             (click)="isMenuCollapsed = true" 
             (keydown.space)="isMenuCollapsed = true" 
             (keydown.enter)="isMenuCollapsed = true"
-            href="/eg/staff/cat/item/search">
+            egAccessKey keyCtx="navbar" i18n-keySpec i18n-keyDesc
+            keySpec="f5" keyDesc="Navigate To Item Status">
             <span class="material-icons" aria-hidden="true">assignment</span>
             <span i18n>Search for Items by Barcode</span>
-            <span i18n>- F5</span>
+            <kbd i18n>F5</kbd>
           </a>
           <a class="dropdown-item" ngbDropdownItem 
            routerLinkActive="active" 
@@ -53,11 +54,13 @@
             keySpec="f3" keyDesc="Catalog">
             <span class="material-icons" aria-hidden="true">search</span>
             <span i18n>Search the Catalog</span>
-            <span i18n>- F3</span>
+            <kbd i18n>F3</kbd>
           </a>
         </div>
       </div>
     </div>
+
+    <!-- CIRCULATION -->
 
     <div class="navbar-nav">
       <div ngbDropdown class="nav-item dropdown">
@@ -73,7 +76,7 @@
             keySpec="f1" keyDesc="Checkout">
             <span class="material-icons" aria-hidden="true">trending_up</span>
             <span i18n>Check Out</span>
-            <span i18n>- F1</span>
+            <kbd i18n>F1</kbd>
           </a>
           <a class="dropdown-item" ngbDropdownItem  href="/eg/staff/circ/checkin/checkin"
             (click)="isMenuCollapsed = true" 
@@ -83,7 +86,7 @@
             keySpec="f2" keyDesc="Checkin">
             <span class="material-icons" aria-hidden="true">trending_down</span>
             <span i18n>Check In</span>
-            <span i18n>- F2</span>
+            <kbd i18n>F2</kbd>
           </a>
           <a class="dropdown-item" ngbDropdownItem  href="/eg/staff/circ/checkin/capture"
             (click)="isMenuCollapsed = true" 
@@ -93,7 +96,7 @@
             keySpec="shift+f2" keyDesc="Capture Holds">
             <span class="material-icons" aria-hidden="true">pin_drop</span>
             <span i18n>Capture Holds</span>
-            <span i18n>- Shift+F2</span>
+            <kbd i18n>Shift+F2</kbd>
           </a>
           <a class="dropdown-item" ngbDropdownItem routerLinkActive="active" 
             ariaCurrentWhenActive="page" routerLink="/staff/circ/holds/pull-list"
@@ -111,7 +114,7 @@
             keySpec="ctrl+f2" keyDesc="Renew Items">
             <span class="material-icons" aria-hidden="true">autorenew</span>
             <span i18n>Renew Items</span>
-            <span i18n>- Ctrl+F2</span>
+            <kbd i18n>Ctrl+F2</kbd>
           </a>
           <a class="dropdown-item" ngbDropdownItem  href="/eg/staff/circ/patron/register"
             (click)="isMenuCollapsed = true" 
@@ -121,7 +124,7 @@
             keySpec="shift+f1" keyDesc="Register Patron">
             <span class="material-icons" aria-hidden="true">person_add</span>
             <span i18n>Register Patron</span>
-            <span i18n>- Shift+F1</span>
+            <kbd i18n>Shift+F1</kbd>
           </a>
           <a *ngIf="maxRecentPatrons" class="dropdown-item" ngbDropdownItem  href="/eg/staff/circ/patron/last"
             (click)="isMenuCollapsed = true" 
@@ -131,7 +134,7 @@
             keySpec="f8" keyDesc="Retrieve Last Patron">
             <span class="material-icons" aria-hidden="true">redo</span>
             <span i18n>Retrieve Last Patron</span>
-            <span i18n>- F8</span>
+            <kbd i18n>F8</kbd>
           </a>
           <a *ngIf="maxRecentPatrons > 1" class="dropdown-item" ngbDropdownItem  
             href="/eg/staff/circ/patron/search?show_recent=1"
@@ -182,7 +185,7 @@
             keySpec="f6" keyDesc="Record In-House Use">
             <span class="material-icons" aria-hidden="true">playlist_add</span>
             <span i18n>Record In-House Use</span>
-            <span i18n>- F6</span>
+            <kbd i18n>F6</kbd>
           </a>
           <a class="dropdown-item" ngbDropdownItem  
             href="/eg/staff/circ/holds/shelf"
@@ -209,7 +212,7 @@
             keySpec="f5" keyDesc="Navigate To Item Status">
             <span class="material-icons" aria-hidden="true">question_answer</span>
             <span i18n>Item Status</span>
-            <span i18n>- F5</span>
+            <kbd i18n>F5</kbd>
           </a>
           <a class="dropdown-item" ngbDropdownItem routerLinkActive="active" 
             ariaCurrentWhenActive="page" 
@@ -227,7 +230,7 @@
             keySpec="f9" keyDesc="Reprint Last Receipt">
             <span class="material-icons" aria-hidden="true">redo</span>
             <span i18n>Reprint Last Receipt</span>
-            <span i18n>- F9</span>
+            <kbd i18n>F9</kbd>
           </button>
           <div class="dropdown-divider"></div>
           <a class="dropdown-item" ngbDropdownItem  
@@ -251,6 +254,8 @@
       </div>
     </div>
 
+    <!-- CIRCULATION (EXPERIMENTAL) -->
+
     <div class="navbar-nav" *ngIf="showAngularCirc">
       <div ngbDropdown class="nav-item dropdown">
         <button type="button" ngbDropdownToggle i18n 
@@ -263,9 +268,12 @@
             ariaCurrentWhenActive="page" routerLink="/staff/circ/patron/search"
             (click)="isMenuCollapsed = true" 
             (keydown.space)="isMenuCollapsed = true" 
-            (keydown.enter)="isMenuCollapsed = true">
+            (keydown.enter)="isMenuCollapsed = true"
+            egAccessKey keyCtx="navbar" i18n-keySpec i18n-keyDesc
+            keySpec="f4" keyDesc="Search for Patrons">
             <span class="material-icons" aria-hidden="true">person</span>
             <span i18n>Search for Patrons</span>
+            <kbd i18n>F4</kbd>
           </a>
           <a class="dropdown-item" ngbDropdownItem
            routerLinkActive="active" 
@@ -277,6 +285,7 @@
             keySpec="f1" keyDesc="Checkout">
             <span class="material-icons" aria-hidden="true">trending_up</span>
             <span i18n>Check Out</span>
+            <kbd i18n>F1</kbd>
           </a>
           <a class="dropdown-item" ngbDropdownItem
            routerLinkActive="active" 
@@ -288,6 +297,7 @@
             keySpec="f2" keyDesc="Checkin">
             <span class="material-icons" aria-hidden="true">trending_down</span>
             <span i18n>Check In</span>
+            <kbd i18n>F2</kbd>
           </a>
           <a class="dropdown-item" ngbDropdownItem
            routerLinkActive="active" 
@@ -299,6 +309,7 @@
             keySpec="shift+f2" keyDesc="Capture Holds">
             <span class="material-icons" aria-hidden="true">pin_drop</span>
             <span i18n>Capture Holds</span>
+            <kbd i18n>Shift+F2</kbd>
           </a>
           <a class="dropdown-item" ngbDropdownItem
            routerLinkActive="active" 
@@ -318,6 +329,7 @@
             keySpec="ctrl+f2" keyDesc="Renew Items">
             <span class="material-icons" aria-hidden="true">autorenew</span>
             <span i18n>Renew Items</span>
+            <kbd i18n>Ctrl+F2</kbd>
           </a>
           <a class="dropdown-item" ngbDropdownItem routerLinkActive="active" 
             ariaCurrentWhenActive="page" routerLink="/staff/circ/patron/register"
@@ -384,7 +396,7 @@
             keySpec="f3" keyDesc="Catalog">
             <span class="material-icons" aria-hidden="true">search</span>
             <span i18n>Search the Catalog</span>
-            <span i18n>- F3</span>
+            <kbd i18n>F3</kbd>
           </a>
           <a *ngIf="showTraditionalCatalog" class="dropdown-item"
             href="/eg/staff/cat/catalog/index" 
@@ -402,6 +414,7 @@
             keySpec="f5" keyDesc="Navigate To Item Status">
             <span class="material-icons" aria-hidden="true">question_answer</span>
             <span i18n>Item Status</span>
+            <kbd i18n>F5</kbd>
           </a>
           <div class="dropdown-divider"></div>
           <a ngbDropdownItem class="dropdown-item"
@@ -439,7 +452,7 @@
             keySpec="shift+f3" keyDesc="Retrieve Bib Record by TCN">
             <span class="material-icons" aria-hidden="true">collections_bookmark</span>
             <span i18n>Retrieve Bib Record by TCN</span>
-            <span i18n>- Shift+F3</span>
+            <kbd i18n>Shift+F3</kbd>
           </a>
           <button type="button" class="dropdown-item" ngbDropdownItem 
             (click)="retrieveLastRecord(); isMenuCollapsed = true" 
@@ -447,7 +460,7 @@
             keySpec="shift+f8" keyDesc="Retrieve Last Bib Record">
             <span class="material-icons" aria-hidden="true">redo</span>
             <span i18n>Retrieve Last Bib Record</span>
-            <span i18n>- Shift+F8</span>
+            <kbd i18n>Shift+F8</kbd>
           </button>
           <div class="dropdown-divider"></div>
           <a href="/eg/staff/cat/catalog/new_bib" ngbDropdownItem class="dropdown-item"
@@ -458,6 +471,7 @@
             keySpec="ctrl+f3" keyDesc="Create New MARC Record">
             <span class="material-icons" aria-hidden="true">add</span>
             <span i18n>Create New MARC Record</span>
+            <kbd i18n>Ctrl+F3</kbd>
           </a>
           <a ngbDropdownItem class="dropdown-item"
             routerLink="/staff/cat/z3950/search"
@@ -885,7 +899,7 @@
               (keydown.enter)="isMenuCollapsed = true"
               egAccessKey keyCtx="navbar" i18n-keySpec i18n-keyDesc
               keySpec="alt+shift+q" keyDesc="Logout (Quit)">
-            <span class="material-icons" aria-hidden="true">lock_outline</span>
+            <span class="material-icons" aria-hidden="true" title="Logout: Alt+Shift+Q">lock_outline</span>
             <span i18n>Logout</span>
           </button>
           <a class="dropdown-item" ngbDropdownItem
