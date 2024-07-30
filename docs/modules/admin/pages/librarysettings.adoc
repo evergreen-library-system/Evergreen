@@ -17,19 +17,19 @@ together. You may browse the list or search for the entry you want to
 edit. Type in your search term in the filter box. You may clear or
 re-apply the filter by clicking *Clear Filter* or *Filter*.
 +
-image::library_settings/lse-1.png[Filtering the Library Settings Editor List]
+image::library_settings/lib_settings_menu.png[Filtering the Library Settings Editor List]
 +
 3. To edit an entry click *Edit* in the line.
 4. Read the instruction in the pop-up window. Make the change. Click
 *Update Setting* to save the change. Click *Delete Setting* if you wish
 to delete it.
 +
-image::library_settings/lse-2.png[Editing a Library Setting]
+image::library_settings/edit_lib_setting.png[Editing a Library Setting]
 +
 5. Click *History* to view the previous values, if any, of a setting.
 You can revert back to an old value by clicking *revert*.
 +
-image::library_settings/lse-3.png[Library Setting History]
+image::library_settings/history_lib_setting.png[Library Setting History]
 
 NOTE: Please note that different settings may require different data
 formats, which are listed in the xref:#settings_overview[Settings Overview] table. Refer to the xref:#data_types[Data Types] table at the
@@ -45,13 +45,13 @@ Those settings displayed on the screen are copied to the clipboard.
 Paste the contents to a text editor, such as Notepad. Save the file on
 your computer.
 +
-image::library_settings/lse-4.png[Exporting Library Settings]
+image::library_settings/export_lib_setting.png[Exporting Library Settings]
 +
 2. To import library settings, click the *Import* button on the *Library
 Settings Editor* screen. Open your previously saved file and copy the
 contents. Click *Paste* in the pop-up window. Click *Submit*.
 +
-image::library_settings/lse-5.png[Importing Library Settings]
+image::library_settings/import_lib_settings.png[Importing Library Settings]
 
 [#settings_overview]
 == Settings Overview ==
