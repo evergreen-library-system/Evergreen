@@ -5,6 +5,16 @@ indexterm:[staff client, configuration]
 indexterm:[workstation, configuration]
 indexterm:[configuration]
 
+== Registered Workstations ==
+
+This lists the workstations registered for Evergreen in your browser.  You can also create a new workstation here, select a new one to login with, or remove an existing workstation.
+
+image:workstation/workstation_menu.png[Workstation Administration Menu]
+
+== Print Templates ==
+
+This will bring you to the *Print Templates* administrative page in Evergreen that will contain the print template editor.  See xref:admin:receipt_template_editor.adoc[Print (Receipt) Templates] for more information.
+
 == Sound Settings ==
 
 === Disable Sounds ===
@@ -57,3 +67,9 @@ VALUES (
 What this will do is create a workstation setting that will also match with what was previously stored in the browser either by localStorage or by Hatch.
 
 https://evergreen-ils.org/documentation/release/RELEASE_NOTES_3_2.html#_browser_client_settings_amp_preferences_stored_on_the_server[Evergreen admins should look to these release notes for more information.]
+
+== Include Full Library Names in Library Selector? ==
+
+This checkbox will allow users to view the full library name instead of the shortcode in certain screens within Evergreen.  This isn't available for all pages, but some dropdown menus.
+
+image:workstation/workstation_lib_full_name.png[Include Full Library Names checkbox]
