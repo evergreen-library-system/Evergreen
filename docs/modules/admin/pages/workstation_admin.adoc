@@ -71,3 +71,5 @@ https://evergreen-ils.org/documentation/release/RELEASE_NOTES_3_2.html#_browser_
 == Include Full Library Names in Library Selector? ==
 
 This checkbox will allow users to view the full library name instead of the shortcode in certain screens within Evergreen.  This isn't available for all pages, but some dropdown menus.
+
+image:workstation/workstation_lib_full_name.png[Include Full Library Names checkbox]
