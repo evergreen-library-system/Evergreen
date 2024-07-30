@@ -11,6 +11,7 @@ s.HOLD_STATUS_5 = "[% l('Hold Shelf Delay') %]";
 s.HOLD_STATUS_6 = "[% l('Canceled') %]";
 s.HOLD_STATUS_7 = "[% l('Suspended') %]";
 s.HOLD_STATUS_8 = "[% l('Wrong Shelf') %]";
+s.HOLD_STATUS_9 = "[% l('Fulfilled') %]";
 s.ACTIVATE_HOLDS = "[% l('Activate [_1] Hold(s)?', '{{num_holds}}') %]"
 s.SUSPEND_HOLDS = "[% l('Suspend [_1] Hold(s)?', '{{num_holds}}') %]"
 s.SET_TOP_OF_QUEUE = 
