@@ -526,7 +526,7 @@ If configured, patrons will see the option to opt-in to the alternate location i
 
 image::basic_holds/preferences_search_history.png[Preferences Menu in OPAC]
 
-image::behind_desk_pref.png[Behind Desk Patron Preference Checkbox]
+image::basic_holds/behind_desk_pref.png[Behind Desk Patron Preference Checkbox]
 
 
 == Display Hold Types on Pull Lists ==
