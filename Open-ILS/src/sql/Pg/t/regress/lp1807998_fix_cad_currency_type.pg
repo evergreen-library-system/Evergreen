@@ -1,0 +1,17 @@
+BEGIN;
+
+SELECT plan(4);
+
+SELECT is(code, 'CAD', 'Canadian Dollars currency code')
+FROM acq.currency_type
+WHERE label = 'Canadian Dollars';
+
+SELECT col_is_fk('acq', 'exchange_rate', 'from_currency', 'Exhange rate from currency foreign key');
+
+SELECT col_is_fk('acq', 'exchange_rate', 'to_currency', 'Exhange rate to currency foreign key');
+
+SELECT col_is_fk('acq', 'funding_source', 'currency_type', 'Funding source currency type foreign key');
+
+SELECT * from finish();
+
+ROLLBACK;

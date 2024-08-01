@@ -30,8 +30,8 @@ CREATE TABLE acq.currency_type (
 
 CREATE TABLE acq.exchange_rate (
     id              SERIAL  PRIMARY KEY,
-    from_currency   TEXT    NOT NULL REFERENCES acq.currency_type (code) DEFERRABLE INITIALLY DEFERRED,
-    to_currency     TEXT    NOT NULL REFERENCES acq.currency_type (code) DEFERRABLE INITIALLY DEFERRED,
+    from_currency   TEXT    NOT NULL REFERENCES acq.currency_type (code) ON UPDATE CASCADE DEFERRABLE INITIALLY DEFERRED,
+    to_currency     TEXT    NOT NULL REFERENCES acq.currency_type (code) ON UPDATE CASCADE DEFERRABLE INITIALLY DEFERRED,
     ratio           NUMERIC NOT NULL,
     CONSTRAINT exchange_rate_from_to_once UNIQUE (from_currency,to_currency)
 );
@@ -155,7 +155,7 @@ CREATE TABLE acq.funding_source (
 	id		SERIAL	PRIMARY KEY,
 	name		TEXT	NOT NULL,
 	owner		INT	NOT NULL REFERENCES actor.org_unit (id) DEFERRABLE INITIALLY DEFERRED,
-	currency_type	TEXT	NOT NULL REFERENCES acq.currency_type (code) DEFERRABLE INITIALLY DEFERRED,
+	currency_type	TEXT	NOT NULL REFERENCES acq.currency_type (code) ON UPDATE CASCADE,
 	code		TEXT	NOT NULL,
 	active		BOOL	NOT NULL DEFAULT TRUE,
 	CONSTRAINT funding_source_code_once_per_owner UNIQUE (code,owner),
