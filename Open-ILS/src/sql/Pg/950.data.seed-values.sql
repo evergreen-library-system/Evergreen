@@ -12491,10 +12491,10 @@ INSERT INTO action_trigger.environment (
 
 -- Use the ISO 4217 abbreviations for currency codes
 INSERT INTO acq.currency_type (code, label) VALUES ('USD', oils_i18n_gettext('USD', 'US Dollars', 'acqct', 'label'));
-INSERT INTO acq.currency_type (code, label) VALUES ('CAN', oils_i18n_gettext('CAN', 'Canadian Dollars', 'acqct', 'label'));
+INSERT INTO acq.currency_type (code, label) VALUES ('CAD', oils_i18n_gettext('CAD', 'Canadian Dollars', 'acqct', 'label'));
 INSERT INTO acq.currency_type (code, label) VALUES ('EUR', oils_i18n_gettext('EUR', 'Euros', 'acqct', 'label'));
 
-INSERT INTO acq.exchange_rate (from_currency,to_currency,ratio) VALUES ('USD','CAN',1.2);
+INSERT INTO acq.exchange_rate (from_currency,to_currency,ratio) VALUES ('USD','CAD',1.2);
 INSERT INTO acq.exchange_rate (from_currency,to_currency,ratio) VALUES ('USD','EUR',0.5);
 
 INSERT INTO acq.invoice_item_type (code,name) VALUES ('TAX',oils_i18n_gettext('TAX', 'Tax', 'aiit', 'name'));
