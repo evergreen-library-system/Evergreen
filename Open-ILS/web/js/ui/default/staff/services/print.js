@@ -329,10 +329,33 @@ function($q , $window , $timeout , $http , egHatch , egAuth , egIDL , egOrg , eg
 
 
                     var deferred = $q.defer();
+                    var imgPromises = [];
+
+                    // First we wait for the $digest complete
                     $timeout(function(){
-                        // give the $digest a chance to complete then resolve
-                        // with the compiled HTML from our print container
-                        deferred.resolve($scope.elm.html());
+
+                        // We can't resolve yet because images that load after being compiled may not be loaded
+                        // So we find everything that is going to be printed
+                        var printedNodes = document.querySelectorAll("#print-div *");      
+                        angular.forEach(printedNodes, function(node){
+                            // Keep track of all the images that haven't been loaded yet
+                            if (node.nodeName && node.nodeName == "IMG" && !node.complete){
+                                // And whether each image is done loading
+                                var imgPromise = $q.defer();
+                                imgPromises.push(imgPromise.promise);
+                                node.onload = (function() {
+                                    imgPromise.resolve();
+                                });
+                            }
+                        });
+
+                        // And once all of them are finished loading,
+                        // resolve with the compiled HTML from our print container
+                        $q.all(imgPromises).then(function(){
+                            deferred.resolve($scope.elm.html());
+                        });
+                        
+
                     });
 
                     return deferred.promise;
