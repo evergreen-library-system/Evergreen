@@ -335,7 +335,7 @@ Some libraries prefer to use the status _Missing_.  This can be set using the li
 _Claim Return: Mark copy as missing_.
 ====== 
 +
-image::circulating_items_web_client/mark-claims-returned-3.png[]
+image::circulating_items_web_client/mark-claims-returned-3.png[View of a claims returned item in a patron's Other/Special Circulations tab.]
 +
 . The patron's *Claims-returned Count* is automatically increased. This can be viewed in the patron summary
 and the _Edit_ tab.
@@ -807,7 +807,7 @@ image::circulating_items_web_client/item_status_altview_web_client.png[Detail Vi
 
 4) Click *List View* to go back.
 
-image::circulating_items_web_client/item_status_list_view_web_client.png[]
+image::circulating_items_web_client/item_status_list_view_web_client.png[List view in Item Status.]
 
 [NOTE]
 If the item's status is "Available", the displayed due date refers to the previous circulation's due date.
