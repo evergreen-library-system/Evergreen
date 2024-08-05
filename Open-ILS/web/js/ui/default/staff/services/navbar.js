@@ -13,9 +13,9 @@ angular.module('egCoreMod')
                 $scope.rs = $rootScope;
                 $scope.showAngularCirc = false;
 
-                $scope.reprintLast = function (e) {
+                $scope.reprintLast = function () {
                     egCore.print.reprintLast();
-                    return e.preventDefault();
+                    return;
                 }
 
                 function navTo(path) {
