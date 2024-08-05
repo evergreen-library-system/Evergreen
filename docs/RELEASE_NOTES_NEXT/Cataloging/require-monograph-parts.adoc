@@ -1,0 +1,14 @@
+== Option to Require Monograph Parts ==
+
+The Require Monographic Part when Present Library Setting,
+`circ.holds.ui_require_monographic_part_when_present`, has been
+expanded to also require that all copies on the parent bibliographic
+record have a part when the setting is active.
+
+This setting requires a patron to select a monograph part when placing
+a hold if any parts exist on the bibliographic record.  In a logical
+extension of this behavior, the setting now also requires catalogers
+to use parts on all copies when any copy at the library have parts.
+
+The change in behavior only affects the library/organization unit
+where the setting is set or its sub-units.

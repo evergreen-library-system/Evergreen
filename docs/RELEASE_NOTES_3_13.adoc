@@ -3,6 +3,72 @@
 :numbered:
 :toclevels: 3
 
+== Evergreen 3.13.2 ==
+
+This release contains bug fixes improving on Evergreen 3.13.1
+
+
+=== Accessibility ===
+
+* Makes the grid icon column header's tooltip configurable (https://bugs.launchpad.net/evergreen/+bug/1861331[Bug 1861331])
+* Corrects current page ARIA in staff catalog pagination (https://bugs.launchpad.net/evergreen/+bug/2058747[Bug 2058747])
+* Fixes the barcode input label in Scan Item as Missing Pieces. (https://bugs.launchpad.net/evergreen/+bug/2058287[Bug 2058287])
+* Adds <label> to prompt dialog text; autofocus prompt input. (https://bugs.launchpad.net/evergreen/+bug/2072776[Bug 2072776])
+
+
+=== Administration ===
+
+* Add a print button to the Desk and Staff User Payment grids to print the org, date range, totals, and full list. (https://bugs.launchpad.net/evergreen/+bug/2003090[Bug 2003090])
+* Fix bug that prevented action triggers from processing when granularity is an empty string. (https://bugs.launchpad.net/evergreen/+bug/2026206[Bug 2026206])
+
+
+=== Catalog ===
+
+* Fixes Angular Search Preferences being empty after login (https://bugs.launchpad.net/evergreen/+bug/2072430[Bug 2072430])
+
+=== Cataloging ===
+
+* Hides Edit call number link if missing permission (https://bugs.launchpad.net/evergreen/+bug/2015112[Bug 2015112])
+
+=== Circulation ===
+
+* Changes 'Clear?' to 'Delete' in Manage Copy Alerts (https://bugs.launchpad.net/evergreen/+bug/1788063[Bug 1788063])
+* Adds User Permission Group name and ID to the AngularJS Hold Shelf list interface. (https://bugs.launchpad.net/evergreen/+bug/2068755[Bug 2068755])
+
+=== Documentation ===
+
+* Fixes issue with point release docs not being built (https://bugs.launchpad.net/evergreen/+bug/2072705[Bug 2072705])
+* Removes obsolete media folders in docs (https://bugs.launchpad.net/evergreen/+bug/2060219[Bug 2060219])
+* Adds missing alt text to image files
+
+
+
+=== Acknowledgements ===
+
+We would like to thank the following individuals who contributed code,
+testing, documentation, and patches to the 3.13.2 point release of Evergreen:
+
+
+* Andrea Buntz Neiman
+* Blake Graham-Henderson
+* Dan Briem
+* Galen Charlton
+* Gina Monti
+* Ian Skelskey
+* Jane Sandberg
+* Jason Stephenson
+* Josh Stompro
+* Michele Morgan
+* Mike Rylander
+* Ruth Davis
+* Scott Angel
+* Stephanie Leary
+* Steven Mayo
+* Terran McCanna
+
+
+
+
 == Evergreen 3.13.1 ==
 
 This release contains bug fixes improving on Evergreen 3.13.0.
