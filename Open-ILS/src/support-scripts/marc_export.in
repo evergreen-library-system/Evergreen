@@ -151,7 +151,7 @@ Usage: $0 [options]
                     best value for your situation requires
                     experimentation.
 --check-leader      Ensure all leaders are exactly 24 characters long
-                    via adding or removing characters to maximize compatability
+                    via adding or removing characters to maximize compatibility
                     with other systems.
 
  Additional options for type = 'BIBLIO':
@@ -200,7 +200,7 @@ libraries with the short names "BR1" and "BR2":
 
   $0 --library BR1 --library BR2 --encoding UTF-8 > sys1_bibs.mrc
 
-The --strip option can be used more than once which imples an "OR" operation.
+The --strip option can be used more than once which implies an "OR" operation.
 If the field argument is omitted (e.g., "/0", it is treated like "..." (all fields).
 If the subfield argument is omitted (e.g. "100/", it is treated like "."
 (all subfields).  Examples:
@@ -396,7 +396,7 @@ sub db_date {
 
 # ------------------------------------------------------------------
 # You would typically have the next two packages inherit from a common
-# superclass, but ineritance doesn't seem to work when all packages
+# superclass, but inheritance doesn't seem to work when all packages
 # are in single file, so we have some duplicated code between these
 # two.
 
