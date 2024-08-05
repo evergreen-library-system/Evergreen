@@ -146,12 +146,12 @@ The MARC 007 Field Physical Characteristics Wizard enables catalogers to interac
 . Make sure that the Flat-Text Editor checkbox is not selected and that you are not using the Flat-Text Editor interface.
 . Right-click in the MARC field column.
 +
-image::marc_editor/pcw1_2.12.jpg[]
+image::marc_editor/pcw1_2.12.jpg[MARC edit form highlighting included fields and lack of 007 field]
 +
 . Click *Add/Replace 007*. The 007 row will appear in the record.
 . Click the chain link icon to the right of the field.
 +
-image::marc_editor/pcw2_2.12.jpg[]
+image::marc_editor/pcw2_2.12.jpg[Partial view of MARC edit form indicating chain link icon location]
 +
 . Click *Physical Characteristics Wizard*.
 
@@ -167,19 +167,19 @@ Once the Category of Material is selected, click *Next*.
 
 Evergreen will display the result of each selection in the preview above. The affected character will be in red.
 
-image::marc_editor/pcw3_2.12.jpg[]
+image::marc_editor/pcw3_2.12.jpg[View of physical characteristics wizard showing red affected character]
 
 By clicking either the *Previous* or *Next* buttons, the user may step forward and backward, as needed, through the various positions in the 007 field.
 
 Once the user enters all of the applicable values for the 007 field and is ready to exit the wizard, click *Save*.
 
-image::marc_editor/pcw4_2.12.jpg[]
+image::marc_editor/pcw4_2.12.jpg[View of physical characteristics wizard highlighting previous and next navigation buttons]
 
 All of the values selected will be stored and displayed within the 007 field of the bibliographic record.
 
-image::marc_editor/pcw5_2.12.jpg[]
+image::marc_editor/pcw5_2.12.jpg[View of physical characteristics wizard indicating the save button]
 
 Continue editing the MARC record, as needed. Once the user is finished editing the record, click *Save*.
 
-image::marc_editor/pcw6_2.12.jpg[]
+image::marc_editor/pcw6_2.12.jpg[View of newly created 007 field in MARC edit form with formatted data from physical characteristics wizard]
 
