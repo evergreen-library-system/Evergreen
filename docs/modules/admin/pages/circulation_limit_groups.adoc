@@ -12,11 +12,13 @@ policies.
 To limit checkouts by shelving location:
 
 . Click *Administration -> Local Administration ->  Circulation Limit Sets*.
-. Click *New* to create a new circulation limit set.
-. In the *Owning Library* field, select the library that can create and edit
-this limit set.
-. Enter a *Name* for the circulation set.  You will select the *Name* to link
-the circulation limit set to a circulation policy.
+. Click *New Circulation Limit Set* to create a new circulation limit set.
+. Enter a brief *Description* of the circulation limit set.
+. Check the box adjacent to *Global Flag* if you want all of the org units in
+your consortium to be restricted by this limit set when it is applied to a
+circulation policy.  Otherwise, Evergreen will only apply the limit to the direct
+ancestors and descendants of the owning library.
+. *ID* will autopopulate after saving.
 . Enter the number of *Items Out* that a user can take from this shelving location.
 . Enter the *Min Depth*, or the minimum depth in the org tree that Evergreen
 will consider as valid circulation libraries for counting items out.  The min
@@ -24,14 +26,21 @@ depth is based on org unit type depths.  For example, if you want the items in
 all of the circulating libraries in your consortium to be eligible for
 restriction by this limit set when it is applied to a circulation policy, then
 enter a zero (0) in this field.  
-. Check the box adjacent to *Global Flag* if you want all of the org units in
-your consortium to be restricted by this limit set when it is applied to a
-circulation policy.  Otherwise, Evergreen will only apply the limit to the direct
-ancestors and descendants of the owning library.
-. Enter a brief *Description* of the circulation limit set.
+. Enter a *Name* for the circulation set.  You will select the *Name* to link
+the circulation limit set to a circulation policy.
+. In the *Owning Library* field, select the library that can create and edit
+this limit set.
 . Click *Save*.
 
-image::circ_limit_groups/Maximum_Checkout_by_Copy_Location1.jpg[Maximum_Checkout_by_Copy_Location1]
+image::circ_limit_groups/new_circ_limit_set.png[New Circulation Limit Set form]
+
+To link shelving locations, circ modifiers, and limit groups, click *Manage* in the same line as the new entry.
+
+image:circ_limit_groups/manage_circ_limit_set_button.png[Managing the Circ Limit Set form]
+
+Add whatever is applicable.
+
+image:circ_limit_groups/edit_link_entities.png[Edit linked entities]
 
 To link the circulation limit set to a circulation policy:
  

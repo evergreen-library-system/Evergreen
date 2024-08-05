@@ -1,0 +1,36 @@
+BEGIN;
+
+SELECT plan(2);
+
+--- Add a rule that you can only check out 1 item from item location 124
+INSERT INTO config.circ_limit_set(items_out, name, owning_lib, id)
+    VALUES (1, 'calculate_system_penalties.pg', 7, 9999);
+INSERT INTO config.circ_matrix_limit_set_map(active, limit_set, matchpoint, id)
+    VALUES (TRUE, 9999, 1, 6789);
+INSERT INTO config.circ_limit_set_copy_loc_map(limit_set, copy_loc, id)
+    VALUES (9999, 124, 5678);
+
+SELECT is(
+    fail_part,
+    NULL,
+    'When no items are out, does not return MAX_ITEMS failure'
+) FROM action.item_user_circ_test(
+    7, -- org unit
+    2351, -- item
+    1); -- patron
+
+-- Check out an item from location=124 to this patron
+INSERT INTO action.circulation (usr, circ_lib, target_copy, circ_staff, renewal_remaining, grace_period, duration_rule, recurring_fine_rule, max_fine_rule)
+    VALUES (1, 7, 1857, 1, 1, '1 day', 1, 1, 1);
+
+SELECT is(
+    fail_part,
+    'config.circ_matrix_circ_mod_test',
+    'When over the items out limit, it returns a MAX_ITEMS failure'
+) FROM action.item_user_circ_test(
+    7, -- org unit
+    2351, -- item
+    1); -- patron;
+
+
+ROLLBACK;

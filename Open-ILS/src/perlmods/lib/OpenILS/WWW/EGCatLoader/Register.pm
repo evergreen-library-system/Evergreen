@@ -10,6 +10,12 @@ use Data::Dumper;
 $Data::Dumper::Indent = 0;
 my $U = 'OpenILS::Application::AppUtils';
 
+# We will construct DOB from the individual components
+sub construct_dob {
+    my $self = shift;
+    return $self->cgi->param('dob-year') . '-' . $self->cgi->param('dob-month') . '-' . $self->cgi->param('dob-day');
+}
+
 sub load_patron_reg {
     my $self = shift;
     my $ctx = $self->ctx;
@@ -36,6 +42,7 @@ sub load_patron_reg {
     # user
     foreach (grep /^stgu\./, $cgi->param) {
         my $val = $cgi->param($_);
+        if ($_ eq 'stgu.dob') { $val = $self->construct_dob(); }
         $self->inspect_register_value($_, $val);
         s/^stgu\.//g;
         $user->$_($val);
@@ -208,6 +215,9 @@ sub collect_register_validation_settings {
         $shash->{$scls}{$field}{$type} = $val;
     }
 
+    # Should be the letters M, D, and Y in some order.
+    $shash->{dob_order} = $ctx->{get_org_setting}->($ctx_org, 'opac.self_register.dob_order');
+
     # use the generic phone settings where none are provided for day_phone.
 
     $shash->{stgu}{day_phone}{example} =
@@ -222,6 +232,13 @@ sub collect_register_validation_settings {
     # org settings.  Wrangle it into place.
     $shash->{stgu}{usrname}{regex} = 
         $ctx->{get_org_setting}->($ctx_org, 'opac.username_regex');
+
+    # Speaking of usrname, some libraries want to hide it. I'll follow the show/require
+    # pattern in case someone wants to genericize it for any field. However this one
+    # would only make sense for the patron self-registration interface, so I'm going
+    # to change the prefix from ui to opac.
+    $shash->{stgu}{usrname}{hide} = 
+        $ctx->{get_org_setting}->($ctx_org, 'opac.patron.edit.au.usrname.hide');
 
     # some fields are assumed to be visible / required even without the            
     # presence of org unit settings.  E.g. we obviously want the user to 

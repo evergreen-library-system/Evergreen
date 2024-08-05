@@ -1,4 +1,4 @@
-# install files for Ubuntu Bionic
+# install files for Ubuntu Jammy
 
 DIR = $(dir $(lastword $(MAKEFILE_LIST)))
 
@@ -11,7 +11,9 @@ export DEB_PGSQL_COMMON_MODS = \
 	librose-uri-perl \
 	libuuid-tiny-perl \
 	libxml-libxml-perl \
-	libxml-libxslt-perl
+	libxml-libxslt-perl \
+	libmarc-xml-perl \
+	libmarc-charset-perl
 
 # NOTE: The 4 '*redis*' packages are also installed by OpenSRF+Redis
 export DEBS = \
@@ -47,11 +49,11 @@ export DEBS = \
 	libgd-graph3d-perl\
 	libhttp-oai-perl\
 	libgeo-coder-osm-perl\
-	libhttp-async-perl\
+    libhttp-async-perl\
 	liblocale-maketext-lexicon-perl\
 	liblog-log4perl-perl\
 	libncurses5-dev\
-	libnet-https-nb-perl\
+    libnet-https-nb-perl\
 	libnet-ip-perl\
 	libnet-ldap-perl \
 	libnet-server-perl\
@@ -59,6 +61,7 @@ export DEBS = \
 	libnet-sftp-foreign-perl\
 	libnet-z3950-simpleserver-perl\
 	libnet-z3950-zoom-perl \
+	libnet-z3950-simple2zoom-perl \
 	libnspr4-dev\
 	libole-storage-lite-perl\
 	libparent-perl\
@@ -69,8 +72,8 @@ export DEBS = \
 	libsru-perl\
 	libssh2-1-dev\
 	libtemplate-plugin-posix-perl\
-	libtest-mockmodule-perl\
-	libtest-mockobject-perl\
+    libtest-mockmodule-perl\
+    libtest-mockobject-perl\
 	libtest-warn-perl\
 	libtest-output-perl\
 	libtext-aspell-perl\
@@ -78,7 +81,7 @@ export DEBS = \
 	libuniversal-require-perl\
 	libunix-syslog-perl\
 	libyaz-dev\
-	postgresql-client-15\
+	postgresql-client-16\
 	libsoap-lite-perl\
 	libbz2-dev\
 	libparse-recdescent-perl\
@@ -104,12 +107,10 @@ export DEB_APACHE_DISCONF = \
 
 export CPAN_MODULES = \
 	Geo::Coder::Google \
-	Geo::Coder::Bing \
+    Geo::Coder::Bing \
 	Business::OnlinePayment::PayPal \
 	Email::Send \
-	MARC::Charset \
-	Net::Z3950::Simple2ZOOM \
-    Locale::Country \
+	Locale::Country \
 	String::KeyboardDistance \
 	Text::Levenshtein::Damerau::XS
 
@@ -118,7 +119,6 @@ export CPAN_MODULES_FORCE = \
 	Class::DBI::Frozen::301
 
 export CPAN_MODULES_PGSQL = \
-	MARC::File::XML \
 	String::KeyboardDistance \
 	Text::Levenshtein::Damerau::XS
 
@@ -161,6 +161,12 @@ PGSQL_SERVER_DEBS_15 = \
         postgresql-15 \
         postgresql-plperl-15 \
         postgresql-server-dev-15
+
+PGSQL_SERVER_DEBS_16 = \
+        $(DEB_PGSQL_COMMON_MODS) \
+        postgresql-16 \
+        postgresql-plperl-16 \
+        postgresql-server-dev-16
 
 # note: some prereqs are repeated in the developer/packager 
 # sections to support building Evergreen packages on servers
@@ -233,6 +239,12 @@ install_postgres_server_15:
 	make -f $(DIR)/Makefile.debian DEBS="$(PGSQL_APT_REPO_DEBS)"
 	make -f $(DIR)/Makefile.debian debian_postgresql_repo
 	make -f $(DIR)/Makefile.debian DEBS="$(PGSQL_SERVER_DEBS_15)"
+	make -f $(DIR)/Makefile.common install_cpan_pgsql
+
+install_postgres_server_16:
+	make -f $(DIR)/Makefile.debian DEBS="$(PGSQL_APT_REPO_DEBS)"
+	make -f $(DIR)/Makefile.debian debian_postgresql_repo
+	make -f $(DIR)/Makefile.debian DEBS="$(PGSQL_SERVER_DEBS_16)"
 	make -f $(DIR)/Makefile.common install_cpan_pgsql
 
 # note: if/when grunt-cli is available as a

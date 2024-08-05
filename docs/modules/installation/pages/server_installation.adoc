@@ -54,8 +54,8 @@ autoreconf -i
     Debian Bookworm (12),
     Debian Bullseye (11),
     Debian Buster (10), 
-    Ubuntu Jammy Jellyfish (22.04),
-    and Ubuntu Focal Fossa (20.04).
+    Ubuntu Noble Numbat (24.04),
+    and Ubuntu Jammy Jellyfish (22.04).
     If you are running an older version of these distributions, you may want 
     to upgrade before upgrading Evergreen. For instructions on upgrading these
     distributions, visit the Debian or Ubuntu websites.
@@ -71,7 +71,7 @@ before you can successfully configure, compile, and install Evergreen.
 2. Issue the following commands as the *root* Linux account to install
    prerequisites using the `Makefile.install` prerequisite installer,
    substituting `debian-bookworm`,`debian-bullseye`,`debian-buster`,`ubuntu-jammy`,
-   or `ubuntu-focal` for <osname> below:
+   or `ubuntu-noble` for <osname> below:
 +
 [source, bash]
 ------------------------------------------------------------------------------
@@ -503,8 +503,8 @@ version and the version recommended for production use of Evergreen:
 make -f Open-ILS/src/extras/Makefile.install postgres-server-debian-bookworm-10
 make -f Open-ILS/src/extras/Makefile.install postgres-server-debian-bullseye-10
 make -f Open-ILS/src/extras/Makefile.install postgres-server-debian-buster-10
-make -f Open-ILS/src/extras/Makefile.install postgres-server-ubuntu-focal-10
 make -f Open-ILS/src/extras/Makefile.install postgres-server-ubuntu-jammy-10
+make -f Open-ILS/src/extras/Makefile.install postgres-server-ubuntu-noble-10
 ------------------------------------------------------------------------------
 
 [WARNING]
@@ -524,8 +524,8 @@ system:
 make -f Open-ILS/src/extras/Makefile.install postgres-server-debian-bookworm-11
 make -f Open-ILS/src/extras/Makefile.install postgres-server-debian-bullseye-11
 make -f Open-ILS/src/extras/Makefile.install postgres-server-debian-buster-11
-make -f Open-ILS/src/extras/Makefile.install postgres-server-ubuntu-focal-11
 make -f Open-ILS/src/extras/Makefile.install postgres-server-ubuntu-jammy-11
+make -f Open-ILS/src/extras/Makefile.install postgres-server-ubuntu-noble-11
 ------------------------------------------------------------------------------
 
 To install PostgreSQL version 12, use the following command for your operating
@@ -546,8 +546,8 @@ jit_above_cost = -1
 make -f Open-ILS/src/extras/Makefile.install postgres-server-debian-bookworm-12
 make -f Open-ILS/src/extras/Makefile.install postgres-server-debian-bullseye-12
 make -f Open-ILS/src/extras/Makefile.install postgres-server-debian-buster-12
-make -f Open-ILS/src/extras/Makefile.install postgres-server-ubuntu-focal-12
 make -f Open-ILS/src/extras/Makefile.install postgres-server-ubuntu-jammy-12
+make -f Open-ILS/src/extras/Makefile.install postgres-server-ubuntu-noble-12
 ------------------------------------------------------------------------------
 
 To install PostgreSQL version 13, use the following command for your operating
@@ -568,8 +568,8 @@ jit_above_cost = -1
 make -f Open-ILS/src/extras/Makefile.install postgres-server-debian-bookworm-13
 make -f Open-ILS/src/extras/Makefile.install postgres-server-debian-bullseye-13
 make -f Open-ILS/src/extras/Makefile.install postgres-server-debian-buster-13
-make -f Open-ILS/src/extras/Makefile.install postgres-server-ubuntu-focal-13
 make -f Open-ILS/src/extras/Makefile.install postgres-server-ubuntu-jammy-13
+make -f Open-ILS/src/extras/Makefile.install postgres-server-ubuntu-noble-13
 ------------------------------------------------------------------------------
 
 To install PostgreSQL version 14, use the following command for your operating
@@ -590,8 +590,8 @@ jit_above_cost = -1
 make -f Open-ILS/src/extras/Makefile.install postgres-server-debian-bookworm-14
 make -f Open-ILS/src/extras/Makefile.install postgres-server-debian-bullseye-14
 make -f Open-ILS/src/extras/Makefile.install postgres-server-debian-buster-14
-make -f Open-ILS/src/extras/Makefile.install postgres-server-ubuntu-focal-14
 make -f Open-ILS/src/extras/Makefile.install postgres-server-ubuntu-jammy-14
+make -f Open-ILS/src/extras/Makefile.install postgres-server-ubuntu-noble-14
 ------------------------------------------------------------------------------
 
 To install PostgreSQL version 15, use the following command for your operating
@@ -612,8 +612,30 @@ jit_above_cost = -1
 make -f Open-ILS/src/extras/Makefile.install postgres-server-debian-bookworm-15
 make -f Open-ILS/src/extras/Makefile.install postgres-server-debian-bullseye-15
 make -f Open-ILS/src/extras/Makefile.install postgres-server-debian-buster-15
-make -f Open-ILS/src/extras/Makefile.install postgres-server-ubuntu-focal-15
 make -f Open-ILS/src/extras/Makefile.install postgres-server-ubuntu-jammy-15
+make -f Open-ILS/src/extras/Makefile.install postgres-server-ubuntu-noble-15
+------------------------------------------------------------------------------
+
+To install PostgreSQL version 16, use the following command for your operating
+system:
+
+[WARNING]
+=========
+PostgreSQL 12+ includes a feature called "JIT" (Just-in-Time compilation).
+Do not turn on Postgres' JIT capabilities. Evergreen's queries, especially complex
+ones used for search, are intentionally tuned for non-JIT execution and JIT has
+been shown to be harmful in some circumstances.
+Recommended minimum tweak to postgresql.conf:
+jit_above_cost = -1
+=========
+
+[source, bash]
+------------------------------------------------------------------------------
+make -f Open-ILS/src/extras/Makefile.install postgres-server-debian-bookworm-16
+make -f Open-ILS/src/extras/Makefile.install postgres-server-debian-bullseye-16
+make -f Open-ILS/src/extras/Makefile.install postgres-server-debian-buster-16
+make -f Open-ILS/src/extras/Makefile.install postgres-server-ubuntu-jammy-16
+make -f Open-ILS/src/extras/Makefile.install postgres-server-ubuntu-noble-16
 ------------------------------------------------------------------------------
 
 .Create the Evergreen PostgreSQL user

@@ -51,6 +51,7 @@
 		override whatever is set in the implementation_config.
 		-->
 		<login id="scclient" password="clientpwd" institution="gapines"/>
+		<login id="cmptrlab" password="clientpwd" institution="gapines" want_patron_ok="true"/>
 	</accounts>
 
 	<!-- Institution tags will hold stuff used to interface to -->

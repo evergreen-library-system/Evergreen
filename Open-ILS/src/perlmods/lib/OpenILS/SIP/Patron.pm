@@ -124,6 +124,9 @@ sub new {
     $self->{id}     = ($key eq 'barcode') ? $patron_id : $user->card->barcode;   # The barcode IS the ID to SIP.  
     # We give back the passed barcode if the key was indeed a barcode, just to be safe.  Otherwise pull it from the card.
 
+    # Return 'OK' in the screen message? Likely used primarily by PC management systems.
+    $self->{want_ok} = $args{want_ok};
+
     syslog("LOG_DEBUG", "OILS: new OpenILS Patron(%s => %s): found patron : barred=%s, card:active=%s", 
         $key, $patron_id, $user->barred, $user->card->active );
 
@@ -483,7 +486,7 @@ sub screen_msg {
     my $expire = DateTime::Format::ISO8601->new->parse_datetime(clean_ISO8601($u->expire_date));
     return $b if CORE::time > $expire->epoch;
 
-    return '';
+    return ($self->{want_ok} ? 'OK' : '');
 }
 
 sub print_line {            # not implemented
