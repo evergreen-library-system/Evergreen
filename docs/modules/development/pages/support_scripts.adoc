@@ -343,6 +343,11 @@ best way to use this option is in combination with the `--items` and one of the
 `--library` or `--descendants` options to export *all* of a library's
 holdings both physical and electronic.
 
+==== --check-leader ====
+Ensure all leaders are exactly 24 characters long
+via adding or removing characters to maximize compatibility
+with other systems.
+
 [#pingest_pl]
 
 == Parallel Ingest with pingest.pl ==
