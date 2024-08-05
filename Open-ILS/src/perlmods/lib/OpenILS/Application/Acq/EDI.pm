@@ -206,6 +206,7 @@ sub process_retrieval {
     # a single EDI blob can contain multiple messages
     # create one edi_message per included message
 
+    my $seen_container_codes = {};
     my $messages = OpenILS::Utils::EDIReader->new->read($content);
     my @return;
 
@@ -254,7 +255,7 @@ sub process_retrieval {
 
         # since there's a fair chance of unhandled problems 
         # cropping up, particularly with new vendors, wrap w/ eval.
-        eval { $class->process_parsed_msg($account, $incoming, $msg_hash) };
+        eval { $class->process_parsed_msg($account, $incoming, $msg_hash, $seen_container_codes) };
 
         $e->xact_begin;
         if ($@) {
@@ -633,7 +634,7 @@ sub process_message_buyer {
 # thing failing.  If a catastrophic error occurs,
 # it will occur via die.
 sub process_parsed_msg {
-    my ($class, $account, $incoming, $msg_hash) = @_;
+    my ($class, $account, $incoming, $msg_hash, $seen_container_codes) = @_;
 
     # INVOIC
     if ($incoming->message_type eq 'INVOIC') {
@@ -642,7 +643,7 @@ sub process_parsed_msg {
 
     } elsif ($incoming->message_type eq 'DESADV') {
         return $class->create_shipment_notification_from_edi(
-            $msg_hash, $account->provider, $incoming);
+            $msg_hash, $account->provider, $incoming, $seen_container_codes);
     }
 
     # ORDRSP
@@ -1149,7 +1150,7 @@ sub create_acq_invoice_from_edi {
 }
 
 sub create_shipment_notification_from_edi {
-    my ($class, $msg_data, $provider_id, $edi_message) = @_;
+    my ($class, $msg_data, $provider_id, $edi_message, $seen_container_codes) = @_;
     # $msg_data is O::U::EDIReader hash
 
     $logger->info("ASN: " . Dumper($msg_data));
@@ -1165,46 +1166,72 @@ sub create_shipment_notification_from_edi {
 
         $logger->info("ACQ processing container: $container_code");
 
-        my $eg_asn = Fieldmapper::acq::shipment_notification->new;
-        $eg_asn->isnew(1);
+        my $eg_asn;
+        if ($seen_container_codes->{$container_code}) {
+            # Appending to a container we created earlier in this EDI file
 
-        # Some troubleshooting aids.  Yeah we should have made appropriate links
-        # for this in the schema, but this is better than nothing.  Probably
-        # *don't* try to i18n this.
-        $eg_asn->note("Generated from acq.edi_message #" . $edi_message->id . ".");
+            $logger->info("ACQ appending to existing container $container_code");
 
-        $eg_asn->provider($provider_id);
-        $eg_asn->shipper($provider_id);
-        $eg_asn->recv_method('EDI');
+            # This is coming through as an object?
+            $provider_id = $provider_id->id if ref $provider_id;
 
-        $eg_asn->recv_date( # invoice_date is a misnomer; should be message date.
-            $class->edi_date_to_iso($msg_data->{invoice_date}));
+            $eg_asn = $e->search_acq_shipment_notification({
+                container_code => $container_code,
+                provider => $provider_id
+            })->[0] or return $e->event;
 
-        $class->process_message_buyer($e, $msg_data, $edi_message, "ASN" , $eg_asn);
+            # The else branch below starts its own transaction so it
+            # can create a new shipment_nofication, which we don't need.
+            # But we do need a xact to add the entries past the if()
+            $e->xact_begin;
 
-        if (!$eg_asn->receiver) {
-            die(sprintf(
-                "Unable to determine buyer (org unit) in shipment notification; ".
-                "buyer_san=%s; buyer_acct=%s",
-                ($msg_data->{buyer_san} || ''), 
-                ($msg_data->{buyer_acct} || '')
-            ));
+        } else {
+            # New container code.  Create a new shipment notification
+            # and update the edi_message accordingly.
+            $logger->info("ACQ creating new shipment noficiation for $container_code");
+
+            $eg_asn = Fieldmapper::acq::shipment_notification->new;
+            $eg_asn->isnew(1);
+
+            # Some troubleshooting aids.  Yeah we should have made appropriate links
+            # for this in the schema, but this is better than nothing.  Probably
+            # *don't* try to i18n this.
+            $eg_asn->note("Generated from acq.edi_message #" . $edi_message->id . ".");
+
+            $eg_asn->provider($provider_id);
+            $eg_asn->shipper($provider_id);
+            $eg_asn->recv_method('EDI');
+
+            $eg_asn->recv_date( # invoice_date is a misnomer; should be message date.
+                $class->edi_date_to_iso($msg_data->{invoice_date}));
+
+            $class->process_message_buyer($e, $msg_data, $edi_message, "ASN" , $eg_asn);
+
+            if (!$eg_asn->receiver) {
+                die(sprintf(
+                    "Unable to determine buyer (org unit) in shipment notification; ".
+                    "buyer_san=%s; buyer_acct=%s",
+                    ($msg_data->{buyer_san} || ''), 
+                    ($msg_data->{buyer_acct} || '')
+                ));
+            }
+
+            $eg_asn->container_code($container_code);
+
+            die("No container code in DESADV message") unless $eg_asn->container_code;
+
+            $e->xact_begin;
+
+            die "Error updating EDI message: " . $e->die_event
+                unless $e->update_acq_edi_message($edi_message);
+
+            die "Error creating shipment notification: " . $e->die_event
+                unless $e->create_acq_shipment_notification($eg_asn);
+
         }
-
-        $eg_asn->container_code($container_code);
-
-        die("No container code in DESADV message") unless $eg_asn->container_code;
 
         my $entries = extract_shipment_notification_entries([
             grep {$_->{container_code} eq $container_code} @{$msg_data->{lineitems}}]);
-
-        $e->xact_begin;
-
-        die "Error updating EDI message: " . $e->die_event
-            unless $e->update_acq_edi_message($edi_message);
-
-        die "Error creating shipment notification: " . $e->die_event
-            unless $e->create_acq_shipment_notification($eg_asn);
 
         for my $entry (@$entries) {
             $entry->shipment_notification($eg_asn->id);
@@ -1213,6 +1240,8 @@ sub create_shipment_notification_from_edi {
         }
 
         $e->xact_commit;
+
+        $seen_container_codes->{$container_code} = 1;
     }
 
     return 1;
