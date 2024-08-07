@@ -41,11 +41,11 @@ indexterm:[staff client, printers]
 
 See the xref:admin:receipt_template_editor.adoc[Receipt Template Editor documentation].
 
-:leveloffset: -1
+:leveloffset: +1
 
 include::latency.adoc[]
 
-:leveloffset: +1
+:leveloffset: -1
 
 == Workstation Permissions/User Settings ==
 
