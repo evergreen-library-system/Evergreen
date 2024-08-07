@@ -15,11 +15,11 @@ An interface for configuring authority headings is available in Server Administr
 
 When navigated to, the interface looks like this:
 
-image::auth_browse/auth_browse_infra1.png[]
+image::auth_browse/auth_browse_infra1.png[Authorities Heading Field Administration list view]
 
 Individual heading field definitions can be edited like this:
 
-image::auth_browse/auth_browse_infra2.png[]
+image::auth_browse/auth_browse_infra2.png[Authorities Heading Field Edit Form]
 
 The available fields are:
 
