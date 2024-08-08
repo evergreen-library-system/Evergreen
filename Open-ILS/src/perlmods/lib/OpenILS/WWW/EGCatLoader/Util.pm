@@ -796,7 +796,7 @@ sub load_copy_location_groups {
                 }
             }
         },
-        {order_by => {acplg => ['pos','name']}}
+        {order_by => [{class => "acplg", field => "pos"},{class => "acplg", field => "name"}]}
     ]);
 
     my %buckets;
