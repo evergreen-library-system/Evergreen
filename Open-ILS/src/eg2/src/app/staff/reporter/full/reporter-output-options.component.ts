@@ -2,6 +2,7 @@
 import {Component, Input} from '@angular/core';
 import {IdlService} from '@eg/core/idl.service';
 import {ReporterService, SRTemplate} from '../share/reporter.service';
+import {Tree} from '@eg/share/tree/tree';
 import * as moment from 'moment-timezone';
 
 @Component({
@@ -18,10 +19,16 @@ export class ReporterOutputOptionsComponent {
     @Input() saveTemplate: (args: any) => void;
     @Input() closeForm: (args: any) => void;
 
+    report_tree: Tree;
+    output_tree: Tree;
+
     constructor(
         private idl: IdlService,
         public RSvc: ReporterService
-    ) { }
+    ) {
+        this.report_tree = this.RSvc.myFolderTrees.reports.clone({expanded:!this.RSvc.reportFolder});
+        this.output_tree = this.RSvc.myFolderTrees.outputs.clone({expanded:!this.RSvc.outputFolder});
+    }
 
     canPivot() {
         return this.advancedMode
@@ -33,8 +40,10 @@ export class ReporterOutputOptionsComponent {
         if (node.callerData.folderIdl) { // folder clicked
             if (node.callerData.folderIdl.classname === 'rrf') { // report folder
                 this.RSvc.reportFolder = node.callerData.folderIdl;
+                this.report_tree.collapseAll();
             } else { // output folder
                 this.RSvc.outputFolder = node.callerData.folderIdl;
+                this.output_tree.collapseAll();
             }
         }
     }

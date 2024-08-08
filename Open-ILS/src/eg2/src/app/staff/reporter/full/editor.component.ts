@@ -39,6 +39,7 @@ export class FullReporterEditorComponent implements OnInit {
     folder: IdlObject = null;
     folderTree: Tree = null;
     _isDirty = false;
+    folderParam: number;
 
     @ViewChild('templateSaved', { static: true }) templateSavedString: StringComponent;
     @ViewChild('templateSaveError', { static: true }) templateSaveErrorString: StringComponent;
@@ -60,10 +61,10 @@ export class FullReporterEditorComponent implements OnInit {
         private pcrud: PcrudService,
         public RSvc: ReporterService
     ) {
-        const folderParam = this.route.snapshot.paramMap.get('folder');
-        if (folderParam) {
+        this.folderParam = Number(this.route.snapshot.paramMap.get('folder')) || null;
+        if (this.folderParam) {
             this.pcrud
-                .retrieve('rtf', folderParam)
+                .retrieve('rtf', this.folderParam)
                 .subscribe(fldr => this.folder = this.RSvc.templateFolder = fldr);
         }
 
@@ -84,8 +85,12 @@ export class FullReporterEditorComponent implements OnInit {
 
     ngOnInit() {
         this._setPageTitle();
-        if (!this.folder) {
-            this.folderTree = this.RSvc.myFolderTrees.templates;
+        if (!this.RSvc.myFolderTrees.templates.rootNode.children.length) { // hard refresh? bookmark?
+            this.RSvc.reloadFolders().then(() => {
+                this.folderTree = this.RSvc.myFolderTrees.templates.clone({expanded:!this.folderParam});
+            });
+        } else {
+            this.folderTree = this.RSvc.myFolderTrees.templates.clone({expanded:!this.folderParam});
         }
     }
 
@@ -197,10 +202,21 @@ export class FullReporterEditorComponent implements OnInit {
     }
 
     folderNodeSelected (node: TreeNode) {
-        this.folder = node.callerData.folderIdl;
-        this.RSvc.templateFolder = this.folder;
-        this.location.go(this.location.path() + '/' + this.folder.id());
-        console.log('folder node selected:', node);
+        if (node && node.callerData && node.callerData.folderIdl) {
+            this.folder = node.callerData.folderIdl;
+            this.folderTree.collapseAll();
+            this.RSvc.templateFolder = this.folder;
+            let newPath = this.location.path();
+            if (!this.folderParam) {
+                this.folderParam = this.folder.id();
+                newPath = newPath + '/' + this.folderParam as string;
+            } else {
+                this.folderParam = this.folder.id();
+                newPath = newPath.replace(/\d+$/, (this.folderParam as unknown) as string);
+            }
+            this.location.go(newPath);
+            console.log('folder node selected:', node);
+        }
     }
 
     idlTreeNodeRequired (node: TreeNode) {
