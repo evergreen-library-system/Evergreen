@@ -56,7 +56,7 @@
         <span *ngIf="!RSvc.reportFolder" class="badge badge-danger" i18n>Report folder is required</span>
         <label class="form-label">{{RSvc.reportFolder?.name()}}</label>
       </div>
-	  <eg-tree [disabled]="disabled" [tree]="RSvc.myFolderTrees.reports" (nodeClicked)="folderNodeSelected($event)"></eg-tree>
+      <eg-tree [disabled]="disabled" [tree]="report_tree" (nodeClicked)="folderNodeSelected($event)"/>
     </div>
     <div *ngIf="advancedMode" class="col-sm-4">
 	  <div>
@@ -64,8 +64,7 @@
         <span *ngIf="!RSvc.outputFolder" class="badge badge-danger" i18n>Output folder is required</span>
         <label class="form-label">{{RSvc.outputFolder?.name()}}</label>
       </div>
-	  <eg-tree [disabled]="disabled" [tree]="RSvc.myFolderTrees.outputs" (nodeClicked)="folderNodeSelected($event)"></eg-tree>
-	  
+      <eg-tree [disabled]="disabled" [tree]="output_tree" (nodeClicked)="folderNodeSelected($event)"/>
     </div>
   </div>
   <div class="form-group row">

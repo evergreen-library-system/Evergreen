@@ -712,6 +712,7 @@ export class ReporterService {
     	    	id: 'my-templates',
 			    label: $localize`Templates`,
                 stateFlag: true,
+                expanded: false,
                 children: [],
 			    callerData: { type: 'rtf' }
             })),
@@ -720,6 +721,7 @@ export class ReporterService {
     	    	id: 'my-reports',
 			    label: $localize`Reports`,
                 stateFlag: true,
+                expanded: false,
                 children: [],
 			    callerData: { type: 'rrf' }
             })),
@@ -728,6 +730,7 @@ export class ReporterService {
     	    	id: 'my-outputs',
 			    label: $localize`Outputs`,
                 stateFlag: true,
+                expanded: false,
                 children: [],
 			    callerData: { type: 'rof' }
             }))
@@ -738,6 +741,7 @@ export class ReporterService {
         		id: 'shared-templates',
 		    	label: $localize`Templates`,
                 stateFlag: false,
+                expanded: false,
                 children: [],
 			    callerData: { type: 'rtf' }
             })),
@@ -746,6 +750,7 @@ export class ReporterService {
     	    	id: 'shared-reports',
 			    label: $localize`Reports`,
                 stateFlag: false,
+                expanded: false,
                 children: [],
 			    callerData: { type: 'rrf' }
             })),
@@ -754,6 +759,7 @@ export class ReporterService {
     	    	id: 'shared-outputs',
 			    label: $localize`Outputs`,
                 stateFlag: false,
+                expanded: false,
                 children: [],
 			    callerData: { type: 'rof' }
             }))
