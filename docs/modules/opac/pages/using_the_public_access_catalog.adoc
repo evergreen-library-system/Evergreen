@@ -47,7 +47,7 @@ Congress Subject Headings.
 
 [TIP]
 =============
-To search an item copy call number, use <<numeric_search, _Advanced Search: 
+To search an item call number, use <<numeric_search, _Advanced Search: 
 Numeric_>> 
 =============
 
@@ -267,7 +267,7 @@ Library Groups location on the Basic Search page:
 
 image::using_the_public_access_catalog/library_group_location_bs.png[Library Groups in Basic Search]
 
-On the Advanced Search page, Library Groups as well as Copy Location
+On the Advanced Search page, Library Groups as well as Shelving Location
 Groups and the Depth Selector are gathered into a dropdown labelled
 *Where*, and this can be seen below the Search Library dropdown:
 
@@ -428,7 +428,7 @@ works by the author. If you want to place a hold on the title, click _Place
 Hold_ beside the format icons.
 
 On the top right, there is a _Limit to Available_ checkbox. Checking this box 
-will filter out those titles with no available copies in the library or 
+will filter out those titles with no available items in the library or 
 libraries at the moment. Usually you will see your search results are 
 re-displayed with fewer titles. 
 
@@ -458,12 +458,12 @@ image::using_the_public_access_catalog/search_facets.jpg[search facets]
 
 indexterm:[search results, availability]
 
-The number of available copies and total copies are displayed under each search 
+The number of available items and total items are displayed under each search 
 result's call number. If you are using a catalog inside a library or accessing
-a library's online catalog from its homepage, you will see how many copies are
+a library's online catalog from its homepage, you will see how many items are
 available in the library under each title, too. If the library belongs to a 
 multi-branch library system you will see an extra row under each title showing 
-how many copies are available in all branches.
+how many items are available in all branches.
 
 
 image::using_the_public_access_catalog/branch_search.jpg[branch search]
@@ -472,7 +472,7 @@ image::using_the_public_access_catalog/search_result_quantity.jpg[search result 
 
 You may also click the _Show More Details_ link at the top of the results page, 
 next to the _Limit to available items_ check box, to view each search result's 
-copies' individual call number, status, and shelving location. 
+items' individual call number, status, and shelving location. 
 
 [[did_you_mean]]
 === Did You Mean? Search Suggestions
@@ -612,7 +612,7 @@ indexterm:[search results, details]
 The record shows details such as the cover image, title, author, publication
 information, and an abstract or summary, if available.
 
-Near the top of the record, users can easily see the number of copies that
+Near the top of the record, users can easily see the number of items that
 are currently available in the system and how many current holds are on the
 title. 
 
@@ -623,9 +623,9 @@ in this section are based on the configurable catalog icon formats.
 
 image::using_the_public_access_catalog/record_details.jpg[Record Details]
 
-The Record Details view shows how many copies are at the library or libraries
+The Record Details view shows how many items are at the library or libraries
 you have selected, and whether they are available or checked out. It also
-displays the Call number and Copy Location for locating the item on the shelves.
+displays the Call Number and Shelving Location for locating the item on the shelves.
 Clicking on Text beside the call number will allow you to send the item's call
 number by text message, if desired. Clicking the location library link will
 reveal information about owning library, such as address and open hours.
@@ -640,8 +640,7 @@ Reads will reveal that additional information.
 
 [NOTE]
 ==========
-Copies are sorted by (in order): org unit, call number, part label, copy number,
-and barcode.
+Items are sorted by (in order): library, call number/item notes, barcode, shelving location, circulation modifier, status, and due date.
 ==========
 
 
@@ -651,7 +650,7 @@ and barcode.
 indexterm:[search results, placing holds]
 
 Holds can be placed on either title results or search results page. If the item 
-is available, it will be pulled from the shelf and held for you. If all copies 
+is available, it will be pulled from the shelf and held for you. If all items 
 at your local library are checked out, you will be placed on a waiting list and 
 you will be notified when items become available. 
 
