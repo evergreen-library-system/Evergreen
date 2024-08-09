@@ -211,9 +211,13 @@ image::circulating_items_web_client/items_out_click_web_client.png[Items Out scr
 
 image::circulating_items_web_client/renew_action_web_client.png[Renew action in the Items Out screen.]
 
-3) If you want to specify the due date, click *Renew with Specific Due Date*. You will be prompted to select a due date. Once done, click *Apply*.
+3) If you want to specify the due date, click *Renew with Specific Due Date*.
 
-//image::media/renew_specific_date_web_client.png[]
+image::circulating_items_web_client/renew_specific_date_web_client.png[Renew items with a specific due date action in Items Out screen.]
+
+You will be prompted to select a due date. Once done, click *Submit*.
+
+image::circulating_items_web_client/renew_specific_date_submit.png[Renew items with a specific due date]
  
 
 === Renewing by Item Barcode ===
@@ -833,9 +837,9 @@ You can also retrieve the past circulations on the patron's Items Out screen and
 === Marking items damaged or missing and other functions ===
 1) To mark items damaged or missing, retrieve the item on the *Item Status* screen.
 
-2) Select the item. Click on *Actions for Selected Items* -> *Mark Item Damaged* or *Mark Item Missing*.
+2) Select the item. Click on *Actions* -> *Mark Item Damaged* or *Mark Item Missing*.
 
-// image::media/mark_missing_damaged_web_client.png[]
+image::circulating_items_web_client/mark_missing_damaged_web_client.png[Mark items as missing or damaged from actions menu in Item Status screen.]
 
 [NOTE]
 Depending on the library's policy, when marking an item damaged, bills (cost and/or processing fee) may be inserted into the last borrower's account. 
@@ -844,20 +848,25 @@ Depending on the library's policy, when marking an item damaged, bills (cost and
 
 === Item alerts ===
 
-The *Edit Item Attributes* function on the *Actions for Selected Items* dropdown list allows you to edit item records. Here, we will show you how to insert item alert messages by this function. See cataloging instructions for more information on item editing.
+The *Edit Item* function on the *Actions* dropdown list allows you to edit item records. Here, we will show you how to insert item alert messages by this function. See cataloging instructions for more information on item editing.
+
 1) Retrieve record on *Item Status* screen.
 
-2) Once item is displayed, highlight it and select *Actions for Selected Items* -> *Edit Item Attributes*.
+2) Once item is displayed, highlight it and select *Actions* -> *Edit* -> *Item*.
 
-3) The item record is displayed in the *Copy Editor*.
+3) The item record is displayed in the *Holdings Editor*.
 
-//image::media/copy_edit_alert_web_client.png[]
+4) Click the *Item Alerts* button in the *Add Item Alerts* box under the *Miscellaneous* column.
 
-4) Click *Alert Message* in the *Miscellaneous* column. The background color of the box changes. Type in the message then click *Apply*. 
+image::circulating_items_web_client/holdings_editor_add_item_alert.png[Item Alerts button in the Holdings Editor.]
 
-//image::media/copy_alert_message_web_client.png[]
+5) A window appears, where you can select the alert type, i.e., when the alert should appear for staff. Select the *Temporary* checkbox if you would like the alert to be removed after that specific action for the item is complete. Type in the message then click *Apply Changes*. 
 
-5) Click *Modify Copies*, then confirm the action.
+image::circulating_items_web_client/item_alert_window.png[Managing item alerts window with examples of alert types shown in dropdown.]
+
+6) Back in the Holdings Editor, click *Apply All & Save* or *Apply, Save & Exit*.
+
+image::circulating_items_web_client/holdings_editor_save_options.png[Item Alerts button in the Holdings Editor.]
 
 == Long Overdue Items ==
 
