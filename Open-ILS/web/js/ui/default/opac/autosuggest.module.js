@@ -178,7 +178,7 @@ export class ListBoxCombobox {
     });
   }
   #addGridEventListeners() {
-    this.listbox.addEventListener('click', (event) => {
+    this.listbox.addEventListener('mousedown', (event) => {
       this.setFocusById(event.target.closest('li').id);
       this.#selectAndSubmit();
     });
