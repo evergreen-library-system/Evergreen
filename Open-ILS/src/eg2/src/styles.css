@@ -1,7 +1,7 @@
 /* You can add global styles to this file, and also import other style files */
 
 /* bootstrap CSS only -- JS bits come from ng-bootstrap */
-@import '~bootstrap-5-css-only/css/bootstrap.min.css';
+@import '~bootstrap/dist/css/bootstrap.min.css';
 
 /* Locally served material icon fonts  */
 @import '~material-design-icons-iconfont/dist/material-design-icons.css';
