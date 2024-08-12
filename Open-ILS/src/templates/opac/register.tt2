@@ -107,7 +107,7 @@ END;
             END
         %]
 
-        <form method='POST' onSubmit="return dobValidate(document.getElementById('stgu.dob'))">
+        <form method='POST'>
             <table>
                 <tr>
                     <td>
@@ -149,6 +149,13 @@ FOR field_def IN register_fields;
     example = ctx.register.settings.$fclass.$fname.example;
     value = ctx.register.values.$fclass.$fname;
 
+    IF fname == 'dob';
+        dateparts = String(value).split('-');
+        dob_year = datepart.item(0);
+        dob_month = datepart.item(1);
+        dob_day = datepart.item(2);
+    END;
+
     invalid_require = ctx.register.invalid.$fclass.$fname.require;
     invalid_regex = ctx.register.invalid.$fclass.$fname.regex;
 
@@ -158,7 +165,83 @@ FOR field_def IN register_fields;
     END;
 
     NEXT UNLESS require OR show;
-%]
+
+    IF fname == 'dob'; %]
+        <!-- we just use this hidden input to tell the middle layer there is a dob -->
+        <input
+        class='form-control'
+        type='hidden'
+        id='stgu.dob'
+        name='stgu.dob'
+        value='kludge'/>
+    [% USE String %]
+    [% DEFAULT dob_order = 'MDY' %]
+    [% IF ctx.register.settings.dob_order %]
+    <!-- opac.self_register.dob_order: [% ctx.register.settings.dob_order %] -->
+    [% # Regular Expressions; love them and hate them %]
+    [% IF ctx.register.settings.dob_order.match('^(?!.*(.).*\1)[MDY]{3}$') %]
+        [% dob_order = ctx.register.settings.dob_order %]
+    [% ELSE %]
+        [% # How should handle an invalid setting? %]
+    [% END %]
+    [% END %]
+    <!-- dob_order: [% dob_order %] -->
+    <tr>
+        <td>
+            <label for='[% field_path %]'>[% field_def.label | html %]</label>
+        </td>
+        <td>
+            <div class="dob-form-group" style="display: flex; gap: 0.25rem;">
+                [% FOREACH element IN dob_order.split('') %]
+                [% SWITCH element %]
+                  [% CASE 'M' %]
+                    <div class="form-group">
+                        <input type="text" inputmode="numeric" size="3" id='dob-month' min="1" max="12" pattern="[0-9]{2}"
+                            name='dob-month' value='[% dob_month || CGI.param("dob-month") | html %]' [% IF require %]required[% END %] />
+                        <label for="dob-month" style="margin-bottom: 0; font-size: 90%;">[% l('Month') %]</label>
+                    </div>
+                  [% CASE 'D' %]
+                    <div class="form-group">
+                        <input type="text" inputmode="numeric" size="3" id='dob-day' min="1" max="31" pattern="[0-9]{2}"
+                            name='dob-day' value='[% dob_day || CGI.param("dob-day") | html %]' [% IF require %]required[% END %] />
+                        <label for="dob-day" style="margin-bottom: 0; font-size: 90%;">[% l('Day') %]</label>
+                    </div>
+                  [% CASE 'Y' %]
+                    <div class="form-group">
+                        <input type="text" inputmode="numeric" size="5" id='dob-year' min="1900" max="[% date.format(date.now, '%Y') %]" pattern="[0-9]{4}"
+                        name='dob-year' value='[% dob_year || CGI.param("dob-year") | html %]' [% IF require %]required[% END %] />
+                        <label for="dob-year" style="margin-bottom: 0; font-size: 90%;">[% l('Year') %]</label>
+                    </div>
+                [% END %]
+              [% END %]
+            
+            [% IF require %]
+            <span class='patron-reg-invalid'>*</span>
+            [% END %]
+        </td>
+        <td>
+    
+        <!-- display errors and example text -->
+    
+        [% IF invalid_require %]
+            <span class='patron-reg-invalid'>
+                [% l('This field is required') %]
+            </span>
+        [% ELSIF invalid_regex %]
+            <span class='patron-reg-invalid'>
+                [% l('The value entered does not have the correct format') %]
+            </span>
+        [% END %]
+        [% IF example %]
+            <span class='patron-reg-extra'>
+                [% l('(Example: [_1])', example) %]
+            </span>
+        [% END %]
+    
+        </td>
+    </tr>
+
+[% ELSE; %]
 <tr>
     <td>
         <label for='[% field_path %]'>[% field_def.label | html %]</label>
@@ -194,6 +277,7 @@ FOR field_def IN register_fields;
 
     </td>
 </tr>
+[% END %]
 [% END %]
 <!-- ====> shifting the code back to the right for context -->
                     [% IF ctx.register.opt_in_settings.size > 0 %]

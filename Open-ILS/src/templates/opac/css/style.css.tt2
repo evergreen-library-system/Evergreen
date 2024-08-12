@@ -2668,6 +2668,12 @@ a.preflib_change {
     [% END -%]
 }
 
+.dob-form-group input:user-invalid {
+    border: 2px solid [% css_colors.border_alert %];
+    color: inherit;
+    font-weight: normal;
+}
+
 .result_footer_nav1 {
     clear: both;
 }
