@@ -33,7 +33,7 @@
         <div class="col-3 text-left">[% IF offset != 0 %]<a href='[% mkurl('circ_history', {limit => limit, offset => (offset - limit)}) %]'
                  class="btn btn-action mr-3" ><span class="nav_arrow_fix">&#9668;</span>[% l('Previous') %]</a>[% END %]
                  <button name="action" class="btn btn-deny my-2" id="delete" value="delete" type="submit" onclick="return confirm('[% l("Are you sure you wish to delete the selected item(s)?") %]');">
-            <i class="fas fa-trash-alt" aria-hidden="true"></i> Delete Selected</button>
+            <i class="fas fa-trash-alt" aria-hidden="true"></i> [% l('Delete Selected') %]</button>
             </div>
         <div class="col-6 text-center"></div>
         <div class="col-3 text-right">[% IF !no_next %]<a href='[% mkurl('circ_history', {limit => limit, offset => (offset + limit)}) %]'
