@@ -291,8 +291,8 @@ function($q , $window , $timeout , $http , egHatch , egAuth , egIDL , egOrg , eg
             scope.elm = element;
         },
         controller : 
-                   ['$scope','$q','$window','$timeout','egHatch','egPrint','egEnv',
-            function($scope , $q , $window , $timeout , egHatch , egPrint , egEnv) {
+                   ['$scope','$q','$window','$timeout','egHatch','egPrint','egEnv', 'ngToast',
+            function($scope , $q , $window , $timeout , egHatch , egPrint , egEnv, ngToast) {
 
                 egPrint.clear_print_content = function() {
                     $scope.elm.html('');
@@ -346,12 +346,24 @@ function($q , $window , $timeout , $http , egHatch , egAuth , egIDL , egOrg , eg
                                 node.onload = (function() {
                                     imgPromise.resolve();
                                 });
+                                node.onerror = function(event) {
+                                    imgPromise.reject("Error loading image in print template");
+                                }
                             }
                         });
 
+                        var imageLoadingDeadline = $q.defer();
+                        var timeoutDuration = 5000;
+                        $timeout(function(){
+                            imageLoadingDeadline.reject("Image in print template failed to load within " + (timeoutDuration / 1000) + " second(s).")
+                        }, timeoutDuration);
+
                         // And once all of them are finished loading,
                         // resolve with the compiled HTML from our print container
-                        $q.all(imgPromises).then(function(){
+                        $q.race([$q.all(imgPromises), imageLoadingDeadline.promise]).catch(function (error) {
+                            deferred.resolve($scope.elm.html());
+                            ngToast.danger(error);
+                        }).then(function(){
                             deferred.resolve($scope.elm.html());
                         });
                         
