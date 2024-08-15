@@ -1,0 +1,219 @@
+= Multi Factor Authentication =
+:toc:
+
+Multi Factor Authentication (MFA) is available in Evergreen for staff accounts. The intention is to provide a configurable secondary factor to confirm a staff login in order to provide a higher level of staff login security.
+
+MFA is established on User Permission Groups, and numerous configuration options are available and described in detail in the sections below.
+
+Configuration options include:
+
+* _Recheck interval_ set via Library Setting, which specifies the time period in between requests for authentication via a secondary factor.
+* _Allowed_ mode and _Required_ mode to help staff transition to using MFA during a rollout.
+* MFA factors can be individually allowed, and may be either inherited or assigned directly in User Permission Groups.
+* An extensive set of global flags to configure size, timeout, algorithm, and other options associated with each type of login factor.
+
+[[mfa_overview]]
+== Multi Factor Authentication Overview ==
+
+Multi Factor Authentication supports two operating modes and three authentication options, with additional configuration available for all three authentication options.
+
+Modes are _Allowed_ and _Required_, which are established in User Permission Groups. 
+
+_Allowed_ mode is intended as an intermediary step when migrating to MFA. Setting a permission group as _Allowed_ for MFA turns on the ability of the user to configure MFA, and will prompt the user to configure at least one factor once every recheck interval if they have not. This is a precursor to _Required_ mode, in which the user must supply a factor once each recheck interval. 
+
+The three authentication options are:
+
+* TOTP / HOTP - Temporary One-Time Password / HMAC-based One-Time Password using a third party service like Google Authenticator
+* WebAuthn - third party services or devices using the WebAuthn protocol, such as Yubikey or FaceID
+* Email or SMS via Action Trigger - sending a code challenge via email or SMS using Evergreen's native action trigger mechanism
+
+
+[[mfa_login]]
+== Using Multi Factor Authentication to Log In ==
+
+When MFA is enabled for a permission group, the next time that user logs in they will be presented with the available option(s) for secondary authentication. These are configurable via the Global Flags described below. To wholly remove a factor, an administrator will need to edit the OpenSRF file as described below.
+
+The only time a user will see the list of available options and the _Skip for Now_ button are when they have not yet configured any factor, and MFA is allowed but not required. The configuration request is only presented once the recheck interval has passed. 
+
+If a user is in the process of an allowed-but-not-required MFA setup and they wish to login without continuing to configure MFA,, they can click the Home icon in the upper-left to return to the standard Evergreen login screen.
+
+If a user chooses to remove an MFA factor, they will need to confirm this using an established MFA factor.
+
+Once a factor is configured and a user confirms it, they will be redirected to the Evergreen splash screen.
+
+=== Using TOTP/HOTP ===
+
+The screenshot below shows the Time-based One-Time Password (TOTP) options available at login. This factor requires a third party application such as Google Authenticator. The sending party, factor length, and validity period for this are controlled by Global Flags described below.
+
+The TOTP specification provides a strongly recommended best practice of using a stable user identifier within issuer label string. Because username, first and last name, email address, and barcode can all change for an Evergreen user (and in some cases, changed directly by a user), the Evergreen user ID is used as the stable identifier here even though this is less human-friendly than other identifiers.
+
+image::images/multi_factor_authentication/TOTP_login.png[Using TOTP via a third party application]
+
+=== Using Web Authentication (WebAuthn) ===
+
+If enabled, Web Authentication will prompt the operating system or password manager to establish MFA credentials. A third party account or device such as a Yubikey is required to use this factor. WebAuthn details are configured via Global Flags.
+
+If so configured, a staff user may pair multiple WebAuthn devices with their account.
+
+image::images/multi_factor_authentication/webauthn_login.png[Enable WebAuthn device]
+
+=== Using Native SMS / Email ===
+
+TOTP is also available via email, or via SMS, using Evergreen's native Action Trigger tools. The sending party, factor length, and validity period for this factor are controlled by Global Flags.
+
+For security reasons, this data does not prepopulate from existing staff profiles and must be entered at configuration time.
+
+The email and SMS codes are time-based, so one code is valid for a given configurable time window for a specific user. The _Resend_ option will resend the same code if there was an unrecoverable error somewhere in an email system.
+
+Users should be aware that some carriers have been limiting email-to-SMS messages, which will affect the speed at which an SMS message will arrive and therefor might make it a less-desirable secondary factor.
+
+image::images/multi_factor_authentication/TOTP_email_login.png[Using TOTP via email]
+
+image::images/multi_factor_authentication/TOTP_SMS_login.png[Using TOTP via SMS]
+
+[[update_mfa_factors]]
+== Updating, Adding, or Removing MFA Factors ==
+
+Once a single secondary factor is configured, the user must be fully logged in with that factor to add additional secondary factors, remove a factor, or edit existing factors. Once logged in, a user can update, add, or remove factors for themselves by accessing the MFA interface from the upper-right hamburger menu. 
+
+image::images/multi_factor_authentication/mfa_location.png[Location of MFA in the upper-right hamburger menu]
+
+An example of this for a WebAuthn device is shown below.
+
+image::images/multi_factor_authentication/edit_factors.png[Add additional, remove, or edit a WebAuthn factor]
+
+[[remove_mfa_factors]]
+== Removing User MFA Factors ==
+
+There will likely be times when a user needs to have someone else remove an MFA factor because they lost an authenticator device, changed phone numbers and cannot receive SMS messages at the registered number, changed phones and did not save their Authenticator app data, or no longer have access to a particular email address. 
+
+Staff with the appropriately scoped REMOVE_USER_MFA permission can use either the Test Password or Verify Credentials interfaces to remove specific MFA factors for other users. The staff member will need to confirm the user's password to do this. It is strongly recommended that this be restricted to higher-level support staff.
+
+image::images/multi_factor_authentication/remove_factor.png[Remove a factor for another user]
+
+For MFA, the account holder's physical or digital control of a shared secret or message is what provides the security. After regaining control of their account, the user should change their password.
+
+[[configure_mfa]]
+== Configuring Multi Factor Authentication ==
+
+MFA is controlled by a new OpenSRF config file, several new global flags, a new library setting, and new functionality in the Permission Group configuration interface.
+
+There are two new permissions associated with MFA. Note that existing permissions about editing Permission Group values are also required.
+
+* ADMIN_MFA is required to edit the MFA options in User Permission Groups. 
+
+* REMOVE_USER_MFA is required to remove configured MFA factors for another user. 
+
+[[mfa_opensrf]]
+=== OpenSRF ===
+
+Because enabling Multi-factor Authentication (MFA) creates a profound change to the login logic within Evergreen, there are certain settings that must be configured at the filesystem level, in the main settings configuration file opensrf.xml.
+
+A new OpenSRF application, `open-ils.auth_mfa`, must be configured and running, whether MFA is in use or not. Within the configuration block for that application, the `<app_settings>` section looks like this:
+
+[,xml]
+----
+<app_settings>
+    <enabled>true</enabled>
+    <factors>
+        <totp>
+         <enabled>true</enabled>
+          <fuzziness>1</fuzziness>
+        </totp>
+        <sms>
+          <enabled>true</enabled>
+        </sms>
+        <email>
+          <enabled>true</enabled>
+        </email>
+        <webauthn>
+          <enabled>true</enabled>
+        </webauthn>
+      </factors>
+    </app_settings>
+----		
+
+If the top-level `<enabled/>` element contains true, then MFA will be generally available. Each potential MFA factor must also be enabled separately, with their own `<enabled/>` element containing true. 
+
+The TOTP, SMS, and email factors can make use of the `<fuzziness/>` element, which tells Evergreen how many timeout periods to look in the past and the future when verifying the one-time code for those factors. This defaults to 1 for all three factors, so that, for instance, a user using the Google Authenticator app for TOTP verification will have up to 90 seconds to enter a code, even though the codes change every 30 seconds. This setting helps account for unsynchronized server and client device clocks, as well as allowing Evergreen to be more forgiving for users that may take more than the average amount of time finding and then entering the one-time code.
+
+To disable any factors you do not wish to offer to your users, simply remove the `<enabled/>` element, or change the content to false.
+
+[[mfa_yaous]]
+=== Library Settings ===
+
+There is a single new Library Setting related to this work: _Security: MFA recheck interval_. This setting allows an Organizational Unit to specify the recheck interval for MFA among its staff members. 
+
+If this is unset, MFA will be forced at every login for MFA-Required permission group(s).
+
+To force the "configure now, or skip for now" screen at every login until the user has configured a factor in "allowed" mode, you can unset the recheck interval setting (or set it to 0 seconds).
+
+In order to require a second factor for login generally, you have to require it for the group. To require it at /every/ login, unset (or set to 0 seconds) the recheck interval.
+
+[[mfa_global]]
+=== Global Flags ===
+
+The following table describes the new Global Flags associated with this work:
+
+|===
+|Name | Label | Value | Enabled
+|webauthn.login.issuer | WebAuthn Relying Party name for single-factor login | Evergreen WebAuthn | t
+|webauthn.login.domain | WebAuthn Relying Party domain (optional base domain) for single-factor login |  | t
+|webauthn.login.digits | WebAuthn single-factor login challenge size (bytes) | 16 | t
+|webauthn.login.period | WebAuthn single-factor login challenge timeout (seconds) | 60 | t
+|webauthn.login.multicred | If Enabled, allows a user to register multiple single-factor login WebAuthn verification devices |  | t
+|totp.login.issuer | TOTP Issuer string for single-factor login | Evergreen-Login | t
+|totp.login.digits | TOTP code length (Google Authenticator supports only 6) | 6 | t
+|totp.login.algorithm | TOTP code generation algorithm (Google Authenticator supports only SHA1) | SHA1 | t
+|totp.login.period | TOTP code validity period in seconds  (Google Authenticator supports only 30) | 30 | t
+|email.login.issuer | Email Issuer string for single-factor login | Evergreen-Login | t
+|email.login.digits | Email one-time code length for single-factor login; max: 8 | 6 | t
+|email.login.algorithm | Email one-time code algorithm for single-factor login: SHA1, SHA256, SHA512 | SHA1 | t
+|email.login.period | Email one-time validity period for single-factor login in seconds (default: 30 minutes) | 1800 | t
+|sms.login.issuer | SMS Issuer string for single-factor login | Evergreen-Login | t
+|sms.login.digits | SMS one-time code length for single-factor login; max: 8 | 6 | t
+|sms.login.algorithm | SMS one-time code algorithm for single-factor login: SHA1, SHA256, SHA512 | SHA1 | t
+|webauthn.mfa.issuer | WebAuthn Relying Party name for multi-factor authentication | Evergreen WebAuthn | t
+|webauthn.mfa.domain | WebAuthn Relying Party domain (optional base domain) for multi-factor authentication |  | t
+|webauthn.mfa.digits | WebAuthn challenge size (bytes) | 16 | t
+|webauthn.mfa.period | WebAuthn challenge timeout (seconds) | 60 | t
+|webauthn.mfa.multicred | If Enabled, allows a user to register multiple multi-factor login WebAuthn verification devices |  | t
+|totp.mfa.issuer | TOTP Issuer string for multi-factor authentication | Evergreen-MFA | t
+|totp.mfa.digits | TOTP code length (Google Authenticator supports only 6) | 6 | t
+|totp.mfa.algorithm | TOTP code generation algorithm (Google Authenticator supports only SHA1) | SHA1 | t
+|totp.mfa.period | TOTP code validity period in seconds  (Google Authenticator supports only 30) | 30 | t
+|email.mfa.issuer | Email Issuer string for multi-factor authentication | Evergreen-MFA | t
+|email.mfa.digits | Email one-time code length for multi-factor authentication; max: 8 | 6 | t
+|email.mfa.algorithm | Email one-time code algorithm for multi-factor authentication: SHA1, SHA256, SHA512 | SHA1 | t
+|email.mfa.period | Email one-time validity period for multi-factor authentication in seconds (default: 30 minutes) | 1800 | t
+|sms.mfa.issuer | SMS Issuer string for multi-factor authentication | Evergreen-MFA | t
+|sms.mfa.digits | SMS one-time code length for multi-factor authentication; max: 8 | 6 | t
+|sms.mfa.algorithm | SMS one-time code algorithm for multi-factor authentication: SHA1, SHA256, SHA512 | SHA1 | t
+|sms.mfa.period | SMS one-time validity period for multi-factor authentication in seconds (default: 15 minutes) | 900 | t
+|sms.login.period | SMS one-time validity period for single-factor login in seconds (default: 15 minutes) | 900 | t
+|===
+
+[[mfa_groups]]
+=== User Permission Groups ===
+
+The **Server Administration -> Permission Groups** interface now has two new options and a tab for MFA factors. 
+
+The two options are whether MFA is permitted, and whether it is required:
+
+image::images/multi_factor_authentication/enable_mfa.png[MFA options in the Permission Groups interface]
+
+The new ADMIN_MFA permission is required to edit any of these options, in addition to existing permissions about editing Permission Group values. 
+
+There is also a new tab to enable or disable the various MFA factors. These can be inherited as shown below. _Assigned directly_ means that even if the higher-level group has the factor removed, the more specific group can make it available.
+
+image::images/multi_factor_authentication/perm_editor_mfa.png[Enabling or disabling specific MFA factors in a Permission Group]
+
+The other new permission is REMOVE_USER_MFA which allows a user to remove configured MFA factors for another user. More information about removing other users’ factors is detailed below.
+
+=== Exempting Logins from MFA Requirements ===
+
+Most Evergreen clients other than the native Web Client will require some amount of development in order to integrate with Evergreen's MFA infrastructure. For instance, SIP2 clients and the OpenSRF shell program srfsh will not be able to complete the login process for users with MFA requirements. 
+
+In order to address this, staff with an appropriately scoped ADMIN_MFA permission can provide those users with either ingress (client) specific exceptions to MFA, or make specific users fully exempt from MFA requirements. This capability is also accessed through the Test Password or Verify Credentials interfaces.
+
+Requiring use of the credential verification interface is meant to encourage active consent from both the administrative staff with the appropriate permissions and the staff for whom MFA configuration would be removed or exempted.
