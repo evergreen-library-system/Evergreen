@@ -72,9 +72,9 @@ When a title is added to a list in the OPAC, a local call number will be display
 
 2)	Preferred library - the Preferred Search Location, which is set in patron OPAC account Search and History Preferences, or the patron's Home Library
 
-3)	Search library - the search library or org unit that is selected in the OPAC search interface
+3)	Search library - the search library or organizational unit that is selected in the OPAC search interface
 
-The call number that is displayed will be the most relevant call number to the searcher.  If the patron is searching at the library, Evergreen will display a call number from that library location.  If the patron is not searching at a library, but is logged in to their OPAC account, Evergreen will display a call number from their Home Library or Preferred Search Location.  If the patron is not searching at the library and is not signed in to their OPAC account, then Evergreen will display a call number from the org unit, or library, that they choose to search in the OPAC search interface.
+The call number that is displayed will be the most relevant call number to the searcher.  If the patron is searching at the library, Evergreen will display a call number from that library location.  If the patron is not searching at a library, but is logged in to their OPAC account, Evergreen will display a call number from their Home Library or Preferred Search Location.  If the patron is not searching at the library and is not signed in to their OPAC account, then Evergreen will display a call number from the organizational unit, or library, that they choose to search in the OPAC search interface.
 
 The local call number and associated library location will appear in the list:
 
