@@ -99,10 +99,9 @@
      <div class="col">
      <label for="OP-{{pathId}}" class="form-label" i18n>Operator</label>
      <select id="OP-{{pathId}}" class="form-select" (change)="operatorChange($event)" [disabled]="disabled || field.force_operator || editorMode === 'report'">
-       <option *ngFor="let o of operators" value="{{o.name}}" selected="{{ field.operator.name === o.name ? 'selected' : '' }}">
-         <span *ngIf="o.name === '= any'" i18n>Equals</span> {{ '' // this and the next are used for bools only }}
+       <option *ngFor="let o of visibleOperators()" value="{{o.name}}" selected="{{ field.operator.name === o.name ? 'selected' : '' }}">
+         <span *ngIf="o.name === '=' || o.name === '= any'" i18n>Equals</span>
          <span *ngIf="o.name === '<> any'" i18n>Does Not Equal</span>
-         <span *ngIf="o.name === '='" i18n>Equals</span>
          <span *ngIf="o.name === 'like'" i18n>Contains Matching Substring (Case Sensitive)</span>{{ '' // This is on hiatus along with non-distinct counting }}
          <span *ngIf="o.name === 'ilike'" i18n>Contains String</span>
          <span *ngIf="o.name === '>' && (field.transform.final_datatype || field.datatype) === 'timestamp'" i18n>After</span>
@@ -282,7 +281,12 @@
           <div [ngSwitch]="field.transform.final_datatype || field.datatype">
             <label for="FV-{{pathId}}" class="form-label" i18n>Filter value</label>
             <div *ngSwitchCase="'org_unit'">
-              <eg-org-family-select
+              <eg-org-select *ngIf="!field.operator.name.match('any')"
+                [disabled]="disabled || editorMode === 'report' && field.with_value_input"
+                [applyDefault]=true
+                [initialOrgId]="field.filter_value"
+                (onChange)="field.filter_value = $event.id()"/>
+              <eg-org-family-select *ngIf="field.operator.name.match('any')"
                 domId="FV-{{pathId}}"
                 (onChange)="setOrgFamilyValue($event)"
                 [disabled]="disabled || editorMode === 'report' && field.with_value_input"
@@ -338,9 +342,9 @@
             <div *ngSwitchCase="'bool'">
               <select [required]="true" id="FV-{{pathId}}" class="form-select" [disabled]="disabled || editorMode === 'report' && field.with_value_input" (change)="setSingleValue($event.target.value)">
                 <option selected="{{ !field.filter_value ? 'selected' : '' }}" disabled="disabled" i18n>Select one</option>
-                <option value="{t}" selected="{{ field.filter_value === '{t}' ? 'selected' : '' }}" i18n>True</option>
-                <option value="{f}" selected="{{ field.filter_value === '{f}' ? 'selected' : '' }}" i18n>False</option>
-                <option value="{t,f}" selected="{{ (field.filter_value && (field.filter_value !== '{t}' && field.filter_value !== '{f}') ) ? 'selected' : '' }}" i18n>Both</option>
+                <option value="{{ field.operator.name === '=' ? 't' : '{t}' }}" selected="{{ ['t','{t}'].includes(field.filter_value) ? 'selected' : '' }}" i18n>True</option>
+                <option value="{{ field.operator.name === '=' ? 'f' : '{f}' }}" selected="{{ ['f','{f}'].includes(field.filter_value) ? 'selected' : '' }}" i18n>False</option>
+                <option *ngIf="field.operator.name === '= any'" value="{t,f}" selected="{{ (field.filter_value && (field.filter_value !== '{t}' && field.filter_value !== '{f}') ) ? 'selected' : '' }}" i18n>Both</option>
               </select>
             </div>
 

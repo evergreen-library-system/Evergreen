@@ -296,11 +296,6 @@ const transforms = [
 
 const operators = [
     {
-        name: '=',
-        datatypes: ['link', 'text', 'timestamp', 'interval', 'float', 'int', 'money', 'number', 'id'],
-        arity: 1
-    },
-    {
         arity: 1,
         datatypes: ['bool', 'org_unit'],
         name: '= any'
@@ -309,6 +304,12 @@ const operators = [
         arity: 1,
         datatypes: ['bool', 'org_unit'],
         name: '<> any'
+    },
+    {
+        name: '=',
+        datatypes: ['link', 'text', 'timestamp', 'interval', 'float', 'int', 'money', 'number', 'id', 'bool', 'org_unit'],
+        hidden: ['bool', 'org_unit'], // This is here to support old templates that don't know how to use the newer bool/org operators
+        arity: 1
     },
     // If I had a dollar for every time someone wanted a case sensitive substring search, I might be able to buy a coffee.
     /* {
@@ -1038,8 +1039,9 @@ export class ReporterService {
     }
 
     defaultOperator(dt) {
-        if (this.getOperatorByName(DEFAULT_OPERATOR).datatypes.indexOf(dt) >= 0) {
-            return this.getOperatorByName(DEFAULT_OPERATOR);
+        const def_op = this.getOperatorByName(DEFAULT_OPERATOR);
+        if (def_op && (!def_op.datatypes || def_op.datatypes.includes(dt)) && (!def_op.hidden || !def_op.hidden.includes(dt))) {
+            return def_op;
         }
         return this.getOperatorsForDatatype(dt)[0];
     }
@@ -1110,20 +1112,22 @@ export class ReporterService {
             'open-ils.reporter',
             'open-ils.reporter.template.retrieve',
             this.auth.token(), id, searchOps
-        ).toPromise().then(t => {
-            const rtData = JSON.parse(t.data());
-            if (rtData.version < 5) {
-                this.upgradeXULTemplateData(t);
-            }
+        ).toPromise().then(t => this.maybeUpgradeTemplate(t));
+    }
 
-            if (rtData.version < 6) {
-                if (!rtData.simple_report) { // truly an old report
-                    this.upgradeAngJSTemplateData(t);
-                } // else it is a Simple Reporter template, just leave it be
-            }
+    maybeUpgradeTemplate(t: IdlObject): Promise<IdlObject> {
+        const rtData = JSON.parse(t.data());
+        if (rtData.version < 5) {
+            this.upgradeXULTemplateData(t);
+        }
 
-            return t;
-        });
+        if (rtData.version < 6) {
+            if (!rtData.simple_report) { // truly an old report
+                this.upgradeAngJSTemplateData(t);
+            } // else it is a Simple Reporter template, just leave it be
+        }
+
+        return of(t).toPromise();
     }
 
     loadReport(id: number): Promise<IdlObject> {
@@ -1137,7 +1141,13 @@ export class ReporterService {
             'open-ils.reporter',
             'open-ils.reporter.report.retrieve',
             this.auth.token(), id, searchOps
-        ).toPromise();
+        ).toPromise().then(
+            r => {
+                return this.maybeUpgradeTemplate(r.template()).then(
+                    t => { return r.template(t), r;}
+                );
+            }
+        );
     }
 
     saveTemplate(
@@ -1580,11 +1590,10 @@ export class ReporterService {
                 // XXX special case for bool and org_unit '='
                 if (['bool','org_unit'].includes(c.datatype)
 					&& c.operator.op === '='
+                    && c.value !== 'undefined'
                 ) {
                     c.operator.op = '= any';
-                    if (typeof c.value !== 'undefined') {
-                        c.value = '{' + c.value + '}';
-                    }
+                    c.value = '{' + c.value + '}';
                 }
             }
 

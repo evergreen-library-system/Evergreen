@@ -61,6 +61,7 @@ export class ReporterFieldComponent implements OnInit {
     }
 
     visibleTransforms() { return this.transforms.filter(t => !t.hidden); }
+    visibleOperators() { return this.operators.filter(t => !t.hidden || !t.hidden.includes(this.field.datatype)); }
 
     ngOnInit() {
 
@@ -112,12 +113,16 @@ export class ReporterFieldComponent implements OnInit {
 
             this.org.sortTree('name');
 
-            const preselected = this.field.filter_value || [];
+            let preselected = this.field.filter_value || [];
+            if (!Array.isArray(preselected)) {
+                preselected = [preselected];
+            }
+            preselected = preselected.map(i => Number(i));
             const node = new TreeNode({
                 id       : this.org.root().id(),
                 label    : this.org.root().name(),
                 expanded : false,
-                stateFlag: preselected.includes(this.org.root().id()),
+                stateFlag: preselected.includes(Number(this.org.root().id())),
                 stateFlagLabel: $localize`Selected`,
                 children : []
             });
@@ -125,7 +130,7 @@ export class ReporterFieldComponent implements OnInit {
             this.treeifyOrg(node, preselected);
 
             this.orgTree = new Tree(node);
-            preselected.forEach( i => this.orgTree.expandPathTo(this.orgTree.findNode(i)) );
+            preselected.filter(p => !!Number(p)).forEach( i => this.orgTree.expandPathTo(this.orgTree.findNode(i)) );
             this.orgTree.expandPathTo(this.orgTree.findNode(this.org.get(this.auth.user().ws_ou()).id()));
 
         }
@@ -181,7 +186,7 @@ export class ReporterFieldComponent implements OnInit {
                 id      : x.id(),
                 label   : x.name(),
                 expanded: false,
-                stateFlag: preselected.includes(x.id()),
+                stateFlag: preselected.includes(Number(x.id())),
                 stateFlagLabel: $localize`Selected`,
                 children: []
             });
@@ -349,11 +354,12 @@ export class ReporterFieldComponent implements OnInit {
             });
         }
         output += '}';
+        if (output == '{}') { return null; }
         return output;
     }
 
     setOrgFamilyValue($event) {
-        this.field.filter_value = this.getBracketListValue($event.orgIds);
+        this.field.filter_value = this.getBracketListValue($event.orgIds.filter(p => !!Number(p)));
         this.field._org_family_includeAncestors = $event.includeAncestors;
         this.field._org_family_includeDescendants = $event.includeDescendants;
         this.field._org_family_primaryOrgId = $event.primaryOrgId;
