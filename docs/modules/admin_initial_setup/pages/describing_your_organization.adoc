@@ -14,9 +14,9 @@ The term _Organization Unit Types_ refers to levels in the hierarchy of your
 library system(s). Examples could include: All-Encompassing Consortium, Library
 System, Branch, Bookmobile, Sub-Branch, etc. 
 
-You can add or remove organizational unit types, and rename them as needed to
+You can add or remove organization unit types, and rename them as needed to
 match the organizational hierarchy that matches the libraries using your
-installation of Evergreen. Organizational unit types should never have proper
+installation of Evergreen. Organization unit types should never have proper
 names since they are only generic types. 
 
 When working with configuration, settings, and permissions, it is very
@@ -36,27 +36,27 @@ To create or add an organization unit type, go to *Administration* > *Server Adm
 
 In the left panel, expand the *Organization Unit Types* hierarchy and click on an organization type to open the form in the right panel. The form displays the data for the selected organization unit type.
 
-image::describing_your_organization/org-unit-type-configuration.png[org unit type configuration]
+image::describing_your_organization/org-unit-type-configuration.png[Organization unit type configuration]
 
 To edit the selected organization unit type, click *Edit*.
 
-image::describing_your_organization/org-unit-type-edit.png[org unit type record edit button]
+image::describing_your_organization/org-unit-type-edit.png[Organization unit type record edit button]
 
 This will open up the Record Editor. Make the necessary updates and click *Save*.
 
-image::describing_your_organization/org-unit-type-record-editor.png[org unit type record editor]
+image::describing_your_organization/org-unit-type-record-editor.png[Organization unit type record editor]
 
 To create a new dependent organization unit type, click *Add Child*. 
 
 This will bring up the Record Editor screen. Fill out the required fields and click *Save*.
 
-image::describing_your_organization/org-unit-type-add-child.png[org unit type add child button]
+image::describing_your_organization/org-unit-type-add-child.png[Organization unit type add child button]
 
-The new child organization unit type will appear in the left panel list below the parent type. The option will also display in the Organizational Unit Type field within the Organizational Units interface.
+The new child organization unit type will appear in the left panel list below the parent type. The option will also display in the Organization Unit Type field within the Organizational Units interface.
 
 === Permissions ===
 
-The following permissions are needed to manage Organizational Unit Types:
+The following permissions are needed to manage Organization Unit Types:
 
 * CREATE_ORG_TYPE
 * UPDATE_ORG_TYPE
@@ -77,21 +77,21 @@ Organizational units are created and edited through *Administration* > *Server A
 
 The left panel shows a list of current Organizational Units and their hierarchy. Selecting a unit opens a form in the right panel, which displays the data for the selected organizational unit.
 
-image::describing_your_organization/org-unit-configuration.png[org unit configuration]
+image::describing_your_organization/org-unit-configuration.png[Organizational unit configuration]
 
 When creating a new organizational unit, all three tabs must be completed: *Main Settings*, *Hours of Operation*, and *Addresses*.
 
 To create a new dependent organizational unit, click *Add Child*. 
 
-image:describing_your_organization/org-unit-add-child.png[org unit add child button]
+image:describing_your_organization/org-unit-add-child.png[Organizational unit add child button]
 
 This will open up a blank form. Input the library information for all three tabs, clicking Save after completing each tab. The same process is followed when editing any organizational unit data. 	
 
 ==== Organizational Unit data ====
 
-The *Main Settings* tab is where you input the organizational unit type, name(s), and contact information. The phone number and email address are used in patron email notifications, hold slips, and transit slips. This is also where you can control whether the organizational unit is visible in the OPAC. Note that all required fields must be filled out and saved before you can access the *Hours of Operation* and *Addresses* tabs.
+The *Main Settings* tab is where you input the organization unit type, name(s), and contact information. The phone number and email address are used in patron email notifications, hold slips, and transit slips. This is also where you can control whether the organizational unit is visible in the OPAC. Note that all required fields must be filled out and saved before you can access the *Hours of Operation* and *Addresses* tabs.
 
-image::describing_your_organization/org-unit-main-settings.png[org unit main settings]
+image::describing_your_organization/org-unit-main-settings.png[Organizational unit main settings]
 
 The *Hours of Operation* tab is where you enter regular, weekly hours. Holiday and other closures are set in the *Closed Dates Editor*. Hours of operation and closed dates impact due dates and fine accrual. When an organizational unit is first created, the hours default to 9 AM to 5 PM each day.
 
@@ -102,7 +102,7 @@ To add or edit hours:
 . To indicate that a branch is closed on a certain day, click the *Closed* button next to that day. The hours will default to 12:00 AM in both the open and closed fields. (If a library is already listed as closed on a certain day, the Closed button will be grayed out.)
 . Click *Apply Changes*.
 
-image::describing_your_organization/hours-of-operation.png[org unit hours of operation]
+image::describing_your_organization/hours-of-operation.png[Organizational unit hours of operation]
 
 There is also the capability to add notes to each day’s hours to record split hours or other service-related information. The notes appear enclosed in parentheses next to each day’s hours when viewing a library’s hours in the Bootstrap OPAC and TPAC.
 
@@ -112,7 +112,7 @@ To add hours of operation notes:
 . Type in the note for the corresponding day.
 . Click *Apply Changes*.
 
-image::describing_your_organization/hours-of-operation-notes.png[org unit hours of operation notes]
+image::describing_your_organization/hours-of-operation-notes.png[Organizational unit hours of operation notes]
 
 To delete (clear) hours, click *Clear Hours of Operation*. The hours will revert to the default times, and an alert will appear stating the hours have not been saved.
 
@@ -120,7 +120,7 @@ image::describing_your_organization/clear-hours-of-operation.png[clear hours of 
 
 The *Addresses* tab is broken out into four address types: *Physical Address*, *Holds Address*, *Mailing Address*, *ILL Address*. Click *Save* in each address tab after adding or editing addresses.
 
-image::describing_your_organization/org_unit_addresses.png[org unit addresses]
+image::describing_your_organization/org_unit_addresses.png[Organizational unit addresses]
 
 If you are offering geographic location service for your catalog, you can also set the longitude and latitude coordinates under any of the addresses screens.
 
@@ -130,9 +130,9 @@ image::geo_coordinates.png[Coordinates Screenshot]
 
 Click here for more information on xref:admin_initial_setup:geosort_admin.adoc#geographic_loc[Geographic Location Service Configuration].
 
-=== After Changing Organization Unit Data ===
+=== After Changing Organizational Unit Data ===
 
-After you change Org Unit data, you must run the autogen.sh script.  
+After you change Organizational Unit data, you must run the autogen.sh script.  
 This script updates the Evergreen organization tree and fieldmapper IDL.  
 You will get unpredictable results if you don't run this after making changes.
 
