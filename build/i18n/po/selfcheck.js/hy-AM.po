@@ -8,14 +8,14 @@ msgstr ""
 "Project-Id-Version: evergreen\n"
 "Report-Msgid-Bugs-To: FULL NAME <EMAIL@ADDRESS>\n"
 "POT-Creation-Date: 2023-05-04 09:23-0400\n"
-"PO-Revision-Date: 2013-12-27 09:39+0000\n"
+"PO-Revision-Date: 2023-11-16 05:10+0000\n"
 "Last-Translator: TZ <tigran@flib.sci.am>\n"
 "Language-Team: Armenian <hy@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2023-05-05 04:48+0000\n"
-"X-Generator: Launchpad (build 90e2150bef31b411d7bae5c4032c7e320fcaaec8)\n"
+"X-Launchpad-Export-Date: 2023-11-17 05:38+0000\n"
+"X-Generator: Launchpad (build f1e537f62ee3967c2b3f24dd10eacf1696334fe6)\n"
 
 #: selfcheck.js:TOTAL_ITEMS_SESSION
 msgid "Total items this session: ${0}."
@@ -225,18 +225,3 @@ msgstr ""
 "Չենք կարող իրականացնել վճարումը, քանի որ քո հաշիվը թարմացվել է մեկ այլ "
 "վայրից։ Թարմացրու միջերեսը կամ դուրս եկ համակարգից և նորից մուտք գործի, "
 "որպեսզի ստանաս վերջին հաշվի մասին տեղեկատվություն։"
-
-#~ msgid "Total fines on account: <b>$${0}</b>."
-#~ msgstr "Հաշվի վրա ընդհանուր տուգանքը: <b>$${0}</b>."
-
-#~ msgid "Total items on account:  <b>${0}</b>."
-#~ msgstr "Հաշվի վրա ընդհանուր նյութերի քանակը:  <b>${0}</b>."
-
-#~ msgid "You have <b>${0}</b> total holds."
-#~ msgstr "Դու ունես գումարային <b>${0}</b> պահում."
-
-#~ msgid "You have <b>${0}</b> item(s) ready for pickup."
-#~ msgstr "Դու ունես <b>${0}</b> նյութեր վերցնելու համար"
-
-#~ msgid "Total items this session: <b>${0}</b>."
-#~ msgstr "Այս սեսիայի ընդհանուր նյութերը: <b>${0}</b>."
