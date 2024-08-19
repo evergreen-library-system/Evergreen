@@ -18,6 +18,7 @@ The search form is filled by information in your URL. This information will stil
 image::bibliographic_records/show_search_form.png[Screenshot of the Show Search Form button, as described above.]
 ====
 
+[[record_summary]]
 == Record Summary ==
 
 The top panel in a record is the _Record Summary_. This contains the following information:
@@ -43,6 +44,7 @@ Select the caret (^) icon in the top-right corner of the _Record Summary_ to col
 
 Select the icon again to expand the record summary panel.
 
+[[results_navigation]]
 == Results Navigation ==
 
 If you accessed the bibliographic record through a search, you can navigate to the records for other results from your search directly from this record. Use the buttons below the _Record Summary_ to the left to navigate your search results.
@@ -59,6 +61,7 @@ The following buttons are available:
 
 NOTE: If there was only one search result, or if you access the record through any method besides a catalog search, the _Results Navigation_ buttons may not be available.
 
+[[record_actions]]
 == Record Actions ==
 
 Action buttons are located below the _Record Summary_ to the right.
@@ -78,6 +81,7 @@ You can use the following actions:
 ** *Upload Cover Image*: The _Upload Cover Image_ window opens. You may upload a cover image for the current record.
 ** *View/Place Orders*: The _Line Items Related to Bib Record_ page in the _Acquisitions_ module opens in a new tab.
 
+[[record_views]]
 == Record Views ==
 
 The _Record Views_ appear below _Results Navigation_ and _Record Actions_ buttons. The _Item Table_ tab is selected by default.
@@ -86,12 +90,14 @@ image::bibliographic_records/record_tabs.png[Screenshot of a bibliographic recor
 
 To change the tab that is selected by default, navigate to the tab of your choice, then select the _Set Default View_ button located above the tabs to the right of the page.
 
+[[staff_view]]
 === Staff View ===
 
 The _Staff View_ tab contains information from the MARC record in a human-readable format. It includes title, author, edition, publisher, type of resource, physical description, ISBN, hold and copy counts, subjects, genre, and formats and editions information.
 
 Selecting any of the hyperlinked information will run the appropriate search.
 
+[[item_table]]
 === Item Table ===
 
 The _Item Table_ tab displays a table of all holdings related to the record. The table is organized alphabetically by library.
@@ -106,6 +112,7 @@ To change what information is displayed in the table, see more results, and sele
 
 TIP: For a more detailed view of holdings with the ability to use actions, see xref:staff_catalog:bibliographic_records.adoc#holdings_view[Holdings View].
 
+[[marc_edit]]
 === MARC Edit ===
 
 The _MARC Edit_ tab allows users with appropriate permissions to modify fixed fields and tags in the MARC record. 
@@ -114,6 +121,7 @@ This tab allows users to pick between the _Enhanced MARC Editor_ and the _Flat T
 
 Use the xref:staff_catalog:bibliographic_records.adoc#marc_view[MARC View] tab for a printer-friendly version of the MARC record.
 
+[[marc_view]]
 === MARC View ===
 
 The _MARC View_ tab shows a non-editable version of the MARC record.
@@ -122,6 +130,7 @@ You may print the MARC record from this tab by selecting the _Print Page_ button
 
 This tab can give users quick access to basic information about a title, but the xref:staff_catalog:bibliographic_records.adoc#staff_view[Staff View] tab may be more useful.
 
+[[record_notes]]
 === Record Notes ===
 
 The _Record Notes_ tab allows users with appropriate permissions to keep notes on a record. This may be useful when a record is under review.
@@ -144,6 +153,7 @@ image::bibliographic_records/delete_note.png[Screenshote showing the Delete Sele
 
 To change what information is displayed in the table, see more results, and select other options, see xref:staff_catalog:bibliographic_records.adoc#grid_options[Grid Options].
 
+[[view_holds]]
 === View Holds ===
 
 The _View Holds_ tab lists all holds on the record. The total number of holds on a record is displayed below the record views list to the left of the page.
@@ -162,6 +172,7 @@ Sort holds by any column heading in ascending order by clicking the column headi
 
 To change what information is displayed in the table, see more results, and select other options, see xref:staff_catalog:bibliographic_records.adoc#grid_options[Grid Options].
 
+[[monograph_parts]]
 === Monograph Parts ===
 
 The _Monograph Parts_ tab allows users with the appropriate permissions manage parts associated with a record. 
@@ -186,6 +197,7 @@ Sort parts by any column heading in ascending order by clicking the column headi
 
 To change what information is displayed in the table, see more results, and select other options, see xref:staff_catalog:bibliographic_records.adoc#grid_options[Grid Options].
 
+[[holdings_view]]
 === Holdings View ===
 
 The _Holdings View_ tab displays detailed item and call number information. It also allows users with appropriate permissions to perform actions on holdings.
@@ -202,6 +214,7 @@ image::bibliographic_records/holdings_actions.png[Screenshot of the Holdings Vie
 
 To change what information is displayed in the table, see more results, and select other options, see xref:staff_catalog:bibliographic_records.adoc#grid_options[Grid Options].
 
+[[conjoined_items]]
 === Conjoined Items ===
 
 The _Conjoined Items_ view allows users with appropriate permissions to manage conjoined items from the bibliographic record. 
@@ -223,12 +236,14 @@ Sort items by any column heading in ascending order by clicking the column headi
 
 To change what information is displayed in the table, see more results, and select other options, see xref:staff_catalog:bibliographic_records.adoc#grid_options[Grid Options].
 
+[[shelf_browse]]
 === Shelf Browse ===
 
 The _Shelf Browse_ view displays tiles containing records for other items appearing before and after the selected record by call number.
 
 Select _Back_ or _Next_, located above and below the results to the left of the page, to view more results.
 
+[[grid_options]]
 == Grid Options ==
 
 Many parts of Evergreen use tables, also called grids, to display information. All grids can be navigated and modified using the same buttons, even if the available buttons or options might change between grids.
@@ -239,6 +254,7 @@ Most grid options can be access through the buttons located on top of the table 
 
 image::bibliographic_records/grid_options.png[Screenshot of the Record Notes view with the grid options buttons highlighted, as described above.]
 
+[[grid_actions]]
 === Grid Actions ===
 
 Some grids allow you to perform actions on items selected in the grid.
@@ -251,6 +267,7 @@ Then select the _Actions for Selected Rows_ button and choose an action.
 
 image::bibliographic_records/grid_actions.png[Screenshot of the Record Notes view with the Actions button highlighted. The Actions button is located above the table, in the group of buttons to the right. It is the left-most button in that group.]
 
+[[navigating_grids]]
 === Navigating Grids ===
 
 There are four buttons that help you see different results and navigate through the results. 
@@ -265,6 +282,7 @@ Return to the previous page of results by selecting the < (left caret) button.
 
 Return to the first page of results by selecting the |< button (pipe-left caret) button. 
 
+[[grid_view_options]]
 === Grid View Options ===
 
 To expand rows vertically, select the downward caret. The button will change to a caret (^). Rows will expand to accommodate overflowing text. 
@@ -306,6 +324,7 @@ _Column Selections_: All available columns are listed at the bottom of the menu.
 
 image::bibliographic_records/column_selections.png[Screenshot of the grid view options menu with the column names highlighted, as described above.]
 
+[[sorting]]
 === Sorting ===
 
 Some grids allow you to sort the grid by column. If this is possible, the column headings will be formatted as hyperlinks. That is, they will be blue and underlined. 
@@ -323,6 +342,7 @@ This grid is sorted in descending order by the column _Note_. Notice that entrie
 image::bibliographic_records/sort_grid.png[Screenshot of a grid showing notes sorted as described above. The Note column has a down arrow beside it and is highlighted.]
 ****
 
+[[filters]]
 === Filters ===
 
 If filters are available, a row will appear between the column headings and the grid contents with the word _Filter_ and a filter symbol in each column.
