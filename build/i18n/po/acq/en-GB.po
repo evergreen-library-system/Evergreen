@@ -1,0 +1,1857 @@
+# English (United Kingdom) translation for evergreen
+# Copyright (c) 2024 Rosetta Contributors and Canonical Ltd 2024
+# This file is distributed under the same license as the evergreen package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2024.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: evergreen\n"
+"Report-Msgid-Bugs-To: FULL NAME <EMAIL@ADDRESS>\n"
+"POT-Creation-Date: 2023-11-16 05:12+0000\n"
+"PO-Revision-Date: 2024-04-23 18:24+0000\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: English (United Kingdom) <en_GB@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Launchpad-Export-Date: 2024-04-24 04:52+0000\n"
+"X-Generator: Launchpad (build 67d34a19aaa1df7be4dd8bf498cbc5bbd785067b)\n"
+
+#: ../../Open-ILS/src/templates/acq/invoice/view.tt2:6
+msgid " Invoice "
+msgstr " Invoice "
+
+#: ../../Open-ILS/src/templates/acq/invoice/receive.tt2:39
+msgid " Select All"
+msgstr " Select All"
+
+#: ../../Open-ILS/src/templates/acq/invoice/view.tt2:90
+msgid "# Invoiced / # Paid"
+msgstr "# Invoiced / # Paid"
+
+#: ../../Open-ILS/src/templates/acq/common/notes.tt2:7
+msgid "#x2196; Return"
+msgstr "#x2196; Return"
+
+#. ("<span id=\"acq-po-view-total-estimated\"></span>")
+#. ("<span id=\"acq-po-view-total-enc\"></span>")
+#. ("<span id=\"acq-po-view-total-spent\"></span>")
+#: ../../Open-ILS/src/templates/acq/po/view.tt2:106 ../../Open-ILS/src/templates/acq/po/view.tt2:65 ../../Open-ILS/src/templates/acq/po/view.tt2:74
+msgid "$%1"
+msgstr "$%1"
+
+#. ("<span id=\"records-up\">0</span>")
+#: ../../Open-ILS/src/templates/acq/lineitem/search.tt2:99
+msgid "%1 term(s) prepared for search"
+msgstr "%1 term(s) prepared for search"
+
+#: ../../Open-ILS/src/templates/acq/common/li_table.tt2:59
+msgid "&#171; Previous"
+msgstr "&#171; Previous"
+
+#: ../../Open-ILS/src/templates/acq/common/li_table.tt2:285 ../../Open-ILS/src/templates/acq/common/li_table.tt2:398 ../../Open-ILS/src/templates/acq/lineitem/worksheet.tt2:12
+msgid "&#x2196; Return"
+msgstr "&#x2196; Return"
+
+#: ../../Open-ILS/src/templates/acq/common/li_table.tt2:283
+msgid "&#x2196; Return To Invoice"
+msgstr ""
+
+#: ../../Open-ILS/src/templates/acq/picklist/view.tt2:20 ../../Open-ILS/src/templates/acq/po/view.tt2:133
+msgid "&#x2196; Return to Invoice"
+msgstr "&#x2196; Return to Invoice"
+
+#: ../../Open-ILS/src/templates/acq/picklist/view.tt2:17 ../../Open-ILS/src/templates/acq/po/view.tt2:130
+msgid "&#x2196; Return to Search"
+msgstr "&#x2196; Return to Search"
+
+#: ../../Open-ILS/src/templates/acq/common/li_table.tt2:183
+msgid "&#x270D; worksheet"
+msgstr "&#x270D; worksheet"
+
+#: ../../Open-ILS/src/templates/acq/common/li_table.tt2:181
+msgid "&#x279F; catalog"
+msgstr "&#x279F; catalogue"
+
+#: ../../Open-ILS/src/templates/acq/common/li_table.tt2:190
+msgid "&#x27AC; queue"
+msgstr "&#x27AC; queue"
+
+#: ../../Open-ILS/src/templates/acq/common/li_table.tt2:182
+msgid "&#x27BE; link to catalog"
+msgstr "&#x27BE; link to catalogue"
+
+#: ../../Open-ILS/src/templates/acq/invoice/view.tt2:220
+msgid "(building the results list progressively)"
+msgstr "(building the results list progressively)"
+
+#: ../../Open-ILS/src/templates/acq/common/li_table.tt2:207
+msgid "-- Actions --"
+msgstr "-- Actions --"
+
+#: ../../Open-ILS/src/templates/acq/common/li_table.tt2:30
+msgid "----PO----"
+msgstr "----PO----"
+
+#: ../../Open-ILS/src/templates/acq/common/li_table.tt2:23
+msgid "--Actions--"
+msgstr "--Actions--"
+
+#: ../../Open-ILS/src/templates/acq/common/vlagent.tt2:82
+msgid "ACQ Copies Processed"
+msgstr "ACQ Copies Processed"
+
+#: ../../Open-ILS/src/templates/acq/lineitem/search.tt2:62
+msgid "ALL of the following terms match"
+msgstr ""
+
+#: ../../Open-ILS/src/templates/acq/lineitem/search.tt2:55
+msgid "ANY of the following terms match"
+msgstr ""
+
+#: ../../Open-ILS/src/templates/acq/invoice/receive.tt2:2
+msgid "Acquisitions Invoice Receiving"
+msgstr ""
+
+#: ../../Open-ILS/src/templates/acq/search/unified.tt2:11 ../../Open-ILS/src/templates/acq/search/unified.tt2:2
+msgid "Acquisitions Search"
+msgstr ""
+
+#: ../../Open-ILS/src/templates/acq/common/li_table.tt2:130
+msgid "Actions"
+msgstr ""
+
+#: ../../Open-ILS/src/templates/acq/po/view.tt2:26
+msgid "Activatable?"
+msgstr ""
+
+#: ../../Open-ILS/src/templates/acq/po/search.tt2:20 ../../Open-ILS/src/templates/acq/po/view.tt2:31
+msgid "Activate Order"
+msgstr ""
+
+#: ../../Open-ILS/src/templates/acq/picklist/upload.tt2:16
+msgid "Activate Purchase Order"
+msgstr ""
+
+#: ../../Open-ILS/src/templates/acq/po/view.tt2:35
+msgid "Activate Without Loading Items"
+msgstr ""
+
+#: ../../Open-ILS/src/templates/acq/common/jubgrid.tt2:62
+msgid "Actual Price"
+msgstr ""
+
+#: ../../Open-ILS/src/templates/acq/common/li_table.tt2:28
+msgid "Add Brief Record"
+msgstr ""
+
+#: ../../Open-ILS/src/templates/acq/invoice/view.tt2:145
+msgid "Add Charge..."
+msgstr ""
+
+#: ../../Open-ILS/src/templates/acq/invoice/view.tt2:340
+msgid "Add New Items"
+msgstr ""
+
+#: ../../Open-ILS/src/templates/acq/invoice/view.tt2:262 ../../Open-ILS/src/templates/acq/search/unified.tt2:83
+msgid "Add Search Term"
+msgstr ""
+
+#: ../../Open-ILS/src/templates/acq/invoice/view.tt2:268
+msgid "Add Selected Items to Invoice"
+msgstr ""
+
+#: ../../Open-ILS/src/templates/acq/fund/view.tt2:236
+msgid "Add Tag"
+msgstr ""
+
+#: ../../Open-ILS/src/templates/acq/picklist/brief_record.tt2:10
+msgid "Add To Selection List"
+msgstr ""
+
+#: ../../Open-ILS/src/templates/acq/lineitem/search.tt2:102
+msgid "Add file"
+msgstr ""
+
+#: ../../Open-ILS/src/templates/acq/lineitem/search.tt2:75
+msgid "Add more search terms"
+msgstr ""
+
+#: ../../Open-ILS/src/templates/acq/common/li_table.tt2:32 ../../Open-ILS/src/templates/acq/lineitem/related.tt2:44
+msgid "Add to Purchase Order"
+msgstr ""
+
+#: ../../Open-ILS/src/templates/acq/lineitem/related.tt2:41 ../../Open-ILS/src/templates/acq/picklist/upload.tt2:30 ../../Open-ILS/src/templates/acq/picklist/user_request.tt2:68
+msgid "Add to Selection List"
+msgstr ""
+
+#: ../../Open-ILS/src/templates/acq/common/li_table.tt2:524
+msgid "Add to Selection List: "
+msgstr ""
+
+#: ../../Open-ILS/src/templates/acq/common/li_table.tt2:274
+msgid "Add/Edit Items"
+msgstr ""
+
+#: ../../Open-ILS/src/templates/acq/picklist/brief_record.tt2:14
+msgid "Adding to Purchase Order"
+msgstr ""
+
+#: ../../Open-ILS/src/templates/acq/common/notes.tt2:31
+msgid "Additional comments"
+msgstr ""
+
+#. ("<span id=\"acq-lit-li-claim-dia-li-title\"></span>", "<span id=\"acq-lit-li-claim-dia-li-id\"></span>")
+#: ../../Open-ILS/src/templates/acq/common/claim_dialog.tt2:6
+msgid "Against item: %1 (%2)"
+msgstr ""
+
+#: ../../Open-ILS/src/templates/acq/common/li_table.tt2:484
+msgid "All Line Items"
+msgstr ""
+
+#: ../../Open-ILS/src/templates/acq/funding_source/view.tt2:36
+msgid "Allocate to Fund"
+msgstr ""
+
+#: ../../Open-ILS/src/templates/acq/fund/view.tt2:179 ../../Open-ILS/src/templates/acq/funding_source/view.tt2:128
+msgid "Allocations"
+msgstr ""
+
+#: ../../Open-ILS/src/templates/acq/po/view.tt2:136
+msgid "Allow activation with <br/> zero-copy lineitems"
+msgstr ""
+
+#: ../../Open-ILS/src/templates/acq/fund/view.tt2:82
+msgid "Amount to transfer from"
+msgstr ""
+
+#: ../../Open-ILS/src/templates/acq/fund/view.tt2:33 ../../Open-ILS/src/templates/acq/funding_source/view.tt2:16 ../../Open-ILS/src/templates/acq/funding_source/view.tt2:46
+msgid "Amount: "
+msgstr ""
+
+#: ../../Open-ILS/src/templates/acq/fund/view.tt2:61 ../../Open-ILS/src/templates/acq/funding_source/view.tt2:29 ../../Open-ILS/src/templates/acq/funding_source/view.tt2:72 ../../Open-ILS/src/templates/acq/settings/li_attr.tt2:40
+msgid "Apply"
+msgstr ""
+
+#: ../../Open-ILS/src/templates/acq/common/li_table.tt2:37
+msgid "Apply Claim Policy to Selected Line Items"
+msgstr ""
+
+#: ../../Open-ILS/src/templates/acq/funding_source/view.tt2:12
+msgid "Apply Credit"
+msgstr ""
+
+#: ../../Open-ILS/src/templates/acq/common/li_table.tt2:112
+msgid "Apply to Selected"
+msgstr ""
+
+#: ../../Open-ILS/src/templates/acq/common/jubgrid.tt2:138
+msgid "Approve Selected Titles"
+msgstr ""
+
+#: ../../Open-ILS/src/templates/acq/common/li_table.tt2:218
+msgid "Approved"
+msgstr ""
+
+#: ../../Open-ILS/src/templates/acq/common/jubgrid.tt2:59 ../../Open-ILS/src/templates/acq/po/item_table.tt2:9
+msgid "Author"
+msgstr ""
+
+#: ../../Open-ILS/src/templates/acq/fund/view.tt2:165 ../../Open-ILS/src/templates/acq/funding_source/view.tt2:94 ../../Open-ILS/src/templates/acq/invoice/view.tt2:162
+msgid "Balance"
+msgstr ""
+
+#: ../../Open-ILS/src/templates/acq/common/jubgrid.tt2:122 ../../Open-ILS/src/templates/acq/common/jubgrid.tt2:95 ../../Open-ILS/src/templates/acq/common/li_table.tt2:232 ../../Open-ILS/src/templates/acq/common/li_table.tt2:365 ../../Open-ILS/src/templates/acq/common/li_table.tt2:416 ../../Open-ILS/src/templates/acq/invoice/receive.tt2:47
+msgid "Barcode"
+msgstr ""
+
+#: ../../Open-ILS/src/templates/acq/common/li_table.tt2:350
+msgid "Batch Update"
+msgstr ""
+
+#: ../../Open-ILS/src/templates/acq/common/li_table.tt2:555
+msgid "Batch Update Funds"
+msgstr ""
+
+#: ../../Open-ILS/src/templates/acq/picklist/from_bib.tt2:17
+msgid "Begin a new search"
+msgstr ""
+
+#: ../../Open-ILS/src/templates/acq/common/vlagent.tt2:39
+msgid "Best/Single Match Minimum Quality Ratio"
+msgstr ""
+
+#: ../../Open-ILS/src/templates/acq/common/vlagent.tt2:78
+msgid "Bib Records Merged/Imported"
+msgstr ""
+
+#: ../../Open-ILS/src/templates/acq/invoice/view.tt2:81
+msgid "Bibliographic Items"
+msgstr ""
+
+#: ../../Open-ILS/src/templates/acq/invoice/view.tt2:125 ../../Open-ILS/src/templates/acq/invoice/view.tt2:91
+msgid "Billed"
+msgstr ""
+
+#: ../../Open-ILS/src/templates/acq/common/jubgrid.tt2:119 ../../Open-ILS/src/templates/acq/common/jubgrid.tt2:91 ../../Open-ILS/src/templates/acq/common/li_table.tt2:231
+msgid "Branch"
+msgstr ""
+
+#: ../../Open-ILS/src/templates/acq/common/jubgrid.tt2:123 ../../Open-ILS/src/templates/acq/common/jubgrid.tt2:99 ../../Open-ILS/src/templates/acq/common/li_table.tt2:233
+msgid "Call Number"
+msgstr ""
+
+#: ../../Open-ILS/src/templates/acq/common/li_table.tt2:337 ../../Open-ILS/src/templates/acq/common/li_table.tt2:364 ../../Open-ILS/src/templates/acq/common/li_table.tt2:415 ../../Open-ILS/src/templates/acq/invoice/receive.tt2:46
+msgid "Callnumber"
+msgstr ""
+
+#: ../../Open-ILS/src/templates/acq/common/li_table.tt2:382 ../../Open-ILS/src/templates/acq/common/li_table.tt2:500 ../../Open-ILS/src/templates/acq/common/li_table.tt2:571 ../../Open-ILS/src/templates/acq/common/li_table.tt2:590 ../../Open-ILS/src/templates/acq/invoice/view.tt2:338
+msgid "Cancel"
+msgstr ""
+
+#: ../../Open-ILS/src/templates/acq/common/li_table.tt2:541
+msgid "Cancel Copy"
+msgstr ""
+
+#: ../../Open-ILS/src/templates/acq/common/li_table.tt2:49
+msgid "Cancel Line Items"
+msgstr ""
+
+#: ../../Open-ILS/src/templates/acq/picklist/user_request.tt2:71 ../../Open-ILS/src/templates/acq/picklist/user_request.tt2:79
+msgid "Cancel Request"
+msgstr ""
+
+#: ../../Open-ILS/src/templates/acq/po/events.tt2:9
+msgid "Cancel Selected"
+msgstr ""
+
+#: ../../Open-ILS/src/templates/acq/common/li_table.tt2:36
+msgid "Cancel Selected Line Items"
+msgstr ""
+
+#: ../../Open-ILS/src/templates/acq/po/view.tt2:112 ../../Open-ILS/src/templates/acq/po/view.tt2:120
+msgid "Cancel order"
+msgstr ""
+
+#: ../../Open-ILS/src/templates/acq/common/li_table.tt2:222
+msgid "Canceled"
+msgstr ""
+
+#: ../../Open-ILS/src/templates/acq/invoice/view.tt2:122 ../../Open-ILS/src/templates/acq/po/item_table.tt2:6
+msgid "Charge Type"
+msgstr ""
+
+#: ../../Open-ILS/src/templates/acq/common/notes.tt2:27
+msgid "Choose alert code "
+msgstr ""
+
+#: ../../Open-ILS/src/templates/acq/common/inv_dialog.tt2:3
+msgid "Choose invoice"
+msgstr ""
+
+#: ../../Open-ILS/src/templates/acq/picklist/list.tt2:53 ../../Open-ILS/src/templates/acq/search/unified.tt2:171
+msgid "Choose the Lead Selection List:"
+msgstr ""
+
+#: ../../Open-ILS/src/templates/acq/common/li_table.tt2:236 ../../Open-ILS/src/templates/acq/common/li_table.tt2:336 ../../Open-ILS/src/templates/acq/common/li_table.tt2:363 ../../Open-ILS/src/templates/acq/common/li_table.tt2:414 ../../Open-ILS/src/templates/acq/common/li_table.tt2:85 ../../Open-ILS/src/templates/acq/invoice/receive.tt2:44
+msgid "Circ Modifier"
+msgstr ""
+
+#: ../../Open-ILS/src/templates/acq/common/final_claim_dialog.tt2:6 ../../Open-ILS/src/templates/acq/common/li_table.tt2:382
+msgid "Claim"
+msgstr ""
+
+#: ../../Open-ILS/src/templates/acq/common/li_table.tt2:544
+msgid "Claim policy:"
+msgstr ""
+
+#: ../../Open-ILS/src/templates/acq/common/claim_dialog.tt2:58
+msgid "Claim selected"
+msgstr ""
+
+#: ../../Open-ILS/src/templates/acq/financial/claim_eligible.tt2:16 ../../Open-ILS/src/templates/acq/financial/claim_eligible.tt2:46
+msgid "Claim selected items"
+msgstr ""
+
+#: ../../Open-ILS/src/templates/acq/common/final_claim_dialog.tt2:2
+msgid "Claim type:"
+msgstr ""
+
+#: ../../Open-ILS/src/templates/acq/common/claim_dialog.tt2:5 ../../Open-ILS/src/templates/acq/common/li_table.tt2:210
+msgid "Claims"
+msgstr ""
+
+#: ../../Open-ILS/src/templates/acq/picklist/bib_search.tt2:44
+msgid "Clear Form"
+msgstr ""
+
+#: ../../Open-ILS/src/templates/acq/lineitem/search.tt2:104
+msgid "Clear loaded search terms"
+msgstr ""
+
+#: ../../Open-ILS/src/templates/acq/picklist/list.tt2:41 ../../Open-ILS/src/templates/acq/search/unified.tt2:155
+msgid "Clone"
+msgstr ""
+
+#: ../../Open-ILS/src/templates/acq/picklist/list.tt2:32 ../../Open-ILS/src/templates/acq/search/unified.tt2:143
+msgid "Clone Selected"
+msgstr ""
+
+#: ../../Open-ILS/src/templates/acq/invoice/view.tt2:175
+msgid "Close"
+msgstr ""
+
+#: ../../Open-ILS/src/templates/acq/fund/view.tt2:162 ../../Open-ILS/src/templates/acq/funding_source/view.tt2:93 ../../Open-ILS/src/templates/acq/settings/li_attr.tt2:50
+msgid "Code"
+msgstr ""
+
+#: ../../Open-ILS/src/templates/acq/settings/li_attr.tt2:10
+msgid "Code:"
+msgstr ""
+
+#: ../../Open-ILS/src/templates/acq/common/li_table.tt2:237 ../../Open-ILS/src/templates/acq/common/li_table.tt2:334 ../../Open-ILS/src/templates/acq/common/li_table.tt2:361 ../../Open-ILS/src/templates/acq/common/li_table.tt2:79 ../../Open-ILS/src/templates/acq/invoice/receive.tt2:43
+msgid "Collection Code"
+msgstr ""
+
+#: ../../Open-ILS/src/templates/acq/financial/claim_eligible.tt2:34
+msgid "Consider individual copies for claiming"
+msgstr ""
+
+#: ../../Open-ILS/src/templates/acq/fund/list.tt2:126 ../../Open-ILS/src/templates/acq/picklist/upload.tt2:26 ../../Open-ILS/src/templates/acq/picklist/user_request.tt2:13 ../../Open-ILS/src/templates/acq/po/events.tt2:23
+msgid "Context Org Unit"
+msgstr ""
+
+#: ../../Open-ILS/src/templates/acq/fund/list.tt2:91
+msgid "Context Org Unit:"
+msgstr ""
+
+#: ../../Open-ILS/src/templates/acq/common/li_table.tt2:392 ../../Open-ILS/src/templates/acq/common/li_table.tt2:70
+msgid "Copies"
+msgstr ""
+
+#. ("<span name=\"count\">0</span>")
+#: ../../Open-ILS/src/templates/acq/common/li_table.tt2:201
+msgid "Copies(%1)"
+msgstr ""
+
+#: ../../Open-ILS/src/templates/acq/common/li_table.tt2:235 ../../Open-ILS/src/templates/acq/common/li_table.tt2:333 ../../Open-ILS/src/templates/acq/common/li_table.tt2:360 ../../Open-ILS/src/templates/acq/common/li_table.tt2:413 ../../Open-ILS/src/templates/acq/common/li_table.tt2:76 ../../Open-ILS/src/templates/acq/invoice/receive.tt2:42
+msgid "Copy Location"
+msgstr ""
+
+#: ../../Open-ILS/src/templates/acq/common/jubgrid.tt2:184 ../../Open-ILS/src/templates/acq/common/notes.tt2:19 ../../Open-ILS/src/templates/acq/common/notes.tt2:34 ../../Open-ILS/src/templates/acq/picklist/list.tt2:24 ../../Open-ILS/src/templates/acq/search/unified.tt2:136
+msgid "Create"
+msgstr ""
+
+#: ../../Open-ILS/src/templates/acq/fund/view.tt2:11
+msgid "Create Allocation"
+msgstr ""
+
+#: ../../Open-ILS/src/templates/acq/po/view.tt2:84
+msgid "Create Invoice"
+msgstr ""
+
+#: ../../Open-ILS/src/templates/acq/common/li_table.tt2:40
+msgid "Create Invoice From Selected Line Items"
+msgstr ""
+
+#: ../../Open-ILS/src/templates/acq/common/li_table.tt2:31 ../../Open-ILS/src/templates/acq/lineitem/related.tt2:47 ../../Open-ILS/src/templates/acq/picklist/upload.tt2:10 ../../Open-ILS/src/templates/acq/po/create.tt2:2 ../../Open-ILS/src/templates/acq/po/create.tt2:3
+msgid "Create Purchase Order"
+msgstr ""
+
+#: ../../Open-ILS/src/templates/acq/picklist/user_request.tt2:39
+msgid "Create Request"
+msgstr ""
+
+#. ("<span id=\"oils-acq-picklist-attr-cdate\"></span>")
+#: ../../Open-ILS/src/templates/acq/picklist/view.tt2:9
+msgid "Create date: %1"
+msgstr ""
+
+#: ../../Open-ILS/src/templates/acq/funding_source/view.tt2:106
+msgid "Credits"
+msgstr ""
+
+#: ../../Open-ILS/src/templates/acq/currency_type/list.tt2:3 ../../Open-ILS/src/templates/acq/fund/view.tt2:163 ../../Open-ILS/src/templates/acq/funding_source/view.tt2:97
+msgid "Currency Type"
+msgstr ""
+
+#: ../../Open-ILS/src/templates/acq/fund/view.tt2:207
+msgid "Debits"
+msgstr ""
+
+#: ../../Open-ILS/src/templates/acq/common/vlagent.tt2:86
+msgid "Debits Encumbered"
+msgstr ""
+
+#: ../../Open-ILS/src/templates/acq/common/notes.tt2:55 ../../Open-ILS/src/templates/acq/invoice/view.tt2:128 ../../Open-ILS/src/templates/acq/invoice/view.tt2:139
+msgid "Delete"
+msgstr ""
+
+#: ../../Open-ILS/src/templates/acq/currency_type/list.tt2:6 ../../Open-ILS/src/templates/acq/fund/list.tt2:42 ../../Open-ILS/src/templates/acq/funding_source/list.tt2:27 ../../Open-ILS/src/templates/acq/picklist/list.tt2:64 ../../Open-ILS/src/templates/acq/search/unified.tt2:186
+msgid "Delete Selected"
+msgstr ""
+
+#: ../../Open-ILS/src/templates/acq/common/jubgrid.tt2:192
+msgid "Delete Selected Copy"
+msgstr ""
+
+#: ../../Open-ILS/src/templates/acq/common/li_table.tt2:27
+msgid "Delete Selected Items"
+msgstr ""
+
+#: ../../Open-ILS/src/templates/acq/settings/li_attr.tt2:51
+msgid "Description"
+msgstr ""
+
+#: ../../Open-ILS/src/templates/acq/settings/li_attr.tt2:14
+msgid "Description: "
+msgstr ""
+
+#: ../../Open-ILS/src/templates/acq/fund/view.tt2:106
+msgid "Destination amount"
+msgstr ""
+
+#: ../../Open-ILS/src/templates/acq/fund/view.tt2:96
+msgid "Destination fund"
+msgstr ""
+
+#: ../../Open-ILS/src/templates/acq/invoice/view.tt2:109 ../../Open-ILS/src/templates/acq/invoice/view.tt2:94
+msgid "Detach"
+msgstr ""
+
+#: ../../Open-ILS/src/templates/acq/invoice/view.tt2:115 ../../Open-ILS/src/templates/acq/po/item_table.tt2:2
+msgid "Direct Charges, Taxes, Fees, etc."
+msgstr ""
+
+#: ../../Open-ILS/src/templates/acq/common/li_table.tt2:88
+msgid "Distribution Formula"
+msgstr ""
+
+#: ../../Open-ILS/src/templates/acq/common/li_table.tt2:308
+msgid "Distribution Formulas"
+msgstr ""
+
+#: ../../Open-ILS/src/templates/acq/common/li_table.tt2:318
+msgid "Distribution formulas applied to this lineitem:"
+msgstr ""
+
+#: ../../Open-ILS/src/templates/acq/fund/list.tt2:99
+msgid "Dry Run: "
+msgstr ""
+
+#: ../../Open-ILS/src/templates/acq/po/edi_messages.tt2:2 ../../Open-ILS/src/templates/acq/po/edi_messages.tt2:6 ../../Open-ILS/src/templates/acq/po/view.tt2:57
+msgid "EDI Messages"
+msgstr ""
+
+#. (ctx.page_args.0)
+#: ../../Open-ILS/src/templates/acq/po/edi_messages.tt2:4
+msgid "EDI Messages (Purchase Order %1)"
+msgstr ""
+
+#: ../../Open-ILS/src/templates/acq/picklist/brief_record.tt2:26
+msgid "Edit MARC"
+msgstr ""
+
+#: ../../Open-ILS/src/templates/acq/common/info.tt2:19
+msgid "Edit MARC Order Record"
+msgstr ""
+
+#: ../../Open-ILS/src/templates/acq/po/events.tt2:38
+msgid "End Date Range"
+msgstr ""
+
+#: ../../Open-ILS/src/templates/acq/common/add_to_po.tt2:45
+msgid "Enter the PO Name: "
+msgstr ""
+
+#: ../../Open-ILS/src/templates/acq/picklist/list.tt2:84 ../../Open-ILS/src/templates/acq/search/unified.tt2:205
+msgid "Entry Count"
+msgstr ""
+
+#. ("<span id=\"oils-acq-picklist-attr-count\"></span>")
+#: ../../Open-ILS/src/templates/acq/picklist/view.tt2:12
+msgid "Entry Count: %1"
+msgstr ""
+
+#: ../../Open-ILS/src/templates/acq/po/item_table.tt2:11
+msgid "Estimated Cost"
+msgstr ""
+
+#: ../../Open-ILS/src/templates/acq/common/jubgrid.tt2:68 ../../Open-ILS/src/templates/acq/common/li_table.tt2:132
+msgid "Estimated Price"
+msgstr ""
+
+#: ../../Open-ILS/src/templates/acq/picklist/bib_search.tt2:21
+msgid "Evergreen Catalog"
+msgstr ""
+
+#: ../../Open-ILS/src/templates/acq/common/li_table.tt2:199
+msgid "Expand"
+msgstr ""
+
+#: ../../Open-ILS/src/templates/acq/common/li_table.tt2:126
+msgid "Expand All"
+msgstr ""
+
+#: ../../Open-ILS/src/templates/acq/invoice/view.tt2:27
+msgid "Expected Cost: "
+msgstr ""
+
+#: ../../Open-ILS/src/templates/acq/common/li_table.tt2:45
+msgid "Export List"
+msgstr ""
+
+#: ../../Open-ILS/src/templates/acq/common/li_table.tt2:29
+msgid "Export Single Attribute List"
+msgstr ""
+
+#: ../../Open-ILS/src/templates/acq/invoice/view.tt2:330
+msgid "Extra Items"
+msgstr ""
+
+#: ../../Open-ILS/src/templates/acq/settings/li_attr.tt2:29
+msgid "False"
+msgstr ""
+
+#: ../../Open-ILS/src/templates/acq/picklist/upload.tt2:52
+msgid "File to Upload:"
+msgstr ""
+
+#: ../../Open-ILS/src/templates/acq/invoice/view.tt2:53
+msgid "Final invoice for Blanket order?"
+msgstr ""
+
+#: ../../Open-ILS/src/templates/acq/po/view.tt2:40
+msgid "Finalize Blanket Order"
+msgstr ""
+
+#: ../../Open-ILS/src/templates/acq/picklist/upload.tt2:36
+msgid "Fiscal Year"
+msgstr ""
+
+#: ../../Open-ILS/src/templates/acq/common/jubgrid.tt2:116 ../../Open-ILS/src/templates/acq/common/jubgrid.tt2:87 ../../Open-ILS/src/templates/acq/common/li_table.tt2:234 ../../Open-ILS/src/templates/acq/common/li_table.tt2:335 ../../Open-ILS/src/templates/acq/common/li_table.tt2:362 ../../Open-ILS/src/templates/acq/common/li_table.tt2:82 ../../Open-ILS/src/templates/acq/invoice/receive.tt2:45 ../../Open-ILS/src/templates/acq/invoice/view.tt2:123 ../../Open-ILS/src/templates/acq/po/item_table.tt2:7
+msgid "Fund"
+msgstr ""
+
+#: ../../Open-ILS/src/templates/acq/fund/view.tt2:5
+msgid "Fund Details"
+msgstr ""
+
+#: ../../Open-ILS/src/templates/acq/fund/list.tt2:45
+msgid "Fund Propagation &amp; Rollover"
+msgstr ""
+
+#: ../../Open-ILS/src/templates/acq/common/jubgrid.tt2:166 ../../Open-ILS/src/templates/acq/funding_source/view.tt2:40
+msgid "Fund: "
+msgstr ""
+
+#: ../../Open-ILS/src/templates/acq/funding_source/view.tt2:5
+msgid "Funding Source Details"
+msgstr ""
+
+#: ../../Open-ILS/src/templates/acq/fund/view.tt2:25
+msgid "Funding Source: "
+msgstr ""
+
+#: ../../Open-ILS/src/templates/acq/funding_source/list.tt2:24
+msgid "Funding Sources"
+msgstr ""
+
+#: ../../Open-ILS/src/templates/acq/fund/list.tt2:2 ../../Open-ILS/src/templates/acq/fund/list.tt2:38
+msgid "Funds"
+msgstr ""
+
+#: ../../Open-ILS/src/templates/acq/common/li_table.tt2:183
+msgid "Generate Worksheet"
+msgstr ""
+
+#: ../../Open-ILS/src/templates/acq/settings/li_attr.tt2:66
+msgid "Generated Attributes"
+msgstr ""
+
+#: ../../Open-ILS/src/templates/acq/common/li_table.tt2:290 ../../Open-ILS/src/templates/acq/common/li_table.tt2:591
+msgid "Go"
+msgstr ""
+
+#: ../../Open-ILS/src/templates/acq/lineitem/findbib.tt2:65
+msgid "Hide"
+msgstr ""
+
+#: ../../Open-ILS/src/templates/acq/invoice/view.tt2:36
+msgid "Hide Details"
+msgstr ""
+
+#: ../../Open-ILS/src/templates/acq/search/unified.tt2:14
+msgid "Hide Search Form"
+msgstr ""
+
+#: ../../Open-ILS/src/templates/acq/po/view.tt2:66
+msgid "History"
+msgstr ""
+
+#: ../../Open-ILS/src/templates/acq/picklist/bib_search.tt2:35
+msgid "Hits Per Source"
+msgstr ""
+
+#: ../../Open-ILS/src/templates/acq/common/li_table.tt2:209
+msgid "Holdings Maint."
+msgstr ""
+
+#: ../../Open-ILS/src/templates/acq/common/jubgrid.tt2:115 ../../Open-ILS/src/templates/acq/common/jubgrid.tt2:57 ../../Open-ILS/src/templates/acq/common/jubgrid.tt2:86 ../../Open-ILS/src/templates/acq/fund/view.tt2:160 ../../Open-ILS/src/templates/acq/funding_source/view.tt2:91 ../../Open-ILS/src/templates/acq/po/search.tt2:39 ../../Open-ILS/src/templates/acq/po/search.tt2:99 ../../Open-ILS/src/templates/acq/po/view.tt2:13 ../../Open-ILS/src/templates/acq/settings/li_attr.tt2:49
+msgid "ID"
+msgstr ""
+
+#: ../../Open-ILS/src/templates/acq/common/jubgrid.tt2:60 ../../Open-ILS/src/templates/acq/common/li_table.tt2:168
+msgid "ISBN"
+msgstr ""
+
+#: ../../Open-ILS/src/templates/acq/common/li_table.tt2:170
+msgid "ISSN"
+msgstr ""
+
+#: ../../Open-ILS/src/templates/acq/receiving/process.tt2:11 ../../Open-ILS/src/templates/acq/settings/li_attr.tt2:54
+msgid "Identifier"
+msgstr ""
+
+#: ../../Open-ILS/src/templates/acq/settings/li_attr.tt2:26
+msgid "Identifier Field?: "
+msgstr ""
+
+#: ../../Open-ILS/src/templates/acq/common/li_table.tt2:492
+msgid "Import Bibs and Create Copies"
+msgstr ""
+
+#: ../../Open-ILS/src/templates/acq/common/vlagent.tt2:22
+msgid "Import Non-Matching Records"
+msgstr ""
+
+#: ../../Open-ILS/src/templates/acq/common/li_table.tt2:190
+msgid "Import Queue"
+msgstr ""
+
+#: ../../Open-ILS/src/templates/acq/po/search.tt2:56
+msgid "In Process"
+msgstr ""
+
+#: ../../Open-ILS/src/templates/acq/fund/list.tt2:95
+msgid "Include Funds for Descendant Org Units:"
+msgstr ""
+
+#: ../../Open-ILS/src/templates/acq/common/claim_dialog.tt2:27
+msgid "Initiate New Claims"
+msgstr ""
+
+#: ../../Open-ILS/src/templates/acq/common/vlagent.tt2:46
+msgid "Insufficient Quality Fall-Through Profile"
+msgstr ""
+
+#: ../../Open-ILS/src/templates/acq/invoice/view.tt2:68
+msgid "Invoice"
+msgstr ""
+
+#: ../../Open-ILS/src/templates/acq/common/inv_dialog.tt2:8
+msgid "Invoice #"
+msgstr ""
+
+#: ../../Open-ILS/src/templates/acq/invoice/view.tt2:2 ../../Open-ILS/src/templates/acq/po/view.tt2:75
+msgid "Invoicing"
+msgstr ""
+
+#: ../../Open-ILS/src/templates/acq/common/li_table.tt2:287
+msgid "Item Count: "
+msgstr ""
+
+#: ../../Open-ILS/src/templates/acq/common/li_table.tt2:128 ../../Open-ILS/src/templates/acq/financial/claim_eligible.tt2:22
+msgid "Items"
+msgstr ""
+
+#: ../../Open-ILS/src/templates/acq/financial/claim_eligible.tt2:2 ../../Open-ILS/src/templates/acq/financial/claim_eligible.tt2:5
+msgid "Items Eligible For Claiming"
+msgstr ""
+
+#: ../../Open-ILS/src/templates/acq/picklist/from_bib.tt2:2
+msgid "Items by Bibliographic ID"
+msgstr ""
+
+#. ("<span id=\"oils-acq-picklist-attr-edate\"></span>")
+#: ../../Open-ILS/src/templates/acq/picklist/view.tt2:10
+msgid "Last updated: %1"
+msgstr ""
+
+#: ../../Open-ILS/src/templates/acq/fund/list.tt2:76
+msgid "Limit Fiscal Year Close-out Operation to Encumbrances: "
+msgstr ""
+
+#: ../../Open-ILS/src/templates/acq/invoice/view.tt2:282
+msgid "Limit to Invoiceable Items"
+msgstr ""
+
+#: ../../Open-ILS/src/templates/acq/common/li_table.tt2:122
+msgid "Line Items"
+msgstr ""
+
+#: ../../Open-ILS/src/templates/acq/settings/li_attr.tt2:5
+msgid "Lineitem Attribute Attribute"
+msgstr ""
+
+#: ../../Open-ILS/src/templates/acq/lineitem/history.tt2:2 ../../Open-ILS/src/templates/acq/lineitem/history.tt2:3
+msgid "Lineitem History"
+msgstr ""
+
+#: ../../Open-ILS/src/templates/acq/lineitem/search.tt2:2 ../../Open-ILS/src/templates/acq/lineitem/search.tt2:5
+msgid "Lineitem Search"
+msgstr ""
+
+#: ../../Open-ILS/src/templates/acq/lineitem/worksheet.tt2:11 ../../Open-ILS/src/templates/acq/lineitem/worksheet.tt2:2
+msgid "Lineitem Worksheet"
+msgstr ""
+
+#: ../../Open-ILS/src/templates/acq/lineitem/search.tt2:15
+msgid "Lineitem state"
+msgstr ""
+
+#: ../../Open-ILS/src/templates/acq/common/vlagent.tt2:70
+msgid "Lineitems Processed"
+msgstr ""
+
+#: ../../Open-ILS/src/templates/acq/invoice/view.tt2:25
+msgid "Lineitems: "
+msgstr ""
+
+#: ../../Open-ILS/src/templates/acq/common/inv_dialog.tt2:27
+msgid "Link"
+msgstr ""
+
+#: ../../Open-ILS/src/templates/acq/po/view.tt2:87
+msgid "Link Invoice"
+msgstr ""
+
+#: ../../Open-ILS/src/templates/acq/common/li_table.tt2:41
+msgid "Link Selected Line Items to Invoice"
+msgstr ""
+
+#: ../../Open-ILS/src/templates/acq/common/li_table.tt2:182
+msgid "Link To Catalog Record"
+msgstr ""
+
+#: ../../Open-ILS/src/templates/acq/common/li_table.tt2:35
+msgid "Load Bibs and Items"
+msgstr ""
+
+#: ../../Open-ILS/src/templates/acq/common/vlagent.tt2:60
+msgid "Load Items for Imported Records"
+msgstr ""
+
+#: ../../Open-ILS/src/templates/acq/lineitem/worksheet.tt2:16
+msgid "Loading Worksheet..."
+msgstr ""
+
+#: ../../Open-ILS/src/templates/acq/lineitem/findbib.tt2:2
+msgid "Locate Bib Record"
+msgstr ""
+
+#: ../../Open-ILS/src/templates/acq/common/jubgrid.tt2:173
+msgid "Location: "
+msgstr ""
+
+#: ../../Open-ILS/src/templates/acq/settings/li_attr.tt2:61
+msgid "MARC Attributes"
+msgstr ""
+
+#: ../../Open-ILS/src/templates/acq/common/info.tt2:17
+msgid "MARC ILS Record"
+msgstr ""
+
+#: ../../Open-ILS/src/templates/acq/common/info.tt2:16
+msgid "MARC Order Record"
+msgstr ""
+
+#: ../../Open-ILS/src/templates/acq/common/li_table.tt2:26
+msgid "Mark Ready for Order"
+msgstr ""
+
+#: ../../Open-ILS/src/templates/acq/common/li_table.tt2:25
+msgid "Mark Ready for Selector"
+msgstr ""
+
+#: ../../Open-ILS/src/templates/acq/common/jubgrid.tt2:195
+msgid "Mark Selected Copies Received"
+msgstr ""
+
+#: ../../Open-ILS/src/templates/acq/common/li_table.tt2:38
+msgid "Mark Selected Line Items as Received"
+msgstr ""
+
+#: ../../Open-ILS/src/templates/acq/common/li_table.tt2:585
+msgid "Mark all"
+msgstr ""
+
+#: ../../Open-ILS/src/templates/acq/common/li_table.tt2:583
+msgid "Mark selected"
+msgstr ""
+
+#: ../../Open-ILS/src/templates/acq/common/li_table.tt2:382
+msgid "Mark&nbsp;Received"
+msgstr ""
+
+#: ../../Open-ILS/src/templates/acq/picklist/list.tt2:58 ../../Open-ILS/src/templates/acq/search/unified.tt2:179
+msgid "Merge"
+msgstr ""
+
+#: ../../Open-ILS/src/templates/acq/common/vlagent.tt2:35
+msgid "Merge On Best Match"
+msgstr ""
+
+#: ../../Open-ILS/src/templates/acq/common/vlagent.tt2:27
+msgid "Merge On Exact Match (901c)"
+msgstr ""
+
+#: ../../Open-ILS/src/templates/acq/common/vlagent.tt2:31
+msgid "Merge On Single Match"
+msgstr ""
+
+#: ../../Open-ILS/src/templates/acq/common/vlagent.tt2:18
+msgid "Merge Profile"
+msgstr ""
+
+#: ../../Open-ILS/src/templates/acq/picklist/list.tt2:49 ../../Open-ILS/src/templates/acq/search/unified.tt2:162
+msgid "Merge Selected"
+msgstr ""
+
+#: ../../Open-ILS/src/templates/acq/common/li_table.tt2:24
+msgid "Move Items To Selection List"
+msgstr ""
+
+#: ../../Open-ILS/src/templates/acq/picklist/list.tt2:7
+msgid "My Selection Lists"
+msgstr ""
+
+#: ../../Open-ILS/src/templates/acq/fund/view.tt2:161 ../../Open-ILS/src/templates/acq/funding_source/view.tt2:92 ../../Open-ILS/src/templates/acq/po/view.tt2:18 ../../Open-ILS/src/templates/acq/search/unified.tt2:111 ../../Open-ILS/src/templates/acq/search/unified.tt2:202
+msgid "Name"
+msgstr ""
+
+#: ../../Open-ILS/src/templates/acq/common/li_table.tt2:468
+msgid "Name (optional)"
+msgstr ""
+
+#: ../../Open-ILS/src/templates/acq/picklist/list.tt2:19 ../../Open-ILS/src/templates/acq/search/unified.tt2:129
+msgid "Name:"
+msgstr ""
+
+#: ../../Open-ILS/src/templates/acq/common/li_table.tt2:215 ../../Open-ILS/src/templates/acq/po/search.tt2:55
+msgid "New"
+msgstr ""
+
+#: ../../Open-ILS/src/templates/acq/common/notes.tt2:24
+msgid "New Alert"
+msgstr ""
+
+#: ../../Open-ILS/src/templates/acq/picklist/brief_record.tt2:2
+msgid "New Brief Record"
+msgstr ""
+
+#: ../../Open-ILS/src/templates/acq/po/item_table.tt2:31
+msgid "New Charge"
+msgstr ""
+
+#: ../../Open-ILS/src/templates/acq/common/jubgrid.tt2:158
+msgid "New Copy"
+msgstr ""
+
+#: ../../Open-ILS/src/templates/acq/currency_type/list.tt2:5
+msgid "New Currency Type"
+msgstr ""
+
+#: ../../Open-ILS/src/templates/acq/fund/list.tt2:41
+msgid "New Fund"
+msgstr ""
+
+#: ../../Open-ILS/src/templates/acq/funding_source/list.tt2:26
+msgid "New Funding Source"
+msgstr ""
+
+#: ../../Open-ILS/src/templates/acq/picklist/list.tt2:36 ../../Open-ILS/src/templates/acq/search/unified.tt2:148
+msgid "New Name:"
+msgstr ""
+
+#: ../../Open-ILS/src/templates/acq/common/notes.tt2:11
+msgid "New Note"
+msgstr ""
+
+#: ../../Open-ILS/src/templates/acq/common/vlagent.tt2:42
+msgid "New Record Quality / Quality of Best Match"
+msgstr ""
+
+#: ../../Open-ILS/src/templates/acq/picklist/bib_search.tt2:59
+msgid "New Search"
+msgstr ""
+
+#: ../../Open-ILS/src/templates/acq/picklist/list.tt2:15 ../../Open-ILS/src/templates/acq/search/unified.tt2:124
+msgid "New Selection List"
+msgstr ""
+
+#: ../../Open-ILS/src/templates/acq/lineitem/search.tt2:80
+msgid "New brief record like this"
+msgstr ""
+
+#: ../../Open-ILS/src/templates/acq/common/li_table_pager.tt2:15 ../../Open-ILS/src/templates/acq/invoice/view.tt2:274
+msgid "Next"
+msgstr ""
+
+#: ../../Open-ILS/src/templates/acq/common/li_table.tt2:60
+msgid "Next &#187;"
+msgstr ""
+
+#: ../../Open-ILS/src/templates/acq/common/li_table.tt2:253
+msgid "No Copies"
+msgstr ""
+
+#: ../../Open-ILS/src/templates/acq/invoice/view.tt2:290
+msgid "No Results"
+msgstr ""
+
+#: ../../Open-ILS/src/templates/acq/lineitem/search.tt2:33
+msgid "No further attributes to search by"
+msgstr ""
+
+#: ../../Open-ILS/src/templates/acq/common/jubgrid.tt2:78
+msgid "No. Copies"
+msgstr ""
+
+#: ../../Open-ILS/src/templates/acq/common/li_table.tt2:238 ../../Open-ILS/src/templates/acq/fund/view.tt2:127 ../../Open-ILS/src/templates/acq/po/item_table.tt2:10
+msgid "Note"
+msgstr ""
+
+#: ../../Open-ILS/src/templates/acq/common/notes.tt2:16
+msgid "Note is vendor-public"
+msgstr ""
+
+#: ../../Open-ILS/src/templates/acq/common/final_claim_dialog.tt2:4
+msgid "Note:"
+msgstr ""
+
+#: ../../Open-ILS/src/templates/acq/fund/view.tt2:54 ../../Open-ILS/src/templates/acq/funding_source/view.tt2:22 ../../Open-ILS/src/templates/acq/funding_source/view.tt2:65
+msgid "Note: "
+msgstr ""
+
+#: ../../Open-ILS/src/templates/acq/common/li_table.tt2:129 ../../Open-ILS/src/templates/acq/common/li_table.tt2:366 ../../Open-ILS/src/templates/acq/po/view.tt2:48
+msgid "Notes"
+msgstr ""
+
+#. ("<span name=\"notes_count\">0</span>")
+#: ../../Open-ILS/src/templates/acq/common/li_table.tt2:203
+msgid "Notes(%1)"
+msgstr ""
+
+#: ../../Open-ILS/src/templates/acq/po/search.tt2:58
+msgid "On order"
+msgstr ""
+
+#: ../../Open-ILS/src/templates/acq/common/li_table.tt2:220
+msgid "On-Order"
+msgstr ""
+
+#: ../../Open-ILS/src/templates/acq/common/vlagent.tt2:9
+msgid "Or create a new queue"
+msgstr ""
+
+#: ../../Open-ILS/src/templates/acq/common/li_table.tt2:165
+msgid "Order Identifier"
+msgstr ""
+
+#: ../../Open-ILS/src/templates/acq/common/li_table.tt2:217
+msgid "Order-Ready"
+msgstr ""
+
+#: ../../Open-ILS/src/templates/acq/common/li_table.tt2:464 ../../Open-ILS/src/templates/acq/po/search.tt2:71
+msgid "Ordering Agency"
+msgstr ""
+
+#: ../../Open-ILS/src/templates/acq/receiving/process.tt2:17
+msgid "Ordering Agency:"
+msgstr ""
+
+#: ../../Open-ILS/src/templates/acq/fund/view.tt2:164 ../../Open-ILS/src/templates/acq/funding_source/view.tt2:98 ../../Open-ILS/src/templates/acq/search/unified.tt2:204
+msgid "Owner"
+msgstr ""
+
+#: ../../Open-ILS/src/templates/acq/common/li_table.tt2:332 ../../Open-ILS/src/templates/acq/common/li_table.tt2:359 ../../Open-ILS/src/templates/acq/common/li_table.tt2:412 ../../Open-ILS/src/templates/acq/common/li_table.tt2:73 ../../Open-ILS/src/templates/acq/invoice/receive.tt2:41
+msgid "Owning Branch"
+msgstr ""
+
+#: ../../Open-ILS/src/templates/acq/common/jubgrid.tt2:80
+msgid "PO"
+msgstr ""
+
+#: ../../Open-ILS/src/templates/acq/po/history.tt2:2
+msgid "PO History"
+msgstr ""
+
+#: ../../Open-ILS/src/templates/acq/picklist/user_request.tt2:31
+msgid "PO Line Item"
+msgstr ""
+
+#: ../../Open-ILS/src/templates/acq/po/search.tt2:10
+msgid "PO Search"
+msgstr ""
+
+#: ../../Open-ILS/src/templates/acq/po/events.tt2:7
+msgid "PO Triggered Events"
+msgstr ""
+
+#: ../../Open-ILS/src/templates/acq/po/view.tt2:22
+msgid "PO name already in use: "
+msgstr ""
+
+#: ../../Open-ILS/src/templates/acq/lineitem/search.tt2:23
+msgid "PO ordering agency"
+msgstr ""
+
+#: ../../Open-ILS/src/templates/acq/common/li_table.tt2:191 ../../Open-ILS/src/templates/acq/invoice/view.tt2:127 ../../Open-ILS/src/templates/acq/invoice/view.tt2:93
+msgid "Paid"
+msgstr ""
+
+#: ../../Open-ILS/src/templates/acq/picklist/user_request.tt2:65
+msgid "Patron Request"
+msgstr ""
+
+#: ../../Open-ILS/src/templates/acq/common/li_table.tt2:186 ../../Open-ILS/src/templates/acq/picklist/user_request.tt2:2
+msgid "Patron Requests"
+msgstr ""
+
+#: ../../Open-ILS/src/templates/acq/po/search.tt2:57
+msgid "Pending"
+msgstr ""
+
+#: ../../Open-ILS/src/templates/acq/common/li_table.tt2:219
+msgid "Pending-Order"
+msgstr ""
+
+#: ../../Open-ILS/src/templates/acq/invoice/view.tt2:92
+msgid "Per Copy"
+msgstr ""
+
+#: ../../Open-ILS/src/templates/acq/fund/view.tt2:41 ../../Open-ILS/src/templates/acq/funding_source/view.tt2:53
+msgid "Percent: "
+msgstr ""
+
+#: ../../Open-ILS/src/templates/acq/fund/list.tt2:59
+msgid "Perform Fiscal Year Close-out Operation: "
+msgstr ""
+
+#: ../../Open-ILS/src/templates/acq/fund/view.tt2:46 ../../Open-ILS/src/templates/acq/funding_source/view.tt2:58
+msgid "Please enter an amount between 0 and 100"
+msgstr ""
+
+#: ../../Open-ILS/src/templates/acq/common/li_table.tt2:480
+msgid "Prepayment Required"
+msgstr ""
+
+#: ../../Open-ILS/src/templates/acq/po/view.tt2:14
+msgid "Prepayment Required?"
+msgstr ""
+
+#: ../../Open-ILS/src/templates/acq/common/li_table_pager.tt2:5
+msgid "Prev"
+msgstr ""
+
+#: ../../Open-ILS/src/templates/acq/invoice/view.tt2:271
+msgid "Previous"
+msgstr ""
+
+#: ../../Open-ILS/src/templates/acq/common/li_table.tt2:33
+msgid "Print Purchase Order"
+msgstr ""
+
+#: ../../Open-ILS/src/templates/acq/search/unified.tt2:216
+msgid "Print Selected Invoices"
+msgstr ""
+
+#: ../../Open-ILS/src/templates/acq/fund/list.tt2:115
+msgid "Process"
+msgstr ""
+
+#: ../../Open-ILS/src/templates/acq/fund/list.tt2:51
+msgid ""
+"Propagation creates new funds for the subsequent fiscal year based on the "
+"funds for the selected fiscal year.  Only funds with the propagate setting "
+"enabled will be affected.  No money or encumbrances are altered during this "
+"process."
+msgstr ""
+
+#: ../../Open-ILS/src/templates/acq/invoice/view.tt2:173
+msgid "Prorate"
+msgstr ""
+
+#: ../../Open-ILS/src/templates/acq/lineitem/search.tt2:91
+msgid "Provide a file of search terms"
+msgstr ""
+
+#: ../../Open-ILS/src/templates/acq/picklist/from_bib.tt2:5
+msgid ""
+"Provide one or more CSV files whose first columns contain Evergreen "
+"bibliographic record IDs."
+msgstr ""
+
+#: ../../Open-ILS/src/templates/acq/common/inv_dialog.tt2:18 ../../Open-ILS/src/templates/acq/common/li_table.tt2:189 ../../Open-ILS/src/templates/acq/common/li_table.tt2:476 ../../Open-ILS/src/templates/acq/picklist/upload.tt2:22 ../../Open-ILS/src/templates/acq/po/search.tt2:42 ../../Open-ILS/src/templates/acq/po/view.tt2:46
+msgid "Provider"
+msgstr ""
+
+#: ../../Open-ILS/src/templates/acq/common/jubgrid.tt2:61
+msgid "Pubdate"
+msgstr ""
+
+#: ../../Open-ILS/src/templates/acq/common/li_table.tt2:185 ../../Open-ILS/src/templates/acq/po/events.tt2:55 ../../Open-ILS/src/templates/acq/po/view.tt2:2
+msgid "Purchase Order"
+msgstr ""
+
+#. ("<span id=\"acq-po-view-state\"></span>")
+#: ../../Open-ILS/src/templates/acq/po/view.tt2:8
+msgid "Purchase Order (%1)"
+msgstr ""
+
+#: ../../Open-ILS/src/templates/acq/po/history.tt2:3
+msgid "Purchase Order History"
+msgstr ""
+
+#. ("<a attr=\"name\"></a>")
+#: ../../Open-ILS/src/templates/acq/po/search.tt2:14
+msgid "Purchase Order: %1"
+msgstr ""
+
+#: ../../Open-ILS/src/templates/acq/po/search.tt2:2
+msgid "Purchase Orders"
+msgstr ""
+
+#: ../../Open-ILS/src/templates/acq/common/vlagent.tt2:90
+msgid "Real Copies Processed"
+msgstr ""
+
+#: ../../Open-ILS/src/templates/acq/common/li_table.tt2:538 ../../Open-ILS/src/templates/acq/picklist/user_request.tt2:74 ../../Open-ILS/src/templates/acq/po/view.tt2:115
+msgid "Reason:"
+msgstr ""
+
+#: ../../Open-ILS/src/templates/acq/invoice/view.tt2:8
+msgid "Receive Items"
+msgstr ""
+
+#: ../../Open-ILS/src/templates/acq/invoice/receive.tt2:32 ../../Open-ILS/src/templates/acq/invoice/receive.tt2:54
+msgid "Receive Selected Copies"
+msgstr ""
+
+#: ../../Open-ILS/src/templates/acq/common/jubgrid.tt2:107
+msgid "Receive Time"
+msgstr ""
+
+#: ../../Open-ILS/src/templates/acq/common/li_table.tt2:221
+msgid "Received"
+msgstr ""
+
+#: ../../Open-ILS/src/templates/acq/common/li_table.tt2:367
+msgid "Receiver"
+msgstr ""
+
+#: ../../Open-ILS/src/templates/acq/receiving/process.tt2:2
+msgid "Receiving Processing"
+msgstr ""
+
+#: ../../Open-ILS/src/templates/acq/common/vlagent.tt2:14
+msgid "Record Match Set"
+msgstr ""
+
+#: ../../Open-ILS/src/templates/acq/common/vlagent.tt2:24
+msgid "Record Source"
+msgstr ""
+
+#: ../../Open-ILS/src/templates/acq/fund/list.tt2:141
+msgid "Refresh"
+msgstr ""
+
+#: ../../Open-ILS/src/templates/acq/fund/view.tt2:211 ../../Open-ILS/src/templates/acq/search/unified.tt2:121 ../../Open-ILS/src/templates/acq/search/unified.tt2:213 ../../Open-ILS/src/templates/acq/search/unified.tt2:94
+msgid "Refresh Grid"
+msgstr ""
+
+#: ../../Open-ILS/src/templates/acq/lineitem/related.tt2:2 ../../Open-ILS/src/templates/acq/lineitem/related.tt2:4
+msgid "Related Lineitems"
+msgstr ""
+
+#: ../../Open-ILS/src/templates/acq/common/vlagent.tt2:50
+msgid "Remove MARC Field Groups"
+msgstr ""
+
+#: ../../Open-ILS/src/templates/acq/common/jubgrid.tt2:141
+msgid "Remove Selected Titles"
+msgstr ""
+
+#: ../../Open-ILS/src/templates/acq/lineitem/search.tt2:68
+msgid "Remove this row"
+msgstr ""
+
+#: ../../Open-ILS/src/templates/acq/invoice/view.tt2:178
+msgid "Reopen"
+msgstr ""
+
+#: ../../Open-ILS/src/templates/acq/po/events.tt2:10
+msgid "Reset Selected"
+msgstr ""
+
+#: ../../Open-ILS/src/templates/acq/po/search.tt2:112
+msgid "Results Summary"
+msgstr ""
+
+#: ../../Open-ILS/src/templates/acq/picklist/from_bib.tt2:12
+msgid "Retrieve records"
+msgstr ""
+
+#: ../../Open-ILS/src/templates/acq/invoice/receive.tt2:61
+msgid "Return to Invoice"
+msgstr ""
+
+#: ../../Open-ILS/src/templates/acq/search/unified.tt2:18
+msgid "Reveal Search Form"
+msgstr ""
+
+#: ../../Open-ILS/src/templates/acq/fund/view.tt2:115
+msgid "Same as source amount?"
+msgstr ""
+
+#: ../../Open-ILS/src/templates/acq/common/add_to_po.tt2:55 ../../Open-ILS/src/templates/acq/common/li_table.tt2:531 ../../Open-ILS/src/templates/acq/common/li_table.tt2:547 ../../Open-ILS/src/templates/acq/invoice/view.tt2:169
+msgid "Save"
+msgstr ""
+
+#: ../../Open-ILS/src/templates/acq/invoice/view.tt2:171
+msgid "Save &amp; Clear"
+msgstr ""
+
+#: ../../Open-ILS/src/templates/acq/common/li_table.tt2:293 ../../Open-ILS/src/templates/acq/common/li_table.tt2:402
+msgid "Save Changes"
+msgstr ""
+
+#: ../../Open-ILS/src/templates/acq/po/item_table.tt2:32
+msgid "Save New Charges"
+msgstr ""
+
+#: ../../Open-ILS/src/templates/acq/picklist/brief_record.tt2:24
+msgid "Save Record"
+msgstr ""
+
+#: ../../Open-ILS/src/templates/acq/common/li_table.tt2:515
+msgid "Save all"
+msgstr ""
+
+#: ../../Open-ILS/src/templates/acq/common/li_table.tt2:520
+msgid "Save as Selection List: "
+msgstr ""
+
+#: ../../Open-ILS/src/templates/acq/common/li_table.tt2:513
+msgid "Save selected"
+msgstr ""
+
+#: ../../Open-ILS/src/templates/acq/invoice/view.tt2:191 ../../Open-ILS/src/templates/acq/invoice/view.tt2:266 ../../Open-ILS/src/templates/acq/lineitem/findbib.tt2:14 ../../Open-ILS/src/templates/acq/lineitem/search.tt2:109 ../../Open-ILS/src/templates/acq/po/events.tt2:44 ../../Open-ILS/src/templates/acq/po/search.tt2:74 ../../Open-ILS/src/templates/acq/receiving/process.tt2:24 ../../Open-ILS/src/templates/acq/search/unified.tt2:87
+msgid "Search"
+msgstr ""
+
+#: ../../Open-ILS/src/templates/acq/picklist/bib_search.tt2:25
+msgid "Search Fields"
+msgstr ""
+
+#: ../../Open-ILS/src/templates/acq/picklist/bib_search.tt2:54
+msgid "Search Results"
+msgstr ""
+
+#: ../../Open-ILS/src/templates/acq/lineitem/search.tt2:45
+msgid "Search by attribute values"
+msgstr ""
+
+#: ../../Open-ILS/src/templates/acq/invoice/view.tt2:206 ../../Open-ILS/src/templates/acq/search/unified.tt2:25
+msgid "Search for"
+msgstr ""
+
+#: ../../Open-ILS/src/templates/acq/lineitem/findbib.tt2:70
+msgid "Searching...."
+msgstr ""
+
+#: ../../Open-ILS/src/templates/acq/lineitem/findbib.tt2:32
+msgid "Select"
+msgstr ""
+
+#: ../../Open-ILS/src/templates/acq/invoice/view.tt2:287
+msgid "Select All"
+msgstr ""
+
+#: ../../Open-ILS/src/templates/acq/common/claim_dialog.tt2:39
+msgid "Select Claim Action"
+msgstr ""
+
+#: ../../Open-ILS/src/templates/acq/common/li_table.tt2:184
+msgid "Select List"
+msgstr ""
+
+#. ("<div id=\"acq-invoice-extra-copies-fund\"></div>")
+#: ../../Open-ILS/src/templates/acq/invoice/view.tt2:334
+msgid "Select a fund for the new items: %1"
+msgstr ""
+
+#: ../../Open-ILS/src/templates/acq/common/li_table.tt2:564
+msgid "Select a new fund:"
+msgstr ""
+
+#: ../../Open-ILS/src/templates/acq/common/li_table.tt2:488
+msgid "Selected Line Items"
+msgstr ""
+
+#: ../../Open-ILS/src/templates/acq/picklist/view.tt2:2
+msgid "Selection List"
+msgstr ""
+
+#: ../../Open-ILS/src/templates/acq/picklist/list.tt2:2
+msgid "Selection Lists"
+msgstr ""
+
+#. ("<span id=\"oils-acq-picklist-name\"> </span>")
+#: ../../Open-ILS/src/templates/acq/picklist/view.tt2:7
+msgid "Selection list %1"
+msgstr ""
+
+#: ../../Open-ILS/src/templates/acq/common/li_table.tt2:216
+msgid "Selector-Ready"
+msgstr ""
+
+#. ("<span id=\"oils-acq-picklist-attr-owner\"></span>")
+#: ../../Open-ILS/src/templates/acq/picklist/view.tt2:11
+msgid "Selector: %1"
+msgstr ""
+
+#: ../../Open-ILS/src/templates/acq/picklist/user_request.tt2:69
+msgid "Set No Hold"
+msgstr ""
+
+#: ../../Open-ILS/src/templates/acq/common/jubgrid.tt2:103 ../../Open-ILS/src/templates/acq/common/jubgrid.tt2:124
+msgid "Shelving Location"
+msgstr ""
+
+#: ../../Open-ILS/src/templates/acq/invoice/view.tt2:41
+msgid "Show Details"
+msgstr ""
+
+#: ../../Open-ILS/src/templates/acq/common/li_table.tt2:181
+msgid "Show In Catalog"
+msgstr ""
+
+#: ../../Open-ILS/src/templates/acq/common/claim_dialog.tt2:19
+msgid "Show Voucher"
+msgstr ""
+
+#: ../../Open-ILS/src/templates/acq/financial/claim_eligible.tt2:7
+msgid "Show items ready to claim for:"
+msgstr ""
+
+#: ../../Open-ILS/src/templates/acq/po/search.tt2:79
+msgid "Show results as a virtual combined PO"
+msgstr ""
+
+#: ../../Open-ILS/src/templates/acq/lineitem/search.tt2:49
+msgid "Show results for which:"
+msgstr ""
+
+#: ../../Open-ILS/src/templates/acq/invoice/view.tt2:279
+msgid "Sort by title"
+msgstr ""
+
+#: ../../Open-ILS/src/templates/acq/fund/view.tt2:81
+msgid "Source amount"
+msgstr ""
+
+#: ../../Open-ILS/src/templates/acq/fund/view.tt2:167
+msgid "Spent Balance"
+msgstr ""
+
+#: ../../Open-ILS/src/templates/acq/po/view.tt2:143
+msgid "Split Order by Lineitems"
+msgstr ""
+
+#: ../../Open-ILS/src/templates/acq/po/events.tt2:31
+msgid "Start Date Range"
+msgstr ""
+
+#: ../../Open-ILS/src/templates/acq/common/jubgrid.tt2:79 ../../Open-ILS/src/templates/acq/po/events.tt2:15 ../../Open-ILS/src/templates/acq/po/search.tt2:45
+msgid "State"
+msgstr ""
+
+#: ../../Open-ILS/src/templates/acq/common/li_table.tt2:131
+msgid "Status"
+msgstr ""
+
+#. ("<span attr=\"state\"></span>")
+#: ../../Open-ILS/src/templates/acq/po/search.tt2:19
+msgid "Status: %1"
+msgstr ""
+
+#: ../../Open-ILS/src/templates/acq/settings/li_attr.tt2:53
+msgid "Subfield"
+msgstr ""
+
+#: ../../Open-ILS/src/templates/acq/settings/li_attr.tt2:22
+msgid "Subfield: "
+msgstr ""
+
+#: ../../Open-ILS/src/templates/acq/common/li_table.tt2:448 ../../Open-ILS/src/templates/acq/common/li_table.tt2:497 ../../Open-ILS/src/templates/acq/common/li_table.tt2:572 ../../Open-ILS/src/templates/acq/picklist/bib_search.tt2:43
+msgid "Submit"
+msgstr ""
+
+#: ../../Open-ILS/src/templates/acq/fund/view.tt2:153 ../../Open-ILS/src/templates/acq/funding_source/view.tt2:83
+msgid "Summary"
+msgstr ""
+
+#: ../../Open-ILS/src/templates/acq/settings/li_attr.tt2:52
+msgid "Tag"
+msgstr ""
+
+#: ../../Open-ILS/src/templates/acq/settings/li_attr.tt2:18
+msgid "Tag: "
+msgstr ""
+
+#: ../../Open-ILS/src/templates/acq/fund/view.tt2:229
+msgid "Tags"
+msgstr ""
+
+#: ../../Open-ILS/src/templates/acq/invoice/receive.tt2:26
+msgid "The remaining are listed below."
+msgstr ""
+
+#: ../../Open-ILS/src/templates/acq/fund/list.tt2:67
+msgid ""
+"The year end close out operation moves encumbrances from the selected fiscal "
+"year to the analogous funds in the subsequent fiscal year and it deactivates "
+"funds for the selected fiscal year.  Additionally, for all funds that have "
+"the \"Rollover\" setting enabled, this process will move all unspent money "
+"to the analogous fund in the subsequent fiscal year."
+msgstr ""
+
+#: ../../Open-ILS/src/templates/acq/po/item_table.tt2:28
+msgid "There are no miscellanea attached to this purchase order."
+msgstr ""
+
+#: ../../Open-ILS/src/templates/acq/search/unified.tt2:237
+msgid "There are no results from your search."
+msgstr ""
+
+#: ../../Open-ILS/src/templates/acq/financial/claim_eligible.tt2:40
+msgid "There were no items matching your search."
+msgstr ""
+
+#. ("<span class=\"oils-notify-text\">", "</span>")
+#: ../../Open-ILS/src/templates/acq/fund/list.tt2:149
+msgid "These changes have %1not%2 been committed yet."
+msgstr ""
+
+#: ../../Open-ILS/src/templates/acq/invoice/receive.tt2:58
+msgid "This invoice has no more copies to receive."
+msgstr ""
+
+#: ../../Open-ILS/src/templates/acq/fund/list.tt2:84
+msgid ""
+"This modifies the above described Close-out Operation, causing funds to be "
+"transfered into the void (that is, entirely removed) instead of being "
+"transfered to the analogous funds in the subsequent fiscal year."
+msgstr ""
+
+#: ../../Open-ILS/src/templates/acq/common/li_table.tt2:472
+msgid "This name is used by another PO"
+msgstr ""
+
+#: ../../Open-ILS/src/templates/acq/common/li_table.tt2:558
+msgid "This will also update any existing encumbered or spent debits."
+msgstr ""
+
+#: ../../Open-ILS/src/templates/acq/common/li_table.tt2:557
+msgid "This will update the fund for all copies attached to these lineitems."
+msgstr ""
+
+#: ../../Open-ILS/src/templates/acq/common/jubgrid.tt2:58
+msgid "Title"
+msgstr ""
+
+#: ../../Open-ILS/src/templates/acq/invoice/view.tt2:124
+msgid "Title / Description"
+msgstr ""
+
+#: ../../Open-ILS/src/templates/acq/invoice/view.tt2:89
+msgid "Title Details"
+msgstr ""
+
+#: ../../Open-ILS/src/templates/acq/po/item_table.tt2:8
+msgid "Title/Description"
+msgstr ""
+
+#: ../../Open-ILS/src/templates/acq/invoice/view.tt2:159 ../../Open-ILS/src/templates/acq/invoice/view.tt2:161
+msgid "Total"
+msgstr ""
+
+#: ../../Open-ILS/src/templates/acq/fund/view.tt2:166
+msgid "Total Allocated"
+msgstr ""
+
+#: ../../Open-ILS/src/templates/acq/po/search.tt2:125
+msgid "Total Copies:"
+msgstr ""
+
+#. ("<span attr=\"copies\"></span>")
+#: ../../Open-ILS/src/templates/acq/po/search.tt2:18
+msgid "Total Copies: %1"
+msgstr ""
+
+#: ../../Open-ILS/src/templates/acq/funding_source/view.tt2:95
+msgid "Total Credits"
+msgstr ""
+
+#: ../../Open-ILS/src/templates/acq/fund/view.tt2:168 ../../Open-ILS/src/templates/acq/funding_source/view.tt2:96
+msgid "Total Debits"
+msgstr ""
+
+#: ../../Open-ILS/src/templates/acq/fund/view.tt2:170 ../../Open-ILS/src/templates/acq/po/view.tt2:73
+msgid "Total Encumbered"
+msgstr ""
+
+#: ../../Open-ILS/src/templates/acq/po/search.tt2:129
+msgid "Total Encumbered:"
+msgstr ""
+
+#. ("<span attr=\"amount_encumbered\">")
+#: ../../Open-ILS/src/templates/acq/po/search.tt2:16
+msgid "Total Encumbered: $%1"
+msgstr ""
+
+#: ../../Open-ILS/src/templates/acq/po/view.tt2:64
+msgid "Total Estimated"
+msgstr ""
+
+#: ../../Open-ILS/src/templates/acq/po/view.tt2:55
+msgid "Total Lineitems"
+msgstr ""
+
+#: ../../Open-ILS/src/templates/acq/po/search.tt2:121
+msgid "Total Lineitems:"
+msgstr ""
+
+#. ("<span attr=\"lineitem_count\"></span>")
+#: ../../Open-ILS/src/templates/acq/po/search.tt2:15
+msgid "Total Lineitems: %1"
+msgstr ""
+
+#: ../../Open-ILS/src/templates/acq/po/search.tt2:117
+msgid "Total Purchase Orders:"
+msgstr ""
+
+#: ../../Open-ILS/src/templates/acq/fund/view.tt2:169 ../../Open-ILS/src/templates/acq/po/view.tt2:105
+msgid "Total Spent"
+msgstr ""
+
+#: ../../Open-ILS/src/templates/acq/po/search.tt2:133
+msgid "Total Spent:"
+msgstr ""
+
+#. ("<span attr=\"amount_spent\"></span>")
+#: ../../Open-ILS/src/templates/acq/po/search.tt2:17
+msgid "Total Spent: $%1"
+msgstr ""
+
+#: ../../Open-ILS/src/templates/acq/fund/view.tt2:138
+msgid "Transfer"
+msgstr ""
+
+#: ../../Open-ILS/src/templates/acq/fund/view.tt2:68
+msgid "Transfer Money"
+msgstr ""
+
+#: ../../Open-ILS/src/templates/acq/settings/li_attr.tt2:30
+msgid "True"
+msgstr ""
+
+#: ../../Open-ILS/src/templates/acq/common/li_table.tt2:169
+msgid "UPC"
+msgstr ""
+
+#: ../../Open-ILS/src/templates/acq/common/li_table.tt2:382
+msgid "Un-Receive"
+msgstr ""
+
+#: ../../Open-ILS/src/templates/acq/common/li_table.tt2:39
+msgid "Un-Receive Selected Line Items"
+msgstr ""
+
+#: ../../Open-ILS/src/templates/acq/common/li_table.tt2:208
+msgid "Update Barcodes"
+msgstr ""
+
+#: ../../Open-ILS/src/templates/acq/picklist/upload.tt2:4 ../../Open-ILS/src/templates/acq/picklist/upload.tt2:54
+msgid "Upload"
+msgstr ""
+
+#: ../../Open-ILS/src/templates/acq/picklist/upload.tt2:69
+msgid "Upload Complete!"
+msgstr ""
+
+#: ../../Open-ILS/src/templates/acq/common/vlagent.tt2:6
+msgid "Upload to Queue"
+msgstr ""
+
+#: ../../Open-ILS/src/templates/acq/invoice/receive.tt2:28
+msgid "Use List Mode"
+msgstr ""
+
+#: ../../Open-ILS/src/templates/acq/invoice/receive.tt2:29
+msgid "Use Numeric Mode"
+msgstr ""
+
+#: ../../Open-ILS/src/templates/acq/picklist/user_request.tt2:22
+msgid "User"
+msgstr ""
+
+#: ../../Open-ILS/src/templates/acq/common/vlagent.tt2:74
+msgid "Vandelay Records Processed"
+msgstr ""
+
+#: ../../Open-ILS/src/templates/acq/common/jubgrid.tt2:74
+msgid "Vendor"
+msgstr ""
+
+#: ../../Open-ILS/src/templates/acq/po/view.tt2:69
+msgid "View"
+msgstr ""
+
+#: ../../Open-ILS/src/templates/acq/common/li_table.tt2:211
+msgid "View History"
+msgstr ""
+
+#: ../../Open-ILS/src/templates/acq/picklist/upload.tt2:72
+msgid "View Import Queue"
+msgstr ""
+
+#. ("<span id=\"acq-po-view-invoice-count\"></span>")
+#: ../../Open-ILS/src/templates/acq/po/view.tt2:79
+msgid "View Invoices (%1)"
+msgstr ""
+
+#: ../../Open-ILS/src/templates/acq/lineitem/findbib.tt2:31
+msgid "View MARC"
+msgstr ""
+
+#: ../../Open-ILS/src/templates/acq/common/li_table.tt2:473 ../../Open-ILS/src/templates/acq/po/view.tt2:23
+msgid "View PO"
+msgstr ""
+
+#: ../../Open-ILS/src/templates/acq/common/li_table.tt2:34
+msgid "View PO History"
+msgstr ""
+
+#: ../../Open-ILS/src/templates/acq/picklist/upload.tt2:70
+msgid "View Purchase Order"
+msgstr ""
+
+#: ../../Open-ILS/src/templates/acq/picklist/upload.tt2:71 ../../Open-ILS/src/templates/acq/picklist/user_request.tt2:68
+msgid "View Selection List"
+msgstr ""
+
+#: ../../Open-ILS/src/templates/acq/common/li_table.tt2:201
+msgid "View copy information"
+msgstr ""
+
+#: ../../Open-ILS/src/templates/acq/fund/list.tt2:107
+msgid ""
+"When Dry Run is selected, the system will generate a summary of the changes "
+"that would occur during the selected operation(s). No data will be changed."
+msgstr ""
+
+#: ../../Open-ILS/src/templates/acq/settings/li_attr.tt2:55
+msgid "XPath"
+msgstr ""
+
+#: ../../Open-ILS/src/templates/acq/settings/li_attr.tt2:35
+msgid "XPath (advanced): "
+msgstr ""
+
+#: ../../Open-ILS/src/templates/acq/fund/list.tt2:134
+msgid "Year"
+msgstr ""
+
+#: ../../Open-ILS/src/templates/acq/invoice/view.tt2:212 ../../Open-ILS/src/templates/acq/search/unified.tt2:37
+msgid "all"
+msgstr ""
+
+#: ../../Open-ILS/src/templates/acq/invoice/view.tt2:213 ../../Open-ILS/src/templates/acq/search/unified.tt2:38
+msgid "any"
+msgstr ""
+
+#: ../../Open-ILS/src/templates/acq/common/li_table.tt2:188
+msgid "claim policy:"
+msgstr ""
+
+#: ../../Open-ILS/src/templates/acq/invoice/view.tt2:236 ../../Open-ILS/src/templates/acq/search/unified.tt2:57
+msgid "contains"
+msgstr ""
+
+#: ../../Open-ILS/src/templates/acq/invoice/view.tt2:240 ../../Open-ILS/src/templates/acq/search/unified.tt2:61
+msgid "does NOT contain"
+msgstr ""
+
+#: ../../Open-ILS/src/templates/acq/search/unified.tt2:33
+msgid "invoices"
+msgstr ""
+
+#: ../../Open-ILS/src/templates/acq/invoice/view.tt2:233 ../../Open-ILS/src/templates/acq/search/unified.tt2:54
+msgid "is"
+msgstr ""
+
+#: ../../Open-ILS/src/templates/acq/invoice/view.tt2:234 ../../Open-ILS/src/templates/acq/search/unified.tt2:55
+msgid "is NOT"
+msgstr ""
+
+#: ../../Open-ILS/src/templates/acq/invoice/view.tt2:246 ../../Open-ILS/src/templates/acq/search/unified.tt2:67
+msgid "is on or AFTER"
+msgstr ""
+
+#: ../../Open-ILS/src/templates/acq/invoice/view.tt2:243 ../../Open-ILS/src/templates/acq/search/unified.tt2:64
+msgid "is on or BEFORE"
+msgstr ""
+
+#: ../../Open-ILS/src/templates/acq/invoice/view.tt2:208 ../../Open-ILS/src/templates/acq/search/unified.tt2:27
+msgid "line items"
+msgstr ""
+
+#: ../../Open-ILS/src/templates/acq/search/unified.tt2:29
+msgid "line items &amp; catalog records"
+msgstr ""
+
+#: ../../Open-ILS/src/templates/acq/invoice/view.tt2:249 ../../Open-ILS/src/templates/acq/search/unified.tt2:70
+msgid "matches a term from a file"
+msgstr ""
+
+#: ../../Open-ILS/src/templates/acq/invoice/view.tt2:210 ../../Open-ILS/src/templates/acq/search/unified.tt2:35
+msgid "matching"
+msgstr ""
+
+#: ../../Open-ILS/src/templates/acq/invoice/view.tt2:216
+msgid "of the following terms"
+msgstr ""
+
+#: ../../Open-ILS/src/templates/acq/search/unified.tt2:41
+msgid "of the following terms:"
+msgstr ""
+
+#: ../../Open-ILS/src/templates/acq/search/unified.tt2:32
+msgid "purchase orders"
+msgstr ""
+
+#: ../../Open-ILS/src/templates/acq/common/li_table.tt2:186
+msgid "requests"
+msgstr ""
+
+#: ../../Open-ILS/src/templates/acq/search/unified.tt2:31
+msgid "selection lists"
+msgstr ""
+
+#: ../../Open-ILS/src/templates/acq/common/li_table.tt2:187
+msgid "view invoice(s)"
+msgstr ""
