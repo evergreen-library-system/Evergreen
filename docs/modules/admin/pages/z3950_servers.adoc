@@ -16,9 +16,8 @@ Permissions required:
 * Other known attributes are not included in Z39.50 Attributes creator, such as _Relation Attributes_, _Position Attributes_ and _Completeness Attributes_ - see https://www.loc.gov/z3950/agency/bib1.html
 * Some sources/servers do not work as expected - see https://bugs.launchpad.net/evergreen/+bug/1745249[Bug 1745249]
 
-=== Reload service after making any changes ===
-
-Reload the *open-ils.search* opensrf service after changes. Z39.50 Sources settings can be cached by the *open-ils.search* drone processes.  Reloading them after changes are made will ensure that your changes are used immediately.  Consult with your Evergreen System Administrator before making changes. Execute the command `osrf_control --reload --service open-ils.search` on each server that serves staff requests.
+=== Service reload no longer needed after making any changes ===
+As of release 3.14 the open-ils.search drone no longer caches z39.50 server config information.  So config changes will now happen immediately.
 
 === Add New Z39.50 Servers and Source Configuration ===
 

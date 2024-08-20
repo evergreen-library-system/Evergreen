@@ -1,0 +1,16 @@
+== Remove Z39.50 target definition caching ==
+
+The open-ils.search drone had the ability to cache the Z39.50 target definition data
+per process.
+
+This fix removes per-child-process caching of Z39.50 target definitions
+to address several issues caused by the caching:
+
+* If any targets have a use permission attached, whether
+  such a target is available to a user can be inconsistent
+  based on who last fetched (and cached) service definitions
+  from a particular open-ils.search backend.
+* Z39.50 searches may sporadically fail to use
+  targets that were recently added.
+
+https://bugs.launchpad.net/evergreen/+bug/2044854[LP#2044854]
