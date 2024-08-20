@@ -15743,7 +15743,7 @@ SELECT  usr,
 		</permacrud>
 	</class>
 
-	<class id="acqr_inv_totals" controller="open-ils.reporter" oils_persist:virtual="true" reporter:label="Invoice Totals">
+	<class id="acqr_inv_totals" controller="open-ils.reporter" oils_persist:readonly="true" reporter:label="Invoice Totals">
 		<oils_persist:source_definition><![CDATA[
 			WITH invoice_entry_totals AS (
 				SELECT acqinv.id,
@@ -15782,7 +15782,7 @@ SELECT  usr,
 		</links>
 	</class>
 
-	<class id="acqr_debit_by_fund" controller="open-ils.reporter" oils_persist:virtual="true" reporter:label="Invoice Debits by Fund">
+	<class id="acqr_debit_by_fund" controller="open-ils.reporter" oils_persist:readonly="true" reporter:label="Invoice Debits by Fund">
 		<oils_persist:source_definition><![CDATA[
 			WITH invoice_funds AS (
 				SELECT invoice, fund, COALESCE(amount, 0.00)::NUMERIC(8,2) AS amount, encumbrance
@@ -15809,7 +15809,7 @@ SELECT  usr,
 		</links>
 	</class>
 
-	<class id="acqr_debit_by_fund_tag" controller="open-ils.reporter" oils_persist:virtual="true" reporter:label="Invoice Debits by Fund Tag">
+	<class id="acqr_debit_by_fund_tag" controller="open-ils.reporter" oils_persist:readonly="true" reporter:label="Invoice Debits by Fund Tag">
 		<oils_persist:source_definition><![CDATA[
 			WITH invoice_funds AS (
 				SELECT invoice, fund, COALESCE(amount, 0.00)::NUMERIC(8,2) AS amount, encumbrance
