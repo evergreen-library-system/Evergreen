@@ -1,3 +1,1315 @@
-Evergreen doesn't keep a GNU-style ChangeLog except in release tarballs.
-Those seeking a change log are encouraged to run 'git log -v', or read
-it online at: http://git.evergreen-ils.org/?p=Evergreen.git;a=log
+commit 814f642fcc7d65f79f464492f8ab0cb6b11cfc19
+Author: Michele Morgan <mmorgan@noblenet.org>
+Date:   Tue Aug 20 14:30:45 2024 +0000
+
+    bumping Perl version string for 3.13.3
+    
+    Signed-off-by: Michele Morgan <mmorgan@noblenet.org>
+
+1	1	Open-ILS/src/perlmods/lib/OpenILS.pm
+
+commit 7dc7c56a8e22874a488cf0d71847b69999d734f7
+Author: Michele Morgan <mmorgan@noblenet.org>
+Date:   Tue Aug 20 13:17:27 2024 +0000
+
+    Translation updates - po files
+    
+    Signed-off-by: Michele Morgan <mmorgan@noblenet.org>
+
+3	3	build/i18n/po/AutoFieldWidget.js/ar-JO.po
+3	3	build/i18n/po/AutoFieldWidget.js/cs-CZ.po
+3	3	build/i18n/po/AutoFieldWidget.js/de-DE.po
+3	3	build/i18n/po/AutoFieldWidget.js/en-CA.po
+3	3	build/i18n/po/AutoFieldWidget.js/en-GB.po
+3	3	build/i18n/po/AutoFieldWidget.js/es-ES.po
+3	3	build/i18n/po/AutoFieldWidget.js/fi-FI.po
+3	3	build/i18n/po/AutoFieldWidget.js/fr-CA.po
+3	3	build/i18n/po/AutoFieldWidget.js/he-IL.po
+3	3	build/i18n/po/AutoFieldWidget.js/hu-HU.po
+3	3	build/i18n/po/AutoFieldWidget.js/hy-AM.po
+3	3	build/i18n/po/AutoFieldWidget.js/oc-FR.po
+3	3	build/i18n/po/AutoFieldWidget.js/pt-BR.po
+3	3	build/i18n/po/AutoFieldWidget.js/ru-RU.po
+3	3	build/i18n/po/AutoFieldWidget.js/sv-SE.po
+3	3	build/i18n/po/AutoFieldWidget.js/tr-TR.po
+3	3	build/i18n/po/FlattenerGrid.js/ar-JO.po
+3	3	build/i18n/po/FlattenerGrid.js/cs-CZ.po
+3	3	build/i18n/po/FlattenerGrid.js/de-DE.po
+3	3	build/i18n/po/FlattenerGrid.js/en-CA.po
+3	3	build/i18n/po/FlattenerGrid.js/en-GB.po
+3	3	build/i18n/po/FlattenerGrid.js/es-ES.po
+3	3	build/i18n/po/FlattenerGrid.js/fi-FI.po
+3	3	build/i18n/po/FlattenerGrid.js/fr-CA.po
+3	3	build/i18n/po/FlattenerGrid.js/hy-AM.po
+3	3	build/i18n/po/PCrudFilterPane.js/ar-JO.po
+3	3	build/i18n/po/PCrudFilterPane.js/cs-CZ.po
+3	3	build/i18n/po/PCrudFilterPane.js/de-DE.po
+3	3	build/i18n/po/PCrudFilterPane.js/en-GB.po
+3	3	build/i18n/po/PCrudFilterPane.js/es-ES.po
+3	3	build/i18n/po/PCrudFilterPane.js/fi-FI.po
+3	3	build/i18n/po/PCrudFilterPane.js/hy-AM.po
+3	3	build/i18n/po/Searcher.js/ar-JO.po
+3	3	build/i18n/po/Searcher.js/cs-CZ.po
+3	3	build/i18n/po/Searcher.js/de-DE.po
+3	3	build/i18n/po/Searcher.js/en-CA.po
+3	3	build/i18n/po/Searcher.js/en-GB.po
+3	3	build/i18n/po/Searcher.js/es-ES.po
+3	3	build/i18n/po/Searcher.js/fi-FI.po
+3	3	build/i18n/po/Searcher.js/fr-CA.po
+7	7	build/i18n/po/Searcher.js/hy-AM.po
+3	3	build/i18n/po/Searcher.js/oc-FR.po
+3	3	build/i18n/po/Searcher.js/pt-BR.po
+3	3	build/i18n/po/Searcher.js/ru-RU.po
+3	3	build/i18n/po/TranslatorPopup.js/ar-JO.po
+3	3	build/i18n/po/TranslatorPopup.js/cs-CZ.po
+3	3	build/i18n/po/TranslatorPopup.js/de-DE.po
+3	3	build/i18n/po/TranslatorPopup.js/en-CA.po
+3	3	build/i18n/po/TranslatorPopup.js/en-GB.po
+3	3	build/i18n/po/TranslatorPopup.js/es-ES.po
+3	3	build/i18n/po/TranslatorPopup.js/fi-FI.po
+3	3	build/i18n/po/TranslatorPopup.js/fr-CA.po
+3	3	build/i18n/po/TranslatorPopup.js/he-IL.po
+3	3	build/i18n/po/TranslatorPopup.js/hu-HU.po
+3	3	build/i18n/po/TranslatorPopup.js/hy-AM.po
+3	3	build/i18n/po/TranslatorPopup.js/oc-FR.po
+3	3	build/i18n/po/TranslatorPopup.js/pt-BR.po
+3	3	build/i18n/po/TranslatorPopup.js/ru-RU.po
+3	3	build/i18n/po/TranslatorPopup.js/sv-SE.po
+3	3	build/i18n/po/TranslatorPopup.js/tr-TR.po
+3	3	build/i18n/po/URLVerify.js/ar-JO.po
+3	3	build/i18n/po/URLVerify.js/cs-CZ.po
+3	3	build/i18n/po/URLVerify.js/de-DE.po
+3	3	build/i18n/po/URLVerify.js/en-GB.po
+3	3	build/i18n/po/URLVerify.js/es-ES.po
+3	3	build/i18n/po/URLVerify.js/hy-AM.po
+3	3	build/i18n/po/URLVerify.js/pt-BR.po
+3	3	build/i18n/po/URLVerify.js/tr-TR.po
+3	3	build/i18n/po/User.js/ar-JO.po
+3	3	build/i18n/po/User.js/cs-CZ.po
+3	3	build/i18n/po/User.js/de-DE.po
+3	3	build/i18n/po/User.js/en-CA.po
+3	3	build/i18n/po/User.js/en-GB.po
+3	3	build/i18n/po/User.js/es-ES.po
+3	3	build/i18n/po/User.js/fi-FI.po
+3	3	build/i18n/po/User.js/fr-CA.po
+3	3	build/i18n/po/User.js/he-IL.po
+3	3	build/i18n/po/User.js/hu-HU.po
+3	3	build/i18n/po/User.js/hy-AM.po
+3	3	build/i18n/po/User.js/oc-FR.po
+3	3	build/i18n/po/User.js/pt-BR.po
+3	3	build/i18n/po/User.js/ru-RU.po
+3	3	build/i18n/po/User.js/sv-SE.po
+3	3	build/i18n/po/User.js/tr-TR.po
+3	3	build/i18n/po/XULTermLoader.js/ar-JO.po
+3	3	build/i18n/po/XULTermLoader.js/cs-CZ.po
+3	3	build/i18n/po/XULTermLoader.js/de-DE.po
+3	3	build/i18n/po/XULTermLoader.js/en-CA.po
+3	3	build/i18n/po/XULTermLoader.js/en-GB.po
+3	3	build/i18n/po/XULTermLoader.js/es-ES.po
+3	3	build/i18n/po/XULTermLoader.js/fi-FI.po
+3	3	build/i18n/po/XULTermLoader.js/fr-CA.po
+3	3	build/i18n/po/XULTermLoader.js/he-IL.po
+3	3	build/i18n/po/XULTermLoader.js/hu-HU.po
+3	3	build/i18n/po/XULTermLoader.js/hy-AM.po
+3	3	build/i18n/po/XULTermLoader.js/oc-FR.po
+3	3	build/i18n/po/XULTermLoader.js/pt-BR.po
+3	3	build/i18n/po/XULTermLoader.js/ru-RU.po
+3	3	build/i18n/po/XULTermLoader.js/sv-SE.po
+3	3	build/i18n/po/XULTermLoader.js/tr-TR.po
+3	48	build/i18n/po/acq.js/ar-JO.po
+19	88	build/i18n/po/acq.js/cs-CZ.po
+3	3	build/i18n/po/acq.js/de-DE.po
+3	51	build/i18n/po/acq.js/en-CA.po
+19	89	build/i18n/po/acq.js/en-GB.po
+3	91	build/i18n/po/acq.js/es-ES.po
+3	24	build/i18n/po/acq.js/fi-FI.po
+3	57	build/i18n/po/acq.js/fr-CA.po
+3	3	build/i18n/po/acq.js/he-IL.po
+3	3	build/i18n/po/acq.js/hu-HU.po
+11	95	build/i18n/po/acq.js/hy-AM.po
+3	3	build/i18n/po/acq.js/oc-FR.po
+3	53	build/i18n/po/acq.js/pt-BR.po
+3	3	build/i18n/po/acq.js/ru-RU.po
+3	3	build/i18n/po/acq.js/sv-SE.po
+3	3	build/i18n/po/acq.js/tr-TR.po
+4	7	build/i18n/po/acq/ar-JO.po
+6	9	build/i18n/po/acq/cs-CZ.po
+4	4	build/i18n/po/acq/de-DE.po
+4	4	build/i18n/po/acq/en-CA.po
+1857	0	build/i18n/po/acq/en-GB.po
+4	7	build/i18n/po/acq/es-ES.po
+4	7	build/i18n/po/acq/hy-AM.po
+1857	0	build/i18n/po/acq/pt-BR.po
+4	4	build/i18n/po/acq/ru-RU.po
+4	4	build/i18n/po/actor/ar-JO.po
+4	4	build/i18n/po/actor/cs-CZ.po
+4	4	build/i18n/po/actor/de-DE.po
+4	4	build/i18n/po/actor/en-GB.po
+4	4	build/i18n/po/actor/es-ES.po
+4	4	build/i18n/po/actor/hy-AM.po
+3	3	build/i18n/po/admin.properties/ar-JO.po
+3	3	build/i18n/po/admin.properties/cs-CZ.po
+3	3	build/i18n/po/admin.properties/de-DE.po
+3	3	build/i18n/po/admin.properties/en-CA.po
+3	3	build/i18n/po/admin.properties/en-GB.po
+3	3	build/i18n/po/admin.properties/es-ES.po
+3	3	build/i18n/po/admin.properties/fi-FI.po
+3	3	build/i18n/po/admin.properties/fr-CA.po
+3	3	build/i18n/po/admin.properties/he-IL.po
+3	3	build/i18n/po/admin.properties/hu-HU.po
+3	3	build/i18n/po/admin.properties/hy-AM.po
+3	3	build/i18n/po/admin.properties/oc-FR.po
+3	3	build/i18n/po/admin.properties/pt-BR.po
+3	3	build/i18n/po/admin.properties/ru-RU.po
+3	3	build/i18n/po/admin.properties/sv-SE.po
+3	3	build/i18n/po/admin.properties/tr-TR.po
+3	3	build/i18n/po/auth.properties/ar-JO.po
+3	3	build/i18n/po/auth.properties/cs-CZ.po
+3	3	build/i18n/po/auth.properties/de-DE.po
+3	3	build/i18n/po/auth.properties/en-CA.po
+3	3	build/i18n/po/auth.properties/en-GB.po
+3	3	build/i18n/po/auth.properties/es-ES.po
+3	3	build/i18n/po/auth.properties/fi-FI.po
+3	3	build/i18n/po/auth.properties/fr-CA.po
+3	3	build/i18n/po/auth.properties/he-IL.po
+3	3	build/i18n/po/auth.properties/hu-HU.po
+3	3	build/i18n/po/auth.properties/hy-AM.po
+3	3	build/i18n/po/auth.properties/oc-FR.po
+3	3	build/i18n/po/auth.properties/pt-BR.po
+3	3	build/i18n/po/auth.properties/ru-RU.po
+3	3	build/i18n/po/auth.properties/sv-SE.po
+3	3	build/i18n/po/auth.properties/tr-TR.po
+3	3	build/i18n/po/authority.js/ar-JO.po
+3	3	build/i18n/po/authority.js/cs-CZ.po
+15	15	build/i18n/po/authority.js/de-DE.po
+3	3	build/i18n/po/authority.js/en-CA.po
+3	3	build/i18n/po/authority.js/en-GB.po
+3	3	build/i18n/po/authority.js/es-ES.po
+3	3	build/i18n/po/authority.js/fi-FI.po
+3	3	build/i18n/po/authority.js/fr-CA.po
+3	3	build/i18n/po/authority.js/hy-AM.po
+3	3	build/i18n/po/authority.js/oc-FR.po
+3	3	build/i18n/po/authority.js/pt-BR.po
+3	3	build/i18n/po/authority.js/ru-RU.po
+3	3	build/i18n/po/authority.js/tr-TR.po
+4	4	build/i18n/po/booking/ar-JO.po
+4	4	build/i18n/po/booking/cs-CZ.po
+4	4	build/i18n/po/booking/de-DE.po
+4	4	build/i18n/po/booking/en-CA.po
+4	4	build/i18n/po/booking/en-GB.po
+4	4	build/i18n/po/booking/es-ES.po
+4	4	build/i18n/po/booking/hy-AM.po
+543	411	build/i18n/po/bootstrap-opac/cs-CZ.po
+515	308	build/i18n/po/bootstrap-opac/en-CA.po
+5998	0	build/i18n/po/bootstrap-opac/en-GB.po
+525	398	build/i18n/po/bootstrap-opac/es-ES.po
+622	475	build/i18n/po/bootstrap-opac/fr-CA.po
+3	3	build/i18n/po/capture.js/ar-JO.po
+3	3	build/i18n/po/capture.js/cs-CZ.po
+3	3	build/i18n/po/capture.js/de-DE.po
+3	3	build/i18n/po/capture.js/en-CA.po
+3	3	build/i18n/po/capture.js/en-GB.po
+3	3	build/i18n/po/capture.js/es-ES.po
+3	3	build/i18n/po/capture.js/fi-FI.po
+3	3	build/i18n/po/capture.js/fr-CA.po
+3	3	build/i18n/po/capture.js/he-IL.po
+3	3	build/i18n/po/capture.js/hu-HU.po
+11	11	build/i18n/po/capture.js/hy-AM.po
+3	3	build/i18n/po/capture.js/oc-FR.po
+3	3	build/i18n/po/capture.js/pt-BR.po
+3	3	build/i18n/po/capture.js/ru-RU.po
+3	3	build/i18n/po/capture.js/sv-SE.po
+3	3	build/i18n/po/capture.js/tr-TR.po
+3	6	build/i18n/po/cat.properties/ar-JO.po
+3	62	build/i18n/po/cat.properties/cs-CZ.po
+3	34	build/i18n/po/cat.properties/de-DE.po
+3	33	build/i18n/po/cat.properties/en-CA.po
+3	62	build/i18n/po/cat.properties/en-GB.po
+3	60	build/i18n/po/cat.properties/es-ES.po
+3	14	build/i18n/po/cat.properties/fi-FI.po
+3	63	build/i18n/po/cat.properties/fr-CA.po
+3	3	build/i18n/po/cat.properties/he-IL.po
+3	3	build/i18n/po/cat.properties/hu-HU.po
+3	60	build/i18n/po/cat.properties/hy-AM.po
+3	11	build/i18n/po/cat.properties/oc-FR.po
+3	63	build/i18n/po/cat.properties/pt-BR.po
+3	55	build/i18n/po/cat.properties/ru-RU.po
+3	3	build/i18n/po/cat.properties/sv-SE.po
+3	3	build/i18n/po/cat.properties/tr-TR.po
+4	4	build/i18n/po/cat/ar-JO.po
+4	4	build/i18n/po/cat/cs-CZ.po
+4	4	build/i18n/po/cat/de-DE.po
+4	4	build/i18n/po/cat/en-CA.po
+4	4	build/i18n/po/cat/en-GB.po
+4	4	build/i18n/po/cat/es-ES.po
+4	4	build/i18n/po/cat/fr-CA.po
+4	4	build/i18n/po/cat/hy-AM.po
+4	4	build/i18n/po/cat/pt-BR.po
+4	4	build/i18n/po/cat/ru-RU.po
+3	21	build/i18n/po/circ.properties/ar-JO.po
+3	42	build/i18n/po/circ.properties/cs-CZ.po
+3	3	build/i18n/po/circ.properties/de-DE.po
+3	41	build/i18n/po/circ.properties/en-CA.po
+3	41	build/i18n/po/circ.properties/en-GB.po
+3	43	build/i18n/po/circ.properties/es-ES.po
+3	30	build/i18n/po/circ.properties/fi-FI.po
+3	44	build/i18n/po/circ.properties/fr-CA.po
+3	3	build/i18n/po/circ.properties/he-IL.po
+3	3	build/i18n/po/circ.properties/hu-HU.po
+3	39	build/i18n/po/circ.properties/hy-AM.po
+3	3	build/i18n/po/circ.properties/oc-FR.po
+3	41	build/i18n/po/circ.properties/pt-BR.po
+3	42	build/i18n/po/circ.properties/ru-RU.po
+3	3	build/i18n/po/circ.properties/sv-SE.po
+3	3	build/i18n/po/circ.properties/tr-TR.po
+4	4	build/i18n/po/circ/ar-JO.po
+4	4	build/i18n/po/circ/cs-CZ.po
+4	4	build/i18n/po/circ/de-DE.po
+4	4	build/i18n/po/circ/en-CA.po
+4	4	build/i18n/po/circ/en-GB.po
+4	4	build/i18n/po/circ/es-ES.po
+4	4	build/i18n/po/circ/hy-AM.po
+4	4	build/i18n/po/circ/ru-RU.po
+3	3	build/i18n/po/common.properties/ar-JO.po
+3	10	build/i18n/po/common.properties/cs-CZ.po
+3	3	build/i18n/po/common.properties/de-DE.po
+3	9	build/i18n/po/common.properties/en-CA.po
+3	9	build/i18n/po/common.properties/en-GB.po
+3	9	build/i18n/po/common.properties/es-ES.po
+3	3	build/i18n/po/common.properties/fi-FI.po
+3	9	build/i18n/po/common.properties/fr-CA.po
+3	3	build/i18n/po/common.properties/he-IL.po
+3	3	build/i18n/po/common.properties/hu-HU.po
+19	25	build/i18n/po/common.properties/hy-AM.po
+3	3	build/i18n/po/common.properties/oc-FR.po
+3	9	build/i18n/po/common.properties/pt-BR.po
+3	9	build/i18n/po/common.properties/ru-RU.po
+3	3	build/i18n/po/common.properties/sv-SE.po
+3	3	build/i18n/po/common.properties/tr-TR.po
+3	3	build/i18n/po/conify.dtd/ar-JO.po
+3	6	build/i18n/po/conify.dtd/cs-CZ.po
+3	3	build/i18n/po/conify.dtd/de-DE.po
+3	3	build/i18n/po/conify.dtd/en-CA.po
+3	6	build/i18n/po/conify.dtd/en-GB.po
+3	6	build/i18n/po/conify.dtd/es-ES.po
+3	3	build/i18n/po/conify.dtd/fi-FI.po
+3	6	build/i18n/po/conify.dtd/fr-CA.po
+3	3	build/i18n/po/conify.dtd/he-IL.po
+3	3	build/i18n/po/conify.dtd/hu-HU.po
+3	6	build/i18n/po/conify.dtd/hy-AM.po
+3	3	build/i18n/po/conify.dtd/oc-FR.po
+3	6	build/i18n/po/conify.dtd/pt-BR.po
+3	6	build/i18n/po/conify.dtd/ru-RU.po
+3	3	build/i18n/po/conify.dtd/sv-SE.po
+3	3	build/i18n/po/conify.dtd/tr-TR.po
+3	3	build/i18n/po/conify.js/ar-JO.po
+3	3	build/i18n/po/conify.js/cs-CZ.po
+3	3	build/i18n/po/conify.js/de-DE.po
+3	3	build/i18n/po/conify.js/en-CA.po
+3	3	build/i18n/po/conify.js/en-GB.po
+3	3	build/i18n/po/conify.js/es-ES.po
+3	3	build/i18n/po/conify.js/fi-FI.po
+3	3	build/i18n/po/conify.js/fr-CA.po
+3	3	build/i18n/po/conify.js/he-IL.po
+3	3	build/i18n/po/conify.js/hu-HU.po
+3	3	build/i18n/po/conify.js/hy-AM.po
+3	3	build/i18n/po/conify.js/oc-FR.po
+3	3	build/i18n/po/conify.js/pt-BR.po
+3	3	build/i18n/po/conify.js/ru-RU.po
+3	3	build/i18n/po/conify.js/sv-SE.po
+3	3	build/i18n/po/conify.js/tr-TR.po
+4	16	build/i18n/po/conify/ar-JO.po
+5	17	build/i18n/po/conify/cs-CZ.po
+1633	0	build/i18n/po/conify/en-GB.po
+4	16	build/i18n/po/conify/es-ES.po
+4	16	build/i18n/po/conify/hy-AM.po
+3550	3395	build/i18n/po/db.seed/ar-JO.po
+3774	3706	build/i18n/po/db.seed/cs-CZ.po
+3548	3173	build/i18n/po/db.seed/de-DE.po
+3512	3253	build/i18n/po/db.seed/en-CA.po
+3512	3253	build/i18n/po/db.seed/en-GB.po
+3550	3454	build/i18n/po/db.seed/es-ES.po
+3527	3238	build/i18n/po/db.seed/fi-FI.po
+3520	3264	build/i18n/po/db.seed/fr-CA.po
+3551	3165	build/i18n/po/db.seed/he-IL.po
+3551	3165	build/i18n/po/db.seed/hu-HU.po
+3531	3537	build/i18n/po/db.seed/hy-AM.po
+3546	3175	build/i18n/po/db.seed/oc-FR.po
+3524	3227	build/i18n/po/db.seed/pt-BR.po
+3529	3221	build/i18n/po/db.seed/ru-RU.po
+3551	3165	build/i18n/po/db.seed/sv-SE.po
+3550	3167	build/i18n/po/db.seed/tr-TR.po
+4106	4019	build/i18n/po/fm_IDL.dtd/ar-JO.po
+4543	4499	build/i18n/po/fm_IDL.dtd/cs-CZ.po
+4041	3923	build/i18n/po/fm_IDL.dtd/de-DE.po
+4091	4038	build/i18n/po/fm_IDL.dtd/en-CA.po
+4076	4026	build/i18n/po/fm_IDL.dtd/en-GB.po
+4100	4018	build/i18n/po/fm_IDL.dtd/es-ES.po
+4097	4021	build/i18n/po/fm_IDL.dtd/fi-FI.po
+4044	3920	build/i18n/po/fm_IDL.dtd/fr-CA.po
+4042	3918	build/i18n/po/fm_IDL.dtd/he-IL.po
+4042	3918	build/i18n/po/fm_IDL.dtd/hu-HU.po
+4133	4089	build/i18n/po/fm_IDL.dtd/hy-AM.po
+4043	3919	build/i18n/po/fm_IDL.dtd/oc-FR.po
+4065	3998	build/i18n/po/fm_IDL.dtd/pt-BR.po
+4065	4004	build/i18n/po/fm_IDL.dtd/ru-RU.po
+4042	3918	build/i18n/po/fm_IDL.dtd/sv-SE.po
+4042	3918	build/i18n/po/fm_IDL.dtd/tr-TR.po
+3	17	build/i18n/po/ils_events.xml/ar-JO.po
+3	37	build/i18n/po/ils_events.xml/cs-CZ.po
+3	3	build/i18n/po/ils_events.xml/de-DE.po
+3	35	build/i18n/po/ils_events.xml/en-CA.po
+3	38	build/i18n/po/ils_events.xml/en-GB.po
+7	19	build/i18n/po/ils_events.xml/es-ES.po
+3	27	build/i18n/po/ils_events.xml/fi-FI.po
+3	36	build/i18n/po/ils_events.xml/fr-CA.po
+3	3	build/i18n/po/ils_events.xml/he-IL.po
+3	3	build/i18n/po/ils_events.xml/hu-HU.po
+3	37	build/i18n/po/ils_events.xml/hy-AM.po
+3	3	build/i18n/po/ils_events.xml/oc-FR.po
+3	26	build/i18n/po/ils_events.xml/pt-BR.po
+3	26	build/i18n/po/ils_events.xml/ru-RU.po
+3	3	build/i18n/po/ils_events.xml/sv-SE.po
+3	3	build/i18n/po/ils_events.xml/tr-TR.po
+4	4	build/i18n/po/kpac/ar-JO.po
+4	7	build/i18n/po/kpac/cs-CZ.po
+4	4	build/i18n/po/kpac/de-DE.po
+4	7	build/i18n/po/kpac/en-GB.po
+4	4	build/i18n/po/kpac/es-ES.po
+4	4	build/i18n/po/kpac/hy-AM.po
+3	62	build/i18n/po/lang.dtd/ar-JO.po
+4	892	build/i18n/po/lang.dtd/cs-CZ.po
+3	309	build/i18n/po/lang.dtd/de-DE.po
+3	821	build/i18n/po/lang.dtd/en-CA.po
+3	869	build/i18n/po/lang.dtd/en-GB.po
+3	284	build/i18n/po/lang.dtd/es-ES.po
+3	519	build/i18n/po/lang.dtd/fi-FI.po
+3	781	build/i18n/po/lang.dtd/fr-CA.po
+3	3	build/i18n/po/lang.dtd/he-IL.po
+3	3	build/i18n/po/lang.dtd/hu-HU.po
+71	935	build/i18n/po/lang.dtd/hy-AM.po
+3	12	build/i18n/po/lang.dtd/oc-FR.po
+3	787	build/i18n/po/lang.dtd/pt-BR.po
+3	780	build/i18n/po/lang.dtd/ru-RU.po
+3	3	build/i18n/po/lang.dtd/sv-SE.po
+3	18	build/i18n/po/lang.dtd/tr-TR.po
+3	3	build/i18n/po/match_set.js/ar-JO.po
+3	3	build/i18n/po/match_set.js/cs-CZ.po
+3	3	build/i18n/po/match_set.js/en-GB.po
+3	3	build/i18n/po/match_set.js/es-ES.po
+3	3	build/i18n/po/match_set.js/fr-CA.po
+3	3	build/i18n/po/match_set.js/hy-AM.po
+3	31	build/i18n/po/multiclass_search_help.html/ar-JO.po
+3	31	build/i18n/po/multiclass_search_help.html/cs-CZ.po
+3	32	build/i18n/po/multiclass_search_help.html/de-DE.po
+3	30	build/i18n/po/multiclass_search_help.html/en-CA.po
+3	30	build/i18n/po/multiclass_search_help.html/en-GB.po
+3	33	build/i18n/po/multiclass_search_help.html/es-ES.po
+3	3	build/i18n/po/multiclass_search_help.html/fi-FI.po
+3	32	build/i18n/po/multiclass_search_help.html/fr-CA.po
+3	3	build/i18n/po/multiclass_search_help.html/he-IL.po
+3	3	build/i18n/po/multiclass_search_help.html/hu-HU.po
+3	31	build/i18n/po/multiclass_search_help.html/hy-AM.po
+3	20	build/i18n/po/multiclass_search_help.html/oc-FR.po
+3	31	build/i18n/po/multiclass_search_help.html/pt-BR.po
+3	31	build/i18n/po/multiclass_search_help.html/ru-RU.po
+3	3	build/i18n/po/multiclass_search_help.html/sv-SE.po
+3	3	build/i18n/po/multiclass_search_help.html/tr-TR.po
+3	3	build/i18n/po/offline.properties/ar-JO.po
+3	9	build/i18n/po/offline.properties/cs-CZ.po
+3	12	build/i18n/po/offline.properties/de-DE.po
+3	12	build/i18n/po/offline.properties/en-CA.po
+3	12	build/i18n/po/offline.properties/en-GB.po
+3	9	build/i18n/po/offline.properties/es-ES.po
+3	3	build/i18n/po/offline.properties/fi-FI.po
+3	9	build/i18n/po/offline.properties/fr-CA.po
+3	3	build/i18n/po/offline.properties/he-IL.po
+3	3	build/i18n/po/offline.properties/hu-HU.po
+13	22	build/i18n/po/offline.properties/hy-AM.po
+3	3	build/i18n/po/offline.properties/oc-FR.po
+3	12	build/i18n/po/offline.properties/pt-BR.po
+3	12	build/i18n/po/offline.properties/ru-RU.po
+3	3	build/i18n/po/offline.properties/sv-SE.po
+3	9	build/i18n/po/offline.properties/tr-TR.po
+3	3	build/i18n/po/opac.dtd/ar-JO.po
+3	43	build/i18n/po/opac.dtd/cs-CZ.po
+3	46	build/i18n/po/opac.dtd/de-DE.po
+3	42	build/i18n/po/opac.dtd/en-CA.po
+3	42	build/i18n/po/opac.dtd/en-GB.po
+3	48	build/i18n/po/opac.dtd/es-ES.po
+3	11	build/i18n/po/opac.dtd/fi-FI.po
+3	47	build/i18n/po/opac.dtd/fr-CA.po
+3	3	build/i18n/po/opac.dtd/he-IL.po
+3	3	build/i18n/po/opac.dtd/hu-HU.po
+34	74	build/i18n/po/opac.dtd/hy-AM.po
+3	3	build/i18n/po/opac.dtd/oc-FR.po
+3	43	build/i18n/po/opac.dtd/pt-BR.po
+3	40	build/i18n/po/opac.dtd/ru-RU.po
+3	3	build/i18n/po/opac.dtd/sv-SE.po
+3	3	build/i18n/po/opac.dtd/tr-TR.po
+3	13	build/i18n/po/opac.js/ar-JO.po
+6	17	build/i18n/po/opac.js/cs-CZ.po
+3	17	build/i18n/po/opac.js/de-DE.po
+3	16	build/i18n/po/opac.js/en-CA.po
+6	17	build/i18n/po/opac.js/en-GB.po
+3	17	build/i18n/po/opac.js/es-ES.po
+3	13	build/i18n/po/opac.js/fi-FI.po
+3	17	build/i18n/po/opac.js/fr-CA.po
+3	3	build/i18n/po/opac.js/he-IL.po
+3	3	build/i18n/po/opac.js/hu-HU.po
+3	16	build/i18n/po/opac.js/hy-AM.po
+3	3	build/i18n/po/opac.js/oc-FR.po
+3	16	build/i18n/po/opac.js/pt-BR.po
+3	16	build/i18n/po/opac.js/ru-RU.po
+3	3	build/i18n/po/opac.js/sv-SE.po
+3	6	build/i18n/po/opac.js/tr-TR.po
+3	3	build/i18n/po/patron.properties/ar-JO.po
+3	25	build/i18n/po/patron.properties/cs-CZ.po
+3	18	build/i18n/po/patron.properties/de-DE.po
+3	25	build/i18n/po/patron.properties/en-CA.po
+3	25	build/i18n/po/patron.properties/en-GB.po
+3	10	build/i18n/po/patron.properties/es-ES.po
+3	22	build/i18n/po/patron.properties/fi-FI.po
+3	26	build/i18n/po/patron.properties/fr-CA.po
+3	3	build/i18n/po/patron.properties/he-IL.po
+3	3	build/i18n/po/patron.properties/hu-HU.po
+7	29	build/i18n/po/patron.properties/hy-AM.po
+3	7	build/i18n/po/patron.properties/oc-FR.po
+3	22	build/i18n/po/patron.properties/pt-BR.po
+3	18	build/i18n/po/patron.properties/ru-RU.po
+3	3	build/i18n/po/patron.properties/sv-SE.po
+3	6	build/i18n/po/patron.properties/tr-TR.po
+3	3	build/i18n/po/pickup_and_return.js/ar-JO.po
+3	3	build/i18n/po/pickup_and_return.js/cs-CZ.po
+3	3	build/i18n/po/pickup_and_return.js/de-DE.po
+3	3	build/i18n/po/pickup_and_return.js/en-CA.po
+3	3	build/i18n/po/pickup_and_return.js/en-GB.po
+3	3	build/i18n/po/pickup_and_return.js/es-ES.po
+3	3	build/i18n/po/pickup_and_return.js/fi-FI.po
+3	3	build/i18n/po/pickup_and_return.js/fr-CA.po
+3	3	build/i18n/po/pickup_and_return.js/he-IL.po
+3	3	build/i18n/po/pickup_and_return.js/hu-HU.po
+3	3	build/i18n/po/pickup_and_return.js/hy-AM.po
+3	3	build/i18n/po/pickup_and_return.js/oc-FR.po
+3	3	build/i18n/po/pickup_and_return.js/pt-BR.po
+3	3	build/i18n/po/pickup_and_return.js/ru-RU.po
+3	3	build/i18n/po/pickup_and_return.js/sv-SE.po
+3	3	build/i18n/po/pickup_and_return.js/tr-TR.po
+3	3	build/i18n/po/pull_list.js/ar-JO.po
+3	3	build/i18n/po/pull_list.js/cs-CZ.po
+7	7	build/i18n/po/pull_list.js/de-DE.po
+3	3	build/i18n/po/pull_list.js/en-CA.po
+3	3	build/i18n/po/pull_list.js/en-GB.po
+3	3	build/i18n/po/pull_list.js/es-ES.po
+3	3	build/i18n/po/pull_list.js/fi-FI.po
+3	3	build/i18n/po/pull_list.js/fr-CA.po
+3	3	build/i18n/po/pull_list.js/he-IL.po
+3	3	build/i18n/po/pull_list.js/hu-HU.po
+3	3	build/i18n/po/pull_list.js/hy-AM.po
+3	3	build/i18n/po/pull_list.js/oc-FR.po
+3	3	build/i18n/po/pull_list.js/pt-BR.po
+3	3	build/i18n/po/pull_list.js/ru-RU.po
+3	3	build/i18n/po/pull_list.js/sv-SE.po
+3	3	build/i18n/po/pull_list.js/tr-TR.po
+3	3	build/i18n/po/register.js/ar-JO.po
+3	8	build/i18n/po/register.js/cs-CZ.po
+3	8	build/i18n/po/register.js/de-DE.po
+3	8	build/i18n/po/register.js/en-CA.po
+3	8	build/i18n/po/register.js/en-GB.po
+3	9	build/i18n/po/register.js/es-ES.po
+3	8	build/i18n/po/register.js/fi-FI.po
+3	8	build/i18n/po/register.js/fr-CA.po
+3	3	build/i18n/po/register.js/he-IL.po
+3	3	build/i18n/po/register.js/hu-HU.po
+3	8	build/i18n/po/register.js/hy-AM.po
+3	8	build/i18n/po/register.js/oc-FR.po
+3	9	build/i18n/po/register.js/pt-BR.po
+3	8	build/i18n/po/register.js/ru-RU.po
+3	3	build/i18n/po/register.js/sv-SE.po
+3	3	build/i18n/po/register.js/tr-TR.po
+3	3	build/i18n/po/reports.dtd/ar-JO.po
+3	20	build/i18n/po/reports.dtd/cs-CZ.po
+3	6	build/i18n/po/reports.dtd/de-DE.po
+3	20	build/i18n/po/reports.dtd/en-CA.po
+3	20	build/i18n/po/reports.dtd/en-GB.po
+3	20	build/i18n/po/reports.dtd/es-ES.po
+3	20	build/i18n/po/reports.dtd/fi-FI.po
+3	20	build/i18n/po/reports.dtd/fr-CA.po
+3	3	build/i18n/po/reports.dtd/he-IL.po
+3	3	build/i18n/po/reports.dtd/hu-HU.po
+11	28	build/i18n/po/reports.dtd/hy-AM.po
+3	3	build/i18n/po/reports.dtd/oc-FR.po
+3	20	build/i18n/po/reports.dtd/pt-BR.po
+3	20	build/i18n/po/reports.dtd/ru-RU.po
+3	3	build/i18n/po/reports.dtd/sv-SE.po
+3	3	build/i18n/po/reports.dtd/tr-TR.po
+3	3	build/i18n/po/reports.js/ar-JO.po
+3	3	build/i18n/po/reports.js/cs-CZ.po
+3	3	build/i18n/po/reports.js/de-DE.po
+3	3	build/i18n/po/reports.js/en-CA.po
+3	3	build/i18n/po/reports.js/en-GB.po
+3	3	build/i18n/po/reports.js/es-ES.po
+3	3	build/i18n/po/reports.js/fi-FI.po
+3	3	build/i18n/po/reports.js/fr-CA.po
+3	3	build/i18n/po/reports.js/he-IL.po
+3	3	build/i18n/po/reports.js/hu-HU.po
+3	3	build/i18n/po/reports.js/hy-AM.po
+3	3	build/i18n/po/reports.js/oc-FR.po
+3	3	build/i18n/po/reports.js/pt-BR.po
+3	3	build/i18n/po/reports.js/ru-RU.po
+3	3	build/i18n/po/reports.js/sv-SE.po
+3	3	build/i18n/po/reports.js/tr-TR.po
+3	3	build/i18n/po/reservation.js/ar-JO.po
+3	3	build/i18n/po/reservation.js/cs-CZ.po
+3	3	build/i18n/po/reservation.js/de-DE.po
+3	3	build/i18n/po/reservation.js/en-CA.po
+3	3	build/i18n/po/reservation.js/en-GB.po
+3	3	build/i18n/po/reservation.js/es-ES.po
+3	3	build/i18n/po/reservation.js/fi-FI.po
+3	3	build/i18n/po/reservation.js/fr-CA.po
+3	3	build/i18n/po/reservation.js/he-IL.po
+3	3	build/i18n/po/reservation.js/hu-HU.po
+3	3	build/i18n/po/reservation.js/hy-AM.po
+3	3	build/i18n/po/reservation.js/oc-FR.po
+3	3	build/i18n/po/reservation.js/pt-BR.po
+3	3	build/i18n/po/reservation.js/ru-RU.po
+3	3	build/i18n/po/reservation.js/sv-SE.po
+3	3	build/i18n/po/reservation.js/tr-TR.po
+3	3	build/i18n/po/selfcheck.js/ar-JO.po
+5	18	build/i18n/po/selfcheck.js/cs-CZ.po
+3	3	build/i18n/po/selfcheck.js/de-DE.po
+3	18	build/i18n/po/selfcheck.js/en-CA.po
+4	19	build/i18n/po/selfcheck.js/en-GB.po
+3	9	build/i18n/po/selfcheck.js/es-ES.po
+3	18	build/i18n/po/selfcheck.js/fi-FI.po
+3	18	build/i18n/po/selfcheck.js/fr-CA.po
+3	3	build/i18n/po/selfcheck.js/he-IL.po
+3	3	build/i18n/po/selfcheck.js/hu-HU.po
+3	18	build/i18n/po/selfcheck.js/hy-AM.po
+3	6	build/i18n/po/selfcheck.js/oc-FR.po
+3	18	build/i18n/po/selfcheck.js/pt-BR.po
+3	3	build/i18n/po/selfcheck.js/ru-RU.po
+3	3	build/i18n/po/selfcheck.js/sv-SE.po
+3	3	build/i18n/po/selfcheck.js/tr-TR.po
+3	3	build/i18n/po/serial.js/ar-JO.po
+3	3	build/i18n/po/serial.js/cs-CZ.po
+3	3	build/i18n/po/serial.js/de-DE.po
+3	3	build/i18n/po/serial.js/en-GB.po
+3	3	build/i18n/po/serial.js/es-ES.po
+3	3	build/i18n/po/serial.js/hy-AM.po
+3	3	build/i18n/po/serial.properties/ar-JO.po
+3	3	build/i18n/po/serial.properties/cs-CZ.po
+3	3	build/i18n/po/serial.properties/de-DE.po
+3	3	build/i18n/po/serial.properties/en-CA.po
+3	14	build/i18n/po/serial.properties/en-GB.po
+3	3	build/i18n/po/serial.properties/es-ES.po
+3	3	build/i18n/po/serial.properties/fi-FI.po
+3	3	build/i18n/po/serial.properties/fr-CA.po
+11	22	build/i18n/po/serial.properties/hy-AM.po
+3	3	build/i18n/po/serial.properties/oc-FR.po
+3	3	build/i18n/po/serial.properties/pt-BR.po
+3	3	build/i18n/po/serial.properties/tr-TR.po
+4	4	build/i18n/po/serial/ar-JO.po
+4	4	build/i18n/po/serial/cs-CZ.po
+413	0	build/i18n/po/serial/de-DE.po
+4	4	build/i18n/po/serial/en-CA.po
+8	8	build/i18n/po/serial/en-GB.po
+4	4	build/i18n/po/serial/es-ES.po
+4	4	build/i18n/po/serial/hy-AM.po
+339	338	build/i18n/po/tpac/ar-JO.po
+339	349	build/i18n/po/tpac/cs-CZ.po
+338	188	build/i18n/po/tpac/de-DE.po
+338	298	build/i18n/po/tpac/en-CA.po
+476	461	build/i18n/po/tpac/en-GB.po
+339	348	build/i18n/po/tpac/es-ES.po
+338	320	build/i18n/po/tpac/fi-FI.po
+339	351	build/i18n/po/tpac/fr-CA.po
+338	170	build/i18n/po/tpac/he-IL.po
+338	170	build/i18n/po/tpac/hu-HU.po
+339	343	build/i18n/po/tpac/hy-AM.po
+338	212	build/i18n/po/tpac/oc-FR.po
+338	294	build/i18n/po/tpac/pt-BR.po
+338	176	build/i18n/po/tpac/ru-RU.po
+338	170	build/i18n/po/tpac/sv-SE.po
+338	182	build/i18n/po/tpac/tr-TR.po
+4	4	build/i18n/po/urlverify/ar-JO.po
+4	4	build/i18n/po/urlverify/cs-CZ.po
+4	4	build/i18n/po/urlverify/de-DE.po
+4	4	build/i18n/po/urlverify/en-GB.po
+4	4	build/i18n/po/urlverify/es-ES.po
+4	4	build/i18n/po/urlverify/hy-AM.po
+3	3	build/i18n/po/vandelay.js/ar-JO.po
+3	3	build/i18n/po/vandelay.js/cs-CZ.po
+3	3	build/i18n/po/vandelay.js/en-CA.po
+3	3	build/i18n/po/vandelay.js/en-GB.po
+3	3	build/i18n/po/vandelay.js/es-ES.po
+3	3	build/i18n/po/vandelay.js/hy-AM.po
+3	3	build/i18n/po/vandelay.js/pt-BR.po
+4	4	build/i18n/po/vandelay/ar-JO.po
+4	4	build/i18n/po/vandelay/cs-CZ.po
+4	4	build/i18n/po/vandelay/de-DE.po
+4	4	build/i18n/po/vandelay/en-CA.po
+108	108	build/i18n/po/vandelay/en-GB.po
+4	4	build/i18n/po/vandelay/es-ES.po
+4	4	build/i18n/po/vandelay/hy-AM.po
+973	1265	build/i18n/po/webstaff/ar-JO.po
+986	1401	build/i18n/po/webstaff/cs-CZ.po
+973	748	build/i18n/po/webstaff/de-DE.po
+973	754	build/i18n/po/webstaff/en-CA.po
+973	786	build/i18n/po/webstaff/en-GB.po
+973	1211	build/i18n/po/webstaff/es-ES.po
+973	962	build/i18n/po/webstaff/hy-AM.po
+973	754	build/i18n/po/webstaff/ru-RU.po
+ create mode 100644 build/i18n/po/acq/en-GB.po
+ create mode 100644 build/i18n/po/acq/pt-BR.po
+ create mode 100644 build/i18n/po/bootstrap-opac/en-GB.po
+ create mode 100644 build/i18n/po/conify/en-GB.po
+ create mode 100644 build/i18n/po/serial/de-DE.po
+
+commit ff84c8482316a986ca05d9d183e7a33fe4884dcf
+Author: Michele Morgan <mmorgan@noblenet.org>
+Date:   Tue Aug 20 12:59:04 2024 +0000
+
+    Translation updates - xtb files
+    
+    Signed-off-by: Michele Morgan <mmorgan@noblenet.org>
+
+922	131	Open-ILS/src/eg2/src/locale/messages.cs-CZ.xtb
+
+commit 00cd79e95472afc829999aaf9fa8aac27d07ff8f
+Author: Andrea Buntz Neiman <abneiman@equinoxinitiative.org>
+Date:   Mon Aug 19 11:57:00 2024 -0400
+
+    Docs: backport 3.13.3 and 3.12.6 release notes
+    
+    Signed-off-by: Andrea Buntz Neiman <abneiman@equinoxinitiative.org>
+
+43	0	docs/RELEASE_NOTES_3_12.adoc
+47	1	docs/RELEASE_NOTES_3_13.adoc
+
+commit 3b302c522bbdbace6b64129089bc93e501cf0855
+Author: Dan Briem <dbriem@harrisonpl.org>
+Date:   Fri Jul 26 18:09:16 2024 +0000
+
+    LP#2073990 Fix Place Hold if SMS Is Disabled and Notify Pref Is SMS
+    
+    To test:
+    (Note: you may need to close/reopen browser after lib setting changes)
+    1. Set the Enable SMS features library setting to true.
+    2. Set a patron's hold notify by to SMS with number and provider.
+    3. Set the Enable SMS lib setting to false.
+    4. Try to place a hold for the patron, note the button is disabled.
+    5. Apply patch.
+    7. Try to place a hold and note the button is enabled.
+    
+    Release-note: Fix bug that prevented staff from placing holds for patrons with SMS notification preferences when SMS is not enabled in library settings.
+    
+    Signed-off-by: Dan Briem <dbriem@harrisonpl.org>
+    Signed-off-by: Gina Monti <gmonti@biblio.org>
+    Signed-off-by: Jane Sandberg <js7389@princeton.edu>
+
+2	2	Open-ILS/src/eg2/src/app/staff/catalog/hold/hold.component.ts
+
+commit 10f75b2b97b538ea063ac581e6889d4dcb0c53cd
+Author: Ian Skelskey <ianskelskey@gmail.com>
+Date:   Mon Aug 5 09:06:14 2024 -0400
+
+    docs: add alt text descriptions to images
+    
+    This commit enhances the documentation by adding descriptive alt text to images, improving accessibility and clarity.
+    
+    Changes include:
+    - `docs/modules/admin/pages/infrastructure_auth_browse.adoc`
+      - Added alt text descriptions for images `auth_browse_infra1.png` and `auth_browse_infra2.png`
+    - `docs/modules/cataloging/pages/MARC_Editor.adoc`
+      - Added alt text descriptions for images `pcw1_2.12.jpg`, `pcw2_2.12.jpg`, `pcw3_2.12.jpg`, `pcw4_2.12.jpg`, `pcw5_2.12.jpg`, and `pcw6_2.12.jpg`
+    - `docs/modules/circulation/pages/circulating_items_web_client.adoc`
+      - Added alt text descriptions for images `mark-claims-returned-3.png` and `item_status_list_view_web_client.png`
+    
+    Signed-off-by: Jane Sandberg <sandbergja@gmail.com>
+
+2	2	docs/modules/admin/pages/infrastructure_auth_browse.adoc
+6	6	docs/modules/cataloging/pages/MARC_Editor.adoc
+2	2	docs/modules/circulation/pages/circulating_items_web_client.adoc
+
+commit 8f34b3d2beccf8f4ebb83724eedaea43f9214730
+Author: Susan Morrison <smorrison@georgialibraries.org>
+Date:   Fri Aug 9 11:53:50 2024 -0400
+
+    Docs: Updates to circulating_items_web_client.adoc
+    
+    * Updated screenshots and alt text for DIG project
+    * Added missing screenshots for circulating_items_web_client
+    
+    Signed-off-by: Jane Sandberg <sandbergja@gmail.com>
+
+-	-	docs/modules/circulation/assets/images/circulating_items_web_client/holdings_editor_add_item_alert.png
+-	-	docs/modules/circulation/assets/images/circulating_items_web_client/holdings_editor_save_options.png
+-	-	docs/modules/circulation/assets/images/circulating_items_web_client/item_alert_window.png
+-	-	docs/modules/circulation/assets/images/circulating_items_web_client/mark_missing_damaged_web_client.png
+-	-	docs/modules/circulation/assets/images/circulating_items_web_client/renew_specific_date_submit.png
+-	-	docs/modules/circulation/assets/images/circulating_items_web_client/renew_specific_date_web_client.png
+20	11	docs/modules/circulation/pages/circulating_items_web_client.adoc
+ create mode 100644 docs/modules/circulation/assets/images/circulating_items_web_client/holdings_editor_add_item_alert.png
+ create mode 100644 docs/modules/circulation/assets/images/circulating_items_web_client/holdings_editor_save_options.png
+ create mode 100644 docs/modules/circulation/assets/images/circulating_items_web_client/item_alert_window.png
+ create mode 100644 docs/modules/circulation/assets/images/circulating_items_web_client/mark_missing_damaged_web_client.png
+ create mode 100644 docs/modules/circulation/assets/images/circulating_items_web_client/renew_specific_date_submit.png
+ create mode 100644 docs/modules/circulation/assets/images/circulating_items_web_client/renew_specific_date_web_client.png
+
+commit 30c58b97b631ff4e36897af86fb0ee4b7d1c7749
+Author: Susan Morrison <smorrison@georgialibraries.org>
+Date:   Fri Aug 9 16:22:04 2024 -0400
+
+    Docs: Update terminology in using_the_public_access_catalog.adoc
+    
+    org unit -> library
+    copy/ies -> item/s
+    copy location -> shelving location
+    
+    Signed-off-by: Jane Sandberg <sandbergja@gmail.com>
+
+12	13	docs/modules/opac/pages/using_the_public_access_catalog.adoc
+
+commit c2d198582ac6b56fa4000843112000c664e625ab
+Author: Gina Monti <gmonti@biblio.org>
+Date:   Wed Jul 31 10:24:11 2024 -0400
+
+    LP2075341 holds management updating screenshot
+    
+    This is for the preferences in the OPAC if 'Behind Desk' is set to OPAC visible for patrons.
+    
+    Deleting old screenshot
+    
+    Signed-off-by: Jane Sandberg <js7389@princeton.edu>
+
+-	-	docs/modules/circulation/assets/images/basic_holds/behind_desk_pref.png
+-	-	docs/modules/circulation/assets/images/basic_holds/custom_hold_pickup_location2.jpg
+-	-	docs/modules/circulation/assets/images/basic_holds/preferences_search_history.png
+4	2	docs/modules/circulation/pages/basic_holds.adoc
+ create mode 100644 docs/modules/circulation/assets/images/basic_holds/behind_desk_pref.png
+ delete mode 100644 docs/modules/circulation/assets/images/basic_holds/custom_hold_pickup_location2.jpg
+ create mode 100644 docs/modules/circulation/assets/images/basic_holds/preferences_search_history.png
+
+commit ea7ea8fcd2179d8636a4f9da4ffc13bfdde00b9f
+Author: Jane Sandberg <js7389@princeton.edu>
+Date:   Wed Aug 7 06:32:16 2024 -0700
+
+    lp2075231 follow-up: Correct level offsets
+    
+    Gina pointed out that the heading structure was off in this page.  The
+    reason was that the leveloffset was incorrect.  To push the latency
+    heading down one level (from H1 to H2), you need to _increase_ the
+    leveloffset by 1, counterintuitively.
+    
+    This commit swaps the leveloffset -1 and +1 lines to get the correct
+    structure.
+    
+    Signed-off-by: Jane Sandberg <js7389@princeton.edu>
+
+2	2	docs/modules/admin/pages/workstation_admin.adoc
+
+commit 90e9e8c303a7bae5e81a2d6141a37b3a3bafb161
+Author: Gina Monti <gmonti@biblio.org>
+Date:   Tue Jul 30 14:43:02 2024 -0400
+
+    lp2075231 workstation page update
+    
+    Updating some information on this page.
+    
+    Signed-off-by: Jane Sandberg <js7389@princeton.edu>
+
+-	-	docs/modules/admin/assets/images/workstation/workstation_lib_full_name.png
+-	-	docs/modules/admin/assets/images/workstation/workstation_menu.png
+16	0	docs/modules/admin/pages/workstation_admin.adoc
+ create mode 100644 docs/modules/admin/assets/images/workstation/workstation_lib_full_name.png
+ create mode 100644 docs/modules/admin/assets/images/workstation/workstation_menu.png
+
+commit 731321355d0d056835d296b1c5842d08195df704
+Author: LenaHernandez <lena.hernandez@equinoxoli.org>
+Date:   Fri Dec 1 11:38:13 2023 -0500
+
+    Docs: Angular Reports rewrite for 3.13
+    
+    These were erroneously missed in the 3.13 Reports merges.
+    
+    Release-note: Adds docs for the 3.13 Reports rewrite
+    
+    Signed-off-by: LenaHernandez <lena.hernandez@equinoxoli.org>
+    Signed-off-by: Andrea Buntz Neiman <abneiman@equinoxinitiative.org>
+
+-	-	docs/modules/reports/assets/images/reporter_basics/delete_pending.png
+-	-	docs/modules/reports/assets/images/reporter_basics/email_address.png
+-	-	docs/modules/reports/assets/images/reporter_basics/layout_sheduling_options.png
+-	-	docs/modules/reports/assets/images/reporter_basics/move_report.png
+-	-	docs/modules/reports/assets/images/reporter_basics/output_buttons.png
+-	-	docs/modules/reports/assets/images/reporter_basics/output_new_tab.png
+-	-	docs/modules/reports/assets/images/reporter_basics/outputs_folder_contents.png
+-	-	docs/modules/reports/assets/images/reporter_basics/recurring_reports.png
+-	-	docs/modules/reports/assets/images/reporter_basics/report-maintain-templates-1.png
+-	-	docs/modules/reports/assets/images/reporter_basics/report-output-1.png
+-	-	docs/modules/reports/assets/images/reporter_basics/report-output-2.png
+-	-	docs/modules/reports/assets/images/reporter_basics/report-output-3.png
+-	-	docs/modules/reports/assets/images/reporter_basics/report-output-4.png
+-	-	docs/modules/reports/assets/images/reporter_basics/report_and_output_folders.png
+-	-	docs/modules/reports/assets/images/reporter_basics/report_description.png
+-	-	docs/modules/reports/assets/images/reporter_basics/report_filters.png
+-	-	docs/modules/reports/assets/images/reporter_basics/report_view_only.png
+-	-	docs/modules/reports/assets/images/reporter_basics/reports-delete-report-1.png
+-	-	docs/modules/reports/assets/images/reporter_basics/reports-delete-report-2.png
+-	-	docs/modules/reports/assets/images/reporter_basics/reports-delete-template-1.png
+-	-	docs/modules/reports/assets/images/reporter_basics/reports-edit-report-def-1.png
+-	-	docs/modules/reports/assets/images/reporter_basics/reports-edit-report-def-2.png
+-	-	docs/modules/reports/assets/images/reporter_basics/reports-filters-1.png
+-	-	docs/modules/reports/assets/images/reporter_basics/reports-filters-2.png
+-	-	docs/modules/reports/assets/images/reporter_basics/reports-filters-3.png
+-	-	docs/modules/reports/assets/images/reporter_basics/reports-filters-4.png
+-	-	docs/modules/reports/assets/images/reporter_basics/reports-filters-5.png
+-	-	docs/modules/reports/assets/images/reporter_basics/reports-recurring-1.png
+-	-	docs/modules/reports/assets/images/reporter_basics/reports-run-1.png
+-	-	docs/modules/reports/assets/images/reporter_basics/reports-run-10.png
+-	-	docs/modules/reports/assets/images/reporter_basics/reports-run-11.png
+-	-	docs/modules/reports/assets/images/reporter_basics/reports-run-2.png
+-	-	docs/modules/reports/assets/images/reporter_basics/reports-run-3.png
+-	-	docs/modules/reports/assets/images/reporter_basics/reports-run-4.png
+-	-	docs/modules/reports/assets/images/reporter_basics/reports-run-5.png
+-	-	docs/modules/reports/assets/images/reporter_basics/reports-run-6.png
+-	-	docs/modules/reports/assets/images/reporter_basics/reports-run-7.png
+-	-	docs/modules/reports/assets/images/reporter_basics/reports-run-8.png
+-	-	docs/modules/reports/assets/images/reporter_basics/reports-run-9.png
+-	-	docs/modules/reports/assets/images/reporter_basics/reports-view-report-def-1.png
+-	-	docs/modules/reports/assets/images/reporter_basics/reports-view-report-def-2.png
+-	-	docs/modules/reports/assets/images/reporter_basics/reports-view-report-def-3.png
+-	-	docs/modules/reports/assets/images/reporter_basics/reports-view-report-def-4.png
+-	-	docs/modules/reports/assets/images/reporter_basics/reports-view-report-def-5.png
+-	-	docs/modules/reports/assets/images/reporter_basics/reports_columns.png
+-	-	docs/modules/reports/assets/images/reporter_basics/select_template_delete.png
+-	-	docs/modules/reports/assets/images/reporter_basics/template_create_date.png
+-	-	docs/modules/reports/assets/images/reporter_basics/template_selection.png
+-	-	docs/modules/reports/assets/images/reporter_basics/view_report.png
+-	-	docs/modules/reports/assets/images/reporter_cloning_shared_templates/clone-report-template-1.png
+-	-	docs/modules/reports/assets/images/reporter_cloning_shared_templates/clone-report-template-2.png
+-	-	docs/modules/reports/assets/images/reporter_cloning_shared_templates/clone-report-template-3.png
+-	-	docs/modules/reports/assets/images/reporter_cloning_shared_templates/clone-report-template-4.png
+-	-	docs/modules/reports/assets/images/reporter_cloning_shared_templates/clone-report-template-5.png
+-	-	docs/modules/reports/assets/images/reporter_cloning_shared_templates/clone-report-template-6.png
+-	-	docs/modules/reports/assets/images/reporter_cloning_shared_templates/clone_template_modal.png
+-	-	docs/modules/reports/assets/images/reporter_cloning_shared_templates/search_results.png
+-	-	docs/modules/reports/assets/images/reporter_cloning_shared_templates/shared_folders.png
+-	-	docs/modules/reports/assets/images/reporter_cloning_shared_templates/template_search.png
+-	-	docs/modules/reports/assets/images/reporter_create_template/report-add-display-field-1.png
+-	-	docs/modules/reports/assets/images/reporter_create_template/report-add-display-field-2.png
+-	-	docs/modules/reports/assets/images/reporter_create_template/report-add-display-field-3.png
+-	-	docs/modules/reports/assets/images/reporter_create_template/report-add-display-field-4.png
+-	-	docs/modules/reports/assets/images/reporter_create_template/report-add-display-field-5.png
+-	-	docs/modules/reports/assets/images/reporter_create_template/report-add-filter-field-1.png
+-	-	docs/modules/reports/assets/images/reporter_create_template/report-add-filter-field-2.png
+-	-	docs/modules/reports/assets/images/reporter_create_template/report-add-filter-field-3.png
+-	-	docs/modules/reports/assets/images/reporter_create_template/report-core-source-1.png
+-	-	docs/modules/reports/assets/images/reporter_create_template/report-create-template-1.png
+-	-	docs/modules/reports/assets/images/reporter_create_template/report-display-fields-1.png
+-	-	docs/modules/reports/assets/images/reporter_create_template/report-display-fields-2.png
+-	-	docs/modules/reports/assets/images/reporter_create_template/report-display-fields-3.png
+-	-	docs/modules/reports/assets/images/reporter_create_template/report-display-fields-4.png
+-	-	docs/modules/reports/assets/images/reporter_create_template/report-display-fields-5.png
+-	-	docs/modules/reports/assets/images/reporter_create_template/report-display-fields-6.png
+-	-	docs/modules/reports/assets/images/reporter_create_template/report-filters-1.png
+-	-	docs/modules/reports/assets/images/reporter_create_template/report-filters-2.png
+-	-	docs/modules/reports/assets/images/reporter_create_template/report-filters-3.png
+-	-	docs/modules/reports/assets/images/reporter_create_template/report-filters-4.png
+-	-	docs/modules/reports/assets/images/reporter_create_template/report-filters-operator-1.png
+-	-	docs/modules/reports/assets/images/reporter_create_template/report-filters-operator-2.png
+-	-	docs/modules/reports/assets/images/reporter_create_template/report-filters-remove-1.png
+-	-	docs/modules/reports/assets/images/reporter_create_template/report-filters-transform-1.png
+-	-	docs/modules/reports/assets/images/reporter_create_template/report-filters-transform-2.png
+-	-	docs/modules/reports/assets/images/reporter_create_template/report-filters-value-1.png
+-	-	docs/modules/reports/assets/images/reporter_create_template/report-filters-value-2.png
+-	-	docs/modules/reports/assets/images/reporter_create_template/report-filters-value-3.png
+-	-	docs/modules/reports/assets/images/reporter_create_template/report-nullability-1.png
+-	-	docs/modules/reports/assets/images/reporter_create_template/report-nullability-2.png
+-	-	docs/modules/reports/assets/images/reporter_create_template/report-template-editor-1.png
+-	-	docs/modules/reports/assets/images/reporter_create_templates/adding_filters.png
+-	-	docs/modules/reports/assets/images/reporter_create_templates/all_fields_from_source.png
+-	-	docs/modules/reports/assets/images/reporter_create_templates/changing_a_transform.png
+-	-	docs/modules/reports/assets/images/reporter_create_templates/filter_value.png
+-	-	docs/modules/reports/assets/images/reporter_create_templates/link_in_tree.png
+-	-	docs/modules/reports/assets/images/reporter_create_templates/new_template_button.png
+-	-	docs/modules/reports/assets/images/reporter_create_templates/new_template_interface.png
+-	-	docs/modules/reports/assets/images/reporter_create_templates/nullibility_demo.png
+-	-	docs/modules/reports/assets/images/reporter_create_templates/nullibility_selected.png
+-	-	docs/modules/reports/assets/images/reporter_create_templates/operator_and_transforms.png
+-	-	docs/modules/reports/assets/images/reporter_create_templates/operator_selection.png
+-	-	docs/modules/reports/assets/images/reporter_create_templates/output_error.png
+-	-	docs/modules/reports/assets/images/reporter_create_templates/removing_fields.png
+-	-	docs/modules/reports/assets/images/reporter_create_templates/removing_filter_fields.png
+-	-	docs/modules/reports/assets/images/reporter_create_templates/reorder_fields.png
+-	-	docs/modules/reports/assets/images/reporter_create_templates/report-filters-3.png
+-	-	docs/modules/reports/assets/images/reporter_create_templates/report-filters-4.png
+-	-	docs/modules/reports/assets/images/reporter_create_templates/report_layout_tab.png
+-	-	docs/modules/reports/assets/images/reporter_create_templates/select_source.png
+-	-	docs/modules/reports/assets/images/reporter_create_templates/template_editor_sections.png
+-	-	docs/modules/reports/assets/images/reporter_create_templates/template_folders.png
+-	-	docs/modules/reports/assets/images/reporter_create_templates/transform_display_fields.png
+-	-	docs/modules/reports/assets/images/reporter_create_templates/transform_selection.png
+-	-	docs/modules/reports/assets/images/reporter_evergreen_database/debugging_output.png
+-	-	docs/modules/reports/assets/images/reporter_evergreen_database/evergreen-database.png
+-	-	docs/modules/reports/assets/images/reporter_evergreen_database/reports-evergreen-database-1.png
+-	-	docs/modules/reports/assets/images/reporter_evergreen_database/reports-evergreen-database-2.png
+-	-	docs/modules/reports/assets/images/reporter_folder/create_template_folder.png
+-	-	docs/modules/reports/assets/images/reporter_folder/create_top-level_template_folder.png
+-	-	docs/modules/reports/assets/images/reporter_folder/file_management_buttons.png
+-	-	docs/modules/reports/assets/images/reporter_folder/folder_tree.png
+-	-	docs/modules/reports/assets/images/reporter_folder/report-create-folders-1.png
+-	-	docs/modules/reports/assets/images/reporter_folder/report-create-folders-2.png
+-	-	docs/modules/reports/assets/images/reporter_folder/report-create-folders-3.png
+-	-	docs/modules/reports/assets/images/reporter_folder/report-create-folders-4.png
+-	-	docs/modules/reports/assets/images/reporter_folder/report-create-folders-5.png
+-	-	docs/modules/reports/assets/images/reporter_folder/report-create-folders-6.png
+-	-	docs/modules/reports/assets/images/reporter_folder/report-folders-1.png
+-	-	docs/modules/reports/assets/images/reporter_folder/report-hide-folders-1.png
+-	-	docs/modules/reports/assets/images/reporter_folder/report-hide-folders-2.png
+-	-	docs/modules/reports/assets/images/reporter_folder/report-hide-folders-3.png
+-	-	docs/modules/reports/assets/images/reporter_folder/report-share-folders-1.png
+-	-	docs/modules/reports/assets/images/reporter_folder/report-share-folders-2.png
+-	-	docs/modules/reports/assets/images/reporter_folder/report-share-folders-3.png
+-	-	docs/modules/reports/assets/images/reporter_folder/report-share-folders-4.png
+-	-	docs/modules/reports/assets/images/reporter_folder/report-share-folders-5.png
+-	-	docs/modules/reports/assets/images/reporter_folder/report-share-folders-6.png
+-	-	docs/modules/reports/assets/images/reporter_folder/report-view-shared-folders-1.png
+-	-	docs/modules/reports/assets/images/reporter_folder/reports_first_login.png
+-	-	docs/modules/reports/assets/images/reporter_folder/reports_subfolders.png
+-	-	docs/modules/reports/assets/images/reporter_folder/shared_folders.png
+-	-	docs/modules/reports/assets/images/reporter_folder/sharing_a_folder.png
+-	-	docs/modules/reports/assets/images/reporter_overview/accessing-reports-1.png
+-	-	docs/modules/reports/assets/images/reporter_overview/accessing-reports-2.png
+-	-	docs/modules/reports/assets/images/reporter_overview/accessing_reporter.png
+-	-	docs/modules/reports/assets/images/reporter_overview/reports_permission_denied.png
+-	-	docs/modules/reports/assets/images/reporter_template_terminology/term-1.png
+7	7	docs/modules/reports/nav.adoc
+13	5	docs/modules/reports/pages/introduction.adoc
+3	2	docs/modules/reports/pages/report_sources.adoc
+17	17	docs/modules/reports/pages/reporter_add_data_source.adoc
+388	220	docs/modules/reports/pages/reporter_basics.adoc
+60	22	docs/modules/reports/pages/reporter_cloning_shared_templates.adoc
+418	236	docs/modules/reports/pages/reporter_create_templates.adoc
+154	64	docs/modules/reports/pages/reporter_evergreen_database.adoc
+12	12	docs/modules/reports/pages/reporter_export_usingpgAdmin.adoc
+75	93	docs/modules/reports/pages/reporter_folder.adoc
+0	36	docs/modules/reports/pages/reporter_modifying_templates.adoc
+44	12	docs/modules/reports/pages/reporter_overview.adoc
+125	42	docs/modules/reports/pages/reporter_template_terminology.adoc
+15	16	docs/modules/reports/pages/simple_reports.adoc
+ create mode 100644 docs/modules/reports/assets/images/reporter_basics/delete_pending.png
+ create mode 100644 docs/modules/reports/assets/images/reporter_basics/email_address.png
+ create mode 100644 docs/modules/reports/assets/images/reporter_basics/layout_sheduling_options.png
+ create mode 100644 docs/modules/reports/assets/images/reporter_basics/move_report.png
+ create mode 100644 docs/modules/reports/assets/images/reporter_basics/output_buttons.png
+ create mode 100644 docs/modules/reports/assets/images/reporter_basics/output_new_tab.png
+ create mode 100644 docs/modules/reports/assets/images/reporter_basics/outputs_folder_contents.png
+ create mode 100644 docs/modules/reports/assets/images/reporter_basics/recurring_reports.png
+ delete mode 100644 docs/modules/reports/assets/images/reporter_basics/report-maintain-templates-1.png
+ delete mode 100644 docs/modules/reports/assets/images/reporter_basics/report-output-1.png
+ delete mode 100644 docs/modules/reports/assets/images/reporter_basics/report-output-2.png
+ delete mode 100644 docs/modules/reports/assets/images/reporter_basics/report-output-3.png
+ delete mode 100644 docs/modules/reports/assets/images/reporter_basics/report-output-4.png
+ create mode 100644 docs/modules/reports/assets/images/reporter_basics/report_and_output_folders.png
+ create mode 100644 docs/modules/reports/assets/images/reporter_basics/report_description.png
+ create mode 100644 docs/modules/reports/assets/images/reporter_basics/report_filters.png
+ create mode 100644 docs/modules/reports/assets/images/reporter_basics/report_view_only.png
+ delete mode 100644 docs/modules/reports/assets/images/reporter_basics/reports-delete-report-1.png
+ delete mode 100644 docs/modules/reports/assets/images/reporter_basics/reports-delete-report-2.png
+ delete mode 100644 docs/modules/reports/assets/images/reporter_basics/reports-delete-template-1.png
+ delete mode 100644 docs/modules/reports/assets/images/reporter_basics/reports-edit-report-def-1.png
+ delete mode 100644 docs/modules/reports/assets/images/reporter_basics/reports-edit-report-def-2.png
+ delete mode 100644 docs/modules/reports/assets/images/reporter_basics/reports-recurring-1.png
+ delete mode 100644 docs/modules/reports/assets/images/reporter_basics/reports-run-1.png
+ delete mode 100644 docs/modules/reports/assets/images/reporter_basics/reports-run-10.png
+ delete mode 100644 docs/modules/reports/assets/images/reporter_basics/reports-run-11.png
+ delete mode 100644 docs/modules/reports/assets/images/reporter_basics/reports-run-2.png
+ delete mode 100644 docs/modules/reports/assets/images/reporter_basics/reports-run-3.png
+ delete mode 100644 docs/modules/reports/assets/images/reporter_basics/reports-run-4.png
+ delete mode 100644 docs/modules/reports/assets/images/reporter_basics/reports-run-5.png
+ delete mode 100644 docs/modules/reports/assets/images/reporter_basics/reports-run-6.png
+ delete mode 100644 docs/modules/reports/assets/images/reporter_basics/reports-run-7.png
+ delete mode 100644 docs/modules/reports/assets/images/reporter_basics/reports-run-8.png
+ delete mode 100644 docs/modules/reports/assets/images/reporter_basics/reports-run-9.png
+ delete mode 100644 docs/modules/reports/assets/images/reporter_basics/reports-view-report-def-1.png
+ delete mode 100644 docs/modules/reports/assets/images/reporter_basics/reports-view-report-def-2.png
+ delete mode 100644 docs/modules/reports/assets/images/reporter_basics/reports-view-report-def-3.png
+ delete mode 100644 docs/modules/reports/assets/images/reporter_basics/reports-view-report-def-4.png
+ delete mode 100644 docs/modules/reports/assets/images/reporter_basics/reports-view-report-def-5.png
+ create mode 100644 docs/modules/reports/assets/images/reporter_basics/reports_columns.png
+ create mode 100644 docs/modules/reports/assets/images/reporter_basics/select_template_delete.png
+ create mode 100644 docs/modules/reports/assets/images/reporter_basics/template_create_date.png
+ create mode 100644 docs/modules/reports/assets/images/reporter_basics/template_selection.png
+ create mode 100644 docs/modules/reports/assets/images/reporter_basics/view_report.png
+ delete mode 100644 docs/modules/reports/assets/images/reporter_cloning_shared_templates/clone-report-template-1.png
+ delete mode 100644 docs/modules/reports/assets/images/reporter_cloning_shared_templates/clone-report-template-2.png
+ delete mode 100644 docs/modules/reports/assets/images/reporter_cloning_shared_templates/clone-report-template-3.png
+ delete mode 100644 docs/modules/reports/assets/images/reporter_cloning_shared_templates/clone-report-template-4.png
+ delete mode 100644 docs/modules/reports/assets/images/reporter_cloning_shared_templates/clone-report-template-5.png
+ delete mode 100644 docs/modules/reports/assets/images/reporter_cloning_shared_templates/clone-report-template-6.png
+ create mode 100644 docs/modules/reports/assets/images/reporter_cloning_shared_templates/clone_template_modal.png
+ create mode 100644 docs/modules/reports/assets/images/reporter_cloning_shared_templates/search_results.png
+ create mode 100644 docs/modules/reports/assets/images/reporter_cloning_shared_templates/shared_folders.png
+ create mode 100644 docs/modules/reports/assets/images/reporter_cloning_shared_templates/template_search.png
+ delete mode 100644 docs/modules/reports/assets/images/reporter_create_template/report-add-display-field-1.png
+ delete mode 100644 docs/modules/reports/assets/images/reporter_create_template/report-add-display-field-2.png
+ delete mode 100644 docs/modules/reports/assets/images/reporter_create_template/report-add-display-field-3.png
+ delete mode 100644 docs/modules/reports/assets/images/reporter_create_template/report-add-display-field-4.png
+ delete mode 100644 docs/modules/reports/assets/images/reporter_create_template/report-add-display-field-5.png
+ delete mode 100644 docs/modules/reports/assets/images/reporter_create_template/report-add-filter-field-1.png
+ delete mode 100644 docs/modules/reports/assets/images/reporter_create_template/report-add-filter-field-2.png
+ delete mode 100644 docs/modules/reports/assets/images/reporter_create_template/report-add-filter-field-3.png
+ delete mode 100644 docs/modules/reports/assets/images/reporter_create_template/report-core-source-1.png
+ delete mode 100644 docs/modules/reports/assets/images/reporter_create_template/report-create-template-1.png
+ delete mode 100644 docs/modules/reports/assets/images/reporter_create_template/report-display-fields-1.png
+ delete mode 100644 docs/modules/reports/assets/images/reporter_create_template/report-display-fields-2.png
+ delete mode 100644 docs/modules/reports/assets/images/reporter_create_template/report-display-fields-3.png
+ delete mode 100644 docs/modules/reports/assets/images/reporter_create_template/report-display-fields-4.png
+ delete mode 100644 docs/modules/reports/assets/images/reporter_create_template/report-display-fields-5.png
+ delete mode 100644 docs/modules/reports/assets/images/reporter_create_template/report-display-fields-6.png
+ delete mode 100644 docs/modules/reports/assets/images/reporter_create_template/report-filters-1.png
+ delete mode 100644 docs/modules/reports/assets/images/reporter_create_template/report-filters-2.png
+ delete mode 100644 docs/modules/reports/assets/images/reporter_create_template/report-filters-3.png
+ delete mode 100644 docs/modules/reports/assets/images/reporter_create_template/report-filters-4.png
+ delete mode 100644 docs/modules/reports/assets/images/reporter_create_template/report-filters-operator-1.png
+ delete mode 100644 docs/modules/reports/assets/images/reporter_create_template/report-filters-operator-2.png
+ delete mode 100644 docs/modules/reports/assets/images/reporter_create_template/report-filters-remove-1.png
+ delete mode 100644 docs/modules/reports/assets/images/reporter_create_template/report-filters-transform-1.png
+ delete mode 100644 docs/modules/reports/assets/images/reporter_create_template/report-filters-transform-2.png
+ delete mode 100644 docs/modules/reports/assets/images/reporter_create_template/report-filters-value-1.png
+ delete mode 100644 docs/modules/reports/assets/images/reporter_create_template/report-filters-value-2.png
+ delete mode 100644 docs/modules/reports/assets/images/reporter_create_template/report-filters-value-3.png
+ delete mode 100644 docs/modules/reports/assets/images/reporter_create_template/report-nullability-1.png
+ delete mode 100644 docs/modules/reports/assets/images/reporter_create_template/report-nullability-2.png
+ delete mode 100644 docs/modules/reports/assets/images/reporter_create_template/report-template-editor-1.png
+ create mode 100644 docs/modules/reports/assets/images/reporter_create_templates/adding_filters.png
+ create mode 100644 docs/modules/reports/assets/images/reporter_create_templates/all_fields_from_source.png
+ create mode 100644 docs/modules/reports/assets/images/reporter_create_templates/changing_a_transform.png
+ create mode 100644 docs/modules/reports/assets/images/reporter_create_templates/filter_value.png
+ create mode 100644 docs/modules/reports/assets/images/reporter_create_templates/link_in_tree.png
+ create mode 100644 docs/modules/reports/assets/images/reporter_create_templates/new_template_button.png
+ create mode 100644 docs/modules/reports/assets/images/reporter_create_templates/new_template_interface.png
+ create mode 100644 docs/modules/reports/assets/images/reporter_create_templates/nullibility_demo.png
+ create mode 100644 docs/modules/reports/assets/images/reporter_create_templates/nullibility_selected.png
+ create mode 100644 docs/modules/reports/assets/images/reporter_create_templates/operator_and_transforms.png
+ create mode 100644 docs/modules/reports/assets/images/reporter_create_templates/operator_selection.png
+ create mode 100644 docs/modules/reports/assets/images/reporter_create_templates/output_error.png
+ create mode 100644 docs/modules/reports/assets/images/reporter_create_templates/removing_fields.png
+ create mode 100644 docs/modules/reports/assets/images/reporter_create_templates/removing_filter_fields.png
+ create mode 100644 docs/modules/reports/assets/images/reporter_create_templates/reorder_fields.png
+ create mode 100644 docs/modules/reports/assets/images/reporter_create_templates/report-filters-3.png
+ create mode 100644 docs/modules/reports/assets/images/reporter_create_templates/report-filters-4.png
+ create mode 100644 docs/modules/reports/assets/images/reporter_create_templates/report_layout_tab.png
+ create mode 100644 docs/modules/reports/assets/images/reporter_create_templates/select_source.png
+ create mode 100644 docs/modules/reports/assets/images/reporter_create_templates/template_editor_sections.png
+ create mode 100644 docs/modules/reports/assets/images/reporter_create_templates/template_folders.png
+ create mode 100644 docs/modules/reports/assets/images/reporter_create_templates/transform_display_fields.png
+ create mode 100644 docs/modules/reports/assets/images/reporter_create_templates/transform_selection.png
+ create mode 100644 docs/modules/reports/assets/images/reporter_evergreen_database/debugging_output.png
+ create mode 100644 docs/modules/reports/assets/images/reporter_evergreen_database/evergreen-database.png
+ delete mode 100644 docs/modules/reports/assets/images/reporter_evergreen_database/reports-evergreen-database-1.png
+ delete mode 100644 docs/modules/reports/assets/images/reporter_evergreen_database/reports-evergreen-database-2.png
+ create mode 100644 docs/modules/reports/assets/images/reporter_folder/create_template_folder.png
+ create mode 100644 docs/modules/reports/assets/images/reporter_folder/create_top-level_template_folder.png
+ create mode 100644 docs/modules/reports/assets/images/reporter_folder/file_management_buttons.png
+ create mode 100644 docs/modules/reports/assets/images/reporter_folder/folder_tree.png
+ delete mode 100644 docs/modules/reports/assets/images/reporter_folder/report-create-folders-1.png
+ delete mode 100644 docs/modules/reports/assets/images/reporter_folder/report-create-folders-2.png
+ delete mode 100644 docs/modules/reports/assets/images/reporter_folder/report-create-folders-3.png
+ delete mode 100644 docs/modules/reports/assets/images/reporter_folder/report-create-folders-4.png
+ delete mode 100644 docs/modules/reports/assets/images/reporter_folder/report-create-folders-5.png
+ delete mode 100644 docs/modules/reports/assets/images/reporter_folder/report-create-folders-6.png
+ delete mode 100644 docs/modules/reports/assets/images/reporter_folder/report-folders-1.png
+ delete mode 100644 docs/modules/reports/assets/images/reporter_folder/report-hide-folders-1.png
+ delete mode 100644 docs/modules/reports/assets/images/reporter_folder/report-hide-folders-2.png
+ delete mode 100644 docs/modules/reports/assets/images/reporter_folder/report-hide-folders-3.png
+ delete mode 100644 docs/modules/reports/assets/images/reporter_folder/report-share-folders-1.png
+ delete mode 100644 docs/modules/reports/assets/images/reporter_folder/report-share-folders-2.png
+ delete mode 100644 docs/modules/reports/assets/images/reporter_folder/report-share-folders-3.png
+ delete mode 100644 docs/modules/reports/assets/images/reporter_folder/report-share-folders-4.png
+ delete mode 100644 docs/modules/reports/assets/images/reporter_folder/report-share-folders-5.png
+ delete mode 100644 docs/modules/reports/assets/images/reporter_folder/report-share-folders-6.png
+ delete mode 100644 docs/modules/reports/assets/images/reporter_folder/report-view-shared-folders-1.png
+ create mode 100644 docs/modules/reports/assets/images/reporter_folder/reports_first_login.png
+ create mode 100644 docs/modules/reports/assets/images/reporter_folder/reports_subfolders.png
+ create mode 100644 docs/modules/reports/assets/images/reporter_folder/shared_folders.png
+ create mode 100644 docs/modules/reports/assets/images/reporter_folder/sharing_a_folder.png
+ delete mode 100644 docs/modules/reports/assets/images/reporter_overview/accessing-reports-1.png
+ delete mode 100644 docs/modules/reports/assets/images/reporter_overview/accessing-reports-2.png
+ create mode 100644 docs/modules/reports/assets/images/reporter_overview/accessing_reporter.png
+ create mode 100644 docs/modules/reports/assets/images/reporter_overview/reports_permission_denied.png
+ delete mode 100644 docs/modules/reports/assets/images/reporter_template_terminology/term-1.png
+ delete mode 100644 docs/modules/reports/pages/reporter_modifying_templates.adoc
+
+commit 4b2a18cd8e3e150cb87f45fd977b9a65b51075d1
+Author: Jason Stephenson <jason@sigio.com>
+Date:   Mon Jul 22 17:09:41 2024 -0400
+
+    LP2073803: Remove Mac OS-specific .DS_Store files
+    
+    Delete .DS_Store files that were accidentally added to the docs/
+    hierarchy and add an entry in .gitignore so that they are hopefully
+    not re-added in the future.
+    
+    .DS_Store files are used by the Mac OS Finder for its own purposes.
+    
+    Since this is mainly a hygiene change with no functional effect on
+    Evergreen, it does not require a release note.
+    
+    Signed-off-by: Jason Stephenson <jason@sigio.com>
+    Signed-off-by: Josh Stompro <stomproj@larl.org>
+
+3	0	.gitignore
+-	-	docs/.DS_Store
+-	-	docs/modules/.DS_Store
+-	-	docs/modules/staff_catalog/.DS_Store
+-	-	docs/modules/staff_catalog/assets/.DS_Store
+-	-	docs/modules/staff_catalog/assets/images/.DS_Store
+ delete mode 100644 docs/.DS_Store
+ delete mode 100644 docs/modules/.DS_Store
+ delete mode 100644 docs/modules/staff_catalog/.DS_Store
+ delete mode 100644 docs/modules/staff_catalog/assets/.DS_Store
+ delete mode 100644 docs/modules/staff_catalog/assets/images/.DS_Store
+
+commit d4ead3e6ce85f9fea6bd3f8ccba414a182819363
+Author: Gina Monti <gmonti@biblio.org>
+Date:   Tue Jul 30 13:19:18 2024 -0400
+
+    Docs LP2073417 library settings update
+    
+    Updating screenshots for this page
+    
+    Signed-off-by: Jane Sandberg <sandbergja@gmail.com>
+
+-	-	docs/modules/admin/assets/images/library_settings/edit_lib_setting.png
+-	-	docs/modules/admin/assets/images/library_settings/export_lib_setting.png
+-	-	docs/modules/admin/assets/images/library_settings/history_lib_setting.png
+-	-	docs/modules/admin/assets/images/library_settings/import_lib_settings.png
+-	-	docs/modules/admin/assets/images/library_settings/lib_settings_menu.png
+-	-	docs/modules/admin/assets/images/library_settings/lse-1.png
+-	-	docs/modules/admin/assets/images/library_settings/lse-2.png
+-	-	docs/modules/admin/assets/images/library_settings/lse-3.png
+5	5	docs/modules/admin/pages/librarysettings.adoc
+ create mode 100644 docs/modules/admin/assets/images/library_settings/edit_lib_setting.png
+ create mode 100644 docs/modules/admin/assets/images/library_settings/export_lib_setting.png
+ create mode 100644 docs/modules/admin/assets/images/library_settings/history_lib_setting.png
+ create mode 100644 docs/modules/admin/assets/images/library_settings/import_lib_settings.png
+ create mode 100644 docs/modules/admin/assets/images/library_settings/lib_settings_menu.png
+ delete mode 100644 docs/modules/admin/assets/images/library_settings/lse-1.png
+ delete mode 100644 docs/modules/admin/assets/images/library_settings/lse-2.png
+ delete mode 100644 docs/modules/admin/assets/images/library_settings/lse-3.png
+
+commit 4ebde1599e0177fbbfb3622f404ffeda7fed0344
+Author: Gina Monti <gmonti@biblio.org>
+Date:   Wed Jul 17 12:42:13 2024 -0400
+
+    Docs LP 2073415 Updating recent staff searches page
+    
+    Signed-off-by: Jane Sandberg <sandbergja@gmail.com>
+
+-	-	docs/modules/admin/assets/images/recent_searches/Saved_Catalog_Searches_2_21.jpg
+-	-	docs/modules/admin/assets/images/recent_searches/Saved_Catalog_Searches_2_22.jpg
+-	-	docs/modules/admin/assets/images/recent_searches/opac_num_saved_searches.png
+-	-	docs/modules/admin/assets/images/recent_searches/recent_searches_staff_catalog.png
+4	4	docs/modules/admin/pages/staff_client-recent_searches.adoc
+ delete mode 100644 docs/modules/admin/assets/images/recent_searches/Saved_Catalog_Searches_2_21.jpg
+ delete mode 100644 docs/modules/admin/assets/images/recent_searches/Saved_Catalog_Searches_2_22.jpg
+ create mode 100644 docs/modules/admin/assets/images/recent_searches/opac_num_saved_searches.png
+ create mode 100644 docs/modules/admin/assets/images/recent_searches/recent_searches_staff_catalog.png
+
+commit a702a5e2d8c78e0ccef79d05bc49675f270b5529
+Author: Gina Monti <gmonti@biblio.org>
+Date:   Wed Jul 17 12:20:45 2024 -0400
+
+    Docs LP2073412 Updating Circulation Limit Sets Page
+    
+    Signed-off-by: Jane Sandberg <sandbergja@gmail.com>
+
+-	-	docs/modules/admin/assets/images/circ_limit_groups/Maximum_Checkout_by_Copy_Location1.jpg
+-	-	docs/modules/admin/assets/images/circ_limit_groups/edit_link_entities.png
+-	-	docs/modules/admin/assets/images/circ_limit_groups/manage_circ_limit_set_button.png
+-	-	docs/modules/admin/assets/images/circ_limit_groups/new_circ_limit_set.png
+20	11	docs/modules/admin/pages/circulation_limit_groups.adoc
+ delete mode 100644 docs/modules/admin/assets/images/circ_limit_groups/Maximum_Checkout_by_Copy_Location1.jpg
+ create mode 100644 docs/modules/admin/assets/images/circ_limit_groups/edit_link_entities.png
+ create mode 100644 docs/modules/admin/assets/images/circ_limit_groups/manage_circ_limit_set_button.png
+ create mode 100644 docs/modules/admin/assets/images/circ_limit_groups/new_circ_limit_set.png
+
+commit 11a42b576d9ff176f9392ea40810317ed8c899e4
+Author: Gina Monti <gmonti@biblio.org>
+Date:   Wed Jul 17 11:44:43 2024 -0400
+
+    Docs LP 2073411 Updating screens for SMS Messaging Page
+    
+    Changing image and file extensions
+    
+    Signed-off-by: Jane Sandberg <sandbergja@gmail.com>
+
+-	-	docs/modules/admin/assets/images/sms_messaging/SMS_Text_Messaging1.png
+-	-	docs/modules/admin/assets/images/sms_messaging/SMS_Text_Messaging2.png
+-	-	docs/modules/admin/assets/images/sms_messaging/SMS_Text_Messaging3.jpg
+-	-	docs/modules/admin/assets/images/sms_messaging/SMS_Text_Messaging3.png
+-	-	docs/modules/admin/assets/images/sms_messaging/SMS_Text_Messaging4.jpg
+-	-	docs/modules/admin/assets/images/sms_messaging/SMS_Text_Messaging4.png
+-	-	docs/modules/admin/assets/images/sms_messaging/SMS_Text_Messaging5.png
+-	-	docs/modules/admin/assets/images/sms_messaging/SMS_Text_Messaging6.png
+2	2	docs/modules/admin/pages/SMS_messaging.adoc
+ delete mode 100644 docs/modules/admin/assets/images/sms_messaging/SMS_Text_Messaging3.jpg
+ create mode 100644 docs/modules/admin/assets/images/sms_messaging/SMS_Text_Messaging3.png
+ delete mode 100644 docs/modules/admin/assets/images/sms_messaging/SMS_Text_Messaging4.jpg
+ create mode 100644 docs/modules/admin/assets/images/sms_messaging/SMS_Text_Messaging4.png
+
+commit 13c3d9856cfd5afd2e46fd3da3d4bf46262b72c8
+Author: Jane Sandberg <js7389@princeton.edu>
+Date:   Fri Jul 26 10:36:18 2024 -0700
+
+    LP2069098: get Angular tests compiling and passing again
+    
+    An Angular constructors got a new parameter, but the
+    test that called the constructor wasn't updated
+    to include the new parameter.  This commit adds the
+    missing parameters.
+    
+    Release-note: Update automated tests for the staff client.
+    
+    Signed-off-by: Jane Sandberg <sandbergja@gmail.com>
+    Signed-off-by: Terran McCanna <tmccanna@georgialibraries.org>
+    Signed-off-by: Steven Mayo <smayo@georgialibraries.org>
+    Signed-off-by: Michele Morgan <mmorgan@noblenet.org>
+    Signed-off-by: Scott Angel <scottangel@mobiusconsortium.org>
+    Signed-off-by: Gina Monti <gmonti@biblio.org>
+    Signed-off-by: Jason Stephenson <jason@sigio.com>
+
+3	1	Open-ILS/src/eg2/src/app/staff/admin/local/cash-reports/cash-reports.component.spec.ts
+
+commit 959b5616c733e570b825c49d760425e0cfa9c58c
+Author: Josh Stompro <stomproj@larl.org>
+Date:   Wed Jul 24 14:44:07 2024 -0500
+
+    LP#2073993 - Docs: Action Trigger template example has a small error.
+    in "helpers.get_org_setting(target.home_ou.id, 'org.bounced_emails')"
+    
+    It doesn't work to use target.home_ou.id since the example is for Overdue items,
+    which use a circ base object.  Updated example to pull the 'org.bounced_emails'
+    using the user variable defined in the example.
+    
+    Signed-off-by: Josh Stompro <stomproj@larl.org>
+    Signed-off-by: Jane Sandberg <sandbergja@gmail.com>
+
+1	1	docs/modules/admin/pages/actiontriggers.adoc
+
+commit 6bee8e9862bf8fb3f866c15952fef2883e9a79f3
+Author: Jane Sandberg <js7389@princeton.edu>
+Date:   Wed Jul 17 07:32:45 2024 -0700
+
+    Add upgrade notes to release notes
+    
+    Also, add a bug fix to the Catalog section, and remove a bug fix that was later reverted
+    
+    Signed-off-by: Jane Sandberg <js7389@princeton.edu>
+
+3	1	docs/RELEASE_NOTES_3_11.adoc
+3	0	docs/RELEASE_NOTES_3_12.adoc
+0	8	docs/RELEASE_NOTES_3_13.adoc
