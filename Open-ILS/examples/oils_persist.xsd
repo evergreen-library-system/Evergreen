@@ -37,7 +37,20 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 <xs:attribute name="restrict_primary"/>
 <xs:attribute name="sequence"/>
 <xs:attribute name="tablename"/>
-<xs:attribute name="virtual" type="xs:boolean"/>
 <xs:attribute name="field_safe" type="xs:boolean"/>
+
+<!--
+
+When "virtual" applied to a whole class it means the class is not backed
+by a DB table, view, or in-IDL SELECT statement, but instead is completely
+ephemeral and constructed outside any database access.
+
+When "virtual" is applied to a field it means there is no database column
+on a table, view, or in-IDL SELECT statement behind the data, such as with
+has_many links, values calculated by the business logic layer, or
+temporary/scratch values.
+
+-->
+<xs:attribute name="virtual" type="xs:boolean"/>
 
 </xs:schema>
