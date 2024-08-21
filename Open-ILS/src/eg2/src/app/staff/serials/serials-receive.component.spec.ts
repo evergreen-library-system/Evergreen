@@ -9,6 +9,7 @@ import { of } from 'rxjs';
 import { PrintService } from '@eg/share/print/print.service';
 import { ToastService } from '@eg/share/toast/toast.service';
 import { MockGenerators } from 'test_data/mock_generators';
+import { SerialsService } from './serials.service';
 
 const template = MockGenerators.idlObject({
     circ_modifier: 'DEFAULT',
@@ -47,6 +48,7 @@ describe('SerialsReceiveComponent', () => {
                 {provide: PermService, useValue: null},
                 {provide: PrintService, useValue: jasmine.createSpyObj<PrintService>(['print'])},
                 {provide: ToastService, useValue: jasmine.createSpyObj<ToastService>(['success'])},
+                {provide: SerialsService, useValue: MockGenerators.serialsService()},
                 {provide: IdlService, useValue:
                 jasmine.createSpyObj<IdlService>(['getClassSelector'], {classes: {
                     acnp: {pkey: 'id'},
@@ -115,6 +117,21 @@ describe('SerialsReceiveComponent', () => {
             it('considers the form to be valid', () => {
                 expect(component.tableForm.valid).toBe(true);
                 expect(fixture.nativeElement.querySelector('#receive-button').disabled).toBeFalse();
+            });
+            it('greys out the Automatically generate barcodes checkbox', () => {
+                expect(fixture.nativeElement.querySelector('#autoGenerate').disabled).toBeTrue();
+            });
+            it('greys out the Show Call Number Prefixes/Suffixes checkbox', () => {
+                expect(fixture.nativeElement.querySelector('#callNumberAffixes').disabled).toBeTrue();
+            });
+        });
+        describe('when the Automatically generate barcodes checkbox is checked', () => {
+            beforeEach(() => {
+                component.tableForm.get('barcodeOptions').get('autoGenerate').setValue(true);
+                fixture.detectChanges();
+            });
+            it('greys out the barcode field', () => {
+                expect(fixture.nativeElement.querySelector('input[aria-labelledby="row-0 barcode"]').disabled).toBeTrue();
             });
         });
         describe('receiveItems$()', () => {

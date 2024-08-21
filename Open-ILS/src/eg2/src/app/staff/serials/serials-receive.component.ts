@@ -5,7 +5,7 @@ import { CommonModule } from '@angular/common';
 import { CommonWidgetsModule } from '@eg/share/common-widgets.module';
 import { AbstractControl, FormArray, FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { NetService } from '@eg/core/net.service';
-import { Observable, merge, tap, toArray } from 'rxjs';
+import { Observable, forkJoin, merge, tap, toArray } from 'rxjs';
 import { AuthService } from '@eg/core/auth.service';
 import { PrintService } from '@eg/share/print/print.service';
 import { PcrudService } from '@eg/core/pcrud.service';
@@ -14,13 +14,18 @@ import { ToastService } from '@eg/share/toast/toast.service';
 import { Router } from '@angular/router';
 import { ComboboxEntry } from '@eg/share/combobox/combobox.component';
 import { SerialsNoteComponent } from './serials-note.component';
+import { SerialsService } from './serials.service';
 
 
 @Component({
     selector: 'eg-serials-receive',
     standalone: true,
     imports: [CommonModule, ItemLocationSelectModule, CommonWidgetsModule, ReactiveFormsModule, SerialsNoteComponent],
-    templateUrl: './serials-receive.component.html'
+    providers: [SerialsService],
+    templateUrl: './serials-receive.component.html',
+    styles: [
+        '.receive-serials-grid td {padding: var(--spacing-1);}'
+    ]
 })
 export class SerialsReceiveComponent implements OnInit {
     @Input() sitems: IdlObject[];
@@ -29,8 +34,17 @@ export class SerialsReceiveComponent implements OnInit {
     @Output() cancel = new EventEmitter<void>();
 
     barcodeModeOn = true;
+    showCallNumberAffixes: boolean;
     itemsFormArray: FormArray;
     tableForm: FormGroup;
+
+    callNumberPrefixes: ComboboxEntry[];
+    callNumbers: ComboboxEntry[];
+    callNumberSuffixes: ComboboxEntry[];
+
+    defaultCallNumberPrefix: ComboboxEntry;
+    defaultCallNumber: ComboboxEntry;
+    defaultCallNumberSuffix: ComboboxEntry;
 
     auth = inject(AuthService);
     evt = inject(EventService);
@@ -38,9 +52,11 @@ export class SerialsReceiveComponent implements OnInit {
     pcrud = inject(PcrudService);
     printer = inject(PrintService);
     router = inject(Router);
+    serials = inject(SerialsService);
     toast = inject(ToastService);
 
     ngOnInit() {
+        this.showCallNumberAffixes = this.serials.shouldShowCallNumberAffixes();
         this.itemsFormArray = new FormArray(this.sitems.map((sitem) => this.formGroupForSitem(sitem)));
         this.tableForm = new FormGroup({
             items: this.itemsFormArray
@@ -48,9 +64,9 @@ export class SerialsReceiveComponent implements OnInit {
         if(this.anyItemsWithReceiveUnitTemplate) {
             // Add batch controls
             this.tableForm.addControl('batch', new FormGroup({
-                prefix: new FormControl<ComboboxEntry>({id: null}),
-                callnumber: new FormControl<ComboboxEntry>({id: null}),
-                suffix: new FormControl<ComboboxEntry>({id: null}),
+                prefix: new FormControl<ComboboxEntry>(null),
+                callnumber: new FormControl<ComboboxEntry>(null),
+                suffix: new FormControl<ComboboxEntry>(null),
                 location: new FormControl(),
                 modifier: new FormControl<ComboboxEntry>({id: null}),
                 barcode: new FormControl('')
@@ -59,12 +75,20 @@ export class SerialsReceiveComponent implements OnInit {
             // Add barcode options
             this.tableForm.addControl('barcodeOptions', new FormGroup({
                 barcodeItems: new FormControl(true),
-                autoGenerate: new FormControl(false)
+                autoGenerate: new FormControl(false),
+                callNumberAffixes: new FormControl(this.showCallNumberAffixes)
             }));
 
             // Turn barcode mode on/off depending on the checkbox
             this.tableForm.get('barcodeOptions').get('barcodeItems').valueChanges.subscribe((value) => {
                 this.barcodeModeOn = value;
+                if (value) {
+                    this.autoGenerateBarcodeCheckbox.enable();
+                    this.showCallNumberAffixesCheckbox.enable();
+                } else {
+                    this.autoGenerateBarcodeCheckbox.disable();
+                    this.showCallNumberAffixesCheckbox.disable();
+                }
                 this.itemsFormArray.controls.forEach((row) => {
                     if(value) {
                         this.turnOnBarcodeValidationForRow(row);
@@ -75,14 +99,34 @@ export class SerialsReceiveComponent implements OnInit {
             });
 
             // Apply the auto-generate value to the barcode fields or clear them
-            this.tableForm.get('barcodeOptions').get('autoGenerate').valueChanges.subscribe((value) => {
+            this.autoGenerateBarcodeCheckbox.valueChanges.subscribe((value) => {
+                const autoGenerateToken = '@@AUTO';
                 this.itemsFormArray.controls.forEach((row) => {
-                    const autoGenerateToken = '@@AUTO';
                     if (value) {
                         row.get('barcode')?.setValue(autoGenerateToken);
-                    } else if (row.get('barcode')?.value === autoGenerateToken) {
-                        row.get('barcode')?.setValue('');
+                        row.get('barcode')?.disable();
+                    } else {
+                        row.get('barcode')?.enable();
+                        if (row.get('barcode')?.value === autoGenerateToken) {
+                            row.get('barcode')?.setValue('');
+                        }
                     }
+                });
+            });
+
+            this.tableForm.get('barcodeOptions').get('callNumberAffixes').valueChanges.subscribe((value) => {
+                this.showCallNumberAffixes = value;
+                this.serials.storeCallNumberAffixPreference(value);
+            });
+
+            this.fetchCallNumberData$().subscribe(values => {
+                this.callNumberPrefixes = values.prefixes;
+                this.callNumbers = values.callNumbers;
+                this.callNumberSuffixes = values.suffixes;
+                this.itemsFormArray.controls.forEach((row) => {
+                    row.get('prefix')?.setValue(values.defaultPrefix);
+                    row.get('callnumber')?.setValue(values.defaultCallNumber);
+                    row.get('suffix')?.setValue({id: values.defaultSuffix});
                 });
             });
         }
@@ -184,6 +228,11 @@ export class SerialsReceiveComponent implements OnInit {
         return this.anyItemsWithReceiveUnitTemplate && this.barcodeModeOn;
     }
 
+    // A serials item can have notes at various levels:
+    //   * on the item itself
+    //   * on the distribution
+    //   * on the subscription
+    // This method combines them all, regardless of level
     notesForSitem(sitem: IdlObject): IdlObject[] {
         const sitem_notes = sitem.notes() || [];
         const sdist_notes = sitem.stream().distribution().notes() || [];
@@ -282,7 +331,7 @@ export class SerialsReceiveComponent implements OnInit {
             controls['prefix'] = new FormControl<ComboboxEntry>({id: null});
             controls['callnumber'] = new FormControl<ComboboxEntry>({id: null}, Validators.required);
             controls['suffix'] = new FormControl<ComboboxEntry>({id: null});
-            controls['location'] = new FormControl(sitem.stream().distribution().receive_unit_template().location());
+            controls['location'] = new FormControl(this.defaultLocationForSitem(sitem));
             controls['modifier'] = new FormControl<ComboboxEntry>(this.defaultCircModifier(sitem));
             controls['barcode'] = new FormControl('', Validators.required);
         }
@@ -293,12 +342,13 @@ export class SerialsReceiveComponent implements OnInit {
     }
 
     private defaultCircModifier(sitem: IdlObject): ComboboxEntry {
-        const circModifier = sitem.stream().distribution().receive_unit_template().circ_modifier();
-        if (circModifier) {
-            return {id: circModifier};
-        } else {
-            return {id: null};
+        if (sitem.stream().distribution().receive_unit_template().circ_modifier) {
+            const circModifier = sitem.stream().distribution().receive_unit_template().circ_modifier();
+            if (circModifier) {
+                return {id: circModifier};
+            }
         }
+        return {id: null};
     }
 
     // Setting the serial.unit id to -1 here will cause the Perl code
@@ -330,4 +380,46 @@ export class SerialsReceiveComponent implements OnInit {
         row.get('callnumber')?.clearValidators();
         row.get('callnumber')?.updateValueAndValidity();
     }
+
+    private get autoGenerateBarcodeCheckbox(): AbstractControl {
+        return this.tableForm.get('barcodeOptions').get('autoGenerate');
+    }
+
+    private get showCallNumberAffixesCheckbox(): AbstractControl {
+        return this.tableForm.get('barcodeOptions').get('callNumberAffixes');
+    }
+
+    private fetchCallNumberData$(): Observable<CallNumberData> {
+        return forkJoin({
+            prefixes: this.serials.callNumberPrefixesAsComboboxEntries$(),
+            callNumbers: this.serials.callNumbersAsComboboxEntries$(this.bibRecordId, this.distributionLibraryId),
+            suffixes: this.serials.callNumberSuffixesAsComboboxEntries$(),
+            defaultPrefix: this.serials.defaultCallNumberPrefix$(this.bibRecordId, this.distributionLibraryId),
+            defaultCallNumber: this.serials.defaultCallNumber$(this.bibRecordId, this.distributionLibraryId),
+            defaultSuffix: this.serials.defaultCallNumberSuffix$(this.bibRecordId, this.distributionLibraryId)
+        });
+    }
+
+    private get distributionLibraryId(): number {
+        if (typeof this.sitems[0]?.stream()?.distribution()?.holding_lib()?.id === 'function') {
+            return this.sitems[0].stream().distribution().holding_lib().id();
+        }
+        return null;
+    }
+
+    private defaultLocationForSitem(sitem: IdlObject): IdlObject {
+        if (sitem.stream().distribution().receive_unit_template().location) {
+            return sitem.stream().distribution().receive_unit_template().location();
+        }
+        return null;
+    }
+}
+
+interface CallNumberData {
+    prefixes: ComboboxEntry[];
+    callNumbers: ComboboxEntry[];
+    suffixes: ComboboxEntry[];
+    defaultPrefix: ComboboxEntry;
+    defaultCallNumber: ComboboxEntry;
+    defaultSuffix: ComboboxEntry;
 }
