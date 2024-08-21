@@ -48,6 +48,15 @@
   --gray-850: hsla(223, 15%, 19%, 1);
   --gray-900: hsla(223, 15%, 14%, 1);
   --gray-950: hsla(223, 15%, 9%, 1);
+
+  /* Spacing options, based on bootstrap's spacing utility
+     classes, see
+     https://getbootstrap.com/docs/5.0/utilities/spacing/ */
+  --spacing-1: 0.25rem;
+  --spacing-2: 0.5rem;
+  --spacing-3: 1rem;
+  --spacing-4: 1.5rem;
+  --spacing-5: 3rem;
 }
 
 /** BS default fonts are huge */

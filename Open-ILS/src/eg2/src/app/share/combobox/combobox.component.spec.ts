@@ -1,4 +1,4 @@
-import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed, fakeAsync, flush, discardPeriodicTasks } from '@angular/core/testing';
 import { ComboboxComponent } from './combobox.component';
 import { FormsModule } from '@angular/forms';
 import { NgbTypeaheadModule } from '@ng-bootstrap/ng-bootstrap';
@@ -42,6 +42,41 @@ describe('ComboboxComponent', () => {
         component.ariaLabelledby = 'someElementId';
         fixture.detectChanges();
         expect(fixture.nativeElement.querySelector('input[aria-labelledby="someElementId"]')).toBeTruthy();
+    });
+
+    describe('after an entry has been selected', () => {
+        beforeEach(fakeAsync(() => {
+            component.entries = [
+                {id: 'cat', label: 'Cat'},
+                {id: 'dog', label: 'Dog'}
+            ];
+            fixture.nativeElement.querySelector('input').click();
+            flush();
+
+            // Click on Cat from the dropdown
+            fixture.debugElement.query(
+                debugEl => debugEl.nativeElement.textContent === 'Cat'
+            ).nativeElement.click();
+
+            fixture.detectChanges();
+        }));
+        it('is available through the selectedId getter', () => {
+            expect(component.selectedId).toEqual('cat');
+        });
+        it('is displayed in the input', () => {
+            expect(fixture.nativeElement.querySelector('input').value).toEqual('Cat');
+        });
+        it('propagates the change (e.g. to ngModel) when you clear the field and blur', fakeAsync(() => {
+            component.propagateChange = (value: any) => {};
+            spyOn(component, 'propagateChange');
+
+            // @ts-ignore -- selected can sometimes be a string, although we have it
+            // typed as a ComboboxEntry
+            component.selected = '';
+            component.onBlur(new window.Event('blur'));
+
+            expect(component.propagateChange).toHaveBeenCalledWith(null);
+        }));
     });
 
     describe('default asyncDataSource', () => {
