@@ -23,18 +23,24 @@
             <label class="form-check-label" for="autoGenerate" i18n>
               Automatically generate barcodes
             </label>
-        </div>          
+        </div>
+        <div class="form-check">
+            <input class="form-check-input" type="checkbox" formControlName="callNumberAffixes" id="callNumberAffixes">
+            <label class="form-check-label" for="callNumberAffixes" i18n>
+              Show call number prefix and suffix
+            </label>
+        </div>
     </div>
-    <table *ngIf="sitems" class="table caption-top">
+    <table *ngIf="sitems" class="table caption-top receive-serials-grid">
         <caption i18n>Recievable items</caption>
         <thead>
             <th scope="col" i18n class="visually-hidden">Row number</th>
             <th scope="col" i18n>Library</th>
             <th scope="col" i18n id="issuance">Issuance</th>
             <th scope="col" i18n id="notes">Notes</th>
-            <th scope="col" i18n id="prefix" *ngIf="showBarcodeFields">Call number prefix</th>
+            <th scope="col" i18n id="prefix" *ngIf="showBarcodeFields && showCallNumberAffixes">Call number prefix</th>
             <th scope="col" i18n id="callnumber" *ngIf="showBarcodeFields">Call number</th>
-            <th scope="col" i18n id="suffix" *ngIf="showBarcodeFields">Call number suffix</th>
+            <th scope="col" i18n id="suffix" *ngIf="showBarcodeFields && showCallNumberAffixes">Call number suffix</th>
             <th scope="col" i18n id="location" *ngIf="showBarcodeFields">Shelving location</th>
             <th scope="col" i18n id="modifier" *ngIf="showBarcodeFields">Circulation modifier</th>
             <th scope="col" i18n id="barcode" *ngIf="showBarcodeFields">Barcode</th>
@@ -48,29 +54,28 @@
                 <tr *ngIf="showBarcodeFields" class="table-secondary">
                     <td class="visually-hidden" id="batch-description" i18n>Batch</td>
                     <td colspan="3" i18n><!-- these fields are not editable, so no batch controls --></td>
-                    <td>
+                    <td *ngIf="showCallNumberAffixes">
                         <eg-combobox ariaLabelledby="batch-description prefix"
                             [asyncSupportsEmptyTermClick]="true"
-                            idlClass="acnp"
-                            idlField="label"
+                            [isEditable]="true"
+                            [entries]="callNumberPrefixes"
                             formControlName="prefix">
                         </eg-combobox>
                     </td>
                     <td>
                         <eg-combobox ariaLabelledby="batch-description callnumber"
                             [asyncSupportsEmptyTermClick]="true"
-                            idlClass="acn"
-                            idlField="label"
-                            [idlBaseQuery]="{'record':{'=':bibRecordId}}"
+                            [isEditable]="true"
+                            [entries]="callNumbers"
                             [allowFreeText]="true"
                             formControlName="callnumber">
                         </eg-combobox>
                     </td>
-                    <td>
+                    <td *ngIf="showCallNumberAffixes">
                         <eg-combobox ariaLabelledby="batch-description suffix"
                             [asyncSupportsEmptyTermClick]="true"
-                            idlClass="acns"
-                            idlField="label"
+                            [isEditable]="true"
+                            [entries]="callNumberSuffixes"
                             formControlName="suffix">
                         </eg-combobox>
                     </td>
@@ -85,6 +90,7 @@
                             unsetString="Template default" i18n-unsetString
                             ariaLabelledby="batch-description modifier"
                             [asyncSupportsEmptyTermClick]="true"
+                            [isEditable]="true"
                             formControlName="modifier">
                         </eg-combobox>
                     </td>
@@ -95,7 +101,7 @@
                             formControlName="barcode">
                     </td>
                     <td colspan="2">
-                        <button type="button" class="btn btn-outline-dark"
+                        <button type="button" class="btn btn-primary"
                             (click)="handleApplyBatch()" i18n
                             id="apply-batch">Apply to the following { sitems.length, plural, =1 {issue} other {issues} }</button>
                     </td>
@@ -116,29 +122,28 @@
 
                     <ng-container *ngIf="showBarcodeFields">
                         <ng-container *ngIf="sitems[rowNumber].stream().distribution().receive_unit_template(); else noTemplateForRow">
-                            <td>
+                            <td *ngIf="showCallNumberAffixes">
                                 <eg-combobox ariaLabelledby="row-{{rowNumber}} prefix"
                                     [asyncSupportsEmptyTermClick]="true"
-                                    idlClass="acnp"
-                                    idlField="label"
+                                    [isEditable]="true"
+                                    [entries]="callNumberPrefixes"
                                     formControlName="prefix">
                                 </eg-combobox>
                             </td>
                             <td>
-                                <eg-combobox ariaLabelledby="row-{{rowNumber}} prefix"
+                                <eg-combobox ariaLabelledby="row-{{rowNumber}} callnumber"
                                     [asyncSupportsEmptyTermClick]="true"
-                                    idlClass="acn"
-                                    idlField="label"
-                                    [idlBaseQuery]="{'record':{'=':bibRecordId}}"
+                                    [isEditable]="true"
+                                    [entries]="callNumbers"
                                     [allowFreeText]="true"
                                     formControlName="callnumber">
                                 </eg-combobox>
                             </td>
-                            <td>
+                            <td *ngIf="showCallNumberAffixes">
                                 <eg-combobox ariaLabelledby="row-{{rowNumber}} suffix"
                                     [asyncSupportsEmptyTermClick]="true"
-                                    idlClass="acns"
-                                    idlField="label"
+                                    [isEditable]="true"
+                                    [entries]="callNumberSuffixes"
                                     formControlName="suffix">
                                 </eg-combobox>
                             </td>
@@ -155,6 +160,7 @@
                                     ariaLabelledby="row-{{rowNumber}} modifier"
                                     [selectedId]="sitems[rowNumber].stream().distribution().receive_unit_template().circ_modifier()"
                                     [asyncSupportsEmptyTermClick]="true"
+                                    [isEditable]="true"
                                     formControlName="modifier">
                                 </eg-combobox>
                             </td>
