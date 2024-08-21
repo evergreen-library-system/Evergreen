@@ -7,11 +7,11 @@
 
 This release contains bug fixes and documentation fixes improving on Evergreen 3.12.5.
 
-== Circulation ==
+=== Circulation ===
 
 * Fixes bug that prevented staff from placing holds for patrons with SMS notification preferences when SMS is not enabled in library settings. (https://bugs.launchpad.net/evergreen/+bug/2073990[Bug 2073990])
 
-== Documentation ==
+=== Documentation ===
 
 * Corrects error in Action Trigger examples (https://bugs.launchpad.net/bugs/2073993[Bug 2073993])
 * Updates images for SMS messaging docs (https://bugs.launchpad.net/bugs/2073411[Bug 2073411])
@@ -25,7 +25,7 @@ This release contains bug fixes and documentation fixes improving on Evergreen 3
 * Adds alt text to images in docs
 
 
-== Staff Client ==
+=== Staff Client ===
 
 * Updates automated tests for the staff client. (https://bugs.launchpad.net/evergreen/+bug/2069098[Bug 2069098] and https://bugs.launchpad.net/evergreen/+bug/2074220[Bug 2074220)
 
@@ -34,12 +34,14 @@ This release contains bug fixes and documentation fixes improving on Evergreen 3
 We would like to thank the following individuals who contributed code, testing, documentation, and patches to the 3.12.6 point release of Evergreen:
 
 * Andrea Buntz Neiman
+* Blake Graham-Henderson
 * Dan Briem
 * Gina Monti
 * Jane Sandberg
 * Jason Stephenson
 * Josh Stompro
 * Michele Morgan
+* Ruth Davis
 * Scott Angel
 * Steven Mayo
 * Susan Morrison
