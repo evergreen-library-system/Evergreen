@@ -13,6 +13,7 @@ import {OpChangeComponent} from '@eg/staff/share/op-change/op-change.component';
 import {PermService} from '@eg/core/perm.service';
 import {ConfirmDialogComponent} from '@eg/share/dialog/confirm.component';
 import {NgbCollapseModule, NgbDropdown} from '@ng-bootstrap/ng-bootstrap';
+import {AccessKeyInfoComponent} from '@eg/share/accesskey/accesskey-info.component';
 
 @Component({
     selector: 'eg-staff-nav-bar',
@@ -39,6 +40,7 @@ export class StaffNavComponent implements OnInit, OnDestroy {
     @ViewChild('navOpChange', {static: false}) opChange: OpChangeComponent;
     @ViewChild('confirmLogout', { static: true }) confirmLogout: ConfirmDialogComponent;
     @ViewChildren(NgbDropdown) dropdowns: QueryList<NgbDropdown>;
+    @ViewChild('egAccessKeyInfo', {static: true}) egAccessKeyInfo: AccessKeyInfoComponent;
     permFailedSub: Subscription;
 
     constructor(

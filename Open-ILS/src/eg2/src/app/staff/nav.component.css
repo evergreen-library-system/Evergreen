@@ -102,6 +102,16 @@
     font-size: 1.125rem;
 }
 
+#staff-navbar .dropdown-item kbd {
+    background-color: var(--gray-100);
+    box-shadow: 0 1px 1px rgba(0,0,10,0.2);
+    margin-inline-start: auto;
+}
+
+#staff-navbar .dropdown-item:has(kbd) span:not(.material-icons):last-of-type {
+    margin-inline-end: 0.5rem;
+}
+
 #staff-navbar .dropdown-menu .nav-link {
     padding-top: 1px;
     padding-bottom: 1px;

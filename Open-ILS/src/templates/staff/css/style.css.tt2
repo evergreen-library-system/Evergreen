@@ -52,6 +52,25 @@ body { padding-bottom: 50px; }
     border-bottom-color: #ddd;
 }
 
+#top-navbar ul.dropdown-menu > li > a {
+  display: flex;
+  align-items: baseline;
+}
+
+#top-navbar ul.dropdown-menu > li > a > kbd {
+  margin-inline-start: auto;
+  background-color: #e8e8e8;
+  color: #000;
+}
+
+#top-navbar ul.dropdown-menu li a:has(kbd) > span:not(.glyphicon):last-of-type {
+  margin-inline-end: 1rem;
+}
+
+#top-navbar ul.dropdown-menu li .glyphicon {
+  margin-inline-end: 0.5rem;
+}
+
 a.skip-nav:not(:focus):not(:hover) {
     transform: translateY(-4em);
     opacity: 0;

@@ -911,10 +911,20 @@
             <span class="material-icons" aria-hidden="true">info_outline</span>
             <span i18n>About</span>
           </a>
+          <button type="button" class="dropdown-item" ngbDropdownItem  
+              (click)="egAccessKeyInfo.open({size: 'lg'}); isMenuCollapsed = true" 
+              (keydown.space)="isMenuCollapsed = true" 
+              (keydown.enter)="isMenuCollapsed = true">
+            <span class="material-icons" aria-hidden="true">keyboard</span>
+            <span i18n>Keyboard Shortcuts</span>
+            <kbd i18n>Ctrl+H</kbd>
+          </button>
         </div>
       </div>
     </div>
   </div>
 </div>
 </nav>
+
+<eg-accesskey-info #egAccessKeyInfo></eg-accesskey-info>
 

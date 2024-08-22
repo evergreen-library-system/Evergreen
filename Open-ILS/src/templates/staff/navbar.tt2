@@ -41,7 +41,8 @@
               eg-accesskey="[% l('alt+s') %] [% l('f4') %]"
               eg-accesskey-desc="[% l('Patron search by name, address, etc.') %]">
               <span class="glyphicon glyphicon-user" aria-hidden="true"></span>
-              <span eg-accesskey-label>[% l('Search for Patrons') %][% l('- F4') %]</span>
+              <span eg-accesskey-label>[% l('Search for Patrons') %]</span>
+              <kbd>[% l('F4') %]</kbd>
             </a>
           </li>
           <li>
@@ -49,7 +50,8 @@
               eg-accesskey="[% l('f5') %]"
               eg-accesskey-desc="[% l('Item Status') %]">
               <span class="glyphicon glyphicon-barcode" aria-hidden="true"></span>
-              <span>[% l('Search for Items by Barcode') %][% l('- F5') %]</span>
+              <span>[% l('Search for Items by Barcode') %]</span>
+              <kbd>[% l('F5') %]</kbd>
             </a>
           </li>
           <li>
@@ -57,7 +59,8 @@
               eg-accesskey="[% l('f3') %]" 
               eg-accesskey-desc="[% l('Catalog') %]">
               <span class="glyphicon glyphicon-search" aria-hidden="true"></span>
-              <span>[% l('Search the Catalog') %][% l('- F3') %]</span>
+              <span>[% l('Search the Catalog') %]</span>
+              <kbd>[% l('F3') %]</kbd>
             </a>
           </li>
         </ul>
@@ -75,7 +78,8 @@
               eg-accesskey="[% l('f1') %]"
               eg-accesskey-desc="[% l('Check Out') %]">
               <span class="glyphicon glyphicon-export" aria-hidden="true"></span>
-              [% l('Check Out F1') %]
+              <span>[% l('Check Out') %]</span>
+              <kbd>[% l('F1') %]</kbd>
             </a>
           </li>
           <li ng-if="!username">
@@ -83,7 +87,8 @@
               eg-accesskey="[% l('f1') %]"
               eg-accesskey-desc="[% l('Check Out') %]">
               <span class="glyphicon glyphicon-export" aria-hidden="true"></span>
-              [% l('Check Out') %][% l('- F1') %]
+              <span>[% l('Check Out') %]</span>
+              <kbd>[% l('F1') %]</kbd>
             </a>
           </li>
           <li ng-if="username">
@@ -91,7 +96,8 @@
               eg-accesskey="[% l('f2') %]"
               eg-accesskey-desc="[% l('Check In') %]">
               <span class="glyphicon glyphicon-import" aria-hidden="true"></span>
-              [% l('Check In') %][% l('- F2') %]
+              <span>[% l('Check In') %]</span>
+              <kbd>[% l('F2') %]</kbd>
             </a>
           </li>
  	  <li ng-if="!username">
@@ -99,7 +105,8 @@
               eg-accesskey="[% l('f2') %]"
               eg-accesskey-desc="[% l('Check In') %]">
               <span class="glyphicon glyphicon-import" aria-hidden="true"></span>
-              [% l('Check In') %][% l('- F2') %]
+              <span>[% l('Check In') %]</span>
+              <kbd>[% l('F2') %]</kbd>
             </a>
            </li>
            <li>
@@ -107,7 +114,8 @@
               eg-accesskey="[% l('shift+f2') %]"
               eg-accesskey-desc="[% l('Capture Holds') %]">
               <span class="glyphicon glyphicon-pushpin" aria-hidden="true"></span>
-              [% l('Capture Holds') %][% l('- Shift+F2') %]
+              <span>[% l('Capture Holds') %]</span>
+              <kbd>[% l('Shift+F2') %]</kbd>
             </a>
           </li>
           <li>
@@ -121,7 +129,8 @@
               eg-accesskey="[% l('ctrl+f2') %]"
               eg-accesskey-desc="[% l('Renew items') %]">
               <span class="glyphicon glyphicon-refresh" aria-hidden="true"></span>
-              [% l('Renew Items') %][% l('- Ctrl+F2') %]
+              <span>[% l('Renew Items') %]</span>
+              <kbd>[% l('Ctrl+F2') %]</kbd>
             </a>
           </li>
 
@@ -130,7 +139,8 @@
               eg-accesskey="[% l('ctrl+f2') %]"
               eg-accesskey-desc="[% l('Renew items') %]">
               <span class="glyphicon glyphicon-refresh" aria-hidden="true"></span>
-              [% l('Renew Items') %][% l('- Ctrl+F2') %]
+              <span>[% l('Renew Items') %]</span>
+              <kbd>[% l('Ctrl+F2') %]</kbd>
             </a>
            </li>
            <li ng-if="username">
@@ -138,7 +148,8 @@
               eg-accesskey="[% l('shift+f1') %]"
               eg-accesskey-desc="[% l('Register Patron') %]">
               <span class="glyphicon glyphicon-user" aria-hidden="true"></span>
-              [% l('Register Patron') %][% l('- Shift+F1') %]
+              <span>[% l('Register Patron') %]</span>
+              <kbd>[% l('Shift+F1') %]</kbd>
             </a>
            </li>
            <li ng-if="!username">
@@ -146,7 +157,8 @@
               eg-accesskey="[% l('shift+f1') %]"
               eg-accesskey-desc="[% l('Register Patron') %]">
               <span class="glyphicon glyphicon-user" aria-hidden="true"></span>
-              [% l('Register Patron') %][% l('- Shift+F1') %]
+              <span>[% l('Register Patron') %]</span>
+              <kbd>[% l('Shift+F1') %]</kbd>
             </a>
            </li>
 	<li ng-if="showRecentPatron">
@@ -154,7 +166,8 @@
               eg-accesskey="[% l('f8') %]"
               eg-accesskey-desc="[% l('Retrieve Last Patron') %]">
               <span class="glyphicon glyphicon-share-alt" aria-hidden="true"></span>
-              [% l('Retrieve Last Patron') %][% l('- F8') %]
+              <span>[% l('Retrieve Last Patron') %]</span>
+              <kbd>[% l('F8') %]</kbd>
             </a>
           </li>
           <li ng-if="showRecentPatrons">
@@ -194,7 +207,8 @@
               eg-accesskey="[% l('f6') %]"
               eg-accesskey-desc="[% l('Record In-House Use') %]">
               <span class="glyphicon glyphicon-pencil" aria-hidden="true"></span>
-              <span>[% l('Record In-House Use') %][% l('- F6') %]</span>
+              <span>[% l('Record In-House Use') %]</span>
+              <kbd>[% l('F6') %]</kbd>
             </a>
           </li>
           <li ng-if="!username">
@@ -202,7 +216,8 @@
               eg-accesskey="[% l('f6') %]"
               eg-accesskey-desc="[% l('Record In-House Use') %]">
               <span class="glyphicon glyphicon-pencil" aria-hidden="true"></span>
-              <span>[% l('Record In-House Use') %][% l('- F6') %]</span>
+              <span>[% l('Record In-House Use') %]</span>
+              <kbd>[% l('F6') %]</kbd>
             </a>
           </li>
           <li>
@@ -223,7 +238,8 @@
               eg-accesskey="[% l('f5') %]" 
               eg-accesskey-desc="[% l('Item Status') %]">
               <span class="glyphicon glyphicon-saved" aria-hidden="true"></span>
-              <span>[% l('Item Status') %][% l('- F5') %]</span>
+              <span>[% l('Item Status') %]</span>
+              <kbd>[% l('F5') %]</kbd>
             </a>
           </li>
           <li>
@@ -238,7 +254,8 @@
               eg-accesskey="[% l('f9') %]"
               eg-accesskey-desc="[% l('Reprint Last Receipt') %]">
               <span class="glyphicon glyphicon-print" aria-hidden="true"></span>
-              <span>[% l('Reprint Last Receipt') %][% l('- F9') %]</span>
+              <span>[% l('Reprint Last Receipt') %]</span>
+              <kbd>[% l('F9') %]</kbd>
             </a>
           </li>
           <li class="divider"></li>
@@ -342,13 +359,14 @@
               eg-accesskey="[% l('f3') %]" 
               eg-accesskey-desc="[% l('Catalog') %]">
               <span class="glyphicon glyphicon-search" aria-hidden="true"></span>
-              <span>[% l('Search the Catalog F3') %]</span>
+              <span>[% l('Search the Catalog') %]</span>
+              <kbd>[% l('F3') %]</kbd>
             </a>
           </li>
           <li ng-if="showTraditionalCatalog">
             <a href="./cat/catalog/index" target="_self">
               <span class="glyphicon glyphicon-search" aria-hidden="true"></span>
-              [% l('Search the Catalog (Traditional)') %][% l('- F3') %]
+              <span>[% l('Search the Catalog (Traditional)') %]</span>
             </a>
           </li>
           <li>
@@ -356,27 +374,28 @@
               eg-accesskey="[% l('f5') %]" 
               eg-accesskey-desc="[% l('Item Status') %]">
               <span class="glyphicon glyphicon-saved" aria-hidden="true"></span>
-              <span>[% l('Item Status F5') %]</span>
+              <span>[% l('Item Status') %]</span>
+              <kbd>[% l('F5') %]</kbd>
             </a>
           </li>
           <li class="divider"></li>
           <li>
             <a href="./cat/bucket/record/view" target="_self">
               <span class="glyphicon glyphicon-list-alt" aria-hidden="true"></span>
-              [% l('Record Buckets') %]
+              <span>[% l('Record Buckets') %]</span>
             </a>
           </li>
           <li>
             <a href="./cat/bucket/copy/view" target="_self">
               <span class="glyphicon glyphicon-list-alt" aria-hidden="true"></span>
-              [% l('Item Buckets') %]
+              <span>[% l('Item Buckets') %]</span>
             </a>
           </li>
           <li class="divider"></li>
           <li>
             <a href="/eg2/staff/cat/bib-from/id">
               <span class="glyphicon glyphicon-file" aria-hidden="true"></span>
-              [% l('Retrieve Bib Record by ID') %]
+              <span>[% l('Retrieve Bib Record by ID') %]</span>
             </a>
           </li>
           <li>
@@ -385,7 +404,8 @@
               eg-accesskey="[% l('shift+f3') %]" 
               eg-accesskey-desc="[% l('Retrieve Last Bib Record') %]">
               <span class="glyphicon glyphicon-tag" aria-hidden="true"></span>
-              [% l('Retrieve Bib Record by TCN') %][% l('- Shift+F3') %]
+              <span>[% l('Retrieve Bib Record by TCN') %]</span>
+              <kbd>[% l('Shift+F3') %]</kbd>
             </a>
           </li>
 	  <li>
@@ -393,7 +413,8 @@
               eg-accesskey="[% l('shift+f8') %]"
               eg-accesskey-desc="[% l('Retrieve Last Bib Record') %]">
               <span class="glyphicon glyphicon-share-alt" aria-hidden="true"></span>
-              [% l('Retrieve Last Bib Record') %][% l('- Shift+F8') %]
+              <span>[% l('Retrieve Last Bib Record') %]</span>
+              <kbd>[% l('Shift+F8') %]</kbd>
             </a>
           </li>
           <li class="divider"></li>
@@ -402,45 +423,46 @@
               eg-accesskey="[% l('ctrl+f3') %]"
               eg-accesskey-desc="[% l('Create New MARC Record') %]">
               <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
-              [% l('Create New MARC Record Ctrl+F3') %]
+              <span>[% l('Create New MARC Record') %]</span>
+              <kbd>[% l('Ctrl+F3') %]</kbd>
             </a>
           </li>
           <li>
             <a href="/eg2/staff/cat/z3950/search" target="_self">
               <span class="glyphicon glyphicon-cloud-download" aria-hidden="true"></span>
-              [% l('Import Record from Z39.50') %]
+              <span>[% l('Import Record from Z39.50') %]</span>
             </a>
           </li>
           <li>
             <a href="/eg2/staff/cat/vandelay/import">
               <span class="glyphicon glyphicon-transfer" aria-hidden="true"></span>
-              [% l('MARC Batch Import/Export') %]
+              <span>[% l('MARC Batch Import/Export') %]</span>
             </a>
           </li>
 	  <li>
             <a href="/eg2/staff/cat/marcbatch">
               <span class="glyphicon glyphicon-edit" aria-hidden="true"></span>
-              [% l('MARC Batch Edit') %]
+              <span>[% l('MARC Batch Edit') %]</span>
             </a>
           </li>
           <li class="divider"></li>
           <li>
             <a href="./cat/catalog/verifyURLs" target="_self">
               <span class="glyphicon glyphicon-link" aria-hidden="true"></span>
-              [% l('Link Checker') %]
+              <span>[% l('Link Checker') %]</span>
             </a>
           </li>
           <li class="divider"></li>
           <li>
             <a href="/eg2/staff/cat/authority/browse">
               <span class="glyphicon glyphicon-lock" aria-hidden="true"></span>
-              [% l('Manage Authorities') %]
+              <span>[% l('Manage Authorities') %]</span>
             </a>
           </li>
           <li>
             <a href="/eg2/staff/cat/authority/edit" target="_self">
               <span class="glyphicon glyphicon-file" aria-hidden="true"></span>
-              [% l('Retrieve Authority Record by ID') %]
+              <span>[% l('Retrieve Authority Record by ID') %]</span>
             </a>
           </li>
        </ul>
@@ -455,106 +477,106 @@
           <li>
             <a href="/eg2/staff/acq/search" target="_self">
               <span class="glyphicon glyphicon-search" aria-hidden="true"></span>
-              [% l('General Search') %]
+              <span>[% l('General Search') %]</span>
             </a>
           <li class="divider"></li>
           <li>
             <a href="/eg2/staff/acq/provider" target="_self">
               <span class="glyphicon glyphicon-search" aria-hidden="true"></span>
-              [% l('Provider Search') %]
+              <span>[% l('Provider Search') %]</span>
             </a>
           </li>
           <li class="divider"></li>
           <li>
             <a href="/eg2/staff/acq/search/selectionlists" target="_self">
               <span class="glyphicon glyphicon-list" aria-hidden="true"></span>
-              [% l('Selection Lists') %]
+              <span>[% l('Selection Lists') %]</span>
             </a>
           </li>
           <li>
             <a href="/eg2/staff/acq/picklist/brief-record" target="_self">
               <span class="glyphicon glyphicon-pencil" aria-hidden="true"></span>
-              [% l('New Brief Record') %]
+              <span>[% l('New Brief Record') %]</span>
             </a>
           </li>
           <li>
             <a href="./acq/requests/list" target="_self">
               <span class="glyphicon glyphicon-thumbs-up" aria-hidden="true"></span>
-              [% l('Patron Requests') %]
+              <span>[% l('Patron Requests') %]</span>
             </a>
           </li>
           <li>
             <a href="/eg2/staff/acq/picklist/z3950-search" target="_self">
               <span class="glyphicon glyphicon-cloud-download" aria-hidden="true"></span>
-              [% l('MARC Federated Search') %]
+              <span>[% l('MARC Federated Search') %]</span>
             </a>
           </li>
           <li>
             <a href="/eg2/staff/acq/picklist/from-bib-ids" target="_self">
               <span class="glyphicon glyphicon-import" aria-hidden="true"></span>
-              [% l('Load Catalog Record IDs') %]
+              <span>[% l('Load Catalog Record IDs') %]</span>
             </a>
           </li>
           <li class="divider"></li>
           <li>
             <a href="/eg2/staff/acq/picklist/upload" target="_self">
               <span class="glyphicon glyphicon-cloud-upload" aria-hidden="true"></span>
-              [% l('Load MARC Order Records') %]
+              <span>[% l('Load MARC Order Records') %]</span>
             </a>
           </li>
           <li>
             <a href="/eg2/staff/cat/vandelay/background-import?type=acq" target="_self">
               <span class="glyphicon glyphicon-cloud-download" aria-hidden="true"></span>
-              [% l('Background Imports') %]
+              <span>[% l('Background Imports') %]</span>
             </a>
           <li>
             <a href="/eg2/staff/acq/search/purchaseorders" target="_self">
               <span class="glyphicon glyphicon-shopping-cart" aria-hidden="true"></span>
-              [% l('Purchase Orders') %]
+              <span>[% l('Purchase Orders') %]</span>
             </a>
           </li>
           <li>
             <a href="/eg2/staff/acq/po/create">
               <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
-              [% l('Create Purchase Order') %]
+              <span>[% l('Create Purchase Order') %]</span>
             </a>
           </li>
           <li class="divider"></li>
           <li>
             <a href="/eg2/staff/acq/claim" target="_self">
               <span class="glyphicon glyphicon-question-sign" aria-hidden="true"></span>
-              [% l('Claim-Ready Items') %]
+              <span>[% l('Claim-Ready Items') %]</span>
             </a>
           </li>
           <li>
             <a href="./acq/legacy/financial/claim_eligible" target="_self">
               <span class="glyphicon glyphicon-question-sign" aria-hidden="true"></span>
-              [% l('Claim-Ready Items (Legacy)') %]
+              <span>[% l('Claim-Ready Items (Legacy)') %]</span>
             </a>
           </li>
           <li>
           <li>
             <a href="/eg2/staff/acq/asn/receive">
               <span class="glyphicon glyphicon-usd" aria-hidden="true"></span>
-              [% l('Receive Shipment') %]
+              <span>[% l('Receive Shipment') %]</span>
             </a>
           </li>
           <li>
             <a href="/eg2/staff/acq/search/invoices" target="_self">
               <span class="glyphicon glyphicon-usd" aria-hidden="true"></span>
-              [% l('Invoices') %]
+              <span>[% l('Invoices') %]</span>
             </a>
           </li>
           <li>
             <a href="/eg2/staff/acq/invoice/create" target="_self">
               <span class="glyphicon glyphicon-credit-card" aria-hidden="true"></span>
-              [% l('Create Invoice') %]
+              <span>[% l('Create Invoice') %]</span>
             </a>
           </li>
           <li>
             <a href="./acq/legacy/invoice/view?create=1" target="_self">
               <span class="glyphicon glyphicon-credit-card" aria-hidden="true"></span>
-              [% l('Create Invoice (Legacy)') %]
+              <span>[% l('Create Invoice (Legacy)') %]</span>
             </a>
           </li>
        </ul>
@@ -569,37 +591,37 @@
           <li>
             <a href="/eg2/staff/booking/create_reservation" target="_self">
               <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
-              [% l('Create Reservations') %]
+              <span>[% l('Create Reservations') %]</span>
             </a>
           </li>
           <li>
             <a href="/eg2/staff/booking/pull_list" target="_self">
               <span class="glyphicon glyphicon-th-list" aria-hidden="true"></span>
-              [% l('Pull List') %]
+              <span>[% l('Pull List') %]</span>
             </a>
           </li>
           <li>
             <a href="/eg2/staff/booking/capture" target="_self">
               <span class="glyphicon glyphicon-pushpin" aria-hidden="true"></span>
-              [% l('Capture Resources') %]
+              <span>[% l('Capture Resources') %]</span>
             </a>
           </li>
           <li>
             <a href="/eg2/staff/booking/pickup" target="_self">
               <span class="glyphicon glyphicon-export" aria-hidden="true"></span>
-              [% l('Pick Up Reservations') %]
+              <span>[% l('Pick Up Reservations') %]</span>p>
             </a>
           </li>
           <li>
             <a href="/eg2/staff/booking/return" target="_self">
               <span class="glyphicon glyphicon-import" aria-hidden="true"></span>
-              [% l('Return Reservations') %]
+              <span>[% l('Return Reservations') %]</span>
             </a>
           </li>
           <li>
             <a href="/eg2/staff/booking/manage_reservations" target="_self">
               <span class="glyphicon glyphicon-wrench" aria-hidden="true"></span>
-              [% l('Manage Reservations') %]
+              <span>[% l('Manage Reservations') %]</span>
             </a>
           </li>
         </ul>
@@ -615,57 +637,57 @@
           <li>
             <a href="./admin/workstation/index" target="_self">
               <span class="glyphicon glyphicon-hdd" aria-hidden="true"></span>
-              [% l('Workstation') %]
+              <span>[% l('Workstation') %]</span>
             </a>
           </li>
           <li>
             <a href="./admin/user_perms" target="_self">
               <span class="glyphicon glyphicon-user" aria-hidden="true"></span>
-              [% l('User Permission Editor') %]
+              <span>[% l('User Permission Editor') %]</span>
             </a>
           </li>
           <li>
             <a href="/eg2/staff/admin/server/splash">
               <span class="glyphicon glyphicon-briefcase" aria-hidden="true"></span>
-              [% l('Server Administration') %]
+              <span>[% l('Server Administration') %]</span>
             </a>
           </li>
           <li>
             <a href="/eg2/staff/admin/local/splash">
               <span class="glyphicon glyphicon-picture" aria-hidden="true"></span>
-              [% l('Local Administration') %]
+              <span>[% l('Local Administration') %]</span>
             </a>
           </li>
           <li>
             <a href="/eg2/staff/admin/acq/splash">
               <span class="glyphicon glyphicon-usd" aria-hidden="true"></span>
-              [% l('Acquisitions Administration') %]
+              <span>[% l('Acquisitions Administration') %]</span>
             </a>
           </li>
           <li>
             <a href="./admin/serials/index" target="_self">
               <span class="glyphicon glyphicon-paperclip" aria-hidden="true"></span>
-              [% l('Serials Administration') %]
+              <span>[% l('Serials Administration') %]</span>
             </a>
           </li>
           <li>
             <a href="/eg2/staff/admin/booking/splash" target="_self">
               <span class="glyphicon glyphicon-calendar" aria-hidden="true"></span>
-              [% l('Booking Administration') %]
+              <span>[% l('Booking Administration') %]</span>
             </a>
           </li>
           <li>
             <a href="/eg2/staff/reporter/full" target="_self">
               <span class="glyphicon glyphicon-object-align-bottom" 
                 aria-hidden="true"></span>
-              [% l('Reports') %]
+              <span>[% l('Reports') %]</span>
             </a>
           </li>
           <li>
             <a href="/eg2/staff/reporter/simple" target="_self">
               <span class="glyphicon glyphicon-object-align-bottom" 
                 aria-hidden="true"></span>
-              [% l('Simple Reports') %]
+              <span>[% l('Simple Reports') %]</span>
             </a>
           </li>
         </ul> <!-- admin dropdown -->
@@ -677,7 +699,7 @@
       <li class="hidden-sm">
         <a ng-cloak ng-show="username" title="{{currentToken()}}"
           ng-init="workstation = '[% l('<no workstation>') %]'">
-            {{username}} @ {{workstation}}
+            <span>{{username}} @ {{workstation}}</span>
         </a>
       </li>
       <!-- locale selector.
@@ -693,7 +715,7 @@
           <!-- disable the selected locale -->
           <li ng-class="{disabled : '[% ctx.locale %]'=='[% locale %]'}">
             <a href="" ng-click="applyLocale('[% locale %]')">
-                [% ctx.locales.$locale %]
+                <span>[% ctx.locales.$locale %]</span>
             </a>
           </li>
         [% END %]
@@ -708,25 +730,25 @@
           <li ng-if="!op_changed">
             <a href="" ng-click="changeOperator()">
               <span class="glyphicon glyphicon-random" aria-hidden="true"></span>
-              [% l('Change Operator') %]
+              <span>[% l('Change Operator') %]</span>
             </a>
           </li>
           <li ng-if="op_changed">
             <a href="" ng-click="changeOperatorUndo()">
               <span class="glyphicon glyphicon-random" aria-hidden="true"></span>
-              [% l('Restore Operator') %]
+              <span>[% l('Restore Operator') %]</span>
             </a>
           </li>
           <li>
             <a href="./login" ng-click="logout()" target="_self">
               <span class="glyphicon glyphicon-log-out" aria-hidden="true"></span>
-              [% l('Log Out') %]
+              <span>[% l('Log Out') %]</span>
             </a>
           </li>
           <li>
             <a href="./about" target="_self">
               <span class="glyphicon glyphicon-question-sign" aria-hidden="true"></span>
-              [% l('About') %]
+              <span>[% l('About') %]</span>
             </a>
           </li>
 	<li class="divider"></li>
@@ -738,7 +760,7 @@
                 ng-class="{'connect-status-ok' : hatchConnected()}"
                 aria-hidden="true">
               </span>
-              [% l('Hatch') %]
+              <span>[% l('Hatch') %]</span>
             </a>
           </li>
         </ul>
