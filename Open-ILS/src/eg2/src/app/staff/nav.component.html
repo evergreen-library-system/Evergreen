@@ -802,8 +802,7 @@
           <i class="material-icons" aria-hidden="true">flag</i>
           <span>{{currentLocale.name()}}</span>
         </button>
-        <div [ngClass]="{'dropdown-menu': isMenuCollapsed}" 
-          [ngbDropdownMenu]="isMenuCollapsed">
+        <div [ngClass]="{'dropdown-menu': isMenuCollapsed}" ngbDropdownMenu>
           <button type="button" class="dropdown-item" ngbDropdownItem
             (click)="setLocale(locale); isMenuCollapsed = true" 
             [ngClass]="{disabled: currentLocale.code() === locale.code()}"
