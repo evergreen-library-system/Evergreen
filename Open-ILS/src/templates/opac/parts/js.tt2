@@ -28,6 +28,35 @@
 [%     '<script>'; custom_jquery ; '</script>' %]                                          
 [% END %]
 
+<!-- Accessible session timeout -->
+[% # auth.opac_timeout is the number of seconds
+authtimeout = ctx.get_org_setting(ctx.physical_loc || ctx.aou_tree.id, 'auth.opac_timeout');
+IF authtimeout AND !ctx.is_staff %]
+<script>
+    function timeControl() {
+        // set timer for 3 minutes less than the limit, then ask user to confirm.
+        setTimeout(userCheck, ([% authtimeout %] * 1000) - (3 * 60 * 1000));
+        // console.debug("Timer set; ask in: ", ([% authtimeout %] * 1000) - (3 * 60 * 1000));
+    }
+    function userCheck() {
+        // set page refresh for 3 minutes
+        var id = setTimeout(authReload, (3 * 60 * 1000));
+        // If user selects "OK" the timer is reset 
+        // if the user selects 'cancel', nothing will happen until the original time limit;
+        // then they will be redirected to the home page
+        if (confirm( "[% l('You will be logged out in a few minutes. Would you like more time?') %]" )) {
+            clearTimeout(id);
+            timeControl();
+        }
+    }
+    function authReload() {
+        window.location = ("[% ctx.opac_root %]");
+    }
+    timeControl();
+    // console.debug("Timeout (seconds): ", ([% authtimeout %]));
+</script>
+[% END %]
+
 <!-- DOB validation for Patron Registration in OPAC -->
 <script type="text/javascript">
     function dobValidate(input) {
