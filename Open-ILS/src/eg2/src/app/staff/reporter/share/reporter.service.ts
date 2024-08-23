@@ -1973,7 +1973,7 @@ export class ReporterService {
             if (sort.length) {
                 orderBy.rt = sort[0].name + ' ' + sort[0].dir;
             } else {
-                orderBy.rt = 'create_time desc';
+                orderBy.rt = 'name ASC';
             }
 
             // start setting up query
@@ -2025,7 +2025,7 @@ export class ReporterService {
             if (sort.length) {
                 orderBy.rr = sort[0].name + ' ' + sort[0].dir;
             } else {
-                orderBy.rr = 'create_time desc';
+                orderBy.rr = 'name ASC';
             }
 
             // start setting up query
