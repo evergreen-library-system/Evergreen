@@ -135,7 +135,7 @@
     <eg-grid-column path="documentation" [cellTemplate]="docURLTmpl" i18n-label label="Documentation"
                     [sortable]="false" [filterable]="false" [disableTooltip]="true"></eg-grid-column>
     <eg-grid-column path="create_time" i18n-label label="Date Created" datatype="timestamp" [datePlusTime]="true"></eg-grid-column>
-    <eg-grid-column path="owner" i18n-label label="Owner"></eg-grid-column>
+    <eg-grid-column path="owner" i18n-label [filterable]="false" [sortable]="false" [disableTooltip]="true" label="Owner"></eg-grid-column>
     <eg-grid-column path="version" i18n-label [hidden]="true" [filterable]="false" [sortable]="false" [disableTooltip]="true" label="Version"></eg-grid-column>
   
   </eg-grid>
