@@ -58,6 +58,15 @@
   dialogTitle="Create a Report Folder"
 ></eg-prompt-dialog>
 
+<ng-template #docURLTmpl let-row="row">
+  <div *ngIf="row.documentation?.match('^\s*https?:')">
+    <a href="{{row.documentation}}" target="_blank" i18n>Template Documentation</a>
+  </div>
+  <span *ngIf="!row.documentation?.match('^\s*https?:')">
+    {{row.documentation}}
+  </span>
+</ng-template>
+
 <div class="mt-2">
   <eg-grid #ReportsGrid
      i18n-toolbarLabel [toolbarLabel]="currentFolder ? currentFolder.name() : (searchTemplate ? 'Reports based on: ' + searchTemplate.name() : 'Search Results' )"
@@ -120,16 +129,16 @@
       [disableOnRows]="notOneSelectedRow">
     </eg-grid-toolbar-action>
 
-    <eg-grid-column path="rr_id" i18n-label label="Report ID" [hidden]="true" [index]="true" [filterable]="false" [sortable]="false"></eg-grid-column>
-    <eg-grid-column path="folder" i18n-label [hidden]="!!currentFolder" label="Folder"></eg-grid-column>
-    <eg-grid-column path="name" i18n-label label="Name"></eg-grid-column>
-    <eg-grid-column path="description" i18n-label label="Description"></eg-grid-column>
-    <eg-grid-column path="create_time" i18n-label label="Date Created" datatype="timestamp" [datePlusTime]="true"></eg-grid-column>
-    <eg-grid-column path="owner" [hidden]="currentFolder && RSvc.folderIsMine(currentFolder)" i18n-label label="Owner"></eg-grid-column>
-    <eg-grid-column path="recurring" i18n-label datatype="bool" label="Recurring?"></eg-grid-column>
-    <eg-grid-column path="recurrence" i18n-label datatype="interval" label="Recurrence Interval"></eg-grid-column>
-    <eg-grid-column path="documentation" i18n-label label="Template Documentation"></eg-grid-column>
-    <eg-grid-column path="version" i18n-label label="Template version" [hidden]="true" [filterable]="false" [sortable]="false"></eg-grid-column>
+    <eg-grid-column path="rr_id" i18n-label label="Report ID" [hidden]="true" [index]="true" [filterable]="false" [sortable]="false"/>
+    <eg-grid-column path="folder" i18n-label [hidden]="!!currentFolder" label="Folder"/>
+    <eg-grid-column path="name" i18n-label label="Name"/>
+    <eg-grid-column path="description" i18n-label label="Description"/>
+    <eg-grid-column path="create_time" i18n-label label="Date Created" datatype="timestamp" [datePlusTime]="true"/>
+    <eg-grid-column path="owner" [hidden]="currentFolder && RSvc.folderIsMine(currentFolder)" i18n-label [sortable]="false" [filterable]="false" [disableTooltip]="true" label="Owner"/>
+    <eg-grid-column path="recurring" i18n-label datatype="bool" label="Recurring?"/>
+    <eg-grid-column path="recurrence" i18n-label datatype="interval" label="Recurrence Interval"/>
+    <eg-grid-column path="documentation" [cellTemplate]="docURLTmpl" i18n-label label="Documentation" [sortable]="false" [filterable]="false" [disableTooltip]="true"/>
+    <eg-grid-column path="version" i18n-label label="Template verison" [hidden]="true" [filterable]="false" [sortable]="false"/>
   
   </eg-grid>
 <div>
