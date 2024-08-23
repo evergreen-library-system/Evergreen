@@ -794,7 +794,7 @@
       <span i18n>{{user()}} &#64; {{workstation()}}</span>
     </div>
     <div class="navbar-nav" *ngIf="locales.length > 1 && currentLocale">
-      <div [ngbDropdown]="!isMenuCollapsed" class="nav-item" 
+      <div ngbDropdown class="nav-item" 
         [ngClass]="{'dropdown': !isMenuCollapsed}" display="dynamic">
         <button type="button" ngbDropdownToggle i18n i18n-title
           title="Select Locale"
