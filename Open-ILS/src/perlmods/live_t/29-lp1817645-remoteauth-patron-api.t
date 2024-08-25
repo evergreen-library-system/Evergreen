@@ -26,12 +26,12 @@ our $U = "OpenILS::Application::AppUtils";
 OpenILS::Utils::TestUtils->new->bootstrap;
 
 my $not_found = { barcode => '99999393000', password => 'nonexistentbarcode' };
-my $expired = { barcode => '99999393001', password => 'marges1234' };
-my $deleted = { barcode => '99999393002', password => 'homers1234' };
-my $barred = { barcode => '99999393003', password => 'barts1234' };
-my $valid = { barcode => '99999393004', password => 'lisas1234' };
-my $inactive = { barcode => '99999393005', password => 'maggies1234' };
-my $external = { barcode => '99999393100', password => 'shelbyvillem1234' };
+my $expired = { barcode => '99999393001', password => 'demo123' };
+my $deleted = { barcode => '99999393002', password => 'demo123' };
+my $barred = { barcode => '99999393003', password => 'demo123' };
+my $valid = { barcode => '99999393004', password => 'demo123' };
+my $inactive = { barcode => '99999393005', password => 'demo123' };
+my $external = { barcode => '99999393100', password => 'demo123' };
 
 # context org is SYS1, test user's home OU is BR1;
 # use BR3 (under SYS2) to test external users

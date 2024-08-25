@@ -3,7 +3,7 @@ import { navigateToEgUrl } from '../../utils';
 
 module.exports = {
   before: (browser: NightwatchBrowser) => {
-    browser.page.login().loginToWebClient(browser, 'br1breid', 'barbarar1234');
+    browser.page.login().loginToWebClient(browser, 'br1breid', 'demo123');
   },
 
   after: (browser: NightwatchBrowser) => {

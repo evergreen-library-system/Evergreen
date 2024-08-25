@@ -50,7 +50,7 @@ my %data =(
 # We are deliberately NOT using the admin user to check for a perm failure.
 my $credentials = {
     username => 'br1mtownsend',
-    password => 'maryt1234',
+    password => 'demo123',
     type => 'staff'
 };
 

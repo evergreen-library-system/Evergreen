@@ -135,9 +135,6 @@ SET CONSTRAINTS ALL DEFERRED;
 \echo loading actor.org_unit_setting
 \i actor.org_unit_setting.sql
 
-\echo loading actor.passwd
-\i actor.passwd.sql
-
 \echo loading actor.stat_cat
 \i actor.stat_cat.sql
 
@@ -395,7 +392,13 @@ SELECT SETVAL('actor.workstation_id_seq', (SELECT MAX(id) FROM actor.workstation
 
 SELECT SETVAL('actor.org_unit_id_seq', (SELECT MAX(id) FROM actor.org_unit));
 
+SELECT SETVAL('actor.usr_standing_penalty_id_seq', (SELECT MAX(id) FROM actor.usr_standing_penalty));
+
+SELECT SETVAL('actor.usr_message_id_seq', (SELECT MAX(id) FROM (SELECT MAX(id) "id" FROM actor.usr_standing_penalty UNION ALL SELECT MAX(id) "id" FROM actor.usr_message) AS a));
+
 COMMIT;
+
+SELECT actor.change_password(id,'demo123') FROM actor.usr;
 
 CREATE OR REPLACE FUNCTION evergreen.concerto_date_carry_tbl_col(tbl TEXT, col TEXT, datecarry INTERVAL)
 RETURNS void AS $func$
@@ -517,7 +520,6 @@ IF NOT skip_date_carry THEN
     PERFORM evergreen.concerto_date_carry_tbl_col('action.survey', 'end_date', datediff);
 
     -- action.survey_response
-    PERFORM evergreen.concerto_date_carry_tbl_col('action.survey_response', 'answer_date', datediff);
     PERFORM evergreen.concerto_date_carry_tbl_col('action.survey_response', 'effective_date', datediff);
 
     -- action.unfulfilled_hold_list

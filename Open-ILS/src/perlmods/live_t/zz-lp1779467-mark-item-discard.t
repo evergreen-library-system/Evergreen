@@ -18,7 +18,7 @@ use constant {
 # We are deliberately NOT using the admin user to check for a perm failure.
 my $credentials = {
     username => 'br1mtownsend',
-    password => 'maryt1234',
+    password => 'demo123',
     type => 'staff'
 };
 
@@ -45,7 +45,7 @@ ok(
 
 # Login with workstation.
 $credentials->{workstation} = WORKSTATION;
-$credentials->{password} = 'maryt1234';
+$credentials->{password} = 'demo123';
 $authtoken = $script->authenticate($credentials);
 ok(
     $script->authtoken,

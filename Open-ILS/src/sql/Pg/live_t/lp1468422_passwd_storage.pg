@@ -19,7 +19,7 @@ SELECT plan(6);
 
 SELECT ok(
     (SELECT TRUE AS verify_old_pw FROM actor.usr 
-        WHERE id = (SELECT id FROM actor.usr WHERE usrname = 'br1mclark') AND passwd = MD5('montyc1234')),
+        WHERE id = (SELECT id FROM actor.usr WHERE usrname = 'br1mclark') AND passwd = MD5('demo123')),
     'Legacy password should match'
 );
 
@@ -35,7 +35,7 @@ SELECT isnt_empty(
 
 SELECT ok(
     (SELECT actor.verify_passwd((SELECT id FROM actor.usr WHERE usrname = 'br1mclark'), 'main',
-        MD5(actor.get_salt((SELECT id FROM actor.usr WHERE usrname = 'br1mclark'), 'main') || MD5('montyc1234')))),
+        MD5(actor.get_salt((SELECT id FROM actor.usr WHERE usrname = 'br1mclark'), 'main') || MD5('demo123')))),
     'verify_passwd should verify migrated password'
 );
 

@@ -12,7 +12,7 @@ my $U = 'OpenILS::Application::AppUtils';
 use constant {
     WORKSTATION => 'LP1923076-Test-Scalar-Return-Type',
     USERNAME => 'br1mtownsend',
-    PASSWORD => 'maryt1234',
+    PASSWORD => 'demo123',
     BR1_ID => 4
 };
 

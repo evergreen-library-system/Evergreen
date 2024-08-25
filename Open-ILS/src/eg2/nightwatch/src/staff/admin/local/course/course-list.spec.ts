@@ -9,7 +9,7 @@ const courseData = [
 module.exports = {
     before: (browser: NightwatchBrowser) => {
         // log in as circ admin
-        browser.page.login().loginToWebClient(browser, 'br3kwright', 'kayw1234');
+        browser.page.login().loginToWebClient(browser, 'br3kwright', 'demo123');
         browser.navigateTo('eg2/en-US/staff/admin/local/asset/course_list')
             
         // Change the grid to show more rows

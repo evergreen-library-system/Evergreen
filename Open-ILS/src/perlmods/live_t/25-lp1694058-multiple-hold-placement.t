@@ -396,7 +396,7 @@ is(
 # Login as patron1.
 my $patron_auth = $script->authenticate({
     username => $patron1->usrname(),
-    password => 'leona1234',
+    password => 'demo123',
     type => 'opac'
 });
 ok(

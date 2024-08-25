@@ -3,7 +3,7 @@ import {navigateToEgUrl, scrollToTopOfPage} from '../../utils'
 
 module.exports = {
     before: (browser: NightwatchBrowser) => {
-        browser.page.login().loginToWebClient(browser, 'bm1cmartinez', 'carolynm1234');
+        browser.page.login().loginToWebClient(browser, 'bm1cmartinez', 'demo123');
     },
 
     after: (browser: NightwatchBrowser) => {

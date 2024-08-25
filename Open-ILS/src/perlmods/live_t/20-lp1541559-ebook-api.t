@@ -20,7 +20,7 @@ use constant EBOOK_API_OU => 1;
 
 # Patrons.
 use constant EBOOK_API_PATRON_USERNAME  => '99999359616';
-use constant EBOOK_API_PATRON_PASSWORD  => 'andreac1234';
+use constant EBOOK_API_PATRON_PASSWORD  => 'demo123';
 use constant EBOOK_API_PATRON_NOT_FOUND => 'patron-not-found';
 
 my $script = OpenILS::Utils::TestUtils->new();

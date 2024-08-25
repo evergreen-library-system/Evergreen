@@ -14,7 +14,7 @@ can_ok( 'OpenILS::WWW::EGCatLoader', 'load_email_record' );
 
 use constant ATEV_ID => '123456789';
 use constant PATRON_USERNAME  => '99999359616';
-use constant PATRON_PASSWORD  => 'andreac1234';
+use constant PATRON_PASSWORD  => 'demo123';
 
 my $script = OpenILS::Utils::TestUtils->new();
 $script->bootstrap;

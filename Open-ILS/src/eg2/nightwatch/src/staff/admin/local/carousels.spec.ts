@@ -3,7 +3,7 @@ import {randomString} from '../../../utils';
 
 module.exports = {
   before: (browser: NightwatchBrowser) => {
-    browser.page.login().loginToWebClient(browser, 'br1csmith', 'cathys1234');
+    browser.page.login().loginToWebClient(browser, 'br1csmith', 'demo123');
   },
 
   after: (browser: NightwatchBrowser) => {

@@ -3,7 +3,7 @@ import {NightwatchBrowser} from 'nightwatch';
 
 module.exports = {
     before: (browser: NightwatchBrowser) => {
-        browser.page.login().loginToWebClient(browser, 'br1mneal', 'melvinn1234'); // circulation admin
+        browser.page.login().loginToWebClient(browser, 'br1mneal', 'demo123'); // circulation admin
     },
 
     after: (browser: NightwatchBrowser) => {

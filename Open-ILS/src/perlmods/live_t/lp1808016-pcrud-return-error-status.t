@@ -16,7 +16,7 @@ diag('LP108016: Pcrud returns a bad error status before complete');
 # Login as a staff with limited permissions (just acq permissions in this case)
 my $credentials = {
     username => 'br1breid',
-    password => 'barbarar1234',
+    password => 'demo123',
     type => 'staff'
 };
 my $authtoken = $script->authenticate($credentials);

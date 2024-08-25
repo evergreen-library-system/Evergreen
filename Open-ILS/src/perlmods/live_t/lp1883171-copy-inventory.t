@@ -15,7 +15,7 @@ use constant {
     SYS1_ID => 2,
     SYS1_FGROUP => "Sys1 Floating Group",
     CIRC_USER => 'br1mtownsend',
-    CIRC_USER_PWD => 'maryt1234',
+    CIRC_USER_PWD => 'demo123',
     CIRC_WORKSTATION => 'BR1-lp1883171-live_t',
 };
 

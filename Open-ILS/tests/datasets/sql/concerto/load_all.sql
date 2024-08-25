@@ -118,3 +118,5 @@ INSERT INTO biblio.record_entry (marc, last_xact_id)
 \i env_destroy.sql
 
 COMMIT;
+
+SELECT actor.change_password(id,'demo123') FROM actor.usr;

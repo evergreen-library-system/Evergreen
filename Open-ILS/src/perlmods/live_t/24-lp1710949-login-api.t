@@ -51,7 +51,7 @@ $resp = $U->simplereq(
     'open-ils.auth',
     'open-ils.auth.login', {
         barcode => '99999381970',
-        password => 'montyc1234',
+        password => 'demo123',
         type => 'staff'
     }
 );
@@ -62,7 +62,7 @@ $resp = $U->simplereq(
     'open-ils.auth',
     'open-ils.auth.login', {
         identifier => 'br1mclark',
-        password => 'montyc1234',
+        password => 'demo123',
         type => 'staff'
     }
 );
@@ -85,7 +85,7 @@ $resp = $U->simplereq(
     'open-ils.auth',
     'open-ils.auth.login', {
         identifier => 'br1mclark',
-        password => 'montyc1234',
+        password => 'demo123',
         type => 'staff'
     }
 );
@@ -149,7 +149,7 @@ my $restored_user = $U->simplereq(
     $authtoken,
     '99999381970'
 );
-$restored_user->passwd('montyc1234');
+$restored_user->passwd('demo123');
 $resp = $U->simplereq(
     'open-ils.actor',
     'open-ils.actor.patron.update',

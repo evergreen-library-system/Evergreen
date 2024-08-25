@@ -24,7 +24,7 @@ my @authtoken = ();
 # Login as staff at BR1
 $authtoken[0] = $script->authenticate({
     username => 'br1vcampbell',
-    password => 'vincentc1234',
+    password => 'demo123',
     type => 'staff'
 });
 
@@ -39,7 +39,7 @@ $script->logout($authtoken[0]);
 # Login as staff at BR1 using workstation.
 $authtoken[0] = $script->authenticate({
     username => 'br1vcampbell',
-    password => 'vincentc1234',
+    password => 'demo123',
     type => 'staff',
     workstation => BR1_WORKSTATION
 });
@@ -47,7 +47,7 @@ $authtoken[0] = $script->authenticate({
 # Login as staff at BR3
 $authtoken[1] = $script->authenticate({
     username => 'br3sforbes',
-    password => 'samuelf1234',
+    password => 'demo123',
     type => 'staff'
 });
 
@@ -62,7 +62,7 @@ $script->logout($authtoken[1]);
 # Login as staff at BR3 using workstation.
 $authtoken[1] = $script->authenticate({
     username => 'br3sforbes',
-    password => 'samuelf1234',
+    password => 'demo123',
     type => 'staff',
     workstation => BR3_WORKSTATION
 });

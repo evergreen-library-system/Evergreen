@@ -70,6 +70,12 @@ our @skipTables       = (
     'config.workstation_setting_type',
     'permission.grp_perm_map',
     'permission.perm_list',
+# all of the passwords are getting set to demo123, no need to compare that table, they are generated upon db restore.
+    'actor.passwd',
+# Waiting for the coded value map in 3.13 to be resolved before we decide what to do for these three tables, skipping them for now.
+    'config.coded_value_map',
+    'config.marc_subfield',
+    'config.record_attr_definition',
 );
 
 our @loadOrder = (
@@ -123,8 +129,20 @@ our %tableColumnOverride = (
         'comp' => [ 'name', 'label' ]
     },
     'config.global_flag' => {
-        'comp' => ['name']
+        'comp' => [ 'name' ]
     },
+    # Waiting for the coded value map in 3.13 to be resolved before we decide what to do here.
+    # 'config.coded_value_map' => {
+    #     'comp' => ['ctype', 'code', 'value'],
+    #     'load' => ['ctype', 'code', 'value', 'description', 'opac_visible', 'search_label', 'is_simple', 'concept_uri']
+    # },
+    # 'config.marc_subfield' => {
+    #     'comp' => [ 'marc_format', 'marc_record_type', 'tag', 'code' ]
+    # },
+    # 'config.record_attr_definition' => {
+    #     'comp' => [ 'name', 'label' ]
+    # },
+
 );
 
 our $help = "Usage: ./make_concerto_from_evergreen_db.pl [OPTION]...
@@ -319,7 +337,7 @@ sub start {
     $loadAll .= "SELECT SETVAL('actor.usr_standing_penalty_id_seq', (SELECT MAX(id) FROM actor.usr_standing_penalty));\n\n";
     $loadAll .= "SELECT SETVAL('actor.usr_message_id_seq', (SELECT MAX(id) FROM (SELECT MAX(id) \"id\" FROM actor.usr_standing_penalty UNION ALL SELECT MAX(id) \"id\" FROM actor.usr_message) AS a));\n\n";
 
-    $loadAll .= "COMMIT;\n";
+    $loadAll .= "COMMIT;\n\nSELECT actor.change_password(id,'demo123') FROM actor.usr;\n";
     $loadAll .= loaderDateCarryForward() . "\n";
 
     print "Writing loader > $outputFolder/load_all.sql\n";
@@ -572,7 +590,6 @@ IF NOT skip_date_carry THEN
     PERFORM evergreen.concerto_date_carry_tbl_col('action.survey', 'end_date', datediff);
 
     -- action.survey_response
-    PERFORM evergreen.concerto_date_carry_tbl_col('action.survey_response', 'answer_date', datediff);
     PERFORM evergreen.concerto_date_carry_tbl_col('action.survey_response', 'effective_date', datediff);
 
     -- action.unfulfilled_hold_list
