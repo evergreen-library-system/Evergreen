@@ -2580,7 +2580,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 			<field reporter:label="Name" name="name" reporter:datatype="text" oils_obj:required="true"/>
 			<field reporter:label="Place Holds?" name="place_holds" reporter:datatype="bool"/>
 			<field reporter:label="Pick Up Holds?" name="pickup_holds" reporter:datatype="bool"/>
-			<field reporter:label="View Borrowing History?" name="view_history" reporter:datatype="bool"/>
+			<field reporter:label="Obtain Circulation Information?" name="view_history" reporter:datatype="bool"/>
 			<field reporter:label="Check Out Items?" name="checkout_items" reporter:datatype="bool"/>
 		</fields>
 		<links>
