@@ -5150,7 +5150,7 @@ SELECT  usr,
 	</class>
 	<class id="aacct" controller="open-ils.cstore open-ils.pcrud" oils_obj:fieldmapper="action::all_circulation_combined_types" oils_persist:tablename="action.all_circulation_combined_types" reporter:core="true" reporter:label="All Circulation Combined Types" oils_persist:readonly="true">
 		<fields>
-			<field reporter:label="Circulating Library" name="circ_lib" reporter:datatype="org_unit"/>
+			<field reporter:label="Checkout / Renewal Library" name="circ_lib" reporter:datatype="org_unit"/>
 			<field reporter:label="Circulating Staff" name="circ_staff" reporter:datatype="link"/>
 			<field reporter:label="Circ ID" name="id" reporter:datatype="int"/>
 			<field reporter:label="Checkout Date/Time" name="xact_start" reporter:datatype="timestamp"/>
@@ -5173,7 +5173,7 @@ SELECT  usr,
 			<field reporter:label="Check In Library" name="checkin_lib" reporter:datatype="org_unit"/>
 			<field reporter:label="Check In Staff" name="checkin_staff" reporter:datatype="link"/>
 			<field reporter:label="Check In Date/Time" name="checkin_time" reporter:datatype="timestamp"/>
-			<field reporter:label="Circulating Library" name="circ_lib" reporter:datatype="org_unit"/>
+			<field reporter:label="Checkout / Renewal Library" name="circ_lib" reporter:datatype="org_unit"/>
 			<field reporter:label="Circulating Staff" name="circ_staff" reporter:datatype="link"/>
 			<field reporter:label="Desk Renewal" name="desk_renewal" reporter:datatype="bool"/>
 			<field reporter:label="Due Date/Time" name="due_date" reporter:datatype="timestamp"/>
@@ -5249,7 +5249,7 @@ SELECT  usr,
 			<field reporter:label="Check In Library" name="checkin_lib" reporter:datatype="org_unit"/>
 			<field reporter:label="Check In Staff" name="checkin_staff" reporter:datatype="link"/>
 			<field reporter:label="Check In Date/Time" name="checkin_time" reporter:datatype="timestamp"/>
-			<field reporter:label="Circulating Library" name="circ_lib" reporter:datatype="org_unit"/>
+			<field reporter:label="Checkout / Renewal Library" name="circ_lib" reporter:datatype="org_unit"/>
 			<field reporter:label="Circulating Staff" name="circ_staff" reporter:datatype="link"/>
 			<field reporter:label="Desk Renewal" name="desk_renewal" reporter:datatype="bool"/>
 			<field reporter:label="Due Date/Time" name="due_date" reporter:datatype="timestamp"/>
@@ -5340,7 +5340,7 @@ SELECT  usr,
 			<field reporter:label="Check In Library" name="checkin_lib" reporter:datatype="org_unit"/>
 			<field reporter:label="Check In Staff" name="checkin_staff" reporter:datatype="link"/>
 			<field reporter:label="Check In Date/Time" name="checkin_time" reporter:datatype="timestamp"/>
-			<field reporter:label="Circulating Library" name="circ_lib" reporter:datatype="org_unit" oils_obj:required="true"/>
+			<field reporter:label="Checkout / Renewal Library" name="circ_lib" reporter:datatype="org_unit" oils_obj:required="true"/>
 			<field reporter:label="Circulating Staff" name="circ_staff" reporter:datatype="link" oils_obj:required="true"/>
 			<field reporter:label="Desk Renewal" name="desk_renewal" reporter:datatype="bool" oils_obj:required="true"/>
 			<field reporter:label="Due Date/Time" name="due_date" reporter:datatype="timestamp"/>
@@ -13618,7 +13618,7 @@ SELECT  usr,
 			<field reporter:label="Check In Library" name="checkin_lib" reporter:datatype="org_unit"/>
 			<field reporter:label="Check In Staff" name="checkin_staff" reporter:datatype="link"/>
 			<field reporter:label="Check In Date/Time" name="checkin_time" reporter:datatype="timestamp"/>
-			<field reporter:label="Circulating Library" name="circ_lib" reporter:datatype="org_unit"/>
+			<field reporter:label="Checkout / Renewal Library" name="circ_lib" reporter:datatype="org_unit"/>
 			<field reporter:label="Circulating Staff" name="circ_staff" reporter:datatype="link"/>
 			<field reporter:label="Desk Renewal" name="desk_renewal" reporter:datatype="bool"/>
 			<field reporter:label="Due Date/Time" name="due_date" reporter:datatype="timestamp"/>
@@ -13740,10 +13740,10 @@ SELECT  usr,
 		</links>
 	</class>
 
-	<class id="rmocbbcol" controller="open-ils.reporter-store" oils_obj:fieldmapper="reporter::money::open_circ_balance_by_circ_and_owning_lib" oils_persist:tablename="money.open_circ_balance_by_circ_and_owning_lib" reporter:core="true" reporter:label="Open Circulation Billing by Circulating Library and Owning Library">
+	<class id="rmocbbcol" controller="open-ils.reporter-store" oils_obj:fieldmapper="reporter::money::open_circ_balance_by_circ_and_owning_lib" oils_persist:tablename="money.open_circ_balance_by_circ_and_owning_lib" reporter:core="true" reporter:label="Open Circulation Billing by Checkout Library and Owning Library">
 		<fields oils_persist:primary="id">
 			<field reporter:label="Circulation ID" name="id" reporter:datatype="link"/>
-			<field reporter:label="Circulating Library" name="circ_lib" reporter:datatype="org_unit"/>
+			<field reporter:label="Checkout / Renewal Library" name="circ_lib" reporter:datatype="org_unit"/>
 			<field reporter:label="Owning Library" name="owning_lib" reporter:datatype="org_unit"/>
 			<field reporter:label="Billing Type" name="billing_type" reporter:datatype="text"/>
 			<field reporter:label="Total Billed" name="billed" reporter:datatype="money"/>
@@ -13755,9 +13755,9 @@ SELECT  usr,
 		</links>
 	</class>
 
-	<class id="rmobbcol" controller="open-ils.reporter-store" oils_obj:fieldmapper="reporter::money::open_balance_by_circ_and_owning_lib" oils_persist:tablename="money.open_balance_by_circ_and_owning_lib" reporter:core="true" reporter:label="Open Circulation Balance by Circulating Library and Owning Library">
+	<class id="rmobbcol" controller="open-ils.reporter-store" oils_obj:fieldmapper="reporter::money::open_balance_by_circ_and_owning_lib" oils_persist:tablename="money.open_balance_by_circ_and_owning_lib" reporter:core="true" reporter:label="Open Circulation Balance by Checkout Library and Owning Library">
 		<fields oils_persist:primary="circ_lib">
-			<field reporter:label="Circulating Library" name="circ_lib" reporter:datatype="org_unit"/>
+			<field reporter:label="Checkout / Renewal Library" name="circ_lib" reporter:datatype="org_unit"/>
 			<field reporter:label="Owning Library" name="owning_lib" reporter:datatype="org_unit"/>
 			<field reporter:label="Billing Types" name="billing_types" reporter:datatype="text"/>
 			<field reporter:label="Balance" name="balance" reporter:datatype="money"/>
