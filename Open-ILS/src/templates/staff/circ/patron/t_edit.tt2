@@ -931,7 +931,7 @@ within the "form" by name for validation.
           <label id="waiverHistory"><input ng-change="field_modified()"
             aria-labelledby="privacyWaiver waiverHistory"
             type='checkbox' ng-model="waiver_entry.view_history"/>
-            [% l('View Borrowing History?') %]</label>
+            [% l('Obtain Circulation Information?') %]</label>
         </div>
         <div class="flex-cell">
           <label id="waiverCheckOut"><input ng-change="field_modified()"

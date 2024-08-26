@@ -148,7 +148,7 @@
                             <label>
                                 <input type="checkbox" name="waiver_view_history"
                                     value="[% waiver.id %]" [% waiver.view_history == 't' ? 'checked="checked"' : '' %]/>
-                                [% l('View Borrowing History') %]
+                                [% l('Obtain Circulation Information') %]
                             </label>
                         </div>
                         [% END %]
@@ -158,7 +158,7 @@
                             <label><input type="checkbox" name="waiver_place_holds" value="new"/>[% l('Place Holds') %]</label>
                             <label><input type="checkbox" name="waiver_pickup_holds" value="new"/>[% l('Pick Up Holds') %]</label>
                             <label><input type="checkbox" name="waiver_checkout_items" value="new"/>[% l('Check Out Items') %]</label>
-                            <label><input type="checkbox" name="waiver_view_history" value="new"/>[% l('View Borrowing History') %]</label>
+                            <label><input type="checkbox" name="waiver_view_history" value="new"/>[% l('Obtain Circulation Information') %]</label>
                         </div>
                     </td>
                 </tr>
