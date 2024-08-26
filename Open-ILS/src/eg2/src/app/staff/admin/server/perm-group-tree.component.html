@@ -116,6 +116,14 @@
                 {{selected.callerData.usergroup() === 't'}}
               </div>
             </div>
+            <div class="row">
+              <div class="col-lg-4">
+                <label class="form-label" i18n>Permission Group ID: </label>
+              </div>
+              <div class="col-lg-8 fw-bold">
+                {{selected.callerData.id()}}
+              </div>
+            </div>
           </ng-template>
         </li>
         <li role="presentation" [ngbNavItem]="'perm'">
