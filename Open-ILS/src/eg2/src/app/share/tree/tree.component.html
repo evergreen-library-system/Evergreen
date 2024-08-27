@@ -1,4 +1,16 @@
 <!-- eslint-disable -->
+<div class="row"><div class="col-12">
+<div class="input-group" *ngIf="!disabled && showLabelFilter">
+  <label class="input-group-text" for="{{_tree.treeId}}-filter" i18n>Filter:</label>
+  <input class="form-control" id="{{_tree.treeId}}-filter" [(ngModel)]="_labelFilter"
+    type="text" (input)="updateLabelFilter()" />
+  <button type="button" class="btn btn-link text-dark p-1 focus-border input-group-text"
+    (click)="updateLabelFilter(_labelFilter='')" aria-label="Clear Label Filter" i18n-aria-label>
+      <span class="material-icons" aria-hidden="true" title="Clear Label Filter" i18n-title>clear</span>
+  </button>
+</div>
+</div></div>
+
 <div class="eg-tree-node-wrapper d-flex">
   <input *ngIf="showSelectAll" type="checkbox"
       (change)="toggleStateFlags($event)" />
@@ -12,17 +24,20 @@
   </button>
   <ng-content select="[header]"></ng-content>
 </div>
-<ul class="eg-tree" *ngIf="displayNodes().length">
-  <ng-container *ngTemplateOutlet="tree;context:{tree_node:displayNodes()[0],disableStateFlag:disableRootSelector}"></ng-container>
+
+<div [attr.role]="showLabelFilter ? 'status' : null">
+<ul class="eg-tree" *ngIf="rootNode()">
+  <ng-container *ngTemplateOutlet="tree;context:{tree_node:rootNode(),disableStateFlag:disableRootSelector}"></ng-container>
 </ul>
 <ng-content select="[footer]"></ng-content>
+</div>
 
 <ng-template #tree let-disableStateFlag="disableStateFlag" let-node="tree_node">
   <li class="eg-tree-node"
-  [ngClass]="{active : node.selected, open : node.expanded, haschildren : node.children.length, nochildren: node.children.length == 0}" tabindex="0" [attr.data-tree-node]="node.id"
+  [ngClass]="{active : node.selected, open : node.expanded, haschildren : _tree.visibleChildren(node).length, nochildren: _tree.visibleChildren(node).length == 0}" tabindex="0" [attr.data-tree-node]="node.id"
     (keydown)="treeKeyEvent(node, $event)">
     <div class="eg-tree-node-wrapper">
-      <button style="visibility: {{node.children.length ? 'visible' : 'hidden'}}" (click)="node.toggleExpand()"
+      <button style="visibility: {{_tree.visibleChildren(node).length ? 'visible' : 'hidden'}}" (click)="node.toggleExpand()"
         type="button" class="input-group-text btn btn-link eg-tree-node-expandy"
         [attr.title]="node.expanded? 'Close tree branch under ' + node.label : 'Open tree branch under ' + node.label"
         [attr.aria-label]="node.expanded? 'Close tree branch under ' + node.label : 'Open tree branch under ' + node.label"
@@ -31,7 +46,7 @@
       </button>
       <input *ngIf="(node.stateFlagLabel || showSelectAll) && !disableStateFlag" type='checkbox'
 		[(ngModel)]="node.stateFlag"
-		(click)="handleStateFlagClick(node)"
+		(click)="handleStateFlagClick(node, $event)"
 		title="{{node.stateFlagLabel}}"
 		tabindex="0"
         [disabled]="disabled"
@@ -45,8 +60,8 @@
 		(click)="handleNodeClick(node)">{{node.label}}</button>
       <ng-container *ngTemplateOutlet="rowTrailingTemplate; context: {$implicit: node}"></ng-container>
   </div>
-  <ul class="eg-tree-branch" *ngIf="node.expanded && node.children.length">
-	  <ng-container *ngFor="let child of node.children">
+  <ul class="eg-tree-branch" *ngIf="node.expanded && _tree.visibleChildren(node).length">
+	  <ng-container *ngFor="let child of _tree.visibleChildren(node)">
 		  <ng-container *ngTemplateOutlet="tree;context:{tree_node:child}"></ng-container>
 	  </ng-container>
 	</ul>

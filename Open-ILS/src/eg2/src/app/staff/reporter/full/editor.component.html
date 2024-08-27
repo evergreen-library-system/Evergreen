@@ -72,12 +72,8 @@
 <div class="row" id="source-tree">
 
   <div class="col-sm-3">
-    <eg-tree
-      [showExpandAll]="false"
-      [tree]="currentIdlTree"
-      (nodeClicked)="idlTreeNodeSelected($event)"
-      (stateFlagClicked)="idlTreeNodeRequired($event)"
-    ></eg-tree>
+    <eg-tree [showExpandAll]="false" [tree]="currentIdlTree" (nodeClicked)="idlTreeNodeSelected($event)"
+      (stateFlagClicked)="idlTreeNodeRequired($event)" [disableStateFlagRangeSelect]="true" />
   </div>
 
   <div class="col-sm-9">

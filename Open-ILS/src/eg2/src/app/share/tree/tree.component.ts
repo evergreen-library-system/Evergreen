@@ -41,6 +41,11 @@ export class TreeComponent {
 
     _nodeList: any = [];
     _tree: Tree;
+    _prev_stateFlagClick: TreeNode;
+    _labelFilter = '';
+    _labelFilterDebounceTimeout: any = null;
+
+    @Input() showLabelFilter = false; // Allow filtering by node label
     @Input() disabled = false; // disables /changing/ state flag or emitting selection events
     @Input() set tree(t: Tree) {
         if (t) {
@@ -58,6 +63,8 @@ export class TreeComponent {
     @Input() showSelectAll = false; // checkbox to toggle all state flags.
     @Input() showExpandAll = true; // show the expand/collapse all arrows?
     @Input() disableRootSelector = false; // checkbox at the top of the tree
+    @Input() disableStateFlag = false; // Hide all checkboxes
+    @Input() disableStateFlagRangeSelect = false; // Disable range selection
     @Input() rowTrailingTemplate: TemplateRef<any>;
 
     @Output() nodeClicked: EventEmitter<TreeNode>;
@@ -68,14 +75,30 @@ export class TreeComponent {
         this.stateFlagClicked = new EventEmitter<TreeNode>();
     }
 
+    rootNode(): TreeNode {
+        return this.tree?.rootNode;
+    }
+
     displayNodes(): TreeNode[] {
         if (!this.tree) { return []; }
         this._nodeList = this.tree.nodeList(true);
         return this._nodeList;
     }
 
+    updateLabelFilter() {
+        clearTimeout(this._labelFilterDebounceTimeout);
+        if (!this._labelFilter) {
+            this.tree.restrictedNodes = [];
+        } else {
+            this._labelFilterDebounceTimeout = setTimeout( () => {
+                this.tree.restrictedNodes = this.tree.findNodesByFieldAndValueSearch('label',this._labelFilter);
+                this.tree.restrictedNodes.forEach(n => this.tree.expandPathTo(n));
+            }, 250);
+        }
+    }
+
     handleNodeClick(node: TreeNode) {
-        if (this.disableRootSelector && node === this.tree.rootNode) {
+        if (this.disableRootSelector && node === this.rootNode()) {
             return;
         }
         if (!this.disabled) {
@@ -84,9 +107,31 @@ export class TreeComponent {
         }
     }
 
-    handleStateFlagClick(node: TreeNode) {
+    handleStateFlagClick(node: TreeNode, $event) {
         if (!this.disabled) {
             node.toggleStateFlag();
+            if (!this.disableStateFlagRangeSelect) { // shift-click child selection is allowed
+                if ($event.shiftKey) { // shift-click child selection happened
+                    this.tree.visibleDescendants(node).forEach(n => n.stateFlag = node.stateFlag); // make descendants match clicked state flag
+                    if (this._prev_stateFlagClick && this._prev_stateFlagClick !== node) { // shift-click range selection, different previous node
+                        const NL = this.tree.visibleDescendants(this.rootNode());
+                        let range_start = NL.indexOf(this._prev_stateFlagClick);
+                        let range_end = NL.indexOf(node);
+
+                        if (range_start > -1 && range_end > -1) { // valid range
+                            if (range_start > range_end) { // clicked above! swap them, and shift
+                                range_end++;
+                                [range_start, range_end] = [range_end, range_start];
+                                range_end++;
+                            }
+                            NL.slice(range_start,range_end).forEach(n => n.stateFlag = node.stateFlag);
+                        }
+                    }
+                    this._prev_stateFlagClick = null; // forget last state flag click now that range selection is complete
+                } else {
+                    this._prev_stateFlagClick = node; // remember last state flag click
+                }
+            }
             this.stateFlagClicked.emit(node);
         }
     }
@@ -104,7 +149,7 @@ export class TreeComponent {
 */
 
     treeKeyEvent(node: TreeNode, $event: any) {
-        const DOMind = this._nodeList.indexOf(node);
+        const DOMind = this.displayNodes().indexOf(node);
         const visibleNL = this.visibleNodeList.toArray();
 
         console.log('Node index: ' + DOMind + '; Key pressed: ', $event.code);
@@ -132,8 +177,8 @@ export class TreeComponent {
                 break;
             case 'ArrowDown':
                 if (visibleNL.length > DOMind + 1) {
-                    const nextTargetNode = this._nodeList[DOMind + 1];
-                    const target = visibleNL.filter(v => v.nativeElement.id == this._tree.treeId + '-' + nextTargetNode.id)[0];
+                    const nextTargetNode = this.displayNodes()[DOMind + 1];
+                    const target = visibleNL.filter(v => v.nativeElement.id == this.tree.treeId + '-' + nextTargetNode.id)[0];
 	        		target.nativeElement.focus();
                 }
                 $event.stopPropagation();
@@ -141,8 +186,8 @@ export class TreeComponent {
                 break;
             case 'ArrowUp':
                 if (DOMind > 0) {
-                    const prevTargetNode = this._nodeList[DOMind - 1];
-                    const target = visibleNL.filter(v => v.nativeElement.id == this._tree.treeId + '-' + prevTargetNode.id)[0];
+                    const prevTargetNode = this.displayNodes()[DOMind - 1];
+                    const target = visibleNL.filter(v => v.nativeElement.id == this.tree.treeId + '-' + prevTargetNode.id)[0];
 	        		target.nativeElement.focus();
                 }
                 $event.stopPropagation();
@@ -184,7 +229,7 @@ export class TreeComponent {
     selectAll() {
         if (this.tree) {
             this.tree.nodeList().forEach(node => {
-                if (!(this.disableRootSelector && (node === this.tree.rootNode))) {
+                if (!(this.disableRootSelector && (node === this.rootNode()))) {
                     node.stateFlag = true;
                 }
             });
@@ -194,7 +239,7 @@ export class TreeComponent {
     deselectAll() {
         if (this.tree) {
             this.tree.nodeList().forEach(node => {
-                if (!(this.disableRootSelector && (node === this.tree.rootNode))) {
+                if (!(this.disableRootSelector && (node === this.rootNode()))) {
                     node.stateFlag = false;
                 }
             });

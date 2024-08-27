@@ -151,10 +151,12 @@
               <eg-tree
                 id="FV-{{pathId}}"
                 [disabled]="disabled || editorMode === 'report' && field.with_value_input"
+                [showLabelFilter]="true"
                 [tree]="orgTree"
                 (nodeClicked)="combineLabelAndStateClick($event)"
                 (stateFlagClicked)="saveFlaggedOrgs()">
               </eg-tree>
+              <p class='form-text' i18n>Hold the Shift key to select a range.</p>
             </div>
             <div *ngSwitchDefault>
               <eg-text-multi-select
