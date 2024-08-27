@@ -1,0 +1,5 @@
+== Add payment type to OPAC printed payment receipt Action Trigger definition ==
+
+Adds correct payment type to the money.payment_receipt.print action trigger template, replacing the hard-coded "Credit Card".
+
+An upgrade script is include which updates the money.payment_receipt.print action trigger template if it has not been altered from stock.
