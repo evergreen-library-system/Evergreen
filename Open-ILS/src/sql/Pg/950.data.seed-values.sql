@@ -12265,7 +12265,17 @@ $$
     </ol>
     
     <div> <!-- Summary of all the information -->
-       Payment Type: Credit Card <br />
+       Payment Type: [% SWITCH mp.payment_type -%]
+                    [% CASE "cash_payment" %]Cash
+                    [% CASE "check_payment" %]Check
+                    [% CASE "credit_card_payment" %]Credit Card
+                    [%- IF mp.credit_card_payment.cc_number %] ([% mp.credit_card_payment.cc_number %])[% END %]
+                    [% CASE "debit_card_payment" %]Debit Card
+                    [% CASE "credit_payment" %]Credit
+                    [% CASE "forgive_payment" %]Forgiveness
+                    [% CASE "goods_payment" %]Goods
+                    [% CASE "work_payment" %]Work
+                [%- END %] <br />
        Total:<strong> $[% grand_total | format("%.2f") %] </strong>  
     </div>
 
