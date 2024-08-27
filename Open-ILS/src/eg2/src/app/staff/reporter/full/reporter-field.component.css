@@ -153,9 +153,11 @@ eg-reporter-field:last-child .reporter-field-container {
   flex: 1 1 100%; /* override standard column flex in this panel only */
 }
 
-#field-filters .reporter-field-value-org-unit {
+#definition-editor-main .reporter-field-value-org-unit .eg-tree,
+#field-filters .reporter-field-value-org-unit .eg-tree {
   max-height: 24rem;  /* About 12 items */
   overflow-y: auto;   /* Adds scrollbar only when needed. 'scroll' would show the scroll gutter at all times. */
+  overflow-x: clip;   /* Avoid scrollbar */
 }
 
 /* TEMPLATE OUTPUT ORDER TAB */

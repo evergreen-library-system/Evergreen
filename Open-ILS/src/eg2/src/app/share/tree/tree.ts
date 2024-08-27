@@ -16,6 +16,7 @@ export class TreeNode {
     // opaque "marked" flag for use by caller
     stateFlag: boolean;
 
+    parent: TreeNode;
     children: TreeNode[];
 
     // function! accepts this tree node as a param, so you can use callerData as extra info
@@ -90,17 +91,58 @@ export class Tree {
     treeId: any;
     rootNode: TreeNode;
     idMap: {[id: string]: TreeNode};
+    restrictedNodes: TreeNode[];
 
     constructor(rootNode?: TreeNode) {
         this.treeId = parseInt((Math.random() * 1000) + '');
         this.rootNode = rootNode;
         this.idMap = {};
+        this.restrictedNodes = [];
+    }
+
+    visibleChildren(node: TreeNode, shallow?: boolean): TreeNode[] {
+        if (!shallow && node.childrenCB) {
+            node.children = node.childrenCB(node);
+            node.childrenCB = null;
+        }
+
+        if (!this.restrictedNodes.length) { // no restriction, return the whole list
+            return node.children;
+        }
+
+        const restricted_with_ancestors = [];
+        this.restrictedNodes.forEach(n => restricted_with_ancestors.push(... this.pathTo(n).filter(x => !!x)));
+
+        return node.children.filter(n => restricted_with_ancestors.indexOf(n) > -1);
+    }
+
+    visibleDescendants(node: TreeNode): TreeNode[] {
+        const nodes = [];
+        const recurseTree = (node: TreeNode) => {
+            if (node) {
+                nodes.push(node);
+                this.visibleChildren(node, true).forEach(n => recurseTree(n));
+            }
+        };
+
+        recurseTree(node);
+        return nodes;
+    }
+
+    // Returns a list of tree nodes
+    nodeList(filterHidden?: boolean): TreeNode[] {
+        if (!filterHidden) {
+            if (!Object.values(this.idMap).length) {
+                return this.descendants(this.rootNode);
+            }
+            return Object.values(this.idMap);
+        }
+        return this.descendants(this.rootNode, filterHidden);
     }
 
     // Returns a depth-first list of tree nodes
     // Tweaks node attributes along the way to match the shape of the tree.
-    nodeList(filterHidden?: boolean): TreeNode[] {
-
+    descendants(node: TreeNode, filterHidden?: boolean): TreeNode[] {
         const nodes = [];
 
         const recurseTree = (node: TreeNode, depth: number, hidden: boolean) => {
@@ -124,11 +166,16 @@ export class Tree {
                     node.childrenCB = null;
                 }
 
-                node.children.forEach(n => recurseTree(n, depth, !node.expanded));
+                node.children.forEach(n => n.parent = node);
+                if (filterHidden) {
+                    this.visibleChildren(node).forEach(n => recurseTree(n, depth, !node.expanded));
+                } else {
+                    node.children.forEach(n => recurseTree(n, depth, !node.expanded));
+                }
             }
         };
 
-        recurseTree(this.rootNode, 0, false);
+        recurseTree(node, node.depth, false);
         return nodes;
     }
 
@@ -140,58 +187,56 @@ export class Tree {
         if (this.idMap[id + '']) {
             return this.idMap[id + ''];
         } else {
-            // nodeList re-indexes all the nodes.
-            this.nodeList();
+            // descendants() re-indexes all the nodes.
+            this.descendants(this.rootNode)
             return this.idMap[id + ''];
         }
     }
 
     findNodesByFieldAndValue(field: string, value: any): TreeNode[] {
-        const list = this.nodeList();
-        const found = [];
-        for (let idx = 0; idx < list.length; idx++) {
-            if (list[idx][field] === value) {
-                found.push( list[idx] );
-            }
-        }
-        return found;
+        return this.nodeList().filter(n => n[field]?.toString() == value.toString());
+    }
+
+    findNodesByFieldAndValueSearch(field: string, value: string): TreeNode[] { // find nodes where $field.toLocaleLowerCase() contains $value.toLocaleLowerCase()
+        return this.nodeList().filter(n => n[field]?.toString().toLocaleLowerCase().search(value.toLocaleLowerCase()) > -1);
     }
 
     findParentNode(node: TreeNode, findHidden?: boolean) {
-        const list = this.nodeList(findHidden ? false : true);
-        for (let idx = 0; idx < list.length; idx++) {
-            const pnode = list[idx];
-            if (pnode.children.filter(c => c.id === node.id).length) {
-                return pnode;
-            }
+        return node.parent;
+    }
+
+    pathTo(node: TreeNode): TreeNode[] {
+        let pathNodes = [node];
+        let nextNode = node.parent;
+        while (nextNode) {
+            pathNodes.push(nextNode);
+            nextNode = nextNode.parent;
         }
-        return null;
+        return pathNodes;
     }
 
     expandPathTo(node: TreeNode) {
-        let nextNode = this.findParentNode(node, true);
-        while (nextNode) {
-            nextNode.expanded = true;
-            nextNode = this.findParentNode(nextNode, true);
-        }
+        this.pathTo(node).forEach(n => n.expanded = true);
     }
 
     findNodePath(node: TreeNode) {
         const path = [];
         do {
             const pnode = {...node};
+            delete pnode['parent'];
             delete pnode['children'];
             delete pnode['childrenCB'];
             path.push({...pnode});
-        } while (node = this.findParentNode(node));
+        } while (node = node.parent);
         return path.reverse();
     }
 
     // only work on non-dynamic trees, that is, those with no childrenCB callback function
     removeNode(node: TreeNode) {
         if (!node) { return; }
-        const pnode = this.findParentNode(node);
+        const pnode = node.parent;
         if (pnode) {
+            node.parent = null; // to help the GC find blind ref
             pnode.children = pnode.children.filter(n => n.id !== node.id);
         } else {
             this.rootNode = null;

@@ -133,6 +133,9 @@ export class ReporterFieldComponent implements OnInit {
             preselected.filter(p => !!Number(p)).forEach( i => this.orgTree.expandPathTo(this.orgTree.findNode(i)) );
             this.orgTree.expandPathTo(this.orgTree.findNode(this.org.get(this.auth.user().ws_ou()).id()));
 
+            if (this.disabled || (this.editorMode === 'report' && this.field.with_value_input)) { // disabled tree input, filter to selected
+                this.orgTree.restrictedNodes = this.orgTree.findStateFlagNodes();
+            }
         }
 
         let already_collected_rel_time_input = this.field.transform.relativeTransform;
