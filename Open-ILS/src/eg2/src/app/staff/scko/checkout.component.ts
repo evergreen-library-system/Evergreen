@@ -6,7 +6,7 @@ import {SckoService} from './scko.service';
 import {ServerStoreService} from '@eg/core/server-store.service';
 
 @Component({
-  templateUrl: 'checkout.component.html'
+    templateUrl: 'checkout.component.html'
 })
 
 export class SckoCheckoutComponent implements OnDestroy {

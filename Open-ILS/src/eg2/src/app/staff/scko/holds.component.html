@@ -16,7 +16,8 @@
     </thead>
     <tbody class='oils-selfck-item-table'>
 	    <tr *ngFor="let hold of holds">
-        <td><img src="/opac/extras/ac/jacket/small/r/{{hold.record_id}}"/></td>
+        <td><img i18n-alt alt="Jacket Image"
+          src="/opac/extras/ac/jacket/small/r/{{hold.record_id}}"/></td>
         <td>{{hold.title}}</td>
         <td>{{hold.author}}</td>
         <td>

@@ -7,9 +7,11 @@ import {OrgService} from '@eg/core/org.service';
 import {HatchService} from '@eg/core/hatch.service';
 import {ForceReloadService} from '@eg/share/util/force-reload.service';
 
+const FOCUS_DELAY = 50;
+
 @Component({
-  selector: 'eg-scko-banner',
-  templateUrl: 'banner.component.html'
+    selector: 'eg-scko-banner',
+    templateUrl: 'banner.component.html'
 })
 
 export class SckoBannerComponent implements OnInit, AfterViewInit {
@@ -47,13 +49,13 @@ export class SckoBannerComponent implements OnInit, AfterViewInit {
         this.hatch.connect();
 
         this.store.getWorkstations()
-        .then(wsList => {
-            this.workstations = wsList;
-            return this.store.getDefaultWorkstation();
-        }).then(def => {
-            this.staffWorkstation = def;
-            this.applyWorkstation();
-        });
+            .then(wsList => {
+                this.workstations = wsList;
+                return this.store.getDefaultWorkstation();
+            }).then(def => {
+                this.staffWorkstation = def;
+                this.applyWorkstation();
+            });
     }
 
     ngAfterViewInit() {
@@ -73,7 +75,7 @@ export class SckoBannerComponent implements OnInit, AfterViewInit {
                 (node as HTMLInputElement).select();
                 (node as HTMLInputElement).focus();
             }
-        }, 50);
+        }, FOCUS_DELAY);
     }
 
     applyWorkstation() {
@@ -125,7 +127,7 @@ export class SckoBannerComponent implements OnInit, AfterViewInit {
                                 this.forceReload.reload('/staff/selfcheck');
                             });
                         }
-                    })
+                    });
                 }
             },
             notOk => {
@@ -137,26 +139,26 @@ export class SckoBannerComponent implements OnInit, AfterViewInit {
     submitPatronLogin() {
         this.patronUsername = (this.patronUsername || '').trim();
         this.scko.loadPatron(this.patronUsername, this.patronPassword)
-        .finally(() => {
+            .finally(() => {
 
-            if (this.scko.patronSummary === null) {
+                if (this.scko.patronSummary === null) {
 
-                const ctx: ActionContext = {
-                    username: this.patronUsername,
-                    shouldPopup: true,
-                    alertSound: 'error.scko.login_failed',
-                    displayText: 'scko.error.login_failed'
-                };
+                    const ctx: ActionContext = {
+                        username: this.patronUsername,
+                        shouldPopup: true,
+                        alertSound: 'error.scko.login_failed',
+                        displayText: 'scko.error.login_failed'
+                    };
 
-                this.scko.notifyPatron(ctx);
+                    this.scko.notifyPatron(ctx);
 
-            } else {
-                this.focusNode('item-barcode');
-            }
+                } else {
+                    this.focusNode('item-barcode');
+                }
 
-            this.patronUsername = '';
-            this.patronPassword = '';
-        });
+                this.patronUsername = '';
+                this.patronPassword = '';
+            });
     }
 
     submitItemBarcode() {

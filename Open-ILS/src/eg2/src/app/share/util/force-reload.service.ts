@@ -1,7 +1,7 @@
 /**
  * Force reload of a given path
  */
-import { Injectable } from "@angular/core";
+import { Injectable } from '@angular/core';
 import {Location} from '@angular/common';
 
 @Injectable()

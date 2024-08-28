@@ -10,7 +10,7 @@ import {ServerStoreService} from '@eg/core/server-store.service';
 import {PrintService} from '@eg/share/print/print.service';
 
 @Component({
-  templateUrl: 'holds.component.html'
+    templateUrl: 'holds.component.html'
 })
 
 export class SckoHoldsComponent implements OnInit {
@@ -37,9 +37,9 @@ export class SckoHoldsComponent implements OnInit {
         this.scko.resetPatronTimeout();
 
         const orderBy = [
-           {shelf_time: {nulls: 'last'}},
-           {capture_time: {nulls: 'last'}},
-           {request_time: {nulls: 'last'}}
+            {shelf_time: {nulls: 'last'}},
+            {capture_time: {nulls: 'last'}},
+            {request_time: {nulls: 'last'}}
         ];
 
         const filters = {
@@ -67,8 +67,8 @@ export class SckoHoldsComponent implements OnInit {
         this.printer.print({
             templateName: 'scko_holds',
             contextData: {
-              holds: this.holds,
-              user: this.scko.patronSummary.patron
+                holds: this.holds,
+                user: this.scko.patronSummary.patron
             },
             printContext: 'default'
         });

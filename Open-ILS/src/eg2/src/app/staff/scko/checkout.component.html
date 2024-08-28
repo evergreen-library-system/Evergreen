@@ -21,7 +21,8 @@
 	    <tr *ngFor="let co of scko.sessionCheckouts">
         <td>
           <ng-container *ngIf="co.circ">
-            <img src="/opac/extras/ac/jacket/small/r/{{co.circ.target_copy().call_number().record().id()}}"/>
+            <img i18n-alt alt="Jacket Image"
+              src="/opac/extras/ac/jacket/small/r/{{co.circ.target_copy().call_number().record().id()}}"/>
           </ng-container>
         </td>
         <td><span *ngIf="co.circ">{{co.circ.target_copy().barcode()}}</span></td>

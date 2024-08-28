@@ -17,26 +17,26 @@ import {SckoFinesComponent} from './fines.component';
 import {ForceReloadService} from '@eg/share/util/force-reload.service';
 
 @NgModule({
-  declarations: [
-    SckoComponent,
-    SckoBannerComponent,
-    SckoSummaryComponent,
-    SckoCheckoutComponent,
-    SckoItemsComponent,
-    SckoHoldsComponent,
-    SckoFinesComponent
-  ],
-  imports: [
-    EgCommonModule,
-    CommonWidgetsModule,
-    PatronModule,
-    SckoRoutingModule
-  ],
-  providers: [
-    SckoService,
-    AudioService,
-    ForceReloadService
-  ]
+    declarations: [
+        SckoComponent,
+        SckoBannerComponent,
+        SckoSummaryComponent,
+        SckoCheckoutComponent,
+        SckoItemsComponent,
+        SckoHoldsComponent,
+        SckoFinesComponent
+    ],
+    imports: [
+        EgCommonModule,
+        CommonWidgetsModule,
+        PatronModule,
+        SckoRoutingModule
+    ],
+    providers: [
+        SckoService,
+        AudioService,
+        ForceReloadService
+    ]
 })
 
 export class SckoModule {}

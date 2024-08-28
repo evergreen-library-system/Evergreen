@@ -7,26 +7,26 @@ import {SckoHoldsComponent} from './holds.component';
 import {SckoFinesComponent} from './fines.component';
 
 const routes: Routes = [{
-  path: '',
-  component: SckoComponent,
-  children: [{
     path: '',
-    component: SckoCheckoutComponent
-  }, {
-    path: 'items',
-    component: SckoItemsComponent
-   }, {
-    path: 'holds',
-    component: SckoHoldsComponent
-   }, {
-    path: 'fines',
-    component: SckoFinesComponent
- }]
+    component: SckoComponent,
+    children: [{
+        path: '',
+        component: SckoCheckoutComponent
+    }, {
+        path: 'items',
+        component: SckoItemsComponent
+    }, {
+        path: 'holds',
+        component: SckoHoldsComponent
+    }, {
+        path: 'fines',
+        component: SckoFinesComponent
+    }]
 }];
 
 @NgModule({
-  imports: [RouterModule.forChild(routes)],
-  exports: [RouterModule]
+    imports: [RouterModule.forChild(routes)],
+    exports: [RouterModule]
 })
 
 export class SckoRoutingModule {}

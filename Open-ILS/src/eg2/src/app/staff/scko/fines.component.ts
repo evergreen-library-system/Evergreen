@@ -11,7 +11,7 @@ import {PrintService} from '@eg/share/print/print.service';
 
 
 @Component({
-  templateUrl: 'fines.component.html'
+    templateUrl: 'fines.component.html'
 })
 
 export class SckoFinesComponent implements OnInit {
@@ -65,7 +65,7 @@ export class SckoFinesComponent implements OnInit {
     displayValue(xact: IdlObject, field: string): string {
         const entry =
             xact.circulation().target_copy().call_number().record().flat_display_entries()
-            .filter(e => e.name() === field)[0];
+                .filter(e => e.name() === field)[0];
 
         return entry ? entry.value() : '';
     }

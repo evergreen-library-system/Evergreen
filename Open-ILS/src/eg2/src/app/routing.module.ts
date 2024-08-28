@@ -13,11 +13,11 @@ import {WelcomeComponent} from './welcome.component';
 const routes: Routes = [{
     path: '',
     component: WelcomeComponent
-  }, {
+}, {
     path: 'staff',
     resolve : {startup : BaseResolver},
     loadChildren: () => import('./staff/staff.module').then(m => m.StaffModule)
-  }, {
+}, {
     path: 'staff/selfcheck',
     resolve : {startup : BaseResolver},
     loadChildren: () => import('./staff/scko/scko.module').then(m => m.SckoModule)

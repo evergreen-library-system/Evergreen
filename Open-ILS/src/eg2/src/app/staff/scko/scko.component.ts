@@ -8,9 +8,9 @@ import {ConfirmDialogComponent} from '@eg/share/dialog/confirm.component';
 import {AlertDialogComponent} from '@eg/share/dialog/alert.component';
 
 @Component({
-  templateUrl: 'scko.component.html',
-  styleUrls: ['scko.component.css'],
-  encapsulation: ViewEncapsulation.None
+    templateUrl: 'scko.component.html',
+    styleUrls: ['scko.component.css'],
+    encapsulation: ViewEncapsulation.None
 })
 
 export class SckoComponent implements OnInit, AfterViewInit {

@@ -11,7 +11,7 @@ import {ServerStoreService} from '@eg/core/server-store.service';
 import {PrintService} from '@eg/share/print/print.service';
 
 @Component({
-  templateUrl: 'items.component.html'
+    templateUrl: 'items.component.html'
 })
 
 export class SckoItemsComponent implements OnInit {
@@ -43,13 +43,13 @@ export class SckoItemsComponent implements OnInit {
             'open-ils.actor.user.checked_out.authoritative',
             this.auth.token(), this.scko.patronSummary.id).toPromise()
 
-        .then(data => {
-            const ids = data.out.concat(data.overdue).concat(data.long_overdue);
-            return this.scko.getFleshedCircs(ids).pipe(tap(circ => {
-                this.circs.push(circ);
-                this.selected[circ.id()] = true;
-            })).toPromise();
-        });
+            .then(data => {
+                const ids = data.out.concat(data.overdue).concat(data.long_overdue);
+                return this.scko.getFleshedCircs(ids).pipe(tap(circ => {
+                    this.circs.push(circ);
+                    this.selected[circ.id()] = true;
+                })).toPromise();
+            });
     }
 
     printList() {
@@ -89,22 +89,22 @@ export class SckoItemsComponent implements OnInit {
         from(renewList).pipe(switchMap(circ => {
             return of(
                 this.scko.renew(circ.target_copy().barcode())
-                .then(ctx => {
-                    contexts.push(ctx);
+                    .then(ctx => {
+                        contexts.push(ctx);
 
-                    if (!ctx.newCirc) { return; }
+                        if (!ctx.newCirc) { return; }
 
-                    // Replace the renewed circ with the new circ.
-                    const circs = [];
-                    this.circs.forEach(c => {
-                        if (c.id() === circ.id()) {
-                            circs.push(ctx.newCirc);
-                        } else {
-                            circs.push(c);
-                        }
-                    });
-                    this.circs = circs;
-                })
+                        // Replace the renewed circ with the new circ.
+                        const circs = [];
+                        this.circs.forEach(c => {
+                            if (c.id() === circ.id()) {
+                                circs.push(ctx.newCirc);
+                            } else {
+                                circs.push(c);
+                            }
+                        });
+                        this.circs = circs;
+                    })
             );
         })).toPromise().then(_ => {
 
