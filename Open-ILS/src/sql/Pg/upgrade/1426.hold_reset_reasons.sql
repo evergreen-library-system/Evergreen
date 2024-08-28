@@ -1,6 +1,6 @@
 BEGIN;
 
-SELECT evergreen.upgrade_deps_block_check('XXXX', :eg_version);
+SELECT evergreen.upgrade_deps_block_check('1426', :eg_version);
 
 
 CREATE TABLE action.hold_request_reset_reason (
