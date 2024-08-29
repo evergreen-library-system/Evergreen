@@ -199,9 +199,11 @@ You can set up recurring monthly reports to show comparative data from one year
 
 Use the _Relative time value_ checkbox under _Filter value_ to switch from a 
 specific real date to a relative date. For a report filtering on month, you will
- be able to indicate how many months ago the report should look at.
+ be able to indicate how many months ago the report should look at. 
 
 image::reporter_basics/reports-filters-2.png[Screenshot of a checkin scan date/time. The relative time value box is selected. Instead of date fields with a calendar pickers there are fields for number of days ago.]
+
+You can use a negative number in the filter value to indicate a future date, e.g., -3 months on the user privilege expiration date field to show users who will expire three months from the date of the report's run.
 
 [[report_library_filters]]
 ==== Library Filters ====
