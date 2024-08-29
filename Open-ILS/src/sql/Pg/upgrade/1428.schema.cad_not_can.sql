@@ -1,6 +1,6 @@
 BEGIN;
 
---SELECT evergreen.upgrade_deps_block_check('XXXX', :eg_version);
+SELECT evergreen.upgrade_deps_block_check('1428', :eg_version);
 
 ALTER TABLE acq.exchange_rate 
 	DROP CONSTRAINT exchange_rate_from_currency_fkey
