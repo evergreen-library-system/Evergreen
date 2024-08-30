@@ -1,6 +1,6 @@
 BEGIN;
 
--- SELECT evergreen.upgrade_deps_block_check('XXXX', :eg_version);
+SELECT evergreen.upgrade_deps_block_check('1429', :eg_version);
 
 UPDATE config.org_unit_setting_type
 SET description = oils_i18n_gettext('circ.course_materials_brief_record_bib_source',
