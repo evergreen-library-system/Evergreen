@@ -24,7 +24,7 @@
 <div class="row">
   <div class="col-md-8">
     <h2>[% l('Latency Test') %]</h2>
-    <p>[% |l %]This will measure the websocket latency between your workstation client and the Evergreen server at the host above.[% END %]
+    <p>[% |l %]A latency test provides information about the current speed of your internet connection. Information from this test can be used to help troubleshoot if you experience system slowdowns. This test measures the websocket latency between your workstation client and the Evergreen server host listed above.[% END %]
     </p>
     <button ng-disable="isTesting" ng-click="testLatency()" type="button" class="btn btn-primary">Start Test</button>
     <button ng-click='clearTestData()' type="button" class="btn btn-secondary">Clear</button>
