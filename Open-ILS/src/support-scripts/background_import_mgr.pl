@@ -162,7 +162,7 @@ sub resolve_queue {
     return $job->queue if $job->queue;
     return $$params{existing_queue} if $$params{existing_queue};
 
-    my $qname = $$params{queue_name};
+    my $qname = $$params{new_queue_name};
     return undef unless $qname;
 
     $logger->info("Creating new queue {$qname} for job ".$job->id."...");
