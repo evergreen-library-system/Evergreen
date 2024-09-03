@@ -5366,7 +5366,11 @@ sub hold_metadata {
                 );
 
             # we got the ids of the parts we can hold, now grab the rest of their info from the fieldmapper
-            $meta->{parts} = [map { $e->retrieve_biblio_monograph_part($_->{'id'}) } @$parts];
+            if ($parts && @$parts && @$parts.length > 0)
+            {
+                my $part_ids = [map {$_->{'id'}} @$parts];
+                $meta->{parts} = $e->search_biblio_monograph_part({id=>$part_ids});
+            }
 
             # T holds on records that have parts are normally OK, but if the record has
             # no non-part copies, the hold will ultimately fail.  When that happens,
