@@ -58,7 +58,7 @@
             [% INCLUDE 'opac/parts/matomo_analytics.tt2' %]
         [% END %]
         [% PROCESS 'opac/parts/stripe.tt2' %]
-<script  src="[% ctx.media_prefix %]/opac/deps/node_modules/jquery/dist/jquery.min.js"></script>
+<script  src="[% ctx.media_prefix %]/opac/deps/node_modules/jquery/dist/jquery.min.js[% ctx.cache_key %]"></script>
 
 		<script>
 			$(document).ready(function(){
