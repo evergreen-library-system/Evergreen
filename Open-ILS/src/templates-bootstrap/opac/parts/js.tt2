@@ -169,8 +169,7 @@ var aou_hash = {
 
 <link rel="stylesheet" href="[% ctx.media_prefix %]/js/ui/default/common/build/js/glide/css/glide.core.min.css[% ctx.cache_key %]">
 <link rel="stylesheet" href="[% ctx.media_prefix %]/js/ui/default/common/build/js/glide/css/glide.theme.min.css[% ctx.cache_key %]">
-<!-- JS imports, etc.  -->
-<script  src="[% ctx.media_prefix %]/opac/deps/node_modules/jquery/dist/jquery.min.js[% ctx.cache_key %]"></script>
+<!-- JS imports, etc. jQuery is loaded in <head> -->
 <script src="[% ctx.media_prefix %]/opac/deps/node_modules/popper.js/dist/umd/popper.min.js[% ctx.cache_key %]"></script>
 <script src="[% ctx.media_prefix %]/opac/deps/node_modules/bootstrap/dist/js/bootstrap.min.js[% ctx.cache_key %]"></script>
 <script  src="[% ctx.media_prefix %]/opac/deps/node_modules/bootstrap-datepicker/dist/js/bootstrap-datepicker.js[% ctx.cache_key %]"></script>
