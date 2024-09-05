@@ -138,3 +138,20 @@ NOTE: https://blog.anoff.io/2019-02-15-antora-first-steps/
 
 NOTE: https://owncloud.org/news/owncloud-docs-migrating-antora-pt-1-2/
 
+== Checking the documentation against our style guide
+
+We use a tool named Vale to check our documentation
+against our style guide.
+
+To check it locally:
+
+. https://asciidoctor.org/#installation[Install asciidoctor locally]
+. https://vale.sh/docs/vale-cli/installation/[Install vale locally]
+. Run the following commands from the Evergreen source directory:
+
+[source,bash]
+----
+cd docs
+vale sync
+vale modules
+----

@@ -4,3 +4,4 @@ package-lock.json
 build
 output
 site-working.yml
+vale-styles/AsciiDoc

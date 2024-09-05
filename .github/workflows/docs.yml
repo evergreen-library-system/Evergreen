@@ -22,3 +22,16 @@ jobs:
           name: built-docs
           path: docs/output
           retention-days: 2
+  check_docs_styles:
+    name: Check docs styles
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - name: Install asciidoctor
+        run: sudo apt-get install -y asciidoctor
+      - name: Install vale
+        run: pip install vale
+      - name: Download and install vale rules
+        run: cd docs && vale sync
+      - name: Check documentation against DIG style guide
+        run: cd docs && vale modules
