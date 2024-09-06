@@ -17,7 +17,7 @@ jobs:
           cd docs
           sed -i 's/branches.*/branches: [HEAD]/' site.yml
           perl generate_docs.pl --base-url http://example.com
-      - uses: actions/upload-artifact@v2
+      - uses: actions/upload-artifact@v4
         with:
           name: built-docs
           path: docs/output
