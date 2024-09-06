@@ -1,6 +1,6 @@
 BEGIN;
 
--- SELECT evergreen.upgrade_deps_block_check('XXXX', :eg_version);
+SELECT evergreen.upgrade_deps_block_check('1430', :eg_version);
 
 INSERT INTO config.print_template
     (name, label, owner, active, locale, content_type, template)
