@@ -1,6 +1,6 @@
 BEGIN;
 
---SELECT evergreen.upgrade_deps_block_check('XXXX', :eg_version);
+SELECT evergreen.upgrade_deps_block_check('1431', :eg_version);
 
 --Add the new information used to calculate available_copy_ratio to the stats the function sends out
 DROP TYPE IF EXISTS action.hold_stats CASCADE;
