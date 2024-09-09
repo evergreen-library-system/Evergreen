@@ -1,0 +1,29 @@
+BEGIN;
+
+SELECT plan(1);
+
+SELECT is(
+    (SELECT vandelay.replace_field(
+-- target record: the new record a cataloger is importing into the system
+$$
+<record xmlns="http://www.loc.gov/MARC21/slim" 
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://www.loc.gov/MARC21/slim http://www.loc.gov/standards/marcxml/schema/MARC21slim.xsd">
+</record>
+$$,
+-- source record: the record that is already in the system
+$$
+<record xmlns="http://www.loc.gov/MARC21/slim"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://www.loc.gov/MARC21/slim http://www.loc.gov/standards/marcxml/schema/MARC21slim.xsd">
+  <datafield tag="490" ind1="1" ind2=" ">
+    <subfield code="a">My great 490 field</subfield>
+  </datafield>
+</record>
+$$, '490')),
+    '<record    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"    xsi:schemaLocation="http://www.loc.gov/MARC21/slim http://www.loc.gov/standards/marcxml/schema/MARC21slim.xsd"    xmlns="http://www.loc.gov/MARC21/slim"><leader>         a              </leader><datafield tag="490" ind1="1" ind2=" "><subfield code="a">My great 490 field</subfield></datafield></record>',
+    'it keeps the 490 from the source record'
+);
+
+SELECT * FROM finish();
+ROLLBACK;
