@@ -1,3 +1,5 @@
+-- Outside the transaction because the first change is.
+SELECT evergreen.upgrade_deps_block_check('1432', :eg_version);
 
 -- This has to happen outside the transaction that uses it below.
 ALTER TYPE config.usr_activity_group ADD VALUE IF NOT EXISTS 'mfa';
