@@ -63,9 +63,9 @@ export class SckoService {
     barcodeRegex: RegExp;
     patronPasswordRequired = false;
     patronIdleTimeout: number;
-    patronTimeoutId: number;
+    patronTimeoutId: ReturnType<typeof setTimeout>;
     logoutWarningTimeout = WARNING_TIMEOUT;
-    logoutWarningTimerId: number;
+    logoutWarningTimerId: ReturnType<typeof setTimeout>;
 
     alertAudio = false;
     alertPopup = false;
