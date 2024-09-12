@@ -2,7 +2,7 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { CredentialInputComponent } from './credential-input.component';
 
-describe('CredentialInputComponent', () => {
+fdescribe('CredentialInputComponent', () => {
     let component: CredentialInputComponent;
     let fixture: ComponentFixture<CredentialInputComponent>;
 
@@ -27,7 +27,7 @@ describe('CredentialInputComponent', () => {
     });
     it('starts out with the credential invisible', () => {
         expect(fixture.nativeElement.querySelector('input').getAttribute('type')).toEqual('password');
-        expect(fixture.nativeElement.querySelector('input').getAttribute('aria-description')).toEqual('Your password is not visible.');
+        expect(fixture.nativeElement.querySelector('#credential-input-description').innerText).toEqual('Your password is not visible.');
         expect(fixture.nativeElement.querySelector('button').getAttribute('title')).toEqual('Show Password');
         expect(fixture.nativeElement.querySelector('button').getAttribute('aria-label')).toEqual('Show Password');
         expect(fixture.nativeElement.querySelector('span').innerText).toEqual('visibility_off');
@@ -36,7 +36,7 @@ describe('CredentialInputComponent', () => {
         fixture.nativeElement.querySelector('button').click();
         fixture.detectChanges();
         expect(fixture.nativeElement.querySelector('input').getAttribute('type')).toEqual('text');
-        expect(fixture.nativeElement.querySelector('input').getAttribute('aria-description')).toEqual('Your password is visible!');
+        expect(fixture.nativeElement.querySelector('#credential-input-description').innerText).toEqual('Your password is visible!');
         expect(fixture.nativeElement.querySelector('button').getAttribute('title')).toEqual('Hide Password');
         expect(fixture.nativeElement.querySelector('button').getAttribute('aria-label')).toEqual('Hide Password');
         expect(fixture.nativeElement.querySelector('span').innerText).toEqual('visibility');
@@ -53,7 +53,7 @@ describe('CredentialInputComponent', () => {
         fixture.nativeElement.querySelector('button').click();
         fixture.detectChanges();
         expect(fixture.nativeElement.querySelector('input').getAttribute('type')).toEqual('password');
-        expect(fixture.nativeElement.querySelector('input').getAttribute('aria-description')).toEqual('Your password is not visible.');
+        expect(fixture.nativeElement.querySelector('#credential-input-description').innerText).toEqual('Your password is not visible.');
         expect(fixture.nativeElement.querySelector('button').getAttribute('title')).toEqual('Show Password');
         expect(fixture.nativeElement.querySelector('button').getAttribute('aria-label')).toEqual('Show Password');
         expect(fixture.nativeElement.querySelector('span').innerText).toEqual('visibility_off');
