@@ -1,7 +1,7 @@
 BEGIN;
 
 -- check whether patch can be applied
-SELECT evergreen.upgrade_deps_block_check('YYYY', :eg_version);
+SELECT evergreen.upgrade_deps_block_check('1435', :eg_version);
 
 -- 002.schema.config.sql
 
