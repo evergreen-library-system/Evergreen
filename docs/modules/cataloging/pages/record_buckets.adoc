@@ -3,59 +3,164 @@
 
 == Introduction ==
 
-Record buckets are containers for MARC records. Once records are in a bucket, you can take
-various types of actions, including:
+Record buckets are containers for bibliographic records. Once records are in a bucket, you can take various types of actions on the records, including:
 
-* Editing all the records at once using the MARC Batch Editor.
-* Deleting all the records in the bucket.
-* Merging all the records in the bucket.
-* Downloading the MARC files for all records in the bucket, so you can edit them in another
-program like http://marcedit.reeset.net[MARCEdit].
+* Deleting all (or selected) records in the bucket.
+* Merging all (or selected) records in the bucket.
+* Transferring title holds among records in the bucket.
+* Creating an xref:admin_initial_setup:carousels.adoc#_create_a_carousel_from_a_record_bucket[OPAC Carousel] from bucket members.
+* Exporting the files for all (or selected) records in the bucket, so you can edit the records in another program like http://marcedit.reeset.net[MARCEdit].
+* Moving or adding all (or selected) records from the current bucket to another bucket.
 
+[[record_buckets_interface]]
+== Record Buckets Interface ==
+
+image::images/cataloging/record_buckets/buckets_interface.png[Buckets interface]
+
+The Angular version of the record buckets interface features a header with a _New Buckets_ button beside it.
+
+Beneath the header are shortcuts to display different sets of buckets:
+
+* _My buckets_ shows all buckets that you created or that you own directly
+* _Favorites_ shows the buckets that you have marked as a favorite
+* _Recent_ shows buckets that you have recently viewed
+* _Shared with others_ shows buckets that you have shared with other staff users or organizational units
+* _Shared with me_ shows buckets that have either been directly shared with you, or shared with you via organizational unit membership, for which you have editing permissions
++
+NOTE: You can have permissions to edit record buckets via your working location (organizational unit), and/or have directly assigned edit permissions for specific bucket(s).
++
+* _Visible to me_ shows buckets that have either been directly shared with you, or shared with you via organizational unit membership, for which you have view-only permissions.
+
+Beneath these shortcuts is a grid to display individual buckets. You can search this grid by bucket ID, as well as use column filters and sorting to change which buckets are displaying.
+
+Grid columns for this interface are:
+
+* _Favorite_ - select or deselect the star icon to add a bucket to your Favorites list. Favorited buckets will populate your Favorites view in the buckets interface, as well as in the staff catalog buckets tab.
+* _Bucket ID_ - this is the internal database ID for the record bucket.
+* _Name_ - this is the name for the record bucket. This is a hyperlink, and clicking on this will open the individual bucket.
+* _Description_ - this is the (optional) description for the record bucket.
+* _# of entries_ - this tells you the number of entries in the record bucket, which can include duplicates of individual bibs if you've added duplicates to your bucket.
+* _Bucket Type_ - this tells you what type of bucket this is. Typically this will be _staff_client_, meaning it is only available to staff members (as disctinct from patron-created buckets in the OPAC).
+* _Public_ - indicates if the bucket is publicly visible. Use this to create buckets that you would like to be publicly viewable in the OPAC.
+* _Created On_ - the date the bucket was created.
+* _Owner_ - the staff user that owns the bucket.
+* _Owning Lib_ - the owning library of the bucket. This field is read-only and will only have a value if the bucket is used for a Carousel.
+* _Actions_ - this column has 4 buttons that are shortcuts to bucket actions:
+** _Edit bucket_ - represented by a pencil icon, this will allow you to edit bucket details like name, description, and whether or not the bucket is public.
+** _Create Carousel_ - represented by a picture icon, this will prompt you to create an OPAC Carousel from your bucket. For more information, see the xref:admin_initial_setup:carousels.adoc#_create_a_carousel_from_a_record_bucket[Carousels] documentation.
+** _Share bucket_ - represented by a person icon, this will open a modal allowing you to share a bucket with specific users and/or organizational units.
+** _Delete bucket_ - represented by an X icon, this will delete the bucket. You will be asked to confirm the delete.
+* _# of org shares_ - this shows a count of the number of organizational units with whom the bucket is shared.
+* _# of user edit shares_ - this shows a count of the number of users with edit permissions, with whom the bucket is shared directly (i.e. not via an organizational unit share).
+* _# of user view shares_ - this shows a count of the number of users with view-only permissions, with whom the bucket is shared directly (i.e. not via an organizational unit share).
+
+Actions in this interface include:
+
+* _Add to Favorites_ - adds the selected bucket to your Favorites list. Favorited buckets will populate your Favorites view in the buckets interface, as well as in the staff catalog buckets tab.
+* _Create Carousel From Bucket_ - prompts you to create an OPAC Carousel from the selected bucket. For more information, see the xref:admin_initial_setup:carousels.adoc#_create_a_carousel_from_a_record_bucket[Carousels] documentation.
+* _Delete Bucket(s)_ - prompts you to confirm deletion of one or several buckets. You can only delete buckets that you own, or for which you have editing permissions.
+* _Edit Bucket_ - allows you to edit bucket details like name, description, and whether or not the bucket is public.
+* _Export Records_ - exports all records in the selected bucket as a csv file.
+* _MARC Batch Edit_ - opens the bucket in the xref:cataloging:MARC_batch_edit.adoc[MARC Batch Edit] interface.
+* _Remove from Favorites_ - removes the selected bucket from your Favorites list.
+* _Share Bucket_ - this opens a modal which will allow you to share the bucket with specific users and/or organizational units. You can separately add users with view-only permissions and users with view and edit permissions. All buckets shared with an organizational unit will be editable by those with bucket editing privileges at that location
+** To add a user, navigate to either the _Users with View Permissions_ or _Users with Edit Permission_ tab. You will see a list of the current users with whom the bucket is shared.
++
+image::images/cataloging/record_buckets/bucket_sharing.png[Current share members]
++
+** Select _Add Users_ which will open a user search modal. Search for users and select one or several users with the checkbox. Use the _Select_ button to add these users to your share list. You may only share buckets with staff users. 
++
+image::images/cataloging/record_buckets/patron_search_share.png[Searching & adding new share members]
++
+** Do not use the _Add to Bucket_ action, as in this context that is to add users to xref:circulation:user_buckets.adoc[User Buckets].
+** You will see your share list updated with the new share users. To complete your updates, select _Update Bucket Sharing_.
++
+image::images/cataloging/record_buckets/update_sharing.png[Updating bucket sharing]
++
+** To remove a user, navigate to either the _Users with View Permissions_ or _Users with Edit Permission_ tab. You will see a list of the current users with whom the bucket is shared. Select one or several users from the list.
+** Select _Remove Users_ and the user will be removed from the share list.
++
+image::images/cataloging/record_buckets/remove_share.png[Remove user from sharing]
++
+** To complete your updates, select _Update Bucket Sharing_.
+** To share a bucket with all staff members of an organizational unit, select the _Libraries_ tab in the sharing modal. Select one or several organizational units from the tree. You will need to select or remove organizational units individually - shares do not inherit.
++
+image::images/cataloging/record_buckets/library_share.png[Share with libraries]
++
+** To complete your updates, select _Update Bucket Sharing_.
+* _Transfer Bucket Ownership_ - this opens a modal which will prompt you to enter a barcode, or search for a user, to transfer bucket ownership. Depending on your permissions, once you transfer a bucket you may lose editing or viewing privileges for that bucket. Administrators can transfer buckets for other users, even if the administrator doesn't directly own the bucket.
+* _Upload Records_ - this opens a modal which will allow you to either upload or copy/paste bibliographic IDs or TCNs to the selected bucket. This is described in detail below in 
+
+[[creating_record_buckets]]
 == Creating Record Buckets ==
 
-. Click on _Cataloging_ -> _Record Buckets_.
-. On the _Buckets_ menu, click _New Bucket_.
+. Naviate to _Cataloging_ -> _Record Buckets_.
+. Next to the _Bibliographic Record Buckets_ heading, select _New Bucket_.
 . Give the bucket a name and (optionally) a description.
+. Select _Create New Bucket_ to close the modal and create your bucket.
 
+[[add_records_to_bucket]]
 == Adding Records to a Bucket ==
 
+Bibliographic records can be added to a new or existing bucket via several means, including:
+
+* Directly in the record bucket interface
+* From the staff catalog search results page
+* From a staff catalog basket
+* From the xref:cataloging:item_status.adoc[Item Status] interface
+* From within the bibliographic record details interface
+* Directly via one-time or recurring reports output(s).
+
+[[add_records_from_bucket_interface]]
 === From the Record Bucket Interface ===
-. Click on _Cataloging_ -> _Record Buckets_.
-. On the _Buckets_ menu, choose the bucket that you'd like to add records to.
-. Go to the _Record Query_ tab.
-. Enter your query into the _Record Query_ box.
-. Select the records you would like to add.
-. On the _Actions_ menu, click _Add to Bucket_.
 
-.Advanced record queries
-****
+Navigate to *Cataloging -> Record Buckets*. The view will default to show your buckets. You can also select other sets of buckets to view, described above.
 
-The _Record Query_ tab allows some advanced search functionality through the use of search keys,
-which can be combined with one another.
+There are two ways to add records via the record bucket interface:
+
+* Via the _Search Catalog_ box on the upper right. This can take either simple keyword input or more advanced searching, described in the section below. Results will open in a new tab.
+* Via the _Upload Records_ action
+
+The _Upload Records_ action is available in the Actions menu. Choose a bucket by selecting its checkbox, and then navigate to the actions menu and select _Upload Records_. When selected, this will open a modal:
+
+image::images/cataloging/record_buckets/upload_to_bucket.png[Upload Records to bucket]
+
+From here, you can select whether you want to upload _Bib IDs_ or _TCNs_. You can select a file from your computer using the _Choose file_ button. You can also, as shown in the screenshot above, paste values into the text box in this modal. You should have 1 value per line.
+
+When ready, select **Import Bib IDs** (or **Import TCNs**) to complete the upload.
+
+TIP: Precat (Bib ID = -1) or invalid values will be rejected, and the error message will note which values were not imported. Blank lines either in the paste or in the text file will be ignored.
+
+
+==== Advanced record queries ====
+
+The _Search Catalog_ input allows some advanced search functionality through the use of search keys, which can be combined with one another.
 
 .Record Bucket search keys
 [options="header"]
 |===================
-|Search key           |Abbreviated version |Usage example               |Description
-|author:              |au:                 |au:Anzaldua                 |An author, creator, or contributor
-|available:           |                    |available:yes               |Limits to available items. There is no way to limit to _unavailable_ items
-|keyword:             |kw:                 |kw:Schirmer                 |A keyword
-|lang:                |                    |lang:Spanish                |A language
-|series:              |se:                 |se:avatar last airbender    |A series title
-|site:                |                    |site:LIB3                   |The shortname of the library/system/consortium you'd like to search
-|subject:             |su:                 |su:open source software     |A subject
-|subject\|geographic: |                    |subject\|geographic:Uruguay |A geographic subject
-|title:               |ti:                 |ti:Harry Potter             |Title proper or alternate title
-|title\|proper:       |                    |title\|proper:Harry Potter  |Title proper taken from 245
+|Search key      |Abbreviated version |Usage example        |Description
+|author:       |au:         |au:Bartok         |An author, creator, or contributor
+|keyword:       |kw:         |kw:Cello         |A keyword
+|lang:        |          |lang:Spanish        |A language
+|series:       |se:         |se:columbia masterworks  |A series title
+|subject:       |su:         |su:concertos   |A subject
+|subject\|geographic: |          |subject\|geographic:Italy |A geographic subject
+|title:        |ti:         |ti:arias for bass    |Title proper or alternate title
+|title\|proper:    |          |title\|proper:arias for bass |Title proper taken from 245
 |===================
 
-You can combine these in the same query, e.g. `ti:borderlands au:anzaldua available:yes`.  However -- with the exception of the _lang_ search key,
-you should not repeat the same search key twice.
+You can combine these in the same query, e.g. `ti:cello au:bartok` However, with the exception of the _lang_ search key, you should not repeat the same search key twice. 
 
-*Limiting Results by Item Type or Search Format*
+Search terms are automatically combined with a Boolean AND operator, but you can also specify other operators similar to what can be used in the OPAC:
 
-You can narrow results using search_format or item_type functionalities by entering search_format(_formattype_) or item_type(_type_) to the end of your search query.
+* && (double ampersand) for Boolean AND
+* || (double pipe) for Boolean OR
+* - (minus sign) for Boolean NOT
+
+==== Limiting Results by Item Type or Search Format ====
+
+You can narrow results using search_format or item_type functionalities by entering `search_format(_formattype_)` or `item_type(_type_)` to the end of your search query.
 
 Search Formats Examples:
 
@@ -66,13 +171,11 @@ Search Formats Examples:
 * cdaudiobook - CD audiobooks
 * casaudiobook - Cassette audiobooks
 
-The item_type filter will allow you to filter directly from the
-Leader/06 value.
+The `item_type` filter will allow you to filter directly from the MARC Leader/06 value.
 
-For example, if you search for: _ti:Outlander au:Gabaldon item_type(i)_,
-your results will limited to nonmusical sound recordings.
+For example, if you search for: `ti:Outlander au:Gabaldon item_type(i)` your results will limited to nonmusical sound recordings.
 
-*Bibliographic Item Types*
+.Bibliographic Item Types
 [width="100%",options="header",]
 |===
 |MARC Item Type |Description
@@ -92,26 +195,106 @@ your results will limited to nonmusical sound recordings.
 |t |Manuscript language material
 |===
 
-****
+[[add_records_from_reports]]
+=== From Reports Output ===
 
-[TIP]
-You can use the same boolean operator symbols that are used in the OPAC (_||_ for boolean OR, _&&_ for boolean AND, and _-_ for boolean NOT).
+Buckets can also be populated directly from reports output. 
 
+TIP: The report template will need to have a column containing numeric Bib ID data in order to populate a bucket.
 
+When creating a report, there are two new options on the output tab under the label _Bibliographic Record Bucket Options_. You are also directed to select the column containing the Bib ID data in your report.
+
+. _New Record Bucket_ - select this checkbox if you wish to create a new record bucket with your report output. The new bucket will be given the same name as your report title, and its description will read "Generated by report #<report ID>." You can change either of these after the bucket is created using the _Edit Bucket_ action.
+. _Existing Record Bucket_ - select this checkbox if you wish to add your report output to an existing record bucket. Enter the bucket's ID in the _Destination Record Bucket ID_ field. You will need to have edit permissions for the selected bucket.
+
+Note that you can select both options on a single report.
+
+TIP: If you are running a recurring report and wish to have a single bucket that collects the report's output each time the recurring report is run, you will need to have an existing bucket to point the output to. Each run of the report will append new output to the bucket. 
+
+image::images/cataloging/record_buckets/report_output_to_bucket.png[Bucket output options in the Reports interface]
+
+[[add_records_from_catalog]]
+=== From Catalog Search ===
+
+You can add records to buckets directly from the staff catalog search results, or from xref:staff_catalog:basket.adoc#_add_basket_to_bucket[a basket]. In either case, you perform a catalog search and then select one or several records from the results list using the checkbox on each result.
+
+There is a buckets subtab to the left of the catalog search results, which will show your favorites as well as your recently-viewed buckets in two collapsable accordions. Each set displays the bucket name, any organizational unit sharing in place, the bucket owner and organizational unit, and the count of records in the bucket. If you hover over the record count, and have selected records in the results list, you will see an option to add those records to a bucket.
+
+image::images/cataloging/record_buckets/staffcat_favorites.png[Buckets subtab in staff catalog showing favorite buckets and recently viewed buckets]
+
+Additionally, you can add a record directly to a bucket from its place in the search results lists. There is a button on the lower right of each result that says _Add to Bucket_. Select this button to see a list of your favorite buckets and recently viewed buckets. Select a bucket from this list to add a record to your bucket.
+
+image::images/cataloging/record_buckets/search_results.png[Add a record to a bucket from an individual member of the search results list]
+
+NOTE: once you navigate into a bucket from the staff catalog, there is no shortcut back to your search results and you will need to use the back button to return to search results.
+
+[[individual_record_bucket_actions]]
+== Individual Record Bucket Actions ==
+
+To access an individual bucket, click on its title in the main buckets interface. This will take you to the _Bibs in a Bucket_ view, where you can see all members of the record bucket and perform actions on them. This grid has filters and sort options available on each column, and as with other grids you can save your grid view.
+
+image::images/cataloging/record_buckets/bibs_in_a_bucket.png[Individual record bucket view]
+
+This interface has several actions avaiable, some via buttons and some via the actions menu.
+
+Buttons include:
+
+* _Remove Filters_ - this will remove all grid filters that are in place.
+* _Show in Catalog Results_ - this will open all selected records in a staff catalog search results page. This will open in a new tab.
+* _Open Selected in New Tabs_ - this will open each selected record in its own tab, and show you the record detail view for each record.
++
+NOTE: You may need to disable your browser's pop up blocker to allow multiple tabs to be opened in one action.
++
+* _Upload_ - this opens the _Upload Records_ modal xref:record_buckets.adoc#add_records_from_bucket_interface[described above].
+* _Export All_ - this exports all members of the bucket in either USMARC or MARCXML format. If you select this option you will see a modal with export options and the ability to confirm before you process the export.
+
+For more information on the Search Catalog box on the right of the interface, see the xref:record_buckets.adoc#add_records_from_bucket_interface[above description].
+
+Additional actions are available in the actions menu, and all may be performed on one or several records, with the exception of _Merge Selected Records_, which is explained in greater detail below. 
+
+Additional actions include:
+
+* _Add Selected Records to a Different Bucket_ - this will copy selected records from the current bucket into a new or existing bucket for which you have edit permissions
+* _Delete Selected Records from Catalog_ - if you have appropriate delete permissions you can delete records from the catalog. Note that this will only work for 'empty' records - any records with holdings or items attached will be blocked from deletion.
+* _Export Selected Records_ - this functions the same as _Export All_ described above, but allows you to select specific records for export.
+* _Merge Selected Records_ - this is described in detail in the next section.
+* _Move Selected Records to a Different Bucket - this will move selected records from the current bucket into a new or existing bucket for which you have edit permissions
+* _Transfer Title Holds_ - this will transfer all title-level holds from the selected record to a pre-selected holds transfer destination record. For more information on setting a holds transfer destination, please see the xref:circulation:basic_holds.adoc#_transferring_holds[Holds Management documentation].
+
+Columns in this view include:
+
+* _Bucket Entry ID_ - a unique identifier related to the record + bucket combined. The presence of this ID uniquely identifies each record as a bucket member, even if a record is added to the bucket twice. This allows users to add or remove duplicate records from the bucket.
++
+NOTE: This is new behavior, and duplicate records are no longer 'folded' or deduplicated within the bucket.
++
+* _Title Proper (normalized) - the title of the bibliographic record. It is a hyperlink, and clicking it will take you to the record detail view for that bibliographic record. This will open in the same tab.
+* _Record ID_ - the system bibliographic record ID
+* _Relative Position_ - the position of the record in a bookbag
+* _Is Deleted?_ - indicates if the bibliographic record is deleted or not
+* _Merge Date_ - the date a bibliographic record as merged
+* _Author (normalized) - the author of the bibliographic record
+* _Bucket ID_ - the ID of this bucket
+* _Date Added to Bucket_ - the date the bibliographic record was added to this bucket
+* _TCN Source_ - the source of the biliographic record's TCN (Title Control Number)
+* _TCN Value_ - the bibliographic record's TCN (Title Control Number)
+* _Record Creation Date/Time - the creation date of the bibliographic record
+* _Last Edit Date/Time - the date the bibliographic record was last edited
+* _Is Active?_ - indicates if a bibliographic record is active or not
+* _Merged To_ - if the record has been merged, this will show the Record ID of the bibliographic record which was the merge destination (AKA Lead Record). This is hyperlinked and clicking on it will take you to the lead record.
+* _Overall Record Quality_ - the calculated quality score of the bibliographic record
+
+[[merging_bib_records]]
 == Bibliographic Record Merging and Overlay ==
 
-Catalogers can merge or overlay records in record buckets or using records obtained from a Z39.50 service.
+You can merge or overlay records in record buckets, either as a way to resolve catalog duplicates or by using a set of records from an external service like Z39.50.
 
 === Merge Records in Record Buckets ===
 
-. Click *Cataloging>Record Buckets*.
+. Navigate to *Cataloging>Record Buckets*.
 . Create and/or select a record bucket.
-. Select the records that you want to merge, and click *Actions>Merge Selected Records*.
-+
-image::record_buckets/marcoverlay1.png[Interface showing the option to merge selected records in record buckets.]
-+
-. The Merge Selected Records interface appears.
-. The records to be merged appear on the right side of the screen.  Click *Use as Lead Record* to select a lead record from those that need to be merged.
+. Select the records that you want to merge, and click *Actions -> Merge Selected Records*.
+. This will open a new tab showing the Merge Records modal.
+. The records to be merged appear on the right side of the screen. Select _Use as Lead Record_ to select a lead record from those that need to be merged.
 +
 image::record_buckets/marcoverlay2.png[Merge Selected Records interface with records to be merged displayed on the right side.]
 +
@@ -124,45 +307,44 @@ image::record_buckets/marcoverlay3.png[Dropdown box for selecting a merge profil
 image::record_buckets/marcoverlay4.png[Preview of changes that will be made to the record after selecting a merge profile.]
 +
 . You can change the merge profile at any time; after doing so, the result of the merge will be recalculated. The merge result will also be recalculated after editing the lead record, changing which record is to be used as lead, or removing a record from consideration.
-. When you are satisfied that you have selected the correct merge profile, click the *Merge* button in the bottom right corner.
+. When you are satisfied that you have selected the correct merge profile, select the *Merge* button in the bottom right corner.
 . Note that merge profiles that contain a preserve field specification are not available to be chosen in this interface, as they would have the effect of reversing which bibliographic record is considered the target of the merge.
+
+After the merge is complete, you will be returned to your record bucket. You will see that the record(s) participating in the merge have an updated _Merge Date_ value. All non-lead records will be marked as deleted = yes, active = no, and will have the lead record's ID in the _Merged To_ field.
 
 === Track Record Merges ===
 
-When 2 or more bib records are merged in a record bucket, all records involved are stamped with a new merge_date value. For any bib record, this field indicates the last time it was involved in a merge. At the same time, all subordinate records (i.e. those deleted as a product of the merge) are stamped with a merged_to value indicating which bib record the source record was merged with.
+When two or more bibliographic records are merged in a record bucket, all records involved are stamped with a new `merge_date` value. For any bibliographic record, this field indicates the last time it was involved in a merge. At the same time, all subordinate records (i.e. those deleted as a product of the merge) are stamped with a `merged_to` value indicating which bibliographic record was the lead record in the merge.
 
-In the browser client bib record display, a warning alert now appears along the top of the page (below the Deleted alert) indicating when a record was used in a merge, when it was merged, and which record it was merge with, rendered as a link to the target record.
+In the staff catalog bibliographic record display, a warning alert now appears along the top of the page below the Deleted alert indicating when a record was used in a merge, when it was merged, and which record it was merge with, rendered as a link to the lead record.
 
 image::record_buckets/merge_tracking.png[merge message with date]
 
 === Merge Records Using Z39.50 ===
 
 . Search for a record in the catalog that you want to overlay.
-. Select the record, and click *MARC View*.
-. Select *Mark for: Overlay Target*.
+. Select the record, and select _MARC View_.
+. Select _Mark for: Overlay Target_.
 +
 image::record_buckets/marcoverlay5.png[Option to mark a record for overlay target in the MARC view.]
 +
-. Click *Cataloging>Import Record from Z39.50*.
-. Search for the lead record that you want to overlay within the Z39.50 interface.
-. Select the desired record, and click *Overlay*.
-+
-image::record_buckets/marcoverlay6.png[Z39.50 interface with the option to overlay the selected record.]
-+
-. The record that you have targeted to be overlaid, and the new record, appear side by side.
+. Navigate to *Cataloging -> Import Record from Z39.50*.
+. Search for the lead record that you want within the Z39.50 interface.
+. Select the desired lead record, and select _Overlay_.
+. The record that you have targeted to be overlaid, and the new record, display side by side.
 +
 image::record_buckets/marcoverlay7.png[Side-by-side comparison of the targeted record and the new record in the Z39.50 interface.]
 +
-. You can edit the lead record before you overlay the target. To edit the record, click the *Edit Z39.50 Record* button above the lead record.
-. The MARC editor will appear.  You can make your changes in the MARC editor, or you can select the *Flat Text Editor* to make changes.  After you have edited the record, click *Modify* in the top right corner, and then *Use Edits* in the bottom right corner. Note that the record you are editing is the version from the Z39.50 server not including any changes that would be made as a result of applying the selected merge file.
+. You can edit the lead record before you overlay the target. To edit the record, select _Edit Z39.50 Record above the lead record.
+. The MARC editor will open. You can make changes in the MARC editor, or you can select the _Flat Text Editor_ to make changes. After you have edited the record, select _Modify_ in the top-right corner, and then _Use Edits_ in the bottom-right corner. Note that the record you are editing is the version from the Z39.50 server not including any changes that would be made as a result of applying the selected merge file.
 . You will return to the side-by-side comparison of the records and then can proceed with the overlay.
-. Once you are satisfied with the record that you want to overlay, select a merge profile from the drop down box, *Choose merge profile*.
-. Click *Overlay*. The overlay will occur, and you will be taken back to the Z39.50 interface.
-. Note that the staff client remembers the last merge overlay profile that you selected, so the next time that you open the interface, it will default to that profile.  Simply change the profile to make a different selection.
+. Once you are satisfied with the record that you want to overlay, select a merge profile from the drop down box.
+. Select _Overlay_. The overlay will occur, and you will be taken back to the Z39.50 interface.
+. Note that the staff client remembers the last merge overlay profile that you selected, so the next time that you open the interface, it will default to that profile. Simply change the profile to make a different selection.
 . Also note when the merge profile is applied, the Z39.50 record acts as the target of the merge. For example, if your merge profile adds 650 fields, those 650 fields are brought over from the record that already exists in the Evergreen database (i.e., the one that you are overlaying from Z39.50).
 . Also note that merge profiles that contain a preserve field specification are not available to be chosen in this interface, as they would have the effect of reversing which bibliographic record is considered the target of the merge.
 
-=== New Admin Settings ===
+=== Administrative Settings for Record Merging ===
 
-. Go to *Admin>Local Administration>Library Settings Editor>Upload Default Merge Profile (Z39.50 and Record Buckets)*.
-. Select a default merge profile, and *click Update Setting*.  The merge profiles that appear in this drop down box are those that are created in *MARC Batch Import/Export*.  Note that catalogers will only see merge profiles that are allowed by their org unit and permissions.
+. Navigate to *Administration -> Local Administration -> Library Settings Editor -> Default Merge Profile (Z39.50 and Record Buckets)*.
+. Select a context organizational unit and a default merge profile, and select *Update Setting*. The merge profiles that appear in this drop down box are those that are created in *MARC Batch Import/Export*. Note that catalogers will only see merge profiles that are allowed by their organizational unit and permissions.

@@ -5,7 +5,7 @@ The results of a search appear below the search form.
 
 The number of results returned by the search appears in the top-left corner in parentheses beside the _Search Results_ label. 
 
-Facets appear to the left side of the page.
+Facets appear to the left side of the page, along with Buckets.
 
 Result details are listed to the right of the facets.
 
@@ -19,13 +19,13 @@ This information appears in the listed order from left to right in each result, 
 
 image::search_results/result_details.png[Screenshot of a single result with the different kinds of information highlighted, as described above.]
 
-Each result also contains a green *Place Hold* button that allows you to place a title or part level hold on the item. 
+Each result also contains a green *Place Hold* button that allows you to place a title or part level hold on the item, as well as an _Add to Bucket_ dropdown. 
 
 === Item Description ===
 
 The item description, also called the physical summary, appears on the left side of each search result. It contains the following information:
 
-* Cover image
+* Cover image (if supplied)
 * Title and author
 * Format with descriptive icon
 * Call number
@@ -48,9 +48,11 @@ The first number on each line is the number of copies on a given record at the s
 
 TIP: The consortium or highest-level location always appears on the first line. The library chosen in the _Library Selector_ determines what will be displayed on the next line or lines. The workstation's preferred library, if set, will appear last, if different from the preceding lines.
 
+image::search_results/result_details.png[Screenshot of a single result with the different kinds of information highlighted, as described above.]
+
 .Example
 ****
-In the image above, the consortium (CONS) owns 18 copies of _Ready Player One_. However, only 17 copies are currently marked "Available" or "Reshelving." Similarly, Branch 2 (BR2) owns 2 copies, but only 1 copy is currently available.
+In the image above, the consortium (CONS) owns 31 copies of _Cello concerto_. However, only 26 copies are currently marked "Available" or "Reshelving." Similarly, Branch 1 (BR1) owns 7 copies, but 6 copies are currently available.
 ****
 
 The title control number (TCN) and the total number of holds on the record are displayed to the right of the location holdings information.
@@ -86,3 +88,9 @@ image::search_results/facets.png[Screenshot with the facets panel highlughted, a
 Select a facet within a given category to limit the search results to the selected facet.
 
 Select the facet again to remove your selection.
+
+== Buckets ==
+
+Record Buckets can also be accessed from the left side.
+
+For more information on the Buckets subtab, see the xref:cataloging:record_buckets.adoc#add_records_from_catalog[Buckets documentation].

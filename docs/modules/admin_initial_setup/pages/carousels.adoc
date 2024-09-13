@@ -3,7 +3,7 @@
 
 This feature fully integrates the creation and management of book carousels into Evergreen, allowing for the display of book cover images on a library’s public catalog home page. Carousels may be animated or static. They can be manually maintained by staff or automatically maintained by Evergreen. Titles can appear in carousels based on newly cataloged items, recent returns, popularity, etc. Titles must have copies that are visible to the public catalog, be circulating, and holdable to appear in a carousel. Serial titles cannot be displayed in carousels. 
 
-image::carousel1.png[Book carousel on public catalog front screen] 
+image::carousels/carousel1.png[Book carousel on public catalog front screen] 
 
 There are three administrative interfaces used to create and manage carousels and their components: 
 
@@ -14,7 +14,7 @@ There are three administrative interfaces used to create and manage carousels an
 Each of these interfaces are detailed below.
 
 [[carousel_types]]
-== CAROUSEL TYPES ==
+== Carousel Types ==
 
 The Carousel Types administrative interface is used to create, edit, or delete carousel types. Carousel Types define the attributes of a carousel, such as whether it is automatically managed and how it is filtered. A carousel must be associated with a carousel type to function properly.  
 
@@ -30,7 +30,7 @@ Additional types can be created in the Carousel Types Interface. Types can also 
 
 The interface displays the list of carousel types in a grid format. The grid displays the Carousel Type ID, name of the carousel type, and the characteristics of each type by default. The Actions Menu is used to edit or delete a carousel type.
 
-image::carousel2.png[Carousel Types configuration screen]
+image::carousels/carousel2.png[Carousel Types configuration screen]
 
 === Attributes of Carousel Types ===
 
@@ -52,7 +52,7 @@ Each Carousel Type defines attributes used to add titles to the carousels associ
   .. Filter by Item Owning Library?
   .. Filter by Item Location?
 
-image::carousel3.png[Carousel Types Editor screen]
+image::carousels/carousel3.png[Carousel Types Editor screen]
 
 === Editing a Carousel Type ===
 
@@ -71,13 +71,13 @@ Carousel types can be deleted with the Actions Menu
 . Select the Actions button (or right-click on the type’s row) and choose Delete Type; carousel types cannot be deleted if there are carousels attached
 
 [[carousel_definitions]]
-== CAROUSEL DEFINITIONS ==
+== Carousel Definitions ==
 
 The Carousels administration page is used to define the characteristics of the carousel, such as the carousel type, which libraries will be able to display the carousel, and which shelving locations should be used to populate the carousel.
 
 The Carousels administration page is accessed through Administration > Local Administration > Carousels. The interface displays existing carousels in a grid format. The grid can be filtered by organizational unit, based on ownership. The filter may include ancestor or descendent organization units, depending on the scope chosen. The columns displayed correspond to attributes of the carousel. The following are displayed by default: Carousel ID, Carousel Type, Owner, Name, Last Refresh Time, Active, Maximum Items. 
 
-image::carousel4.png[Carousels configuration screen]
+image::carousels/carousel4.png[Carousels configuration screen]
 
 Additional columns may be added to the display with the column picker, including the log in of the creator and/or editor, the carousel’s creation or edit time, age limit, item libraries, shelving locations, or associated record bucket. 
 
@@ -119,7 +119,7 @@ Additional columns may be added to the display with the column picker, including
 . Enter the Maximum Number of titles to display in the carousel
 . Click Save 
 
-image::carousel5.png[Carousel editor screen]
+image::carousels/carousel5.png[Carousel editor screen]
 
 === Carousels and Record Buckets ===
 
@@ -130,8 +130,7 @@ When a carousel is created, a corresponding record bucket is also created. The b
 A record bucket linked to a carousel can be displayed in the Record Bucket interface through the Shared Bucket by ID action.
 
 . Go to Cataloging > Record Buckets
-. Select the Buckets button
-. Enter the bucket number of the carousel’s bucket; this can be found on the Carousels administration page. “Bucket” is one of the column options for the grid. It displays the bucket number. 
+. Using the _Name_ filter, enter the name the carousel’s bucket. This name can be found on the Carousels Administration page under the _Bucket_ column.
 . The contents of the carousel and bucket will be displayed
 
 Users can add or remove records from the bucket. If the associated carousel is automatically maintained, any changes to the bucket’s contents are subject to being overwritten by the next automatic update. Users are warned of this when making changes to the bucket contents.
@@ -140,13 +139,14 @@ Users can add or remove records from the bucket. If the associated carousel is a
 
 A carousel can be created from a record bucket.
  
-. Go to Cataloging > Record Buckets
-. The Bucket View tab opens. Select the Buckets button and choose one of the existing buckets to open. The list of titles in the bucket will display on the screen.
-. Select the Buckets button and choose Create Carousel from Bucket
+. Go to Cataloging > Record Buckets.
+. You will see a list of your buckets. You can also select to view other buckets, depending on your permissions.
+. Select the bucket you wish to make a carousel, and under the _Actions_ column, select the picture icon for _Create Carousel_.
+. You will be prompted to enter a name for your carousel and click _Create_.
+. You will be redirected to the Carousels Administration interface.
 
-image::carousel6.png[Record Bucket Actions button - Create Carousel from Bucket]
+image::carousels/create_carousel_from_bucket.png[Create Carousel from Bucket]
 
-TIP: The Create Carousel from Bucket option is visible in both Record Query and Pending Buckets; however, initiating the creation of a carousel from either of these two tabs creates an empty bucket only. It will not pull titles from either to add contents to the carousel.
 
 === Manually Adding Contents to a Carousel from Record Details Page ===
 
@@ -156,7 +156,7 @@ Titles can be added to a manually maintained carousel through the record details
 . Select the Other Actions button
 . Choose Add to Carousel
 +
-image::carousel7.png[Actions button on Record Summary page - Add to Carousel] 
+image::carousels/carousel7.png[Actions button on Record Summary page - Add to Carousel] 
 +
 . A drop-down with a list of manually maintained carousels that have been shared to at least one of the user’s working locations will appear
 . Choose the carousel from the list
@@ -165,7 +165,7 @@ image::carousel7.png[Actions button on Record Summary page - Add to Carousel]
 TIP: The Add to Carousel menu item is disabled if no qualifying carousels are available
 
 [[carousel_mapping]]
-== CAROUSEL LIBRARY MAPPING ==
+== Carousel Library Mapping ==
 
 The Carousel Library Mapping administration page is used to manage which libraries will display specific carousels, as well as the default display order on a library’s public catalog. 
 
@@ -192,7 +192,7 @@ WARNING: If a carousel is deleted, its mappings are deleted.
 . Click on the Library field to choose on which library organizational unit’s public catalog home screen the carousel will appear
 . Enter a number in sequence number to indicate in which order the carousel should appear on the library public catalog home screen. “0” is the top level. “1” is the subsequent level, etc.
 
-image::carousel8.png[Carousel mapping editor screen]
+image::carousels/carousel8.png[Carousel mapping editor screen]
 
 
 == CAROUSELS - OTHER ADMINISTRATIVE FEATURES ==

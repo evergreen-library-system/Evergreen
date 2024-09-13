@@ -25,7 +25,9 @@ To add all search results, select _Basket Actions_ in the search form below the 
 
 CAUTION: If your search returned many results, this action may take a long time.
 
-image::basket/all_results.png[Screenshot the search form with Add All Search Results in the Basket Actions menu highlighted, as described above.]
+image::basket/add_to_basket_new.png[Screenshot the search form with two records selected and the Basket Actions menu highlighted, as described above.]
+
+TIP: to add records directly to a bucket and skip the basket, see the xref:cataloging:record_buckets.adoc#add_records_from_catalog[Buckets documentation].
 
 == Removing Records from the Basket ==
 
