@@ -1,5 +1,8 @@
 BEGIN;
 
+-- check whether patch can be applied
+SELECT evergreen.upgrade_deps_block_check('1436', :eg_version);
+
 CREATE OR REPLACE FUNCTION evergreen.direct_opt_in_check(
     patron_id   INT,
     staff_id    INT, -- patron must be opted in (directly or implicitly) to one of the staff's working locations
