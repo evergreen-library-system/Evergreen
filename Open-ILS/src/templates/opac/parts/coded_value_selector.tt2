@@ -35,13 +35,13 @@ FOR o IN all_values;
     END;
 END;
 FOR o IN simple_sorter.sort('value') %]
-    <option value='[% o.code | html | replace("'","&#39;") %]'[% values.grep('^' _ o.code _ '$').size ? ' selected="selected"' : '' %]>[% o.value | html %]</option>
+    <option value='[% o.code | html | replace("'","&#39;") %]'[% values.grep('^' _ o.code.replace('\|', '\\|') _ '$').size ? ' selected="selected"' : '' %]>[% o.value | html %]</option>
 [%  END;
 IF simple_sorter.size && sorter.size %]
     <option disabled='true'>-----</option>
 [%  END;
 FOR o IN sorter.sort('value') %]
-    <option value='[% o.code | html | replace("'","&#39;") %]'[% values.grep('^' _ o.code _ '$').size ? ' selected="selected"' : '' %]>[% o.value | html %]</option>
+    <option value='[% o.code | html | replace("'","&#39;") %]'[% values.grep('^' _ o.code.replace('\|', '\\|') _ '$').size ? ' selected="selected"' : '' %]>[% o.value | html %]</option>
 [%  END -%]
 </select>
 
