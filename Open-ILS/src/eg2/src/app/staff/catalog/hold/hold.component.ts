@@ -171,9 +171,9 @@ export class HoldComponent implements OnInit {
         });
 
         getI18nString(this.pcrud, 1) // Seed data default is: All Parts
-        .subscribe(actual_string => {
-            this.anyPartLabel = actual_string
-        });
+            .subscribe(actual_string => {
+                this.anyPartLabel = actual_string;
+            });
 
         if (!Array.isArray(this.holdTargets)) {
             this.holdTargets = [this.holdTargets];
