@@ -113,7 +113,9 @@ sub parse_report {
         ->set_do_rollup( $report->{do_rollup} )
         ->set_pivot_data( $report->{pivot_data} )
         ->set_pivot_label( $report->{pivot_label} )
-        ->set_pivot_default( $report->{pivot_default} );
+        ->set_pivot_default( $report->{pivot_default} )
+        ->set_bib_column_number( $report->{bib_column_number} )
+        ->set_record_bucket( $report->{record_bucket} );
 
     return $rs;
 }
@@ -154,6 +156,30 @@ sub set_template_version {
     my $self = shift;
     my $v = shift;
     $self->builder->{_template_version} = $v || 0;
+    return $self;
+}
+
+sub record_bucket {
+    my $self = shift;
+    return $self->builder->{_record_bucket};
+}
+
+sub set_record_bucket {
+    my $self = shift;
+    my $p = shift;
+    $self->builder->{_record_bucket} = $p if (defined $p);
+    return $self;
+}
+
+sub bib_column_number {
+    my $self = shift;
+    return $self->builder->{_bib_column_number};
+}
+
+sub set_bib_column_number {
+    my $self = shift;
+    my $p = shift;
+    $self->builder->{_bib_column_number} = $p if (defined $p);
     return $self;
 }
 

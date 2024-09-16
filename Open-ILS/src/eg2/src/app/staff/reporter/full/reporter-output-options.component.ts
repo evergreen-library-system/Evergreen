@@ -30,6 +30,12 @@ export class ReporterOutputOptionsComponent {
         this.output_tree = this.RSvc.myFolderTrees.outputs.clone({expanded:!this.RSvc.outputFolder});
     }
 
+    bibIdFields () {
+        return this.templ.nonAggregateDisplayFields().filter(
+            f => !!((f.type === 'link' && f.class === 'bre' && f.reltype === 'has_a' && f.key === 'id') || f.treeNodeId.endsWith('bre.id'))
+        );
+    }
+
     canPivot() {
         return this.advancedMode
                 && this.templ.aggregateDisplayFields().length > 0

@@ -411,9 +411,13 @@ export class SRTemplate {
     htmlOutput = true;
     barCharts = false;
     lineCharts = false;
+    newRecordBucket = false;
+    existingRecordBucket = false;
     email = '';
     pivotLabel = '';
     pivotData = 0;
+    recordBucket = null;
+    bibColumnNumber = '';
     doRollup = false;
     runNow = 'now';
     runTime: moment.Moment = null;
@@ -1171,6 +1175,8 @@ export class ReporterService {
         rrData['__pivot_label'] = templ.pivotLabel;
         rrData['__pivot_data'] = templ.pivotData;
         rrData['__do_rollup'] = templ.doRollup ? 1 : 0;
+        rrData['__record_bucket'] = templ.recordBucket;
+        rrData['__bib_column_number'] = templ.bibColumnNumber;
 
         templ.filterFields.forEach((el, idx) => {
             if (isSimple || !el.with_value_input) {
@@ -1348,6 +1354,8 @@ export class ReporterService {
         rs.html_format(templ.htmlOutput ? 't' : 'f');
         rs.chart_line(templ.lineCharts ? 't' : 'f');
         rs.chart_bar(templ.barCharts ? 't' : 'f');
+        rs.new_record_bucket(templ.newRecordBucket ? 't' : 'f');
+        rs.existing_record_bucket(templ.existingRecordBucket ? 't' : 'f');
 
         // clear any un-run schedules, then add the new one
         return this.pcrud.search(

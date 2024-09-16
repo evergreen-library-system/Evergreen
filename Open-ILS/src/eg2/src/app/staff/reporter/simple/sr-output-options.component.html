@@ -22,6 +22,30 @@
             <input class="form-check-input" type="checkbox" id="srLineCharts" name="srLineCharts" [(ngModel)]="templ.lineCharts">
             <label class="form-label form-check-label" for="srLineCharts" i18n>Line Chart</label>
           </div>
+          <div class="form">
+            <label class="form-label" i18n>Bibliographic Record Bucket Options</label>
+            <div class="row"><div class="col-sm-10">
+              <div class="form-text">
+                <div></div>
+                <div>
+                    <label class="form-label form-text-label" for="srBibColumnNumber" i18n>Column number for bib id</label>
+                    <input class="form-text-input" type="text" id="srBibColumnNumber" name="srBibColumnNumber" [(ngModel)]="templ.bibColumnNumber">
+                </div>
+              </div>
+              <div class="form-check">
+                <input class="form-check-input" type="checkbox" id="srNewRecordBucket" name="srNewRecordBucket" [(ngModel)]="templ.newRecordBucket">
+                <label class="form-label form-check-label" for="srNewRecordBucket" i18n>New Record Bucket</label>
+              </div>
+              <div class="form-check">
+                <input class="form-check-input" type="checkbox" id="srExistingRecordBucket" name="srExistingRecordBucket" [(ngModel)]="templ.existingRecordBucket">
+                <label class="form-label form-check-label" for="srExistingRecordBucket" i18n>Existing Record Bucket</label>
+                  <div class="form-text">
+                    <label class="form-label form-text-label" for="srRecordBucket" i18n>Destination Record Bucket Id</label>
+                    <input class="form-text-input" type="text" id="srRecordBucket" name="srRecordBucket" [(ngModel)]="templ.recordBucket">
+                  </div>
+              </div>
+            </div></div>
+          </div>
         </div>
   </div>
   <div class="form-group row">

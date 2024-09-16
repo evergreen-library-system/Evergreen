@@ -108,6 +108,8 @@ CREATE TABLE reporter.schedule (
 	chart_pie	BOOL				NOT NULL DEFAULT FALSE,
 	chart_bar	BOOL				NOT NULL DEFAULT FALSE,
 	chart_line	BOOL				NOT NULL DEFAULT FALSE,
+	new_record_bucket	BOOL				NOT NULL DEFAULT FALSE,
+	existing_record_bucket	BOOL				NOT NULL DEFAULT FALSE,
 	error_code	INT,
 	error_text	TEXT
 );
