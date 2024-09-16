@@ -282,6 +282,8 @@ osrfHash* oilsIDLInit( const char* idl_filename ) {
 { create :
     { permission : [ x, y, z ],
       global_required : "true", -- anything else, or missing, is false
+      permit_field : "pub", -- field on object to check for "skip permission test"
+      permit_field_value : "t", -- value of field on object must match this for "skip permission test"
       ignore_object_perms : "true", -- anything else, or missing, is false
       local_context : [ f1, f2 ],
       foreign_context : { class1 : { fkey : local_class_key, field : class1_field, context : [ a, b, c ] }, ...}
@@ -341,6 +343,12 @@ osrfHash* oilsIDLInit( const char* idl_filename ) {
 
 					    	osrfHashSet( action_def_hash,
 								(char*)xmlGetNoNsProp(_a, BAD_CAST "owning_user"), "owning_user");
+
+					    	osrfHashSet( action_def_hash,
+								(char*)xmlGetNoNsProp(_a, BAD_CAST "permit_field"), "permit_field");
+
+					    	osrfHashSet( action_def_hash,
+								(char*)xmlGetNoNsProp(_a, BAD_CAST "permit_field_value"), "permit_field_value");
 
 					    	osrfHashSet( action_def_hash,
 								(char*)xmlGetNoNsProp(_a, BAD_CAST "global_required"), "global_required");

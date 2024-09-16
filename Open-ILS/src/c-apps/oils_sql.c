@@ -74,6 +74,8 @@ static void setXactId( osrfMethodContext* ctx );
 static inline const char* getXactId( osrfMethodContext* ctx );
 static inline void clearXactId( osrfMethodContext* ctx );
 
+static char* free_cursor_name();
+static char* random_cursor_name();
 static jsonObject* doFieldmapperSearch ( osrfMethodContext* ctx, osrfHash* class_meta,
 		jsonObject* where_hash, jsonObject* query_hash, int* err );
 static jsonObject* oilsMakeFieldmapperFromResult( dbi_result, osrfHash* );
@@ -94,7 +96,7 @@ static char* searchPredicate ( const ClassInfo*, osrfHash*, jsonObject*, osrfMet
 static char* searchJOIN ( const jsonObject*, const ClassInfo* left_info );
 static char* searchWHERE ( const jsonObject* search_hash, const ClassInfo*, int, osrfMethodContext* );
 static char* buildSELECT( const jsonObject*, jsonObject* rest_of_query,
-	osrfHash* meta, osrfMethodContext* ctx );
+	osrfHash* meta, osrfMethodContext* ctx, char* new_cursor_name );
 static char* buildOrderByFromArray( osrfMethodContext* ctx, const jsonObject* order_array );
 
 char* buildQuery( osrfMethodContext* ctx, jsonObject* query, int flags );
@@ -151,11 +153,31 @@ int writeAuditInfo( osrfMethodContext* ctx, const char* user_id, const char* ws_
 static char* _sanitize_tz_name( const char* tz );
 static char* _sanitize_savepoint_name( const char* sp );
 
+static char* cursor_name = NULL;
+const char charset[] = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789_";
+static char* free_cursor_name() {
+	if (cursor_name) free(cursor_name);
+	cursor_name = NULL;
+	return cursor_name;
+}
+static char* random_cursor_name() {
+    char* str = safe_malloc(sizeof(char) * (ALIAS_STORE_SIZE + 1)); // 16 character cursor name + \0
+    int n;
+    for(n = 0; n < ALIAS_STORE_SIZE; n++) {
+        int key = rand() % (int) (sizeof charset - 1);
+        str[n] = charset[key];
+    }
+    str[ALIAS_STORE_SIZE] = '\0';
+    return str;
+}
+
 /**
 	@brief Connect to the database.
 	@return A database connection if successful, or NULL if not.
 */
 dbi_conn oilsConnectDB( const char* mod_name ) {
+
+    srand(time(NULL)); // In case we need some randomness, just once per db connection.
 
 	osrfLogDebug( OSRF_LOG_MARK, "Attempting to initialize libdbi..." );
 	if( dbi_initialize( NULL ) == -1 ) {
@@ -489,6 +511,12 @@ void userDataFree( void* blob ) {
 		};
 	}
 	if( writehandle ) {
+		if( !dbi_conn_query( writehandle, "CLOSE ALL;" ) ) {
+			const char* msg;
+			int errnum = dbi_conn_error( writehandle, &msg );
+			osrfLogWarning( OSRF_LOG_MARK, "Unable to release cursors: %d %s",
+				errnum, msg ? msg : "(No description available)" );
+		}
 		if( !dbi_conn_query( writehandle, "SELECT auditor.clear_audit_info();" ) ) {
 			const char* msg;
 			int errnum = dbi_conn_error( writehandle, &msg );
@@ -1633,11 +1661,12 @@ static int verifyObjectPCRUD ( osrfMethodContext* ctx, osrfHash *class, const js
 
 	// The following string array stores the list of org units.  (We don't have a thingie
 	// for storing lists of integers, so we fake it with a list of strings.)
-	osrfStringArray* context_org_array = osrfNewStringArray( 1 );
+	osrfStringArray* context_org_array = osrfNewStringArray( 0 );
 
 	const char* context_org = NULL;
     const char* pkey = NULL;
     jsonObject *param = NULL;
+	jsonObject *_list = NULL;
 	const char* perm = NULL;
 	int OK = 0;
 	int i = 0;
@@ -1701,7 +1730,7 @@ static int verifyObjectPCRUD ( osrfMethodContext* ctx, osrfHash *class, const js
 			// Fetch the row so that we can look at the foreign key(s)
 			osrfHashSet((osrfHash*) ctx->session->userData, "1", "inside_verify");
 			jsonObject* _tmp_params = single_hash( pkey, pkey_value );
-			jsonObject* _list = doFieldmapperSearch( ctx, class, _tmp_params, NULL, &err );
+			_list = doFieldmapperSearch( ctx, class, _tmp_params, NULL, &err );
 			jsonObjectFree( _tmp_params );
 			osrfHashSet((osrfHash*) ctx->session->userData, "0", "inside_verify");
 
@@ -1737,6 +1766,18 @@ static int verifyObjectPCRUD ( osrfMethodContext* ctx, osrfHash *class, const js
 
 			free( m );
 			return 0;
+		}
+
+		// Check for "pub=t" style escape hatches early, as soon as
+		// we've fetched the object for permission context gathering.
+		// This test will be duplicated elsewhere.
+		char* pfield = osrfHashGet(pcrud, "permit_field");
+		char* pfield_value = osrfHashGet(pcrud, "permit_field_value");
+		if (pfield && pfield_value) {
+			const char* obj_pfield_value = oilsFMGetStringConst( param, pfield );
+			if (obj_pfield_value && !strcmp(pfield_value, obj_pfield_value)) {
+				return 1;
+			}
 		}
 
 		if( local_context && local_context->size > 0 ) {
@@ -1788,8 +1829,8 @@ static int verifyObjectPCRUD ( osrfMethodContext* ctx, osrfHash *class, const js
 					const char* foreign_pkey = osrfHashGet( fcontext, "field" );
 
 					// Get the value of the foreign key pointing to the foreign table
-					char* foreign_pkey_value =
-							oilsFMGetString( param, osrfHashGet( fcontext, "fkey" ));
+					const char* foreign_pkey_value =
+							oilsFMGetStringConst( param, osrfHashGet( fcontext, "fkey" ));
 					if( !foreign_pkey_value )
 						continue;    // Foreign key value is null; skip it
 
@@ -1797,130 +1838,128 @@ static int verifyObjectPCRUD ( osrfMethodContext* ctx, osrfHash *class, const js
 					jsonObject* _tmp_params = single_hash( foreign_pkey, foreign_pkey_value );
 
 					osrfHashSet((osrfHash*) ctx->session->userData, "1", "inside_verify");
-					jsonObject* _list = doFieldmapperSearch(
+					jsonObject* top_list = doFieldmapperSearch(
 						ctx, osrfHashGet( oilsIDL(), class_name ), _tmp_params, NULL, &err );
 					osrfHashSet((osrfHash*) ctx->session->userData, "0", "inside_verify");
-
-					jsonObject* _fparam = NULL;
-					if( _list && JSON_ARRAY == _list->type && _list->size > 0 )
-						_fparam = jsonObjectExtractIndex( _list, 0 );
-
 					jsonObjectFree( _tmp_params );
-					jsonObjectFree( _list );
 
-					// At this point _fparam either points to the row identified by the
-					// foreign key, or it's NULL (no such row found).
+					int top_list_index = 0;
+					while( top_list->size > top_list_index ) {
+						jsonObject* _fparam = jsonObjectClone(jsonObjectGetIndex( top_list, top_list_index++ ));
 
-					osrfStringArray* jump_list = osrfHashGet( fcontext, "jump" );
+						// At this point _fparam points a the row identified by the
+						// foreign key
 
-					const char* bad_class = NULL;  // For noting failed lookups
-					if( ! _fparam )
-						bad_class = class_name;    // Referenced row not found
-					else if( jump_list ) {
-						// Follow a chain of rows, linked by foreign keys, to find an owner
-						const char* flink = NULL;
-						int k = 0;
-						while ( (flink = osrfStringArrayGetString(jump_list, k++)) && _fparam ) {
-							// For each entry in the jump list.  Each entry (i.e. flink) is
-							// the name of a foreign key column in the current row.
+						osrfStringArray* jump_list = osrfHashGet( fcontext, "jump" );
 
-							// From the IDL, get the linkage information for the next jump
-							osrfHash* foreign_link_hash =
-									oilsIDLFindPath( "/%s/links/%s", _fparam->classname, flink );
+						const char* bad_class = NULL;  // For noting failed lookups
+						if( ! _fparam )
+							bad_class = class_name;    // Referenced row not found
+						else if( jump_list ) {
+							// Follow a chain of rows, linked by foreign keys, to find an owner
+							const char* flink = NULL;
+							int k = 0;
+							while ( (flink = osrfStringArrayGetString(jump_list, k++)) && _fparam ) {
+								// For each entry in the jump list.  Each entry (i.e. flink) is
+								// the name of a foreign key column in the current row.
 
-							// Get the class metadata for the class
-							// to which the foreign key points
-							osrfHash* foreign_class_meta = osrfHashGet( oilsIDL(),
-									osrfHashGet( foreign_link_hash, "class" ));
+								// From the IDL, get the linkage information for the next jump
+								osrfHash* foreign_link_hash =
+										oilsIDLFindPath( "/%s/links/%s", _fparam->classname, flink );
 
-							// Get the name of the referenced key of that class
-							foreign_pkey = osrfHashGet( foreign_link_hash, "key" );
+								// Get the class metadata for the class
+								// to which the foreign key points
+								osrfHash* foreign_class_meta = osrfHashGet( oilsIDL(),
+										osrfHashGet( foreign_link_hash, "class" ));
 
-							// Get the value of the foreign key pointing to that class
-							free( foreign_pkey_value );
-							foreign_pkey_value = oilsFMGetString( _fparam, flink );
-							if( !foreign_pkey_value )
-								break;    // Foreign key is null; quit looking
+								// Get the name of the referenced key of that class
+								foreign_pkey = osrfHashGet( foreign_link_hash, "key" );
 
-							// Build a WHERE clause for the lookup
-							_tmp_params = single_hash( foreign_pkey, foreign_pkey_value );
+								// Get the value of the foreign key pointing to that class
+								const char* jump_foreign_pkey_value = oilsFMGetStringConst( _fparam, flink );
+								if( !jump_foreign_pkey_value )
+									break;    // Foreign key is null; quit looking
 
-							// Do the lookup
-							osrfHashSet((osrfHash*) ctx->session->userData, "1", "inside_verify");
-							_list = doFieldmapperSearch( ctx, foreign_class_meta,
-									_tmp_params, NULL, &err );
-							osrfHashSet((osrfHash*) ctx->session->userData, "0", "inside_verify");
+								// Build a WHERE clause for the lookup
+								_tmp_params = single_hash( foreign_pkey, jump_foreign_pkey_value );
 
-							// Get the resulting row
-							jsonObjectFree( _fparam );
-							if( _list && JSON_ARRAY == _list->type && _list->size > 0 )
-								_fparam = jsonObjectExtractIndex( _list, 0 );
-							else {
-								// Referenced row not found
-								_fparam = NULL;
-								bad_class = osrfHashGet( foreign_link_hash, "class" );
+								// Do the lookup
+								osrfHashSet((osrfHash*) ctx->session->userData, "1", "inside_verify");
+								_list = doFieldmapperSearch( ctx, foreign_class_meta,
+										_tmp_params, NULL, &err );
+								osrfHashSet((osrfHash*) ctx->session->userData, "0", "inside_verify");
+
+								// Get the resulting row
+								jsonObjectFree( _fparam );
+								if( _list && JSON_ARRAY == _list->type && _list->size > 0 )
+									_fparam = jsonObjectExtractIndex( _list, 0 );
+								else {
+									// Referenced row not found
+									_fparam = NULL;
+									bad_class = osrfHashGet( foreign_link_hash, "class" );
+								}
+
+								jsonObjectFree( _tmp_params );
+								jsonObjectFree( _list );
+							}
+						}
+
+						if( bad_class ) {
+
+							// We had a foreign key pointing to such-and-such a row, but then
+							// we couldn't fetch that row.  The data in the database are in an
+							// inconsistent state; the database itself may even be corrupted.
+							growing_buffer* msg = osrf_buffer_init( 128 );
+							osrf_buffer_fadd(
+								msg,
+								"%s: no object of class %s found with primary key %s of %s",
+								modulename,
+								bad_class,
+								foreign_pkey,
+								foreign_pkey_value ? foreign_pkey_value : "(null)"
+							);
+
+							char* m = osrf_buffer_release( msg );
+							osrfAppSessionStatus(
+								ctx->session,
+								OSRF_STATUS_INTERNALSERVERERROR,
+								"osrfMethodException",
+								ctx->request,
+								m
+							);
+
+							free( m );
+							osrfHashIteratorFree( class_itr );
+							jsonObjectFree( param );
+							jsonObjectFree( top_list );
+							osrfStringArrayFree( context_org_array );
+
+							return 0;
+						}
+
+						if( _fparam ) {
+							// Examine each context column of the foreign row,
+							// and add its value to the list of org units.
+							int j = 0;
+							const char* foreign_field = NULL;
+							const char* foreign_value = NULL;
+							osrfStringArray* ctx_array = osrfHashGet( fcontext, "context" );
+							while ( (foreign_field = osrfStringArrayGetString( ctx_array, j++ )) ) {
+								if( (foreign_value = oilsFMGetStringConst( _fparam, foreign_field )) ) {
+									osrfStringArrayAdd( context_org_array, foreign_value );
+									osrfLogDebug( OSRF_LOG_MARK,
+										"adding foreign class %s field %s (value: %s) "
+											"to the context org list",
+										class_name, foreign_field, foreign_value
+									);
+								}
 							}
 
-							jsonObjectFree( _tmp_params );
-							jsonObjectFree( _list );
+						    jsonObjectFree( _fparam );
 						}
 					}
 
-					if( bad_class ) {
-
-						// We had a foreign key pointing to such-and-such a row, but then
-						// we couldn't fetch that row.  The data in the database are in an
-						// inconsistent state; the database itself may even be corrupted.
-						growing_buffer* msg = osrf_buffer_init( 128 );
-						osrf_buffer_fadd(
-							msg,
-							"%s: no object of class %s found with primary key %s of %s",
-							modulename,
-							bad_class,
-							foreign_pkey,
-							foreign_pkey_value ? foreign_pkey_value : "(null)"
-						);
-
-						char* m = osrf_buffer_release( msg );
-						osrfAppSessionStatus(
-							ctx->session,
-							OSRF_STATUS_INTERNALSERVERERROR,
-							"osrfMethodException",
-							ctx->request,
-							m
-						);
-
-						free( m );
-						osrfHashIteratorFree( class_itr );
-						free( foreign_pkey_value );
-						jsonObjectFree( param );
-
-						return 0;
-					}
-
-					free( foreign_pkey_value );
-
-					if( _fparam ) {
-						// Examine each context column of the foreign row,
-						// and add its value to the list of org units.
-						int j = 0;
-						const char* foreign_field = NULL;
-						osrfStringArray* ctx_array = osrfHashGet( fcontext, "context" );
-						while ( (foreign_field = osrfStringArrayGetString( ctx_array, j++ )) ) {
-							osrfStringArrayAdd( context_org_array,
-								oilsFMGetStringConst( _fparam, foreign_field ));
-							osrfLogDebug( OSRF_LOG_MARK,
-								"adding foreign class %s field %s (value: %s) "
-									"to the context org list",
-								class_name,
-								foreign_field,
-								osrfStringArrayGetString(
-									context_org_array, context_org_array->size - 1 )
-							);
-						}
-
-						jsonObjectFree( _fparam );
-					}
+					jsonObjectFree( top_list );
 				}
 
 				osrfHashIteratorFree( class_itr );
@@ -1998,15 +2037,29 @@ static int verifyObjectPCRUD ( osrfMethodContext* ctx, osrfHash *class, const js
 					m
 				);
 	
+				osrfStringArrayFree( context_org_array );
 				free( m );
 				return 0;
 			} else {
 
-    	        int ownerid = atoi( oilsFMGetStringConst( param, owning_user_field ) );
+				// Check for "pub=t" style escape hatches early, as soon as
+				// we've fetched the object for permission context gathering.
+				// This test will be duplicated elsewhere.
+				char* pfield = osrfHashGet(pcrud, "permit_field");
+				char* pfield_value = osrfHashGet(pcrud, "permit_field_value");
+				if (pfield && pfield_value) {
+					const char* obj_pfield_value = oilsFMGetStringConst( param, pfield );
+					if (obj_pfield_value && !strcmp(pfield_value, obj_pfield_value))
+						OK = 1;
+				}
 
-                // Allow the owner to do whatever
-                if (ownerid == userid)
-                    OK = 1;
+				if (!OK) {
+					int ownerid = atoi( oilsFMGetStringConst( param, owning_user_field ) );
+
+					// Allow the owner to do whatever
+					if (ownerid == userid)
+						OK = 1;
+				}
 			}
 		}
 
@@ -5536,7 +5589,7 @@ static char* buildOrderByFromArray( osrfMethodContext* ctx, const jsonObject* or
 	The SELECT statements built here are distinct from those built for the json_query method.
 */
 static char* buildSELECT ( const jsonObject* search_hash, jsonObject* rest_of_query,
-	osrfHash* meta, osrfMethodContext* ctx ) {
+	osrfHash* meta, osrfMethodContext* ctx, char* new_cursor_name ) {
 
 	const char* locale = osrf_message_get_last_locale();
 
@@ -5651,6 +5704,7 @@ static char* buildSELECT ( const jsonObject* search_hash, jsonObject* rest_of_qu
 	if( !table )
 		table = strdup( "(null)" );
 
+	if (new_cursor_name) osrf_buffer_fadd( sql_buf, "DECLARE \"%s\" NO SCROLL CURSOR WITHOUT HOLD FOR ", new_cursor_name );
 	osrf_buffer_fadd( sql_buf, "SELECT %s FROM %s AS \"%s\"", col_list, table, core_class );
 	free( col_list );
 	free( table );
@@ -5707,7 +5761,7 @@ static char* buildSELECT ( const jsonObject* search_hash, jsonObject* rest_of_qu
 		free( pred );
 	}
 
-	// Add the ORDER BY, LIMIT, and/or OFFSET clauses, if present
+	// Add the ORDER BY, if present
 	if( rest_of_query ) {
 		const jsonObject* order_by = NULL;
 		if( ( order_by = jsonObjectGetKeyConst( rest_of_query, "order_by" )) ){
@@ -5862,29 +5916,24 @@ static char* buildSELECT ( const jsonObject* search_hash, jsonObject* rest_of_qu
 			}
 
 			free( order_by_list );
+
 		}
 
-		const jsonObject* limit = jsonObjectGetKeyConst( rest_of_query, "limit" );
-		if( limit ) {
-			const char* str = jsonObjectGetString( limit );
-			if (str) {
-				osrf_buffer_fadd(
-					sql_buf,
-					" LIMIT %d",
-					atoi(str)
-				);
+		if (!new_cursor_name) {
+			const jsonObject* limit = jsonObjectGetKeyConst( rest_of_query, "limit" );
+			if( limit ) {
+				const char* str = jsonObjectGetString( limit );
+				if (str) {
+					 osrf_buffer_fadd( sql_buf, " LIMIT %d", atoi(str) );
+				}
 			}
-		}
 
-		const jsonObject* offset = jsonObjectGetKeyConst( rest_of_query, "offset" );
-		if( offset ) {
-			const char* str = jsonObjectGetString( offset );
-			if (str) {
-				osrf_buffer_fadd(
-					sql_buf,
-					" OFFSET %d",
-					atoi( str )
-				);
+			const jsonObject* offset = jsonObjectGetKeyConst( rest_of_query, "offset" );
+			if( offset ) {
+				const char* str = jsonObjectGetString( offset );
+				if (str) {
+					osrf_buffer_fadd( sql_buf, " OFFSET %d", atoi(str) );
+				}
 			}
 		}
 	}
@@ -5989,6 +6038,7 @@ int doJSONSearch ( osrfMethodContext* ctx ) {
 static jsonObject* doFieldmapperSearch( osrfMethodContext* ctx, osrfHash* class_meta,
 		jsonObject* where_hash, jsonObject* query_hash, int* err ) {
 
+    char* new_cursor_name = NULL;
 	const char* tz = _sanitize_tz_name(ctx->session->session_tz);
 
 	// XXX for now...
@@ -6008,11 +6058,19 @@ static jsonObject* doFieldmapperSearch( osrfMethodContext* ctx, osrfHash* class_
 
 	int i_respond_directly = 0;
 	int flesh_depth = 0;
+    int offset = 0;
+    int limit = 0;
+    int can_get_cursor = 0;
+    int cursor_page_size = 100;
 
-	char* sql = buildSELECT( where_hash, query_hash, class_meta, ctx );
+    if (!cursor_name && need_to_verify) can_get_cursor = 1; // There is no cursor yet, and we are in PCRUD verify mode
+    if (*methodtype != 'r' && can_get_cursor) new_cursor_name = cursor_name = random_cursor_name(); /* Use a cursor for all but .retrieve */
+
+	char* sql = buildSELECT( where_hash, query_hash, class_meta, ctx, new_cursor_name );
 	if( !sql ) {
 		osrfLogDebug( OSRF_LOG_MARK, "Problem building query, returning NULL" );
 		*err = -1;
+		free_cursor_name();
 		return NULL;
 	}
 
@@ -6030,6 +6088,7 @@ static jsonObject* doFieldmapperSearch( osrfMethodContext* ctx, osrfHash* class_
 					"osrfMethodException", ctx->request, "Error setting timezone" );
 				if( !oilsIsDBConnected( writehandle )) {
 					osrfAppSessionPanic( ctx->session );
+					free_cursor_name();
 					return NULL;
 				}
 			} else {
@@ -6043,6 +6102,7 @@ static jsonObject* doFieldmapperSearch( osrfMethodContext* ctx, osrfHash* class_
 				osrfLogError( OSRF_LOG_MARK, "%s: Error resetting timezone", modulename);
 				if( !oilsIsDBConnected( writehandle )) {
 					osrfAppSessionPanic( ctx->session );
+					free_cursor_name();
 					return NULL;
 				}
 			} else {
@@ -6052,6 +6112,47 @@ static jsonObject* doFieldmapperSearch( osrfMethodContext* ctx, osrfHash* class_
 	}
 
 
+	if (new_cursor_name) {
+		const jsonObject* limit_o = jsonObjectGetKeyConst( query_hash, "limit" );
+		if( limit_o && limit_o->type != JSON_NULL ) {
+			limit = (int) jsonObjectGetNumber( limit_o );
+		} else {
+			limit = -1;
+		}
+
+		const jsonObject* offset_o = jsonObjectGetKeyConst( query_hash, "offset" );
+		if( offset_o && offset_o->type != JSON_NULL ) {
+			offset = (int) jsonObjectGetNumber( offset_o );
+		} else {
+			offset = -1;
+		}
+
+		// set cursor_page_size to the largest of the three
+		if (cursor_page_size < offset) cursor_page_size = offset;
+		if (cursor_page_size < limit) cursor_page_size = limit;
+
+		if (!getXactId(ctx)) {
+			// Start a transaction for the cursor, if not inside an explicit one,
+			// so we can use WITHOUT HOLD and avoid temp file attacks.
+			dbi_result result = dbi_conn_query( writehandle, "START TRANSACTION;" );
+			if( !result ) {
+				free_cursor_name();
+				const char* msg;
+				int errnum = dbi_conn_error( writehandle, &msg );
+				osrfLogError( OSRF_LOG_MARK, "%s: Error starting transaction for cursor: %d %s",
+					modulename, errnum, msg ? msg : "(No description available)" );
+				osrfAppSessionStatus( ctx->session, OSRF_STATUS_INTERNALSERVERERROR,
+					"osrfMethodException", ctx->request, "Error starting transaction for cursor" );
+				if( !oilsIsDBConnected( writehandle ))
+					osrfAppSessionPanic( ctx->session );
+				return NULL;
+			} else {
+				dbi_result_free( result );
+			}
+		}
+	}
+
+	// Declares a cursor or runs a retrieve-select
 	dbi_result result = dbi_conn_query( dbhandle, sql );
 
 	if( NULL == result ) {
@@ -6071,6 +6172,11 @@ static jsonObject* doFieldmapperSearch( osrfMethodContext* ctx, osrfHash* class_
 		);
 		*err = -1;
 		free( sql );
+		if (cursor_name) { // we're inside a transaction for sure, but dead in the water -- try to rollback!
+			result = dbi_conn_query( writehandle, "ROLLBACK;" );
+			if (result) dbi_result_free(result);
+		}
+		free_cursor_name();
 		return NULL;
 
 	} else {
@@ -6100,10 +6206,40 @@ static jsonObject* doFieldmapperSearch( osrfMethodContext* ctx, osrfHash* class_
 		i_respond_directly = ( *methodtype == 'r' || *methodtype == 'i' || *methodtype == 's' );
 
 		rs_size = (int *) safe_malloc( sizeof(int) );	// will be freed by sessionDataFree()
-		unsigned long long result_count = dbi_result_get_numrows( result );
+		unsigned long long result_count = cursor_page_size;
+		if (!new_cursor_name) {
+			result_count = dbi_result_get_numrows( result );
+		}
 		*rs_size = (int) result_count * (flesh_depth + 1);	// yes, we could lose some bits, but come on
 		osrfHashSet( (osrfHash *) ctx->session->userData, rs_size, "rs_size_req_%d", ctx->request );
 	}
+
+    if (new_cursor_name) {
+	    dbi_result_free( result ); // toss the declare result
+	    result = dbi_conn_queryf( dbhandle, "FETCH %d FROM \"%s\";", cursor_page_size, cursor_name );
+
+    	if( NULL == result ) {
+    		const char* msg;
+    		int errnum = dbi_conn_error( dbhandle, &msg );
+    		osrfLogError(OSRF_LOG_MARK, "%s: Error retrieving %s with query [%s]: %d %s",
+    			modulename, osrfHashGet( class_meta, "fieldmapper" ), sql, errnum,
+    			msg ? msg : "(No description available)" );
+    		if( !oilsIsDBConnected( dbhandle ))
+    			osrfAppSessionPanic( ctx->session );
+    		osrfAppSessionStatus(
+    			ctx->session,
+    			OSRF_STATUS_INTERNALSERVERERROR,
+    			"osrfMethodException",
+    			ctx->request,
+    			"Severe query error -- see error log for more details"
+    		);
+    		*err = -1;
+    		free( sql );
+    		free_cursor_name();
+    		return NULL;
+    
+    	}
+    }
 
 	if( dbi_result_first_row( result )) {
 
@@ -6112,7 +6248,9 @@ static jsonObject* doFieldmapperSearch( osrfMethodContext* ctx, osrfHash* class_
 		// eliminate the duplicates.
 		osrfLogDebug( OSRF_LOG_MARK, "Query returned at least one row" );
 		osrfHash* dedup = osrfNewHash();
+		int cursor_page_remaining = cursor_page_size;
 		do {
+			cursor_page_remaining--;
 			row_obj = oilsMakeFieldmapperFromResult( result, class_meta );
 			char* pkey_val = oilsFMGetString( row_obj, pkey );
 			if( osrfHashGet( dedup, pkey_val ) ) {
@@ -6121,11 +6259,54 @@ static jsonObject* doFieldmapperSearch( osrfMethodContext* ctx, osrfHash* class_
 			} else {
 				if( !enforce_pcrud || !need_to_verify ||
 						verifyObjectPCRUD( ctx, class_meta, row_obj, 0 /* means check user data for rs_size */ )) {
-					osrfHashSet( dedup, pkey_val, pkey_val );
-					jsonObjectPush( res_list, row_obj );
+					if (new_cursor_name) {
+						if (offset > -1 && offset) {
+							offset--;
+						} else if (limit) {
+							limit--;
+							osrfHashSet( dedup, pkey_val, pkey_val );
+							jsonObjectPush( res_list, row_obj );
+						}
+					} else {
+						osrfHashSet( dedup, pkey_val, pkey_val );
+						jsonObjectPush( res_list, row_obj );
+					}
 				}
 			}
-		} while( dbi_result_next_row( result ));
+            if (new_cursor_name && !cursor_page_remaining) { // fetch next page
+                cursor_page_remaining = cursor_page_size;
+                dbi_result_free( result );
+                result = dbi_conn_queryf( dbhandle, "FETCH %d FROM \"%s\";", cursor_page_size, cursor_name );
+
+            	if( NULL == result ) {
+            		const char* msg;
+            		int errnum = dbi_conn_error( dbhandle, &msg );
+            		osrfLogError(OSRF_LOG_MARK, "%s: Error retrieving %s with query [%s]: %d %s",
+            			modulename, osrfHashGet( class_meta, "fieldmapper" ), sql, errnum,
+            			msg ? msg : "(No description available)" );
+            		if( !oilsIsDBConnected( dbhandle ))
+            			osrfAppSessionPanic( ctx->session );
+            		osrfAppSessionStatus(
+            			ctx->session,
+            			OSRF_STATUS_INTERNALSERVERERROR,
+            			"osrfMethodException",
+            			ctx->request,
+            			"Severe query error -- see error log for more details"
+            		);
+            		*err = -1;
+            		free( sql );
+            		free_cursor_name();
+            		return NULL;
+            	}
+            }
+		} while(
+            (!new_cursor_name && dbi_result_next_row(result)) || (
+                new_cursor_name && limit && ( // limit is -1 (none) or not yet decremented to 0
+                    (cursor_page_remaining == cursor_page_size && dbi_result_first_row(result)) || // on a new page, and there's a row
+                    (cursor_page_remaining != cursor_page_size && dbi_result_next_row(result)) // on the same page, and there's a row
+                )
+            )
+        );
 		osrfHashFree( dedup );
 
 	} else {
@@ -6135,6 +6316,33 @@ static jsonObject* doFieldmapperSearch( osrfMethodContext* ctx, osrfHash* class_
 
 	/* clean up the query */
 	dbi_result_free( result );
+	if (new_cursor_name) {
+		result = dbi_conn_queryf( dbhandle, "CLOSE \"%s\";", cursor_name );
+		dbi_result_free( result );
+		free_cursor_name(); // release the cursor name now so recursive fleshing calls can make their own without leaking
+
+		// We magically create a transaction for cursors when /not/ in an explicit one,
+		// so failing this test means no explicit xact exists, thus there must be an
+		// implicit one.
+		if (!getXactId(ctx)) {
+			// We only use a cursor xact in retrieve-ish methods, which are read-only, so roll back rather than commit.
+			result = dbi_conn_query( writehandle, "ROLLBACK;" );
+			if( !result ) {
+				const char* msg;
+				int errnum = dbi_conn_error( writehandle, &msg );
+				osrfLogError( OSRF_LOG_MARK, "%s: Error rolling back transaction for cursor: %d %s",
+					modulename, errnum, msg ? msg : "(No description available)" );
+				osrfAppSessionStatus( ctx->session, OSRF_STATUS_INTERNALSERVERERROR,
+					"osrfMethodException", ctx->request, "Error rolling back transaction for cursor" );
+				if( !oilsIsDBConnected( writehandle ))
+					osrfAppSessionPanic( ctx->session );
+				return NULL;
+			} else {
+				dbi_result_free( result );
+			}
+		}
+	}
+
 	free( sql );
 
 	// If we're asked to flesh, and there's anything to flesh, then flesh it
