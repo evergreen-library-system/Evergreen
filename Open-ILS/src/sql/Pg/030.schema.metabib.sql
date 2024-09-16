@@ -330,6 +330,17 @@ CREATE TRIGGER metabib_browse_entry_fti_trigger
     BEFORE INSERT OR UPDATE ON metabib.browse_entry
     FOR EACH ROW EXECUTE PROCEDURE oils_tsearch2('keyword');
 
+-- INSERT-only table that catches browse entry updates to be reconciled
+CREATE UNLOGGED TABLE metabib.browse_entry_updates (
+    transaction_id  BIGINT,
+    simple_heading  BIGINT,
+    source          BIGINT,
+    authority       BIGINT,
+    def             INT,
+    sort_value      TEXT,
+    value           TEXT
+);
+CREATE INDEX browse_entry_updates_tid_idx ON metabib.browse_entry_updates (transaction_id);
 
 CREATE TABLE metabib.browse_entry_def_map (
     id BIGSERIAL PRIMARY KEY,
@@ -349,6 +360,83 @@ CREATE TABLE metabib.browse_entry_simple_heading_map (
 );
 CREATE INDEX browse_entry_sh_map_entry_idx ON metabib.browse_entry_simple_heading_map (entry);
 CREATE INDEX browse_entry_sh_map_sh_idx ON metabib.browse_entry_simple_heading_map (simple_heading);
+
+CREATE OR REPLACE FUNCTION metabib.disable_browse_entry_reification () RETURNS VOID AS $f$
+    INSERT INTO config.internal_flag (name,enabled)
+      VALUES ('ingest.disable_browse_entry_reification',TRUE)
+    ON CONFLICT (name) DO UPDATE SET enabled = TRUE;
+$f$ LANGUAGE SQL;
+
+CREATE OR REPLACE FUNCTION metabib.enable_browse_entry_reification () RETURNS VOID AS $f$
+    UPDATE config.internal_flag SET enabled = FALSE WHERE name = 'ingest.disable_browse_entry_reification';
+$f$ LANGUAGE SQL;
+
+
+CREATE OR REPLACE FUNCTION metabib.browse_entry_reify (full_reify BOOLEAN DEFAULT FALSE) RETURNS INT AS $f$
+  WITH new_authority_rows AS ( -- gather provisional authority browse entries
+      DELETE FROM metabib.browse_entry_updates
+        WHERE simple_heading IS NOT NULL AND (full_reify OR transaction_id = txid_current())
+        RETURNING sort_value, value, simple_heading
+  ), new_bib_rows AS ( -- gather provisional bib browse entries
+      DELETE FROM metabib.browse_entry_updates
+        WHERE def IS NOT NULL AND (full_reify OR transaction_id = txid_current())
+        RETURNING sort_value, value, def, source, authority
+  ), computed_browse_values AS ( -- unique set of to-be-mapped sort_value/value pairs :: sort_value, value, def, cmf.browse_nocase
+      SELECT  nbr.sort_value, nbr.value, nbr.def, cmf.browse_nocase
+        FROM  new_bib_rows AS nbr JOIN config.metabib_field AS cmf ON (nbr.def = cmf.id)
+          UNION
+      SELECT  sort_value, value, NULL::INT AS def, FALSE AS browse_nocase
+        FROM new_authority_rows
+  ), existing_browse_entries AS ( -- find the id of existing sort_value/value pairs, nocase'd if cmf says so :: id, sort_value, value, def (NULL for authority)
+      SELECT  mbe.id, cr.sort_value, cr.value, cr.def
+        FROM  metabib.browse_entry mbe
+              JOIN computed_browse_values cr ON (
+                  mbe.sort_value = cr.sort_value
+                  AND (
+                    (cr.browse_nocase AND evergreen.lowercase(mbe.value) = evergreen.lowercase(cr.value))
+                    OR (NOT cr.browse_nocase AND mbe.value = cr.value)
+                  )
+              )
+  ), missing_browse_entries AS ( -- unique set of sort_value/value pairs NOT in the browse_entry table
+      SELECT DISTINCT sort_value, value FROM computed_browse_values
+          EXCEPT
+      SELECT sort_value, value FROM existing_browse_entries
+  ), inserted_browse_entries AS ( -- insert missing sort_value/value pairs and get the new id for each
+      INSERT INTO metabib.browse_entry (sort_value, value)
+          SELECT sort_value, value FROM missing_browse_entries ON CONFLICT DO NOTHING RETURNING id, sort_value, value
+  ), computed_browse_entries AS ( -- full set of to-be-mapped sort_value/value pairs with the id for each
+      SELECT id, sort_value, value, def FROM existing_browse_entries
+          UNION ALL
+      SELECT id, sort_value, value, NULL::INT def FROM inserted_browse_entries
+  ), new_authority_browse_map AS ( -- insert entry->simple_heading map now that all sort_value/value pairs have an id
+      INSERT INTO metabib.browse_entry_simple_heading_map (entry, simple_heading)
+          SELECT  cbe.id, nar.simple_heading
+            FROM  computed_browse_entries cbe
+                  JOIN new_authority_rows nar USING (sort_value, value)
+      RETURNING *
+  ), new_bib_browse_map AS ( -- insert entry->dev/source/authority map now that all sort_value/value pairs have an id
+      INSERT INTO metabib.browse_entry_def_map (entry, def, source, authority)
+          SELECT  cbe.id, nbr.def, nbr.source, nbr.authority
+            FROM  computed_browse_entries cbe
+                  JOIN new_bib_rows nbr USING (sort_value, value, def)
+            WHERE cbe.def IS NOT NULL
+              UNION
+          SELECT  cbe.id, nbr.def, nbr.source, nbr.authority
+            FROM  computed_browse_entries cbe
+                  JOIN new_bib_rows nbr USING (sort_value, value)
+            WHERE cbe.def IS NULL
+      RETURNING *
+  )
+  SELECT  a.row_count + b.row_count
+    FROM  (SELECT COUNT(*) AS row_count FROM new_authority_browse_map) AS a,
+          (SELECT COUNT(*) AS row_count FROM new_bib_browse_map) AS b;
+$f$ LANGUAGE SQL;
+
+-- This version does not constrain itself to just the current transaction.
+CREATE OR REPLACE FUNCTION metabib.browse_entry_full_reify () RETURNS INT AS $f$
+    SELECT metabib.browse_entry_reify(TRUE);
+$f$ LANGUAGE SQL;
+
 
 CREATE OR REPLACE FUNCTION metabib.display_field_normalize_trigger () 
     RETURNS TRIGGER AS $$
@@ -1113,34 +1201,13 @@ BEGIN
 
 
         IF ind_data.browse_field AND NOT b_skip_browse THEN
-            -- A caveat about this SELECT: this should take care of replacing
-            -- old mbe rows when data changes, but not if normalization (by
-            -- which I mean specifically the output of
-            -- evergreen.oils_tsearch2()) changes.  It may or may not be
-            -- expensive to add a comparison of index_vector to index_vector
-            -- to the WHERE clause below.
 
             CONTINUE WHEN ind_data.sort_value IS NULL;
 
-            value_prepped := metabib.browse_normalize(ind_data.value, ind_data.field);
-            IF ind_data.browse_nocase THEN -- for "nocase" browse definions, look for a preexisting row that matches case-insensitively on value and use that
-                SELECT INTO mbe_row * FROM metabib.browse_entry
-                    WHERE evergreen.lowercase(value) = evergreen.lowercase(value_prepped) AND sort_value = ind_data.sort_value
-                    ORDER BY sort_value, value LIMIT 1; -- gotta pick something, I guess
-            END IF;
+            INSERT INTO metabib.browse_entry_updates (transaction_id, sort_value, value, def, source, authority)
+                VALUES (txid_current(), SUBSTRING(ind_data.sort_value FOR 1000), SUBSTRING(metabib.browse_normalize(ind_data.value, ind_data.field) FOR 1000),
+                        ind_data.field, ind_data.source, ind_data.authority);
 
-            IF mbe_row.id IS NOT NULL THEN -- asked to check for, and found, a "nocase" version to use
-                mbe_id := mbe_row.id;
-            ELSE -- otherwise, an UPSERT-protected variant
-                INSERT INTO metabib.browse_entry
-                    ( value, sort_value ) VALUES
-                    ( SUBSTRING(value_prepped FOR 1000), SUBSTRING(ind_data.sort_value FOR 1000) )
-                  ON CONFLICT (sort_value, value) DO UPDATE SET sort_value = SUBSTRING(EXCLUDED.sort_value FOR 1000) -- must update a row to return an existing id
-                  RETURNING id INTO mbe_id;
-            END IF;
-
-            INSERT INTO metabib.browse_entry_def_map (entry, def, source, authority)
-                VALUES (mbe_id, ind_data.field, ind_data.source, ind_data.authority);
         END IF;
 
         IF ind_data.search_field AND NOT b_skip_search THEN
@@ -1167,6 +1234,13 @@ BEGIN
         PERFORM * FROM config.internal_flag WHERE name = 'ingest.disable_symspell_reification' AND enabled;
         IF NOT FOUND THEN
             PERFORM search.symspell_dictionary_reify();
+        END IF;
+    END IF;
+
+    IF NOT b_skip_browse THEN
+        PERFORM * FROM config.internal_flag WHERE name = 'ingest.disable_browse_entry_reification' AND enabled;
+        IF NOT FOUND THEN
+            PERFORM metabib.browse_entry_reify();
         END IF;
     END IF;
 
@@ -2059,20 +2133,8 @@ BEGIN
             VALUES (ashs.record, ashs.atag, ashs.value, ashs.sort_value, ashs.thesaurus);
             ash_id := CURRVAL('authority.simple_heading_id_seq'::REGCLASS);
 
-        SELECT INTO mbe_row * FROM metabib.browse_entry
-            WHERE value = ashs.value AND sort_value = ashs.sort_value;
-
-        IF FOUND THEN
-            mbe_id := mbe_row.id;
-        ELSE
-            INSERT INTO metabib.browse_entry
-                ( value, sort_value ) VALUES
-                ( ashs.value, ashs.sort_value );
-
-            mbe_id := CURRVAL('metabib.browse_entry_id_seq'::REGCLASS);
-        END IF;
-
-        INSERT INTO metabib.browse_entry_simple_heading_map (entry,simple_heading) VALUES (mbe_id,ash_id);
+        INSERT INTO metabib.browse_entry_updates (transaction_id, sort_value, value, simple_heading)
+            VALUES ( txid_current(), SUBSTRING(ashs.sort_value FOR 1000), SUBSTRING(ashs.value FOR 1000), ash_id);
 
     END LOOP;
 
@@ -2089,6 +2151,11 @@ BEGIN
     PERFORM * FROM config.internal_flag WHERE name = 'ingest.disable_symspell_reification' AND enabled;
     IF NOT FOUND THEN
         PERFORM search.symspell_dictionary_reify();
+    END IF;
+
+    PERFORM * FROM config.internal_flag WHERE name = 'ingest.disable_browse_entry_reification' AND enabled;
+    IF NOT FOUND THEN
+        PERFORM metabib.browse_entry_reify();
     END IF;
 
     RETURN TRUE;

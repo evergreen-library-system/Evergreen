@@ -30,6 +30,7 @@ my $batch_size = 10000; # records processed per batch
 my $max_child  = 8;     # max number of parallel worker processes
 
 my $delay_dym;    # Delay DYM symspell dictionary reification.
+my $pbrowse;      # Delay browse entry reification so it can be parallelized.
 my $skip_browse;  # Skip the browse reingest.
 my $skip_attrs;   # Skip the record attributes reingest.
 my $skip_search;  # Skip the search reingest.
@@ -59,6 +60,7 @@ GetOptions(
     'batch-size=i'   => \$batch_size,
     'max-child=i'    => \$max_child,
     'delay-symspell' => \$delay_dym,
+    'parallel-browse'=> \$pbrowse,
     'skip-browse'    => \$skip_browse,
     'skip-attrs'     => \$skip_attrs,
     'skip-search'    => \$skip_search,
@@ -77,7 +79,8 @@ sub help {
     print <<HELP;
 
     $0 --batch-size $batch_size --max-child $max_child \
-        --start-id 1 --end-id 500000 --max-duration 14400
+        --start-id 1 --end-id 500000 --max-duration 14400 \
+        --parallel-browse --delay-symspell
 
     --batch-size
         Number of records to process per batch
@@ -93,6 +96,10 @@ sub help {
         concern in an existing database as the dictionary is
         generally complete and only the details of use counts
         will change due to reingests and record inserts/updates.
+
+    --parallel-browse
+        Delay browse entry reification until the end so that
+        browse ingest can be parallelized.
 
     --skip-browse
     --skip-attrs
@@ -196,7 +203,7 @@ if ($opt_pipe) {
 }
 
 foreach my $record (@input) {
-    push(@blist, $record); # separate list of browse-only ingest
+    push(@blist, $record) unless ($pbrowse); # separate list of browse-only ingest, if not parallelized
     push(@$records, $record);
     if (++$count == $batch_size) {
         $lol[$lists++] = $records;
@@ -219,11 +226,19 @@ if ($delay_dym) {
     $dbh->disconnect();
 }
 
+# and likewise for browse ingest
+if ($pbrowse and !$skip_browse) {
+    my $dbh = DBI->connect("DBI:Pg:database=$db_db;host=$db_host;port=$db_port;application_name=pingest",
+                           $db_user, $db_password);
+    $dbh->do('SELECT metabib.disable_browse_entry_reification()');
+    $dbh->disconnect();
+}
+
 # @running keeps track of the running child processes.
 my @running = ();
 
 # We start the browse-only ingest before starting the other ingests.
-browse_ingest(@blist) unless ($skip_browse);
+browse_ingest(@blist) unless ($skip_browse or $pbrowse);
 
 # We loop until we have processed all of the batches stored in @lol
 # or the maximum processing duration has been reached.
@@ -249,6 +264,7 @@ while ($count < $lists) {
 
     if ($duration_expired && scalar(@running) == 0) {
         symspell_reification() if ($delay_dym);
+        browse_reification() if ($pbrowse);
         warn "Exiting on max_duration ($max_duration)\n";
         exit(0);
     }
@@ -257,8 +273,32 @@ while ($count < $lists) {
 # Incorporate symspell updates if they were delayed
 symspell_reification() if ($delay_dym);
 
+# likewise for browse entries
+browse_reification() if ($pbrowse);
+
 # Rebuild reporter.materialized_simple_record after the ingests.
 rmsr_rebuild() if ($rebuild_rmsr);
+
+# This sub should be called at the end of the run if browse entry updates
+# were delayed using the --parallel-browse command line flag.
+sub browse_reification {
+    my $dbh = DBI->connect("DBI:Pg:database=$db_db;host=$db_host;port=$db_port;application_name=pingest",
+                           $db_user, $db_password);
+    $dbh->do('SELECT metabib.enable_browse_entry_reification()');
+    $dbh->do('SELECT metabib.browse_entry_full_reify()');
+
+    # There might be a race condition above if non-pingest record updates
+    # were started before the first of the two statements above, but ended
+    # after the second one, so we'll wait a few seconds and then look again.
+    sleep(5);
+
+    # This count will always be 0 when browse entry reification is done inline
+    # rather than delayed, because it is handled by a trigger that runs
+    # inside the transaction that causes inline reification.
+    my ($recheck) = $dbh->selectrow_array('SELECT COUNT(*) FROM metabib.browse_entry_updates');
+    $dbh->do('SELECT metabib.browse_entry_full_reify()') if ($recheck);
+    $dbh->disconnect();
+}
 
 # This sub should be called at the end of the run if symspell updates
 # were delayed using the --delay-dym command line flag.
@@ -340,11 +380,12 @@ sub reingest {
 sub reingest_field_entries {
     my $dbh = shift;
     my $list = shift;
-    my $sth = $dbh->prepare('SELECT metabib.reingest_metabib_field_entries(bib_id := ?, skip_facet := ?, skip_browse := TRUE, skip_search := ?, skip_display := ?)');
+    my $sth = $dbh->prepare('SELECT metabib.reingest_metabib_field_entries(bib_id := ?, skip_facet := ?, skip_browse := ?, skip_search := ?, skip_display := ?)');
     # Because reingest uses "skip" options we invert the logic of do variables.
     $sth->bind_param(2, ($skip_facets) ? 1 : 0);
-    $sth->bind_param(3, ($skip_search) ? 1 : 0);
-    $sth->bind_param(4, ($skip_display) ? 1: 0);
+    $sth->bind_param(3, ($skip_browse or !$pbrowse) ? 1 : 0);
+    $sth->bind_param(4, ($skip_search) ? 1 : 0);
+    $sth->bind_param(5, ($skip_display) ? 1: 0);
     foreach (@$list) {
         $sth->bind_param(1, $_);
         if ($sth->execute()) {
