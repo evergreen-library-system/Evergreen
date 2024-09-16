@@ -81,12 +81,27 @@
     (onRowActivate)="showEditDialog($event)"
     [initialFilterValues]="initialFilterValues"
     [filterable]="true" [stickyHeader]="true">
-  <eg-grid-toolbar-button [disabled]="!canCreate" 
-    label="New {{recordLabel || idlLabelClassDef.label}}" i18n-label (onClick)="createNew()">
-  </eg-grid-toolbar-button>
-  <eg-grid-toolbar-button [disabled]="translatableFields.length === 0"
+  <ng-container>
+    <eg-grid-toolbar-button *ngIf="!newRecordLabel" [disabled]="!canCreate" 
+      label="New {{recordLabel || idlLabelClassDef.label}}" i18n-label (onClick)="createNew()">
+    </eg-grid-toolbar-button>
+    <eg-grid-toolbar-button *ngIf="newRecordLabel" [disabled]="!canCreate" 
+      label="{{newRecordLabel}}" i18n-label (onClick)="createNew()">
+    </eg-grid-toolbar-button>
+  </ng-container>
+  <eg-grid-toolbar-button *ngIf="!hideApplyTranslations" [disabled]="translatableFields.length === 0"
     label="Apply Translations" i18n-label (onClick)="translate()">
   </eg-grid-toolbar-button>
+  <ng-container *ngFor="let cb of customButtons">
+      <eg-grid-toolbar-button label="{{cb.label}}"
+        (onClick)="cb.method($event)">
+      </eg-grid-toolbar-button>
+  </ng-container>
+  <ng-container *ngFor="let ca of customActions">
+      <eg-grid-toolbar-action label="{{ca.label}}"
+        (onClick)="ca.method($event)">
+      </eg-grid-toolbar-action>
+  </ng-container>
   <eg-grid-toolbar-action label="Edit Selected" i18n-label
     (onClick)="editSelected($event)" *ngIf="!disableEdit">
   </eg-grid-toolbar-action>

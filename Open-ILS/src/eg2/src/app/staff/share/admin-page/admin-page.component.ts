@@ -112,6 +112,12 @@ export class AdminPageComponent implements OnInit {
     // Optional record label to use instead of the IDL label
     @Input() recordLabel: string;
 
+    // Optional label to use for the New Record button
+    @Input() newRecordLabel: string;
+
+    // optional flag to hide the Apply Translations button
+    @Input() hideApplyTranslations: boolean;
+
     // optional flag to hide the Clear Filters action for gridFilters
     @Input() hideClearFilters: boolean;
 
@@ -142,6 +148,12 @@ export class AdminPageComponent implements OnInit {
     // for example, a column created by callbacks based on data from
     // other columns
     @Input() templateFields: TemplateField[];
+
+    // Similar to templateFields, let's you define custom GridToolBarActionComponent's
+    @Input() customActions: TemplateAction[];
+
+    // And for toolbar buttons
+    @Input() customButtons: TemplateAction[];
 
     @ViewChild('grid', { static: true }) grid: GridComponent;
     @ViewChild('editDialog', { static: true }) editDialog: FmRecordEditorComponent;
@@ -635,7 +647,11 @@ export class AdminPageComponent implements OnInit {
             cf.reltype === 'has_many' ?
                 (linkClass.field_map[cf.key].key || this.pkeyField) : cf.name;
 
-        return row[localField]();
+        if (row[localField] && typeof row[localField] == 'function') {
+            return row[localField]();
+        } else {
+            return row[localField]; // aforementioned scalar
+        }
     }
 
     // Returns a URL suitable for using as an href.
@@ -687,3 +703,7 @@ export interface TemplateField {
     name: string;
 }
 
+export interface TemplateAction {
+    label: string;
+    method: Function;
+}
