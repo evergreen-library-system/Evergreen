@@ -26,7 +26,7 @@ body, .form-control, .btn, .input-group-text {
   font-size: .88rem;
   }
 h1 {
-  font-size: 1.25rem;
+  font-size: 1.4rem;
   font-weight: normal;
   margin: 0;
   color: light-dark(var(--bs-blue-700), white);
@@ -41,6 +41,12 @@ h4 {font-size: 1.05rem}
 h5 {font-size: .95rem}
 
 .small-text-1 {font-size: 85%}
+.semibold {font-weight: 600;}
+
+.numeric {
+  font-variant-numeric: tabular-nums lining-nums;
+  text-align: end;
+}
 
 /** Use a default link color that achieves WCAG AA
  *  color contrast against a white background
@@ -65,8 +71,29 @@ a:hover,
 }
 
 .btn-link:focus,
+.btn-link:hover,
+.nav-link:focus,
+.nav-link:hover {
+  color: var(--bs-blue-650);
+}
+
+.btn-link:focus,
 .btn-link:hover {
-  color: var(--primary-hover);
+  border-width: 0;
+}
+
+/** Ang5 routes on clicks to href's with no values, so we can't have
+ * bare href's to force anchor styling.  Use this for anchors w/ no href.
+ * TODO: should we style all of them?  a:not([href]) ....
+ * */
+ .no-href {
+  color: var(--primary);
+  cursor: pointer;
+}
+
+.no-href:hover {
+  border-color: var(--bs-blue-650);
+  color: var(--bs-blue-650);
 }
 
 /** BS has flex utility classes, but none for specifying flex widths.
@@ -966,6 +993,8 @@ button.focus-border:focus-visible {
 
 /* Less intense, WCAG AAA-compliant badges */
 .badge {
+  border-width: 0;
+  border-style: solid;
   font-weight: 400;
   font-size: .9em;
   line-height: .9em;
@@ -977,12 +1006,14 @@ button.focus-border:focus-visible {
 .badge.text-bg-primary {
   background: var(--badge-bg);
   color: var(--badge-color);
+  border-color: var(--bs-blue-200);
 }
 
 .badge-secondary,
 .badge.text-bg-secondary {
   background: light-dark(var(--bs-gray-300), var(--bs-gray-700));
   color: var(--bs-body-color);
+  border-color: var(--bs-gray-500);
 }
 
 .alert-success,
@@ -990,6 +1021,7 @@ button.focus-border:focus-visible {
 .badge.text-bg-success {
   background: var(--badge-success-bg);
   color: var(--badge-success-color);
+  border-color: var(--bs-green-400);
 }
 
 .alert-danger,
@@ -997,6 +1029,7 @@ button.focus-border:focus-visible {
 .badge.text-bg-danger {
   background: var(--badge-danger-bg);
   color: var(--danger-color);
+  border-color: var(--bs-red-300);
 }
 
 .alert-warning,
@@ -1004,6 +1037,7 @@ button.focus-border:focus-visible {
 .badge.text-bg-warning {
   background: var(--badge-warning-bg);
   color: var(--warning-color);
+  border-color: var(--bs-yellow-400);
 }
 
 .alert-info,
@@ -1011,18 +1045,25 @@ button.focus-border:focus-visible {
 .badge.text-bg-info {
   background: var(--badge-info-bg);
   color: var(--badge-info-color);
+  border-color: var(--bs-cyan-300);
 }
 
 .badge-light,
 .badge.text-bg-light {
   background: var(--bs-gray-200);
   color: var(--bs-gray-900);
+  border-color: var(--bs-gray-500);
 }
 
 .badge-dark,
 .badge.text-bg-dark {
   color: var(--bs-body-color);
   background: var(--bs-gray-500);
+  border-color: var(--bs-gray-600);
+}
+
+.badge.border {
+  border: 1px solid inherit;
 }
 
 /* 
