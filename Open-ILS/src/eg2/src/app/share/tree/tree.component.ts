@@ -231,6 +231,7 @@ export class TreeComponent {
             this.tree.nodeList().forEach(node => {
                 if (!(this.disableRootSelector && (node === this.rootNode()))) {
                     node.stateFlag = true;
+                    this.stateFlagClicked.emit(node);
                 }
             });
         }
@@ -241,6 +242,7 @@ export class TreeComponent {
             this.tree.nodeList().forEach(node => {
                 if (!(this.disableRootSelector && (node === this.rootNode()))) {
                     node.stateFlag = false;
+                    this.stateFlagClicked.emit(node);
                 }
             });
         }
