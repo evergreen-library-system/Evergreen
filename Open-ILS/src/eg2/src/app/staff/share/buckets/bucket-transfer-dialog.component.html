@@ -1,0 +1,40 @@
+<eg-patron-search-dialog #patronSearch i18n-dialogTitle dialogTitle="User Search">
+</eg-patron-search-dialog>
+
+<eg-alert-dialog #fail i18n-dialogTitle
+  dialogTitle="Could not transfer ownership.">
+</eg-alert-dialog>
+
+<eg-bucket-action-summary-dialog #results i18n-dialogTitle
+  dialogTitle="Transfer Results">
+</eg-bucket-action-summary-dialog>
+
+<ng-template #dialogContent>
+  <div class="modal-header">
+    <h3 class="modal-title" i18n>Confirm Bucket Transfer</h3>
+    <button type="button" class="btn-close btn-close-white"
+      i18n-aria-label aria-label="Close"
+      (click)="dismiss('cross_click')"></button>
+  </div>
+  <div class="p-3">
+      <p class="p-3">
+        <button type="button" class="btn btn-primary" (click)="searchPatrons()" i18n>Search for user</button>
+      </p>
+      <p *ngIf="containerObjects.length" class="alert" [ngClass]="{'alert-success': (patron$ | async)?.first_given_name || (patron$ | async)?.second_given_name || (patron$ | async)?.family_name}" role="status" i18n>
+        {containerObjects.length, plural, 
+          =1 { 1 bucket selected for transfer to: } 
+          other { {{containerObjects.length}} buckets selected for transfer to: }
+        }
+        <b>
+          {{ (patron$ | async)?.first_given_name}}
+          {{ (patron$ | async)?.second_given_name}}
+          {{ (patron$ | async)?.family_name}}
+        </b>
+      </p>
+  </div>
+  
+  <div class="modal-footer">
+    <button type="button" (click)="close()" class="btn btn-normal me-2" i18n>Cancel</button>
+    <button type="button" (click)="transferBucketOwner()" [disabled]="!destinationPatronId" class="btn btn-info" i18n>Confirm transfer</button>
+  </div>
+</ng-template>

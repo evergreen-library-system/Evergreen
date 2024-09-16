@@ -1,0 +1,242 @@
+<eg-title i18n-prefix prefix="Record Buckets">
+</eg-title>
+
+<eg-staff-banner bannerText="Bibliographic Record Buckets" i18n-bannerText
+    [bannerTemplateRef]="bannerTemplate">
+</eg-staff-banner>
+
+<ng-template #bannerTemplate>
+    <button type="button" class="btn btn-sm btn-primary" (click)="openNewBucketDialog($event)" i18n>New Bucket</button>
+</ng-template>
+
+<eg-bucket-dialog #newBucketDialog>
+</eg-bucket-dialog>
+
+<eg-fm-record-editor #editDialog idlClass="cbreb" readonlyFields="id,btype,create_time,owner,owning_lib">
+</eg-fm-record-editor>
+
+<eg-alert-dialog #deleteFail i18n-dialogTitle
+  dialogTitle="Could not delete bucket(s).">
+</eg-alert-dialog>
+
+<eg-alert-dialog #retrieveByIdFail i18n-dialogTitle
+  dialogTitle="Could not retrieve the bucket referenced.">
+</eg-alert-dialog>
+
+<eg-alert-dialog #createCarouselFail i18n-dialogTitle
+  dialogTitle="Could not create a carousel from the bucket referenced.">
+</eg-alert-dialog>
+
+<eg-confirm-dialog #deleteDialog
+  i18n-dialogTitle
+  dialogTitle="Delete selected container(s)?">
+</eg-confirm-dialog>
+
+<eg-confirm-dialog #deleteCarouselDialog
+  i18n-dialogTitle
+  dialogTitle="Delete carousel buckets and their carousels?">
+</eg-confirm-dialog>
+
+<eg-bucket-action-summary-dialog #results i18n-dialogTitle
+  dialogTitle="Deletion Results">
+</eg-bucket-action-summary-dialog>
+
+<eg-prompt-dialog #createCarouselPrompt
+  i18n-dialogBody dialogBody="Enter a name for the new carousel:"
+  i18n-dialogTitle dialogTitle="Create Carousel"
+  i18n-confirmString confirmString="Create">
+</eg-prompt-dialog>
+
+<eg-record-bucket-export-dialog #exportDialog>
+</eg-record-bucket-export-dialog>
+
+<eg-record-bucket-item-upload-dialog #importDialog>
+</eg-record-bucket-item-upload-dialog>
+
+<div class="row row-cols-auto justify-content-between mb-3">
+    <div class="col">
+      <ul class="list-unstyled hstack eg-grid-filter-links">
+          <ng-container *ngFor="let view of getViewKeys()">
+            <ng-container *ngIf="views[view].label !== null">
+              <li>
+                <button type="button" class="btn btn-link"
+                  [ngClass]="{'active': isCurrentView(view)}"
+                  (click)="switchTo(view)"
+                  [disabled]="views[view]['count'] <= 0"
+                  [attr.aria-current]="isCurrentView(view) ? 'page' : null">
+                  {{views[view].label}}
+                  ({{views[view]['count'] === -1 ? (countInProgress ? '...' : 0) : views[view]['count']}})
+                </button>
+              </li>
+            </ng-container>
+          </ng-container>
+      </ul>
+    </div>
+    <div class="col">
+        <form class="input-group">
+          <input type="text" class="form-control"
+            [(ngModel)]="catSearchQuery"
+            id="catalog-search-input"
+            name="catalog-search-input"
+            i18n-placeholder placeholder="Search for..."
+            i18n-aria-label aria-label="Search for...">
+            <button class="input-group-text"
+              (click)="searchCatalog()" type="submit" i18n>
+              Search Catalog
+            </button>
+        </form>
+    </div>
+</div>
+
+<eg-bucket-transfer-dialog #transferDialog></eg-bucket-transfer-dialog>
+<eg-bucket-share-dialog #shareBucketDialog></eg-bucket-share-dialog>
+
+<eg-grid #grid idlClass="cbreb"
+    persistKey="catalog.record_buckets"
+    [dataSource]="dataSource" [cellTextGenerator]="cellTextGenerator"
+    (rowSelectionChange)="gridSelectionChange($event)"
+    showDeclaredFieldsOnly="true"
+    [sortable]="true" [filterable]="true" [allowNamedFilterSets]="false">
+<!--
+    <eg-grid-toolbar-button
+        label="Add New" i18n-label
+        (onClick)="openNewBucketDialog($event)">
+    </eg-grid-toolbar-button>
+-->
+    <eg-grid-toolbar-button
+        [adjacentPreceedingTemplateRef]="retrieveByIdTemplate"
+        label="Search" i18n-label class="input-group-text"
+        (onClick)="retrieveBucketById()">
+    </eg-grid-toolbar-button>
+<!--
+    <eg-grid-toolbar-button
+        label="View Contents" i18n-label
+        [disabled]="!oneSelectedRow"
+        (onClick)="jumpToBucketContent($event[0].id)">
+    </eg-grid-toolbar-button>
+-->
+    <eg-grid-toolbar-action
+        label="Edit Bucket" i18n-label
+        [disabled]="!oneSelectedRow"
+        (onClick)="openEditBucketDialog($event)">
+    </eg-grid-toolbar-action>
+
+    <eg-grid-toolbar-action
+        label="Add to Favorites" i18n-label
+        [disabled]="noSelectedRows"
+        (onClick)="favoriteBucket($event)">
+    </eg-grid-toolbar-action>
+
+    <eg-grid-toolbar-action
+        label="Remove from Favorites" i18n-label
+        [disabled]="noSelectedRows"
+        (onClick)="unFavoriteBucket($event)">
+    </eg-grid-toolbar-action>
+
+    <eg-grid-toolbar-action
+        label="Delete Bucket(s)" i18n-label
+        [disabled]="noSelectedRows"
+        (onClick)="openDeleteBucketDialog($event)">
+    </eg-grid-toolbar-action>
+
+    <eg-grid-toolbar-action
+        label="MARC Batch Edit" i18n-label
+        [disabled]="!oneSelectedRow"
+        (onClick)="marcBatchEdit($event)">
+    </eg-grid-toolbar-action>
+
+    <eg-grid-toolbar-action
+        label="Create Carousel From Bucket" i18n-label
+        [disabled]="!oneSelectedRow"
+        (onClick)="openCreateCarouselDialog($event)">
+    </eg-grid-toolbar-action>
+
+    <eg-grid-toolbar-action
+        label="Transfer Bucket Ownership" i18n-label
+        [disabled]="noSelectedRows"
+        (onClick)="openTransferDialog($event)">
+    </eg-grid-toolbar-action>
+
+    <eg-grid-toolbar-action
+        label="Share Bucket" i18n-label
+        [disabled]="noSelectedRows"
+        (onClick)="openShareBucketDialog($event)">
+    </eg-grid-toolbar-action>
+
+    <eg-grid-toolbar-action
+        label="Upload Records" i18n-label
+        [disabled]="noSelectedRows"
+        (onClick)="uploadRecords($event)">
+    </eg-grid-toolbar-action>
+
+    <eg-grid-toolbar-action
+        label="Export Records" i18n-label
+        [disabled]="noSelectedRows"
+        (onClick)="exportAllRecords($event)">
+    </eg-grid-toolbar-action>
+
+    <eg-grid-column name="favorite" label="Favorite" i18n-label [filterable]="false" [sortable]="false" [cellTemplate]="favoriteCellTemplate"></eg-grid-column>
+    <eg-grid-column [required]="true" path="id" [index]="true"></eg-grid-column>
+    <eg-grid-column [required]="true" name="name" [cellTemplate]="nameTemplate"></eg-grid-column>
+    <eg-grid-column [required]="true" path="description"></eg-grid-column>
+    <eg-grid-column [required]="true" [sortable]="false" path="item_count" i18n-label label="# of entries"></eg-grid-column>
+    <eg-grid-column [required]="true" [sortable]="false" path="org_share_count" i18n-label label="# of org shares"></eg-grid-column>
+    <eg-grid-column [required]="true" [sortable]="false" path="usr_view_share_count" i18n-label label="# of user view shares"></eg-grid-column>
+    <eg-grid-column [required]="true" [sortable]="false" path="usr_edit_share_count" i18n-label label="# of user edit shares"></eg-grid-column>
+    <eg-grid-column [required]="true" path="btype"></eg-grid-column>
+    <eg-grid-column [required]="true" path="pub"></eg-grid-column>
+    <eg-grid-column [required]="true" path="create_time"></eg-grid-column>
+    <eg-grid-column [required]="true" name="owner" path="owner.usrname" i18n-label label="Owner" idlClass="au" [hidden]="true"></eg-grid-column>
+    <eg-grid-column [required]="true" name="owning_lib" path="owning_lib.shortname" i18n-label label="Owning Lib" idlClass="aou" [hidden]="true"></eg-grid-column>
+    <eg-grid-column [required]="true" name="row-actions" label="Actions" i18n-label [filterable]="false" 
+      [sortable]="false" [cellTemplate]="bucketActionsTemplate"></eg-grid-column>
+</eg-grid>
+
+<ng-template #favoriteCellTemplate let-row="row">
+  <button *ngIf="favoriteIds.includes(row?.id)" (click)="unFavoriteBucket([row])"
+    type="button" class="btn mat-icon-in-button text-warning user-favorite">
+    <span class="material-icons" title="Favorite" i18n-title aria-hidden="true">star</span>
+    <span class="visually-hidden" i18n="Bucket favorites column star icon alt text">Favorite</span>
+  </button>
+  <button *ngIf="!favoriteIds.includes(row?.id)" (click)="favoriteBucket([row])"
+    type="button" class="btn mat-icon-in-button text-muted user-favorite">
+    <span class="material-icons" title="Not favorite" i18n-title aria-hidden="true">star_outlined</span>
+    <span class="visually-hidden" i18n="Bucket favorites column star icon alt text">Not favorite</span>
+  </button>
+</ng-template>
+
+<ng-template #retrieveByIdTemplate>
+    <label for="bucketIdInput" class="input-group-text" i18n>Bucket ID:</label>
+    <input id="bucketIdInput" class="form-control" type="text" inputmode="numeric" 
+    [(ngModel)]="bucketIdToRetrieve" (keydown.enter)="retrieveBucketById()" />
+</ng-template>
+
+<ng-template #nameTemplate let-r="row">
+    <a routerLink="/staff/cat/bucket/record/content/{{r?.id}}" [queryParams]="{returnTo: currentView}">{{r?.name}}</a>
+</ng-template>
+
+<ng-template #bucketActionsTemplate let-row="row">
+  <div class="hstack flex-wrap justify-content-end">
+    <div class="hstack flex-wrap">
+      <button type="button" class="btn mat-icon-in-button bucket-action" (click)="openEditBucketDialog([row])">
+        <span class="visually-hidden" id="actions-edit-bucket-{{row?.id}}" i18n>Edit {{row?.name}}</span>
+        <span class="material-icons" aria-hidden="true" title="Edit {{row?.name}}" i18n-title>edit</span>
+      </button>
+    
+      <button type="button" class="btn mat-icon-in-button bucket-action" (click)="openCreateCarouselDialog([row])">
+        <span class="visually-hidden" id="actions-add-carousel-{{row?.id}}" i18n>Create carousel from {{row?.name}}</span>
+        <span class="material-icons" aria-hidden="true" title="Create carousel from {{row?.name}}" i18n-title>add_photo_alternate</span>
+      </button>
+    </div>
+    <div class="hstack flex-wrap">
+      <button type="button" class="btn mat-icon-in-button bucket-action" (click)="openShareBucketDialog([row])">
+        <span class="visually-hidden" id="actions-share-bucket-{{row?.id}}" i18n>Share {{row?.name}}</span>
+        <span class="material-icons" aria-hidden="true" title="Share {{row?.name}}" i18n-title>account_circle</span>
+      </button>
+      <button type="button" class="btn mat-icon-in-button bucket-action bucket-destroy" (click)="openDeleteBucketDialog([row])">
+        <span class="visually-hidden" id="actions-delete-bucket-{{row?.id}}" i18n>Delete {{row?.name}}</span>
+        <span class="material-icons" aria-hidden="true" title="Delete {{row?.name}}" i18n-title>close</span>
+      </button>
+    </div>
+  </div>
+</ng-template>

@@ -1,0 +1,66 @@
+<eg-alert-dialog #fail></eg-alert-dialog>
+<eg-confirm-dialog #confirm></eg-confirm-dialog>
+
+<eg-patron-search-dialog #patronSearch>
+</eg-patron-search-dialog>
+
+<ng-template #dialogContent>
+  <div class="modal-header bg-info">
+    <h4 class="modal-title" i18n>Bucket Sharing</h4>
+    <button type="button" class="btn-close btn-close-white" 
+                          i18n-aria-label aria-label="Close dialog" 
+                                          (click)="close({})"></button>
+  </div>
+  <div class="modal-body">
+    <ul ngbNav #bucketShareTabs="ngbNav" class="nav-tabs" [activeId]="activeTabId" [keyboard]="true" [roles]="false" role="tablist">
+      <li role="presentation" [ngbNavItem]="1">
+        <a role="tab" ngbNavLink i18n>Users with View Permissions</a>
+        <ng-template ngbNavContent>
+          <eg-bucket-user-share #userShareViewPerm
+            [trickery]="trickeryViewPermGrid"
+            [cellTextGenerator]="cellTextGeneratorViewPermGrid"
+            [dataSource]="dataSourceViewPermGrid"
+            [onRowActivate]="onRowActivateViewPermGrid"
+            [addUsers]="addUsersViewPermGrid"
+            [removeUsers]="removeUsersViewPermGrid">
+          </eg-bucket-user-share>
+        </ng-template>
+      </li>
+      <li role="presentation" [ngbNavItem]="2">
+        <a role="tab" ngbNavLink i18n>Users with Edit Permissions</a>
+        <ng-template ngbNavContent>
+          <eg-bucket-user-share #userShareEditPerm
+            [trickery]="trickeryEditPermGrid"
+            [cellTextGenerator]="cellTextGenerator"
+            [dataSource]="dataSourceEditPermGrid"
+            [onRowActivate]="onRowActivateEditPermGrid"
+            [addUsers]="addUsersEditPermGrid"
+            [removeUsers]="removeUsersEditPermGrid">
+          </eg-bucket-user-share>
+        </ng-template>
+      </li>
+      <li role="presentation" [ngbNavItem]="3">
+        <a role="tab" ngbNavLink i18n>Libraries</a>
+        <ng-template ngbNavContent>
+            <h3 i18n>Libraries with View/Edit Permissions</h3>
+            <div class="border rounded p-1" >
+              <eg-tree
+                [showSelectAll]="true"
+                [tree]="shareTree"
+                (stateFlagClicked)="dialog_flagClicked($event)"
+                (nodeClicked)="dialog_nodeClicked($event)">
+              </eg-tree>
+            </div>
+        </ng-template>
+      </li>
+    </ul>
+    <div [ngbNavOutlet]="bucketShareTabs"></div>
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-success" 
+                          [disabled]="!orgsTouched && !users_touchedViewPermGrid && !users_touchedEditPermGrid"
+                          (click)="shareBuckets()" i18n>Update Bucket Sharing</button>
+    <button type="button" class="btn btn-normal" 
+                          (click)="close({})" i18n>Cancel Update</button>
+  </div>
+</ng-template>

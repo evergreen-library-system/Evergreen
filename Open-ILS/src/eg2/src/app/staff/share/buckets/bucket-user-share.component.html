@@ -1,0 +1,27 @@
+<eg-grid idlClass="au" #userGrid [dataSource]="dataSource"
+    persistKey="buckets.user_shares" [sortable]="true" [useLocalSort]="true"
+    [showDeclaredFieldsOnly]="true" [cellTextGenerator]="cellTextGenerator"
+    (rowSelectionChange)="gridSelectionChange($event)" (onRowActivate)="onRowActivate($event)">
+
+    <eg-grid-toolbar-button label="Add Users"
+      i18n-label (onClick)="addUsers()">
+    </eg-grid-toolbar-button>
+
+    <eg-grid-toolbar-button label="Remove Users"
+      i18n-label (onClick)="removeUsers($event)">
+    </eg-grid-toolbar-button>
+
+    <eg-grid-column [required]="true" name="id"></eg-grid-column>
+
+    <eg-grid-column name="family_name"></eg-grid-column>
+    <eg-grid-column name="first_given_name"></eg-grid-column>
+
+    <eg-grid-column name="barcode"
+      label="Barcode" i18n-label>
+    </eg-grid-column>
+
+    <eg-grid-column name="active"></eg-grid-column>
+
+    <eg-grid-column name="home_ou"></eg-grid-column>
+
+</eg-grid>

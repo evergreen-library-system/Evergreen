@@ -1,0 +1,38 @@
+<ng-template #dialogContent>
+  <div class="modal-header">
+    <h3 class="modal-title" i18n>Export All Bib Records in Bucket</h3>
+    <button type="button" class="btn-close btn-close-white"
+      i18n-aria-label aria-label="Close"
+      (click)="dismiss('cross_click')"></button>
+  </div>
+
+  <form>
+    <div class="modal-body">
+      <div class="form-group">
+        <label for="recordFormat" i18n>Record Format</label>
+        <select id="recordFormat" class="form-control" [(ngModel)]="recordFormat" name="recordFormat">
+          <option value="USMARC" i18n>USMARC</option>
+          <option value="MARCXML" i18n>MARCXML</option>
+        </select>
+      </div>
+
+      <div class="form-group">
+        <label for="encoding" i18n>Encoding</label>
+        <select id="encoding" class="form-control" [(ngModel)]="encoding" name="encoding">
+          <option value="MARC8" i18n>MARC8</option>
+          <option value="UTF-8" i18n>UTF-8</option>
+        </select>
+      </div>
+
+      <div class="form-group form-check">
+        <input type="checkbox" class="form-check-input" id="includeItems" [(ngModel)]="includeItems" name="includeItems">
+        <label class="form-check-label" for="includeItems" i18n>Include items?</label>
+      </div>
+    </div>
+
+    <div class="modal-footer">
+      <button type="button" (click)="onSubmit()" class="btn btn-info" i18n>Confirm export</button>
+      <button type="button" (click)="close()" class="btn btn-normal ms-2" i18n>Cancel</button>
+    </div>
+  </form>
+</ng-template>

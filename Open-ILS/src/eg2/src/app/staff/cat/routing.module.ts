@@ -26,6 +26,23 @@ const routes: Routes = [
         path: 'volcopy',
         loadChildren: () =>
             import('./volcopy/volcopy.module').then(m => m.VolCopyModule)
+    },{
+        path: 'bucket/record',
+        loadChildren: () =>
+            import('../share/buckets/record-bucket.module').then(m => m.RecordBucketModule)
+    },{ path: 'bucket/record/:id',
+        loadChildren: () =>
+            import('../share/buckets/record-bucket.module').then(m => m.RecordBucketModule)
+
+    // Instead of fighting with AdminPageComponent
+    }, { path: 'container/biblio_record_entry_bucket_item',
+        loadChildren: () =>
+            import('../share/buckets/record-bucket.module').then(m => m.RecordBucketModule)
+
+    // For the convenience of people who manually tweak URLs s/eg/eg2/
+    }, { path: 'bucket/record/view', redirectTo: 'bucket/record', pathMatch: 'full'
+    }, { path: 'bucket/record/view/:id', redirectTo: 'bucket/record/:id', pathMatch: 'full'
+
     }, {
         path: 'bib-from/:identType',
         component: BibByIdentComponent

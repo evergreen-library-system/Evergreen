@@ -4,29 +4,38 @@
 <ng-template #dialogContent>
   <div class="modal-header">
     <h4 class="modal-title">
-      <ng-container *ngIf="itemIds.length > 0">
+      <ng-container *ngIf="showExistingBuckets; else addNewBucket">
         <span *ngIf="itemIds.length === 1" i18n>
-          Add Item #{{itemIds[0]}} to Bucket</span>
+          Add Record #{{itemIds[0]}} to Bucket
+        </span>
         <span *ngIf="itemIds.length > 1" i18n>
-          Add {{itemIds.length}} Items to Bucket</span>
+          Add {{itemIds.length}} Records to Bucket
+        </span>
+        <span *ngIf="fromBibQueue" i18n>
+          Add Records from Queue #{{fromBibQueue}} to Bucket
+        </span>
       </ng-container>
-      <span *ngIf="fromBibQueue" i18n>Add Records from queue #{{fromBibQueue}} to Bucket</span>
+
+      <ng-template #addNewBucket>
+        <span i18n>Add New Bucket</span>
+      </ng-template>
     </h4>
     <button type="button" class="btn-close btn-close-white"
       i18n-aria-label aria-label="Close dialog" (click)="close()"></button>
   </div>
   <div class="modal-body">
-    <ul ngbNav #bucketDialogTabs="ngbNav" class="nav-tabs" [keyboard]="true" [roles]="false" role="tablist">
-      <li role="presentation" [ngbNavItem]="1">
+    <ul ngbNav #bucketDialogTabs="ngbNav" class="nav-tabs" [activeId]="activeTabId" [keyboard]="true" [roles]="false" role="tablist">
+      <li role="presentation" [ngbNavItem]="1" [disabled]="!showExistingBuckets">
         <a role="tab" ngbNavLink i18n>Existing bucket</a>
         <ng-template ngbNavContent>
           <div class="row mt-3">
-            <div class="col-lg-3 fw-bold"><label class="form-label" for="existing-bucket-name">Name of existing bucket</label></div>
+            <div class="col-lg-3">
+              <label class="form-label fw-bold" for="existing-bucket-name" i18n>Name of existing bucket</label>
+            </div>
             <div class="col-lg-5">
               <eg-combobox [entries]="formatBucketEntries()"
                 (onChange)="bucketChanged($event)"
-                domId="existing-bucket-name"
-                placeholder="Existing Bucket..." i18n-placeholder>
+                domId="existing-bucket-name">
               </eg-combobox>
             </div>
             <div class="col-lg-4">
@@ -42,39 +51,44 @@
         <a role="tab" ngbNavLink i18n>New bucket</a>
         <ng-template ngbNavContent>
           <div class="row mt-3">
-            <div class="col-lg-3 fw-bold" i18n>Name of new bucket</div>
+            <div class="col-lg-3">
+              <label for="newBucketName" class="form-label fw-bold" i18n>Name of new bucket</label>
+            </div>
             <div class="col-lg-5">
               <input type="text" class="form-control"
-                placeholder="New Bucket Name..."
-                i18n-placeholder
+                id="newBucketName"
                 [(ngModel)]="newBucketName"/>
             </div>
             <div class="col-lg-4">
-              <button type="button" class="btn btn-info" (click)="addToNew()" i18n
+              <button type="button" class="btn btn-info" (click)="addToNew()"
                 [disabled]="!newBucketName">
-                Add To New Bucket
+                <span *ngIf="showExistingBuckets" i18n>Add To New Bucket</span>
+                <span *ngIf="!showExistingBuckets" i18n>Create New Bucket</span>
               </button>
             </div>
           </div>
           <div class="row mt-3">
-            <div class="col-lg-3 fw-bold" i18n>New bucket description</div>
+            <div class="col-lg-3">
+              <label for="newBucketDesc" class="form-label fw-bold" i18n>New bucket description</label>
+            </div>
             <div class="col-lg-5">
               <textarea size="3" type="text" class="form-control"
-                placeholder="Optional New Bucket Description..."
-                i18n-placeholder
+                id="newBucketDesc"
                 [(ngModel)]="newBucketDesc">
               </textarea>
             </div>
           </div>
         </ng-template>
       </li>
-      <li role="presentation" [ngbNavItem]="3">
+      <li role="presentation" [ngbNavItem]="3" [disabled]="!showExistingBuckets">
         <a role="tab" ngbNavLink i18n>Shared bucket</a>
         <ng-template ngbNavContent>
           <div class="row mt-3">
-            <div class="col-lg-3 fw-bold" i18n>ID of shared bucket</div>
+            <div>
+              <label for="sharedBucketId" class="form-label fw-bold" i18n>ID of shared bucket</label>
+            </div>
             <div class="col-lg-5">
-              <input type="number" class="form-control"
+              <input type="number" class="form-control" id="sharedBucketId"
                 [(ngModel)]="sharedBucketId"/>
             </div>
             <div class="col-lg-4">
@@ -90,6 +104,7 @@
     <div [ngbNavOutlet]="bucketDialogTabs"></div>
   </div>
 </ng-template>
+
 <eg-confirm-dialog #confirmAddToShared
   i18n-dialogTitle i18n-dialogBody
   dialogTitle="Confirm Add to Shared Bucket"

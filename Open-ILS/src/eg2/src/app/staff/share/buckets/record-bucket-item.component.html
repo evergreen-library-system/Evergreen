@@ -1,0 +1,156 @@
+<eg-title i18n-prefix prefix="Bibs in a Bucket">
+</eg-title>
+
+<eg-staff-banner bannerText="" i18n-bannerText
+    [bannerTemplateRef]="bucket ? bannerTemplate : null">
+</eg-staff-banner>
+
+<ng-template #bannerTemplate>
+    <h1 id="staff-banner" tabindex="0" i18n>Bibs in a Bucket:
+        #{{bucket?.id()}} {{bucket?.name()}}
+    </h1>
+</ng-template>
+
+<eg-bucket-dialog #addToBucketDialog>
+</eg-bucket-dialog>
+
+<ng-template #titleTemplate let-r="row">
+  <ng-container *ngIf="r['target_biblio_record_entry.simple_record.title']">
+    <a routerLink="/staff/catalog/record/{{r['target_biblio_record_entry.id']}}">{{r['target_biblio_record_entry.simple_record.title']}}</a>
+  </ng-container>
+</ng-template>
+
+<ng-template #mergedToTemplate let-r="row">
+  <ng-container *ngIf="r['target_biblio_record_entry.merged_to']">
+    <a routerLink="/staff/catalog/record/{{r['target_biblio_record_entry.merged_to']}}">{{r['target_biblio_record_entry.merged_to']}}</a>
+  </ng-container>
+</ng-template>
+
+<eg-confirm-dialog #confirmDialog></eg-confirm-dialog>
+<eg-alert-dialog #alertDialog></eg-alert-dialog>
+
+<eg-hold-transfer-via-bibs-dialog #holdTransferDialog>
+</eg-hold-transfer-via-bibs-dialog>
+
+<eg-record-bucket-export-dialog #exportDialog>
+</eg-record-bucket-export-dialog>
+
+<eg-record-bucket-item-upload-dialog #importDialog>
+</eg-record-bucket-item-upload-dialog>
+
+<div class="row row-cols-auto justify-content-between mb-3">
+    <div class="col">
+        <ul class="list-unstyled hstack eg-grid-filter-links">
+            <li>
+                <a class="btn btn-sm btn-link" routerLink="/staff/cat/bucket/record/{{returnTo}}" i18n>&larr; Return to Buckets</a>
+            </li>
+        </ul>
+    </div>
+    <div class="col">
+        <form class="input-group">
+            <input type="text" class="form-control"
+                [(ngModel)]="catSearchQuery"
+                name='catalog-search-input'
+                id='catalog-search-input'
+                egAutofocus
+                i18n-placeholder placeholder="Search for..."
+                i18n-aria-label aria-label="Search for...">
+            <button class="input-group-text"
+                (click)="searchCatalog()" type="submit" i18n>
+                Search Catalog
+            </button>
+        </form>
+    </div>
+</div>
+
+<eg-grid #grid idlClass="cbrebi"
+    persistKey="catalog.record_bucket.content"
+    [dataSource]="dataSource" [cellTextGenerator]="cellTextGenerator"
+    (rowSelectionChange)="gridSelectionChange($event)"
+    [sortable]="true" [filterable]="true" [allowNamedFilterSets]="false"
+    ignoreFields="target_biblio_record_entry">
+
+    <eg-grid-toolbar-button
+        label="Show in Catalog Results" i18n-label
+        [disabled]="noSelectedRows"
+        (onClick)="jumpToCatalog($event)">
+    </eg-grid-toolbar-button>
+
+    <eg-grid-toolbar-button
+        label="Open Selected in New Tabs" i18n-label
+        [disabled]="noSelectedRows"
+        (onClick)="openCatalogTabs($event)">
+    </eg-grid-toolbar-button>
+
+    <eg-grid-toolbar-button
+        label="Upload" i18n-label
+        (onClick)="uploadRecords()">
+    </eg-grid-toolbar-button>
+
+    <eg-grid-toolbar-button
+        label="Export All" i18n-label
+        (onClick)="exportAllRecords()">
+    </eg-grid-toolbar-button>
+
+    <eg-grid-toolbar-action
+        label="Remove Selected Records from Bucket" i18n-label
+        [disabled]="noSelectedRows"
+        (onClick)="removeFromBucket($event)">
+    </eg-grid-toolbar-action>
+
+    <eg-grid-toolbar-action
+        label="Add Selected Records to a Different Bucket" i18n-label
+        [disabled]="noSelectedRows"
+        (onClick)="openAddToBucketDialog($event)">
+    </eg-grid-toolbar-action>
+
+    <eg-grid-toolbar-action
+        label="Move Selected Records to a Different Bucket" i18n-label
+        [disabled]="noSelectedRows"
+        (onClick)="moveToBucket($event)">
+    </eg-grid-toolbar-action>
+
+    <eg-grid-toolbar-action
+        label="Delete Selected Records from Catalog" i18n-label
+        [disabled]="noSelectedRows"
+        (onClick)="deleteFromCatalog($event)">
+    </eg-grid-toolbar-action>
+
+    <eg-grid-toolbar-action
+        label="Transfer Title Holds" i18n-label
+        [disabled]="noSelectedRows"
+        (onClick)="transferTitleHolds($event)">
+    </eg-grid-toolbar-action>
+
+    <eg-grid-toolbar-action
+        label="Merge Selected Records" i18n-label
+        [disabled]="noSelectedRows || oneSelectedRow"
+        (onClick)="mergeRecords($event)">
+    </eg-grid-toolbar-action>
+
+    <eg-grid-toolbar-action
+        label="Export Selected Records" i18n-label
+        [disabled]="noSelectedRows"
+        (onClick)="exportRecords($event)">
+    </eg-grid-toolbar-action>
+
+    <eg-grid-column path="id" [index]="true" [hidden]="true" [required]="true"></eg-grid-column>
+    <eg-grid-column path="target_biblio_record_entry.simple_record.title" [required]="true" [cellTemplate]="titleTemplate"></eg-grid-column>
+    <eg-grid-column path="target_biblio_record_entry.simple_record.author" [required]="true"></eg-grid-column>
+    <eg-grid-column path="target_biblio_record_entry.id" [required]="true"></eg-grid-column>
+    <eg-grid-column path="bucket" [hidden]="true" [required]="true"></eg-grid-column>
+    <eg-grid-column path="pos" [hidden]="true" [required]="true"></eg-grid-column>
+    <eg-grid-column path="create_time" i18n-label label="Date Added to Bucket" [hidden]="true" [required]="true"></eg-grid-column>
+    <eg-grid-column path="target_biblio_record_entry.tcn_source" [hidden]="true" [required]="true"></eg-grid-column>
+    <eg-grid-column path="target_biblio_record_entry.tcn_value" [hidden]="true" [required]="true"></eg-grid-column>
+    <eg-grid-column path="target_biblio_record_entry.create_date" [hidden]="true" [required]="true"></eg-grid-column>
+    <eg-grid-column path="target_biblio_record_entry.edit_date" [hidden]="true" [required]="true"></eg-grid-column>
+    <eg-grid-column path="target_biblio_record_entry.active" [hidden]="true" [required]="true"></eg-grid-column>
+    <eg-grid-column path="target_biblio_record_entry.deleted" [hidden]="true" [required]="true"></eg-grid-column>
+    <eg-grid-column path="target_biblio_record_entry.merge_date" [hidden]="true" [required]="true"></eg-grid-column>
+    <eg-grid-column path="target_biblio_record_entry.merged_to" [hidden]="true" [required]="true" [cellTemplate]="mergedToTemplate"></eg-grid-column>
+    <eg-grid-column path="target_biblio_record_entry.simple_record.quality" [required]="true"></eg-grid-column>
+    <!--<eg-grid-column path="target_biblio_record_entry.*" idlClass="bre" [hidden]="true"></eg-grid-column>-->
+    <!--<eg-grid-column path="target_biblio_record_entry.simple_record.*" idlClass="rmsr" [hidden]="true"></eg-grid-column>-->
+
+</eg-grid>

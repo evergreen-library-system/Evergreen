@@ -11,6 +11,7 @@ import {NgbModal} from '@ng-bootstrap/ng-bootstrap';
 import {ConfirmDialogComponent} from '@eg/share/dialog/confirm.component';
 import {ComboboxEntry} from '@eg/share/combobox/combobox.component';
 import {StringComponent} from '@eg/share/string/string.component';
+import {BucketService} from '@eg/staff/share/buckets/bucket.service';
 
 /**
  * Dialog for adding bib records to new and existing record buckets.
@@ -23,12 +24,14 @@ import {StringComponent} from '@eg/share/string/string.component';
 
 export class BucketDialogComponent extends DialogComponent implements OnInit {
 
+    activeTabId = 1; // Existing Buckets tab
     selectedBucket: number;
     sharedBucketId: number;
     sharedBucketName: string;
     newBucketName: string;
     newBucketDesc: string;
     buckets: any[];
+    showExistingBuckets = true;
 
     @Input() bucketClass: 'biblio' | 'user' | 'callnumber' | 'copy';
     @Input() bucketType: string; // e.g. staff_client
@@ -52,6 +55,7 @@ export class BucketDialogComponent extends DialogComponent implements OnInit {
         private toast: ToastService,
         private idl: IdlService,
         private net: NetService,
+        private bucketService: BucketService,
         private evt: EventService,
         private auth: AuthService) {
         super(modal); // required for subclassing
@@ -63,13 +67,17 @@ export class BucketDialogComponent extends DialogComponent implements OnInit {
     ngOnInit() {
         this.onOpen$.subscribe(ok => {
             this.reset(); // Reset data on dialog open
-            this.net.request(
-                'open-ils.actor',
-                'open-ils.actor.container.retrieve_by_class.authoritative',
-                this.auth.token(), this.auth.user().id(),
-                this.bucketClass, this.bucketType
-            // eslint-disable-next-line rxjs/no-nested-subscribe
-            ).subscribe(buckets => this.buckets = buckets);
+            if (this.showExistingBuckets) {
+                this.net.request(
+                    'open-ils.actor',
+                    'open-ils.actor.container.retrieve_by_class.authoritative',
+                    this.auth.token(), this.auth.user().id(),
+                    this.bucketClass, this.bucketType
+                // eslint-disable-next-line rxjs/no-nested-subscribe
+                ).subscribe(buckets => this.buckets = buckets);
+            } else {
+                this.activeTabId = 2; // New Bucket tab
+            }
         });
     }
 
@@ -108,6 +116,8 @@ export class BucketDialogComponent extends DialogComponent implements OnInit {
         if (!this.bucketType) {
             this.bucketType = 'staff_client';
         }
+
+        this.showExistingBuckets = this.itemIds.length > 0 || Boolean(this.fromBibQueue);
     }
 
     addToSelected() {
@@ -167,7 +177,13 @@ export class BucketDialogComponent extends DialogComponent implements OnInit {
                 // requires the bucket name.
                 bucket.id(bktId);
                 this.buckets.push(bucket);
-                this.addToBucket(bktId);
+                if (this.showExistingBuckets) { // aka, in a "add to bucket" context
+                    this.addToBucket(bktId);
+                } else {
+                    this.bucketService.logRecordBucket(bktId);
+                    this.bucketService.requestBibBucketsRefresh();
+                    this.close({success: true, bucket: bktId}); // we're done
+                }
             }
         });
     }
@@ -182,6 +198,7 @@ export class BucketDialogComponent extends DialogComponent implements OnInit {
 
     // Add the record(s) to the bucket with provided ID.
     addRecordToBucket(bucketId: number) {
+        this.bucketService.logRecordBucket(bucketId);
         const items = [];
         this.itemIds.forEach(itemId => {
             const item = this.idl.create(this.bucketFmClass + 'i');
@@ -200,7 +217,8 @@ export class BucketDialogComponent extends DialogComponent implements OnInit {
                 this.toast.danger(evt.toString());
             } else {
                 this.toast.success(this.successString.text);
-                this.close();
+                this.bucketService.requestBibBucketsRefresh();
+                this.close({success: true, bucket: bucketId}); // we're done
             }
         });
     }
@@ -208,6 +226,7 @@ export class BucketDialogComponent extends DialogComponent implements OnInit {
     addBibQueueToBucket(bucketId: number) {
         const bucket = this.buckets.filter(b => b.id() === bucketId)[0];
         if (!bucket) { return; }
+        this.bucketService.logRecordBucket(bucketId);
 
         this.net.request(
             'open-ils.vandelay',
@@ -218,7 +237,8 @@ export class BucketDialogComponent extends DialogComponent implements OnInit {
             if (evt) {
                 this.toast.danger(evt.toString());
             } else {
-                this.close();
+                this.bucketService.requestBibBucketsRefresh();
+                this.close({success: true, bucket: bucketId}); // we're done
             }
         });
     }

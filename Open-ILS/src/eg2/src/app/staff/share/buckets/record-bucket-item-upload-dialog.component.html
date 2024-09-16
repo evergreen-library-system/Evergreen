@@ -1,0 +1,74 @@
+<eg-alert-dialog #fail></eg-alert-dialog>
+<eg-alert-dialog #success></eg-alert-dialog>
+<eg-confirm-dialog #confirm></eg-confirm-dialog>
+
+<ng-template #dialogContent>
+  <div class="modal-header bg-info">
+    <h4 class="modal-title" i18n>Record Bucket Import</h4>
+    <button type="button" class="btn-close btn-close-white" 
+        i18n-aria-label aria-label="Close dialog" 
+        (click)="close({})"></button>
+  </div>
+  <div class="modal-body">
+    <h3 *ngIf="containerObjects.length === 1" i18n>Import Records to {{bucketLabel}}</h3>
+    <h3 *ngIf="containerObjects.length > 1" i18n>Import Records to {{containerObjects.length}} buckets</h3>
+  
+    <form>
+      <div class="row">
+        <div class="col">
+          <div class="btn-group mb-3">
+      
+            <input type="radio" class="btn-check" name="importType" id="bibIdsRadio" autocomplete="off" value="bibIds" [(ngModel)]="importType">
+            <label class="btn btn-outline-primary" for="bibIdsRadio" i18n>Bib IDs</label>
+          
+            <input type="radio" class="btn-check" name="importType" id="tcnsRadio" autocomplete="off" value="tcns" [(ngModel)]="importType">
+            <label class="btn btn-outline-primary" for="tcnsRadio" i18n>TCNs</label>
+            
+          </div>
+        </div>
+      </div>
+      <div class="row mb-3">
+        <div class="col-md-7">
+          <label for="fileUpload" class="form-label" i18n>Upload CSV or text file</label>
+          <input type="file" class="form-control" id="fileUpload" (change)="onFileSelected($event)" accept=".csv,.txt">
+        </div>
+        <div class="col-md-5">
+          <label for="csvColumn" class="form-label">
+            <span *ngIf="importType === 'bibIds'" i18n>CSV column number containing bib IDs</span>
+            <span *ngIf="importType === 'tcns'" i18n>CSV column number containing TCNs</span>
+          </label>
+          <input type="number" class="form-control" id="csvColumn" [(ngModel)]="csvColumnNumber" name="csvColumn" min="1" [max]="maxCsvColumns">
+        </div>
+        <div class="col-md-12">
+          <p class="form-text" i18n="Instructions for uploading files to buckets">Files may contain one identifier per line, or comma-separated values with identifiers in the specified column number.</p>
+        </div>
+      </div>
+      
+      <div class="row mb-3">
+        <div class="col">
+          <label for="pasteValues" class="form-label" i18n>or paste values</label>
+          <textarea class="form-control" id="pasteValues" rows="5" (input)="tickleDisabledCheck()" [(ngModel)]="pastedValues" name="pastedValues"></textarea>
+        </div>
+      </div>
+      
+    </form>
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-destroy me-auto" (click)="clearPastedValues()" i18n>Clear</button>
+
+    <button type="button" class="btn" *ngIf="importType === 'bibIds'"
+        [ngClass]="{'btn-secondary': importDisabled, 'btn-success': !importDisabled}"
+        [disabled]="importDisabled"
+        (click)="importRecords()" i18n>
+        Import Bib IDs
+    </button>
+    <button type="button" class="btn" *ngIf="importType === 'tcns'"
+        [ngClass]="{'btn-secondary': importDisabled, 'btn-success': !importDisabled}"
+        [disabled]="importDisabled"
+        (click)="importRecords()" i18n>
+        Import TCNs
+    </button>
+    <button type="button" class="btn btn-normal" 
+                          (click)="close({})" i18n>Cancel Import</button>
+  </div>
+</ng-template>
