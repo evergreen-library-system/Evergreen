@@ -1,0 +1,12 @@
+== Dark Mode ==
+
+The staff client now supports both light and dark modes.  By default, the staff client will
+use the color mode setting from your operating system.  That is to say, if you have turned on
+Dark Mode for your operating system, or if your operating system defaults to Dark Mode, the
+Evergreen staff client will now also display in Dark Mode. 
+
+If you'd like to use a different color mode in the staff client than your operating system
+setting, you can do so using the color mode selector in the navigation bar at the top of the
+staff client.  If you want to resume using your operating system's color mode, you can set
+the color mode selector to "Auto".
+

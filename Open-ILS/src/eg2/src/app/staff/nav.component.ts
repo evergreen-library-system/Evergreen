@@ -97,10 +97,10 @@ export class StaffNavComponent implements OnInit, OnDestroy {
                 .then(settings => this.maxRecentPatrons =
                 settings['ui.staff.max_recent_patrons'] ?? 1);
 
-            const darkModePreference = window.matchMedia("(prefers-color-scheme: dark)");
+            const darkModePreference = window.matchMedia('(prefers-color-scheme: dark)');
             darkModePreference.addEventListener('change', () => {
                 // Don't change color mode while printing
-                if (!window.matchMedia("print").matches) {
+                if (!window.matchMedia('print').matches) {
                     this.setColorMode();
                 }
 
@@ -160,19 +160,19 @@ export class StaffNavComponent implements OnInit, OnDestroy {
 
     setColorMode() {
         if ('auto' === this.colorMode) {
-            document.documentElement.setAttribute('data-bs-theme', (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light'));
-        }
-        else {
+            document.documentElement.setAttribute('data-bs-theme',
+                (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light')
+            );
+        } else {
             document.documentElement.setAttribute('data-bs-theme', this.colorMode);
         }
     }
-    
+
     changeColorMode(mode: any) {
         if ( 'light' === mode || 'dark' === mode || 'auto' === mode ) {
             this.colorMode = mode;
             this.store.setLocalItem('eg.ui.general.colormode', mode);
-        }
-        else {
+        } else {
             this.colorMode = 'auto';
             this.store.removeLocalItem('eg.ui.general.colormode');
         }

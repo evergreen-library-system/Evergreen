@@ -862,15 +862,15 @@
     <div class="navbar-nav" [ngClass]="{'ms-auto': !user()}">
       <div ngbDropdown class="nav-item dropdown color-mode-toggle" display="dynamic">
         <button type="button" ngbDropdownToggle class="nav-link dropdown-toggle with-material-icon">
-          <ng-container *ngIf="colorMode == 'light'">
+          <ng-container *ngIf="colorMode === 'light'">
             <span class="material-icons" aria-hidden="true">light_mode</span>
             <span class="visually-hidden" i18n>Current color mode: Light</span>
           </ng-container>
-          <ng-container *ngIf="colorMode == 'dark'">
+          <ng-container *ngIf="colorMode === 'dark'">
             <span class="material-icons" aria-hidden="true">nightlight</span>
             <span class="visually-hidden" i18n>Current color mode: Dark</span>
           </ng-container>
-          <ng-container *ngIf="!colorMode || colorMode == 'auto'">
+          <ng-container *ngIf="!colorMode || colorMode === 'auto'">
             <span class="material-icons" aria-hidden="true">brightness_medium</span>
             <span class="visually-hidden" i18n>Current color mode: Auto</span>
           </ng-container>
