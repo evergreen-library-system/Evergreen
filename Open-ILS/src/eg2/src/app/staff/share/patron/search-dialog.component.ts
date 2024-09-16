@@ -1,4 +1,4 @@
-import {Component, ViewChild} from '@angular/core';
+import {Component, ViewChild, Input} from '@angular/core';
 import {IdlObject} from '@eg/core/idl.service';
 import {NgbModal} from '@ng-bootstrap/ng-bootstrap';
 import {DialogComponent} from '@eg/share/dialog/dialog.component';
@@ -18,6 +18,8 @@ import {PatronSearchComponent} from './search.component';
 
 export class PatronSearchDialogComponent
     extends DialogComponent {
+
+    @Input() dialogTitle: string;
 
     @ViewChild('searchForm', {static: false})
         searchForm: PatronSearchComponent;

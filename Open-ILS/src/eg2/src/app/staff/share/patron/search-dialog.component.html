@@ -1,6 +1,9 @@
 <ng-template #dialogContent>
   <div class="modal-header">
-    <h4 class="modal-title"><span i18n>Patron Search</span></h4>
+    <h4 class="modal-title">
+      <span *ngIf="!dialogTitle" i18n>Patron Search</span>
+      <span *ngIf="dialogTitle">{{dialogTitle}}</span>
+    </h4>
     <button type="button" class="btn-close btn-close-white" 
       i18n-aria-label aria-label="Close dialog" (click)="close()"></button>
   </div>
