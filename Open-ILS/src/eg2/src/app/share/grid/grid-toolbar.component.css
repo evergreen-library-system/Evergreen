@@ -1,5 +1,8 @@
 .eg-grid-toolbar {
   display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  margin: 0;
 }
 
 .eg-grid-toolbar .dropdown-menu {
@@ -7,6 +10,7 @@
 }
 
 .eg-grid-toolbar .material-icons {
+  line-height: 1.25;
   vertical-align: top;
 }
 
@@ -15,13 +19,6 @@
   display: flex;
   flex-wrap: nowrap;
   white-space: wrap;
-}
-
-/* Kind of hacky -- only way to get a toolbar button with no 
- * mat icon to line up horizontally with mat icon buttons */
-.eg-grid-toolbar .text-button {
-  padding-top: 11px;
-  padding-bottom: 11px;
 }
 
 /* make buttons and links match when focused */
@@ -39,6 +36,38 @@
 
 .button-adjacent-label.disabled {
     opacity: .65;
+}
+
+.eg-grid-filters-toolbar > .btn-toolbar {
+  gap: 0.25rem;
+}
+
+.eg-grid-selection-count {
+  align-self: flex-end;
+  font-style: italic;
+  margin-inline-start: 0.75rem;
+  margin-inline-end: 0.5rem;
+}
+
+.btn-group > .btn-group.eg-grid-settings {
+  margin: 0;
+}
+
+.eg-grid-toolbar-utilities {
+  display: flex;
+  justify-content: flex-end;
+}
+
+.eg-grid-toolbar-utilities .btn-outline-dark,
+.eg-grid-toolbar-utilities .btn-outline-dark:hover {
+  border-color: rgba(33, 37, 41, 0.35);
+}
+
+/* reduce opacity of text/icons, not borders */
+.eg-grid-toolbar-utilities .btn-outline-dark.disabled,
+.eg-grid-toolbar-utilities .btn-outline-dark:disabled {
+  color: rgba(33, 37, 41, 0.5);
+  opacity: 1;
 }
 
 .eg-grid-toolbar .dropdown h2,

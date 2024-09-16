@@ -2,8 +2,8 @@
 .eg-grid-wrapper {
   margin-bottom: 1rem;
   padding-bottom: 1rem;
-  overflow-x: auto;
-  overflow-y: clip;
+  overflow-x: hidden;
+  overflow-y: auto;
   resize: horizontal;
   width: auto;
 }
@@ -53,7 +53,7 @@ table.table.eg-grid {
 
 .eg-grid.eg-grid-empty,
 .eg-grid.eg-grid-error {
-  caption-side: block-end;
+  caption-side: bottom;
 }
 
 .eg-grid.eg-grid-empty caption,
@@ -86,6 +86,10 @@ table.table.eg-grid {
 .eg-grid-body-row.selected .eg-grid-cell {
   background-color: inherit;
   color: inherit;
+}
+
+.eg-grid-body-row.selected .badge {
+  border-width: 1px;
 }
 
 .eg-grid .row-dropzone {
@@ -160,6 +164,11 @@ table.table.eg-grid {
 
 .button-adjacent-label.disabled {
     opacity: .65;
+}
+
+.eg-grid-actions-cell .eg-grid-cell-contents {
+  display: flex;
+  justify-content: flex-end;
 }
 
 .eg-grid-cell-skinny {
@@ -254,12 +263,12 @@ table.table.eg-grid {
   background-color: var(--bs-body-bg-alt);
 }
 
-/* align headers for non-filterable columns with those that have filter buttons */
+/* align headers for sortable, non-filterable columns with those that have filter buttons */
 .eg-grid:has(.eg-grid-filter-control) .eg-grid-header-cell:not(
   :has(.eg-grid-filter-control .input-group),
   .eg-grid-checkbox-cell,
   .eg-grid-number-cell,
-  .eg-grid-flair-cell ) .eg-grid-cell-contents .header-label {
+  .eg-grid-flair-cell ) .eg-grid-cell-contents button.header-label {
   margin-bottom: calc(28px + 0.5rem); /* size of mat icon + 0.25rem padding * 2 */
 }
 
@@ -462,6 +471,10 @@ See setClassNames() in grid.ts
   /* width: 30ch; */
 }
 
+.eg-grid-idlfield-row-actions {
+  text-align: end;
+}
+
 th.eg-grid-idlfield-barcode,
 th.eg-grid-idlfield-patron_barcode,
 th.eg-grid-idlfield-copy_barcode,
@@ -483,4 +496,22 @@ td.eg-grid-idlfield-url,
 td.eg-grid-idlfield-email {
   overflow-wrap: anywhere;
   word-break: break-all; /* prevents hyphens */
+}
+
+/* .visually-hidden except for star icon */
+.grid-key-catalog_record_buckets .eg-grid-idlfield-favorite .header-label {
+  display: block;
+  margin: 0;
+  max-width: 1.35rem;
+  overflow: hidden;
+  padding: 0.1rem;
+  text-decoration: none;
+  white-space: nowrap;
+}
+
+.grid-key-catalog_record_buckets .eg-grid-idlfield-favorite .header-label:before {
+  content: 'star';
+  font-family: "Material Icons";
+  font-size: 22px;
+  font-weight: normal;
 }

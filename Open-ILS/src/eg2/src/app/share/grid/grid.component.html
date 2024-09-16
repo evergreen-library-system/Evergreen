@@ -1,4 +1,4 @@
-<div id="{{gridDomId}}" class="eg-grid-wrapper" role="region" aria-labelledby="eg-grid-caption" tabindex="0">
+<div id="{{gridDomId}}" class="eg-grid-wrapper col-12" role="region" aria-labelledby="eg-grid-caption" tabindex="0">
   
   <eg-grid-print #gridPrinter [gridContext]="context">
   </eg-grid-print>
@@ -15,43 +15,48 @@
   </eg-grid-toolbar-actions-menu>
 </ng-template>
 
-<!-- tabindex so the grid can capture keyboard events -->
-<table #egGrid role="grid" tabindex="0" (keydown)="onGridKeyDown($event)"
-  class="eg-grid table grid-key-{{persistKey ? persistKey.replaceAll('.', '_') : 'none'}}"
-  [ngClass]="{'eg-grid-cell-truncate': context.truncateCells,
-              'eg-grid-empty': !dataSource.requestingData && !dataSource.retrievalError,
-              'eg-grid-error': !dataSource.requestingData && dataSource.retrievalError}">
-    <caption id="eg-grid-caption">
-    <ng-container *ngIf="dataSource.data.length === 0">
-      <ng-container *ngIf="dataSource.requestingData">
-        <span>
-          <eg-progress-inline></eg-progress-inline>
-        </span>
-      </ng-container>
-      <ng-container *ngIf="!dataSource.requestingData">
-        <span i18n *ngIf="dataSource.retrievalError">
-          Error Retrieving Results
-        </span>
-        <span i18n *ngIf="!dataSource.retrievalError">
-          Nothing to Display
-        </span>
-      </ng-container>
-    </ng-container>
-    </caption>
+<div class="row">
+  <div class="col">
 
-    <colgroup class="eg-grid-col-utilities">
-      <col *ngIf="!context.disableSelect" class="eg-grid-col eg-grid-checkbox-col">
-      <col class="eg-grid-col eg-grid-number-col">
-      <col *ngIf="context.rowFlairIsEnabled" class="eg-grid-col eg-grid-flair-col">
-    </colgroup>
-    <colgroup class="eg-grid-col-data">
-      <col *ngFor="let col of context.columnSet.displayColumns()" 
-        class="eg-grid-col {{context.setClassNames(row, col)}}"
-        [ngClass]="{'eg-grid-col-sorted': context.isColumnSorting(col, 'ASC') || context.isColumnSorting(col, 'DESC')}">
-    </colgroup>
-    
-    <thead class="eg-grid-header" #egGridStickyHeader [context]="context" [ngClass]="{'eg-grid-sticky-header' : context.stickyGridHeader}" role="rowgroup">  </thead>
-    <tbody class="eg-grid-body" [context]="context" role="rowgroup"></tbody>
-</table>
+    <!-- tabindex so the grid can capture keyboard events -->
+    <table #egGrid role="grid" tabindex="0" (keydown)="onGridKeyDown($event)"
+      class="eg-grid table grid-key-{{persistKey ? persistKey.replaceAll('.', '_') : 'none'}}"
+      [ngClass]="{'eg-grid-cell-truncate': context.truncateCells,
+                  'eg-grid-empty': !dataSource.requestingData && !dataSource.retrievalError,
+                  'eg-grid-error': !dataSource.requestingData && dataSource.retrievalError}">
+        <caption id="eg-grid-caption">
+        <ng-container *ngIf="dataSource.data.length === 0">
+          <ng-container *ngIf="dataSource.requestingData">
+            <span>
+              <eg-progress-inline></eg-progress-inline>
+            </span>
+          </ng-container>
+          <ng-container *ngIf="!dataSource.requestingData">
+            <span i18n *ngIf="dataSource.retrievalError">
+              Error Retrieving Results
+            </span>
+            <span i18n *ngIf="!dataSource.retrievalError">
+              Nothing to Display
+            </span>
+          </ng-container>
+        </ng-container>
+        </caption>
+
+        <colgroup class="eg-grid-col-utilities">
+          <col *ngIf="!context.disableSelect" class="eg-grid-col eg-grid-checkbox-col">
+          <col class="eg-grid-col eg-grid-number-col">
+          <col *ngIf="context.rowFlairIsEnabled" class="eg-grid-col eg-grid-flair-col">
+        </colgroup>
+        <colgroup class="eg-grid-col-data">
+          <col *ngFor="let col of context.columnSet.displayColumns()" 
+            class="eg-grid-col {{context.setClassNames(row, col)}}"
+            [ngClass]="{'eg-grid-col-sorted': context.isColumnSorting(col, 'ASC') || context.isColumnSorting(col, 'DESC')}">
+        </colgroup>
+        
+        <thead class="eg-grid-header" #egGridStickyHeader [context]="context" [ngClass]="{'eg-grid-sticky-header' : context.stickyGridHeader}" role="rowgroup">  </thead>
+        <tbody class="eg-grid-body" [context]="context" role="rowgroup"></tbody>
+    </table>
+  </div>
+</div>
 
 </div>

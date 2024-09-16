@@ -1,7 +1,7 @@
 /**
  * Collection of grid related classses and interfaces.
  */
-import {TemplateRef, EventEmitter, AfterViewInit, QueryList} from '@angular/core';
+import {TemplateRef, EventEmitter, ChangeDetectorRef, AfterViewInit, QueryList} from '@angular/core';
 import {Observable, Subscription} from 'rxjs';
 import {IdlService, IdlObject} from '@eg/core/idl.service';
 import {OrgService} from '@eg/core/org.service';
@@ -405,7 +405,9 @@ export class GridColumnSet {
     }
 
     displayColumns(): GridColumn[] {
-        return this.columns.filter(c => c.visible);
+        let visible = this.columns.filter(c => (c.visible && !(c.name === 'row-actions')));
+        let actions = this.columns.filter(c => c.name === 'row-actions');
+        return visible.concat(actions);
     }
 
     // Sorted visible columns followed by sorted non-visible columns.
@@ -730,17 +732,20 @@ export class GridContext {
     org: OrgService;
     store: ServerStoreService;
     format: FormatService;
+    cdr: ChangeDetectorRef;
 
     constructor(
         idl: IdlService,
         org: OrgService,
         store: ServerStoreService,
-        format: FormatService) {
+        format: FormatService,
+        cdr: ChangeDetectorRef) {
 
         this.idl = idl;
         this.org = org;
         this.store = store;
         this.format = format;
+        this.cdr = cdr;
         this.pager = new Pager();
         this.rowSelector = new GridRowSelector();
         this.toolbarButtons = [];
@@ -825,6 +830,7 @@ export class GridContext {
             this.pager.reset();
             this.dataSource.reset();
             this.dataSource.requestPage(this.pager);
+            this.cdr.detectChanges();
         });
     }
 
@@ -832,6 +838,7 @@ export class GridContext {
         setTimeout(() => {
             this.dataSource.reset();
             this.dataSource.requestPage(this.pager);
+            this.cdr.detectChanges();
         });
     }
 
@@ -1591,6 +1598,8 @@ export class GridToolbarButton {
     label: string;
     adjacentPreceedingLabel: string;
     adjacentSubsequentLabel: string;
+    adjacentPreceedingTemplateRef: TemplateRef<any>;
+    adjacentSubsequentTemplateRef: TemplateRef<any>;
     onClick: EventEmitter<any []>;
     action: () => any; // DEPRECATED
     disabled: boolean;

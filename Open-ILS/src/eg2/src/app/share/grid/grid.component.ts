@@ -1,5 +1,6 @@
 import {Component, Input, Output, OnInit, AfterViewInit, EventEmitter,
-    OnDestroy, ViewChild, ViewEncapsulation} from '@angular/core';
+    OnDestroy, ChangeDetectorRef, ViewChild, ViewEncapsulation,
+    TemplateRef} from '@angular/core';
 import {IdlService} from '@eg/core/idl.service';
 import {OrgService} from '@eg/core/org.service';
 import {ServerStoreService} from '@eg/core/server-store.service';
@@ -161,10 +162,11 @@ export class GridComponent implements OnInit, AfterViewInit, OnDestroy {
         private idl: IdlService,
         private org: OrgService,
         private store: ServerStoreService,
-        private format: FormatService
+        private format: FormatService,
+        private cdr: ChangeDetectorRef
     ) {
         this.context =
-            new GridContext(this.idl, this.org, this.store, this.format);
+            new GridContext(this.idl, this.org, this.store, this.format, this.cdr);
         this.onRowActivate = new EventEmitter<any>();
         this.onRowClick = new EventEmitter<any>();
         this.rowSelectionChange = new EventEmitter<string[]>();
