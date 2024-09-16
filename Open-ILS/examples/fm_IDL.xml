@@ -5703,27 +5703,70 @@ SELECT  usr,
 	</class>
 	<class id="cbreb" controller="open-ils.cstore open-ils.pcrud" oils_obj:fieldmapper="container::biblio_record_entry_bucket" oils_persist:tablename="container.biblio_record_entry_bucket" reporter:label="Bibliographic Record Entry Bucket">
 		<fields oils_persist:primary="id" oils_persist:sequence="container.biblio_record_entry_bucket_id_seq">
-			<field name="items" oils_persist:virtual="true" reporter:datatype="link"/>
-			<field name="btype" reporter:datatype="text"/>
-			<field name="id" reporter:datatype="id" reporter:selector="id"/>
-			<field name="name" reporter:datatype="text" oils_obj:required="true"/>
-			<field name="description" reporter:datatype="text"/>
-			<field name="owner" reporter:datatype="link" oils_obj:required="true"/>
-			<field name="pub" reporter:datatype="bool"/>
-			<field name="create_time" reporter:datatype="timestamp"/>
-			<field name="owning_lib" reporter:datatype="org_unit"/>
+			<field reporter:label="Contents" name="items" oils_persist:virtual="true" reporter:datatype="link" config_field="true"/>
+			<field reporter:label="Bucket Type" name="btype" reporter:datatype="text"/>
+			<field reporter:label="Bucket ID" name="id" reporter:datatype="id" reporter:selector="id"/>
+			<field reporter:label="Name" name="name" reporter:datatype="text" oils_obj:required="true"/>
+			<field reporter:label="Description" name="description" reporter:datatype="text"/>
+			<field reporter:label="Owning User" name="owner" reporter:datatype="link" oils_obj:required="true"/>
+			<field reporter:label="Public?" name="pub" reporter:datatype="bool" oils_obj:required="true"/>
+			<field reporter:label="Created On" name="create_time" reporter:datatype="timestamp"/>
+			<field reporter:label="Owning Library" name="owning_lib" reporter:datatype="org_unit"/>
+			<field name="share_maps" reporter:datatype="link" oils_persist:virtual="true"/>
 		</fields>
 		<links>
 			<link field="owning_lib" reltype="has_a" key="id" map="" class="aou"/>
 			<link field="owner" reltype="has_a" key="id" map="" class="au"/>
 			<link field="items" reltype="has_many" key="bucket" map="" class="cbrebi"/>
+			<link field="share_maps" reltype="has_many" key="bucket" map="" class="cbrebs"/>
 		</links>
 		<permacrud xmlns="http://open-ils.org/spec/opensrf/IDL/permacrud/v1">
 			<actions>
 				<create permission="CREATE_BIB_BUCKET ADMIN_BIB_BUCKET" context_field="owning_lib" owning_user="owner"/>
-				<retrieve permission="CREATE_BIB_BUCKET ADMIN_BIB_BUCKET" context_field="owning_lib" owning_user="owner"/>
-				<update permission="CREATE_BIB_BUCKET ADMIN_BIB_BUCKET" context_field="owning_lib" owning_user="owner"/>
+				<retrieve permission="CREATE_BIB_BUCKET ADMIN_BIB_BUCKET VIEW_CONTAINER" context_field="owning_lib" owning_user="owner" permit_field="pub" permit_field_value="t">
+					<context link="share_maps" field="share_org"/>
+				</retrieve>
+				<update permission="CREATE_BIB_BUCKET ADMIN_BIB_BUCKET UPDATE_CONTAINER" context_field="owning_lib" owning_user="owner">
+					<context link="share_maps" field="share_org"/>
+				</update>
 				<delete permission="CREATE_BIB_BUCKET ADMIN_BIB_BUCKET" context_field="owning_lib" owning_user="owner"/>
+			</actions>
+		</permacrud>
+	</class>
+	<class id="cbrebs" controller="open-ils.cstore" oils_obj:fieldmapper="container::biblio_record_entry_bucket_shares" oils_persist:tablename="container.biblio_record_entry_bucket_shares" reporter:label="Bibliographic Record Entry Bucket Share Mapping">
+		<fields oils_persist:primary="id" oils_persist:sequence="container.biblio_record_entry_bucket_shares_id_seq">
+			<field name="id" reporter:datatype="id"/>
+			<field name="bucket" reporter:datatype="link" oils_obj:required="true"/>
+			<field name="share_org" reporter:datatype="link" oils_obj:required="true"/>
+		</fields>
+		<links>
+			<link field="bucket" reltype="has_a" key="id" map="" class="cbreb"/>
+			<link field="share_org" reltype="has_a" key="id" map="" class="aou"/>
+		</links>
+	</class>
+	<class id="cbrebuf" controller="open-ils.cstore open-ils.pcrud" oils_obj:fieldmapper="container::biblio_record_entry_bucket_usr_flags" oils_persist:tablename="container.biblio_record_entry_bucket_usr_flags" reporter:label="Bibliographic Record Entry Bucket User Flag Mapping">
+		<fields oils_persist:primary="id" oils_persist:sequence="container.biblio_record_entry_bucket_usr_flags_id_seq">
+			<field name="id" reporter:datatype="id"/>
+			<field name="bucket" reporter:datatype="link" oils_obj:required="true"/>
+			<field name="usr" reporter:datatype="link" oils_obj:required="true"/>
+            <field name="flag" reporter:datatype="text" oils_obj:required="true"/>
+		</fields>
+		<links>
+			<link field="bucket" reltype="has_a" key="id" map="" class="cbreb"/>
+			<link field="usr" reltype="has_a" key="id" map="" class="au"/>
+		</links>
+		<permacrud xmlns="http://open-ils.org/spec/opensrf/IDL/permacrud/v1">
+			<actions>
+				<create permission="STAFF_LOGIN" global_required="true" owning_user="usr" />
+				<retrieve permission="STAFF_LOGIN" owning_user="usr">
+					<context link="bucket" field="owning_lib"/>
+                </retrieve>
+				<update permission="STAFF_LOGIN" owning_user="usr">
+					<context link="bucket" field="owning_lib"/>
+				</update>
+				<delete permission="STAFF_LOGIN" owning_user="usr">
+					<context link="bucket" field="owning_lib"/>
+				</delete>
 			</actions>
 		</permacrud>
 	</class>
@@ -8921,12 +8964,12 @@ SELECT  usr,
 	</class>
 	<class id="cbrebi" controller="open-ils.cstore open-ils.pcrud" oils_obj:fieldmapper="container::biblio_record_entry_bucket_item" oils_persist:tablename="container.biblio_record_entry_bucket_item" reporter:label="Biblio Record Entry Bucket Item">
 		<fields oils_persist:primary="id" oils_persist:sequence="container.biblio_record_entry_bucket_item_id_seq">
-			<field name="bucket" reporter:datatype="link" oils_obj:required="true"/>
-			<field name="id" reporter:datatype="id"/>
-			<field name="target_biblio_record_entry" reporter:datatype="link" oils_obj:required="true"/>
-			<field name="create_time" reporter:datatype="timestamp"/>
-			<field name="pos" reporter:datatype="int"/>
-			<field name="notes" oils_persist:virtual="true" reporter:datatype="link"/>
+			<field reporter:label="Bucket ID" name="bucket" reporter:datatype="link" oils_obj:required="true"/>
+			<field reporter:label="Bucket Entry ID" name="id" reporter:datatype="id"/>
+			<field reporter:label="Bibliographic Record ID" name="target_biblio_record_entry" reporter:datatype="link" oils_obj:required="true"/>
+			<field reporter:label="Created On" name="create_time" reporter:datatype="timestamp"/>
+			<field reporter:label="Relative Position" name="pos" reporter:datatype="int"/>
+			<field reporter:label="Notes" name="notes" oils_persist:virtual="true" reporter:datatype="link"/>
 		</fields>
 		<links>
 			<link field="target_biblio_record_entry" reltype="has_a" key="id" map="" class="bre"/>
@@ -8935,9 +8978,7 @@ SELECT  usr,
 		</links>
 		<permacrud xmlns="http://open-ils.org/spec/opensrf/IDL/permacrud/v1">
 			<actions>
-				<retrieve permission="ADMIN_COPY_BUCKET">
-					<context link="bucket" field="owning_lib"/>
-				</retrieve>
+				<retrieve permission="STAFF_LOGIN" global_required="true"/>
 			</actions>
 		</permacrud>
 	</class>
@@ -11203,6 +11244,8 @@ SELECT  usr,
 			<field reporter:label="Pie Chart" name="chart_pie" reporter:datatype="bool"/>
 			<field reporter:label="Bar Chart" name="chart_bar" reporter:datatype="bool"/>
 			<field reporter:label="Line Chart" name="chart_line" reporter:datatype="bool"/>
+			<field reporter:label="New Record Bucket" name="new_record_bucket" reporter:datatype="bool"/>
+			<field reporter:label="Existing Record Bucket" name="existing_record_bucket" reporter:datatype="bool"/>
 		</fields>
 		<links>
 			<link field="runner" reltype="has_a" key="id" map="" class="au"/>
