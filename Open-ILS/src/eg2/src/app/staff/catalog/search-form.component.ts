@@ -291,7 +291,7 @@ export class SearchFormComponent implements OnInit, AfterViewInit {
     }
 
     orgName(orgId: number): string {
-        return this.org.get(orgId).shortname();
+        return this.org.get(orgId)?.shortname();
     }
 
     addSearchRow(index: number): void {

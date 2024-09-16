@@ -1,41 +1,136 @@
-<div *ngIf="searchContext.result.facetData">
-  <h2 class="visually-hidden" i18n>Facets</h2>
-  <div *ngFor="let facetConf of facetConfig.display">
-    <div *ngIf="searchContext.result.facetData[facetConf.facetClass]">
-      <div *ngFor="let name of facetConf.facetOrder">
-        <div class="row"
-          *ngIf="searchContext.result.facetData[facetConf.facetClass][name]">
-          <div class="card mb-2 p-0" [ngClass]="{'list-truncate': this.displayFullFacets.indexOf(facetConf.facetClass+'-'+name) < 0}">
-            <div class="card-header d-flex align-items-start justify-content-between">
-              <h3>{{searchContext.result.facetData[facetConf.facetClass][name].cmfLabel}}</h3>
-              <button type="button" *ngIf="searchContext.result.facetData[facetConf.facetClass][name].valueList.length > 5"
-                (click)="facetToggle(name, facetConf.facetClass)" i18n-title
-                title="Show {{displayFullFacets.indexOf(facetConf.facetClass+'-'+name) < 0 ? searchContext.result.facetData[facetConf.facetClass][name].valueList.length : 5}}"
-                class="btn btn-link p-0" i18n>
-                {{displayFullFacets.indexOf(facetConf.facetClass+'-'+name) < 0 ? 'More' : 'Less'}}
-              </button>
-            </div>
-            <ul class="list-group list-group-flush">
-              <li class="list-group-item" 
-                [ngClass]="{'facet-selected' :
-                  facetIsApplied(facetConf.facetClass, name, value.value)}"
-                *ngFor="
-                  let value of searchContext.result.facetData[facetConf.facetClass][name].valueList">
-                <div class="row">
-                  <div class="col-lg-9">
-                    <a class="card-link"
-                      routerLink="/staff/catalog/search"
-                      [queryParams]="getFacetUrlParams(facetConf.facetClass, name, value.value)">
-                      {{value.value}}
-                    </a>
-                  </div>
-                  <div class="col-lg-3 text-end">{{value.count}}</div>
+<div class="row g-0">
+<ul ngbNav #catalogSidebarTabs="ngbNav" [activeId]="activeTab" (navChange)="onNavChange($event)" [keyboard]="true" class="nav-tabs">
+  <li [ngbNavItem]="'facets'" [disabled]="!searchContext.result.facetData">
+    <button type="button" ngbNavLink i18n="Staff catalog search results sidebar tabs">Facets</button>
+    <ng-template ngbNavContent>
+      <h2 class="visually-hidden" i18n="Staff catalog search results sidebar tabs">Facets</h2>
+      <ng-container *ngFor="let facetConf of facetConfig.display">
+        <ng-container *ngIf="searchContext.result.facetData && searchContext.result.facetData[facetConf.facetClass]">
+          <ng-container *ngFor="let name of facetConf.facetOrder">
+            <div class="row g-0"
+              *ngIf="searchContext.result.facetData[facetConf.facetClass][name]">
+              <div class="card mb-2 p-0" [ngClass]="{'list-truncate': this.displayFullFacets.indexOf(facetConf.facetClass+'-'+name) < 0}">
+                <div class="card-header d-flex align-items-start justify-content-between">
+                  <h3 class="m-0">{{searchContext.result.facetData[facetConf.facetClass][name].cmfLabel}}</h3>
+                  <button type="button" *ngIf="searchContext.result.facetData[facetConf.facetClass][name]?.valueList?.length > 5"
+                    (click)="facetToggle(name, facetConf.facetClass)" i18n-title
+                    title="Show {{displayFullFacets.indexOf(facetConf.facetClass+'-'+name) < 0 ? searchContext.result.facetData[facetConf.facetClass][name]?.valueList?.length : 5}}"
+                    class="btn btn-link p-0" i18n>
+                    {{displayFullFacets.indexOf(facetConf.facetClass+'-'+name) < 0 ? 'More' : 'Less'}}
+                  </button>
                 </div>
-              </li>
-            </ul>
-          </div>
-        </div>
-      </div>
+                <div class="card-body py-1">
+                  <ul class="list-group list-group-flush">
+                    <li class="list-group-item" 
+                      [ngClass]="{'facet-selected' :
+                        facetIsApplied(facetConf.facetClass, name, value.value)}"
+                      *ngFor="
+                        let value of searchContext.result.facetData[facetConf.facetClass][name]?.valueList">
+                      <div class="bucket-metadata">
+                        <div class="facet-name flex-grow-1">
+                          <a class="card-link"
+                            routerLink="/staff/catalog/search"
+                            [queryParams]="getFacetUrlParams(facetConf.facetClass, name, value.value)">
+                            {{value.value}}
+                          </a>
+                        </div>
+                        <div class="facet-count numeric">{{value.count}}</div>
+                      </div>
+                    </li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+          </ng-container>
+        </ng-container>
+      </ng-container>
+    </ng-template> <!-- Facets tab panel -->
+    
+  </li>
+  <li [ngbNavItem]="'buckets'" [disabled]="">
+    <button type="button" ngbNavLink i18n="Staff catalog search results sidebar tabs">Buckets</button>
+    <ng-template ngbNavContent>
+      <h2 class="visually-hidden" i18n="Staff catalog search results sidebar tabs">Buckets</h2>
+      <div class="row g-0">
+        <ngb-accordion #sidebarBuckets="ngbAccordion" [closeOthers]="false" class="p-0" [activeIds]="['favorite_buckets_sidebar', 'recent_buckets_sidebar']">
+
+          <ngb-panel id="favorite_buckets_sidebar">
+            <ng-template ngbPanelHeader let-opened="true">
+              
+                <button ngbPanelToggle class="accordion-button bg-gray text-dark">
+                  <h3 class="m-0" i18n>Favorite</h3>
+                  <span class="material-icons user-favorite ms-1" aria-hidden="true">star</span>
+                </button>
+            </ng-template>
+            <ng-template ngbPanelContent>
+              <ul class="list-group list-group-flush">
+                <li class="list-group-item bucket-favorite m-0 px-0 py-2" *ngFor="let bundle of (favoriteBuckets$ | async)">
+                  <div class="bucket-metadata">
+                    <div class="flex-grow-1">
+                      <h4 class="d-inline fs-6 m-0">
+                        <a routerLink="/staff/cat/bucket/record/content/{{bundle.bucket.id}}" class="card-link semibold me-2">{{bundle.bucket.name}}</a>
+                      </h4>
+                      <span *ngIf="bundle.bucket.pub == 't'" class="badge badge-success" i18n="Bucket public status">Public</span>
+                      <p class="m-0" *ngIf="bundle.bucket.owning_lib">
+                        <span>{{orgName(bundle.bucket.owning_lib)}}</span>
+                      </p>
+                      <p class="m-0 text-secondary">
+                        <i i18n="Bucket owner @ home library">{{bundle.bucket.owner.usrname}} &#64; {{orgName(bundle.bucket.owner.home_ou)}}</i>
+                      </p>
+                    </div>
+                    <div class="bucket-count numeric">
+                      <div title="{{bundle.item_count}} records" i18n-title="Bucket count">{{bundle.item_count}}</div>
+                      <button type="button" class="btn btn-link btn-sm small-text-1 basket-add" 
+                        (click)="addBasketToBucket(bundle.bucket.id)" attr.aria-describedby="bucket-name-{{bundle.bucket.id}}" i18n>
+                        Add {{getBasketCount()}}
+                      </button>
+                    </div>
+                  </div>
+                </li>
+              </ul>
+            </ng-template>
+          </ngb-panel>
+        
+          <ngb-panel id="recent_buckets_sidebar">
+            <ng-template ngbPanelHeader let-opened="true">
+              <button ngbPanelToggle class="accordion-button bg-gray text-dark">
+                <h3 class="m-0" i18n>Recent</h3>
+              </button>
+            </ng-template>
+            <ng-template ngbPanelContent>
+              <ul class="list-group list-group-flush">
+                <li class="list-group-item bucket-recent m-0 px-0 py-2" *ngFor="let bundle of (recentBuckets$ | async)">
+                  <div class="bucket-metadata">
+                    <div class="flex-grow-1">
+                      <h4 class="d-inline fs-6 m-0">
+                        <a routerLink="/staff/cat/bucket/record/content/{{bundle.bucket.id}}" class="card-link semibold me-2" id="bucket-name-{{bundle.bucket.id}}">{{bundle.bucket.name}}</a>
+                      </h4>
+                      <span *ngIf="bundle.bucket.pub == 't'" class="badge badge-success" i18n="Bucket public status">Public</span>
+                      <p class="m-0" *ngIf="bundle.bucket.owning_lib">
+                        <span>{{orgName(bundle.bucket.owning_lib)}}</span>
+                      </p>
+                      <p class="m-0 text-secondary">
+                        <i i18n="Bucket owner @ home library">{{bundle.bucket.owner.usrname}} &#64; {{orgName(bundle.bucket.owner.home_ou)}}</i>
+                      </p>
+                    </div>
+                    <div class="bucket-count numeric">
+                      <div title="{{bundle.item_count}} records" i18n-title="Bucket count">{{bundle.item_count}}</div>
+                      <button type="button" class="btn btn-link btn-sm small-text-1 basket-add" 
+                        (click)="addBasketToBucket(bundle.bucket.id)" attr.aria-describedby="bucket-name-{{bundle.bucket.id}}" i18n>
+                        Add {{getBasketCount()}}
+                      </button>
+                    </div>
+                  </div>
+                </li>
+              </ul>
+            </ng-template>
+          </ngb-panel>
+        
+        </ngb-accordion>
     </div>
-  </div>
+    </ng-template> <!-- Buckets tab panel -->
+  </li>
+</ul>
 </div>
+
+<div [ngbNavOutlet]="catalogSidebarTabs" class="row mt-2 sidebar"></div>

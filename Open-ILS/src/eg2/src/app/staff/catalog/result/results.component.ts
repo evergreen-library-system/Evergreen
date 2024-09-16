@@ -1,4 +1,4 @@
-import {Component, OnInit, OnDestroy, Input} from '@angular/core';
+import {Component, OnInit, OnDestroy, ViewChild, Input} from '@angular/core';
 import {Observable, Subscription} from 'rxjs';
 import {tap, map, switchMap, distinctUntilChanged} from 'rxjs/operators';
 import {Router, ActivatedRoute, ParamMap} from '@angular/router';

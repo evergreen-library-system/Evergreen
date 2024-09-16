@@ -1,8 +1,16 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, OnInit, NgModule, ViewChild} from '@angular/core';
+import {BehaviorSubject, Subscription} from 'rxjs';
 import {CatalogService} from '@eg/share/catalog/catalog.service';
 import {CatalogUrlService} from '@eg/share/catalog/catalog-url.service';
 import {CatalogSearchContext, FacetFilter} from '@eg/share/catalog/search-context';
 import {StaffCatalogService} from '../catalog.service';
+import {BucketService} from '@eg/staff/share/buckets/bucket.service';
+import {AuthService} from '@eg/core/auth.service';
+import {OrgService} from '@eg/core/org.service';
+import {ToastService} from '@eg/share/toast/toast.service';
+import {BasketService} from '@eg/share/catalog/basket.service';
+import {EventService} from '@eg/core/event.service';
+import {NgbAccordion, NgbNav, NgbNavChangeEvent, NgbCollapse} from '@ng-bootstrap/ng-bootstrap';
 
 export const FACET_CONFIG = {
     display: [
@@ -21,20 +29,84 @@ export const FACET_CONFIG = {
 })
 export class ResultFacetsComponent implements OnInit {
 
+    favoriteBuckets$ = new BehaviorSubject<any[]>([]);
+    recentBuckets$ = new BehaviorSubject<any[]>([]);
+
     searchContext: CatalogSearchContext;
     facetConfig: any;
     displayFullFacets: string[] = [];
+    activeTab: string = 'facets';
+    favoriteBucketIds: number[] = [];
+    recentBucketIds: number[] = [];
+    
+    public isCollapsed = false;
+
+    @ViewChild('sidebarBuckets', { static: false }) sidebarBuckets: NgbAccordion;
 
     constructor(
+        private evt: EventService,
         private cat: CatalogService,
         private catUrl: CatalogUrlService,
-        private staffCat: StaffCatalogService
+        private staffCat: StaffCatalogService,
+        private bucketService: BucketService,
+        private auth: AuthService,
+        private org: OrgService,
+        private toast: ToastService,
+        private basket: BasketService,
     ) {
         this.facetConfig = FACET_CONFIG;
     }
 
     ngOnInit() {
+        console.debug('ResultFacetsComponent, this', this);
         this.searchContext = this.staffCat.searchContext;
+        this.bucketService.bibBucketsRefreshRequested$.subscribe(() => {
+            console.debug('refresh request sub triggered');
+            this.loadBuckets();
+        });
+    }
+
+    async onNavChange(event: NgbNavChangeEvent) {
+        this.activeTab = event.nextId;
+        if (this.activeTab == 'buckets') {
+            await this.loadBuckets();
+        }
+    }
+
+    async loadBuckets() {
+        await this.bucketService.loadFavoriteRecordBucketFlags(this.auth.user().id());
+        this.favoriteBucketIds = this.bucketService.getFavoriteRecordBucketIds();
+        this.recentBucketIds = this.bucketService.recentRecordBucketIds();
+        const favoriteBuckets = await this.bucketService.retrieveRecordBuckets(this.favoriteBucketIds);
+        this.favoriteBuckets$.next(favoriteBuckets);
+        const recentBuckets = await this.bucketService.retrieveRecordBuckets(this.recentBucketIds);
+        this.recentBuckets$.next(recentBuckets);
+        await this.basket.getRecordIds(); // prime the service if nobody else has
+    }
+
+    addBasketToBucket(bucketId: number, clearBasket?: boolean) {
+        this.basket.getRecordIds().then( basket_records => {
+            this.bucketService.addBibsToRecordBucket(bucketId, basket_records)
+            .then(resp => {
+                const evt = this.evt.parse(resp);
+                if (evt) {
+                    console.error('addBasketToBucket failed:',evt);
+                    this.toast.warning($localize`Could not add basket items to bucket :: {{evt.textcode}}`);
+                } else {
+                    this.toast.success($localize`Basket items added to bucket`);
+                    if (clearBasket) this.basket.removeAllRecordIds();
+                    return this.loadBuckets();
+                }
+            });
+        });
+    }
+
+    getBasketCount() {
+        return this.basket.recordCount();
+    }
+
+    orgName(orgId: number): string {
+        return this.org.get(orgId)?.shortname();
     }
 
     facetIsApplied(cls: string, name: string, value: string): boolean {
@@ -52,8 +124,7 @@ export class ResultFacetsComponent implements OnInit {
     // More than one facet may be expanded
     facetToggle(name: string, fClass: string) {
         const index = this.displayFullFacets.indexOf(fClass+'-'+name);
-        // eslint-disable-next-line eqeqeq
-        if ( index == -1 ) {  // not found
+        if ( index === -1 ) {  // not found
             this.displayFullFacets.push(fClass+'-'+name);
         } else { // delete it
             this.displayFullFacets.splice(index, 1);

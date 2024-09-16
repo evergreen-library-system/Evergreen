@@ -1,3 +1,5 @@
+<eg-bucket-dialog #addRecordToBucketDialog bucketClass="biblio" [itemIds]="recordIds">
+</eg-bucket-dialog>
 
 <div class="col-lg-12 card tight-card mb-2 p-2 bg-light">
   <div class="card-body">
@@ -209,17 +211,38 @@
         <div class="row pt-2">
           <div class="col-lg-12">
             <div class="float-end">
-              <ng-container *ngIf="summary.record.deleted() === 't'">
-                <span class="text-danger" i18n>(Deleted)</span>
-              </ng-container>
-              <span>
+              <div class="text-end my-1" *ngIf="summary.record.deleted() === 't'">
+                <span class="badge badge-danger border-1" i18n>(Deleted)</span>
+              </div>
+              <div class="vstack">
                 <button type="button" (click)="placeHold()" [disabled]="!summary.isHoldable"
                   [ngClass]="summary.isHoldable ? 'btn-success' : 'btn-secondary'"
                   class="btn btn-sm label-with-material-icon small-text-1">
                   <span class="material-icons" aria-hidden="true">check</span>
                   <span i18n>Place Hold</span>
                 </button>
-              </span>
+
+                <div class="btn-group my-1" ngbDropdown>
+                  <button type="button" class="btn btn-normal text-start small-text-1"
+                    (click)="chooseBucket(summary.id)" i18n>Add to Bucket</button>
+                  <button type="button" class="btn btn-normal dropdown-toggle-split" ngbDropdownToggle>
+                    <span class="visually-hidden" i18n="Catalog search result 'Add to Bucket' dropdown toggle">Toggle Bucket List</span>
+                  </button>
+                  <div ngbDropdownMenu>
+                    <h4 i18n="Add to Bucket dropdown subheading">Favorites</h4>
+                    <button *ngFor="let bundle of (favoriteBuckets$ | async)" ngbDropdownItem
+                      type="button" (click)="addRecordToBucket(summary.id, bundle.bucket.id)">
+                      {{bundle.bucket.name}}
+                    </button>
+                    <hr class="dropdown-divider">
+                    <h4 i18n="Add to Bucket dropdown subheading">Recent</h4>
+                    <button *ngFor="let bundle of (recentBuckets$ | async)" ngbDropdownItem
+                      type="button" (click)="addRecordToBucket(summary.id, bundle.bucket.id)">
+                      {{bundle.bucket.name}}
+                    </button>
+                  </div>
+                </div>
+              </div>
             </div>
           </div>
         </div>

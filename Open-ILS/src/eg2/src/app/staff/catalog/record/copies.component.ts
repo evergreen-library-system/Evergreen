@@ -99,7 +99,7 @@ export class CopiesComponent implements OnInit {
     }
 
     orgName(orgId: number): string {
-        return this.org.get(orgId).shortname();
+        return this.org.get(orgId)?.shortname();
     }
 
     fetchCopies(pager: Pager): Observable<any> {

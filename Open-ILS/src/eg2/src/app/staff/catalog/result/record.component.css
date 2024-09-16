@@ -167,3 +167,8 @@ table td {
     background-color: rgba(var(--bs-info-rgb), .2);
     color: var(--bs-dark);
 }
+
+.dropdown-menu h4 {
+    font-weight: 600;
+    padding: 0 0.5rem;
+}

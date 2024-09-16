@@ -200,7 +200,7 @@ export class CnBrowseResultsComponent implements OnInit, OnDestroy {
     }
 
     orgName(orgId: number): string {
-        return this.org.get(orgId).shortname();
+        return this.org.get(orgId)?.shortname();
     }
 
     getAuthorSearchParams(summary: BibRecordSummary): any {
