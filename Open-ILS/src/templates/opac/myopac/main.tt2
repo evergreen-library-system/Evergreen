@@ -47,6 +47,7 @@
                     <th nowrap="nowrap" style="white-space:nowrap;">
                         <input id="pay_fines_box1" checked="checked"
                             type="checkbox" onclick="select_all_checkboxes('xact', this.checked)"
+                            onchange=canSubmitPayment(event)
                             title="[% l('Click to (un)select all charges') %]" />
                     </th>
                     [% END %]
@@ -73,7 +74,7 @@
                 <tr id='myopac_circ_trans_row'>
                     [% IF myopac_cc_allowed %]
                     <td>
-                        <input type="checkbox" checked="checked" 
+                        <input type="checkbox" checked="checked" onchange=canSubmitPayment(event)
                             title="[% l('Pay this fine') %]" name="xact"
                             value="[% f.xact.id %]" />
                     </td>
@@ -159,6 +160,7 @@
                     <th  nowrap="nowrap" style="white-space:nowrap;">
                         <input id="pay_fines_box2" checked="checked"
                             type="checkbox" onclick="select_all_checkboxes('xact_misc', this.checked)"
+                            onchange=canSubmitPayment(event)
                             title="[% l('Click to (un)select all fines') %]" />
                     </th>
                     [% END %]
@@ -177,7 +179,7 @@
                    [% IF myopac_cc_allowed %]
                     <td >
                         <input type="checkbox" title='[% l("Pay this fine") %]'
-                            name="xact_misc" value="[% f.xact.id %]"
+                            name="xact_misc" value="[% f.xact.id %]" onchange=canSubmitPayment(event)
                             checked="checked" />
                     </td>
                     [% END %]

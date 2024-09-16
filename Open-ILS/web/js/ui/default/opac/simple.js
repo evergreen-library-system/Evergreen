@@ -362,3 +362,21 @@ function displayAlert(elementID) {
     // fade out after 8 seconds
     setTimeout(() => {document.getElementById(elementID).classList.add('d-none')}, 8000);
 }
+
+function canSubmitPayment(evt){
+   // check that charges are selected in opac for payment
+   // enable the submit payment button if they are
+    var form = document.getElementById('selected_fines');
+    var submit = form.querySelector('input[type="submit"]');
+    if (!form || !submit) return;
+    var els = form.elements;
+    for (i = 0; i < els.length; i++){
+        var e = els[i];
+        if (e.type == "checkbox" && !e.hidden && e.checked){
+            submit.removeAttribute("disabled");
+            return;
+        }
+    }
+
+    submit.setAttribute("disabled","");
+}
