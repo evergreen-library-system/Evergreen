@@ -4,7 +4,12 @@
       <span *ngIf="!dialogTitle" i18n>Could Not Complete The Action</span>
       <span *ngIf="dialogTitle">{{dialogTitle}}</span>
     </h4>
-    <div class="alert alert-danger">{{dialogBody}}</div>
+    <ng-container *ngIf="!dialogBodyTemplate">
+      <div class="alert" [ngClass]="'alert-' + alertType">{{dialogBody}}</div>
+    </ng-container>
+    <ng-container *ngIf="dialogBodyTemplate">
+      <ng-container *ngTemplateOutlet="dialogBodyTemplate"></ng-container>
+    </ng-container>
     <ng-content><!-- Place for projected content; for example: <eg-alert-dialog><ul><li>render me too!</li></ul></eg-alert-dialog> --></ng-content>
   </div>
   <div class="modal-footer">

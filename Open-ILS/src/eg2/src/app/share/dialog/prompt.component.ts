@@ -15,6 +15,7 @@ export class PromptDialogComponent extends DialogComponent implements OnInit {
     @Input() inputDomId = 'eg-prompt-dialog-' + PromptDialogComponent.domId++;
 
     // What question are we asking?
+    @Input() public dialogTitle: string;
     @Input() public dialogBody: string;
     // Value to return to the caller
     @Input() public promptValue: string;
