@@ -86,25 +86,27 @@ sub handler {
     my $ses = OpenSRF::AppSession->create('open-ils.cstore');
 
     # still no records ...
-    my $container = $cgi->param('containerid');
-    if ($container) {
-        my $bucket = $ses->request( 'open-ils.cstore.direct.container.biblio_record_entry_bucket.retrieve', $container )->gather(1);
-        unless($bucket) {
-            $r->log->error("No such bucket $container"); 
-            $logger->error("No such bucket $container"); 
-            return Apache2::Const::NOT_FOUND;
-        }
-        if ($bucket->pub !~ /t|1/oi) {
-            my $authid = $cgi->cookie('ses') || $cgi->param('ses') || $cgi->cookie('eg.auth.token');
-            if ($authid =~ /^"(.+)"$/) {
-                $authid = $1;
+    my @containerids = $cgi->param('containerid');
+    if (@containerids) {
+        foreach my $container (@containerids) {
+            my $bucket = $ses->request( 'open-ils.cstore.direct.container.biblio_record_entry_bucket.retrieve', $container )->gather(1);
+            unless($bucket) {
+                $r->log->error("No such bucket $container"); 
+                $logger->error("No such bucket $container"); 
+                return Apache2::Const::NOT_FOUND;
             }
-            my $auth = verify_login($authid);
-            if (!$auth) {
-                return 403;
+            if ($bucket->pub !~ /t|1/oi) {
+                my $authid = $cgi->cookie('ses') || $cgi->param('ses') || $cgi->cookie('eg.auth.token');
+                if ($authid =~ /^"(.+)"$/) {
+                    $authid = $1;
+                }
+                my $auth = verify_login($authid);
+                if (!$auth) {
+                    return 403;
+                }
             }
         }
-        my $recs = $ses->request( 'open-ils.cstore.direct.container.biblio_record_entry_bucket_item.search.atomic', { bucket => $container } )->gather(1);
+        my $recs = $ses->request( 'open-ils.cstore.direct.container.biblio_record_entry_bucket_item.search.atomic', { bucket => \@containerids } )->gather(1);
         @records = map { ($_->target_biblio_record_entry) } @$recs;
     }
 

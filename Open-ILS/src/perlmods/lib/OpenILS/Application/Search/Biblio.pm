@@ -354,6 +354,47 @@ sub biblio_search_tcn {
     return { count => scalar(@$recs), ids => $recs };
 }
 
+__PACKAGE__->register_method(
+    method   => "biblio_search_tcn_batch",
+    api_name => "open-ils.search.biblio.tcn.batch",
+    argc     => 2,
+    signature => {
+        desc   => "Retrieve related record ID(s) given a list of TCNs",
+        params => [
+            { desc => 'Authentication token', type => 'string' },
+            { desc => 'Array of TCNs', type => 'array' },
+            { desc => 'Flag indicating to include deleted records', type => 'string' }
+        ],
+        return => {
+            desc => 'Results object like: { "successful": [ { "tcn": $tcn, "ids": [...] }, ... ], "failed": [ $tcn, ... ] }',
+            type => 'object'
+        }
+    }
+);
+
+sub biblio_search_tcn_batch {
+    my( $self, $client, $auth, $tcns, $include_deleted ) = @_;
+
+    my $e = new_editor(authtoken => $auth);
+    return $e->event unless $e->checkauth;
+
+    my $results = { successful => [], failed => [] };
+
+    foreach my $tcn (@$tcns) {
+        $tcn =~ s/^\s+|\s+$//og;
+        my $search = {tcn_value => $tcn};
+        $search->{deleted} = 'f' unless $include_deleted;
+        my $recs = $e->search_biblio_record_entry( $search, {idlist => 1} );
+
+        if (@$recs) {
+            push @{$results->{successful}}, { tcn => $tcn, ids => $recs };
+        } else {
+            push @{$results->{failed}}, $tcn;
+        }
+    }
+
+    return $results;
+}
 
 # --------------------------------------------------------------------------------
 

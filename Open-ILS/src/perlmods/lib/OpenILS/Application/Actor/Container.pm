@@ -3,7 +3,6 @@ use base 'OpenILS::Application';
 use strict; use warnings;
 use OpenILS::Application::AppUtils;
 use OpenILS::Perm;
-use Data::Dumper;
 use OpenSRF::EX qw(:try);
 use OpenILS::Utils::Fieldmapper;
 use OpenILS::Utils::CStoreEditor qw/:funcs/;
@@ -14,6 +13,7 @@ use OpenSRF::Utils::JSON;
 
 my $apputils = "OpenILS::Application::AppUtils";
 my $U = $apputils;
+my $conf;
 my $logger = "OpenSRF::Utils::Logger";
 
 sub initialize { return 1; }
@@ -26,6 +26,7 @@ my %itypes;
 my %htypes;
 my %qtypes;
 my %ttypes;
+my %jtypes;
 my %batch_perm;
 my %table;
 
@@ -58,6 +59,11 @@ $htypes{'biblio'} = "bre";
 $htypes{'callnumber'} = "acn";
 $htypes{'copy'} = "acp";
 $htypes{'user'} = "au";
+
+$jtypes{'biblio'} = "cbreb";
+#$jtypes{'callnumber'} = "ccnb";
+#$jtypes{'copy'} = "ccb";
+#$jtypes{'user'} = "cub";
 
 $table{'biblio'} = "biblio.record_entry";
 $table{'callnumber'} = "asset.call_number";
@@ -104,6 +110,283 @@ sub bucket_retrieve_all {
     }
 
     return \%buckets;
+}
+
+__PACKAGE__->register_method(
+    method  => "get_bucket_ids_shared_with_others",
+    api_name    => "open-ils.actor.container.retrieve_biblio_record_entry_buckets_shared_with_others",
+    signature => {
+        desc => q/
+            Returns a list of the user's record buckets that are shared with other orgs and users.
+        /,
+        params => [
+            {desc => 'Authentication token', type => 'string'},
+        ],
+        return => {
+            desc => 'An array of bucket IDs for record buckets that are shared with other orgs and users.'
+        }
+    }
+);
+__PACKAGE__->register_method(
+    method  => "get_bucket_ids_shared_with_others",
+    api_name    => "open-ils.actor.container.retrieve_biblio_record_entry_buckets_shared_with_others.count"
+);
+
+__PACKAGE__->register_method(
+    method  => "get_bucket_ids_shared_with_user",
+    api_name    => "open-ils.actor.container.retrieve_biblio_record_entry_buckets_shared_with_user",
+    signature => {
+        desc => q/
+            Returns a list of record buckets being shared with the requestor, either directly or indirectly.
+        /,
+        params => [
+            {desc => 'Authentication token', type => 'string'},
+        ],
+        return => {
+            desc => 'An array of bucket IDs for buckets being shared with requestor, either directly or indirectly.'
+        }
+    }
+);
+__PACKAGE__->register_method(
+    method  => "get_bucket_ids_shared_with_user",
+    api_name    => "open-ils.actor.container.retrieve_biblio_record_entry_buckets_shared_with_user.count"
+);
+
+sub get_bucket_ids_shared_with_others {
+    my ($self, $client, $authtoken) = @_;
+    my $e = new_editor(authtoken => $authtoken);
+    return $e->die_event unless $e->checkauth;
+
+    # No need for further perm checking, we're dealing with one's own bucket shares
+
+    my $bucket_retrieve_method;
+    my $bucket_org_share_retrieve_method;
+    my $bucket_user_share_retrieve_method;
+    my $object_class_for_user_object_perms;
+    if ($self->api_name =~ 'biblio_record_entry') {
+        $bucket_retrieve_method = 'search_container_biblio_record_entry_bucket';
+        $bucket_org_share_retrieve_method = 'search_container_biblio_record_entry_bucket_shares';
+        $bucket_user_share_retrieve_method = 'search_permission_usr_object_perm_map';
+        $object_class_for_user_object_perms = 'cbreb';
+    }
+
+    my $view_container_perm = $e->search_permission_perm_list({code => "VIEW_CONTAINER"})->[0]->id;
+
+    my $user_id = $e->requestor->id;
+
+    # First, get all buckets owned by the user
+    my $user_buckets = $e->$bucket_retrieve_method({owner => $user_id});
+
+    # Now, get all share mappings for these buckets
+    my $bucket_ids = [map { $_->id } @$user_buckets];
+    my $org_share_mappings = $e->$bucket_org_share_retrieve_method({bucket => $bucket_ids});
+    my $user_share_mappings = $e->$bucket_user_share_retrieve_method({
+        perm => $view_container_perm,
+        object_type => $object_class_for_user_object_perms,
+        object_id => $bucket_ids
+    });
+
+    #use Data::Dumper;
+    #$logger->warn('org_share_mappings, dumper: ' . Dumper($org_share_mappings) );
+    #$logger->warn('user_share_mappings, dumper: ' . Dumper($user_share_mappings) );
+
+    # Create a hash of bucket IDs that have shares
+    my %shared_bucket_ids = ();
+    if ($org_share_mappings && ref($org_share_mappings) eq 'ARRAY') {
+        foreach my $m (@$org_share_mappings) {
+            $shared_bucket_ids{ $m->bucket } = 1;
+        }
+    }
+    if ($user_share_mappings && ref($user_share_mappings) eq 'ARRAY') {
+        foreach my $m (@$user_share_mappings) {
+            $shared_bucket_ids{ $m->object_id } = 1;
+        }
+    }
+
+    # Filter the user's buckets to only those that are shared
+    my @shared_bucket_ids = keys %shared_bucket_ids;
+
+    my $results = [keys %shared_bucket_ids];
+    if ($self->api_name =~ 'count') {
+        return scalar(@$results);
+    } else { 
+        return $results;
+    }
+}
+
+sub get_bucket_ids_shared_with_user {
+    my ($self, $client, $authtoken) = @_;
+    my $e = new_editor(authtoken => $authtoken);
+    return $e->die_event unless $e->checkauth;
+
+    # We may want to make an optional argument for this
+    # but if we do, remember to change ->home_ou
+    # No need for perm checking unless we do that.
+    my $user_id = $e->requestor->id;
+
+    # Get user's working locations and home org.
+    # We don't usually merge home libs with working locations, so...
+    # TODO: sanity check this, re: staff versus patrons
+    my $work_ous = $U->get_user_work_ou_ids($e, $user_id);
+    my $home_ou = $e->requestor->home_ou;
+    my @user_ous = ($home_ou, @$work_ous);
+
+    # Merging all full paths, going with inheritance
+    my $all_ou_ids = [];
+    for my $ou_id (@user_ous) {
+        push @$all_ou_ids, @{$U->get_org_full_path($ou_id)};
+    }
+    # Remove duplicates
+    my %ou_ids_uniq = map { $_ => 1 } @$all_ou_ids;
+    $all_ou_ids = [keys %ou_ids_uniq];
+
+    my $json_query;
+    my $bucket_user_share_retrieve_method;
+    my $object_class_for_user_object_perms;
+    if ($self->api_name =~ 'biblio_record_entry') {
+        $json_query = {
+            select => { cbrebs => ['bucket'], cbreb => ['id'] },
+            from => { cbrebs => { cbreb => { type => 'inner' } } },
+            where => { '+cbrebs' => { share_org => $all_ou_ids },
+                '+cbreb' => { owner => { '!=' => $user_id } } },
+            distinct => 1
+        };
+        $bucket_user_share_retrieve_method = 'search_permission_usr_object_perm_map';
+        $object_class_for_user_object_perms = 'cbreb';
+    }
+
+    # Get buckets shared with any of these orgs not owned by user
+    my $org_share_mappings = $e->json_query($json_query);
+    # Buckets being shared directly with the user
+    my $user_share_mappings = $e->$bucket_user_share_retrieve_method({
+        perm => $e->search_permission_perm_list({code => "VIEW_CONTAINER"})->[0]->id,
+        object_type => $object_class_for_user_object_perms,
+        usr => $user_id
+    });
+
+    #use Data::Dumper;
+    #$logger->warn('org_share_mappings, dumper: ' . Dumper($org_share_mappings) );
+    #$logger->warn('user_share_mappings, dumper: ' . Dumper($user_share_mappings) );
+
+    # Create a hash of bucket IDs that have shares
+    my %shared_bucket_ids = ();
+    if ($org_share_mappings && ref($org_share_mappings) eq 'ARRAY') {
+        foreach my $m (@$org_share_mappings) {
+            $shared_bucket_ids{ $m->{bucket} } = 1;
+        }
+    }
+    if ($user_share_mappings && ref($user_share_mappings) eq 'ARRAY') {
+        foreach my $m (@$user_share_mappings) {
+            $shared_bucket_ids{ $m->object_id } = 1;
+        }
+    }
+
+    my @bucket_ids = keys %shared_bucket_ids;
+
+    my $results = \@bucket_ids;
+    if ($self->api_name =~ 'count') {
+        return scalar(@$results);
+    } else { 
+        return $results;
+    }
+}
+
+__PACKAGE__->register_method(
+    method  => "pcrud_count",
+    api_name    => "open-ils.actor.count_with_pcrud", # TODO: should build pcrud.count instead, but expedient
+    authoritative => 1,
+    signature => {
+        desc => q/
+            Take a class hint and pcrud query and return the count of results. No options.
+        /,
+        params => [
+            {desc => 'Authentication token', type => 'string'},
+            {desc => 'Class hint', type => 'string'},
+            {desc => 'Query', type => 'hash'},
+        ],
+        return => {
+            desc => 'Returns a count or an exception.'
+        }
+    }
+);
+
+#sub pcrud_count {
+#    my ($self, $client, $authtoken, $hint, $query) = @_;
+#    my $e = new_editor(authtoken => $authtoken);
+#    return $e->event unless $e->checkauth;
+#
+#    my $search = "search_" . Fieldmapper->class_for_hint($hint);
+#    $search =~ s/::/_/g;
+#
+#    my $ids = $e->$search($query, { 'id_list' => 1 });
+#
+#    return scalar(@$ids);
+#}
+
+sub pcrud_count {
+    my ($self, $client, $authtoken, $hint, $query) = @_;
+
+    # overkill coming
+
+    return OpenILS::Event->new('BAD_PARAMS')
+        unless defined($authtoken) && defined($hint) && defined($query);
+
+    return OpenILS::Event->new('BAD_PARAMS')
+        unless ref($query) eq 'HASH';
+
+    my $e = new_editor(authtoken => $authtoken);
+    return $e->event unless $e->checkauth;
+
+    $e->personality('open-ils.pcrud');
+
+    #if(!$conf) {
+    #    $conf = OpenSRF::Utils::SettingsClient->new;
+    #    my $idl = OpenSRF::Utils::SettingsClient->new->config_value("IDL");
+    #    Fieldmapper->import(IDL => $idl);
+    #}
+    #
+    #my $class = Fieldmapper->class_for_hint($hint);
+
+    # Having trouble with generalizing the method, so special coding cbreb and friends for now
+
+    my $class;
+    if ($hint eq 'cbreb') {
+        $class = "container::biblio_record_entry_bucket";
+    } elsif ($hint eq 'cbrebuf') {
+        $class = "container::biblio_record_entry_bucket_usr_flag";
+    } elsif ($hint eq 'cbrebs') {
+        $class = "container::biblio_record_entry_bucket_shares";
+    } elsif ($hint eq 'cbrebi') {
+        $class = "container::biblio_record_entry_bucket_item";
+    }
+
+    return OpenILS::Event->new('BAD_PARAMS', note => "Invalid class hint: $hint")
+        unless $class;
+
+    my $search = "search_" . $class;
+    $search =~ s/::/_/g;
+
+    unless ($e->can($search)) {
+        return OpenILS::Event->new('INTERNAL_SERVER_ERROR', 
+            note => "Method $search not found");
+    }
+
+    my $ids;
+    eval {
+        $ids = $e->$search($query, { 'id_list' => 1, 'atomic' => 1 });
+    };
+
+    if ($@) {
+        return OpenILS::Event->new('INTERNAL_SERVER_ERROR', 
+            note => "Error in search: $@");
+    }
+
+    unless (defined $ids && ref($ids) eq 'ARRAY') {
+        return OpenILS::Event->new('INTERNAL_SERVER_ERROR', 
+            note => "Unexpected result from search");
+    }
+
+    return scalar(@$ids);
 }
 
 __PACKAGE__->register_method(
@@ -164,6 +447,97 @@ sub _bucket_flesh {
     return $bkt;
 }
 
+
+for my $btype (keys %jtypes) {
+    __PACKAGE__->register_method(
+        method   => "bucket_count_stats",
+        api_name => "open-ils.actor.container.$ttypes{$btype}.count_stats",
+        authoritative => 1,
+        btype    => $btype
+    );
+}
+sub bucket_count_stats {
+    my($self, $conn, $auth, $ids) = @_;
+    $ids = [$ids] unless ref($ids);
+    my $class = $self->{btype};
+    return undef unless $jtypes{$class} and @$ids;
+    my $e = new_editor(authtoken => $auth);
+    return $e->die_event unless $e->checkauth;
+    my $icore = $jtypes{$class}.'i';
+    my $score = $jtypes{$class}.'s';
+    my %icounts = ();
+    my %org_shares = ();
+    my %view_user_shares = ();
+    my %update_user_shares = ();
+
+    my $iquery_result = $e->json_query({
+        select => {$icore => [
+            { column => 'bucket', alias  => 'id' },
+            { column => 'id',     alias => 'count',
+              transform => 'count', aggregate => 1 }
+        ]},
+        from => $icore,
+        where => {bucket => $ids}
+    });
+    if ($iquery_result && ref($iquery_result) eq 'ARRAY') {
+        %icounts = map { $_->{id} => $_->{count} } @$iquery_result;
+    } else {
+        $logger->warn("No results or error in item count query for $class");
+    }
+
+    my $org_query_result = $e->json_query({
+        select => {$score => [
+            { column => 'bucket', alias  => 'id' },
+            { column => 'id',     alias => 'count',
+              transform => 'count', aggregate => 1 }
+        ]},
+        from => $score,
+        where => {bucket => $ids}
+    });
+    if ($org_query_result && ref($org_query_result) eq 'ARRAY') {
+        %org_shares = map { $_->{id} => $_->{count} } @$org_query_result;
+    } else {
+        $logger->warn("No results or error in org share count query for $class");
+    }
+
+    my $view_perm_id = $e->search_permission_perm_list({code=>'VIEW_CONTAINER'})->[0]->id;
+    my $update_perm_id = $e->search_permission_perm_list({code=>'UPDATE_CONTAINER'})->[0]->id;
+
+    my $user_query_result = $e->json_query({
+        select => {puopm => [
+            { column => 'object_id', alias  => 'id' },
+            { column => 'perm',      alias  => 'perm' },
+            { column => 'usr',       alias => 'count',
+              transform => 'count', aggregate => 1,
+              distinct => 1}
+        ]},
+        from => puopm => where => {
+            object_type => $jtypes{$class},
+            object_id => $ids,
+            perm => [$view_perm_id, $update_perm_id]
+        }
+    });
+    if ($user_query_result && ref($user_query_result) eq 'ARRAY') {
+        for my $result (@$user_query_result) {
+            if ($result->{perm} == $view_perm_id) {
+                $view_user_shares{$result->{id}} = $result->{count};
+            } elsif ($result->{perm} == $update_perm_id) {
+                $update_user_shares{$result->{id}} = $result->{count};
+            }
+        }
+    } else {
+        $logger->warn("No results or error in user share count query for $class");
+    }
+
+    return { map {
+        $_ => {
+            item_count => $icounts{$_} || 0,
+            org_share_count => $org_shares{$_} || 0,
+            usr_view_share_count => $view_user_shares{$_} || 0,
+            usr_update_share_count => $update_user_shares{$_} || 0
+        }
+    } @$ids };
+}
 
 __PACKAGE__->register_method(
     method  => "item_note_cud",
@@ -328,6 +702,136 @@ sub bucket_create {
     return $obj->id;
 }
 
+
+__PACKAGE__->register_method(
+    method  => "update_record_bucket_org_share_mapping",
+    api_name    => "open-ils.actor.container.update_record_bucket_org_share_mapping",
+    signature => {
+        desc => q/
+            Sets the org share mappings for the specified bucket and org ids.
+        /,
+        params => [
+            {desc => 'Authentication token', type => 'string'},
+            {desc => 'Record bucket Ids to work with.', type => 'array'},
+            {desc => 'Org Ids to share with.', type => 'array'},
+        ],
+        return => {
+            desc => '1 for success, otherwise exception'
+        }
+    }
+);
+
+sub update_record_bucket_org_share_mapping {
+    my( $self, $client, $authtoken, $bucket_ids, $org_ids ) = @_;
+    my $e = new_editor(xact=>1, authtoken=>$authtoken);
+    return $e->die_event unless $e->checkauth;
+
+    my $bucket_retrieve_method;
+    my $bucket_share_retrieve_method;
+    my $bucket_share_delete_method;
+    my $bucket_share_create_method;
+    my $share_perm;
+    my $fm_type;
+
+    if ($self->api_name =~ 'update_record_bucket_org_share_mapping') {
+        $bucket_retrieve_method = 'search_container_biblio_record_entry_bucket';
+        $bucket_share_retrieve_method = 'search_container_biblio_record_entry_bucket_shares';
+        $bucket_share_delete_method = 'delete_container_biblio_record_entry_bucket_shares';
+        $bucket_share_create_method = 'create_container_biblio_record_entry_bucket_shares';
+        $share_perm = 'ADMIN_CONTAINER_BIBLIO_RECORD_ENTRY_ORG_SHARE';
+        $fm_type = 'Fieldmapper::container::biblio_record_entry_bucket_shares';
+    }
+
+    # Fetch buckets
+    my $buckets = $e->$bucket_retrieve_method( { id => $bucket_ids } );
+
+    # Test permission against all buckets 
+    for my $bucket (@$buckets) {
+        if ($bucket->owner ne $e->requestor->id) {
+            if ($bucket->owning_lib) {
+                return $e->die_event unless $e->allowed($share_perm, $bucket->owning_lib);
+            } else {
+                return $e->die_event unless $e->allowed($share_perm, $e->requestor->home_ou);
+            }
+        }
+    }
+
+    # Create desired mappings
+    my $desired_maps = [];
+    for my $bucket_id (@$bucket_ids) {
+        for my $org_id (@$org_ids) {
+            push @$desired_maps, { bucket => $bucket_id, share_org => $org_id };
+        }
+    }
+
+    # Fetch existing mappings from _shares table
+    my $existing_maps = $e->$bucket_share_retrieve_method( { bucket => $bucket_ids } );
+
+    # Where existing rows not in desired rows, delete those
+    my $maps_to_delete = [];
+    for my $existing_map (@$existing_maps) {
+        unless (grep { $_->{bucket} == $existing_map->bucket && $_->{share_org} == $existing_map->share_org } @$desired_maps) {
+            push @$maps_to_delete, $existing_map;
+        }
+    }
+
+    for my $map (@$maps_to_delete) {
+        return $e->die_event unless $e->$bucket_share_delete_method($map);
+    }
+
+    # Where desired rows not in existing rows, create those
+    my $needed_maps = [];
+    for my $desired_map (@$desired_maps) {
+        unless (grep { $_->bucket == $desired_map->{bucket} && $_->share_org == $desired_map->{share_org} } @$existing_maps) {
+            push @$needed_maps, $desired_map;
+        }
+    }
+
+    for my $map (@$needed_maps) {
+        my $obj = $fm_type->new;
+        $obj->bucket($map->{bucket});
+        $obj->share_org($map->{share_org});
+        return $e->die_event unless $e->$bucket_share_create_method($obj);
+    }
+
+    return $e->die_event unless $e->commit;
+    return 1;
+}
+
+__PACKAGE__->register_method(
+    method  => "retrieve_org_ids_from_record_bucket_org_share_mapping",
+    api_name    => "open-ils.actor.container.retrieve_record_bucket_shared_org_ids",
+    signature => {
+        desc => q/
+            Retrieves org ids for the set of orgs referenced in org share mappings for the specified buckets.
+        /,
+        params => [
+            {desc => 'Authentication token', type => 'string'},
+            {desc => 'Record bucket Ids to work with.', type => 'array'},
+        ],
+        return => {
+            desc => 'An array of org ids, otherwise exception'
+        }
+    }
+);
+
+sub retrieve_org_ids_from_record_bucket_org_share_mapping {
+    my( $self, $client, $authtoken, $bucket_ids ) = @_;
+    my $e = new_editor(xact=>1, authtoken=>$authtoken);
+    return $e->die_event unless $e->checkauth;
+
+    my $bucket_share_retrieve_method;
+    if ($self->api_name =~ 'retrieve_record_bucket_shared_org_ids') {
+        $bucket_share_retrieve_method = 'search_container_biblio_record_entry_bucket_shares';
+    }
+
+    # Fetch mappings shares table
+    my $maps = $e->$bucket_share_retrieve_method( { bucket => $bucket_ids } );
+
+    # Getting our set of org ids
+    my %ou_ids_uniq = map { $_->share_org => 1 } @$maps;
+    return [keys %ou_ids_uniq];
+}
 
 __PACKAGE__->register_method(
     method  => "item_create",
@@ -617,6 +1121,49 @@ sub __item_delete {
     return $stat;
 }
 
+__PACKAGE__->register_method(
+    method      => 'containers_batch_full_delete',
+    api_name        => 'open-ils.actor.containers.full_delete',
+    signature   => q/
+        Completely removes the given containers, including content.
+        @param authtoken The login session key
+        @param class The container class
+        @param An array of container ids
+        @return Returns a hash of container ids, with the
+                corresponding values being either true for
+                success, 0 for no deletion, or an error Event
+        /
+);
+
+__PACKAGE__->register_method(
+    method      => 'containers_batch_full_delete',
+    api_name        => 'open-ils.actor.containers.full_delete.override',
+    signature   => q/
+        Completely removes the given containers, including content and carousels.
+        @param authtoken The login session key
+        @param class The container class
+        @param An array of container ids
+        @return Returns a hash of container ids, with the
+                corresponding values being either true for
+                success, 0 for no deletion, or an error Event
+        /
+);
+
+sub containers_batch_full_delete {
+    my ($self, $conn, $authtoken, $class, $container_ids) = @_;
+
+    my $method_name = 'open-ils.actor.container.full_delete';
+    $method_name .= '.override' if ($self->api_name =~ /override/);
+
+    my %results;
+    for my $container_id (@$container_ids) {
+        my $delete_method = $self->method_lookup($method_name);
+        my ($result) = $delete_method->run($authtoken, $class, $container_id);
+        $results{$container_id} = $result;
+    }
+
+    return \%results;
+}
 
 __PACKAGE__->register_method(
     method  => 'full_delete',
@@ -624,9 +1171,18 @@ __PACKAGE__->register_method(
     notes       => "Complety removes a container including all attached items",
 );  
 
+__PACKAGE__->register_method(
+    method  => 'full_delete',
+    api_name    => 'open-ils.actor.container.full_delete.override',
+    notes       => "Complety removes a container including all attached items, and any linked carousel.",
+);  
+
 sub full_delete {
     my( $self, $client, $authtoken, $class, $containerId ) = @_;
     my( $container, $evt);
+
+    my $override = 0;
+    $override = 1 if ($self->api_name =~ /override/);
 
     my $e = new_editor(xact=>1, authtoken=>$authtoken);
     return $e->event unless $e->checkauth;
@@ -634,13 +1190,14 @@ sub full_delete {
     ( $container, $evt ) = $apputils->fetch_container_e($e, $containerId, $class);
     return $evt if $evt;
 
+    my $owner;
     if( $container->owner ne $e->requestor->id ) {
-      my $owner = $e->retrieve_actor_user($container->owner)
-         or return $e->die_event;
+        $owner = $e->retrieve_actor_user($container->owner)
+            or return $e->die_event;
         return $e->event unless $e->allowed('DELETE_CONTAINER', $owner->home_ou);
     }
 
-    my $items; 
+    my $items; my $carousels = [];
 
     my @s = ({bucket => $containerId}, {idlist=>1});
 
@@ -653,6 +1210,7 @@ sub full_delete {
     }
 
     if( $class eq 'biblio' ) {
+        $carousels = $e->search_container_carousel(@s); # same query
         $items = $e->search_container_biblio_record_entry_bucket_item(@s);
     }
 
@@ -660,6 +1218,17 @@ sub full_delete {
         $items = $e->search_container_user_bucket_item(@s);
     }
 
+    if (@$carousels) {
+        return OpenILS::Event->new('BUCKET_LINKED_TO_CAROUSEL') unless $override;
+        # FIXME: move to pcrud personality so we can test the configured permission against the actual carousel owner
+        if( $container->owner ne $e->requestor->id ) {
+            return $e->event unless $e->allowed('ADMIN_CAROUSEL', $owner->home_ou);
+        }
+    }
+
+    foreach (@$carousels) {
+        return $e->event unless $e->delete_container_carousel( $e->retrieve_container_carousel($_) );
+    }
     __item_delete($e, $class, $_) for @$items;
 
     my $stat;
@@ -688,16 +1257,43 @@ sub full_delete {
 }
 
 __PACKAGE__->register_method(
+    method      => 'containers_batch_update',
+    api_name        => 'open-ils.actor.containers.update',
+    signature   => q/
+        Updates the given containers.
+        @param authtoken The login session key
+        @param class The container class
+        @param An array of containers
+        @return Returns a hash of container ids, with the
+                corresponding values being either true for
+                success, 0 for no update, or an error Event
+        /
+);
+
+__PACKAGE__->register_method(
     method      => 'container_update',
     api_name        => 'open-ils.actor.container.update',
     signature   => q/
-        Updates the given container item.
+        Updates the given container.
         @param authtoken The login session key
         @param class The container class
         @param container The container item
         @return true on success, 0 on no update, Event on error
         /
 );
+
+sub containers_batch_update {
+    my ($self, $conn, $authtoken, $class, $containers) = @_;
+
+    my %results;
+    for my $container (@$containers) {
+        my $update_method = $self->method_lookup('open-ils.actor.container.update');
+        my ($result) = $update_method->run($authtoken, $class, $container);
+        $results{$container->id} = $result;
+    }
+
+    return \%results;
+}
 
 sub container_update {
     my( $self, $conn, $authtoken, $class, $container )  = @_;
@@ -737,7 +1333,94 @@ sub container_update {
     return $stat;
 }
 
+__PACKAGE__->register_method(
+    method      => 'containers_transfer',
+    api_name        => 'open-ils.actor.containers.transfer',
+    signature   => q/
+        Updates the owner for the specified container containers.
+        @param authtoken The login session key
+        @param user The destination user ID
+        @param class The container class
+        @param containers An array of container IDs
+        @return Returns a hash of container ids, with the
+                corresponding values being either true for
+                success, 0 for no update, or an error Event
+        /
+);
 
+sub containers_transfer {
+    my ($self, $conn, $authtoken, $target_user_id, $class, $container_ids) = @_;
+    my $e = new_editor(authtoken=>$authtoken);
+    return $e->event unless $e->checkauth;
+
+    my $usr_home_ou_map = {};
+    my $get_cached_home_ou = sub {
+        my $usr_id = shift;
+        unless (exists $usr_home_ou_map->{$usr_id}) {
+            my $usr = $e->retrieve_actor_user($usr_id)
+                or return $e->die_event;
+            $usr_home_ou_map->{$usr_id} = $usr->home_ou;
+        }
+        return $usr_home_ou_map->{$usr_id};
+    };
+
+    # our master perm
+    my $target_usr_home_ou = $get_cached_home_ou->($target_user_id);
+    return $e->event unless $e->allowed('TRANSFER_CONTAINER', $target_usr_home_ou);
+    
+    my $containers;
+    my $search_method;
+    if ($class eq 'copy') { $search_method = 'search_container_copy_bucket';
+    } elsif ($class eq 'callnumber') { $search_method = 'search_container_call_number_bucket';
+    } elsif ($class eq 'biblio') { $search_method = 'search_container_biblio_record_entry_bucket';
+    } elsif ($class eq 'user') { $search_method = 'search_container_user_bucket';
+    } else { return $e->event; }
+    
+    $containers = $e->$search_method({id => $container_ids});
+    return $e->event unless $containers;
+
+    for my $container (@$containers) {
+        if ($container->owner ne $e->requestor->id) {
+            my $owner_ou = $get_cached_home_ou->($container->owner)
+                or return $e->die_event;
+            # checks against original owner
+            return $e->event unless $e->allowed('TRANSFER_CONTAINER', $owner_ou) &&
+                $e->allowed('UPDATE_CONTAINER', $owner_ou);
+            # check against target owner + one at the beginning of the method
+            return $e->event unless $e->allowed('UPDATE_CONTAINER', $target_usr_home_ou);
+        }
+
+        # See if we have a collision with the owner/name/btype constraint
+        my $existing_container = $e->$search_method({
+            owner => $target_user_id,
+            name => $container->name,
+            btype => $container->btype
+        })->[0];
+
+        if ($existing_container) {
+            # Generate a new unique name
+            my $base_name = $container->name;
+            my $counter = 1;
+            my $new_name;
+            do {
+                $new_name = sprintf("%s (%d)", $base_name, $counter++);
+                $existing_container = $e->$search_method({
+                    owner => $target_user_id,
+                    name => $new_name,
+                    btype => $container->btype
+                })->[0];
+            } while ($existing_container);
+
+            $container->name($new_name);
+        }
+
+        $container->owner($target_user_id);
+    }
+
+    my $update_method = $self->method_lookup('open-ils.actor.containers.update');
+    my ($result) = $update_method->run($authtoken, $class, $containers);
+    return $result;
+}
 
 __PACKAGE__->register_method(
     method  => "anon_cache",
@@ -1294,7 +1977,200 @@ __PACKAGE__->register_method(
     }
 );
 
+__PACKAGE__->register_method(
+    method  => "add_container_user_share",
+    api_name    => "open-ils.actor.container.user_share.create",
+    signature => {
+        desc => "Add a user share to a container",
+        params => [
+            {desc => "Authentication token", type => "string"},
+            {desc => "Container class (biblio, callnumber, copy, user)", type => "string"},
+            {desc => "Container ID", type => "number"},
+            {desc => "User ID to share with", type => "number"},
+        ],
+        return => {
+            desc => "1 on success, Event on error",
+        }
+    }
+);
 
+sub add_container_user_share {
+    my($self, $conn, $auth, $container_class, $container_id, $user_id) = @_;
+    my $e = new_editor(xact=>1, authtoken=>$auth);
+    return $e->die_event unless $e->checkauth;
+
+    my $meth = "retrieve_$ctypes{$container_class}";
+    my $container = $e->$meth($container_id)
+        or return $e->die_event;
+
+    if ($container->owner ne $e->requestor->id) {
+        return $e->die_event unless $e->allowed("ADMIN_CONTAINER_${container_class}_USER_SHARE", $e->requestor->home_ou);
+    }
+
+    my $map = Fieldmapper::permission::usr_object_perm_map->new;
+    $map->usr($user_id);
+    $map->perm($e->retrieve_permission_perm_list({code => "VIEW_CONTAINER"})->id);
+    $map->object_type($jtypes{$container_class});
+    $map->object_id($container_id);
+
+    $e->create_permission_usr_object_perm_map($map) or return $e->die_event;
+    $e->commit;
+    return 1;
+}
+
+__PACKAGE__->register_method(
+    method  => "remove_container_user_share",
+    api_name    => "open-ils.actor.container.user_share.delete",
+    signature => {
+        desc => "Remove a user share from a container",
+        params => [
+            {desc => "Authentication token", type => "string"},
+            {desc => "Container class (biblio, callnumber, copy, user)", type => "string"},
+            {desc => "Container ID", type => "number"},
+            {desc => "User ID to remove share from", type => "number"},
+        ],
+        return => {
+            desc => "1 on success, Event on error",
+        }
+    }
+);
+
+sub remove_container_user_share {
+    my($self, $conn, $auth, $container_class, $container_id, $user_id) = @_;
+    my $e = new_editor(xact=>1, authtoken=>$auth);
+    return $e->die_event unless $e->checkauth;
+
+    my $meth = "retrieve_$ctypes{$container_class}";
+    my $container = $e->$meth($container_id)
+        or return $e->die_event;
+
+    if ($container->owner ne $e->requestor->id) {
+        return $e->die_event unless $e->allowed("ADMIN_CONTAINER_${container_class}_USER_SHARE", $e->requestor->home_ou);
+    }
+
+    my $map = $e->search_permission_usr_object_perm_map({
+        usr => $user_id,
+        object_type => $jtypes{$container_class},
+        object_id => $container_id
+    })->[0] or return $e->die_event;
+
+    $e->delete_permission_usr_object_perm_map($map) or return $e->die_event;
+    $e->commit;
+    return 1;
+}
+
+__PACKAGE__->register_method(
+    method  => "list_container_user_shares",
+    api_name    => "open-ils.actor.container.user_share.retrieve",
+    signature => {
+        desc => "List user shares for a container",
+        params => [
+            {desc => "Authentication token", type => "string"},
+            {desc => "Container class (biblio, callnumber, copy, user)", type => "string"},
+            {desc => "Container ID", type => "number"},
+            {desc => "Optional permission code to filter with", type => "string"},
+        ],
+        return => {
+            desc => "Array of user IDs with shares on the container, Event on error",
+        }
+    }
+);
+
+sub list_container_user_shares {
+    my($self, $conn, $auth, $container_class, $container_id, $perm_code) = @_;
+    my $e = new_editor(authtoken=>$auth);
+    return $e->die_event unless $e->checkauth;
+
+    my $meth = "retrieve_$ctypes{$container_class}";
+    my $container = $e->$meth($container_id)
+        or return $e->die_event;
+
+    if ($container->owner ne $e->requestor->id) {
+        return $e->die_event unless $e->allowed("VIEW_CONTAINER_${container_class}_USER_SHARE", $e->requestor->home_ou);
+    }
+
+    my $search = {
+        object_type => $jtypes{$container_class},
+        object_id => $container_id
+    };
+
+    if ($perm_code) {
+         $search->{'perm'} = $e->search_permission_perm_list({code => "$perm_code"})->[0]->id;
+    }
+
+    my $maps = $e->search_permission_usr_object_perm_map($search);
+
+    return [map { $_->usr } @$maps];
+}
+
+__PACKAGE__->register_method(
+    method  => "update_container_user_shares",
+    api_name    => "open-ils.actor.container.update_record_bucket_user_share_mapping",
+    signature => {
+        desc => "Update user shares for multiple containers (removes all existing shares and (re-)adds new ones.",
+        params => [
+            {desc => "Authentication token", type => "string"},
+            {desc => "Array of Container IDs", type => "array"},
+            {desc => "Array of User IDs to share with", type => "array"},
+            {desc => "Optional permission code to work with. Defauls to VIEW_CONTAINER", type => "string"},
+        ],
+        return => {
+            desc => "1 on success, Event on error",
+        }
+    }
+);
+
+sub update_container_user_shares {
+    my($self, $conn, $auth, $container_ids, $user_ids, $perm_code) = @_;
+    my $e = new_editor(xact=>1, authtoken=>$auth);
+    return $e->die_event unless $e->checkauth;
+
+    if (!$perm_code) {
+        $perm_code = 'VIEW_CONTAINER';
+    }
+    my $container_perm = $e->search_permission_perm_list({code => "$perm_code"})->[0]->id;
+
+    my $retrieve_method;
+    my $admin_perm;
+    my $object_type;
+    if ($self->api_name =~ 'update_record_bucket_user_share_mapping') {
+        $retrieve_method = 'retrieve_container_biblio_record_entry_bucket';
+        $admin_perm = 'ADMIN_CONTAINER_BIBLIO_RECORD_ENTRY_USER_SHARE';
+        $object_type = 'cbreb';
+    }
+
+    foreach my $container_id (@$container_ids) {
+        my $container = $e->$retrieve_method($container_id)
+            or return $e->die_event;
+
+        if ($container->owner ne $e->requestor->id) {
+            return $e->die_event unless $e->allowed($admin_perm, $e->requestor->home_ou);
+        }
+
+        # Remove existing shares
+        my $existing_maps = $e->search_permission_usr_object_perm_map({
+            object_type => $object_type,
+            object_id => $container_id,
+            perm => $container_perm
+        });
+        foreach my $map (@$existing_maps) {
+            $e->delete_permission_usr_object_perm_map($map) or return $e->die_event;
+        }
+
+        # Add new shares
+        foreach my $user_id (@$user_ids) {
+            my $map = Fieldmapper::permission::usr_object_perm_map->new;
+            $map->usr($user_id);
+            $map->perm($container_perm);
+            $map->object_type($object_type);
+            $map->object_id($container_id);
+            $e->create_permission_usr_object_perm_map($map) or return $e->die_event;
+        }
+    }
+
+    $e->commit;
+    return 1;
+}
 
 1;
 
