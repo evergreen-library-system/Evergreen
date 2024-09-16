@@ -45,6 +45,12 @@ angular.module('egCatRecordBuckets',
         resolve : resolver
     });
 
+    $routeProvider.when('/cat/bucket/record/view/:id/merge/:ids', {
+        templateUrl: './cat/bucket/record/t_view',
+        controller: 'ViewCtrl',
+        resolve: resolver
+    });
+
     $routeProvider.when('/cat/bucket/record/view/:id', {
         templateUrl: './cat/bucket/record/t_view',
         controller: 'ViewCtrl',
@@ -605,7 +611,7 @@ function($scope,  $q , $routeParams,  bucketSvc,  egCore,  $window,
     }
 
     // opens the record merge dialog
-    $scope.openRecordMergeDialog = function(records) {
+    $scope.openRecordMergeDialog = function(records, bChannel) {
         $uibModal.open({
             templateUrl: './cat/bucket/record/t_merge_records',
             backdrop: 'static',
@@ -630,7 +636,10 @@ function($scope,  $q , $routeParams,  bucketSvc,  egCore,  $window,
                         lead : $scope.lead
                     });
                 }
-                $scope.cancel = function () { $uibModalInstance.dismiss() }
+                $scope.cancel = function () {
+                    if (bChannel) { $window.close(); } // called from the Angular bucket UI
+                    $uibModalInstance.dismiss();
+                }
 
                 $scope.merge_marc = function() {
                     // need lead, at least one sub, and a merge profile
@@ -728,8 +737,10 @@ function($scope,  $q , $routeParams,  bucketSvc,  egCore,  $window,
                 };
             }]
         }).result.then(function (args) {
-            if (!args.lead_id) return;
-            if (!args.records.length) return;
+            if (!args.lead_id || !args.records.length) {
+                if (bChannel) { $window.close(); } // called from the Angular bucket UI
+                return;
+            }
 
             function update_bib() {
                 if (args.merge_profile) {
@@ -747,7 +758,11 @@ function($scope,  $q , $routeParams,  bucketSvc,  egCore,  $window,
                     args.lead_id,
                     args.records.map(function(val) { return val.id; })
                 ).then(function() {
-                    $window.open('/eg2/staff/catalog/record/' + args.lead_id);
+                    if (bChannel) {
+                        bChannel.postMessage({success:true});
+                        // $window.open('/eg2/staff/catalog/record/' + args.lead_id);
+                        $window.close(); // called from the Angular bucket UI
+                    }
                 });
             });
         });
@@ -845,7 +860,22 @@ function($scope,  $q , $routeParams,  bucketSvc,  egCore,  $window,
         return true;
     }
 
-    // fetch the bucket;  on error show the not-allowed message
-    if ($scope.bucketId) 
+    if ($routeParams.ids) {
+        var recordIds = $routeParams.ids.split(',');
+        var records = recordIds.map(function(id) { return {id: id}; });
+        var bChannel = null;
+        if (typeof BroadcastChannel != 'undefined') {
+            bChannel = new BroadcastChannel("eg.merge_records_in_bucket_" + $scope.bucketId);
+        }
+        
+        // Wait for the bucket to load before opening the modal
+        drawBucket().then(function() {
+            $timeout(function() {
+                $scope.openRecordMergeDialog(records, bChannel);
+            });
+        });
+    } else if ($scope.bucketId) {
+        // Normal bucket view behavior
         drawBucket()['catch'](function() { $scope.forbidden = true });
+    }
 }])
