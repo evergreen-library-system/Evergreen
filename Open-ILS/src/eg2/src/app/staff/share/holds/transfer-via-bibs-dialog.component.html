@@ -1,0 +1,41 @@
+<eg-string #successMsg
+    text="Successfully Transfered Hold" i18n-text></eg-string>
+<eg-string #errorMsg
+    text="Failed To Transfer Hold" i18n-text></eg-string>
+<eg-string #targetNeeded
+    text="Transfer Target Required" i18n-text> </eg-string>
+
+<ng-template #dialogContent>
+    <div class="modal-header">
+      <h4 class="modal-title">
+        <span i18n>Transfer Hold(s) To Marked Target</span>
+      </h4>
+      <button type="button" class="btn-close btn-close-white"
+        i18n-aria-label aria-label="Close" (click)="close()"></button>
+    </div>
+    <div class="modal-body">
+      <div class="row d-flex justify-content-center">
+        <h5>Transfer Holds For {{bibIds.length}} Bib(s) To Record {{transferTarget}}?</h5>
+      </div>
+      <div class="row" *ngIf="numSucceeded > 0">
+        <div class="col-lg-12" i18n>
+          Holds for {{numSucceeded}} Bib(s) Successfully Transferred.
+        </div>
+        <div class="row" *ngIf="numFailed > 0">
+          <div class="col-lg-12">
+            <div class="alert alert-warning">
+              Holds for {{numFailed}} Bibs(s) Failed to Transfer.
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <ng-container *ngIf="!chargeResponse">
+        <button type="button" class="btn btn-normal"
+          (click)="close()" i18n>Cancel</button>
+        <button type="button" class="btn btn-success"
+          (click)="transferBatch()" i18n>Transfer</button>
+      </ng-container>
+    </div>
+  </ng-template>

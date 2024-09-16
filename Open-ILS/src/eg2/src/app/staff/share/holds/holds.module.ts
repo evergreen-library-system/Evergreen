@@ -7,6 +7,7 @@ import {HoldDetailComponent} from './detail.component';
 import {HoldManageComponent} from './manage.component';
 import {HoldRetargetDialogComponent} from './retarget-dialog.component';
 import {HoldTransferDialogComponent} from './transfer-dialog.component';
+import {HoldTransferViaBibsDialogComponent} from './transfer-via-bibs-dialog.component';
 import {HoldCancelDialogComponent} from './cancel-dialog.component';
 import {HoldManageDialogComponent} from './manage-dialog.component';
 import {HoldNoteDialogComponent} from './note-dialog.component';
@@ -21,6 +22,7 @@ import {WorkLogModule} from '@eg/staff/share/worklog/worklog.module';
         HoldManageComponent,
         HoldRetargetDialogComponent,
         HoldTransferDialogComponent,
+        HoldTransferViaBibsDialogComponent,
         HoldCancelDialogComponent,
         HoldManageDialogComponent,
         HoldNoteDialogComponent,
@@ -38,6 +40,7 @@ import {WorkLogModule} from '@eg/staff/share/worklog/worklog.module';
         HoldManageComponent,
         HoldRetargetDialogComponent,
         HoldTransferDialogComponent,
+        HoldTransferViaBibsDialogComponent,
         HoldCancelDialogComponent,
         HoldManageDialogComponent,
         HoldCopyLocationsDialogComponent
