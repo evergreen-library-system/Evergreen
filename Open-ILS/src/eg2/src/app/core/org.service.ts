@@ -7,7 +7,7 @@ import {AuthService} from './auth.service';
 import {PcrudService} from './pcrud.service';
 import {DbStoreService} from './db-store.service';
 
-type OrgNodeOrId = number | IdlObject;
+type OrgNodeOrId = number | IdlObject | { id: number } | null | undefined;
 
 interface OrgFilter {
     canHaveUsers?: boolean;
@@ -40,8 +40,16 @@ export class OrgService {
     ) {}
 
     get(nodeOrId: OrgNodeOrId): IdlObject {
+        if (nodeOrId == null) {
+            return null;
+        }
         if (typeof nodeOrId === 'object') {
-            return nodeOrId;
+            if ('id' in nodeOrId && typeof nodeOrId.id === 'function') {
+                return nodeOrId as IdlObject;
+            } else if ('id' in nodeOrId && typeof nodeOrId.id !== 'function') {
+                return this.orgMap[nodeOrId.id];
+            }
+            return nodeOrId as IdlObject;
         }
         return this.orgMap[nodeOrId];
     }

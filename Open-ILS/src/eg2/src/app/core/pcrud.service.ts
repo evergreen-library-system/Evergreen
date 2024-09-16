@@ -1,6 +1,7 @@
 /* eslint-disable no-shadow, no-var */
 import {Injectable} from '@angular/core';
 import {Observable, Observer} from 'rxjs';
+import {map, reduce} from 'rxjs/operators';
 import {IdlService, IdlObject} from './idl.service';
 import {NetService, NetRequest} from './net.service';
 import {AuthService} from './auth.service';
@@ -399,6 +400,27 @@ export class PcrudService {
                 complete: () => console.debug('authoriative check function complete')
             });
         }
+    }
+
+    /*translateFlatSortSimple(sort: any[]): any {
+        if (!sort || sort.length === 0) return null;
+
+        return sort.reduce((acc, s) => {
+            acc[s.name] = s.dir.toLowerCase();
+            return acc;
+        }, {});
+    }*/
+
+    translateFlatSortComplex(hint: string, sort: any[]): any {
+        if (!sort || sort.length === 0) return null;
+
+        return {
+            order_by: sort.map(s => ({
+                class: hint,
+                field: s.name,
+                direction: s.dir.toUpperCase()
+            }))
+        };
     }
 }
 

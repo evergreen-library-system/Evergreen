@@ -6,7 +6,7 @@
  */
 import {NgModule} from '@angular/core';
 import {CommonModule, DatePipe, DecimalPipe} from '@angular/common';
-import {FormatValuePipe, OrgDateInContextPipe, DueDatePipe, OrUnderscoresPipe, Js2JsonPipe, FundLabelPipe} from './format.service';
+import {FormatValuePipe, OrgDateInContextPipe, DueDatePipe, OrUnderscoresPipe, Js2JsonPipe, FundLabelPipe, UsrnameOrIdPipe} from './format.service';
 
 @NgModule({
     declarations: [
@@ -16,6 +16,7 @@ import {FormatValuePipe, OrgDateInContextPipe, DueDatePipe, OrUnderscoresPipe, J
         OrUnderscoresPipe,
         Js2JsonPipe,
         FundLabelPipe,
+        UsrnameOrIdPipe,
     ],
     imports: [
         CommonModule
@@ -28,6 +29,7 @@ import {FormatValuePipe, OrgDateInContextPipe, DueDatePipe, OrUnderscoresPipe, J
         OrUnderscoresPipe,
         Js2JsonPipe,
         FundLabelPipe,
+        UsrnameOrIdPipe,
     ],
     providers: [
         DatePipe,

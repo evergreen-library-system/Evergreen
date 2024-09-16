@@ -450,4 +450,12 @@ export class FundLabelPipe implements PipeTransform {
 
         return ''; // default value until the fund is loaded
     }
+
+}
+
+@Pipe({ name: 'usrnameOrId' })
+export class UsrnameOrIdPipe implements PipeTransform {
+    transform(user: IdlObject): any {
+        return user && typeof user.usrname === 'function' ? user.usrname() : user;
+    }
 }
