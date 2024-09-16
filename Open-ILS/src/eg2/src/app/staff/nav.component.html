@@ -418,7 +418,8 @@
           </a>
           <div class="dropdown-divider"></div>
           <a ngbDropdownItem class="dropdown-item"
-            href="/eg/staff/cat/bucket/record/view" 
+            routerLink="/staff/cat/bucket/record"
+            routerLinkActive="active" ariaCurrentWhenActive="page"
             (click)="isMenuCollapsed = true" 
             (keydown.space)="isMenuCollapsed = true" 
             (keydown.enter)="isMenuCollapsed = true">

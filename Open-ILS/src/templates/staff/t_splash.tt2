@@ -57,7 +57,7 @@
             </div>
           </div>
           <div>
-            <a target="_self" href="./cat/bucket/record/">
+            <a target="_self" href="/eg2/staff/cat/bucket/record/">
               <img src="[% ctx.media_prefix %]/images/portal/bucket.png" alt="" role="presentation"/>
               [% l('Record Buckets') %]
             </a>

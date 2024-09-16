@@ -380,7 +380,7 @@
           </li>
           <li class="divider"></li>
           <li>
-            <a href="./cat/bucket/record/view" target="_self">
+            <a href="/eg2/staff/cat/bucket/record/view" target="_self">
               <span class="glyphicon glyphicon-list-alt" aria-hidden="true"></span>
               <span>[% l('Record Buckets') %]</span>
             </a>

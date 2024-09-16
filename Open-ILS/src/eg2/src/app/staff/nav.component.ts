@@ -131,9 +131,6 @@ export class StaffNavComponent implements OnInit, OnDestroy {
             this.net.permFailed$.subscribe(
                 (req: NetRequest) => this.opChange.escalateRequest(req));
 
-        // Offset scrolling to anchor by -48px to account for the fixed navbar
-        // eslint-disable-next-line no-magic-numbers
-        this.vs.setOffset([0,-48]);
     }
 
     ngOnDestroy() {

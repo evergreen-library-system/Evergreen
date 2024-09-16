@@ -65,7 +65,7 @@
   <eg-grid-toolbar-action label="Refresh Selected" i18n-label [action]="refreshSelected">
   </eg-grid-toolbar-action>
   <ng-template #recordBucketTmpl let-carousel="row">
-    <a href="/eg/staff/cat/bucket/record/view/{{carousel.bucket().id()}}" target="_blank">
+    <a href="/eg2/staff/cat/bucket/record/view/{{carousel.bucket().id()}}" target="_blank">
         {{carousel.bucket().name()}}
     </a>
   </ng-template>
@@ -83,7 +83,7 @@
 <ng-template #bucketTemplate
     let-field="field" let-record="record">
   <span *ngIf="record[field.name]()">
-    <a href="/eg/staff/cat/bucket/record/view/{{record[field.name]()}}" target="_blank" i18n>Link to bucket</a>
+    <a href="/eg2/staff/cat/bucket/record/view/{{record[field.name]()}}" target="_blank" i18n>Link to bucket</a>
     <span *ngIf="record['type']() !== 1" i18n style="font-style: italic"> (Note: changes to bucket contents may be overwritten by the next carousel update.)</span>
   </span>
 </ng-template>
