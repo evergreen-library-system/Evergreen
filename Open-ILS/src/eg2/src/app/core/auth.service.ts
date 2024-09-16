@@ -105,21 +105,26 @@ export class AuthService {
     // This only rejects when no authtoken is found.
     testAuthToken(): Promise<any> {
 
-        if (!this.activeUser?.token) {
+        if (!this.token()) {
             // Only necessary on new page loads.  During op-change,
             // for example, we already have an activeUser.
-            this.activeUser = new AuthUser(
-                this.store.getLoginSessionItem(`${this.authDomain}.token`),
-                this.store.getLoginSessionItem(`${this.authDomain}.time`)
-            );
+            const stashed_token = this.store.getLoginSessionItem(`${this.authDomain}.token`);
+            const stashed_time = this.store.getLoginSessionItem(`${this.authDomain}.time`);
+            if (stashed_token && stashed_time) {
+                this.activeUser = new AuthUser(stashed_token, stashed_time);
+            }
         }
 
-        if (!this.activeUser?.token) { // let's try to get a provisional token
-            this.activeUser = new AuthUser(
-                this.store.getLoginSessionItem('eg.auth.token.provisional'),
-                this.store.getLoginSessionItem('eg.auth.time.provisional'),
-                null, true, true
-            );
+        if (!this.token()) { // let's try to get a provisional token
+            const stashed_provisional_token = this.store.getLoginSessionItem('eg.auth.token.provisional');
+            const stashed_provisional_time = this.store.getLoginSessionItem('eg.auth.time.provisional');
+            if (stashed_provisional_token && stashed_provisional_time) {
+                this.activeUser = new AuthUser(
+                    stashed_provisional_token,
+                    stashed_provisional_time,
+                    null, true, true
+                );
+            }
         }
 
         if (!this.token()) {
@@ -214,9 +219,8 @@ export class AuthService {
             this.activeUser = new AuthUser(
                 this.store.getLoginSessionItem('eg.auth.token.provisional'),
                 this.store.getLoginSessionItem('eg.auth.time.provisional'),
-                this.activeUser.workstation, false
+                this.activeUser.workstation, false, true
             );
-            this.activeUser.mfaAllowed = true;
             this.store.removeLoginSessionItem('eg.auth.token.provisional');
             this.store.removeLoginSessionItem('eg.auth.time.provisional');
             this.store.setLoginSessionItem('eg.auth.token', this.token());
