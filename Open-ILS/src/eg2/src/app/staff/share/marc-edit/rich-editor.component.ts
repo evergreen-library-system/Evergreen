@@ -18,7 +18,7 @@ import {PhysCharDialogComponent} from './phys-char-dialog.component';
 @Component({
     selector: 'eg-marc-rich-editor',
     templateUrl: './rich-editor.component.html',
-    styleUrls: ['rich-editor.component.css']
+    styleUrls: ['rich-editor.component.css', 'rich-editor-colors.css']
 })
 
 export class MarcRichEditorComponent implements OnInit {

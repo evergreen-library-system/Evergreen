@@ -1021,7 +1021,7 @@ button.focus-border:focus-visible {
 
 .badge-dark,
 .badge.text-bg-dark {
-  color: var(--bs-black);
+  color: var(--bs-body-color);
   background: var(--bs-gray-500);
 }
 
@@ -1066,7 +1066,7 @@ a {
 
 /* Drop shadows for dropdown menus and active tabs */
 .nav-tabs .nav-link {
-  background-color: var(--bs-body-bg);
+  background-color: var(--bs-body-bg-alt);
   border-color: var(--border);
   padding: 0.5rem 0.85rem;
 }
@@ -1160,6 +1160,11 @@ input, textarea, select, option,
     background: var(--bs-body-bg-alt);
     border-color: var(--border);
     color: var(--bs-body-color);
+}
+
+input, textarea, select, option, 
+.form-control, .form-control:focus, .form-select, .form-check-input {
+  background: light-dark(var(--bs-body-bg), var(--bs-body-bg-alt));
 }
 
 .dropdown-item {

@@ -1,6 +1,6 @@
 eg-marc-rich-editor,
 #eg-marc-rich-editor {
-  background-color: var(--bs-body-bg-alt);
+  background-color: light-dark(var(--gray-125), var(--bs-body-bg-alt));
 }
 
 .fixed-fields-container {
@@ -18,18 +18,18 @@ eg-marc-rich-editor,
 
 .marc-toolbar,
 .marc-toolbar .btn-secondary {
-  background-color: light-dark(var(--bs-gray-600), var(--bs-gray-900));
+  background-color: light-dark(var(--gray-550), var(--bs-gray-900));
   border-color: light-dark(var(--bs-gray-600), var(--bs-gray-900));
   color: white;
 }
 
 .marc-toolbar .btn-secondary:focus,
 .marc-toolbar .btn-secondary:hover {
-  background-color: light-dark(var(--bs-gray-700), var(--bs-gray-700));
+  background-color: light-dark(var(--gray-650), var(--bs-gray-700));
 }
 
 .marc-toolbar .badge-dark {
-  background-color: light-dark(var(--bs-gray-500), var(--bs-gray-300));
+  background-color: light-dark(var(--gray-300), var(--bs-gray-700));
 }
 
 .menu-with-accesskeys .dropdown-item {
@@ -55,6 +55,7 @@ eg-marc-rich-editor,
   margin-bottom: 0;
   table-layout: fixed;
   width: 100%;
+  --bs-table-bg: light-dark(var(--gray-125), var(--bs-body-bg-alt));
 }
 
 /* remove Bootstrap default styles */
@@ -113,16 +114,16 @@ eg-marc-rich-editor,
 /* col.subfields will take the remaining available space */
 
 .marc-table tr {
-  background-color: light-dark(var(--bs-gray-100), var(--bs-gray-950));
+  background-color: light-dark(var(--gray-125), var(--bs-gray-950));
 }
 
 .start-even tr:not(.changed):nth-child(odd),
 .marc-table:not(.start-even) tr:not(.changed):nth-child(even) {
-  background-color: light-dark(var(--bs-gray-100), var(--bs-gray-925));
+  background-color: light-dark(var(--gray-100), var(--bs-gray-925));
 }
 
 .marc-table tr.changed {
-  background-color: light-dark(var(--bs-gray-200), var(--bs-gray-900));
+  background-color: light-dark(var(--gray-200), var(--bs-gray-900));
 }
 
 .marc-table tr.changed th.tag {
@@ -261,7 +262,7 @@ tr#marc-tag-END:hover {
 }
 
 .field-hints h5 {
-  border-bottom: 1px solid var(--border);
+  border-bottom: 1px solid light-dark(var(--gray-400), var(--border));
   padding-bottom: 0.25rem;
   font-weight: 600;
 }
@@ -301,10 +302,10 @@ tr#marc-tag-END:hover {
 }
 
 button.delete-subfield {
-  color: light-dark(var(--bs-gray-600), var(--bs-gray-400));
-  background-color: light-dark(var(--bs-gray-100), var(--bs-gray-900));
-  border: 1px solid light-dark(var(--bs-gray-200), var(--bs-gray-800));
-  border-left: 1px solid light-dark(var(--bs-gray-100), var(--bs-gray-900));
+  color: light-dark(var(--gray-600), var(--bs-gray-400));
+  background-color: light-dark(var(--gray-100), var(--bs-gray-900));
+  border: 1px solid light-dark(var(--gray-200), var(--bs-gray-800));
+  border-left: 1px solid light-dark(var(--gray-150), var(--bs-gray-900));
   border-radius: 0;
 }
 
@@ -312,7 +313,7 @@ button.delete-subfield:focus,
 button.delete-subfield:hover,
 .marc-table tr.marc-field:focus button.delete-subfield,
 .marc-table tr.marc-field:hover button.delete-subfield {
-  color: light-dark(var(--bs-gray-700), var(--bs-gray-300));
+  color: light-dark(var(--gray-700), var(--bs-gray-300));
 }
 
 .move:hover {
@@ -324,7 +325,7 @@ button.delete-subfield:hover,
 }
 
 .btn-tiny:hover {
-  border: 1px solid light-dark(var(--bs-gray-700), var(--bs-gray-300));
+  border: 1px solid light-dark(var(--gray-700), var(--bs-gray-300));
   box-shadow: 1px 1px .25rem rgba(0,0,0,0.25);
 }
 

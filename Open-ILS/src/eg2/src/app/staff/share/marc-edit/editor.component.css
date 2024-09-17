@@ -1,40 +1,44 @@
 /* eg-marc-editor background set in parent record.component.css */
 
 .nav-tabs {
-  background-color: var(--bs-body-bg);
-  border-color: var(--border);
+  background: light-dark(var(--gray-125), var(--bs-body-bg-alt));
+  border-color: light-dark(var(--gray-250), var(--border));
   padding-inline-start: 0.5rem; /* separate active tab from page background */
 }
 
 .nav-tabs .nav-link {
-  background-color: var(--bs-body-bg);
-  border-color: var(--bs-body-bg-alt);
+  background: light-dark(var(--gray-125), var(--bs-body-bg));
+  border-color: light-dark(var(--gray-250), var(--bs-body-bg-highlight));
   color: light-dark(var(--bs-blue-650), var(--bs-blue-400));
 }
 
 .nav-tabs .nav-link.active {
-  background: light-dark(
-    linear-gradient(var(--bs-gray-100) 35%, var(--bs-gray-150)),
-    linear-gradient(var(--bs-gray-900) 35%, var(--bs-gray-850))
-  );
-  border-color: light-dark(
-    var(--bs-gray-100) var(--bs-gray-500) var(--bs-gray-100),
-    var(--bs-gray-900) var(--bs-gray-500) var(--bs-gray-900)
-  );
-  color:var(--bs-body-color);
+  background: var(--tab-active-bg);
+  color: var(--bs-body-color);
+  /* light-dark() does not work with border shorthand */
+  border-top-color: light-dark(var(--gray-300),var(--bs-gray-800));
+  border-right-color: light-dark(var(--gray-400), var(--bs-gray-700));
+  border-bottom-color: light-dark(var(--gray-100), var(--bs-gray-900));
+  border-left-color: light-dark(var(--gray-400), var(--bs-gray-700));
+}
+
+.nav-tabs .nav-item:has(.nav-link.active) {
+  margin-bottom: -1px;
+  position: relative;
+  background: light-dark(var(--gray-125), var(--bs-body-bg-alt));
 }
 
 .nav-tabs .nav-link:hover,
 .nav-tabs .nav-link:focus {
-  background-color: light-dark(var(--bs-gray-100), var(--bs-gray-900));
-  border-color: light-dark(
-    var(--bs-gray-600) var(--bs-gray-600) var(--bs-gray-100),
-    var(--bs-gray-400) var(--bs-gray-400) var(--bs-gray-900)
-  );
+  background-color: light-dark(var(--gray-100), var(--bs-gray-900));
+  border-top-color: light-dark(var(--gray-600),var(--bs-gray-400));
+  border-right-color: light-dark(var(--gray-600), var(--bs-gray-400));
+  border-bottom-color: light-dark(var(--gray-125), var(--bs-gray-900));
+  border-left-color: light-dark(var(--gray-600), var(--bs-gray-400));
 }
 
 .btn-destroy {
-  background-color: light-dark(var(--bs-gray-300), var(--bs-gray-700));
+  background-color: light-dark(var(--gray-550), var(--bs-gray-700));
   color: var(--white);
 }
 

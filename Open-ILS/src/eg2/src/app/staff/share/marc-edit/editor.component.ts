@@ -31,7 +31,7 @@ export interface MarcSavedEvent {
 @Component({
     selector: 'eg-marc-editor',
     templateUrl: './editor.component.html',
-    styleUrls: ['editor.component.css']
+    styleUrls: ['editor.component.css', 'rich-editor-colors.css']
 })
 
 export class MarcEditorComponent implements OnInit {

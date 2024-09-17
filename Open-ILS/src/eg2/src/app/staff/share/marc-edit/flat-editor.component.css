@@ -5,9 +5,5 @@
 .flat-editor-content {
     font-family: monospace; 
     display: inline-block; 
-    /*
-    min-width: 1ch; 
-    margin: 0 -1px; 
-    */
-    padding: 0;
+    padding: 0.375rem;
 }

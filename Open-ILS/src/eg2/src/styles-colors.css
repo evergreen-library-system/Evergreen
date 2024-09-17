@@ -237,7 +237,7 @@
   --info-hover: light-dark(var(--bs-cyan-200), var(--bs-cyan-750)); 
   --primary: light-dark(var(--bs-blue-600), var(--bs-blue-300)); 
   --primary-border: light-dark(var(--bs-blue-650), var(--bs-blue-400) );
-  --primary-focus-outline-rgb: var(--bs-blue-rgb);
+  --primary-focus-outline-rgb: var(--bs-blue-600-rgb);
   --primary-hover: light-dark(var(--bs-blue-650), var(--bs-blue-400));
   --primary-disabled: light-dark(rgba(var(--bs-blue-600-rgb), 1.0), rgba(var(--bs-blue-300-rgb), 0.7));
   --primary-disabled-hover: light-dark()
@@ -254,7 +254,7 @@
 
   --common-form-bg: var(--bs-body-bg-alt);
   --common-form-border: var(--border);
-  --form-check-border: light-dark(var(--bs-gray-100), var(--bs-gray-800));
+  --form-check-border: light-dark(var(--bs-gray-300), var(--bs-gray-800));
   --form-valid: var(--success-border);
   --form-invalid: var(--bs-red-600);
   
