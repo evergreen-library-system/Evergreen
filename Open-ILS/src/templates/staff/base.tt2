@@ -34,6 +34,12 @@
     <link rel="stylesheet" href="[% ctx.base_path %]/staff/css/dark.css" />
     <link rel="stylesheet" href="[% ctx.base_path %]/staff/css/nav.css" />
     <link rel="stylesheet" href="[% ctx.base_path %]/staff/css/grid.css" />
+    <script>
+      const colormode = localStorage.getItem('eg.ui.general.colormode');
+      if (colormode) {
+        document.documentElement.setAttribute('data-bs-theme', colormode.replaceAll("\"", ""));
+      }
+    </script>
     
   </head>
   <body>
