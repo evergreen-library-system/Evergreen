@@ -24434,7 +24434,7 @@ VALUES (currval('action_trigger.event_definition_id_seq'), 'home_ou');
 
 
 INSERT INTO config.usr_activity_type (id, ewhat, egroup, label)
-VALUES (31, 'confirm', 'mfa' oils_i18n_gettext(31, 'Generic MFA authentication confirmation', 'cuat', 'label'));
+VALUES (31, 'confirm', 'mfa', oils_i18n_gettext(31, 'Generic MFA authentication confirmation', 'cuat', 'label'));
 
 ----- Flags used to control OTP calculations -----
 INSERT INTO config.global_flag (name, label, value, enabled) VALUES
