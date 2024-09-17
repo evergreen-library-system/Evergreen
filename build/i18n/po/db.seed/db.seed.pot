@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Evergreen 1.4\n"
 "Report-Msgid-Bugs-To: open-ils-dev@list.georgialibraries.org\n"
-"POT-Creation-Date: 2024-07-17 18:57:17-0400\n"
+"POT-Creation-Date: 2024-09-17 13:34:46-0400\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -5675,7 +5675,7 @@ msgstr ""
 msgid ""
 "The course materials module will use this bib source for any new brief "
 "bibliographic records made inside that module. For best results, use a "
-"transcendant bib source."
+"transcendent bib source."
 msgstr ""
 
 # id::coust.label__circ.password_reset_request_per_user_limit
@@ -14872,7 +14872,7 @@ msgstr ""
 msgid "US Dollars"
 msgstr ""
 
-# id::acqct.label__CAN
+# id::acqct.label__CAD
 #: 950.data.seed-values.sql:12494
 msgid "Canadian Dollars"
 msgstr ""
@@ -19700,196 +19700,196 @@ msgid "Picklist Upload Form Templates"
 msgstr ""
 
 # id::cwst.label__eg.grid.admin.local.cash_reports.desk_payments
-#: 950.data.seed-values.sql:23324
+#: 950.data.seed-values.sql:23364
 msgid "Grid Config: admin.local.cash_reports.desk_payments"
 msgstr ""
 
 # id::cwst.label__eg.grid.admin.local.cash_reports.user_payments
-#: 950.data.seed-values.sql:23331
+#: 950.data.seed-values.sql:23371
 msgid "Grid Config: admin.local.cash_reports.user_payments"
 msgstr ""
 
 # id::cgf.label__opac.max_concurrent_search.query
-#: 950.data.seed-values.sql:23343
+#: 950.data.seed-values.sql:23383
 msgid "Limit the number of global concurrent matching search queries"
 msgstr ""
 
 # id::cgf.label__opac.max_concurrent_search.ip
-#: 950.data.seed-values.sql:23352
+#: 950.data.seed-values.sql:23392
 msgid "Limit the number of global concurrent searches per client IP address"
 msgstr ""
 
 # id::cgf.label__opac.login_redirect_domains
-#: 950.data.seed-values.sql:23361
+#: 950.data.seed-values.sql:23401
 msgid ""
 "Restrict post-login redirection to local URLs, or those that match the "
 "supplied comma-separated list of foreign domains or host names."
 msgstr ""
 
 # id::cgf.label__ingest.queued.max_threads
-#: 950.data.seed-values.sql:23370
+#: 950.data.seed-values.sql:23410
 msgid ""
 "Queued Ingest: Maximum number of database workers allowed for queued ingest "
 "processes"
 msgstr ""
 
 # id::cgf.label__ingest.queued.abort_on_error
-#: 950.data.seed-values.sql:23377
+#: 950.data.seed-values.sql:23417
 msgid ""
 "Queued Ingest: Abort transaction on ingest error rather than simply logging "
 "an error"
 msgstr ""
 
 # id::cgf.label__ingest.queued.authority.propagate
-#: 950.data.seed-values.sql:23384
+#: 950.data.seed-values.sql:23424
 msgid ""
 "Queued Ingest: Queue all bib record updates on authority change propagation,"
 " even if bib queuing is not generally enabled"
 msgstr ""
 
 # id::cgf.label__ingest.queued.all
-#: 950.data.seed-values.sql:23391
+#: 950.data.seed-values.sql:23431
 msgid ""
 "Queued Ingest: Use Queued Ingest for all bib and authority record ingest"
 msgstr ""
 
 # id::cgf.label__ingest.queued.biblio.all
-#: 950.data.seed-values.sql:23398
+#: 950.data.seed-values.sql:23438
 msgid "Queued Ingest: Use Queued Ingest for all bib record ingest"
 msgstr ""
 
 # id::cgf.label__ingest.queued.authority.all
-#: 950.data.seed-values.sql:23405
+#: 950.data.seed-values.sql:23445
 msgid "Queued Ingest: Use Queued Ingest for all authority record ingest"
 msgstr ""
 
 # id::cgf.label__ingest.queued.biblio.insert.marc_edit_inline
-#: 950.data.seed-values.sql:23412
+#: 950.data.seed-values.sql:23452
 msgid ""
 "Queued Ingest: Do NOT use Queued Ingest when creating a new bib, or "
 "undeleting a bib, via the MARC editor"
 msgstr ""
 
 # id::cgf.label__ingest.queued.biblio.insert
-#: 950.data.seed-values.sql:23419
+#: 950.data.seed-values.sql:23459
 msgid ""
 "Queued Ingest: Use Queued Ingest for bib record ingest on insert and "
 "undelete"
 msgstr ""
 
 # id::cgf.label__ingest.queued.authority.insert
-#: 950.data.seed-values.sql:23426
+#: 950.data.seed-values.sql:23466
 msgid ""
 "Queued Ingest: Use Queued Ingest for authority record ingest on insert and "
 "undelete"
 msgstr ""
 
 # id::cgf.label__ingest.queued.biblio.update.marc_edit_inline
-#: 950.data.seed-values.sql:23433
+#: 950.data.seed-values.sql:23473
 msgid ""
 "Queued Ingest: Do NOT Use Queued Ingest when editing bib records via the "
 "MARC Editor"
 msgstr ""
 
 # id::cgf.label__ingest.queued.biblio.update
-#: 950.data.seed-values.sql:23440
+#: 950.data.seed-values.sql:23480
 msgid "Queued Ingest: Use Queued Ingest for bib record ingest on update"
 msgstr ""
 
 # id::cgf.label__ingest.queued.authority.update
-#: 950.data.seed-values.sql:23447
+#: 950.data.seed-values.sql:23487
 msgid "Queued Ingest: Use Queued Ingest for authority record ingest on update"
 msgstr ""
 
 # id::cgf.label__ingest.queued.biblio.delete
-#: 950.data.seed-values.sql:23454
+#: 950.data.seed-values.sql:23494
 msgid "Queued Ingest: Use Queued Ingest for bib record ingest on delete"
 msgstr ""
 
 # id::cgf.label__ingest.queued.authority.delete
-#: 950.data.seed-values.sql:23461
+#: 950.data.seed-values.sql:23501
 msgid "Queued Ingest: Use Queued Ingest for authority record ingest on delete"
 msgstr ""
 
 # id::coust.label__circ.custom_penalty_override.PATRON_EXCEEDS_FINES
-#: 950.data.seed-values.sql:23473
+#: 950.data.seed-values.sql:23513
 msgid "Custom PATRON_EXCEEDS_FINES penalty"
 msgstr ""
 
 # id::coust.description__circ.custom_penalty_override.PATRON_EXCEEDS_FINES
-#: 950.data.seed-values.sql:23477
+#: 950.data.seed-values.sql:23517
 msgid ""
 "Specifies a non-default standing penalty to apply to patrons that exceed the"
 " max-fine threshold for their group."
 msgstr ""
 
 # id::coust.label__circ.custom_penalty_override.PATRON_EXCEEDS_OVERDUE_COUNT
-#: 950.data.seed-values.sql:23482
+#: 950.data.seed-values.sql:23522
 msgid "Custom PATRON_EXCEEDS_OVERDUE_COUNT penalty"
 msgstr ""
 
 # id::coust.description__circ.custom_penalty_override.PATRON_EXCEEDS_OVERDUE_COUNT
-#: 950.data.seed-values.sql:23486
+#: 950.data.seed-values.sql:23526
 msgid ""
 "Specifies a non-default standing penalty to apply to patrons that exceed the"
 " overdue count threshold for their group."
 msgstr ""
 
 # id::coust.label__circ.custom_penalty_override.PATRON_EXCEEDS_CHECKOUT_COUNT
-#: 950.data.seed-values.sql:23491
+#: 950.data.seed-values.sql:23531
 msgid "Custom PATRON_EXCEEDS_CHECKOUT_COUNT penalty"
 msgstr ""
 
 # id::coust.description__circ.custom_penalty_override.PATRON_EXCEEDS_CHECKOUT_COUNT
-#: 950.data.seed-values.sql:23495
+#: 950.data.seed-values.sql:23535
 msgid ""
 "Specifies a non-default standing penalty to apply to patrons that exceed the"
 " checkout count threshold for their group."
 msgstr ""
 
 # id::coust.label__circ.custom_penalty_override.PATRON_EXCEEDS_COLLECTIONS_WARNING
-#: 950.data.seed-values.sql:23500
+#: 950.data.seed-values.sql:23540
 msgid "Custom PATRON_EXCEEDS_COLLECTIONS_WARNING penalty"
 msgstr ""
 
 # id::coust.description__circ.custom_penalty_override.PATRON_EXCEEDS_COLLECTIONS_WARNING
-#: 950.data.seed-values.sql:23504
+#: 950.data.seed-values.sql:23544
 msgid ""
 "Specifies a non-default standing penalty to apply to patrons that exceed the"
 " collections fine warning threshold for their group."
 msgstr ""
 
 # id::coust.label__circ.custom_penalty_override.PATRON_EXCEEDS_LOST_COUNT
-#: 950.data.seed-values.sql:23509
+#: 950.data.seed-values.sql:23549
 msgid "Custom PATRON_EXCEEDS_LOST_COUNT penalty"
 msgstr ""
 
 # id::coust.description__circ.custom_penalty_override.PATRON_EXCEEDS_LOST_COUNT
-#: 950.data.seed-values.sql:23513
+#: 950.data.seed-values.sql:23553
 msgid ""
 "Specifies a non-default standing penalty to apply to patrons that exceed the"
 " lost item count threshold for their group."
 msgstr ""
 
 # id::coust.label__circ.custom_penalty_override.PATRON_EXCEEDS_LONGOVERDUE_COUNT
-#: 950.data.seed-values.sql:23518
+#: 950.data.seed-values.sql:23558
 msgid "Custom PATRON_EXCEEDS_LONGOVERDUE_COUNT penalty"
 msgstr ""
 
 # id::coust.description__circ.custom_penalty_override.PATRON_EXCEEDS_LONGOVERDUE_COUNT
-#: 950.data.seed-values.sql:23522
+#: 950.data.seed-values.sql:23562
 msgid ""
 "Specifies a non-default standing penalty to apply to patrons that exceed the"
 " long-overdue item count threshold for their group."
 msgstr ""
 
 # id::coust.label__circ.custom_penalty_override.PATRON_IN_COLLECTIONS
-#: 950.data.seed-values.sql:23527
+#: 950.data.seed-values.sql:23567
 msgid "Custom PATRON_IN_COLLECTIONS penalty"
 msgstr ""
 
 # id::coust.description__circ.custom_penalty_override.PATRON_IN_COLLECTIONS
-#: 950.data.seed-values.sql:23531
+#: 950.data.seed-values.sql:23571
 msgid ""
 "Specifies a non-default standing penalty that may have been applied to "
 "patrons that have been placed into collections and that should be "
@@ -19899,42 +19899,42 @@ msgid ""
 msgstr ""
 
 # id::cwst.label__eg.holds.pull_list_filters
-#: 950.data.seed-values.sql:23540
+#: 950.data.seed-values.sql:23580
 msgid ""
 "Holds pull list filter values for pickup library and shelving locations."
 msgstr ""
 
 # id::coust.label__staff.added_content.novelistselect.version
-#: 950.data.seed-values.sql:23552
+#: 950.data.seed-values.sql:23592
 msgid "Staff Client added content: NoveList Select API version"
 msgstr ""
 
 # id::coust.description__staff.added_content.novelistselect.version
-#: 950.data.seed-values.sql:23555
+#: 950.data.seed-values.sql:23595
 msgid ""
 "API version used to provide NoveList Select added content in the Staff "
 "Client"
 msgstr ""
 
 # id::coust.label__staff.added_content.novelistselect.profile
-#: 950.data.seed-values.sql:23566
+#: 950.data.seed-values.sql:23606
 msgid "Staff Client added content: NoveList Select profile/user"
 msgstr ""
 
 # id::coust.description__staff.added_content.novelistselect.profile
-#: 950.data.seed-values.sql:23569
+#: 950.data.seed-values.sql:23609
 msgid ""
 "Profile/user used to provide NoveList Select added content in the Staff "
 "Client"
 msgstr ""
 
 # id::coust.label__staff.added_content.novelistselect.passwd
-#: 950.data.seed-values.sql:23580
+#: 950.data.seed-values.sql:23620
 msgid "Staff Client added content: NoveList Select key/password"
 msgstr ""
 
 # id::coust.description__staff.added_content.novelistselect.passwd
-#: 950.data.seed-values.sql:23583
+#: 950.data.seed-values.sql:23623
 msgid ""
 "Key/password used to provide NoveList Select added content in the Staff "
 "Client"
@@ -19942,69 +19942,79 @@ msgstr ""
 
 # id::coust.label__staff.added_content.novelistselect.url
 # id::coust.description__staff.added_content.novelistselect.url
-#: 950.data.seed-values.sql:23593 950.data.seed-values.sql:23598
+#: 950.data.seed-values.sql:23633 950.data.seed-values.sql:23638
 msgid "URL Override for NoveList Select added content javascript"
 msgstr ""
 
 # id::cwst.label__eg.grid.catalog.link_checker
-#: 950.data.seed-values.sql:23608
+#: 950.data.seed-values.sql:23648
 msgid "Grid Config: catalog.link_checker"
 msgstr ""
 
 # id::cwst.label__eg.grid.catalog.link_checker.attempt
-#: 950.data.seed-values.sql:23615
+#: 950.data.seed-values.sql:23655
 msgid "Grid Config: catalog.link_checker.attempt"
 msgstr ""
 
 # id::cwst.label__eg.grid.catalog.link_checker.url
-#: 950.data.seed-values.sql:23622
+#: 950.data.seed-values.sql:23662
 msgid "Grid Config: catalog.link_checker.url"
 msgstr ""
 
 # id::cwst.label__eg.grid.filters.catalog.link_checker
-#: 950.data.seed-values.sql:23629
+#: 950.data.seed-values.sql:23669
 msgid "Grid Filter Sets: catalog.link_checker"
 msgstr ""
 
 # id::cwst.label__eg.grid.filters.catalog.link_checker.attempt
-#: 950.data.seed-values.sql:23636
+#: 950.data.seed-values.sql:23676
 msgid "Grid Filter Sets: catalog.link_checker.attempt"
 msgstr ""
 
 # id::cwst.label__eg.grid.filters.catalog.link_checker.url
-#: 950.data.seed-values.sql:23643
+#: 950.data.seed-values.sql:23683
 msgid "Grid Filter Sets: catalog.link_checker.url"
 msgstr ""
 
 # id::cwst.label__eg.grid.admin.local.actor.stat_cat
-#: 950.data.seed-values.sql:23653
+#: 950.data.seed-values.sql:23693
 msgid "Grid Config: admin.local.actor.stat_cat"
 msgstr ""
 
 # id::cwst.label__eg.grid.admin.local.asset.stat_cat
-#: 950.data.seed-values.sql:23660
+#: 950.data.seed-values.sql:23700
 msgid "Grid Config: admin.local.asset.stat_cat"
 msgstr ""
 
 # id::cwst.label__eg.grid.admin.local.actor.stat_cat_entry
-#: 950.data.seed-values.sql:23670
+#: 950.data.seed-values.sql:23710
 msgid "Grid Config: admin.local.actor.stat_cat_entry"
 msgstr ""
 
 # id::cwst.label__eg.grid.admin.local.asset.stat_cat_entry
-#: 950.data.seed-values.sql:23677
+#: 950.data.seed-values.sql:23717
 msgid "Grid Config: admin.local.asset.stat_cat_entry"
 msgstr ""
 
 # id::coust.label__cat.patron_view_discovery_layer_url
-#: 950.data.seed-values.sql:23689
+#: 950.data.seed-values.sql:23729
 msgid "Patron view discovery layer URL"
 msgstr ""
 
 # id::coust.description__cat.patron_view_discovery_layer_url
-#: 950.data.seed-values.sql:23695
+#: 950.data.seed-values.sql:23735
 msgid ""
 "URL for displaying an item in the \"patron view\" discovery layer with a "
 "placeholder for the bib record ID: {eg_record_id}. For example: "
 "https://example.com/Record/{eg_record_id}"
+msgstr ""
+
+# id::cwst.label__eg.grid.admin.acq.distribution_formula
+#: 950.data.seed-values.sql:23747
+msgid "Grid Config: admin.acq.distribution_formula"
+msgstr ""
+
+# id::cwst.label__eg.grid.catalog.record.conjoined
+#: 950.data.seed-values.sql:23757
+msgid "Grid Config: catalog.record.conjoined"
 msgstr ""

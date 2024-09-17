@@ -122,9 +122,9 @@ msgstr ""
 msgid "%1 mi"
 msgstr ""
 
-#. (attrs.copy_counts.$depth.available, attrs.copy_counts.$depth.count, ou_name)
-#. (attrs.plib_copy_counts.$depth.available, attrs.plib_copy_counts.$depth.count, ou_name)
 #. (ou_avail, ou_count, ou_name)
+#. (attrs.plib_copy_counts.$depth.available, attrs.plib_copy_counts.$depth.count, ou_name)
+#. (attrs.copy_counts.$depth.available, attrs.copy_counts.$depth.count, ou_name)
 #: ../../Open-ILS/src/templates/opac/parts/record/copy_counts.tt2:22 ../../Open-ILS/src/templates/opac/parts/record/copy_counts.tt2:41 ../../Open-ILS/src/templates/opac/parts/result/copy_counts.tt2:14 ../../Open-ILS/src/templates/opac/parts/result/copy_counts.tt2:34
 msgid "%1 of %quant(%2,copy,copies) available at %3."
 msgstr ""
@@ -3368,6 +3368,10 @@ msgstr ""
 msgid "OR"
 msgstr ""
 
+#: ../../Open-ILS/src/templates/opac/myopac/prefs_settings.tt2:149 ../../Open-ILS/src/templates/opac/myopac/prefs_settings.tt2:159
+msgid "Obtain Circulation Information"
+msgstr ""
+
 #: ../../Open-ILS/src/templates/opac/myopac/generic_payment_form.tt2:92
 msgid "October (10)"
 msgstr ""
@@ -5474,10 +5478,6 @@ msgstr ""
 
 #: ../../Open-ILS/src/templates/opac/parts/cart.tt2:21 ../../Open-ILS/src/templates/opac/parts/cart.tt2:5 ../../Open-ILS/src/templates/opac/parts/record/summary.tt2:127
 msgid "View Basket"
-msgstr ""
-
-#: ../../Open-ILS/src/templates/opac/myopac/prefs_settings.tt2:149 ../../Open-ILS/src/templates/opac/myopac/prefs_settings.tt2:159
-msgid "View Borrowing History"
 msgstr ""
 
 #: ../../Open-ILS/src/templates/opac/parts/myopac/main_base.tt2:42
