@@ -51,8 +51,8 @@
   Pokud vidíte tuto stránku, jste pravděpodobně v dobré kondici...
   </translation>
   <translation id="7506889982289699821">
-  Ale možná jste chtěli jít na 
-    <ph name="START_LINK"><ex>&lt;a&gt;</ex></ph>stránku personálu<ph name="CLOSE_LINK"><ex>&lt;/a&gt;</ex></ph>
+  Ale možná chcete přejít na 
+    <ph name="START_LINK"><ex>&lt;a&gt;</ex></ph>vstupní stránku služebního katalogu<ph name="CLOSE_LINK"><ex>&lt;/a&gt;</ex></ph>
   </translation>
   <translation id="7785113474511387049">Přiřazení přístupové klávesy</translation>
   <translation id="1795589471045938719">Příkaz</translation>
@@ -260,7 +260,7 @@ Administrace</translation>
   <translation id="5356002028938925107">Odhlášení a další...</translation>
   <translation id="7275989946002419237">Změna operátora se nezdařila</translation>
   <translation id="7200978329936255427">Změna operátora proběhla úspěšně</translation>
-  <translation id="3793967144105863445">Obnovit operátora</translation>
+  <translation id="3793967144105863445">Vrátit se k původnímu přihlášení</translation>
   <translation id="3797778920049399855">Odhlásit</translation>
   <translation id="1726363342938046830">O Evergreenu</translation>
   <translation id="4569777642533426433">ctrl+h</translation>
@@ -1322,7 +1322,7 @@ Poměr minimální kvalit při prosté/nejlepší shodě
   <translation id="327877591865566241">Status je zobrazen v OPACu</translation>
   <translation id="6390846851971922880">Status aktivuje exemplář</translation>
   <translation id="1135231675731391183">Status Je smazáno</translation>
-  <translation id="9210267296323241154">Status Volné</translation>
+  <translation id="9210267296323241154">Status je Dostupné</translation>
   <translation id="1407332882545400518">ID Signatury</translation>
   <translation id="1864102786594277120">Klíč řazení signatury</translation>
   <translation id="2099781163954082933">ID části</translation>
@@ -2447,7 +2447,7 @@ Poměr minimální kvalit při prosté/nejlepší shodě
   <translation id="1142819708127342051">Vynutit tiskový kontext:</translation>
   <translation id="5607669932062416162">Výchozí </translation>
   <translation id="564628000366807090">Potvrzení</translation>
-  <translation id="4077520913910941990">Označení</translation>
+  <translation id="4077520913910941990">Štítky</translation>
   <translation id="1292737233370901804">Pošta</translation>
   <translation id="313850810538580916">Offline</translation>
   <translation id="4094457549458169593">Bez tisku</translation>
@@ -2534,7 +2534,7 @@ limitů se nezdařila</translation>
   <translation id="8438402275401303539">Při pokusu o smazání položky došlo k chybě.</translation>
   <translation id="3605194406869496384">Při pokusu o aktualizaci sady limitů došlo k chybě.</translation>
   <translation id="3319622416410005872">Uloženo.</translation>
-  <translation id="5193581862332356160">Spravovat menu Akce</translation>
+  <translation id="5193581862332356160">Nastavit položky menu</translation>
   <translation id="6396861841748550867">Zdroj:</translation>
   <translation id="1273552842154526827">Verze zdroje:</translation>
   <translation id="6334748001760026557">Související zdroj:</translation>
@@ -5182,4 +5182,41 @@ Zadat rezervaci <ph name="START_SMALL_TEXT"/> (<ph name="INTERPOLATION"/>, <ph n
   <translation id="5458177150283468089" desc="Staff catalog paging: next page marker">»</translation>
   <translation id="962932728820694376">Verze šablony</translation>
   <translation id="6871590641237832504">Nápověda  ke sloupci s ikonami</translation>
+  <translation id="7647298469447651360">Update of Survey failed</translation>
+  <translation id="8977025665424064245" desc="Serials Quick Receive feature">Quick Receive</translation>
+  <translation id="8755099053691815611"> starting with </translation>
+  <translation id="6998809186301919404">Obtain Circulation Information?</translation>
+  <translation id="4893823712842527327">Return to record</translation>
+  <translation id="6671823086410899660">This subscription doesn&apos;t have any expected items.</translation>
+  <translation id="8565487481469426669">Predict new issues or add a special issue?</translation>
+  <translation id="3749276423135504828">Important: </translation>
+  <translation id="2334025377556615910">This distribution does not have a receive template, so we cannot barcode the issue.</translation>
+  <translation id="6817716224747936368">You may still receive without barcoding.</translation>
+  <translation id="3826011931474837834">Other options:</translation>
+  <translation id="2684075216481601833">Create a new template</translation>
+  <translation id="5822080925430638865">Add an existing template to the distribution.</translation>
+  <translation id="924309768168598087"> Barcode items </translation>
+  <translation id="8917541187998643780"> Automatically generate barcodes </translation>
+  <translation id="3909537419612306328"> Show call number prefix and suffix </translation>
+  <translation id="1678881050828049099">Recievable items</translation>
+  <translation id="9161207978355818535">Row number</translation>
+  <translation id="2335585469298834390">Issuance</translation>
+  <translation id="8167855211730748375">Call number prefix</translation>
+  <translation id="3036183657832535211">Call number suffix</translation>
+  <translation id="5148832089116637648">Circulation modifier</translation>
+  <translation id="2520515360425898057">Receive this issue?</translation>
+  <translation id="1217298361325220846">Print routing list for this issue?</translation>
+  <translation id="1884005344345039602">Template default</translation>
+  <translation id="7513055354338888453">Apply to the following <ph name="ICU"/></translation>
+  <translation id="1433160408343868753">{VAR_PLURAL, plural, =1 {issue} other {issues}}</translation>
+  <translation id="5027441549136370245"> No routing list is configured for this stream. </translation>
+  <translation id="1943541715636491272"> Receive </translation>
+  <translation id="3290149003362654744"> Receive and print routing list </translation>
+  <translation id="8833550620496898654">Items received</translation>
+  <translation id="7830707034534607415">Subscription</translation>
+  <translation id="6621421014045079565"> There is no serials subscription for this record at this location.
+</translation>
+  <translation id="1841211506970615814">Subscription <ph name="PH"/> at <ph name="PH_1"/> (<ph name="PH_2"/>-<ph name="PH_3"/>)</translation>
+  <translation id="1719180124348618979">Deposit amount</translation>
+  <translation id="6052408741254261577">Rental fee</translation>
 </translationbundle>
