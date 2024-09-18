@@ -85,6 +85,23 @@
         </div>
       </div>
 
+      
+      <div class="row new-entry">
+        <div class="col-md-8">
+          <label for="grid_density">[% l('Table density') %]</label>
+        </div>
+        <div class="col-md-4">
+          <select id="grid_density" class="form-control" ng-model="grid_density" ng-change="apply_grid_density()">
+            <option value="">[% l('Standard') %]</option>
+            <option value="compact">[% l('Compact') %]</option>
+            <option value="wide">[% l('Wide') %]</option>
+          </select>
+        </div>
+        <div class="col-md-8">
+          <p>[% l('Whitespace in grids (data tables). This does not apply to older interfaces such as Circulation or Item and User Buckets.') %]</p>
+        </div>
+      </div>
+
     </div><!-- left column -->
     <div class="col-md-6"><!-- right column -->
 

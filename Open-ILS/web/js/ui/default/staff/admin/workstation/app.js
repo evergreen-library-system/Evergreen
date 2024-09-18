@@ -180,6 +180,10 @@ function($scope , $window , $location , egCore , egConfirmDialog) {
         $scope.orgselect_combo_names = val;
     });
 
+    egCore.hatch.getItem('ui.staff.grid.density').then(function(val) {
+        $scope.grid_density = val;
+    });
+
     egCore.hatch.getItem('eg.search.search_lib').then(function(val) {
         $scope.search_lib = egCore.org.get(val);
     });
@@ -218,6 +222,15 @@ function($scope , $window , $location , egCore , egConfirmDialog) {
         } else {
             egCore.hatch.removeItem('eg.orgselect.show_combined_names');
         }
+    }
+
+    $scope.apply_grid_density = function() {
+        if ($scope.grid_density && ($scope.grid_density === 'compact' || $scope.grid_density === 'wide' )) {
+            egCore.hatch.setItem('ui.staff.grid.density', $scope.grid_density);
+        } else {
+            egCore.hatch.removeItem('ui.staff.grid.density');
+        }
+        console.log("New density: ", $scope.grid_density);
     }
 
     $scope.test_audio = function(sound) {
