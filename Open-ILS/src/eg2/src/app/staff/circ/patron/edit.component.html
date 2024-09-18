@@ -315,7 +315,7 @@
         fieldName="au-dob-input"
         [noMaxWidth]="true"
         [initialYmd]="patron.dob()"
-        (onChangeAsIso)="
+        (onChangeAsYmd)="
           fieldValueChange(null, null, 'dob', $event); 
           afterFieldChange(null, null, 'dob')"
         [required]="fieldRequired('au.dob')">

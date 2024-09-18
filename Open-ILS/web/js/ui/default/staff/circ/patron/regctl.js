@@ -1154,7 +1154,7 @@ angular.module('egCoreMod')
         patron.expire_date(patron.expire_date().toISOString());
         patron.profile(patron.profile().id());
         if (patron.dob()) 
-            patron.dob(patron.dob().toISOString().replace(/T.*/,''));
+            patron.dob(moment(patron.dob()).format('YYYY-MM-DD'));
         if (patron.ident_type()) 
             patron.ident_type(patron.ident_type().id());
         if (patron.locale())
