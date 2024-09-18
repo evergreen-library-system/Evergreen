@@ -76,6 +76,14 @@ const routes: Routes = [{
         fieldOrder: 'name,label,host,port,db,record_format,transmission_format,auth,use_perm'
     }]
 }, {
+    path: 'config/copy_tag_type',
+    component: BasicAdminPageComponent,
+    data: [{schema: 'config',
+        table: 'copy_tag_type',
+        readonlyFields: 'id',
+        orgDefaultAllowed: 'owner',
+        orgFieldsDefaultingToContextOrg: 'owner' }]
+}, {
     path: 'permission/grp_tree',
     component: PermGroupTreeComponent
 }, {
