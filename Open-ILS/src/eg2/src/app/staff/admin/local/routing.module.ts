@@ -57,6 +57,14 @@ const routes: Routes = [{
     path: 'asset/course_module_term_course_map',
     component: CourseTermMapComponent
 }, {
+    path: 'asset/copy_tag',
+    component: BasicAdminPageComponent,
+    data: [{schema: 'asset',
+        table: 'copy_tag',
+        readonlyFields: 'id',
+        orgDefaultAllowed: 'owner',
+        orgFieldsDefaultingToContextOrg: 'owner' }]
+}, {
     path: 'actor/search_filter_group',
     loadChildren: () =>
         import('./search-filter/search-filter-group.module').then(m => m.SearchFilterGroupModule)
