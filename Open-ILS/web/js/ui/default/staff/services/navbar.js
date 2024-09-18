@@ -130,6 +130,18 @@ angular.module('egCoreMod')
                     return egLovefield.cannotConnect;
                 }
 
+                // This needs to run even if egCore.startup.go() doesn't (which might only happen during offline circ?)
+                $scope.init = function() {
+                    $scope.color_mode = egCore.hatch.getLocalItem('eg.ui.general.colormode');
+                    if (!$scope.color_mode) {
+                        $scope.color_mode = 'auto';
+                    }
+                    const darkModePreference = window.matchMedia("(prefers-color-scheme: dark)");
+                    darkModePreference.addEventListener("change", $scope.setColorMode);
+                    $scope.setColorMode();
+                    
+                }
+                $scope.init();
                 egCore.startup.go().then(
                     function() {
                         if (egCore.auth.user()) {
@@ -139,17 +151,6 @@ angular.module('egCoreMod')
                             $scope.user_id = egCore.auth.user().id();
                             $scope.ws_ou = egCore.auth.user().ws_ou();
                             $scope.workstation = egCore.auth.workstation();
-
-                            $scope.color_mode = egCore.hatch.getLocalItem('eg.ui.general.colormode');
-
-                            if (!$scope.color_mode) {
-                                $scope.color_mode = 'auto';
-                            }
-
-                            const darkModePreference = window.matchMedia("(prefers-color-scheme: dark)");
-                            darkModePreference.addEventListener("change", $scope.setColorMode);
-                            
-                            $scope.setColorMode();
 
                             egCore.org.settings([
                                 'ui.staff.max_recent_patrons',
