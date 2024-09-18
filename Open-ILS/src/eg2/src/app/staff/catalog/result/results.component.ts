@@ -37,13 +37,13 @@ export class ResultsComponent implements OnInit, OnDestroy {
     basketSub: Subscription;
     showMoreDetails = false;
     facetsCollapsed = false;
-    facetsHorizontal = 
+    facetsHorizontal =
         window.innerWidth > mobileWidth;
-    resultsWidth: String;
+    resultsWidth = '10';
 
     @HostListener('window:resize', ['$event'])
     onResize(event) {
-      this.facetsHorizontal = 
+        this.facetsHorizontal =
         event.target.innerWidth > mobileWidth;
     }
 
@@ -93,9 +93,16 @@ export class ResultsComponent implements OnInit, OnDestroy {
         // Watch for basket changes applied by other components.
         this.basketSub = this.basket.onChange.subscribe(
             () => this.applyRecordSelection());
-            
-        // Set how many columns the results may take.
-        this.setResultsWidth();
+
+        this.serverStore.getItem('eg.staff.catalog.results.show_sidebar').then(
+            show_sidebar => {
+                this.facetsCollapsed = !show_sidebar;
+                console.debug('Sidebar: ', show_sidebar);
+                console.debug('Collapsed: ', this.facetsCollapsed);
+                // Set how many columns the results may take.
+                this.setResultsWidth();
+            }
+        );
     }
 
     ngOnDestroy() {
@@ -154,7 +161,9 @@ export class ResultsComponent implements OnInit, OnDestroy {
 
                     this.cat.search(this.searchContext)
                         .then(ok => {
-                            this.cat.fetchFacets(this.searchContext);
+                            if (!this.facetsCollapsed) {
+                                this.cat.fetchFacets(this.searchContext);
+                            }
                             this.cat.fetchBibSummaries(this.searchContext);
                         });
                 });
@@ -200,16 +209,25 @@ export class ResultsComponent implements OnInit, OnDestroy {
             this.basket.removeRecordIds(ids);
         }
     }
-    
+
     handleFacetShow() {
         this.facetsCollapsed = !this.facetsCollapsed;
+        if (!this.facetsCollapsed) {
+            this.cat.fetchFacets(this.searchContext);
+        }
         this.setResultsWidth();
+        this.serverStore.setItem('eg.staff.catalog.results.show_sidebar', !this.facetsCollapsed).then(
+            setting => { 
+                console.debug('New sidebar: ', setting);
+                
+            }
+        );
     }
-    
+
     setResultsWidth(){
         // results can take up the entire row
         // when facets are not present
-        this.resultsWidth = 
+        this.resultsWidth =
              'col-lg-' + resultsCols[(!this.basket || !this.facetsCollapsed ? 0 : 1)];
     }
 }
