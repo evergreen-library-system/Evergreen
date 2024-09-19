@@ -1,4 +1,4 @@
-= Ebook API integration ==
+= Ebook API integration =
 :toc:
 
 Evergreen supports integration with third-party APIs provided by OverDrive and
