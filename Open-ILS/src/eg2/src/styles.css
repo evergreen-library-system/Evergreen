@@ -1152,6 +1152,10 @@ a {
   box-shadow: 0 0.1em 0.5em rgba(var(--box-shadow), 0.3);
 }
 
+[data-bs-theme="dark"] .dropdown-menu.show {
+  box-shadow: 0 0.1em 1em rgba(var(--box-shadow), 0.7);
+}
+
 /* DARK MODE */
 /* Bootstrap has some background colors set instead of using their own body
 background/text variables. Crash override. We can remove this in Bootstrap 5.3.

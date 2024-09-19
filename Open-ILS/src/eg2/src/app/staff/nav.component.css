@@ -125,6 +125,7 @@
 #staff-navbar .nav-link-home {
     margin-right: 0;
     padding: .5rem;
+    transition: color 0.15s ease-in-out, background-color 0.15s ease-in-out;
 }
 
 #staff-navbar .nav-link:hover,
