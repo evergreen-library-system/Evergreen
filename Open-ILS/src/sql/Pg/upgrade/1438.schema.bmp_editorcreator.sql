@@ -1,5 +1,7 @@
 BEGIN;
 
+SELECT evergreen.upgrade_deps_block_check('1438', :eg_version);
+
 ALTER TABLE biblio.monograph_part
     ADD COLUMN creator INTEGER DEFAULT 1,
     ADD COLUMN editor INTEGER DEFAULT 1,
