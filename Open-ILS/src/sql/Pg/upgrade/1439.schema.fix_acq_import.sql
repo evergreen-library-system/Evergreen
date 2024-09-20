@@ -1,6 +1,6 @@
 BEGIN;
 
--- INSERT INTO config.upgrade_log (version) VALUES ('XXXX');
+INSERT INTO config.upgrade_log (version) VALUES ('1439');
 
 -- Use oils_xpath_table instead of pgxml's xpath_table
 CREATE OR REPLACE FUNCTION acq.extract_holding_attr_table (lineitem int, tag text) RETURNS SETOF acq.flat_lineitem_holding_subfield AS $$
