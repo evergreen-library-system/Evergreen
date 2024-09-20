@@ -563,10 +563,10 @@ END;
 $f$ STABLE LANGUAGE PLPGSQL;
 
 CREATE OR REPLACE FUNCTION evergreen.redact_value(
-    input_data      anycompatible,
-    skip_redaction  BOOLEAN         DEFAULT FALSE,  -- pass TRUE for "I passed the test!" and avoid redaction
-    redact_with     anycompatible   DEFAULT NULL
-) RETURNS anycompatible AS $f$
+    input_data      anyelement,
+    skip_redaction  BOOLEAN     DEFAULT FALSE,  -- pass TRUE for "I passed the test!" and avoid redaction
+    redact_with     anyelement  DEFAULT NULL
+) RETURNS anyelement AS $f$
 DECLARE
     result ALIAS FOR $0;
 BEGIN
