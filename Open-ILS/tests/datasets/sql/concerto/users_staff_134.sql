@@ -1,7 +1,7 @@
 -- Invalid address
 INSERT INTO actor.usr 
     (profile, ident_type, usrname, home_ou, family_name, passwd, first_given_name, second_given_name, expire_date, dob, suffix) 
-    VALUES (13, 3, 'sforbes', 6, 'Forbes', 'samuelf1234', 
+    VALUES (13, 3, 'sforbes', 6, 'Forbes', 'demo123',
         'Samuel', 'Eugene', NOW() + '3 years'::INTERVAL, NULL, NULL);
 
 INSERT INTO actor.usr_address 
@@ -28,7 +28,7 @@ UPDATE actor.usr usr SET usrname = LOWER(aou.shortname) || usrname
 
 INSERT INTO actor.usr 
     (profile, ident_type, usrname, home_ou, family_name, passwd, first_given_name, second_given_name, expire_date, dob, suffix) 
-    VALUES (13, 1, 'vcampbell', 4, 'Campbell', 'vincentc1234', 
+    VALUES (13, 1, 'vcampbell', 4, 'Campbell', 'demo123',
         'Vincent', 'Lawrence', NOW() + '3 years'::INTERVAL, NULL, NULL);
 
 INSERT INTO actor.usr_address 
@@ -55,7 +55,7 @@ UPDATE actor.usr usr SET usrname = LOWER(aou.shortname) || usrname
 
 INSERT INTO actor.usr 
     (profile, ident_type, usrname, home_ou, family_name, passwd, first_given_name, second_given_name, expire_date, dob, suffix) 
-    VALUES (15, 3, 'afrey', 9, 'Frey', 'annief1234', 
+    VALUES (15, 3, 'afrey', 9, 'Frey', 'demo123',
         'Annie', 'Jessica', NOW() + '3 years'::INTERVAL, NULL, NULL);
 
 INSERT INTO actor.usr_address 
@@ -82,7 +82,7 @@ UPDATE actor.usr usr SET usrname = LOWER(aou.shortname) || usrname
 
 INSERT INTO actor.usr 
     (profile, ident_type, usrname, home_ou, family_name, passwd, first_given_name, second_given_name, expire_date, dob, suffix) 
-    VALUES (15, 3, 'msalinas', 9, 'Salinas', 'marks1234', 
+    VALUES (15, 3, 'msalinas', 9, 'Salinas', 'demo123',
         'Mark', 'Christopher', NOW() + '3 years'::INTERVAL, '1999-06-13', 'II');
 
 INSERT INTO actor.usr_address 
@@ -109,7 +109,7 @@ UPDATE actor.usr usr SET usrname = LOWER(aou.shortname) || usrname
 
 INSERT INTO actor.usr 
     (profile, ident_type, usrname, home_ou, family_name, passwd, first_given_name, second_given_name, expire_date, dob, suffix) 
-    VALUES (15, 1, 'klindsey', 8, 'Lindsey', 'kennethl1234', 
+    VALUES (15, 1, 'klindsey', 8, 'Lindsey', 'demo123',
         'Kenneth', 'Jesse', NOW() + '3 years'::INTERVAL, NULL, NULL);
 
 INSERT INTO actor.usr_address 
@@ -136,7 +136,7 @@ UPDATE actor.usr usr SET usrname = LOWER(aou.shortname) || usrname
 
 INSERT INTO actor.usr 
     (profile, ident_type, usrname, home_ou, family_name, passwd, first_given_name, second_given_name, expire_date, dob, suffix) 
-    VALUES (15, 3, 'mdavis', 8, 'Davis', 'marthad1234', 
+    VALUES (15, 3, 'mdavis', 8, 'Davis', 'demo123',
         'Martha', '', NOW() + '3 years'::INTERVAL, NULL, NULL);
 
 INSERT INTO actor.usr_address 
@@ -163,7 +163,7 @@ UPDATE actor.usr usr SET usrname = LOWER(aou.shortname) || usrname
 
 INSERT INTO actor.usr 
     (profile, ident_type, usrname, home_ou, family_name, passwd, first_given_name, second_given_name, expire_date, dob, suffix) 
-    VALUES (15, 3, 'vfreeman', 7, 'Freeman', 'virginiaf1234', 
+    VALUES (15, 3, 'vfreeman', 7, 'Freeman', 'demo123',
         'Virginia', 'Johanna', NOW() + '3 years'::INTERVAL, '1967-07-23', 'Jr');
 
 INSERT INTO actor.usr_address 
@@ -190,7 +190,7 @@ UPDATE actor.usr usr SET usrname = LOWER(aou.shortname) || usrname
 
 INSERT INTO actor.usr 
     (profile, ident_type, usrname, home_ou, family_name, passwd, first_given_name, second_given_name, expire_date, dob, suffix) 
-    VALUES (15, 3, 'lmartinez', 7, 'Martinez', 'leroym1234', 
+    VALUES (15, 3, 'lmartinez', 7, 'Martinez', 'demo123',
         'Leroy', 'Brian', NOW() + '3 years'::INTERVAL, NULL, NULL);
 
 INSERT INTO actor.usr_address 
@@ -217,7 +217,7 @@ UPDATE actor.usr usr SET usrname = LOWER(aou.shortname) || usrname
 
 INSERT INTO actor.usr 
     (profile, ident_type, usrname, home_ou, family_name, passwd, first_given_name, second_given_name, expire_date, dob, suffix) 
-    VALUES (15, 1, 'warmstrong', 6, 'Armstrong', 'williama1234', 
+    VALUES (15, 1, 'warmstrong', 6, 'Armstrong', 'demo123',
         'William', 'William', NOW() + '3 years'::INTERVAL, NULL, NULL);
 
 INSERT INTO actor.usr_address 
@@ -244,7 +244,7 @@ UPDATE actor.usr usr SET usrname = LOWER(aou.shortname) || usrname
 
 INSERT INTO actor.usr 
     (profile, ident_type, usrname, home_ou, family_name, passwd, first_given_name, second_given_name, expire_date, dob, suffix) 
-    VALUES (15, 3, 'acotton', 6, 'Cotton', 'amyc1234', 
+    VALUES (15, 3, 'acotton', 6, 'Cotton', 'demo123',
         'Amy', 'Ada', NOW() + '3 years'::INTERVAL, NULL, NULL);
 
 INSERT INTO actor.usr_address 
@@ -271,7 +271,7 @@ UPDATE actor.usr usr SET usrname = LOWER(aou.shortname) || usrname
 
 INSERT INTO actor.usr 
     (profile, ident_type, usrname, home_ou, family_name, passwd, first_given_name, second_given_name, expire_date, dob, suffix) 
-    VALUES (15, 1, 'sbarton', 5, 'Barton', 'sarahb1234', 
+    VALUES (15, 1, 'sbarton', 5, 'Barton', 'demo123',
         'Sarah', 'Valerie', NOW() + '3 years'::INTERVAL, NULL, NULL);
 
 INSERT INTO actor.usr_address 
@@ -298,7 +298,7 @@ UPDATE actor.usr usr SET usrname = LOWER(aou.shortname) || usrname
 
 INSERT INTO actor.usr 
     (profile, ident_type, usrname, home_ou, family_name, passwd, first_given_name, second_given_name, expire_date, dob, suffix) 
-    VALUES (15, 1, 'jhammond', 5, 'Hammond', 'jamesh1234', 
+    VALUES (15, 1, 'jhammond', 5, 'Hammond', 'demo123',
         'James', 'Michael', NOW() + '3 years'::INTERVAL, NULL, NULL);
 
 INSERT INTO actor.usr_address 
@@ -325,7 +325,7 @@ UPDATE actor.usr usr SET usrname = LOWER(aou.shortname) || usrname
 
 INSERT INTO actor.usr 
     (profile, ident_type, usrname, home_ou, family_name, passwd, first_given_name, second_given_name, expire_date, dob, suffix) 
-    VALUES (15, 3, 'ajoseph', 4, 'Joseph', 'alexj1234', 
+    VALUES (15, 3, 'ajoseph', 4, 'Joseph', 'demo123',
         'Alex', 'Edward', NOW() + '3 years'::INTERVAL, NULL, NULL);
 
 INSERT INTO actor.usr_address 
@@ -352,7 +352,7 @@ UPDATE actor.usr usr SET usrname = LOWER(aou.shortname) || usrname
 
 INSERT INTO actor.usr 
     (profile, ident_type, usrname, home_ou, family_name, passwd, first_given_name, second_given_name, expire_date, dob, suffix) 
-    VALUES (15, 3, 'imccoy', 4, 'Mccoy', 'idam1234', 
+    VALUES (15, 3, 'imccoy', 4, 'Mccoy', 'demo123',
         'Ida', 'Gloria', NOW() + '3 years'::INTERVAL, NULL, NULL);
 
 INSERT INTO actor.usr_address 
@@ -379,7 +379,7 @@ UPDATE actor.usr usr SET usrname = LOWER(aou.shortname) || usrname
 
 INSERT INTO actor.usr 
     (profile, ident_type, usrname, home_ou, family_name, passwd, first_given_name, second_given_name, expire_date, dob, suffix) 
-    VALUES (14, 3, 'dwright', 9, 'Wright', 'dennisw1234', 
+    VALUES (14, 3, 'dwright', 9, 'Wright', 'demo123',
         'Dennis', 'Ernest', NOW() + '3 years'::INTERVAL, NULL, NULL);
 
 INSERT INTO actor.usr_address 
@@ -406,7 +406,7 @@ UPDATE actor.usr usr SET usrname = LOWER(aou.shortname) || usrname
 
 INSERT INTO actor.usr 
     (profile, ident_type, usrname, home_ou, family_name, passwd, first_given_name, second_given_name, expire_date, dob, suffix) 
-    VALUES (14, 1, 'alynch', 9, 'Lynch', 'armandol1234', 
+    VALUES (14, 1, 'alynch', 9, 'Lynch', 'demo123',
         'Armando', '', NOW() + '3 years'::INTERVAL, NULL, NULL);
 
 INSERT INTO actor.usr_address 
@@ -433,7 +433,7 @@ UPDATE actor.usr usr SET usrname = LOWER(aou.shortname) || usrname
 
 INSERT INTO actor.usr 
     (profile, ident_type, usrname, home_ou, family_name, passwd, first_given_name, second_given_name, expire_date, dob, suffix) 
-    VALUES (14, 3, 'rgraham', 8, 'Graham', 'robertg1234', 
+    VALUES (14, 3, 'rgraham', 8, 'Graham', 'demo123',
         'Robert', '', NOW() + '3 years'::INTERVAL, NULL, NULL);
 
 INSERT INTO actor.usr_address 
@@ -460,7 +460,7 @@ UPDATE actor.usr usr SET usrname = LOWER(aou.shortname) || usrname
 
 INSERT INTO actor.usr 
     (profile, ident_type, usrname, home_ou, family_name, passwd, first_given_name, second_given_name, expire_date, dob, suffix) 
-    VALUES (14, 1, 'sthompson', 8, 'Thompson', 'sherrit1234', 
+    VALUES (14, 1, 'sthompson', 8, 'Thompson', 'demo123',
         'Sherri', '', NOW() + '3 years'::INTERVAL, NULL, NULL);
 
 INSERT INTO actor.usr_address 
@@ -487,7 +487,7 @@ UPDATE actor.usr usr SET usrname = LOWER(aou.shortname) || usrname
 
 INSERT INTO actor.usr 
     (profile, ident_type, usrname, home_ou, family_name, passwd, first_given_name, second_given_name, expire_date, dob, suffix) 
-    VALUES (14, 1, 'ngarcia', 7, 'Garcia', 'nanetteg1234', 
+    VALUES (14, 1, 'ngarcia', 7, 'Garcia', 'demo123',
         'Nanette', 'Helen', NOW() + '3 years'::INTERVAL, NULL, NULL);
 
 INSERT INTO actor.usr_address 
@@ -514,7 +514,7 @@ UPDATE actor.usr usr SET usrname = LOWER(aou.shortname) || usrname
 
 INSERT INTO actor.usr 
     (profile, ident_type, usrname, home_ou, family_name, passwd, first_given_name, second_given_name, expire_date, dob, suffix) 
-    VALUES (14, 3, 'rcook', 7, 'Cook', 'raymondc1234', 
+    VALUES (14, 3, 'rcook', 7, 'Cook', 'demo123',
         'Raymond', 'Boyd', NOW() + '3 years'::INTERVAL, NULL, NULL);
 
 INSERT INTO actor.usr_address 
@@ -541,7 +541,7 @@ UPDATE actor.usr usr SET usrname = LOWER(aou.shortname) || usrname
 
 INSERT INTO actor.usr 
     (profile, ident_type, usrname, home_ou, family_name, passwd, first_given_name, second_given_name, expire_date, dob, suffix) 
-    VALUES (14, 3, 'kbrewer', 6, 'Brewer', 'katherineb1234', 
+    VALUES (14, 3, 'kbrewer', 6, 'Brewer', 'demo123',
         'Katherine', '', NOW() + '3 years'::INTERVAL, NULL, NULL);
 
 INSERT INTO actor.usr_address 
@@ -568,7 +568,7 @@ UPDATE actor.usr usr SET usrname = LOWER(aou.shortname) || usrname
 
 INSERT INTO actor.usr 
     (profile, ident_type, usrname, home_ou, family_name, passwd, first_given_name, second_given_name, expire_date, dob, suffix) 
-    VALUES (14, 1, 'cwashington', 6, 'Washington', 'christopherw1234', 
+    VALUES (14, 1, 'cwashington', 6, 'Washington', 'demo123',
         'Christopher', '', NOW() + '3 years'::INTERVAL, NULL, NULL);
 
 INSERT INTO actor.usr_address 
@@ -595,7 +595,7 @@ UPDATE actor.usr usr SET usrname = LOWER(aou.shortname) || usrname
 
 INSERT INTO actor.usr 
     (profile, ident_type, usrname, home_ou, family_name, passwd, first_given_name, second_given_name, expire_date, dob, suffix) 
-    VALUES (14, 3, 'dmurray', 5, 'Murray', 'dawnm1234', 
+    VALUES (14, 3, 'dmurray', 5, 'Murray', 'demo123',
         'Dawn', 'Katherine', NOW() + '3 years'::INTERVAL, NULL, NULL);
 
 INSERT INTO actor.usr_address 
@@ -622,7 +622,7 @@ UPDATE actor.usr usr SET usrname = LOWER(aou.shortname) || usrname
 
 INSERT INTO actor.usr 
     (profile, ident_type, usrname, home_ou, family_name, passwd, first_given_name, second_given_name, expire_date, dob, suffix) 
-    VALUES (14, 1, 'bwatts', 5, 'Watts', 'barbaraw1234', 
+    VALUES (14, 1, 'bwatts', 5, 'Watts', 'demo123',
         'Barbara', 'Gloria', NOW() + '3 years'::INTERVAL, NULL, NULL);
 
 INSERT INTO actor.usr_address 
@@ -649,7 +649,7 @@ UPDATE actor.usr usr SET usrname = LOWER(aou.shortname) || usrname
 
 INSERT INTO actor.usr 
     (profile, ident_type, usrname, home_ou, family_name, passwd, first_given_name, second_given_name, expire_date, dob, suffix) 
-    VALUES (14, 3, 'mmartin', 4, 'Martin', 'marym1234', 
+    VALUES (14, 3, 'mmartin', 4, 'Martin', 'demo123',
         'Mary', 'Shannon', NOW() + '3 years'::INTERVAL, NULL, 'Sr');
 
 INSERT INTO actor.usr_address 
@@ -676,7 +676,7 @@ UPDATE actor.usr usr SET usrname = LOWER(aou.shortname) || usrname
 
 INSERT INTO actor.usr 
     (profile, ident_type, usrname, home_ou, family_name, passwd, first_given_name, second_given_name, expire_date, dob, suffix) 
-    VALUES (14, 3, 'vford', 4, 'Ford', 'vivianf1234', 
+    VALUES (14, 3, 'vford', 4, 'Ford', 'demo123',
         'Vivian', 'Darlene', NOW() + '3 years'::INTERVAL, NULL, NULL);
 
 INSERT INTO actor.usr_address 
@@ -703,7 +703,7 @@ UPDATE actor.usr usr SET usrname = LOWER(aou.shortname) || usrname
 
 INSERT INTO actor.usr 
     (profile, ident_type, usrname, home_ou, family_name, passwd, first_given_name, second_given_name, expire_date, dob, suffix) 
-    VALUES (12, 1, 'gsuarez', 9, 'Suarez', 'garys1234', 
+    VALUES (12, 1, 'gsuarez', 9, 'Suarez', 'demo123',
         'Gary', 'Joel', NOW() + '3 years'::INTERVAL, NULL, 'Sr');
 
 INSERT INTO actor.usr_address 
@@ -730,7 +730,7 @@ UPDATE actor.usr usr SET usrname = LOWER(aou.shortname) || usrname
 
 INSERT INTO actor.usr 
     (profile, ident_type, usrname, home_ou, family_name, passwd, first_given_name, second_given_name, expire_date, dob, suffix) 
-    VALUES (12, 1, 'eellis', 9, 'Ellis', 'edwarde1234', 
+    VALUES (12, 1, 'eellis', 9, 'Ellis', 'demo123',
         'Edward', 'David', NOW() + '3 years'::INTERVAL, NULL, NULL);
 
 INSERT INTO actor.usr_address 
@@ -757,7 +757,7 @@ UPDATE actor.usr usr SET usrname = LOWER(aou.shortname) || usrname
 
 INSERT INTO actor.usr 
     (profile, ident_type, usrname, home_ou, family_name, passwd, first_given_name, second_given_name, expire_date, dob, suffix) 
-    VALUES (12, 1, 'nward', 8, 'Ward', 'naomiw1234', 
+    VALUES (12, 1, 'nward', 8, 'Ward', 'demo123',
         'Naomi', 'Angela', NOW() + '3 years'::INTERVAL, NULL, 'Sr');
 
 INSERT INTO actor.usr_address 
@@ -784,7 +784,7 @@ UPDATE actor.usr usr SET usrname = LOWER(aou.shortname) || usrname
 
 INSERT INTO actor.usr 
     (profile, ident_type, usrname, home_ou, family_name, passwd, first_given_name, second_given_name, expire_date, dob, suffix) 
-    VALUES (12, 1, 'jrichards', 8, 'Richards', 'josephr1234', 
+    VALUES (12, 1, 'jrichards', 8, 'Richards', 'demo123',
         'Joseph', 'Thomas', NOW() + '3 years'::INTERVAL, NULL, NULL);
 
 INSERT INTO actor.usr_address 
@@ -811,7 +811,7 @@ UPDATE actor.usr usr SET usrname = LOWER(aou.shortname) || usrname
 
 INSERT INTO actor.usr 
     (profile, ident_type, usrname, home_ou, family_name, passwd, first_given_name, second_given_name, expire_date, dob, suffix) 
-    VALUES (12, 3, 'rsanders', 7, 'Sanders', 'roslyns1234', 
+    VALUES (12, 3, 'rsanders', 7, 'Sanders', 'demo123',
         'Roslyn', '', NOW() + '3 years'::INTERVAL, NULL, NULL);
 
 INSERT INTO actor.usr_address 
@@ -838,7 +838,7 @@ UPDATE actor.usr usr SET usrname = LOWER(aou.shortname) || usrname
 
 INSERT INTO actor.usr 
     (profile, ident_type, usrname, home_ou, family_name, passwd, first_given_name, second_given_name, expire_date, dob, suffix) 
-    VALUES (12, 1, 'nrivera', 7, 'Rivera', 'nancyr1234', 
+    VALUES (12, 1, 'nrivera', 7, 'Rivera', 'demo123',
         'Nancy', 'Anita', NOW() + '3 years'::INTERVAL, NULL, 'Sr');
 
 INSERT INTO actor.usr_address 
@@ -865,7 +865,7 @@ UPDATE actor.usr usr SET usrname = LOWER(aou.shortname) || usrname
 
 INSERT INTO actor.usr 
     (profile, ident_type, usrname, home_ou, family_name, passwd, first_given_name, second_given_name, expire_date, dob, suffix) 
-    VALUES (12, 1, 'cmartin', 6, 'Martin', 'carlm1234', 
+    VALUES (12, 1, 'cmartin', 6, 'Martin', 'demo123',
         'Carl', 'Charles', NOW() + '3 years'::INTERVAL, NULL, NULL);
 
 INSERT INTO actor.usr_address 
@@ -892,7 +892,7 @@ UPDATE actor.usr usr SET usrname = LOWER(aou.shortname) || usrname
 
 INSERT INTO actor.usr 
     (profile, ident_type, usrname, home_ou, family_name, passwd, first_given_name, second_given_name, expire_date, dob, suffix) 
-    VALUES (12, 1, 'telliott', 6, 'Elliott', 'thomase1234', 
+    VALUES (12, 1, 'telliott', 6, 'Elliott', 'demo123',
         'Thomas', 'Marcus', NOW() + '3 years'::INTERVAL, NULL, NULL);
 
 INSERT INTO actor.usr_address 
@@ -919,7 +919,7 @@ UPDATE actor.usr usr SET usrname = LOWER(aou.shortname) || usrname
 
 INSERT INTO actor.usr 
     (profile, ident_type, usrname, home_ou, family_name, passwd, first_given_name, second_given_name, expire_date, dob, suffix) 
-    VALUES (12, 3, 'ocherry', 5, 'Cherry', 'olgac1234', 
+    VALUES (12, 3, 'ocherry', 5, 'Cherry', 'demo123',
         'Olga', 'Marie', NOW() + '3 years'::INTERVAL, NULL, NULL);
 
 INSERT INTO actor.usr_address 
@@ -946,7 +946,7 @@ UPDATE actor.usr usr SET usrname = LOWER(aou.shortname) || usrname
 
 INSERT INTO actor.usr 
     (profile, ident_type, usrname, home_ou, family_name, passwd, first_given_name, second_given_name, expire_date, dob, suffix) 
-    VALUES (12, 1, 'gdavenport', 5, 'Davenport', 'gwendolynd1234', 
+    VALUES (12, 1, 'gdavenport', 5, 'Davenport', 'demo123',
         'Gwendolyn', '', NOW() + '3 years'::INTERVAL, NULL, 'Jr');
 
 INSERT INTO actor.usr_address 
@@ -973,7 +973,7 @@ UPDATE actor.usr usr SET usrname = LOWER(aou.shortname) || usrname
 
 INSERT INTO actor.usr 
     (profile, ident_type, usrname, home_ou, family_name, passwd, first_given_name, second_given_name, expire_date, dob, suffix) 
-    VALUES (12, 3, 'sbrock', 4, 'Brock', 'scottb1234', 
+    VALUES (12, 3, 'sbrock', 4, 'Brock', 'demo123',
         'Scott', 'George', NOW() + '3 years'::INTERVAL, NULL, NULL);
 
 INSERT INTO actor.usr_address 
@@ -1000,7 +1000,7 @@ UPDATE actor.usr usr SET usrname = LOWER(aou.shortname) || usrname
 
 INSERT INTO actor.usr 
     (profile, ident_type, usrname, home_ou, family_name, passwd, first_given_name, second_given_name, expire_date, dob, suffix) 
-    VALUES (12, 3, 'rjackson', 4, 'Jackson', 'ronaldj1234', 
+    VALUES (12, 3, 'rjackson', 4, 'Jackson', 'demo123',
         'Ronald', 'Robert', NOW() + '3 years'::INTERVAL, NULL, 'Jr');
 
 INSERT INTO actor.usr_address 
@@ -1027,7 +1027,7 @@ UPDATE actor.usr usr SET usrname = LOWER(aou.shortname) || usrname
 
 INSERT INTO actor.usr 
     (profile, ident_type, usrname, home_ou, family_name, passwd, first_given_name, second_given_name, expire_date, dob, suffix) 
-    VALUES (11, 1, 'wjames', 9, 'James', 'waynej1234', 
+    VALUES (11, 1, 'wjames', 9, 'James', 'demo123',
         'Wayne', 'George', NOW() + '3 years'::INTERVAL, NULL, NULL);
 
 INSERT INTO actor.usr_address 
@@ -1054,7 +1054,7 @@ UPDATE actor.usr usr SET usrname = LOWER(aou.shortname) || usrname
 
 INSERT INTO actor.usr 
     (profile, ident_type, usrname, home_ou, family_name, passwd, first_given_name, second_given_name, expire_date, dob, suffix) 
-    VALUES (11, 1, 'shernandez', 9, 'Hernandez', 'sarahh1234', 
+    VALUES (11, 1, 'shernandez', 9, 'Hernandez', 'demo123',
         'Sarah', 'Elaine', NOW() + '3 years'::INTERVAL, NULL, NULL);
 
 INSERT INTO actor.usr_address 
@@ -1081,7 +1081,7 @@ UPDATE actor.usr usr SET usrname = LOWER(aou.shortname) || usrname
 
 INSERT INTO actor.usr 
     (profile, ident_type, usrname, home_ou, family_name, passwd, first_given_name, second_given_name, expire_date, dob, suffix) 
-    VALUES (11, 3, 'latkins', 8, 'Atkins', 'louisa1234', 
+    VALUES (11, 3, 'latkins', 8, 'Atkins', 'demo123',
         'Louis', 'Edward', NOW() + '3 years'::INTERVAL, NULL, NULL);
 
 INSERT INTO actor.usr_address 
@@ -1108,7 +1108,7 @@ UPDATE actor.usr usr SET usrname = LOWER(aou.shortname) || usrname
 
 INSERT INTO actor.usr 
     (profile, ident_type, usrname, home_ou, family_name, passwd, first_given_name, second_given_name, expire_date, dob, suffix) 
-    VALUES (11, 3, 'wneal', 8, 'Neal', 'waynen1234', 
+    VALUES (11, 3, 'wneal', 8, 'Neal', 'demo123',
         'Wayne', '', NOW() + '3 years'::INTERVAL, '1977-06-05', 'Jr');
 
 INSERT INTO actor.usr_address 
@@ -1135,7 +1135,7 @@ UPDATE actor.usr usr SET usrname = LOWER(aou.shortname) || usrname
 
 INSERT INTO actor.usr 
     (profile, ident_type, usrname, home_ou, family_name, passwd, first_given_name, second_given_name, expire_date, dob, suffix) 
-    VALUES (11, 3, 'mharrison', 7, 'Harrison', 'michelleh1234', 
+    VALUES (11, 3, 'mharrison', 7, 'Harrison', 'demo123',
         'Michelle', 'Patricia', NOW() + '3 years'::INTERVAL, NULL, NULL);
 
 INSERT INTO actor.usr_address 
@@ -1162,7 +1162,7 @@ UPDATE actor.usr usr SET usrname = LOWER(aou.shortname) || usrname
 
 INSERT INTO actor.usr 
     (profile, ident_type, usrname, home_ou, family_name, passwd, first_given_name, second_given_name, expire_date, dob, suffix) 
-    VALUES (11, 3, 'hwomack', 7, 'Womack', 'howardw1234', 
+    VALUES (11, 3, 'hwomack', 7, 'Womack', 'demo123',
         'Howard', '', NOW() + '3 years'::INTERVAL, NULL, NULL);
 
 INSERT INTO actor.usr_address 
@@ -1189,7 +1189,7 @@ UPDATE actor.usr usr SET usrname = LOWER(aou.shortname) || usrname
 
 INSERT INTO actor.usr 
     (profile, ident_type, usrname, home_ou, family_name, passwd, first_given_name, second_given_name, expire_date, dob, suffix) 
-    VALUES (11, 3, 'vbacon', 6, 'Bacon', 'virginiab1234', 
+    VALUES (11, 3, 'vbacon', 6, 'Bacon', 'demo123',
         'Virginia', 'Celia', NOW() + '3 years'::INTERVAL, NULL, NULL);
 
 INSERT INTO actor.usr_address 
@@ -1216,7 +1216,7 @@ UPDATE actor.usr usr SET usrname = LOWER(aou.shortname) || usrname
 
 INSERT INTO actor.usr 
     (profile, ident_type, usrname, home_ou, family_name, passwd, first_given_name, second_given_name, expire_date, dob, suffix) 
-    VALUES (11, 1, 'lbrooks', 6, 'Brooks', 'lonnieb1234', 
+    VALUES (11, 1, 'lbrooks', 6, 'Brooks', 'demo123',
         'Lonnie', 'William', NOW() + '3 years'::INTERVAL, NULL, NULL);
 
 INSERT INTO actor.usr_address 
@@ -1243,7 +1243,7 @@ UPDATE actor.usr usr SET usrname = LOWER(aou.shortname) || usrname
 
 INSERT INTO actor.usr 
     (profile, ident_type, usrname, home_ou, family_name, passwd, first_given_name, second_given_name, expire_date, dob, suffix) 
-    VALUES (11, 3, 'mgonzales', 5, 'Gonzales', 'maryg1234', 
+    VALUES (11, 3, 'mgonzales', 5, 'Gonzales', 'demo123',
         'Mary', 'Jessica', NOW() + '3 years'::INTERVAL, NULL, NULL);
 
 INSERT INTO actor.usr_address 
@@ -1270,7 +1270,7 @@ UPDATE actor.usr usr SET usrname = LOWER(aou.shortname) || usrname
 
 INSERT INTO actor.usr 
     (profile, ident_type, usrname, home_ou, family_name, passwd, first_given_name, second_given_name, expire_date, dob, suffix) 
-    VALUES (11, 1, 'mterry', 5, 'Terry', 'michellet1234', 
+    VALUES (11, 1, 'mterry', 5, 'Terry', 'demo123',
         'Michelle', 'Kristy', NOW() + '3 years'::INTERVAL, NULL, NULL);
 
 INSERT INTO actor.usr_address 
@@ -1297,7 +1297,7 @@ UPDATE actor.usr usr SET usrname = LOWER(aou.shortname) || usrname
 
 INSERT INTO actor.usr 
     (profile, ident_type, usrname, home_ou, family_name, passwd, first_given_name, second_given_name, expire_date, dob, suffix) 
-    VALUES (11, 3, 'mmeeks', 4, 'Meeks', 'michellem1234', 
+    VALUES (11, 3, 'mmeeks', 4, 'Meeks', 'demo123',
         'Michelle', 'Myra', NOW() + '3 years'::INTERVAL, '1966-01-23', 'III');
 
 INSERT INTO actor.usr_address 
@@ -1324,7 +1324,7 @@ UPDATE actor.usr usr SET usrname = LOWER(aou.shortname) || usrname
 
 INSERT INTO actor.usr 
     (profile, ident_type, usrname, home_ou, family_name, passwd, first_given_name, second_given_name, expire_date, dob, suffix) 
-    VALUES (11, 3, 'epalmer', 4, 'Palmer', 'elvap1234', 
+    VALUES (11, 3, 'epalmer', 4, 'Palmer', 'demo123',
         'Elva', 'Tiffany', NOW() + '3 years'::INTERVAL, '1987-08-21', 'Jr');
 
 INSERT INTO actor.usr_address 
@@ -1351,7 +1351,7 @@ UPDATE actor.usr usr SET usrname = LOWER(aou.shortname) || usrname
 
 INSERT INTO actor.usr 
     (profile, ident_type, usrname, home_ou, family_name, passwd, first_given_name, second_given_name, expire_date, dob, suffix) 
-    VALUES (10, 3, 'mwilliams', 9, 'Williams', 'mattheww1234', 
+    VALUES (10, 3, 'mwilliams', 9, 'Williams', 'demo123',
         'Matthew', '', NOW() + '3 years'::INTERVAL, NULL, NULL);
 
 INSERT INTO actor.usr_address 
@@ -1378,7 +1378,7 @@ UPDATE actor.usr usr SET usrname = LOWER(aou.shortname) || usrname
 
 INSERT INTO actor.usr 
     (profile, ident_type, usrname, home_ou, family_name, passwd, first_given_name, second_given_name, expire_date, dob, suffix) 
-    VALUES (10, 1, 'nperez', 9, 'Perez', 'nicholasp1234', 
+    VALUES (10, 1, 'nperez', 9, 'Perez', 'demo123',
         'Nicholas', 'Joseph', NOW() + '3 years'::INTERVAL, NULL, NULL);
 
 INSERT INTO actor.usr_address 
@@ -1405,7 +1405,7 @@ UPDATE actor.usr usr SET usrname = LOWER(aou.shortname) || usrname
 
 INSERT INTO actor.usr 
     (profile, ident_type, usrname, home_ou, family_name, passwd, first_given_name, second_given_name, expire_date, dob, suffix) 
-    VALUES (10, 3, 'bfisher', 8, 'Fisher', 'barbaraf1234', 
+    VALUES (10, 3, 'bfisher', 8, 'Fisher', 'demo123',
         'Barbara', '', NOW() + '3 years'::INTERVAL, NULL, NULL);
 
 INSERT INTO actor.usr_address 
@@ -1432,7 +1432,7 @@ UPDATE actor.usr usr SET usrname = LOWER(aou.shortname) || usrname
 
 INSERT INTO actor.usr 
     (profile, ident_type, usrname, home_ou, family_name, passwd, first_given_name, second_given_name, expire_date, dob, suffix) 
-    VALUES (10, 3, 'mmendoza', 8, 'Mendoza', 'miguelm1234', 
+    VALUES (10, 3, 'mmendoza', 8, 'Mendoza', 'demo123',
         'Miguel', '', NOW() + '3 years'::INTERVAL, NULL, NULL);
 
 INSERT INTO actor.usr_address 
@@ -1459,7 +1459,7 @@ UPDATE actor.usr usr SET usrname = LOWER(aou.shortname) || usrname
 
 INSERT INTO actor.usr 
     (profile, ident_type, usrname, home_ou, family_name, passwd, first_given_name, second_given_name, expire_date, dob, suffix) 
-    VALUES (10, 1, 'ldickinson', 7, 'Dickinson', 'leed1234', 
+    VALUES (10, 1, 'ldickinson', 7, 'Dickinson', 'demo123',
         'Lee', 'Annie', NOW() + '3 years'::INTERVAL, NULL, NULL);
 
 INSERT INTO actor.usr_address 
@@ -1486,7 +1486,7 @@ UPDATE actor.usr usr SET usrname = LOWER(aou.shortname) || usrname
 
 INSERT INTO actor.usr 
     (profile, ident_type, usrname, home_ou, family_name, passwd, first_given_name, second_given_name, expire_date, dob, suffix) 
-    VALUES (10, 1, 'awilliams', 7, 'Williams', 'angelinaw1234', 
+    VALUES (10, 1, 'awilliams', 7, 'Williams', 'demo123',
         'Angelina', 'Joan', NOW() + '3 years'::INTERVAL, NULL, NULL);
 
 INSERT INTO actor.usr_address 
@@ -1513,7 +1513,7 @@ UPDATE actor.usr usr SET usrname = LOWER(aou.shortname) || usrname
 
 INSERT INTO actor.usr 
     (profile, ident_type, usrname, home_ou, family_name, passwd, first_given_name, second_given_name, expire_date, dob, suffix) 
-    VALUES (10, 1, 'bsanchez', 6, 'Sanchez', 'beths1234', 
+    VALUES (10, 1, 'bsanchez', 6, 'Sanchez', 'demo123',
         'Beth', 'Deborah', NOW() + '3 years'::INTERVAL, NULL, NULL);
 
 INSERT INTO actor.usr_address 
@@ -1540,7 +1540,7 @@ UPDATE actor.usr usr SET usrname = LOWER(aou.shortname) || usrname
 
 INSERT INTO actor.usr 
     (profile, ident_type, usrname, home_ou, family_name, passwd, first_given_name, second_given_name, expire_date, dob, suffix) 
-    VALUES (10, 3, 'ethompson', 6, 'Thompson', 'elvint1234', 
+    VALUES (10, 3, 'ethompson', 6, 'Thompson', 'demo123',
         'Elvin', '', NOW() + '3 years'::INTERVAL, NULL, NULL);
 
 INSERT INTO actor.usr_address 
@@ -1567,7 +1567,7 @@ UPDATE actor.usr usr SET usrname = LOWER(aou.shortname) || usrname
 
 INSERT INTO actor.usr 
     (profile, ident_type, usrname, home_ou, family_name, passwd, first_given_name, second_given_name, expire_date, dob, suffix) 
-    VALUES (10, 1, 'dlawson', 5, 'Lawson', 'doral1234', 
+    VALUES (10, 1, 'dlawson', 5, 'Lawson', 'demo123',
         'Dora', '', NOW() + '3 years'::INTERVAL, NULL, NULL);
 
 INSERT INTO actor.usr_address 
@@ -1594,7 +1594,7 @@ UPDATE actor.usr usr SET usrname = LOWER(aou.shortname) || usrname
 
 INSERT INTO actor.usr 
     (profile, ident_type, usrname, home_ou, family_name, passwd, first_given_name, second_given_name, expire_date, dob, suffix) 
-    VALUES (10, 1, 'lvargas', 5, 'Vargas', 'laurav1234', 
+    VALUES (10, 1, 'lvargas', 5, 'Vargas', 'demo123',
         'Laura', 'Mildred', NOW() + '3 years'::INTERVAL, '1989-07-04', 'III');
 
 INSERT INTO actor.usr_address 
@@ -1621,7 +1621,7 @@ UPDATE actor.usr usr SET usrname = LOWER(aou.shortname) || usrname
 
 INSERT INTO actor.usr 
     (profile, ident_type, usrname, home_ou, family_name, passwd, first_given_name, second_given_name, expire_date, dob, suffix) 
-    VALUES (10, 3, 'wrandall', 4, 'Randall', 'williamr1234', 
+    VALUES (10, 3, 'wrandall', 4, 'Randall', 'demo123',
         'William', 'James', NOW() + '3 years'::INTERVAL, NULL, NULL);
 
 INSERT INTO actor.usr_address 
@@ -1648,7 +1648,7 @@ UPDATE actor.usr usr SET usrname = LOWER(aou.shortname) || usrname
 
 INSERT INTO actor.usr 
     (profile, ident_type, usrname, home_ou, family_name, passwd, first_given_name, second_given_name, expire_date, dob, suffix) 
-    VALUES (10, 1, 'csmith', 4, 'Smith', 'cathys1234', 
+    VALUES (10, 1, 'csmith', 4, 'Smith', 'demo123',
         'Cathy', 'Cheryl', NOW() + '3 years'::INTERVAL, NULL, NULL);
 
 INSERT INTO actor.usr_address 
@@ -1675,7 +1675,7 @@ UPDATE actor.usr usr SET usrname = LOWER(aou.shortname) || usrname
 
 INSERT INTO actor.usr 
     (profile, ident_type, usrname, home_ou, family_name, passwd, first_given_name, second_given_name, expire_date, dob, suffix) 
-    VALUES (9, 1, 'alopez', 9, 'Lopez', 'arlinel1234', 
+    VALUES (9, 1, 'alopez', 9, 'Lopez', 'demo123',
         'Arline', 'Amber', NOW() + '3 years'::INTERVAL, '1985-05-05', 'III');
 
 INSERT INTO actor.usr_address 
@@ -1702,7 +1702,7 @@ UPDATE actor.usr usr SET usrname = LOWER(aou.shortname) || usrname
 
 INSERT INTO actor.usr 
     (profile, ident_type, usrname, home_ou, family_name, passwd, first_given_name, second_given_name, expire_date, dob, suffix) 
-    VALUES (9, 1, 'epeterson', 9, 'Peterson', 'emmap1234', 
+    VALUES (9, 1, 'epeterson', 9, 'Peterson', 'demo123',
         'Emma', '', NOW() + '3 years'::INTERVAL, NULL, NULL);
 
 INSERT INTO actor.usr_address 
@@ -1729,7 +1729,7 @@ UPDATE actor.usr usr SET usrname = LOWER(aou.shortname) || usrname
 
 INSERT INTO actor.usr 
     (profile, ident_type, usrname, home_ou, family_name, passwd, first_given_name, second_given_name, expire_date, dob, suffix) 
-    VALUES (9, 1, 'okelly', 8, 'Kelly', 'opalk1234', 
+    VALUES (9, 1, 'okelly', 8, 'Kelly', 'demo123',
         'Opal', 'Sara', NOW() + '3 years'::INTERVAL, '1975-01-18', 'III');
 
 INSERT INTO actor.usr_address 
@@ -1756,7 +1756,7 @@ UPDATE actor.usr usr SET usrname = LOWER(aou.shortname) || usrname
 
 INSERT INTO actor.usr 
     (profile, ident_type, usrname, home_ou, family_name, passwd, first_given_name, second_given_name, expire_date, dob, suffix) 
-    VALUES (9, 1, 'cdonovan', 8, 'Donovan', 'charlied1234', 
+    VALUES (9, 1, 'cdonovan', 8, 'Donovan', 'demo123',
         'Charlie', 'David', NOW() + '3 years'::INTERVAL, NULL, NULL);
 
 INSERT INTO actor.usr_address 
@@ -1783,7 +1783,7 @@ UPDATE actor.usr usr SET usrname = LOWER(aou.shortname) || usrname
 
 INSERT INTO actor.usr 
     (profile, ident_type, usrname, home_ou, family_name, passwd, first_given_name, second_given_name, expire_date, dob, suffix) 
-    VALUES (9, 3, 'msmith', 7, 'Smith', 'marthas1234', 
+    VALUES (9, 3, 'msmith', 7, 'Smith', 'demo123',
         'Martha', 'Raquel', NOW() + '3 years'::INTERVAL, NULL, NULL);
 
 INSERT INTO actor.usr_address 
@@ -1810,7 +1810,7 @@ UPDATE actor.usr usr SET usrname = LOWER(aou.shortname) || usrname
 
 INSERT INTO actor.usr 
     (profile, ident_type, usrname, home_ou, family_name, passwd, first_given_name, second_given_name, expire_date, dob, suffix) 
-    VALUES (9, 3, 'chouston', 7, 'Houston', 'cherylh1234', 
+    VALUES (9, 3, 'chouston', 7, 'Houston', 'demo123',
         'Cheryl', '', NOW() + '3 years'::INTERVAL, NULL, NULL);
 
 INSERT INTO actor.usr_address 
@@ -1837,7 +1837,7 @@ UPDATE actor.usr usr SET usrname = LOWER(aou.shortname) || usrname
 
 INSERT INTO actor.usr 
     (profile, ident_type, usrname, home_ou, family_name, passwd, first_given_name, second_given_name, expire_date, dob, suffix) 
-    VALUES (9, 1, 'kwright', 6, 'Wright', 'kayw1234', 
+    VALUES (9, 1, 'kwright', 6, 'Wright', 'demo123',
         'Kay', 'Anna', NOW() + '3 years'::INTERVAL, NULL, NULL);
 
 INSERT INTO actor.usr_address 
@@ -1864,7 +1864,7 @@ UPDATE actor.usr usr SET usrname = LOWER(aou.shortname) || usrname
 
 INSERT INTO actor.usr 
     (profile, ident_type, usrname, home_ou, family_name, passwd, first_given_name, second_given_name, expire_date, dob, suffix) 
-    VALUES (9, 3, 'mlane', 6, 'Lane', 'michellel1234', 
+    VALUES (9, 3, 'mlane', 6, 'Lane', 'demo123',
         'Michelle', 'Andrea', NOW() + '3 years'::INTERVAL, '1963-06-14', 'Sr');
 
 INSERT INTO actor.usr_address 
@@ -1891,7 +1891,7 @@ UPDATE actor.usr usr SET usrname = LOWER(aou.shortname) || usrname
 
 INSERT INTO actor.usr 
     (profile, ident_type, usrname, home_ou, family_name, passwd, first_given_name, second_given_name, expire_date, dob, suffix) 
-    VALUES (9, 1, 'rsmith', 5, 'Smith', 'roberts1234', 
+    VALUES (9, 1, 'rsmith', 5, 'Smith', 'demo123',
         'Robert', '', NOW() + '3 years'::INTERVAL, NULL, NULL);
 
 INSERT INTO actor.usr_address 
@@ -1918,7 +1918,7 @@ UPDATE actor.usr usr SET usrname = LOWER(aou.shortname) || usrname
 
 INSERT INTO actor.usr 
     (profile, ident_type, usrname, home_ou, family_name, passwd, first_given_name, second_given_name, expire_date, dob, suffix) 
-    VALUES (9, 1, 'cdodson', 5, 'Dodson', 'cleod1234', 
+    VALUES (9, 1, 'cdodson', 5, 'Dodson', 'demo123',
         'Cleo', '', NOW() + '3 years'::INTERVAL, NULL, NULL);
 
 INSERT INTO actor.usr_address 
@@ -1945,7 +1945,7 @@ UPDATE actor.usr usr SET usrname = LOWER(aou.shortname) || usrname
 
 INSERT INTO actor.usr 
     (profile, ident_type, usrname, home_ou, family_name, passwd, first_given_name, second_given_name, expire_date, dob, suffix) 
-    VALUES (9, 1, 'mneal', 4, 'Neal', 'melvinn1234', 
+    VALUES (9, 1, 'mneal', 4, 'Neal', 'demo123',
         'Melvin', 'Richard', NOW() + '3 years'::INTERVAL, NULL, NULL);
 
 INSERT INTO actor.usr_address 
@@ -1972,7 +1972,7 @@ UPDATE actor.usr usr SET usrname = LOWER(aou.shortname) || usrname
 
 INSERT INTO actor.usr 
     (profile, ident_type, usrname, home_ou, family_name, passwd, first_given_name, second_given_name, expire_date, dob, suffix) 
-    VALUES (9, 3, 'awilliams', 4, 'Williams', 'annaw1234', 
+    VALUES (9, 3, 'awilliams', 4, 'Williams', 'demo123',
         'Anna', 'Justine', NOW() + '3 years'::INTERVAL, NULL, NULL);
 
 INSERT INTO actor.usr_address 
@@ -1999,7 +1999,7 @@ UPDATE actor.usr usr SET usrname = LOWER(aou.shortname) || usrname
 
 INSERT INTO actor.usr 
     (profile, ident_type, usrname, home_ou, family_name, passwd, first_given_name, second_given_name, expire_date, dob, suffix) 
-    VALUES (8, 1, 'emiller', 9, 'Miller', 'edmondm1234', 
+    VALUES (8, 1, 'emiller', 9, 'Miller', 'demo123',
         'Edmond', 'Vance', NOW() + '3 years'::INTERVAL, NULL, NULL);
 
 INSERT INTO actor.usr_address 
@@ -2026,7 +2026,7 @@ UPDATE actor.usr usr SET usrname = LOWER(aou.shortname) || usrname
 
 INSERT INTO actor.usr 
     (profile, ident_type, usrname, home_ou, family_name, passwd, first_given_name, second_given_name, expire_date, dob, suffix) 
-    VALUES (8, 3, 'vlogan', 9, 'Logan', 'vanessal1234', 
+    VALUES (8, 3, 'vlogan', 9, 'Logan', 'demo123',
         'Vanessa', 'Cassandra', NOW() + '3 years'::INTERVAL, NULL, NULL);
 
 INSERT INTO actor.usr_address 
@@ -2053,7 +2053,7 @@ UPDATE actor.usr usr SET usrname = LOWER(aou.shortname) || usrname
 
 INSERT INTO actor.usr 
     (profile, ident_type, usrname, home_ou, family_name, passwd, first_given_name, second_given_name, expire_date, dob, suffix) 
-    VALUES (8, 1, 'lthompson', 8, 'Thompson', 'lisat1234', 
+    VALUES (8, 1, 'lthompson', 8, 'Thompson', 'demo123',
         'Lisa', 'Shirley', NOW() + '3 years'::INTERVAL, NULL, NULL);
 
 INSERT INTO actor.usr_address 
@@ -2080,7 +2080,7 @@ UPDATE actor.usr usr SET usrname = LOWER(aou.shortname) || usrname
 
 INSERT INTO actor.usr 
     (profile, ident_type, usrname, home_ou, family_name, passwd, first_given_name, second_given_name, expire_date, dob, suffix) 
-    VALUES (8, 1, 'oshaffer', 8, 'Shaffer', 'ollies1234', 
+    VALUES (8, 1, 'oshaffer', 8, 'Shaffer', 'demo123',
         'Ollie', 'Monica', NOW() + '3 years'::INTERVAL, NULL, NULL);
 
 INSERT INTO actor.usr_address 
@@ -2107,7 +2107,7 @@ UPDATE actor.usr usr SET usrname = LOWER(aou.shortname) || usrname
 
 INSERT INTO actor.usr 
     (profile, ident_type, usrname, home_ou, family_name, passwd, first_given_name, second_given_name, expire_date, dob, suffix) 
-    VALUES (8, 1, 'randrews', 7, 'Andrews', 'raymonda1234', 
+    VALUES (8, 1, 'randrews', 7, 'Andrews', 'demo123',
         'Raymond', 'Willie', NOW() + '3 years'::INTERVAL, NULL, NULL);
 
 INSERT INTO actor.usr_address 
@@ -2134,7 +2134,7 @@ UPDATE actor.usr usr SET usrname = LOWER(aou.shortname) || usrname
 
 INSERT INTO actor.usr 
     (profile, ident_type, usrname, home_ou, family_name, passwd, first_given_name, second_given_name, expire_date, dob, suffix) 
-    VALUES (8, 3, 'emartinez', 7, 'Martinez', 'ednam1234', 
+    VALUES (8, 3, 'emartinez', 7, 'Martinez', 'demo123',
         'Edna', 'Judith', NOW() + '3 years'::INTERVAL, NULL, NULL);
 
 INSERT INTO actor.usr_address 
@@ -2161,7 +2161,7 @@ UPDATE actor.usr usr SET usrname = LOWER(aou.shortname) || usrname
 
 INSERT INTO actor.usr 
     (profile, ident_type, usrname, home_ou, family_name, passwd, first_given_name, second_given_name, expire_date, dob, suffix) 
-    VALUES (8, 3, 'jdavis', 6, 'Davis', 'jamesd1234', 
+    VALUES (8, 3, 'jdavis', 6, 'Davis', 'demo123',
         'James', 'Jerry', NOW() + '3 years'::INTERVAL, '1970-06-11', 'III');
 
 INSERT INTO actor.usr_address 
@@ -2188,7 +2188,7 @@ UPDATE actor.usr usr SET usrname = LOWER(aou.shortname) || usrname
 
 INSERT INTO actor.usr 
     (profile, ident_type, usrname, home_ou, family_name, passwd, first_given_name, second_given_name, expire_date, dob, suffix) 
-    VALUES (8, 1, 'droberts', 6, 'Roberts', 'dianer1234', 
+    VALUES (8, 1, 'droberts', 6, 'Roberts', 'demo123',
         'Diane', 'Teresa', NOW() + '3 years'::INTERVAL, NULL, NULL);
 
 INSERT INTO actor.usr_address 
@@ -2215,7 +2215,7 @@ UPDATE actor.usr usr SET usrname = LOWER(aou.shortname) || usrname
 
 INSERT INTO actor.usr 
     (profile, ident_type, usrname, home_ou, family_name, passwd, first_given_name, second_given_name, expire_date, dob, suffix) 
-    VALUES (8, 1, 'psantiago', 5, 'Santiago', 'paiges1234', 
+    VALUES (8, 1, 'psantiago', 5, 'Santiago', 'demo123',
         'Paige', 'Helen', NOW() + '3 years'::INTERVAL, '1979-08-23', 'Sr');
 
 INSERT INTO actor.usr_address 
@@ -2242,7 +2242,7 @@ UPDATE actor.usr usr SET usrname = LOWER(aou.shortname) || usrname
 
 INSERT INTO actor.usr 
     (profile, ident_type, usrname, home_ou, family_name, passwd, first_given_name, second_given_name, expire_date, dob, suffix) 
-    VALUES (8, 1, 'awright', 5, 'Wright', 'alyssaw1234', 
+    VALUES (8, 1, 'awright', 5, 'Wright', 'demo123',
         'Alyssa', 'Christine', NOW() + '3 years'::INTERVAL, NULL, NULL);
 
 INSERT INTO actor.usr_address 
@@ -2269,7 +2269,7 @@ UPDATE actor.usr usr SET usrname = LOWER(aou.shortname) || usrname
 
 INSERT INTO actor.usr 
     (profile, ident_type, usrname, home_ou, family_name, passwd, first_given_name, second_given_name, expire_date, dob, suffix) 
-    VALUES (8, 3, 'dbeck', 4, 'Beck', 'dianab1234', 
+    VALUES (8, 3, 'dbeck', 4, 'Beck', 'demo123',
         'Diana', 'Wilma', NOW() + '3 years'::INTERVAL, NULL, NULL);
 
 INSERT INTO actor.usr_address 
@@ -2296,7 +2296,7 @@ UPDATE actor.usr usr SET usrname = LOWER(aou.shortname) || usrname
 
 INSERT INTO actor.usr 
     (profile, ident_type, usrname, home_ou, family_name, passwd, first_given_name, second_given_name, expire_date, dob, suffix) 
-    VALUES (8, 1, 'mclark', 4, 'Clark', 'montyc1234', 
+    VALUES (8, 1, 'mclark', 4, 'Clark', 'demo123',
         'Monty', 'Daniel', NOW() + '3 years'::INTERVAL, '1984-05-19', 'II');
 
 INSERT INTO actor.usr_address 
@@ -2323,7 +2323,7 @@ UPDATE actor.usr usr SET usrname = LOWER(aou.shortname) || usrname
 
 INSERT INTO actor.usr 
     (profile, ident_type, usrname, home_ou, family_name, passwd, first_given_name, second_given_name, expire_date, dob, suffix) 
-    VALUES (7, 3, 'hstone', 9, 'Stone', 'hazels1234', 
+    VALUES (7, 3, 'hstone', 9, 'Stone', 'demo123',
         'Hazel', 'Sylvia', NOW() + '3 years'::INTERVAL, NULL, NULL);
 
 INSERT INTO actor.usr_address 
@@ -2350,7 +2350,7 @@ UPDATE actor.usr usr SET usrname = LOWER(aou.shortname) || usrname
 
 INSERT INTO actor.usr 
     (profile, ident_type, usrname, home_ou, family_name, passwd, first_given_name, second_given_name, expire_date, dob, suffix) 
-    VALUES (7, 1, 'dgarza', 9, 'Garza', 'davidg1234', 
+    VALUES (7, 1, 'dgarza', 9, 'Garza', 'demo123',
         'David', 'Steven', NOW() + '3 years'::INTERVAL, NULL, NULL);
 
 INSERT INTO actor.usr_address 
@@ -2377,7 +2377,7 @@ UPDATE actor.usr usr SET usrname = LOWER(aou.shortname) || usrname
 
 INSERT INTO actor.usr 
     (profile, ident_type, usrname, home_ou, family_name, passwd, first_given_name, second_given_name, expire_date, dob, suffix) 
-    VALUES (7, 3, 'jevans', 8, 'Evans', 'johne1234', 
+    VALUES (7, 3, 'jevans', 8, 'Evans', 'demo123',
         'John', 'Timothy', NOW() + '3 years'::INTERVAL, NULL, NULL);
 
 INSERT INTO actor.usr_address 
@@ -2404,7 +2404,7 @@ UPDATE actor.usr usr SET usrname = LOWER(aou.shortname) || usrname
 
 INSERT INTO actor.usr 
     (profile, ident_type, usrname, home_ou, family_name, passwd, first_given_name, second_given_name, expire_date, dob, suffix) 
-    VALUES (7, 3, 'rpayton', 8, 'Payton', 'robertp1234', 
+    VALUES (7, 3, 'rpayton', 8, 'Payton', 'demo123',
         'Robert', 'Steven', NOW() + '3 years'::INTERVAL, '1994-05-07', 'Jr');
 
 INSERT INTO actor.usr_address 
@@ -2431,7 +2431,7 @@ UPDATE actor.usr usr SET usrname = LOWER(aou.shortname) || usrname
 
 INSERT INTO actor.usr 
     (profile, ident_type, usrname, home_ou, family_name, passwd, first_given_name, second_given_name, expire_date, dob, suffix) 
-    VALUES (7, 3, 'ddavis', 7, 'Davis', 'donaldd1234', 
+    VALUES (7, 3, 'ddavis', 7, 'Davis', 'demo123',
         'Donald', 'Gene', NOW() + '3 years'::INTERVAL, NULL, NULL);
 
 INSERT INTO actor.usr_address 
@@ -2458,7 +2458,7 @@ UPDATE actor.usr usr SET usrname = LOWER(aou.shortname) || usrname
 
 INSERT INTO actor.usr 
     (profile, ident_type, usrname, home_ou, family_name, passwd, first_given_name, second_given_name, expire_date, dob, suffix) 
-    VALUES (7, 1, 'gadams', 7, 'Adams', 'genea1234', 
+    VALUES (7, 1, 'gadams', 7, 'Adams', 'demo123',
         'Gene', '', NOW() + '3 years'::INTERVAL, '1974-02-18', 'III');
 
 INSERT INTO actor.usr_address 
@@ -2485,7 +2485,7 @@ UPDATE actor.usr usr SET usrname = LOWER(aou.shortname) || usrname
 
 INSERT INTO actor.usr 
     (profile, ident_type, usrname, home_ou, family_name, passwd, first_given_name, second_given_name, expire_date, dob, suffix) 
-    VALUES (7, 1, 'hwhite', 6, 'White', 'humbertow1234', 
+    VALUES (7, 1, 'hwhite', 6, 'White', 'demo123',
         'Humberto', 'Kevin', NOW() + '3 years'::INTERVAL, '1997-09-08', 'Jr');
 
 INSERT INTO actor.usr_address 
@@ -2512,7 +2512,7 @@ UPDATE actor.usr usr SET usrname = LOWER(aou.shortname) || usrname
 
 INSERT INTO actor.usr 
     (profile, ident_type, usrname, home_ou, family_name, passwd, first_given_name, second_given_name, expire_date, dob, suffix) 
-    VALUES (7, 3, 'asnyder', 6, 'Snyder', 'anas1234', 
+    VALUES (7, 3, 'asnyder', 6, 'Snyder', 'demo123',
         'Ana', '', NOW() + '3 years'::INTERVAL, '1991-05-23', 'III');
 
 INSERT INTO actor.usr_address 
@@ -2539,7 +2539,7 @@ UPDATE actor.usr usr SET usrname = LOWER(aou.shortname) || usrname
 
 INSERT INTO actor.usr 
     (profile, ident_type, usrname, home_ou, family_name, passwd, first_given_name, second_given_name, expire_date, dob, suffix) 
-    VALUES (7, 1, 'jroberts', 5, 'Roberts', 'johnr1234', 
+    VALUES (7, 1, 'jroberts', 5, 'Roberts', 'demo123',
         'John', 'Theodore', NOW() + '3 years'::INTERVAL, NULL, NULL);
 
 INSERT INTO actor.usr_address 
@@ -2566,7 +2566,7 @@ UPDATE actor.usr usr SET usrname = LOWER(aou.shortname) || usrname
 
 INSERT INTO actor.usr 
     (profile, ident_type, usrname, home_ou, family_name, passwd, first_given_name, second_given_name, expire_date, dob, suffix) 
-    VALUES (7, 3, 'sheath', 5, 'Heath', 'stevenh1234', 
+    VALUES (7, 3, 'sheath', 5, 'Heath', 'demo123',
         'Steven', 'Luke', NOW() + '3 years'::INTERVAL, NULL, NULL);
 
 INSERT INTO actor.usr_address 
@@ -2593,7 +2593,7 @@ UPDATE actor.usr usr SET usrname = LOWER(aou.shortname) || usrname
 
 INSERT INTO actor.usr 
     (profile, ident_type, usrname, home_ou, family_name, passwd, first_given_name, second_given_name, expire_date, dob, suffix) 
-    VALUES (7, 1, 'krush', 4, 'Rush', 'keithr1234', 
+    VALUES (7, 1, 'krush', 4, 'Rush', 'demo123',
         'Keith', '', NOW() + '3 years'::INTERVAL, NULL, NULL);
 
 INSERT INTO actor.usr_address 
@@ -2620,7 +2620,7 @@ UPDATE actor.usr usr SET usrname = LOWER(aou.shortname) || usrname
 
 INSERT INTO actor.usr 
     (profile, ident_type, usrname, home_ou, family_name, passwd, first_given_name, second_given_name, expire_date, dob, suffix) 
-    VALUES (7, 3, 'lfarrell', 4, 'Farrell', 'lindaf1234', 
+    VALUES (7, 3, 'lfarrell', 4, 'Farrell', 'demo123',
         'Linda', 'Linda', NOW() + '3 years'::INTERVAL, NULL, NULL);
 
 INSERT INTO actor.usr_address 
@@ -2647,7 +2647,7 @@ UPDATE actor.usr usr SET usrname = LOWER(aou.shortname) || usrname
 
 INSERT INTO actor.usr 
     (profile, ident_type, usrname, home_ou, family_name, passwd, first_given_name, second_given_name, expire_date, dob, suffix) 
-    VALUES (6, 3, 'rharrison', 9, 'Harrison', 'richardh1234', 
+    VALUES (6, 3, 'rharrison', 9, 'Harrison', 'demo123',
         'Richard', 'Melvin', NOW() + '3 years'::INTERVAL, NULL, NULL);
 
 INSERT INTO actor.usr_address 
@@ -2674,7 +2674,7 @@ UPDATE actor.usr usr SET usrname = LOWER(aou.shortname) || usrname
 
 INSERT INTO actor.usr 
     (profile, ident_type, usrname, home_ou, family_name, passwd, first_given_name, second_given_name, expire_date, dob, suffix) 
-    VALUES (6, 1, 'ksmith', 9, 'Smith', 'kevins1234', 
+    VALUES (6, 1, 'ksmith', 9, 'Smith', 'demo123',
         'Kevin', 'Timothy', NOW() + '3 years'::INTERVAL, NULL, NULL);
 
 INSERT INTO actor.usr_address 
@@ -2701,7 +2701,7 @@ UPDATE actor.usr usr SET usrname = LOWER(aou.shortname) || usrname
 
 INSERT INTO actor.usr 
     (profile, ident_type, usrname, home_ou, family_name, passwd, first_given_name, second_given_name, expire_date, dob, suffix) 
-    VALUES (6, 1, 'fmoore', 8, 'Moore', 'florencem1234', 
+    VALUES (6, 1, 'fmoore', 8, 'Moore', 'demo123',
         'Florence', 'Michelle', NOW() + '3 years'::INTERVAL, '1977-02-07', 'Jr');
 
 INSERT INTO actor.usr_address 
@@ -2728,7 +2728,7 @@ UPDATE actor.usr usr SET usrname = LOWER(aou.shortname) || usrname
 
 INSERT INTO actor.usr 
     (profile, ident_type, usrname, home_ou, family_name, passwd, first_given_name, second_given_name, expire_date, dob, suffix) 
-    VALUES (6, 1, 'bcruz', 8, 'Cruz', 'bettyc1234', 
+    VALUES (6, 1, 'bcruz', 8, 'Cruz', 'demo123',
         'Betty', 'Shirley', NOW() + '3 years'::INTERVAL, '1993-08-10', 'Sr');
 
 INSERT INTO actor.usr_address 
@@ -2755,7 +2755,7 @@ UPDATE actor.usr usr SET usrname = LOWER(aou.shortname) || usrname
 
 INSERT INTO actor.usr 
     (profile, ident_type, usrname, home_ou, family_name, passwd, first_given_name, second_given_name, expire_date, dob, suffix) 
-    VALUES (6, 1, 'jjohnson', 7, 'Johnson', 'joelj1234', 
+    VALUES (6, 1, 'jjohnson', 7, 'Johnson', 'demo123',
         'Joel', 'Allen', NOW() + '3 years'::INTERVAL, NULL, NULL);
 
 INSERT INTO actor.usr_address 
@@ -2782,7 +2782,7 @@ UPDATE actor.usr usr SET usrname = LOWER(aou.shortname) || usrname
 
 INSERT INTO actor.usr 
     (profile, ident_type, usrname, home_ou, family_name, passwd, first_given_name, second_given_name, expire_date, dob, suffix) 
-    VALUES (6, 1, 'kburton', 7, 'Burton', 'kristenb1234', 
+    VALUES (6, 1, 'kburton', 7, 'Burton', 'demo123',
         'Kristen', 'Dena', NOW() + '3 years'::INTERVAL, NULL, NULL);
 
 INSERT INTO actor.usr_address 
@@ -2809,7 +2809,7 @@ UPDATE actor.usr usr SET usrname = LOWER(aou.shortname) || usrname
 
 INSERT INTO actor.usr 
     (profile, ident_type, usrname, home_ou, family_name, passwd, first_given_name, second_given_name, expire_date, dob, suffix) 
-    VALUES (6, 1, 'rpineda', 6, 'Pineda', 'robertp1234', 
+    VALUES (6, 1, 'rpineda', 6, 'Pineda', 'demo123',
         'Robert', 'Gordon', NOW() + '3 years'::INTERVAL, NULL, NULL);
 
 INSERT INTO actor.usr_address 
@@ -2836,7 +2836,7 @@ UPDATE actor.usr usr SET usrname = LOWER(aou.shortname) || usrname
 
 INSERT INTO actor.usr 
     (profile, ident_type, usrname, home_ou, family_name, passwd, first_given_name, second_given_name, expire_date, dob, suffix) 
-    VALUES (6, 1, 'avaldez', 6, 'Valdez', 'alissav1234', 
+    VALUES (6, 1, 'avaldez', 6, 'Valdez', 'demo123',
         'Alissa', 'Gladys', NOW() + '3 years'::INTERVAL, '1994-03-25', 'Jr');
 
 INSERT INTO actor.usr_address 
@@ -2863,7 +2863,7 @@ UPDATE actor.usr usr SET usrname = LOWER(aou.shortname) || usrname
 
 INSERT INTO actor.usr 
     (profile, ident_type, usrname, home_ou, family_name, passwd, first_given_name, second_given_name, expire_date, dob, suffix) 
-    VALUES (6, 3, 'krowland', 5, 'Rowland', 'kennethr1234', 
+    VALUES (6, 3, 'krowland', 5, 'Rowland', 'demo123',
         'Kenneth', 'Ernest', NOW() + '3 years'::INTERVAL, NULL, NULL);
 
 INSERT INTO actor.usr_address 
@@ -2890,7 +2890,7 @@ UPDATE actor.usr usr SET usrname = LOWER(aou.shortname) || usrname
 
 INSERT INTO actor.usr 
     (profile, ident_type, usrname, home_ou, family_name, passwd, first_given_name, second_given_name, expire_date, dob, suffix) 
-    VALUES (6, 1, 'thansen', 5, 'Hansen', 'terranceh1234', 
+    VALUES (6, 1, 'thansen', 5, 'Hansen', 'demo123',
         'Terrance', '', NOW() + '3 years'::INTERVAL, NULL, NULL);
 
 INSERT INTO actor.usr_address 
@@ -2917,7 +2917,7 @@ UPDATE actor.usr usr SET usrname = LOWER(aou.shortname) || usrname
 
 INSERT INTO actor.usr 
     (profile, ident_type, usrname, home_ou, family_name, passwd, first_given_name, second_given_name, expire_date, dob, suffix) 
-    VALUES (6, 3, 'breid', 4, 'Reid', 'barbarar1234', 
+    VALUES (6, 3, 'breid', 4, 'Reid', 'demo123',
         'Barbara', 'Amanda', NOW() + '3 years'::INTERVAL, NULL, NULL);
 
 INSERT INTO actor.usr_address 
@@ -2944,7 +2944,7 @@ UPDATE actor.usr usr SET usrname = LOWER(aou.shortname) || usrname
 
 INSERT INTO actor.usr 
     (profile, ident_type, usrname, home_ou, family_name, passwd, first_given_name, second_given_name, expire_date, dob, suffix) 
-    VALUES (6, 1, 'mroberts', 4, 'Roberts', 'michaelr1234', 
+    VALUES (6, 1, 'mroberts', 4, 'Roberts', 'demo123',
         'Michael', 'Stephen', NOW() + '3 years'::INTERVAL, NULL, NULL);
 
 INSERT INTO actor.usr_address 
@@ -2971,7 +2971,7 @@ UPDATE actor.usr usr SET usrname = LOWER(aou.shortname) || usrname
 
 INSERT INTO actor.usr 
     (profile, ident_type, usrname, home_ou, family_name, passwd, first_given_name, second_given_name, expire_date, dob, suffix) 
-    VALUES (5, 3, 'rkaufman', 9, 'Kaufman', 'rachelk1234', 
+    VALUES (5, 3, 'rkaufman', 9, 'Kaufman', 'demo123',
         'Rachel', 'Vickie', NOW() + '3 years'::INTERVAL, NULL, NULL);
 
 INSERT INTO actor.usr_address 
@@ -2998,7 +2998,7 @@ UPDATE actor.usr usr SET usrname = LOWER(aou.shortname) || usrname
 
 INSERT INTO actor.usr 
     (profile, ident_type, usrname, home_ou, family_name, passwd, first_given_name, second_given_name, expire_date, dob, suffix) 
-    VALUES (5, 3, 'csims', 9, 'Sims', 'christophers1234', 
+    VALUES (5, 3, 'csims', 9, 'Sims', 'demo123',
         'Christopher', 'John', NOW() + '3 years'::INTERVAL, NULL, NULL);
 
 INSERT INTO actor.usr_address 
@@ -3025,7 +3025,7 @@ UPDATE actor.usr usr SET usrname = LOWER(aou.shortname) || usrname
 
 INSERT INTO actor.usr 
     (profile, ident_type, usrname, home_ou, family_name, passwd, first_given_name, second_given_name, expire_date, dob, suffix) 
-    VALUES (5, 1, 'srobinson', 8, 'Robinson', 'sarahr1234', 
+    VALUES (5, 1, 'srobinson', 8, 'Robinson', 'demo123',
         'Sarah', '', NOW() + '3 years'::INTERVAL, '1996-01-28', 'II');
 
 INSERT INTO actor.usr_address 
@@ -3052,7 +3052,7 @@ UPDATE actor.usr usr SET usrname = LOWER(aou.shortname) || usrname
 
 INSERT INTO actor.usr 
     (profile, ident_type, usrname, home_ou, family_name, passwd, first_given_name, second_given_name, expire_date, dob, suffix) 
-    VALUES (5, 3, 'jpayton', 8, 'Payton', 'johnnyp1234', 
+    VALUES (5, 3, 'jpayton', 8, 'Payton', 'demo123',
         'Johnny', 'Vincent', NOW() + '3 years'::INTERVAL, NULL, NULL);
 
 INSERT INTO actor.usr_address 
@@ -3079,7 +3079,7 @@ UPDATE actor.usr usr SET usrname = LOWER(aou.shortname) || usrname
 
 INSERT INTO actor.usr 
     (profile, ident_type, usrname, home_ou, family_name, passwd, first_given_name, second_given_name, expire_date, dob, suffix) 
-    VALUES (5, 3, 'djamison', 7, 'Jamison', 'davidj1234', 
+    VALUES (5, 3, 'djamison', 7, 'Jamison', 'demo123',
         'David', 'Eric', NOW() + '3 years'::INTERVAL, NULL, NULL);
 
 INSERT INTO actor.usr_address 
@@ -3106,7 +3106,7 @@ UPDATE actor.usr usr SET usrname = LOWER(aou.shortname) || usrname
 
 INSERT INTO actor.usr 
     (profile, ident_type, usrname, home_ou, family_name, passwd, first_given_name, second_given_name, expire_date, dob, suffix) 
-    VALUES (5, 3, 'jford', 7, 'Ford', 'jamief1234', 
+    VALUES (5, 3, 'jford', 7, 'Ford', 'demo123',
         'Jamie', '', NOW() + '3 years'::INTERVAL, NULL, NULL);
 
 INSERT INTO actor.usr_address 
@@ -3133,7 +3133,7 @@ UPDATE actor.usr usr SET usrname = LOWER(aou.shortname) || usrname
 
 INSERT INTO actor.usr 
     (profile, ident_type, usrname, home_ou, family_name, passwd, first_given_name, second_given_name, expire_date, dob, suffix) 
-    VALUES (5, 1, 'gwatson', 6, 'Watson', 'geraldw1234', 
+    VALUES (5, 1, 'gwatson', 6, 'Watson', 'demo123',
         'Gerald', 'Larry', NOW() + '3 years'::INTERVAL, NULL, NULL);
 
 INSERT INTO actor.usr_address 
@@ -3160,7 +3160,7 @@ UPDATE actor.usr usr SET usrname = LOWER(aou.shortname) || usrname
 
 INSERT INTO actor.usr 
     (profile, ident_type, usrname, home_ou, family_name, passwd, first_given_name, second_given_name, expire_date, dob, suffix) 
-    VALUES (5, 1, 'clambert', 6, 'Lambert', 'charlesl1234', 
+    VALUES (5, 1, 'clambert', 6, 'Lambert', 'demo123',
         'Charles', 'William', NOW() + '3 years'::INTERVAL, '1995-09-22', 'Jr');
 
 INSERT INTO actor.usr_address 
@@ -3187,7 +3187,7 @@ UPDATE actor.usr usr SET usrname = LOWER(aou.shortname) || usrname
 
 INSERT INTO actor.usr 
     (profile, ident_type, usrname, home_ou, family_name, passwd, first_given_name, second_given_name, expire_date, dob, suffix) 
-    VALUES (5, 1, 'mbarber', 5, 'Barber', 'michealb1234', 
+    VALUES (5, 1, 'mbarber', 5, 'Barber', 'demo123',
         'Micheal', 'Ramon', NOW() + '3 years'::INTERVAL, NULL, NULL);
 
 INSERT INTO actor.usr_address 
@@ -3214,7 +3214,7 @@ UPDATE actor.usr usr SET usrname = LOWER(aou.shortname) || usrname
 
 INSERT INTO actor.usr 
     (profile, ident_type, usrname, home_ou, family_name, passwd, first_given_name, second_given_name, expire_date, dob, suffix) 
-    VALUES (5, 3, 'tcruz', 5, 'Cruz', 'tomc1234', 
+    VALUES (5, 3, 'tcruz', 5, 'Cruz', 'demo123',
         'Tom', 'Eugene', NOW() + '3 years'::INTERVAL, NULL, NULL);
 
 INSERT INTO actor.usr_address 
@@ -3241,7 +3241,7 @@ UPDATE actor.usr usr SET usrname = LOWER(aou.shortname) || usrname
 
 INSERT INTO actor.usr 
     (profile, ident_type, usrname, home_ou, family_name, passwd, first_given_name, second_given_name, expire_date, dob, suffix) 
-    VALUES (5, 1, 'iwalton', 4, 'Walton', 'inezw1234', 
+    VALUES (5, 1, 'iwalton', 4, 'Walton', 'demo123',
         'Inez', 'Amanda', NOW() + '3 years'::INTERVAL, NULL, NULL);
 
 INSERT INTO actor.usr_address 
@@ -3268,7 +3268,7 @@ UPDATE actor.usr usr SET usrname = LOWER(aou.shortname) || usrname
 
 INSERT INTO actor.usr 
     (profile, ident_type, usrname, home_ou, family_name, passwd, first_given_name, second_given_name, expire_date, dob, suffix) 
-    VALUES (5, 3, 'mtownsend', 4, 'Townsend', 'maryt1234', 
+    VALUES (5, 3, 'mtownsend', 4, 'Townsend', 'demo123',
         'Mary', '', NOW() + '3 years'::INTERVAL, '1995-03-03', 'Jr');
 
 INSERT INTO actor.usr_address 
@@ -3295,7 +3295,7 @@ UPDATE actor.usr usr SET usrname = LOWER(aou.shortname) || usrname
 
 INSERT INTO actor.usr 
     (profile, ident_type, usrname, home_ou, family_name, passwd, first_given_name, second_given_name, expire_date, dob, suffix) 
-    VALUES (4, 3, 'cmartinez', 9, 'Martinez', 'carolynm1234', 
+    VALUES (4, 3, 'cmartinez', 9, 'Martinez', 'demo123',
         'Carolyn', 'Sandra', NOW() + '3 years'::INTERVAL, NULL, NULL);
 
 INSERT INTO actor.usr_address 
@@ -3322,7 +3322,7 @@ UPDATE actor.usr usr SET usrname = LOWER(aou.shortname) || usrname
 
 INSERT INTO actor.usr 
     (profile, ident_type, usrname, home_ou, family_name, passwd, first_given_name, second_given_name, expire_date, dob, suffix) 
-    VALUES (4, 1, 'jjohnson', 9, 'Johnson', 'jeremyj1234', 
+    VALUES (4, 1, 'jjohnson', 9, 'Johnson', 'demo123',
         'Jeremy', 'Mark', NOW() + '3 years'::INTERVAL, '1970-03-14', 'II');
 
 INSERT INTO actor.usr_address 
@@ -3349,7 +3349,7 @@ UPDATE actor.usr usr SET usrname = LOWER(aou.shortname) || usrname
 
 INSERT INTO actor.usr 
     (profile, ident_type, usrname, home_ou, family_name, passwd, first_given_name, second_given_name, expire_date, dob, suffix) 
-    VALUES (4, 1, 'mscott', 8, 'Scott', 'maes1234', 
+    VALUES (4, 1, 'mscott', 8, 'Scott', 'demo123',
         'Mae', 'Sue', NOW() + '3 years'::INTERVAL, NULL, NULL);
 
 INSERT INTO actor.usr_address 
@@ -3376,7 +3376,7 @@ UPDATE actor.usr usr SET usrname = LOWER(aou.shortname) || usrname
 
 INSERT INTO actor.usr 
     (profile, ident_type, usrname, home_ou, family_name, passwd, first_given_name, second_given_name, expire_date, dob, suffix) 
-    VALUES (4, 3, 'rstevens', 8, 'Stevens', 'russells1234', 
+    VALUES (4, 3, 'rstevens', 8, 'Stevens', 'demo123',
         'Russell', 'Daniel', NOW() + '3 years'::INTERVAL, '1973-08-15', 'Jr');
 
 INSERT INTO actor.usr_address 
@@ -3403,7 +3403,7 @@ UPDATE actor.usr usr SET usrname = LOWER(aou.shortname) || usrname
 
 INSERT INTO actor.usr 
     (profile, ident_type, usrname, home_ou, family_name, passwd, first_given_name, second_given_name, expire_date, dob, suffix) 
-    VALUES (4, 3, 'therrera', 7, 'Herrera', 'tracih1234', 
+    VALUES (4, 3, 'therrera', 7, 'Herrera', 'demo123',
         'Traci', 'Edith', NOW() + '3 years'::INTERVAL, '1994-07-07', 'Jr');
 
 INSERT INTO actor.usr_address 
@@ -3430,7 +3430,7 @@ UPDATE actor.usr usr SET usrname = LOWER(aou.shortname) || usrname
 
 INSERT INTO actor.usr 
     (profile, ident_type, usrname, home_ou, family_name, passwd, first_given_name, second_given_name, expire_date, dob, suffix) 
-    VALUES (4, 3, 'vgrimes', 7, 'Grimes', 'virginiag1234', 
+    VALUES (4, 3, 'vgrimes', 7, 'Grimes', 'demo123',
         'Virginia', 'Jennifer', NOW() + '3 years'::INTERVAL, NULL, NULL);
 
 INSERT INTO actor.usr_address 
@@ -3457,7 +3457,7 @@ UPDATE actor.usr usr SET usrname = LOWER(aou.shortname) || usrname
 
 INSERT INTO actor.usr 
     (profile, ident_type, usrname, home_ou, family_name, passwd, first_given_name, second_given_name, expire_date, dob, suffix) 
-    VALUES (4, 1, 'pward', 6, 'Ward', 'paulw1234', 
+    VALUES (4, 1, 'pward', 6, 'Ward', 'demo123',
         'Paul', '', NOW() + '3 years'::INTERVAL, NULL, NULL);
 
 INSERT INTO actor.usr_address 
@@ -3484,7 +3484,7 @@ UPDATE actor.usr usr SET usrname = LOWER(aou.shortname) || usrname
 
 INSERT INTO actor.usr 
     (profile, ident_type, usrname, home_ou, family_name, passwd, first_given_name, second_given_name, expire_date, dob, suffix) 
-    VALUES (4, 3, 'bgreen', 6, 'Green', 'beatriceg1234', 
+    VALUES (4, 3, 'bgreen', 6, 'Green', 'demo123',
         'Beatrice', 'Janette', NOW() + '3 years'::INTERVAL, NULL, NULL);
 
 INSERT INTO actor.usr_address 
@@ -3511,7 +3511,7 @@ UPDATE actor.usr usr SET usrname = LOWER(aou.shortname) || usrname
 
 INSERT INTO actor.usr 
     (profile, ident_type, usrname, home_ou, family_name, passwd, first_given_name, second_given_name, expire_date, dob, suffix) 
-    VALUES (4, 1, 'sschmidt', 5, 'Schmidt', 'scotts1234', 
+    VALUES (4, 1, 'sschmidt', 5, 'Schmidt', 'demo123',
         'Scott', 'Kyle', NOW() + '3 years'::INTERVAL, NULL, 'Sr');
 
 INSERT INTO actor.usr_address 
@@ -3538,7 +3538,7 @@ UPDATE actor.usr usr SET usrname = LOWER(aou.shortname) || usrname
 
 INSERT INTO actor.usr 
     (profile, ident_type, usrname, home_ou, family_name, passwd, first_given_name, second_given_name, expire_date, dob, suffix) 
-    VALUES (4, 3, 'jclark', 5, 'Clark', 'joannec1234', 
+    VALUES (4, 3, 'jclark', 5, 'Clark', 'demo123',
         'Joanne', 'Andrea', NOW() + '3 years'::INTERVAL, NULL, NULL);
 
 INSERT INTO actor.usr_address 
@@ -3565,7 +3565,7 @@ UPDATE actor.usr usr SET usrname = LOWER(aou.shortname) || usrname
 
 INSERT INTO actor.usr 
     (profile, ident_type, usrname, home_ou, family_name, passwd, first_given_name, second_given_name, expire_date, dob, suffix) 
-    VALUES (4, 1, 'bbrown', 4, 'Brown', 'beverlyb1234', 
+    VALUES (4, 1, 'bbrown', 4, 'Brown', 'demo123',
         'Beverly', 'Florence', NOW() + '3 years'::INTERVAL, NULL, NULL);
 
 INSERT INTO actor.usr_address 
@@ -3592,7 +3592,7 @@ UPDATE actor.usr usr SET usrname = LOWER(aou.shortname) || usrname
 
 INSERT INTO actor.usr 
     (profile, ident_type, usrname, home_ou, family_name, passwd, first_given_name, second_given_name, expire_date, dob, suffix) 
-    VALUES (4, 3, 'jmcginnis', 4, 'Mcginnis', 'josem1234', 
+    VALUES (4, 3, 'jmcginnis', 4, 'Mcginnis', 'demo123',
         'Jose', 'David', NOW() + '3 years'::INTERVAL, NULL, NULL);
 
 INSERT INTO actor.usr_address 
