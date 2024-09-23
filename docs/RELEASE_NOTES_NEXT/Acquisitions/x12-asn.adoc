@@ -1,0 +1,6 @@
+== EDI X12 Parser ==
+
+Added support to the EDI parser to read X12 messages.  In particular, this 
+allows Evergreen to consume Midwesttapes X12 ASN (shipment notification)
+messages.
+
