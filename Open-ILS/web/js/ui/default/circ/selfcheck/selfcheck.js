@@ -472,7 +472,7 @@ SelfCheckManager.prototype.fetchPatron = function(barcode, usrname) {
               ( this.patron.pref_first_given_name() ? this.patron.pref_first_given_name() : this.patron.first_given_name() ) ]);
 
         if (this.patron.email() && // they have an email address set and ...
-            this.patron.email().match(/.*@.*/).length > 0 // it sorta looks like an email address
+            this.patron.email().match(/.+@.+/) // it sorta looks like an email address
         ) {
             openils.Util.removeCSSClass( dojo.byId('oils-selfck-receipt-email').parentNode, 'hidden' );
             if (user_setting_value(this.patron, 'circ.send_email_checkout_receipts') == 'true') // their selected default
