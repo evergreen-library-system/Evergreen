@@ -124,7 +124,7 @@ function($routeProvider , $locationProvider) {
                     // confusing intermediate page loads, since
                     // path(...) is a setter function.  Build the URL by
                     // hand instead from the configured base path.
-                    var route_to = egCore.env.basePath;
+                    route_to = '/eg2/staff/splash';
 
                     if (result.invalid_workstation) {
                         // route to WS admin page to delete the offending
@@ -133,7 +133,7 @@ function($routeProvider , $locationProvider) {
                             'admin/workstation/workstations?remove=' 
                                 + encodeURIComponent(args.workstation);
 
-                    } else if ($location.search().route_to) {
+                    } else if ($location.search().route_to && $location.search().route_to !== '/eg/staff/') {
                         // Route to the originally requested page.
                         route_to = $location.search().route_to;
                     }
