@@ -2,7 +2,8 @@ import { FormatService } from '@eg/core/format.service';
 import { IdlService } from '@eg/core/idl.service';
 import { OrgService } from '@eg/core/org.service';
 import { ServerStoreService } from '@eg/core/server-store.service';
-import { GridContext } from './grid';
+import { GridContext, GridDataSource } from './grid';
+import { ChangeDetectorRef } from '@angular/core';
 
 const mockIdl = jasmine.createSpyObj<IdlService>([], {classes: {acpl: {fields: [{name: 'id'}]}}});
 const mockOrg = jasmine.createSpyObj<OrgService>(['root']);
@@ -24,6 +25,7 @@ describe('GridContext', () => {
     describe('reload()', () => {
         it('should call detectChanges after reloading', (done) => {
             const context = new GridContext(mockIdl, mockOrg, mockStore, mockFormat, mockChangeDetectorRef);
+            context.dataSource = new GridDataSource();
             context.reload();
             setTimeout(() => {
                 expect(mockChangeDetectorRef.detectChanges).toHaveBeenCalled();
@@ -34,6 +36,7 @@ describe('GridContext', () => {
     describe('reloadWithoutPagerReset()', () => {
         it('should call detectChanges after reloading', (done) => {
             const context = new GridContext(mockIdl, mockOrg, mockStore, mockFormat, mockChangeDetectorRef);
+            context.dataSource = new GridDataSource();
             context.reloadWithoutPagerReset();
             setTimeout(() => {
                 expect(mockChangeDetectorRef.detectChanges).toHaveBeenCalled();

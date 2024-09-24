@@ -13,7 +13,7 @@ let component: GridComponent;
 
 describe('GridComponent', () => {
     beforeEach(() => {
-        component = new GridComponent(mockIdl, mockOrg, mockStore, mockFormat);
+        component = new GridComponent(mockIdl, mockOrg, mockStore, mockFormat, null);
     });
     describe('ngOnInit', () => {
         it('adds initialFilterValues to the context', () => {
