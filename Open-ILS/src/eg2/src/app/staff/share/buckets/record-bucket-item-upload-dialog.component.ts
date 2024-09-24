@@ -1,3 +1,4 @@
+/* eslint-disable max-len */
 import {Component, Input, OnInit, OnDestroy, ViewChild} from '@angular/core';
 import {Subscription, firstValueFrom} from 'rxjs';
 import {tap} from 'rxjs/operators';
@@ -47,6 +48,7 @@ export class RecordBucketItemUploadDialogComponent
         console.debug('RecordBucketItemUploadDialogComponent, init', this);
     }
 
+    // eslint-disable-next-line @angular-eslint/no-empty-lifecycle-method
     ngOnDestroy() {
         // Unsubscribe from any subscriptions if needed
     }
@@ -108,7 +110,7 @@ export class RecordBucketItemUploadDialogComponent
                 const content = e.target.result as string;
                 const lines = content.split(/\r?\n/).filter(line => line.trim());
                 const values: string[] = [];
-                
+
                 for (const line of lines) {
                     const columns = line.split(',');
                     if (this.csvColumnNumber > columns.length) {
@@ -120,7 +122,7 @@ export class RecordBucketItemUploadDialogComponent
                         values.push(value);
                     }
                 }
-                
+
                 resolve(values);
             };
             reader.onerror = (e) => reject(new Error($localize`Error reading CSV file`));
@@ -163,9 +165,9 @@ export class RecordBucketItemUploadDialogComponent
             if (failedTCNs.length > 0) {
                 console.warn('failedTCNs',failedTCNs);
                 if (failedTCNs.length > 10) {
-                    this.fail.dialogBody = imported + "\n" + $localize`Failed to find bibs for more than 10 TCNs. See the developer tools console for specific entries.`;
+                    this.fail.dialogBody = imported + '\n' + $localize`Failed to find bibs for more than 10 TCNs. See the developer tools console for specific entries.`;
                 } else {
-                    this.fail.dialogBody = imported + "\n" + $localize`Failed to find bibs for the following TCNs: ` + failedTCNs.join(', ');
+                    this.fail.dialogBody = imported + '\n' + $localize`Failed to find bibs for the following TCNs: ` + failedTCNs.join(', ');
                 }
                 this.fail.open();
             } else {
@@ -216,9 +218,9 @@ export class RecordBucketItemUploadDialogComponent
             if (invalidIds.length > 0) {
                 console.warn('invalidIds',invalidIds);
                 if (invalidIds.length > 10) {
-                    this.fail.dialogBody = imported + "\n" + $localize`Failed to find bibs for more than 10 Ids. See the developer tools console for specific entries.`;
+                    this.fail.dialogBody = imported + '\n' + $localize`Failed to find bibs for more than 10 Ids. See the developer tools console for specific entries.`;
                 } else {
-                    this.fail.dialogBody = imported + "\n" + $localize`Failed to find bibs for the following Ids: ` + invalidIds.join(', ');
+                    this.fail.dialogBody = imported + '\n' + $localize`Failed to find bibs for the following Ids: ` + invalidIds.join(', ');
                 }
                 this.fail.open();
             } else {
@@ -243,6 +245,7 @@ export class RecordBucketItemUploadDialogComponent
             return;
         }
         for (const bucket of this.containerObjects) {
+            // eslint-disable-next-line no-await-in-loop
             await this.addRecordsToBucket(bucket.id, bibIds);
         }
     }

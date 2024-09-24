@@ -35,10 +35,10 @@ export class ResultFacetsComponent implements OnInit {
     searchContext: CatalogSearchContext;
     facetConfig: any;
     displayFullFacets: string[] = [];
-    activeTab: string = 'facets';
+    activeTab = 'facets';
     favoriteBucketIds: number[] = [];
     recentBucketIds: number[] = [];
-    
+
     public isCollapsed = false;
 
     @ViewChild('sidebarBuckets', { static: false }) sidebarBuckets: NgbAccordion;
@@ -68,6 +68,7 @@ export class ResultFacetsComponent implements OnInit {
 
     async onNavChange(event: NgbNavChangeEvent) {
         this.activeTab = event.nextId;
+        // eslint-disable-next-line eqeqeq
         if (this.activeTab == 'buckets') {
             await this.loadBuckets();
         }
@@ -87,17 +88,17 @@ export class ResultFacetsComponent implements OnInit {
     addBasketToBucket(bucketId: number, clearBasket?: boolean) {
         this.basket.getRecordIds().then( basket_records => {
             this.bucketService.addBibsToRecordBucket(bucketId, basket_records)
-            .then(resp => {
-                const evt = this.evt.parse(resp);
-                if (evt) {
-                    console.error('addBasketToBucket failed:',evt);
-                    this.toast.warning($localize`Could not add basket items to bucket :: {{evt.textcode}}`);
-                } else {
-                    this.toast.success($localize`Basket items added to bucket`);
-                    if (clearBasket) this.basket.removeAllRecordIds();
-                    return this.loadBuckets();
-                }
-            });
+                .then(resp => {
+                    const evt = this.evt.parse(resp);
+                    if (evt) {
+                        console.error('addBasketToBucket failed:',evt);
+                        this.toast.warning($localize`Could not add basket items to bucket :: {{evt.textcode}}`);
+                    } else {
+                        this.toast.success($localize`Basket items added to bucket`);
+                        if (clearBasket) {this.basket.removeAllRecordIds();}
+                        return this.loadBuckets();
+                    }
+                });
         });
     }
 

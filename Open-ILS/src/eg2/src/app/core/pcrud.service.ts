@@ -402,7 +402,7 @@ export class PcrudService {
         }
     }
 
-    /*translateFlatSortSimple(sort: any[]): any {
+    /* translateFlatSortSimple(sort: any[]): any {
         if (!sort || sort.length === 0) return null;
 
         return sort.reduce((acc, s) => {
@@ -412,7 +412,7 @@ export class PcrudService {
     }*/
 
     translateFlatSortComplex(hint: string, sort: any[]): any {
-        if (!sort || sort.length === 0) return null;
+        if (!sort || sort.length === 0) {return null;}
 
         return {
             order_by: sort.map(s => ({

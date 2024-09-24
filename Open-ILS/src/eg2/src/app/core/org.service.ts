@@ -40,6 +40,7 @@ export class OrgService {
     ) {}
 
     get(nodeOrId: OrgNodeOrId): IdlObject {
+        // eslint-disable-next-line eqeqeq
         if (nodeOrId == null) {
             return null;
         }

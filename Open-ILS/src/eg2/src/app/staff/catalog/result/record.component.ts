@@ -171,9 +171,8 @@ export class ResultRecordComponent implements OnInit, OnDestroy {
         const bibIds = new Array(bibId);
         const inBucket = await this.bucketService.checkForBibInRecordBuckets(bibId, new Array(bucketId));
         if (inBucket) {
-            await this.bucketService.removeBibsFromRecordBucket(bucketId, bibIds);  
-        }
-        else {
+            await this.bucketService.removeBibsFromRecordBucket(bucketId, bibIds);
+        } else {
             await this.bucketService.addBibsToRecordBucket(bucketId, bibIds);
         }
     }
@@ -204,13 +203,13 @@ export class ResultRecordComponent implements OnInit, OnDestroy {
         console.debug('addRecordToBucket, invoked');
         this.bucketService.logRecordBucket(bucketId);
         let msg = '';
-        let result = await this.bucketService.addBibsToRecordBucket(bucketId, [bibId]);
+        const result = await this.bucketService.addBibsToRecordBucket(bucketId, [bibId]);
+        // eslint-disable-next-line eqeqeq
         if (result.textcode == 'DATABASE_UPDATE_FAILED') {
             msg = $localize`Error adding to bucket`;
             console.log(msg, result.debug);
             this.toast.warning(msg);
-        }
-        else {
+        } else {
             msg = $localize`Added record ${bibId} to bucket ${bucketId}`;
             console.log(msg);
             this.toast.success(msg);
@@ -222,7 +221,7 @@ export class ResultRecordComponent implements OnInit, OnDestroy {
     async recordInBucket(bibId: number, bucketId: number): Promise<any> {
         return await this.bucketService.checkForBibInRecordBuckets(bibId, new Array(bucketId));
     }
-    
+
     getHoldingsSummaries(): HoldingsSummary[] {
         if (!this.summary.prefOuHoldingsSummary) {
             return this.summary.holdingsSummary;

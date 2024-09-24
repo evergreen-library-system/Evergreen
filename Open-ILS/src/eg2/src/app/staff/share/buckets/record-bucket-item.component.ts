@@ -168,7 +168,7 @@ export class RecordBucketItemComponent implements OnInit {
         const url = `/eg/staff/cat/bucket/record/view/${this.bucket.id()}/merge/${uniqueBibIds.join(',')}`;
         this.broadcaster.listen('eg.merge_records_in_bucket_' + this.bucket.id()).pipe(take(1)).subscribe(result => {
             console.debug('AngularJS bucket-merge result: ', result);
-            if (result.success) setTimeout(() => {this.grid.reload()},0);
+            if (result.success) {setTimeout(() => {this.grid.reload();},0);}
         });
         console.debug('legacyMergeRecords', url);
         window.open(url, '_blank');

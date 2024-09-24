@@ -9,7 +9,7 @@ import {IdlService,IdlObject} from '@eg/core/idl.service';
 
 @Injectable()
 export class BucketService {
-    maxRecentRecordBuckets: number = 10;
+    maxRecentRecordBuckets = 10;
     private favoriteRecordBucketFlags: {[bucketId: number]: IdlObject} = {};
 
     private bibBucketsRefreshRequested = new Subject<void>();
@@ -27,7 +27,7 @@ export class BucketService {
         this.bibBucketsRefreshRequested.next();
     }
 
-    async retrieveRecordBucketItems(bucketId: number, limit: number = 100): Promise<any[]> {
+    async retrieveRecordBucketItems(bucketId: number, limit = 100): Promise<any[]> {
         const query: any = {
             bucket: bucketId
         };
@@ -123,12 +123,12 @@ export class BucketService {
             favorite: this.isFavoriteRecordBucket(bucket.id())
         }));
         console.debug('retrieveRecordBuckets, bundle', bundle);
-        return bundle;;
+        return bundle;
     }
 
     private async loadRecordBuckets(bucketIds: number[]): Promise<any[]> {
         return lastValueFrom(
-            this.pcrud.search('cbreb', 
+            this.pcrud.search('cbreb',
                 {id: bucketIds},
                 {flesh: 1, flesh_fields: { cbreb: ['owner','owning_lib'] }},
                 {atomic: true}
@@ -182,7 +182,7 @@ export class BucketService {
             acc[flag.bucket()] = flag;
             return acc;
         }, {});
-        console.debug('Favorites, flags', flags)
+        console.debug('Favorites, flags', flags);
     }
 
     isFavoriteRecordBucket(bucketId: number): boolean {
@@ -190,6 +190,7 @@ export class BucketService {
     }
 
     async addFavoriteRecordBucketFlag(bucketId: number, userId: number): Promise<void> {
+        // eslint-disable-next-line max-len
         console.debug('addFavoriteRecordBucketFlag: bucketId, userId, favoriteRecordBucketFlags[bucketId]', bucketId, userId, this.favoriteRecordBucketFlags[bucketId]);
         if (!this.favoriteRecordBucketFlags[bucketId]) {
             const flag = this.idl.create('cbrebuf');

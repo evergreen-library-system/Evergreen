@@ -405,8 +405,8 @@ export class GridColumnSet {
     }
 
     displayColumns(): GridColumn[] {
-        let visible = this.columns.filter(c => (c.visible && !(c.name === 'row-actions')));
-        let actions = this.columns.filter(c => c.name === 'row-actions');
+        const visible = this.columns.filter(c => (c.visible && !(c.name === 'row-actions')));
+        const actions = this.columns.filter(c => c.name === 'row-actions');
         return visible.concat(actions);
     }
 

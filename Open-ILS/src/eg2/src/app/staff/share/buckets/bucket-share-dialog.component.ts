@@ -229,8 +229,9 @@ export class BucketShareDialogComponent
 
         // see if the sorted values are all the same (unchanged); == because number vs number as string
         if (currently_selected
-                .sort((a: IdlObject, b: IdlObject) => a.id() - b.id() )
-                .every((e,i) => e.id() == this._original_view_users.sort()[i].id())) {
+            .sort((a: IdlObject, b: IdlObject) => a.id() - b.id() )
+            // eslint-disable-next-line eqeqeq
+            .every((e,i) => e.id() == this._original_view_users.sort()[i].id())) {
             console.debug('dialog: isSharingAllowedViewPermGrid(), all elements match, so no save');
             return false;
         }
@@ -260,8 +261,9 @@ export class BucketShareDialogComponent
 
         // see if the sorted values are all the same (unchanged); == because number vs number as string
         if (currently_selected
-                .sort((a: IdlObject, b: IdlObject) => a.id() - b.id() )
-                .every((e,i) => e.id() == this._original_edit_users.sort()[i].id())) {
+            .sort((a: IdlObject, b: IdlObject) => a.id() - b.id() )
+            // eslint-disable-next-line eqeqeq
+            .every((e,i) => e.id() == this._original_edit_users.sort()[i].id())) {
             console.debug('dialog: isSharingAllowedEditPermGrid(), all elements match, so no save');
             return false;
         }
@@ -562,7 +564,8 @@ export class BucketShareDialogComponent
             return false;
         }
 
-        // see if the sorted values are all the same (unchanged); == because number vs number as string
+        // see if the sorted values are all the same (unchanged)
+        // eslint-disable-next-line eqeqeq -- using == because number vs number as string
         if (currently_selected.sort().every((e,i) => e == this._original_orgs.sort()[i])) {
             console.debug('dialog: isShareOrgsAllowed(), all elements match, so no save');
             return false;

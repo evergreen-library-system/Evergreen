@@ -217,9 +217,9 @@ export class ResultsComponent implements OnInit, OnDestroy {
         }
         this.setResultsWidth();
         this.serverStore.setItem('eg.staff.catalog.results.show_sidebar', !this.facetsCollapsed).then(
-            setting => { 
+            setting => {
                 console.debug('New sidebar: ', setting);
-                
+
             }
         );
     }

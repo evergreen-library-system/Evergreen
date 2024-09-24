@@ -10,7 +10,7 @@ import {IdlObject} from '@eg/core/idl.service';
 })
 
 export class BucketUserShareComponent
-    implements OnInit {
+implements OnInit {
 
     @Input() cellTextGenerator: GridCellTextGenerator;
     @Input() dataSource: GridDataSource = new GridDataSource();

@@ -1,3 +1,4 @@
+<!-- eslint-disable @angular-eslint/template/button-has-type -->
 <div class="row g-0">
 <ul ngbNav #catalogSidebarTabs="ngbNav" [activeId]="activeTab" (navChange)="onNavChange($event)" [keyboard]="true" class="nav-tabs">
   <li [ngbNavItem]="'facets'" [disabled]="!searchContext.result.facetData">
@@ -70,7 +71,7 @@
                       <h4 class="d-inline fs-6 m-0">
                         <a routerLink="/staff/cat/bucket/record/content/{{bundle.bucket.id}}" class="card-link semibold me-2">{{bundle.bucket.name}}</a>
                       </h4>
-                      <span *ngIf="bundle.bucket.pub == 't'" class="badge badge-success" i18n="Bucket public status">Public</span>
+                      <span *ngIf="bundle.bucket.pub === 't'" class="badge badge-success" i18n="Bucket public status">Public</span>
                       <p class="m-0" *ngIf="bundle.bucket.owning_lib">
                         <span>{{orgName(bundle.bucket.owning_lib)}}</span>
                       </p>
@@ -105,7 +106,7 @@
                       <h4 class="d-inline fs-6 m-0">
                         <a routerLink="/staff/cat/bucket/record/content/{{bundle.bucket.id}}" class="card-link semibold me-2" id="bucket-name-{{bundle.bucket.id}}">{{bundle.bucket.name}}</a>
                       </h4>
-                      <span *ngIf="bundle.bucket.pub == 't'" class="badge badge-success" i18n="Bucket public status">Public</span>
+                      <span *ngIf="bundle.bucket.pub === 't'" class="badge badge-success" i18n="Bucket public status">Public</span>
                       <p class="m-0" *ngIf="bundle.bucket.owning_lib">
                         <span>{{orgName(bundle.bucket.owning_lib)}}</span>
                       </p>

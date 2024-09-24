@@ -1,5 +1,5 @@
 /* eslint-disable no-magic-numbers, @angular-eslint/component-selector */
-import {Component, Input, OnInit, AfterViewInit, QueryList, ViewChildren, inject, NgZone, OnDestroy, Renderer2, ViewEncapsulation} from '@angular/core';
+import {Component, Input, OnInit, AfterViewInit, QueryList, ViewChildren, inject, NgZone, OnDestroy, Renderer2} from '@angular/core';
 import {DOCUMENT} from '@angular/common';
 import {GridContext, GridColumn} from './grid';
 import {GridFilterControlComponent} from './grid-filter-control.component';

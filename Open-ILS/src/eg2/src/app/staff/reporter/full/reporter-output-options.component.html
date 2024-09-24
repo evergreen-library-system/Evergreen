@@ -1,3 +1,4 @@
+<!-- eslint-disable @angular-eslint/template/eqeqeq -->
 <form #srOutputOptionsForm="ngForm" class="form-validated common-form">
   <div class="form-group row" *ngIf="advancedMode">
    <legend class="col-form-label col-sm-1 pt-0" i18n>Pivot Label Column</legend>
@@ -59,7 +60,7 @@
               <select i18n-title title="{{bibIdFields().length ? '' : 'Must have at least one field that is or links to bib record IDs'}}"
                 [disabled]="!bibIdFields().length" id="srBibColumnNumber" class="form-select"
                 [ngModelOptions]="{standalone: true}" [(ngModel)]="templ.bibColumnNumber">
-                <option value="" [selected]="templ.bibColumnNumber == ''" i18n>{{ !bibIdFields().length ? 'No bib record columns' : 'Select One (Optional)'}}</option>
+                <option value="" [selected]="templ.bibColumnNumber === ''" i18n>{{ !bibIdFields().length ? 'No bib record columns' : 'Select One (Optional)'}}</option>
                 <option
                   *ngFor="let f of bibIdFields()"
                   value="{{templ.displayFields.indexOf(f)}}"

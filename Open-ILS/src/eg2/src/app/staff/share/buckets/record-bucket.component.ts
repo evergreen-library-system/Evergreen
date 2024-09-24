@@ -576,8 +576,8 @@ export class RecordBucketComponent implements OnInit, OnDestroy {
         }
         console.debug('rows', rows);
 
-        const performDelete = async (override: boolean = false): Promise<number> => {
-            const method = override 
+        const performDelete = async (override = false): Promise<number> => {
+            const method = override
                 ? 'open-ils.actor.containers.full_delete.override'
                 : 'open-ils.actor.containers.full_delete';
 
@@ -616,7 +616,7 @@ export class RecordBucketComponent implements OnInit, OnDestroy {
                             resolve(carousels);
                         }
                     },
-                    error: (error) => {
+                    error: (error: unknown) => {
                         console.error(error);
                         this.deleteFail.dialogBody = error.toString();
                         this.deleteFail.open();
