@@ -41,7 +41,7 @@ export class MockGenerators {
     }
 
     static storeService(valueFromStore: any) {
-        const store = jasmine.createSpyObj<StoreService>(['getLocalItem', 'setLocalItem']);
+        const store = jasmine.createSpyObj<StoreService>(['getLocalItem', 'setLocalItem', 'getLoginSessionItem']);
         store.getLocalItem.and.returnValue(valueFromStore);
         return store;
     }
