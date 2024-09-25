@@ -20,11 +20,8 @@
   <th *ngIf="context.rowFlairIsEnabled" scope="col" role="columnheader"
     class="eg-grid-cell eg-grid-header-cell eg-grid-flair-cell">
     <div class="eg-grid-cell-contents">
-      <span class="material-icons" aria-hidden="true"
-        title="{{flair.title}}" i18n-title>
-        {{flair.icon}}
-      </span>
-      <span class="visually-hidden" i18n>{{flair.title}}</span>
+      <span class="material-icons" aria-hidden="true" title="{{context.flairColumnHeader}}" i18n-title>notifications</span>
+      <span class="visually-hidden" i18n>{{context.flairColumnHeader}}</span>
     </div>
   </th>
   <th *ngFor="let col of context.columnSet.displayColumns()"
