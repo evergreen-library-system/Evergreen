@@ -14382,6 +14382,7 @@ SELECT  usr,
 			<field name="label" reporter:label="Entry Label" reporter:datatype="text"/>
 			<field name="image_url" reporter:label="Entry Image URL" reporter:datatype="text"/>
 			<field name="target_url" reporter:label="Entry Target URL" reporter:datatype="text"/>
+			<field name="url_newtab" reporter:label="URL Opens in New Tab" reporter:datatype="bool"/>
 			<field name="entry_text" reporter:label="Entry Text" reporter:datatype="text"/>
 			<field name="owner" reporter:label="Owner" reporter:datatype="link" oils_obj:required="true"/>
 		</fields>

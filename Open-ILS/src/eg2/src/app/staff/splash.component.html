@@ -39,7 +39,7 @@
           <div class="list-group">
             <ng-container *ngFor="let entry of portalEntries[i]">
               <div class="list-group-item border-0 p-2" *ngIf="entry.entry_type() === 'menuitem'">
-                <a href="{{entry.target_url()}}" i18n>
+                <a href="{{entry.target_url()}}" [target]="entry.url_newtab() ? '_blank' : null" i18n>
                   <img src="{{entry.image_url()}}" alt="" role="presentation"/>
                   {{entry.label()}}
                 </a>
@@ -62,7 +62,7 @@
                 </div>
               </div>
               <div class="list-group-item border-0 p-2" *ngIf="entry.entry_type() === 'link'">
-                <a target="_top" href="{{entry.target_url()}}" i18n>
+                <a [target]="entry.url_newtab() ? '_blank' : '_top'" href="{{entry.target_url()}}" i18n>
                   <img src="{{entry.image_url()}}" alt="" role="presentation"/>
                   {{entry.label()}}
                 </a>

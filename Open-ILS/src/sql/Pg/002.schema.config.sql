@@ -1415,6 +1415,7 @@ CREATE TABLE config.ui_staff_portal_page_entry (
     label       TEXT,
     image_url   TEXT,
     target_url  TEXT,
+    url_newtab  BOOLEAN,
     entry_text  TEXT,
     owner       INT NOT NULL -- REFERENCES actor.org_unit (id)
 );

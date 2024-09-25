@@ -17,6 +17,7 @@
 .card {
   background-color: var(--bs-card-bg);
   border-color: light-dark(var(--border), var(--splash-card-header-border));
+  margin-block-end: 2rem;
 }
 
 .card-body, .card-body .list-group-item {

@@ -1,4 +1,4 @@
-
+[% # See Open-ILS/web/js/ui/default/staff/admin/workstation/app.js for settings %]
 <div class="container admin-splash-container">
 
   <div class="row">
@@ -70,6 +70,19 @@
             ng-click="test_audio('warning')">[% l('Warning') %]</button>
           <button class="btn btn-danger" ng-class="{disabled : disable_sound}" 
             ng-click="test_audio('error')">[% l('Error') %]</button>
+        </div>
+      </div>
+
+      <div class="row new-entry">
+        <div class="col-md-12">
+          <div class="checkbox">
+            <label>
+              <input type="checkbox" ng-model="disable_links_newtabs"
+                  ng-change="apply_disable_links_newtabs()">
+                [% l('Prevent links from opening in new tabs?') %]
+            </label>
+          </div>
+          <p>[% l('Some links open in new tabs or windows. Screen reader users might want to select this option to force all links to open in the same window.') %]</p>
         </div>
       </div>
 

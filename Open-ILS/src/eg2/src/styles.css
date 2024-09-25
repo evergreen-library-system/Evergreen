@@ -123,6 +123,13 @@ a:not(.alert-link):is(:hover, :focus, :focus-visible),
   filter: brightness(1.1);
 }
 
+a[target="_blank"]:after {
+  display: inline;
+  content: "\e89e";
+  font-family: "Material Icons";
+  line-height: inherit;
+}
+
 /** BS has flex utility classes, but none for specifying flex widths.
  *  BS class="col" is roughly equivelent to flex-1, but col-2 is not
  *  equivalent to flex-2, since col-2 really means 2/12 width. */

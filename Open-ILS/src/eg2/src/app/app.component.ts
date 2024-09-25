@@ -1,4 +1,4 @@
-import {Component} from '@angular/core';
+import {Component, AfterViewChecked} from '@angular/core';
 import {Router, NavigationEnd} from '@angular/router';
 import {DialogComponent} from '@eg/share/dialog/dialog.component';
 
@@ -7,7 +7,7 @@ import {DialogComponent} from '@eg/share/dialog/dialog.component';
     template: '<router-outlet></router-outlet>'
 })
 
-export class BaseComponent {
+export class BaseComponent implements AfterViewChecked {
 
     constructor(private router: Router) {
         this.router.events.subscribe(routeEvent => {
@@ -18,6 +18,13 @@ export class BaseComponent {
         });
     }
 
+    ngAfterViewChecked(): void {
+        document.querySelectorAll('a[target="_blank"]').forEach((a) => {
+            if (!a.getAttribute('aria-describedby')) {
+                a.setAttribute('aria-describedby', 'link-opens-newtab');
+            }
+        });
+    }
 }
 
 

@@ -25,7 +25,7 @@ import {merge, Observable, EMPTY} from 'rxjs';
 export class AdminStaffPortalPageComponent extends AdminPageComponent implements OnInit {
 
     idlClass = 'cusppe';
-    fieldOrder = 'label,entry_type,target_url,entry_text,image_url,page_col,col_pos,owner,id';
+    fieldOrder = 'label,entry_type,target_url,url_newtab,entry_text,image_url,page_col,col_pos,owner,id';
     classLabel: string;
 
     refreshSelected: (idlThings: IdlObject[]) => void;
