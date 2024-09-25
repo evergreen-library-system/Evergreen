@@ -85,26 +85,12 @@ a:hover,
 .btn-link:hover,
 .nav-link:focus,
 .nav-link:hover {
-  color: var(--bs-blue-650);
+  color: var(--primary-hover);
 }
 
 .btn-link:focus,
 .btn-link:hover {
   border-width: 0;
-}
-
-/** Ang5 routes on clicks to href's with no values, so we can't have
- * bare href's to force anchor styling.  Use this for anchors w/ no href.
- * TODO: should we style all of them?  a:not([href]) ....
- * */
- .no-href {
-  color: var(--primary);
-  cursor: pointer;
-}
-
-.no-href:hover {
-  border-color: var(--bs-blue-650);
-  color: var(--bs-blue-650);
 }
 
 /** BS has flex utility classes, but none for specifying flex widths.
@@ -714,7 +700,7 @@ button.input-group-text.text-danger {
 .btn-destroy,
 .btn-outline-normal:hover,
 .btn-outline-normal:focus,
-.input-group-text {
+.btn-outline-normal:active {
   color: var(--btn-gray-color);
   background-color: var(--btn-gray-bg);
   border: 1px solid var(--btn-gray-border);
@@ -735,32 +721,18 @@ button.input-group-text.text-danger {
   border: 1px solid var(--btn-gray-border);
 }
 
-.btn-outline-normal:hover,
-.btn-outline-normal:focus,
-.btn-outline-normal:active {
-  color: var(--btn-gray-color);
-  background-color: var(--btn-gray-bg);
-  border: 1px solid var(--btn-gray-border);
-}
-
-.btn-outline-normal:hover,
-.btn-outline-normal:focus {
-  color: var(--btn-gray-color);
-  background-color: var(--btn-gray-bg);
-  border: 1px solid var(--btn-gray-border);
-}
 .btn-normal[disabled],
 .btn-destroy[disabled] {
-  color: var(--bs-gray-700);
-  background-color: var(--bs-gray-200);
-  border: 1px solid var(--bs-gray-300);
+  color: var(---bs-body-color-disabled);
+  background-color: var(--bs-body-bg-highlight);
+  border: 1px solid var(--border);
 }
 
 .btn-outline-normal[disabled],
 .btn-outline-destroy[disabled] {
-  color: var(--bs-gray-700);
+  color: var(---bs-body-color-disabled);
   background-color: transparent;
-  border: 1px solid var(--bs-gray-300);
+  border: 1px solid var(--border);
 }
 
 .btn-link.btn-destroy {
@@ -772,226 +744,36 @@ button.input-group-text.text-danger {
 .btn-destroy:focus,
 .btn-link.btn-destroy:hover,
 .btn-link.btn-destroy:focus {
-  color: var(--bs-red-600);
-  background-color: var(--bs-gray-200);
-  border: 1px solid var(--bs-red);
-  box-shadow: 0 0 0 .25rem rgba(var(--bs-red-rgb), .25);
-}
-
-.btn-destroy:active {
-  color:  var(--bs-white);
-  background-color: var(--bs-red);
-  border: 1px solid var(--bs-red-700);
-}
-
-.btn-link.btn-destroy:active {
-  color: var(--bs-red-700);
-  background-color: transparent;
-  border: 1px solid var(--bs-red-700);
-}
-
-.btn-outline-destroy:hover,
-.btn-outline-destroy:focus {
-  color: var(--bs-red-600);
-  background-color: transparent;
-  border: 1px solid var(--bs-red);
-  box-shadow: 0 0 0 .25rem rgba(var(--bs-red-rgb), .25);
-}
-
-.btn-outline-destroy:active {
-  color: var(--bs-red);
-  background-color: transparent;
-  border: 1px solid var(--bs-red-700);
-}
-
-/* inset a solid outline instead of using Bootstrap's box-shadow style */
-button.focus-border:focus,
-button.focus-border:focus-visible {
-    box-shadow: none;
-    outline: 3px solid var(--bs-primary);
-    outline-offset: -3px;
-}
-
-.btn-normal,
-.btn-destroy,
-.btn-outline-normal:hover,
-.btn-outline-normal:focus {
-  color: var(--bs-gray-900);
-  background-color: var(--bs-gray-200);
-  border: 1px solid var(--bs-gray-400);
-}
-
-.btn-normal:hover,
-.btn-normal:focus,
-.btn-normal:active {
-  color: var(--bs-gray-900);
-  background-color: var(--bs-gray-300);
-  border: 1px solid var(--bs-gray-400);
-}
-
-.btn-outline-normal,
-.btn-outline-destroy {
-  color: var(--bs-gray-900);
-  background-color: transparent;
-  border: 1px solid var(--bs-gray-400);
-}
-
-.btn-outline-normal:hover,
-.btn-outline-normal:focus,
-.btn-outline-normal:active {
-  color: var(--bs-gray-900);
-  background-color: var(--bs-gray-200);
-  border: 1px solid var(--bs-gray-400);
-}
-
-.btn-normal[disabled],
-.btn-destroy[disabled] {
-  color: var(--bs-body-color-disabled);
-  background-color: var(--btn-gray-bg);
-  border: 1px solid var(--btn-gray-bg-hover);
-}
-
-.btn-outline-normal[disabled],
-.btn-outline-destroy[disabled] {
-  color: var(--bs-body-color-disabled);
-  background-color: transparent;
-  border: 1px solid var(--btn-gray-bg-hover);
-}
-
-.btn-link.btn-destroy {
-  background-color: transparent;
-  border-color: transparent;
-}
-
-.btn-destroy:hover,
-.btn-destroy:focus,
-.btn-link.btn-destroy:hover,
-.btn-link.btn-destroy:focus {
-  color: var(--danger-color);
-  background-color: light-dark(var(--bs-gray-300), var(--bs-gray-800));
+  color: var(--danger);
+  background-color: var(--btn-gray-bg-hover);
   border: 1px solid var(--danger-border);
-  box-shadow: 0 0 0 .25rem rgba(var(--bs-red-rgb), 0.25);
-}
-
-.btn-destroy:active {
-  color: var(--white);
-  background-color: var(--danger);
-  border: 1px solid var(--danger-border);
-}
-
-.btn-link.btn-destroy:active {
-  color: var(--danger-color);
-  background-color: transparent;
-  border: 1px solid var(--danger-border);
-}
-
-.btn-outline-destroy:hover,
-.btn-outline-destroy:focus {
-  color: var(--danger-color);
-  background-color: transparent;
-  border: 1px solid var(--danger-border);
-  box-shadow: 0 0 0 .25rem rgba(var(--bs-red-rgb), 0.25);
-}
-
-.btn-outline-destroy:active {
-  color: var(--danger-color);
-  background-color: transparent;
-  border: 1px solid var(--danger-border);
-}
-
-/* inset a solid outline instead of using Bootstrap's box-shadow style */
-button.focus-border:focus,
-button.focus-border:focus-visible {
-    box-shadow: none;
-    outline: 3px solid rgba(var(--primary-focus-outline-rgb), 0.75);
-    outline-offset: -3px;
-}
-
-.btn-normal,
-.btn-destroy,
-.btn-outline-normal:hover,
-.btn-outline-normal:focus {
-  color: var(--bs-gray-900);
-  background-color: var(--bs-gray-200);
-  border: 1px solid var(--bs-gray-400);
-}
-
-.btn-normal:hover,
-.btn-normal:focus,
-.btn-normal:active {
-  color: var(--bs-gray-900);
-  background-color: var(--bs-gray-300);
-  border: 1px solid var(--bs-gray-400);
-}
-
-.btn-outline-normal,
-.btn-outline-destroy {
-  color: var(--bs-gray-900);
-  background-color: transparent;
-  border: 1px solid var(--bs-gray-400);
-}
-
-.btn-outline-normal:hover,
-.btn-outline-normal:focus,
-.btn-outline-normal:active {
-  color: var(--bs-gray-900);
-  background-color: var(--bs-gray-200);
-  border: 1px solid var(--bs-gray-400);
-}
-
-.btn-normal[disabled],
-.btn-destroy[disabled] {
-  color: var(--bs-gray-700);
-  background-color: var(--bs-gray-200);
-  border: 1px solid var(--bs-gray-300);
-}
-
-.btn-outline-normal[disabled],
-.btn-outline-destroy[disabled] {
-  color: var(--bs-gray-700);
-  background-color: transparent;
-  border: 1px solid var(--bs-gray-300);
-}
-
-.btn-link.btn-destroy {
-  background-color: transparent;
-  border-color: transparent;
-}
-
-.btn-destroy:hover,
-.btn-destroy:focus,
-.btn-link.btn-destroy:hover,
-.btn-link.btn-destroy:focus {
-  color: var(--bs-red-600);
-  background-color: var(--bs-gray-200);
-  border: 1px solid var(--bs-red);
   box-shadow: 0 0 0 .25rem rgba(var(--bs-red-rgb), .25);
 }
 
 .btn-destroy:active {
   color: var(--bs-white);
-  background-color: var(--bs-red);
-  border: 1px solid var(--bs-red-700);
+  background-color: var(--bs-danger);
+  border: 1px solid var(--danger-border);
 }
 
 .btn-link.btn-destroy:active {
-  color: var(--bs-red-700);
+  color: var(--danger-color);
   background-color: transparent;
-  border: 1px solid var(--bs-red-700);
+  border: 1px solid var(--danger-border);
 }
 
 .btn-outline-destroy:hover,
 .btn-outline-destroy:focus {
-  color: var(--bs-red-600);
+  color: var(--danger-color);
   background-color: transparent;
-  border: 1px solid var(--bs-red);
+  border: 1px solid var(--danger-border);
   box-shadow: 0 0 0 .25rem rgba(var(--bs-red-rgb), .25);
 }
 
 .btn-outline-destroy:active {
-  color: var(--bs-red);
+  color: var(--danger-color);
   background-color: transparent;
-  border: 1px solid var(--bs-red-700);
+  border: 1px solid var(--danger-border);
 }
 
 /* inset a solid outline instead of using Bootstrap's box-shadow style */
@@ -1177,7 +959,6 @@ background/text variables. Crash override. We can remove this in Bootstrap 5.3.
 .list-group-item,
 .panel, .panel-body,
 #patron-fixed-tabs,
-.patron-summary-container .row:nth-child(2n+1):not(.alert),
 .table {
     background: var(--bs-body-bg);
     border-color: var(--border);
@@ -1208,7 +989,6 @@ input, textarea, select, option,
 .eg-grid-sticky-header,
 .form-control, .form-control:focus, .form-select, .form-check-input,
 .panel-header,
-#patron-summary-grid div.row:nth-child(2n+1),
 .popover, 
 .popover-body,
 .tooltip-inner,
@@ -1321,33 +1101,12 @@ input, textarea, select, option,
 
 .nav-tabs.flex-column .nav-item .nav-link:hover, 
 .nav-tabs.flex-column .nav-item .nav-link:focus {
-  background-color: rgba(0,0,100,0.075);
+  background-color: light-dark(rgba(0,0,100,0.075), var(--bs-body-bg-highlight));
 }
 
 .nav-tabs.flex-column .nav-item.show .nav-link, 
 .nav-tabs.flex-column .nav-link.active {
-  background-color: rgba(var(--bs-blue-rgb),0.1);
-  font-weight: bold;
-}
-
-/* Vertical nav tabs */
-.nav-tabs.flex-column .nav-item .nav-link, 
-.nav-tabs.flex-column .nav-link {
-  border-radius: 0;
-  border-width: 0;
-  padding: 0.375rem 0.25rem;
-  text-align: left;
-  width: 100%;
-}
-
-.nav-tabs.flex-column .nav-item .nav-link:hover, 
-.nav-tabs.flex-column .nav-item .nav-link:focus {
-  background-color: rgba(0,0,100,0.075);
-}
-
-.nav-tabs.flex-column .nav-item.show .nav-link, 
-.nav-tabs.flex-column .nav-link.active {
-  background-color: rgba(var(--bs-blue-rgb),0.1);
+  background-color: light-dark(rgba(var(--bs-blue-rgb),0.1), var(--bs-blue-350));
   font-weight: bold;
 }
 

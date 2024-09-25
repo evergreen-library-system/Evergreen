@@ -1,10 +1,17 @@
 
 .patron-summary-container {
+  background-color: light-dark(var(--bs-body-bg), var(--bs-body-bg-alt));
   border-radius: 0.5rem;
   box-shadow: 
-    0.25rem 1px  1rem rgba(0,0,100,0.2), 
-    0.25rem 1rem 1rem rgba(0,0,100,0.1);
-    padding: 1rem;
+    0.25rem 1px  1rem light-dark(rgba(0,0,100,0.2), rgba(0,0,0,0.8)), 
+    0.25rem 1rem 1rem light-dark(rgba(0,0,100,0.1), rgba(0,0,0,0.5));
+  padding: 1rem;
+}
+
+.account-details .row:nth-child(odd):not(.alert) {
+    background: var(--bs-body-bg);
+    border-color: var(--border);
+    color: var(--bs-body-color);
 }
 
 .account-sections {
@@ -50,8 +57,8 @@
 
 .alert-danger,
 .alert-danger .material-icons {
-  background: #f8d7da;
-  color: #58151c;
+  background: light-dark(var(--bs-red-100), var(--bs-red-900));
+  color: light-dark(var(--bs-red-800), var(--bs-red-200));
 }
 
 dl .alert {
@@ -72,9 +79,9 @@ dl .alert {
 }
 
 .alert-penalties {
-  background: rgba(0,0,100,0.08);
+  background: light-dark(rgba(0,0,100,0.08), var(--bs-gray-800));
   border-radius: 0.35rem;
-  color: #212529;
+  color: light-dark(var(--bs-gray-900), var(--bs-gray-200));
   margin: 0 0 1rem;
   padding: 0.25rem;
 }
@@ -97,8 +104,8 @@ dl .alert {
 }
 /* --badge-info */
 .PATRON_HAS_NOTES { 
-  background: #cff4fc;
-  color: #032830;
+  background: light-dark(var(--bs-cyan-100), var(--bs-cyan-900));
+  color: light-dark(var(--bs-cyan-900), var(--bs-cyan-100));;
 }
  /* BS Purple */
 .PATRON_EXCEEDS_LOST_COUNT,
@@ -106,13 +113,13 @@ dl .alert {
 .PATRON_EXCEEDS_OVERDUE_COUNT,
 .PATRON_EXCEEDS_LONGOVERDUE_COUNT,
 .PATRON_EXCEEDS_FINES  { 
-  background: #E2D9F3;
-  color: #2C1A4D; 
+  background: light-dark(var(--bs-purple-100), var(--bs-purple-800));
+  color: light-dark(var(--bs-purple-800), var(--bs-purple-100)); 
 }
 /* --badge-success */
 .NO_PENALTIES {
-  background: #dff0d8;
-  color: #003B35;
+  background: var(--success-text-light);
+  color: var(--success-text-dark);
 }
 /* --badge-warning */
 .ONE_PENALTY,
@@ -123,36 +130,36 @@ dl .alert {
 .INVALID_PATRON_DAY_PHONE,
 .INVALID_PATRON_EVENING_PHONE,
 .INVALID_PATRON_OTHER_PHONE {
-  background: #FFF3CE;
-  color: #653208;
+  background: light-dark(var(--bs-yellow-100), var(--bs-yellow-800));
+  color: light-dark(var(--bs-orange-800), var(--bs-yellow-100));
 }
 /* Bootstrap orange */
 .MULTIPLE_PENALTIES,
 .PATRON_HAS_LOST,
 .PATRON_IN_COLLECTIONS { 
-  background: #FFE5D0;
-  color: #653208;
+  background: light-dark(var(--bs-orange-100), var(--bs-yellow-800));
+  color: light-dark(var(--bs-orange-800), var(--bs-yellow-100));
 }
 /* --badge-secondary */
 .PATRON_INACTIVE,
 .PATRON_EXPIRED  { 
-  background: #dee2e6;
-  color: #212529;
+  background: light-dark(var(--bs-gray-300), var(--bs-gray-900));
+  color: light-dark(var(--bs-gray-900), var(--bs-gray-300));
 }
 /* --badge-danger */
 .PATRON_BARRED,
 .PATRON_HAS_ALERT,
 .PATRON_HAS_STAFF_ALERT  { 
-  background: #f8d7da;
-  color: #58151c;
+  background: light-dark(var(--bs-red-100), var(--bs-red-800));
+  color: light-dark(var(--bs-red-800), var(--bs-red-100));
 }
 .PATRON_BARRED {
   font-weight: bold;
 }
 /* --badge-primary */
 .PATRON_JUVENILE  { 
-  background: #cfe2ff;
-  color: #062C65;
+  background: light-dark(var(--bs-blue-100), var(--bs-blue-800));
+  color: light-dark(var(--bs-blue-800), var(--bs-blue-100));
 }
 
 /* Statuses with warning icon */
