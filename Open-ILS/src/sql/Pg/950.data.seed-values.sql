@@ -561,39 +561,39 @@ INSERT INTO config.net_access_level (id, name) VALUES
 SELECT SETVAL('config.net_access_level_id_seq'::TEXT, 100);
 
 -- available locales
-INSERT INTO config.i18n_locale (code,marc_code,name,description)
+INSERT INTO config.i18n_locale (code,marc_code,name,description,staff_client)
     VALUES ('en-US', 'eng', oils_i18n_gettext('en-US', 'English (US)', 'i18n_l', 'name'),
-	oils_i18n_gettext('en-US', 'American English', 'i18n_l', 'description'));
-INSERT INTO config.i18n_locale (code,marc_code,name,description)
+	oils_i18n_gettext('en-US', 'American English', 'i18n_l', 'description'),true);
+INSERT INTO config.i18n_locale (code,marc_code,name,description,staff_client)
     VALUES ('cs-CZ', 'cze', oils_i18n_gettext('cs-CZ', 'Czech', 'i18n_l', 'name'),
-	oils_i18n_gettext('cs-CZ', 'Czech', 'i18n_l', 'description'));
-INSERT INTO config.i18n_locale (code,marc_code,name,description)
+	oils_i18n_gettext('cs-CZ', 'Czech', 'i18n_l', 'description'),false);
+INSERT INTO config.i18n_locale (code,marc_code,name,description,staff_client)
     VALUES ('en-CA', 'eng', oils_i18n_gettext('en-CA', 'English (Canada)', 'i18n_l', 'name'),
-	oils_i18n_gettext('en-CA', 'Canadian English', 'i18n_l', 'description'));
-INSERT INTO config.i18n_locale (code,marc_code,name,description)
+	oils_i18n_gettext('en-CA', 'Canadian English', 'i18n_l', 'description'),false);
+INSERT INTO config.i18n_locale (code,marc_code,name,description,staff_client)
     VALUES ('fi-FI', 'fin', oils_i18n_gettext('fi-FI', 'Finnish', 'i18n_l', 'name'),
-	oils_i18n_gettext('fi-FI', 'Finnish', 'i18n_l', 'description'));
-INSERT INTO config.i18n_locale (code,marc_code,name,description)
+	oils_i18n_gettext('fi-FI', 'Finnish', 'i18n_l', 'description'),false);
+INSERT INTO config.i18n_locale (code,marc_code,name,description,staff_client)
     VALUES ('fr-CA', 'fre', oils_i18n_gettext('fr-CA', 'French (Canada)', 'i18n_l', 'name'),
-	oils_i18n_gettext('fr-CA', 'Canadian French', 'i18n_l', 'description'));
-INSERT INTO config.i18n_locale (code,marc_code,name,description)
+	oils_i18n_gettext('fr-CA', 'Canadian French', 'i18n_l', 'description'),false);
+INSERT INTO config.i18n_locale (code,marc_code,name,description,staff_client)
     VALUES ('hy-AM', 'arm', oils_i18n_gettext('hy-AM', 'Armenian', 'i18n_l', 'name'),
-	oils_i18n_gettext('hy-AM', 'Armenian', 'i18n_l', 'description'));
-INSERT INTO config.i18n_locale (code,marc_code,name,description)
+	oils_i18n_gettext('hy-AM', 'Armenian', 'i18n_l', 'description'),false);
+INSERT INTO config.i18n_locale (code,marc_code,name,description,staff_client)
     VALUES ('es-ES', 'spa', oils_i18n_gettext('es-ES', 'Spanish', 'i18n_l', 'name'),
-	oils_i18n_gettext('es-ES', 'Spanish', 'i18n_l', 'description'));
---INSERT INTO config.i18n_locale (code,marc_code,name,description)
+	oils_i18n_gettext('es-ES', 'Spanish', 'i18n_l', 'description'),false);
+--INSERT INTO config.i18n_locale (code,marc_code,name,description,staff_client)
 --    VALUES ('es-US', 'spa', oils_i18n_gettext('es-US', 'Spanish (US)', 'i18n_l', 'name'),
---	oils_i18n_gettext('es-US', 'American Spanish', 'i18n_l', 'description'));
---INSERT INTO config.i18n_locale (code,marc_code,name,description)
+--	oils_i18n_gettext('es-US', 'American Spanish', 'i18n_l', 'description'),false);
+--INSERT INTO config.i18n_locale (code,marc_code,name,description,staff_client)
 --    VALUES ('es-MX', 'spa', oils_i18n_gettext('es-MX', 'Spanish (Mexico)', 'i18n_l', 'name'),
---	oils_i18n_gettext('es-MX', 'Mexican Spanish', 'i18n_l', 'description'));
-INSERT INTO config.i18n_locale (code,marc_code,name,description)
+--	oils_i18n_gettext('es-MX', 'Mexican Spanish', 'i18n_l', 'description'),false);
+INSERT INTO config.i18n_locale (code,marc_code,name,description,staff_client)
     VALUES ('ru-RU', 'rus', oils_i18n_gettext('ru-RU', 'Russian', 'i18n_l', 'name'),
-	oils_i18n_gettext('ru-RU', 'Russian', 'i18n_l', 'description'));
-INSERT INTO config.i18n_locale (code,marc_code,name,description,rtl)
+	oils_i18n_gettext('ru-RU', 'Russian', 'i18n_l', 'description'),false);
+INSERT INTO config.i18n_locale (code,marc_code,name,description,staff_client,rtl)
     VALUES ('ar-JO', 'ara', oils_i18n_gettext('ar-JO', 'Arabic (Jordan)', 'i18n_l', 'name'),
-	oils_i18n_gettext('ar-JO', 'Arabic (Jordan)', 'i18n_l', 'description'), 'true');
+	oils_i18n_gettext('ar-JO', 'Arabic (Jordan)', 'i18n_l', 'description'),false, 'true');
 
 -- Z39.50 server attributes
 

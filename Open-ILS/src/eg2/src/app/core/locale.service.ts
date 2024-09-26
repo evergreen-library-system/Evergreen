@@ -36,21 +36,14 @@ export class LocaleService {
         window.location.href = url;
     }
 
-    // Returns codes supported for the current environment.
-    supportedLocaleCodes(): string[] {
-        return environment.locales || [];
-    }
-
     // Returns i18n_l objects matching the locales supported
     // in the current environment.
     supportedLocales(): Observable<IdlObject> {
-        const locales = this.supportedLocaleCodes();
+        const localeCriteria = environment.production ?
+            {staff_client: 't'} :
+            {code: 'en-US'}; // non-production environments typically only build in English, so don't present other options
 
-        if (locales.length === 0) {
-            return of();
-        }
-
-        return this.pcrud.search('i18n_l', {code: locales}, {}, {anonymous: true});
+        return this.pcrud.search('i18n_l', localeCriteria, {}, {anonymous: true});
     }
 
     // Extract the local from the URL.

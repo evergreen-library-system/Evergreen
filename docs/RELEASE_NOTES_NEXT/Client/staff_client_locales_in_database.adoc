@@ -1,0 +1,17 @@
+== Staff client locales configurable in the database ==
+
+Previously, system administrators could define which locales should display
+in the staff client by editing a file called environment.prod.ts.
+
+In this release, these locales are instead configured in the config.i18n_locale
+database table.  To enable the cs-CZ locale in the staff client, for example,
+you can issue this SQL query:
+
+[source,sql]
+-------------
+UPDATE config.i18n_locale SET staff_client=TRUE WHERE code='cs-CZ';
+-------------
+
+Any locales with a true staff_client value will appear in the locale picker, and
+will be listed as options when translating terms within the staff client.
+

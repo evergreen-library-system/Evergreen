@@ -9374,6 +9374,7 @@ SELECT  usr,
 			<field name="name" reporter:datatype="text" oils_persist:i18n="true" oils_obj:required="true"/>
 			<field name="description" reporter:datatype="text" oils_persist:i18n="true"/>
 			<field name="rtl" reporter:datatype="bool"/>
+			<field name="staff_client" reporter:datatype="bool" reporter:label="Display in staff client?" />
 		</fields>
 		<links/>
 		<permacrud xmlns="http://open-ils.org/spec/opensrf/IDL/permacrud/v1">
