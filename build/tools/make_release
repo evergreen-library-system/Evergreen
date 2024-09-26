@@ -156,6 +156,8 @@ echo "Version: $VERSION Short: $SHORT_VERSION"
 DASH_VERSION=`echo $VERSION | sed 's/\./-/g'`
 SHORT_DASH_VERSION=`echo $SHORT_VERSION | sed 's/\./-/g'`
 UNDER_VERSION=`echo $VERSION | sed -e 's/\./_/g;s/-/_/g'`
+VERSION_ARRAY=(${VERSION//./ })
+PADDED_DECIMAL_VERSION="${VERSION_ARRAY[0]}.$(printf %02d "${VERSION_ARRAY[1]//[!0-9]/}" )$(printf %02d "${VERSION_ARRAY[2]//[!0-9]/}" )"
 
 PREVIEW_TEXT=""
 
@@ -225,6 +227,7 @@ if [ "$PREV_BRANCH" != "PACKAGE" ]; then
     echo "Applying to Application.pm - HEAD -> $DASH_VERSION"
     echo "Alt: $SHORT_DASH_VERSION -> $DASH_VERSION"
     sed -i -e "s/\"$SHORT_DASH_VERSION[^\"]*\"/\"$DASH_VERSION\"/" -e "s/\"HEAD\"/\"$DASH_VERSION\"/" $GIT_ABS/Open-ILS/src/perlmods/lib/OpenILS/Application.pm
+    sed -i "/VERSION/s/'.*'/'$PADDED_DECIMAL_VERSION'/g" Open-ILS/src/perlmods/lib/OpenILS.pm
 
     echo "Applying to README:"
 
