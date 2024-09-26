@@ -296,18 +296,10 @@ if [ "$PREV_BRANCH" != "PACKAGE" ]; then
         fi
     fi
 
-    grep -i -m 1 Signed-off-by ChangeLog &> /dev/null
-    if [ $? -ne 0 ]; then
-        echo "Building ChangeLog"
-        git log --cherry-pick --right-only --no-merges --pretty --summary --numstat $PREV_BRANCH...HEAD > $GIT_ABS/ChangeLog
-    else
-        echo "Not overwriting existing ChangeLog!"
-    fi
-
     echo "Committing (but not pushing) the lot of it"
-    COMMIT_MESSAGE="Bumping version numbers and adding Changelog"
+    COMMIT_MESSAGE="Bumping version numbers"
     if [ -n "$UPGRADE_FILE" ]; then
-        COMMIT_MESSAGE="Bumping version numbers, adding Upgrade Script and Changelog"
+        COMMIT_MESSAGE="Bumping version numbers and adding Upgrade Script"
     fi
     git commit -asm "$COMMIT_MESSAGE"
     if [ "$PG_HOST" != "NONE" ]; then
@@ -396,9 +388,6 @@ fi
 cd $RELEASE_DIR
 tar czf Evergreen-ILS-$VERSION.tar.gz Evergreen-ILS-$VERSION/
 md5sum Evergreen-ILS-$VERSION.tar.gz > Evergreen-ILS-$VERSION.tar.gz.md5
-if [ $PREV_BRANCH != "PACKAGE" ]; then # We need to have tagged to do this ;)
-    cp Evergreen-ILS-$VERSION/ChangeLog ChangeLog-$PREV_VERSION-$VERSION
-fi
 
 echo "Removing build directory"
 rm -rf Evergreen-ILS-$VERSION/
