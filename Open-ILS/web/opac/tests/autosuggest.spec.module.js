@@ -241,7 +241,7 @@ describe('ListBoxComponent', () => {
                     const form = global.document.querySelector('form');
                     spyOn(form, 'submit');
 
-                    const event = new global.window.KeyboardEvent('click', { 'bubbles': true});
+                    const event = new global.window.KeyboardEvent('mousedown', { 'bubbles': true});
                     global.document.querySelector(selector).dispatchEvent(event);
 
                     expect(input.value).toBe('Cambridge music handbooks');
