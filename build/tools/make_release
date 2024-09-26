@@ -3,8 +3,6 @@
 GIT_ABS=`git rev-parse --show-toplevel`
 RELEASE_DIR=$GIT_ABS/../release/
 GIT_BRANCH=`git rev-parse --abbrev-ref HEAD | sed 's|.*/||'`
-HEADURLBASE="http://git.evergreen-ils.org/?p=Evergreen.git;a=shortlog;h=refs/heads/tags/"
-HEADURL="$HEADURLBASE$GIT_BRANCH"
 
 # Drop to the root of the checkout
 cd $GIT_ABS
@@ -245,21 +243,6 @@ if [ "$PREV_BRANCH" != "PACKAGE" ]; then
     echo "Applying to configure.ac:"
     echo "AC_INIT and AM_INIT_AUTOMAKE entries"
     sed -i -e "s/^\(AC_INIT(Open-ILS, \)[^,]*,/\1$VERSION,/" -e "s/^\(AM_INIT_AUTOMAKE(\[[^]]*], \[\)[^]]*]/\1$VERSION]/" configure.ac
-
-    echo "Finding/updating old \$HeadURL\$ entries"
-    HEADURLBASE=`echo ${HEADURLBASE} | sed 's/\?/\\?/'`
-    for file in `grep -Rl --exclude=make_release "$HEADURLBASE" $GIT_ABS`
-    do
-        echo $file
-        sed -i "s|${HEADURLBASE}[A-Za-z0-9_]*|$HEADURL|" $file
-    done
-
-    echo "Applying \$HeadURL\$ - $HEADURL"
-    for file in `grep -Rl --exclude=make_release '\\$HeadURL\\$' $GIT_ABS`
-    do
-        echo $file
-        sed -i "s|\\\$HeadURL\\\$|$HEADURL|" $file
-    done
 
     if [ "$PREV_BRANCH" = "TAG" ]; then
         echo "Committing (but not pushing) the lot of it"
