@@ -1,42 +1,42 @@
     [% IF !sso_enabled || sso_native %]
     <div class="row">
-        <div class="col-sm w-50">
+        <div class="col-sm-6">
             <label for='username_field' class="lbl1" >[% l('Library Card Number') %]
-            <a href="#" title="[% INCLUDE "opac/parts/login/username_hint.tt2" %]" data-html="true" data-toggle="tooltip">
-            <i class="fas fa-question-circle"></i></a></label>
+                <a href="#" aria-label="Card number help" title="[% INCLUDE 'opac/parts/login/username_hint.tt2' %]" data-toggletip>
+                <i class="fas fa-question-circle"></i></a>
+            </label>
+
+            <input class="form-control" type='text' id="username_field" name="username" 
+                autocomplete="username" autocapitalize="off" aria-describedby="login-failed-message"
+                [% IF ctx.page == 'login' %] autofocus [% END %]/>
         </div>
-        <div class="col-sm w-50">
+        <div class="col-sm-6">
             <label for="password_field" class="lbl1" >[% l('PIN') %]
-            <a href="#" title="[% INCLUDE "opac/parts/login/password_hint.tt2" %]" data-html="true" data-toggle="tooltip">
-            <i class="fas fa-question-circle"></i></a></label>
-        </div>
-    </div>
-    <div class="row">
-        <div class="col-sm w-50">
-            <input class="form-control" type='text' id="username_field" name="username"[% IF ctx.page == 'login' %] autofocus [% END %]/>
-        </div>
-        <div class="col-sm w-50">
+                <a href="#" aria-label="Password help" title="[% INCLUDE 'opac/parts/login/password_hint.tt2' %]" data-toggletip>
+                <i class="fas fa-question-circle"></i></a>
+            </label>
+
             <div class="input-group">
 				<input class="form-control" id="password_field" name="password" type="password"
-					spellcheck="false" autocomplete="false" autocapitalize="none" aria-description="[% l('Your password is not visible.') %]"/>
-				<button id="show_password" class="input-group-text pointer" type="button" role="checkbox">
+					spellcheck="false" autocomplete="current-password" autocapitalize="none" aria-describedby="login-failed-message show_password" />
+				<button id="show_password" class="input-group-text pointer" type="button" role="checkbox" aria-checked="false">
 					<i class="fas fa-eye-slash"></i>
+                    <span id="show_password_desc" class="sr-only">[% l('Your password is not visible.') %]</span>
 				</button>
             </div>
         </div>
     </div>
     <div class="row">
-        <div class="col-sm w-50">
+        <div class="col-sm-6">
                     [% IF ctx.get_org_setting (
                           ctx.physical_loc || ctx.aou_tree.id, 'opac.allow_pending_user') %]
-            <a href='[% mkurl(ctx.opac_root _ '/register', {}, 1) %]'>[% l('Request A Card') %]</a>
+            <a href="[% mkurl(ctx.opac_root _ '/register', {}, 1) %]">[% l('Request A Card') %]</a>
                     [% END %]
         </div>
-        <div class="col-sm w-50">
+        <div class="col-sm-6">
             [% IF reset_password == 'true' %]
-                <a href='[% mkurl(ctx.opac_root _ '/password_reset', {}, 1) %]'>[% l('Forgot Your Password?') %]  </a>
+                <a href="[% mkurl(ctx.opac_root _ '/password_reset', {}, 1) %]">[% l('Forgot Your Password?') %]  </a>
             [% END %]
         </div>
     </div>
     [% END; # native block %]
-</div>
