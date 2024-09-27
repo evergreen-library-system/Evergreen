@@ -28,20 +28,20 @@ ctx.metalinks.push('
             END;
             %]
             <a href='http://obalkyknih.cz/view?isbn=[% isbnissn %]'>
-                <img alt="[% attrs.title _ ' Cover Image' | html %]" class='img-thumbnail w-auto'
+                <img alt="" class='img-thumbnail w-auto'
                     src='[% ctx.media_prefix %]/opac/extras/ac/jacket/[% record.summary.jacket_size %]/r/[% ctx.bre_id | uri %]' />
             </a>
             [% ELSE %]
             <a href='[% ctx.media_prefix %]/opac/extras/ac/jacket/large/r/[% ctx.bre_id | uri %]'><img
-                    alt="[% attrs.title _ ' Cover Image' | html %]" class='img-thumbnail w-auto'
+                    alt="" class='img-thumbnail w-auto'
                     src='[% ctx.media_prefix %]/opac/extras/ac/jacket/[% record.summary.jacket_size %]/r/[% ctx.bre_id | uri %]' />
             </a>
             [%- END %]
 
             [%- IF attrs.format_label %]
             [% FOR format IN attrs.all_formats %]
-            <span style="font-size:14px;" class="mt-3 d-block">
-                <img alt="[% format.label | html %]" src="[% format.icon %]" />
+            <span class="mt-3 d-block format_label">
+                <img alt="" src="[% format.icon %]" />
                 [% format.label | html %]
             </span>
             [% END %]
@@ -57,15 +57,15 @@ ctx.metalinks.push('
         <div class="row h-100">
             <div class="col-lg-8">
                 <div id="rdetail_title_div">
-                <h1 id="rdetail_title" class='h1' property="name">[% IF attrs.hl.title; attrs.hl.title; ELSE; attrs.title_extended | html; END %]</h1>
+                <h2 id="rdetail_title" property="name">[% IF attrs.hl.title; attrs.hl.title; ELSE; attrs.title_extended | html; END %]</h2>
                 [%-
                 FOR link880 IN attrs.graphic_titles;
                 FOR alt IN link880.graphic;
-                '<h2 class="graphic880"';
+                '<h3 class="graphic880"';
                     IF alt.dir;
                         ' dir="' _ alt.dir _ '"';
                     END;
-                    '>'; alt.value | html; '</h2>';
+                    '>'; alt.value | html; '</h3>';
                 END;
                 END;
                 -%]
@@ -76,7 +76,7 @@ ctx.metalinks.push('
                     <button id="btnMore" data-toggle="collapse" data-target="#demo"
                         class="btn btn-action btn-sm my-3"><i class="fas fa-info-circle" aria-hidden="true"></i> [%l ("More Details") %]</button>
                     <div id="demo" class="collapse">
-                        <h2 class='rdetail_record_details'>[% l("Record details") %]</h2>
+                        <h3 class='rdetail_record_details'>[% l("Record details") %]</h3>
                         <ul class="list-unstyled">
                             [%- IF attrs.hl.isbn.size; FOR isbn IN attrs.hl.isbn %]
                             <li class='rdetail_isbns'>
@@ -297,45 +297,23 @@ ctx.metalinks.push('
 
                             IF args.mmr_unique_bib.size > 1;
                             %]
-                            <h2 class="rdetail_other_formats">[% l("Other Formats and Editions") %]</h2>
-                            <span class="metarecord_population_format">
-                                [%- IF mmr_attrs.format_label;
-
-                                FOR format IN mmr_attrs.all_formats;
-
-                                link = mkurl(ctx.opac_root _ '/record/' _ format.source_bibs.0);
-                                IF format.source_bibs.size > 1;
-                                link = mkurl( ctx.opac_root _ '/results', { modifier => 'metabib', metarecord =>
-                                ctx.mmr_id, 'fi:icon_format' => format.search_format, 'fi:from_metarecord' => ctx.mmr_id
-                                }, stop_parms.merge(expert_search_parms, general_search_parms, browse_search_parms,
-                                facet_search_parms,
-                                ['qtype','fi:search_format','fi:icon_format','fi:item_lang','fi:from_metarecord']) );
-                                END; -%]
-                                <span class="metarecord_population_span_link">
-                                    <a href="[%- l( link ) %]">
-                                        [% format.label | html %]
-                                        ([%- l( format.source_bibs.size ) %])
-                                    </a></span><br />
-
-                                [%- END %]
-                            </span>
+                            <h3 class="rdetail_other_formats">[% l("Other Formats and Editions") %]</h3>
+                            
                             [%- IF mmr_attrs.all_lang.size > 0 %]
                             <span class="metarecord_population_item_lang">
                                 [% FOR lang IN mmr_attrs.all_lang;
-                                link = mkurl(ctx.opac_root _ '/record/' _ lang.source_bibs.0);
-                                IF lang.source_bibs.size > 1;
-                                USE url(ctx.opac_root _ '/results');
-                                link = mkurl( ctx.opac_root _ '/results', { modifier => 'metabib', metarecord =>
-                                ctx.mmr_id, 'fi:item_lang' => lang.search_format, 'fi:from_metarecord' => ctx.mmr_id },
-                                stop_parms.merge(expert_search_parms, general_search_parms, browse_search_parms,
-                                facet_search_parms,
-                                ['qtype','fi:search_format','fi:icon_format','fi:item_lang','fi:from_metarecord']) );
-                                END; -%]
-                                <span class="metarecord_population_span_link">
-                                    <a href="[%- l( link ) %]">
-                                        [% lang.label | html %]
-                                        ([%- l( lang.source_bibs.size ) %])
-                                    </a></span><br />
+                                    link = mkurl(ctx.opac_root _ '/record/' _ lang.source_bibs.0);
+                                    IF lang.source_bibs.size > 1;
+                                        USE url(ctx.opac_root _ '/results');
+                                        link = mkurl( ctx.opac_root _ '/results', { modifier => 'metabib', metarecord =>
+                                        ctx.mmr_id, 'fi:item_lang' => lang.search_format, 'fi:from_metarecord' => ctx.mmr_id },
+                                        stop_parms.merge(expert_search_parms, general_search_parms, browse_search_parms,
+                                        facet_search_parms,
+                                        ['qtype','fi:search_format','fi:icon_format','fi:item_lang','fi:from_metarecord']) );
+                                    END; -%]
+                                    <span class="metarecord_population_span_link">
+                                        <a href="[%- link %]">[% l('[_1] ([_2])', lang.label, lang.source_bibs.size) %]</a>
+                                    </span><br />
                                 [%- END %]
                             </span> <!-- metarecord_population_item_lang -->
                             [%- END %]
@@ -347,13 +325,11 @@ ctx.metalinks.push('
                                 ['qtype','fi:search_format','fi:icon_format','fi:item_lang','fi:from_metarecord'] ) );
                                 %]
                                 <span class="metarecord_population_span_link">
-                                    <a href="[%- l( link ) %]">[% l("View all formats and editions ") %] ([%-
-                                        args.mmr_unique_bib.size %])
-                                    </a></span><br />
+                                    <a href="[%- l( link ) %]">[% l("View all formats and editions ([_1])", args.mmr_unique_bib.size) %]</a>
+                                </span><br />
                             </div>
-                            [%- END;
-                            END # ending tag for IF args.mmr_unique_bib.size > 1; %]
-                            [% args = save_args; %]
+                        [%- END # ending tag for IF args.mmr_unique_bib.size > 1; %]
+                        [% args = save_args; %]
                         </div>
 
             </div>
@@ -368,23 +344,37 @@ ctx.metalinks.push('
                 )
                 %]
                 
-                    <a class="btn btn-action no-dec" role="button" href="[% mkurl(ctx.opac_root _ '/place_hold',
-                    {hold_target => ctx.bre_id, hold_type => 'T', hold_source_page => mkurl()}, stop_parms) %]">
-                        <span class="place_hold"><i class="fas fa-check" aria-hidden="true"></i> [% l('Place Hold') %]</span></a>
+                    <a class="btn btn-action no-dec" href="[% mkurl(ctx.opac_root _ '/place_hold',
+                    {hold_target => ctx.bre_id, hold_type => 'T', hold_source_page => mkurl()}, stop_parms) %]"
+                    aria-describedby="rdetail_title">
+                        <span class="place_hold">
+                            <i class="fas fa-check" aria-hidden="true"></i>
+                            [% l('Place Hold') %]
+                        </span>
+                    </a>
               
                 [%- END -%]
 
                 [%- IF ebook_api.enabled == 'true' && args.ebook %]
-                    <a id="[%- ctx.bre_id -%]_ebook_checkout"
-                        class="btn btn-action no-dec hidden" role="button" href="[% mkurl(ctx.opac_root _ '/myopac/ebook_checkout',
-                        {title => args.ebook.ebook_id, vendor => args.ebook.vendor, action => 'checkout'}, stop_parms) %]"
-                        rel="nofollow" vocab="">
-                        <span class="place_hold"><i class="fas fa-check" aria-hidden="true"></i> [% l('Check Out E-Item') %]</span></a>
-                    <a id="[%- ctx.bre_id -%]_ebook_place_hold"
-                        class="btn btn-action no-dec hidden" role="button" href="[% mkurl(ctx.opac_root _ '/myopac/ebook_place_hold',
-                        {title => args.ebook.ebook_id, vendor => args.ebook.vendor, action => 'place_hold'}, stop_parms) %]"
-                        rel="nofollow" vocab="">
-                        <span class="place_hold"><i class="fas fa-check" aria-hidden="true"></i> [% l('Place Hold on E-Item') %]</span></a>
+              
+                    <div id="[%- ctx.bre_id -%]_ebook_checkout" class="rdetail_aux_utils ebook_action hidden">
+                        <a class="btn btn-action no-dec hidden" href="[% mkurl(ctx.opac_root _ '/myopac/ebook_checkout',
+                    {title => args.ebook.ebook_id, vendor => args.ebook.vendor, action => 'checkout'}, stop_parms) %]"
+                            rel="nofollow" vocab="" aria-describedby="rdetail_title">
+                            <span class="place_hold"><i class="fas fa-check" aria-hidden="true"></i>
+                                [% l('Check Out E-Item') %]</span>
+                        </a>
+                    </div>
+               
+               
+                    <div id="[%- ctx.bre_id -%]_ebook_place_hold" class="rdetail_aux_utils ebook_action hidden">
+                        <a class="btn btn-action no-dec hidden" href="[% mkurl(ctx.opac_root _ '/myopac/ebook_place_hold',
+                    {title => args.ebook.ebook_id, vendor => args.ebook.vendor, action => 'place_hold'}, stop_parms) %]"
+                            rel="nofollow" vocab="" aria-describedby="rdetail_title">
+                            <span class="place_hold"><i class="fas fa-check" aria-hidden="true"></i>
+                                [% l('Place Hold on E-Item') %]</span></a>
+                    </div>
+               
                 [%- END -%]
 
 
@@ -394,27 +384,36 @@ ctx.metalinks.push('
                     delhref = mkurl(ctx.opac_root _ '/mylist/delete', {record => ctx.bre_id}, stop_parms);
                     label = (operation == "add") ? l("Add to Basket") : l("Remove from Basket");
                     %]
+                    [% IF ctx.mylist.grep('^' _ ctx.bre_id _ '$').size %]
                     <a href="[% addhref %]" id="mylist_add_[% ctx.bre_id %]"
-                        data-recid="[% ctx.bre_id %]" data-action="add" role="button"
-                        class="btn btn-action mylist_action [% IF ctx.mylist.grep('^' _ ctx.bre_id _ '$').size %]hidden[% END %]"
-                        title="[% l(" Add [_1] to basket", attrs.title) | html %]" rel="nofollow" vocab="">
+                        data-recid="[% ctx.bre_id %]" data-action="add"
+                        class="btn btn-action mylist_action"
+                        rel="nofollow" vocab="" aria-describedby="rdetail_title">
                         <i class="fas fa-shopping-basket" aria-hidden="true"></i>
                         [% l("Add to basket") %]
                     </a>
+                    [% END %]
+                    [% IF !ctx.mylist.grep('^' _ ctx.bre_id _ '$').size %]
                     <a href="[% delhref %]" id="mylist_delete_[% ctx.bre_id %]"
-                        data-recid="[% ctx.bre_id %]" data-action="delete" role="button"
-                        class="btn btn-action mylist_action [% IF !ctx.mylist.grep('^' _ ctx.bre_id _ '$').size %]hidden[% END %]"
-                        title="[% l(" Remove [_1] from basket", attrs.title) | html %]" rel="nofollow" vocab="">
+                        data-recid="[% ctx.bre_id %]" data-action="delete"
+                        class="btn btn-action mylist_action"
+                        rel="nofollow" vocab="" aria-describedby="rdetail_title">
                         <i class="fas fa-minus-circle" aria-hidden="true"></i>
                         [% l("Remove from basket") %]
                     </a>
-               
+                    [% END %]
                 [% IF ctx.mylist.size %]
                
                     [%- IF ctx.user; %]
-                    <a href="[% mkurl(ctx.opac_root _ '/myopac/lists') %]" class="btn btn-action" role="button" rel="nofollow" vocab=""><i class="fas fa-glasses" aria-hidden="true"></i> [% l(' View Basket') %]</a>
+                    <a href="[% mkurl(ctx.opac_root _ '/myopac/lists') %]" class="btn btn-action" rel="nofollow" vocab="">
+                        <i class="fas fa-glasses" aria-hidden="true"></i>
+                        [% l(' View Basket') %]
+                    </a>
                     [%- ELSE %]
-                    <a href="[% mkurl(ctx.opac_root _ '/mylist') %]" class="btn btn-action" role="button" rel="nofollow" vocab=""><i class="fas fa-glasses" aria-hidden="true"></i> [% l(' View My Basket') %]</a>
+                    <a href="[% mkurl(ctx.opac_root _ '/mylist') %]" class="btn btn-action" rel="nofollow" vocab="">
+                        <i class="fas fa-glasses" aria-hidden="true"></i>
+                        [% l(' View My Basket') %]
+                    </a>
                     [%- END %]
               
                 [% END %]
@@ -427,10 +426,16 @@ ctx.metalinks.push('
 
                
                   
-                    <a href="[% mkurl(ctx.opac_root _ '/record/print_preview/' _ ctx.bre_id) %]" class="btn btn-action" role="button" rel="nofollow"
-                        vocab=""><i class="fas fa-print" aria-hidden="true"></i>[% l('Print') %]</a> 
-                    <a href="[% mkurl(ctx.opac_root _ '/record/email_preview/' _ ctx.bre_id) %]" class="btn btn-action" role="button" rel="nofollow"
-                        vocab=""> <i class="fas fa-envelope-open-text" aria-hidden="true"></i>[% l('Email') %]</a>
+                    <a href="[% mkurl(ctx.opac_root _ '/record/print_preview/' _ ctx.bre_id) %]" class="btn btn-action"  rel="nofollow"
+                        vocab="">
+                        <i class="fas fa-print" aria-hidden="true"></i>
+                        [% l('Print') %]
+                    </a> 
+                    <a href="[% mkurl(ctx.opac_root _ '/record/email_preview/' _ ctx.bre_id) %]" class="btn btn-action"  rel="nofollow"
+                        vocab="">
+                        <i class="fas fa-envelope-open-text" aria-hidden="true"></i>
+                        [% l('Email') %]
+                    </a>
                 
                 [%- IF ctx.refworks.enabled == 'true' %]
                 [%- INCLUDE 'opac/parts/record/refworks.tt2' %]
@@ -438,7 +443,7 @@ ctx.metalinks.push('
                 [% IF !ctx.is_staff %]
                 
                     <a href="[% mkurl('', {locg =>CGI.param('locg'), copy_depth =>CGI.param('copy_depth')}, 1) %]"
-                        class="btn btn-action" role="button">
+                        class="btn btn-action" aria-describedby="rdetail_title">
                         <i class="fas fa-link" aria-hidden="true"></i>
                         [% l('Permalink') %]
                     </a>
@@ -447,9 +452,9 @@ ctx.metalinks.push('
                 [% PROCESS set_show_highlight %]
                
                     [% IF !show_highlight %]
-                    <a class="btn btn-action no-dec" role="button" href="[% mkurl('', {show_highlight => '1'}) %]">
+                    <a class="btn btn-action no-dec"  href="[% mkurl('', {show_highlight => '1'}) %]">
                         [% ELSE %]
-                        <a href="[% mkurl('', {show_highlight => '0'}) %]" class="btn btn-action" role="button">
+                        <a href="[% mkurl('', {show_highlight => '0'}) %]" class="btn btn-action" >
                             [% END %]
                             <i class="fas fa-highlighter" aria-hidden="true"></i>
                             [% !show_highlight ? l('Enable Highlighting') : l('Disable Highlighting') %]
@@ -458,7 +463,7 @@ ctx.metalinks.push('
                 [%- IF ctx.is_staff %]
                 
                     <a href="[% ctx.media_prefix %]/opac/extras/ac/clearcache/all/r/[% ctx.bre_id | uri %]"
-                        class="btn btn-action" role="button" target="_blank">
+                        class="btn btn-action"  target="_blank">
                         <i class="fas fa-sync-alt" aria-hidden="true"></i>
                         [% l('Clear Added Content Cache') %]
                     </a>
@@ -490,26 +495,23 @@ ctx.metalinks.push('
         IF openurls.size && openurls.0 != '';
         %]
         <div id='rdetail_openurl'>
-            <strong class='rdetail_openurl_title'>[% l("Electronic resources") %]</strong>
-            <table>
-                <tbody>
+            <h4 class='rdetail_openurl_title'>[% l("Electronic resources") %]</h4>
+            <dl class="dl-grid">
                     [%-
                     FOREACH res IN openurls;
                     %]
-                    <tr>
-                        <td class='rdetail_openurl_entry'><a href="[% res.target_url %]">[% res.public_name | html
-                                %]</a></td>
-                        <td>[% res.target_coverage | html %]
+                    
+                        <dt class='rdetail_openurl_entry'><a href="[% res.target_url %]">[% res.public_name | html
+                                %]</a></dt>
+                        <dd>[% res.target_coverage | html %]
                             [%- IF res.target_embargo != '';
                             ' - ';
                             res.target_embargo | html;
                             END;
                             -%]
-                        </td>
-                    </tr>
+                        </dd>
                     [%- END %]
-                </tbody>
-            </table>
+            </dl>
         </div>
         [%- END %]
         [%- END %]
@@ -518,7 +520,7 @@ ctx.metalinks.push('
         IF num_uris > 0;
         -%]
 
-        <h2 class="rdetail_uris">[% l("Electronic resources") %]</h2>
+        <h3 class="rdetail_uris">[% l("Electronic resources") %]</h3>
         <div class="rdetail_uris">
             [%- IF num_uris > 1 %]<ul>[% END %]
                 [%- FOR uri IN merged_uris %]

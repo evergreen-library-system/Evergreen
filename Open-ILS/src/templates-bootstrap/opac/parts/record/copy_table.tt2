@@ -81,44 +81,44 @@ IF has_copies or ctx.foreign_copies;
   </a>
 [% END %]
 
-<table class="container-fluid table table-hover mt-4 miniTable copyTable" >
-    <thead>
-        <tr>
+<table role="table" class="container-fluid table table-sm table-hover mt-4 miniTable copyTable" >
+    <thead role="rowgroup">
+        <tr role="row">
             [% IF serial_holdings -%]
-            <th scope='col'>[% l("Issue Label") %]</th>
+            <th scope='col' role="columnheader">[% l("Issue Label") %]</th>
             [%- ELSE -%]
-            <th scope='col'>[% l("Location") %]</th>
+            <th scope='col' role="columnheader">[% l("Location") %]</th>
             [%- END %]
-            <th scope='col'>[% l("Call Number / Copy Notes") %]</th>
+            <th scope='col' role="columnheader">[% l("Call Number / Copy Notes") %]</th>
             [%- IF has_parts == 'true' %]
-            <th scope='col'>[% l("Part") %]</th>
+            <th scope='col' role="columnheader">[% l("Part") %]</th>
             [%- END %]
-            <th scope='col'>[% l("Barcode") %]</th>
-            <th scope='col'>[% l("Shelving Location") %]</th>
+            <th scope='col' role="columnheader">[% l("Barcode") %]</th>
+            <th scope='col' role="columnheader">[% l("Shelving Location") %]</th>
             [%- IF ctx.is_staff || ctx.use_courses %]
-            <th scope='col'>[% l("Circulation Modifier") %]</th>
+            <th scope='col' role="columnheader">[% l("Circulation Modifier") %]</th>
             [%- END %]
             [%- IF ctx.is_staff %]
-            <th scope='col'>[% l("Age Hold Protection") %]</th>
-            <th scope='col'>[% l("Active/Create Date") %]</th>
+            <th scope='col' role="columnheader">[% l("Age Hold Protection") %]</th>
+            <th scope='col' role="columnheader">[% l("Active/Create Date") %]</th>
             [%- END %]
             [%- IF ctx.is_staff OR serial_holdings %]
-            <th scope='col'>[% l("Holdable?") %]</th>
+            <th scope='col' role="columnheader">[% l("Holdable?") %]</th>
             [%- END %]
-            <th scope='col'>[% l("Status") %]</th>
-            <th scope='col'>[% l("Due Date") %]</th>
+            <th scope='col' role="columnheader">[% l("Status") %]</th>
+            <th scope='col' role="columnheader">[% l("Due Date") %]</th>
             [%- IF ctx.use_courses %]
-            <th scope='col'>[% l("Courses") %]</th>
+            <th scope='col' role="columnheader">[% l("Courses") %]</th>
             [%- END %]
             [%- IF ctx.geo_sort && ctx.has_valid_coords %]
-            <th scope='col'>[% l("Distance") %]</th>
+            <th scope='col' role="columnheader">[% l("Distance") %]</th>
             [%- END %]
         </tr>
     </thead>
-    <tbody>
+    <tbody role="rowgroup">
 [%- FOREACH peer IN ctx.foreign_copies;
         FOREACH bib IN peer.foreign_copy_maps; %]
-    <tr><td>
+    <tr role="row"><td role="cell">
     [%- bib_lib_name = ctx.get_aou(bib.target_copy.circ_lib).name | html;
         l("[_1] (foreign item)", bib_lib_name); -%]
         <ul><li>
@@ -129,13 +129,13 @@ IF has_copies or ctx.foreign_copies;
             </a>
         </li></ul>
     </td>
-    <td>[% bib.target_copy.call_number.label | html %]</td>
-    <td>[% bib.target_copy.barcode | html %]</td>
-    <td>[% bib.target_copy.location.name | html %]</td>
-    <td>[% bib.target_copy.status.name | html %]</td>
-    <td>[% date.format(ctx.parse_datetime(copy_info.due_date, copy_info.circ_circ_lib),DATE_FORMAT) %]</td>
+    <td role="cell">[% bib.target_copy.call_number.label | html %]</td>
+    <td role="cell">[% bib.target_copy.barcode | html %]</td>
+    <td role="cell">[% bib.target_copy.location.name | html %]</td>
+    <td role="cell">[% bib.target_copy.status.name | html %]</td>
+    <td role="cell">[% date.format(ctx.parse_datetime(copy_info.due_date, copy_info.circ_circ_lib),DATE_FORMAT) %]</td>
     [%- IF ctx.geo_sort && ctx.has_valid_coords %]
-    <td>[% display_ou_distance(bib.target_copy.circ_lib) %]</td>
+    <td role="cell">[% display_ou_distance(bib.target_copy.circ_lib) %]</td>
     [%- END %]
 </tr>
    [%- END; # FOREACH peer
@@ -156,17 +156,17 @@ END; # FOREACH bib
                 callnum = callnum  _ " " _ callnum_suffix;
             END;
         -%]
-        <tr property="offers" typeof="Offer" mobile-count="#[% loop.count %]">
+        <tr role="row" property="offers" typeof="Offer" mobile-count="#[% loop.count %]">
             [%- IF serial_holdings %]
-            <td class='rdetail-issue-issue'>
+            <td role="cell" class='rdetail-issue-issue'>
                 [%- copy_info.holding_label | html; -%]
             </td>
-            [%- ELSE %]<td mobile-title="[% l('Location') %]">
+            [%- ELSE %]<td role="cell" mobile-title="[% l('Location') %]">
             [%- INCLUDE "opac/parts/library_name_link.tt2"; -%]
                 <link property="businessFunction" href="http://purl.org/goodrelations/v1#LeaseOut">
                 <meta property="price" content="0.00">
             </td>[% END %]
-            <td mobile-title="[% l('Call Number/Copy Notes') %]"><span property="sku">[% callnum | html %]</span> [% IF ctx.get_org_setting(CGI.param('loc')
+            <td role="cell" mobile-title="[% l('Call Number/Copy Notes') %]"><span property="sku">[% callnum | html %]</span> [% IF ctx.get_org_setting(CGI.param('loc')
                 OR ctx.aou_tree.id, 'sms.enable') == 1 %](<a href="[% mkurl(ctx.opac_root _ '/sms_cn',
                {copy_id => copy_info.id}) %];rec=[%- ctx.bre_id -%]" rel="nofollow" vocab="">Text</a>)[% END %]
 
@@ -201,9 +201,9 @@ END; # FOREACH bib
         [% END %]
         </td>
             [%- IF has_parts == 'true' %]
-            <td mobile-title="[% l('Parts') %]">[% copy_info.part_label | html %]</td>
+            <td role="cell" mobile-title="[% l('Parts') %]">[% copy_info.part_label | html %]</td>
             [%- END %]
-            <td mobile-title="[% l('Barcode')%]" property="serialNumber">
+            <td role="cell" mobile-title="[% l('Barcode')%]" property="serialNumber">
                 [% copy_info.barcode | html -%]
                 [% IF ctx.is_staff %]
                   [%- IF ctx.is_browser_staff %]
@@ -214,16 +214,16 @@ END; # FOREACH bib
                         <a target="_blank" href="[% ctx.base_path %]/staff/cat/item/[% copy_info.id %]/edit">[% l('edit') %]</a>
                     [% END %]
                   [% ELSE %]
-                    <a onclick="xulG.new_tab(xulG.urls.XUL_COPY_STATUS, {}, {'from_item_details_new': true, 'barcodes': ['[%- copy_info.barcode | html | replace('\'', '\\\'') -%]']})"
-                        href="javascript:;">[% l('view') %]</a>
+                    <button type="button" class="btn-link" 
+                        onclick="xulG.new_tab(xulG.urls.XUL_COPY_STATUS, {}, {'from_item_details_new': true, 'barcodes': ['[%- copy_info.barcode | html | replace('\'', '\\\'') -%]']})">[% l('view') %]</button>
                     [%# if the user can edit copies, show the copy edit link %]
                     [% IF ctx.has_perm('UPDATE_COPY', copy_info.circ_lib)
                         OR ctx.has_perm('UPDATE_COPY', copy_info.call_number_owning_lib) %]
                         <span> | </span>
-                        <a href="javascript:;"
+                        <button type="button" class="btn-link"
                             onclick="xulG.volume_item_creator({copy_id : [% copy_info.id %]})">
                             [% l(' edit') %]
-                        </a>
+                        </button>
                     [% END %]
                   [% END %]
                 [% END %]
@@ -231,18 +231,18 @@ END; # FOREACH bib
                     '<meta property="gtin13" content="' _ attrs.gtin13 _ '" />';
                 END; -%]
             </td>
-            <td mobile-title="[% l('Shelving Location')%]" property="availableAtOrFrom">[%- INCLUDE "opac/parts/location_name_link.tt2"; -%]</td>
+            <td role="cell" mobile-title="[% l('Shelving Location')%]" property="availableAtOrFrom">[%- INCLUDE "opac/parts/location_name_link.tt2"; -%]</td>
             [% IF copy_info.courses.size > 0 || ctx.is_staff %]
-            <td mobile-title="[% l('Circulation Modifier') %]">[% copy_info.circ_modifier | html %]</td>
+            <td role="cell" mobile-title="[% l('Circulation Modifier') %]">[% copy_info.circ_modifier | html %]</td>
             [% ELSIF ctx.use_courses %]
-            <td></td>
+            <td role="cell"></td>
             [% END %]
             [% IF ctx.is_staff %]
-            <td mobile-title="[% l('Age Hold Protection') %]">
+            <td role="cell" mobile-title="[% l('Age Hold Protection') %]">
                 [% copy_info.age_protect ?
                     ctx.get_crahp(copy_info.age_protect).name : l('None') | html %]
             </td>
-            <td mobile-title="[% l('Active/Create Date') %]">[%
+            <td role="cell" mobile-title="[% l('Active/Create Date') %]">[%
                 IF ctx.get_org_setting(copy_info.circ_lib, 'circ.holds.age_protect.active_date') == 1;
                     disp_date = copy_info.active_date ? copy_info.active_date : copy_info.create_date;
                 ELSE;
@@ -260,7 +260,7 @@ END; # FOREACH bib
             %]</td>
             [% END # is_staff %]
             [% IF ctx.is_staff OR serial_holdings %]
-            <td mobile-title="[% l('Holdable') %]">[%  # Show copy/volume hold links to staff (without
+            <td role="cell" mobile-title="[% l('Holdable') %]">[%  # Show copy/volume hold links to staff (without
                 # checking whether they have permissions to do those).
                 overall_holdable = (
                     copy_info.holdable == 't' AND
@@ -308,11 +308,11 @@ END; # FOREACH bib
                     l("Not holdable");
                 END %]</td>
             [%- END %]
-            <td mobile-title="[% l('Status') %]">[%-
+            <td role="cell" mobile-title="[% l('Status') %]">[%-
                 schema_copy_status.${copy_info.status_code};
                 copy_info.copy_status | html;
             -%]</td>
-            <td mobile-title="[% l('Due Date') %]">[%
+            <td role="cell" mobile-title="[% l('Due Date') %]">[%
                 IF copy_info.due_date;
                     date.format(
                         ctx.parse_datetime(copy_info.due_date, copy_info.circ_circ_lib),
@@ -322,17 +322,17 @@ END; # FOREACH bib
                     '-';
                 END %]</td>
             [%- IF ctx.use_courses %]
-            <td mobile-title="[% l('Courses') %]">[%- FOREACH course IN copy_info.courses %]
-                <div>[% course.course_number %]</div>
+            <td role="cell" mobile-title="[% l('Courses') %]">[%- FOREACH course IN copy_info.courses %]
+                [% course.course_number %]
             [% END %]</td>
             [% END %]
             [%- IF ctx.geo_sort && ctx.has_valid_coords %]
-                <td mobile-title="[% l('Distance') %]">[% display_ou_distance(copy_info.circ_lib) %]</td>
+                <td role="cell" mobile-title="[% l('Distance') %]">[% display_ou_distance(copy_info.circ_lib) %]</td>
             [%- END %]
         </tr>
 
 [%- IF copy_info.peer_bib_marc.size > 0;
-'<tr><td><ul>';
+'<tr role="row"><td role="cell"><ul>';
     FOREACH bib IN copy_info.peer_bib_marc;
         attrs = {marc_xml => bib};
         PROCESS get_marc_attrs args=attrs %]

@@ -2,66 +2,76 @@
 <div class="results_header_nav1 py-4">
     [%- INCLUDE "opac/parts/pref_lib_display.tt2" %]
 
-    <nav aria-label="Page navigation">
-                <ul class='start_end_links_span pagination d-inline-flex'>
+    [% IF header == 1; %]
+    <h2 class="result_number">
+    [% ELSE; %]
+    <p class="result_number">
+    [% END; %]
+        [%~ IF ctx.hit_count == ctx.pagable_limit; ctx.hit_count = ctx.hit_count _ '+'; END ~%]
+        [%~ |l('<span role="text" class="result_count_number">' _ ctx.result_start _'</span>',
+        '<span role="text" class="result_count_number">' _ ctx.result_stop _ '</span>',
+        '<span role="text" class="result_count_number">' _ ctx.hit_count _ '</span>')  ~%]
+        Search results [_1] - [_2] of [_3]
+        [%~ END %]
+        
+        &nbsp; 
 
-                    [%- class = 'search_page_nav_link';
-                        href = '#';
-                        IF page > 0;
-                            href = mkurl('', {page => page - 1});
-                    -%]
-                    <li class="page-item"><a class='page-link [% class %]' href='[% href %]'
-                        title='[% l("Previous page") %]'><span class="nav_arrow_fix">&#9668;</span> <span class="paginateText"> [% l('Previous') %]</span> </a></li>
-                    [%- END;
+        [%~ |l('<span role="text" class="result_count_number">' _ (page + 1) _ '</span>',
+        '<span role="text" class="result_count_number">' _ page_count _ '</span>') ~%]
+        (page [_1] of [_2])
+        [%~ END %]
+      [% IF header == 1; %]
+      </h2>
+      [% ELSE; %]
+      </p>
+      [% END; %]
 
-                        # show links to 4 previous pages, the current page, and 3 more pages.
-                        added = 0;
-                        pageitr = page - 5;
-                        IF page_count > 1; # no need to paginate 1 page
-                    -%]
+    
+    <nav [% html_text_attr('aria-label', l('Page navigation [_1]', header ? l('(header)') : l('(footer)'))) %]>
+        <ul class='start_end_links_span pagination d-inline-flex'>
 
-                    [%-
-                                WHILE (pageitr = pageitr + 1) < page_count;
-                                    IF pageitr < 0; NEXT; END;
-                                    IF pageitr == page; %]
-                                       <li class="page-item active"> <span class='results-paginator-selected page-link disabled'>[% pageitr + 1%]</span></li>
-                                    [% ELSE %]
-                                        <li class="page-item"><a href="[% mkurl('', {page => pageitr}) %]" class="page-link">[% pageitr + 1%]</a></li>
-                                [%  END;
-                                    added = added + 1;
-                                    #Number of pages to paginate
-                                    IF added == 5; LAST; END;
-                                END;
-                    -%]
+            [%- class = 'search_page_nav_link';
+                href = '#';
+                IF page > 0;
+                    href = mkurl('', {page => page - 1});
+            -%]
+            <li class="page-item"><a class='page-link [% class %]' href='[% href %]'
+                title='[% l("Previous page") %]'><span class="nav_arrow_fix">&#9668;</span> <span class="paginateText"> [% l('Previous') %]</span> </a></li>
+            [%- END;
 
-                    [%- END;
+                # show links to 4 previous pages, the current page, and 3 more pages.
+                added = 0;
+                pageitr = page - 5;
+                IF page_count > 1; # no need to paginate 1 page
+            -%]
 
-                        class = 'search_page_nav_link';
-                        href = '#';
-                        IF (page + 1) < page_count;
-                            href = mkurl('', {page => page + 1});
-                    -%]
-                    <li class="page-item"><a class='page-link [% class %]' href='[% href %]'
-                        title='[% l("Next page") %]'>
-                        <span class="paginateText">[% l('Next') %] </span><span class="nav_arrow_fix">&#9658;</span></a></li>
-                    [%- END; -%]
-                </ul>
-                </nav>
+            [%-
+                        WHILE (pageitr = pageitr + 1) < page_count;
+                            IF pageitr < 0; NEXT; END;
+                            IF pageitr == page; %]
+                               <li class="page-item active"><a href="[% mkurl('', {page => pageitr}) %]" class="page-link" aria-current="page">[% pageitr + 1%]</a></li>
+                            [% ELSE %]
+                                <li class="page-item"><a href="[% mkurl('', {page => pageitr}) %]" class="page-link">[% pageitr + 1%]</a></li>
+                        [%  END;
+                            added = added + 1;
+                            #Number of pages to paginate
+                            IF added == 5; LAST; END;
+                        END;
+            -%]
 
-    <span class="result_number">
-                [%~ IF ctx.hit_count == ctx.pagable_limit; ctx.hit_count = ctx.hit_count _ '+'; END ~%]
-                [%~ |l('<span class="result_count_number">' _ ctx.result_start _'</span>',
-                '<span class="result_count_number">' _ ctx.result_stop _ '</span>',
-                '<span class="result_count_number">' _ ctx.hit_count _ '</span>')  ~%]
-                Results [_1] - [_2] of [_3]
-                [%~ END %]
-                <span class='padding-left-6'>
-                    [%~ |l('<span class="result_count_number">' _ (page + 1) _ '</span>',
-                    '<span class="result_count_number">' _ page_count _ '</span>') ~%]
-                    (page [_1] of [_2])
-                    [%~ END %]
-                </span>
-    </span>
+            [%- END;
+
+                class = 'search_page_nav_link';
+                href = '#';
+                IF (page + 1) < page_count;
+                    href = mkurl('', {page => page + 1});
+            -%]
+            <li class="page-item"><a class='page-link [% class %]' href='[% href %]'
+                title='[% l("Next page") %]'>
+                <span class="paginateText">[% l('Next') %] </span><span class="nav_arrow_fix">&#9658;</span></a></li>
+            [%- END; -%]
+        </ul>
+    </nav>
 </div>
 [% END %]
 

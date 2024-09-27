@@ -108,29 +108,20 @@
                 content.push(next_s);
             END;
 
-            content = content.join('<br/>');
 %]
-            <table class='rdetail_subject'>
-                <tbody>
-                    <tr>
-                        <td class='rdetail_subject_type'>[% subj.label %]</td>
-                        <td class='rdetail_subject_value'>[% content %]</td>
-                    </tr>
-                </tbody>
-            </table>
+            <dt class='rdetail_subject_type'>[% subj.label %]</dt>
+            [% FOREACH line IN content; %]
+            <dd class='rdetail_subject_value'>[% line %]</dd>
+            [% END; %]
 [%
         ELSE;
             content = PROCESS render_subject(s=subj);
             IF content.match('\S');
 %]
-        <table class='rdetail_subject'>
-            <tbody>
-                <tr>
-                    <td class='rdetail_subject_type'>[% subj.label %]</td>
-                    <td class='rdetail_subject_value'>[% content %]</td>
-                </tr>
-            </tbody>
-        </table>
+                <dt class='rdetail_subject_type'>[% subj.label %]</dt>
+                [% FOREACH line IN content; %]
+                <dd class='rdetail_subject_value'>[% line %]</dd>
+                [% END; %]
             [%- END; %]
         [%- END; %]
     [%- END; %]
@@ -139,6 +130,8 @@
 [%-  subject_html = PROCESS render_all_subjects;
     IF subject_html.length > 0;
 %]
-<h2 class='rdetail_related_subjects'>[% l('Search for related items by subject') %]</h2>
-[%- subject_html %]
+<h3 class='rdetail_related_subjects'>[% l('Search for related items by subject') %]</h3>
+<dl class='dl-grid rdetail_subject'>
+    [%- subject_html %]
+</dl>
 [%- END %]

@@ -44,9 +44,9 @@ BLOCK render_all_summary_contents;
         END;
         IF content.match('\S');
 -%]
-<tr>
-    <td class='rdetail_content_type'>[% cont.label %]</td>
-    <td class='rdetail_content_value' property='keywords'>[% content %]</td>
+<tr role="row">
+    <td role="cell" class='rdetail_content_type'>[% cont.label %]</td>
+    <td role="cell" class='rdetail_content_value' property='keywords'>[% content %]</td>
 </tr>
         [%- END; %]
     [%- END; %]

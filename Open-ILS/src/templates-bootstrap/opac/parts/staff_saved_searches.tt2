@@ -1,25 +1,16 @@
 [% IF ctx.saved_searches.size %]
-<div id="accordion">
-  <div class="card">
-    <div class="card-header" id="headRecent">
-      <h5 class="mb-0">
-        <button class="btn btn-link" data-toggle="collapse" data-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
-          [% l("Recent searches") %]
-        </button>
-      </h5>
-    </div>
+<details class="card" id="accordion">
+  <summary class="card-header" id="headRecent">
+    <h2 class="mb-0">[% l("Recent searches") %]</h2>
+  </summary>
 
-    <div id="collapseOne" class="collapse" aria-labelledby="headRecent" data-parent="#accordion">
-      <div class="card-body">
-          [% FOR s IN ctx.saved_searches %]
-          <ul>
-              <li><a href="[% ctx.opac_root %]/results?query=[% s | uri %]&amp;_adv=1">[% s | html %]</a></li>
-          </ul>
-            [% END %]
-      </div>
-    </div>
+  <div class="card-body">
+      [% FOR s IN ctx.saved_searches %]
+      <ul class="list-group list-group-flush">
+          <li class="list-group-item"><a href="[% ctx.opac_root %]/results?query=[% s | uri %]&amp;_adv=1">[% s | html %]</a></li>
+      </ul>
+      [% END %]
   </div>
-</div>
-
+</details>
 
 [% END %]

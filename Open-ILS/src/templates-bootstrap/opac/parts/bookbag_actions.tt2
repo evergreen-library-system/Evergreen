@@ -37,10 +37,10 @@
     }, stop_parms));
 %]
 
- <div id="btnGroupDrop1" role="button" class="btn btn-action text-left" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+ <button type="button" id="btnGroupDrop1" class="btn btn-action text-left" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
         <i class="fas fa-list" aria-hidden="true"></i>
           [% l("Add to my list") %]
-        </div>
+        </button>
     <!--Removal-->
     <div class="dropdown-menu" aria-labelledby="btnGroupDrop1">
     <a class="dropdown-item" href="[% href %]">[% l('Temporary List') %]</a>

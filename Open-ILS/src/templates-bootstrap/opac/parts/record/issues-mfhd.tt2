@@ -1,6 +1,6 @@
 [% IF ctx.mfhd_summaries.size; %]
     <div class="rdetail-mfhd-holdings">
-        <table><tbody>
+    <dl class="">
 [%
         mfhd = {
             basic_holdings = l('Volumes'),
@@ -14,30 +14,23 @@
             incomplete = l('Incomplete'),
         };
 
-        FOREACH serial IN ctx.mfhd_summaries;
-            printed_mfhd_header = 0;
+        FOREACH serial IN ctx.mfhd_summaries; %]
+            <dt class="rdetail-mfhd-head">[% l('Holdings summary ([_1])', serial.location) | html %]</dt>
+            <dd>
             FOREACH type IN mfhd.keys;
                 NEXT UNLESS serial.$type.size;
-                IF !printed_mfhd_header; %]
-                <tr>
-                    <td class="rdetail-mfhd-head" colspan="2">[% l('Holdings summary ([_1])', serial.location) | html %]</td>
-                </tr>
-                [% printed_mfhd_header = 1;
-                END; %]
-                <tr>
-                    <td class="rdetail-mfhd-type">[% mfhd.$type %]</td>
-                    <td class="rdetail-mfhd-contents">[%
+                %]
+                <dl class="dl-grid">
+                    <dt class="rdetail-mfhd-type">[% mfhd.$type %]</dt>
+                    <dd class="rdetail-mfhd-contents">[%
                         FOR thing IN serial.$type;
                             thing.join(", ") | html;
-                        END %]</td>
-                </tr>
-            [% END;
-            IF printed_mfhd_header; %]
-                <tr>
-                    <td class="rdetail-mfhd-foot" colspan="2"> </td>
-                </tr>
-            [% END %]
+                        END %]
+                    </dd>
+                </dl>
+            [% END; %]
+            </dd>
         [% END %]
-        </tbody></table>
+        </dl>
     </div>
 [% END %]

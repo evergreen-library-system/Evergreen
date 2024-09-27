@@ -1,13 +1,13 @@
 
   <div id="basket_actions">
   <div id="select_basket_action" class="dropdown">
-      <a href="#" class="no-dec" id="cartDropdown" data-toggle="dropdown">
-        <img id="cart_icon_image" src="[% ctx.media_prefix %]/images/cart-sm.png[% ctx.cache_key %]" alt="[% l('View Basket') %]">
-         <div id="record_basket_count_floater">
+      <button type="button" class="btn p-1" id="cartDropdown" data-toggle="dropdown"
+        aria-label="[% l('View basket'); %]" aria-describedby="record_basket_count">
+        <img id="cart_icon_image" src="[% ctx.media_prefix %]/images/cart-sm.png[% ctx.cache_key %]" alt="">
+        <div id="record_basket_count_floater" role="status" aria-labelledby="cartDropdown">
             <span id="record_basket_count">[% ctx.mylist.size %]</span>
-            <span class="sr-only">[% l('Records In Basket') %]</span>
         </div>
-      </a>
+      </button>
       <div class="dropdown-menu dropdown-menu-right" role="menu" aria-labelledby="cartDropdown">
         <a class="dropdown-item" role="menuitem"  href="[% mkurl(ctx.opac_root _ '/mylist', {}) %]"><i class="fas fa-glasses" aria-hidden="true"></i> [% l('View Basket') %]</a>
         <a class="dropdown-item" role="menuitem"  href="[% mkurl(ctx.opac_root _ '/mylist/move', { action => 'place_hold', entire_list => 1 }) %]"><i class="fas fa-book" aria-hidden="true"></i> [% l('Place Holds') %]</a>
