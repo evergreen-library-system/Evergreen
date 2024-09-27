@@ -16,7 +16,6 @@
     END;
     skin_root = "../"
 %]
-    <h2 class="sr-only">[% l('My Account') %]</h2>
     [% INCLUDE "opac/parts/topnav.tt2" %]
     <div class="mobile_hide">
     [% INCLUDE "opac/parts/searchbar.tt2" %]

@@ -9,7 +9,7 @@
     offset = (ctx.holds_offset.defined) ? ctx.holds_offset : 0;
     count = (ctx.holds_ids.size.defined) ? ctx.holds_ids.size : 0;
 %]
-<h3>[% l('My E-Item Holds') %]</h3>
+<h2>[% l('My E-Item Holds') %]</h2>
 <div id='myopac_holds_div'>
     <div id="no_ebook_holds" class="warning_box hidden">[% l('You have no e-item holds.') %]</div>
     <div id="ebook_cancel_hold_failed" class="warning_box hidden">[% l('Hold could not be canceled.') %]</div>

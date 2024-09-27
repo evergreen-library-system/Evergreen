@@ -3,9 +3,8 @@
     INCLUDE "opac/parts/topnav.tt2";
     ctx.metalinks.push('<link rel="canonical" href="' _ mkurl('', {}, 1) _ '" />');
     ctx.page_title = l("Home") %]
-    <h2 class="sr-only">[% l('Catalog Home') %]</h2>
-    [% INCLUDE "opac/parts/searchbar.tt2" is_home_page=1 %]
-
-            [% INCLUDE "opac/parts/homesearch.tt2" %]
-
+    <main id="main">
+        [% INCLUDE "opac/parts/searchbar.tt2" is_home_page=1 %]
+        [% INCLUDE "opac/parts/homesearch.tt2" %]
+    </main>
 [%- END %]

@@ -5,7 +5,7 @@
     parent="prefs";
     prefs_page = 'prefs_settings' %]
 
-    <h3>[% l('Search and History Preferences') %]</h3>
+    <h2>[% l('Search and History Preferences') %]</h2>
 
     <form method='post' action="prefs_settings">
 

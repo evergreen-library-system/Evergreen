@@ -7,7 +7,8 @@
     ctx.metalinks.push('<meta property="og:url" content="' _ canon  _ '" />');
     IF CGI.param("expand"); basic_search = "f"; END;
 -%]
-    <span class="sr-only">[% l('Record Details') %]</span>
+<main id="main">
+    <h2 class="sr-only">[% l('Record Details') %]</h2>
     [% INCLUDE "opac/parts/searchbar.tt2" %]
     <br />
     <div id="content-wrapper" class="content-wrapper-record-page">
@@ -21,6 +22,6 @@
         <div id="[% ctx.staff_saved_search_size ? 'main-content-after-bar' : 'main-content' %]">
             [% INCLUDE "opac/parts/record/body.tt2" %]
         </div>
-        <br/>
     </div>
+</main>
 [%- END %]

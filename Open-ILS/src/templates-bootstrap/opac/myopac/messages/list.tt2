@@ -71,6 +71,7 @@
             [% IF count < 1 %]
             <div class="warning_box">[% l('No messages found.') %]</div>
             [% ELSE %]
+            <h2 id="messages-heading">[% l('Messages') %]</h2>
              <div class="d-block d-md-none">
                 <input id="all_message_check" checked="checked"
                 type="checkbox" onclick="var inputs=document.getElementsByTagName('input'); for (i = 0; i < inputs.length; i++) { if (inputs[i].name == 'message_id' &amp;&amp; !inputs[i].disabled) inputs[i].checked = this.checked;}"

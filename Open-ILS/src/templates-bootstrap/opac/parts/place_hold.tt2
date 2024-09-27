@@ -116,8 +116,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
 </script>
 <div class='container'>
-<hr>
-   <h3>[% l('Place Hold') %]</h3>
+   <h2>[% l('Place Hold') %]</h2>
 
     [% some_holds_allowed = -1 %]
 

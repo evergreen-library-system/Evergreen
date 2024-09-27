@@ -5,6 +5,7 @@
         basic_search = "f";
     END;
     ctx.page_title = l("Place Hold") %]
+<main id="main">
     <h2 class="sr-only">[% l('Hold Placement') %]</h2>
     [% INCLUDE "opac/parts/searchbar.tt2" %]
     <div id="content-wrapper">
@@ -16,4 +17,5 @@
             [% END %]
         </div>
     </div>
+</main>
 [%- END %]

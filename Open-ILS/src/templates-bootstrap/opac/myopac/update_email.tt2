@@ -2,12 +2,9 @@
     PROCESS "opac/parts/misc_util.tt2";
     WRAPPER "opac/parts/myopac/base.tt2";
     myopac_page = "prefs"  %]
-<h3 class="sr-only">[% l('Edit Email Address') %]</h3>
 <div id='myopac_summary_div' style="padding:0px;">
 
-    <div class="header_middle">
-       <span class="float-left">[% l('Update Email') %]</span>
-    </div>
+    <h3>[% l('Update Email') %]</h3>
 
 [% IF ctx.invalid_email %]
     <div id='account-update-email-error'>

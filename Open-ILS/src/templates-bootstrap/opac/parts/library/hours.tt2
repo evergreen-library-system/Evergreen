@@ -10,18 +10,18 @@
    # We need to add "today" to the opening/closing hours for Date input
 -%]
 <div class="my-3">
-<h3>[% l('Opening hours') %]</h3>
+<h2>[% l('Opening hours') %]</h2>
 
-<table title="[% l('Open Hours') %]" class="table table-striped w-auto">
-    <thead>
-        <tr>
-          <th scope="col">[% l('Day') %]</th>
-          <th scope="col">[% l('Hours') %]</th>
+<table role="table" class="table table-striped w-auto">
+    <thead role="rowgroup">
+        <tr role="row">
+          <th scope="col" role="columnheader">[% l('Day') %]</th>
+          <th scope="col" role="columnheader">[% l('Hours') %]</th>
         </tr>
     </thead>
-    <tr>
-        <td>[% l('Monday') %]</td>
-        <td>
+    <tr role="row">
+        <td role="cell">[% l('Monday') %]</td>
+        <td role="cell">
         [%-
             open = today _ ctx.hours.dow_0_open;
             close = today _ ctx.hours.dow_0_close;
@@ -42,9 +42,9 @@
         [%- END %]
         </td>
     </tr>
-    <tr>
-        <td>[% l('Tuesday') %]</td>
-        <td>
+    <tr role="row">
+        <td role="cell">[% l('Tuesday') %]</td>
+        <td role="cell">
         [%-
             open = today _ ctx.hours.dow_1_open;
             close = today _ ctx.hours.dow_1_close;
@@ -64,9 +64,9 @@
         [%- END %]
         </td>
     </tr>
-    <tr>
-        <td>[% l('Wednesday') %]</td>
-        <td>
+    <tr role="row">
+        <td role="cell">[% l('Wednesday') %]</td>
+        <td role="cell">
         [%-
             open = today _ ctx.hours.dow_2_open;
             close = today _ ctx.hours.dow_2_close;
@@ -86,9 +86,9 @@
         [%- END %]
         </td>
     </tr>
-    <tr>
-        <td>[% l('Thursday') %]</td>
-        <td>
+    <tr role="row">
+        <td role="cell">[% l('Thursday') %]</td>
+        <td role="cell">
         [%-
             open = today _ ctx.hours.dow_3_open;
             close = today _ ctx.hours.dow_3_close;
@@ -108,9 +108,9 @@
         [%- END %]
         </td>
     </tr>
-    <tr>
-        <td>[% l('Friday') %]</td>
-        <td>
+    <tr role="row">
+        <td role="cell">[% l('Friday') %]</td>
+        <td role="cell">
         [%-
             open = today _ ctx.hours.dow_4_open;
             close = today _ ctx.hours.dow_4_close;
@@ -130,9 +130,9 @@
         [%- END %]
         </td>
     </tr>
-    <tr>
-        <td>[% l('Saturday') %]</td>
-        <td>
+    <tr role="row">
+        <td role="cell">[% l('Saturday') %]</td>
+        <td role="cell">
         [%-
             open = today _ ctx.hours.dow_5_open;
             close = today _ ctx.hours.dow_5_close;
@@ -152,9 +152,9 @@
         [%- END %]
         </td>
     </tr>
-    <tr>
-        <td>[% l('Sunday') %]</td>
-        <td>
+    <tr role="row">
+        <td role="cell">[% l('Sunday') %]</td>
+        <td role="cell">
         [%-
             open = today _ ctx.hours.dow_6_open;
             close = today _ ctx.hours.dow_6_close;
@@ -177,19 +177,20 @@
 </table>
 </div>
 
-<h3>[% l('Upcoming closures') %]</h3>
+<h2>[% l('Upcoming closures') %]</h2>
 
 [% IF ctx.closed_dates.size %]
-    <table title="[% l('Closed Dates') %]" class="table table-striped w-auto">
-    <thead>
-        <tr>
-          <th scope="col">[% l('Date') %]</th>
-          <th scope="col">[% l('Reason for Closure') %]</th>
+    <table role="table" title="[% l('Closed Dates') %]" class="table table-striped w-auto">
+    <thead role="rowgroup">
+        <tr role="row">
+          <th scope="col" role="columnheader">[% l('Date') %]</th>
+          <th scope="col" role="columnheader">[% l('Reason for Closure') %]</th>
         </tr>
     </thead>
+    <tbody role="rowgroup">
     [% FOR cdate IN ctx.closed_dates %]
-    <tr>
-        <td>
+    <tr role="row">
+        <td role="cell">
             [% display_start_date = date.format(ctx.parse_datetime(cdate.close_start), DATE_FORMAT) %]
             [% display_end_date = date.format(ctx.parse_datetime(cdate.close_end), DATE_FORMAT) %]
             [% display_start_time = date.format(ctx.parse_datetime(cdate.close_start), TIME_FORMAT) %]
@@ -207,9 +208,10 @@
                 - [% display_end_date %]
             [% END %]
         </td>
-        <td>[% cdate.reason | html %]</td>
+        <td role="cell">[% cdate.reason | html %]</td>
     </tr>
     [% END %]
+    </tbody>
     </table>
 [% ELSE %]
         [% l("No closures scheduled") %]

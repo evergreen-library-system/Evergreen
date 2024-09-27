@@ -7,6 +7,8 @@
     ctx.metalinks.push('<meta property="og:url" content="' _ canon  _ '" />');
     ctx.metalinks.push('<meta property="og:type" content="http://schema.org/Library" />');
 -%]
+<main id="main">
     [%- INCLUDE "opac/parts/searchbar.tt2" %]
     [%- INCLUDE "opac/parts/library/core_info.tt2"; %]
+</main>
 [%- END; %]

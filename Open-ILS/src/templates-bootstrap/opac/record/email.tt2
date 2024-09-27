@@ -5,6 +5,7 @@
     ctx.page_title = l("Record Detail") %]
     [% INCLUDE "opac/parts/searchbar.tt2" %]
     <br class="clear-both" />
+<main id="main">
     <div id="content-wrapper" class="content-wrapper-record-page">
         <div id='main-content'>
             <div class="alert alert-success" role="alert">
@@ -30,5 +31,6 @@
         </div>
         <br class="clear-both" />
     </div>
+</main>
 [% END %]
 

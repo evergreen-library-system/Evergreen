@@ -1,1 +1,1 @@
-<a class="navbar-brand" href="/eg/opac/"><img id="topnav_logo_image" alt="[% l('Evergreen') %]" src="[% ctx.media_prefix %]/images/evergreen-logo-white.svg[% ctx.cache_key %]" role="img" class="eg-logo" /></a>
+<h1 class="navbar-brand"><a class="navbar-brand" href="/eg/opac/"><img id="topnav_logo_image" alt="[% l('Evergreen') %]" src="[% ctx.media_prefix %]/images/evergreen-logo-white.svg[% ctx.cache_key %]" role="img" class="eg-logo" /></a></h1>

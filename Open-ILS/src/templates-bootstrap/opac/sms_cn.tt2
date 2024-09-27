@@ -6,6 +6,7 @@
     <div class="mobile_hide">
     [% INCLUDE "opac/parts/searchbar.tt2" %]
     </div>
+<main id="main">
     <div id="content-wrapper">
         <div id="main-content">
             <div class="common-full-pad"></div>
@@ -49,4 +50,5 @@
             <div class="common-full-pad"></div>
         </div>
     </div>
+</main>
 [%- END %]

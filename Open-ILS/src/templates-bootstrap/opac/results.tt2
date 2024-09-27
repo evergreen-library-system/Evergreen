@@ -19,10 +19,9 @@
     PROCESS "opac/parts/misc_util.tt2";
     PROCESS get_library;
 -%]
-    <h2 class="sr-only">[% l('Search Results') %]</h2>
+<main id="main">
     <form action="[% ctx.opac_root %]/results" method="get">
     [% INCLUDE "opac/parts/searchbar.tt2" took_care_of_form=1 %]
-    <h3 class="sr-only">[% l('Additional search filters and navigation') %]</h3>
     <div class="almost-content-wrapper border-bottom">
 
         [%# hide the header bar when displaying metarecord constituents
@@ -62,7 +61,7 @@
                         <!-- ===== Drop Down ===== -->
                         <div class="search-option my-2">
                         <label for="opac.result.sort">[% l('Sort Results') %]</label>
-                            [% INCLUDE "opac/parts/filtersort.tt2" value=CGI.param('sort') submit_on_change=1 class="form-control" %]
+                            [% INCLUDE "opac/parts/filtersort.tt2" value=CGI.param('sort') submit_on_change=1 class="form-control form-control-sm" %]
                         </div>
                         [%- IF show_more_details.default != 'hide' -%]
 
@@ -129,12 +128,15 @@
                     [% IF ctx.depth_sel_checkbox %]
 
                     <div class="search-filter m-2">
-                        <label for="depth_sel" title="[% ctx.depth_sel_tooltip | html %]">
+                        <label for="depth_sel">
                             <input type="checkbox" id="depth_sel" name="depth" value="[% ctx.depth_sel_depth %]"
                             onchange="this.form.submit()"
                             [% CGI.param('depth') == ctx.depth_sel_depth ? ' checked="checked"' : '' %] />
                             [% ctx.depth_sel_checkbox_label | html %]
                         </label>
+                        <a href="#" title="[% ctx.depth_sel_tooltip | html %]" data-toggletip>
+                            <i class="fas fa-question-circle" aria-hidden="true"></i>
+                        </a>
                     </div>
                     [% END %]
                     [% IF ctx.exclude_electronic_checkbox %]
@@ -156,16 +158,16 @@
             </div>
         </div>
     </form>
-    <div class="mx-5">
-        <div class="row">
-            <div id="results-page" class="col">
+    <div class="container-fluid">
+        <div id="results-page" class="container-fluid">
                 [%- IF (ctx.depth_sel_checkbox OR ctx.depth_sel_button) AND CGI.param('depth') == ctx.depth_sel_depth AND ctx.depth_sel_resultshint %]
                 <div id="results-page-depth-hint">[% ctx.depth_sel_resultshint | html %]</div>
                 [%- END %]
                 [% path = "opac/parts/result/" _
                     (ctx.records.size ? "table.tt2" : "lowhits.tt2");
                 INCLUDE $path %]
-            </div>
         </div>
+        
     </div>
+</main>
 [%- END %]

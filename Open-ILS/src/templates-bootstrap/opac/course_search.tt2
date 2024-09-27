@@ -7,7 +7,7 @@
     PROCESS get_library;
     ctx.metalinks.push('<meta name="robots" content="noindex,follow">');
 -%]
-
+<main id="main">
 <h2 class="sr-only">[% l('Course Search') %]</h2>
 
 <div id="content-wrapper">
@@ -15,9 +15,9 @@
   <form action="[% ctx.opac_root %]/course/results" method="get">
     <!-- TODO: Refactor simple.js addSearchRow to better handle
       tables with IDs that aren't adv_... -->
-    <div class="header_middle" id="adv_search_input">
-      [% l("Course Search Input") %]
-    </div>
+    <h2 class="header_middle" id="adv_search_input">
+      [% l("Search Courses") %]
+    </h2>
 
     <div id="adv_search_filters" class="adv_filter_block">
       <div class="adv_filter_block_item">
@@ -78,5 +78,5 @@
   </form>
   </div>
 </div>
-
+</main>
 [% END %]

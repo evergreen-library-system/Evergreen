@@ -1,3 +1,4 @@
+<header>
 [%- IF ctx.maintenance_message -%]
 <div class="alert alert-[% ctx.maintenance_type %] alert-dismissible mb-0 text-center" role="alert">
     <button type="button" class="close" data-dismiss="alert" aria-label="Close">
@@ -15,3 +16,4 @@
 <div id="subheader-wrap">
  [% INCLUDE "opac/parts/topnav_subnav.tt2" %]
  </div>
+</header>

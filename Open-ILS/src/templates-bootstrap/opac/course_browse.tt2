@@ -15,7 +15,7 @@
     depart_list = ['blimit', 'bterm', 'bpivot'];
     ctx.metalinks.push('<meta name="robots" content="noindex,follow">');
 %]
-
+<main id="main">
 <h2 class="sr-only">[% l('Course Browse') %]</h2>
 
 <div id="content-wrapper" class="my-5">
@@ -145,3 +145,4 @@
 </div>
 
 [% END %]
+</main>

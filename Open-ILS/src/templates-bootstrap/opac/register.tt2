@@ -46,11 +46,10 @@ UNLESS ctx.register.settings.stgu.usrname.hide;
 END;
 
 %]
-
-<h2 class="sr-only">[% l('Account Registration') %]</h2>
+<main id="main">
 <div class="container">
     <div id="main-content-register">
-        <h1>[% l('Request a Library Card')%]</h1>
+        <h2>[% l('Request a Library Card')%]</h2>
         <span class="validate">&bigstar; [% l('indicates Required Field') %]</span>
         <hr/>
 
@@ -275,6 +274,7 @@ FOR field_def IN register_fields;
             [% END %]
         </div>
     </div>
+</main>
 [%- END %]
 <script>
 (function() {

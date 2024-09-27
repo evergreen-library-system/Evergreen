@@ -5,6 +5,7 @@
     ctx.page_title = l("Confirm Basket Email") %]
 
 [% INCLUDE "opac/parts/searchbar.tt2" %]
+<main id="main">
 <div class="container top-divide">
   [% IF ctx.mylist.size %]
   <h3>[% l('Confirm Basket Email') %]</h3>
@@ -27,4 +28,5 @@
     <button type="button" class="btn btn-confirm" onclick="window.location='[% ctx.referer | html %]'"><i class="fas fa-undo-alt" aria-hidden="true"></i> [% l('Return') %]</button>
   [% END %]
 </div>
+</main>
 [%- END %]

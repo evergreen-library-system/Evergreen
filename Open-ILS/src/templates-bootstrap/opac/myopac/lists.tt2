@@ -71,12 +71,12 @@
     </div>
 
     <div class="row border-top pt-4">
-    <h3>[% l('Saved Lists') %]</h3>
+    <h2>[% l('Saved Lists') %]</h2>
    
 
         [% IF !ctx.bookbags.size %]
         <div class="container pb-2 mt-2 pt-2">
-                <h4>[% l("You don't have any lists yet") %]</h4>
+                <h3>[% l("You don't have any lists yet") %]</h3>
                 <a href='[% mkurl(ctx.opac_root _ '/myopac/lists', {}) %]'>[% l('Create a list with the form above') %]</a>
   
         [% ELSE %]
@@ -139,10 +139,10 @@
                         url = mkurl(baseurl, {}, ['bbid', 'edit_notes', 'sort']);
                         ltitle = l("Hide items in list");
                     END %]
-                    <h4 class="bookbag-name"><a title="[% ltitle %]" href="[% url %]">[% bbag.name | html %]</a>[% IF bbag.pub == 't'; %]
+                    <h3 class="bookbag-name"><a title="[% ltitle %]" href="[% url %]">[% bbag.name | html %]</a>[% IF bbag.pub == 't'; %]
                     <a target='_blank' href='/opac/extras/feed/bookbag/rss2-full/[% bbag.id %]' aria-label="[% l('RSS Feed') %]">
                     <i class="fas fa-rss-square" aria-hidden="true"></i></a>
-                    [% END %]</h4>
+                    [% END %]</h3>
             </div>
             <div class="row bookbag-description">
                      [% bbag.description | html %]
@@ -202,7 +202,7 @@
             </form>
 
             <div class="bookbag-controls">
-                <button class="btn btn-action btn-sm m-1" data-toggle="collapse" data-target="#bbag-edit-div-[% bbag.id %]"><i class="fa fa-edit" aria-hidden="true"></i> [% l('Edit List') %]</button>
+                <button type="button" class="btn btn-action btn-sm m-1" data-toggle="collapse" data-target="#bbag-edit-div-[% bbag.id %]"><i class="fa fa-edit" aria-hidden="true"></i> [% l('Edit List') %]</button>
             </div>
 
             [% IF bbag.pub == 't'; %]
@@ -233,7 +233,7 @@
 
         <div id="bbag-edit-div-[% bbag.id %]" class="row collapse">
             <div class="col-12 mt-3 p-2 bg-light">
-            <h5>[% l('Edit List Description') %]</h5>
+            <h4>[% l('Edit List Description') %]</h4>
             <form method="post">
                 <div class="form-group">
                     <label for="bbag-edit-name">[% l('Name:') %]</label>
@@ -258,7 +258,7 @@
         [% IF CGI.param("bbid") == bbag.id %]
 
         <div>
-        <h5 class="text-center my-2">List Items</h5>
+        <h4 class="text-center my-2">List Items</h4>
         <form action="[% mkurl(ctx.opac_root _ '/myopac/list/update') %]" method="post" >
         <input type="hidden" name="list" value="[% bbag.id %]" />
         <input type="hidden" name="sort" value="[% CGI.param('sort') | uri %]" />
