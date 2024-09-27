@@ -1,21 +1,25 @@
 [%
+    cnsearch = CGI.param('cn');
     cnoffset = CGI.param('cnoffset');
     cnoffset = cnoffset.match('^-?\d+$') ? cnoffset : 0; # verify cnoffset is a sane value
 %]
 
 <div class='cn_browser'>
-    <div id='cn_browse_div'>
-        <p class='color_4 h5'>
-            [% l("You are now browsing [_1]", ctx.browsing_ou.name) | html %]
-        </p>
-
-        <div class="row">
+    <div id='cn_browse_div' class="row">
+        <div class="row align-items-end">
             <div class="col-3">
                 <a class='np_nav_link classic_link btn btn-outline-primary' href="[% mkurl('', {cnoffset => cnoffset - 1}) %]#cnbrowse">[% l("&lt;&lt; Previous Page") %]</a>
             </div>
 
             <div class="col-6 text-center">
-                <h3>[% l("Shelf Browser") %]</h3>
+                <h2>[% l("Shelf Browser") %]</h2>
+                <p class='cn_browse_orgunit m-0'>
+                    [% l('You are browsing [_1] by call number near ', ctx.browsing_ou.name) | html %]
+                    <a id="cn_target_link" href="[% IF cnoffset > 0; mkurl('', {cnoffset => 0}); END %]#cn_target"
+                        aria-description="[% l('Skip directly to closest matching call number') %]">
+                        [% l(' [_1]', cnsearch) | html %]
+                    </a>
+                </p>
             </div>
 
             <div class="col-3 text-right">
@@ -23,47 +27,44 @@
             </div>
         </div>
 
-        <hr />
+        <ol class='list-unstyled data_grid bookshelf' data-page="[% cnoffset + 1 %]">
+            [%- PROCESS get_library;
+            FOR cn IN ctx.browsed_call_numbers; %]
+            <li class='cn_browse_item'>
+                <div class="card" [% IF cnoffset == 0 && loop.index() == 4 %] id="cn_target" [% END %]>
+                [%  rec_attrs = {marc_xml => cn.record.marc};
+                    PROCESS get_marc_attrs args=rec_attrs;
+                %]
+                    <div class="card-body">
+                        <a class="cover-img-wrap" href="[% mkurl(ctx.opac_root _ '/record/' _ cn.record.id, {$loc_name => loc_value}, 1) %]">
+                            <img id="cover-img-[% cn.record.id %]" class='cn_browse_info img-fluid cover-img' alt=""
+                            src="[% ctx.media_prefix %]/opac/extras/ac/jacket/medium/r/[% cn.record.id | uri %]" />
+                        </a>
 
-        <table class='data_grid bookshelf'>
-            <tbody>
-            [%- tr_open = 0;
-                PROCESS get_library;
-                FOR cn IN ctx.browsed_call_numbers;
-                  IF loop.index % 3 == 0; tr_open = 1 %]
-                <tr class='cn_browse_row'>
-                [% END -%]
-                    <td class='cn_browse_item'>
-                        <div class="card">
-                        [%  rec_attrs = {marc_xml => cn.record.marc};
-                            PROCESS get_marc_attrs args=rec_attrs; %]
-                        <a href="[% mkurl(ctx.opac_root _ '/record/' _ cn.record.id, {$loc_name => loc_value}, 1) %]"><img height='60' width='50'
-                            class='cn_browse_info'
-                            [% img_alt(l('Go to record [_1]', rec_attrs.title)) %]
-                            src="[% ctx.media_prefix %]/opac/extras/ac/jacket/small/r/[% cn.record.id | uri %]" /></a>
-                        <div class='cn_browse_info bold'>[% cn.label | html %]</div>
-                        <div class='cn_browse_info'>
-                            <a class='classic_link record_title'
+                        <div class='card-text cn_browse_info'>
+                            <h3 class="card-title">
+                                <a class='classic_link record_title'
                                 href="[% mkurl(ctx.opac_root _ '/record/' _ cn.record.id, {$loc_name => loc_value}, 1) %]">[% rec_attrs.title | html %]</a>
-                        </div>
-                        [% IF rec_attrs.author %]<div class='cn_browse_info'>
+                            </h3>
+                            [% IF rec_attrs.author %]
                             <a class='classic_link record_author'
                                 href="[%-
                                     authorquery = rec_attrs.author | replace('[,\.:;]', '');
                                     mkurl(ctx.opac_root _ '/results', {qtype => 'author', query => authorquery, $loc_name => loc_value}, 1)
                                     -%]">[% rec_attrs.author | html %]</a>
-                        </div>[% END %]
-                        <div class='cn_browse_info'>[% cn.owning_lib.name | html %]</div>
+                            [% END %]
                         </div>
-                    </td>
-                [% IF loop.index % 3 == 2; tr_open = 0 %]
-                </tr>
-                [% END %]
-            [% END; IF tr_open %]</tr>[% END %]
-            </tbody>
-        </table>
-
-        <hr />
+                    </div>
+                    <div class="card-footer">
+                        <span class="visually-hidden">[% l('Call number') %]</span>
+                        <cite class='card-text cn_browse_info badge badge-light call-number mr-2'>[% cn.label | html %]</cite>
+                        <span class="visually-hidden">[% l('Library') %]</span>
+                        <span role="text" class='card-text cn_browse_info'>[% cn.owning_lib.name | html %]</span>
+                    </div>
+                </div>
+            </li>
+            [% END %]
+        </ol>
 
         <div class="row">
             <div class="col-3">
