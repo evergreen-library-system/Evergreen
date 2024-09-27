@@ -4,11 +4,12 @@
   "description": "Dependencies for Evergreen OPAC skins",
   "main": "index.js",
   "dependencies": {
-    "@fortawesome/fontawesome-free": "^5.14.0",
-    "bootstrap": "~4.3.0",
-    "bootstrap-datepicker": "^1.9.0",
-    "jquery": "~3.5.1",
-    "popper.js": "^1.14.7"
+    "@duetds/date-picker": "^1.4.0",
+    "@fortawesome/fontawesome-free": ">=6.6.0",
+    "apex4x": "^2023.8.1-2.45",
+    "bootstrap": "^4.6.2",
+    "jquery": ">=3.7.1",
+    "popper.js": "^1.16.1"
   },
   "devDependencies": {
     "eslint": "^8.36.0",

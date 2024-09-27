@@ -165,10 +165,10 @@ function updateCheckoutView() {
         dojo.forEach(xacts.checkouts, function(x) {
             var ebook = new Ebook(x.vendor, x.title_id);
             var tr = dojo.create("tr", null, dojo.byId('ebook_circs_main_table_body'));
-            dojo.create("td", { innerHTML: x.title }, tr);
-            dojo.create("td", { innerHTML: x.author }, tr);
-            dojo.create("td", { innerHTML: x.due_date }, tr);
-            var dl_td = dojo.create("td", null, tr);
+            dojo.create("td", { 'mobile-title': dojo.byId('ebook_circs_main_table_header_title' ).innerHTML, innerHTML: x.title }, tr);
+            dojo.create("td", { 'mobile-title': dojo.byId('ebook_circs_main_table_header_author' ).innerHTML, innerHTML: x.author }, tr);
+            dojo.create("td", { 'mobile-title': dojo.byId('ebook_circs_main_table_header_date' ).innerHTML, innerHTML: x.due_date }, tr);
+            var dl_td = dojo.create("td", { 'mobile-title': dojo.byId('ebook_circs_main_table_header_actions' ).innerHTML, }, tr);
             if (x.download_url) {
                 dl_td.innerHTML = '<a href="' + x.download_url + '">' + l_strings.download + '</a>';
             }
@@ -237,11 +237,11 @@ function updateHoldView() {
                 });
             };
             var tr = dojo.create("tr", { id: "hold-" + h.title_id }, dojo.byId('ebook_holds_main_table_body'));
-            dojo.create("td", { innerHTML: h.title }, tr);
-            dojo.create("td", { innerHTML: h.author }, tr);
-            dojo.create("td", { innerHTML: h.expire_date }, tr);
-            dojo.create("td", { innerHTML: hold_status }, tr);
-            var actions_td = dojo.create("td", null, tr);
+            dojo.create("td", { 'mobile-title': dojo.byId('ebook_holds_main_table_header_title' ).innerHTML, innerHTML: h.title }, tr);
+            dojo.create("td", { 'mobile-title': dojo.byId('ebook_holds_main_table_header_author').innerHTML, innerHTML: h.author }, tr);
+            dojo.create("td", { 'mobile-title': dojo.byId('ebook_holds_main_table_header_date'  ).innerHTML, innerHTML: h.expire_date }, tr);
+            dojo.create("td", { 'mobile-title': dojo.byId('ebook_holds_main_table_header_status').innerHTML, innerHTML: hold_status }, tr);
+            var actions_td = dojo.create("td", { 'mobile-title': dojo.byId('ebook_holds_main_table_header_actions').innerHTML }, tr);
             var button = dojo.create("input", { id: "cancel-hold-" + h.title_id, type: "button", value: l_strings.cancel_hold }, actions_td);
             dojo.connect(button, 'onclick', h, "doCancelHold");
         });
@@ -261,8 +261,8 @@ function getReadyForCheckout() {
         active_ebook.getDetails( function(ebook) {
             dojo.empty('ebook_circs_main_table_body');
             var tr = dojo.create("tr", null, dojo.byId('ebook_circs_main_table_body'));
-            dojo.create("td", { innerHTML: ebook.title }, tr);
-            dojo.create("td", { innerHTML: ebook.author }, tr);
+            dojo.create("td", { 'mobile-title': dojo.byId('ebook_circs_main_table_header_title' ).innerHTML, innerHTML: ebook.title }, tr);
+            dojo.create("td", { 'mobile-title': dojo.byId('ebook_circs_main_table_header_author').innerHTML, innerHTML: ebook.author }, tr);
             dojo.create("td", null, tr);
             dojo.create("td", { id: "checkout-button-td" }, tr);
             if (typeof active_ebook.formats !== 'undefined') {

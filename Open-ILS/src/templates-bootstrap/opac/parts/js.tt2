@@ -5,6 +5,29 @@
 [% INCLUDE "opac/i18n_strings.tt2" %]
 
 
+[% IF ctx.readonly %]
+<script >
+  $(document).ready(function() {
+    $('a').removeAttr('href');
+    $('a').removeAttr('data-toggle');
+    $('a').click(function(event) { event.preventDefault(); });
+    $('button').prop('disabled', true);
+    $('button').click(function(event) { event.preventDefault(); });
+    $('input').prop('disabled', true);
+    $('input').click(function(event) { event.preventDefault(); });
+    $('select').prop('disabled', true);
+    $('select').click(function(event) { event.preventDefault(); });
+    $('textarea').prop('disabled', true);
+    $('textarea').click(function(event) { event.preventDefault(); });
+  });
+</script>
+[% END %]
+
+[% IF ctx.get_org_setting(ctx.search_ou, 'opac.patron.custom_jquery') %]
+[%     custom_jquery = ctx.get_org_setting(ctx.search_ou, 'opac.patron.custom_jquery') %]
+[%     '<script>'; custom_jquery ; '</script>' %]
+[% END %]
+
 <!-- Accessible session timeout -->
 [% # auth.opac_timeout is the number of seconds
 authtimeout = ctx.get_org_setting(ctx.physical_loc || ctx.aou_tree.id, 'auth.opac_timeout');
@@ -32,30 +55,6 @@ IF authtimeout AND !ctx.is_staff %]
     timeControl();
     // console.debug("Timeout (seconds): ", ([% authtimeout %]));
 </script>
-[% END %]
-
-
-[% IF ctx.readonly %]
-<script >
-  $(document).ready(function() {
-    $('a').removeAttr('href');
-    $('a').removeAttr('data-toggle');
-    $('a').click(function(event) { event.preventDefault(); });
-    $('button').prop('disabled', true);
-    $('button').click(function(event) { event.preventDefault(); });
-    $('input').prop('disabled', true);
-    $('input').click(function(event) { event.preventDefault(); });
-    $('select').prop('disabled', true);
-    $('select').click(function(event) { event.preventDefault(); });
-    $('textarea').prop('disabled', true);
-    $('textarea').click(function(event) { event.preventDefault(); });
-  });
-</script>
-[% END %]
-
-[% IF ctx.get_org_setting(ctx.search_ou, 'opac.patron.custom_jquery') %]
-[%     custom_jquery = ctx.get_org_setting(ctx.search_ou, 'opac.patron.custom_jquery') %]
-[%     '<script>'; custom_jquery ; '</script>' %]
 [% END %]
 
 <!-- DOB validation for Patron Registration in OPAC -->
@@ -193,16 +192,174 @@ var aou_hash = {
 <script >var max_cart_size = [% ctx.max_cart_size %];</script>
 [%- END; %]
 
-
-<link rel="stylesheet" href="[% ctx.media_prefix %]/js/ui/default/common/build/js/glide/css/glide.core.min.css[% ctx.cache_key %]">
-<link rel="stylesheet" href="[% ctx.media_prefix %]/js/ui/default/common/build/js/glide/css/glide.theme.min.css[% ctx.cache_key %]">
 <!-- JS imports, etc. jQuery is loaded in <head> -->
 <script src="[% ctx.media_prefix %]/opac/deps/node_modules/popper.js/dist/umd/popper.min.js[% ctx.cache_key %]"></script>
 <script src="[% ctx.media_prefix %]/opac/deps/node_modules/bootstrap/dist/js/bootstrap.min.js[% ctx.cache_key %]"></script>
-<script  src="[% ctx.media_prefix %]/opac/deps/node_modules/bootstrap-datepicker/dist/js/bootstrap-datepicker.js[% ctx.cache_key %]"></script>
+<script src="[% ctx.media_prefix %]/opac/deps/node_modules/@duetds/date-picker/dist/duet/duet.js[% ctx.cache_key %]"></script>
 
-  <script>
-    $(document).ready(function(){
-    $('[data-toggle="tooltip"]').tooltip();
+<script>
+    // Datepicker format conversion
+    // See https://duetds.github.io/date-picker/
+    const DATE_FORMAT_US = /^(\d{1,2})\/(\d{1,2})\/(\d{4})$/
+    document.querySelectorAll("duet-date-picker").forEach(picker => {
+        picker.dateAdapter = {
+            parse(value = "", createDate) {
+            const matches = value.match(DATE_FORMAT_US)
+
+            if (matches) {
+                return createDate(matches[3], matches[1], matches[2])
+            }
+            },
+            format(date) {
+                return `${date.getMonth() + 1}/${date.getDate()}/${date.getFullYear()}`
+            },
+        }
+
+        picker.localization = {
+            buttonLabel: "Choose date",
+            placeholder: "mm/dd/yyyy",
+            selectedDateMessage: "Selected date is",
+            prevMonthLabel: "Previous month",
+            nextMonthLabel: "Next month",
+            monthSelectLabel: "Month",
+            yearSelectLabel: "Year",
+            closeLabel: "Close date picker",
+            calendarHeading: "Choose a date",
+            dayNames: ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"],
+            monthNames: ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"],
+            monthNamesShort: ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"],
+            locale: "en-US",
+        }
     });
+
+    // Password visibility eye
+    $(document).ready(function(){
+        $("#loginModal").on('shown.bs.modal', function(){
+            $(this).find('#username_field').focus();
+        });
+        // password visibility eye
+        let btn = document.getElementById('show_password');
+        let input = document.getElementById('password_field');
+        let icon = btn.querySelector('i');
+        let desc = document.getElementById('show_password_desc');
+        btn.addEventListener('click', () => {
+            if(input.type == 'password'){
+                input.type = 'text';
+                icon.setAttribute('class', 'fas fa-eye');
+                btn.setAttribute('aria-checked', 'true');
+                desc.setAttribute('textContent', "[% l('Your password is visible!') %]");
+            }else {
+                input.type = 'password';
+                icon.setAttribute('class', 'fas fa-eye-slash');
+                btn.setAttribute('aria-checked', 'false');
+                desc.setAttribute('textContent', "[% l('Your password is not visible.') %]");
+            }
+            input.focus();
+        });
+        let loginForm = document.getElementById('login_form');
+        loginForm.addEventListener('submit', ()=>{
+            input.type = 'password';
+        });
+    });
+</script>
+<script>
+    // roving tabindex for closed summaries (focusable children bug workaround)
+    window.addEventListener('load', () => {
+        document.querySelectorAll('details').forEach(details => 
+            details.querySelectorAll('a, button, input, select, textarea').forEach(el => {
+                el.setAttribute('tabindex', details.open ? 0 : -1);
+            })
+        );
+    });
+
+    document.querySelectorAll('details').forEach(details => 
+        details.addEventListener('toggle', () => {
+            details.querySelectorAll('a, button, input, select, textarea').forEach(el => {
+                el.setAttribute('tabindex', details.open ? 0 : -1);
+            });
+        })
+    );
+
+    document.querySelectorAll('.cover-img').forEach(img => {
+        if ( img.offsetWidth < 2 ) {
+            img.parentNode.remove();
+        }
+    });
+</script>
+
+<script>
+/* Based on Toggletips by Heydon Pickering, https://inclusive-components.design/tooltips-toggletips/ */
+/* Modified to work with existing aria-label; added mouseenter and mouseleave events that toggle the role attribute */
+(function() {
+  // Get all the toggletip buttons
+  var toggletips = document.querySelectorAll('[data-toggletip]');
+
+  // Iterate over them
+  Array.prototype.forEach.call(toggletips, function(toggletip) {
+    
+    // remove title attributes from things that should not be toggletips
+    if ( !['a', 'button'].includes(toggletip.tagName.toLowerCase()) ) {
+      toggletip.removeAttribute('title');
+      return;
+    }
+
+    // Create the container element
+    var container = document.createElement('span');
+    container.setAttribute('class', 'toggletip-container');
+    toggletip.after(container);
+    
+    // Create the live region
+    var liveRegion = document.createElement('span');
+    liveRegion.setAttribute('role', 'status');
+    container.appendChild(liveRegion);
+
+    // Build tooltip content from title 
+    var message = toggletip.getAttribute('title');
+    toggletip.removeAttribute('title');
+    toggletip.setAttribute('role', 'button');
+    toggletip.setAttribute('tabindex', '0'); // in case someone forgot the href
+
+    // Toggle the message
+    toggletip.addEventListener('click', function() {
+        liveRegion.innerHTML = '';
+        document.querySelectorAll('.toggletip-bubble').forEach(bubble => bubble.remove());
+        window.setTimeout(function() {
+          liveRegion.innerHTML = '<span class="toggletip-bubble">'+ message +'</span>';
+        }, 100);
+    });
+    toggletip.addEventListener('mouseenter', function() {
+        // don't announce on hover
+        liveRegion.removeAttribute('role');
+        liveRegion.innerHTML = '';
+        document.querySelectorAll('.toggletip-bubble').forEach(bubble => bubble.remove());
+        window.setTimeout(function() {
+          liveRegion.innerHTML = '<span class="toggletip-bubble">'+ message +'</span>';
+        }, 100);
+    });
+
+    // Close on outside click
+    document.addEventListener('click', function (e) {
+      if (toggletip !== e.target) {
+        liveRegion.innerHTML = '';
+      }                        
+    });
+
+    // Remove toggletip on ESC
+    toggletip.addEventListener('keydown', function(e) {
+      if (e.key === 'Escape')
+        liveRegion.innerHTML = '';
+    });
+    
+    // Remove on blur
+    toggletip.addEventListener('blur', function (e) {
+      liveRegion.innerHTML = '';
+    });
+    
+    // Remove toggletip on mouseleave and reset role to status
+    toggletip.addEventListener('mouseleave', function(e) {
+      liveRegion.innerHTML = '';
+      liveRegion.setAttribute('role', 'status');
+    });
+  });
+}());
 </script>

@@ -1,13 +1,13 @@
 [%-
     css_fonts = {
-        size_base = "14px",
-        size_small = "92%",
-        size_smaller = "83%",
-        size_smallest = "75%",
-        size_medium = "95%",
-        size_big = "110%",
-        size_bigger = "125%",
-        size_biggest = "150%"
-        font_main = "Arial, Helvetica, sans-serif",
+        size_base = "100%",
+        size_small = "0.92rem",
+        size_smaller = "0.83rem",
+        size_smallest = "0.75rem",
+        size_medium = "0.95rem",
+        size_big = "1.1rem",
+        size_bigger = "1.25rem",
+        size_biggest = "1.50rem",
+        font_main = "-apple-system, BlinkMacSystemFont, avenir next, avenir, segoe ui, helvetica neue, helvetica, Cantarell, Ubuntu, roboto, noto, arial, sans-serif",
     }
 %]

@@ -23,11 +23,6 @@
 </script>
 [% END %]
 
-[% IF ctx.get_org_setting(ctx.search_ou, 'opac.patron.custom_jquery') %]
-[%     custom_jquery = ctx.get_org_setting(ctx.search_ou, 'opac.patron.custom_jquery') %]
-[%     '<script>'; custom_jquery ; '</script>' %]                                          
-[% END %]
-
 <!-- Accessible session timeout -->
 [% # auth.opac_timeout is the number of seconds
 authtimeout = ctx.get_org_setting(ctx.physical_loc || ctx.aou_tree.id, 'auth.opac_timeout');

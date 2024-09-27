@@ -10,12 +10,16 @@
         <!--Added bootstrap dependancies-->
         <link rel="stylesheet" href="[% ctx.media_prefix %]/opac/deps/node_modules/bootstrap/dist/css/bootstrap.min.css[% ctx.cache_key %]">
         <link rel="stylesheet"  href="[% ctx.media_prefix %]/opac/deps/node_modules/@fortawesome/fontawesome-free/css/all.css[% ctx.cache_key %]" />
-        <link rel="stylesheet"  href="[% ctx.media_prefix %]/opac/deps/node_modules/bootstrap-datepicker/dist/css/bootstrap-datepicker.css[% ctx.cache_key %]" />
+        <link rel="stylesheet" href="[% ctx.media_prefix %]/js/ui/default/common/build/js/glide/css/glide.core.min.css[% ctx.cache_key %]">
+        <link rel="stylesheet" href="[% ctx.media_prefix %]/js/ui/default/common/build/js/glide/css/glide.theme.min.css[% ctx.cache_key %]">
+        <link rel="stylesheet" href="[% ctx.media_prefix %]/opac/deps/node_modules/@duetds/date-picker/dist/duet/themes/default.css[% ctx.cache_key %]" />
+
+
         <link rel="stylesheet"  href="[% ctx.media_prefix %]/css/skin/default/opac/semiauto.css[% ctx.cache_key %]" />
         <link rel="stylesheet" href="[% ctx.opac_root %]/css/style.css[% ctx.cache_key %]&amp;dir=[%
           IF ctx.get_i18n_l(ctx.eg_locale).rtl == 't' %]rtl[%
           ELSE %]ltr[% END %]" />
-          <link rel="stylesheet" href="[% ctx.opac_root %]/css/mediaQuery.css[% ctx.cache_key %]" />
+        <link rel="stylesheet" href="[% ctx.opac_root %]/css/mediaQuery.css[% ctx.cache_key %]" />
         [% IF ctx.get_i18n_l(ctx.eg_locale).rtl == 't' %]
         <link rel="stylesheet" href="[% ctx.media_prefix %]/css/skin/default/opac/semiauto-rtl.css[% ctx.cache_key %]" />
         [% END %]
@@ -56,50 +60,20 @@
             [% INCLUDE 'opac/parts/matomo_analytics.tt2' %]
         [% END %]
         [% PROCESS 'opac/parts/stripe.tt2' %]
-<script  src="[% ctx.media_prefix %]/opac/deps/node_modules/jquery/dist/jquery.min.js[% ctx.cache_key %]"></script>
-
-		<script>
-			$(document).ready(function(){
-				$("#loginModal").on('shown.bs.modal', function(){
-					$(this).find('#username_field').focus();
-				});
-                // password visibility eye
-                let btn = document.getElementById('show_password');
-                let input = document.getElementById('password_field');
-                let icon = btn.querySelector('i');
-                btn.addEventListener('click', () => {
-                    if(input.type == 'password'){
-                        input.type = 'text';
-                        icon.setAttribute('class', 'fas fa-eye');
-                        btn.setAttribute('aria-checked', 'true');
-                        input.setAttribute('aria-description', "[% l('Your password is visible!') %]");
-                    }else {
-                        input.type = 'password';
-                        icon.setAttribute('class', 'fas fa-eye-slash');
-                        btn.setAttribute('aria-checked', 'false');
-                        input.setAttribute('aria-description', "[% l('Your password is not visible.') %]");
-                    }
-                    input.focus();
-                });
-                let loginForm = document.getElementById('login_form');
-                loginForm.addEventListener('submit', ()=>{
-                    input.type = 'password';
-                });
-			});
-		</script>
-
+<script src="[% ctx.media_prefix %]/opac/deps/node_modules/jquery/dist/jquery.min.js[% ctx.cache_key %]"></script>
     </head>
-    <body[% IF want_dojo; ' class="tundra d-flex flex-column min-vh-100"'; ELSE; ' class="tundra d-flex flex-column min-vh-100"';  END %]>
-        <h1 class="sr-only">[% l('Catalog') %]</h1>
+    <body class="tundra d-flex flex-column min-vh-100 [% IF we_want_to_turn_on_facet_styling.defined %] styled_facets [% END %]">
         [%#Each content page needs (at minimum) an <h2> describing the content%]
+        <a class="skip-link" href="#main">[% l('Skip to main content') %]</a>
        <div class="mb-3">
         [% content %]
         </div>
+
+        [% INCLUDE 'opac/parts/footer.tt2' %]
+        
         [% IF ctx.page != "login" ;%]
         [% INCLUDE 'opac/parts/login/login_modal.tt2' %]
         [% END;%]
-        <h2 class="sr-only">[% l('Additional Resources') %]</h2>
-        [% INCLUDE 'opac/parts/footer.tt2' %]
 
         [% INCLUDE 'opac/parts/js.tt2' %]
         <script>
