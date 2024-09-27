@@ -23,11 +23,18 @@
     [% IF CGI.param("return_to_referer") %]
     <input type="hidden" name="redirect_to" value="[% ctx.referer | html %]" />
     [% END %]
-    <table>
-        <tr><td>[% l('Current Email') %]</td><td>[% ctx.user.email | html %]</td></tr>
-        <tr><td>[% l('Current Password') %]</td><td><input type='password' class="form-control" name='current_pw'/></td></tr>
-        <tr><td>[% l('New Email') %]</td><td><input type='text' name='email' class="form-control" value='[% ctx.invalid_email | html %]'/></td></tr>
-    </table>
+    <p>
+        <b class="form-label d-block">[% l('Current Email') %]</b>
+        [% ctx.user.email | html %]
+    </p>
+    <p>
+        <label for="current_pw" class="form-label">[% l('Current Password') %]</label>
+        <input type='password' class="form-control" name='current_pw' id="current_pw" autocomplete="current-password" />
+    </p>
+    <p>
+        <label for="email" class="form-label">[% l('New Email') %]</label>
+        <input type='text' name='email' id="email" class="form-control" value='[% ctx.invalid_email | html %]' autocomplete="email" />
+    </p>
    <button class="btn btn-confirm m-2" type='submit'><i class="fas fa-save"></i> [% l('Save Changes') %]</button>
 </form>
 </div>

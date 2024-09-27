@@ -36,7 +36,7 @@
     </div>
     [% IF ctx.message_update_action.defined %]
         [% IF ctx.message_update_changed > 0 %]
-        <div class="message-update-summary">
+        <div class="message-update-summary alert alert-primary" role="status">
             [% IF ctx.message_update_action == 'mark_read';
                 l('Marked [_1] message(s) as read.', ctx.message_update_changed);
                ELSIF ctx.message_update_action == 'mark_unread';
@@ -48,7 +48,7 @@
         </div>
         [% END %]
         [% IF ctx.message_update_failed > 0 %]
-        <div class="message-update-summary alert">
+        <div class="message-update-summary alert alert-danger" role="status">
             [% IF ctx.message_update_action == 'mark_read';
                 l('Failed to mark [_1] message(s) as read.', ctx.message_update_failed);
                ELSIF ctx.message_update_action == 'mark_unread';
@@ -78,43 +78,34 @@
                 aria-label="[% l('Check/Uncheck All') %]" />
                 <label for="all_message_check">[% l('Check/Uncheck All') %]</label>
             </div>
-            <table id="acct_messages_main_header" title="[% l('Messages') %]"
+            <table role="table" id="acct_messages_main_header" aria-describedby="messages-heading" 
                 class="table table-hover table-bordered miniTable messagesTable">
-                <thead>
-                <tr>
-                    <td>
+                <thead role="rowgroup">
+                <tr role="row">
+                    <th scope="col" role="columnheader">
                         <input type="checkbox" aria-label="[% l('Select All Messages') %]"
                         onclick="var inputs=document.getElementsByTagName('input'); for (i = 0; i < inputs.length; i++) { if (inputs[i].name == 'message_id' &amp;&amp; !inputs[i].disabled) inputs[i].checked = this.checked;}"/>
-                    </td>
-                    <th>[% l('Date') %]</th>
-                    <th>[% l('Library') %]</th>
-                    <th>[% l('Subject') %]</th>
-                    <td></td>
+                    </th>
+                    <th scope="col" role="columnheader">[% l('Date') %]</th>
+                    <th scope="col" role="columnheader">[% l('Library') %]</th>
+                    <th scope="col" role="columnheader">[% l('Subject') %]</th>
                 </tr>
                 </thead>
-                <tbody>
+                <tbody role="rowgroup">
                 [% FOR message IN ctx.patron_messages; %]
-                    <tr [% IF !message.is_read %]class="unread-patron-message"[% END %]>
-                        <td class="checkCell">
-                            <span class="sr-only">[% l('Message Number [_1]', count); %]</span>
-                        <input type="checkbox" name="message_id" value="[% message.id %]"
+                    <tr role="row" [% IF !message.is_read %]class="unread-patron-message"[% END %] mobile-count="#[% loop.count %]">
+                        <th class="checkCell">
+                            <input type="checkbox" name="message_id" value="[% message.id %]"
                             [% html_text_attr('aria-label', l('Select message [_1]', message.title)) %]/>
-                        </td>
-                        <td>
-                            <span class="sr-only">[% l('Date of Message') %]</span>
+                        </th>
+                        <td role="cell" mobile-title="[% l('Date') %]">
                             [% date.format(ctx.parse_datetime(message.create_date), DATE_FORMAT); %]
                         </td>
-                        <td>
-                            <span class="sr-only">[% l('Library') %]</span>
+                        <td role="cell" mobile-title="[% l('Library') %]">
                             [% message.library | html %]
                         </td>
-                        <td>
-                            <span class="sr-only">[% l('Title of Message') %]</span>
+                        <td role="cell" mobile-title="[% l('Subject') %]">
                             <a href="[% mkurl('messages', { single => 1, message_id => message.id } ) %]">[% message.title | html %]</a>
-                        </td>
-                        <td>
-                        <span class="sr-only">[% l('Message Options') %]</span>
-                            <a class="btn btn-sm btn-action" href="[% mkurl('messages', { single => 1, message_id => message.id } ) %]" title="[% l('Read [_1]', message.title) | html %]"><i class="fas fa-glasses" aria-hidden="true"></i> [% l('Read') %]</a>
                         </td>
                     </tr>
                 [% END %]

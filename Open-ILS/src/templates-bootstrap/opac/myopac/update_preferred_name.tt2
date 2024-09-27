@@ -7,29 +7,34 @@
     <h2>[% l('Update Preferred Name') %]</h2>
 
 [% IF ctx.password_incorrect %]
-    <div class='account-password-error'>
+    <div class='account-password-error' id="account-password-error" role="status">
         [% |l %]Your current password was not correct.[% END %]
     </div>
 
 [% END %]
 
-<form method='post' id='account-update-preferred-name' autocomplete='off'>
-    <table>
-        <tr><td>[% l('Current Preferred Name') %]</td><td>[% l(
-            HUMAN_NAME_FORMAT,
-            ctx.user.pref_prefix || ctx.user.prefix,
-            ctx.user.pref_first_given_name || ctx.user.first_given_name,
-            ctx.user.pref_second_given_name || ctx.user.second_given_name,
-            ctx.user.pref_family_name || ctx.user.family_name,
-            ctx.user.pref_suffix || ctx.user.suffix) | html %]</td></tr>
-        <tr><td><label for="current_pw">[% l('Current Password') %]</label></td><td><input type='password' name='current_pw' id='current_pw' class="form-control" autocomplete="current-password" /></td></tr>
-        <tr><td><label for='pref-prefix'>[% l('Preferred Prefix') %]</label></td><td><input type='text' name='pref_prefix' id='pref_prefix' class="form-control" value="[% ctx.user.pref_prefix | html %]" autocomplete="honorific-prefix" /></td></tr>
-        <tr><td><label for='pref-first-given-name'>[% l('Preferred First Name') %]</label></td><td><input type='text' name='pref_first_given_name' id='pref_first_given_name' class="form-control" value="[% ctx.user.pref_first_given_name | html %]" autocomplete="given-name" /></td></tr>
-        <tr><td><label for='pref-second-given-name'>[% l('Preferred Second Name') %]</label></td><td><input type='text' name='pref_second_given_name' id='pref_second_given_name' class="form-control" value="[% ctx.user.pref_second_given_name | html %]" autocomplete="additional-name" /></td></tr>
-        <tr><td><label for='pref-family-name'>[% l('Preferred Family Name') %]</label></td><td><input type='text' name='pref_family_name' id='pref_family_name' class="form-control" value="[% ctx.user.pref_family_name | html %]" autocomplete="family-name" /></td></tr>
-        <tr><td><label for='pref-suffix'>[% l('Preferred Suffix') %]</label></td><td><input type='text' name='pref_suffix' id='pref_suffix' class="form-control" value="[% ctx.user.pref_suffix | html %]" autocomplete="honorific-suffix" /></td></tr>
-        <tr><td colspan='2'><button class="btn btn-confirm m-2" type='submit'><i class="fas fa-save"></i> [% l('Save Changes') %]</button></td></tr>
-    </table>
+<form method='post' id='account-update-preferred-name' [% IF ctx.is_staff %] autocomplete='off' [% END %]>
+
+        <div class="row">
+            <div class="col-md-6">[% l('Current Preferred Name') %]</div>
+            <div class="col-md-6">
+                <output role="status">[% l(HUMAN_NAME_FORMAT,
+                    ctx.user.pref_prefix || ctx.user.prefix,
+                    ctx.user.pref_first_given_name || ctx.user.first_given_name,
+                    ctx.user.pref_second_given_name || ctx.user.second_given_name,
+                    ctx.user.pref_family_name || ctx.user.family_name,
+                    ctx.user.pref_suffix || ctx.user.suffix) | html %]
+                </output>
+            </div>
+        </div>
+        <div class="row"><div class="col-md-6"><label for="current_pw">[% l('Current Password') %]</label></div><div class="col-md-6"><input type='password' name='current_pw' id='current_pw' class="form-control" autocomplete="current-password" aria-describedby="account-password-error" /></div></div>
+        <div class="row"><div class="col-md-6"><label for='pref-prefix'>[% l('Preferred Prefix') %]</label></div><div class="col-md-6"><input type='text' name='pref_prefix' id='pref_prefix' class="form-control" value="[% ctx.user.pref_prefix | html %]" autocomplete="honorific-prefix" /></div></div>
+        <div class="row"><div class="col-md-6"><label for='pref-first-given-name'>[% l('Preferred First Name') %]</label></div><div class="col-md-6"><input type='text' name='pref_first_given_name' id='pref_first_given_name' class="form-control" value="[% ctx.user.pref_first_given_name | html %]" autocomplete="given-name" /></div></div>
+        <div class="row"><div class="col-md-6"><label for='pref-second-given-name'>[% l('Preferred Second Name') %]</label></div><div class="col-md-6"><input type='text' name='pref_second_given_name' id='pref_second_given_name' class="form-control" value="[% ctx.user.pref_second_given_name | html %]" autocomplete="additional-name" /></div></div>
+        <div class="row"><div class="col-md-6"><label for='pref-family-name'>[% l('Preferred Family Name') %]</label></div><div class="col-md-6"><input type='text' name='pref_family_name' id='pref_family_name' class="form-control" value="[% ctx.user.pref_family_name | html %]" autocomplete="family-name" /></div></div>
+        <div class="row"><div class="col-md-6"><label for='pref-suffix'>[% l('Preferred Suffix') %]</label></div><div class="col-md-6"><input type='text' name='pref_suffix' id='pref_suffix' class="form-control" value="[% ctx.user.pref_suffix | html %]" autocomplete="honorific-suffix" /></div></div>
+        <div class="row"><div class="col-md-12"><button class="btn btn-confirm m-2" type='submit'><i class="fas fa-save"></i> [% l('Save Changes') %]</button></div></div>
+
 </form>
 
 [% END %]

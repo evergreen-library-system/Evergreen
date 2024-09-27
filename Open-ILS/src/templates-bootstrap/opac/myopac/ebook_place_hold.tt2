@@ -13,11 +13,11 @@
     <div id="ebook_place_hold_succeeded" class="success hidden">[% l('E-item is now on hold.') %]</div>
     <div id="ebook_spinner"><img src="[% ctx.media_prefix %]/opac/images/progressbar_green.gif[% ctx.cache_key %]" alt="[% l("Loading...") %]"/></div>
     <div id='ebook_holds_main' class="hidden">
-        <table id="ebook_holds_main_table"
+        <table role="table" id="ebook_holds_main_table"
             title="[% l('Place Hold on E-Item') %]"
             class="table_no_border_space table_no_cell_pad item_list_padding">
-            <thead>
-            <tr>
+            <thead role="rowgroup">
+            <tr role="row">
                 <th>[% l("Title") %]</th>
                 <th>[% l("Author") %]</th>
                 <th>[% l("Expire Date") %]</th>

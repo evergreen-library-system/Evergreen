@@ -34,11 +34,11 @@
 
             <label for="check_all_checked">[% l('Check/Uncheck All') %]</label>
         </div>
-        <table  id="acct_checked_main_header"  title="[% l('Items Checked Out') %]"
+        <table role="table"  id="acct_checked_main_header"  title="[% l('Items Checked Out') %]"
             class="table table-hover table-bordered miniTable circTable">
-            <thead>
-            <tr>
-                <td class="checkbox_column">
+            <thead role="rowgroup">
+            <tr role="row">
+                <td role="cell" class="checkbox_column">
                     <input type="checkbox" id="check_all_checked"
                         aria-label="[% l('Select All Items') %]"
                         onclick="var inputs=document.getElementsByTagName('input'); for (i = 0; i < inputs.length; i++) { if (inputs[i].name == 'circ' &amp;&amp; !inputs[i].disabled) inputs[i].checked = this.checked;}"
@@ -59,7 +59,7 @@
                 END; %]
             </tr>
             </thead>
-            <tbody>
+            <tbody role="rowgroup">
                 [%# Copy the ctx.circs into a local array, then add a SORT field
                     that contains the value to sort on.  Since we need the item attrs,
                     invoke it and save the result in ATTRS.
@@ -128,13 +128,13 @@
         # circ_items list is now sorted.  Traverse and dump the information.
 
                 FOR circ IN circ_items; %]
-                    <tr>
-                        <td class="checkCell">
+                    <tr role="row" mobile-count="#[% loop.count %]">
+                        <th class="checkCell">
                             <input type="checkbox" name="circ"
                                 aria-label="[% l('Select Item') %]"
                                 [% IF circ.circ.renewal_remaining < 1 %] disabled="disabled" [% END %]
                                 value="[% circ.circ.id %]" />
-                        </td>
+                        </th>
                         [%  IF circ.ATTRS.issns.0;
                                 row_isbnissn = circ.ATTRS.issns.0;
                             ELSIF circ.ATTRS.isbns.0;
@@ -146,8 +146,7 @@
                             row_title = circ.ATTRS.title;
                             PROCESS show_cover;
                         %]
-                        <td>
-                            <span class="sr-only">[% l('Title') %]</span>
+                        <td role="cell" mobile-title="[% l('Title') %]">
                             [% IF circ.circ.target_copy.call_number.id == -1 %]
                                 [% circ.circ.target_copy.dummy_title | html %]
                             [% ELSIF circ.ATTRS.title %]
@@ -157,12 +156,10 @@
                                     [%- circ.ATTRS.title.substr(circ.ATTRS.nonfiling_characters) | html %]</a>
                             [% END %]
                         </td>
-                        <td>
+                        <td role="cell" mobile-title="[% l('Author') %]">
                             [% IF circ.circ.target_copy.call_number.id == -1 %]
-                                <span class="sr-only">[% l('Author') %]</span>
                                 [% circ.circ.target_copy.dummy_author | html %]
                             [% ELSIF circ.ATTRS.author %]
-                                <span class="sr-only">[% l('Author') %]</span>
                                 <a href="[% mkurl(ctx.opac_root _ '/results',
                                     {qtype => 'author', query => circ.ATTRS.author.replace('[,\.:;]', '')},
                                     1
@@ -171,24 +168,20 @@
 
                             [% END %]
                         </td>
-                        <td>
-                            <span class="sr-only">[% l('Renewals Remaining') %]</span>
+                        <td role="cell" mobile-title="[% l('Renewals Remaining') %]">
                             [% circ.circ.renewal_remaining %]
                         </td>
                         [%
                             due_date = ctx.parse_datetime(circ.circ.due_date, circ.circ.circ_lib);
                             due_class = (date.now > date.format(due_date, '%s')) ? 'error' : '';
                         %]
-                        <td class='[% due_class %]'>
-                            <span class="sr-only">[% l('Due Date') %]</span>
+                        <td role="cell" mobile-title="[% l('Due Date') %]" class='[% due_class %]'>
                             [% date.format(due_date, DATE_FORMAT) %]
                         </td>
-                        <td>
-                            <span class="sr-only">[% l('Barcode') %]</span>
-                            <span class="speak:spell-out;">[% circ.circ.target_copy.barcode | html %]</span>
+                        <td role="cell" mobile-title="[% l('Barcode') %]">
+                            <span class="">[% circ.circ.target_copy.barcode | html %]</span>
                         </td>
-                        <td>
-                            <span class="sr-only">[% l('Call Number') %]</span>
+                        <td role="cell" mobile-title="[% l('Call Number') %]">
                             [%-
                                  cnlist = [];
                                  FOREACH element IN [circ.circ.target_copy.call_number.prefix.label
@@ -202,11 +195,11 @@
                             %]
                             [% cn | html %]
                             [%- IF circ.circ.target_copy.parts.0.label %]
-                                  </BR>[% circ.circ.target_copy.parts.0.label | html -%]
+                                  <br />[% circ.circ.target_copy.parts.0.label | html -%]
                             [%- END %]
                         </td>
                          [% IF ctx.get_org_setting(ctx.user.home_ou, 'opac.show_owning_lib_column'); %]
-                          <td>
+                          <td role="cell" mobile-title="[% l('Library') %]">
                                 [%- fleshed_ou = circ.circ.target_copy.call_number.owning_lib;
                                                 INCLUDE "opac/parts/library_name_link_from_ou.tt2";
                                 %]
@@ -215,8 +208,8 @@
                     </tr>
                     [%  IF circ.renewal_response AND
                             circ.renewal_response.textcode != 'SUCCESS' %]
-                    <tr>
-                        <td colspan="[% column_count %]">[%# XXX colspan="0" does not work in IE %]
+                    <tr role="row">
+                        <td role="cell" colspan="[% column_count %]">[%# XXX colspan="0" does not work in IE %]
                             <span class="failure-text" title="[% circ.renewal_response.textcode | html %] / [% circ.renewal_response.fail_part | html %]">
                                 [%
                                     renew_fail_msg = '';

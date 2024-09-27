@@ -7,87 +7,85 @@
 
 <h3>[% l('Personal Information and Preferences') %]</h3>
 <div id="acct_info_main">
-    <table title="[% l('Account preference') %]" class='light_border table table-hover'>
-        <tbody id='myopac_summary_tbody'>
-            <tr>
-                <td width='30%'
-                    class='color_4 light_border'>[% l("Preferred Name") %]</td>
+    
+            <div class="row">
+                <div class="col-md-4 color_4 light_border">[% l("Preferred Name") %]</div>
 
-                <td class='light_border'>[% l(
+                <div class='col-md-4 light_border'>[% l(
                     HUMAN_NAME_FORMAT,
                     ctx.user.pref_prefix || ctx.user.prefix,
                     ctx.user.pref_first_given_name || ctx.user.first_given_name,
                     ctx.user.pref_second_given_name || ctx.user.second_given_name,
                     ctx.user.pref_family_name || ctx.user.family_name,
-                    ctx.user.pref_suffix || ctx.user.suffix) | html %]</td>
+                    ctx.user.pref_suffix || ctx.user.suffix) | html %]</div>
 
-                <td class='light_border'><a class="btn btn-sm btn-action" href='update_preferred_name'
+                <div class='col-md-4'><a class="btn btn-sm btn-action" href='update_preferred_name'
                     title="[% l('Change Preferred Name') %]"><i class="fas fa-user-cog"></i>[% l("Change") %]</a>
-                </td>
+                </div>
 
-            </tr>
-            <tr>
-                <td class='color_4 light_border'>[% l("Legal Name") %]</td>
+            </div>
+            <div class="row">
+                <div class='col-md-4 color_4 light_border'>[% l("Legal Name") %]</div>
 
-                <td class='light_border'>[% l(
+                <div class='col-md-4 light_border'>[% l(
                     HUMAN_NAME_FORMAT,
                     ctx.user.prefix,
                     ctx.user.first_given_name,
                     ctx.user.second_given_name,
                     ctx.user.family_name,
                     ctx.user.suffix
-                ) | html %]</td>
+                ) | html %]</div>
 
-                <td></td>
-            </tr>
+                <div class="col-md-4"></div>
+            </div>
 
-            <tr>
-                <td class='color_4 light_border'>[% l("Day Phone") %]</td>
-                <td class='light_border'>[% ctx.user.day_phone | html %]</td>
-                <td></td>
-            </tr>
+            <div class="row">
+                <div class='col-md-4 color_4 light_border'>[% l("Day Phone") %]</div>
+                <div class='col-md-4 light_border'>[% ctx.user.day_phone | html %]</div>
+                <div class="col-md-4"></div>
+            </div>
 
-            <tr>
-                <td class='color_4 light_border'>[% l("Evening Phone") %]</td>
-                <td class='light_border'>[% ctx.user.evening_phone | html %]</td>
-                <td></td>
-            </tr>
+            <div class="row">
+                <div class='col-md-4 color_4 light_border'>[% l("Evening Phone") %]</div>
+                <div class='col-md-4 light_border'>[% ctx.user.evening_phone | html %]</div>
+                <div class="col-md-4"></div>
+            </div>
 
-            <tr>
-                <td class='color_4 light_border'>[% l("Other Phone") %]</td>
-                <td class='light_border'>[% ctx.user.other_phone | html %]</td>
-                <td></td>
-            </tr>
+            <div class="row">
+                <div class='col-md-4 color_4 light_border'>[% l("Other Phone") %]</div>
+                <div class='col-md-4 light_border'>[% ctx.user.other_phone | html %]</div>
+                <div class='col-md-4'></div>
+            </div>
 
-            <tr>
-                <td class='color_4 light_border'>
+            <div class="row">
+                <div class='col-md-4 color_4 light_border'>
                     <div style="position:absolute">
                    </div>[% l("Username") %]
-                </td>
-                <td class='light_border'>[% ctx.user.usrname | html %]</td>
+                </div>
+                <div class='col-md-4 light_border'>[% ctx.user.usrname | html %]</div>
                 [%- IF ctx.username_change_disallowed %]
-                <td></td>
+                <div class='col-md-4'></div>
                 [%- ELSE %]
-                <td class='light_border'><a class="btn btn-sm btn-action" href='update_username'
-                    title="[% l('Change Username') %]"><i class="fas fa-user-cog"></i> [% l("Change") %]</a></td>
+                <div class='col-md-4 light_border'><a class="btn btn-sm btn-action" href='update_username'
+                    title="[% l('Change Username') %]"><i class="fas fa-user-cog"></i> [% l("Change") %]</a></div>
                 [%- END %]
-            </tr>
-            <tr>
-                <td class='color_4 light_border'>[% l("Password") %]</td>
-                <td class='light_border'>[% l("(not shown)") %]</td>
-                <td>
+            </div>
+            <div class="row">
+                <div class='col-md-4 color_4 light_border'>[% l("Password") %]</div>
+                <div class='col-md-4 light_border'>[% l("(not shown)") %]</div>
+                <div class='col-md-4'>
                 [%- IF disable_password_change == 'true' %]
                 <span></span>
                 [%- ELSE %]
                 <span class='light_border'><a class="btn btn-sm btn-action" href='update_password'
                     title="[% l('Change Password') %]"><i class="fas fa-user-cog"></i> [% l("Change") %]</a></span>
                 [%- END %]
-                </td>
-            </tr>
-            <tr>
-                <td class='color_4 light_border'>[% l("Email Address") %]</td>
-                <td class='light_border'>[% ctx.user.email | html %]</td>
-                <td>
+                </div>
+            </div>
+            <div class="row">
+                <div class='col-md-4 color_4 light_border'>[% l("Email Address") %]</div>
+                <div class='col-md-4 light_border'>[% ctx.user.email | html %]</div>
+                <div class='col-md-4'>
                 [%- IF disable_email_change == 'true' %]
                 <span></span>
                 [%- ELSE %]
@@ -103,48 +101,48 @@
                     </button>
                     </span>
                 [%- END %]
-                </td>
-            </tr>
-            <tr id="test_notification_banner" style="display:none">
-                <td></td>
-                <td colspan='2'>
+                </div>
+            </div>
+            <div role="status" id="test_notification_banner" style="display:none">
+                <div class='col-md-4'></div>
+                <div class='col-md-8'>
                     [% INCLUDE "opac/myopac/test_notification.tt2" message_type = "email" %]
-                </td>
-            </tr>
+                </div>
+            </div>
 
-            [% IF ctx.user.ident_value %]<tr class="hide_me">
-                <td class='color_4 light_border'>
-                [% l("Primary Identification") %]</td>
+            [% IF ctx.user.ident_value %]<div class="row" class="hide_me">
+                <div class='col-md-4 color_4 light_border'>
+                [% l("Primary Identification") %]</div>
 
-                <td class='light_border'>
+                <div class='col-md-4 light_border'>
                     [%
                     # l('[_1] ([_2])', ctx.user.ident_value, ctx.user.ident_type.name) | html
                     # XXX uncomment the above line to show primary
                     # identification. With a minor tweak it could
                     # alternatively be shown but partially obscured.
                     %]
-                </td>
-                <td></td>
-            </tr>[% END %]
+                </div>
+                <div class='col-md-4'></div>
+            </div>[% END %]
 
-            <tr>
-                <td class='color_4 light_border'>[% l("Active Barcode") %]</td>
-                <td class='light_border'>[% ctx.user.card.barcode %]</td>
-                <td></td>
-            </tr>
+            <div class="row">
+                <div class='col-md-4 color_4 light_border'>[% l("Active Barcode") %]</div>
+                <div class='col-md-4 light_border'>[% ctx.user.card.barcode %]</div>
+                <div class='col-md-4'></div>
+            </div>
 
-            <tr>
-                <td class='color_4 light_border'>[% l("Preferred Language") %]</td>
-                <td class='light_border'>[% ctx.user.locale.name | html %]</td>
-                <td>
+            <div class="row">
+                <div class='col-md-4 color_4 light_border'>[% l("Preferred Language") %]</div>
+                <div class='col-md-4 light_border'>[% ctx.user.locale.name | html %]</div>
+                <div class='col-md-4'>
                 <span class='light_border'><a class="btn btn-sm btn-action" href='update_locale'
                     title="[% l('Update Preferred Language') %]"><i class="fas fa-user-cog"></i> [% l('Change') %]</a></span>
-                </td>
-            </tr>
+                </div>
+            </div>
 
-            <tr>
-                <td class='color_4 light_border'>[% l("Home Library") %]</td>
- <td class='light_border'>
+            <div class="row">
+                <div class='col-md-4 color_4 light_border'>[% l("Home Library") %]</div>
+ <div class='col-md-4 light_border'>
                     [% ctx.get_aou(ctx.user.home_ou.parent_ou).name %]<br/>
                     [% ctx.user.home_ou.name | html %]<br/>
                     [% ctx.user.home_ou.billing_address.street1 %]<br/>
@@ -161,44 +159,42 @@
                             '<a href="'; lib_url | html; '" property="url">'; lib_url; '</a>';
                         END;
                     %]
-                </td>                <td></td>
-            </tr>
-            <tr>
-                <td class='color_4 light_border'>[% l("Account Creation Date") %]</td>
-                <td class='light_border'>[% date.format(ctx.parse_datetime(ctx.user.create_date), DATE_FORMAT) %]</td>
-                <td></td>
-            </tr>
-            <tr>
-                <td class='color_4 light_border'>[% l("Account Expiration Date") %]</td>
-                <td class='light_border'>
+                </div>                <div class='col-md-4'></div>
+            </div>
+            <div class="row">
+                <div class='col-md-4 color_4 light_border'>[% l("Account Creation Date") %]</div>
+                <div class='col-md-4 light_border'>[% date.format(ctx.parse_datetime(ctx.user.create_date), DATE_FORMAT) %]</div>
+                <div class='col-md-4'></div>
+            </div>
+            <div class="row">
+                <div class='col-md-4 color_4 light_border'>[% l("Account Expiration Date") %]</div>
+                <div class='col-md-4 light_border'>
                     [%- IF date.format(ctx.parse_datetime(ctx.user.expire_date), '%s') < date.format(date.now , '%s'); -%]
                         <span class="danger">[% date.format(ctx.parse_datetime(ctx.user.expire_date), DATE_FORMAT) %]</span>
                     [% ELSE %]
                         [% date.format(ctx.parse_datetime(ctx.user.expire_date), DATE_FORMAT) %]
                     [% END %]
-                </td>
-                <td></td>
-            </tr>
+                </div>
+                <div class='col-md-4'></div>
+            </div>
             [% IF ctx.user.stat_cat_entries.size;
                 FOR statcat IN ctx.user.stat_cat_entries;
                     IF statcat.stat_cat.opac_visible == 't'; %]
-                        <tr>
-                            <td class='color_4 light_border'>[% statcat.stat_cat.name %]</td>
-                            <td class='light_border' colspan='2'>[% statcat.stat_cat_entry %]</td>
-                        </tr>
+                        <div class="row">
+                            <div class='col-md-4 color_4 light_border'>[% statcat.stat_cat.name %]</div>
+                            <div class='col-md-4 light_border' colspan='2'>[% statcat.stat_cat_entry %]</div>
+                        </div>
                     [% END;
                 END;
             END %]
-        </tbody>
-    </table>
 
     <br />
     <hr />
     <br />
 
-	<div class="header_middle mb-3">
+	<h3 class="header_middle mb-3">
         <span>[% l('Addresses') %]</span>
-    </div>
+    </h3>
 
 <div class="row">
             [%
@@ -223,14 +219,11 @@
                 pending_addr = pending.$cur_id;
             %]
     <div class="col-lg-6 col-12">
-        <table class='table' title="[% l('Addresses') %]">
-
-            <tbody>
-            <tr>
+        <div class="row">
                 <!-- pending address form -->
                 [% IF pending_addr OR edit_addr_id == cur_id;
                     update_addr = pending_addr || addr %]
-              <td>
+              <div class='col-md-4'>
 
                     <form method='post'>
                         [% IF pending_addr %]
@@ -238,67 +231,64 @@
                         [% ELSE %]
                             <input type='hidden' name='replace_addr' value='[% edit_addr_id | html %]'/>
                         [% END %]
-                        <table class='pending-addr table' title="[% l('Pending Addresses') %]">
-                        <tr><td colspan="2"><h5 class="text-center">Pending Address Change</h5></td></tr>
+                        <div class="row"><div class="col-md-12">
+                            <h4 class="text-center">[% l('Pending Address Change') %]</h4>
+                        </div>
                         [% addr_fields = [
-                            {label => l("Address Type"), name => 'address_type', value => update_addr.address_type},
-                            {label => l("Street"), name => 'street1', value => update_addr.street1},
-                            {label => l("Street"), name => 'street2', value => update_addr.street2},
-                            {label => l("City"), name => 'city', value => update_addr.city},
-                            {label => l("County"), name => 'county', value => update_addr.county},
-                            {label => l("State"), name => 'state', value => update_addr.state},
-                            {label => l("Country"), name => 'country', value => update_addr.country},
-                            {label => l("ZIP"), name => 'post_code', value => update_addr.post_code},
+                            {label => l("Address Type"), name => 'address_type', autocomplete => '', value => update_addr.address_type},
+                            {label => l("Street"), name => 'street1', autocomplete => 'address-line1', value => update_addr.street1},
+                            {label => l("Street"), name => 'street2', autocomplete => 'address-line2', value => update_addr.street2},
+                            {label => l("City"), name => 'city', autocomplete => 'address-level2', value => update_addr.city},
+                            {label => l("County"), name => 'county', autocomplete => '', value => update_addr.county},
+                            {label => l("State"), name => 'state', autocomplete => 'address-level1', value => update_addr.state},
+                            {label => l("Country"), name => 'country', autocomplete => 'country', value => update_addr.country},
+                            {label => l("ZIP"), name => 'post_code', autocomplete => 'postal-code', value => update_addr.post_code},
                         ];
                         FOR field IN addr_fields %]
 
-                            <tr>
+                            <div class="row">
 
-                                <td><label for="addr-form-[% field.name %]">[% field.label %]</label></td>
-                                <td><input name="[% field.name %]"
-                                    id="addr-form-[% field.name %]"
+                                <div class='col-md-4'><label for="addr-form-[% field.name %]">[% field.label %]</label></div>
+                                <div class='col-md-4'><input name="[% field.name %]"
+                                    id="addr-form-[% field.name %]" autocomplete="[% field.autocomplete %]"
                                     value="[% field.value | html %]" class="form-control">
-                                </td>
-                            </tr>
+                                </div>
+                            </div>
                         [% END %]
-                            <tr>
-                                <td><button type='submit' class="btn btn-confirm "><i class="fas fa-save"></i> [% l('Save Changes') %]
+                            <div class="row">
+                                <div class='col-md-4'><button type='submit' class="btn btn-confirm "><i class="fas fa-save"></i> [% l('Save Changes') %]
 
- </button></td>
-                                <td>
+ </button></div>
+                                <div class='col-md-4'>
                                     [% params = (pending_addr) ? {delete_pending => pending_addr.id} : {} %]
                                     <a href="[% mkurl('', params, 1) %]" class="btn btn-deny "><i class="fas fa-trash-alt"></i> [% l('Discard Pending Address') %]</a>
-                                </td>
-                            </tr>
-                            <tr><td colspan='2'><i>[% l('This address has a pending change.') %]</i></td></tr>
-                            <tr><td colspan='2'><i>[% l('Address changes will be verified by staff') %]</i></td></tr>
-                        </table>
+                                </div>
+                            </div>
+                            <div class="row"><div class="col-md-6"><i>[% l('This address has a pending change.') %]</i></div></div>
+                            <div class="row"><div class="col-md-6"><i>[% l('Address changes will be verified by staff') %]</i></div></div>
+                        
                     </form>
-                </td>
+                </div>
                  [% ELSE %]
-                <td>
+                <div class='col-md-12'>
 
                     <!-- read-only address display -->
-                    <table class='table table-hover light_border' title="[% l('Active Addresses') %]">
-                        <tr><td class='color_4'>[% l("Address Type") %]</td><td>[% addr.address_type | html %]</td></tr>
-                        <tr><td class='color_4'>[% l("Street") %]</td><td>[% addr.street1 | html %]</td></tr>
-                        <tr><td class='color_4'>[% l("Street") %]</td><td>[% addr.street2 | html %]</td></tr>
-                        <tr><td class='color_4'>[% l("City") %]</td><td>[% addr.city | html %]</td></tr>
-                        <tr><td class='color_4'>[% l("County") %]</td><td>[% addr.county| html  %]</td></tr>
-                        <tr><td class='color_4'>[% l("State") %]</td><td>[% addr.state | html %]</td></tr>
-                        <tr><td class='color_4'>[% l("Country") %]</td><td>[% addr.country | html %]</td></tr>
-                        <tr><td class='color_4'>[% l("Zip") %]</td><td>[% addr.post_code | html %]</td></tr>
+                    
+                        <div class="row"><div class='col-md-4 color_4'>[% l("Address Type") %]</div><div class='col-md-4'>[% addr.address_type | html %]</div></div>
+                        <div class="row"><div class='col-md-4 color_4'>[% l("Street") %]</div><div class='col-md-4'>[% addr.street1 | html %]</div></div>
+                        <div class="row"><div class='col-md-4 color_4'>[% l("Street") %]</div><div class='col-md-4'>[% addr.street2 | html %]</div></div>
+                        <div class="row"><div class='col-md-4 color_4'>[% l("City") %]</div><div class='col-md-4'>[% addr.city | html %]</div></div>
+                        <div class="row"><div class='col-md-4 color_4'>[% l("County") %]</div><div class='col-md-4'>[% addr.county| html  %]</div></div>
+                        <div class="row"><div class='col-md-4 color_4'>[% l("State") %]</div><div class='col-md-4'>[% addr.state | html %]</div></div>
+                        <div class="row"><div class='col-md-4 color_4'>[% l("Country") %]</div><div class='col-md-4'>[% addr.country | html %]</div></div>
+                        <div class="row"><div class='col-md-4 color_4'>[% l("Zip") %]</div><div class='col-md-4'>[% addr.post_code | html %]</div></div>
                         [% IF ctx.get_org_setting(ctx.user.home_ou.id, 'opac.allow_pending_address')
                                 AND !pending_addr AND edit_addr_id != cur_id %]
-                        <tr><td colspan='2'><a class="btn btn-action" href='?edit_address=[% addr.id %]'><i class="fas fa-edit"></i> [% l('Edit Address') %]</a></td></tr>
+                        <div class="row"><div class="col-md-12"><a class="btn btn-action" href='?edit_address=[% addr.id %]'><i class="fas fa-edit"></i> [% l('Edit Address') %]</a></div></div>
                         [% END %]
-                    </table>
-
-                 </td>
+                 </div>
                 [% END %]
-                </tr>
-            </tbody>
-        </table>
+                </div>
      </div>
             [% END %]
 

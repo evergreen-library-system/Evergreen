@@ -222,9 +222,8 @@ document.addEventListener("DOMContentLoaded", () => {
         [% END %]
         [% END %]
 
-        <table>
-            <tr>
-                <td>
+        <div>
+         
                     [% IF !this_hold_disallowed %]
                     <input type="hidden" name="hold_target" value="[% hdata.target.id | html %]" />
                     [% END %]
@@ -273,21 +272,12 @@ document.addEventListener("DOMContentLoaded", () => {
                     [% END %]
             [% INCLUDE "opac/parts/multi_hold_select.tt2" IF NOT (this_hold_disallowed AND hdata.part_required); %]
 
-                </td>
-            </tr>
-
             [% IF this_hold_disallowed %]
-              <tr><td>
                 <div class="mr_holds_no_formats">
                 [% l('This item does not have any formats available for holds placement') %]
                 </div>
-              </td></tr>
             [% END %]
-
-            [%  IF !loop.last AND ctx.hold_data.size > 1 %]
-            <tr class="holds_item_row_separator"><td> </td></tr>
-            [% END %]
-</table>
+</div>
         [% END %]
 
 
@@ -316,11 +306,7 @@ document.addEventListener("DOMContentLoaded", () => {
                      [% IF !ctx.user.email and !ctx.is_staff; l('<br>No configured Email address. See "My Account" for setting your Email address.'); ELSE; %] : <span id="email_address"><b name="email_address">[% ctx.user.email %]</b></span>[% END %]
                 </label>
             </div>
-
-
-                <p>
-
-                </p>
+            
                 [%- IF allow_phone_notifications == 'true' %]
                 <div class="form-check m-2">
                     <input class="form-check-input hold-alert-method" type="checkbox" id="phone_notify_checkbox" name="phone_notify_checkbox" [% IF ctx.default_phone_notify %]checked="checked"[% END %]>
@@ -356,7 +342,7 @@ document.addEventListener("DOMContentLoaded", () => {
                 ELSE;
                     l('Suspend these holds?');
                 END %]
-                  <a href="#" aria-label="[% l('A suspended hold will retain its place in the queue, but will not be fulfilled until it has been activated.') %]" title="[% l('A suspended hold will retain its place in the queue, but will not be fulfilled until it has been activated.') %]" data-toggle="tooltip">
+                  <a href="#" aria-label="[% l('What is a suspended hold?') %]" title="[% l('A suspended hold will retain its place in the queue, but will not be fulfilled until it has been activated.') %]" data-toggletip>
                     <i class="fas fa-question-circle" aria-hidden="true"></i>
                 </a>
                 </label>
@@ -370,12 +356,7 @@ document.addEventListener("DOMContentLoaded", () => {
             </div>
             <blockquote id="toggled-block-suspend">
             <label for="thaw_date">[% l('Activate on') %]
-              <div class="input-group date" data-provide="datepicker">
-                <input type="text" class="form-control" name="thaw_date" id="thaw_date" value="[% thaw_date | html %]" data-date-format="mm/dd/yyyy" />
-                <div class="input-group-addon">
-                    <span class="glyphicon glyphicon-th"></span>
-                </div>
-            </div>
+            <duet-date-picker identifier="thaw_date" value="[% thaw_date | html %]"></duet-date-picker>
             </blockquote>
 
          [% IF CGI.param('from_basket') %]

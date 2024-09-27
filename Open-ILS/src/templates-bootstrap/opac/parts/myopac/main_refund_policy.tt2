@@ -1,5 +1,5 @@
-<tr>
-    <td colspan="3">
+<tr role="row">
+    <td role="cell" colspan="3">
         <strong>
         [% l('Please print or save the receipt for your records before closing the payment screen.') %]
         </strong>

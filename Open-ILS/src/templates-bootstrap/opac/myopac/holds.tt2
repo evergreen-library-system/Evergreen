@@ -34,7 +34,7 @@
                     <strong>[% l("Show all holds") %]</strong> |
                     <a href="[% mkurl('holds',{available => 1},['limit','offset']) %]">[% l("Show only available holds") %]</a>
                     [% END -%]
-                     <a href="#" title="This option will show all items available for pickup." data-toggle="tooltip">
+                     <a href="#" title="This option will show all items available for pickup." data-toggletip>
                         <i class="fas fa-question-circle" aria-hidden="true"></i>
                     </a>
                </p>
@@ -73,24 +73,24 @@
 
             <label for="check_all_holds">[% l('Check/Uncheck All') %]</label>
         </div>
-        <table title="[% l('Items on Hold') %]"
+        <table role="table" title="[% l('Items on Hold') %]"
         class="table table-hover table-bordered miniTable activeHoldstable w-100 my-3">
-            <thead>
-            <tr>
-                <td class="checkCell">
+            <thead role="rowgroup">
+            <tr role="row">
+                <th class="checkCell">
                     <input type="checkbox" aria-label="[% l('Select All Holds') %]"
                       onclick="var inputs=document.getElementsByTagName('input'); for (i = 0; i < inputs.length; i++) { if (inputs[i].name == 'hold_id' &amp;&amp; !inputs[i].disabled) inputs[i].checked = this.checked;}"/>
-                </td>
-                <th>[% l("Cover") %]</th>
-                <th>[% sort_head("sort_title", l('Title')) %]</th>
-                <th>[% sort_head("author", l('Author')) %]</th>
-                <th>[% sort_head("format", l('Format')) %]</th>
-                <th>[% l('Pickup Location') %]</th>
-                <th>[% l('Cancel if not filled by') %]</th>
-                <th>[% l('Status') %]</th>
-                <th>[% l('Notify Method') %]</th>
-                <th>[% l('Notes') %]</th>
-                <th>[% l('Edit') %]</th>
+                </th>
+                <th scope="col" role="columnheader">[% l("Cover") %]</th>
+                <th scope="col" role="columnheader">[% sort_head("sort_title", l('Title')) %]</th>
+                <th scope="col" role="columnheader">[% sort_head("author", l('Author')) %]</th>
+                <th scope="col" role="columnheader">[% sort_head("format", l('Format')) %]</th>
+                <th scope="col" role="columnheader">[% l('Pickup Location') %]</th>
+                <th scope="col" role="columnheader">[% l('Cancel if not filled by') %]</th>
+                <th scope="col" role="columnheader">[% l('Status') %]</th>
+                <th scope="col" role="columnheader">[% l('Notify Method') %]</th>
+                <th scope="col" role="columnheader">[% l('Notes') %]</th>
+                <th scope="col" role="columnheader">[% l('Edit') %]</th>
             </tr>
             </thead>
             <tbody id="holds_temp_parent">
@@ -150,12 +150,11 @@
                     ahr = hold.hold.hold;
                     cnt = cnt + 1;
                      %]
-                <tr class="[% ahr.frozen == 't' ? ' inactive-hold' : '' %]">
-                    <td class="checkbox_column">
+                <tr role="row" mobile-count="#[% loop.count %]" class="[% ahr.frozen == 't' ? ' inactive-hold' : '' %]">
+                    <td role="cell" class="checkbox_column">
 
-                    <span class="sr-only">[% l('Hold Number [_1]', cnt); %]</span>
-                        <input type="checkbox" name="hold_id" value="[% ahr.id %]"
-                            [% html_text_attr('title', l('Select hold [_1]', attrs.title)) %]/>
+                    <input type="checkbox" name="hold_id" value="[% ahr.id %]"
+                        [% html_text_attr('title', l('Select hold [_1]', attrs.title)) %]/>
                     </td>
                     [%  IF hold.ATTRS.issns.0;
                             row_isbnissn = hold.ATTRS.issns.0;
@@ -168,9 +167,7 @@
                         row_title = hold.ATTRS.title;
                         PROCESS show_cover;
                     %]
-                    <td>
-                    <span class="sr-only">[% l('Title') %]</span>
-                        <div>
+                    <td role="cell" mobile-title="[% l('Title') %]">
                             [% title = hold.ATTRS.title;
                             IF ahr.hold_type == 'P';
                                 title = l('[_1] ([_2])', title, hold.hold.part.label);
@@ -180,19 +177,14 @@
                                 hold.hold.bre_id, {}, 1) %]"><span[%- deemphasize_class -%]>
                                 [%- title.substr(0,hold.ATTRS.nonfiling_characters) | html %]</span>
                                 [%- title.substr(hold.ATTRS.nonfiling_characters)   | html %]</a>
-                        </div>
                     </td>
-                    <td>
-                    <span class="sr-only">[% l('Author') %]</span>
-                        <div>
+                    <td role="cell" mobile-title="[% l('Author') %]">
                             <a href="[% mkurl(ctx.opac_root _ '/results',
                                 {qtype => 'author', query => hold.ATTRS.author.replace('[,\.:;]', '')},
                                 1
                             ) %]">[% hold.ATTRS.author | html %]</a>
-                        </div>
                     </td>
-                    <td>
-                    <span class="sr-only">[% l('Format') %]</span>
+                    <td role="cell" mobile-title="[% l('Format') %]">
                         <div class="format_icon">
                           [%
                             formats = hold.ATTRS.all_formats;
@@ -209,36 +201,25 @@
                             END;
                             FOR format IN formats
                           %]
-                          <span class="sr-only">[% format.label | html %]</span>
-                            <img title="[% format.label | html %]"
-                              alt="[% format.label | html %]" src="[% format.icon %][% ctx.cache_key %]" />
+                            <img alt="[% format.label | html %]" src="[% format.icon %][% ctx.cache_key %]" />
                             [% END %]
                         </div>
                     </td>
-                    <td>
-                    <span class="sr-only">[% l('Pickup Location') %]</span>
+                    <td role="cell" mobile-title="[% l('Pickup Location') %]">
                         [% ctx.get_aou(ahr.pickup_lib).name | html %]
                     </td>
-                    <td>
-                    <span class="sr-only">[% l('Cancel if not filled by') %]</span>
+                    <td role="cell" mobile-title="[% l('Cancel if not filled by') %]">
                         [% IF ahr.expire_time;
                             date.format(ctx.parse_datetime(ahr.expire_time), DATE_FORMAT);
                         END %]
                     </td>
-                    <td>
-                    <span class="sr-only">[% l('Status') %]</span>
-                        <div>
+                    <td role="cell" mobile-title="[% l('Status') %]">
                             [% PROCESS get_hold_status hold=hold; %]
-                        </div>
                     </td>
-                    <td>
-                    <span class="sr-only">[% l('Notify Method') %]</span>
-                        <div>
+                    <td role="cell" mobile-title="[% l('Notify Method') %]">
                             [% PROCESS get_hold_notify h=ahr; %]
-                        </div>
                     </td>
-                    <td class="hold_notes">
-                    <span class="sr-only">[% l('Notes') %]</span>
+                    <td role="cell" mobile-title="[% l('Notes') %]" class="hold_notes">
                     [%- FOREACH pubnote IN ahr.notes;
                         IF pubnote.pub == 't';
                     %]
@@ -249,7 +230,7 @@
                         </div>
                     [%- END; END; %]
                     </td>
-                    <td class="fullRow">
+                    <td role="cell" mobile-title="" class="fullRow">
                         <a class="btn btn-confirm btn-sm" href="[% mkurl(ctx.opac_root _ '/myopac/holds/edit', {hid => ahr.id}) %]"
                             [% html_text_attr('title', l('Edit hold for item [_1]', attrs.title)) %]>
                             <i class="fas fa-edit" aria-hidden="true"></i>

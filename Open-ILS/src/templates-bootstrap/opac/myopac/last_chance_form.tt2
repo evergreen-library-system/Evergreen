@@ -12,15 +12,15 @@
     <p class="my-2"><big>[% l("Are you sure you are ready to charge ") %]
          <strong> [% l("[_1] ", money(ctx.fines.balance_owed))%]</strong>
         [% l("to your credit card?") %]</big></p>
-     <table title="[% l('List of Transactions') %]" id="acct_fines_confirm_header"
+     <table role="table" title="[% l('List of Transactions') %]" id="acct_fines_confirm_header"
         class="table my-2">
-   <thead>
-      <tr>
+   <thead role="rowgroup">
+      <tr role="row">
         <th>[% l('Charge/Fee') %]</th>
         <th class="text-right"><span>[% l('Amount') %]</th>
      </tr>
    </thead>
-   <tbody>
+   <tbody role="rowgroup">
       [%
        FOR f IN ctx.fines.circulation;
          NEXT IF CGI.param('xact').size &&
@@ -31,18 +31,18 @@
          ELSIF f.xact.reservation;
               attrs.title = f.xact.reservation.target_resource_type.name;
          END %]
-         <tr>
-            <td>[% attrs.title | html %]</td>
-            <td class="text-right">[% money(f.xact.balance_owed) %]</td>
+         <tr role="row">
+            <td role="cell">[% attrs.title | html %]</td>
+            <td role="cell" class="text-right">[% money(f.xact.balance_owed) %]</td>
          </tr>
           [%
           END;
           FOR f IN ctx.fines.grocery;
               NEXT IF CGI.param('xact_misc').size &&
                   !CGI.param('xact_misc').grep(f.xact.id).size %]
-              <tr>
-                 <td>[% f.xact.last_billing_type | html %]</td>
-                 <td class="text-right">[% money(f.xact.balance_owed) %]</td>
+              <tr role="row">
+                 <td role="cell">[% f.xact.last_billing_type | html %]</td>
+                 <td role="cell" class="text-right">[% money(f.xact.balance_owed) %]</td>
             </tr>
         [% END %]
      </tbody>

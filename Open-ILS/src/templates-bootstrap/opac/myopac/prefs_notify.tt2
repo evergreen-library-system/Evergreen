@@ -19,13 +19,11 @@
 
   <h4 class="">[% l('You have updated notification preferences. Those changes only affect future holds. Would you like to update existing holds to use the new information?') %]</h4>
     <form id="hold_updates_form" name="hold_updates_form" method='post' action="./prefs_notify_changed_holds" onsubmit='return updateHoldsCheck()'>
-        <table class="full-width table" id="acct_search_main" 
-            title="[% l('Notification Preferences') %]">
-            <tbody>
+        
         [% SET blnk = l('Blank') %]
         [% FOR c IN ctx.affectedChgs %]
-            <tr>
-              <td>
+            <ul class="list-unstyled">
+              <li>
                 [% IF c.2 == 'sms_info' %]
                 <input type='hidden' name="[% c.2 %][]" value="[% c.0.carrier _ ',' _ c.0.sms | html %]" />
                 <input type='hidden' name="[% c.2 %][]" value="[% c.1.carrier _ ',' _ c.1.sms | html %]" />
@@ -46,11 +44,10 @@
                     [% SET f_name = c.2.replace("_", " ") %]
                     <label for="[% c %]">[% c.3.size %] hold(s) currently with [% f_name %] set to '[% c.0 ? c.0 : blnk %]'. Update to '[% c.1 ? c.1 : blnk %]'?</label>
                 [% END %]
-              </td>
-            </tr>
+              </li>
+            </ul>
         [% END %]
-            </tbody>
-        </table>
+
         <input type='submit' disabled value="[% l('Update') %]" class="btn btn-confirm" />
         <a href='/eg/opac/myopac/prefs_notify'>[% l('Continue without updating') %]</a>
     </form>
@@ -61,110 +58,83 @@
             <input name='[% setting %]' type="hidden"
                 [% IF ctx.user_setting_map.$setting; %] value='[% ctx.user_setting_map.$setting | html %]' [% END %]/>
 
-            <table class="full-width table" id="acct_search_main" 
-                title="[% l('Notification Preferences') %]">
-                <tbody>
-
                     [% IF ctx.updated_user_settings %]
-                    <tr><td colspan='2'>
                         <div class='renew-summary'>
                             [% l('Account Successfully Updated') %]
                         </div>
-                    </td></tr>
                     [% END %]
 
                     [% setting = 'opac.hold_notify' %]
-                    <tr>
-                        [%# WCAG insists that labels for checkboxes contain the input
-                            or directly follow the input, which would not look right
-                            with the rest of the table.  As an alternative, we can
-                            repeat the label as a title attr.
-                            http://www.w3.org/TR/WCAG20-TECHS/H44.html %]
-                        [% email_label = l('Notify by Email by default when a hold is ready for pickup?') %]
+                    <p class="form-check">
+                    [% email_label = l('Notify by Email by default when a hold is ready for pickup?') %]
 
-                        <td><label for='[% setting %].email'>[% email_label %]</label></td>
-                        <td>
-                            <input onchange="record_change(event)" id='[% setting %].email' name='[% setting %].email'
+                    <input class="form-check-input" onchange="record_change(event)" id='[% setting %].email' name='[% setting %].email'
                                 type="checkbox" title="[% email_label %]"
                                 [% IF (matches = ctx.user_setting_map.$setting.match('email')); %] checked='checked' [% END %]/>
-                        </td>
-                    </tr>
+                    <label for='[% setting %].email' class="form-check-label">[% email_label %]</label>
+                    </p>
                     [%- IF allow_phone_notifications == 'true';
                         setting = 'opac.hold_notify'; 
                     -%]
-                    <tr>
+                    <p class="form-check">
                         [% phone_label = l('Notify by Phone by default when a hold is ready for pickup?') %]
-                        <td><label for='[% setting %].phone'>[% phone_label %]</label></td>
-                        <td>
-                            <input onchange="record_change(event)" id='[% setting %].phone' name='[% setting %].phone'
-                                type="checkbox" title="[% phone_label %]"
-                                [% IF (matches = ctx.user_setting_map.$setting.match('phone')); %] checked='checked' [% END %]/>
-                        </td>
-                    </tr>
+                        <input class="form-check-input" onchange="record_change(event)" id='[% setting %].phone' name='[% setting %].phone'
+                            type="checkbox" title="[% phone_label %]"
+                            [% IF (matches = ctx.user_setting_map.$setting.match('phone')); %] checked='checked' [% END %]/>
+                        <label class="form-check-label" for='[% setting %].phone'>[% phone_label %]</label>
+                    </p>
                     [% setting = 'opac.default_phone' %]
-                    <tr>
-                        <td><label for='[% setting %]'>[% l('Default Phone Number') %]</label></td>
-                        <td>
-                            <input onchange="record_change(event)" id='[% setting %]' name='[% setting %]' type="text"
+                    <p class="form-check">
+                        <input class="form-control" onchange="record_change(event)" id='[% setting %]' name='[% setting %]' type="tel" autocomplete="tel-national"
                                 [% IF ctx.user_setting_map.$setting; %] value='[% ctx.user_setting_map.$setting | html %]' [% END %]/>
-                        </td>
-                    </tr>
+                        <label class="form-label" for='[% setting %]'>[% l('Default Phone Number') %]</label>
+                    </p>
                     [%- END %]
                     [%- IF ctx.get_org_setting(ctx.search_ou, 'sms.enable') == 1;
                        setting = 'opac.hold_notify';
                     -%]
-                    <tr>
+                    <p class="form-check">
                         [% sms_label = l('Notify by Text by default when a hold is ready for pickup?') %]
-                        <td><label for='[% setting %].sms'>[% sms_label %]</label></td>
-                        <td>
-                            <input onchange="record_change(event)" id='[% setting %].sms' name='[% setting %].sms'
+                        <input class="form-check-input" onchange="record_change(event)" id='[% setting %].sms' name='[% setting %].sms'
                                 type="checkbox" title="[% sms_label %]"
                                 [% IF (matches = ctx.user_setting_map.$setting.match('sms')); %] checked='checked' [% END %]/>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>[% l('Default Mobile Carrier') %]</td>
-                        <td>[% INCLUDE "opac/parts/sms_carrier_selector.tt2" sms_carrier_hide_label="true" %]</td>
-                    </tr>
+                        <label class="form-check-label" for='[% setting %].sms'>[% sms_label %]</label>
+                    </p>
+                    <p>
+                        <label for="sms_carrier">[% l('Default Mobile Carrier') %]</label>
+                        [% INCLUDE "opac/parts/sms_carrier_selector.tt2" sms_carrier_hide_label="true" %]
+                    </p>
                     [% setting = 'opac.default_sms_notify' %]
-                    <tr>
-                        <td><label for='[% setting %]'>[% l('Default Mobile Number') %]</label></td>
-                        <td>
-                            <input onchange="record_change(event)" id='[% setting %]' name='[% setting %]' type="text"
+                    <p>
+                        <label for='[% setting %]'>[% l('Default Mobile Number') %]</label>
+                        <input onchange="record_change(event)" id='[% setting %]' name='[% setting %]' type="text" autocomplete="tel-national"
                                 [% IF ctx.user_setting_map.$setting; %] value='[% ctx.user_setting_map.$setting | html %]' [% END %]/>
                             [% IF ctx.user_setting_map.$setting; %]
                                 <span class='light_border'>
-                                <a href="#" class="btn btn-sm btn-action" onclick="sendTestSMS(
+                                <button type="button" class="btn btn-sm btn-action" onclick="sendTestSMS(
                                     [% ctx.user.id %], '[% ctx.authtoken %]'
-                                    )"
-                                    title="[% l('Send Test Text Message') %]">
+                                    )">
                                     <i class="fas fa-mobile"></i> [% l('Send Test Text Message') %]
-                                </a>
+                                </button>
                                 </span><br />
                             [% l('Hint: use the full 10 digits of your phone #, no spaces, no dashes'); %]
                             [% END %]
                         </td>
-                    </tr>
+                    </p>
                     [% END %]
-                    <tr id="test_notification_banner" style="display:none">
-                        <td colspan='3'>
-                            [% INCLUDE "opac/myopac/test_notification.tt2" message_type = "sms" %]
-                        </td>
-                    </tr>
+                    <p role="status" id="test_notification_banner" style="display:none">
+                        [% INCLUDE "opac/myopac/test_notification.tt2" message_type = "sms" %]
+                    </p>
                     [% FOR optin IN ctx.opt_in_settings %]
-                    <tr>
-                        <td><label for='[% optin.cust.name | uri %]'>[% optin.cust.label | html %]</label></td>
-                        <td>
-                            <input type='checkbox' name='setting' 
-                                value='[% optin.cust.name | uri %]' 
-                                id='[% optin.cust.name | uri %]' 
-                                title="[% optin.cust.label | html %]"
-                                [% IF optin.value %] checked='checked' [% END %]/>
-                        </td>
-                    </tr>
+                    <p class="form-check">
+                        <input class="form-check-input" type='checkbox' name='setting' 
+                            value='[% optin.cust.name | uri %]' 
+                            id='[% optin.cust.name | uri %]' 
+                            title="[% optin.cust.label | html %]"
+                            [% IF optin.value %] checked='checked' [% END %]/>
+                        <label class="form-check-label" for='[% optin.cust.name | uri %]'>[% optin.cust.label | html %]</label>
+                    </p>
                     [% END %]
-                </tbody>
-            </table>
 
     <button type='submit' class="btn btn-confirm"><i class="fas fa-save"></i> [% l('Save') %]</button>
 </form>
