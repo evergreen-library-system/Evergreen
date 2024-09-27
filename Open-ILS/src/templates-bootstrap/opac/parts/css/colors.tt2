@@ -8,9 +8,10 @@
         non_zero_count = "#ffc107", #Logged in item/charges count NOT at 0
 
         facets_back = "#006042", #search list facet backgrounds
+        facets_back_hover = "#e8e8e8",
         facets_text = "#fff",
         footer_link = "#fff",
-        footer_link_disabled = "#000",
+        footer_link_disabled = "#fff",
 
         nav_separation = "#007a54",
         header_primary = "#007a54", #Primary Header Color
@@ -20,7 +21,7 @@
 
         bg_extras = "#007a54",
         bg_filter = "#007a54",
-        bg_filter_hover = "#00593d"
+        bg_filter_hover = "#00593d",
 
         text_filter = "#fff",
 
@@ -66,6 +67,7 @@
         button_confirm_border = "#007a54",
         button_confirm_border_hover = "#00593d",
         button_confirm_text = "#fff",
+        button_confirm_focus_outline = "rgba(0, 122, 84, 0.75)",
 
 #Denial buttons like Cancel. Make all 4 the same color for no hover effect
         button_deny = "#c82333",
@@ -73,6 +75,7 @@
         button_deny_border = "#bd2130",
         button_deny_border_hover = "#bd2130",
         button_deny_text = "#fff",
+        button_deny_focus_outline = "rgba(200, 35, 51, 0.75)",
 
 #Removal buttons like removing a search row in the advanced search. Make all 4 the same color for no hover effect
         button_remove = "#dc3545",
@@ -80,22 +83,93 @@
         button_remove_border = "#dc3545",
         button_remove_border_hover = "#bd2130",
         button_remove_text = "#fff",
+        button_remove_focus_outline = "rgba(220, 53, 69, 0.75)",
 
 #Main search buttons and buttons that are not a confirm or deny such as the Less and More details on the record. Make all 4 the same color for no hover effect
         opac_button = "#424fa6",
         opac_button_hover = "#4a58b7",
-        opac_button_border = "#2e3b91;",
-        opac_button_border_hover = "#2e3b91;",
+        opac_button_border = "#2e3b91",
+        opac_button_border_hover = "#2e3b91",
         opac_button_text = "#fff",
+        opac_button_rgb = "74, 88, 183",
 
 #Action buttons such as Place Hold and Add to List seen in record and results. Make all 4 the same color for no hover effect
         action_button = "#f8f9fa",
-        action_button_hover = "#e2e6ea",
+        action_button_hover = "rgba(255, 193, 7, 0.2)", # Bootstrap yellow
         action_button_border = "#007a54",
         action_button_border_hover = "#00593d",
         action_button_text = "#00593d",
         #Many action buttons use link coloring on the anchor tags. This setting will change the color to match your color schema if necessary
         #action_button_text_anchors = "",
+        action_button_focus_outline = "rgba(0, 122, 84, 0.75)",
+
+        border_table = "#ccc", #light grey
+        border_table_lighter = "#eee",
+        border_record_selector_block = 'rgba(0,0,0,.125)',
+
+        page_link_bg = "#00593d",
+        page_link_border = "#00593d",
+        page_link_color = "#00593d",
+
+        alert_danger_link = "#424fa6",
+        not_active_pill = "#007bff", #bright blue 
+        dash_divider = "#fff",
+
+        basket_count_bg = "#ddd",
+        basket_actions_select_border = "rgb(169, 169, 169)",
+        metarecord_filters_border = "#333",
+        rdetails_card_header_bg = "#007a54",
+        rdetails_card_header_link = "#fff",
+        eresources_bg = "#f0f0f0",
+
+        search_highlight = "#99ff99",
+        search_highlight_identifier = "#42b0f4",
+        text_match_active = "#fff", #white (link when clicked)
+        text_circwarning = "#007bff", #bright blue
+        
+        show_password_border = "#888",
+        show_password_bg = "whitesmoke",
+
+        #Bootstrap colors 
+        success = "green",
+
+        #Logo
+        logo_path = "/images/evergreen-round-logo.svg",
+        header_logo_color = "#fff",
+        footer_logo_color = "#fff",
+
+        mobile_nav_toggle_color = '#fff',
+        mobile_nav_toggle_border = 'rgba(255,255,255,0.75)',
+        top_divide = 'rgba(0,0,0,.1)',
+
+        dropdown_item_active = "#000",
+        dropdown_menu_shadow = "#00000054", # black at 54 (in hex) opacity
+        header_nav_link_color = "#fff",
+        header_nav_link_active_color = "#000",
+        mynav_link_active_color = "#c8ffaf",
+        mynav_dropdown_item_active = "#EDFFCC",
+
+        cn_link_highlight = "#fec",
+        cn_browse_border_highlight = '#888',
+        cn_browse_card_bg = '#edeaef',
+        cn_card_border_color = '#ccc',
+        cover_shadow = '0 0 1px rgba(0,0,0,0.25), 0 1px 8px rgba(0,0,0,0.35)',
+        box_shadow_large = '0 1rem 3rem rgba(0,0,0,0.175)',
+
+        tooltip_text = "whitesmoke",
+        tooltip_bg = "rgba(0,0,0,0.85)",
+        tooltip_border = "1px solid whitesmoke",
+        tooltip_shadow = "0 0 0.65rem rgba(0,0,0,0.35)",
+
+        # Focus outlines
+        # 255, 193, 7 = Bootstrap yellow
+        # 74, 88, 183 = #424fa6 (OPAC button color)
+        header_link_focus_outline = "rgba(255, 193, 7, 0.8)",
+        subheader_link_focus_outline = "rgba(74, 88, 183, 0.8)",
+        footer_link_focus_outline = "rgba(255, 193, 7, 0.8)",
+        body_link_focus_outline = "rgba(74, 88, 183, 0.8)",
+        form_control_focus_outline = "rgba(74, 88, 183, 0.8)",
+        button_focus_outline = "rgba(74, 88, 183, 0.8)"
 };
 
 %]

@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang='[% ctx.eg_locale %]'>
+<html lang='[% ctx.eg_locale %]' [% IF ctx.get_i18n_l(ctx.eg_locale).rtl == 't' %] dir="rtl" [% END %]>
     <head prefix="og: http://ogp.me/ns#">
         <meta charset="utf-8" />
         <meta http-equiv="X-UA-Compatible" content="IE=edge" />
@@ -49,8 +49,6 @@
             [% INCLUDE 'opac/parts/goog_analytics.tt2' %]
         [% END %]
         [% PROCESS 'opac/parts/stripe.tt2' %]
-<script  src="[% ctx.media_prefix %]/opac/deps/node_modules/jquery/dist/jquery.min.js"></script>
-
 		<script>
 			$(document).ready(function(){
 				$("#loginModal").on('shown.bs.modal', function(){
@@ -61,17 +59,12 @@
 
     </head>
     <body[% IF want_dojo; ' class="tundra d-flex flex-column min-vh-100"'; ELSE; ' class="tundra d-flex flex-column min-vh-100"';  END %]>
-        <h1 class="sr-only">[% l('Catalog') %]</h1>
         [%#Each content page needs (at minimum) an <h2> describing the content%]
+        <a class="skip-link" href="#main">[% l('Skip to main content') %]</a>
        <div class="mb-3">
         [% content %]
         </div>
         [% INCLUDE 'opac/parts/js.tt2' %]
-        <script>
-    $(document).ready(function(){
-    $('.tooltip').tooltip();
-    });
-</script>
         [%- IF ENV.OILS_CHILIFRESH_ACCOUNT %]
             [%- INCLUDE 'opac/parts/chilifresh.tt2' %]
         [%- END %]

@@ -31,5 +31,3 @@
 .full-width { width: 100%; }
 .selector_actions_for_list { width: 175px; margin-right: 11px; }
 .selector_actions_for_list_inner_option { margin-left: 2em; } /* XXX ".opac-auto-179 optgroup option" doesn't work!? */
-#cn_browse_div > div { width: 90%; text-align: center; margin: 10px; }
-#cn_browse { width: 95%; text-align: center; padding: 15px; }

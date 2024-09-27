@@ -7,14 +7,11 @@
 </div>
 
 /////////////////////TOOLTIPS///////////////////////////////////////////
-<!--data-html allows use of HTML tags in the tooltip-->  
- <a href="#" title="text to show on tooltip" data-html="true" data-toggle="tooltip">
+<!--HTML tags can be used in the toggletips. NOTE: we no longer use Bootstrap tooltips.-->  
+ <a href="#" title="text to show on <b>tooltip</b>" data-toggletip>
     <i class="fas fa-question-circle" aria-hidden="true"></i>
 </a>
-<!--This is needed to activate the tooltips on the page and is activated Globally by default in js.tt2-->
-<script>
-jQuery(document).ready(function(){
-  jQuery('[data-toggle="tooltip"]').tooltip();
-});
-</script>
+<!--Use <a> or <button> as tooltips. They will not work on form fields or labels.-->
+<!--See toggletips.js.tt2-->
+
 

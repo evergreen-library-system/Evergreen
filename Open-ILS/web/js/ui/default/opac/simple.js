@@ -17,49 +17,80 @@ function hideMe(node) { addClass(node, "hide_me"); }
 
 var _search_row_template, _expert_row_template;
 function addSearchRow() {
+    const tBody = document.getElementById('adv_global_tbody');
     if (!_search_row_template) {
-        t = get("adv_global_row").cloneNode(true);
-        t.id = null;
+        t = tBody.getElementsByTagName("fieldset")[0].cloneNode(true);
+        t.id = '';
         _search_row_template = t;
     }
 
-    get("adv_global_tbody").insertBefore(
-        _search_row_template.cloneNode(true),
-        get("adv_global_addrow")
-    );
+    var insertPoint = document.getElementById('adv_global_addrow');
+    var newFieldset = tBody.insertBefore(_search_row_template, insertPoint);
 
-    get("adv_global_input_table").rows[get("adv_global_input_table").rows.length - 2].getElementsByTagName("input")[0].value = "";
+    // clear inputs
+    newFieldset.querySelectorAll('input').forEach(input => {
+        input.value = '';
+    });
+    
+    reindexLegends(tBody);
+
+    displayAlert('aria-search-row-added');
+
+    // focus on first input in new fieldset
+    newFieldset.querySelector('input').focus();
 }
 
-(function(get){
-var _search_row_template, _expert_row_template, t;
-var _el_adv_global_row = get("adv_global_row"), _el_adv_expert_row = get("adv_expert_row");
-if (_el_adv_global_row) {
-    t = _el_adv_global_row.cloneNode(true);
-    t.id = null;
-    _search_row_template = t;
-}
-
-if (_el_adv_expert_row) {
-    t = _el_adv_expert_row.cloneNode(true);
-    t.id = null;
-    _expert_row_template = t;
-}
 function addExpertRow() {
-    get("adv_expert_rows_here").appendChild(
-        _expert_row_template.cloneNode(true)
-    );
+    const clone = document.getElementById('adv_expert_row').cloneNode(true);
+    clone.id = '';
+    const parent = document.getElementById("adv_expert_rows_here");
+    parent.appendChild(clone);
+    reindexLegends(parent);
 }
 
-window.addSearchRow = addSearchRow;
-window.addExpertRow = addExpertRow;
-})(get);
-function killRowIfAtLeast(min, link) {
+function killRowIfAtLeast(min) {
+    const link = $event.target;
+    //console.debug("Target: ", link);
     var row = link.parentNode.parentNode;
-    if (row.parentNode.getElementsByTagName("tr").length > min)
+    //console.debug("Row: ", row);
+    if (row.parentNode.getElementsByTagName("fieldset").length > min) {
         row.parentNode.removeChild(row);
-    return false;
+        displayAlert('aria-search-row-removed');
+        // re-number the legends 
+        reindexLegends(tBody);
+        // focus on first input in last row
+        row.parentNode.querySelector('input').focus();
+    }
 }
+
+function removeSearchRows(event) {
+    const tBody = document.getElementById('adv_global_tbody');
+    tBody.removeChild(event.target.closest('fieldset'));
+    displayAlert('aria-search-row-removed');
+    // re-number the legends 
+    reindexLegends(tBody);
+    // focus on first input in last fieldset
+    const fieldsets = tBody.getElementsByTagName('fieldset');
+    const inputs = fieldsets[fieldsets.length - 1].getElementsByTagName('input');
+    inputs[0].focus();
+};
+
+function reindexLegends(parent) {
+    const fieldsets = parent.querySelectorAll('fieldset');
+    if (!fieldsets) return;
+    const digits = new RegExp(/[0-9]+/g);
+    fieldsets.forEach(fs => {
+        let n = Array.prototype.indexOf.call(fs.parentNode.querySelectorAll('fieldset'), fs) + 1;
+        //console.debug('Reindexing fieldset ', n);
+        fs.querySelector('legend').textContent = fs.querySelector('legend').textContent.replace(digits, n);
+        let btn = fs.querySelector('.row-remover');
+        let icon = btn.querySelector('i');
+        let vh = btn.querySelector('.visually-hidden');
+        icon.setAttribute('title', icon?.getAttribute('title').replace(digits, n));
+        vh.textContent = vh?.textContent.replace(digits, n);
+    } );
+}
+
 function print_node(node_id) {
     var iframe = document.createElement("iframe");
     var source_node = get(node_id);
@@ -315,4 +346,14 @@ function canSubmit(evt){
 function toggle_related_required(id, isRequired){
     var input = document.getElementById(id);
     input.required = isRequired;
+}
+
+function displayAlert(elementID) {
+    const el = document.getElementById(elementID);
+    // clear previous alerts
+    el.parentElement.querySelectorAll('.alert').forEach(alert => {alert.classList.add('d-none')});
+    // display the chosen alert
+    el.classList.remove('d-none');
+    // fade out after 8 seconds
+    setTimeout(() => {document.getElementById(elementID).classList.add('d-none')}, 8000);
 }
