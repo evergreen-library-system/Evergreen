@@ -104,22 +104,26 @@
                 delhref = mkurl(ctx.opac_root _ '/mylist/delete', {record => ctx.bre_id}, stop_parms);
                 label = (operation == "add") ? l("Add to Basket") : l("Remove from Basket");
             %]
+                [% IF ctx.mylist.grep('^' _ ctx.bre_id _ '$').size %]
                 <a href="[% addhref %]" id="mylist_add_[% ctx.bre_id %]"
                     rel="nofollow" vocab=""
                     data-recid="[% ctx.bre_id %]" data-action="add"
-                    class="no-dec mylist_action [% IF ctx.mylist.grep('^' _ ctx.bre_id _ '$').size %]hidden[% END %]"
+                    class="no-dec mylist_action"
                     title="[% l("Add [_1] to basket", attrs.title) | html %]" rel="nofollow" vocab="">
                     <img src="[% ctx.media_prefix %]/images/add-to-cart.png[% ctx.cache_key %]" alt="" />
                     [% l("Add to basket") %]
                 </a>
+                [% END %]
+                [% IF !ctx.mylist.grep('^' _ ctx.bre_id _ '$').size %]
                 <a href="[% delhref %]" id="mylist_delete_[% ctx.bre_id %]"
                      rel="nofollow" vocab=""
                     data-recid="[% ctx.bre_id %]" data-action="delete"
-                    class="mylist_action [% IF !ctx.mylist.grep('^' _ ctx.bre_id _ '$').size %]hidden[% END %]"
+                    class="mylist_action"
                     title="[% l("Remove [_1] from basket", attrs.title) | html %]" rel="nofollow" vocab="">
                     <img src="[% ctx.media_prefix %]/images/add-to-cart.png[% ctx.cache_key %]" alt="" />
                     [% l("Remove from basket") %]
                 </a>
+                [% END %]
             </div>
             <div class="rdetail_aux_utils toggle_list">
                      [% IF ctx.mylist.size %]

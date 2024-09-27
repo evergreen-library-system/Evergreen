@@ -26,5 +26,16 @@
          <span class="sr-only">[% l('records in basket') %]</span>
        </a>
      </div>
+    <a href="[% mkurl(ctx.opac_root _ '/mylist') %]" class="no-dec" rel="nofollow" vocab=""
+        aria-label="[%
+          IF ctx.mylist.size > 1; l('View [_0] records in basket');
+          ELSEIF ctx.mylist.size == 1; l('View one record in basket');
+          ELSE; l('Basket is empty');
+        %]">
+        <img src="[% ctx.media_prefix %]/images/cart-sm.png[% ctx.cache_key %]" alt="">
+        <div id="record_basket_count_floater">
+          <span id="record_basket_count">[% ctx.mylist.size %]</span>
+        </div>
+    </a>
   </div>
 </div>

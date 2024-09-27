@@ -196,10 +196,10 @@ BLOCK render_all_contents;
         END;
         IF content.match('\S');
 -%]
-<tr>
-    <td class='rdetail_content_type'>[% cont.label %]</td>
-    <td class='rdetail_content_value' property='keywords'>[% content %]</td>
-</tr>
+<div class="rdetail_content_wrap">
+    <dt class='rdetail_content_type'>[% cont.label %]</dt>
+    <dd class='rdetail_content_value' property='keywords'>[% content %]</dd>
+</div>
         [%- END; %]
     [%- END; %]
 [%- END %]
@@ -207,10 +207,8 @@ BLOCK render_all_contents;
 [%-  content_html = PROCESS render_all_contents;
     IF content_html.length > 0;
 %]
-<h2 class='rdetail_contents'>[% l('Content descriptions') %]</h2>
-<table class='rdetail_content'>
-    <tbody>
+<h3 class='rdetail_contents'>[% l('Content descriptions') %]</h3>
+<dl class='dl-flex dl-flex-wrapped rdetail_content'>
 [%- content_html %]
-    </tbody>
-</table>
+</dl>
 [%- END %]
