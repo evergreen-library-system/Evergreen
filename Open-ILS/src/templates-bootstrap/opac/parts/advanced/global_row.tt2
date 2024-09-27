@@ -22,46 +22,41 @@
         b = bools.shift;
         q = queries.shift; %]
 
-<!-- tag the second row so the bool column won't be hidden -->
-<tr[% IF loop.index == 1 %] id="adv_global_row"[% END %]>
+<fieldset class="adv_fieldset_row">
+    [% # Legends and remove buttons will be numbered dynamically via JS; see reindexLegends() in simple.js %]
+    <legend class="sr-only visually-hidden">[% l('Search term group [_1]', loop.index + 1) %]</legend>
 
-    <td class="td-left py-3">
-        <div class="row">
-            <div class="col-2">
-            <!-- bool selector.  hide for first row.  safe to ignore first bool value in form submission -->
-                <select aria-label="[% l('Boolean search operator') %]"
-                name='bool' [% IF loop.first %] class='d-none' [% ELSE %] class='form-control' [% END %]>
-                    <option value='and' [% b == 'and' ? 'selected="selected"' : '' %]>[% l('And') %]</option>
-                    <option value='or' [% b == 'or' ? 'selected="selected"' : '' %]>[% l('Or') %]</option>
-                </select>
-            </div>
-            <div class="col-3">
-                <!-- keyword, subject, etc. selector -->
-                <span>
-                    [% INCLUDE "opac/parts/qtype_selector.tt2"
-                        query_type=qtype %]
-                </span>
-            </div>
-            <div class="col-3">
-                <select class='form-control w-100' aria-label="[% l('Search phrase match strictness') %]"
-                name='contains'>
-                [% FOR o IN contains_options; -%]
-                <option value="[% o.value %]" [% c == o.value ? ' selected="selected"' : '' %]>[% o.label %]</option>
-                [% END %]
-                </select>
-            </div>
-            <div class="col-4">
-                <input class="form-control" aria-label="[% l('Search term') %]"
-                type='text' size='18' name='query' value="[% q | html %]"  [% IF loop.index == 0 %] autofocus [% END %] />
-            </div>
-        </div>
-    </td>
-    <td class="px-2">
-        <a href="javascript:;" class="btn btn-remove btn-sm"
-            title="[% l('Remove row') %]"
-            aria-label="[% l('Remove row') %]"
-            onclick='return killRowIfAtLeast(2, this);'>
-               <i class="fas fa-times" aria-hidden="true"></i>
-            </a></td>
-</tr>
+
+    <div class="col-bool-operator">
+    <!-- bool selector.  hide for first row.  safe to ignore first bool value in form submission -->
+        <select aria-label="[% l('Boolean search operator') %]"
+            name='bool' class='form-control bool-operator'>
+            <option value='and' [% b == 'and' ? 'selected="selected"' : '' %]>[% l('And') %]</option>
+            <option value='or' [% b == 'or' ? 'selected="selected"' : '' %]>[% l('Or') %]</option>
+        </select>
+    </div>
+    <div class="col-query-type">
+        <!-- keyword, subject, etc. selector -->
+            [% INCLUDE "opac/parts/qtype_selector.tt2"
+                query_type=qtype %]
+    </div>
+    <div class="col-match">
+        <select class='form-control w-100' aria-label="[% l('Search phrase match strictness') %]"
+        name='contains'>
+        [% FOR o IN contains_options; -%]
+        <option value="[% o.value %]" [% c == o.value ? ' selected="selected"' : '' %]>[% o.label %]</option>
+        [% END %]
+        </select>
+    </div>
+    <div class="col-term">
+        <input class="form-control" aria-label="[% l('Search term') %]"
+        type='search' name='query' value="[% q | html %]" />
+    </div>
+    <div class="col-remove">
+        <button type="button" class="btn btn-remove btn-sm row-remover" onclick="removeSearchRows(event)">
+            <i class="fas fa-times" aria-hidden="true" title="[% l('Remove search term group [_1]', loop.index + 1) %]"></i>
+            <span class="visually-hidden">[% l('Remove search term group [_1]', loop.index + 1) %]</span>
+        </button>
+    </div>
+</fieldset>
 [% END %]

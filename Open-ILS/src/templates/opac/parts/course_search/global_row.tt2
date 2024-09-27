@@ -20,36 +20,44 @@
         q = queries.shift; %]
 
 <!-- tag the second row so the bool column won't be hidden -->
-<tr[% IF loop.index == 1 %] id="adv_global_row"[% END %]>
-    <td class="td-left">
+<fieldset class="adv_fieldset_row" [% IF loop.index == 1 %] id="adv_global_row"[% END %]>
+    <legend class="visually-hidden">[% l('Search filter set [_1]', loop.index + 1) %]</legend>
 
+    <div class="col-bool-operator">
         <!-- bool selector.  hide for first row.  safe to ignore first bool value in form submission -->
-        <select title="[% l('Boolean search operator') %]" 
-          name='bool' style='width: auto' [% IF loop.first %] class='invisible' [% END %]>
+        <select aria-label="[% l('Boolean search operator') %]" name='bool'
+            class="form-control w-auto [% IF loop.first %] invisible [% END %]" 
+            [% IF loop.first %] aria-hidden="true" tabindex="-1" [% END %]>
             <option value='and' [% b == 'and' ? 'selected="selected"' : '' %]>[% l('And') %]</option>
             <option value='or' [% b == 'or' ? 'selected="selected"' : '' %]>[% l('Or') %]</option>
         </select>
+    </div>
 
-        <!-- keyword, subject, etc. selector -->
-        <span class="qtype_selector_margin">
-            [% INCLUDE "opac/parts/course_search/qtype_selector.tt2"
-                query_type=qtype %]
-        </span>
+    <!-- keyword, subject, etc. selector -->
+    <div class="col-query-type">
+        [% INCLUDE "opac/parts/course_search/qtype_selector.tt2"
+            query_type=qtype %]
+    </div>
 
-        <select title="[% l('Search phrase match strictness') %]"
-          name='contains' style='margin-right: 7px;'>
+    <div class="col-match">
+        <select aria-label="[% l('Search phrase match strictness') %]"
+          name='contains' class="form-control w-auto mx-1">
             [% FOR o IN contains_options; -%]
             <option value="[% o.value %]" [% c == o.value ? ' selected="selected"' : '' %]>[% o.label %]</option>
             [% END %]
         </select>
-        <input title="[% l('Search term') %]" aria-label="[% l('Search term') %]"
-          type='text' size='18' name='query' value="[% q | html %]" x-webkit-speech [% IF loop.index == 0 %] autofocus [% END %] />
-        <a href="javascript:;" class="row-remover"
-            title="[% l('Remove row') %]" alt="[% l('Remove row') %]"
-            onclick='return killRowIfAtLeast(2, this);'>
-                <img src="[% ctx.media_prefix %]/images/expert_row_close_btn.png[% ctx.cache_key %]"
-                    alt="[% l('Remove row') %]"/>
-            </a>
-    </td>
-</tr>
+    </div>
+
+    <div class="col-term">
+        <input aria-label="[% l('Search term') %]" class="form-control w-auto mx-1"
+            type='text' name='query' value="[% q | html %]" x-webkit-speech />
+    </div>
+    
+    <div class="col-row-remove">
+        <button class="btn btn-remove btn-sm row-remover" onclick="removeSearchRows()">
+            <i class="fas fa-times" aria-hidden="true" title="[% l('Remove filter set [_1]', loop.index + 1) %]"></i>
+            <span class="visually-hidden">[% l('Remove filter set [_1]', loop.index + 1) %]</span>
+        </button>
+    </div>
+</fieldset>
 [% END %]

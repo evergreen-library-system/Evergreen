@@ -11,12 +11,32 @@
             {value => "bookplate", label => l("Digital Bookplate"), plural_label => l("Digital Bookplates")}
         );
     END;
+
+    query_type = query_type || CGI.param('qtype') || search.default_qtypes.0;
 -%]
 
-<select class="form-control w-100" name="[% name || 'qtype' %]"[% IF id; ' id="'; id ; '"' ; END -%]
-    title="[% l('Select query type:') %]">
-    [%  query_type = query_type || CGI.param('qtype') || search.default_qtypes.0;
-      FOR qt IN query_types;
+[% IF label_only;
+
+$label = '';
+
+FOR qt IN query_types;
+    NEXT IF browse_only AND NOT qt.browse;
+    IF qt.value == query_type;
+        IF plural AND qt.plural_label;
+            $label = qt.plural_label | html;
+        ELSE;
+            $label = qt.label | html;
+        END;
+    END;
+END;
+
+$label;
+
+ELSE; -%]
+
+<select class="form-control" name="[% name || 'qtype' %]"[% IF id; ' id="'; id ; '"' ; END -%]
+[% IF ariaLabel; html_text_attr('aria-label', l('Select query type:')); END; %]>
+    [% FOR qt IN query_types;
         NEXT IF browse_only AND NOT qt.browse -%]
     <option value='[% qt.value | html %]'[%
         query_type == qt.value ? ' selected="selected"' : ''
@@ -27,3 +47,5 @@
     END %]</option>
     [% END -%]
 </select>
+
+[% END %]

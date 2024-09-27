@@ -29,11 +29,24 @@ BLOCK build_org_selector;
     lasso_selected = 0;
     base_value = value.split(':').0;
 
+    IF label_only;
+        IF ctx.search_lasso == loc_value;
+            FOR lasso IN ctx.lassos;
+                IF lasso.id == loc_value;
+                    lasso.name | html;
+                END;
+            END;
+        ELSE;
+            context_org = ctx.get_aou(ctx.search_ou);
+            display_name = loc_grp ? loc_grp.name : context_org.name;
+            display_name | html;
+        END;
+    ELSE;
     -%]
 
     <select [% IF id %] id='[% id %]' [% END -%]
             title='[% arialabel || l("Select Library") %]'
-            name='[% name %]' class="form-control w-100">
+            name='[% name %]' class="form-control">
 
         [% IF show_lassos AND ctx.lassos.size > 0;
             %] <optgroup label="[% l('Library Groups') %]"> [%
@@ -156,7 +169,7 @@ BLOCK build_org_selector;
             </optgroup>
         [%- END %]
     </select>
-[%- END;
+[%- END; END;
 
 BLOCK build_scope_selector;
     IF !name;
@@ -176,7 +189,7 @@ BLOCK build_scope_selector;
 
     <select [% IF id %] id='[% id %]' [% END -%]
             title='[% arialabel || l("Select scoping restrictions") %]'
-            name='[% name %]' class="form-control w-100">
+            name='[% name %]' class="form-control">
             <option value=''>[% l('No Restrictions') | html %]</option>
 
         <optgroup label="[% l('Search Scope') %]"> [%

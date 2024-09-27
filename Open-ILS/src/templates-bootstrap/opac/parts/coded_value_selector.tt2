@@ -16,10 +16,10 @@
     IF size AND size < 1; size = all_values.size; END;
 -%]
 
-<select class="form-control form-control-sm w-100" id='[% id %]' name='[% name %]'[%
+<select class="form-control w-100" id='[% id %]' name='[% name %]'[%
     multiple ? ' multiple="multiple"' : '';
     size ? (' size="' _ size _ '"') : '';
-%] title="[% filter_label || l('Select item type:') %]">
+%]>
 [% IF none_ok %]
     <option value=''>[% none_label ? none_label : l('-- Any --') %]</option>
 [% END;

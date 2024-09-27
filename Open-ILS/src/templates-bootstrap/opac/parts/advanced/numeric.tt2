@@ -1,12 +1,12 @@
 <form action="[% ctx.opac_root %]/results" method="get">
-    <h1 class="text-center">[% l("Numeric Search") %]</h1>
-            <h2 class="text-center">[% l("Search by a field and numeric identifier.") %]</h2>
+    <h2 id="advanced_search_label">[% l("Numeric Search") %]</h2>
+            <p>[% l("Search by a field and numeric identifier.") %]</p>
     <input type="hidden" name="contains" value="contains" />
     <input type="hidden" name="_special" value="1" />
     <input id="detail" type="hidden" name="detail_record_view"
            value="[% show_detail_view %]"/>
-    <div id='adv_numeric_block' class='row'>
-        <div class="col-12 my-3">
+    <div id='adv_numeric_block' class='row align-items-end'>
+        <div class="col-md-3 my-3">
             <label for="numeric_qtype"><strong>[% l("Field:") %]</strong></label>
                 <select id="numeric_qtype" name="qtype" class="form-control">
                     <!-- TODO: Pull labels from config.metabib_field.label -->
@@ -19,22 +19,19 @@
                     <option value="item_barcode">[% l('Item Barcode') %]</option>
                 </select>
         </div>
-        <div class="col-12 my-3">
+        <div class="col-md-3 my-3">
                 <label for="numeric_ident"><strong>[% l("Identifier:") %]</strong></label>
-                <input id="numeric_ident" class="form-control" type="text" name="query" size="16" autofocus placeholder='[% l("Identifier") %]' aria-label='[% l("Identifier") %]' />
+                <input id="numeric_ident" class="form-control" type="text" name="query" size="16" />
         </div>
-        <br/>
-        <div class="col-12 my-3">
+        <div class="col-md-3 my-3">
             [%- lib_select_id="adv_org_selector" -%]
-            <label for="[% lib_select_id %]"><strong>[% l("Search Library:") %]</strong>
-                  [% PROCESS "opac/parts/org_selector.tt2";
-                     INCLUDE build_org_selector id=lib_select_id show_loc_groups=1
-                  %]
-            </label>
-        <br/>
-
+            <label for="[% lib_select_id %]"><strong>[% l("Search Library:") %]</strong></label>
+            [% PROCESS "opac/parts/org_selector.tt2";
+                INCLUDE build_org_selector id=lib_select_id show_loc_groups=1
+            %]
+            
           </div>
-          <div class="col-12 my-3">
+          <div class="col-md-3 my-3">
                       <button type="submit" class="btn btn-confirm"><i class="fas fa-search"></i> [% l('Search') %]</button>
 
         </div>

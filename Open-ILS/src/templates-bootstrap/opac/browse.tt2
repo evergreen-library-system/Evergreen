@@ -28,18 +28,16 @@
         END;
     END;
 %]
-
-    <h2 class="sr-only">[% l('Catalog Browse') %]</h2>
-
+<main id="main">
     <div id="content-wrapper" class="my-5">
         <div class="container mx-auto w-75">
             <div id="browse-the-catalog">
-                <div id="browse-controls" class='row'>
+                <div id="browse-controls" class='row' role="search" aria-label="[% l('Catalog Browse Controls') %]">
                     <form method="get" onsubmit="$('browse-submit-spinner').className = ''; return true" class="mx-auto">
                         <input type="hidden" name="blimit"
                             value="[% blimit | html %]" />
 
-                        [% control_qtype = INCLUDE "opac/parts/qtype_selector.tt2"
+                        [% control_qtype = PROCESS "opac/parts/qtype_selector.tt2"
                             id="browse-search-class" browse_only=1 plural=1 %]
 
                         [% control_bterm = BLOCK %]<input type="text" name="bterm" id="browse-term"
@@ -48,15 +46,30 @@
                         [% control_locg = INCLUDE build_org_selector id='browse-context'
                             show_loc_groups=1
                             arialabel=l('Select holding library') %]
-                        [% l('Browse for [_1] starting with [_2] in [_3]', control_qtype, control_bterm, control_locg) %]
-
-            <button id='search-submit-go' type="submit" class="btn btn-confirm my-2"><i class="fas fa-book-reader" aria-hidden="true"></i> [% l('Browse') %]</button>
-                        <img id="browse-submit-spinner"
+                        
+                    <div class="form-inline row row-cols-auto align-items-end">
+                        <div class="col">
+                            <label class="form-label" for="browse-term">[% l('Browse for') %]</label>
+                            [% control_qtype %]
+                        </div> 
+                        <div class="col">
+                            <label class="form-label" for="browse-search-class">[% l('starting with') %]</label>
+                            [% control_bterm %]
+                        </div> 
+                        <div class="col">
+                            <label class="form-label" for="browse-context">[% l('in') %]</label>
+                            [% control_locg %]
+                        </div>   
+                        <button id='search-submit-go' type="submit" class="btn btn-confirm mx-2"><i class="fas fa-book-reader" aria-hidden="true"></i> [% l('Browse') %]</button>
+                    </div>
+                    <img id="browse-submit-spinner"
                         src="[% ctx.media_prefix %]/opac/images/progressbar_green.gif[% ctx.cache_key %]"
                         class="hidden" style="width: 16px; height: 16px;"
                         alt="[% l('Search in progress icon') %]" />
+                    
                     </form>
                 </div>
+            [% INCLUDE "opac/parts/browse_case_hints.tt2" %]
             <div class="row my-5 border-top border-bottom">
                 [% BLOCK browse_pager %]
                 <div class="browse-pager col-12">
@@ -72,11 +85,11 @@
                         [% END %]
                     </span>
                     [% END %]
-                    <span class="browse-pager-spinner">
+                    <span class="browse-pager-spinner" role="status">
                         <img id="browse-pager-spinner-[% id %]"
                             src="[% ctx.media_prefix %]/opac/images/progressbar_green.gif[% ctx.cache_key %]"
                             class="hidden" height="16" width="16"
-                            alt="[% l('Search in progress icon') %]" />
+                            alt="[% l('Search in progress') %]" />
                     </span>
                     [% IF ctx.forward_pivot %]
                     <a class="btn btn-action btn-sm" href="[% mkurl('', {bpivot => ctx.forward_pivot}) %]" onclick="$('#browse-pager-spinner-[% id %]').removeClass('hidden');">[%l ('Next') %] &rarr;</a>
@@ -91,11 +104,11 @@
 
                 <div id="browse-results" class="col-12">
                 [% IF ctx.browse_error %]
-                    <span class="browse-error">
+                    <p class="browse-error" role="status">
                         [% l("An error occurred browsing records. " _
                         "Please try again in a moment or report the issue " _
                         "to library staff.") %]
-                    </span>
+                    </p>
                 [% ELSE %]
                     [% IF ctx.browse_leading_article_warning %]
                     <div class="browse-leading-article-warning">
@@ -110,7 +123,19 @@
                             </p>
                     </div>
                     [% END %]
-                    <ul class="browse-result-list">
+
+                    [% IF ctx.browse_results; %]
+                    <h2>
+                        [% control_qtype_label = INCLUDE "opac/parts/qtype_selector.tt2"
+                            id="browse-search-class" browse_only=1 plural=1 label_only=1 %]
+                        [% control_locg_label = INCLUDE build_org_selector id='browse-context'
+                            show_loc_groups=1 label_only=1
+                            arialabel=l('Select holding library') %]
+                        [% control_bterm_label = CGI.param('bterm') | html %]
+                        [% l('Browse for <b>[_1]</b> starting with <b>[_2]</b> in <b>[_3]</b>', control_qtype_label, control_bterm_label, control_locg_label) %]
+                    </h2>
+                    [% END; %]
+                    <ol class="list-unstyled browse-result-list">
                     [% FOR result IN ctx.browse_results %]
                         <li class="browse-result">
                             <span class="browse-result-value[% result.row_number == 0 && !CGI.param('bpivot') ? ' browse-result-best-match' : '' %]">
@@ -187,7 +212,7 @@
                                             IF h.target AND h.target_count AND result.list_sees.grep('^' _ h.target _ '$').size == 0 AND !h.main_entry AND ctx.get_cgf('opac.show_related_headings_in_browse').enabled == 't';
                                                 id = h.target; NEXT IF seenit.$id; seenit.$id = 1;
                                                 IF !auth_headings_ul_added;
-                                                    # only add a <ul> if we have at least one <li> (WCAG 2.0)
+                                                    # only add a <ol> if we have at least one <li> (WCAG 2.0)
                                                     auth_headings_ul_added = 1; %]
                                                 <ul class="browse-result-authority-headings">
                                                 [% END %]
@@ -202,7 +227,7 @@
                             [% IF auth_headings_ul_added %]</ul>[% END %]
                         </li>
                     [% END %]
-                    </ul>
+                    </ol>
                 [% END %]
                 </div>
 
@@ -210,7 +235,6 @@
             </div>
 </div>
         </div>
-    </div>
 
     [% BLOCK authority_notes;
         # Displays public general notes (sometimes called "scope notes" ?)
@@ -225,5 +249,6 @@
             </div>
         [% END;
     END;    # end of BLOCK authority_notes %]
-
+    </div>
+</main>
 [% END %]

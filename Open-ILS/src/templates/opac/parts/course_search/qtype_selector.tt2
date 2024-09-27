@@ -15,7 +15,7 @@ query_types.push({
 END;
 -%]
 <select name="[% name || 'qtype' %]"[% IF id; ' id="'; id ; '"' ; END -%]
-    title="[% l('Select query type:') %]">
+    aria-label="[% l('Select query type:') %]" class="form-control w-auto">
     [%  query_type = query_type || CGI.param('qtype') || search.default_qtypes.0;
       FOR qt IN query_types;
         NEXT IF browse_only AND NOT qt.browse -%]
