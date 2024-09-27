@@ -2549,15 +2549,7 @@ a.dash-link:hover { text-decoration: underline !important; }
 .invisible { visibility: hidden; }
 .rdetail-extras-summary { margin: 10px; }
 .staff-hold { background-color: [% css_colors.accent_lightest %]; }
-.expert-search tbody tr th {
-    [% IF rtl == 't' -%]
-    text-align: left;
-    padding-right: 2em;
-    [% ELSE -%]
-    text-align: right;
-    padding-left: 2em;
-    [% END -%]
-}
+.expert-search .col-auto { padding-right: 0; }
 .expert-search label { font-weight: bold; }
 
 /*.cn_browse_item { padding: 2ex; } */
@@ -3344,6 +3336,16 @@ a.preflib_change {
 
 #browse-controls button {
     margin-left: 0.5rem;
+}
+
+#browse-controls .row .col {
+    display: flex;
+    flex-wrap: nowrap;
+    gap: 0.5rem;
+}
+
+#browse-controls .row .col label {
+    white-space: nowrap;
 }
 
 .browse-pager-spinner {

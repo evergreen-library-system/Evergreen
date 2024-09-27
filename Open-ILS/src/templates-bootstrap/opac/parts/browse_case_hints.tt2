@@ -1,0 +1,7 @@
+[% # You may remove this message if your library's index consistently uses one case. %]
+
+<div class="row mt-4">
+  <p class="form-text form-hint">
+    [% l("For historical reasons, records may appear in either upper- or lowercase. Try both if you do not see the term you're looking for.") %]
+  </p>
+</div>

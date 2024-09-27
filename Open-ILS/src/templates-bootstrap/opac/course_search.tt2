@@ -27,11 +27,11 @@
         <div>
           [% PROCESS "opac/parts/org_selector.tt2" %]
           [% INCLUDE build_org_selector show_loc_groups=1 id=org.id %]
-          <span class="course_search_archived">
+          <span class="course_search_archived form-check">
             <input type="checkbox" name="modifier" value="include_archived"
               [% CGI.param('modifier').grep('include_archived').size ? ' checked="checked"' : '' %]
-              id="opac.course_result.include_archived" />
-            <label for="opac.course_result.include_archived">
+              id="opac.course_result.include_archived" class="form-check-input" />
+            <label for="opac.course_result.include_archived" class="form-check-label">
               [% l('Include Archived Courses?') %]
             </label>
           </span>
@@ -40,28 +40,31 @@
     </div>
     
     <div class="advanced_div">
-      <div id='adv_global_search' class='data_grid data_grid_center'>
-        <div id='adv_search_rows'>
-          <div class='adv_global_input_container'>
-            <table id="adv_global_input_table" role="presentation">
-              <tbody id='adv_global_tbody'>
+      <div id='adv_global_search' class='data_grid data_grid_center w-auto'>
+        <div id='adv_search_rows' class="w-auto">
+          <div class='adv_global_input_container w-auto'>
+            <div id="adv_global_input_table">
+              <div id='adv_global_tbody'>
                 [% INCLUDE "opac/parts/course_search/global_row.tt2" %]
                 <!-- add a new row -->
-                <tr id="adv_global_addrow">
-                  <td class="td-search-left">
-                    <a href="javascript:;" id="myopac_new_global_row" 
-                      onclick='addSearchRow();'>
-                      [% l('Add Search Row') %]
-                    </a>
-                  </td>
-                </tr>
-                <tr>
-              </tbody>
-            </table>
+                <div id="adv_global_addrow">
+                    <div class="d-flex align-items-start justify-content-between">
+                      <button type="button" id="myopac_new_global_row" 
+                        onclick='addSearchRow();'>
+                        [% l('Add Search Row') %]
+                      </button>
+                      <div id="adv_search_status" class="mx-3">
+                        [% # placeholder for ARIA live announcements; see ariaStatus() in simple.js %]
+                      </div>
+                    </div>
+                </div>
+                <div>
+              </div>
+            </div>
           </div>
         </div>
 
-        <div id='course_search_submit'>
+        <div id='course_search_submit' class="d-flex justify-content-between">
           <input type="hidden" name="_course" value="1" />
           <span>
             <input id='search-submit-go' type="submit" value="[% l('Search') %]" title="[% l('Search') %]" class="btn btn-opac"
