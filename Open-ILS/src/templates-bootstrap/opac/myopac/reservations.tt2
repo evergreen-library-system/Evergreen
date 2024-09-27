@@ -6,21 +6,21 @@
 <h3 class="sr-only">[% l('Reservations') %]</h3>
 <h3>[% l("Reservations") %]</h3>
 [% IF ctx.reservations.size %]
-    <table id="acct_reservations_main_header" class="table table-hover table-bordered miniTable reservationsTable">
-        <tr>
-            <th scope="col">[% l('Resource type') %]</th>
-            <th scope="col">[% l('Start time') %]</th>
-            <th scope="col">[% l('End time') %]</th>
-            <th scope="col">[% l('Pickup location') %]</th>
-            <th scope="col">[% l('Status') %]</th>
+    <table role="table" id="acct_reservations_main_header" class="table table-hover table-bordered miniTable reservationsTable">
+        <tr role="row">
+            <th scope="col" role="columnheader">[% l('Resource type') %]</th>
+            <th scope="col" role="columnheader">[% l('Start time') %]</th>
+            <th scope="col" role="columnheader">[% l('End time') %]</th>
+            <th scope="col" role="columnheader">[% l('Pickup location') %]</th>
+            <th scope="col" role="columnheader">[% l('Status') %]</th>
         </tr>
     [% FOREACH r IN ctx.reservations %]
-        <tr>
-            <td>[% r.resource_type_name %]</td>
-            <td>[% date.format(ctx.parse_datetime(r.start_time, r.pickup_lib), DATE_FORMAT _ ' %I:%M %p') %]</td>
-            <td>[% date.format(ctx.parse_datetime(r.end_time, r.pickup_lib), DATE_FORMAT _ ' %I:%M %p') %]</td>
-            <td><a href="../library/[% r.shortname %]">[% r.pickup_name %]</a></td>
-            <td>
+        <tr role="row" mobile-count="#[% loop.count %]">
+            <td role="cell" mobile-title="[% l('Resource type') %]">[% r.resource_type_name %]</td>
+            <td role="cell" mobile-title="[% l('Start time') %]">[% date.format(ctx.parse_datetime(r.start_time, r.pickup_lib), DATE_FORMAT _ ' %I:%M %p') %]</td>
+            <td role="cell" mobile-title="[% l('End time') %]">[% date.format(ctx.parse_datetime(r.end_time, r.pickup_lib), DATE_FORMAT _ ' %I:%M %p') %]</td>
+            <td role="cell" mobile-title="[% l('Pickup location') %]"><a href="../library/[% r.shortname %]">[% r.pickup_name %]</a></td>
+            <td role="cell" mobile-title="[% l('Status') %]">
             [% IF r.cancel_time %]
                 [% l('Canceled') %]
             [% ELSIF r.pickup_time %]

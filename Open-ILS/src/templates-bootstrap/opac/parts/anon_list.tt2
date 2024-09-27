@@ -1,7 +1,7 @@
         [% IF ctx.mylist.size %]
         <div>
         <hr>
-        <h3>[% l('Basket') %]</h3>
+        <h2>[% l('Basket') %]</h2>
 
         <form action="[% mkurl(ctx.opac_root _ '/mylist/move') %]" method="post">
         <input type="hidden" name="anonsort" value="[% CGI.param('anonsort') %]" />
@@ -18,9 +18,9 @@
             <a class="btn btn-action m-1" id="new_list" href=[% mkurl(ctx.opac_root _ '/myopac/lists', { move_cart_by_default => 1, from_basket => 1}) %]><i class="fas fa-plus" aria-hidden="true"></i> [% l('Add to New List') %]</a>
             <div class="dropdown show m-1">
                 [% IF ctx.user AND ctx.bookbags.size %]
-                 <a class="btn btn-action dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                 <button type="button" class="btn btn-action dropdown-toggle" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                    <i class="fas fa-truck-moving" aria-hidden="true"></i> [% l('Move selected items to list:') %]
-                 </a>
+                 </button>
 
                 <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
                     [% FOR bbag IN ctx.bookbags %]
@@ -48,39 +48,29 @@
         <div class="bbag-content">
 
 
-            <div class="d-block d-md-none">
-                <input id="all_check" checked="checked"
-                type="checkbox" onclick="var inputs=document.getElementsByTagName('input');
-                                for (i = 0; i < inputs.length; i++) {
-                                    if (inputs[i].name == 'record' && !inputs[i].disabled) inputs[i].checked = this.checked;}"
-                aria-label="[% l('Check/Uncheck All') %]" />
-                <label for="all_check">[% l('Check/Uncheck All') %]</label>
-            </div>
-            <table class="container-fluid table table-hover table-bordered mt-4 miniTable bucketTable">
+            <table role="table" class="container-fluid table table-sm table-hover table-bordered mt-4 miniTable bucketTable">
                 <thead id="acct_list_header_anon">
-                    <tr>
-                        <th class='list_checkbox'>
+                    <tr role="row">
+                        <th scope="col" role="columnheader"  class='list_checkbox'>
                             <input type="checkbox" checked="checked"
-                            aria-label="[% l('Select all records') %]" onclick="
-                                var inputs=document.getElementsByTagName('input');
-                                for (i = 0; i < inputs.length; i++) {
-                                    if (inputs[i].name == 'record' && !inputs[i].disabled) inputs[i].checked = this.checked;}"/>
+                                aria-label="[% l('Select all records') %]" 
+                                onclick="checkAll()" onkeydown="maybeCheckAll($e)" />
                         </th>
-                        <th><a href="[% mkurl('', {anonsort=>(CGI.param('anonsort') == 'titlesort' ? 'titlesort.descending' : 'titlesort')}) %]">[% l('Title') %]</a></th>
-                        <th><a href="[% mkurl('', {anonsort=>(CGI.param('anonsort') == 'authorsort' ? 'authorsort.descending' : 'authorsort')}) %]">[% l('Author(s)') %]</a></th>
-                        <th>[% l('Local Call Number') %]</th>
+                        <th scope="col" role="columnheader"><a href="[% mkurl('', {anonsort=>(CGI.param('anonsort') == 'titlesort' ? 'titlesort.descending' : 'titlesort')}) %]">[% l('Title') %]</a></th>
+                        <th scope="col" role="columnheader"><a href="[% mkurl('', {anonsort=>(CGI.param('anonsort') == 'authorsort' ? 'authorsort.descending' : 'authorsort')}) %]">[% l('Author(s)') %]</a></th>
+                        <th scope="col" role="columnheader">[% l('Local Call Number') %]</th>
                     </tr>
                 </thead>
-                <tbody>
+                <tbody role="rowgroup">
                     [% FOR item IN ctx.mylist;
                         attrs = {marc_xml => ctx.mylist_marc_xml.$item};
                         PROCESS get_marc_attrs args=attrs %]
-                    <tr>
-                        <td class="list_checkbox">
-                            <input type="checkbox" checked="checked" name="record" value="[% item %]" aria-label="[% l('Select record') %]" />
-                        </td>
-                        <td class="list_entry" data-label="[% l('Title') %]"><a href="[% mkurl(ctx.opac_root _ '/record/' _ item, {}, ['edit_notes', 'id']) %]">[% attrs.title | html %]</a></td>
-                        <td class="list_entry" data-label="[% l('Author(s)') %]"><a href="[%-
+                    <tr role="row" mobile-count="#[% loop.count %]">
+                        <th role="rowheader" scope="row" class="list_checkbox">
+                            <input type="checkbox" checked="checked" name="record" value="[% item %]" aria-label="[% l('Select [_1]', attrs.title) %]" />
+                        </th>
+                        <td role="cell" class="list_entry" mobile-title="[% l('Title') %]"><a href="[% mkurl(ctx.opac_root _ '/record/' _ item, {}, ['edit_notes', 'id']) %]">[% attrs.title | html %]</a></td>
+                        <td role="cell" class="list_entry" mobile-title="[% l('Author(s)') %]"><a href="[%-
                             authorquery = attrs.author | replace('[,\.:;]', '');
                             mkurl(
                                 ctx.opac_root _ '/results',
@@ -88,7 +78,7 @@
                                 ['page', 'id', 'edit_notes']
                             )
                         -%]">[% attrs.author | html %]</a></td>
-                        <td class="list_entry" data-label="[% l('Local Call Number') %]">
+                        <td role="cell" class="list_entry" mobile-title="[% l('Local Call Number') %]">
                         [%
                             copy = attrs.holdings.0;
                             IF copy;
@@ -108,11 +98,23 @@
                     [% END %]
                 </tbody>
             </table>
-
-
-
-            <br /><br />
         </div>
         </form>
         </div>
+
+        <script>
+            function checkAll() {
+                var inputs=document.getElementsByTagName('input');
+                        for (i = 0; i < inputs.length; i++) {
+                            if (inputs[i].name == 'record' && !inputs[i].disabled) 
+                                inputs[i].checked = this.checked;
+                        }
+            }
+
+            function maybeCheckAll($e) {
+                if ($e.key && $e.key == 'Enter') {
+                    checkAll();
+                }
+            }
+        </script>
         [% END %]

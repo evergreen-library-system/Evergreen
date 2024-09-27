@@ -7,26 +7,26 @@
         <input type="hidden" name="xact_misc" value="[% xact | html %]" />
         [% END %]
 
-         <table id="billing_info_table" class="table table-hover">
-         <thead>
+         <table role="table" id="billing_info_table" class="table table-hover">
+         <thead role="rowgroup">
           <th colspan='2'><strong>[% l('Billing Information') %]</strong></th>
          </thead>
-          <tbody>
+          <tbody role="rowgroup">
 
-               <tr>
-                <td><label for="payment-first-name">[% l('First Name') %]</label></td>
-                    <td><input name="given-name" type="text"  name="billing_first" id="payment-first-name"
-                        value="[% ctx.user.first_given_name | html %]" class="form-control"/></td>
+               <tr role="row">
+                <td role="cell"><label for="payment-first-name">[% l('First Name') %]</label></td>
+                    <td role="cell"><input name="given-name" type="text"  name="billing_first" id="payment-first-name"
+                        value="[% ctx.user.first_given_name | html %]" autocomplete="given-name" class="form-control"/></td>
                 </tr>
-                <tr>
-                    <td><label for="payment-last-name">[% l('Last Name') %]</label></td>
-                    <td><input name="family-name" type="text" name="billing_last" id="payment-last-name"
-                        value="[% ctx.user.family_name | html %]" class="form-control"/></td>
+                <tr role="row">
+                    <td role="cell"><label for="payment-last-name">[% l('Last Name') %]</label></td>
+                    <td role="cell"><input name="family-name" type="text" name="billing_last" id="payment-last-name"
+                        value="[% ctx.user.family_name | html %]" autocomplete="family-name" class="form-control"/></td>
                 </tr>
 
-                <tr>
-                    <td><label for="payment-email-addr">[% l('Email Address') %]</label></td>
-                    <td>
+                <tr role="row">
+                    <td role="cell"><label for="payment-email-addr">[% l('Email Address') %]</label></td>
+                    <td role="cell">
 
                         <input id="payment-email-addr" type="text"
                              value="[% ctx.user.email | html %]" disabled="disabled"
@@ -35,58 +35,59 @@
                             href="[% ctx.opac_root %]/myopac/update_email?return_to_referer=1">[% l("Update") %]</a>
                     </td>
                 </tr>
-                <tr>
-                    <td><label for="payment-billing-address">[% l('Street Address') %]</label></td>
-                    <td><input type="text" name="billing_address" id="payment-billing-address"
-                        value="[% ctx.user.billing_address.street1 _ ctx.user.billing_address.street2 | html %]" class="form-control"/></td>
+                <tr role="row">
+                    <td role="cell"><label for="payment-billing-address">[% l('Street Address') %]</label></td>
+                    <td role="cell"><input type="text" name="billing_address" id="payment-billing-address"
+                        value="[% ctx.user.billing_address.street1 _ ctx.user.billing_address.street2 | html %]" autocomplete="street-address" class="form-control"/></td>
                 </tr>
-                <tr>
-                    <td><label for="payment-billing-city">[% l('City' )%]</label></td>
-                    <td><input type="text" name="billing_city" id="payment-billing-city"
-                        value="[% ctx.user.billing_address.city | html %]" class="form-control"/></td>
+                <tr role="row">
+                    <td role="cell"><label for="payment-billing-city">[% l('City' )%]</label></td>
+                    <td role="cell"><input type="text" name="billing_city" id="payment-billing-city"
+                        value="[% ctx.user.billing_address.city | html %]" autocomplete="address-level2" class="form-control"/></td>
                 </tr>
-                <tr>
-                    <td><label for="payment-billing-state">[% l('State or Province') %]</label></td>
-                    <td><input type="text" name="billing_state" id="payment-billing-state"
-                        value="[% ctx.user.billing_address.state | html %]" class="form-control" /></td>
+                <tr role="row">
+                    <td role="cell"><label for="payment-billing-state">[% l('State or Province') %]</label></td>
+                    <td role="cell"><input type="text" name="billing_state" id="payment-billing-state"
+                        value="[% ctx.user.billing_address.state | html %]" autocomplete="address-level1" class="form-control" /></td>
                 </tr>
-                <tr>
-                    <td><label for="paymenet-billing-zip">[% l('Postal Code') %]</label></td>
+                <tr role="row">
+                    <td role="cell"><label for="paymenet-billing-zip">[% l('Postal Code') %]</label></td>
                     [% USE zip=String(ctx.user.billing_address.post_code) %]
-                    <td><input type="tel" pattern="[/^[a-zA-Z0-9 _-]{7}$/]*" maxlength="7" size="7" name="billing_zip" id="paymenet-billing-zip"
-                        value="[% zip.truncate(5)  %]" class="form-control"/></td>
+                    <td role="cell"><input type="text" inputmode="numeric" pattern="[/^[a-zA-Z0-9 _-]{7}$/]*" maxlength="7" size="7" 
+                        name="billing_zip" id="paymenet-billing-zip" value="[% zip.truncate(5)  %]" autocomplete="postal-code" class="form-control"/></td>
                 </tr>
                </tbody>
                </table>
 
-               <table id="credit_card_info_table" class="table">
-               <thead>
+               <table role="table" id="credit_card_info_table" class="table">
+               <thead role="rowgroup">
                    <th colspan='2'><strong>[% l('Credit Card Information') %]</strong></th>
                </thead>
-               <tbody>
+               <tbody role="rowgroup">
 
-                <tr>
-                    <td><label for="payment-credit-card">[% l('Credit Card #') %]</label></td>
+                <tr role="row">
+                    <td role="cell"><label for="payment-credit-card">[% l('Credit Card #') %]</label></td>
 
                      <!-- Make type tel, which prompts for numbers in mobile -->
-                    <td><input class="form-control" type="tel" pattern="[0-9]*" maxlength="16" id="payment-credit-card" required name="number" /></td>
+                    <td role="cell"><input class="form-control" type="text" inputmode="numeric" pattern="[0-9]*" 
+                        maxlength="16" id="payment-credit-card" autocomplete="cc-number" required name="number" /></td>
                 </tr>
-                <tr>
-                    <td><label for="payment-security-code">[% l('Security Code') %]</label></td>
-                    <td>
-                         <!-- Make type tel, which prompts for numbers in mobile -->
-                        <input class="form-control" type="tel" pattern="[0-9]*" size="4" maxlength="5" id="payment-security-code" name="cvv2" /></td>
+                <tr role="row">
+                    <td role="cell"><label for="payment-security-code">[% l('Security Code') %]</label></td>
+                    <td role="cell">
+                        <input class="form-control" type="text" inputmode="numeric" pattern="[0-9]*" size="4" maxlength="5"
+                            id="payment-security-code" name="cvv2" autocomplete="cc-csc" /></td>
                 </tr>
-                <tr>
-                    <td><label for="payment-expire-month">[% l('Expiration Month') %]</label></td>
-                    <td>
+                <tr role="row">
+                    <td role="cell"><label for="payment-expire-month">[% l('Expiration Month') %]</label></td>
+                    <td role="cell">
                         <select class="form-control" id="payment-expire-month" required
                         [% IF ctx.use_stripe %]
                         data-stripe="exp_month"
                         [% ELSE %]
                         name="expire_month"
                         [% END %]
-                        >
+                        autocomplete="cc-exp-month">
                             <option value="-1"></option>
                             <option value="01">[% l("January (1)") %]</option>
                             <option value="02">[% l("February (2)") %]</option>
@@ -103,10 +104,10 @@
                         </select>
                     </td>
                 </tr>
-                <tr>
-                    <td><label for="payment-expire-year">[% l('Expiration Year') %]</label></td>
-                    <td>
-                        <select class="form-control" id="payment-expire-year" name="expire_year" >
+                <tr role="row">
+                    <td role="cell"><label for="payment-expire-year">[% l('Expiration Year') %]</label></td>
+                    <td role="cell">
+                        <select class="form-control" id="payment-expire-year" name="expire_year" autocomplete="cc-exp-year">
                         [% year = date.format(date.now, '%Y');
                         y = year;
                         WHILE y < year + 10; # show ten years starting now %]
@@ -115,8 +116,8 @@
                         </select>
                     </td>
                 </tr>
-                <tr>
-                   <td colspan='2'>
+                <tr role="row">
+                   <td role="cell" colspan='2'>
                        <div id="payment_actions">
                           [% l('Total amount:') %]
                            <strong>[% money(ctx.fines.balance_owed) %]</strong><br />

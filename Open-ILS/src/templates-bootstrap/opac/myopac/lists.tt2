@@ -18,7 +18,7 @@
 
     <!-- new list creation -->
     <div class="row">
-    <button class="btn btn-sm btn-opac my-2" data-toggle="collapse" data-target="#create_form" aria-expanded="false" aria-controls="create_form">[% l('Create New List') %]</button>
+    <button type="button" class="btn btn-sm btn-opac my-2" data-toggle="collapse" data-target="#create_form" aria-expanded="false" aria-controls="create_form">[% l('Create New List') %]</button>
     </div>
     <div id="create_form" [% IF ctx.add_rec || move_cart_by_default || !ctx.bookbags.size %] class="collapse show my-3"[% ELSE %] class="row collapse my-3"[% END %]>
         <form action="[% mkurl(ctx.opac_root _ '/myopac/list/update') %]" method="post">
@@ -44,7 +44,7 @@
                     <option value="0">[% l('No') %]
                     <option value="1">[% l('Yes') %]
                 </select>
-                <a href="#" title="[% l('Allows the list to be shared through a link or RSS.') %]" data-toggle="tooltip">
+                <a href="#" title="[% l('Allows the list to be shared through a link or RSS.') %]" data-toggletip>
                 <i class="fas fa-question-circle" aria-hidden="true"></i>
                 </a>
             </div>
@@ -283,36 +283,37 @@
 
             <label for="check_all_list_items">[% l('Check/Uncheck All') %]</label>
         </div>
-        <table class="table table-hover miniTable w-100 bookbagTable">
-            <thead>
-                <tr>
-                    <th class="list_checkbox">
+        <table role="table" class="table table-hover miniTable w-100 bookbagTable">
+            <thead role="rowgroup">
+                <tr role="row">
+                    <th scope="col" role="columnheader"  class="list_checkbox">
                     <input type="checkbox"
+                      id="check_all_list_items_desktop" aria-label="[% l('Check/Uncheck All') %]"
                       onclick="var inputs=document.getElementsByTagName('input');
                         for (i = 0; i < inputs.length; i++) {
                             if (inputs[i].name == 'selected_item' &amp;&amp; !inputs[i].disabled &amp;&amp; inputs[i].getAttribute('bbag') == [% bbag.id %])
                                 inputs[i].checked = this.checked;}"/>
 
                     </th>
-                    <th class="list_entry">
+                    <th scope="col" role="columnheader"  class="list_entry">
                         [% l("Cover") %]
                     </th>
-                    <th class="list_entry">
+                    <th scope="col" role="columnheader"  class="list_entry">
                         <a href="[% mkurl(ctx.opac_root _ '/myopac/lists', {sort=> (CGI.param('sort') == 'titlesort' ? 'titlesort.descending' : 'titlesort')}) %]">[% l('Title') %]</a>
                     </th>
-                    <th class="list_entry">
+                    <th scope="col" role="columnheader"  class="list_entry">
                         <a href="[% mkurl(ctx.opac_root _ '/myopac/lists', {sort=>(CGI.param('sort') == 'authorsort' ? 'authorsort.descending' : 'authorsort')}) %]">[% l('Author(s)') %]</a>
                     </th>
-                    <th class='list_entry'>
+                    <th scope="col" role="columnheader"  class='list_entry'>
                         [% l('Local Call Number') %]
                     </th>
-                    <th class="list_entry">
+                    <th scope="col" role="columnheader"  class="list_entry">
                         <a href="[% mkurl(ctx.opac_root _ '/myopac/lists', {sort=>(CGI.param('sort') == 'pubdate' ? 'pubdate.descending' : 'pubdate')}) %]">[% l('Publication Date') %]</a>
                     </th>
-                    <th class="list_entry">
+                    <th scope="col" role="columnheader"  class="list_entry">
                          [% l('Format') %]
                     </th>
-                    <th class="list_entry">
+                    <th scope="col" role="columnheader"  class="list_entry">
                         [% l('Notes') %]
                         [% IF CGI.param("edit_notes") != bbag.id %]
                         | <a href="[% mkurl(ctx.opac_root _ '/myopac/lists', {edit_notes=> bbag.id}) %]">[% l('Edit') %]</a>
@@ -320,9 +321,9 @@
                     </th>
                 </tr>
             </thead>
-            <tbody>
+            <tbody role="rowgroup">
                 [% UNLESS bbag.items.size %]
-                <tr><td colspan="6" class="list_is_empty">
+                <tr role="row"><td role="cell" colspan="8" class="list_is_empty">
                     [% l("This list contains no items.") %]
                 </td></tr>
                 [% END %]
@@ -330,10 +331,10 @@
                     rec_id = item.target_biblio_record_entry.id;
                     attrs = {marc_xml => ctx.bookbags_marc_xml.$rec_id};
                     PROCESS get_marc_attrs args=attrs %]
-                <tr class="bookbag-item-row">
-                    <td class="list_checkbox">
+                <tr role="row" mobile-count="#[% loop.count %]" class="bookbag-item-row">
+                    <th role="rowheader" scope="row" class="list_checkbox">
                         <input type="checkbox" name="selected_item" value="[% item.id %]" bbag='[% bbag.id %]'/>
-                    </td>
+                    </th>
                     [%  IF attrs.issns.0; 
                             row_isbnissn = attrs.issns.0;
                         ELSIF attrs.0;
@@ -345,16 +346,16 @@
                         row_title = attrs.title;
                         PROCESS show_cover;
                     %]
-                    <td class="list_entry" data-label="[% l('Title') %]">
+                    <td role="cell" class="list_entry" mobile-title="[% l('Title') %]">
                         <a href="[% mkurl(ctx.opac_root _ '/record/' _ rec_id, {}, ['edit_notes', 'bbid']) %]">[% attrs.title | html %]</a>
                     </td>
-                    <td class="list_entry" data-label="[% l('Author(s)') %]">
+                    <td role="cell" class="list_entry" mobile-title="[% l('Author(s)') %]">
                         <a href="[%-
                             authorquery = attrs.author | replace('[,\.:;]', '');
                             mkurl(ctx.opac_root _ '/results', {qtype => 'author', query => authorquery}, ['page', 'bbid', 'edit_notes'])
                             -%]">[% attrs.author | html %]</a>
                     </td>
-                    <td class="list_entry" data-label="[% l('Local Call Number') %]">
+                    <td role="cell" class="list_entry" mobile-title="[% l('Local Call Number') %]">
                         [%
                             copy = attrs.holdings.0;
                             IF copy;
@@ -371,21 +372,21 @@
                             END;
                         %]
                     </td>
-                    <td class="list_entry" data-label="[% l('Publication Date') %]">
+                    <td role="cell" class="list_entry" mobile-title="[% l('Publication Date') %]">
                           [% attrs.pubdate | html %]
                     </td>
-                    <td class="list_entry" data-label="[% l('Format') %]">
+                    <td role="cell" class="list_entry" mobile-title="[% l('Format') %]">
                           [% attrs.format_label | html %]
                     </td>
                     [% IF CGI.param("edit_notes") == bbag.id %]
-                    <td class="list_entry" data-label="[% l('Notes') %]">
+                    <td role="cell" class="list_entry" mobile-title="[% l('Notes') %]">
                         [% FOR note IN item.notes %]
                         <input type="text" name="note-[% note.id %]" value="[% note.note | html %]" />
                         [% END %]
                         <input type="text" name="item-[% item.id %]" />
                     </td>
                     [% ELSE %]
-                    <td class="list_entry" data-label="[% l('Notes') %]">
+                    <td role="cell" class="list_entry" mobile-title="[% l('Notes') %]">
                         [% FOR note IN item.notes %]
                         <div>[% note.note | html %]</div>
                         [% END %]
@@ -394,9 +395,9 @@
                 </tr>
                 [% END %]
                 [% IF CGI.param("edit_notes") == bbag.id %]
-                <tr class="mobile_hide">
-                    <td colspan="7"><!-- All space left of notes column --></td>
-                    <td class="save-notes">
+                <tr role="row" class="mobile_hide">
+                    <td role="cell" colspan="7"><!-- All space left of notes column --></td>
+                    <td role="cell" class="save-notes">
                         [%- INCLUDE "opac/parts/preserve_params.tt2"; %]
                         <input type="hidden" name="bbid" value="[% CGI.param('bbid') | html %]" />
                         <button type="submit" class="btn btn-confirm" name="save_notes" value="[% l('Save Notes') %]" ><i class="fas fa-save" aria-hidden="true"></i> [% l('Save Notes') %]</button>

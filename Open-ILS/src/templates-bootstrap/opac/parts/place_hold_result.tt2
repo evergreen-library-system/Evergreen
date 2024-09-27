@@ -23,13 +23,13 @@ function disable_submit() {
         <input type="hidden" name="[% k %]" value="[% ctx.orig_params.$k | html %]" />
         [% END %]
 
-        <table id='hold-items-list'>
+        <table role="table" id='hold-items-list'>
 
         [% FOR hdata IN ctx.hold_data;
             attrs = {marc_xml => hdata.marc_xml};
             PROCESS get_marc_attrs args=attrs %]
-            <tr>
-                <td>
+            <tr role="row">
+                <td role="cell">
                     [%
                         override = 0;
                         IF hdata.could_override || hdata.hold_local_alert;
@@ -43,7 +43,7 @@ function disable_submit() {
                          checked='checked' />
                          [% END %]
                 </td>
-                <td>
+                <td role="cell">
 
                     [% IF hdata.parts %]
                         <input type='hidden' name='part' value='[% hdata.selected_part || '' %]'/>
@@ -51,7 +51,7 @@ function disable_submit() {
 
                         [% IF hdata.hold_success %]
 
-                       <h5 class="success"><i class="fas fa-check-circle"></i> [% l("Hold was successfully placed for: "); %]</h5>
+                       <h4 class="success"><i class="fas fa-check-circle"></i> [% l("Hold was successfully placed for: "); %]</h4>
                     [%
                         title = attrs.title_extended;
                         IF hdata.selected_part AND hdata.parts AND hdata.parts.size > 0;

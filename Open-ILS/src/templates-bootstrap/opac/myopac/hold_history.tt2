@@ -33,18 +33,18 @@
 
 
            
-          <p style="padding-left:5px;" class='error'>
+          <p class='ml-2 error alert alert-danger' role="status">
                     [%  IF ctx.hold_suspend_post_capture; l('One or more holds could not be suspended because the item is at (or en route to) the pickup library.'); END; %]
                 </p>
-        <p style="float:right;">
+        <p class="float-right">
             <a class="hide_me" href="#">[% l('Export List') %]</a>
         </p>
     </div>
 
     <div id='holds_main'>
         [% IF ctx.holds.size && ctx.holds.size < 1 %]
-        <div class="warning_box">
-            <big><strong>[% l('No holds found.') %]</strong></big>
+        <div class="warning_box fw-bold" role="status">
+            [% l('No holds found.') %]
         </div>
         [% ELSE %]
         [% hold_items = ctx.holds;
@@ -52,24 +52,24 @@
            hi = hi > hold_items.max ? hold_items.max : hi;
            hold_items = hold_items.slice(offset, hi);
         %]
-        <table id='acct_holds_hist_header' class='table table-hover table-bordered miniTable holdHistoryTable' title="[% l('History of items on hold') %]">
-            <thead>
-                <tr>
-                    <th>[% l("Cover") %]</th>
-                    <th><span>[% l('Title') %]</span></th>
-                    <th><span>[% l('Author') %]</span></th>
-                    <th> <span>[% l('Format') %]</span></th>
-                    <th><span>[% l('Pickup Location') %]</span> </th>
-                    <th><span>[% l('Status') %]</span></th>
+        <table role="table" id='acct_holds_hist_header' class='table table-hover table-bordered miniTable holdHistoryTable' title="[% l('History of items on hold') %]">
+            <thead role="rowgroup">
+                <tr role="row">
+                    <th scope="col" role="columnheader">[% l("Cover") %]</th>
+                    <th scope="col" role="columnheader">[% l('Title') %]</th>
+                    <th scope="col" role="columnheader">[% l('Author') %]</th>
+                    <th scope="col" role="columnheader">[% l('Format') %]</th>
+                    <th scope="col" role="columnheader">[% l('Pickup Location') %]</th>
+                    <th scope="col" role="columnheader">[% l('Status') %]</th>
                 </tr>
             </thead>
-            <tbody>
+            <tbody role="rowgroup">
                 [% FOR hold IN hold_items;
                     attrs = {marc_xml => hold.marc_xml};
                     PROCESS get_marc_attrs args=attrs;
                     ahr = hold.hold.hold %]
 
-                <tr>
+                <tr role="row" mobile-count="#[% loop.count %]">
                     [%  IF hold.ATTRS.issns.0;
                             row_isbnissn = hold.ATTRS.issns.0;
                         ELSIF hold.ATTRS.isbns.0;
@@ -81,41 +81,27 @@
                         row_title = hold.ATTRS.title;
                         PROCESS show_cover;
                     %]
-                    <td>
-                    <span class="sr-only">[% l('Title') %]</span>
-                        <div>
-                            <a href="[% mkurl(ctx.opac_root _ '/record/' _ hold.hold.bre_id) %]">[% attrs.title | html %]</a>
-                        </div>
+                    <td role="cell" mobile-title='[% l("Title") %]'>
+                        <a href="[% mkurl(ctx.opac_root _ '/record/' _ hold.hold.bre_id) %]">[% attrs.title | html %]</a>
                     </td>
-                    <td>
+                    <td role="cell" mobile-title="[% l('Author') %]">
                      [% IF attrs.author; %]
-                    <span class="sr-only">[% l('Author') %]</span>
-                        <div>
-                       
-                            <a href="[% mkurl(ctx.opac_root _ '/results',
-                                {qtype => author, query => attrs.author.replace('[,\.:;]', '')}
-                            ) %]">[% attrs.author | html %]</a>
-                          
-                        </div>
-                          [% END %]
+                        <a href="[% mkurl(ctx.opac_root _ '/results',
+                            {qtype => author, query => attrs.author.replace('[,\.:;]', '')}
+                        ) %]">[% attrs.author | html %]</a>
+                    [% END %]
                     </td>
-                    <td>
-                        <div>
-                            [% IF attrs.format_icon %]
-                            <img alt="[% attrs.format_label | html %]" src="[% attrs.format_icon %][% ctx.cache_key %]" />
-                            [% END %]
-                             <span>[% attrs.format_label | html %]</span>
-                        </div>
-                         <span class="sr-only">[% l('Format') %] [% attrs.format_label | html %]</span>
+                    <td role="cell" mobile-title="[% l('Format') %]">
+                        [% IF attrs.format_icon %]
+                        <img alt="" src="[% attrs.format_icon %][% ctx.cache_key %]" />
+                        [% END %]
+                        <span>[% attrs.format_label | html %]</span>
                     </td>
-                    <td>
-                    <span class="sr-only">[% l('Pickup Location') %]</span>
+                    <td role="cell" mobile-title="[% l('Pickup Location') %]">
                         [% ctx.get_aou(ahr.pickup_lib).name | html %]
                     </td>
-                    <td>
-                    <span class="sr-only">[% l('Hold Status') %]</span>
-                        <div> [% PROCESS get_hold_status hold=hold; %]
-                        </div>
+                    <td role="cell" mobile-title="[% l('Status') %]">
+                        [% PROCESS get_hold_status hold=hold; %]
                     </td>
                 </tr>
                 [% END %]

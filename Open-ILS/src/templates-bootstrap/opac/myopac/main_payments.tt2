@@ -31,36 +31,34 @@
     </div>
     <h4>[% l('Payments') %]</h4>
     [% IF ctx.payments.size %]
-    <table title="[% l('Payments') %]"
-        class='table table-hover table-bordered miniTable paymentTable'>
-        <thead><tr>
-            <th>[% l('Payment Date') %]</th>
-            <th>[% l('Payment For') %]</th>
-            <th>[% l('Amount') %]</th>
-            <th>[% l('Receipt') %]</th>
+    <table role="table" class='table table-hover table-bordered miniTable paymentTable'>
+        <thead role="rowgroup"><tr role="row">
+            <th scope="col" role="columnheader">[% l('Payment Date') %]</th>
+            <th scope="col" role="columnheader">[% l('Payment For') %]</th>
+            <th scope="col" role="columnheader">[% l('Amount') %]</th>
+            <th scope="col" role="columnheader">[% l('Receipt') %]</th>
         </tr></thead>
-        <tbody>
+        <tbody role="rowgroup">
             [% FOR payment IN ctx.payments %]
-            <tr>
-                <td><span class="sr-only">Payment Date: </span>[% date.format(ctx.parse_datetime(payment.mp.payment_ts), DATE_FORMAT) %]</td>
-                <td>
-                <span class="sr-only">Payment For: </span>
+            <tr role="row" mobile-count="#[% loop.count %]">
+                <td role="cell" mobile-title="[% l('Payment date:') %]">[% date.format(ctx.parse_datetime(payment.mp.payment_ts), DATE_FORMAT) %]</td>
+                <td role="cell" mobile-title="[% l('Payment for:') %]">
                 [%
                     btype = payment.last_billing_type | html;
                     ptitle = payment.title | html;
                     (payment.xact_type == 'grocery') ? btype : ptitle
                 %]
                 </td>
-                <td><span class="sr-only">Amount: </span>[% money(payment.mp.amount) %]</td>
-                <td>
-                <span class="sr-only">Receipt Options: </span>
+                <td role="cell" mobile-title="[% l('Amount') %]" class="numeric money">
+                    [% money(payment.mp.amount) %]</td>
+                <td role="cell" mobile-title="[% l('Receipt Options:') %]">
                     <form action="[% ctx.opac_root %]/myopac/receipt_print" method="post" class="d-inline m-1">
                         <input class="btn btn-sm btn-confirm my-1" type="hidden" name="payment" value="[% payment.mp.id %]" />
-                        <button class="btn btn-sm btn-action my-1" type="submit"><i class='fas fa-print'></i> Print</button>
+                        <button class="btn btn-sm btn-action my-1" type="submit"><i class='fas fa-print'></i> [% l('Print') %]</button>
                     </form>
                     <form action="[% ctx.opac_root %]/myopac/receipt_email" method="post" class="d-inline m-1">
                         <input class="btn btn-sm btn-confirm my-1" type="hidden" name="payment" value="[% payment.mp.id %]" />
-                        <button class="btn btn-sm btn-action my-1" type="submit" value="[% l('Email') %]"><i class="fas fa-envelope-open-text"></i> Email</button>
+                        <button class="btn btn-sm btn-action my-1" type="submit" value="[% l('Email') %]"><i class="fas fa-envelope-open-text"></i> [% l('Email') %]</button>
                     </form>
                 </td>
             </tr>

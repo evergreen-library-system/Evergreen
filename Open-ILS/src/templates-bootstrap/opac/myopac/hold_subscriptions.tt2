@@ -22,9 +22,9 @@
             <big><strong>[% l('No subscriptions found.') %]</strong></big>
         </div>
         [% ELSE %]
-        <table id='acct_holds_groups_header' class='table table-hover table-bordered miniTable holdgroupsTable' title="[% l('Hold Groups') %]">
-            <thead>
-                <tr>
+        <table role="table" id='acct_holds_groups_header' class='table table-hover table-bordered miniTable holdgroupsTable' title="[% l('Hold Groups') %]">
+            <thead role="rowgroup">
+                <tr role="row">
                     <th><span>[% l('Group Name') %]</span></th>
                     <th><span>[% l('Description') %]</span></th>
                     <th><span>[% l('Actions') %]</span></th>
@@ -32,11 +32,11 @@
             </thead>
             <tbody id='holds_temp_parent'>
                 [% FOR sub IN ctx.my_hold_subscriptions %]
-                <tr name="acct_holds_temp" class="acct_holds_temp">
+                <tr role="row" name="acct_holds_temp" class="acct_holds_temp">
 
-                    <td> [% sub.name | html %] </td>
-                    <td> [% sub.description | html %] </td>
-                    <td>
+                    <td role="cell"> [% sub.name | html %] </td>
+                    <td role="cell"> [% sub.description | html %] </td>
+                    <td role="cell">
                         <a href='[% mkurl('hold_subscriptions', {remove => sub.id}) %]'>
                             [% l('Remove me') %]
                         </a>

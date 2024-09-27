@@ -11,17 +11,18 @@
     <div id="ebook_checkout_succeeded" class="success hidden">[% l('E-item successfully checked out.') %]</div>
     <div id="ebook_spinner"><img src="[% ctx.media_prefix %]/opac/images/progressbar_green.gif[% ctx.cache_key %]" alt="[% l("Loading...") %]"/></div>
     <div id='ebook_circs_main' class="hidden">
-        <table id="ebook_circs_main_table"
+        <table role="table" id="ebook_circs_main_table"
             title="[% l('Check Out E-Item') %]"
             class="table table-hover table-bordered miniTable w-100 echeckoutTable">
-            <thead>
-            <tr>
-                <th>[% l("Title") %]</th>
-                <th>[% l("Author") %]</th>
-                <th>[% l("Due Date") %]</th>
-                <th>[% l("Actions") %]</th>
+            <thead role="rowgroup">
+            <tr role="row">
+                <th scope="col" role="columnheader" id="ebook_circs_main_table_header_title">[% l("Title") %]</th>
+                <th scope="col" role="columnheader" id="ebook_circs_main_table_header_author">[% l("Author") %]</th>
+                <th scope="col" role="columnheader" id="ebook_circs_main_table_header_date">[% l("Due Date") %]</th>
+                <th scope="col" role="columnheader" id="ebook_circs_main_table_header_actions">[% l("Actions") %]</th>
             </tr>
             </thead>
+            <!-- filled in via Open-ILS/web/js/ui/default/opac/ebook_api/loggedin.js -->
             <tbody id="ebook_circs_main_table_body"></tbody>
         </table>
     </div>

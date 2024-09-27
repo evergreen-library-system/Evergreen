@@ -14,20 +14,20 @@
     <div id="no_ebook_holds" class="warning_box hidden">[% l('You have no e-item holds.') %]</div>
     <div id="ebook_cancel_hold_failed" class="warning_box hidden">[% l('Hold could not be canceled.') %]</div>
     <div id="ebook_cancel_hold_succeeded" class="success hidden">[% l('Your hold has been canceled.') %]</div>
-    <div id="ebook_spinner"><img src="[% ctx.media_prefix %]/opac/images/progressbar_green.gif[% ctx.cache_key %]" alt="[% l("Loading...") %]"/></div>
+    <div id="ebook_spinner"><img src="[% ctx.media_prefix %]/opac/images/progressbar_green.gif[% ctx.cache_key %]" alt="[% l('Loading...') %]"/></div>
     <div id='ebook_holds_main' class="hidden">
-        <table id="ebook_holds_main_table"
-            title="[% l('E-Items on Hold') %]"
+        <table role="table" id="ebook_holds_main_table"
             class="table table-hover table-bordered miniTable w-100 eholdsTable">
-            <thead>
-            <tr>
-                <th>[% l("Title") %]</th>
-                <th>[% l("Author") %]</th>
-                <th>[% l("Expire Date") %]</th>
-                <th>[% l("Status") %]</th>
-                <th>[% l("Actions") %]</th>
+            <thead role="rowgroup">
+            <tr role="row">
+                <th scope="col" role="columnheader" id="ebook_holds_main_table_header_title">[% l("Title") %]</th>
+                <th scope="col" role="columnheader" id="ebook_holds_main_table_header_author">[% l("Author") %]</th>
+                <th scope="col" role="columnheader" id="ebook_holds_main_table_header_date">[% l("Expire Date") %]</th>
+                <th scope="col" role="columnheader" id="ebook_holds_main_table_header_status">[% l("Status") %]</th>
+                <th scope="col" role="columnheader" id="ebook_holds_main_table_header_actions">[% l("Actions") %]</th>
             </tr>
             </thead>
+            <!-- filled in via Open-ILS/web/js/ui/default/opac/ebook_api/loggedin.js -->
             <tbody id="ebook_holds_main_table_body"></tbody>
         </table>
     </div>

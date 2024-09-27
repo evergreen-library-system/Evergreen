@@ -9,35 +9,28 @@
 
     <form method='post' action="prefs_settings">
 
-       <table class="full-width table" id="acct_search_main"
-            title="[% l('Search and History Preferences') %]">
-            <tbody>
-
+       <div class="form-grid" id="acct_search_main">
                 [% IF ctx.confirm_history_delete %]
-                <tr><td colspan='2'>
-                  <div id='clear-history-confirm' class='renew-summary text-center'>
-                  [% l('Disabling checkout or holds history will permanently remove all items from your history.') %]
-                  <br/>
-                  [% l('Are you sure you wish to continue?') %]
-                  <br>
-                  <a href="[% mkurl() %]" class="btn btn-deny"><i class="fas fa-ban"></i> [% l('Cancel') %]</a>
-                  <input type='hidden' name='history_delete_confirmed' value='1'/>
-                  <button type="submit" class="btn btn-confirm"><i class="fas fa-check"></i> [% l('Confirm') %]</button>
-                  </div>
-                </td></tr>
+                    <p id='clear-history-confirm' class='renew-summary w-100'>
+                        [% l('Disabling checkout or holds history will permanently remove all items from your history.') %]
+                        <br/>
+                        [% l('Are you sure you wish to continue?') %]
+                        <br>
+                        <a href="[% mkurl() %]" class="btn btn-deny"><i class="fas fa-ban"></i> [% l('Cancel') %]</a>
+                        <input type='hidden' name='history_delete_confirmed' value='1'/>
+                        <button type="submit" class="btn btn-confirm"><i class="fas fa-check"></i> [% l('Confirm') %]</button>
+                    </p>
                 [% ELSIF ctx.updated_user_settings OR ctx.updated_waiver_entries %]
-                <tr><td colspan='2'>
-                    <div class='renew-summary'>
+                    <p class='renew-summary' class="w-100" role="status">
                         [% l('Account Successfully Updated') %]
-                    </div>
-                </td></tr>
+                    </p>
                 [% END %]
 
                 [%- setting = 'opac.hits_per_page' -%]
-                <tr >
-                    <td><label for='[% setting %]'>[% l("Search hits per page") %]</label></td>
-                    <td>
-                        <select class="d-inline-block form-control mini-control" id='[% setting %]' name='[% setting %]'>
+                    <label class="form-label" for='[% setting %]'>[% l("Search hits per page") %]</label>
+                    <div>
+                        <select class="d-inline-block form-control mini-control" id='[% setting %]' name='[% setting %]'
+                            aria-describedby="hits_per_page_hint">
                             [%  UNLESS ctx.user_setting_map.$setting;
                                     ctx.user_setting_map.$setting = 10;
                                 END;
@@ -47,155 +40,146 @@
                                         selected='selected'[% END %]>[% val | html %]</option>
                             [% END %]
                         </select>
-                         <a href="#" title="[% l('Change the amount of results shown in a search while signed in.') %]" data-toggle="tooltip">
-                        <i class="fas fa-question-circle"></i>
-                    </a>
-                    </td>
-                </tr>
+                        <p class="form-text form-hint w-100" id="hits_per_page_hint">
+                            [% l('Change the number of results shown in a search while signed in.') %]
+                        </p>
+                    </div>
                 [%- setting = 'opac.default_search_location'; -%]
-                <tr >
-                    <td><label for='[% setting %]'>[% l("Preferred search location") %]</label></td>
-                    <td>
-                        [%- thang = ctx.user.home_ou.id;
-                            IF ctx.user_setting_map.$setting;
-                                thang = ctx.user_setting_map.$setting;
-                            END;
-                            id = setting;
-                            INCLUDE build_org_selector name=setting value=thang;
-                        %]
-                    </td>
-                </tr>
+                
+                    <label class="form-label" for='[% setting %]'>[% l("Preferred search location") %]</label>
+                    
+                    [%- thang = ctx.user.home_ou.id;
+                        IF ctx.user_setting_map.$setting;
+                            thang = ctx.user_setting_map.$setting;
+                        END;
+                        id = setting;
+                        INCLUDE build_org_selector name=setting value=thang;
+                    %]
                 [%- setting = 'opac.default_pickup_location'; -%]
-                <tr>
-                    <td><label for='[% setting %]'>[% l("Preferred pickup location") %]</label></td>
-                    <td>
-                        [%- thang = ctx.user.home_ou.id;
-                            IF ctx.user_setting_map.$setting;
-                                thang = ctx.user_setting_map.$setting;
-                            END;
-                            id = setting;
-                            INCLUDE build_org_selector name=setting value=thang can_have_vols_only=1;
-                        %]
-                    </td>
-                </tr>
+                <label class="form-label" for='[% setting %]'>[% l("Preferred pickup location") %]</label>
+                    
+                [%- thang = ctx.user.home_ou.id;
+                    IF ctx.user_setting_map.$setting;
+                        thang = ctx.user_setting_map.$setting;
+                    END;
+                    id = setting;
+                    INCLUDE build_org_selector name=setting value=thang can_have_vols_only=1;
+                %]
 
                 [%- setting = 'ui.show_search_highlight'; -%]
-                <tr>
+                <div class="form-check w-100">
                     [%- highlight_name = l('Highlight search terms?') -%]
-                    <td><label for = '[% setting %]'>[% highlight_name %]</label></td>
-                    <td>
-                        <input id='[% setting %]' name='[% setting %]'
-                            type="checkbox" title='[% highlight_name %]'
-                            [% highlight_setting = 'ui.show_search_highlight' %]
-                            [% user_setting = ctx.user_setting_map.$highlight_setting %]
-                            [% IF user_setting || (user_setting == "" && search.default_highlight) %]
-                            checked='checked'
-                            [% END %]/>
-                    </td>
-                </tr>
+                    <input id='[% setting %]' name='[% setting %]'
+                        type="checkbox" title='[% highlight_name %]'
+                        [% highlight_setting = 'ui.show_search_highlight' %]
+                        [% user_setting = ctx.user_setting_map.$highlight_setting %]
+                        [% IF user_setting || (user_setting == "" && search.default_highlight) %]
+                        checked='checked' class="form-check-input"
+                        [% END %]/>
+                    <label class="form-check-label" for='[% setting %]'>[% highlight_name %]</label>                        
+                </div>
 
                 [%- setting = 'history.circ.retention_start' -%]
-                <tr>
+                <div class="form-check w-100">
                     [% circ_name = l('Keep history of checked out items?') %]
-                    <td><label for='[% setting %]'>[% circ_name%]</label></td>
-                    <td>
-                        <input id='[% setting %]' name='[% setting %]'
+                    <input id='[% setting %]' name='[% setting %]' class="form-check-input"
                             type="checkbox" title="[% circ_name %]"
                             [% IF ctx.user_setting_map.$setting
-                              AND !ctx.clear_circ_history; %] checked='checked' [% END %]/>
-                    </td>
-                </tr>
+                                AND !ctx.clear_circ_history; %] checked='checked' [% END %]/>
+                    <label class="form-check-label" for='[% setting %]'>[% circ_name%]</label>
+                </div>
+
                 [%- setting = 'history.hold.retention_start' -%]
-                <tr>
+                <div class="form-check w-100">
                     [% hold_name =  l('Keep history of holds?') %]
-                    <td><label for='[% setting %]'>[% hold_name %]</label></td>
-                    <td>
-                        <input id='[% setting %]' name='[% setting %]'
-                            type="checkbox" title="[% hold_name %]"
-                            [% IF ctx.user_setting_map.$setting
-                              AND !ctx.clear_hold_history; %] checked='checked' [% END %]/>
-                    </td>
-                </tr>
+                    <input id='[% setting %]' name='[% setting %]' class="form-check-input"
+                        type="checkbox" title="[% hold_name %]"
+                        [% IF ctx.user_setting_map.$setting
+                            AND !ctx.clear_hold_history; %] checked='checked' [% END %]/>
+                    <label class="form-check-label" for='[% setting %]'>[% hold_name %]</label>
+                </div>
+
                 [%- setting = 'opac.temporary_list_no_warn' -%]
-                <tr>
+                <div class="form-check w-100">
                     [% skip_warn =  l('Skip warning when adding to temporary book list?') %]
-                    <td><label for='[% setting %]'>[% skip_warn %]</label></td>
-                    <td>
-                        <input id='[% setting %]' name='[% setting %]'
-                            type="checkbox" title="[% skip_warn %]"
-                            [% IF ctx.user_setting_map.$setting %] checked='checked' [% END %]/>
-                    </td>
-                </tr>
+                    <input id='[% setting %]' name='[% setting %]' class="form-check-input"
+                        type="checkbox" title="[% skip_warn %]"
+                        [% IF ctx.user_setting_map.$setting %] checked='checked' [% END %]/>
+                    <label class="form-check-label" for='[% setting %]'>[% skip_warn %]</label>
+                </div>
+
                 [%- setting = 'circ.holds_behind_desk'; IF ctx.behind_desk_supported -%]
-                <tr>
+                <div class="form-check w-100">
                     [% behind_desk = l('Pickup holds from behind the desk when possible?') %]
-                    <td><label for='[% setting %]'>[% behind_desk %]</label></td>
-                    <td>
-                        <input id='[% setting %]' name='[% setting %]'
-                            type="checkbox" title="[% behind_desk %]"
-                            [% IF ctx.user_setting_map.$setting %] checked='checked' [% END %]/>
-                    </td>
-                </tr>
+                    <input id='[% setting %]' name='[% setting %]' class="form-check-input"
+                        type="checkbox" title="[% behind_desk %]"
+                        [% IF ctx.user_setting_map.$setting %] checked='checked' [% END %]/>
+                    <label class="form-check-label"  for='[% setting %]'>[% behind_desk %]</label>
+                </div>
                 [% END %]
 
   [%- IF ctx.get_org_setting(ctx.user.home_ou.id, 'circ.privacy_waiver'); %]
-                <tr>
-                    <td>[% l('Allow others to use my account') %]</td>
-                    <td>
-                        [% FOR waiver IN ctx.user.waiver_entries %]
-                        <div id="waiver_[% waiver.id %]">
-                            <input type="hidden" name="waiver_id" value="[% waiver.id %]"/>
-                            [% l('Name:') %] <input type="textbox" name="waiver_name_[% waiver.id %]" value="[% waiver.name | html %]"/><br/>
-                            <label>
-                                <input type="checkbox" name="waiver_place_holds"
-                                    value="[% waiver.id %]" [% waiver.place_holds == 't' ? 'checked="checked"' : '' %]/>
-                                [% l('Place Holds') %]
-                            </label>
-                            <label>
-                                <input type="checkbox" name="waiver_pickup_holds"
-                                    value="[% waiver.id %]" [% waiver.pickup_holds == 't' ? 'checked="checked"' : '' %]/>
-                                [% l('Pick Up Holds') %]
-                            </label>
-                            <label>
-                                <input type="checkbox" name="waiver_checkout_items"
-                                    value="[% waiver.id %]" [% waiver.checkout_items == 't' ? 'checked="checked"' : '' %]/>
-                                [% l('Check Out Items') %]
-                            </label>
-                            <label>
-                                <input type="checkbox" name="waiver_view_history"
-                                    value="[% waiver.id %]" [% waiver.view_history == 't' ? 'checked="checked"' : '' %]/>
-                                [% l('Obtain Circulation Information') %]
-                            </label>
+                <fieldset class="row">
+                    <legend class="w-100">[% l('Allow others to use my account') %]</legend>
+                    [% FOR waiver IN ctx.user.waiver_entries %]
+                    <div id="waiver_[% waiver.id %]" class="subgrid">
+                        <input type="hidden" name="waiver_id" value="[% waiver.id %]"/>
+                        <label class="form-label" for="waiver_name_[% waiver.id %]">[% l('Name:') %]</label>
+                        <input class="form-control" type="textbox" id="waiver_name_[% waiver.id %]" name="waiver_name_[% waiver.id %]" value="[% waiver.name | html %]"/>
+                        
+                        <div class="form-check w-100">
+                            <label class="form-check-label" for="waiver_place_holds[% waiver.id %]">[% l('Place Holds') %]</label>
+                            <input type="checkbox" id="waiver_place_holds[% waiver.id %]" name="waiver_place_holds" class="form-check-input"
+                                value="[% waiver.id %]" [% waiver.place_holds == 't' ? 'checked="checked"' : '' %]/>
                         </div>
-                        [% END %]
-                        <br/>
-                        <div>
-                            [% l('Name:') %] <input type="textbox" name="waiver_name_new"/><br/>
-                            <label><input type="checkbox" name="waiver_place_holds" value="new"/>[% l('Place Holds') %]</label>
-                            <label><input type="checkbox" name="waiver_pickup_holds" value="new"/>[% l('Pick Up Holds') %]</label>
-                            <label><input type="checkbox" name="waiver_checkout_items" value="new"/>[% l('Check Out Items') %]</label>
-                            <label><input type="checkbox" name="waiver_view_history" value="new"/>[% l('Obtain Circulation Information') %]</label>
+                        
+                        <div class="form-check w-100">
+                            <label class="form-label" for="waiver_pickup_holds[% waiver.id %]">[% l('Pick Up Holds') %]</label>
+                            <input type="checkbox" name="waiver_pickup_holds[% waiver.id %]" name="waiver_pickup_holds" class="form-check-input"
+                                value="[% waiver.id %]" [% waiver.pickup_holds == 't' ? 'checked="checked"' : '' %]/>
                         </div>
-                    </td>
-                </tr>
+                        
+                        <div class="form-check w-100">
+                            <label class="form-label" for="waiver_checkout_items[% waiver.id %]">[% l('Check Out Items') %]</label>
+                            <input type="checkbox" id="waiver_checkout_items[% waiver.id %]" name="waiver_checkout_items" class="form-check-input"
+                                value="[% waiver.id %]" [% waiver.checkout_items == 't' ? 'checked="checked"' : '' %]/>
+                        </div>
+
+                        <div class="form-check w-100">
+                            <label class="form-label">[% l('Obtain Circulation Information') %]</label>
+                            <input type="checkbox" id="waiver_view_history[% waiver.id %]" name="waiver_view_history" class="form-check-input"
+                                value="[% waiver.id %]" [% waiver.view_history == 't' ? 'checked="checked"' : '' %]/>
+                        </div>
+                    </div>
+                    [% END %]
+                    <div>
+                        <label class="form-label">[% l('Name:') %]</label>
+                        <input type="textbox" class="form-control" name="waiver_name_new"/>
+
+                        <div class="form-check w-100">
+                            <input for="waiver_place_holds" type="checkbox" class="form-check-input" name="waiver_place_holds" id="waiver_place_holds" value="new"/>
+                            <label class="form-label">[% l('Place Holds') %]</label>
+                        </div>
+                        <div class="form-check w-100">
+                            <input type="checkbox" class="form-check-input" name="waiver_pickup_holds" id="waiver_pickup_holds" value="new"/>
+                            <label for="waiver_pickup_holds" class="form-label">[% l('Pick Up Holds') %]</label>                            
+                        </div>
+                        <div class="form-check w-100">
+                            <input type="checkbox" class="form-check-input" name="waiver_checkout_items" id="waiver_checkout_items" value="new"/>
+                            <label for="waiver_checkout_items" class="form-label">[% l('Check Out Items') %]</label>
+                        </div>
+                        <div class="form-check w-100">
+                            <input type="checkbox" class="form-check-input" name="waiver_view_history" id="waiver_view_history" value="new"/>
+                            <label for="waiver_view_history" class="form-label">[% l('Obtain Circulation Information') %]</label>
+                        </div>
+                    </div>
+                </fieldset>
                 [% END %]
-
-                <!--
-                <tr>
-                    <td><label for='prefs_def_font'>[% l("Default Font Size") %]</label></td>
-                    <td>
-                        <select id='prefs_def_font'>
-                            <option value='regular'>[% l("Regular Font") %]</option>
-                            <option value='large'>[% l("Large Font") %]</option>
-                        </select>
-                    </td>
-                </tr>
-                -->
-
-            </tbody>
-        </table>
+        </div>
         [% IF !ctx.confirm_history_delete %]
-        <button type="submit" class="btn btn-confirm"><i class="fas fa-save"></i> [% l('Save') %]</button>
+        <p class="mt-3">
+            <button type="submit" class="btn btn-confirm"><i class="fas fa-save"></i> [% l('Save') %]</button>
+        </p>
         [% END %]
     </form>
     [% INCLUDE "opac/parts/myopac/prefs_hints.tt2" %]

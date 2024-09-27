@@ -47,23 +47,23 @@
 
             <label for="check_all_circ_hist">[% l('Check/Uncheck All') %]</label>
         </div>
-        <table title="[% l('History of Items Checked Out') %]" id="acct_checked_hist_header" class="table table-hover table-bordered miniTable circHistTable my-3">
-            <thead>
-                <tr>
-                    <td class="checkCell">
+        <table role="table" title="[% l('History of Items Checked Out') %]" id="acct_checked_hist_header" class="table table-hover table-bordered miniTable circHistTable my-3">
+            <thead role="rowgroup">
+                <tr role="row">
+                    <th class="checkCell">
                         <input type="checkbox" onclick="var inputs=document.getElementsByTagName('input'); for (i = 0; i < inputs.length; i++) { if (inputs[i].name == 'circ_id' && !inputs[i].disabled) inputs[i].checked = this.checked;}" aria-label="[% l('Click to (un)select all items') %]"/>
-                    </td>
-                    <th>[% l("Cover") %]</th>
-                    <th>[% sort_head("sort_title", l("Title")) %]</th>
-                    <th>[% sort_head("author", l("Author")) %]</th>
-                    <th>[% sort_head("checkout", l("Checkout Date")) %]</th>
-                    <th>[% sort_head("due", l("Due Date")) %]</th>
-                    <th>[% sort_head("returned", l("Date Returned")) %]</th>
-                    <th>[% sort_head("barcode", l("Barcode")) %]</th>
-                    <th>[% sort_head("callnum", l("Call Number")) %]</th>
+                    </th>
+                    <th scope="col" role="columnheader">[% l("Cover") %]</th>
+                    <th scope="col" role="columnheader">[% sort_head("sort_title", l("Title")) %]</th>
+                    <th scope="col" role="columnheader">[% sort_head("author", l("Author")) %]</th>
+                    <th scope="col" role="columnheader">[% sort_head("checkout", l("Checkout Date")) %]</th>
+                    <th scope="col" role="columnheader">[% sort_head("due", l("Due Date")) %]</th>
+                    <th scope="col" role="columnheader">[% sort_head("returned", l("Date Returned")) %]</th>
+                    <th scope="col" role="columnheader">[% sort_head("barcode", l("Barcode")) %]</th>
+                    <th scope="col" role="columnheader">[% sort_head("callnum", l("Call Number")) %]</th>
                 </tr>
             </thead>
-            <tbody>
+            <tbody role="rowgroup">
                 [%# Copy the ctx.circs into a local array, then add a SORT field
                     that contains the value to sort on.  Since we need the item attrs,
                     invoke it and save the result in ATTRS.
@@ -136,10 +136,10 @@
                 # circ_items list is now sorted.  Traverse and dump the information.
 
                 FOR circ IN circ_items; %]
-                    <tr>
-            <td class="checkbox_column">
+                    <tr role="row" mobile-count="#[% loop.count %]">
+            <th role="rowheader" scope="row" class="checkbox_column">
                 <input type="checkbox" name="circ_id" value="[% circ.circ.id %]" aria-label="Select Item"/>
-            </td>
+            </th>
                         [%  IF circ.ATTRS.issns.0;
                                 row_isbnissn = circ.ATTRS.issns.0;
                             ELSIF circ.ATTRS.isbns.0;
@@ -151,7 +151,7 @@
                             row_title = circ.ATTRS.title;
                             PROCESS show_cover;
                         %]
-                        <td>
+                        <td role="cell" mobile-title="[% l('Title') %]">
                           [% IF circ.circ.target_copy.call_number.id == -1 %]
                                 [% circ.circ.target_copy.dummy_title | html %]
                           [% ELSIF circ.ATTRS.title %]
@@ -162,7 +162,7 @@
                                 [%- circ.ATTRS.title.substr(circ.ATTRS.nonfiling_characters) | html %]</a>
                           [% END %]
                         </td>
-                        <td>
+                        <td role="cell" mobile-title="[% l('Author') %]">
                             [% IF circ.circ.target_copy.call_number.id == -1 %]
                                 [% circ.circ.target_copy.dummy_author | html %]
                             [% ELSIF circ.ATTRS.author %]
@@ -172,10 +172,10 @@
                                 ) %]">[% circ.ATTRS.author | html %]</a>
                             [% END; %]
                         </td>
-                        <td>
+                        <td role="cell" mobile-title="[% l('Checkout Date') %]">
                             [% date.format(ctx.parse_datetime(circ.circ.xact_start),DATE_FORMAT); %]
                         </td>
-                        <td>
+                        <td role="cell" mobile-title="[% l('Due Date') %]">
                             [% IF circ.circ.source_circ;
                                 date.format(ctx.parse_datetime(circ.circ.due_date, circ.circ.source_circ.circ_lib),DATE_FORMAT);
                                ELSE;
@@ -183,15 +183,15 @@
                                END;
                             %]
                         </td>
-                        <td>
+                        <td role="cell" mobile-title="[% l('Date Returned') %]">
                             [% IF circ.circ.checkin_time;
                                     date.format(ctx.parse_datetime(circ.circ.checkin_time),DATE_FORMAT);
                                 ELSE; %]
-                                <span style='color:blue;'>Not Returned</span><!-- meh -->
+                                <span class="warning-not-returned">Not Returned</span>
                             [% END %]
                         </td>
-                        <td>[% circ.circ.target_copy.barcode | html %]</td>
-                        <td>
+                        <td role="cell" mobile-title="[% l('Barcode') %]">[% circ.circ.target_copy.barcode | html %]</td>
+                        <td role="cell" mobile-title="[% l('Call Number') %]">
                               [%-
                                    cnlist = [];
                                    FOREACH element IN [circ.circ.target_copy.call_number.prefix.label
@@ -205,7 +205,7 @@
                               %]
                               [% cn | html %]
                               [%- IF circ.circ.target_copy.parts.0.label %]
-                                    </BR>[% circ.circ.target_copy.parts.0.label | html -%]
+                                    <br />[% circ.circ.target_copy.parts.0.label | html -%]
                               [%- END %]
                         </td>
 

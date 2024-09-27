@@ -5,30 +5,36 @@
 <h2>[% l('Update Username') %]</h2>
 <div id='myopac_summary_div p-0'>
 [% IF ctx.invalid_username %]
-    <div id='account-update-email-error'> <!-- borrow css from update-email page -->
+    <div id='account-update-email-error' role="status"> <!-- borrow css from update-email page -->
         [% bad_user = ctx.invalid_username | html %]
         [% l('"[_1]" is not a valid username.  Usernames cannot have any spaces or look like a barcode, and may be restricted by policy.  Please try a different username.', '<b>' _ bad_user _ '</b>') %]
     </div>
 
 [% ELSIF ctx.username_exists %]
-    <div id='account-update-email-error'>
+    <div id='account-update-email-error' role="status">
         [% l('The username "[_1]" is taken.  Please try a different username.', '<b>' _ bad_user _ '</b>') %]
     </div>
 
 [% ELSIF ctx.password_incorrect %]
-    <div id='account-update-email-error'>
+    <div id='account-update-email-error' role="status">
         [% |l %]Your current password was not correct.[% END %]
     </div>
 
 [% END %]
 
-<form method='post' id='account-update-email' autocomplete='off'>
-    <table>
-        <tr><td>[% l('Current Username') %]</td><td>[% ctx.user.usrname | html %]</td></tr>
-        <tr><td>[% l('Current Password') %]</td><td><input type='password' name='current_pw' class="form-control"/></td></tr>
-        <tr><td>[% l('New Username') %]</td><td><input type='text' name='username' value='[% ctx.invalid_username | html %]' class="form-control"/></td></tr>
-        <tr><td colspan='2' align='center'><button class="btn btn-confirm m-2" type='submit'><i class="fas fa-save"></i> [% l('Save Changes') %]</button></td></tr>
-    </table>
+<form method='post' id='account-update-email'>
+    <p><b>[% l('Current Username: ') %]</b> [% ctx.user.usrname | html %]</p>
+    <p>
+        <label for="current_pw">[% l('Current Password') %]</label>
+        <input type='password' name='current_pw' id="current_pw" class="form-control" autocomplete="current-password" />
+    </p>
+    <p>
+        <label for="username">[% l('New Username') %]</label>
+        <input type='text' id="username" name='username' value='[% ctx.invalid_username | html %]' class="form-control" />
+    </p>
+    <button class="btn btn-confirm m-2" type='submit'>
+        <i class="fas fa-save"></i> [% l('Save Changes') %]
+    </button>
 </form>
 
 [% END %]

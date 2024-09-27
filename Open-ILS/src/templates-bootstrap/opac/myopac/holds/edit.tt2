@@ -60,13 +60,7 @@
                         have already been captured... %]
                             
                             <label for="expire_time">[% l('Cancel unless filled by') %]</label>
-                            <div class="input-group date" data-provide="datepicker">
-                                <input type="text" class="form-control" id="expire_time" name="expire_time"
-                                    value="[% expire_time | html %]" data-date-format="mm/dd/yyyy">
-                                <div class="input-group-addon">
-                                    <span class="glyphicon glyphicon-th"></span>
-                                </div>
-                            </div>
+                            <duet-date-picker identifier="expire_time" value="[% expire_time | html %]"></duet-date-picker>
  
                             <div class="form-group mt-2">
                                 <label for="frozen">[% l('Active?') %]</label>
@@ -80,14 +74,9 @@
                                 </select>
                             </div>
  
-                            <label for="datepicker">[% l('If suspended, activate on') %]</label>
-                            <div class="input-group date" data-provide="datepicker">
-                                <input type="text" class="form-control" name="thaw_date" id="datepicker" value="[% thaw_date | html %]" data-date-format="mm/dd/yyyy">
-                                <div class="input-group-addon">
-                                    <span class="glyphicon glyphicon-th"></span>
-                                </div>
-                            </div>
-
+                            <label for="datepicker">[% l('If suspended, activate on') %][% thaw_date | html %]</label>
+                            <duet-date-picker identifier="datepicker" value="[% thaw_date | html %]"></duet-date-picker>
+                            
                         <div class="form-check mt-3">
                             <input class="form-check-input" type="checkbox" name="email_notify" id="email_notify"
                                 [% IF ahr.email_notify == 't' %] checked [% END %] />
@@ -137,13 +126,6 @@
         END %]
     </div>
 </div>
-<script>
-    $('#datepicker').datepicker({
-        weekStart: 1,
-        autoclose: true,
-        todayHighlight: true,
-    });
-    $('#datepicker').datepicker("setDate", new Date());
-</script>
+
 [% END %]
 

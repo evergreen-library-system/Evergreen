@@ -66,37 +66,37 @@
         <form class="egtr" method="POST">
             <input type="hidden" name="action" value="curbside"/>
             <input type="hidden" name="cs_slot_id" value="[% appointment.id %]"/>
-            <table class="table table-bordered miniTable curbsideApptTable w-100 my-3">
-                <thead>
+            <table role="table" class="table table-bordered miniTable curbsideApptTable w-100 my-3">
+                <thead role="rowgroup">
                     <th>[% l('Pickup Location') %]</th>
                     <th>[% l('Date') %]</th>
                     <th>[% l('Time') %]</th>
                     <th>[% l('Arrival Notes') %]
-                        <a href="#" title="" data-toggle="tooltip" data-original-title="Vehicle Description, etc.">
+                        <a href="#" data-toggletip title="Vehicle Description, etc.">
                             <i class="fas fa-question-circle" aria-hidden="true"></i>
                         </a>
                     </th>
                     <th>[% l('Action') %]</th>
                 </thead>
-                <tbody><tr>
+                <tbody role="rowgroup"><tr role="row" mobile-count="#[% loop.count %]">
             [% disable_me = 0 %]
             [% no_patron_input = 0 %]
             [% date_started_null = 0 %]
             [% IF appointment && appointment.arrival; disable_me = 1; END %]
             [% IF ctx.get_org_setting(lib, 'circ.curbside.disable_patron_input'); no_patron_input = 1; END %]
-            <td>
+            <td role="cell" mobile-title="[% l('Pickup Location') %]">
                 [% ctx.get_aou(lib).name | html %]<br/>
                 [% l('Phone:')%] [% ctx.get_aou(lib).phone | html %]
                 <input type="hidden" name="cs_org" value="[% lib %]"/>
             </td>
-            <td>
+            <td role="cell" mobile-title="[% l('Date') %]">
                 [% IF !cs_date || ( date.format(cs_date _ ' 12:00:00', '%Y%m%d') < date.format(date.now, '%Y%m%d') ); cs_date = ''; tmp_cs_date = date.format(date.now, '%F'); date_started_null = 1; %]
                 [% ELSE; tmp_cs_date = cs_date; END %]
                 [% IF cs_date %]<input type="hidden" name="cs_date" value="[% cs_date | html %]"/>[% END %]
                 [% IF no_patron_input && date_started_null; %]&nbsp;
                 [% ELSE; %]<input type="date" name="cs_date" min="[% date.format(date.now, '%F') %]" value="[% tmp_cs_date | html %]" [% IF cs_date || no_patron_input %]disabled="disabled"[% END %]/>[% END %]
             </td>
-            <td>
+            <td role="cell" mobile-title="[% l('Time') %]">
                 [% IF appointment || cs_date; # checking times %]
                   [% current_date = cs_date %]
                   [% IF date_started_null && no_patron_input %]&nbsp;
@@ -123,13 +123,13 @@
                   [% IF !no_patron_input; %][% l('Select a date') %][% END %]
                 [% END %]
             </td>
-            <td>
+            <td role="cell" mobile-title="[% l('Arrival Notes') %]">
                 [% IF cs_date; # show the notes box %]
                 <input type="text" name="cs_notes" value="[% cs_notes | html %]" [% IF no_patron_input || disable_me %]disabled="disabled"[% END %]/>
                 [% ELSE %] &nbsp;
                 [% END %]
             </td>
-            <td>[%
+            <td role="cell">[%
                 disable_arrival_button = 1; # assume arrival is not yet allowed
                 IF appointment && appointment.slot;
                     stime = date.format(ctx.parse_datetime(appointment.slot), '%s');

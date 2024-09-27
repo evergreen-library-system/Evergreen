@@ -18,7 +18,7 @@
     IF neg_or_zero > 0; myopac_cc_allowed = 0; END;
 %]
 
-<h3>[% l("Current Charges") %]</h3>
+<h2>[% l("Current Charges") %]</h2>
 [%  IF myopac_cc_allowed; %]
 <form action="[% ctx.opac_root %]/myopac/main_payment_form#payment" method="get" id="selected_fines">
 [% END %]
@@ -26,23 +26,24 @@
     [% IF ctx.fines.circulation.size > 0 %]
     <div id='myopac_circ_trans_div'>
         <div class="header_middle">
-           <span class="acct_fines_header">
+           <h3 class="acct_fines_header">
            <!-- Different heading when not able to pay -->
              [% IF myopac_cc_allowed %]
                 [% l("Pay Selected Circulation Charges") %]
             [% ELSE %] 
                 [% l("Circulation Charges") %]
              [% END %]
-           </span>
+           </h3>
            
         </div>
 
      
         <div class="table-responsive">
-        <table id="acct_fines_main_header" class="table table-hover table-bordered miniTable chargesMainTable" title="[% l('Items Checked Out') %]">
-            <thead>
+        <h4>[% l('Items Checked Out') %]</h4>
+        <table role="table" id="acct_fines_main_header" class="table table-hover table-bordered miniTable chargesMainTable">
+            <thead role="rowgroup">
                
-                <tr>
+                <tr role="row">
 
                    [% IF myopac_cc_allowed %]
                     <th style="white-space:nowrap;">
@@ -51,16 +52,13 @@
                             title="[% l('Click to (un)select all charges') %]" />
                     </th> 
                     [% END %]
-                    <th>[% l("Owed") %]</th>
-                    <th>[% l("Billing Type") %]</th>
-                    <th>[% l("Title") %]</th>
-                    <th>[% l("Checkout") %]</th> 
-                    <th>[% l(" Due ") %]</th> 
-                    <th>
-                       <span>[% l(" Returned/Renewed") %]</span>
-                       <span>[% l(" Returned&#42;") %]</span>
-                    </th>
-                    
+                    <th scope="col" role="columnheader">[% l("Owed") %]</th>
+                    <th scope="col" role="columnheader">[% l("Billing Type") %]</th>
+                    <th scope="col" role="columnheader">[% l("Title") %]</th>
+                    <th scope="col" role="columnheader">[% l("Checkout") %]</th> 
+                    <th scope="col" role="columnheader">[% l(" Due ") %]</th> 
+                    <th scope="col" role="columnheader">[% l(" Returned/Renewed") %]
+                        [% l(" Returned&#42;") %]</th>
                 </tr>
             </thead>
             <tbody id='myopac_circ_trans_tbody'>
@@ -72,27 +70,25 @@
                     ELSIF f.xact.reservation;
                         attrs.title = f.xact.reservation.target_resource_type.name;
                     END %]
-                <tr id='myopac_circ_trans_row'>
+                <tr role="row" id='myopac_circ_trans_row'>
                     [% IF myopac_cc_allowed %]
-                    <td class="checkCell">
+                    <th class="checkCell form-check">
                         <input type="checkbox" checked="checked" 
-                            title="[% l('Pay this fine') %]" name="xact"
-                            value="[% f.xact.id %]" class="fineCheck"/>
-                    </td>
+                            aria-label="[% l('Pay [_0] fine', money(f.xact.balance_owed)) %]" name="xact"
+                            value="[% f.xact.id %]" class="form-check-input fineCheck"/>
+                    </th>
                     [% END %]
                     
-                    <td>
-                        <strong>
-                            [% money(f.xact.balance_owed) %]
-                        </strong>
+                    <td role="cell" class="numeric money fw-bold" mobile-title='[% l("Owed") %]'>
+                        [% money(f.xact.balance_owed) %]
                         <input class="fineAmount" value="[% f.xact.balance_owed %]" hidden />
                     </td>
                     
-                    <td>
+                    <td role="cell" mobile-title='[% l("Billing Type") %]'>
                        [% f.xact.last_billing_type %]
                     </td>
                                   
-                    <td>
+                    <td role="cell" mobile-title='[% l("Title") %]'>
                         [% recid = f.xact.circulation.target_copy.call_number.record.id || f.xact.reservation.target_resource_type.record.id;
                         IF recid; %]
                         <a href="[% mkurl(ctx.opac_root _ '/record/' _ recid,
@@ -102,14 +98,14 @@
                         [% END %]
                     </td>
                     
-                   <td name='myopac_circ_trans_start'>
+                   <td role="cell" mobile-title='[% l("Checkout") %]' name='myopac_circ_trans_start' class="circ_date xact_start">
                         [% ts = f.xact.circulation.xact_start || f.xact.reservation.start_time || 0;
                         IF ts;
                             date.format(ctx.parse_datetime(ts), DATE_FORMAT);
                         END %]
                     </td>
                     
-                    <td name='myopac_circ_trans_due' >
+                    <td role="cell" mobile-title='[% l(" Due ") %]' name='myopac_circ_trans_due' class="circ_date xact_end">
                         [% ts = f.xact.circulation.due_date || f.xact.reservation.end_time || 0;
                            due_org = f.xact.circulation.circ_lib || f.xact.reservation.pickup_lib;
                         IF ts;
@@ -117,7 +113,7 @@
                         END %]
                     </td>
                     
-                    <td name='myopac_circ_trans_finished' >
+                    <td role="cell" mobile-title='[% l(" Returned/Renewed") %]' name='myopac_circ_trans_finished' class="circ_date xact_return">
                         [%  ts = f.xact.circulation.checkin_time || f.xact.reservation.return_time || 0;
                             IF ts;
                                 date.format(ctx.parse_datetime(ts), DATE_FORMAT);
@@ -154,67 +150,63 @@
         </div>
 
         [% IF myopac_cc_allowed %]
-        <div class="d-block d-md-none">
-            <input id="pay_fines_check" checked="checked"
+        <div class="d-block d-md-none form-check">
+            <input id="pay_fines_check" checked="checked" class="form-check-input"
             type="checkbox" onclick="select_all_checkboxes('xact_misc', this.checked)"
             aria-label="[% l('Check/Uncheck All') %]" />    
-            <label for="pay_fines_check">[% l('Check/Uncheck All') %]</label>  
+            <label for="pay_fines_check" class="form-check-label">[% l('Check/Uncheck All') %]</label>  
         </div>             
         [% END %]
         
 		<div class="table-responsive">
-         <table id="acct_fees_main_header" class="table table-hover table-bordered mini-table" title="[% l('Other Fines and Fees') %]">
-            <thead>
-                <tr>
+         <table role="table" id="acct_fees_main_header" class="table table-hover table-bordered mini-table" title="[% l('Other Fines and Fees') %]">
+            <thead role="rowgroup">
+                <tr role="row">
                 
                      [% IF myopac_cc_allowed %]
                     <th style="white-space:nowrap;">
-                        <input id="pay_fines_box2" checked="checked"
+                        <input id="pay_fines_box2" checked="checked" class="form-check-input"
                             type="checkbox" onclick="select_all_checkboxes('xact_misc', this.checked)"
                             aria-label="[% l('Check/Uncheck All') %]" />
                     </th>
                     [% END %]
-                    <th >[% l("Owed") %]</th>
-                    <th >[% l("Billing Type") %]</th>
-                    <th >[% l("Note") %]</th>
-                    <th >[% l("Date") %]</th>
+                    <th scope="col" role="columnheader">[% l("Owed") %]</th>
+                    <th scope="col" role="columnheader">[% l("Billing Type") %]</th>
+                    <th scope="col" role="columnheader">[% l("Note") %]</th>
+                    <th scope="col" role="columnheader">[% l("Date") %]</th>
                     
 
                 </tr>
             </thead>
             <tbody id='myopac_trans_tbody'>
                 [% FOR f IN ctx.fines.grocery %]
-                <tr class ='myopac_trans_row'>
+                <tr role="row" class ='myopac_trans_row'>
                 [% c = c + 1; %]
                     [% IF myopac_cc_allowed %]
-                    <td class="checkCell">
+                    <th role="rowheader" scope="row" class="checkCell form-check">
                         <label class="sr-only">[% l('Billing Number [_1]', c) %]</label>
-                        <input aria-label="[% l('Pay This Bill') %]" class="fineCheck" type="checkbox" name="xact_misc" value="[% f.xact.id %]" checked="checked" />
-                    </td>
+                        <input aria-label="[% l('Pay [_0] bill', money(f.xact.balance_owed)) %]" class="form-check-input fineCheck" type="checkbox" name="xact_misc" value="[% f.xact.id %]" checked="checked" />
+                    </th>
                     [% END %]
                     
-                    <td class="danger">
-                        <span class="sr-only">[% l('Amount Owed') %]</span>
+                    <td role="cell" class="danger">
                         <strong>
                             [% money(f.xact.balance_owed) %]
                         </strong>
                          <input type="hidden" class="fineAmount" value="[% f.xact.balance_owed %]" hidden />
                     </td>
                     
-                    <td>
-                        <span class="sr-only">[% l('Billing For') %]</span>
+                    <td role="cell">
                         [% f.xact.last_billing_type %]
                     </td>
                     
-                    <td>
+                    <td role="cell">
                         [% IF f.xact.last_billing_note; %]
-                            <span class="sr-only">[% l('Note') %]</span>
                             [% f.xact.last_billing_note %]
                         [% END %]
                     </td>
                     
-                    <td>
-                        <span class="sr-only">[% l('Date of Billing') %]</span>
+                    <td role="cell">
                         [% date.format(ctx.parse_datetime(f.xact.xact_start),DATE_FORMAT) %]
                     </td>
 
@@ -229,7 +221,7 @@
     <div>[% l('You have no current fines.') %]</div>
     [% ELSIF myopac_cc_allowed %]
         <div class="my-3">
-            <button type="submit" value="[% l('Pay selected charges') %] - [% money(ctx.user_stats.fines.balance_owed) %]" title="[% l('Pay selected charges') %]" class="btn btn-confirm my-1"
+            <button type="button" value="[% l('Pay selected charges') %] - [% money(ctx.user_stats.fines.balance_owed) %]" title="[% l('Pay selected charges') %]" class="btn btn-confirm my-1"
                 id="selectPay"> <i class='fas fa-money-bill-wave' aria-hidden="true"></i> [% l('Pay Selected Charges') %] - [% money(ctx.user_stats.fines.balance_owed) %]</button>
             <button type="submit" class="btn btn-confirm my-1"><i class="fas fa-cash-register" aria-hidden="true"></i> [% l('Pay All Charges') %] - [% money(ctx.user_stats.fines.balance_owed) %]</button>
         </div>
