@@ -5,6 +5,7 @@
     ctx.page_title = l("Confirm Clearing of Basket") %]
 
     [% INCLUDE "opac/parts/searchbar.tt2" %]
+<main id="main">
 <div class="container">
   <hr>
   <h3>[% l('Confirm Clearing of Basket') %]</h3>
@@ -16,4 +17,5 @@
       <button type="reset" onclick="window.location='[% ctx.referer | html %]'" id="clear_basket_cancel" class="btn btn-deny"><i class="fas fa-times-circle" aria-hidden="true"></i> [% l('Cancel') %]</button>
     </form>
 </div>
+</main>
 [%- END %]

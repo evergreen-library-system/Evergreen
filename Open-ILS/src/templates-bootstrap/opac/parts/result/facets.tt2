@@ -1,4 +1,5 @@
-<div class="container-fluid my-3">
+<div class="row my-3">
+    <h3 class="sr-only">[% l('Search Results Facets') %]</h3>
 <div class="facet_box_wrapper row">
 [%
 

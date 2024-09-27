@@ -5,6 +5,7 @@
     ctx.page_title = l("Basket Warning") %]
     <h2 class="sr-only">[% l('Basket Warning') %]</h2>
     [% INCLUDE "opac/parts/searchbar.tt2" %]
+<main id="main">
     <div id="content-wrapper">
         <div id="main-content">
              <p class="big-strong">[% l('You are adding to a basket.') %]
@@ -24,4 +25,5 @@
             <div class="common-full-pad"></div>
         </div>
     </div>
+</main>
 [%- END %]

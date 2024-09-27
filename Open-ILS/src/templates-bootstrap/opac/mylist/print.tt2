@@ -4,7 +4,7 @@
     INCLUDE "opac/parts/topnav.tt2";
     ctx.page_title = l("Confirm Basket Printing") %]
     [% INCLUDE "opac/parts/searchbar.tt2" %]
-
+<main id="main">
 <div class="container">
   [% IF ctx.mylist.size %]
   <h3>[% l('Confirm Basket Printing') %]</h3>
@@ -26,4 +26,5 @@
     <button type="button" class="btn btn-confirm" onclick="window.location='[% ctx.referer | html %]'"><i class="fas fa-undo-alt" aria-hidden="true"></i> [% l('Return') %]</button>
   [% END %]
 </div>
+</main>
 [%- END %]

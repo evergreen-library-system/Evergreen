@@ -886,8 +886,8 @@
     </ul>
   </div>
   <div class="glide__arrows" data-glide-el="controls">
-    <button class="glide__arrow glide__arrow--left btn" data-glide-dir="<"><i class="fas fa-arrow-left"></i> [% l('Prev') %]</button>
-    <button class="glide__arrow glide__arrow--right btn" data-glide-dir=">">[% l('Next') %] <i class="fas fa-arrow-right"></i></button>
+    <button type="button" class="glide__arrow glide__arrow--left btn" data-glide-dir="<"><i class="fas fa-arrow-left"></i> [% l('Prev') %]</button>
+    <button type="button" class="glide__arrow glide__arrow--right btn" data-glide-dir=">">[% l('Next') %] <i class="fas fa-arrow-right"></i></button>
   </div>
 </div>
 </div>
@@ -917,8 +917,7 @@
 [% END -%]
 
 [%- BLOCK show_cover -%]
-    <td>
-    <span class="sr-only">[% l('Cover Image') %]</span>
+    <td role="cell">
     [% IF obalkyknih_cz.enabled == 'true' %]
         [% IF (matches = row_isbnissn.match('^(.+?)(\s.+)$'));
             row_isbnissn = matches.0;
@@ -927,7 +926,7 @@
     [% ELSE %]
         <a href='[% ctx.media_prefix %]/opac/extras/ac/jacket/medium/r/[% row_rec_id | uri %]'>
     [% END %]
-    <img alt="[% row_title _ ' Cover Image' %]" class='my-2' style="max-width:70px;"
+    <img alt="" class='my-2' style="max-width:70px;"
             src='[% ctx.media_prefix %]/opac/extras/ac/jacket/medium/r/[% row_rec_id | uri %]'/>
     </a>
     </td>

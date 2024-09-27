@@ -12,7 +12,7 @@
 <div id='myopac_summary_div'>
     <div>
         <div id="acct_sum_block" class="container">
-            <h3>[% l('My Account Summary') %]</h3>
+            <h2>[% l('My Account Summary') %]</h2>
                 <div class="row">
                     <div class="col-12">
                      <span [% IF ctx.expired_card %]class="danger"[% END %]>

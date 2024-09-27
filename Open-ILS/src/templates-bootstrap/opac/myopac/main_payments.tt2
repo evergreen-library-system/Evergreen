@@ -29,7 +29,7 @@
 
         </div>
     </div>
-
+    <h4>[% l('Payments') %]</h4>
     [% IF ctx.payments.size %]
     <table title="[% l('Payments') %]"
         class='table table-hover table-bordered miniTable paymentTable'>

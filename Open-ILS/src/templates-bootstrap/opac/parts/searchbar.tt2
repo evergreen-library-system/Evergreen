@@ -1,4 +1,4 @@
-<h3 class="sr-only">[% l('Catalog Search') %]</h3>
+<div role="search" aria-label="Catalog">
 [% PROCESS "opac/parts/org_selector.tt2";
 
 # We need to ignore some filters in our count
@@ -195,7 +195,6 @@ END;
             </li>
         [% END %]</ul>
     </div>
-    <br/>
     [% END %]
 
     <script>

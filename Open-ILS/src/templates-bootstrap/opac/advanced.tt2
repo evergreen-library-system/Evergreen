@@ -7,9 +7,8 @@
 
     ctx.metalinks.push('<meta name="robots" content="noindex,follow">');
 -%]
-    <span class="sr-only">[% l('Advanced Search') %]</span>
     <div class="container">
-        <div id="search-wrapper">
+        <nav id="search-wrapper" aria-label="[% l('Advanced Search') %]">
             <div class="mt-3">
                 <ul class="nav nav-tabs">
                 <li class="nav-item">
@@ -29,10 +28,10 @@
                 </li>
                 </ul>
             </div>
-        </div>
-        <div id="content-wrapper">
-            <div>
-                <div class="advanced_div">
+        </nav>
+        <main id="main">
+            <div id="content-wrapper">
+                <div class="advanced_div" role="search" aria-labelledby="advanced_search_label">
                 [% IF pane == 'advanced' %]
                 [% INCLUDE "opac/parts/advanced/search.tt2" %]
                 [% ELSIF pane == 'numeric' %]
@@ -42,6 +41,6 @@
                 [% END %]
                 </div>
             </div>
-        </div>
+        </main>
     </div>
 [% END %]

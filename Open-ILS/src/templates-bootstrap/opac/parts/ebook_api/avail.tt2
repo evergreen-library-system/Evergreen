@@ -29,10 +29,10 @@ IF args.ebook;
                     <th>[% l('Available Formats') %]</th>
                     <th>[% l('Status') %]</th>
                 </tr>
-            <tbody>
-                <tr>
-                    <td id="[% ebook.rec_id %]_formats"></td>
-                    <td id="[% ebook.rec_id %]_status"></td>
+            <tbody role="rowgroup">
+                <tr role="row">
+                    <td role="cell" id="[% ebook.rec_id %]_formats"></td>
+                    <td role="cell" id="[% ebook.rec_id %]_status"></td>
                 </tr>
             </tbody>
         </table>

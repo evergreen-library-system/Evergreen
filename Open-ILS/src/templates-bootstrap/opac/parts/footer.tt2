@@ -1,28 +1,24 @@
 [% IF !ctx.is_staff %]
 <div id="footer-wrap" class="mt-auto">
-<div id="footer">
+<footer id="footer">
 <div class="row mx-0">
 <div class="col-12 col-lg-3">
     
 </div>
 <div class="col-12 col-lg-6">
-    <nav class="navbar navbar-expand-lg navbar-dark ">
-    <div class="row w-100">
-        <div class="col-12">
-            <ul class="navbar-nav">
-                <!--Link 1-->
-            [% IF ctx.get_org_setting(ctx.physical_loc || ctx.aou_tree.id, 'opac.allow_pending_user') && !ctx.user %]
-                <li class="nav-item"><a class="nav-link" href="[% mkurl(ctx.opac_root _ '/register') %]">[%
-                l('Request Library Card') %]</a></li>
-            [% ELSE %]
-                <li class="nav-item"><a class="nav-link" href="#">[% l('Example Link 1') %]</a></li>
-            [% END %]
-                <li class="nav-item"><a class="nav-link" href="#">[% l('Example Link 2') %]</a></li>
-                <li class="nav-item"><a class="nav-link" href="#">[% l('Example Link 3') %]</a></li>
-                <li class="nav-item"><a class="nav-link" href="#">[% l('Example Link 4') %]</a></li>
-            </ul>
-        </div>
-    </div>
+    <nav class="navbar navbar-expand-lg navbar-dark" aria-label="Additional Resources">
+        <ul class="navbar-nav mx-auto">
+            <!--Link 1-->
+        [% IF ctx.get_org_setting(ctx.physical_loc || ctx.aou_tree.id, 'opac.allow_pending_user') && !ctx.user %]
+            <li class="nav-item"><a class="nav-link" href="[% mkurl(ctx.opac_root _ '/register') %]">[%
+            l('Request Library Card') %]</a></li>
+        [% ELSE %]
+            <li class="nav-item"><a class="nav-link" href="#">[% l('Example Link 1') %]</a></li>
+        [% END %]
+            <li class="nav-item"><a class="nav-link" href="#">[% l('Example Link 2') %]</a></li>
+            <li class="nav-item"><a class="nav-link" href="#">[% l('Example Link 3') %]</a></li>
+            <li class="nav-item"><a class="nav-link" href="#">[% l('Example Link 4') %]</a></li>
+        </ul>
     </nav>
      [% IF ctx.timing %]
     <div id="timing">
@@ -49,6 +45,6 @@
  <div class="col-12 col-lg-3">[%- INCLUDE 'opac/parts/pref_locale_picker.tt2' %]</div>
 
     </div>
-    </div>
+    </footer>
 </div>
 [% END %]

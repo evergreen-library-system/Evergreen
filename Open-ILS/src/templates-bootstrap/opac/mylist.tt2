@@ -4,6 +4,7 @@
     INCLUDE "opac/parts/topnav.tt2";
     ctx.metalinks.push('<meta name="robots" content="noindex,follow">');
     ctx.page_title = l("Record Detail") %]
+<main id="main">
     <h2 class="sr-only">[% l('Basket') %]</h2>
     <div>
     [% INCLUDE "opac/parts/searchbar.tt2" %]
@@ -18,5 +19,5 @@
                 [% END %]
         </div>
     </div>
-
+</main>
 [%- END %]

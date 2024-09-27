@@ -15,8 +15,7 @@ function disable_submit() {
 </script>
 
 <div id='holds_box' class='container'>
-<hr>
-    <h3>[% l('Place Hold') %]</h3>
+    <h2>[% l('Place Hold') %]</h2>
 
     <form method="post" onsubmit="return disable_submit();">
         <input type="hidden" name="override" value="1" />
@@ -140,14 +139,13 @@ function disable_submit() {
         [% END %]
         </table>
         [% IF override_possible %]
-            <br/>
             <hr/>
-            <div class='big-strong'>
+            <p class='big-strong'>
                 [% |l %]You have permission to override some of the failed holds. Click Submit to override and place your hold on the selected items.[% END %]
-            </div>
-            <span>
+            </p>
+            <p>
                 <button id="place_hold_submit" type="submit" name="submit" class="btn btn-confirm"><i class="fas fa-save" aria-hidden="true"></i> [% l('Submit') %]</button>
-            </span>
+            </p>
         [% END %]
 
         [% IF any_failures OR ctx.general_hold_error %]

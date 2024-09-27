@@ -43,8 +43,7 @@
     END;
     skin_root = "../"
 %]
-
-    <h2 class="sr-only">[% l('My Account') %]</h2>
+<main id="main">
     [% INCLUDE "opac/parts/topnav.tt2" %]
     <div>
         [% INCLUDE "opac/parts/searchbar.tt2" %]
@@ -54,7 +53,7 @@
         <div class="row">
             <div class="col-lg-3">
                 <div class="my_nav">
-                <div class="btn-group-vertical dropright">
+                <div class="btn-group-vertical">
 
                 [%- FOREACH page IN myopac_pages;
                     IF page.url == myopac_page || page.url == parent;
@@ -65,12 +64,10 @@
                     END -%]
 
                     [% IF page.parent == "parent" && page.children > 0; %]
-                    <div class="dropdown dropright">
-                        <button class="w-100 btn btn-action text-left dropdown-toggle [% active %]" id="dropdownMenuLink-[% page.url %]" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                            [% page.text; %]
-                        </button>
-
-                        <div class="dropdown-menu" aria-labelledby="dropdownMenuLink-[% page.url %]">
+                    <details>
+                        <summary>
+                            <div class="w-100 btn btn-action [% active %]">[% page.text; %]</div>
+                        </summary>
                         [%- FOREACH child IN myopac_pages; -%]
                             [% IF child.parent == page.url;
                             IF myopac_page == child.url;
@@ -82,16 +79,15 @@
                         %]
                         [%- IF (ebook_api.enabled == 'true' && child.url.search('ebook')) || !child.url.search('ebook') %]
 
-                        <a role="button" href="[% mkurl(ctx.opac_root _ '/myopac/' _ child.url, {}, ['bbid', 'offset', 'limit','sort','sort_type', 'hid']) %]"
+                        <a href="[% mkurl(ctx.opac_root _ '/myopac/' _ child.url, {}, ['bbid', 'offset', 'limit','sort','sort_type', 'hid']) %]"
                     class="dropdown-item [% cactive %]">[% child.text; %]</a>
                     [% END %]
                             [% END %]
                         [% END %]
-                        </div>
-                    </div>
+                    </details>
                     [% ELSIF page.parent == "parent"; %]
 
-                    <a role="button" class="btn btn-action [% active %]" href="[% mkurl(ctx.opac_root _ '/myopac/' _ page.url, {}, ['bbid', 'offset', 'limit','sort','sort_type', 'hid']) %]">
+                    <a class="btn btn-action [% active %]" href="[% mkurl(ctx.opac_root _ '/myopac/' _ page.url, {}, ['bbid', 'offset', 'limit','sort','sort_type', 'hid']) %]">
   [% page.text; %]
   </a>
 
@@ -106,6 +102,6 @@
         </div>
         </div>
     </div> <!-- content-wrapper -->
-
+</main>
 
 [% END %]
