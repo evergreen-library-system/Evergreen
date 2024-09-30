@@ -7,23 +7,24 @@
     set_locale = CGI.param('set_eg_locale') || CGI.cookie('eg_locale') || base_locale;
 %]
 
-<form id="pref_locale_picker_form" class="language_form" action="[% mkurl() %]" method="post">
-    <h6><i class="fas fa-globe"></i> [% l("Language") %]</h6>
-    [%- FOREACH param IN CGI.params(); -%]
-        [%- NEXT IF param.key == 'set_eg_locale'; -%]
-        <input type="hidden" name="[% param.key | html %]" value="[% param.value | html %]" />
-    [%- END; -%]
-    <ul style="list-style:none;padding:0px;">
+<nav id="lang_select" aria-labelledby="lang_select_header" class="language_form">
+    <b id="lang_select_header">
+        <i class="fas fa-globe" aria-hidden="true"></i>
+        [% l("Language") %]
+    </b>
+
+    <ul class="list-unstyled">
     [%- FOREACH locale IN ctx.locales.keys %]
         [%- IF set_locale == locale;
-                disabled = 'disabled="disabled"';
+                aria_current = 'aria-current="page"';
             ELSE;
-                disabled = '';
+                aria_current = '';
             END;
         %]
         <li>
-        <button type="submit" name="set_eg_locale" value="[% locale | html %]" [% disabled %]>[% ctx.locales.$locale | html %]</button></li>
+            <a href="[% mkurl('', {set_eg_locale => locale}) %]" [% aria_current %]>[% ctx.locales.$locale | html %]</a>
+        </li>
     [%- END %]
     </ul>
-</form>
+</nav>
 [%- END %]

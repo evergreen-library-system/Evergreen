@@ -42,7 +42,7 @@ END;
     <div class="row m-3 align-items-end">
      <!--Keyword-->
         <div class="col col-search-box">
-        <span class='search_box_wrapper'>
+        <div class='search_box_wrapper'>
             <label id="search_box_label" for="search_box" class="form-label w-100">[% l('Search: ') %]</label>
             <input class="form-control form-control-sm" type="search" id="search_box" name="query" aria-label="[%
                     l('Enter search query:');
@@ -54,7 +54,7 @@ END;
                 [%- ELSE -%]
                     [% IF basic_search != "f" AND is_home_page%] autofocus [% END %]
                 [%- END # autosuggest enabled %] />
-        </span>
+        </div>
         </div>
 
         <!-- Force next columns to break to new line below sm breakpoint -->

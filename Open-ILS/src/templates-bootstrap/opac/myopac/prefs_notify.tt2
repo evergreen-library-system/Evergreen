@@ -5,7 +5,7 @@
     prefs_page = 'prefs_notify';
     can_call_action_trigger = 'true' %]
 
-<h3>[% l('Notification Preferences') %]</h3>
+<h2>[% l('Notification Preferences') %]</h2>
 
     [% IF ctx.affectedChgs %]
         [% # get hash of sms cariers keyed by id:

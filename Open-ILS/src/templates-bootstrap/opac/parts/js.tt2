@@ -241,18 +241,15 @@ var aou_hash = {
         let btn = document.getElementById('show_password');
         let input = document.getElementById('password_field');
         let icon = btn.querySelector('i');
-        let desc = document.getElementById('show_password_desc');
         btn.addEventListener('click', () => {
             if(input.type == 'password'){
                 input.type = 'text';
                 icon.setAttribute('class', 'fas fa-eye');
                 btn.setAttribute('aria-checked', 'true');
-                desc.setAttribute('textContent', "[% l('Your password is visible!') %]");
             }else {
                 input.type = 'password';
                 icon.setAttribute('class', 'fas fa-eye-slash');
                 btn.setAttribute('aria-checked', 'false');
-                desc.setAttribute('textContent', "[% l('Your password is not visible.') %]");
             }
             input.focus();
         });

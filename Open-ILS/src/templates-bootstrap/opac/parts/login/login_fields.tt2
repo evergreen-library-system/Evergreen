@@ -1,27 +1,22 @@
     [% IF !sso_enabled || sso_native %]
     <div class="row">
         <div class="col-sm-6">
-            <label for='username_field' class="lbl1" >[% l('Library Card Number') %]
-                <a href="#" aria-label="Card number help" title="[% INCLUDE 'opac/parts/login/username_hint.tt2' %]" data-toggletip>
+            <label for='username_field' class="lbl1 form-label d-inline" >[% l('Library Card Number') %]</label>
+            <a href="#" aria-label="Card number help" title="[% INCLUDE 'opac/parts/login/username_hint.tt2' %]" data-toggletip>
                 <i class="fas fa-question-circle"></i></a>
-            </label>
-
             <input class="form-control" type='text' id="username_field" name="username" 
                 autocomplete="username" autocapitalize="off" aria-describedby="login-failed-message"
                 [% IF ctx.page == 'login' %] autofocus [% END %]/>
         </div>
         <div class="col-sm-6">
-            <label for="password_field" class="lbl1" >[% l('PIN') %]
-                <a href="#" aria-label="Password help" title="[% INCLUDE 'opac/parts/login/password_hint.tt2' %]" data-toggletip>
+            <label for="password_field" class="lbl1 form-label d-inline" >[% l('PIN') %]</label>
+            <a href="#" aria-label="Password help" title="[% INCLUDE 'opac/parts/login/password_hint.tt2' %]" data-toggletip>
                 <i class="fas fa-question-circle"></i></a>
-            </label>
-
             <div class="input-group">
 				<input class="form-control" id="password_field" name="password" type="password"
 					spellcheck="false" autocomplete="current-password" autocapitalize="none" aria-describedby="login-failed-message show_password" />
-				<button id="show_password" class="input-group-text pointer" type="button" role="checkbox" aria-checked="false">
+				<button id="show_password" class="input-group-text pointer" type="button" role="checkbox" aria-checked="false" aria-label="[% l('Show password') %]">
 					<i class="fas fa-eye-slash"></i>
-                    <span id="show_password_desc" class="sr-only">[% l('Your password is not visible.') %]</span>
 				</button>
             </div>
         </div>

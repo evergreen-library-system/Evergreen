@@ -18,7 +18,7 @@
 %]
 <div class='container'>
 <hr>
-    <h3 class="text-center">[% l('Login to Your Account') %]</h3>
+    <h2 class="text-center">[% l('Login to Your Account') %]</h2>
 <div class="table table-borderless table-sm">
 
     [% IF sso_enabled %]

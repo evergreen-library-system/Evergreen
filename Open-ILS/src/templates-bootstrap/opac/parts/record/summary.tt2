@@ -28,12 +28,13 @@ ctx.metalinks.push('
             END;
             %]
             <a href='http://obalkyknih.cz/view?isbn=[% isbnissn %]'>
-                <img alt="" class='img-thumbnail w-auto'
+                <img class='img-thumbnail w-auto' alt="Cover image for [% IF attrs.hl.title; attrs.hl.title; ELSE; attrs.title_extended | html; END %]"
                     src='[% ctx.media_prefix %]/opac/extras/ac/jacket/[% record.summary.jacket_size %]/r/[% ctx.bre_id | uri %]' />
             </a>
             [% ELSE %]
-            <a href='[% ctx.media_prefix %]/opac/extras/ac/jacket/large/r/[% ctx.bre_id | uri %]'><img
-                    alt="" class='img-thumbnail w-auto'
+            <a href='[% ctx.media_prefix %]/opac/extras/ac/jacket/large/r/[% ctx.bre_id | uri %]'>
+                <img class='img-thumbnail w-auto'
+                    alt="Enlarge cover image for [% IF attrs.hl.title; attrs.hl.title; ELSE; attrs.title_extended | html; END %]"
                     src='[% ctx.media_prefix %]/opac/extras/ac/jacket/[% record.summary.jacket_size %]/r/[% ctx.bre_id | uri %]' />
             </a>
             [%- END %]

@@ -1,5 +1,5 @@
 <div id="myopac_messages_div">
-    <h3>[% l("Messages") %]</h3>
+    <h2>[% l("Messages") %]</h2>
     <div id="single_message_main">
         <form method="post" id="messages-form" action="[% ctx.opac_root %]/myopac/messages"  class="my-2">
             <input type="hidden" name="message_id" value="[% ctx.patron_message_id %]" />

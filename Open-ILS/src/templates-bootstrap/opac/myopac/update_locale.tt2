@@ -2,15 +2,13 @@
     PROCESS "opac/parts/misc_util.tt2";
     WRAPPER "opac/parts/myopac/base.tt2";
     myopac_page = "prefs"  %]
-<h3 class="sr-only">[% l('Update Preferred Language') %]</h3>
-<div id='myopac_summary_div' style="padding:0px;">
+<h2>[% l('Update Preferred Language') %]</h2>
+<div id='myopac_summary_div'>
 
-    <div class="header_middle">
-        <span class="float-left">[% l('Update Preferred Language') %]</span>
-    </div>
+    
 	
 [% IF ctx.password_incorrect %]
-    <div id='account-update-email-error'>
+    <div id='account-update-email-error' class="alert alert-danger" role="status">
         [% |l %]Your current password was not correct.[% END %]
     </div>
 [% END %]
@@ -19,25 +17,22 @@
     [% IF CGI.param("return_to_referer") %]
     <input type="hidden" name="redirect_to" value="[% ctx.referer | html %]" />
     [% END %]
+    <div class="form-grid">
+        <label for="current_locale">[% l('Current Preferred Language') %]</label>
+        <output id="current_locale">[% ctx.user.locale.name | html %]</output>
     
-        <div class="row">
-            <div class="col-md-6">[% l('Current Preferred Language') %]</div>
-            <div class="col-md-6">[% ctx.user.locale.name | html %]</div>
-        </div>
-        <div class="row">
-            <div class="col-md-6"><label for="password">[% l('Current Password') %]</label></div>
-            <div class="col-md-6"><input id="password" type='password' name='current_pw' autocomplete="current-password"/></div>
-        </div>
-        <div class="row">
-            <div class="col-md-6"><label for="pref_lang">[% l('New Preferred Language') %]</label></div>
-            <div class="col-md-6" class="px-3">
-                <select class="d-inline-block form-control mod-control" name="pref_lang" id="pref_lang">
-                    [% FOREACH i18n IN ctx.i18n_locales %]
-                        <option value='[% i18n.key | html %]'>[% l(i18n.value) %]
-                    [% END %]
-                </select>
-            </td>
-    <button class="btn btn-confirm m-2" type='submit'><i class="fas fa-save"></i>Save Changes</button>
+        <label for="password">[% l('Current Password') %]</label>
+        <input id="password" class="form-control" type='password' name='current_pw' autocomplete="current-password"/>
+        
+        <label for="pref_lang">[% l('New Preferred Language') %]</label>
+        <select class="d-inline-block form-control mod-control" name="pref_lang" id="pref_lang">
+            [% FOREACH i18n IN ctx.i18n_locales %]
+                <option value='[% i18n.key | html %]'>[% l(i18n.value) %]
+            [% END %]
+        </select>
+                
+        <button class="btn btn-confirm m-2" type='submit'><i class="fas fa-save"></i>[% l('Save Changes') %]</button>
+    </div>
 </form>
-
+</div>
 [% END %]
