@@ -1,0 +1,651 @@
+= Evergreen 3.14 Release Notes =
+:toc:
+:numbered:
+:toclevels: 3
+
+== New Features ==
+
+:leveloffset: +2
+
+
+= Acquisitions =
+
+
+== EDI X12 Parser ==
+
+Added support to the EDI parser to read X12 messages.  In particular, this 
+allows Evergreen to consume Midwesttapes X12 ASN (shipment notification)
+messages.
+
+https://bugs.launchpad.net/evergreen/+bug/2003106[LP#2003106]
+
+
+= Administration =
+
+
+== Remove Z39.50 target definition caching ==
+
+The open-ils.search drone had the ability to cache the Z39.50 target definition data
+per process.
+
+This fix removes per-child-process caching of Z39.50 target definitions
+to address several issues caused by the caching:
+
+* If any targets have a use permission attached, whether
+  such a target is available to a user can be inconsistent
+  based on who last fetched (and cached) service definitions
+  from a particular open-ils.search backend.
+* Z39.50 searches may sporadically fail to use
+  targets that were recently added.
+
+https://bugs.launchpad.net/evergreen/+bug/2044854[LP#2044854]
+
+Apache Proxy LogFormat Configuration
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+Two `LogFormat` entries have been added to the sample Apache
+configuration in `eg.conf.in` that are useful when a proxy runs in
+front of Evergreen's Apache.  These configurations mimic the default
+"common" and "combined" log formats, but log the remote client's
+actual IP address when `mod_remoteip` is enabled.  The entries are
+repeated here in case you prefer to manually update your Apache
+configuration.
+
+ LogFormat "%a %l %u %t \"%r\" %>s %b" proxy-common
+ Logformat "%a %l %u %t \"%r\" %>s %b \"%{Referer}i\" \"%{User-agent}i\"" proxy-combined
+
+To use these formats, simply replace the "common" or "combined" at the
+end of the `CustomLog` entries in the `eg.conf` file with either the
+"proxy-common" or "proxy-combined" entry, depending upon which you
+want to use.
+
+From:
+
+ CustomLog "|/usr/bin/logger -p local7.info" common
+
+to:
+
+ CustomLog "|/usr/bin/logger -p local7.info" proxy-common
+
+for example.
+
+
+== Patron Loader ==
+
+A new script for bulk loading and updating patrons from the server now exists in Open-ILS/src/support-scripts called patron_loader.pl.  It is installed to <prefix>/bin (/openils/bin/patron_loader.pl for standard installs).  It can be run manually or from cron.
+
+=== Sample invocation:
+
+[source,bash]
+-----------------
+./patron_loader.pl --db evergreen --dbhost myserver -dbuser admin --dbpw demo123 --file sample.csv --org_unit INNS --date_format "MM/DD/YYYY" --default_password 4444 --alert_message "patron has left swim cap at desk"  --debug
+-----------------
+
+=== Required parameters:
+
+ --file path to the CSV file used as the data source
+ --org_unit the org unit name of the org unit patrons are being loaded for
+   used to match mapped variables
+
+=== Optional parameters:
+
+ --help or --h shows the help
+
+ Database settings loaded by default from opensrf.xml
+ --db the Evergreen database (defaults to the one established in opensrf.xml)
+ --dbuser the user of the Evergreen database
+ --dbhost the ip or domain name of the Evergreen database
+ --dbport Evergreen database port, defaults to 5432
+
+ --delimiter defaults to a comma can be any other delimiter usable by TEXT::CSV
+ --debug using this will assume you do not want to commit
+   any database transactions and will print the SQL that would do so to STDOUT
+ --matchpoint defaults to 'usrname', can also be 'cardnumber'
+ --date_format used if dates are not in a 'YYYY-MM-DD' format
+ --ident_type available as a field but rarely used in export sources so it can
+   be specified from the command line
+ --default_password allows you to define a default password for accounts where one
+   is not defined in the file, be very careful, this option is dangerous as it
+   _will_ overwrite existing passwords
+   if some rows have a passwd value and the default is used the default will only
+   be used where the column is null
+ --alert_message this is meant for scenarios where the script is being used for bulk
+   loading students and an alert message is needed such as "verify address"
+   it only adds an alert and does not check for duplications
+   sending library will be set to the org unit used in the parameters
+ --alert_title defaults to 'Needs Staff Attention', only appears when --alert_message
+   is defined
+ --profile if no profile is given in the file one can be specified by parameter,
+   if a combination of parameter and in file is used the parameter will be used as
+   a fall back from the file
+ --home_org if no library is provided in the file it can be overridden by this, like
+   similar settings if a column with library is present but null in a given row
+   this will be used instead; expects short org name
+ --fill_with_matchpoint
+   if set will allow you to only have cardnumber or usrname but it must also
+   be your matchpoint, e.g. if you have a cardnumber but not username and cardnumber
+   if your matchpoint with this set the cardnumber will be used for both
+ --nobootstrap do not load DB config from opensrf.xml
+
+=== Required Columns:
+
+* *cardnumber* - unless using usrname as matchpoint and --fill_with_matchpoint is used
+* *usrname* - unless using cardnumber as matchpoint and --fill_with_matchpoint is used
+* *profile* - unless --profile is used
+* *home_library* - unless --home_org is used
+* *family_name*
+* *first_given_name*
+
+Although data for the above columns are optional in some situations the columns still need to exist in the file.
+
+=== Optional Columns:
+
+ net_access_level
+ second_given_name
+ pref_first_given_name
+ name_keywords
+ email
+ day_phone
+ evening_phone
+ other_phone
+ expire_date
+ ident_type   <-- needs id value, not string
+ ident_value
+ passwd       <-- if not supplied for a new user a random one will be created on NULL or empty string
+ add1_street1
+ add1_street2
+ add1_cit
+ add1_county
+ add1_state
+ add1_country
+ add1_post_code
+ add2_street1
+ add2_street2
+ add2_cit
+ add2_county
+ add2_state
+ add2_country
+ add2_post_code
+ statcat_name1
+ statcat_value1
+ statcat_name2
+ statcat_value2
+ statcat_name3
+ statcat_value3
+ photo_url
+
+=== Mapping:
+
+Not all data sources can customize the data exported to the CSV so some mapping is allowed.
+
+The *config.patron_loader_header_map* table allows for mapping incoming header names to ones that
+are natively expected.  For example, imagine that a school wants to use the 'uid' as
+password and the column header will always read 'uid' then you can enter it like this:
+
+ import_header: 'uid'
+ default_header: 'passwd'
+
+Two value types can currently be mapped as well, 'home_library' and 'profile' in patron_loader_value_map.
+These map values in their respective columns instead of the headers.  For example, imagine a
+school who exports student profiles of 'Middle School' and 'High School' but both need to load
+as the Evergreen profile of 'Student'.  It would be represented with two entries:
+
+ mapping_type: 'profile'
+ import_value: 'Middle School'
+ native_value: 'Student'
+
+ mapping_type: 'profile'
+ import_value: 'High School'
+ native_value: 'Student'
+
+You can also map home libraries like this:
+
+ mapping_type: 'home_library'
+ import_value: 'South West Elementary'
+ native_value: 'BR1'
+
+As a convention the Evergreen database column names are mostly used for the actor.usr
+columns but it was found in testing that home_ou was very confusing so the label of
+'library' is used instead and internally adjusted to use 'home_ou'.
+
+The column ident_type is treated specially.  It is required by actor.usr and does not
+have a default but usually doesn't correspond to a exported value from others systems
+so it defaults to '3' or 'Other' but you can define it through an optional parameter.
+
+=== Overview:
+
+The script is very conservative checking for an existing cardnumber and usrname.  If
+either is found on an account that differs from the one using the match point then it
+will skip adding or updating that user.  The match point specified is considered
+authoritative and it will update the matching account unless debug is on.
+
+Currently only two set of address columns are supported add1_foo and add2_foo. The script
+assumes the addresses being added are authoritative mailing addresses, removes any existing
+mailing addresses, adds these and sets the user's mailing_address field to the one from the
+addr1_street1 field or addr2_street1 if there is no addr1_street1.  If only a partial address
+is given the entire address will be written so long as there is a street1.  Empty strings will
+be used for the other values.  If there is no address given then addresses will not be
+touched.  Part of the aggressiveness of removing non-specified addresses is to ensure
+identifying information for patrons is removed when updating, especially for the use case
+of schools bulk updating juveniles.
+
+=== Database and Logging:
+
+The database holds a *actor.patron_loader_log* table that logs sessions and failed rows.
+
+
+= Cataloging =
+
+== Angular Record Buckets ==
+
+This work moves the Record Buckets feature into a new and reimagined Angular interface, and adds several new feature improvements.
+
+https://bugs.launchpad.net/evergreen/+bug/2063146[#2063146]
+
+Feature improvements include:
+
+* Reimplementation of the main buckets interfaces in Angular with accessibility and usability improvements.
+* New bucket sharing options, including sharing with organizational units, sharing with specific users, and read-write sharing as well as read-only sharing.
+* Transfer Bucket Ownership, where users can transfer their bucket to another user.
+* Favorites option, allowing a staff user to "star" a bucket to indicate it is a favorite.
+* Direct import of either Bib IDs or TCNs, both from a text file as well as in an upload modal.
+* Ability to send reports output directly to a new or specified bucket.
+* Addition of a new _Buckets_ subtab in the staff catalog interface, displaying a user's favorite and most recently viewed buckets.
+* Addition of a quick-add feature in the staff catalog search results list, where a user can add a record directly to a recent or a favorite bucket.
+* New buckets admin options available from within the buckets interface, where those with admin permissions can do the following:
+** Transfer ownership of others' buckets.
+** Edit bucket options and sharing for others' buckets.
+* Disambiguation of duplicate bucket entries via a new _Bucket Entry ID_ field, allowing users to intentionally add duplicates and/or remove accidental duplicates.
+
+In addition to feature improvements, this work addresses functional bugs related to record buckets, including:
+
+* https://bugs.launchpad.net/evergreen/+bug/1837933[Bug 1837933] - Record links don't work if ID column is hidden in record bucket query
+* https://bugs.launchpad.net/evergreen/+bug/1771568[Bug 1771568] - Record Bucket duplicates require separate removal
+* https://bugs.launchpad.net/evergreen/+bug/1870151[Bug 1870151] - Open Record Bucket title in a new tab
+* https://bugs.launchpad.net/evergreen/+bug/1819059[Bug 1819059] - When creating a bucket, Evergreen ignores the Publicly Visible? setting
+* https://bugs.launchpad.net/evergreen/+bug/1824723[Bug 1824723] - No error message when retrieving non existing shared bucket 
+* https://bugs.launchpad.net/evergreen/+bug/1870148[Bug 1870148] - Bucket contents may be removed by other users without warning
+* https://bugs.launchpad.net/evergreen/+bug/2027796[Bug 2027796] - When editing a record bucket the changes save without having to click on Apply Changes
+* https://bugs.launchpad.net/evergreen/+bug/2063146[Bug 2063146] - Record bucket contents still hang around in the Web client after you've deleted a bucket
+
+This work also introduces some changes to the grid component:
+
+* A new option to have an actions button column at the end of each row.
+* Template areas before and after grid toolbar buttons, used here to insert inputs.
+* Aligning the right side of the grid toolbar to more closely resemble AngularJS styles, including using the word _Actions_ for the actions menu instead of the checklist icon.
+
+This also introduces a change to the title area in Angular screens. Instead of using the blue alert style, page titles are now left-aligned and have a template area afterward. This is intended to be used for single buttons that represent a primary action on the screen, e.g. Add New [Thing]. This change makes room for a second template area that can be placed to the right of the title, used here for a search box.
+
+
+This work adds the following new permissions. Note that the _CALL_NUMBER_, _COPY_, and _USER_ permissions are placeholders for potential future work:
+
+* TRANSFER_CONTAINER
+* ADMIN_CONTAINER_BIBLIO_RECORD_ENTRY_USER_SHARE
+* ADMIN_CONTAINER_CALL_NUMBER_USER_SHARE
+* ADMIN_CONTAINER_COPY_USER_SHARE
+* ADMIN_CONTAINER_USER_USER_SHARE
+* VIEW_CONTAINER_BIBLIO_RECORD_ENTRY_USER_SHARE
+* VIEW_CONTAINER_CALL_NUMBER_USER_SHARE
+* VIEW_CONTAINER_COPY_USER_SHARE
+* VIEW_CONTAINER_USER_USER_SHARE
+* ADMIN_CONTAINER_BIBLIO_RECORD_ENTRY_ORG_SHARE
+* ADMIN_CONTAINER_CALL_NUMBER_ORG_SHARE
+* ADMIN_CONTAINER_COPY_ORG_SHARE
+* ADMIN_CONTAINER_USER_ORG_SHARE
+* VIEW_CONTAINER_BIBLIO_RECORD_ENTRY_ORG_SHARE
+* VIEW_CONTAINER_CALL_NUMBER_ORG_SHARE
+* VIEW_CONTAINER_COPY_ORG_SHARE
+* VIEW_CONTAINER_USER_ORG_SHARE
+
+== marc_export Exports Public Copy Notes and Copy Tags ==
+
+Public copy notes and tags are now exported by `marc_export` in the
+852 subfield z when the `--items` option is used.
+
+Copy tags come before copy notes, and tags with a URL come before
+those without.  The URL of a copy tag (if any) is added to 852
+subfield u.  The copy tags are ordered such that the first subfield z
+should correspond to the first subfield u and so on if there is more
+than one URL.
+
+https://bugs.launchpad.net/bugs/2045440[#2045440]
+
+== Option to Require Monograph Parts ==
+
+The Require Monographic Part when Present Library Setting,
+`circ.holds.ui_require_monographic_part_when_present`, has been
+expanded to also require that all copies on the parent bibliographic
+record have a part when the setting is active.
+
+This setting requires a patron to select a monograph part when placing
+a hold if any parts exist on the bibliographic record.  In a logical
+extension of this behavior, the setting now also requires catalogers
+to use parts on all copies when any copy at the library have parts.
+
+The change in behavior only affects the library/organization unit
+where the setting is set or its sub-units.
+
+https://bugs.launchpad.net/bugs/2018014[#2018014]
+
+== SuperCat/unAPI Export Public Copy Tags ==
+
+SuperCat and unAPI can now export public copy tags when copies are
+exported.
+
+To request the export of copy tags via unAPI, add `acpt` to the URL
+"includes" section.
+
+https://bugs.launchpad.net/bugs/2047442[#2047442]
+
+= Circulation =
+
+== Hold Reset Reasons ==
+
+=== New database tables ===
+
+. action.hold_request_reset_reason
+. action.hold_request_reset_reason_entry
+
+Hold reset reasons allow staff to see when and why a hold request has been reset. Reset reasons are generated any time a hold has been reset, whether that's a manual reset from a staff member or automatically because a hold has reached the hold retarget interval. This can be very useful for debugging the hold targeter or identifying bad actors in the system.
+
+=== Types of Reset Reasons ===
+
+There are ten different types of reset reasons that can be identified.
+
+. HOLD_TIMED_OUT
+. HOLD_MANUAL_RESET
+. HOLD_BETTER_HOLD
+. HOLD_FROZEN
+. HOLD_UNFROZEN
+. HOLD_CANCELED
+. HOLD_UNCANCELED
+. HOLD_UPDATED
+. HOLD_CHECKED_OUT
+. HOLD_CHECKED_IN
+
+=== Viewing Reset Reasons ===
+
+Staff can view reset reasons for a hold via a patron's *holds* tab.
+
+. Open patron's page.
+. Click *holds* tab.
+. Select a hold to investigate.
+. Click *detail view*.
+. Click *Reset Entries*
+. Order can be reversed to show most recent resets first.
+
+=== New srfsh script ===
+
+This feature includes a script that you can setup as a cron job to maintain the action.hold_request_reset_entry table:
+
+NOTE: purge_hold_reset_reason_entries.srfsh
+
+This script defaults to "1 year" but can be overridden on a library by library basis via YAOUS.
+
+=== New library settings ===
+
+. circ.hold_reset_reason_entry_age_threshold
+. circ.hold_retarget_previous_targets_interval
+
+https://bugs.launchpad.net/bugs/2012669[#2012669]
+
+== Self-Checkout Angular Port ==
+
+The patron self-checkout interface is now available as an Angular port of 
+the interface.
+
+https://myhost.mydomain/eg2/staff/selfcheck
+
+=== New Print Templates ===
+
+New self-check print templates are available under 
+Administration => Server Administration => Print Templates
+
+* Self-Checkout Checkouts
+* Self-Checkout Fines
+* Self-Checkout Holds
+* Self-Checkout Items Out
+
+https://bugs.launchpad.net/bugs/1840773[#1840773]
+
+
+= Client =
+
+== Dark Mode ==
+
+The staff client now supports both light and dark modes.  By default, the staff client will
+use the color mode setting from your operating system.  That is to say, if you have turned on
+Dark Mode for your operating system, or if your operating system defaults to Dark Mode, the
+Evergreen staff client will now also display in Dark Mode. 
+
+If you'd like to use a different color mode in the staff client than your operating system
+setting, you can do so using the color mode selector in the navigation bar at the top of the
+staff client.  If you want to resume using your operating system's color mode, you can set
+the color mode selector to "Auto".
+
+
+== Staff Multi-Factor Authentication ==
+
+Adding support to the Staff Client for Multi-Factor Authentication.  Supported factors:
+
+ * WebAuthn (YubiKey, Paired phones/tablets, Windows Hello, etc)
+ * Time-based One-Time Password (Google Authenticator, Twilio Authy, etc)
+ * SMS One-Time codes
+ * Email One-Time codes
+
+https://bugs.launchpad.net/bugs/2071636[#2071636]
+
+= OPAC =
+
+
+== OPAC setting to show/hide carousels ==
+
+There is a new setting to hide carousels from the public catalog.  This can be useful in cases
+where carousels are created for use in other sites (e.g. on library websites), rather than
+for use in the public catalog.
+
+You can turn off carousels in config.tt2 by setting `ctx.show_carousels` to `'false'`.
+
+https://bugs.launchpad.net/bugs/2009903[2009903]
+
+= SIP =
+
+Return an OK Screen Message for Users in Good Standing
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+If your PC management system or selfcheck looks for a screen
+message value of OK to evaulate user standing this can be
+enabled by adding the want_patron_ok value to a sip login
+and setting the value to true. Using a login setting like
+this allows you to only send this screeen message to those
+clients that expect it.
+
+https://bugs.launchpad.net/bugs/1613335[1613335]
+
+= Serials =
+
+== Angular Quick Receive ==
+
+The Angular Staff Catalog now has a Serials Quick Receive feature,
+similar to the one from the traditional catalog.
+
+https://bugs.launchpad.net/bugs/1906462[1906462]
+
+= Miscellaneous =
+
+ * For patron self-registration [Lp 2065448](https://bugs.launchpad.net/evergreen/+bug/2065448), improves styling and accessiblity and adds the following library settings:
+   ** 'Hide Username field in Patron Self-Reg.'
+       Hides the Requested Username field in the Patron Self-Registration interface.
+   ** 'Patron Self-Reg. Date of Birth Order'
+       The order in which to present the Month, Day, and Year elements for the Date of Birth field in Patron Self-Registration. Use the letter M for Month, D for Day, and Y for Year. Examples: MDY, DMY, YMD'
+ * LP1902120 Customizing the label for items with no parts (formerly "All Parts" or "Any Part")
+
+    This feature creates a new table for localizable strings intended to be used in
+    UI's. This is not a replacement for the existing I18N system for templates, but
+    does allow developers to choose some strings to be more easily accessible to
+    staff/admins for dynamic localization. The string we're focused on here is a
+    replacement for the "All Parts" and "Any Part" label in various Place Hold
+    interfaces when monographic parts are an option.
+
+    There is a UI for managing such strings under *Administration -> Server
+    Administration -> I18N: Localized UI Strings*. An admin could change the
+    "string" field directly, or use the existing Apply Translation mechanism to
+    customize the string for a specific locale.
+
+    As a bonus feature, we also expose an alternate UI for handling entries for
+    said Translation mechanism. This can be found under *Administration -> Server
+    Administration -> I18N: Localized Fieldmapper Strings*.
+
+    These customizations are global to the Evergreen installation.
+
+* SVG logos; support for forced colors mode (https://bugs.launchpad.net/evergreen/+bug/2049657[Bug 2049657])
+* Fix an accessibility issue in staff client forms. (https://bugs.launchpad.net/evergreen/+bug/2067115[Bug 2067115])
+* Add a print button to the Desk and Staff User Payment grids to (https://bugs.launchpad.net/evergreen/+bug/2003090[Bug 2003090])
+* Improves staff catalog search preferences, including ability (https://bugs.launchpad.net/evergreen/+bug/1783408[Bug 1783408])
+* Changes 'Clear?' to 'Delete' in Manage Copy Alerts (https://bugs.launchpad.net/evergreen/+bug/1788063[Bug 1788063])
+* Hides Edit call number link if missing permission (https://bugs.launchpad.net/evergreen/+bug/2015112[Bug 2015112])
+* Makes the grid icon column header's tooltip configurable (https://bugs.launchpad.net/evergreen/+bug/1861331[Bug 1861331])
+* Corrects current page ARIA in staff catalog pagination (https://bugs.launchpad.net/evergreen/+bug/2058747[Bug 2058747])
+* Adds User Permission Group name and ID to the AngularJS Hold Shelf list interface. (https://bugs.launchpad.net/evergreen/+bug/2068755[Bug 2068755])
+* Fixes the barcode input label in Scan Item as Missing Pieces. (https://bugs.launchpad.net/evergreen/+bug/2058287[Bug 2058287])
+* Update automated tests for the staff client. (https://bugs.launchpad.net/evergreen/+bug/2069098[Bug 2069098])
+* Fix bug that prevented action triggers from processing when granularity is an empty string. (https://bugs.launchpad.net/evergreen/+bug/2026206[Bug 2026206])
+* Patch Insecure direct object reference (IDOR) vulnerability for action trigger output in OPAC list printing feature. (https://bugs.launchpad.net/evergreen/+bug/2070078[Bug 2070078])
+* Remediates a reflected Cross-site Scripting (XSS) vulnerability in the public catalog browse feature. (https://bugs.launchpad.net/evergreen/+bug/2069959[Bug 2069959])
+* Mitigate a reflected cross-site scripting (XSS) vulnerability in the public catalog. (https://bugs.launchpad.net/evergreen/+bug/2019157[Bug 2019157])
+* Fixes Angular Search Preferences being empty after login (https://bugs.launchpad.net/evergreen/+bug/2072430[Bug 2072430])
+* The setting to require a monographic part when placing a hold now also requires that all copies have parts on a record with parts. (https://bugs.launchpad.net/evergreen/+bug/2018014[Bug 2018014])
+* add <label> to prompt dialog text; autofocus prompt input. (https://bugs.launchpad.net/evergreen/+bug/2072776[Bug 2072776])
+* Increase automated test coverage of circ limit sets. (https://bugs.launchpad.net/evergreen/+bug/2048425[Bug 2048425])
+* Adds docs for the 3.13 Reports rewrite (https://bugs.launchpad.net/evergreen/+bug/3[Bug 3])
+* Fix bug that prevented staff from placing holds for patrons with SMS notification preferences when SMS is not enabled in library settings. (https://bugs.launchpad.net/evergreen/+bug/2073990[Bug 2073990])
+* Fixes headings and links in staff catalog docs.
+* Update the bootstrap dependency in the staff client. (https://bugs.launchpad.net/evergreen/+bug/2073127[Bug 2073127])
+* Remove unintended grey stripes from popup dialogs in the staff client. (https://bugs.launchpad.net/evergreen/+bug/2073014[Bug 2073014])
+* Allow users to save grid settings in Acquisitions Distribution Formulas administrative interface. (https://bugs.launchpad.net/evergreen/+bug/2069750[Bug 2069750])
+* Hide the "Credit Available" and Patron Credit payment options when patron credit is disabled on bills screen. (https://bugs.launchpad.net/evergreen/+bug/1810419[Bug 1810419])
+* After checking out an item with a deposit, show the updated balance in patron summary. (https://bugs.launchpad.net/evergreen/+bug/2069891[Bug 2069891])
+* Show the deposit amount (if any) on the overrideable events dialog in checkout interface. (https://bugs.launchpad.net/evergreen/+bug/2069890[Bug 2069890])
+* Accessible toast markup; new toast duration WS setting. (https://bugs.launchpad.net/evergreen/+bug/1836686[Bug 1836686])
+* Fixes the OPAC Shelving Location Group sort to honor (https://bugs.launchpad.net/evergreen/+bug/2076357[Bug 2076357])
+* Fixes silent failure in offline mode Reprint Last Receipt. (https://bugs.launchpad.net/evergreen/+bug/1806780[Bug 1806780])
+* More specific "Close" labels for dialog buttons (https://bugs.launchpad.net/evergreen/+bug/2076677[Bug 2076677])
+* i18n for staff catalog Browse search form label (https://bugs.launchpad.net/evergreen/+bug/2069617[Bug 2069617])
+* i18n for BooPAC circ history "Delete Selected" button (https://bugs.launchpad.net/evergreen/+bug/2076420[Bug 2076420])
+* Prevent the shelving location group from being dropped in (https://bugs.launchpad.net/evergreen/+bug/2077998[Bug 2077998])
+* Adds keyboard shortcut hints to staff navigation menus (https://bugs.launchpad.net/evergreen/+bug/1622358[Bug 1622358])
+* Style keyboard shortcut hints in staff menus (https://bugs.launchpad.net/evergreen/+bug/1622358[Bug 1622358])
+* Allow receiving cancelled or backordered line items in Acq Search (https://bugs.launchpad.net/evergreen/+bug/2047940[Bug 2047940])
+* Allow users to save grid settings in Conjoined Items grid. (https://bugs.launchpad.net/evergreen/+bug/2069472[Bug 2069472])
+* Sort report templates grid by name, rather than create date. (https://bugs.launchpad.net/evergreen/+bug/2077441[Bug 2077441])
+* Fixes the Canadian Dollars currency symbol to CAD for acquisitions. (https://bugs.launchpad.net/evergreen/+bug/1807998[Bug 1807998])
+* updates to column picker docs (https://bugs.launchpad.net/evergreen/+bug/2067746[Bug 2067746])
+* Updates to Holds Pull List documentation (https://bugs.launchpad.net/evergreen/+bug/2067739[Bug 2067739])
+* Adds updates regarding barred and inactive accounts (https://bugs.launchpad.net/evergreen/+bug/2062004[Bug 2062004])
+* Fixes typo in 'Bib source for brief records' library setting (https://bugs.launchpad.net/evergreen/+bug/1910580[Bug 1910580])
+* Prevents the same record from appearing in a carousel created from a bucket more than once (https://bugs.launchpad.net/evergreen/+bug/2059034[Bug 2059034])
+* Updates the wording on the latency test page to be a little more user-friendly. (https://bugs.launchpad.net/evergreen/+bug/2064355[Bug 2064355])
+* Displays permission group ID in admin page. (https://bugs.launchpad.net/evergreen/+bug/2077631[Bug 2077631])
+* Reporter: Normalize count and date transforms, and add round transform (https://bugs.launchpad.net/evergreen/+bug/2071372[Bug 2071372])
+* Improve support for report templates created using previous versions of the reporter. (https://bugs.launchpad.net/evergreen/+bug/2077098[Bug 2077098])
+* Allows staff to edit survey questions and answers with UPDATE_SURVEY perm (https://bugs.launchpad.net/evergreen/+bug/1910444[Bug 1910444])
+* Allows staff to create and delete surveys with CREATE_SURVEY and DELETE_SURVEY perms (https://bugs.launchpad.net/evergreen/+bug/1910444[Bug 1910444])
+* Allows staff to take survey responses with UPDATE_USER perm. (https://bugs.launchpad.net/evergreen/+bug/1910444[Bug 1910444])
+* Rename "View Borrowing History" privacy waiver to "Obtain Circulation Information" for accuracy. (https://bugs.launchpad.net/evergreen/+bug/2054595[Bug 2054595])
+* Add a --check-leader flag to marc_export to force leaders to 24 characters. (https://bugs.launchpad.net/evergreen/+bug/2063350[Bug 2063350])
+* Speed up Bootstrap OPAC by removing extra copy of jQuery (https://bugs.launchpad.net/evergreen/+bug/2078985[Bug 2078985])
+* Update a dependency in a Github action that documentation contributors use to check their work. (https://bugs.launchpad.net/evergreen/+bug/2979835[Bug 2979835])
+* Improve display of ebook API items in the public catalog. (https://bugs.launchpad.net/evergreen/+bug/1982217[Bug 1982217])
+* Consider age protection when determining if a patron can renew an item that others are waiting for. (https://bugs.launchpad.net/evergreen/+bug/1989740[Bug 1989740])
+* Fix bug in Merge/Overlay Profile preserve specifications. (https://bugs.launchpad.net/evergreen/+bug/1878984[Bug 1878984])
+* Silence console errors in staff navigation menu (https://bugs.launchpad.net/evergreen/+bug/2077753[Bug 2077753])
+* Check the staff client authentication session every three minutes, reducing chances of hidden eviction of the session (https://bugs.launchpad.net/evergreen/+bug/2034956[Bug 2034956])
+* Updates 'Circulating Library' to 'Checkout / Renewal Library' where relevant (https://bugs.launchpad.net/evergreen/+bug/2068934[Bug 2068934])
+* Improves processing of receipts with images. (https://bugs.launchpad.net/evergreen/+bug/2076225[Bug 2076225])
+* Changes all Concerto test data passwords to demo123. (https://bugs.launchpad.net/evergreen/+bug/2068740[Bug 2068740])
+* Adds creator and last editor to parts. (https://bugs.launchpad.net/evergreen/+bug/1962757[Bug 1962757])
+* Fixes issue with numeric usernames when AuthProxy falls (https://bugs.launchpad.net/evergreen/+bug/1828456[Bug 1828456])
+* Allow acquisitions vendor MARC Order record load even if some subfields are empty. (https://bugs.launchpad.net/evergreen/+bug/924952[Bug 924952])
+* Updates Sip2 Patron Status to support subfields "too many items charged" subfield (05) and "too many items lost" subfield (09). (https://bugs.launchpad.net/evergreen/+bug/1980978[Bug 1980978])
+* Make sure the MFA screen does not display when MFA is not enabled. (https://bugs.launchpad.net/evergreen/+bug/2080764[Bug 2080764])
+* Allow staff to hide facets sidebar in catalog results (https://bugs.launchpad.net/evergreen/+bug/2073988[Bug 2073988])
+* Fixes mouse selection of autosuggest searches. (https://bugs.launchpad.net/evergreen/+bug/2061004[Bug 2061004])
+* Fixes issue where self check screen is blank when user's email doesn't contain an @ sign (https://bugs.launchpad.net/evergreen/+bug/2081758[Bug 2081758])
+* Automate part of the build process. (https://bugs.launchpad.net/evergreen/+bug/2082120[Bug 2082120])
+
+
+:leveloffset: 0
+
+
+== Acknowledgments ==
+The Evergreen project would like to acknowledge the following
+organizations that commissioned developments in this release of
+Evergreen:
+
+* Evergreen Community Development Initiative (ECDI)
+* PAILS
+
+We would also like to thank the following individuals who contributed
+code, translations, documentations patches and tests to this release of
+Evergreen:
+
+* Alberto Martinez
+* Andrea Buntz Neiman
+* Bill Erickson
+* Blake Graham Henderson
+* Chris Hancock
+* Chris Sharp
+* Christine Burns
+* Dan Briem
+* Elizabeth Davis
+* Galen Charlton
+* Gina Monti
+* Ian Skelskey
+* Jane Sandberg
+* Jason Boyer
+* Jason Etheridge
+* Jason Stephenson
+* Jeff Davis
+* Jennifer Weston
+* Jessica Woolford
+* John Amundson
+* Josh Stompro
+* Kathy Lussier
+* Lena Hernandez
+* Linda Jansová
+* Lindsay Stratton
+* Llewellyn Marshall
+* Madison Kochel
+* Martha Driscoll
+* Mary Llewellyn
+* Michele Morgan
+* Mike Rylander
+* Rogan Hamby
+* Ruth Frasur Davis
+* Scott Angel
+* Shula Link
+* Stephanie Leary
+* Steven Mayo
+* Susan Morrison
+* Terran McCanna
+* Tiffany Little
+* Tina Ji
+
+We also thank the following organizations whose employees contributed
+patches:
+
+* BC Libraries Coop
+* Bibliomation Inc.
+* CW MARS
+* Equinox Open Library Initiative
+* Evergreen Community Development Initiative (ECDI)
+* Georgia Public Library Service (PINES)
+* King County Library System
+* MOBIUS
+* NC Cardinal
+* NOBLE
+* PAILS
+* Princeton University
+
+We regret any omissions.  If a contributor has been inadvertently
+missed, please open a bug at http://bugs.launchpad.net/evergreen/
+with a correction.
+
