@@ -1,9 +1,0 @@
-== Staff Multi-Factor Authentication ==
-
-Adding support to the Staff Client for Multi-Factor Authentication.  Supported factors:
-
- * WebAuthn (YubiKey, Paired phones/tablets, Windows Hello, etc)
- * Time-based One-Time Password (Google Authenticator, Twilio Authy, etc)
- * SMS One-Time codes
- * Email One-Time codes
-

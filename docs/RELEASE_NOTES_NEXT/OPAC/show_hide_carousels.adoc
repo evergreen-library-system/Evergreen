@@ -1,8 +1,0 @@
-== OPAC setting to show/hide carousels ==
-
-There is a new setting to hide carousels from the public catalog.  This can be useful in cases
-where carousels are created for use in other sites (e.g. on library websites), rather than
-for use in the public catalog.
-
-You can turn off carousels in config.tt2 by setting `ctx.show_carousels` to `'false'`.
-
