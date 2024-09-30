@@ -168,6 +168,7 @@ relators = {
     'lse' => l('Licensee'),
     'lso' => l('Licensor'),
     'ltg' => l('Lithographer'),
+    'ltr' => l('Letterer'),
     'lyr' => l('Lyricist'),
     'mcp' => l('Music copyist'),
     'mdc' => l('Metadata contact'),
