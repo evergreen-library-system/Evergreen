@@ -1,5 +1,5 @@
 <div id="myopac_messages_div">
-<h3>[% l("Messages") %]</h3>
+<h2>[% l("Messages") %]</h2>
     <div>
 
 

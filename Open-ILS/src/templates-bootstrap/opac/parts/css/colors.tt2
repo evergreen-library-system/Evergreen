@@ -146,7 +146,6 @@
         dropdown_menu_shadow = "#00000054", # black at 54 (in hex) opacity
         header_nav_link_color = "#fff",
         header_nav_link_active_color = "#000",
-        mynav_link_active_color = "#c8ffaf",
         mynav_dropdown_item_active = "#EDFFCC",
 
         cn_link_highlight = "#fec",

@@ -5,7 +5,7 @@
 %]
 
 <div class='cn_browser'>
-    <div id='cn_browse_div' class="row">
+    <div id='cn_browse_div row'>
         <div class="row align-items-end">
             <div class="col-3">
                 <a class='np_nav_link classic_link btn btn-outline-primary' href="[% mkurl('', {cnoffset => cnoffset - 1}) %]#cnbrowse">[% l("&lt;&lt; Previous Page") %]</a>
@@ -36,7 +36,7 @@
                     PROCESS get_marc_attrs args=rec_attrs;
                 %]
                     <div class="card-body">
-                        <a class="cover-img-wrap" href="[% mkurl(ctx.opac_root _ '/record/' _ cn.record.id, {$loc_name => loc_value}, 1) %]">
+                        <a class="cover-img-wrap" tabindex="-1" aria-hidden="true" href="[% mkurl(ctx.opac_root _ '/record/' _ cn.record.id, {$loc_name => loc_value}, 1) %]">
                             <img id="cover-img-[% cn.record.id %]" class='cn_browse_info img-fluid cover-img' alt=""
                             src="[% ctx.media_prefix %]/opac/extras/ac/jacket/medium/r/[% cn.record.id | uri %]" />
                         </a>

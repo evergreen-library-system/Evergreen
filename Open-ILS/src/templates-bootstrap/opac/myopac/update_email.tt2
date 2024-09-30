@@ -4,7 +4,7 @@
     myopac_page = "prefs"  %]
 <div id='myopac_summary_div' style="padding:0px;">
 
-    <h3>[% l('Update Email') %]</h3>
+    <h2>[% l('Update Email') %]</h2>
 
 [% IF ctx.invalid_email %]
     <div id='account-update-email-error'>

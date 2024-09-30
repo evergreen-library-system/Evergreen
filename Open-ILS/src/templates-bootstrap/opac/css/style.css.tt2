@@ -85,10 +85,7 @@ a:not(.btn) {
 .navbar-dark .navbar-toggler {
     color: [% css_colors.mobile_nav_toggle_color %];
     border-color: [% css_colors.mobile_nav_toggle_border %];
-}
-
-.navbar-dark .navbar-toggler-icon {
-    background-image: url("data:image/svg+xml,%3csvg viewBox='0 0 30 30' xmlns='http://www.w3.org/2000/svg'%3e%3cpath stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-miterlimit='10' d='M4 7h22M4 15h22M4 23h22'/%3e%3c/svg%3e");
+    border-width: 2px;
 }
 
 /* end BS5 */
@@ -269,7 +266,9 @@ Novelist Styling
     border-color: [% css_colors.action_button_border %];
 }
 
-.btn-action:hover{
+.btn-action:hover,
+.btn-action:focus, 
+.btn-action:focus-visible {
     color: [% css_colors.action_button_text %];
     background-color: [% css_colors.action_button_hover %] !important;
     border-color: [% css_colors.action_button_border_hover %];
@@ -284,20 +283,20 @@ Novelist Styling
     width: 100%;
 }
 
-.my_nav details summary .btn.btn-action {
+.my_nav details summary.btn.btn-action {
     border-radius: 0;
     position: relative;
     padding-inline-end: 1.75rem;
     text-align: start;
 }
 
-.my_nav details summary .btn.btn-action:after {
+.my_nav details summary.btn.btn-action:after {
     position: absolute;
     inset-inline-end: 0.25rem;
     content: "\23F7"; /* down arrow */
 }
 
-.my_nav details[open] summary .btn.btn-action:after {
+.my_nav details[open] summary.btn.btn-action:after {
     content: "\23F6"; /* up arrow */
 }
 
@@ -308,9 +307,22 @@ Novelist Styling
 .btn-group .btn.btn-action,
 .btn-group-vertical .btn.btn-action {
     border-width: 1px 0;
+    border-radius: 0;
+    text-align: start;
 }
 
-.my_nav .btn-group-vertical {
+.btn-group .btn.btn-action:first-child,
+.btn-group-vertical .btn.btn-action:first-child {
+    border-width: 0 0 1px;
+}
+
+.btn-group .btn.btn-action:last-child,
+.btn-group-vertical .btn.btn-action:last-child {
+    border-width: 1px 0 0;
+}
+
+.my_nav .btn-group-vertical,
+.result_table_utils.btn-group-vertical {
     border: 1px solid [% css_colors.action_button_border %];
     border-radius: 0.25rem;
 }
@@ -413,6 +425,7 @@ Novelist Styling
 .cn_browse_item .card {
     --bs-card-bg: [% css_colors.cn_browse_card_bg %];
     --bs-card-border-color: [% css_colors.cn_card_border_color %];
+    height: 100%;
 }
 #cn_target {
     border-color: [% css_colors.cn_browse_border_highlight %];
@@ -4207,7 +4220,7 @@ label[for*=expert_]
 }
 
 .my_nav .active{
-     background-color: [% css_colors.mynav_link_active_color %];
+     background-color: [% css_colors.action_button_hover %];
 }
 
 .my_nav a {
@@ -4274,23 +4287,23 @@ label[for*=expert_]
     color: [% css_colors.alert_danger_link %];
 }
 
-.language_form button {
+.language_form a {
     background:none;
     border:none;
     margin:0;
     padding:0;
     color:[% css_colors.footer_link %];
 }
-.language_form button:disabled {
+.language_form a[aria-current="page"] {
     color:[% css_colors.footer_link_disabled %];
     font-weight: bold;
 }
-.language_form ul{
+.language_form ul {
     list-style:none;
 }
-.language_form h6{
+.language_form #lang_select_header {
     color:[% css_colors.footer_link %];
-        }
+}
 .language_form{
     float: right;
 padding: 15px;
@@ -4323,6 +4336,10 @@ padding: 15px;
     grid-template-columns: max-content 1fr;
     column-gap: 1rem;
     row-gap: 0.75rem;
+}
+
+.form-grid.form-grid-w-auto {
+    grid-template-columns: max-content minmax(auto, 25rem);
 }
 
 .form-grid .row,
@@ -4394,6 +4411,23 @@ main .btn.btn-action:hover,
 main .btn.btn-action:focus,
 main .btn.btn-action:focus-visible {
     box-shadow: 0 0 0 .25rem [% css_colors.action_button_focus_outline %];
+}
+
+main .btn-group .btn.btn-action:hover,
+main .btn-group .btn.btn-action:focus,
+main .btn-group .btn.btn-action:focus-visible,
+main .btn-group-vertical .btn.btn-action:hover,
+main .btn-group-vertical .btn.btn-action:focus,
+main .btn-group-vertical .btn.btn-action:focus-visible,
+main .btn-group summary:has(.btn.btn-action):hover,
+main .btn-group summary:has(.btn.btn-action):focus,
+main .btn-group summary:has(.btn.btn-action):focus-visible,
+main .btn-group-vertical summary:has(.btn.btn-action):hover,
+main .btn-group-vertical summary:has(.btn.btn-action):focus,
+main .btn-group-vertical summary:has(.btn.btn-action):focus-visible {
+    box-shadow: 0 0 0 .25rem [% css_colors.action_button_focus_outline %];
+    position: relative;
+    z-index: 1;
 }
 
 main .btn.btn-confirm:hover,

@@ -129,12 +129,6 @@
 
                 FOR circ IN circ_items; %]
                     <tr role="row" mobile-count="#[% loop.count %]">
-                        <th class="checkCell">
-                            <input type="checkbox" name="circ"
-                                aria-label="[% l('Select Item') %]"
-                                [% IF circ.circ.renewal_remaining < 1 %] disabled="disabled" [% END %]
-                                value="[% circ.circ.id %]" />
-                        </th>
                         [%  IF circ.ATTRS.issns.0;
                                 row_isbnissn = circ.ATTRS.issns.0;
                             ELSIF circ.ATTRS.isbns.0;
@@ -146,6 +140,12 @@
                             row_title = circ.ATTRS.title;
                             PROCESS show_cover;
                         %]
+                        <th class="checkCell">
+                            <input type="checkbox" name="circ"
+                                [% html_text_attr('aria-label', l('Select [_1]', row_title)) %]
+                                [% IF circ.circ.renewal_remaining < 1 %] disabled="disabled" [% END %]
+                                value="[% circ.circ.id %]" />
+                        </th>
                         <td role="cell" mobile-title="[% l('Title') %]">
                             [% IF circ.circ.target_copy.call_number.id == -1 %]
                                 [% circ.circ.target_copy.dummy_title | html %]

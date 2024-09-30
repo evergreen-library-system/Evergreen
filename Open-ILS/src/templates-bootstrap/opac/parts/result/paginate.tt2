@@ -7,19 +7,21 @@
     [% ELSE; %]
     <p class="result_number">
     [% END; %]
+        <span role="text">
         [%~ IF ctx.hit_count == ctx.pagable_limit; ctx.hit_count = ctx.hit_count _ '+'; END ~%]
-        [%~ |l('<span role="text" class="result_count_number">' _ ctx.result_start _'</span>',
-        '<span role="text" class="result_count_number">' _ ctx.result_stop _ '</span>',
-        '<span role="text" class="result_count_number">' _ ctx.hit_count _ '</span>')  ~%]
+        [%~ |l('<span class="result_count_number">' _ ctx.result_start _'</span>',
+        '<span class="result_count_number">' _ ctx.result_stop _ '</span>',
+        '<span class="result_count_number">' _ ctx.hit_count _ '</span>')  ~%]
         Search results [_1] - [_2] of [_3]
         [%~ END %]
         
         &nbsp; 
 
-        [%~ |l('<span role="text" class="result_count_number">' _ (page + 1) _ '</span>',
-        '<span role="text" class="result_count_number">' _ page_count _ '</span>') ~%]
+        [%~ |l('<span class="result_count_number">' _ (page + 1) _ '</span>',
+        '<span class="result_count_number">' _ page_count _ '</span>') ~%]
         (page [_1] of [_2])
         [%~ END %]
+        </span>
       [% IF header == 1; %]
       </h2>
       [% ELSE; %]

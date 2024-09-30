@@ -5,7 +5,7 @@
     prefs_page = 'prefs_my_lists' %]
 
 
-    <h3>[% l('List Preferences') %]</h3>
+    <h2>[% l('List Preferences') %]</h2>
     <form method='post'>
 
                 [% IF ctx.updated_user_settings %]
@@ -13,11 +13,12 @@
                     [% l('Account Successfully Updated') %]
                 </div>
                 [% END %]
-
+        <div class="form-grid">
                 [%- setting = 'opac.lists_per_page' -%]
-                <p>
+                
                 <label for='[% setting %]'>[%l("Lists per page") %]</label>
-                <select class="d-inline-block form-control mini-control" id='[% setting %]' name='[% setting %]'>
+                <div>
+                    <select class="d-inline-block form-control mini-control" id='[% setting %]' name='[% setting %]'>
                             [%  UNLESS ctx.user_setting_map.$setting;
                                     ctx.user_setting_map.$setting = 10;
                                 END;
@@ -30,11 +31,12 @@
                       <a href="#" title="[% l("Change the number of lists shown in 'My Lists'.") %]" data-toggletip>
                         <i class="fas fa-question-circle"></i>
                     </a>
-                </p>
+                </div>
                 [%- setting = 'opac.list_items_per_page' -%]
-                <p>
+                
                     <label for='[% setting %]'>[%l("List items per page") %]</label>
-                    <select class="d-inline-block form-control mini-control" id='[% setting %]' name='[% setting %]'>
+                    <div>
+                        <select class="d-inline-block form-control mini-control" id='[% setting %]' name='[% setting %]'>
                             [%  UNLESS ctx.user_setting_map.$setting;
                                     ctx.user_setting_map.$setting = 10;
                                 END;
@@ -47,8 +49,9 @@
                        <a href="#" title="[% l("Change the number of items shown while viewing a 'My List'.") %]" data-toggletip>
                         <i class="fas fa-question-circle"></i>
                     </a>
-                </p>
+                </div>
         <button type="submit" class="btn btn-confirm"><i class="fas fa-save"></i> [% l('Save') %]</button>
+        </div>
     </form>
     [% INCLUDE "opac/parts/myopac/prefs_hints.tt2" %]
 

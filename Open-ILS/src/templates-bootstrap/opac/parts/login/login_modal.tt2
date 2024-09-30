@@ -17,7 +17,7 @@
 %]
 
 <dialog class="modal fade" id="loginModal">
-  <div class="modal-dialog modal-dialog-centered" role="document">
+  <div class="modal-dialog modal-dialog-centered">
     <div class="modal-content">
       <div class="modal-header">
         <h1 class="modal-title" id="exampleModalLabel">[% l('Log in to Evergreen') %]</h1>
@@ -64,12 +64,12 @@
     </div>
     [%# INCLUDE "opac/parts/login/help.tt2" %]
 
-      <div class="modal-footer">
-      <div class="mr-auto">
-        <input type='hidden' name='redirect_to' value='[% redirect | html %]'/>
-        <input type="checkbox" name="persist" id="persist" class="mr-1"/>
-        <label for="persist"> [% l('Stay logged in?') %]</label>
-      </div>
+      <div class="modal-footer d-sm-flex flex-wrap">
+        <div class="mr-auto form-check">
+          <input type='hidden' name='redirect_to' value='[% redirect | html %]'/>
+          <input type="checkbox" name="persist" id="persist" class="form-check-input"/>
+          <label for="persist" class="form-check-label"> [% l('Stay logged in?') %]</label>
+        </div>
         <button type="button" class="btn btn-secondary" data-dismiss="modal"><i class="fas fa-times" aria-hidden="true"></i> [% l('Close') %]</button>
         <button type="submit" class="btn btn-confirm"><i class="fas fa-sign-in-alt" aria-hidden="true"></i> [% l('Log in') %]</button>
       </div>

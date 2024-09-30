@@ -74,8 +74,8 @@
                     [% IF myopac_cc_allowed %]
                     <th class="checkCell form-check">
                         <input type="checkbox" checked="checked" 
-                            aria-label="[% l('Pay [_0] fine', money(f.xact.balance_owed)) %]" name="xact"
-                            value="[% f.xact.id %]" class="form-check-input fineCheck"/>
+                        [% html_text_attr('aria-label', l('Pay [_1] fine', money(f.xact.balance_owed))) %]
+                            name="xact" value="[% f.xact.id %]" class="form-check-input fineCheck"/>
                     </th>
                     [% END %]
                     

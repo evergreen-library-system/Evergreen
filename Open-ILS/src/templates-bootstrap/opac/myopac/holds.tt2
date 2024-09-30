@@ -10,12 +10,12 @@
     offset = (ctx.holds_offset.defined) ? ctx.holds_offset : 0;
     count = (ctx.holds_ids.size.defined) ? ctx.holds_ids.size : 0;
 %]
-<h3> [%  IF CGI.param("available");
+<h2> [%  IF CGI.param("available");
                     l("Items Ready for Pickup");
                 ELSE;
                     l("Items on Hold");
                 END
-            %]</h3>
+            %]</h2>
 <div>
     <div id='holds_main'>
     <form method="post">

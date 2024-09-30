@@ -67,7 +67,7 @@
                         PROCESS get_marc_attrs args=attrs %]
                     <tr role="row" mobile-count="#[% loop.count %]">
                         <th role="rowheader" scope="row" class="list_checkbox">
-                            <input type="checkbox" checked="checked" name="record" value="[% item %]" aria-label="[% l('Select [_1]', attrs.title) %]" />
+                            <input type="checkbox" checked="checked" name="record" value="[% item %]" [% html_text_attr('aria-label', l('Select [_1]', attrs.title)) %] />
                         </th>
                         <td role="cell" class="list_entry" mobile-title="[% l('Title') %]"><a href="[% mkurl(ctx.opac_root _ '/record/' _ item, {}, ['edit_notes', 'id']) %]">[% attrs.title | html %]</a></td>
                         <td role="cell" class="list_entry" mobile-title="[% l('Author(s)') %]"><a href="[%-

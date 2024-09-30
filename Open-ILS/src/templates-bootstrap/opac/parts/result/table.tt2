@@ -48,8 +48,10 @@
                 
                 <div id="selected_records_summary" class="col-auto flex-grow-1" role="status">
                     <a href="[% mkurl(ctx.opac_root _ '/mylist') %]" class="no-dec" rel="nofollow" vocab="">
-                        <span id="selected_records_count">[% ctx.mylist.size %]</span>
-                        [% l('selected') %]
+                        <span role="text">
+                            <span id="selected_records_count">[% ctx.mylist.size %]</span>
+                            [% l('selected') %]
+                        </span>
                     </a>
                     <span id="hit_selected_record_limit" class="hidden">[% l('Reached limit!') %]</span>
                 </div>
@@ -116,7 +118,7 @@
                                 [% END %]
                                 <!--Cover Image-->
                                 <div class='col_cover col-auto' id="result[% rec.bre_id %]">
-                                    <a href="[% mkurl(record_url_path, add_parms, del_parms); %]" class="cover-image cover-shadow">
+                                    <a href="[% mkurl(record_url_path, add_parms, del_parms); %]" tabindex="-1" aria-hidden="true" class="cover-image cover-shadow">
                                     <img alt="" id='item_jacket[% rec.bre_id %]' class='img-fluid'
                                     src='[% ctx.media_prefix %]/opac/extras/ac/jacket/large/r/[% rec.bre_id | uri %]' /></a><br />
                                 </div>

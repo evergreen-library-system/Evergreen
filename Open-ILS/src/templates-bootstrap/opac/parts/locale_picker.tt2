@@ -25,7 +25,7 @@
         <option value="[% locale | html %]" [% selected %]>[% ctx.locales.$locale | html %]</option>
     [%- END %]
     </select>
-    <button type="submit" class="btn btn-sm btn-confirm float-right"/><i class="fas fa-save" aria-hidden="true"></i>[% l("Save Changes") %]</button>
+    <button type="submit" class="btn btn-sm btn-confirm float-end"><i class="fas fa-save" aria-hidden="true"></i>[% l("Save Changes") %]</button>
   </div>
 </form>
 [%- END %]

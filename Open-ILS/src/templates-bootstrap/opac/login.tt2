@@ -9,7 +9,6 @@
 <main id="main">
     <div id="content-wrapper">
         <div id="main-content">
-            <h2 class="sr-only visually-hidden">[% l('Account Login') %]</h2>
             [% INCLUDE "opac/parts/login/form.tt2" %]
             <div class="clear-both very-big-height"></div>
         </div>

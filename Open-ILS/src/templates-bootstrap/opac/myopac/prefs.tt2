@@ -5,7 +5,7 @@
     prefs_page = 'prefs';
     can_call_action_trigger = 'true' %]
 
-<h3>[% l('Personal Information and Preferences') %]</h3>
+<h2>[% l('Personal Information and Preferences') %]</h2>
 <div id="acct_info_main">
     
             <div class="row">
