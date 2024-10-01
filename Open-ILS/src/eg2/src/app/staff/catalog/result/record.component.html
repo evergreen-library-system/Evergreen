@@ -58,9 +58,13 @@
                 </a>
               </ng-container>
               
-              <a routerLink="/staff/catalog/search" class="bib-author-link pt-2" [queryParams]="getAuthorSearchParams(summary)">
-                <eg-bib-display-field [summary]="summary" field="author" [usePlaceholder]="true"></eg-bib-display-field>
-              </a>
+              <ng-container *ngIf="getAuthorSearchParams(summary) as authorParams">
+                <ng-container *ngIf="authorParams.query && authorParams.query[0] !== undefined">
+                  <a routerLink="/staff/catalog/search" class="bib-author-link pt-2" [queryParams]="authorParams">
+                    <eg-bib-display-field [summary]="summary" field="author" [usePlaceholder]="true"></eg-bib-display-field>
+                  </a>
+                </ng-container>
+              </ng-container>
               </h3>
             </div>
           </div>
