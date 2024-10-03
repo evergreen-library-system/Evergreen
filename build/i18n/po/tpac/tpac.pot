@@ -90,8 +90,8 @@ msgstr ""
 msgid "%1 %2"
 msgstr ""
 
-#. (copy.label, copy_org.name)
 #. (title, part.label)
+#. (copy.label, copy_org.name)
 #. (title, hold.hold.part.label)
 #: ../../Open-ILS/src/templates/opac/myopac/holds.tt2:200 ../../Open-ILS/src/templates/opac/myopac/holds/edit.tt2:27 ../../Open-ILS/src/templates/opac/myopac/lists.tt2:363 ../../Open-ILS/src/templates/opac/parts/anon_list.tt2:77 ../../Open-ILS/src/templates/opac/parts/place_hold_result.tt2:46
 msgid "%1 (%2)"
@@ -122,9 +122,9 @@ msgstr ""
 msgid "%1 mi"
 msgstr ""
 
-#. (attrs.copy_counts.$depth.available, attrs.copy_counts.$depth.count, ou_name)
-#. (attrs.plib_copy_counts.$depth.available, attrs.plib_copy_counts.$depth.count, ou_name)
 #. (ou_avail, ou_count, ou_name)
+#. (attrs.plib_copy_counts.$depth.available, attrs.plib_copy_counts.$depth.count, ou_name)
+#. (attrs.copy_counts.$depth.available, attrs.copy_counts.$depth.count, ou_name)
 #: ../../Open-ILS/src/templates/opac/parts/record/copy_counts.tt2:22 ../../Open-ILS/src/templates/opac/parts/record/copy_counts.tt2:41 ../../Open-ILS/src/templates/opac/parts/result/copy_counts.tt2:14 ../../Open-ILS/src/templates/opac/parts/result/copy_counts.tt2:34
 msgid "%1 of %quant(%2,copy,copies) available at %3."
 msgstr ""
@@ -200,10 +200,6 @@ msgstr ""
 #. ("<span class=\"result_count_number\">' _ (page + 1) _ '</span>", "<span class=\"result_count_number\">' _ page_count _ '</span>")
 #: ../../Open-ILS/src/templates/opac/parts/result/paginate.tt2:15
 msgid "(page %1 of %2)"
-msgstr ""
-
-#: ../../Open-ILS/src/templates/opac/parts/place_hold.tt2:196
-msgid "- All Parts -"
 msgstr ""
 
 #: ../../Open-ILS/src/templates/opac/parts/place_hold.tt2:143
@@ -499,10 +495,6 @@ msgstr ""
 
 #: ../../Open-ILS/src/templates/opac/parts/config.tt2:3
 msgid "All Libraries"
-msgstr ""
-
-#: ../../Open-ILS/src/templates/opac/parts/place_hold.tt2:183
-msgid "All Parts"
 msgstr ""
 
 #: ../../Open-ILS/src/templates/opac/parts/place_hold_result.tt2:107
@@ -855,7 +847,7 @@ msgstr ""
 msgid "Book artist"
 msgstr ""
 
-#: ../../Open-ILS/src/templates/opac/parts/misc_util.tt2:861
+#: ../../Open-ILS/src/templates/opac/parts/misc_util.tt2:864
 msgid "Book cover"
 msgstr ""
 
@@ -2061,7 +2053,7 @@ msgstr ""
 msgid "Event place"
 msgstr ""
 
-#: ../../Open-ILS/src/templates/opac/parts/footer.tt2:30
+#: ../../Open-ILS/src/templates/opac/parts/footer.tt2:29
 msgid "Evergreen"
 msgstr ""
 
@@ -2261,6 +2253,10 @@ msgstr ""
 
 #: ../../Open-ILS/src/templates/opac/parts/record/contents.tt2:2
 msgid "Funding Information Note: "
+msgstr ""
+
+#: ../../Open-ILS/src/templates/opac/parts/relators.tt2:2
+msgid "Game developer"
 msgstr ""
 
 #: ../../Open-ILS/src/templates/opac/parts/record/contents.tt2:2
@@ -2735,6 +2731,10 @@ msgstr ""
 
 #: ../../Open-ILS/src/templates/opac/parts/relators.tt2:2
 msgid "Lender"
+msgstr ""
+
+#: ../../Open-ILS/src/templates/opac/parts/relators.tt2:2
+msgid "Letterer"
 msgstr ""
 
 #: ../../Open-ILS/src/templates/opac/parts/relators.tt2:2
@@ -3390,6 +3390,10 @@ msgstr ""
 
 #: ../../Open-ILS/src/templates/opac/parts/result/adv_filter.tt2:31
 msgid "OR"
+msgstr ""
+
+#: ../../Open-ILS/src/templates/opac/myopac/prefs_settings.tt2:149 ../../Open-ILS/src/templates/opac/myopac/prefs_settings.tt2:159
+msgid "Obtain Circulation Information"
 msgstr ""
 
 #: ../../Open-ILS/src/templates/opac/myopac/generic_payment_form.tt2:92
@@ -4069,7 +4073,7 @@ msgstr ""
 msgid "Read Less"
 msgstr ""
 
-#: ../../Open-ILS/src/templates/opac/i18n_strings.tt2:25 ../../Open-ILS/src/templates/opac/parts/misc_util.tt2:897
+#: ../../Open-ILS/src/templates/opac/i18n_strings.tt2:25 ../../Open-ILS/src/templates/opac/parts/misc_util.tt2:900
 msgid "Read More"
 msgstr ""
 
@@ -5508,10 +5512,6 @@ msgstr ""
 msgid "View Basket"
 msgstr ""
 
-#: ../../Open-ILS/src/templates/opac/myopac/prefs_settings.tt2:149 ../../Open-ILS/src/templates/opac/myopac/prefs_settings.tt2:159
-msgid "View Borrowing History"
-msgstr ""
-
 #: ../../Open-ILS/src/templates/opac/parts/myopac/main_base.tt2:42
 msgid "View Charges"
 msgstr ""
@@ -5639,6 +5639,14 @@ msgid "Writer of added text"
 msgstr ""
 
 #: ../../Open-ILS/src/templates/opac/parts/relators.tt2:2
+msgid "Writer of film story"
+msgstr ""
+
+#: ../../Open-ILS/src/templates/opac/parts/relators.tt2:2
+msgid "Writer of intertitles"
+msgstr ""
+
+#: ../../Open-ILS/src/templates/opac/parts/relators.tt2:2
 msgid "Writer of introduction"
 msgstr ""
 
@@ -5648,6 +5656,10 @@ msgstr ""
 
 #: ../../Open-ILS/src/templates/opac/parts/relators.tt2:2
 msgid "Writer of supplementary textual content"
+msgstr ""
+
+#: ../../Open-ILS/src/templates/opac/parts/relators.tt2:2
+msgid "Writer of television story"
 msgstr ""
 
 #: ../../Open-ILS/src/templates/opac/myopac/prefs_notify.tt2:41
@@ -5847,11 +5859,11 @@ msgstr ""
 msgid "here"
 msgstr ""
 
-#: ../../Open-ILS/src/templates/opac/parts/misc_util.tt2:870
+#: ../../Open-ILS/src/templates/opac/parts/misc_util.tt2:873
 msgid "next"
 msgstr ""
 
-#: ../../Open-ILS/src/templates/opac/parts/misc_util.tt2:869
+#: ../../Open-ILS/src/templates/opac/parts/misc_util.tt2:872
 msgid "prev"
 msgstr ""
 
