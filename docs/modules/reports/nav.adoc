@@ -12,6 +12,7 @@
 *** xref:reports:reporter_add_data_source.adoc[Adding Data Sources to Reporter]
 *** xref:reports:reporter_export_usingpgAdmin.adoc[Exporting Report Templates Using phpPgAdmin]
 *** xref:reports:reporter_daemon.adoc[Starting and Stopping the Reporter Daemon]
+*** xref:reports:reports_security_idl.adoc[Reports Security IDL Configuration]
 ** xref:reports:simple_reports.adoc[Simple Reports Interface]
 
 

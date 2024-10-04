@@ -19,7 +19,7 @@ image::circulation_patron_records_web_client/circulation_patron_records-1a_web_c
 
 
 Next to the _Clear Form_ button there is a button with an arrow pointing down that will display the following additional search fields:
-   
+  
 * Barcode 
 * Alias 
 * Username
@@ -46,17 +46,17 @@ image::circulation_patron_records_web_client/circulation_patron_records-1b_web_c
 .Tips for searching 
 [TIP] 
 =================== 
-* Search one field or combine fields for more precise results.  
+* Search one field or combine fields for more precise results. 
 * Truncate search terms for more search results.
 * Search ignores punctuation such as diacritics, apostrophes, hyphens and commas.
 * Searching by Date of Birth: Year searches are "contains" searches. E.g. year
-  "15" matches 2015, 1915, 1599, etc. For exact matches use the full 4-digit
-  year. Day and month values are exact matches. E.g. month "1" (or "01") matches
-  January, "12" matches December.
+ "15" matches 2015, 1915, 1599, etc. For exact matches use the full 4-digit
+ year. Day and month values are exact matches. E.g. month "1" (or "01") matches
+ January, "12" matches December.
 ===================
 
 Once you have located the desired patron, click on the entry row for this patron in
-the results screen.  A summary for this patron will display on the left hand side.  
+the results screen. A summary for this patron will display on the left hand side. 
 
 image::circulation_patron_records_web_client/circulation_patron_records-2_web_client.png[Screenshot of the patron search results. The results are listed in a grid with each line representing a different patron account. One line is selected using the checkbox on the left and is highlighted. A summary of the account is displayed in a column on the left.]
 
@@ -111,7 +111,7 @@ image::circulation_patron_records_web_client/circulation_patron_records-6.JPG[An
 When finished entering the necessary information, select _Save_ to save the new
 patron record or _Save & Clone_ to register a patron with the same address.
 When _Save & Clone_ is selected, the address information is copied into the
-resulting patron registration screen.  It is linked to the original patron.
+resulting patron registration screen. It is linked to the original patron.
 Address information may only be edited through the original record.
 
 image::circulation_patron_records_web_client/circulation_patron_records-8.JPG[A screenshot showing a lower section of the patron registration screen. This is focused on the address section. The Postal Code, Street (1), City, and Country fields are yellow to indicate they are required fields. An arrow has been added to highlight the location of the Save and Save & Clone buttons in the upper right.]
@@ -160,27 +160,34 @@ For more information please see xref:admin:actiontriggers.adoc#creating_alternat
 
 
 == Patron Self-Registration ==
-*Abstract*
 
-Patron Self-Registration allows patrons to initiate registration for a library account through the OPAC.  Patrons can fill out a web-based form with basic information that will be stored as a “pending patron” in Evergreen.  Library staff can review pending patrons in the staff-client and use the pre-loaded account information to create a full patron account.  Pending patron accounts that are not approved within a configurable amount of time will be automatically deleted.  
+Patron Self-Registration allows patrons to initiate registration for a library account through the OPAC. Patrons can fill out a web-based form with basic information that will be stored as a “pending patron” in Evergreen. Library staff can review pending patrons in the staff-client and use the pre-loaded account information to create a full patron account. Pending patron accounts that are not approved within a configurable amount of time will be automatically deleted.
 
-*Patron Self-Registration*
+Please see the xref:admin:patron_self_registration.adoc[documentation on self-registration library settings] for information about how to enable and configure patron self-registration.
 
-. In the OPAC, click on the link to *Request Library Card*
+=== Patron Self-Registration ===
 
+. In the OPAC, select the _Request a Library Card_ link. By default this is available in two places:
+.. *My Account* on the upper right. 
++
+image::circulation_patron_records_web_client/request_library_card.png[Link to request a library card]
++
+.. In the center of the page's footer.
+. In both cases, the link will take you to the self-registration form.
 . Fill out the self-registration form to request a library card, and click *Submit Registration*.
++
+image::circulation_patron_records_web_client/library_card_form.png[Self registration form]
++
+. Patrons will see a confirmation message: “Registration successful! Please see library staff to complete your registration.”
 
-. Patrons will see a confirmation message: “Registration successful!  Please see library staff to complete your registration.”
 
-image::circulation_patron_records_web_client/patron_self_registration2.jpg[Screenshot of a generic Patron Self-Registration form. The fields are focused on name, address, phone, and email contact information. Little red astrisks are used to indicate required fields.]
-
-*Managing Pending Patrons*
+=== Managing Pending Patrons ===
 
 . In the staff client select *Circulation* -> *Pending Patrons*.
 
-. Select the patron you would like to review.  In this screen you have the option to *Load* the pending patron information to create a permanent library account.
+. Select the patron you would like to review. In this screen you have the option to *Load* the pending patron information to create a permanent library account.
 
-. To create a permanent library account for the patron, click on the patron’s row, click on the *Load Patron* button at the top of the screen.  This will load the patron self-registration information into the main *Patron Registration* form. 
+. To create a permanent library account for the patron, click on the patron’s row, click on the *Load Patron* button at the top of the screen. This will load the patron self-registration information into the main *Patron Registration* form. 
 
 . Fill in the necessary patron information for your library, and click *Save* to create the permanent patron account.
 
@@ -197,9 +204,9 @@ Click on _Edit_ from the options that display at the top of the patron record.
 
 image::circulation_patron_records_web_client/circulation_patron_records-9_web_client.png[Screenshot of a patron account for Sarah Smith. On the left is the summary display. The Edit tab has been selected at the top and all of the fields we saw on the patron registration screen can now be edited again. Replace Barcode and See All buttons are now visible next to the Barcode field.]
 
-Edit information as required.  When finished, select _Save_.  
+Edit information as required. When finished, select _Save_. 
 
-After selecting _Save_, the page will refresh.  The edited information will be
+After selecting _Save_, the page will refresh. The edited information will be
 reflected in the patron summary pane.
 
 [TIP]
@@ -214,7 +221,7 @@ since the permission group determines the expiration date.
 
 indexterm:[patrons, holds, notifications]
 
-The public catalog and staff client have the ability to update existing holds if a patron or a staff member changes certain notification preferences or contact information.  Evergreen will detect these changes and prompt the staff user or patron user and ask if they want to update existing holds with the new contact information and/or notification preferences.
+The public catalog and staff client have the ability to update existing holds if a patron or a staff member changes certain notification preferences or contact information. Evergreen will detect these changes and prompt the staff user or patron user and ask if they want to update existing holds with the new contact information and/or notification preferences.
 
 NOTE: Email notices are sent at the time of hold capture, the system will not prompt a user when a change to the email address is made - the user will only be prompted if email notifications are turned off or turned on, or if an email address is invalidated by a staff user.
 
@@ -265,7 +272,7 @@ image::circulation_patron_records_web_client/notify_methods.png[A view of the pu
 
 Additionally, patron users can now edit hold notification preferences on individual holds by using the _Edit_ function found in the _Current Items on Hold_ table.
 
-image::circulation_patron_records_web_client/update_individual_hold.png[A screenshot of the Editing Hold page in the My Account section of the public catalog. The title information is above. As is status  and hold queue position. The lower half of the shot is a grey box indicating the area that can be edited. There are fields for Pickup library, Cancel unless filled by, Active?, If suspended, activate on, email Notification, Phone Notification, SMS Notification, and Default Mobile Carrier. The last four fields have been highlighted.]
+image::circulation_patron_records_web_client/update_individual_hold.png[A screenshot of the Editing Hold page in the My Account section of the public catalog. The title information is above. As is status and hold queue position. The lower half of the shot is a grey box indicating the area that can be edited. There are fields for Pickup library, Cancel unless filled by, Active?, If suspended, activate on, email Notification, Phone Notification, SMS Notification, and Default Mobile Carrier. The last four fields have been highlighted.]
 == Renewing Library Cards ==
 
 indexterm:[library cards, renewing]
@@ -278,14 +285,14 @@ image::circulation_patron_records_web_client/circulation_patron_records-11_web_c
 Open the patron record in edit mode as described in the section
 <<updating_patron_information,Updating Patron Information>>.
 
-Navigate to the information field labeled _Privilege Expiration Date_.  Enter a
-new date in this box.  Or click the calendar icon, and a calendar widget
+Navigate to the information field labeled _Privilege Expiration Date_. Enter a
+new date in this box. Or click the calendar icon, and a calendar widget
 will display to help you easily navigate to the desired date.
 
 image::circulation_patron_records_web_client/circulation_patron_records-12.JPG[A screenshot of the patron registration page. The calendar widget for the Privilege Expiration Date has been opened and there is an arrow indicating the button for the widget between the field and the Update Expire Date button.]
 
-Select the date using the calendar widget or key the date in manually.  Click
-the _Save_ button.  The screen will refresh and the ``expired'' alerts on the
+Select the date using the calendar widget or key the date in manually. Click
+the _Save_ button. The screen will refresh and the ``expired'' alerts on the
 account will be removed. 
 
 
@@ -303,27 +310,27 @@ Next to the _Barcode_ field, select the _Replace Barcode_ button.
 
 image::circulation_patron_records_web_client/circulation_patron_records_13.JPG[A screenshot of the top of the patron record screen. The Replace Barcode button next to the barcode field is highlighted.]
 
-This will clear the barcode field.  Enter a new barcode and _Save_ the record.
+This will clear the barcode field. Enter a new barcode and _Save_ the record.
 The screen will refresh and the new barcode will display in the patron summary
-pane.  
+pane. 
 
 If a patron’s barcode is mistakenly replaced, the old barcode may be reinstated.
 Retrieve the patron record as described in the section
 <<searching_patrons,Searching Patrons>>. Open the patron record in
 edit mode as described in the section <<updating_patron_information,Updating Patron Information>>.
 
-Select the _See All_ button next to the _Replace Barcode_ button.  This will
+Select the _See All_ button next to the _Replace Barcode_ button. This will
 display the current and past barcodes associated with this account. 
 
 image::circulation_patron_records_web_client/circulation_patron_records_14.JPG[A screenshot of the Patron Barcodes modal. Two barcodes are shown. Under the Active heading, only the lower checkbox is selected. Under the Primary column the radio button for the second barcode is selected.]
 
-Check the box(es) for all barcodes that should be active for the patron.  An
-active barcode may be used for circulation transactions.  A patron may have
-more than one active barcode.  Only one barcode may be designated
+Check the box(es) for all barcodes that should be active for the patron. An
+active barcode may be used for circulation transactions. A patron may have
+more than one active barcode. Only one barcode may be designated
 primary. The primary barcode displays in the patron’s summary
 information in the _Library Card_ field. 
 
-Once you have modified the patron barcode(s), _Save_ the patron record.  If you
+Once you have modified the patron barcode(s), _Save_ the patron record. If you
 modified the ``primary'' barcode, the new primary barcode will display in the
 patron summary screen. 
 
@@ -331,7 +338,7 @@ patron summary screen.
 
 indexterm:[patrons, passwords]
 
-A patron’s password may be reset from the OPAC or through the staff client.  To
+A patron’s password may be reset from the OPAC or through the staff client. To
 reset the password from the staff client, retrieve the patron record as
 described in the section <<searching_patrons,Searching Patrons>>. 
 
@@ -346,8 +353,8 @@ NOTE: The existing password is not displayed in patron records for security
 reasons.
 
 A new number will populate the _Password_ text box.
-Make note of the new password and _Save_ the patron record.  The screen will
-refresh and the new password will be suppressed from view.   
+Make note of the new password and _Save_ the patron record. The screen will
+refresh and the new password will be suppressed from view.  
 
 
 == Inactive Patron Accounts ==
@@ -370,7 +377,7 @@ image::circulation_patron_records_web_client/active_checkbox.png[Active checkbox
 
 indexterm:[patrons, barring]
 
-A patron may be barred from circulation activities.  To bar a patron:
+A patron may be barred from circulation activities. To bar a patron:
 
 . Retrieve the patron record as described in the section <<searching_patrons,Searching Patrons>>. 
 . Open the patron record in edit mode as described in the section <<updating_patron_information,Updating Patron Information>>.
@@ -378,7 +385,7 @@ A patron may be barred from circulation activities.  To bar a patron:
 +
 image::circulation_patron_records_web_client/circulation_patron_records-16.JPG[circulation_patron_records 16]
 +
-. *Save* the user. The screen will refresh.  
+. *Save* the user. The screen will refresh. 
 
 
 NOTE: Barring a patron from one library bars that patron from all consortium
@@ -524,7 +531,7 @@ Blocks can be manually added to a patron account to take away certain library pr
 * HOLD - Users cannot place holds on items
 * RENEW - Users cannot renew items
 * CAPTURE - This penalty prevents a user’s holds from being captured. If the HOLD penalty has not been applied to a user’s account, then the patron can place a hold, but the targeted item will not appear on a pull list and will not be captured for a hold if it is checked in.
-*  FULFILL - This penalty prevents a user from checking out an item that is on hold. If the HOLD and CAPTURE penalties have not been applied to a user’s account, then the user can place a hold on an item, and the itemcan be captured for a hold. However, when he tries to check out the item, the circulator will see a pop up box with the name of the penalty type, FULFILL. The circulator must correct the problem with the account or must override the penalty to check out the item.
+* FULFILL - This penalty prevents a user from checking out an item that is on hold. If the HOLD and CAPTURE penalties have not been applied to a user’s account, then the user can place a hold on an item, and the itemcan be captured for a hold. However, when he tries to check out the item, the circulator will see a pop up box with the name of the penalty type, FULFILL. The circulator must correct the problem with the account or must override the penalty to check out the item.
 
 ==== Block Display ====
 
@@ -539,14 +546,14 @@ To create a new Block:
 . Go to the _Notes_ tab in the patron account and click *Create Note*.
 . A modal will appear where you can create a new Block. Required fields are highlighted in yellow.
 . Select _Block_ at the top of the screen.
-..  The default Block is a block on CIRC, HOLD, RENEW
-..  Other Penalty Types can be selected from the drop down menu. These Penalty Types are configured in _Local Administration -> Standing Penalties_.
+.. The default Block is a block on CIRC, HOLD, RENEW
+.. Other Penalty Types can be selected from the drop down menu. These Penalty Types are configured in _Local Administration -> Standing Penalties_.
 . The _Depth_ drop down menu controls the visibility of the note. Values correspond to OPAC labels, and by default they are This Branch, Local Library System, and Everywhere.
 .. By default, the Location will be set to the library the staff member’s workstation is registered to. The note will be visible to the workstation library, as well as all Org Units that are ancestors and descendants in the Org Unit hierarchy.
 . Enter a title or subject for the alert in the _Title…_ field. The Title field is required.
 . Enter the main content of the block in the _Note…_ field.
 . Enter your initials if your library requires initials when creating blocks on patron accounts.
-.  Click *OK* to create the block.
+. Click *OK* to create the block.
 
 image::circulation_patron_records_web_client/block.png[Screenshot of the Block Display version of the note modal. The only difference from the alert type is the Block tab is selected and the Penalty Type is changed to Alerting block on Circ, Hold and...]
 
@@ -687,18 +694,18 @@ User Buckets allow staff to batch delete and make batch modifications to user ac
 * Privilege Expiration Date
 * Statistical Categories
 
-Batch modifications and deletions can be rolled back or reversed, with the exception of batch changes to statistical categories.  Batch changes made in User Buckets will not activate any Action/Trigger event definitions that would normally be activated when editing an individual account.
+Batch modifications and deletions can be rolled back or reversed, with the exception of batch changes to statistical categories. Batch changes made in User Buckets will not activate any Action/Trigger event definitions that would normally be activated when editing an individual account.
 
-User accounts can be added to User Buckets by scanning individual user barcodes or by uploading a file of user barcodes directly in the User Bucket interface.  They can also be added to a User Bucket from the Patron Search screen.  Batch changes and batch edit sets are tied to the User Bucket itself, not to the login of the bucket owner.
+User accounts can be added to User Buckets by scanning individual user barcodes or by uploading a file of user barcodes directly in the User Bucket interface. They can also be added to a User Bucket from the Patron Search screen. Batch changes and batch edit sets are tied to the User Bucket itself, not to the login of the bucket owner.
 
 === Create a User Bucket ===
 
 *To add users to a bucket via the Patron Search screen:*
 
 . Go to *Search->Search for Patrons*.
-. Enter your search and select the users you want to add to the user bucket by checking the box next to each user row.  You can also hold down the CTRL or SHIFT on your keyboard and select multiple users.
+. Enter your search and select the users you want to add to the user bucket by checking the box next to each user row. You can also hold down the CTRL or SHIFT on your keyboard and select multiple users.
 . Click *Add to Bucket* and select an existing bucket from the drop down menu or click *New Bucket* to create a new user bucket.
-.. If creating a new user bucket, a dialog box called _Create Bucket_ will appear where you can enter a bucket _Name_ and _Description_ and indicate if the bucket is _Staff Shareable?_.  Click *Create Bucket*.
+.. If creating a new user bucket, a dialog box called _Create Bucket_ will appear where you can enter a bucket _Name_ and _Description_ and indicate if the bucket is _Staff Shareable?_. Click *Create Bucket*.
 . After adding users to a bucket, an update will appear at the bottom-right hand corner of the screen that says _"Successfully added # users to bucket [Name]"_.
 
 image::circulation_patron_records_web_client/userbucket1.PNG[Screenshot of the patron search page. The Add to Bucket and Merge Patrons buttons are inbetween the search fields above and the search results below.]
@@ -709,11 +716,11 @@ image::circulation_patron_records_web_client/userbucket2.PNG[Screenshot of the C
 
 . Go to *Circulation->User Buckets* and select the *Pending Users* tab at the top of the screen.
 . Click on *Buckets* and select an existing bucket from the drop down menu or click *New Bucket* to create a new user bucket.
-.. If creating a new user bucket, a dialog box called _Create Bucket_ will appear where you can enter a bucket _Name_ and _Description_ and indicate if the bucket is _Staff Shareable?_.  Click *Create Bucket*.
+.. If creating a new user bucket, a dialog box called _Create Bucket_ will appear where you can enter a bucket _Name_ and _Description_ and indicate if the bucket is _Staff Shareable?_. Click *Create Bucket*.
 .. After selecting or creating a bucket, the Name, Description, number of items, and creation date of the bucket will appear above the _Scan Card_ field.
-. Scan in the barcodes of the users that you want to add to the selected bucket into the _Scan Card_ field.  Each user account will be added to the Pending Users tab.  Hit ENTER on your keyboard after manually typing in a barcode to add it to the list of Pending Users.
+. Scan in the barcodes of the users that you want to add to the selected bucket into the _Scan Card_ field. Each user account will be added to the Pending Users tab. Hit ENTER on your keyboard after manually typing in a barcode to add it to the list of Pending Users.
 . Select the user accounts that you want to add to the bucket by checking the box next to each user row or by using the CTRL or SHIFT key on your keyboard to select multiple users.
-. Go to *Actions->Add To Bucket* or right-click on a selected user account to view the _Actions_ menu and select *Add To Bucket*.  The user accounts will move to the Bucket View tab and are now in the selected User Bucket.
+. Go to *Actions->Add To Bucket* or right-click on a selected user account to view the _Actions_ menu and select *Add To Bucket*. The user accounts will move to the Bucket View tab and are now in the selected User Bucket.
 
 image::circulation_patron_records_web_client/userbucket3.PNG[Screenshot of the User bucket interface as described above. The tab options are Pending Users () and Bucket View (). The options to add users are next on the screen, The bucket selection button is inline with the grid actions buttons. The pending users tab and the add users sections are highlighted.]
 
@@ -721,13 +728,13 @@ image::circulation_patron_records_web_client/userbucket3.PNG[Screenshot of the U
 
 . Go to *Circulation->User Buckets* and select the *Pending Users* tab at the top of the screen.
 . Click on *Buckets* and select an existing bucket from the drop down menu or click *New Bucket* to create a new user bucket.
-.. If creating a new user bucket, a dialog box called _Create Bucket_ will appear where you can enter a bucket _Name_ and _Description_ and indicate if the bucket is _Staff Shareable?_.  Click *Create Bucket*.
+.. If creating a new user bucket, a dialog box called _Create Bucket_ will appear where you can enter a bucket _Name_ and _Description_ and indicate if the bucket is _Staff Shareable?_. Click *Create Bucket*.
 .. After selecting or creating a bucket, the Name, Description, number of items, and creation date of the bucket will appear above the Scan Card field.
 . In the Pending Users tab, click *Choose File* and select the file of barcodes to be uploaded.
 .. The file that is uploaded must be a .txt file that contains a single barcode per row.
 . The user accounts will automatically appear in the list of Pending Users.
 . Select the user accounts that you want to add to the bucket by checking the box next to each user row or by using the CTRL or SHIFT key on your keyboard to select multiple users.
-. Go to *Actions->Add To Bucket* or right-click on a selected user account to view the _Actions_ menu and select *Add To Bucket*.  The user accounts will move to the Bucket View tab and are now in the selected User Bucket.
+. Go to *Actions->Add To Bucket* or right-click on a selected user account to view the _Actions_ menu and select *Add To Bucket*. The user accounts will move to the Bucket View tab and are now in the selected User Bucket.
 
 === Batch Edit All Users ===
 
@@ -737,8 +744,8 @@ To batch edit all users in a user bucket:
 . Click *Buckets* and select the bucket you want to modify from the list of existing buckets.
 .. After selecting a bucket, the Name, Description, number of items, and creation date of the bucket will appear at the top of the screen.
 . Verify the list of users in the bucket and click *Batch edit all users*. A dialog box called _Update all users_ will appear where you can select the batch modifications to be made to the user accounts.
-. Assign a _Name for edit set_.  This name will allow staff to identify the batch edit for future verification or rollbacks.
-. Set the values that you want to modify.  The following fields can be modified in batch:
+. Assign a _Name for edit set_. This name will allow staff to identify the batch edit for future verification or rollbacks.
+. Set the values that you want to modify. The following fields can be modified in batch:
 
 * Home Library
 * Profile Group
@@ -748,7 +755,7 @@ To batch edit all users in a user bucket:
 * Juvenile flag
 * Privilege Expiration Date
 
-. Click *Apply Changes*.  The modification(s) will be applied in batch.
+. Click *Apply Changes*. The modification(s) will be applied in batch.
 
 image::circulation_patron_records_web_client/userbucket4.PNG[Screenshot of the Update all users modal. The fields are as described above. Two fields have been changed and these are indicated by green highlights.]
 
@@ -759,11 +766,11 @@ To batch modify statistical categories for all users in a bucket:
 . Go to *Circulation->User Buckets* and select the *Bucket View* tab.
 . Click *Buckets* and select the bucket you want to modify from the list of existing buckets.
 .. After selecting a bucket, the Name, Description, number of items, and creation date of the bucket will appear at the top of the screen.
-. Verify the list of users in the bucket and click *Batch modify statistical categories*. A dialog box called _Update statistical categories_ will appear where you can select the batch modifications to be made to the user accounts.  The existing patron statistical categories will be listed and staff can choose:
+. Verify the list of users in the bucket and click *Batch modify statistical categories*. A dialog box called _Update statistical categories_ will appear where you can select the batch modifications to be made to the user accounts. The existing patron statistical categories will be listed and staff can choose:
 .. To leave the stat cat value unchanged in the patron accounts.
 .. To select a new stat cat value for the patron accounts.
 .. Check the box next to Remove to delete the current stat cat value from the patron accounts.
-. Click *Apply Changes*.  The stat cat modification(s) will be applied in batch.
+. Click *Apply Changes*. The stat cat modification(s) will be applied in batch.
 
 image::circulation_patron_records_web_client/userbucket12.PNG[screenshot of the Update statistical categories screen as described above.]
 
@@ -774,8 +781,8 @@ To batch delete users in a bucket:
 . Click on *Buckets* and select the bucket you want to modify from the list of existing buckets.
 .. After selecting a bucket, the Name, Description, number of items, and creation date of the bucket will appear at the top of the screen.
 . Verify the list of users in the bucket and click *Delete all users*. A dialog box called _Delete all users_ will appear.
-. Assign a _Name for delete set_.  This name will allow staff to identify the batch deletion for future verification or rollbacks.
-. Click *Apply Changes*.  All users in the bucket will be marked as deleted.
+. Assign a _Name for delete set_. This name will allow staff to identify the batch deletion for future verification or rollbacks.
+. Click *Apply Changes*. All users in the bucket will be marked as deleted.
 
 NOTE: Batch deleting patrons from a user bucket does not use the Purge User functionality, but instead marks the users as deleted.
 
@@ -785,7 +792,7 @@ image::circulation_patron_records_web_client/userbucket7.PNG[Screenshot of the D
 
 . The batch changes that have been made to User Buckets can be viewed by going to *Circulation->User Buckets* and selecting the *Bucket View* tab.
 . Click *Buckets* to select an existing bucket.
-. Click *View batch changes*.  A dialog box will appear that lists the _Name_, date _Completed_, and date _Rolled back_ of any batch changes made to the bucket.  There is also an option to _Delete_ a batch change.  This will remove this batch change from the list of actions that can be rolled back.  It will not delete or reverse the batch change.
+. Click *View batch changes*. A dialog box will appear that lists the _Name_, date _Completed_, and date _Rolled back_ of any batch changes made to the bucket. There is also an option to _Delete_ a batch change. This will remove this batch change from the list of actions that can be rolled back. It will not delete or reverse the batch change.
 . Click *OK* to close the dialog box.
 
 image::circulation_patron_records_web_client/userbucket8.PNG[Screenshot of the View batch Changes modal as described above.]
@@ -794,7 +801,7 @@ image::circulation_patron_records_web_client/userbucket8.PNG[Screenshot of the V
 
 . Batch Changes and Batch Deletions can be rolled back or reversed by going to *Circulation->User Buckets* and selecting the *Bucket View* tab.
 . Click *Buckets* to select an existing bucket.
-. Click *Roll back batch edit*.  A dialog box will appear that contains a drop down menu that lists all batch edits that can be rolled back.  Select the batch edit to roll back and click *Roll Back Changes*.  The batch change will be reversed and the roll back is recorded under _View batch changes_.
+. Click *Roll back batch edit*. A dialog box will appear that contains a drop down menu that lists all batch edits that can be rolled back. Select the batch edit to roll back and click *Roll Back Changes*. The batch change will be reversed and the roll back is recorded under _View batch changes_.
 
 NOTE: Batch statistical category changes cannot be rolled back.
 
@@ -803,11 +810,11 @@ image::circulation_patron_records_web_client/userbucket10.png[Screenshot of the 
 image::circulation_patron_records_web_client/userbucket9.PNG[Screenshot of the View batch Changes modal. A new date has been added to the Rolled back column.]
 
 === Sharing Buckets ===
-If a User Bucket has been made Staff Shareable, it can be retrieved via bucket ID by another staff account.  The ID for each bucket can be found at the end of the URL for the bucket.  For example, in the screenshot below, the bucket ID is 32.
+If a User Bucket has been made Staff Shareable, it can be retrieved via bucket ID by another staff account. The ID for each bucket can be found at the end of the URL for the bucket. For example, in the screenshot below, the bucket ID is 32.
 
 image::circulation_patron_records_web_client/userbucket11.PNG[Screenshog of the Bucket view page showing the URL bar at the top of the screen. The URL is "dev-test2.esilibrary.com/eg/staff/circ/patron/bucket/view/32"]
 
-A shared bucket can be retrieved by going to *Circulation->User Buckets* and selecting the *Bucket View* tab.  Next, click *Buckets* and select *Shared Bucket*.  A dialog box called _Load Shared Bucket by Bucket ID_ will appear.  Enter the ID of the bucket you wish to retrieve and click *Load Bucket*.  The shared bucket will load in the Bucket View tab.
+A shared bucket can be retrieved by going to *Circulation->User Buckets* and selecting the *Bucket View* tab. Next, click *Buckets* and select *Shared Bucket*. A dialog box called _Load Shared Bucket by Bucket ID_ will appear. Enter the ID of the bucket you wish to retrieve and click *Load Bucket*. The shared bucket will load in the Bucket View tab.
 
 === Permissions ===
 
