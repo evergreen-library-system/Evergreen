@@ -31,7 +31,7 @@
 
 /* from ACQB, may not be needed */
 .eg-tree-node-wrapper.active {
-  background-color: var(--common-form-bg);
+  background-color: var(--bs-body-bg-alt);
   border: 1px solid var(--border);
   font-style: italic;
 }

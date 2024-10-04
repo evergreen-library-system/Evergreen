@@ -60,13 +60,13 @@
 
 .eg-grid-toolbar-utilities .btn-outline-dark,
 .eg-grid-toolbar-utilities .btn-outline-dark:hover {
-  border-color: rgba(33, 37, 41, 0.35);
+  border-color: light-dark(rgba(33, 37, 41, 0.35), rgba(255, 255, 255, 0.35));
 }
 
 /* reduce opacity of text/icons, not borders */
 .eg-grid-toolbar-utilities .btn-outline-dark.disabled,
 .eg-grid-toolbar-utilities .btn-outline-dark:disabled {
-  color: rgba(33, 37, 41, 0.5);
+  color: light-dark(rgba(33, 37, 41, 0.5), rgba(255, 255, 255, 0.5));
   opacity: 1;
 }
 

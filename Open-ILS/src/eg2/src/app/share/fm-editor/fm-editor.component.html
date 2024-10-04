@@ -163,12 +163,12 @@
                     [required]="field.isRequired()"
                     [ngModel]="record[field.name]()"
                     (ngModelChange)="record[field.name]($event)"/>
-                    <span *ngIf="field.i18n && !field.readOnly" [ngClass]="(field.i18n && !field.readOnly) ? 'input-group-text' : null">
-                      <button type="button" (click)="openTranslator(field.name)" class="btn"
-                        i18n-title title="Translate" i18n-aria-label aria-label="Translate">
-                        <span class="material-icons text-info" aria-hidden="true">translate</span>
-                      </button>
-                    </span>
+                    <button type="button" *ngIf="field.i18n && !field.readOnly" 
+                      [ngClass]="(field.i18n && !field.readOnly) ? 'input-group-text' : null"
+                      (click)="openTranslator(field.name)"
+                      i18n-title title="Translate" i18n-aria-label aria-label="Translate">
+                      <span class="material-icons text-info" aria-hidden="true">translate</span>
+                    </button>
                   </div>
                 </ng-container>
 

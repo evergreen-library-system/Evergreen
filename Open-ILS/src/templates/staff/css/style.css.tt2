@@ -2,22 +2,22 @@
 body { padding-bottom: 50px; }
 
 a.skip-nav:not(:focus):not(:hover) {
-    transform: translateY(-4em);
-    opacity: 0;
+  transform: translateY(-4em);
+  opacity: 0;
 }
 
-a.skip-nav {
-    background-color: var(--bs-body-bg);
-    border: 1px solid #0D7764;
-    color: #0D7764;
-    margin: 0;
-    padding: 1em;
-    position: absolute;
-    z-index: 2000;
-    left: 0;
-    top: 0;
-    width: auto;
-    transition: transform 0.15s ease-out, opacity 0.15s ease-out;
+.skip-nav {
+background-color: var(--bs-body-bg);
+border: 1px solid var(--evergreen);
+color: var(--evergreen);
+margin: 0;
+padding: 1em;
+position: absolute;
+z-index: 2000;
+left: 0;
+top: 0;
+width: auto;
+transition: transform 0.15s ease-out, opacity 0.15s ease-out;
 }
 
 #top-navbar ul.dropdown-menu > li > a {
@@ -37,28 +37,9 @@ a.skip-nav {
   margin-inline-end: 0.5rem;
 }
 
-a.skip-nav:not(:focus):not(:hover) {
-    transform: translateY(-4em);
-    opacity: 0;
-}
-
-.skip-nav {
-  background-color: var(--bs-body-bg);
-  border: 1px solid var(--evergreen);
-  color: var(--evergreen);
-  margin: 0;
-  padding: 1em;
-  position: absolute;
-  z-index: 2000;
-  left: 0;
-  top: 0;
-  width: auto;
-  transition: transform 0.15s ease-out, opacity 0.15s ease-out;
-}
-
 /* Hatch / WebSockets / Etc. connectivity status indicator */
 .connect-status-ok {
-  color: rgb(92, 184, 92); /* success */
+  color: rgb(var(--bs-green-rgb)); /* success */
 }
 
 body {
@@ -69,7 +50,7 @@ body {
 }
 
 kbd {
-  background-color: var(--bs-light);
+  background-color: light-dark(var(--bs-gray-200), var(--bs-body-bg-highlight));
   border-radius: .2rem;
   border: none;
   box-shadow: 1px 1px 1px rgba(var(--box-shadow), 0.2);
@@ -139,7 +120,7 @@ kbd {
  */
 .form-validated input.ng-invalid.ng-dirty,
 .form-validated textarea.ng-invalid.ng-dirty {
-  background-color: light-dark(#FA787E, var(--bs-red-900));
+  background-color: light-dark(var(--bs-red-200), var(--bs-red-900));
 }
 .form-validated input.ng-valid.ng-dirty,
 .form-validated textarea.ng-valid.ng-dirty {
@@ -172,8 +153,9 @@ a.disabled {
 }
 
 table.list tr.selected td { /* deprecated? */
-    color: #2a6496;
-    background-color:  var(--bs-light);
+  color: var(--grid-row-selected);
+  background-color: var(--grid-row-selected-bg);
+  border-color: var(--grid-row-selected-border);
 }
 
 .pad-horiz {padding : 0px 10px 0px 10px; }
@@ -191,7 +173,7 @@ table.list tr.selected td { /* deprecated? */
 .tab-pane { padding-top: 20px; }
 
 .nav-pills-like-tabs {
-    border-bottom:1px solid #CCC;
+    border-bottom:1px solid var(--border);
 }
 
 .btn-pad {
@@ -301,13 +283,10 @@ table.list tr.selected td { /* deprecated? */
 /* background colors are !important because Bootstrap 4 table striping is greedy */
 /* background colors are !important because Bootstrap 4 table striping is greedy */
 .overdue-row {
-  color: var(--bs-body);
-  background-color: rgba(var(--bs-red-rgb), 0.10) !important;
-  border-left: 2px solid var(--bs-red);
-  padding-left: 0;
-  color: var(--bs-body);
-  background-color: rgba(var(--bs-red-rgb), 0.10) !important;
-  border-left: 2px solid var(--bs-red);
+  color: var(--bs-body-color);
+  background-color: rgba(var(--bs-orange-rgb), 0.10);
+  border-color: rgba(var(--bs-orange-rgb), 0.15);
+  border-left: 10px solid var(--bs-orange);
   padding-left: 0;
 }
 
@@ -318,42 +297,50 @@ table.list tr.selected td { /* deprecated? */
 }
 
 .longoverdue-row {
-  color: var(--bs-body);
-  background-color: rgba(var(--bs-orange-rgb), 0.18) !important;
+  color: var(--bs-body-color);
+  background-color: rgba(var(--bs-orange-rgb), 0.25) !important;
+  border-color: rgba(var(--bs-orange-rgb), 0.30);
   border-left: 2px solid var(--bs-orange-600);
   padding-left: 0;
 }
 
 .longoverdue-row a:link, .longoverdue-row a:visited,
 .longoverdue-row .eg-grid-cell-stock-status {
-  color: light-dark(var(--bs-orange-700), var(--bs-yellow-600));
+  color: light-dark(var(--bs-orange-700), var(--bs-yellow-300));
   border-color: var(--bs-orange-700);
 }
 
 .lost-row {
-  color: var(--bs-body);
-  background-color: rgba(var(--bs-red-rgb), 0.15) !important;
+  color: var(--bs-body-color);
+  background-color: rgba(var(--bs-red-rgb), 0.25);
+  border-color: rgba(var(--bs-red-rgb), 0.30);
   border-left: 2px solid var(--bs-red-600);
   padding-left: 0;
 }
 
 .lost-row a:link, .lost-row a:visited,
 .lost-row .eg-grid-cell-stock-status {
-  color: var(--badge-danger-color);
+  color: var(--danger-color);
   border-color: var(--bs-red-700);
 }
 
 
 .eg-grid-row-selected.overdue-row {
-  background-color: rgba(var(--bs-red-rgb), 0.20) !important;
-  border-left: 2px solid var(--bs-red);
-}
-.eg-grid-row-selected.longoverdue-row {
+  color: var(--bs-body-color);
   background-color: rgba(var(--bs-orange-rgb), 0.15) !important;
+  border-color: rgba(var(--bs-orange-rgb), 0.20);
   border-left: 2px solid var(--bs-orange);
 }
+.eg-grid-row-selected.longoverdue-row {
+  color: var(--bs-body-color);
+  background-color: rgba(var(--bs-orange-rgb), 0.30) !important;
+  border-color: rgba(var(--bs-orange-rgb), 0.35);
+  border-left: 2px solid var(--bs-orange-600);
+}
 .eg-grid-row-selected.lost-row {
-  background-color: rgba(var(--bs-red-rgb), 0.25) !important;
+  color: var(--bs-body-color);
+  background-color: rgba(var(--bs-red-rgb), 0.30) !important;
+  border-color: rgba(var(--bs-red-rgb), 0.35);
   border-left: 2px solid var(--bs-red-600);
 }
 
@@ -432,13 +419,13 @@ table.list tr.selected td { /* deprecated? */
 
 .eg-grid-columns-modal-body .row {
   padding: 2px 0px 2px 0px;
-  border-bottom: 1px solid #aaa;
+  border-bottom: 1px solid var(--border);
 }
 
 .eg-grid-columns-modal-body .visible {
-  color: #000;
-  background-color: rgb(201, 221, 225);
-  border-bottom: 1px solid #888;
+  color: var(--bs-body-color);
+  background-color: var(--bs-body-bg-alt);
+  border-bottom: 1px solid var(--border);
 }
 
 
@@ -554,11 +541,6 @@ input, textarea, select, option,
   border-bottom-color: var(--border);
 }
 
-.patron-summary-alert, .patron-summary-alert-small {
-    background: inherit;
-    color: light-dark(var(--bs-red-300), var(--bs-red-700));
-}
-
 [data-bs-theme="dark"] .alert {
   border: none;
 }
@@ -606,6 +588,7 @@ input, textarea, select, option,
 .badge.text-bg-secondary {
   background: light-dark(var(--bs-gray-300), var(--bs-gray-700));
   color: var(--bs-body-color);
+  border-color: var(--border);
 }
 
 .alert-success,
@@ -620,7 +603,7 @@ input, textarea, select, option,
 .badge-danger,
 .badge.text-bg-danger {
   background: var(--badge-danger-bg);
-  color: var(--danger-color);
+  color: var(--badge-danger-color);
   border-color: var(--danger-border);
 }
 
@@ -628,8 +611,8 @@ input, textarea, select, option,
 .badge-warning,
 .badge.text-bg-warning {
   background: var(--badge-warning-bg);
-  color: var(--warning-color);
-  border-color: var(--wawrning-border);
+  color: var(--badge-warning-color);
+  border-color: var(--warning-border);
 }
 
 .alert-info,
@@ -642,14 +625,16 @@ input, textarea, select, option,
 
 .badge-light,
 .badge.text-bg-light {
-  background: var(--bs-gray-200);
-  color: var(--bs-gray-900);
+  background: var(---bs-body-bg-highlight);
+  color: var(--bs-body-color);
+  border-color: var(--border);
 }
 
 .badge-dark,
 .badge.text-bg-dark {
-  color: var(--bs-black);
-  background: var(--bs-gray-500);
+  background: light-dark(var(--bs-gray-500), var(--bs-gray-800));
+  color: var(--bs-body-color);
+  border-color: var(--border);
 }
 
 /* Accessible button colors */
@@ -683,7 +668,7 @@ input, textarea, select, option,
 
 .btn.btn-warning,
 .btn.btn-outline-warning {
-  background: var(--badge-warning-bg);
+  background: light-dark(var(--bs-yellow-300), var(--bs-yellow-800));
   border-color: var(--warning-border);
   color: var(--bs-body-color);
 }
@@ -696,6 +681,7 @@ input, textarea, select, option,
 /* other colors' focus state shadows do not need to change */
 .btn.btn-warning.focus,
 .btn.btn-warning:focus {
+  background-color: var(--badge-warning-hover-bg);
   border-color: var(--warning-border-hover);
   box-shadow: 0 0 0 .2rem var(--warning-shadow);
 }
@@ -744,8 +730,8 @@ input, textarea, select, option,
 
 .btn-primary.disabled:hover,
 .btn-primary:disabled:hover {
-  color: var(--bs-white);
-  /* background-color: var(--bs-red-600); */
+  color: var(--primary-disabled);
+  background-color: var(--bs-body-bg);
   border-color: var(--primary-disabled);
 }
 
@@ -757,8 +743,9 @@ input, textarea, select, option,
 }
 
 .btn-info {
-  background-color: var(--badge-info-bg);
-  border-color: var(--info);
+  background-color: light-dark(var(--bs-cyan-700), var(--bs-cyan-900));
+  border-color: light-dark(var(--bs-cyan-600), var(--bs-cyan-800));
+  color: white;
 }
 
 .btn-info:hover,
@@ -769,13 +756,15 @@ input, textarea, select, option,
 .btn-check:checked + .btn-info, 
 .btn-info.active,
 .show > .btn-info.dropdown-toggle {
-  background-color: var(--badge-info-bg);
-  border-color: var(--info-hover);
+  background-color: var(--bs-cyan-600);
+  border-color: light-dark(var(--bs-cyan-600), var(--bs-cyan-800));
+  color: white;
 }
 
 .btn-info.disabled, .btn-info:disabled {
   background-color: rgba(var(--bs-info-rgb), 0.5);
   border-color: rgba(var(--bs-info-rgb), 0.5);
+  color: white !important;
 }
 
 .btn-outline-info {
@@ -847,28 +836,28 @@ input, textarea, select, option,
 }
 
 .btn-success.disabled,
-.btn-success:disabled {
+.btn-success:disabled, .btn-success:disabled:hover {
   color: var(--bs-white);
   background-color: var(--success-disabled);
   border-color: var(--success-disabled);
 }
 
 .btn-outline-success.disabled,
-.btn-outline-success:disabled {
+.btn-outline-success:disabled, .btn-outline-success:disabled:hover {
   color: var(--success-disabled);
   background-color: var(--bs-body-bg);
   border-color: var(--success-disabled);
 }
 
 .btn-danger {
-  background-color: var(--badge-danger-bg);
-  border-color: var(--danger);
-  color: var(--bs-body-color);
+  background-color: var(--danger);
+  border-color: var(--danger-border);
+  color: white;
 }
 
 .btn-danger:hover,
 .btn-danger:focus {
-  background-color: var(--badge-danger-selected-bg);
+  background-color: var(--danger-bg-hover);
 }
 
 /* Also have to overwrite bootstrap for dark mode for these */
@@ -911,23 +900,30 @@ button.dropdown-toggle:focus,
 .btn.btn-default:active {
   color: light-dark(var(--bs-gray-800), var(--bs-gray-150));
   background-color: light-dark(#e6e6e6, var(--bs-gray-800));
-  border-color: #adadad
+  border-color: #adadad;
 }
 
-.nav-tabs>li.active>a, 
-.nav-tabs>li.active>a:focus, 
-.nav-tabs>li.active>a:hover {
-  background-color: var(--white);
-  color: light-dark(#555, var(--bs-gray-400));
+:is(.nav, .nav-pills, .nav-tabs) > li.active > a:is(a, .active, :active) {
+  background-color: var(--bs-body-bg);
+  color: var(--primary);
 }
 
-.input-group-addon {
+:is(.nav, .nav-pills, .nav-tabs) > li.active > a:is(a, :focus, :focus-visible, :hover) {
+  background-color: var(--bs-body-bg-highlight);
+  color: var(--primary-hover);
+}
+
+.input-group-addon,
+.input-group-addon button {
   color: var(--bs-text-highlight);
   background-color: var(--bs-body-bg-highlight);
   border-color: var(--border-thick);
   border-right-color: var(--border);
 }
 
+.input-group-addon button {
+  border: none;
+}
 
 @media (forced-colors: active) or (prefers-contrast: forced) {
   .uib-increment .btn,

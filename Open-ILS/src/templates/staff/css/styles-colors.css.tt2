@@ -20,11 +20,10 @@
   /* Greys */
   --black: light-dark(black, white);
   --black-rgb: 0,0,0;
-  --bs-black-rgb: light-dark(var(--black-rgb), var(var(--white-rgb));)
+  --bs-black-rgb: light-dark(var(--black-rgb), var(--white-rgb));
   --white: light-dark(white, black);
   --white-rgb: 255,255,255;
   --bs-white: light-dark(white, black);
- 
 
   --bs-gray-100: #f8f9fa;
   --bs-gray-110: #f4f5f6;
@@ -39,6 +38,7 @@
   --bs-gray-700: #495057;
   --bs-gray-750: #3F454C;
   --bs-gray-800: #343a40;
+  --bs-gray-850: #2B3035;
   --bs-gray-900: #212529;
   --bs-gray-925: #1B1D1F;
   --bs-gray-950: #151515;
@@ -161,20 +161,21 @@
   --black: light-dark(black, white);
   --white: light-dark(white, black);
   --bs-white: light-dark(white, black);
-  --bs-light: light-dark(var(--bs-gray-100), var(--bs-gray-900));
+  --bs-light: light-dark(var(--bs-gray-100), var(--bs-gray-850));
   --bs-dark: light-dark(var(--bs-gray-900), var(--bs-gray-100));
   --border: light-dark(var(--bs-gray-300), var(--bs-gray-700));
-  --border-thick: light-dark(var(--bs-gray-400), var(--bs-gray-800));
+  --border-thick: light-dark(var(--bs-gray-400), var(--bs-gray-600));
   --inactive: light-dark(var(--bs-gray-800), var(--bs-gray-400));
+  --form-check-border: light-dark(var(--bs-gray-300), var(--bs-gray-800));
 
-  --bs-body-color: light-dark(var(--bs-gray-900), var(--bs-gray-200));
-  --bs-body-color-rgb: light-dark((33, 37, 41), (255, 255, 255));
-  --bs-body-bg: light-dark(white, var(--bs-gray-975));
-  --bs-body-color-disabled: var(--bs-gray-700);
-  --bs-body-bg-alt: light-dark(var(--bs-gray-110), var(--bs-gray-950));
-  --bs-body-bg-highlight: light-dark(var(--bs-gray-200), var(--bs-gray-900));
+  --bs-body-color: light-dark(var(--bs-gray-900), var(--bs-gray-400));
+  --bs-body-color-rgb: light-dark((33, 37, 41), (222, 226, 230));
+  --bs-body-bg: light-dark(white, var(--bs-gray-925));
+  --bs-body-color-disabled: var(--bs-dropdown-link-disabled-color);
+  --bs-body-bg-alt: light-dark(var(--bs-gray-110), var(--bs-gray-900));
+  --bs-body-bg-highlight: light-dark(var(--bs-gray-200), var(--bs-gray-850));
   --bs-text-highlight: light-dark(var(--bs-gray-700), var(--bs-gray-500));
-  --bs-card-bg: light-dark(var(--bs-gray-125), var(--bs-gray-975));
+  --bs-card-bg: light-dark(var(--bs-gray-125), var(--bs-gray-925));
   /* no light-dark() needed: */
   --bs-row-alt: rgba(var(--bs-black-rgb), 0.03);
   --box-shadow: var(--black-rgb);
@@ -194,7 +195,7 @@
   --form-success-bg: light-dark(var(--bs-green-100), var(--eg-green-900));
   /* used in both nav and splash components: */
   --staff-navbar-a: light-dark( var(--eg-green-800), var(--bs-gray-900));
-  --staff-navbar-b: light-dark( var(--eg-green-600), var(--bs-gray-950));
+  --staff-navbar-b: light-dark( var(--eg-green-600), var(--bs-gray-975));
 
   --badge-color: light-dark(var(--bs-primary-text-dark), var(--bs-blue-200)); 
   --badge-bg: light-dark(var(--bs-blue-100), var(--bs-blue-900)); 
@@ -204,7 +205,8 @@
   --badge-danger-color: light-dark( var(--bs-red-800),  var(--bs-red-200));
 
   --badge-info-color: light-dark(var(--bs-cyan-900), var(--bs-cyan-100)); 
-  --badge-info-bg: light-dark(var(--bs-cyan-100), var(--bs-cyan-900)); 
+  --badge-info-bg: light-dark(var(--bs-cyan-100), var(--bs-cyan-900));
+  --badge-info-border: light-dark(var(--bs-cyan-300), var(--bs-cyan-700));
 
   --badge-success-color: var(--success-text-dark); 
   --badge-success-bg: var(--success-text-light);
@@ -213,6 +215,8 @@
   --badge-warning-hover-bg: light-dark(var(--bs-yellow-300), var(--bs-yellow-900)); 
   --badge-warning-selected-bg: light-dark(var(--bs-yellow-300), var(--bs-yellow-700)); 
   --badge-warning-color: light-dark(var(--bs-orange-750), var(--bs-yellow-200)); 
+
+  --batch-item-attr-header-bg: light-dark(var(--bs-blue-100), var(--bs-blue-900-desat));
 
   --grid-color: var(--bs-body-color);
   --grid-borders: light-dark(rgba(0,0,0,0.125), #292929);
@@ -226,16 +230,17 @@
 
   --grid-header-button: light-dark(var(--bs-blue-700), var(--bs-blue-300));
 
-  --danger: light-dark(var(--bs-red-600), var(--bs-red-400));
+  --danger: light-dark(var(--bs-red-600), var(--bs-red-800));
+  --danger-bg-hover: var(--bs-red-700);
   --danger-color: light-dark(var(--bs-red-700), var(--bs-red-300));
-  --danger-border: light-dark(var(--bs-red-700), var(--bs-red-400)); 
+  --danger-border: light-dark(var(--bs-red-700), var(--bs-red-600)); 
   --info: light-dark(var(--bs-cyan-700), var(--bs-cyan-300)); 
   --info-border: light-dark(var(--bs-cyan-300), var(--bs-cyan-700)); 
   --info-disabled: light-dark(rgba(var(--bs-cyan-700-disabled-rgb), 1), rgba(var(--bs-cyan-700-disabled-rgb), 0.7));
   --info-hover: light-dark(var(--bs-cyan-200), var(--bs-cyan-750)); 
   --primary: light-dark(var(--bs-blue-600), var(--bs-blue-300)); 
   --primary-border: light-dark(var(--bs-blue-650), var(--bs-blue-400) );
-  --primary-focus-outline-rgb: var(--bs-blue-rgb);
+  --primary-focus-outline-rgb: var(--bs-blue-600-rgb);
   --primary-hover: light-dark(var(--bs-blue-650), var(--bs-blue-400));
   --primary-disabled: light-dark(rgba(var(--bs-blue-600-rgb), 1.0), rgba(var(--bs-blue-300-rgb), 0.7));
   
@@ -248,19 +253,20 @@
   --btn-gray-bg-hover: light-dark(var(--bs-gray-300), var(--bs-gray-800));
   --btn-gray-color: var(--bs-body-color);
   --btn-gray-border: light-dark(var(--bs-gray-400), var(--bs-gray-800));
-
-  --common-form-bg: var(--bs-body-bg-alt);
-  --common-form-border: var(--border);
-  --form-check-border: light-dark(var(--bs-gray-100), var(--bs-gray-800));
-  --form-valid: var(--success-border);
-  --form-invalid: var(--bs-red-600);
   
   --row-even-bg: var(--bs-body-bg-alt);
-  --modal-header-color: var(--bs-white);
-  --modal-header-bg: var(--info);
+  --modal-header-color: white;
+  --modal-header-bg: var(--bs-cyan-800);
+  --modal-body-bg: light-dark(var(--bs-body-bg), var(--bs-body-bg-alt));
   --popover-menu-hover: light-dark(var(--bs-gray-100), var(--bs-gray-900));
   --popover-header-bg: light-dark(var(--bs-gray-100), var(--bs-gray-900));
   --dropdown-menu-bg: light-dark(white, var(--bs-gray-900));
 
   --status-archived: light-dark(var(--bs-gray-600), var(--bs-gray-500));
+  
+  --common-form-bg: var(--bs-body-bg-alt);
+  --common-form-border: var(--border);
+  --form-check-border: light-dark(var(--bs-gray-300), var(--bs-gray-800));
+  --form-valid: var(--bs-green-600);
+  --form-invalid: var(--bs-red-600);
 }
