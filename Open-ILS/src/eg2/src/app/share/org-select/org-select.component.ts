@@ -79,6 +79,9 @@ export class OrgSelectComponent implements OnInit {
     // ID to display in the DOM for this selector
     @Input() domId = 'eg-org-select-' + OrgSelectComponent._domId++;
 
+    // String containing additional CSS class names, space separated
+    @Input() moreClasses = '';
+
     @Input() name = '';
 
     // Org unit field displayed in the selector
