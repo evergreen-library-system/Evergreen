@@ -3,49 +3,34 @@
 
 == Library Settings ==
 
-Three Library Settings are specific to patron self-registration:
+Four Library Settings are specific to patron self-registration:
 
- * OPAC: Allow Patron Self-Registration must be set to `True` to enable use of this feature.
+* _OPAC: Allow Patron Self-Registration_ must be set to `True` to enable use of this feature.
+* _OPAC: Patron Self-Reg. Expire Interval_ allows each library to set the amount of time after which pending patron accounts should be deleted.
+* _OPAC: Patron Self-Reg. Display Timeout_ allows each library to set the amount of time after which the patron self-registration screen will timeout in the OPAC.  The default is 5 minutes.
+* _Patron Self-Reg. Date of Birth Order_ sets the order in which to present the Month, Day, and Year elements for the Date of Birth field in Patron Self-Registration. Use the letter M for Month, D for Day, and Y for Year. Examples: MDY, DMY, YMD. The default is MDY.
+* _Hide Username field in Patron Self-Reg_ will hide the entry field for a username. If this is set to `True`, the system will assign a unique value that can later be edited in Pending Patrons.
 
- * OPAC: Patron Self-Reg. Expire Interval allows each library to set the amount of time after which pending patron accounts should be deleted.
+Several more Library Settings can be used to determine if a field should be required or hidden in the self-registration form. These settings also impact the staff client patron registration form.
 
- * OPAC: Patron Self-Reg. Display Timeout allows each library to set the amount of time after which the patron self-registration screen will timeout in the OPAC.  The default is 5 minutes.
+* GUI: Require day_phone field on patron registration
+* GUI: Show day_phone on patron registration
+* GUI: Require dob (date of birth) field on patron registration
+* GUI: Show dob field on patron registration
+* GUI: Require email field on patron registration
+* GUI: Show email field on patron registration
+* GUI: Require State field on patron registration
+* GUI: Show State field on patron registration
+* GUI: Require county field on patron registration
+* GUI: Show county field on patron registration
 
-Several more Library Settings can be used to determine if a field should be required or hidden in the self-registration form:
+Several more Library Settings can be used to verify values in certain fields and provide examples for data format on the registration form. These settings also impact the staff client patron registration form.
 
- * GUI: Require day_phone field on patron registration
-
- * GUI: Show day_phone on patron registration
-
- * GUI: Require dob (date of birth) field on patron registration
-
- * GUI: Show dob field on patron registration
-
- * GUI: Require email field on patron registration
-
- * GUI: Show email field on patron registration
-
- * GUI: Require State field on patron registration
-
- * GUI: Show State field on patron registration
-
- * GUI: Require county field on patron registration
-
- * GUI: Show county field on patron registration  [New Setting]
-
-Several more Library Settings can be used to verify values in certain fields and provide examples for data format on the registration form:
-
- * Global: Patron username format
-
- * GUI: Regex for phone fields on patron registration OR GUI: Regex for day_phone field on patron registration
-
- * GUI: Regex for email field on patron registration
-
- * GUI: Regex for post_code field on patron registration
-
- * GUI: Example for email field on patron registration
-
- * GUI: Example for post_code field on patron registration
-
- * GUI: Example for day_phone field on patron registration OR GUI: Example for phone fields on patron registration
+* Global: Patron username format
+* GUI: Regex for phone fields on patron registration OR GUI: Regex for day_phone field on patron registration
+* GUI: Regex for email field on patron registration
+* GUI: Regex for post_code field on patron registration
+* GUI: Example for email field on patron registration
+* GUI: Example for post_code field on patron registration
+* GUI: Example for day_phone field on patron registration OR GUI: Example for phone fields on patron registration
 

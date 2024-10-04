@@ -1,97 +1,56 @@
 = Monograph Parts =
 :toc:
 
-*Monograph Parts* enables you to differentiate between parts of
-monographs or other multi-part items.  This feature enables catalogers
-to describe items more precisely by labeling the parts of an item.  For
-example, catalogers might identify the parts of a monograph or the discs
-of a DVD set.  This feature also allows patrons more flexibility when
-placing holds on multi-part items.  A patron could place a hold on a
-specific disc of a DVD set if they want to access a specific season or
-episode rather than an entire series.
+*Monograph Parts* enables you to differentiate between parts of monographs or other multi-part items. This feature enables catalogers to describe items more precisely by labeling the parts of an item. For example, catalogers might identify the parts of a monograph or the discs of a DVD set. This feature also allows patrons more flexibility when placing holds on multi-part items. A patron could place a hold on a specific disc of a DVD set if they want to access a specific season or episode rather than an entire series.
 
-Four new permissions are used by this functionality:
+Four permissions are used by this functionality:
 
 * CREATE_MONOGRAPH_PART
 * UPDATE_MONOGRAPH_PART
 * DELETE_MONOGRAPH_PART
 * MAP_MONOGRAPH_PART
 
-These permissions should be assigned at the consortial level to those
-groups or users that will make use of the features described below.
+These permissions should be assigned at the consortial level to those groups or users that will make use of the features described below.
 
 
 == Add a Monograph Part to an Existing Record ==
 
-To add a monograph part to an existing record in the catalog:  
+To add a monograph part to an existing record in the catalog: 
 
 . Retrieve a record.
-
-. Click the *Manage Parts* tab.
+. Select the *Monograph Parts* tab.
 +
-image::mono_parts/manage_parts_menu.jpg[Menu: Manage Parts]
-
-. Click the *New Monograph Part* button
-
-. Enter the *label* that you want to appear to the user in the catalog,
-and click *Save*.  This will create a list of monograph parts from which
-you can choose when you create holdings.
+image::mono_parts/monograph_parts_tab.png[Monograph parts tab]
 +
-image::mono_parts/monograph_parts2.jpg[monograph_parts2]
-
-. Add holdings.  To add holdings to your workstation
-library, click the *Add Holdings* button in the *Record Summary* area above the tabs.
+. Select the *New Monograph Part* button.
 +
-To add holdings to your workstation library or other libraries,
-click the *Holdings View* tab, right-click the appropriate
-library, and choose *Add -> Call numbers and Items*.
+image::mono_parts/new_monograph_part.png[New monograph part button]
 +
-image::mono_parts/monograph_parts3.jpg[monograph_parts3]
-
-. The Holdings Editor opens. Enter the number of call numbers
-that you want to add to the catalog and the call number description.
-
-. Enter the number of items and barcode(s) of each item.
-
-. Choose the part label from the *Part* drop down menu.
+. Enter the _label_ that you want to appear to the user in the catalog, and select *Save*. This will add a new entry to the list of monograph parts from which you can choose when you create holdings.
 +
-image::mono_parts/monograph_parts4.jpg[monograph_parts4]
-
-. Apply a template to the items, or edit fields in the *Working Items* section below.
+image::mono_parts/parts_list.png[List of monograph parts for a record]
 +
-image::mono_parts/monograph_parts5.jpg[monograph_parts5]
-
-. Click *Store Selected* when those items are ready.
-
-. Review your completed items on the "Completed Items" tab.
-
-. When all items have been stored and reviewed, click "Save & Exit".
+. Add holdings. To add holdings to your workstation library, select the *Add Holdings* button in the _Record Summary_ area above the tabs.
 +
-NOTE: If you are only making one set of changes, you can simply click
-*Save & Exit* and skip the *Store Selected* stage.
-
-. The *Holdings View* tab now shows the new part information. These fields
-also appear in the OPAC View.
+To add holdings to your workstation library or other libraries, select the *Holdings View* tab, right-click the appropriate library, and choose *Add -> Call numbers and Items*.
 +
-image::mono_parts/manage_parts_opac.png[Catalog Record showing items with part details]
+. The Holdings Editor opens. For each item, select a part label from the _Part_ drop down menu.
++
+image::mono_parts/apply_part_label.png[Apply part label to item]
+. Select _Apply All & Save_ and continue to make edits as needed.
+. When all items have been stored and reviewed, select _Apply All, Save, & Exit_.
+. The _Holdings View_ tab now shows the new part information. These fields also appear in the OPAC View.
++
+image::mono_parts/part_column.png[Staff Catalog showing items with part details]
 
 == Monograph Part Merging ==
 
-The monograph part list for a bibliographic record may, over time, diverge from
-the proscribed format, resulting in multiple labels for what are essentially the
-same item.  For instance, ++Vol.{nbsp}1++ may have variants
-like ++V.1++, ++Vol{nbsp}1++, or ++{nbsp}Vol.{nbsp}1++ (leading
-space). Merging parts will allow cataloging staff to collapse the variants into
-one value.
+The monograph part list for a bibliographic record may diverge from the proscribed format, resulting in multiple labels for what are essentially the same item. For instance, Vol. 1 may have variants like V.1, Vol 1, or Vol. 1 with a leading space before 'Vol.' Merging parts will allow cataloging staff to collapse the variants into one value.
 
-In the Monograph Parts display:
+In the Monograph Parts tab:
 
-. Click the checkbox for all items you wish to merge including the one you wish
-to prevail when done.
-. Click on the ``Merge Selected'' button. A pop-up window will list the selected
-items in a monospaced font, with blanks represented by a middle-dot character
-for more visibility.
-. Click on the item you wish to prevail.
+. Select the checkbox for all items you wish to merge including the one you wish to prevail when done - the "lead part."
+. From the actions menu, choose _Merge Selected_. A modal will list the selected parts.
+. Select the part that you wish to be the lead part and then select *Merge*.
 
-The undesired part labels will be deleted, and any items that previously used
-those labels will now use the prevailing label
+The undesired part labels will be deleted, and any items that previously used those labels will now use the selected lead parts label.

@@ -14,6 +14,7 @@
 ** xref:admin:copy_statuses.adoc[Item Statuses]
 ** xref:admin:copy_tags_admin.adoc[Item Tags (Digital Bookplates)]
 ** xref:admin:library_groups_admin.adoc[Library Groups Administration]
+** xref:admin:admin_localized_strings.adoc[Localizing Strings]
 ** xref:admin:MARC_Import_Remove_Fields.adoc[MARC Import Remove Fields]
 ** xref:admin:MARC_RAD_MVF_CRA.adoc[MARC Record Attributes]
 *** xref:admin:infrastructure_auth_browse.adoc[Authority Browse Infrastructure Changes]

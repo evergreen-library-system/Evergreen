@@ -1,0 +1,42 @@
+= Localized UI Strings and Localized Fieldmapper Strings =
+:toc:
+
+== Introduction ==
+
+There are two admin interfaces for handing localization of certain interface strings. All customizations applied in these interfaces are global to an Evergreen installation.
+
+* Administration -> Server Administration -> I18N: Localized UI Strings
+* Administration -> Server Administration -> I18N: Localized Fieldmapper Strings
+
+The first, _Localized UI Strings_, uses a new table for localizable strings intended to be used in interfaces. This is not a replacement for the existing internationalization (I18N) system for templates, but does allow developers to choose some strings to be more easily accessible to staff/admins for dynamic localization. 
+
+image::admin_local_strings/i18n_string.png[Internationalization Interface Strings]
+
+Currently, this interface allows users to customize the staff client and OPAC label for monographic parts, which defaults to "All Parts" in the context of placing a parts hold. Sites which implement parts differently may choose to render this label as "Any Parts." Future development can leverage this interface to provide alternate labeling for other interface components.
+
+An administrator can change the _string_ field directly, or use the existing Apply Translation mechanism
+to customize the string for a specific locale.
+
+To edit a String Configuration, double click on the row of the string. The modal has the following fields:
+
+* Context - this describes the context of the string. It is free text.
+* ID - this is a system-assigned ID number and is not editable.
+* String - enter the value you want displayed in the Place Holds interface. Select *Save*.
+
+NOTE: You should not need to run autogen or restart Apache to see the change take effect in the public and staff Place Holds interfaces.
+
+NOTE: No additional delete or create actions are allowed via the interface, only edit, as these are meant to be static. Permissions are left in place for expected future use. 
+
+Additionally, there is a separate interface for handling entries for said Translation mechanism. This can be found under *Administration -> Server Administration -> I18N: Localized Fieldmapper Strings*. This allows the user to specify translation strings for use anywhere there’s an Angular (eg2) interface translate widget or _Apply Translation_ button.
+
+This interface is intended to facilitate a human-readable list of extant translation entries in the extant `config.i18n_core` table.
+
+The fields in this interface include:
+
+* _id_ - the system-assigned ID for values in this table
+* _fq_field_ - the IDL field name, e.g., `ccvm.description` for `config.coded_value_map.description`
+* _identity_value_ - associates a translation with a specific row or database object
+* _translation_ - the translated value of the interface string
+* _string_ - the stock value for the interface string
+
+WARNING: It is not recommended to use this interface to create translation labels without speaking to your Evergreen system administrator about your configured locales and extant translations in place.

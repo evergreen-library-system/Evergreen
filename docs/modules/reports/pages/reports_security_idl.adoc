@@ -1,3 +1,6 @@
+= Reports Security IDL Configuration =
+:toc:
+
 The new Report Security functionality is primarily configured through the addition of XML attributes to elements in the Fieldmapper XML file, fm_IDL.xml.  These new attributes fall into three categories:
 
 * Field value redaction
@@ -5,10 +8,9 @@ The new Report Security functionality is primarily configured through the additi
 * Joined class row restriction
 
 
-
 These attributes, explained below, are defined within a new XML namespace with the URI `http://open-ils.org/spec/opensrf/IDL/reporter/v1/security` , and the common namespace prefix of `repsec` .  An accompanying XSD is provided to confirm that the locations and values of the attributes, when supplied, do not fall outside their defined scope and that the fm_IDL.xml file remains both well-formed and valid.
 
-==== Field value redaction
+= Field value redaction =
 
 Fields used in the SELECT and ORDER BY SQL clauses can be redacted, either outputting NULL or, optionally, a data type compatible alternate literal value.  This is configured through the addition of several XML attributes to the fields to which redaction should be applied.
 
@@ -16,18 +18,18 @@ Fields used in the SELECT and ORDER BY SQL clauses can be redacted, either outpu
 
 XML Attributes involved:
 
-* repsec:redact and repsec:redact_default
+* `repsec:redact` and `repsec:redact_default`
   ** Type: XML Schema boolean
   ** Valid values: true or false
-* repsec:redact_with and repsec:redact_with_default
+* `repsec:redact_with` and `repsec:redact_with_default`
   ** Type: string
   ** Valid values: any string literal that can be cast to the same datatype as the field naturally holds
-* repsec:redact_skip_function and repsec:redact_skip_function_default
+* `repsec:redact_skip_function` and `repsec:redact_skip_function_default`
   ** Type: string
   ** Valid values: a fully-qualified database function that returns a boolean value.  When the function returns TRUE the redaction of the field will not be performed, otherwise the field will be redacted.
-* repsec:redact_skip_function_parameters and repsec:redact_skip_function_parameters_default
+* `repsec:redact_skip_function_parameters` and `repsec:redact_skip_function_parameters_default`
   ** Type: string
-  ** Valid values: a colon-separated list of parameters to pass to the function named in the repsec:redact_skip_function.  Each parameter in the list can have one of the following three forms
+  ** Valid values: a colon-separated list of parameters to pass to the function named in the `repsec:redact_skip_function`.  Each parameter in the list can have one of the following three forms
     *** The string `$runner` , which will cause the id of the staff user that scheduled the run of the report to be passed to the function.
     *** The name of a field defined for the class, which will cause the value of that field from the row being tested for field redaction to be passed to the function.
     *** Any other string that does not contain a colon (:) character, which will be passed as a dollar-quoted literal to the function.  There is no provision for escaping an embedded colon, so special consideration must be given to the string literals that need to be passed into the function, and function may need to perform text manipulation in order to interpret some other string as a colon before operating on the string as passed.
@@ -60,7 +62,7 @@ Finally, all fields are redacted with an SQL `NULL` value by default.  Supplying
 
 Two new, stock functions are supplied for use as `redact_skip_function` values:
 
-* evergreen.direct_opt_in_check
+* `evergreen.direct_opt_in_check`
   ** Purpose: confirm that the patron either has a home library at which the staff has at least one of the permissions from the Required Permission List, or that the patron has opted in at of those libraries.
   ** Parameters
     *** Patron ID
@@ -68,78 +70,87 @@ Two new, stock functions are supplied for use as `redact_skip_function` values:
     *** Required Permission List
   ** Returns TRUE if the patron is opt-in visible to the staff member, and FALSE otherwise.
   ** Example:
++
+[source]
+----
+<class id="au" ...>
 
-`<class id="au" ...>`
+<fields ...
 
-`<fields ...`
+repsec:redact_default="true"
+    repsec:redact_skip_function_default="evergreen.direct_opt_in_check"
+    repsec:redact_skip_function_parameters_default="id:$runner:{VIEW_USER}">
 
-`repsec:redact_default="true"    repsec:redact_skip_function_default="evergreen.direct_opt_in_check"    repsec:redact_skip_function_parameters_default="id:$runner:{VIEW_USER}">`
+<field name="id" ... repsec:redact="false"/>
 
-`<field name="id" ... repsec:redact="false"/>`
+...
 
-`...`
+</fields>
 
-`</fields>`
-
-`</class>`
-
-
-
-* evergreen.hint_opt_in_check
+</class>
+----
++
+* `evergreen.hint_opt_in_check`
   ** Purpose: Indirectly confirm that a patron related to a row from another linked table either has a home library at which the staff has at least one of the permissions from the Required Permission List, or that the patron has opted in at of those libraries.
   ** Parameters
     *** Patron ID
     *** Staff ID
     *** Required Permission List
   ** Applicable classes:
-    *** aua (table: actor.usr_address)
-    *** auact (table: actor.usr_activity)
-    *** aus (table: actor.usr_setting
-    *** actscecm (table: actor.stat_cat_entry_usr_map)
-    *** ateo (table: action_trigger.event_output)
+    *** aua (table: `actor.usr_address`)
+    *** auact (table: `actor.usr_activity`)
+    *** aus (table: `actor.usr_setting`)
+    *** actscecm (table: `actor.stat_cat_entry_usr_map`)
+    *** ateo (table: `action_trigger.event_output`)
   ** Returns TRUE if the patron is opt-in visible to the staff member, and FALSE otherwise.
   ** Example:
++
+[source]
+----
+<class id="ateo" ...>
 
-`<class id="ateo" ...>`
+<fields ...
 
-`<fields ...`
+repsec:redact_skip_function_default="evergreen.hint_opt_in_check"
+    repsec:redact_skip_function_parameters_default="ateo:id:$runner:{VIEW_USER}">
 
-`repsec:redact_skip_function_default="evergreen.hint_opt_in_check"    repsec:redact_skip_function_parameters_default="ateo:id:$runner:{VIEW_USER}">`
+<field name="data" ... repsec:redact="true"/>
 
-`<field name="data" ... repsec:redact="true"/>`
+...
 
-`...`
+</fields>
 
-`</fields>`
-
-`</class>`
-
+</class>
+----
 
 
 In addition to these new functions, the preexisting stock permission test functions, such as `permission.usr_has_perm` and `permission.usr_has_work_perm` can be used as `redact_skip_function` values.  These can be used in this way: 
 
 
+[source]
+----
+<class id="circ" ...>
 
-`<class id="circ" ...>`
+<fields ...
 
-`<fields ...`
+repsec:redact_skip_function_default="permission.usr_has_work_perm"
+    repsec:redact_skip_function_parameters_default="$runner:VIEW_CIRCULATIONS:circ_lib">
 
-`repsec:redact_skip_function_default="permission.usr_has_work_perm" repsec:redact_skip_function_parameters_default="$runner:VIEW_CIRCULATIONS:circ_lib">`
+<field name="due_date" ... repsec:redact="true"/>
 
-`<field name="due_date" ... repsec:redact="true"/>`
+...
 
-`...`
+</fields>
 
-`</fields>`
+</class>
+----
 
-`</class>`
-
-==== Core class row restriction
+== Core class row restriction
 
 Two new attributes are available for defining row-level restrictions on the core class of a report template:
 
-* repsec:restriction_function
-* repsec:restriction_function_parameters
+* `repsec:restriction_function`
+* `repsec:restriction_function_parameters`
 
 
 
@@ -153,24 +164,26 @@ When added, these functions generate a WHERE-clause condition that, when TRUE, a
 
 For example:
 
-`<class id="au" ...`
+[source]
+----
+<class id="au" ...
 
-`repsec:restriction_function="evergreen.direct_opt_in_check"`
+repsec:restriction_function="evergreen.direct_opt_in_check"
 
-`repsec:restriction_function_parameters="id:$runner:{VIEW_USER}">`
-
+repsec:restriction_function_parameters="id:$runner:{VIEW_USER}">
+----
 
 
 will cause any report that uses the au class as the core source to add a WHERE-clause condition that restricts the inclusion of rows from actor.usr in the final report output by applying the `evergreen.direct_opt_in_check` function.
 
 
 
-==== Joined class row restriction
+== Joined class row restriction
 
 Two additional new attributes are available to define JOIN-clause restrictions that should be applied to each row in order to include the tested table row in the final report output:
 
-* repsec:projection_function
-* repsec:projection_function_parameters
+* `repsec:projection_function`
+* `repsec:projection_function_parameters`
 
 
 
@@ -189,13 +202,14 @@ Put another way, an administrator can decide if restrictions are added when a ta
 To restrict access to rows of a table being joined to -- that is, when a "child relation" is joined into a report -- the attributes are applied to the `<class>` element.  For example:
 
 
+[source]
+----
+<class id="actscecm" ...
 
-`<class id="actscecm" ...`
+repsec:projection_function="evergreen.direct_opt_in_check"
 
-`repsec:projection_function="evergreen.direct_opt_in_check"`
-
-`repsec:projection_function_parameters="target_usr:$runner:{VIEW_USER}">`
-
+repsec:projection_function_parameters="target_usr:$runner:{VIEW_USER}">
+----
 
 
 will cause any report that links from the `au` class to the `actscecm` class to restrict the visibility of rows from `actscecm` by applying the `evergreen.direct_opt_in_check` function.
@@ -209,29 +223,31 @@ If the projection function attributes are instead applied to the `<link>` elemen
 For a somewhat contrived example, consider this configuration that allows core and linked use of ancihu (Non-cataloged In House Use) while redacting the `staff` field based on the `VIEW_USER` permission, but restricts rows based on the opt-in visibility of the staff that recorded the in-house use based on the `VIEW_CIRC` permission of the report-running staff member if that field is linked in the template:
 
 
+[source]
+----
+<class id="ancihu" ...>
 
-`<class id="ancihu" ...>`
+...
 
-`...`
+<field
 
-`<field`
+name="staff"
 
-`name="staff"`
+repsec:redact="true"
 
-`repsec:redact="true"`
+repsec:redact_skip_function="evergreen.direct_opt_in_check"
+    repsec:redact_skip_function_parameters="staff:$runner:{VIEW_USER}"/>
 
-`repsec:redact_skip_function="evergreen.direct_opt_in_check"    repsec:redact_skip_function_parameters="staff:$runner:{VIEW_USER}"/>`
+...
 
-`...`
+<link ...
 
-`<link ...`
+field="staff"
 
-`field="staff"`
+repsec:projection_function="evergreen.direct_opt_in_check"
 
-`repsec:projection_function="evergreen.direct_opt_in_check"`
-
-`repsec:projection_function_parameters="staff:$runner:{VIEW_CIRC}"/>`
-
+repsec:projection_function_parameters="staff:$runner:{VIEW_CIRC}"/>
+----
 
 
 NOTE: Any `<class>` -level restrictions on the linked table, in this case the `actor.usr` table, will also be enforced.
