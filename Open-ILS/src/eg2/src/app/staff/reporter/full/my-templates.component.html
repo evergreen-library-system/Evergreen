@@ -72,7 +72,7 @@
     [showDeclaredFieldsOnly]="true"
     (onRowActivate)="newReport([$event])">
   
-    <eg-grid-toolbar-button label="New template" i18n-label *ngIf="currentFolder && RSvc.folderIsMine(currentFolder)"
+    <eg-grid-toolbar-button label="New Template" i18n-label *ngIf="currentFolder && RSvc.folderIsMine(currentFolder)"
       (onClick)="newTemplate($event)">
     </eg-grid-toolbar-button>
 
