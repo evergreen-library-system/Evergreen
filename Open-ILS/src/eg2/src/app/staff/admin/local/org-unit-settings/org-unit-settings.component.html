@@ -18,13 +18,13 @@
     <div class="input-group">
         <label for="context-ou" class="form-label input-group-text" i18n>Context Location</label>
         <eg-org-select [initialOrg]="contextOrg" id="context-ou"
-          (onChange)="contextOrgChanged($event)">
+          (onChange)="contextOrgChanged($event)" [moreClasses]="'rounded-0 rounded-end'">
         </eg-org-select>
     </div>
   </div>
   <div class="col-md-6">
     <div class="input-group">
-        <input type="text"
+        <input type="search"
             class="form-control"
             [(ngModel)]="filterString"
             (blur)="applyFilter()"
@@ -32,16 +32,16 @@
             aria-label="Filter Settings"
             i18n-aria-label
         />
-        <button type="button" class="btn btn-outline-dark me-1" i18n>Filter</button>
-        <button type="button" class="btn btn-outline-dark me-1" i18n
+        <button type="button" class="btn btn-normal" i18n>Filter</button>
+        <button type="button" class="btn btn-destroy" i18n
           (click)="applyFilter(true)">Clear Filter</button>
     </div>
   </div>
   <div class="col-md-3">
-    <div class="input-group">
-      <button type="button" class="btn btn-outline-dark me-1"
+    <div class="btn-group">
+      <button type="button" class="btn btn-normal"
         (click)="showJsonDialog(true)" i18n>Export</button>
-      <button type="button" class="btn btn-outline-dark me-1"
+      <button type="button" class="btn btn-normal"
         (click)="showJsonDialog(false)" i18n>Import</button>
     </div>
   </div>
@@ -71,7 +71,7 @@
 <ng-template #editCellTemplate let-entry="row">
   <span>
     <button type="button" (click)="showEditSettingValueDialog(entry)"
-      class="btn btn-primary" i18n>
+      class="btn btn-sm btn-primary text-nowrap" i18n>
       Edit
     </button>
   </span>
@@ -80,7 +80,7 @@
 <ng-template #historyCellTemplate let-entry="row">
   <span>
     <button type="button"
-      (click)="showHistoryDialog(entry)" class="btn btn-link ps-1" i18n>
+      (click)="showHistoryDialog(entry)" class="btn btn-link ps-1 text-nowrap" i18n>
       History
     </button>
   </span>
