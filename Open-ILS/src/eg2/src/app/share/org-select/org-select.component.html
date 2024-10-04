@@ -10,7 +10,7 @@
 
 <ng-container *ngIf="!readOnly">
   <input type="text" 
-    class="form-control"
+    class="form-control {{moreClasses}}"
     id="{{domId}}"
     [name]="name"
     [attr.aria-label]="ariaLabel"
