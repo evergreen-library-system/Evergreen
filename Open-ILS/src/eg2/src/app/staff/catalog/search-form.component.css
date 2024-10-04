@@ -33,3 +33,7 @@ select.form-control:not([size]):not([multiple]) {
   font-size: 0.88rem;
   margin-bottom: 0;
 }
+
+[data-bs-theme="dark"] .btn.btn-light {
+  border-color: transparent;
+}

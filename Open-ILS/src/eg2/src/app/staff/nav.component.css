@@ -108,7 +108,7 @@
 }
 
 #staff-navbar .dropdown-item kbd {
-    background-color: var(--bs-light);
+    background-color: light-dark(var(--bs-gray-200), var(--bs-body-bg-highlight));
     box-shadow: 0 1px 1px rgba(0,0,10,0.2);
     margin-inline-start: auto;
 }

@@ -53,7 +53,7 @@
 }
 
 .btn.user-favorite.text-warning {
-    -webkit-text-stroke: 1px var(--bs-orange-700);
+    -webkit-text-stroke: 1px var(--star-stroke);
 }
 
 .btn.bucket-action {

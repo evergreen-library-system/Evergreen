@@ -5,7 +5,7 @@
 .user-favorite {
   color: var(--bs-yellow);
   margin-inline-start: 0.25rem;
-  -webkit-text-stroke: 1px var(--bs-yellow-700);
+  -webkit-text-stroke: 1px var(--star-stroke);
 }
 
 .card {

@@ -14,10 +14,12 @@
   background-color: var(--common-form-bg);
 }
 
-/* there are bootstrap tyles for error, warning, etc., 
-but the ones I'm finding aren't quite cutting it..*/
-.patron-summary-alert {color: var(--danger); font-weight:bold}
-.patron-summary-alert-small {color: var(--badge-danger-color); background-color: var(--badge-danger-bg);}
+.patron-summary-alert:not(.active .patron-summary-alert), 
+.patron-summary-alert-small:not(.active .patron-summary-alert-small) {
+  background-color: var(--badge-danger-bg);
+  color: var(--badge-danger-color);
+  font-weight:bold;
+}
 .patron-summary-divider { border-top: 1px solid var(--border);}
 .patron-summary-act-link {font-size: .8em;}
 .patron-summary-has-notes:hover, .patron-summary-has-notes:visited{ text-decoration: none; }
