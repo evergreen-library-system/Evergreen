@@ -184,7 +184,7 @@ function($scope , $window , $location , egCore , egConfirmDialog) {
         $scope.grid_density = val;
     });
 
-    egCore.hatch.getItem('eg.admin.disable_links_newtabs').then(function(val) {
+    egCore.hatch.getItem('ui.staff.disable_links_newtabs').then(function(val) {
         $scope.disable_links_newtabs = val;
     });
 
@@ -239,9 +239,9 @@ function($scope , $window , $location , egCore , egConfirmDialog) {
 
     $scope.apply_disable_links_newtabs = function() {
         if ($scope.disable_links_newtabs) {
-            egCore.hatch.setItem('eg.admin.disable_links_newtabs', true);
+            egCore.hatch.setItem('ui.staff.disable_links_newtabs', true);
         } else {
-            egCore.hatch.removeItem('eg.admin.disable_links_newtabs');
+            egCore.hatch.removeItem('ui.staff.disable_links_newtabs');
         }
     }
 

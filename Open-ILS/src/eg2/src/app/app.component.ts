@@ -19,6 +19,9 @@ export class BaseComponent implements AfterViewChecked {
     }
 
     ngAfterViewChecked(): void {
+        document.querySelectorAll('.user-pref-no-new-tabs a[target="_blank"]').forEach((a) => {
+            a.removeAttribute('target');
+        });
         document.querySelectorAll('a[target="_blank"]').forEach((a) => {
             if (!a.getAttribute('aria-describedby')) {
                 a.setAttribute('aria-describedby', 'link-opens-newtab');
