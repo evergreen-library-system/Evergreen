@@ -1,6 +1,6 @@
 BEGIN;
 
-INSERT INTO config.upgrade_log (version) VALUES ('1439');
+SELECT evergreen.upgrade_deps_block_check('1439', :eg_version);
 
 -- Use oils_xpath_table instead of pgxml's xpath_table
 CREATE OR REPLACE FUNCTION acq.extract_holding_attr_table (lineitem int, tag text) RETURNS SETOF acq.flat_lineitem_holding_subfield AS $$
