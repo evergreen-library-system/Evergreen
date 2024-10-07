@@ -612,7 +612,7 @@ input, textarea, select, option,
 .badge-success,
 .badge.text-bg-success {
   background: var(--badge-success-bg);
-  color: var(--success-color);
+  color: var(--badge-success-color);
   border-color: var(--success-border);
 }
 
