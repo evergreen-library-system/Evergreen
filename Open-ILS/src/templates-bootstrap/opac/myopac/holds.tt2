@@ -151,11 +151,6 @@
                     cnt = cnt + 1;
                      %]
                 <tr role="row" mobile-count="#[% loop.count %]" class="[% ahr.frozen == 't' ? ' inactive-hold' : '' %]">
-                    <td role="cell" class="checkbox_column">
-
-                    <input type="checkbox" name="hold_id" value="[% ahr.id %]"
-                        [% html_text_attr('title', l('Select hold [_1]', attrs.title)) %]/>
-                    </td>
                     [%  IF hold.ATTRS.issns.0;
                             row_isbnissn = hold.ATTRS.issns.0;
                         ELSIF hold.ATTRS.isbns.0;
@@ -165,8 +160,13 @@
                         END;
                         row_rec_id = hold.hold.bre_id;
                         row_title = hold.ATTRS.title;
-                        PROCESS show_cover;
                     %]
+                    <td role="cell" class="checkbox_column">
+
+                        <input type="checkbox" name="hold_id" value="[% ahr.id %]"
+                            aria-label="[% l('Select [_1]', row_title) %]" />
+                    </td>
+                    [% PROCESS show_cover; %]
                     <td role="cell" mobile-title="[% l('Title') %]">
                             [% title = hold.ATTRS.title;
                             IF ahr.hold_type == 'P';
