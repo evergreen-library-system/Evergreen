@@ -1,0 +1,17 @@
+== New PostgreSQL Minimum Version ==
+
+Evergreen 3.14 no longer supports new installations on PostgreSQL
+versions less than 13.  Evergreen 3.14 is still compatible with
+PostgreSQL versions of 10 or higher.  Existing installations may
+upgrade to Evergreen 3.14 without requiring a PostreSQL upgrade.
+
+Compatibility with obsolete PostgreSQL database versions is not
+guaranteed in the next major Evergreen release.  Users are encouraged
+to upgrade to a more recent PostgreSQL version if they are running
+PostgreSQL versions between 10 and 12.
+
+The PostgreSQL community recommends a dump and restore from the older
+PostgreSQL database to the newer one when upgrading over major
+versions.  For more information,
+https://www.postgresql.org/docs/current/upgrading.html#UPGRADING-VIA-PGDUMPALL[see the PostgreSQL upgrade documentation].
+

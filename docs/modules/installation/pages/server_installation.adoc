@@ -49,7 +49,7 @@ autoreconf -i
 
 == Installing prerequisites ==
 
-  * **PostgreSQL**: The minimum supported version is 10.
+  * **PostgreSQL**: The minimum supported version is 13.
   * **Linux**: Evergreen has been tested on
     Debian Bookworm (12),
     Debian Bullseye (11),
@@ -494,61 +494,6 @@ server packages, use the make target
 'postgres-server-<OSTYPE>-<POSTGRESVERSION>'.  Choose the most
 appropriate command below based on your operating system and desired
 PostgreSQL Version.
-
-The first below will install PostgreSQL 10, the minimum supported
-version and the version recommended for production use of Evergreen:
-
-[source, bash]
-------------------------------------------------------------------------------
-make -f Open-ILS/src/extras/Makefile.install postgres-server-debian-bookworm-10
-make -f Open-ILS/src/extras/Makefile.install postgres-server-debian-bullseye-10
-make -f Open-ILS/src/extras/Makefile.install postgres-server-debian-buster-10
-make -f Open-ILS/src/extras/Makefile.install postgres-server-ubuntu-jammy-10
-make -f Open-ILS/src/extras/Makefile.install postgres-server-ubuntu-noble-10
-------------------------------------------------------------------------------
-
-[WARNING]
-=========
-Evergreen support for PostgreSQL server versions greater than 10 is
-still exprimental.  The use of the following is discouraged in
-production environments.  The following are only recommended if you
-are willing to test newer PostgreSQL versions for performance and
-possible bugs.
-=========
-
-To install PostgreSQL version 11, use the following command for your operating
-system:
-
-[source, bash]
-------------------------------------------------------------------------------
-make -f Open-ILS/src/extras/Makefile.install postgres-server-debian-bookworm-11
-make -f Open-ILS/src/extras/Makefile.install postgres-server-debian-bullseye-11
-make -f Open-ILS/src/extras/Makefile.install postgres-server-debian-buster-11
-make -f Open-ILS/src/extras/Makefile.install postgres-server-ubuntu-jammy-11
-make -f Open-ILS/src/extras/Makefile.install postgres-server-ubuntu-noble-11
-------------------------------------------------------------------------------
-
-To install PostgreSQL version 12, use the following command for your operating
-system:
-
-[WARNING]
-=========
-PostgreSQL 12+ includes a feature called "JIT" (Just-in-Time compilation).
-Do not turn on Postgres' JIT capabilities. Evergreen's queries, especially complex
-ones used for search, are intentionally tuned for non-JIT execution and JIT has
-been shown to be harmful in some circumstances.
-Recommended minimum tweak to postgresql.conf:
-jit_above_cost = -1
-=========
-
-[source, bash]
-------------------------------------------------------------------------------
-make -f Open-ILS/src/extras/Makefile.install postgres-server-debian-bookworm-12
-make -f Open-ILS/src/extras/Makefile.install postgres-server-debian-bullseye-12
-make -f Open-ILS/src/extras/Makefile.install postgres-server-debian-buster-12
-make -f Open-ILS/src/extras/Makefile.install postgres-server-ubuntu-jammy-12
-make -f Open-ILS/src/extras/Makefile.install postgres-server-ubuntu-noble-12
-------------------------------------------------------------------------------
 
 To install PostgreSQL version 13, use the following command for your operating
 system:
