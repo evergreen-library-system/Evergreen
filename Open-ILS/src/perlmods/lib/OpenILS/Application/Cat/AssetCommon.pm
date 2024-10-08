@@ -428,8 +428,6 @@ sub update_fleshed_copies {
     my %cache;
     $cache{$vol->id} = $vol if $vol;
 
-    my @new_parts = ();
-
     sub process_copy {
         my ($original_copy, $cache_ref, $editor, $class, $logger) = @_;
 
@@ -498,11 +496,19 @@ sub update_fleshed_copies {
 
 
         # Have to watch out for multiple items creating the same new part or the whole update will fail
-        # Twiddling knobs inside an $x inside a for $x in @y has to be done carefully
+        # This volume isn't necessarily the only volume with the same new part in this batch, so we have to check against the actual database.
+        # Grab all the parts on the same record and then check the potentially new part against them all.
+        my $preexisting_parts = $editor->search_biblio_monograph_part({
+            record => $vol->record,
+            label => (map { $_->label } @$parts),
+            deleted => 'f'
+        });
+
         for my $part (@$parts) {
             next unless $part->isnew;
 
-	    my @existing = grep { $_->label eq $part->label && $_->record == $part->record } @new_parts;
+            # Second check in case we hit a part matching a different part in this batch
+            my @existing = grep { $_->label eq $part->label && $_->record == $part->record } @$preexisting_parts;
             if (@existing) {
                 # We've created this part previously, don't want to do that again.
                 my $oldnewthing = $existing[0];
@@ -510,27 +516,7 @@ sub update_fleshed_copies {
                     $part->id($oldnewthing->id);
                     $part->isnew(0);
                     $part->ischanged(0);
-                } else {
-                    # Grab the id of the previously created part so we can keep track of it
-                    my $results = $editor->search_biblio_monograph_part(
-                        {
-                            label => $part->label,
-                            record => $part->record,
-                            deleted => 'f'
-                        }
-                    );
-
-                    # There *should* always be a result, but...
-                    if ($results) {
-                        $oldnewthing->id($results->[0]->id);
-                        $part->id($oldnewthing->id);
-                        $part->isnew(0);
-                        $part->ischanged(0);
-                    }
                 }
-            } else {
-                # haven't seen this new part before
-                push(@new_parts, $part);
             }
         }
 
