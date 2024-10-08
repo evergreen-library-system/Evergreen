@@ -6,7 +6,7 @@ All of the steps in this chapter are to be completed from the command line.
 
 == Software Prerequisites ==
 
-  * **PostgreSQL**: The minimum supported version is 10.
+  * **PostgreSQL**: The minimum supported version is 13.
   * **Linux**: Evergreen 3.X.X has been tested on Debian Buster
     (10.0), Debian Bullseye (11.0), Debian Bookworm (11.0), 
     Ubuntu Jammy Jellyfish (22.04), and Ubuntu Noble Numbat (24.04).

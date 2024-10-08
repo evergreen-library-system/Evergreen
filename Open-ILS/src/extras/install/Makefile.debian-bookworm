@@ -206,24 +206,6 @@ all:
 	make -f $(DIR)/Makefile.common install_cpan_force
 	make -f $(DIR)/Makefile.debian debian_sys_config
 
-install_postgres_server_10:
-	make -f $(DIR)/Makefile.debian DEBS="$(PGSQL_APT_REPO_DEBS)"
-	make -f $(DIR)/Makefile.debian debian_postgresql_repo
-	make -f $(DIR)/Makefile.debian DEBS="$(PGSQL_SERVER_DEBS_10)"
-	make -f $(DIR)/Makefile.common install_cpan_pgsql
-
-install_postgres_server_11:
-	make -f $(DIR)/Makefile.debian DEBS="$(PGSQL_APT_REPO_DEBS)"
-	make -f $(DIR)/Makefile.debian debian_postgresql_repo
-	make -f $(DIR)/Makefile.debian DEBS="$(PGSQL_SERVER_DEBS_11)"
-	make -f $(DIR)/Makefile.common install_cpan_pgsql
-
-install_postgres_server_12:
-	make -f $(DIR)/Makefile.debian DEBS="$(PGSQL_APT_REPO_DEBS)"
-	make -f $(DIR)/Makefile.debian debian_postgresql_repo
-	make -f $(DIR)/Makefile.debian DEBS="$(PGSQL_SERVER_DEBS_12)"
-	make -f $(DIR)/Makefile.common install_cpan_pgsql
-
 install_postgres_server_13:
 	make -f $(DIR)/Makefile.debian DEBS="$(PGSQL_APT_REPO_DEBS)"
 	make -f $(DIR)/Makefile.debian debian_postgresql_repo
