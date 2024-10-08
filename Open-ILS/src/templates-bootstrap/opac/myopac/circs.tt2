@@ -138,14 +138,14 @@
                             END;
                             row_rec_id = circ.circ.target_copy.call_number.record.id;
                             row_title = circ.ATTRS.title;
-                            PROCESS show_cover;
                         %]
                         <th class="checkCell">
                             <input type="checkbox" name="circ"
-                                [% html_text_attr('aria-label', l('Select [_1]', row_title)) %]
+                                aria-label="[% l('Select [_1]', row_title) %]"
                                 [% IF circ.circ.renewal_remaining < 1 %] disabled="disabled" [% END %]
                                 value="[% circ.circ.id %]" />
                         </th>
+                        [% PROCESS show_cover; %]
                         <td role="cell" mobile-title="[% l('Title') %]">
                             [% IF circ.circ.target_copy.call_number.id == -1 %]
                                 [% circ.circ.target_copy.dummy_title | html %]
