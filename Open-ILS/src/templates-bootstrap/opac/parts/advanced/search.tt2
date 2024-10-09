@@ -2,7 +2,7 @@
     PROCESS "opac/parts/misc_util.tt2";
     PROCESS get_library;
 %]
-<form action="[% ctx.opac_root %]/results" method="get">
+<form id="adv_search_form" action="[% ctx.opac_root %]/results" method="get">
 <div id='adv_global_search' class='data_grid data_grid_center'>
     <div id='adv_search_rows' class="container">
         <h2 id="advanced_search_label">[% l('Advanced Search') %]</h2>
@@ -40,7 +40,7 @@
             <input type="hidden" name="detail_record_view"
                value="[% show_detail_view %]"/>
             <button id='search-submit-go-1' type="button" class="btn btn-confirm"
-                onclick='setTimeout(function(){$("search-submit-spinner-1").className=""; $("search-submit-go-1").className="hidden"}, 2000)'><i class="fas fa-search"></i> [% l("Submit") %]</button>
+                onclick='setTimeout(function(){$("search-submit-spinner-1").className=""; $("search-submit-go-1").className="hidden"; $("#adv_search_form").submit()}, 2000)'><i class="fas fa-search"></i> [% l("Submit") %]</button>
             <img id='search-submit-spinner-1' src='/opac/images/progressbar_green.gif[% ctx.cache_key %]'
                 class='hidden' alt="[% l('Search in progress icon') %]"/>
         </div>
