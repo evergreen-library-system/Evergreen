@@ -59,7 +59,6 @@ Track their labels here.
     [ngClass]="{'auth-invalid': isAuthInvalid()}"
     tabindex="{{tabindex}}"
     [attr.aria-label]="ariaLabel"
-    [egContextMenu]="contextMenuEntries()"
     (menuItemSelected)="contextMenuChange($event.value)"
     (keydown)="inputKeyDown($event)"
     (focus)="selectText()"
