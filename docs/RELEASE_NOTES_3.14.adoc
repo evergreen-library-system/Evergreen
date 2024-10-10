@@ -580,6 +580,7 @@ The Evergreen project would like to acknowledge the following
 organizations that commissioned developments in this release of
 Evergreen:
 
+* BC Libraries coop
 * Evergreen Community Development Initiative (ECDI)
 * PAILS
 
@@ -604,6 +605,7 @@ Evergreen:
 * Jason Etheridge
 * Jason Stephenson
 * Jeff Davis
+* Jennifer Pringle
 * Jennifer Weston
 * Jessica Woolford
 * John Amundson
@@ -644,6 +646,21 @@ patches:
 * NOBLE
 * PAILS
 * Princeton University
+
+We would also like to thank the National Network for Equitable Library
+Service (Canada) whose employees performed accessibility testing for
+Evergreen:
+
+* David Kopman
+* Deanna Ng
+* Ka Li
+* Laetitia Mfamobani
+* Melody Shih
+* Michael Krupp
+* Patrick Bouchard
+* Riane Lapaire
+* Simon Jaeger
+* Tait Hoyem
 
 We regret any omissions.  If a contributor has been inadvertently
 missed, please open a bug at http://bugs.launchpad.net/evergreen/
