@@ -221,6 +221,7 @@ export class MarcRichEditorComponent implements OnInit {
                 if (evt.ctrlKey) { // redo
                     this.context.requestRedo();
                     evt.preventDefault();
+                    evt.stopPropagation();
                 }
                 break;
 
@@ -228,6 +229,7 @@ export class MarcRichEditorComponent implements OnInit {
                 if (evt.ctrlKey) { // undo
                     this.context.requestUndo();
                     evt.preventDefault();
+                    evt.stopPropagation();
                 }
                 break;
 
@@ -268,8 +270,7 @@ export class MarcRichEditorComponent implements OnInit {
 
                 // down == move focus to tag of next field
                 // but not in a combobox or textarea
-                if (!evt.ctrlKey) {
-                    // avoid dupe focus requests during copy
+                if (!evt.ctrlKey && !(subfield && this.context.subfieldHasFocus(field, subfield))) {
                     this.context.focusNextTag(field);
                 }
                 break;
@@ -283,9 +284,8 @@ export class MarcRichEditorComponent implements OnInit {
                 }
 
                 // up == move focus to tag of previous field
-                // but not in a combobox or textarea
-                if (!evt.ctrlKey) {
-                    // avoid dupe focus requests
+                // but not in a subfield
+                if (!evt.ctrlKey && !(subfield && this.context.subfieldHasFocus(field, subfield))) {
                     this.context.focusPreviousTag(field);
                 }
                 break;
@@ -308,7 +308,7 @@ export class MarcRichEditorComponent implements OnInit {
                     // ctrl+delete == delete whole field
                     this.context.deleteField(field);
                     evt.preventDefault();
-
+                    evt.stopPropagation();
                 } else if (evt.shiftKey) {
 
                     if (subfield) {
@@ -319,6 +319,7 @@ export class MarcRichEditorComponent implements OnInit {
                     // prevent any shift-delete from bubbling up becuase
                     // unexpected stuff will be deleted.
                     evt.preventDefault();
+                    evt.stopPropagation();
                 }
 
                 break;
@@ -330,6 +331,7 @@ export class MarcRichEditorComponent implements OnInit {
                     const pos = subfield ? subfield[2] + 1 : 0;
                     this.context.insertStubSubfield(field, pos);
                     evt.preventDefault();
+                    evt.stopPropagation();
                 }
                 break;
         }
