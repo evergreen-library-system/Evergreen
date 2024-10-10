@@ -636,7 +636,7 @@ patches:
 
 * BC Libraries Coop
 * Bibliomation Inc.
-* CW MARS
+* C/W MARS, Inc.
 * Equinox Open Library Initiative
 * Evergreen Community Development Initiative (ECDI)
 * Georgia Public Library Service (PINES)
