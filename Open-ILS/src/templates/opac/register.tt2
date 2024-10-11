@@ -198,19 +198,19 @@ FOR field_def IN register_fields;
                     <div class="form-group">
                         <input type="text" inputmode="numeric" size="3" id='dob-month' min="1" max="12" pattern="[0-9]{2}"
                             name='dob-month' value='[% dob_month || CGI.param("dob-month") | html %]' [% IF require %]required[% END %] />
-                        <label for="dob-month" style="margin-bottom: 0; font-size: 90%;">[% l('Month') %]</label>
+                        <label for="dob-month">[% l('Month') %]</label>
                     </div>
                   [% CASE 'D' %]
                     <div class="form-group">
                         <input type="text" inputmode="numeric" size="3" id='dob-day' min="1" max="31" pattern="[0-9]{2}"
                             name='dob-day' value='[% dob_day || CGI.param("dob-day") | html %]' [% IF require %]required[% END %] />
-                        <label for="dob-day" style="margin-bottom: 0; font-size: 90%;">[% l('Day') %]</label>
+                        <label for="dob-day">[% l('Day') %]</label>
                     </div>
                   [% CASE 'Y' %]
                     <div class="form-group">
                         <input type="text" inputmode="numeric" size="5" id='dob-year' min="1900" max="[% date.format(date.now, '%Y') %]" pattern="[0-9]{4}"
                         name='dob-year' value='[% dob_year || CGI.param("dob-year") | html %]' [% IF require %]required[% END %] />
-                        <label for="dob-year" style="margin-bottom: 0; font-size: 90%;">[% l('Year') %]</label>
+                        <label for="dob-year">[% l('Year') %]</label>
                     </div>
                 [% END %]
               [% END %]

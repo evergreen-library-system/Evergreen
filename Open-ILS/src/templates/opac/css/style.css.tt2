@@ -2674,6 +2674,12 @@ a.preflib_change {
     font-weight: normal;
 }
 
+.dob-form-group label {
+    display: block;
+    font-size: [% css_fonts.size_smaller %];
+    margin-bottom: 0;
+}
+
 .result_footer_nav1 {
     clear: both;
 }
