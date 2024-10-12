@@ -221,7 +221,7 @@
         </li>
 
         <li role="presentation" ngbNavItem="credentials" [disabled]="!context.summary">
-          <button role="tab" ngbNavLink (click)="navItemClick('credentials', $event)"
+          <button role="tab" ngbNavLink (click)="navItemClick('credentials', $event)" type="button"
             routerLink="/staff/circ/patron/{{patronId}}/credentials" i18n>Test Password</button>
           <ng-template ngbNavContent>
             <eg-title i18n-prefix [prefix]="patronTitle('Test Password for Patron')"></eg-title>
