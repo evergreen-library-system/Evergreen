@@ -47,7 +47,7 @@ The screenshot below shows the Time-based One-Time Password (TOTP) options avail
 
 The TOTP specification provides a strongly recommended best practice of using a stable user identifier within issuer label string. Because username, first and last name, email address, and barcode can all change for an Evergreen user (and in some cases, changed directly by a user), the Evergreen user ID is used as the stable identifier here even though this is less human-friendly than other identifiers.
 
-image::images/multi_factor_authentication/TOTP_login.png[Using TOTP via a third party application]
+image::multi_factor_authentication/TOTP_login.png[Using TOTP via a third party application]
 
 === Using Web Authentication (WebAuthn) ===
 
@@ -55,7 +55,7 @@ If enabled, Web Authentication will prompt the operating system or password mana
 
 If so configured, a staff user may pair multiple WebAuthn devices with their account.
 
-image::images/multi_factor_authentication/webauthn_login.png[Enable WebAuthn device]
+image::multi_factor_authentication/webauthn_login.png[Enable WebAuthn device]
 
 === Using Native SMS / Email ===
 
@@ -67,20 +67,20 @@ The email and SMS codes are time-based, so one code is valid for a given configu
 
 Users should be aware that some carriers have been limiting email-to-SMS messages, which will affect the speed at which an SMS message will arrive and therefor might make it a less-desirable secondary factor.
 
-image::images/multi_factor_authentication/TOTP_email_login.png[Using TOTP via email]
+image::multi_factor_authentication/TOTP_email_login.png[Using TOTP via email]
 
-image::images/multi_factor_authentication/TOTP_SMS_login.png[Using TOTP via SMS]
+image::multi_factor_authentication/TOTP_SMS_login.png[Using TOTP via SMS]
 
 [[update_mfa_factors]]
 == Updating, Adding, or Removing MFA Factors ==
 
 Once a single secondary factor is configured, the user must be fully logged in with that factor to add additional secondary factors, remove a factor, or edit existing factors. Once logged in, a user can update, add, or remove factors for themselves by accessing the MFA interface from the upper-right hamburger menu. 
 
-image::images/multi_factor_authentication/mfa_location.png[Location of MFA in the upper-right hamburger menu]
+image::multi_factor_authentication/mfa_location.png[Location of MFA in the upper-right hamburger menu]
 
 An example of this for a WebAuthn device is shown below.
 
-image::images/multi_factor_authentication/edit_factors.png[Add additional, remove, or edit a WebAuthn factor]
+image::multi_factor_authentication/edit_factors.png[Add additional, remove, or edit a WebAuthn factor]
 
 [[remove_mfa_factors]]
 == Removing User MFA Factors ==
@@ -89,7 +89,7 @@ There will likely be times when a user needs to have someone else remove an MFA 
 
 Staff with the appropriately scoped REMOVE_USER_MFA permission can use either the Test Password or Verify Credentials interfaces to remove specific MFA factors for other users. The staff member will need to confirm the user's password to do this. It is strongly recommended that this be restricted to higher-level support staff.
 
-image::images/multi_factor_authentication/remove_factor.png[Remove a factor for another user]
+image::multi_factor_authentication/remove_factor.png[Remove a factor for another user]
 
 For MFA, the account holder's physical or digital control of a shared secret or message is what provides the security. After regaining control of their account, the user should change their password.
 
@@ -200,13 +200,15 @@ The **Server Administration -> Permission Groups** interface now has two new opt
 
 The two options are whether MFA is permitted, and whether it is required:
 
-image::images/multi_factor_authentication/enable_mfa.png[MFA options in the Permission Groups interface]
+image::multi_factor_authentication/enable_mfa.png[MFA options in the Permission Groups interface]
 
 The new ADMIN_MFA permission is required to edit any of these options, in addition to existing permissions about editing Permission Group values. 
 
 There is also a new tab to enable or disable the various MFA factors. These can be inherited as shown below. _Assigned directly_ means that even if the higher-level group has the factor removed, the more specific group can make it available.
 
-image::images/multi_factor_authentication/perm_editor_mfa.png[Enabling or disabling specific MFA factors in a Permission Group]
+image::multi_factor_authentication/perm_editor_mfa.png[Enabling or disabling specific MFA factors in a Permission Group]
+
+NOTE: You will not see this tab unless at least one factor is enabled via OpenSRF, described above.
 
 The other new permission is REMOVE_USER_MFA which allows a user to remove configured MFA factors for another user. More information about removing other users’ factors is detailed below.
 

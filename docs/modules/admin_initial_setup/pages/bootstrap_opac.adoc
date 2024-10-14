@@ -1,8 +1,8 @@
 = Bootstrap-based OPAC =
 
-Evergreen includes an experimental OPAC with a cleaner, more modern design.
+As of version 3.6, the Boostrap OPAC (BOOPAC) is the default.
 
-To enable the new OPAC design, open the `/etc/apache2/eg_vhost.conf` file.
+Enable or disable the Bootstrap OPAC in the the `/etc/apache2/eg_vhost.conf` file.
 
 Find the following line:
 
@@ -10,17 +10,17 @@ Find the following line:
 PerlAddVar OILSWebTemplatePath "/openils/var/templates"
 ----
 
-Add the following line directly below it:
+Add the following line directly below it to if not already present:
 
 ----
 PerlAddVar OILSWebTemplatePath "/openils/var/templates-bootstrap"
 ----
 
 Be sure that, if you have any local customizations, that they are referenced below
-this line.  This way, your customizations will still appear in the new OPAC design
+this line.  This way, your customizations will still appear in the Bootstrap OPAC design
 (although they may need to be adjusted to better fit the new style).
 
-You can also turn on the new OPAC for some virtual hosts only, by adding it to the
+You can also turn on the Boostrap OPAC for some virtual hosts only, by adding it to the
 appropriate virtual host entry.  Be sure to reference the OILSWebTemplatePath for
 the `templates-bootstrap` directory before referencing any local customizations
 used by that virtual host.

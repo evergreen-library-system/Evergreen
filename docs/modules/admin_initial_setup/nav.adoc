@@ -15,7 +15,7 @@
 *** xref:admin_initial_setup:managing_holds_ui_in_tpac.adoc[Managing how holds options display in the catalog]
 *** xref:admin_initial_setup:custom_ou_trees.adoc[Custom Org Unit Trees]
 ** xref:admin_initial_setup:KidsOPAC.adoc[Kid's OPAC Configuration]
-** xref:admin_initial_setup:bootstrap_opac.adoc[Enabling the Experimental Bootstrap OPAC]
+** xref:admin_initial_setup:bootstrap_opac.adoc[Bootstrap OPAC]
 ** xref:admin:search_interface.adoc[Designing the patron search experience]
 *** xref:admin:search_settings_web_client.adoc[Adjusting Relevance Ranking and Indexing]
 *** xref:admin:auto_suggest_search.adoc[Auto Suggest in Catalog Search]
@@ -36,3 +36,4 @@
 ** xref:admin:sip_server.adoc[SIP Server]
 ** xref:admin:audio_alerts.adoc[Managing Audio Alerts]
 ** xref:admin_initial_setup:oaipmh.adoc[OAI-PMH Data Provider Support]
+** xref:admin:multi_factor_authentication.adoc[Staff Multi Factor Authentication]
