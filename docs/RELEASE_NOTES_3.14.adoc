@@ -570,6 +570,12 @@ https://bugs.launchpad.net/bugs/1906462[1906462]
 * Fixes mouse selection of autosuggest searches. (https://bugs.launchpad.net/evergreen/+bug/2061004[Bug 2061004])
 * Fixes issue where self check screen is blank when user's email doesn't contain an @ sign (https://bugs.launchpad.net/evergreen/+bug/2081758[Bug 2081758])
 * Automate part of the build process. (https://bugs.launchpad.net/evergreen/+bug/2082120[Bug 2082120])
+* Update test data. (https://bugs.launchpad.net/evergreen/+bug/2081634[Bug 2081634])
+* Give OPAC users more time before logging out if needed (https://bugs.launchpad.net/evergreen/+bug/1894900[Bug 1894900])
+* Patron status badges; persistent patron search form (https://bugs.launchpad.net/evergreen/+bug/2065344[Bug 2065344])
+* Shared depth selector component (https://bugs.launchpad.net/evergreen/+bug/2065344[Bug 2065344])
+* Angular Circulation notes, alerts, and messages (https://bugs.launchpad.net/evergreen/+bug/2065344[Bug 2065344])
+* Side navigation for Angular Circulation (https://bugs.launchpad.net/evergreen/+bug/2065344[Bug 2065344])
 
 
 :leveloffset: 0
