@@ -586,7 +586,7 @@ The Evergreen project would like to acknowledge the following
 organizations that commissioned developments in this release of
 Evergreen:
 
-* BC Libraries coop
+* BC Libraries Coop
 * Evergreen Community Development Initiative (ECDI)
 * PAILS
 
