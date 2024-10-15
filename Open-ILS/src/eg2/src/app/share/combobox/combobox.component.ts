@@ -386,6 +386,11 @@ implements ControlValueAccessor, OnInit, AfterViewInit, OnChanges {
             acc[cur.egIdlClass] = cur.template;
             return acc;
         }, {});
+
+        // Make the default an entry with no id if we have it - usually from reloading after saving a freetext
+        if (!this.selectedId && !this.selected){
+            this.selected = this.entrylist.find(e => e.id == null) ?? this.selected;
+        }
     }
 
     ngOnChanges(changes: SimpleChanges) {
@@ -748,7 +753,25 @@ implements ControlValueAccessor, OnInit, AfterViewInit, OnChanges {
     writeValue(value: ComboboxEntry) {
         //console.debug('writeValue: ', value);
         if (value !== undefined && value !== null) {
-            this.selectedId = value.id;
+            if (!this.hasEntry(value.id)) {
+                // First we see if we have a different entry with the same text.
+                let dupeEntry = this.entrylist.find(e => e.label === value.label);
+                if (dupeEntry !== undefined) {
+                    // Duplicate, select the preexisting entry
+                    this.selected = dupeEntry;
+                    
+                } else {
+                    // No duplicate, make a new freetext entry with the same value
+                    this.selected = 
+                    {
+                        id: null,
+                        label: value?.label,
+                        freetext: true,
+                        class: value?.class
+                    };
+                }
+                
+            } else {this.selectedId = value.id;}
             this.applySelection();
         }
     }

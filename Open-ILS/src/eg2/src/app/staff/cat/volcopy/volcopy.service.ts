@@ -415,7 +415,7 @@ export class VolCopyService {
                     if (!this.bibParts[part.record()]) {
                         this.bibParts[part.record()] = [];
                     }
-                    if (this.bibParts[part.record()].every(existingPart => {return existingPart.id() !== part.id();})){
+                    if (this.bibParts[part.record()].every(existingPart => {return existingPart.label() !== part.label();})){
                         this.bibParts[part.record()].push(part);
                     }
                 },

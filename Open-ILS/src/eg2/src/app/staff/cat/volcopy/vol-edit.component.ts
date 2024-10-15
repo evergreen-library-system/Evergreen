@@ -1,4 +1,5 @@
-import {Component, OnInit, ViewChild, Input, Renderer2, Output, EventEmitter} from '@angular/core';
+import {Component, OnInit, ViewChild, Input, Renderer2,
+    Output, EventEmitter, ViewChildren, QueryList, PipeTransform, Pipe} from '@angular/core';
 import {tap} from 'rxjs/operators';
 import {IdlService, IdlObject} from '@eg/core/idl.service';
 import {OrgService} from '@eg/core/org.service';
@@ -6,7 +7,7 @@ import {AuthService} from '@eg/core/auth.service';
 import {NetService} from '@eg/core/net.service';
 import {PcrudService} from '@eg/core/pcrud.service';
 import {VolCopyContext, HoldingsTreeNode} from './volcopy';
-import {ComboboxEntry} from '@eg/share/combobox/combobox.component';
+import {ComboboxComponent, ComboboxEntry} from '@eg/share/combobox/combobox.component';
 import {ConfirmDialogComponent} from '@eg/share/dialog/confirm.component';
 import {VolCopyService} from './volcopy.service';
 
@@ -46,6 +47,9 @@ export class VolEditComponent implements OnInit {
     batchVolPrefix: ComboboxEntry;
     batchVolSuffix: ComboboxEntry;
     batchVolLabel: ComboboxEntry;
+    batchPart: ComboboxEntry;
+
+    @ViewChildren('partSelectBox') partComboboxes : QueryList<ComboboxComponent>;
 
     autoBarcodeInProgress = false;
 
@@ -285,7 +289,10 @@ export class VolEditComponent implements OnInit {
         if (entry) {
 
             let newPart;
-            if (entry.freetext) {
+            const recordNumber = copy.call_number().record();
+            const recordParts = this.volcopy.bibParts[recordNumber] ?? [];
+            const matchedPart = recordParts.find(p => p.id() === entry.id || p.label() === entry.label );
+            if (entry.freetext || matchedPart === undefined) {
                 newPart = this.idl.create('bmp');
                 newPart.isnew(true);
                 newPart.record(copy.call_number().record());
@@ -295,9 +302,7 @@ export class VolEditComponent implements OnInit {
 
             } else {
 
-                newPart =
-                    this.volcopy.bibParts[copy.call_number().record()]
-                        .filter(p => p.id() === entry.id)[0];
+                newPart = matchedPart;
 
                 // Nothing to change?
                 if (part && part.id() === newPart.id()) { return; }
@@ -316,6 +321,15 @@ export class VolEditComponent implements OnInit {
     }
 
     batchVolApply() {
+        if (this.batchPart){
+            // Put the new value in all the part comboboxes
+            this.partComboboxes.forEach(box => {
+                box.writeValue(this.batchPart);
+                // Gotta dirty the boxes to enable the pretty green line
+                box.moreClasses = box.moreClasses.concat(' ng-dirty');
+            });
+        }
+
         this.context.volNodes().forEach(volNode => {
             const vol = volNode.target;
             if (this.batchVolClass) {
@@ -330,6 +344,13 @@ export class VolEditComponent implements OnInit {
             if (this.batchVolLabel) {
                 // Use label; could be freetext.
                 this.applyVolValue(vol, 'label', this.batchVolLabel.label);
+            }
+            if (this.batchPart){
+                // Load the new part into the object that gets saved when we save
+                volNode.children.forEach(copy => {
+                    this.copyPartChanged(copy,  this.batchPart);
+                    copy.target.part = this.batchPart;
+                });
             }
         });
     }
@@ -670,6 +691,24 @@ export class VolEditComponent implements OnInit {
         this.volcopy.defaults.visible.batch_actions =
             !this.volcopy.defaults.visible.batch_actions;
         this.volcopy.saveDefaults();
+    }
+}
+
+// Evil dirty pipe just for this component because I can't figure out the timing for deduping the batch dropdown otherwise.
+@Pipe({
+    name: 'comboboxLabelDedupe'
+})
+export class ComboboxLabelDedupePipe implements PipeTransform {
+    transform(items: [{[bibId: number]: IdlObject[]}] ) : IdlObject[]{
+        const uniqueEntries = [];
+        Object.values(items).forEach(record => {
+            record['value'].forEach(entry => {
+                if (!uniqueEntries.some(e => e.label() === entry.label())){
+                    uniqueEntries.push(entry);
+                }
+            });
+        });
+        return uniqueEntries;
     }
 }
 

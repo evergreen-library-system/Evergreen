@@ -82,7 +82,23 @@
       </div>
     </ng-container>
   </div>
-  <div class="p-1" [ngStyle]="{flex: flexAt(7)}">
+  <div class="p-1" [ngStyle]="{flex: flexAt(7)}"></div>
+  <div class="p-1" [ngStyle]="{flex: flexAt(8)}"></div>
+  <div class="p-1" [ngStyle]="{flex: flexAt(9)}"></div>
+  <div class="p-1" [ngStyle]="{flex: flexAt(10)}">
+    <ng-container *ngIf="displayColumn('copy_part')" >
+      <div><label class="form-label fw-bold" i18n>Part</label></div>
+      <div>
+        <eg-combobox [smallFormControl]="true" [allowFreeText]="true" [(ngModel)]="batchPart">
+          <eg-combobox-entry 
+            *ngFor="let part of (volcopy.bibParts | keyvalue) | comboboxLabelDedupe"
+            [entryId]="part.id()" [entryLabel]="part.label()">
+          </eg-combobox-entry>
+        </eg-combobox>
+      </div>
+    </ng-container>
+  </div>
+  <div class="p-1" [ngStyle]="{flex: flexAt(11)}">
     <div><label class="form-label fw-bold" i18n>Batch</label></div>
     <div>
       <button class="btn btn-sm btn-outline-dark label-with-material-icon"
@@ -93,10 +109,6 @@
     </div>
   </div>
   <!-- needed for consistent column widths -->
-  <div class="p-1" [ngStyle]="{flex: flexAt(8)}"></div>
-  <div class="p-1" [ngStyle]="{flex: flexAt(9)}"></div>
-  <div class="p-1" [ngStyle]="{flex: flexAt(10)}"></div>
-  <div class="p-1" [ngStyle]="{flex: flexAt(11)}"></div>
 </div>
 
 <div class="row d-flex mt-2 mb-2">
@@ -451,6 +463,7 @@
         <div class="p-1" [ngStyle]="{flex: flexAt(10)}">
           <ng-container *ngIf="displayColumn('copy_part')">
             <eg-combobox
+              #partSelectBox
               [selectedId]="copyNode.target.parts()[0] ? copyNode.target.parts()[0].id() : null"
               [moreClasses]="'vol-edit-validity-combobox'"
               [smallFormControl]="true"
