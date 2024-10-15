@@ -420,12 +420,11 @@ sub fetch_copies_by_ids {
 # this does the actual work
 sub update_fleshed_copies {
     my($class, $editor, $override, $vol, $copies, $delete_stats, $retarget_holds, $force_delete_empty_bib, $create_parts) = @_;
-
+    
     $override = { all => 1 } if($override && !ref $override);
     $override = { all => 0 } if(!ref $override);
 
     my $evt;
-    my $fetchvol = ($vol) ? 0 : 1;
 
     my %cache;
     $cache{$vol->id} = $vol if $vol;
@@ -436,27 +435,25 @@ sub update_fleshed_copies {
         my $copyid = $original_copy->id;
         $logger->info("vol-update: inspecting copy $copyid");
 
-        my $vol;
-        if (!($vol = $cache_ref->{$original_copy->call_number})) {
-            $vol = $cache_ref->{$original_copy->call_number} =
-                $editor->retrieve_asset_call_number($original_copy->call_number);
-            return $editor->event unless $vol;
+        my $vol = $cache_ref->{$original_copy->call_number};
+        if (!defined $vol) {
+            $vol = $editor->retrieve_asset_call_number($original_copy->call_number);
+            return (undef, $editor->event) unless defined $vol;
+            $cache_ref->{$original_copy->call_number} = $vol;
         }
+        return (undef, $editor->event) unless $editor->allowed('UPDATE_COPY', $class->copy_perm_org($vol, $original_copy));
 
-        return $editor->event unless
-            $editor->allowed('UPDATE_COPY', $class->copy_perm_org($vol, $original_copy));
-
-        return; # return nothing if all checks pass
+        return ($vol, undef); # return vol and undef if all checks pass
     }
 
     my $original_copies = $class->fetch_copies_by_ids( $editor, map { $_->id } @$copies );
     for my $original_copy (@$original_copies) {
-        my $event = process_copy($original_copy, \%cache, $editor, $class, $logger);
+        my ($vol, $event) = process_copy($original_copy, \%cache, $editor, $class, $logger);
         return $event if $event;
     }
 
     for my $copy (@$copies) {
-        my $event = process_copy($copy, \%cache, $editor, $class, $logger);
+        my ($vol, $event) = process_copy($copy, \%cache, $editor, $class, $logger);
         return $event if $event;
 
         $copy->editor($editor->requestor->id);
