@@ -137,8 +137,8 @@ msgstr ""
 msgid "%1 %2 %3&#13;&#10;%4 %5&#13;&#10;%6, %7 %8"
 msgstr ""
 
-#. ("{{patron().prefix()}}", "{{patron().family_name()}}", "{{patron().first_given_name()}}", "{{patron().second_given_name()}}", "{{patron().suffix()}}")
 #. ("{{patron().pref_prefix() || patron().prefix()}}", "{{patron().pref_family_name() || patron().family_name()}}", "{{patron().pref_first_given_name() || patron().first_given_name()}}", "{{patron().pref_second_given_name() || patron().second_given_name()}}", "{{patron().pref_suffix() || patron().suffix()}}")
+#. ("{{patron().prefix()}}", "{{patron().family_name()}}", "{{patron().first_given_name()}}", "{{patron().second_given_name()}}", "{{patron().suffix()}}")
 #: ../../Open-ILS/src/templates/staff/circ/patron/index.tt2:118 ../../Open-ILS/src/templates/staff/circ/patron/t_summary.tt2:159
 msgid "%1 %2, %3 %4 %5"
 msgstr ""
@@ -230,17 +230,17 @@ msgstr ""
 msgid "%1, %2"
 msgstr ""
 
-#. ("{{patron().pref_family_name() || patron().family_name()}}", "{{patron().pref_first_given_name() || patron().first_given_name()}}", "{{patron().pref_second_given_name() || patron().second_given_name()}}")
 #. ("{{lname}}", "{{fname}}", "{{mname}}")
+#. ("{{patron().pref_family_name() || patron().family_name()}}", "{{patron().pref_first_given_name() || patron().first_given_name()}}", "{{patron().pref_second_given_name() || patron().second_given_name()}}")
 #: ../../Open-ILS/src/templates/staff/circ/patron/index.tt2:80 ../../Open-ILS/src/templates/staff/circ/patron/t_summary.tt2:34
 msgid "%1, %2 %3"
 msgstr ""
 
 #. ("{{user.family_name()}}", "{{user.first_given_name()}}", "{{user.second_given_name()}}", "{{user.card().barcode()}}")
-#. ("{{circ.usr().family_name()}}", "{{circ.usr().first_given_name()}}", "{{circ.usr().second_given_name()}}", "{{circ.usr().card().barcode()}}")
-#. ("{{prev_circ_usr.family_name()}}", "{{prev_circ_usr.first_given_name()}}", "{{prev_circ_usr.second_given_name()}}", "{{prev_circ_usr.card().barcode()}}")
 #. ("{{hold.usr().family_name()}}", "{{hold.usr().first_given_name()}}", "{{hold.usr().second_given_name()}}", "{{hold.usr().card().barcode()}}")
 #. ("{{hold.requestor().family_name()}}", "{{hold.requestor().first_given_name()}}", "{{hold.requestor().second_given_name()}}", "{{hold.requestor().card().barcode()}}")
+#. ("{{circ.usr().family_name()}}", "{{circ.usr().first_given_name()}}", "{{circ.usr().second_given_name()}}", "{{circ.usr().card().barcode()}}")
+#. ("{{prev_circ_usr.family_name()}}", "{{prev_circ_usr.first_given_name()}}", "{{prev_circ_usr.second_given_name()}}", "{{prev_circ_usr.card().barcode()}}")
 #. ("{{extra.user_obj.family_name}}", "{{extra.user_obj.first_given_name}}", "{{extra.user_obj.second_given_name}}", "{{extra.user_obj.home_ou.shortname}}")
 #: ../../Open-ILS/src/templates/staff/acq/requests/t_edit.tt2:27 ../../Open-ILS/src/templates/staff/cat/item/t_circ_list_pane.tt2:27 ../../Open-ILS/src/templates/staff/cat/item/t_circs_pane.tt2:118 ../../Open-ILS/src/templates/staff/cat/item/t_circs_pane.tt2:18 ../../Open-ILS/src/templates/staff/cat/item/t_holds_pane.tt2:17 ../../Open-ILS/src/templates/staff/cat/item/t_holds_pane.tt2:30 ../../Open-ILS/src/templates/staff/circ/patron/t_move_to_group_dialog.tt2:16
 msgid "%1, %2 %3 : %4"
@@ -1398,8 +1398,8 @@ msgstr ""
 msgid "Between"
 msgstr ""
 
-#. ("{{lead_id}}")
 #. ("{{record_id}}")
+#. ("{{lead_id}}")
 #: ../../Open-ILS/src/templates/staff/cat/bucket/record/t_merge_records.tt2:49 ../../Open-ILS/src/templates/staff/cat/catalog/index.tt2:66
 msgid "Bib %1"
 msgstr ""
