@@ -16,7 +16,7 @@
 
         FOREACH serial IN ctx.mfhd_summaries; %]
             <dt class="rdetail-mfhd-head">[% l('Holdings summary ([_1])', serial.location) | html %]</dt>
-            <dd>
+            <dd>[%
             FOREACH type IN mfhd.keys;
                 NEXT UNLESS serial.$type.size;
                 %]
