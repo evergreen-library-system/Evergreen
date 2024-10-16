@@ -30,7 +30,7 @@
         aria-label="[%
           IF ctx.mylist.size > 1; l('View [_0] records in basket');
           ELSIF ctx.mylist.size == 1; l('View one record in basket');
-          ELSE l('Basket is empty');
+          ELSE; l('Basket is empty');
           END;
         %]">
         <img src="[% ctx.media_prefix %]/images/cart-sm.png[% ctx.cache_key %]" alt="">
