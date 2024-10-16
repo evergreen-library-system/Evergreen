@@ -29,7 +29,7 @@
     <a href="[% mkurl(ctx.opac_root _ '/mylist') %]" class="no-dec" rel="nofollow" vocab=""
         aria-label="[%
           IF ctx.mylist.size > 1; l('View [_0] records in basket');
-          ELSEIF ctx.mylist.size == 1; l('View one record in basket');
+          ELSIF ctx.mylist.size == 1; l('View one record in basket');
           ELSE l('Basket is empty');
           END;
         %]">
