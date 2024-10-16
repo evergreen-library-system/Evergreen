@@ -3,14 +3,14 @@ msgstr ""
 "Project-Id-Version: Evergreen\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2018-08-15 11:29-0400\n"
-"PO-Revision-Date: 2018-03-19 21:25+0000\n"
+"PO-Revision-Date: 2024-10-03 18:50+0000\n"
 "Last-Translator: Eva Cerninakova <Unknown>\n"
 "Language-Team: UISK <LL@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2023-05-05 04:35+0000\n"
-"X-Generator: Launchpad (build 90e2150bef31b411d7bae5c4032c7e320fcaaec8)\n"
+"X-Launchpad-Export-Date: 2024-10-04 07:22+0000\n"
+"X-Generator: Launchpad (build 6341c735b243a0768c3cb66edf85737937cab327)\n"
 "X-Accelerator-Marker: &\n"
 "X-Poedit-SourceCharset: utf-8\n"
 "X-Poedit-Country: CZECH REPUBLIC\n"
@@ -2425,62 +2425,3 @@ msgstr "Exempláře:"
 #: staff.cat.bib_brief.items.available.tooltip
 msgid "%1$s available"
 msgstr "%1$s volných"
-
-#~ msgid "Record ID = %1$s"
-#~ msgstr "ID záznamu = %1$s"
-
-#~ msgid "Volumes deleted."
-#~ msgstr "Svazky smazány."
-
-#~ msgid "Record: %1$s"
-#~ msgstr "Záznam: %1$s"
-
-#~ msgid "Merge these records? (Select the \"lead\" record first)"
-#~ msgstr "Sloučit tyto záznamy? (Vyberte nejprve \"hlavní\" záznam)"
-
-#~ msgid "Merge"
-#~ msgstr "Sloučit"
-
-#~ msgctxt "staff.cat.record_buckets.merge_records.cancel_button.label"
-#~ msgid "Cancel"
-#~ msgstr "Storno"
-
-#~ msgctxt "staff.cat.record_buckets.merge_records.cancel_button.accesskey"
-#~ msgid "C"
-#~ msgstr "C"
-
-#~ msgid "Lead Record? # %1$s"
-#~ msgstr "Hlavní záznam? # %1$s"
-
-# nutný kontext
-#~ msgid "Lead"
-#~ msgstr "Vedoucí"
-
-#~ msgid "Merge Aborted"
-#~ msgstr "Sloučení selhalo"
-
-#~ msgid "Records were successfully merged."
-#~ msgstr "Záznamy byly úspěšně sloučeny."
-
-#~ msgid "Call Numbers"
-#~ msgstr "Signatury"
-
-#~ msgctxt "staff.cat.copy_editor.field.floating.yes_or_true"
-#~ msgid "Yes"
-#~ msgstr "Ano"
-
-#~ msgctxt "staff.cat.copy_editor.field.floating.no_or_false"
-#~ msgid "No"
-#~ msgstr "Ne"
-
-#~ msgid ""
-#~ "You must delete all the copies on the volume before you may delete the "
-#~ "volume itself."
-#~ msgstr ""
-#~ "Před smazáním celého svazku musíte smazat všechny exempláře ve svazku."
-
-#~ msgid "Holds transferred."
-#~ msgstr "Rezervace přesunuty."
-
-#~ msgid "Cancel "
-#~ msgstr "Storno "

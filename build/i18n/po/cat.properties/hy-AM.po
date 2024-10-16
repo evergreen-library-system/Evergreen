@@ -4,14 +4,14 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2018-08-15 11:29-0400\n"
-"PO-Revision-Date: 2017-08-20 08:04+0000\n"
+"PO-Revision-Date: 2024-10-03 18:50+0000\n"
 "Last-Translator: TZ <tigran@flib.sci.am>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2023-05-05 04:35+0000\n"
-"X-Generator: Launchpad (build 90e2150bef31b411d7bae5c4032c7e320fcaaec8)\n"
+"X-Launchpad-Export-Date: 2024-10-04 07:22+0000\n"
+"X-Generator: Launchpad (build 6341c735b243a0768c3cb66edf85737937cab327)\n"
 "X-Accelerator-Marker: &\n"
 
 #: bib.no_marc
@@ -2400,60 +2400,3 @@ msgstr "Նյութեր։"
 #: staff.cat.bib_brief.items.available.tooltip
 msgid "%1$s available"
 msgstr "%1$sմատչելի"
-
-#~ msgid "Record ID = %1$s"
-#~ msgstr "Գրառման ID = %1$s"
-
-#~ msgid ""
-#~ "You must delete all the copies on the volume before you may delete the "
-#~ "volume itself."
-#~ msgstr "Պետք է ջնջես հատորի բոլոր օրինակները, ապա նոր կարող ես ջնջել հատորը:"
-
-#~ msgid "Volumes deleted."
-#~ msgstr "Հատորները ջնջված են:"
-
-#~ msgid "Record: %1$s"
-#~ msgstr "Գրառում: %1$s"
-
-#~ msgid "Merge these records? (Select the \"lead\" record first)"
-#~ msgstr "Միացնե՞լ այս գրառումները: (Ընտրիր սկզբից \"lead\" գրառումը)"
-
-#~ msgid "Merge"
-#~ msgstr "Միաձուլել"
-
-#~ msgctxt "staff.cat.record_buckets.merge_records.cancel_button.label"
-#~ msgid "Cancel"
-#~ msgstr "Չեղյալ անել"
-
-#~ msgctxt "staff.cat.record_buckets.merge_records.cancel_button.accesskey"
-#~ msgid "C"
-#~ msgstr "C"
-
-#~ msgid "Lead Record? # %1$s"
-#~ msgstr "Առաջատա՞ր գրառում # %1$s"
-
-#~ msgid "Lead"
-#~ msgstr "Առաջատար"
-
-#~ msgid "Merge Aborted"
-#~ msgstr "Միաձուլւոմը կասեցվեց"
-
-#~ msgid "Records were successfully merged."
-#~ msgstr "Գրառումները հաջողությամբ միաձուլվել են:"
-
-#~ msgid "Call Numbers"
-#~ msgstr "Դասիչներ"
-
-#~ msgctxt "staff.cat.copy_editor.field.floating.yes_or_true"
-#~ msgid "Yes"
-#~ msgstr "Այո"
-
-#~ msgctxt "staff.cat.copy_editor.field.floating.no_or_false"
-#~ msgid "No"
-#~ msgstr "Ոչ"
-
-#~ msgid "Holds transferred."
-#~ msgstr "Պահումները փոխանցված են"
-
-#~ msgid "Cancel "
-#~ msgstr "Չեղյալ անել "
