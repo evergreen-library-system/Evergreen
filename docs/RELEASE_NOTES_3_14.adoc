@@ -3,13 +3,13 @@
 :numbered:
 :toclevels: 3
 
-== New Features ==
+== Evergreen 3.14-rc ==
 
-:leveloffset: +2
+=== New Features ===
 
+:leveloffset: +3
 
 = Acquisitions =
-
 
 == EDI X12 Parser ==
 
@@ -40,7 +40,7 @@ to address several issues caused by the caching:
 
 https://bugs.launchpad.net/evergreen/+bug/2044854[LP#2044854]
 
-=== Apache Proxy LogFormat Configuration ===
+**Apache Proxy LogFormat Configuration**
 
 Two `LogFormat` entries have been added to the sample Apache
 configuration in `eg.conf.in` that are useful when a proxy runs in
@@ -73,20 +73,20 @@ for example.
 
 A new script for bulk loading and updating patrons from the server now exists in Open-ILS/src/support-scripts called patron_loader.pl.  It is installed to <prefix>/bin (/openils/bin/patron_loader.pl for standard installs).  It can be run manually or from cron.
 
-=== Sample invocation:
+**Sample invocation:**
 
 [source,bash]
 -----------------
 ./patron_loader.pl --db evergreen --dbhost myserver -dbuser admin --dbpw demo123 --file sample.csv --org_unit INNS --date_format "MM/DD/YYYY" --default_password 4444 --alert_message "patron has left swim cap at desk"  --debug
 -----------------
 
-=== Required parameters:
+**Required parameters:**
 
  --file path to the CSV file used as the data source
  --org_unit the org unit name of the org unit patrons are being loaded for
    used to match mapped variables
 
-=== Optional parameters:
+**Optional parameters:**
 
  --help or --h shows the help
 
@@ -126,7 +126,7 @@ A new script for bulk loading and updating patrons from the server now exists in
    if your matchpoint with this set the cardnumber will be used for both
  --nobootstrap do not load DB config from opensrf.xml
 
-=== Required Columns:
+**Required Columns:**
 
 * *cardnumber* - unless using usrname as matchpoint and --fill_with_matchpoint is used
 * *usrname* - unless using cardnumber as matchpoint and --fill_with_matchpoint is used
@@ -137,7 +137,7 @@ A new script for bulk loading and updating patrons from the server now exists in
 
 Although data for the above columns are optional in some situations the columns still need to exist in the file.
 
-=== Optional Columns:
+**Optional Columns:**
 
  net_access_level
  second_given_name
@@ -173,7 +173,7 @@ Although data for the above columns are optional in some situations the columns 
  statcat_value3
  photo_url
 
-=== Mapping:
+**Mapping:**
 
 Not all data sources can customize the data exported to the CSV so some mapping is allowed.
 
@@ -211,7 +211,7 @@ The column ident_type is treated specially.  It is required by actor.usr and doe
 have a default but usually doesn't correspond to a exported value from others systems
 so it defaults to '3' or 'Other' but you can define it through an optional parameter.
 
-=== Overview:
+**Overview:**
 
 The script is very conservative checking for an existing cardnumber and usrname.  If
 either is found on an account that differs from the one using the match point then it
@@ -228,7 +228,7 @@ touched.  Part of the aggressiveness of removing non-specified addresses is to e
 identifying information for patrons is removed when updating, especially for the use case
 of schools bulk updating juveniles.
 
-=== Database and Logging:
+**Database and Logging:**
 
 The database holds a *actor.patron_loader_log* table that logs sessions and failed rows.
 
@@ -340,14 +340,14 @@ https://bugs.launchpad.net/bugs/2047442[#2047442]
 
 == Hold Reset Reasons ==
 
-=== New database tables ===
+**New database tables**
 
 . action.hold_request_reset_reason
 . action.hold_request_reset_reason_entry
 
 Hold reset reasons allow staff to see when and why a hold request has been reset. Reset reasons are generated any time a hold has been reset, whether that's a manual reset from a staff member or automatically because a hold has reached the hold retarget interval. This can be very useful for debugging the hold targeter or identifying bad actors in the system.
 
-=== Types of Reset Reasons ===
+**Types of Reset Reasons**
 
 There are ten different types of reset reasons that can be identified.
 
@@ -362,7 +362,7 @@ There are ten different types of reset reasons that can be identified.
 . HOLD_CHECKED_OUT
 . HOLD_CHECKED_IN
 
-=== Viewing Reset Reasons ===
+**Viewing Reset Reasons**
 
 Staff can view reset reasons for a hold via a patron's *holds* tab.
 
@@ -373,7 +373,7 @@ Staff can view reset reasons for a hold via a patron's *holds* tab.
 . Click *Reset Entries*
 . Order can be reversed to show most recent resets first.
 
-=== New srfsh script ===
+**New srfsh script**
 
 This feature includes a script that you can setup as a cron job to maintain the action.hold_request_reset_entry table:
 
@@ -381,7 +381,7 @@ NOTE: purge_hold_reset_reason_entries.srfsh
 
 This script defaults to "1 year" but can be overridden on a library by library basis via YAOUS.
 
-=== New library settings ===
+**New library settings**
 
 . circ.hold_reset_reason_entry_age_threshold
 . circ.hold_retarget_previous_targets_interval
@@ -395,7 +395,7 @@ the interface.
 
 https://myhost.mydomain/eg2/staff/selfcheck
 
-=== New Print Templates ===
+**New Print Templates**
 
 New self-check print templates are available under 
 Administration => Server Administration => Print Templates
