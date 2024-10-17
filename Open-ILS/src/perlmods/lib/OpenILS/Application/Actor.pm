@@ -3169,7 +3169,7 @@ sub modify_penalty {
 
 __PACKAGE__->register_method(
     method   => "remove_penalty",
-    api_name => "open-ils.actor.user.note.remove"
+    api_name => "open-ils.actor.user.penalty.remove"
 );
 
 __PACKAGE__->register_method(
