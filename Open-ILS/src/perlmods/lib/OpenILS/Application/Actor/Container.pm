@@ -2086,7 +2086,7 @@ sub list_container_user_shares {
         or return $e->die_event;
 
     if ($container->owner ne $e->requestor->id) {
-        return $e->die_event unless $e->allowed("VIEW_CONTAINER_${container_class}_USER_SHARE", $e->requestor->home_ou);
+        return $e->die_event unless $e->allowed('VIEW_CONTAINER_' . uc($ttypes{ ${container_class} }) . '_USER_SHARE', $e->requestor->home_ou);
     }
 
     my $search = {
