@@ -61,7 +61,7 @@ export class ReporterFieldComponent implements OnInit {
     }
 
     visibleTransforms() { return this.transforms.filter(t => !t.hidden); }
-    visibleOperators() { return this.operators.filter(t => !t.hidden || !t.hidden.includes(this.field.datatype)); }
+    visibleOperators() { return this.operators.filter(t => !t.hidden || !t.hidden.includes(this.field.transform?.final_datatype || this.field.datatype)); }
 
     ngOnInit() {
 
@@ -78,7 +78,7 @@ export class ReporterFieldComponent implements OnInit {
         }
 
         if ( this.withOperators ) {
-            this.operators = this.RSvc.getOperatorsForDatatype(this.field.datatype);
+            this.operators = this.RSvc.getOperatorsForDatatype(this.field.transform?.final_datatype || this.field.datatype);
         }
 
         this.wsContextOrgs = this.org.fullPath(this.auth.user().ws_ou(), true);
