@@ -3,6 +3,60 @@
 :numbered:
 :toclevels: 3
 
+
+== Evergreen 3.12.8 ==
+
+This release contains bug fixes and documentation fixes improving on Evergreen 3.12.7.
+
+=== Acquisitions ===
+
+* Allow acquisitions vendor MARC Order record load even if some subfields are empty. (https://bugs.launchpad.net/evergreen/+bug/924952[Bug 924952])
+
+=== Administration ===
+
+* Fixes issue with numeric usernames when AuthProxy falls (https://bugs.launchpad.net/evergreen/+bug/1828456[Bug 1828456])
+* Updates SIP2 Patron Status to support subfields "too many items charged" subfield (05) and "too many items lost" subfield (09). (https://bugs.launchpad.net/evergreen/+bug/1980978[Bug 1980978])
+* Automate part of the build process. (https://bugs.launchpad.net/evergreen/+bug/2082120[Bug 2082120])
+
+=== Circulation ===
+
+* Fixes issue where self check screen is blank when user's email doesn't contain an @ sign (https://bugs.launchpad.net/evergreen/+bug/2081758[Bug 2081758])
+* Fixes receipt printing issues. (https://bugs.launchpad.net/evergreen/+bug/2076255[Bug 2076255]
+
+=== Documentation ===
+
+* Updates eboook API intergration documentation (https://bugs.launchpad.net/evergreen/+bug/2078643[Bug 2078643])
+
+=== OPAC ===
+
+* Fixes mouse selection of autosuggest searches. (https://bugs.launchpad.net/evergreen/+bug/2061004[Bug 2061004])
+
+=== Staff Catalog ===
+
+* Fixes issue with DOB saving incorrectly in certain time zones. (https://bugs.launchpad.net/evergreen/+bug/1828114[Bug 1828114])
+
+=== Acknowledgements ===
+
+We would like to thank the following individuals who contributed code, testing, documentation, and patches to the 3.12.7 point release of Evergreen:
+
+* Andrea Buntz Neiman
+* Dan Briem
+* Ian Skelskey
+* Jane Sandberg
+* Jason Stephenson
+* Jeff Davis
+* Josh Stompro
+* Lindsay Stratton
+* Llewellyn Marshall
+* Michele Morgan
+* Mike Rylander
+* Stephanie Leary
+* Steven Mayo
+* Susan Morrison
+* Terran McCanna
+* kdandy1
+
+
 == Evergreen 3.12.7 ==
 
 This release contains bug fixes and documentation fixes improving on Evergreen 3.12.6.
