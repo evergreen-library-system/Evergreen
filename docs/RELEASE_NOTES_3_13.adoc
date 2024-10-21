@@ -3,6 +3,176 @@
 :numbered:
 :toclevels: 3
 
+== Evergreen 3.13.5 ==
+
+This release contains bug fixes and documentation fixes improving on Evergreen 3.13.5.
+
+=== Acquisitions ===
+
+* Allow acquisitions vendor MARC Order record load even if some subfields are empty. (https://bugs.launchpad.net/evergreen/+bug/924952[Bug 924952])
+* Fix line item cancellation failure due to undefined volume retrieval. (https://bugs.launchpad.net/evergreen/+bug/2084096[Bug 2084096])
+
+=== Administration ===
+
+* Fixes issue with numeric usernames when AuthProxy falls (https://bugs.launchpad.net/evergreen/+bug/1828456[Bug 1828456])
+* Updates SIP2 Patron Status to support subfields "too many items charged" subfield (05) and "too many items lost" subfield (09). (https://bugs.launchpad.net/evergreen/+bug/1980978[Bug 1980978])
+* Automate part of the build process. (https://bugs.launchpad.net/evergreen/+bug/2082120[Bug 2082120])
+
+
+=== Circulation ===
+
+* Fixes issue where self check screen is blank when user's email doesn't contain an @ sign (https://bugs.launchpad.net/evergreen/+bug/2081758[Bug 2081758])
+* Fixes receipt printing issues. (https://bugs.launchpad.net/evergreen/+bug/2076255[Bug 2076255]
+
+=== Documentation ===
+
+* Updates eboook API intergration documentation (https://bugs.launchpad.net/evergreen/+bug/2078643[Bug 2078643])
+
+=== OPAC ===
+
+* Fixes mouse selection of autosuggest searches. (https://bugs.launchpad.net/evergreen/+bug/2061004[Bug 2061004])
+
+
+=== Staff Catalog ===
+
+* Fixes issue with DOB saving incorrectly in certain time zones. (https://bugs.launchpad.net/evergreen/+bug/1828114[Bug 1828114])
+
+
+=== Acknowledgements ===
+
+We would like to thank the following individuals who contributed code, testing, documentation, and patches to the 3.13.5 point release of Evergreen:
+
+* Andrea Buntz Neiman
+* Blake Graham-Henderson
+* Dan Briem
+* Ian Skelskey
+* Jane Sandberg
+* Jason Stephenson
+* Jeff Davis
+* Josh Stompro
+* Lindsay Stratton
+* Llewellyn Marshall
+* Michele Morgan
+* Mike Rylander
+* Stephanie Leary
+* Steven Mayo
+* Susan Morrison
+* Terran McCanna
+* Tiffany Little
+* kdandy1
+
+
+
+
+
+
+== Evergreen 3.13.4 ==
+
+This release contains bug fixes and documentation fixes improving on Evergreen 3.13.3.
+
+=== Acquisitions ===
+
+* Allow users to save grid settings in Acquisitions Distribution Formulas administrative interface. (https://bugs.launchpad.net/evergreen/+bug/2069750[Bug 2069750])
+* Allow receiving cancelled or backordered line items in Acq Search (https://bugs.launchpad.net/evergreen/+bug/2047940[Bug 2047940])
+* Fixes the Canadian Dollars currency symbol to CAD for acquisitions. (https://bugs.launchpad.net/evergreen/+bug/1807998[Bug 1807998])
+* Add a --check-leader flag to marc_export to force leaders to 24 characters. (https://bugs.launchpad.net/evergreen/+bug/2063350[Bug 2063350])
+
+=== Administration ===
+
+* Fixes typo in 'Bib source for brief records' library setting (https://bugs.launchpad.net/evergreen/+bug/1910580[Bug 1910580])
+* Updates the wording on the latency test page to be a little more user-friendly. (https://bugs.launchpad.net/evergreen/+bug/2064355[Bug 2064355])
+* Speed up Bootstrap OPAC by removing extra copy of jQuery (https://bugs.launchpad.net/evergreen/+bug/2078985[Bug 2078985])
+* Update a dependency in a Github action that documentation contributors use to check their work. (https://bugs.launchpad.net/evergreen/+bug/2979835[Bug 2979835])
+
+=== Cataloging ===
+
+* Allow users to save grid settings in Conjoined Items grid. (https://bugs.launchpad.net/evergreen/+bug/2069472[Bug 2069472])
+* Prevents the same record from appearing in a carousel created from a bucket more than once (https://bugs.launchpad.net/evergreen/+bug/2059034[Bug 2059034])
+* Fix bug in Merge/Overlay Profile preserve specifications. (https://bugs.launchpad.net/evergreen/+bug/1878984[Bug 1878984])
+
+=== Circulation ===
+
+* Hide the "Credit Available" and Patron Credit payment options when patron credit is disabled on bills screen. (https://bugs.launchpad.net/evergreen/+bug/1810419[Bug 1810419])
+* After checking out an item with a deposit, show the updated balance in patron summary. (https://bugs.launchpad.net/evergreen/+bug/2069891[Bug 2069891])
+* Show the deposit amount (if any) on the overrideable events dialog in checkout interface. (https://bugs.launchpad.net/evergreen/+bug/2069890[Bug 2069890])
+* Allows staff to edit survey questions and answers with UPDATE_SURVEY perm (https://bugs.launchpad.net/evergreen/+bug/1910444[Bug 1910444])
+* Allows staff to create and delete surveys with CREATE_SURVEY and DELETE_SURVEY perms (https://bugs.launchpad.net/evergreen/+bug/1910444[Bug 1910444])
+* Allows staff to take survey responses with UPDATE_USER perm. (https://bugs.launchpad.net/evergreen/+bug/1910444[Bug 1910444])
+* Rename "View Borrowing History" privacy waiver to "Obtain Circulation Information" for accuracy. (https://bugs.launchpad.net/evergreen/+bug/2054595[Bug 2054595])
+* Consider age protection when determining if a patron can renew an item that others are waiting for. (https://bugs.launchpad.net/evergreen/+bug/1989740[Bug 1989740])
+
+=== Documentation ===
+
+* Fixes headings and links in staff catalog docs.
+* Updates to column picker docs (https://bugs.launchpad.net/evergreen/+bug/2067746[Bug 2067746])
+* Updates to Holds Pull List documentation (https://bugs.launchpad.net/evergreen/+bug/2067739[Bug 2067739])
+* Adds updates regarding barred and inactive accounts (https://bugs.launchpad.net/evergreen/+bug/2062004[Bug 2062004])
+
+=== OPAC ===
+
+* Fixes the OPAC Shelving Location Group sort to honor position, name. (https://bugs.launchpad.net/evergreen/+bug/2076357[Bug 2076357])
+* i18n for BooPAC circ history "Delete Selected" button (https://bugs.launchpad.net/evergreen/+bug/2076420[Bug 2076420])
+* Prevent the shelving location group from being dropped in library selection box (https://bugs.launchpad.net/evergreen/+bug/2077998[Bug 2077998
+* Improve display of ebook API items in the public catalog. (https://bugs.launchpad.net/evergreen/+bug/1982217[Bug 1982217])
+
+=== Reports ===
+
+* Sort report templates grid by name, rather than create date. (https://bugs.launchpad.net/evergreen/+bug/2077441[Bug 2077441])
+* Reporter: Normalize count and date transforms, and add round transform (https://bugs.launchpad.net/evergreen/+bug/2071372[Bug 2071372])
+* Improve support for report templates created using previous versions of the reporter. (https://bugs.launchpad.net/evergreen/+bug/2077098[Bug 2077098])
+
+=== Staff Catalog ===
+
+* i18n for staff catalog Browse search form label (https://bugs.launchpad.net/evergreen/+bug/2069617[Bug 2069617])
+
+=== Staff Client ===
+
+* Remove unintended grey stripes from popup dialogs in the staff client. (https://bugs.launchpad.net/evergreen/+bug/2073014[Bug 2073014])
+* More specific "Close" labels for dialog buttons (https://bugs.launchpad.net/evergreen/+bug/2076677[Bug 2076677])
+* Silence console errors in staff navigation menu (https://bugs.launchpad.net/evergreen/+bug/2077753[Bug 2077753])
+* Check the staff client authentication session every three minutes, reducing chances of hidden eviction of the session (https://bugs.launchpad.net/evergreen/+bug/2034956[Bug 2034956])
+* Updates 'Circulating Library' to 'Checkout / Renewal Library' where relevant (https://bugs.launchpad.net/evergreen/+bug/2068934[Bug 2068934])
+
+=== Acknowledgements ===
+
+The Evergreen project would like to acknowledge the following organizations that commissioned developments in this release of Evergreen:
+
+* PaILS
+
+We would like to thank the following individuals who contributed code, testing, documentation, and patches to the 3.13.4 point release of Evergreen:
+
+* Andrea Buntz Neiman
+* Dan Briem
+* Elizabeth Davis
+* Galen Charlton
+* Jane Sandberg
+* Jason Boyer
+* Jason Stephenson
+* Jeff Davis
+* Jennifer Weston
+* John Amundson
+* Josh Stompro
+* Kathy Lussier
+* Lena Hernandez
+* Linda Jansová
+* Lindsay Stratton
+* Madison Kochel
+* Martha Driscoll
+* Mary Llewellyn
+* Michele Morgan
+* Mike Rylander
+* Rogan Hamby
+* Ruth Davis
+* Stephanie Leary
+* Steven Mayo
+* Susan Morrison
+* Terran McCanna
+* Tiffany Little
+
+
+
+
+
 == Evergreen 3.13.3 ==
 
 This release contains bug fixes and documentation fixes improving on Evergreen 3.13.2.
