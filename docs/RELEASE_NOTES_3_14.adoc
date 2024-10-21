@@ -13,11 +13,21 @@
 
 == EDI X12 Parser ==
 
-Added support to the EDI parser to read X12 messages.  In particular, this 
-allows Evergreen to consume Midwesttapes X12 ASN (shipment notification)
-messages.
+Support is added for handling X12-format ASN messages, which are generally used
+to deliver shipping status information about EDI-processed materials orders.
+Development targeted the general X12 message format standard for data parsing,
+and configuration suitable for processing the expected contents of ASN messages
+in particular.  While the initially targeted production vendor test data was
+from Midwest Tape, the general X12 parser was built using documentation and
+non-production examples from several vendors, and is expected to handle
+X12-format ASN message from most library materials vendors.
 
-https://bugs.launchpad.net/evergreen/+bug/2003106[LP#2003106]
+This functionality is implemented in a way that does not require intervention
+or configuration by the Evergreen administrator beyond the normal EDI
+configuration.  If an X12-format message is delivered by the vendor, Evergreen
+will notice and attempt to handle it transparently.
+
+https://bugs.launchpad.net/evergreen/+bug/2003106[#2003106]
 
 
 = Administration =
@@ -38,9 +48,9 @@ to address several issues caused by the caching:
 * Z39.50 searches may sporadically fail to use
   targets that were recently added.
 
-https://bugs.launchpad.net/evergreen/+bug/2044854[LP#2044854]
+https://bugs.launchpad.net/evergreen/+bug/2044854[#2044854]
 
-**Apache Proxy LogFormat Configuration**
+== Apache Proxy LogFormat Configuration ==
 
 Two `LogFormat` entries have been added to the sample Apache
 configuration in `eg.conf.in` that are useful when a proxy runs in
@@ -68,10 +78,11 @@ to:
 
 for example.
 
+https://bugs.launchpad.net/evergreen/+bug/1908540[#1908540]
 
 == Patron Loader ==
 
-A new script for bulk loading and updating patrons from the server now exists in Open-ILS/src/support-scripts called patron_loader.pl.  It is installed to <prefix>/bin (/openils/bin/patron_loader.pl for standard installs).  It can be run manually or from cron.
+A new script for bulk loading and updating patrons from the server now exists in `Open-ILS/src/support-scripts called patron_loader.pl`.  It is installed to `<prefix>/bin` (`/openils/bin/patron_loader.pl` for standard installs).  It can be run manually or from cron.
 
 **Sample invocation:**
 
@@ -82,56 +93,37 @@ A new script for bulk loading and updating patrons from the server now exists in
 
 **Required parameters:**
 
- --file path to the CSV file used as the data source
- --org_unit the org unit name of the org unit patrons are being loaded for
-   used to match mapped variables
+* `--file path` to the CSV file used as the data source
+* `--org_unit` the org unit name of the org unit patrons are being loaded for used to match mapped variables
 
 **Optional parameters:**
 
- --help or --h shows the help
+* `--help` or `--h` shows the help
 
- Database settings loaded by default from opensrf.xml
- --db the Evergreen database (defaults to the one established in opensrf.xml)
- --dbuser the user of the Evergreen database
- --dbhost the ip or domain name of the Evergreen database
- --dbport Evergreen database port, defaults to 5432
-
- --delimiter defaults to a comma can be any other delimiter usable by TEXT::CSV
- --debug using this will assume you do not want to commit
-   any database transactions and will print the SQL that would do so to STDOUT
- --matchpoint defaults to 'usrname', can also be 'cardnumber'
- --date_format used if dates are not in a 'YYYY-MM-DD' format
- --ident_type available as a field but rarely used in export sources so it can
-   be specified from the command line
- --default_password allows you to define a default password for accounts where one
-   is not defined in the file, be very careful, this option is dangerous as it
-   _will_ overwrite existing passwords
-   if some rows have a passwd value and the default is used the default will only
-   be used where the column is null
- --alert_message this is meant for scenarios where the script is being used for bulk
-   loading students and an alert message is needed such as "verify address"
-   it only adds an alert and does not check for duplications
-   sending library will be set to the org unit used in the parameters
- --alert_title defaults to 'Needs Staff Attention', only appears when --alert_message
-   is defined
- --profile if no profile is given in the file one can be specified by parameter,
-   if a combination of parameter and in file is used the parameter will be used as
-   a fall back from the file
- --home_org if no library is provided in the file it can be overridden by this, like
-   similar settings if a column with library is present but null in a given row
-   this will be used instead; expects short org name
- --fill_with_matchpoint
-   if set will allow you to only have cardnumber or usrname but it must also
-   be your matchpoint, e.g. if you have a cardnumber but not username and cardnumber
-   if your matchpoint with this set the cardnumber will be used for both
- --nobootstrap do not load DB config from opensrf.xml
+Database settings loaded by default from opensrf.xml
+* `--db` the Evergreen database (defaults to the one established in opensrf.xml)
+* `--dbuser` the user of the Evergreen database
+* `--dbhost` the ip or domain name of the Evergreen database
+* `--dbport` Evergreen database port, defaults to 5432
+* `--delimiter` defaults to a comma can be any other delimiter usable by TEXT::CSV
+* `--debug` using this will assume you do not want to commit any database transactions and will print the SQL that would do so to STDOUT
+* `--matchpoint` defaults to 'usrname', can also be 'cardnumber'
+* `--date_format` used if dates are not in a 'YYYY-MM-DD' format
+* `--ident_type` available as a field but rarely used in export sources so it can be specified from the command line
+* `--default_password` allows you to define a default password for accounts where one is not defined in the file, be very careful, this option is dangerous as it _will_ overwrite existing passwords if some rows have a passwd value and the default is used the default will only be used where the column is null
+* `--alert_message` this is meant for scenarios where the script is being used for bulk loading students and an alert message is needed such as "verify address" it only adds an alert and does not check for duplications sending library will be set to the org unit used in the parameters
+* `--alert_title` defaults to 'Needs Staff Attention', only appears when `--alert_message` is defined
+* `--profile` if no profile is given in the file one can be specified by parameter, if a combination of parameter and in file is used the parameter will be used as a fall back from the file
+* `--home_org` if no library is provided in the file it can be overridden by this, like similar settings if a column with library is present but null in a given row this will be used instead; expects short org name
+* `--fill_with_matchpoint` if set will allow you to only have cardnumber or usrname but it must also be your matchpoint, e.g. if you have a cardnumber but not username and cardnumber if your matchpoint with this set the cardnumber will be used for both
+* `--nobootstrap` do not load DB config from opensrf.xml
 
 **Required Columns:**
 
-* *cardnumber* - unless using usrname as matchpoint and --fill_with_matchpoint is used
-* *usrname* - unless using cardnumber as matchpoint and --fill_with_matchpoint is used
-* *profile* - unless --profile is used
-* *home_library* - unless --home_org is used
+* *cardnumber* - unless using usrname as matchpoint and `--fill_with_matchpoint` is used
+* *usrname* - unless using cardnumber as matchpoint and `--fill_with_matchpoint` is used
+* *profile* - unless `--profile` is used
+* *home_library* - unless `--home_org` is used
 * *family_name*
 * *first_given_name*
 
@@ -139,52 +131,52 @@ Although data for the above columns are optional in some situations the columns 
 
 **Optional Columns:**
 
- net_access_level
- second_given_name
- pref_first_given_name
- name_keywords
- email
- day_phone
- evening_phone
- other_phone
- expire_date
- ident_type   <-- needs id value, not string
- ident_value
- passwd       <-- if not supplied for a new user a random one will be created on NULL or empty string
- add1_street1
- add1_street2
- add1_cit
- add1_county
- add1_state
- add1_country
- add1_post_code
- add2_street1
- add2_street2
- add2_cit
- add2_county
- add2_state
- add2_country
- add2_post_code
- statcat_name1
- statcat_value1
- statcat_name2
- statcat_value2
- statcat_name3
- statcat_value3
- photo_url
+* `net_access_level`
+* `second_given_name`
+* `pref_first_given_name`
+* `name_keywords`
+* `email`
+* `day_phone`
+* `evening_phone`
+* `other_phone`
+* `expire_date`
+* `ident_type` - needs id value, not string
+* `ident_value`
+* `passwd` - if not supplied for a new user a random one will be created on NULL or empty string
+* `add1_street1`
+* `add1_street2`
+* `add1_cit`
+* `add1_county`
+* `add1_state`
+* `add1_country`
+* `add1_post_code`
+* `add2_street1`
+* `add2_street2`
+* `add2_cit`
+* `add2_county`
+* `add2_state`
+* `add2_country`
+* `add2_post_code`
+* `statcat_name1`
+* `statcat_value1`
+* `statcat_name2`
+* `statcat_value2`
+* `statcat_name3`
+* `statcat_value3`
+* `photo_url`
 
 **Mapping:**
 
 Not all data sources can customize the data exported to the CSV so some mapping is allowed.
 
-The *config.patron_loader_header_map* table allows for mapping incoming header names to ones that
+The `config.patron_loader_header_map` table allows for mapping incoming header names to ones that
 are natively expected.  For example, imagine that a school wants to use the 'uid' as
 password and the column header will always read 'uid' then you can enter it like this:
 
  import_header: 'uid'
  default_header: 'passwd'
 
-Two value types can currently be mapped as well, 'home_library' and 'profile' in patron_loader_value_map.
+Two value types can currently be mapped as well, 'home_library' and 'profile' in `patron_loader_value_map`.
 These map values in their respective columns instead of the headers.  For example, imagine a
 school who exports student profiles of 'Middle School' and 'High School' but both need to load
 as the Evergreen profile of 'Student'.  It would be represented with two entries:
@@ -203,11 +195,11 @@ You can also map home libraries like this:
  import_value: 'South West Elementary'
  native_value: 'BR1'
 
-As a convention the Evergreen database column names are mostly used for the actor.usr
-columns but it was found in testing that home_ou was very confusing so the label of
-'library' is used instead and internally adjusted to use 'home_ou'.
+As a convention the Evergreen database column names are mostly used for the `actor.usr`
+columns but it was found in testing that `home_ou` was very confusing so the label of
+'library' is used instead and internally adjusted to use `home_ou`.
 
-The column ident_type is treated specially.  It is required by actor.usr and does not
+The column ident_type is treated specially.  It is required by `actor.usr` and does not
 have a default but usually doesn't correspond to a exported value from others systems
 so it defaults to '3' or 'Other' but you can define it through an optional parameter.
 
@@ -230,8 +222,9 @@ of schools bulk updating juveniles.
 
 **Database and Logging:**
 
-The database holds a *actor.patron_loader_log* table that logs sessions and failed rows.
+The database holds a `actor.patron_loader_log` table that logs sessions and failed rows.
 
+https://bugs.launchpad.net/evergreen/+bug/1786524[#1786524]
 
 = Cataloging =
 
@@ -377,7 +370,7 @@ Staff can view reset reasons for a hold via a patron's *holds* tab.
 
 This feature includes a script that you can setup as a cron job to maintain the action.hold_request_reset_entry table:
 
-NOTE: purge_hold_reset_reason_entries.srfsh
+`purge_hold_reset_reason_entries.srfsh`
 
 This script defaults to "1 year" but can be overridden on a library by library basis via YAOUS.
 
@@ -422,6 +415,7 @@ setting, you can do so using the color mode selector in the navigation bar at th
 staff client.  If you want to resume using your operating system's color mode, you can set
 the color mode selector to "Auto".
 
+https://bugs.launchpad.net/evergreen/+bug/1740529[#1740529]
 
 == Staff Multi-Factor Authentication ==
 
@@ -445,7 +439,77 @@ for use in the public catalog.
 
 You can turn off carousels in config.tt2 by setting `ctx.show_carousels` to `'false'`.
 
-https://bugs.launchpad.net/bugs/2009903[2009903]
+https://bugs.launchpad.net/bugs/2009903[#2009903]
+
+== OPAC Accessibility Bugfixes ==
+
+OPAC overhaul of accessibility in several categories:
+
+* Headings, landmarks, and HTML structure
+* Eliminating layout tables and fixing data table semantics
+* Revised responsive layouts for better screen magnification support
+* Form field labels, fieldset groups, error message associations
+* Font size inconsistencies; respect users' browser font size settings
+* Color contrast; moving hard-coded colors to variables
+* Focus outline consistency and visibility; form focus behavior
+* New datepicker with keyboard support
+* New tooltips with keyboard support; move most tooltips to visible text
+* Clarifying instructions and hints (forms, browse case sensitivity)
+* Adding unique descriptions to item action labels ("close", "delete")
+* Revised timed logout behavior that allows users to ask for more time
+
+https://bugs.launchpad.net/bugs/2048666[#2048666]
+
+== Patron Self Registration Updates ==
+
+Improves styling and accessiblity and adds the following library settings:
+
+* _Hide Username field in Patron Self-Reg._ - Hides the Requested Username field in the Patron Self-Registration interface.
+* _Patron Self-Reg. Date of Birth Order_ - The order in which to present the Month, Day, and Year elements for the Date of Birth field in Patron Self-Registration. Use the letter M for Month, D for Day, and Y for Year. Examples: MDY, DMY, YMD.
+
+https://bugs.launchpad.net/evergreen/+bug/2065448[#2065448]
+
+= Reports=
+
+== Reports Security Enhancements ==
+
+** Run time reporting security **
+
+The new Report Security functionality is primarily configured through
+the addition of XML attributes to elements in the Fieldmapper XML file,
+fm_IDL.xml.  These new attributes fall into three categories:
+
+* Field value redaction - Database functions are used to optionally redact, with NULL or an administrator-supplied alternate literal value, the original value stored in the column (field) of each row.
+* Core class row restriction - In addition to any report-supplied criteria, rows from the core reporting source are evaluated by database functions in order to determine whether they can be included in report output.
+* Joined class row restriction - JOIN and WHERE clause conditions that make use of database functions are added to the generated query to restrict access to rows on non-core sources.
+
+All restriction definitions can make use of the full set of fields on
+the restricted source (LEFT side for core source and link-element
+projected sources, RIGHT side for class-level projection-restricted
+sources), the staff user that scheduled the report run, and any
+aribtrary liternal value, though typically the last will be a set of
+one or more permissions to be tested.
+
+Many of the existing, permission-related database functions can act as
+redaction and join/projection restriction functions.  Additional
+functions are supplied as part of this development in order to
+faciliated restrictions based on Patron Opt-In values in effect at the
+time a report is run.
+
+See the https://docs.evergreen-ils.org/docs/latest/reports/reports_security_idl.html[Reports Security documentation] for more details.
+
+*** Report output security restrictions ***
+
+In addition to report content security restrictions, report output visibility
+is now, optionally, restricted based on whether the accessing user either owns
+the report output, or they have at least the VIEW_REPORT_OUTPUT permission at a
+location to which the folder in which the output lives has been shared.
+
+Administrators can add additional required permissions via the
+OILSProxyPermissions Apache configuration value in the report output <Location>
+section of the eg_vhost configuration file.
+
+https://bugs.launchpad.net/evergreen/+bug/2043142[#2043142]
 
 = SIP =
 
@@ -458,7 +522,7 @@ and setting the value to true. Using a login setting like
 this allows you to only send this screeen message to those
 clients that expect it.
 
-https://bugs.launchpad.net/bugs/1613335[1613335]
+https://bugs.launchpad.net/bugs/1613335[#1613335]
 
 = Serials =
 
@@ -467,35 +531,15 @@ https://bugs.launchpad.net/bugs/1613335[1613335]
 The Angular Staff Catalog now has a Serials Quick Receive feature,
 similar to the one from the traditional catalog.
 
-https://bugs.launchpad.net/bugs/1906462[1906462]
+https://bugs.launchpad.net/bugs/1906462[#1906462]
 
 = Miscellaneous =
 
- * For patron self-registration [Lp 2065448](https://bugs.launchpad.net/evergreen/+bug/2065448), improves styling and accessiblity and adds the following library settings:
-   ** 'Hide Username field in Patron Self-Reg.'
-       Hides the Requested Username field in the Patron Self-Registration interface.
-   ** 'Patron Self-Reg. Date of Birth Order'
-       The order in which to present the Month, Day, and Year elements for the Date of Birth field in Patron Self-Registration. Use the letter M for Month, D for Day, and Y for Year. Examples: MDY, DMY, YMD'
- * LP1902120 Customizing the label for items with no parts (formerly "All Parts" or "Any Part")
-
-    This feature creates a new table for localizable strings intended to be used in
-    UI's. This is not a replacement for the existing I18N system for templates, but
-    does allow developers to choose some strings to be more easily accessible to
-    staff/admins for dynamic localization. The string we're focused on here is a
-    replacement for the "All Parts" and "Any Part" label in various Place Hold
-    interfaces when monographic parts are an option.
-
-    There is a UI for managing such strings under *Administration -> Server
-    Administration -> I18N: Localized UI Strings*. An admin could change the
-    "string" field directly, or use the existing Apply Translation mechanism to
-    customize the string for a specific locale.
-
-    As a bonus feature, we also expose an alternate UI for handling entries for
-    said Translation mechanism. This can be found under *Administration -> Server
-    Administration -> I18N: Localized Fieldmapper Strings*.
-
-    These customizations are global to the Evergreen installation.
-
+* Customizing the label for items with no parts (formerly "All Parts" or "Any Part") (https://bugs.launchpad.net/evergreen/+bug/2065448[Bug 2065448]
+** This feature creates a new table for localizable strings intended to be used in UI's. This is not a replacement for the existing I18N system for templates, but does allow developers to choose some strings to be more easily accessible to staff/admins for dynamic localization. The string we're focused on here is a replacement for the "All Parts" and "Any Part" label in various Place Hold interfaces when monographic parts are an option.
+** There is a UI for managing such strings under *Administration -> Server Administration -> I18N: Localized UI Strings*. An admin could change the "string" field directly, or use the existing Apply Translation mechanism to customize the string for a specific locale.
+** As a bonus feature, we also expose an alternate UI for handling entries for said Translation mechanism. This can be found under *Administration -> Server Administration -> I18N: Localized Fieldmapper Strings*.
+** These customizations are global to the Evergreen installation.
 * SVG logos; support for forced colors mode (https://bugs.launchpad.net/evergreen/+bug/2049657[Bug 2049657])
 * Fix an accessibility issue in staff client forms. (https://bugs.launchpad.net/evergreen/+bug/2067115[Bug 2067115])
 * Add a print button to the Desk and Staff User Payment grids to (https://bugs.launchpad.net/evergreen/+bug/2003090[Bug 2003090])
@@ -515,7 +559,6 @@ https://bugs.launchpad.net/bugs/1906462[1906462]
 * The setting to require a monographic part when placing a hold now also requires that all copies have parts on a record with parts. (https://bugs.launchpad.net/evergreen/+bug/2018014[Bug 2018014])
 * add <label> to prompt dialog text; autofocus prompt input. (https://bugs.launchpad.net/evergreen/+bug/2072776[Bug 2072776])
 * Increase automated test coverage of circ limit sets. (https://bugs.launchpad.net/evergreen/+bug/2048425[Bug 2048425])
-* Adds docs for the 3.13 Reports rewrite (https://bugs.launchpad.net/evergreen/+bug/3[Bug 3])
 * Fix bug that prevented staff from placing holds for patrons with SMS notification preferences when SMS is not enabled in library settings. (https://bugs.launchpad.net/evergreen/+bug/2073990[Bug 2073990])
 * Fixes headings and links in staff catalog docs.
 * Update the bootstrap dependency in the staff client. (https://bugs.launchpad.net/evergreen/+bug/2073127[Bug 2073127])
@@ -582,22 +625,25 @@ https://bugs.launchpad.net/bugs/1906462[1906462]
 
 
 == Acknowledgments ==
+
 The Evergreen project would like to acknowledge the following
 organizations that commissioned developments in this release of
 Evergreen:
 
-* BC Libraries Coop
+* BC Libraries Cooperative
 * Evergreen Community Development Initiative (ECDI)
+* King County Library System
 * PAILS
+* Traverse des Sioux Library
 
 We would also like to thank the following individuals who contributed
-code, translations, documentations patches and tests to this release of
+code, translations, documentation, patches and tests to this release of
 Evergreen:
 
 * Alberto Martinez
 * Andrea Buntz Neiman
 * Bill Erickson
-* Blake Graham Henderson
+* Blake Graham-Henderson
 * Chris Hancock
 * Chris Sharp
 * Christine Burns
@@ -640,7 +686,7 @@ Evergreen:
 We also thank the following organizations whose employees contributed
 patches:
 
-* BC Libraries Coop
+* BC Libraries Cooperative
 * Bibliomation Inc.
 * C/W MARS, Inc.
 * Equinox Open Library Initiative
