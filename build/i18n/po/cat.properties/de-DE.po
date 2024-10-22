@@ -8,14 +8,14 @@ msgstr ""
 "Project-Id-Version: evergreen\n"
 "Report-Msgid-Bugs-To: FULL NAME <EMAIL@ADDRESS>\n"
 "POT-Creation-Date: 2018-08-15 11:29-0400\n"
-"PO-Revision-Date: 2012-09-10 17:55+0000\n"
+"PO-Revision-Date: 2024-10-03 18:50+0000\n"
 "Last-Translator: Maximilian Mühlbauer <Unknown>\n"
 "Language-Team: German <de@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2023-05-05 04:35+0000\n"
-"X-Generator: Launchpad (build 90e2150bef31b411d7bae5c4032c7e320fcaaec8)\n"
+"X-Launchpad-Export-Date: 2024-10-04 07:23+0000\n"
+"X-Generator: Launchpad (build 6341c735b243a0768c3cb66edf85737937cab327)\n"
 
 #: bib.no_marc
 msgid "No MARC Record"
@@ -2366,34 +2366,3 @@ msgstr ""
 #: staff.cat.bib_brief.items.available.tooltip
 msgid "%1$s available"
 msgstr ""
-
-#~ msgctxt "staff.cat.record_buckets.merge_records.cancel_button.label"
-#~ msgid "Cancel"
-#~ msgstr "Abbrechen"
-
-#~ msgid "Merge"
-#~ msgstr "Zusammenführen"
-
-#~ msgctxt "staff.cat.record_buckets.merge_records.cancel_button.accesskey"
-#~ msgid "C"
-#~ msgstr "C"
-
-#~ msgid "Merge Aborted"
-#~ msgstr "Zusammenführung abgebrochen"
-
-#~ msgid "Call Numbers"
-#~ msgstr "Signaturen"
-
-#~ msgid "Records were successfully merged."
-#~ msgstr "Einträge wurden erfolgreich zusammengeführt."
-
-#~ msgid "Record: %1$s"
-#~ msgstr "Eintrag: %1$s"
-
-#~ msgctxt "staff.cat.copy_editor.field.floating.yes_or_true"
-#~ msgid "Yes"
-#~ msgstr "Ja"
-
-#~ msgctxt "staff.cat.copy_editor.field.floating.no_or_false"
-#~ msgid "No"
-#~ msgstr "Nein"
