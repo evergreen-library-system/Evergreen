@@ -3,7 +3,7 @@
 :numbered:
 :toclevels: 3
 
-== Evergreen 3.14-rc ==
+== Evergreen 3.14.0 ==
 
 === New Features ===
 
@@ -225,6 +225,32 @@ of schools bulk updating juveniles.
 The database holds a `actor.patron_loader_log` table that logs sessions and failed rows.
 
 https://bugs.launchpad.net/evergreen/+bug/1786524[#1786524]
+
+== Date / Time Format Settings Deprecated ==
+
+The format.date and format.time org unit settings are no longer used
+by the staff client and have been marked Deprecated. If you are not
+using these OU settings in a local customization they can be removed
+from the database at your convenience.
+
+= Architecture =
+
+== New PostgreSQL Minimum Version ==
+
+Evergreen 3.14 no longer supports new installations on PostgreSQL
+versions less than 13.  Evergreen 3.14 is still compatible with
+PostgreSQL versions of 10 or higher.  Existing installations may
+upgrade to Evergreen 3.14 without requiring a PostreSQL upgrade.
+
+Compatibility with obsolete PostgreSQL database versions is not
+guaranteed in the next major Evergreen release.  Users are encouraged
+to upgrade to a more recent PostgreSQL version if they are running
+PostgreSQL versions between 10 and 12.
+
+The PostgreSQL community recommends a dump and restore from the older
+PostgreSQL database to the newer one when upgrading over major
+versions.  For more information,
+https://www.postgresql.org/docs/current/upgrading.html#UPGRADING-VIA-PGDUMPALL[see the PostgreSQL upgrade documentation].
 
 = Cataloging =
 
@@ -469,7 +495,7 @@ Improves styling and accessiblity and adds the following library settings:
 
 https://bugs.launchpad.net/evergreen/+bug/2065448[#2065448]
 
-= Reports=
+= Reports =
 
 == Reports Security Enhancements ==
 
@@ -619,6 +645,9 @@ https://bugs.launchpad.net/bugs/1906462[#1906462]
 * Shared depth selector component (https://bugs.launchpad.net/evergreen/+bug/2065344[Bug 2065344])
 * Angular Circulation notes, alerts, and messages (https://bugs.launchpad.net/evergreen/+bug/2065344[Bug 2065344])
 * Side navigation for Angular Circulation (https://bugs.launchpad.net/evergreen/+bug/2065344[Bug 2065344])
+* Fix line item cancellation failure due to undefined volume retrieval. (https://bugs.launchpad.net/evergreen/+bug/2084096[Bug 2084096])
+* DOB input compatibility for old OPAC self-reg templates (https://bugs.launchpad.net/evergreen/+bug/2084166[Bug 2084166])
+* Bugfix for record bucket sharing perm check. (https://bugs.launchpad.net/evergreen/+bug/2084835[Bug 2084835])
 
 
 :leveloffset: 0
@@ -663,6 +692,7 @@ Evergreen:
 * John Amundson
 * Josh Stompro
 * Kathy Lussier
+* kdandy1
 * Lena Hernandez
 * Linda Jansová
 * Lindsay Stratton
