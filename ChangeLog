@@ -1,3 +1,383 @@
-Evergreen doesn't keep a GNU-style ChangeLog except in release tarballs.
-Those seeking a change log are encouraged to run 'git log -v', or read
-it online at: http://git.evergreen-ils.org/?p=Evergreen.git;a=log
+commit 79fc56637334544bf7ec5f3bbcd6c936abebdf23
+Author: Jane Sandberg <js7389@princeton.edu>
+Date:   Tue Oct 22 09:24:49 2024 -0700
+
+    Translation updates - xtb files
+    
+    Signed-off-by: Jane Sandberg <js7389@princeton.edu>
+
+1346	142	Open-ILS/src/eg2/src/locale/messages.cs-CZ.xtb
+
+commit d4e09cf973fc265d33db9044163064e78ef79c2d
+Author: Jane Sandberg <js7389@princeton.edu>
+Date:   Tue Oct 22 09:21:58 2024 -0700
+
+    Translation updates - po files
+    
+    Signed-off-by: Jane Sandberg <js7389@princeton.edu>
+
+54	0	build/i18n/po/booking/fr-CA.po
+144	98	build/i18n/po/bootstrap-opac/cs-CZ.po
+93	78	build/i18n/po/bootstrap-opac/en-CA.po
+93	78	build/i18n/po/bootstrap-opac/en-GB.po
+126	87	build/i18n/po/bootstrap-opac/es-ES.po
+119	85	build/i18n/po/bootstrap-opac/fr-CA.po
+3192	3184	build/i18n/po/db.seed/ar-JO.po
+3201	3187	build/i18n/po/db.seed/cs-CZ.po
+3192	3184	build/i18n/po/db.seed/de-DE.po
+3192	3184	build/i18n/po/db.seed/en-CA.po
+3192	3184	build/i18n/po/db.seed/en-GB.po
+3192	3184	build/i18n/po/db.seed/es-ES.po
+3192	3184	build/i18n/po/db.seed/fi-FI.po
+3192	3184	build/i18n/po/db.seed/fr-CA.po
+3192	3184	build/i18n/po/db.seed/he-IL.po
+3192	3184	build/i18n/po/db.seed/hu-HU.po
+3192	3184	build/i18n/po/db.seed/hy-AM.po
+3192	3184	build/i18n/po/db.seed/oc-FR.po
+3192	3184	build/i18n/po/db.seed/pt-BR.po
+3192	3184	build/i18n/po/db.seed/ru-RU.po
+3192	3184	build/i18n/po/db.seed/sv-SE.po
+3192	3184	build/i18n/po/db.seed/tr-TR.po
+3784	3769	build/i18n/po/fm_IDL.dtd/ar-JO.po
+3789	3771	build/i18n/po/fm_IDL.dtd/cs-CZ.po
+3776	3767	build/i18n/po/fm_IDL.dtd/de-DE.po
+3784	3769	build/i18n/po/fm_IDL.dtd/en-CA.po
+3784	3769	build/i18n/po/fm_IDL.dtd/en-GB.po
+3786	3771	build/i18n/po/fm_IDL.dtd/es-ES.po
+3784	3769	build/i18n/po/fm_IDL.dtd/fi-FI.po
+3776	3767	build/i18n/po/fm_IDL.dtd/fr-CA.po
+3776	3767	build/i18n/po/fm_IDL.dtd/he-IL.po
+3776	3767	build/i18n/po/fm_IDL.dtd/hu-HU.po
+3784	3769	build/i18n/po/fm_IDL.dtd/hy-AM.po
+3776	3767	build/i18n/po/fm_IDL.dtd/oc-FR.po
+3786	3771	build/i18n/po/fm_IDL.dtd/pt-BR.po
+3786	3771	build/i18n/po/fm_IDL.dtd/ru-RU.po
+3776	3767	build/i18n/po/fm_IDL.dtd/sv-SE.po
+3776	3767	build/i18n/po/fm_IDL.dtd/tr-TR.po
+48	48	build/i18n/po/tpac/ar-JO.po
+51	48	build/i18n/po/tpac/cs-CZ.po
+48	48	build/i18n/po/tpac/de-DE.po
+48	48	build/i18n/po/tpac/en-CA.po
+51	48	build/i18n/po/tpac/en-GB.po
+48	48	build/i18n/po/tpac/es-ES.po
+48	48	build/i18n/po/tpac/fi-FI.po
+51	48	build/i18n/po/tpac/fr-CA.po
+48	48	build/i18n/po/tpac/he-IL.po
+48	48	build/i18n/po/tpac/hu-HU.po
+48	48	build/i18n/po/tpac/hy-AM.po
+48	48	build/i18n/po/tpac/oc-FR.po
+48	48	build/i18n/po/tpac/pt-BR.po
+48	48	build/i18n/po/tpac/ru-RU.po
+48	48	build/i18n/po/tpac/sv-SE.po
+48	48	build/i18n/po/tpac/tr-TR.po
+111	105	build/i18n/po/webstaff/ar-JO.po
+125	111	build/i18n/po/webstaff/cs-CZ.po
+111	105	build/i18n/po/webstaff/de-DE.po
+111	105	build/i18n/po/webstaff/en-CA.po
+111	105	build/i18n/po/webstaff/en-GB.po
+111	105	build/i18n/po/webstaff/es-ES.po
+111	105	build/i18n/po/webstaff/hy-AM.po
+111	105	build/i18n/po/webstaff/ru-RU.po
+ create mode 100644 build/i18n/po/booking/fr-CA.po
+
+commit d20fe68c96fc69fdaabeede404ad65138af6f62a
+Author: Jane Sandberg <js7389@princeton.edu>
+Date:   Tue Oct 22 09:57:40 2024 -0500
+
+    Translation updates - newpot
+    
+    Signed-off-by: Jane Sandberg <js7389@princeton.edu>
+
+2	2	build/i18n/po/bootstrap-opac/bootstrap-opac.pot
+2	2	build/i18n/po/tpac/tpac.pot
+7	7	build/i18n/po/webstaff/webstaff.pot
+
+commit 121ec94efdfd583bac3c0b856e45a190fdc8d6b9
+Author: Andrea Buntz Neiman <abneiman@equinoxinitiative.org>
+Date:   Mon Oct 21 17:04:59 2024 -0400
+
+    docs: release notes 3.12.8
+    
+    Signed-off-by: Andrea Buntz Neiman <abneiman@equinoxinitiative.org>
+    Signed-off-by: Jane Sandberg <js7389@princeton.edu>
+
+54	0	docs/RELEASE_NOTES_3_12.adoc
+
+commit 4775d065840cabb63d082a4ebe11dc9d0e9d3553
+Author: Dan Briem <dbriem@harrisonpl.org>
+Date:   Wed Sep 18 20:13:19 2024 +0000
+
+    LP#1828114 Incorrect date of birth saved in certain time zones
+    
+    The Angular and AngularJS patron edit/register interfaces save
+    the birth date one day before the selected date if the client
+    device is set to a UTC+ time zone.
+    
+    This patch converts the Date object to a formatted date string
+    without converting it to UTC.
+    
+    To test:
+    1. Set your device time zone to a time zone after UTC
+    2. Edit a patron's date of birth in the AngularJS interface
+    3. Note the saved date of birth is 1 day earlier than expected
+    4. Repeat steps 2-3 for the Angular interface
+    5. Apply patch
+    6. Repeat steps 2 for both the Angular and AngularJS interfaces
+    7. Note the saved date of birth is as expected
+    
+    Signed-off-by: Dan Briem <dbriem@harrisonpl.org>
+    Signed-off-by: Jason Stephenson <jason@sigio.com>
+
+1	1	Open-ILS/src/eg2/src/app/staff/circ/patron/edit.component.html
+1	1	Open-ILS/web/js/ui/default/staff/circ/patron/regctl.js
+
+commit 45da99b0b39ccc4f1ccf6e8888763cfbe62edf9b
+Author: spmorrison <101879901+spmorrison@users.noreply.github.com>
+Date:   Thu Aug 15 09:26:58 2024 -0400
+
+    Update my_lists.adoc
+    
+    Changed 'org unit' to 'organizational unit'
+    
+    Signed-off-by: Jane Sandberg <sandbergja@gmail.com>
+
+2	2	docs/modules/opac/pages/my_lists.adoc
+
+commit 9f10d522889d5b2625d6b740db0e706f48209161
+Author: spmorrison <101879901+spmorrison@users.noreply.github.com>
+Date:   Thu Aug 15 09:46:03 2024 -0400
+
+    Docs: Update terms in describing_your_organization.adoc
+    
+    Updated 'org unit' to 'organizational unit' where applies. (I kept organization unit type , not organizational unit type, due to the name of the interface.)
+    
+    Signed-off-by: Jane Sandberg <js7389@princeton.edu>
+
+17	17	docs/modules/admin_initial_setup/pages/describing_your_organization.adoc
+
+commit 0addf4fd23b5362b7adb0d6227662aca7b6210f3
+Author: Jane Sandberg <js7389@princeton.edu>
+Date:   Thu Sep 26 06:23:53 2024 -0700
+
+    LP2082120: Automate changes to OpenILS.pm as part of build process
+    
+    To test, run make_release using a wide variety of options for the -v and -f flags, for example:
+    build/tools/make_release -v 3.14-beta -f origin/tags/rel_3_12_5 -i -C
+    build/tools/make_release -v 3.14-rc2 -f origin/tags/rel_3_12_5 -i -C
+    build/tools/make_release -v 3.14.0 -f origin/tags/rel_3_13_0 -i -C
+    build/tools/make_release -v 3.13.1 -f origin/tags/rel_3_13_0 -i -C
+    build/tools/make_release -v 3.13.17 -f origin/tags/rel_3_13_0 -i -C
+    
+    After each make_release run, check that the most recent commit includes
+    an accurate change to Open-ILS/src/perlmods/lib/OpenILS.pm.
+    
+    Release-note: Automate part of the build process.
+    Signed-off-by: Jane Sandberg <js7389@princeton.edu>
+    Signed-off-by: Jason Stephenson <jason@sigio.com>
+
+3	0	build/tools/make_release
+
+commit e82bcc61d0fbc4b82ab73efe00c10a1aed9b573b
+Author: Llewellyn Marshall <llewellyn.marshall@ncdcr.gov>
+Date:   Mon Sep 23 13:40:59 2024 -0400
+
+    LP2081758 Self Check with invalid email
+    
+    Release-note: Fixes issue where self check screen is blank when user's email doesn't contain an @ sign
+    
+    Signed-off-by: Llewellyn Marshall <llewellyn.marshall@ncdcr.gov>
+    Signed-off-by: Jane Sandberg <js7389@princeton.edu>
+
+1	1	Open-ILS/web/js/ui/default/circ/selfcheck/selfcheck.js
+
+commit 2baf88b39ad7d3bca1020bc76cd1901c7c26c8b7
+Author: Jane Sandberg <js7389@princeton.edu>
+Date:   Thu Sep 26 09:02:47 2024 -0700
+
+    LP#2061004 follow-up: let tests know that they should test mousedown now, rather than click
+    
+    Signed-off-by: Jane Sandberg <js7389@princeton.edu>
+
+1	1	Open-ILS/web/opac/tests/autosuggest.spec.module.js
+
+commit 5545d1b47df3b090b42879a76ec2b0c703ba64e3
+Author: Mike Rylander <mrylander@gmail.com>
+Date:   Fri Aug 9 12:48:00 2024 -0400
+
+    LP#2061004: Search suggestion regression fix
+    
+    We need to use the mousedown event instead of click to select opac
+    search box auto-suggestions with a mouse.  The fix to address this was
+    identified by Galen Charlton.
+    
+    Signed-off-by: Mike Rylander <mrylander@gmail.com>
+    
+    Release-note: Fixes mouse selection of autosuggest searches.
+    Signed-off-by: Jane Sandberg <js7389@princeton.edu>
+
+1	1	Open-ILS/web/js/ui/default/opac/autosuggest.module.js
+
+commit 5ef6e35b14d0d0eff9d7f82331ebe5a4b24fa17e
+Author: Jason Stephenson <jason@sigio.com>
+Date:   Thu Jul 7 13:40:55 2022 -0400
+
+    LP1980978: Improve SIP2 Patron Status Field
+    
+    Set Y in the "too many items charged" subfield (05) of the SIP2 Patron
+    Status field if the patron has the PATRON_EXCEEDS_CHECKOUT_COUNT
+    penalty.
+    
+    Set Y in the "too many items lost" subfield (09) of the SIP2 Patron
+    Status field if the patron has the PATRON_EXCEEDS_LOST_COUNT
+    penalty.
+    
+    Include the PATRON_EXCEEDS_LONGOVERDUE_COUNT penalty when checking for
+    the "too many items overdue" subfield (06) of the Patron Status field.
+    
+    Release-Note: Updates Sip2 Patron Status to support subfields "too many items charged" subfield (05) and "too many items lost" subfield (09).
+    
+    Too test this bug:
+    
+    1. Find a patron with either too many items checked out or too many
+    lost items.
+    
+    2. Use your favorite SIP client to look them up in Evergreen with a
+    patron information message (63).
+    
+    3. Verify that the patron comes with their ability to checkout
+    blocked, i.e there is a Y in field 00 of the Patron Status field of
+    the message 64 returned by the SIP server.
+    
+    4. Verify that fields 05 and 09 are both blank even though one of them
+    should have a Y in it.
+    
+    After applying the patch, begin with step 2, above.  When you get to step
+    4, either 05 or 09 (possilby both) should have a Y in it depending on
+    the patron's penalties.
+    
+    Repeat the above steps with a patron who has the
+    PATRON_EXCEEDS_LONGOVERDUE_COUNT penalty but not the
+    PATRON_EXCEEDS_OVERDUE_COUNT penalty.  You will look for a Y or a
+    space in subfield 06.
+    
+    Signed-off-by: Jason Stephenson <jason@sigio.com>
+    Signed-off-by: Josh Stompro <stomproj@larl.org>
+
+3	1	Open-ILS/src/perlmods/lib/OpenILS/Const.pm
+11	7	Open-ILS/src/perlmods/lib/OpenILS/SIP/Patron.pm
+
+commit 1e0c78cd51af0192e181032ecfd651ea4950b7d5
+Author: kdandy1 <129405903+kdandy1@users.noreply.github.com>
+Date:   Thu Sep 19 17:08:04 2024 -0400
+
+    LP2078643: Update ebook_api.adoc
+    
+    removed extra "=" from the header
+    
+    Signed-off-by: Jane Sandberg <sandbergja@gmail.com>
+
+1	1	docs/modules/admin/pages/ebook_api.adoc
+
+commit 0ec2f42530372413dd6bf49cc401a081853c14f4
+Author: Mike Rylander <mrylander@gmail.com>
+Date:   Fri Sep 20 13:18:03 2024 -0400
+
+    Stamping upgrade script
+    
+    Signed-off-by: Mike Rylander <mrylander@gmail.com>
+
+1	1	Open-ILS/src/sql/Pg/002.schema.config.sql
+1	1	Open-ILS/src/sql/Pg/upgrade/{XXXX.schema.fix_acq_import.sql => 1439.schema.fix_acq_import.sql}
+ rename Open-ILS/src/sql/Pg/upgrade/{XXXX.schema.fix_acq_import.sql => 1439.schema.fix_acq_import.sql} (95%)
+
+commit 465aa7b6fd69b1a95b30abd25bfc5b0c3f881a57
+Author: Jane Sandberg <js7389@princeton.edu>
+Date:   Wed Jul 17 13:27:17 2024 -0700
+
+    LP924952: Make acq import resilient against empty subfields
+    
+    To test:
+    1. Find or create an acquisitions provider with a holdings tag and several holdings subfields.
+    2. Create a MARC record that has the holdings field you configured.
+    3. In the holdings field, add some of the subfields you configured in step 1.  Add data to some
+       of them, but leave some empty.
+    4. Go to Acquisitions > Load MARC Order records.
+    5. Choose the provider you configured in step 1.
+    6. Choose an ordering agency, fiscal year, and queue name.
+    7. Check Create Purchase Order.
+    8. Press the Upload button.
+    9. Without this patch, these steps will give an ACQ_IMPORT_ERROR.  With this patch, the steps
+       should give no error, and give "Go to: Queue, Purchase Order" links at the bottom.
+    
+    Release-note: Allow acquisitions vendor MARC Order record load even if some subfields are empty.
+    
+    Co-authored-by: Ian Skelskey <ianskelskey@gmail.com>
+    Co-authored-by: Steven Mayo <smayo@georgialibraries.org>
+    Co-authored-by: Michele Morgan <mmorgan@noblenet.org>
+    Signed-off-by: Terran McCanna <tmccanna@georgialibraries.org>
+    Signed-off-by: Stephanie Leary <stephanie.leary@equinoxoli.org>
+    Signed-off-by: Mike Rylander <mrylander@gmail.com>
+
+3	3	Open-ILS/src/sql/Pg/200.schema.acq.sql
+76	0	Open-ILS/src/sql/Pg/t/lp924952-Order_record_load_fails_with_null_subfield.pg
+44	0	Open-ILS/src/sql/Pg/upgrade/XXXX.schema.fix_acq_import.sql
+ create mode 100644 Open-ILS/src/sql/Pg/t/lp924952-Order_record_load_fails_with_null_subfield.pg
+ create mode 100644 Open-ILS/src/sql/Pg/upgrade/XXXX.schema.fix_acq_import.sql
+
+commit 724d9577ba48a7b7d8a519cc3ce5191d029c4849
+Author: Jeff Davis <jeff.davis@bc.libraries.coop>
+Date:   Thu May 9 11:32:14 2019 -0700
+
+    LP#1828456: use open-ils.auth.login for AuthProxy native login
+    
+    AuthProxy always uses the username for login purposes -- if you provide
+    a barcode, it will look up the associated username. But for native login
+    it uses open-ils.auth.authenticate.init+complete, which redundantly and
+    incorrectly uses a hard-coded barcode pattern of '^\d' to check whether
+    the identifier it is given is a username or a barcode (see bug 1827296).
+    If your username happens to be the same as your barcode, this won't be a
+    problem. But if your barcode is 123456 and your username is 2legit2quit,
+    native login fall-back will always fail.
+    
+    The solution is for AuthProxy to abandon the old init+complete method
+    and use open-ils.auth.login for native login instead. It will treat the
+    username as a username instead of applying a bad barcode pattern, thus
+    allowing patrons whose username begins with a number to login.
+    
+    Release-note: Fixes issue with numeric usernames when AuthProxy falls
+    back on the native Evergreen login mechanism.
+    
+    Signed-off-by: Jeff Davis <jeff.davis@bc.libraries.coop>
+    Signed-off-by: Mike Rylander <mrylander@gmail.com>
+
+1	14	Open-ILS/src/perlmods/lib/OpenILS/Application/AuthProxy.pm
+
+commit 26d0384c788033c69f880b9ade39292088088c15
+Author: Steven Mayo <smayo@georgialibraries.org>
+Date:   Tue Aug 13 11:50:35 2024 -0400
+
+    lp2076225 Receipts With Images Print Whole Page
+    
+    Adds extra error handling so printing doesn't stall forever if an image
+    in the template is busted.
+    
+    Signed-off-by: Steven Mayo <smayo@georgialibraries.org>
+    Signed-off-by: Lindsay Stratton <lstratton@wlsmail.org>
+    Signed-off-by: Terran McCanna <tmccanna@georgialibraries.org>
+
+15	3	Open-ILS/web/js/ui/default/staff/services/print.js
+
+commit ef8a16e3565fd3920dac2107c1008a3e49e18d94
+Author: Steven Mayo <smayo@georgialibraries.org>
+Date:   Thu Aug 1 09:49:08 2024 -0400
+
+    lp2076225 Receipts With Images Print Whole Page
+    
+    Waits for all images within print-div to finish loading before finishing
+    ingest_print_content. If there are no images, behaves like before and exits
+    after the $digest is finished.
+    
+    Signed-off-by: Steven Mayo <smayo@georgialibraries.org>
+    Signed-off-by: Terran McCanna <tmccanna@georgialibraries.org>
+
+26	3	Open-ILS/web/js/ui/default/staff/services/print.js
