@@ -8,14 +8,14 @@ msgstr ""
 "Project-Id-Version: evergreen\n"
 "Report-Msgid-Bugs-To: FULL NAME <EMAIL@ADDRESS>\n"
 "POT-Creation-Date: 2017-05-25 00:15-0400\n"
-"PO-Revision-Date: 2012-01-11 15:57+0000\n"
+"PO-Revision-Date: 2024-05-29 00:50+0000\n"
 "Last-Translator: Daniel Winzen <Unknown>\n"
 "Language-Team: German <de@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2023-05-05 04:47+0000\n"
-"X-Generator: Launchpad (build 90e2150bef31b411d7bae5c4032c7e320fcaaec8)\n"
+"X-Launchpad-Export-Date: 2024-05-31 05:18+0000\n"
+"X-Generator: Launchpad (build a60fb269857abd7169036a2da5afd37a6a1d41e8)\n"
 
 #: staff.patron.barcode_entry.user_permission_editor
 msgid "User Permission Editor"
@@ -1973,18 +1973,3 @@ msgstr ""
 #: staff.patron.summary.hold_counts
 msgid "Available / Total"
 msgstr ""
-
-#~ msgid "Alert message: \"%1$s\"<br/><br/>"
-#~ msgstr "Fehlermeldung: \"%1$s\"<br/><br/>"
-
-#~ msgid "Patron account is INACTIVE.<br/><br/>"
-#~ msgstr "Kundenkonto ist INAKTIV.<br/><br/>"
-
-#~ msgid "Patron account is BARRED.<br/><br/>"
-#~ msgstr "Kundenkonto ist GESPERRT.<br/><br/>"
-
-#~ msgid "Patron account retrieved with an INACTIVE card.<br/><br/>"
-#~ msgstr "Kundenkonto mit INAKTIVER Karte erneuert.<br/><br/>"
-
-#~ msgid "Patron account is EXPIRED.<br/><br/>"
-#~ msgstr "Kundenkonto ist ABGELAUFEN.<br/><br/>"
