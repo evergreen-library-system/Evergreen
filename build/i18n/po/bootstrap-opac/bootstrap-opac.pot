@@ -172,7 +172,7 @@ msgid "(Change library)"
 msgstr ""
 
 #. (example)
-#: ../../Open-ILS/src/templates-bootstrap/opac/register.tt2:237
+#: ../../Open-ILS/src/templates-bootstrap/opac/register.tt2:244
 msgid "(Example: %1)"
 msgstr ""
 
@@ -1655,7 +1655,7 @@ msgstr ""
 msgid "Date: Oldest to Newest"
 msgstr ""
 
-#: ../../Open-ILS/src/templates-bootstrap/opac/parts/library/hours.tt2:18 ../../Open-ILS/src/templates-bootstrap/opac/register.tt2:198
+#: ../../Open-ILS/src/templates-bootstrap/opac/parts/library/hours.tt2:18 ../../Open-ILS/src/templates-bootstrap/opac/register.tt2:205
 msgid "Day"
 msgstr ""
 
@@ -2352,7 +2352,7 @@ msgstr ""
 msgid "Go"
 msgstr ""
 
-#: ../../Open-ILS/src/templates-bootstrap/opac/myopac/holds/edit.tt2:119 ../../Open-ILS/src/templates-bootstrap/opac/register.tt2:267
+#: ../../Open-ILS/src/templates-bootstrap/opac/myopac/holds/edit.tt2:119 ../../Open-ILS/src/templates-bootstrap/opac/register.tt2:274
 msgid "Go Back"
 msgstr ""
 
@@ -3121,7 +3121,7 @@ msgstr ""
 msgid "Monitor"
 msgstr ""
 
-#: ../../Open-ILS/src/templates-bootstrap/opac/register.tt2:192
+#: ../../Open-ILS/src/templates-bootstrap/opac/register.tt2:199
 msgid "Month"
 msgstr ""
 
@@ -3809,7 +3809,7 @@ msgid "Please do not Refresh or use your browser's Back button or your credit ca
 msgstr ""
 
 #. (field_def.label)
-#: ../../Open-ILS/src/templates-bootstrap/opac/register.tt2:218
+#: ../../Open-ILS/src/templates-bootstrap/opac/register.tt2:225
 msgid "Please enter a %1"
 msgstr ""
 
@@ -5067,7 +5067,7 @@ msgstr ""
 msgid "Submit Payment"
 msgstr ""
 
-#: ../../Open-ILS/src/templates-bootstrap/opac/register.tt2:269
+#: ../../Open-ILS/src/templates-bootstrap/opac/register.tt2:276
 msgid "Submit Registration"
 msgstr ""
 
@@ -5278,7 +5278,7 @@ msgstr ""
 msgid "The username \"%1\" is taken.  Please try a different username."
 msgstr ""
 
-#: ../../Open-ILS/src/templates-bootstrap/opac/register.tt2:232
+#: ../../Open-ILS/src/templates-bootstrap/opac/register.tt2:239
 msgid "The value entered does not have the correct format"
 msgstr ""
 
@@ -5306,7 +5306,7 @@ msgstr ""
 msgid "This address has a pending change."
 msgstr ""
 
-#: ../../Open-ILS/src/templates-bootstrap/opac/register.tt2:228
+#: ../../Open-ILS/src/templates-bootstrap/opac/register.tt2:235
 msgid "This field is required"
 msgstr ""
 
@@ -5654,7 +5654,7 @@ msgstr ""
 msgid "YES"
 msgstr ""
 
-#: ../../Open-ILS/src/templates-bootstrap/opac/register.tt2:204
+#: ../../Open-ILS/src/templates-bootstrap/opac/register.tt2:211
 msgid "Year"
 msgstr ""
 
