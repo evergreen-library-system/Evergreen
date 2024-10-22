@@ -8,14 +8,14 @@ msgstr ""
 "Project-Id-Version: evergreen\n"
 "Report-Msgid-Bugs-To: FULL NAME <EMAIL@ADDRESS>\n"
 "POT-Creation-Date: 2023-05-04 09:23-0400\n"
-"PO-Revision-Date: 2018-10-24 12:02+0000\n"
+"PO-Revision-Date: 2024-10-03 18:50+0000\n"
 "Last-Translator: Eva Cerninakova <Unknown>\n"
 "Language-Team: Czech <cs@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2023-05-05 04:48+0000\n"
-"X-Generator: Launchpad (build 90e2150bef31b411d7bae5c4032c7e320fcaaec8)\n"
+"X-Launchpad-Export-Date: 2024-10-04 07:58+0000\n"
+"X-Generator: Launchpad (build 6341c735b243a0768c3cb66edf85737937cab327)\n"
 
 #: selfcheck.js:TOTAL_ITEMS_SESSION
 msgid "Total items this session: ${0}."
@@ -204,6 +204,8 @@ msgstr ""
 #: selfcheck.js:FAIL_PART_monographic_part_required
 msgid "Title hold request invalid when monographic part required"
 msgstr ""
+"Požadavek na rezervaci titulu je neplatný, pokud je požadována část "
+"monografie"
 
 #: selfcheck.js:FAIL_PART_no_matchpoint
 msgid "System rules do not define how to handle this item"
@@ -226,18 +228,3 @@ msgstr ""
 "Nelze pokračovat v platbě, protože Váš účet byl aktualizován z jiného místa. "
 "Pro nahrání aktuálních informací načtěte prosím znovu stránku nebo se "
 "odhlašte a opět přihlašte."
-
-#~ msgid "Total fines on account: <b>$${0}</b>."
-#~ msgstr "Pokuta na tomto účtu celkem: <b>$${0}</b>."
-
-#~ msgid "Total items on account:  <b>${0}</b>."
-#~ msgstr "Na účtu je celkem <b>${0}</b> exemplářů."
-
-#~ msgid "You have <b>${0}</b> total holds."
-#~ msgstr "Máte celkem  <b>${0}</b> rezevací"
-
-#~ msgid "Total items this session: <b>${0}</b>."
-#~ msgstr "Celkem položek v této relaci: <b>${0}</b>."
-
-#~ msgid "You have <b>${0}</b> item(s) ready for pickup."
-#~ msgstr "Máte <b>${0}</b> položek připravených k vyzvednutí"

@@ -3,99 +3,15 @@ msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2018-09-18 16:05-0400\n"
-"PO-Revision-Date: 2017-08-20 08:14+0000\n"
+"PO-Revision-Date: 2024-10-03 18:50+0000\n"
 "Last-Translator: TZ <tigran@flib.sci.am>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2023-05-05 04:42+0000\n"
-"X-Generator: Launchpad (build 90e2150bef31b411d7bae5c4032c7e320fcaaec8)\n"
+"X-Launchpad-Export-Date: 2024-10-04 07:45+0000\n"
+"X-Generator: Launchpad (build 6341c735b243a0768c3cb66edf85737937cab327)\n"
 "X-Accelerator-Marker: &\n"
-
-#: common.logout
-msgid "Log Out"
-msgstr "Ելք"
-
-#: common.browser.reload.label
-#: common.browser.reload.accesskey
-msgid "Re&load"
-msgstr "Վերա&բեռնել"
-
-#: common.browser.print.label
-#: common.browser.print.accesskey
-msgid "&Print Page"
-msgstr "&Տպել էջը"
-
-#: staff.circ.offline.cmd_exit.label
-#: staff.circ.offline.cmd_exit.accesskey
-msgctxt ""
-"staff.circ.offline.cmd_exit.label staff.circ.offline.cmd_exit.accesskey"
-msgid "E&xit"
-msgstr "&Ելք"
-
-#: staff.copy.attr.stat.genre.example13
-msgid "Western"
-msgstr "Արեվմտյան"
-
-#: staff.main.menu.edit.find.label
-msgid "Find"
-msgstr "Գտնել"
-
-#: staff.main.menu.edit.paste.label
-msgctxt "staff.main.menu.edit.paste.label"
-msgid "Paste"
-msgstr "Դնել"
-
-#: staff.main.menu.edit.redo.label
-msgid "Redo"
-msgstr "Վերարկել"
-
-#: staff.main.menu.edit.undo.label
-msgid "Undo"
-msgstr "Ետարկել"
-
-#: staff.main.menu.file.label
-#: staff.main.menu.file.accesskey
-msgid "&File"
-msgstr "&Նշոց"
-
-#: staff.main.menu.file.new_tab.label
-#: staff.main.menu.file.new_tab.accesskey
-msgid "New &Tab"
-msgstr "Նոր &ներդիր"
-
-#: staff.marc.file.reload
-msgid "Reload"
-msgstr "Վերաբեռնել"
-
-#: staff.server.admin.stat_cat.type
-msgid "Type: "
-msgstr "Տեսակ՝ "
-
-#: staff.cat.copy_editor.identification.miscellaneous.label
-msgid "Miscellaneous"
-msgstr "Զանազանք"
-
-#: staff.patron.bill_cc_info.discover.label
-msgid "Discover"
-msgstr "Հայտնաբերել"
-
-#~ msgctxt "ev.staff.patron.ue_xhtml.back.label"
-#~ msgid "Back"
-#~ msgstr "Ետ"
-
-#~ msgctxt "ev.staff.patron.ue_xhtml.forward.label"
-#~ msgid "Forward"
-#~ msgstr "Առաջ"
-
-#~ msgctxt "staff.patron.ue.back.label"
-#~ msgid "Back"
-#~ msgstr "Ետ"
-
-#~ msgctxt "staff.patron.ue.forward.label"
-#~ msgid "Forward"
-#~ msgstr "Առաջ"
 
 #: lang.version
 msgid "remote v1"
@@ -206,6 +122,10 @@ msgstr "Ձևաչափ"
 #: common.login
 msgid "Login"
 msgstr "Մուտքի գրանցում"
+
+#: common.logout
+msgid "Log Out"
+msgstr "Ելք"
 
 #: common.at
 msgid "at"
@@ -337,6 +257,16 @@ msgstr "Գնա Առա&ջ"
 #: common.browser.backward.accesskey
 msgid "Go &Back"
 msgstr "Գնա &Հետ"
+
+#: common.browser.reload.label
+#: common.browser.reload.accesskey
+msgid "Re&load"
+msgstr "Վերա&բեռնել"
+
+#: common.browser.print.label
+#: common.browser.print.accesskey
+msgid "&Print Page"
+msgstr "&Տպել էջը"
 
 #: common.browser.help.label
 #: common.browser.help.accesskey
@@ -1896,6 +1826,13 @@ msgstr "Գրանցիր &Ընթերցող"
 msgid "&Last Receipt"
 msgstr "&Վերջին ստացական"
 
+#: staff.circ.offline.cmd_exit.label
+#: staff.circ.offline.cmd_exit.accesskey
+msgctxt ""
+"staff.circ.offline.cmd_exit.label staff.circ.offline.cmd_exit.accesskey"
+msgid "E&xit"
+msgstr "&Ելք"
+
 #: staff.circ.offline_checkin.main.label
 msgid "Standalone Check In"
 msgstr "Մեկուսի հետ ընդունում"
@@ -2451,6 +2388,10 @@ msgstr "Թրիլեր"
 #: staff.copy.attr.stat.genre.example12
 msgid "War"
 msgstr "Պատերազմ"
+
+#: staff.copy.attr.stat.genre.example13
+msgid "Western"
+msgstr "Արեվմտյան"
 
 #: staff.copy.attr.stat.genre.example14
 msgid "Religious fiction"
@@ -4110,6 +4051,10 @@ msgctxt "staff.main.menu.edit.find.key"
 msgid "F"
 msgstr "F"
 
+#: staff.main.menu.edit.find.label
+msgid "Find"
+msgstr "Գտնել"
+
 #: staff.main.menu.edit.find_again.key
 msgid "g"
 msgstr "g"
@@ -4128,10 +4073,19 @@ msgctxt "staff.main.menu.edit.paste.key"
 msgid "P"
 msgstr "P"
 
+#: staff.main.menu.edit.paste.label
+msgctxt "staff.main.menu.edit.paste.label"
+msgid "Paste"
+msgstr "Դնել"
+
 #: staff.main.menu.edit.redo.key
 msgctxt "staff.main.menu.edit.redo.key"
 msgid "R"
 msgstr "R"
+
+#: staff.main.menu.edit.redo.label
+msgid "Redo"
+msgstr "Վերարկել"
 
 #: staff.main.menu.edit.select_all.key
 msgctxt "staff.main.menu.edit.select_all.key"
@@ -4147,6 +4101,10 @@ msgstr "Ընտրել բոլորը"
 msgctxt "staff.main.menu.edit.undo.key"
 msgid "U"
 msgstr "U"
+
+#: staff.main.menu.edit.undo.label
+msgid "Undo"
+msgstr "Ետարկել"
 
 #: staff.main.menu.entity.bib.label
 msgid "Bib Records"
@@ -4186,10 +4144,20 @@ msgstr "C"
 msgid "&Close Tab"
 msgstr "&Փակել ներդիրը"
 
+#: staff.main.menu.file.label
+#: staff.main.menu.file.accesskey
+msgid "&File"
+msgstr "&Նշոց"
+
 #: staff.main.menu.file.new.label
 #: staff.main.menu.file.new.accesskey
 msgid "&New Window"
 msgstr "&Նոր պատուհան"
+
+#: staff.main.menu.file.new_tab.label
+#: staff.main.menu.file.new_tab.accesskey
+msgid "New &Tab"
+msgstr "Նոր &ներդիր"
 
 #: staff.main.menu.file.portal.label
 #: staff.main.menu.file.portal.accesskey
@@ -5611,6 +5579,10 @@ msgstr "Հիշիր (to DB)"
 msgctxt "staff.marc.file.publish.key"
 msgid "S"
 msgstr "S"
+
+#: staff.marc.file.reload
+msgid "Reload"
+msgstr "Վերաբեռնել"
 
 #: staff.marc.file.reload.key
 msgctxt "staff.marc.file.reload.key"
@@ -9166,6 +9138,10 @@ msgstr "Միացված"
 msgid "Off"
 msgstr "Անջատված"
 
+#: staff.server.admin.stat_cat.type
+msgid "Type: "
+msgstr "Տեսակ՝ "
+
 #: staff.server.admin.stat_cat.patron
 msgctxt "staff.server.admin.stat_cat.patron"
 msgid "Patron"
@@ -11399,6 +11375,10 @@ msgstr "Սպասարկում"
 msgid "2"
 msgstr "2"
 
+#: staff.cat.copy_editor.identification.miscellaneous.label
+msgid "Miscellaneous"
+msgstr "Զանազանք"
+
 #: staff.cat.copy_editor.identification.miscellaneous.accesskey
 msgctxt "staff.cat.copy_editor.identification.miscellaneous.accesskey"
 msgid "3"
@@ -12386,6 +12366,10 @@ msgstr "Mastercard"
 #: staff.patron.bill_cc_info.american_express.label
 msgid "American Express"
 msgstr "American Express"
+
+#: staff.patron.bill_cc_info.discover.label
+msgid "Discover"
+msgstr "Հայտնաբերել"
 
 #: staff.patron.bill_cc_info.other.label
 msgctxt "staff.patron.bill_cc_info.other.label"
@@ -15051,851 +15035,3 @@ msgstr "Փակել"
 #: staff.bucketz39_search.open_queue
 msgid "Open Queue"
 msgstr "Բացել հերթը"
-
-#~ msgid "Record ID"
-#~ msgstr "Գրառման ID"
-
-#~ msgid "x"
-#~ msgstr "x"
-
-#~ msgid "Search"
-#~ msgstr "Որոնում"
-
-#~ msgctxt "staff.circ.offline_register.dob.label"
-#~ msgid "Date of Birth:"
-#~ msgstr "Ծննդյան տարեթիվ"
-
-#~ msgctxt "staff.copy.attr.stat.audience.example2"
-#~ msgid "Juvenile"
-#~ msgstr "Պատանեկան"
-
-#~ msgid "Available"
-#~ msgstr "Մատչելի"
-
-#~ msgid "&Browse Unfulfilled Holds for this Pickup Lib"
-#~ msgstr "&Դիտիր վերցնելու գրադարանի չիրականացված պահումները"
-
-#~ msgid "Operator Change: New"
-#~ msgstr "Կարգավարի փոփոխում՝ նոր"
-
-#~ msgid "Create &New Marc Record"
-#~ msgstr "Ստեղծիր &նոր Marc գրառում"
-
-#~ msgid "Retrieve record by &TCN"
-#~ msgstr "կանչիր գրառումը ըստ &TCN"
-
-#~ msgid "Retrieve record by Record I&D"
-#~ msgstr "Կանչիր գրառումը ըստ Գրառման I&D"
-
-#~ msgctxt "staff.main.menu.circ.claimed_returned.key"
-#~ msgid "C"
-#~ msgstr "C"
-
-#~ msgid "Mark as \"Claimed Returned\""
-#~ msgstr "Նշիր որպես \"Վերադարձված խարանվածներ\""
-
-#~ msgid "Search for record by Record I&D"
-#~ msgstr "Որոնիր գրառումը ըստ Գրառման I&D"
-
-#~ msgid "Next"
-#~ msgstr "Հաջորդ"
-
-#~ msgctxt "staff.patron_display.date_of_birth.label"
-#~ msgid "Date of Birth:"
-#~ msgstr "Ծննդյան ամսաթիվ"
-
-#~ msgid "Lost, Claimed Returned, Long Overdue, Has Unpaid Billings"
-#~ msgstr "Կորած, խարանված, ժամկետանց, կան չվճարված հաշիվներ"
-
-#~ msgid "Previous"
-#~ msgstr "Նախորդ"
-
-#~ msgid "Small"
-#~ msgstr "Փոքր"
-
-#~ msgid "Large"
-#~ msgstr "Լայն"
-
-#~ msgctxt "staff.server.admin.transit.list.abort.label"
-#~ msgid "Abort Transits"
-#~ msgstr "Տրանզիտների վիժեցում"
-
-#~ msgctxt "staff.server.admin.cash.date.select"
-#~ msgid "Date selector"
-#~ msgstr "Ամսաթվի ընտրիչ"
-
-#~ msgid " Copy Locations Editor "
-#~ msgstr " Պատճերի տեղաբաշխման խմբագիր "
-
-#~ msgid "Create a new copy location"
-#~ msgstr "Ստեղծիր նոր պատճեի տեղաբաշխում"
-
-#~ msgid "Copy Hold"
-#~ msgstr "Օրինակի պահում"
-
-#~ msgid "Name"
-#~ msgstr "Անուն"
-
-#~ msgid "Pull List for Hold Requests"
-#~ msgstr "Հրելու ցուցակ պահման հարցումների համար"
-
-#~ msgctxt "staff.circ.checkin_overlay.sel_transit_abort.label"
-#~ msgid "Abort Transit"
-#~ msgstr "Վիժեցրու տրանզիտը"
-
-#~ msgctxt "staff.circ.renew_overlay.sel_transit_abort.label"
-#~ msgid "Abort Transit"
-#~ msgstr "Վիժեցրու տրանզիտը"
-
-#~ msgctxt "staff.circ.copy_status_overlay.sel_transit_abort.label"
-#~ msgid "Abort Transits"
-#~ msgstr "Տրանզիտների վիժեցում"
-
-#~ msgid "&Import"
-#~ msgstr "&Ներմուծում"
-
-#~ msgid "Edit Phone Notification"
-#~ msgstr "Խմբագրիր հեռախոսով հիշեցումը"
-
-#~ msgctxt ""
-#~ "staff.hold_list.cancel_hold_dialog.cancel_btn.label "
-#~ "staff.hold_list.cancel_hold_dialog.cancel_btn.accesskey"
-#~ msgid "&Cancel"
-#~ msgstr "&Չեղյալ անել"
-
-#~ msgctxt ""
-#~ "staff.cat.copy_browser.actions.cmd_edit_items.label "
-#~ "staff.cat.copy_browser.actions.cmd_edit_items.accesskey"
-#~ msgid "&Edit Item Attributes"
-#~ msgstr "&Խմբագրիր նյութի հատկանիշները"
-
-#~ msgctxt "staff.cat.copy_browser.actions.cmd_replace_barcode.label"
-#~ msgid "Replace Barcode"
-#~ msgstr "Փոխարինիր շտրիխ կոդը"
-
-#~ msgid "Show &Libraries With Items"
-#~ msgstr "Ցույց տուր &գրադարանները նյութերի հետ"
-
-#~ msgctxt ""
-#~ "staff.cat.copy_browser.holdings_maintenance.cmd_edit_items.label "
-#~ "staff.cat.copy_browser.holdings_maintenance.cmd_edit_items.accesskey"
-#~ msgid "&Edit Item Attributes"
-#~ msgstr "&Խմբագրիր նյութի հատկանիշները"
-
-#~ msgctxt ""
-#~ "staff.cat.copy_browser.holdings_maintenance.cmd_replace_barcode.label"
-#~ msgid "Replace Barcode"
-#~ msgstr "Փոխարինիր շտրիխ կոդը"
-
-#~ msgid "Import"
-#~ msgstr "Ներմուծում"
-
-#~ msgid "&Close"
-#~ msgstr "&Փակիր"
-
-#~ msgid "MARC Editor for &Overlay"
-#~ msgstr "MARC խմբագրիչ &վերածածկման համար"
-
-#~ msgid "MARC Editor for &Import"
-#~ msgstr "MARC խմբագրիչ &ներմուծման համար"
-
-#~ msgid "Summary"
-#~ msgstr "Ամփոփում"
-
-#~ msgctxt "staff.patron.ue.view_errors.label"
-#~ msgid "View Errors"
-#~ msgstr "Նայիր սխալները"
-
-#~ msgctxt "staff.patron.ue.nav.user_id.label"
-#~ msgid "1. User Identification"
-#~ msgstr "1. Օգտվողի ճանաչում"
-
-#~ msgctxt "staff.patron.ue.nav.contact_info.label"
-#~ msgid "2. Contact Info"
-#~ msgstr "2. Կոնտակտ ինֆո"
-
-#~ msgctxt "staff.patron.ue.nav.addresses.label"
-#~ msgid "3. Addresses"
-#~ msgstr "3. Հասցեներ"
-
-#~ msgctxt "staff.patron.ue.nav.groups_permissions.label"
-#~ msgid "4. Groups and Permissions"
-#~ msgstr "4. Խմբեր և իրավասություններ"
-
-#~ msgctxt "staff.patron.ue.nav.stat_categories.label"
-#~ msgid "5. Statistical Categories"
-#~ msgstr "5. Վիճակագրական դասեր"
-
-#~ msgctxt "staff.patron.ue.nav.surveys.label"
-#~ msgid "6. Surveys"
-#~ msgstr "6. Հարցախույզներ"
-
-#~ msgctxt "staff.patron.ue.nav.finish.label"
-#~ msgid "7. Finish"
-#~ msgstr "7. Ավարտ"
-
-#~ msgctxt "staff.patron.ue.found_duplicate_patron.label"
-#~ msgid "Number of possible duplicate patron(s):"
-#~ msgstr "Հնարավոր կրկնվող օգտվողների քանակ"
-
-#~ msgctxt "staff.patron.ue.reset.label"
-#~ msgid "Reset"
-#~ msgstr "Վերասկսիր"
-
-#~ msgctxt "staff.patron.ue.re_password.label"
-#~ msgid "Password: "
-#~ msgstr "Գաղտնաբառ: "
-
-#~ msgctxt "staff.patron.ue.verify_password.label"
-#~ msgid "Verify Password"
-#~ msgstr "Համադրի Գաղտնաբառը"
-
-#~ msgctxt "staff.patron.ue.last_name.label"
-#~ msgid "Last Name"
-#~ msgstr "Ազգանուն"
-
-#~ msgctxt "staff.patron.ue.choose.label"
-#~ msgid "- Pick -"
-#~ msgstr "- Վերցրու -"
-
-#~ msgctxt "staff.patron.ue.primary_id_type.label"
-#~ msgid "Primary Identification Type"
-#~ msgstr "Նախնական ճանաչման տեսակ"
-
-#~ msgctxt "staff.patron.ue.required.label"
-#~ msgid " -- Required -- "
-#~ msgstr " -- Պահանջվող -- "
-
-#~ msgctxt "staff.patron.ue.primary_id.label"
-#~ msgid "Primary Identification"
-#~ msgstr "Նախնական ճանաչում"
-
-#~ msgctxt "staff.patron.ue.secondary_id_type.label"
-#~ msgid "Secondary Identification Type"
-#~ msgstr "Երկրորդային ճանաչման տեսակ"
-
-#~ msgctxt "staff.patron.ue.none_selected.label"
-#~ msgid " -- None Selected -- "
-#~ msgstr " -- Ոչ մեկը չի ընտրված -- "
-
-#~ msgctxt "staff.patron.ue.secondary_id.label"
-#~ msgid "Secondary Identification"
-#~ msgstr "Երկրորդային ճանաչում"
-
-#~ msgctxt "staff.patron.ue.parent_guardian.label"
-#~ msgid "Parent or Guardian"
-#~ msgstr "Ծնող կամ երաշխավոր"
-
-#~ msgctxt "staff.patron.ue.email_address.label"
-#~ msgid "Email Address"
-#~ msgstr "Էլ փոստ հասցե"
-
-#~ msgctxt "staff.patron.ue.day_phone.label"
-#~ msgid "Daytime Phone"
-#~ msgstr "Ցերեկային հեռախոս"
-
-#~ msgctxt "staff.patron.ue.in_city_limits.label"
-#~ msgid "Within City Limits"
-#~ msgstr "Քաղաքի սահմաններում"
-
-#~ msgctxt "staff.patron.ue.valid.label"
-#~ msgid "Valid"
-#~ msgstr "Թույլատրելի"
-
-#~ msgctxt "staff.patron.ue.owned_address.label"
-#~ msgid "Address is owned by"
-#~ msgstr "Հասցեն տնօրինում է"
-
-#~ msgctxt "staff.patron.ue.street_1.label"
-#~ msgid "Street 1"
-#~ msgstr "Փողոց 1"
-
-#~ msgctxt "staff.patron.ue.street_2.label"
-#~ msgid "Street 2"
-#~ msgstr "Փողոց 2"
-
-#~ msgctxt "staff.patron.ue.county.label"
-#~ msgid "County"
-#~ msgstr "Համայնք"
-
-#~ msgctxt "staff.patron.ue.delete_this_address.label"
-#~ msgid "Delete this Address"
-#~ msgstr "Ջնջիր այս հասցեն"
-
-#~ msgctxt "staff.patron.ue.detach_this_address.label"
-#~ msgid "Detach this Address"
-#~ msgstr "Detach this Address"
-
-#~ msgctxt "staff.patron.ue.profile_group.label"
-#~ msgid "Profile Group"
-#~ msgstr "Պրոֆայլ խումբ"
-
-#~ msgctxt "staff.patron.ue.accoutn_expire_date.label"
-#~ msgid "Account Expiration Date"
-#~ msgstr "Հաշվի ժամկետի լրանալու ամսաթիվ"
-
-#~ msgctxt "staff.patron.ue.internet_access_level.label"
-#~ msgid "Internet Access Level"
-#~ msgstr "Ինտերնետ հասանելիության մակարդակ"
-
-#~ msgctxt "staff.patron.ue.barred.label"
-#~ msgid "Barred"
-#~ msgstr "Կասեցված"
-
-#~ msgctxt "staff.patron.ue.set_lead_account.label"
-#~ msgid "Set as Family or Group Lead Account"
-#~ msgstr "Դիր որպես Ընտանիքի կամ խմբի հաշիվ"
-
-#~ msgctxt "staff.patron.ue.owner.label"
-#~ msgid "Owner"
-#~ msgstr "Տնօրինող"
-
-#~ msgctxt "staff.patron.ue.no_surveys_for_location.label"
-#~ msgid "No surveys have been created for this location."
-#~ msgstr "Այս տեղաբաշխման համար հարցախույզներ չեն ստեղծվել"
-
-#~ msgctxt "staff.patron.ue.address_label.label"
-#~ msgid "Address Label"
-#~ msgstr "Հասցեի պիտակ"
-
-#~ msgctxt "staff.patron.ue.family_lead_account.label"
-#~ msgid "Family Lead Account"
-#~ msgstr "Ընտանիքի հաշվի գրանցիչ"
-
-#~ msgctxt "staff.patron.ue.stat_categories.label"
-#~ msgid "Statistical Categories"
-#~ msgstr "Վիճակագրական դասեր"
-
-#~ msgctxt "staff.patron.ue.survey.label"
-#~ msgid "Survey"
-#~ msgstr "Հարցախույզ"
-
-#~ msgctxt "staff.patron.ue.question.label"
-#~ msgid "Question"
-#~ msgstr "Հարց"
-
-#~ msgctxt "staff.patron.ue.answer.label"
-#~ msgid "Answer"
-#~ msgstr "Պատասխան"
-
-#~ msgctxt "staff.patron.ue.no_profile.label"
-#~ msgid "A profile group must be selected"
-#~ msgstr "Պրոֆայլ խումբը պետք է ընտրված լինի"
-
-#~ msgctxt "ev.staff.patron.ue_xhtml.ev_user_editor.label"
-#~ msgid "Evergreen User Editor"
-#~ msgstr "Evergreen օգտվողի խմբագրիչ"
-
-#~ msgctxt "ev.staff.patron.ue_xhtml.welcome.label"
-#~ msgid "Welcome "
-#~ msgstr "Բարի գալուստ "
-
-#~ msgctxt "ev.staff.patron.ue_xhtml.view_errors.label"
-#~ msgid "View Errors"
-#~ msgstr "Դիտիր սխալները"
-
-#~ msgctxt "ev.staff.patron.ue_xhtml.user_id.label"
-#~ msgid "1. User Identification"
-#~ msgstr "1. Օգտվողի ճանաչում"
-
-#~ msgctxt "ev.staff.patron.ue_xhtml.contact_info.label"
-#~ msgid "2. Contact Info"
-#~ msgstr "2. Կոնտակտ ինֆո"
-
-#~ msgctxt "ev.staff.patron.ue_xhtml.addresses.label"
-#~ msgid "3. Addresses"
-#~ msgstr "3. Հասցեներ"
-
-#~ msgctxt "ev.staff.patron.ue_xhtml.groups_permissions.label"
-#~ msgid "4. Groups and Permissions"
-#~ msgstr "4. Խմբեր և իրավասություններ"
-
-#~ msgctxt "ev.staff.patron.ue_xhtml.statistical_categories.label"
-#~ msgid "5. Statistical Categories"
-#~ msgstr "5. Վիճակագրական դասեր"
-
-#~ msgctxt "ev.staff.patron.ue_xhtml.surveys.label"
-#~ msgid "6. Surveys"
-#~ msgstr "6. Հարցախուզներ"
-
-#~ msgctxt "ev.staff.patron.ue_xhtml.finish.label"
-#~ msgid "7. Finish"
-#~ msgstr "7. Վերջ"
-
-#~ msgctxt "ev.staff.patron.ue_xhtml.loading_data.label"
-#~ msgid "Loading data..."
-#~ msgstr "Տվյալների բեռնավորում..."
-
-#~ msgctxt "ev.staff.patron.ue_xhtml.found_duplicate_patron.label"
-#~ msgid "Number of possible duplicate patron(s):"
-#~ msgstr "Հնարավոր կրկնվող օգտվողների քանակ"
-
-#~ msgctxt "ev.staff.patron.ue_xhtml.barcode.label"
-#~ msgid "Barcode"
-#~ msgstr "Շտրիխ կոդ"
-
-#~ msgctxt "ev.staff.patron.ue_xhtml.mark_lost.label"
-#~ msgid "Mark Lost"
-#~ msgstr "Նշիր կորած"
-
-#~ msgctxt "ev.staff.patron.ue_xhtml.username.label"
-#~ msgid "Username"
-#~ msgstr "Օգտվողի Անուն"
-
-#~ msgctxt "ev.staff.patron.ue_xhtml.password.label"
-#~ msgid "Password"
-#~ msgstr "Գաղտնաբառ"
-
-#~ msgctxt "ev.staff.patron.ue_xhtml.reset.label"
-#~ msgid "Reset"
-#~ msgstr "Վերաթողարկիր"
-
-#~ msgctxt "ev.staff.patron.ue_xhtml.re_password.label"
-#~ msgid "Password: "
-#~ msgstr "Գաղտնաբառ: "
-
-#~ msgctxt "ev.staff.patron.ue_xhtml.verify_password.label"
-#~ msgid "Verify Password"
-#~ msgstr "Համադրի Գաղտնաբառը"
-
-#~ msgctxt "ev.staff.patron.ue_xhtml.first_name.label"
-#~ msgid "First Name"
-#~ msgstr "Անուն"
-
-#~ msgctxt "ev.staff.patron.ue_xhtml.middle_name.label"
-#~ msgid "Middle Name"
-#~ msgstr "Միջին Անուն"
-
-#~ msgctxt "ev.staff.patron.ue_xhtml.last_name.label"
-#~ msgid "Last Name"
-#~ msgstr "Ազգանուն"
-
-#~ msgctxt "ev.staff.patron.ue_xhtml.suffix.label"
-#~ msgid "Suffix"
-#~ msgstr "Վերջածանց"
-
-#~ msgctxt "ev.staff.patron.ue_xhtml.pick_suffix.label"
-#~ msgid "- Pick -"
-#~ msgstr "- Վերցրու -"
-
-#~ msgctxt "ev.staff.patron.ue_xhtml.dob.label"
-#~ msgid "Date of Birth"
-#~ msgstr "Ծննդյան ամսաթիվ"
-
-#~ msgctxt "ev.staff.patron.ue_xhtml.primary_id_type.label"
-#~ msgid "Primary Identification Type"
-#~ msgstr "Նախնական ճանաչման տեսակ"
-
-#~ msgctxt "ev.staff.patron.ue_xhtml.primary_id.label"
-#~ msgid "Primary Identification"
-#~ msgstr "Նախնական ճանաչում"
-
-#~ msgctxt "ev.staff.patron.ue_xhtml.parent_guardian.label"
-#~ msgid "Parent or Guardian"
-#~ msgstr "Ծնող կամ երաշխավոր"
-
-#~ msgctxt "ev.staff.patron.ue_xhtml.email_address.label"
-#~ msgid "Email Address"
-#~ msgstr "Էլ փոստ"
-
-#~ msgctxt "ev.staff.patron.ue_xhtml.daytime_phone.label"
-#~ msgid "Daytime Phone"
-#~ msgstr "Ցերեկային հեռախոս"
-
-#~ msgctxt "ev.staff.patron.ue_xhtml.evening_phone.label"
-#~ msgid "Evening Phone"
-#~ msgstr "Երեկոյան հեռախոս"
-
-#~ msgid "Other (Cell Phone)"
-#~ msgstr "Այլ (բջջային)"
-
-#~ msgctxt "ev.staff.patron.ue_xhtml.home_library.label"
-#~ msgid "Home Library"
-#~ msgstr "Տան գրադարան"
-
-#~ msgctxt "ev.staff.patron.ue_xhtml.address.label"
-#~ msgid "Address"
-#~ msgstr "Հասցե"
-
-#~ msgctxt "ev.staff.patron.ue_xhtml.in_city_limits.label"
-#~ msgid "Within City Limits"
-#~ msgstr "Քաղաքի սահմաններում"
-
-#~ msgctxt "ev.staff.patron.ue_xhtml.county.label"
-#~ msgid "County"
-#~ msgstr "Համայնք"
-
-#~ msgctxt "ev.staff.patron.ue_xhtml.valid.label"
-#~ msgid "Valid"
-#~ msgstr "Հավաստի"
-
-#~ msgctxt "ev.staff.patron.ue_xhtml.mailing_address.label"
-#~ msgid "Mailing Address"
-#~ msgstr "Փոստային հասցե"
-
-#~ msgctxt "ev.staff.patron.ue_xhtml.physical_address.label"
-#~ msgid "Physical Address"
-#~ msgstr "Ֆիզիկական հասցե"
-
-#~ msgctxt "ev.staff.patron.ue_xhtml.address_owned_by.label"
-#~ msgid "Address is owned by"
-#~ msgstr "Հասցեն տնօրինվում է"
-
-#~ msgctxt "ev.staff.patron.ue_xhtml.label.label"
-#~ msgid "Label"
-#~ msgstr "Պիտակ"
-
-#~ msgid "Zip"
-#~ msgstr "Zip"
-
-#~ msgctxt "ev.staff.patron.ue_xhtml.street1.label"
-#~ msgid "Street 1"
-#~ msgstr "Փողոց 1"
-
-#~ msgctxt "ev.staff.patron.ue_xhtml.street2.label"
-#~ msgid "Street 2"
-#~ msgstr "Փողոց 2"
-
-#~ msgctxt "ev.staff.patron.ue_xhtml.city.label"
-#~ msgid "City"
-#~ msgstr "Քաղաք"
-
-#~ msgctxt "ev.staff.patron.ue_xhtml.conuty.label"
-#~ msgid "County"
-#~ msgstr "Համայնք"
-
-#~ msgctxt "ev.staff.patron.ue_xhtml.state.label"
-#~ msgid "State"
-#~ msgstr "Նահանգ"
-
-#~ msgctxt "ev.staff.patron.ue_xhtml.country.label"
-#~ msgid "Country"
-#~ msgstr "Երկիր"
-
-#~ msgctxt "ev.staff.patron.ue_xhtml.profile_group.label"
-#~ msgid "Profile Group"
-#~ msgstr "Պրոֆայլ խումբ"
-
-#~ msgctxt "ev.staff.patron.ue_xhtml.ue_addr_delete.label"
-#~ msgid "Delete this Address"
-#~ msgstr "Ջնջիր այս հասցեն"
-
-#~ msgctxt "ev.staff.patron.ue_xhtml.ue_addr_detach.label"
-#~ msgid "Detach this Address"
-#~ msgstr "Detach this Address"
-
-#~ msgctxt "ev.staff.patron.ue_xhtml.edit.label"
-#~ msgid "Edit"
-#~ msgstr "Խմբագրիր"
-
-#~ msgctxt "ev.staff.patron.ue_xhtml.required.label"
-#~ msgid " -- Required -- "
-#~ msgstr " -- Պահանջվող -- "
-
-#~ msgctxt "ev.staff.patron.ue_xhtml.account_expiration_date.label"
-#~ msgid "Account Expiration Date"
-#~ msgstr "Հաշվի ժամկետի լրանալու ամսաթիվ"
-
-#~ msgctxt "ev.staff.patron.ue_xhtml.net_access_level.label"
-#~ msgid "Internet Access Level"
-#~ msgstr "Ինտերնետ հասանելիության մակարդակ"
-
-#~ msgctxt "ev.staff.patron.ue_xhtml.active.label"
-#~ msgid "Active"
-#~ msgstr "Ակտիվ"
-
-#~ msgctxt "ev.staff.patron.ue_xhtml.barred.label"
-#~ msgid "Barred"
-#~ msgstr "Կասեցված"
-
-#~ msgctxt "ev.staff.patron.ue_xhtml.juvenile.label"
-#~ msgid "Juvenile"
-#~ msgstr "Պատանեկան"
-
-#~ msgctxt "ev.staff.patron.ue_xhtml.set_family_group_lead_account.label"
-#~ msgid "Set as Family or Group Lead Account"
-#~ msgstr "Դիր որպես Ընտանիքի կամ խմբի հաշիվ"
-
-#~ msgctxt "ev.staff.patron.ue_xhtml.claims_returned_count.label"
-#~ msgid "Claims Returned Count"
-#~ msgstr "Խարանվածների վերադարձի հաշվիչ"
-
-#~ msgctxt "ev.staff.patron.ue_xhtml.alert_message.label"
-#~ msgid "Alert Message"
-#~ msgstr "Ահազանգող հաղորդում"
-
-#~ msgctxt "ev.staff.patron.ue_xhtml.stat_cat_name.label"
-#~ msgid "Statistical Category Name"
-#~ msgstr "Վիճակագրական դասի անուն"
-
-#~ msgctxt "ev.staff.patron.ue_xhtml.owner.label"
-#~ msgid "Owner"
-#~ msgstr "Տնօրինող"
-
-#~ msgctxt "ev.staff.patron.ue_xhtml.value.label"
-#~ msgid "Value"
-#~ msgstr "Արժեք"
-
-#~ msgctxt "ev.staff.patron.ue_xhtml.none_selected.label"
-#~ msgid " -- None Selected -- "
-#~ msgstr " -- Ոչ մեկը չի ընտրված -- "
-
-#~ msgctxt "ev.staff.patron.ue_xhtml.no_surveys_for_location.label"
-#~ msgid "No surveys have been created for this location."
-#~ msgstr "Այս տեղաբաշխման համար հարցախույզներ չեն ստեղծվել"
-
-#~ msgid ""
-#~ "You are now ready to save the user to the database.<br/>To view or print a "
-#~ "summary of the changes, click on the 'View Summary' link.<br/>To save the "
-#~ "user, click on the 'Save User' button."
-#~ msgstr ""
-#~ "Հիմա դու պատրաստ ես հիշել օգտվողին շտեմարանում: <br/>Փոփոխությունների "
-#~ "ամփոփումը դիտելու կամ տպելու համար սեղմիր 'Դիտիր ամփոփումը' "
-#~ "կապը<br/>Օգտվողին հիշելու համար սեղմիր 'Հիշիր Օգտվողին' կոճակը:"
-
-#~ msgctxt "ev.staff.patron.ue_xhtml.secondary_id_type.label"
-#~ msgid "Secondary Identification Type"
-#~ msgstr "Երկրորդային ճանաչման տեսակ"
-
-#~ msgctxt "ev.staff.patron.ue_xhtml.secondary_id.label"
-#~ msgid "Secondary Identification"
-#~ msgstr "Երկրորդային ճանաչում"
-
-#~ msgctxt "ev.staff.patron.ue_xhtml.address_label.label"
-#~ msgid "Address Label"
-#~ msgstr "Հասցեի պիտակ"
-
-#~ msgctxt "ev.staff.patron.ue_xhtml.profile.label"
-#~ msgid "Profile"
-#~ msgstr "Պրոֆայլ"
-
-#~ msgctxt "ev.staff.patron.ue_xhtml.expire_date.label"
-#~ msgid "Expire Date"
-#~ msgstr "Լրանալու ժամկետ"
-
-#~ msgctxt "ev.staff.patron.ue_xhtml.family_lead_account.label"
-#~ msgid "Family Lead Account"
-#~ msgstr "Ընտանիքի հաշվի գրանցիչ"
-
-#~ msgctxt "ev.staff.patron.ue_xhtml.stat_categories.label"
-#~ msgid "Statistical Categories"
-#~ msgstr "Վիճակագրական դասեր"
-
-#~ msgctxt "ev.staff.patron.ue_xhtml.survey.label"
-#~ msgid "Survey"
-#~ msgstr "Հարցախույզ"
-
-#~ msgctxt "ev.staff.patron.ue_xhtml.question.label"
-#~ msgid "Question"
-#~ msgstr "Հարց"
-
-#~ msgctxt "ev.staff.patron.ue_xhtml.answer.label"
-#~ msgid "Answer"
-#~ msgstr "Պատասխան"
-
-#~ msgid ""
-#~ "This will reset the claims returned count for this user. Are you sure you "
-#~ "wish to perform this action?"
-#~ msgstr ""
-#~ "Տվյալ օգտվողի համար սա խարանների վերադարձի հաշվիչը կբերի նախնական վիճակի: "
-#~ "Վստա՞հ ես որ ցանկանում ես կատարել գործողությունը:"
-
-#~ msgid "You have unsaved changes."
-#~ msgstr "Ունես չհիշված փոփոխություններ"
-
-#~ msgid ""
-#~ "It appears that someone else was also editing this user. Saving the user now "
-#~ "will destroy their changes.  Click 'OK' to refresh the user and continue "
-#~ "editing. Click 'Cancel' to do nothing. Note that you will not be able to "
-#~ "save the user until this page has been refreshed."
-#~ msgstr ""
-#~ "Կարծես մեկ ուրիշն էլ է խմբագրում այս օգտվողին: Օգտվողին հիշելը  հիմա "
-#~ "կոչնչացնի փոփոխությունները: Սեղմիր  'Լավ' օգտվողին թարմացնելու և խմբագրումը "
-#~ "շարունակելու համար: Սեղմիր 'Չեղյալ անել' որ ոչինչ չկատարվի: Նկատի ունեցիր որ "
-#~ "չես կարող հիշել այս օգտվողին քանի այս էջը թարմացվում է:"
-
-#~ msgctxt "ev.staff.patron.ue_xhtml.no_profile.label"
-#~ msgid "A profile group must be selected"
-#~ msgstr "Պրոֆայլ խումբը պետք է լինի ընտրված"
-
-#~ msgid "Print Page"
-#~ msgstr "Տպիր Էջը"
-
-#~ msgid "Return to Editor"
-#~ msgstr "Վերադարձիր խմբագիր"
-
-#~ msgid "Save User"
-#~ msgstr "Հիշիր օգտվողին"
-
-#~ msgid "Save and Clone User"
-#~ msgstr "Հիշիր և կլոնավորիր օգտվողին"
-
-#~ msgctxt "ev.staff.patron.ue_xhtml.cancel.value"
-#~ msgid "Cancel"
-#~ msgstr "Չեղյալ անել"
-
-#~ msgid "Clear"
-#~ msgstr "Մաքրել"
-
-#~ msgctxt "ev.staff.patron.ue_xhtml.date_selector.label"
-#~ msgid "Date selector"
-#~ msgstr "Ամսաթվի ընտրիչ"
-
-#~ msgid "Evergreen Staff Client Portal Page"
-#~ msgstr "Evergreen Staff Client Portal Page"
-
-#~ msgid ""
-#~ "This is the Evergreen staff client portal page. You can customize this with "
-#~ "the information or functionality your organization needs to support its "
-#~ "operations. For example, you could add links to process and procedure "
-#~ "documents."
-#~ msgstr ""
-#~ "Սա Evergreen-ի աշխատակազմի պորտալի էջն է: Կարող ես փոփոխել այն քո "
-#~ "կազմակերպության պահանջներին համապատասխան: Օրինակ, կարող ես ավելացնել "
-#~ "հղումներ գործողոթյուններ իրականացնող փաստաթղթերին:"
-
-#~ msgid "Permissions"
-#~ msgstr "Թույլտվություններ"
-
-#~ msgid "MARC Codes"
-#~ msgstr "MARC կոդեր"
-
-#~ msgid "Toggle &Button Bar"
-#~ msgstr "Toggle &Button Bar"
-
-#~ msgid "Holds Alias:"
-#~ msgstr "Պահումների կեղծանուն"
-
-#~ msgid "Alias:"
-#~ msgstr "Փոխանուն։"
-
-#~ msgid "Server Settings"
-#~ msgstr "Սպասարկող կայանի կարգաբերումներ"
-
-#~ msgid ""
-#~ "If true, patrons will be required to enter their password in addition to "
-#~ "their username/barcode to log into the selfcheck interface"
-#~ msgstr ""
-#~ "Եթե ճիշտ է, ընթերցողից բացի օգտվողի անուն/շտրիխ կոդից լրացուցիչ կպահանջվի "
-#~ "մուտք անել իր գաղտնաբառը, որպեսզի մուտք գործի ինքնաստուգման միջերես։"
-
-#~ msgid "Selfcheck: Require patron password"
-#~ msgstr "Ինքնաստուգում։ Պահանջում է ընթերցողի գաղտնաբառ"
-
-#~ msgctxt ""
-#~ "staff.hold_list.cancel_hold_dialog.apply_btn.label "
-#~ "staff.hold_list.cancel_hold_dialog.apply_btn.accesskey"
-#~ msgid "&Apply"
-#~ msgstr "&Կիրառել"
-
-#~ msgid "Example: 123-456-7890 or 123-456-7890 ex123"
-#~ msgstr "Օրինակ՝ 123-456-7890 կամ 123-456-7890 ex123"
-
-#~ msgid "Approve pending address?  This operation will be be instantenous."
-#~ msgstr "Հաստատե՞լ սպասող հասցեն։ Այս գործողությունը կլինի շատ արագ։"
-
-#~ msgid "(XXX-YY-ZZZZ)"
-#~ msgstr "(XXX-YY-ZZZZ)"
-
-#~ msgid "Approve Pending Address"
-#~ msgstr "Հաստատիր սպասող հասցեն"
-
-#~ msgid "(GA-123456789)"
-#~ msgstr "(GA-123456789)"
-
-#~ msgid "Alias"
-#~ msgstr "Կեղծանուն"
-
-#~ msgctxt ""
-#~ "staff.main.menu.admin.server_admin.acq.label "
-#~ "staff.main.menu.admin.server_admin.acq.accesskey"
-#~ msgid "&Acquisitions"
-#~ msgstr "&Համալրումներ"
-
-#~ msgctxt "staff.main.menu.acq.label staff.main.menu.acq.accesskey"
-#~ msgid "&Acquisitions"
-#~ msgstr "&Համալրումներ"
-
-#~ msgctxt "staff.patron_display.radio.mailing_address.label"
-#~ msgid "Mailing"
-#~ msgstr "Փոստային"
-
-#~ msgid "Group"
-#~ msgstr "Խումբ"
-
-#~ msgctxt "staff.patron_display.radio.physical_address.label"
-#~ msgid "Billing"
-#~ msgstr "Հաշիվ"
-
-#~ msgid "Record ID:"
-#~ msgstr "Գրառման ID:"
-
-#~ msgid "View Shelf-E&xpired Holds"
-#~ msgstr "Դիտիր դարակը-Ժ&ամկետանց պահումները"
-
-#~ msgctxt "ev.staff.patron.ue_xhtml.mailing.label"
-#~ msgid "Mailing"
-#~ msgstr "Փոստային"
-
-#~ msgctxt "ev.staff.patron.ue_xhtml.billing.label"
-#~ msgid "Billing"
-#~ msgstr "Հաշիվ"
-
-#~ msgid ""
-#~ "This print strategy will ignore the printer settings in the &quot;Normal "
-#~ "Settings&quot; section. In Windows, you must map your printer to the LPT1 "
-#~ "port, under Start Menu -&gt; Printers and Faxes -&gt; your printer -&gt; "
-#~ "right-click, Properties -&gt; Ports. Also, HTML styling such as different "
-#~ "font weights and sizes will be lost, and any advanced templates using "
-#~ "Javascript will not work.  Data is sent to the printer as simple text.  This "
-#~ "option is here for legacy purposes, and the Custom/External Print strategy "
-#~ "is more flexible."
-#~ msgstr ""
-#~ "Տպելու այս մարտավարությունը կանտեսի տպիչի կարգաբերումները &quot;նորմալ "
-#~ "կարգաբերումներ&quot; բաժնից։ Ուինդոզում, դու պետք է ուղղորդես քո տպիչը LPT1 "
-#~ "պորտին, օգտվելով Start Menu -&gt; Printers and Faxes -&gt; your printer -"
-#~ "&gt; աջ սեղմում։ Properties -&gt; Ports. Նաև HTML ոճը շ՝ ասենք տարբեր "
-#~ "ֆոնտերի քաշեր և չափեր, կկորեն, և Javascrip օգտագործող ձևերը չեն աշխատի։ "
-#~ "Տվայլները ուղարկվում են տպիչին հասարակ տեքստի տեսքով։"
-
-#~ msgid ""
-#~ "If using Receipt Templates with either the DOS LPT1 Print strategy or the "
-#~ "Custom/External Print strategy (with &quot;receipt.txt&quot;), the client "
-#~ "will try to translate any HTML markup to text, but this process may be "
-#~ "imperfect, and for the best fidelity you should consider reworking your "
-#~ "templates to be plain text if you are using a plain text print strategy.  "
-#~ "However, if using a plain text print strategy with HTML markup, you may "
-#~ "include special character codes in 2-digit hexadecimal in a &quot;hex&quot; "
-#~ "attribute for any given element.  Such codes will be converted to actual "
-#~ "characters and inserted at the place of the tag.  For example, &amp;lt;p "
-#~ "hex=&amp;quot;0C&amp;quot;&amp;gt;Hello World&amp;lt;/p&amp;gt; will "
-#~ "translate to form feed control character + Hello World. "
-#~ "&amp;lt;p&amp;gt;Hello World&amp;lt;/p hex=&amp;quot;0C&amp;quot;&amp;gt; "
-#~ "will translate to Hello World + form feed control character."
-#~ msgstr ""
-#~ "Երբ օգտագործվում են ստացման ձևեր կամ DOS LPT1 Print մարտավարությամբ կամ "
-#~ "Custom/External Print մարտավարությամբ (ըստ &quot;receipt.txt&quot;), "
-#~ "հաճախորդը կջանա թարգմանել ցանկացած HTML markup տեքստի, բայց գործողությունը "
-#~ "կարող է լինել ոչ կատարյալ, և լավագույն ճշտության համար հարկ կլինի վերագրել "
-#~ "ձևերը, որպեսզի լինեն պարզ տեքստի տեսքով՝ եթե օգտագործում ես պարզ տեքստային "
-#~ "տպիչի մարտավարությունը։ Համենայնդեպս, երբ կիրառվում է պարզ տեքստի "
-#~ "մարտավարությունը կոմբինացված HTML markup, դու կարող ես ներառել հատուկ նիշեր "
-#~ "2-նիշանի հեքսա կոդում &quot;hex&quot; որպես ցանկացած տված տարրի բաղկացուցիչ։ "
-#~ "Այսպիսի կոդերը կձևափոխվեն իրական նիշերի և կներդրվեն ցուցիչների տեղում։ "
-#~ "Օրինակ, &amp;lt;p hex=&amp;quot;0C&amp;quot;&amp;gt;Hello "
-#~ "World&amp;lt;/p&amp;gt; will translate to form feed control character + "
-#~ "Hello World. &amp;lt;p&amp;gt;Hello World&amp;lt;/p "
-#~ "hex=&amp;quot;0C&amp;quot;&amp;gt; կթարգմանի Hello World + form feed control "
-#~ "character."
-
-#~ msgid ""
-#~ "This print strategy will ignore the printer settings in the &quot;Normal "
-#~ "Settings&quot; section. Advanced templates using Javascript may not work, "
-#~ "even if the external tool can take the receipt.html file."
-#~ msgstr ""
-#~ "Տպելու այս մարտավարությունը կանտեսի տպիչի կարգաբերումները &quot;Նորմալ "
-#~ "կարգաբերումներ&quot; բաժնից։ Խորացված ձևերը որոնք օգտագործում են Javascript "
-#~ "կարող է չաշխատեն, նույնիսկ եթե արտաքին գործիքը կվերցնի receipt.html ֆայլը։"
-
-#~ msgid "Items"
-#~ msgstr "Տարրեր"

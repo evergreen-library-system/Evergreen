@@ -8,14 +8,14 @@ msgstr ""
 "Project-Id-Version: evergreen\n"
 "Report-Msgid-Bugs-To: FULL NAME <EMAIL@ADDRESS>\n"
 "POT-Creation-Date: 2023-05-03 11:30-0400\n"
-"PO-Revision-Date: 2012-05-02 18:36+0000\n"
+"PO-Revision-Date: 2024-10-03 18:50+0000\n"
 "Last-Translator: Warren Layton <Unknown>\n"
 "Language-Team: English (United Kingdom) <en_GB@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2023-05-05 04:46+0000\n"
-"X-Generator: Launchpad (build 90e2150bef31b411d7bae5c4032c7e320fcaaec8)\n"
+"X-Launchpad-Export-Date: 2024-10-04 07:55+0000\n"
+"X-Generator: Launchpad (build 6341c735b243a0768c3cb66edf85737937cab327)\n"
 
 #: opac.js:BARCODE_PROMPT
 msgid "Barcode: "
@@ -23,7 +23,7 @@ msgstr "code-barres "
 
 #: opac.js:USERNAME_PROMPT
 msgid "Username: "
-msgstr ""
+msgstr "Username: "
 
 #: opac.js:CANCEL_BUTTON_LABEL
 msgid "Cancel"
@@ -76,6 +76,8 @@ msgid ""
 "To begin the password reset process, enter either your barcode or username "
 "in the form below and click 'Submit'"
 msgstr ""
+"To begin the password reset process, enter either your barcode or username "
+"in the form below and click 'Submit'"
 
 #: opac.js:CREATE_MFHD
 msgid "Add MFHD Record"
@@ -188,16 +190,3 @@ msgstr "... more copies listed in full record"
 #: opac.js:SOURCE_CANNOT_HAVE_COPIES
 msgid "Records from ${0} cannot have copies."
 msgstr "Records from ${0} cannot have copies."
-
-#~ msgid "Edit Propeties"
-#~ msgstr "Edit Properties"
-
-#~ msgid ""
-#~ "To begin the password reset process, enter either your barcode or user name "
-#~ "in the form below and click 'Submit'"
-#~ msgstr ""
-#~ "To begin the password reset process, enter either your barcode or user name "
-#~ "in the form below and click 'Submit'"
-
-#~ msgid "User name: "
-#~ msgstr "User name: "
