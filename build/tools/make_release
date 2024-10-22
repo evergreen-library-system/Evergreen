@@ -373,7 +373,7 @@ fi;
 
 echo "Installing Dojo"
 if [ ! -f "../dojo.tgz" ]; then
-    wget http://evergreen-ils.org/downloads/dojo.tgz -O ../dojo.tgz
+    curl -o ../dojo.tgz http://evergreen-ils.org/downloads/dojo.tgz
 fi
 tar xzf ../dojo.tgz -C Open-ILS/web/js/dojo/
 
