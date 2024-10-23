@@ -100,7 +100,8 @@ A new script for bulk loading and updating patrons from the server now exists in
 
 * `--help` or `--h` shows the help
 
-Database settings loaded by default from opensrf.xml
+Database settings loaded by default from `opensrf.xml`
+
 * `--db` the Evergreen database (defaults to the one established in opensrf.xml)
 * `--dbuser` the user of the Evergreen database
 * `--dbhost` the ip or domain name of the Evergreen database
@@ -499,7 +500,7 @@ https://bugs.launchpad.net/evergreen/+bug/2065448[#2065448]
 
 == Reports Security Enhancements ==
 
-** Run time reporting security **
+=== Run time reporting security ===
 
 The new Report Security functionality is primarily configured through
 the addition of XML attributes to elements in the Fieldmapper XML file,
@@ -524,7 +525,7 @@ time a report is run.
 
 See the https://docs.evergreen-ils.org/docs/latest/reports/reports_security_idl.html[Reports Security documentation] for more details.
 
-*** Report output security restrictions ***
+=== Report output security restrictions ===
 
 In addition to report content security restrictions, report output visibility
 is now, optionally, restricted based on whether the accessing user either owns
@@ -561,7 +562,7 @@ https://bugs.launchpad.net/bugs/1906462[#1906462]
 
 = Miscellaneous =
 
-* Customizing the label for items with no parts (formerly "All Parts" or "Any Part") (https://bugs.launchpad.net/evergreen/+bug/2065448[Bug 2065448]
+* Customizing the label for items with no parts (formerly "All Parts" or "Any Part") (https://bugs.launchpad.net/evergreen/+bug/2065448[Bug 2065448])
 ** This feature creates a new table for localizable strings intended to be used in UI's. This is not a replacement for the existing I18N system for templates, but does allow developers to choose some strings to be more easily accessible to staff/admins for dynamic localization. The string we're focused on here is a replacement for the "All Parts" and "Any Part" label in various Place Hold interfaces when monographic parts are an option.
 ** There is a UI for managing such strings under *Administration -> Server Administration -> I18N: Localized UI Strings*. An admin could change the "string" field directly, or use the existing Apply Translation mechanism to customize the string for a specific locale.
 ** As a bonus feature, we also expose an alternate UI for handling entries for said Translation mechanism. This can be found under *Administration -> Server Administration -> I18N: Localized Fieldmapper Strings*.
