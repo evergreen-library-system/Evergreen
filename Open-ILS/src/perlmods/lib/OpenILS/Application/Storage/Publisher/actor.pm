@@ -801,6 +801,26 @@ sub patron_search {
             }
             push @phonev, "^$pv";
         }
+
+        # Also search user settings which may contain phone number values.
+        my $normalize = ($pv =~ /^\d+$/) ?
+            "evergreen.lowercase(REGEXP_REPLACE(value, '[^0-9]', '', 'g')) ~ ?" :
+            "evergreen.lowercase(value) ~ ?";
+
+        push @ps, <<"        SQL";
+            EXISTS (
+                SELECT TRUE FROM actor.usr_setting
+                WHERE usr = u.id
+                    AND name IN ('opac.default_phone', 'opac.default_sms_notify')
+                    AND $normalize
+                LIMIT 1
+            )
+        SQL
+
+        # Prefix the search value with '"?' since user setting phone
+        # values may be stored as JSON numbers or (more likely) strings.
+        push(@phonev, "^\"?$pv");
+
         $phone = '(' . join(' OR ', @ps) . ')';
     }
 
