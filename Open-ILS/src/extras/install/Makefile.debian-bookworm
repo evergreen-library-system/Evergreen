@@ -88,6 +88,7 @@ export DEBS = \
 	libparse-recdescent-perl\
 	libhtml-defang-perl\
 	libconfig-general-perl\
+	libmodule-pluggable-perl\
 	yaz
 
 export DEB_APACHE_MODS = \
