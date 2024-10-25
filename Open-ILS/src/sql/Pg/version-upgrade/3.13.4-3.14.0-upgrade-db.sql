@@ -1185,16 +1185,12 @@ UPDATE config.org_unit_setting_type SET label = 'Deprecated: ' || label WHERE na
 COMMIT;
 
 -- MFA has to be done outside of the main transaction. It also needs
--- to be split into 2 transactions of its own.
-
-BEGIN;
+-- to be split into 2 parts.
 
 SELECT evergreen.upgrade_deps_block_check('1433', :eg_version);
 
 -- This has to happen outside the transaction that uses it below.
 ALTER TYPE config.usr_activity_group ADD VALUE IF NOT EXISTS 'mfa';
-
-COMMIT;
 
 BEGIN;
 
