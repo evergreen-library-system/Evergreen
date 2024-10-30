@@ -278,7 +278,7 @@
           </div>
         </div>
 
-        <div class="reporter-field-transform-inputs pt-2"
+        <div class="reporter-field-transform-inputs"
           *ngIf="field.operator.name.indexOf('between') === -1 && field.operator.name.indexOf('in') === -1 && field.operator.name.indexOf('is') === -1">
           <div [ngSwitch]="field.transform.final_datatype || field.datatype">
             <label for="FV-{{pathId}}" class="form-label" i18n>Filter value</label>
