@@ -338,9 +338,13 @@ sub make_payments {
 
     my $patron = $e->retrieve_actor_user($user_id) or return $e->die_event;
 
+    # If a Stripe payment intent gets here, it has succeeded and the patron's cc has been charged
+    # Apply the payment regardless of differing last_xact_id (lp2077343)
     if($patron->last_xact_id ne $last_xact_id) {
-        $e->rollback;
-        return OpenILS::Event->new('INVALID_USER_XACT_ID');
+	if (!exists $cc_args->{stripe_payment_intent}) {
+            $e->rollback;
+            return OpenILS::Event->new('INVALID_USER_XACT_ID');
+        }
     }
 
     # A user is allowed to make credit card payments on his/her own behalf
