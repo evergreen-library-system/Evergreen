@@ -33,10 +33,16 @@
       </h3>
     </ng-container>
   </div>
-  <div class="col-lg-2">
+  <div class="col-lg-6">
     <button type="button" class="btn btn-outline-dark btn-sm" (click)="searchPatrons()">
       <span class="material-icons mat-icon-in-button align-middle" aria-hidden="true">search</span>
       <span class="align-middle" i18n>Search for Patron</span>
+    </button>
+    <button type="button" class="btn btn-outline-dark btn-sm ms-2"
+      *ngIf="maxRecentPatrons" [disabled]="recentPatronsDisabled()"
+      (click)="searchRecentPatrons()">
+      <span class="material-icons mat-icon-in-button align-middle" aria-hidden="true">redo</span>
+      <span class="align-middle ms-1" i18n>Recent Patron</span>
     </button>
   </div>
 </div>

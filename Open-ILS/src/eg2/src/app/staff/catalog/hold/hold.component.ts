@@ -1,4 +1,4 @@
-import {Component, OnInit, ViewChild} from '@angular/core';
+import {Component, OnDestroy, OnInit, ViewChild} from '@angular/core';
 import {Router, ActivatedRoute, ParamMap} from '@angular/router';
 import {EventService} from '@eg/core/event.service';
 import {NetService} from '@eg/core/net.service';
@@ -22,6 +22,8 @@ import {BarcodeSelectComponent
 } from '@eg/staff/share/barcodes/barcode-select.component';
 import {WorkLogService} from '@eg/staff/share/worklog/worklog.service';
 import {getI18nString} from '@eg/share/util/i18ns';
+import {StoreService} from '@eg/core/store.service';
+import {firstValueFrom} from 'rxjs';
 
 class HoldContext {
     holdMeta: HoldRequestTarget;
@@ -52,7 +54,7 @@ class HoldContext {
 @Component({
     templateUrl: 'hold.component.html'
 })
-export class HoldComponent implements OnInit {
+export class HoldComponent implements OnInit, OnDestroy {
 
     holdType: string;
     holdTargets: number[];
@@ -98,6 +100,11 @@ export class HoldComponent implements OnInit {
     // Orgs which are not valid pickup locations
     disableOrgs: number[] = [];
 
+    // Default is 1, but wait for settings to load
+    // in case this feature isn't enabled for holds.
+    maxRecentPatrons = 0;
+    recentPatronIds: number[] = [];
+
     @ViewChild('patronSearch', {static: false})
         patronSearch: PatronSearchDialogComponent;
 
@@ -121,7 +128,8 @@ export class HoldComponent implements OnInit {
         private holds: HoldsService,
         private patron: PatronService,
         private perm: PermService,
-        private worklog: WorkLogService
+        private worklog: WorkLogService,
+        private sessionStore: StoreService
     ) {
         this.holdContexts = [];
         this.smsCarriers = [];
@@ -147,12 +155,19 @@ export class HoldComponent implements OnInit {
 
         this.store.getItemBatch([
             'circ.staff_placed_holds_fallback_to_ws_ou',
-            'circ.staff_placed_holds_default_to_ws_ou'
+            'circ.staff_placed_holds_default_to_ws_ou',
+            'ui.staff.max_recent_patrons',
+            'ui.staff.place_holds_for_recent_patrons'
         ]).then(settings => {
             this.puLibWsFallback =
                 settings['circ.staff_placed_holds_fallback_to_ws_ou'] === true;
             this.puLibWsDefault =
                 settings['circ.staff_placed_holds_default_to_ws_ou'] === true;
+
+            this.initRecentPatrons(
+                !!settings['ui.staff.place_holds_for_recent_patrons'],
+                settings['ui.staff.max_recent_patrons'] ?? 1
+            );
         }).then(_ => this.worklog.loadSettings());
 
         this.org.list().forEach(org => {
@@ -432,6 +447,7 @@ export class HoldComponent implements OnInit {
             this.applyUserSettings();
             this.multiHoldsActive =
                 this.canPlaceMultiAt.includes(user.home_ou());
+            this.addRecentPatron(user.id());
         });
     }
 
@@ -726,15 +742,72 @@ export class HoldComponent implements OnInit {
         );
     }
 
-    searchPatrons() {
-        this.patronSearch.open({size: 'xl'}).toPromise().then(
-            patrons => {
-                if (!patrons || patrons.length === 0) { return; }
-                const user = patrons[0];
-                this.userBarcode = user.card().barcode();
-                this.userBarcodeChanged();
-            }
-        );
+    triggerPatronChange(user?: IdlObject): void {
+        if (user) {
+            this.userBarcode = user.card().barcode();
+            this.userBarcodeChanged();
+        }
+    }
+
+    searchPatrons(idsToAutoLoad?: number[]): void {
+        this.patronSearch.patronIds = idsToAutoLoad;
+        firstValueFrom(this.patronSearch.open({size: 'xl'}))
+            .then(patrons => this.triggerPatronChange(patrons?.[0]));
+    }
+
+    searchRecentPatrons(): void {
+        this.refreshRecentPatronIds();
+
+        if (this.recentPatronIds.length === 1) {
+            // load recent patron
+            this.patron.getFleshedById(this.recentPatronIds[0])
+                .then(patron => this.triggerPatronChange(patron));
+        } else {
+            // initialize search dialog with recent patrons
+            this.searchPatrons(this.recentPatronIds);
+        }
+    }
+
+    initRecentPatrons(enabled: boolean, max: number): void {
+        if (enabled && max > 0) {
+            this.maxRecentPatrons = max;
+            this.refreshRecentPatronIds();
+
+            // Sync recent patrons across tabs on window focus
+            // instead of on every change detection.
+            window.addEventListener('focus', this.refreshRecentPatronIds);
+        }
+    }
+
+    getRecentPatronIds(): number[] {
+        const key = 'eg.circ.recent_patrons';
+        const ids = this.sessionStore.getLoginSessionItem(key) || [];
+        return ids.slice(0, this.maxRecentPatrons);
+    }
+
+    refreshRecentPatronIds = (): void => {
+        this.recentPatronIds = this.getRecentPatronIds();
+    };
+
+    addRecentPatron(id: number): void {
+        if (!this.maxRecentPatrons || !id) { return; }
+
+        const recentIds = this.getRecentPatronIds();
+        if (recentIds?.[0] === id) { return; }
+
+        this.recentPatronIds = [
+            id,
+            ...recentIds.filter(recentId => recentId !== id)
+        ].slice(0, this.maxRecentPatrons);
+
+        const key = 'eg.circ.recent_patrons';
+        this.sessionStore.setLoginSessionItem(key, this.recentPatronIds);
+    }
+
+    recentPatronsDisabled(): boolean {
+        return this.recentPatronIds.length === 1
+            ? this.recentPatronIds[0] === this.user?.id()
+            : !this.recentPatronIds.length;
     }
 
     isItemHold(): boolean {
@@ -759,6 +832,12 @@ export class HoldComponent implements OnInit {
 
     goBack() {
         history.back();
+    }
+
+    ngOnDestroy(): void {
+        if (this.maxRecentPatrons) {
+            window.removeEventListener('focus', this.refreshRecentPatronIds);
+        }
     }
 }
 
