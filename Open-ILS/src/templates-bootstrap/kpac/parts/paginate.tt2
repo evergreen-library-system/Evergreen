@@ -1,0 +1,39 @@
+[%  # Pagination
+    page = CGI.param('page');
+    page = page.match('^\d+$') ? page : 0; # verify page is a sane value
+    page_count = ctx.page_size == 0 ? 1 : POSIX.ceil(ctx.hit_count / ctx.page_size);
+    ctx.result_start = 1 + ctx.page_size * page;
+    ctx.result_stop = ctx.page_size * (page + 1);
+    IF ctx.result_stop > ctx.hit_count; ctx.result_stop = ctx.hit_count; END;
+    result_count = ctx.result_start;
+%]
+
+<nav class="row search_paging" [% html_text_attr('aria-label', l('Search result page navigation [_1]', header == 1 ? l('(header)') : l('(footer)'))) %]>
+    <div class="col-12 col-lg-3 text-center text-lg-left">
+        [%  class = '';
+            href = '#';
+            IF page > 0;
+                href = mkurl('', {page => page - 1});
+            ELSE; class = class _ ' invisible'; END %]
+        <a class="[% class %]" href="[% href %]">
+            <span aria-hidden="true">&laquo;</span> [% l('Previous') %]
+        </a>
+
+    </div>
+
+    <div class="col-12 col-lg-6 text-center">
+        [% l('Page [_1] of [_2]', (page + 1), page_count ) %]
+    </div>
+
+    <div class="col-12 col-lg-3 text-center text-lg-right">
+        [%  class = '';
+            href = '#';
+            IF (page + 1) < page_count;
+                href = mkurl('', {page => page + 1});
+            ELSE; class = class _ ' invisible'; END;
+        %]
+        <a class="[% class %]" href="[% href %]">
+            [% l('Next') %] <span aria-hidden="true">&raquo;</span>
+        </a>
+    </div>
+</nav>

@@ -1492,4 +1492,34 @@ CREATE TABLE config.patron_loader_value_map (
     native_value TEXT NOT NULL
 );
 
+-- Add Bootstrap KPAC Configuration
+
+CREATE TABLE config.kpac_content_types (
+    id              SERIAL PRIMARY KEY,
+    name            TEXT NOT NULL
+);
+
+INSERT INTO config.kpac_content_types
+    (id, name)
+VALUES
+    (1, 'Category'),
+    (2, 'Book List'),
+    (3, 'URL'),
+    (4, 'Search String')
+;
+
+CREATE TABLE config.kpac_topics (
+    id              SERIAL PRIMARY KEY,
+    active          BOOLEAN NOT NULL DEFAULT TRUE,
+    parent          INTEGER, -- empty is home / top level entry
+    img             TEXT, -- image file name
+    name            TEXT NOT NULL,
+    description     TEXT,
+    content_type    INTEGER NOT NULL REFERENCES config.kpac_content_types (id),
+    content_list    INTEGER, -- bookbag id
+    content_link    TEXT, -- url
+    content_search  TEXT, -- preset search string
+    topic_order     INTEGER
+);
+
 COMMIT;

@@ -1,0 +1,70 @@
+[% PROCESS "opac/parts/org_selector.tt2" %]
+ 
+    <div class="search_wrapper" role="search">
+        <h1 class="sr-only">[% l('Search') %]</h1>
+        <h2>[% l('Search for books, movies, music, magazines, and more!') %]</h2>
+
+        <form action="[% ctx.kpac_root _ '/results' %]">
+            [% qtype = CGI.param('qtype') %]
+            [% audience = CGI.param('fi:audience') ? CGI.param('fi:audience') : "" %]
+            <div class="row">
+                <div class="col-12 col-lg-2">
+                    <label id="query_label" for="query" class="form-label">[% l('Search words:') %]</label><br/>
+                    <input type="search" class="form-control" name="query" id="query"
+                        value="[% CGI.param('nosprop') ? '' : CGI.param('query') | html  %]"/>
+                </div>
+                <div class="col-12 col-lg-2">
+                    <label for="qtype" id="qtype_label">[% l('Type of search:') %] </label>
+                    <select class="form-control" name="qtype" id="qtype">
+                        <option value="keyword" name="[% l('Word Search') %]">[% l('Word') %]</option>
+                        <option value="title" name="[% l('Title Search') %]" [% IF qtype == 'title' %]selected[% END %]>[% l('Title') %]</option>
+                        <option value="author" name="[% l('Author Search') %]" [% IF qtype == 'author' %]selected[% END %]>[% l('Author') %]</option>
+                    </select>
+                </div>
+                <div class="col-12 col-lg-2">
+                    [%  allowed_audn = ctx.get_org_setting(ctx.physical_loc || ctx.aou_tree.id, 'opac.kpac_audn_filter');
+                        IF !allowed_audn; allowed_audn = "a,b,c,j"; END;
+                    %]
+                    <label for="audience" id="qtype_label">[% l('Age group:') %] </label>
+                    <select class="form-control" name="fi:audience" id="audience">
+                        <option value="" name="all" [% IF audience == '' %]selected[% END %]>[% l('All Age Groups') %]</option>
+                        [% IF allowed_audn.search('a') %]
+                            <option value="a" name="a" [% IF audience == 'a' %]selected[% END %]>[% l('Preschool (0-5 years)') %]</option>
+                        [% END %]
+                        [% IF allowed_audn.search('b') %]
+                            <option value="b" name="b" [% IF audience == 'b' %]selected[% END %]>[% l('Primary School (6-8 years)') %]</option>
+                        [% END %]
+                        [% IF allowed_audn.search('c') %]
+                            <option value="c" name="c" [% IF audience == 'c' %]selected[% END %]>[% l('Tween (9-13 years)') %]</option>
+                        [% END %]
+                        [% IF allowed_audn.search('d') %]
+                            <option value="d" name="d" [% IF audience == 'd' %]selected[% END %]>[% l('Teen (14-17 years)') %]</option>
+                        [% END %]
+                        [% IF allowed_audn.search('j') %]
+                            <option value="j" name="j" [% IF audience == 'j' %]selected[% END %]>[% l('Juvenile (0-15 years)') %]</option>
+                        [% END %]
+                    </select> 
+                </div>
+                <div class="col-12 col-lg-4">
+                    <label id="search_locg_label" for="search_org_selector" class="form-label">
+                    [%- l('Library: '); %]</label>
+                    [% select_lib_label = l("Select search library") %]
+                    [% INCLUDE build_org_selector id='search_org_selector' name='locg'
+                        show_loc_groups=1 show_lassos=1 arialabel=select_lib_label %]
+                </div>              
+                <div class="col-12 col-lg-2 text-center text-lg-left align-items-end">
+                    <input id="detail" type="hidden" name="detail_record_view" value="[% show_detail_view %]"/>
+                    <button id='search-submit-go' type="submit" class="kpac-button kpac-search-button"
+                        onclick='setTimeout(function(){$("search-submit-spinner").className="";
+                        $("search-submit-go").className="hidden";
+                        [% IF ctx.depth_sel_button AND NOT took_care_of_form %]
+                            $("search-submit-go-depth").className="hidden";
+                        [% END %]}, 2000)'>
+                        <i class="fas fa-search" aria-hidden="true"></i> [% l('Search') %]
+                    </button>
+                    <img id='search-submit-spinner' src='[% ctx.media_prefix %]/opac/images/progressbar_green.gif[% ctx.cache_key %]'
+                        class='hidden' alt='[% l("Search In Progress") %]'/>
+                </div>
+            </div>
+        </form>
+    </div>

@@ -1,0 +1,324 @@
+[%  
+    PROCESS "opac/parts/header.tt2";
+    WRAPPER "kpac/parts/base.tt2";
+    ctx.page_title = l("Dewey Decimal Guide");
+%]
+
+<div id="home" class="mx-3">
+    <h1>Dewey Decimal Guide</h1>
+
+    <div class="descriptive-box">
+        <p>Use this chart to learn how the library's books are organized on the shelves!</p>
+        <p>Look at the number next to the subject you are interested in below (for example, 560 for Dinosaurs),<br/>
+            then find that number on the library's shelves to find those books.</p>
+    </div>
+
+    <h2 class="section-title">000 General Knowledge</h2>
+    <div class="row category_wrapper">
+        <div class="cat-grid">
+            <div class="cat-grid-cell">
+                <img src="[% ctx.media_prefixes _ '/images/kpac2/uploads/cat-computer.png' %]" 
+                        class="cat-img" alt="Computers" aria-hidden="true" />
+                <div class="cat-title">000<br/>Computers</div>
+            </div>
+            <div class="cat-grid-cell">
+                <img src="[% ctx.media_prefixes _ '/images/kpac2/uploads/cat-ufo.png' %]" 
+                        class="cat-img" alt="UFOs" aria-hidden="true" />
+                <div class="cat-title">001<br/>UFOs and the Unexplained</div>
+            </div>
+            <div class="cat-grid-cell">
+                <img src="[% ctx.media_prefixes _ '/images/kpac2/uploads/cat-encyclopedia.png' %]" 
+                        class="cat-img" alt="Encyclopedias" aria-hidden="true" />
+                <div class="cat-title">030<br/>Encyclopedias and Books of Facts</div>
+            </div>
+        </div>
+    </div>
+
+    <h2 class="section-title">100 Philosophy &amp; Psychology</h2>
+    <div class="row category_wrapper">
+        <div class="cat-grid">
+            <div class="cat-grid-cell">
+                <img src="[% ctx.media_prefixes _ '/images/kpac2/uploads/cat-ghost.png' %]" 
+                        class="cat-img" alt="Ghosts" aria-hidden="true" />
+                <div class="cat-title">130<br/>Ghosts</div>
+            </div>
+            <div class="cat-grid-cell">
+                <img src="[% ctx.media_prefixes _ '/images/kpac2/uploads/cat-dreams.png' %]" 
+                        class="cat-img" alt="Dreams" aria-hidden="true" />
+                <div class="cat-title">135<br/>Dreams</div>
+            </div>
+        </div>
+    </div>
+
+    <h2 class="section-title">200 Religions</h2>
+    <div class="row category_wrapper">
+        <div class="cat-grid">
+            <div class="cat-grid-cell">
+                <img src="[% ctx.media_prefixes _ '/images/kpac2/uploads/cat-church.png' %]" 
+                        class="cat-img" alt="Bible Stories" aria-hidden="true" />
+                <div class="cat-title">220<br/>Bible Stories</div>
+            </div>
+            <div class="cat-grid-cell">
+                <img src="[% ctx.media_prefixes _ '/images/kpac2/uploads/cat-myth.png' %]" 
+                        class="cat-img" alt="Mythology" aria-hidden="true" />
+                <div class="cat-title">290<br/>Mythology</div>
+            </div>
+        </div>
+    </div>
+
+    <h2 class="section-title">300 Social Sciences</h2>
+    <div class="row category_wrapper">
+        <div class="cat-grid">
+            <div class="cat-grid-cell">
+                <img src="[% ctx.media_prefixes _ '/images/kpac2/uploads/cat-world.png' %]" 
+                        class="cat-img" alt="World Cultures" aria-hidden="true" />
+                <div class="cat-title">300<br/>World Cultures</div>
+            </div>
+            <div class="cat-grid-cell">
+                <img src="[% ctx.media_prefixes _ '/images/kpac2/uploads/cat-military.png' %]" 
+                        class="cat-img" alt="Military" aria-hidden="true" />
+                <div class="cat-title">350<br/>Military (Tanks, Submarines)</div>
+            </div>
+            <div class="cat-grid-cell">
+                <img src="[% ctx.media_prefixes _ '/images/kpac2/uploads/cat-fairy.png' %]" 
+                        class="cat-img" alt="Fairy Tales" aria-hidden="true" />
+                <div class="cat-title">390<br/>Folk Tales and Fairy Tales</div>
+            </div>
+        </div>
+    </div>
+
+    <h2 class="section-title">400 Languages</h2>
+    <div class="row category_wrapper">
+        <div class="cat-grid">
+            <div class="cat-grid-cell">
+                <img src="[% ctx.media_prefixes _ '/images/kpac2/uploads/cat-signlanguage.png' %]" 
+                        class="cat-img" alt="Sign Language" aria-hidden="true" />
+                <div class="cat-title">410<br/>Sign Language</div>
+            </div>
+            <div class="cat-grid-cell">
+                <img src="[% ctx.media_prefixes _ '/images/kpac2/uploads/cat-dictionary.png' %]" 
+                        class="cat-img" alt="Dictionaries" aria-hidden="true" />
+                <div class="cat-title">420<br/>Dictionaries</div>
+            </div>
+            <div class="cat-grid-cell">
+                <img src="[% ctx.media_prefixes _ '/images/kpac2/uploads/cat-french.png' %]" 
+                        class="cat-img" alt="French" aria-hidden="true" />
+                <div class="cat-title">440<br/>French</div>
+            </div>
+            <div class="cat-grid-cell">
+                <img src="[% ctx.media_prefixes _ '/images/kpac2/uploads/cat-spanish.png' %]" 
+                        class="cat-img" alt="Spanish" aria-hidden="true" />
+                <div class="cat-title">460<br/>Spanish</div>
+            </div>
+            <div class="cat-grid-cell">
+                <img src="[% ctx.media_prefixes _ '/images/kpac2/uploads/cat-chinese.png' %]" 
+                        class="cat-img" alt="Chinese" aria-hidden="true" />
+                <div class="cat-title">490<br/>Mandarin Chinese</div>
+            </div>
+        </div>
+    </div>
+
+    <h2 class="section-title">500 Math &amp; Science</h2>
+    <div class="row category_wrapper">
+        <div class="cat-grid">
+            <div class="cat-grid-cell">
+                <img src="[% ctx.media_prefixes _ '/images/kpac2/uploads/cat-scienceprojects.png' %]" 
+                        class="cat-img" alt="Science Fair Projects" aria-hidden="true" />
+                <div class="cat-title">500 Science Fair Projects</div>
+            </div>
+            <div class="cat-grid-cell">
+                <img src="[% ctx.media_prefixes _ '/images/kpac2/uploads/cat-math.png' %]" 
+                        class="cat-img" alt="Math" aria-hidden="true" />
+                <div class="cat-title">510<br/>Math</div>
+            </div>
+            <div class="cat-grid-cell">
+                <img src="[% ctx.media_prefixes _ '/images/kpac2/uploads/cat-astronomy.png' %]" 
+                        class="cat-img" alt="astronomy" aria-hidden="true" />
+                <div class="cat-title">520<br/>Astronomy (Stars &amp Planets)</div>
+            </div>
+            <div class="cat-grid-cell">
+                <img src="[% ctx.media_prefixes _ '/images/kpac2/uploads/cat-physics.png' %]" 
+                        class="cat-img" alt="Physics" aria-hidden="true" />
+                <div class="cat-title">530<br/>Physics</div>
+            </div>
+            <div class="cat-grid-cell">
+                <img src="[% ctx.media_prefixes _ '/images/kpac2/uploads/cat-chemistry.png' %]" 
+                        class="cat-img" alt="Chemistry" aria-hidden="true" />
+                <div class="cat-title">540<br/>Chemistry</div>
+            </div>
+            <div class="cat-grid-cell">
+                <img src="[% ctx.media_prefixes _ '/images/kpac2/uploads/cat-earth.png' %]" 
+                        class="cat-img" alt="Earth Sciences" aria-hidden="true" />
+                <div class="cat-title">550<br/>Earth, Volcanoes, Storms</div>
+            </div>
+            <div class="cat-grid-cell">
+                <img src="[% ctx.media_prefixes _ '/images/kpac2/uploads/cat-dinosaur.png' %]" 
+                        class="cat-img" alt="Dinosaurs" aria-hidden="true" />
+                <div class="cat-title">560<br/>Dinosaurs</div>
+            </div>
+            <div class="cat-grid-cell">
+                <img src="[% ctx.media_prefixes _ '/images/kpac2/uploads/cat-habitat.png' %]" 
+                        class="cat-img" alt="Habits and Environments" aria-hidden="true" />
+                <div class="cat-title">570<br/>Habitats</div>
+            </div>
+            <div class="cat-grid-cell">
+                <img src="[% ctx.media_prefixes _ '/images/kpac2/uploads/cat-plant.png' %]" 
+                        class="cat-img" alt="Plants" aria-hidden="true" />
+                <div class="cat-title">580<br/>Plants</div>
+            </div>
+            <div class="cat-grid-cell">
+                <img src="[% ctx.media_prefixes _ '/images/kpac2/uploads/cat-insects.png' %]" 
+                        class="cat-img" alt="Insects" aria-hidden="true" />
+                <div class="cat-title">595<br/>Insects</div>
+            </div>
+            <div class="cat-grid-cell">
+                <img src="[% ctx.media_prefixes _ '/images/kpac2/uploads/cat-reptiles.png' %]" 
+                        class="cat-img" alt="Reptiles" aria-hidden="true" />
+                <div class="cat-title">597<br/>Snakes, Lizards &amp; Fish</div>
+            </div>
+            <div class="cat-grid-cell">
+                <img src="[% ctx.media_prefixes _ '/images/kpac2/uploads/cat-mammals.png' %]" 
+                        class="cat-img" alt="Mammals" aria-hidden="true" />
+                <div class="cat-title">599<br/>Mammals</div>
+            </div>
+        </div>
+    </div>
+
+    <h2 class="section-title">600 Technology</h2>
+    <div class="row category_wrapper">
+        <div class="cat-grid">
+            <div class="cat-grid-cell">
+                <img src="[% ctx.media_prefixes _ '/images/kpac2/uploads/cat-inventions.png' %]" 
+                        class="cat-img" alt="Inventions" aria-hidden="true" />
+                <div class="cat-title">600<br/>Inventions</div>
+            </div>
+            <div class="cat-grid-cell">
+                <img src="[% ctx.media_prefixes _ '/images/kpac2/uploads/cat-doctor.png' %]" 
+                        class="cat-img" alt="Medical Science" aria-hidden="true" />
+                <div class="cat-title">610<br/>The Human Body &amp; Medical Science</div>
+            </div>
+            <div class="cat-grid-cell">
+                <img src="[% ctx.media_prefixes _ '/images/kpac2/uploads/cat-car.png' %]" 
+                        class="cat-img" alt="Transportation" aria-hidden="true" />
+                <div class="cat-title">620<br/>Transportation</div>
+            </div>
+            <div class="cat-grid-cell">
+                <img src="[% ctx.media_prefixes _ '/images/kpac2/uploads/cat-space.png' %]" 
+                        class="cat-img" alt="Space" aria-hidden="true" />
+                <div class="cat-title">629<br/>Space Exploration</div>
+            </div>
+            <div class="cat-grid-cell">
+                <img src="[% ctx.media_prefixes _ '/images/kpac2/uploads/cat-pets.png' %]" 
+                        class="cat-img" alt="Pets" aria-hidden="true" />
+                <div class="cat-title">636<br/>Pets</div>
+            </div>
+            <div class="cat-grid-cell">
+                <img src="[% ctx.media_prefixes _ '/images/kpac2/uploads/cat-cooking.png' %]" 
+                        class="cat-img" alt=Cooking" aria-hidden="true" />
+                <div class="cat-title">641<br/>Cooking &amp; Recipes</div>
+            </div>
+        </div>
+    </div>
+
+    <h2 class="section-title">700 Art &amp; Games</h2>
+    <div class="row category_wrapper">
+        <div class="cat-grid">
+            <div class="cat-grid-cell">
+                <img src="[% ctx.media_prefixes _ '/images/kpac2/uploads/cat-sculpture.png' %]" 
+                        class="cat-img" alt="Sculpture" aria-hidden="true" />
+                <div class="cat-title">730<br/>Sculpture &amp; Origami</div>
+            </div>
+            <div class="cat-grid-cell">
+                <img src="[% ctx.media_prefixes _ '/images/kpac2/uploads/cat-art.png' %]" 
+                        class="cat-img" alt="Arts and Crafts" aria-hidden="true" />
+                <div class="cat-title">740<br/>Arts &amp; Crafts</div>
+            </div>
+            <div class="cat-grid-cell">
+                <img src="[% ctx.media_prefixes _ '/images/kpac2/uploads/cat-artists.png' %]" 
+                        class="cat-img" alt="Famous Artists" aria-hidden="true" />
+                <div class="cat-title">759<br/>Famous Artists</div>
+            </div>
+            <div class="cat-grid-cell">
+                <img src="[% ctx.media_prefixes _ '/images/kpac2/uploads/cat-music.png' %]" 
+                        class="cat-img" alt="Music" aria-hidden="true" />
+                <div class="cat-title">70<br/>Music</div>
+            </div>
+            <div class="cat-grid-cell">
+                <img src="[% ctx.media_prefixes _ '/images/kpac2/uploads/cat-game.png' %]" 
+                        class="cat-img" alt="Games" aria-hidden="true" />
+                <div class="cat-title">790<br/>Games</div>
+            </div>
+            <div class="cat-grid-cell">
+                <img src="[% ctx.media_prefixes _ '/images/kpac2/uploads/cat-magic.png' %]" 
+                        class="cat-img" alt="Magic Tricks" aria-hidden="true" />
+                <div class="cat-title">793<br/>Magic Tricks</div>
+            </div>
+            <div class="cat-grid-cell">
+                <img src="[% ctx.media_prefixes _ '/images/kpac2/uploads/cat-sports.png' %]" 
+                        class="cat-img" alt="Sports" aria-hidden="true" />
+                <div class="cat-title">796<br/>Sports</div>
+            </div>
+        </div>
+    </div>
+
+    <h2 class="section-title">800 Literature</h2>
+    <div class="row category_wrapper">
+        <div class="cat-grid">
+            <div class="cat-grid-cell">
+                <img src="[% ctx.media_prefixes _ '/images/kpac2/uploads/cat-poetry.png' %]" 
+                        class="cat-img" alt="Poetry" aria-hidden="true" />
+                <div class="cat-title">811<br/>Poetry</div>
+            </div>
+            <div class="cat-grid-cell">
+                <img src="[% ctx.media_prefixes _ '/images/kpac2/uploads/cat-plays.png' %]" 
+                        class="cat-img" alt="Plays" aria-hidden="true" />
+                <div class="cat-title">812<br/>Plays, Scripts, Theater</div>
+            </div>
+            <div class="cat-grid-cell">
+                <img src="[% ctx.media_prefixes _ '/images/kpac2/uploads/cat-speeches.png' %]" 
+                        class="cat-img" alt="Speeches" aria-hidden="true" />
+                <div class="cat-title">815<br/>Speeches</div>
+            </div>
+            <div class="cat-grid-cell">
+                <img src="[% ctx.media_prefixes _ '/images/kpac2/uploads/cat-shakespeare.png' %]" 
+                        class="cat-img" alt="Shakespeare" aria-hidden="true" />
+                <div class="cat-title">820<br/>William Shakespeare</div>
+            </div>
+        </div>
+    </div>
+
+    <h2 class="section-title">900 History &amp; Geography</h2>
+    <div class="row category_wrapper">
+        <div class="cat-grid">
+            <div class="cat-grid-cell">
+                <img src="[% ctx.media_prefixes _ '/images/kpac2/uploads/cat-pirate.png' %]" 
+                        class="cat-img" alt="Pirates and Explorers" aria-hidden="true" />
+                <div class="cat-title">910<br/>Explorers &amp; Pirates</div>
+            </div>
+            <div class="cat-grid-cell">
+                <img src="[% ctx.media_prefixes _ '/images/kpac2/uploads/cat-map.png' %]" 
+                        class="cat-img" alt="Maps" aria-hidden="true" />
+                <div class="cat-title">912<br/>Maps</div>
+            </div>
+            <div class="cat-grid-cell">
+                <img src="[% ctx.media_prefixes _ '/images/kpac2/uploads/cat-archeology.png' %]" 
+                        class="cat-img" alt="Archeology" aria-hidden="true" />
+                <div class="cat-title">930<br/>Archeology &amp; Fossils</div>
+            </div>
+            <div class="cat-grid-cell">
+                <img src="[% ctx.media_prefixes _ '/images/kpac2/uploads/cat-history-europe.png' %]" 
+                        class="cat-img" alt="European History" aria-hidden="true" />
+                <div class="cat-title">940<br/>European History</div>
+            </div>
+            <div class="cat-grid-cell">
+                <img src="[% ctx.media_prefixes _ '/images/kpac2/uploads/cat-history-us.png' %]" 
+                        class="cat-img" alt="US History" aria-hidden="true" />
+                <div class="cat-title">973<br/>US History</div>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+[% END %]
+

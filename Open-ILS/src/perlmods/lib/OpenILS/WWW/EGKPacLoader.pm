@@ -21,12 +21,15 @@ sub load {
     return $stat unless $stat == Apache2::Const::OK;
 
     $self->load_kpac_config;
+    $self->load_kpac_categories;
 
     my $path = $self->apache->path_info;
     ($self->ctx->{page} = $path) =~ s#.*/(.*)#$1#g;
 
     return $self->load_simple("home") if $path =~ m|kpac/home|;
+    return $self->load_simple("css") if $path =~ m|kpac/css|;
     return $self->load_simple("category") if $path =~ m|kpac/category|;
+    return $self->load_simple("dewey") if $path =~ m|kpac/dewey|;
     return $self->load_kpac_rresults if $path =~ m|kpac/results|;
     return $self->load_record(no_search => 1) if $path =~ m|kpac/record|; 
     return $self->load_library if $path =~ m|kpac/library|;
@@ -40,6 +43,12 @@ sub load {
     if ($path =~ m|kpac/getit_results|) {
         return $self->load_getit_results;
     } elsif ($path =~ m|kpac/getit|) {
+        return $self->load_getit;
+    }
+    
+    if ($path =~ m|kpac/list_results|) {
+        return $self->load_getit_results;
+    } elsif ($path =~ m|kpac/list|) {
         return $self->load_getit;
     }
 
@@ -74,12 +83,18 @@ sub load_getit {
     my $rec_id = $ctx->{page_args}->[0];
     my $bbag_id = $self->cgi->param('bookbag');
     my $action = $self->cgi->param('action') || '';
-
+    my $path = $self->apache->path_info;
+  
     # first load the record
     my $stat = $self->load_record(no_search => 1);
     return $stat unless $stat == Apache2::Const::OK;
-
-    $self->ctx->{page} = 'getit'; # repair the page
+  
+    # repair the page
+    if ($path =~ m|kpac/getit|) {
+        $self->ctx->{page} = 'getit';
+    } elsif ($path =~ m|kpac/list|) {
+        $self->ctx->{page} = 'list';
+    }
 
     return $self->save_item_to_bookbag($rec_id, $bbag_id) if $action eq 'save';
     return $self->login_and_place_hold($rec_id) if $action eq 'hold';
@@ -110,7 +125,7 @@ sub load_getit {
         }
     }
 
-    $self->ctx->{page} = 'getit'; # repair the page
+    # $self->ctx->{page} = 'getit'; # repair the page
     return Apache2::Const::OK;
 }
     
@@ -177,16 +192,24 @@ sub login_and_place_hold {
 
 sub save_item_to_bookbag {
     my $self = shift;
+    my $ctx = $self->ctx;
+    my $username = $self->cgi->param('username');
+    my $password = $self->cgi->param('password');
     my $rec_id = shift;
     my $bookbag_id = shift;
+    
+    if (!$ctx->{user}) {
+        return Apache2::Const::OK unless $username and $password;
+        return $self->load_login;
+    }
 
     if ($bookbag_id) { 
         # save to existing bookbag
         $self->cgi->param('record', $rec_id);
         my $stat = $self->load_myopac_bookbag_update('add_rec', $bookbag_id);
         # TODO: check for failure
-        (my $new_uri = $self->apache->unparsed_uri) =~ s/getit/getit_results/g;
-        $new_uri .= ($new_uri =~ /\?/) ? "&list=$bookbag_id" : "?list=$bookbag_id";
+        (my $new_uri = $self->apache->unparsed_uri) =~ s/list/list_results/g;
+        $new_uri .= ($new_uri =~ /\?/) ? "&list=$bookbag_id&listsuccess=1" : "?list=$bookbag_id&listsuccess=1";
         return $self->generic_redirect($new_uri);
 
     } else { 
@@ -194,8 +217,8 @@ sub save_item_to_bookbag {
        
         # set some params assumed to exist for load_mylist_add
         $self->cgi->param('record', $rec_id);
-        (my $new_uri = $self->apache->unparsed_uri) =~ s/getit/getit_results/g;
-        $new_uri .= ($new_uri =~ /\?/) ? '&list=anon' : '?list=anon';
+        (my $new_uri = $self->apache->unparsed_uri) =~ s/list/list_results/g;
+        $new_uri .= ($new_uri =~ /\?/) ? '&list=anon&listsuccess=1' : '?list=anon&listsuccess=1';
         $self->cgi->param('redirect_to', $new_uri);
 
         return $self->load_mylist_add;
@@ -268,8 +291,25 @@ sub load_kpac_config {
     $ctx->{kpac_config} = $kpac_config{$path};
     $ctx->{kpac_root} = $ctx->{base_path} . "/kpac"; 
     $ctx->{home_page} = $ctx->{proto} . '://' . $ctx->{hostname} . $ctx->{kpac_root} . "/home";
-    $ctx->{global_search_filter} = $kpac_config{$path}->{global_filter};
+
+    #Replace audn config from kpac.xml.example to new org unit setting
+    #$ctx->{global_search_filter} = $kpac_config{$path}->{global_filter};
+    my $audn_filter = $ctx->{get_org_setting}->($ou, 'opac.kpac_audn_filter') || 'a,b,c,j';
+    $ctx->{global_search_filter} = "audience(" . $audn_filter . ")";
 }
 
+sub load_kpac_categories {
+    my $self = shift;
+    my $ctx = $self->ctx;
+
+    my $categories = $self->editor->search_config_kpac_topics([
+        {active => t},
+        {order_by => {kt => 'topic_order'}}
+    ]);
+
+    $ctx->{categories} = $categories;
+
+    return Apache2::Const::OK;
+} 
 
 1;

@@ -16622,6 +16622,66 @@ SELECT  usr,
         </links>
     </class>
 
+    <class id="kt" controller="open-ils.cstore open-ils.pcrud" oils_obj:fieldmapper="config::kpac_topics" oils_persist:tablename="config.kpac_topics" reporter:label="KPAC Topic Configuration">
+        <fields oils_persist:primary="id" oils_persist:sequence="config.kpac_topics_id_seq">
+            <field reporter:label="ID" name="id" reporter:datatype="id"/>
+            <field reporter:label="Active" name="active" reporter:datatype="bool"/>
+            <field reporter:label="Parent Category" name="parent" reporter:datatype="link"/>
+            <field reporter:label="Image File Name" name="img" reporter:datatype="text"/>
+            <field reporter:label="Name" name="name" reporter:datatype="text" oils_obj:required="true"/>
+            <field reporter:label="Description" name="description" reporter:datatype="text"/>
+            <field reporter:label="Content Type" name="content_type" reporter:datatype="link"/>
+            <field reporter:label="Book List ID" name="content_list" reporter:datatype="int"/>
+            <field reporter:label="URL" name="content_link" reporter:datatype="text"/>
+            <field reporter:label="Search String" name="content_search" reporter:datatype="text"/>
+            <field reporter:label="Topic Order" name="topic_order" reporter:datatype="int"/>
+        </fields>
+        <links>
+            <link field="content_type" reltype="has_a" key="id" map="" class="kct"/>
+            <link field="parent" reltype="has_a" key="id" map="" class="kp"/>
+        </links>
+        <permacrud xmlns="http://open-ils.org/spec/opensrf/IDL/permacrud/v1">
+            <actions>
+                <create permission="KPAC_ADMIN" global_required="true"/>
+                <retrieve/>
+                <update permission="KPAC_ADMIN" global_required="true"/>
+                <delete permission="KPAC_ADMIN" global_required="true"/>
+            </actions>
+        </permacrud>
+    </class>
+
+    <class id="kct" controller="open-ils.cstore open-ils.pcrud" oils_obj:fieldmapper="config::kpac_content_types" oils_persist:tablename="config.kpac_content_types" reporter:label="KPAC Content Types">
+        <fields oils_persist:primary="id" oils_persist:sequence="config.kpac_content_types_id_seq">
+            <field reporter:label="ID" name="id" reporter:datatype="id"/>
+            <field reporter:label="Name" name="name" reporter:datatype="text" oils_obj:required="true"/>
+        </fields>
+        <permacrud xmlns="http://open-ils.org/spec/opensrf/IDL/permacrud/v1">
+            <actions>
+                <create permission="KPAC_ADMIN" global_required="true"/>
+                <retrieve/>
+                <update permission="KPAC_ADMIN" global_required="true"/>
+                <delete permission="KPAC_ADMIN" global_required="true"/>
+            </actions>
+        </permacrud>
+    </class>
+
+    <class id="kp" controller="open-ils.cstore open-ils.pcrud" oils_obj:fieldmapper="config::kpac_parent_topics" reporter:label="KPAC Parent Topics" oils_persist:readonly="true">
+        <oils_persist:source_definition>
+            SELECT id, name FROM config.kpac_topics WHERE content_type=1
+        </oils_persist:source_definition>
+        <fields oils_persist:primary="id">
+            <field reporter:label="ID" name="id" reporter:datatype="id"/>
+            <field reporter:label="Name" name="name" reporter:datatype="text" oils_obj:required="true"/>
+        </fields>
+        <permacrud>
+            <actions>
+                <create permission="KPAC_ADMIN" global_required="true"/>
+                <retrieve/>
+                <update permission="KPAC_ADMIN" global_required="true"/>
+                <delete permission="KPAC_ADMIN" global_required="true"/>
+            </actions>
+        </permacrud>
+    </class>
 
 	<!-- ********************************************************************************************************************* -->
 </IDL>

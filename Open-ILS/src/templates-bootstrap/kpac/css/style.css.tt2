@@ -1,0 +1,505 @@
+/* KPAC-SPECIFIC CSS */
+
+[%-
+    PROCESS "kpac/css/colors.tt2";
+    PROCESS "kpac/css/fonts.tt2";
+    rtl = ctx.get_i18n_l(ctx.eg_locale).rtl;
+%]
+
+/* BASIC STRUCTURE */
+
+body {
+    font-size: [% kpac_fonts.kpac_base %];
+}
+
+h1 {
+    font-size: [% kpac_fonts.kpac_biggest %];
+    line-height: 1.5;
+}
+
+h2 {
+    font-size: [% kpac_fonts.size_bigger %];
+}
+
+a {
+    color: [% kpac_colors.link_text %];
+    text-decoration: none;
+}
+
+a:hover {
+    color: [% kpac_colors.hover %];
+}
+
+#main {
+    padding: 0px 20px 20px 20px;
+}
+
+/* BUTTONS */
+
+.kpac-button {
+    color: [% kpac_colors.button_text %];
+    font-weight: bold;
+    text-decoration: none !important;
+    cursor: pointer !important;
+    border-radius: 1rem;
+    border: 1px solid [% kpac_colors.button_fade %];
+    background-color:  [% kpac_colors.button %];
+    margin: 0.5em;
+    padding: 0.3em;
+    display: inline-block;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.15);
+}
+
+.kpac-button:hover, a.kpac-button:hover {
+    background-color: [% kpac_colors.button_hover %] !important;
+    color: [% kpac_colors.button_hover_text %] !important;
+}
+
+.kpac-button:disabled {
+    color: [% css_colors.accent_medium %];
+    cursor: pointer !important;
+    border: 1px solid [% css_colors.accent_light %];
+    background-color: [% css_colors.accent_lighter %];
+}
+
+.kpac-search-button {
+    margin-top: 30px;
+    padding: 5px;
+}
+
+.kpac-record-button {
+    width: 10rem;
+}
+
+/* Firefox adds its own special space to inputs; this gets us closer */
+button.kpac-button::-moz-focus-inner, input.kpac-button::-moz-focus-inner {
+    padding: 0;
+    border: 0;
+}
+
+/* HEADER */
+
+.header_wrapper {
+    background-color: [% kpac_colors.header_background %];
+    height: 175px;
+    border-bottom: 1px solid [% kpac_colors.medium_border %];
+    color: [% kpac_colors.header_text %];
+    background-image: url("[% ctx.media_prefix %]/images/kpac2/critters.png");
+    background-repeat: no-repeat;
+    background-position: center;
+}
+
+#topnav_logo {
+    color: [% kpac_colors.header_text %];
+}
+
+#topnav_logo img {
+    max-height: 110px;
+}
+
+.header_wrapper a, #topnav_logo a {
+    color: [% kpac_colors.header_link %];
+    font-weight: bold;
+    font-size: [% kpac_fonts.kpac_medium %];
+}
+
+#topnav_logo a {
+  display: block;
+}
+
+.header_wrapper a:hover {
+    color: [% kpac_colors.hover %];
+}
+
+#topnav_logo a:hover {
+    color: [% kpac_colors.hover %];
+    display: block;
+    border: 1px solid [% kpac_colors.hover %];
+}
+
+@media only screen and (max-width: 1000px) {
+    .header_wrapper {
+        height: 175px;
+        background-image: url("[% ctx.media_prefix %]/images/kpac2/dog-left.png");
+        background-repeat: no-repeat;
+        background-position: left;
+    }
+
+    #topnav_logo {
+        padding: 10px;
+    }
+
+    #topnav_logo img {
+        width: 90px;
+    }
+
+    .header_wrapper a, #topnav_logo a {
+        font-size: [% kpac_fonts.kpac_medium %];
+    }
+}
+
+/* FOOTER */
+
+.footer_wrapper {
+    background-color:  [% kpac_colors.footer_background %];
+    color: [% kpac_colors.footer_text %]; 
+}
+
+.footer_wrapper a, .footer_wrapper a:visited {
+    color: [% kpac_colors.footer_link %]; 
+}
+
+.footer_wrapper a:hover {
+    color: [% kpac_colors.footer_hover %];
+}
+
+#footer_logo {
+    text-align: center;
+}
+
+#footer_logo a {
+    display: block;
+    padding: 10px;
+}
+
+#footer_logo a:hover {
+    color: [% kpac_colors.footer_hover %]; 
+    border: 1px solid [% kpac_colors.footer_hover %]; 
+    display: block;
+}
+
+.bottom_nav {}
+
+/* SEARCH BOX */
+
+.search_wrapper {
+    margin-bottom: 10px;
+    margin-top: 10px;
+    background: [% kpac_colors.light_background_two %];
+    border: 1px dashed [% kpac_colors.dark_accent %];
+    padding: 20px;
+    border-radius: 1rem;
+}
+
+/* HOME PAGE CATEGORY GRID */
+
+.category_wrapper {}
+
+.cat-grid {
+    width: 80%;
+    margin: auto;
+}
+
+.cat-grid-cell {
+    border: 0px;
+    float: left;
+    width: 150px;
+    height: 150px;
+    margin: 10px;
+    text-align: center;
+}
+
+.cat-grid-cell a {
+    display: block;
+}
+
+.cat-grid-cell a:hover {
+    border: 1px solid [% kpac_colors.hover %];
+    display: block;
+}
+
+.cat-img {
+    padding: 0px;
+    width: 130px;
+}
+
+.cat-title {
+    font-weight: bold;
+    background-color: [% kpac_colors.cat_text_background %];
+    color: [% kpac_colors.cat_text %];
+    padding: 5px;
+    text-decoration: none;
+    border-radius: 1rem;
+}
+
+.cat-title-block {
+    max-width: 80%;
+    margin: auto;
+    padding-bottom: 50px;
+}
+
+.cat-title-block h2 {
+    text-align: center;
+}
+
+.cat-description {
+    padding: 10px;
+    width: 60%;
+    margin: auto;
+    text-align: center;
+}
+
+/* SEARCH RESULTS */
+
+.search_paging {
+    background-color: [% kpac_colors.light_background_three %];
+    border-radius: 1rem;
+    padding: .4rem;
+    margin: .25rem;
+}
+
+.search_paging div {
+    padding: 5px;
+    font-size: [% kpac_fonts.kpac_smaller %];
+}
+
+.result_wrapper {
+    width: 90%;
+    margin: auto;
+}
+
+.result_row {
+    border: 1px solid [% kpac_colors.light_border %];
+    padding: 10px;
+    margin: 5px 5px 20px 5px;
+    border-radius: 1rem;
+}
+
+.result_row_image_wrapper a {
+    display:block;
+    padding: 5px;
+    width: 160px;
+}
+
+.result_row_image_wrapper a:hover {
+    border: 1px solid [% kpac_colors.hover %];
+}
+
+.result_row_image_wrapper img {
+    border: 1px solid [% kpac_colors.medium_border %];
+    width: 150px;
+    border-radius: .25rem;
+}
+
+.result_row_title {
+    font-weight: bold;
+    font-size: [% kpac_fonts.kpac_big %];
+}
+
+.result_shelf_location {
+    padding: .5em;
+    margin-top: 1em;
+    background: [% kpac_colors.light_background_four %];
+    border-radius: 1rem;
+}
+
+/* RECORD DETAILS */
+
+.record_wrapper {
+    width: 90%;
+    margin: auto;
+}
+
+.copy_table {}
+
+.copy_table_intro {}
+
+.copy_table_paging {
+    font-weight: bold;
+    background-color: [% kpac_colors.copy_table_paging %];
+    border-radius: 1rem;
+    padding: .4rem;
+    margin: .5rem;
+}
+
+.copy_table_paging div {
+    padding: 5px;
+    font-size: [% kpac_fonts.kpac_smaller %];
+}
+
+.record_summary_wrapper {}
+
+.cover_image_wrapper img {
+    border: 1px solid [% kpac_colors.dark_border %];
+    max-width: 180px;
+    border-radius: .25rem;
+    margin-bottom: 10px;
+}
+
+.item_title {}
+
+.item_author {}
+
+.item_format {}
+
+.item_summary {
+    padding: 20px 0px 20px 0px;
+}
+
+.item_summary p {
+    font-size: [% kpac_fonts.kpac_big %];
+    font-weight: bold;
+}
+
+/* REQUEST HOLD AND ADD TO LIST PAGES */
+
+.request_wrapper {
+    width: 100%;
+    margin: auto;
+}
+
+.request_summary {
+    margin-bottom: 20px;
+}
+
+.request_cover_wrapper {}
+
+.request_cover_wrapper img {
+    width: 150px;
+    border: 1px solid [% kpac_colors.dark_border %];
+    border-radius: .25rem;
+    padding: 0px;
+    margin-bottom: 10px;
+}
+
+.request_decor {
+    background-image: url("[% ctx.media_prefix %]/images/kpac2/cat-right.png");
+    background-repeat: no-repeat;
+    background-position: right bottom;
+    background-size: 380px;
+}
+
+.request_list_decor {
+    background-image: url("[% ctx.media_prefix %]/images/kpac2/sloth-right.png");
+    background-repeat: no-repeat;
+    background-position: right bottom;
+    background-size: 370px;
+}
+
+.request_form {
+    border: 2px dotted [% kpac_colors.dark_accent %];
+    background: [% kpac_colors.light_background_two %];
+    padding: 20px;
+    border-radius: 1em;
+}
+
+/* REQUEST HOLD RESULT PAGE */
+
+.request_result_wrapper {
+    height: 200px;
+}
+
+.request_result_decor {
+    background-image: url("[% ctx.media_prefix %]/images/kpac2/fox-left.png");
+    background-repeat: no-repeat;
+    background-position: left bottom;
+    background-size: 450px;
+    margin-left: -5px;
+    margin-bottom: -36px;
+}
+
+@media only screen and (max-width: 1000px) {
+    .request_result_decor {
+        display: none;
+        visibility: hidden;
+    }
+}
+
+/* BREADCRUMBS */
+
+.breadcrumb {
+    background: [% kpac_colors.light_background_one %];
+    border: 1px dashed [% kpac_colors.medium_border %];
+    border-radius: 1rem;
+}
+
+/* PLACE HOLD - SUCCESS PAGE */
+
+.hold_success_left {}
+
+.hold_success_right {
+    background-image: url("[% ctx.media_prefix %]/images/kpac2/kpac-success.png");
+    background-repeat: no-repeat;
+    background-position:left bottom;
+    height: 400px;
+}
+
+@media only screen and (max-width: 1000px) {
+    .hold_success_left, .hold_success_right {
+        display: none;
+        visibility: hidden;
+    }
+}
+
+/* SAVE TO LIST - SUCCESS PAGE */
+
+.list_success_left {}
+
+.list_success_right {
+    background-image: url("[% ctx.media_prefix %]/images/kpac2/kpac-list-success.png");
+    background-repeat: no-repeat;
+    background-position:left bottom;
+    height: 400px;
+}
+
+@media only screen and (max-width: 1000px) {
+    .list_success_left, .list_success_right {
+        display: none;
+        visibility: hidden;
+    }
+}
+
+/* LOGIN MODAL */
+
+#loginModal {
+    background: [% kpac_colors.light_background_one %];
+    background-image: url("[% ctx.media_prefix %]/images/kpac2/header.png");
+    background-repeat: no-repeat;
+    background-position: center top;
+    background-size: 650px;
+}
+
+@media only screen and (max-width: 1000px) {
+    #loginModal {
+        background: [% kpac_colors.light_background_one %];
+        background-image: url("[% ctx.media_prefix %]/images/kpac2/header.png");
+        background-repeat: no-repeat;
+        background-position: center top;
+        background-size: 550px;
+    }
+}
+
+/* BOOKBAGS */
+
+.list-description {
+    margin: 0px 20px 20px 0px;
+}
+
+.list-note {
+    font-style: italic;
+    margin-bottom: 10px;
+    background: [% kpac_colors.light_background_one %];
+    border-radius: 1rem;
+    padding-left: 10px;
+}
+
+/* ADDITIONAL BASIC PAGES */
+
+.descriptive-box {
+    margin-bottom: 10px;
+    margin-top: 10px;
+    background: [% kpac_colors.light_background_two %];
+    border: 1px dashed [% kpac_colors.dark_accent %];
+    padding: 20px;
+    border-radius: 1rem;
+}
+
+.section-title {
+    margin-bottom: 10px;
+    margin-top: 10px;
+    background: [% kpac_colors.light_background_one %];
+    border: 1px dashed [% kpac_colors.dark_accent %];
+    padding: 10px 20px 10px 20px;
+    border-radius: 1rem;
+    font-size: [% kpac_fonts.kpac_big %];
+}

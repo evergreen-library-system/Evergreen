@@ -9,6 +9,11 @@
 
 
    <ul class="navbar-nav nav-fl px-3">
+      <!--Kids Catalog-->
+      [% IF ctx.get_org_setting(ctx.physical_loc || ctx.aou_tree.id, 'opac.show_kpac_link') %]
+        <li class="nav-item"><a class="nav-link" href="[% mkurl(ctx.base_path _ "/kpac/home") %]">
+        [% l('Kids\' Catalog') %]</a></li>
+      [% END %]
       <!--Link 1-->
       <li class="nav-item">
         <a class="nav-link" href="[% ctx.link_one %]">[% l('Example Link 1') %]<span class="sr-only">(current)</span></a>

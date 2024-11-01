@@ -1,0 +1,23 @@
+                <div class="cat-grid-cell">
+                    [% location = CGI.param('locg') ? CGI.param('locg') : '1' %]
+
+                    [% new_trail = CGI.param('trail') AND ctx.page != 'home' ? trail_append(cat.id) : cat.id %]
+
+                    [% IF cat.content_type == '2' # book list %]
+                        <a href="[% mkurl(ctx.kpac_root _ '/results', {bookbag => cat.content_list,
+                            locg => location, trail => new_trail}) %]">
+                    [% ELSIF cat.content_type == '3' # url link %]
+                        <a href="[%- cat.content_link | html -%]">
+                    [% ELSIF cat.content_type == '4' # search terms %]
+                        <a href="[% mkurl(ctx.kpac_root _ '/results', {query => cat.content_search,
+                            nosprop => '', locg => location, trail => new_trail}, ['page', 'qtype', 'bookbag']) %]">
+                    [% ELSIF cat.content_type == '1' # category %]
+                        <a href="[% mkurl(ctx.kpac_root _ '/category', {trail => new_trail, locg => location,
+                            nosprop => 1}, ['page', 'qtype', 'bookbag']) %]">
+                    [% END %]
+                    <img src="[% ctx.media_prefixes _ '/images/kpac2/uploads/' _ cat.img %]" 
+                        class="cat-img" 
+                        alt="" /><br/>
+                    <div class="cat-title">[% l(cat.name) %]</div>
+                    </a>
+                </div>

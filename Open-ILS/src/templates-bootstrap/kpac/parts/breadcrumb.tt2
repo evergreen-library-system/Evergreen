@@ -1,0 +1,87 @@
+<div class="breadcrumb" role="navigation" aria-label="Breadcrumb Menu">
+    [% clear_params = ['action', 'hold', 'hold_failed', 'pickup_lib', 'ac', 'copy_limit', 'copy_offset', 'list', 'listsuccess', 'bookbag', 'trail', 'query'] %]
+
+    <!-- home page -->
+    <a href="[% mkurl(ctx.kpac_root _ '/home', {}, clear_params) %]" 
+        class="bread_home" title="Return to KPAC Home Page">[% l('Home Page') %]</a>
+
+    [%  IF ctx.page == 'category' OR (ctx.page == 'rresult' AND CGI.param('bookbag') AND CGI.param('trail')) %]
+        <!-- category page or bookbag page -->
+        [%  trail = CGI.param('trail'); 
+            trail = trail ? trail.split('/') : [];
+            IF trail.size > 1;
+                FOR cat IN trail;
+                    IF cat != trail_endpoint();
+                        FOR thiscat IN ctx.categories;
+                            IF thiscat.id == cat;
+                                ctx.parentname = thiscat.name;
+                            END;
+                        END %]
+                        &nbsp; <span aria-hidden="true">&raquo;</span> &nbsp; 
+                        <a href="[% mkurl(ctx.kpac_root _ '/category', 
+                            {trail = cat}, clear_params) %]">[% ctx.parentname %]</a>
+                    [% END %]
+                [% END %]
+            [% END %]
+        
+    [% ELSIF ctx.page == 'rresult' AND CGI.param('trail') %]
+        <!-- category search result page -->
+        [%  trail = CGI.param('trail'); 
+            trail = trail ? trail.split('/') : [];
+            IF trail.size > 0;
+                FOR cat IN trail;
+                    FOR thiscat IN ctx.categories;
+                        IF thiscat.id == cat;
+                            ctx.parentname = thiscat.name;
+                        END;
+                    END %]
+                    [% IF cat != trail_endpoint(); %]
+                        &nbsp; <span aria-hidden="true">&raquo;</span> &nbsp;
+                        <a href="[% mkurl(ctx.kpac_root _ '/category',
+                            {trail = cat}, clear_params) %]">[% ctx.parentname %]</a>
+                    [% END;
+                END;
+            END %]
+
+    [% ELSIF ctx.page == 'record' %]
+        <!-- record details -->
+        [%  trail = CGI.param('trail'); 
+            trail = trail ? trail.split('/') : [];
+            IF trail.size > 0;
+                FOR cat IN trail;
+                    FOR thiscat IN ctx.categories;
+                        IF thiscat.id == cat;
+                            ctx.parentname = thiscat.name;
+                        END;
+                    END %]
+                    &nbsp; <span aria-hidden="true">&raquo;</span> &nbsp;
+                    [% IF cat != trail_endpoint(); %]
+                        <a href="[% mkurl(ctx.kpac_root _ '/category',
+                            {trail = cat}, clear_params) %]">[% ctx.parentname %]</a>
+                    [% ELSE %]
+                        [% IF CGI.param('bookbag') %]
+                            <a href="[% mkurl(ctx.kpac_root _ '/results') %]">[% ctx.parentname %]</a>
+                        [% ELSE %]
+                            <a href="[% mkurl(ctx.kpac_root _ '/category',
+                                {trail = CGI.param('trail')}, clear_params) %]">[% ctx.parentname %]</a>
+                            &nbsp; <span aria-hidden="true">&raquo;</span> &nbsp;
+                            <a href="[% mkurl(ctx.kpac_root _ '/results') %]">[% l('Search Results') %]</a>
+                        [% END %]
+                    [% END;
+                END; %]
+            [% ELSE %]
+               &nbsp; <span aria-hidden="true">&raquo;</span> &nbsp;
+               <a href="[% mkurl(ctx.kpac_root _ '/results') %]">[% l("Search Results") %]</a>
+            [% END %]
+
+    [% ELSIF ctx.page == 'getit' OR ctx.page == 'list' OR CGI.param('hold_failed') OR CGI.param('hold') OR CGI.param('listsuccess') %]
+        <!-- hold pages -->
+        &nbsp; <span aria-hidden="true">&raquo;</span> &nbsp; <a href="[% mkurl(ctx.kpac_root _ '/results', {}, clear_params) %]">
+            [% l('Search Results') %]
+        </a>
+        &nbsp; <span aria-hidden="true">&raquo;</span> &nbsp; 
+        <a href="[% mkurl(ctx.kpac_root _ '/record/' _ ctx.bre_id, {}, clear_params) %]">[% attrs.title | html %]</a>
+    [% END %]
+</div>
+
+

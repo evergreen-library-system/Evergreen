@@ -1,0 +1,13 @@
+[%-
+    kpac_fonts = {
+        kpac_base = "100%",
+        kpac_small = "0.92rem",
+        kpac_smaller = "0.83rem",
+        kpac_smallest = "0.75rem",
+        kpac_medium = "0.95rem",
+        kpac_big = "1.1rem",
+        kpac_bigger = "1.25rem",
+        kpac_biggest = "2rem",
+        font_main = "arial, sans-serif"
+    }
+%]

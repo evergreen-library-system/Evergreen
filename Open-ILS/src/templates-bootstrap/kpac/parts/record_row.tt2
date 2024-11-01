@@ -1,0 +1,46 @@
+<div class="row result_row">
+    <div class="col-12 col-lg-3 text-center text-lg-left result_row_image_wrapper">
+        [%  ident = attrs.isbn_clean || attrs.upc; 
+            img_src = ctx.media_prefix _ '/images/kpac2/item_image.jpg' _ ctx.cache_key;
+            IF ident; img_src = ctx.media_prefix _ '/opac/extras/ac/jacket/medium/' _ ident; END %]
+        <a href="[% mkurl(ctx.kpac_root _ '/record/' _ rec_id) %]">
+            <img alt="[% l('Cover image for [_1]', attrs.title) | html %]" src='[% img_src | url %]' />
+        </a>
+    </div>
+    <div class="col-12 col-lg-6 text-center text-lg-left">
+        <h3><a href="[% mkurl(ctx.kpac_root _ '/record/' _ rec_id) %]" class="result_row_title">
+                [% attrs.title | html %]</a></h3>
+        [% IF attrs.author && attrs.author.size %]
+            <div class="item_author">[% l('Author') %]: [% attrs.author | html %]</div>
+        [% END %]
+
+        [% IF ctx.bookbag;
+            rec_id = rec.id;
+            FOR note IN ctx.bookbag_items_by_bre_id.$rec_id.notes %]
+                <div class="list-note">
+                    [% l("Note") %]: [% note.note | html %]
+                </div>
+            [% END %]
+        [% END %]
+
+        <div>
+            [% l('Publisher') %]: [% attrs.publisher _ " " _ attrs.pubdate | html %]
+        </div>
+        <div class="item_format">
+            <img alt="[% l('Format: [_1]', attrs.format_label) | html %]" src="[% attrs.format_icon %]" />
+            [% l(attrs.format_label) | html %]
+        </div>
+        <div class="result_shelf_location">
+            <i class="fas fa-location-dot" aria-hidden="true"></i> [% l('Location:') %] [% attrs.holdings.0.library %] &rArr; [% attrs.holdings.0.location | html %] &rArr; [% attrs.holdings.0.label | html %]
+        </div>
+    </div>
+    <div class="col-12 col-lg-3 text-center text lg-right">
+        <a class="kpac-button kpac-record-button" href="[% mkurl(ctx.kpac_root _ '/record/' _ rec_id) %]">
+            <i class="fas fa-circle-info" aria-hidden="true"></i> [% l("More Info") %]</a><br/>
+        <a class="kpac-button kpac-record-button" href="[% mkurl(ctx.kpac_root _ '/getit/' _ rec_id) %]">
+            <i class="fas fa-hand" aria-hidden="true"></i> [% l("Ask For This") %]</a><br>
+        <a class="kpac-button kpac-record-button" href="[% mkurl(ctx.kpac_root _ '/list/' _ rec_id) %]">
+            <i class="fas fa-list" aria-hidden="true"></i> [% l("Add To List") %]</a>
+    </div>
+</div>  
+ 

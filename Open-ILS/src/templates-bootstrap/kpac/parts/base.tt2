@@ -1,0 +1,74 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns='http://www.w3.org/1999/xhtml' lang='[% ctx.eg_locale %]' xml:lang='[% ctx.eg_locale %]'>
+    <head>
+        <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
+        <meta name = "viewport" content = "width=device-width, initial-scale = 1.0">
+
+        <!--Bootstrap dependancies-->
+        <link rel="stylesheet" href="[% ctx.media_prefix %]/opac/deps/node_modules/bootstrap/dist/css/bootstrap.min.css[% ctx.cache_key %]">
+        <link rel="stylesheet" href="[% ctx.media_prefix %]/opac/deps/node_modules/@fortawesome/fontawesome-free/css/all.css[% ctx.cache_key %]" />
+        <link rel="stylesheet" href="[% ctx.media_prefix %]/js/ui/default/common/build/js/glide/css/glide.core.min.css[% ctx.cache_key %]">
+        <link rel="stylesheet" href="[% ctx.media_prefix %]/js/ui/default/common/build/js/glide/css/glide.theme.min.css[% ctx.cache_key %]">
+        <link rel="stylesheet" href="[% ctx.media_prefix %]/opac/deps/node_modules/@duetds/date-picker/dist/duet/themes/default.css[% ctx.cache_key %]" />
+
+        <!--OPAC Stylesheets-->
+        <link rel="stylesheet" href="[% ctx.opac_root %]/css/style.css[% ctx.cache_key %]&amp;dir=[%
+          IF ctx.get_i18n_l(ctx.eg_locale).rtl == 't' %]rtl[%
+          ELSE %]ltr[% END %]" />
+        <link rel="stylesheet" href="[% ctx.media_prefix %]/css/skin/default/opac/semiauto.css[% ctx.cache_key %]" />
+        <link rel="stylesheet" href="[% ctx.opac_root %]/css/mediaQuery.css[% ctx.cache_key %]" />
+        [% IF ctx.get_i18n_l(ctx.eg_locale).rtl == 't' %]
+        <link rel="stylesheet" href="[% ctx.media_prefix %]/css/skin/default/opac/semiauto-rtl.css[% ctx.cache_key %]" />
+        [% END %]
+
+        <!--KPAC Stylesheet-->
+        <link rel="stylesheet" href="[% ctx.kpac_root %]/css/style.css[% ctx.cache_key %]">
+
+        [% IF ctx.refresh %]
+            <meta http-equiv="refresh" content="[% ctx.refresh %]" />
+        [% END %]
+
+        <!--Analytics-->
+        [% matomo_id = ctx.get_org_setting(ctx.search_ou, 'opac.analytics.matomo_id'); %]
+        [% matomo_url = ctx.get_org_setting(ctx.search_ou, 'opac.analytics.matomo_url'); %]
+        [% IF matomo_id && matomo_url %]
+           [% matomo_enabled = 1; %]
+        [% END %]
+        [% INCLUDE 'opac/parts/goog_analytics.tt2' %]
+        [% INCLUDE 'opac/parts/matomo_analytics.tt2' %]
+
+        <script src="[% ctx.media_prefix %]/opac/deps/node_modules/jquery/dist/jquery.min.js[% ctx.cache_key %]"></script>
+
+        [%- libname = ctx.get_aou(ctx.search_ou).name;
+            libname = libname | html; %]
+
+        <title>[% l("Kids' Catalog - [_1]", ctx.page_title) %] - [% libname %]</title>
+    </head>
+    <body class="tundra d-flex flex-column min-vh-100">
+        [%#Each content page needs (at minimum) an <h2> describing the content%]
+        <a class="skip-link" href="#main">[% l('Skip to main content') %]</a>
+
+        [% INCLUDE 'kpac/parts/header.tt2' %]
+
+        <div class="mb-3" id="main" role="main">
+        [% content %]
+        </div>
+
+        [% INCLUDE 'kpac/parts/footer.tt2' %]
+
+        [% IF ctx.page != "login" ;%]
+        [% INCLUDE 'kpac/parts/login_modal.tt2' %]
+        [% END;%]
+
+        [% INCLUDE 'opac/parts/js.tt2' %]
+
+        </div>
+        <script type="text/javascript" src="[% ctx.media_prefix %]/js/ui/default/kpac/functions.js[% ctx.cache_key %]"></script>
+
+        <script>
+            $(document).ready(function(){
+                $('.tooltip').tooltip();
+            });
+        </script>
+    </body>
+</html>

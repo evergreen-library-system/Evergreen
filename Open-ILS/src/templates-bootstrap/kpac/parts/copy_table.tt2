@@ -1,0 +1,95 @@
+[%-
+FOREACH copy_info IN ctx.copies;
+    IF copy_info.call_number_label != '##URI##';
+        has_copies = 'true';
+    END;
+    IF copy_info.part_label != '';
+        has_parts = 'true';
+    END;
+    IF has_parts && has_copies;
+        LAST;
+    END;
+END;
+%]
+[%- IF has_copies; %]
+
+    <!-- COPY TABLE -->
+
+    <div class="copy_table_intro">
+        [% l("You can find this item at these locations:") %]
+    </div>
+
+    <table class="container-fluid table table-sm tablee-hover mt-4 miniTable copy_table" role="table">
+        <thead row="rowgroup">
+            <tr role="row">
+                <th scope="col" role="columnheader">[% l('Library') %]</th>
+                <th scope="col" role="columnheader">[% l('Shelving Location') %]</th>
+                <th scope="col" role="columnheader">[% l('Call Number') %]</th>
+                [%- IF has_parts == 'true' %]
+                    <th scope='col' role="columnheader">[% l("Part") %]</th>
+                [%- END %]
+                <th scope="col" role="columnheader">[% l('Status') %]</th>
+            </tr>
+        </thead>
+        <tbody role="rowgroup">
+            [%- 
+            FOR copy_info IN ctx.copies;
+                callnum = copy_info.call_number_label;
+                NEXT IF callnum == '##URI##';
+
+                callnum_prefix = copy_info.call_number_prefix_label;
+                IF callnum_prefix != "";
+                    callnum = callnum_prefix _ " " _ callnum;
+                END;
+
+                callnum_suffix = copy_info.call_number_suffix_label;
+                IF callnum_suffix != "";
+                    callnum = callnum  _ " " _ callnum_suffix;
+                END;
+            -%]
+            <tr role="row" property="offers" typeof="Offer" mobile-count="#[% loop.count %]">
+                <td  role="cell" mobile-title="[% l('Library') %]">
+                    [%- INCLUDE "opac/parts/library_name_link.tt2"; -%]
+                </td>
+                <td role="cell" mobile-title="[% l('Shelving Location') %]">[% copy_info.copy_location | html %]</td>
+                <td role="cell" mobile-title="[% l('Call Number') %]">[% callnum | html %]</td>
+                [%- IF has_parts == 'true' %]
+                    <td  role="cell" mobile-title="[% l('Part') %]">[% copy_info.part_label | html %]</td>     
+                [%- END %]
+                <td role="cell" mobile-title="[% l('Status') %]">[% copy_info.copy_status | html %]</td>
+            </tr>
+            [%- END %]
+        </tbody>
+    </table>
+
+    <!-- PAGING -->
+    [%- more_copies_limit = 50 %]
+    [% IF ctx.copies.size >= ctx.copy_limit || ctx.copy_offset > 0 || ctx.copy_limit == more_copies_limit %]
+        <div class="row copy_table_paging">
+            <div class="col-12 col-lg-3 text-center text-lg-left">
+                [%- IF ctx.copy_offset > 0;
+                    new_offset = ctx.copy_offset - ctx.copy_limit;
+                    IF new_offset < 0; new_offset = 0; END %]
+                    <a href="[% mkurl('', {copy_offset => new_offset, copy_limit => ctx.copy_limit}) %]"><span aria-hidden="true">&laquo;</span>
+                        [% l('Show previous [_1] copies', ctx.copy_offset - new_offset) %]</a>
+                [%- END %]
+            </div>
+
+            <div class="col-12 col-lg-6 text-center">
+                [%- IF  ctx.copy_limit != more_copies_limit AND ctx.copies.size >= ctx.copy_limit %]
+                    <a href="[% mkurl('', {copy_limit => more_copies_limit, copy_offset => 0}) %]">[% l('Show more copies') %]</a>
+                [%- ELSIF ctx.copy_limit == more_copies_limit %]
+                    <a href="[% mkurl('', {copy_limit => 0, copy_offset => 0}) %]">[% l('Show fewer copies') %]</a>
+                [%- END %]
+            </div>
+
+            <div class="col-12 col-lg-3 text-center text-lg-right">
+                [%- IF ctx.copies.size >= ctx.copy_limit %]
+                    <a href="[% mkurl('', {copy_offset => ctx.copy_offset + ctx.copy_limit, copy_limit => ctx.copy_limit}) %]">[%
+                        l('Show next [_1] copies', ctx.copy_limit) %] <span aria-hidden="true">&raquo;</span></a>
+                [%- END %]
+            </div>
+        </div>
+    [% END %]
+[% END %]
+

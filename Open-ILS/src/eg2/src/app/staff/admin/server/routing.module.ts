@@ -130,6 +130,13 @@ const routes: Routes = [{
     data: [{schema: 'sip',
         table: 'filter', readonlyFields: 'key'}]
 }, {
+    path: 'config/kpac_topics',
+    component: BasicAdminPageComponent,
+    data: [{schema: 'config',
+        table: 'kpac_topics',
+        readonlyFields: 'id',
+        fieldOrder: 'name,description,active,img,id,parent,topic_order,content_type,content_list,content_search, content_link'}]
+}, {
     path: ':schema/:table',
     component: BasicAdminPageComponent
 }];

@@ -1,0 +1,19 @@
+[%  
+    PROCESS "opac/parts/header.tt2";
+    PROCESS "opac/parts/org_selector.tt2";
+    WRAPPER "kpac/parts/base.tt2";
+    PROCESS 'kpac/parts/util.tt2'; 
+    ctx.page_title = l("Home");
+%]
+
+<div id="home" class="mx-3">
+    [% INCLUDE "kpac/parts/searchbar.tt2" %]
+ 
+    [% IF ctx.categories.size %]
+        <h2>[% l('Or click on an image to get started:') %]</h2>
+        [% INCLUDE "kpac/parts/grid.tt2" %]
+    [% END %]
+</div>
+
+[% END %]
+

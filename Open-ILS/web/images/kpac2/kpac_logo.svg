@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html [
+	<!ENTITY nbsp "&#xA0;">
+	<!ENTITY sdot "&#x22C5;">
+]>
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en-US" lang="en-US">
+<!-- git web interface version 2.47.1, (C) 2005-2006, Kay Sievers <kay.sievers@vrfy.org>, Christian Gierke -->
+<!-- git core binaries version 2.47.1 -->
+<head>
+<meta name="generator" content="gitweb/2.47.1 git/2.47.1"/>
+<meta name="robots" content="index, nofollow"/>
+<title>git.evergreen-ils.org Git - evergreen/pines.git/blob - Open-ILS/web/images/kpac2/kpac_logo.svg</title>
+<link rel="stylesheet" type="text/css" href="static/gitweb.css"/>
+<link rel="alternate" title="evergreen/pines.git - history of Open-ILS/web/images/kpac2/kpac_logo.svg - RSS feed" href="/?p=evergreen/pines.git;a=rss;f=Open-ILS/web/images/kpac2/kpac_logo.svg" type="application/rss+xml" />
+<link rel="alternate" title="evergreen/pines.git - history of Open-ILS/web/images/kpac2/kpac_logo.svg - RSS feed (no merges)" href="/?p=evergreen/pines.git;a=rss;f=Open-ILS/web/images/kpac2/kpac_logo.svg;opt=--no-merges" type="application/rss+xml" />
+<link rel="alternate" title="evergreen/pines.git - history of Open-ILS/web/images/kpac2/kpac_logo.svg - Atom feed" href="/?p=evergreen/pines.git;a=atom;f=Open-ILS/web/images/kpac2/kpac_logo.svg" type="application/atom+xml" />
+<link rel="alternate" title="evergreen/pines.git - history of Open-ILS/web/images/kpac2/kpac_logo.svg - Atom feed (no merges)" href="/?p=evergreen/pines.git;a=atom;f=Open-ILS/web/images/kpac2/kpac_logo.svg;opt=--no-merges" type="application/atom+xml" />
+<link rel="shortcut icon" href="static/git-favicon.png" type="image/png" />
+</head>
+<body>
+<div class="page_header">
+<a href="https://git-scm.com/" title="git homepage"><img alt="git" class="logo" height="27" src="static/git-logo.png" width="72" /></a><a href="/">projects</a> / <a href="/?a=project_list;pf=evergreen">evergreen</a> / <a href="/?p=evergreen/pines.git;a=summary">pines.git</a> / blob
+</div>
+<form method="get" action="/" enctype="multipart/form-data"><div class="search">
+<input name="p" type="hidden" value="evergreen/pines.git" />
+<input name="a" type="hidden" value="search" />
+<input name="h" type="hidden" value="83f89532e18b306b12264b3ba055d5a49907c3cd" />
+<select name="st" >
+<option selected="selected" value="commit">commit</option>
+<option value="grep">grep</option>
+<option value="author">author</option>
+<option value="committer">committer</option>
+<option value="pickaxe">pickaxe</option>
+</select> <a href="/?p=evergreen/pines.git;a=search_help" title="search help">?</a> search:
+<input type="text" name="s"  />
+<span title="Extended regular expression"><label><input type="checkbox" name="sr" value="1" />re</label></span></div>
+</form>
+<div class="page_nav">
+<a href="/?p=evergreen/pines.git;a=summary">summary</a> | <a href="/?p=evergreen/pines.git;a=shortlog">shortlog</a> | <a href="/?p=evergreen/pines.git;a=log">log</a> | <a href="/?p=evergreen/pines.git;a=commit;h=83f89532e18b306b12264b3ba055d5a49907c3cd">commit</a> | <a href="/?p=evergreen/pines.git;a=commitdiff;h=83f89532e18b306b12264b3ba055d5a49907c3cd">commitdiff</a> | <a href="/?p=evergreen/pines.git;a=tree;h=b9f80f2ee01b12be15fe53f163626a0ae3ba68b3;hb=83f89532e18b306b12264b3ba055d5a49907c3cd">tree</a><br/>
+<a href="/?p=evergreen/pines.git;a=history;f=Open-ILS/web/images/kpac2/kpac_logo.svg;h=afbfc5bfc095cd10be70e343318ade84dad87da2;hb=83f89532e18b306b12264b3ba055d5a49907c3cd">history</a> | <a href="/?p=evergreen/pines.git;a=blob_plain;f=Open-ILS/web/images/kpac2/kpac_logo.svg;h=afbfc5bfc095cd10be70e343318ade84dad87da2;hb=83f89532e18b306b12264b3ba055d5a49907c3cd">raw</a> | <a href="/?p=evergreen/pines.git;a=blob;f=Open-ILS/web/images/kpac2/kpac_logo.svg;hb=HEAD">HEAD</a><br/>
+</div>
+<div class="header">
+<a class="title" href="/?p=evergreen/pines.git;a=commit;h=83f89532e18b306b12264b3ba055d5a49907c3cd">PINES KPAC - intermediary branch start</a>
+</div>
+<div class="page_path"><a href="/?p=evergreen/pines.git;a=tree;hb=83f89532e18b306b12264b3ba055d5a49907c3cd" title="tree root">[evergreen/pines.git]</a> / <a href="/?p=evergreen/pines.git;a=tree;f=Open-ILS;hb=83f89532e18b306b12264b3ba055d5a49907c3cd" title="Open-ILS">Open-ILS</a> / <a href="/?p=evergreen/pines.git;a=tree;f=Open-ILS/web;hb=83f89532e18b306b12264b3ba055d5a49907c3cd" title="Open-ILS/web">web</a> / <a href="/?p=evergreen/pines.git;a=tree;f=Open-ILS/web/images;hb=83f89532e18b306b12264b3ba055d5a49907c3cd" title="Open-ILS/web/images">images</a> / <a href="/?p=evergreen/pines.git;a=tree;f=Open-ILS/web/images/kpac2;hb=83f89532e18b306b12264b3ba055d5a49907c3cd" title="Open-ILS/web/images/kpac2">kpac2</a> / <a href="/?p=evergreen/pines.git;a=blob_plain;f=Open-ILS/web/images/kpac2/kpac_logo.svg;hb=83f89532e18b306b12264b3ba055d5a49907c3cd" title="Open-ILS/web/images/kpac2/kpac_logo.svg">kpac_logo.svg</a><br/></div>
+<div class="page_body">
+<img class="blob" type="image/svg+xml" alt="Open-ILS/web/images/kpac2/kpac_logo.svg" title="Open-ILS/web/images/kpac2/kpac_logo.svg" src="/?p=evergreen/pines.git;a=blob_plain;f=Open-ILS/web/images/kpac2/kpac_logo.svg;h=afbfc5bfc095cd10be70e343318ade84dad87da2;hb=83f89532e18b306b12264b3ba055d5a49907c3cd" />
+</div><div class="page_footer">
+<div class="page_footer_text">Evergreen working repo (PINES)</div>
+<a class="rss_logo" href="/?p=evergreen/pines.git;a=rss;f=Open-ILS/web/images/kpac2/kpac_logo.svg" title="history of Open-ILS/web/images/kpac2/kpac_logo.svg RSS feed">RSS</a>
+<a class="rss_logo" href="/?p=evergreen/pines.git;a=atom;f=Open-ILS/web/images/kpac2/kpac_logo.svg" title="history of Open-ILS/web/images/kpac2/kpac_logo.svg Atom feed">Atom</a>
+</div>
+<script type="text/javascript" src="static/gitweb.js"></script>
+<script type="text/javascript">
+window.onload = function () {
+	var tz_cookie = { name: 'gitweb_tz', expires: 14, path: '/' };
+	onloadTZSetup('local', tz_cookie, 'datetime');
+};
+</script>
+</body>
+</html>

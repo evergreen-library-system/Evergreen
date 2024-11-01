@@ -8,6 +8,11 @@
 <div class="col-12 col-lg-6">
     <nav class="navbar navbar-expand-lg navbar-dark" aria-label="Additional Resources">
         <ul class="navbar-nav mx-auto">
+        <!--Kids Catalog-->
+        [% IF ctx.get_org_setting(ctx.physical_loc || ctx.aou_tree.id, 'opac.show_kpac_link') %]
+            <li class="nav-item"><a class="nav-link" href="[% mkurl(ctx.base_path _ "/kpac/home") %]">
+            [% l('Kids\' Catalog') %]</a></li>
+        [% END %]
             <!--Link 1-->
         [% IF ctx.get_org_setting(ctx.physical_loc || ctx.aou_tree.id, 'opac.allow_pending_user') && !ctx.user %]
             <li class="nav-item"><a class="nav-link" href="[% mkurl(ctx.opac_root _ '/register') %]">[%

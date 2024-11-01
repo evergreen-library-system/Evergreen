@@ -1,0 +1,13 @@
+<div class="row category_wrapper">
+        <div class="cat-grid">
+            [% FOR cat IN ctx.categories %]
+                [% IF ctx.page == 'home' AND !cat.parent %]
+                    [% INCLUDE 'kpac/parts/grid-cell.tt2' %]
+                [% ELSIF page_id AND cat.parent == page_id%]
+                    [% INCLUDE 'kpac/parts/grid-cell.tt2' %]
+                [% ELSIF !CGI.param('trail') AND !cat.parent %]
+                    [% INCLUDE 'kpac/parts/grid-cell.tt2' %]
+                [% END %]
+            [% END %]
+        </div>
+</div>

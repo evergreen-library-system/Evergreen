@@ -1,0 +1,21 @@
+<div class="row footer_wrapper" role="contentinfo">
+    <div class="col-12 col-lg-3 mx-2 text-center text-lg-left">
+        <a href="[% mkurl(ctx.opac_root _ '/home') %]">
+            <i class="fas fa-backward" aria-hidden="true"></i> [% l('Back to Main Catalog') %]</a>
+    </div>
+
+    <div id="copyright_text" class="col-12 col-lg-6">
+        [% l('Copyright &copy; 2006-[_1] Georgia Public Library Service, and others', date.format(date.now, '%Y')) %]
+        <div id="footer_logo">
+            [% l('Powered by') %]<br/>
+            <a href="http://evergreen-ils.org">
+                <img id="footer_logo_image" src="[% ctx.media_prefix %]/images/evergreen-logo-white.svg[% ctx.cache_key %]"
+                    alt="[% l('Evergreen') %]" role="img" />
+            </a>
+        </div>
+    </div>
+
+    <div class="col-12 col-lg-2 mx-2">
+        [%- INCLUDE 'opac/parts/pref_locale_picker.tt2' %]
+    </div>
+</div>

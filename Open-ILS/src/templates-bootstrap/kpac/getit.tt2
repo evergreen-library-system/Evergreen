@@ -1,0 +1,100 @@
+[%  
+    PROCESS "opac/parts/header.tt2";
+    PROCESS "opac/parts/misc_util.tt2"; # MARC 
+    WRAPPER "kpac/parts/base.tt2";
+    PROCESS 'kpac/parts/util.tt2'; 
+    attrs = {marc_xml => ctx.marc_xml};
+    INCLUDE get_marc_attrs args=attrs;
+    ctx.page_title = attrs.title | html 
+%]
+  
+[% INCLUDE 'kpac/parts/breadcrumb.tt2' %]
+
+<h1>[% l('Place Hold') %]</h1>
+<p>[% l('Ask for this item and pick it up at your local library!') %]</p>
+<div class="row request_wrapper">
+    <div class="col-12 col-lg-2 text-center text-lg-left request_cover_wrapper">
+        [%  ident = attrs.isbn_clean || attrs.upc; 
+            img_src = ctx.media_prefix _ '/images/kpac2/item_image.jpg' _ ctx.cache_key;
+            IF ident; img_src = ctx.media_prefix _ '/opac/extras/ac/jacket/medium/' _ ident;
+        END %]
+        <img class="request_cover"
+            alt="[% l('Cover image for [_1]', attrs.title) | html %]" src='[% img_src | url %]' />
+    </div>
+    <div class="col-12 col-lg-4 text-center text-lg-left request_summary">
+        <h2 class="item_title">[% attrs.title | html %]</h2>
+        [% IF attrs.author && attrs.author.size %]
+            <div class="item_author">[% l('By [_1]', attrs.author) | html %]</div>
+        [% END %]
+        <div>
+            [% attrs.publisher _ " " _ attrs.pubdate | html %]
+        </div>
+        <div class="item_format">
+            <img alt="[% l('Format: [_1]', attrs.format_label) | html %]" src="[% attrs.format_icon %]" />
+            [% l(attrs.format_label) | html %]
+        </div>
+    </div>
+    <div class="col-12 col-lg-2 request_decor">
+
+    </div>
+    <div class="col-12 col-lg-3 text-center text-lg-left request_form">
+        <form method='POST'>
+            [% IF !ctx.user %]
+                <h2>[% l("Log In") %]</h2>
+                <p><label for="username">[% l("Enter your Library Card Number or User Name:") %]</p>
+                <input name="username" id="username" type="text" class="text_box" /></label>
+                <p>
+                <p><label for="password">[% l("Enter your Password:") %]</p>
+                <input name="password" id="password" type="password" class="text_box" /></label>
+                <input type="hidden" name='pickup_lib' value='0' id='pickup_lib'>
+            [% ELSE %]
+                <h2>[% l("Select a Library") %]</h2>
+                <p><label for="pickup_lib">[% l("Which library do you want to pick this up at?") %]</label></p>
+                [%  def_lib = ctx.default_pickup_lib || ctx.physical_loc;
+                    PROCESS "opac/parts/org_selector.tt2";
+                    INCLUDE build_org_selector name='pickup_lib' 
+                    value=def_lib id='pickup_lib' can_have_vols_only=1 hold_pickup_lib=1 %]
+
+                <!-- HIDDEN FIELDS FOR DEFAULT NOTIFICATION PREFERENCES -->
+                [%  # To avoid non-notifications (see lp#1282783) force prefs if default is unset
+                    IF !ctx.notify_method OR ctx.notify_method == '';
+                        SET ctx.notify_method = 'email|phone';
+                    END
+                %]
+
+                [% IF ctx.user.email AND ctx.notify_method.search('email') %]
+                    <input type="hidden" id="email_notify" name="email_notify" value="t" />
+                [% END %]
+
+                [% IF allow_phone_notifications == 'true' AND ctx.notify_method.search('phone') %]
+                    <input type="hidden" id="phone_notify_checkbox" name="phone_notify_checkbox" value="t" />
+                    <input type="hidden" id="phone_notify" name="phone_notify"
+                        value="[% ctx.default_phone ? ctx.default_phone : ctx.user.day_phone %]" />
+                [% END %]
+
+                [% IF ctx.get_org_setting(ctx.search_ou, 'sms.enable') == 1 AND ctx.notify_method.search('sms');
+                    setting_notify = 'opac.default_sms_notify';
+                    setting_carrier = 'opac.default_sms_carrier'; %]
+                    <input type="hidden" id="sms_notify_checkbox" name="sms_notify_checkbox" value="t" />
+                    <input type="hidden" id="sms_carrier" name="sms_carrier" value="[% ctx.user_setting_map.$setting_carrier %]" />
+                    <input type="hidden" id="sms_notify" name="sms_notify" value="[% ctx.user_setting_map.$setting_notify %]" />
+                [% END %]
+            [% END %]
+
+            <div>
+                <input type="hidden" name="action" value="hold" />
+                <button class="btn btn-confirm kpac-button" type="submit">
+                    [% IF !ctx.user %]
+                        <i class="fas fa-child-reaching" aria-hidden="true"></i>
+                        [% l("Log In") %]
+                    [% ELSE %]
+                        <i class="fas fa-arrow-right" aria-hidden="true"></i>
+                        [% l("Send Your Request") %]
+                    [% END %]
+                </button>
+            </div>
+        </form>
+    </div>
+</div>
+       
+[% END %]

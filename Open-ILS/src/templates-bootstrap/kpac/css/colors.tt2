@@ -1,0 +1,52 @@
+[%
+    kpac_colors = {
+        # OPAC style is also pulled in - this is used in addition
+
+        # GENERAL
+
+        dark_accent = "#288188", # dark turquoise
+        light_border = "#ddd", # light gray
+        medium_border = "#999", # medium gray
+        dark_border = "#333", # dark gray
+        light_background_one = "#ccebf8", # light blue
+        light_background_two = "#e1f8c2", # light green
+        light_background_three = "#fde0aa", # light orange
+        light_background_four = "#fff7bd", # yellow
+        link_text = "#226c73", # dark turquoise
+        hover = "#0038A8" # dark blue
+
+        # HEADER
+        header_background = "#ccebf8", # light blue
+        header_text = "#288188", # dark turquoise
+        header_link = "#288188" # dark turquoise
+
+        # FOOTER
+
+        footer_background = "#288188", # dark turquoise
+        footer_link = "#fff", # white
+        footer_text = "#fff", # white
+        footer_hover = "#ffd574" # yellow
+
+        # BUTTONS
+
+        button = "#288188", # dark turquoise
+        button_text = "#fff", # white
+        button_fade = "#000", # black
+        button_hover = "#fff", # gray
+        button_hover_text = "#288188" # dark turquoise
+
+        # CATEGORIES
+
+        cat_text = "#fff", # white
+        cat_text_background = "#0038A8", # dark blue
+
+        # SEARCH RESULTS
+
+        search_paging = "#ccebf8", # light blue
+
+        # RECORD DETAILS
+        copy_table_paging = "#ccebf8", # light blue
+
+};
+
+%]

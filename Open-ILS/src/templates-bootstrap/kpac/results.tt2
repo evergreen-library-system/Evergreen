@@ -1,0 +1,46 @@
+[%  PROCESS "opac/parts/header.tt2";
+    PROCESS "opac/parts/misc_util.tt2"; # MARC 
+    PROCESS "kpac/parts/util.tt2"; 
+    WRAPPER "kpac/parts/base.tt2";
+    attrs = {marc_xml => ctx.marc_xml};
+    PROCESS get_marc_attrs args=attrs;
+    page_id = trail_endpoint();
+    IF ctx.bookbag;
+        ctx.page_title = l(ctx.bookbag.name);
+    ELSE;
+        ctx.page_title = l('Search Results');
+    END;
+%]
+
+[% INCLUDE "kpac/parts/searchbar.tt2" %]
+    
+[% INCLUDE 'kpac/parts/breadcrumb.tt2' %]
+
+[% IF ctx.bookbag %]
+    <h2>[% l(ctx.page_title) %]</h2>
+    <div class="list-description">[% l(ctx.bookbag.description) %]</div>
+[% ELSE %]
+    <h2>[% l('Search Results') %]</h2>
+[% END %]
+
+<div class="result_wrapper">
+    [% IF ctx.records.size == 0 %]
+        <div class="results_none">
+            [% l('No records were found that matched your search.') %]
+        </div>
+    [% ELSE %]
+        [% PROCESS 'kpac/parts/paginate.tt2' header=1 %]
+        [% FOR rec IN ctx.records;
+            attrs = {marc_xml => rec.marc_xml};
+            PROCESS get_marc_attrs args=attrs;
+            INCLUDE 'kpac/parts/record_row.tt2' show_actions=1 rec_id=rec.id;
+        END %]
+        [% PROCESS 'kpac/parts/paginate.tt2' header=0 %]
+    [% END %]
+</div>
+
+
+
+
+</div>
+[% END %]

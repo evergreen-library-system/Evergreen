@@ -1,0 +1,37 @@
+[%  
+    PROCESS "opac/parts/header.tt2";
+    PROCESS "kpac/parts/util.tt2";
+    WRAPPER "kpac/parts/base.tt2";
+    page_id = trail_endpoint();
+
+    FOR thiscat IN ctx.categories;
+        IF thiscat.id == page_id;
+           ctx.page_title = thiscat.name;
+           ctx.page_id = thiscat.id;
+           ctx.parent = thiscat.parent;
+           ctx.description = thiscat.description;
+        END;
+    END;
+%]
+
+<div id="home" class="mx-3">
+    [% INCLUDE "kpac/parts/searchbar.tt2" %]
+    
+    [% INCLUDE 'kpac/parts/breadcrumb.tt2' %]
+
+    <div class="cat-title-block">
+        <h2>[% ctx.page_title %]</h2>
+        [% IF ctx.description %]
+            <div class="cat-description">
+                [% ctx.description %]
+            </div>
+        [% END; %]
+    </div>
+
+    [% IF ctx.categories.size %]
+        [% INCLUDE "kpac/parts/grid.tt2" %]
+    [% END %]
+
+</div>
+
+[% END %] 

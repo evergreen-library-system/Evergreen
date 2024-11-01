@@ -2045,6 +2045,8 @@ INSERT INTO permission.perm_list ( id, code, description ) VALUES
      'Allow viewing of user bucket user shares', 'ppl', 'description')),
  ( 676, 'UPDATE_TOP_OF_QUEUE', oils_i18n_gettext(676,
      'Allow setting and unsetting hold from top of hold queue (cut in line)', 'ppl', 'description')),
+ ( 677, 'KPAC_ADMIN', oils_i18n_gettext(677,
+     'Allow user to configure KPAC category and topic entries', 'ppl', 'description')),
  ( 688, 'UPDATE_HARD_DUE_DATE', oils_i18n_gettext(688,
      'Allow update hard due dates', 'ppl', 'description')),
  ( 689, 'CREATE_HARD_DUE_DATE', oils_i18n_gettext(689,
@@ -25013,8 +25015,6 @@ VALUES (
     'bool'
 );
 
--- upgrade/XXXX.data.org-setting-template-bar.sql
-
 INSERT INTO config.org_unit_setting_type
     (grp, name, datatype, label, description)
 VALUES (
@@ -26173,3 +26173,40 @@ INSERT INTO config.org_unit_setting_type (
     'bool'
 );
 
+------- KPAC ------
+
+INSERT INTO config.workstation_setting_type
+    (name, grp, datatype, label)
+VALUES (
+    'eg.grid.admin.server.config.kpac_topics', 'gui', 'object',
+    oils_i18n_gettext(
+        'eg.grid.admin.server.config.kpac_topics',
+        'Grid Config: KPAC topics',
+        'cwst', 'label')
+);
+
+INSERT into config.org_unit_setting_type
+    (name, grp, label, description, datatype)
+VALUES (
+    'opac.show_kpac_link', 'opac',
+    oils_i18n_gettext('opac.show_kpac_link',
+        'Show KPAC Link',
+        'coust', 'label'),
+    oils_i18n_gettext('opac.show_kpac_link',
+        'Show the KPAC link in the OPAC. Default is false.',
+        'coust', 'description'),
+    'bool'
+);
+
+INSERT into config.org_unit_setting_type
+    (name, grp, label, description, datatype)
+VALUES (
+    'opac.kpac_audn_filter', 'opac',
+    oils_i18n_gettext('opac.kpac_audn_filter',
+        'KPAC Audience Filter',
+        'coust', 'label'),
+    oils_i18n_gettext('opac.kpac_audn_filter',
+        'Controls which items to display based on MARC Target Audience (Audn) field. Options are: a,b,c,d,j. Default is: a,b,c,j',
+        'coust', 'description'),
+    'string'
+);

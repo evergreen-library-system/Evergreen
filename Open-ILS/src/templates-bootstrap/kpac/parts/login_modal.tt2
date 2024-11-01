@@ -1,0 +1,114 @@
+[%
+
+    redirect = CGI.param('redirect_to');
+    # Don't use referer unless we got here from elsewhere within the TPAC
+    IF !redirect AND ctx.referer.match('^https?://' _ ctx.hostname _ ctx.kpac_root);
+        redirect = ctx.referer;
+    END;
+
+    # If no redirect is offered or it's leading us back to the
+    # login form, redirect the user to the KPAC Home Page
+    IF !redirect OR redirect.match(ctx.path_info _ '$');
+        redirect = CGI.url('-full' => 1) _ '/kpac/home';
+    END;
+    redirect = redirect | replace('^http:', 'https:');
+    sso_enabled = ctx.get_org_setting(ctx.sso_org, 'opac.login.shib_sso.enable');
+    sso_native = ctx.get_org_setting(ctx.sso_org, 'opac.login.shib_sso.allow_native');
+%]
+
+<dialog class="modal fade" id="loginModal" aria-label="Login form">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h1 class="modal-title" id="exampleModalLabel">[% l('Log in to Evergreen') %]</h1>
+        <button type="button" class="close" data-dismiss="modal">
+          <i class="fas fa-times" aria-hidden="true"></i>
+          <span class="sr-only">[% l('Close login dialog') %]</span>
+        </button>
+      </div>
+      <div class="modal-body">
+    [% IF sso_enabled %]
+    [%      final_redirect = redirect | html %]
+    <div id='sso-login-notice'>
+        <button type="submit" class="btn btn-confirm my-2" onclick="window.location = '[% mkurl(ctx.opac_root _ '/manual_shib_login', { redirect_to => final_redirect }) %]'" ><i class="fas fa-sign-in-alt" aria-hidden="true"></i>[% l('Login with SSO') %]</button>
+    [%-      IF sso_native; l(' or use the form below.'); END -%]
+    </div>
+    <br/>
+    [% END %]
+
+      [% IF ctx.login_failed_event %]
+    <div id='login-failed-message' role="status">
+    [%
+        IF ctx.login_failed_event.textcode == 'PATRON_CARD_INACTIVE';
+            l("The barcode used to login is marked as inactive.  Please contact your local library.");
+        ELSIF ctx.login_failed_event.textcode == 'PATRON_INACTIVE';
+            l("This account has been deactivated.  Please contact your local library.");
+        ELSE;
+            l("Login failed. The username or password provided was not valid. " _
+               "Passwords are case-sensitive.  Check your Caps-Lock key and try again or contact your local library.");
+        END;
+    %]
+    </div>
+    [% END %]
+
+  <form id="login_form" method='post' action="/eg/opac/login?redirect_to=[% ctx.kpac_root _ '/home' %]">
+<div class='container'>
+
+<!--Login Fields-->
+    [% IF !sso_enabled || sso_native %]
+    <div class="row">
+        <div class="col-sm-6">
+            <label for='username_field' class="lbl1 form-label d-inline" >[% l('Library Card Number') %]</label>
+            <input class="form-control" type='text' id="username_field" name="username" 
+                autocomplete="username" autocapitalize="off" aria-describedby="login-failed-message"
+                [% IF ctx.page == 'login' %] autofocus [% END %]/>
+        </div>
+        <div class="col-sm-6">
+            <label for="password_field" class="lbl1 form-label d-inline" >[% l('PIN') %]</label>
+            <div class="input-group">
+				<input class="form-control" id="password_field" name="password" type="password"
+					spellcheck="false" autocomplete="current-password" autocapitalize="none" aria-describedby="login-failed-message show_password" />
+				<button id="show_password" class="input-group-text pointer" type="button" role="checkbox" aria-checked="false" aria-label="[% l('Show password') %]">
+					<i class="fas fa-eye-slash"></i>
+				</button>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-sm-6">
+                    [% IF ctx.get_org_setting (
+                          ctx.physical_loc || ctx.aou_tree.id, 'opac.allow_pending_user') %]
+            <a href="[% mkurl(ctx.opac_root _ '/register', {}, 1) %]">[% l('Request A Card') %]</a>
+                    [% END %]
+        </div>
+        <div class="col-sm-6">
+            [% IF reset_password == 'true' %]
+                <a href="[% mkurl(ctx.opac_root _ '/password_reset', {}, 1) %]">[% l('Forgot Your Password?') %]  </a>
+            [% END %]
+        </div>
+    </div>
+    [% END; # native block %]
+
+    <div class="mx-auto row">
+
+        <div style="clear: both; padding-top: 15px;" class="col-12">
+        </div>
+
+        <input id="client_tz_id" name="client_tz" type="hidden" />
+    </div>
+    </div>
+
+      <div class="modal-footer d-sm-flex flex-wrap">
+        <div class="mr-auto form-check">
+          <input type='hidden' name='redirect_to' value='[% redirect | html %]'/>
+          <input type="checkbox" name="persist" id="persist" class="form-check-input"/>
+          <label for="persist" class="form-check-label"> [% l('Stay logged in?') %]</label>
+        </div>
+        <button type="button" class="btn btn-secondary" data-dismiss="modal"><i class="fas fa-times" aria-hidden="true"></i> [% l('Close') %]</button>
+        <button type="submit" class="btn btn-confirm"><i class="fas fa-sign-in-alt" aria-hidden="true"></i> [% l('Log in') %]</button>
+      </div>
+    </form>
+      </div>
+    </div>
+  </div>
+</dialog>

@@ -1,0 +1,37 @@
+[%  
+    PROCESS "opac/parts/header.tt2";
+    PROCESS "opac/parts/misc_util.tt2"; # MARC 
+    WRAPPER "kpac/parts/base.tt2";
+    PROCESS 'kpac/parts/util.tt2'; 
+    attrs = {marc_xml => ctx.marc_xml};
+    INCLUDE get_marc_attrs args=attrs;
+    ctx.page_title = l('Hold Results');
+    title_html = attrs.title | html;
+    kill_params = ['action', 'hold', 'hold_failed', 'pickup_lib', 'ac', 'copy_limit', 'copy_offset', 'list', 'listsuccess', 'trail', 'bookbag'];
+%]
+
+[% INCLUDE 'kpac/parts/breadcrumb.tt2' %]
+
+<div class="row request_result_wrapper">
+    <div class="col-12 col-lg-2 request_result_decor">
+
+    </div>
+    <div class="col-12 col-lg-9">
+        [% IF CGI.param('hold') %]
+            [% lib_html = ctx.get_aou(ctx.hold.pickup_lib).name | html %]
+            <h1>[% l('Hold Successful!') %]</h1>
+            <p>[% l('Hooray! Your request for [_1] was successful.', '<a href="' _ mkurl(ctx.kpac_root _ '/record/' _ ctx.bre_id,
+                {}, kill_params) _ '">'_ title_html _ '</a>') %]</p>
+            <p>[% l('We will contact you when your item is ready to pick up at [_1].', 
+                '<a href="' _ mkurl(ctx.kpac_root _ '/library/' _ ctx.hold.pickup_lib, {}, kill_params) _ '">' _ lib_html _ '</a>') %]</p>
+        [% ELSE %]
+            <h1>[% l('Hold Failed') %]</h1>
+            <p>[% l('We\'re sorry. We were unable to request [_1] for you.', '<a href="' _ mkurl(ctx.kpac_root _ '/record/'
+                 _ ctx.bre_id, {}, kill_params) _ '">' _ title_html _ '</a>') %]</p>
+            <p>[% l('Please ask a librarian for help.') %]</p>
+        [% END %]
+    </div>
+</div>
+          
+[% END %]          
+
