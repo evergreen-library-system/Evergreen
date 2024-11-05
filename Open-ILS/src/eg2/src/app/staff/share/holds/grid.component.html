@@ -100,8 +100,9 @@
               <label for="copy-locations-filter-btn" class="input-group-text"
                 style="cursor: pointer" i18n>Shelving Locations:
               </label>
-              <input type="button" id="copy-locations-filter-btn"
-                class="form-control" (click)="openCopyLocationsDialog()">
+              <button type="button" class="form-control" 
+              (click)="openCopyLocationsDialog()" i18n>Click to Select
+              </button>
               <button type="button" class="btn btn-outline-dark"
                 [ngClass]="{disabled: !this.copyLocationEntries.length}"
                 (click)="clearCopyLocations()" i18n>Clear
