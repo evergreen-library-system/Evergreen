@@ -3029,7 +3029,7 @@ table.bookbag-specific {
 .result-bookbag-description { font-size: [% css_fonts.size_bigger %]; font-style: italic; }
 .result-bookbag-item-note { font-style: italic; }
 .lowhits-bookbag-name { font-weight: bold; }
-.search_box_wrapper .list-group { z-index: 2; }
+.search_box_wrapper .list-group { z-index: 3; }
 .oils_AS { font-weight: bold; color: [% css_colors.text_match %]; }
 .active .oils_AS {
     color: [% css_colors.text_match_active %];
