@@ -40,3 +40,7 @@
   display: block;
   font-weight: bold;
 }
+
+.venn-dropdown {
+  color: var(--bs-body-color);
+}
