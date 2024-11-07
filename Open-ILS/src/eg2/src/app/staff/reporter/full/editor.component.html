@@ -73,7 +73,7 @@
 
   <div class="col-sm-3">
     <eg-tree [showExpandAll]="false" [tree]="currentIdlTree" (nodeClicked)="idlTreeNodeSelected($event)"
-      (stateFlagClicked)="idlTreeNodeRequired($event)" [disableStateFlagRangeSelect]="true" />
+      [disableStateFlagRangeSelect]="true" [stateFlagTemplate]="joinTypeVennDiagram" />
   </div>
 
   <div class="col-sm-9">
@@ -125,3 +125,33 @@
     </div>
   </div>
 </div>
+
+<ng-template #joinTypeVennDiagram let-node="node" >
+  <div ngbDropdown class="dropdown" #currentDropdown="ngbDropdown">
+    <button type="button" ngbDropdownToggle class="nav-link btn p-0 dropdown-toggle no-dropdown-caret venn-dropdown"
+      title="Select join type" i18n-title
+      aria-label="Select join type" i18n-aria-label>
+      <span [ngSwitch]="node.stateFlag" class="material-icons mat-icon-in-button" attr.aria-hidden="true">
+        <ng-container *ngSwitchCase="false">join_left</ng-container>
+        <ng-container *ngSwitchCase="true">join_inner</ng-container>
+      </span>
+    </button>
+    <div class="dropdown-menu" ngbDropdownMenu>
+      <button type="button" class="dropdown-item label-with-material-icon" ngbDropdownItem 
+        (keyup.space)="node.stateFlag=false; idlTreeNodeRequired(node); currentDropdown.close()"
+        (keyup.enter)="node.stateFlag=false; idlTreeNodeRequired(node); currentDropdown.close()"
+        (click)="node.stateFlag=false; idlTreeNodeRequired(node)">
+        <span class="material-icons" aria-hidden="true">join_left</span>
+        <span class="ms-2" i18n>Left Join</span>
+      </button>
+      <button type="button" class="dropdown-item label-with-material-icon" ngbDropdownItem 
+        (keyup.space)="node.stateFlag=true; idlTreeNodeRequired(node); currentDropdown.close()"
+        (keyup.enter)="node.stateFlag=true; idlTreeNodeRequired(node); currentDropdown.close()"
+        (click)="node.stateFlag=true; idlTreeNodeRequired(node)">
+        <span class="material-icons" aria-hidden="true">join_inner</span>
+        <span class="ms-2" i18n>Inner Join</span>
+      </button>
+    </div>
+  </div>
+</ng-template>
+

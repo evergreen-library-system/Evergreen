@@ -44,14 +44,18 @@
         i18n-aria-label i18n-title [attr.tabindex]="node.selected ? '0' : '-1'">
         <span class="material-icons" aria-hidden="true">{{node.expanded? 'expand_less' : 'expand_more'}}</span>
       </button>
-      <input *ngIf="(node.stateFlagLabel || showSelectAll) && !disableStateFlag" type='checkbox'
-		[(ngModel)]="node.stateFlag"
-		(click)="handleStateFlagClick(node, $event)"
-		title="{{node.stateFlagLabel}}"
-		tabindex="0"
-        [disabled]="disabled"
-		[attr.aria-label]="node.stateFlagLabel"
-		/>
+
+      <span #stateFlagContainer *ngIf="(node.stateFlagLabel || showSelectAll || stateFlagTemplate) && !disableStateFlag">
+        <input *ngIf="!stateFlagTemplate" type='checkbox'
+		  [(ngModel)]="node.stateFlag"
+		  (click)="handleStateFlagClick(node, $event)"
+		  title="{{node.stateFlagLabel}}"
+		  tabindex="0"
+          [disabled]="disabled"
+		  [attr.aria-label]="node.stateFlagLabel" />
+        <ng-container [ngTemplateOutlet]="stateFlagTemplate" [ngTemplateOutletContext]="{ node:node }"></ng-container>
+      </span>
+
       <button class="btn btn-link eg-tree-node-label" #egTreeNode
 		id="{{_tree.treeId}}-{{node.id}}" 
         [disabled]="disabled"
