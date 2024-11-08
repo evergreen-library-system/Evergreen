@@ -132,16 +132,20 @@ export class ReportReportsComponent implements OnInit {
         });
     }
 
-    shareFolder($event) {
+    shareFolder(clickedButtonComponent) {
         return this.shareOrgDialog.open().subscribe( org => {
             if ( org ) {
-            	this.RSvc.shareFolder(this.currentFolder, org);
-        	}
-        });
+   	           this.RSvc.shareFolder(this.currentFolder, org);
+               // Need to remove the old button from the grid context to not display it twice
+               this.reportsGrid.context.toolbarButtons = this.reportsGrid.context.toolbarButtons.filter(button => button != clickedButtonComponent.button);
+            }
+      	});
     }
 
-    unshareFolder($event) {
-        return this.RSvc.unshareFolder(this.currentFolder);
+    unshareFolder(clickedButtonComponent) {
+        // Need to remove the old button from the grid context to not display it twice
+        this.reportsGrid.context.toolbarButtons = this.reportsGrid.context.toolbarButtons.filter(button => button != clickedButtonComponent.button);
+   	   return this.RSvc.unshareFolder(this.currentFolder);
     }
 
     zeroSelectedRows(rows: any) {

@@ -92,11 +92,11 @@
     </eg-grid-toolbar-button>
  
     <eg-grid-toolbar-button label="Share Folder" i18n-label *ngIf="currentFolder && RSvc.folderIsMine(currentFolder) && currentFolder.shared() === 'f'"
-      (onClick)="shareFolder($event)">
+      #share (onClick)="shareFolder(share)">
     </eg-grid-toolbar-button>
 
     <eg-grid-toolbar-button label="Unshare Folder" i18n-label *ngIf="currentFolder && RSvc.folderIsMine(currentFolder) && currentFolder.shared() === 't'"
-      (onClick)="unshareFolder($event)">
+      #unshare (onClick)="unshareFolder(unshare)">
     </eg-grid-toolbar-button>
 
     <eg-grid-toolbar-action label="Delete Selected" i18n-label
