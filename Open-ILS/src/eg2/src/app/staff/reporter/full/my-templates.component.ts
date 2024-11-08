@@ -153,10 +153,12 @@ export class ReportTemplatesComponent implements OnInit {
         });
     }
 
-    shareFolder($event) {
+    shareFolder(clickedButtonComponent) {
         return this.shareOrgDialog.open().subscribe( org => {
             if ( org ) {
    	           this.RSvc.shareFolder(this.currentFolder, org);
+               // Need to remove the old button from the grid context to not display it twice
+               this.templatesGrid.context.toolbarButtons = this.templatesGrid.context.toolbarButtons.filter(button => button != clickedButtonComponent.button);
             }
       	});
     }
@@ -174,7 +176,9 @@ export class ReportTemplatesComponent implements OnInit {
       	});
     }
 
-    unshareFolder($event) {
+    unshareFolder(clickedButtonComponent) {
+        // Need to remove the old button from the grid context to not display it twice
+        this.templatesGrid.context.toolbarButtons = this.templatesGrid.context.toolbarButtons.filter(button => button != clickedButtonComponent.button);
    	   return this.RSvc.unshareFolder(this.currentFolder);
     }
 
