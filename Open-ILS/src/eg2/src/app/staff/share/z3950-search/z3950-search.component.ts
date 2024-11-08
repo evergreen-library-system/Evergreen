@@ -613,6 +613,12 @@ export class Z3950SearchComponent implements OnInit {
         );
     }
 
+    clearForm() {
+        this.currentFields.forEach(f => {
+            f.searchTerms = "";
+        });
+    }
+
     selectedRows() {
         return this
             .resultGrid
