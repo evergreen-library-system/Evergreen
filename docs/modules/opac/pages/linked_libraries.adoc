@@ -12,8 +12,10 @@ Evergreen automatically generates this page based on information entered in
 
 The library information page displays:
 
-* The name of the library
+* Library name
+* Library website
 * Opening hours
+* Upcoming closures
 * E-mail address
 * Phone number
 * Mailing address
