@@ -40,7 +40,7 @@ export LIBDBI_HOST=http://open-ils.org/~denials/evergreen
 
 # some OSes require a newer version of NodeJS
 # NOTE: Using the LTS binaries for NodeJS
-export NODEJS_VERSION=v18.18.0
+export NODEJS_VERSION=v22.11.0
 MACHINE_NAME = $(shell uname -m)
 ifeq ($(MACHINE_NAME),x86_64)
     export NODEJS_ARCHITECTURE=x64
