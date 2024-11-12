@@ -38,7 +38,7 @@ image::shelving_location/shelving_location_alert.png[Check in Alert message]
 NOTE: By default, these alerts will only display when an item is checked in, _not_ when it is used to record an in-house use.
 To also display these alerts when an item in your location is scanned for in-house use, go to Administration > Local Administration > Library Settings Editor and set _Display shelving location check in alert for in-house-use_ to True.
 +
-.. _Is Deleted?_, this sets the deletion flag for a shelving location to yes. 
+.. _Is Deleted?_, this sets the deletion flag for a shelving location to yes. If a shelving location is marked deleted, it will be filtered from the results by default.
 .. If you would like a prefix or suffix to be added to the call numbers of every volume in this location, enter it.
 .. If you would like, add a URL to the _URL_ field.  When a URL is entered in this field, the associated shelving location will display as a link in the Public Catalog summary display. This link can be useful for retrieving maps or other directions to the shelving location to aid users in finding material.
 . Select *Save*.
@@ -70,7 +70,7 @@ You may only delete a shelving location if:
 . Select the shelving location you would like to delete.
 . Select the actions button and select _Delete Selected_.
 
-Evergreen preserves shelving locations in the database, so no statistical information is lost when a shelving location is deleted.
+Evergreen preserves shelving locations in the database, so no statistical information is lost when a shelving location is deleted. A filter to hide deleted locations is applied by default. Clicking the _Remove Filters_ button or clearing the filter on the _Is Deleted?_ column will reveal the deleted locations.
 
 == Modifying shelving location order ==
 
