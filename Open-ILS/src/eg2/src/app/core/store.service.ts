@@ -113,6 +113,14 @@ export class StoreService {
         return this.parseJson(window.localStorage.getItem(key));
     }
 
+    getLocalItemNames(): string[] {
+        const keys = [];
+        for (let i = 0; i < window.localStorage.length ; i++ ) {
+            keys.push(window.localStorage.key(i));
+        }
+        return keys;
+    }
+
     getSessionItem(key: string): any {
         return this.parseJson(window.sessionStorage.getItem(key));
     }
@@ -196,6 +204,10 @@ export class StoreService {
 
     removeLocalItem(key: string): void {
         window.localStorage.removeItem(key);
+    }
+
+    removeLocalItems(keys: string[]): void {
+        keys.forEach((key) => this.removeLocalItem(key));
     }
 
     removeSessionItem(key: string): void {
