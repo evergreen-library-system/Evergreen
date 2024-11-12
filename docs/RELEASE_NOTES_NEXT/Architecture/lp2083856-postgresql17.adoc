@@ -1,0 +1,4 @@
+== Evergreen Supports PostgreSQL 17 ==
+
+PostgreSQL 17 can be installed along with Evergreen using the normal
+prerequisite installation process.
