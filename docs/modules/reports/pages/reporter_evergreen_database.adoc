@@ -113,8 +113,8 @@ This table contains item records. Important fields in this table include:
 * Last Edit Date/Time
 * Price
 
-Pre-catalogd item information including Dummy ISBN, Precat Dummy Title, and 
-Precat Dummy Author is also in this table. When a pre-catalogd item is checked
+Pre-cataloged item information including Dummy ISBN, Precat Dummy Title, and 
+Precat Dummy Author is also in this table. When a pre-cataloged item is checked
  out, an item record is created. If the barcode is already in the table and the
  item is not marked deleted, the item record will be updated with the new 
  title, author, etc.
@@ -139,7 +139,7 @@ table. When linking from other tables you usually have to link through the _Call
 
 === Circulation Table ===
 
-This table contains circulation records, including pre-catalogd item circulations.
+This table contains circulation records, including pre-cataloged item circulations.
 
 [NOTE]
 ======
@@ -176,22 +176,22 @@ xref:circulation:circulating_items_web_client.adoc#_in_house_use_f6[In-House Use
 
 For item information, follow the link to the _Item_ table.
 
-=== Non-catalogd Circulation Table ===
+=== Non-cataloged Circulation Table ===
 
 This table contains circulations for 
 xref:admin:circing_uncataloged_materials.adoc#_non_cataloged_item_settings[non-cataloged items]. 
 
-For Non-catalogd item type information, follow the link to the _Non-cat Item 
+For Non-cataloged item type information, follow the link to the _Non-cat Item 
 Type_ table.
 
-=== Non-catalogd In-house Use Table ===
+=== Non-cataloged In-house Use Table ===
 
 This table contains in-house use records for non-cataloged items. 
 
 These in-house circulations are done via the 
 xref:circulation:circulating_items_web_client.adoc#_in_house_use_f6[In-House Use] interface.
 
-For Non-catalogd item type information, follow the link to the _Item Type_ table.
+For Non-cataloged item type information, follow the link to the _Item Type_ table.
 
 === Hold Request Table ===
 
