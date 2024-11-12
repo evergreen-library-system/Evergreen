@@ -12,6 +12,10 @@ Four permissions are used by this functionality:
 
 These permissions should be assigned at the consortial level to those groups or users that will make use of the features described below.
 
+The _Require Monographic Part when Present_ Library Setting enables organizational units to:
+
+* Require a patron to select a monograph part when placing a hold if any part exists on the bibliographic record.
+* Require catalogers to use parts on all items when any item at the library has parts.
 
 == Add a Monograph Part to an Existing Record ==
 
@@ -54,3 +58,4 @@ In the Monograph Parts tab:
 . Select the part that you wish to be the lead part and then select *Merge*.
 
 The undesired part labels will be deleted, and any items that previously used those labels will now use the selected lead parts label.
+
