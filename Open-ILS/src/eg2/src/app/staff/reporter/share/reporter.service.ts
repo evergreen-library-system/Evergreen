@@ -1845,9 +1845,8 @@ export class ReporterService {
             return this.net.request(
                 'open-ils.reporter',
                 'open-ils.reporter.schedule.retrieve_by_folder',
-                this.auth.token(), query, null /* no limit ... cannot offset in the API */, withComplete
+                this.auth.token(), query, {offset: pager.offset, limit: pager.limit} , withComplete
             ).pipe(
-                map((rows: any[]) => rows.slice(pager.offset, pager.offset + pager.limit)),
                 map((rows: any[]) => rows.map(row => {
                     return {
                         template_name: row.report().template().name(),

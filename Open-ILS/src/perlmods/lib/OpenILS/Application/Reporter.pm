@@ -158,6 +158,11 @@ __PACKAGE__->register_method(
     method => 'retrieve_schedules');
 sub retrieve_schedules {
     my( $self, $conn, $auth, $folderId, $limit, $complete ) = @_;
+    my $offset = 0;
+    if (ref $limit) {
+        $offset = $$limit{offset} || 0;
+        $limit = $$limit{limit};
+    }
     my $e = new_rstore_editor(authtoken=>$auth);
     return $e->event unless $e->checkauth;
     return $e->event unless $e->allowed(['RUN_REPORTS','VIEW_REPORT_OUTPUT']);
@@ -173,6 +178,7 @@ sub retrieve_schedules {
     ];
 
     $query->[1]->{limit} = $limit if $limit;
+    $query->[1]->{offset} = $offset if $offset;
     $query->[0]->{complete_time} = undef unless $complete;
     $query->[0]->{complete_time} = { '!=' => undef } if $complete;
 
