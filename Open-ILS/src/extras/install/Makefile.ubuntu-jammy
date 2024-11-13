@@ -242,6 +242,12 @@ install_postgres_server_16:
 	make -f $(DIR)/Makefile.debian DEBS="$(PGSQL_SERVER_DEBS_16)"
 	make -f $(DIR)/Makefile.common install_cpan_pgsql
 
+install_postgres_server_17:
+	make -f $(DIR)/Makefile.debian DEBS="$(PGSQL_APT_REPO_DEBS)"
+	make -f $(DIR)/Makefile.debian debian_postgresql_repo
+	make -f $(DIR)/Makefile.debian DEBS="$(PGSQL_SERVER_DEBS_17)"
+	make -f $(DIR)/Makefile.common install_cpan_pgsql
+
 # note: if/when grunt-cli is available as a
 # package, use the packaged version instead.
 install_developer:
