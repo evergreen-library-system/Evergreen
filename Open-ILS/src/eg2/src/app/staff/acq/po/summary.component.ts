@@ -335,7 +335,7 @@ export class PoSummaryComponent implements OnInit, OnDestroy {
                 this.load(false).then(_ => {
                     this.initDone = true;
                     this.liService.clearLiCache();
-                    this.router.navigate([]);
+                    window.location.reload();
                 });
 
             } else {
@@ -344,6 +344,7 @@ export class PoSummaryComponent implements OnInit, OnDestroy {
             }
         });
     }
+
 
     setCanFinalize() {
 
