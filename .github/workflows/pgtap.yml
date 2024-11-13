@@ -24,7 +24,7 @@ jobs:
     runs-on: ubuntu-22.04
     strategy:
       matrix:
-        pg-version: [13, 14, 15, 16]
+        pg-version: [13, 14, 15, 16, 17]
       fail-fast: false
     steps:
       - uses: actions/checkout@v4
