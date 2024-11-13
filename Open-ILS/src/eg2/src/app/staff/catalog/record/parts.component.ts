@@ -66,9 +66,11 @@ export class PartsComponent implements OnInit {
             const orderBy: any = {};
 
             if (sort.length) { // Sort provided by grid.
-                orderBy.bmp = sort[0].name + ' ' + sort[0].dir;
+                // Labels sort by label_sortkey instead of label
+                let sort_name = sort[0].name === 'label' ? 'label_sortkey' : sort[0].name;
+                orderBy.bmp = sort_name + ' ' + sort[0].dir;
             } else {
-                orderBy.bmp = 'label';
+                orderBy.bmp = 'label_sortkey';
             }
 
             const searchOps = {
