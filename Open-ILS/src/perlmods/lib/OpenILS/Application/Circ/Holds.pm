@@ -1296,7 +1296,7 @@ sub update_hold_impl {
     # but needs to
     # --------------------------------------------------------------
     if($U->is_true($hold->cut_in_line) ne $U->is_true($orig_hold->cut_in_line)) {
-        return $e->die_event unless $e->allowed('UPDATE_HOLD_REQUEST_TIME', $hold->pickup_lib);
+        return $e->die_event unless $e->allowed('UPDATE_TOP_OF_QUEUE', $hold->pickup_lib);
     }
 
 

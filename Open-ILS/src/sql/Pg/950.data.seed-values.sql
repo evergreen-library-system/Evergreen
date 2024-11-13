@@ -2042,7 +2042,9 @@ INSERT INTO permission.perm_list ( id, code, description ) VALUES
  ( 674, 'VIEW_CONTAINER_COPY_ORG_SHARE', oils_i18n_gettext(674,
      'Allow viewing of copy bucket user shares', 'ppl', 'description')),
  ( 675, 'VIEW_CONTAINER_USER_ORG_SHARE', oils_i18n_gettext(675,
-     'Allow viewing of user bucket user shares', 'ppl', 'description'))
+     'Allow viewing of user bucket user shares', 'ppl', 'description')),
+ ( 676, 'UPDATE_TOP_OF_QUEUE', oils_i18n_gettext(676,
+     'Allow setting and unsetting hold from top of hold queue (cut in line)', 'ppl', 'description'))
 ;
 
 SELECT SETVAL('permission.perm_list_id_seq'::TEXT, 1000);
@@ -2576,7 +2578,8 @@ INSERT INTO permission.grp_perm_map (grp, perm, depth, grantable)
             'ABORT_TRANSIT_ON_LOST', 
             'ABORT_TRANSIT_ON_MISSING',
             'UPDATE_PATRON_COLLECTIONS_EXEMPT',
-			'VIEW_HOLD_MATRIX_MATCHPOINT');
+			'VIEW_HOLD_MATRIX_MATCHPOINT',
+            'UPDATE_TOP_OF_QUEUE');
 
 INSERT INTO permission.grp_perm_map (grp, perm, depth, grantable)
 	SELECT
