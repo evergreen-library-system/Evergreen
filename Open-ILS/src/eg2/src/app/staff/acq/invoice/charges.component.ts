@@ -36,7 +36,7 @@ export class InvoiceChargesComponent implements OnInit, OnDestroy {
     private amountPaidChangeSubject = new Subject<{ charge: IdlObject; value: any }>();
     private destroy$ = new Subject<void>();
 
-    owners: number[];
+    owners: number[] = [];
 
     @ViewChild('disencumberChargeDialog') disencumberChargeDialog: DisencumberChargeDialogComponent;
     @ViewChild('stopPercentAlertDialog') stopPercentAlertDialog: AlertDialogComponent;
@@ -88,7 +88,15 @@ export class InvoiceChargesComponent implements OnInit, OnDestroy {
             this._handleAmountPaidChange(charge, value);
         });
 
-        this.owners = this.org.ancestors(this.auth.user().ws_ou(), true);
+        this.perm.hasWorkPermAt(['MANAGE_FUND','CREATE_INVOICE'],true).then((perm) => {
+            this.owners.concat(perm['MANAGE_FUND']);
+
+            perm['CREATE_INVOICE'].forEach(ou => {
+                if(!this.owners.includes(ou)) {
+                    this.owners.push(ou);
+                }
+            });
+        });
 
         console.debug('InvoiceChargesComponent',this);
     }
