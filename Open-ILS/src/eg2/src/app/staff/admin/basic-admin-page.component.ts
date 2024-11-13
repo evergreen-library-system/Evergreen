@@ -11,9 +11,9 @@ import {tap, switchMap} from 'rxjs/operators';
 @Component({
     template: `
       <ng-container *ngIf="idlClass">
-      <eg-title i18n-prefix prefix="{{recordLabel || classLabel}} Administration">
+      <eg-title i18n-prefix prefix="{{ recordTitle || recordLabel || classLabel}} Administration">
       </eg-title>
-      <eg-staff-banner bannerText="{{recordLabel || classLabel}}" i18n-bannerText>
+      <eg-staff-banner bannerText="{{ recordTitle || recordLabel || classLabel}}" i18n-bannerText>
       </eg-staff-banner>
       <eg-admin-page persistKeyPfx="{{persistKeyPfx}}" idlClass="{{idlClass}}"
         configLinkBasePath="{{configLinkBasePath}}"
@@ -46,6 +46,8 @@ export class BasicAdminPageComponent implements OnInit {
     contextOrgSelectorPersistKey = '';
     readonlyFields = '';
     recordLabel = '';
+    // Overrides the record label, but only for the page title
+    recordTitle = '';
     orgDefaultAllowed = '';
     orgFieldsDefaultingToContextOrg = '';
     hideClearFilters: boolean;
@@ -106,6 +108,7 @@ export class BasicAdminPageComponent implements OnInit {
                     this.contextOrgSelectorPersistKey = data['contextOrgSelectorPersistKey'];
                     this.readonlyFields = data['readonlyFields'];
                     this.recordLabel = data['recordLabel'];
+                    this.recordTitle = data['recordTitle'];
                     this.orgDefaultAllowed = data['orgDefaultAllowed'];
                     this.orgFieldsDefaultingToContextOrg = data['orgFieldsDefaultingToContextOrg'];
                     this.hideClearFilters = data['hideClearFilters'];
