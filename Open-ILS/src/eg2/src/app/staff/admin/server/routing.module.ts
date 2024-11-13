@@ -87,6 +87,15 @@ const routes: Routes = [{
     path: 'permission/grp_tree',
     component: PermGroupTreeComponent
 }, {
+    path: 'permission/perm_list',
+    component: BasicAdminPageComponent,
+    data: [{
+        schema: 'permission',
+        table: 'perm_list',
+        recordTitle: 'Permission List',
+        recordLabel: 'Permission'
+    }]
+}, {
     path: 'actor/org_unit',
     loadChildren: () =>
         import('./org-unit.module').then(m => m.OrgUnitModule)
