@@ -4,7 +4,9 @@
 
 .user-favorite {
   color: var(--bs-yellow);
+  inset-block-end: -0.25rem;
   margin-inline-start: 0.25rem;
+  position: relative;
   -webkit-text-stroke: 1px var(--star-stroke);
 }
 

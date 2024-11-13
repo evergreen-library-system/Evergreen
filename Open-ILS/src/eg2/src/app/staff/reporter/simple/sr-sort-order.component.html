@@ -1,12 +1,12 @@
 <div class="order-row">
 
-<ngb-accordion #displayList="ngbAccordion" activeIds="display-field-list" class="col-md-6">
+<div class="col-md-6">
 
-  <ngb-panel id="display-field-list">
-    <ng-template ngbPanelHeader let-opened=true>
-      <h5 class="m-0" i18n>Field Display Order</h5>
-    </ng-template>
-    <ng-template ngbPanelContent>
+  <details class="card" id="display-field-list" open>
+    <summary class="card-header">
+      <h5 class="d-inline" i18n>Field Display Order</h5>
+    </summary>
+    <div class="card-body">
 
       <ng-container *ngFor="let f of fields; index as idx">
         <eg-sr-field
@@ -23,17 +23,17 @@
         </eg-sr-field>
       </ng-container>
 
-    </ng-template>
-  </ngb-panel>
+    </div>
+  </details>
 
-</ngb-accordion>
+</div>
 
-<ngb-accordion #orderList="ngbAccordion" activeIds="order-field-list" class="col-md-6">
-  <ngb-panel id="order-field-list">
-    <ng-template ngbPanelHeader let-opened=true>
-      <h5 class="m-0" i18n>Field Sort Order</h5>
-    </ng-template>
-    <ng-template ngbPanelContent>
+<div class="col-md-6">
+  <details class="card" id="order-field-list" open>
+    <summary class="card-header">
+      <h5 class="d-inline" i18n>Field Sort Order</h5>
+    </summary>
+    <div class="card-body">
 
       <ng-container *ngFor="let f of fieldsInOrderByOrder(); index as idx">
         <eg-sr-field
@@ -51,9 +51,9 @@
         </eg-sr-field>
       </ng-container>
 
-    </ng-template>
-  </ngb-panel>
+    </div>
+  </details>
 
-</ngb-accordion>
+</div>
 
 </div>

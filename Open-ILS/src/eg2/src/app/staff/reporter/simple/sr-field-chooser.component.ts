@@ -1,5 +1,4 @@
 import {Component, Input, Output, EventEmitter, ViewChild} from '@angular/core';
-import {NgbAccordion} from '@ng-bootstrap/ng-bootstrap';
 import {IdlService, IdlObject} from '@eg/core/idl.service';
 import {ReporterService} from '../share/reporter.service';
 
@@ -19,9 +18,6 @@ export class SRFieldChooserComponent {
     @Input() selectedFields: IdlObject[] = [];
     @Output() selectedFieldsChange = new EventEmitter<IdlObject[]>();
     @Input() listFields: IdlObject[] = [];
-
-    @ViewChild('fieldChooser', { static: false }) fieldChooser: NgbAccordion;
-    @ViewChild('selectedList', { static: false }) selectedList: NgbAccordion;
 
     constructor(
         private idl: IdlService,

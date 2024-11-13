@@ -10,7 +10,7 @@ import {OrgService} from '@eg/core/org.service';
 import {ToastService} from '@eg/share/toast/toast.service';
 import {BasketService} from '@eg/share/catalog/basket.service';
 import {EventService} from '@eg/core/event.service';
-import {NgbAccordion, NgbNav, NgbNavChangeEvent, NgbCollapse} from '@ng-bootstrap/ng-bootstrap';
+import {NgbNavChangeEvent} from '@ng-bootstrap/ng-bootstrap';
 
 export const FACET_CONFIG = {
     display: [
@@ -40,8 +40,6 @@ export class ResultFacetsComponent implements OnInit {
     recentBucketIds: number[] = [];
 
     public isCollapsed = false;
-
-    @ViewChild('sidebarBuckets', { static: false }) sidebarBuckets: NgbAccordion;
 
     constructor(
         private evt: EventService,

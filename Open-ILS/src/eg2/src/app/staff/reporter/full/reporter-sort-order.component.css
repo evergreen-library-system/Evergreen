@@ -3,7 +3,7 @@
   justify-content: space-between;
 }
 
-.accordion-header h3 {
+.card-header h3 {
   font-size: 1rem;
   font-weight: 600;
   padding: .75rem;

@@ -12,59 +12,59 @@
         </div>
       </ng-container>
       <ng-container *ngIf="!exportingBasket">
-        <div class="row"><label>Select a Record Source</label></div>
-        <ngb-accordion [closeOthers]="true" activeIds="csv" 
-          (panelChange)="sourceChange($event)">
-          <ngb-panel id="csv" title="CSV File">
-            <ng-template ngbPanelContent>
-              <div class="row">
-                <div class="col-lg-6">
-                  <label class="form-label" for="csv-input" i18n>Use Field Number</label>
-                </div>
-                <div class="col-lg-6">
-                  <input id='csv-input' type="number" class="form-control" 
-                    [(ngModel)]="fieldNumber"
-                    i18n-placeholder placeholder="Starts at 0..."/>
-                </div>
+          <h3>Select a Record Source</h3>
+          <details name="record-source" class="card" open> 
+            <summary class="card-header">
+              <h3 class="d-inline">CSV File</h3>
+            </summary>
+            <div class="row card-body">
+              <div class="col-lg-6">
+                <label class="form-label" for="csv-input" i18n>Use Field Number</label>
               </div>
-              <div class="row">
-                <div class="col-lg-6">
-                  <label class="form-label" for="use-csv-file" i18n>From CSV file</label>
-                </div>
-                <div class="col-lg-6">
-                  <input #fileSelector (change)="fileSelected($event)" 
-                    id="use-csv-file" class="form-control" type="file"/>
-                </div>
+              <div class="col-lg-6">
+                <input id='csv-input' type="number" class="form-control" 
+                  [(ngModel)]="fieldNumber"
+                  i18n-placeholder placeholder="Starts at 0..." autofocus />
               </div>
-            </ng-template>
-          </ngb-panel>
-          <ngb-panel id="record-id" title="Record ID">
-            <ng-template ngbPanelContent>
-              <div class="row">
-                <div class="col-lg-6">
-                  <label class="form-label" for="record-id-input" i18n>Record ID</label>
-                </div>
-                <div class="col-lg-6">
-                  <input id='record-id-input' type="number" 
-                    class="form-control" [(ngModel)]="recordId"/>
-                </div>
+            </div>
+            <div class="row">
+              <div class="col-lg-6">
+                <label class="form-label" for="use-csv-file" i18n>From CSV file</label>
               </div>
-            </ng-template>
-          </ngb-panel>
-          <ngb-panel id="bucket-id" title="Bucket">
-            <ng-template ngbPanelContent>
-              <div class="row">
-                <div class="col-lg-6">
-                  <label class="form-label" for="bucket-id-input" i18n>Bucket ID</label>
-                </div>
-                <div class="col-lg-6">
-                  <input id='bucket-id-input' type="number" 
-                    class="form-control" [(ngModel)]="bucketId"/>
-                </div>
+              <div class="col-lg-6">
+                <input #fileSelector (change)="fileSelected($event)" 
+                  id="use-csv-file" class="form-control" type="file"/>
               </div>
-            </ng-template>
-          </ngb-panel>
-        </ngb-accordion>
+            </div>
+          </details>
+          <details name="record-source" class="card">
+            <summary class="card-header">
+              <h3 class="d-inline">Record ID</h3>
+            </summary>
+            <div class="row card-body">
+              <div class="col-lg-6">
+                <label class="form-label" for="record-id-input" i18n>Record ID</label>
+              </div>
+              <div class="col-lg-6">
+                <input id='record-id-input' type="number" 
+                  class="form-control" [(ngModel)]="recordId" autofocus/>
+              </div>
+            </div>
+          </details>
+          <details name="record-source" class="card">
+            <summary class="card-header">
+              <h3 class="d-inline">Bucket ID</h3>
+            </summary>
+            <div class="row card-body">
+              <div class="col-lg-6">
+                <label class="form-label" for="bucket-id-input" i18n>Bucket ID</label>
+              </div>
+              <div class="col-lg-6">
+                <input id='bucket-id-input' type="number" 
+                  class="form-control" [(ngModel)]="bucketId" autofocus/>
+              </div>
+            </div>
+          </details>
       </ng-container>
     </div><!-- col -->
 

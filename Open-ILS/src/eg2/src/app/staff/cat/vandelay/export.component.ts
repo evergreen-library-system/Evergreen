@@ -63,7 +63,7 @@ export class ExportComponent implements AfterViewInit, OnInit {
         if (this.exportingBasket) {
             return; // no source to focus
         }
-        this.renderer.selectRootElement('#csv-input').focus();
+        //this.renderer.selectRootElement('#csv-input').focus();
     }
 
     sourceChange($event: NgbPanelChangeEvent) {
@@ -72,7 +72,7 @@ export class ExportComponent implements AfterViewInit, OnInit {
         if (this.exportingBasket) {
             return; // no source to focus
         }
-
+        /*
         if ($event.nextState) { // panel opened
 
             // give the panel a chance to render before focusing input
@@ -81,6 +81,7 @@ export class ExportComponent implements AfterViewInit, OnInit {
                     `#${this.recordSource}-input`).focus();
             });
         }
+        /***/
     }
 
     fileSelected($event) {

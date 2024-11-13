@@ -53,17 +53,12 @@
     <ng-template ngbNavContent>
       <h2 class="visually-hidden" i18n="Staff catalog search results sidebar tabs">Buckets</h2>
       <div class="row g-0">
-        <ngb-accordion #sidebarBuckets="ngbAccordion" [closeOthers]="false" class="p-0" [activeIds]="['favorite_buckets_sidebar', 'recent_buckets_sidebar']">
-
-          <ngb-panel id="favorite_buckets_sidebar">
-            <ng-template ngbPanelHeader let-opened="true">
-              
-                <button ngbPanelToggle class="accordion-button bg-gray text-dark">
-                  <h3 class="m-0" i18n>Favorite</h3>
-                  <span class="material-icons user-favorite ms-1" aria-hidden="true">star</span>
-                </button>
-            </ng-template>
-            <ng-template ngbPanelContent>
+        <details id="favorite_buckets_sidebar" class="card" open>
+            <summary class="card-header">
+              <h3 class="d-inline" i18n>Favorite</h3>
+              <span class="material-icons user-favorite ms-1" aria-hidden="true">star</span>
+            </summary>
+            <div class="card-body">
               <ul class="list-group list-group-flush">
                 <li class="list-group-item bucket-favorite m-0 px-0 py-2" *ngFor="let bundle of (favoriteBuckets$ | async)">
                   <div class="bucket-metadata">
@@ -89,16 +84,14 @@
                   </div>
                 </li>
               </ul>
-            </ng-template>
-          </ngb-panel>
+            </div>
+          </details>
         
-          <ngb-panel id="recent_buckets_sidebar">
-            <ng-template ngbPanelHeader let-opened="true">
-              <button ngbPanelToggle class="accordion-button bg-gray text-dark">
-                <h3 class="m-0" i18n>Recent</h3>
-              </button>
-            </ng-template>
-            <ng-template ngbPanelContent>
+          <details id="recent_buckets_sidebar" class="card" open>
+            <summary class="card-header">
+              <h3 class="d-inline" i18n>Recent</h3>
+            </summary>
+            <div class="card-body">
               <ul class="list-group list-group-flush">
                 <li class="list-group-item bucket-recent m-0 px-0 py-2" *ngFor="let bundle of (recentBuckets$ | async)">
                   <div class="bucket-metadata">
@@ -124,10 +117,9 @@
                   </div>
                 </li>
               </ul>
-            </ng-template>
-          </ngb-panel>
+            </div>
+          </details>
         
-        </ngb-accordion>
     </div>
     </ng-template> <!-- Buckets tab panel -->
   </li>

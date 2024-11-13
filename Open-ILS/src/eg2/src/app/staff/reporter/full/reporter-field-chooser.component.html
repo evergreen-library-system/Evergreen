@@ -1,9 +1,11 @@
 <div class="chooser-row">
 
-<ngb-accordion *ngIf="editorMode !== 'definition'" #fieldChooser="ngbAccordion" [closeOthers]="true" class="col-md-3" activeIds="all">
-
-  <ngb-panel *ngIf="fieldType === 'filter' && hasFilterSuggestions()" id="suggested_filters" title="Suggested Filters" i18n-title>
-    <ng-template ngbPanelContent>
+<div *ngIf="editorMode !== 'definition'">
+  <details *ngIf="fieldType === 'filter' && hasFilterSuggestions()" id="suggested_filters" class="card">
+    <summary class="card-header">
+      <h3 class="d-inline" i18n>Suggested Filters</h3>
+    </summary>
+    <div class="card-body">
       <ng-container *ngFor="let f of allFields">
         <eg-reporter-field
           *ngIf="f.suggest_filter"
@@ -14,11 +16,14 @@
         >
         </eg-reporter-field>
       </ng-container>
-    </ng-template>
-  </ngb-panel>
+    </div>
+  </details>
 
-  <ngb-panel *ngFor="let g of fieldGroups" id="{{g.name}}" title="{{g.label}}">
-    <ng-template ngbPanelContent>
+  <details *ngFor="let g of fieldGroups" id="{{g.name}}" class="card">
+    <summary class="card-header">
+      <h3 class="d-inline">{{g.label}}</h3>
+    </summary>
+    <div class="card-body">
       <ng-container *ngFor="let f of g.members">
         <eg-reporter-field
           *ngIf="!hideField(f)"
@@ -30,11 +35,14 @@
         >
         </eg-reporter-field>
       </ng-container>
-    </ng-template>
-  </ngb-panel>
+    </div>
+  </details>
 
-  <ngb-panel *ngIf="allFields.length > 0" id="all" title="All Fields" i18n-title>
-    <ng-template ngbPanelContent>
+  <details *ngIf="allFields.length > 0" id="all" class="card">
+    <summary class="card-header">
+      <h3 i18n>All Fields</h3>
+    </summary>
+    <div class="card-body">
       <ng-container *ngFor="let f of allFields">
         <eg-reporter-field
           *ngIf="!hideField(f) && !f.virtual"
@@ -47,32 +55,27 @@
         >
         </eg-reporter-field>
       </ng-container>
-    </ng-template>
-  </ngb-panel>
-</ngb-accordion>
+    </div>
+  </details>
+</div>
 
-<ngb-accordion #selectedList="ngbAccordion" activeIds="display-field-list,sort-field-list" class="col-md-9">
-  <ngb-panel id="display-field-list" *ngIf="fieldType === 'filter' && listFields.length > 0">
-    <ng-template ngbPanelHeader let-opened=true>
-      <div class="p-2">
-        <h3 class="m-2" i18n>Fields Selected for Display</h3>
-      </div>
-    </ng-template>
-    <ng-template ngbPanelContent>
+<div class="col-md-9">
+  <details class="card" id="display-field-list" *ngIf="fieldType === 'filter' && listFields.length > 0" open>
+    <summary class="card-header">
+      <h3 i18n>Fields Selected for Display</h3>
+    </summary>
+    <div class="card-body">
       <span *ngFor="let f of listFields; index as idx" class="reporter-chooser-display-list">
         {{f.alias}}{{f.field_doc ? ' (' + f.field_doc + ')' : ''}}{{idx === (listFields.length - 1) ? '' : ', '}}
       </span>
-    </ng-template>
-  </ngb-panel>
-  <ngb-panel id="sort-field-list">
-    <ng-template ngbPanelHeader let-opened=true>
-      <div class="p-2">
-        <h3 class="m-2"  *ngIf="fieldType === 'display'" i18n>Field Display Order</h3>
-        <h3 class="m-2"  *ngIf="fieldType === 'filter'" i18n>Filter Fields and Values</h3>
-      </div>
-    </ng-template>
-    <ng-template ngbPanelContent>
-
+    </div>
+  </details>
+  <details class="card" id="sort-field-list" open>
+    <summary class="card-header">
+      <h3 class="d-inline" *ngIf="fieldType === 'display'" i18n>Field Display Order</h3>
+      <h3 class="d-inline" *ngIf="fieldType === 'filter'" i18n>Filter Fields and Values</h3>
+    </summary>
+    <div class="card-body">
       <div *ngIf="fieldType === 'display'" id="field-display">
         <ng-container *ngFor="let f of selectedFields; index as idx">
           <eg-reporter-field
@@ -111,8 +114,8 @@
         </ng-container>
       </div>
 
-    </ng-template>
-  </ngb-panel>
-</ngb-accordion>
+    </div>
+  </details>
+</div>
 
 </div>

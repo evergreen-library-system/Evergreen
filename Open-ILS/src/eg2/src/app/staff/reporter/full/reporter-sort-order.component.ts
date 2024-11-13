@@ -1,5 +1,4 @@
 import {Component, Input, Output, EventEmitter, ViewChild} from '@angular/core';
-import {NgbAccordion} from '@ng-bootstrap/ng-bootstrap';
 import {IdlService, IdlObject} from '@eg/core/idl.service';
 
 @Component({
@@ -14,9 +13,6 @@ export class ReporterSortOrderComponent {
     @Output() fieldsChange = new EventEmitter<IdlObject[]>();
     @Input() orderByNames: string[] = [];
     @Output() orderByNamesChange = new EventEmitter<string[]>();
-
-    @ViewChild('displayList', { static: false }) displayList: NgbAccordion;
-    @ViewChild('orderList', { static: false }) orderList: NgbAccordion;
 
     constructor(
         private idl: IdlService

@@ -1077,7 +1077,6 @@ a {
 /* Bootstrap has some background colors set instead of using their own body
 background/text variables. Crash override. We can remove this in Bootstrap 5.3.
 /**/
-.accordion-item, .accordion-button,
 .card,
 .eg-grid-content-body > div:nth-child(2n+1):not(.eg-grid-row-selected),
 .list-group-item,
