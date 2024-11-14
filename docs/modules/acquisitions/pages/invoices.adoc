@@ -28,7 +28,7 @@ The summary section contains the following fields, some for entry and other whic
 * _Receive Method_ (required) - Select a receive method. The system will default to _Paper_.
 * _Receiver_ (required) - The receiver defaults to the branch at which your workstation is registered. You can change the receiver by selecting a different org unit.
 *_Invoice Type_ (optional) - This is a free text field.
-* _Payment Method_ (optional) - Select a payment method. Payment methods are set in xref:acquisitions_admin.adoc#invoice_payment_method[Acquisitions Administration].
+* _Payment Method_ (optional) - Select a payment method. Payment methods are set in xref:admin:acquisitions_admin.adoc#invoice_payment_method[Acquisitions Administration].
 * _Payment Auth_ (optional) - This is a free text field.
 * _Note_ (optional) - This is a free text field.
 * _Invoice Date_ (required) - This default as the date that you create the invoice. You can change the date by clicking in the field or using the calendar picker.
