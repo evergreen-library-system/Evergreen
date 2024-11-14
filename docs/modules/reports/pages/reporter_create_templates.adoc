@@ -103,7 +103,7 @@ If the path for one of your display fields or filters is incorrect, you will get
  an error instead of the expected report output. Sometimes the error text will 
  give you a clue about what isn't working.
 
-image::reporter_create_templates/output_error["Screenshot from the Outputs folder. A line is selected. In the Output column, where you would normally see HTML and CSV button links, it says Error running report. The cursor is hovering over the Error text column to show the full error text. The text begins 'DBD::Pg::st execute failed: ERROR'."]
+image::reporter_create_templates/output_error.png["Screenshot from the Outputs folder. A line is selected. In the Output column, where you would normally see HTML and CSV button links, it says Error running report. The cursor is hovering over the Error text column to show the full error text. The text begins 'DBD::Pg::st execute failed: ERROR'."]
 
 You can modify your template and try again. 
 =====

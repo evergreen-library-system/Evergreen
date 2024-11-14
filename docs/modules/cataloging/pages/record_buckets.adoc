@@ -15,7 +15,7 @@ Record buckets are containers for bibliographic records. Once records are in a b
 [[record_buckets_interface]]
 == Record Buckets Interface ==
 
-image::cataloging/record_buckets/buckets_interface.png[Buckets interface]
+image::record_buckets/buckets_interface.png[Buckets interface]
 
 The Angular version of the record buckets interface features a header with a _New Buckets_ button beside it.
 
@@ -66,26 +66,26 @@ Actions in this interface include:
 * _Share Bucket_ - this opens a modal which will allow you to share the bucket with specific users and/or organizational units. You can separately add users with view-only permissions and users with view and edit permissions. All buckets shared with an organizational unit will be editable by those with bucket editing privileges at that location
 ** To add a user, navigate to either the _Users with View Permissions_ or _Users with Edit Permission_ tab. You will see a list of the current users with whom the bucket is shared.
 +
-image::cataloging/record_buckets/bucket_sharing.png[Current share members]
+image::record_buckets/bucket_sharing.png[Current share members]
 +
 ** Select _Add Users_ which will open a user search modal. Search for users and select one or several users with the checkbox. Use the _Select_ button to add these users to your share list. You may only share buckets with staff users. 
 +
-image::cataloging/record_buckets/patron_search_share.png[Searching & adding new share members]
+image::record_buckets/patron_search_share.png[Searching & adding new share members]
 +
 ** Do not use the _Add to Bucket_ action, as in this context that is to add users to xref:circulation:user_buckets.adoc[User Buckets].
 ** You will see your share list updated with the new share users. To complete your updates, select _Update Bucket Sharing_.
 +
-image::cataloging/record_buckets/update_sharing.png[Updating bucket sharing]
+image::record_buckets/update_sharing.png[Updating bucket sharing]
 +
 ** To remove a user, navigate to either the _Users with View Permissions_ or _Users with Edit Permission_ tab. You will see a list of the current users with whom the bucket is shared. Select one or several users from the list.
 ** Select _Remove Users_ and the user will be removed from the share list.
 +
-image::cataloging/record_buckets/remove_share.png[Remove user from sharing]
+image::record_buckets/remove_share.png[Remove user from sharing]
 +
 ** To complete your updates, select _Update Bucket Sharing_.
 ** To share a bucket with all staff members of an organizational unit, select the _Libraries_ tab in the sharing modal. Select one or several organizational units from the tree. You will need to select or remove organizational units individually - shares do not inherit.
 +
-image::cataloging/record_buckets/library_share.png[Share with libraries]
+image::record_buckets/library_share.png[Share with libraries]
 +
 ** To complete your updates, select _Update Bucket Sharing_.
 * _Transfer Bucket Ownership_ - this opens a modal which will prompt you to enter a barcode, or search for a user, to transfer bucket ownership. Depending on your permissions, once you transfer a bucket you may lose editing or viewing privileges for that bucket. Administrators can transfer buckets for other users, even if the administrator doesn't directly own the bucket.
@@ -123,7 +123,7 @@ There are two ways to add records via the record bucket interface:
 
 The _Upload Records_ action is available in the Actions menu. Choose a bucket by selecting its checkbox, and then navigate to the actions menu and select _Upload Records_. When selected, this will open a modal:
 
-image::cataloging/record_buckets/upload_to_bucket.png[Upload Records to bucket]
+image::record_buckets/upload_to_bucket.png[Upload Records to bucket]
 
 From here, you can select whether you want to upload _Bib IDs_ or _TCNs_. You can select a file from your computer using the _Choose file_ button. You can also, as shown in the screenshot above, paste values into the text box in this modal. You should have 1 value per line.
 
@@ -211,7 +211,7 @@ Note that you can select both options on a single report.
 
 TIP: If you are running a recurring report and wish to have a single bucket that collects the report's output each time the recurring report is run, you will need to have an existing bucket to point the output to. Each run of the report will append new output to the bucket. 
 
-image::cataloging/record_buckets/report_output_to_bucket.png[Bucket output options in the Reports interface]
+image::record_buckets/report_output_to_bucket.png[Bucket output options in the Reports interface]
 
 [[add_records_from_catalog]]
 === From Catalog Search ===
@@ -220,11 +220,11 @@ You can add records to buckets directly from the staff catalog search results, o
 
 There is a buckets subtab to the left of the catalog search results, which will show your favorites as well as your recently-viewed buckets in two collapsable accordions. Each set displays the bucket name, any organizational unit sharing in place, the bucket owner and organizational unit, and the count of records in the bucket. If you hover over the record count, and have selected records in the results list, you will see an option to add those records to a bucket.
 
-image::cataloging/record_buckets/staffcat_favorites.png[Buckets subtab in staff catalog showing favorite buckets and recently viewed buckets]
+image::record_buckets/staffcat_favorites.png[Buckets subtab in staff catalog showing favorite buckets and recently viewed buckets]
 
 Additionally, you can add a record directly to a bucket from its place in the search results lists. There is a button on the lower right of each result that says _Add to Bucket_. Select this button to see a list of your favorite buckets and recently viewed buckets. Select a bucket from this list to add a record to your bucket.
 
-image::cataloging/record_buckets/search_results.png[Add a record to a bucket from an individual member of the search results list]
+image::record_buckets/search_results.png[Add a record to a bucket from an individual member of the search results list]
 
 NOTE: once you navigate into a bucket from the staff catalog, there is no shortcut back to your search results and you will need to use the back button to return to search results.
 
@@ -233,7 +233,7 @@ NOTE: once you navigate into a bucket from the staff catalog, there is no shortc
 
 To access an individual bucket, click on its title in the main buckets interface. This will take you to the _Bibs in a Bucket_ view, where you can see all members of the record bucket and perform actions on them. This grid has filters and sort options available on each column, and as with other grids you can save your grid view.
 
-image::cataloging/record_buckets/bibs_in_a_bucket.png[Individual record bucket view]
+image::record_buckets/bibs_in_a_bucket.png[Individual record bucket view]
 
 This interface has several actions avaiable, some via buttons and some via the actions menu.
 

@@ -292,7 +292,7 @@ Validators set the validation test to be preformed to determine whether the acti
 
 You may also create, edit and delete Validators. Just remember that their must be an associated subroutine in the Reactor.pm Perl module.
 
-[#processing_action_triggers]
+[[processing_action_triggers]]
 == Processing Action Triggers ==
 
 To run action triggers, an Evergreen administrator will need to run the trigger processing script. This should be set up as a cron job to run periodically. To run the script, use this command:
