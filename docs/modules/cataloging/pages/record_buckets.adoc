@@ -15,7 +15,7 @@ Record buckets are containers for bibliographic records. Once records are in a b
 [[record_buckets_interface]]
 == Record Buckets Interface ==
 
-image::cataloging/record_buckets/buckets_interface.png[Buckets interface]
+image::record_buckets/buckets_interface.png[Buckets interface]
 
 The Angular version of the record buckets interface features a header with a _New Buckets_ button beside it.
 
