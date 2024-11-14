@@ -236,7 +236,7 @@ image::invoices/invoices_search.png[Open Invoice Search]
 +
 image::invoices/invoices_from_po.png[View Invoices from PO]
 +
-. To view invoices by searching specific invoice fields, see the section on xref:acquisitons_search.adoc[Acquisitions General Search].
+. To view invoices by searching specific invoice fields, see the section on xref:acquisitions:acquisitions_search.adoc[Acquisitions General Search].
 . To view invoices for a line item, see the section above on xref:invoices.adoc#create_invoice_for_li[line item invoices].
 
 [[receive_from_invoice]]
