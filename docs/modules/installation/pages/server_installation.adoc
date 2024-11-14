@@ -472,7 +472,7 @@ cp -b /openils/conf/action_trigger_filters.json.example /openils/conf/action_tri
 ------------------------------------------------------------------------------
 
 For more information about configuring and running action triggers, see
-xref:admin:actiontriggers_process.adoc#processing_action_triggers[Notifications / Action Triggers].
+xref:admin:actiontriggers.adoc#processing_action_triggers[Notifications / Action Triggers].
 
 [[creating_the_evergreen_database]]
 == Creating the Evergreen database ==
