@@ -199,7 +199,7 @@
             <div class="col mt-3" *ngIf="searchFilters().includes('item_type')">
               <label i18n class="form-label select-label" for="context-termSearch-ccvmFilters-item_type">Item Type</label>
               <select class="form-select"  multiple="true" id="context-termSearch-ccvmFilters-item_type"
-                [(ngModel)]="context.termSearch.ccvmFilters.item_type" (change)="filtersActive()">
+                (change)="updateFilters('item_type', $event.target)">
                 <option value='' i18n>All Item Types</option>
                 <ng-container
                   *ngTemplateOutlet="ccvmOption;context:{list:ccvmMap.item_type}">
@@ -209,7 +209,7 @@
             <div class="col mt-3" *ngIf="searchFilters().includes('item_form')">
               <label i18n class="form-label select-label" for="context-termSearch-ccvmFilters-item_form">Form</label>
               <select class="form-select" multiple="true" id="context-termSearch-ccvmFilters-item_form"
-                [(ngModel)]="context.termSearch.ccvmFilters.item_form" (change)="filtersActive()">
+                (change)="updateFilters('item_form', $event.target)">
                 <option value='' i18n>All Item Forms</option>
                 <ng-container
                   *ngTemplateOutlet="ccvmOption;context:{list:ccvmMap.item_form}">
@@ -219,7 +219,7 @@
             <div class="col mt-3" *ngIf="searchFilters().includes('item_lang')">
               <label i18n class="form-label select-label" for="context-termSearch-ccvmFilters-item_lang">Language</label>
               <select class="form-select" id="context-termSearch-ccvmFilters-item_lang"
-                [(ngModel)]="context.termSearch.ccvmFilters.item_lang" multiple="true" (change)="filtersActive()">
+                multiple="true" (change)="updateFilters('item_lang', $event.target)">
                 <option value='' i18n>All Languages</option>
                 <ng-container
                   *ngTemplateOutlet="ccvmOption;context:{list:ccvmMap.item_lang}">
@@ -229,7 +229,7 @@
             <div class="col mt-3" *ngIf="searchFilters().includes('audience')">
               <label i18n class="form-label select-label" for="context-termSearch-ccvmFilters-audience">Audience</label>
               <select class="form-select" id="context-termSearch-ccvmFilters-audience"
-                [(ngModel)]="context.termSearch.ccvmFilters.audience" multiple="true" (change)="filtersActive()">
+                multiple="true" (change)="updateFilters('audience', $event.target)">
                 <option value='' i18n>All Audiences</option>
                 <ng-container
                   *ngTemplateOutlet="ccvmOption;context:{list:ccvmMap.audience}">
@@ -241,7 +241,7 @@
             <div class="col mt-3" *ngIf="searchFilters().includes('vr_format')">
               <label i18n class="form-label select-label" for="context-termSearch-ccvmFilters-vr_format">Video Format</label>
               <select class="form-select" id="context-termSearch-ccvmFilters-vr_format"
-                [(ngModel)]="context.termSearch.ccvmFilters.vr_format" multiple="true" (change)="filtersActive()">
+                multiple="true" (change)="updateFilters('vr_format', $event.target)">
                 <option value='' i18n>All Video Formats</option>
                 <ng-container
                   *ngTemplateOutlet="ccvmOption;context:{list:ccvmMap.vr_format}">
@@ -251,7 +251,7 @@
             <div class="col mt-3" *ngIf="searchFilters().includes('bib_level')">
               <label i18n class="form-label select-label" for="context-termSearch-ccvmFilters-bib_level">Bibliographic Level</label>
               <select class="form-select" id="context-termSearch-ccvmFilters-bib_level"
-                [(ngModel)]="context.termSearch.ccvmFilters.bib_level" multiple="true" (change)="filtersActive()">
+                multiple="true" (change)="updateFilters('bib_level', $event.target)">
                 <option value='' i18n>All Bib Levels</option>
                 <ng-container
                   *ngTemplateOutlet="ccvmOption;context:{list:ccvmMap.bib_level}">
@@ -261,7 +261,7 @@
             <div class="col mt-3" *ngIf="searchFilters().includes('lit_form')">
               <label i18n class="form-label select-label" for="context-termSearch-ccvmFilters-lit_form">Literary Form</label>
               <select class="form-select" id="context-termSearch-ccvmFilters-lit_form"
-                [(ngModel)]="context.termSearch.ccvmFilters.lit_form" multiple="true" (change)="filtersActive()">
+                multiple="true" (change)="updateFilters('lit_form', $event.target)">
                 <option value='' i18n>All Literary Forms</option>
                 <ng-container
                   *ngTemplateOutlet="ccvmOption;context:{list:ccvmMap.lit_form}">
@@ -271,7 +271,7 @@
             <div class="col mt-3">
               <label i18n class="form-label select-label" for="context-termSearch-copyLocations">Shelving Location</label>
               <select class="form-select" id="context-termSearch-copyLocations" [disabled]="context.termSearch.locationGroupOrLasso !== ''"
-                [(ngModel)]="context.termSearch.copyLocations" multiple="true" (change)="filtersActive()">
+                multiple="true" (change)="updateFilters('copyLocations', $event.target)">
                 <option value='' i18n>All Shelving Locations</option>
                 <option *ngFor="let loc of copyLocations" value="{{loc.id()}}" i18n>
                   {{loc.name()}} ({{orgName(loc.owning_lib())}})
