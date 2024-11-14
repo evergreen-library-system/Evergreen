@@ -261,7 +261,7 @@ Some grids allow you to perform actions on items selected in the grid.
 
 To perform actions, you must first select items in the grid. Select items by checking the checkbox on the left side of the item's row. You may select all items on the current page of a grid by checking the checkbox at the top of the grid. 
 
-IMPORTANT: Selecting the checkbox at the top of the grid will only select items on the current page. To select more items, you may navigate to other pages and make additional selections, or change the number of rows that appear on each page. See xref:staff_catalog/bibliographic_records.adoc#navigating_grids[Navigating Grids].
+IMPORTANT: Selecting the checkbox at the top of the grid will only select items on the current page. To select more items, you may navigate to other pages and make additional selections, or change the number of rows that appear on each page. See xref:staff_catalog:bibliographic_records.adoc#navigating_grids[Navigating Grids].
 
 Then select the _Actions for Selected Rows_ button and choose an action.
 
