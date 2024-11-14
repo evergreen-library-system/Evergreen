@@ -703,6 +703,7 @@ Prorate-> if you want to prorate the charge across funds.
 
 . Click _Save_.
 
+[[invoice_payment_method]]
 === Invoice payment method ===
 
 The invoice payment method allows you to predefine the type(s) of invoices and

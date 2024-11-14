@@ -655,7 +655,7 @@ image::selection_lists_po/acq_mark_ready_for_selector.png[Action: Mark Ready for
 . You will be presented with a confirmation dialog. Choose *Confirm* to mark the line items as Selector Ready or choose *Cancel* to exit without marking line items as Selector Ready.
 . The marked line item(s) will be highlighted pink, and their status will change to Selector-Ready.
 +
-image::selection_lists_po/acq_selector_ready.png,[Selector Ready Line Item]
+image::selection_lists_po/acq_selector_ready.png[Selector Ready Line Item]
 +
 . Once a Selector has reviewed the line items, they can either send them to a purchase order (see following section) or navigate to *Actions -> Mark Selected Line Items as Ready for Order* as an intermediate step.
 +

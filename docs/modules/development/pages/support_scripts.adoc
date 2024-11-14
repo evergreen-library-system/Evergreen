@@ -19,7 +19,7 @@ to more thorough documentation, if available.
    -- Groups together event output for already processed events.  Useful for
       creating files that contain data from a group of events.  Such as a CSV
       file with all the overdue data for one day.
- * xref:admin:actiontriggers_process.adoc#processing_action_triggers[action_trigger_runner.pl]
+ * xref:admin:actiontriggers.adoc#processing_action_triggers[action_trigger_runner.pl]
    -- Useful for creating events for specified hooks and running pending events
  * authority_authority_linker.pl
    -- Links reference headings in authority records to main entry headings

@@ -28,7 +28,7 @@ The summary section contains the following fields, some for entry and other whic
 * _Receive Method_ (required) - Select a receive method. The system will default to _Paper_.
 * _Receiver_ (required) - The receiver defaults to the branch at which your workstation is registered. You can change the receiver by selecting a different org unit.
 *_Invoice Type_ (optional) - This is a free text field.
-* _Payment Method_ (optional) - Select a payment method. Payment methods are set in xref:acquisitions_admin.adoc#_invoice_payment_method[Acquisitions Administration].
+* _Payment Method_ (optional) - Select a payment method. Payment methods are set in xref:admin:acquisitions_admin.adoc#invoice_payment_method[Acquisitions Administration].
 * _Payment Auth_ (optional) - This is a free text field.
 * _Note_ (optional) - This is a free text field.
 * _Invoice Date_ (required) - This default as the date that you create the invoice. You can change the date by clicking in the field or using the calendar picker.
@@ -219,7 +219,7 @@ You can use the link invoice feature to link an existing invoice to a purchase o
 
 Evergreen can receive electronic invoices from providers. To access an electronic invoice, you must:
 
-. Configure EDI for your provider. See the xref:acquisitions_admin.adoc#acq_edi[Acquisitions Administration documentation] for more information.
+. Configure EDI for your provider. See the xref:admin:acquisitions_admin.adoc#acq_edi[Acquisitions Administration documentation] for more information.
 . Evergreen will receive invoices electronically from the provider.
 . Navigate to _Acquisitions_ -> Invoices_ to view a list of open invoices, or use the _General Search_ to retrieve invoices. Click the hyperlinked invoice ID in the _Vendor Invoice ID_ field to view the invoice.
 
@@ -236,7 +236,7 @@ image::invoices/invoices_search.png[Open Invoice Search]
 +
 image::invoices/invoices_from_po.png[View Invoices from PO]
 +
-. To view invoices by searching specific invoice fields, see the section on xref:acquisitons_search.adoc[Acquisitions General Search].
+. To view invoices by searching specific invoice fields, see the section on xref:acquisitions:acquisitions_search.adoc[Acquisitions General Search].
 . To view invoices for a line item, see the section above on xref:invoices.adoc#create_invoice_for_li[line item invoices].
 
 [[receive_from_invoice]]
