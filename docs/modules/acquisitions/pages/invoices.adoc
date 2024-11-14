@@ -219,7 +219,7 @@ You can use the link invoice feature to link an existing invoice to a purchase o
 
 Evergreen can receive electronic invoices from providers. To access an electronic invoice, you must:
 
-. Configure EDI for your provider. See the xref:acquisitions_admin.adoc#acq_edi[Acquisitions Administration documentation] for more information.
+. Configure EDI for your provider. See the xref:admin:acquisitions_admin.adoc#acq_edi[Acquisitions Administration documentation] for more information.
 . Evergreen will receive invoices electronically from the provider.
 . Navigate to _Acquisitions_ -> Invoices_ to view a list of open invoices, or use the _General Search_ to retrieve invoices. Click the hyperlinked invoice ID in the _Vendor Invoice ID_ field to view the invoice.
 
