@@ -705,8 +705,6 @@ Prorate-> if you want to prorate the charge across funds.
 
 === Invoice payment method ===
 
-[[invoice_payment_method]]
-
 The invoice payment method allows you to predefine the type(s) of invoices and
 payment method(s) that you accept. The text that you enter in the admin module
 will appear as a drop-down menu in the invoice type and payment method fields on
@@ -727,6 +725,8 @@ the drop-down menu on the invoice.
 . Click _Save_.
 
 Payment methods can be deleted from this screen.
+
+[[invoice_payment_method]]
 
 == Line Item Features ==
 [[line_item_features]]
