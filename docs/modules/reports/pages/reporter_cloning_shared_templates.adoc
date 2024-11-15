@@ -46,7 +46,7 @@ By default, the system will take the original name and add _(Clone)_ to the end.
 image::reporter_cloning_shared_templates/clone_template_modal.png["Screenshot of the Clone Template modal. Text reads, Enter a new name for the clone of: Undeleted Items. In the name field the system has auto-populated, Undeleted Items (Clone)."]
 +
 . The template editor will open. For information on modifying templates, see 
-the section on xref:reporter_modifying_templates.adoc[Modifying Templates].
+the section on xref:reporter_create_templates.html#report_template_editor[Modifying Templates].
 . Update the *Template Name* and/or *Template Description* if desired.
 . Select *Save*. Once a template is saved it is not possible to edit the template.
  To make changes, clone a template and change the clone.
