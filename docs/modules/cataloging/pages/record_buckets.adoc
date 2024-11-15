@@ -40,7 +40,7 @@ Grid columns for this interface are:
 * _Name_ - this is the name for the record bucket. This is a hyperlink, and clicking on this will open the individual bucket.
 * _Description_ - this is the (optional) description for the record bucket.
 * _# of entries_ - this tells you the number of entries in the record bucket, which can include duplicates of individual bibs if you've added duplicates to your bucket.
-* _Bucket Type_ - this tells you what type of bucket this is. Typically this will be _staff_client_, meaning it is only available to staff members (as disctinct from patron-created buckets in the OPAC).
+* _Bucket Type_ - this tells you what type of bucket this is. Typically this will be _staff_client_, meaning it is only available to staff members (as distinct from patron-created buckets in the OPAC).
 * _Public_ - indicates if the bucket is publicly visible. Use this to create buckets that you would like to be publicly viewable in the OPAC.
 * _Created On_ - the date the bucket was created.
 * _Owner_ - the staff user that owns the bucket.
@@ -94,7 +94,7 @@ image::record_buckets/library_share.png[Share with libraries]
 [[creating_record_buckets]]
 == Creating Record Buckets ==
 
-. Naviate to _Cataloging_ -> _Record Buckets_.
+. Navigate to _Cataloging_ -> _Record Buckets_.
 . Next to the _Bibliographic Record Buckets_ heading, select _New Bucket_.
 . Give the bucket a name and (optionally) a description.
 . Select _Create New Bucket_ to close the modal and create your bucket.
@@ -173,7 +173,7 @@ Search Formats Examples:
 
 The `item_type` filter will allow you to filter directly from the MARC Leader/06 value.
 
-For example, if you search for: `ti:Outlander au:Gabaldon item_type(i)` your results will limited to nonmusical sound recordings.
+For example, if you search for: `ti:Outlander au:Gabaldon item_type(i)` your results will be limited to nonmusical sound recordings.
 
 .Bibliographic Item Types
 [width="100%",options="header",]
@@ -235,7 +235,7 @@ To access an individual bucket, click on its title in the main buckets interface
 
 image::record_buckets/bibs_in_a_bucket.png[Individual record bucket view]
 
-This interface has several actions avaiable, some via buttons and some via the actions menu.
+This interface has several actions available, some via buttons and some via the actions menu.
 
 Buttons include:
 
@@ -275,7 +275,7 @@ NOTE: This is new behavior, and duplicate records are no longer 'folded' or dedu
 * _Author (normalized)_ - the author of the bibliographic record
 * _Bucket ID_ - the ID of this bucket
 * _Date Added to Bucket_ - the date the bibliographic record was added to this bucket
-* _TCN Source_ - the source of the biliographic record's TCN (Title Control Number)
+* _TCN Source_ - the source of the bibliographic record's TCN (Title Control Number)
 * _TCN Value_ - the bibliographic record's TCN (Title Control Number)
 * _Record Creation Date/Time_ - the creation date of the bibliographic record
 * _Last Edit Date/Time_ - the date the bibliographic record was last edited
@@ -316,7 +316,7 @@ After the merge is complete, you will be returned to your record bucket. You wil
 
 When two or more bibliographic records are merged in a record bucket, all records involved are stamped with a new `merge_date` value. For any bibliographic record, this field indicates the last time it was involved in a merge. At the same time, all subordinate records (i.e. those deleted as a product of the merge) are stamped with a `merged_to` value indicating which bibliographic record was the lead record in the merge.
 
-In the staff catalog bibliographic record display, a warning alert now appears along the top of the page below the Deleted alert indicating when a record was used in a merge, when it was merged, and which record it was merge with, rendered as a link to the lead record.
+In the staff catalog bibliographic record display, a warning alert now appears along the top of the page below the Deleted alert indicating when a record was used in a merge, when it was merged, and which record it was merged with, rendered as a link to the lead record.
 
 image::record_buckets/merge_tracking.png[merge message with date]
 
