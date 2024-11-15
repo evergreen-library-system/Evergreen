@@ -63,7 +63,7 @@ these tables link to each other via other tables such as the circulation table
 The connections between tables are called joins. Evergreen uses a default join
  when creating report templates which is usually what you need for a template. 
  When working with data that can be null (have no value), you may want to use 
- xref:reports:reporter_create_template.adoc#report_nullability[nullability], 
+ xref:reports:reporter_create_templates.html#report_nullability[nullability], 
  which allows you to create an inner join on your selected table. 
 
 When you create a template, you are writing a SQL (structured query language) 
