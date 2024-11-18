@@ -577,7 +577,7 @@ BEGIN
         RETURN NULL;
     END IF;
 
-    -- Default to the LoC controll set
+    -- Default to the LoC crontrol set
     SELECT control_set INTO cset FROM authority.record_entry WHERE id = auth_id;
 
     -- if none, make a best guess
@@ -610,12 +610,12 @@ BEGIN
         )::TEXT;
     END IF;
 
-    FOR main_entry IN SELECT * FROM authority.control_set_authority_field acsaf WHERE acsaf.control_set = cset AND acsaf.main_entry IS NULL LOOP
+    FOR main_entry IN SELECT * FROM authority.control_set_authority_field acsaf WHERE acsaf.control_set = cset AND acsaf.main_entry IS NULL ORDER BY acsaf.tag LOOP
         auth_field := XPATH('//*[local-name()="datafield" and @tag="'||main_entry.tag||'"][1]',source_xml::XML);
         auth_i1 := (XPATH('//*[local-name()="datafield"]/@ind1',auth_field[1]))[1];
         auth_i2 := (XPATH('//*[local-name()="datafield"]/@ind2',auth_field[1]))[1];
         IF ARRAY_LENGTH(auth_field,1) > 0 THEN
-            FOR bib_field IN SELECT * FROM authority.control_set_bib_field WHERE authority_field = main_entry.id LOOP
+            FOR bib_field IN SELECT * FROM authority.control_set_bib_field WHERE authority_field = main_entry.id ORDER BY control_set_bib_field.tag LOOP
                 SELECT XMLELEMENT( -- XMLAGG avoids magical <element> creation, but requires unnest subquery
                     name datafield,
                     XMLATTRIBUTES(bib_field.tag AS tag, auth_i1 AS ind1, auth_i2 AS ind2),
