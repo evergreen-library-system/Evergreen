@@ -289,7 +289,7 @@
             <div class="col mt-3">
               <label i18n class="form-label select-label" for="context-termSearch-copyLocations">Shelving Location</label>
               <select class="form-select" id="context-termSearch-copyLocations" [disabled]="context.termSearch.locationGroupOrLasso !== ''"
-                multiple="true" (change)="updateFilters('copyLocations', $event.target)">
+                [(ngModel)]="context.termSearch.copyLocations" multiple="true" (change)="filtersActive()">
                 <option value='' i18n>All Shelving Locations</option>
                 <option *ngFor="let loc of copyLocations" value="{{loc.id()}}" i18n>
                   {{loc.name()}} ({{orgName(loc.owning_lib())}})
