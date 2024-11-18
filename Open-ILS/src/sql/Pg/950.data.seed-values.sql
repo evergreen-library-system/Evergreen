@@ -12862,6 +12862,19 @@ INSERT INTO config.global_flag (name, label, value, enabled) VALUES (
     TRUE
 );
 
+INSERT INTO config.global_flag (name, label, value, enabled) VALUES (
+    'staff.client_cache_key',
+    oils_i18n_gettext(
+        'staff.client_cache_key',
+        'Change this value to force staff clients to clear some cached values',
+        'cgf',
+        'label'
+    ),
+    md5(random()::text),
+		TRUE
+);
+
+
 INSERT INTO config.usr_setting_type (name,opac_visible,label,description,datatype)
     VALUES (
         'history.circ.retention_age',
