@@ -66,26 +66,26 @@ Actions in this interface include:
 * _Share Bucket_ - this opens a modal which will allow you to share the bucket with specific users and/or organizational units. You can separately add users with view-only permissions and users with view and edit permissions. All buckets shared with an organizational unit will be editable by those with bucket editing privileges at that location
 ** To add a user, navigate to either the _Users with View Permissions_ or _Users with Edit Permission_ tab. You will see a list of the current users with whom the bucket is shared.
 +
-image::cataloging/record_buckets/bucket_sharing.png[Current share members]
+image::record_buckets/bucket_sharing.png[Current share members]
 +
 ** Select _Add Users_ which will open a user search modal. Search for users and select one or several users with the checkbox. Use the _Select_ button to add these users to your share list. You may only share buckets with staff users. 
 +
-image::cataloging/record_buckets/patron_search_share.png[Searching & adding new share members]
+image::record_buckets/patron_search_share.png[Searching & adding new share members]
 +
 ** Do not use the _Add to Bucket_ action, as in this context that is to add users to xref:circulation:user_buckets.adoc[User Buckets].
 ** You will see your share list updated with the new share users. To complete your updates, select _Update Bucket Sharing_.
 +
-image::cataloging/record_buckets/update_sharing.png[Updating bucket sharing]
+image::record_buckets/update_sharing.png[Updating bucket sharing]
 +
 ** To remove a user, navigate to either the _Users with View Permissions_ or _Users with Edit Permission_ tab. You will see a list of the current users with whom the bucket is shared. Select one or several users from the list.
 ** Select _Remove Users_ and the user will be removed from the share list.
 +
-image::cataloging/record_buckets/remove_share.png[Remove user from sharing]
+image::record_buckets/remove_share.png[Remove user from sharing]
 +
 ** To complete your updates, select _Update Bucket Sharing_.
 ** To share a bucket with all staff members of an organizational unit, select the _Libraries_ tab in the sharing modal. Select one or several organizational units from the tree. You will need to select or remove organizational units individually - shares do not inherit.
 +
-image::cataloging/record_buckets/library_share.png[Share with libraries]
+image::record_buckets/library_share.png[Share with libraries]
 +
 ** To complete your updates, select _Update Bucket Sharing_.
 * _Transfer Bucket Ownership_ - this opens a modal which will prompt you to enter a barcode, or search for a user, to transfer bucket ownership. Depending on your permissions, once you transfer a bucket you may lose editing or viewing privileges for that bucket. Administrators can transfer buckets for other users, even if the administrator doesn't directly own the bucket.
