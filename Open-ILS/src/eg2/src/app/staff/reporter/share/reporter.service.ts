@@ -1547,6 +1547,7 @@ export class ReporterService {
     }
 
     upgradeAngJSTemplateData = function(template: IdlObject) {
+        const localIdl = this.idl;
 
         const newSRTempl = new SRTemplate();
         newSRTempl.isNew = false;
@@ -1642,9 +1643,11 @@ export class ReporterService {
                     callerData: { fmClass: old.classname }
                 };
                 if (old.uplink) {
+                    const uplink_from = old.from?.split('.').pop(); // get the last class step in the "from" member, if it exists
                     newPathNode.callerData['fmField'] = {
-                        key: old.uplink.key, // my pkey
-                        name: old.uplink.name, // field from left side of join
+                        key: old.uplink.key, // my (right hand side) join key
+                        name: (uplink_from && ['has_many','might_have'].includes(old.uplink.reltype)) ? // do we have enough information and the reltype conditions to replace the left hand side key?
+                                localIdl.classes[uplink_from].pkey : old.uplink.name, // field from left side of join. see: treeFromRptType() in ../full/editor.component.ts
                         reltype: old.uplink.reltype, // reltype from link from left side of join
                         class: newPathNode.callerData.fmClass // same as fmClass
                     };
