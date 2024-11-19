@@ -123,7 +123,7 @@ There are two ways to add records via the record bucket interface:
 
 The _Upload Records_ action is available in the Actions menu. Choose a bucket by selecting its checkbox, and then navigate to the actions menu and select _Upload Records_. When selected, this will open a modal:
 
-image::cataloging/record_buckets/upload_to_bucket.png[Upload Records to bucket]
+image::record_buckets/upload_to_bucket.png[Upload Records to bucket]
 
 From here, you can select whether you want to upload _Bib IDs_ or _TCNs_. You can select a file from your computer using the _Choose file_ button. You can also, as shown in the screenshot above, paste values into the text box in this modal. You should have 1 value per line.
 
