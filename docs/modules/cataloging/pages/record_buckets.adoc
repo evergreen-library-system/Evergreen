@@ -123,7 +123,7 @@ There are two ways to add records via the record bucket interface:
 
 The _Upload Records_ action is available in the Actions menu. Choose a bucket by selecting its checkbox, and then navigate to the actions menu and select _Upload Records_. When selected, this will open a modal:
 
-image::cataloging/record_buckets/upload_to_bucket.png[Upload Records to bucket]
+image::record_buckets/upload_to_bucket.png[Upload Records to bucket]
 
 From here, you can select whether you want to upload _Bib IDs_ or _TCNs_. You can select a file from your computer using the _Choose file_ button. You can also, as shown in the screenshot above, paste values into the text box in this modal. You should have 1 value per line.
 
@@ -211,7 +211,7 @@ Note that you can select both options on a single report.
 
 TIP: If you are running a recurring report and wish to have a single bucket that collects the report's output each time the recurring report is run, you will need to have an existing bucket to point the output to. Each run of the report will append new output to the bucket. 
 
-image::cataloging/record_buckets/report_output_to_bucket.png[Bucket output options in the Reports interface]
+image::record_buckets/report_output_to_bucket.png[Bucket output options in the Reports interface]
 
 [[add_records_from_catalog]]
 === From Catalog Search ===
@@ -220,11 +220,11 @@ You can add records to buckets directly from the staff catalog search results, o
 
 There is a buckets subtab to the left of the catalog search results, which will show your favorites as well as your recently-viewed buckets in two collapsable accordions. Each set displays the bucket name, any organizational unit sharing in place, the bucket owner and organizational unit, and the count of records in the bucket. If you hover over the record count, and have selected records in the results list, you will see an option to add those records to a bucket.
 
-image::cataloging/record_buckets/staffcat_favorites.png[Buckets subtab in staff catalog showing favorite buckets and recently viewed buckets]
+image::record_buckets/staffcat_favorites.png[Buckets subtab in staff catalog showing favorite buckets and recently viewed buckets]
 
 Additionally, you can add a record directly to a bucket from its place in the search results lists. There is a button on the lower right of each result that says _Add to Bucket_. Select this button to see a list of your favorite buckets and recently viewed buckets. Select a bucket from this list to add a record to your bucket.
 
-image::cataloging/record_buckets/search_results.png[Add a record to a bucket from an individual member of the search results list]
+image::record_buckets/search_results.png[Add a record to a bucket from an individual member of the search results list]
 
 NOTE: once you navigate into a bucket from the staff catalog, there is no shortcut back to your search results and you will need to use the back button to return to search results.
 
@@ -233,7 +233,7 @@ NOTE: once you navigate into a bucket from the staff catalog, there is no shortc
 
 To access an individual bucket, click on its title in the main buckets interface. This will take you to the _Bibs in a Bucket_ view, where you can see all members of the record bucket and perform actions on them. This grid has filters and sort options available on each column, and as with other grids you can save your grid view.
 
-image::cataloging/record_buckets/bibs_in_a_bucket.png[Individual record bucket view]
+image::record_buckets/bibs_in_a_bucket.png[Individual record bucket view]
 
 This interface has several actions avaiable, some via buttons and some via the actions menu.
 
