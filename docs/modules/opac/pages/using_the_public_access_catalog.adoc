@@ -468,7 +468,7 @@ how many items are available in all branches.
 
 image::using_the_public_access_catalog/branch_search.jpg[branch search]
 
-image::using_the_public_access_catalog/search_results_quantity.jpg[search result quantity]
+image::using_the_public_access_catalog/search_results_quantity.png[search results quantity]
 
 You may also click the _Show More Details_ link at the top of the results page, 
 next to the _Limit to available items_ check box, to view each search result's 
