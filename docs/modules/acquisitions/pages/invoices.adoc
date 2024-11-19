@@ -94,7 +94,7 @@ image::invoices/invoice_li_search.png[Search for lineitems from an invoice]
 - Note that if the _Billed_ and _Paid_ fields come over as null, you can enter a billed price that will propagate to the paid price. Changes to non-null values will not propagate between these fields.
 . The _Price Per Item_ field calculates the cost of each copy by dividing the amount that was billed by the number of copies for which the library paid.
 
-image::invoices/price_per_item.png[Invoice line item showing price per item calculation]
+image::invoices/invoice_price_per_item.png[Invoice line item showing price per item calculation]
 
 [[create_invoice_from_po]]
 === Create an invoice from a purchase order ===

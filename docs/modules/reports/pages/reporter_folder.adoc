@@ -54,7 +54,7 @@ image::reporter_folder/create_template_folder.png["Screenshot of the Create a Te
 . Select the _Confirm_ button.
 . The folder can now be seen in the appropriate folder tree.
 +
-image::reporter_folder/folder_tree["Updated folder tree showing three levels; Templates, sub-folder Monthly Statistics, and sub- sub-folders Patrons and Collections."]
+image::reporter_folder/folder_tree.png["Updated folder tree showing three levels; Templates, sub-folder Monthly Statistics, and sub- sub-folders Patrons and Collections."]
 
 [NOTE]
 ======
