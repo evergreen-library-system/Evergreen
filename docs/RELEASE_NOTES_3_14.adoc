@@ -3,6 +3,88 @@
 :numbered:
 :toclevels: 3
 
+== Evergreen 3.14.1 == 
+
+This release contains bug fixes and documentation fixes improving on Evergreen 3.14.0.
+
+=== Administration ===
+
+* Fixes dojo.tgz hangup in make release script (https://bugs.launchpad.net/evergreen/+bug/2085384[Bug 2085384])
+
+=== Cataloging ===
+
+* Fixes vandelay background importer perl script (https://bugs.launchpad.net/evergreen/+bug/2078506[Bug 2078506])
+* Adds default owning org unit for copy tags and types. (https://bugs.launchpad.net/evergreen/+bug/1721026[Bug 1721026])
+* Trim spaces from TCN when importing Z39.50 (https://bugs.launchpad.net/evergreen/+bug/2049934[Bug 2049934])
+* Fixes up/down arrows, CTRL-D, context menus in MARC editor (https://bugs.launchpad.net/evergreen/+bug/2084199[Bug 2084199])
+* Fixes a race condition retrieving the cat.require_call_number_labels ou setting (https://bugs.launchpad.net/evergreen/+bug/2052742[Bug 2052742])
+* Fixes save issue with call number fields in item templates (https://bugs.launchpad.net/evergreen/+bug/2045989[Bug 2045989])
+* Adds label to shelving locations selector in Angular pull list (https://bugs.launchpad.net/evergreen/+bug/2086737[Bug 2086737])
+
+=== Circulation ===
+
+* Fixes a bug that prevented canceling holds from the Holds Shelf (https://bugs.launchpad.net/evergreen/+bug/2085646[Bug 2085646])
+* Checks for duplicate values and address alerts when loading staged users (https://bugs.launchpad.net/evergreen/+bug/2046000[Bug 2046000])
+* Fixes patron bills error that causes several settings to be skipped when Uncheck Bills setting is used. (https://bugs.launchpad.net/evergreen/+bug/2069358[Bug 2069358])
+* Fixes typo in Angular Pull List (https://bugs.launchpad.net/evergreen/+bug/2083959[Bug 2083959])
+
+=== OPAC ===
+
+* Fixes display conflict on OPAC home screen where autosuggest list appears behind carousel buttons. (https://bugs.launchpad.net/evergreen/+bug/2086709[Bug 2086709])
+* Assures a successful Stripe payment is credited when the patron record has changed (https://bugs.launchpad.net/evergreen/+bug/2077343[Bug 2077343])
+
+=== Reports ===
+
+* Fixes an Operator display issue in the report definition (https://bugs.launchpad.net/evergreen/+bug/2084837[Bug 2084837])
+* Fixes report template and CCVM composite definition editor (https://bugs.launchpad.net/evergreen/+bug/2087562[Bug 2087562])
+
+=== Staff Catalog ===
+
+* Removes undefined author links in catalog search results (https://bugs.launchpad.net/evergreen/+bug/2081317[Bug 2081317])
+* Refactor filter handling in search controls for more consistent performance (https://bugs.launchpad.net/evergreen/+bug/2087609[Bug 2087609])
+
+
+=== Staff Client ===
+
+* Redirect to Angular staff portal from AngularJS login (https://bugs.launchpad.net/evergreen/+bug/1983500[Bug 1983500])
+
+=== Miscellaneous ===
+
+* .gitignore DEV Docker generated signal files (https://bugs.launchpad.net/evergreen/+bug/2081832[Bug 2081832])
+* Fixes docker install issue with Email::Send (https://bugs.launchpad.net/evergreen/+bug/2086480[Bug 2086480])
+
+=== Acknowledgements ===
+
+We would like to thank the following individuals who contributed code, testing, documentation, and patches to the 3.14.1 point release of Evergreen:
+
+* Andrea Buntz Neiman
+* Bill Erickson
+* Blake Graham-Henderson
+* Chris Sharp
+* Dan Briem
+* Galen Charlton
+* Gina Monti
+* Ian Skelskey
+* Jane Sandberg
+* Jason Boyer
+* Jason Stephenson
+* Jennifer Weston
+* Joni Paxton
+* Josh Stompro
+* Llewellyn Marshall
+* Mary Llewellyn
+* Michele Morgan
+* Mike Rylander
+* Ruth Davis
+* Scott Angel
+* Shula Link
+* Stephanie Leary
+* Steven Mayo
+* Susan Morrison
+* Terran McCanna
+
+
+
 == Evergreen 3.14.0 ==
 
 === New Features ===
