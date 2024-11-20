@@ -1087,7 +1087,6 @@ Poměr minimální kvalit při prosté/nejlepší shodě
   <translation id="4145296112424291008">ID rezervace</translation>
   <translation id="2105948048369918244">Aktuální jednotka</translation>
   <translation id="1191865578113917590">Čárový kód čtenáře</translation>
-  <translation id="3706978543620092484">Alias čtenáře</translation>
   <translation id="4926083753933394202">Datum zadání požadavku</translation>
   <translation id="1826468428193309350">Datum zachycení</translation>
   <translation id="8296622428370822141">Datum, kdy byla dostupná</translation>
@@ -1655,7 +1654,6 @@ Poměr minimální kvalit při prosté/nejlepší shodě
   <translation id="7754016079160377456">FTP nebo SCP server pro EDI,l včetně protokolu. Například ftp://ftp.example.org.</translation>
   <translation id="8955767596926635588">Prostřední jméno</translation>
   <translation id="4816767784445044140">Klíčová slova ke jménu</translation>
-  <translation id="629459648209899236">Přepnout zobrazení rozšířeného formuláře</translation>
   <translation id="1965206604774400">Alias</translation>
   <translation id="4768749765465246664">E-mail</translation>
   <translation id="2213211565500516002">Vymazat formulář</translation>
@@ -1668,9 +1666,6 @@ Poměr minimální kvalit při prosté/nejlepší shodě
   <translation id="1141427761455134615">Poštovní kód</translation>
   <translation id="4212720883106184788">Domovská knihovna</translation>
   <translation id="5005351852439288543">Rodič / zákonný zástupce</translation>
-  <translation id="5128097297071315723">Rok narození</translation>
-  <translation id="5934240320730772286">Měsíc narození</translation>
-  <translation id="1992773184953675659">Den narození</translation>
   <translation id="1709289572931484960">Databázové ID</translation>
   <translation id="5691966639616932851">Průkaz</translation>
   <translation id="4915431133669985304">Skupina oprávnění</translation>
@@ -2146,16 +2141,8 @@ Poměr minimální kvalit při prosté/nejlepší shodě
   <translation id="1704281614449226988">Akci nebylo možné dokončit</translation>
   <translation id="8829497237648100098">Filtrovat</translation>
   <translation id="4188062815181384255">Skupiny rezervací</translation>
-  <translation id="5433045795604110511">Blokace byla vytvořena</translation>
-  <translation id="3906930277800232979">Vytvoření nové blokace se nezdařilo</translation>
-  <translation id="8853031339694656451">Vytvořit blokaci / zprávu</translation>
-  <translation id="4785558017150815464">
-        Vytvořit blokaci u čtenáře <ph name="START_BOLD_TEXT"><ex>&lt;b&gt;</ex>&lt;b&gt;</ph><ph name="INTERPOLATION"><ex>{{patron.family_name()}}</ex>{{patron.family_name()}}</ph>, <ph name="INTERPOLATION_1"><ex>{{patron.first_given_name()}}</ex>{{patron.first_given_name()}}</ph><ph name="CLOSE_BOLD_TEXT"><ex>&lt;/b&gt;</ex>&lt;/b&gt;</ph>
-      </translation>
   <translation id="5726454104363206493">Upozornění</translation>
   <translation id="420763834450076269">Blokace</translation>
-  <translation id="2542500273874492483">Typ blokace...</translation>
-  <translation id="6590542072128166142">Iniciály...</translation>
   <translation id="5431228396326281511"><ph name="INTERPOLATION"><ex>{{idlClassDef.label}}</ex>{{idlClassDef.label}}</ph> Úspěšně vytvořeno</translation>
   <translation id="4345580939645597591">Označit jako jednotku s chybějícími kusy</translation>
   <translation id="2224609992551286941">Název: </translation>
@@ -2194,9 +2181,6 @@ Poměr minimální kvalit při prosté/nejlepší shodě
       <ph name="START_TAG_NG_CONTAINER_7"><ex>&lt;ng-container&gt;</ex>&lt;ng-container&gt;</ph>ČÁSTI<ph name="CLOSE_TAG_NG_CONTAINER"><ex>&lt;/ng-container&gt;</ex>&lt;/ng-container&gt;</ph>
       na záznam(y)
     </translation>
-  <translation id="9101750782104818048">
-    Otevřít dialog blokace
-  </translation>
   <translation id="8146546112280184122">Služba geografické lokace</translation>
   <translation id="8060648552195479893">Skupiny knihoven</translation>
   <translation id="2735903267964158309">Mapy skupin knihoven</translation>
@@ -2271,7 +2255,6 @@ Poměr minimální kvalit při prosté/nejlepší shodě
   <translation id="4714420935811571878">Položka menu</translation>
   <translation id="3018852928628690984">Název objednávky</translation>
   <translation id="8693414454705808287">Název...</translation>
-  <translation id="8207297763599297671">Text poznámky...</translation>
   <translation id="8567107650774094976">Obnovit vybrané údálosti</translation>
   <translation id="3613090159518202974">Zrušit vybrané události</translation>
   <translation id="8934309345846313407">Protokol spuštěných událostí (specifický pro čtenáře)</translation>
@@ -3544,13 +3527,10 @@ Přenos fondu neovlivní  finanční částku ani zatížení fondu, pokud nejso
   <translation id="5276213198137794752">Vložit počet půjčovaných <ph name="INTERPOLATION"/></translation>
   <translation id="513858940436650688">Možnosti data</translation>
   <translation id="4874122976280827361">Specifické datum vrácení</translation>
-  <translation id="7178953019207816665">Specifické datum vrácení do odhlášení</translation>
   <translation id="3574340089655552361">Spravovat (<ph name="INTERPOLATION"/>) </translation>
   <translation id="814023652643338986">ID výpůjčky</translation>
   <translation id="6675056734193253687">Počet nezkatalogizovaných</translation>
-  <translation id="3444007987917278435"> Rychlé potvrzení </translation>
   <translation id="926310115971289752">Odeslat potvrzení e-mailem</translation>
-  <translation id="6223306102430213105"> Hotovo </translation>
   <translation id="7998988118606668384">Bez potvrzení</translation>
   <translation id="1160916388490317189">Zobrazit:</translation>
   <translation id="1747436446216992571">Povinná pole</translation>
@@ -3616,11 +3596,7 @@ Vámi provedené úpravy nebyly uloženy; prosím, proveďte je znovu.</translat
   <translation id="1253400484304166430">Ostatní/speciální výpůjčky (<ph name="INTERPOLATION"/>)</translation>
   <translation id="2716487329958742045"><ph name="START_TAG_NG_CONTAINER"/> Nekatalogizované výpůjčky (<ph name="INTERPOLATION"/>) <ph name="CLOSE_TAG_NG_CONTAINER"/></translation>
   <translation id="9129866022070836227"> Žádní poslední čtenáři k načtení </translation>
-  <translation id="6384374469322390229">Pokuty a zprávy</translation>
-  <translation id="837277979573261735">Přidat penále / zprávu</translation>
   <translation id="3345732163708338186">Upravit vybrané</translation>
-  <translation id="1024921655948235239">Použito na</translation>
-  <translation id="6570013468520620085">Archivované pokuty / zprávy</translation>
   <translation id="8640831174694193520">Dearchivovat vybrané</translation>
   <translation id="3084527950049443584">Správa čtenářů</translation>
   <translation id="299289286995496988">Zcela vymazat čtenářské konto?</translation>
@@ -3636,22 +3612,11 @@ Tento krok je NEVRATNÝ</translation>
    (přihlášení personálu). Zadejte prosím čárový kód pro cílové konto, 
     abyste získali přístup k nejrůznějším výsledkům práce personálu (statistiky aj.) 
    v účtu, který se chystáte smazat.</translation>
-  <translation id="1664844700559964584">Čtenář: 
-    <ph name="INTERPOLATION"/>, 
-    <ph name="INTERPOLATION_1"/> 
-    <ph name="INTERPOLATION_2"/></translation>
   <translation id="6824182202302531067"> Výpůjčky (<ph name="INTERPOLATION"/>) </translation>
   <translation id="6144790625681226822"> Rezervace (<ph name="INTERPOLATION"/> / <ph name="INTERPOLATION_1"/>) </translation>
   <translation id="3040524738735554270"> Poplatky <ph name="START_TAG_SPAN"/> (<ph name="INTERPOLATION"/>) <ph name="CLOSE_TAG_SPAN"/></translation>
-  <translation id="6452372740127749380">Zprávy</translation>
-  <translation id="6576734186812420906">Upozornění a zprávy</translation>
   <translation id="7307045272545738337">Spuštěné události / oznámení</translation>
-  <translation id="7777788962353377013">Centrum zpráv</translation>
   <translation id="6999437351376042860">Testovat heslo</translation>
-  <translation id="6550492079792851660">Akviziční žádosti čtenáře</translation>
-  <translation id="955831265312055637">Rezervace zdrojů: Spravovat rezervace</translation>
-  <translation id="8155988185010441199">Rezervace zdrojů: Vytvořit rezervaci</translation>
-  <translation id="7979588092946308013">Rezervace zdrojů: Vyzvednout rezervaci</translation>
   <translation id="8288969366628209251">Zcela smazat konto</translation>
   <translation id="4503390375418951435">Pracovní lokace</translation>
   <translation id="1227899493863458295"> <ph name="INTERPOLATION"/> (<ph name="INTERPOLATION_1"/>) </translation>
@@ -3820,11 +3785,7 @@ není aktivní, proto ho není možné využít k  výpůjčkám.</translation>
   <translation id="649720494834281682">Zobrazit rezervace na titul</translation>
   <translation id="6011229620473146275"> Povolení odmítnuto. Prosím, zadejte přihlašovací údaje pro účet, který má oprávnění <ph name="INTERPOLATION"/>. </translation>
   <translation id="1591700599178852066">Sloučit čtenáře</translation>
-  <translation id="5379081329984157730"> Zahrnout neaktivní </translation>
   <translation id="1615862948897489623">Přidat do skupiny</translation>
-  <translation id="4586862368267080825"> <ph name="INTERPOLATION"/>, <ph name="INTERPOLATION_1"/> <ph name="INTERPOLATION_2"/> </translation>
-  <translation id="6415621109409940629"> Blíží se konec platnosti registrace. Prosím, prodlužte ji. </translation>
-  <translation id="6920241498088023610"> Konto nezletilého čtenáře </translation>
   <translation id="208866581805779717">Přístup k internetu</translation>
   <translation id="7514499799246708880">&lt;Skryto&gt;</translation>
   <translation id="6093347351929825528">Rodič / zákonný zástupce</translation>
@@ -3849,8 +3810,6 @@ není aktivní, proto ho není možné využít k  výpůjčkám.</translation>
   <translation id="3691322098231359866">Vyzvednou rezervace</translation>
   <translation id="7724111694355846168">Zobrazit historii výpůjček</translation>
   <translation id="736798795918125284">Výpůjčky</translation>
-  <translation id="6862265996781523030">zkopírovat</translation>
-  <translation id="3388326130942494952">vytisknout</translation>
   <translation id="7855909634431420724"><ph name="INTERPOLATION"/> <ph name="INTERPOLATION_1"/></translation>
   <translation id="167536117640117769"><ph name="INTERPOLATION"/>, <ph name="INTERPOLATION_1"/> <ph name="INTERPOLATION_2"/></translation>
   <translation id="8347612058079704973">Nekatalogizovaná výpůjčka</translation>
@@ -4152,7 +4111,6 @@ Zadat rezervaci <ph name="START_SMALL_TEXT"/> (<ph name="INTERPOLATION"/>, <ph n
   <translation id="8865123935207425518">Dotaz na identifikátor...</translation>
   <translation id="4031118666027324953">Procházet...</translation>
   <translation id="6030204061808901083">Procházet signatury</translation>
-  <translation id="7930377011385863018">Zvolte e-mail nebo tisk</translation>
   <translation id="1041094180246418141">Čas běhu události</translation>
   <translation id="296599452224598245">Čas ukončení události</translation>
   <translation id="1779454710424245707">Čas začátku události</translation>
@@ -4220,9 +4178,7 @@ Zadat rezervaci <ph name="START_SMALL_TEXT"/> (<ph name="INTERPOLATION"/>, <ph n
   <translation id="7919941768705689333"> Přesun jednotek<ph name="START_TAG_NG_CONTAINER"/> (Currently <ph name="INTERPOLATION"/>)<ph name="CLOSE_TAG_NG_CONTAINER"/></translation>
   <translation id="6628817915368848153"> Zrušit označení záznamu </translation>
   <translation id="1339895160776893140">Edice: <ph name="START_TAG_EG_BIB_DISPLAY_FIELD"/><ph name="CLOSE_TAG_EG_BIB_DISPLAY_FIELD"/></translation>
-  <translation id="8328825069693872772">Rezervace zdrojů: vrácení</translation>
   <translation id="2140931202184471938">Vyberte nejkrásnější knihovny</translation>
-  <translation id="8110357026556445194"><ph name="START_TAG_BUTTON"/>DAtum narození<ph name="CLOSE_TAG_BUTTON"/></translation>
   <translation id="5250149255644238520">Poznámka (volitelné)</translation>
   <translation id="3123663770718099325"> Nejsou k dispozici žádné rezervovatelné zdroje, které by odpovídaly vašim kritériím. Chcete vytvořit <ph name="START_LINK"/>nějaké nové rezervovatelné zdroje<ph name="CLOSE_LINK"/>?
 </translation>
@@ -5137,4 +5093,6 @@ Zadat rezervaci <ph name="START_SMALL_TEXT"/> (<ph name="INTERPOLATION"/>, <ph n
   <translation id="7822548082002090596"><ph name="START_TAG_SPAN"/>content_copy<ph name="CLOSE_TAG_SPAN"/></translation>
   <translation id="4203320065138377001">Print <ph name="INTERPOLATION"/> address</translation>
   <translation id="5206156932788796332"><ph name="START_TAG_SPAN"/>print<ph name="CLOSE_TAG_SPAN"/></translation>
+  <translation id="8838576452464401614">Patron Alias</translation>
+  <translation id="3061862449593971702">Click to Select </translation>
 </translationbundle>
