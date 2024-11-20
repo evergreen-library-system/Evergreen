@@ -1,3 +1,714 @@
-Evergreen doesn't keep a GNU-style ChangeLog except in release tarballs.
-Those seeking a change log are encouraged to run 'git log -v', or read
-it online at: http://git.evergreen-ils.org/?p=Evergreen.git;a=log
+commit 0193e0e43e0add5fab9d629d42f51f83c6f18b8b
+Author: Andrea Buntz Neiman <abneiman@equinoxinitiative.org>
+Date:   Wed Nov 20 15:19:39 2024 -0500
+
+    Docs: 3.14.1 release notes
+    
+    Signed-off-by: Andrea Buntz Neiman <abneiman@equinoxinitiative.org>
+
+82	0	docs/RELEASE_NOTES_3_14.adoc
+
+commit 6682dd534a7d6c64efce65adb902d65eee2d079f
+Author: Jason Stephenson <jason@sigio.com>
+Date:   Wed Nov 20 15:45:00 2024 +0000
+
+    Translation updates - xtb files
+    
+    Signed-off-by: Jason Stephenson <jason@sigio.com>
+
+2	44	Open-ILS/src/eg2/src/locale/messages.cs-CZ.xtb
+
+commit 151f329503f1f74e29d3a0f24b3f26dd224e1193
+Author: Jason Stephenson <jason@sigio.com>
+Date:   Wed Nov 20 15:30:58 2024 +0000
+
+    Translation updates - po files
+    
+    Signed-off-by: Jason Stephenson <jason@sigio.com>
+
+469	471	build/i18n/po/bootstrap-opac/cs-CZ.po
+469	471	build/i18n/po/bootstrap-opac/en-CA.po
+469	471	build/i18n/po/bootstrap-opac/en-GB.po
+469	471	build/i18n/po/bootstrap-opac/es-ES.po
+469	471	build/i18n/po/bootstrap-opac/fr-CA.po
+2936	2940	build/i18n/po/db.seed/ar-JO.po
+2935	2939	build/i18n/po/db.seed/cs-CZ.po
+2915	2935	build/i18n/po/db.seed/de-DE.po
+2915	2935	build/i18n/po/db.seed/en-CA.po
+2915	2935	build/i18n/po/db.seed/en-GB.po
+2936	2940	build/i18n/po/db.seed/es-ES.po
+2915	2935	build/i18n/po/db.seed/fi-FI.po
+2915	2935	build/i18n/po/db.seed/fr-CA.po
+2915	2935	build/i18n/po/db.seed/he-IL.po
+2915	2935	build/i18n/po/db.seed/hu-HU.po
+2936	2940	build/i18n/po/db.seed/hy-AM.po
+2915	2935	build/i18n/po/db.seed/oc-FR.po
+2915	2935	build/i18n/po/db.seed/pt-BR.po
+2915	2935	build/i18n/po/db.seed/ru-RU.po
+2915	2935	build/i18n/po/db.seed/sv-SE.po
+2915	2935	build/i18n/po/db.seed/tr-TR.po
+135	123	build/i18n/po/tpac/ar-JO.po
+135	123	build/i18n/po/tpac/cs-CZ.po
+135	123	build/i18n/po/tpac/de-DE.po
+135	123	build/i18n/po/tpac/en-CA.po
+135	123	build/i18n/po/tpac/en-GB.po
+135	123	build/i18n/po/tpac/es-ES.po
+135	123	build/i18n/po/tpac/fi-FI.po
+135	123	build/i18n/po/tpac/fr-CA.po
+135	123	build/i18n/po/tpac/he-IL.po
+135	123	build/i18n/po/tpac/hu-HU.po
+135	123	build/i18n/po/tpac/hy-AM.po
+135	123	build/i18n/po/tpac/oc-FR.po
+135	123	build/i18n/po/tpac/pt-BR.po
+135	123	build/i18n/po/tpac/ru-RU.po
+135	123	build/i18n/po/tpac/sv-SE.po
+135	123	build/i18n/po/tpac/tr-TR.po
+
+commit baf969cacbf37cd5058d5f83cb962c869622a133
+Author: Jason Stephenson <jason@sigio.com>
+Date:   Wed Nov 20 14:23:36 2024 +0000
+
+    Translation updates - newpot
+    
+    Signed-off-by: Jason Stephenson <jason@sigio.com>
+
+5	5	build/i18n/po/webstaff/webstaff.pot
+
+commit 637390527768da2c6c2e991aef36f2e079ba4152
+Author: Mike Rylander <mrylander@gmail.com>
+Date:   Fri Nov 15 13:17:34 2024 -0500
+
+    LP#2087562: Fix node-parent tracking in dynamic trees
+    
+    Root issue and resolution:
+    
+    Node-parent tracking was added to eg-tree in order to facilitate fast
+    traversal for filtering back in commit 1bfe22, but dynamic trees (those
+    constructed using the childernCB method) were not having their parent
+    links updated at the appropriate time.  Those links replace the older
+    "climb through the entire structure looking for my parent" mechanism, so
+    we need to make sure we add the parent link when dynamic children are
+    added.
+    
+    Additionally, some users of eg-tree modify the internal structure of
+    trees manually.  In these cases the parent links and other state-related
+    information is not automatically maintained.
+    
+    This commit fixes those by forcing a maintenance cycle after calling the
+    childrenCB method, and whenever a non-root, un-parented node is used in
+    a tree-level method.
+    
+    Practical impact:
+    
+    In the reporter, we use childrenCB to build the report source tree,
+    because it's essentially unbounded. Then, we use the path from the core
+    source (tree root) to the selected leaf source to construct the join
+    tree for that specific leaf.  Because the node-parent links were not
+    always updated when we need them to be, the path was sometimes empty and
+    the join tree was truncated.  The effect was the core and leaf sources
+    (tables) were joined directly, dropping all intermediate tables.  The
+    link updating fixes the path retrieval, which in turn fixes the join
+    tree construction.
+    
+    In the CCVN composite attribute definition editor, the tree-level
+    findNodeParent method can be called against a node that has not had its
+    parent link applied. This was editor spotted by Llewellyn Marshall while
+    investigating the reporter issue.
+    
+    Reporter test plan:
+     1) Create a report template in the Angular full reporter in 3.13 or
+        later that starts at the Circulation source and adds the Simple
+        Record Extracts -> Title Proper (normalized) field for display.
+     2) See that the Debug Output (Debugging Info link on the main output
+        page for the report output) shows only the action.circulation and
+        reporter.materialized_simple_record tables in the FROM clause.
+     3) Apply this patch and rebuild the staff client.
+     4) Recreate the above template with this patch in effect and see that
+        the FROM clause now contains all of the correct intermediate tables.
+    
+    CCVM composite definition editor test plan:
+     1) Attempt to add nodes to an existing CCVM composite definition, see
+        that you cannot add a new boolean operator and then children
+        thereto.
+     2) Apply this patch and rebuild the staff client.
+     3) See that the CCVM composite defition editor works correctly.
+    
+    Release-note: Fixes report template and CCVM composite definition editor
+    regression introduced during an opimization change.
+    
+    Signed-off-by: Mike Rylander <mrylander@gmail.com>
+    Signed-off-by: Llewellyn Marshall <llewellyn.marshall@dncr.nc.gov>
+
+31	9	Open-ILS/src/eg2/src/app/share/tree/tree.ts
+
+commit f841487654a19e9970f13d903a3f4e6543c68a29
+Author: Josh Stompro <stomproj@larl.org>
+Date:   Fri Jun 14 12:39:00 2024 -0500
+
+    LP#2069358 - Avoid a type error if grid isn't initialized.
+    
+    Release-Note: Fixes patron bills error that causes several settings to be skipped when Uncheck Bills setting is used.
+    
+    If the "Uncheck bills by default" library setting is being used (set to true), there is a function call to
+    unselect all the bills that can fail if the grid isn't already initialized.  That has a side
+    effect of skipping a bunch of settings checks after that statement.
+    
+    The other settings that are effected in some way are.
+     - ui.circ.billing.amount_warn
+      - ui.circ.billing.amount_limit
+      - circ.staff_client.do_not_auto_attempt_print -
+      - circ.disable_patron_credit - Controls Disabling "Convert change to credit option"
+      - credit.processor.default - controls disabling internal CC form when there is no default, or if Stripe is the processor.
+    
+    Testing notes:
+    
+    To confirm the bug:
+    1. enable the "Uncheck bills by default" library setting.
+    2. Also enable disable patron credit, and/or any of the other above settings.
+    3. Log out and back in to refresh settings.
+    4. Open up a patron , switch to bills tab.
+    5. The "Convert change to credit option" will still be shown, even though disable patron credit is enabled.
+    6. Test functionality related to any of the other options listed above.
+    
+    After the fix is applied, the related functions should work correctly.
+    
+    Signed-off-by: Josh Stompro <stomproj@larl.org>
+    Signed-off-by: Jennifer Weston <jennifer.weston@equinoxoli.org>
+    Signed-off-by: Michele Morgan <mmorgan@noblenet.org>
+
+4	1	Open-ILS/web/js/ui/default/staff/circ/patron/bills.js
+
+commit 6eb5bba904dc12334a592ef04b3fa9aa730967b1
+Author: Jane Sandberg <sandbergja@gmail.com>
+Date:   Fri Mar 1 07:50:03 2024 -0800
+
+    LP2052742 Assure ou setting resolves before checking canSave()
+    
+    emitSaveChange() calls canSave(), which checks the library setting cat.require_call_number_labels.
+    
+    However, since the library setting check is asynchronous, there's a chance that we get to canSave()
+    before we have the library setting value, so it uses the default (true) instead.
+    
+    This commit uses .then() to make sure that we only call emitSaveChange() after the library setting
+    promise resolves and we have the actual setting value, rather than the default.
+    
+    Release-Note: Fixes a race condition retrieving the cat.require_call_number_labels ou setting
+    
+    Co-authored-by: Michele Morgan <mmorgan@noblenet.org>
+    Signed-off-by: Jane Sandberg <sandbergja@gmail.com>
+    Signed-off-by: Shula Link <slink@gchrl.org>
+    Signed-off-by: Steven Mayo <smayo@georgialibraries.org>
+    Signed-off-by: blake <blake@mobiusconsortium.org>
+    Signed-off-by: Jason Stephenson <jason@sigio.com>
+    Signed-off-by: Terran McCanna <tmccanna@georgialibraries.org>
+
+14	15	Open-ILS/src/eg2/src/app/staff/cat/volcopy/vol-edit.component.ts
+
+commit 84a12f2f5bbdfbe9c1f021879d47b8e49a537549
+Author: Jane Sandberg <js7389@princeton.edu>
+Date:   Sat Nov 4 07:25:26 2023 -0700
+
+    LP2045989: Call Number Templates save only changed fields
+    
+    Signed-off-by: Jane Sandberg <sandbergja@gmail.com>
+    Signed-off-by: Michele Morgan <mmorgan@noblenet.org>
+    Signed-off-by: Jennifer Weston <jennifer.weston@equinoxoli.org>
+    Signed-off-by: Ruth Frasur Davis <rfrasur@gmail.com>
+    Signed-off-by: Terran McCanna <tmccanna@georgialibraries.org>
+
+103	2	Open-ILS/src/eg2/src/app/staff/cat/volcopy/copy-attrs.component.spec.ts
+18	5	Open-ILS/src/eg2/src/app/staff/cat/volcopy/copy-attrs.component.ts
+43	0	Open-ILS/src/eg2/src/app/staff/cat/volcopy/vol-edit.component.spec.ts
+3	3	Open-ILS/src/eg2/src/app/staff/cat/volcopy/vol-edit.component.ts
+ create mode 100644 Open-ILS/src/eg2/src/app/staff/cat/volcopy/vol-edit.component.spec.ts
+
+commit 95a4d613378ff76fd55d21ac1cffc648f3eb71d1
+Author: Jason Boyer <JBoyer@equinoxOLI.org>
+Date:   Mon Feb 19 09:35:44 2024 -0500
+
+    LP2046000: Check for staging dupes and alerts
+    
+    When loading staged users run the duplicate field checks for all relevant
+    fields and check the addresses for any alerts.
+    
+    Release-Note: Check for duplicate values and address alerts when loading staged users.
+    
+    Signed-off-by: Jason Boyer <JBoyer@equinoxOLI.org>
+    Signed-off-by: Galen Charlton <gmc@equinoxOLI.org>
+    Signed-off-by: Terran McCanna <tmccanna@georgialibraries.org>
+
+17	0	Open-ILS/web/js/ui/default/staff/circ/patron/regctl.js
+
+commit 5e487c1f8bf33dd31bc0cf883ec1e2878058a050
+Author: Stephanie Leary <stephanie.leary@equinoxoli.org>
+Date:   Thu Oct 10 21:21:48 2024 +0000
+
+    LP2084166 MARC edit keyboard fix: up, down, CTRL-D
+    
+    Fixes broken keyboard shortcut behavior in the MARC rich editor:
+    
+    In tags, indicators, and subfield codes, fixes the up/down arrow keys to
+    move focus to the adjacent row as expected. CTRL-D now prevents browser
+    default behavior (bookmarking the page).
+    
+    Also removes vestigial context menu code, which could cause obsolete
+    contextual menus to appear in some editable fields.
+    
+    Release-note: Fixes up/down arrows, CTRL-D, context menus in MARC editor
+    
+    Signed-off-by: Stephanie Leary <stephanie.leary@equinoxoli.org>
+    Signed-off-by: Joni Paxton <joni@yourcl.org>
+    Signed-off-by: Michele Morgan <mmorgan@noblenet.org>
+
+0	1	Open-ILS/src/eg2/src/app/staff/share/marc-edit/editable-content.component.html
+15	88	Open-ILS/src/eg2/src/app/staff/share/marc-edit/editable-content.component.ts
+8	6	Open-ILS/src/eg2/src/app/staff/share/marc-edit/rich-editor.component.ts
+
+commit 53e88651947a7d02a73be01f305e9dc66273cfdd
+Author: Chris Sharp <csharp@georgialibraries.org>
+Date:   Fri Jan 13 17:26:14 2012 -0500
+
+    LP#2049934: Remove trailing TCN spaces from incoming bib records.
+    
+    For libraries using the 001 as the Evergreen database ID and the 035
+    to store the original title control number, this fix ensures that
+    any leading or trailing spaces in the incoming record's 001 are removed.
+    This ensures matching on existing records with the same TCN in the 035.
+    Authored by Galen Charlton for PINES and applied locally for many years.
+    
+    Release-note: Trim spaces from TCN when importing Z39.50
+    
+    Signed-off-by: Chris Sharp <csharp@georgialibraries.org>
+    Signed-off-by: blake <blake@mobiusconsortium.org>
+    Signed-off-by: Mary Llewellyn <mllewell@biblio.org>
+
+1	0	Open-ILS/src/perlmods/lib/OpenILS/Application/Cat/BibCommon.pm
+
+commit d8092874252073c2f70437fd50cdb5dc0bef059e
+Author: IanSkelskey <ianskelskey@gmail.com>
+Date:   Mon Nov 18 14:10:16 2024 -0500
+
+    LP#2087609: Fix incorrect lit_form parameter in search query
+    
+    Fix the issue where the \"Not Fiction\" literary form filter did not append the correct lit_form parameter due to its code being zero, which Angular was interpreting as false. This patch ensures the filter now correctly includes lit_form=0 in the query string.
+    
+    - The fix was mistakenly applied to the shelving location filter and has been corrected.
+    - Ensure consistent behavior across all literary form filters by properly mapping each to its corresponding query parameter.
+    
+    Release-Note: Ensure all literary form filters append correct lit_form parameter in queries.
+    
+    Signed-off-by: Ian Skelskey <ianskelskey@gmail.com>
+    Signed-off-by: Ruth Frasur Davis <rdavis@evergreencdi.org>
+    Signed-off-by: Shula Link <slink@gchrl.org>
+    Signed-off-by: blake <blake@mobiusconsortium.org>
+    Signed-off-by: Scott Angel <scottangel@mobiusconsortium.org>
+    Signed-off-by: Michele Morgan <mmorgan@noblenet.org>
+
+1	1	Open-ILS/src/eg2/src/app/staff/catalog/search-form.component.html
+
+commit 1e27c32df70ec4e130cd6cc3889bafe0c36c6634
+Author: Steven Mayo <smayo@georgialibraries.org>
+Date:   Tue Oct 8 17:10:16 2024 -0400
+
+    LP2007284: Don't fail when assigning a new part to multiple items
+    
+    Uses a search_biblio_monograph_part to figure out what parts already
+    exist instead of tracking them in memory where they can be ignored by a
+    parallel call.
+    
+    Signed-off-by: Steven Mayo <smayo@georgialibraries.org>
+    Signed-off-by: blake <blake@mobiusconsortium.org>
+    Signed-off-by: Ruth Frasur Davis <rfrasur@gmail.com>
+
+10	24	Open-ILS/src/perlmods/lib/OpenILS/Application/Cat/AssetCommon.pm
+
+commit 15ebd1b53fbbab8a18c47b0dd020287ea65f2cdd
+Author: Jason Boyer <JBoyer@equinoxOLI.org>
+Date:   Tue Feb 14 13:12:55 2023 -0500
+
+    LP2007284: Don't fail when assigning a new part to multiple items
+    
+    Signed-off-by: Jason Boyer <JBoyer@equinoxOLI.org>
+
+40	1	Open-ILS/src/perlmods/lib/OpenILS/Application/Cat/AssetCommon.pm
+
+commit 061259c9dce51ee1b1edc557a055ee7476229dec
+Author: Michele Morgan <mmorgan@noblenet.org>
+Date:   Wed Oct 30 16:30:08 2024 -0400
+
+    LP2077343: Stripe - patron can be charged w/o credit in Evergreen
+    
+    Adds a check for a Stripe payment intent id when encountering INVALID_USER_XACT_ID.
+    If found, don't bail out since the patron's card has already been charged.
+    
+    Release-note: Assures a successful Stripe payment is credited when the patron record has changed.
+    
+    Signed-off-by: Michele Morgan <mmorgan@noblenet.org>
+    Signed-off-by: Terran McCanna <tmccanna@georgialibraries.org>
+    Signed-off-by: Jane Sandberg <js7389@princeton.edu>
+    Signed-off-by: Ruth Davis <rdavis@evergreencdi.org>
+    Signed-off-by: Ian Skelskey <ianskelskey@gmail.com>
+    Signed-off-by: blake <blake@mobiusconsortium.org>
+
+6	2	Open-ILS/src/perlmods/lib/OpenILS/Application/Circ/Money.pm
+
+commit d4572a69295cecfbd7f426b5dfc4888da031b042
+Author: Gina Monti <gmonti@biblio.org>
+Date:   Tue Oct 8 13:07:16 2024 -0400
+
+    LP#2083959
+    
+    Typo for the 'Patron alias' column picker option within the Angular Pull
+    List.  This corrects the captialization.
+    
+    [1] Go to Circulation > Pull List for Hold Requests
+    [2] Go to the column picker
+    [3] Observe the typo in the 'Patron alias' option.
+    
+    Signed-off-by: Gina Monti <gmonti@biblio.org>
+    Signed-off-by: Stephanie Leary <stephanie.leary@equinoxoli.org>
+
+1	1	Open-ILS/src/eg2/src/app/staff/share/holds/grid.component.html
+
+commit e85a7b3dcecbeccf0169a0feb04bc96f341c5879
+Author: Gina Monti <gmonti@biblio.org>
+Date:   Tue Nov 5 15:43:45 2024 -0500
+
+    LP#2086737: Angular Pull List Needs for Shelving Locations Selector
+    
+    Before applying patch:
+    
+    [1] Circulation > Pull List for Hold Requests
+    [2] Observe that the empty square next to Shelving Location in the top
+    screen is a button without a label.  This may be confusing for users.
+    
+    After patch:
+    
+    [1] Circulation < Pull List for Hold Requests
+    [2] The button now has a Click to Select label.
+    
+    Signed-off-by: Gina Monti <gmonti@biblio.org>
+    Signed-off-by: Stephanie Leary <stephanie.leary@equinoxoli.org>
+
+3	2	Open-ILS/src/eg2/src/app/staff/share/holds/grid.component.html
+
+commit e0270aa72ef9ba9a3eb0daca0b798f751c245743
+Author: Mike Rylander <mrylander@gmail.com>
+Date:   Wed Sep 18 12:04:45 2024 -0400
+
+    LP#1721026: Default owner for copy tags and types
+    
+    This commit adds the boilerplate required to set the default owner field
+    on copy tags and tag types to the workstation org of the logged in staff
+    user.
+    
+    Release-note: Adds default owning org unit for copy tags and types.
+    
+    Signed-off-by: Mike Rylander <mrylander@gmail.com>
+    Signed-off-by: Gina Monti <gmonti@biblio.org>
+    Signed-off-by: Michele Morgan <mmorgan@noblenet.org>
+
+8	0	Open-ILS/src/eg2/src/app/staff/admin/local/routing.module.ts
+8	0	Open-ILS/src/eg2/src/app/staff/admin/server/routing.module.ts
+
+commit bf51471b04344ff2c02dd908dd5b283d00942461
+Author: blake <blake@mobiusconsortium.org>
+Date:   Sun Nov 17 08:55:07 2024 -0600
+
+    LP#2081832 Adding DEV Docker files to .gitignore
+    
+    The DEV container makes use of some files in the root of
+    the repository to facilitate signaling to the container
+    from host OS.
+    
+    These should be gitignored:
+    
+    docker-watch.sh
+    db_control.txt
+    db_switch.log
+    eg_restart_go_screenoutput
+    eg_restart_go
+    eg_rebuild_angular_screenoutput
+    eg_rebuild_angular
+    watch.LOCK
+    
+    Release-note: .gitignore DEV Docker generated signal files
+    
+    Signed-off-by: blake <blake@mobiusconsortium.org>
+
+10	0	.gitignore
+
+commit e615525596c85267aeec54bfc0a211f645fbdaca
+Author: Mike Rylander <mrylander@gmail.com>
+Date:   Fri Oct 18 15:15:35 2024 -0400
+
+    LP#2084837: Show operators for resolved datatype
+    
+    In the reporter, a transform can modify the datatype of a field in a way
+    that changes the set of operators that should be presented to the user.
+    This commit makes sure that a tranform-resolved datatype is used when
+    available, and falls back to the field's native datatype if no transform
+    with a different final datatype is selected.
+    
+    Release-note: Fixes an Operator display issue in the report definition
+    editor.
+    
+    Signed-off-by: Mike Rylander <mrylander@gmail.com>
+    Signed-off-by: Terran McCanna <tmccanna@georgialibraries.org>
+    Signed-off-by: Jane Sandberg <js7389@princeton.edu>
+    Signed-off-by: Blake Graham-Henderson <blake@mobiusconsortium.org>
+    Signed-off-by: Ian Skelskey <iskelskey@biblio.org>
+    Signed-off-by: Steven Mayo <smayo@georgialibraries.org>
+    Signed-off-by: Stephanie Leary <stephanie.leary@equinoxoli.org>
+    Signed-off-by: Michele Morgan <mmorgan@noblenet.org>
+
+2	2	Open-ILS/src/eg2/src/app/staff/reporter/full/reporter-field.component.ts
+
+commit bcb983e3e036cda66c81ac39d6c18562ae98edb7
+Author: Jason Stephenson <jason@sigio.com>
+Date:   Fri Nov 15 15:53:53 2024 -0500
+
+    Update Dojo download URL in README/install doc
+    
+    As reported by Blake Graham-Henderson in IRC,
+    http://irc.evergreen-ils.org/evergreen/2024-11-15#i_566219, the Dojo
+    download no longer works well with http, so this commit switches to
+    https as suggested by Chris Sharp.
+    
+    Signed-off-by: Jason Stephenson <jason@sigio.com>
+
+1	1	docs/modules/installation/pages/server_installation.adoc
+
+commit 3860981631c0c511b398385d5876499fae25adf6
+Author: IanSkelskey <ianskelskey@gmail.com>
+Date:   Wed Nov 13 19:51:48 2024 -0500
+
+    LP#2087609: Improve filter update handling in search form
+    
+    The problem was that the code for the Not fiction literary form was
+    zero which Angular automatically converts to false. This caused the
+    filter to be removed from the search query.
+    
+    Refactor filter update logic for the catalog search form.
+    - Replace ngModel binding with new `updateFilters` function for each filter.
+    - Ensure selected filter values are properly captured and assigned.
+    - Simplify logic by directly handling HTML select elements.
+    
+    Release-Note: Refactor filter handling in search controls for more consistent performance.
+    
+    Signed-off-by: Ian Skelskey <ianskelskey@gmail.com>
+    Co-authored-by: Mike Rylander <mrylander@gmail.com>
+    Co-authored-by: Steven Mayo <smayo@georgialibraries.org>
+    Signed-off-by: Bill Erickson <berickxx@gmail.com>
+
+8	8	Open-ILS/src/eg2/src/app/staff/catalog/search-form.component.html
+9	0	Open-ILS/src/eg2/src/app/staff/catalog/search-form.component.ts
+
+commit 11445663dacf49f04e7e13c1619d4bdde230fba7
+Author: Stephanie Leary <stephanie.leary@equinoxoli.org>
+Date:   Mon Sep 23 16:49:02 2024 +0000
+
+    LP1983500 Update AngularJS login path for staff
+    
+    Changes the AngularJS login routing to go directly to /eg2/staff/splash
+    (unless some other route was requested) rather than attempting to use
+    the old AngularJS base path first. Speeds up logging in and prevents a
+    flash of blank white screen in between frameworks.
+    
+    Release-note: Redirect to Angular staff portal from AngularJS login
+    
+    Signed-off-by: Stephanie Leary <stephanie.leary@equinoxoli.org>
+    Signed-off-by: Jason Stephenson <jason@sigio.com>
+
+2	2	Open-ILS/web/js/ui/default/staff/app.js
+
+commit ce6131543a821852f083f7cf6a75783092aaa376
+Author: Susan Morrison <101879901+spmorrison@users.noreply.github.com>
+Date:   Tue Nov 12 10:51:07 2024 -0500
+
+    Docs: Update linked_libraries.adoc with upcoming closures info
+    
+    Per 3.12 bug fix: https://bugs.launchpad.net/evergreen/+bug/2017913
+    
+    Signed-off-by: Jane Sandberg <js7389@princeton.edu>
+
+3	1	docs/modules/opac/pages/linked_libraries.adoc
+
+commit 1a5afdf5df2ffc4feaa876ef1f061016aae6b79d
+Author: spmorrison <101879901+spmorrison@users.noreply.github.com>
+Date:   Tue Nov 12 09:43:01 2024 -0500
+
+    Docs: Update copy_locations.adoc - deleted shelving locations filtered by default
+    
+    Per bug fix in 3.11: https://bugs.launchpad.net/evergreen/+bug/1917092
+    
+    Signed-off-by: Jane Sandberg <js7389@princeton.edu>
+
+2	2	docs/modules/admin/pages/copy_locations.adoc
+
+commit 40385454a1670421be245dc8caeb54ef8aec4902
+Author: IanSkelskey <ianskelskey@gmail.com>
+Date:   Tue Nov 5 10:06:48 2024 -0500
+
+    LP#2086709: fix autosuggest overlap on OPAC home screen
+    
+    The autosuggest list currently renders behind carousel navigation buttons on the OPAC home screen, obscuring suggested options. This change raises the z-index of `.search_box_wrapper .list-group` to ensure it appears above the carousel controls.
+    
+    Release-Note: Fixes display conflict on OPAC home screen where autosuggest list appears behind carousel buttons.
+    
+    Signed-off-by: Ian Skelskey <ianskelskey@gmail.com>
+    Signed-off-by: Gina Monti <gmonti@biblio.org>
+    Signed-off-by: Jane Sandberg <sandbergja@gmail.com>
+
+1	1	Open-ILS/src/templates-bootstrap/opac/css/style.css.tt2
+
+commit e5fa0c8fae9d95ae2011370a4a1502ae991e8023
+Author: IanSkelskey <ianskelskey@gmail.com>
+Date:   Tue Oct 1 14:35:15 2024 -0400
+
+    LP#2081317: fix invisible author links and undefined queries in staff catalog
+    
+    Removes author links from catalog search results where the work has no
+    author, which previously resulted in links to a query where
+    author="undefined".
+    
+    Release-note: Removes undefined author links in catalog search results
+    
+    Signed-off-by: Ian Skelskey <ianskelskey@gmail.com>
+    Signed-off-by: Stephanie Leary <stephanie.leary@equinoxoli.org>
+    Signed-off-by: Michele Morgan <mmorgan@noblenet.org>
+    Signed-off-by: blake <blake@mobiusconsortium.org>
+    Signed-off-by: Terran McCanna <tmccanna@georgialibraries.org>
+    Signed-off-by: Jane Sandberg <js7389@princeton.edu>
+
+7	3	Open-ILS/src/eg2/src/app/staff/catalog/result/record.component.html
+
+commit e3c0f493df134d70a0b98aa1516e53ec6ea62438
+Author: Mike Rylander <mrylander@gmail.com>
+Date:   Fri Aug 30 13:50:37 2024 -0400
+
+    LP#2078506: Fix Background Imports to new named queues
+    
+    The new Background Import Manager script responsible for processing
+    background import requests got out of sync with the front end user
+    input, and has a defect stopping it from properly creating named import
+    queues for bib records. Importing to existing queues, and ACQ imports
+    (which deal with queues differently than pure Vandelay imports), are
+    not impacted.
+    
+    To test:
+    
+     1) attempt to process a normal (non-ACQ) background import request
+        involving a new queue (that is, one that does not already exist,
+        and for which you have supplied a name)
+     2) see that the background import request fails to be processed by
+        the background_import_mgr.pl script, either via cron or when run
+        by directly on the server, and the request remains in the "new"
+        state
+     3) apply this commit
+     4) see that the background import request is processed correctly
+    
+    Release-note: Fix vandelay background importer perl script
+    
+    Signed-off-by: Mike Rylander <mrylander@gmail.com>
+    Signed-off-by: Jane Sandberg <sandbej@linnbenton.edu>
+    Signed-off-by: blake <blake@mobiusconsortium.org>
+
+1	1	Open-ILS/src/support-scripts/background_import_mgr.pl
+
+commit adf841cb341ec1b423e577ed49b25d31d038ffad
+Author: blake <blake@mobiusconsortium.org>
+Date:   Fri Oct 25 16:13:35 2024 -0500
+
+    Fixing Perl installation of Email::Send
+    
+    Installing in Docker as root we can run into an issue with installing
+    the dependency for Email::Send (Module::Pluggable)
+    
+    Issue described here:
+    https://github.com/simonwistow/Module-Pluggable/issues/27
+    
+    Release-note: Fix installation issue in docker containers.
+    
+    Signed-off-by: blake <blake@mobiusconsortium.org>
+    Signed-off-by: Jane Sandberg <js7389@princeton.edu>
+
+1	0	Open-ILS/src/extras/install/Makefile.debian-bookworm
+1	0	Open-ILS/src/extras/install/Makefile.debian-bullseye
+1	0	Open-ILS/src/extras/install/Makefile.debian-buster
+1	0	Open-ILS/src/extras/install/Makefile.fedora
+1	0	Open-ILS/src/extras/install/Makefile.ubuntu-jammy
+1	0	Open-ILS/src/extras/install/Makefile.ubuntu-noble
+
+commit b630097b7046f4c9c6a39e783e1e9a0e1016ae4b
+Author: Dan Briem <dbriem@harrisonpl.org>
+Date:   Sat Oct 26 18:53:37 2024 +0000
+
+    LP#2085646 Disabled Holds Shelf Action Items (Cancel/Uncancel)
+    
+    Match the cancel/uncancel action handler names in the
+    holds shelf view with the hold grid actions service.
+    
+    Release-note: Fix a bug that prevented canceling holds from the Holds
+    Shelf interface.
+    
+    Signed-off-by: Dan Briem <dbriem@harrisonpl.org>
+    Signed-off-by: Jane Sandberg <sandbergja@gmail.com>
+
+2	2	Open-ILS/src/templates/staff/circ/holds/t_shelf_list.tt2
+
+commit 743a0d7aedb9edb90f85ce03bbe3326f3cd0702c
+Author: blake <blake@mobiusconsortium.org>
+Date:   Tue Oct 22 15:46:59 2024 -0500
+
+    LP#2085384 Switching from wget to curl for make release
+    
+    one line switch from wget to curl. Seems to be more successful
+    
+    Signed-off-by: blake <blake@mobiusconsortium.org>
+    Signed-off-by: Jane Sandberg <sandbergja@gmail.com>
+
+1	1	build/tools/make_release
+
+commit 49136b0adf8aca682d870b90efd1f297a8302b04
+Author: blake <blake@mobiusconsortium.org>
+Date:   Wed Oct 23 09:10:20 2024 -0500
+
+    Forward port 3.13.4-3.13.5 upgrade script
+    
+    Signed-off-by: blake <blake@mobiusconsortium.org>
+
+51	0	Open-ILS/src/sql/Pg/version-upgrade/3.13.4-3.13.5-upgrade-db.sql
+ create mode 100644 Open-ILS/src/sql/Pg/version-upgrade/3.13.4-3.13.5-upgrade-db.sql
+
+commit 376304a315691297b6df54a8d52b0feadecbe635
+Author: blake <blake@mobiusconsortium.org>
+Date:   Wed Oct 23 20:59:00 2024 -0500
+
+    Forward-port 3.13.3-3.13.4 upgrade script
+    
+    Signed-off-by: blake <blake@mobiusconsortium.org>
+
+503	0	Open-ILS/src/sql/Pg/version-upgrade/3.13.3-3.13.4-upgrade-db.sql
+ create mode 100644 Open-ILS/src/sql/Pg/version-upgrade/3.13.3-3.13.4-upgrade-db.sql
+
+commit 93eb3f555e83811a2c2029ee95194e8ddf3f9123
+Author: Andrea Buntz Neiman <abneiman@equinoxinitiative.org>
+Date:   Wed Oct 23 14:04:33 2024 -0400
+
+    3.14.0 relnotes corrections
+    
+    Signed-off-by: Andrea Buntz Neiman <abneiman@equinoxinitiative.org>
+
+5	4	docs/RELEASE_NOTES_3_14.adoc
+
+commit a6650a7839962e0169dab0f16e7fb981ac872c05
+Author: Jason Stephenson <jason@sigio.com>
+Date:   Tue Oct 22 17:26:50 2024 +0000
+
+    Foward port 3.13.14-3.14.0 upgrade script
+    
+    Signed-off-by: Jason Stephenson <jason@sigio.com>
+
+1630	0	Open-ILS/src/sql/Pg/version-upgrade/3.13.4-3.14.0-upgrade-db.sql
+ create mode 100644 Open-ILS/src/sql/Pg/version-upgrade/3.13.4-3.14.0-upgrade-db.sql
