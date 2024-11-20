@@ -1,3 +1,418 @@
-Evergreen doesn't keep a GNU-style ChangeLog except in release tarballs.
-Those seeking a change log are encouraged to run 'git log -v', or read
-it online at: http://git.evergreen-ils.org/?p=Evergreen.git;a=log
+commit ae8707fbd4a8e8848c2b237f6e8180c72eecbb31
+Author: Michele Morgan <mmorgan@noblenet.org>
+Date:   Wed Nov 20 16:03:18 2024 +0000
+
+    bumping Perl version string for 3.12.9
+    
+    Signed-off-by: Michele Morgan <mmorgan@noblenet.org>
+
+1	1	Open-ILS/src/perlmods/lib/OpenILS.pm
+
+commit 9536d72bae16d4a1794fec38ac9478363478870f
+Author: Andrea Buntz Neiman <abneiman@equinoxinitiative.org>
+Date:   Wed Nov 20 14:25:56 2024 -0500
+
+    Docs: 3.12.9 release notes
+    
+    Signed-off-by: Andrea Buntz Neiman <abneiman@equinoxinitiative.org>
+
+61	0	docs/RELEASE_NOTES_3_12.adoc
+
+commit 9c6d82c16cbc7e224273ed73f7499ca1443dcf5b
+Author: Jason Stephenson <jason@sigio.com>
+Date:   Wed Nov 20 14:08:53 2024 +0000
+
+    Translation updates - xtb files
+    
+    Signed-off-by: Jason Stephenson <jason@sigio.com>
+
+462	493	Open-ILS/src/eg2/src/locale/messages.cs-CZ.xtb
+
+commit e6dadfcaf2f0d0b365779a197bedb2188712cbfc
+Author: Jason Stephenson <jason@sigio.com>
+Date:   Wed Nov 20 14:08:13 2024 +0000
+
+    Translation updates - po files
+    
+    Signed-off-by: Jason Stephenson <jason@sigio.com>
+
+54	0	build/i18n/po/booking/fr-CA.po
+142	96	build/i18n/po/bootstrap-opac/cs-CZ.po
+91	76	build/i18n/po/bootstrap-opac/en-CA.po
+91	76	build/i18n/po/bootstrap-opac/en-GB.po
+124	85	build/i18n/po/bootstrap-opac/es-ES.po
+117	83	build/i18n/po/bootstrap-opac/fr-CA.po
+3192	3184	build/i18n/po/db.seed/ar-JO.po
+3201	3187	build/i18n/po/db.seed/cs-CZ.po
+3192	3184	build/i18n/po/db.seed/de-DE.po
+3192	3184	build/i18n/po/db.seed/en-CA.po
+3192	3184	build/i18n/po/db.seed/en-GB.po
+3192	3184	build/i18n/po/db.seed/es-ES.po
+3192	3184	build/i18n/po/db.seed/fi-FI.po
+3192	3184	build/i18n/po/db.seed/fr-CA.po
+3192	3184	build/i18n/po/db.seed/he-IL.po
+3192	3184	build/i18n/po/db.seed/hu-HU.po
+3192	3184	build/i18n/po/db.seed/hy-AM.po
+3192	3184	build/i18n/po/db.seed/oc-FR.po
+3192	3184	build/i18n/po/db.seed/pt-BR.po
+3192	3184	build/i18n/po/db.seed/ru-RU.po
+3192	3184	build/i18n/po/db.seed/sv-SE.po
+3192	3184	build/i18n/po/db.seed/tr-TR.po
+3784	3769	build/i18n/po/fm_IDL.dtd/ar-JO.po
+3789	3771	build/i18n/po/fm_IDL.dtd/cs-CZ.po
+3776	3767	build/i18n/po/fm_IDL.dtd/de-DE.po
+3784	3769	build/i18n/po/fm_IDL.dtd/en-CA.po
+3784	3769	build/i18n/po/fm_IDL.dtd/en-GB.po
+3786	3771	build/i18n/po/fm_IDL.dtd/es-ES.po
+3784	3769	build/i18n/po/fm_IDL.dtd/fi-FI.po
+3776	3767	build/i18n/po/fm_IDL.dtd/fr-CA.po
+3776	3767	build/i18n/po/fm_IDL.dtd/he-IL.po
+3776	3767	build/i18n/po/fm_IDL.dtd/hu-HU.po
+3784	3769	build/i18n/po/fm_IDL.dtd/hy-AM.po
+3776	3767	build/i18n/po/fm_IDL.dtd/oc-FR.po
+3786	3771	build/i18n/po/fm_IDL.dtd/pt-BR.po
+3786	3771	build/i18n/po/fm_IDL.dtd/ru-RU.po
+3776	3767	build/i18n/po/fm_IDL.dtd/sv-SE.po
+3776	3767	build/i18n/po/fm_IDL.dtd/tr-TR.po
+46	46	build/i18n/po/tpac/ar-JO.po
+49	46	build/i18n/po/tpac/cs-CZ.po
+46	46	build/i18n/po/tpac/de-DE.po
+46	46	build/i18n/po/tpac/en-CA.po
+49	46	build/i18n/po/tpac/en-GB.po
+47	47	build/i18n/po/tpac/es-ES.po
+46	46	build/i18n/po/tpac/fi-FI.po
+49	46	build/i18n/po/tpac/fr-CA.po
+46	46	build/i18n/po/tpac/he-IL.po
+46	46	build/i18n/po/tpac/hu-HU.po
+46	46	build/i18n/po/tpac/hy-AM.po
+46	46	build/i18n/po/tpac/oc-FR.po
+46	46	build/i18n/po/tpac/pt-BR.po
+46	46	build/i18n/po/tpac/ru-RU.po
+46	46	build/i18n/po/tpac/sv-SE.po
+46	46	build/i18n/po/tpac/tr-TR.po
+109	103	build/i18n/po/webstaff/ar-JO.po
+123	109	build/i18n/po/webstaff/cs-CZ.po
+109	103	build/i18n/po/webstaff/de-DE.po
+109	103	build/i18n/po/webstaff/en-CA.po
+109	103	build/i18n/po/webstaff/en-GB.po
+109	103	build/i18n/po/webstaff/es-ES.po
+109	103	build/i18n/po/webstaff/hy-AM.po
+109	103	build/i18n/po/webstaff/ru-RU.po
+ create mode 100644 build/i18n/po/booking/fr-CA.po
+
+commit 05b984eef120fd7650e36d3cf72fac8cc29018f7
+Author: Jason Stephenson <jason@sigio.com>
+Date:   Wed Nov 20 13:55:58 2024 +0000
+
+    Translation updates - newpot
+    
+    Signed-off-by: Jason Stephenson <jason@sigio.com>
+
+1	1	build/i18n/po/bootstrap-opac/bootstrap-opac.pot
+1	1	build/i18n/po/tpac/tpac.pot
+5	5	build/i18n/po/webstaff/webstaff.pot
+
+commit 7c04e25229d22ee9f3cde025dde976a0b11e5325
+Author: Josh Stompro <stomproj@larl.org>
+Date:   Fri Jun 14 12:39:00 2024 -0500
+
+    LP#2069358 - Avoid a type error if grid isn't initialized.
+    
+    Release-Note: Fixes patron bills error that causes several settings to be skipped when Uncheck Bills setting is used.
+    
+    If the "Uncheck bills by default" library setting is being used (set to true), there is a function call to
+    unselect all the bills that can fail if the grid isn't already initialized.  That has a side
+    effect of skipping a bunch of settings checks after that statement.
+    
+    The other settings that are effected in some way are.
+     - ui.circ.billing.amount_warn
+      - ui.circ.billing.amount_limit
+      - circ.staff_client.do_not_auto_attempt_print -
+      - circ.disable_patron_credit - Controls Disabling "Convert change to credit option"
+      - credit.processor.default - controls disabling internal CC form when there is no default, or if Stripe is the processor.
+    
+    Testing notes:
+    
+    To confirm the bug:
+    1. enable the "Uncheck bills by default" library setting.
+    2. Also enable disable patron credit, and/or any of the other above settings.
+    3. Log out and back in to refresh settings.
+    4. Open up a patron , switch to bills tab.
+    5. The "Convert change to credit option" will still be shown, even though disable patron credit is enabled.
+    6. Test functionality related to any of the other options listed above.
+    
+    After the fix is applied, the related functions should work correctly.
+    
+    Signed-off-by: Josh Stompro <stomproj@larl.org>
+    Signed-off-by: Jennifer Weston <jennifer.weston@equinoxoli.org>
+    Signed-off-by: Michele Morgan <mmorgan@noblenet.org>
+
+4	1	Open-ILS/web/js/ui/default/staff/circ/patron/bills.js
+
+commit 5b82dea102db509d5aa1bff9489d2771dfcddbf5
+Author: Jane Sandberg <sandbergja@gmail.com>
+Date:   Fri Mar 1 07:50:03 2024 -0800
+
+    LP2052742 Assure ou setting resolves before checking canSave()
+    
+    emitSaveChange() calls canSave(), which checks the library setting cat.require_call_number_labels.
+    
+    However, since the library setting check is asynchronous, there's a chance that we get to canSave()
+    before we have the library setting value, so it uses the default (true) instead.
+    
+    This commit uses .then() to make sure that we only call emitSaveChange() after the library setting
+    promise resolves and we have the actual setting value, rather than the default.
+    
+    Release-Note: Fixes a race condition retrieving the cat.require_call_number_labels ou setting
+    
+    Co-authored-by: Michele Morgan <mmorgan@noblenet.org>
+    Signed-off-by: Jane Sandberg <sandbergja@gmail.com>
+    Signed-off-by: Shula Link <slink@gchrl.org>
+    Signed-off-by: Steven Mayo <smayo@georgialibraries.org>
+    Signed-off-by: blake <blake@mobiusconsortium.org>
+    Signed-off-by: Jason Stephenson <jason@sigio.com>
+    Signed-off-by: Terran McCanna <tmccanna@georgialibraries.org>
+
+8	8	Open-ILS/src/eg2/src/app/staff/cat/volcopy/vol-edit.component.ts
+
+commit f2b3a60f6fb07e4cf06cddaa9544329021d79aaf
+Author: Jane Sandberg <js7389@princeton.edu>
+Date:   Sat Nov 4 07:25:26 2023 -0700
+
+    LP2045989: Call Number Templates save only changed fields
+    
+    Signed-off-by: Jane Sandberg <sandbergja@gmail.com>
+    Signed-off-by: Michele Morgan <mmorgan@noblenet.org>
+    Signed-off-by: Jennifer Weston <jennifer.weston@equinoxoli.org>
+    Signed-off-by: Ruth Frasur Davis <rfrasur@gmail.com>
+    Signed-off-by: Terran McCanna <tmccanna@georgialibraries.org>
+
+103	2	Open-ILS/src/eg2/src/app/staff/cat/volcopy/copy-attrs.component.spec.ts
+18	5	Open-ILS/src/eg2/src/app/staff/cat/volcopy/copy-attrs.component.ts
+43	0	Open-ILS/src/eg2/src/app/staff/cat/volcopy/vol-edit.component.spec.ts
+3	3	Open-ILS/src/eg2/src/app/staff/cat/volcopy/vol-edit.component.ts
+ create mode 100644 Open-ILS/src/eg2/src/app/staff/cat/volcopy/vol-edit.component.spec.ts
+
+commit 2e72600b8ee8d9da45d65ddf271215b28c15654f
+Author: Jason Boyer <JBoyer@equinoxOLI.org>
+Date:   Mon Feb 19 09:35:44 2024 -0500
+
+    LP2046000: Check for staging dupes and alerts
+    
+    When loading staged users run the duplicate field checks for all relevant
+    fields and check the addresses for any alerts.
+    
+    Release-Note: Check for duplicate values and address alerts when loading staged users.
+    
+    Signed-off-by: Jason Boyer <JBoyer@equinoxOLI.org>
+    Signed-off-by: Galen Charlton <gmc@equinoxOLI.org>
+    Signed-off-by: Terran McCanna <tmccanna@georgialibraries.org>
+
+17	0	Open-ILS/web/js/ui/default/staff/circ/patron/regctl.js
+
+commit baa9f5db8a2071f42efaa5703806079b0ae492af
+Author: Chris Sharp <csharp@georgialibraries.org>
+Date:   Fri Jan 13 17:26:14 2012 -0500
+
+    LP#2049934: Remove trailing TCN spaces from incoming bib records.
+    
+    For libraries using the 001 as the Evergreen database ID and the 035
+    to store the original title control number, this fix ensures that
+    any leading or trailing spaces in the incoming record's 001 are removed.
+    This ensures matching on existing records with the same TCN in the 035.
+    Authored by Galen Charlton for PINES and applied locally for many years.
+    
+    Release-note: Trim spaces from TCN when importing Z39.50
+    
+    Signed-off-by: Chris Sharp <csharp@georgialibraries.org>
+    Signed-off-by: blake <blake@mobiusconsortium.org>
+    Signed-off-by: Mary Llewellyn <mllewell@biblio.org>
+
+1	0	Open-ILS/src/perlmods/lib/OpenILS/Application/Cat/BibCommon.pm
+
+commit d3a97f74fc91b0cbfe0b28feb7d1c1fba246fa95
+Author: Michele Morgan <mmorgan@noblenet.org>
+Date:   Wed Oct 30 16:30:08 2024 -0400
+
+    LP2077343: Stripe - patron can be charged w/o credit in Evergreen
+    
+    Adds a check for a Stripe payment intent id when encountering INVALID_USER_XACT_ID.
+    If found, don't bail out since the patron's card has already been charged.
+    
+    Release-note: Assures a successful Stripe payment is credited when the patron record has changed.
+    
+    Signed-off-by: Michele Morgan <mmorgan@noblenet.org>
+    Signed-off-by: Terran McCanna <tmccanna@georgialibraries.org>
+    Signed-off-by: Jane Sandberg <js7389@princeton.edu>
+    Signed-off-by: Ruth Davis <rdavis@evergreencdi.org>
+    Signed-off-by: Ian Skelskey <ianskelskey@gmail.com>
+    Signed-off-by: blake <blake@mobiusconsortium.org>
+
+6	2	Open-ILS/src/perlmods/lib/OpenILS/Application/Circ/Money.pm
+
+commit 5b50e6c2215992ba49de3963ceba19a6f35a5b1d
+Author: Mike Rylander <mrylander@gmail.com>
+Date:   Wed Sep 18 12:04:45 2024 -0400
+
+    LP#1721026: Default owner for copy tags and types
+    
+    This commit adds the boilerplate required to set the default owner field
+    on copy tags and tag types to the workstation org of the logged in staff
+    user.
+    
+    Release-note: Adds default owning org unit for copy tags and types.
+    
+    Signed-off-by: Mike Rylander <mrylander@gmail.com>
+    Signed-off-by: Gina Monti <gmonti@biblio.org>
+    Signed-off-by: Michele Morgan <mmorgan@noblenet.org>
+
+8	0	Open-ILS/src/eg2/src/app/staff/admin/local/routing.module.ts
+8	0	Open-ILS/src/eg2/src/app/staff/admin/server/routing.module.ts
+
+commit 1e5cee75c5295f0997c6e81c2b41c77d7b57d262
+Author: blake <blake@mobiusconsortium.org>
+Date:   Sun Nov 17 08:55:07 2024 -0600
+
+    LP#2081832 Adding DEV Docker files to .gitignore
+    
+    The DEV container makes use of some files in the root of
+    the repository to facilitate signaling to the container
+    from host OS.
+    
+    These should be gitignored:
+    
+    docker-watch.sh
+    db_control.txt
+    db_switch.log
+    eg_restart_go_screenoutput
+    eg_restart_go
+    eg_rebuild_angular_screenoutput
+    eg_rebuild_angular
+    watch.LOCK
+    
+    Release-note: .gitignore DEV Docker generated signal files
+    
+    Signed-off-by: blake <blake@mobiusconsortium.org>
+
+10	0	.gitignore
+
+commit 7f8a9a5500ded198a6a96e5bec39d838b705071f
+Author: Jason Stephenson <jason@sigio.com>
+Date:   Fri Nov 15 15:53:53 2024 -0500
+
+    Update Dojo download URL in README/install doc
+    
+    As reported by Blake Graham-Henderson in IRC,
+    http://irc.evergreen-ils.org/evergreen/2024-11-15#i_566219, the Dojo
+    download no longer works well with http, so this commit switches to
+    https as suggested by Chris Sharp.
+    
+    Signed-off-by: Jason Stephenson <jason@sigio.com>
+
+1	1	docs/modules/installation/pages/server_installation.adoc
+
+commit 6c3e1ce816588df8a69e091a22fb8fee202903cd
+Author: Stephanie Leary <stephanie.leary@equinoxoli.org>
+Date:   Mon Sep 23 16:49:02 2024 +0000
+
+    LP1983500 Update AngularJS login path for staff
+    
+    Changes the AngularJS login routing to go directly to /eg2/staff/splash
+    (unless some other route was requested) rather than attempting to use
+    the old AngularJS base path first. Speeds up logging in and prevents a
+    flash of blank white screen in between frameworks.
+    
+    Release-note: Redirect to Angular staff portal from AngularJS login
+    
+    Signed-off-by: Stephanie Leary <stephanie.leary@equinoxoli.org>
+    Signed-off-by: Jason Stephenson <jason@sigio.com>
+
+2	2	Open-ILS/web/js/ui/default/staff/app.js
+
+commit 325afa415ad3b5d22fe11d56b5520187ccc8293b
+Author: Susan Morrison <101879901+spmorrison@users.noreply.github.com>
+Date:   Tue Nov 12 10:51:07 2024 -0500
+
+    Docs: Update linked_libraries.adoc with upcoming closures info
+    
+    Per 3.12 bug fix: https://bugs.launchpad.net/evergreen/+bug/2017913
+    
+    Signed-off-by: Jane Sandberg <js7389@princeton.edu>
+
+3	1	docs/modules/opac/pages/linked_libraries.adoc
+
+commit 0dd2ff181a1e8b03525633799c5a1688e7ffb6e3
+Author: spmorrison <101879901+spmorrison@users.noreply.github.com>
+Date:   Tue Nov 12 09:43:01 2024 -0500
+
+    Docs: Update copy_locations.adoc - deleted shelving locations filtered by default
+    
+    Per bug fix in 3.11: https://bugs.launchpad.net/evergreen/+bug/1917092
+    
+    Signed-off-by: Jane Sandberg <js7389@princeton.edu>
+
+2	2	docs/modules/admin/pages/copy_locations.adoc
+
+commit 0c187118d6efa311ef7424337f7a85a44541e5ad
+Author: IanSkelskey <ianskelskey@gmail.com>
+Date:   Tue Nov 5 10:06:48 2024 -0500
+
+    LP#2086709: fix autosuggest overlap on OPAC home screen
+    
+    The autosuggest list currently renders behind carousel navigation buttons on the OPAC home screen, obscuring suggested options. This change raises the z-index of `.search_box_wrapper .list-group` to ensure it appears above the carousel controls.
+    
+    Release-Note: Fixes display conflict on OPAC home screen where autosuggest list appears behind carousel buttons.
+    
+    Signed-off-by: Ian Skelskey <ianskelskey@gmail.com>
+    Signed-off-by: Gina Monti <gmonti@biblio.org>
+    Signed-off-by: Jane Sandberg <sandbergja@gmail.com>
+
+1	1	Open-ILS/src/templates-bootstrap/opac/css/style.css.tt2
+
+commit b8c69749d9f77fb2367c26b24bf574d9002798d6
+Author: blake <blake@mobiusconsortium.org>
+Date:   Fri Oct 25 16:13:35 2024 -0500
+
+    Fixing Perl installation of Email::Send
+    
+    Installing in Docker as root we can run into an issue with installing
+    the dependency for Email::Send (Module::Pluggable)
+    
+    Issue described here:
+    https://github.com/simonwistow/Module-Pluggable/issues/27
+    
+    Release-note: Fix installation issue in docker containers.
+    
+    Signed-off-by: blake <blake@mobiusconsortium.org>
+    Signed-off-by: Jane Sandberg <js7389@princeton.edu>
+
+1	0	Open-ILS/src/extras/install/Makefile.debian-bookworm
+1	0	Open-ILS/src/extras/install/Makefile.debian-bullseye
+1	0	Open-ILS/src/extras/install/Makefile.debian-buster
+1	0	Open-ILS/src/extras/install/Makefile.fedora
+1	0	Open-ILS/src/extras/install/Makefile.ubuntu-focal
+1	0	Open-ILS/src/extras/install/Makefile.ubuntu-jammy
+
+commit 00d032b5a3f621e9a39b1f9863b80a75bf7d4d2a
+Author: blake <blake@mobiusconsortium.org>
+Date:   Tue Oct 22 15:46:59 2024 -0500
+
+    LP#2085384 Switching from wget to curl for make release
+    
+    one line switch from wget to curl. Seems to be more successful
+    
+    Signed-off-by: blake <blake@mobiusconsortium.org>
+    Signed-off-by: Jane Sandberg <sandbergja@gmail.com>
+
+1	1	build/tools/make_release
+
+commit 9fc81565865aa2fac64397f5275caf9c8e7fe077
+Author: Jane Sandberg <js7389@princeton.edu>
+Date:   Tue Oct 22 09:55:48 2024 -0700
+
+    Forward-port 3.12.7-3.12.8 upgrade script
+    
+    Signed-off-by: Jane Sandberg <js7389@princeton.edu>
+
+51	0	Open-ILS/src/sql/Pg/version-upgrade/3.12.7-3.12.8-upgrade-db.sql
+ create mode 100644 Open-ILS/src/sql/Pg/version-upgrade/3.12.7-3.12.8-upgrade-db.sql
