@@ -81,11 +81,6 @@ export class ReporterFieldComponent implements OnInit {
             this.operators = this.RSvc.getOperatorsForDatatype(this.field.transform?.final_datatype || this.field.datatype);
         }
 
-        this.wsContextOrgs = this.org.fullPath(this.auth.user().ws_ou(), true);
-        if (this.field.org_filter_field) {
-            this.linkedIdlBaseQuery[this.field.org_filter_field] = this.wsContextOrgs;
-        }
-
         if (this.editorMode === 'template' && this.field.with_value_input) {
             this.withValueInput = this.field.with_value_input;
         }
@@ -106,6 +101,20 @@ export class ReporterFieldComponent implements OnInit {
                     this.field.key = fmField.key;
                 }
             }
+        }
+
+        if (!this.field.org_filter_field) { // no explicit "owner-y" field marker
+            if (this.field.class) { // this field is a link
+                const remote_org_fields = this.idl.classes[this.field.class].fields.filter(rf => rf.datatype === 'org_unit' && !rf.virtual)
+                if (remote_org_fields.length == 1) { // just one remote org-ish real field
+                    this.field.org_filter_field = remote_org_fields[0].name;
+                }
+            }
+        }
+
+        this.wsContextOrgs = this.org.fullPath(this.auth.user().ws_ou(), true);
+        if (this.field.org_filter_field) {
+            this.linkedIdlBaseQuery[this.field.org_filter_field] = this.wsContextOrgs;
         }
 
         if (this.field.datatype === 'org_unit'
