@@ -2236,6 +2236,7 @@ SELECT  h.id, h.request_time, h.capture_time, h.fulfillment_time, h.checkin_time
         pl.shortname AS pl_shortname, pl.name AS pl_name, pl.email AS pl_email,
         pl.phone AS pl_phone, pl.opac_visible AS pl_opac_visible, pl.fiscal_calendar AS pl_fiscal_calendar,
 
+        ol.shortname AS ol_shortname,
         cl.shortname AS cl_shortname,
         rl.shortname AS rl_shortname,
         sl.shortname AS sl_shortname,
@@ -2418,6 +2419,7 @@ SELECT  h.id, h.request_time, h.capture_time, h.fulfillment_time, h.checkin_time
         LEFT JOIN asset.call_number cn ON ((cn.id = cp.call_number AND h.hold_type != 'V' ) OR (h.hold_type = 'V' AND cn.id = h.target))
         LEFT JOIN asset.call_number_prefix acnp ON (cn.prefix = acnp.id)
         LEFT JOIN asset.call_number_suffix acns ON (cn.suffix = acns.id)
+        LEFT JOIN actor.org_unit ol ON (cn.owning_lib = ol.id)
         LEFT JOIN LATERAL (SELECT * FROM action.hold_transit_copy WHERE h.id = hold ORDER BY id DESC LIMIT 1) tr ON TRUE
         LEFT JOIN actor.org_unit tl ON (tr.source = tl.id)
         LEFT JOIN LATERAL (SELECT COUNT(*) FROM action.hold_request_note WHERE h.id = hold AND (pub = TRUE OR staff = $is_staff_request)) notes ON TRUE
