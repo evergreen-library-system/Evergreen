@@ -1,3 +1,7 @@
+:host {
+  --tree-border: light-dark(var(--bs-gray-500), var(--bs-gray-400));
+}
+
 .eg-tree {
   padding-left: 0;
 }
@@ -51,7 +55,7 @@
 
 /* elbow lines for folders */
 .eg-tree-branch .eg-tree-node {
-  border-left: 2px solid var(--bs-gray-400);
+  border-left: 2px solid var(--tree-border);
   padding-left: 1rem;
 }
 
@@ -60,7 +64,7 @@
 }
 
 .eg-tree-branch .eg-tree-node-wrapper:before {
-  border-bottom: 2px solid var(--bs-gray-400);
+  border-bottom: 2px solid var(--tree-border);
   display: inline-block;
   height: 1rem;
   width: 1rem;
@@ -69,7 +73,7 @@
 }
 
 .eg-tree-branch .eg-tree-node:last-child > .eg-tree-node-wrapper:before {
-  border-left: 2px solid var(--bs-gray-400);
+  border-left: 2px solid var(--tree-border);
 }
 
 .eg-tree-branch .eg-tree-node > .eg-tree-node-wrapper {
@@ -77,8 +81,13 @@
 }
 
 .eg-tree-branch .eg-tree-node.active > .eg-tree-node-wrapper {
-  background-color: light-dark(rgba(var(--box-shadow).03), rgba(255,255,255, .1));
-  border: 1px solid var(--bs-gray-400);
+  background-color: light-dark(rgba(var(--box-shadow), .04), rgba(255,255,255, .1));
+  border: 1px solid var(--tree-border);
+}
+
+.eg-tree.blurred .eg-tree-node.active > .eg-tree-node-wrapper {
+    background-color: transparent;
+    border-color: light-dark(var(--bs-gray-300), var(--bs-gray-600));
 }
 
 .eg-tree-node-wrapper {
