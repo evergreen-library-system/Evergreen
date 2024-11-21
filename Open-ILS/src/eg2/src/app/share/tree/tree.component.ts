@@ -39,6 +39,8 @@ nodeClicked(node: TreeNode) {
 })
 export class TreeComponent {
 
+    static lastClickedTree: TreeComponent;
+
     _nodeList: any = [];
     _tree: Tree;
     _prev_stateFlagClick: TreeNode;
@@ -106,6 +108,7 @@ export class TreeComponent {
         if (!this.disabled) {
             this.tree.selectNode(node);
             this.nodeClicked.emit(node);
+            TreeComponent.lastClickedTree = this;
         }
     }
 
@@ -251,6 +254,10 @@ export class TreeComponent {
                 }
             });
         }
+    }
+
+    wasLastClicked(): boolean {
+        return TreeComponent.lastClickedTree === this;
     }
 
 }

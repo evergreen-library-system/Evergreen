@@ -26,7 +26,7 @@
 </div>
 
 <div [attr.role]="showLabelFilter ? 'status' : null">
-<ul class="eg-tree" *ngIf="rootNode()">
+<ul class="eg-tree" [ngClass]="{blurred: !wasLastClicked()}" *ngIf="rootNode()">
   <ng-container *ngTemplateOutlet="tree;context:{tree_node:rootNode(),disableStateFlag:disableRootSelector}"></ng-container>
 </ul>
 <ng-content select="[footer]"></ng-content>
