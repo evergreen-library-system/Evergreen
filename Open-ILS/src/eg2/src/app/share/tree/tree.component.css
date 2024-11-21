@@ -59,7 +59,7 @@
 
 /* elbow lines for folders */
 .eg-tree-branch .eg-tree-node {
-  border-left: 2px solid var(--bs-gray-400);
+  border-left: 2px solid var(--tree-border);
   padding-left: 1rem;
 }
 
@@ -68,7 +68,7 @@
 }
 
 .eg-tree-branch .eg-tree-node-wrapper:before {
-  border-bottom: 2px solid var(--bs-gray-400);
+  border-bottom: 2px solid var(--tree-border);
   display: inline-block;
   height: 1rem;
   width: 1rem;
@@ -77,7 +77,7 @@
 }
 
 .eg-tree-branch .eg-tree-node:last-child > .eg-tree-node-wrapper:before {
-  border-left: 2px solid var(--bs-gray-400);
+  border-left: 2px solid var(--tree-border);
 }
 
 .eg-tree-branch .eg-tree-node > .eg-tree-node-wrapper {
