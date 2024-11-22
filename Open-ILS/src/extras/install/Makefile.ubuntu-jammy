@@ -177,7 +177,8 @@ PACKAGER_DEBS = \
 	source-highlight \
 	zip \
 	unzip \
-	nsis
+	nsis \
+	pkg-config
 
 TRANSLATOR_DEBS = \
 	libtemplate-perl \
