@@ -135,7 +135,7 @@ cd $EVERGREEN_ROOT/Open-ILS/web/js/ui/default/staff/
 +
 [source,sh]
 ------------------------------------------------------------------------------
-npm install   # fetch JS dependencies
+npm ci   # fetch JS dependencies
 ------------------------------------------------------------------------------
 +
 3. Run the build script.
@@ -171,7 +171,7 @@ cd $EVERGREEN_ROOT/Open-ILS/src/eg2/
 +
 [source,sh]
 ------------------------------------------------------------------------------
-npm install   # fetch JS dependencies
+npm ci   # fetch JS dependencies
 ------------------------------------------------------------------------------
 +
 3. Run the build script.
@@ -218,7 +218,7 @@ cd $EVERGREEN_ROOT/Open-ILS/web/opac/deps
 +
 [source,sh]
 ------------------------------------------------------------------------------
-npm install   # fetch JS and CSS dependencies
+npm ci   # fetch JS and CSS dependencies
 ------------------------------------------------------------------------------
 +
 Note that there is no build step.
