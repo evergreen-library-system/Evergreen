@@ -43,7 +43,7 @@ output and what conditions to filter on in the database. These templates allow
 you to run a report more than once, without building it anew every time. 
 Templates may be shared for commonly needed reports. These templates can be 
 xref:reports:reporter_cloning_shared_templates.adoc[cloned] and used as is or 
-xref:reports:reporter_create_templates.html#report_template_editor[modified] by library staff. 
+xref:reports:reporter_create_templates.adoc#report_template_editor[modified] by library staff. 
 Library staff can also xref:reports:reporter_create_templates.adoc[create new report templates]. 
 Successfully creating a new template generally requires a solid understanding
  of Evergreen and the xref:reports:reporter_evergreen_database.adoc[Evergreen database]. 
