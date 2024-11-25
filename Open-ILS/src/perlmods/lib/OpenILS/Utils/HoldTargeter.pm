@@ -658,8 +658,8 @@ sub get_hold_copies {
     $self->log_hold($self->{eligible_copy_count}." potential copies");
 
     # Let the caller know we encountered the copy they were interested in.
-    $self->{found_copy} = 1 if $self->{find_copy}
-        && grep {$_->{id} eq $self->{find_copy}} @$copies;
+    $self->{found_copy} = 1 if $self->parent->{find_copy}
+        && grep {$_->{id} eq $self->parent->{find_copy}} @$copies;
 
     $self->copies($copies);
 
