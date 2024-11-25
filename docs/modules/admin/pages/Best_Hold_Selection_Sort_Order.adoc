@@ -84,7 +84,7 @@ image::Best_Hold_Selection_Sort_Order/create_new_bhsso.png[New Best-Hold Selecti
 . Next, use the numeric selectors next to each field to set the order that you would like Evergreen to check when looking for the best hold to fill with an item at opportunistic capture.
 . Click *Save* to create your custom Best-Hold Selection Sort Order.  
 
-image::Best_Hold_Selection_Sort_Order/new_bhsso.png[New Best-Hold Selection Sort Order]
+image::Best_Hold_Selection_Sort_Order/new_bhsso.png[]
 
 
 == Edit an Existing Best-Hold Selection Sort Order ==
