@@ -4,7 +4,7 @@ import {Router, Resolve, RouterStateSnapshot,
     ActivatedRouteSnapshot} from '@angular/router';
 import * as moment from 'moment-timezone';
 import {Md5} from 'ts-md5';
-import {map, switchMap, mergeMap, defaultIfEmpty, last} from 'rxjs/operators';
+import {map, switchMap, mergeMap, concatMap, defaultIfEmpty, last} from 'rxjs/operators';
 import {EMPTY, Observable, of, from} from 'rxjs';
 import {AuthService} from '@eg/core/auth.service';
 import {PermService} from '@eg/core/perm.service';
@@ -2057,7 +2057,13 @@ export class ReporterService {
             const orderBy: any = {};
 
             if (sort.length) {
-                orderBy.rr = sort[0].name + ' ' + sort[0].dir;
+                if (sort[0].name === 'recurring') {
+                    // special case because the grid column path
+                    // does not match the DB column name
+                    orderBy.rr = 'recur' + ' ' + sort[0].dir;
+                } else {
+                    orderBy.rr = sort[0].name + ' ' + sort[0].dir;
+                }
             } else {
                 orderBy.rr = 'name ASC';
             }
@@ -2080,7 +2086,15 @@ export class ReporterService {
             // and add any filters
             Object.keys(gridSource.filters).forEach(key => {
                 Object.keys(gridSource.filters[key]).forEach(key2 => {
-                    query.push(gridSource.filters[key][key2]);
+                    if (key === 'recurring') {
+                        // special case because the grid column path
+                        // does not match the DB column name
+                        query.push({
+                            recur: gridSource.filters[key][key2]['recurring']
+                        });
+                    } else {
+                        query.push(gridSource.filters[key][key2]);
+                    }
                 });
             });
 
@@ -2089,7 +2103,8 @@ export class ReporterService {
                 'open-ils.reporter.folder_data.retrieve.stream',
                 this.auth.token(), 'report', query,
                 pager.limit, pager.offset, orderBy
-            ).pipe(mergeMap(row => {
+            ).pipe(map(row => {
+                // TODO cap the parallelism
                 const rowFolder = this.reportFolderList.find(f => f.id() === row.folder());
 
                 return this.net.request(
@@ -2113,7 +2128,7 @@ export class ReporterService {
                         _rr: row
                     };
                 }));
-            }));
+            }),concatMap(x => x));
         };
 
         return gridSource;
