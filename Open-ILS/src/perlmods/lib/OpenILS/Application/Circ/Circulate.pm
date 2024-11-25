@@ -2774,7 +2774,7 @@ sub checkin_retarget {
             'open-ils.circ.hold_reset_reason_entry.create', $self->editor->authtoken, $_->{id},OILS_HOLD_BETTER_HOLD);
             my $tresult = $U->simplereq(
                 'open-ils.hold-targeter',
-                'open-ils.hold-targeter.target', 
+                'open-ils.hold-targeter.target.atomic',
                 {hold => $_->{id}, find_copy => $self->copy->id}
             );
             if(ref $tresult eq "ARRAY" and scalar @$tresult) {
