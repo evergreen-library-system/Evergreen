@@ -1058,7 +1058,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 		</permacrud>
 	</class>
 
-	<class id="csc" controller="open-ils.cstore open-ils.pcrud" oils_obj:fieldmapper="config::sms_carrier" oils_persist:tablename="config.sms_carrier" reporter:label="SMS Carrier" oils_persist:field_safe="true">
+	<class id="csc" controller="open-ils.cstore open-ils.pcrud" oils_obj:fieldmapper="config::sms_carrier" oils_persist:tablename="config.sms_carrier" reporter:label="SMS Carrier" oils_persist:field_safe="true" oils_persist:cardinality="low">
 		<fields oils_persist:primary="id" oils_persist:sequence="config.sms_carrier_id_seq">
 			<field reporter:label="ID" name="id" reporter:datatype="id"/>
 			<field reporter:label="Region" name="region" reporter:datatype="text" oils_persist:i18n="true"/>
@@ -1251,7 +1251,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 		</permacrud>
 	</class>
 
-	<class id="czs" controller="open-ils.cstore open-ils.pcrud" oils_obj:fieldmapper="config::z3950_source" oils_persist:tablename="config.z3950_source" reporter:label="Z39.50 Source">
+	<class id="czs" controller="open-ils.cstore open-ils.pcrud" oils_obj:fieldmapper="config::z3950_source" oils_persist:tablename="config.z3950_source" reporter:label="Z39.50 Source" oils_persist:cardinality="low">
 		<fields oils_persist:primary="name">
 			<field reporter:label="Z39.50 Source" name="name" reporter:datatype="id" oils_obj:required="true"/>
 			<field reporter:label="Label" name="label" reporter:datatype="text" oils_persist:i18n="true" oils_obj:required="true"/>
@@ -1278,7 +1278,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 		</permacrud>
 	</class>
 
-	<class id="cza" controller="open-ils.cstore open-ils.pcrud" oils_obj:fieldmapper="config::z3950_attr" oils_persist:tablename="config.z3950_attr" reporter:label="Z39.50 Attribute">
+	<class id="cza" controller="open-ils.cstore open-ils.pcrud" oils_obj:fieldmapper="config::z3950_attr" oils_persist:tablename="config.z3950_attr" reporter:label="Z39.50 Attribute" oils_persist:cardinality="low">
 		<fields oils_persist:primary="id" oils_persist:sequence="config.z3950_attr_id_seq">
 			<field reporter:label="Z39.50 Attribute ID" name="id" reporter:datatype="id" reporter:selector="label"/>
 			<field reporter:label="Z39.50 Source" name="source" reporter:datatype="link" config_field="true" oils_obj:required="true"/>
@@ -1846,7 +1846,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 		</permacrud>
 	</class>
 
-	<class id="ccm" controller="open-ils.cstore open-ils.pcrud" oils_obj:fieldmapper="config::circ_modifier" oils_persist:tablename="config.circ_modifier" reporter:label="Circulation Modifier">
+	<class id="ccm" controller="open-ils.cstore open-ils.pcrud" oils_obj:fieldmapper="config::circ_modifier" oils_persist:tablename="config.circ_modifier" reporter:label="Circulation Modifier" oils_persist:cardinality="low">
 		<fields oils_persist:primary="code">
 			<field reporter:label="Code" name="code" reporter:selector="name" reporter:datatype="id" oils_obj:required="true"/>
 			<field reporter:label="Name" name="name" reporter:datatype="text" oils_persist:i18n="true" oils_obj:required="true"/>
@@ -1866,7 +1866,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 		</permacrud>
 	</class>
 
-	<class id="aiit" controller="open-ils.cstore open-ils.pcrud" oils_obj:fieldmapper="acq::invoice_item_type" oils_persist:tablename="acq.invoice_item_type" reporter:label="Non-bibliographic Invoice Item Type" oils_persist:field_safe="true">
+	<class id="aiit" controller="open-ils.cstore open-ils.pcrud" oils_obj:fieldmapper="acq::invoice_item_type" oils_persist:tablename="acq.invoice_item_type" reporter:label="Non-bibliographic Invoice Item Type" oils_persist:field_safe="true" oils_persist:cardinality="low">
 		<fields oils_persist:primary="code">
 			<field reporter:label="Code" name="code" reporter:selector="name" reporter:datatype="id" oils_obj:required="true"/>
 			<field reporter:label="Label" name="name" reporter:datatype="text" oils_persist:i18n="true" oils_obj:required="true"/>
@@ -2227,7 +2227,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 		</permacrud>
 	</class>
 
-	<class id="cclg" controller="open-ils.cstore open-ils.pcrud" oils_obj:fieldmapper="config::circ_limit_group" oils_persist:tablename="config.circ_limit_group" reporter:label="Circulation Limit Group">
+	<class id="cclg" controller="open-ils.cstore open-ils.pcrud" oils_obj:fieldmapper="config::circ_limit_group" oils_persist:tablename="config.circ_limit_group" reporter:label="Circulation Limit Group" oils_persist:cardinality="low">
 		<fields oils_persist:primary="id" oils_persist:sequence="config.circ_limit_group_id_seq">
 			<field reporter:label="ID" name="id" reporter:datatype="id" reporter:selector="name"/>
 			<field reporter:label="Name" name="name" reporter:datatype="text" oils_obj:required="true"/>
@@ -2244,7 +2244,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 		</permacrud>
 	</class>
 
-	<class id="ccls" controller="open-ils.cstore open-ils.pcrud" oils_obj:fieldmapper="config::circ_limit_set" oils_persist:tablename="config.circ_limit_set" reporter:label="Circulation Limit Set">
+	<class id="ccls" controller="open-ils.cstore open-ils.pcrud" oils_obj:fieldmapper="config::circ_limit_set" oils_persist:tablename="config.circ_limit_set" reporter:label="Circulation Limit Set" oils_persist:cardinality="low">
 		<fields oils_persist:primary="id" oils_persist:sequence="config.circ_limit_set_id_seq">
 			<field reporter:label="ID" name="id" reporter:datatype="id" reporter:selector="name"/>
 			<field reporter:label="Name" name="name" reporter:datatype="text" oils_obj:required="true"/>
@@ -2373,7 +2373,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 		</permacrud>
 	</class>
 
-	<class id="cit" controller="open-ils.cstore open-ils.pcrud" oils_obj:fieldmapper="config::identification_type" oils_persist:tablename="config.identification_type" reporter:label="Identification Type">
+	<class id="cit" controller="open-ils.cstore open-ils.pcrud" oils_obj:fieldmapper="config::identification_type" oils_persist:tablename="config.identification_type" reporter:label="Identification Type" oils_persist:cardinality="low">
 		<fields oils_persist:primary="id" oils_persist:sequence="config.identification_type_id_seq">
 			<field reporter:label="Identification ID" name="id" reporter:selector="name" reporter:datatype="id"/>
 			<field reporter:label="Identification Name" name="name" reporter:datatype="text" oils_persist:i18n="true" oils_obj:required="true"/>
@@ -3242,7 +3242,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 		</permacrud>
 	</class>
 
-	<class id="cbho" controller="open-ils.cstore open-ils.pcrud" oils_obj:fieldmapper="config::best_hold_order" oils_persist:tablename="config.best_hold_order" reporter:label="Best-Hold Sort Order">
+	<class id="cbho" controller="open-ils.cstore open-ils.pcrud" oils_obj:fieldmapper="config::best_hold_order" oils_persist:tablename="config.best_hold_order" reporter:label="Best-Hold Sort Order" oils_persist:cardinality="low">
 		<fields oils_persist:primary="id" oils_persist:sequence="config.best_hold_order_id_seq">
 			<field reporter:label="ID" name="id" reporter:datatype="id" reporter:selector="name"/>
 			<field reporter:label="Name" name="name" reporter:datatype="text"/>
@@ -3269,7 +3269,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 			</actions>
 		</permacrud>
 	</class>
-	<class id="cbfp" controller="open-ils.cstore open-ils.pcrud" oils_obj:fieldmapper="config::biblio_fingerprint" oils_persist:tablename="config.biblio_fingerprint" reporter:label="Fingerprint Definition">
+	<class id="cbfp" controller="open-ils.cstore open-ils.pcrud" oils_obj:fieldmapper="config::biblio_fingerprint" oils_persist:tablename="config.biblio_fingerprint" reporter:label="Fingerprint Definition" oils_persist:cardinality="low">
 		<fields oils_persist:primary="id" oils_persist:sequence="config.biblio_fingerprint_id_seq">
 			<field name="id" reporter:datatype="id"/>
 			<field name="name" reporter:datatype="text" oils_obj:required="true"/>
@@ -3615,7 +3615,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 			<link field="call_number" reltype="has_a" key="id" map="" class="acn"/>
 		</links>
 	</class>
-	<class id="cst" controller="open-ils.cstore" oils_obj:fieldmapper="config::standing" oils_persist:tablename="config.standing" reporter:label="Standing Penalty">
+	<class id="cst" controller="open-ils.cstore" oils_obj:fieldmapper="config::standing" oils_persist:tablename="config.standing" reporter:label="Standing Penalty" oils_persist:cardinality="low">
 		<fields oils_persist:primary="id" oils_persist:sequence="config.standing_id_seq">
 			<field name="id" reporter:datatype="id"/>
 			<field name="value" oils_persist:i18n="true" oils_obj:required="true"/>
@@ -3975,7 +3975,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 			</actions>
 		</permacrud>
 	</class>
-	<class id="crcd" controller="open-ils.cstore open-ils.pcrud" oils_obj:fieldmapper="config::rules::circ_duration" oils_persist:tablename="config.rule_circ_duration" reporter:label="Circulation Duration Rule">
+	<class id="crcd" controller="open-ils.cstore open-ils.pcrud" oils_obj:fieldmapper="config::rules::circ_duration" oils_persist:tablename="config.rule_circ_duration" reporter:label="Circulation Duration Rule" oils_persist:cardinality="low">
 		<fields oils_persist:primary="id" oils_persist:sequence="config.rule_circ_duration_id_seq">
 			<field name="extended" reporter:datatype="interval" oils_obj:required="true"/>
 			<field name="id" reporter:datatype="id" reporter:selector="name"/>
@@ -4195,7 +4195,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 			</actions>
 		</permacrud>
 	</class>
-	<class id="cuat" controller="open-ils.cstore open-ils.pcrud" oils_obj:fieldmapper="config::usr_activity_type" oils_persist:tablename="config.usr_activity_type" reporter:label="User Activity Type">
+	<class id="cuat" controller="open-ils.cstore open-ils.pcrud" oils_obj:fieldmapper="config::usr_activity_type" oils_persist:tablename="config.usr_activity_type" reporter:label="User Activity Type" oils_persist:cardinality="low">
 		<fields oils_persist:primary="id" oils_persist:sequence="config.usr_activity_type_id_seq">
 			<field name="id" reporter:label="ID" reporter:datatype="id" reporter:selector="label"/>
 			<field name="ewho" reporter:label="Event Caller" reporter:datatype="text"/>
@@ -4325,7 +4325,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 			</actions>
 		</permacrud>
 	</class>
-	<class id="aous" controller="open-ils.cstore" oils_obj:fieldmapper="actor::org_unit_setting" oils_persist:tablename="actor.org_unit_setting" reporter:label="Organizational Unit Setting">
+	<class id="aous" controller="open-ils.cstore" oils_obj:fieldmapper="actor::org_unit_setting" oils_persist:cardinality="high" oils_persist:tablename="actor.org_unit_setting" reporter:label="Organizational Unit Setting">
 		<fields oils_persist:primary="id" oils_persist:sequence="actor.org_unit_setting_id_seq">
 			<field name="id"/>
 			<field name="name" reporter:datatype="text" oils_obj:required="true"/>
@@ -4402,7 +4402,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 			</actions>
 		</permacrud>
 	</class>
-	<class id="cnal" controller="open-ils.cstore open-ils.pcrud" oils_obj:fieldmapper="config::net_access_level" oils_persist:tablename="config.net_access_level" reporter:label="Net Access Level">
+	<class id="cnal" controller="open-ils.cstore open-ils.pcrud" oils_obj:fieldmapper="config::net_access_level" oils_persist:tablename="config.net_access_level" reporter:label="Net Access Level" oils_persist:cardinality="low">
 		<fields oils_persist:primary="id" oils_persist:sequence="config.net_access_level_id_seq">
 			<field name="id" reporter:selector="name" reporter:datatype="id"/>
 			<field name="name" reporter:datatype="text" oils_persist:i18n="true" oils_obj:required="true"/>
@@ -4792,7 +4792,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 			</actions>
 		</permacrud>
 	</class>
-	<class id="ccs" controller="open-ils.cstore open-ils.pcrud" oils_obj:fieldmapper="config::copy_status" oils_persist:tablename="config.copy_status" oils_persist:restrict_primary="100" reporter:label="Item Status" oils_persist:field_safe="true">
+	<class id="ccs" controller="open-ils.cstore open-ils.pcrud" oils_obj:fieldmapper="config::copy_status" oils_persist:cardinality="low" oils_persist:tablename="config.copy_status" oils_persist:restrict_primary="100" reporter:label="Item Status" oils_persist:field_safe="true">
 		<fields oils_persist:primary="id" oils_persist:sequence="config.copy_status_id_seq">
 			<field name="holdable" reporter:datatype="bool" reporter:label="Holdable"/>
 			<field name="id" reporter:selector="name" reporter:datatype="id" reporter:label="ID"/>
@@ -5772,7 +5772,7 @@ SELECT  usr,
 			</actions>
 		</permacrud>
 	</class>
-	<class id="acpl" controller="open-ils.cstore open-ils.pcrud" oils_obj:fieldmapper="asset::copy_location" oils_persist:tablename="asset.copy_location" reporter:label="Shelving Location" oils_persist:field_safe="true">
+	<class id="acpl" controller="open-ils.cstore open-ils.pcrud" oils_obj:fieldmapper="asset::copy_location" oils_persist:cardinality="low" oils_persist:tablename="asset.copy_location" reporter:label="Shelving Location" oils_persist:field_safe="true">
 		<fields oils_persist:primary="id" oils_persist:sequence="asset.copy_location_id_seq">
 			<field reporter:label="Can Circulate?" name="circulate" reporter:datatype="bool"/>
 			<field reporter:label="Is Holdable?" name="holdable" reporter:datatype="bool"/>
@@ -7659,7 +7659,7 @@ SELECT  usr,
 			</actions>
 		</permacrud>
 	</class>
-	<class id="cbs" controller="open-ils.cstore open-ils.pcrud" oils_obj:fieldmapper="config::bib_source" oils_persist:tablename="config.bib_source" reporter:label="Bib Source">
+	<class id="cbs" controller="open-ils.cstore open-ils.pcrud" oils_obj:fieldmapper="config::bib_source" oils_persist:tablename="config.bib_source" reporter:label="Bib Source" oils_persist:cardinality="low">
 		<fields oils_persist:primary="id" oils_persist:sequence="config.bib_source_id_seq">
 			<field name="id" reporter:selector="source" reporter:datatype="id"/>
 			<field name="quality" reporter:datatype="int"/>
@@ -7958,7 +7958,7 @@ SELECT  usr,
 			<link field="field" reltype="has_a" key="id" map="" class="cmf"/>
 		</links>
 	</class>
-	<class id="crrf" controller="open-ils.cstore open-ils.pcrud" oils_obj:fieldmapper="config::rules::recurring_fine" oils_persist:tablename="config.rule_recurring_fine" reporter:label="Recurring Fine Rule">
+	<class id="crrf" controller="open-ils.cstore open-ils.pcrud" oils_obj:fieldmapper="config::rules::recurring_fine" oils_persist:tablename="config.rule_recurring_fine" reporter:label="Recurring Fine Rule" oils_persist:cardinality="low">
 		<fields oils_persist:primary="id" oils_persist:sequence="config.rule_recurring_fine_id_seq">
 			<field name="high" reporter:datatype="money" oils_obj:required="true"/>
 			<field name="id" reporter:selector="name" reporter:datatype="id"/>
@@ -8172,7 +8172,7 @@ SELECT  usr,
 		</permacrud>
 	</class>
 
-	<class id="ccat" controller="open-ils.cstore open-ils.pcrud" oils_obj:fieldmapper="config::copy_alert_type" oils_persist:tablename="config.copy_alert_type" reporter:label="Item Alert Type" oils_persist:restrict_primary="100">
+	<class id="ccat" controller="open-ils.cstore open-ils.pcrud" oils_obj:fieldmapper="config::copy_alert_type" oils_persist:tablename="config.copy_alert_type" reporter:label="Item Alert Type" oils_persist:restrict_primary="100" oils_persist:cardinality="low">
 		<fields oils_persist:primary="id" oils_persist:sequence="config.copy_alert_type_id_seq">
 			<field reporter:label="Id" name="id" reporter:selector="name" reporter:datatype="id"/>
 			<field reporter:label="Scope Org Unit" name="scope_org" reporter:datatype="org_unit" oils_obj:required="true"/>
@@ -8341,7 +8341,7 @@ SELECT  usr,
 		</permacrud>
 	</class>
 
-	<class id="crahp" controller="open-ils.cstore open-ils.pcrud" oils_obj:fieldmapper="config::rules::age_hold_protect" oils_persist:tablename="config.rule_age_hold_protect" reporter:label="Age Hold Protection Rule" oils_persist:field_safe="true">
+	<class id="crahp" controller="open-ils.cstore open-ils.pcrud" oils_obj:fieldmapper="config::rules::age_hold_protect" oils_persist:tablename="config.rule_age_hold_protect" reporter:label="Age Hold Protection Rule" oils_persist:field_safe="true" oils_persist:cardinality="low">
 		<fields oils_persist:primary="id" oils_persist:sequence="config.rule_age_hold_protect_id_seq">
 			<field reporter:label="Item Age" name="age" reporter:datatype="interval" oils_obj:required="true"/>
 			<field reporter:label="Rule ID" name="id" reporter:selector="name" reporter:datatype="id"/>
@@ -8358,7 +8358,7 @@ SELECT  usr,
 			</actions>
 		</permacrud>
 	</class>
-	<class id="crmf" controller="open-ils.cstore open-ils.pcrud" oils_obj:fieldmapper="config::rules::max_fine" oils_persist:tablename="config.rule_max_fine" reporter:label="Max Fine Rule">
+	<class id="crmf" controller="open-ils.cstore open-ils.pcrud" oils_obj:fieldmapper="config::rules::max_fine" oils_persist:tablename="config.rule_max_fine" reporter:label="Max Fine Rule" oils_persist:cardinality="low">
 		<fields oils_persist:primary="id" oils_persist:sequence="config.rule_max_fine_id_seq">
 			<field reporter:label="Max Fine Amount" name="amount" reporter:datatype="money" oils_obj:required="true"/>
 			<field reporter:label="Rule ID" name="id" reporter:selector="name" reporter:datatype="id"/>
@@ -8375,7 +8375,7 @@ SELECT  usr,
 			</actions>
 		</permacrud>
 	</class>
-	<class id="pgt" controller="open-ils.cstore open-ils.pcrud" oils_obj:fieldmapper="permission::grp_tree" oils_persist:tablename="permission.grp_tree" reporter:label="Permission Group">
+	<class id="pgt" controller="open-ils.cstore open-ils.pcrud" oils_obj:fieldmapper="permission::grp_tree" oils_persist:tablename="permission.grp_tree" reporter:label="Permission Group" oils_persist:cardinality="low">
 		<fields oils_persist:primary="id" oils_persist:sequence="permission.grp_tree_id_seq">
 			<field reporter:label="Child Groups" name="children" oils_persist:virtual="true" reporter:datatype="link"/>
 			<field reporter:label="Description" name="description" reporter:datatype="text" oils_persist:i18n="true"/>
@@ -9125,7 +9125,7 @@ SELECT  usr,
 			</actions>
 		</permacrud>
 	</class>
-	<class id="i18n_l" controller="open-ils.cstore open-ils.pcrud" oils_obj:fieldmapper="config::i18n_locale" oils_persist:tablename="config.i18n_locale" oils_persist:field_safe="true" reporter:label="Locale">
+	<class id="i18n_l" controller="open-ils.cstore open-ils.pcrud" oils_obj:fieldmapper="config::i18n_locale" oils_persist:tablename="config.i18n_locale" oils_persist:field_safe="true" reporter:label="Locale" oils_persist:cardinality="low">
 		<fields oils_persist:primary="code">
 			<field name="code" reporter:datatype="id" oils_obj:required="true"/>
 			<field name="marc_code" reporter:datatype="text" oils_obj:required="true"/>
@@ -9143,7 +9143,7 @@ SELECT  usr,
 			</actions>
 		</permacrud>
 	</class>
-	<class id="cbt" controller="open-ils.cstore open-ils.pcrud" oils_obj:fieldmapper="config::billing_type" oils_persist:tablename="config.billing_type" oils_persist:restrict_primary="100" reporter:label="Billing Type">
+	<class id="cbt" controller="open-ils.cstore open-ils.pcrud" oils_obj:fieldmapper="config::billing_type" oils_persist:tablename="config.billing_type" oils_persist:restrict_primary="100" reporter:label="Billing Type" oils_persist:cardinality="low">
 		<fields oils_persist:primary="id" oils_persist:sequence="config.billing_type_id_seq">
 			<field name="id" reporter:datatype="id" reporter:label="ID" reporter:selector="name" oils_obj:required="true"/>
 			<field name="name" reporter:datatype="text" reporter:label="Name" oils_persist:i18n="true" oils_obj:required="true"/>
@@ -9317,7 +9317,7 @@ SELECT  usr,
 		</permacrud>
 	</class>
 
-	<class id="acqct" controller="open-ils.cstore open-ils.reporter-store open-ils.pcrud" oils_obj:fieldmapper="acq::currency_type" oils_persist:tablename="acq.currency_type" reporter:label="Currency Type">
+	<class id="acqct" controller="open-ils.cstore open-ils.reporter-store open-ils.pcrud" oils_obj:fieldmapper="acq::currency_type" oils_persist:tablename="acq.currency_type" reporter:label="Currency Type" oils_persist:cardinality="low">
 		<fields oils_persist:primary="code">
 			<field reporter:label="Currency Code" name="code" reporter:datatype="text" reporter:selector="label" oils_obj:required="true"/>
 			<field reporter:label="Currency Label" name="label" reporter:datatype="text" oils_persist:i18n="true"/>
@@ -9752,7 +9752,7 @@ SELECT  usr,
 		</permacrud>
 	</class>
 
-	<class id="acqfc" controller="open-ils.cstore open-ils.pcrud" oils_obj:fieldmapper="acq::fiscal_calendar" oils_persist:tablename="acq.fiscal_calendar" reporter:label="Fiscal Calendar">
+	<class id="acqfc" controller="open-ils.cstore open-ils.pcrud" oils_obj:fieldmapper="acq::fiscal_calendar" oils_persist:tablename="acq.fiscal_calendar" reporter:label="Fiscal Calendar" oils_persist:cardinality="low">
 		<fields oils_persist:primary="id" oils_persist:sequence="acq.fiscal_calendar_id_seq">
 			<field reporter:label="Fiscal Calendar ID" name="id" reporter:datatype="id" reporter:selector="name" oils_obj:required="true"/>
 			<field reporter:label="Fiscal Calendar Name" name="name" reporter:datatype="text" oils_obj:required="true"/>
@@ -9771,7 +9771,7 @@ SELECT  usr,
 		</permacrud>
 	</class>
 
-	<class id="acqfy" controller="open-ils.cstore open-ils.pcrud" oils_obj:fieldmapper="acq::fiscal_year" oils_persist:tablename="acq.fiscal_year" reporter:label="Fiscal Year">
+	<class id="acqfy" controller="open-ils.cstore open-ils.pcrud" oils_obj:fieldmapper="acq::fiscal_year" oils_persist:tablename="acq.fiscal_year" reporter:label="Fiscal Year" oils_persist:cardinality="low">
 		<fields oils_persist:primary="id" oils_persist:sequence="acq.fiscal_year_id_seq">
 			<field reporter:label="Fiscal Year ID" name="id" reporter:datatype="id" reporter:selector="year" oils_obj:required="true"/>
 			<field reporter:label="Calendar" name="calendar" reporter:datatype="link" oils_obj:required="true"/>
@@ -9793,7 +9793,7 @@ SELECT  usr,
 	</class>
 
 	<class id="acqfs" controller="open-ils.cstore open-ils.reporter-store open-ils.pcrud" oils_obj:fieldmapper="acq::funding_source" oils_persist:tablename="acq.funding_source" reporter:label="Funding Source">
-		<fields oils_persist:primary="id" oils_persist:sequence="acq.funding_source_id_seq">
+		<fields oils_persist:primary="id" oils_persist:sequence="acq.funding_source_id_seq" oils_persist:cardinality="low">
 			<field reporter:label="Funding Source ID" name="id" reporter:datatype="id" reporter:selector="code"/>
 			<field reporter:label="Funding Source Name" name="name" reporter:datatype="text" oils_persist:i18n="true" oils_obj:required="true"/>
 			<field reporter:label="Owner" name="owner" reporter:datatype="org_unit" oils_obj:required="true"/>
@@ -9907,7 +9907,7 @@ SELECT  usr,
 		</permacrud>
 	</class>
 
-	<class id="acqf" controller="open-ils.cstore open-ils.pcrud" oils_obj:fieldmapper="acq::fund" oils_persist:tablename="acq.fund" reporter:label="Fund">
+	<class id="acqf" controller="open-ils.cstore open-ils.pcrud" oils_obj:fieldmapper="acq::fund" oils_persist:tablename="acq.fund" reporter:label="Fund" oils_persist:cardinality="low">
 		<fields oils_persist:primary="id" oils_persist:sequence="acq.fund_id_seq">
 			<field reporter:label="Fund ID" name="id" reporter:datatype="id" reporter:selector="code"/>
 			<field reporter:label="Owner" name="org" reporter:datatype="org_unit" oils_obj:required="true"/>
@@ -11499,7 +11499,7 @@ SELECT  usr,
 		</permacrud>
 	</class>
 
-	<class id="acqclet" controller="open-ils.cstore open-ils.pcrud" oils_obj:fieldmapper="acq::claim_event_type" oils_persist:tablename="acq.claim_event_type" reporter:label="Claim Event Type">
+	<class id="acqclet" controller="open-ils.cstore open-ils.pcrud" oils_obj:fieldmapper="acq::claim_event_type" oils_persist:tablename="acq.claim_event_type" reporter:label="Claim Event Type" oils_persist:cardinality="low">
 		<fields oils_persist:primary="id" oils_persist:sequence="acq.claim_event_type_id_seq">
 			<field reporter:label="Claim Event Type ID" name="id" reporter:datatype="id" reporter:selector="code"/>
 			<field reporter:label="Owner" name="org_unit" reporter:datatype="org_unit" oils_obj:required="true"/>
@@ -11576,7 +11576,7 @@ SELECT  usr,
 		</links>
 	</class>
 
-	<class id="acqclp" controller="open-ils.cstore open-ils.pcrud" oils_obj:fieldmapper="acq::claim_policy" oils_persist:tablename="acq.claim_policy" reporter:label="Claim Policy">
+	<class id="acqclp" controller="open-ils.cstore open-ils.pcrud" oils_obj:fieldmapper="acq::claim_policy" oils_persist:tablename="acq.claim_policy" reporter:label="Claim Policy" oils_persist:cardinality="low">
 		<fields oils_persist:primary="id" oils_persist:sequence="acq.claim_policy_id_seq">
 			<field reporter:label="ID" name="id" reporter:datatype="id" reporter:selector="name"/>
 			<field reporter:label="Owner" name="org_unit" reporter:datatype="org_unit" oils_obj:required="true"/>
@@ -13870,7 +13870,7 @@ SELECT  usr,
 			<link field="stat_cat" reltype="has_a" key="id" map="" class="asc"/>
 		</links>
 	</class>
-	<class id="cfg" controller="open-ils.cstore open-ils.pcrud" oils_obj:fieldmapper="config::floating_group" oils_persist:tablename="config.floating_group" reporter:label="Floating Group">
+	<class id="cfg" controller="open-ils.cstore open-ils.pcrud" oils_obj:fieldmapper="config::floating_group" oils_persist:tablename="config.floating_group" reporter:label="Floating Group" oils_persist:cardinality="low">
 		<fields oils_persist:primary="id" oils_persist:sequence="config.floating_group_id_seq">
 			<field reporter:label="ID" name="id" reporter:selector="name" reporter:datatype="id"/>
 			<field reporter:label="Name" name="name" reporter:datatype="text" oils_obj:required="true"/>
@@ -13911,7 +13911,7 @@ SELECT  usr,
 			</actions>
 		</permacrud>
 	</class>
-	<class id="cctt" controller="open-ils.cstore open-ils.pcrud" oils_obj:fieldmapper="config::copy_tag_type" oils_persist:tablename="config.copy_tag_type" reporter:label="Item Tag Types" oils_persist:field_safe="true">
+	<class id="cctt" controller="open-ils.cstore open-ils.pcrud" oils_obj:fieldmapper="config::copy_tag_type" oils_persist:tablename="config.copy_tag_type" reporter:label="Item Tag Types" oils_persist:field_safe="true" oils_persist:cardinality="low">
 		<fields oils_persist:primary="code">
 			<field reporter:label="Code" name="code" reporter:selector="label" reporter:datatype="id" oils_obj:required="true"/>
 			<field reporter:label="Label" name="label" reporter:datatype="text" oils_obj:required="true"/>
@@ -14040,7 +14040,7 @@ SELECT  usr,
 		</links>
 	</class>
 
-	<class id="cht" controller="open-ils.cstore open-ils.pcrud" oils_obj:fieldmapper="config::hold_type" oils_persist:tablename="config.hold_type" reporter:label="Hold Type" oils_persist:readonly="true">
+	<class id="cht" controller="open-ils.cstore open-ils.pcrud" oils_obj:fieldmapper="config::hold_type" oils_persist:tablename="config.hold_type" reporter:label="Hold Type" oils_persist:readonly="true" oils_persist:cardinality="low">
 		<fields oils_persist:primary="id" oils_persist:sequence="config.hold_type_id_seq">
 			<field name="id" reporter:selector="name" reporter:datatype="id"/>
 			<field name="description" reporter:datatype="text" oils_persist:i18n="true"/>
@@ -14048,7 +14048,7 @@ SELECT  usr,
 		</fields>
 	</class>
 
-	<class id="cpt" controller="open-ils.cstore open-ils.pcrud" oils_obj:fieldmapper="config::print_template" oils_persist:tablename="config.print_template" reporter:label="Print Templates">
+	<class id="cpt" controller="open-ils.cstore open-ils.pcrud" oils_obj:fieldmapper="config::print_template" oils_persist:tablename="config.print_template" reporter:label="Print Templates" oils_persist:cardinality="low">
 		<fields oils_persist:primary="id" oils_persist:sequence="config.print_template_id_seq">
 			<field name="id" reporter:datatype="id" reporter:selector="label"/>
 			<field name="name" reporter:datatype="text" oils_obj:required="true"/>
@@ -14073,7 +14073,7 @@ SELECT  usr,
 		</permacrud>
 	</class>
 
-	<class id="cct" controller="open-ils.cstore open-ils.pcrud" oils_obj:fieldmapper="config::carousel_type" oils_persist:tablename="config.carousel_type" reporter:label="Carousel Types">
+	<class id="cct" controller="open-ils.cstore open-ils.pcrud" oils_obj:fieldmapper="config::carousel_type" oils_persist:tablename="config.carousel_type" reporter:label="Carousel Types" oils_persist:cardinality="low">
 		<fields oils_persist:primary="id" oils_persist:sequence="config.carousel_type_id_seq">
 			<field reporter:label="Carousel Type ID" reporter:selector="name" name="id" reporter:datatype="id"/>
 			<field reporter:label="Name" name="name" reporter:datatype="text" oils_obj:required="true" oils_persist:i18n="true"/>
@@ -14157,7 +14157,7 @@ SELECT  usr,
 		</permacrud>
 	</class>
 
-	<class id="cra" controller="open-ils.cstore open-ils.pcrud" oils_obj:fieldmapper="config::remoteauth_profile" oils_persist:tablename="config.remoteauth_profile" reporter:label="Remote Patron Authentication Configuration Profile">
+	<class id="cra" controller="open-ils.cstore open-ils.pcrud" oils_obj:fieldmapper="config::remoteauth_profile" oils_persist:tablename="config.remoteauth_profile" reporter:label="Remote Patron Authentication Configuration Profile" oils_persist:cardinality="low">
 		<fields oils_persist:primary="name">
 			<field name="name" reporter:datatype="text" reporter:label="Name" oils_obj:required="true"/>
 			<field name="description" reporter:datatype="text" reporter:label="Description"/>
@@ -14184,7 +14184,7 @@ SELECT  usr,
 			</actions>
 		</permacrud>
 	</class>
-	<class id="cgs" controller="open-ils.cstore open-ils.pcrud" oils_obj:fieldmapper="config::geolocation_service" oils_persist:tablename="config.geolocation_service" reporter:label="Geographic Location Service">
+	<class id="cgs" controller="open-ils.cstore open-ils.pcrud" oils_obj:fieldmapper="config::geolocation_service" oils_persist:tablename="config.geolocation_service" reporter:label="Geographic Location Service" oils_persist:cardinality="low">
 		<fields oils_persist:primary="id" oils_persist:sequence="config.geolocation_service_id_seq">
 			<field name="id" reporter:selector="name" reporter:datatype="id" reporter:label="ID"/>
 			<field reporter:label="Active" name="active" reporter:datatype="bool" oils_obj:required="true"/>

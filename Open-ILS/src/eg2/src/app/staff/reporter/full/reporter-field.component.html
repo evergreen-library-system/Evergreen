@@ -129,23 +129,38 @@
           <label for="FV-{{pathId}}" class="form-label" i18n>Filter value</label>
           <div [ngSwitch]="field.transform.final_datatype || field.datatype">
             <div *ngSwitchCase="'link'">
-              <eg-multi-select
-                *ngIf="idl.getClassSelector(field.class, true)"
-                domId="FV-{{pathId}}"
-                [disabled]="disabled || editorMode === 'report' && field.with_value_input"
-                [linkedLibraryLabel]="field.org_filter_field"
-                [idlBaseQuery]="linkedIdlBaseQuery"
-                [idlClass]="field.class"
-                [startValue]="getBracketListValue(field.filter_value)"
-                (onChange)="setBracketListValue($event)">
-              </eg-multi-select>
+              <!-- if it has a defined selector column, use smart widgets -->
+              <ng-container *ngIf="idl.getClassSelector(field.class, true)">
+                <div [ngSwitch]="idl.classes[field.class].cardinality">
+                  <div *ngSwitchCase="'low'"> <!-- low cardinality table, use tree-based multiselect -->
+                    <eg-tree-multiselect
+                      domId="FV-{{pathId}}"
+                      [disabled]="disabled || editorMode === 'report' && field.with_value_input"
+                      [linkedLibraryLabel]="field.org_filter_field"
+                      [idlBaseQuery]="linkedIdlBaseQuery"
+                      [idlClass]="field.class"
+                      [startValue]="getBracketListValue(field.filter_value)"
+                      (onChange)="setBracketListValue($event)"/>
+                  </div>
+                  <div *ngSwitchDefault> <!-- high or unbounded cardinality table, use server-side filtering eg-multi-select -->
+                    <eg-multi-select
+                      domId="FV-{{pathId}}"
+                      [disabled]="disabled || editorMode === 'report' && field.with_value_input"
+                      [linkedLibraryLabel]="field.org_filter_field"
+                      [idlBaseQuery]="linkedIdlBaseQuery"
+                      [idlClass]="field.class"
+                      [startValue]="getBracketListValue(field.filter_value)"
+                      (onChange)="setBracketListValue($event)"/>
+                  </div>
+                </div>
+              </ng-container>
+              <!-- no defined selector column, just gather user strings -->
               <eg-text-multi-select
                 *ngIf="!idl.getClassSelector(field.class, true)"
                 domId="FV-{{pathId}}"
                 [disabled]="disabled || editorMode === 'report' && field.with_value_input"
                 [startValue]="field.filter_value"
-                (onChange)="setSingleValue($event)">
-              </eg-text-multi-select>
+                (onChange)="setSingleValue($event)"/>
             </div>
             <div class="reporter-field-value-input-inner reporter-field-value-org-unit" *ngSwitchCase="'org_unit'">
               <eg-tree
