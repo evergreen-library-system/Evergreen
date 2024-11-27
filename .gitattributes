@@ -1,0 +1,6 @@
+# Apply LF line endings to all Perl files
+*.pl text eol=lf
+*.pm text eol=lf
+
+# Apply LF line endings to all .adoc files in the docs directory
+/docs/**/*.adoc text eol=lf
