@@ -53,4 +53,15 @@ temporary/scratch values.
 -->
 <xs:attribute name="virtual" type="xs:boolean"/>
 
+<!-- 
+
+Let whoever needs to know that the class carrying this attribute, or the
+foreign end of a link, has an expected cardinality scale.  Useful values are:
+ * low - less than 100 rows
+ * high - less than 1000 rows
+ * unbounded - unknown, but potentially many thousands of rows
+
+-->
+<xs:attribute name="cardinality"/>
+
 </xs:schema>
