@@ -1,6 +1,6 @@
 <!-- eslint-disable -->
 <div class="row"><div class="col-12">
-<div class="input-group" *ngIf="!disabled && showLabelFilter">
+<div class="input-group" *ngIf="!disabled && showLabelFilter && _tree">
   <label class="input-group-text" for="{{_tree.treeId}}-filter" i18n>Filter:</label>
   <input class="form-control" id="{{_tree.treeId}}-filter" [(ngModel)]="_labelFilter"
     type="text" (input)="updateLabelFilter()" />
