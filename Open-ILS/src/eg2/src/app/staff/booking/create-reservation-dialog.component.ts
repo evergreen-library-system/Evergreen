@@ -183,8 +183,13 @@ export class CreateReservationDialogComponent
     };
 
     addBresvAndOpenPatronReservations = (): void => {
-        this.addBresv$()
-            .subscribe(() => this.openPatronReservations());
+        this.addBresv$().subscribe({
+            next: (response) => {
+                if (!('ilsevent' in response)) {
+                    this.openPatronReservations();
+                }
+            }
+        });
     };
 
     searchPatrons() {
