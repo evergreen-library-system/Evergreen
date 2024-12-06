@@ -10,6 +10,7 @@ import {VolCopyContext, HoldingsTreeNode} from './volcopy';
 import {ComboboxComponent, ComboboxEntry} from '@eg/share/combobox/combobox.component';
 import {ConfirmDialogComponent} from '@eg/share/dialog/confirm.component';
 import {VolCopyService} from './volcopy.service';
+import { VolEditPartDedupePipe } from './vol-edit-part-dedupe.pipe';
 
 @Component({
     selector: 'eg-vol-edit',
@@ -693,22 +694,3 @@ export class VolEditComponent implements OnInit {
         this.volcopy.saveDefaults();
     }
 }
-
-// Evil dirty pipe just for this component because I can't figure out the timing for deduping the batch dropdown otherwise.
-@Pipe({
-    name: 'comboboxLabelDedupe'
-})
-export class ComboboxLabelDedupePipe implements PipeTransform {
-    transform(items: [{[bibId: number]: IdlObject[]}] ) : IdlObject[]{
-        const uniqueEntries = [];
-        Object.values(items).forEach(record => {
-            record['value'].forEach(entry => {
-                if (!uniqueEntries.some(e => e.label() === entry.label())){
-                    uniqueEntries.push(entry);
-                }
-            });
-        });
-        return uniqueEntries;
-    }
-}
-

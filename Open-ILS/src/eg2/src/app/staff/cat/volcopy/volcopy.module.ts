@@ -4,7 +4,8 @@ import {CommonWidgetsModule} from '@eg/share/common-widgets.module';
 import {HoldingsModule} from '@eg/staff/share/holdings/holdings.module';
 import {VolCopyRoutingModule} from './routing.module';
 import {VolCopyComponent} from './volcopy.component';
-import {ComboboxLabelDedupePipe, VolEditComponent} from './vol-edit.component';
+import {VolEditComponent} from './vol-edit.component';
+import { VolEditPartDedupePipe } from './vol-edit-part-dedupe.pipe';
 import {VolCopyService} from './volcopy.service';
 import {CopyAttrsComponent} from './copy-attrs.component';
 import {ItemLocationSelectModule} from '@eg/share/item-location-select/item-location-select.module';
@@ -18,7 +19,7 @@ import {VolCopyPermissionDialogComponent} from './vol-copy-permission-dialog.com
         CopyAttrsComponent,
         VolCopyConfigComponent,
         VolCopyPermissionDialogComponent,
-        ComboboxLabelDedupePipe
+        VolEditPartDedupePipe
     ],
     imports: [
         StaffCommonModule,

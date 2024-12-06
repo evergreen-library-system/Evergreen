@@ -412,22 +412,26 @@ export class VolCopyService {
             {record: recordIds, deleted: 'f'})
             .subscribe(
                 part => {
-                    if (!this.bibParts[part.record()]) {
-                        this.bibParts[part.record()] = [];
+                    const updatedBibParts =  {...this.bibParts};
+                    if (!updatedBibParts[part.record()]) {
+                        updatedBibParts[part.record()] = [];
                     }
-                    if (this.bibParts[part.record()].every(existingPart => {return existingPart.label() !== part.label();})){
-                        this.bibParts[part.record()].push(part);
+                    if (updatedBibParts[part.record()].every(existingPart => existingPart.label() !== part.label())){
+                        updatedBibParts[part.record()].push(part);
                     }
+                    this.bibParts = updatedBibParts;
                 },
                 (err: unknown) => {},
                 () => {
+                    const finalBibParts = {...this.bibParts};
                     recordIds.forEach(bibId => {
-                        if (this.bibParts[bibId]) {
-                            this.bibParts[bibId] = this.bibParts[bibId]
+                        if (finalBibParts[bibId]) {
+                            finalBibParts[bibId] = finalBibParts[bibId]
                                 .sort((p1, p2) =>
                                     p1.label_sortkey() < p2.label_sortkey() ? -1 : 1);
                         }
                     });
+                    this.bibParts = finalBibParts;
                 }
             );
     }

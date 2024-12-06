@@ -389,7 +389,7 @@ implements ControlValueAccessor, OnInit, AfterViewInit, OnChanges {
 
         // Make the default an entry with no id if we have it - usually from reloading after saving a freetext
         if (!this.selectedId && !this.selected){
-            this.selected = this.entrylist.find(e => e.id == null) ?? this.selected;
+            this.selected = this.entrylist.find(e => e.id == null);
         }
     }
 

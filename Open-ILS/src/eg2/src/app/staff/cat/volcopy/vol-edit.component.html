@@ -91,7 +91,7 @@
       <div>
         <eg-combobox [smallFormControl]="true" [allowFreeText]="true" [(ngModel)]="batchPart">
           <eg-combobox-entry 
-            *ngFor="let part of (volcopy.bibParts | keyvalue) | comboboxLabelDedupe"
+            *ngFor="let part of volcopy.bibParts | volEditPartDedupe"
             [entryId]="part.id()" [entryLabel]="part.label()">
           </eg-combobox-entry>
         </eg-combobox>
