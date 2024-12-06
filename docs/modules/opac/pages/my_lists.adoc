@@ -3,9 +3,9 @@
 
 The *My Lists* feature replaces the bookbag feature that was available in versions prior to 2.2.  The *My Lists* feature is a part of the Template Toolkit OPAC that is available in version 2.2.  This feature enables you to create temporary and permanent lists; create and edit notes for items in lists; place holds on items in lists; and share lists via RSS feeds and CSV files.
 
-There is now a direct link to *My Lists* from the *My Account* area in the top right part of the screen.  This gives users the ability to quickly access their lists while logged into the catalog.
+There is a direct link to *My Lists* from the *My Account* area in the top right part of the screen.  This gives users the ability to quickly access their lists while logged into the catalog.
 
-As of version 3.2, xref:opac:batch_actions_from_search.adoc#batch_actions_from_search[Batch Actions from Search Results] has replaced the old Temporary Lists feature, as well as enabled multiple selections from a search results list.
+As of version 3.2, the Bootstrap version of the OPAC has baskets that you can use to make temporary lists/group records temporarily.  xref:opac:baskets.adoc[Click here to read about baskets.]
 
 image::lists_opac/home_list_link.jpg[My Lists from Homepage]
 
