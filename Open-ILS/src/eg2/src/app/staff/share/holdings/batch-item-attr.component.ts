@@ -19,7 +19,7 @@ export interface BatchChangeSelection {
     templateUrl: 'batch-item-attr.component.html',
     styles: [
         '.header { background-color: var(--batch-item-attr-header-bg); }',
-        '.has-changes { background-color: var(--green-light); }'
+        '.has-changes { background-color: var(--success-text-light); }'
     ]
 })
 
