@@ -6,6 +6,7 @@ use OpenSRF::Utils::SettingsClient;
 use OpenSRF::System;
 use XML::LibXML;
 use Scalar::Util 'blessed';
+use Types::Serialiser;
 
 my $log = 'OpenSRF::Utils::Logger';
 
@@ -423,6 +424,13 @@ sub FieldDatatype {
     return $$fieldmap{$class_name}{fields}{$field}{datatype};
 }
 
+sub FieldLink {
+    my $self = shift;
+    my $f = shift;
+    return undef unless ($f && exists $$fieldmap{$self->class_name}{links}{$f});
+    return $$fieldmap{$self->class_name}{links}{$f};
+}
+
 sub class_name {
     my $class_name = shift;
     return ref($class_name) || $class_name;
@@ -457,10 +465,38 @@ sub properties {
 
 sub to_bare_hash {
     my $self = shift;
+    my $deep = shift;
+    my $cname = $self->class_name;
 
     my %hash = ();
     for my $f ($self->properties) {
         my $val = $self->$f;
+        my $vtype = $cname->FieldDatatype($f) || '';
+        if ($deep
+            and ref($val)
+            and exists $$fieldmap{$cname}{links}{$f}
+        ) {
+            my $fclass = Fieldmapper::class_for_hint($$fieldmap{$cname}{links}{$f}{class});
+            if ($fclass and $$fieldmap{$cname}{links}{$f}{reltype} eq 'has_many' and @$val) {
+                $val = [ map { (blessed($_) and $_->isa('Fieldmapper')) ? $_->to_bare_hash($deep) : $_ } @$val ];
+            } elsif (blessed($val) and $val->isa('Fieldmapper')) {
+                $val = $val->to_bare_hash($deep);
+            }
+        } elsif (defined($val) and $vtype eq 'bool') {
+            $val = ($val and $val !~ /^f$/i) ? Types::Serialiser::true : Types::Serialiser::false;
+        } elsif (
+            $val
+            and $vtype eq 'timestamp'
+            and $val =~ /^(\S{10}T\S{8}[-+]\d{2})(\d{2})$/
+        ) {
+                $val = "$1:$2";
+        } elsif (
+            $val
+            and $vtype eq 'timestamp'
+            and $val =~ /^\S{10}$/
+        ) {
+                $val .= 'T00:00:00';
+        }
         $hash{$f} = $val;
     }
 
@@ -473,9 +509,24 @@ sub to_bare_hash {
 sub from_bare_hash {
     my $self = shift;
     my $hash = shift;
+    my $deep = shift;
+    my $cname = $self->class_name;
+
     my @value = ();
     for my $f ($self->properties) {
-        push @value, $$hash{$f};
+        my $val = $$hash{$f};
+        if ($deep
+            and ref($val)
+            and $self->FieldDatatype($f) eq 'link'
+        ) {
+            my $fclass = Fieldmapper::class_for_hint($$fieldmap{$cname}{links}{$f}{class});
+            if ($fclass and $$fieldmap{$cname}{links}{$f}{reltype} eq 'has_many' and @$val) {
+                $val = [ map { $fclass->from_bare_hash($_, $deep) } @$val ];
+            } else {
+                $val = $fclass->from_bare_hash($val, $deep);
+            }
+        }
+        push @value, $val;
     }
     return $self->new(\@value);
 }
