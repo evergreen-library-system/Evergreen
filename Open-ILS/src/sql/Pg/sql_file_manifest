@@ -50,6 +50,7 @@ FTS_CONFIG_FILE
 
 500.view.cross-schema.sql
 600.schema.oai.sql
+610.schema.openapi.sql
 
 800.fkeys.sql
 

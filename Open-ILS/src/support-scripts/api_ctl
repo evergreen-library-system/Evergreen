@@ -1,0 +1,2043 @@
+#!/usr/bin/perl
+
+# ---------------------------------------------------------------
+# Copyright (C) 2024 Equinox Open Library Initiative, Inc.
+# Mike Rylander <mrylander@gmail.com>
+
+# This program is free software; you can redistribute it and/or
+# modify it under the terms of the GNU General Public License
+# as published by the Free Software Foundation; either version 2
+# of the License, or (at your option) any later version.
+
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+# ---------------------------------------------------------------
+
+use strict;
+use warnings;
+
+use DBI;
+use Getopt::Long;
+use Data::Dumper;
+use IO::Prompter;
+use Digest::MD5 qw/md5_hex/;
+
+my $raise_db_error = 0;
+
+# Globals for the command line options:
+my $opt_lockfile      = '/tmp/api_ctl-LOCK';
+my $help              = 0;
+my $from_command      = 0;
+
+# Database connection options with defaults:
+my $db_user = $ENV{PGUSER} || 'evergreen';
+my $db_host = $ENV{PGHOST} || 'localhost';
+my $db_db = $ENV{PGDATABASE} || 'evergreen';
+my $db_pw = $ENV{PGPASSWORD} || 'evergreen';
+my $db_port = $ENV{PGPORT} || 5432;
+
+# State globals
+my %state;
+my @command_stack;
+
+
+GetOptions(
+    'lock-file=s'       => \$opt_lockfile,
+    'dbuser=s'          => \$db_user,
+    'dbhost=s'          => \$db_host,
+    'dbname=s'          => \$db_db,
+    'dbpw=s'            => \$db_pw,
+    'dbport=i'          => \$db_port,
+    'dbraise-error'     => \$raise_db_error,
+    'command'           => sub { $from_command++; die '!FINISH' }, # this is similar to --, to leave the rest of @ARGV alone, but also know that it's meant to be a one-shot
+    'help'              => \$help
+);
+
+help() if ($help);
+
+sub help {
+    print <<HELP;
+
+...man page here...
+
+HELP
+    exit;
+}
+
+my $dsn = "dbi:Pg:dbname=$db_db;host=$db_host;port=$db_port;application_name='api_ctl';sslmode=allow";
+
+my $dbh = DBI->connect(
+    $dsn, $db_user, $db_pw,
+    { AutoCommit => 1,
+      pg_expand_array => 0,
+      pg_bool_tf => 0,
+      RaiseError => $raise_db_error
+    }
+) || die "Could not connect to the database\n";
+
+push(@ARGV, 'quit') if $from_command;
+exit next_cmd('OpenAPI:' => [qw/api integrator control details/]);
+
+#------------------
+
+sub prompt_user_input_return_first {
+    my $next = prompt @_;
+    $next =~ s/^\s+//;
+    $next =~ s/\s+$//;
+    my @parts = split /\s+/, $next;
+    $next = shift @parts;
+    push @ARGV, @parts;
+    return $next
+}
+
+sub list_or_argv {
+    my $prompt = shift;
+    my $options = shift;
+    return shift @ARGV if @ARGV;
+    print "\n* Command path: " . join('/', @command_stack) . "\n" if @command_stack and !$from_command;
+    return prompt_user_input_return_first($prompt => -stdio, -comp => $options, @_);
+}
+
+sub number_menu_or_argv {
+    return shift @ARGV if @ARGV;
+    return menu_or_argv(@_, -number);
+}
+
+sub menu_or_argv {
+    return shift @ARGV if @ARGV;
+    my $prompt = shift;
+    my $options = shift;
+    print "\n* Command path: " . join('/', @command_stack) . "\n" if @command_stack and !$from_command;
+    return prompt_user_input_return_first($prompt => -stdio, -menu => $options, @_);
+}
+
+sub menu_spec_from_table {
+    my $table = shift;
+    my $label = shift;
+    my $value = shift;
+    my $no_value_label = shift;
+    my $no_value_value = shift;
+
+    my $spec = {};
+    $$spec{" $no_value_label"} = $no_value_value if $no_value_label;
+
+    for my $row ($dbh->selectall_array("SELECT $label as \"$label\", $value FROM $table", { Slice => {} })) {
+        $$spec{$$row{$label}} = $$row{$value};
+    }
+
+    return $spec;
+}
+
+sub permission_menu_spec {
+    return { map { $_->{code} . ': ' . $_->{description} => $_->{id} } $dbh->selectall_array('SELECT * FROM permission.perm_list', { Slice => {} }) };
+}
+
+sub depth_menu_spec {
+    return menu_spec_from_table('actor.org_unit_type','name','depth');
+}
+
+sub value_or_argv {
+    my $prompt = shift;
+    return shift @ARGV if @ARGV;
+    return prompt $prompt, -stdio, -verbatim, @_;
+}
+
+sub prompted_value {
+    my $prompt = shift;
+    return prompt -prompt => $prompt, -stdio, -verbatim, @_;
+}
+
+sub pw_value {
+    my $prompt = shift;
+    return prompted_value($prompt, -echo => '*');
+}
+
+sub yn {
+    my $prompt = shift;
+    return prompt $prompt, -stdio, -yes, @_;
+}
+
+sub next_cmd {
+    my $prompt = shift;
+    my $options = shift;
+    push @$options, 'back' if @command_stack;
+    push @$options, 'show', 'quit';
+    my $result = 0;
+    while (my $cmd = list_or_argv($prompt => $options)) {
+        if ($cmd eq 'top') { # special case to go back all the way to the top
+            if (@command_stack) {
+                unshift @ARGV, 'top';
+                last;
+            }
+            next;
+        }
+
+        next if ($cmd eq 'show' and show_state(1)); # special case to show the loaded state
+        last if ($cmd eq 'back'); # special case to go back one command level
+        quit() if ($cmd eq 'quit'); # special case to leave
+
+        unless (grep {$_ eq $cmd} @$options) {
+            warn "Command [$cmd] not known\n" if ($cmd ne '');
+            next;
+        }
+
+        push @command_stack, $cmd;
+        my $subname = join '_', @command_stack;
+        $result = &{\&{$subname}}();
+        pop @command_stack;
+
+    }
+    return $result;
+}
+
+sub quit { exit }
+
+sub show_state {
+    my $immediate_details = shift;
+
+    print '-' x 50 ."\n";
+    my $sep = 0;
+
+    if ($state{control}{perm_set}) {
+        print "\n" if $sep;
+        print " == Permission Set Name: $state{control}{perm_set}{name}\n";
+        if ($immediate_details || $state{details} || $state{control_details}|| $state{control_perm_sets_details}) {
+            print " --          ID: $state{control}{perm_set}{id}\n";
+            print " -- Permissions: ".join(', ', map {$$_{code}} @{$state{control}{perm_set}{perms}})."\n";
+            print " --   Endpoints: ".join(', ', @{$state{control}{perm_set}{endpoints}})."\n";
+            print " --        Sets: ".join(', ', @{$state{control}{perm_set}{sets}})."\n";
+        }
+        $sep++;
+    }
+
+    if ($state{control}{rate_limit}) {
+        print "\n" if $sep;
+        print " == Rate Limit Definition Name: $state{control}{rate_limit}{name}\n";
+        if ($immediate_details || $state{details} || $state{control_details}|| $state{control_rate_limit_details}) {
+            print " --        ID: $state{control}{rate_limit}{id}\n";
+            print " --     Count: $state{control}{rate_limit}{limit_count}\n";
+            print " --  Interval: $state{control}{rate_limit}{limit_interval}\n";
+            print " -- Endpoints: ".join(', ', @{$state{control}{rate_limit}{endpoints}})."\n";
+            print " --      Sets: ".join(', ', @{$state{control}{rate_limit}{sets}})."\n";
+        }
+        $sep++;
+    }
+
+    if ($state{integrator}) {
+        print "\n" if $sep;
+        print " == Integrator username: $state{integrator}{usrname}\n";
+        if ($immediate_details || $state{details} || $state{integrator_details}) {
+            print " --           Lead Account: ".($state{integrator}{master_account} ? 'Yes' : 'No')."\n";
+            print " --       Account Group ID: $state{integrator}{usrgroup}\n";
+            print " --  Main Permission Group: $state{integrator}{profile}{name}\n";
+            print " --  Secondary Perm Groups: ".join(', ', map {$$_{name}} @{$state{integrator}{secondary_groups}})."\n";
+            print " --            Permissions: ".join(', ', map {$$_{code}} @{$state{integrator}{user_perms}})."\n";
+            print " -- Rate Limited Endpoints: ".join(', ', map {"$$_{endpoint} => $$_{name}"} @{$state{integrator}{endpoint_rate_limits}})."\n";
+            print " --      Rate Limited Sets: ".join(', ', map {"$$_{endpoint_set} => $$_{name}"} @{$state{integrator}{endpoint_set_rate_limits}})."\n";
+            print " --       Property Filters: ".join(', ', map {"$$_{name} => $$_{value}"} @{$state{integrator}{filter_settings}})."\n";
+            print " --                   Name: $state{integrator}{first_given_name} $state{integrator}{family_name}\n";
+            print " --                Barcode: $state{integrator}{card}{barcode}\n" if $state{integrator}{card};
+            print " --                  Email: $state{integrator}{email}\n" if $state{integrator}{email};
+            print " --              Day Phone: $state{integrator}{day_phone}\n" if $state{integrator}{day_phone};
+            if ( my $s = $state{integrator}{login_attempt_summary}) {
+                print " :: Login Attempt Summary\n";
+                print "  . First Attempt: $$s{first_attempt}\n";
+                print "  .  Last Attempt: $$s{last_attempt}\n";
+                print "  . Success Count: $$s{success}\n";
+                print "  .    Fail Count: $$s{failure}\n";
+            }
+            if (@{$state{integrator}{endpoint_access_summary}}) {
+                print " :: Endpoint Access Summary\n";
+                print "  . $$_{endpoint}: First: $$_{first_attempt}, Last: $$_{last_attempt}, Success: $$_{success}, Failure: $$_{failure}\n"
+                    for (@{$state{integrator}{endpoint_access_summary}});
+            }
+        }
+        $sep++;
+    }
+
+    if ($state{api}{set}) {
+        print "\n" if $sep;
+        print " == API Endpoint Set: $state{api}{set}{name}\n";
+        if ($immediate_details || $state{details} || $state{api_details} || $state{api_sets_details}) {
+            print " -- Description: $state{api}{set}{description}\n";
+            print " --      Active: ".($state{api}{set}{active} ? 'Yes' : 'No')."\n";
+            print " --  Rate Limit: $state{api}{set}{rate_limit}{name}\n" if $state{api}{set}{rate_limit};
+            print " --   IP Ranges: ".join(', ', map {$$_{ip_range}} @{$state{api}{set}{ip_ranges}})."\n";
+            print " --   Endpoints: ".join(', ', @{$state{api}{set}{endpoints}})."\n";
+            print " -- Permissions: ".join(', ', map {$$_{code}} @{$state{api}{set}{perms}})."\n";
+            print " --   Perm Sets: ".join(', ', map {$$_{name}.' ('.join(' ', map{$$_{code}} @{$$_{perms}}).')'} @{$state{api}{set}{perm_sets}})."\n";
+        }
+        $sep++;
+    }
+
+    if ($state{api}{endpoint}) {
+        print "\n" if $sep;
+        print " == API Endpoint Operation ID: $state{api}{endpoint}{operation_id}\n";
+        if ($immediate_details || $state{details} || $state{api_details} || $state{api_endpointss_details}) {
+            print " --     Summary: $state{api}{endpoint}{summary}\n";
+            print " --      Active: ".($state{api}{endpoint}{active} ? 'Yes' : 'No')."\n";
+            print " --        Path: $state{api}{endpoint}{path}\n";
+            print " -- HTTP Method: $state{api}{endpoint}{http_method}\n";
+            print " --    Security: $state{api}{endpoint}{security}\n";
+            print " --      Source: $state{api}{endpoint}{method_source}\n";
+            print " --     Handler: $state{api}{endpoint}{method_name}\n";
+            print " --   Param Map: $state{api}{endpoint}{method_params}\n";
+            print " --  Rate Limit: $state{api}{endpoint}{rate_limit}{name}\n" if $state{api}{endpoint}{rate_limit};
+            print " --   IP Ranges: ".join(', ', map {$$_{ip_range}} @{$state{api}{endpoint}{ip_ranges}})."\n";
+            print " --        Sets: ".join(', ', @{$state{api}{endpoint}{sets}})."\n";
+            print " -- Permissions: ".join(', ', map {$$_{code}} @{$state{api}{endpoint}{perms}})."\n";
+            print " --   Perm Sets: ".join(', ', map {$$_{name}.' ('.join(' ', map{$$_{code}} @{$$_{perms}}).')'} @{$state{api}{endpoint}{perm_sets}})."\n";
+            if (@{$state{api}{endpoint}{params}}) {
+                print " :: Parameters\n";
+                for my $p (@{$state{api}{endpoint}{params}}) {
+                    print " >>               Name: $$p{name}\n";
+                    print "  .                 In: $$p{in_part}\n";
+                    print "  .           Required: ".($$p{required} ? 'Yes' : 'No')."\n";
+                    print "  .   Fieldmapper Type: $$p{fm_type}\n" if $$p{fm_type};
+                    print "  .   JSON Schema Type: $$p{schema_type}\n" if $$p{schema_type};
+                    print "  . JSON Schema Format: $$p{schema_format}\n" if $$p{schema_format};
+                    print "  .   Array Items Type: $$p{array_items}\n" if $$p{array_items};
+                    print "  .      Default Value: $$p{default_value}\n" if $$p{default_value};
+                }
+            }
+            if (@{$state{api}{endpoint}{responses}}) {
+                print " :: Responses\n";
+                for my $p (@{$state{api}{endpoint}{responses}}) {
+                    print " >>   HTTP Status Code: $$p{status}\n";
+                    print "  .       Content Type: $$p{content_type}\n";
+                    print "  .    Validate Output: ".($$p{validate} ? 'Yes' : 'No')."\n";
+                    print "  .        Description: $$p{description}\n";
+                    print "  .   Fieldmapper Type: $$p{fm_type}\n" if $$p{fm_type};
+                    print "  .   JSON Schema Type: $$p{schema_type}\n" if $$p{schema_type};
+                    print "  . JSON Schema Format: $$p{schema_format}\n" if $$p{schema_format};
+                    print "  .   Array Items Type: $$p{array_items}\n" if $$p{array_items};
+                }
+            }
+        }
+        $sep++;
+    }
+
+    print '-' x 50 ."\n";
+    return 1;
+}
+
+sub details {
+    $state{details} = $state{details} ? 0 : 1;
+    print ' ! Global Detail Dispaly: '. ($state{details} ? 'On' : 'Off'). "\n" if !$from_command;
+}
+
+sub control {
+    next_cmd('Control actions:' => [qw/rate_limit perm_sets details/])
+}
+
+sub control_details {
+    $state{control_details} = $state{control_details} ? 0 : 1;
+    print ' ! Control Detail Dispaly: '. ($state{control_details} ? 'On' : 'Off'). "\n" if !$from_command;
+}
+
+sub control_perm_sets {
+    next_cmd('Control Permission Sets actions:' => [qw/list load unload add remove edit details permissions/])
+}
+
+sub control_perm_sets_permissions {
+    control_perm_sets_load() unless $state{control}{perm_set}{id};
+    next_cmd('Control Permission Sets Permission actions:' => [qw/list add remove/]) if $state{control}{perm_set}{id};
+}
+
+sub control_perm_sets_permissions_list {
+    print "Permission in Set $state{control}{perm_set}{name}\n"
+        . "=================================\n" if !$from_command;
+    print join(
+            "\n",
+            map {
+                "$$_{code}: $$_{description}"
+            } @{$state{control}{perm_set}{perms}}
+        ) . "\n";
+}
+
+sub control_perm_sets_permissions_add {
+    my $new_perm = list_or_argv('New Permission:' => $dbh->selectcol_arrayref('SELECT code FROM permission.perm_list'));
+    if ($new_perm ne '' and yn("Add permission [$new_perm] to Permission Set [$state{control}{perm_set}{name}]?")) {
+        $new_perm = $dbh->selectcol_arrayref('SELECT id FROM permission.perm_list WHERE code = ?', undef, $new_perm)->[0];
+        $dbh->do('INSERT INTO openapi.perm_set_perm_map (perm_set,perm) VALUES (?,?)', undef, $state{control}{perm_set}{id}, $new_perm);
+        reload_control_perm_sets();
+    }
+}
+
+
+sub control_perm_sets_permissions_remove {
+    if (@{$state{control}{perm_set}{perms}}) {
+        my $perm = list_or_argv('Permission:' => [map {$$_{code}} @{$state{control}{perm_set}{perms}}]);
+        if ($perm ne '' and yn("Remove permission [$perm] from Permission Set [$state{control}{perm_set}{name}]?")) {
+            $perm = $dbh->selectcol_arrayref('SELECT id FROM permission.perm_list WHERE code = ?', undef, $perm)->[0];
+            $dbh->do('DELETE FROM openapi.perm_set_perm_map WHERE perm_set = ? AND perm = ?', undef, $state{control}{perm_set}{id}, $perm) if ($perm);
+            reload_control_perm_sets();
+        }
+    }
+}
+
+sub control_perm_sets_details {
+    $state{control_perm_sets_details} = $state{control_perm_sets_details} ? 0 : 1;
+    print ' ! Control Detail Dispaly: '. ($state{control_perm_sets_details} ? 'On' : 'Off'). "\n" if !$from_command;
+}
+
+sub control_perm_sets_list {
+    print "Permission Sets:\n"
+        . "================\n" if !$from_command;
+    print join(
+            "\n",
+            map {
+                "$$_{id}: $$_{name}"
+            } $dbh->selectall_array('SELECT id,name FROM openapi.perm_set ORDER BY name',{Slice => {}})
+        ) . "\n";
+}
+
+sub control_perm_sets_unload {
+    delete $state{control}{perm_set};
+}
+
+sub reload_control_perm_sets {
+    if ($state{control}{perm_set}{id}) {
+        unshift @ARGV, $state{control}{perm_set}{id};
+        control_perm_sets_load();
+    }
+}
+
+sub control_perm_sets_load {
+    my $id = shift || number_menu_or_argv(
+        'Permission Set:' => menu_spec_from_table('openapi.perm_set', 'name', 'id', '[Cancel]', 0)
+    );
+
+    control_perm_sets_unload();
+    return {} if ($id eq '0');
+
+    $state{control}{perm_set} = $dbh->selectrow_hashref('SELECT * FROM openapi.perm_set WHERE id = ?',undef,$id);
+
+    $state{control}{perm_set}{perms} = $dbh->selectall_arrayref(
+        'SELECT p.* FROM openapi.perm_set_perm_map m JOIN permission.perm_list p ON (m.perm = p.id)  WHERE m.perm_set = ? ORDER BY p.code',
+        {Slice => {}}, $state{control}{perm_set}{id}
+    );
+
+    $state{control}{perm_set}{endpoints} = $dbh->selectcol_arrayref(
+        'SELECT endpoint FROM openapi.endpoint_perm_set_map WHERE perm_set = ?',
+        undef, $state{control}{perm_set}{id}
+    );
+
+    $state{control}{perm_set}{sets} = $dbh->selectcol_arrayref(
+        'SELECT endpoint_set FROM openapi.endpoint_set_perm_set_map WHERE perm_set = ?',
+        undef, $state{control}{perm_set}{id}
+    );
+
+
+    return $state{control}{perm_set};
+}
+
+sub control_perm_sets_edit {
+    my $rl = control_perm_sets_load($state{control}{perm_set}{id});
+    if ($rl) {
+        $$rl{name} = prompt "Name [$$rl{name}]:", -def => $$rl{name};
+        $dbh->do("UPDATE openapi.perm_set SET name = ? WHERE id = ?", undef, $$rl{name}, $$rl{id});
+        reload_control_perm_sets();
+    }
+}
+
+sub control_perm_sets_add {
+    control_perm_sets_unload();
+    my $name = prompt "Name:";
+    $dbh->do("INSERT INTO openapi.perm_sets (name) VALUES (?)", undef, $name);
+    control_perm_sets_list();
+}
+
+sub control_perm_sets_remove {
+    if ($state{control}{perm_set}{id} and yn("Continue to remove Permission Set $state{control}{perm_set}{name}?")) {
+        $dbh->do( "DELETE FROM openapi.perm_set WHERE id = ?", undef, $state{control}{perm_set}{id} );
+        control_perm_sets_unload();
+        control_perm_sets_list();
+    }
+}
+
+
+sub control_rate_limit {
+    next_cmd('Control Rate Limit actions:' => [qw/list load unload add remove edit details/])
+}
+
+sub control_rate_limit_details {
+    $state{control_rate_limit_details} = $state{control_rate_limit_details} ? 0 : 1;
+    print ' ! Control Detail Dispaly: '. ($state{control_rate_limit_details} ? 'On' : 'Off'). "\n" if !$from_command;
+}
+
+sub control_rate_limit_list {
+    print "Rate Limit Definitions:\n"
+        . "=======================\n" if !$from_command;
+    print join(
+            "\n",
+            map {
+                "$$_{id}: $$_{name}"
+            } $dbh->selectall_array('SELECT id,name FROM openapi.rate_limit_definition ORDER BY name',{Slice => {}})
+        ) . "\n";
+}
+
+
+sub control_rate_limit_unload {
+    delete $state{control}{rate_limit};
+}
+
+sub reload_control_rate_limit {
+    if ($state{control}{rate_limit}{id}) {
+        unshift @ARGV, $state{control}{rate_limit}{id};
+        control_rate_limit_load();
+    }
+}
+
+sub control_rate_limit_load {
+    my $id = shift || number_menu_or_argv(
+        'Rate Limit Definition:' => menu_spec_from_table('openapi.rate_limit_definition', 'name', 'id', '[Cancel]', 0)
+    );
+
+    control_rate_limit_unload();
+    return {} if ($id eq '0');
+
+    $state{control}{rate_limit} = $dbh->selectrow_hashref('SELECT * FROM openapi.rate_limit_definition WHERE id = ?',undef,$id);
+
+    $state{control}{rate_limit}{endpoint_ip_ranges} = $dbh->selectall_arrayref(
+        'SELECT * FROM openapi.endpoint_ip_rate_limit_map WHERE rate_limit = ?',
+        { Slice => {} }, $state{control}{rate_limit}{id}
+    );
+
+    $state{control}{rate_limit}{endpoint_set_ip_ranges} = $dbh->selectall_arrayref(
+        'SELECT * FROM openapi.endpoint_set_ip_rate_limit_map WHERE rate_limit = ?',
+        { Slice => {} }, $state{control}{rate_limit}{id}
+    );
+
+    $state{control}{rate_limit}{endpoint_users} = $dbh->selectall_arrayref(
+        'SELECT * FROM openapi.endpoint_user_rate_limit_map WHERE rate_limit = ?',
+        { Slice => {} }, $state{control}{rate_limit}{id}
+    );
+
+    $state{control}{rate_limit}{endpoint_set_users} = $dbh->selectall_arrayref(
+        'SELECT * FROM openapi.endpoint_set_user_rate_limit_map WHERE rate_limit = ?',
+        { Slice => {} }, $state{control}{rate_limit}{id}
+    );
+
+    $state{control}{rate_limit}{endpoints} = $dbh->selectcol_arrayref(
+        'SELECT operation_id FROM openapi.endpoint WHERE rate_limit = ?',
+        undef, $state{control}{rate_limit}{id}
+    );
+
+    $state{control}{rate_limit}{sets} = $dbh->selectcol_arrayref(
+        'SELECT name FROM openapi.endpoint_set WHERE rate_limit = ?',
+        undef, $state{control}{rate_limit}{id}
+    );
+
+
+    return $state{control}{rate_limit};
+}
+
+sub control_rate_limit_edit {
+    my $rl = control_rate_limit_load($state{control}{rate_limit}{id});
+    if ($rl) {
+        $$rl{name}           = prompt "Name [$$rl{name}]:",               -def => $$rl{name};
+        $$rl{limit_count}    = prompt "Count [$$rl{limit_count}]:",       -def => $$rl{limit_count};
+        $$rl{limit_interval} = prompt "Interval [$$rl{limit_interval}]:", -def => $$rl{limit_interval};
+        $dbh->do("UPDATE openapi.rate_limit_definition SET name = ?, limit_count = ?, limit_interval = ? WHERE id = ?", undef, $$rl{name}, $$rl{limit_count}, $$rl{limit_interval}, $$rl{id});
+        reload_control_rate_limit();
+    }
+}
+
+sub control_rate_limit_add {
+    control_rate_limit_unload();
+    my $name           = prompt "Name:";
+    my $limit_count    = prompt "Count:";
+    my $limit_interval = prompt "Interval:";
+    $dbh->do("INSERT INTO openapi.rate_limit_definition (name, limit_count, limit_interval) VALUES (?,?,?)", undef, $name, $limit_count, $limit_interval);
+    control_rate_limit_list();
+}
+
+sub control_rate_limit_remove {
+    if ($state{control}{rate_limit}{id} and yn("Continue to remove rate limit definition $state{control}{rate_limit}{name}?")) {
+        $dbh->do( "DELETE FROM openapi.rate_limit_definition WHERE id = ?", undef, $state{control}{rate_limit}{id} );
+        control_rate_limit_unload();
+        control_rate_limit_list();
+    }
+}
+
+sub api {
+    next_cmd('API actions:' => [qw/endpoints sets details/])
+}
+
+sub api_details {
+    $state{api_details} = $state{api_details} ? 0 : 1;
+    print ' ! API Detail Dispaly: '. ($state{api_details} ? 'On' : 'Off'). "\n" if !$from_command;
+}
+
+sub api_endpoints {
+    next_cmd('API Endpoint actions:' => [qw/list load unload add remove edit activate deactivate parameters responses sets rate_limits perm_sets/])
+}
+
+sub _collect_endpoint_data {
+    my $ep = shift || {
+        operation_id => '',
+        summary      => '',
+        path         => '',
+        http_method  => 'get',
+        security     => 'bearerAuth',
+        method_source=> '',
+        method_name  => '',
+        method_params=> 'eg_auth_token',
+        active       => 0,
+        rate_limit   => { name => 'None', id => 0 }
+    };
+
+
+
+    $$ep{operation_id} = prompt "Operation ID".($$ep{operation_id} ? " [$$ep{operation_id}]" :'').":",   -def => $$ep{operation_id} || '';
+    $$ep{summary}      = prompt "Summary".($$ep{summary} ? " [$$ep{summary}]" :'').":",             -def => $$ep{summary} || '';
+    $$ep{path}         = prompt "Path".($$ep{path} ? " [$$ep{path}]" :'').":",                   -def => $$ep{path} || '';
+    $$ep{http_method}  = prompt "HTTP Method [$$ep{http_method}]:",     -def => $$ep{http_method}, -comp => [qw/get post put delete patch/];
+    $$ep{security}     = prompt "Security [$$ep{security}]:",           -def => $$ep{security}, -comp => [map {$_.'Auth'} qw/bearer basic cookie param/];
+    $$ep{method_source}= prompt "Method Source".($$ep{method_source} ? " [$$ep{method_source}]" :'').":", -def => $$ep{method_source} || '';
+    $$ep{method_name}  = prompt "Method Name".($$ep{method_name} ? " [$$ep{method_name}]" :'').":",     -def => $$ep{method_name} || '';
+    $$ep{method_params}= prompt "Method Params".($$ep{method_params} ? " [$$ep{method_params}]" :'').":", -def => $$ep{method_params} || '';
+    $$ep{active}       = prompt "Active [".($$ep{active} ? 'Y' : 'N')."]:", -yn => -def => ($$ep{active} ? 'y':'n');
+    $$ep{rate_limit}   = number_menu_or_argv(
+        "Rate Limit".($$ep{rate_limit}? " [$$ep{rate_limit}{name}]" : '').":",
+        menu_spec_from_table('openapi.rate_limit_definition', 'name', 'id', '[None]', 0),
+        -def => (ref $$ep{rate_limit} ? $$ep{rate_limit}{id} : 0)
+    );
+
+    $$ep{active} = $$ep{active} eq 'y' ? 1 : 0;
+    $$ep{rate_limit} = $$ep{rate_limit} eq '0' ? undef : $$ep{rate_limit};
+
+    return $ep;
+}
+
+sub api_endpoints_edit {
+    my $ep = $state{api}{endpoint} || api_endpoints_load();
+    if ($ep) {
+        my $oldname = $$ep{operation_id};
+        _collect_endpoint_data($ep);
+        $dbh->do(
+            "UPDATE openapi.endpoint".
+            " SET operation_id=?, summary=?, active=?, rate_limit=?, path=?, http_method=?,".
+            "     security=?, method_source=?, method_name=?, method_params=?".
+            " WHERE operation_id = ?", undef,
+            $$ep{operation_id}, $$ep{summary}, $$ep{active}, $$ep{rate_limit}, $$ep{path}, $$ep{http_method},
+            $$ep{security}, $$ep{method_source}, $$ep{method_name}, $$ep{method_params}, $oldname
+        );
+        reload_api_endpoints();
+    }
+}
+
+sub api_endpoints_remove {
+    if ($state{api}{endpoint}{operation_id} and yn("Continue to remove endpoint $state{api}{endpoint}{operation_id}?")) {
+        $dbh->do( "DELETE FROM openapi.endpoint WHERE operation_id = ?", undef, $state{api}{endpoint}{operation_id} );
+        api_endpoints_unload();
+        api_endpoints_list();
+    }
+}
+
+sub api_endpoints_add {
+    api_endpoints_unload();
+    my $ep = _collect_endpoint_data();
+    $dbh->do(
+        "INSERT INTO openapi.endpoint (operation_id, summary, path, http_method, security, method_source, method_name, method_params, active, rate_limit) ".
+        " VALUES (?,?,?,?,?,?,?,?,?,?)", undef,
+        $$ep{operation_id}, $$ep{summary}, $$ep{path}, $$ep{http_method}, $$ep{security}, $$ep{method_source}, $$ep{method_name}, $$ep{method_params}, $$ep{active}, $$ep{rate_limit}
+    );
+    unshift @ARGV, $$ep{operation_id};
+    api_endpoints_load();
+}
+
+sub api_endpoints_details {
+    $state{api_endpoints_details} = $state{api_endpoints_details} ? 0 : 1;
+    print ' ! API Endpoint Detail Dispaly: '. ($state{api_endpoints_details} ? 'On' : 'Off'). "\n" if !$from_command;
+}
+
+sub api_endpoints_list {
+    print "API Endpoints:\n"
+        . "==============\n" if !$from_command;
+    print join(
+            "\n",
+            map {
+                "$$_{operation_id}: [$$_{http_method} $$_{path}] $$_{summary} " . ($$_{active} ? '(Active)' : '(Inactive)')
+            } $dbh->selectall_array('SELECT * FROM openapi.endpoint ORDER BY operation_id',{Slice => {}})
+        ) . "\n";
+}
+
+sub api_endpoints_activate {
+    my $enabled = shift || 'TRUE';
+    my $oid = $state{api}{endpoint}{operation_id} || value_or_argv('Endpoint Operation ID:');
+    if ($oid ne '') {
+        $dbh->do("UPDATE openapi.endpoint SET active = $enabled WHERE operation_id = ?", undef, $oid);
+        unshift @ARGV, $oid;
+        api_endpoints_load();
+    }
+}
+sub api_endpoints_deactivate { api_endpoints_activate('FALSE') }
+
+sub api_endpoints_sets {
+    return unless $state{api}{endpoint}{operation_id} || api_endpoints_load();
+    next_cmd('API Endpoint Assigned Sets actions:' => [qw/list add remove/])
+}
+
+sub api_endpoints_sets_list {
+    print "API Sets for Endpoint\n"
+        . "=====================\n" if !$from_command;
+    print join("\n", @{$state{api}{endpoint}{sets}})."\n";
+}
+
+sub api_endpoints_sets_remove {
+    return unless @{$state{api}{endpoint}{sets}};
+    if (my $s = value_or_argv('API Set:', -comp => $state{api}{endpoint}{sets})) {
+        if (yn("Remove endpoint $state{api}{endpoint}{operation_id} from set $s?")) {
+            $dbh->do( "DELETE FROM openapi.endpoint_set_endpoint_map WHERE endpoint = ? AND endpoint_set = ?", undef, $state{api}{endpoint}{operation_id}, $s );
+            reload_api_endpoints();
+        }
+    }
+}
+
+sub api_endpoints_sets_add {
+    my $options = $dbh->selectcol_arrayref(
+        'SELECT s.name FROM openapi.endpoint_set s WHERE name NOT IN (SELECT endpoint_set FROM openapi.endpoint_set_endpoint_map WHERE endpoint = ?)',
+        undef, $state{api}{endpoint}{operation_id}
+    );
+    return unless @$options;
+    if (my $s = value_or_argv('API Set:', -comp => $options)) {
+        if (yn("Add endpoint $state{api}{endpoint}{operation_id} to set $s?")) {
+            $dbh->do(
+                "INSERT INTO openapi.endpoint_set_endpoint_map (endpoint, endpoint_set) VALUES (?,?)",
+                undef, $state{api}{endpoint}{operation_id}, $s
+            );
+            reload_api_endpoints();
+        }
+    }
+}
+
+sub api_endpoints_perm_sets {
+    return unless $state{api}{endpoint}{operation_id} || api_endpoints_load();
+    next_cmd('API Endpoint Permission Set actions:' => [qw/list add remove/])
+}
+
+sub api_endpoints_perm_sets_list {
+    print "Permission Sets for Endpoint\n"
+        . "============================\n" if !$from_command;
+    print join("\n", map { $$_{name} .': '. join(', ', map {$$_{code}} @{$$_{perms}}) } @{$state{api}{endpoint}{perm_sets}})."\n";
+}
+
+sub api_endpoints_perm_sets_remove {
+    return unless @{$state{api}{endpoint}{perm_sets}};
+    if (my $s = number_menu_or_argv('Permission Set:', { map {$$_{name} => $$_{id}} @{$state{api}{endpoint}{perm_sets}} })) {
+        $dbh->do( "DELETE FROM openapi.endpoint_perm_set_map WHERE endpoint = ? AND perm_set = ?", undef, $state{api}{endpoint}{operation_id}, $s );
+        reload_api_endpoints();
+    }
+}
+
+sub api_endpoints_perm_sets_add {
+    my $options = $dbh->selectall_arrayref(
+        'SELECT * FROM openapi.perm_set WHERE id NOT IN (SELECT perm_set FROM openapi.endpoint_perm_set_map WHERE endpoint = ?)',
+        { Slice => {} }, $state{api}{endpoint}{operation_id}
+    );
+    return unless @$options;
+    if (my $s = number_menu_or_argv('Permission Set:', { map {$$_{name} => $$_{id}} @$options })) {
+        $dbh->do(
+            "INSERT INTO openapi.endpoint_perm_set_map (endpoint, perm_set) VALUES (?,?)",
+            undef, $state{api}{endpoint}{operation_id}, $s
+        );
+        reload_api_endpoints();
+    }
+}
+
+
+sub api_endpoints_parameters {
+    return unless $state{api}{endpoint}{operation_id} || api_endpoints_load();
+    next_cmd('API Endpoint Parameter actions:' => [qw/list add edit remove/])
+}
+
+sub api_endpoints_parameters_list {
+    print "Parameters for Endpoint\n"
+        . "=======================\n" if !$from_command;
+    print join("\n",
+        map { "$$_{name}: Type [".
+              ($$_{fm_type}||$$_{schema_type}).
+              "] supplied in $$_{in_part}, ".
+              ($$_{required}?'':'not ').'required'.
+              (defined($$_{default_value}) ? "; Default [$$_{default_value}]" : '.')
+        } @{$state{api}{endpoint}{params}}
+    )."\n";
+}
+
+sub api_endpoints_parameters_remove {
+    return unless @{$state{api}{endpoint}{params}};
+    if (my $p = number_menu_or_argv('Endpoint Parameter', {' Cancel' => 0, map {$$_{name}, $$_{id}} @{$state{api}{endpoint}{params}}})) {
+        if ($p ne '0' and yn("Remove parameter from endpoint $state{api}{endpoint}{operation_id}?")) {
+            $dbh->do( "DELETE FROM openapi.endpoint_param WHERE id = ?", undef, $p );
+            reload_api_endpoints();
+        }
+    }
+}
+
+sub _collect_endpoint_parameter_data {
+    my $param = shift || {
+        name          => '',
+        in_part       => 'query',
+        required      => 0,
+        fm_type       => undef,
+        schema_type   => 'string',
+        schema_format => undef,
+        array_items   => undef,
+        default_value => undef
+    };
+
+    $$param{name}          = prompt 'Name'.($$param{name}?" [$$param{name}]":'').':', -def => $$param{name} || '';
+    $$param{in_part}       = list_or_argv("In part [$$param{in_part}]:" => [qw/path query header cookie/], -def => $$param{in_part});
+    $$param{required}      = prompt "Required [".($$param{required}?'Y':'N')."]:", -def => $$param{requried} ? 'y':'n', -yn;
+    $$param{fm_type}       = prompt 'Fieldmapper type (empty for none)'.($$param{fm_type}?" [$$param{fm_type}]":'').':', -def => $$param{fm_type} || '';
+    $$param{schema_type}   = ($$param{fm_type} eq '') ?
+        menu_or_argv(
+            "JSON Schema type".($$param{schema_type}?" [$$param{schema_type}]":'').':',
+            menu_spec_from_table('openapi.json_schema_datatype', 'label','name','[None]',''), -def => $$param{schema_type} || ''
+        ) : '';
+    $$param{schema_format} = menu_or_argv(
+        "JSON Schema format".($$param{schema_format}?" [$$param{schema_format}]":'').":",
+        menu_spec_from_table('openapi.json_schema_format', 'label','name','[None]',''), -def => $$param{schema_format} || ''
+    );
+    $$param{array_items}   = ($$param{schema_type} eq 'array') ?
+        menu_or_argv(
+            "Array item type".($$param{array_items}?" [$$param{array_items}]":'').":",
+            menu_spec_from_table('openapi.json_schema_datatype', 'label','name','[None]',''), -def => $$param{array_items} || ''
+        ) : '';
+    $$param{default_value} = prompt 'Default value (empty for none)'.($$param{default_value}?" [$$param{default_value}]":'').':', -def => $$param{default_value} || '';
+
+    for my $nullable_part ( qw/fm_type schema_type schema_format array_items default_value/ ) {
+        $$param{$nullable_part} = undef if ($$param{$nullable_part} eq '');
+    }
+
+    return $param;
+}
+
+sub api_endpoints_parameters_edit {
+    return unless @{$state{api}{endpoint}{params}};
+    my $p = number_menu_or_argv('Endpoint Parameter', {' Cancel' => 0, map {$$_{name}, $$_{id}} @{$state{api}{endpoint}{params}}});
+    if ($p ne '0') {
+        ($p) = grep { $$_{id} eq $p } @{$state{api}{endpoint}{params}};
+        $p = _collect_endpoint_parameter_data($p);
+        $dbh->do('UPDATE openapi.endpoint_param'.
+                 '  SET name = ?,'.
+                 '      in_part = ?,'.
+                 '      required = ?,'.
+                 '      fm_type = ?,'.
+                 '      schema_type = ?,'.
+                 '      schema_format = ?,'.
+                 '      array_items = ?,'.
+                 '      default_value = ?'.
+                 '  WHERE id = ?', undef,
+                 $$p{name}, $$p{in_part}, $$p{required}, $$p{fm_type}, $$p{schema_type},
+                 $$p{schema_format}, $$p{array_items}, $$p{default_value}, $$p{id}
+        );
+        reload_api_endpoints();
+    }
+}
+
+sub api_endpoints_parameters_add {
+    return unless $state{api}{endpoint}{operation_id};
+    my $p = _collect_endpoint_parameter_data();
+    $dbh->do('INSERT INTO openapi.endpoint_param (endpoint,name,in_part,required,fm_type,schema_type,schema_format,array_items,default_value)'.
+             '  VALUES (?,?,?,?,?,?,?,?,?)', undef,
+             $state{api}{endpoint}{operation_id}, $$p{name}, $$p{in_part}, $$p{required},
+             $$p{fm_type}, $$p{schema_type}, $$p{schema_format}, $$p{array_items}, $$p{default_value}
+    );
+    reload_api_endpoints();
+}
+
+sub api_endpoints_responses {
+    return unless $state{api}{endpoint}{operation_id} || api_endpoints_load();
+    next_cmd('API Endpoint Responses actions:' => [qw/list add edit remove/])
+}
+
+sub api_endpoints_responses_list {
+    print "Responses for Endpoint\n"
+        . "=======================\n" if !$from_command;
+    print join("\n",
+        map { "$$_{status}: $$_{description}; HTTP Content Type [$$_{content_type}], ".
+              "Data type [".($$_{fm_type}||$$_{schema_type}).  "], ".
+              ($$_{validate}?'':'not ').'validated against OpenAPI spec'
+        } @{$state{api}{endpoint}{responses}}
+    )."\n";
+}
+
+sub api_endpoints_responses_remove {
+    return unless @{$state{api}{endpoint}{responses}};
+    my $p = number_menu_or_argv(
+        'Endpoint Response',
+        {' Cancel' => 0,
+            map { ("$$_{status}: $$_{description}", $$_{id}) } @{$state{api}{endpoint}{responses}}
+        }
+    );
+
+    if ($p ne '0' and yn("Remove response spec from endpoint $state{api}{endpoint}{operation_id}?")) {
+        $dbh->do( "DELETE FROM openapi.endpoint_response WHERE id = ?", undef, $p );
+        reload_api_endpoints();
+    }
+}
+
+sub _collect_endpoint_response_data {
+    my $param = shift || {
+        status        => '200',
+        content_type  => 'application/json',
+        description   => 'Success',
+        validate      => 1,
+        fm_type       => undef,
+        schema_type   => undef,
+        schema_format => undef,
+        array_items   => undef,
+    };
+
+    $$param{status}        = prompt 'Status'.($$param{status}?" [$$param{status}]":'').':', -def => $$param{status} || '';
+    $$param{content_type}  = prompt
+        "HTTP Content Type [$$param{content_type}]:",
+        -comp => ['application/json', 'application/xml', 'text/plain', 'application/octet-stream'],
+        -def => $$param{content_type};
+    $$param{description}   = prompt 'Default value (empty for none)'.($$param{description}?" [$$param{description}]":'').':', -def => $$param{description} || '';
+    $$param{validate}      = prompt "Validate against OpenAPI spec [".($$param{validate}?'Y':'N')."]:", -def => $$param{validate} ? 'y':'n', -yn;
+    $$param{fm_type}       = prompt 'Fieldmapper type (empty for none)'.($$param{fm_type}?" [$$param{fm_type}]":'').':', -def => $$param{fm_type} || '';
+    $$param{schema_type}   = ($$param{fm_type} eq '') ?
+        menu_or_argv(
+            "JSON Schema type".($$param{schema_type}?" [$$param{schema_type}]":'').':',
+            menu_spec_from_table('openapi.json_schema_datatype', 'label','name','[None]',''), -def => $$param{schema_type} || ''
+        ) : '';
+    $$param{schema_format} = menu_or_argv(
+        "JSON Schema format".($$param{schema_format}?" [$$param{schema_format}]":'').":",
+        menu_spec_from_table('openapi.json_schema_format', 'label','name','[None]',''), -def => $$param{schema_format} || ''
+    );
+    $$param{array_items}   = ($$param{schema_type} eq 'array') ?
+        menu_or_argv(
+            "Array item type".($$param{array_items}?" [$$param{array_items}]":'').":",
+            menu_spec_from_table('openapi.json_schema_datatype', 'label','name','[None]',''), -def => $$param{array_items} || ''
+        ) : '';
+
+    for my $nullable_part ( qw/fm_type schema_type schema_format array_items/ ) {
+        $$param{$nullable_part} = undef if ($$param{$nullable_part} eq '');
+    }
+
+    return $param;
+}
+
+
+sub api_endpoints_responses_edit {
+    return unless @{$state{api}{endpoint}{responses}};
+    my $p = number_menu_or_argv(
+        'Endpoint Response',
+        {' Cancel' => 0,
+            map { ("$$_{status}: $$_{description}", $$_{id}) } @{$state{api}{endpoint}{responses}}
+        }
+    );
+    if ($p ne '0') {
+        ($p) = grep { $$_{id} eq $p } @{$state{api}{endpoint}{responses}};
+        $p = _collect_endpoint_response_data($p);
+        $dbh->do('UPDATE openapi.endpoint_response'.
+                 '  SET status = ?,'.
+                 '      content_type = ?,'.
+                 '      description = ?,'.
+                 '      validate = ?,'.
+                 '      fm_type = ?,'.
+                 '      schema_type = ?,'.
+                 '      schema_format = ?,'.
+                 '      array_items = ?'.
+                 '  WHERE id = ?', undef,
+                 $$p{status}, $$p{content_type}, $$p{description}, $$p{validate},
+                 $$p{fm_type}, $$p{schema_type}, $$p{schema_format}, $$p{array_items}, $$p{id}
+        );
+        reload_api_endpoints();
+    }
+}
+
+sub api_endpoints_responses_add {
+    return unless $state{api}{endpoint}{operation_id} || api_endpoints_load();
+    my $p = _collect_endpoint_response_data();
+    $dbh->do('INSERT INTO openapi.endpoint_response (endpoint,status,content_type,description,validate,fm_type,schema_type,schema_format,array_items)'.
+             '  VALUES (?,?,?,?,?,?,?,?,?)', undef,
+             $state{api}{endpoint}{operation_id}, $$p{status}, $$p{content_type}, $$p{description},
+             $$p{validate}, $$p{fm_type}, $$p{schema_type}, $$p{schema_format}, $$p{array_items}
+    );
+    reload_api_endpoints();
+}
+
+sub api_endpoints_rate_limits {
+    return unless $state{api}{endpoint}{operation_id} || api_endpoints_load();
+    next_cmd('API Endpoint rate limit types:' => [qw/ip_address integrator/])
+}
+
+sub api_endpoints_rate_limits_ip_address {
+    next_cmd('API Endpoint IP Address rate limit commands:' => [qw/list add edit remove/])
+}
+
+sub api_endpoints_rate_limits_ip_address_list {
+    return api_endpoints_rate_limits_list('ip_ranges');
+}
+
+sub api_endpoints_rate_limits_integrator {
+    next_cmd('API Endpoint IP Address rate limit commands:' => [qw/list add edit remove/])
+}
+
+sub api_endpoints_rate_limits_integrator_list {
+    return api_endpoints_rate_limits_list('user_rate_limits');
+}
+
+sub get_endpoint_rate_limit_label_list {
+    my $type = shift;
+    my @pile;
+    for my $rl ( @{$state{api}{endpoint}{$type}} ) {
+        my $def = $dbh->selectrow_hashref(
+            'SELECT * FROM openapi.rate_limit_definition WHERE id = ?',
+            undef, $$rl{rate_limit}
+        );
+
+        my $limited = $type eq 'user_rate_limits' ? $dbh->selectrow_hashref(
+            'SELECT usrname FROM actor.usr WHERE id = ?',
+            undef, $$rl{accessor}
+        )->{usrname} : $$rl{ip_range};
+
+        push @pile, {"$limited limited to $$def{limit_count} per $$def{limit_interval}" => $$rl{id}};
+    }
+    return @pile;
+}
+
+sub api_endpoints_rate_limits_list {
+    my $type = shift;
+    my $type_label = $type eq 'user_rate_limits' ?  'User-specific' : 'IP Range';
+
+    print "$type_label Endpoint Rate Limits for $state{api}{endpoint}{operation_id}\n"
+        . "===================================================\n" if !$from_command;
+
+    print join("\n", map {
+        my $label = (keys(%$_))[0];
+        $label = "$state{api}{endpoint}{operation_id}: $label" if $from_command;
+        $label;
+    } get_endpoint_rate_limit_label_list($type))."\n";
+}
+
+sub _collect_endpoint_rate_limit_ip_data {
+    my $ep = $state{api}{endpoint} || api_endpoints_load();
+    return unless $ep;
+
+    my $rl = shift || {
+        endpoint   => $$ep{operation_id},
+        ip_range   => '',
+        rate_limit => undef
+    };
+
+    $$rl{endpoint}   = prompt "Endpoint".($$rl{endpoint} ? " [$$rl{endpoint}]" :'').":",      -def => $$rl{endpoint} || '';
+    $$rl{ip_range}   = prompt "CIDR IP Range".($$rl{ip_range} ? " [$$rl{ip_range}]" :'').":", -def => $$rl{ip_range} || '';
+    $$rl{rate_limit} = number_menu_or_argv(
+        "Rate Limit".($$rl{rate_limit}? " [$$rl{rate_limit}{name}]" : '').":",
+        menu_spec_from_table('openapi.rate_limit_definition', 'name', 'id', '[Cancel]', 0),
+        -def => (ref $$rl{rate_limit} ? $$rl{rate_limit}{id} : 0)
+    );
+
+    $$rl{rate_limit} = $$rl{rate_limit} eq '0' ? undef : $$rl{rate_limit};
+
+    return $rl;
+}
+
+sub api_endpoints_rate_limits_ip_address_add {
+    my $rl = _collect_endpoint_rate_limit_ip_data();
+    $dbh->do(
+        "INSERT INTO openapi.endpoint_ip_rate_limit_map (endpoint, ip_range, rate_limit) VALUES (?,?,?)", undef,
+        $$rl{endpoint}, $$rl{ip_range}, $$rl{rate_limit}
+    );
+    reload_api_endpoints();
+}
+
+sub api_endpoints_rate_limits_ip_address_edit {
+    my @rl_list = get_endpoint_rate_limit_label_list('ip_ranges');
+    my $rl_map = { map {%$_} @rl_list };
+    $$rl_map{' [Cancel]'} = 0;
+    my $rl_id = number_menu_or_argv( 'Rate Limit to edit:', $rl_map, -def => 0 );
+    return unless $rl_id;
+
+    my ($rl) = grep {$$_{id} == $rl_id} @{$state{api}{endpoints}{ip_ranges}};
+    $rl = _collect_endpoint_rate_limit_ip_data($rl);
+    $dbh->do(
+        "UPDATE openapi.endpoint_ip_rate_limit_map SET endpoint=?, ip_range=?, rate_limit=? WHERE id=?", undef,
+        $$rl{endpoint}, $$rl{ip_range}, $$rl{rate_limit}, $rl_id
+    );
+    reload_api_endpoints();
+}
+
+sub api_endpoints_rate_limits_ip_address_remove {
+    my @rl_list = get_endpoint_rate_limit_label_list('ip_ranges');
+    my $rl_map = { map {%$_} @rl_list };
+    $$rl_map{' [Cancel]'} = 0;
+    my $rl_id = number_menu_or_argv( 'Rate Limit to edit:', $rl_map, -def => 0 );
+    return unless $rl_id;
+
+    $dbh->do( "DELETE FROM openapi.endpoint_ip_rate_limit_map WHERE id=?", undef, $rl_id);
+    reload_api_endpoints();
+}
+
+sub _collect_endpoint_rate_limit_user_data {
+    my $ep = $state{api}{endpoint} || api_endpoints_load();
+    my $int = $state{integrator}{id} || 0;
+    return unless $ep;
+
+    my $rl = shift || {
+        endpoint   => $$ep{operation_id},
+        accessor   => $int,
+        rate_limit => 0
+    };
+
+    $$rl{endpoint} = prompt "Endpoint".($$rl{endpoint} ? " [$$rl{endpoint}]" :'').":", -def => $$rl{endpoint} || '';
+    $$rl{accessor} = number_menu_or_argv(
+        "Integrator".($$rl{accessor}? " [ID:$$rl{accessor}]" : '').":",
+        menu_spec_from_table('openapi.integrator natural join actor.usr', 'usrname', 'id', '[Cancel]', 0),
+        -def => $$rl{accessor}
+    );
+    $$rl{rate_limit} = number_menu_or_argv(
+        "Rate Limit".($$rl{rate_limit}? " [ID:$$rl{rate_limit}]" : '').":",
+        menu_spec_from_table('openapi.rate_limit_definition', 'name', 'id', '[Cancel]', 0),
+        -def => (ref $$rl{rate_limit} ? $$rl{rate_limit}{id} : 0)
+    );
+
+    $$rl{accessor} = $$rl{accessor} eq '0' ? undef : $$rl{accessor};
+    $$rl{rate_limit} = $$rl{rate_limit} eq '0' ? undef : $$rl{rate_limit};
+
+    return $rl;
+}
+
+sub api_endpoints_rate_limits_integrator_add {
+    my $rl = _collect_endpoint_rate_limit_user_data();
+    $dbh->do(
+        "INSERT INTO openapi.endpoint_user_rate_limit_map (endpoint, accessor, rate_limit) VALUES (?,?,?)", undef,
+        $$rl{endpoint}, $$rl{accessor}, $$rl{rate_limit}
+    );
+    reload_api_endpoints();
+}
+
+sub api_endpoints_rate_limits_integrator_edit {
+    my @rl_list = get_endpoint_rate_limit_label_list('user_rate_limits');
+    my $rl_map = { map {%$_} @rl_list };
+    $$rl_map{' [Cancel]'} = 0;
+    my $rl_id = number_menu_or_argv( 'Rate Limit to edit:', $rl_map, -def => 0 );
+    return unless $rl_id;
+
+    my ($rl) = grep {$$_{id} == $rl_id} @{$state{api}{endpoints}{user_rate_limits}};
+    $rl = _collect_endpoint_rate_limit_ip_data($rl);
+    $dbh->do(
+        "UPDATE openapi.endpoint_user_rate_limit_map SET endpoint=?, accessor=?, rate_limit=? WHERE id=?", undef,
+        $$rl{endpoint}, $$rl{accessor}, $$rl{rate_limit}, $rl_id
+    );
+    reload_api_endpoints();
+}
+
+sub api_endpoints_rate_limits_integrator_remove {
+    my @rl_list = get_endpoint_rate_limit_label_list('user_rate_limits');
+    my $rl_map = { map {%$_} @rl_list };
+    $$rl_map{' [Cancel]'} = 0;
+    my $rl_id = number_menu_or_argv( 'Rate Limit to remove', $rl_map, -def => 0 );
+    return unless $rl_id;
+
+    $dbh->do( "DELETE FROM openapi.endpoint_user_rate_limit_map WHERE id=?", undef, $rl_id);
+    reload_api_endpoints();
+}
+
+
+
+sub api_sets {
+    next_cmd('API Endpoint Set actions:' => [qw/list load unload add remove edit activate deactivate endpoints rate_limits perm_sets/])
+}
+
+sub _collect_set_data {
+    my $set = shift || {
+        name        => '',
+        description => '',
+        active      => 0,
+        rate_limit  => { name => 'None', id => 0 }
+    };
+
+    $$set{name}        = prompt "Name [$$set{name}]:",                   -def => $$set{name};
+    $$set{description} = prompt "Description [$$set{description}]:",     -def => $$set{description};
+    $$set{active}      = prompt "Active [".($$set{active}?'Y':'N')."]:", -yn => -def => ($$set{active} ? 'y':'n');
+    $$set{rate_limit}   = number_menu_or_argv(
+        "Rate Limit".($$set{rate_limit} ? " [$$set{rate_limit}{name}]":'').":",
+        menu_spec_from_table('openapi.rate_limit_definition', 'name', 'id', '[None]', 0),
+        -def => (ref $$set{rate_limit} ? $$set{rate_limit}{id} : 0)
+    );
+
+    $$set{active} = $$set{active} eq 'y' ? 1 : 0;
+    $$set{rate_limit} = $$set{rate_limit} eq '0' ? undef : $$set{rate_limit};
+
+    return $set;
+}
+
+sub api_sets_remove {
+    if ($state{api}{set}{name} and yn("Continue to remove set $state{api}{set}{name}?")) {
+        $dbh->do( "DELETE FROM openapi.endpoint_set WHERE name = ?", undef, $state{api}{set}{name} );
+        api_sets_unload();
+        api_sets_list();
+    }
+}
+
+sub api_sets_add {
+    api_sets_unload();
+    my $set = _collect_set_data();
+    $dbh->do(
+        "INSERT INTO openapi.endpoint_set (name, description, active, rate_limit) VALUES (?,?,?,?)", undef,
+        $$set{name}, $$set{description}, $$set{active}, $$set{rate_limit}
+    );
+    unshift @ARGV, $$set{name};
+    api_sets_load();
+}
+
+sub api_sets_edit {
+    my $set = $state{api}{set} || api_sets_load();
+    if ($set) {
+        my $oldname = $$set{name};
+        _collect_set_data($set);
+        $dbh->do(
+            "UPDATE openapi.endpoint_set SET name = ?, description = ?, active = ?, rate_limit = ? WHERE name = ?", undef,
+            $$set{name}, $$set{description}, $$set{active}, $$set{rate_limit}, $oldname
+        );
+        reload_api_sets();
+    }
+}
+
+sub api_sets_details {
+    $state{api_sets_details} = $state{api_sets_details} ? 0 : 1;
+    print ' ! API Endpoint Set Detail Dispaly: '. ($state{api_sets_details} ? 'On' : 'Off'). "\n" if !$from_command;
+}
+
+sub api_sets_list {
+    print "API Endpoint Sets:\n"
+        . "==============\n" if !$from_command;
+    print join(
+            "\n",
+            map {
+                "$$_{name}: $$_{description} " . ($$_{active} ? '(Active)' : '(Inactive)')
+            } $dbh->selectall_array('SELECT * FROM openapi.endpoint_set ORDER BY name',{Slice => {}})
+        ) . "\n";
+}
+
+sub api_sets_activate {
+    my $enabled = shift || 'TRUE';
+    my $name = $state{api}{set}{name} || value_or_argv('Endpoint Set Name:');
+    if ($name ne '') {
+        $dbh->do("UPDATE openapi.endpoint_set SET active = $enabled WHERE name = ?", undef, $name);
+        unshift @ARGV, $name;
+        api_set_load();
+    }
+}
+sub api_sets_deactivate { api_sets_activate('FALSE') }
+
+sub api_sets_perm_sets {
+    return unless $state{api}{set}{name} || api_sets_load();
+    next_cmd('API Endpoint Set Permission Set actions:' => [qw/list add remove/])
+}
+
+sub api_sets_perm_sets_list {
+    print "Permission Sets for Endpoint Set\n"
+        . "============================\n" if !$from_command;
+    print join("\n", map { $$_{name} .': '. join(', ', map {$$_{code}} @{$$_{perms}}) } @{$state{api}{set}{perm_sets}})."\n";
+}
+
+sub api_sets_perm_sets_remove {
+    return unless @{$state{api}{set}{perm_sets}};
+    if (my $s = number_menu_or_argv('Permission Set:', { map {$$_{name} => $$_{id}} @{$state{api}{set}{perm_sets}} })) {
+        $dbh->do( "DELETE FROM openapi.endpoint_set_perm_set_map WHERE endpoint_set = ? AND perm_set = ?", undef, $state{api}{set}{name}, $s );
+        reload_api_sets();
+    }
+}
+
+sub api_sets_perm_sets_add {
+    my $options = $dbh->selectall_arrayref(
+        'SELECT * FROM openapi.perm_set WHERE id NOT IN (SELECT perm_set FROM openapi.endpoint_set_perm_set_map WHERE endpoint_set = ?)',
+        { Slice => {} }, $state{api}{set}{name}
+    );
+    return unless @$options;
+    if (my $s = number_menu_or_argv('API Set:', { map {$$_{name} => $$_{id}} @$options })) {
+        $dbh->do(
+            "INSERT INTO openapi.endpoint_set_perm_set_map (endpoint_set, perm_set) VALUES (?,?)",
+            undef, $state{api}{set}{name}, $s
+        );
+        reload_api_sets();
+    }
+}
+
+
+sub api_sets_endpoints {
+    return unless $state{api}{set}{name} || api_sets_load();
+    next_cmd('API Sets Assigned Endpoint actions:' => [qw/list add remove/])
+}
+
+sub api_sets_endpoints_list {
+    print "API Endpoints for Set\n"
+        . "=====================\n" if !$from_command;
+    print join("\n", @{$state{api}{set}{endpoints}})."\n";
+}
+
+sub api_sets_endpoints_remove {
+    return unless @{$state{api}{set}{endpoints}};
+    if (my $s = value_or_argv('API Endpoint:', -comp => $state{api}{set}{endpoints})) {
+        if (yn("Remove endpoint $s from set $state{api}{set}{name}?")) {
+            $dbh->do( "DELETE FROM openapi.endpoint_set_endpoint_map WHERE endpoint = ? AND endpoint_set = ?", undef, $s, $state{api}{set}{name} );
+            reload_api_sets();
+        }
+    }
+}
+
+sub api_sets_endpoints_add {
+    my $options = $dbh->selectcol_arrayref(
+        'SELECT s.operation_id FROM openapi.endpoint s WHERE operation_id NOT IN (SELECT endpoint FROM openapi.endpoint_set_endpoint_map WHERE endpoint_set = ?)',
+        undef, $state{api}{set}{name}
+    );
+    return unless @$options;
+    if (my $s = value_or_argv('API Endpoint', -comp => $options)) {
+        if (yn("Add endpoint $s to set $state{api}{set}{name}?")) {
+            $dbh->do(
+                "INSERT INTO openapi.endpoint_set_endpoint_map (endpoint, endpoint_set) VALUES (?,?)",
+                undef, $s, $state{api}{set}{name}
+            );
+            reload_api_sets();
+        }
+    }
+}
+
+sub api_sets_rate_limits {
+    return unless $state{api}{set}{name} || api_sets_load();
+    next_cmd('API Set rate limit types:' => [qw/ip_address integrator/])
+}
+
+sub api_sets_rate_limits_ip_address {
+    next_cmd('API Set IP Address rate limit commands:' => [qw/list add edit remove/])
+}
+
+sub api_sets_rate_limits_ip_address_list {
+    return api_sets_rate_limits_list('ip_ranges');
+}
+
+sub api_sets_rate_limits_integrator {
+    next_cmd('API Set IP Address rate limit commands:' => [qw/list add edit remove/])
+}
+
+sub api_sets_rate_limits_integrator_list {
+    return api_sets_rate_limits_list('user_rate_limits');
+}
+
+sub get_set_rate_limit_label_list {
+    my $type = shift;
+    my @pile;
+    for my $rl ( @{$state{api}{set}{$type}} ) {
+        my $def = $dbh->selectrow_hashref(
+            'SELECT * FROM openapi.rate_limit_definition WHERE id = ?',
+            undef, $$rl{rate_limit}
+        );
+
+        my $limited = $type eq 'user_rate_limits' ? $dbh->selectrow_hashref(
+            'SELECT usrname FROM actor.usr WHERE id = ?',
+            undef, $$rl{accessor}
+        )->{usrname} : $$rl{ip_range};
+
+        push @pile, {"$limited limited to $$def{limit_count} per $$def{limit_interval}" => $$rl{id}};
+    }
+    return @pile;
+}
+
+sub api_sets_rate_limits_list {
+    my $type = shift;
+    my $type_label = $type eq 'user_rate_limits' ?  'User-specific' : 'IP Range';
+
+    print "$type_label Endpoint Set Rate Limits for $state{api}{set}{name}\n"
+        . "===================================================\n" if !$from_command;
+
+    print join("\n", map {
+        my $label = (keys(%$_))[0];
+        $label = "$state{api}{set}{name}: $label" if $from_command;
+        $label;
+    } get_set_rate_limit_label_list($type))."\n";
+}
+
+sub _collect_set_rate_limit_ip_data {
+    my $set = $state{api}{set} || api_sets_load();
+    return unless $set;
+
+    my $rl = shift || {
+        endpoint_set => $$set{name},
+        ip_range   => '',
+        rate_limit => undef
+    };
+
+    $$rl{endpoint_set}   = prompt "Endpoint Set".($$rl{endpoint_set} ? " [$$rl{endpoint_set}]" :'').":", -def => $$rl{endpoint_set} || '';
+    $$rl{ip_range}   = prompt "CIDR IP Range".($$rl{ip_range} ? " [$$rl{ip_range}]" :'').":", -def => $$rl{ip_range} || '';
+    $$rl{rate_limit} = number_menu_or_argv(
+        "Rate Limit".($$rl{rate_limit}? " [$$rl{rate_limit}{name}]" : '').":",
+        menu_spec_from_table('openapi.rate_limit_definition', 'name', 'id', '[Cancel]', 0),
+        -def => $$rl{rate_limit} || 0
+    );
+
+    $$rl{rate_limit} = $$rl{rate_limit} eq '0' ? undef : $$rl{rate_limit};
+
+    return $rl;
+}
+
+sub api_sets_rate_limits_ip_address_add {
+    my $rl = _collect_set_rate_limit_ip_data();
+    return unless $$rl{rate_limit};
+
+    $dbh->do(
+        "INSERT INTO openapi.endpoint_set_ip_rate_limit_map (endpoint_set, ip_range, rate_limit) VALUES (?,?,?)", undef,
+        $$rl{endpoint_set}, $$rl{ip_range}, $$rl{rate_limit}
+    );
+    reload_api_sets();
+}
+
+sub api_sets_rate_limits_ip_address_edit {
+    my @rl_list = get_set_rate_limit_label_list('ip_ranges');
+    my $rl_map = { map {%$_} @rl_list };
+    $$rl_map{' [Cancel]'} = 0;
+    my $rl_id = number_menu_or_argv( 'Rate Limit to edit:', $rl_map, -def => 0 );
+    return unless $rl_id;
+
+    my ($rl) = grep {$$_{id} == $rl_id} @{$state{api}{set}{ip_ranges}};
+    $rl = _collect_set_rate_limit_ip_data($rl);
+    $dbh->do(
+        "UPDATE openapi.endpoint_set_ip_rate_limit_map SET endpoint_set=?, ip_range=?, rate_limit=? WHERE id=?", undef,
+        $$rl{endpoint_set}, $$rl{ip_range}, $$rl{rate_limit}, $rl_id
+    );
+    reload_api_sets();
+}
+
+sub api_sets_rate_limits_ip_address_remove {
+    my @rl_list = get_set_rate_limit_label_list('ip_ranges');
+    my $rl_map = { map {%$_} @rl_list };
+    $$rl_map{' [Cancel]'} = 0;
+    my $rl_id = number_menu_or_argv( 'Rate Limit to edit:', $rl_map, -def => 0 );
+    return unless $rl_id;
+
+    $dbh->do( "DELETE FROM openapi.endpoint_set_ip_rate_limit_map WHERE id=?", undef, $rl_id);
+    reload_api_sets();
+}
+
+sub _collect_set_rate_limit_user_data {
+    my $set = $state{api}{set} || api_sets_load();
+    my $int = $state{integrator}{id} || 0;
+    return unless $set;
+
+    my $rl = shift || {
+        endpoint_set   => $$set{name},
+        accessor   => $int,
+        rate_limit => 0
+    };
+
+    $$rl{endpoint_set} = prompt "Endpoint Set".($$rl{endpoint_set} ? " [$$rl{endpoint_set}]" :'').":", -def => $$rl{endpoint_set} || '';
+    $$rl{accessor} = number_menu_or_argv(
+        "Integrator".($$rl{accessor}? " [ID:$$rl{accessor}]" : '').":",
+        menu_spec_from_table('openapi.integrator natural join actor.usr', 'usrname', 'id', '[Cancel]', 0),
+        -def => $$rl{accessor} || 0
+    );
+    $$rl{rate_limit} = number_menu_or_argv(
+        "Rate Limit".($$rl{rate_limit}? " [ID:$$rl{rate_limit}]" : '').":",
+        menu_spec_from_table('openapi.rate_limit_definition', 'name', 'id', '[Cancel]', 0),
+        -def => $$rl{rate_limit} || 0
+    );
+
+    $$rl{accessor} = $$rl{accessor} eq '0' ? undef : $$rl{accessor};
+    $$rl{rate_limit} = $$rl{rate_limit} eq '0' ? undef : $$rl{rate_limit};
+
+    return $rl;
+}
+
+sub api_sets_rate_limits_integrator_add {
+    my $rl = _collect_set_rate_limit_user_data();
+    return unless $$rl{rate_limit} and $$rl{accessor};
+    $dbh->do(
+        "INSERT INTO openapi.endpoint_set_user_rate_limit_map (endpoint_set, accessor, rate_limit) VALUES (?,?,?)", undef,
+        $$rl{endpoint_set}, $$rl{accessor}, $$rl{rate_limit}
+    );
+    reload_api_sets();
+}
+
+sub api_sets_rate_limits_integrator_edit {
+    my @rl_list = get_set_rate_limit_label_list('user_rate_limits');
+    my $rl_map = { map {%$_} @rl_list };
+    $$rl_map{' [Cancel]'} = 0;
+    my $rl_id = number_menu_or_argv( 'Rate Limit to edit:', $rl_map, -def => 0 );
+    return unless $rl_id;
+
+    my ($rl) = grep {$$_{id} == $rl_id} @{$state{api}{set}{user_rate_limits}};
+    $rl = _collect_set_rate_limit_user_data($rl);
+    $dbh->do(
+        "UPDATE openapi.endpoint_set_user_rate_limit_map SET endpoint_set=?, accessor=?, rate_limit=? WHERE id=?", undef,
+        $$rl{endpoint_set}, $$rl{accessor}, $$rl{rate_limit}, $rl_id
+    );
+    reload_api_sets();
+}
+
+sub api_sets_rate_limits_integrator_remove {
+    my @rl_list = get_set_rate_limit_label_list('user_rate_limits');
+    my $rl_map = { map {%$_} @rl_list };
+    $$rl_map{' [Cancel]'} = 0;
+    my $rl_id = number_menu_or_argv( 'Rate Limit to remove', $rl_map, -def => 0 );
+    return unless $rl_id;
+
+    $dbh->do( "DELETE FROM openapi.endpoint_set_user_rate_limit_map WHERE id=?", undef, $rl_id);
+    reload_api_sets();
+}
+
+
+sub integrator {
+    next_cmd('Integrator actions:' => [qw/list load unload add remove enable disable password
+                                          details permissions groups global_property_whitelist
+                                          global_property_blacklist endpoint_property_whitelist
+                                          endpoint_property_blacklist/]);
+}
+
+sub integrator_global_property_whitelist {
+    my $usrname = $state{integrator}{usrname} || integrator_load()->{usrname};
+    next_cmd('Global Fieldmapper property whitelist actions:' => [qw/list set remove/]);
+}
+
+sub integrator_global_property_blacklist {
+    my $usrname = $state{integrator}{usrname} || integrator_load()->{usrname};
+    next_cmd('Global Fieldmapper property blacklist actions:' => [qw/list set remove/]);
+}
+
+sub integrator_global_property_whitelist_list {
+    return show_global_integrator_property_filter('whitelist');
+}
+
+sub integrator_global_property_blacklist_list {
+    return show_global_integrator_property_filter('blacklist');
+}
+
+sub integrator_endpoint_property_whitelist_list {
+    return show_endpoint_integrator_property_filter('whitelist');
+}
+
+sub integrator_endpoint_property_blacklist_list {
+    return show_endpoint_integrator_property_filter('blacklist');
+}
+
+sub show_global_integrator_property_filter {
+    my $type = shift;
+
+    my $setting_name = "REST.api.${type}_properties";
+
+    return print_filter_list(Global => $type => [ grep { $$_{name} eq $setting_name } @{$state{integrator}{filter_settings}} ]);
+
+}
+
+sub show_endpoint_integrator_property_filter {
+    my $type = shift;
+    my $endpoint = shift || '';
+
+    my $setting_name = "REST.api.${type}_properties.$endpoint";
+
+    return print_filter_list(Endpoint => $type => [ grep { $$_{name} =~ /^$setting_name/ } @{$state{integrator}{filter_settings}} ]);
+}
+
+sub print_filter_list {
+    my $scope = shift;
+    my $type = shift;
+    my $settings = shift || [];
+
+    print "$scope $type properties\n"
+        . "==================================\n" if !$from_command;
+    print ''.($scope eq 'Endpoint' ? +(split '\.', $$_{name})[-1] . ': ' : '')."$$_{value}\n" for @$settings;
+}
+
+sub integrator_global_property_whitelist_set {
+    return set_property_filter('whitelist');
+}
+
+sub integrator_global_property_blacklist_set {
+    return set_property_filter('blacklist');
+}
+
+sub integrator_global_property_whitelist_remove {
+    return remove_property_filter('whitelist');
+}
+
+sub integrator_global_property_blacklist_remove {
+    return remove_property_filter('blacklist');
+}
+
+sub find_property_filter_value {
+    my $name = shift;
+    my $setting = [grep { $$_{name} eq $name } @{$state{integrator}{filter_settings}}]->[0];
+    return $$setting{value} if $setting;
+    return undef;
+}
+
+sub set_property_filter {
+    my $type = shift;
+    my $endpoint = shift;
+
+    my $name = "REST.api.${type}_properties";
+    $name .= ".$endpoint" if $endpoint;
+
+    my $current_value = find_property_filter_value($name);
+
+    if (my $id = $state{integrator}{id} || integrator_load("Integrator username adjust ${type}ed properties:")) {
+        print "Current value of $name: $current_value\n" if $current_value;
+        my $new_value = value_or_argv("Comma separated list of properties to $type, [Enter] to leave unchanged:");
+        if ($new_value) {
+            $new_value =~ s/"//g;
+            $new_value = '"'.$new_value.'"';
+
+            # auto-vivicate the user setting type for endpoint-specific ones
+            $dbh->do(
+                'INSERT INTO config.usr_setting_type (name,label,grp) VALUES (?,?,?) ON CONFLICT DO NOTHING;', undef,
+                $name,"OpenAPI Fieldmapper property $type for endpoint $endpoint",'openapi'
+            ) if $endpoint;
+
+            $dbh->do(
+                'INSERT INTO actor.usr_setting (usr,name,value) VALUES (?,?,?) ON CONFLICT (usr,name) DO UPDATE SET value = ?;', undef,
+                $id,$name,$new_value,$new_value
+            );
+            reload_integrator();
+        }
+    }
+}
+
+sub remove_property_filter {
+    my $type = shift;
+    my $endpoint = shift;
+
+    my $name = "REST.api.${type}_properties";
+    $name .= ".$endpoint" if $endpoint;
+
+    my $current_value = find_property_filter_value($name);
+
+    if (my $id = $state{integrator}{id} || integrator_load("Integrator username to remove ${type}ed properties from:")->{id}) {
+        print "Current value of $name: $current_value\n" if $current_value;
+        if (yn("Continue to remove $type in setting $name for [$state{integrator}{usrname}]?")) {
+            $dbh->do('DELETE FROM actor.usr_setting WHERE usr = ? AND name = ?;', undef, $id, $name);
+            reload_integrator();
+        }
+    }
+}
+
+sub existing_endpoint_property_filter_endpoints {
+    return [] if !$state{integrator}{id};
+    return [
+        sort {
+            $a cmp $b
+        } map {
+            s/^REST\.api\.\w+?_properties\.//; $_;
+        } grep {
+            /^REST\.api\.\w+?_properties\./
+        } map {
+            $$_{name}
+        } @{$state{integrator}{filter_settings}}
+    ];
+}
+
+sub integrator_endpoint_property_whitelist {
+    my $usrname = $state{integrator}{usrname} || integrator_load()->{usrname};
+    next_cmd('Endpoint-specific Fieldmapper property whitelist actions:' => [qw/list add edit remove/]);
+}
+
+sub integrator_endpoint_property_blacklist {
+    my $usrname = $state{integrator}{usrname} || integrator_load()->{usrname};
+    next_cmd('Endpoint-specific Fieldmapper property blacklist actions:' => [qw/list add edit remove/]);
+}
+
+sub integrator_endpoint_property_whitelist_add {
+    return integrator_endpoint_property_filter_change(add => 'whitelist');
+}
+
+sub integrator_endpoint_property_blacklist_add {
+    return integrator_endpoint_property_filter_change(add => 'blacklist');
+}
+
+sub integrator_endpoint_property_whitelist_edit {
+    return integrator_endpoint_property_filter_change(edit => 'whitelist');
+}
+
+sub integrator_endpoint_property_blacklist_edit {
+    return integrator_endpoint_property_filter_change(edit => 'blacklist');
+}
+
+sub integrator_endpoint_property_whitelist_remove {
+    return integrator_endpoint_property_filter_change(remove => 'whitelist');
+}
+
+sub integrator_endpoint_property_blacklist_remove {
+    return integrator_endpoint_property_filter_change(remove => 'blacklist');
+}
+
+sub integrator_endpoint_property_filter_change {
+    my $action = shift;
+    my $type = shift;
+
+    if ($state{integrator}{usrname} || integrator_load("Integrator username to $action ${type}ed properties for:")) {
+        my $existing_endpoints = existing_endpoint_property_filter_endpoints();
+        if ($action eq 'add' or @$existing_endpoints) {
+            my $where = @$existing_endpoints ? "WHERE operation_id ".($action eq 'add' ? 'NOT' : '')." IN ('".join("','", @$existing_endpoints)."')" : '';
+            my $new_endpoint = number_menu_or_argv(
+                "Endpoint to $action $type:",
+                menu_spec_from_table("openapi.endpoint $where","operation_id || ': ' || http_method || ' ' || path",'operation_id','[Cancel]',0)
+            );
+            if ($new_endpoint ne '0') {
+                if ($action eq 'remove') {
+                    remove_property_filter($type, $new_endpoint);
+                } else {
+                    set_property_filter($type, $new_endpoint);
+                }
+            }
+        }
+    }
+}
+
+sub integrator_list {
+    print "Integrators:\n"
+        . "============\n" if !$from_command;
+    print join(
+            "\n",
+            map {
+                "$$_{usrname}: " . ($$_{enabled} ? 'Enabled' : 'Disabled')
+            } $dbh->selectall_array('SELECT u.usrname, i.enabled FROM actor.usr u JOIN openapi.integrator i USING (id) WHERE NOT u.deleted ORDER BY 1',{Slice => {}})
+        ) . "\n";
+}
+
+sub integrator_password {
+    if ($state{integrator} or integrator_load()) {
+        my $pw = pw_value("New API password for [$state{integrator}{usrname}]:");
+        my $pw2 = pw_value("Confirm new API password for [$state{integrator}{usrname}]:");
+
+        if ($pw ne $pw2) {
+            print "  !! passwords don't match \n";
+            return;
+        }
+
+        if ($pw ne '' and yn("Continue to (re)set password for [$state{integrator}{usrname}]?")) {
+            my $salt = $dbh->selectcol_arrayref("SELECT actor.create_salt('api')")->[0];
+            $dbh->do("SELECT actor.set_passwd(?,'api',?,?)", undef, $state{integrator}{id}, md5_hex($salt . md5_hex($pw)), $salt);
+        }
+    } else {
+        print "  !! Load integrator before (re)setting password\n";
+    }
+}
+
+sub integrator_add {
+    my $usrname = value_or_argv('New Integrator username:');
+    if ($usrname ne '') {
+        $dbh->do('INSERT INTO openapi.integrator (id) SELECT id FROM actor.usr WHERE usrname = ?', undef, $usrname);
+        unshift @ARGV, $usrname;
+        integrator_load();
+    }
+}
+
+sub integrator_remove {
+    my $usrname = $state{integrator}{usrname} || integrator_load('Integrator username to remove:')->{usrname};
+    if ($usrname ne '' and yn("Continue to remove integrator $usrname?")) {
+        $dbh->do('DELETE FROM openapi.integrator WHERE id IN (SELECT id FROM actor.usr WHERE usrname = ?)', undef, $usrname);
+    }
+}
+
+sub integrator_enable {
+    my $enabled = shift || 'TRUE';
+    my $usrname = $state{integrator}{usrname} || value_or_argv('Integrator username:');
+    if ($usrname ne '') {
+        $dbh->do("UPDATE openapi.integrator SET enabled = $enabled WHERE id IN (SELECT id FROM actor.usr WHERE usrname = ?)", undef, $usrname);
+        unshift @ARGV, $usrname;
+        integrator_load();
+    }
+}
+sub integrator_disable { integrator_enable('FALSE') }
+
+sub integrator_permissions {
+    my $usrname = $state{integrator}{usrname} || integrator_load()->{usrname};
+    next_cmd('Integrator permission actions:' => [qw/list add remove/])
+}
+
+sub integrator_permissions_list {
+    print "Permissions:\n"
+        . "============\n" if !$from_command;
+    print join("\n", map {$$_{code}} @{$state{integrator}{user_perms}}) . "\n\n";
+}
+
+sub integrator_permissions_add {
+    my $new_perm = list_or_argv('New Permission:' => $dbh->selectcol_arrayref('SELECT code FROM permission.perm_list'));
+    if ($new_perm ne '') {
+        my $new_depth = number_menu_or_argv('Permission Depth:' => depth_menu_spec());
+        if ($new_depth and yn("Add permission [$new_perm]?")) {
+            $new_perm = $dbh->selectcol_arrayref('SELECT id FROM permission.perm_list WHERE code = ?', undef, $new_perm)->[0];
+            $dbh->do('INSERT INTO permission.usr_perm_map (usr,perm,depth) VALUES (?,?,?)', undef, $state{integrator}{id}, $new_perm, $new_depth);
+            reload_integrator();
+        }
+    }
+}
+
+sub integrator_permissions_remove {
+    if (@{$state{integrator}{user_perms}}) {
+        my $perm = list_or_argv('Permission:' => [map {$$_{code}} @{$state{integrator}{user_perms}}]);
+        if ($perm ne '' and yn("Remove permission [$perm]?")) {
+            $perm = $dbh->selectcol_arrayref('SELECT id FROM permission.perm_list WHERE code = ?', undef, $perm)->[0];
+            $dbh->do('DELETE FROM permission.usr_perm_map WHERE usr = ? AND perm = ?', undef, $state{integrator}{id}, $perm) if ($perm);
+            reload_integrator();
+        }
+    }
+}
+
+sub integrator_groups {
+    my $usrname = $state{integrator}{usrname} || integrator_load()->{usrname};
+    next_cmd('Integrator secondary group actions:' => [qw/list add remove/])
+}
+
+sub integrator_groups_list {
+    print "Groups:\n"
+        . "=======\n" if !$from_command;
+    print join("\n", map {$$_{name}} @{$state{integrator}{secondary_groups}}) . "\n\n";
+}
+
+sub integrator_groups_add {
+    my $new_group = number_menu_or_argv('New Group:' => menu_spec_from_table('permission.grp_tree','name','id','[Cancel]' => 0));
+    my ($new_group_name) = $dbh->selectrow_array('SELECT name FROM permission.grp_tree WHERE id = ?', undef, $new_group);
+    if ($new_group ne '0'  and yn("Add Secondary Group [$new_group_name]?")) {
+        $dbh->do('INSERT INTO permission.usr_grp_map (usr,grp) VALUES (?,?)', undef, $state{integrator}{id}, $new_group);
+        reload_integrator();
+    }
+}
+
+sub integrator_groups_remove {
+    if (@{$state{integrator}{secondary_groups}}) {
+        my $group = number_menu_or_argv('Group:' => {' [Cancel]' => 0, map { $$_{name} => $$_{id} } @{$state{integrator}{secondary_groups}}});
+        my ($group_name) = $dbh->selectrow_array('SELECT name FROM permission.grp_tree WHERE id = ?', undef, $group);
+        if ($group ne '0' and yn("Remove Secondary Group [$group_name]?")) {
+            $dbh->do('DELETE FROM permission.usr_grp_map WHERE usr = ? AND grp = ?', undef, $state{integrator}{id}, $group);
+            reload_integrator();
+        }
+    }
+}
+
+sub integrator_details {
+    $state{integrator_details} = $state{integrator_details} ? 0 : 1;
+    print ' ! Integrator Detail Dispaly: '. ($state{integrator_details} ? 'On' : 'Off'). "\n" if !$from_command;
+}
+
+sub integrator_unload {
+    delete $state{integrator};
+}
+
+sub reload_integrator {
+    if ($state{integrator}{usrname}) {
+        unshift @ARGV, $state{integrator}{usrname};
+        integrator_load();
+    }
+}
+
+sub integrator_load {
+    my $prompt = shift || 'Integrator username:';
+    $state{integrator} = $dbh->selectrow_hashref(
+        'SELECT u.*, i.enabled AS api_enabled FROM actor.usr u JOIN openapi.integrator i USING (id) WHERE NOT u.deleted AND u.usrname = ?',
+        undef, value_or_argv($prompt)
+    );
+
+    if (!$state{integrator}) {
+        print " ! Integrator account not found\n";
+        return undef;
+    }
+
+    $state{integrator}{profile} = $dbh->selectrow_hashref(
+        'SELECT * FROM permission.grp_tree WHERE id = ?',
+        undef, $state{integrator}{profile}
+    );
+
+    $state{integrator}{secondary_groups} = $dbh->selectall_arrayref(
+        'SELECT g.* FROM permission.grp_tree g JOIN permission.usr_grp_map m ON (m.grp = g.id) WHERE m.usr = ?',
+        { Slice => {} }, $state{integrator}{id}
+    );
+
+    $state{integrator}{filter_settings} = $dbh->selectall_arrayref(
+        "SELECT * FROM actor.usr_setting WHERE name like 'REST.api.%properties%' AND usr = ? ORDER BY name",
+        { Slice => {} }, $state{integrator}{id}
+    );
+
+    $state{integrator}{endpoint_rate_limits} = $dbh->selectall_arrayref(
+        'SELECT m.endpoint, r.* FROM openapi.endpoint_user_rate_limit_map m JOIN openapi.rate_limit_definition r ON (r.id = m.rate_limit) WHERE m.accessor = ?',
+        { Slice => {} }, $state{integrator}{id}
+    );
+
+    $state{integrator}{endpoint_set_rate_limits} = $dbh->selectall_arrayref(
+        'SELECT m.endpoint_set, r.* FROM openapi.endpoint_set_user_rate_limit_map m JOIN openapi.rate_limit_definition r ON (r.id = m.rate_limit) WHERE m.accessor = ?',
+        { Slice => {} }, $state{integrator}{id}
+    );
+
+    $state{integrator}{login_attempt_summary} = $dbh->selectrow_hashref(
+        'SELECT  MIN(attempt_time) AS first_attempt,'.
+        '        MAX(attempt_time) AS last_attempt,'.
+        '        SUM((token IS NOT NULL)::INT) AS success,'.
+        "        SUM((NULLIF(token,'') IS NULL)::INT) AS failure".
+        '  FROM  openapi.authen_attempt_log'.
+        '  WHERE cred_user = ?'.
+        '  GROUP BY cred_user',
+        undef, $state{integrator}{usrname}
+    );
+
+    $state{integrator}{endpoint_access_summary} = $dbh->selectall_arrayref(
+        'SELECT  endpoint,'.
+        '        MIN(attempt_time) AS first_attempt,'.
+        '        MAX(attempt_time) AS last_attempt,'.
+        '        SUM(allowed::INT) AS success,'.
+        '        SUM((allowed IS FALSE)::INT) AS failure'.
+        '  FROM  openapi.endpoint_access_attempt_log'.
+        '  WHERE accessor = ?'.
+        '  GROUP BY endpoint',
+        { Slice => {} }, $state{integrator}{id}
+    );
+
+    $state{integrator}{user_perms} = $dbh->selectall_arrayref(
+        'SELECT p.* FROM permission.perm_list p JOIN permission.usr_perm_map m ON (m.perm = p.id) WHERE m.usr = ?',
+        { Slice => {} }, $state{integrator}{id}
+    );
+
+    $state{integrator}{card} = $dbh->selectrow_hashref(
+        'SELECT * FROM actor.card WHERE id = ?',
+        undef, $state{integrator}{card}
+    ) if $state{integrator}{card};
+
+    return $state{integrator};
+}
+
+sub api_endpoints_unload {
+    delete $state{api}{endpoint};
+}
+
+sub reload_api_endpoints {
+    if ($state{api}{endpoint}{operation_id}) {
+        unshift @ARGV, $state{api}{endpoint}{operation_id};
+        api_endpoints_load();
+    }
+}
+
+sub api_endpoints_load {
+    my $prompt = shift || 'API Endpoint Operation Id:';
+    $state{api}{endpoint} = $dbh->selectrow_hashref(
+        'SELECT * FROM openapi.endpoint WHERE operation_id = ?',
+        undef, number_menu_or_argv(
+            $prompt => menu_spec_from_table('openapi.endpoint',"http_method || ' ' || path",'operation_id','[Cancel]',0)
+        )
+    );
+
+    if (!$state{api}{endpoint}) {
+        print " ! API Endpoint not found\n";
+        return undef;
+    }
+
+    $state{api}{endpoint}{ip_ranges} = $dbh->selectall_arrayref(
+        'SELECT * FROM openapi.endpoint_ip_rate_limit_map WHERE endpoint = ?',
+        { Slice => {} }, $state{api}{endpoint}{operation_id}
+    );
+
+    $state{api}{endpoint}{user_rate_limits} = $dbh->selectall_arrayref(
+        'SELECT * FROM openapi.endpoint_user_rate_limit_map WHERE endpoint = ?',
+        { Slice => {} }, $state{api}{endpoint}{operation_id}
+    );
+
+    $state{api}{endpoint}{rate_limit} = $dbh->selectrow_hashref(
+        'SELECT * FROM openapi.rate_limit_definition WHERE id = ?',
+        undef, $state{api}{endpoint}{rate_limit}
+    ) if $state{api}{endpoint}{rate_limit};
+
+    $state{api}{endpoint}{params} = $dbh->selectall_arrayref(
+        'SELECT * FROM openapi.endpoint_param WHERE endpoint = ?',
+        { Slice => {} }, $state{api}{endpoint}{operation_id}
+    );
+
+    $state{api}{endpoint}{responses} = $dbh->selectall_arrayref(
+        'SELECT * FROM openapi.endpoint_response WHERE endpoint = ?',
+        { Slice => {} }, $state{api}{endpoint}{operation_id}
+    );
+
+    $state{api}{endpoint}{sets} = $dbh->selectcol_arrayref(
+        'SELECT endpoint_set FROM openapi.endpoint_set_endpoint_map WHERE endpoint = ?',
+        undef, $state{api}{endpoint}{operation_id}
+    );
+
+    $state{api}{endpoint}{perms} = $dbh->selectall_arrayref(
+        'SELECT p.* FROM permission.perm_list p JOIN openapi.endpoint_perm_map m ON (m.perm = p.id) WHERE m.endpoint = ?',
+        { Slice => {} }, $state{api}{endpoint}{operation_id}
+    );
+
+    $state{api}{endpoint}{perm_sets} = $dbh->selectall_arrayref(
+        'SELECT s.* FROM openapi.perm_set s JOIN openapi.endpoint_perm_set_map m ON (m.perm_set = s.id) WHERE m.endpoint = ?',
+        { Slice => {} }, $state{api}{endpoint}{operation_id}
+    );
+
+    for my $ps ( @{$state{api}{endpoint}{perm_sets}} ) {
+        $$ps{perms} = $dbh->selectall_arrayref(
+            'SELECT p.* FROM permission.perm_list p JOIN openapi.perm_set_perm_map m ON (m.perm = p.id) WHERE m.perm_set = ?',
+            { Slice => {} }, $$ps{id}
+        );
+    }
+
+    return $state{api}{endpoint};
+}
+
+sub api_sets_unload {
+    delete $state{api}{set};
+}
+
+sub reload_api_sets {
+    if ($state{api}{set}{name}) {
+        unshift @ARGV, $state{api}{set}{name};
+        api_sets_load();
+    }
+}
+
+sub api_sets_load {
+    my $prompt = shift || 'API Endpoint Set Name:';
+    $state{api}{set} = $dbh->selectrow_hashref(
+        'SELECT * FROM openapi.endpoint_set WHERE name = ?',
+        undef, number_menu_or_argv(
+            $prompt => menu_spec_from_table('openapi.endpoint_set',"description",'name','[Cancel]',0)
+        )
+    );
+
+    if (!$state{api}{set}) {
+        print " ! API Endpoint Set not found\n";
+        return undef;
+    }
+
+    $state{api}{set}{user_rate_limits} = $dbh->selectall_arrayref(
+        'SELECT * FROM openapi.endpoint_set_user_rate_limit_map WHERE endpoint_set = ?',
+        { Slice => {} }, $state{api}{set}{name}
+    );
+
+    $state{api}{set}{ip_ranges} = $dbh->selectall_arrayref(
+        'SELECT * FROM openapi.endpoint_set_ip_rate_limit_map WHERE endpoint_set = ?',
+        { Slice => {} }, $state{api}{set}{name}
+    );
+
+    $state{api}{set}{rate_limit} = $dbh->selectrow_hashref(
+        'SELECT * FROM openapi.rate_limit_definition WHERE id = ?',
+        undef, $state{api}{set}{rate_limit}
+    ) if $state{api}{set}{rate_limit};
+
+    $state{api}{set}{endpoints} = $dbh->selectcol_arrayref(
+        'SELECT endpoint FROM openapi.endpoint_set_endpoint_map WHERE endpoint_set = ?',
+        undef, $state{api}{set}{name}
+    );
+
+    $state{api}{set}{perms} = $dbh->selectall_arrayref(
+        'SELECT p.* FROM permission.perm_list p JOIN openapi.endpoint_set_perm_map m ON (m.perm = p.id) WHERE m.endpoint_set = ?',
+        { Slice => {} }, $state{api}{set}{name}
+    );
+
+    $state{api}{set}{perm_sets} = $dbh->selectall_arrayref(
+        'SELECT s.* FROM openapi.perm_set s JOIN openapi.endpoint_set_perm_set_map m ON (m.perm_set = s.id) WHERE m.endpoint_set = ?',
+        { Slice => {} }, $state{api}{set}{name}
+    );
+
+    for my $ps ( @{$state{api}{set}{perm_sets}} ) {
+        $$ps{perms} = $dbh->selectall_arrayref(
+            'SELECT p.* FROM permission.perm_list p JOIN openapi.perm_set_perm_map m ON (m.perm = p.id) WHERE m.perm_set = ?',
+            { Slice => {} }, $$ps{id}
+        );
+    }
+
+    return $state{api}{set};
+}
+

@@ -4197,7 +4197,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 		</links>
 		<permacrud xmlns="http://open-ils.org/spec/opensrf/IDL/permacrud/v1">
 			<actions>
-				<retrieve permission="VIEW_USER user_request.view" context_field="home_ou"/>
+				<retrieve permission="VIEW_USER user_request.view" context_field="home_ou" owning_user="id"/>
 			</actions>
 		</permacrud>
 	</class>
@@ -4871,7 +4871,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 		<permacrud xmlns="http://open-ils.org/spec/opensrf/IDL/permacrud/v1">
 			<actions>
 				<create permission="UPDATE_USER"><context link="usr" field="home_ou"/></create>
-				<retrieve permission="VIEW_USER"><context link="usr" field="home_ou"/></retrieve>
+				<retrieve permission="VIEW_USER" owning_user="usr"><context link="usr" field="home_ou"/></retrieve>
 				<update permission="UPDATE_USER"><context link="usr" field="home_ou"/></update>
 				<delete permission="UPDATE_USER"><context link="usr" field="home_ou"/></delete>
 			</actions>
@@ -7527,7 +7527,7 @@ SELECT  usr,
 		</links>
 		<permacrud xmlns="http://open-ils.org/spec/opensrf/IDL/permacrud/v1">
 			<actions>
-				<retrieve permission="VIEW_USER user_request.view">
+				<retrieve permission="VIEW_USER user_request.view" owning_user="usr">
 					<context link="usr" field="home_ou"/>
 				</retrieve>
 			</actions>
@@ -14398,6 +14398,468 @@ SELECT  usr,
 				<delete permission="ADMIN_STAFF_PORTAL_PAGE" context_field="owner"/>
 			</actions>
 		</permacrud>
+	</class>
+
+	<!-- OpenAPI class defs -->
+	<class id="ojsd" controller="open-ils.cstore open-ils.pcrud" oils_obj:fieldmapper="openapi::json_schema_datatype" oils_persist:tablename="openapi.json_schema_datatype" reporter:label="OpenAPI JSON Schema Datatype">
+		<fields oils_persist:primary="name">
+			<field name="name" reporter:label="Name" reporter:datatype="id"/>
+			<field name="label" reporter:label="Label" reporter:datatype="text" oils_obj:required="true"/>
+			<field name="description" reporter:label="Description" reporter:datatype="text"/>
+		</fields>
+		<permacrud xmlns="http://open-ils.org/spec/opensrf/IDL/permacrud/v1">
+			<actions>
+				<create permission="ADMIN_OPENAPI" global_required="true"/>
+				<retrieve/>
+				<update permission="ADMIN_OPENAPI" global_required="true"/>
+				<delete permission="ADMIN_OPENAPI" global_required="true"/>
+			</actions>
+		</permacrud>
+	</class>
+
+	<class id="ojsf" controller="open-ils.cstore open-ils.pcrud" oils_obj:fieldmapper="openapi::json_schema_format" oils_persist:tablename="openapi.json_schema_format" reporter:label="OpenAPI JSON Schema Data Format">
+		<fields oils_persist:primary="name">
+			<field name="name" reporter:label="Name" reporter:datatype="id"/>
+			<field name="label" reporter:label="Label" reporter:datatype="text" oils_obj:required="true"/>
+			<field name="description" reporter:label="Description" reporter:datatype="text"/>
+		</fields>
+		<permacrud xmlns="http://open-ils.org/spec/opensrf/IDL/permacrud/v1">
+			<actions>
+				<create permission="ADMIN_OPENAPI" global_required="true"/>
+				<retrieve/>
+				<update permission="ADMIN_OPENAPI" global_required="true"/>
+				<delete permission="ADMIN_OPENAPI" global_required="true"/>
+			</actions>
+		</permacrud>
+	</class>
+
+	<class id="oint" controller="open-ils.cstore open-ils.pcrud" oils_obj:fieldmapper="openapi::integrator" oils_persist:tablename="openapi.integrator" reporter:label="OpenAPI Integrator">
+		<fields oils_persist:primary="id">
+            <field name="id" reporter:label="User/Integrator ID" reporter:datatype="id"/>
+			<field name="enabled" reporter:label="Enabled?" reporter:datatype="bool" oils_obj:required="true"/>
+		</fields>
+		<links>
+			<link field="id" reltype="has_a" key="id" map="" class="au"/>
+		</links>
+		<permacrud xmlns="http://open-ils.org/spec/opensrf/IDL/permacrud/v1">
+			<actions>
+				<create permission="ADMIN_OPENAPI" global_required="true"/>
+				<retrieve permission="ADMIN_OPENAPI" global_required="true"/>
+				<update permission="ADMIN_OPENAPI" global_required="true"/>
+				<delete permission="ADMIN_OPENAPI" global_required="true"/>
+			</actions>
+		</permacrud>
+	</class>
+
+	<class id="orld" controller="open-ils.cstore open-ils.pcrud" oils_obj:fieldmapper="openapi::rate_limit_definition" oils_persist:tablename="openapi.rate_limit_definition" reporter:label="OpenAPI Endpoints" oils_persist:restrict_primary="100">
+		<fields oils_persist:primary="id" oils_persist:sequence="openapi.rate_limit_definition_id_seq">
+			<field name="id" reporter:label="ID" reporter:datatype="id" reporter:selector="name"/>
+			<field name="name" reporter:label="Name" reporter:datatype="text" oils_obj:required="true"/>
+			<field name="limit_interval" reporter:label="Interval" reporter:datatype="interval" oils_obj:required="true"/>
+			<field name="limit_count" reporter:label="Count" reporter:datatype="int" oils_obj:required="true"/>
+		</fields>
+		<permacrud xmlns="http://open-ils.org/spec/opensrf/IDL/permacrud/v1">
+			<actions>
+				<create permission="ADMIN_OPENAPI" global_required="true"/>
+				<retrieve permission="ADMIN_OPENAPI" global_required="true"/>
+				<update permission="ADMIN_OPENAPI" global_required="true"/>
+				<delete permission="ADMIN_OPENAPI" global_required="true"/>
+			</actions>
+		</permacrud>
+	</class>
+
+	<class id="orlem" controller="open-ils.cstore open-ils.pcrud" oils_obj:fieldmapper="openapi::endpoint_user_rate_limit_map" oils_persist:tablename="openapi.endpoint_user_rate_limit_map" reporter:label="User OpenAPI Endpoint Rate Limit Map">
+		<fields oils_persist:primary="id" oils_persist:sequence="openapi.endpoint_user_rate_limit_map_id_seq">
+			<field name="id" reporter:label="User Endpoint Rate Limit Map ID" reporter:datatype="id"/>
+			<field name="accessor" reporter:label="API Accessor" reporter:datatype="text"/>
+			<field name="endpoint" reporter:label="Endpoint" reporter:datatype="link"/>
+			<field name="rate_limit" reporter:label="Rate Limit" reporter:datatype="link"/>
+		</fields>
+		<links>
+			<link field="accessor" reltype="has_a" key="name" map="" class="au"/>
+			<link field="endpoint" reltype="has_a" key="operation_id" map="" class="oep"/>
+			<link field="rate_limit" reltype="has_a" key="name" map="" class="orld"/>
+		</links>
+		<permacrud xmlns="http://open-ils.org/spec/opensrf/IDL/permacrud/v1">
+			<actions>
+				<create permission="ADMIN_OPENAPI" global_required="true"/>
+				<retrieve permission="ADMIN_OPENAPI" global_required="true"/>
+				<update permission="ADMIN_OPENAPI" global_required="true"/>
+				<delete permission="ADMIN_OPENAPI" global_required="true"/>
+			</actions>
+		</permacrud>
+	</class>
+
+	<class id="orlesm" controller="open-ils.cstore open-ils.pcrud" oils_obj:fieldmapper="openapi::endpoint_set_user_rate_limit_map" oils_persist:tablename="openapi.endpoint_set_user_rate_limit_map" reporter:label="User OpenAPI Endpoint Set Rate Limit Map">
+		<fields oils_persist:primary="id" oils_persist:sequence="openapi.endpoint_set_user_rate_limit_map_id_seq">
+			<field name="id" reporter:label="User Endpoint Set Rate Limit Map ID" reporter:datatype="id"/>
+			<field name="accessor" reporter:label="API Accessor" reporter:datatype="text"/>
+			<field name="endpoint_set" reporter:label="Endpoint Set" reporter:datatype="link"/>
+			<field name="rate_limit" reporter:label="Rate Limit" reporter:datatype="link"/>
+		</fields>
+		<links>
+			<link field="accessor" reltype="has_a" key="name" map="" class="au"/>
+			<link field="endpoint_set" reltype="has_a" key="name" map="" class="oes"/>
+			<link field="rate_limit" reltype="has_a" key="name" map="" class="orld"/>
+		</links>
+		<permacrud xmlns="http://open-ils.org/spec/opensrf/IDL/permacrud/v1">
+			<actions>
+				<create permission="ADMIN_OPENAPI" global_required="true"/>
+				<retrieve permission="ADMIN_OPENAPI" global_required="true"/>
+				<update permission="ADMIN_OPENAPI" global_required="true"/>
+				<delete permission="ADMIN_OPENAPI" global_required="true"/>
+			</actions>
+		</permacrud>
+	</class>
+
+	<class id="orleipm" controller="open-ils.cstore open-ils.pcrud" oils_obj:fieldmapper="openapi::endpoint_ip_rate_limit_map" oils_persist:tablename="openapi.endpoint_ip_rate_limit_map" reporter:label="IP OpenAPI Endpoint Rate Limit Map">
+		<fields oils_persist:primary="id" oils_persist:sequence="openapi.endpoint_ip_rate_limit_map_id_seq">
+			<field name="id" reporter:label="IP Endpoint Rate Limit Map ID" reporter:datatype="id"/>
+			<field name="ip_range" reporter:label="IP with CIDR Mask" reporter:datatype="text"/>
+			<field name="endpoint" reporter:label="Endpoint" reporter:datatype="link"/>
+			<field name="rate_limit" reporter:label="Rate Limit" reporter:datatype="link"/>
+		</fields>
+		<links>
+			<link field="endpoint" reltype="has_a" key="operation_id" map="" class="oep"/>
+			<link field="rate_limit" reltype="has_a" key="name" map="" class="orld"/>
+		</links>
+		<permacrud xmlns="http://open-ils.org/spec/opensrf/IDL/permacrud/v1">
+			<actions>
+				<create permission="ADMIN_OPENAPI" global_required="true"/>
+				<retrieve permission="ADMIN_OPENAPI" global_required="true"/>
+				<update permission="ADMIN_OPENAPI" global_required="true"/>
+				<delete permission="ADMIN_OPENAPI" global_required="true"/>
+			</actions>
+		</permacrud>
+	</class>
+
+	<class id="orlesipm" controller="open-ils.cstore open-ils.pcrud" oils_obj:fieldmapper="openapi::endpoint_set_ip_rate_limit_map" oils_persist:tablename="openapi.endpoint_set_ip_rate_limit_map" reporter:label="IP OpenAPI Endpoint Set Rate Limit Map">
+		<fields oils_persist:primary="id" oils_persist:sequence="openapi.endpoint_set_ip_rate_limit_map_id_seq">
+			<field name="id" reporter:label="IP Endpoint Set Rate Limit Map ID" reporter:datatype="id"/>
+			<field name="ip_range" reporter:label="IP with CIDR Mask" reporter:datatype="text"/>
+			<field name="endpoint_set" reporter:label="Endpoint Set" reporter:datatype="link"/>
+			<field name="rate_limit" reporter:label="Rate Limit" reporter:datatype="link"/>
+		</fields>
+		<links>
+			<link field="endpoint_set" reltype="has_a" key="name" map="" class="oes"/>
+			<link field="rate_limit" reltype="has_a" key="name" map="" class="orld"/>
+		</links>
+		<permacrud xmlns="http://open-ils.org/spec/opensrf/IDL/permacrud/v1">
+			<actions>
+				<create permission="ADMIN_OPENAPI" global_required="true"/>
+				<retrieve permission="ADMIN_OPENAPI" global_required="true"/>
+				<update permission="ADMIN_OPENAPI" global_required="true"/>
+				<delete permission="ADMIN_OPENAPI" global_required="true"/>
+			</actions>
+		</permacrud>
+	</class>
+
+	<class id="oep" controller="open-ils.cstore open-ils.pcrud" oils_obj:fieldmapper="openapi::endpoint" oils_persist:tablename="openapi.endpoint" reporter:label="OpenAPI Endpoints">
+		<fields oils_persist:primary="operation_id">
+			<field name="operation_id" reporter:label="Operation ID" reporter:datatype="id"/>
+			<field name="path" reporter:label="Route Path" reporter:datatype="text" oils_obj:required="true"/>
+			<field name="http_method" reporter:label="HTTP Method" reporter:datatype="text" oils_obj:required="true"/>
+			<field name="summary" reporter:label="Summary" reporter:datatype="text" oils_obj:required="true"/>
+			<field name="security" reporter:label="Security Scheme" reporter:datatype="text" oils_obj:required="true"/>
+			<field name="rate_limit" reporter:label="Default Rate Limit" reporter:datatype="link"/>
+			<field name="method_source" reporter:label="Method Source (Perl Module or OpenSRF service)" reporter:datatype="text" oils_obj:required="true"/>
+			<field name="method_name" reporter:label="Method Name (Perl or OpenSRF method)" reporter:datatype="text" oils_obj:required="true"/>
+			<field name="method_params" reporter:label="Method Parameters (comma-separated list)" reporter:datatype="text"/>
+			<field name="active" reporter:label="Active" reporter:datatype="bool" oils_obj:required="true"/>
+			<field name="parameters" reporter:label="Route Parameters" reporter:datatype="link" oils_persist:virtual="true"/>
+			<field name="responses" reporter:label="Route Responses" reporter:datatype="link" oils_persist:virtual="true"/>
+			<field name="perms" reporter:label="Direct Permissions" reporter:datatype="link" oils_persist:virtual="true"/>
+			<field name="perm_sets" reporter:label="Direct Permission Sets" reporter:datatype="link" oils_persist:virtual="true"/>
+			<field name="endpoint_sets" reporter:label="Endpoint Sets" reporter:datatype="link" oils_persist:virtual="true"/>
+		</fields>
+		<links>
+			<link field="rate_limit" reltype="has_a" key="id" map="" class="orld"/>
+			<link field="parameters" reltype="has_many" key="endpoint" map="" class="oepparam"/>
+			<link field="responses" reltype="has_many" key="endpoint" map="" class="oepres"/>
+			<link field="perms" reltype="has_many" key="endpoint" map="perm" class="oep_perm_maps"/>
+			<link field="perm_sets" reltype="has_many" key="endpoint" map="perm_set" class="oep_perm_set_maps"/>
+			<link field="endpoint_sets" reltype="has_many" key="endpoint" map="endpoint_set" class="oes_maps"/>
+		</links>
+		<permacrud xmlns="http://open-ils.org/spec/opensrf/IDL/permacrud/v1">
+			<actions>
+				<create permission="ADMIN_OPENAPI" global_required="true"/>
+				<retrieve/>
+				<update permission="ADMIN_OPENAPI" global_required="true"/>
+				<delete permission="ADMIN_OPENAPI" global_required="true"/>
+			</actions>
+		</permacrud>
+	</class>
+
+	<class id="oepparam" controller="open-ils.cstore open-ils.pcrud" oils_obj:fieldmapper="openapi::endpoint_param" oils_persist:tablename="openapi.endpoint_param" reporter:label="OpenAPI Endpoint Parameter Schemas">
+		<fields oils_persist:primary="id" oils_persist:sequence="openapi.endpoint_param_id_seq">
+			<field name="id" reporter:label="Param Schema ID" reporter:datatype="id"/>
+			<field name="endpoint" reporter:label="Endpoint" reporter:datatype="link" oils_obj:required="true"/>
+			<field name="name" reporter:label="Name" reporter:datatype="text" oils_obj:required="true"/>
+			<field name="required" reporter:label="Required" reporter:datatype="bool" oils_obj:required="true"/>
+			<field name="in_part" reporter:label="In Part" reporter:datatype="text" oils_obj:required="true"/>
+			<field name="fm_type" reporter:label="Fieldmapper hint" reporter:datatype="text"/>
+			<field name="schema_type" reporter:label="JSON Schema Datatype" reporter:datatype="link"/>
+			<field name="schema_format" reporter:label="JSON Schema Data Format" reporter:datatype="link"/>
+			<field name="array_items" reporter:label="JSON Schema Array Item Datatypes" reporter:datatype="link"/>
+			<field name="default_value" reporter:label="Default value" reporter:datatype="text"/>
+		</fields>
+		<links>
+			<link field="endpoint" reltype="has_a" key="operation_id" map="" class="oep"/>
+			<link field="schema_type" reltype="has_a" key="name" map="" class="ojsd"/>
+			<link field="schema_format" reltype="has_a" key="name" map="" class="ojsf"/>
+			<link field="array_items" reltype="has_a" key="name" map="" class="ojsd"/>
+		</links>
+		<permacrud xmlns="http://open-ils.org/spec/opensrf/IDL/permacrud/v1">
+			<actions>
+				<create permission="ADMIN_OPENAPI" global_required="true"/>
+				<retrieve/>
+				<update permission="ADMIN_OPENAPI" global_required="true"/>
+				<delete permission="ADMIN_OPENAPI" global_required="true"/>
+			</actions>
+		</permacrud>
+	</class>
+
+	<class id="oepres" controller="open-ils.cstore open-ils.pcrud" oils_obj:fieldmapper="openapi::endpoint_response" oils_persist:tablename="openapi.endpoint_response" reporter:label="OpenAPI Endpoint Response Schemas">
+		<fields oils_persist:primary="id" oils_persist:sequence="openapi.endpoint_response_id_seq">
+			<field name="id" reporter:label="Response Schema ID" reporter:datatype="id"/>
+			<field name="endpoint" reporter:label="Endpoint" reporter:datatype="link" oils_obj:required="true"/>
+			<field name="validate" reporter:label="Validate" reporter:datatype="bool"/>
+			<field name="status" reporter:label="Status Code" reporter:datatype="int"/>
+			<field name="content_type" reporter:label="Content Type" reporter:datatype="text"/>
+			<field name="description" reporter:label="Status Description" reporter:datatype="text"/>
+			<field name="fm_type" reporter:label="Fieldmapper hint" reporter:datatype="text"/>
+			<field name="schema_type" reporter:label="JSON Schema Datatype" reporter:datatype="link"/>
+			<field name="schema_format" reporter:label="JSON Schema Data Format" reporter:datatype="link"/>
+			<field name="array_items" reporter:label="JSON Schema Array Item Datatypes" reporter:datatype="link"/>
+		</fields>
+		<links>
+			<link field="endpoint" reltype="has_a" key="operation_id" map="" class="oep"/>
+			<link field="schema_type" reltype="has_a" key="name" map="" class="ojsd"/>
+			<link field="schema_format" reltype="has_a" key="name" map="" class="ojsf"/>
+			<link field="array_items" reltype="has_a" key="name" map="" class="ojsd"/>
+		</links>
+		<permacrud xmlns="http://open-ils.org/spec/opensrf/IDL/permacrud/v1">
+			<actions>
+				<create permission="ADMIN_OPENAPI" global_required="true"/>
+				<retrieve/>
+				<update permission="ADMIN_OPENAPI" global_required="true"/>
+				<delete permission="ADMIN_OPENAPI" global_required="true"/>
+			</actions>
+		</permacrud>
+	</class>
+
+	<class id="ops" controller="open-ils.cstore open-ils.pcrud" oils_obj:fieldmapper="openapi::perm_set" oils_persist:tablename="openapi.perm_set" reporter:label="OpenAPI Permission Sets" oils_persist:restrict_primary="1001">
+		<fields oils_persist:primary="id" oils_persist:sequence="openapi.perm_set_id_seq">
+			<field name="id" reporter:label="Permission Set ID" reporter:datatype="id"/>
+			<field name="name" reporter:label="Name" reporter:datatype="text"/>
+			<field name="perms" reporter:label="Permissions" reporter:datatype="link" oils_persist:virtual="true"/>
+		</fields>
+		<links>
+			<link field="perms" reltype="has_many" key="perm_set" map="perm" class="opspm"/>
+		</links>
+		<permacrud xmlns="http://open-ils.org/spec/opensrf/IDL/permacrud/v1">
+			<actions>
+				<create permission="ADMIN_OPENAPI" global_required="true"/>
+				<retrieve/>
+				<update permission="ADMIN_OPENAPI" global_required="true"/>
+				<delete permission="ADMIN_OPENAPI" global_required="true"/>
+			</actions>
+		</permacrud>
+	</class>
+
+	<class id="opspm" controller="open-ils.cstore open-ils.pcrud" oils_obj:fieldmapper="openapi::perm_set_perm_map" oils_persist:tablename="openapi.perm_set_perm_map" reporter:label="OpenAPI Permission Set Permission Maps">
+		<fields oils_persist:primary="id" oils_persist:sequence="openapi.endpoint_set_perm_map_id_seq">
+			<field name="id" reporter:label="Endpoint Set Permission Map ID" reporter:datatype="id"/>
+			<field name="perm_set" reporter:label="Permission Set" reporter:datatype="link"/>
+			<field name="perm" reporter:label="Permission" reporter:datatype="link"/>
+		</fields>
+		<links>
+			<link field="perm_set" reltype="has_a" key="id" map="" class="ops"/>
+			<link field="perm" reltype="has_a" key="id" map="" class="ppl"/>
+		</links>
+		<permacrud xmlns="http://open-ils.org/spec/opensrf/IDL/permacrud/v1">
+			<actions>
+				<create permission="ADMIN_OPENAPI" global_required="true"/>
+				<retrieve/>
+				<update permission="ADMIN_OPENAPI" global_required="true"/>
+				<delete permission="ADMIN_OPENAPI" global_required="true"/>
+			</actions>
+		</permacrud>
+	</class>
+
+	<class id="oes" controller="open-ils.cstore open-ils.pcrud" oils_obj:fieldmapper="openapi::endpoint_set" oils_persist:tablename="openapi.endpoint_set" reporter:label="OpenAPI Endpoint Set">
+		<fields oils_persist:primary="name">
+			<field name="name" reporter:label="Set Name" reporter:datatype="id"/>
+			<field name="description" reporter:label="Set Description" reporter:datatype="text" oils_obj:required="true"/>
+			<field name="active" reporter:label="Active" reporter:datatype="bool" oils_obj:required="true"/>
+			<field name="endpoint" reporter:label="Endpoints" reporter:datatype="link" oils_persist:virtual="true"/>
+			<field name="perm_set_maps" reporter:label="Permission Set Maps" reporter:datatype="link" oils_persist:virtual="true"/>
+			<field name="perm_sets" reporter:label="Permission Sets" reporter:datatype="link" oils_persist:virtual="true"/>
+			<field name="perms" reporter:label="Direct Permissions" reporter:datatype="link" oils_persist:virtual="true"/>
+			<field name="rate_limit" reporter:label="Default Rate Limit" reporter:datatype="link"/>
+		</fields>
+		<links>
+			<link field="perm_set_maps" reltype="has_many" key="endpoint_set" map="" class="oes_perm_set_maps"/>
+			<link field="perm_sets" reltype="has_many" key="endpoint_set" map="perm_set" class="oes_perm_set_maps"/>
+			<link field="perms" reltype="has_many" key="endpoint_set" map="perm" class="oes_perm_maps"/>
+			<link field="endpoints" reltype="has_many" key="endpoint_set" map="endpoint" class="oes_maps"/>
+			<link field="rate_limit" reltype="has_a" key="id" map="" class="orld"/>
+		</links>
+		<permacrud xmlns="http://open-ils.org/spec/opensrf/IDL/permacrud/v1">
+			<actions>
+				<create permission="ADMIN_OPENAPI" global_required="true"/>
+				<retrieve/>
+				<update permission="ADMIN_OPENAPI" global_required="true"/>
+				<delete permission="ADMIN_OPENAPI" global_required="true"/>
+			</actions>
+		</permacrud>
+	</class>
+
+	<class id="oes_maps" controller="open-ils.cstore open-ils.pcrud" oils_obj:fieldmapper="openapi::endpoint_set_endpoint_map" oils_persist:tablename="openapi.endpoint_set_endpoint_map" reporter:label="OpenAPI Endpoint Set Map">
+		<fields oils_persist:primary="id" oils_persist:sequence="openapi.endpoint_set_endpoint_map_id_seq">
+			<field name="id" reporter:label="Endpoint Permission Map ID" reporter:datatype="id"/>
+			<field name="endpoint" reporter:label="Endpoint" reporter:datatype="link"/>
+			<field name="endpoint_set" reporter:label="Endpoint Set" reporter:datatype="link"/>
+		</fields>
+		<links>
+			<link field="endpoint" reltype="has_a" key="operation_id" map="" class="oep"/>
+			<link field="endpoint_set" reltype="has_a" key="name" map="" class="oes"/>
+		</links>
+		<permacrud xmlns="http://open-ils.org/spec/opensrf/IDL/permacrud/v1">
+			<actions>
+				<create permission="ADMIN_OPENAPI" global_required="true"/>
+				<retrieve/>
+				<update permission="ADMIN_OPENAPI" global_required="true"/>
+				<delete permission="ADMIN_OPENAPI" global_required="true"/>
+			</actions>
+		</permacrud>
+	</class>
+
+	<class id="oes_perm_set_maps" controller="open-ils.cstore open-ils.pcrud" oils_obj:fieldmapper="openapi::endpoint_set_perm_set_map" oils_persist:tablename="openapi.endpoint_set_perm_set_map" reporter:label="OpenAPI Endpoint Set Permission Set Maps">
+		<fields oils_persist:primary="id" oils_persist:sequence="openapi.endpoint_set_perm_set_map_id_seq">
+			<field name="id" reporter:label="Endpoint Set Permission Set Map ID" reporter:datatype="id"/>
+			<field name="endpoint_set" reporter:label="Endpoint Set" reporter:datatype="link"/>
+			<field name="perm_set" reporter:label="Permission Set" reporter:datatype="link"/>
+		</fields>
+		<links>
+			<link field="endpoint_set" reltype="has_a" key="name" map="" class="oes"/>
+			<link field="perm_set" reltype="has_a" key="id" map="" class="ops"/>
+		</links>
+		<permacrud xmlns="http://open-ils.org/spec/opensrf/IDL/permacrud/v1">
+			<actions>
+				<create permission="ADMIN_OPENAPI" global_required="true"/>
+				<retrieve/>
+				<update permission="ADMIN_OPENAPI" global_required="true"/>
+				<delete permission="ADMIN_OPENAPI" global_required="true"/>
+			</actions>
+		</permacrud>
+	</class>
+
+	<class id="oep_perm_set_maps" controller="open-ils.cstore open-ils.pcrud" oils_obj:fieldmapper="openapi::endpoint_perm_set_map" oils_persist:tablename="openapi.endpoint_perm_set_map" reporter:label="OpenAPI Endpoint Permission Set Maps">
+		<fields oils_persist:primary="id" oils_persist:sequence="openapi.endpoint_perm_set_map_id_seq">
+			<field name="id" reporter:label="Endpoint Permission Set Map ID" reporter:datatype="id"/>
+			<field name="endpoint" reporter:label="Endpoint" reporter:datatype="link"/>
+			<field name="perm_set" reporter:label="Permission_set" reporter:datatype="link"/>
+		</fields>
+		<links>
+			<link field="endpoint" reltype="has_a" key="name" map="" class="oep"/>
+			<link field="perm_set" reltype="has_a" key="id" map="" class="ops"/>
+		</links>
+		<permacrud xmlns="http://open-ils.org/spec/opensrf/IDL/permacrud/v1">
+			<actions>
+				<create permission="ADMIN_OPENAPI" global_required="true"/>
+				<retrieve/>
+				<update permission="ADMIN_OPENAPI" global_required="true"/>
+				<delete permission="ADMIN_OPENAPI" global_required="true"/>
+			</actions>
+		</permacrud>
+	</class>
+
+	<class id="oes_perm_maps" controller="open-ils.cstore open-ils.pcrud" oils_obj:fieldmapper="openapi::endpoint_set_perm_map" oils_persist:tablename="openapi.endpoint_set_perm_map" reporter:label="OpenAPI Endpoint Set Permission Maps">
+		<fields oils_persist:primary="id" oils_persist:sequence="openapi.endpoint_set_perm_map_id_seq">
+			<field name="id" reporter:label="Endpoint Set Permission Map ID" reporter:datatype="id"/>
+			<field name="endpoint_set" reporter:label="Endpoint Set" reporter:datatype="link"/>
+			<field name="perm" reporter:label="Permission" reporter:datatype="link"/>
+		</fields>
+		<links>
+			<link field="endpoint_set" reltype="has_a" key="name" map="" class="oes"/>
+			<link field="perm" reltype="has_a" key="name" map="" class="ppl"/>
+		</links>
+		<permacrud xmlns="http://open-ils.org/spec/opensrf/IDL/permacrud/v1">
+			<actions>
+				<create permission="ADMIN_OPENAPI" global_required="true"/>
+				<retrieve/>
+				<update permission="ADMIN_OPENAPI" global_required="true"/>
+				<delete permission="ADMIN_OPENAPI" global_required="true"/>
+			</actions>
+		</permacrud>
+	</class>
+
+	<class id="oep_perm_maps" controller="open-ils.cstore open-ils.pcrud" oils_obj:fieldmapper="openapi::endpoint_perm_map" oils_persist:tablename="openapi.endpoint_perm_map" reporter:label="OpenAPI Endpoint Permission Maps">
+		<fields oils_persist:primary="id" oils_persist:sequence="openapi.endpoint_set_endpoint_map_id_seq">
+			<field name="id" reporter:label="Endpoint Set Endpoint Map ID" reporter:datatype="id"/>
+			<field name="endpoint" reporter:label="Endpoint" reporter:datatype="link"/>
+			<field name="perm" reporter:label="Permission" reporter:datatype="link"/>
+		</fields>
+		<links>
+			<link field="endpoint" reltype="has_a" key="operation_id" map="" class="oep"/>
+			<link field="perm" reltype="has_a" key="name" map="" class="ppl"/>
+		</links>
+		<permacrud xmlns="http://open-ils.org/spec/opensrf/IDL/permacrud/v1">
+			<actions>
+				<create permission="ADMIN_OPENAPI" global_required="true"/>
+				<retrieve/>
+				<update permission="ADMIN_OPENAPI" global_required="true"/>
+				<delete permission="ADMIN_OPENAPI" global_required="true"/>
+			</actions>
+		</permacrud>
+	</class>
+
+
+	<class id="oaal" controller="open-ils.cstore" oils_obj:fieldmapper="openapi::authen_attempt_log" oils_persist:tablename="openapi.authen_attempt_log" reporter:label="OpenAPI Authentication Attempt Log">
+		<fields oils_persist:primary="request_id">
+			<field name="request_id" reporter:label="Request ID" reporter:datatype="text"/>
+			<field name="attempt_time" reporter:label="Attempt Time" reporter:datatype="timestamp"/>
+			<field name="ip_addr" reporter:label="IP Address" reporter:datatype="text"/>
+			<field name="cred_user" reporter:label="User Credential" reporter:datatype="text"/>
+			<field name="token" reporter:label="Authentication Token" reporter:datatype="text"/>
+			<field name="dispatch_log_entry" reporter:label="Dispatch Log Entry" reporter:datatype="link" oils_persist:virtual="true"/>
+		</fields>
+		<links>
+			<link field="dispatch_log_entry" reltype="might_have" key="request_id" map="" class="oedl"/>
+		</links>
+	</class>
+
+	<class id="oeaal" controller="open-ils.cstore" oils_obj:fieldmapper="openapi::endpoint_access_attempt_log" oils_persist:tablename="openapi.endpoint_access_attempt_log" reporter:label="OpenAPI Endpoint Access Attempt Log">
+		<fields oils_persist:primary="request_id">
+			<field name="request_id" reporter:label="Request ID" reporter:datatype="text"/>
+			<field name="endpoint" reporter:label="Endpoint" reporter:datatype="link"/>
+			<field name="attempt_time" reporter:label="Request Time" reporter:datatype="timestamp"/>
+			<field name="ip_addr" reporter:label="IP Address" reporter:datatype="text"/>
+			<field name="accessor" reporter:label="API Accessor" reporter:datatype="text"/>
+			<field name="allowed" reporter:label="Access Permitted?" reporter:datatype="bool"/>
+			<field name="token" reporter:label="Authentication Token" reporter:datatype="text"/>
+			<field name="dispatch_log_entry" reporter:label="Dispatch Log Entry" reporter:datatype="link" oils_persist:virtual="true"/>
+		</fields>
+		<links>
+			<link field="endpoint" reltype="has_a" key="operation_id" map="" class="oep"/>
+			<link field="accessor" reltype="has_a" key="name" map="" class="au"/>
+			<link field="dispatch_log_entry" reltype="might_have" key="request_id" map="" class="oedl"/>
+		</links>
+	</class>
+
+	<class id="oedl" controller="open-ils.cstore" oils_obj:fieldmapper="openapi::endpoint_dispatch_log" oils_persist:tablename="openapi.endpoint_dispatch_log" reporter:label="OpenAPI Endpoint Dispatch Log">
+		<fields oils_persist:primary="request_id">
+			<field name="request_id" reporter:label="Request ID" reporter:datatype="text"/>
+			<field name="complete_time" reporter:label="Complete Time" reporter:datatype="timestamp"/>
+			<field name="error" reporter:label="Access Permitted?" reporter:datatype="bool"/>
+			<field name="authen_log_entry" reporter:label="Authentication Log Entry" reporter:datatype="link" oils_persist:virtual="true"/>
+			<field name="endpoint_log_entry" reporter:label="Endpoint Access Log Entry" reporter:datatype="link" oils_persist:virtual="true"/>
+		</fields>
+		<links>
+			<link field="authen_log_entry" reltype="might_have" key="request_id" map="" class="oaal"/>
+			<link field="endpoint_log_entry" reltype="might_have" key="request_id" map="" class="oeaal"/>
+		</links>
 	</class>
 
 	<!-- Simple Reporter classes are currently used only by the SR UI -->

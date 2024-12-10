@@ -1,0 +1,1016 @@
+#!/usr/bin/perl
+
+# ---------------------------------------------------------------
+# Copyright (C) 2024 Equinox Open Library Initiative, Inc.
+# Mike Rylander <mrylander@gmail.com>
+# Galen Charlton <gmc@equinoxOLI.org>
+
+# This program is free software; you can redistribute it and/or
+# modify it under the terms of the GNU General Public License
+# as published by the Free Software Foundation; either version 2
+# of the License, or (at your option) any later version.
+
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+# ---------------------------------------------------------------
+
+# Add an nginx config block to the https section:
+#
+# location /openapi3 {
+#     proxy_pass https://localhost:8080;
+#     proxy_set_header Host $host;
+#     proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+#     proxy_set_header X-Forwarded-Proto $scheme;
+#     proxy_read_timeout 300s;
+# }
+#
+#
+# And start it up like this:
+#
+# /openils/bin/openapi_server prefork -m production -l https://localhost:8080
+#
+#
+# For server option details, see: https://docs.mojolicious.org/Mojolicious/Guides/Cookbook#DEPLOYMENT
+#
+
+
+use strict;
+use warnings;
+
+my $U = "OpenILS::Application::AppUtils";
+
+package OpenILS::APIServer;
+
+use MIME::Base64;
+use Scalar::Util qw/blessed/;
+use Types::Serialiser;
+use Mojolicious::Lite;
+use OpenSRF::System;
+use OpenSRF::AppSession;
+use OpenSRF::Utils::SettingsClient;
+use OpenSRF::EX qw(:try);
+use OpenILS::Utils::Fieldmapper;
+use OpenILS::Application::AppUtils;
+use OpenILS::Utils::CStoreEditor q/new_editor/;
+use OpenSRF::Utils::Logger q/$logger/;
+use Data::Dumper;
+
+#-------------------------------------------------
+# globals and setup
+
+my $osrf_config = '/openils/conf/opensrf_core.xml';
+my $rev_proxy_levels = $ENV{EG_REV_PROXY_LEVELS} // 1;
+
+OpenSRF::System->bootstrap_client(config_file => $osrf_config);
+
+Fieldmapper->import(
+    IDL => OpenSRF::Utils::SettingsClient->new->config_value("IDL")
+);
+
+OpenILS::Utils::CStoreEditor->init;
+
+#-------------------------------------------------
+# Build the OpenAPI 3 config blob
+
+my $config = {
+  openapi => "3.0.3",
+  info => {
+    description => "RESTful API for the Evergreen ILS",
+    version => "1.0.0",
+    title => "Evergreen API",
+    license => {
+      name => "GNU Public License 2.0+"
+    }
+  },
+  servers => [
+    { url => "/openapi3/v1" }
+  ],
+  tags => [],
+  components => {
+    securitySchemes => {
+      basicAuth => { # /only/ used to get a token, handler does the actual auth and the plugin sub is just a passthrough
+        type   => "http",
+        scheme => "basic"
+      },
+      passthroughUser => { # /only/ used to get a token, handler does the actual auth and the plugin sub is just a passthrough
+        type => "apiKey",
+        in   => "query",
+        name => "u"
+      },
+      passthroughPass => { # /only/ used to get a token, handler does the actual auth and the plugin sub is just a passthrough
+        type => "apiKey",
+        in   => "query",
+        name => "p"
+      },
+      bearerAuth => {
+        type   => "http",
+        scheme => "bearer"
+      },
+      cookieAuth => {
+        type => "apiKey",
+        in   => "cookie",
+        name => "eg.api.token"
+      },
+      paramAuth => {
+        type => "apiKey",
+        in   => "query",
+        name => "ses"
+      }
+    },
+    schemas => generate_schemas()
+  }
+};
+
+# gather tags (endpoint sets)...
+add_endpoint_sets();
+
+# ... and, finally, gather the registered paths ...
+add_dynamic_endpoints();
+
+#-------------------------------------------------
+# Finally, let the openapi plugin do it's thing
+
+plugin OpenAPI => {
+    #skip_validating_specification => 1,
+    spec     => JSON::Validator::Schema::OpenAPIv3::Evergreen->new($config),
+    security => {
+        basicAuth  => sub { return $_[3]->($_[0]) }, # basic auth is only used for initial login
+        bearerAuth => sub { return securityCheck(bearerAuth => @_) },
+        cookieAuth => sub { return securityCheck(cookieAuth => @_) },
+        paramAuth  => sub { return securityCheck(paramAuth  => @_) }
+    },
+};
+
+# We should be behind a reverse proxy, probably nginx. Set the
+# env var EG_REV_PROXY_LEVELS to the depth of the reverse proxy
+# stack that YOU control. Theoretically, that could even be "0"
+# if you were to expose this API server directly to clients.
+plugin ForwardedFor => { levels => $rev_proxy_levels };
+
+#-------------------------------------------------
+# Almost ready to go...
+
+app->hook(after_dispatch => sub { log_authenticated_dispatch_event(@_) });
+app->hook(after_dispatch => sub { $_[0]->res->headers->remove('Server') });
+
+# XXX If we want to use session cookies we'll need to come
+# up with a better way to set secrets().
+app->secrets(scalar time)->start;
+
+
+
+
+
+
+
+#-------------------------------------------------
+# Support functions
+
+sub add_dynamic_endpoints {
+    my $paths = new_editor()->json_query({
+        distinct => 1,
+        select   => { oep => ['path'] },
+        from     => 'oep',
+        where    => { active => 't' }
+    });
+
+    # ... and register all their HTTP method handlers ...
+    for my $path (map {$$_{path}} @$paths) {
+        $logger->info("Loading path configuration for: $path");
+        my $path_config = fetch_path_config($path);
+        add_path($path => $_ => @{$$path_config{$_}}) for keys %$path_config;
+    }
+}
+
+sub add_endpoint_sets {
+    my $tags = new_editor()->search_openapi_endpoint_set({ active => 't' });
+    $logger->info(
+        "Loading endpoint sets (OpenAPI tags): ".join(' ', map { $_->name} @$tags)
+    ) if @$tags;
+
+    $$config{tags} ||= [];
+    for my $tag (@$tags) {
+        if (!grep {$$_{name} eq $tag->name} @{$$config{tags}}) {
+            push @{$$config{tags}}, {name => $tag->name, description => $tag->description};
+        }
+    }
+}
+
+sub _build_handler_params {
+    my $c = shift;
+    my $pdef = shift || [];
+
+    my @params;
+    for my $part (@$pdef) {
+        if ($part =~ /^(["'])(.*?)\1$/) { # a quoted literal? just pass it along
+            push @params, $2;
+            next;
+        }
+
+        my $c_method = 'stash'; # assume stash for unqualified part names
+        my @subparts = split /\./, $part;
+
+        # useful prefixes: stash [every_]param [every_|signed_]cookie req session
+        if (scalar(@subparts) > 1) { # has a .?
+            $c_method = shift @subparts;
+        }
+
+        # req needs a little shoving around to be useful. the others
+        # (generally) are generalized accessor/mutator objects, req
+        # is an object with methods we want to call.
+        my $context_obj = $c;
+        if ($c_method eq 'req') {
+            $c_method = shift @subparts;
+            $context_obj = $c->req;
+        }
+
+        push @params, $context_obj->$c_method(@subparts);
+    }
+
+    return @params;
+}
+
+# returns renderer handler name, sets $c->stash('eg_req_resolved_content_type'), and might set $c->stash('format')
+sub resolve_requested_render_type {
+    my $c = shift;
+    my $endpoint = shift;
+
+    my $validated = 0;
+    my @resp_types = qw#application/json#;
+
+    if (!ref($endpoint)) {
+        $validated = $endpoint;
+    } else {
+        $validated = grep { $U->is_true($_->validate) and $_->status == 200 } @{$endpoint->responses};
+        @resp_types = map { $_->content_type } @{$endpoint->responses};
+    }
+
+    my %default_tokens;
+    if (my $accept_tokens = $c->req->headers->header('X-EG-OpenAPI-Options')) {
+        $accept_tokens =~ s/^\s+|\s+$//g;
+        $c->app->log->trace("Received options [$accept_tokens] via header [X-EG-OpenAPI-Options] operationId: ".$c->stash('operationId'));
+
+        my @parts = split ';', $accept_tokens;
+        for my $part (@parts) {
+            my ($token_key, $token_value) = split '=', $part;
+            if (defined($token_key) and defined($token_value)) {
+                $token_key =~ s/^\s+|\s+$//g;
+                $token_value =~ s/^\s+|\s+$//g;
+                $default_tokens{$token_key} = $token_value;
+                $c->app->log->trace("Adding default Accept header option [$token_key] with value [$token_value] via header [X-EG-OpenAPI-Options] for operationId: ".$c->stash('operationId'));
+            }
+        }
+    }
+
+    my $hdr = $c->req->headers->accept || '';
+    $hdr =~ s/^\s+|\s+$//g;
+
+    unless ($hdr) { # assume JSON, maybe validated
+        return $validated ? 'openapi' : 'json';
+    }
+
+    my @opt_request_list = split ',', $hdr;
+    my $default_order_val = scalar @opt_request_list;
+
+    my @all_opts;
+    for my $option (@opt_request_list) {
+        my $specificity_qual = 0;
+        my $order_qual = $default_order_val--;
+        my $user_qual = 1.0;
+        my $tokens = { map {($_ => $default_tokens{$_})} keys %default_tokens };
+
+        $option =~ s/^\s+|\s+$//g;
+
+        my ($type, @other) = split ';', $option;
+        $type =~ s/^\s+|\s+$//g;
+
+        my ($main_type, $sub_type) = split '/', $type;
+        $specificity_qual++ if ($main_type ne '*');
+        $specificity_qual++ if ($sub_type ne '*');
+
+        for my $maybe_qual (@other) {
+            $maybe_qual =~ s/^\s+|\s+$//g;
+
+            my ($token_key, $token_value) = split '=', $maybe_qual;
+            if (defined($token_key) and defined($token_value)) {
+                $token_key =~ s/^\s+|\s+$//g;
+                $token_value =~ s/^\s+|\s+$//g;
+                $$tokens{$token_key} = $token_value;
+            }
+        }
+
+        # we only use the q=$weight part, but record the rest, I guess
+        $user_qual *= $$tokens{q}
+            if (exists($$tokens{q}) and $$tokens{q} =~ /^\d+(?:\.\d+)?$/);
+
+        push @all_opts, {
+            full_type => $type,
+            main_type => $main_type,
+            sub_type  => $sub_type,
+            tokens    => $tokens,
+            oqual     => $order_qual,
+            squal     => $specificity_qual,
+            uqual     => $user_qual
+        };
+    }
+
+    @all_opts = sort { # sort on weight/specificity/order
+        $$b{uqual} <=> $$a{uqual} || # order they asked for via q-metric, larger is first
+        $$b{squal} <=> $$a{squal} || # specific rather than wildcard, more specific (larger) is first
+        $$b{oqual} <=> $$a{oqual}    # order specified by the user; counts down, so larger is first
+    } @all_opts;
+
+    $c->stash(eg_req_accepts => \@all_opts);
+
+    my ($have_xml) = grep { /xml$/ } @resp_types;
+    my ($have_json) = grep { /json$/ } @resp_types;
+    my ($have_html) = grep { /^text\/html$/ } @resp_types;
+    my ($have_text) = grep { /^text\/plain$/ } @resp_types;
+    my ($have_binary) = grep { /octet/ } @resp_types;
+
+    for my $req_opt (@all_opts) {
+        my $want_xml = ($$req_opt{sub_type} =~ /xml$/) ? 1 : 0;
+        my $want_json = ($$req_opt{sub_type} =~ /json$/) ? 1 : 0;
+        my $want_html = ($$req_opt{full_type} eq 'text/html') ? 1 : 0;
+        my $want_text = ($$req_opt{main_type} =~ /^text/) ? 1 : 0;
+        my $want_binary = ($$req_opt{sub_type} =~ /octet/) ? 1 : 0;
+
+        if ($want_xml and $have_xml) {
+            $c->res->headers->content_type($have_xml);
+            $c->stash(format => 'xml');
+            $c->stash(eg_req_resolved_content_type_object => $req_opt);
+            $c->stash(eg_req_resolved_content_format => 'xml');
+            $c->stash(eg_req_resolved_content_renderer => 'text');
+        } elsif ($want_json and $have_json) {
+            $c->res->headers->content_type($have_json);
+            $c->stash(eg_req_resolved_content_type_object => $req_opt);
+            $c->stash(eg_req_resolved_content_format => 'json');
+            $c->stash(eg_req_resolved_content_renderer => $validated ? 'openapi' : 'json');
+        } elsif ($want_html and $have_html) {
+            $c->res->headers->content_type($have_html);
+            $c->stash(format => 'html');
+            $c->stash(eg_req_resolved_content_type_object => $req_opt);
+            $c->stash(eg_req_resolved_content_format => 'html');
+            $c->stash(eg_req_resolved_content_renderer => 'html');
+        } elsif ($want_text and $have_text) {
+            $c->res->headers->content_type($have_text);
+            $c->stash(eg_req_resolved_content_type_object => $req_opt);
+            $c->stash(eg_req_resolved_content_format => 'text');
+            $c->stash(eg_req_resolved_content_renderer => 'text');
+        } elsif ($want_binary and $have_binary) {
+            $c->res->headers->content_type($have_binary);
+            $c->stash(eg_req_resolved_content_type_object => $req_opt);
+            $c->stash(eg_req_resolved_content_format => 'binary');
+            $c->stash(eg_req_resolved_content_renderer => 'data');
+        }
+
+        return $c->stash('eg_req_resolved_content_renderer')
+            if ($c->stash('eg_req_resolved_content_renderer'));
+    }
+
+    # push the default tokens from the X-EG-OpenAPI-Options header into the environment
+    $c->stash(eg_req_resolved_content_type_object => { tokens => \%default_tokens });
+
+    # found nothing matching above, we'll just use a default
+    return $validated ? 'openapi' : 'json';
+}
+
+sub automated_handler_wrapper {
+    my $endpoint = shift;
+    my $param_text = $endpoint->method_params || '';
+    my $plist = [grep {$_} split /\s+/, $param_text];
+
+    # opensrf app names contain .s
+    return opensrf_passthrough_wrapper( $endpoint->method_source, $endpoint->method_name, $plist, $endpoint )
+        if ($endpoint->method_source =~ /\./);
+
+    # must be an MJ controller method
+    my $pkg = $endpoint->method_source;
+
+    my $built_in = $pkg.'::VERSION';
+    {   no strict 'refs';
+        # check to see if we already have the namespace, somehow
+        unless (eval '$'.$built_in) {
+            $pkg->use or die $@;
+        }
+    }
+
+    my $code = $pkg . '::' . $endpoint->method_name;
+    return basic_handler_wrapper($plist => $code => $endpoint);
+}
+
+sub is_rendered_success_type {
+    my $type = shift;
+    my $ep = shift;
+    my $renderer = shift;
+    return 0 unless ( grep {$renderer eq $_} qw/json openapi/ );
+
+    my ($success_res) = grep {$_->status == 200} @{$ep->responses};
+    return 0 unless $success_res;
+
+    return $success_res->schema_type eq $type ? 1 : 0;
+}
+
+sub basic_handler_wrapper {
+    my $stash_parts = shift;
+    my $code = shift;
+    my $endpoint = shift;
+
+    return sub {
+        my $c = shift->openapi->valid_input or return;
+        apply_locale($c);
+
+        my $renderer = resolve_requested_render_type($c, $endpoint);
+        my @params = _build_handler_params($c, $stash_parts);
+
+        my $result;
+        try {
+            if (ref($code) and ref($code) eq 'CODE') { # code ref, run it directly
+                $result = $code->( $c, @params );
+            } else { # not a code ref, must be a package-qualified function name, call it
+                no strict 'refs';
+                $result = &{$code}($c, @params );
+            }
+        } catch Error with {
+            my $e = shift;
+            $result = { error => $e };
+            $c->res->code(500);
+        };
+
+
+        if ($c->res->is_error) {
+            $renderer = ref($result) ? 'json' : 'text';
+            $result //= '';
+        } elsif (!ref($result) and is_rendered_success_type(boolean => $endpoint, $renderer)) {
+            $result = JSON_bool($result);
+        } elsif (!ref($result) and is_rendered_success_type(integer => $endpoint, $renderer)) {
+            $result = 0+$result;
+        } elsif (!ref($result) and is_rendered_success_type(number => $endpoint, $renderer)) {
+            $result = 0.0+$result;
+        } elsif (!ref($result) and is_rendered_success_type(string => $endpoint, $renderer)) {
+            $result = ''.$result;
+        }
+
+        return $c->render( $renderer => to_bare_mixed_ref( $result, $c ) );
+    };
+}
+
+sub opensrf_passthrough_wrapper {
+    my $service = shift;
+    my $method = shift;
+    my $stash_parts = shift;
+    my $endpoint = shift;
+
+    return sub {
+        my $c = shift->openapi->valid_input or return;
+        apply_locale($c);
+
+        my $renderer = resolve_requested_render_type($c, $endpoint);
+
+        my $result;
+
+        try {
+            $result = $U->simplereq(
+                $service => $method,
+                _build_handler_params($c, $stash_parts)
+            );
+
+            # TODO: Some OpenSRF methods only communicate ILS Events, so
+            # this may need to be thought through a bit before enabling.
+            #
+            # throw $result if ($U->is_event($result) and $result->{textcode} ne 'SUCCESS');
+
+        } catch Error with {
+            my $e = shift;
+            $result = { error => $e };
+            $c->res->code(500);
+        };
+
+        if ($c->res->is_error) {
+            $renderer = ref($result) ? 'json' : 'text';
+            $result //= '';
+        } elsif (!ref($result) and is_rendered_success_type(boolean => $endpoint, $renderer)) {
+            $result = JSON_bool($result);
+        } elsif (!ref($result) and is_rendered_success_type(integer => $endpoint, $renderer)) {
+            $result = 0+$result;
+        } elsif (!ref($result) and is_rendered_success_type(number => $endpoint, $renderer)) {
+            $result = 0.0+$result;
+        } elsif (!ref($result) and is_rendered_success_type(string => $endpoint, $renderer)) {
+            $result = ''.$result;
+        }
+        return $c->render( $renderer => to_bare_mixed_ref( $result, $c ) );
+    };
+}
+
+sub construct_subschema {
+    my $thing = shift; # fm object from openapi.endpoint_param or openapi.endpoint_response
+
+    my $new_subschema = {};
+    my $working = $new_subschema;
+
+    my $stype = $thing->schema_type;
+    if ($stype and $stype eq 'array') {
+        $$working{type} = 'array';
+        $$working{items} = {};
+        $working = $$working{items};
+        $stype = $thing->array_items;
+    } elsif ($thing->can('default_value')) {
+        $$working{default} = $thing->default_value if $thing->default_value;
+    }
+
+    if ($thing->fm_type) {
+        $$working{'$ref'} = '#/components/schemas/'.$thing->fm_type;
+    } elsif ($stype) {
+        $$working{type} = $stype;
+        $$working{format} = $thing->schema_format if ($thing->schema_format);
+    } else { # no fm_type, no schema_type, allow anything
+        # See: https://swagger.io/docs/specification/v3_0/data-models/data-types/#any-type and schema def
+        $$working{'$ref'} = '#/components/schemas/AnyValue';
+    }
+
+    return $new_subschema;
+}
+
+sub JSON_bool {
+    my $val = shift;
+    return $U->is_true($val) ? Types::Serialiser::true : Types::Serialiser::false;
+}
+
+our %_path_config_cache;
+sub fetch_path_config {
+    my $path = shift;
+    my $force = shift;
+
+    if (defined($_path_config_cache{$path}) and !$force) {
+        return $_path_config_cache{$path};
+    }
+
+    my $e = new_editor();
+    my $path_configs = $e->search_openapi_endpoint([
+        {path => $path, active => 't'},
+        {flesh => 3,
+         flesh_fields =>
+            { oep => [qw/perms perm_sets endpoint_sets parameters responses/], # openapi.endpoint
+              oes => [qw/perms perm_sets/], # openapi.endpoint_set
+              ops => [qw/perms/] # openapi.perm_set
+            }
+        }
+    ]);
+
+    $_path_config_cache{$path} = {}; # reset it on new or forced reload
+    for my $op ( @$path_configs ) {
+        my $p = $_path_config_cache{$path}{$op->http_method} = {
+            operationId => $op->operation_id,
+            summary => $op->summary,
+            tags => [map {$_->name} grep {$_->active eq 't'} @{$op->endpoint_sets}],
+        };
+
+        $$p{parameters} = [
+            map {{ required => JSON_bool($_->required), name => $_->name, in => $_->in_part, schema => construct_subschema($_) }} @{$op->parameters}
+        ] if @{$op->parameters};
+
+        # gather groups of permissions
+        my @perm_defs;
+
+        push @perm_defs, map {$_->code} @{$op->perms}; # perms assigned to the operationId, each allows access by itself
+        for my $pset (@{$op->perm_sets}) {
+            push @perm_defs, join(',', map {$_->code} @{$pset->perms}); # perms for each directly attached perm set, all are required for access
+        }
+        for my $eset (@{$op->endpoint_sets}) {
+            push @perm_defs, map {$_->code} @{$op->perms}; # perms assigned to an endpoint_set (tag) that this operationId belongs to, each allows access by itself
+            for my $pset (@{$eset->perm_sets}) {
+                push @perm_defs, join(',', map {$_->code} @{$pset->perms}); # perms for each endpoint_set attached perm set, all are required for access
+            }
+        }
+
+        # Wire up the perms we found
+        $$p{security} = [{$op->security => ['operationId:'.$op->operation_id, @perm_defs]}];
+
+        $$p{responses} = {};
+        for my $res (@{$op->responses}) {
+            $$p{responses}{$res->status} ||= {
+                description => $res->description,
+                content => {}
+            };
+            $$p{responses}{$res->status}{content}{$res->content_type} = {
+                schema => construct_subschema($res)
+            };
+        }
+
+        # Provide a sane success response schema, even though it won't be validated
+        $$p{responses}{200} ||= {
+            description => 'Success',
+            content => {
+                'application/json' => {
+                    schema => { '$ref' => '#/components/schemas/AnyValue' }
+                }
+            }
+        };
+
+        $_path_config_cache{$path}{$op->http_method} = [$p => automated_handler_wrapper($op)];
+    }
+
+    return $_path_config_cache{$path};
+}
+
+sub add_path {
+    my $path = shift;
+    (my $oapath = $path) =~ s/:(\w+)/{$1}/g;
+
+    while (@_) {
+        my $method = shift;
+        my $def= shift;
+        my $handler = shift;
+
+        $method = [$method] unless ref $method;
+
+        for my $m (@$method) {
+            my $m_def = { %$def };
+
+            # We only disambiguate when multiple HTTP methods
+            # are registered with one operation id.  The in-db
+            # config cannot do that, so it's just some builtins
+            # and early prototyping methods.
+            $$m_def{operationId} .= "_$m" if @$method > 1;
+
+            unless (exists $$config{paths}{$oapath}{$m}) {
+                $$config{paths}{$oapath}{$m} = $m_def;
+                $m = 'del' if ($m eq 'delete'); # for registration via del()
+
+                my $defaults = {
+                    operationId => $$m_def{operationId},
+                    log_error   => 0,
+                    log_allowed => 0
+                };
+
+                &{\&{$m}}( # get, post, put, patch, del, etc, from MJ::L
+                    $path => $defaults => $handler => $$m_def{operationId}
+                );
+            }
+        }
+    }
+}
+
+sub _t_f {
+    my $bool = shift;
+    return 'f' if ($bool and $bool eq 'f');
+    return !!$bool ? 't' : 'f';
+}
+
+sub log_authentication_attempt {
+    my $c = shift;
+    my $user = shift;
+    my $token = shift;
+
+    my $authen_attempt_log = Fieldmapper::openapi::authen_attempt_log->new;
+    $authen_attempt_log->request_id( $c->req->request_id );
+    $authen_attempt_log->ip_addr( $c->forwarded_for );
+    $authen_attempt_log->cred_user( $user );
+    $authen_attempt_log->token( $token );
+
+    my $e = new_editor(xact=>1);
+    $e->create_openapi_authen_attempt_log($authen_attempt_log);
+    $e->commit;
+}
+
+sub log_authenticated_dispatch_event {
+    my $c = shift;
+
+    my $oep_dispatch_log = Fieldmapper::openapi::endpoint_dispatch_log->new;
+    $oep_dispatch_log->request_id( $c->req->request_id );
+    $oep_dispatch_log->error( _t_f($c->stash('log_error')) );
+
+    my $e = new_editor(xact=>1);
+    $e->create_openapi_endpoint_dispatch_log($oep_dispatch_log);
+    $e->commit;
+}
+
+sub log_authenticated_endpoint_access_attempt_event {
+    my $c = shift;
+
+    my $oep_access_log = Fieldmapper::openapi::endpoint_access_attempt_log->new;
+    $oep_access_log->request_id( $c->req->request_id );
+    $oep_access_log->token( $c->stash('eg_auth_token') );
+    $oep_access_log->ip_addr( $c->forwarded_for );
+    $oep_access_log->accessor( $c->stash('eg_user_id') );
+    $oep_access_log->endpoint( $c->stash('operationId') );
+    $oep_access_log->allowed( _t_f($c->stash('log_allowed')) );
+
+    my $e = new_editor(xact=>1);
+    $e->create_openapi_endpoint_access_attempt_log($oep_access_log);
+    $e->commit;
+}
+
+sub securityCheck {
+    my ($type, $c, $definition, $scopes, $cb) = @_;
+    $scopes = ref($scopes) ? [@$scopes] : [$scopes]; # make a copy, and make it an arrayref
+
+    if ($$scopes[0] =~ /^operationId:(\S+)/) { # special scope value marker for passing OpId to the under() handler
+        $c->stash(operationId => $1);
+        shift @$scopes
+    }
+
+    return $cb->($c) if ($U->is_true($c->stash('log_allowed'))); # already successfully completed, move on
+
+    my $fail_message = 'Request not allowed'; # generic error message
+    $c->app->log->trace("Security check [$type] for operationId: ".$c->stash('operationId'));
+
+    my $ses = [split ' ', $c->req->headers->authorization // '']->[-1]
+        || $c->cookie('eg.api.token')
+        || $c->cookie('eg.auth.token')
+        || $c->cookie('ses')
+        || $c->req->param('ses')
+        // '';
+
+    $ses =~ s/\s+//;
+    $ses =~ s/^%22//; $ses =~ s/%22$//;
+    $ses =~ s/^['"]//; $ses =~ s/['"]$//;
+
+    if (!$ses) {
+        $fail_message = 'No authtoken provided';
+    } else {
+        $c->app->log->trace("Received auth token: $ses");
+        $c->stash(eg_auth_token => $ses);
+
+        my ($user_obj, $evt) = $U->checkses($ses);
+        if ($evt) {
+            log_authenticated_endpoint_access_attempt_event($c);
+            $fail_message = 'Invalid session';
+        } else {
+            $c->stash(eg_user_obj => $user_obj);
+            $c->stash(eg_user_id => $user_obj->id);
+
+            $c->app->log->trace("Stash updated for user: ".$c->stash('eg_user_id'));
+
+            my $pass = @$scopes ? 0 : 1; # No perms necessary? You can proceed.
+            for my $s (@$scopes) {
+                my $evt = $U->check_perms($user_obj->id, $user_obj->home_ou, split(',',$s));
+                $pass++ unless $evt;
+            }
+
+            if (!$pass) {
+                $fail_message = 'Permission denied';
+            } else {
+                my $throttle_user = check_request_limits(
+                    $c->stash('operationId'),
+                    $c->stash('eg_user_id'),
+                    $c->forwarded_for
+                );
+
+                if ($throttle_user) {
+                    $fail_message = 'Rate limit exceeded';
+                    $c->res->code(429);
+                    $c->res->headers->header('Retry-After' => $throttle_user);
+                } else {
+                    $fail_message = undef; # we did it! no failure!
+                    $c->stash(log_allowed => 1);
+                }
+            }
+        }
+    }
+
+    log_authenticated_endpoint_access_attempt_event($c);
+    return $cb->($c => $fail_message);
+}
+
+sub check_request_limits {
+    my $endpoint = shift;
+    my $user = shift;
+    my $ip = shift;
+
+    my $limits = new_editor()->json_query({from => ['openapi.check_generic_endpoint_rate_limit', $endpoint, $user, $ip]});
+    return $$limits[0]{'openapi.check_generic_endpoint_rate_limit'} if @$limits;
+
+    return undef; # proceed
+}
+
+sub generate_schemas {
+    my %schemas = (AnyValue => {nullable => Types::Serialiser::true});
+    for my $c (Fieldmapper->classes) {
+        my $h = $c->json_hint;
+        my $required = $c->Identity;
+
+        $schemas{$h} = {
+            type       => 'object',
+            properties => {},
+        };
+
+        for my $p ($c->properties) {
+            my $info = $c->FieldInfo($p);
+
+            my $real_type = $$info{primitive} || $$info{datatype} || '';
+            my $type = $$info{datatype} || 'text';
+            my $format;
+            my $nullable = !$$info{required} ? Types::Serialiser::true : Types::Serialiser::false;
+
+            #XXX Fixing some broken data
+            $type = 'string' if ($real_type eq 'string' and $type eq 'float');
+            $nullable = Types::Serialiser::true if ($h eq 'au' and $p eq 'passwd');
+
+            if ($type eq 'timestamp') {
+                ($type,$format) = (string => 'date-time');
+            } elsif ($type eq 'id') {
+                ($type,$format) = (string => 'identifier');
+            } elsif ($type eq 'text') {
+                ($type,$format) = (string => undef);
+            } elsif ($type eq 'money') {
+                ($type,$format) = (string => 'money');
+            } elsif ($type eq 'bool') {
+                ($type,$format) = (boolean => undef);
+            } elsif ($type eq 'org_unit') {
+                ($type,$format) = (link => undef);
+            } elsif ($type eq 'int') {
+                ($type,$format) = (integer => 'int64');
+            } elsif ($type eq 'number' || $type eq 'float') {
+                ($type,$format) = (number => 'float');
+            } elsif ($type eq 'interval') {
+                ($type,$format) = (string => 'interval');
+            } elsif ($type ne 'link') {
+                ($type,$format) = (string => undef);
+            }
+
+            my $ref;
+            if ($type eq 'link' and my $link = $c->FieldLink($p)) {
+                $ref = { oneOf => [ { format => $$link{class}, type => 'string', nullable => $nullable }, { '$ref' => "#/components/schemas/$$link{class}" } ] };
+                $ref = $$link{reltype} eq 'has_many' ?  { nullable => $nullable, type => array => items => $ref } : $ref;
+            } else {
+                $type = 'string' if $type eq 'link'; # fallback
+                $ref = { nullable => $nullable, type => $type };
+                #$$ref{format} = $format if ($format);
+            }
+
+            $schemas{$h}{properties}{$p} = $ref
+        }
+    }
+    return \%schemas;
+}
+
+sub apply_locale {
+    OpenSRF::AppSession->reset_locale;
+    OpenSRF::AppSession->default_locale(
+        parse_eg_locale(
+            parse_accept_lang($_[0]->req->headers->accept_language) || 'en_us'
+        )
+    );
+}
+
+sub parse_accept_lang {
+    my $al = shift;
+    return undef unless $al;
+    my ($locale) = split(/,/, $al);
+    ($locale) = split(/;/, $locale);
+    return undef unless $locale;
+    $locale =~ s/-/_/og;
+    return $locale;
+}
+
+# Accept-Language uses locales like 'en', 'fr', 'fr_fr', while Evergreen
+# internally uses 'en-US', 'fr-CA', 'fr-FR' (always with the 2 lowercase,
+# hyphen, 2 uppercase convention)
+sub parse_eg_locale {
+    my $ua_locale = shift || 'en_us';
+
+    $ua_locale =~ m/^(..).?(..)?$/;
+    my $lang_code = lc($1);
+    my $region_code = $2 ? uc($2) : uc($1);
+    return "$lang_code-$region_code";
+}
+
+sub to_bare_mixed_ref {
+    my $thing = shift;
+    my $c = shift;
+
+    my $filter_nulls = ref($c) ? 0 : $c;
+
+    if ($c and ref($c)) {
+        if (my $type_obj = $c->stash('eg_req_resolved_content_type_object')) {
+            $filter_nulls = $U->is_true($$type_obj{tokens}{filterNulls}) ? 1 : 0;
+        }
+
+        unless ($c->res->is_error) { # don't trim error output
+            my $op = $c->stash('operationId');
+            my $user_obj = $c->stash('eg_user_obj');
+
+            if ($op and $user_obj) {
+
+                # First, gather user settings applied to integrators
+                my $usettings = new_editor()->search_actor_user_setting({
+                    usr => $user_obj->id,
+                    name => ["REST.api.whitelist_properties.$op","REST.api.whitelist_properties",
+                             "REST.api.blacklist_properties.$op","REST.api.blacklist_properties"]
+                });
+                my @whitelist_settings = map { OpenSRF::Utils::JSON->JSON2perl($_->value) } grep { $_->name =~ /^REST.api.whitelist_properties/ } @$usettings;
+                my @blacklist_settings = map { OpenSRF::Utils::JSON->JSON2perl($_->value) } grep { $_->name =~ /^REST.api.blacklist_properties/ } @$usettings;
+
+                # Then add YAOUSen to the list
+                my %YAOUSen = $U->ou_ancestor_setting_batch_insecure(
+                    $user_obj->home_ou,
+                    ["REST.api.whitelist_properties.$op","REST.api.whitelist_properties",
+                     "REST.api.blacklist_properties.$op","REST.api.blacklist_properties"]
+                );
+                push @whitelist_settings, grep {defined and /\w+/} map { defined($YAOUSen{$_}) ? $YAOUSen{$_}{value} : undef } grep {/^REST.api.whitelist_properties/} keys %YAOUSen;
+                push @blacklist_settings, grep {defined and /\w+/} map { defined($YAOUSen{$_}) ? $YAOUSen{$_}{value} : undef } grep {/^REST.api.blacklist_properties/} keys %YAOUSen;
+
+                do {
+                    $filter_nulls++; # force filtering of nulls because some properties can't be null but are allowed to not exist at all
+                    $thing = filter_object_properties($c, $thing, join(',', @whitelist_settings), join(',', @blacklist_settings));
+                } if (@whitelist_settings or @blacklist_settings);
+            }
+        }
+    }
+
+    $thing = $thing->to_bare_hash if (blessed($thing) and $thing->isa('Fieldmapper'));
+
+    my $thing_type = ref($thing);
+    return $thing unless $thing_type;
+
+    if ($thing_type eq 'HASH') {
+        return filter_out_null_properties( { map { ($_, to_bare_mixed_ref($$thing{$_}, $c)) } keys %$thing }, $filter_nulls );
+    } elsif ($thing_type eq 'ARRAY') {
+        return [ map { to_bare_mixed_ref($_, $c) } @$thing ];
+    }
+
+    # dunno what to do with it...
+    return $thing;
+}
+
+sub filter_out_null_properties {
+    my $hashref = shift;
+    my $do_filter = shift;
+    return $hashref unless $do_filter;
+
+    my %replacement;
+    for my $key (keys %$hashref) {
+        $replacement{$key} = $$hashref{$key} if defined $$hashref{$key};
+    }
+
+    return \%replacement;
+}
+
+sub filter_object_properties {
+    my $c = shift;
+    my $obj = shift;
+    my $keep_proplist = shift || '';
+    my $toss_proplist = shift || '';
+    my $shallow = shift;
+
+    return $obj unless ($keep_proplist or $toss_proplist);
+
+    if (!ref($keep_proplist)) { # passed a comma separated list instead of an arrayref
+        $keep_proplist = [ grep {/\w+\.\w+/} map {s/^\s+//; s/\s+$//; $_} split ',', $keep_proplist ];
+    }
+
+    if (!ref($toss_proplist)) { # passed a comma separated list instead of an arrayref
+        $toss_proplist = [ grep {/\w+\.\w+/} map {s/^\s+//; s/\s+$//; $_} split ',', $toss_proplist ];
+    }
+
+    return $obj unless (@$keep_proplist or @$toss_proplist);
+
+    if (blessed($obj) and $obj->isa('Fieldmapper')) { # working an an FM object
+        my $hint = $obj->json_hint;
+        $c->app->log->trace("Checking for field restrictions on object type $hint");
+        my @my_keep_proplist = grep { /^$hint\./ } @$keep_proplist;
+        my @my_toss_proplist = grep { /^$hint\./ } @$toss_proplist;
+        if (@my_keep_proplist or @my_toss_proplist) { # we must have /at least/ one property to turn on filtering
+            for my $prop ($obj->properties) {
+                #$c->app->log->trace("Checking for field restrictions on object type $hint, property $prop");
+                if (defined $obj->$prop &&
+                    (@my_keep_proplist and !grep { $_ eq "$hint.$prop" } @my_keep_proplist) || # we have a "keep" list but the property is not on it
+                    (@my_toss_proplist and grep { $_ eq "$hint.$prop" } @my_toss_proplist)     # or, we have a "toss" list and the property IS on it
+                ) {
+                    $c->app->log->trace("Clearing property $prop on object type $hint");
+                    my $clear_func = "clear_$prop";
+                    $obj->$clear_func;
+                } elsif (!$shallow) {
+                    $obj->$prop(filter_object_properties($c, $obj->$prop, $keep_proplist, $toss_proplist));
+                }
+            }
+        }
+    } elsif (ref($obj) and ref($obj) eq 'ARRAY') { # an arrayref of stuff
+        $obj = [ map { filter_object_properties($c, $_, $keep_proplist, $toss_proplist, $shallow) } @$obj ];
+    } elsif (ref($obj) and ref($obj) eq 'HASH') { # a hashref of stuff
+        $obj = { map { ($_ => filter_object_properties($c, $$obj{$_}, $keep_proplist, $toss_proplist, $shallow)) } keys %$obj };
+    }
+
+    return $obj;
+}
+
+# This package adds format validators for all IDL class hints
+package JSON::Validator::Schema::OpenAPIv3::Evergreen;
+use JSON::Validator::Schema::OpenAPIv3;
+use OpenSRF::Utils::Logger q/$logger/;
+use OpenILS::Utils::Fieldmapper;
+use base 'JSON::Validator::Schema::OpenAPIv3';
+
+our $_format_cache;
+sub _build_formats {
+    return $_format_cache if $_format_cache;
+    $_format_cache = JSON::Validator::Schema::OpenAPIv3::_build_formats();
+    $logger->info('Adding fieldmapper class hints to OpenAPI format validator mappings');
+    $$_format_cache{$_->json_hint} = sub { return undef } for (Fieldmapper->classes);
+    return $_format_cache;
+}
+
+1;

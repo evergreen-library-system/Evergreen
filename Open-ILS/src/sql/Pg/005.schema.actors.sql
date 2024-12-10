@@ -1093,45 +1093,6 @@ BEGIN
 END;
 $$ LANGUAGE PLPGSQL;
 
-CREATE OR REPLACE FUNCTION 
-    actor.verify_passwd(pw_usr INTEGER, pw_type TEXT, test_passwd TEXT) 
-    RETURNS BOOLEAN AS $$
-DECLARE
-    pw_salt TEXT;
-BEGIN
-    /* Returns TRUE if the password provided matches the in-db password.  
-     * If the password type is salted, we compare the output of CRYPT().
-     * NOTE: test_passwd is MD5(salt || MD5(password)) for legacy 
-     * 'main' passwords.
-     */
-
-    SELECT INTO pw_salt salt FROM actor.passwd 
-        WHERE usr = pw_usr AND passwd_type = pw_type;
-
-    IF NOT FOUND THEN
-        -- no such password
-        RETURN FALSE;
-    END IF;
-
-    IF pw_salt IS NULL THEN
-        -- Password is unsalted, compare the un-CRYPT'ed values.
-        RETURN EXISTS (
-            SELECT TRUE FROM actor.passwd WHERE 
-                usr = pw_usr AND
-                passwd_type = pw_type AND
-                passwd = test_passwd
-        );
-    END IF;
-
-    RETURN EXISTS (
-        SELECT TRUE FROM actor.passwd WHERE 
-            usr = pw_usr AND
-            passwd_type = pw_type AND
-            passwd = CRYPT(test_passwd, pw_salt)
-    );
-END;
-$$ STRICT LANGUAGE PLPGSQL;
-
 -- Remove all activity entries by activity type, 
 -- except the most recent entry per user. 
 CREATE OR REPLACE FUNCTION
