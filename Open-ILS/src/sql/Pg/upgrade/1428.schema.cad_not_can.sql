@@ -14,6 +14,7 @@ ALTER TABLE acq.funding_source
     DROP CONSTRAINT funding_source_currency_type_fkey
     ,ADD CONSTRAINT funding_source_currency_type_fkey FOREIGN KEY (currency_type) REFERENCES acq.currency_type (code) ON UPDATE CASCADE;
 
+UPDATE acq.fund SET currency_type ='CAD' WHERE currency_type = 'CAN';
 UPDATE acq.fund_debit SET origin_currency_type ='CAD' WHERE origin_currency_type = 'CAN';
 UPDATE acq.provider SET currency_type ='CAD' WHERE currency_type = 'CAN';
 UPDATE acq.currency_type SET code = 'CAD' WHERE code = 'CAN';
