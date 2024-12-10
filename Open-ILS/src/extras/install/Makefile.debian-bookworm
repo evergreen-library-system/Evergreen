@@ -118,6 +118,11 @@ export CPAN_MODULES = \
 	Text::Levenshtein::Damerau::XS \
 	Pass::OTP \
 	Authen::WebAuthn \
+	IO::Prompter \
+	Mojolicious \
+	Mojolicious::Lite \
+	Mojolicious::Plugin::OpenAPI \
+	Mojolicious::Plugin::ForwardedFor \
 	Email::Send \
 	Duadua
 

@@ -118,6 +118,11 @@ export CPAN_MODULES = \
 	Email::Send \
 	Pass::OTP \
 	Authen::WebAuthn \
+	IO::Prompter \
+	Mojolicious \
+	Mojolicious::Lite \
+	Mojolicious::Plugin::OpenAPI \
+	Mojolicious::Plugin::ForwardedFor \
 	Locale::Country \
 	Duadua
 

@@ -92,6 +92,11 @@ export CPAN_MODULES = \
 	Config::General \
 	Pass::OTP \
 	Authen::WebAuthn \
+	IO::Prompter \
+	Mojolicious \
+	Mojolicious::Lite \
+	Mojolicious::Plugin::OpenAPI \
+	Mojolicious::Plugin::ForwardedFor \
 	Rose::URI \
 	Duadua
 
