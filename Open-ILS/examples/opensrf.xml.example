@@ -510,6 +510,7 @@ vim:et:ts=4:sw=4:
                     <!-- defined app-specific settings here -->
                     <default_timeout>
                         <!-- default login timeouts based on login type -->
+                        <api>3600</api>
                         <opac>420</opac>
                         <staff>7200</staff>
                         <temp>300</temp>

@@ -21,6 +21,7 @@
 #define OILS_AUTH_STAFF "staff"
 #define OILS_AUTH_TEMP "temp"
 #define OILS_AUTH_PERSIST "persist"
+#define OILS_AUTH_API "api"
 
 #define BLOCK_EXPIRED_STAFF_LOGIN_FLAG "auth.block_expired_staff_login"
 
@@ -37,6 +38,7 @@ static long _oilsAuthOPACTimeout = 0;
 static long _oilsAuthStaffTimeout = 0;
 static long _oilsAuthOverrideTimeout = 0;
 static long _oilsAuthPersistTimeout = 0;
+static long _oilsAuthAPITimeout = 0;
 
 /**
     @brief Initialize the application by registering functions for method calls.
@@ -146,6 +148,15 @@ static long oilsAuthGetTimeout(
         }
 
         value_obj = osrf_settings_host_value_object(
+            "/apps/open-ils.auth_internal/app_settings/default_timeout/api" );
+        _oilsAuthAPITimeout = oilsUtilsIntervalToSeconds( jsonObjectGetString( value_obj ));
+        jsonObjectFree(value_obj);
+        if( -1 == _oilsAuthAPITimeout ) {
+            osrfLogWarning( OSRF_LOG_MARK, "Invalid default timeout for API logins" );
+            _oilsAuthAPITimeout = 0;
+        }
+
+        value_obj = osrf_settings_host_value_object(
             "/apps/open-ils.auth_internal/app_settings/default_timeout/staff" );
         _oilsAuthStaffTimeout = oilsUtilsIntervalToSeconds( jsonObjectGetString( value_obj ));
         jsonObjectFree(value_obj);
@@ -173,9 +184,9 @@ static long oilsAuthGetTimeout(
         }
 
         osrfLogInfo(OSRF_LOG_MARK, "Set default auth timeouts: "
-            "opac => %ld : staff => %ld : temp => %ld : persist => %ld",
+            "opac => %ld : staff => %ld : temp => %ld : persist => %ld : api => %ld",
             _oilsAuthOPACTimeout, _oilsAuthStaffTimeout,
-            _oilsAuthOverrideTimeout, _oilsAuthPersistTimeout );
+            _oilsAuthOverrideTimeout, _oilsAuthPersistTimeout, _oilsAuthAPITimeout );
     }
 
     int home_ou = (int) jsonObjectGetNumber( oilsFMGetObject( userObj, "home_ou" ));
@@ -188,6 +199,9 @@ static long oilsAuthGetTimeout(
     if( !strcmp( type, OILS_AUTH_OPAC )) {
         setting = OILS_ORG_SETTING_OPAC_TIMEOUT;
         default_timeout = _oilsAuthOPACTimeout;
+    } else if( !strcmp( type, OILS_AUTH_API )) {
+        setting = OILS_ORG_SETTING_API_TIMEOUT;
+        default_timeout = _oilsAuthAPITimeout;
     } else if( !strcmp( type, OILS_AUTH_STAFF )) {
         setting = OILS_ORG_SETTING_STAFF_TIMEOUT;
         default_timeout = _oilsAuthStaffTimeout;
@@ -274,6 +288,9 @@ static oilsEvent* oilsAuthCheckLoginPerm(osrfMethodContext* ctx,
 
     if (!strcasecmp(type, OILS_AUTH_OPAC)) {
         perms[0] = "OPAC_LOGIN";
+
+    } else if (!strcasecmp(type, OILS_AUTH_API)) {
+        perms[0] = "API_LOGIN";
 
     } else if (!strcasecmp(type, OILS_AUTH_STAFF)) {
         perms[0] = "STAFF_LOGIN";
