@@ -125,6 +125,10 @@ table.table.eg-grid {
   flex-basis: 100%;
 }
 
+.eg-grid-toolbar {
+    align-items: flex-end;
+}
+
 .eg-grid-toolbar .material-icons {
   font-size: 20px;
 }
