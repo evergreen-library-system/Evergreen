@@ -41,6 +41,11 @@ Consortia that allow all users to search all locations should, as a
 matter of best practice, make all Library Groups global.
 ====
 
+You can choose to display the library group in the Public Catalog or not
+using the "OPAC Visible?" checkbox.  If it is checked, the library group
+will display in both the staff catalog and the public catalog.  If it is
+unchecked, it will only display in the staff catalog.
+
 When you are finished, click *Save*.
 
 Return to *Server Administration* and select *Library Group Maps*.

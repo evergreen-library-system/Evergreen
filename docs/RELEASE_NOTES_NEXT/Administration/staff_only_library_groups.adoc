@@ -1,0 +1,11 @@
+== Staff-only and Public Catalog Library Groups ==
+
+Before this release, library groups were visible in both the public catalog and
+the staff catalog.  In this release, administrators can choose to display any
+library group in the Public Catalog or not using the "OPAC Visible?" checkbox in
+the Library Group administrative screen.  If it is checked, the library group
+will display in both the staff catalog and the public catalog.  If it is
+unchecked, it will only display in the staff catalog.
+
+Any pre-existing library groups will automatically continue to be visible in the
+public catalog until an dministrator configures them otherwise.

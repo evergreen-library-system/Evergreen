@@ -6623,6 +6623,7 @@ SELECT  usr,
 			<field reporter:label="Library Group ID" name="id" reporter:datatype="id" reporter:selector="name"/>
 			<field reporter:label="Name" name="name" reporter:datatype="text"/>
 			<field reporter:label="Global?" name="global" reporter:datatype="bool"/>
+			<field reporter:label="OPAC Visible?" name="opac_visible" reporter:datatype="bool"/>
 			<field reporter:label="Maps" name="maps" oils_persist:virtual="true" reporter:datatype="link"/>
 		</fields>
 		<links>

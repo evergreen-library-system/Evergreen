@@ -1,0 +1,8 @@
+BEGIN;
+
+SELECT plan(2);
+SELECT has_column('actor', 'org_lasso', 'opac_visible', 'has an opac_visible column');
+SELECT col_default_is('actor', 'org_lasso', 'opac_visible', TRUE, 'opac_visible column defaults to TRUE');
+
+SELECT * FROM finish();
+ROLLBACK;

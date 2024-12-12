@@ -878,7 +878,7 @@ sub load_lassos {
 
     $self->ctx->{lassos} = $U->simplereq(
         'open-ils.search',
-        'open-ils.search.fetch_context_library_groups.atomic',
+        'open-ils.search.fetch_context_library_groups.opac.atomic',
         $self->ctx->{search_ou}
     );
 
