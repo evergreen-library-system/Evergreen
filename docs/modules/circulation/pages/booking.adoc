@@ -91,17 +91,14 @@ image::booking/booking-confirm-reservation.png[Confirm reservation modal showing
 +
 .Book Item Now Option
 image::booking/booking-book-from-catalog.png[Book Item Now option in the Holdings View tab.,width=550]
-
++
 [NOTE]
 You can also accomplish this by selecting the row and clicking the Actions button at the top right of the grid and choosing **Book Item Now**.
-
-**Action Button**
-
++
 .Booking Grid Actions Button
 image::booking/booking-grid-actions-button.png[Actions button in the Holdings View tab.,width=200]
 . Follow steps 3–8 above to complete the reservation.
 
-**Actions → Book Item Now**.
 
 == Reservation Pull List ==
 
