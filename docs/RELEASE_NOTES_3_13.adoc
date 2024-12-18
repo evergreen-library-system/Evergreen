@@ -3,6 +3,67 @@
 :numbered:
 :toclevels: 3
 
+== Evergreen 3.13.7 ==
+
+This release contains bug fixes and documentation fixes improving on Evergreen 3.13.6.
+
+
+=== Acquisitions ===
+
+* Fixes the fund dropdown on invoice direct charges. (https://bugs.launchpad.net/evergreen/+bug/2086786[Bug 2086786])
+
+=== Booking ===
+
+* Prevents reservation screen navigation if reservation confirmation fails. (https://bugs.launchpad.net/evergreen/+bug/2091015[Bug 2091015])
+
+=== Circulation ===
+
+* Replaces the hard coded "Credit Card" payment type with the correct type
+from money.payment.payment_type. (https://bugs.launchpad.net/bugs/1980294[Bug 1980294])
+
+=== Documentation ===
+
+* Updates booking module documentation with new visuals for better usability.
+* Updates My Lists documentation (https://bugs.launchpad.net/evergreen/+bug/2091179[Bug 2091179])
+* Updates cross references in Reports documentation.
+
+
+=== Release Process ===
+
+* Improves the release process. (https://bugs.launchpad.net/evergreen/+bug/2089305[Bug 2089305])
+* Stops including partial changelogs in official tarballs. (https://bugs.launchpad.net/evergreen/+bug/2082209[Bug 2082209])
+* Fix potential failure in database upgrade script. (https://bugs.launchpad.net/bugs/2086105[Bug 2086105])
+
+=== Reports ===
+
+* Fixes alignment of the "Filter value" input in the new reports editor.(https://bugs.launchpad.net/evergreen/+bug/2085970[Bug 2085970])
+* Fixes capitalization of "New template" button in the Angular Reporter (https://bugs.launchpad.net/evergreen/+bug/2083702[Bug 2083702])
+* Angular report template documentation now shown (https://bugs.launchpad.net/evergreen/+bug/2077443[Bug 2077443])
+* Adds a Venn diagram selector for reports nullability (https://bugs.launchpad.net/bugs/2077460[Bug 2077460])
+
+
+=== Acknowledgements ===
+
+We would like to thank the following individuals who contributed code, testing, documentation, and patches to the 3.13.7 point release of Evergreen:
+
+* Andrea Buntz Neiman
+* Blake Graham-Henderson
+* Galen Charlton
+* Gina Monti
+* Ian Skelskey
+* Jane Sandberg
+* Jason Boyer
+* Jason Stephenson
+* Jeff Davis
+* Michele Morgan
+* Mike Rylander
+* Ruth Frasur Davis
+* Steven Mayo
+* Susan Morrison
+* Tiffany Little
+
+
+
 == Evergreen 3.13.6 ==
 
 This release contains bug fixes and documentation fixes improving on Evergreen 3.13.5.
