@@ -128,9 +128,9 @@ msgstr ""
 msgid "%1 mi"
 msgstr ""
 
-#. (attrs.copy_counts.$depth.available, attrs.copy_counts.$depth.count, ou_name)
-#. (attrs.plib_copy_counts.$depth.available, attrs.plib_copy_counts.$depth.count, ou_name)
 #. (ou_avail, ou_count, ou_name)
+#. (attrs.plib_copy_counts.$depth.available, attrs.plib_copy_counts.$depth.count, ou_name)
+#. (attrs.copy_counts.$depth.available, attrs.copy_counts.$depth.count, ou_name)
 #: ../../Open-ILS/src/templates-bootstrap/opac/parts/record/copy_counts.tt2:23 ../../Open-ILS/src/templates-bootstrap/opac/parts/record/copy_counts.tt2:42 ../../Open-ILS/src/templates-bootstrap/opac/parts/result/copy_counts.tt2:14 ../../Open-ILS/src/templates-bootstrap/opac/parts/result/copy_counts.tt2:34
 msgid "%1 of %quant(%2,copy,copies) available at %3."
 msgstr ""

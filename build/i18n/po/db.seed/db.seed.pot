@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Evergreen 1.4\n"
 "Report-Msgid-Bugs-To: open-ils-dev@list.georgialibraries.org\n"
-"POT-Creation-Date: 2024-09-17 13:34:46-0400\n"
+"POT-Creation-Date: 2024-12-18 14:46:00-0400\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -179,8 +179,8 @@ msgstr ""
 # id::cmc.label__title id::cza.label__5 id::cza.label__14 id::aba.name__title
 # id::czifm.label__1
 #: 950.data.seed-values.sql:100 950.data.seed-values.sql:613
-#: 950.data.seed-values.sql:634 950.data.seed-values.sql:14046
-#: 950.data.seed-values.sql:16561
+#: 950.data.seed-values.sql:634 950.data.seed-values.sql:14056
+#: 950.data.seed-values.sql:16571
 msgid "Title"
 msgstr ""
 
@@ -188,12 +188,12 @@ msgstr ""
 # id::aba.name__author id::czifm.label__2
 #: 950.data.seed-values.sql:101 950.data.seed-values.sql:315
 #: 950.data.seed-values.sql:611 950.data.seed-values.sql:632
-#: 950.data.seed-values.sql:14047 950.data.seed-values.sql:16562
+#: 950.data.seed-values.sql:14057 950.data.seed-values.sql:16572
 msgid "Author"
 msgstr ""
 
 # id::cmc.label__subject id::aba.name__subject
-#: 950.data.seed-values.sql:102 950.data.seed-values.sql:14048
+#: 950.data.seed-values.sql:102 950.data.seed-values.sql:14058
 msgid "Subject"
 msgstr ""
 
@@ -291,7 +291,7 @@ msgstr ""
 # id::vqbrad.description__5 id::czifm.label__3
 #: 950.data.seed-values.sql:159 950.data.seed-values.sql:607
 #: 950.data.seed-values.sql:628 950.data.seed-values.sql:6001
-#: 950.data.seed-values.sql:16563
+#: 950.data.seed-values.sql:16573
 msgid "ISBN"
 msgstr ""
 
@@ -299,7 +299,7 @@ msgstr ""
 # id::vqbrad.description__6 id::czifm.label__4
 #: 950.data.seed-values.sql:161 950.data.seed-values.sql:615
 #: 950.data.seed-values.sql:636 950.data.seed-values.sql:6002
-#: 950.data.seed-values.sql:16564
+#: 950.data.seed-values.sql:16574
 msgid "ISSN"
 msgstr ""
 
@@ -821,13 +821,13 @@ msgstr ""
 
 # id::cza.label__3 id::cza.label__12 id::czifm.label__5
 #: 950.data.seed-values.sql:609 950.data.seed-values.sql:630
-#: 950.data.seed-values.sql:16565
+#: 950.data.seed-values.sql:16575
 msgid "LCCN"
 msgstr ""
 
 # id::cza.label__18 id::crad.description__item_type id::czifm.label__7
 #: 950.data.seed-values.sql:642 950.data.seed-values.sql:7180
-#: 950.data.seed-values.sql:16570
+#: 950.data.seed-values.sql:16580
 msgid "Item Type"
 msgstr ""
 
@@ -940,8 +940,8 @@ msgstr ""
 
 # id::cbt.name__11 id::coust.label__circ.longoverdue_materials_processing_fee
 # id::coust.description__circ.longoverdue_materials_processing_fee
-#: 950.data.seed-values.sql:694 950.data.seed-values.sql:16638
-#: 950.data.seed-values.sql:16644
+#: 950.data.seed-values.sql:694 950.data.seed-values.sql:16648
+#: 950.data.seed-values.sql:16654
 msgid "Long-Overdue Materials Processing Fee"
 msgstr ""
 
@@ -11810,7 +11810,7 @@ msgstr ""
 #: 950.data.seed-values.sql:8460 950.data.seed-values.sql:8581
 #: 950.data.seed-values.sql:8600 950.data.seed-values.sql:8717
 #: 950.data.seed-values.sql:8726 950.data.seed-values.sql:9305
-#: 950.data.seed-values.sql:9326 950.data.seed-values.sql:18563
+#: 950.data.seed-values.sql:9326 950.data.seed-values.sql:18573
 msgid "Not applicable"
 msgstr ""
 
@@ -14848,356 +14848,356 @@ msgid "A payment receipt needs to be formatted for printing."
 msgstr ""
 
 # id::cbrebt.label__temp
-#: 950.data.seed-values.sql:12303
+#: 950.data.seed-values.sql:12313
 msgid "Temporary bucket which gets deleted after use."
 msgstr ""
 
 # id::atclean.description__DeleteTempBiblioBucket
-#: 950.data.seed-values.sql:12313
+#: 950.data.seed-values.sql:12323
 msgid "Deletes a cbreb object used as a target if it has a btype of \"temp\""
 msgstr ""
 
 # id::ath.description__biblio.format.record_entry.email
-#: 950.data.seed-values.sql:12324
+#: 950.data.seed-values.sql:12334
 msgid "An email has been requested for one or more biblio record entries."
 msgstr ""
 
 # id::ath.description__biblio.format.record_entry.print
-#: 950.data.seed-values.sql:12335
+#: 950.data.seed-values.sql:12345
 msgid "One or more biblio record entries need to be formatted for printing."
 msgstr ""
 
 # id::acqct.label__USD
-#: 950.data.seed-values.sql:12493
+#: 950.data.seed-values.sql:12503
 msgid "US Dollars"
 msgstr ""
 
 # id::acqct.label__CAD
-#: 950.data.seed-values.sql:12494
+#: 950.data.seed-values.sql:12504
 msgid "Canadian Dollars"
 msgstr ""
 
 # id::acqct.label__EUR
-#: 950.data.seed-values.sql:12495
+#: 950.data.seed-values.sql:12505
 msgid "Euros"
 msgstr ""
 
 # id::aiit.name__TAX
-#: 950.data.seed-values.sql:12500
+#: 950.data.seed-values.sql:12510
 msgid "Tax"
 msgstr ""
 
 # id::aiit.name__PRO
-#: 950.data.seed-values.sql:12501
+#: 950.data.seed-values.sql:12511
 msgid "Processing Fee"
 msgstr ""
 
 # id::aiit.name__SHP
-#: 950.data.seed-values.sql:12502
+#: 950.data.seed-values.sql:12512
 msgid "Shipping Charge"
 msgstr ""
 
 # id::aiit.name__HND
-#: 950.data.seed-values.sql:12503
+#: 950.data.seed-values.sql:12513
 msgid "Handling Charge"
 msgstr ""
 
 # id::aiit.name__ITM
-#: 950.data.seed-values.sql:12504
+#: 950.data.seed-values.sql:12514
 msgid "Non-library Item"
 msgstr ""
 
 # id::aiit.name__SUB
-#: 950.data.seed-values.sql:12505
+#: 950.data.seed-values.sql:12515
 msgid "Serial Subscription"
 msgstr ""
 
 # id::aiit.name__BLA
-#: 950.data.seed-values.sql:12507
+#: 950.data.seed-values.sql:12517
 msgid "Blanket Order"
 msgstr ""
 
 # id::acqim.name__EDI
-#: 950.data.seed-values.sql:12510
+#: 950.data.seed-values.sql:12520
 msgid "EDI"
 msgstr ""
 
 # id::acqit.name__PPR
-#: 950.data.seed-values.sql:12511
+#: 950.data.seed-values.sql:12521
 msgid "Paper"
 msgstr ""
 
 # id::acqcr.label__1
-#: 950.data.seed-values.sql:12514
+#: 950.data.seed-values.sql:12524
 msgid "Canceled: Invalid ISBN"
 msgstr ""
 
 # id::acqcr.description__1
-#: 950.data.seed-values.sql:12514
+#: 950.data.seed-values.sql:12524
 msgid "ISBN is unrecognizable"
 msgstr ""
 
 # id::acqcr.label__2
-#: 950.data.seed-values.sql:12516
+#: 950.data.seed-values.sql:12526
 msgid "Canceled: Postpone"
 msgstr ""
 
 # id::acqcr.description__2
-#: 950.data.seed-values.sql:12516
+#: 950.data.seed-values.sql:12526
 msgid "Title has been postponed"
 msgstr ""
 
 # id::acqcr.label__3
-#: 950.data.seed-values.sql:12518
+#: 950.data.seed-values.sql:12528
 msgid "Delayed: Delivered but Lost"
 msgstr ""
 
 # id::acqcr.description__3
-#: 950.data.seed-values.sql:12519
+#: 950.data.seed-values.sql:12529
 msgid "Delivered but not received; presumed lost"
 msgstr ""
 
 # id::acqcr.label__1002
-#: 950.data.seed-values.sql:12522
+#: 950.data.seed-values.sql:12532
 msgid "Canceled: Deleted"
 msgstr ""
 
 # id::acqcr.description__1002
-#: 950.data.seed-values.sql:12523
+#: 950.data.seed-values.sql:12533
 msgid "The information is to be or has been deleted."
 msgstr ""
 
 # id::acqcr.label__1003
-#: 950.data.seed-values.sql:12524
+#: 950.data.seed-values.sql:12534
 msgid "Delayed: Changed"
 msgstr ""
 
 # id::acqcr.description__1003
-#: 950.data.seed-values.sql:12525
+#: 950.data.seed-values.sql:12535
 msgid "The information is to be or has been changed."
 msgstr ""
 
 # id::acqcr.label__1004
-#: 950.data.seed-values.sql:12526
+#: 950.data.seed-values.sql:12536
 msgid "Delayed: No Action"
 msgstr ""
 
 # id::acqcr.description__1004
-#: 950.data.seed-values.sql:12527
+#: 950.data.seed-values.sql:12537
 msgid "This line item is not affected by the actual message."
 msgstr ""
 
 # id::acqcr.label__1005
-#: 950.data.seed-values.sql:12528
+#: 950.data.seed-values.sql:12538
 msgid "Delayed: Accepted without amendment"
 msgstr ""
 
 # id::acqcr.description__1005
-#: 950.data.seed-values.sql:12529
+#: 950.data.seed-values.sql:12539
 msgid "This line item is entirely accepted by the seller."
 msgstr ""
 
 # id::acqcr.label__1007
-#: 950.data.seed-values.sql:12530
+#: 950.data.seed-values.sql:12540
 msgid "Canceled: Not Accepted"
 msgstr ""
 
 # id::acqcr.description__1007
-#: 950.data.seed-values.sql:12531
+#: 950.data.seed-values.sql:12541
 msgid "This line item is not accepted by the seller."
 msgstr ""
 
 # id::acqcr.label__1010
-#: 950.data.seed-values.sql:12532
+#: 950.data.seed-values.sql:12542
 msgid "Canceled: Not Found"
 msgstr ""
 
 # id::acqcr.description__1010
-#: 950.data.seed-values.sql:12533
+#: 950.data.seed-values.sql:12543
 msgid "This line item is not found in the referenced message."
 msgstr ""
 
 # id::acqcr.label__1015
-#: 950.data.seed-values.sql:12534
+#: 950.data.seed-values.sql:12544
 msgid "Canceled: Fulfilled"
 msgstr ""
 
 # id::acqcr.description__1015
-#: 950.data.seed-values.sql:12535
+#: 950.data.seed-values.sql:12545
 msgid "This acquisition request has been fulfilled."
 msgstr ""
 
 # id::acqcr.label__1024
-#: 950.data.seed-values.sql:12536
+#: 950.data.seed-values.sql:12546
 msgid "Delayed: Accepted with amendment"
 msgstr ""
 
 # id::acqcr.description__1024
-#: 950.data.seed-values.sql:12537
+#: 950.data.seed-values.sql:12547
 msgid "Accepted with changes which require no confirmation."
 msgstr ""
 
 # id::acqcr.label__1211
-#: 950.data.seed-values.sql:12540
+#: 950.data.seed-values.sql:12550
 msgid "Delayed: Split Quantity"
 msgstr ""
 
 # id::acqcr.description__1211
-#: 950.data.seed-values.sql:12541
+#: 950.data.seed-values.sql:12551
 msgid "Part of the whole quantity."
 msgstr ""
 
 # id::acqcr.label__1221
-#: 950.data.seed-values.sql:12542
+#: 950.data.seed-values.sql:12552
 msgid "Delayed: Ordered Quantity"
 msgstr ""
 
 # id::acqcr.description__1221
-#: 950.data.seed-values.sql:12543
+#: 950.data.seed-values.sql:12553
 msgid "[6024] The quantity which has been ordered."
 msgstr ""
 
 # id::acqcr.label__1246
-#: 950.data.seed-values.sql:12544
+#: 950.data.seed-values.sql:12554
 msgid "Delayed: Pieces Delivered"
 msgstr ""
 
 # id::acqcr.description__1246
-#: 950.data.seed-values.sql:12545
+#: 950.data.seed-values.sql:12555
 msgid "Number of pieces actually received at the final destination."
 msgstr ""
 
 # id::acqcr.label__1283
-#: 950.data.seed-values.sql:12546
+#: 950.data.seed-values.sql:12556
 msgid "Delayed: Backorder"
 msgstr ""
 
 # id::acqcr.description__1283
-#: 950.data.seed-values.sql:12547
+#: 950.data.seed-values.sql:12557
 msgid "The quantity of goods that is on back-order."
 msgstr ""
 
 # id::acqcr.label__1285
-#: 950.data.seed-values.sql:12548
+#: 950.data.seed-values.sql:12558
 msgid "Canceled: By Vendor"
 msgstr ""
 
 # id::acqcr.description__1285
-#: 950.data.seed-values.sql:12549
+#: 950.data.seed-values.sql:12559
 msgid "Line item canceled by vendor"
 msgstr ""
 
 # id::cgf.label__circ.holds.usr_not_requestor
-#: 950.data.seed-values.sql:12554
+#: 950.data.seed-values.sql:12564
 msgid ""
 "Holds: When testing hold matrix matchpoints, use the profile group of the "
 "receiving user instead of that of the requestor (affects staff-placed holds)"
 msgstr ""
 
 # id::cgf.label__circ.holds.empty_issuance_ok
-#: 950.data.seed-values.sql:12566
+#: 950.data.seed-values.sql:12576
 msgid "Holds: Allow holds on empty issuances"
 msgstr ""
 
 # id::cgf.label__ingest.disable_authority_linking
-#: 950.data.seed-values.sql:12578
+#: 950.data.seed-values.sql:12588
 msgid "Authority Automation: Disable bib-authority link tracking"
 msgstr ""
 
 # id::cgf.label__ingest.disable_authority_auto_update
-#: 950.data.seed-values.sql:12589
+#: 950.data.seed-values.sql:12599
 msgid ""
 "Authority Automation: Disable automatic authority updating (requires link "
 "tracking)"
 msgstr ""
 
 # id::cgf.label__cat.bib.use_id_for_tcn
-#: 950.data.seed-values.sql:12600
+#: 950.data.seed-values.sql:12610
 msgid "Cat: Use Internal ID for TCN Value"
 msgstr ""
 
 # id::cgf.label__history.circ.retention_age
 # id::cust.label__history.circ.retention_age
 # id::cust.description__history.circ.retention_age
-#: 950.data.seed-values.sql:12612 950.data.seed-values.sql:12803
-#: 950.data.seed-values.sql:12804
+#: 950.data.seed-values.sql:12622 950.data.seed-values.sql:12813
+#: 950.data.seed-values.sql:12814
 msgid "Historical Circulation Retention Age"
 msgstr ""
 
 # id::cgf.label__history.circ.retention_count
-#: 950.data.seed-values.sql:12616
+#: 950.data.seed-values.sql:12626
 msgid "Historical Circulations per Copy"
 msgstr ""
 
 # id::cgf.label__history.hold.retention_age
 # id::cust.label__history.hold.retention_age
 # id::cust.description__history.hold.retention_age
-#: 950.data.seed-values.sql:12623 950.data.seed-values.sql:12818
-#: 950.data.seed-values.sql:12819
+#: 950.data.seed-values.sql:12633 950.data.seed-values.sql:12828
+#: 950.data.seed-values.sql:12829
 msgid "Historical Hold Retention Age"
 msgstr ""
 
 # id::cgf.label__history.hold.retention_age_fulfilled
-#: 950.data.seed-values.sql:12627
+#: 950.data.seed-values.sql:12637
 msgid "Historical Hold Retention Age - Fulfilled"
 msgstr ""
 
 # id::cgf.label__history.hold.retention_age_canceled
-#: 950.data.seed-values.sql:12631
+#: 950.data.seed-values.sql:12641
 msgid "Historical Hold Retention Age - Canceled (Default)"
 msgstr ""
 
 # id::cgf.label__history.hold.retention_age_canceled_1
-#: 950.data.seed-values.sql:12635
+#: 950.data.seed-values.sql:12645
 msgid "Historical Hold Retention Age - Canceled (Untarged expiration)"
 msgstr ""
 
 # id::cgf.label__history.hold.retention_age_canceled_2
-#: 950.data.seed-values.sql:12639
+#: 950.data.seed-values.sql:12649
 msgid "Historical Hold Retention Age - Canceled (Hold Shelf expiration)"
 msgstr ""
 
 # id::cgf.label__history.hold.retention_age_canceled_3
-#: 950.data.seed-values.sql:12643
+#: 950.data.seed-values.sql:12653
 msgid "Historical Hold Retention Age - Canceled (Patron via phone)"
 msgstr ""
 
 # id::cgf.label__history.hold.retention_age_canceled_4
-#: 950.data.seed-values.sql:12647
+#: 950.data.seed-values.sql:12657
 msgid "Historical Hold Retention Age - Canceled (Patron in person)"
 msgstr ""
 
 # id::cgf.label__history.hold.retention_age_canceled_5
-#: 950.data.seed-values.sql:12651
+#: 950.data.seed-values.sql:12661
 msgid "Historical Hold Retention Age - Canceled (Staff forced)"
 msgstr ""
 
 # id::cgf.label__history.hold.retention_age_canceled_6
-#: 950.data.seed-values.sql:12655
+#: 950.data.seed-values.sql:12665
 msgid "Historical Hold Retention Age - Canceled (Patron via OPAC)"
 msgstr ""
 
 # id::cgf.label__cat.maintain_control_numbers
-#: 950.data.seed-values.sql:12662
+#: 950.data.seed-values.sql:12672
 msgid "Cat: Maintain 001/003/035 according to the MARC21 specification"
 msgstr ""
 
 # id::cgf.label__circ.opac_renewal.use_original_circ_lib
-#: 950.data.seed-values.sql:12674
+#: 950.data.seed-values.sql:12684
 msgid ""
 "Circ: Use original circulation library on opac renewal instead of user home "
 "library"
 msgstr ""
 
 # id::cgf.label__circ.desk_renewal.use_original_circ_lib
-#: 950.data.seed-values.sql:12686
+#: 950.data.seed-values.sql:12696
 msgid ""
 "Circ: Use original circulation library on desk renewal instead of the "
 "workstation library"
 msgstr ""
 
 # id::cgf.label__opac.use_autosuggest
-#: 950.data.seed-values.sql:12698
+#: 950.data.seed-values.sql:12708
 msgid ""
 "OPAC: Show auto-completing suggestions dialog under basic search box (put "
 "'opac_visible' into the value field to limit suggestions to OPAC-visible "
@@ -15205,54 +15205,54 @@ msgid ""
 msgstr ""
 
 # id::cgf.label__history.circ.retention_uses_last_finished
-#: 950.data.seed-values.sql:12711
+#: 950.data.seed-values.sql:12721
 msgid ""
 "Historical Circulations use most recent xact_finish date instead of last "
 "circ's."
 msgstr ""
 
 # id::cgf.label__history.circ.retention_age_is_min
-#: 950.data.seed-values.sql:12719
+#: 950.data.seed-values.sql:12729
 msgid ""
 "Historical Circulations are kept for global retention age at a minimum, "
 "regardless of user preferences."
 msgstr ""
 
 # id::cgf.label__opac.browse.warnable_regexp_per_class
-#: 950.data.seed-values.sql:12732
+#: 950.data.seed-values.sql:12742
 msgid ""
 "Map of search classes to regular expressions to warn user about leading "
 "articles."
 msgstr ""
 
 # id::cgf.label__opac.browse.holdings_visibility_test_limit
-#: 950.data.seed-values.sql:12743
+#: 950.data.seed-values.sql:12753
 msgid ""
 "Don't look for more than this number of records with holdings when "
 "displaying browse headings with visible record counts."
 msgstr ""
 
 # id::cgf.label__opac.located_uri.act_as_copy
-#: 950.data.seed-values.sql:12755
+#: 950.data.seed-values.sql:12765
 msgid ""
 "When enabled, Located URIs will provide visibility behavior identical to "
 "copies."
 msgstr ""
 
 # id::cgf.label__opac.icon_attr
-#: 950.data.seed-values.sql:12765
+#: 950.data.seed-values.sql:12775
 msgid "OPAC Format Icons Attribute"
 msgstr ""
 
 # id::cgf.label__opac.default_sort
-#: 950.data.seed-values.sql:12777
+#: 950.data.seed-values.sql:12787
 msgid ""
 "OPAC Default Sort (titlesort, authorsort, pubdate, popularity, poprel, or "
 "empty)"
 msgstr ""
 
 # id::cgf.label__search.max_popularity_importance_multiplier
-#: 950.data.seed-values.sql:12789
+#: 950.data.seed-values.sql:12799
 msgid ""
 "Maximum popularity importance multiplier for popularity-adjusted relevance "
 "searches (decimal value between 1.0 and 2.0)"
@@ -15260,214 +15260,214 @@ msgstr ""
 
 # id::cust.label__history.circ.retention_start
 # id::cust.description__history.circ.retention_start
-#: 950.data.seed-values.sql:12809 950.data.seed-values.sql:12810
+#: 950.data.seed-values.sql:12819 950.data.seed-values.sql:12820
 msgid "Historical Circulation Retention Start Date"
 msgstr ""
 
 # id::cust.label__history.hold.retention_start
 # id::cust.description__history.hold.retention_start
-#: 950.data.seed-values.sql:12824 950.data.seed-values.sql:12825
+#: 950.data.seed-values.sql:12834 950.data.seed-values.sql:12835
 msgid "Historical Hold Retention Start Date"
 msgstr ""
 
 # id::cust.label__history.hold.retention_count
 # id::cust.description__history.hold.retention_count
-#: 950.data.seed-values.sql:12830 950.data.seed-values.sql:12831
+#: 950.data.seed-values.sql:12840 950.data.seed-values.sql:12841
 msgid "Historical Hold Retention Count"
 msgstr ""
 
 # id::cust.label__opac.default_sort id::cust.description__opac.default_sort
-#: 950.data.seed-values.sql:12912 950.data.seed-values.sql:12918
+#: 950.data.seed-values.sql:12922 950.data.seed-values.sql:12928
 msgid "OPAC Default Search Sort"
 msgstr ""
 
 # id::ath.description__circ.format.missing_pieces.slip.print
-#: 950.data.seed-values.sql:12932
+#: 950.data.seed-values.sql:12942
 msgid "A missing pieces slip needs to be formatted for printing."
 msgstr ""
 
 # id::ath.description__circ.format.missing_pieces.letter.print
-#: 950.data.seed-values.sql:12942
+#: 950.data.seed-values.sql:12952
 msgid "A missing pieces patron letter needs to be formatted for printing."
 msgstr ""
 
 # id::ath.description__ahr.format.pull_list
-#: 950.data.seed-values.sql:13056
+#: 950.data.seed-values.sql:13066
 msgid "Format holds pull list for printing"
 msgstr ""
 
 # id::atval.description__HoldIsCancelled
-#: 950.data.seed-values.sql:13166
+#: 950.data.seed-values.sql:13176
 msgid "Check whether a hold request is cancelled."
 msgstr ""
 
 # id::ath.description__circ.staff_age_to_lost
-#: 950.data.seed-values.sql:13179
+#: 950.data.seed-values.sql:13189
 msgid "An overdue circulation should be aged to a Lost status."
 msgstr ""
 
 # id::vie.description__general.unknown
-#: 950.data.seed-values.sql:13247
+#: 950.data.seed-values.sql:13257
 msgid "Import or Overlay failed"
 msgstr ""
 
 # id::vie.description__import.item.duplicate.barcode
-#: 950.data.seed-values.sql:13248
+#: 950.data.seed-values.sql:13258
 msgid "Import failed due to barcode collision"
 msgstr ""
 
 # id::vie.description__import.item.invalid.circ_modifier
-#: 950.data.seed-values.sql:13249
+#: 950.data.seed-values.sql:13259
 msgid "Import failed due to invalid circulation modifier"
 msgstr ""
 
 # id::vie.description__import.item.invalid.location
-#: 950.data.seed-values.sql:13250
+#: 950.data.seed-values.sql:13260
 msgid "Import failed due to invalid copy location"
 msgstr ""
 
 # id::vie.description__import.duplicate.sysid
 # id::vie.description__import.duplicate.tcn
-#: 950.data.seed-values.sql:13251 950.data.seed-values.sql:13252
+#: 950.data.seed-values.sql:13261 950.data.seed-values.sql:13262
 msgid "Import failed due to system id collision"
 msgstr ""
 
 # id::vie.description__overlay.missing.sysid
-#: 950.data.seed-values.sql:13253
+#: 950.data.seed-values.sql:13263
 msgid "Overlay failed due to missing system id"
 msgstr ""
 
 # id::vie.description__import.auth.duplicate.acn
-#: 950.data.seed-values.sql:13254
+#: 950.data.seed-values.sql:13264
 msgid "Import failed due to Accession Number collision"
 msgstr ""
 
 # id::vie.description__import.xml.malformed
-#: 950.data.seed-values.sql:13255
+#: 950.data.seed-values.sql:13265
 msgid "Malformed record cause Import failure"
 msgstr ""
 
 # id::vie.description__overlay.xml.malformed
-#: 950.data.seed-values.sql:13256
+#: 950.data.seed-values.sql:13266
 msgid "Malformed record cause Overlay failure"
 msgstr ""
 
 # id::vie.description__overlay.record.quality
-#: 950.data.seed-values.sql:13257
+#: 950.data.seed-values.sql:13267
 msgid "New record had insufficient quality"
 msgstr ""
 
 # id::vie.description__import.item.invalid.status
-#: 950.data.seed-values.sql:13260
+#: 950.data.seed-values.sql:13270
 msgid "Invalid value for \"status\""
 msgstr ""
 
 # id::vie.description__import.item.invalid.price
-#: 950.data.seed-values.sql:13262
+#: 950.data.seed-values.sql:13272
 msgid "Invalid value for \"price\""
 msgstr ""
 
 # id::vie.description__import.item.invalid.deposit_amount
-#: 950.data.seed-values.sql:13264
+#: 950.data.seed-values.sql:13274
 msgid "Invalid value for \"deposit_amount\""
 msgstr ""
 
 # id::vie.description__import.item.invalid.owning_lib
-#: 950.data.seed-values.sql:13266
+#: 950.data.seed-values.sql:13276
 msgid "Invalid value for \"owning_lib\""
 msgstr ""
 
 # id::vie.description__import.item.invalid.circ_lib
-#: 950.data.seed-values.sql:13268
+#: 950.data.seed-values.sql:13278
 msgid "Invalid value for \"circ_lib\""
 msgstr ""
 
 # id::vie.description__import.item.invalid.copy_number
-#: 950.data.seed-values.sql:13270
+#: 950.data.seed-values.sql:13280
 msgid "Invalid value for \"copy_number\""
 msgstr ""
 
 # id::vie.description__import.item.invalid.circ_as_type
-#: 950.data.seed-values.sql:13272
+#: 950.data.seed-values.sql:13282
 msgid "Invalid value for \"circ_as_type\""
 msgstr ""
 
 # id::vie.description__import.record.perm_failure
-#: 950.data.seed-values.sql:13274
+#: 950.data.seed-values.sql:13284
 msgid "Perm failure creating a record"
 msgstr ""
 
 # id::vie.description__import.item.invalid.stat_cat_format
-#: 950.data.seed-values.sql:13276
+#: 950.data.seed-values.sql:13286
 msgid "Bad format for stat cat data, should be like: CAT 1|VALUE 1"
 msgstr ""
 
 # id::vie.description__import.item.invalid.stat_cat_data
-#: 950.data.seed-values.sql:13278
+#: 950.data.seed-values.sql:13288
 msgid "Invalid stat cat data"
 msgstr ""
 
 # id::ath.description__vandelay.queued_bib_record.print
-#: 950.data.seed-values.sql:13323
+#: 950.data.seed-values.sql:13333
 msgid "Print output has been requested for records in an Importer Bib Queue."
 msgstr ""
 
 # id::ath.description__vandelay.queued_bib_record.csv
-#: 950.data.seed-values.sql:13334
+#: 950.data.seed-values.sql:13344
 msgid "CSV output has been requested for records in an Importer Bib Queue."
 msgstr ""
 
 # id::ath.description__vandelay.queued_bib_record.email
-#: 950.data.seed-values.sql:13345
+#: 950.data.seed-values.sql:13355
 msgid "An email has been requested for records in an Importer Bib Queue."
 msgstr ""
 
 # id::ath.description__vandelay.queued_auth_record.print
-#: 950.data.seed-values.sql:13356
+#: 950.data.seed-values.sql:13366
 msgid ""
 "Print output has been requested for records in an Importer Authority Queue."
 msgstr ""
 
 # id::ath.description__vandelay.queued_auth_record.csv
-#: 950.data.seed-values.sql:13367
+#: 950.data.seed-values.sql:13377
 msgid ""
 "CSV output has been requested for records in an Importer Authority Queue."
 msgstr ""
 
 # id::ath.description__vandelay.queued_auth_record.email
-#: 950.data.seed-values.sql:13378
+#: 950.data.seed-values.sql:13388
 msgid ""
 "An email has been requested for records in an Importer Authority Queue."
 msgstr ""
 
 # id::ath.description__vandelay.import_items.print
-#: 950.data.seed-values.sql:13389
+#: 950.data.seed-values.sql:13399
 msgid ""
 "Print output has been requested for Import Items from records in an Importer"
 " Bib Queue."
 msgstr ""
 
 # id::ath.description__vandelay.import_items.csv
-#: 950.data.seed-values.sql:13400
+#: 950.data.seed-values.sql:13410
 msgid ""
 "CSV output has been requested for Import Items from records in an Importer "
 "Bib Queue."
 msgstr ""
 
 # id::ath.description__vandelay.import_items.email
-#: 950.data.seed-values.sql:13411
+#: 950.data.seed-values.sql:13421
 msgid ""
 "An email has been requested for Import Items from records in an Importer Bib"
 " Queue."
 msgstr ""
 
 # id::ath.description__container.biblio_record_entry_bucket.csv
-#: 950.data.seed-values.sql:13900
+#: 950.data.seed-values.sql:13910
 msgid "Produce a CSV file representing a book list"
 msgstr ""
 
 # id::atr.description__ContainerCSV
-#: 950.data.seed-values.sql:13912
+#: 950.data.seed-values.sql:13922
 msgid ""
 "Facilitates producing a CSV file representing a book list by introducing an "
 "\"items\" variable into the TT environment, sorted as dictated according to "
@@ -15475,442 +15475,442 @@ msgid ""
 msgstr ""
 
 # id::acs.name__1
-#: 950.data.seed-values.sql:13960
+#: 950.data.seed-values.sql:13970
 msgid "LoC"
 msgstr ""
 
 # id::acs.description__1
-#: 950.data.seed-values.sql:13961
+#: 950.data.seed-values.sql:13971
 msgid "Library of Congress standard authority record control semantics"
 msgstr ""
 
 # id::acsaf.name__4
-#: 950.data.seed-values.sql:13966
+#: 950.data.seed-values.sql:13976
 msgid "Heading -- Uniform Title"
 msgstr ""
 
 # id::acsaf.name__24
-#: 950.data.seed-values.sql:13967
+#: 950.data.seed-values.sql:13977
 msgid "See Also From Tracing -- Uniform Title"
 msgstr ""
 
 # id::acsaf.name__44
-#: 950.data.seed-values.sql:13968
+#: 950.data.seed-values.sql:13978
 msgid "Established Heading Linking Entry -- Uniform Title"
 msgstr ""
 
 # id::acsaf.name__64
-#: 950.data.seed-values.sql:13969
+#: 950.data.seed-values.sql:13979
 msgid "See From Tracing -- Uniform Title"
 msgstr ""
 
 # id::acsaf.name__1
-#: 950.data.seed-values.sql:13975
+#: 950.data.seed-values.sql:13985
 msgid "Heading -- Personal Name"
 msgstr ""
 
 # id::acsaf.name__2
-#: 950.data.seed-values.sql:13977
+#: 950.data.seed-values.sql:13987
 msgid "Heading -- Corporate Name"
 msgstr ""
 
 # id::acsaf.name__3
-#: 950.data.seed-values.sql:13979
+#: 950.data.seed-values.sql:13989
 msgid "Heading -- Meeting Name"
 msgstr ""
 
 # id::acsaf.name__5
-#: 950.data.seed-values.sql:13981
+#: 950.data.seed-values.sql:13991
 msgid "Heading -- Topical Term"
 msgstr ""
 
 # id::acsaf.name__6
-#: 950.data.seed-values.sql:13983
+#: 950.data.seed-values.sql:13993
 msgid "Heading -- Geographic Name"
 msgstr ""
 
 # id::acsaf.name__7
-#: 950.data.seed-values.sql:13985
+#: 950.data.seed-values.sql:13995
 msgid "Heading -- Genre/Form Term"
 msgstr ""
 
 # id::acsaf.name__8
-#: 950.data.seed-values.sql:13987
+#: 950.data.seed-values.sql:13997
 msgid "Heading -- General Subdivision"
 msgstr ""
 
 # id::acsaf.name__9
-#: 950.data.seed-values.sql:13989
+#: 950.data.seed-values.sql:13999
 msgid "Heading -- Geographic Subdivision"
 msgstr ""
 
 # id::acsaf.name__10
-#: 950.data.seed-values.sql:13991
+#: 950.data.seed-values.sql:14001
 msgid "Heading -- Chronological Subdivision"
 msgstr ""
 
 # id::acsaf.name__11
-#: 950.data.seed-values.sql:13993
+#: 950.data.seed-values.sql:14003
 msgid "Heading -- Form Subdivision"
 msgstr ""
 
 # id::acsaf.name__12
-#: 950.data.seed-values.sql:13995
+#: 950.data.seed-values.sql:14005
 msgid "Heading -- Chronological Term"
 msgstr ""
 
 # id::acsaf.name__21
-#: 950.data.seed-values.sql:13998
+#: 950.data.seed-values.sql:14008
 msgid "See Also From Tracing -- Personal Name"
 msgstr ""
 
 # id::acsaf.name__22
-#: 950.data.seed-values.sql:13999
+#: 950.data.seed-values.sql:14009
 msgid "See Also From Tracing -- Corporate Name"
 msgstr ""
 
 # id::acsaf.name__23
-#: 950.data.seed-values.sql:14000
+#: 950.data.seed-values.sql:14010
 msgid "See Also From Tracing -- Meeting Name"
 msgstr ""
 
 # id::acsaf.name__25
-#: 950.data.seed-values.sql:14001
+#: 950.data.seed-values.sql:14011
 msgid "See Also From Tracing -- Topical Term"
 msgstr ""
 
 # id::acsaf.name__26
-#: 950.data.seed-values.sql:14002
+#: 950.data.seed-values.sql:14012
 msgid "See Also From Tracing -- Geographic Name"
 msgstr ""
 
 # id::acsaf.name__27
-#: 950.data.seed-values.sql:14003
+#: 950.data.seed-values.sql:14013
 msgid "See Also From Tracing -- Genre/Form Term"
 msgstr ""
 
 # id::acsaf.name__28
-#: 950.data.seed-values.sql:14004
+#: 950.data.seed-values.sql:14014
 msgid "See Also From Tracing -- General Subdivision"
 msgstr ""
 
 # id::acsaf.name__29
-#: 950.data.seed-values.sql:14005
+#: 950.data.seed-values.sql:14015
 msgid "See Also From Tracing -- Geographic Subdivision"
 msgstr ""
 
 # id::acsaf.name__30
-#: 950.data.seed-values.sql:14006
+#: 950.data.seed-values.sql:14016
 msgid "See Also From Tracing -- Chronological Subdivision"
 msgstr ""
 
 # id::acsaf.name__31
-#: 950.data.seed-values.sql:14007
+#: 950.data.seed-values.sql:14017
 msgid "See Also From Tracing -- Form Subdivision"
 msgstr ""
 
 # id::acsaf.name__32
-#: 950.data.seed-values.sql:14008
+#: 950.data.seed-values.sql:14018
 msgid "See Also From Tracing -- Chronological Term"
 msgstr ""
 
 # id::acsaf.name__41
-#: 950.data.seed-values.sql:14011
+#: 950.data.seed-values.sql:14021
 msgid "Established Heading Linking Entry -- Personal Name"
 msgstr ""
 
 # id::acsaf.name__42
-#: 950.data.seed-values.sql:14012
+#: 950.data.seed-values.sql:14022
 msgid "Established Heading Linking Entry -- Corporate Name"
 msgstr ""
 
 # id::acsaf.name__43
-#: 950.data.seed-values.sql:14013
+#: 950.data.seed-values.sql:14023
 msgid "Established Heading Linking Entry -- Meeting Name"
 msgstr ""
 
 # id::acsaf.name__45
-#: 950.data.seed-values.sql:14014
+#: 950.data.seed-values.sql:14024
 msgid "Established Heading Linking Entry -- Topical Term"
 msgstr ""
 
 # id::acsaf.name__46
-#: 950.data.seed-values.sql:14015
+#: 950.data.seed-values.sql:14025
 msgid "Established Heading Linking Entry -- Geographic Name"
 msgstr ""
 
 # id::acsaf.name__47
-#: 950.data.seed-values.sql:14016
+#: 950.data.seed-values.sql:14026
 msgid "Established Heading Linking Entry -- Genre/Form Term"
 msgstr ""
 
 # id::acsaf.name__48
-#: 950.data.seed-values.sql:14017
+#: 950.data.seed-values.sql:14027
 msgid "Subdivision Linking Entry -- General Subdivision"
 msgstr ""
 
 # id::acsaf.name__49
-#: 950.data.seed-values.sql:14018
+#: 950.data.seed-values.sql:14028
 msgid "Subdivision Linking Entry -- Geographic Subdivision"
 msgstr ""
 
 # id::acsaf.name__50
-#: 950.data.seed-values.sql:14019
+#: 950.data.seed-values.sql:14029
 msgid "Subdivision Linking Entry -- Chronological Subdivision"
 msgstr ""
 
 # id::acsaf.name__51
-#: 950.data.seed-values.sql:14020
+#: 950.data.seed-values.sql:14030
 msgid "Subdivision Linking Entry -- Form Subdivision"
 msgstr ""
 
 # id::acsaf.name__52
-#: 950.data.seed-values.sql:14021
+#: 950.data.seed-values.sql:14031
 msgid "Established Heading Linking Entry -- Chronological Term"
 msgstr ""
 
 # id::acsaf.name__61
-#: 950.data.seed-values.sql:14024
+#: 950.data.seed-values.sql:14034
 msgid "See From Tracing -- Personal Name"
 msgstr ""
 
 # id::acsaf.name__62
-#: 950.data.seed-values.sql:14025
+#: 950.data.seed-values.sql:14035
 msgid "See From Tracing -- Corporate Name"
 msgstr ""
 
 # id::acsaf.name__63
-#: 950.data.seed-values.sql:14026
+#: 950.data.seed-values.sql:14036
 msgid "See From Tracing -- Meeting Name"
 msgstr ""
 
 # id::acsaf.name__65
-#: 950.data.seed-values.sql:14027
+#: 950.data.seed-values.sql:14037
 msgid "See From Tracing -- Topical Term"
 msgstr ""
 
 # id::acsaf.name__66
-#: 950.data.seed-values.sql:14028
+#: 950.data.seed-values.sql:14038
 msgid "See From Tracing -- Geographic Name"
 msgstr ""
 
 # id::acsaf.name__67
-#: 950.data.seed-values.sql:14029
+#: 950.data.seed-values.sql:14039
 msgid "See From Tracing -- Genre/Form Term"
 msgstr ""
 
 # id::acsaf.name__68
-#: 950.data.seed-values.sql:14030
+#: 950.data.seed-values.sql:14040
 msgid "See From Tracing -- General Subdivision"
 msgstr ""
 
 # id::acsaf.name__69
-#: 950.data.seed-values.sql:14031
+#: 950.data.seed-values.sql:14041
 msgid "See From Tracing -- Geographic Subdivision"
 msgstr ""
 
 # id::acsaf.name__70
-#: 950.data.seed-values.sql:14032
+#: 950.data.seed-values.sql:14042
 msgid "See From Tracing -- Chronological Subdivision"
 msgstr ""
 
 # id::acsaf.name__71
-#: 950.data.seed-values.sql:14033
+#: 950.data.seed-values.sql:14043
 msgid "See From Tracing -- Form Subdivision"
 msgstr ""
 
 # id::acsaf.name__72
-#: 950.data.seed-values.sql:14034
+#: 950.data.seed-values.sql:14044
 msgid "See From Tracing -- Chronological Term"
 msgstr ""
 
 # id::aba.description__title
-#: 950.data.seed-values.sql:14046
+#: 950.data.seed-values.sql:14056
 msgid "Title axis"
 msgstr ""
 
 # id::aba.description__author
-#: 950.data.seed-values.sql:14047
+#: 950.data.seed-values.sql:14057
 msgid "Author axis"
 msgstr ""
 
 # id::aba.description__subject
-#: 950.data.seed-values.sql:14048
+#: 950.data.seed-values.sql:14058
 msgid "Subject axis"
 msgstr ""
 
 # id::aba.name__topic
-#: 950.data.seed-values.sql:14049
+#: 950.data.seed-values.sql:14059
 msgid "Topic"
 msgstr ""
 
 # id::aba.description__topic
-#: 950.data.seed-values.sql:14049
+#: 950.data.seed-values.sql:14059
 msgid "Topic Subject axis"
 msgstr ""
 
 # id::cbrebt.label__vandelay_queue
-#: 950.data.seed-values.sql:14174
+#: 950.data.seed-values.sql:14184
 msgid "Vandelay Queue"
 msgstr ""
 
 # id::cust.label__opac.default_sms_carrier
 # id::cust.description__opac.default_sms_carrier
-#: 950.data.seed-values.sql:14181 950.data.seed-values.sql:14187
+#: 950.data.seed-values.sql:14191 950.data.seed-values.sql:14197
 msgid "Default SMS/Text Carrier"
 msgstr ""
 
 # id::cust.label__opac.default_sms_notify
 # id::cust.description__opac.default_sms_notify
-#: 950.data.seed-values.sql:14201 950.data.seed-values.sql:14207
+#: 950.data.seed-values.sql:14211 950.data.seed-values.sql:14217
 msgid "Default SMS/Text Number"
 msgstr ""
 
 # id::cust.label__opac.default_phone id::cust.description__opac.default_phone
-#: 950.data.seed-values.sql:14220 950.data.seed-values.sql:14226
+#: 950.data.seed-values.sql:14230 950.data.seed-values.sql:14236
 msgid "Default Phone Number"
 msgstr ""
 
 # id::cust.label__ui.grid_columns.circ.hold_pull_list
-#: 950.data.seed-values.sql:14239
+#: 950.data.seed-values.sql:14249
 msgid "Hold Pull List"
 msgstr ""
 
 # id::cust.description__ui.grid_columns.circ.hold_pull_list
-#: 950.data.seed-values.sql:14245
+#: 950.data.seed-values.sql:14255
 msgid "Hold Pull List Saved Column Settings"
 msgstr ""
 
 # id::cust.label__ui.grid_columns.actor.user.event_log
-#: 950.data.seed-values.sql:14256
+#: 950.data.seed-values.sql:14266
 msgid "User Event Log"
 msgstr ""
 
 # id::cust.description__ui.grid_columns.actor.user.event_log
-#: 950.data.seed-values.sql:14262
+#: 950.data.seed-values.sql:14272
 msgid "User Event Log Saved Column Settings"
 msgstr ""
 
 # id::cust.label__ui.grid_columns.conify.config.circ_matrix_matchpoint
-#: 950.data.seed-values.sql:14273
+#: 950.data.seed-values.sql:14283
 msgid "Circulation Policy Configuration"
 msgstr ""
 
 # id::cust.description__ui.grid_columns.conify.config.circ_matrix_matchpoint
-#: 950.data.seed-values.sql:14279
+#: 950.data.seed-values.sql:14289
 msgid "Circulation Policy Configuration Column Settings"
 msgstr ""
 
 # id::csc.region__1
-#: 950.data.seed-values.sql:14294
+#: 950.data.seed-values.sql:14304
 msgid "Local"
 msgstr ""
 
 # id::csc.name__1
-#: 950.data.seed-values.sql:14300
+#: 950.data.seed-values.sql:14310
 msgid "Test Carrier"
 msgstr ""
 
 # id::csc.region__2 id::csc.region__3 id::csc.region__4
-#: 950.data.seed-values.sql:14313 950.data.seed-values.sql:14330
-#: 950.data.seed-values.sql:14347
+#: 950.data.seed-values.sql:14323 950.data.seed-values.sql:14340
+#: 950.data.seed-values.sql:14357
 msgid "Canada & USA"
 msgstr ""
 
 # id::csc.name__2
-#: 950.data.seed-values.sql:14319
+#: 950.data.seed-values.sql:14329
 msgid "Rogers Wireless"
 msgstr ""
 
 # id::csc.name__3
-#: 950.data.seed-values.sql:14336
+#: 950.data.seed-values.sql:14346
 msgid "Rogers Wireless (Alternate)"
 msgstr ""
 
 # id::csc.name__4
-#: 950.data.seed-values.sql:14353
+#: 950.data.seed-values.sql:14363
 msgid "Telus Mobility"
 msgstr ""
 
 # id::csc.region__5 id::csc.region__6 id::csc.region__7 id::csc.region__8
 # id::csc.region__9 id::csc.region__10 id::csc.region__11 id::csc.region__12
 # id::csc.region__13
-#: 950.data.seed-values.sql:14366 950.data.seed-values.sql:14383
-#: 950.data.seed-values.sql:14400 950.data.seed-values.sql:14417
-#: 950.data.seed-values.sql:14434 950.data.seed-values.sql:14451
-#: 950.data.seed-values.sql:14468 950.data.seed-values.sql:14485
-#: 950.data.seed-values.sql:14502
+#: 950.data.seed-values.sql:14376 950.data.seed-values.sql:14393
+#: 950.data.seed-values.sql:14410 950.data.seed-values.sql:14427
+#: 950.data.seed-values.sql:14444 950.data.seed-values.sql:14461
+#: 950.data.seed-values.sql:14478 950.data.seed-values.sql:14495
+#: 950.data.seed-values.sql:14512
 msgid "Canada"
 msgstr ""
 
 # id::csc.name__5
-#: 950.data.seed-values.sql:14372
+#: 950.data.seed-values.sql:14382
 msgid "Koodo Mobile"
 msgstr ""
 
 # id::csc.name__6
-#: 950.data.seed-values.sql:14389
+#: 950.data.seed-values.sql:14399
 msgid "Fido"
 msgstr ""
 
 # id::csc.name__7
-#: 950.data.seed-values.sql:14406
+#: 950.data.seed-values.sql:14416
 msgid "Bell Mobility & Solo Mobile"
 msgstr ""
 
 # id::csc.name__8
-#: 950.data.seed-values.sql:14423
+#: 950.data.seed-values.sql:14433
 msgid "Bell Mobility & Solo Mobile (Alternate)"
 msgstr ""
 
 # id::csc.name__9
-#: 950.data.seed-values.sql:14440
+#: 950.data.seed-values.sql:14450
 msgid "Aliant"
 msgstr ""
 
 # id::csc.name__10
-#: 950.data.seed-values.sql:14457
+#: 950.data.seed-values.sql:14467
 msgid "PC Telecom"
 msgstr ""
 
 # id::csc.name__11
-#: 950.data.seed-values.sql:14474
+#: 950.data.seed-values.sql:14484
 msgid "SaskTel"
 msgstr ""
 
 # id::csc.name__12
-#: 950.data.seed-values.sql:14491
+#: 950.data.seed-values.sql:14501
 msgid "MTS Mobility"
 msgstr ""
 
 # id::csc.name__13 id::csc.name__59
-#: 950.data.seed-values.sql:14508 950.data.seed-values.sql:15294
+#: 950.data.seed-values.sql:14518 950.data.seed-values.sql:15304
 msgid "Virgin Mobile"
 msgstr ""
 
 # id::csc.region__14 id::csc.region__15 id::csc.region__16 id::csc.region__17
-#: 950.data.seed-values.sql:14521 950.data.seed-values.sql:14538
-#: 950.data.seed-values.sql:14555 950.data.seed-values.sql:14572
+#: 950.data.seed-values.sql:14531 950.data.seed-values.sql:14548
+#: 950.data.seed-values.sql:14565 950.data.seed-values.sql:14582
 msgid "International"
 msgstr ""
 
 # id::csc.name__14
-#: 950.data.seed-values.sql:14527
+#: 950.data.seed-values.sql:14537
 msgid "Iridium"
 msgstr ""
 
 # id::csc.name__15
-#: 950.data.seed-values.sql:14544
+#: 950.data.seed-values.sql:14554
 msgid "Globalstar"
 msgstr ""
 
 # id::csc.name__16
-#: 950.data.seed-values.sql:14561
+#: 950.data.seed-values.sql:14571
 msgid "Bulletin.net"
 msgstr ""
 
 # id::csc.name__17
-#: 950.data.seed-values.sql:14578
+#: 950.data.seed-values.sql:14588
 msgid "Panacea Mobile"
 msgstr ""
 
@@ -15925,448 +15925,448 @@ msgstr ""
 # id::csc.region__55 id::csc.region__56 id::csc.region__57 id::csc.region__58
 # id::csc.region__59 id::csc.region__60 id::csc.region__61 id::csc.region__62
 # id::csc.region__63 id::csc.region__64 id::csc.region__66 id::csc.region__67
-#: 950.data.seed-values.sql:14591 950.data.seed-values.sql:14693
-#: 950.data.seed-values.sql:14710 950.data.seed-values.sql:14727
-#: 950.data.seed-values.sql:14744 950.data.seed-values.sql:14761
-#: 950.data.seed-values.sql:14778 950.data.seed-values.sql:14795
-#: 950.data.seed-values.sql:14812 950.data.seed-values.sql:14829
-#: 950.data.seed-values.sql:14846 950.data.seed-values.sql:14863
-#: 950.data.seed-values.sql:14880 950.data.seed-values.sql:14897
-#: 950.data.seed-values.sql:14914 950.data.seed-values.sql:14931
-#: 950.data.seed-values.sql:14948 950.data.seed-values.sql:14965
-#: 950.data.seed-values.sql:14982 950.data.seed-values.sql:14999
-#: 950.data.seed-values.sql:15016 950.data.seed-values.sql:15033
-#: 950.data.seed-values.sql:15050 950.data.seed-values.sql:15067
-#: 950.data.seed-values.sql:15084 950.data.seed-values.sql:15101
-#: 950.data.seed-values.sql:15118 950.data.seed-values.sql:15135
-#: 950.data.seed-values.sql:15152 950.data.seed-values.sql:15169
-#: 950.data.seed-values.sql:15186 950.data.seed-values.sql:15203
-#: 950.data.seed-values.sql:15220 950.data.seed-values.sql:15237
-#: 950.data.seed-values.sql:15254 950.data.seed-values.sql:15271
-#: 950.data.seed-values.sql:15288 950.data.seed-values.sql:15305
-#: 950.data.seed-values.sql:15322 950.data.seed-values.sql:15339
-#: 950.data.seed-values.sql:15356 950.data.seed-values.sql:15373
-#: 950.data.seed-values.sql:15411 950.data.seed-values.sql:15428
+#: 950.data.seed-values.sql:14601 950.data.seed-values.sql:14703
+#: 950.data.seed-values.sql:14720 950.data.seed-values.sql:14737
+#: 950.data.seed-values.sql:14754 950.data.seed-values.sql:14771
+#: 950.data.seed-values.sql:14788 950.data.seed-values.sql:14805
+#: 950.data.seed-values.sql:14822 950.data.seed-values.sql:14839
+#: 950.data.seed-values.sql:14856 950.data.seed-values.sql:14873
+#: 950.data.seed-values.sql:14890 950.data.seed-values.sql:14907
+#: 950.data.seed-values.sql:14924 950.data.seed-values.sql:14941
+#: 950.data.seed-values.sql:14958 950.data.seed-values.sql:14975
+#: 950.data.seed-values.sql:14992 950.data.seed-values.sql:15009
+#: 950.data.seed-values.sql:15026 950.data.seed-values.sql:15043
+#: 950.data.seed-values.sql:15060 950.data.seed-values.sql:15077
+#: 950.data.seed-values.sql:15094 950.data.seed-values.sql:15111
+#: 950.data.seed-values.sql:15128 950.data.seed-values.sql:15145
+#: 950.data.seed-values.sql:15162 950.data.seed-values.sql:15179
+#: 950.data.seed-values.sql:15196 950.data.seed-values.sql:15213
+#: 950.data.seed-values.sql:15230 950.data.seed-values.sql:15247
+#: 950.data.seed-values.sql:15264 950.data.seed-values.sql:15281
+#: 950.data.seed-values.sql:15298 950.data.seed-values.sql:15315
+#: 950.data.seed-values.sql:15332 950.data.seed-values.sql:15349
+#: 950.data.seed-values.sql:15366 950.data.seed-values.sql:15383
+#: 950.data.seed-values.sql:15421 950.data.seed-values.sql:15438
 msgid "USA"
 msgstr ""
 
 # id::csc.name__18
-#: 950.data.seed-values.sql:14597
+#: 950.data.seed-values.sql:14607
 msgid "C Beyond"
 msgstr ""
 
 # id::csc.region__19
-#: 950.data.seed-values.sql:14608
+#: 950.data.seed-values.sql:14618
 msgid "Alaska, USA"
 msgstr ""
 
 # id::csc.name__19
-#: 950.data.seed-values.sql:14614
+#: 950.data.seed-values.sql:14624
 msgid "General Communications, Inc."
 msgstr ""
 
 # id::csc.region__20
-#: 950.data.seed-values.sql:14625
+#: 950.data.seed-values.sql:14635
 msgid "California, USA"
 msgstr ""
 
 # id::csc.name__20
-#: 950.data.seed-values.sql:14631
+#: 950.data.seed-values.sql:14641
 msgid "Golden State Cellular"
 msgstr ""
 
 # id::csc.region__21
-#: 950.data.seed-values.sql:14642
+#: 950.data.seed-values.sql:14652
 msgid "Cincinnati, Ohio, USA"
 msgstr ""
 
 # id::csc.name__21
-#: 950.data.seed-values.sql:14648
+#: 950.data.seed-values.sql:14658
 msgid "Cincinnati Bell"
 msgstr ""
 
 # id::csc.region__22
-#: 950.data.seed-values.sql:14659
+#: 950.data.seed-values.sql:14669
 msgid "Hawaii, USA"
 msgstr ""
 
 # id::csc.name__22
-#: 950.data.seed-values.sql:14665
+#: 950.data.seed-values.sql:14675
 msgid "Hawaiian Telcom Wireless"
 msgstr ""
 
 # id::csc.region__23
-#: 950.data.seed-values.sql:14676
+#: 950.data.seed-values.sql:14686
 msgid "Midwest, USA"
 msgstr ""
 
 # id::csc.name__23
-#: 950.data.seed-values.sql:14682
+#: 950.data.seed-values.sql:14692
 msgid "i wireless (T-Mobile)"
 msgstr ""
 
 # id::csc.name__24
-#: 950.data.seed-values.sql:14699
+#: 950.data.seed-values.sql:14709
 msgid "i-wireless (Sprint PCS)"
 msgstr ""
 
 # id::csc.name__25
-#: 950.data.seed-values.sql:14716
+#: 950.data.seed-values.sql:14726
 msgid "MetroPCS"
 msgstr ""
 
 # id::csc.name__26
-#: 950.data.seed-values.sql:14733
+#: 950.data.seed-values.sql:14743
 msgid "Kajeet"
 msgstr ""
 
 # id::csc.name__27
-#: 950.data.seed-values.sql:14750
+#: 950.data.seed-values.sql:14760
 msgid "Element Mobile"
 msgstr ""
 
 # id::csc.name__28
-#: 950.data.seed-values.sql:14767
+#: 950.data.seed-values.sql:14777
 msgid "Esendex"
 msgstr ""
 
 # id::csc.name__29
-#: 950.data.seed-values.sql:14784
+#: 950.data.seed-values.sql:14794
 msgid "Boost Mobile"
 msgstr ""
 
 # id::csc.name__30
-#: 950.data.seed-values.sql:14801
+#: 950.data.seed-values.sql:14811
 msgid "BellSouth"
 msgstr ""
 
 # id::csc.name__31
-#: 950.data.seed-values.sql:14818
+#: 950.data.seed-values.sql:14828
 msgid "Bluegrass Cellular"
 msgstr ""
 
 # id::csc.name__32
-#: 950.data.seed-values.sql:14835
+#: 950.data.seed-values.sql:14845
 msgid "AT&T Enterprise Paging"
 msgstr ""
 
 # id::csc.name__33
-#: 950.data.seed-values.sql:14852
+#: 950.data.seed-values.sql:14862
 msgid "AT&T Mobility/Wireless"
 msgstr ""
 
 # id::csc.name__34
-#: 950.data.seed-values.sql:14869
+#: 950.data.seed-values.sql:14879
 msgid "AT&T Global Smart Messaging Suite"
 msgstr ""
 
 # id::csc.name__35
-#: 950.data.seed-values.sql:14886
+#: 950.data.seed-values.sql:14896
 msgid "Alltel (Allied Wireless)"
 msgstr ""
 
 # id::csc.name__36
-#: 950.data.seed-values.sql:14903
+#: 950.data.seed-values.sql:14913
 msgid "Alaska Communications"
 msgstr ""
 
 # id::csc.name__37
-#: 950.data.seed-values.sql:14920
+#: 950.data.seed-values.sql:14930
 msgid "Ameritech"
 msgstr ""
 
 # id::csc.name__38
-#: 950.data.seed-values.sql:14937
+#: 950.data.seed-values.sql:14947
 msgid "Cingular (GoPhone prepaid)"
 msgstr ""
 
 # id::csc.name__39
-#: 950.data.seed-values.sql:14954
+#: 950.data.seed-values.sql:14964
 msgid "Cingular (Postpaid)"
 msgstr ""
 
 # id::csc.name__40
-#: 950.data.seed-values.sql:14971
+#: 950.data.seed-values.sql:14981
 msgid "Cellular One (Dobson) / O2 / Orange"
 msgstr ""
 
 # id::csc.name__41
-#: 950.data.seed-values.sql:14988
+#: 950.data.seed-values.sql:14998
 msgid "Cellular South"
 msgstr ""
 
 # id::csc.name__42
-#: 950.data.seed-values.sql:15005
+#: 950.data.seed-values.sql:15015
 msgid "Cellcom"
 msgstr ""
 
 # id::csc.name__43
-#: 950.data.seed-values.sql:15022
+#: 950.data.seed-values.sql:15032
 msgid "Chariton Valley Wireless"
 msgstr ""
 
 # id::csc.name__44
-#: 950.data.seed-values.sql:15039
+#: 950.data.seed-values.sql:15049
 msgid "Cricket"
 msgstr ""
 
 # id::csc.name__45
-#: 950.data.seed-values.sql:15056
+#: 950.data.seed-values.sql:15066
 msgid "Cleartalk Wireless"
 msgstr ""
 
 # id::csc.name__46
-#: 950.data.seed-values.sql:15073
+#: 950.data.seed-values.sql:15083
 msgid "Edge Wireless"
 msgstr ""
 
 # id::csc.name__47
-#: 950.data.seed-values.sql:15090
+#: 950.data.seed-values.sql:15100
 msgid "Syringa Wireless"
 msgstr ""
 
 # id::csc.name__48
-#: 950.data.seed-values.sql:15107
+#: 950.data.seed-values.sql:15117
 msgid "T-Mobile"
 msgstr ""
 
 # id::csc.name__49
-#: 950.data.seed-values.sql:15124
+#: 950.data.seed-values.sql:15134
 msgid "Straight Talk / PagePlus Cellular"
 msgstr ""
 
 # id::csc.name__50
-#: 950.data.seed-values.sql:15141
+#: 950.data.seed-values.sql:15151
 msgid "South Central Communications"
 msgstr ""
 
 # id::csc.name__51
-#: 950.data.seed-values.sql:15158
+#: 950.data.seed-values.sql:15168
 msgid "Simple Mobile"
 msgstr ""
 
 # id::csc.name__52
-#: 950.data.seed-values.sql:15175
+#: 950.data.seed-values.sql:15185
 msgid "Sprint (PCS)"
 msgstr ""
 
 # id::csc.name__53
-#: 950.data.seed-values.sql:15192
+#: 950.data.seed-values.sql:15202
 msgid "Nextel"
 msgstr ""
 
 # id::csc.name__54
-#: 950.data.seed-values.sql:15209
+#: 950.data.seed-values.sql:15219
 msgid "Pioneer Cellular"
 msgstr ""
 
 # id::csc.name__55
-#: 950.data.seed-values.sql:15226
+#: 950.data.seed-values.sql:15236
 msgid "Qwest Wireless"
 msgstr ""
 
 # id::csc.name__56
-#: 950.data.seed-values.sql:15243
+#: 950.data.seed-values.sql:15253
 msgid "US Cellular"
 msgstr ""
 
 # id::csc.name__57
-#: 950.data.seed-values.sql:15260
+#: 950.data.seed-values.sql:15270
 msgid "Unicel"
 msgstr ""
 
 # id::csc.name__58
-#: 950.data.seed-values.sql:15277
+#: 950.data.seed-values.sql:15287
 msgid "Teleflip"
 msgstr ""
 
 # id::csc.name__60
-#: 950.data.seed-values.sql:15311
+#: 950.data.seed-values.sql:15321
 msgid "Verizon Wireless"
 msgstr ""
 
 # id::csc.name__61
-#: 950.data.seed-values.sql:15328
+#: 950.data.seed-values.sql:15338
 msgid "USA Mobility"
 msgstr ""
 
 # id::csc.name__62
-#: 950.data.seed-values.sql:15345
+#: 950.data.seed-values.sql:15355
 msgid "Viaero"
 msgstr ""
 
 # id::csc.name__63
-#: 950.data.seed-values.sql:15362
+#: 950.data.seed-values.sql:15372
 msgid "TracFone"
 msgstr ""
 
 # id::csc.name__64
-#: 950.data.seed-values.sql:15379
+#: 950.data.seed-values.sql:15389
 msgid "Centennial Wireless"
 msgstr ""
 
 # id::csc.region__65
-#: 950.data.seed-values.sql:15392
+#: 950.data.seed-values.sql:15402
 msgid "South Korea and USA"
 msgstr ""
 
 # id::csc.name__65
-#: 950.data.seed-values.sql:15398
+#: 950.data.seed-values.sql:15408
 msgid "Helio"
 msgstr ""
 
 # id::csc.name__66
-#: 950.data.seed-values.sql:15417
+#: 950.data.seed-values.sql:15427
 msgid "Republic Wireless (must enable on device)"
 msgstr ""
 
 # id::csc.name__67
-#: 950.data.seed-values.sql:15434
+#: 950.data.seed-values.sql:15444
 msgid "Google Fi"
 msgstr ""
 
 # id::ath.description__acn.format.sms_text
-#: 950.data.seed-values.sql:15533
+#: 950.data.seed-values.sql:15543
 msgid "A text message has been requested for a call number."
 msgstr ""
 
 # id::vmp.name__1
-#: 950.data.seed-values.sql:15596
+#: 950.data.seed-values.sql:15606
 msgid "Match-Only Merge"
 msgstr ""
 
 # id::vmp.name__2
-#: 950.data.seed-values.sql:15599
+#: 950.data.seed-values.sql:15609
 msgid "Full Overlay"
 msgstr ""
 
 # id::cuat.label__1
-#: 950.data.seed-values.sql:15642
+#: 950.data.seed-values.sql:15652
 msgid "Login via opensrf"
 msgstr ""
 
 # id::cuat.label__2
-#: 950.data.seed-values.sql:15643
+#: 950.data.seed-values.sql:15653
 msgid "Login via srfsh"
 msgstr ""
 
 # id::cuat.label__3
-#: 950.data.seed-values.sql:15644
+#: 950.data.seed-values.sql:15654
 msgid "Login via gateway-v1"
 msgstr ""
 
 # id::cuat.label__4
-#: 950.data.seed-values.sql:15645
+#: 950.data.seed-values.sql:15655
 msgid "Login via translator-v1"
 msgstr ""
 
 # id::cuat.label__5
-#: 950.data.seed-values.sql:15646
+#: 950.data.seed-values.sql:15656
 msgid "Login via xmlrpc"
 msgstr ""
 
 # id::cuat.label__6
-#: 950.data.seed-values.sql:15647
+#: 950.data.seed-values.sql:15657
 msgid "Login via remoteauth"
 msgstr ""
 
 # id::cuat.label__7
-#: 950.data.seed-values.sql:15648
+#: 950.data.seed-values.sql:15658
 msgid "SIP2 Proxy Login"
 msgstr ""
 
 # id::cuat.label__8
-#: 950.data.seed-values.sql:15649
+#: 950.data.seed-values.sql:15659
 msgid "Login via Apache module"
 msgstr ""
 
 # id::cuat.label__9
-#: 950.data.seed-values.sql:15651
+#: 950.data.seed-values.sql:15661
 msgid "Verification via opensrf"
 msgstr ""
 
 # id::cuat.label__10
-#: 950.data.seed-values.sql:15652
+#: 950.data.seed-values.sql:15662
 msgid "Verification via srfsh"
 msgstr ""
 
 # id::cuat.label__11
-#: 950.data.seed-values.sql:15653
+#: 950.data.seed-values.sql:15663
 msgid "Verification via gateway-v1"
 msgstr ""
 
 # id::cuat.label__12
-#: 950.data.seed-values.sql:15654
+#: 950.data.seed-values.sql:15664
 msgid "Verification via translator-v1"
 msgstr ""
 
 # id::cuat.label__13
-#: 950.data.seed-values.sql:15655
+#: 950.data.seed-values.sql:15665
 msgid "Verification via xmlrpc"
 msgstr ""
 
 # id::cuat.label__14
-#: 950.data.seed-values.sql:15656
+#: 950.data.seed-values.sql:15666
 msgid "Verification via remoteauth"
 msgstr ""
 
 # id::cuat.label__15
-#: 950.data.seed-values.sql:15657
+#: 950.data.seed-values.sql:15667
 msgid "SIP2 User Verification"
 msgstr ""
 
 # id::cuat.label__16
-#: 950.data.seed-values.sql:15660
+#: 950.data.seed-values.sql:15670
 msgid "OPAC Login (jspac)"
 msgstr ""
 
 # id::cuat.label__17
-#: 950.data.seed-values.sql:15661
+#: 950.data.seed-values.sql:15671
 msgid "OPAC Login (tpac)"
 msgstr ""
 
 # id::cuat.label__18
-#: 950.data.seed-values.sql:15662
+#: 950.data.seed-values.sql:15672
 msgid "Staff Client Login"
 msgstr ""
 
 # id::cuat.label__19
-#: 950.data.seed-values.sql:15663
+#: 950.data.seed-values.sql:15673
 msgid "Self-Check Proxy Login"
 msgstr ""
 
 # id::cuat.label__20
-#: 950.data.seed-values.sql:15664
+#: 950.data.seed-values.sql:15674
 msgid "Unique Mgt Login"
 msgstr ""
 
 # id::cuat.label__21
-#: 950.data.seed-values.sql:15665
+#: 950.data.seed-values.sql:15675
 msgid "Apache Auth Proxy Login"
 msgstr ""
 
 # id::cuat.label__22
-#: 950.data.seed-values.sql:15666
+#: 950.data.seed-values.sql:15676
 msgid "LibraryElf Login"
 msgstr ""
 
 # id::cuat.label__23
-#: 950.data.seed-values.sql:15668
+#: 950.data.seed-values.sql:15678
 msgid "Self-Check User Verification"
 msgstr ""
 
 # id::cuat.label__24
-#: 950.data.seed-values.sql:15669
+#: 950.data.seed-values.sql:15679
 msgid "EZProxy Verification"
 msgstr ""
 
 # id::coust.label__circ.fines.charge_when_closed
-#: 950.data.seed-values.sql:15680
+#: 950.data.seed-values.sql:15690
 msgid "Charge fines on overdue circulations when closed"
 msgstr ""
 
 # id::coust.description__circ.fines.charge_when_closed
-#: 950.data.seed-values.sql:15686
+#: 950.data.seed-values.sql:15696
 msgid ""
 "Normally, fines are not charged when a library is closed.  When set to True,"
 " fines will be charged during scheduled closings and normal weekly closed "
@@ -16374,12 +16374,12 @@ msgid ""
 msgstr ""
 
 # id::coust.label__circ.patron.usr_activity_retrieve.max
-#: 950.data.seed-values.sql:15700
+#: 950.data.seed-values.sql:15710
 msgid "Max user activity entries to retrieve (staff client)"
 msgstr ""
 
 # id::coust.description__circ.patron.usr_activity_retrieve.max
-#: 950.data.seed-values.sql:15706
+#: 950.data.seed-values.sql:15716
 msgid ""
 "Sets the maxinum number of recent user activity entries to retrieve for "
 "display in the staff client.  0 means show none, -1 means show all.  Default"
@@ -16387,32 +16387,32 @@ msgid ""
 msgstr ""
 
 # id::ath.description__circ.format.history.csv
-#: 950.data.seed-values.sql:15721
+#: 950.data.seed-values.sql:15731
 msgid "Produce CSV of circulation history"
 msgstr ""
 
 # id::atb.label__1
-#: 950.data.seed-values.sql:15762
+#: 950.data.seed-values.sql:15772
 msgid "circ"
 msgstr ""
 
 # id::atb.label__2
-#: 950.data.seed-values.sql:15763
+#: 950.data.seed-values.sql:15773
 msgid "cat"
 msgstr ""
 
 # id::cgf.label__opac.org_unit.non_inherited_visibility
-#: 950.data.seed-values.sql:15769
+#: 950.data.seed-values.sql:15779
 msgid "Org Units Do Not Inherit Visibility"
 msgstr ""
 
 # id::coust.label__ui.hide_copy_editor_fields
-#: 950.data.seed-values.sql:15780
+#: 950.data.seed-values.sql:15790
 msgid "GUI: Hide these fields within the Item Attribute Editor"
 msgstr ""
 
 # id::coust.description__ui.hide_copy_editor_fields
-#: 950.data.seed-values.sql:15786
+#: 950.data.seed-values.sql:15796
 msgid ""
 "This setting may be best maintained with the dedicated configuration "
 "interface within the Item Attribute Editor.  However, here it shows up as "
@@ -16420,12 +16420,12 @@ msgid ""
 msgstr ""
 
 # id::coust.label__opac.patron.auto_overide_hold_events
-#: 950.data.seed-values.sql:15804
+#: 950.data.seed-values.sql:15814
 msgid "Auto-Override Permitted Hold Blocks (Patrons)"
 msgstr ""
 
 # id::coust.description__opac.patron.auto_overide_hold_events
-#: 950.data.seed-values.sql:15810
+#: 950.data.seed-values.sql:15820
 msgid ""
 "When a patron places a hold that fails and the patron has the correct "
 "permission to override the hold, automatically override the hold without "
@@ -16434,12 +16434,12 @@ msgid ""
 msgstr ""
 
 # id::coust.label__opac.patron.temporary_list_warn
-#: 950.data.seed-values.sql:15826
+#: 950.data.seed-values.sql:15836
 msgid "Warn patrons when adding to a temporary book list"
 msgstr ""
 
 # id::coust.description__opac.patron.temporary_list_warn
-#: 950.data.seed-values.sql:15832
+#: 950.data.seed-values.sql:15842
 msgid ""
 "Present a warning dialog to the patron when a patron adds a book to a "
 "temporary book list."
@@ -16447,22 +16447,22 @@ msgstr ""
 
 # id::cust.label__opac.temporary_list_no_warn
 # id::cust.description__opac.temporary_list_no_warn
-#: 950.data.seed-values.sql:15847 950.data.seed-values.sql:15853
+#: 950.data.seed-values.sql:15857 950.data.seed-values.sql:15863
 msgid "Opt out of warning when adding a book to a temporary book list"
 msgstr ""
 
 # id::cust.label__opac.default_list id::cust.description__opac.default_list
-#: 950.data.seed-values.sql:15868 950.data.seed-values.sql:15874
+#: 950.data.seed-values.sql:15878 950.data.seed-values.sql:15884
 msgid "Default list to use when adding to a list"
 msgstr ""
 
 # id::coust.label__circ.staff.max_visible_event_age
-#: 950.data.seed-values.sql:15888
+#: 950.data.seed-values.sql:15898
 msgid "Maximum visible age of User Trigger Events in Staff Interfaces"
 msgstr ""
 
 # id::coust.description__circ.staff.max_visible_event_age
-#: 950.data.seed-values.sql:15894
+#: 950.data.seed-values.sql:15904
 msgid ""
 "If this is unset, staff can view User Trigger Events regardless of age. When"
 " this is set to an interval, it represents the age of the oldest possible "
@@ -16470,56 +16470,56 @@ msgid ""
 msgstr ""
 
 # id::asfg.label__1
-#: 950.data.seed-values.sql:15906
+#: 950.data.seed-values.sql:15916
 msgid "Kid's OPAC Search Filter"
 msgstr ""
 
 # id::asq.label__1
-#: 950.data.seed-values.sql:15909
+#: 950.data.seed-values.sql:15919
 msgid "Children's Materials"
 msgstr ""
 
 # id::asq.label__2
-#: 950.data.seed-values.sql:15911
+#: 950.data.seed-values.sql:15921
 msgid "Young Adult Materials"
 msgstr ""
 
 # id::asq.label__3
-#: 950.data.seed-values.sql:15913
+#: 950.data.seed-values.sql:15923
 msgid "General/Adult Materials"
 msgstr ""
 
 # id::coust.label__acq.fund.allow_rollover_without_money
-#: 950.data.seed-values.sql:15936
+#: 950.data.seed-values.sql:15946
 msgid "Rollover encumbrances only"
 msgstr ""
 
 # id::coust.description__acq.fund.allow_rollover_without_money
-#: 950.data.seed-values.sql:15942
+#: 950.data.seed-values.sql:15952
 msgid ""
 "Rollover encumbrances only when doing fiscal year end.  This makes money "
 "left in the old fund disappear, modeling its return to some outside entity."
 msgstr ""
 
 # id::coust.label__circ.lost.xact_open_on_zero
-#: 950.data.seed-values.sql:15956
+#: 950.data.seed-values.sql:15966
 msgid "Leave transaction open when lost balance equals zero"
 msgstr ""
 
 # id::coust.description__circ.lost.xact_open_on_zero
-#: 950.data.seed-values.sql:15962
+#: 950.data.seed-values.sql:15972
 msgid ""
 "Leave transaction open when lost balance equals zero.  This leaves the lost "
 "copy on the patron record when it is paid"
 msgstr ""
 
 # id::coust.label__circ.patron_expires_soon_warning
-#: 950.data.seed-values.sql:15976
+#: 950.data.seed-values.sql:15986
 msgid "Warn when patron account is about to expire"
 msgstr ""
 
 # id::coust.description__circ.patron_expires_soon_warning
-#: 950.data.seed-values.sql:15982
+#: 950.data.seed-values.sql:15992
 msgid ""
 "Warn when patron account is about to expire. If set, the staff client "
 "displays a warning this many days before the expiry of a patron account. "
@@ -16527,22 +16527,22 @@ msgid ""
 msgstr ""
 
 # id::coust.label__circ.fines.truncate_to_max_fine
-#: 950.data.seed-values.sql:15995
+#: 950.data.seed-values.sql:16005
 msgid "Truncate fines to max fine amount"
 msgstr ""
 
 # id::csg.label__url_verify
-#: 950.data.seed-values.sql:16009
+#: 950.data.seed-values.sql:16019
 msgid "URL Verify"
 msgstr ""
 
 # id::coust.label__url_verify.url_verification_delay
-#: 950.data.seed-values.sql:16022
+#: 950.data.seed-values.sql:16032
 msgid "Number of seconds to wait between URL test attempts."
 msgstr ""
 
 # id::coust.description__url_verify.url_verification_delay
-#: 950.data.seed-values.sql:16028
+#: 950.data.seed-values.sql:16038
 msgid ""
 "Throttling mechanism for batch URL verification runs.  Each running process "
 "will wait this number of seconds after a URL test before performing the "
@@ -16550,53 +16550,53 @@ msgid ""
 msgstr ""
 
 # id::coust.label__url_verify.url_verification_max_redirects
-#: 950.data.seed-values.sql:16043
+#: 950.data.seed-values.sql:16053
 msgid "Maximum redirect lookups"
 msgstr ""
 
 # id::coust.description__url_verify.url_verification_max_redirects
-#: 950.data.seed-values.sql:16049
+#: 950.data.seed-values.sql:16059
 msgid ""
 "For URLs returning 3XX redirects, this is the maximum number of redirects we"
 " will follow before giving up."
 msgstr ""
 
 # id::coust.label__url_verify.url_verification_max_wait
-#: 950.data.seed-values.sql:16064
+#: 950.data.seed-values.sql:16074
 msgid "Maximum wait time (in seconds) for a URL to lookup"
 msgstr ""
 
 # id::coust.description__url_verify.url_verification_max_wait
-#: 950.data.seed-values.sql:16070
+#: 950.data.seed-values.sql:16080
 msgid ""
 "If we exceed the wait time, the URL is marked as a \"timeout\" and the "
 "system moves on to the next URL"
 msgstr ""
 
 # id::cfdi.description__url_verify
-#: 950.data.seed-values.sql:16082
+#: 950.data.seed-values.sql:16092
 msgid "All Link Checker filter dialogs"
 msgstr ""
 
 # id::cust.label__ui.grid_columns.url_verify.select_urls
 # id::cust.description__ui.grid_columns.url_verify.select_urls
-#: 950.data.seed-values.sql:16094 950.data.seed-values.sql:16100
+#: 950.data.seed-values.sql:16104 950.data.seed-values.sql:16110
 msgid "Link Checker's URL Selection interface's saved columns"
 msgstr ""
 
 # id::cust.label__ui.grid_columns.url_verify.review_attempt
 # id::cust.description__ui.grid_columns.url_verify.review_attempt
-#: 950.data.seed-values.sql:16113 950.data.seed-values.sql:16119
+#: 950.data.seed-values.sql:16123 950.data.seed-values.sql:16129
 msgid "Link Checker's Review Attempt interface's saved columns"
 msgstr ""
 
 # id::coust.label__url_verify.verification_batch_size
-#: 950.data.seed-values.sql:16133
+#: 950.data.seed-values.sql:16143
 msgid "Number of URLs to test in parallel"
 msgstr ""
 
 # id::coust.description__url_verify.verification_batch_size
-#: 950.data.seed-values.sql:16139
+#: 950.data.seed-values.sql:16149
 msgid ""
 "URLs are tested in batches.  This number defines the size of each batch and "
 "it directly relates to the number of back-end processes performing URL "
@@ -16604,205 +16604,205 @@ msgid ""
 msgstr ""
 
 # id::coust.label__acq.upload.default.create_po
-#: 950.data.seed-values.sql:16153
+#: 950.data.seed-values.sql:16163
 msgid "Upload Create PO"
 msgstr ""
 
 # id::coust.description__acq.upload.default.create_po
-#: 950.data.seed-values.sql:16159
+#: 950.data.seed-values.sql:16169
 msgid "Create a purchase order by default during ACQ file upload"
 msgstr ""
 
 # id::coust.label__acq.upload.default.activate_po
-#: 950.data.seed-values.sql:16170
+#: 950.data.seed-values.sql:16180
 msgid "Upload Activate PO"
 msgstr ""
 
 # id::coust.description__acq.upload.default.activate_po
-#: 950.data.seed-values.sql:16176
+#: 950.data.seed-values.sql:16186
 msgid "Activate the purchase order by default during ACQ file upload"
 msgstr ""
 
 # id::coust.label__acq.upload.default.provider
-#: 950.data.seed-values.sql:16187
+#: 950.data.seed-values.sql:16197
 msgid "Upload Default Provider"
 msgstr ""
 
 # id::coust.description__acq.upload.default.provider
-#: 950.data.seed-values.sql:16193
+#: 950.data.seed-values.sql:16203
 msgid "Default provider to use during ACQ file upload"
 msgstr ""
 
 # id::coust.label__acq.upload.default.vandelay.match_set
-#: 950.data.seed-values.sql:16204
+#: 950.data.seed-values.sql:16214
 msgid "Upload Default Match Set"
 msgstr ""
 
 # id::coust.description__acq.upload.default.vandelay.match_set
-#: 950.data.seed-values.sql:16210
+#: 950.data.seed-values.sql:16220
 msgid "Default match set to use during ACQ file upload"
 msgstr ""
 
 # id::coust.label__acq.upload.default.vandelay.merge_profile
-#: 950.data.seed-values.sql:16221
+#: 950.data.seed-values.sql:16231
 msgid "Upload Default Merge Profile"
 msgstr ""
 
 # id::coust.description__acq.upload.default.vandelay.merge_profile
-#: 950.data.seed-values.sql:16227
+#: 950.data.seed-values.sql:16237
 msgid "Default merge profile to use during ACQ file upload"
 msgstr ""
 
 # id::coust.label__acq.upload.default.vandelay.import_non_matching
-#: 950.data.seed-values.sql:16238
+#: 950.data.seed-values.sql:16248
 msgid "Upload Import Non Matching by Default"
 msgstr ""
 
 # id::coust.description__acq.upload.default.vandelay.import_non_matching
-#: 950.data.seed-values.sql:16244
+#: 950.data.seed-values.sql:16254
 msgid "Import non-matching records by default during ACQ file upload"
 msgstr ""
 
 # id::coust.label__acq.upload.default.vandelay.merge_on_exact
-#: 950.data.seed-values.sql:16255
+#: 950.data.seed-values.sql:16265
 msgid "Upload Merge on Exact Match by Default"
 msgstr ""
 
 # id::coust.description__acq.upload.default.vandelay.merge_on_exact
-#: 950.data.seed-values.sql:16261
+#: 950.data.seed-values.sql:16271
 msgid "Merge records on exact match by default during ACQ file upload"
 msgstr ""
 
 # id::coust.label__acq.upload.default.vandelay.merge_on_best
-#: 950.data.seed-values.sql:16272
+#: 950.data.seed-values.sql:16282
 msgid "Upload Merge on Best Match by Default"
 msgstr ""
 
 # id::coust.description__acq.upload.default.vandelay.merge_on_best
-#: 950.data.seed-values.sql:16278
+#: 950.data.seed-values.sql:16288
 msgid "Merge records on best match by default during ACQ file upload"
 msgstr ""
 
 # id::coust.label__acq.upload.default.vandelay.merge_on_single
-#: 950.data.seed-values.sql:16289
+#: 950.data.seed-values.sql:16299
 msgid "Upload Merge on Single Match by Default"
 msgstr ""
 
 # id::coust.description__acq.upload.default.vandelay.merge_on_single
-#: 950.data.seed-values.sql:16295
+#: 950.data.seed-values.sql:16305
 msgid "Merge records on single match by default during ACQ file upload"
 msgstr ""
 
 # id::coust.label__acq.upload.default.vandelay.quality_ratio
-#: 950.data.seed-values.sql:16306
+#: 950.data.seed-values.sql:16316
 msgid "Upload Default Min. Quality Ratio"
 msgstr ""
 
 # id::coust.description__acq.upload.default.vandelay.quality_ratio
-#: 950.data.seed-values.sql:16312
+#: 950.data.seed-values.sql:16322
 msgid "Default minimum quality ratio used during ACQ file upload"
 msgstr ""
 
 # id::coust.label__acq.upload.default.vandelay.low_quality_fall_thru_profile
-#: 950.data.seed-values.sql:16323
+#: 950.data.seed-values.sql:16333
 msgid "Upload Default Insufficient Quality Fall-Thru Profile"
 msgstr ""
 
 # id::coust.description__acq.upload.default.vandelay.low_quality_fall_thru_profile
-#: 950.data.seed-values.sql:16329
+#: 950.data.seed-values.sql:16339
 msgid "Default low-quality fall through profile used during ACQ file upload"
 msgstr ""
 
 # id::coust.label__acq.upload.default.vandelay.load_item_for_imported
-#: 950.data.seed-values.sql:16340
+#: 950.data.seed-values.sql:16350
 msgid "Upload Load Items for Imported Records by Default"
 msgstr ""
 
 # id::coust.description__acq.upload.default.vandelay.load_item_for_imported
-#: 950.data.seed-values.sql:16346
+#: 950.data.seed-values.sql:16356
 msgid "Load items for imported records by default during ACQ file upload"
 msgstr ""
 
 # id::coust.label__circ.hold_capture_order
-#: 950.data.seed-values.sql:16395
+#: 950.data.seed-values.sql:16405
 msgid "Best-hold selection sort order"
 msgstr ""
 
 # id::coust.description__circ.hold_capture_order
-#: 950.data.seed-values.sql:16401
+#: 950.data.seed-values.sql:16411
 msgid ""
 "Defines the sort order of holds when selecting a hold to fill using a given "
 "copy at capture time"
 msgstr ""
 
 # id::coust.label__circ.hold_go_home_interval
-#: 950.data.seed-values.sql:16417
+#: 950.data.seed-values.sql:16427
 msgid "Max foreign-circulation time"
 msgstr ""
 
 # id::coust.description__circ.hold_go_home_interval
-#: 950.data.seed-values.sql:16423
+#: 950.data.seed-values.sql:16433
 msgid ""
 "Time a copy can spend circulating away from its circ lib before returning "
 "there to fill a hold (if one exists there)"
 msgstr ""
 
 # id::coust.label__acq.fund.rollover_distrib_forms
-#: 950.data.seed-values.sql:16543
+#: 950.data.seed-values.sql:16553
 msgid "Rollover Distribution Formulae Funds"
 msgstr ""
 
 # id::coust.description__acq.fund.rollover_distrib_forms
-#: 950.data.seed-values.sql:16549
+#: 950.data.seed-values.sql:16559
 msgid "During fiscal rollover, update distribution formalae to use new funds"
 msgstr ""
 
 # id::czifm.label__6
-#: 950.data.seed-values.sql:16569
+#: 950.data.seed-values.sql:16579
 msgid "Pubdate"
 msgstr ""
 
 # id::coust.label__cat.z3950.batch.max_parallel
-#: 950.data.seed-values.sql:16581
+#: 950.data.seed-values.sql:16591
 msgid "Maximum Parallel Z39.50 Batch Searches"
 msgstr ""
 
 # id::coust.description__cat.z3950.batch.max_parallel
-#: 950.data.seed-values.sql:16587
+#: 950.data.seed-values.sql:16597
 msgid ""
 "The maximum number of Z39.50 searches that can be in-flight at any given "
 "time when performing batch Z39.50 searches"
 msgstr ""
 
 # id::coust.label__cat.z3950.batch.max_results
-#: 950.data.seed-values.sql:16601
+#: 950.data.seed-values.sql:16611
 msgid "Maximum Z39.50 Batch Search Results"
 msgstr ""
 
 # id::coust.description__cat.z3950.batch.max_results
-#: 950.data.seed-values.sql:16607
+#: 950.data.seed-values.sql:16617
 msgid ""
 "The maximum number of search results to retrieve and queue for each record +"
 " Z39 source during batch Z39.50 searches"
 msgstr ""
 
 # id::coust.label__circ.longoverdue_immediately_available
-#: 950.data.seed-values.sql:16623
+#: 950.data.seed-values.sql:16633
 msgid "Long-Overdue Items Usable on Checkin"
 msgstr ""
 
 # id::coust.description__circ.longoverdue_immediately_available
-#: 950.data.seed-values.sql:16629
+#: 950.data.seed-values.sql:16639
 msgid "Long-overdue items are usable on checkin instead of going \"home\" first"
 msgstr ""
 
 # id::coust.label__circ.max_accept_return_of_longoverdue
-#: 950.data.seed-values.sql:16653
+#: 950.data.seed-values.sql:16663
 msgid "Long-Overdue Max Return Interval"
 msgstr ""
 
 # id::coust.description__circ.max_accept_return_of_longoverdue
-#: 950.data.seed-values.sql:16659
+#: 950.data.seed-values.sql:16669
 msgid ""
 "Long-overdue check-in processing (voiding fees, re-instating overdues, etc.)"
 " will not take place for items that have been overdue for (or have last "
@@ -16811,47 +16811,47 @@ msgstr ""
 
 # id::coust.label__circ.restore_overdue_on_longoverdue_return
 # id::coust.description__circ.restore_overdue_on_longoverdue_return
-#: 950.data.seed-values.sql:16670 950.data.seed-values.sql:16676
+#: 950.data.seed-values.sql:16680 950.data.seed-values.sql:16686
 msgid "Restore Overdues on Long-Overdue Item Return"
 msgstr ""
 
 # id::coust.label__circ.void_longoverdue_on_checkin
 # id::coust.description__circ.void_longoverdue_on_checkin
-#: 950.data.seed-values.sql:16685 950.data.seed-values.sql:16691
+#: 950.data.seed-values.sql:16695 950.data.seed-values.sql:16701
 msgid "Void Long-Overdue Item Billing When Returned"
 msgstr ""
 
 # id::coust.label__circ.void_longoverdue_proc_fee_on_checkin
 # id::coust.description__circ.void_longoverdue_proc_fee_on_checkin
-#: 950.data.seed-values.sql:16700 950.data.seed-values.sql:16706
+#: 950.data.seed-values.sql:16710 950.data.seed-values.sql:16716
 msgid "Void Processing Fee on Long-Overdue Item Return"
 msgstr ""
 
 # id::coust.label__circ.void_overdue_on_longoverdue
 # id::coust.description__circ.void_overdue_on_longoverdue
-#: 950.data.seed-values.sql:16715 950.data.seed-values.sql:16721
+#: 950.data.seed-values.sql:16725 950.data.seed-values.sql:16731
 msgid "Void Overdue Fines When Items are Marked Long-Overdue"
 msgstr ""
 
 # id::coust.label__circ.longoverdue.xact_open_on_zero
-#: 950.data.seed-values.sql:16730
+#: 950.data.seed-values.sql:16740
 msgid "Leave transaction open when long overdue balance equals zero"
 msgstr ""
 
 # id::coust.description__circ.longoverdue.xact_open_on_zero
-#: 950.data.seed-values.sql:16736
+#: 950.data.seed-values.sql:16746
 msgid ""
 "Leave transaction open when long-overdue balance equals zero.  This leaves "
 "the long-overdue copy on the patron record when it is paid"
 msgstr ""
 
 # id::coust.label__circ.longoverdue.use_last_activity_date_on_return
-#: 950.data.seed-values.sql:16746
+#: 950.data.seed-values.sql:16756
 msgid "Long-Overdue Check-In Interval Uses Last Activity Date"
 msgstr ""
 
 # id::coust.description__circ.longoverdue.use_last_activity_date_on_return
-#: 950.data.seed-values.sql:16752
+#: 950.data.seed-values.sql:16762
 msgid ""
 "Use the long-overdue last-activity date instead of the due_date to determine"
 " whether the item has been checked out too long to perform long-overdue "
@@ -16861,29 +16861,29 @@ msgid ""
 msgstr ""
 
 # id::atreact.description__MarkItemLongOverdue
-#: 950.data.seed-values.sql:16769
+#: 950.data.seed-values.sql:16779
 msgid ""
 "Marks a circulating item as long-overdue and applies configured penalties.  "
 "Also creates events for the longoverdue.auto hook"
 msgstr ""
 
 # id::coust.label__opac.allow_pending_user
-#: 950.data.seed-values.sql:17064
+#: 950.data.seed-values.sql:17074
 msgid "Allow Patron Self-Registration"
 msgstr ""
 
 # id::coust.description__opac.allow_pending_user
-#: 950.data.seed-values.sql:17070
+#: 950.data.seed-values.sql:17080
 msgid "Allow patrons to self-register, creating pending user accounts"
 msgstr ""
 
 # id::coust.label__opac.pending_user_expire_interval
-#: 950.data.seed-values.sql:17080
+#: 950.data.seed-values.sql:17090
 msgid "Patron Self-Reg. Expire Interval"
 msgstr ""
 
 # id::coust.description__opac.pending_user_expire_interval
-#: 950.data.seed-values.sql:17086
+#: 950.data.seed-values.sql:17096
 msgid ""
 "If set, this is the amount of time a pending user account will be allowed to"
 " sit in the database.  After this time, the pending user information will be"
@@ -16891,83 +16891,83 @@ msgid ""
 msgstr ""
 
 # id::coust.label__ui.patron.edit.aua.county.show
-#: 950.data.seed-values.sql:17098
+#: 950.data.seed-values.sql:17108
 msgid "Show county field on patron registration"
 msgstr ""
 
 # id::coust.description__ui.patron.edit.aua.county.show
-#: 950.data.seed-values.sql:17104
+#: 950.data.seed-values.sql:17114
 msgid "The county field will be shown on the patron registration screen"
 msgstr ""
 
 # id::coust.label__vandelay.item.barcode.auto
-#: 950.data.seed-values.sql:17118
+#: 950.data.seed-values.sql:17128
 msgid "Vandelay Generate Default Barcodes"
 msgstr ""
 
 # id::coust.description__vandelay.item.barcode.auto
-#: 950.data.seed-values.sql:17122
+#: 950.data.seed-values.sql:17132
 msgid "Auto-generate deault item barcodes when no item barcode is present"
 msgstr ""
 
 # id::coust.label__vandelay.item.barcode.prefix
-#: 950.data.seed-values.sql:17131
+#: 950.data.seed-values.sql:17141
 msgid "Vandelay Default Barcode Prefix"
 msgstr ""
 
 # id::coust.description__vandelay.item.barcode.prefix
-#: 950.data.seed-values.sql:17135
+#: 950.data.seed-values.sql:17145
 msgid "Apply this prefix to any auto-generated item barcodes"
 msgstr ""
 
 # id::coust.label__vandelay.item.call_number.auto
-#: 950.data.seed-values.sql:17144
+#: 950.data.seed-values.sql:17154
 msgid "Vandelay Generate Default Call Numbers"
 msgstr ""
 
 # id::coust.description__vandelay.item.call_number.auto
-#: 950.data.seed-values.sql:17148
+#: 950.data.seed-values.sql:17158
 msgid ""
 "Auto-generate default item call numbers when no item call number is present"
 msgstr ""
 
 # id::coust.label__vandelay.item.call_number.prefix
-#: 950.data.seed-values.sql:17157
+#: 950.data.seed-values.sql:17167
 msgid "Vandelay Default Call Number Prefix"
 msgstr ""
 
 # id::coust.description__vandelay.item.call_number.prefix
-#: 950.data.seed-values.sql:17161
+#: 950.data.seed-values.sql:17171
 msgid "Apply this prefix to any auto-generated item call numbers"
 msgstr ""
 
 # id::coust.label__vandelay.item.copy_location.default
-#: 950.data.seed-values.sql:17170
+#: 950.data.seed-values.sql:17180
 msgid "Vandelay Default Copy Location"
 msgstr ""
 
 # id::coust.description__vandelay.item.copy_location.default
-#: 950.data.seed-values.sql:17174
+#: 950.data.seed-values.sql:17184
 msgid "Default copy location value for imported items"
 msgstr ""
 
 # id::coust.label__vandelay.item.circ_modifier.default
-#: 950.data.seed-values.sql:17183
+#: 950.data.seed-values.sql:17193
 msgid "Vandelay Default Circulation Modifier"
 msgstr ""
 
 # id::coust.description__vandelay.item.circ_modifier.default
-#: 950.data.seed-values.sql:17187
+#: 950.data.seed-values.sql:17197
 msgid "Default circulation modifier value for imported items"
 msgstr ""
 
 # id::coust.label__opac.holds.org_unit_not_pickup_lib
-#: 950.data.seed-values.sql:17201
+#: 950.data.seed-values.sql:17211
 msgid "OPAC: Org Unit is not a hold pickup library"
 msgstr ""
 
 # id::coust.description__opac.holds.org_unit_not_pickup_lib
-#: 950.data.seed-values.sql:17204
+#: 950.data.seed-values.sql:17214
 msgid ""
 "If set, this org unit will not be offered to the patron as an option for a "
 "hold pickup location.  This setting has no affect on searching or hold "
@@ -16975,32 +16975,32 @@ msgid ""
 msgstr ""
 
 # id::csp.label__35
-#: 950.data.seed-values.sql:17218
+#: 950.data.seed-values.sql:17228
 msgid "Patron Exceeds Max Long-Overdue Threshold"
 msgstr ""
 
 # id::coust.label__opac.self_register.timeout
-#: 950.data.seed-values.sql:17235
+#: 950.data.seed-values.sql:17245
 msgid "Patron Self-Reg. Display Timeout"
 msgstr ""
 
 # id::coust.description__opac.self_register.timeout
-#: 950.data.seed-values.sql:17241
+#: 950.data.seed-values.sql:17251
 msgid ""
 "Number of seconds to wait before reloading the patron self-registration "
 "interface to clear sensitive data"
 msgstr ""
 
 # id::coust.label__ui.circ.items_out.longoverdue
-#: 950.data.seed-values.sql:17255
+#: 950.data.seed-values.sql:17265
 msgid "Items Out Long-Overdue display setting"
 msgstr ""
 
 # id::coust.description__ui.circ.items_out.longoverdue
 # id::coust.description__ui.circ.items_out.lost
 # id::coust.description__ui.circ.items_out.claimsreturned
-#: 950.data.seed-values.sql:17261 950.data.seed-values.sql:17281
-#: 950.data.seed-values.sql:17301
+#: 950.data.seed-values.sql:17271 950.data.seed-values.sql:17291
+#: 950.data.seed-values.sql:17311
 msgid ""
 "Value is a numeric code, describing: A. In which tab (\"Items Checked Out\","
 " or \"Other/Special Circulations\") the circulation should appear while "
@@ -17011,93 +17011,93 @@ msgid ""
 msgstr ""
 
 # id::coust.label__ui.circ.items_out.lost
-#: 950.data.seed-values.sql:17275
+#: 950.data.seed-values.sql:17285
 msgid "Items Out Lost display setting"
 msgstr ""
 
 # id::coust.label__ui.circ.items_out.claimsreturned
-#: 950.data.seed-values.sql:17295
+#: 950.data.seed-values.sql:17305
 msgid "Items Out Claims Returned display setting"
 msgstr ""
 
 # id::coust.label__circ.disable_patron_credit
-#: 950.data.seed-values.sql:17322
+#: 950.data.seed-values.sql:17332
 msgid "Disable Patron Credit"
 msgstr ""
 
 # id::coust.description__circ.disable_patron_credit
-#: 950.data.seed-values.sql:17328
+#: 950.data.seed-values.sql:17338
 msgid ""
 "Do not allow patrons to accrue credit or pay fines/fees with accrued credit"
 msgstr ""
 
 # id::cgf.label__opac.metarecord.holds.format_attr
-#: 950.data.seed-values.sql:17341
+#: 950.data.seed-values.sql:17351
 msgid "OPAC Metarecord Hold Formats Attribute"
 msgstr ""
 
 # id::cgf.label__opac.format_selector.attr
-#: 950.data.seed-values.sql:17355
+#: 950.data.seed-values.sql:17365
 msgid "OPAC Format Selector Attribute"
 msgstr ""
 
 # id::cgf.label__search.max_facets_per_field
-#: 950.data.seed-values.sql:17369
+#: 950.data.seed-values.sql:17379
 msgid ""
 "Search: maximum number of facet values to retrieve for each facet field"
 msgstr ""
 
 # id::coust.label__circ.permit_renew_when_exceeds_fines
-#: 950.data.seed-values.sql:17382
+#: 950.data.seed-values.sql:17392
 msgid "Permit renewals when patron exceeds max fine threshold"
 msgstr ""
 
 # id::coust.description__circ.permit_renew_when_exceeds_fines
-#: 950.data.seed-values.sql:17389
+#: 950.data.seed-values.sql:17399
 msgid ""
 "Permit renewals even when the patron exceeds the maximum fine threshold"
 msgstr ""
 
 # id::coust.label__circ.void_lost_on_claimsreturned
 # id::coust.description__circ.void_lost_on_claimsreturned
-#: 950.data.seed-values.sql:17405 950.data.seed-values.sql:17408
+#: 950.data.seed-values.sql:17415 950.data.seed-values.sql:17418
 msgid "Void lost item billing when claims returned"
 msgstr ""
 
 # id::coust.label__circ.void_lost_proc_fee_on_claimsreturned
 # id::coust.description__circ.void_lost_proc_fee_on_claimsreturned
-#: 950.data.seed-values.sql:17414 950.data.seed-values.sql:17417
+#: 950.data.seed-values.sql:17424 950.data.seed-values.sql:17427
 msgid "Void lost item processing fee when claims returned"
 msgstr ""
 
 # id::coust.label__circ.void_longoverdue_on_claimsreturned
-#: 950.data.seed-values.sql:17427
+#: 950.data.seed-values.sql:17437
 msgid "Void longoverdue item billing when claims returned"
 msgstr ""
 
 # id::coust.description__circ.void_longoverdue_on_claimsreturned
-#: 950.data.seed-values.sql:17430
+#: 950.data.seed-values.sql:17440
 msgid "Void long overdue item billing when claims returned"
 msgstr ""
 
 # id::coust.label__circ.void_longoverdue_proc_fee_on_claimsreturned
-#: 950.data.seed-values.sql:17436
+#: 950.data.seed-values.sql:17446
 msgid "Void longoverdue item processing fee when claims returned"
 msgstr ""
 
 # id::coust.description__circ.void_longoverdue_proc_fee_on_claimsreturned
-#: 950.data.seed-values.sql:17439
+#: 950.data.seed-values.sql:17449
 msgid "Void long overdue item processing fee when claims returned"
 msgstr ""
 
 # id::coust.label__org.restrict_opt_to_depth
-#: 950.data.seed-values.sql:17449
+#: 950.data.seed-values.sql:17459
 msgid ""
 "Restrict patron opt-in to home library and related orgs at specified depth"
 msgstr ""
 
 # id::coust.description__org.restrict_opt_to_depth
-#: 950.data.seed-values.sql:17452
+#: 950.data.seed-values.sql:17462
 msgid ""
 "Patrons at this library can only be opted-in at org units which are within "
 "the library's section of the org tree, at or below the depth specified by "
@@ -17105,24 +17105,24 @@ msgid ""
 msgstr ""
 
 # id::coust.label__circ.clear_hold_on_checkout
-#: 950.data.seed-values.sql:17464
+#: 950.data.seed-values.sql:17474
 msgid "Clear hold when other patron checks out item"
 msgstr ""
 
 # id::coust.description__circ.clear_hold_on_checkout
-#: 950.data.seed-values.sql:17467
+#: 950.data.seed-values.sql:17477
 msgid ""
 "Default to cancel the hold when patron A checks out item on hold for patron "
 "B."
 msgstr ""
 
 # id::coust.label__circ.patron_search.diacritic_insensitive
-#: 950.data.seed-values.sql:17477
+#: 950.data.seed-values.sql:17487
 msgid "Patron search diacritic insensitive"
 msgstr ""
 
 # id::coust.description__circ.patron_search.diacritic_insensitive
-#: 950.data.seed-values.sql:17480
+#: 950.data.seed-values.sql:17490
 msgid ""
 "Match patron last, first, and middle names irrespective of usage of "
 "diacritical marks or spaces. (e.g., Ines will match Inés; de la Cruz will "
@@ -17130,7 +17130,7 @@ msgid ""
 msgstr ""
 
 # id::cgf.label__ingest.disable_authority_auto_update_bib_meta
-#: 950.data.seed-values.sql:17495
+#: 950.data.seed-values.sql:17505
 msgid ""
 "Authority Automation: Disable automatic authority updates from modifying bib"
 " record editor and edit_date"
@@ -17138,39 +17138,39 @@ msgstr ""
 
 # id::cust.label__circ.send_email_checkout_receipts
 # id::cust.description__circ.send_email_checkout_receipts
-#: 950.data.seed-values.sql:17514 950.data.seed-values.sql:17515
+#: 950.data.seed-values.sql:17524 950.data.seed-values.sql:17525
 msgid "Email checkout receipts by default?"
 msgstr ""
 
 # id::ath.description__circ.checkout.batch_notify
-#: 950.data.seed-values.sql:17523
+#: 950.data.seed-values.sql:17533
 msgid "Notification of a group of circs"
 msgstr ""
 
 # id::ath.description__circ.checkout.batch_notify.session
-#: 950.data.seed-values.sql:17536
+#: 950.data.seed-values.sql:17546
 msgid "Notification of a group of circs at the end of a checkout session"
 msgstr ""
 
 # id::coust.label__circ.in_house_use.copy_alert
 # id::coust.description__circ.in_house_use.copy_alert
-#: 950.data.seed-values.sql:17779 950.data.seed-values.sql:17782
+#: 950.data.seed-values.sql:17789 950.data.seed-values.sql:17792
 msgid "Display copy alert for in-house-use"
 msgstr ""
 
 # id::coust.label__circ.in_house_use.checkin_alert
 # id::coust.description__circ.in_house_use.checkin_alert
-#: 950.data.seed-values.sql:17788 950.data.seed-values.sql:17791
+#: 950.data.seed-values.sql:17798 950.data.seed-values.sql:17801
 msgid "Display copy location checkin alert for in-house-use"
 msgstr ""
 
 # id::coust.label__webstaff.cat.label.font.family
-#: 950.data.seed-values.sql:17806
+#: 950.data.seed-values.sql:17816
 msgid "Item Print Label Font Family"
 msgstr ""
 
 # id::coust.description__webstaff.cat.label.font.family
-#: 950.data.seed-values.sql:17812
+#: 950.data.seed-values.sql:17822
 msgid ""
 "Set the preferred font family for item print labels. You can specify a list "
 "of CSS fonts, separated by commas, in order of preference; the system will "
@@ -17179,24 +17179,24 @@ msgid ""
 msgstr ""
 
 # id::coust.label__webstaff.cat.label.font.size
-#: 950.data.seed-values.sql:17822
+#: 950.data.seed-values.sql:17832
 msgid "Item Print Label Font Size"
 msgstr ""
 
 # id::coust.description__webstaff.cat.label.font.size
-#: 950.data.seed-values.sql:17828
+#: 950.data.seed-values.sql:17838
 msgid ""
 "Set the default font size for item print labels. Please include a unit of "
 "measurement that is valid CSS. For example, \"12pt\" or \"16px\" or \"1em\""
 msgstr ""
 
 # id::coust.label__webstaff.cat.label.font.weight
-#: 950.data.seed-values.sql:17838
+#: 950.data.seed-values.sql:17848
 msgid "Item Print Label Font Weight"
 msgstr ""
 
 # id::coust.description__webstaff.cat.label.font.weight
-#: 950.data.seed-values.sql:17844
+#: 950.data.seed-values.sql:17854
 msgid ""
 "Set the default font weight for item print labels. Please use the CSS "
 "specification for values for font-weight.  For example, \"normal\", "
@@ -17204,24 +17204,24 @@ msgid ""
 msgstr ""
 
 # id::coust.label__webstaff.cat.label.left_label.left_margin
-#: 950.data.seed-values.sql:17854
+#: 950.data.seed-values.sql:17864
 msgid "Item Print Label - Left Margin for Spine Label"
 msgstr ""
 
 # id::coust.description__webstaff.cat.label.left_label.left_margin
-#: 950.data.seed-values.sql:17860
+#: 950.data.seed-values.sql:17870
 msgid ""
 "Set the default left margin for the item print Spine Label. Please include a"
 " unit of measurement that is valid CSS. For example, \"1in\" or \"2.5cm\""
 msgstr ""
 
 # id::coust.label__webstaff.cat.label.right_label.left_margin
-#: 950.data.seed-values.sql:17870
+#: 950.data.seed-values.sql:17880
 msgid "Item Print Label - Left Margin for Pocket Label"
 msgstr ""
 
 # id::coust.description__webstaff.cat.label.right_label.left_margin
-#: 950.data.seed-values.sql:17876
+#: 950.data.seed-values.sql:17886
 msgid ""
 "Set the default left margin for the item print Pocket Label (or in other "
 "words, the desired space between the two labels). Please include a unit of "
@@ -17229,123 +17229,123 @@ msgid ""
 msgstr ""
 
 # id::coust.label__webstaff.cat.label.left_label.height
-#: 950.data.seed-values.sql:17886
+#: 950.data.seed-values.sql:17896
 msgid "Item Print Label - Height for Spine Label"
 msgstr ""
 
 # id::coust.description__webstaff.cat.label.left_label.height
-#: 950.data.seed-values.sql:17892
+#: 950.data.seed-values.sql:17902
 msgid ""
 "Set the default height for the item print Spine Label. Please include a unit"
 " of measurement that is valid CSS. For example, \"1in\" or \"2.5cm\""
 msgstr ""
 
 # id::coust.label__webstaff.cat.label.left_label.width
-#: 950.data.seed-values.sql:17902
+#: 950.data.seed-values.sql:17912
 msgid "Item Print Label - Width for Spine Label"
 msgstr ""
 
 # id::coust.description__webstaff.cat.label.left_label.width
-#: 950.data.seed-values.sql:17908
+#: 950.data.seed-values.sql:17918
 msgid ""
 "Set the default width for the item print Spine Label. Please include a unit "
 "of measurement that is valid CSS. For example, \"1in\" or \"2.5cm\""
 msgstr ""
 
 # id::coust.label__webstaff.cat.label.right_label.height
-#: 950.data.seed-values.sql:17918
+#: 950.data.seed-values.sql:17928
 msgid "Item Print Label - Height for Pocket Label"
 msgstr ""
 
 # id::coust.description__webstaff.cat.label.right_label.height
-#: 950.data.seed-values.sql:17924
+#: 950.data.seed-values.sql:17934
 msgid ""
 "Set the default height for the item print Pocket Label. Please include a "
 "unit of measurement that is valid CSS. For example, \"1in\" or \"2.5cm\""
 msgstr ""
 
 # id::coust.label__webstaff.cat.label.right_label.width
-#: 950.data.seed-values.sql:17934
+#: 950.data.seed-values.sql:17944
 msgid "Item Print Label - Width for Pocket Label"
 msgstr ""
 
 # id::coust.description__webstaff.cat.label.right_label.width
-#: 950.data.seed-values.sql:17940
+#: 950.data.seed-values.sql:17950
 msgid ""
 "Set the default width for the item print Pocket Label. Please include a unit"
 " of measurement that is valid CSS. For example, \"1in\" or \"2.5cm\""
 msgstr ""
 
 # id::coust.label__webstaff.cat.label.inline_css
-#: 950.data.seed-values.sql:17950
+#: 950.data.seed-values.sql:17960
 msgid "Item Print Label - Inline CSS"
 msgstr ""
 
 # id::coust.description__webstaff.cat.label.inline_css
-#: 950.data.seed-values.sql:17956
+#: 950.data.seed-values.sql:17966
 msgid ""
 "This setting allows you to inject arbitrary CSS into the item print label "
 "template.  For example, \".printlabel { text-transform: uppercase; }\""
 msgstr ""
 
 # id::coust.label__webstaff.cat.label.call_number_wrap_filter_height
-#: 950.data.seed-values.sql:17966
+#: 950.data.seed-values.sql:17976
 msgid "Item Print Label - Call Number Wrap Filter Height"
 msgstr ""
 
 # id::coust.description__webstaff.cat.label.call_number_wrap_filter_height
-#: 950.data.seed-values.sql:17972
+#: 950.data.seed-values.sql:17982
 msgid ""
 "This setting is used to set the default height (in number of lines) to use "
 "for call number wrapping in the left print label."
 msgstr ""
 
 # id::coust.label__webstaff.cat.label.call_number_wrap_filter_width
-#: 950.data.seed-values.sql:17982
+#: 950.data.seed-values.sql:17992
 msgid "Item Print Label - Call Number Wrap Filter Width"
 msgstr ""
 
 # id::coust.description__webstaff.cat.label.call_number_wrap_filter_width
-#: 950.data.seed-values.sql:17988
+#: 950.data.seed-values.sql:17998
 msgid ""
 "This setting is used to set the default width (in number of characters) to "
 "use for call number wrapping in the left print label."
 msgstr ""
 
 # id::cgf.label__circ.holds.retarget_interval
-#: 950.data.seed-values.sql:17999
+#: 950.data.seed-values.sql:18009
 msgid "Holds Retarget Interval"
 msgstr ""
 
 # id::cgf.label__opac.show_related_headings_in_browse
-#: 950.data.seed-values.sql:18011
+#: 950.data.seed-values.sql:18021
 msgid "Display related headings (see-also) in browse"
 msgstr ""
 
 # id::csg.label__ebook_api
-#: 950.data.seed-values.sql:18021
+#: 950.data.seed-values.sql:18031
 msgid "Ebook API Integration"
 msgstr ""
 
 # id::coust.label__ebook_api.overdrive.discovery_base_uri
-#: 950.data.seed-values.sql:18027
+#: 950.data.seed-values.sql:18037
 msgid "OverDrive Discovery API Base URI"
 msgstr ""
 
 # id::coust.description__ebook_api.overdrive.discovery_base_uri
-#: 950.data.seed-values.sql:18033
+#: 950.data.seed-values.sql:18043
 msgid ""
 "Base URI for OverDrive Discovery API (defaults to "
 "https://api.overdrive.com/v1). Using HTTPS here is strongly encouraged."
 msgstr ""
 
 # id::coust.label__ebook_api.overdrive.circulation_base_uri
-#: 950.data.seed-values.sql:18043
+#: 950.data.seed-values.sql:18053
 msgid "OverDrive Circulation API Base URI"
 msgstr ""
 
 # id::coust.description__ebook_api.overdrive.circulation_base_uri
-#: 950.data.seed-values.sql:18049
+#: 950.data.seed-values.sql:18059
 msgid ""
 "Base URI for OverDrive Circulation API (defaults to "
 "https://patron.api.overdrive.com/v1). Using HTTPS here is strongly "
@@ -17353,77 +17353,77 @@ msgid ""
 msgstr ""
 
 # id::coust.label__ebook_api.overdrive.account_id
-#: 950.data.seed-values.sql:18059
+#: 950.data.seed-values.sql:18069
 msgid "OverDrive Account ID"
 msgstr ""
 
 # id::coust.description__ebook_api.overdrive.account_id
-#: 950.data.seed-values.sql:18065
+#: 950.data.seed-values.sql:18075
 msgid ""
 "Account ID (a.k.a. Library ID) for this library, as assigned by OverDrive"
 msgstr ""
 
 # id::coust.label__ebook_api.overdrive.websiteid
-#: 950.data.seed-values.sql:18075
+#: 950.data.seed-values.sql:18085
 msgid "OverDrive Website ID"
 msgstr ""
 
 # id::coust.description__ebook_api.overdrive.websiteid
-#: 950.data.seed-values.sql:18081
+#: 950.data.seed-values.sql:18091
 msgid "Website ID for this library, as assigned by OverDrive"
 msgstr ""
 
 # id::coust.label__ebook_api.overdrive.authorizationname
-#: 950.data.seed-values.sql:18091
+#: 950.data.seed-values.sql:18101
 msgid "OverDrive Authorization Name"
 msgstr ""
 
 # id::coust.description__ebook_api.overdrive.authorizationname
-#: 950.data.seed-values.sql:18097
+#: 950.data.seed-values.sql:18107
 msgid "Authorization name for this library, as assigned by OverDrive"
 msgstr ""
 
 # id::coust.label__ebook_api.overdrive.basic_token
-#: 950.data.seed-values.sql:18107
+#: 950.data.seed-values.sql:18117
 msgid "OverDrive Basic Token"
 msgstr ""
 
 # id::coust.description__ebook_api.overdrive.basic_token
-#: 950.data.seed-values.sql:18113
+#: 950.data.seed-values.sql:18123
 msgid ""
 "Basic token for client authentication with OverDrive API (supplied by "
 "OverDrive)"
 msgstr ""
 
 # id::coust.label__ebook_api.overdrive.granted_auth_redirect_uri
-#: 950.data.seed-values.sql:18123
+#: 950.data.seed-values.sql:18133
 msgid "OverDrive Granted Authorization Redirect URI"
 msgstr ""
 
 # id::coust.description__ebook_api.overdrive.granted_auth_redirect_uri
-#: 950.data.seed-values.sql:18129
+#: 950.data.seed-values.sql:18139
 msgid "URI provided to OverDrive for use with granted authorization"
 msgstr ""
 
 # id::coust.label__ebook_api.overdrive.password_required
-#: 950.data.seed-values.sql:18139
+#: 950.data.seed-values.sql:18149
 msgid "OverDrive Password Required"
 msgstr ""
 
 # id::coust.description__ebook_api.overdrive.password_required
-#: 950.data.seed-values.sql:18145
+#: 950.data.seed-values.sql:18155
 msgid ""
 "Does this library require a password when authenticating patrons with the "
 "OverDrive API?"
 msgstr ""
 
 # id::coust.label__ebook_api.oneclickdigital.base_uri
-#: 950.data.seed-values.sql:18159
+#: 950.data.seed-values.sql:18169
 msgid "OneClickdigital Base URI"
 msgstr ""
 
 # id::coust.description__ebook_api.oneclickdigital.base_uri
-#: 950.data.seed-values.sql:18165
+#: 950.data.seed-values.sql:18175
 msgid ""
 "Base URI for OneClickdigital API (defaults to "
 "https://api.oneclickdigital.com/v1). Using HTTPS here is strongly "
@@ -17431,34 +17431,34 @@ msgid ""
 msgstr ""
 
 # id::coust.label__ebook_api.oneclickdigital.library_id
-#: 950.data.seed-values.sql:18175
+#: 950.data.seed-values.sql:18185
 msgid "OneClickdigital Library ID"
 msgstr ""
 
 # id::coust.description__ebook_api.oneclickdigital.library_id
-#: 950.data.seed-values.sql:18181
+#: 950.data.seed-values.sql:18191
 msgid "Identifier assigned to this library by OneClickdigital"
 msgstr ""
 
 # id::coust.label__ebook_api.oneclickdigital.basic_token
-#: 950.data.seed-values.sql:18191
+#: 950.data.seed-values.sql:18201
 msgid "OneClickdigital Basic Token"
 msgstr ""
 
 # id::coust.description__ebook_api.oneclickdigital.basic_token
-#: 950.data.seed-values.sql:18197
+#: 950.data.seed-values.sql:18207
 msgid ""
 "Basic token for client authentication with OneClickdigital API (supplied by "
 "OneClickdigital)"
 msgstr ""
 
 # id::coust.label__webstaff.format.dates
-#: 950.data.seed-values.sql:18216
+#: 950.data.seed-values.sql:18226
 msgid "Format Dates with this pattern"
 msgstr ""
 
 # id::coust.description__webstaff.format.dates
-#: 950.data.seed-values.sql:18222
+#: 950.data.seed-values.sql:18232
 msgid ""
 "Format Dates with this pattern (examples: \"yyyy-MM-dd\" for \"2010-04-26\","
 " \"MMM d, yyyy\" for \"Apr 26, 2010\").  This will be used in areas where a "
@@ -17466,12 +17466,12 @@ msgid ""
 msgstr ""
 
 # id::coust.label__webstaff.format.date_and_time
-#: 950.data.seed-values.sql:18232
+#: 950.data.seed-values.sql:18242
 msgid "Format Date+Time with this pattern"
 msgstr ""
 
 # id::coust.description__webstaff.format.date_and_time
-#: 950.data.seed-values.sql:18238
+#: 950.data.seed-values.sql:18248
 msgid ""
 "Format Date+Time with this pattern (examples: \"yy-MM-dd h:m:s.SSS a\" for "
 "\"16-04-05 2:07:20.666 PM\", \"yyyy-dd-MMM HH:mm\" for \"2016-05-Apr "
@@ -17480,24 +17480,24 @@ msgid ""
 msgstr ""
 
 # id::coust.label__opac.search.enable_bookplate_search
-#: 950.data.seed-values.sql:18251
+#: 950.data.seed-values.sql:18261
 msgid "Enable Digital Bookplate Search"
 msgstr ""
 
 # id::coust.description__opac.search.enable_bookplate_search
-#: 950.data.seed-values.sql:18257
+#: 950.data.seed-values.sql:18267
 msgid ""
 "If enabled, adds a \"Digital Bookplate\" option to the query type selectors "
 "in the public catalog for search on copy tags."
 msgstr ""
 
 # id::coust.label__lib.timezone
-#: 950.data.seed-values.sql:18273
+#: 950.data.seed-values.sql:18283
 msgid "Library time zone"
 msgstr ""
 
 # id::coust.description__lib.timezone
-#: 950.data.seed-values.sql:18276
+#: 950.data.seed-values.sql:18286
 msgid ""
 "Define the time zone in which a library physically resides. Examples: "
 "America/Toronto, America/Chicago, America/Los_Angeles, America/Vancouver, "
@@ -17508,25 +17508,25 @@ msgid ""
 msgstr ""
 
 # id::coust.label__ui.staff.max_recent_patrons
-#: 950.data.seed-values.sql:18288
+#: 950.data.seed-values.sql:18298
 msgid "Number of Retrievable Recent Patrons"
 msgstr ""
 
 # id::coust.description__ui.staff.max_recent_patrons
-#: 950.data.seed-values.sql:18294
+#: 950.data.seed-values.sql:18304
 msgid ""
 "Number of most recently accessed patrons that can be re-retrieved in the "
 "staff client.  A value of 0 or less disables the feature. Defaults to 1."
 msgstr ""
 
 # id::coust.label__circ.copy_alerts.forgive_fines_on_lost_checkin
-#: 950.data.seed-values.sql:18374
+#: 950.data.seed-values.sql:18384
 msgid ""
 "Forgive fines when checking out a lost item and copy alert is suppressed?"
 msgstr ""
 
 # id::coust.description__circ.copy_alerts.forgive_fines_on_lost_checkin
-#: 950.data.seed-values.sql:18377
+#: 950.data.seed-values.sql:18387
 msgid ""
 "Controls whether fines are automatically forgiven when checking out an item "
 "that has been marked as lost, and the corresponding copy alert has been "
@@ -17534,14 +17534,14 @@ msgid ""
 msgstr ""
 
 # id::coust.label__circ.copy_alerts.forgive_fines_on_long_overdue_checkin
-#: 950.data.seed-values.sql:18389
+#: 950.data.seed-values.sql:18399
 msgid ""
 "Forgive fines when checking out a long-overdue item and copy alert is "
 "suppressed?"
 msgstr ""
 
 # id::coust.description__circ.copy_alerts.forgive_fines_on_long_overdue_checkin
-#: 950.data.seed-values.sql:18392
+#: 950.data.seed-values.sql:18402
 msgid ""
 "Controls whether fines are automatically forgiven when checking out an item "
 "that has been marked as long-overdue, and the corresponding copy alert has "
@@ -17549,932 +17549,932 @@ msgid ""
 msgstr ""
 
 # id::aea.label__INCLUDE_PO_NAME
-#: 950.data.seed-values.sql:18401
+#: 950.data.seed-values.sql:18411
 msgid "Orders Include PO Name"
 msgstr ""
 
 # id::aea.label__INCLUDE_COPIES
-#: 950.data.seed-values.sql:18404
+#: 950.data.seed-values.sql:18414
 msgid "Orders Include Copy Data"
 msgstr ""
 
 # id::aea.label__INCLUDE_FUND
-#: 950.data.seed-values.sql:18407
+#: 950.data.seed-values.sql:18417
 msgid "Orders Include Copy Funds"
 msgstr ""
 
 # id::aea.label__INCLUDE_CALL_NUMBER
-#: 950.data.seed-values.sql:18410
+#: 950.data.seed-values.sql:18420
 msgid "Orders Include Copy Call Numbers"
 msgstr ""
 
 # id::aea.label__INCLUDE_ITEM_TYPE
-#: 950.data.seed-values.sql:18413
+#: 950.data.seed-values.sql:18423
 msgid "Orders Include Copy Item Types"
 msgstr ""
 
 # id::aea.label__INCLUDE_ITEM_BARCODE
-#: 950.data.seed-values.sql:18416
+#: 950.data.seed-values.sql:18426
 msgid "Orders Include Copy Barcodes"
 msgstr ""
 
 # id::aea.label__INCLUDE_LOCATION
-#: 950.data.seed-values.sql:18419
+#: 950.data.seed-values.sql:18429
 msgid "Orders Include Copy Locations"
 msgstr ""
 
 # id::aea.label__INCLUDE_COLLECTION_CODE
-#: 950.data.seed-values.sql:18422
+#: 950.data.seed-values.sql:18432
 msgid "Orders Include Copy Collection Codes"
 msgstr ""
 
 # id::aea.label__INCLUDE_OWNING_LIB
-#: 950.data.seed-values.sql:18425
+#: 950.data.seed-values.sql:18435
 msgid "Orders Include Copy Owning Library"
 msgstr ""
 
 # id::aea.label__USE_ID_FOR_OWNING_LIB
-#: 950.data.seed-values.sql:18428
+#: 950.data.seed-values.sql:18438
 msgid ""
 "Emit Owning Library ID Rather Than Short Name. Takes effect only if "
 "INCLUDE_OWNING_LIB is in use"
 msgstr ""
 
 # id::aea.label__INCLUDE_QUANTITY
-#: 950.data.seed-values.sql:18431
+#: 950.data.seed-values.sql:18441
 msgid "Orders Include Copy Quantities"
 msgstr ""
 
 # id::aea.label__INCLUDE_COPY_ID
-#: 950.data.seed-values.sql:18434
+#: 950.data.seed-values.sql:18444
 msgid "Orders Include Copy IDs"
 msgstr ""
 
 # id::aea.label__BUYER_ID_INCLUDE_VENDCODE
-#: 950.data.seed-values.sql:18437
+#: 950.data.seed-values.sql:18447
 msgid "Buyer ID Qualifier Includes Vendcode"
 msgstr ""
 
 # id::aea.label__BUYER_ID_ONLY_VENDCODE
-#: 950.data.seed-values.sql:18440
+#: 950.data.seed-values.sql:18450
 msgid "Buyer ID Qualifier Only Contains Vendcode"
 msgstr ""
 
 # id::aea.label__INCLUDE_BIB_EDITION
-#: 950.data.seed-values.sql:18443
+#: 950.data.seed-values.sql:18453
 msgid "Order Lineitems Include Edition Info"
 msgstr ""
 
 # id::aea.label__INCLUDE_BIB_AUTHOR
-#: 950.data.seed-values.sql:18446
+#: 950.data.seed-values.sql:18456
 msgid "Order Lineitems Include Author Info"
 msgstr ""
 
 # id::aea.label__INCLUDE_BIB_PAGINATION
-#: 950.data.seed-values.sql:18449
+#: 950.data.seed-values.sql:18459
 msgid "Order Lineitems Include Pagination Info"
 msgstr ""
 
 # id::aea.label__COPY_SPEC_CODES
-#: 950.data.seed-values.sql:18452
+#: 950.data.seed-values.sql:18462
 msgid "Order Lineitem Notes Include Copy Spec Codes"
 msgstr ""
 
 # id::aea.label__INCLUDE_EMPTY_IMD_VALUES
-#: 950.data.seed-values.sql:18455
+#: 950.data.seed-values.sql:18465
 msgid "Lineitem Title, Author, etc. Fields Are Present Even if Empty"
 msgstr ""
 
 # id::aea.label__INCLUDE_EMPTY_LI_NOTE
-#: 950.data.seed-values.sql:18458
+#: 950.data.seed-values.sql:18468
 msgid "Order Lineitem Notes Always Present (Even if Empty)"
 msgstr ""
 
 # id::aea.label__INCLUDE_EMPTY_CALL_NUMBER
-#: 950.data.seed-values.sql:18461
+#: 950.data.seed-values.sql:18471
 msgid "Order Copies Always Include Call Number (Even if Empty)"
 msgstr ""
 
 # id::aea.label__INCLUDE_EMPTY_ITEM_TYPE
-#: 950.data.seed-values.sql:18464
+#: 950.data.seed-values.sql:18474
 msgid "Order Copies Always Include Item Type (Even if Empty)"
 msgstr ""
 
 # id::aea.label__INCLUDE_EMPTY_LOCATION
-#: 950.data.seed-values.sql:18467
+#: 950.data.seed-values.sql:18477
 msgid "Order Copies Always Include Location (Even if Empty)"
 msgstr ""
 
 # id::aea.label__INCLUDE_EMPTY_COLLECTION_CODE
-#: 950.data.seed-values.sql:18470
+#: 950.data.seed-values.sql:18480
 msgid "Order Copies Always Include Collection Code (Even if Empty)"
 msgstr ""
 
 # id::aea.label__LINEITEM_IDENT_VENDOR_NUMBER
-#: 950.data.seed-values.sql:18473
+#: 950.data.seed-values.sql:18483
 msgid ""
 "Lineitem Identifier Fields (LIN/PIA) Use Vendor-Encoded ID Value When "
 "Available"
 msgstr ""
 
 # id::aea.label__LINEITEM_REF_ID_ONLY
-#: 950.data.seed-values.sql:18476
+#: 950.data.seed-values.sql:18486
 msgid "Lineitem Reference Field (RFF) Uses Lineitem ID Only"
 msgstr ""
 
 # id::at.name__|
-#: 950.data.seed-values.sql:18564
+#: 950.data.seed-values.sql:18574
 msgid "No attempt to code"
 msgstr ""
 
 # id::at.name__ 
-#: 950.data.seed-values.sql:18565
+#: 950.data.seed-values.sql:18575
 msgid "Alternate no attempt to code"
 msgstr ""
 
 # id::cwst.label__eg.circ.checkin.no_precat_alert
-#: 950.data.seed-values.sql:19185
+#: 950.data.seed-values.sql:19195
 msgid "Checkin: Ignore Precataloged Items"
 msgstr ""
 
 # id::cwst.label__eg.circ.checkin.noop
-#: 950.data.seed-values.sql:19192
+#: 950.data.seed-values.sql:19202
 msgid "Checkin: Suppress Holds and Transits"
 msgstr ""
 
 # id::cwst.label__eg.circ.checkin.void_overdues
-#: 950.data.seed-values.sql:19199
+#: 950.data.seed-values.sql:19209
 msgid "Checkin: Amnesty Mode"
 msgstr ""
 
 # id::cwst.label__eg.circ.checkin.auto_print_holds_transits
-#: 950.data.seed-values.sql:19206
+#: 950.data.seed-values.sql:19216
 msgid "Checkin: Auto-Print Holds and Transits"
 msgstr ""
 
 # id::cwst.label__eg.circ.checkin.clear_expired
-#: 950.data.seed-values.sql:19213
+#: 950.data.seed-values.sql:19223
 msgid "Checkin: Clear Holds Shelf"
 msgstr ""
 
 # id::cwst.label__eg.circ.checkin.retarget_holds
-#: 950.data.seed-values.sql:19220
+#: 950.data.seed-values.sql:19230
 msgid "Checkin: Retarget Local Holds"
 msgstr ""
 
 # id::cwst.label__eg.circ.checkin.retarget_holds_all
-#: 950.data.seed-values.sql:19227
+#: 950.data.seed-values.sql:19237
 msgid "Checkin: Retarget All Statuses"
 msgstr ""
 
 # id::cwst.label__eg.circ.checkin.hold_as_transit
-#: 950.data.seed-values.sql:19234
+#: 950.data.seed-values.sql:19244
 msgid "Checkin: Capture Local Holds as Transits"
 msgstr ""
 
 # id::cwst.label__eg.circ.checkin.manual_float
-#: 950.data.seed-values.sql:19241
+#: 950.data.seed-values.sql:19251
 msgid "Checkin: Manual Floating Active"
 msgstr ""
 
 # id::cwst.label__eg.circ.patron.summary.collapse
-#: 950.data.seed-values.sql:19255
+#: 950.data.seed-values.sql:19265
 msgid "Collaps Patron Summary Display"
 msgstr ""
 
 # id::cwst.label__circ.bills.receiptonpay
-#: 950.data.seed-values.sql:19262
+#: 950.data.seed-values.sql:19272
 msgid "Print Receipt On Payment"
 msgstr ""
 
 # id::cwst.label__eg.circ.bills.annotatepayment
-#: 950.data.seed-values.sql:19269
+#: 950.data.seed-values.sql:19279
 msgid "Bills: Annotate Payment"
 msgstr ""
 
 # id::cwst.label__circ.renew.strict_barcode
-#: 950.data.seed-values.sql:19276
+#: 950.data.seed-values.sql:19286
 msgid "Renew: Strict Barcode"
 msgstr ""
 
 # id::cwst.label__circ.checkin.strict_barcode
-#: 950.data.seed-values.sql:19283
+#: 950.data.seed-values.sql:19293
 msgid "Checkin: Strict Barcode"
 msgstr ""
 
 # id::cwst.label__circ.checkout.strict_barcode
-#: 950.data.seed-values.sql:19290
+#: 950.data.seed-values.sql:19300
 msgid "Checkout: Strict Barcode"
 msgstr ""
 
 # id::cwst.label__cat.holdings_show_copies
-#: 950.data.seed-values.sql:19297
+#: 950.data.seed-values.sql:19307
 msgid "Holdings View Show Copies"
 msgstr ""
 
 # id::cwst.label__cat.holdings_show_empty
-#: 950.data.seed-values.sql:19304
+#: 950.data.seed-values.sql:19314
 msgid "Holdings View Show Empty Volumes"
 msgstr ""
 
 # id::cwst.label__cat.holdings_show_empty_org
-#: 950.data.seed-values.sql:19311
+#: 950.data.seed-values.sql:19321
 msgid "Holdings View Show Empty Orgs"
 msgstr ""
 
 # id::cwst.label__cat.holdings_show_vols
-#: 950.data.seed-values.sql:19318
+#: 950.data.seed-values.sql:19328
 msgid "Holdings View Show Volumes"
 msgstr ""
 
 # id::cwst.label__cat.copy.defaults
-#: 950.data.seed-values.sql:19325
+#: 950.data.seed-values.sql:19335
 msgid "Copy Edit Default Values"
 msgstr ""
 
 # id::cwst.label__cat.printlabels.default_template
-#: 950.data.seed-values.sql:19332
+#: 950.data.seed-values.sql:19342
 msgid "Print Label Default Template"
 msgstr ""
 
 # id::cwst.label__cat.printlabels.templates
-#: 950.data.seed-values.sql:19339
+#: 950.data.seed-values.sql:19349
 msgid "Print Label Templates"
 msgstr ""
 
 # id::cwst.label__eg.circ.patron.search.include_inactive
-#: 950.data.seed-values.sql:19346
+#: 950.data.seed-values.sql:19356
 msgid "Patron Search Include Inactive"
 msgstr ""
 
 # id::cwst.label__eg.circ.patron.search.show_extras
-#: 950.data.seed-values.sql:19353
+#: 950.data.seed-values.sql:19363
 msgid "Patron Search Show Extra Search Options"
 msgstr ""
 
 # id::cwst.label__eg.grid.circ.checkin.checkin
-#: 950.data.seed-values.sql:19360
+#: 950.data.seed-values.sql:19370
 msgid "Grid Config: circ.checkin.checkin"
 msgstr ""
 
 # id::cwst.label__eg.grid.circ.checkin.capture
-#: 950.data.seed-values.sql:19367
+#: 950.data.seed-values.sql:19377
 msgid "Grid Config: circ.checkin.capture"
 msgstr ""
 
 # id::cwst.label__eg.grid.admin.server.config.copy_tag_type
-#: 950.data.seed-values.sql:19374
+#: 950.data.seed-values.sql:19384
 msgid "Grid Config: admin.server.config.copy_tag_type"
 msgstr ""
 
 # id::cwst.label__eg.grid.admin.server.config.metabib_field_virtual_map.grid
-#: 950.data.seed-values.sql:19381
+#: 950.data.seed-values.sql:19391
 msgid "Grid Config: admin.server.config.metabib_field_virtual_map.grid"
 msgstr ""
 
 # id::cwst.label__eg.grid.admin.server.config.metabib_field.grid
-#: 950.data.seed-values.sql:19388
+#: 950.data.seed-values.sql:19398
 msgid "Grid Config: admin.server.config.metabib_field.grid"
 msgstr ""
 
 # id::cwst.label__eg.grid.admin.server.config.marc_field
-#: 950.data.seed-values.sql:19395
+#: 950.data.seed-values.sql:19405
 msgid "Grid Config: admin.server.config.marc_field"
 msgstr ""
 
 # id::cwst.label__eg.grid.admin.server.asset.copy_tag
-#: 950.data.seed-values.sql:19402
+#: 950.data.seed-values.sql:19412
 msgid "Grid Config: admin.server.asset.copy_tag"
 msgstr ""
 
 # id::cwst.label__eg.grid.admin.local.circ.neg_balance_users
-#: 950.data.seed-values.sql:19409
+#: 950.data.seed-values.sql:19419
 msgid "Grid Config: admin.local.circ.neg_balance_users"
 msgstr ""
 
 # id::cwst.label__eg.grid.admin.local.rating.badge
-#: 950.data.seed-values.sql:19416
+#: 950.data.seed-values.sql:19426
 msgid "Grid Config: admin.local.rating.badge"
 msgstr ""
 
 # id::cwst.label__eg.grid.admin.workstation.work_log
-#: 950.data.seed-values.sql:19423
+#: 950.data.seed-values.sql:19433
 msgid "Grid Config: admin.workstation.work_log"
 msgstr ""
 
 # id::cwst.label__eg.grid.admin.workstation.patron_log
-#: 950.data.seed-values.sql:19430
+#: 950.data.seed-values.sql:19440
 msgid "Grid Config: admin.workstation.patron_log"
 msgstr ""
 
 # id::cwst.label__eg.grid.admin.serials.pattern_template
-#: 950.data.seed-values.sql:19437
+#: 950.data.seed-values.sql:19447
 msgid "Grid Config: admin.serials.pattern_template"
 msgstr ""
 
 # id::cwst.label__eg.grid.serials.copy_templates
-#: 950.data.seed-values.sql:19444
+#: 950.data.seed-values.sql:19454
 msgid "Grid Config: serials.copy_templates"
 msgstr ""
 
 # id::cwst.label__eg.grid.cat.record_overlay.holdings
-#: 950.data.seed-values.sql:19451
+#: 950.data.seed-values.sql:19461
 msgid "Grid Config: cat.record_overlay.holdings"
 msgstr ""
 
 # id::cwst.label__eg.grid.cat.bucket.record.search
-#: 950.data.seed-values.sql:19458
+#: 950.data.seed-values.sql:19468
 msgid "Grid Config: cat.bucket.record.search"
 msgstr ""
 
 # id::cwst.label__eg.grid.cat.bucket.record.view
-#: 950.data.seed-values.sql:19465
+#: 950.data.seed-values.sql:19475
 msgid "Grid Config: cat.bucket.record.view"
 msgstr ""
 
 # id::cwst.label__eg.grid.cat.bucket.record.pending
-#: 950.data.seed-values.sql:19472
+#: 950.data.seed-values.sql:19482
 msgid "Grid Config: cat.bucket.record.pending"
 msgstr ""
 
 # id::cwst.label__eg.grid.cat.bucket.copy.view
-#: 950.data.seed-values.sql:19479
+#: 950.data.seed-values.sql:19489
 msgid "Grid Config: cat.bucket.copy.view"
 msgstr ""
 
 # id::cwst.label__eg.grid.cat.bucket.copy.pending
-#: 950.data.seed-values.sql:19486
+#: 950.data.seed-values.sql:19496
 msgid "Grid Config: cat.bucket.copy.pending"
 msgstr ""
 
 # id::cwst.label__eg.grid.cat.items
-#: 950.data.seed-values.sql:19493
+#: 950.data.seed-values.sql:19503
 msgid "Grid Config: cat.items"
 msgstr ""
 
 # id::cwst.label__eg.grid.cat.volcopy.copies
-#: 950.data.seed-values.sql:19500
+#: 950.data.seed-values.sql:19510
 msgid "Grid Config: cat.volcopy.copies"
 msgstr ""
 
 # id::cwst.label__eg.grid.cat.volcopy.copies.complete
-#: 950.data.seed-values.sql:19507
+#: 950.data.seed-values.sql:19517
 msgid "Grid Config: cat.volcopy.copies.complete"
 msgstr ""
 
 # id::cwst.label__eg.grid.cat.peer_bibs
-#: 950.data.seed-values.sql:19514
+#: 950.data.seed-values.sql:19524
 msgid "Grid Config: cat.peer_bibs"
 msgstr ""
 
 # id::cwst.label__eg.grid.cat.catalog.wide_holds
-#: 950.data.seed-values.sql:19521
+#: 950.data.seed-values.sql:19531
 msgid "Grid Config: cat.catalog.wide_holds"
 msgstr ""
 
 # id::cwst.label__eg.grid.hopeless.wide_holds
-#: 950.data.seed-values.sql:19528
+#: 950.data.seed-values.sql:19538
 msgid "Grid Config: hopeless.wide_holds"
 msgstr ""
 
 # id::cwst.label__eg.grid.cat.holdings
-#: 950.data.seed-values.sql:19535
+#: 950.data.seed-values.sql:19545
 msgid "Grid Config: cat.holdings"
 msgstr ""
 
 # id::cwst.label__eg.grid.cat.z3950_results
-#: 950.data.seed-values.sql:19542
+#: 950.data.seed-values.sql:19552
 msgid "Grid Config: cat.z3950_results"
 msgstr ""
 
 # id::cwst.label__eg.grid.circ.wide_holds.shelf
-#: 950.data.seed-values.sql:19549
+#: 950.data.seed-values.sql:19559
 msgid "Grid Config: circ.wide_holds.shelf"
 msgstr ""
 
 # id::cwst.label__eg.grid.circ.holds.pull
-#: 950.data.seed-values.sql:19556
+#: 950.data.seed-values.sql:19566
 msgid "Grid Config: circ.holds.pull"
 msgstr ""
 
 # id::cwst.label__eg.grid.circ.in_house_use
-#: 950.data.seed-values.sql:19563
+#: 950.data.seed-values.sql:19573
 msgid "Grid Config: circ.in_house_use"
 msgstr ""
 
 # id::cwst.label__eg.grid.circ.renew
-#: 950.data.seed-values.sql:19570
+#: 950.data.seed-values.sql:19580
 msgid "Grid Config: circ.renew"
 msgstr ""
 
 # id::cwst.label__eg.grid.circ.transits.list
-#: 950.data.seed-values.sql:19577
+#: 950.data.seed-values.sql:19587
 msgid "Grid Config: circ.transits.list"
 msgstr ""
 
 # id::cwst.label__eg.grid.circ.patron.holds
-#: 950.data.seed-values.sql:19584
+#: 950.data.seed-values.sql:19594
 msgid "Grid Config: circ.patron.holds"
 msgstr ""
 
 # id::cwst.label__eg.grid.circ.pending_patrons.list
-#: 950.data.seed-values.sql:19591
+#: 950.data.seed-values.sql:19601
 msgid "Grid Config: circ.pending_patrons.list"
 msgstr ""
 
 # id::cwst.label__eg.grid.circ.patron.items_out.noncat
-#: 950.data.seed-values.sql:19598
+#: 950.data.seed-values.sql:19608
 msgid "Grid Config: circ.patron.items_out.noncat"
 msgstr ""
 
 # id::cwst.label__eg.grid.circ.patron.items_out
-#: 950.data.seed-values.sql:19605
+#: 950.data.seed-values.sql:19615
 msgid "Grid Config: circ.patron.items_out"
 msgstr ""
 
 # id::cwst.label__eg.grid.circ.patron.billhistory_payments
-#: 950.data.seed-values.sql:19612
+#: 950.data.seed-values.sql:19622
 msgid "Grid Config: circ.patron.billhistory_payments"
 msgstr ""
 
 # id::cwst.label__eg.grid.user.bucket.view
-#: 950.data.seed-values.sql:19619
+#: 950.data.seed-values.sql:19629
 msgid "Grid Config: user.bucket.view"
 msgstr ""
 
 # id::cwst.label__eg.grid.user.bucket.pending
-#: 950.data.seed-values.sql:19626
+#: 950.data.seed-values.sql:19636
 msgid "Grid Config: user.bucket.pending"
 msgstr ""
 
 # id::cwst.label__eg.grid.circ.patron.staff_messages
-#: 950.data.seed-values.sql:19633
+#: 950.data.seed-values.sql:19643
 msgid "Grid Config: circ.patron.staff_messages"
 msgstr ""
 
 # id::cwst.label__eg.grid.circ.patron.archived_messages
-#: 950.data.seed-values.sql:19640
+#: 950.data.seed-values.sql:19650
 msgid "Grid Config: circ.patron.archived_messages"
 msgstr ""
 
 # id::cwst.label__eg.grid.circ.patron.bills
-#: 950.data.seed-values.sql:19647
+#: 950.data.seed-values.sql:19657
 msgid "Grid Config: circ.patron.bills"
 msgstr ""
 
 # id::cwst.label__eg.grid.circ.patron.checkout
-#: 950.data.seed-values.sql:19654
+#: 950.data.seed-values.sql:19664
 msgid "Grid Config: circ.patron.checkout"
 msgstr ""
 
 # id::cwst.label__eg.grid.circ.patron.group_members
-#: 950.data.seed-values.sql:19661
+#: 950.data.seed-values.sql:19671
 msgid "Grid Config: circ.patron.group_members"
 msgstr ""
 
 # id::cwst.label__eg.grid.serials.mfhd_grid
-#: 950.data.seed-values.sql:19668
+#: 950.data.seed-values.sql:19678
 msgid "Grid Config: serials.mfhd_grid"
 msgstr ""
 
 # id::cwst.label__eg.grid.serials.view_item_grid
-#: 950.data.seed-values.sql:19675
+#: 950.data.seed-values.sql:19685
 msgid "Grid Config: serials.view_item_grid"
 msgstr ""
 
 # id::cwst.label__eg.grid.serials.dist_stream_grid
-#: 950.data.seed-values.sql:19682
+#: 950.data.seed-values.sql:19692
 msgid "Grid Config: serials.dist_stream_grid"
 msgstr ""
 
 # id::cwst.label__eg.grid.circ.patron.search
-#: 950.data.seed-values.sql:19689
+#: 950.data.seed-values.sql:19699
 msgid "Grid Config: circ.patron.search"
 msgstr ""
 
 # id::cwst.label__eg.grid.admin.actor.org_unit_settings
-#: 950.data.seed-values.sql:19696
+#: 950.data.seed-values.sql:19706
 msgid "Grid Config: admin.actor.org_unit_settings"
 msgstr ""
 
 # id::cwst.label__eg.cat.record.summary.collapse
-#: 950.data.seed-values.sql:19703
+#: 950.data.seed-values.sql:19713
 msgid "Collapse Bib Record Summary"
 msgstr ""
 
 # id::cwst.label__cat.marcedit.flateditor
-#: 950.data.seed-values.sql:19710
+#: 950.data.seed-values.sql:19720
 msgid "Use Flat MARC Editor"
 msgstr ""
 
 # id::cwst.label__cat.marcedit.stack_subfields
-#: 950.data.seed-values.sql:19717
+#: 950.data.seed-values.sql:19727
 msgid "MARC Editor Stack Subfields"
 msgstr ""
 
 # id::cwst.label__eg.offline.print_receipt
-#: 950.data.seed-values.sql:19724
+#: 950.data.seed-values.sql:19734
 msgid "Offline Print Receipt"
 msgstr ""
 
 # id::cwst.label__eg.offline.strict_barcode
-#: 950.data.seed-values.sql:19731
+#: 950.data.seed-values.sql:19741
 msgid "Offline Use Strict Barcode"
 msgstr ""
 
 # id::cwst.label__cat.default_bib_marc_template
-#: 950.data.seed-values.sql:19738
+#: 950.data.seed-values.sql:19748
 msgid "Default MARC Template"
 msgstr ""
 
 # id::cwst.label__eg.audio.disable
-#: 950.data.seed-values.sql:19745
+#: 950.data.seed-values.sql:19755
 msgid "Disable Staff Client Notification Audio"
 msgstr ""
 
 # id::cwst.label__eg.search.adv_pane
-#: 950.data.seed-values.sql:19752
+#: 950.data.seed-values.sql:19762
 msgid "Catalog Advanced Search Default Pane"
 msgstr ""
 
 # id::cwst.label__eg.print.template_context.bills_current
-#: 950.data.seed-values.sql:19759
+#: 950.data.seed-values.sql:19769
 msgid "Print Template Context: bills_current"
 msgstr ""
 
 # id::cwst.label__eg.print.template.bills_current
-#: 950.data.seed-values.sql:19766
+#: 950.data.seed-values.sql:19776
 msgid "Print Template: bills_current"
 msgstr ""
 
 # id::cwst.label__eg.print.template_context.bills_historical
-#: 950.data.seed-values.sql:19773
+#: 950.data.seed-values.sql:19783
 msgid "Print Template Context: bills_historical"
 msgstr ""
 
 # id::cwst.label__eg.print.template.bills_historical
-#: 950.data.seed-values.sql:19780
+#: 950.data.seed-values.sql:19790
 msgid "Print Template: bills_historical"
 msgstr ""
 
 # id::cwst.label__eg.print.template_context.bill_payment
-#: 950.data.seed-values.sql:19787
+#: 950.data.seed-values.sql:19797
 msgid "Print Template Context: bill_payment"
 msgstr ""
 
 # id::cwst.label__eg.print.template.bill_payment
-#: 950.data.seed-values.sql:19794
+#: 950.data.seed-values.sql:19804
 msgid "Print Template: bill_payment"
 msgstr ""
 
 # id::cwst.label__eg.print.template_context.checkin
-#: 950.data.seed-values.sql:19801
+#: 950.data.seed-values.sql:19811
 msgid "Print Template Context: checkin"
 msgstr ""
 
 # id::cwst.label__eg.print.template.checkin
-#: 950.data.seed-values.sql:19808
+#: 950.data.seed-values.sql:19818
 msgid "Print Template: checkin"
 msgstr ""
 
 # id::cwst.label__eg.print.template_context.checkout
-#: 950.data.seed-values.sql:19815
+#: 950.data.seed-values.sql:19825
 msgid "Print Template Context: checkout"
 msgstr ""
 
 # id::cwst.label__eg.print.template.checkout
-#: 950.data.seed-values.sql:19822
+#: 950.data.seed-values.sql:19832
 msgid "Print Template: checkout"
 msgstr ""
 
 # id::cwst.label__eg.print.template_context.hold_transit_slip
-#: 950.data.seed-values.sql:19829
+#: 950.data.seed-values.sql:19839
 msgid "Print Template Context: hold_transit_slip"
 msgstr ""
 
 # id::cwst.label__eg.print.template.hold_transit_slip
-#: 950.data.seed-values.sql:19836
+#: 950.data.seed-values.sql:19846
 msgid "Print Template: hold_transit_slip"
 msgstr ""
 
 # id::cwst.label__eg.print.template_context.hold_shelf_slip
-#: 950.data.seed-values.sql:19843
+#: 950.data.seed-values.sql:19853
 msgid "Print Template Context: hold_shelf_slip"
 msgstr ""
 
 # id::cwst.label__eg.print.template.hold_shelf_slip
-#: 950.data.seed-values.sql:19850
+#: 950.data.seed-values.sql:19860
 msgid "Print Template: hold_shelf_slip"
 msgstr ""
 
 # id::cwst.label__eg.print.template_context.holds_for_bib
-#: 950.data.seed-values.sql:19857
+#: 950.data.seed-values.sql:19867
 msgid "Print Template Context: holds_for_bib"
 msgstr ""
 
 # id::cwst.label__eg.print.template.holds_for_bib
-#: 950.data.seed-values.sql:19864
+#: 950.data.seed-values.sql:19874
 msgid "Print Template: holds_for_bib"
 msgstr ""
 
 # id::cwst.label__eg.print.template_context.holds_for_patron
-#: 950.data.seed-values.sql:19871
+#: 950.data.seed-values.sql:19881
 msgid "Print Template Context: holds_for_patron"
 msgstr ""
 
 # id::cwst.label__eg.print.template.holds_for_patron
-#: 950.data.seed-values.sql:19878
+#: 950.data.seed-values.sql:19888
 msgid "Print Template: holds_for_patron"
 msgstr ""
 
 # id::cwst.label__eg.print.template_context.hold_pull_list
-#: 950.data.seed-values.sql:19885
+#: 950.data.seed-values.sql:19895
 msgid "Print Template Context: hold_pull_list"
 msgstr ""
 
 # id::cwst.label__eg.print.template.hold_pull_list
-#: 950.data.seed-values.sql:19892
+#: 950.data.seed-values.sql:19902
 msgid "Print Template: hold_pull_list"
 msgstr ""
 
 # id::cwst.label__eg.print.template_context.hold_shelf_list
-#: 950.data.seed-values.sql:19899
+#: 950.data.seed-values.sql:19909
 msgid "Print Template Context: hold_shelf_list"
 msgstr ""
 
 # id::cwst.label__eg.print.template.hold_shelf_list
-#: 950.data.seed-values.sql:19906
+#: 950.data.seed-values.sql:19916
 msgid "Print Template: hold_shelf_list"
 msgstr ""
 
 # id::cwst.label__eg.print.template_context.in_house_use_list
-#: 950.data.seed-values.sql:19913
+#: 950.data.seed-values.sql:19923
 msgid "Print Template Context: in_house_use_list"
 msgstr ""
 
 # id::cwst.label__eg.print.template.in_house_use_list
-#: 950.data.seed-values.sql:19920
+#: 950.data.seed-values.sql:19930
 msgid "Print Template: in_house_use_list"
 msgstr ""
 
 # id::cwst.label__eg.print.template_context.item_status
-#: 950.data.seed-values.sql:19927
+#: 950.data.seed-values.sql:19937
 msgid "Print Template Context: item_status"
 msgstr ""
 
 # id::cwst.label__eg.print.template.item_status
-#: 950.data.seed-values.sql:19934
+#: 950.data.seed-values.sql:19944
 msgid "Print Template: item_status"
 msgstr ""
 
 # id::cwst.label__eg.print.template_context.items_out
-#: 950.data.seed-values.sql:19941
+#: 950.data.seed-values.sql:19951
 msgid "Print Template Context: items_out"
 msgstr ""
 
 # id::cwst.label__eg.print.template.items_out
-#: 950.data.seed-values.sql:19948
+#: 950.data.seed-values.sql:19958
 msgid "Print Template: items_out"
 msgstr ""
 
 # id::cwst.label__eg.print.template_context.patron_address
-#: 950.data.seed-values.sql:19955
+#: 950.data.seed-values.sql:19965
 msgid "Print Template Context: patron_address"
 msgstr ""
 
 # id::cwst.label__eg.print.template.patron_address
-#: 950.data.seed-values.sql:19962
+#: 950.data.seed-values.sql:19972
 msgid "Print Template: patron_address"
 msgstr ""
 
 # id::cwst.label__eg.print.template_context.patron_data
-#: 950.data.seed-values.sql:19969
+#: 950.data.seed-values.sql:19979
 msgid "Print Template Context: patron_data"
 msgstr ""
 
 # id::cwst.label__eg.print.template.patron_data
-#: 950.data.seed-values.sql:19976
+#: 950.data.seed-values.sql:19986
 msgid "Print Template: patron_data"
 msgstr ""
 
 # id::cwst.label__eg.print.template_context.patron_note
-#: 950.data.seed-values.sql:19983
+#: 950.data.seed-values.sql:19993
 msgid "Print Template Context: patron_note"
 msgstr ""
 
 # id::cwst.label__eg.print.template.patron_note
-#: 950.data.seed-values.sql:19990
+#: 950.data.seed-values.sql:20000
 msgid "Print Template: patron_note"
 msgstr ""
 
 # id::cwst.label__eg.print.template_context.renew
-#: 950.data.seed-values.sql:19997
+#: 950.data.seed-values.sql:20007
 msgid "Print Template Context: renew"
 msgstr ""
 
 # id::cwst.label__eg.print.template.renew
-#: 950.data.seed-values.sql:20004
+#: 950.data.seed-values.sql:20014
 msgid "Print Template: renew"
 msgstr ""
 
 # id::cwst.label__eg.print.template_context.transit_list
-#: 950.data.seed-values.sql:20011
+#: 950.data.seed-values.sql:20021
 msgid "Print Template Context: transit_list"
 msgstr ""
 
 # id::cwst.label__eg.print.template.transit_list
-#: 950.data.seed-values.sql:20018
+#: 950.data.seed-values.sql:20028
 msgid "Print Template: transit_list"
 msgstr ""
 
 # id::cwst.label__eg.print.template_context.transit_slip
-#: 950.data.seed-values.sql:20025
+#: 950.data.seed-values.sql:20035
 msgid "Print Template Context: transit_slip"
 msgstr ""
 
 # id::cwst.label__eg.print.template.transit_slip
-#: 950.data.seed-values.sql:20032
+#: 950.data.seed-values.sql:20042
 msgid "Print Template: transit_slip"
 msgstr ""
 
 # id::cwst.label__eg.print.template_context.offline_checkout
-#: 950.data.seed-values.sql:20039
+#: 950.data.seed-values.sql:20049
 msgid "Print Template Context: offline_checkout"
 msgstr ""
 
 # id::cwst.label__eg.print.template.offline_checkout
-#: 950.data.seed-values.sql:20046
+#: 950.data.seed-values.sql:20056
 msgid "Print Template: offline_checkout"
 msgstr ""
 
 # id::cwst.label__eg.print.template_context.offline_renew
-#: 950.data.seed-values.sql:20053
+#: 950.data.seed-values.sql:20063
 msgid "Print Template Context: offline_renew"
 msgstr ""
 
 # id::cwst.label__eg.print.template.offline_renew
-#: 950.data.seed-values.sql:20060
+#: 950.data.seed-values.sql:20070
 msgid "Print Template: offline_renew"
 msgstr ""
 
 # id::cwst.label__eg.print.template_context.offline_checkin
-#: 950.data.seed-values.sql:20067
+#: 950.data.seed-values.sql:20077
 msgid "Print Template Context: offline_checkin"
 msgstr ""
 
 # id::cwst.label__eg.print.template.offline_checkin
-#: 950.data.seed-values.sql:20074
+#: 950.data.seed-values.sql:20084
 msgid "Print Template: offline_checkin"
 msgstr ""
 
 # id::cwst.label__eg.print.template_context.offline_in_house_use
-#: 950.data.seed-values.sql:20081
+#: 950.data.seed-values.sql:20091
 msgid "Print Template Context: offline_in_house_use"
 msgstr ""
 
 # id::cwst.label__eg.print.template.offline_in_house_use
-#: 950.data.seed-values.sql:20088
+#: 950.data.seed-values.sql:20098
 msgid "Print Template: offline_in_house_use"
 msgstr ""
 
 # id::cwst.label__eg.serials.stream_names
-#: 950.data.seed-values.sql:20095
+#: 950.data.seed-values.sql:20105
 msgid "Serials Local Stream Names"
 msgstr ""
 
 # id::cwst.label__eg.serials.items.do_print_routing_lists
-#: 950.data.seed-values.sql:20102
+#: 950.data.seed-values.sql:20112
 msgid "Serials Print Routing Lists"
 msgstr ""
 
 # id::cwst.label__eg.serials.items.receive_and_barcode
-#: 950.data.seed-values.sql:20109
+#: 950.data.seed-values.sql:20119
 msgid "Serials Barcode On Receive"
 msgstr ""
 
 # id::cwst.label__eg.grid.circ.patron.billhistory_xacts
-#: 950.data.seed-values.sql:20116
+#: 950.data.seed-values.sql:20126
 msgid "Grid Config: circ.patron.billhistory_xacts"
 msgstr ""
 
 # id::cwst.label__eg.grid.reporter.simple.reports
-#: 950.data.seed-values.sql:20123
+#: 950.data.seed-values.sql:20133
 msgid "Grid Config: eg.grid.reporter.simple.reports"
 msgstr ""
 
 # id::cwst.label__eg.grid.reporter.simple.outputs
-#: 950.data.seed-values.sql:20130
+#: 950.data.seed-values.sql:20140
 msgid "Grid Config: eg.grid.reporter.simple.outputs"
 msgstr ""
 
 # id::cwst.label__eg.grid.admin.config.idl_field_doc
-#: 950.data.seed-values.sql:20137
+#: 950.data.seed-values.sql:20147
 msgid "Grid Config: admin.config.idl_field_doc"
 msgstr ""
 
 # id::cwst.label__eg.orgselect.admin.stat_cat.owner
-#: 950.data.seed-values.sql:20144
+#: 950.data.seed-values.sql:20154
 msgid "Default org unit for stat cat and stat cat entry editors"
 msgstr ""
 
 # id::cwst.label__eg.orgfamilyselect.admin.item_stat_cat.main_org_selector
-#: 950.data.seed-values.sql:20151
+#: 950.data.seed-values.sql:20161
 msgid ""
 "Default org unit for the main org select in the item stat cat and stat cat "
 "entry admin interfaces."
 msgstr ""
 
 # id::cwst.label__eg.orgfamilyselect.admin.patron_stat_cat.main_org_selector
-#: 950.data.seed-values.sql:20158
+#: 950.data.seed-values.sql:20168
 msgid ""
 "Default org unit for the main org select in the patron stat cat and stat cat"
 " entry admin interfaces."
 msgstr ""
 
 # id::cwst.label__eg.search.search_lib
-#: 950.data.seed-values.sql:20170
+#: 950.data.seed-values.sql:20180
 msgid "Staff Catalog Default Search Library"
 msgstr ""
 
 # id::cwst.label__eg.search.pref_lib
-#: 950.data.seed-values.sql:20177
+#: 950.data.seed-values.sql:20187
 msgid "Staff Catalog Preferred Library"
 msgstr ""
 
 # id::cwst.label__eg.grid.cat.vandelay.queue.bib
-#: 950.data.seed-values.sql:20288
+#: 950.data.seed-values.sql:20298
 msgid "Grid Config: Vandelay Bib Queue"
 msgstr ""
 
 # id::cwst.label__eg.grid.cat.vandelay.queue.auth
-#: 950.data.seed-values.sql:20295
+#: 950.data.seed-values.sql:20305
 msgid "Grid Config: Vandelay Authority Queue"
 msgstr ""
 
 # id::cwst.label__eg.grid.cat.vandelay.match_set.list
-#: 950.data.seed-values.sql:20302
+#: 950.data.seed-values.sql:20312
 msgid "Grid Config: Vandelay Match Sets"
 msgstr ""
 
 # id::cwst.label__eg.grid.cat.vandelay.match_set.quality
-#: 950.data.seed-values.sql:20309
+#: 950.data.seed-values.sql:20319
 msgid "Grid Config: Vandelay Match Quality Metrics"
 msgstr ""
 
 # id::cwst.label__eg.grid.cat.vandelay.queue.items
-#: 950.data.seed-values.sql:20316
+#: 950.data.seed-values.sql:20326
 msgid "Grid Config: Vandelay Queue Import Items"
 msgstr ""
 
 # id::cwst.label__eg.grid.cat.vandelay.queue.list.bib
-#: 950.data.seed-values.sql:20323
+#: 950.data.seed-values.sql:20333
 msgid "Grid Config: Vandelay Bib Queue List"
 msgstr ""
 
 # id::cwst.label__eg.grid.cat.vandelay.queue.bib.items
-#: 950.data.seed-values.sql:20330
+#: 950.data.seed-values.sql:20340
 msgid "Grid Config: Vandelay Bib Items"
 msgstr ""
 
 # id::cwst.label__eg.grid.cat.vandelay.queue.list.auth
-#: 950.data.seed-values.sql:20337
+#: 950.data.seed-values.sql:20347
 msgid "Grid Config: Vandelay Authority Queue List"
 msgstr ""
 
 # id::cwst.label__eg.grid.admin.vandelay.merge_profile
-#: 950.data.seed-values.sql:20344
+#: 950.data.seed-values.sql:20354
 msgid "Grid Config: Vandelay Merge Profiles"
 msgstr ""
 
 # id::cwst.label__eg.grid.admin.vandelay.bib_attr_definition
-#: 950.data.seed-values.sql:20351
+#: 950.data.seed-values.sql:20361
 msgid "Grid Config: Vandelay Bib Record Attributes"
 msgstr ""
 
 # id::cwst.label__eg.grid.admin.vandelay.import_item_attr_definition
-#: 950.data.seed-values.sql:20358
+#: 950.data.seed-values.sql:20368
 msgid "Grid Config: Vandelay Import Item Attributes"
 msgstr ""
 
 # id::coust.label__opac.email_record.allow_without_login
-#: 950.data.seed-values.sql:20368
+#: 950.data.seed-values.sql:20378
 msgid "Allow record emailing without login"
 msgstr ""
 
 # id::coust.description__opac.email_record.allow_without_login
-#: 950.data.seed-values.sql:20371
+#: 950.data.seed-values.sql:20381
 msgid ""
 "Instead of forcing a patron to log in in order to email the details of a "
 "record, just challenge them with a simple catpcha."
 msgstr ""
 
 # id::coust.label__ui.patron.edit.au.guardian.show
-#: 950.data.seed-values.sql:20398
+#: 950.data.seed-values.sql:20408
 msgid "GUI: Show guardian field on patron registration"
 msgstr ""
 
 # id::coust.description__ui.patron.edit.au.guardian.show
-#: 950.data.seed-values.sql:20403
+#: 950.data.seed-values.sql:20413
 msgid ""
 "The guardian field will be shown on the patron registration screen. Showing "
 "a field makes it appear with required fields even when not required. If the "
@@ -18482,12 +18482,12 @@ msgid ""
 msgstr ""
 
 # id::coust.label__ui.patron.edit.au.guardian.suggest
-#: 950.data.seed-values.sql:20411
+#: 950.data.seed-values.sql:20421
 msgid "GUI: Suggest guardian field on patron registration"
 msgstr ""
 
 # id::coust.description__ui.patron.edit.au.guardian.suggest
-#: 950.data.seed-values.sql:20416
+#: 950.data.seed-values.sql:20426
 msgid ""
 "The guardian field will be suggested on the patron registration screen. "
 "Suggesting a field makes it appear when suggested fields are shown. If the "
@@ -18495,204 +18495,204 @@ msgid ""
 msgstr ""
 
 # id::coust.label__ui.patron.edit.guardian_required_for_juv
-#: 950.data.seed-values.sql:20423
+#: 950.data.seed-values.sql:20433
 msgid "GUI: Juvenile account requires parent/guardian"
 msgstr ""
 
 # id::coust.description__ui.patron.edit.guardian_required_for_juv
-#: 950.data.seed-values.sql:20428
+#: 950.data.seed-values.sql:20438
 msgid ""
 "Require a value for the parent/guardian field in the patron editor for "
 "patrons marked as juvenile"
 msgstr ""
 
 # id::cwst.label__eg.cat.vandelay.import.templates
-#: 950.data.seed-values.sql:20438
+#: 950.data.seed-values.sql:20448
 msgid "Vandelay Import Form Templates"
 msgstr ""
 
 # id::cwst.label__eg.grid.admin.server.config.rule_age_hold_protect
-#: 950.data.seed-values.sql:20489
+#: 950.data.seed-values.sql:20499
 msgid "Grid Config: admin.server.config.rule_age_hold_protect"
 msgstr ""
 
 # id::cwst.label__eg.grid.admin.server.asset.stat_cat_sip_fields
-#: 950.data.seed-values.sql:20496
+#: 950.data.seed-values.sql:20506
 msgid "Grid Config: admin.server.asset.stat_cat_sip_fields"
 msgstr ""
 
 # id::cwst.label__eg.grid.admin.server.actor.stat_cat_sip_fields
-#: 950.data.seed-values.sql:20503
+#: 950.data.seed-values.sql:20513
 msgid "Grid Config: admin.server.actor.stat_cat_sip_fields"
 msgstr ""
 
 # id::cwst.label__eg.grid.admin.server.authority.browse_axis
-#: 950.data.seed-values.sql:20510
+#: 950.data.seed-values.sql:20520
 msgid "Grid Config: admin.server.authority.browse_axis"
 msgstr ""
 
 # id::cwst.label__eg.grid.admin.server.authority.control_set
-#: 950.data.seed-values.sql:20517
+#: 950.data.seed-values.sql:20527
 msgid "Grid Config: admin.server.authority.control_set"
 msgstr ""
 
 # id::cwst.label__eg.grid.admin.server.authority.heading_field
-#: 950.data.seed-values.sql:20524
+#: 950.data.seed-values.sql:20534
 msgid "Grid Config: admin.server.authority.heading_field"
 msgstr ""
 
 # id::cwst.label__eg.grid.admin.server.authority.thesaurus
-#: 950.data.seed-values.sql:20531
+#: 950.data.seed-values.sql:20541
 msgid "Grid Config: admin.server.authority.thesaurus"
 msgstr ""
 
 # id::cwst.label__eg.grid.admin.server.config.best_hold_order
-#: 950.data.seed-values.sql:20538
+#: 950.data.seed-values.sql:20548
 msgid "Grid Config: admin.server.config.best_hold_order"
 msgstr ""
 
 # id::cwst.label__eg.grid.admin.server.config.billing_type
-#: 950.data.seed-values.sql:20545
+#: 950.data.seed-values.sql:20555
 msgid "Grid Config: admin.server.config.billing_type"
 msgstr ""
 
 # id::cwst.label__eg.grid.admin.server.asset.call_number_prefix
-#: 950.data.seed-values.sql:20552
+#: 950.data.seed-values.sql:20562
 msgid "Grid Config: admin.server.asset.call_number_prefix"
 msgstr ""
 
 # id::cwst.label__eg.grid.admin.server.asset.call_number_suffix
-#: 950.data.seed-values.sql:20559
+#: 950.data.seed-values.sql:20569
 msgid "Grid Config: admin.server.asset.call_number_suffix"
 msgstr ""
 
 # id::cwst.label__eg.grid.admin.server.config.rule_circ_duration
-#: 950.data.seed-values.sql:20566
+#: 950.data.seed-values.sql:20576
 msgid "Grid Config: admin.server.config.rule_circ_duration"
 msgstr ""
 
 # id::cwst.label__eg.grid.admin.server.config.circ_limit_group
-#: 950.data.seed-values.sql:20573
+#: 950.data.seed-values.sql:20583
 msgid "Grid Config: admin.server.config.circ_limit_group"
 msgstr ""
 
 # id::cwst.label__eg.grid.admin.server.config.circ_matrix_weights
-#: 950.data.seed-values.sql:20580
+#: 950.data.seed-values.sql:20590
 msgid "Grid Config: admin.server.config.circ_matrix_weights"
 msgstr ""
 
 # id::cwst.label__eg.grid.admin.server.config.rule_max_fine
-#: 950.data.seed-values.sql:20587
+#: 950.data.seed-values.sql:20597
 msgid "Grid Config: admin.server.config.rule_max_fine"
 msgstr ""
 
 # id::cwst.label__eg.grid.admin.server.config.circ_modifier
-#: 950.data.seed-values.sql:20594
+#: 950.data.seed-values.sql:20604
 msgid "Grid Config: admin.server.config.circ_modifier"
 msgstr ""
 
 # id::cwst.label__eg.grid.admin.server.config.copy_status
-#: 950.data.seed-values.sql:20601
+#: 950.data.seed-values.sql:20611
 msgid "Grid Config: admin.server.config.copy_status"
 msgstr ""
 
 # id::cwst.label__eg.grid.admin.server.config.floating_group
-#: 950.data.seed-values.sql:20608
+#: 950.data.seed-values.sql:20618
 msgid "Grid Config: admin.server.config.floating_group"
 msgstr ""
 
 # id::cwst.label__eg.grid.admin.server.config.global_flag
-#: 950.data.seed-values.sql:20615
+#: 950.data.seed-values.sql:20625
 msgid "Grid Config: admin.server.config.global_flag"
 msgstr ""
 
 # id::cwst.label__eg.grid.admin.server.config.hard_due_date
-#: 950.data.seed-values.sql:20622
+#: 950.data.seed-values.sql:20632
 msgid "Grid Config: admin.server.config.hard_due_date"
 msgstr ""
 
 # id::cwst.label__eg.grid.admin.server.config.hold_matrix_weights
-#: 950.data.seed-values.sql:20629
+#: 950.data.seed-values.sql:20639
 msgid "Grid Config: admin.server.config.hold_matrix_weights"
 msgstr ""
 
 # id::cwst.label__eg.grid.admin.server.vandelay.match_set
-#: 950.data.seed-values.sql:20636
+#: 950.data.seed-values.sql:20646
 msgid "Grid Config: admin.server.vandelay.match_set"
 msgstr ""
 
 # id::cwst.label__eg.grid.admin.server.config.coded_value_map
-#: 950.data.seed-values.sql:20643
+#: 950.data.seed-values.sql:20653
 msgid "Grid Config: admin.server.config.coded_value_map"
 msgstr ""
 
 # id::cwst.label__eg.grid.admin.server.vandelay.import_bib_trash_group
-#: 950.data.seed-values.sql:20650
+#: 950.data.seed-values.sql:20660
 msgid "Grid Config: admin.server.vandelay.import_bib_trash_group"
 msgstr ""
 
 # id::cwst.label__eg.grid.admin.server.config.record_attr_definition
-#: 950.data.seed-values.sql:20657
+#: 950.data.seed-values.sql:20667
 msgid "Grid Config: admin.server.config.record_attr_definition"
 msgstr ""
 
 # id::cwst.label__eg.grid.admin.server.config.metabib_class
-#: 950.data.seed-values.sql:20664
+#: 950.data.seed-values.sql:20674
 msgid "Grid Config: admin.server.config.metabib_class"
 msgstr ""
 
 # id::cwst.label__eg.grid.admin.server.config.metabib_field_ts_map
-#: 950.data.seed-values.sql:20671
+#: 950.data.seed-values.sql:20681
 msgid "Grid Config: admin.server.config.metabib_field_ts_map"
 msgstr ""
 
 # id::cwst.label__eg.grid.admin.server.config.metabib_field
-#: 950.data.seed-values.sql:20678
+#: 950.data.seed-values.sql:20688
 msgid "Grid Config: admin.server.config.metabib_field"
 msgstr ""
 
 # id::cwst.label__eg.grid.admin.server.permission.perm_list
-#: 950.data.seed-values.sql:20685
+#: 950.data.seed-values.sql:20695
 msgid "Grid Config: admin.server.permission.perm_list"
 msgstr ""
 
 # id::cwst.label__eg.grid.admin.server.config.remote_account
-#: 950.data.seed-values.sql:20692
+#: 950.data.seed-values.sql:20702
 msgid "Grid Config: admin.server.config.remote_account"
 msgstr ""
 
 # id::cwst.label__eg.grid.admin.server.config.sms_carrier
-#: 950.data.seed-values.sql:20699
+#: 950.data.seed-values.sql:20709
 msgid "Grid Config: admin.server.config.sms_carrier"
 msgstr ""
 
 # id::cwst.label__eg.grid.admin.server.config.usr_activity_type
-#: 950.data.seed-values.sql:20706
+#: 950.data.seed-values.sql:20716
 msgid "Grid Config: admin.server.config.usr_activity_type"
 msgstr ""
 
 # id::cwst.label__eg.grid.admin.server.config.weight_assoc
-#: 950.data.seed-values.sql:20713
+#: 950.data.seed-values.sql:20723
 msgid "Grid Config: admin.server.config.weight_assoc"
 msgstr ""
 
 # id::cwst.label__eg.grid.admin.server.config.z3950_index_field_map
-#: 950.data.seed-values.sql:20720
+#: 950.data.seed-values.sql:20730
 msgid "Grid Config: admin.server.config.z3950_index_field_map"
 msgstr ""
 
 # id::cwst.label__eg.grid.admin.server.config.z3950_source
-#: 950.data.seed-values.sql:20727
+#: 950.data.seed-values.sql:20737
 msgid "Grid Config: admin.server.config.z3950_source"
 msgstr ""
 
 # id::coust.label__circ.privacy_waiver
-#: 950.data.seed-values.sql:20738
+#: 950.data.seed-values.sql:20748
 msgid "Allow others to use patron account (privacy waiver)"
 msgstr ""
 
 # id::coust.description__circ.privacy_waiver
-#: 950.data.seed-values.sql:20741
+#: 950.data.seed-values.sql:20751
 msgid ""
 "Add a note to a user account indicating that specified people are allowed to"
 " place holds, pick up holds, check out items, or view borrowing history for "
@@ -18700,12 +18700,12 @@ msgid ""
 msgstr ""
 
 # id::coust.label__circ.holds.calculated_age_proximity
-#: 950.data.seed-values.sql:20752
+#: 950.data.seed-values.sql:20762
 msgid "Use calculated proximity for age-protection check"
 msgstr ""
 
 # id::coust.description__circ.holds.calculated_age_proximity
-#: 950.data.seed-values.sql:20755
+#: 950.data.seed-values.sql:20765
 msgid ""
 "When checking whether a copy is viable for a hold based on transit distance,"
 " use calculated proximity with adjustments rather than baseline Org Unit "
@@ -18714,295 +18714,295 @@ msgstr ""
 
 # id::coust.label__opac.login.shib_sso.enable
 # id::coust.description__opac.login.shib_sso.enable
-#: 950.data.seed-values.sql:20765 950.data.seed-values.sql:20766
+#: 950.data.seed-values.sql:20775 950.data.seed-values.sql:20776
 msgid "Enable Shibboleth SSO for the OPAC"
 msgstr ""
 
 # id::coust.label__opac.login.shib_sso.entityId
-#: 950.data.seed-values.sql:20770
+#: 950.data.seed-values.sql:20780
 msgid "Shibboleth SSO Entity ID"
 msgstr ""
 
 # id::coust.description__opac.login.shib_sso.entityId
-#: 950.data.seed-values.sql:20771
+#: 950.data.seed-values.sql:20781
 msgid ""
 "Which configured Entity ID to use for SSO when there is more than one "
 "available to Shibboleth"
 msgstr ""
 
 # id::coust.label__opac.login.shib_sso.logout
-#: 950.data.seed-values.sql:20775
+#: 950.data.seed-values.sql:20785
 msgid "Log out of the Shibboleth IdP"
 msgstr ""
 
 # id::coust.description__opac.login.shib_sso.logout
-#: 950.data.seed-values.sql:20776
+#: 950.data.seed-values.sql:20786
 msgid ""
 "When logging out of Evergreen, also force a logout of the IdP behind "
 "Shibboleth"
 msgstr ""
 
 # id::coust.label__opac.login.shib_sso.allow_native
-#: 950.data.seed-values.sql:20780
+#: 950.data.seed-values.sql:20790
 msgid "Allow both Shibboleth and native OPAC authentication"
 msgstr ""
 
 # id::coust.description__opac.login.shib_sso.allow_native
-#: 950.data.seed-values.sql:20781
+#: 950.data.seed-values.sql:20791
 msgid ""
 "When Shibboleth SSO is enabled, also allow native Evergreen authentication"
 msgstr ""
 
 # id::coust.label__opac.login.shib_sso.evergreen_matchpoint
-#: 950.data.seed-values.sql:20785
+#: 950.data.seed-values.sql:20795
 msgid "Evergreen SSO matchpoint"
 msgstr ""
 
 # id::coust.description__opac.login.shib_sso.evergreen_matchpoint
-#: 950.data.seed-values.sql:20786
+#: 950.data.seed-values.sql:20796
 msgid ""
 "Evergreen-side field to match a patron against for Shibboleth SSO. Default "
 "is usrname.  Other reasonable values would be barcode or email."
 msgstr ""
 
 # id::coust.label__opac.login.shib_sso.shib_matchpoint
-#: 950.data.seed-values.sql:20792
+#: 950.data.seed-values.sql:20802
 msgid "Shibboleth SSO matchpoint"
 msgstr ""
 
 # id::coust.description__opac.login.shib_sso.shib_matchpoint
-#: 950.data.seed-values.sql:20793
+#: 950.data.seed-values.sql:20803
 msgid ""
 "Shibboleth-side field to match a patron against for Shibboleth SSO. Default "
 "is uid; use eppn for Active Directory"
 msgstr ""
 
 # id::coust.label__holds.subscription.randomize
-#: 950.data.seed-values.sql:20802
+#: 950.data.seed-values.sql:20812
 msgid "Randomize group hold order"
 msgstr ""
 
 # id::coust.description__holds.subscription.randomize
-#: 950.data.seed-values.sql:20808
+#: 950.data.seed-values.sql:20818
 msgid ""
 "When placing a batch group hold, randomize the order of the patrons "
 "receiving the holds so they are not always in the same order."
 msgstr ""
 
 # id::cuat.label__25
-#: 950.data.seed-values.sql:20860
+#: 950.data.seed-values.sql:20870
 msgid "Login via Websocket V1"
 msgstr ""
 
 # id::cuat.label__26
-#: 950.data.seed-values.sql:20863
+#: 950.data.seed-values.sql:20873
 msgid "Login via Websocket V2"
 msgstr ""
 
 # id::cuat.label__27
-#: 950.data.seed-values.sql:20866
+#: 950.data.seed-values.sql:20876
 msgid "Verification via Websocket v1"
 msgstr ""
 
 # id::cuat.label__28
-#: 950.data.seed-values.sql:20869
+#: 950.data.seed-values.sql:20879
 msgid "Verifiation via Websocket V2"
 msgstr ""
 
 # id::cuat.label__29
-#: 950.data.seed-values.sql:20872
+#: 950.data.seed-values.sql:20882
 msgid "Generic Login"
 msgstr ""
 
 # id::cuat.label__30
-#: 950.data.seed-values.sql:20875
+#: 950.data.seed-values.sql:20885
 msgid "Generic Verify"
 msgstr ""
 
 # id::cwst.label__catalog.record.holds.prefetch
-#: 950.data.seed-values.sql:20882
+#: 950.data.seed-values.sql:20892
 msgid "Pre-Fetch Record Holds"
 msgstr ""
 
 # id::cwst.label__eg.print.template_context.booking_capture
-#: 950.data.seed-values.sql:20892
+#: 950.data.seed-values.sql:20902
 msgid "Print Template Context: booking_capture"
 msgstr ""
 
 # id::cwst.label__eg.catalog.search_templates
-#: 950.data.seed-values.sql:20902
+#: 950.data.seed-values.sql:20912
 msgid "Staff Catalog Search Templates"
 msgstr ""
 
 # id::cwst.label__eg.grid.admin.local.config.hold_matrix_matchpoint
-#: 950.data.seed-values.sql:20912
+#: 950.data.seed-values.sql:20922
 msgid "Grid Config: admin.local.config.hold_matrix_matchpoint"
 msgstr ""
 
 # id::cwst.label__eg.grid.admin.local.actor.address_alert
-#: 950.data.seed-values.sql:20919
+#: 950.data.seed-values.sql:20929
 msgid "Grid Config: admin.local.actor.address_alert"
 msgstr ""
 
 # id::cwst.label__eg.grid.admin.local.config.barcode_completion
-#: 950.data.seed-values.sql:20926
+#: 950.data.seed-values.sql:20936
 msgid "Grid Config: admin.local.config.barcode_completion"
 msgstr ""
 
 # id::cwst.label__eg.grid.admin.local.actor.copy_alert_suppress
-#: 950.data.seed-values.sql:20933
+#: 950.data.seed-values.sql:20943
 msgid "Grid Config: admin.local.actor.copy_alert_suppress"
 msgstr ""
 
 # id::cwst.label__eg.grid.admin.local.asset.copy_location
-#: 950.data.seed-values.sql:20940
+#: 950.data.seed-values.sql:20950
 msgid "Grid Config: admin.local.asset.copy_location"
 msgstr ""
 
 # id::cwst.label__eg.grid.admin.local.asset.copy_tag
-#: 950.data.seed-values.sql:20947
+#: 950.data.seed-values.sql:20957
 msgid "Grid Config: admin.local.asset.copy_tag"
 msgstr ""
 
 # id::cwst.label__eg.grid.admin.local.permission.grp_penalty_threshold
-#: 950.data.seed-values.sql:20954
+#: 950.data.seed-values.sql:20964
 msgid "Grid Config: admin.local.permission.grp_penalty_threshold"
 msgstr ""
 
 # id::cwst.label__eg.grid.admin.local.config.non_cataloged_type
-#: 950.data.seed-values.sql:20961
+#: 950.data.seed-values.sql:20971
 msgid "Grid Config: admin.local.config.non_cataloged_type"
 msgstr ""
 
 # id::cpt.label__1
-#: 950.data.seed-values.sql:20973
+#: 950.data.seed-values.sql:20983
 msgid "Address Label"
 msgstr ""
 
 # id::cpt.label__2
-#: 950.data.seed-values.sql:20999
+#: 950.data.seed-values.sql:21009
 msgid "Holds for Bib Record"
 msgstr ""
 
 # id::cpt.label__3
-#: 950.data.seed-values.sql:21052
+#: 950.data.seed-values.sql:21062
 msgid "Booking capture slip"
 msgstr ""
 
 # id::cwst.label__booking.manage
-#: 950.data.seed-values.sql:21092
+#: 950.data.seed-values.sql:21102
 msgid "Grid Config: Booking Manage Reservations"
 msgstr ""
 
 # id::cwst.label__booking.pickup.ready
-#: 950.data.seed-values.sql:21098
+#: 950.data.seed-values.sql:21108
 msgid "Grid Config: Booking Ready to pick up grid"
 msgstr ""
 
 # id::cwst.label__booking.pickup.picked_up
-#: 950.data.seed-values.sql:21104
+#: 950.data.seed-values.sql:21114
 msgid "Grid Config: Booking Already Picked Up grid"
 msgstr ""
 
 # id::cwst.label__booking.return.patron.picked_up
-#: 950.data.seed-values.sql:21110
+#: 950.data.seed-values.sql:21120
 msgid "Grid Config: Booking Return Patron tab Already Picked Up grid"
 msgstr ""
 
 # id::cwst.label__booking.return.patron.returned
-#: 950.data.seed-values.sql:21116
+#: 950.data.seed-values.sql:21126
 msgid "Grid Config: Booking Return Patron tab Returned Today grid"
 msgstr ""
 
 # id::cwst.label__booking.return.resourcce.picked_up
-#: 950.data.seed-values.sql:21122
+#: 950.data.seed-values.sql:21132
 msgid "Grid Config: Booking Return Resource tab Already Picked Up grid"
 msgstr ""
 
 # id::cwst.label__booking.return.resource.returned
-#: 950.data.seed-values.sql:21128
+#: 950.data.seed-values.sql:21138
 msgid "Grid Config: Booking Return Resource tab Returned Today grid"
 msgstr ""
 
 # id::cwst.label__booking.manage
-#: 950.data.seed-values.sql:21134
+#: 950.data.seed-values.sql:21144
 msgid "Grid Config: Booking Captured Reservations"
 msgstr ""
 
 # id::cwst.label__booking.pull_list
-#: 950.data.seed-values.sql:21140
+#: 950.data.seed-values.sql:21150
 msgid "Grid Config: Booking Pull List"
 msgstr ""
 
 # id::cwst.label__booking.manage.selected_org_family
-#: 950.data.seed-values.sql:21146
+#: 950.data.seed-values.sql:21156
 msgid "Sticky setting for pickup ou family in Manage Reservations screen"
 msgstr ""
 
 # id::cwst.label__booking.return.tab
-#: 950.data.seed-values.sql:21152
+#: 950.data.seed-values.sql:21162
 msgid "Sticky setting for tab in Booking Return"
 msgstr ""
 
 # id::cwst.label__booking.create.granularity
-#: 950.data.seed-values.sql:21158
+#: 950.data.seed-values.sql:21168
 msgid "Sticky setting for granularity combobox in Booking Create"
 msgstr ""
 
 # id::cwst.label__booking.create.multiday
-#: 950.data.seed-values.sql:21164
+#: 950.data.seed-values.sql:21174
 msgid "Default to creating multiday booking reservations"
 msgstr ""
 
 # id::cwst.label__booking.pickup.ready.only_show_captured
-#: 950.data.seed-values.sql:21170
+#: 950.data.seed-values.sql:21180
 msgid ""
 "Include only resources that have been captured in the Ready grid in the "
 "Pickup screen"
 msgstr ""
 
 # id::cwst.label__eg.grid.circ.patron.xact_details_details_bills
-#: 950.data.seed-values.sql:21176
+#: 950.data.seed-values.sql:21186
 msgid "Grid Config: circ.patron.xact_details_details_bills"
 msgstr ""
 
 # id::cwst.label__eg.grid.circ.patron.xact_details_details_payments
-#: 950.data.seed-values.sql:21182
+#: 950.data.seed-values.sql:21192
 msgid "Grid Config: circ.patron.xact_details_details_payments"
 msgstr ""
 
 # id::cwst.label__eg.hatch.enable.printing
-#: 950.data.seed-values.sql:21191
+#: 950.data.seed-values.sql:21201
 msgid "Use Hatch for printing"
 msgstr ""
 
 # id::acmr.name__1
-#: 950.data.seed-values.sql:21204
+#: 950.data.seed-values.sql:21214
 msgid "Instructor"
 msgstr ""
 
 # id::acmr.name__2
-#: 950.data.seed-values.sql:21205
+#: 950.data.seed-values.sql:21215
 msgid "Teaching assistant"
 msgstr ""
 
 # id::acmr.name__3
-#: 950.data.seed-values.sql:21206
+#: 950.data.seed-values.sql:21216
 msgid "Student"
 msgstr ""
 
 # id::cwst.label__eg.catalog.results.count
-#: 950.data.seed-values.sql:21214
+#: 950.data.seed-values.sql:21224
 msgid "Catalog Results Page Size"
 msgstr ""
 
 # id::cgf.label__history.money.age_with_circs
-#: 950.data.seed-values.sql:21226
+#: 950.data.seed-values.sql:21236
 msgid "Age billings and payments when circulations are aged."
 msgstr ""
 
 # id::cgf.label__history.money.retention_age
-#: 950.data.seed-values.sql:21235
+#: 950.data.seed-values.sql:21245
 msgid ""
 "Age billings and payments whose transactions were completed this long ago.  "
 "For circulation transactions, this setting is superseded by the "
@@ -19010,171 +19010,171 @@ msgid ""
 msgstr ""
 
 # id::cwst.label__eg.orgselect.cat.catalog.wide_holds
-#: 950.data.seed-values.sql:21247
+#: 950.data.seed-values.sql:21257
 msgid "Default org unit for catalog holds org unit selector"
 msgstr ""
 
 # id::cwst.label__eg.orgselect.patron.search
-#: 950.data.seed-values.sql:21254
+#: 950.data.seed-values.sql:21264
 msgid "Default org unit for patron search"
 msgstr ""
 
 # id::cwst.label__eg.orgselect.hopeless.wide_holds
-#: 950.data.seed-values.sql:21261
+#: 950.data.seed-values.sql:21271
 msgid "Default org unit for hopeless holds interface"
 msgstr ""
 
 # id::cwst.label__eg.grid.cat.authority.browse
-#: 950.data.seed-values.sql:21268
+#: 950.data.seed-values.sql:21278
 msgid "Grid Config: eg.grid.cat.authority.browse"
 msgstr ""
 
 # id::cwst.label__eg.grid.cat.authority.manage.bibs
-#: 950.data.seed-values.sql:21274
+#: 950.data.seed-values.sql:21284
 msgid "Grid Config: eg.grid.cat.authority.manage.bibs"
 msgstr ""
 
 # id::cwst.label__eg.acq.search.default.lineitems
-#: 950.data.seed-values.sql:21284
+#: 950.data.seed-values.sql:21294
 msgid "Acquisitions Default Search: Lineitems"
 msgstr ""
 
 # id::cwst.label__eg.acq.search.default.purchaseorders
-#: 950.data.seed-values.sql:21290
+#: 950.data.seed-values.sql:21300
 msgid "Acquisitions Default Search: Purchase Orders"
 msgstr ""
 
 # id::cwst.label__eg.acq.search.default.invoices
-#: 950.data.seed-values.sql:21296
+#: 950.data.seed-values.sql:21306
 msgid "Acquisitions Default Search: Invoices"
 msgstr ""
 
 # id::cwst.label__eg.acq.search.default.selectionlists
-#: 950.data.seed-values.sql:21302
+#: 950.data.seed-values.sql:21312
 msgid "Acquisitions Default Search: Selection Lists"
 msgstr ""
 
 # id::cwst.label__eg.acq.search.lineitems.run_immediately
-#: 950.data.seed-values.sql:21312
+#: 950.data.seed-values.sql:21322
 msgid "Acquisitions Search: Immediately Search Lineitems"
 msgstr ""
 
 # id::cwst.label__eg.acq.search.purchaseorders.run_immediately
-#: 950.data.seed-values.sql:21318
+#: 950.data.seed-values.sql:21328
 msgid "Acquisitions Search: Immediately Search Purchase Orders"
 msgstr ""
 
 # id::cwst.label__eg.acq.search.invoices.run_immediately
-#: 950.data.seed-values.sql:21324
+#: 950.data.seed-values.sql:21334
 msgid "Acquisitions Search: Immediately Search Invoices"
 msgstr ""
 
 # id::cwst.label__eg.acq.search.selectionlists.run_immediately
-#: 950.data.seed-values.sql:21330
+#: 950.data.seed-values.sql:21340
 msgid "Acquisitions Search: Immediately Search Selection Lists"
 msgstr ""
 
 # id::cwst.label__eg.grid.acq.search.lineitems
-#: 950.data.seed-values.sql:21340
+#: 950.data.seed-values.sql:21350
 msgid "Grid Config: acq.search.lineitems"
 msgstr ""
 
 # id::cwst.label__eg.grid.acq.search.purchaseorders
-#: 950.data.seed-values.sql:21346
+#: 950.data.seed-values.sql:21356
 msgid "Grid Config: acq.search.purchaseorders"
 msgstr ""
 
 # id::cwst.label__eg.grid.acq.search.selectionlists
-#: 950.data.seed-values.sql:21352
+#: 950.data.seed-values.sql:21362
 msgid "Grid Config: acq.search.selectionlists"
 msgstr ""
 
 # id::cwst.label__eg.grid.acq.search.invoices
-#: 950.data.seed-values.sql:21358
+#: 950.data.seed-values.sql:21368
 msgid "Grid Config: acq.search.invoices"
 msgstr ""
 
 # id::cwst.label__eg.grid.acq.provider.addresses
-#: 950.data.seed-values.sql:21372
+#: 950.data.seed-values.sql:21382
 msgid "Grid Config: acq.provider.addresses"
 msgstr ""
 
 # id::cwst.label__eg.grid.acq.provider.attributes
-#: 950.data.seed-values.sql:21378
+#: 950.data.seed-values.sql:21388
 msgid "Grid Config: acq.provider.attributes"
 msgstr ""
 
 # id::cwst.label__eg.grid.acq.provider.contact.addresses
-#: 950.data.seed-values.sql:21384
+#: 950.data.seed-values.sql:21394
 msgid "Grid Config: acq.provider.contact.addresses"
 msgstr ""
 
 # id::cwst.label__eg.grid.acq.provider.contacts
-#: 950.data.seed-values.sql:21390
+#: 950.data.seed-values.sql:21400
 msgid "Grid Config: acq.provider.contacts"
 msgstr ""
 
 # id::cwst.label__eg.grid.acq.provider.edi_accounts
-#: 950.data.seed-values.sql:21396
+#: 950.data.seed-values.sql:21406
 msgid "Grid Config: acq.provider.edi_accounts"
 msgstr ""
 
 # id::cwst.label__eg.grid.acq.provider.edi_messages
-#: 950.data.seed-values.sql:21402
+#: 950.data.seed-values.sql:21412
 msgid "Grid Config: acq.provider.edi_messages"
 msgstr ""
 
 # id::cwst.label__eg.grid.acq.provider.holdings
-#: 950.data.seed-values.sql:21408
+#: 950.data.seed-values.sql:21418
 msgid "Grid Config: acq.provider.holdings"
 msgstr ""
 
 # id::cwst.label__eg.grid.acq.provider.invoices
-#: 950.data.seed-values.sql:21414
+#: 950.data.seed-values.sql:21424
 msgid "Grid Config: acq.provider.invoices"
 msgstr ""
 
 # id::cwst.label__eg.grid.acq.provider.purchaseorders
-#: 950.data.seed-values.sql:21420
+#: 950.data.seed-values.sql:21430
 msgid "Grid Config: acq.provider.purchaseorders"
 msgstr ""
 
 # id::cwst.label__eg.grid.acq.provider.search.results
-#: 950.data.seed-values.sql:21426
+#: 950.data.seed-values.sql:21436
 msgid "Grid Config: acq.provider.search.results"
 msgstr ""
 
 # id::coust.label__opac.analytics.matomo_id
-#: 950.data.seed-values.sql:21436
+#: 950.data.seed-values.sql:21446
 msgid "Matomo Site ID"
 msgstr ""
 
 # id::coust.description__opac.analytics.matomo_id
-#: 950.data.seed-values.sql:21440
+#: 950.data.seed-values.sql:21450
 msgid ""
 "The Site ID for your Evergreen catalog. You can find the Site ID in the "
 "tracking code you got from Matomo."
 msgstr ""
 
 # id::coust.label__opac.analytics.matomo_url
-#: 950.data.seed-values.sql:21446
+#: 950.data.seed-values.sql:21456
 msgid "Matomo URL"
 msgstr ""
 
 # id::coust.description__opac.analytics.matomo_url
-#: 950.data.seed-values.sql:21449
+#: 950.data.seed-values.sql:21459
 msgid ""
 "The URL for your the Matomo software. Be sure to include the trailing slash,"
 " e.g. https://my-evergreen.matomo.cloud/"
 msgstr ""
 
 # id::coust.label__circ.curbside
-#: 950.data.seed-values.sql:21458
+#: 950.data.seed-values.sql:21468
 msgid "Enable curbside pickup functionality at library."
 msgstr ""
 
 # id::coust.description__circ.curbside
-#: 950.data.seed-values.sql:21462
+#: 950.data.seed-values.sql:21472
 msgid ""
 "When set to TRUE, enable staff and public interfaces to schedule curbside "
 "pickup of holds that become available for pickup."
@@ -19182,53 +19182,53 @@ msgstr ""
 
 # id::coust.label__circ.curbside.granularity
 # id::coust.description__circ.curbside.granularity
-#: 950.data.seed-values.sql:21471 950.data.seed-values.sql:21475
+#: 950.data.seed-values.sql:21481 950.data.seed-values.sql:21485
 msgid "Time interval between curbside appointments"
 msgstr ""
 
 # id::coust.label__circ.curbside.max_concurrent
 # id::coust.description__circ.curbside.max_concurrent
-#: 950.data.seed-values.sql:21484 950.data.seed-values.sql:21488
+#: 950.data.seed-values.sql:21494 950.data.seed-values.sql:21498
 msgid ""
 "Maximum number of patrons that may select a particular curbside pickup time"
 msgstr ""
 
 # id::coust.label__circ.curbside.disable_patron_input
-#: 950.data.seed-values.sql:21497
+#: 950.data.seed-values.sql:21507
 msgid "Disable patron modification of curbside appointments in public catalog"
 msgstr ""
 
 # id::coust.description__circ.curbside.disable_patron_input
-#: 950.data.seed-values.sql:21501
+#: 950.data.seed-values.sql:21511
 msgid ""
 "When set to TRUE, patrons cannot use the My Account interface to select "
 "curbside pickup times"
 msgstr ""
 
 # id::ath.description__hold.offer_curbside
-#: 950.data.seed-values.sql:21519
+#: 950.data.seed-values.sql:21529
 msgid "Hook used to trigger the notification of an offer of curbside pickup"
 msgstr ""
 
 # id::ath.description__hold.confirm_curbside
-#: 950.data.seed-values.sql:21532
+#: 950.data.seed-values.sql:21542
 msgid ""
 "Hook used to trigger the notification of the creation or update of a "
 "curbside pickup appointment with an arrival URL"
 msgstr ""
 
 # id::cgf.label__opac.use_geolocation
-#: 950.data.seed-values.sql:21556
+#: 950.data.seed-values.sql:21566
 msgid "Offer use of geographic location services in the public catalog"
 msgstr ""
 
 # id::coust.label__opac.holdings_sort_by_geographic_proximity
-#: 950.data.seed-values.sql:21566
+#: 950.data.seed-values.sql:21576
 msgid "Enable Holdings Sort by Geographic Proximity"
 msgstr ""
 
 # id::coust.description__opac.holdings_sort_by_geographic_proximity
-#: 950.data.seed-values.sql:21570
+#: 950.data.seed-values.sql:21580
 msgid ""
 "When set to TRUE, will cause the record details page to display the controls"
 " for sorting holdings by geographic proximity. This also depends on the "
@@ -19236,31 +19236,31 @@ msgid ""
 msgstr ""
 
 # id::coust.label__opac.geographic_proximity_in_miles
-#: 950.data.seed-values.sql:21579
+#: 950.data.seed-values.sql:21589
 msgid "Show Geographic Proximity in Miles"
 msgstr ""
 
 # id::coust.description__opac.geographic_proximity_in_miles
-#: 950.data.seed-values.sql:21583
+#: 950.data.seed-values.sql:21593
 msgid ""
 "When set to TRUE, will cause the record details page to show distances for "
 "geographic proximity in miles instead of kilometers."
 msgstr ""
 
 # id::coust.label__opac.geographic_location_service_for_address
-#: 950.data.seed-values.sql:21592
+#: 950.data.seed-values.sql:21602
 msgid "Geographic Location Service to use for Addresses"
 msgstr ""
 
 # id::coust.description__opac.geographic_location_service_for_address
-#: 950.data.seed-values.sql:21596
+#: 950.data.seed-values.sql:21606
 msgid ""
 "Specifies which geographic location service to use for converting address "
 "input to geographic coordinates."
 msgstr ""
 
 # id::cgf.label__opac.cover_upload_compression
-#: 950.data.seed-values.sql:21621
+#: 950.data.seed-values.sql:21631
 msgid ""
 "Cover image uploads are converted to PNG files with this compression, on a "
 "scale of 0 (no compression) to 9 (maximum compression), or -1 for the zlib "
@@ -19268,31 +19268,31 @@ msgid ""
 msgstr ""
 
 # id::coust.label__opac.cover_upload_max_file_size
-#: 950.data.seed-values.sql:21631
+#: 950.data.seed-values.sql:21641
 msgid ""
 "Maximum file size for uploaded cover image files (at time of upload, prior "
 "to rescaling)."
 msgstr ""
 
 # id::coust.description__opac.cover_upload_max_file_size
-#: 950.data.seed-values.sql:21635
+#: 950.data.seed-values.sql:21645
 msgid ""
 "The number of bytes to allow for a cover image upload.  If unset, defaults "
 "to 10737418240 (roughly 10GB)."
 msgstr ""
 
 # id::cgf.label__circ.holds.api_require_monographic_part_when_present
-#: 950.data.seed-values.sql:21648
+#: 950.data.seed-values.sql:21658
 msgid "Holds: Require Monographic Part When Present for hold check."
 msgstr ""
 
 # id::coust.label__circ.holds.ui_require_monographic_part_when_present
-#: 950.data.seed-values.sql:21658
+#: 950.data.seed-values.sql:21668
 msgid "Require Monographic Part when Present"
 msgstr ""
 
 # id::coust.description__circ.holds.ui_require_monographic_part_when_present
-#: 950.data.seed-values.sql:21662
+#: 950.data.seed-values.sql:21672
 msgid ""
 "Normally the selection of a monographic part during hold placement is "
 "optional if there is at least one copy on the bib without a monographic "
@@ -19301,166 +19301,166 @@ msgid ""
 msgstr ""
 
 # id::cwst.label__eg.staffcat.exclude_electronic
-#: 950.data.seed-values.sql:21902
+#: 950.data.seed-values.sql:21912
 msgid "Staff Catalog \"Exclude Electronic Resources\" Option"
 msgstr ""
 
 # id::cwst.label__eg.staffcat.course_materials_selector
-#: 950.data.seed-values.sql:21909
+#: 950.data.seed-values.sql:21919
 msgid "Add the \"Reserves material\" dropdown to refine search results"
 msgstr ""
 
 # id::cwst.label__eg.orgselect.catalog.holdings
-#: 950.data.seed-values.sql:21919
+#: 950.data.seed-values.sql:21929
 msgid "Default org unit for catalog holdings tab"
 msgstr ""
 
 # id::cwst.label__eg.catalog.search.form.open
-#: 950.data.seed-values.sql:21929
+#: 950.data.seed-values.sql:21939
 msgid "Catalog Search Form Visibility Sticky Setting"
 msgstr ""
 
 # id::cwst.label__eg.grid.catalog.record.copies
-#: 950.data.seed-values.sql:21939
+#: 950.data.seed-values.sql:21949
 msgid "Grid Config: eg.grid.catalog.record.copies"
 msgstr ""
 
 # id::cwst.label__eg.grid.catalog.record.notes
-#: 950.data.seed-values.sql:21948
+#: 950.data.seed-values.sql:21958
 msgid "Grid Config: eg.grid.catalog.record.notes"
 msgstr ""
 
 # id::cgf.label__auth.block_expired_staff_login
-#: 950.data.seed-values.sql:21960
+#: 950.data.seed-values.sql:21970
 msgid ""
 "Block the ability of expired user with the STAFF_LOGIN permission to log "
 "into Evergreen."
 msgstr ""
 
 # id::cgf.label__search.max_suggestion_search_terms
-#: 950.data.seed-values.sql:21972
+#: 950.data.seed-values.sql:21982
 msgid "Limit suggestion generation to searches with this many terms or less"
 msgstr ""
 
 # id::cwst.label__eg.staff.catalog.results.show_more
-#: 950.data.seed-values.sql:21986
+#: 950.data.seed-values.sql:21996
 msgid "Show more details in Angular staff catalog"
 msgstr ""
 
 # id::cwst.label__eg.grid.item.event_grid
-#: 950.data.seed-values.sql:21997
+#: 950.data.seed-values.sql:22007
 msgid "Grid Config: item.event_grid"
 msgstr ""
 
 # id::cwst.label__eg.grid.patron.event_grid
-#: 950.data.seed-values.sql:22003
+#: 950.data.seed-values.sql:22013
 msgid "Grid Config: patron.event_grid"
 msgstr ""
 
 # id::coust.label__credit.processor.stripe.currency
-#: 950.data.seed-values.sql:22014
+#: 950.data.seed-values.sql:22024
 msgid "Stripe ISO 4217 currency code"
 msgstr ""
 
 # id::coust.description__credit.processor.stripe.currency
-#: 950.data.seed-values.sql:22020
+#: 950.data.seed-values.sql:22030
 msgid ""
 "Use an all lowercase version of a Stripe-supported ISO 4217 currency code.  "
 "Defaults to \"usd\""
 msgstr ""
 
 # id::cwst.label__eg.grid.acq.fund.fund_debit
-#: 950.data.seed-values.sql:22033
+#: 950.data.seed-values.sql:22043
 msgid "Grid Config: eg.grid.acq.fund.fund_debit"
 msgstr ""
 
 # id::cwst.label__eg.grid.acq.fund.fund_transfer
-#: 950.data.seed-values.sql:22040
+#: 950.data.seed-values.sql:22050
 msgid "Grid Config: eg.grid.acq.fund.fund_transfer"
 msgstr ""
 
 # id::cwst.label__eg.grid.acq.fund.fund_allocation
-#: 950.data.seed-values.sql:22047
+#: 950.data.seed-values.sql:22057
 msgid "Grid Config: eg.grid.acq.fund.fund_allocation"
 msgstr ""
 
 # id::cwst.label__eg.grid.admin.acq.fund
-#: 950.data.seed-values.sql:22054
+#: 950.data.seed-values.sql:22064
 msgid "Grid Config: eg.grid.admin.acq.fund"
 msgstr ""
 
 # id::cwst.label__eg.grid.admin.acq.funding_source
-#: 950.data.seed-values.sql:22061
+#: 950.data.seed-values.sql:22071
 msgid "Grid Config: eg.grid.admin.acq.funding_source"
 msgstr ""
 
 # id::cwst.label__eg.grid.acq.funding_source.fund_allocation
-#: 950.data.seed-values.sql:22068
+#: 950.data.seed-values.sql:22078
 msgid "Grid Config: eg.grid.acq.funding_source.fund_allocation"
 msgstr ""
 
 # id::cwst.label__eg.grid.acq.funding_source.credit
-#: 950.data.seed-values.sql:22075
+#: 950.data.seed-values.sql:22085
 msgid "Grid Config: eg.grid.acq.funding_source.credit"
 msgstr ""
 
 # id::cwst.label__eg.grid.admin.acq.fiscal_calendar
-#: 950.data.seed-values.sql:22082
+#: 950.data.seed-values.sql:22092
 msgid "Grid Config: eg.grid.admin.acq.fiscal_calendar"
 msgstr ""
 
 # id::cwst.label__eg.grid.admin.acq.fiscal_year
-#: 950.data.seed-values.sql:22089
+#: 950.data.seed-values.sql:22099
 msgid "Grid Config: eg.grid.admin.acq.fiscal_year"
 msgstr ""
 
 # id::cwst.label__eg.grid.acq.lineitem.history
-#: 950.data.seed-values.sql:22099
+#: 950.data.seed-values.sql:22109
 msgid "Grid Config: Acq Lineitem History"
 msgstr ""
 
 # id::cwst.label__eg.grid.acq.po.history
-#: 950.data.seed-values.sql:22106
+#: 950.data.seed-values.sql:22116
 msgid "Grid Config: Acq PO History"
 msgstr ""
 
 # id::cwst.label__eg.grid.acq.po.edi_messages
-#: 950.data.seed-values.sql:22113
+#: 950.data.seed-values.sql:22123
 msgid "Grid Config: Acq PO EDI Messages"
 msgstr ""
 
 # id::cwst.label__acq.lineitem.page_size
-#: 950.data.seed-values.sql:22120
+#: 950.data.seed-values.sql:22130
 msgid "ACQ Lineitem List Page Size"
 msgstr ""
 
 # id::cwst.label__ui.staff.angular_acq_search.enabled
-#: 950.data.seed-values.sql:22127
+#: 950.data.seed-values.sql:22137
 msgid "Enable Experimental ACQ Selection/Purchase Search Interface Links"
 msgstr ""
 
 # id::cwst.label__eg.cat.volcopy.defaults
-#: 950.data.seed-values.sql:22137
+#: 950.data.seed-values.sql:22147
 msgid "Holdings Editor Default Values and Visibility"
 msgstr ""
 
 # id::cwst.label__acq.lineitem.sort_order
-#: 950.data.seed-values.sql:22147
+#: 950.data.seed-values.sql:22157
 msgid "ACQ Lineitem List Sort Order"
 msgstr ""
 
 # id::cwst.label__ui.staff.acq.show_deprecated_links
-#: 950.data.seed-values.sql:22157
+#: 950.data.seed-values.sql:22167
 msgid "Display Links to Deprecated Acquisitions Interfaces"
 msgstr ""
 
 # id::coust.label__circ.primary_item_value_field
-#: 950.data.seed-values.sql:22169
+#: 950.data.seed-values.sql:22179
 msgid "Use Item Price or Cost as Primary Item Value"
 msgstr ""
 
 # id::coust.description__circ.primary_item_value_field
-#: 950.data.seed-values.sql:22175
+#: 950.data.seed-values.sql:22185
 msgid ""
 "Expects \"price\" or \"cost\" and defaults to price.  This refers to the "
 "corresponding field on the item record and gets used in such contexts as "
@@ -19469,12 +19469,12 @@ msgid ""
 msgstr ""
 
 # id::coust.label__circ.secondary_item_value_field
-#: 950.data.seed-values.sql:22189
+#: 950.data.seed-values.sql:22199
 msgid "Use Item Price or Cost as Backup Item Value"
 msgstr ""
 
 # id::coust.description__circ.secondary_item_value_field
-#: 950.data.seed-values.sql:22195
+#: 950.data.seed-values.sql:22205
 msgid ""
 "Expects \"price\" or \"cost\", but defaults to neither.  This refers to the "
 "corresponding field on the item record and is used as a second-pass fall-"
@@ -19483,206 +19483,206 @@ msgid ""
 msgstr ""
 
 # id::coust.label__eg.staffcat.search_filters
-#: 950.data.seed-values.sql:22208
+#: 950.data.seed-values.sql:22218
 msgid "Staff Catalog Search Filters"
 msgstr ""
 
 # id::coust.description__eg.staffcat.search_filters
-#: 950.data.seed-values.sql:22212
+#: 950.data.seed-values.sql:22222
 msgid ""
 "Array of advanced search filters to display, e.g. "
 "[\"item_lang\",\"audience\",\"lit_form\"]"
 msgstr ""
 
 # id::cpt.label__4
-#: 950.data.seed-values.sql:22226
+#: 950.data.seed-values.sql:22236
 msgid "Hold Pull List "
 msgstr ""
 
 # id::cwst.label__circ.holds.pull_list
-#: 950.data.seed-values.sql:22274
+#: 950.data.seed-values.sql:22284
 msgid "Hold Pull List Grid Settings"
 msgstr ""
 
 # id::cwst.label__circ.holds.pull_list.prefetch
-#: 950.data.seed-values.sql:22281
+#: 950.data.seed-values.sql:22291
 msgid "Hold Pull List Prefetch Preference"
 msgstr ""
 
 # id::cwst.label__eg.grid.admin.local.container.carousel_org_unit
-#: 950.data.seed-values.sql:22291
+#: 950.data.seed-values.sql:22301
 msgid "Grid Config: eg.grid.admin.local.container.carousel_org_unit"
 msgstr ""
 
 # id::cwst.label__eg.grid.admin.container.carousel
-#: 950.data.seed-values.sql:22298
+#: 950.data.seed-values.sql:22308
 msgid "Grid Config: eg.grid.admin.container.carousel"
 msgstr ""
 
 # id::cwst.label__eg.grid.admin.server.config.carousel_type
-#: 950.data.seed-values.sql:22305
+#: 950.data.seed-values.sql:22315
 msgid "Grid Config: eg.grid.admin.server.config.carousel_type"
 msgstr ""
 
 # id::coust.label__circ.staff_placed_holds_default_to_ws_ou
-#: 950.data.seed-values.sql:22317
+#: 950.data.seed-values.sql:22327
 msgid "Workstation OU is the default for staff-placed holds"
 msgstr ""
 
 # id::coust.description__circ.staff_placed_holds_default_to_ws_ou
-#: 950.data.seed-values.sql:22323
+#: 950.data.seed-values.sql:22333
 msgid ""
 "For staff-placed holds, regardless of the patron preferred pickup location, "
 "the staff workstation OU is the default pickup location"
 msgstr ""
 
 # id::cwst.label__eg.grid.admin.local.triggers.atevdef
-#: 950.data.seed-values.sql:22335
+#: 950.data.seed-values.sql:22345
 msgid "Grid Config: eg.grid.admin.local.triggers.atevdef"
 msgstr ""
 
 # id::cwst.label__eg.grid.admin.local.triggers.atenv
-#: 950.data.seed-values.sql:22342
+#: 950.data.seed-values.sql:22352
 msgid "Grid Config: eg.grid.admin.local.triggers.atenv"
 msgstr ""
 
 # id::cwst.label__eg.grid.admin.local.triggers.atevparam
-#: 950.data.seed-values.sql:22349
+#: 950.data.seed-values.sql:22359
 msgid "Grid Config: eg.grid.admin.local.triggers.atevparam"
 msgstr ""
 
 # id::cwst.label__eg.grid.cat.bucket.batch_hold.view
-#: 950.data.seed-values.sql:22359
+#: 950.data.seed-values.sql:22369
 msgid "Grid Config: eg.grid.cat.bucket.batch_hold.view"
 msgstr ""
 
 # id::cwst.label__eg.grid.cat.bucket.batch_hold.pending
-#: 950.data.seed-values.sql:22366
+#: 950.data.seed-values.sql:22376
 msgid "Grid Config: eg.grid.cat.bucket.batch_hold.pending"
 msgstr ""
 
 # id::cwst.label__eg.grid.cat.bucket.batch_hold.events
-#: 950.data.seed-values.sql:22373
+#: 950.data.seed-values.sql:22383
 msgid "Grid Config: eg.grid.cat.bucket.batch_hold.events"
 msgstr ""
 
 # id::cwst.label__eg.grid.cat.bucket.batch_hold.list
-#: 950.data.seed-values.sql:22380
+#: 950.data.seed-values.sql:22390
 msgid "Grid Config: eg.grid.cat.bucket.batch_hold.list"
 msgstr ""
 
 # id::cusppet.label__link
-#: 950.data.seed-values.sql:22389
+#: 950.data.seed-values.sql:22399
 msgid "Link"
 msgstr ""
 
 # id::cusppet.label__menuitem
-#: 950.data.seed-values.sql:22390
+#: 950.data.seed-values.sql:22400
 msgid "Menu Item"
 msgstr ""
 
 # id::cusppet.label__text
-#: 950.data.seed-values.sql:22391
+#: 950.data.seed-values.sql:22401
 msgid "Text and/or HTML"
 msgstr ""
 
 # id::cusppet.label__header
-#: 950.data.seed-values.sql:22392
+#: 950.data.seed-values.sql:22402
 msgid "Header"
 msgstr ""
 
 # id::cusppet.label__catalogsearch
-#: 950.data.seed-values.sql:22393
+#: 950.data.seed-values.sql:22403
 msgid "Catalog Search Box"
 msgstr ""
 
 # id::cusppe.label__1
-#: 950.data.seed-values.sql:22398
+#: 950.data.seed-values.sql:22408
 msgid "Circulation and Patrons"
 msgstr ""
 
 # id::cusppe.label__2
-#: 950.data.seed-values.sql:22399
+#: 950.data.seed-values.sql:22409
 msgid "Check Out Items"
 msgstr ""
 
 # id::cusppe.label__3
-#: 950.data.seed-values.sql:22400
+#: 950.data.seed-values.sql:22410
 msgid "Check In Items"
 msgstr ""
 
 # id::cusppe.label__4
-#: 950.data.seed-values.sql:22401
+#: 950.data.seed-values.sql:22411
 msgid "Search For Patron By Name"
 msgstr ""
 
 # id::cusppe.label__5
-#: 950.data.seed-values.sql:22402
+#: 950.data.seed-values.sql:22412
 msgid "Item Search and Cataloging"
 msgstr ""
 
 # id::cusppe.label__6
-#: 950.data.seed-values.sql:22403
+#: 950.data.seed-values.sql:22413
 msgid "Search Catalog"
 msgstr ""
 
 # id::cusppe.label__7
-#: 950.data.seed-values.sql:22404
+#: 950.data.seed-values.sql:22414
 msgid "Record Buckets"
 msgstr ""
 
 # id::cusppe.label__8
-#: 950.data.seed-values.sql:22405
+#: 950.data.seed-values.sql:22415
 msgid "Item Buckets"
 msgstr ""
 
 # id::cusppe.label__9
-#: 950.data.seed-values.sql:22406
+#: 950.data.seed-values.sql:22416
 msgid "Administration"
 msgstr ""
 
 # id::cusppe.label__10
-#: 950.data.seed-values.sql:22407
+#: 950.data.seed-values.sql:22417
 msgid "Evergreen Documentation"
 msgstr ""
 
 # id::cusppe.label__11
-#: 950.data.seed-values.sql:22408
+#: 950.data.seed-values.sql:22418
 msgid "Workstation Administration"
 msgstr ""
 
 # id::cusppe.label__12
-#: 950.data.seed-values.sql:22409
+#: 950.data.seed-values.sql:22419
 msgid "Reports"
 msgstr ""
 
 # id::cwst.label__eg.grid.admin.config.ui_staff_portal_page_entry
-#: 950.data.seed-values.sql:22418
+#: 950.data.seed-values.sql:22428
 msgid "Grid Config: admin.config.ui_staff_portal_page_entry"
 msgstr ""
 
 # id::cwst.label__eg.orgselect.show_combined_names
-#: 950.data.seed-values.sql:22428
+#: 950.data.seed-values.sql:22438
 msgid "Library Selector Show Combined Names"
 msgstr ""
 
 # id::cwst.label__eg.grid.admin.local.negative_balances
-#: 950.data.seed-values.sql:22435
+#: 950.data.seed-values.sql:22445
 msgid "Patrons With Negative Balances Grid Settings"
 msgstr ""
 
 # id::cwst.label__eg.orgselect.admin.local.negative_balances
-#: 950.data.seed-values.sql:22442
+#: 950.data.seed-values.sql:22452
 msgid "Default org unit for patron negative balances interface"
 msgstr ""
 
 # id::coust.label__ui.staff.traditional_catalog.enabled
-#: 950.data.seed-values.sql:22453
+#: 950.data.seed-values.sql:22463
 msgid "GUI: Enable Traditional Staff Catalog"
 msgstr ""
 
 # id::coust.description__ui.staff.traditional_catalog.enabled
-#: 950.data.seed-values.sql:22458
+#: 950.data.seed-values.sql:22468
 msgid ""
 "Display an entry point in the browser client for the traditional staff "
 "catalog."
@@ -19690,206 +19690,206 @@ msgstr ""
 
 # id::coust.label__ui.staff.angular_circ.enabled
 # id::coust.description__ui.staff.angular_circ.enabled
-#: 950.data.seed-values.sql:22466 950.data.seed-values.sql:22471
+#: 950.data.seed-values.sql:22476 950.data.seed-values.sql:22481
 msgid "Enable Angular Circulation Menu"
 msgstr ""
 
 # id::cwst.label__eg.acq.picklist.upload.templates
-#: 950.data.seed-values.sql:22678
+#: 950.data.seed-values.sql:22688
 msgid "Picklist Upload Form Templates"
 msgstr ""
 
 # id::cwst.label__eg.grid.admin.local.cash_reports.desk_payments
-#: 950.data.seed-values.sql:23364
+#: 950.data.seed-values.sql:23374
 msgid "Grid Config: admin.local.cash_reports.desk_payments"
 msgstr ""
 
 # id::cwst.label__eg.grid.admin.local.cash_reports.user_payments
-#: 950.data.seed-values.sql:23371
+#: 950.data.seed-values.sql:23381
 msgid "Grid Config: admin.local.cash_reports.user_payments"
 msgstr ""
 
 # id::cgf.label__opac.max_concurrent_search.query
-#: 950.data.seed-values.sql:23383
+#: 950.data.seed-values.sql:23393
 msgid "Limit the number of global concurrent matching search queries"
 msgstr ""
 
 # id::cgf.label__opac.max_concurrent_search.ip
-#: 950.data.seed-values.sql:23392
+#: 950.data.seed-values.sql:23402
 msgid "Limit the number of global concurrent searches per client IP address"
 msgstr ""
 
 # id::cgf.label__opac.login_redirect_domains
-#: 950.data.seed-values.sql:23401
+#: 950.data.seed-values.sql:23411
 msgid ""
 "Restrict post-login redirection to local URLs, or those that match the "
 "supplied comma-separated list of foreign domains or host names."
 msgstr ""
 
 # id::cgf.label__ingest.queued.max_threads
-#: 950.data.seed-values.sql:23410
+#: 950.data.seed-values.sql:23420
 msgid ""
 "Queued Ingest: Maximum number of database workers allowed for queued ingest "
 "processes"
 msgstr ""
 
 # id::cgf.label__ingest.queued.abort_on_error
-#: 950.data.seed-values.sql:23417
+#: 950.data.seed-values.sql:23427
 msgid ""
 "Queued Ingest: Abort transaction on ingest error rather than simply logging "
 "an error"
 msgstr ""
 
 # id::cgf.label__ingest.queued.authority.propagate
-#: 950.data.seed-values.sql:23424
+#: 950.data.seed-values.sql:23434
 msgid ""
 "Queued Ingest: Queue all bib record updates on authority change propagation,"
 " even if bib queuing is not generally enabled"
 msgstr ""
 
 # id::cgf.label__ingest.queued.all
-#: 950.data.seed-values.sql:23431
+#: 950.data.seed-values.sql:23441
 msgid ""
 "Queued Ingest: Use Queued Ingest for all bib and authority record ingest"
 msgstr ""
 
 # id::cgf.label__ingest.queued.biblio.all
-#: 950.data.seed-values.sql:23438
+#: 950.data.seed-values.sql:23448
 msgid "Queued Ingest: Use Queued Ingest for all bib record ingest"
 msgstr ""
 
 # id::cgf.label__ingest.queued.authority.all
-#: 950.data.seed-values.sql:23445
+#: 950.data.seed-values.sql:23455
 msgid "Queued Ingest: Use Queued Ingest for all authority record ingest"
 msgstr ""
 
 # id::cgf.label__ingest.queued.biblio.insert.marc_edit_inline
-#: 950.data.seed-values.sql:23452
+#: 950.data.seed-values.sql:23462
 msgid ""
 "Queued Ingest: Do NOT use Queued Ingest when creating a new bib, or "
 "undeleting a bib, via the MARC editor"
 msgstr ""
 
 # id::cgf.label__ingest.queued.biblio.insert
-#: 950.data.seed-values.sql:23459
+#: 950.data.seed-values.sql:23469
 msgid ""
 "Queued Ingest: Use Queued Ingest for bib record ingest on insert and "
 "undelete"
 msgstr ""
 
 # id::cgf.label__ingest.queued.authority.insert
-#: 950.data.seed-values.sql:23466
+#: 950.data.seed-values.sql:23476
 msgid ""
 "Queued Ingest: Use Queued Ingest for authority record ingest on insert and "
 "undelete"
 msgstr ""
 
 # id::cgf.label__ingest.queued.biblio.update.marc_edit_inline
-#: 950.data.seed-values.sql:23473
+#: 950.data.seed-values.sql:23483
 msgid ""
 "Queued Ingest: Do NOT Use Queued Ingest when editing bib records via the "
 "MARC Editor"
 msgstr ""
 
 # id::cgf.label__ingest.queued.biblio.update
-#: 950.data.seed-values.sql:23480
+#: 950.data.seed-values.sql:23490
 msgid "Queued Ingest: Use Queued Ingest for bib record ingest on update"
 msgstr ""
 
 # id::cgf.label__ingest.queued.authority.update
-#: 950.data.seed-values.sql:23487
+#: 950.data.seed-values.sql:23497
 msgid "Queued Ingest: Use Queued Ingest for authority record ingest on update"
 msgstr ""
 
 # id::cgf.label__ingest.queued.biblio.delete
-#: 950.data.seed-values.sql:23494
+#: 950.data.seed-values.sql:23504
 msgid "Queued Ingest: Use Queued Ingest for bib record ingest on delete"
 msgstr ""
 
 # id::cgf.label__ingest.queued.authority.delete
-#: 950.data.seed-values.sql:23501
+#: 950.data.seed-values.sql:23511
 msgid "Queued Ingest: Use Queued Ingest for authority record ingest on delete"
 msgstr ""
 
 # id::coust.label__circ.custom_penalty_override.PATRON_EXCEEDS_FINES
-#: 950.data.seed-values.sql:23513
+#: 950.data.seed-values.sql:23523
 msgid "Custom PATRON_EXCEEDS_FINES penalty"
 msgstr ""
 
 # id::coust.description__circ.custom_penalty_override.PATRON_EXCEEDS_FINES
-#: 950.data.seed-values.sql:23517
+#: 950.data.seed-values.sql:23527
 msgid ""
 "Specifies a non-default standing penalty to apply to patrons that exceed the"
 " max-fine threshold for their group."
 msgstr ""
 
 # id::coust.label__circ.custom_penalty_override.PATRON_EXCEEDS_OVERDUE_COUNT
-#: 950.data.seed-values.sql:23522
+#: 950.data.seed-values.sql:23532
 msgid "Custom PATRON_EXCEEDS_OVERDUE_COUNT penalty"
 msgstr ""
 
 # id::coust.description__circ.custom_penalty_override.PATRON_EXCEEDS_OVERDUE_COUNT
-#: 950.data.seed-values.sql:23526
+#: 950.data.seed-values.sql:23536
 msgid ""
 "Specifies a non-default standing penalty to apply to patrons that exceed the"
 " overdue count threshold for their group."
 msgstr ""
 
 # id::coust.label__circ.custom_penalty_override.PATRON_EXCEEDS_CHECKOUT_COUNT
-#: 950.data.seed-values.sql:23531
+#: 950.data.seed-values.sql:23541
 msgid "Custom PATRON_EXCEEDS_CHECKOUT_COUNT penalty"
 msgstr ""
 
 # id::coust.description__circ.custom_penalty_override.PATRON_EXCEEDS_CHECKOUT_COUNT
-#: 950.data.seed-values.sql:23535
+#: 950.data.seed-values.sql:23545
 msgid ""
 "Specifies a non-default standing penalty to apply to patrons that exceed the"
 " checkout count threshold for their group."
 msgstr ""
 
 # id::coust.label__circ.custom_penalty_override.PATRON_EXCEEDS_COLLECTIONS_WARNING
-#: 950.data.seed-values.sql:23540
+#: 950.data.seed-values.sql:23550
 msgid "Custom PATRON_EXCEEDS_COLLECTIONS_WARNING penalty"
 msgstr ""
 
 # id::coust.description__circ.custom_penalty_override.PATRON_EXCEEDS_COLLECTIONS_WARNING
-#: 950.data.seed-values.sql:23544
+#: 950.data.seed-values.sql:23554
 msgid ""
 "Specifies a non-default standing penalty to apply to patrons that exceed the"
 " collections fine warning threshold for their group."
 msgstr ""
 
 # id::coust.label__circ.custom_penalty_override.PATRON_EXCEEDS_LOST_COUNT
-#: 950.data.seed-values.sql:23549
+#: 950.data.seed-values.sql:23559
 msgid "Custom PATRON_EXCEEDS_LOST_COUNT penalty"
 msgstr ""
 
 # id::coust.description__circ.custom_penalty_override.PATRON_EXCEEDS_LOST_COUNT
-#: 950.data.seed-values.sql:23553
+#: 950.data.seed-values.sql:23563
 msgid ""
 "Specifies a non-default standing penalty to apply to patrons that exceed the"
 " lost item count threshold for their group."
 msgstr ""
 
 # id::coust.label__circ.custom_penalty_override.PATRON_EXCEEDS_LONGOVERDUE_COUNT
-#: 950.data.seed-values.sql:23558
+#: 950.data.seed-values.sql:23568
 msgid "Custom PATRON_EXCEEDS_LONGOVERDUE_COUNT penalty"
 msgstr ""
 
 # id::coust.description__circ.custom_penalty_override.PATRON_EXCEEDS_LONGOVERDUE_COUNT
-#: 950.data.seed-values.sql:23562
+#: 950.data.seed-values.sql:23572
 msgid ""
 "Specifies a non-default standing penalty to apply to patrons that exceed the"
 " long-overdue item count threshold for their group."
 msgstr ""
 
 # id::coust.label__circ.custom_penalty_override.PATRON_IN_COLLECTIONS
-#: 950.data.seed-values.sql:23567
+#: 950.data.seed-values.sql:23577
 msgid "Custom PATRON_IN_COLLECTIONS penalty"
 msgstr ""
 
 # id::coust.description__circ.custom_penalty_override.PATRON_IN_COLLECTIONS
-#: 950.data.seed-values.sql:23571
+#: 950.data.seed-values.sql:23581
 msgid ""
 "Specifies a non-default standing penalty that may have been applied to "
 "patrons that have been placed into collections and that should be "
@@ -19899,42 +19899,42 @@ msgid ""
 msgstr ""
 
 # id::cwst.label__eg.holds.pull_list_filters
-#: 950.data.seed-values.sql:23580
+#: 950.data.seed-values.sql:23590
 msgid ""
 "Holds pull list filter values for pickup library and shelving locations."
 msgstr ""
 
 # id::coust.label__staff.added_content.novelistselect.version
-#: 950.data.seed-values.sql:23592
+#: 950.data.seed-values.sql:23602
 msgid "Staff Client added content: NoveList Select API version"
 msgstr ""
 
 # id::coust.description__staff.added_content.novelistselect.version
-#: 950.data.seed-values.sql:23595
+#: 950.data.seed-values.sql:23605
 msgid ""
 "API version used to provide NoveList Select added content in the Staff "
 "Client"
 msgstr ""
 
 # id::coust.label__staff.added_content.novelistselect.profile
-#: 950.data.seed-values.sql:23606
+#: 950.data.seed-values.sql:23616
 msgid "Staff Client added content: NoveList Select profile/user"
 msgstr ""
 
 # id::coust.description__staff.added_content.novelistselect.profile
-#: 950.data.seed-values.sql:23609
+#: 950.data.seed-values.sql:23619
 msgid ""
 "Profile/user used to provide NoveList Select added content in the Staff "
 "Client"
 msgstr ""
 
 # id::coust.label__staff.added_content.novelistselect.passwd
-#: 950.data.seed-values.sql:23620
+#: 950.data.seed-values.sql:23630
 msgid "Staff Client added content: NoveList Select key/password"
 msgstr ""
 
 # id::coust.description__staff.added_content.novelistselect.passwd
-#: 950.data.seed-values.sql:23623
+#: 950.data.seed-values.sql:23633
 msgid ""
 "Key/password used to provide NoveList Select added content in the Staff "
 "Client"
@@ -19942,67 +19942,67 @@ msgstr ""
 
 # id::coust.label__staff.added_content.novelistselect.url
 # id::coust.description__staff.added_content.novelistselect.url
-#: 950.data.seed-values.sql:23633 950.data.seed-values.sql:23638
+#: 950.data.seed-values.sql:23643 950.data.seed-values.sql:23648
 msgid "URL Override for NoveList Select added content javascript"
 msgstr ""
 
 # id::cwst.label__eg.grid.catalog.link_checker
-#: 950.data.seed-values.sql:23648
+#: 950.data.seed-values.sql:23658
 msgid "Grid Config: catalog.link_checker"
 msgstr ""
 
 # id::cwst.label__eg.grid.catalog.link_checker.attempt
-#: 950.data.seed-values.sql:23655
+#: 950.data.seed-values.sql:23665
 msgid "Grid Config: catalog.link_checker.attempt"
 msgstr ""
 
 # id::cwst.label__eg.grid.catalog.link_checker.url
-#: 950.data.seed-values.sql:23662
+#: 950.data.seed-values.sql:23672
 msgid "Grid Config: catalog.link_checker.url"
 msgstr ""
 
 # id::cwst.label__eg.grid.filters.catalog.link_checker
-#: 950.data.seed-values.sql:23669
+#: 950.data.seed-values.sql:23679
 msgid "Grid Filter Sets: catalog.link_checker"
 msgstr ""
 
 # id::cwst.label__eg.grid.filters.catalog.link_checker.attempt
-#: 950.data.seed-values.sql:23676
+#: 950.data.seed-values.sql:23686
 msgid "Grid Filter Sets: catalog.link_checker.attempt"
 msgstr ""
 
 # id::cwst.label__eg.grid.filters.catalog.link_checker.url
-#: 950.data.seed-values.sql:23683
+#: 950.data.seed-values.sql:23693
 msgid "Grid Filter Sets: catalog.link_checker.url"
 msgstr ""
 
 # id::cwst.label__eg.grid.admin.local.actor.stat_cat
-#: 950.data.seed-values.sql:23693
+#: 950.data.seed-values.sql:23703
 msgid "Grid Config: admin.local.actor.stat_cat"
 msgstr ""
 
 # id::cwst.label__eg.grid.admin.local.asset.stat_cat
-#: 950.data.seed-values.sql:23700
+#: 950.data.seed-values.sql:23710
 msgid "Grid Config: admin.local.asset.stat_cat"
 msgstr ""
 
 # id::cwst.label__eg.grid.admin.local.actor.stat_cat_entry
-#: 950.data.seed-values.sql:23710
+#: 950.data.seed-values.sql:23720
 msgid "Grid Config: admin.local.actor.stat_cat_entry"
 msgstr ""
 
 # id::cwst.label__eg.grid.admin.local.asset.stat_cat_entry
-#: 950.data.seed-values.sql:23717
+#: 950.data.seed-values.sql:23727
 msgid "Grid Config: admin.local.asset.stat_cat_entry"
 msgstr ""
 
 # id::coust.label__cat.patron_view_discovery_layer_url
-#: 950.data.seed-values.sql:23729
+#: 950.data.seed-values.sql:23739
 msgid "Patron view discovery layer URL"
 msgstr ""
 
 # id::coust.description__cat.patron_view_discovery_layer_url
-#: 950.data.seed-values.sql:23735
+#: 950.data.seed-values.sql:23745
 msgid ""
 "URL for displaying an item in the \"patron view\" discovery layer with a "
 "placeholder for the bib record ID: {eg_record_id}. For example: "
@@ -20010,11 +20010,11 @@ msgid ""
 msgstr ""
 
 # id::cwst.label__eg.grid.admin.acq.distribution_formula
-#: 950.data.seed-values.sql:23747
+#: 950.data.seed-values.sql:23757
 msgid "Grid Config: admin.acq.distribution_formula"
 msgstr ""
 
 # id::cwst.label__eg.grid.catalog.record.conjoined
-#: 950.data.seed-values.sql:23757
+#: 950.data.seed-values.sql:23767
 msgid "Grid Config: catalog.record.conjoined"
 msgstr ""
