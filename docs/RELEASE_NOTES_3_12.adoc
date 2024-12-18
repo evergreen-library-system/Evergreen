@@ -3,6 +3,56 @@
 :numbered:
 :toclevels: 3
 
+== Evergreen 3.12.10 ==
+
+This release contains bug fixes and documentation fixes improving on Evergreen 3.12.9.
+
+
+=== Circulation ===
+
+* Replaces the hard coded "Credit Card" payment type with the correct type
+from money.payment.payment_type. (https://bugs.launchpad.net/bugs/1980294[Bug 1980294])
+
+=== Documentation ===
+
+* Updates booking module documentation with new visuals for better usability.
+* Updates My Lists documentation (https://bugs.launchpad.net/evergreen/+bug/2091179[Bug 2091179])
+
+=== Release Process ===
+
+* Improve the release process. (https://bugs.launchpad.net/evergreen/+bug/2089305[Bug 2089305])
+* Stop including partial changelogs in official tarballs. (https://bugs.launchpad.net/evergreen/+bug/2082209[Bug 2082209])
+* Fix potential failure in database upgrade script. (https://bugs.launchpad.net/bugs/2086105[Bug 2086105])
+
+=== Acknowledgements ===
+
+We would like to thank the following individuals who contributed code, testing, documentation, and patches to the 3.12.10 point release of Evergreen:
+
+* Andrea Buntz Neiman
+* Blake Graham-Henderson
+* Galen Charlton
+* Gina Monti
+* Ian Skelskey
+* Jane Sandberg
+* Jason Stephenson
+* Jeff Davis
+* Michele Morgan
+* Ruth Frasur Davis
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 == Evergreen 3.12.9 ==
 
 This release contains bug fixes and documentation fixes improving on Evergreen 3.12.8.
@@ -41,7 +91,7 @@ This release contains bug fixes and documentation fixes improving on Evergreen 3
 
 === Acknowledgements ===
 
-We would like to thank the following individuals who contributed code, testing, documentation, and patches to the 3.12.8 point release of Evergreen:
+We would like to thank the following individuals who contributed code, testing, documentation, and patches to the 3.12.9 point release of Evergreen:
 
 * Andrea Buntz Neiman
 * Blake Graham-Henderson
