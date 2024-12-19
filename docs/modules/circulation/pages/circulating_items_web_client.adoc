@@ -517,6 +517,7 @@ Lost Item Billing
 - The replacement fee and processing fee for lost-then-returned items may be voided if set by local policy. Overdue fines may be reinstated on lost-then-returned items if set by local policy.
 ========================
 
+[[_refunds_for_lost_items]]
 === Refunds for Lost Items ===
 
 If an item is returned after a lost bill has been paid and the library's policy is to void the replacement fee for lost-then-returned items, there will be a negative balance in the bill. A refund needs to be made to close the bill and the circulation record. Once the outstanding amount has been refunded, the bill and circulation record will be closed and the item will disappear from the Items Out screen.
