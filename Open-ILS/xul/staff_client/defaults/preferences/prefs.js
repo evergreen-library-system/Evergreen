@@ -11,7 +11,7 @@ pref("toolkit.singletonWindowType", "eg_main");
 pref("open-ils.enable_join_tabs", true);
 
 // We'll use this one to help brand some build information into the client, and rely on subversion keywords
-pref("open-ils.repository.headURL","$HeadURL$");
+pref("open-ils.repository.headURL","http://git.evergreen-ils.org/?p=Evergreen.git;a=shortlog;h=refs/heads/tags/rel_3_12_10");
 pref("open-ils.repository.author","$Author$");
 pref("open-ils.repository.revision","$Revision$");
 pref("open-ils.repository.date","$Date$");
