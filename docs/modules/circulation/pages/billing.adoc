@@ -81,6 +81,7 @@ or a processing charge for a lost item.
 . Select the specific bill line you would like to void and click *Actions -> Void Billings*.
 . Click *OK/Continue*.  The amount owing for the bill will be updated.
 
+[[void_paid_bill]]
 === Voiding a Paid Bill ===
 
 Sometimes you may need to void a bill a patron has already paid in order to process a refund.
