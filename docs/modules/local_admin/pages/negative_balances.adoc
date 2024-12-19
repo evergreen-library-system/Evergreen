@@ -25,7 +25,7 @@ image::negative_balances.jpg[Screen Shot of the Patron with Negative Balances Sc
 ======
 Negative balances can appear when bills are voided.  One common example is a patron who needs to be refunded for paid lost items so that bill becomes voided within their account.  
 
-xref:circulating_items_web_client.adoc#refunds_for_lost_items[Click here for info on refunding lost items.]
+xref:circulation:circulating_items_web_client.adoc#_refunds_for_lost_items[Click here for info on refunding lost items.]
 
 To avoid producing negative balances, use the _Prohibit negative balance on bills (DEFAULT)_ library setting.  You can also choose _Prohibit negative balance on bills for lost materials_ or _Prohibit negative balance on bills for overdue materials_ library settings if you want to apply a specific condition.
 ======
