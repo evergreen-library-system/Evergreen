@@ -32,10 +32,11 @@
 
 
 
-           
-          <p class='ml-2 error alert alert-danger' role="status">
-                    [%  IF ctx.hold_suspend_post_capture; l('One or more holds could not be suspended because the item is at (or en route to) the pickup library.'); END; %]
-                </p>
+        [% IF ctx.hold_suspend_post_capture %]
+            <p class='ml-2 error alert alert-danger' role="status">
+            [% l('One or more holds could not be suspended because the item is at (or en route to) the pickup library.'); %]
+            </p>
+        [% END %]
         <p class="float-right">
             <a class="hide_me" href="#">[% l('Export List') %]</a>
         </p>
