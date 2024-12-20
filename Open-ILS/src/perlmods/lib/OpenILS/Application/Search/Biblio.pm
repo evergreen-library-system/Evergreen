@@ -1648,14 +1648,21 @@ sub fetch_display_fields {
     }
 
     my $e = new_editor();
+    my $fleshed = 0;
+    my %df_cache;
+
+    if ($self->api_name =~ /fleshed$/) {
+        $fleshed++;
+        %df_cache = map {
+            ($_->id => {%{$_->to_bare_hash}{qw/id field_class name label search_field browse_field facet_field display_field restrict/}})
+        } @{ $e->retrieve_all_config_metabib_field };
+    }
 
     for my $record ( @records ) {
         next unless ($record && $highlight_map);
-        $conn->respond(
-            $e->json_query(
-                {from => ['search.highlight_display_fields', $record, $highlight_map]}
-            )
-        );
+        my $hl = $e->json_query({from => ['search.highlight_display_fields', $record, $highlight_map]});
+        $hl = [ map { $$_{field} = $df_cache{$$_{field}}; $_ } @$hl ] if $fleshed;
+        $conn->respond( $hl );
     }
 
     return undef;
@@ -1663,6 +1670,12 @@ sub fetch_display_fields {
 __PACKAGE__->register_method(
     method    => 'fetch_display_fields',
     api_name  => 'open-ils.search.fetch.metabib.display_field.highlight',
+    stream   => 1
+);
+
+__PACKAGE__->register_method(
+    method    => 'fetch_display_fields',
+    api_name  => 'open-ils.search.fetch.metabib.display_field.highlight.fleshed',
     stream   => 1
 );
 

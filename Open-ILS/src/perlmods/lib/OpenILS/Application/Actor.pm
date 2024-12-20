@@ -2574,7 +2574,7 @@ sub user_transaction_history {
         $filter->{'total_owed'} = { '<>' => 0 };
     }
 
-    my $options_clause = { order_by => { mbt => 'xact_start DESC' } };
+    my $options_clause = { order_by => { mbt => 'xact_start '.($$options{sort} ? uc($$options{sort}) : 'DESC') } };
     $options_clause->{'limit'} = $options->{'limit'} if $options->{'limit'};
     $options_clause->{'offset'} = $options->{'offset'} if $options->{'offset'};
 
