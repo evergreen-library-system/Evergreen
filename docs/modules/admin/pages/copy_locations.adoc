@@ -98,18 +98,19 @@ This feature allows staff to create and name sets of shelving locations to use a
 
 NOTE: To work with shelving location groups, you will need the ADMIN_COPY_LOCATION_GROUP permission.
 
-image::shelving_location/sl_groups.png[Shelving Location Groups]
+image::shelving_location/shelving_location_groups_editor.png[Shelving Location Groups]
 
 === Create a shelving location group ===
 
 . Click *Administration ->  Local Administration -> Shelving Location Groups*.
-. At the top of the screen is a drop down menu that displays the org unit tree. Select the unit within the org tree to which you want to add a shelving location group. The shelving locations associated with the org unit appear in the shelving locations column.
-. In the column called _Location Groups_, click _New_.
+. At the top of the screen is a menu that displays the org unit tree. Select the unit within the org tree to which you want to add a shelving location group. The shelving locations associated with the org unit appear in the shelving locations column.
+. Click _New Location Group_.
 +
-image::shelving_location/sl_groups_new.png[New Shelving Location Group]
+image::shelving_location/new_shelving_location_group.png[New Shelving Location Group]
 +
-. Choose how you want the shelving location group to display to patrons in the catalog's org unit tree in the OPAC. By default, when you add a new shelving location group, the group displays in the org unit tree beneath any branches or sub-libraries of its parental org unit. If you check the box adjacent to Display above orgs, then the group will appear above the branches or sub-libraries of its parental org unit.
-. To make the shelving location group visible to users searching the public catalog, check the box adjacent to Is OPAC visible?
+. Choose how you want the shelving location group to display to patrons in the catalog's org unit tree in the OPAC. By default, when you add a new shelving location group, the group displays in the org unit tree beneath any branches or sub-libraries of its parental org unit. If you select _Yes_ for _Display Above Orgs_, then the group will appear above the branches or sub-libraries of its parental org unit.
+. To make the shelving location group visible to users searching the public catalog, select _Yes_ for _Is OPAC Visible?_
+. _Position_ will order the display of the shelving location group.  This takes integers with 0 being first.
 . Enter a _Name_ for the shelving location group.
 . Click Save. The name of the shelving location group appears in the location groups.
 . Select the shelving locations that you want to add to the group, and click Add. The shelving locations will populate the middle column, Group Entries.
