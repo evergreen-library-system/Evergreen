@@ -98,7 +98,7 @@ This feature allows staff to create and name sets of shelving locations to use a
 
 NOTE: To work with shelving location groups, you will need the ADMIN_COPY_LOCATION_GROUP permission.
 
-image::shelving_location/sl_groups.png[Shelving Location Groups]
+image::shelving_location/shelving_location_groups_editor.png[Shelving Location Groups]
 
 === Create a shelving location group ===
 
@@ -106,7 +106,7 @@ image::shelving_location/sl_groups.png[Shelving Location Groups]
 . At the top of the screen is a drop down menu that displays the org unit tree. Select the unit within the org tree to which you want to add a shelving location group. The shelving locations associated with the org unit appear in the shelving locations column.
 . In the column called _Location Groups_, click _New_.
 +
-image::shelving_location/sl_groups_new.png[New Shelving Location Group]
+image::shelving_location/new_shelving_location_group.png[New Shelving Location Group]
 +
 . Choose how you want the shelving location group to display to patrons in the catalog's org unit tree in the OPAC. By default, when you add a new shelving location group, the group displays in the org unit tree beneath any branches or sub-libraries of its parental org unit. If you check the box adjacent to Display above orgs, then the group will appear above the branches or sub-libraries of its parental org unit.
 . To make the shelving location group visible to users searching the public catalog, check the box adjacent to Is OPAC visible?
