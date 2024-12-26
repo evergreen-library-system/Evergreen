@@ -86,7 +86,7 @@ This release contains bug fixes and documentation fixes improving on Evergreen 3
 * Fixes up/down arrows, CTRL-D, context menus in MARC editor (https://bugs.launchpad.net/evergreen/+bug/2084199[Bug 2084199])
 * Fixes a race condition retrieving the cat.require_call_number_labels ou setting (https://bugs.launchpad.net/evergreen/+bug/2052742[Bug 2052742])
 * Fixes save issue with call number fields in item templates (https://bugs.launchpad.net/evergreen/+bug/2045989[Bug 2045989])
-* Adds label to shelving locations selector in Angular pull list (https://bugs.launchpad.net/evergreen/+bug/2086737[Bug 2086737])
+
 
 === Circulation ===
 
@@ -94,6 +94,7 @@ This release contains bug fixes and documentation fixes improving on Evergreen 3
 * Checks for duplicate values and address alerts when loading staged users (https://bugs.launchpad.net/evergreen/+bug/2046000[Bug 2046000])
 * Fixes patron bills error that causes several settings to be skipped when Uncheck Bills setting is used. (https://bugs.launchpad.net/evergreen/+bug/2069358[Bug 2069358])
 * Fixes typo in Angular Pull List (https://bugs.launchpad.net/evergreen/+bug/2083959[Bug 2083959])
+* Adds label to shelving locations selector in Angular pull list (https://bugs.launchpad.net/evergreen/+bug/2086737[Bug 2086737])
 
 === OPAC ===
 
