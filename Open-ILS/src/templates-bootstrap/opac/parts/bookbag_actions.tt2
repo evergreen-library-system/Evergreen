@@ -37,7 +37,7 @@
     }, stop_parms));
 %]
 
- <button type="button" id="btnGroupDrop1" class="btn btn-action text-left" data-bs-toggle="dropdown" 
+ <button type="button" id="btnGroupDrop1" class="btn btn-action text-left" data-toggle="dropdown"
     aria-haspopup="true" aria-expanded="false" aria-describedby="[% rec_anchor %]">
         <i class="fas fa-list" aria-hidden="true"></i>
           [% l("Add to my list") %]
