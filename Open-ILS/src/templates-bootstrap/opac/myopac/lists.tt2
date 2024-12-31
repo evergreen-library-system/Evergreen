@@ -332,6 +332,10 @@
                     attrs = {marc_xml => ctx.bookbags_marc_xml.$rec_id};
                     PROCESS get_marc_attrs args=attrs %]
                 <tr role="row" mobile-count="#[% loop.count %]" class="bookbag-item-row">
+                    <td role="cell" class="list_checkbox"></th>
+                        <input type="checkbox" name="selected_item" value="[% item.id %]" bbag='[% bbag.id %]'
+                        [% html_text_attr('aria-label', l('Select [_1]', row_title)) %]/>
+                    </td>
                     [%  IF attrs.issns.0; 
                             row_isbnissn = attrs.issns.0;
                         ELSIF attrs.0;
@@ -343,10 +347,6 @@
                         row_title = attrs.title;
                         PROCESS show_cover;
                     %]
-                    <th role="rowheader" scope="row" class="list_checkbox"></th>
-                        <input type="checkbox" name="selected_item" value="[% item.id %]" bbag='[% bbag.id %]'
-                        [% html_text_attr('aria-label', l('Select [_1]', row_title)) %]/>
-                    </th>
                     <td role="cell" class="list_entry" mobile-title="[% l('Title') %]">
                         <a href="[% mkurl(ctx.opac_root _ '/record/' _ rec_id, {}, ['edit_notes', 'bbid']) %]">[% attrs.title | html %]</a>
                     </td>
