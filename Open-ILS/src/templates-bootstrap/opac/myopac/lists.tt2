@@ -241,9 +241,7 @@
                 </div>
                 <div class="form-group">
                 <label for="bbag-edit-description">[% l('Description:') %]</label>
-                <textarea name="description" class="form-control"
-                    id="bbag-edit-description">[% bbag.description | html %]
-                </textarea>
+                <textarea name="description" class="form-control" id="bbag-edit-description">[% bbag.description | html %]</textarea>
                 </div>
                 <input type="hidden" name="bbid" value="[% bbag.id %]" />
                 <input type="hidden" name="action" value="editmeta" />
