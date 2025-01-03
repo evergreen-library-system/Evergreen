@@ -540,6 +540,8 @@ vim:et:ts=4:sw=4:
                 <app_settings>
                     <!-- 'enabled' is the master switch; set to 'true' to enable MFA -->
                     <enabled>false</enabled>
+                    <!-- set 'honor_secondary_groups' to to 'true' allow secondary group membership to act in the same way as profile group for MFA availability and factor list -->
+                    <honor_secondary_groups>false</honor_secondary_groups>
                     <factors>
                         <totp>
                             <enabled>true</enabled>
