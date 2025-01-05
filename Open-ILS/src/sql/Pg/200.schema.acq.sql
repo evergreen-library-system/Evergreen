@@ -1084,27 +1084,6 @@ CREATE OR REPLACE FUNCTION public.extract_acq_marc_field_set ( BIGINT, TEXT, TEX
 $$ LANGUAGE SQL;
 
 
-/*
-CREATE OR REPLACE FUNCTION public.extract_bib_marc_field ( BIGINT, TEXT ) RETURNS TEXT AS $$
-	SELECT public.extract_marc_field('biblio.record_entry', $1, $2);
-$$ LANGUAGE SQL;
-
-CREATE OR REPLACE FUNCTION public.extract_authority_marc_field ( BIGINT, TEXT ) RETURNS TEXT AS $$
-	SELECT public.extract_marc_field('authority.record_entry', $1, $2);
-$$ LANGUAGE SQL;
-*/
--- For example:
--- INSERT INTO acq.lineitem_provider_attr_definition ( provider, code, description, xpath ) VALUES (1,'price','Price','//*[@tag="020" or @tag="022"]/*[@code="a"][1]');
-
-/*
-Suggested vendor fields:
-	vendor_price
-	vendor_currency
-	vendor_avail
-	vendor_po
-	vendor_identifier
-*/
-
 CREATE OR REPLACE FUNCTION public.ingest_acq_marc ( ) RETURNS TRIGGER AS $function$
 DECLARE
 	value		TEXT;
