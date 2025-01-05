@@ -945,7 +945,7 @@ BEGIN
     SELECT INTO type_row * FROM actor.passwd_type WHERE code = pw_type;
 
     IF NOT FOUND THEN
-        RETURN EXCEPTION 'No such password type: %', pw_type;
+        RAISE EXCEPTION 'No such password type: %', pw_type;
     END IF;
 
     IF type_row.iter_count IS NULL THEN
