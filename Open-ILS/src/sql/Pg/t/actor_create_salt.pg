@@ -1,0 +1,8 @@
+BEGIN;
+SELECT plan(1);
+PREPARE "unconfigured password type" as SELECT actor.create_salt('does-not-exist');
+SELECT throws_ilike(
+    '"unconfigured password type"',
+    '%No such password type%',
+    'It rejects a password type that has not been configured');
+ROLLBACK;
