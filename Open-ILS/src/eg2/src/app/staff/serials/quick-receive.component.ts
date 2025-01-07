@@ -4,7 +4,7 @@ import { SubscriptionSelectorComponent } from './subscription-selector.component
 import { StaffCommonModule } from '../common.module';
 import { NetService } from '@eg/core/net.service';
 import { AuthService } from '@eg/core/auth.service';
-import { firstValueFrom, map, tap, throwIfEmpty, toArray } from 'rxjs';
+import { filter, firstValueFrom, map, tap, toArray } from 'rxjs';
 import { IdlObject } from '@eg/core/idl.service';
 import { SerialsReceiveComponent } from './serials-receive.component';
 
@@ -34,7 +34,7 @@ export class QuickReceiveComponent {
             this.auth.token(),
             subscriptionId)
             .pipe(
-                throwIfEmpty(),
+                filter(sitem => sitem.status() === 'Expected'),
                 toArray(),
                 map((results: IdlObject[]) => {
                     // Make sure this list of items is unique by stream ID.
@@ -58,8 +58,11 @@ export class QuickReceiveComponent {
                     }, []);
                 }),
                 tap({
-                    next: (results) => {
+                    next: (results: IdlObject[]) => {
                         this.fleshedSitems = results;
+                        if (!this.fleshedSitems?.length) {
+                            this.handleNoRecievableItems();
+                        }
                     },
                     error: (error: unknown) => {
                         this.handleNoRecievableItems();
