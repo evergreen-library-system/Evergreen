@@ -11,6 +11,7 @@ import { MockGenerators } from 'test_data/mock_generators';
 const sitemMock = MockGenerators.idlObject({
     stream: MockGenerators.idlObject({id: 3}),
     issuance: MockGenerators.idlObject({date_published: '2020-01-01T10:00:00-0600'}),
+    status: 'Expected',
 });
 
 describe('QuickReceiveComponent', () => {
@@ -52,12 +53,11 @@ describe('QuickReceiveComponent', () => {
         });
         it('gives a notice if there are no receivable items', async () => {
             netMock.request.and.returnValues(EMPTY, of());
-            component.checkForExpectedItems(12).catch(() => {
-                fixture.detectChanges();
+            component.checkForExpectedItems(12);
+            fixture.detectChanges();
 
-                expect(fixture.nativeElement.querySelector('[role="alert"]').innerText)
-                    .toContain('This subscription doesn\'t have any expected items');
-            });
+            expect(fixture.nativeElement.querySelector('[role="alert"]').innerText)
+                .toContain('This subscription doesn\'t have any expected items');
         });
         it('does not show a notice if there is a receivable item', async () => {
             netMock.request.and.returnValue(of(sitemMock));
@@ -71,6 +71,7 @@ describe('QuickReceiveComponent', () => {
                 const earlierSitemMock = MockGenerators.idlObject({
                     stream: MockGenerators.idlObject({id: 3}),
                     issuance: MockGenerators.idlObject({date_published: '2019-12-25T10:00:00-0600'}),
+                    status: 'Expected',
                 });
                 netMock.request.and.returnValues(from([sitemMock, earlierSitemMock]));
                 await component.checkForExpectedItems(12);
@@ -78,11 +79,30 @@ describe('QuickReceiveComponent', () => {
                 expect(component.fleshedSitems).toEqual([earlierSitemMock]);
             });
         });
+        describe('when the serial item has a status Discarded', () => {
+            it('does not include it in fleshedSitems', async () => {
+                const discardedSitemMock = MockGenerators.idlObject({
+                    stream: MockGenerators.idlObject({id: 3}),
+                    issuance: MockGenerators.idlObject({date_published: '2019-12-25T10:00:00-0600'}),
+                    status: 'Discarded',
+                });
+                netMock.request.and.returnValues(from([discardedSitemMock]));
+                await component.checkForExpectedItems(12);
+
+                expect(component.fleshedSitems).toBeNull();
+
+                fixture.detectChanges();
+
+                expect(fixture.nativeElement.querySelector('[role="alert"]').innerText)
+                    .toContain('This subscription doesn\'t have any expected items');
+            });
+        });
         describe('when there are multiple streams', () => {
             it('takes one item from each stream', async () => {
                 const otherStreamMock = MockGenerators.idlObject({
                     stream: MockGenerators.idlObject({id: 12}),
                     issuance: MockGenerators.idlObject({date_published: '2019-12-25T10:00:00-0600'}),
+                    status: 'Expected',
                 });
                 netMock.request.and.returnValues(from([sitemMock, otherStreamMock]));
                 await component.checkForExpectedItems(12);
