@@ -1,5 +1,5 @@
 BEGIN;
--- SELECT evergreen.upgrade_deps_block_check('xxxx', :eg_version);
+SELECT evergreen.upgrade_deps_block_check('1446', :eg_version);
 
 CREATE OR REPLACE FUNCTION actor.create_salt(pw_type TEXT)
     RETURNS TEXT AS $$
