@@ -24199,4 +24199,11 @@ VALUES (
         'Grid Config: catalog.record.conjoined',
         'cwst', 'label'
     )
+), (
+    'eg.grid.catalog.record.parts', 'gui', 'object',
+    oils_i18n_gettext(
+        'eg.grid.catalog.record.parts',
+        'Grid Config: catalog.record.parts',
+        'cwst', 'label'
+       )
 );
