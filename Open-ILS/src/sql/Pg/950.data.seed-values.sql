@@ -24844,5 +24844,14 @@ VALUES (
         'Show the sidebar in staff catalog search results. Default is true.',
         'coust', 'description'),
     'bool'
+), (
+    'eg.grid.catalog.record.parts', 'gui',
+    oils_i18n_gettext(
+        'eg.grid.catalog.record.parts',
+        'Grid Config: catalog.record.parts',
+        'cwst', 'label'
+       ),
+    NULL,
+    'object'
 );
 
