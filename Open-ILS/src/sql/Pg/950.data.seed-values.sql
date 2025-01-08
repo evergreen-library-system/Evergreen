@@ -24858,5 +24858,13 @@ VALUES (
         'Disables single-letter keyboard shortcuts if set to true. Screen reader users should set this to true to avoid interference with standard keyboard shortcuts.',
         'coust', 'description'),
     'bool'
+), (
+    'eg.grid.catalog.record.parts', 'gui',
+    oils_i18n_gettext(
+        'eg.grid.catalog.record.parts',
+        'Grid Config: catalog.record.parts',
+        'cwst', 'label'
+       ),
+    NULL, 'object'
 );
 
