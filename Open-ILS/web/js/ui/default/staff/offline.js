@@ -1520,7 +1520,7 @@ function($scope , $routeParams , $q , $uibModal , $window , egCore ,
 
     $scope.edit_passthru = {};
 
-    // 0=all, 1=suggested, 2=all
+    // 0=all, 1=suggested, 2=required
     $scope.edit_passthru.vis_level = 2; 
 
     // Apply default values for new patrons during initial registration
