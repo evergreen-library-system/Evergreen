@@ -174,7 +174,7 @@
             <a href="./circ/patron/search?show_recent=1" target="_self"
               eg-accesskey-desc="[% l('Retrieve Recent Patrons') %]">
               <span class="glyphicon glyphicon-share-alt" aria-hidden="true"></span>
-              [% l('Retrieve Last Patron') %][% l('- F8') %]
+              [% l('Retrieve Recent Patrons') %]
             </a>
           </li>
           <li>
