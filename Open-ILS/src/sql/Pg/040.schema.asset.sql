@@ -633,6 +633,7 @@ BEGIN
                 trans
           FROM  mask,
                 org_list,
+                available_statuses,
                 asset.copy_vis_attr_cache av
                 JOIN asset.copy cp ON (cp.id = av.target_copy AND av.record = rid)
           WHERE cp.circ_lib = ANY (org_list.orgs) AND av.vis_attr_vector @@ mask.c_attrs::query_int

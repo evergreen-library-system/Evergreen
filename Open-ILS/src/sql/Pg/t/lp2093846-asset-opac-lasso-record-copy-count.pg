@@ -1,0 +1,52 @@
+BEGIN;
+INSERT INTO biblio.record_entry(marc, last_xact_id) VALUES ('<record/>', 'asset.opac_lasso_record_copy_count test');
+
+WITH
+    record AS (SELECT MAX(id) AS id FROM biblio.record_entry),
+    library AS (SELECT MAX(ou.id) AS id FROM actor.org_unit ou INNER JOIN actor.org_unit_type aout ON ou.ou_type = aout.id WHERE aout.can_have_vols),
+    editor AS (SELECT MAX(id) AS id FROM actor.usr)
+INSERT INTO asset.call_number(record, creator, editor, owning_lib, label, label_class) SELECT
+    record.id,
+    editor.id,
+    editor.id,
+    library.id,
+    'asset.opac_lasso_record_copy_count test',
+    1
+    FROM record, library, editor;
+
+WITH
+    call_number AS (SELECT id FROM asset.call_number cn
+        INNER JOIN (SELECT MAX(id) AS max_id FROM biblio.record_entry) AS max_record
+        ON cn.record = max_record.max_id LIMIT 1),
+    library AS (SELECT MAX(ou.id) AS id FROM actor.org_unit ou INNER JOIN actor.org_unit_type aout ON ou.ou_type = aout.id WHERE aout.can_have_vols),
+    editor AS (SELECT MAX(id) AS id FROM actor.usr)
+INSERT INTO asset.copy (call_number, circ_lib, creator, editor, loan_duration, fine_level, barcode) SELECT
+    call_number.id,
+    library.id,
+    editor.id,
+    editor.id,
+    1 AS loan_duration,
+    1 AS fine_level,
+    md5(random()::text) AS barcode
+    FROM call_number, library, editor;
+
+WITH new_org_lasso AS (INSERT INTO actor.org_lasso (name, global) VALUES ('New Lasso', TRUE) RETURNING id),
+    library AS (SELECT MAX(ou.id) AS max_id FROM actor.org_unit ou INNER JOIN actor.org_unit_type aout ON ou.ou_type = aout.id WHERE aout.can_have_vols)
+INSERT INTO actor.org_lasso_map(lasso, org_unit) SELECT (SELECT id FROM new_org_lasso), library.max_id FROM library;
+
+SELECT plan(1);
+
+PREPARE lasso_counts AS
+    WITH record AS (SELECT MAX(id) AS id FROM biblio.record_entry),
+        lasso AS (SELECT id FROM actor.org_lasso WHERE name = 'New Lasso')
+    SELECT depth, visible, available, unshadow FROM asset.opac_lasso_record_copy_count(
+        (SELECT id FROM lasso),
+        (SELECT id FROM record));
+
+SELECT results_eq('lasso_counts',
+    $$VALUES (-1::int, 1::bigint, 1::bigint, 1::bigint)$$,
+    'asset.opac_lasso_record_copy_count includes depth=-1, visible, available, and unshadow columns'
+);
+
+SELECT * FROM finish();
+ROLLBACK;
