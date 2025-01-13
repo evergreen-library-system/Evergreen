@@ -302,7 +302,7 @@ implements ControlValueAccessor, OnInit, AfterViewInit, OnChanges {
                     return fm.name() + ' (' + this.getOrgShortname(fm.owning_lib()) + ')';
                     break;
                 case 'acqpro':
-                    return fm.name() + ' (' + this.getOrgShortname(fm.owner()) + ')';
+                    return fm.code() + ' (' + this.getOrgShortname(fm.owner()) + ')';
                     break;
                 default:
                     const field = this.idlField;
