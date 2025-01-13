@@ -3,8 +3,23 @@ body {
     font-size: 13px;                                                           
 }                                                                              
 
-A {
+a {
     text-decoration: none;
+}
+
+h1 {
+    font-size: 1.5rem;
+    font-color: #00593d;
+    display: inline;
+}
+
+.section-title {
+    padding-top: 10px;
+    padding-left: 20px;
+}
+
+h2 {
+    font-size: 1.2rem;
 }
                                                                                
 #scko-banner {                                                         
@@ -64,46 +79,75 @@ A {
 }
 
 label.btn-outline-success {
-    border-radius: 1rem;
 }
 
-.scko-button,
-.btn-check:active + label.btn-outline-success, 
-.btn-check:checked + label.btn-outline-success, 
-label.btn-outline-success.active,
-label.btn-outline-success:active { 
+.scko-button, .btn-check-label, .btn-check {
     color: #FBF9F9;
     font-weight: bold;
     text-shadow: 1px 1px 1px #555555;
     border-radius: 1rem;
+    padding: .5rem 1rem;
+    text-decoration: none;
+    display: inline-block;
+}
+
+.btn-check-label {
+    height: 2rem;
+}
+
+.material-icons {
+    display: inline-flex;
+    vertical-align: middle;
+    font-size: 1rem;
+}
+
+.scko-button { 
     border: 1px solid #007a54;
     background: linear-gradient(#007a54, #00593d);
     background: -moz-linear-gradient(#007a54, #00593d);
     background: -o-linear-gradient(#007a54, #00593d);
     background: -webkit-linear-gradient(#007a54, #00593d);
-    background-color: #00593d;
-    padding: .5rem 1rem;
-    text-decoration: none;
+    margin: 10px;
+    height: 2.5rem;
+}
+
+.btn-check-label,
+.btn-check:active + label.btn-outline-success, 
+.btn-check:checked + label.btn-outline-success, 
+label.btn-outline-success.active,
+label.btn-outline-success:active {
+    border: 1px solid #2e3b91;
+    background: linear-gradient(#2e3b91, #424fa6);
+    background: -moz-linear-gradient(#2e3b91, #424fa6);
+    background: -o-linear-gradient(#2e3b91, #424fa6);
+    background: -webkit-linear-gradient(#2e3b91, #424fa6);
+    padding: 5px;
+    margin: 5px 10px 20px 0px;
+    border-radius: .25em;
 }
 
 .scko-button:hover,
 .scko-button:focus,
-.scko-button:active {
-    color: #FBF9F9;
-    background: linear-gradient(#007a54, #00593d);
-    background: -moz-linear-gradient(#007a54, #00593d);
-    background: -o-linear-gradient(#007a54, #00593d);
-    background: -webkit-linear-gradient(#007a54, #00593d);
-    background-color: #00593d;
+.scko-button:active,
+.btn-check-label:hover,
+.btn-check-label:focus,
+.btn-check-label:active {
+    color: #F8E473;
 }
 
-label.btn.active:before {
+label.btn-check-label.active:before {
     font-family: "Material Icons";
     content: "\e876";               /* a check mark, equivalent to "done" keyword */
     line-height: 1;
     margin-right: 0.35rem;
-    vertical-align: middle;
 }
+
+.receipt-option-wrapper {
+    display: flex;
+    flex-direction: row;
+}
+
+.receipt-option {}
 
 .oils-selfck-item-table  {
     width: 98%;
