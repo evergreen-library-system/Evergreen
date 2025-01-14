@@ -205,6 +205,8 @@ Error generating print content for template name=&quot;<ph name="INTERPOLATION"/
   <msg id="346828805070618953"><source>src/app/share/translate/translate.component.html:53</source>Prev String</msg>
   <msg id="1076462705547011441"><source>src/app/share/translate/translate.component.html:55</source>Next String</msg>
   <msg id="4391289919356861627"><source>src/app/share/translate/translate.component.html:56</source>Apply</msg>
+  <msg id="3797570084942068182"><source>src/app/share/tree/tree-multiselect.component.ts:68</source>Select</msg>
+  <msg id="7531602241051125940"><source>src/app/share/tree/tree-multiselect.component.ts:137</source>Objects</msg>
   <msg id="2152960452087805667"><source>src/app/share/tree/tree.component.html:3</source>Filter:</msg>
   <msg id="7039535908805786316"><source>src/app/share/tree/tree.component.html:7</source>Clear Label Filter</msg>
   <msg id="5008745968518267369"><source>src/app/share/tree/tree.component.html:17</source>Expand All</msg>
@@ -3180,27 +3182,27 @@ Delete Provider</msg>
   <msg id="7127087298308904203"><source>src/app/staff/reporter/full/reporter-field.component.html:120</source>Is Null or Blank</msg>
   <msg id="4982036895050151810"><source>src/app/staff/reporter/full/reporter-field.component.html:121</source>Is Not Null or Blank</msg>
   <msg id="8443172652217230881"><source>src/app/staff/reporter/full/reporter-field.component.html:128</source>Filter value</msg>
-  <msg id="3321729055125701123"><source>src/app/staff/reporter/full/reporter-field.component.html:158</source>Hold the Shift key to select a range.</msg>
-  <msg id="5198266590204701192"><source>src/app/staff/reporter/full/reporter-field.component.html:176</source>Beginning of filter range</msg>
-  <msg id="5125772594762280195"><source>src/app/staff/reporter/full/reporter-field.component.html:187</source>End of filter range</msg>
-  <msg id="6817008351390393773"><source>src/app/staff/reporter/full/reporter-field.component.html:201</source>Relative time value</msg>
-  <msg id="1987454370114756547"><source>src/app/staff/reporter/full/reporter-field.component.html:208</source>Beginning of filter date range</msg>
-  <msg id="5592426547062149372"><source>src/app/staff/reporter/full/reporter-field.component.html:220</source>End of filter date range</msg>
-  <msg id="2250784683932913830"><source>src/app/staff/reporter/full/reporter-field.component.html:300</source>Select...</msg>
-  <msg id="3413683949529276097"><source>src/app/staff/reporter/full/reporter-field.component.html:345</source>Select one</msg>
-  <msg id="6251586038459969294"><source>src/app/staff/reporter/full/reporter-field.component.html:348</source>Both</msg>
-  <msg id="4328738626502194147"><source>src/app/staff/reporter/full/reporter-field.component.html:381</source>Direction</msg>
-  <msg id="8781111421053259135"><source>src/app/staff/reporter/full/reporter-field.component.html:384</source>Later dates at the bottom</msg>
-  <msg id="4274551664743237627"><source>src/app/staff/reporter/full/reporter-field.component.html:386</source>Larger numbers at the bottom</msg>
-  <msg id="7213481871338614557"><source>src/app/staff/reporter/full/reporter-field.component.html:388</source>Ascending (1, 2, a, b, A, B; FALSE, TRUE)</msg>
-  <msg id="620387230204546053"><source>src/app/staff/reporter/full/reporter-field.component.html:390</source>Later dates at the top</msg>
-  <msg id="4891525768328201789"><source>src/app/staff/reporter/full/reporter-field.component.html:392</source>Larger numbers at the top</msg>
-  <msg id="5811893345890269733"><source>src/app/staff/reporter/full/reporter-field.component.html:394</source>Descending (B, A, b, a, 2, 1; TRUE, FALSE)</msg>
-  <msg id="8502065112576581103"><source>src/app/staff/reporter/full/reporter-field.component.html:400</source>Move up</msg>
-  <msg id="2207764482815871800"><source>src/app/staff/reporter/full/reporter-field.component.html:401</source>Move down</msg>
-  <msg id="8760070733234838765"><source>src/app/staff/reporter/full/reporter-field.component.html:418</source>Year(s) ago</msg>
-  <msg id="5214793274172992989"><source>src/app/staff/reporter/full/reporter-field.component.html:419</source>Month(s) ago</msg>
-  <msg id="7267191671332895261"><source>src/app/staff/reporter/full/reporter-field.component.html:420</source>Day(s) ago</msg>
+  <msg id="3321729055125701123"><source>src/app/staff/reporter/full/reporter-field.component.html:173</source>Hold the Shift key to select a range.</msg>
+  <msg id="5198266590204701192"><source>src/app/staff/reporter/full/reporter-field.component.html:191</source>Beginning of filter range</msg>
+  <msg id="5125772594762280195"><source>src/app/staff/reporter/full/reporter-field.component.html:202</source>End of filter range</msg>
+  <msg id="6817008351390393773"><source>src/app/staff/reporter/full/reporter-field.component.html:216</source>Relative time value</msg>
+  <msg id="1987454370114756547"><source>src/app/staff/reporter/full/reporter-field.component.html:223</source>Beginning of filter date range</msg>
+  <msg id="5592426547062149372"><source>src/app/staff/reporter/full/reporter-field.component.html:235</source>End of filter date range</msg>
+  <msg id="2250784683932913830"><source>src/app/staff/reporter/full/reporter-field.component.html:315</source>Select...</msg>
+  <msg id="3413683949529276097"><source>src/app/staff/reporter/full/reporter-field.component.html:360</source>Select one</msg>
+  <msg id="6251586038459969294"><source>src/app/staff/reporter/full/reporter-field.component.html:363</source>Both</msg>
+  <msg id="4328738626502194147"><source>src/app/staff/reporter/full/reporter-field.component.html:396</source>Direction</msg>
+  <msg id="8781111421053259135"><source>src/app/staff/reporter/full/reporter-field.component.html:399</source>Later dates at the bottom</msg>
+  <msg id="4274551664743237627"><source>src/app/staff/reporter/full/reporter-field.component.html:401</source>Larger numbers at the bottom</msg>
+  <msg id="7213481871338614557"><source>src/app/staff/reporter/full/reporter-field.component.html:403</source>Ascending (1, 2, a, b, A, B; FALSE, TRUE)</msg>
+  <msg id="620387230204546053"><source>src/app/staff/reporter/full/reporter-field.component.html:405</source>Later dates at the top</msg>
+  <msg id="4891525768328201789"><source>src/app/staff/reporter/full/reporter-field.component.html:407</source>Larger numbers at the top</msg>
+  <msg id="5811893345890269733"><source>src/app/staff/reporter/full/reporter-field.component.html:409</source>Descending (B, A, b, a, 2, 1; TRUE, FALSE)</msg>
+  <msg id="8502065112576581103"><source>src/app/staff/reporter/full/reporter-field.component.html:415</source>Move up</msg>
+  <msg id="2207764482815871800"><source>src/app/staff/reporter/full/reporter-field.component.html:416</source>Move down</msg>
+  <msg id="8760070733234838765"><source>src/app/staff/reporter/full/reporter-field.component.html:433</source>Year(s) ago</msg>
+  <msg id="5214793274172992989"><source>src/app/staff/reporter/full/reporter-field.component.html:434</source>Month(s) ago</msg>
+  <msg id="7267191671332895261"><source>src/app/staff/reporter/full/reporter-field.component.html:435</source>Day(s) ago</msg>
   <msg id="8327358359103773610"><source>src/app/staff/reporter/full/reporter-output-options.component.html:2</source>Pivot Label Column</msg>
   <msg id="5871274521271240074"><source>src/app/staff/reporter/full/reporter-output-options.component.html:4</source><ph name="INTERPOLATION"/></msg>
   <msg id="1758710025669242534"><source>src/app/staff/reporter/full/reporter-output-options.component.html:6</source><ph name="INTERPOLATION"/></msg>
@@ -3342,7 +3344,6 @@ Delete Provider</msg>
   <msg id="8043665789842246779"><source>src/app/staff/share/admin-page/admin-page.component.html:95</source>Undelete Selected</msg>
   <msg id="1629012641824964054"><source>src/app/staff/share/barcodes/barcode-select.component.html:4</source>Select Barcode</msg>
   <msg id="939125329755502449"><source>src/app/staff/share/barcodes/barcode-select.component.html:10</source>Select the desired barcode.</msg>
-  <msg id="3797570084942068182"><source>src/app/staff/share/barcodes/barcode-select.component.html:24</source>Select</msg>
   <msg id="7007378492251742745"><source>src/app/staff/share/bib-list/bib-list.component.html:2</source>View Record <ph name="INTERPOLATION"/></msg>
   <msg id="2517309683610083249"><source>src/app/staff/share/bib-staff-view/bib-staff-view.component.html:8</source>Title:</msg>
   <msg id="62592076693431987"><source>src/app/staff/share/bib-staff-view/bib-staff-view.component.html:18</source>Series Title:</msg>
