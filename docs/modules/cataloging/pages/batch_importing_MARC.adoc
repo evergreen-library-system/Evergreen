@@ -89,7 +89,7 @@ To use _MARC Tag and Subfield_ match points:
 . Select *Add to Selected Node*. Once this is selected, the tree will refresh and update with the new expression.
 +
 image::batch_importing_MARC/marc_tag_and_subfield.jpg[MARC Tag and Subfield]
-+
+
 
 === Replace Mode ===
 
@@ -271,7 +271,6 @@ image::batch_importing_MARC/merge_target.png[Select Merge Target]
 Selected Records*
 +
 NOTE: In this case, it is recommended that you apply the _Non-Imported Records_ filter. 
-+
 
 [[background_import]]
 === Background Import Feature ===
