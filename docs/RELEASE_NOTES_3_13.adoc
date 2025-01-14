@@ -3,6 +3,53 @@
 :numbered:
 :toclevels: 3
 
+== Evergreen 3.13.8 ==
+
+This release contains bug fixes and documentation fixes improving on Evergreen 3.13.7.
+
+
+=== Administration ===
+
+* Correct error message in the actor.create_salt database function (https://bugs.launchpad.net/evergreen/+bug/2093010[Bug 2093010])
+* Corrects misleading comment explaining vis_level values in offline.js (https://bugs.launchpad.net/evergreen/+bug/2093358[Bug 2093358])
+
+=== Cataloging ===
+
+* Serials quick receive no longer includes issues in non-receivable statuses, such as Discarded or Not Published. (https://bugs.launchpad.net/evergreen/+bug/2091728[Bug 2091728])
+* Include status and location in marc_export when determining item visibility in the 852 MARC tag. (https://bugs.launchpad.net/evergreen/+bug/2056343[Bug 2056343])
+
+
+=== OPAC ===
+
+* Prevents '|' fixed field codes from automatically selecting OPAC advanced search filters (https://bugs.launchpad.net/evergreen/+bug/2080691[Bug 2080691])
+
+=== Reports ===
+
+* Restricts selectable report filter values by library ownership when applicable and possible. (https://bugs.launchpad.net/evergreen/+bug/2088100[Bug 2088100])
+* Fixes report template upgrade issues relating to more complex join types in older templates. (https://bugs.launchpad.net/evergreen/+bug/2089066[Bug 2089066])
+* Fix issues with sorting and filtering the contents of reports folders in the Reports interface. (https://bugs.launchpad.net/evergreen/+bug/2077438[Bug 2077438])
+* Allow paging through list of report outputs; fixes issue where this could time out in the Angular Reports interface for output folders that have many completed reports. (https://bugs.launchpad.net/evergreen/+bug/2086861[Bug 2086861])
+* Add a new user interface widget to provide a way for users of the Angular Reporter to select multiple values when filtering a report on a linked field. (https://bugs.launchpad.net/evergreen/+bug/2077357[Bug 2077357])
+
+
+=== Acknowledgements ===
+
+We would like to thank the following individuals who contributed code, testing, documentation, and patches to the 3.13.8 point release of Evergreen:
+
+* Andrea Buntz Neiman
+* Chrisy Schroth
+* Elizabeth Davis
+* Galen Charlton
+* Garry Collum
+* Ian Skelskey
+* Jane Sandberg
+* Jason Stephenson
+* Josh Stompro
+* Michele Morgan
+* Mike Rylander
+* Stephanie Leary
+* Steven Mayo
+
 == Evergreen 3.13.7 ==
 
 This release contains bug fixes and documentation fixes improving on Evergreen 3.13.6.
