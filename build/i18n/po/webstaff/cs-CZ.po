@@ -7,15 +7,15 @@ msgid ""
 msgstr ""
 "Project-Id-Version: evergreen\n"
 "Report-Msgid-Bugs-To: FULL NAME <EMAIL@ADDRESS>\n"
-"POT-Creation-Date: 2024-10-17 00:14+0000\n"
+"POT-Creation-Date: 2024-12-19 02:04+0000\n"
 "PO-Revision-Date: 2024-10-03 18:50+0000\n"
 "Last-Translator: Eva Cerninakova <Unknown>\n"
 "Language-Team: Czech <cs@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2024-10-17 07:10+0000\n"
-"X-Generator: Launchpad (build 01390110bd8387dc90dd69527e8fd8aaf2734aac)\n"
+"X-Launchpad-Export-Date: 2024-12-20 08:15+0000\n"
+"X-Generator: Launchpad (build 6394e03793719e8d73f5a60b5439440e693c92f1)\n"
 
 #. ("{{pendingXacts | date:\"short\"}}")
 #: ../../Open-ILS/src/templates/staff/t_login.tt2:62
@@ -176,8 +176,8 @@ msgstr "#%1"
 msgid "%1 %2 %3&#13;&#10;%4 %5&#13;&#10;%6, %7 %8"
 msgstr "%1 %2 %3&#13;&#10;%4 %5&#13;&#10;%6, %7 %8"
 
-#. ("{{patron().pref_prefix() || patron().prefix()}}", "{{patron().pref_family_name() || patron().family_name()}}", "{{patron().pref_first_given_name() || patron().first_given_name()}}", "{{patron().pref_second_given_name() || patron().second_given_name()}}", "{{patron().pref_suffix() || patron().suffix()}}")
 #. ("{{patron().prefix()}}", "{{patron().family_name()}}", "{{patron().first_given_name()}}", "{{patron().second_given_name()}}", "{{patron().suffix()}}")
+#. ("{{patron().pref_prefix() || patron().prefix()}}", "{{patron().pref_family_name() || patron().family_name()}}", "{{patron().pref_first_given_name() || patron().first_given_name()}}", "{{patron().pref_second_given_name() || patron().second_given_name()}}", "{{patron().pref_suffix() || patron().suffix()}}")
 #: ../../Open-ILS/src/templates/staff/circ/patron/index.tt2:118 ../../Open-ILS/src/templates/staff/circ/patron/t_summary.tt2:159
 msgid "%1 %2, %3 %4 %5"
 msgstr "%1 %2, %3 %4 %5"
@@ -269,17 +269,17 @@ msgstr "%1 je již půjčeno"
 msgid "%1, %2"
 msgstr "%1, %2"
 
-#. ("{{lname}}", "{{fname}}", "{{mname}}")
 #. ("{{patron().pref_family_name() || patron().family_name()}}", "{{patron().pref_first_given_name() || patron().first_given_name()}}", "{{patron().pref_second_given_name() || patron().second_given_name()}}")
+#. ("{{lname}}", "{{fname}}", "{{mname}}")
 #: ../../Open-ILS/src/templates/staff/circ/patron/index.tt2:80 ../../Open-ILS/src/templates/staff/circ/patron/t_summary.tt2:34
 msgid "%1, %2 %3"
 msgstr "%1, %2 %3"
 
 #. ("{{user.family_name()}}", "{{user.first_given_name()}}", "{{user.second_given_name()}}", "{{user.card().barcode()}}")
+#. ("{{prev_circ_usr.family_name()}}", "{{prev_circ_usr.first_given_name()}}", "{{prev_circ_usr.second_given_name()}}", "{{prev_circ_usr.card().barcode()}}")
+#. ("{{circ.usr().family_name()}}", "{{circ.usr().first_given_name()}}", "{{circ.usr().second_given_name()}}", "{{circ.usr().card().barcode()}}")
 #. ("{{hold.usr().family_name()}}", "{{hold.usr().first_given_name()}}", "{{hold.usr().second_given_name()}}", "{{hold.usr().card().barcode()}}")
 #. ("{{hold.requestor().family_name()}}", "{{hold.requestor().first_given_name()}}", "{{hold.requestor().second_given_name()}}", "{{hold.requestor().card().barcode()}}")
-#. ("{{circ.usr().family_name()}}", "{{circ.usr().first_given_name()}}", "{{circ.usr().second_given_name()}}", "{{circ.usr().card().barcode()}}")
-#. ("{{prev_circ_usr.family_name()}}", "{{prev_circ_usr.first_given_name()}}", "{{prev_circ_usr.second_given_name()}}", "{{prev_circ_usr.card().barcode()}}")
 #. ("{{extra.user_obj.family_name}}", "{{extra.user_obj.first_given_name}}", "{{extra.user_obj.second_given_name}}", "{{extra.user_obj.home_ou.shortname}}")
 #: ../../Open-ILS/src/templates/staff/acq/requests/t_edit.tt2:27 ../../Open-ILS/src/templates/staff/cat/item/t_circ_list_pane.tt2:27 ../../Open-ILS/src/templates/staff/cat/item/t_circs_pane.tt2:118 ../../Open-ILS/src/templates/staff/cat/item/t_circs_pane.tt2:18 ../../Open-ILS/src/templates/staff/cat/item/t_holds_pane.tt2:17 ../../Open-ILS/src/templates/staff/cat/item/t_holds_pane.tt2:30 ../../Open-ILS/src/templates/staff/circ/patron/t_move_to_group_dialog.tt2:16
 msgid "%1, %2 %3 : %4"
@@ -349,7 +349,7 @@ msgstr "*Všechna nastavení budou uložena spolu s šablonami"
 
 #: ../../Open-ILS/src/templates/staff/navbar.tt2:177
 msgid "- F8"
-msgstr ""
+msgstr "- F8"
 
 #: ../../Open-ILS/src/templates/staff/reporter/t_edit_template.tt2:46
 msgid "-- Select Source --"
@@ -457,6 +457,11 @@ msgid ""
 "you experience system slowdowns. This test measures the websocket latency "
 "between your workstation client and the Evergreen server host listed above."
 msgstr ""
+"Test latence poskytuje informace o aktuální rychlosti internetového "
+"připojení. Informace z tohoto testu mohou být použity při řešení problémů, "
+"pokud dojde ke zpomalení systému. Tento test měří latenci webového socketu "
+"mezi klientem pracovní stanice a výše uvedeným hostitelem Evergreenovéo "
+"serveru."
 
 #: ../../Open-ILS/src/templates/staff/share/print_templates/t_bill_payment.tt2:30
 msgid "A receipt of your  transaction:"
@@ -1441,8 +1446,8 @@ msgid "Barcode: %1 Checkin date: %2"
 msgstr "Čárový kód: %1 datum vrácení: %2"
 
 #. ("{{checkout.copy.barcode}}", "{{checkout.circ.due_date | egDueDate:$root.egDateAndTimeFormat:checkout.circ.circ_lib:checkout.circ.duration}}")
-#. ("{{renewal.copy.barcode}}", "{{renewal.circ.due_date | egDueDate:$root.egDateAndTimeFormat:renewal.circ.circ_lib:renewal.circ.duration}}")
 #. ("{{checkout.barcode}}", "{{checkout.due_date | date:\"short\"}}")
+#. ("{{renewal.copy.barcode}}", "{{renewal.circ.due_date | egDueDate:$root.egDateAndTimeFormat:renewal.circ.circ_lib:renewal.circ.duration}}")
 #: ../../Open-ILS/src/templates/staff/share/print_templates/t_checkout.tt2:47 ../../Open-ILS/src/templates/staff/share/print_templates/t_items_out.tt2:43 ../../Open-ILS/src/templates/staff/share/print_templates/t_offline_renew.tt2:16 ../../Open-ILS/src/templates/staff/share/print_templates/t_renew.tt2:27
 msgid "Barcode: %1 Due: %2"
 msgstr "Čárový kód: %1 K vrácení: %2"
@@ -1508,8 +1513,8 @@ msgstr "Pořadí pro řazení výběru Nejvýhodnějších rezervací"
 msgid "Between"
 msgstr "Mezi"
 
-#. ("{{record_id}}")
 #. ("{{lead_id}}")
+#. ("{{record_id}}")
 #: ../../Open-ILS/src/templates/staff/cat/bucket/record/t_merge_records.tt2:49 ../../Open-ILS/src/templates/staff/cat/catalog/index.tt2:66
 msgid "Bib %1"
 msgstr "Bib. zázn.  %1"
@@ -3185,11 +3190,11 @@ msgstr "Kont"
 
 #: ../../Open-ILS/src/templates/staff/navbar.tt2:133 ../../Open-ILS/src/templates/staff/navbar.tt2:143
 msgid "Ctrl+F2"
-msgstr ""
+msgstr "Ctrl+F2"
 
 #: ../../Open-ILS/src/templates/staff/navbar.tt2:427
 msgid "Ctrl+F3"
-msgstr ""
+msgstr "Ctrl+F3"
 
 #: ../../Open-ILS/src/templates/staff/cat/share/t_marcedit.tt2:75
 msgid "Ctry"
@@ -3229,7 +3234,7 @@ msgstr "Aktuální uživatelé"
 
 #: ../../Open-ILS/src/templates/staff/navbar.tt2:729
 msgid "Current color mode:"
-msgstr ""
+msgstr "Aktuální režim barev:"
 
 #: ../../Open-ILS/src/templates/staff/cat/catalog/t_holds.tt2:125 ../../Open-ILS/src/templates/staff/circ/holds/t_shelf_list.tt2:102 ../../Open-ILS/src/templates/staff/circ/patron/t_holds_list.tt2:102
 msgid "Currently Frozen"
@@ -3266,7 +3271,7 @@ msgstr "Poškozeno"
 
 #: ../../Open-ILS/src/templates/staff/navbar.tt2:740 ../../Open-ILS/src/templates/staff/navbar.tt2:763
 msgid "Dark"
-msgstr ""
+msgstr "Tmavý"
 
 #: ../../Open-ILS/src/templates/staff/admin/server/config/metabib_field.tt2:60
 msgid "Data Suppliers"
@@ -4385,35 +4390,35 @@ msgstr "Rozšířený"
 
 #: ../../Open-ILS/src/templates/staff/navbar.tt2:82 ../../Open-ILS/src/templates/staff/navbar.tt2:91
 msgid "F1"
-msgstr ""
+msgstr "F1"
 
 #: ../../Open-ILS/src/templates/staff/navbar.tt2:100 ../../Open-ILS/src/templates/staff/navbar.tt2:109
 msgid "F2"
-msgstr ""
+msgstr "F2"
 
 #: ../../Open-ILS/src/templates/staff/navbar.tt2:363 ../../Open-ILS/src/templates/staff/navbar.tt2:63
 msgid "F3"
-msgstr ""
+msgstr "F3"
 
 #: ../../Open-ILS/src/templates/staff/navbar.tt2:45
 msgid "F4"
-msgstr ""
+msgstr "F4"
 
 #: ../../Open-ILS/src/templates/staff/navbar.tt2:242 ../../Open-ILS/src/templates/staff/navbar.tt2:378 ../../Open-ILS/src/templates/staff/navbar.tt2:54
 msgid "F5"
-msgstr ""
+msgstr "F5"
 
 #: ../../Open-ILS/src/templates/staff/navbar.tt2:211 ../../Open-ILS/src/templates/staff/navbar.tt2:220
 msgid "F6"
-msgstr ""
+msgstr "F6"
 
 #: ../../Open-ILS/src/templates/staff/navbar.tt2:170
 msgid "F8"
-msgstr ""
+msgstr "F8"
 
 #: ../../Open-ILS/src/templates/staff/navbar.tt2:258
 msgid "F9"
-msgstr ""
+msgstr "F9"
 
 #: ../../Open-ILS/src/templates/staff/cat/share/t_marcedit.tt2:104
 msgid "FMus"
@@ -6155,7 +6160,7 @@ msgstr "Knihovna: "
 
 #: ../../Open-ILS/src/templates/staff/navbar.tt2:734 ../../Open-ILS/src/templates/staff/navbar.tt2:755
 msgid "Light"
-msgstr ""
+msgstr "Světlý"
 
 #: ../../Open-ILS/src/templates/staff/admin/acq/t_splash.tt2:11
 msgid "Line Item Alerts"
@@ -6892,7 +6897,7 @@ msgstr "Přesunout uživatele do této skupiny"
 
 #: ../../Open-ILS/src/templates/staff/navbar.tt2:803
 msgid "Multi-factor Authentication"
-msgstr ""
+msgstr "Vícefaktorové ověření"
 
 #: ../../Open-ILS/src/templates/staff/cat/volcopy/t_attr_edit.tt2:392
 msgid "Multiple amounts"
@@ -7293,7 +7298,7 @@ msgstr "Nevydáno"
 
 #: ../../Open-ILS/src/templates/staff/circ/patron/t_credentials.tt2:80 ../../Open-ILS/src/templates/staff/circ/patron/t_credentials.tt2:96
 msgid "Not Removed"
-msgstr ""
+msgstr "Neodebráno"
 
 #: ../../Open-ILS/src/templates/staff/reporter/share/report_strings.tt2:110 ../../Open-ILS/src/templates/staff/reporter/share/report_strings.tt2:29
 msgid "Not between"
@@ -7466,7 +7471,7 @@ msgstr "Typ organizační jednotky"
 
 #: ../../Open-ILS/src/templates/staff/circ/patron/t_edit.tt2:934
 msgid "Obtain Circulation Information?"
-msgstr ""
+msgstr "Načíst výpůjční informace?"
 
 #: ../../Open-ILS/src/templates/staff/serials/t_month_selector.tt2:11
 msgid "October"
@@ -9098,7 +9103,7 @@ msgstr "Odebrat:"
 
 #: ../../Open-ILS/src/templates/staff/circ/patron/t_credentials.tt2:79 ../../Open-ILS/src/templates/staff/circ/patron/t_credentials.tt2:95
 msgid "Removed"
-msgstr ""
+msgstr "Odebráno"
 
 #: ../../Open-ILS/src/templates/staff/admin/workstation/t_print_templates.tt2:34 ../../Open-ILS/src/templates/staff/base_js.tt2:121 ../../Open-ILS/src/templates/staff/circ/patron/t_items_out.tt2:67 ../../Open-ILS/src/templates/staff/circ/renew/index.tt2:2 ../../Open-ILS/src/templates/staff/circ/share/t_circ_exists_dialog.tt2:36 ../../Open-ILS/src/templates/staff/offline-interface.tt2:374 ../../Open-ILS/src/templates/staff/offline-interface.tt2:430
 msgid "Renew"
@@ -9150,7 +9155,7 @@ msgstr "Zbývající prodloužení"
 
 #: ../../Open-ILS/src/templates/staff/circ/share/t_event_override_dialog.tt2:30
 msgid "Rental fee"
-msgstr ""
+msgstr "Poplatek za pronájem"
 
 #: ../../Open-ILS/src/templates/staff/circ/patron/t_edit.tt2:183 ../../Open-ILS/src/templates/staff/navbar.tt2:233
 msgid "Replace Barcode"
@@ -9289,7 +9294,7 @@ msgstr "Resetovat nastavení sloupců"
 
 #: ../../Open-ILS/src/templates/staff/circ/share/t_hold_details.tt2:75
 msgid "Reset Entries"
-msgstr ""
+msgstr "Obnovit položky"
 
 #: ../../Open-ILS/src/templates/staff/admin/actor/org_unit/t_main_tab.tt2:50 ../../Open-ILS/src/templates/staff/admin/workstation/t_print_config.tt2:106
 msgid "Reset Form"
@@ -9414,7 +9419,7 @@ msgstr "Čas vrácení"
 
 #: ../../Open-ILS/src/templates/staff/circ/share/t_hold_details.tt2:165
 msgid "Reverse Order"
-msgstr ""
+msgstr "Obrácené pořadí"
 
 #: ../../Open-ILS/src/templates/staff/serials/t_prediction_wizard.tt2:420
 msgid "Review"
@@ -9620,7 +9625,7 @@ msgstr "Vyhledat čtenáře podle jména"
 
 #: ../../Open-ILS/src/templates/staff/circ/share/t_hold_details.tt2:199
 msgid "Search In Progress"
-msgstr ""
+msgstr "Probíhá vyhledávání"
 
 #: ../../Open-ILS/src/templates/staff/navbar.tt2:53
 msgid "Search for Items by Barcode"
@@ -9982,19 +9987,19 @@ msgstr "Umístění"
 
 #: ../../Open-ILS/src/templates/staff/navbar.tt2:152 ../../Open-ILS/src/templates/staff/navbar.tt2:161
 msgid "Shift+F1"
-msgstr ""
+msgstr "Shift+F1"
 
 #: ../../Open-ILS/src/templates/staff/navbar.tt2:118
 msgid "Shift+F2"
-msgstr ""
+msgstr "Shift+F2"
 
 #: ../../Open-ILS/src/templates/staff/navbar.tt2:408
 msgid "Shift+F3"
-msgstr ""
+msgstr "Shift+F3"
 
 #: ../../Open-ILS/src/templates/staff/navbar.tt2:417
 msgid "Shift+F8"
-msgstr ""
+msgstr "Shift+F8"
 
 #: ../../Open-ILS/src/templates/staff/admin/serials/index.tt2:18 ../../Open-ILS/src/templates/staff/cat/catalog/t_holdings.tt2:136 ../../Open-ILS/src/templates/staff/cat/item/t_list.tt2:153 ../../Open-ILS/src/templates/staff/cat/item/t_summary_pane.tt2:75 ../../Open-ILS/src/templates/staff/cat/volcopy/index.tt2:20 ../../Open-ILS/src/templates/staff/cat/volcopy/t_attr_edit.tt2:292
 msgid "Short"
@@ -10562,8 +10567,8 @@ msgstr "Pozastaveno"
 msgid "TCN"
 msgstr "Kontrolní číslo záznamu (TCN)"
 
-#. ("{{overlay_target_tcn}}")
 #. ("{{local_overlay_target_tcn}}")
+#. ("{{overlay_target_tcn}}")
 #: ../../Open-ILS/src/templates/staff/cat/z3950/t_list.tt2:78 ../../Open-ILS/src/templates/staff/cat/z3950/t_overlay.tt2:21
 msgid "TCN %1"
 msgstr "TCN %1"
@@ -11648,11 +11653,11 @@ msgstr "Editor uživatelských oprávnění"
 
 #: ../../Open-ILS/src/templates/staff/circ/holds/t_shelf_list.tt2:135
 msgid "User Permission Group"
-msgstr ""
+msgstr "Skupina uživatelských oprávnění"
 
 #: ../../Open-ILS/src/templates/staff/circ/holds/t_shelf_list.tt2:134
 msgid "User Permission Group ID"
-msgstr ""
+msgstr "ID skupiny uživtelských oprávnění"
 
 #: ../../Open-ILS/src/templates/staff/admin/server/t_splash.tt2:11
 msgid "User Setting Types"
