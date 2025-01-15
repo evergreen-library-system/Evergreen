@@ -602,7 +602,6 @@ export class Z3950SearchComponent implements OnInit {
     }
 
     performSearch() {
-        this.saveDefaultZ3950Targets(false);
         this.resultGrid.reload();
     }
 
