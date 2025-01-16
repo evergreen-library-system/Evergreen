@@ -1,0 +1,9 @@
+== Move the OPAC alert banner to a library setting ==
+
+Moves the Bootstrap OPAC maintenance message alert banner from the config.tt2 file to a trio of new library settings.
+
+. OPAC Alert Banner: Display (true / false)
+. OPAC Alert Banner: Text (the message that will appear)
+. OPAC Alert Banner: Type (success, info, warning, danger)
+
+The alert banner types utilize the existing CSS to determine the color scheme.

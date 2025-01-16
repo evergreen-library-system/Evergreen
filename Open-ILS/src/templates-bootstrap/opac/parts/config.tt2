@@ -193,15 +193,6 @@ search.default_highlight = 1;
 ctx.google_books_preview = 0;
 
 ##############################################################################
-
-# Set a maintenance message to display in the catalogue
-#ctx.maintenance_message = "<b>This OPAC will be unavailable part of March 15, 2019 for planned upgrades.</b>";
-# Maintenance types follow Bootstrap4 alert options as follows
-# success = green; info = blue; warning = yellow; danger = red
-# Other colors would require re-coding the alert
-#ctx.maintenance_type = l('warning');
-
-##############################################################################
 # Depth Button/Checkbox
 # Recommendation: Do not enable button for basic search without enabling the
 # checkbox for the results page
