@@ -378,14 +378,12 @@ ctx.metalinks.push('
                
                 [%- END -%]
 
-
-               
                     [% operation = ctx.mylist.grep('^' _ ctx.bre_id _ '$').size ? "delete" : "add";
                     addhref = mkurl(ctx.opac_root _ '/mylist/add', {record => ctx.bre_id}, stop_parms);
                     delhref = mkurl(ctx.opac_root _ '/mylist/delete', {record => ctx.bre_id}, stop_parms);
                     label = (operation == "add") ? l("Add to Basket") : l("Remove from Basket");
                     %]
-                    [% IF ctx.mylist.grep('^' _ ctx.bre_id _ '$').size %]
+
                     <a href="[% addhref %]" id="mylist_add_[% ctx.bre_id %]"
                         data-recid="[% ctx.bre_id %]" data-action="add"
                         class="btn btn-action mylist_action"
@@ -393,8 +391,7 @@ ctx.metalinks.push('
                         <i class="fas fa-shopping-basket" aria-hidden="true"></i>
                         [% l("Add to basket") %]
                     </a>
-                    [% END %]
-                    [% IF !ctx.mylist.grep('^' _ ctx.bre_id _ '$').size %]
+
                     <a href="[% delhref %]" id="mylist_delete_[% ctx.bre_id %]"
                         data-recid="[% ctx.bre_id %]" data-action="delete"
                         class="btn btn-action mylist_action"
@@ -402,22 +399,18 @@ ctx.metalinks.push('
                         <i class="fas fa-minus-circle" aria-hidden="true"></i>
                         [% l("Remove from basket") %]
                     </a>
-                    [% END %]
-                [% IF ctx.mylist.size %]
-               
-                    [%- IF ctx.user; %]
-                    <a href="[% mkurl(ctx.opac_root _ '/myopac/lists') %]" class="btn btn-action" rel="nofollow" vocab="">
+
+                    [% IF ctx.user;
+                        basketurl = mkurl(ctx.opac_root _ '/myopac/lists');
+                    ELSE;
+                        basketurl = mkurl(ctx.opac_root _ '/mylist');
+                    END %]
+
+                    <a href="[% basketurl %]" id="mybasket" class="btn btn-action"
+                        rel="nofollow" vocab="">
                         <i class="fas fa-glasses" aria-hidden="true"></i>
                         [% l(' View Basket') %]
                     </a>
-                    [%- ELSE %]
-                    <a href="[% mkurl(ctx.opac_root _ '/mylist') %]" class="btn btn-action" rel="nofollow" vocab="">
-                        <i class="fas fa-glasses" aria-hidden="true"></i>
-                        [% l(' View My Basket') %]
-                    </a>
-                    [%- END %]
-              
-                [% END %]
 
                 [% IF !ctx.is_staff %]
                     [% IF ctx.user; %]
