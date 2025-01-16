@@ -127,11 +127,23 @@
     function adjustLegacyControlsVis(op, rec) {
         if (op == 'add' || op == 'checked') {
             var t;
-            if (t = document.getElementById('mylist_add_' + rec)) t.classList.add('hidden');
-            if (t = document.getElementById('mylist_delete_' + rec)) t.classList.remove('hidden');
+            if (t = document.getElementById('mylist_add_' + rec)) {
+                t.classList.add('hidden');
+                document.getElementById('mylist_delete_' + rec).focus();
+            }
+            if (t = document.getElementById('mylist_delete_' + rec)) {
+                t.classList.remove('hidden');
+                document.getElementById('mylist_add_' + rec).focus();
+            }
         } else if (op == 'delete' || op == 'unchecked') {
             if (t = document.getElementById('mylist_add_' + rec)) t.classList.remove('hidden');
             if (t = document.getElementById('mylist_delete_' + rec)) t.classList.add('hidden');
+        }
+
+        if (mylist.length > 0) {
+            document.getElementById('mybasket').classList.remove('hidden');
+        } else {
+            document.getElementById('mybasket').classList.add('hidden');
         }
     }
 
