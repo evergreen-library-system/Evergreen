@@ -36,16 +36,16 @@
   </eg-catalog-browse-pager>
 
   <div class="row">
-    <div class="col-lg-2" *ngIf="!searchContext.basket">
+    <div class="col-lg-2" *ngIf="!searchContext.showBasket">
       <ng-container *ngIf="!searchContext.termSearch.browseEntry">
         <h2 i18n>Search Results ({{searchContext.result.count}})</h2>
       </ng-container>
     </div>
-    <div class="col-lg-2" *ngIf="searchContext.basket">
+    <div class="col-lg-2" *ngIf="searchContext.showBasket">
       <h3 i18n>Basket View</h3>
     </div>
     <div class="col-lg-4">
-      <label class="form-label checkbox" *ngIf="!searchContext.basket">
+      <label class="form-label checkbox" *ngIf="!searchContext.showBasket">
         <input type='checkbox' [(ngModel)]="allRecsSelected" 
             (change)="toggleAllRecsSelected()"/>
         <span class="ps-1" i18n>Select {{searchContext.pager.rowNumber(0)}} - 
@@ -63,6 +63,7 @@
         [attr.aria-expanded]="!facetsCollapsed"
         aria-controls="collapseFacetsButton"
         class="btn btn-outline-dark ms-2"
+        *ngIf="!searchContext.showBasket"
       >
         <ng-container *ngIf="facetsCollapsed" i18n>Show Facets</ng-container>
         <ng-container *ngIf="!facetsCollapsed" i18n>Hide Facets</ng-container>    
@@ -88,7 +89,7 @@
       </div>
 
       <aside class="col-lg-2" id="eg-catalog-result-facets" 
-      *ngIf="!searchContext.basket && searchContext.result.facetData" 
+      *ngIf="!searchContext.showBasket && searchContext.result.facetData"
       #collapse="ngbCollapse" [animation]="!facetsHorizontal" 
       [(ngbCollapse)]="facetsCollapsed" [horizontal]="facetsHorizontal">
             <eg-catalog-result-facets></eg-catalog-result-facets>
