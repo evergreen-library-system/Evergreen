@@ -1,0 +1,8 @@
+== Move Google Analytics configuration to library settings ==
+
+Moves the Google Analytics configuration from the config.tt2 file
+in the Bootstrap OPAC to two new library settings.
+
+. Google Analytics: Enable (true/false)
+. Google Analytics: Code (Analytics account code)
+
