@@ -263,11 +263,11 @@ function ($scope, $q, $window, $routeParams, $location, $timeout, egCore, egNet,
                     })
                 );
 
-                angular.forEach(data.copies, function (copy) {
+                angular.forEach(data.copies, function (copy, index) {
                     promises.push(
                         itemSvc.fetch(null, copy).then(function (res) {
                             var flat_copy = egCore.idl.toHash(res.copy, true);
-                            $scope.preview_scope.copies.push(flat_copy);
+                            $scope.preview_scope.copies[index] = flat_copy;
                             $scope.record_details[flat_copy['call_number.record.id']] = 1;
                         })
                     )
