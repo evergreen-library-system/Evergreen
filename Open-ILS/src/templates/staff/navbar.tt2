@@ -609,7 +609,7 @@
           <li>
             <a href="/eg2/staff/booking/pickup" target="_self">
               <span class="glyphicon glyphicon-export" aria-hidden="true"></span>
-              <span>[% l('Pick Up Reservations') %]</span>p>
+              <span>[% l('Pick Up Reservations') %]</span>
             </a>
           </li>
           <li>
