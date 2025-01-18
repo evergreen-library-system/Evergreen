@@ -44,7 +44,6 @@ use List::MoreUtils qw(uniq);
 use Encode;
 use Pass::OTP;
 use Pass::OTP::URI;
-use Convert::Base32 qw(decode_base32);
 use Authen::WebAuthn;
 use Email::Valid;
 use MIME::Base64;
