@@ -8229,6 +8229,7 @@ SELECT  usr,
 			<field reporter:label="Stat-Cat entry maps" name="stat_cat_entry_copy_maps" oils_persist:virtual="true" reporter:datatype="link"/>
 			<field reporter:label="Circulations" name="circulations" oils_persist:virtual="true" reporter:datatype="link"/>
 			<field reporter:label="Aged (patronless) Circulations" name="aged_circulations" oils_persist:virtual="true" reporter:datatype="link"/>
+			<field reporter:label="In House Use" name="in_house_use" oils_persist:virtual="true" reporter:datatype="link"/>
 			<field reporter:label="Combined Aged and Active Circulations" name="all_circulations" oils_persist:virtual="true" reporter:datatype="link"/>
 			<field reporter:label="Total Circulations" name="total_circ_count" oils_persist:virtual="true" reporter:datatype="link"/>
 			<field reporter:label="Last Circulation Date" name="last_circ" oils_persist:virtual="true" reporter:datatype="link"/>
@@ -8258,6 +8259,7 @@ SELECT  usr,
 			<link field="notes" reltype="has_many" key="owning_copy" map="" class="acpn"/>
 			<link field="stat_cat_entries" reltype="has_many" key="owning_copy" map="stat_cat_entry" class="ascecm"/>
 			<link field="circulations" reltype="has_many" key="target_copy" map="" class="circ"/>
+			<link field="in_house_use" reltype="has_many" key="item" map="" class="aihu"/>
 			<link field="aged_circulations" reltype="has_many" key="target_copy" map="" class="acirc"/>
 			<link field="all_circulations" reltype="has_many" key="target_copy" map="" class="combcirc"/>
 			<link field="total_circ_count" reltype="might_have" key="id" map="" class="erfcc"/>
