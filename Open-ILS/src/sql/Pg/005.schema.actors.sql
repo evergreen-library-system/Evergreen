@@ -1318,6 +1318,12 @@ CREATE TABLE actor.usr_privacy_waiver (
 );
 CREATE INDEX actor_usr_privacy_waiver_usr_idx ON actor.usr_privacy_waiver (usr);
 
+CREATE TABLE IF NOT EXISTS actor.usr_mfa_exception (
+    id      SERIAL  PRIMARY KEY,
+    usr     BIGINT  NOT NULL REFERENCES actor.usr (id) DEFERRABLE INITIALLY DEFERRED,
+    ingress TEXT    -- disregard MFA requirement for specific ehow (ingress types, like 'sip2'), or NULL for all
+);
+
 CREATE TABLE actor.usr_mfa_factor_map (
     id          SERIAL  PRIMARY KEY,
     usr         BIGINT  NOT NULL REFERENCES actor.usr (id) DEFERRABLE INITIALLY DEFERRED,
