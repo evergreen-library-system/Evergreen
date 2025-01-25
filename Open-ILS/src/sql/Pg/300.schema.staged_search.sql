@@ -2321,6 +2321,32 @@ BEGIN
 END;
 $f$ LANGUAGE PLPGSQL;
 
+-- Defined here, rather than 040.asset, because it relies on
+-- asset.patron_default_visibility_mask() being defined
+CREATE OR REPLACE FUNCTION asset.opac_lasso_record_copy_count_sum(lasso_id INT, record_id BIGINT)
+    RETURNS TABLE (depth INT, org_unit INT, visible BIGINT, available BIGINT, unshadow BIGINT, transcendant INT, library_group INT) AS $$
+    BEGIN
+    IF (lasso_id IS NULL) THEN RETURN; END IF;
+    IF (record_id IS NULL) THEN RETURN; END IF;
+
+    RETURN QUERY SELECT
+        -1,
+        -1,
+        COUNT(cp.id),
+        SUM( CASE WHEN cp.status IN (SELECT id FROM config.copy_status WHERE holdable AND is_available) THEN 1 ELSE 0 END ),
+        SUM( CASE WHEN cl.opac_visible AND cp.opac_visible THEN 1 ELSE 0 END),
+        0,
+        lasso_id
+    FROM ( SELECT DISTINCT descendants.id FROM actor.org_lasso_map aolmp JOIN LATERAL actor.org_unit_descendants(aolmp.org_unit) AS descendants ON TRUE WHERE aolmp.lasso = lasso_id) d
+        JOIN asset.copy cp ON (cp.circ_lib = d.id AND NOT cp.deleted)
+        JOIN asset.copy_location cl ON (cp.location = cl.id AND NOT cl.deleted)
+        JOIN asset.call_number cn ON (cn.record = record_id AND cn.id = cp.call_number AND NOT cn.deleted)
+        JOIN asset.copy_vis_attr_cache av ON (cp.id = av.target_copy AND av.record = record_id)
+        JOIN LATERAL (SELECT c_attrs FROM asset.patron_default_visibility_mask()) AS mask ON TRUE
+        WHERE av.vis_attr_vector @@ mask.c_attrs::query_int;
+    END;
+$$ LANGUAGE PLPGSQL STABLE ROWS 1;
+
 CREATE TRIGGER maintain_symspell_entries_tgr
     AFTER INSERT OR UPDATE OR DELETE ON metabib.title_field_entry
     FOR EACH ROW EXECUTE PROCEDURE search.symspell_maintain_entries();

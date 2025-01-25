@@ -306,7 +306,8 @@ CREATE OR REPLACE FUNCTION unapi.bre (
     slimit HSTORE DEFAULT NULL,
     soffset HSTORE DEFAULT NULL,
     include_xmlns BOOL DEFAULT TRUE,
-    pref_lib INT DEFAULT NULL
+    pref_lib INT DEFAULT NULL,
+    library_group INT DEFAULT NULL
 )
 RETURNS XML AS $F$ SELECT NULL::XML $F$ LANGUAGE SQL STABLE;
 CREATE OR REPLACE FUNCTION unapi.mmr (
@@ -319,7 +320,8 @@ CREATE OR REPLACE FUNCTION unapi.mmr (
     slimit HSTORE DEFAULT NULL,
     soffset HSTORE DEFAULT NULL,
     include_xmlns BOOL DEFAULT TRUE,
-    pref_lib INT DEFAULT NULL
+    pref_lib INT DEFAULT NULL,
+    library_group INT DEFAULT NULL
 )
 RETURNS XML AS $F$ SELECT NULL::XML $F$ LANGUAGE SQL STABLE;
 CREATE OR REPLACE FUNCTION unapi.bmp    ( obj_id BIGINT, format TEXT, ename TEXT, includes TEXT[], org TEXT, depth INT DEFAULT NULL, slimit HSTORE DEFAULT NULL, soffset HSTORE DEFAULT NULL, include_xmlns BOOL DEFAULT TRUE ) RETURNS XML AS $F$ SELECT NULL::XML $F$ LANGUAGE SQL STABLE;
@@ -336,7 +338,8 @@ CREATE OR REPLACE FUNCTION unapi.holdings_xml (
     slimit HSTORE DEFAULT NULL,
     soffset HSTORE DEFAULT NULL,
     include_xmlns BOOL DEFAULT TRUE,
-    pref_lib INT DEFAULT NULL
+    pref_lib INT DEFAULT NULL,
+    library_group INT DEFAULT NULL
 )
 RETURNS XML AS $F$ SELECT NULL::XML $F$ LANGUAGE SQL STABLE;
 
@@ -349,13 +352,14 @@ CREATE OR REPLACE FUNCTION unapi.mmr_holdings_xml (
     slimit HSTORE DEFAULT NULL,
     soffset HSTORE DEFAULT NULL,
     include_xmlns BOOL DEFAULT TRUE,
-    pref_lib INT DEFAULT NULL
+    pref_lib INT DEFAULT NULL,
+    library_group INT DEFAULT NULL
 )
 RETURNS XML AS $F$ SELECT NULL::XML $F$ LANGUAGE SQL STABLE;
 
-CREATE OR REPLACE FUNCTION unapi.biblio_record_entry_feed ( id_list BIGINT[], format TEXT, includes TEXT[], org TEXT, depth INT DEFAULT NULL, slimit HSTORE DEFAULT NULL, soffset HSTORE DEFAULT NULL, include_xmlns BOOL DEFAULT TRUE, title TEXT DEFAULT NULL, description TEXT DEFAULT NULL, creator TEXT DEFAULT NULL, update_ts TEXT DEFAULT NULL, unapi_url TEXT DEFAULT NULL, header_xml XML DEFAULT NULL, pref_lib INT DEFAULT NULL ) RETURNS XML AS $F$ SELECT NULL::XML $F$ LANGUAGE SQL STABLE;
+CREATE OR REPLACE FUNCTION unapi.biblio_record_entry_feed ( id_list BIGINT[], format TEXT, includes TEXT[], org TEXT, depth INT DEFAULT NULL, slimit HSTORE DEFAULT NULL, soffset HSTORE DEFAULT NULL, include_xmlns BOOL DEFAULT TRUE, title TEXT DEFAULT NULL, description TEXT DEFAULT NULL, creator TEXT DEFAULT NULL, update_ts TEXT DEFAULT NULL, unapi_url TEXT DEFAULT NULL, header_xml XML DEFAULT NULL, pref_lib INT DEFAULT NULL, library_group INT DEFAULT NULL ) RETURNS XML AS $F$ SELECT NULL::XML $F$ LANGUAGE SQL STABLE;
 
-CREATE OR REPLACE FUNCTION unapi.metabib_virtual_record_feed ( id_list BIGINT[], format TEXT, includes TEXT[], org TEXT, depth INT DEFAULT NULL, slimit HSTORE DEFAULT NULL, soffset HSTORE DEFAULT NULL, include_xmlns BOOL DEFAULT TRUE, title TEXT DEFAULT NULL, description TEXT DEFAULT NULL, creator TEXT DEFAULT NULL, update_ts TEXT DEFAULT NULL, unapi_url TEXT DEFAULT NULL, header_xml XML DEFAULT NULL, pref_lib INT DEFAULT NULL ) RETURNS XML AS $F$ SELECT NULL::XML $F$ LANGUAGE SQL STABLE;
+CREATE OR REPLACE FUNCTION unapi.metabib_virtual_record_feed ( id_list BIGINT[], format TEXT, includes TEXT[], org TEXT, depth INT DEFAULT NULL, slimit HSTORE DEFAULT NULL, soffset HSTORE DEFAULT NULL, include_xmlns BOOL DEFAULT TRUE, title TEXT DEFAULT NULL, description TEXT DEFAULT NULL, creator TEXT DEFAULT NULL, update_ts TEXT DEFAULT NULL, unapi_url TEXT DEFAULT NULL, header_xml XML DEFAULT NULL, pref_lib INT DEFAULT NULL, library_group INT DEFAULT NULL ) RETURNS XML AS $F$ SELECT NULL::XML $F$ LANGUAGE SQL STABLE;
 
 CREATE OR REPLACE FUNCTION unapi.memoize (classname TEXT, obj_id BIGINT, format TEXT,  ename TEXT, includes TEXT[], org TEXT, depth INT DEFAULT NULL, slimit HSTORE DEFAULT NULL, soffset HSTORE DEFAULT NULL, include_xmlns BOOL DEFAULT TRUE ) RETURNS XML AS $F$
 DECLARE
@@ -384,7 +388,24 @@ BEGIN
 END;
 $F$ LANGUAGE PLPGSQL STABLE;
 
-CREATE OR REPLACE FUNCTION unapi.biblio_record_entry_feed ( id_list BIGINT[], format TEXT, includes TEXT[], org TEXT, depth INT DEFAULT NULL, slimit HSTORE DEFAULT NULL, soffset HSTORE DEFAULT NULL, include_xmlns BOOL DEFAULT TRUE, title TEXT DEFAULT NULL, description TEXT DEFAULT NULL, creator TEXT DEFAULT NULL, update_ts TEXT DEFAULT NULL, unapi_url TEXT DEFAULT NULL, header_xml XML DEFAULT NULL, pref_lib INT DEFAULT NULL ) RETURNS XML AS $F$
+CREATE OR REPLACE FUNCTION unapi.biblio_record_entry_feed (
+    id_list BIGINT[],
+    format TEXT,
+    includes TEXT[],
+    org TEXT,
+    depth INT DEFAULT NULL,
+    slimit HSTORE DEFAULT NULL,
+    soffset HSTORE DEFAULT NULL, 
+    include_xmlns BOOL DEFAULT TRUE,
+    title TEXT DEFAULT NULL,
+    description TEXT DEFAULT NULL,
+    creator TEXT DEFAULT NULL,
+    update_ts TEXT DEFAULT NULL,
+    unapi_url TEXT DEFAULT NULL,
+    header_xml XML DEFAULT NULL,
+    pref_lib INT DEFAULT NULL,
+    library_group INT DEFAULT NULL
+     ) RETURNS XML AS $F$
 DECLARE
     layout          unapi.bre_output_layout%ROWTYPE;
     transform       config.xml_transform%ROWTYPE;
@@ -410,7 +431,7 @@ BEGIN
     xmlns_uri := COALESCE(transform.namespace_uri,xmlns_uri);
 
     -- Gather the bib xml
-    SELECT XMLAGG( unapi.bre(i, format, '', includes, org, depth, slimit, soffset, include_xmlns, pref_lib)) INTO tmp_xml FROM UNNEST( id_list ) i;
+    SELECT XMLAGG( unapi.bre(i, format, '', includes, org, depth, slimit, soffset, include_xmlns, pref_lib, library_group)) INTO tmp_xml FROM UNNEST( id_list ) i;
 
     IF layout.title_element IS NOT NULL THEN
         EXECUTE 'SELECT XMLCONCAT( XMLELEMENT( name '|| layout.title_element ||', XMLATTRIBUTES( $1 AS xmlns), $3), $2)' INTO tmp_xml USING xmlns_uri, tmp_xml::XML, title;
@@ -443,7 +464,23 @@ BEGIN
 END;
 $F$ LANGUAGE PLPGSQL STABLE;
 
-CREATE OR REPLACE FUNCTION unapi.metabib_virtual_record_feed ( id_list BIGINT[], format TEXT, includes TEXT[], org TEXT, depth INT DEFAULT NULL, slimit HSTORE DEFAULT NULL, soffset HSTORE DEFAULT NULL, include_xmlns BOOL DEFAULT TRUE, title TEXT DEFAULT NULL, description TEXT DEFAULT NULL, creator TEXT DEFAULT NULL, update_ts TEXT DEFAULT NULL, unapi_url TEXT DEFAULT NULL, header_xml XML DEFAULT NULL, pref_lib INT DEFAULT NULL ) RETURNS XML AS $F$
+CREATE OR REPLACE FUNCTION unapi.metabib_virtual_record_feed (
+    id_list BIGINT[],
+    format TEXT,
+    includes TEXT[],
+    org TEXT,
+    depth INT DEFAULT NULL,
+    slimit HSTORE DEFAULT NULL,
+    soffset HSTORE DEFAULT NULL,
+    include_xmlns BOOL DEFAULT TRUE,
+    title TEXT DEFAULT NULL,
+    description TEXT DEFAULT NULL,
+    creator TEXT DEFAULT NULL,
+    update_ts TEXT DEFAULT NULL,
+    unapi_url TEXT DEFAULT NULL,
+    header_xml XML DEFAULT NULL,
+    pref_lib INT DEFAULT NULL,
+    library_group INT DEFAULT NULL ) RETURNS XML AS $F$
 DECLARE
     layout          unapi.bre_output_layout%ROWTYPE;
     transform       config.xml_transform%ROWTYPE;
@@ -469,7 +506,7 @@ BEGIN
     xmlns_uri := COALESCE(transform.namespace_uri,xmlns_uri);
 
     -- Gather the bib xml
-    SELECT XMLAGG( unapi.mmr(i, format, '', includes, org, depth, slimit, soffset, include_xmlns, pref_lib)) INTO tmp_xml FROM UNNEST( id_list ) i;
+    SELECT XMLAGG( unapi.mmr(i, format, '', includes, org, depth, slimit, soffset, include_xmlns, pref_lib, library_group)) INTO tmp_xml FROM UNNEST( id_list ) i;
 
     IF layout.title_element IS NOT NULL THEN
         EXECUTE 'SELECT XMLCONCAT( XMLELEMENT( name '|| layout.title_element ||', XMLATTRIBUTES( $1 AS xmlns), $3), $2)' INTO tmp_xml USING xmlns_uri, tmp_xml::XML, title;
@@ -512,7 +549,8 @@ CREATE OR REPLACE FUNCTION unapi.bre (
     slimit HSTORE DEFAULT NULL,
     soffset HSTORE DEFAULT NULL,
     include_xmlns BOOL DEFAULT TRUE,
-    pref_lib INT DEFAULT NULL
+    pref_lib INT DEFAULT NULL,
+    library_group INT DEFAULT NULL
 )
 RETURNS XML AS $F$
 DECLARE
@@ -539,7 +577,7 @@ BEGIN
     END IF;
 
     IF format = 'holdings_xml' THEN -- the special case
-        output := unapi.holdings_xml( obj_id, ouid, org, depth, includes, slimit, soffset, include_xmlns);
+        output := unapi.holdings_xml( obj_id, ouid, org, depth, includes, slimit, soffset, include_xmlns, NULL, library_group);
         RETURN output;
     END IF;
 
@@ -569,7 +607,7 @@ BEGIN
 
     -- grab holdings if we need them
     IF ('holdings_xml' = ANY (includes)) THEN 
-        hxml := unapi.holdings_xml(obj_id, ouid, org, depth, array_remove(includes,'holdings_xml'), slimit, soffset, include_xmlns, pref_lib);
+        hxml := unapi.holdings_xml(obj_id, ouid, org, depth, array_remove(includes,'holdings_xml'), slimit, soffset, include_xmlns, pref_lib, library_group);
     ELSE
         hxml := NULL::XML;
     END IF;
@@ -659,7 +697,8 @@ CREATE OR REPLACE FUNCTION unapi.holdings_xml (
     slimit HSTORE DEFAULT NULL,
     soffset HSTORE DEFAULT NULL,
     include_xmlns BOOL DEFAULT TRUE,
-    pref_lib INT DEFAULT NULL
+    pref_lib INT DEFAULT NULL,
+    library_group INT DEFAULT NULL
 )
 RETURNS XML AS $F$
      SELECT  XMLELEMENT(
@@ -689,6 +728,18 @@ RETURNS XML AS $F$
                                      XMLATTRIBUTES('pref_lib' as type, depth, org_unit, coalesce(transcendant,0) as transcendant, available, visible as count, unshadow)
                                  )::text
                            FROM  asset.opac_ou_record_copy_count($9,  $1)
+                                     UNION
+                         SELECT  XMLELEMENT(
+                                     name count,
+                                     XMLATTRIBUTES('public' as type, depth, library_group, coalesce(transcendant,0) as transcendant, available, visible as count, unshadow)
+                                 )::text
+                           FROM  asset.opac_lasso_record_copy_count_sum(library_group,  $1)
+                                     UNION
+                         SELECT  XMLELEMENT(
+                                     name count,
+                                     XMLATTRIBUTES('staff' as type, depth, library_group, coalesce(transcendant,0) as transcendant, available, visible as count, unshadow)
+                                 )::text
+                           FROM  asset.staff_lasso_record_copy_count_sum(library_group,  $1)
                                      ORDER BY 1
                      )x)
                  ),
@@ -1585,7 +1636,8 @@ CREATE OR REPLACE FUNCTION unapi.mmr_holdings_xml (
     slimit HSTORE DEFAULT NULL,
     soffset HSTORE DEFAULT NULL,
     include_xmlns BOOL DEFAULT TRUE,
-    pref_lib INT DEFAULT NULL
+    pref_lib INT DEFAULT NULL,
+    library_group INT DEFAULT NULL
 )
 RETURNS XML AS $F$
      SELECT  XMLELEMENT(
@@ -1615,6 +1667,18 @@ RETURNS XML AS $F$
                                      XMLATTRIBUTES('pref_lib' as type, depth, org_unit, coalesce(transcendant,0) as transcendant, available, visible as count, unshadow)
                                  )::text
                            FROM  asset.opac_ou_metarecord_copy_count($9,  $1)
+                                     UNION
+                         SELECT  XMLELEMENT(
+                                     name count,
+                                     XMLATTRIBUTES('public' as type, depth, library_group, coalesce(transcendant,0) as transcendant, available, visible as count, unshadow)
+                                 )::text
+                           FROM  asset.opac_lasso_metarecord_copy_count_sum(library_group,  $1)
+                                     UNION
+                         SELECT  XMLELEMENT(
+                                     name count,
+                                     XMLATTRIBUTES('staff' as type, depth, library_group, coalesce(transcendant,0) as transcendant, available, visible as count, unshadow)
+                                 )::text
+                           FROM  asset.staff_lasso_metarecord_copy_count_sum(library_group,  $1)
                                      ORDER BY 1
                      )x)
                  ),
@@ -1654,7 +1718,8 @@ CREATE OR REPLACE FUNCTION unapi.mmr (
     slimit HSTORE DEFAULT NULL,
     soffset HSTORE DEFAULT NULL,
     include_xmlns BOOL DEFAULT TRUE,
-    pref_lib INT DEFAULT NULL
+    pref_lib INT DEFAULT NULL,
+    library_group INT DEFAULT NULL
 )
 RETURNS XML AS $F$
 DECLARE
@@ -1703,7 +1768,7 @@ BEGIN
         output := unapi.mmr_holdings_xml(
             obj_id, ouid, org, depth,
             array_remove(includes,'holdings_xml'),
-            slimit, soffset, include_xmlns, pref_lib);
+            slimit, soffset, include_xmlns, pref_lib, library_group);
         RETURN output;
     END IF;
 
@@ -1731,7 +1796,7 @@ BEGIN
         hxml := unapi.mmr_holdings_xml(
                     obj_id, ouid, org, depth,
                     array_remove(includes,'holdings_xml'),
-                    slimit, soffset, include_xmlns, pref_lib);
+                    slimit, soffset, include_xmlns, pref_lib, library_group);
     END IF;
 
     subxml := NULL::XML;
