@@ -116,7 +116,8 @@ sub load_record {
         flesh => '{holdings_xml,bmp,mra,acp,acnp,acns}',
         site => $org_name,
         depth => $depth,
-        pref_lib => $pref_ou
+        pref_lib => $pref_ou,
+        library_group => $ctx->{search_lasso}
     });
 
     $self->timelog("past get_records_and_facets()");
@@ -586,6 +587,11 @@ sub get_hold_copy_summary {
         $copy_count_meth .= '.staff';
     }
     my $req1 = $search->request($copy_count_meth, $org, $rec_id); 
+    $self->ctx->{copy_summary} = $req1->recv->content;
+    if ($ctx->{search_lasso}) {
+        my ($group_counts) = $search->request("$copy_count_meth.lasso", $org, $rec_id, $ctx->{search_lasso})->recv->content;
+        unshift @{$self->ctx->{copy_summary}}, $group_counts->[0];
+    }
 
     # if org unit hiding applies, limit the hold count to holds
     # whose pickup library is within our depth-scoped tree
@@ -598,8 +604,6 @@ sub get_hold_copy_summary {
     $self->ctx->{record_hold_count} = $U->simplereq(
         'open-ils.circ', 'open-ils.circ.bre.holds.count', 
         $rec_id, $count_args);
-
-    $self->ctx->{copy_summary} = $req1->recv->content;
 
     $search->kill_me;
 }
