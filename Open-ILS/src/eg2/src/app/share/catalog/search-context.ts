@@ -463,6 +463,13 @@ export class CatalogSearchContext {
         return ids;
     }
 
+    currentLasso(): number|null {
+        if (this.termSearch.locationGroupOrLasso?.includes('lasso')) {
+            return +this.termSearch.locationGroupOrLasso.match(/\d+/g)[0];
+        }
+        return null;
+    }
+
     addResultId(id: number, resultIdx: number ): void {
         this.resultIds[resultIdx + this.pager.offset] = Number(id);
     }

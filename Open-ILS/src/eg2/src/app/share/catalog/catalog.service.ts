@@ -1,11 +1,10 @@
 /* eslint-disable */
 /* eslint-disable no-empty, no-magic-numbers */
 import {Injectable, EventEmitter} from '@angular/core';
-import {Observable} from 'rxjs';
+import {Observable, of} from 'rxjs';
 import {map, tap, finalize} from 'rxjs/operators';
 import {OrgService} from '@eg/core/org.service';
-import {UnapiService} from '@eg/share/catalog/unapi.service';
-import {IdlService, IdlObject} from '@eg/core/idl.service';
+import {IdlObject} from '@eg/core/idl.service';
 import {NetService} from '@eg/core/net.service';
 import {PcrudService} from '@eg/core/pcrud.service';
 import {CatalogSearchContext, CatalogSearchState, CATALOG_CCVM_FILTERS} from './search-context';
@@ -35,10 +34,8 @@ export class CatalogService {
     onSearchComplete: EventEmitter<CatalogSearchContext>;
 
     constructor(
-        private idl: IdlService,
         private net: NetService,
         private org: OrgService,
-        private unapi: UnapiService,
         private pcrud: PcrudService,
         private bibService: BibRecordService,
         private basket: BasketService,
@@ -233,6 +230,10 @@ export class CatalogService {
             options.copy_depth = depth;
             options.copy_limit = 5;
             options.pref_ou = ctx.prefOu;
+        }
+
+        if (ctx.currentLasso()) {
+            options.library_group = ctx.currentLasso();
         }
 
         if (isMeta) {
@@ -518,5 +519,21 @@ export class CatalogService {
             'open-ils.supercat.call_number.browse',
             cbs.value, ctx.searchOrg.shortname(), cbs.limit, cbs.offset
         ).pipe(tap(result => ctx.searchState = CatalogSearchState.COMPLETE));
+    }
+
+    orgOrLassoName(itemCount: any): Observable<string> {
+        if (itemCount.org_unit && itemCount.org_unit > 0) {
+            return of(this.org.get(itemCount.org_unit)?.shortname());
+        } else if (itemCount.library_group) {
+            return this.getLasso(itemCount.library_group).pipe(map(lasso => lasso.name()));
+        }
+        return of('');
+    }
+
+    private getLasso(lassoId): Observable<IdlObject> {
+        if (this.libraryGroups.some((group) => group.id() == lassoId)) {
+            return of(this.libraryGroups.find((group) => group.id() == lassoId));
+        }
+        return this.pcrud.retrieve('lasso', lassoId);
     }
 }

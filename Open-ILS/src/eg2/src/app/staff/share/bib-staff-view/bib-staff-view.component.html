@@ -208,7 +208,7 @@
                     <ul>
                         <li><span i18n>{{summary.holdCount}} hold requests</span></li>
                         <li *ngFor="let _count of summary.holdingsSummary">
-                            <span i18n>{{_count.available}} of {{_count.count}} copies available at {{orgName(_count.org_unit)}}.</span>
+                            <span i18n>{{_count.available}} of {{_count.count}} copies available at {{orgName(_count) | async}}.</span>
                         </li>
                     </ul>
                 </div>

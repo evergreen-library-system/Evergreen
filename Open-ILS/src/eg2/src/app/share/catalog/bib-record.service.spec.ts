@@ -83,5 +83,17 @@ describe('BibRecordService', () => {
                     expect(summary.recordNoteCount).toEqual(0);
                 });
         }));
+        it('can accept a library group id', waitForAsync(() => {
+            service.getBibSummary(248, 1, true, 15)
+                .subscribe(() => {
+                    expect(mockNetService.request).toHaveBeenCalledWith(
+                        'open-ils.search',
+                        'open-ils.search.biblio.record.catalog_summary.staff',
+                        1, // org id
+                        [248], // bib record ids
+                        {library_group: 15}
+                    );
+                });
+        }));
     });
 });

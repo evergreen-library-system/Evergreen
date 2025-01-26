@@ -52,7 +52,10 @@ export class OrgService {
             }
             return nodeOrId as IdlObject;
         }
-        return this.orgMap[nodeOrId];
+        if (nodeOrId > 0) {
+            return this.orgMap[nodeOrId];
+        }
+        return null;
     }
 
     list(): IdlObject[] {
