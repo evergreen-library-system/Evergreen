@@ -1,7 +1,7 @@
 :host {
   --lineitem-delayed: light-dark(var(--bs-blue-150), var(--bs-blue-900-desat));
   --lineitem-new: light-dark(var(--bs-yellow-025), var(--bs-yellow-900)); 
-  --lineitem-on-order: light-dark(var(--bs-gray-200), var(--bs-gray-800)); 
+  --lineitem-on-order: light-dark(var(--bs-red-100), var(--bs-red-900)); 
   --lineitem-order-pending: light-dark(var(--bs-yellow-050), var(--bs-yellow-900)); 
   --lineitem-order-ready: light-dark(var(--bs-gray-150), var(--bs-gray-900)); 
   --lineitem-ready: light-dark(var(--bs-gray-100), var(--bs-gray-900)); 
