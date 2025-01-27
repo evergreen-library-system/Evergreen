@@ -745,7 +745,13 @@ function($scope,  $q,  $routeParams,  $timeout,  $window,  $location,  egCore,
     }
 
     $scope.clearForm = function () {
-        $scope.searchArgs={};
+        var inactive = $scope.searchArgs.inactive;
+        var home_ou = egCore.org.tree();
+        $scope.searchArgs = {
+            home_ou: home_ou,
+            inactive: inactive
+        };
+        egCore.hatch.setItem('eg.circ.patron.search.ou', home_ou);
         if (lastFormElement) lastFormElement.focus();
     }
 
@@ -770,9 +776,27 @@ function($scope,  $q,  $routeParams,  $timeout,  $window,  $location,  egCore,
                     if (searchInactive) $scope.searchArgs.inactive = searchInactive;
                 });
 
+    egCore.hatch.getItem('eg.circ.patron.search.ou').then(function(cachedHomeOu) {
+        $scope.searchArgs.home_ou = cachedHomeOu || egCore.org.tree();
+        // Once done, mark ourselves as ready
+        $scope.initialized = true;
+        });
+
      $scope.onSearchInactiveChanged = function() {
         egCore.hatch.setItem('eg.circ.patron.search.include_inactive', $scope.searchArgs.inactive);
     }
+
+    // Then watch the home_ou for actual user changes
+    $scope.$watch('searchArgs.home_ou', function(newVal, oldVal) {
+        // If not initialized, ignore. The first assignment is from the cached value.
+        if (!$scope.initialized) return;
+        if (newVal !== oldVal) {
+        egCore.hatch.setItem(
+            'eg.circ.patron.search.ou',
+            $scope.searchArgs.home_ou
+        );
+        }
+    });
 
     // map form arguments into search params
     function compileSearch(args) {
@@ -782,7 +806,7 @@ function($scope,  $q,  $routeParams,  $timeout,  $window,  $location,  egCore,
             if (key == 'profile' && args.profile) {
                 search.profile = {value : args.profile.id(), group : 5};
             } else if (key == 'home_ou' && args.home_ou) {
-                search.home_ou = args.home_ou.id(); // passed separately
+                search.home_ou = args.home_ou.id();
             } else if (key == 'inactive') {
                 search.inactive = val;
             } else if (key == 'name') { // name keywords search
@@ -812,7 +836,7 @@ function($scope,  $q,  $routeParams,  $timeout,  $window,  $location,  egCore,
                 }
             }
         });
-
+    
         return search;
     }
 

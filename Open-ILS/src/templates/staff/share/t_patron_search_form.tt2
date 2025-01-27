@@ -91,8 +91,8 @@
               </ul>
             </div>
 
-          <eg-org-selector  ng-show="showExtras" label="[% l('Home Library') %]" org-aria="[% l('Home Library') %]"
-            selected="searchArgs.home_ou" sticky-setting="eg.circ.patron.search.ou">
+          <eg-org-selector ng-show="showExtras" label="[% l('Home Library') %]" org-aria="[% l('Home Library') %]"
+              selected="searchArgs.home_ou" sticky-setting="eg.circ.patron.search.ou">
           </eg-org-selector>
 
           <input ng-show="showExtras" type="text" class="form-control" aria-label="[% l('Parent/Guardian') %]"
@@ -121,7 +121,7 @@
           </div>
 
       <div ng-show="showExtras" class="actions-reset" ng-show="showExtras" ng-mouseover="setLastFormElement()">
-        <input type="reset" class="btn btn-outline-primary" ng-click="clearForm()"
+        <input type="button" class="btn btn-outline-primary" ng-click="clearForm()"
           aria-label="[% l('Clear Form') %]" value="[% l('Clear Form') %]"/>
       </div>
       <div class="actions-search" ng-mouseover="setLastFormElement()">
