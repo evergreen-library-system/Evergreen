@@ -93,38 +93,39 @@
                     [%- IF ctx.get_org_setting(ctx.search_ou, 'sms.enable') == 1;
                        setting = 'opac.hold_notify';
                     -%]
-                    <p class="form-check">
-                        [% sms_label = l('Notify by Text by default when a hold is ready for pickup?') %]
-                        <input class="form-check-input" onchange="record_change(event)" id='[% setting %].sms' name='[% setting %].sms'
-                                type="checkbox" title="[% sms_label %]"
-                                [% IF (matches = ctx.user_setting_map.$setting.match('sms')); %] checked='checked' [% END %]/>
-                        <label class="form-check-label" for='[% setting %].sms'>[% sms_label %]</label>
-                    </p>
-                    <p>
-                        <label for="sms_carrier">[% l('Default Mobile Carrier') %]</label>
-                        [% INCLUDE "opac/parts/sms_carrier_selector.tt2" sms_carrier_hide_label="true" %]
-                    </p>
-                    [% setting = 'opac.default_sms_notify' %]
-                    <p>
-                        <label for='[% setting %]'>[% l('Default Mobile Number') %]</label>
-                        <input onchange="record_change(event)" id='[% setting %]' name='[% setting %]' type="text" autocomplete="tel-national"
+                        <p class="form-check">
+                            [% sms_label = l('Notify by Text by default when a hold is ready for pickup?') %]
+                            <input class="form-check-input" onchange="record_change(event)" id='[% setting %].sms' name='[% setting %].sms'
+                                    type="checkbox" title="[% sms_label %]"
+                                    [% IF (matches = ctx.user_setting_map.$setting.match('sms')); %] checked='checked' [% END %]/>
+                            <label class="form-check-label" for='[% setting %].sms'>[% sms_label %]</label>
+                        </p>
+                        <p class="form-check">
+                            <label for="sms_carrier">[% l('Default Mobile Carrier') %]</label>
+                            [% INCLUDE "opac/parts/sms_carrier_selector.tt2" sms_carrier_hide_label="true" %]
+                        </p>
+                        [% setting = 'opac.default_sms_notify' %]
+                        <p class="form-check">
+                            <label for='[% setting %]'>[% l('Default Mobile Number') %]</label>
+                            <input onchange="record_change(event)" id='[% setting %]' name='[% setting %]' type="text" autocomplete="tel-national"
                                 [% IF ctx.user_setting_map.$setting; %] value='[% ctx.user_setting_map.$setting | html %]' [% END %]/>
-                            [% IF ctx.user_setting_map.$setting; %]
-                                <span class='light_border'>
-                                <button type="button" class="btn btn-sm btn-action" onclick="sendTestSMS(
-                                    [% ctx.user.id %], '[% ctx.authtoken %]'
-                                    )">
-                                    <i class="fas fa-mobile"></i> [% l('Send Test Text Message') %]
-                                </button>
-                                </span><br />
-                            [% l('Hint: use the full 10 digits of your phone #, no spaces, no dashes'); %]
-                            [% END %]
-                        </td>
-                    </p>
+                                [% IF ctx.user_setting_map.$setting; %]
+                                    <span class='light_border'>
+                                    <button type="button" class="btn btn-sm btn-action" onclick="sendTestSMS(
+                                        [% ctx.user.id %], '[% ctx.authtoken %]'
+                                        )">
+                                        <i class="fas fa-mobile"></i> [% l('Send Test Text Message') %]
+                                    </button>
+                                    </span><br />
+                                [% l('Hint: use the full 10 digits of your phone #, no spaces, no dashes'); %]
+                                [% END %]
+                        </p>
                     [% END %]
-                    <p role="status" id="test_notification_banner" style="display:none">
+
+                    <div role="status" id="test_notification_banner" style="display:none;" class="form-check">
                         [% INCLUDE "opac/myopac/test_notification.tt2" message_type = "sms" %]
-                    </p>
+                    </div>
+
                     [% FOR optin IN ctx.opt_in_settings %]
                     <p class="form-check">
                         <input class="form-check-input" type='checkbox' name='setting' 
