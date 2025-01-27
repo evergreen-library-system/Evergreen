@@ -1,5 +1,7 @@
 BEGIN;
 
+SELECT evergreen.upgrade_deps_block_check('1449', :eg_version);
+
 CREATE OR REPLACE FUNCTION metabib.reingest_metabib_field_entries(
     bib_id BIGINT,
     skip_facet BOOL DEFAULT FALSE,
