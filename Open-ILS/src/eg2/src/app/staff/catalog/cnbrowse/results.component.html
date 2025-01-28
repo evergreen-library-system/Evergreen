@@ -25,10 +25,11 @@
 <!-- header, pager, and list of records -->
 <div id="staff-catalog-browse-results-container" *ngIf="browseHasResults()">
 
-  <div class="row mb-2 d-flex">
-    <div class="flex-1"></div>
-    <div>
+  <div class="row mb-2">
+    <div class="col-6">
       <button type="button" class="btn btn-primary" (click)="prevPage()">Back</button>
+    </div>
+    <div class="col-6 text-end">
       <button type="button" class="btn btn-primary ms-3" (click)="nextPage()">Next</button>
     </div>
   </div>
@@ -37,9 +38,12 @@
     <div class="row mb-3" *ngFor="let rowIdx of rowIndexList">
       <ng-container *ngFor="let callNumber of resultSlice(rowIdx); let colIdx = index">
         <ng-container *ngIf="callNumber._bibSummary">
-          <div class="col-lg-4 pt-2 d-flex border"
+          <div class="row col-lg-4 col-sm-12 border m-0"
             [ngClass]="{'border-primary': isCenter(rowIdx, colIdx)}">
-            <div class="flex-1">
+            <div class="col-lg-4 col-md-12 col-sm-12 p-2 text-sm-center">
+              <img alt="" src="/opac/extras/ac/jacket/small/r/{{callNumber._bibSummary.id}}"/>
+            </div>
+            <div class="col-lg-7 col-md-12 col-sm-12 p-2">
               <h3 class="browse-call-number">
                 {{callNumber.prefix().label()}} {{callNumber.label()}}
                 {{callNumber.suffix().label()}}
@@ -64,19 +68,17 @@
 		  </div>
 	      </ng-container>
             </div>
-            <div class="ms-2">
-              <img alt="" src="/opac/extras/ac/jacket/small/r/{{callNumber._bibSummary.id}}"/>
-            </div>
           </div>
         </ng-container>
       </ng-container>
     </div>
   </ng-container>
 
-  <div class="row mb-2 d-flex">
-    <div class="flex-1"></div>
-    <div>
+  <div class="row mb-2">
+    <div class="col-6">
       <button type="button" class="btn btn-primary" (click)="prevPage()">Back</button>
+    </div>
+    <div class="col-6 text-end">
       <button type="button" class="btn btn-primary ms-3" (click)="nextPage()">Next</button>
     </div>
   </div>
