@@ -1521,7 +1521,8 @@ function($scope , $routeParams , $q , $uibModal , $window , egCore ,
     $scope.edit_passthru = {};
 
     // 0=all, 1=suggested, 2=required
-    $scope.edit_passthru.vis_level = 2; 
+    $scope.edit_passthru.vis_level = 2;
+    $scope.name_tab = 'primary';
 
     // Apply default values for new patrons during initial registration
     // prs is shorthand for patronSvc
@@ -1645,6 +1646,7 @@ function($scope , $routeParams , $q , $uibModal , $window , egCore ,
         'au.passwd' :  3,
         'au.first_given_name' : 3,
         'au.family_name' : 3,
+        'au.pref_first_given_name' : 2,
         'au.ident_type' : 3,
         'au.home_ou' : 3,
         'au.profile' : 3,
