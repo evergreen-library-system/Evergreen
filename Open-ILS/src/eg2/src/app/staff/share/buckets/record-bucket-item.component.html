@@ -137,6 +137,10 @@
     <eg-grid-column path="id" [index]="true" [hidden]="true" [required]="true"></eg-grid-column>
     <eg-grid-column path="target_biblio_record_entry.simple_record.title" [required]="true" [cellTemplate]="titleTemplate"></eg-grid-column>
     <eg-grid-column path="target_biblio_record_entry.simple_record.author" [required]="true"></eg-grid-column>
+    <eg-grid-column path="target_biblio_record_entry.simple_record.publisher" [required]="true"></eg-grid-column>
+    <eg-grid-column path="target_biblio_record_entry.simple_record.pubdate" [required]="true"></eg-grid-column>
+    <eg-grid-column path="target_biblio_record_entry.simple_record.isbn" [required]="true"></eg-grid-column>
+    <eg-grid-column path="target_biblio_record_entry.simple_record.issn" [hidden]="true"></eg-grid-column>
     <eg-grid-column path="target_biblio_record_entry.id" [required]="true"></eg-grid-column>
     <eg-grid-column path="bucket" [hidden]="true" [required]="true"></eg-grid-column>
     <eg-grid-column path="pos" [hidden]="true" [required]="true"></eg-grid-column>
@@ -150,6 +154,7 @@
     <eg-grid-column path="target_biblio_record_entry.merge_date" [hidden]="true" [required]="true"></eg-grid-column>
     <eg-grid-column path="target_biblio_record_entry.merged_to" [hidden]="true" [required]="true" [cellTemplate]="mergedToTemplate"></eg-grid-column>
     <eg-grid-column path="target_biblio_record_entry.simple_record.quality" [required]="true"></eg-grid-column>
+    <eg-grid-column path="target_biblio_record_entry.simple_record.fingerprint" [hidden]="true"></eg-grid-column>
     <!--<eg-grid-column path="target_biblio_record_entry.*" idlClass="bre" [hidden]="true"></eg-grid-column>-->
     <!--<eg-grid-column path="target_biblio_record_entry.simple_record.*" idlClass="rmsr" [hidden]="true"></eg-grid-column>-->
 
