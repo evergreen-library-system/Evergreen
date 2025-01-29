@@ -3687,7 +3687,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 			<field reporter:label="Record Creation Date/Time" name="create_date" reporter:datatype="timestamp"/>
 			<field reporter:label="Record Creator" name="creator" reporter:datatype="link"/>
 			<field reporter:label="Is Deleted?" name="deleted" reporter:datatype="bool"/>
-			<field reporter:label="Last Edit Data/Time" name="edit_date" reporter:datatype="timestamp"/>
+			<field reporter:label="Last Edit Date/Time" name="edit_date" reporter:datatype="timestamp"/>
 			<field reporter:label="Last Editing User" name="editor" reporter:datatype="link"/>
 			<field reporter:label="Fingerprint" name="fingerprint" reporter:datatype="text"/>
 			<field reporter:label="Record ID" name="id" reporter:datatype="id"/>
