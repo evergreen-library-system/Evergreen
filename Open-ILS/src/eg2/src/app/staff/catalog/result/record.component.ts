@@ -72,7 +72,6 @@ export class ResultRecordComponent implements OnInit, OnDestroy {
             this.isRecordSelected = this.basket.hasRecordId(this.summary.id);
         });
 
-        await this.loadBuckets();
     }
 
     ngOnDestroy() {
@@ -89,6 +88,13 @@ export class ResultRecordComponent implements OnInit, OnDestroy {
         this.favoriteBuckets$.next(favoriteBuckets);
         const recentBuckets = await this.bucketService.retrieveRecordBuckets(this.recentBucketIds);
         this.recentBuckets$.next(recentBuckets);
+    }
+
+    async updateBucketList($event) {
+        if ($event) {
+            // we're opening, so fetch the buckets
+            await this.loadBuckets();
+        }
     }
 
     loadCourseInformation(recordId) {

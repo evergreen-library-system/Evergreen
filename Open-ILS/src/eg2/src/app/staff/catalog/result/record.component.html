@@ -226,7 +226,7 @@
                   <span i18n>Place Hold</span>
                 </button>
 
-                <div class="btn-group my-1" ngbDropdown>
+                <div class="btn-group my-1" ngbDropdown (openChange)="updateBucketList($event)">
                   <button type="button" class="btn btn-normal text-start small-text-1"
                     (click)="chooseBucket(summary.id)" i18n>Add to Bucket</button>
                   <button type="button" class="btn btn-normal dropdown-toggle-split" ngbDropdownToggle>
