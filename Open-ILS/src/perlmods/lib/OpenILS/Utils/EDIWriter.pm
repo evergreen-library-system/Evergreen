@@ -462,7 +462,7 @@ EDI
     my $li_count = scalar(@lis);
 
     # EDI lineitem segments
-    for (my $i = 0; $i <= $li_count; $i++) {
+    for (my $i = 0; $i < $li_count; $i++) {
         $lis[$i]->{seq_id} = $i + 1;
         $edi .= $self->build_lineitem_segments($lis[$i]);
     }
