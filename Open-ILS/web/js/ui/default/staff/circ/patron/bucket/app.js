@@ -230,8 +230,10 @@ function($scope,  $routeParams,  bucketSvc , egGridDataProvider,   egCore , ngTo
             // $scope.resetPendingList(); // ??? Add instead of replace
             angular.forEach(newVal.split(/\n/), function(line) {
                 if (!line) return;
-                // scrub any trailing spaces or commas from the barcode
-                line = line.replace(/(.*?)($|\s.*|,.*)/,'$1');
+                // scrub any leading or trailing spaces or commas from the barcode,
+                // leaving any internal spaces intact
+                line = line.replace(/^(\s|,)+/, '');
+                line = line.replace(/(\s|,)+$/, '');
                 barcodes.push(line);
 
             });
