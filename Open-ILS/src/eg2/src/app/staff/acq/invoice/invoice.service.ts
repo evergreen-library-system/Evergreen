@@ -443,8 +443,8 @@ export class InvoiceService {
             entry.phys_item_count(count);
             entry.inv_item_count(count);
             if (/* use_po_prices &&*/ !isNaN(Number(li.estimated_unit_price()))) {
-                entry.cost_billed( li.estimated_unit_price() * count );
-                entry.amount_paid( li.estimated_unit_price() * count );
+                entry.cost_billed( (li.estimated_unit_price() * count * 100) / 100 );
+                entry.amount_paid( (li.estimated_unit_price() * count * 100) / 100 );
             }
             entries.push(entry);
         });
