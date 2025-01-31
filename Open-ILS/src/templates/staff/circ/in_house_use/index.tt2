@@ -57,6 +57,13 @@
           class="form-control" ng-model="args.barcode"
           ng-disabled="args.noncat_type != 'barcode'"/>
         <input class="btn btn-default" type="submit" value="[% l('Submit') %]"/>
+
+        <label class="pad-horiz">
+          <input type="checkbox" ng-model="do_inventory_update"
+            ng-change="toggle_do_inventory_update()"
+            ng-disabled="!isBarcodeMode()">
+            [% l('Update Inventory') %]
+        </label>
       </div><!-- input group -->
     </div><!-- col -->
   </div><!-- row -->
@@ -64,6 +71,14 @@
 
 <div clas="row" ng-if="copyNotFound">
   <div class="col-md-6 alert alert-danger">[% l('Item Not Found') %]</div>
+</div>
+
+<div class="row" ng-if="do_inventory_update && isBarcodeMode()">
+  <div class="col-md-12">
+    <div class="alert alert-danger pad-all-min">
+      [% l('Update Inventory') %]
+    </div>
+  </div>
 </div>
 
 <eg-grid

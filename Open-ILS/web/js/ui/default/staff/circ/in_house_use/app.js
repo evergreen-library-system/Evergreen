@@ -16,6 +16,8 @@ function($scope , egCore , egGridDataProvider , egConfirmDialog,
     var countCap;
     var countMax;
 
+    $scope.do_inventory_update = false;
+
     egCore.startup.go().then(function() {
 
         // grab our non-cat types after startup
@@ -44,6 +46,11 @@ function($scope , egCore , egGridDataProvider , egConfirmDialog,
             $scope.checkinAlert = checkinAlert =
                 set['circ.in_house_use.checkin_alert'] || false;
         });
+
+        egCore.hatch.getItem('eg.circ.in_house.do_inventory_update')
+            .then(function(doInventoryUpdate) {
+                $scope.do_inventory_update = doInventoryUpdate;
+            });
     });
 
     $scope.bcFocus = true;
@@ -113,6 +120,10 @@ function($scope , egCore , egGridDataProvider , egConfirmDialog,
                 }
 
                 coArgs.copyid = copy.id();
+
+                if ($scope.do_inventory_update) {
+                    coArgs.do_inventory_update = true;
+                }
 
                 copy.call_number().record().flat_display_entries(
                     egBibDisplay.mfdeToHash(
@@ -188,5 +199,18 @@ function($scope , egCore , egGridDataProvider , egConfirmDialog,
             scope : print_data
         });
     }
+
+    $scope.toggle_do_inventory_update = function() {
+        var key = 'eg.circ.in_house.do_inventory_update';
+        if ($scope.do_inventory_update) {
+            egCore.hatch.setItem(key, true);
+        } else {
+            egCore.hatch.removeItem(key);
+        }
+    };
+
+    $scope.isBarcodeMode = function() {
+        return $scope.args.noncat_type === 'barcode';
+    };
 
 }])

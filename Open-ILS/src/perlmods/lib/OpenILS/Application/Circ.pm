@@ -715,6 +715,7 @@ __PACKAGE__->register_method(
             'location' The org unit id where the in-house use occurs
             'copyid' The copy in question
             'count' The number of in-house uses to apply to this copy
+            'do_inventory_update' If true, create an inventory entry (optional)
         @return An array of id's representing the id's of the newly created
         in-house use objects or an event on an error
     /);
@@ -783,6 +784,32 @@ sub create_in_house_use {
 
         $ihu = $e->$cmeth($ihu) or return $e->event;
         push( @ids, $ihu->id );
+    }
+
+    if ($params->{do_inventory_update} && !$non_cat) {
+        my $do_inventory = $copy->circ_lib == $org;
+
+        if (!$do_inventory && $copy->floating) {
+            my $res = $e->json_query({
+                from => [
+                    'evergreen.can_float',
+                    $copy->floating,
+                    $copy->circ_lib,
+                    $org
+                ]
+            });
+            $do_inventory = $U->is_true(
+                $res->[0]->{'evergreen.can_float'}
+            );
+        }
+
+        if ($do_inventory) {
+            my $aci = Fieldmapper::asset::copy_inventory->new;
+            $aci->inventory_date('now');
+            $aci->inventory_workstation($e->requestor->wsid);
+            $aci->copy($copyid);
+            $e->create_asset_copy_inventory($aci) or return $e->event;
+        }
     }
 
     $e->commit;

@@ -19455,6 +19455,13 @@ VALUES (
              'cwst', 'label'
     )
 ), (
+    'eg.circ.in_house.do_inventory_update', 'circ', 'bool',
+    oils_i18n_gettext (
+             'eg.circ.in_house.do_inventory_update',
+             'In-House Use: Update Inventory',
+             'cwst', 'label'
+    )
+), (
     'eg.circ.patron.summary.collapse', 'circ', 'bool',
     oils_i18n_gettext(
         'eg.circ.patron.summary.collapse',
