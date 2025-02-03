@@ -8108,7 +8108,7 @@ SELECT  usr,
 			<link field="parts" reltype="has_many" key="target_copy" map="part" class="acpm"/>
 			<link field="peer_record_maps" reltype="has_many" key="target_copy" map="" class="bpbcm"/>
 			<link field="peer_records" reltype="has_many" key="target_copy" map="peer_record" class="bpbcm"/>
-			<link field="last_captured_hold" reltype="has_a" key="current_copy" map="" class="alhr"/>
+			<link field="last_captured_hold" reltype="might_have" key="current_copy" map="" class="alhr"/>
 			<link field="latest_inventory" reltype="might_have" key="copy" map="" class="alci"/>
 			<link field="copy_inventory" reltype="might_have" key="copy" map="" class="aci"/>
 			<link field="floating" reltype="has_a" key="id" map="" class="cfg"/>
