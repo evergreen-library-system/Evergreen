@@ -116,54 +116,7 @@
       </div>
 
     </div><!-- left column -->
-    <div class="col-md-6"><!-- right column -->
 
-      <div class="row">
-        <div class="col-md-8">
-            <label for="search_lib_selector">[% l('Default Search Library') %]</label>
-            <p>[% l('The default search library setting determines what library is searched from the advanced search screen and portal page by default. Manual selection of a search library will override it. One recommendation is to set the search library to the highest point you would normally want to search.') %]</p>
-        </div>
-        <div class="col-md-4">
-          <eg-org-selector id="search_lib_selector"
-            selected="search_lib" nodefault
-            label="[% l('Select...') %]"
-            onchange="handle_search_lib_changed">
-          </eg-org-selector>
-        </div>
-      </div><!-- row -->
-
-      <div class="row new-entry">
-        <div class="col-md-8">
-            <label for="pref_lib_selector">[% l('Preferred Library') %]</label>
-            <p>[% l('The preferred library is used to show copies and URIs regardless of the library searched. One recommendation is to set this to your workstation library so that local copies show up first in search results.') %]</p>
-        </div>
-        <div class="col-md-4">
-          <eg-org-selector id="pref_lib_selector"
-            selected="pref_lib" nodefault
-            label="[% l('Select...') %]"
-            onchange="handle_pref_lib_changed">
-          </eg-org-selector>
-        </div>
-      </div>
-
-      <div class="row new-entry">
-        <div class="col-md-8">
-            <label for="adv_pane_selector">[% l('Advanced Search Default Pane') %]</label>
-            <p>[% l('Advanced search has secondary panes for Numeric and MARC Expert searching. You can change which one is loaded by default when opening a new catalog window here.') %]</p>
-        </div>
-        <div class="col-md-4">
-          <select id="adv_pane_selector" ng-model="adv_pane">
-            <option value="advanced">[% l('Advanced (default)') %]</option>
-            <option value="numeric" >[% l('Numeric') %]</option>
-            <option value="expert"  >[% l('MARC Expert') %]</option>
-          </select>
-        </div>
-      </div>
-
-    </div><!-- col -->
   </div><!-- row -->
-
-
-
 
 </div>
