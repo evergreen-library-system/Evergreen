@@ -34,15 +34,16 @@ debian_sys_config:
 # Adding this for installing versions from PostgreSQL community apt source
 debian_postgresql_repo:
 	if test -z "$$(grep -R postgresql.org /etc/apt/)" ; then \
+		mkdir -p --mode 0755 /etc/apt/keyrings ; \
+		wget --quiet -O /etc/apt/keyrings/pgdg.asc https://www.postgresql.org/media/keys/ACCC4CF8.asc ; \
 		if test "$(RELEASE_CODENAME)" = "buster" ; then \
 			$(APT_TOOL) install apt-transport-https ; \
-			echo "deb [signed-by=/etc/apt/trusted.gpg.d/pgdg.asc] https://apt-archive.postgresql.org/pub/repos/apt/ $(RELEASE_CODENAME)-pgdg main" \
+			echo "deb [signed-by=/etc/apt/keyrings/pgdg.asc] https://apt-archive.postgresql.org/pub/repos/apt/ $(RELEASE_CODENAME)-pgdg main" \
 				> /etc/apt/sources.list.d/pgdg.list; \
 		else \
-			echo "deb [signed-by=/etc/apt/trusted.gpg.d/pgdg.asc] http://apt.postgresql.org/pub/repos/apt/ $(RELEASE_CODENAME)-pgdg main" \
+			echo "deb [signed-by=/etc/apt/keyrings/pgdg.asc] http://apt.postgresql.org/pub/repos/apt/ $(RELEASE_CODENAME)-pgdg main" \
 				> /etc/apt/sources.list.d/pgdg.list; \
 		fi ; \
-		wget --quiet -O /etc/apt/trusted.gpg.d/pgdg.asc https://www.postgresql.org/media/keys/ACCC4CF8.asc ; \
 		$(APT_TOOL) update ; \
 	fi
 
