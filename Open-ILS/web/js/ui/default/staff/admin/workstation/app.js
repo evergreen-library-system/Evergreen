@@ -188,30 +188,6 @@ function($scope , $window , $location , egCore , egConfirmDialog) {
         $scope.disable_links_newtabs = val;
     });
 
-    egCore.hatch.getItem('eg.search.search_lib').then(function(val) {
-        $scope.search_lib = egCore.org.get(val);
-    });
-    $scope.handle_search_lib_changed = function(org) {
-        egCore.hatch.setItem('eg.search.search_lib', org.id());
-    };
-
-    egCore.hatch.getItem('eg.search.pref_lib').then(function(val) {
-        $scope.pref_lib = egCore.org.get(val);
-    });
-    $scope.handle_pref_lib_changed = function(org) {
-        egCore.hatch.setItem('eg.search.pref_lib', org.id());
-    };
-
-    $scope.adv_pane = 'advanced'; // default value if not explicitly set
-    egCore.hatch.getItem('eg.search.adv_pane').then(function(val) {
-        $scope.adv_pane = val;
-    });
-    $scope.$watch('adv_pane', function(newVal, oldVal) {
-        if (typeof newVal != 'undefined' && newVal != oldVal) {
-            egCore.hatch.setItem('eg.search.adv_pane', newVal);
-        }
-    });
-
     $scope.apply_sound = function() {
         if ($scope.disable_sound) {
             egCore.hatch.setItem('eg.audio.disable', true);
