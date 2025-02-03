@@ -374,6 +374,55 @@ sub record_id_to_copy_count {
     return [ sort { $a->{depth} <=> $b->{depth} } @count ];
 }
 
+
+__PACKAGE__->register_method(
+    method => 'copy_total',
+    api_name => 'open-ils.search.biblio.record.copy_total',
+    signature => {
+        desc => 'returns a total of all public items on a record at the specified orgs and library groups',
+        params => [
+            {desc => 'Record ID', type => 'number'},
+            {desc => 'Org unit IDs', type => 'arrayref'},
+            {desc => 'Org unit depth', type => 'number'},
+            {desc => 'Library group IDs', type => 'arrayref'},
+        ],
+        return => {
+            desc => 'total of all public items on the record',
+            type => 'bool'
+        }
+    }
+);
+
+__PACKAGE__->register_method(
+    method => 'copy_total',
+    api_name => 'open-ils.search.biblio.record.copy_total.staff',
+    signature => {
+        desc => 'returns a total of all staff-visible items on a record at the specified orgs and library groups',
+        params => [
+            {desc => 'Record ID', type => 'number'},
+            {desc => 'Org unit IDs', type => 'arrayref'},
+            {desc => 'Org unit depth', type => 'number'},
+            {desc => 'Library group IDs', type => 'arrayref'},
+        ],
+        return => {
+            desc => 'total of all staff-visible items on the record',
+            type => 'bool'
+        }
+    }
+);
+
+sub copy_total {
+    my ($self, $client, $record_id, $org_unit_ids, $org_unit_depth, $library_group_ids) = @_;
+    my $total_function = $self->api_name =~ /staff/ ? 'asset.staff_copy_total' : 'asset.opac_copy_total';
+    return new_editor->json_query(
+        {from => [$total_function =>
+            $record_id,
+            '{' . join(',', @$org_unit_ids) . '}',
+            $org_unit_depth,
+            '{' . join(',', @$library_group_ids) . '}']}
+    )->[0]->{$total_function};
+}
+
 __PACKAGE__->register_method(
     method   => "record_has_holdable_copy",
     api_name => "open-ils.search.biblio.record.has_holdable_copy",

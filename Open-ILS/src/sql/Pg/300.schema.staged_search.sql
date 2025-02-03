@@ -2347,6 +2347,19 @@ CREATE OR REPLACE FUNCTION asset.opac_lasso_record_copy_count_sum(lasso_id INT, 
     END;
 $$ LANGUAGE PLPGSQL STABLE ROWS 1;
 
+CREATE OR REPLACE FUNCTION asset.opac_copy_total(rec_id INT, org_units INT[], depth INT, library_groups INT[])
+RETURNS INT AS $$
+  SELECT COUNT(cp.id) total
+       FROM asset.copy cp
+       INNER JOIN asset.call_number cn ON (cn.id = cp.call_number AND NOT cn.deleted AND cn.record = rec_id)
+       INNER JOIN asset.copy_location cl ON (cp.location = cl.id AND NOT cl.deleted)
+    INNER JOIN asset.copy_vis_attr_cache av ON (cp.id = av.target_copy AND av.record = rec_id)
+    JOIN LATERAL (SELECT c_attrs FROM asset.patron_default_visibility_mask()) AS mask ON TRUE
+    WHERE av.vis_attr_vector @@ mask.c_attrs::query_int
+       AND cp.circ_lib = ANY (SELECT asset.copy_org_ids(org_units, depth, library_groups))
+       AND NOT cp.deleted;
+$$ LANGUAGE SQL;
+
 CREATE TRIGGER maintain_symspell_entries_tgr
     AFTER INSERT OR UPDATE OR DELETE ON metabib.title_field_entry
     FOR EACH ROW EXECUTE PROCEDURE search.symspell_maintain_entries();

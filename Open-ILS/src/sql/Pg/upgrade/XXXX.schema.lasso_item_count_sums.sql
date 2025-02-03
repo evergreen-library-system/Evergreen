@@ -84,6 +84,48 @@ CREATE OR REPLACE FUNCTION asset.opac_lasso_metarecord_copy_count_sum(lasso_id I
       WHERE mmsm.metarecord = metarecord_id;
 $$ LANGUAGE SQL STABLE ROWS 1;
 
+
+CREATE OR REPLACE FUNCTION asset.copy_org_ids(org_units INT[], depth INT, library_groups INT[])
+RETURNS TABLE (id INT)
+AS $$
+DECLARE
+    ancestor INT;
+BEGIN
+    RETURN QUERY SELECT org_unit FROM actor.org_lasso_map WHERE lasso = ANY(library_groups);
+    FOR ancestor IN SELECT unnest(org_units)
+    LOOP
+        RETURN QUERY
+        SELECT d.id
+        FROM actor.org_unit_descendants(ancestor, depth) d;
+    END LOOP;
+    RETURN;
+END;
+$$ LANGUAGE plpgsql;
+
+
+CREATE OR REPLACE FUNCTION asset.staff_copy_total(rec_id INT, org_units INT[], depth INT, library_groups INT[])
+RETURNS INT AS $$
+  SELECT COUNT(cp.id) total
+  	FROM asset.copy cp
+  	INNER JOIN asset.call_number cn ON (cn.id = cp.call_number AND NOT cn.deleted AND cn.record = rec_id)
+  	INNER JOIN asset.copy_location cl ON (cp.location = cl.id AND NOT cl.deleted)
+  	WHERE cp.circ_lib = ANY (SELECT asset.copy_org_ids(org_units, depth, library_groups))
+  	AND NOT cp.deleted;
+$$ LANGUAGE SQL;
+
+CREATE OR REPLACE FUNCTION asset.opac_copy_total(rec_id INT, org_units INT[], depth INT, library_groups INT[])
+RETURNS INT AS $$
+  SELECT COUNT(cp.id) total
+  	FROM asset.copy cp
+  	INNER JOIN asset.call_number cn ON (cn.id = cp.call_number AND NOT cn.deleted AND cn.record = rec_id)
+  	INNER JOIN asset.copy_location cl ON (cp.location = cl.id AND NOT cl.deleted)
+    INNER JOIN asset.copy_vis_attr_cache av ON (cp.id = av.target_copy AND av.record = rec_id)
+    JOIN LATERAL (SELECT c_attrs FROM asset.patron_default_visibility_mask()) AS mask ON TRUE
+    WHERE av.vis_attr_vector @@ mask.c_attrs::query_int
+  	AND cp.circ_lib = ANY (SELECT asset.copy_org_ids(org_units, depth, library_groups))
+  	AND NOT cp.deleted;
+$$ LANGUAGE SQL;
+
 -- We are adding another argument, which means that we must delete functions with the old signature
 DROP FUNCTION IF EXISTS unapi.holdings_xml(
     bid BIGINT,
