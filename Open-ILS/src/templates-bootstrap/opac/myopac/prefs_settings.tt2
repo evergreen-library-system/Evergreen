@@ -21,7 +21,7 @@
                         <button type="submit" class="btn btn-confirm"><i class="fas fa-check"></i> [% l('Confirm') %]</button>
                     </p>
                 [% ELSIF ctx.updated_user_settings OR ctx.updated_waiver_entries %]
-                    <p class='renew-summary' class="w-100" role="status">
+                    <p class='renew-summary w-100' role="status">
                         [% l('Account Successfully Updated') %]
                     </p>
                 [% END %]
