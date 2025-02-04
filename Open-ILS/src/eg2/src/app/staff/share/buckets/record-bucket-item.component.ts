@@ -237,7 +237,7 @@ export class RecordBucketItemComponent implements OnInit {
             let url = `/exporter?containerid=${this.bucket.id()}`;
             if (options.format) { url += `&format=${options.format}`; }
             if (options.encoding) { url += `&encoding=${options.encoding}`; }
-            if (options.holdings) { url += '&holdings=1'; }
+            if (options.includeItems) { url += '&holdings=1'; }
             url += `&ses=${this.auth.token()}`;
             window.open(url, '_blank');
         }
@@ -251,7 +251,7 @@ export class RecordBucketItemComponent implements OnInit {
             url += idParams;
             if (options.format) { url += `&format=${encodeURIComponent(options.format)}`; }
             if (options.encoding) { url += `&encoding=${encodeURIComponent(options.encoding)}`; }
-            if (options.holdings) { url += '&holdings=1'; }
+            if (options.includeItems) { url += '&holdings=1'; }
             url += `&ses=${encodeURIComponent(this.auth.token())}`;
             window.open(url, '_blank');
         }
