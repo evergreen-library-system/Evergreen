@@ -140,10 +140,12 @@
             if (t = document.getElementById('mylist_delete_' + rec)) t.classList.add('hidden');
         }
 
+        /* Only relevant on the record detail page where the View Basket button exists and
+            should only be visible if it has contents */
         if (mylist.length > 0) {
-            document.getElementById('mybasket').classList.remove('hidden');
+            document.getElementById('mybasket')?.classList?.remove('hidden');
         } else {
-            document.getElementById('mybasket').classList.add('hidden');
+            document.getElementById('mybasket')?.classList?.add('hidden');
         }
     }
 
