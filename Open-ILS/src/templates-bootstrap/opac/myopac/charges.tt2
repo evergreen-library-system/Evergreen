@@ -72,14 +72,14 @@
                     END %]
                 <tr role="row" id='myopac_circ_trans_row'>
                     [% IF myopac_cc_allowed %]
-                    <th class="checkCell form-check">
+                    <td class="checkCell">
                         <input type="checkbox" checked="checked" 
-                        [% html_text_attr('aria-label', l('Pay [_1] fine', money(f.xact.balance_owed))) %]
-                            name="xact" value="[% f.xact.id %]" class="form-check-input fineCheck"/>
-                    </th>
+                            [% html_text_attr('aria-label', l('Pay [_1] fine', money(f.xact.balance_owed))) %]
+                            name="xact" value="[% f.xact.id %]" class="fineCheck"/>
+                    </td>
                     [% END %]
                     
-                    <td role="cell" class="numeric money fw-bold" mobile-title='[% l("Owed") %]'>
+                    <td role="cell" class="numeric money fw-bold danger" mobile-title='[% l("Owed") %]'>
                         [% money(f.xact.balance_owed) %]
                         <input class="fineAmount" value="[% f.xact.balance_owed %]" hidden />
                     </td>
@@ -151,7 +151,7 @@
 
         [% IF myopac_cc_allowed %]
         <div class="d-block d-md-none form-check">
-            <input id="pay_fines_check" checked="checked" class="form-check-input"
+            <input id="pay_fines_check" checked="checked"  class="form-check-input"
             type="checkbox" onclick="select_all_checkboxes('xact_misc', this.checked)"
             aria-label="[% l('Check/Uncheck All') %]" />    
             <label for="pay_fines_check" class="form-check-label">[% l('Check/Uncheck All') %]</label>  
@@ -165,7 +165,7 @@
                 
                      [% IF myopac_cc_allowed %]
                     <th style="white-space:nowrap;">
-                        <input id="pay_fines_box2" checked="checked" class="form-check-input"
+                        <input id="pay_fines_box2" checked="checked"
                             type="checkbox" onclick="select_all_checkboxes('xact_misc', this.checked)"
                             aria-label="[% l('Check/Uncheck All') %]" />
                     </th>
@@ -180,28 +180,29 @@
             </thead>
             <tbody id='myopac_trans_tbody'>
                 [% FOR f IN ctx.fines.grocery %]
-                <tr role="row" class ='myopac_trans_row'>
+                <tr role="row" class='myopac_trans_row'>
                 [% c = c + 1; %]
                     [% IF myopac_cc_allowed %]
-                    <th role="rowheader" scope="row" class="checkCell form-check">
+                    <td class="checkCell">
                         <label class="sr-only">[% l('Billing Number [_1]', c) %]</label>
-                        <input aria-label="[% l('Pay [_0] bill', money(f.xact.balance_owed)) %]" class="form-check-input fineCheck" type="checkbox" name="xact_misc" value="[% f.xact.id %]" checked="checked" />
-                    </th>
+                        <input aria-label="[% l('Pay [_0] bill', money(f.xact.balance_owed)) %]" class="fineCheck"
+                        type="checkbox" name="xact_misc" value="[% f.xact.id %]" checked="checked" />
+                    </td>
                     [% END %]
                     
                     <td role="cell" class="danger">
-                        <strong>
-                            [% money(f.xact.balance_owed) %]
-                        </strong>
-                         <input type="hidden" class="fineAmount" value="[% f.xact.balance_owed %]" hidden />
+                        [% money(f.xact.balance_owed) %]
+                        <input type="hidden" class="fineAmount" value="[% f.xact.balance_owed %]" hidden />
                     </td>
                     
                     <td role="cell">
+                        <span class="sr-only">[% l('Billing For') %]</span>
                         [% f.xact.last_billing_type %]
                     </td>
                     
                     <td role="cell">
                         [% IF f.xact.last_billing_note; %]
+                            <span class="sr-only">[% l('Note') %]</span>
                             [% f.xact.last_billing_note %]
                         [% END %]
                     </td>
@@ -221,7 +222,7 @@
     <div>[% l('You have no current fines.') %]</div>
     [% ELSIF myopac_cc_allowed %]
         <div class="my-3">
-            <button type="button" value="[% l('Pay selected charges') %] - [% money(ctx.user_stats.fines.balance_owed) %]" title="[% l('Pay selected charges') %]" class="btn btn-confirm my-1"
+            <button type="submit" value="[% l('Pay selected charges') %] - [% money(ctx.user_stats.fines.balance_owed) %]" title="[% l('Pay selected charges') %]" class="btn btn-confirm my-1"
                 id="selectPay"> <i class='fas fa-money-bill-wave' aria-hidden="true"></i> [% l('Pay Selected Charges') %] - [% money(ctx.user_stats.fines.balance_owed) %]</button>
             <button type="submit" class="btn btn-confirm my-1"><i class="fas fa-cash-register" aria-hidden="true"></i> [% l('Pay All Charges') %] - [% money(ctx.user_stats.fines.balance_owed) %]</button>
         </div>
