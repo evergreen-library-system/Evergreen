@@ -224,7 +224,6 @@
         <div class="my-3">
             <button type="submit" value="[% l('Pay selected charges') %] - [% money(ctx.user_stats.fines.balance_owed) %]" title="[% l('Pay selected charges') %]" class="btn btn-confirm my-1"
                 id="selectPay"> <i class='fas fa-money-bill-wave' aria-hidden="true"></i> [% l('Pay Selected Charges') %] - [% money(ctx.user_stats.fines.balance_owed) %]</button>
-            <button type="submit" class="btn btn-confirm my-1"><i class="fas fa-cash-register" aria-hidden="true"></i> [% l('Pay All Charges') %] - [% money(ctx.user_stats.fines.balance_owed) %]</button>
         </div>
     [% END %]
 	[% IF neg_or_zero > 0 %]
