@@ -582,7 +582,7 @@
                     placeholder='#' i18n-placeholder
                     min="0" max="{{(li.lineitem_details()||[]).length}}"
                     [disabled]="li.state() === 'received'"
-                    [(ngModel)]="lineitemDetailCountMap[li.id()]"
+                    [ngModel]="countReceivableItems(li)"
                     (ngModelChange)="adjustSelectedLids(li.id(),$event)"/>
               </div>
             </ng-container>
