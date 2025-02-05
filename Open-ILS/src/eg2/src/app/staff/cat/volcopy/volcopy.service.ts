@@ -14,6 +14,7 @@ import {FileExportService} from '@eg/share/util/file-export.service';
 import {ServerStoreService} from '@eg/core/server-store.service';
 import {StoreService} from '@eg/core/store.service';
 import {ComboboxEntry} from '@eg/share/combobox/combobox.component';
+import { Observable, Subscription, lastValueFrom } from 'rxjs';
 
 /* Managing volcopy data */
 
@@ -498,17 +499,17 @@ export class VolCopyService implements OnDestroy {
             'eg.cat.volcopy.defaults', this.defaults);
     }
 
-    fetchBibParts(recordIds: number[]) {
+    fetchBibParts(recordIds: number[]) : Promise<any> {
 
         if (recordIds.length === 0) { return; }
 
         // All calls fetch updated data since we may be creating
         // new mono parts during editing.
 
-        this.pcrud.search('bmp',
+        return lastValueFrom( this.pcrud.search('bmp',
             {record: recordIds, deleted: 'f'})
-            .subscribe(
-                { next: part => {
+            .pipe(tap({
+                next: part => {
                     const updatedBibParts =  {...this.bibParts};
                     if (!updatedBibParts[part.record()]) {
                         updatedBibParts[part.record()] = [];
@@ -517,7 +518,9 @@ export class VolCopyService implements OnDestroy {
                         updatedBibParts[part.record()].push(part);
                     }
                     this.bibParts = updatedBibParts;
-                }, error: (err: unknown) => {}, complete: () => {
+                },
+                error: (err: unknown) => {},
+                complete: () => {
                     const finalBibParts = {...this.bibParts};
                     recordIds.forEach(bibId => {
                         if (finalBibParts[bibId]) {
@@ -527,8 +530,9 @@ export class VolCopyService implements OnDestroy {
                         }
                     });
                     this.bibParts = finalBibParts;
-                } }
-            );
+                }
+            }))
+        );
     }
 
 
