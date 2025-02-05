@@ -1458,6 +1458,12 @@ export class LineitemListComponent implements OnInit, OnDestroy, OnChanges {
         return total;
     }
 
+    countReceivableItems(li: IdlObject) : Number {
+        const sum = li.order_summary();
+
+        return sum.item_count() - (sum.cancel_count() + sum.recv_count());
+    }
+
     receiveSelected() { /* lineitems*/
         this.markReceived(this.selectedIds());
     }
