@@ -41,25 +41,30 @@ function addSearchRow() {
 }
 
 function addExpertRow() {
-    const clone = document.getElementById('adv_expert_row').cloneNode(true);
+    // Needs to use class instead of id so you can delete the first row
+    const clone = document.getElementsByClassName('adv_expert_row')[0].cloneNode(true);
     clone.id = '';
+    // Clear input values in the new row
+    clone.getElementsByTagName("input").forEach(input => {
+        input.value = '';
+    });
     const parent = document.getElementById("adv_expert_rows_here");
     parent.appendChild(clone);
+    displayAlert('aria-search-row-added');
     reindexLegends(parent);
 }
 
-function killRowIfAtLeast(min) {
+function killRowIfAtLeast(min, $event) {
     const link = $event.target;
-    //console.debug("Target: ", link);
-    var row = link.parentNode.parentNode;
-    //console.debug("Row: ", row);
-    if (row.parentNode.getElementsByTagName("fieldset").length > min) {
-        row.parentNode.removeChild(row);
+    let row = link.closest("fieldset");
+    let parent = row.parentNode;
+    if (parent.getElementsByTagName("fieldset").length > min) {
+        parent.removeChild(row);
         displayAlert('aria-search-row-removed');
         // re-number the legends 
-        reindexLegends(tBody);
+        reindexLegends(parent);
         // focus on first input in last row
-        row.parentNode.querySelector('input').focus();
+        parent.querySelector('input').focus();
     }
 }
 
