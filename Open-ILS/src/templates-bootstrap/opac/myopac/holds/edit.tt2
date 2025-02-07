@@ -13,8 +13,8 @@
     hold.human_status = PROCESS get_hold_status hold=hold;
 
     # Do this up front to avoid verbosity later
-    expire_time = ahr.expire_time ? date.format(ctx.parse_datetime(ahr.expire_time), DATE_FORMAT) : '';
-    thaw_date = ahr.thaw_date ? date.format(ctx.parse_datetime(ahr.thaw_date), DATE_FORMAT) : '';
+    expire_time = ahr.expire_time ? date.format(ctx.parse_datetime(ahr.expire_time), '%Y-%m-%d') : '';
+    thaw_date = ahr.thaw_date ? date.format(ctx.parse_datetime(ahr.thaw_date), '%Y-%m-%d') : '';
 %]
 
 <div>
@@ -60,7 +60,7 @@
                         have already been captured... %]
                             
                             <label for="expire_time">[% l('Cancel unless filled by') %]</label>
-                            <duet-date-picker identifier="expire_time" value="[% expire_time | html %]"></duet-date-picker>
+                            <duet-date-picker identifier="expire_time" name="expire_time" value="[% expire_time | html %]"></duet-date-picker>
  
                             <div class="form-group mt-2">
                                 <label for="frozen">[% l('Active?') %]</label>
@@ -74,8 +74,8 @@
                                 </select>
                             </div>
  
-                            <label for="datepicker">[% l('If suspended, activate on') %][% thaw_date | html %]</label>
-                            <duet-date-picker identifier="datepicker" value="[% thaw_date | html %]"></duet-date-picker>
+                            <label for="datepicker">[% l('If suspended, activate on') %]</label>
+                            <duet-date-picker identifier="datepicker" name="thaw_date" value="[% thaw_date | html %]"></duet-date-picker>
                             
                         <div class="form-check mt-3">
                             <input class="form-check-input" type="checkbox" name="email_notify" id="email_notify"

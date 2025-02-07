@@ -356,7 +356,7 @@ document.addEventListener("DOMContentLoaded", () => {
             </div>
             <blockquote id="toggled-block-suspend">
             <label for="thaw_date">[% l('Activate on') %]
-            <duet-date-picker identifier="thaw_date" value="[% thaw_date | html %]"></duet-date-picker>
+            <duet-date-picker identifier="thaw_date" name="thaw_date"></duet-date-picker>
             </blockquote>
 
          [% IF CGI.param('from_basket') %]
