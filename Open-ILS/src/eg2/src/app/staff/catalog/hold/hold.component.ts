@@ -1,6 +1,5 @@
 import {Component, OnDestroy, OnInit, ViewChild} from '@angular/core';
-import {Router, ActivatedRoute, ParamMap} from '@angular/router';
-import {EventService} from '@eg/core/event.service';
+import {ActivatedRoute, ParamMap} from '@angular/router';
 import {NetService} from '@eg/core/net.service';
 import {AuthService} from '@eg/core/auth.service';
 import {PcrudService} from '@eg/core/pcrud.service';
@@ -8,7 +7,7 @@ import {PermService} from '@eg/core/perm.service';
 import {IdlObject} from '@eg/core/idl.service';
 import {OrgService} from '@eg/core/org.service';
 import {ServerStoreService} from '@eg/core/server-store.service';
-import {BibRecordService, BibRecordSummary} from '@eg/share/catalog/bib-record.service';
+import {BibRecordSummary} from '@eg/share/catalog/bib-record.service';
 import {CatalogService} from '@eg/share/catalog/catalog.service';
 import {StaffCatalogService} from '../catalog.service';
 import {HoldsService, HoldRequest,
@@ -23,7 +22,7 @@ import {BarcodeSelectComponent
 import {WorkLogService} from '@eg/staff/share/worklog/worklog.service';
 import {getI18nString} from '@eg/share/util/i18ns';
 import {StoreService} from '@eg/core/store.service';
-import {firstValueFrom} from 'rxjs';
+import {firstValueFrom, toArray} from 'rxjs';
 
 class HoldContext {
     holdMeta: HoldRequestTarget;
@@ -82,6 +81,10 @@ export class HoldComponent implements OnInit, OnDestroy {
     smsCarriers: ComboboxEntry[];
     userBarcodeTimeout: any;
 
+    holdGroups: IdlObject[];
+    selectedHoldGroup: ComboboxEntry;
+    holdGroupsOverrideAllPossible = false;
+
     smsEnabled: boolean;
 
     maxMultiHolds = 0;
@@ -114,15 +117,12 @@ export class HoldComponent implements OnInit, OnDestroy {
     @ViewChild('activeDateAlert') private activeDateAlert: AlertDialogComponent;
 
     constructor(
-        private router: Router,
         private route: ActivatedRoute,
-        private evt: EventService,
         private net: NetService,
         private org: OrgService,
         private store: ServerStoreService,
         private auth: AuthService,
         private pcrud: PcrudService,
-        private bib: BibRecordService,
         private cat: CatalogService,
         private staffCat: StaffCatalogService,
         private holds: HoldsService,
@@ -219,6 +219,8 @@ export class HoldComponent implements OnInit, OnDestroy {
             const node = document.getElementById('patron-barcode');
             if (node) { node.focus(); }
         });
+
+        this.fetchHoldGroups();
     }
 
     getRequestorSetsAndPerms(): Promise<any> {
@@ -635,6 +637,10 @@ export class HoldComponent implements OnInit, OnDestroy {
             return Promise.resolve();
         }
 
+        if (this.holdFor === 'group' && this.selectedHoldGroup && this.holdGroupsOverrideAllPossible) {
+            override = true;
+        }
+
         ctx.processing = true;
         const selectedFormats = this.mrSelectorsToFilters(ctx);
 
@@ -667,6 +673,8 @@ export class HoldComponent implements OnInit, OnDestroy {
             notifySms: this.smsEnabled && this.notifySms ? this.smsValue : null,
             smsCarrier: this.smsCbox ? this.smsCbox.selectedId : null,
             thawDate: this.suspend ? this.activeDateStr : null,
+            holdGroup: Boolean(this.holdFor === 'group' && this.selectedHoldGroup),
+            holdGroupId: (this.holdFor === 'group' && this.selectedHoldGroup) ? this.selectedHoldGroup.id : null,
             frozen: this.suspend,
             holdableFormats: selectedFormats
 
@@ -841,6 +849,23 @@ export class HoldComponent implements OnInit, OnDestroy {
             window.removeEventListener('focus', this.refreshRecentPatronIds);
         }
     }
+
+    get holdGroupsAsComboboxEntries(): ComboboxEntry[] {
+        return this.holdGroups.map(group => {
+            return {
+                id: group.id(),
+                label: group.name(),
+                fm: group
+            };
+        });
+    }
+
+    private fetchHoldGroups() {
+        this.pcrud.search('cub', {btype: 'hold_subscription'}, {order_by: {cub: 'name'}}).pipe(
+            toArray()
+        ).subscribe(arr => {this.holdGroups = arr;});
+    }
+
 }
 
 

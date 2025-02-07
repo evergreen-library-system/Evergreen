@@ -25,7 +25,7 @@ describe('ItemLocationSelectComponent', () => {
                 { provide: OrgService, useValue: {ancestors: () => []} },
                 { provide: AuthService, useValue: {} },
                 { provide: PermService, useValue: {} },
-                { provide: PcrudService, useValue: MockGenerators.pcrudService({search: location}) },
+                { provide: PcrudService, useValue: MockGenerators.pcrudService({search: [location]}) },
             ],
             schemas: [CUSTOM_ELEMENTS_SCHEMA]
         })

@@ -32,6 +32,8 @@ export interface HoldRequest {
     thawDate?: string; // ISO date
     frozen?: boolean;
     holdableFormats?: {[target: number]: string};
+    holdGroup?: boolean;
+    holdGroupId?: number;
     result?: HoldRequestResult;
 }
 
@@ -69,51 +71,18 @@ export class HoldsService {
     ) {}
 
     placeHold(request: HoldRequest): Observable<HoldRequest> {
+        if (request.holdGroup) {
+            return this.placeSubscriptionHold(request);
+        }
 
         let method = 'open-ils.circ.holds.test_and_create.batch';
         if (request.override) { method = method + '.override'; }
 
         return this.net.request(
-            'open-ils.circ', method, this.auth.token(), {
-                patronid:       request.recipient,
-                pickup_lib:     request.pickupLib,
-                hold_type:      request.holdType,
-                email_notify:   request.notifyEmail,
-                phone_notify:   request.notifyPhone,
-                thaw_date:      request.thawDate,
-                frozen:         request.frozen,
-                sms_notify:     request.notifySms,
-                sms_carrier:    request.smsCarrier,
-                holdable_formats_map: request.holdableFormats
-            },
-            [request.holdTarget]
+            'open-ils.circ', method, this.auth.token(), ...this.placeHoldArgs(request)
         ).pipe(map(
             resp => {
-                let result = resp.result;
-                const holdResult: HoldRequestResult = {success: true};
-
-                // API can return an ID, an array of events, or a hash
-                // of info.
-
-                if (Number(result) > 0) {
-                    // On success, the API returns the hold ID.
-                    holdResult.holdId = result;
-                    console.debug(`Hold successfully placed ${result}`);
-
-                } else {
-                    holdResult.success = false;
-                    console.info('Hold request failed: ', result);
-
-                    if (Array.isArray(result)) { result = result[0]; }
-
-                    if (this.evt.parse(result)) {
-                        holdResult.evt = this.evt.parse(result);
-                    } else {
-                        holdResult.evt = this.evt.parse(result.last_event);
-                    }
-                }
-
-                request.result = holdResult;
+                request.result = this.parseResult(resp.result);
                 return request;
             }
         ));
@@ -163,6 +132,79 @@ export class HoldsService {
             console.warn('Hold update returned event', evt);
             return evt;
         }));
+    }
+
+    private placeHoldArgs(request: HoldRequest): any[] {
+        const params = {
+            pickup_lib:     request.pickupLib,
+            hold_type:      request.holdType,
+            email_notify:   request.notifyEmail,
+            phone_notify:   request.notifyPhone,
+            thaw_date:      request.thawDate,
+            frozen:         request.frozen,
+            sms_notify:     request.notifySms,
+            sms_carrier:    request.smsCarrier,
+            holdable_formats_map: request.holdableFormats
+        } as any;
+        if (request.holdGroup) {
+            return [
+                params,
+                request.holdGroupId,
+                request.holdTarget
+            ];
+        }
+        params.patronid = request.recipient;
+        return [
+            params,
+            [request.holdTarget]
+        ];
+    }
+
+    private placeSubscriptionHold(request: HoldRequest): Observable<HoldRequest> {
+        let method = 'open-ils.circ.holds.test_and_create.subscription_batch';
+        if (request.override) { method = method + '.override'; }
+
+        return this.net.request(
+            'open-ils.circ', method, this.auth.token(), ...this.placeHoldArgs(request)
+        ).pipe(map(
+            resp => {
+                request.result = this.parseResult(resp.result);
+                return request;
+            }
+        ));
+    }
+
+    private parseResult(raw: any): HoldRequestResult {
+        const holdResult: HoldRequestResult = {success: true};
+
+        // API can return an ID, an array of events, a hash
+        // of info, or (for the summary of a hold group hold),
+        // undefined.
+
+        if (raw === undefined) {
+            // This is the summary of a hold group subscription hold.  We can assume
+            // success for now.  If a particular patron has an issue, that will be
+            // revealed in future OpenSRF messages.
+            return holdResult;
+        }
+
+        if (Number(raw) > 0) {
+            // On success, the API returns the hold ID.
+            holdResult.holdId = raw;
+            console.debug(`Hold successfully placed ${raw}`);
+
+        } else {
+            console.info('Hold request failed: ', raw);
+            holdResult.success = false;
+            if (Array.isArray(raw)) { raw = raw[0]; }
+
+            if (this.evt.parse(raw)) {
+                holdResult.evt = this.evt.parse(raw);
+            } else {
+                holdResult.evt = this.evt.parse(raw.last_event);
+            }
+        }
+        return holdResult;
     }
 }
 

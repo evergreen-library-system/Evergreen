@@ -13,7 +13,7 @@ const mockCallNumber = MockGenerators.idlObject({
     suffix: MockGenerators.idlObject({id: 7, label: 'DOWNSTAIRS'})
 });
 
-const mockPcrud = MockGenerators.pcrudService({search: mockCallNumber});
+const mockPcrud = MockGenerators.pcrudService({search: [mockCallNumber]});
 
 describe('SerialsService', () => {
     beforeEach(() => {

@@ -93,6 +93,25 @@
         </div>
         <div class="col-lg-6 fw-bold">{{requestor.usrname()}}</div>
       </div>
+      <div class="row mt-2" *ngIf="holdGroups?.length">
+        <div class="col-lg-6">
+          <div class="form-check">
+            <input class="form-check-input" type="radio"
+              (change)="holdForChanged()"
+              id="hold-for-group"
+              name="holdFor" value="group" [(ngModel)]="holdFor"/>
+            <label class="form-label form-check-label" i18n for="hold-for-group">
+              Place hold for this hold group:
+            </label>
+          </div>
+        </div>
+        <div class="col-lg-6 fw-bold">
+          <eg-combobox [entries]="holdGroupsAsComboboxEntries" [(ngModel)]="selectedHoldGroup" domId="hold-for-group" name="selectedHoldGroup" [disabled]="holdFor !== 'group'"></eg-combobox>
+          <input class="form-check-input" type="checkbox" id="override-many" [disabled]="holdFor !== 'group'"
+          name="override-many" [(ngModel)]="holdGroupsOverrideAllPossible"/>
+        <label class="form-label form-check-label" for="override-many" i18n>Override all hold-blocking conditions possible?</label>
+        </div>
+      </div>
       <div class="row mt-2">
         <div class="col-lg-6">
           <label class="form-label" for="pickupLibSelect" i18n>Pickup Location: </label>

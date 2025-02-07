@@ -8,7 +8,8 @@ import { StoreService } from '@eg/core/store.service';
 import { CatalogSearchContext } from '@eg/share/catalog/search-context';
 import { StaffCatalogService } from '@eg/staff/catalog/catalog.service';
 import { SerialsService } from '@eg/staff/serials/serials.service';
-import { of } from 'rxjs';
+import { HoldsService } from '@eg/staff/share/holds/holds.service';
+import { from, of } from 'rxjs';
 
 // Convenience functions that generate mock data for use in automated tests
 export class MockGenerators {
@@ -26,6 +27,19 @@ export class MockGenerators {
         auth.user.and.returnValue(user);
         auth.token.and.returnValue('MY_AUTH_TOKEN');
         return auth;
+    }
+
+    static holdsService() {
+        const service = jasmine.createSpyObj<HoldsService>(['placeHold']);
+        service.placeHold.and.returnValue(of({
+            holdType: 'B',
+            holdTarget: 1,
+            recipient: 2,
+            requestor: 3,
+            pickupLib: 4,
+            result: { success: true, holdId: 303 }
+        }));
+        return service;
     }
 
     static idlService(classes: {}) {
@@ -69,12 +83,12 @@ export class MockGenerators {
         return perm;
     }
 
-    static pcrudService(returnValues: {[method: string]: any}) {
+    static pcrudService(returnValues: {[method: string]: any[]}) {
         const methods = ['search', 'retrieve', 'retrieveAll', 'create', 'update', 'remove'];
         const pcrud = jasmine.createSpyObj<PcrudService>(['search', 'retrieve', 'retrieveAll', 'create', 'update', 'remove']);
         methods.forEach((method) => {
             if (returnValues[method]) {
-                pcrud[method].and.returnValue(of(returnValues[method]));
+                pcrud[method].and.returnValue(from(returnValues[method]));
             } else {
                 pcrud[method].and.returnValue(of());
             }
@@ -117,6 +131,10 @@ export class MockGenerators {
     }
 
     static orgService() {
-        return {ancestors: () => []};
+        return {
+            ancestors: () => [],
+            list: () => of([]),
+            settings: () => Promise.resolve(null),
+        };
     }
 }

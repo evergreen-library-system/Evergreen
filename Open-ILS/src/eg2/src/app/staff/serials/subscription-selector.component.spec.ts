@@ -17,7 +17,7 @@ const mockSubscription = MockGenerators.idlObject({
 });
 
 const mockAuth = MockGenerators.authService();
-const mockPcrud = MockGenerators.pcrudService({search: mockSubscription});
+const mockPcrud = MockGenerators.pcrudService({search: [mockSubscription]});
 const mockFormat = jasmine.createSpyObj<FormatService>(['transform']);
 mockFormat.transform.and.callFake((date) => formatDate(date.value, 'shortDate', 'en-us'));
 

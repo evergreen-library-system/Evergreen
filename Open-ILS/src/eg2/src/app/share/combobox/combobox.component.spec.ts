@@ -8,7 +8,7 @@ import { OrgService } from '@eg/core/org.service';
 import { MockGenerators } from 'test_data/mock_generators';
 
 const mockData = MockGenerators.idlObject({ code: 'DEFAULT', name: 'Default' });
-const pcrudMock = MockGenerators.pcrudService({search: mockData});
+const pcrudMock = MockGenerators.pcrudService({search: [mockData]});
 
 describe('ComboboxComponent', () => {
     let component: ComboboxComponent;
