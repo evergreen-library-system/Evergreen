@@ -1285,9 +1285,14 @@ sub handle_hold_update {
             for my $field (qw/expire_time thaw_date/) {
                 # XXX TODO make this support other date formats, not just
                 # MM/DD/YYYY.
-                next unless $self->cgi->param($field) =~
-                    m:^(\d{2})/(\d{2})/(\d{4})$:;
-                $val->{$field} = "$3-$1-$2";
+                # Added support for YYYY-MM-DD format as well
+                if ($self->cgi->param($field) =~ m:^(\d{2})/(\d{2})/(\d{4})$:) {
+                    $val->{$field} = "$3-$1-$2";
+                } elsif ($self->cgi->param($field) =~ m:^(\d{4})-(\d{2})-(\d{2})$:) {
+                    $val->{$field} = $self->cgi->param($field);
+                } else {
+                    $logger->warn("ignoring invalid date field when updating hold request");
+                }
             }
 
             $val->{holdable_formats} = # no-op for non-MR holds
@@ -1555,14 +1560,20 @@ sub load_place_hold {
         # TODO: Make this support other date formats, not just mm/dd/yyyy.
         # We should use a date input type on the forms once it is supported by Firefox.
         # I didn't do that now because it is not available in a general release.
+
+        # Update - I added a second format to support duet-date-picker
         if ($cgi->param('thaw_date') =~ m:^(\d{2})/(\d{2})/(\d{4})$:){
             eval {
                 my $dt = DateTime::Format::ISO8601->parse_datetime("$3-$1-$2");
                 $ctx->{thaw_date} = $dt->ymd;
             };
-            if ($@) {
-                $logger->warn("ignoring invalid thaw_date when placing hold request");
-            }
+        } elsif ($cgi->param('thaw_date') =~ m:^(\d{4})-(\d{2})-(\d{2})$:){
+            eval {
+                my $dt = DateTime::Format::ISO8601->parse_datetime("$1-$2-$3");
+                $ctx->{thaw_date} = $dt->ymd;
+            };
+        } else {
+            $logger->warn("ignoring invalid thaw_date when placing hold request");
         }
     }
 
