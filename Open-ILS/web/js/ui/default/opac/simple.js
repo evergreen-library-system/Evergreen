@@ -25,7 +25,7 @@ function addSearchRow() {
     }
 
     var insertPoint = document.getElementById('adv_global_addrow');
-    var newFieldset = tBody.insertBefore(_search_row_template, insertPoint);
+    var newFieldset = tBody.insertBefore(_search_row_template.cloneNode(true), insertPoint);
 
     // clear inputs
     newFieldset.querySelectorAll('input').forEach(input => {
