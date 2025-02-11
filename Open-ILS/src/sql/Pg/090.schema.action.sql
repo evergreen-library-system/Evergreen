@@ -592,7 +592,7 @@ CREATE TABLE action.hold_request_reset_reason (
 
 CREATE TABLE action.hold_request_reset_reason_entry (
     id SERIAL NOT NULL PRIMARY KEY,
-    hold INT REFERENCES action.hold_request (id) DEFERRABLE INITIALLY DEFERRED,
+    hold INT REFERENCES action.hold_request (id) ON DELETE CASCADE DEFERRABLE INITIALLY DEFERRED,
     reset_reason INT REFERENCES action.hold_request_reset_reason (id) DEFERRABLE INITIALLY DEFERRED,
     note TEXT,
     reset_time TIMESTAMP WITH TIME ZONE,

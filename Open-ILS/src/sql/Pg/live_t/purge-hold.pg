@@ -1,0 +1,38 @@
+BEGIN;
+
+SELECT plan(3);
+
+INSERT INTO action.hold_request(usr, requestor, pickup_lib, request_lib, selection_ou, hold_type, target)
+    VALUES (10, 10, 1, 1, 1, 'T', 22);
+INSERT INTO action.hold_request_reset_reason_entry(reset_reason, hold)
+    VALUES (2, CURRVAL('action.hold_request_id_seq'::regclass));
+
+SELECT is(
+    (SELECT COUNT(*) FROM action.hold_request WHERE id = CURRVAL('action.hold_request_id_seq'::regclass)),
+    1::BIGINT,
+   'successfully created hold'
+);
+
+-- force foreign key constraints to be immediate so that
+-- we can verify that deletions cascade to hold reset entries; see LP#2097622
+SET CONSTRAINTS ALL IMMEDIATE;
+
+DELETE FROM action.hold_request WHERE id = CURRVAL('action.hold_request_id_seq'::regclass);
+
+SELECT is(
+    (SELECT COUNT(*) FROM action.hold_request WHERE id = CURRVAL('action.hold_request_id_seq'::regclass)),
+    0::BIGINT,
+   'successfully purged hold...'
+);
+
+SELECT is(
+    (SELECT COUNT(*) FROM action.aged_hold_request WHERE id = CURRVAL('action.hold_request_id_seq'::regclass)),
+    1::BIGINT,
+   '... and aged it'
+);
+
+
+SELECT * FROM finish();
+ROLLBACK;
+
+

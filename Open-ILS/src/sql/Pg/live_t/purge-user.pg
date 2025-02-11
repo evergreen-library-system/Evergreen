@@ -9,7 +9,12 @@ INSERT INTO action.curbside (id, patron, org, notes)
 INSERT INTO actor.usr_message (usr, message, sending_lib)
     VALUES (10, 'Private message', 1);
 
-SELECT plan(3);
+INSERT INTO action.hold_request(usr, requestor, pickup_lib, request_lib, selection_ou, hold_type, target)
+    VALUES (11, 11, 1, 1, 1, 'T', 22);
+INSERT INTO action.hold_request_reset_reason_entry(reset_reason, hold, requestor)
+    VALUES (2, CURRVAL('action.hold_request_id_seq'::regclass), 10);
+
+SELECT plan(4);
 
 SELECT * FROM actor.usr_purge_data(10, 20);
 
@@ -28,6 +33,12 @@ SELECT is(
 SELECT is_empty(
     ('SELECT id FROM actor.usr_message WHERE usr=10 AND NOT deleted'),
     'User messages are marked as deleted'
+);
+
+SELECT is(
+    (SELECT requestor FROM action.hold_request_reset_reason_entry WHERE id = CURRVAL('action.hold_request_reset_reason_entry_id_seq'::regclass)::INTEGER),
+    20::INTEGER,
+    'Requestor of hold reset entry is now dest_usr'
 );
 
 SELECT * FROM finish();
