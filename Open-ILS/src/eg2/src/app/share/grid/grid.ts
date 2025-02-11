@@ -794,7 +794,6 @@ export class GridContext {
             this.getGridDensity().then(
                 grid_density => {
                     this.grid_density = grid_density ?? 'standard';
-                    //console.log("Density: ", this.grid_density);
                 }
             );
             // This is called regardless of the presence of saved

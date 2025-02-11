@@ -147,7 +147,7 @@ export class GridComponent implements OnInit, AfterViewInit, OnDestroy {
     context: GridContext;
     private static id = 0;
     gridDomId = 'eg-grid-';
-    grid_density: string = 'normal';
+    grid_density = 'normal';
 
     // These events are emitted from our grid-body component.
     // They are defined here for ease of access to the caller.
