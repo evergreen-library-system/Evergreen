@@ -13,13 +13,13 @@
                 <div id="adv_global_tbody" class="adv_search_grid">
                     [% INCLUDE "opac/parts/advanced/global_row.tt2" %]
                     <!-- add a new row -->
-                    <div class="adv_fieldset_row" id='adv_global_addrow'>
-                        <div class="d-flex align-items-start justify-content-between">
+                    <div class="adv_fieldset_row" id="adv_global_addrow">
+                        <div class="d-flex align-items-start justify-content-between" style="height:3.5rem">
                             <button type="button" class="btn btn-opac btn-sm" id="myopac_new_global_row" onclick='addSearchRow()'>
                                 <i class="fas fa-plus-circle" aria-hidden="true"></i> [% l('Add Search Terms') %]
                             </button>
 
-                            <div id="adv_search_status" role="status">
+                            <div id="adv_search_status" role="status" style="margin-left:1rem">
                                 [% # ARIA live announcements toggled by ariaStatus() in simple.js %]
                                 <div class="m-0 alert alert-warning d-none" id="aria-search-row-removed">
                                     [% l('Search term logic group removed.'); %]
@@ -35,7 +35,8 @@
         </div>
     </div>
     <div class="row align-items-end">
-        <div class="col-12 text-end">
+
+	<div class="mb-3 justify-content-between" style="margin-left: 1rem">
             <input type="hidden" name="_adv" value="1" />
             <input type="hidden" name="detail_record_view"
                value="[% show_detail_view %]"/>
@@ -43,7 +44,9 @@
                 onclick='setTimeout(function(){$("search-submit-spinner-1").className=""; $("search-submit-go-1").className="hidden"; $("#adv_search_form").submit()}, 2000)'><i class="fas fa-search"></i> [% l("Submit") %]</button>
             <img id='search-submit-spinner-1' src='/opac/images/progressbar_green.gif[% ctx.cache_key %]'
                 class='hidden' alt="[% l('Search in progress icon') %]"/>
-        </div>
+<a href="[% mkurl(ctx.opac_root _ '/advanced', {$loc_name => loc_value}, 1) %]"
+            class="btn btn-deny float-end"><i class="fas fa-ban"></i> [% l('Clear Form') %]</a>
+	</div>
     </div>
     <div class="addtl-search-filters">
         <h3>[% l("Search Filters") %]</h3>
@@ -179,14 +182,14 @@
         <input type="hidden" name="detail_record_view"
             value="[% show_detail_view %]"/>
         
-        <a href="[% mkurl(ctx.opac_root _ '/advanced', {$loc_name => loc_value}, 1) %]"
-            class="btn btn-deny float-end"><i class="fas fa-ban"></i> [% l('Clear Form') %]</a>
-
         <span>
             <button id='search-submit-go-2' type="submit" class="btn btn-confirm"
                 onclick='setTimeout(function(){$("search-submit-spinner-2").className=""; $("search-submit-go-2").className="hidden"}, 2000)'><i class="fas fa-search"></i> [% l("Submit") %]</button>
             <img id='search-submit-spinner-2' src='/opac/images/progressbar_green.gif[% ctx.cache_key %]'
                 class='hidden' alt="[% l('Search in progress icon') %]"/>
         </span>
+
+        <a href="[% mkurl(ctx.opac_root _ '/advanced', {$loc_name => loc_value}, 1) %]"
+            class="btn btn-deny float-end"><i class="fas fa-ban"></i> [% l('Clear Form') %]</a>
     </div>
 </form>
