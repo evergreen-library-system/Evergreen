@@ -10,7 +10,7 @@
     queries = CGI.param('query');
     bools = CGI.param('bool');
     qtypes = CGI.param('qtype');
-    rowcount = 2;
+    rowcount = 3;
 
     # scalar.merge treats the scalar as a 1-item array
     WHILE queries.size < rowcount; queries = queries.merge(['']); END;

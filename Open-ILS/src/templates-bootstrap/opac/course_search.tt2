@@ -38,28 +38,32 @@
         </div>
       </div>
     </div>
-    
+
+
     <div class="advanced_div">
       <div id='adv_global_search' class='data_grid data_grid_center w-auto'>
         <div id='adv_search_rows' class="w-auto">
           <div class='adv_global_input_container w-auto'>
             <div id="adv_global_input_table">
               <div id='adv_global_tbody'>
-                [% INCLUDE "opac/parts/course_search/global_row.tt2" %]
-                <!-- add a new row -->
-                <div id="adv_global_addrow">
-                    <div class="d-flex align-items-start justify-content-between">
-                      <button type="button" id="myopac_new_global_row" 
-                        onclick='addSearchRow();'>
-                        [% l('Add Search Row') %]
-                      </button>
-                      <div id="adv_search_status" class="mx-3">
-                        [% # placeholder for ARIA live announcements; see ariaStatus() in simple.js %]
-                      </div>
-                    </div>
-                </div>
-                <div>
-              </div>
+		[% INCLUDE "opac/parts/course_search/global_row.tt2" %]
+	 	<!-- add a new row --> 
+                <div class="adv_fieldset_row" id="adv_global_addrow">
+                     <div class="d-flex align-items-start justify-content-between" style="height:3.5rem">
+                         <button type="button" class="btn btn-opac btn-sm" id="myopac_new_global_row" onclick='addSearchRow()'>
+                             <i class="fas fa-plus-circle" aria-hidden="true"></i> [% l('Add Search Terms') %]
+                         </button>
+                         <div id="adv_search_status" role="status" style="margin-left:1rem">
+                             [% # ARIA live announcements toggled by ariaStatus() in simple.js %]
+                             <div class="m-0 alert alert-warning d-none" id="aria-search-row-removed">
+                                 [% l('Search term logic group removed.'); %]
+                             </div>
+                             <div class="m-0 alert alert-success d-none" id="aria-search-row-added">
+                                 [% l('Search term logic group added.'); %]
+                             </div>
+                         </div>
+                     </div>
+                 </div>
             </div>
           </div>
         </div>
