@@ -367,7 +367,7 @@ Novelist Styling
 .adv_search_grid {
     align-items: center;
     display: grid;
-    gap: 0.5rem 0.75rem;
+    gap: 0.1rem 0.75rem;
     /* Columns: legend (hidden), boolean operator, query type, match, term, row remover button */
     grid-template-columns: max-content max-content max-content minmax(auto, 20rem) max-content;
 }
@@ -375,7 +375,9 @@ Novelist Styling
 .adv_fieldset_row {
     display: grid;
     grid-column: 1 / -1;
+    grid-gap: 0.25rem;
     grid-template-columns: subgrid;
+    align-items: center;
 }
 
 #adv_global_addrow {
