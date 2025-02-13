@@ -1682,7 +1682,11 @@ function($scope , $routeParams , $q , $uibModal , $window , egCore ,
 
             } else if ($scope.org_settings[sho_set] === false){
                 // hide the field if the 'show' setting is explicitly false (not undefined)
-                field_visibility[field_key] = -1;
+                if (default_field_visibility[field_key] === undefined
+                    || default_field_visibility[field_key] < 3) {
+                    // Only hide if not a database-required field
+                    field_visibility[field_key] = -1;
+                }
             }
         }
 
