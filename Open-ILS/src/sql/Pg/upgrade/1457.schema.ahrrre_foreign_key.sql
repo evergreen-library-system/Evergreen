@@ -1,6 +1,6 @@
 BEGIN;
 
-SELECT evergreen.upgrade_deps_block_check('XXXX', :eg_version);
+SELECT evergreen.upgrade_deps_block_check('1457', :eg_version);
 
 ALTER TABLE action.hold_request_reset_reason_entry DROP CONSTRAINT hold_request_reset_reason_entry_hold_fkey;
 ALTER TABLE action.hold_request_reset_reason_entry ADD FOREIGN KEY (hold) REFERENCES action.hold_request(id) ON DELETE CASCADE DEFERRABLE INITIALLY DEFERRED;
