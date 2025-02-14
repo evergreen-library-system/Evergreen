@@ -211,7 +211,7 @@ export class HoldCopyLocationsDialogComponent
           return mappedIds;
       }, []);
 
-      if (!groupsToMap) {return of([...new Set(cachedIds)]);}
+      if (!groupsToMap.length) {return of([...new Set(cachedIds)]);}
 
       // otherwise, prepare the pcrud search
       groupsToMap.forEach(id => this.mappedIdsCache[id] = []);
