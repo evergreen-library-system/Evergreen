@@ -1,0 +1,40 @@
+<ul #list tabindex="-1" [ngClass]="{'inline-list': inline}">
+    @if(collapsed) {
+        @for (entry of truncatedEntries; track $index) {
+            <li>
+                <eg-show-more [characterLimit]="characterLimit"
+                    [text]="entry.text"
+                    [routerLink]="entry.displayLink ? entry.routerLink : null"
+                    [queryParams]="entry.queryParams ? entry.queryParams: null"></eg-show-more>
+            </li>
+        }
+        @if(shouldTruncate) {
+            <li><button
+                (click)="expand()"
+                type="button"
+                class="btn btn-sm btn-expandy">
+                <span class="expandy-text" i18n>Read more</span>
+                <span class="material-icons mat-icon-in-button" aria-hidden="true">expand_more</span>
+            </button></li>
+        }   
+
+    } @else {
+        @for(entry of entries; track $index) {
+            <li>
+                <eg-show-more [characterLimit]="characterLimit"
+                    [text]="entry.text"
+                    [routerLink]="entry.displayLink ? entry.routerLink : null"
+                    [queryParams]="entry.queryParams ? entry.queryParams: null"></eg-show-more>
+            </li>
+        }
+        @if(shouldTruncate) {
+            <li><button
+                (click)="collapse()"
+                type="button"
+                class="btn btn-sm btn-expandy">
+                <span class="expandy-text" i18n>Read less</span>
+                <span class="material-icons mat-icon-in-button" aria-hidden="true">expand_less</span>
+            </button></li>
+        }
+    }
+</ul>

@@ -1,0 +1,29 @@
+@if (shouldTruncate() && collapsed()) {
+    @if (displayLink() && routerLink() && queryParams()) {
+      <a #collapsedText [routerLink]="routerLink()" [queryParams]="queryParams()">{{ text() | snippet:characterLimit() }}</a>
+    } @else {
+      <span #collapsedText tabindex="-1">{{ text() | snippet:characterLimit() }}</span>
+    }
+    <button
+      class="btn btn-sm btn-expandy"
+      i18n
+      aria-expanded="false"
+      (click)="expand()"
+      type="button">Read more</button>
+} @else {
+    @if (displayLink() && routerLink() && queryParams()) {
+        <a #expandedText [routerLink]="routerLink()" [queryParams]="queryParams()">{{ text() }}</a>
+    } @else {
+        <span #expandedText tabindex="-1">{{ text() }}</span>
+    }
+    @if (shouldTruncate()) {
+      <button
+        class="btn btn-sm btn-expandy"
+        i18n
+        aria-expanded="true"
+        (click)="collapse()"
+        type="button">Read less</button>
+    }
+}
+
+

@@ -28,6 +28,31 @@ export interface HoldingsSummary {
     count: number;
     available: number;
     transcendant: number;
+    lasso?: number;
+}
+
+// This type should match the postgres config.ui_record_display_entry_content_type enum
+export type RecordDisplayEntryType = 'field' | 'formats_and_editions' | 'hold_counts' | 'item_counts';
+
+export interface RecordDisplayEntry {
+    label?: string;
+    value?: any;
+    value_limit?: number;
+    character_limit?: number;
+    query_field?: string;
+    content_type: RecordDisplayEntryType;
+    display_as_link?: boolean;
+}
+
+export class InvalidRecordError extends Error {}
+
+function parseRecordDisplayEntry(original: any): RecordDisplayEntry {
+    if (original['display_as_link'] === 't') {
+        original['display_as_link'] = true;
+    } else {
+        original['display_as_link'] = false;
+    }
+    return original;
 }
 
 export class BibRecordSummary {
@@ -54,8 +79,11 @@ export class BibRecordSummary {
     eResourceUrls: EResourceUrl[] = [];
     copies: any[];
     isHoldable: boolean;
+    searchResultDisplayEntries: RecordDisplayEntry[];
+    staffViewDisplayEntries: RecordDisplayEntry[][];
 
     constructor(record: IdlObject, orgId: number, orgDepth?: number) {
+        if (!record) { throw new InvalidRecordError('record should be an object'); }
         this.id = Number(record.id());
         this.record = record;
         this.orgId = orgId;
@@ -112,9 +140,8 @@ export class BibRecordService {
 
     getBibSummary(id: number,
         orgId?: number, isStaff?: boolean,
-        library_group?: number): Observable<BibRecordSummary> {
-        const opts = library_group ? {library_group: library_group} : {};
-        return this.getBibSummaries([id], orgId, isStaff, opts);
+        options?: any): Observable<BibRecordSummary> {
+        return this.getBibSummaries([id], orgId, isStaff, options);
     }
 
     getBibSummaries(bibIds: number[], orgId?: number,
@@ -142,6 +169,8 @@ export class BibRecordService {
                 summary.copies = bibSummary.copies;
                 summary.firstCallNumber = bibSummary.first_call_number;
                 summary.prefOuHoldingsSummary = bibSummary.pref_ou_copy_counts;
+                summary.searchResultDisplayEntries = bibSummary.search_result?.map(e => parseRecordDisplayEntry(e));
+                summary.staffViewDisplayEntries = bibSummary.staff_view?.map(col => col?.map(e => parseRecordDisplayEntry(e)));
 
                 summary.isHoldable = bibSummary.record.deleted() === 'f'
                 && bibSummary.has_holdable_copy
@@ -184,6 +213,9 @@ export class BibRecordService {
                 summary.copies = metabibSummary.copies;
                 summary.firstCallNumber = metabibSummary.first_call_number;
                 summary.prefOuHoldingsSummary = metabibSummary.pref_ou_copy_counts;
+                summary.searchResultDisplayEntries = metabibSummary.search_result?.map(e => parseRecordDisplayEntry(e));
+                summary.staffViewDisplayEntries = metabibSummary.staff_view?.map(col => col.map(e => parseRecordDisplayEntry(e)));
+
 
                 summary.isHoldable = metabibSummary.record.deleted() === 'f'
                 && metabibSummary.has_holdable_copy

@@ -13,7 +13,6 @@ import {TitleComponent} from '@eg/share/title/title.component';
 import {BucketDialogComponent} from '@eg/staff/share/buckets/bucket-dialog.component';
 import {BucketService} from '@eg/staff/share/buckets/bucket.service';
 import {BibSummaryComponent} from '@eg/staff/share/bib-summary/bib-summary.component';
-import {BibStaffViewComponent} from '@eg/staff/share/bib-staff-view/bib-staff-view.component';
 import {AddedContentComponent} from '@eg/staff/catalog/content/added-content.component';
 import {EgHelpPopoverComponent} from '@eg/share/eg-help-popover/eg-help-popover.component';
 import {DatetimeValidatorDirective} from '@eg/share/validators/datetime_validator.directive';
@@ -39,7 +38,6 @@ import { ItemLocationSelectComponent } from '@eg/share/item-location-select/item
         AccessKeyDirective,
         AccessKeyInfoComponent,
         AddedContentComponent,
-        BibStaffViewComponent,
         BibSummaryComponent,
         BucketDialogComponent,
         DatesInOrderValidatorDirective,
@@ -71,7 +69,6 @@ import { ItemLocationSelectComponent } from '@eg/share/item-location-select/item
         OpChangeComponent,
         BucketDialogComponent,
         BibSummaryComponent,
-        BibStaffViewComponent,
         EgHelpPopoverComponent,
         DatetimeValidatorDirective,
         MultiSelectComponent,

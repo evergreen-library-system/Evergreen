@@ -45,8 +45,9 @@
       <li role="presentation" [ngbNavItem]="'staff_view'">
         <h2><a i18n ngbNavLink role="tab">Staff View</a></h2>
         <ng-template ngbNavContent>
-          <eg-bib-staff-view [recordId]="recordId" [bibSummary]="summaryForDisplay()">
-          </eg-bib-staff-view>
+          <eg-staff-record-summary-view [summary]="summary"
+            class="mt-3 d-block">
+          </eg-staff-record-summary-view>
         </ng-template>
       </li>
 

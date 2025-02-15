@@ -1,0 +1,27 @@
+li {
+    border: 0;
+    list-style: none;
+    padding: .25rem .25rem 0 0;    
+}
+
+ul {
+    margin-bottom: 0.25rem;
+}
+
+.inline-list {
+  display: inline;
+  list-style: none;
+  padding: 0;
+}
+
+.inline-list li {
+  display: inline;
+}
+
+.inline-list li:after {
+  content: ", ";
+}
+
+.inline-list li:last-child:after {
+    content: "";
+}

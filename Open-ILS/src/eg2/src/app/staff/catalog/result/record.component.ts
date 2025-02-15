@@ -15,12 +15,14 @@ import {AuthService} from '@eg/core/auth.service';
 import {ToastService} from '@eg/share/toast/toast.service';
 import {BucketDialogComponent} from '@eg/staff/share/buckets/bucket-dialog.component';
 import { StaffCommonModule } from '@eg/staff/common.module';
+import { BibFieldService } from '@eg/share/catalog/bib-field.service';
+import { MetadataColumnComponent } from '@eg/share/catalog/metadata-column.component';
 
 @Component({
     selector: 'eg-catalog-result-record',
     templateUrl: 'record.component.html',
     styleUrls: ['record.component.css'],
-    imports: [StaffCommonModule]
+    imports: [StaffCommonModule, MetadataColumnComponent]
 })
 export class ResultRecordComponent implements OnInit, OnDestroy {
     private router = inject(Router);
@@ -32,6 +34,7 @@ export class ResultRecordComponent implements OnInit, OnDestroy {
     private bucketService = inject(BucketService);
     private auth = inject(AuthService);
     private toast = inject(ToastService);
+    bibField = inject(BibFieldService);
 
 
     @ViewChild('addRecordToBucketDialog', { static: true })
@@ -59,7 +62,8 @@ export class ResultRecordComponent implements OnInit, OnDestroy {
     recentBucketIds: number[] = [];
     recordIds: number[] = [];
 
-    async ngOnInit() {
+
+    ngOnInit() {
         this.searchContext = this.staffCat.searchContext;
         this.loadCourseInformation(this.summary.id);
         this.isRecordSelected = this.basket.hasRecordId(this.summary.id);
@@ -68,7 +72,6 @@ export class ResultRecordComponent implements OnInit, OnDestroy {
         this.basketSub = this.basket.onChange.subscribe(() => {
             this.isRecordSelected = this.basket.hasRecordId(this.summary.id);
         });
-
     }
 
     ngOnDestroy() {

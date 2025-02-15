@@ -1,0 +1,37 @@
+@if (data) {
+
+    <th scope="row">{{ data.col_pos() }}</th>
+    <td>{{ contentType }}@if(fieldLabel){ / {{fieldLabel}}}</td>
+    <td>@if(data.value_limit() ?? data.character_limit()){<eg-bool [value]="data.value_limit() ?? data.character_limit()"></eg-bool>}</td>
+    <td>@if(data.display_as_link()){<eg-bool [value]="data.display_as_link()"></eg-bool>}</td>
+    @if (hasPermissions) {
+<td class="actions">
+        <div class="d-flex justify-content-end flex-wrap pt-0 pb-0">
+            <button type="button"
+                (click)="delete()"
+                class="btn btn-link text-danger"
+                title="Delete section {{ data.page_col() }} entry {{ data.col_pos() }}" i18n-title
+                attr.aria-label="Delete section {{ data.page_col() }} entry {{ data.col_pos() }}" i18n-aria-label>
+                Delete
+            </button>
+            <button type="button"
+                (click)="edit()"
+                class="btn btn-link text-primary ms-1"
+                title="Edit section {{ data.page_col() }} entry {{ data.col_pos() }}" i18n-title
+                attr.aria-label="Edit section {{ data.page_col() }} entry {{ data.col_pos() }}" i18n-aria-label>
+                Edit
+            </button>
+            <button type="button"
+                (keydown.arrowup)="moveUp($event, data)"
+                (keydown.arrowdown)="moveDown($event, data)"
+                class="btn btn-link btn-move text-dark ms-1"
+                attr.aria-label="Move section {{ data.page_col() }} entry {{ data.col_pos() }}" i18n-aria-label>
+                <span class="material-icons mat-icon-in-button" aria-hidden="true" 
+                title="Move section {{ data.page_col() }} entry {{ data.col_pos() }}" i18n-title>open_with</span>
+            </button>
+        </div>
+        <eg-record-display-entry-edit mode="edit" [data]="data" [columnIndex]="columnIndex" [type]="type" (formSubmit)="dataChange.emit(null)" #editForm></eg-record-display-entry-edit>
+    </td>
+}    
+
+}
