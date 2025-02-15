@@ -14,6 +14,7 @@ import { NgbNavModule } from '@ng-bootstrap/ng-bootstrap';
 import { TitleComponent } from '@eg/share/title/title.component';
 import { StringService } from '@eg/share/string/string.service';
 import { CommonModule } from '@angular/common';
+import { BibFieldService } from '@eg/share/catalog/bib-field.service';
 
 describe('RecordComponent', () => {
     let fixture: ComponentFixture<RecordComponent>;
@@ -44,7 +45,8 @@ describe('RecordComponent', () => {
                 { provide: HoldingsService, useValue: null },
                 { provide: StoreService, useValue: mockStoreService },
                 { provide: ServerStoreService, useValue: {getItemBatch: () => Promise.resolve([])} },
-                { provide: StringService, useValue: null }
+                { provide: StringService, useValue: null },
+                { provide: BibFieldService, useValue: {recordDisplayEntries: (_) => of()} },
             ]}).overrideComponent(RecordComponent, {set: {
             schemas: [CUSTOM_ELEMENTS_SCHEMA],
             imports: [ CommonModule, NgbNavModule, TitleComponent]

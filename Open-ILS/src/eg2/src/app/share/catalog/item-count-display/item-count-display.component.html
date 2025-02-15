@@ -1,0 +1,9 @@
+@if (summary?.holdingsSummary) {
+<ul>
+    @for (_count of summary.holdingsSummary; track _count) {
+<li>
+        <span i18n>{{_count.available}} of {{_count.count}} copies available at {{orgName(_count) | async}}.</span>
+    </li>
+}
+</ul>
+}

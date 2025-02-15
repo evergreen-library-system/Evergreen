@@ -167,8 +167,9 @@ export class MockGenerators {
     }
 
     static permService(permissions_result: {}) {
-        const perm = jasmine.createSpyObj<PermService>(['hasWorkPermHere']);
+        const perm = jasmine.createSpyObj<PermService>(['hasWorkPermHere', 'hasWorkPermAt']);
         perm.hasWorkPermHere.and.resolveTo(permissions_result);
+        perm.hasWorkPermAt.and.resolveTo(permissions_result);
         return perm;
     }
 

@@ -1,0 +1,64 @@
+<ng-template #dialogContent>
+    <div class="modal-header">
+        <h3 class="modal-title" i18n>MARC Record Display Entry</h3>
+        <button type="button" class="btn-close btn-close-white" 
+            i18n-aria-label aria-label="Close dialog" (click)="close()"></button>
+    </div>
+    <form [formGroup]="recordDisplayEntryEditForm" class="modal-body">
+        <div class="row">
+            @if (mode() === 'create') {
+                <div class="col-lg-3"><label for="content_type" i18n>Content type</label></div>
+                <div class="col-lg-9">
+                    <select name="content_type" id="content_type" formControlName="contentType" class="form-select">
+                        @for (contentType of ['field', 'formats_and_editions', 'hold_counts', 'item_counts']; track contentType) {
+                            <option [value]="contentType" i18n>{{ contentTypeLabel(contentType) }}</option>
+                        }
+                    </select>
+                </div>
+            } @else if (data()) {
+                <div i18n class="col-lg-3">Content type</div>
+                <div class="col-lg-9">
+                    @switch (data().content_type()) {
+                        @case ('field') { <span i18n>Field</span>}
+                        @case ('formats_and_editions') { <span i18n>Formats and editions</span>}
+                        @case ('hold_counts') { <span i18n>Hold counts</span>}
+                        @case ('item_counts') { <span i18n>Item counts</span>}
+                    }
+                </div>
+            }
+        </div>
+        @if (canSelectField) {
+<div class="row mt-2">
+            <div class="col-lg-3"><label for="curde-field" i18n>Field</label></div>
+            <div class="col-lg-9"><eg-combobox [entries]="fieldEntries" formControlName="field" domId="curde-field"></eg-combobox></div>
+        </div>
+}
+        @if (canLimitValues) {
+<div class="row mt-2">
+            <div class="col-lg-3"><label for="value_limit" i18n>Value limit</label></div>
+            <div class="col-lg-9"><input name="value_limit" id="value_limit" type="number" formControlName="valueLimit" class="form-control"></div>
+        </div>
+}
+        @if (canLimitCharacters) {
+<div class="row mt-2">
+            <div class="col-lg-3"><label for="character_limit" i18n>Character limit</label></div>
+            <div class="col-lg-9"><input name="character_limit" id="character_limit" type="number" formControlName="characterLimit" class="form-control"></div>
+        </div>
+}
+        @if (canDisplayAsLink) {
+<div class="row mt-2">
+            <div class="col-lg-3"><label for="display_as_link" i18n>Display as link</label></div>
+            <div class="col-lg-9"><input name="display_as_link" id="display_as_link" type="checkbox" formControlName="displayAsLink" class="form-control"></div>
+        </div>
+}
+        <div class="mt-5">
+            @if (mode() === 'edit') {
+<button i18n type="button" (click)="delete()" class="btn btn-destroy float-start">Delete</button>
+}
+            <div class="float-end">
+                <button i18n type="button" (click)="close()" class="btn btn-secondary me-2">Cancel</button>
+                <button i18n type="submit" (click)="save()" class="btn btn-info" [disabled]="!recordDisplayEntryEditForm.valid">Save</button>
+            </div>
+        </div>
+    </form>    
+</ng-template>

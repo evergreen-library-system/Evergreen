@@ -224,7 +224,7 @@ export class CatalogService {
 
         let observable: Observable<BibRecordSummary>;
 
-        const options: any = {pref_ou: ctx.prefOu};
+        const options: any = {pref_ou: ctx.prefOu, search_result: 1};
 
         if (ctx.showResultExtras) {
             options.flesh_copies = true;
