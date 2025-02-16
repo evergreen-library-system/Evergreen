@@ -342,7 +342,7 @@ export class ShelvingLocationGroupsComponent implements OnInit {
 
         this.draggedElement = group;
         this.assignNewPositions(index, index - 1);
-        setTimeout($event.target.focus());
+        setTimeout(() => $event.target.focus(), 0);
     }
 
     moveDown($event, group, index) {
@@ -353,7 +353,7 @@ export class ShelvingLocationGroupsComponent implements OnInit {
 
         this.draggedElement = group;
         this.assignNewPositions(index, index + 1);
-        setTimeout($event.target.focus());
+        setTimeout(() => $event.target.focus(), 0);
     }
 
     onDragStart = (event, locationGroup) => {
