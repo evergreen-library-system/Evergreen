@@ -2061,7 +2061,9 @@ INSERT INTO permission.perm_list ( id, code, description ) VALUES
  ( 693, 'DELETE_HARD_DUE_DATE_VALUE', oils_i18n_gettext(693,
      'Allow delete hard due date values', 'ppl', 'description')),
  ( 695, 'ADMIN_CALL_NUMBER_CLASS', oils_i18n_gettext(695,
-     'Allow updates to call number classification names, normalizers, and fields.', 'ppl', 'description'))
+     'Allow updates to call number classification names, normalizers, and fields.', 'ppl', 'description')),
+ ( 696, 'ADMIN_RECORD_DISPLAY', oils_i18n_gettext(696,
+     'Allow modifying the display of catalog records in certain interfaces', 'ppl', 'description'))
 ;
 
 INSERT INTO permission.perm_list (id,code) VALUES

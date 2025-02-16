@@ -298,4 +298,7 @@ ALTER TABLE config.ui_staff_portal_page_entry ADD CONSTRAINT cusppe_entry_type_f
 ALTER TABLE config.ui_staff_portal_page_entry ADD CONSTRAINT cusppe_owner_fkey
     FOREIGN KEY (owner) REFERENCES  actor.org_unit(id) ON UPDATE CASCADE ON DELETE CASCADE DEFERRABLE INITIALLY DEFERRED;
 
+ALTER TABLE config.ui_record_display_entry ADD CONSTRAINT curde_field_fkey
+    FOREIGN KEY (field) REFERENCES config.metabib_field(id) ON UPDATE CASCADE ON DELETE SET NULL DEFERRABLE INITIALLY DEFERRED;
+
 COMMIT;
