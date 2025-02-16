@@ -1421,6 +1421,27 @@ CREATE TABLE config.ui_staff_portal_page_entry (
     owner       INT NOT NULL -- REFERENCES actor.org_unit (id)
 );
 
+CREATE TYPE config.ui_record_display_entry_type AS ENUM ('search_result', 'staff_view');
+
+-- This should match the typescript RecordDisplayEntryType type
+CREATE TYPE config.ui_record_display_entry_content_type AS ENUM (
+    'field', 'formats_and_editions', 'hold_counts', 'item_counts'
+);
+
+CREATE TABLE IF NOT EXISTS config.ui_record_display_entry (
+    id              SERIAL PRIMARY KEY,
+    type            config.ui_record_display_entry_type,
+    content_type    config.ui_record_display_entry_content_type,
+    page_col        INTEGER NOT NULL,
+    col_pos         INTEGER NOT NULL,
+    field           INT, -- REFERENCES config.metabib_field (id)
+    value_limit     INTEGER,
+    character_limit INTEGER,
+    display_as_link BOOLEAN,
+    CONSTRAINT must_specify_whether_field_entry_should_be_a_link CHECK (content_type != 'field'::config.ui_record_display_entry_content_type OR display_as_link IS NOT NULL),
+    CONSTRAINT incompatible_options CHECK (content_type = 'field'::config.ui_record_display_entry_content_type OR (display_as_link IS NULL AND value_limit IS NULL AND character_limit is NULL))
+);
+
 -- Add OpenAthens Integration
 CREATE TABLE config.openathens_uid_field (
     id      SERIAL  PRIMARY KEY,

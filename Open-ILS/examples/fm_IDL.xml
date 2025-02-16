@@ -14489,6 +14489,31 @@ SELECT  usr,
 		</permacrud>
 	</class>
 
+	<class id="curde" controller="open-ils.cstore open-ils.pcrud" oils_obj:fieldmapper="config::ui_record_display_entry" oils_persist:tablename="config.ui_record_display_entry" reporter:label="MARC Record Display Entry" oils_persist:cardinality="low">
+		<fields oils_persist:primary="id" oils_persist:sequence="config.ui_record_display_entry_id_seq">
+			<field name="id" reporter:label="ID" reporter:datatype="id"/>
+			<field name="type" reporter:label="Entry Type" reporter:datatype="text" oils_obj:required="true"/>
+			<field name="content_type" reporter:label="Entry Content Type" reporter:datatype="text" oils_obj:required="true"/>
+			<field name="page_col" reporter:label="Page Column" reporter:datatype="int"/>
+			<field name="col_pos" reporter:label="Column Position" reporter:datatype="int" oils_obj:required="true"/>
+			<field name="field" reporter:label="Field" reporter:datatype="link"/>
+			<field name="value_limit" reporter:label="Value Limit" reporter:datatype="int"/>
+			<field name="character_limit" reporter:label="Character Limit" reporter:datatype="int"/>
+			<field name="display_as_link" reporter:label="Display as Link?" reporter:datatype="bool"/>
+		</fields>
+		<links>
+			<link field="field" reltype="has_a" key="id" map="" class="cmf"/>
+		</links>
+		<permacrud xmlns="http://open-ils.org/spec/opensrf/IDL/permacrud/v1">
+			<actions>
+				<create permission="ADMIN_RECORD_DISPLAY" global_required="true" />
+				<retrieve />
+				<update permission="ADMIN_RECORD_DISPLAY" global_required="true" />
+				<delete permission="ADMIN_RECORD_DISPLAY" global_required="true" />
+			</actions>
+		</permacrud>
+	</class>
+
 	<class id="cusppet" controller="open-ils.cstore open-ils.pcrud" oils_obj:fieldmapper="config::ui_staff_portal_page_entry_type" oils_persist:tablename="config.ui_staff_portal_page_entry_type" reporter:label="Portal Page Entry Type">
 		<fields oils_persist:primary="code">
 			<field name="code" reporter:label="Entry Type Code" reporter:datatype="text" reporter:selector="label" oils_obj:required="true"/>
