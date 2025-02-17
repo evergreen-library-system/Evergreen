@@ -4,29 +4,41 @@
 
     <ng-container *ngIf="!context.disableSelect">
       <td role="gridcell" class="eg-grid-cell eg-grid-checkbox-cell">
-        <div class="eg-grid-cell-contents">
+        <div class="eg-grid-cell-contents" #rowContextMenu="ngbPopover"
+            popoverTitle="Actions for Selected Rows" i18n-popoverTitle
+            (contextmenu)="onRowContextClick($event, row, rowContextMenu)"
+            [ngbPopover]="contextMenu"
+            placement="right"
+            triggers="manual">
         <input type='checkbox' 
           [ngModel]="context.rowSelector.indexes[context.getRowIndex(row)]"
           (ngModelChange)="context.rowSelector.toggle(context.getRowIndex(row))"
-          i18n-aria-label="e.g. Row 13" attr.aria-label="Row {{context.pager.rowNumber(idx)}}"
-          #rowContextMenu="ngbPopover"
+          i18n-aria-label="e.g. Row 13" attr.aria-label="Row {{context.pager.rowNumber(idx)}}">
+        </div>
+      </td>
+    </ng-container>
+    <td role="gridcell" class="eg-grid-cell eg-grid-number-cell alphanumeric" (click)="onRowClick($event, row, idx)">
+      <div class="eg-grid-cell-contents" #rowContextMenu="ngbPopover"
           popoverTitle="Actions for Selected Rows" i18n-popoverTitle
           (contextmenu)="onRowContextClick($event, row, rowContextMenu)"
           [ngbPopover]="contextMenu"
           placement="right"
           triggers="manual">
-        </div>
-      </td>
-    </ng-container>
-    <td role="gridcell" class="eg-grid-cell eg-grid-number-cell alphanumeric">
-      <div class="eg-grid-cell-contents">{{context.pager.rowNumber(idx)}}</div>
+        {{context.pager.rowNumber(idx)}}
+      </div>
     </td>
-    <td role="gridcell" *ngIf="context.rowFlairIsEnabled" class="eg-grid-cell eg-grid-flair-cell">
+    <td role="gridcell" *ngIf="context.rowFlairIsEnabled" class="eg-grid-cell eg-grid-flair-cell"
+        (click)="onRowClick($event, row, idx)">
       <!-- using *ngIf allows us to assign the flair callback to a value,
             obviating the need for multiple calls of the same function -->
       <ng-container *ngIf="context.rowFlairCallback(row); let flair">
         <ng-container *ngIf="flair.icon">
-          <div class="eg-grid-cell-contents">
+          <div class="eg-grid-cell-contents" #rowContextMenu="ngbPopover"
+              popoverTitle="Actions for Selected Rows" i18n-popoverTitle
+              (contextmenu)="onRowContextClick($event, row, rowContextMenu)"
+              [ngbPopover]="contextMenu"
+              placement="right"
+              triggers="manual">
             <span class="material-icons" aria-hidden="true"
               title="{{flair.title}}" i18n-title>
               {{flair.icon}}
@@ -46,9 +58,9 @@
     <!-- eslint-disable @angular-eslint/template/click-events-have-key-events, @angular-eslint/template/accessibility-interactive-supports-focus -->
     <td role="gridcell" *ngFor="let col of context.columnSet.displayColumns()"
       class="eg-grid-cell eg-grid-body-cell"
-      [ngClass]="context.setClassNames(row, col)">
+      [ngClass]="context.setClassNames(row, col)"
+      (click)="onRowClick($event, row, idx)">
         <div class="eg-grid-cell-contents" (dblclick)="onRowDblClick(row)"
-          (click)="onRowClick($event, row, idx)"
           #rowContextMenu="ngbPopover"
           popoverTitle="Actions for Selected Rows" i18n-popoverTitle
           (contextmenu)="onRowContextClick($event, row, rowContextMenu)"
