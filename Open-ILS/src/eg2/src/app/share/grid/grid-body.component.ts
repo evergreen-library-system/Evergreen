@@ -29,6 +29,11 @@ export class GridBodyComponent {
             return;
         }
 
+        if (['a', 'button', 'input', 'select', 'summary'].includes($event.target.tagName.toLowerCase())) {
+            // avoid interrupting normal interactive elements
+            return;
+        }
+
         const index = this.context.getRowIndex(row);
 
         if (this.context.disableMultiSelect) {
