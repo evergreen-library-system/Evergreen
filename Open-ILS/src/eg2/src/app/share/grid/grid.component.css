@@ -39,6 +39,7 @@ table.table.eg-grid {
     width: 100%;
     color: var(--grid);
     caption-side: block-start;
+    height: 1px;
     table-layout: auto;
     white-space: normal;  
 }
