@@ -57,25 +57,27 @@ Evergreen comes pre-loaded with a number of item statuses.
 
 == Adding Item Statuses ==
 
-. In the _New Status_ field, enter the name of the new status you wish to add.
-. Click _Add_.
-. Locate your new status and check the _Holdable_ check box if you wish to allow
-users to place holds on items in this status. Check _OPAC Visible_ if you wish
-for this status to appear in the public catalog. Check _Sets copy active_ if you
-wish for this status to set the active date for new items.
-. Click _Save Changes_ at the bottom of the screen to save changes to the new
+. In the _New Item Status_ field, enter the name of the new status you wish to add.
+. Fill out the form as needed.
+. Click _Save_ at the bottom of the screen to save changes to the new
 status.
 
-image::copy_status/copy_status_add.png[Adding item statuses]
+image::copy_status/new-item-status-form.png[Adding item statuses]
+
+[TIP]
+====
+The _Holdable_ check box will allow
+users to place holds on items in this status.  _OPAC Visible_ allows for this status to appear in the public catalog. _Sets copy active_ allows this status to set the active date for new items.
+====
 
 == Deleting Item Statuses ==
 
-. Highlight the statuses you wish to delete. Ctrl-click to select more than one
-status.
-. Click _Delete Selected_.
-. Click _OK_ to verify.
+. Highlight the statuses you wish to delete. Right-click and select _Delete Selected_.
+. Click _Confirm_ to verify.
 
-image::copy_status/copy_status_delete.png[Deleting item statuses]
+image::copy_status/delete-item-status-option.png[Delete an item status]
+
+image::copy_status/delete-item-status-confirmation.png[Confirm to delete item status]
 
 [NOTE]
 You will not be able to delete statuses if items currently exist with that
@@ -83,11 +85,10 @@ status.
 
 == Editing Item Statuses ==
 
-. Double click on a status name to change its name. Enter the new name.
+. Select desired status and right-click.
 
-. To change whether a status is holdable, visible in the OPAC, or sets the
-item's active date, check or uncheck the relevant checkbox.
+. Choose _Edit Selected_
 
-. Once you have finished editing the statuses, remember to click Save Changes.
+. You will be brought back to the same form that allows a new status creation.  Make your changes and click _Save_.
 
-image::copy_status/copy_status_edit.png[Editing item statuses]
+image::copy_status/edit-item-status-option.png[Editing item statuses]
