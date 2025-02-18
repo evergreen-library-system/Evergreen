@@ -97,30 +97,76 @@ foreach my $commit (split /\0/, $commits, -1) {
     my ($bugnum) = (shift(@lines) =~ /(\d+)/);
     $bugnum //= 'unknown';
     my @notes = ();
+    my $in_note = 0;
+    my $full_note = '';
     foreach my $line (@lines) {
         if ($line =~ /^\s*release-notes*:(.*)/i) {
+            if ($in_note) {
+                # we have more than one release note in the commit for some reason; let's
+                # assume they're intended to be separate entries
+                push @notes, $full_note;
+                $full_note = '';
+            }
+            $in_note = 1;
             my $note = $1;
             $note =~ s/^\s+//;
             $note =~ s/^://;
             $note =~ s/^\s+//;
             $note =~ s/\s+$//;
-            push @notes, $note if $note;
+            $full_note .= ' ' . $note;
+            $full_note =~ s/^ //;
         } elsif ($line =~ /^\s*signed-off-by:\s*(.*?)$/i) {
+            if ($in_note) {
+                push @notes, $full_note;
+                $full_note = '';
+                $in_note = 0;
+            }
             my $reviewer = $1;
             $reviewer =~ s/\<.*$//;
             $reviewer =~ s/^\s+//;
             $reviewer =~ s/\s+$//;
             $reviewers{$reviewer}++ if $reviewer;
         } elsif ($line =~ /^\s+sponsored-by:\s*(.*?)\s*$/i) {
+            if ($in_note) {
+                push @notes, $full_note;
+                $full_note = '';
+                $in_note = 0;
+            }
             $sponsors{$1}++ if $1;
         } elsif ($line =~ /^\s+co-authored-by:\s*(.*?)\s*$/i) {
+            if ($in_note) {
+                push @notes, $full_note;
+                $full_note = '';
+                $in_note = 0;
+            }
             my $coauthor = $1;
             $coauthor =~ s/<.*$//;
             $coauthor =~ s/^\s+//;
             $coauthor =~ s/\s+$//;
             $authors{$coauthor}++ if $coauthor;
-        } 
+        } else {
+            if ($in_note) {
+                if ($line =~ /^    \S/) {
+                    # if we get here, four spaces followed by a non-space character
+                    # is assumed to be the continuation of a note
+                    my $note = $line;
+                    $note =~ s/^\s+//;
+                    $note =~ s/\s+$//;
+                    $full_note .= ' ' . $note;
+                    $full_note =~ s/^ //;
+                } else {
+                    push @notes, $full_note;
+                    $full_note = '';
+                    $in_note = 0;
+                }
+            }
+        }
     }
+
+    if ($in_note) {
+        push @notes, $full_note;
+    }
+
     foreach my $note (@notes) {
         if ($bugnum =~ /^\d+$/) {
             print "* $note (https://bugs.launchpad.net/evergreen/+bug/${bugnum}[Bug $bugnum])\n";
