@@ -38,12 +38,12 @@ export class CharMapDialogComponent extends DialogComponent implements OnInit {
 
     @HostListener('window:keydown', ['$event'])
     focusHeading($event) {
+        if (!this.modalRef) {return;} // don't grab keydown if the charmap modal isn't open
         if (this.disableAccessKeys) {return;}
         // console.debug("Keydown ", $event.key);
         const letters = '0123456789abcdefghijklmnopqrstuvwxyz'.split('');
         if (letters.includes($event.key)) {
-            $event.preventDefault();
-            const el = document.querySelector('[data-index='+$event.key+']') as HTMLElement;
+            const el = document.querySelector('[data-index='+String($event.key)+']') as HTMLElement;
             setTimeout(() => el?.focus());
         }
     }
