@@ -3,6 +3,106 @@
 :numbered:
 :toclevels: 3
 
+== Evergreen 3.13.9 ==
+
+This release contains bug fixes and documentation fixes improving on Evergreen 3.13.8.
+
+=== Upgrade notes ===
+
+* The fix for https://bugs.launchpad.net/evergreen/+bug/2088529[Bug 2088529] requires running an upgrade script.
+* The fix for https://bugs.launchpad.net/evergreen/+bug/1975852[Bug 1975852] requires running an upgrade script.
+* The fix for https://bugs.launchpad.net/evergreen/+bug/1695911[Bug 1695911] requires running an upgrade script.
+* The fix for https://bugs.launchpad.net/evergreen/+bug/2009066[Bug 2009066] requires running an upgrade script.
+
+=== Acquisitions ===
+
+* Refresh line item status and color coding when Purchase order is activated. (https://bugs.launchpad.net/evergreen/+bug/1991801[Bug 1991801])
+* Fixes incorrect calculation of the line-item level cost and amount paid that can occur when creating an invoice from a purchase order or a line item. (https://bugs.launchpad.net/evergreen/+bug/2097049[Bug 2097049])
+* Makes the foreign key relationship between acq.invoice_item and acq.fund_debit deferrable so that fund debits can be deleted in the same transactions as the invoice items. (https://bugs.launchpad.net/evergreen/+bug/2009066[Bug 2009066])
+
+=== Administration ===
+
+* Fix borders, wrapped button text in org unit settings grid. Add class name @Input to org unit selector component. (https://bugs.launchpad.net/evergreen/+bug/2083725[Bug 2083725])
+* Fix an issue in the Shelving Location Group admin screen that caused keyboard focus to disappear. (https://bugs.launchpad.net/evergreen/+bug/2098550[Bug 2098550])
+* Limits browse entry values to 1000 characters (https://bugs.launchpad.net/evergreen/+bug/1695911[Bug 1695911])
+
+
+=== Cataloging ===
+
+* Ensures tag order in the authority.generate_overlay_template function output. (https://bugs.launchpad.net/evergreen/+bug/2088529[Bug 2088529])
+* Removes the Z39.50 search source autosave to match the previous version of the interface. (https://bugs.launchpad.net/evergreen/+bug/2094284[Bug 2094284])
+* The 'Clear Form' button on the Import Record from Z39.50 interface now only clears the search fields, not the services and credentials inputs. (https://bugs.launchpad.net/evergreen/+bug/2084348[Bug 2084348])
+* Adds workstation setting for Monograph Parts grid preferences (https://bugs.launchpad.net/evergreen/+bug/1975852[Bug 1975852])
+* Fix an issue that caused MARC editor interface to change unexpectedly when a record is saved. (https://bugs.launchpad.net/evergreen/+bug/2093128[Bug 2093128])
+
+=== Circulation ===
+
+* Fix Text/SMS Carrier label type in the Modify Hold's dialog box. (https://bugs.launchpad.net/evergreen/+bug/2091111[Bug 2091111])
+* Patron barcode file uploads in the User Bucket's Pending User(s) list are now able to retrieve patrons whose barcode value contains embedded spaces. (https://bugs.launchpad.net/evergreen/+bug/2087873[Bug 2087873])
+
+=== Documentation ===
+
+* Refactor booking module documentation for clarity and updated visuals.
+* Replace 'npm install' with 'npm ci' in the 'For Developers' installation instructions (https://bugs.launchpad.net/evergreen/+bug/2089160[Bug 2089160]). 
+* Updates links between refund and void billing (https://bugs.launchpad.net/bugs/2092238[Bug 2092238])
+* Updates screenshots in Shelving Location Groups documentation (https://bugs.launchpad.net/bugs/2092450[Bug 2092450])
+* Fixes headings in Batch Import MARC documentation (https://bugs.launchpad.net/bugs/2094835[Bug 2094835])
+
+=== OPAC ===
+
+* Fixes whitespace issue with empty list descriptions in the patron's lists in their OPAC account. (https://bugs.launchpad.net/evergreen/+bug/2088180[Bug 2088180])
+
+=== Reports ===
+
+* Fixes typo in bibliographic record source in IDL. (https://bugs.launchpad.net/evergreen/+bug/2086227[Bug 2086227])
+* Fixes reporting source Item's link for last captured hold (https://bugs.launchpad.net/evergreen/+bug/2097281[Bug 2097281])
+* Fixes duplication of Share / Unshare buttons (https://bugs.launchpad.net/evergreen/+bug/2081883[Bug 2081883])
+
+=== Staff Client ===
+
+* Remove noise from the browser developer console when saving Angular grids. (https://bugs.launchpad.net/evergreen/+bug/2095026[Bug 2095026])
+* Correct grid toolbar button sizes in narrow screen sizes. (https://bugs.launchpad.net/evergreen/+bug/2066069[Bug 2066069])
+
+
+
+=== Acknowledgements ===
+
+We would like to thank the following individuals who contributed code, testing, documentation, and patches to the 3.13.9 point release of Evergreen:
+
+* Andrea Buntz Neiman
+* Blake Graham-Henderson
+* Carol Witt
+* Dan Briem
+* Galen Charlton
+* Garry Collum
+* Gina Monti
+* Ian Skelskey
+* Jane Sandberg
+* Jason Stephenson
+* Jeff Davis
+* Jennifer Pringle
+* John Amundson
+* Llewellyn Marshall
+* Mary Llewellyn
+* Michele Morgan
+* Mike Rylander
+* Shula Link
+* Stephanie Leary
+* Steven Callender
+* Steven Mayo
+* Susan Morrison
+* Terran McCanna
+* Tiffany Little
+
+
+
+
+
+
+
+
+
+
 == Evergreen 3.13.8 ==
 
 This release contains bug fixes and documentation fixes improving on Evergreen 3.13.7.
