@@ -26,7 +26,7 @@ sub use_authoritative {
 sub ils_version {
     # version format is "x-y-z", for example "2-0-0" for Evergreen 2.0.0
     # For branches, format is "x-y"
-    return "3-13-19";
+    return "3-13-9";
 }
 
 __PACKAGE__->register_method(

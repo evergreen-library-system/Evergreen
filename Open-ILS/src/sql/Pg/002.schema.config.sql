@@ -93,6 +93,7 @@ CREATE TRIGGER no_overlapping_deps
     FOR EACH ROW EXECUTE PROCEDURE evergreen.array_overlap_check ('deprecates');
 
 INSERT INTO config.upgrade_log (version, applied_to) VALUES ('1454', :eg_version); -- Dyrcona/BMagic/shulabramble/sandbergja
+INSERT INTO config.upgrade_log (version, applied_to) VALUES ('3.13.9', :eg_version);
 INSERT INTO config.upgrade_log (version, applied_to) VALUES ('3.13.19', :eg_version);
 
 CREATE TABLE config.bib_source (
