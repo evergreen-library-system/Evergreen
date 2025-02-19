@@ -3830,6 +3830,7 @@ Delete Provider</msg>
   <msg id="8623045216132981102"><source>src/app/staff/share/holds/manage.component.html:208</source>Phone Number...</msg>
   <msg id="6755484265772753339"><source>src/app/staff/share/holds/manage.component.html:225</source>Text/SMS Number:</msg>
   <msg id="8448690617357798076"><source>src/app/staff/share/holds/manage.component.html:229</source>SMS Number...</msg>
+  <msg id="2193805699094587352"><source>src/app/staff/share/holds/manage.component.html:243</source>Text/SMS Carrier:</msg>
   <msg id="5153453663642537871"><source>src/app/staff/share/holds/manage.component.html:253</source>SMS Carrier...</msg>
   <msg id="4134917114666618814"><source>src/app/staff/share/holds/manage.component.html:262,265</source> Cancel </msg>
   <msg id="2236690492774050280"><source>src/app/staff/share/holds/note-dialog.component.html:11</source>Patron Visible?</msg>
