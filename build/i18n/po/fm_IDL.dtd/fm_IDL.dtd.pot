@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Evergreen 1.4\n"
 "Report-Msgid-Bugs-To: open-ils-dev@list.georgialibraries.org\n"
-"POT-Creation-Date: 2024-09-17 14:45:12-0400\n"
+"POT-Creation-Date: 2025-02-19 12:16:59-0400\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -3232,8 +3232,8 @@ msgstr ""
 msgid "Is Deleted"
 msgstr ""
 
-#: field.acn.edit_date.label:3536 field.sunit.edit_date.label:6226
-#: field.acp.edit_date.label:8056
+#: field.acn.edit_date.label:3536 field.bre.edit_date.label:3690
+#: field.sunit.edit_date.label:6226 field.acp.edit_date.label:8056
 msgid "Last Edit Date/Time"
 msgstr ""
 
@@ -3380,10 +3380,6 @@ msgstr ""
 
 #: field.bre.creator.label:3688
 msgid "Record Creator"
-msgstr ""
-
-#: field.bre.edit_date.label:3690
-msgid "Last Edit Data/Time"
 msgstr ""
 
 #: field.bre.fingerprint.label:3692 field.rmsr.fingerprint.label:11166
