@@ -7,14 +7,14 @@ msgid ""
 msgstr ""
 "Project-Id-Version: evergreen\n"
 "Report-Msgid-Bugs-To: FULL NAME <EMAIL@ADDRESS>\n"
-"POT-Creation-Date: 2024-12-18 23:16+0000\n"
+"POT-Creation-Date: 2025-01-14 22:32+0000\n"
 "PO-Revision-Date: 2024-05-29 00:50+0000\n"
 "Last-Translator: Eva Cerninakova <Unknown>\n"
 "Language-Team: Czech <cs@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2024-12-19 05:19+0000\n"
+"X-Launchpad-Export-Date: 2025-01-15 09:45+0000\n"
 "X-Generator: Launchpad (build 6394e03793719e8d73f5a60b5439440e693c92f1)\n"
 
 #. ("{{pendingXacts | date:\"short\"}}")
@@ -178,7 +178,7 @@ msgstr "%1 %2 %3&#13;&#10;%4 %5&#13;&#10;%6, %7 %8"
 
 #. ("{{patron().prefix()}}", "{{patron().family_name()}}", "{{patron().first_given_name()}}", "{{patron().second_given_name()}}", "{{patron().suffix()}}")
 #. ("{{patron().pref_prefix() || patron().prefix()}}", "{{patron().pref_family_name() || patron().family_name()}}", "{{patron().pref_first_given_name() || patron().first_given_name()}}", "{{patron().pref_second_given_name() || patron().second_given_name()}}", "{{patron().pref_suffix() || patron().suffix()}}")
-#: ../../Open-ILS/src/templates/staff/circ/patron/index.tt2:118 ../../Open-ILS/src/templates/staff/circ/patron/t_summary.tt2:159
+#: ../../Open-ILS/src/templates/staff/circ/patron/index.tt2:115 ../../Open-ILS/src/templates/staff/circ/patron/t_summary.tt2:159
 msgid "%1 %2, %3 %4 %5"
 msgstr "%1 %2, %3 %4 %5"
 
@@ -193,7 +193,7 @@ msgid "%1 (Default)"
 msgstr "%1 (Výchozí)"
 
 #. ("{{dynamic}}", "{{context}}")
-#: ../../Open-ILS/src/templates/staff/base_js.tt2:163
+#: ../../Open-ILS/src/templates/staff/base_js.tt2:160
 msgid "%1 - %2"
 msgstr "%1 - %2"
 
@@ -411,7 +411,7 @@ msgstr "<HODNOTA NEZADÁNA>"
 msgid "<OPAC Renewal>"
 msgstr "<Prodloužení v OPACu>"
 
-#: ../../Open-ILS/src/templates/staff/navbar.tt2:701
+#: ../../Open-ILS/src/templates/staff/navbar.tt2:671
 msgid "<no workstation>"
 msgstr "<žádná pracovní stanice>"
 
@@ -479,7 +479,7 @@ msgstr "Zrušit vyčištění požadavků"
 msgid "Abort Update"
 msgstr "Zrušit aktualizaci"
 
-#: ../../Open-ILS/src/templates/staff/index.tt2:13 ../../Open-ILS/src/templates/staff/navbar.tt2:809
+#: ../../Open-ILS/src/templates/staff/index.tt2:13 ../../Open-ILS/src/templates/staff/navbar.tt2:722
 msgid "About"
 msgstr "O aplikaci"
 
@@ -503,15 +503,15 @@ msgstr "Přijmout pouze exempláře v \"dobré kvalitě\"?"
 msgid "Acquisition Cost"
 msgstr "Akviziční cena"
 
-#: ../../Open-ILS/src/templates/staff/acq/requests/index.tt2:2 ../../Open-ILS/src/templates/staff/acq/requests/t_list.tt2:3 ../../Open-ILS/src/templates/staff/circ/patron/index.tt2:234
+#: ../../Open-ILS/src/templates/staff/acq/requests/index.tt2:2 ../../Open-ILS/src/templates/staff/acq/requests/t_list.tt2:3 ../../Open-ILS/src/templates/staff/circ/patron/index.tt2:231
 msgid "Acquisition Patron Requests"
 msgstr "Akviziční požadavky čtenářů"
 
-#: ../../Open-ILS/src/templates/staff/acq/index.tt2:2 ../../Open-ILS/src/templates/staff/navbar.tt2:473
+#: ../../Open-ILS/src/templates/staff/acq/index.tt2:2 ../../Open-ILS/src/templates/staff/navbar.tt2:444
 msgid "Acquisitions"
 msgstr "Akvizice"
 
-#: ../../Open-ILS/src/templates/staff/admin/acq/index.tt2:2 ../../Open-ILS/src/templates/staff/admin/acq/t_splash.tt2:4 ../../Open-ILS/src/templates/staff/navbar.tt2:664
+#: ../../Open-ILS/src/templates/staff/admin/acq/index.tt2:2 ../../Open-ILS/src/templates/staff/admin/acq/t_splash.tt2:4 ../../Open-ILS/src/templates/staff/navbar.tt2:634
 msgid "Acquisitions Administration"
 msgstr "Správa akvizice"
 
@@ -565,7 +565,7 @@ msgstr "Pole Sip statistických kategorií pro Actor"
 msgid "Ad hoc issue?"
 msgstr "Jednotlivě vydané číslo?"
 
-#: ../../Open-ILS/src/templates/staff/cat/catalog/t_holdings.tt2:75 ../../Open-ILS/src/templates/staff/cat/catalog/t_holdings.tt2:77 ../../Open-ILS/src/templates/staff/cat/catalog/t_holdings.tt2:79 ../../Open-ILS/src/templates/staff/cat/catalog/t_holdings.tt2:81 ../../Open-ILS/src/templates/staff/cat/item/index.tt2:126 ../../Open-ILS/src/templates/staff/cat/item/t_list.tt2:63 ../../Open-ILS/src/templates/staff/cat/item/t_list.tt2:65 ../../Open-ILS/src/templates/staff/cat/item/t_list.tt2:67 ../../Open-ILS/src/templates/staff/cat/item/t_summary_pane.tt2:220 ../../Open-ILS/src/templates/staff/circ/patron/t_credentials.tt2:110 ../../Open-ILS/src/templates/staff/circ/patron/t_credentials.tt2:118 ../../Open-ILS/src/templates/staff/circ/patron/t_patron_groups_dialog.tt2:50
+#: ../../Open-ILS/src/templates/staff/cat/catalog/t_holdings.tt2:75 ../../Open-ILS/src/templates/staff/cat/catalog/t_holdings.tt2:77 ../../Open-ILS/src/templates/staff/cat/catalog/t_holdings.tt2:79 ../../Open-ILS/src/templates/staff/cat/catalog/t_holdings.tt2:81 ../../Open-ILS/src/templates/staff/cat/item/index.tt2:126 ../../Open-ILS/src/templates/staff/cat/item/t_list.tt2:63 ../../Open-ILS/src/templates/staff/cat/item/t_list.tt2:65 ../../Open-ILS/src/templates/staff/cat/item/t_list.tt2:67 ../../Open-ILS/src/templates/staff/cat/item/t_summary_pane.tt2:220 ../../Open-ILS/src/templates/staff/circ/patron/t_patron_groups_dialog.tt2:50
 msgid "Add"
 msgstr "Přidat"
 
@@ -637,7 +637,7 @@ msgstr "Přidat část"
 msgid "Add Person"
 msgstr "Přidat osobu"
 
-#: ../../Open-ILS/src/templates/staff/circ/share/t_hold_details.tt2:131
+#: ../../Open-ILS/src/templates/staff/circ/share/t_hold_details.tt2:126
 msgid "Add Record of Notification"
 msgstr "Přidat záznam o upozornění"
 
@@ -785,7 +785,7 @@ msgstr "Nastavit na nulu"
 msgid "Adjustment"
 msgstr "Přizpůsobení"
 
-#: ../../Open-ILS/src/templates/staff/navbar.tt2:633 ../../Open-ILS/src/templates/staff/t_splash.tt2:78
+#: ../../Open-ILS/src/templates/staff/navbar.tt2:603 ../../Open-ILS/src/templates/staff/t_splash.tt2:78
 msgid "Administration"
 msgstr "Administrace"
 
@@ -960,7 +960,7 @@ msgstr "Přidat poznámku"
 msgid "Annual Circ History"
 msgstr "Roční historie výpůjček"
 
-#: ../../Open-ILS/src/templates/staff/base_js.tt2:140
+#: ../../Open-ILS/src/templates/staff/base_js.tt2:137
 msgid ""
 "Another staff member with the above permission may authorize this specific "
 "action.  Please notify your library administrator if you need this "
@@ -1081,7 +1081,7 @@ msgstr "Archivované poznámky"
 msgid "Archived on %1"
 msgstr "Archivováno %1"
 
-#: ../../Open-ILS/src/templates/staff/base_js.tt2:159
+#: ../../Open-ILS/src/templates/staff/base_js.tt2:156
 msgid ""
 "Are you certain you want to clear these pending offline transactions? This "
 "action is irreversible. Transactions cannot be recovered after clearing!"
@@ -1114,11 +1114,11 @@ msgstr "Opravdu chcete vybrané uživatele ve skupině smazat z katalogu?"
 msgid "Are you sure you want to delete title record %1 from the catalog?"
 msgstr "Opravdu chcete smazat záznam titulu %1 z katalogu?"
 
-#: ../../Open-ILS/src/templates/staff/base_js.tt2:165
+#: ../../Open-ILS/src/templates/staff/base_js.tt2:162
 msgid "Are you sure you want to load ALL items?"
 msgstr "Opravdu chcete nahrát VŠECHNY položky"
 
-#: ../../Open-ILS/src/templates/staff/base_js.tt2:161
+#: ../../Open-ILS/src/templates/staff/base_js.tt2:158
 msgid "Are you sure you want to record {{num_uses}} uses for this?"
 msgstr "Opravdu chcete pro toto zaznamenat  {{num_uses}} počet užití?"
 
@@ -1332,7 +1332,7 @@ msgstr "Zpětně datovaná výpůjčka %1"
 msgid "Backdating Enabled"
 msgstr "Bylo zapnuto zpětné datování"
 
-#: ../../Open-ILS/src/templates/staff/navbar.tt2:530
+#: ../../Open-ILS/src/templates/staff/navbar.tt2:501
 msgid "Background Imports"
 msgstr "Import na pozadí"
 
@@ -1340,11 +1340,11 @@ msgstr "Import na pozadí"
 msgid "Bad Barcode"
 msgstr "Špatný čárový kód"
 
-#: ../../Open-ILS/src/templates/staff/base_js.tt2:153
+#: ../../Open-ILS/src/templates/staff/base_js.tt2:150
 msgid "Bad item barcode"
 msgstr "Špatný čárový kód jednotky"
 
-#: ../../Open-ILS/src/templates/staff/base_js.tt2:155
+#: ../../Open-ILS/src/templates/staff/base_js.tt2:152
 msgid "Bad patron barcode"
 msgstr "Špatný čárový kód"
 
@@ -1631,7 +1631,7 @@ msgstr "Trvalá:PSČ"
 msgid "Billings Voided:"
 msgstr "Zrušené poplatky:"
 
-#: ../../Open-ILS/src/templates/staff/circ/patron/index.tt2:167 ../../Open-ILS/src/templates/staff/circ/patron/index.tt2:85 ../../Open-ILS/src/templates/staff/circ/patron/t_xact_details_details.tt2:5
+#: ../../Open-ILS/src/templates/staff/circ/patron/index.tt2:164 ../../Open-ILS/src/templates/staff/circ/patron/index.tt2:85 ../../Open-ILS/src/templates/staff/circ/patron/t_xact_details_details.tt2:5
 msgid "Bills"
 msgstr "Poplatky"
 
@@ -1695,27 +1695,27 @@ msgstr "Blokace"
 msgid "Book Item Now"
 msgstr "Rezervovat položku nyní"
 
-#: ../../Open-ILS/src/templates/staff/booking/index.tt2:2 ../../Open-ILS/src/templates/staff/navbar.tt2:587
+#: ../../Open-ILS/src/templates/staff/booking/index.tt2:2 ../../Open-ILS/src/templates/staff/navbar.tt2:558
 msgid "Booking"
 msgstr "Rezervace zdrojů"
 
-#: ../../Open-ILS/src/templates/staff/admin/booking/index.tt2:2 ../../Open-ILS/src/templates/staff/admin/booking/t_splash.tt2:4 ../../Open-ILS/src/templates/staff/navbar.tt2:676
+#: ../../Open-ILS/src/templates/staff/admin/booking/index.tt2:2 ../../Open-ILS/src/templates/staff/admin/booking/t_splash.tt2:4 ../../Open-ILS/src/templates/staff/navbar.tt2:646
 msgid "Booking Administration"
 msgstr "Správa rezervace zdrojů"
 
-#: ../../Open-ILS/src/templates/staff/circ/patron/index.tt2:244
+#: ../../Open-ILS/src/templates/staff/circ/patron/index.tt2:241
 msgid "Booking: Create Reservation"
 msgstr "Rezervace zdrojů: Vytvořit rezervaci"
 
-#: ../../Open-ILS/src/templates/staff/circ/patron/index.tt2:239
+#: ../../Open-ILS/src/templates/staff/circ/patron/index.tt2:236
 msgid "Booking: Manage Reservations"
 msgstr "Rezervace zdrojů: Spravovat rezervace"
 
-#: ../../Open-ILS/src/templates/staff/circ/patron/index.tt2:249
+#: ../../Open-ILS/src/templates/staff/circ/patron/index.tt2:246
 msgid "Booking: Pick Up Reservations"
 msgstr "Rezervace zdrojů: Vyzvednout rezervované zdroje"
 
-#: ../../Open-ILS/src/templates/staff/circ/patron/index.tt2:254
+#: ../../Open-ILS/src/templates/staff/circ/patron/index.tt2:251
 msgid "Booking: Return Reservations"
 msgstr "Rezervace zdrojů: Vrátit rezervované zdroje"
 
@@ -2060,7 +2060,7 @@ msgstr "Zachytit"
 msgid "Capture Date"
 msgstr "Datum zachycení"
 
-#: ../../Open-ILS/src/templates/staff/circ/checkin/t_checkin.tt2:5 ../../Open-ILS/src/templates/staff/navbar.tt2:115 ../../Open-ILS/src/templates/staff/navbar.tt2:117 ../../Open-ILS/src/templates/staff/navbar.tt2:309
+#: ../../Open-ILS/src/templates/staff/circ/checkin/t_checkin.tt2:5 ../../Open-ILS/src/templates/staff/navbar.tt2:109 ../../Open-ILS/src/templates/staff/navbar.tt2:111 ../../Open-ILS/src/templates/staff/navbar.tt2:289
 msgid "Capture Holds"
 msgstr "Zachytit rezervace"
 
@@ -2068,7 +2068,7 @@ msgstr "Zachytit rezervace"
 msgid "Capture Local Holds As Transits"
 msgstr "Zachytit lokální rezervace jako přepravy"
 
-#: ../../Open-ILS/src/templates/staff/navbar.tt2:606
+#: ../../Open-ILS/src/templates/staff/navbar.tt2:577
 msgid "Capture Resources"
 msgstr "Zachytiti zdroje"
 
@@ -2092,7 +2092,7 @@ msgstr "Hotově"
 msgid "Cash Drawer"
 msgstr "Hotovostní pokladna"
 
-#: ../../Open-ILS/src/templates/staff/base_js.tt2:125
+#: ../../Open-ILS/src/templates/staff/base_js.tt2:122
 msgid "Cash Payment"
 msgstr "Platba v hotovosti"
 
@@ -2100,11 +2100,11 @@ msgstr "Platba v hotovosti"
 msgid "CatLang"
 msgstr "JazKat"
 
-#: ../../Open-ILS/src/templates/staff/cat/catalog/index.tt2:2 ../../Open-ILS/src/templates/staff/cat/catalog/index.tt2:65 ../../Open-ILS/src/templates/staff/navbar.tt2:360 ../../Open-ILS/src/templates/staff/navbar.tt2:60
+#: ../../Open-ILS/src/templates/staff/cat/catalog/index.tt2:2 ../../Open-ILS/src/templates/staff/cat/catalog/index.tt2:65 ../../Open-ILS/src/templates/staff/navbar.tt2:58
 msgid "Catalog"
 msgstr "Katalog"
 
-#: ../../Open-ILS/src/templates/staff/circ/share/circ_strings.tt2:43 ../../Open-ILS/src/templates/staff/navbar.tt2:353
+#: ../../Open-ILS/src/templates/staff/circ/share/circ_strings.tt2:43 ../../Open-ILS/src/templates/staff/navbar.tt2:333
 msgid "Cataloging"
 msgstr "Katalogizace"
 
@@ -2136,7 +2136,7 @@ msgstr "Změnit složky"
 msgid "Change Given:"
 msgstr "Vrácený zůstatek"
 
-#: ../../Open-ILS/src/templates/staff/navbar.tt2:785 ../../Open-ILS/src/templates/staff/reporter/t_edit_template.tt2:200
+#: ../../Open-ILS/src/templates/staff/navbar.tt2:704 ../../Open-ILS/src/templates/staff/reporter/t_edit_template.tt2:200
 msgid "Change Operator"
 msgstr "Jiný operátor"
 
@@ -2181,7 +2181,7 @@ msgstr "Šekem"
 msgid "Check All Refunds"
 msgstr "Označit všechny přeplatky"
 
-#: ../../Open-ILS/src/templates/staff/base_js.tt2:122 ../../Open-ILS/src/templates/staff/circ/checkin/index.tt2:2 ../../Open-ILS/src/templates/staff/circ/patron/t_items_out.tt2:72 ../../Open-ILS/src/templates/staff/navbar.tt2:106 ../../Open-ILS/src/templates/staff/navbar.tt2:108 ../../Open-ILS/src/templates/staff/navbar.tt2:303 ../../Open-ILS/src/templates/staff/navbar.tt2:97 ../../Open-ILS/src/templates/staff/navbar.tt2:99
+#: ../../Open-ILS/src/templates/staff/base_js.tt2:119 ../../Open-ILS/src/templates/staff/circ/checkin/index.tt2:2 ../../Open-ILS/src/templates/staff/circ/patron/t_items_out.tt2:72 ../../Open-ILS/src/templates/staff/navbar.tt2:101 ../../Open-ILS/src/templates/staff/navbar.tt2:103 ../../Open-ILS/src/templates/staff/navbar.tt2:283 ../../Open-ILS/src/templates/staff/navbar.tt2:93 ../../Open-ILS/src/templates/staff/navbar.tt2:95
 msgid "Check In"
 msgstr "Vrátit"
 
@@ -2201,7 +2201,7 @@ msgstr "Vráceno v knihovně"
 msgid "Check Number"
 msgstr "Číslo šeku"
 
-#: ../../Open-ILS/src/templates/staff/base_js.tt2:120 ../../Open-ILS/src/templates/staff/circ/patron/index.tt2:147 ../../Open-ILS/src/templates/staff/navbar.tt2:297 ../../Open-ILS/src/templates/staff/navbar.tt2:79 ../../Open-ILS/src/templates/staff/navbar.tt2:81 ../../Open-ILS/src/templates/staff/navbar.tt2:88 ../../Open-ILS/src/templates/staff/navbar.tt2:90
+#: ../../Open-ILS/src/templates/staff/base_js.tt2:117 ../../Open-ILS/src/templates/staff/circ/patron/index.tt2:144 ../../Open-ILS/src/templates/staff/navbar.tt2:277 ../../Open-ILS/src/templates/staff/navbar.tt2:77 ../../Open-ILS/src/templates/staff/navbar.tt2:79 ../../Open-ILS/src/templates/staff/navbar.tt2:85 ../../Open-ILS/src/templates/staff/navbar.tt2:87
 msgid "Check Out"
 msgstr "Půjčit"
 
@@ -2233,7 +2233,7 @@ msgstr "Půjčující personál"
 msgid "Check Out Workstation"
 msgstr "Výpůjční pracovní stanice"
 
-#: ../../Open-ILS/src/templates/staff/base_js.tt2:126
+#: ../../Open-ILS/src/templates/staff/base_js.tt2:123
 msgid "Check Payment"
 msgstr "Platba šekem"
 
@@ -2406,11 +2406,11 @@ msgstr "Půjčovat?"
 msgid "Circulating Library"
 msgstr "Půjčující knihovna"
 
-#: ../../Open-ILS/src/templates/staff/cat/volcopy/t_defaults.tt2:154 ../../Open-ILS/src/templates/staff/navbar.tt2:71
+#: ../../Open-ILS/src/templates/staff/cat/volcopy/t_defaults.tt2:154 ../../Open-ILS/src/templates/staff/navbar.tt2:69
 msgid "Circulation"
 msgstr "Výpůjčka"
 
-#: ../../Open-ILS/src/templates/staff/navbar.tt2:281
+#: ../../Open-ILS/src/templates/staff/navbar.tt2:263
 msgid "Circulation (Experimental)"
 msgstr "Výpůjčky (Experimentální)"
 
@@ -2495,11 +2495,11 @@ msgstr "Akce reklamačních politik"
 msgid "Claim Types"
 msgstr "Typy reklamací"
 
-#: ../../Open-ILS/src/templates/staff/navbar.tt2:548
+#: ../../Open-ILS/src/templates/staff/navbar.tt2:519
 msgid "Claim-Ready Items"
 msgstr "Položky k reklamaci"
 
-#: ../../Open-ILS/src/templates/staff/navbar.tt2:554
+#: ../../Open-ILS/src/templates/staff/navbar.tt2:525
 msgid "Claim-Ready Items (Legacy)"
 msgstr "Jednotky připravené k reklamaci (starší verze)"
 
@@ -2571,7 +2571,7 @@ msgstr "Vyčistit tyto rezervace"
 msgid "Clear Transactions"
 msgstr "Vymazat transakce"
 
-#: ../../Open-ILS/src/templates/staff/base_js.tt2:158
+#: ../../Open-ILS/src/templates/staff/base_js.tt2:155
 msgid "Clear pending transactions"
 msgstr "Vymazat nevyřízené transakce"
 
@@ -2600,7 +2600,7 @@ msgstr "Klonovat předplatné"
 msgid "Cloned serial subscription"
 msgstr "Klonovat předplatné seriálu"
 
-#: ../../Open-ILS/src/templates/staff/admin/serials/t_attr_edit.tt2:39 ../../Open-ILS/src/templates/staff/base_js.tt2:119 ../../Open-ILS/src/templates/staff/share/t_grid_columns.tt2:67
+#: ../../Open-ILS/src/templates/staff/admin/serials/t_attr_edit.tt2:39 ../../Open-ILS/src/templates/staff/base_js.tt2:116 ../../Open-ILS/src/templates/staff/share/t_grid_columns.tt2:67
 msgid "Close"
 msgstr "Zavřít"
 
@@ -2608,7 +2608,7 @@ msgstr "Zavřít"
 msgid "Code"
 msgstr "Kód"
 
-#: ../../Open-ILS/src/templates/staff/circ/patron/index.tt2:129
+#: ../../Open-ILS/src/templates/staff/circ/patron/index.tt2:126
 msgid "Collapse Patron Summary Display"
 msgstr "Sbalit zobrazení přehledu údajů o čtenáři"
 
@@ -2672,7 +2672,7 @@ msgstr ""
 "Opravdu chcete zcela SMAZAT toto čtenářské konto, včetně naúčtovaných "
 "poplatků, plateb, seznamů knih atd? Tuto akci NELZE VZÍT ZPĚT."
 
-#: ../../Open-ILS/src/templates/staff/circ/patron/index.tt2:259
+#: ../../Open-ILS/src/templates/staff/circ/patron/index.tt2:256
 msgid "Completely Purge Account"
 msgstr "Zcela vymazat data účtu"
 
@@ -2712,7 +2712,7 @@ msgstr "Potvrdit smazání seznamu"
 msgid "Confirm Prediction Pattern Template Deletion"
 msgstr "Potvrdit smazání šablony pro predikování schématu"
 
-#: ../../Open-ILS/src/templates/staff/base_js.tt2:135
+#: ../../Open-ILS/src/templates/staff/base_js.tt2:132
 msgid "Confirm Record Deletion"
 msgstr "Potvrďte vymazání záznamu"
 
@@ -2998,11 +2998,11 @@ msgstr "Datum / čas vytvoření"
 msgid "Create Event"
 msgstr "Vytvořit událost"
 
-#: ../../Open-ILS/src/templates/staff/navbar.tt2:573
+#: ../../Open-ILS/src/templates/staff/navbar.tt2:544
 msgid "Create Invoice"
 msgstr "Vytvořit fakturu"
 
-#: ../../Open-ILS/src/templates/staff/navbar.tt2:579
+#: ../../Open-ILS/src/templates/staff/navbar.tt2:550
 msgid "Create Invoice (Legacy)"
 msgstr "Vytvořit fakturu (starší verze)"
 
@@ -3014,7 +3014,7 @@ msgstr "Vytvořit záznam MARC"
 msgid "Create MFHD"
 msgstr "VYtvořit MFHD"
 
-#: ../../Open-ILS/src/templates/staff/navbar.tt2:424 ../../Open-ILS/src/templates/staff/navbar.tt2:426
+#: ../../Open-ILS/src/templates/staff/navbar.tt2:396 ../../Open-ILS/src/templates/staff/navbar.tt2:398
 msgid "Create New MARC Record"
 msgstr "Vytvořit nový záznam MARC"
 
@@ -3030,7 +3030,7 @@ msgstr "Vytvořit požadavek čtenáře"
 msgid "Create Pattern"
 msgstr "Vytvořit schéma"
 
-#: ../../Open-ILS/src/templates/staff/navbar.tt2:541
+#: ../../Open-ILS/src/templates/staff/navbar.tt2:512
 msgid "Create Purchase Order"
 msgstr "Vytvořit objednávku"
 
@@ -3042,7 +3042,7 @@ msgstr "Vytvořit záznam upozornění na rezervaci"
 msgid "Create Request"
 msgstr "Vytvořit požadavek"
 
-#: ../../Open-ILS/src/templates/staff/navbar.tt2:594
+#: ../../Open-ILS/src/templates/staff/navbar.tt2:565
 msgid "Create Reservations"
 msgstr "Vytvořit rezervace zdrojů"
 
@@ -3115,7 +3115,7 @@ msgid "Created On"
 msgstr "Vytvořeno"
 
 #. ("{{notify.notify_staff().usrname()}}")
-#: ../../Open-ILS/src/templates/staff/circ/share/t_hold_details.tt2:142
+#: ../../Open-ILS/src/templates/staff/circ/share/t_hold_details.tt2:137
 msgid "Created by %1"
 msgstr "Vytvořila(a) %1"
 
@@ -3156,11 +3156,11 @@ msgstr "Informace o kreditní kartě"
 msgid "Credit Card Number"
 msgstr "Číslo kreditní karty"
 
-#: ../../Open-ILS/src/templates/staff/base_js.tt2:127
+#: ../../Open-ILS/src/templates/staff/base_js.tt2:124
 msgid "Credit Card Payment"
 msgstr "Platba platební kartou"
 
-#: ../../Open-ILS/src/templates/staff/base_js.tt2:129
+#: ../../Open-ILS/src/templates/staff/base_js.tt2:126
 msgid "Credit Payment"
 msgstr "Platba ze zálohy"
 
@@ -3172,7 +3172,7 @@ msgstr "Kont"
 msgid "Ctry"
 msgstr "Země"
 
-#: ../../Open-ILS/src/templates/staff/circ/curbside/index.tt2:2 ../../Open-ILS/src/templates/staff/circ/curbside/t_main.tt2:3 ../../Open-ILS/src/templates/staff/navbar.tt2:272
+#: ../../Open-ILS/src/templates/staff/circ/curbside/index.tt2:2 ../../Open-ILS/src/templates/staff/circ/curbside/t_main.tt2:3 ../../Open-ILS/src/templates/staff/navbar.tt2:254
 msgid "Curbside Pickup"
 msgstr "Bezkontaktní vyzvednutí"
 
@@ -3345,7 +3345,7 @@ msgstr "Telefon během dne"
 msgid "Debit Card"
 msgstr "Debetní karta"
 
-#: ../../Open-ILS/src/templates/staff/base_js.tt2:128
+#: ../../Open-ILS/src/templates/staff/base_js.tt2:125
 msgid "Debit Card Payment"
 msgstr "Platba debetní kartou"
 
@@ -3398,7 +3398,7 @@ msgstr "Výchozí: %1"
 msgid "Defaults"
 msgstr "Výchozí"
 
-#: ../../Open-ILS/src/templates/staff/cat/catalog/t_holdings.tt2:95 ../../Open-ILS/src/templates/staff/cat/catalog/t_holdings.tt2:97 ../../Open-ILS/src/templates/staff/cat/catalog/t_holdings.tt2:99 ../../Open-ILS/src/templates/staff/cat/printlabels/t_view.tt2:41 ../../Open-ILS/src/templates/staff/cat/share/t_marcedit.tt2:45 ../../Open-ILS/src/templates/staff/cat/volcopy/t_attr_edit.tt2:67 ../../Open-ILS/src/templates/staff/cat/volcopy/t_copy_alerts.tt2:74 ../../Open-ILS/src/templates/staff/circ/patron/bucket/t_changesets.tt2:33 ../../Open-ILS/src/templates/staff/circ/patron/t_patron_groups_dialog.tt2:26 ../../Open-ILS/src/templates/staff/circ/share/t_hold_details.tt2:117 ../../Open-ILS/src/templates/staff/serials/t_prediction_manager.tt2:68 ../../Open-ILS/src/templates/staff/serials/t_prediction_wizard.tt2:166 ../../Open-ILS/src/templates/staff/share/t_copy_alert_editor_dialog.tt2:28
+#: ../../Open-ILS/src/templates/staff/cat/catalog/t_holdings.tt2:95 ../../Open-ILS/src/templates/staff/cat/catalog/t_holdings.tt2:97 ../../Open-ILS/src/templates/staff/cat/catalog/t_holdings.tt2:99 ../../Open-ILS/src/templates/staff/cat/printlabels/t_view.tt2:41 ../../Open-ILS/src/templates/staff/cat/share/t_marcedit.tt2:45 ../../Open-ILS/src/templates/staff/cat/volcopy/t_attr_edit.tt2:67 ../../Open-ILS/src/templates/staff/cat/volcopy/t_copy_alerts.tt2:74 ../../Open-ILS/src/templates/staff/circ/patron/bucket/t_changesets.tt2:33 ../../Open-ILS/src/templates/staff/circ/patron/t_patron_groups_dialog.tt2:26 ../../Open-ILS/src/templates/staff/circ/share/t_hold_details.tt2:112 ../../Open-ILS/src/templates/staff/serials/t_prediction_manager.tt2:68 ../../Open-ILS/src/templates/staff/serials/t_prediction_wizard.tt2:166 ../../Open-ILS/src/templates/staff/share/t_copy_alert_editor_dialog.tt2:28
 msgid "Delete"
 msgstr "Smazat"
 
@@ -3507,7 +3507,7 @@ msgstr "Smazat jednotky"
 msgid "Delete prediction pattern?"
 msgstr "Smazat schéma predikce?"
 
-#: ../../Open-ILS/src/templates/staff/base_js.tt2:136
+#: ../../Open-ILS/src/templates/staff/base_js.tt2:133
 msgid "Delete record {{id}}?"
 msgstr "Smazat záznam  {{id}}?"
 
@@ -3656,7 +3656,7 @@ msgstr "Vypnout zvuky?"
 msgid "Discarded"
 msgstr "Vyřazeno"
 
-#: ../../Open-ILS/src/templates/staff/circ/patron/index.tt2:194
+#: ../../Open-ILS/src/templates/staff/circ/patron/index.tt2:191
 msgid "Display Alerts"
 msgstr "Zobrazit varování"
 
@@ -3759,7 +3759,7 @@ msgid "Does Not Equal Any"
 msgstr "Není roven žádnému"
 
 #. ("{{family_name}}", "{{first_given_name}}", "{{org_name}}", "{{org_shortname}}")
-#: ../../Open-ILS/src/templates/staff/base_js.tt2:145 ../../Open-ILS/src/templates/staff/circ/patron/index.tt2:76
+#: ../../Open-ILS/src/templates/staff/base_js.tt2:142 ../../Open-ILS/src/templates/staff/circ/patron/index.tt2:76
 msgid ""
 "Does patron %1, %2 from %3 (%4) consent to having their personal information "
 "shared with your library?"
@@ -3835,7 +3835,7 @@ msgstr "ÚplZ"
 msgid "ELvl_tbmfhd"
 msgstr "ÚplZ_tbmfhd"
 
-#: ../../Open-ILS/src/templates/staff/cat/bucket/record/t_merge_records.tt2:51 ../../Open-ILS/src/templates/staff/cat/catalog/t_holdings.tt2:84 ../../Open-ILS/src/templates/staff/cat/catalog/t_holdings.tt2:86 ../../Open-ILS/src/templates/staff/cat/catalog/t_holdings.tt2:88 ../../Open-ILS/src/templates/staff/cat/catalog/t_holdings.tt2:90 ../../Open-ILS/src/templates/staff/cat/catalog/t_holdings.tt2:92 ../../Open-ILS/src/templates/staff/cat/item/index.tt2:131 ../../Open-ILS/src/templates/staff/cat/item/t_list.tt2:70 ../../Open-ILS/src/templates/staff/cat/item/t_list.tt2:72 ../../Open-ILS/src/templates/staff/cat/item/t_list.tt2:74 ../../Open-ILS/src/templates/staff/cat/item/t_list.tt2:76 ../../Open-ILS/src/templates/staff/cat/item/t_list.tt2:78 ../../Open-ILS/src/templates/staff/cat/volcopy/t_view.tt2:18 ../../Open-ILS/src/templates/staff/circ/checkin/t_checkin_table.tt2:56 ../../Open-ILS/src/templates/staff/circ/patron/index.tt2:181 ../../Open-ILS/src/templates/staff/circ/patron/index.tt2:88
+#: ../../Open-ILS/src/templates/staff/cat/bucket/record/t_merge_records.tt2:51 ../../Open-ILS/src/templates/staff/cat/catalog/t_holdings.tt2:84 ../../Open-ILS/src/templates/staff/cat/catalog/t_holdings.tt2:86 ../../Open-ILS/src/templates/staff/cat/catalog/t_holdings.tt2:88 ../../Open-ILS/src/templates/staff/cat/catalog/t_holdings.tt2:90 ../../Open-ILS/src/templates/staff/cat/catalog/t_holdings.tt2:92 ../../Open-ILS/src/templates/staff/cat/item/index.tt2:131 ../../Open-ILS/src/templates/staff/cat/item/t_list.tt2:70 ../../Open-ILS/src/templates/staff/cat/item/t_list.tt2:72 ../../Open-ILS/src/templates/staff/cat/item/t_list.tt2:74 ../../Open-ILS/src/templates/staff/cat/item/t_list.tt2:76 ../../Open-ILS/src/templates/staff/cat/item/t_list.tt2:78 ../../Open-ILS/src/templates/staff/cat/volcopy/t_view.tt2:18 ../../Open-ILS/src/templates/staff/circ/checkin/t_checkin_table.tt2:56 ../../Open-ILS/src/templates/staff/circ/patron/index.tt2:178 ../../Open-ILS/src/templates/staff/circ/patron/index.tt2:88
 msgid "Edit"
 msgstr "Upravit"
 
@@ -4009,7 +4009,7 @@ msgstr "Upravený akviziční požadavek čtenáře"
 msgid "Edited By"
 msgstr "Upravil(a)"
 
-#: ../../Open-ILS/src/templates/staff/base_js.tt2:123
+#: ../../Open-ILS/src/templates/staff/base_js.tt2:120
 msgid "Edited Patron"
 msgstr "Upravovaný čtenář"
 
@@ -4190,7 +4190,7 @@ msgstr "Název události"
 msgid "Evergreen Documentation"
 msgstr "Dokumentace Evergreenu"
 
-#: ../../Open-ILS/src/templates/staff/base_js.tt2:162
+#: ../../Open-ILS/src/templates/staff/base_js.tt2:159
 msgid "Evergreen Staff Client"
 msgstr "Služební klient Evergreenu"
 
@@ -4300,7 +4300,7 @@ msgstr "Ukončit"
 msgid "Expand"
 msgstr "Rozbalit"
 
-#: ../../Open-ILS/src/templates/staff/circ/patron/index.tt2:134
+#: ../../Open-ILS/src/templates/staff/circ/patron/index.tt2:131
 msgid "Expand Patron Summary Display"
 msgstr "Rozbalit zobrazení přehledu údajů o čtenáři"
 
@@ -4708,7 +4708,7 @@ msgstr "Chcete v této akci přesto pokračovat?"
 msgid "Forgive"
 msgstr "Prominout"
 
-#: ../../Open-ILS/src/templates/staff/base_js.tt2:131
+#: ../../Open-ILS/src/templates/staff/base_js.tt2:128
 msgid "Forgive Payment"
 msgstr "Prominutí platby"
 
@@ -4806,7 +4806,7 @@ msgstr ""
 "&quot;2.5cm&quot;, &quot;1.5in&quot;, etc.  (jednotky musí být ve formátu "
 "platném pro CSS)"
 
-#: ../../Open-ILS/src/templates/staff/navbar.tt2:480
+#: ../../Open-ILS/src/templates/staff/navbar.tt2:451
 msgid "General Search"
 msgstr "Všeobecné vyhledávání"
 
@@ -4850,7 +4850,7 @@ msgstr "V dobrém stavu"
 msgid "Goods"
 msgstr "Věcná náhrada"
 
-#: ../../Open-ILS/src/templates/staff/base_js.tt2:132
+#: ../../Open-ILS/src/templates/staff/base_js.tt2:129
 msgid "Goods Payment"
 msgstr "Věcná náhrada"
 
@@ -4886,7 +4886,7 @@ msgstr "Skupina"
 msgid "Group Fines"
 msgstr "Skupinové pokuty"
 
-#: ../../Open-ILS/src/templates/staff/circ/patron/index.tt2:219 ../../Open-ILS/src/templates/staff/circ/patron/t_group.tt2:2
+#: ../../Open-ILS/src/templates/staff/circ/patron/index.tt2:216 ../../Open-ILS/src/templates/staff/circ/patron/t_group.tt2:2
 msgid "Group Member Details"
 msgstr "Detaily člena skupiny"
 
@@ -4898,7 +4898,7 @@ msgstr "HTML"
 msgid "Hard Due Date Changes"
 msgstr "Změny v půjčování k pevnému datu"
 
-#: ../../Open-ILS/src/templates/staff/navbar.tt2:821
+#: ../../Open-ILS/src/templates/staff/navbar.tt2:734
 msgid "Hatch"
 msgstr "Hatch"
 
@@ -4921,7 +4921,7 @@ msgstr ""
 "do prohlížeče a obchází tak externí tiskový mechanismus.  Nejsou vyžadována\n"
 "žádná další nastavení."
 
-#: ../../Open-ILS/src/templates/staff/navbar.tt2:816
+#: ../../Open-ILS/src/templates/staff/navbar.tt2:729
 msgid "Hatch Connection Status"
 msgstr "Hatch - status připojení"
 
@@ -5028,7 +5028,7 @@ msgstr "Datum aktivace rezervace"
 msgid "Hold Cancel Date/Time"
 msgstr "Datum /čas zrušení rezervace"
 
-#: ../../Open-ILS/src/templates/staff/base_js.tt2:134
+#: ../../Open-ILS/src/templates/staff/base_js.tt2:131
 msgid "Hold Cancelation"
 msgstr "Zrušení rezervace"
 
@@ -5068,7 +5068,7 @@ msgstr "Rezervační skupina č. {{bucket().id()}}: {{bucket().name()}}"
 msgid "Hold Group Buckets"
 msgstr "Skupiny čtenářů pro rezervační skupiny"
 
-#: ../../Open-ILS/src/templates/staff/cat/bucket/batch_hold/index.tt2:40 ../../Open-ILS/src/templates/staff/cat/bucket/batch_hold/t_view.tt2:8 ../../Open-ILS/src/templates/staff/circ/patron/index.tt2:209 ../../Open-ILS/src/templates/staff/circ/patron/t_hold_subscriptions.tt2:1 ../../Open-ILS/src/templates/staff/navbar.tt2:195
+#: ../../Open-ILS/src/templates/staff/cat/bucket/batch_hold/index.tt2:40 ../../Open-ILS/src/templates/staff/cat/bucket/batch_hold/t_view.tt2:8 ../../Open-ILS/src/templates/staff/circ/patron/index.tt2:206 ../../Open-ILS/src/templates/staff/circ/patron/t_hold_subscriptions.tt2:1 ../../Open-ILS/src/templates/staff/navbar.tt2:183
 msgid "Hold Groups"
 msgstr "Rezervační skupiny"
 
@@ -5092,7 +5092,7 @@ msgstr "Poznámky k rezervaci"
 msgid "Hold Pull List"
 msgstr "Seznam rezervací k zachycení"
 
-#: ../../Open-ILS/src/templates/staff/base_js.tt2:133
+#: ../../Open-ILS/src/templates/staff/base_js.tt2:130
 msgid "Hold Request"
 msgstr "Požadavek na rezervaci"
 
@@ -5202,7 +5202,7 @@ msgstr ""
 "Objekty související se správou exemplářů, jako číslování, exempláře,  "
 "jednotky a rejstříky,  nebudou klonovány."
 
-#: ../../Open-ILS/src/templates/staff/circ/patron/index.tt2:159 ../../Open-ILS/src/templates/staff/circ/patron/index.tt2:86 ../../Open-ILS/src/templates/staff/circ/patron/t_summary.tt2:119
+#: ../../Open-ILS/src/templates/staff/circ/patron/index.tt2:156 ../../Open-ILS/src/templates/staff/circ/patron/index.tt2:86 ../../Open-ILS/src/templates/staff/circ/patron/t_summary.tt2:119
 msgid "Holds"
 msgstr "Rezervace"
 
@@ -5226,7 +5226,7 @@ msgstr "Oznámení o rezervacích"
 msgid "Holds Pull List"
 msgstr "Seznam rezervací k zachycení"
 
-#: ../../Open-ILS/src/templates/staff/circ/holds/index.tt2:2 ../../Open-ILS/src/templates/staff/circ/holds/t_shelf.tt2:3 ../../Open-ILS/src/templates/staff/circ/share/circ_strings.tt2:42 ../../Open-ILS/src/templates/staff/navbar.tt2:226
+#: ../../Open-ILS/src/templates/staff/circ/holds/index.tt2:2 ../../Open-ILS/src/templates/staff/circ/holds/t_shelf.tt2:3 ../../Open-ILS/src/templates/staff/circ/share/circ_strings.tt2:42 ../../Open-ILS/src/templates/staff/navbar.tt2:212
 msgid "Holds Shelf"
 msgstr "Regál s rezervacemi"
 
@@ -5356,7 +5356,7 @@ msgstr "Sady shod importu"
 msgid "Import Record"
 msgstr "Importovat záznam"
 
-#: ../../Open-ILS/src/templates/staff/navbar.tt2:433
+#: ../../Open-ILS/src/templates/staff/navbar.tt2:404
 msgid "Import Record from Z39.50"
 msgstr "Importovat záznam pomocí Z39.50"
 
@@ -5500,7 +5500,7 @@ msgstr "Typ položky na faktuře"
 msgid "Invoice Payment Method"
 msgstr "Platební metoda"
 
-#: ../../Open-ILS/src/templates/staff/navbar.tt2:567
+#: ../../Open-ILS/src/templates/staff/navbar.tt2:538
 msgid "Invoices"
 msgstr "Faktury"
 
@@ -5615,7 +5615,7 @@ msgstr "čárový kód jednotky:"
 msgid "Item Barcode: %1"
 msgstr "Čárový kód jednotky: %1"
 
-#: ../../Open-ILS/src/templates/staff/cat/bucket/copy/index.tt2:2 ../../Open-ILS/src/templates/staff/navbar.tt2:391 ../../Open-ILS/src/templates/staff/t_splash.tt2:68
+#: ../../Open-ILS/src/templates/staff/cat/bucket/copy/index.tt2:2 ../../Open-ILS/src/templates/staff/navbar.tt2:365 ../../Open-ILS/src/templates/staff/t_splash.tt2:68
 msgid "Item Buckets"
 msgstr "Skupiny jednotek"
 
@@ -5671,7 +5671,7 @@ msgstr "Vyhledávání exemplářů a katalogizace"
 msgid "Item Selection Depth"
 msgstr "Hloubka výběru exempláře"
 
-#: ../../Open-ILS/src/templates/staff/admin/workstation/t_print_templates.tt2:29 ../../Open-ILS/src/templates/staff/cat/catalog/t_holds.tt2:96 ../../Open-ILS/src/templates/staff/cat/item/index.tt2:2 ../../Open-ILS/src/templates/staff/cat/item/t_list.tt2:6 ../../Open-ILS/src/templates/staff/cat/item/t_list.tt2:92 ../../Open-ILS/src/templates/staff/circ/holds/t_pull_list.tt2:127 ../../Open-ILS/src/templates/staff/circ/holds/t_shelf_list.tt2:77 ../../Open-ILS/src/templates/staff/circ/in_house_use/index.tt2:87 ../../Open-ILS/src/templates/staff/circ/patron/t_holds_list.tt2:77 ../../Open-ILS/src/templates/staff/circ/patron/t_items_out.tt2:104 ../../Open-ILS/src/templates/staff/navbar.tt2:239 ../../Open-ILS/src/templates/staff/navbar.tt2:241 ../../Open-ILS/src/templates/staff/navbar.tt2:375 ../../Open-ILS/src/templates/staff/navbar.tt2:377 ../../Open-ILS/src/templates/staff/navbar.tt2:51
+#: ../../Open-ILS/src/templates/staff/admin/workstation/t_print_templates.tt2:29 ../../Open-ILS/src/templates/staff/cat/catalog/t_holds.tt2:96 ../../Open-ILS/src/templates/staff/cat/item/index.tt2:2 ../../Open-ILS/src/templates/staff/cat/item/t_list.tt2:6 ../../Open-ILS/src/templates/staff/cat/item/t_list.tt2:92 ../../Open-ILS/src/templates/staff/circ/holds/t_pull_list.tt2:127 ../../Open-ILS/src/templates/staff/circ/holds/t_shelf_list.tt2:77 ../../Open-ILS/src/templates/staff/circ/in_house_use/index.tt2:87 ../../Open-ILS/src/templates/staff/circ/patron/t_holds_list.tt2:77 ../../Open-ILS/src/templates/staff/circ/patron/t_items_out.tt2:104 ../../Open-ILS/src/templates/staff/navbar.tt2:225 ../../Open-ILS/src/templates/staff/navbar.tt2:352 ../../Open-ILS/src/templates/staff/navbar.tt2:50
 msgid "Item Status"
 msgstr "Status jednotky"
 
@@ -5748,7 +5748,7 @@ msgstr "Exemplář jako postrádaný"
 msgid "Item barcode"
 msgstr "Čárový kód jednotky"
 
-#: ../../Open-ILS/src/templates/staff/base_js.tt2:154
+#: ../../Open-ILS/src/templates/staff/base_js.tt2:151
 msgid "Item barcode does not have a correct check digit."
 msgstr "Čárový kód jednotky nemá správnou konrolní číslici"
 
@@ -5772,7 +5772,7 @@ msgstr "Jednotky v přepravě"
 msgid "Item is not captured for a hold"
 msgstr "Exemplář není zachycen pro rezervace"
 
-#: ../../Open-ILS/src/templates/staff/base_js.tt2:157
+#: ../../Open-ILS/src/templates/staff/base_js.tt2:154
 msgid "Item not found"
 msgstr "Jednotka nebyla nalezena"
 
@@ -5865,7 +5865,7 @@ msgstr "Vrácené exempláře"
 msgid "Items Checked Out"
 msgstr "Vypůjčené exempláře"
 
-#: ../../Open-ILS/src/templates/staff/admin/workstation/t_print_templates.tt2:30 ../../Open-ILS/src/templates/staff/circ/patron/index.tt2:151 ../../Open-ILS/src/templates/staff/circ/patron/index.tt2:87 ../../Open-ILS/src/templates/staff/circ/patron/t_group.tt2:43 ../../Open-ILS/src/templates/staff/circ/patron/t_summary.tt2:91
+#: ../../Open-ILS/src/templates/staff/admin/workstation/t_print_templates.tt2:30 ../../Open-ILS/src/templates/staff/circ/patron/index.tt2:148 ../../Open-ILS/src/templates/staff/circ/patron/index.tt2:87 ../../Open-ILS/src/templates/staff/circ/patron/t_group.tt2:43 ../../Open-ILS/src/templates/staff/circ/patron/t_summary.tt2:91
 msgid "Items Out"
 msgstr "Výpůjčky"
 
@@ -6098,7 +6098,7 @@ msgstr "Definice atributů MARC pro položku"
 msgid "Lineitem ID"
 msgstr "ID položky"
 
-#: ../../Open-ILS/src/templates/staff/navbar.tt2:452
+#: ../../Open-ILS/src/templates/staff/navbar.tt2:423
 msgid "Link Checker"
 msgstr "Kontrola odkazů"
 
@@ -6126,11 +6126,11 @@ msgstr "Nahrát"
 msgid "Load Bucket"
 msgstr "Načíst skupinu"
 
-#: ../../Open-ILS/src/templates/staff/navbar.tt2:517
+#: ../../Open-ILS/src/templates/staff/navbar.tt2:488
 msgid "Load Catalog Record IDs"
 msgstr "Načíst ID katalogizačních záznamů"
 
-#: ../../Open-ILS/src/templates/staff/navbar.tt2:524
+#: ../../Open-ILS/src/templates/staff/navbar.tt2:495
 msgid "Load MARC Order Records"
 msgstr "Nahrát MARC záznamy pro objednávky"
 
@@ -6154,7 +6154,7 @@ msgstr "Načítá se…"
 msgid "Loan Duration"
 msgstr "Délka výpůjčky"
 
-#: ../../Open-ILS/src/templates/staff/navbar.tt2:658
+#: ../../Open-ILS/src/templates/staff/navbar.tt2:628
 msgid "Local Administration"
 msgstr "Lokální  administrace"
 
@@ -6170,7 +6170,7 @@ msgstr "Umístění"
 msgid "Location:"
 msgstr "Umístění:"
 
-#: ../../Open-ILS/src/templates/staff/navbar.tt2:797
+#: ../../Open-ILS/src/templates/staff/navbar.tt2:716
 msgid "Log Out"
 msgstr "Odhlásit se"
 
@@ -6206,11 +6206,11 @@ msgstr "Nízká"
 msgid "Lower case"
 msgstr "Malá písmena"
 
-#: ../../Open-ILS/src/templates/staff/navbar.tt2:445
+#: ../../Open-ILS/src/templates/staff/navbar.tt2:416
 msgid "MARC Batch Edit"
 msgstr "Hromadná editace MARCu"
 
-#: ../../Open-ILS/src/templates/staff/navbar.tt2:439
+#: ../../Open-ILS/src/templates/staff/navbar.tt2:410
 msgid "MARC Batch Import/Export"
 msgstr "Dávkový import/export MARCu"
 
@@ -6226,7 +6226,7 @@ msgstr "Editace MARCu"
 msgid "MARC Expert"
 msgstr "Expertní (MARC)"
 
-#: ../../Open-ILS/src/templates/staff/navbar.tt2:511
+#: ../../Open-ILS/src/templates/staff/navbar.tt2:482
 msgid "MARC Federated Search"
 msgstr "Federativní vyhledávání MARCu"
 
@@ -6371,7 +6371,7 @@ msgstr "Nastavit jako poslední zobrazený"
 msgid "Manage"
 msgstr "Spravovat"
 
-#: ../../Open-ILS/src/templates/staff/navbar.tt2:459
+#: ../../Open-ILS/src/templates/staff/navbar.tt2:430
 msgid "Manage Authorities"
 msgstr "Spravovat autority"
 
@@ -6403,7 +6403,7 @@ msgstr "Spravovat MFHD"
 msgid "Manage Predictions"
 msgstr "Spravovat predikce"
 
-#: ../../Open-ILS/src/templates/staff/cat/catalog/t_holdings.tt2:50 ../../Open-ILS/src/templates/staff/cat/item/index.tt2:105 ../../Open-ILS/src/templates/staff/cat/item/t_list.tt2:26 ../../Open-ILS/src/templates/staff/navbar.tt2:624
+#: ../../Open-ILS/src/templates/staff/cat/catalog/t_holdings.tt2:50 ../../Open-ILS/src/templates/staff/cat/item/index.tt2:105 ../../Open-ILS/src/templates/staff/cat/item/t_list.tt2:26 ../../Open-ILS/src/templates/staff/navbar.tt2:595
 msgid "Manage Reservations"
 msgstr "Spravovat rezervace zdrojů"
 
@@ -6901,7 +6901,7 @@ msgstr "Jméno pro smazání sady"
 msgid "Name for edit set"
 msgstr "Jméno editační sady"
 
-#: ../../Open-ILS/src/templates/staff/circ/patron/index.tt2:124
+#: ../../Open-ILS/src/templates/staff/circ/patron/index.tt2:121
 msgid "Name keywords: "
 msgstr "Štítky k uživateli: "
 
@@ -6953,7 +6953,7 @@ msgstr "Zbývá zaplatit:"
 msgid "New Barcode..."
 msgstr "Nový čárový kód ..."
 
-#: ../../Open-ILS/src/templates/staff/navbar.tt2:499
+#: ../../Open-ILS/src/templates/staff/navbar.tt2:470
 msgid "New Brief Record"
 msgstr "Vytvořit předběžný  záznam"
 
@@ -6985,7 +6985,7 @@ msgstr "Nové upozornění k jednotce"
 msgid "New Item Note"
 msgstr "Nová poznámka k jednotce"
 
-#: ../../Open-ILS/src/templates/staff/circ/share/t_hold_details.tt2:85
+#: ../../Open-ILS/src/templates/staff/circ/share/t_hold_details.tt2:80
 msgid "New Note"
 msgstr "Nová poznámka"
 
@@ -7013,7 +7013,7 @@ msgstr "Nově vytvořená jednotka"
 msgid "Next"
 msgstr "Další"
 
-#: ../../Open-ILS/src/templates/staff/circ/share/t_hold_details.tt2:194 ../../Open-ILS/src/templates/staff/share/t_autogrid.tt2:91 ../../Open-ILS/src/templates/staff/share/t_autogrid.tt2:92
+#: ../../Open-ILS/src/templates/staff/share/t_autogrid.tt2:91 ../../Open-ILS/src/templates/staff/share/t_autogrid.tt2:92
 msgid "Next Page"
 msgstr "Další stránka"
 
@@ -7029,7 +7029,7 @@ msgstr "Následující status jednotky: "
 msgid "Next to Last"
 msgstr "Příští k poslednímu"
 
-#: ../../Open-ILS/src/templates/staff/admin/serials/t_attr_edit.tt2:114 ../../Open-ILS/src/templates/staff/admin/serials/t_attr_edit.tt2:150 ../../Open-ILS/src/templates/staff/admin/serials/t_attr_edit.tt2:227 ../../Open-ILS/src/templates/staff/admin/serials/t_attr_edit.tt2:257 ../../Open-ILS/src/templates/staff/admin/serials/t_attr_edit.tt2:69 ../../Open-ILS/src/templates/staff/base_js.tt2:170 ../../Open-ILS/src/templates/staff/cat/volcopy/index.tt2:27 ../../Open-ILS/src/templates/staff/cat/volcopy/t_attr_edit.tt2:146 ../../Open-ILS/src/templates/staff/cat/volcopy/t_attr_edit.tt2:203 ../../Open-ILS/src/templates/staff/cat/volcopy/t_attr_edit.tt2:244 ../../Open-ILS/src/templates/staff/cat/volcopy/t_attr_edit.tt2:348 ../../Open-ILS/src/templates/staff/cat/volcopy/t_attr_edit.tt2:372
+#: ../../Open-ILS/src/templates/staff/admin/serials/t_attr_edit.tt2:114 ../../Open-ILS/src/templates/staff/admin/serials/t_attr_edit.tt2:150 ../../Open-ILS/src/templates/staff/admin/serials/t_attr_edit.tt2:227 ../../Open-ILS/src/templates/staff/admin/serials/t_attr_edit.tt2:257 ../../Open-ILS/src/templates/staff/admin/serials/t_attr_edit.tt2:69 ../../Open-ILS/src/templates/staff/base_js.tt2:167 ../../Open-ILS/src/templates/staff/cat/volcopy/index.tt2:27 ../../Open-ILS/src/templates/staff/cat/volcopy/t_attr_edit.tt2:146 ../../Open-ILS/src/templates/staff/cat/volcopy/t_attr_edit.tt2:203 ../../Open-ILS/src/templates/staff/cat/volcopy/t_attr_edit.tt2:244 ../../Open-ILS/src/templates/staff/cat/volcopy/t_attr_edit.tt2:348 ../../Open-ILS/src/templates/staff/cat/volcopy/t_attr_edit.tt2:372
 msgid "No"
 msgstr "Ne"
 
@@ -7241,7 +7241,7 @@ msgstr "Poznámka:"
 msgid "Note: %1"
 msgstr "Poznámka: %1"
 
-#: ../../Open-ILS/src/templates/staff/circ/curbside/t_schedule_pickup.tt2:73 ../../Open-ILS/src/templates/staff/circ/patron/index.tt2:174 ../../Open-ILS/src/templates/staff/circ/patron/index.tt2:82 ../../Open-ILS/src/templates/staff/circ/patron/t_messages.tt2:1 ../../Open-ILS/src/templates/staff/circ/share/t_hold_details.tt2:66 ../../Open-ILS/src/templates/staff/serials/t_batch_receive.tt2:42
+#: ../../Open-ILS/src/templates/staff/circ/curbside/t_schedule_pickup.tt2:73 ../../Open-ILS/src/templates/staff/circ/patron/index.tt2:171 ../../Open-ILS/src/templates/staff/circ/patron/index.tt2:82 ../../Open-ILS/src/templates/staff/circ/patron/t_messages.tt2:1 ../../Open-ILS/src/templates/staff/circ/share/t_hold_details.tt2:66 ../../Open-ILS/src/templates/staff/serials/t_batch_receive.tt2:42
 msgid "Notes"
 msgstr "Poznámky"
 
@@ -7389,7 +7389,7 @@ msgstr "Vrácení v režimu offline"
 msgid "Offline Checkout"
 msgstr "Půjčení v režimu offline"
 
-#: ../../Open-ILS/src/templates/staff/navbar.tt2:265
+#: ../../Open-ILS/src/templates/staff/navbar.tt2:247
 msgid "Offline Circulation"
 msgstr "Výpůjčky v režimu offline"
 
@@ -7409,19 +7409,19 @@ msgstr "Offline relace"
 msgid "Offline blocklist downloaded"
 msgstr "Byl stažen seznam blokovaných pro režim offline"
 
-#: ../../Open-ILS/src/templates/staff/base_js.tt2:148
+#: ../../Open-ILS/src/templates/staff/base_js.tt2:145
 msgid "Offline session creation failed"
 msgstr "Vytvoření offline relace se nezdařilo"
 
-#: ../../Open-ILS/src/templates/staff/base_js.tt2:147
+#: ../../Open-ILS/src/templates/staff/base_js.tt2:144
 msgid "Offline session description"
 msgstr "Popis offline relace"
 
-#: ../../Open-ILS/src/templates/staff/base_js.tt2:149
+#: ../../Open-ILS/src/templates/staff/base_js.tt2:146
 msgid "Offline session processing failed"
 msgstr "Zpracování offline relace se nezdařilo"
 
-#: ../../Open-ILS/src/templates/staff/base_js.tt2:150
+#: ../../Open-ILS/src/templates/staff/base_js.tt2:147
 msgid "Offline transaction upload failed"
 msgstr "Nahrání offline transakcí se nezdařilo"
 
@@ -7485,15 +7485,15 @@ msgstr "Otevřít v novém okně"
 msgid "Operator"
 msgstr "Jiný operátor"
 
-#: ../../Open-ILS/src/templates/staff/base_js.tt2:139
+#: ../../Open-ILS/src/templates/staff/base_js.tt2:136
 msgid "Operator Change"
 msgstr "Jiný operátor"
 
-#: ../../Open-ILS/src/templates/staff/base_js.tt2:138
+#: ../../Open-ILS/src/templates/staff/base_js.tt2:135
 msgid "Operator Change Failed"
 msgstr "Změna operátora se nezdařila"
 
-#: ../../Open-ILS/src/templates/staff/base_js.tt2:137
+#: ../../Open-ILS/src/templates/staff/base_js.tt2:134
 msgid "Operator Change Succeeded"
 msgstr "Změna přihlášení proběhla úspěšně"
 
@@ -7557,7 +7557,7 @@ msgstr "Půvoní čárový kód"
 msgid "Originating Acquisition"
 msgstr "Najít zdroj akvizice"
 
-#: ../../Open-ILS/src/templates/staff/circ/patron/index.tt2:185 ../../Open-ILS/src/templates/staff/circ/patron/index.tt2:84
+#: ../../Open-ILS/src/templates/staff/circ/patron/index.tt2:182 ../../Open-ILS/src/templates/staff/circ/patron/index.tt2:84
 msgid "Other"
 msgstr "Ostatní"
 
@@ -7765,7 +7765,7 @@ msgstr "Čárový kód čtenáře:"
 msgid "Patron Barcodes"
 msgstr "Čárové kódy čtenáře"
 
-#: ../../Open-ILS/src/templates/staff/circ/share/t_hold_details.tt2:103
+#: ../../Open-ILS/src/templates/staff/circ/share/t_hold_details.tt2:98
 msgid "Patron Created"
 msgstr "Čtenář byl vytvořen"
 
@@ -7813,11 +7813,11 @@ msgstr "Čtenářská poznámka"
 msgid "Patron Registration"
 msgstr "Registrovat čtenáře"
 
-#: ../../Open-ILS/src/templates/staff/navbar.tt2:505
+#: ../../Open-ILS/src/templates/staff/navbar.tt2:476
 msgid "Patron Requests"
 msgstr "Požadavky čtenářů"
 
-#: ../../Open-ILS/src/templates/staff/circ/curbside/t_schedule_pickup.tt2:15 ../../Open-ILS/src/templates/staff/circ/patron/index.tt2:265 ../../Open-ILS/src/templates/staff/circ/patron/index.tt2:79
+#: ../../Open-ILS/src/templates/staff/circ/curbside/t_schedule_pickup.tt2:15 ../../Open-ILS/src/templates/staff/circ/patron/index.tt2:262 ../../Open-ILS/src/templates/staff/circ/patron/index.tt2:79
 msgid "Patron Search"
 msgstr "Hledání čtenářů"
 
@@ -7825,7 +7825,7 @@ msgstr "Hledání čtenářů"
 msgid "Patron Search Results"
 msgstr "Výsledky hledání čtenáře"
 
-#: ../../Open-ILS/src/templates/staff/cat/bucket/batch_hold/t_list.tt2:17 ../../Open-ILS/src/templates/staff/circ/patron/t_stat_cats.tt2:11 ../../Open-ILS/src/templates/staff/circ/share/t_hold_details.tt2:97 ../../Open-ILS/src/templates/staff/circ/share/t_new_message_dialog.tt2:58
+#: ../../Open-ILS/src/templates/staff/cat/bucket/batch_hold/t_list.tt2:17 ../../Open-ILS/src/templates/staff/circ/patron/t_stat_cats.tt2:11 ../../Open-ILS/src/templates/staff/circ/share/t_hold_details.tt2:92 ../../Open-ILS/src/templates/staff/circ/share/t_new_message_dialog.tt2:58
 msgid "Patron Visible"
 msgstr "Viditelné pro čtenáře"
 
@@ -7866,7 +7866,7 @@ msgstr "Alias čtenáře"
 msgid "Patron barcode"
 msgstr "Čárový kód čtenáře"
 
-#: ../../Open-ILS/src/templates/staff/base_js.tt2:156
+#: ../../Open-ILS/src/templates/staff/base_js.tt2:153
 msgid "Patron barcode does not have a correct check digit."
 msgstr "Čárový kód čtenáře nemá správnou kontrolní číslici"
 
@@ -7874,7 +7874,7 @@ msgstr "Čárový kód čtenáře nemá správnou kontrolní číslici"
 msgid "Patron barcode:"
 msgstr "Čárový kód čtenáře:"
 
-#: ../../Open-ILS/src/templates/staff/base_js.tt2:152
+#: ../../Open-ILS/src/templates/staff/base_js.tt2:149
 msgid "Patron blocked"
 msgstr "Čtenářské konto je blokováno"
 
@@ -7903,7 +7903,7 @@ msgstr "Čtenář již dorazil!"
 msgid "Patron is blocked from checkouts."
 msgstr "Čtenář má blokované výpůjční transakce."
 
-#: ../../Open-ILS/src/templates/staff/base_js.tt2:151
+#: ../../Open-ILS/src/templates/staff/base_js.tt2:148
 msgid "Patron not found"
 msgstr "Čtenář nebyl nalezen"
 
@@ -7915,7 +7915,7 @@ msgstr ""
 "Čtenářské konto bylo změněno jiným uživatelem zatímco jste jej upravoval(a). "
 "Změny, které jste provedl(a) nebyly uloženy; prosíme, proveďte je znovu."
 
-#: ../../Open-ILS/src/templates/staff/navbar.tt2:289 ../../Open-ILS/src/templates/staff/navbar.tt2:42
+#: ../../Open-ILS/src/templates/staff/navbar.tt2:42
 msgid "Patron search by name, address, etc."
 msgstr "Hledání čtenář podle jména, adresy apod."
 
@@ -8013,7 +8013,7 @@ msgstr "Při platbě vrátit:"
 msgid "Pending Items"
 msgstr "Nevyřízené položky"
 
-#: ../../Open-ILS/src/templates/staff/circ/patron/pending.tt2:2 ../../Open-ILS/src/templates/staff/circ/patron/t_pending_list.tt2:3 ../../Open-ILS/src/templates/staff/navbar.tt2:183
+#: ../../Open-ILS/src/templates/staff/circ/patron/pending.tt2:2 ../../Open-ILS/src/templates/staff/circ/patron/t_pending_list.tt2:3 ../../Open-ILS/src/templates/staff/navbar.tt2:171
 msgid "Pending Patrons"
 msgstr "Nevyřízení čtenáři"
 
@@ -8046,11 +8046,11 @@ msgstr "Oprávnění zamítnuto : %1"
 msgid "Permission Groups"
 msgstr "Skupiny oprávnění"
 
-#: ../../Open-ILS/src/templates/staff/base_js.tt2:142
+#: ../../Open-ILS/src/templates/staff/base_js.tt2:139
 msgid "Permission Override Login Failed"
 msgstr "Přihlášení pro obejití oprávnění selhalo"
 
-#: ../../Open-ILS/src/templates/staff/base_js.tt2:141
+#: ../../Open-ILS/src/templates/staff/base_js.tt2:138
 msgid "Permission Override Login Succeeded"
 msgstr "Přihlášení pro obejití oprávnění  úspěšně proběhlo"
 
@@ -8086,7 +8086,7 @@ msgstr "Průvodce fyzickými vlastnostmi"
 msgid "Pick Up Holds?"
 msgstr "Vyzvednout rezervace?"
 
-#: ../../Open-ILS/src/templates/staff/navbar.tt2:612
+#: ../../Open-ILS/src/templates/staff/navbar.tt2:583
 msgid "Pick Up Reservations"
 msgstr "Vyzvednout rezervované zdroje"
 
@@ -8315,7 +8315,7 @@ msgstr "Předchozí"
 msgid "Previous Circ Group"
 msgstr "Předtím neměl nikdo půjčeno"
 
-#: ../../Open-ILS/src/templates/staff/circ/share/t_hold_details.tt2:183 ../../Open-ILS/src/templates/staff/share/t_autogrid.tt2:79 ../../Open-ILS/src/templates/staff/share/t_autogrid.tt2:80
+#: ../../Open-ILS/src/templates/staff/share/t_autogrid.tt2:79 ../../Open-ILS/src/templates/staff/share/t_autogrid.tt2:80
 msgid "Previous Page"
 msgstr "Předchozí stránka"
 
@@ -8428,7 +8428,7 @@ msgstr "Tiskové šablony"
 msgid "Print Transits"
 msgstr "Tisk seznamu přeprav"
 
-#: ../../Open-ILS/src/templates/staff/circ/share/t_hold_details.tt2:95
+#: ../../Open-ILS/src/templates/staff/circ/share/t_hold_details.tt2:90
 msgid "Print on Slip"
 msgstr "Vytisknout na průvodku"
 
@@ -8494,7 +8494,7 @@ msgstr "Skupina oprávnění"
 msgid "Proj"
 msgstr "Proj"
 
-#: ../../Open-ILS/src/templates/staff/navbar.tt2:486
+#: ../../Open-ILS/src/templates/staff/navbar.tt2:457
 msgid "Provider Search"
 msgstr "Vyhledání dodavatele"
 
@@ -8546,15 +8546,15 @@ msgstr "Vydavatel"
 msgid "Publisher..."
 msgstr "Vydavatel..."
 
-#: ../../Open-ILS/src/templates/staff/navbar.tt2:600
+#: ../../Open-ILS/src/templates/staff/navbar.tt2:571
 msgid "Pull List"
 msgstr "Seznam rezervací k zachycení"
 
-#: ../../Open-ILS/src/templates/staff/navbar.tt2:124 ../../Open-ILS/src/templates/staff/navbar.tt2:315
+#: ../../Open-ILS/src/templates/staff/navbar.tt2:117 ../../Open-ILS/src/templates/staff/navbar.tt2:295
 msgid "Pull List for Hold Requests"
 msgstr "Seznam požadavků na rezervace"
 
-#: ../../Open-ILS/src/templates/staff/navbar.tt2:535
+#: ../../Open-ILS/src/templates/staff/navbar.tt2:506
 msgid "Purchase Orders"
 msgstr "Objednávky"
 
@@ -8634,7 +8634,7 @@ msgstr "Vyhledávací řetezec pro obecné PQN vyhledávání Z39.50"
 msgid "Raw Z39.50 Search"
 msgstr "obecné vyhledávání Z39.50"
 
-#: ../../Open-ILS/src/templates/staff/base_js.tt2:143
+#: ../../Open-ILS/src/templates/staff/base_js.tt2:140
 msgid "Re-Using Permission Override Login in Batch"
 msgstr "Opětovní použití  přihlášení při dávkovém obejití oprávnění"
 
@@ -8688,7 +8688,7 @@ msgstr "Přijmout"
 msgid "Receive Next"
 msgstr "Přijmout následující"
 
-#: ../../Open-ILS/src/templates/staff/navbar.tt2:561
+#: ../../Open-ILS/src/templates/staff/navbar.tt2:532
 msgid "Receive Shipment"
 msgstr "Přijmout zásilku"
 
@@ -8744,7 +8744,7 @@ msgstr "Záznam"
 msgid "Record %1 marked for overlay"
 msgstr "Záznam %1 byl označen pro přepsání"
 
-#: ../../Open-ILS/src/templates/staff/cat/bucket/record/index.tt2:2 ../../Open-ILS/src/templates/staff/navbar.tt2:385 ../../Open-ILS/src/templates/staff/t_splash.tt2:62
+#: ../../Open-ILS/src/templates/staff/cat/bucket/record/index.tt2:2 ../../Open-ILS/src/templates/staff/navbar.tt2:359 ../../Open-ILS/src/templates/staff/t_splash.tt2:62
 msgid "Record Buckets"
 msgstr "Skupiny záznamů"
 
@@ -8769,7 +8769,7 @@ msgstr "ID záznamu %1"
 msgid "Record ID..."
 msgstr "ID záznamu..."
 
-#: ../../Open-ILS/src/templates/staff/navbar.tt2:208 ../../Open-ILS/src/templates/staff/navbar.tt2:210 ../../Open-ILS/src/templates/staff/navbar.tt2:217 ../../Open-ILS/src/templates/staff/navbar.tt2:219
+#: ../../Open-ILS/src/templates/staff/navbar.tt2:196 ../../Open-ILS/src/templates/staff/navbar.tt2:198 ../../Open-ILS/src/templates/staff/navbar.tt2:204 ../../Open-ILS/src/templates/staff/navbar.tt2:206
 msgid "Record In-House Use"
 msgstr "Záznamenat prezenční výpůjčku"
 
@@ -8851,7 +8851,7 @@ msgstr "Obnovit"
 msgid "Refresh List"
 msgstr "Obnovit seznam"
 
-#: ../../Open-ILS/src/templates/staff/circ/patron/index.tt2:190
+#: ../../Open-ILS/src/templates/staff/circ/patron/index.tt2:187
 msgid "Refresh Penalties"
 msgstr "Obnovit pokuty"
 
@@ -8867,7 +8867,7 @@ msgstr "Přeplatek:"
 msgid "Register"
 msgstr "Registrovat"
 
-#: ../../Open-ILS/src/templates/staff/circ/patron/t_edit.tt2:8 ../../Open-ILS/src/templates/staff/navbar.tt2:149 ../../Open-ILS/src/templates/staff/navbar.tt2:151 ../../Open-ILS/src/templates/staff/navbar.tt2:158 ../../Open-ILS/src/templates/staff/navbar.tt2:160 ../../Open-ILS/src/templates/staff/navbar.tt2:327 ../../Open-ILS/src/templates/staff/offline-interface.tt2:590
+#: ../../Open-ILS/src/templates/staff/circ/patron/t_edit.tt2:8 ../../Open-ILS/src/templates/staff/navbar.tt2:140 ../../Open-ILS/src/templates/staff/navbar.tt2:142 ../../Open-ILS/src/templates/staff/navbar.tt2:148 ../../Open-ILS/src/templates/staff/navbar.tt2:150 ../../Open-ILS/src/templates/staff/navbar.tt2:307 ../../Open-ILS/src/templates/staff/offline-interface.tt2:590
 msgid "Register Patron"
 msgstr "Registrovat čtenáře"
 
@@ -8879,7 +8879,7 @@ msgstr "Registrovat nového člena skupiny klonování vybraného čtenáře"
 msgid "Register a New Workstation For This Browser"
 msgstr "Registrovat novou pracovní stanici pro tento prohlížeč"
 
-#: ../../Open-ILS/src/templates/staff/base_js.tt2:124
+#: ../../Open-ILS/src/templates/staff/base_js.tt2:121
 msgid "Registered Patron"
 msgstr "Registrovaný čtenář"
 
@@ -8921,7 +8921,7 @@ msgstr "Zbývající počet prodloužení"
 msgid "Remote Accounts"
 msgstr "Vzdálené účty"
 
-#: ../../Open-ILS/src/templates/staff/admin/workstation/t_workstations.tt2:71 ../../Open-ILS/src/templates/staff/cat/bucket/copy/t_apply_tags.tt2:11 ../../Open-ILS/src/templates/staff/cat/volcopy/t_copy_notes.tt2:69 ../../Open-ILS/src/templates/staff/cat/volcopy/t_copy_tags.tt2:11 ../../Open-ILS/src/templates/staff/circ/patron/t_credentials.tt2:78 ../../Open-ILS/src/templates/staff/circ/patron/t_credentials.tt2:94 ../../Open-ILS/src/templates/staff/serials/t_subscription_manager.tt2:53 ../../Open-ILS/src/templates/staff/serials/t_subscription_manager.tt2:89 ../../Open-ILS/src/templates/staff/share/t_copy_alert_manager_dialog.tt2:19
+#: ../../Open-ILS/src/templates/staff/admin/workstation/t_workstations.tt2:71 ../../Open-ILS/src/templates/staff/cat/bucket/copy/t_apply_tags.tt2:11 ../../Open-ILS/src/templates/staff/cat/volcopy/t_copy_notes.tt2:69 ../../Open-ILS/src/templates/staff/cat/volcopy/t_copy_tags.tt2:11 ../../Open-ILS/src/templates/staff/serials/t_subscription_manager.tt2:53 ../../Open-ILS/src/templates/staff/serials/t_subscription_manager.tt2:89 ../../Open-ILS/src/templates/staff/share/t_copy_alert_manager_dialog.tt2:19
 msgid "Remove"
 msgstr "Odebrat"
 
@@ -9001,7 +9001,7 @@ msgstr "Odstranit vybrané poznámky?"
 msgid "Remove:"
 msgstr "Odebrat:"
 
-#: ../../Open-ILS/src/templates/staff/admin/workstation/t_print_templates.tt2:34 ../../Open-ILS/src/templates/staff/base_js.tt2:121 ../../Open-ILS/src/templates/staff/circ/patron/t_items_out.tt2:67 ../../Open-ILS/src/templates/staff/circ/renew/index.tt2:2 ../../Open-ILS/src/templates/staff/circ/share/t_circ_exists_dialog.tt2:36 ../../Open-ILS/src/templates/staff/offline-interface.tt2:374 ../../Open-ILS/src/templates/staff/offline-interface.tt2:430
+#: ../../Open-ILS/src/templates/staff/admin/workstation/t_print_templates.tt2:34 ../../Open-ILS/src/templates/staff/base_js.tt2:118 ../../Open-ILS/src/templates/staff/circ/patron/t_items_out.tt2:67 ../../Open-ILS/src/templates/staff/circ/renew/index.tt2:2 ../../Open-ILS/src/templates/staff/circ/share/t_circ_exists_dialog.tt2:36 ../../Open-ILS/src/templates/staff/offline-interface.tt2:374 ../../Open-ILS/src/templates/staff/offline-interface.tt2:430
 msgid "Renew"
 msgstr "Prodloužit"
 
@@ -9013,7 +9013,7 @@ msgstr "Prodloužit vše"
 msgid "Renew All Items?"
 msgstr "Prodloužit všechny položky?"
 
-#: ../../Open-ILS/src/templates/staff/cat/item/index.tt2:110 ../../Open-ILS/src/templates/staff/cat/item/t_list.tt2:39 ../../Open-ILS/src/templates/staff/circ/renew/t_renew.tt2:5 ../../Open-ILS/src/templates/staff/navbar.tt2:132 ../../Open-ILS/src/templates/staff/navbar.tt2:142 ../../Open-ILS/src/templates/staff/navbar.tt2:321
+#: ../../Open-ILS/src/templates/staff/cat/item/index.tt2:110 ../../Open-ILS/src/templates/staff/cat/item/t_list.tt2:39 ../../Open-ILS/src/templates/staff/circ/renew/t_renew.tt2:5 ../../Open-ILS/src/templates/staff/navbar.tt2:125 ../../Open-ILS/src/templates/staff/navbar.tt2:134 ../../Open-ILS/src/templates/staff/navbar.tt2:301
 msgid "Renew Items"
 msgstr "Prodloužit výpůjčky"
 
@@ -9029,7 +9029,7 @@ msgstr "Prodloužit výpůjčky?"
 msgid "Renew With Specific Due Date"
 msgstr "Prodloužit ke specifickému datu vrácení"
 
-#: ../../Open-ILS/src/templates/staff/navbar.tt2:130 ../../Open-ILS/src/templates/staff/navbar.tt2:140
+#: ../../Open-ILS/src/templates/staff/navbar.tt2:123 ../../Open-ILS/src/templates/staff/navbar.tt2:132
 msgid "Renew items"
 msgstr "Prodloužit výpůjčky"
 
@@ -9053,7 +9053,7 @@ msgstr "Zbývající prodloužení"
 msgid "Rental fee"
 msgstr "Poplatek za pronájem"
 
-#: ../../Open-ILS/src/templates/staff/circ/patron/t_edit.tt2:183 ../../Open-ILS/src/templates/staff/navbar.tt2:233
+#: ../../Open-ILS/src/templates/staff/circ/patron/t_edit.tt2:183 ../../Open-ILS/src/templates/staff/navbar.tt2:219
 msgid "Replace Barcode"
 msgstr "Změnit čárový kód"
 
@@ -9082,11 +9082,11 @@ msgstr "Složky zpráv"
 msgid "Reporter"
 msgstr "Reportér"
 
-#: ../../Open-ILS/src/templates/staff/navbar.tt2:683 ../../Open-ILS/src/templates/staff/reporter/share/report_strings.tt2:39 ../../Open-ILS/src/templates/staff/t_splash.tt2:96
+#: ../../Open-ILS/src/templates/staff/navbar.tt2:653 ../../Open-ILS/src/templates/staff/reporter/share/report_strings.tt2:39 ../../Open-ILS/src/templates/staff/t_splash.tt2:96
 msgid "Reports"
 msgstr "Zprávy a statistiky"
 
-#: ../../Open-ILS/src/templates/staff/navbar.tt2:255 ../../Open-ILS/src/templates/staff/navbar.tt2:257 ../../Open-ILS/src/templates/staff/offline-interface.tt2:34
+#: ../../Open-ILS/src/templates/staff/navbar.tt2:238 ../../Open-ILS/src/templates/staff/navbar.tt2:240 ../../Open-ILS/src/templates/staff/offline-interface.tt2:34
 msgid "Reprint Last Receipt"
 msgstr "Tisk kopie posledního potvrzení"
 
@@ -9241,7 +9241,7 @@ msgstr "Zdroje"
 msgid "Restarts at unit completion"
 msgstr "Začíná znovu při dokončení jednotky"
 
-#: ../../Open-ILS/src/templates/staff/navbar.tt2:791
+#: ../../Open-ILS/src/templates/staff/navbar.tt2:710
 msgid "Restore Operator"
 msgstr "Zpět k předchozímu přihlášení"
 
@@ -9261,15 +9261,15 @@ msgstr "Získat"
 msgid "Retrieve All These Patrons"
 msgstr "Načíst všechny tyto čtenáře"
 
-#: ../../Open-ILS/src/templates/staff/navbar.tt2:465
+#: ../../Open-ILS/src/templates/staff/navbar.tt2:436
 msgid "Retrieve Authority Record by ID"
 msgstr "Načíst autoritní zánam podle ID"
 
-#: ../../Open-ILS/src/templates/staff/navbar.tt2:398
+#: ../../Open-ILS/src/templates/staff/navbar.tt2:372
 msgid "Retrieve Bib Record by ID"
 msgstr "Načíst bibliografické záznamy podle ID"
 
-#: ../../Open-ILS/src/templates/staff/navbar.tt2:407
+#: ../../Open-ILS/src/templates/staff/navbar.tt2:381
 msgid "Retrieve Bib Record by TCN"
 msgstr "Načíst bibliografický záznam podle TCN"
 
@@ -9277,11 +9277,11 @@ msgstr "Načíst bibliografický záznam podle TCN"
 msgid "Retrieve Item"
 msgstr "Načíst exemplář"
 
-#: ../../Open-ILS/src/templates/staff/navbar.tt2:405 ../../Open-ILS/src/templates/staff/navbar.tt2:414 ../../Open-ILS/src/templates/staff/navbar.tt2:416
+#: ../../Open-ILS/src/templates/staff/navbar.tt2:379 ../../Open-ILS/src/templates/staff/navbar.tt2:387 ../../Open-ILS/src/templates/staff/navbar.tt2:389
 msgid "Retrieve Last Bib Record"
 msgstr "Načíst poslední bibiografický záznam"
 
-#: ../../Open-ILS/src/templates/staff/navbar.tt2:167 ../../Open-ILS/src/templates/staff/navbar.tt2:169 ../../Open-ILS/src/templates/staff/navbar.tt2:177 ../../Open-ILS/src/templates/staff/navbar.tt2:333
+#: ../../Open-ILS/src/templates/staff/navbar.tt2:156 ../../Open-ILS/src/templates/staff/navbar.tt2:158 ../../Open-ILS/src/templates/staff/navbar.tt2:313
 msgid "Retrieve Last Patron"
 msgstr "Načíst posledního čtenáře"
 
@@ -9293,7 +9293,7 @@ msgstr "Načíst posledního čtenáře, který si exemplář vypůjčil"
 msgid "Retrieve Patron"
 msgstr "Načíst čtenáře"
 
-#: ../../Open-ILS/src/templates/staff/navbar.tt2:175 ../../Open-ILS/src/templates/staff/navbar.tt2:339
+#: ../../Open-ILS/src/templates/staff/navbar.tt2:163 ../../Open-ILS/src/templates/staff/navbar.tt2:165 ../../Open-ILS/src/templates/staff/navbar.tt2:319
 msgid "Retrieve Recent Patrons"
 msgstr "Načíst poslední čtenáře"
 
@@ -9301,7 +9301,7 @@ msgstr "Načíst poslední čtenáře"
 msgid "Retrieve Selected Patrons"
 msgstr "Načíst vybrané čtenáře"
 
-#: ../../Open-ILS/src/templates/staff/navbar.tt2:618
+#: ../../Open-ILS/src/templates/staff/navbar.tt2:589
 msgid "Return Reservations"
 msgstr "Vrátit rezervovatelné zdroje"
 
@@ -9483,7 +9483,7 @@ msgstr "Načíst průkaz"
 msgid "Scan Item"
 msgstr "Načíst exemplář"
 
-#: ../../Open-ILS/src/templates/staff/cat/item/missing_pieces.tt2:2 ../../Open-ILS/src/templates/staff/cat/item/missing_pieces.tt2:26 ../../Open-ILS/src/templates/staff/navbar.tt2:248
+#: ../../Open-ILS/src/templates/staff/cat/item/missing_pieces.tt2:2 ../../Open-ILS/src/templates/staff/cat/item/missing_pieces.tt2:26 ../../Open-ILS/src/templates/staff/navbar.tt2:231
 msgid "Scan Item as Missing Pieces"
 msgstr "Načíst exempláře jako chybějící kusy"
 
@@ -9511,11 +9511,11 @@ msgstr "Vyhledávací pole"
 msgid "Search For Patron By Name"
 msgstr "Vyhledat čtenáře podle jména"
 
-#: ../../Open-ILS/src/templates/staff/navbar.tt2:53
+#: ../../Open-ILS/src/templates/staff/navbar.tt2:52
 msgid "Search for Items by Barcode"
 msgstr "Vyhledat jednotku podle čárového kódu"
 
-#: ../../Open-ILS/src/templates/staff/navbar.tt2:291 ../../Open-ILS/src/templates/staff/navbar.tt2:44
+#: ../../Open-ILS/src/templates/staff/navbar.tt2:271 ../../Open-ILS/src/templates/staff/navbar.tt2:44
 msgid "Search for Patrons"
 msgstr "Hledat čtenáře"
 
@@ -9527,11 +9527,11 @@ msgstr "Hledat čtenáře"
 msgid "Search for..."
 msgstr "Hledat..."
 
-#: ../../Open-ILS/src/templates/staff/navbar.tt2:362 ../../Open-ILS/src/templates/staff/navbar.tt2:62
+#: ../../Open-ILS/src/templates/staff/navbar.tt2:340 ../../Open-ILS/src/templates/staff/navbar.tt2:60
 msgid "Search the Catalog"
 msgstr "Hledat v katalogu"
 
-#: ../../Open-ILS/src/templates/staff/navbar.tt2:369
+#: ../../Open-ILS/src/templates/staff/navbar.tt2:346
 msgid "Search the Catalog (Traditional)"
 msgstr "Hledat v katalogu (tradiční)"
 
@@ -9661,7 +9661,7 @@ msgstr "Knihovna výběru"
 msgid "Selection List ID"
 msgstr "ID  akvizičního seznamu"
 
-#: ../../Open-ILS/src/templates/staff/navbar.tt2:493
+#: ../../Open-ILS/src/templates/staff/navbar.tt2:464
 msgid "Selection Lists"
 msgstr "Akviziční seznamy"
 
@@ -9713,7 +9713,7 @@ msgstr "Šablona pro jednotky seriálů"
 msgid "Serials"
 msgstr "Seriály"
 
-#: ../../Open-ILS/src/templates/staff/admin/serials/index.tt2:2 ../../Open-ILS/src/templates/staff/admin/serials/t_splash.tt2:4 ../../Open-ILS/src/templates/staff/navbar.tt2:670
+#: ../../Open-ILS/src/templates/staff/admin/serials/index.tt2:2 ../../Open-ILS/src/templates/staff/admin/serials/t_splash.tt2:4 ../../Open-ILS/src/templates/staff/navbar.tt2:640
 msgid "Serials Administration"
 msgstr "Správa seriálů"
 
@@ -9729,7 +9729,7 @@ msgstr "Šablony seriálů"
 msgid "Series"
 msgstr "Edice"
 
-#: ../../Open-ILS/src/templates/staff/admin/server/index.tt2:2 ../../Open-ILS/src/templates/staff/admin/server/t_splash.tt2:4 ../../Open-ILS/src/templates/staff/navbar.tt2:652
+#: ../../Open-ILS/src/templates/staff/admin/server/index.tt2:2 ../../Open-ILS/src/templates/staff/admin/server/t_splash.tt2:4 ../../Open-ILS/src/templates/staff/navbar.tt2:622
 msgid "Server Administration"
 msgstr "Administrace serveru"
 
@@ -9997,7 +9997,7 @@ msgstr "Přihlásit se"
 msgid "Sign in"
 msgstr "Přihlásit se"
 
-#: ../../Open-ILS/src/templates/staff/navbar.tt2:690
+#: ../../Open-ILS/src/templates/staff/navbar.tt2:660
 msgid "Simple Reports"
 msgstr "Zjednodušené zprávy a sestavy"
 
@@ -10108,7 +10108,7 @@ msgstr "Personál"
 msgid "Staff Barcode"
 msgstr "Čárový kód personálu"
 
-#: ../../Open-ILS/src/templates/staff/circ/share/t_hold_details.tt2:101
+#: ../../Open-ILS/src/templates/staff/circ/share/t_hold_details.tt2:96
 msgid "Staff Created"
 msgstr "Vytvořil(a)"
 
@@ -10128,7 +10128,7 @@ msgstr "Přihlášení personálu"
 msgid "Staff Notifications"
 msgstr "Upozornění personálu"
 
-#: ../../Open-ILS/src/templates/staff/circ/patron/t_stat_cats.tt2:13 ../../Open-ILS/src/templates/staff/circ/share/t_hold_details.tt2:99
+#: ../../Open-ILS/src/templates/staff/circ/patron/t_stat_cats.tt2:13 ../../Open-ILS/src/templates/staff/circ/share/t_hold_details.tt2:94
 msgid "Staff Only"
 msgstr "Pouze personál"
 
@@ -10144,7 +10144,7 @@ msgstr "Odbaveno a připraveno k vyzvednutí čtenářem"
 msgid "Staging Staff"
 msgstr "Odbavuje pracovník"
 
-#: ../../Open-ILS/src/templates/staff/admin/workstation/t_print_config.tt2:365 ../../Open-ILS/src/templates/staff/cat/catalog/t_catalog.tt2:9 ../../Open-ILS/src/templates/staff/cat/share/t_authority_browser.tt2:4 ../../Open-ILS/src/templates/staff/cat/share/t_authority_browser.tt2:54 ../../Open-ILS/src/templates/staff/circ/checkin/t_checkin_table.tt2:95 ../../Open-ILS/src/templates/staff/circ/patron/t_bill_history_payments.tt2:54 ../../Open-ILS/src/templates/staff/circ/patron/t_bill_history_xacts.tt2:21 ../../Open-ILS/src/templates/staff/circ/patron/t_bills_list.tt2:57 ../../Open-ILS/src/templates/staff/circ/patron/t_xact_details.tt2:26 ../../Open-ILS/src/templates/staff/circ/share/t_bill_patron_dialog.tt2:30 ../../Open-ILS/src/templates/staff/circ/share/t_hold_details.tt2:174 ../../Open-ILS/src/templates/staff/share/t_autogrid.tt2:69 ../../Open-ILS/src/templates/staff/share/t_autogrid.tt2:70
+#: ../../Open-ILS/src/templates/staff/admin/workstation/t_print_config.tt2:365 ../../Open-ILS/src/templates/staff/cat/catalog/t_catalog.tt2:9 ../../Open-ILS/src/templates/staff/cat/share/t_authority_browser.tt2:4 ../../Open-ILS/src/templates/staff/cat/share/t_authority_browser.tt2:54 ../../Open-ILS/src/templates/staff/circ/checkin/t_checkin_table.tt2:95 ../../Open-ILS/src/templates/staff/circ/patron/t_bill_history_payments.tt2:54 ../../Open-ILS/src/templates/staff/circ/patron/t_bill_history_xacts.tt2:21 ../../Open-ILS/src/templates/staff/circ/patron/t_bills_list.tt2:57 ../../Open-ILS/src/templates/staff/circ/patron/t_xact_details.tt2:26 ../../Open-ILS/src/templates/staff/circ/share/t_bill_patron_dialog.tt2:30 ../../Open-ILS/src/templates/staff/share/t_autogrid.tt2:69 ../../Open-ILS/src/templates/staff/share/t_autogrid.tt2:70
 msgid "Start"
 msgstr "Začátek"
 
@@ -10184,7 +10184,7 @@ msgstr "Stát"
 msgid "Statement"
 msgstr "Rozpis"
 
-#: ../../Open-ILS/src/templates/staff/cat/volcopy/t_attr_edit.tt2:505 ../../Open-ILS/src/templates/staff/cat/volcopy/t_defaults.tt2:262 ../../Open-ILS/src/templates/staff/circ/patron/index.tt2:204 ../../Open-ILS/src/templates/staff/circ/patron/t_edit.tt2:1163 ../../Open-ILS/src/templates/staff/share/print_templates/t_patron_data.tt2:50
+#: ../../Open-ILS/src/templates/staff/cat/volcopy/t_attr_edit.tt2:505 ../../Open-ILS/src/templates/staff/cat/volcopy/t_defaults.tt2:262 ../../Open-ILS/src/templates/staff/circ/patron/index.tt2:201 ../../Open-ILS/src/templates/staff/circ/patron/t_edit.tt2:1163 ../../Open-ILS/src/templates/staff/share/print_templates/t_patron_data.tt2:50
 msgid "Statistical Categories"
 msgstr "Statistické kategorie"
 
@@ -10236,15 +10236,15 @@ msgstr "Status je Viditené v OPACu"
 msgid "Status:"
 msgstr "Status:"
 
-#: ../../Open-ILS/src/templates/staff/base_js.tt2:167
+#: ../../Open-ILS/src/templates/staff/base_js.tt2:164
 msgid "Status: Long Overdue"
 msgstr "Status: Dlouhodově nevrácené"
 
-#: ../../Open-ILS/src/templates/staff/base_js.tt2:166
+#: ../../Open-ILS/src/templates/staff/base_js.tt2:163
 msgid "Status: Lost Materials"
 msgstr "Status: Ztracené materiály"
 
-#: ../../Open-ILS/src/templates/staff/base_js.tt2:168
+#: ../../Open-ILS/src/templates/staff/base_js.tt2:165
 msgid "Status: Overdue"
 msgstr "Status: S uplynulou lhůtou"
 
@@ -10414,7 +10414,7 @@ msgstr "Potlačit rezervace a přepravy"
 msgid "Survey"
 msgstr "Průzkum"
 
-#: ../../Open-ILS/src/templates/staff/circ/patron/index.tt2:214 ../../Open-ILS/src/templates/staff/circ/patron/t_edit.tt2:1218 ../../Open-ILS/src/templates/staff/circ/patron/t_surveys.tt2:1 ../../Open-ILS/src/templates/staff/share/print_templates/t_patron_data.tt2:53
+#: ../../Open-ILS/src/templates/staff/circ/patron/index.tt2:211 ../../Open-ILS/src/templates/staff/circ/patron/t_edit.tt2:1218 ../../Open-ILS/src/templates/staff/circ/patron/t_surveys.tt2:1 ../../Open-ILS/src/templates/staff/share/print_templates/t_patron_data.tt2:53
 msgid "Surveys"
 msgstr "Průzkumy"
 
@@ -10531,7 +10531,7 @@ msgstr "Nepodařilo se odeslat testovací oznámení"
 msgid "Test Notification sent"
 msgstr "Testovací oznámení bylo odesláno"
 
-#: ../../Open-ILS/src/templates/staff/circ/patron/index.tt2:229
+#: ../../Open-ILS/src/templates/staff/circ/patron/index.tt2:226
 msgid "Test Password"
 msgstr "Testovat heslo"
 
@@ -10705,7 +10705,7 @@ msgid "This account is inactive and may not circulate items."
 msgstr ""
 "Toto konto není aktivní a nemůže být použito pro půjčování exemplářů."
 
-#: ../../Open-ILS/src/templates/staff/base_js.tt2:164
+#: ../../Open-ILS/src/templates/staff/base_js.tt2:161
 msgid "This action might take a while to complete. Continue?"
 msgstr "Dokončení této akce může chvíli trvat. Pokračovat?"
 
@@ -10771,11 +10771,11 @@ msgid "This item should be routed to the %1Public Holds Shelf%2"
 msgstr ""
 "Tato jednotka by měla být přednána k  %1rezervacím u výpůjčního pultu%2."
 
-#: ../../Open-ILS/src/templates/staff/base_js.tt2:118
+#: ../../Open-ILS/src/templates/staff/base_js.tt2:115
 msgid "This page may have unsaved data."
 msgstr "Tato stránka může obsahovat neuložená data"
 
-#: ../../Open-ILS/src/templates/staff/base_js.tt2:116
+#: ../../Open-ILS/src/templates/staff/base_js.tt2:113
 msgid ""
 "This page may have unsaved data.\\n\\nAre you sure you want to leave this "
 "page?"
@@ -10783,7 +10783,7 @@ msgstr ""
 "Tato stránka může obsahovat neuložená data.\\n\\nOpravdu chcete opustit tuto "
 "stránku?"
 
-#: ../../Open-ILS/src/templates/staff/base_js.tt2:146 ../../Open-ILS/src/templates/staff/circ/curbside/t_schedule_pickup.tt2:25 ../../Open-ILS/src/templates/staff/circ/patron/t_bcsearch.tt2:22
+#: ../../Open-ILS/src/templates/staff/base_js.tt2:143 ../../Open-ILS/src/templates/staff/circ/curbside/t_schedule_pickup.tt2:25 ../../Open-ILS/src/templates/staff/circ/patron/t_bcsearch.tt2:22
 msgid "This patron's record is not viewable at your library."
 msgstr "Údaje o tomto čtenáři nelze ve Vaší knihovně zobrazit"
 
@@ -11110,7 +11110,7 @@ msgstr "Přeprava:"
 msgid "Triggered Events"
 msgstr "Spuštěné události"
 
-#: ../../Open-ILS/src/templates/staff/circ/patron/index.tt2:199
+#: ../../Open-ILS/src/templates/staff/circ/patron/index.tt2:196
 msgid "Triggered Events / Notifications"
 msgstr "Spuštěné události/upozornění"
 
@@ -11486,7 +11486,7 @@ msgstr "Alias uživatele nebo zobrazené jméno"
 msgid "User Barcode"
 msgstr "Čárový kód uživatele"
 
-#: ../../Open-ILS/src/templates/staff/circ/patron/bucket/index.tt2:2 ../../Open-ILS/src/templates/staff/navbar.tt2:189
+#: ../../Open-ILS/src/templates/staff/circ/patron/bucket/index.tt2:2 ../../Open-ILS/src/templates/staff/navbar.tt2:177
 msgid "User Buckets"
 msgstr "Skupiny uživatelů"
 
@@ -11515,7 +11515,7 @@ msgstr "ID uživatele: %1"
 msgid "User Not Found"
 msgstr "Uživatel nenalezen"
 
-#: ../../Open-ILS/src/templates/staff/admin/user_perms.tt2:2 ../../Open-ILS/src/templates/staff/circ/patron/index.tt2:224 ../../Open-ILS/src/templates/staff/navbar.tt2:646
+#: ../../Open-ILS/src/templates/staff/admin/user_perms.tt2:2 ../../Open-ILS/src/templates/staff/circ/patron/index.tt2:221 ../../Open-ILS/src/templates/staff/navbar.tt2:616
 msgid "User Permission Editor"
 msgstr "Editor uživatelských oprávnění"
 
@@ -11571,7 +11571,7 @@ msgstr "Má varianty"
 msgid "Verify"
 msgstr "Ověřit"
 
-#: ../../Open-ILS/src/templates/staff/circ/patron/t_credentials.tt2:5 ../../Open-ILS/src/templates/staff/navbar.tt2:202 ../../Open-ILS/src/templates/staff/navbar.tt2:345
+#: ../../Open-ILS/src/templates/staff/circ/patron/t_credentials.tt2:5 ../../Open-ILS/src/templates/staff/navbar.tt2:190 ../../Open-ILS/src/templates/staff/navbar.tt2:325
 msgid "Verify Credentials"
 msgstr "Ověřit oprávnění"
 
@@ -11579,7 +11579,7 @@ msgstr "Ověřit oprávnění"
 msgid "Verify Payment Amount"
 msgstr "Potvrdit výši platby"
 
-#: ../../Open-ILS/src/templates/staff/base_js.tt2:144 ../../Open-ILS/src/templates/staff/circ/patron/index.tt2:75
+#: ../../Open-ILS/src/templates/staff/base_js.tt2:141 ../../Open-ILS/src/templates/staff/circ/patron/index.tt2:75
 msgid "Verify Permission to Share Personal Information"
 msgstr "Ověřit souhlas se sdílením osobních údajů"
 
@@ -11891,7 +11891,7 @@ msgstr "Prací"
 msgid "Work Log"
 msgstr "Pracovní log"
 
-#: ../../Open-ILS/src/templates/staff/base_js.tt2:130
+#: ../../Open-ILS/src/templates/staff/base_js.tt2:127
 msgid "Work Payment"
 msgstr "Platba prací"
 
@@ -11903,7 +11903,7 @@ msgstr "Upravované jednotky"
 msgid "Working location"
 msgstr "Pracovní organizační jednotka"
 
-#: ../../Open-ILS/src/templates/staff/circ/patron/t_items_out.tt2:87 ../../Open-ILS/src/templates/staff/navbar.tt2:640 ../../Open-ILS/src/templates/staff/offline-interface.tt2:13 ../../Open-ILS/src/templates/staff/offline-interface.tt2:200 ../../Open-ILS/src/templates/staff/t_login.tt2:40
+#: ../../Open-ILS/src/templates/staff/circ/patron/t_items_out.tt2:87 ../../Open-ILS/src/templates/staff/navbar.tt2:610 ../../Open-ILS/src/templates/staff/offline-interface.tt2:13 ../../Open-ILS/src/templates/staff/offline-interface.tt2:200 ../../Open-ILS/src/templates/staff/t_login.tt2:40
 msgid "Workstation"
 msgstr "Pracovní stanice"
 
@@ -11960,7 +11960,7 @@ msgstr "Rok(y)"
 msgid "Yearly (Annual)"
 msgstr "Ročně"
 
-#: ../../Open-ILS/src/templates/staff/admin/serials/t_attr_edit.tt2:108 ../../Open-ILS/src/templates/staff/admin/serials/t_attr_edit.tt2:144 ../../Open-ILS/src/templates/staff/admin/serials/t_attr_edit.tt2:221 ../../Open-ILS/src/templates/staff/admin/serials/t_attr_edit.tt2:251 ../../Open-ILS/src/templates/staff/admin/serials/t_attr_edit.tt2:63 ../../Open-ILS/src/templates/staff/base_js.tt2:169 ../../Open-ILS/src/templates/staff/cat/volcopy/index.tt2:26 ../../Open-ILS/src/templates/staff/cat/volcopy/t_attr_edit.tt2:140 ../../Open-ILS/src/templates/staff/cat/volcopy/t_attr_edit.tt2:197 ../../Open-ILS/src/templates/staff/cat/volcopy/t_attr_edit.tt2:238 ../../Open-ILS/src/templates/staff/cat/volcopy/t_attr_edit.tt2:342 ../../Open-ILS/src/templates/staff/cat/volcopy/t_attr_edit.tt2:366
+#: ../../Open-ILS/src/templates/staff/admin/serials/t_attr_edit.tt2:108 ../../Open-ILS/src/templates/staff/admin/serials/t_attr_edit.tt2:144 ../../Open-ILS/src/templates/staff/admin/serials/t_attr_edit.tt2:221 ../../Open-ILS/src/templates/staff/admin/serials/t_attr_edit.tt2:251 ../../Open-ILS/src/templates/staff/admin/serials/t_attr_edit.tt2:63 ../../Open-ILS/src/templates/staff/base_js.tt2:166 ../../Open-ILS/src/templates/staff/cat/volcopy/index.tt2:26 ../../Open-ILS/src/templates/staff/cat/volcopy/t_attr_edit.tt2:140 ../../Open-ILS/src/templates/staff/cat/volcopy/t_attr_edit.tt2:197 ../../Open-ILS/src/templates/staff/cat/volcopy/t_attr_edit.tt2:238 ../../Open-ILS/src/templates/staff/cat/volcopy/t_attr_edit.tt2:342 ../../Open-ILS/src/templates/staff/cat/volcopy/t_attr_edit.tt2:366
 msgid "Yes"
 msgstr "Ano"
 
@@ -12108,7 +12108,7 @@ msgstr "Z39.50 servery"
 msgid "ZIP or postal code"
 msgstr "PSČ"
 
-#: ../../Open-ILS/src/templates/staff/navbar.tt2:288 ../../Open-ILS/src/templates/staff/navbar.tt2:41
+#: ../../Open-ILS/src/templates/staff/navbar.tt2:41
 msgid "alt+s"
 msgstr "alt+s"
 
@@ -12116,11 +12116,11 @@ msgstr "alt+s"
 msgid "copy"
 msgstr "kopírovat"
 
-#: ../../Open-ILS/src/templates/staff/navbar.tt2:129 ../../Open-ILS/src/templates/staff/navbar.tt2:139
+#: ../../Open-ILS/src/templates/staff/navbar.tt2:122 ../../Open-ILS/src/templates/staff/navbar.tt2:131
 msgid "ctrl+f2"
 msgstr "ctrl+f2"
 
-#: ../../Open-ILS/src/templates/staff/navbar.tt2:423
+#: ../../Open-ILS/src/templates/staff/navbar.tt2:395
 msgid "ctrl+f3"
 msgstr "ctrl+f3"
 
@@ -12136,35 +12136,35 @@ msgstr "exported_label_templates.json"
 msgid "exported_serials_template.json"
 msgstr "exported_serials_template.json"
 
-#: ../../Open-ILS/src/templates/staff/navbar.tt2:78 ../../Open-ILS/src/templates/staff/navbar.tt2:87
+#: ../../Open-ILS/src/templates/staff/navbar.tt2:76 ../../Open-ILS/src/templates/staff/navbar.tt2:84
 msgid "f1"
 msgstr "f1"
 
-#: ../../Open-ILS/src/templates/staff/navbar.tt2:105 ../../Open-ILS/src/templates/staff/navbar.tt2:96
+#: ../../Open-ILS/src/templates/staff/navbar.tt2:100 ../../Open-ILS/src/templates/staff/navbar.tt2:92
 msgid "f2"
 msgstr "f2"
 
-#: ../../Open-ILS/src/templates/staff/navbar.tt2:359 ../../Open-ILS/src/templates/staff/navbar.tt2:59
+#: ../../Open-ILS/src/templates/staff/navbar.tt2:57
 msgid "f3"
 msgstr "f3"
 
-#: ../../Open-ILS/src/templates/staff/navbar.tt2:288 ../../Open-ILS/src/templates/staff/navbar.tt2:41
+#: ../../Open-ILS/src/templates/staff/navbar.tt2:41
 msgid "f4"
 msgstr "f4"
 
-#: ../../Open-ILS/src/templates/staff/navbar.tt2:238 ../../Open-ILS/src/templates/staff/navbar.tt2:374 ../../Open-ILS/src/templates/staff/navbar.tt2:50
+#: ../../Open-ILS/src/templates/staff/navbar.tt2:49
 msgid "f5"
 msgstr "f5"
 
-#: ../../Open-ILS/src/templates/staff/navbar.tt2:207 ../../Open-ILS/src/templates/staff/navbar.tt2:216
+#: ../../Open-ILS/src/templates/staff/navbar.tt2:195 ../../Open-ILS/src/templates/staff/navbar.tt2:203
 msgid "f6"
 msgstr "f6"
 
-#: ../../Open-ILS/src/templates/staff/navbar.tt2:166
+#: ../../Open-ILS/src/templates/staff/navbar.tt2:155
 msgid "f8"
 msgstr "f8"
 
-#: ../../Open-ILS/src/templates/staff/navbar.tt2:254
+#: ../../Open-ILS/src/templates/staff/navbar.tt2:237
 msgid "f9"
 msgstr "f9"
 
@@ -12202,19 +12202,19 @@ msgstr "Konv"
 msgid "select subscription to work on"
 msgstr "vyberte předplatné, se kterým chcete pracovat"
 
-#: ../../Open-ILS/src/templates/staff/navbar.tt2:148 ../../Open-ILS/src/templates/staff/navbar.tt2:157
+#: ../../Open-ILS/src/templates/staff/navbar.tt2:139 ../../Open-ILS/src/templates/staff/navbar.tt2:147
 msgid "shift+f1"
 msgstr "shift+f1"
 
-#: ../../Open-ILS/src/templates/staff/navbar.tt2:114
+#: ../../Open-ILS/src/templates/staff/navbar.tt2:108
 msgid "shift+f2"
 msgstr "shift+f2"
 
-#: ../../Open-ILS/src/templates/staff/navbar.tt2:404
+#: ../../Open-ILS/src/templates/staff/navbar.tt2:378
 msgid "shift+f3"
 msgstr "shift+f3"
 
-#: ../../Open-ILS/src/templates/staff/navbar.tt2:413
+#: ../../Open-ILS/src/templates/staff/navbar.tt2:386
 msgid "shift+f8"
 msgstr "shift+f8"
 
@@ -12226,7 +12226,7 @@ msgstr "týden v"
 msgid "week on"
 msgstr "týden kolem"
 
-#: ../../Open-ILS/src/templates/staff/base_js.tt2:160
+#: ../../Open-ILS/src/templates/staff/base_js.tt2:157
 msgid "{{location_name}} ({{owning_lib_shortname}})"
 msgstr "{{location_name}} ({{owning_lib_shortname}})"
 
