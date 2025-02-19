@@ -5601,4 +5601,10 @@ Zadat rezervaci <ph name="START_SMALL_TEXT"/> (<ph name="INTERPOLATION"/>, <ph n
   <translation id="5999418244609609466">Left Join</translation>
   <translation id="2434345280107075774">Inner Join</translation>
   <translation id="7531602241051125940">Objects</translation>
+  <translation id="2193805699094587352">Text/SMS Carrier:</translation>
+  <translation id="655023843937287181">
+    <ph name="INTERPOLATION"/>
+  </translation>
+  <translation id="3004296973717433221"> Suspended </translation>
+  <translation id="5248265517504994939"> In Transit </translation>
 </translationbundle>
