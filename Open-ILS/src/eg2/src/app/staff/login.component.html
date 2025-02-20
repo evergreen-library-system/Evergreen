@@ -1,10 +1,9 @@
 <div class="container">
   <div class="col-lg-6 offset-lg-3">
-    <fieldset>
-      <legend class="mb-0" i18n><h1>Sign In</h1></legend>
-      <hr class="mt-1"/>
-      <form (ngSubmit)="handleSubmit()" #loginForm="ngForm" class="form-validated">
-       
+    <form (ngSubmit)="handleSubmit()" #loginForm="ngForm" class="form-validated">
+      <fieldset>
+        <legend class="mb-0" i18n><h1>Log in</h1></legend>
+        <hr class="mt-1"/>
         <div *ngIf="loginFailed" id="form-error-summary" class="row">
           <div class="col">
             <p class="alert alert-danger label-with-material-icon w-100">
@@ -15,7 +14,7 @@
           </div>
         </div>
 
-        <div class="row row-cols-auto">
+        <div class="row row-cols-auto" [hidden]="allowSSO && !allowNative">
           <label class="form-label col-form-label fw-bold col-4 text-end" for="username" i18n>Username</label>
           <div class="col-8">
             <input
@@ -32,10 +31,10 @@
           </div>
         </div>
 
-        <div class="row row-cols-auto mt-3">
+        <div class="row row-cols-auto mt-3" [hidden]="allowSSO && !allowNative">
           <label class="form-label col-form-label col-4 text-end fw-bold" for="password" i18n>Password</label>
           <div class="col-8">
-            <eg-credential-input domId="password" name="password" [(ngModel)]="args.password"></eg-credential-input>
+            <eg-credential-input domId="password" name="password" [(ngModel)]="args.password" [ariaErrorMessage]="'form-error-summary'"></eg-credential-input>
           </div>
         </div>
        
@@ -48,6 +47,7 @@
               name="workstation"
               aria-describedby="form-error-summary"
               required
+              (change)="checkSSO($event.target.value)"
               [(ngModel)]="args.workstation">
               <option *ngFor="let ws of workstations" [value]="ws.name">
                 {{ws.name}}
@@ -56,9 +56,22 @@
           </div>
         </div>
 
-        <div class="row row-cols-auto mt-3">
-          <div class="col-2 offset-4">
-            <button type="submit" class="btn btn-outline-dark" i18n>Sign In</button>
+        <div class="row row-cols-auto mt-3" [hidden]="allowSSO">
+          <div class="col-8 offset-4">
+            <button type="submit" class="btn btn-primary" i18n>Log in</button>
+          </div>
+        </div>
+
+        <div class="row row-cols-auto mt-3" [hidden]="!allowSSO || !allowNative">
+          <div class="col-8 offset-4">
+            <button type="submit" class="btn btn-primary" i18n>Log in with Evergreen</button>
+          </div>
+        </div>
+
+        <div class="row row-cols-auto mt-3" [hidden]="!allowSSO">
+          <div class="col-8 offset-4">
+            <button type="button" (click)="redirectToSSO()" class="btn" i18n
+              [ngClass]="{'btn-primary': !allowNative, 'btn-normal': allowNative}">Log in with Single Sign On</button>
           </div>
         </div>
 
@@ -68,7 +81,7 @@
             Last transaction added at {{pendingXactsDate | date:'short'}}.
           </div>
         </div>
-      </form>
-    </fieldset>
+      </fieldset>
+    </form>
   </div>
 </div>

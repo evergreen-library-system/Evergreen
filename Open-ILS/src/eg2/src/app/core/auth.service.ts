@@ -52,6 +52,9 @@ export class AuthService {
 
     private authChannel: any;
 
+    SSOEnabled = false;
+    allowNativeLogin = true;
+
     private activeUser: AuthUser = null;
 
     workstationState: AuthWsState = AuthWsState.PENDING;
@@ -154,6 +157,26 @@ export class AuthService {
                 // cache MFA allowed-ness whenever we have to fetch the session
                 this.activeUser.mfaAllowed = Number(res) === 1;
             });
+        });
+    }
+
+    SSOSettings(ws_name: string): Promise<any> {
+        return this.net.request(
+            'open-ils.actor',
+            'open-ils.actor.org_unit_settings.by_workstation.retrieve',
+            ['staff.login.shib_sso.enable','staff.login.shib_sso.allow_native'],
+            ws_name
+        ).toPromise().then(settings => {
+            settings.forEach(s => {
+                if (s.value !== null) {
+                    if (s.name === 'staff.login.shib_sso.enable') {
+                        this.SSOEnabled = s.value;
+                    } else if (s.name === 'staff.login.shib_sso.allow_native') {
+                        this.allowNativeLogin = s.value;
+                    }
+                }
+            });
+            return this;
         });
     }
 

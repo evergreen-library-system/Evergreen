@@ -225,7 +225,7 @@ export class StaffNavComponent implements OnInit, OnDestroy {
     // logout duties.
     logout(): void {
         this.auth.broadcastLogout();
-        this.router.navigate(['/staff/login']);
+        this.router.navigate(['/staff/login'], {queryParams:{activeLogout:'1'}});
     }
 
     reprintLast() {

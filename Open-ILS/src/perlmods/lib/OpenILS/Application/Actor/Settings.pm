@@ -87,6 +87,46 @@ sub retrieve_settings {
     return undef;
 }
 
+__PACKAGE__->register_method (
+    method      => 'settings_for_ws',
+    api_name    => 'open-ils.actor.org_unit_settings.by_workstation.retrieve',
+    signature => {
+        desc => q/
+            Returns org unit setting values for the requested setting types.
+
+            If no workstation is provided, return the settings for the org
+            at the top of the org hierarchy.
+        /,
+        params => [
+            {desc => 'settings. List of setting names', type => 'array'},
+            {desc => 'workstation. Optional workstation name', type => 'string'}
+        ],
+        return => {
+            desc => q/
+                Array of setting objects with name and value properties in
+                the same order as the provided list of setting names.  No
+                object is returned for settings that have no value defined./,
+            type => 'string'
+        }
+    }
+);
+
+sub settings_for_ws {
+    my ($self, $client, $settings, $ws_name) = @_;
+    $settings = [$settings] unless ref($settings);
+
+    my $e = new_editor();
+
+    my $org;
+    if ($ws_name and my $ws = $e->search_actor_workstation({name=>$ws_name})->[0]) {
+        $org = $ws->owning_lib;
+    }
+
+    $org ||= $e->search_actor_org_unit({parent_ou => undef})->[0]->id;
+
+    return [$self->method_lookup('open-ils.actor.settings.retrieve')->run($settings, undef, $org)];
+}
+
 # Returns ($org_id, $user_id, $ws_id, $evt);
 # Any value may be undef.
 sub get_context {

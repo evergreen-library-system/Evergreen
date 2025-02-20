@@ -33,6 +33,9 @@ use OpenILS::WWW::EGCatLoader::OpenAthens;
 
 my $U = 'OpenILS::Application::AppUtils';
 
+use constant COOKIE_STAFF_TOKEN => 'eg.auth.token';
+use constant COOKIE_STAFF_TIMEOUT => 'eg.auth.time';
+
 use constant COOKIE_SES => 'ses';
 use constant COOKIE_LOGGEDIN => 'eg_loggedin';
 use constant COOKIE_SHIB_LOGGEDOUT => 'eg_shib_logged_out';
@@ -231,6 +234,9 @@ sub load {
     }
 
     return $self->load_manual_shib_login if $path =~ m|opac/manual_shib_login|;
+    return $self->load_staff_sso_login if $path =~ m|staff/sso/login$|;
+    return $self->load_staff_sso_logout if $path =~ m|staff/sso/logout$|;
+
     # ----------------------------------------------------------------
     #  Everything below here requires authentication
     # ----------------------------------------------------------------
@@ -550,6 +556,214 @@ sub get_carousel_loc {
     return $self->cgi->param('carousel_loc') || $ENV{carousel_loc};
 }
 
+sub load_staff_sso_logout {
+    my $self = shift;
+    my $cgi = $self->cgi;
+    my $ctx = $self->ctx;
+
+    my $redirect_to = shift || $cgi->param('redirect_to') || '/eg2/staff/login';
+    my $cookie_list = [];
+
+    my $ws_org;
+    if (my $staff_session = $self->cgi->cookie(COOKIE_STAFF_TOKEN)) {
+        $staff_session =~ s/^"//;
+        $staff_session =~ s/"$//;
+        if($self->editor->authtoken($staff_session) and $self->editor->checkauth) {
+            $ws_org = $self->editor->requestor->ws_ou;
+        }
+    }
+
+    my $sso_org = $ws_org || $ctx->{sso_org};
+    if ($sso_org and $ctx->{get_org_setting}->($sso_org, 'staff.login.shib_sso.enable')) { # we're allowed to attempt SSO
+
+        my $active_logout = $cgi->param('active_logout');
+
+        my $sso_entity_id = $ctx->{get_org_setting}->($sso_org, 'staff.login.shib_sso.entityId');
+        my $sso_logout = $ctx->{get_org_setting}->($sso_org, 'staff.login.shib_sso.logout');
+
+        # If using SSO, and actively logging out of EG /or/ staff.login.shib_sso.logout is true then
+        # log out of the SP (and, depending on Shib config, maybe the IdP or globally).
+        if ($sso_logout or $active_logout) {
+            $redirect_to = '/Shibboleth.sso/Logout?return=' . uri_escape_utf8($redirect_to);
+            if ($sso_entity_id) {
+                $redirect_to .= '&entityID=' . $sso_entity_id;
+            }
+        }
+
+        # clear value of and expire both of these login-related cookies
+        $cookie_list = [
+            $cgi->cookie(
+                -name => COOKIE_SHIB_LOGGEDIN,
+                -path => '/',
+                -value => '0',
+                -expires => '-1h'
+            ),
+            $cgi->cookie(
+                -name => COOKIE_STAFF_TOKEN, # staff auth token cookie
+                -path => '/',
+                -secure => 1,
+                -value => '',
+                -expires => '-1h'
+            ),
+            $cgi->cookie(
+                -name => COOKIE_STAFF_TIMEOUT,
+                -path => '/',
+                -secure => 1,
+                -value => '',
+                -expires => '-1h'
+            ),
+            $cgi->cookie(
+                -name => COOKIE_SES, # opac auth token cookie
+                -path => '/',
+                -value => '',
+                -expires => '-1h'
+            ),
+            $cgi->cookie(
+                -name => COOKIE_LOGGEDIN,
+                -path => '/',
+                -value => '',
+                -expires => '-1h'
+            )
+        ];
+
+        if ($active_logout) {
+            push @$cookie_list,$cgi->cookie(
+                -name => COOKIE_SHIB_LOGGEDOUT,
+                -path => '/',
+                -value => '1',
+                -expires => '2147483647'
+            );
+        }
+    }
+
+    # If the user was adding anything to an anonymous cache 
+    # while logged in, go ahead and clear it out.
+    $self->clear_anon_cache;
+
+    try { # a missing auth token will cause an ugly explosion
+        $U->simplereq(
+            'open-ils.auth',
+            'open-ils.auth.session.delete',
+            $cgi->cookie(COOKIE_STAFF_TOKEN)
+        );
+    } catch Error with {};
+
+    return $self->generic_redirect($redirect_to, $cookie_list);
+}
+
+sub load_staff_sso_login {
+    my $self = shift;
+    my $cgi = $self->cgi;
+    my $ctx = $self->ctx;
+
+    my $here = $cgi->url( -path => 1 );
+    my $ws_name = $cgi->param('ws');
+    my $redirect_to = $cgi->param('redirect_to') || ''; 
+
+    my $url = '/eg2/staff/login'; # when in doubt, head to the front door
+    my $cookie_list = [];
+
+    my $ws_org;
+    if ($ws_name) {
+        if (my $ws = $self->editor->search_actor_workstation({name => $ws_name})->[0]) {
+            $ws_org = $ws->owning_lib;
+        }
+    }
+
+    my $sso_org = $ws_org || $ctx->{sso_org};
+    if ($sso_org and $ctx->{get_org_setting}->($sso_org, 'staff.login.shib_sso.enable')) { # we're allowed to attempt SSO
+
+        my $sso_shib_match = $ctx->{get_org_setting}->($sso_org, 'staff.login.shib_sso.shib_matchpoint') || 'uid';
+        $logger->info("Looking for SSO matchpoint attribute: $sso_shib_match");
+
+        my $sso_user_match_value = $ENV{$sso_shib_match};
+        $logger->info("SSO matchpoint $sso_shib_match contains: $sso_user_match_value");
+
+        if ($sso_user_match_value) { # We already have a Shibboleth matchpoint value, complete the login dance
+
+            my $sso_eg_match = $ctx->{get_org_setting}->($sso_org, 'staff.login.shib_sso.evergreen_matchpoint') || 'usrname';
+            $logger->info("Have an SSO user match value: $sso_user_match_value");
+            $self->timelog("Have an SSO user match value: $sso_user_match_value");
+
+            if ($sso_eg_match eq 'barcode') { # barcode is special
+                my $card = $self->editor->search_actor_card({barcode => $sso_user_match_value})->[0];
+                $sso_user_match_value = $card ? $card->usr : undef;
+                $sso_eg_match = 'id';
+            }
+
+            if ($sso_user_match_value && $sso_eg_match) {
+                my $user = $self->editor->search_actor_user({ $sso_eg_match => $sso_user_match_value })->[0];
+                if ($user) { # create a session
+
+                    # should we start provisional?
+                    my $attempt_mfa = $U->simplereq('open-ils.auth_mfa', 'open-ils.auth_mfa.enabled');
+
+                    my $session = $U->simplereq(
+                        'open-ils.auth_internal',
+                        'open-ils.auth_internal.session.create',
+                        { user_id     => $user->id,
+                          workstation => $ws_name,
+                          login_type  => 'staff',
+                          provisional => 0+$attempt_mfa # MUST be actually numeric
+                        }
+                    )->{payload};
+
+                    $redirect_to = undef if $redirect_to =~ m#eg2?(?:/\w{2}-\w{2})?/staff/login#; # the login page logs you out, and we don't want that
+                    $url = $redirect_to || '/eg2/staff/splash';
+
+                    # both login-related cookies should expire at the same time
+                    my $login_cookie_expires = CORE::time + $session->{authtime};
+
+                    my $cookie_suffix = $session->{provisional} ? '.provisional' : '';
+                    $cookie_list = [
+                        $cgi->cookie(
+                            -name => COOKIE_STAFF_TOKEN . $cookie_suffix,
+                            -path => '/',
+                            -secure => 1,
+                            -value => '"'.$session->{authtoken}.'"',
+                            -expires => $login_cookie_expires
+                        ),
+                        $cgi->cookie(
+                            -name => COOKIE_STAFF_TIMEOUT . $cookie_suffix,
+                            -path => '/',
+                            -secure => 1,
+                            -value => $session->{authtime},
+                            -expires => $login_cookie_expires
+                        ),
+                        $cgi->cookie(
+                            -name => COOKIE_SHIB_LOGGEDOUT,
+                            -path => '/',
+                            -value => '0',
+                            -expires => '-1h'
+                        )
+                    ];
+
+                }
+            }
+
+        } else { # We need to ask Shib to give us a session
+
+            $url = '/Shibboleth.sso/Login?target=' . uri_escape_utf8($here.'?ws='.$ws_name.'&redirect_to='.uri_escape_utf8($redirect_to));
+
+            my $sso_entity_id = $ctx->{get_org_setting}->($sso_org, 'staff.login.shib_sso.entityId');
+            if ($sso_entity_id) {
+                $url .= '&entityID=' . $sso_entity_id;
+            }
+
+            $cookie_list =  [
+                $self->cgi->cookie(
+                    -name => COOKIE_SHIB_LOGGEDOUT,
+                    -path => '/',
+                    -value => '0',
+                    -expires => '-1h'
+                )
+            ];
+        }
+    }
+
+    return $self->generic_redirect( $url, $cookie_list );
+}
+
 # -----------------------------------------------------------------------------
 # Log in and redirect to the redirect_to URL (or home)
 # -----------------------------------------------------------------------------
@@ -847,6 +1061,24 @@ sub load_logout {
             -expires => '-1h'
         )
     ];
+
+    if ($self->ctx->{is_staff}) {
+        push @$cookie_list, 
+            $self->cgi->cookie(
+                -name => COOKIE_STAFF_TOKEN,
+                -path => '/',
+                -secure => 1,
+                -value => '',
+                -expires => '-1h'
+            ),
+            $self->cgi->cookie(
+                -name => COOKIE_STAFF_TIMEOUT,
+                -path => '/',
+                -secure => 1,
+                -value => '',
+                -expires => '-1h'
+            );
+    }
 
     return 
         $self->_perform_any_sso_signout_required($redirect_to, $cookie_list)

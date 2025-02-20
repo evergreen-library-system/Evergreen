@@ -1,4 +1,4 @@
-import { Component, Input, ViewChild, ElementRef, ViewEncapsulation, forwardRef } from '@angular/core';
+import { Component, Input, ViewChild, ElementRef, ViewEncapsulation, forwardRef, OnInit } from '@angular/core';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 
 @Component({
@@ -12,15 +12,21 @@ import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
         multi: true
     }]
 })
-export class CredentialInputComponent implements ControlValueAccessor {
+export class CredentialInputComponent implements ControlValueAccessor, OnInit {
 
   @Input() domId: string;
+  @Input() ariaErrorMessage: string; // ID of element containing error details
   @ViewChild('password')
       passwordInput: ElementRef;
 
 
   ariaDescription: string = $localize`Your password is not visible.`;
   passwordVisible: boolean;
+
+  ngOnInit(): void {
+    // always show the credential input description; optionally append anything given in @Input()
+    this.ariaErrorMessage = 'credential-input-description ' +  this.ariaErrorMessage;
+  }
 
   togglePasswordVisibility() {
       this.passwordVisible = !this.passwordVisible;

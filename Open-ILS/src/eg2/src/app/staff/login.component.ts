@@ -26,6 +26,9 @@ export class StaffLoginComponent implements OnInit {
     pendingXactsDate: Date;
     passwordVisible: boolean;
     singleFactor = true;
+    activeLogout = false;
+    allowSSO = false;
+    allowNative = true;
 
     args = {
         username : '',
@@ -46,6 +49,7 @@ export class StaffLoginComponent implements OnInit {
     ) {}
 
     ngOnInit() {
+        this.activeLogout = !!this.route.snapshot.queryParamMap.get('activeLogout');
         this.routeTo = this.route.snapshot.queryParamMap.get('routeTo');
 
         if (this.routeTo) {
@@ -61,6 +65,8 @@ export class StaffLoginComponent implements OnInit {
             }
         }
 
+        const wasLoggedIn = !!this.auth.token();
+
         // clear out any stale auth data
         this.auth.logout();
 
@@ -73,22 +79,50 @@ export class StaffLoginComponent implements OnInit {
                 return this.store.getDefaultWorkstation();
             }).then(def => {
                 this.args.workstation = def;
-                this.applyWorkstation();
+                return this.applyWorkstation();
+            }).then(ws => {
+                return this.checkSSO(ws);
+            }).then(_ => {
+                if (this.allowSSO && wasLoggedIn) {
+                    // redirect to SSO logout
+                    this.redirectToSSO('logout');
+                }
             });
 
         this.offline.pendingXactsDate().then(d => this.pendingXactsDate = d);
     }
 
+    redirectToSSO(type: string = 'login') {
+        let url = `/eg/opac/staff/sso/${type}?ws=${this.args.workstation}`;
+        if (this.routeTo) {
+            url = url + '&redirect_to=' + encodeURIComponent(this.routeTo);
+        }
+        if (this.activeLogout) {
+            url = url + '&active_logout=1';
+        }
+
+        window.location.href = url;
+    }
+
+    checkSSO(ws_name:string) { 
+        return this.auth.SSOSettings(ws_name).then(svc => {
+            this.allowSSO = svc.SSOEnabled;
+            this.allowNative = svc.allowNativeLogin;
+        });
+    }
+
+
     applyWorkstation() {
         const wanted = this.route.snapshot.queryParamMap.get('workstation');
-        if (!wanted) { return; } // use the default
+        if (!wanted) { return this.args.workstation; } // use the default
 
-        const exists = this.workstations.filter(w => w.name === wanted)[0];
+        const exists = this.workstations.find(w => w.name === wanted);
         if (exists) {
             this.args.workstation = wanted;
         } else {
             console.error(`Unknown workstation requested: ${wanted}`);
         }
+        return this.args.workstation;
     }
 
     handleSubmit() {
