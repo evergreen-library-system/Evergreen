@@ -28,6 +28,7 @@ use Tie::IxHash;
 use Email::Send;
 use Scalar::Util 'looks_like_number';
 use List::MoreUtils qw/uniq/;
+use sigtrap qw/handler die_signal normal-signals/;
 
 use open ':utf8';
 
@@ -1165,3 +1166,8 @@ sub pivot_data {
 }
 
 
+sub die_signal {
+    my $sig = shift;
+    $logger->warn("Reporter received signal $sig");
+    exit(0);
+}
