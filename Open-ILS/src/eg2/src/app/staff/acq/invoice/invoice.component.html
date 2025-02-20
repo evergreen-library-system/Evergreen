@@ -47,11 +47,6 @@
             <span class="material-icons small me-1" aria-hidden="true">print</span>
             <span i18n>Print</span>
           </a>-->
-          <ng-container *ngIf="showLegacyLinks">
-            <a href="/eg/staff/acq/legacy/invoice/view/{{invoiceId()}}" target="_blank">
-              Show Invoice in Legacy Interface
-            </a>
-          </ng-container>
           <ng-container *ngIf="isTop">
             <button type="button" (click)="toggleFmEditor()"
                     class="btn btn-normal label-with-material-icon"
@@ -62,6 +57,11 @@
               <span *ngIf="showFmEditor" aria-hidden="true"
                                          class="material-icons mat-icon-in-button">unfold_less</span>
             </button>
+          </ng-container>
+          <ng-container *ngIf="showLegacyLinks && invoiceId()">
+            <a href="/eg/staff/acq/legacy/invoice/view/{{invoiceId()}}" target="_blank">
+              Show Invoice in Legacy Interface
+            </a>
           </ng-container>
         </div>
       </div>
