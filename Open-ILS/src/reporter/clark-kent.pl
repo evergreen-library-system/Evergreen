@@ -41,6 +41,10 @@ my $opt_max_rows_for_charts;
 my $opt_statement_timeout;
 my $opt_resultset_limit;
 
+# Process id of the first Clark started.  This is saved so that we can
+# properly cleanup the lock file at the END.
+my $main_pid;
+
 GetOptions(
 	"daemon"	=> \$daemon,
 	"sleep=i"	=> \$sleep_interval,
@@ -140,6 +144,7 @@ my ($dbh,$running,$sth,@reports,$run, $current_time);
 
 if ($daemon) {
 	daemonize("Clark Kent, waiting for trouble");
+    $main_pid = $$ unless ($main_pid);
 	open(F, ">$lockfile") or die "Cannot write lockfile '$lockfile'";
 	print F $$;
 	close F;
@@ -1170,4 +1175,8 @@ sub die_signal {
     my $sig = shift;
     $logger->warn("Reporter received signal $sig");
     exit(0);
+}
+
+END {
+    unlink $lockfile if ($$ == $main_pid);
 }
