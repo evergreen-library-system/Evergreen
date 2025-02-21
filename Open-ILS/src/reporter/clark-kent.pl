@@ -33,7 +33,7 @@ use sigtrap qw/handler die_signal normal-signals/;
 use open ':utf8';
 
 
-my ($config, $sleep_interval, $lockfile, $daemon) = ('SYSCONFDIR/opensrf_core.xml', 10, '/tmp/reporter-LOCK');
+my ($config, $sleep_interval, $lockfile, $daemon) = ('SYSCONFDIR/opensrf_core.xml', 10, 'LOCALSTATEDIR/run/reporter.pid');
 
 my $opt_count;
 my $opt_minimum_repsec_version;
