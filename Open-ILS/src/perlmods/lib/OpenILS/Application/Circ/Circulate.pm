@@ -247,11 +247,7 @@ sub run_method {
         $circulator->do_permit();
 
     } elsif( $api =~ /checkout.full/ ) {
-
-        # requesting a precat checkout implies that any required
-        # overrides have been performed.  Go ahead and re-override.
         $circulator->skip_permit_key(1);
-        $circulator->override(1) if ( $circulator->request_precat && $circulator->editor->allowed('CREATE_PRECAT') );
         $circulator->do_permit();
         $circulator->is_checkout(1);
         unless( $circulator->bail_out ) {
@@ -1335,7 +1331,14 @@ sub run_indb_circ_test {
         {   from => [
                 $dbfunc,
                 $self->circ_lib,
-                ($self->is_noncat or ($self->is_precat and !$self->override and !$self->is_renewal)) ? undef : $self->copy->id, 
+                (
+                    $self->is_noncat
+                    or (
+                        $self->is_precat and
+                        !$self->request_precat and
+                        !$self->is_renewal
+                    )
+                ) ? undef : $self->copy->id,
                 $self->patron->id,
             ]
         }
