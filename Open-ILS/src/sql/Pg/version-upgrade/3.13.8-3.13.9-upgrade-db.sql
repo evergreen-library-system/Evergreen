@@ -1,7 +1,7 @@
---Upgrade Script for 3.13.8 to 3.13.19
-\set eg_version '''3.13.19'''
+--Upgrade Script for 3.13.8 to 3.13.9
+\set eg_version '''3.13.9'''
 BEGIN;
-INSERT INTO config.upgrade_log (version, applied_to) VALUES ('3.13.19', :eg_version);
+INSERT INTO config.upgrade_log (version, applied_to) VALUES ('3.13.9', :eg_version);
 
 SELECT evergreen.upgrade_deps_block_check('1447', :eg_version);
 
