@@ -34,6 +34,14 @@ select.form-control:not([size]):not([multiple]) {
   margin-bottom: 0;
 }
 
+/* Mimics prior behavior by using the browser's native color. Otherwise some
+browsers would change filter color when defocused, which isn't very bad, but a little
+graceless. */
+.filter-option:checked {
+  background-color: selecteditem;
+  color: selecteditemtext;
+}
+
 [data-bs-theme="dark"] :host .btn.btn-light {
   border-color: transparent;
 }
