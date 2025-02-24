@@ -1,12 +1,12 @@
-<ng-template #ccvmOption let-list="list">
+<ng-template #ccvmOption let-list="list" let-ctype="ctype">
   <ng-container *ngFor="let ccv of list">
-  <option *ngIf="ccv.is_simple() === 't'" value="{{ccv.code()}}">
+  <option *ngIf="ccv.is_simple() === 't'" value="{{ccv.code()}}" class="filter-option" [selected]="context.termSearch.ccvmFilters[ctype]?.includes(ccv.code())">
     {{ccv.search_label() || ccv.value()}}
     <ng-container *ngIf="ccv.opac_visible() === 'f'" i18n>(Hidden)</ng-container>
   </option>
   </ng-container>
   <ng-container *ngFor="let ccv of list">
-  <option *ngIf="ccv.is_simple() === 'f'" value="{{ccv.code()}}">
+  <option *ngIf="ccv.is_simple() === 'f'" value="{{ccv.code()}}" class="filter-option" [selected]="context.termSearch.ccvmFilters[ctype]?.includes(ccv.code())">
     {{ccv.search_label() || ccv.value()}}
     <ng-container *ngIf="ccv.opac_visible() === 'f'" i18n>(Hidden)</ng-container>
   </option>
@@ -202,7 +202,7 @@
                 (change)="updateFilters('item_type', $event.target)">
                 <option value='' i18n>All Item Types</option>
                 <ng-container
-                  *ngTemplateOutlet="ccvmOption;context:{list:ccvmMap.item_type}">
+                  *ngTemplateOutlet="ccvmOption;context:{list:ccvmMap.item_type, ctype:'item_type'}">
                 </ng-container>
               </select>
             </div>
@@ -212,7 +212,7 @@
                 (change)="updateFilters('item_form', $event.target)">
                 <option value='' i18n>All Item Forms</option>
                 <ng-container
-                  *ngTemplateOutlet="ccvmOption;context:{list:ccvmMap.item_form}">
+                  *ngTemplateOutlet="ccvmOption;context:{list:ccvmMap.item_form, ctype:'item_form'}">
                 </ng-container>
               </select>
             </div>
@@ -222,7 +222,7 @@
                 multiple="true" (change)="updateFilters('item_lang', $event.target)">
                 <option value='' i18n>All Languages</option>
                 <ng-container
-                  *ngTemplateOutlet="ccvmOption;context:{list:ccvmMap.item_lang}">
+                  *ngTemplateOutlet="ccvmOption;context:{list:ccvmMap.item_lang, ctype:'item_lang'}">
                 </ng-container>
               </select>
             </div>
@@ -232,7 +232,7 @@
                 multiple="true" (change)="updateFilters('audience', $event.target)">
                 <option value='' i18n>All Audiences</option>
                 <ng-container
-                  *ngTemplateOutlet="ccvmOption;context:{list:ccvmMap.audience}">
+                  *ngTemplateOutlet="ccvmOption;context:{list:ccvmMap.audience, ctype:'audience'}">
                 </ng-container>
               </select>
             </div>
@@ -244,7 +244,7 @@
                 multiple="true" (change)="updateFilters('vr_format', $event.target)">
                 <option value='' i18n>All Video Formats</option>
                 <ng-container
-                  *ngTemplateOutlet="ccvmOption;context:{list:ccvmMap.vr_format}">
+                  *ngTemplateOutlet="ccvmOption;context:{list:ccvmMap.vr_format, ctype:'vr_format'}">
                 </ng-container>
               </select>
             </div>
@@ -254,7 +254,7 @@
                 multiple="true" (change)="updateFilters('bib_level', $event.target)">
                 <option value='' i18n>All Bib Levels</option>
                 <ng-container
-                  *ngTemplateOutlet="ccvmOption;context:{list:ccvmMap.bib_level}">
+                  *ngTemplateOutlet="ccvmOption;context:{list:ccvmMap.bib_level, ctype:'bib_level'}">
                 </ng-container>
               </select>
             </div>
@@ -264,7 +264,7 @@
                 multiple="true" (change)="updateFilters('lit_form', $event.target)">
                 <option value='' i18n>All Literary Forms</option>
                 <ng-container
-                  *ngTemplateOutlet="ccvmOption;context:{list:ccvmMap.lit_form}">
+                  *ngTemplateOutlet="ccvmOption;context:{list:ccvmMap.lit_form, ctype:'lit_form'}">
                 </ng-container>
               </select>
             </div>
@@ -273,7 +273,7 @@
               <select class="form-select" id="context-termSearch-copyLocations" [disabled]="context.termSearch.locationGroupOrLasso !== ''"
                 [(ngModel)]="context.termSearch.copyLocations" multiple="true" (change)="filtersActive()">
                 <option value='' i18n>All Shelving Locations</option>
-                <option *ngFor="let loc of copyLocations" value="{{loc.id()}}" i18n>
+                <option *ngFor="let loc of copyLocations" value="{{loc.id()}}" class="filter-option" i18n>
                   {{loc.name()}} ({{orgName(loc.owning_lib())}})
                 </option>
               </select>
