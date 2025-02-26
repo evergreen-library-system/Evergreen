@@ -65,10 +65,26 @@ autoreconf -i
 Evergreen has a number of prerequisite packages that must be installed
 before you can successfully configure, compile, and install Evergreen.
 
-1. Begin by installing the most recent version of OpenSRF (3.3.0 or later).
+1. Begin by using the `openssl` command to cut a new SSL key for your Apache
+   server in the Apache installation directory. This SSL key is also required
+   for the OpenSRF WebSocket gateway. For a production server, you should
+   purchase a signed SSL certificate, but you can just use a self-signed
+   certificate and accept the warnings in the browser during testing and
+   development. Create an SSL key for the Apache server by issuing the 
+   following command as the *root* Linux account:
++
+[source,bash]
+-------------------------------------------------------------------------------
+# Set up SSL
+mkdir /etc/apache2/ssl
+cd /etc/apache2/ssl
+openssl req -new -x509 -days 365 -nodes -out server.crt -keyout server.key 
+-------------------------------------------------------------------------------
++ 
+2. Install the most recent version of OpenSRF (3.3.0 or later).
    You can download OpenSRF releases from http://evergreen-ils.org/opensrf-downloads/
 +
-2. Issue the following commands as the *root* Linux account to install
+3. Issue the following commands as the *root* Linux account to install
    prerequisites using the `Makefile.install` prerequisite installer,
    substituting `debian-bookworm`,`debian-bullseye`,`debian-buster`,`ubuntu-jammy`,
    or `ubuntu-noble` for <osname> below:
@@ -309,20 +325,6 @@ interfaces. Issue the following commands as the *root* Linux account:
 cp Open-ILS/examples/apache_24/eg_24.conf       /etc/apache2/sites-available/eg.conf
 cp Open-ILS/examples/apache_24/eg_vhost_24.conf /etc/apache2/eg_vhost.conf
 cp Open-ILS/examples/apache_24/eg_startup    	/etc/apache2/
-# Now set up SSL
-mkdir /etc/apache2/ssl
-cd /etc/apache2/ssl
-------------------------------------------------------------------------------------
-+
-. The `openssl` command cuts a new SSL key for your Apache server. For a
-production server, you should purchase a signed SSL certificate, but you can
-just use a self-signed certificate and accept the warnings in the
-and browser during testing and development. Create an SSL key for the Apache
-server by issuing the following command as the *root* Linux account:
-+
-[source,bash]
-------------------------------------------------------------------------------
-openssl req -new -x509 -days 365 -nodes -out server.crt -keyout server.key
 ------------------------------------------------------------------------------
 +
 . As the *root* Linux account, edit the `eg.conf` file that you copied into
