@@ -1,0 +1,56 @@
+== IMPORTANT: FIX DB Table config.coded_value_map ==
+
+If your Evergreen database pre-dates version 3.13 and you have executed the DB upgrade (1416) which was included in the Evergreen upgrade files:
+
+* Open-ILS/src/sql/Pg/version-upgrade/3.12.3-3.13.0-upgrade-db.sql
+* Open-ILS/src/sql/Pg/version-upgrade/1416.data.updated_marc_tag_tables.sql
+
+As described in https://bugs.launchpad.net/evergreen/+bug/2073561[LP2073561]
+
+You have two options:
+
+. Use the provided fix SQL script to reset the tables to stock
+. Use a backup database that you may have pre-3.13 upgrade, and restore these two tables:
+.. config.coded_value_map
+.. config.composite_attr_entry_definition
++
+NOTE: You might prefer option 2 if you have customized the coded_value_map for new/different OPAC Icon/Search Formats.
+
+=== Option 1: Reset the tables to stock
+
+You will need to manually run the provided SQL file:
+
+IMPORTANT: Open-ILS/src/sql/Pg/LP2073561.fix.coded.value.map-post_3.13_upgrade.sql
+
+Example:
+
+[source,bash]
+----
+psql evergreen < Open-ILS/src/sql/Pg/LP2073561.fix.coded.value.map-post_3.13_upgrade.sql
+----
+
+=== Option 2: Restore from backup
+
+. From the old copy of your database, pre-dating an upgrade to 3.13
++
+[source,bash]
+----
+pg_dump evergreen --data-only --schema config \
+--table config.coded_value_map \
+--table config.composite_attr_entry_definition \
+> ccvm_restore.sql
+----
++
+. Copy ccvm_restore.sql to an accessible location on your production database
++
+[source,bash]
+----
+pgsql evergreen -c "truncate config.coded_value_map CASCADE;"
+pgsql evergreen < ccvm_restore.sql
+----
+
+IMPORTANT: We highly recommend testing these steps on a non-production database!
+
+
+NOTE: If your Evergreen database was started on version 3.13 and above, then you can safely ignore these instructions.
+
