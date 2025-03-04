@@ -54,6 +54,11 @@ export class StaffLoginComponent implements OnInit {
                     'routeTo must contain only path information: ', this.routeTo);
                 this.routeTo = null;
             }
+            else {
+                // Remove /eg2/:locale/ however many times it's been prepended, so it's added back only once in prepareExternalUrl()
+                // Hopefully doesn't scrub locale back to en-US?
+                this.routeTo = this.routeTo.replace(/^(\/eg2\/([a-z]{2}-[A-Z]{2}))+/, "");
+            }   
         }
 
         // clear out any stale auth data
