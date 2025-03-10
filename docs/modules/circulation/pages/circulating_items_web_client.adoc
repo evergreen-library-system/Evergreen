@@ -907,6 +907,9 @@ Evergreen has two sample Notification/Action Triggers that are related to markin
 
 ** 6 Month Long Overdue Notice—will send patron notification that an item has been marked long overdue on their account
 
+[TIP]
+LOST reactors for action triggers also react to Long Overdues.  This means that Long Overdue cannot be activated while Mark Lost, for example, is activated.  To use Long Overdue, you would need to deactivate Mark Lost.
+
 [[longoverdue_library_settings]]
 *Library Settings* 
 
