@@ -57,6 +57,7 @@ implements ControlValueAccessor, OnInit, AfterViewInit, OnChanges {
     selected: ComboboxEntry;
     click$: Subject<string>;
     entrylist: ComboboxEntry[];
+    controller: HTMLInputElement;
 
     @ViewChild('instance', {static: false}) instance: NgbTypeahead;
     @ViewChild('defaultDisplayTemplate', {static: true}) defaultDisplayTemplate: TemplateRef<any>;
@@ -401,9 +402,10 @@ implements ControlValueAccessor, OnInit, AfterViewInit, OnChanges {
         if (!this.selectedId && !this.selected){
             this.selected = this.entrylist.find(e => e.id == null);
         }
-        
+
         document.querySelectorAll('ngb-typeahead-window button[disabled]').forEach(b => b.setAttribute('tabindex', '-1'));
-        this.elm.nativeElement.querySelector('input').addEventListener('keydown', this.onKeydown.bind(this));
+        this.controller = this.instance['_elementRef'].nativeElement as HTMLInputElement;
+        this.controller.addEventListener('keydown', this.onKeydown.bind(this));
     }
 
     ngOnChanges(changes: SimpleChanges) {
@@ -474,6 +476,9 @@ implements ControlValueAccessor, OnInit, AfterViewInit, OnChanges {
         //console.debug('Key: ', $event);
 
         if (this.instance.isPopupOpen()) {
+            if ($event.key === 'ArrowUp' || $event.key === 'ArrowDown') {
+                this.scrollEntries();
+            }
             return;
         }
 
@@ -495,6 +500,24 @@ implements ControlValueAccessor, OnInit, AfterViewInit, OnChanges {
         this.comboboxEnter.emit(this.selected.id);
     }
     
+    scrollEntries() {
+        // adapted from https://github.com/ng-bootstrap/ng-bootstrap/issues/4789
+        if (!this.controller)
+            return;
+
+        const listbox = document.getElementById(this.controller.getAttribute('aria-owns'));
+        // console.debug("Listbox: ", listbox);
+
+        const activeItem = document.getElementById(this.controller.getAttribute('aria-activedescendant'));
+        if (activeItem) {
+            if (activeItem.offsetTop < listbox.scrollTop) {
+                listbox.scrollTo({ top: activeItem.offsetTop });
+            } else if (activeItem.offsetTop + activeItem.offsetHeight > listbox.scrollTop + listbox.clientHeight) {
+                listbox.scrollTo({ top: activeItem.offsetTop + activeItem.offsetHeight - listbox.clientHeight });
+            }
+        }
+    }
+
     openMe($event) {
         // Give the input a chance to focus then fire the click
         // handler to force open the typeahead
