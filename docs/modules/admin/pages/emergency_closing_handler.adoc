@@ -1,101 +1,138 @@
-= Emergency Closing Handler =
+= Closed Dates Editor =
 :toc:
 
-== Introduction ==
+indexterm:[Closed Dates]
 
-The *Closed Dates Editor* now includes an Emergency Closing feature that allows libraries to shift due dates and expiry dates to the next open day. Overdue fines will be automatically voided for the day(s) the library is marked closed. Once an Emergency Closing is processed, it is permanent and cannot be rolled back.
+The *Closed Dates Editor* can be accessed via *Administration -> Local Administration -> Closed Dates Editor*. 
 
-== Administration ==
+Within the Closed Dates Editor screen, scheduled closed dates are listed and can be scoped by a specific organizational unit and date. The date filter in the upper right-hand corner will show upcoming library closures on or after the selected date in the filter.
 
-=== Permissions ===
+Entries in the Closed Dates Editor are in addition to the regular weekly closed days for each organizational unit. Both regular closed days and those entered in the Closed Dates Editor affect due dates and fines:
 
-To create an Emergency Closing, the EMERGENCY_CLOSING permission needs to be granted to the user for all locations to be affected by an emergency closing.
- 
-== Create an emergency closing ==
+* *Due dates.* Due dates that would fall on closed days are automatically pushed forward to the next open day. Likewise, if an item is checked out at 8pm, for example, and would normally be due on a day when the library closes before 8pm, Evergreen pushes the due date forward to the next open day.
+* *Overdue fines.* Overdue fines may not be charged on days when the library is closed. This fine behavior depends on how the _Charge fines on overdue circulations when closed_ setting is configured in the Library Settings Editor.
 
-The Emergency Closing feature is located within the *Closed Dates Editor* screen, which can be accessed via *Administration -> Local Administration -> Closed Dates Editor*. 
+Closed dates do not affect the processing delays for Action/Triggers. For example, if your library has a trigger event that marks items as lost after 30 days, that 30-day period will include both open and closed dates.
 
-Within the closed dates editor screen, scheduled closed dates are listed and can be scoped by specific org unit and date. The date filter in the upper right-hand corner will show upcoming library closings on or after the selected date in the filter.
+Any closed dates entered in the interface will also appear on the xref:opac:linked_libraries.adoc[organizational unit’s library information page] under *Upcoming Closures*
 
-[NOTE]
-========================
-*NOTE* Before creating an Emergency Closure, delete any previously entered closures that overlap the Emergency Closure you wish to enter. Overlapping closed dates can cause issues in processing the Emergency Closure.
-========================
+image::emergency_closing/upcoming closure listing.png[Upcoming closures]
 
-Select *Add closing* to begin the emergency closing process.
+== Adding a closure ==
 
+. Select _Administration -> Local Administration_.
+. Select _Closed Dates Editor_.
+. Select _Add Closing_.
++
 image::emergency_closing/ECHClosedDatesEditorAddClosing.png[Add Closing]
-
-A pop-up will appear with fields to fill out. 
-
-image::emergency_closing/ECHLibraryClosingConstruction.png[Create Closing for One Full Day]
-
-*Library* - Using the dropdown window, select the org unit which will be closing.
-
-*Apply to all of my libraries* - When selected, this checkbox will apply the emergency closing date to the selected org unit and any associated child org unit(s).
-
-*Closing Type* - The following Closing Type options are available in a drop down window:
-* One full day
-* Multiple days
-* Detailed closing
-
-The _Multiple days_ and _Detailed closing_ options will display different date options (e.g. start and end dates) in the next field if selected. 
-
++
+. A pop-up will appear with fields to fill out. 
++
+image::emergency_closing/example closing.png[Create Closing for One Full Day]
++
+* *Library* - Using the dropdown window, select the organizational unit which will be closing.
+* *Apply to all of my libraries* - When selected, this checkbox will apply the closing date to the selected organizational unit and any associated child organizational units. 
++
 [NOTE]
-========================
-*NOTE* There is an existing bug that pushes the due dates to the first day after the Emergency Closure even if that day is normally closed. So, if you need to enter an Emergency Closure for a Friday, but you are normally closed on Saturday and Sunday, be sure to enter the Emergency Closure for Friday through Sunday.
-========================
+====
+By default, creating a closed date in a parent organizational unit does _not_ also
+close the child unit. For example, adding a system-level closure will not also 
+close all of that system's branches, unless you check the *Apply to all of my libraries* box.
+====
++
 
+* *Closing type* - Available options in the dropdown window are _One Full Day_, _Multiple Days_, and _Detailed_ (for partial day closures). The _Multiple Days_ and _Detailed_ options will display different date options (e.g., start and end dates) in the next field if selected. 
++
 image::emergency_closing/ECHLibraryClosingMultipleDays.png[Create Closing for Multiple Days]
++
 
++
 image::emergency_closing/ECHLibraryClosingDetailed.png[Create Detailed Closing]
-
-*Date* - Select which day or days the library will be closed. 
-
++
+* *Date* - Click the calendar gadget to select which day or days the library will be closed.
++
 [NOTE]
-========================
-*NOTE* The Closed Dates editor is now date-aware. If a selected closed date is either in the past, or nearer in time than the end of the longest configured circulation period, staff will see a notification that says "Possible Emergency Closing" in both the dialog box and in the bottom right-hand corner.
-========================
+====
+The Closed Dates editor is now date-aware. If a selected closed date is either in the past, or nearer in time than the end of the longest configured circulation period, staff will see a notification that says _Possible Emergency Closing_ in both the dialog box and in the bottom right-hand corner. See the Emergency Closing Handler section for information on how to manage emergency closures.
+====
++
+* *Reason* - Optionally enter the reason for the closure. Note that this will appear on the library’s contact page.
+. Click *OK*.
 
-*Reason* - Label the reason for library closing accordingly, e.g. 3/15 Snow Day
+== Editing a closure ==
 
-=== Emergency Closing Handler ===
-
-When a date is chosen that is nearer in time than the end of the longest configured circulation period or in the past, then a *Possible Emergency Closing* message will appear in the pop-up and in the bottom right-hand corner of the screen. Below the Possible Emergency Closing message, two checkboxes appear: *Emergency* and *Process Immediately*. Both checkboxes must be manually selected in 
-
-[NOTE]
-=========================
-*NOTE* The *Emergency* checkbox must still be manually selected in order to actually set the closing as an Emergency Closing.
-=========================
-
-By selecting the *Emergency* checkbox, the system will void any overdue fines incurred for that emergency closed day or days and push back any of the following dates to the next open day as determined by the library’s settings:
-* item due dates
-* shelf expire times
-* booking start times
-
-image::emergency_closing/ECHClosingSnowDay.png[Create Emergency Closing]
-
-When selecting the *Process immediately* checkbox, Evergreen will enact the Emergency Closing changes immediately once the Emergency Closed Date information is saved. If Process immediately is not selected at the time of creation, staff will need to delete the original Emergency Closing and create a new one to make sure the Process immediately option is checked. If you go back to edit an entry to select the Process immediately checkbox, the Emergency processing will not occur.
-
-Upon clicking *OK*, a progress bar will appear on-screen. After completion, the Closed Dates Editor screen will update, and under the Emergency Closing Processing Summary column, the number of affected/processed Circulations, Holds, and Reservations will be listed.
-
-image::emergency_closing/ECHLibraryClosingDone.png[Emergency Closing Processing Complete]
-
-[NOTE]
-=========================
-*NOTE* Processing can take some time, especially if you are creating an Emergency Closure at the system level and applying it to all branches. It's best to let it run and check back later to make sure that all circulations and holds processed. A successful processing is indicated by the green bar in the Emergency Closing Processing Summary column (shown in the screenshot above). If the bar is blue after processing, this indicates the processing did not complete correctly.
-=========================
-
-=== Editing Emergency Closings ===
-
-If *Process immediately* is not selected during an Emergency Closing event creation, editing the existing Emergency Closing entry does not allow for proper processing. Staff will need to delete the original entry and create a new entry, making sure to select both the *Emergency Closing* and *Process immediately* options.
-
-This caveat applies to editing the dates of an Emergency Closure as well. If the Emergency Closure dates need to be changed or extended, editing the existing entry does not process the circulations and holds properly. Either the original entry should be deleted and a new one created that encompasses the full date range, or a second Emergency Closure should be created to for the extended date range.
-
-To edit the Reason field of an existing Emergency Closing event, go to *Actions -> Edit closing*. 
+To edit a closure, go to *Actions -> Edit closing*. 
 
 image::emergency_closing/ECHEditClosing.png[Edit Closing]
 
 A pop-up display will appear with the same format as creating a Closed Dates event. Once you make the changes, click *OK*. The Closed Dates Editor display will update.
 
 image::emergency_closing/ECHEditClosingModal.png[Edit Closing Pop-Up]
+
+== Emergency closing handler ==
+
+The *Closed Dates Editor* includes an Emergency Closing feature that allows libraries to shift due dates and expiry dates to the next open day. Overdue fines will be automatically voided for the day(s) the library is marked closed. Once an Emergency Closing is processed, it is permanent and cannot be rolled back.
+
+When a date is chosen that is nearer in time than the end of the longest configured circulation period or in the past, then a _Possible Emergency Closing_ message will appear as a pop-up in the bottom right-hand corner of the screen. 
+
+image::emergency_closing/possibly emergency closure_toast.png[Possible Emergency Closure Toast]
+
+A _Possible Emergency Closure_ section will also appear in the Library Closing form.
+
+image::emergency_closing/possibly emergency closure_section.png[Possible Emergency Closure Section]
+
+=== Adding an emergency closure ===
+
+[NOTE]
+====
+Before creating an Emergency Closure, delete any previously entered closures that overlap the Emergency Closure you wish to enter. Overlapping closed dates can cause issues in processing the closure.
+====
+
+To add an emergency closure, follow the process for entering a regular closed date until you reach the *Possible Emergency Closure* section.
+
+[NOTE]
+====
+There is an existing bug that pushes the due dates to the first day after the Emergency Closure even if that day is normally closed. So, if you need to enter an Emergency Closure for a Friday, but you are normally closed on Saturday and Sunday, be sure to enter the Emergency Closure for Friday through Sunday.
+====
+
+Below the Possible Emergency Closing message, two checkboxes appear: *Emergency* and *Process Immediately*. Both checkboxes must be manually selected in order to set the closure as an Emergency Closing.
+
+By selecting the *Emergency* checkbox, the system will void any overdue fines incurred for that emergency closed day(s) and push back any of the following dates to the next open day as determined by the library’s settings:
+* item due dates
+* shelf expire times
+* booking start times
+
+When selecting the *Process immediately* checkbox, Evergreen will enact the Emergency Closing changes immediately once the Emergency Closed Date information is saved.
+
+Upon clicking *OK*, a progress bar will appear on-screen. After completion, the Closed Dates Editor screen will update, and under the Emergency Closing Processing Summary column, the number of affected/processed Circulations, Holds, and Reservations will be listed.
+
+image::emergency_closing/ECHLibraryClosingDone.png[Emergency Closing Processing Complete]
+
+[NOTE]
+====
+Processing can take some time, especially if you are creating an Emergency Closure at the system level and applying it to all branches. It's best to let it run and check back later to make sure that all circulations and holds processed. A successful processing is indicated by the green bar in the Emergency Closing Processing Summary column (shown in the screenshot above). If the bar is blue after processing, this indicates the processing did not complete correctly.
+====
+
+=== Editing an emergency closure ===
+
+If *Process immediately* is not selected during an Emergency Closing event creation, staff can edit the closure entry, select the _Process immediately_ checkbox, and click *OK* to process the closure; however, the grid display does not update to show that the circulations and holds have been processed.
+
+If the emergency closure dates need to be changed or extended, editing the existing entry _does not_ process the circulations and holds properly. Either the original entry should be deleted and a new one created that encompasses the full date range, or a second emergency closure should be created for the extended date range.
+
+== Deleting a closure ==
+
+To delete a regular or emergency closure, select the closure in the grid and go to *Actions -> Delete closing*.
+
+image::emergency_closing/delete closing.png[Delete Closing]
+
+== Permissions ==
+
+To manage entries in the Closed Dates Editor, staff need the following permissions:
+
+* actor.org_unit.closed_date.create
+* actor.org_unit.closed_date.update
+* actor.org_unit.closed_date.delete
+
+To manage emergency closures, staff need the following additional permission:
+
+* EMERGENCY_CLOSING
