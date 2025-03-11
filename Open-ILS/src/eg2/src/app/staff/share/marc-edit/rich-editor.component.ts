@@ -210,6 +210,13 @@ export class MarcRichEditorComponent implements OnInit {
     onKeyDown(evt: KeyboardEvent, field: MarcField, subfield?: MarcSubfield) {
         switch (evt.key) {
             case 'ArrowRight':
+                // console.debug("ArrowRight: ", evt, field, subfield);
+                let el = evt.target as HTMLElement;
+                // do nothing if we are in a text input
+                if (el.nodeName && (el.nodeName.toLowerCase() === 'input' || el.nodeName.toLowerCase() === 'textarea')) {
+                    return;
+                }
+                // otherwise, move focus from the group to its first input (the subfield code)
                 evt.preventDefault();
                 evt.stopPropagation();
                 this.context.focusSubfield(field, subfield[2], false);
