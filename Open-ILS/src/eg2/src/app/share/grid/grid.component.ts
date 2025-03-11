@@ -180,7 +180,7 @@ export class GridComponent implements OnInit, AfterViewInit, OnDestroy {
         }
 
         this.gridDomId += GridComponent.id++;
-
+        this.context.gridDomId = this.gridDomId;
         this.context.idlClass = this.idlClass;
         this.context.dataSource = this.dataSource;
         this.context.persistKey = this.persistKey;

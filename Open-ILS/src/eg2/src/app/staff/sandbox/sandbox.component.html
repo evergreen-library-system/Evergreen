@@ -329,7 +329,7 @@
   <eg-grid-toolbar-action [isSeparator]="true">
   </eg-grid-toolbar-action>
   <eg-grid-toolbar-action label="Another Action" i18n-label
-    (onClick)="complimentEvergreen2($event)">
+    (onClick)="complimentEvergreen2($event)" [describedbySelectionCount]="true">
   </eg-grid-toolbar-action>
   <eg-grid-column name="test" [cellTemplate]="cellTmpl" 
     [cellContext]="btGridTestContext" [sortable]="false">
@@ -373,7 +373,7 @@
   [stickyHeader]="true"
   showFields="barcode,location,circ_lib,price,dummy_title,create_date"
 >
-  <eg-grid-toolbar-action label="Edit Selected" i18n-label [action]="editSelected">
+  <eg-grid-toolbar-action label="Edit Selected" i18n-label [action]="editSelected" [describedbySelectionCount]="true">
   </eg-grid-toolbar-action>
   <eg-grid-column [sortable]="true" [filterable]="false"  path="barcode"></eg-grid-column>
   <eg-grid-column [sortable]="true" path="circ_lib"></eg-grid-column>

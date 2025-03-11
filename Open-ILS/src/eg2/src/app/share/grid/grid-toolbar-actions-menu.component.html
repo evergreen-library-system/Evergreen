@@ -12,6 +12,7 @@
   *ngFor="let action of gridContext.toolbarActions; let idx = index">
   <button ngbDropdownItem class="dropdown-item" *ngIf="!action.hidden"
     [disabled]="shouldDisable(action)"
+    [attr.aria-describedby]="action.describedbySelectionCount ? gridContext.gridDomId + '-selection-count' : null"
     (click)="performAction(action)" type="button">
     <ng-container *ngIf="action.isGroup">
       <span class="fw-bold fst-italic">{{action.label}}</span>
