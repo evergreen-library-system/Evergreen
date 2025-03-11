@@ -564,6 +564,8 @@ implements OnInit, AfterViewInit, OnDestroy {
 
                 if (evt.ctrlKey && !evt.shiftKey && !(this.fieldType === 'ldr' || this.fieldType === 'ffld')) {
                     // ctrl+down == copy current field down one
+                    evt.preventDefault();
+                    evt.stopPropagation();
                     this.context.insertField(
                         this.field, this.record.cloneField(this.field));
                 }
@@ -587,6 +589,8 @@ implements OnInit, AfterViewInit, OnDestroy {
 
                 if (evt.ctrlKey && !evt.shiftKey && !(this.fieldType === 'ldr' || this.fieldType === 'ffld')) {
                     // ctrl+up == copy current field up one
+                    evt.preventDefault();
+                    evt.stopPropagation();
                     this.context.insertField(
                         this.field, this.record.cloneField(this.field), true);
                 }
