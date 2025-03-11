@@ -481,13 +481,11 @@
       [disableOnRows]="notOneSelectedForGrid"
       (onClick)="editThenImport($event)"/>
 
-<!-- -action@disableOnRows is not smart enough to do what we want, cannot use non-grid info
     <eg-grid-toolbar-action
       *ngIf="includeNativeCatalog && searchMode !== 'acq'"
       i18n-label label="Overlay"
-      [disableOnRows]="cant_overlayForGrid"
+      [disabled]="cant_overlay()"
       (onClick)="editThenOverlay($event)"/>
--->
 
     <eg-grid-toolbar-action
       *ngIf="searchMode === 'acq'"
