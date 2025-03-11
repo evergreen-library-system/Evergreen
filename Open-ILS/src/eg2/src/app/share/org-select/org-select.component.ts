@@ -66,6 +66,7 @@ export class OrgSelectComponent implements OnInit, AfterViewInit {
     valueFromSetting: number = null;
     sortedOrgs: IdlObject[] = [];
     orgSelectGroup: FormGroup;
+    controller: HTMLInputElement;
 
     // Disable the entire input
     @Input() disabled: boolean;
@@ -77,6 +78,10 @@ export class OrgSelectComponent implements OnInit, AfterViewInit {
 
     // ARIA label for selector. Required if there is no <label> in the markup.
     @Input() ariaLabel?: string;
+
+    // Optionally provide an aria-labelledby for the input.  This should be one or more
+    // space-delimited ids of elements that describe this combobox.
+    @Input() ariaLabelledby: string;
 
     // ARIA describedby, for attaching error messages
     @Input() ariaDescribedby?: string = null;
@@ -271,7 +276,9 @@ export class OrgSelectComponent implements OnInit, AfterViewInit {
     }
 
     ngAfterViewInit(): void {
-        this.elm.nativeElement.querySelector('input').addEventListener('keydown', this.onKeydown.bind(this));
+        document.querySelectorAll('ngb-typeahead-window button[disabled]').forEach(b => b.setAttribute('tabindex', '-1'));
+        this.controller = this.instance['_elementRef'].nativeElement as HTMLInputElement;
+        this.controller.addEventListener('keydown', this.onKeydown.bind(this));
     }
 
     getDisplayLabel(org: IdlObject): string {
@@ -381,6 +388,9 @@ export class OrgSelectComponent implements OnInit, AfterViewInit {
         // console.debug('Key: ', $event);
 
         if (this.instance.isPopupOpen()) {
+            if ($event.key === 'ArrowUp' || $event.key === 'ArrowDown') {
+                this.scrollEntries();
+            }
             return;
         }
 
@@ -407,6 +417,27 @@ export class OrgSelectComponent implements OnInit, AfterViewInit {
         // handler to force open the typeahead
         document.getElementById(this.domId).focus();
         setTimeout(() => this.click$.next(''));
+    }
+
+    closeMe($event) {
+        this.instance.dismissPopup();
+    }
+
+    scrollEntries() {
+        // adapted from https://github.com/ng-bootstrap/ng-bootstrap/issues/4789
+        if (!this.controller) {return;}
+
+        const listbox = document.getElementById(this.controller.getAttribute('aria-owns'));
+        // console.debug("Listbox: ", listbox);
+
+        const activeItem = document.getElementById(this.controller.getAttribute('aria-activedescendant'));
+        if (activeItem) {
+            if (activeItem.offsetTop < listbox.scrollTop) {
+                listbox.scrollTo({ top: activeItem.offsetTop });
+            } else if (activeItem.offsetTop + activeItem.offsetHeight > listbox.scrollTop + listbox.clientHeight) {
+                listbox.scrollTo({ top: activeItem.offsetTop + activeItem.offsetHeight - listbox.clientHeight });
+            }
+        }
     }
 
     // NgbTypeahead doesn't offer a way to style the dropdown
