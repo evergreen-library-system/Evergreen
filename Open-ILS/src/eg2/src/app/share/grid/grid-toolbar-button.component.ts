@@ -33,6 +33,9 @@ export class GridToolbarButtonComponent implements OnInit {
     // Provide a router link instead of an onClick handler
     @Input() routerLink: string;
 
+    // Use `${gridDomId}-selection-count` as the button aria-describedby attribute?
+    @Input() describedbySelectionCount = false;
+
     @Input() set disabled(d: boolean) {
         // Support asynchronous disabled values by appling directly
         // to our button object as values arrive.

@@ -14,6 +14,9 @@ export class GridToolbarActionComponent implements OnInit {
     // Note most input fields should match class fields for GridColumn
     @Input() label: string;
 
+    // Use `${gridDomId}-selection-count` as the button aria-describedby attribute?
+    @Input() describedbySelectionCount = false;
+
     // Register to click events
     // eslint-disable-next-line @angular-eslint/no-output-on-prefix
     @Output() onClick: EventEmitter<any []>;
@@ -65,6 +68,7 @@ export class GridToolbarActionComponent implements OnInit {
         this.toolbarAction.disabled = this.disabled;
         this.toolbarAction.isSeparator = this.isSeparator;
         this.toolbarAction.disableOnRows = this.disableOnRows;
+        this.toolbarAction.describedbySelectionCount = this.describedbySelectionCount;
         this.grid.context.toolbarActions.push(this.toolbarAction);
     }
 }

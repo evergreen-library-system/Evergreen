@@ -722,6 +722,7 @@ export class GridContext {
     currentResizeCol: GridColumn;
     currentResizeTarget: any;
     grid_density: string;
+    gridDomId: string;
     resizeWrapper: boolean;
 
     // Allow calling code to know when the select-all-rows-in-page
@@ -1603,6 +1604,7 @@ export class GridToolbarAction {
     isGroup: boolean; // used for group placeholder entries
     isSeparator: boolean;
     disableOnRows: (rows: any[]) => boolean;
+    describedbySelectionCount: boolean;
     hidden?: boolean;
 }
 
@@ -1617,6 +1619,7 @@ export class GridToolbarButton {
     onClick: EventEmitter<any []>;
     action: () => any; // DEPRECATED
     disabled: boolean;
+    describedbySelectionCount: boolean;
     routerLink: string;
 }
 
