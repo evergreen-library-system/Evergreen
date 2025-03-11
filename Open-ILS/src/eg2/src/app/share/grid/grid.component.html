@@ -1,6 +1,6 @@
 <div id="{{gridDomId}}" class="eg-grid-wrapper col-12"
   [ngClass]="{'eg-grid-resize': context.resizeWrapper}"
-  role="region" aria-labelledby="eg-grid-caption" tabindex="0">
+  role="region" [attr.aria-labelledby]="'eg-grid-caption-'+gridDomId" tabindex="0">
   
   <eg-grid-print #gridPrinter [gridContext]="context">
   </eg-grid-print>
@@ -28,7 +28,7 @@
               'eg-grid-error': !dataSource.requestingData && dataSource.retrievalError,
               'grid-density-wide': context.grid_density === 'wide',
               'grid-density-compact': context.grid_density === 'compact' }">
-    <caption id="eg-grid-caption">
+    <caption id="eg-grid-caption-{{gridDomId}}">
     <ng-container *ngIf="dataSource.data.length === 0">
       <ng-container *ngIf="dataSource.requestingData">
         <span>
