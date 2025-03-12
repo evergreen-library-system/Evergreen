@@ -1,5 +1,5 @@
 /** TODO PORT ME TO <eg-combobox> */
-import {Component, OnInit, Input, Output, ViewChild, EventEmitter} from '@angular/core';
+import {Component, OnInit, Input, Output, ViewChild, EventEmitter, ElementRef, AfterViewInit} from '@angular/core';
 import {Observable, Subject} from 'rxjs';
 import {map, mapTo, debounceTime, distinctUntilChanged, merge, filter} from 'rxjs/operators';
 import {AuthService} from '@eg/core/auth.service';
@@ -38,7 +38,7 @@ interface OrgDisplay {
     selector: 'eg-org-select',
     templateUrl: './org-select.component.html'
 })
-export class OrgSelectComponent implements OnInit {
+export class OrgSelectComponent implements OnInit, AfterViewInit {
     static _domId = 0;
 
     showCombinedNames = false; // Managed via user/workstation setting
@@ -76,6 +76,9 @@ export class OrgSelectComponent implements OnInit {
     // ARIA label for selector. Required if there is no <label> in the markup.
     @Input() ariaLabel?: string;
 
+    // ARIA describedby, for attaching error messages
+    @Input() ariaDescribedby?: string = null;
+
     // ID to display in the DOM for this selector
     @Input() domId = 'eg-org-select-' + OrgSelectComponent._domId++;
 
@@ -96,6 +99,8 @@ export class OrgSelectComponent implements OnInit {
     @Input() readOnly = false;
 
     @Input() required = false;
+
+    @Input() ngbAutofocus = null; // passthrough for [ngbAutofocus]
 
     // List of org unit IDs to exclude from the selector
     hidden: number[] = [];
@@ -154,6 +159,14 @@ export class OrgSelectComponent implements OnInit {
     // in the selector.
     @Input() orgClassCallback: (orgId: number) => string;
 
+    // Emitted when the Enter key is pressed in the input and the popup is not open
+    @Output() orgSelectEnter = new EventEmitter<number>();
+
+    // Emitted when a key is pressed in the input and the popup is not open.
+    // A passthrough for keyboard events on the input.
+    // Example: (orgSelectKey)="$event.key === 'Escape' ? cancel() : handleKeydown($event)"
+    @Output() orgSelectKey = new EventEmitter<Event>();
+
     // Emitted when the org unit value is changed via the selector.
     // Does not fire on initialOrg
     @Output() onChange = new EventEmitter<IdlObject>();
@@ -185,7 +198,8 @@ export class OrgSelectComponent implements OnInit {
       private store: StoreService,
       private serverStore: ServerStoreService,
       private org: OrgService,
-      private perm: PermService
+      private perm: PermService,
+      private elm: ElementRef,
     ) {
         this.orgClassCallback = (orgId: number): string => '';
     }
@@ -249,6 +263,10 @@ export class OrgSelectComponent implements OnInit {
 
             this.markAsLoaded(startupOrg);
         });
+    }
+
+    ngAfterViewInit(): void {
+        this.elm.nativeElement.querySelector('input').addEventListener('keydown', this.onKeydown.bind(this));
     }
 
     getDisplayLabel(org: IdlObject): string {
@@ -356,6 +374,38 @@ export class OrgSelectComponent implements OnInit {
     // reset the state of the component
     reset() {
         this.selected = null;
+    }
+
+    onKeydown($event: KeyboardEvent) {
+        // console.debug('Key: ', $event);
+
+        if (this.instance.isPopupOpen()) {
+            return;
+        }
+
+        if ( $event.key === 'ArrowDown' && $event.ctrlKey && $event.shiftKey ) {
+            setTimeout(() => this.openMe($event));
+            return;
+        }
+
+        // a shortcut to the Org ID if Enter is the only key event you're interested in
+        if ( $event.key === 'Enter' ) {
+            this.onEnter();
+        }
+
+        // Pass through to calling component via (orgSelectKey)
+        this.orgSelectKey.emit($event);
+    }
+
+    onEnter() {
+        this.orgSelectEnter.emit(this.selected.id);
+    }
+
+    openMe($event) {
+        // Give the input a chance to focus then fire the click
+        // handler to force open the typeahead
+        document.getElementById(this.domId).focus();
+        setTimeout(() => this.click$.next(''));
     }
 
     // NgbTypeahead doesn't offer a way to style the dropdown

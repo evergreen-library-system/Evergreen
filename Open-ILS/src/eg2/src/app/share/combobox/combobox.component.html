@@ -27,10 +27,11 @@
       [id]="domId"
       [attr.aria-labelledby]="ariaLabelledby"
       [ngClass]="{
-        'text-success fst-italic fw-bold': selected && selected.freetext,
+        'text-success-emphasis fst-italic fw-bold': selected && selected.freetext,
         'form-control-sm': smallFormControl
       }"
       [attr.aria-label]="ariaLabel"
+      [attr.aria-describedby]="ariaDescribedby"
       [placeholder]="placeholder"
       [name]="name"
       [disabled]="isDisabled"
@@ -46,6 +47,7 @@
       (focus)="onFocus($event)"
       container="body"
       (selectItem)="selectorChanged($event)"
+      [attr.ngbAutofocus]="ngbAutofocus"
       #instance="ngbTypeahead"/>
     <button *ngIf="icons" type="button" class="input-group-text" (click)="openMe($event)"
       aria-label="Open" i18n-aria-label title="Open" i18n-title>

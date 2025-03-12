@@ -70,6 +70,7 @@ implements ControlValueAccessor, OnInit, AfterViewInit, OnChanges {
     @Input() name: string;
 
     @Input() ariaLabel?: string = null;
+    @Input() ariaDescribedby?: string = null;
 
     // Placeholder text for selector input
     @Input() placeholder = '';
@@ -148,6 +149,7 @@ implements ControlValueAccessor, OnInit, AfterViewInit, OnChanges {
     @Input() readOnly = false;
 
     @Input() focused = false;
+    @Input() ngbAutofocus = null; // passthrough for [ngbAutofocus]
 
     // Allow the selected entry ID to be passed via the template
     // This does NOT not emit onChange events.
@@ -236,6 +238,14 @@ implements ControlValueAccessor, OnInit, AfterViewInit, OnChanges {
     // For propagating focus/blur events coming from the input element
     @Output() inputFocused: EventEmitter<void>;
     @Output() inputBlurred: EventEmitter<void>;
+
+    // Emitted when the Enter key is pressed in the input and the popup is not open
+    @Output() comboboxEnter = new EventEmitter<number>();
+
+    // Emitted when a key is pressed in the input and the popup is not open.
+    // A passthrough for keyboard events on the input.
+    // Example: (comboboxKeydown)="$event.key === 'Escape' ? cancel() : handleKeydown($event)"
+    @Output() comboboxKeydown = new EventEmitter<Event>();
 
     // Optionally provide an aria-labelledby for the input.  This should be one or more
     // space-delimited ids of elements that describe this combobox.
@@ -391,6 +401,9 @@ implements ControlValueAccessor, OnInit, AfterViewInit, OnChanges {
         if (!this.selectedId && !this.selected){
             this.selected = this.entrylist.find(e => e.id == null);
         }
+        
+        document.querySelectorAll('ngb-typeahead-window button[disabled]').forEach(b => b.setAttribute('tabindex', '-1'));
+        this.elm.nativeElement.querySelector('input').addEventListener('keydown', this.onKeydown.bind(this));
     }
 
     ngOnChanges(changes: SimpleChanges) {
@@ -457,6 +470,31 @@ implements ControlValueAccessor, OnInit, AfterViewInit, OnChanges {
         }
     }
 
+    onKeydown($event: KeyboardEvent) {
+        //console.debug('Key: ', $event);
+
+        if (this.instance.isPopupOpen()) {
+            return;
+        }
+
+        if ( $event.key == 'ArrowDown' && $event.ctrlKey && $event.shiftKey ) {
+            setTimeout(() => this.openMe($event));
+            return;
+        }
+
+        // a shortcut if Enter is the only key event you're interested in
+        if ( $event.key == 'Enter' ) {
+            this.onEnter();
+        }
+
+        // Pass through to calling component via (comboboxKeydown)="yourFunction($event)"
+        this.comboboxKeydown.emit($event);
+    }
+
+    onEnter() {
+        this.comboboxEnter.emit(this.selected.id);
+    }
+    
     openMe($event) {
         // Give the input a chance to focus then fire the click
         // handler to force open the typeahead
