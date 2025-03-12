@@ -500,24 +500,26 @@ sub update_fleshed_copies {
         # Have to watch out for multiple items creating the same new part or the whole update will fail
         # This volume isn't necessarily the only volume with the same new part in this batch, so we have to check against the actual database.
         # Grab all the parts on the same record and then check the potentially new part against them all.
-        my $preexisting_parts = $editor->search_biblio_monograph_part({
-            record => $vol->record,
-            label => (map { $_->label } @$parts),
-            deleted => 'f'
-        });
+        if (scalar @$parts) {
+            my $preexisting_parts = $editor->search_biblio_monograph_part({
+                record => $vol->record,
+                label => (map { $_->label } @$parts),
+                deleted => 'f'
+            });
 
-        for my $part (@$parts) {
-            next unless $part->isnew;
+            for my $part (@$parts) {
+                next unless $part->isnew;
 
-            # Second check in case we hit a part matching a different part in this batch
-            my @existing = grep { $_->label eq $part->label && $_->record == $part->record } @$preexisting_parts;
-            if (@existing) {
-                # We've created this part previously, don't want to do that again.
-                my $oldnewthing = $existing[0];
-                if ($oldnewthing->id) {
-                    $part->id($oldnewthing->id);
-                    $part->isnew(0);
-                    $part->ischanged(0);
+                # Second check in case we hit a part matching a different part in this batch
+                my @existing = grep { $_->label eq $part->label && $_->record == $part->record } @$preexisting_parts;
+                if (@existing) {
+                    # We've created this part previously, don't want to do that again.
+                    my $oldnewthing = $existing[0];
+                    if ($oldnewthing->id) {
+                        $part->id($oldnewthing->id);
+                        $part->isnew(0);
+                        $part->ischanged(0);
+                    }
                 }
             }
         }
