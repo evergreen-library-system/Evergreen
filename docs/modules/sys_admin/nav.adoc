@@ -3,6 +3,7 @@
 ** xref:admin:age_hold_protection.adoc[Age Hold Protection]
 ** xref:admin:authorities.adoc[Authorities]
 ** xref:admin:Best_Hold_Selection_Sort_Order.adoc[Best-Hold Selection Sort Order]
+** xref:admin:billing_types.adoc[Billing Types]
 ** xref:admin:booking-admin.adoc[Booking Module Administration]
 ** xref:admin:cn_prefixes_and_suffixes.adoc[Call Number Prefixes and Suffixes]
 ** xref:admin:desk_payments.adoc[Cash Reports]
