@@ -1,4 +1,6 @@
-<div id="{{gridDomId}}" class="eg-grid-wrapper col-12" role="region" aria-labelledby="eg-grid-caption" tabindex="0">
+<div id="{{gridDomId}}" class="eg-grid-wrapper col-12"
+  [ngClass]="{'eg-grid-resize': context.resizeWrapper}"
+  role="region" aria-labelledby="eg-grid-caption" tabindex="0">
   
   <eg-grid-print #gridPrinter [gridContext]="context">
   </eg-grid-print>
@@ -22,7 +24,7 @@
 <table #egGrid role="grid" tabindex="0" (keydown)="onGridKeyDown($event)"
   class="eg-grid table grid-key-{{persistKey ? persistKey.replaceAll('.', '_') : 'none'}}"
   [ngClass]="{'eg-grid-cell-truncate': context.truncateCells,
-              'eg-grid-empty': !dataSource.requestingData && !dataSource.data.length,
+              'eg-grid-empty': dataSource.data.length === 0,
               'eg-grid-error': !dataSource.requestingData && dataSource.retrievalError,
               'grid-density-wide': context.grid_density === 'wide',
               'grid-density-compact': context.grid_density === 'compact' }">

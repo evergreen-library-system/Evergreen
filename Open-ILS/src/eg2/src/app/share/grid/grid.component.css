@@ -2,15 +2,14 @@
 .eg-grid-wrapper {
   margin-bottom: 1rem;
   padding-bottom: 1rem;
-  overflow-x: hidden;
-  overflow-y: auto;
-  resize: horizontal;
+  overflow-x: clip;
+  overflow-y: visible;
   width: auto;
 }
 
-/* Show just enough of the column config dropdown, if it exists */
-.eg-grid-wrapper:has(eg-grid-column-config) {
-  min-height: 300px;
+.eg-grid-wrapper.eg-grid-resize {
+  overflow-y: auto;
+  resize: horizontal;
 }
 
 /* Not quite so loud on focus */
@@ -514,4 +513,11 @@ td.eg-grid-idlfield-email {
   font-family: "Material Icons";
   font-size: 22px;
   font-weight: normal;
+}
+
+.eg-grid-cell-contents {
+    min-height: 1.5em;
+    height: 100%;
+    width: 100%;
+    display: block;
 }

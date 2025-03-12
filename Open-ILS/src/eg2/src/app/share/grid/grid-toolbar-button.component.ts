@@ -1,4 +1,5 @@
 import {Component, Input, Output, OnInit, Host, TemplateRef, EventEmitter} from '@angular/core';
+import {ButtonStyle} from '@eg/share/util/button-style.directive';
 import {GridToolbarButton} from './grid';
 import {GridComponent} from './grid.component';
 
@@ -11,6 +12,9 @@ export class GridToolbarButtonComponent implements OnInit {
 
     // Note most input fields should match class fields for GridColumn
     @Input() label: string;
+
+    // Optional, for passing to egButtonStyle within the template
+    @Input() buttonStyle: ButtonStyle;
 
     // These are optional labels that can come before and after the button
     @Input() adjacentPreceedingLabel = '';
@@ -53,6 +57,7 @@ export class GridToolbarButtonComponent implements OnInit {
         this.button.onClick = this.onClick;
         this.button.routerLink = this.routerLink;
         this.button.label = this.label;
+        this.button.buttonStyle = this.buttonStyle;
         this.button.adjacentPreceedingLabel = this.adjacentPreceedingLabel;
         this.button.adjacentSubsequentLabel = this.adjacentSubsequentLabel;
         if (this.adjacentPreceedingTemplateRef) {

@@ -8,6 +8,7 @@ import {CommonModule} from '@angular/common';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
 import {EgCoreModule} from '@eg/core/core.module';
+import {ButtonStyleDirective} from '@eg/share/util/button-style.directive';
 import {ComboboxComponent, IdlClassTemplateDirective} from '@eg/share/combobox/combobox.component';
 import {ComboboxEntryComponent} from '@eg/share/combobox/combobox-entry.component';
 import {DateSelectComponent} from '@eg/share/date-select/date-select.component';
@@ -25,6 +26,7 @@ import { CredentialInputComponent } from './util/credential-input.component';
 
 @NgModule({
     declarations: [
+        ButtonStyleDirective,
         ComboboxComponent,
         ComboboxEntryComponent,
         DateSelectComponent,
@@ -52,6 +54,7 @@ import { CredentialInputComponent } from './util/credential-input.component';
         FormsModule,
         NgbModule,
         EgCoreModule,
+        ButtonStyleDirective,
         ComboboxComponent,
         ComboboxEntryComponent,
         DateSelectComponent,

@@ -7,6 +7,7 @@ import {IdlService, IdlObject} from '@eg/core/idl.service';
 import {OrgService} from '@eg/core/org.service';
 import {ServerStoreService} from '@eg/core/server-store.service';
 import {FormatService} from '@eg/core/format.service';
+import {ButtonStyle} from '@eg/share/util/button-style.directive';
 import {Pager} from '@eg/share/util/pager';
 import {GridFilterControlComponent} from './grid-filter-control.component';
 
@@ -721,6 +722,7 @@ export class GridContext {
     currentResizeCol: GridColumn;
     currentResizeTarget: any;
     grid_density: string;
+    resizeWrapper: boolean;
 
     // Allow calling code to know when the select-all-rows-in-page
     // action has occurred.
@@ -752,6 +754,7 @@ export class GridContext {
         this.toolbarButtons = [];
         this.toolbarCheckboxes = [];
         this.toolbarActions = [];
+        this.resizeWrapper = true;
     }
 
     init() {
@@ -1510,9 +1513,9 @@ export class GridContext {
 
         /* Base classes */
         if (col.datatype) {classes.push('eg-grid-type-' + col.datatype);}
-        if (col.name) {classes.push('eg-grid-idlfield-' + col.name.replaceAll('.', '_'));}
+        if (col.name) {classes.push('eg-grid-idlfield-' + col.name?.replaceAll('.', '_'));}
         if (col.idlClass) {classes.push('eg-grid-idlclass-' + col.idlClass);}
-        if (col.path) {classes.push('eg-grid-path-' + col.path.replaceAll('.', '_'));}
+        if (col.path) {classes.push('eg-grid-path-' + col.path?.replaceAll('.', '_'));}
 
         /* TODO: pass idlclass to IDL service and find out whether this column is the primary key */
         /*
@@ -1521,7 +1524,7 @@ export class GridContext {
         */
 
         /* Name-based formats */
-        if (col.name.endsWith('count') || col.name.endsWith('Count')) {classes.push('numeric');}
+        if (col.name?.endsWith('count') || col.name?.endsWith('Count')) {classes.push('numeric');}
 
         switch (col.name) {
             case 'callnumber':
@@ -1610,6 +1613,7 @@ export class GridToolbarButton {
     adjacentSubsequentLabel: string;
     adjacentPreceedingTemplateRef: TemplateRef<any>;
     adjacentSubsequentTemplateRef: TemplateRef<any>;
+    buttonStyle?: ButtonStyle;
     onClick: EventEmitter<any []>;
     action: () => any; // DEPRECATED
     disabled: boolean;

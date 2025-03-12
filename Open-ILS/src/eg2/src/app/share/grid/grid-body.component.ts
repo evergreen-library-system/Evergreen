@@ -45,6 +45,14 @@ export class GridBodyComponent {
     }
 
     onRowClick($event: any, row: any, idx: number) {
+        console.debug('GridBodyComponent, onRowClick:', {
+            target: $event.target,
+            currentTarget: $event.currentTarget,
+            clientX: $event.clientX,
+            clientY: $event.clientY,
+            row,
+            idx
+        });
         this.handleRowClick($event, row);
         this.grid.onRowClick.emit(row);
     }
