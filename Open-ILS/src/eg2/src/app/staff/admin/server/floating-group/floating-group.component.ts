@@ -11,6 +11,7 @@ import {PcrudService} from '@eg/core/pcrud.service';
 import {OrgService} from '@eg/core/org.service';
 import {PermService} from '@eg/core/perm.service';
 import {AuthService} from '@eg/core/auth.service';
+import {BroadcastService} from '@eg/share/util/broadcast.service';
 import {AdminPageComponent} from '../../../share/admin-page/admin-page.component';
 import {ConfirmDialogComponent} from '@eg/share/dialog/confirm.component';
 
@@ -37,9 +38,10 @@ export class FloatingGroupComponent extends AdminPageComponent implements OnInit
         pcrud: PcrudService,
         perm: PermService,
         toast: ToastService,
-        private router: Router
+        private router: Router,
+        broadcaster: BroadcastService
     ) {
-        super(route, ngLocation, format, idl, org, auth, pcrud, perm, toast);
+        super(route, ngLocation, format, idl, org, auth, pcrud, perm, toast, broadcaster);
     }
 
     ngOnInit() {
