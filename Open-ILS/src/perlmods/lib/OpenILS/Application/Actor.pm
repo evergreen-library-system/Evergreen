@@ -626,8 +626,12 @@ sub update_patron {
     ($new_patron, $evt) = _create_stat_maps($e, $patron, $new_patron);
     return $evt if $evt;
 
-    ($new_patron, $evt) = _create_perm_maps($e, $patron, $new_patron);
-    return $evt if $evt;
+    # PINES - modified this because it was breaking e-renew, could not verify that it actually
+    # worked anywhere because the subroutine looks like it's trying to update the wrong table - TM
+    if($patron->isnew()) {
+        ($new_patron, $evt) = _create_perm_maps($e, $patron, $new_patron);
+        return $evt if $evt;
+    }
 
     $evt = apply_invalid_addr_penalty($e, $patron);
     return $evt if $evt;
@@ -2089,6 +2093,69 @@ sub user_opac_vitals {
         checkouts => $out,
         holds => $holds,
         messages => { unread => scalar(@$unread_msgs) }
+    };
+}
+
+# PINES ECARD RENEWAL INFO API
+__PACKAGE__->register_method(
+    method        => "user_opac_renewal",
+    api_name      => "open-ils.actor.user.opac.renewal",
+    argc          => 1,
+    authoritative => 1,
+    signature     => {
+        desc   => 'Returns minimal patron info for 3rd party renewal',
+        params => [
+            {desc => 'Authentication token',                          type => 'string'},
+            {desc => 'Optional User ID, for use in the staff client', type => 'number'}  # number?
+        ],
+        return => {
+            desc => "A user object."
+        }
+    }
+);
+
+sub user_opac_renewal {
+    my( $self, $client, $auth, $user_id ) = @_;
+
+    my $e = new_editor(authtoken=>$auth);
+    return $e->event unless $e->checkauth;
+
+    $user_id ||= $e->requestor->id;
+
+    my $user = $e->retrieve_actor_user([ $user_id, {
+        flesh => 1,
+        flesh_fields => {
+            au => ['card', 'billing_address', 'mailing_address']
+        }
+        }]);
+
+    return {
+        user => {
+            first_given_name  => $user->first_given_name,
+            second_given_name => $user->second_given_name,
+            family_name       => $user->family_name,
+            pref_first_given_name => $user->pref_first_given_name,
+            pref_second_given_name => $user->pref_second_given_name,
+            pref_family_name  => $user->pref_family_name,
+            day_phone         => $user->day_phone,
+            email             => $user->email,
+            home_ou           => $user->home_ou,
+            barcode           => $user->card->barcode,
+            physical_street1  => $user->billing_address->street1,
+            physical_street2  => $user->billing_address->street2,
+            physical_city     => $user->billing_address->city,
+            physical_post_code => $user->billing_address->post_code,
+            physical_county   => $user->billing_address->county,
+            physical_state    => $user->billing_address->state,
+            physical_country  => $user->billing_address->country,
+            mailing_street1   => $user->mailing_address->street1,
+            mailing_street2   => $user->mailing_address->street2,
+            mailing_city      => $user->mailing_address->city,
+            mailing_post_code => $user->mailing_address->post_code,
+            mailing_county    => $user->mailing_address->county,
+            mailing_state     => $user->mailing_address->state,
+            mailing_country   => $user->mailing_address->country
+        }
     };
 }
 

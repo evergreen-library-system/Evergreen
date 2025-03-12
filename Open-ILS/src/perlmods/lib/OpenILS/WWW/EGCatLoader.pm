@@ -30,6 +30,7 @@ use OpenILS::WWW::EGCatLoader::Container;
 use OpenILS::WWW::EGCatLoader::SMS;
 use OpenILS::WWW::EGCatLoader::Register;
 use OpenILS::WWW::EGCatLoader::OpenAthens;
+use OpenILS::WWW::EGCatLoader::Ecard;
 
 my $U = 'OpenILS::Application::AppUtils';
 
@@ -187,6 +188,13 @@ sub load {
     return $self->load_openathens_logout if $path =~ m|opac/sso/openathens/logout$|;
 
     $self->load_simple("myopac") if $path =~ m:opac/myopac:; # A default page for myopac parts
+
+    return $self->load_ecard_form if $path =~ m|opac/ecard/form|;
+    # PINES - online account registration
+    return $self->load_ecard_submit if $path =~ m|opac/ecard/submit|;
+
+    # PINES - online account renewal
+    return $self->load_ecard_renew if $path =~ m|opac/ecard/renew|;
 
     if($path =~ m|opac/login|) {
         return $self->load_login unless $self->editor->requestor; # already logged in?

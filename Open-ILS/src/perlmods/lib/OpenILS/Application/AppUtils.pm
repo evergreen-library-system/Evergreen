@@ -2560,6 +2560,79 @@ sub verify_migrated_user_password {
         $e, $user_id, md5_hex($salt . $md5_pass), $pw_type);
 }
 
+# Calculate a barcode check digit using the Luhn algorithm:
+# https://en.wikipedia.org/wiki/Luhn_algorithm
+# Takes a string of digits and returns the checkdigit.
+# -1 is returned if the string contains any characters other than digits.
+sub calculate_luhn_checkdigit {
+    my ($class, $input) = @_;
+    return -1 unless ($input =~ /^\d+$/);
+    my @bc = reverse(split(//, $input));
+    my $mult = 2;
+    my $sum = 0;
+    for (my $i = 0; $i < @bc; $i++) {
+        my $v = $bc[$i] * $mult;
+        $v -= 9 if ($v > 9);
+        $sum += $v;
+        $mult = ($mult == 2) ? 1 : 2;
+    }
+    return ($sum % 10) ? 10 - ($sum % 10) : 0;
+}
+
+# Generate a barcode using a combination of:
+# $prefix : A prefix sequence for the barcode.
+# $length : The total lenght for the generated barcode, including
+#           length of the prefix and checkdigit (if any).
+# $checkdigit: A boolean, whether or not to calculate a check digit.
+# $sequence: A database sequence to use as a source of the main digit
+#            sequence for the barcode.
+# $e : An optional CStoreEditor to use for queries.  If not provided,
+#      a new one will be created and used.
+#
+# Returns the new barcode or undef on failure.
+sub generate_barcode {
+    my ($class, $prefix, $length, $checkdigit, $sequence, $e) = @_;
+    $e = OpenILS::Utils::CStoreEditor->new() unless($e);
+    # Don't do checkdigit if prefix is not all numbers.
+    if ($prefix !~ /^\d+$/) {
+        $checkdigit = 0;
+    }
+    $length = $length - length($prefix);
+    $length -= 1 if ($checkdigit);
+    if ($length > 0) {
+        my $barcode;
+        do {
+            my $r = $e->json_query(
+                {from => [
+                    'actor.generate_barcode',
+                    $prefix,
+                    $length,
+                    $sequence
+                ]});
+            if ($r && $r->[0] && $r->[0]->{'actor.generate_barcode'}) {
+                $barcode = $r->[0]->{'actor.generate_barcode'};
+                if ($checkdigit) {
+                    $barcode .= $class->calculate_luhn_checkdigit($barcode);
+                }
+                # Check for duplication.
+                my $x = $e->json_query(
+                    {
+                        select => {ac => ['id']},
+                        from => 'ac',
+                        where => {
+                            barcode => $barcode
+                        }
+                    }
+                );
+                undef($barcode) if ($x && $x->[0]);
+            } else {
+                return undef;
+            }
+        } until ($barcode);
+        return $barcode;
+    }
+    return undef;
+}
 
 # generate a MARC XML document from a MARC XML string
 sub marc_xml_to_doc {

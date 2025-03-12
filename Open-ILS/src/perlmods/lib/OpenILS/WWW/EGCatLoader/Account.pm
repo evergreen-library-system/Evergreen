@@ -40,7 +40,7 @@ sub prepare_extended_user_info {
         {
             flesh => 2,
             flesh_fields => {
-                au => [qw/card home_ou addresses ident_type locale billing_address waiver_entries stat_cat_entries/, @extra_flesh],
+                au => [qw/card home_ou addresses ident_type locale billing_address mailing_address waiver_entries stat_cat_entries/, @extra_flesh],
                 "aou" => ["billing_address"],
                 "actscecm" => ["stat_cat"]
             }
@@ -123,6 +123,20 @@ sub load_myopac_prefs {
     $self->prepare_extended_user_info;
     my $user = $self->ctx->{user};
 
+    # PINES - check whether or not to provide account renewal link
+    if ($user->billing_address and $user->billing_address->valid and $user->billing_address->valid eq 't') {
+        $self->ctx->{valid_billing_address} = 't';
+    } else {
+        $self->ctx->{valid_billing_address} = 'f';
+    }
+    if ($user->mailing_address and $user->mailing_address->valid and $user->mailing_address->valid eq 't') {
+        $self->ctx->{valid_mailing_address} = 't';
+    } else {
+        $self->ctx->{valid_mailing_address} = 'f';
+    }
+
+    $self->check_account_exp();
+
     my $lock_usernames = $self->ctx->{get_org_setting}->($e->requestor->home_ou, 'opac.lock_usernames');
     if(defined($lock_usernames) and $lock_usernames == 1) {
         # Policy says no username changes
@@ -191,7 +205,6 @@ sub load_myopac_prefs {
 sub load_myopac_prefs_notify {
     my $self = shift;
     my $e = $self->editor;
-
 
     my $stat = $self->_load_user_with_prefs;
     return $stat if $stat;
@@ -2807,6 +2820,23 @@ sub load_myopac_main {
             pub => 't'
         })
     );
+
+    # PINES - need to make sure we're retrieving current info
+# NEEDS WORK - NOT SURE WHY THIS LINE IS BREAKING ACCOUNTS THAT HAVE CHARGES
+#    $self->prepare_extended_user_info;
+    # PINES - check whether or not to provide account renewal link
+    if ($self->ctx->{user}->billing_address) {
+        $self->ctx->{valid_billing_address} = $self->editor->retrieve_actor_user_address($self->ctx->{user}->billing_address)->valid;
+    } else {
+        $self->ctx->{valid_billing_address} = 0;
+    }
+    if ($self->ctx->{user}->mailing_address) {
+        $self->ctx->{valid_mailing_address} = $self->editor->retrieve_actor_user_address($self->ctx->{user}->mailing_address)->valid;
+    } else {
+        $self->ctx->{valid_mailing_address} = 0;
+    }
+    $self->check_account_exp();
+
     return $self->prepare_fines($limit, $offset) || Apache2::Const::OK;
 }
 
@@ -3739,6 +3769,149 @@ sub load_password_reset {
 
     $logger->info("patron password reset resulted in " . Dumper($ctx->{pwreset}));
     return Apache2::Const::OK;
+}
+
+# PINES - check whether patron has standing penalties that should block
+# online account renewal
+sub has_penalties {
+    my $self = shift;
+    my $ctx = $self->ctx;
+    my $user = $self->ctx->{user};
+    my $e = new_editor(xact => 1);
+    
+    #I'm sure there is a way to combine the following standing penalty checks, but this is working for now
+
+    #check for INVALID_PATRON_ADDRESS
+    my $findpenalty_address = $e->search_config_standing_penalty({name => 'INVALID_PATRON_ADDRESS'})->[0];
+    my $searchpenalty_address = $e->search_actor_user_standing_penalty({
+        usr => $user->id,
+        standing_penalty => $findpenalty_address->id,
+        '-or' => [
+            {stop_date => undef},
+            {stop_date => {'>' => 'now'}}
+        ]
+    });
+
+    #check for INVALID_PATRON_DAY_PHONE
+    my $findpenalty_phone = $e->search_config_standing_penalty({name => 'INVALID_PATRON_DAY_PHONE'})->[0];
+    my $searchpenalty_phone = $e->search_actor_user_standing_penalty({
+        usr => $user->id,
+        standing_penalty => $findpenalty_phone->id,
+        '-or' => [
+            {stop_date => undef},
+            {stop_date => {'>' => 'now'}}
+        ]
+    });
+
+    #check for PATRON_IN_COLLECTIONS
+    my $findpenalty_coll = $e->search_config_standing_penalty({name => 'PATRON_IN_COLLECTIONS'})->[0];
+    my $searchpenalty_coll = $e->search_actor_user_standing_penalty({
+        usr => $user->id,
+        standing_penalty => $findpenalty_coll->id,
+        '-or' => [
+            {stop_date => undef},
+            {stop_date => {'>' => 'now'}}
+        ]
+    });
+
+    #check for alerting block
+    my $findpenalty_alertblock = $e->search_config_standing_penalty({name => 'STAFF_CHR'})->[0];
+    my $searchpenalty_alertblock = $e->search_actor_user_standing_penalty({
+        usr => $user->id,
+        standing_penalty => $findpenalty_alertblock->id,
+        '-or' => [
+            {stop_date => undef},
+            {stop_date => {'>' => 'now'}}
+        ]
+    });
+
+    #check for PATRON_TEMP_RENEWAL
+    my $findpenalty_temp = $e->search_config_standing_penalty({name => 'PATRON_TEMP_RENEWAL'})->[0];
+    my $searchpenalty_temp = $e->search_actor_user_standing_penalty({
+        usr => $user->id,
+        standing_penalty => $findpenalty_temp->id,
+        '-or' => [
+            {stop_date => undef},
+            {stop_date => {'>' => 'now'}}
+        ]
+    });
+
+    if (@$searchpenalty_address || @$searchpenalty_coll || @$searchpenalty_phone || @$searchpenalty_alertblock) {
+        $ctx->{haspenalty} = 1;
+    } else {
+        $ctx->{haspenalty} = 0;
+    }
+
+    if (@$searchpenalty_temp) {
+        $ctx->{hastemprenew} = 1;
+    } else {
+        $ctx->{hastemprenew} = 0;
+    }
+
+    return;
+}
+
+# PINES - check whether or not to show account renewal link
+sub check_account_exp {
+    my $self = shift;
+    my $ctx = $self->ctx;
+    $self->update_dashboard_stats();
+
+    #make sure patron is in an eligible perm group for renewal
+    my $grp = new_editor()->retrieve_permission_grp_tree($ctx->{user}->profile);
+
+    if ($grp->erenew eq 't') {
+        $ctx->{eligible_permgroup} = 1;
+    } else {
+        $ctx->{eligible_permgroup} = 0;
+    }
+
+    #check for various standing penalties that would block an online renewal
+    $self->has_penalties();
+
+    #check for other problems that would block an online renewal
+    if ($ctx->{user}->active ne 't') { #user is no longer active
+        $ctx->{hasproblem} = 1;
+    } elsif ($ctx->{haspenalty} eq 1) { #user has a standing penalty block
+        $ctx->{hasproblem} = 1;
+    } elsif ($ctx->{user}->barred eq 't') { #user is barred
+        $ctx->{hasproblem} = 1;
+    } elsif ($ctx->{valid_billing_address} ne 't') { #user has invalid billing address
+        $ctx->{hasproblem} = 1;
+    } elsif ($ctx->{valid_mailing_address} ne 't') { #user has invalid mailing address
+        $ctx->{hasproblem} = 1;
+    } else {
+        $ctx->{hasproblem} = 0;
+    }
+
+    #determine which message to show (if any)
+    my $cache = OpenSRF::Utils::Cache->new('global');
+    $cache->put_cache('account_renew_ok','false',3600);
+
+    # TODO: This needs to be refactored so that the messages can be
+    # translated, and the HTML needs to go in a template not hardcoded
+    # in strings handed out by Perl.
+    if ($ctx->{hastemprenew} eq 1) { #user already has active temp renewal
+        $ctx->{account_renew_message} = '<div style="border:2px solid green;padding:5px;">Your account
+        could only be temporarily renewed because your address changed. Please visit your
+        library with proof of identity and curreent address to complete your account renewal.</div>';
+    } elsif (DateTime->today->add(days=>29) lt $ctx->{user}->expire_date) {
+        #expiration date is too far in future - don't show message
+        $ctx->{account_renew_message} = '';
+    } elsif ($ctx->{hasproblem} eq 1 or $ctx->{eligible_permgroup} eq 0) { #see other problems above
+        $ctx->{account_renew_message} = '<div style="border:2px solid green;padding:5px;">Your account is
+        due for renewal, but it cannot be renewed online. Please visit your
+        library with proof of identity and current address to update and renew your account.</div>';
+    } elsif ($ctx->{user_stats}->{fines}->{balance_owed} > 0) { #user has fines
+        $ctx->{account_renew_message} = '<div style="border:2px solid green;padding:5px;">Your account
+        is due for renewal. Please pay your outstanding fines in order to renew your account.</div>';
+    } else {
+        $ctx->{account_renew_message} = '<span class="light_border"><a class="btn btn-sm btn-action"
+        href="/eg/opac/ecard/renew"><i class="fas fa-user-cog"></i>Click here to renew your account</a></span>';
+        $cache->put_cache('account_renew_ok','true',3600);
+    }
+
+    return 1;
 }
 
 1;
