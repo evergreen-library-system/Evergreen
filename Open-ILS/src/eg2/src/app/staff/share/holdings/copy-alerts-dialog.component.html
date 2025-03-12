@@ -1,121 +1,186 @@
-<eg-string #successMsg text="Successfully Modified Item Alerts" i18n-text></eg-string>
-<eg-string #errorMsg text="Failed To Modify Item Alerts" i18n-text></eg-string>
+<eg-string #successMsg [text]="successMessage" i18n-text></eg-string>
+<eg-string #errorMsg [text]="errorMessage" i18n-text></eg-string>
 
 <ng-template #dialogContent>
-  <div class="modal-header">
-    <h4 class="modal-title">
-      <ng-container *ngIf="mode === 'create'">
-        <span i18n>Adding alerts for {{copyIds.length}} item(s).</span>
-      </ng-container>
-      <ng-container *ngIf="mode === 'manage'">
-        <span *ngIf="!inBatch()" i18n>Managing alerts for item {{copies.length ? copies[0].barcode() : ''}}</span>
-        <span *ngIf="inBatch()" i18n>Managing alerts in common for {{copyIds.length}} item(s).</span>
-      </ng-container>
-      <span i18n></span>
-    </h4>
-    <button type="button" class="btn-close btn-close-white" 
-      i18n-aria-label aria-label="Close dialog" (click)="close()"></button>
-  </div>
-  <div class="modal-body p-4 form-validated">
-    <div class="row mt-2 p-2 rounded border border-success">
-      <div class="col-lg-4">
-        <eg-combobox [entries]="alertTypes" 
-          i18n-placeholder placeholder="Select Alert Type..."
-          domId="item-alert-type"
-          [selectedId]="newAlert.alert_type() || defaultAlertType"
-          [mandatory]="true"
-          (onChange)="newAlert.alert_type($event ? $event.id : null)">
-        </eg-combobox>
-      </div>
-      <div class="col-lg-5">
-        <textarea class="form-control" rows="2" 
-          i18n-placeholder placeholder="New Alert Note..."
-          (ngModelChange)="newAlert.note($event)" [ngModel]="newAlert.note()">
-        </textarea>
-      </div>
-      <div class="col-lg-3">
-        <div class="d-flex flex-column">
-          <div class="form-check">
-            <input class="form-check-input" type="checkbox" 
-              [ngModel]="newAlert.temp() === 't'" 
-              (ngModelChange)="newAlert.temp($event ? 't' : 'f')"
-              id="new-alert-temporary">
-            <label class="form-label form-check-label" for="new-alert-temporary" i18n>
-              Temporary?
-            </label>
-          </div>
-          <div class="pt-2">
-            <button type="button" class="btn btn-success" (click)="addNew()" i18n>
-              Add New
-            </button>
-          </div>  
-        </div>  
-      </div>
-    </div>
-    <h4 class="mt-2" i18n *ngIf="newAlerts.length > 0">Pending New Alerts</h4>
-    <div class="row mt-2" *ngFor="let alert of newAlerts">
-      <div class="col-lg-4">{{getAlertTypeLabel(alert)}}</div>
-      <div class="col-lg-5">{{alert.note()}}</div>
-      <div class="col-lg-3">
-        <button type="button" class="btn btn-outline-danger" (click)="removeAlert(alert)" i18n>
-          Remove
-        </button>
+<eg-copy-things-dialog
+    [thingType]="thingType"
+    [copies]="copies"
+    [copyIds]="copyIds"
+    [batchWarningMessage]="batchWarningMessage"
+    [inBatch]="inBatch.bind(this)"
+    [onClose]="close.bind(this)"
+    [onApplyChanges]="applyChanges.bind(this)">
+
+  <h4 class="mt-2 border-bottom" i18n>New Item Alert</h4>
+
+  <!-- New alert form -->
+  <form class="row mt-3 px-0" id="new-alert-form">
+    <!-- Alert Type -->
+    <div class="col-lg-4">
+      <label for="item-alert-type" class="form-label" i18n>Alert Type</label>
+      <eg-combobox [entries]="activeAlertTypes" 
+        [name]="'item-alert-type'" #newAlertTitle
+        domId="item-alert-type" [ariaDescribedby]="'item-alert-type-error'"
+        [selectedId]="newAlert.alert_type() || defaultAlertType"
+        [mandatory]="true" [ngbAutofocus]="true"
+        (onChange)="newAlert.alert_type($event ? $event.id : null)">
+      </eg-combobox>
+      <div class="invalid-feedback" id="item-alert-type-error" hidden>
+        <span class="badge badge-danger" i18n>Alert type is required</span>
       </div>
     </div>
 
-    <ng-container *ngIf="mode === 'manage'">
-      <!-- eventually we'll always be in 'manage' mode -->
-      <!-- if not in batch, list all the pertinent alerts linked to the copy -->
-      <!-- if in batch, use the alertsInCommon variable instead for some proxy alerts -->
-      <div class="row mt-2" 
-        *ngFor="let alert of inBatch() ? alertsInCommon : (copies.length ? copies[0].copy_alerts() : [])">
-        <div class="col-lg-12 pb-2"><hr/></div>
-        <div class="col-lg-4">
-          <eg-combobox [entries]="alertTypes" [selectedId]="alert.alert_type()"
-            i18n-placeholder placeholder="Alert Type..."
-            [mandatory]="true"
-            (onChange)="alert.alert_type($event ? $event.id : null); alert.ischanged(true)">
-          </eg-combobox>
-          <div *ngIf="!inBatch()" class="ps-2 pt-2" i18n>
-            Added: {{alert.create_time() | date:'shortDate'}}
-          </div>
+    <!-- Alert Note -->
+    <div class="col-lg-5">
+      <label for="item-alert-note" class="form-label" i18n>Alert Note</label>
+      <textarea class="form-control" rows="2" id="item-alert-note" name="item-alert-note"
+        (ngModelChange)="newAlert.note($event)"
+        [ngModel]="newAlert.note()">
+      </textarea>
+    </div>
+
+    <!-- Alert Options -->
+    <div class="col-lg-3 d-flex flex-wrap align-items-baseline justify-content-end">
+    
+      <!-- Temporary flag -->
+      <div class="form-check mb-2 me-auto">
+        <input class="form-check-input" type="checkbox"
+          [ngModel]="newAlert.temp() === 't' || newAlert.temp() === true"
+          (ngModelChange)="newAlert.temp($event ? 't' : 'f')"
+          id="new-alert-temporary" name="new-alert-temporary">
+        <label class="form-label form-check-label"
+          for="new-alert-temporary" i18n>
+          Temporary?
+        </label>
+      </div>
+
+      <!-- Add button -->
+      <button type="button" class="btn btn-success"
+        (click)="addNew()" i18n>
+        Add New
+      </button>
+    
+    </div>
+  </form>
+
+
+<!-- Pending alerts list --> 
+<ng-container *ngIf="newThings && newThings.length">
+<h4 class="mt-4 border-bottom" i18n>Pending Item Alerts</h4>
+<ul class="list-group list-group-flush">
+  <li class="list-group-item px-0 py-3" *ngFor="let alert of newThings; index as i">
+  <h5 class="visually-hidden" id="pending-{{i}}" i18n>Pending Alert #{{i}}</h5>
+  <div class="row">
+    <!-- Alert Type -->
+    <div class="col-lg-4">
+      <eg-combobox [entries]="getCurrentAlertTypes(alert.alert_type())"
+        [selectedId]="alert.alert_type()"
+        i18n-placeholder placeholder="Alert Type..."
+        [disableEntries]="getDisabledAlertTypes(alert.alert_type())"
+        validateDisabledSelection
+        [mandatory]="true"
+        (onChange)="alert.alert_type($event ? $event.id : null);">
+      </eg-combobox>
+      <span *ngIf="disabledAlertTypes.includes(alert.alert_type())" class="badge badge-warning" i18n>This alert type is inactive.</span>
+    </div>
+
+    <!-- Alert Note -->
+    <div class="col-lg-5">
+      <textarea class="form-control" rows="2"
+        i18n-placeholder placeholder="Alert Note..."
+        (ngModelChange)="alert.note($event);"
+        [ngModel]="alert.note()">
+      </textarea>
+    </div>
+    <div class="col-lg-3 d-flex flex-wrap align-items-baseline justify-content-end">
+      <!-- Temporary flag -->
+      <div class="form-check mb-2 me-auto">
+        <input class="form-check-input" type="checkbox"
+          [ngModel]="alert.temp() === 't' || alert.temp() === true"
+          (ngModelChange)="alert.temp($event ? 't' : 'f')"
+          id="alert-temporary-{{i}}">
+        <label class="form-label form-check-label"
+          for="alert-temporary-{{i}}" i18n>
+          Temporary?
+        </label>
+      </div>
+      
+      <button type="button" class="btn-link btn-destroy"
+        (click)="removeAlert(alert)" i18n>Remove</button>
+    </div>
+
+  </div>
+  </li>
+</ul>
+</ng-container>
+
+  <ng-container *ngIf="!templateOnlyMode">
+  <h4 class="mt-4 border-bottom" i18n>Existing Item Alerts</h4>
+
+  <!-- Existing alerts list -->
+   <ul class="list-group list-group-flush">
+  <li class="list-group-item px-0 py-3"
+    *ngFor="let alert of inBatch() ? alertsInCommon : (copies.length ? copies[0].copy_alerts() : [])">
+  <div *ngIf="!alert.isnew()" class="row"> <!-- filter out pending notes on subsequent dialog opens -->
+    <!-- Alert Type -->
+    <div class="col-lg-4">
+      <eg-combobox [entries]="getCurrentAlertTypes(alert.alert_type())"
+        [selectedId]="alert.alert_type()"
+        i18n-placeholder placeholder="Alert Type..."
+        [disableEntries]="getDisabledAlertTypes(alert.alert_type())"
+        validateDisabledSelection
+        [mandatory]="true"
+        (onChange)="alert.alert_type($event ? $event.id : null); alert.ischanged(true)">
+      </eg-combobox>
+      <span *ngIf="disabledAlertTypes.includes(alert.alert_type())" class="badge badge-warning" i18n>This alert type is inactive.</span>
+
+      <!-- Creation date - only show in single mode -->
+      <div *ngIf="!inBatch() && !templateOnlyMode" class="ps-2 pt-2 text-muted" i18n>
+        Added: {{alert.create_time() | date:'shortDate'}}
+      </div>
+    </div>
+
+    <!-- Alert Note -->
+    <div class="col-lg-5">
+      <textarea class="form-control" rows="2"
+        i18n-placeholder placeholder="Alert Note..."
+        (ngModelChange)="alert.note($event); alert.ischanged(true)"
+        [ngModel]="alert.note()">
+      </textarea>
+    </div>
+
+    <!-- Alert Options -->
+    <div class="col-lg-3">
+      <div class="d-flex flex-wrap align-items-baseline justify-content-end">
+        <!-- Temporary flag -->
+        <div class="form-check mb-2 me-auto">
+          <input class="form-check-input" type="checkbox"
+            [ngModel]="alert.temp() === 't' || alert.temp() === true"
+            (ngModelChange)="alert.temp($event ? 't' : 'f'); alert.ischanged(true)"
+            id="alert-temporary-{{alert.id()}}">
+          <label class="form-label form-check-label"
+            for="alert-temporary-{{alert.id()}}" i18n>
+            Temporary?
+          </label>
         </div>
-        <div class="col-lg-5">
-          <textarea class="form-control" rows="2" 
-            i18n-placeholder placeholder="Alert Note..."
-            (ngModelChange)="alert.note($event); alert.ischanged(true)"
-            [ngModel]="alert.note()">
-          </textarea>
-        </div>
-        <div class="col-lg-3">
-          <div class="d-flex flex-column">
-            <div class="form-check">
-              <input class="form-check-input" type="checkbox" 
-                [ngModel]="alert.temp() === 't'" 
-                (ngModelChange)="alert.temp($event ? 't' : 'f'); alert.ischanged(true)"
-                id="alert-temporary-{{alert.id()}}">
-              <label class="form-label form-check-label" for="alert-temporary-{{alert.id()}}" i18n>
-                Temporary?
-              </label>
-            </div>
-            <div class="form-check pt-2">
-              <input class="form-check-input" type="checkbox" 
-                [ngModel]="alert.ack_time() !== null" 
-                (ngModelChange)="alert.ack_time($event ? 'now' : null); alert.ischanged(true)"
-                id="alert-temporary-{{alert.id()}}">
-              <label class="form-label form-check-label" for="alert-temporary-{{alert.id()}}" i18n>
-                Clear?
-              </label>
-            </div>
-          </div>
+
+        <!-- Acknowledgment -->
+        <div class="form-check mb-2 me-auto">
+          <input class="form-check-input" type="checkbox"
+            [ngModel]="alert.ack_time() !== null"
+            (ngModelChange)="setAck(alert,$event);"
+            id="alert-acknowledged-{{alert.id()}}">
+          <label class="form-label form-check-label"
+            for="alert-acknowledged-{{alert.id()}}" i18n>
+            Clear?
+          </label>
         </div>
       </div>
-    </ng-container>
+    </div>
   </div>
-  <div class="modal-footer">
-    <button type="button" class="btn btn-secondary" 
-      (click)="close()" i18n>Close</button>
-    <button type="button" class="btn btn-success me-2" 
-      (click)="applyChanges()" i18n>Apply Changes</button>
-  </div>
+  </li>
+</ul>
+  </ng-container>
+
+</eg-copy-things-dialog>
 </ng-template>

@@ -2382,71 +2382,10 @@ function($scope , $q , $window , $routeParams , $location , $timeout , egCore , 
     $scope.copy_alerts_dialog = function(copy_list) {
         if (!angular.isArray(copy_list)) copy_list = [copy_list];
 
-        return $uibModal.open({
-            templateUrl: './cat/volcopy/t_copy_alerts',
-            animation: true,
-            controller:
-                   ['$scope','$uibModalInstance',
-            function($scope , $uibModalInstance) {
 
-                itemSvc.get_copy_alert_types().then(function(ccat) {
-                    $scope.alert_types = ccat;
-                });
-
-                $scope.focusNote = true;
-                $scope.copy_alert = {
-                    create_staff : egCore.auth.user().id(),
-                    note         : '',
-                    temp         : false
-                };
-
-                egCore.hatch.getItem('cat.copy.alerts.last_type').then(function(t) {
-                    if (t) $scope.copy_alert.alert_type = t;
-                });
-
-                if (copy_list.length == 1) {
-                    $scope.copy_alert_list = copy_list[0].copy_alerts();
-                }
-
-                $scope.ok = function(copy_alert) {
-
-                    if (typeof(copy_alert.note) != 'undefined' &&
-                        copy_alert.note != '') {
-                        angular.forEach(copy_list, function (cp) {
-                            if (!angular.isArray(cp.copy_alerts())) cp.copy_alerts([]);
-                            var a = new egCore.idl.aca();
-                            a.isnew(1);
-                            a.create_staff(copy_alert.create_staff);
-                            a.note(copy_alert.note);
-                            a.temp(copy_alert.temp ? 't' : 'f');
-                            a.copy(cp.id());
-                            a.ack_time(null);
-                            a.alert_type(
-                                $scope.alert_types.filter(function(at) {
-                                    return at.id() == copy_alert.alert_type;
-                                })[0]
-                            );
-                            cp.copy_alerts().push( a );
-                        });
-
-                        if (copy_alert.alert_type) {
-                            egCore.hatch.setItem(
-                                'cat.copy.alerts.last_type',
-                                copy_alert.alert_type
-                            );
-                        }
-
-                    }
-
-                    $uibModalInstance.close();
-                }
-
-                $scope.cancel = function($event) {
-                    $uibModalInstance.dismiss();
-                    $event.preventDefault();
-                }
-            }]
-        });
+        // Instead of opening modal, open new tab with Angular route
+        const copyIds = copy_list.map(cp => cp.id()).join(',');
+        window.open(`/eg2/staff/cat/item/alerts?copyIds=${copyIds}`, '_blank');
     }
 
 }])

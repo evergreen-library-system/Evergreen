@@ -5,8 +5,9 @@ import {HoldingsService} from './holdings.service';
 import {MarkDamagedDialogComponent} from './mark-damaged-dialog.component';
 import {MarkMissingDialogComponent} from './mark-missing-dialog.component';
 import {MarkDiscardDialogComponent} from './mark-discard-dialog.component';
-import {CopyAlertsDialogComponent} from './copy-alerts-dialog.component';
+import {CopyAlertsDialogComponent, AlertTypeValidatorDirective} from './copy-alerts-dialog.component';
 import {CopyTagsDialogComponent} from './copy-tags-dialog.component';
+import {TagMapListComponent} from './tag-map-list.component';
 import {CopyNotesDialogComponent} from './copy-notes-dialog.component';
 import {ReplaceBarcodeDialogComponent} from './replace-barcode-dialog.component';
 import {DeleteHoldingDialogComponent} from './delete-volcopy-dialog.component';
@@ -14,7 +15,9 @@ import {ConjoinedItemsDialogComponent} from './conjoined-items-dialog.component'
 import {TransferItemsComponent} from './transfer-items.component';
 import {TransferHoldingsComponent} from './transfer-holdings.component';
 import {BatchItemAttrComponent} from './batch-item-attr.component';
+import {CopyThingsDialogWrapperComponent} from './copy-things-dialog-wrapper.component';
 import {CopyAlertManagerDialogComponent} from './copy-alert-manager.component';
+import {CopyAlertsPageComponent} from './copy-alerts-page.component';
 import {CopyNotesEditComponent} from './copy-notes-edit/copy-notes-edit.component';
 import { FmRecordEditorModule } from '@eg/share/fm-editor/fm-editor.module';
 
@@ -23,8 +26,10 @@ import { FmRecordEditorModule } from '@eg/share/fm-editor/fm-editor.module';
         MarkDamagedDialogComponent,
         MarkMissingDialogComponent,
         MarkDiscardDialogComponent,
+        CopyThingsDialogWrapperComponent,
         CopyAlertsDialogComponent,
         CopyTagsDialogComponent,
+        TagMapListComponent,
         CopyNotesDialogComponent,
         CopyNotesEditComponent,
         ReplaceBarcodeDialogComponent,
@@ -33,7 +38,9 @@ import { FmRecordEditorModule } from '@eg/share/fm-editor/fm-editor.module';
         TransferItemsComponent,
         TransferHoldingsComponent,
         BatchItemAttrComponent,
-        CopyAlertManagerDialogComponent
+        CopyAlertManagerDialogComponent,
+        CopyAlertsPageComponent,
+        AlertTypeValidatorDirective
     ],
     imports: [
         StaffCommonModule,
@@ -46,6 +53,7 @@ import { FmRecordEditorModule } from '@eg/share/fm-editor/fm-editor.module';
         MarkDiscardDialogComponent,
         CopyAlertsDialogComponent,
         CopyTagsDialogComponent,
+        TagMapListComponent,
         CopyNotesDialogComponent,
         ReplaceBarcodeDialogComponent,
         DeleteHoldingDialogComponent,
@@ -53,7 +61,8 @@ import { FmRecordEditorModule } from '@eg/share/fm-editor/fm-editor.module';
         TransferItemsComponent,
         TransferHoldingsComponent,
         BatchItemAttrComponent,
-        CopyAlertManagerDialogComponent
+        CopyAlertManagerDialogComponent,
+        CopyAlertsPageComponent
     ],
     providers: [
         HoldingsService

@@ -225,7 +225,6 @@ export class RenewComponent implements OnInit, AfterViewInit {
         if (copyIds.length === 0) { return; }
 
         this.copyAlertsDialog.copyIds = copyIds;
-        this.copyAlertsDialog.mode = 'create';
         this.copyAlertsDialog.open({size: 'lg'}).subscribe();
     }
 
@@ -234,7 +233,6 @@ export class RenewComponent implements OnInit, AfterViewInit {
         if (copyIds.length === 0) { return; }
 
         this.copyAlertsDialog.copyIds = copyIds;
-        this.copyAlertsDialog.mode = 'manage';
         this.copyAlertsDialog.open({size: 'lg'}).subscribe();
     }
 

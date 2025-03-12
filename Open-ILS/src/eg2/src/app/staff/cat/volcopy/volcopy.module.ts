@@ -10,6 +10,8 @@ import {VolCopyService} from './volcopy.service';
 import {CopyAttrsComponent} from './copy-attrs.component';
 import {ItemLocationSelectModule} from '@eg/share/item-location-select/item-location-select.module';
 import {VolCopyConfigComponent} from './config.component';
+import {VolCopyTemplateGridComponent} from './template-grid.component';
+import {VolCopyTemplateEditComponent} from './template-edit.component';
 import {VolCopyPermissionDialogComponent} from './vol-copy-permission-dialog.component';
 
 @NgModule({
@@ -18,6 +20,8 @@ import {VolCopyPermissionDialogComponent} from './vol-copy-permission-dialog.com
         VolEditComponent,
         CopyAttrsComponent,
         VolCopyConfigComponent,
+        VolCopyTemplateGridComponent,
+        VolCopyTemplateEditComponent,
         VolCopyPermissionDialogComponent,
         VolEditPartDedupePipe
     ],

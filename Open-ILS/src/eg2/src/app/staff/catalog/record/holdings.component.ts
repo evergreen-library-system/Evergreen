@@ -256,6 +256,7 @@ export class HoldingsMaintenanceComponent implements OnInit {
     }
 
     ngOnInit() {
+        // console.debug('HoldingsComponent, ngOnInit(), this', this);
         this.initDone = true;
 
         this.broadcaster.listen('eg.holdings.update').subscribe(data => {
@@ -312,6 +313,7 @@ export class HoldingsMaintenanceComponent implements OnInit {
     }
 
     hardRefresh() {
+        // console.debug('HoldingsComponent, hardRefresh()');
         this.renderFromPrefs = true;
         this.refreshHoldings = true;
         this.initHoldingsTree();
@@ -727,7 +729,9 @@ export class HoldingsMaintenanceComponent implements OnInit {
 
     // Which copies in the grid are selected.
     selectedCopyIds(rows: HoldingsEntry[], skipStatus?: number): number[] {
-        return this.selectedCopies(rows, skipStatus).map(c => Number(c.id()));
+        const result = this.selectedCopies(rows, skipStatus).map(c => Number(c.id()));
+        // console.debug('Holdings: selectedCopyIds; rows, result', rows, result);
+        return result;
     }
 
     selectedVolIds(rows: HoldingsEntry[]): number[] {
@@ -738,10 +742,12 @@ export class HoldingsMaintenanceComponent implements OnInit {
 
     selectedCopies(rows: HoldingsEntry[], skipStatus?: number): IdlObject[] {
         let copyRows = rows.filter(r => Boolean(r.copy)).map(r => r.copy);
+        // console.debug('Holdings: selectedCopies(); rows, copyRows pre-status filter', rows, copyRows);
         if (skipStatus) {
             copyRows = copyRows.filter(
                 c => Number(c.status().id()) !== Number(skipStatus));
         }
+        // console.debug('Holdings: selectedCopies(); rows, copyRows post-status filter', rows, copyRows);
         return copyRows;
     }
 
@@ -954,15 +960,16 @@ export class HoldingsMaintenanceComponent implements OnInit {
 
     openItemAlerts(rows: HoldingsEntry[]) {
         const copyIds = this.selectedCopyIds(rows);
+        // console.debug('Holdings: openItemAlerts; rows, copyIds', rows, copyIds);
         if (copyIds.length === 0) { return; }
 
         this.copyAlertsDialog.copyIds = copyIds;
+        this.copyAlertsDialog.copies = [];
+        this.copyAlertsDialog.clearPending();
         this.copyAlertsDialog.open({size: 'lg'}).subscribe(
             changes => {
-                if (!changes) { return; }
-                if (changes.newAlerts.length > 0 || changes.changedAlerts.length > 0) {
-                    this.hardRefresh();
-                }
+                // console.debug('HoldingsComponent: copyAlertsDialog, changes?', changes);
+                this.hardRefresh();
             }
         );
     }
@@ -972,11 +979,12 @@ export class HoldingsMaintenanceComponent implements OnInit {
         if (copyIds.length === 0) { return; }
 
         this.copyTagsDialog.copyIds = copyIds;
+        this.copyTagsDialog.copies = [];
+        this.copyTagsDialog.clearPending();
         this.copyTagsDialog.open({size: 'lg'}).subscribe(
             changes => {
-                if (changes.newTags.length > 0 || changes.deletedMaps.length > 0) {
-                    this.hardRefresh();
-                }
+                // console.debug('HoldingsComponent: copyTagsDialog, changes?', changes);
+                this.hardRefresh();
             }
         );
     }
@@ -986,12 +994,12 @@ export class HoldingsMaintenanceComponent implements OnInit {
         if (copyIds.length === 0) { return; }
 
         this.copyNotesDialog.copyIds = copyIds;
+        this.copyNotesDialog.copies = [];
+        this.copyNotesDialog.clearPending();
         this.copyNotesDialog.open({size: 'lg'}).subscribe(
             changes => {
-                if (!changes) { return; }
-                if (changes.newNotes.length > 0 || changes.delNotes.length > 0) {
-                    this.hardRefresh();
-                }
+                // console.debug('HoldingsComponent: copyNotesDialog, changes?', changes);
+                this.hardRefresh();
             }
         );
     }

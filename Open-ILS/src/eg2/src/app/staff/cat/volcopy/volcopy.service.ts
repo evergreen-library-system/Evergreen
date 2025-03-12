@@ -1,5 +1,8 @@
-import {Injectable, EventEmitter} from '@angular/core';
-import {tap} from 'rxjs/operators';
+/* eslint-disable max-len, no-prototype-builtins */
+import {Injectable, EventEmitter, OnDestroy} from '@angular/core';
+import {Subject} from 'rxjs';
+import {tap, takeUntil} from 'rxjs/operators';
+import {SafeUrl} from '@angular/platform-browser';
 import {IdlService, IdlObject} from '@eg/core/idl.service';
 import {NetService} from '@eg/core/net.service';
 import {OrgService} from '@eg/core/org.service';
@@ -8,6 +11,7 @@ import {EventService} from '@eg/core/event.service';
 import {AuthService} from '@eg/core/auth.service';
 import {VolCopyContext} from './volcopy';
 import {HoldingsService} from '@eg/staff/share/holdings/holdings.service';
+import {FileExportService} from '@eg/share/util/file-export.service';
 import {ServerStoreService} from '@eg/core/server-store.service';
 import {StoreService} from '@eg/core/store.service';
 import {ComboboxEntry} from '@eg/share/combobox/combobox.component';
@@ -24,13 +28,16 @@ interface VolCopyDefaults {
 }
 
 @Injectable()
-export class VolCopyService {
+export class VolCopyService implements OnDestroy {
 
     autoId = -1;
 
     localOrgs: number[];
     defaults: VolCopyDefaults = null;
     copyStatuses: {[id: number]: IdlObject} = {};
+    acnLabelClasses: {[id: number]: IdlObject} = {};
+    acnPrefixes: {[id: number]: IdlObject} = {};
+    acnSuffixes: {[id: number]: IdlObject} = {};
     bibParts: {[bibId: number]: IdlObject[]} = {};
 
     // This will be all 'local' copy locations plus any remote
@@ -42,8 +49,13 @@ export class VolCopyService {
 
     statCatEntryMap: {[id: number]: IdlObject} = {}; // entry id => entry
 
+    private destroy$ = new Subject<void>;
+    private templatesRefreshed = new Subject<void>();
+    templatesRefreshed$ = this.templatesRefreshed.asObservable();
+
     templateNames: ComboboxEntry[] = [];
     templates: any = {};
+    templatesToExport: any = {};
 
     commonData: {[key: string]: IdlObject[]} = {};
     magicCopyStats: number[] = [];
@@ -61,46 +73,94 @@ export class VolCopyService {
         private auth: AuthService,
         private pcrud: PcrudService,
         private holdings: HoldingsService,
+        private fileExport: FileExportService,
         private store: StoreService,
         private serverStore: ServerStoreService
-    ) {}
+    ) {
+        // Listen for ServerStoreService cache invalidation completions within this tab
+        this.serverStore.cacheCleared$
+            .pipe(takeUntil(this.destroy$))
+            .subscribe(() => {
+                this.fetchTemplates().then(() => {
+                    this.templatesRefreshed.next();
+                });
+            });
+    }
 
+    ngOnDestroy() {
+        this.destroy$.next();
+        this.destroy$.complete();
+    }
 
     // Fetch the data that is always needed.
     load(): Promise<any> {
+        console.debug('VolCopyService.load() starting');
 
-        if (this.commonData.acp_item_type_map) { return Promise.resolve(); }
+        if (this.commonData.acp_item_type_map) {
+            console.debug('VolCopyService.load() - commonData already loaded, returning early');
+            return Promise.resolve();
+        }
 
         this.localOrgs = this.org.fullPath(this.auth.user().ws_ou(), true);
+        console.debug('VolCopyService.load() - localOrgs set:', this.localOrgs);
 
         this.hideVolOrgs = this.org.list()
             .filter(o => !this.org.canHaveVolumes(o)).map(o => o.id());
+        console.debug('VolCopyService.load() - hideVolOrgs set:', this.hideVolOrgs);
 
         return this.net.request(
             'open-ils.cat', 'open-ils.cat.volcopy.data', this.auth.token()
         ).pipe(tap(dataset => {
+            console.debug('VolCopyService.load() - received dataset:', dataset);
             const key = Object.keys(dataset)[0];
             this.commonData[key] = dataset[key];
         })).toPromise()
-            .then(_ => this.ingestCommonData())
-
-        // These will come up later -- prefetch.
-            .then(_ => this.serverStore.getItemBatch([
-                'cat.copy.templates',
-                'eg.cat.volcopy.defaults',
-                'eg.cat.record.summary.collapse'
-            ]))
-
-            .then(_ => this.holdings.getMagicCopyStatuses())
-            .then(stats => this.magicCopyStats = stats)
-            .then(_ => this.fetchDefaults())
-            .then(_ => this.fetchTemplates());
+            .then(result => {
+                console.debug('VolCopyService.load() - after initial data fetch:', result);
+                return this.ingestCommonData();
+            })
+            .then(result => {
+                console.debug('VolCopyService.load() - after ingestCommonData');
+                return this.serverStore.getItemBatch([
+                    'cat.copy.templates',
+                    'eg.cat.volcopy.defaults',
+                    'eg.cat.record.summary.collapse'
+                ]);
+            })
+            .then(batchResult => {
+                console.debug('VolCopyService.load() - after getItemBatch:', batchResult);
+                return this.holdings.getMagicCopyStatuses();
+            })
+            .then(stats => {
+                console.debug('VolCopyService.load() - got magicCopyStats:', stats);
+                this.magicCopyStats = stats;
+                return this.fetchDefaults();
+            })
+            .then(result => {
+                console.debug('VolCopyService.load() - after fetchDefaults');
+                return this.fetchTemplates();
+            })
+            .then(result => {
+                console.debug('VolCopyService.load() - after fetchTemplates, templates:', this.templates);
+                return result;
+            })
+            .catch(error => {
+                console.error('VolCopyService.load() - Error in promise chain:', error);
+                throw error;
+            });
     }
 
     ingestCommonData() {
 
         this.commonData.acp_location.forEach(
             loc => this.copyLocationMap[loc.id()] = loc);
+
+        // We want the magic -1 id for these
+        this.commonData.acn_prefix.forEach(
+            prefix => this.acnPrefixes[prefix.id()] = prefix);
+
+        this.commonData.acn_suffix.forEach(
+            suffix => this.acnSuffixes[suffix.id()] = suffix);
 
         // Remove the -1 prefix and suffix so they can be treated
         // specially in the markup.
@@ -109,6 +169,9 @@ export class VolCopyService {
 
         this.commonData.acn_suffix =
             this.commonData.acn_suffix.filter(sfx => sfx.id() !== -1);
+
+        this.commonData.acn_class.forEach(
+            label_class => this.acnLabelClasses[label_class.id()] = label_class);
 
         this.commonData.acp_status.forEach(
             stat => this.copyStatuses[stat.id()] = stat);
@@ -125,31 +188,65 @@ export class VolCopyService {
         }
 
         return this.pcrud.retrieve('acpl', id)
-            .pipe(tap(loc => this.copyLocationMap[loc.id()] = loc))
+            .pipe(tap(loc => {
+                console.debug(`getLocation(${id})`,loc);
+                this.copyLocationMap[loc.id()] = loc;
+            }))
             .toPromise();
     }
 
     fetchTemplates(): Promise<any> {
-
+        console.debug('VolCopyService.fetchTemplates() starting');
         return this.serverStore.getItem('cat.copy.templates')
             .then(templates => {
-
-                if (!templates) { return null; }
-
+                console.debug('VolCopyService.fetchTemplates() - received templates:', templates);
+                if (!templates) {
+                    console.debug('VolCopyService.fetchTemplates() - no templates found');
+                    return null;
+                }
                 this.templates = templates;
-
                 this.templateNames = Object.keys(templates)
                     .sort((n1, n2) => n1 < n2 ? -1 : 1)
                     .map(name => ({id: name, label: name}));
-
+                console.debug('VolCopyService.fetchTemplates() - templateNames set:', this.templateNames);
                 this.store.removeLocalItem('cat.copy.templates');
+                return templates;
+            })
+            .catch(error => {
+                console.error('VolCopyService.fetchTemplates() - Error:', error);
+                throw error;
             });
     }
 
-
     saveTemplates(): Promise<any> {
+        console.debug('saving cat.copy.templates', this.templates);
         return this.serverStore.setItem('cat.copy.templates', this.templates)
-            .then(() => this.fetchTemplates());
+            .then(() => this.templates);
+    }
+
+    deleteTemplates(templateNames: string[]): Promise<any> {
+        if (!this.templates) {
+            return Promise.reject(new Error('Templates not initialized'));
+        }
+
+        const deletedTemplates: string[] = [];
+        const notFoundTemplates: string[] = [];
+
+        templateNames.forEach(name => {
+            if (this.templates.hasOwnProperty(name)) {
+                delete this.templates[name];
+                deletedTemplates.push(name);
+            } else {
+                notFoundTemplates.push(name);
+            }
+        });
+
+        this.templateNames = this.templateNames.filter(entry => !deletedTemplates.includes(entry.id));
+
+        return this.saveTemplates().then(() => ({
+            deleted: deletedTemplates,
+            notFound: notFoundTemplates
+        }));
     }
 
     fetchDefaults(): Promise<any> {
@@ -194,6 +291,7 @@ export class VolCopyService {
         vol.record(recordId);
         vol.label(null);
         vol.owning_lib(Number(orgId));
+        vol.label_class(this.defaults.values.classification || 1);
         vol.prefix(this.defaults.values.prefix || -1);
         vol.suffix(this.defaults.values.suffix || -1);
 
@@ -442,8 +540,10 @@ export class VolCopyService {
     }
 
     restrictCopyDelete(statId: number): boolean {
-        return this.copyStatuses[statId] &&
-               this.copyStatuses[statId].restrict_copy_delete() === 't';
+        return this.copyStatuses[statId] && (
+            this.copyStatuses[statId].restrict_copy_delete() === 't'
+           || this.copyStatuses[statId].restrict_copy_delete() === true
+        );
     }
 
     // Returns true if any items are missing values for a required stat cat.
@@ -454,7 +554,7 @@ export class VolCopyService {
             if (!copy.barcode()) { return; }
 
             this.commonData.acp_stat_cat.forEach(cat => {
-                if (cat.required() !== 't') { return; }
+                if (cat.required() !== 't' && cat.required() !== true) { return; }
 
                 const matches = copy.stat_cat_entries()
                     .filter(e => e.stat_cat() === cat.id());
@@ -466,6 +566,96 @@ export class VolCopyService {
         });
 
         return missing;
+    }
+
+    exportTemplate($event, selected) {
+        const exportList = selected ? this.templatesToExport : this.templates;
+        // console.debug('We will export templates: ', exportList);
+        this.fileExport.exportFile(
+            $event, JSON.stringify(exportList), 'text/json');
+    }
+
+    importTemplate($event): Promise<{added: string[], overwritten: string[]}> {
+        const file: File = $event.target.files[0];
+        if (!file) {
+            return Promise.resolve({ added: [], overwritten: [] });
+        }
+
+        return new Promise((resolve, reject) => {
+            const reader = new FileReader();
+
+            reader.addEventListener('load', () => {
+                try {
+                    const template = JSON.parse(reader.result as string);
+                    const added: string[] = [];
+                    const overwritten: string[] = [];
+                    const theKeys = Object.keys(template);
+
+                    for (let i = 0; i < theKeys.length; i++) {
+                        const name = theKeys[i];
+                        const data = template[name];
+
+                        // backwards compatibility
+                        if (data.copy_notes && !data.notes) {
+                            data.notes = data.copy_notes;
+                            delete data.copy_notes;
+                        }
+
+                        // convert actual booleans to 't' and 'f'
+                        Object.keys(data).forEach(key => {
+                            if (this.idl.classes.acp.field_map[key]?.datatype === 'bool') {
+                                if (data[key] === true) { data[key] = 't'; }
+                                else if (data[key] === false) { data[key] = 'f'; }
+                            }
+                        });
+
+                        // same for alerts, notes, and tags
+                        const ant = { alerts: 'aca', notes: 'acpn', tags: 'acpt' };
+                        Object.keys(ant).forEach(thing => {
+                            if (data[thing] && Array.isArray(data[thing])) {
+                                data[thing].forEach(thingElement => {
+                                    Object.keys(thingElement).forEach(key => {
+                                        if (this.idl.classes[ant[thing]].field_map[key].datatype === 'bool') {
+                                            if (thingElement[key] === true) { thingElement[key] = 't'; }
+                                            else if (thingElement[key] === false) { thingElement[key] = 'f'; }
+                                        }
+                                    });
+                                });
+                            }
+                        });
+
+                        // Check if template already exists
+                        if (this.templates.hasOwnProperty(name)) {
+                            overwritten.push(name);
+                        } else {
+                            added.push(name);
+                        }
+                        this.templates[name] = data;
+                    }
+
+                    this.saveTemplates().then(() => {
+                        // Adds the new ones to the list and re-sorts the labels
+                        return this.fetchTemplates();
+                    }).then(() => {
+                        this.templatesRefreshed.next();
+                        resolve({ added, overwritten });
+                    }).catch(error => {
+                        reject(error);
+                    });
+
+                } catch (E) {
+                    console.error('Invalid Item Attribute template', E);
+                    reject(E);
+                }
+            });
+
+            reader.readAsText(file);
+        });
+    }
+
+    // Returns null when no export is in progress.
+    exportTemplateUrl(): SafeUrl {
+        return this.fileExport.safeUrl;
     }
 }
 

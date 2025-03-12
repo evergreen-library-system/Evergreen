@@ -1674,19 +1674,15 @@ function($uibModal , $q , egCore , egAlertDialog , egConfirmDialog,  egAddCopyAl
     }
 
     service.add_copy_alerts = function(item_ids) {
-        return egAddCopyAlertDialog.open({
-            copy_ids : item_ids,
-            ok : function() { },
-            cancel : function() {}
-        }).result.then(function() { });
+        // Instead of opening modal, open new tab with Angular route
+        const copyIds = item_ids.join(',');
+        window.open(`/eg2/staff/cat/item/alerts?copyIds=${copyIds}`, '_blank');
     }
 
     service.manage_copy_alerts = function(item_ids) {
-        return egCopyAlertEditorDialog.open({
-            copy_id : item_ids[0],
-            ok : function() { },
-            cancel : function() {}
-        }).result.then(function() { });
+        // Instead of opening modal, open new tab with Angular route
+        const copyIds = item_ids.join(',');
+        window.open(`/eg2/staff/cat/item/alerts?copyIds=${copyIds}`, '_blank');
     }
 
     // alert when copy location alert_message is set.

@@ -1,0 +1,28 @@
+<div class="modal-header">
+ <h2 class="modal-title">
+   <span *ngIf="!inBatch()" i18n>Managing {{thingType === 'tag maps' ? 'tags' : thingType}} for item {{copies.length ? copies[0].barcode() : ''}}</span>
+   <span *ngIf="inBatch()" i18n>Managing {{thingType === 'tag maps' ? 'tags' : thingType}} in common for {{copyIds.length}} item(s)</span>
+ </h2>
+ <button type="button" class="btn-close btn-close-white" 
+   i18n-aria-label aria-label="Close dialog" (click)="onClose()">
+ </button>
+</div>
+
+<div class="modal-body p-4">
+ <!-- Batch warning message if needed -->
+ <p *ngIf="inBatch() && batchWarningMessage" class="text-muted">
+   {{batchWarningMessage}}
+ </p>
+
+ <!-- Projected content -->
+ <ng-content></ng-content>
+</div>
+
+<div class="modal-footer">
+  <a *ngIf="thingType === 'tag maps'" class="btn btn-secondary me-auto" target="_blank" routerLink="/staff/admin/local/asset/copy_tag" i18n>Manage Tags</a>
+
+ <button type="button" class="btn btn-secondary" 
+   (click)="onClose()" i18n>Close</button>
+ <button type="button" class="btn btn-success me-2" 
+   (click)="onApplyChanges()" i18n>Apply Changes</button>
+</div>

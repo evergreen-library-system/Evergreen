@@ -7,7 +7,6 @@ import { OrgService } from '@eg/core/org.service';
 import { StoreService } from '@eg/core/store.service';
 import { ComboboxComponent } from '@eg/share/combobox/combobox.component';
 import { ToastService } from '@eg/share/toast/toast.service';
-import { FileExportService } from '@eg/share/util/file-export.service';
 import { CopyAttrsComponent } from './copy-attrs.component';
 import { VolCopyContext, HoldingsTreeNode } from './volcopy';
 import { VolCopyService } from './volcopy.service';
@@ -20,13 +19,12 @@ describe('CopyAttrsComponent', () => {
     const authServiceMock = jasmine.createSpyObj<AuthService>(['user']);
     const formatServiceMock = jasmine.createSpyObj<FormatService>(['transform']);
     const storeServiceMock = jasmine.createSpyObj<StoreService>(['setLocalItem']);
-    const fileExportServiceMock = jasmine.createSpyObj<FileExportService>(['exportFile']);
     const toastServiceMock = jasmine.createSpyObj<ToastService>(['success']);
     const volCopyServiceMock = jasmine.createSpyObj<VolCopyService>(['copyStatIsMagic', 'saveTemplates']);
 
     beforeEach(() => {
         component = new CopyAttrsComponent(idlMock, orgMock, authServiceMock,
-            null, formatServiceMock, storeServiceMock, fileExportServiceMock,
+            null, formatServiceMock, storeServiceMock,
             toastServiceMock, volCopyServiceMock);
         component.copyTemplateCbox = jasmine.createSpyObj<ComboboxComponent>(['entries']);
         component.copyTemplateCbox.selected = {id: 0};
@@ -125,7 +123,7 @@ describe('CopyAttrsComponent', () => {
                 // Also assume that we have no item fields
                 component.batchAttrs = new QueryList();
 
-                component.saveTemplate();
+                component.saveTemplate(false);
 
                 expect(component.volcopy.templates[0]).toEqual({callnumber: {prefix: 10}});
             });
@@ -155,7 +153,7 @@ describe('CopyAttrsComponent', () => {
                 // Also assume that we have no item fields
                 component.batchAttrs = new QueryList();
 
-                component.saveTemplate();
+                component.saveTemplate(false);
 
                 expect(component.volcopy.templates[0]).toEqual({callnumber: {prefix: 10, classification: 1}});
             });

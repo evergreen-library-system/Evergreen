@@ -33,8 +33,10 @@
     <ng-container *ngIf="displayColumn('classification')">
       <div><label  class="form-label fw-bold" i18n>Classification</label></div>
       <div>
-        <eg-combobox [smallFormControl]="true" [(ngModel)]="batchVolClass">
+        <eg-combobox [smallFormControl]="true" [(ngModel)]="batchVolClass"
+          [startId]="volcopy.defaults?.values['classification']">
           <eg-combobox-entry *ngFor="let cls of volcopy.commonData.acn_class"
+            [selected]="batchVolClass === cls.id()"
             [entryId]="cls.id()" [entryLabel]="cls.name()">
           </eg-combobox-entry>
         </eg-combobox>

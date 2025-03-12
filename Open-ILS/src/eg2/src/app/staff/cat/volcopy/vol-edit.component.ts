@@ -629,6 +629,7 @@ export class VolEditComponent implements OnInit {
 
     canSave(): boolean {
 
+        // console.debug('VolEditComponent, canSave()');
         const copies = this.context.copyList();
 
         const badCopies = copies.filter(copy => {
@@ -643,6 +644,7 @@ export class VolEditComponent implements OnInit {
             }
         }).length > 0;
 
+        // console.debug('VolEditComponent, canSave(), badCopies', badCopies);
         if (badCopies) { return false; }
 
         const badVols = this.context.volNodes().filter(volNode => {
@@ -662,6 +664,7 @@ export class VolEditComponent implements OnInit {
                 }
             }
         }).length > 0;
+        // console.debug('VolEditComponent, canSave(), badVols', badVols);
 
         return !badVols;
     }

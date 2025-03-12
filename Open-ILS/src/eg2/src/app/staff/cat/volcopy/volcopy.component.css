@@ -1,0 +1,4 @@
+.volcopy-actions button .warning-wrapper {
+  display: inline-flex;
+  flex-direction: row-reverse;
+}

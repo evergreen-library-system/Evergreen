@@ -1,70 +1,52 @@
-<eg-string #successMsg text="Successfully Modified Item Tags" i18n-text></eg-string>
-<eg-string #errorMsg text="Failed To Modify Item Tags" i18n-text></eg-string>
+<eg-string #successMsg [text]="successMessage" i18n-text></eg-string>
+<eg-string #errorMsg [text]="errorMessage" i18n-text></eg-string>
 
 <ng-template #dialogContent>
-  <div class="modal-header">
-    <h4 class="modal-title">
-      <ng-container *ngIf="mode === 'create'">
-        <span i18n>Adding tags for {{copyIds.length}} item(s).</span>
-      </ng-container>
-      <ng-container *ngIf="mode === 'manage'">
-        <span i18n>Managing tags for item {{copy.barcode()}}</span>
-      </ng-container>
-      <span i18n></span>
-    </h4>
-    <button type="button" class="btn-close btn-close-white" 
-      i18n-aria-label aria-label="Close dialog" (click)="close()"></button>
-  </div>
-  <div class="modal-body p-4 form-validated">
+<eg-copy-things-dialog
+    [thingType]="thingType"
+    [copies]="copies"
+    [copyIds]="copyIds"
+    [batchWarningMessage]="batchWarningMessage"
+    [inBatch]="inBatch.bind(this)"
+    [onClose]="close.bind(this)"
+    [onApplyChanges]="applyChanges.bind(this)">
 
-    <ng-container *ngIf="mode === 'manage' && copy.tags().length">
-      <h4 i18n>Existing Tags</h4>
-      <div class="row mt-2 p-2" *ngFor="let map of copy.tags()">
-        <div class="col-lg-4">{{map.tag().tag_type().label()}}</div>
-        <div class="col-lg-5">{{map.tag().label()}}</div>
-        <div class="col-lg-3">
-          <button type="button" class="btn btn-outline-danger" (click)="removeTag(map.tag())" i18n>
-            Remove
-          </button>
-        </div>
-      </div>
-      <hr/>
-    </ng-container>
-
-    <h4 i18n>New Tags</h4>
-    <div class="row mt-2 p-2" *ngFor="let tag of newTags">
-      <ng-container *ngIf="!tag.isdeleted()">
-        <div class="col-lg-4">{{tagTypeMap[tag.tag_type()].label()}}</div>
-        <div class="col-lg-5">{{tag.label()}}</div>
-        <div class="col-lg-3">
-          <button type="button" class="btn btn-outline-danger" (click)="removeTag(tag)" i18n>
-            Remove
-          </button>
-        </div>
-      </ng-container>
-    </div>
-
-    <div class="row mt-2 p-2 rounded border border-success">
-      <div class="col-lg-4">
-        <eg-combobox [entries]="tagTypes" [(ngModel)]="curTagType"
-          i18n-placeholder placeholder="Select tag type...">
-        </eg-combobox>
-      </div>
-      <div class="col-lg-5">
-        <eg-combobox [asyncDataSource]="tagDataSource" [(ngModel)]="curTag"
-          [allowFreeText]="true"
-          i18n-placeholder placeholder="Enter tag label...">
-        </eg-combobox>
-      </div>
-      <div class="col-lg-3">
-        <div class="pt-2">
-          <button type="button" class="btn btn-success" (click)="addNew()" i18n>Add Tag</button>
-        </div>  
-      </div>
+  <div class="row">
+    <div class="col">
+      <h3 i18n>Add Tag</h3>
     </div>
   </div>
-  <div class="modal-footer">
-    <button type="button" class="btn btn-secondary" (click)="close()" i18n>Cancel</button>
-    <button type="button" class="btn btn-success me-2" (click)="applyChanges()" i18n>Apply Changes</button>
+  <div class="row my-2">
+    <div class="col-lg-4">
+      <eg-combobox [entries]="tagTypes" [(ngModel)]="curTagType" [ngbAutofocus]="true"
+        i18n-placeholder placeholder="Select tag type...">
+      </eg-combobox>
+    </div>
+    <div class="col-lg-5">
+      <eg-combobox [asyncDataSource]="tagDataSource" [(ngModel)]="curTag"
+        [allowFreeText]="true" [icons]="false" (comboboxEnter)="addThenRefresh()"
+        i18n-placeholder placeholder="Enter tag value...">
+      </eg-combobox>
+    </div>
+    <div class="col-lg-3 new-tag-actions">
+      <button [disabled]="curTag && !curTag.id" type="button" class="btn btn-normal" (click)="addThenRefresh()" i18n>Add Tag</button>
+      <button [disabled]="!curTag || curTag.id || !curTag.freetext" type="button" class="btn btn-success" (click)="addThenRefresh()" i18n>Create New Tag</button>
+    </div>
   </div>
+
+  <!-- Combined Tag Maps -->
+  <eg-tag-map-list #combinedTagsMapsList
+    [maps]="allMapRows"
+    [newThings]="newThings"
+    [copyIds]="copyIds"
+    [code2cctt]="code2type"
+    [trickery]="trickeryExistingTagMapsList"
+    i18n-headerText headerText="Tags"
+    i18n-buttonText buttonText="Remove Tag"
+    [showIsDeleted]="true"
+    (remove)="removeThing($event)">
+  </eg-tag-map-list>
+
+
+</eg-copy-things-dialog>
 </ng-template>

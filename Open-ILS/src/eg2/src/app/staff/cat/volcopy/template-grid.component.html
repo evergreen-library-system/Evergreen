@@ -1,0 +1,155 @@
+<eg-alert-dialog #importSummaryDialog
+    i18n-dialogTitle dialogTitle="Template Import Summary"
+    [dialogBodyTemplate]="importResultsTemplate">
+</eg-alert-dialog>
+
+<ng-template #importResultsTemplate>
+    <ng-container *ngFor="let result of importResults">
+        <h3 class="border-bottom">{{result.section}}</h3>
+        <ol>
+            <li *ngFor="let item of result.items" class="ps-1">{{item}}</li>
+        </ol>
+    </ng-container>
+</ng-template>
+
+<!-- when displayed as a standalone page -->
+<ng-container *ngIf="route.snapshot.url.join('/') === 'template_grid'">
+  <eg-staff-banner bannerText="Holdings Templates" i18n-bannerText>
+  </eg-staff-banner>
+</ng-container>
+
+<!-- when displayed in the Holdings Editor's Administration tab -->
+<div class="d-flex" *ngIf="route.snapshot.url.join('/') !== 'template_grid'">
+  <h2 class="mt-3" i18n>Holdings Templates</h2>
+</div>
+
+<!-- impact of these hidden things on accessibility? -->
+<input type="file" class="d-none" #templateFile
+    (change)="importTemplates($event)" id="template-file-upload"/>
+<a class="d-none" (click)="exportTemplates($event, true)" #exportLink
+    download="export_copy_templates.json" [href]="exportTemplateUrl()">
+</a>
+<a class="d-none" (click)="exportTemplates($event, false)" #exportAllLink
+    download="export_copy_templates_all.json" [href]="exportTemplateUrl()">
+</a>
+
+<eg-grid #grid
+    persistKey="cat.volcopy.template_grid"
+    [dataSource]="dataSource" [cellTextGenerator]="cellTextGenerator"
+    (rowSelectionChange)="gridSelectionChange($event)"
+    (onRowActivate)="editSelected([$event])"
+    [sortable]="true" [filterable]="true" [allowNamedFilterSets]="false">
+
+    <eg-grid-toolbar-button [buttonStyle]="{success: true}"
+        label="Create Template" i18n-label
+        (onClick)="createTemplate($event)">
+    </eg-grid-toolbar-button>
+
+    <eg-grid-toolbar-button [buttonStyle]="{normal: true}"
+        label="Edit Selected" i18n-label
+        [disabled]="noSelectedRows"
+        (onClick)="editSelected($event)">
+    </eg-grid-toolbar-button>
+
+    <eg-grid-toolbar-button [buttonStyle]="{danger: true}"
+        label="Delete Selected" i18n-label
+        [disabled]="noSelectedRows"
+        (onClick)="deleteSelected($event)">
+    </eg-grid-toolbar-button>
+
+    <eg-grid-toolbar-button [buttonStyle]="{normal: true}"
+        label="Import" i18n-label
+        (onClick)="templateFile.click()">
+    </eg-grid-toolbar-button>
+
+    <!--
+      The typical approach of wrapping a file input in a <label> results
+      in button-ish things that have slightly different dimensions.
+      Instead have a button activate a hidden file input.
+    <button type="button" class="btn btn-outline-dark me-2" (click)="templateFile.click()">
+      <input type="file" class="d-none" #templateFile
+        (change)="importTemplate($event)" id="template-file-upload"/>
+      <span i18n>Import Templates</span>
+    </button>
+    <input type="file" class="d-none" #templateFile
+        (change)="importTemplate($event)" id="template-file-upload"/>
+    -->
+
+    <eg-grid-toolbar-button [buttonStyle]="{normal: true}"
+        label="Export Selected" i18n-label
+        [disabled]="noSelectedRows"
+        (onClick)="exportSelected()">
+    </eg-grid-toolbar-button>
+    
+    <eg-grid-toolbar-button [buttonStyle]="{normal: true}"
+        label="Export All" i18n-label
+        (onClick)="exportAllLink.click()">
+    </eg-grid-toolbar-button>
+    <!--
+    <a (click)="exportTemplate($event)"
+      download="export_copy_template.json" [href]="exportTemplateUrl()">
+      <button type="button" class="btn btn-outline-dark me-2" i18n>Export All Templates</button>
+    </a>
+    -->
+
+    <eg-grid-toolbar-action
+        label="Edit Selected Templates" i18n-label
+        [disabled]="noSelectedRows"
+        (onClick)="editSelected($event)">
+    </eg-grid-toolbar-action>
+
+    <eg-grid-toolbar-action
+        label="Delete Selected Templates" i18n-label
+        [disabled]="noSelectedRows"
+        (onClick)="deleteSelected($event)">
+    </eg-grid-toolbar-action>
+
+    <eg-grid-toolbar-action
+        label="Export Selected" i18n-label
+        [disabled]="noSelectedRows"
+        (onClick)="exportSelected()">
+    </eg-grid-toolbar-action>
+    
+    <eg-grid-toolbar-action
+        label="Export All" i18n-label
+        (onClick)="exportAllLink.click()">
+    </eg-grid-toolbar-action>
+
+    <eg-grid-toolbar-action
+        label="Create Template" i18n-label
+        (onClick)="createTemplate($event)">
+    </eg-grid-toolbar-action>
+
+    <eg-grid-toolbar-action
+        label="Import" i18n-label
+        (onClick)="templateFile.click()">
+    </eg-grid-toolbar-action>
+
+    <eg-grid-column name="templateName" [index]="true" i18n-label label="Template Name" name="templateName"></eg-grid-column>
+    <eg-grid-column name="age_protect" [hidden]="true" i18n-label label="Age Protect"></eg-grid-column>
+    <eg-grid-column name="circ_as_type" [hidden]="true" i18n-label label="Circ As Type"></eg-grid-column>
+    <eg-grid-column name="circ_lib" [hidden]="false" i18n-label label="Circ Lib"></eg-grid-column>
+    <eg-grid-column name="circ_modifier" [hidden]="false" i18n-label label="Circ Modifier"></eg-grid-column>
+    <eg-grid-column name="circulate" [hidden]="true" i18n-label label="Circulate"></eg-grid-column>
+    <eg-grid-column name="copy_alerts" [hidden]="false" i18n-label label="Alerts"></eg-grid-column>
+    <eg-grid-column name="notes" [hidden]="false" i18n-label label="Notes"></eg-grid-column>
+    <eg-grid-column name="tags" [hidden]="false" i18n-label label="Tags"></eg-grid-column>
+    <eg-grid-column name="stat_cat_entries" [hidden]="false" i18n-label label="Stat Cats"></eg-grid-column>
+    <eg-grid-column name="copy_number" [hidden]="true" i18n-label label="Copy Number"></eg-grid-column>
+    <eg-grid-column name="cost" [hidden]="true" i18n-label label="Cost"></eg-grid-column>
+    <eg-grid-column name="deposit" [hidden]="true" i18n-label label="Deposit"></eg-grid-column>
+    <eg-grid-column name="deposit_amount" [hidden]="true" i18n-label label="Deposit Amount"></eg-grid-column>
+    <eg-grid-column name="fine_level" [hidden]="true" i18n-label label="Fine Level"></eg-grid-column>
+    <eg-grid-column name="floating" [hidden]="true" i18n-label label="Floating"></eg-grid-column>
+    <eg-grid-column name="holdable" [hidden]="true" i18n-label label="Holdable"></eg-grid-column>
+    <eg-grid-column name="loan_duration" [hidden]="true" i18n-label label="Loan Duration"></eg-grid-column>
+    <eg-grid-column name="location" [hidden]="true" i18n-label label="Location"></eg-grid-column>
+    <eg-grid-column name="mint_condition" [hidden]="true" i18n-label label="Mint Condition"></eg-grid-column>
+    <eg-grid-column name="opac_visible" [hidden]="true" i18n-label label="OPAC Visible"></eg-grid-column>
+    <eg-grid-column name="owning_lib" [hidden]="false" i18n-label label="Owning Lib"></eg-grid-column>
+    <eg-grid-column name="price" [hidden]="true" i18n-label label="Price"></eg-grid-column>
+    <eg-grid-column name="ref" [hidden]="true" i18n-label label="Reference"></eg-grid-column>
+    <eg-grid-column name="statcat_filter" [hidden]="true" i18n-label label="Stat Cat Filter"></eg-grid-column>
+    <eg-grid-column name="status" [hidden]="true" i18n-label label="Status"></eg-grid-column>
+    <eg-grid-column name="debug" [hidden]="true" i18n-label label="Debug JSON"></eg-grid-column>
+</eg-grid>
