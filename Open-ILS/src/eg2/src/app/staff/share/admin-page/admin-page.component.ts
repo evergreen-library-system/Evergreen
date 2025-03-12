@@ -689,7 +689,7 @@ export class AdminPageComponent implements OnInit {
     }
 
     hasNoHistory(): boolean {
-        return history.length === 0;
+        return history.length <= 1;
     }
 
     goBack() {
