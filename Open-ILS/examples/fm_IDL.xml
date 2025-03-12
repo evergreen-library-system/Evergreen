@@ -14069,7 +14069,7 @@ SELECT  usr,
 	<class id="cctt" controller="open-ils.cstore open-ils.pcrud" oils_obj:fieldmapper="config::copy_tag_type" oils_persist:tablename="config.copy_tag_type" reporter:label="Item Tag Types" oils_persist:field_safe="true" oils_persist:cardinality="low">
 		<fields oils_persist:primary="code">
 			<field reporter:label="Code" name="code" reporter:selector="label" reporter:datatype="id" oils_obj:required="true"/>
-			<field reporter:label="Label" name="label" reporter:datatype="text" oils_obj:required="true"/>
+			<field reporter:label="Tag Type" name="label" reporter:datatype="text" oils_obj:required="true"/>
 			<field reporter:label="Owner" name="owner" reporter:datatype="org_unit" oils_obj:required="true"/>
 		</fields>
 		<links>
@@ -14087,9 +14087,9 @@ SELECT  usr,
 	<class id="acpt" controller="open-ils.cstore open-ils.pcrud" oils_obj:fieldmapper="asset::copy_tag" oils_persist:tablename="asset.copy_tag" reporter:label="Item Tags" oils_persist:field_safe="true">
 		<fields oils_persist:primary="id" oils_persist:sequence="asset.copy_tag_id_seq">
 			<field reporter:label="ID" name="id" reporter:datatype="id"/>
-			<field reporter:label="Item Tag Type" name="tag_type" reporter:datatype="link"/>
-			<field reporter:label="Label" name="label" reporter:datatype="text" oils_obj:required="true"/>
-			<field reporter:label="Value" name="value" reporter:datatype="text" oils_obj:required="true"/>
+			<field reporter:label="Tag Type" name="tag_type" reporter:datatype="link"/>
+			<field reporter:label="Tag Label" name="label" reporter:datatype="text" oils_obj:required="true"/>
+			<field reporter:label="Tag Value" name="value" reporter:datatype="text" oils_obj:required="true"/>
 			<field reporter:label="Staff Note" name="staff_note" reporter:datatype="text"/>
 			<field reporter:label="Is OPAC Visible?" name="pub" reporter:datatype="bool"/>
 			<field reporter:label="Owner" name="owner" reporter:datatype="org_unit" oils_obj:required="true"/>
