@@ -29,6 +29,8 @@ Example:
 psql evergreen < Open-ILS/src/sql/Pg/LP2073561.fix.coded.value.map-post_3.13_upgrade.sql
 ----
 
+You may need additional options for the psql command depending on your environment.
+
 === Option 2: Restore from backup
 
 . From the old copy of your database, pre-dating an upgrade to 3.13
@@ -45,12 +47,15 @@ pg_dump evergreen --data-only --schema config \
 +
 [source,bash]
 ----
-pgsql evergreen -c "truncate config.coded_value_map CASCADE;"
-pgsql evergreen < ccvm_restore.sql
+psql evergreen -c "truncate config.coded_value_map CASCADE;"
+psql evergreen < ccvm_restore.sql
 ----
+
+You may need additional options for the psql and pg_dump commands
+depending on your environment.
 
 IMPORTANT: We highly recommend testing these steps on a non-production database!
 
 
-NOTE: If your Evergreen database was started on version 3.13 and above, then you can safely ignore these instructions.
+NOTE: If your Evergreen database started on version 3.13 and above, then you may ignore these instructions.
 
