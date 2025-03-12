@@ -43,6 +43,7 @@ CREATE TABLE actor.usr (
 	family_name		TEXT				NOT NULL,
 	suffix			TEXT,
     guardian        TEXT,
+    guardian_email        TEXT,
     pref_prefix TEXT,
     pref_first_given_name TEXT,
     pref_second_given_name TEXT,
@@ -192,6 +193,33 @@ CREATE TRIGGER user_ingest_name_keywords_tgr
     BEFORE INSERT OR UPDATE ON actor.usr 
     FOR EACH ROW EXECUTE PROCEDURE actor.user_ingest_name_keywords();
 
+CREATE OR REPLACE FUNCTION evergreen.json_delta(old_obj JSON, new_obj JSON, only_keys TEXT[] DEFAULT '{}') RETURNS JSONB AS $f$
+use JSON;
+use List::Util qw/uniq/;
+
+my $old = shift;
+my $new = shift;
+my $keylist = shift;
+
+$old = from_json($old) if (!ref($old));
+$new = from_json($new) if (!ref($new));
+
+my $delta = {};
+
+my @keys = @$keylist;
+@keys = (keys(%$old), keys(%$new)) if (!@keys);
+
+for my $key (uniq @keys) {
+    $$delta{$key} = [$$old{$key},$$new{$key}] if ((
+        ((!exists($$old{$key}) or !exists($$new{$key})) and not (!exists($$old{$key}) and !exists($$new{$key}))) # one exists
+        or ((!defined($$old{$key}) or !defined($$new{$key})) and not (!defined($$old{$key}) and !defined($$new{$key}))) # or one is defined
+        or ((defined($$old{$key}) and defined($$new{$key})) and $$old{$key} ne $$new{$key}) # or they do not match
+    ) and grep {defined} $$old{$key},$$new{$key}); # there is data
+}
+
+return to_json($delta);
+$f$ LANGUAGE PLPERLU;
+
 CREATE TABLE actor.usr_setting (
 	id	BIGSERIAL	PRIMARY KEY,
 	usr	INT		NOT NULL REFERENCES actor.usr ON DELETE CASCADE DEFERRABLE INITIALLY DEFERRED,
@@ -216,6 +244,29 @@ CREATE INDEX actor_usr_setting_phone_values_idx
 CREATE INDEX actor_usr_setting_phone_values_numeric_idx
     ON actor.usr_setting (evergreen.lowercase(REGEXP_REPLACE(value, '[^0-9]', '', 'g')))
     WHERE name IN ('opac.default_phone', 'opac.default_sms_notify');
+
+-- Start at 100 to avoid barcodes with long stretches of zeros early on.
+-- eCard barcodes have 7 auto-generated digits.
+CREATE SEQUENCE actor.auto_barcode_ecard_seq START 100 MAXVALUE 9999999;
+
+CREATE OR REPLACE FUNCTION actor.generate_barcode
+    (prefix TEXT, numchars INTEGER, seqname TEXT) RETURNS TEXT AS
+$$
+	SELECT NEXTVAL($3); -- bump the sequence up 1
+	SELECT CASE
+		WHEN LENGTH(CURRVAL($3)::TEXT) > $2 THEN NULL
+		ELSE $1 || LPAD(CURRVAL($3)::TEXT, $2, '0')
+		END;
+$$ LANGUAGE SQL;
+
+COMMENT ON FUNCTION actor.generate_barcode(TEXT, INTEGER, TEXT) IS $$
+Generate a barcode starting with 'prefix' and followed by 'numchars'
+numbers.  The auto portion numbers are generated from the provided
+sequence, guaranteeing uniquness across all barcodes generated with
+the same sequence.  The number is left-padded with zeros to meet the
+numchars size requirement.  Returns NULL if the sequnce value is
+higher than numchars can accommodate.
+$$;
 
 CREATE TABLE actor.stat_cat_sip_fields (
     field   CHAR(2) PRIMARY KEY,
@@ -581,6 +632,35 @@ CREATE TABLE actor.workstation (
 	name		TEXT	NOT NULL UNIQUE,
 	owning_lib	INT	NOT NULL REFERENCES actor.org_unit (id) DEFERRABLE INITIALLY DEFERRED
 );
+
+CREATE TABLE actor.usr_delta_history (
+    id          BIGSERIAL   PRIMARY KEY,
+    eg_user     INT         REFERENCES actor.usr (id) ON UPDATE CASCADE ON DELETE SET NULL,
+    eg_ws       INT         REFERENCES actor.workstation (id) ON UPDATE CASCADE ON DELETE SET NULL,
+    usr_id      INT         NOT NULL REFERENCES actor.usr (id) ON UPDATE CASCADE ON DELETE CASCADE,
+    change_time TIMESTAMPTZ NOT NULL DEFAULT NOW(),
+    delta       JSONB       NOT NULL,
+    keylist     TEXT[]
+);
+
+CREATE OR REPLACE FUNCTION actor.record_usr_delta() RETURNS TRIGGER AS $f$
+BEGIN
+    INSERT INTO actor.usr_delta_history (eg_user, eg_ws, usr_id, delta, keylist)
+        SELECT  a.eg_user,
+                a.eg_ws,
+                OLD.id,
+                evergreen.json_delta(to_json(OLD.*), to_json(NEW.*), TG_ARGV),
+                TG_ARGV
+          FROM  auditor.get_audit_info() a;
+    RETURN NEW;
+END;
+$f$ LANGUAGE PLPGSQL;
+
+CREATE TRIGGER record_usr_delta
+    AFTER UPDATE ON actor.usr
+    FOR EACH ROW
+    EXECUTE FUNCTION actor.record_usr_delta(last_update_time /* unquoted, literal comma-separated column names to include in the delta */);
+ALTER TABLE actor.usr DISABLE TRIGGER record_usr_delta;
 
 CREATE TABLE actor.usr_org_unit_opt_in (
 	id		SERIAL				PRIMARY KEY,

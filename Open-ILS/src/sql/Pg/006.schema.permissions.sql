@@ -41,7 +41,8 @@ CREATE TABLE permission.grp_tree (
 	application_perm	TEXT,
 	hold_priority       INT   NOT NULL DEFAULT 0,
     mfa_allowed     BOOL NOT NULL DEFAULT FALSE,
-    mfa_required    BOOL NOT NULL DEFAULT FALSE
+    mfa_required    BOOL NOT NULL DEFAULT FALSE,
+	erenew          BOOL NOT NULL DEFAULT TRUE
 );
 CREATE INDEX grp_tree_parent_idx ON permission.grp_tree (parent);
 
