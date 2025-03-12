@@ -301,7 +301,7 @@ export class MarcEditContext {
     }
 
     trackMoveUndo(field: MarcField, prevIndex: number) {
-        const position: FieldFocusRequest = {fieldId: field.fieldId, target: 'move'};
+        const position: FieldFocusRequest = {fieldId: field?.fieldId, target: 'move'};
 
         const action = new StructUndoRedoAction();
         action.field = field;
