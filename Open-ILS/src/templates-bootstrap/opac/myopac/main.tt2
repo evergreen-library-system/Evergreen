@@ -16,20 +16,13 @@
                 <div class="row">
                     <div class="col-12">
                      <span [% IF ctx.expired_card %]class="danger"[% END %]>
-                        [% l("Account Expiration Date - ") %]
+                        [% l("Account Expiration Date") %]:
                             [% date.format(ctx.parse_datetime(ctx.user.expire_date), DATE_FORMAT) %]
                         </span>
                     </div>
-                    <div class="col-12">
-                     [% IF ctx.expired_card %]
-                        <span>
-                            <em>
-                            [% l("<br>Your library card has expired.<br>Please contact a librarian to resolve this issue.", fmt_expire_date) %]
-                            </em>
-                        </span>
-                        [% END %]
+                    <div class="col-12" style="padding-bottom:20px;padding-top:20px;">
+                        [% ctx.account_renew_message %]
                     </div>
-                    <br>
                     <div class="col-12">
                      <a href="[% mkurl(ctx.opac_root _ '/myopac/circs') %]"
                             title="[% l('View My Checked Out Items') %]">

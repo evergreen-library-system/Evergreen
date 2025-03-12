@@ -14,13 +14,27 @@
             [% l('Kids\' Catalog') %]</a></li>
         [% END %]
             <!--Link 1-->
-        [% IF ctx.get_org_setting(ctx.physical_loc || ctx.aou_tree.id, 'opac.allow_pending_user') && !ctx.user %]
-            <li class="nav-item"><a class="nav-link" href="[% mkurl(ctx.opac_root _ '/register') %]">[%
-            l('Request Library Card') %]</a></li>
-        [% ELSE %]
-            <li class="nav-item"><a class="nav-link" href="#">[% l('Example Link 1') %]</a></li>
-        [% END %]
-            <li class="nav-item"><a class="nav-link" href="#">[% l('Example Link 2') %]</a></li>
+            [% IF ctx.get_org_setting(ctx.physical_loc || ctx.aou_tree.id,
+                              'opac.ecard_registration_enabled') %]
+                <li class="nav-item">
+                    <a class="nav-link" href="[% mkurl(ctx.opac_root _ '/ecard/form') %]"> [% l('Request Electronic Card') %]</a>
+                </li>
+            [% ELSE %]
+                [% IF ctx.get_org_setting(ctx.physical_loc || ctx.aou_tree.id, 'opac.allow_pending_user') && !ctx.user %]
+                    <li class="nav-item"><a class="nav-link" href="[% mkurl(ctx.opac_root _ '/register') %]">[%
+                    l('Request Library Card') %]</a></li>
+                [% ELSE %]
+                    <li class="nav-item"><a class="nav-link" href="#">[% l('Example Link 1') %]</a></li>
+                [% END %]
+            [% END %]
+            [% IF ctx.get_org_setting(ctx.physical_loc || ctx.aou_tree.id,
+                              'opac.ecard_verification_enabled') %]
+                <li class="nav-item">
+                    <a class="nav-link" href="[% mkurl(ctx.opac_root _ '/ecard/verify') %]"> [% l('Verify Electronic Card') %]</a>
+                </li>
+            [% ELSE %]
+                <li class="nav-item"><a class="nav-link" href="#">[% l('Example Link 2') %]</a></li>
+            [% END %]
             <li class="nav-item"><a class="nav-link" href="#">[% l('Example Link 3') %]</a></li>
             <li class="nav-item"><a class="nav-link" href="#">[% l('Example Link 4') %]</a></li>
         </ul>

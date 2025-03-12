@@ -1,0 +1,111 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <title>[% l('Confirm an eCard Account') %]</title>
+
+    <link rel="stylesheet" href="[% ctx.media_prefix %]/js/ui/default/staff/build/css/bootstrap.min.css" />
+
+    <!-- local CSS -->
+    <style>
+      #ecard-container-wrapper {
+        width: 98%;
+      }
+      #ecard-container {
+        margin-bottom: 20px;
+        color: #585d5e;
+        font-family: 'Open Sans', sans-serif;
+        letter-spacing: .5pt;
+        font-size: 15px;
+        width: 900px; /* to match bibliocms */
+        margin-left: auto;
+        margin-right: auto;
+      }
+    </style>
+
+    <script>
+      function handleSubmit() {
+        return true;
+      }
+
+      function handleCancel() {
+        // unused at time of writing, keep around just in case.
+        return false; // avoid submit
+      }
+    </script>
+
+  </head>
+  <body>
+
+    <div id='ecard-container-wrapper' role="main">
+      <div id='ecard-container'>
+
+        <div id='ecard-preamble'>
+          <h1>Confirm Your Library eCard</h1>
+          <p>
+            Please fill out the form below to confirm your eCard account.
+          </p>
+          [% IF ctx.verify_failed %]
+          <div id='ecard-verify-failed'>
+            <div class="alert alert-warning" role="alert">
+              <p>
+                It appears that your confirmation did not go through.
+                This could happen for a variety of reasons:
+              </p>
+              <br/>
+              <ul>
+                <li>You mistyped the confirmation code</li>
+                <li>
+                  You typed in the code, but you provided it more than 30
+                  days after your application. If so, please feel free to reapply.
+                </li>
+                <li>You already confirmed, so your eCard is ready to use!</li>
+              </ul>
+              <br/>
+              <p>
+                If you have any questions about how to confirm your eCard
+                please contact your library.
+              </p>
+            </div>
+          </div>
+          [% END %]
+        </div>
+
+        [% IF ctx.verify_success %]
+        <div id='ecard-verify-success'>
+          <div class="alert alert-success" role="alert">
+            <p>
+            Congratulations! You have successfully confirmed your Library eCard!
+            </p>
+          </div>
+        </div>
+        [% ELSE %]
+        <div id='ecard-verify-form' class='col-md-6'>
+          <form method='POST' onsubmit="return handleSubmit()">
+            <div class="form-group">
+              <label for="barcode">eCard Number</label>
+              <input type="text" class="form-control" id="barcode"
+                name="barcode" placeholder="eCard Number"
+                value="[% ctx.barcode | html %]"/>
+            </div>
+            <div class="form-group">
+              <label for="verification_code">6-Character Confirmation Code</label>
+              <input type="text" class="form-control" id="verification_code"
+                name="verification_code" placeholder="Confirmation Code"
+                value="[% ctx.verify_code | html %]"/>
+            </div>
+            <button type="submit" class="btn btn-default">Submit</button>
+          </form>
+        </div>
+        <div style="clear:both"></div>
+        [% END %]
+
+      </div>
+    </div>
+
+    <!-- unlike the quipu form page, we have to manaully load jquery here -->
+    <script src="[% ctx.media_prefix %]/js/ui/default/common/build/js/jquery.min.js"></script>
+
+  </body>
+</html>
+

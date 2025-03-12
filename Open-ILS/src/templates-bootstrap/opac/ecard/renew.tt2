@@ -1,0 +1,36 @@
+[%- PROCESS "opac/parts/header.tt2";
+    PROCESS "opac/parts/org_selector.tt2";
+    WRAPPER "opac/parts/base.tt2";
+    INCLUDE "opac/parts/topnav.tt2";
+    ctx.page_title = l("Renew Your Library Card");
+    ctx_org = ctx.physical_loc || ctx.search_ou || ctx.aou_tree.id;
+%]
+
+<div id="content-wrapper">
+<div id="main-content-register">
+<h2 class="sr-only">[% l('Renew Your Library Card') %]</h2>
+[% IF ctx.ecard.enabled && ctx.ecard.quipu_id %]
+[% IF ctx.user %]
+<!-- eCARD scripts here -->
+<script id="eRenewServer" src="https://ecard.quipugroup.net/js/eRenewEmbed.js"></script>
+<script>loadQGeRenew([% ctx.ecard.quipu_id %])</script>
+<input type="hidden" id="patronID" value="[% ctx.user.id %]" />
+<div id="eRenew" data-language="en" data-branchid="[% cts_org %]"></div>
+<!-- eCARD requires JavaScript in order to display the registration form -->
+<!-- The following will detect if JavaScript is enabled on the patron's browser -->
+<noscript>
+<h2 style="color:red;">Warning - JavaScript Required</h2>
+<p>For full functionality of this web page it is necessary to enable JavaScript in your browser. For more information on most browsers, try <a href="http://www.enable-javascript.com/" target="_blank">How to enable JavaScript</a> OR <a href="http://activatejavascript.org/en/instructions" target="_blank">activatejavascript.org</a><
+</p>
+</noscript>
+[% ELSE %]
+<h2 styl="color:red;">[% l("You must be logged in to use this feature.") %]</h2>
+[% END %]
+[% ELSE %]
+<p>
+[% l('Electronic card registration is not enabled for this library.') %]
+</p>
+[% END #IF %]
+</div>
+</div>
+[% END #WRAPPER %]
