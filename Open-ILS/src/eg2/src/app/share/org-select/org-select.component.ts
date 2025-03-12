@@ -9,6 +9,7 @@ import {OrgService} from '@eg/core/org.service';
 import {IdlObject} from '@eg/core/idl.service';
 import {PermService} from '@eg/core/perm.service';
 import {NgbTypeahead, NgbTypeaheadSelectItemEvent} from '@ng-bootstrap/ng-bootstrap';
+import {FormControl, FormGroup} from '@angular/forms';
 
 /** Org unit selector
  *
@@ -64,6 +65,7 @@ export class OrgSelectComponent implements OnInit, AfterViewInit {
     click$ = new Subject<string>();
     valueFromSetting: number = null;
     sortedOrgs: IdlObject[] = [];
+    orgSelectGroup: FormGroup;
 
     // Disable the entire input
     @Input() disabled: boolean;
@@ -202,6 +204,9 @@ export class OrgSelectComponent implements OnInit, AfterViewInit {
       private elm: ElementRef,
     ) {
         this.orgClassCallback = (orgId: number): string => '';
+        this.orgSelectGroup = new FormGroup({
+            orgSelect: new FormControl()
+        });
     }
 
     ngOnInit() {
@@ -346,17 +351,13 @@ export class OrgSelectComponent implements OnInit, AfterViewInit {
         }
     }
 
-    // Modifies the classlist of the input to show a visual change.
-    // FIXME I don't think angular forms notice this but I don't understand
-    //       angular forms to do it properly :(
     updateValidity(newOrg: number) {
         if (newOrg && this.required) {
-            const node = document.getElementById(`${this.domId}`);
+            // console.debug('Checking org validity via FormControl', this.orgSelectGroup.controls.orgSelect);
             if (this.isValidOrg(newOrg)) {
-                node.classList.replace('ng-invalid', 'ng-valid');
-            } else {
-                node.classList.replace('ng-valid', 'ng-invalid');
+                return this.orgSelectGroup.controls.orgSelect.valid;
             }
+            return this.orgSelectGroup.controls.orgSelect.invalid;
         }
     }
 

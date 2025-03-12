@@ -8,7 +8,7 @@
   <span>{{selected.label}}</span>
 </ng-container>
 
-<ng-container *ngIf="!readOnly">
+<ng-container *ngIf="!readOnly" [formGroup]="orgSelectGroup">
   <input type="text" 
     class="form-control {{moreClasses}}"
     id="{{domId}}"
@@ -29,6 +29,7 @@
     (selectItem)="orgChanged($event)"
     container="body"
     #instance="ngbTypeahead"
+    formControlName="orgSelect"
   />
 
 </ng-container>
