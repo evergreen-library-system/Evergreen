@@ -169,6 +169,7 @@
   --border: light-dark(var(--bs-gray-300), var(--bs-gray-700));
   --border-thick: light-dark(var(--bs-gray-400), var(--bs-gray-600));
   --inactive: light-dark(var(--bs-gray-800), var(--bs-gray-400));
+  --form-control-border: light-dark(var(--bs-gray-500), var(--bs-gray-700));
   --form-check-border: light-dark(var(--bs-gray-300), var(--bs-gray-800));
 
   --bs-body-color: light-dark(var(--bs-gray-900), var(--bs-gray-400));
