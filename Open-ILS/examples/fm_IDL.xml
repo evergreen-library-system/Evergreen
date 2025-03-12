@@ -4162,6 +4162,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 			<field reporter:label="Preferred Last Name" name="pref_family_name" reporter:datatype="text"/>
 			<field reporter:label="Preferred Suffix" name="pref_suffix" reporter:datatype="text"/>
 			<field reporter:label="Parent/Guardian" name="guardian" reporter:datatype="text"/>
+			<field reporter:label="Parent/Guardian Email Address" name="guardian_email" reporter:datatype="text"/>
 			<field reporter:label="Name Keywords" name="name_keywords" reporter:datatype="text"/>
 			<field reporter:label="Name Keyword internal tsvector" name="name_kw_tsvector" reporter:datatype="text"/>
 			<field reporter:label="Additional Permission Groups" name="groups" oils_persist:virtual="true" reporter:datatype="link"/>
@@ -4237,6 +4238,29 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 				<retrieve/>
 				<update permission="ADMIN_USER_ACTIVITY_TYPE" global_required="true"/>
 				<delete permission="ADMIN_USER_ACTIVITY_TYPE" global_required="true"/>
+			</actions>
+		</permacrud>
+	</class>
+	<class id="audh" controller="open-ils.cstore open-ils.pcrud" oils_obj:fieldmapper="actor::user_delta_history" oils_persist:tablename="actor.usr_delta_history" oils_persist:readonly="true" reporter:core="true" reporter:label="ILS User Change History">
+		<fields oils_persist:primary="id" oils_persist:sequence="actor.usr_delta_history_id_seq">
+			<field name="id" reporter:label="ID" reporter:datatype="id" reporter:selector="label"/>
+			<field name="eg_user" reporter:label="Staff User" reporter:datatype="link"/>
+			<field reporter:label="Workstation" name="eg_ws" reporter:datatype="link" oils_obj:required="true"/>
+			<field name="usr_id" reporter:label="Target User" reporter:datatype="link"/>
+			<field name="change_time" reporter:label="Change Time" reporter:datatype="timestamp"/>
+			<field name="delta" reporter:label="Changes (JSON)" reporter:datatype="text"/>
+			<field name="keylist" reporter:label="Key List" reporter:datatype="text"/>
+		</fields>
+        <links>
+			<link field="eg_user" reltype="has_a" key="id" map="" class="au"/>
+			<link field="eg_ws" reltype="has_a" key="id" map="" class="aws"/>
+			<link field="usr_id" reltype="has_a" key="id" map="" class="au"/>
+        </links>
+		<permacrud xmlns="http://open-ils.org/spec/opensrf/IDL/permacrud/v1">
+			<actions>
+				<retrieve permission="VIEW_USER user_request.view">
+					<context link="usr_id" field="home_ou" />
+				</retrieve>
 			</actions>
 		</permacrud>
 	</class>
@@ -8559,6 +8583,7 @@ SELECT  usr,
 			<field reporter:label="Hold Priority" name="hold_priority" reporter:datatype="int"/>
 			<field reporter:label="MFA Allowed?" name="mfa_allowed" reporter:datatype="bool"/>
 			<field reporter:label="MFA Required?" name="mfa_required" reporter:datatype="bool"/>
+			<field reporter:label="E-renew?" name="erenew" reporter:datatype="bool"/>
 		</fields>
 		<links>
 			<link field="parent" reltype="has_a" key="id" map="" class="pgt"/>
