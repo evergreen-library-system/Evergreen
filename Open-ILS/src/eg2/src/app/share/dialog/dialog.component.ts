@@ -1,4 +1,5 @@
-import {Component, Input, OnInit, ViewChild, TemplateRef, EventEmitter} from '@angular/core';
+import {DOCUMENT} from '@angular/common';
+import {Component, Input, OnInit, ViewChild, TemplateRef, EventEmitter, inject, ElementRef} from '@angular/core';
 import {Observable, Observer} from 'rxjs';
 import {NgbModal, NgbModalRef, NgbModalOptions} from '@ng-bootstrap/ng-bootstrap';
 
@@ -47,6 +48,9 @@ export class DialogComponent implements OnInit {
     @ViewChild('dialogContent', {static: false}) dialogContent: TemplateRef<any>;
 
     identifier: number = DialogComponent.counter++;
+    returnFocusTo: any;
+    private _document = inject(DOCUMENT);
+    private _elRef = inject(ElementRef<HTMLElement>);
 
     // Emitted after open() is called on the ngbModal.
     // Note when overriding open(), this will not fire unless also
@@ -58,6 +62,8 @@ export class DialogComponent implements OnInit {
 
     // The modalRef allows direct control of the modal instance.
     protected modalRef: NgbModalRef = null;
+
+    public focusable: string;
 
     constructor(private modalService: NgbModal) {}
 
@@ -73,6 +79,26 @@ export class DialogComponent implements OnInit {
 
     ngOnInit() {
         this.onOpen$ = new EventEmitter<any>();
+
+        const notFocusable = ':is(:disabled, [inert], [inert] *, [hidden], [hidden] *, [tabindex^="-"])';
+        const isFocusable = [
+            '[egAutofocus]',
+            '[ngbAutofocus]',
+            'a[href]',
+            'area[href]',
+            'input:not([type="hidden"]):not(fieldset:disabled *)',
+            'select:not(fieldset:disabled *)',
+            'textarea:not(fieldset:disabled *)',
+            'details > summary:first-of-type:not(details:not([open]) > details summary)',
+            'details:not(:has(> summary)):not(details:not([open]) > details)',
+            'button',
+            'iframe',
+            'audio[controls]',
+            'video[controls]',
+            '[contenteditable]',
+            '[tabindex]'
+        ].join(', ');
+        this.focusable = `:is(${isFocusable}):not(${notFocusable})`;
     }
 
     open(options: NgbModalOptions = { backdrop: 'static' }): Observable<any> {
@@ -87,10 +113,15 @@ export class DialogComponent implements OnInit {
 
         this.modalRef = this.modalService.open(this.dialogContent, options);
         DialogComponent.instances[this.identifier] = this;
+        this.returnFocusTo = this._document.activeElement;
+        // console.debug('this.returnFocusTo', this.returnFocusTo);
 
         if (this.onOpen$) {
             // Let the digest cycle complete
-            setTimeout(() => this.onOpen$.emit(true));
+            setTimeout(() => {
+                this.onOpen$.emit(true);
+                this._setFocus();
+            });
         }
 
         return new Observable(observer => {
@@ -107,6 +138,21 @@ export class DialogComponent implements OnInit {
                 dismissed => this.finalize()
             );
         });
+    }
+
+    // Look for the first focusable element in .modal-body.
+    // If none, focus will default to the 'X' close button, if present, or the first footer button
+    private _setFocus() {
+        if (!this.modalRef) {return;}
+        if (!this._elRef.nativeElement.contains(this._document.activeElement)) {
+            const elementToFocus = this._elRef.nativeElement.querySelector('.modal-body ' + this.focusable) as HTMLElement;
+            // console.debug('elementToFocus', elementToFocus);
+            setTimeout(() => elementToFocus?.focus());
+        }
+    }
+
+    private _restoreFocus() {
+        setTimeout(() => this.returnFocusTo.focus());
     }
 
     // Send a response to the caller without closing the dialog.
@@ -150,8 +196,7 @@ export class DialogComponent implements OnInit {
         }
         this.modalRef = null;
         delete DialogComponent.instances[this.identifier];
+        this._restoreFocus();
     }
-
 }
-
 
