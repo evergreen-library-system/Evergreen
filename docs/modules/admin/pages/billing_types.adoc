@@ -1,0 +1,19 @@
+= Billing Types =
+:toc:
+
+== Introduction ==
+_Billing Types_ is an administrative interface that manages the different types of bills the user can apply to patron accounts.  Some of these are system generated and some are bills you can manually apply.
+
+To access the interface, go to _Administration_ -> _Server Administration_ -> _Billing Types_.
+
+image::billing_types/billing_types_interface.png[Billing Types interface]
+
+== New Billing Type ==
+After selecting the appropriate org unit/branch or CONS, click on _New Billing Type_ in the upper left corner.
+
+Fill out the form as needed.
+
+image::billing_types/billing_types_form.png[New Billing Type form]
+
+[NOTE]
+Setting a _Default Price_ will automatically apply the said price whenever that billing is added to the patron account.  This can be handy for replacement barcodes, processing fees, etc.
