@@ -98,6 +98,9 @@
           <input ng-show="showExtras" type="text" class="form-control" aria-label="[% l('Parent/Guardian') %]"
             ng-model="searchArgs.guardian" placeholder="[% l('Parent/Guardian') %]"/>
 
+          <input ng-show="showExtras" type="text" class="form-control" aria-label="[% l('Parent/Guardian Email') %]"
+            ng-model="searchArgs.guardian_email" placeholder="[% l('Parent/Guardian Email') %]"/>
+
             <input ng-show="showExtras" type="text" class="form-control" ng-model="searchArgs.dob_year"
             aria-label="[% l('DOB Year') %]"
             placeholder="[% l('DOB Year') %]" title="[% l('DOB Year') %]"/>

@@ -90,6 +90,7 @@ function load() {
     setExpireDate.attr("label", localeStrings.UPDATE_EXPIRE_DATE);
     dojo.byId('verifyPassword').innerHTML = localeStrings.VERIFY_PASSWORD;
     dojo.byId('parentGuardian').innerHTML = localeStrings.PARENT_OR_GUARDIAN;
+    dojo.byId('parentGuardianEmail').innerHTML = localeStrings.PARENT_OR_GUARDIAN_EMAIL;
     dojo.byId('userSettings').innerHTML = localeStrings.USER_SETTINGS;
     dojo.byId('statCats').innerHTML = localeStrings.STAT_CATS;
     dojo.byId('uedit-all-cards-barcode').innerHTML = localeStrings.ALL_CARDS_BARCODE;

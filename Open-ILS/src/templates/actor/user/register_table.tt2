@@ -34,7 +34,7 @@
     <tr fmclass='au' fmfield='juvenile'></tr>
     <tr fmclass='au' fmfield='ident_type' required='required'></tr>
     <tr fmclass='au' fmfield='ident_value'></tr>
-    <tr fmclass='au' fmfield='ident_value2'><td></td><td id='parentGuardian'></td></t></tr>
+    <tr fmclass='au' fmfield='ident_value2'><td></td><td id='parentGuardian'></td></tr>
     <tr fmclass='au' fmfield='photo_url'></tr>
     <tr fmclass='au' fmfield='email'></tr>
     <tr fmclass='au' fmfield='day_phone'></tr>

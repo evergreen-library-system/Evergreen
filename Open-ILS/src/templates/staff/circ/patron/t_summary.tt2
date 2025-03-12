@@ -53,7 +53,7 @@
     </div>
     <div class="row">
       <div class="col-md-5">[% l('Parent/Guardian') %]</div>
-      <div class="col-md-7">{{patron().guardian()}}</div>
+      <div class="col-md-7">{{patron().guardian()}}<br />{{patron().guardian_email()}}</div>
     </div>
     <div class="row">
       <div class="col-md-5">[% l('Last Activity') %]</div>

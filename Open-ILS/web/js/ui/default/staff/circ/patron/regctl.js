@@ -412,6 +412,8 @@ angular.module('egCoreMod')
             'ui.patron.edit.aua.county.require',
             'ui.patron.edit.au.guardian.show',
             'ui.patron.edit.au.guardian.suggest',
+            'ui.patron.edit.au.guardian_email.show',
+            'ui.patron.edit.au.guardian_email.suggest',
             'ui.patron.edit.guardian_required_for_juv',
             'webstaff.format.dates',
             'ui.patron.edit.default_suggested',
@@ -1551,6 +1553,7 @@ function($scope , $routeParams , $q , $uibModal , $window , egCore ,
             if (newVal === oldVal) return;
             if (newVal) {
                 field_visibility['au.guardian'] = 3; // required
+                field_visibility['au.guardian_email'] = 2; // shown
             } else {
                 // Value will be reassessed by show_field()
                 delete field_visibility['au.guardian'];
@@ -1619,6 +1622,8 @@ function($scope , $routeParams , $q , $uibModal , $window , egCore ,
         'au.family_name' : 3,
         'au.pref_first_given_name' : 2,
         'au.pref_family_name' : 2,
+        'au.guardian' : 1,
+        'au.guardian_email' : 1,
         'au.ident_type' : 3,
         'au.ident_type2' : 2,
         'au.photo_url' : 2,

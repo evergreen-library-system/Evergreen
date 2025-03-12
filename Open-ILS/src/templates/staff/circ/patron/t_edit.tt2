@@ -416,6 +416,14 @@ within the "form" by name for validation.
   </div>
 </div>
 
+<div class="row reg-field-row" ng-show="show_field('au.guardian_email')">
+  [% draw_field_label('au', 'guardian_email') %]
+  [% draw_form_input('au', 'guardian_email'); %]
+  <div class="col-md-6 patron-reg-example">
+    [% draw_example_text('au', 'guardian_email') %]
+  </div>
+</div>
+
 <!-- ident_type -->
 
 <div class="row reg-field-row" ng-show="show_field('au.ident_type')">

@@ -17,6 +17,7 @@
     "RESET_PASSWORD" : "Generate Password",
     "VERIFY_PASSWORD" : "Verify Password",
     "PARENT_OR_GUARDIAN" : "Parent/Guardian",
+    "PARENT_OR_GUARDIAN_EMAIL" : "Parent/Guardian Email",
     "USER_SETTINGS" : "User Settings",
     "ADDRESS_HEADER" : "Address",
     "ADDRESS_MAILING" : "Mailing",
