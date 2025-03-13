@@ -405,18 +405,26 @@ export class HoldingsMaintenanceComponent implements OnInit {
         traverseOrg(this.holdingsTree.root);
     }
 
-    // Org node children are sorted with any child org nodes pushed to the
-    // front, followed by the call number nodes sorted alphabetcially by label.
+    // Org node children are sorted by call number nodes attached to the org unit first,
+    // followed by child org unit nodes. Peers are sorted alphabetically by label.
+    // Example: If SYS2-BR3 has holdings but also has a bookmobile SYS2-BR3-BM1
+    // that has its own holdings then the hierarchy should display as:
+    // SYS2
+    // - BR3
+    // - - MR248 (BR3's holdings)
+    // - - BM1
+    // - - - MR248 (BM1's holdings)
+
     sortOrgNodeChildren(node: HoldingsTreeNode) {
         node.children = node.children.sort((a, b) => {
             if (a.nodeType === 'org') {
                 if (b.nodeType === 'org') {
                     return a.target.shortname() < b.target.shortname() ? -1 : 1;
                 } else {
-                    return -1;
+                    return 1;
                 }
             } else if (b.nodeType === 'org') {
-                return 1;
+                return -1;
             } else {
                 // TODO: should this use label sortkey instead of
                 // the compiled call number label?
