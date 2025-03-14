@@ -328,6 +328,11 @@ UNION ALL
 CREATE OR REPLACE FUNCTION action.age_circ_on_delete () RETURNS TRIGGER AS $$
 DECLARE
 found char := 'N';
+patron_ou               INTEGER;
+kept_year               INTEGER;
+kept_postcode           TEXT;
+donot_keep_year         BOOLEAN;
+donot_keep_postcode     BOOLEAN;
 BEGIN
 
     -- If there are any renewals for this circulation, don't archive or delete
@@ -342,10 +347,25 @@ BEGIN
         RETURN NULL;  -- don't delete
 	END IF;
 
+    SELECT usr_home_ou FROM action.all_circulation WHERE id = OLD.id INTO patron_ou;
+
+    SELECT value::BOOLEAN FROM actor.org_unit_setting WHERE name = 'circ.do_not_retain_year_of_birth_on_aged'
+    AND org_unit IN (SELECT id FROM actor.org_unit_ancestors(patron_ou)) ORDER BY org_unit DESC LIMIT 1
+    INTO donot_keep_year;
+    IF donot_keep_year IS NULL THEN donot_keep_year = FALSE; END IF; 
+        
+    SELECT value::BOOLEAN FROM actor.org_unit_setting WHERE name = 'circ.do_not_retain_post_code_on_aged'
+    AND org_unit IN (SELECT id FROM actor.org_unit_ancestors(patron_ou)) ORDER BY org_unit DESC LIMIT 1
+    INTO donot_keep_postcode;
+    IF donot_keep_postcode IS NULL THEN donot_keep_postcode = FALSE; END IF;
+        
+    IF donot_keep_year = TRUE THEN kept_year = NULL; ELSE kept_year = (SELECT usr_birth_year FROM action.all_circulation WHERE id = OLD.id); END IF;
+    IF donot_keep_postcode = TRUE THEN kept_postcode = NULL; ELSE kept_postcode = (SELECT usr_post_code FROM action.all_circulation WHERE id = OLD.id); END IF;
+
     -- Archive a copy of the old row to action.aged_circulation
 
     INSERT INTO action.aged_circulation
-        (id,usr_post_code, usr_home_ou, usr_profile, usr_birth_year, copy_call_number, copy_location,
+        (id, kept_postcode, usr_home_ou, usr_profile, kept_year, copy_call_number, copy_location,
         copy_owning_lib, copy_circ_lib, copy_bib_record, xact_start, xact_finish, target_copy,
         circ_lib, circ_staff, checkin_staff, checkin_lib, renewal_remaining, grace_period, due_date,
         stop_fines_time, checkin_time, create_time, duration, fine_interval, recurring_fine,
@@ -815,14 +835,34 @@ CREATE OR REPLACE VIEW action.all_hold_request AS
 
 CREATE OR REPLACE FUNCTION action.age_hold_on_delete () RETURNS TRIGGER AS $$
 DECLARE
+patron_ou               INTEGER;
+kept_year               INTEGER;
+kept_postcode           TEXT;
+donot_keep_year         BOOLEAN;
+donot_keep_postcode     BOOLEAN;
 BEGIN
+    SELECT usr_home_ou FROM action.all_hold_request WHERE id = OLD.id INTO patron_ou;
+
+    SELECT value::BOOLEAN FROM actor.org_unit_setting WHERE name = 'holds.do_not_retain_year_of_birth_on_aged'
+    AND org_unit IN (SELECT id FROM actor.org_unit_ancestors(patron_ou)) ORDER BY org_unit DESC LIMIT 1
+    INTO donot_keep_year;
+    IF donot_keep_year IS NULL THEN donot_keep_year = FALSE; END IF;
+
+    SELECT value::BOOLEAN FROM actor.org_unit_setting WHERE name = 'holds.do_not_retain_post_code_on_aged'
+    AND org_unit IN (SELECT id FROM actor.org_unit_ancestors(patron_ou)) ORDER BY org_unit DESC LIMIT 1
+    INTO donot_keep_postcode;
+    IF donot_keep_postcode IS NULL THEN donot_keep_postcode = FALSE; END IF;
+
+    IF donot_keep_year = TRUE THEN kept_year = NULL; ELSE kept_year = (SELECT usr_birth_year FROM action.all_hold_request WHERE id = OLD.id); END IF;
+    IF donot_keep_postcode = TRUE THEN kept_postcode = NULL; ELSE kept_postcode = (SELECT usr_post_code FROM action.all_hold_request WHERE id = OLD.id); END IF;
+
     -- Archive a copy of the old row to action.aged_hold_request
 
     INSERT INTO action.aged_hold_request
-           (usr_post_code,
+           (kept_postcode,
             usr_home_ou,
             usr_profile,
-            usr_birth_year,
+            kept_year,
             staff_placed,
             id,
             request_time,
