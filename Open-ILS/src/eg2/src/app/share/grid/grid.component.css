@@ -20,9 +20,10 @@
 .eg-grid-body-row.selected:focus,
 .eg-grid-row:focus,
 .eg-grid-cell:focus {
-  outline: none !important;
+  outline: none;
 }
 
+.eg-grid:focus-visible,
 .eg-grid-wrapper:focus-visible {
   outline: 2px solid rgba(var(--bs-primary-rgb), 0.25);
   outline-offset: 5px;
