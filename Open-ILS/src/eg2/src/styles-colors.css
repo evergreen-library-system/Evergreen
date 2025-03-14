@@ -193,6 +193,9 @@
   --success-border: #00593d;
   --success-hover: #157146; 
   --success-disabled: #448768; /* desaturated */
+  --bs-tertiary-bg: var(--bs-body-bg-highlight);
+  --bs-border-color: var(--border);
+
   --success-disabled-rgb: 68, 135, 104;
   --success-text-light: #dff0d8;
   --success-text-light-rgb: 223, 240, 216;
