@@ -7,11 +7,11 @@
 
 <div class="row">
   <div class="col text-end">
-    <button type="button" class="btn btn-danger" *ngIf="currentCourse && (courseIsArchived || currentCourse.is_archived()) === 'f' "
+    <button type="button" class="btn btn-destroy" *ngIf="currentCourse && (courseIsArchived || currentCourse.is_archived()) === 'f' "
       (click)="archiveCourse()">
       <span class="align-middle">Archive Course</span>
     </button>
-    <button type="button" class="btn btn-primary"
+    <button type="button" class="btn btn-normal"
       (click)="unarchiveCourse()" *ngIf="currentCourse && (courseIsArchived || currentCourse.is_archived()) === 't' ">
       <span class="align-middle">Unarchive Course</span>
     </button>
