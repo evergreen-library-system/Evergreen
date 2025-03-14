@@ -503,6 +503,7 @@ button.input-group-text.text-danger {
 .input-group .btn:not([class*="btn-"]),
 .input-group .btn[class*="btn-outline-"] {
   background-color: var(--btn-gray-bg);
+  color: var(--bs-body-color);
 }
 
 .btn.btn-link {

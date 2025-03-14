@@ -159,4 +159,6 @@
   --bs-red-300: #EA868F;
   --bs-red-200: #F1AFB5;
   --bs-red-100: #f8d7da;
+  --bs-tertiary-bg: var(--bs-body-bg-highlight);
+  --bs-border-color: var(--border);
 }
