@@ -10,23 +10,28 @@
     </span>
     <hr class="p-1" />
   </div>
-  <div class="form-group">
+  <div class="form-group mb-3">
     <label class="form-label" for="order-agency-input" i18n>Ordering Agency</label>
     <eg-org-select (onChange)="orgChange($event)" domId="order-agency-input"
     [limitPerms]="['CREATE_PURCHASE_ORDER']">
     </eg-org-select>
   </div>
-  <div class="form-group">
-    <label class="form-label" for="name-input" i18n>Name (optional)</label>
+  <div class="form-group mb-3">
+    <label class="form-label" for="name-input" i18n>PO Name (optional)</label>
     <input id="name-input" class="form-control" type="text" [ngModel]="poName"
       (ngModelChange)="poName = $event; checkDuplicatePoName()"
+      aria-describedby="name-dupe-error name-auto-number"
     />
+    <p class="form-text" id="name-auto-number">
+      You may enter a name for this PO for future reference. 
+      POs without a name will be referenced by number.
+    </p>
   </div>
-  <div *ngIf="dupeResults.dupeFound" class="alert alert-warning" i18n>
+  <div *ngIf="dupeResults.dupeFound" id="name-dupe-error" class="alert alert-warning" i18n>
     This name is already in used by another PO: 
     <a target="_blank" routerLink="/staff/acq/po/{{dupeResults.dupePoId}}">View PO</a>
   </div>
-  <div class="form-group">
+  <div class="form-group mb-3">
     <label class="form-label" for="name-input" i18n>Provider</label>
     <eg-combobox domId="provider-input" [(ngModel)]="provider"
       [asyncSupportsEmptyTermClick]="true"
@@ -34,14 +39,14 @@
       [idlQueryAnd]="{active: 't'}" idlClass="acqpro">
     </eg-combobox>
   </div>
-  <div class="form-group form-check">
+  <div class="form-group form-check mb-3">
     <input type="checkbox" class="form-check-input" 
       [(ngModel)]="prepaymentRequired" id="prepayment-required">
     <label class="form-label form-check-label" for="prepayment-required" i18n>
       Prepayment Required
     </label>
   </div>
-  <div class="form-group form-check" *ngIf="lineitems.length">
+  <div class="form-group form-check mb-3" *ngIf="lineitems.length">
     <input type="checkbox" class="form-check-input" 
       [(ngModel)]="createAssets" id="create-assets">
     <label class="form-label form-check-label" for="create-assets" i18n>
