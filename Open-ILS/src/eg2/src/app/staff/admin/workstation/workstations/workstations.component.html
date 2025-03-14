@@ -51,7 +51,7 @@
             title="Workstation Name"
             [(ngModel)]='newName'/>
           <div class="input-group-btn">
-            <button type="button" class="btn btn-outline-dark" 
+            <button type="button" class="btn btn-outline-dark rounded-0 rounded-end"
               [disabled]="!newName || !newOwner"
               (click)="registerWorkstation()">
               <span i18n>Register</span>
@@ -60,7 +60,7 @@
         </div>
       </div>
     </div>
-    <div class="row mt-3 pt-3 border border-start-0 border-end-0 border-bottom-0 border-light">
+    <div class="row mt-3 pt-3">
       <div class="col">
         <label class="form-label" for="registeredWS" i18n>Workstations Registered With This Browser</label>
       </div>
