@@ -10,8 +10,8 @@
       <div class="col-lg-10 offset-lg-1">
         <div class="form-check">
           <input class="form-check-input" type="radio" name="lead"
-            value="{{part.id()}}" [(ngModel)]="leadPart" id="lead-part-{{part.id}}">
-          <label for="lead-part-{{part.id}}" class="form-label form-check-label">{{part.label()}}</label>
+            value="{{part.id()}}" [(ngModel)]="leadPart" id="lead-part-{{part.id()}}">
+          <label for="lead-part-{{part.id()}}" class="form-label form-check-label">{{part.label()}}</label>
         </div>
       </div>
     </div>
