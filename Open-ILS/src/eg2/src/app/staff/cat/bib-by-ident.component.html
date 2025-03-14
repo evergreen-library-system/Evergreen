@@ -9,28 +9,43 @@
 </ng-container>
 
 
-<div class="row form-validated mt-5">
-  <div class="col-lg-6 form-inline">
-    <div class="input-group">
-        <span class="input-group-text" id="bib-ident-label">
-          <ng-container *ngIf="identType === 'id'" i18n>Record ID:</ng-container>
-          <ng-container *ngIf="identType === 'tcn'" i18n>Record TCN:</ng-container>
-        </span>
-      <input id="bib-ident-value" type="text" required 
-        (keyup.enter)="search()" [(ngModel)]="identValue"
-        class="form-control" aria-describedby="bib-ident-label"/>
-    </div>
-    <button type="button" class="btn btn-outline-dark" (click)="search()" i18n>Submit</button>
-  </div>
-</div>
+<form class="mt-3">
+  <div class="hstack align-items-baseline w-auto" [formGroup]="bibIdentGroup">
+    <label class="form-label" for="bib-ident-type">
+      Retrieve record by
+    </label>
 
-<div class="row mt-3">
-  <div class="col-lg-6">
-    <div class="alert alert-warning" *ngIf="notFound && !multiRecordsFound" i18n>
+    <select class="form-select w-auto mx-2" id="bib-ident-type" 
+      [(ngModel)]="identType" formControlName="bibIdentType">
+      <option value="id">ID</option>
+      <option value="tcn">TCN</option>
+    </select>
+
+    <label class="form-label mx-2" for="bib-ident-value">
+      <ng-container *ngIf="identType === 'id'" i18n>ID:</ng-container>
+      <ng-container *ngIf="identType === 'tcn'" i18n>TCN:</ng-container>
+    </label>
+    <input id="bib-ident-value" type="text" required 
+      (keyup.enter)="search()" [(ngModel)]="identValue" formControlName="bibIdentValue"
+      class="form-control mx-2 w-auto" aria-describedby="bib-ident-status" />
+
+    <button class="btn btn-primary" [disabled]="searchInProgress" (click)="search()" i18n>
+      Search
+    </button>
+
+    <div *ngIf="searchInProgress" role="status">
+      <span class="visually-hidden">Searching...</span>
+      <span class="material-icons" aria-hidden="true">pending</span>
+    </div>
+
+  </div>
+
+  <div class="invalid-feedback d-block fs-4" role="status" id="bib-ident-status">
+    <div *ngIf="notFound && !multiRecordsFound" i18n>
       Record not found: {{identValue}}
     </div>
-    <div class="alert alert-warning" *ngIf="multiRecordsFound" i18n>
+    <div *ngIf="multiRecordsFound" i18n>
       More than one Bib Record found with TCN: {{identValue}}
     </div>
   </div>
-</div>
+</form>
