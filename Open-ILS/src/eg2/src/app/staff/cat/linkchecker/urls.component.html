@@ -1,8 +1,8 @@
 <!-- how should we do i18n with eg-staff-banner? -->
-<div class="lead alert alert-primary text-center pt-1 pb-1">
-   <span class="align-middle">
-    {session_names, plural, =0 {URLs for All Sessions} =1 {URLs for Session: {{session_names.join(', ')}}} other {URLs for Sessions: {{session_names.join(', ')}}}}
-   </span>
+<div class="staff-banner">
+  <h1 id="staff-banner" tabindex="-1">
+    <span i18n>{session_names, plural, =0 {URLs for All Sessions} =1 {URLs for Session: {{session_names.join(', ')}}} other {URLs for Sessions: {{session_names.join(', ')}}}}</span>
+  </h1>
 </div>
 
 <ng-template #bibIdTemplate let-r="row">
