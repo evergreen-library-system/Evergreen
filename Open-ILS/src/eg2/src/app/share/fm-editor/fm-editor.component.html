@@ -75,6 +75,7 @@
                     domId="{{idPrefix}}-{{field.name}}"
                     [attr.aria-describedby]="field.helpText ? idPrefix+'-'+field.name+'-help' : null"
                     [readOnly]="field.readOnly"
+                    [required]="field.isRequired()"
                     [ngModel]="record[field.name]()"
                     name="{{field.name}}"
                     (onChangeAsIso)="record[field.name]($event)"
@@ -91,6 +92,7 @@
                     (onChangeAsIso)="record[field.name]($event)"
                     i18n-validatorError
                     [readOnly]="field.readOnly"
+                    [required]="field.isRequired()"
                     [ngModel]="record[field.name]()"
                     name="{{field.name}}"
                     initialIso="{{record[field.name]()}}">
