@@ -52,7 +52,7 @@
 
 <ng-template #docURLTmpl let-row="row">
   <div *ngIf="row.documentation?.match('^\s*https?:')">
-    <a href="{{row.documentation}}" target="_blank" i18n>Template Documentation</a>
+    <a href="{{row.documentation}}" target="_blank"><kbd>{{row.documentation}}</kbd></a>
   </div>
   <span *ngIf="!row.documentation?.match('^\s*https?:')">
     {{row.documentation}}
