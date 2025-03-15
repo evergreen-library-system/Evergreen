@@ -1,8 +1,8 @@
 <!-- how should we do i18n with eg-staff-banner? -->
-<div class="lead alert alert-primary text-center pt-1 pb-1">
-   <span class="align-middle">
-    {batches, plural, =0 {Attempts for All Batches} =1 {Attempts for Batch ID {{batches}}} other {Attempts for Batch IDs {{batches}}}}
-   </span>
+<div class="staff-banner">
+  <h1 id="staff-banner" tabindex="-1">
+    <span i18n>{batches, plural, =0 {Attempts for All Batches} =1 {Attempts for Batch ID {{batches}}} other {Attempts for Batch IDs {{batches}}}}</span>
+  </h1>
 </div>
 
 <ng-template #bibIdTemplate let-r="row">
