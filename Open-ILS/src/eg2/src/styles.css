@@ -1022,7 +1022,7 @@ legend,
 
 input, textarea, select, option, 
 .form-control, .form-control:focus, .form-select, .form-check-input {
-  background: var(--bs-body-bg);
+  background-color: var(--bs-body-bg);
   border-color: light-dark(var(--bs-gray-500), var(--bs-gray-700));
   color: var(--bs-body-color);
 }
