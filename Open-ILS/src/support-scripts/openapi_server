@@ -85,7 +85,7 @@ my $config = {
     }
   },
   servers => [
-    { url => "/openapi3/v1" }
+    { url => "/openapi3/v0" }
   ],
   tags => [],
   components => {

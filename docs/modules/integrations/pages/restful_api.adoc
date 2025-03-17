@@ -639,7 +639,7 @@ The Evergreen OpenAPI endpoints are not meant for use by humans directly in a br
 
 The way OpenAPI clients and servers work together in Evergreen, through this development specifically, is as follows:
 
-. The server software produces an API specification document in JSON or YAML. This is available at https://<hostname>/openapi3/v1 on any fully installed instance of this development. 
+. The server software produces an API specification document in JSON or YAML. This is available at https://<hostname>/openapi3/v0 on any fully installed instance of this development. 
 . The client software consumes that specification document in order to understand what API calls are available, how it should send parameter data to the API calls, and what the format of the output of an API call will look like. 
 
 There are standard tools to automate much of the client-side work, but the result of creating a functioning OpenAPI client will be an application making HTTP requests.
@@ -673,6 +673,10 @@ Administrators can install Swagger-UI visualization tools so that developers can
 NOTE: The JSON Schema is very large, and tends to cause the both locally hosted demonstration Swagger-UI visualization tools and the free editor hosted at editor.swagger.io to hang. This development intentionally creates a run-time translation mapping between Evergreen's Fieldmapper data structures that describe Evergreen data layout and standard JSON Schema object definitions, and there are many hundreds of object types that reference each other.
 
 The web-based Swagger-UI editor and visualization tools are not robust or sophisticated enough to handle such a large and complex component schema. This is a limitation of the basic demo Swagger tools. True client applications do not try to render the full JSON Schema, are written to be robust and correct, and are not expected to have these sorts of issues if they are designed well.
+
+=== API Versioning ===
+
+Evergreen's OpenAPI support establishes a framework for clients to access and manipulate Evergreen data as well as a set of predefined endpoints. Consequently, additional endpoints are expected to be added over time. Like any API, the definitions of endpoints are subject to change, especially as the number of clients using the endpoints grows. An API version stamp in the path component of the base URL will be used to signal whether breaking changes have been introduced in the API. The initial release of the API sets the version as `v0` (i.e., `https://<hostname>/openapi3/v0`). This will get incremented whenever backwards-incompatible changes get made to existing endpoint or if changes to core Fieldmapper IDL classes could break clients.
 
 [[adding_endpoints_example]]
 == Example: Adding endpoints to Evergreen's OpenAPI server ==
