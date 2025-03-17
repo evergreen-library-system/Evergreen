@@ -468,7 +468,9 @@ implements OnInit, AfterViewInit, OnDestroy {
         // track the new value as the value the next session of
         // text edits should return to upon undo.
         this.undoBackToText = this.getContent();
-        this.field.hasFocus = false;
+        if (this.field && typeof this.field === 'object') {
+            this.field.hasFocus = false;
+        }
     }
 
     // Propagate textarea content into our record
