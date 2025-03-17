@@ -147,8 +147,6 @@ VALUES (currval('action_trigger.event_definition_id_seq'), 'home_ou'),
        (currval('action_trigger.event_definition_id_seq'), 'home_ou.mailing_address'),
        (currval('action_trigger.event_definition_id_seq'), 'home_ou.billing_address');
 
-COMMIT;
-
 -- ID has to be under 100 in order to prevent it from appearing as a dropdown in the patron editor.
 INSERT INTO config.standing_penalty (id, name, label, staff_alert, org_depth) 
 VALUES (90, 'PATRON_TEMP_RENEWAL',
