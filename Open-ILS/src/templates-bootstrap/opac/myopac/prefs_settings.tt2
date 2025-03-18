@@ -153,8 +153,8 @@
                     </div>
                     [% END %]
                     <div>
-                        <label class="form-label">[% l('Name:') %]</label>
-                        <input type="textbox" class="form-control" name="waiver_name_new"/>
+                        <label class="form-label" for="waiver_name_new">[% l('Name:') %]</label>
+                        <input type="textbox" class="form-control" name="waiver_name_new" id="waiver_name_new"/>
 
                         <div class="form-check w-100">
                             <input for="waiver_place_holds" type="checkbox" class="form-check-input" name="waiver_place_holds" id="waiver_place_holds" value="new"/>
