@@ -15,12 +15,12 @@
       <div class="row d-flex justify-content-center">
           <h5>Retarget {{holdIds.length}} Holds?</h5>
       </div>
-      <div class="row" *ngIf="numSucceeded > 0">
+      <div class="row" *ngIf="numSucceeded > 0" role="status">
         <div class="col-lg-12" i18n>
           {{numSucceeded}} Hold(s) Successfully Retargeted
         </div>
       </div>
-      <div class="row" *ngIf="numFailed > 0">
+      <div class="row" *ngIf="numFailed > 0" role="status">
         <div class="col-lg-12">
           <div class="alert alert-warning">
             {{numFailed}} Hold(s) Failed to Retarget.

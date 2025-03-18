@@ -13,8 +13,9 @@
       </h4>
       <h4 i18n>Please select a PO and click "Add to Purchase Order" to add the line items,
         or "Exit Dialog" to exit without adding the line items to a PO.</h4>
+      <label class="form-label" i18n>PO:</label>
       <eg-combobox domId="acq-add-to-po-dialog" name="acq-add-to-po-dialog" 
-        [asyncSupportsEmptyTermClick]="true"
+        [asyncSupportsEmptyTermClick]="true" domId="po_to_add"
         idlClass="acqpo" [idlQueryAnd]="{state: ['new', 'pending']}"
         idlIncludeLibraryInLabel="ordering_agency"
         [(ngModel)]="po"></eg-combobox>

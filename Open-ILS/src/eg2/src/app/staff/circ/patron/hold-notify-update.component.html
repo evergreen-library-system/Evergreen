@@ -8,7 +8,7 @@
     <div class="row mt-2" *ngFor="let mod of mods">
       <div class="col-lg-12">
 
-        <div [ngSwitch]="mod.field" class="mt-2 mb-2">
+        <div [ngSwitch]="mod.field" role="status" class="mt-2 mb-2">
           <span *ngSwitchCase="'phone_notify'">
             <span class="me-2">You have set Notify by Phone to</span>
             <eg-bool [value]="mod.newValue"></eg-bool>

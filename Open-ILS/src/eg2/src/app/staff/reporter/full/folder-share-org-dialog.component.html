@@ -12,10 +12,8 @@
     </div>
     <div class="row mt-3">
         <div class="col-md-12">
-            <div class="input-group">
-              <div class="input-group-text" i18n>Share with:</div>
-              <eg-org-select [hideOrgs]="notMyOrgs()" [applyDefault]=true (onChange)="contextOrg = $event"/>
-            </div>
+            <label class="form-label" for="shareOrgs" i18n>Share with:</label>
+            <eg-org-select domId="shareOrgs" [hideOrgs]="notMyOrgs()" [applyDefault]=true (onChange)="contextOrg = $event"/>
         </div>
     </div>
   </div>

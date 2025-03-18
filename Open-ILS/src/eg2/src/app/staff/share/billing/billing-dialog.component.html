@@ -3,7 +3,7 @@
 
 <!-- putting this here guarantees it's available to ViewChild before open -->
 <ng-template #bTypes>
-  <eg-combobox #bTypeCbox [entries]="billingTypes" 
+  <eg-combobox #bTypeCbox domId="billing_type" [entries]="billingTypes" 
     [required]="true" (onChange)="btChanged($event)"></eg-combobox>
 </ng-template>
 
@@ -55,22 +55,22 @@
         <div class="col-lg-8" i18n>{{hereOrg}}</div>
       </div>
       <div class="row mt-2">
-        <div class="col-lg-4" i18n>Billing Type</div>
+        <label class="col-lg-4 col-form-label" for="billing_type" i18n>Billing Type</label>
         <div class="col-lg-8">
           <ng-container *ngTemplateOutlet="bTypes"></ng-container>
         </div>
       </div>
       <div class="row mt-2">
-        <div class="col-lg-4" i18n>Amount</div>
+        <label class="col-lg-4 col-form-label" for="amount-input" i18n>Amount</label>
         <div class="col-lg-8" i18n>
           <input type="number" class="form-control" id="amount-input"
             required [(ngModel)]="amount" [min]="0"/>
         </div>
       </div>
       <div class="row mt-2">
-        <div class="col-lg-4" i18n>Note</div>
+        <label class="col-lg-4 col-form-label" for="note" i18n>Note</label>
         <div class="col-lg-8" i18n>
-          <textarea class="form-control" [rows]="3" [(ngModel)]="note"></textarea>
+          <textarea class="form-control" id="note" [rows]="3" [(ngModel)]="note"></textarea>
         </div>
       </div>
     </div>

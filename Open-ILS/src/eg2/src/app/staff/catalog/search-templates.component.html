@@ -80,10 +80,9 @@
   </div>
   <div class="modal-body">
     <div class="row">
-      <div class="col-lg-4" i18n id="templateNameLabel">Template Name:</div>
+      <label class="col-lg-4 col-form-label" i18n for="templateName">Template Name:</label>
       <div class="col-lg-6">
-        <input class="form-control" [(ngModel)]="templateName"
-          aria-labelledby="templateNameLabel"/>
+        <input class="form-control" [(ngModel)]="templateName" id="templateName" />
       </div>
     </div>
   </div>
