@@ -4,6 +4,7 @@ import {NetService} from './net.service';
 import {EventService, EgEvent} from './event.service';
 import {IdlService, IdlObject} from './idl.service';
 import {StoreService} from './store.service';
+import { lastValueFrom } from 'rxjs';
 
 // Not universally available.
 declare var BroadcastChannel; // eslint-disable-line no-var
@@ -255,10 +256,10 @@ export class AuthService {
         }
 
 
-        return this.net.request(
+        return lastValueFrom(this.net.request(
             'open-ils.actor',
             'open-ils.actor.staff_client_cache_key'
-        ).toPromise().then(cacheKey => {
+        )).then(cacheKey => {
             console.debug('Cache key: ' + cacheKey);
 
             const currentKey = this.store.getLocalItem('eg.staff_client_cache_key');
@@ -280,8 +281,6 @@ export class AuthService {
                 this.store.removeLocalItems(clearItems);
                 this.store.setLocalItem('eg.staff_client_cache_key', cacheKey);
             }
-
-            return Promise.resolve();
         });
 
     }
