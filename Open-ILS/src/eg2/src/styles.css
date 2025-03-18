@@ -427,15 +427,16 @@ input[type="checkbox"]:focus {
 }
 @media print {
   head {display: none} /* just to be safe */
-  body div:not([id="eg-print-container"]) {display: none}
-  div {display: none}
+  /* Display ONLY eg-print-container; Hide literally everything that is not above, below, or itself eg-print-container */
+  *:not(:has(#eg-print-container)):not(#eg-print-container *):not(#eg-print-container) {
+    display: none
+  }
   @page {size: auto} /* work around Bootrap 4's default
                         of A3; specifying any paper
                         size stops browsers from letting
                         the user choose portrait or
                         landscape. LP#1986725 */
   #eg-print-container {display: block}
-  #eg-print-container div {display: block}
   #eg-print-container pre {border: none}
   
   /* Always print in light mode */
