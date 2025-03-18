@@ -296,6 +296,10 @@ input, textarea, select, option,
 input[type="checkbox"], .form-check-input {
   --bs-border-color: var(--form-check-border);
   --bs-border-width: 2px;
+  appearance: revert;
+  background-color: unset;
+  background-image: unset;
+  border-radius: 0.15rem;
   min-width: 1rem;
   min-height: 1rem;
 }
