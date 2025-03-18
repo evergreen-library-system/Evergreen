@@ -21,9 +21,9 @@
     <div class="row mt-2" *ngFor="let grp of secondaryGroups">
       <div class="col-lg-6">{{grp.name()}}</div>
       <div class="col-lg-6">
-        <button type="button" class="btn btn-danger" *ngIf="!grp.isdeleted()"
+        <button type="button" class="btn btn-destroy" *ngIf="!grp.isdeleted()"
           (click)="grp.isdeleted(true)" i18n>Remove</button>
-        <button type="button" class="btn btn-info" *ngIf="grp.isdeleted()"
+        <button type="button" class="btn btn-normal" *ngIf="grp.isdeleted()"
           (click)="grp.isdeleted(false)" i18n>Un-Delete</button>
       </div>
     </div>

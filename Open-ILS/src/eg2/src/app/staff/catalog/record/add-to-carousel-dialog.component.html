@@ -15,9 +15,9 @@
     <p> <a routerLink="/staff/admin/local/container/carousel" i18n>Would you like to add one?</a></p>
   </div>
   <div class="row" *ngIf="carousels.length">
-    <div class="col-lg-3 fw-bold" i18n>Carousel</div>
+    <label class="col-lg-3 col-form-label" for="selectedCarousel" i18n>Carousel</label>
     <div class="col-lg-5">
-      <eg-combobox [entries]="formatCarouselEntries()" [formControl]="selectedCarousel">
+      <eg-combobox [entries]="formatCarouselEntries()" [formControl]="selectedCarousel" domId="selectedCarousel">
       </eg-combobox>
     </div>
   </div>

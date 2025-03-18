@@ -17,12 +17,12 @@
       <div class="row d-flex justify-content-center">
           <h5>Mark {{copyIds.length}} Item(s) Discard?</h5>
       </div>
-      <div class="row" *ngIf="numSucceeded > 0">
+      <div class="row" *ngIf="numSucceeded > 0" role="status">
         <div class="col-lg-12" i18n>
           {{numSucceeded}} Items(s) Successfully Marked Discard
         </div>
       </div>
-      <div class="row" *ngIf="numFailed > 0">
+      <div class="row" *ngIf="numFailed > 0" role="status">
         <div class="col-lg-12">
           <div class="alert alert-warning">
             {{numFailed}} Items(s) Failed to be Marked Discard

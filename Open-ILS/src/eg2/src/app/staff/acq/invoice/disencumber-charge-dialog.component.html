@@ -7,39 +7,53 @@
     </div>
     <div class="modal-body">
       <div class="d-flex">
-        <div class="flex-2" i18n>Charge:</div>
+        <div class="flex-2">
+          <label for="inv_item_type" class="form-label" i18n>Charge:</label>
+        </div>
         <div class="flex-3">
           <eg-combobox idlClass="aiit" [selectedId]="charge.inv_item_type()"
-            [readOnly]="true"></eg-combobox>
+            [readOnly]="true" domId="inv_item_type"></eg-combobox>
         </div>
       </div>
       <div class="d-flex">
-        <div class="flex-2" i18n>Amount:</div>
-        <div class="flex-3">{{charge.cost_billed()}}</div>
+        <div class="flex-2">
+          <label for="cost_billed" class="form-label" i18n>Amount:</label>
+        </div>
+        <div class="flex-3">
+          <output id="cost_billed">{{charge.cost_billed()}}</output>
+        </div>
       </div>
       <div class="d-flex">
-        <div class="flex-2" i18n>Original Fund:</div>
+        <div class="flex-2">
+          <label for="charge_fund" class="form-label" i18n>Original Fund:</label>
+        </div>
         <div class="flex-3">
           <eg-combobox idlClass="acqf" [selectedId]="charge.fund()"
-            [readOnly]="true"></eg-combobox>
+            [readOnly]="true" domId="charge_fund"></eg-combobox>
         </div>
       </div>
       <div class="d-flex">
-        <div class="flex-2" i18n>Fund Debited:</div>
+        <div class="flex-2">
+          <label for="debit_fund" class="form-label" i18n>Fund Debited:</label>
+        </div>
         <div class="flex-3">
           <eg-combobox idlClass="acqf" [selectedId]="charge.fund_debit().fund()"
-            [readOnly]="true"></eg-combobox>
+            [readOnly]="true" domId="debit_fund"></eg-combobox>
         </div>
       </div>
       <div class="d-flex">
-        <div class="flex-2" i18n>Amount Encumbered:</div>
-        <div class="flex-3">{{charge.fund_debit().amount()}}</div>
+        <div class="flex-2">
+          <label for="amount_encumbered" class="form-label" i18n>Amount Encumbered:</label>
+        </div>
+        <div class="flex-3">
+          <output id="amount_encumbered">{{charge.fund_debit().amount()}}</output>
+        </div>
       </div>
     </div>
     <div class="modal-footer">
       <button type="button" class="btn btn-success"
         (click)="close(true)" i18n>Disencumber</button>
-      <button type="button" class="btn btn-warning"
+      <button type="button" class="btn btn-normal"
         (click)="close()" i18n>Cancel</button>
     </div>
   </form>

@@ -45,7 +45,7 @@
           <li class="list-group-item">
             <span i18n>
               Calucated fine amount is 
-              <span class="fw-bold text-danger">
+              <span class="badge badge-danger fs-6">
                 {{chargeResponse.charge | currency}}
               </span>
             </span>
@@ -53,18 +53,18 @@
           <ng-container *ngIf="amountChangeRequested">
             <li class="list-group-item">
               <div class="row">
-                <div class="col-lg-3" i18n>Billing Type</div>
+                <label class="col-lg-3 col-form-label" for="billingType" i18n>Billing Type</label>
                 <div class="col-lg-6">
                   <eg-combobox 
                     placeholder="Billing Type..." i18n-placeholder
-                    (onChange)="newBtype = $event.id"
+                    (onChange)="newBtype = $event.id" domId="billingType"
                     [entries]="billingTypes"></eg-combobox>
                 </div>
               </div>  
             </li>
             <li class="list-group-item">
               <div class="row">
-                <div class="col-lg-3" i18n>Charge Amount</div>
+                <label class="col-lg-3 col-form-label" for="newCharge" i18n>Charge Amount</label>
                 <div class="col-lg-6">
                   <input class="form-control" type="number" step="0.01" min="0"
                   [(ngModel)]="newCharge"/>
@@ -73,10 +73,10 @@
             </li>
             <li class="list-group-item">
               <div class="row">
-                <div class="col-lg-3" i18n>Note</div>
+                <label class="col-lg-3 col-form-label" for="newNote" i18n>Note</label>
                 <div class="col-lg-6">
                   <textarea class="form-control" rows="3"
-                    [(ngModel)]="newNote"></textarea>
+                    [(ngModel)]="newNote" id="newNote"></textarea>
                 </div>
               </div>  
             </li>

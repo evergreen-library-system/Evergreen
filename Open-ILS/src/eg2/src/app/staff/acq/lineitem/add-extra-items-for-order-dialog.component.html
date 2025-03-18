@@ -1,4 +1,4 @@
-<ng-template #dialogContent>
+<ng-template #dialogContent>  
   <form class="form-validated">
     <div class="modal-header">
       <h3 class="modal-title" i18n>Add Extra Items To Order</h3>
@@ -7,7 +7,8 @@
     </div>
     <div class="modal-body">
       <h4 i18n>You are attempting to invoice {{extra_count}} more copy or copies than originally ordered. To add these items to the original purchase order, select a fund and choose 'Add New Items' below. If you do this, it will happen immediately, whether you save changes to the invoice or not.</h4>
-      <eg-combobox idlClass="acqf" name="fund"
+      <label for="fund" class="form-label" i18n>Fund:</label>
+      <eg-combobox idlClass="acqf" name="fund" domId="fund"
         i18n-placeholder placeholder="Fund..."
         [asyncSupportsEmptyTermClick]="true"
         [required]="true"
@@ -16,24 +17,24 @@
         [(ngModel)]="fund" (ngModelChange)="fundSelected($event)"></eg-combobox>
     </div>
     <div class="row" style="margin-left: 1.33em">
-      <div class="col"><label i18n>Allocation Total</label></div>
-      <div class="col">{{fundSummary?.allocation_total | currency}}</div>
+      <label class="col-form-label" for="allocation_total" i18n>Allocation Total</label>
+      <div class="col"><output id="allocation_total">{{fundSummary?.allocation_total | currency}}</output></div>
     </div>
     <div class="row" style="margin-left: 1.33em">
-      <div class="col"><label i18n>Combined Balance</label></div>
-      <div class="col">{{fundSummary?.combined_balance | currency}}</div>
+      <label class="col-form-label" for="combined_balance" i18n>Combined Balance</label>
+      <div class="col"><output id="combined_balance">{{fundSummary?.combined_balance | currency}}</output></div>
     </div>
     <div class="row" style="margin-left: 1.33em">
-      <div class="col"><label i18n>Encumbrance Total</label></div>
-      <div class="col">{{fundSummary?.encumbrance_total | currency}}</div>
+      <label class="col-form-label" for="encumbrance_total" i18n>Encumbrance Total</label>
+      <div class="col"><output id="encumbrance_total">{{fundSummary?.encumbrance_total | currency}}</output></div>
     </div>
     <div class="row" style="margin-left: 1.33em">
-      <div class="col"><label i18n>Debit Total</label></div>
-      <div class="col">{{fundSummary?.debit_total | currency}}</div>
+      <label class="col-form-label" for="debit_total" i18n>Debit Total</label>
+      <div class="col"><output id="debit_total">{{fundSummary?.debit_total | currency}}</output></div>
     </div>
     <div class="row" style="margin-left: 1.33em">
-      <div class="col"><label i18n>Spent Total</label></div>
-      <div class="col">{{fundSummary?.spent_total | currency}}</div>
+      <label class="col-form-label" for="spent_total" i18n>Spent Total</label>
+      <div class="col"><output id="spent_total">{{fundSummary?.spent_total | currency}}</output></div>
     </div>
     <div class="modal-footer">
       <button type="button" class="btn btn-success" [disabled]="!fund" 

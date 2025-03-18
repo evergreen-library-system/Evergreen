@@ -13,14 +13,14 @@
   <div class="modal-body">
     <h5 i18n>Marking Claims Returned for {{barcodes.length}} Item(s)</h5>
     <div class="row mt-3">
-      <div class="col-lg-6" i18n>Enter Claims Returned Date</div>
+      <label class="col-lg-6 col-form-label" for="returnDate" i18n>Enter Claims Returned Date</label>
       <div class="col-lg-6">
-        <eg-datetime-select [required]="true" [initialIso]="returnDate" 
+        <eg-datetime-select domId="returnDate" [required]="true" [initialIso]="returnDate" 
           (onChangeAsIso)="returnDate = $event">
         </eg-datetime-select>
       </div>
     </div>
-    <div *ngIf="patronExceeds" class="row mt-3 mb-3 d-flex">
+    <div *ngIf="patronExceeds" class="row mt-3 mb-3 d-flex" role="status">
       <div class="flex-1 p-2 me-2 alert alert-danger" i18n>
         Patron exceeds claims returned count.  Force this action?
       </div>

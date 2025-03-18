@@ -11,9 +11,7 @@
       <div class="col-lg-7">{{permGroup.name()}}</div>
     </div>
     <div class="row mt-1 pt-1">
-      <div class="col-lg-5">
-        <label for="select-perms" i18n>New Permission</label>
-      </div>
+      <label class="col-lg-5 col-form-label" for="select-perms" i18n>New Permission</label>
       <div class="col-lg-7">
         <input type="text" id="select-perms" #selectPerms
           [ngbTypeahead]="permEntries"
@@ -32,22 +30,14 @@
           </div>
         </div>
         <div class="row row-cols-5 mt-1 pt-1">
-          <div class="col">
-            <label [attr.for]="'depth-'+map.controls.id.value"
-              i18n>Depth
-            </label>
-          </div>
+          <label class="col-form-label" for="depth-{{map.controls.id.value}}" i18n>Depth</label>
           <div class="col">
             <select formControlName="depth" class="p-1"
               id="depth-{{map.controls.id.value}}">
               <option *ngFor="let d of orgDepths" value="{{d}}">{{d}}</option>
             </select>
           </div>
-          <div class="col">
-            <label [attr.for]="'grantable-'+map.controls.id.value"
-              i18n>Grantable
-            </label>
-          </div>
+          <label class="col-form-lalel" for="grantable-{{map.controls.id.value}}" i18n>Grantable</label>
           <div class="col">
             <input type="checkbox" formControlName="grantable"
               id="grantable-{{map.controls.id.value}}">
