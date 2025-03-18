@@ -380,6 +380,7 @@ AC_CONFIG_FILES([Makefile
          Open-ILS/updates/Makefile
          Open-ILS/xul/staff_client/Makefile
          Open-ILS/src/extras/eg_config
+         Open-ILS/src/sql/Pg/LP1902937-convert-quipu-early-adopter.sql
          ],
         [
             if test -e "./Open-ILS/src/extras/eg_config"; then chmod 755 Open-ILS/src/extras/eg_config; fi;
