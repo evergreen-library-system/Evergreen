@@ -152,7 +152,7 @@
                         [% END %]
                         <br/>
                         <div>
-                            [% l('Name:') %] <input type="textbox" name="waiver_name_new"/><br/>
+                            <label for="waiver_name_new">[% l('Name:') %]</label> <input type="textbox" name="waiver_name_new" id="waiver_name_new"/><br/>
                             <label><input type="checkbox" name="waiver_place_holds" value="new"/>[% l('Place Holds') %]</label>
                             <label><input type="checkbox" name="waiver_pickup_holds" value="new"/>[% l('Pick Up Holds') %]</label>
                             <label><input type="checkbox" name="waiver_checkout_items" value="new"/>[% l('Check Out Items') %]</label>
