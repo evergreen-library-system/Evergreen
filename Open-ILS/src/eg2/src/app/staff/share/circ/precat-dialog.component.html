@@ -7,7 +7,7 @@
   <div class="modal-body">
 
     <div class="row">
-      <div class="col-lg-4" i18n>Title</div>
+      <label class="col-lg-4 col-form-label" for="precat-title-input" i18n>Title</label>
       <div class="col-lg-8">
         <input class="form-control" [(ngModel)]="values.dummy_title"
           id='precat-title-input' i18n-placeholder placeholder="Title..."/>
@@ -15,25 +15,25 @@
     </div>
 
     <div class="row mt-2">
-      <div class="col-lg-4" i18n>Author</div>
+      <label class="col-lg-4 col-form-label" for="dummy_author" i18n>Author</label>
       <div class="col-lg-8">
-        <input class="form-control" [(ngModel)]="values.dummy_author"
+        <input class="form-control" [(ngModel)]="values.dummy_author" id="dummy_author"
           i18n-placeholder placeholder="Author..."/>
       </div>
     </div>
 
     <div class="row mt-2">
-      <div class="col-lg-4" i18n>ISBN</div>
+      <label class="col-lg-4 col-form-label" for="dummy_isbn" i18n>ISBN</label>
       <div class="col-lg-8">
-        <input class="form-control" [(ngModel)]="values.dummy_isbn"
+        <input class="form-control" [(ngModel)]="values.dummy_isbn" id="dummy_isbn"
           i18n-placeholder placeholder="ISBN..."/>
       </div>
     </div>
 
     <div class="row mt-2">
-      <div class="col-lg-4" i18n>Circulation Modifier</div>
+      <label class="col-lg-4 col-form-label" for="circ_modifier" i18n>Circulation Modifier</label>
       <div class="col-lg-8">
-        <eg-combobox idlClass="ccm" 
+        <eg-combobox idlClass="ccm" domId="circ_modifier"
           i18n-placeholder placeholder="Circulation Modifier..."
           (onChange)="values.circ_modifier = $event ? $event.id : null">
         </eg-combobox>

@@ -6,8 +6,8 @@
       i18n-aria-label aria-label="Close dialog" (click)="close()"></button>
   </div>
   <div class="modal-body">
-    <h4 i18n>Lead Selection List:</h4>
-      <select [(ngModel)]="leadList" [ngModelOptions]="{standalone: true}" required>
+    <label class="form-label" for="leadList" i18n>Lead Selection List:</label>
+      <select id="leadList" [(ngModel)]="leadList" [ngModelOptions]="{standalone: true}" required>
         <option *ngFor="let list of selectedLists"
           value="{{list.id()}}">{{list.name()}}</option>
       </select>

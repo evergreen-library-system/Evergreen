@@ -11,7 +11,7 @@
           {{id}}<span *ngIf="!isLast">,</span>
         </span>
       </h4>
-      <h4 i18n>Select a claim policy:</h4>
+      <label for="acq-claim-policy-dialog" i18n>Select a claim policy:</label>
       <eg-combobox domId="acq-claim-policy-dialog" name="acq-claim-policy-dialog" 
         [asyncSupportsEmptyTermClick]="true"
         idlClass="acqclp" [(ngModel)]="claimPolicy"></eg-combobox>

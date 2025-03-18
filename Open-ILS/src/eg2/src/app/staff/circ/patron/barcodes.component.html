@@ -14,17 +14,18 @@
       <div class="col-lg-4 fw-bold" i18n>Primary</div>
     </div>
     <div class="row mt-2 pt-2" *ngFor="let card of patron.cards()">
-      <div class="col-lg-4" i18n>
+      <label class="col-lg-4 col-form-label" for="card-{{card.id()}}" i18n>
         {{card.barcode()}}
-      </div>
+      </label>
       <div class="col-lg-4" i18n>
         <input type="checkbox" [disabled]="!myPerms.UPDATE_PATRON_ACTIVE_CARD"
-          (ngModelChange)="activeChange(card, $event)"
+          (ngModelChange)="activeChange(card, $event)" id="card-{{card.id()}}"
           class="form-check-input ms-0" [ngModel]="card.active() === 't'">
       </div>
       <div class="col-lg-4" i18n>
         <input type="radio" name="primary-card" [value]="card.id()"
           [disabled]="!myPerms.UPDATE_PATRON_PRIMARY_CARD"
+          aria-label="Use {{card.barcode()}} as primary card" i18n-aria-label
           class="form-check-input ms-0" [(ngModel)]="primaryCard">
       </div>
     </div>

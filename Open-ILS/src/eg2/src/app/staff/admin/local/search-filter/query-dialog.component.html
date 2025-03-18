@@ -8,27 +8,27 @@
     </div>
     <div class="modal-body"> 
         <div class="row">
-            <div class="col-lg-3 fw-bold" i18n>Query Label</div>
+            <label class="col-lg-3 col-form-label" for="query_label" i18n>Query Label</label>
             <div class="col-lg-9">
-                <input type="text" class="form-control"  name="query_label"
+                <input type="text" class="form-control" id="query_label" name="query_label"
                 placeholder="Query Label"
                 i18n-placeholder required
                 [(ngModel)]="newQueryLabel"/>
             </div>
         </div>
         <div class="row mt-3">
-            <div class="col-lg-3 fw-bold" i18n>Query Text</div>
+            <label class="col-lg-3 col-form-label" for="query_text" i18n>Query Text</label>
             <div class="col-lg-9">
-                <input type="text" class="form-control"  name="query_text"
+                <input type="text" class="form-control" id="query_text" name="query_text"
                 placeholder="Query Text"
                 i18n-placeholder required
                 [(ngModel)]="newQueryText"/>
             </div>
         </div>
         <div class="row mt-3">
-            <div class="col-lg-3 fw-bold" i18n>Position</div>
+            <label class="col-lg-3 col-form-label" for="pos" i18n>Position</label>
             <div class="col-lg-9">
-                <input type="number" class="form-control" name="pos"
+                <input type="number" class="form-control" id="pos" name="pos"
                 placeholder="Position"
                 i18n-placeholder required
                 [(ngModel)]="newQueryPosition"/>
