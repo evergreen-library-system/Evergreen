@@ -1,6 +1,6 @@
 BEGIN;
 
--- SELECT evergreen.upgrade_deps_block_check('TODO', :eg_version);
+SELECT evergreen.upgrade_deps_block_check('1461', :eg_version);
 
 -- for searching e.g. "111-111-1111"
 CREATE INDEX actor_usr_setting_phone_values_idx
