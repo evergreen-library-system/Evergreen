@@ -1,6 +1,6 @@
 BEGIN;
 
---SELECT evergreen.upgrade_deps_block_check('XXXX', :eg_version); -- JBoyer
+SELECT evergreen.upgrade_deps_block_check('1460', :eg_version); -- JBoyer
 
 -- Note: the value will not be consistent from system to system. It's an opaque key that has no meaning of its own,
 -- if the value cached in the client does not match or is missing, it clears some cached values and then saves the current value.
