@@ -9,7 +9,7 @@ a {
 
 h1 {
     font-size: 1.5rem;
-    font-color: #00593d;
+    color: #00593d;
     display: inline;
 }
 
@@ -102,7 +102,10 @@ label.btn-outline-success {
 }
 
 .scko-button { 
-    border: 1px solid #007a54;
+    --bs-btn-border-color: #007a54;
+    --bs-btn-color: white;
+    color: var(--bs-btn-color);
+    border: 1px solid var(--bs-btn-border-color);
     background: linear-gradient(#007a54, #00593d);
     background: -moz-linear-gradient(#007a54, #00593d);
     background: -o-linear-gradient(#007a54, #00593d);
@@ -116,7 +119,10 @@ label.btn-outline-success {
 .btn-check:checked + label.btn-outline-success, 
 label.btn-outline-success.active,
 label.btn-outline-success:active {
-    border: 1px solid #2e3b91;
+    --bs-btn-border-color: #2e3b91;
+    --bs-btn-color: white;
+    color: var(--bs-btn-color);
+    border: 1px solid var(--bs-btn-border-color);
     background: linear-gradient(#2e3b91, #424fa6);
     background: -moz-linear-gradient(#2e3b91, #424fa6);
     background: -o-linear-gradient(#2e3b91, #424fa6);
