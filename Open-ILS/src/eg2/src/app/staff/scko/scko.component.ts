@@ -32,6 +32,9 @@ export class SckoComponent implements OnInit, AfterViewInit {
             this.scko.logoutStaff();
         });
 
+        // force light mode (for now)
+        document.documentElement.setAttribute('data-bs-theme', 'light');
+
         this.scko.load();
     }
 
