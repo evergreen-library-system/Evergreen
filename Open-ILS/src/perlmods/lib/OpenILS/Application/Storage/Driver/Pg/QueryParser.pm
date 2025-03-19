@@ -1215,15 +1215,19 @@ SQL
 
 sub is_org_visible {
     my $org = shift;
-    return 0 if (!$U->is_true($org->opac_visible));
-
-    my $non_inherited_vis_gf = shift || $U->get_global_flag('opac.org_unit.non_inherited_visibility');
-    return 1 if ($U->is_true($non_inherited_vis_gf->enabled));
-
-    while ($org = $org->parent_ou) {
+    if ( defined($org) ) {
         return 0 if (!$U->is_true($org->opac_visible));
+
+        my $non_inherited_vis_gf = shift || $U->get_global_flag('opac.org_unit.non_inherited_visibility');
+        return 1 if ($U->is_true($non_inherited_vis_gf->enabled));
+
+        while ($org = $org->parent_ou) {
+            return 0 if (!$U->is_true($org->opac_visible));
+        }
+        return 1; 
+    }  else {
+        return 0;
     }
-    return 1;
 }
 
 sub flesh_parents {
