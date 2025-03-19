@@ -133,7 +133,7 @@
     <legend class="col-form-label col-sm-1 pt-0" i18n>Email</legend>
     <div class="col-sm-3 form-inline">
       <label class="form-control-label me-sm-2" for="srEmail" i18n>Email Address</label>
-      <input [disabled]="disabled" class="form-control" type="text" id="srEmail" name="srEmail" [(ngModel)]="templ.email">
+      <input [disabled]="disabled" class="form-control" type="email" autocomplete="email" id="srEmail" name="srEmail" [(ngModel)]="templ.email">
     </div>
   </div>
   <div *ngIf="!advancedMode" class="form-group row">

@@ -1,16 +1,17 @@
 /* eslint-disable */
-import {Component, Input} from '@angular/core';
+import {Component, Input, OnInit} from '@angular/core';
 import {IdlService} from '@eg/core/idl.service';
 import {ReporterService, SRTemplate} from '../share/reporter.service';
 import {Tree} from '@eg/share/tree/tree';
 import * as moment from 'moment-timezone';
+import { AuthService } from '@eg/core/auth.service';
 
 @Component({
     selector: 'eg-reporter-output-options',
     templateUrl: './reporter-output-options.component.html'
 })
 
-export class ReporterOutputOptionsComponent {
+export class ReporterOutputOptionsComponent implements OnInit {
 
     @Input() advancedMode = false;
     @Input() disabled = false;
@@ -23,11 +24,19 @@ export class ReporterOutputOptionsComponent {
     output_tree: Tree;
 
     constructor(
+        private auth: AuthService,
         private idl: IdlService,
         public RSvc: ReporterService
     ) {
         this.report_tree = this.RSvc.myFolderTrees.reports.clone({expanded:!this.RSvc.reportFolder});
         this.output_tree = this.RSvc.myFolderTrees.outputs.clone({expanded:!this.RSvc.outputFolder});
+    }
+
+    ngOnInit(): void {
+        console.debug("User: ", this.auth.user());
+        if (!this.templ.email) {
+            this.templ.email = this.auth.user().email();
+        }
     }
 
     bibIdFields () {
