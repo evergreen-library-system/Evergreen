@@ -63,8 +63,6 @@ export class DialogComponent implements OnInit {
     // The modalRef allows direct control of the modal instance.
     protected modalRef: NgbModalRef = null;
 
-    public focusable: string;
-
     constructor(private modalService: NgbModal) {}
 
     // Close all active dialogs
@@ -79,26 +77,6 @@ export class DialogComponent implements OnInit {
 
     ngOnInit() {
         this.onOpen$ = new EventEmitter<any>();
-
-        const notFocusable = ':is(:disabled, [inert], [inert] *, [hidden], [hidden] *, [tabindex^="-"])';
-        const isFocusable = [
-            '[egAutofocus]',
-            '[ngbAutofocus]',
-            'a[href]',
-            'area[href]',
-            'input:not([type="hidden"]):not(fieldset:disabled *)',
-            'select:not(fieldset:disabled *)',
-            'textarea:not(fieldset:disabled *)',
-            'details > summary:first-of-type:not(details:not([open]) > details summary)',
-            'details:not(:has(> summary)):not(details:not([open]) > details)',
-            'button',
-            'iframe',
-            'audio[controls]',
-            'video[controls]',
-            '[contenteditable]',
-            '[tabindex]'
-        ].join(', ');
-        this.focusable = `:is(${isFocusable}):not(${notFocusable})`;
     }
 
     open(options: NgbModalOptions = { backdrop: 'static' }): Observable<any> {
@@ -121,7 +99,7 @@ export class DialogComponent implements OnInit {
             setTimeout(() => {
                 this.onOpen$.emit(true);
                 this._setFocus();
-            });
+            }, 100);
         }
 
         return new Observable(observer => {
@@ -141,18 +119,53 @@ export class DialogComponent implements OnInit {
     }
 
     // Look for the first focusable element in .modal-body.
-    // If none, focus will default to the 'X' close button, if present, or the first footer button
+    // Fallbacks are the footer buttons, then (implicitly) the 'X' close button in the dialog header
     private _setFocus() {
         if (!this.modalRef) {return;}
         if (!this._elRef.nativeElement.contains(this._document.activeElement)) {
-            const elementToFocus = this._elRef.nativeElement.querySelector('.modal-body ' + this.focusable) as HTMLElement;
-            // console.debug('elementToFocus', elementToFocus);
-            setTimeout(() => elementToFocus?.focus());
+            const dialogEl = this.modalRef['_windowCmptRef'].instance['_elRef'].nativeElement;
+            const dialogBodySelector = `.modal-body ${this.getFocusable()}`;
+            const dialogFooterSelector = `.modal-footer ${this.getFocusable()}`;
+            setTimeout(() => {
+                let elementToFocus = dialogEl.querySelector(dialogBodySelector) as HTMLElement;
+                if (!elementToFocus) {
+                    // if this is an alert dialog, focus the whole body rather than a footer button
+                    if (this.hasOwnProperty('alertType')) {  // eslint-disable-line no-prototype-builtins
+                        elementToFocus = dialogEl.querySelector('.modal-body') as HTMLElement;
+                    } else {
+                        elementToFocus = dialogEl.querySelector(dialogFooterSelector) as HTMLElement;
+                    }
+                }
+                elementToFocus?.focus();
+                console.debug('elementToFocus', elementToFocus);
+            });
         }
     }
 
     private _restoreFocus() {
         setTimeout(() => this.returnFocusTo.focus());
+    }
+
+    public getFocusable() {
+        const notFocusable = ':is(:disabled, [inert], [inert] *, [hidden], [hidden] *, [tabindex^="-"])';
+        const isFocusable = [
+            '[egAutofocus]',
+            '[ngbAutofocus]',
+            'a[href]',
+            'area[href]',
+            'input:not([type="hidden"]):not(fieldset:disabled *)',
+            'select:not(fieldset:disabled *)',
+            'textarea:not(fieldset:disabled *)',
+            'details > summary:first-of-type:not(details:not([open]) > details summary)',
+            'details:not(:has(> summary)):not(details:not([open]) > details)',
+            'button',
+            'iframe',
+            'audio[controls]',
+            'video[controls]',
+            '[contenteditable]',
+            '[tabindex]'
+        ].join(', ');
+        return `:is(${isFocusable}):not(${notFocusable})`;
     }
 
     // Send a response to the caller without closing the dialog.
