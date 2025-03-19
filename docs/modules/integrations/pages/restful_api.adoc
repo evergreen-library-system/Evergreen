@@ -3,7 +3,9 @@
 
 == Introduction ==
 
-The below documentation describes the new RESTful API suite for Evergreen, rewritten in late 2024.
+The below documentation describes the new RESTful API suite for Evergreen.
+
+For now, this is an experimental feature, intended as a starting point to encourage further testing. A more fully developed version of the API will be included in a future release.
 
 == Terminology ==
 
