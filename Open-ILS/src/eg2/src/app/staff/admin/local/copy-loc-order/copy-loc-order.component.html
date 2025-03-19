@@ -4,8 +4,8 @@
 <eg-string #editString i18n-text text="Changes Saved"></eg-string>
 
 <div class="row">
-  <div class="col-lg-12 d-flex">
-      <label for="context_library" class="mr-2" i18n>Context Org Unit</label>
+  <div class="col-lg-12 d-flex align-items-center">
+      <label for="context_library" class="me-2" i18n>Context Org Unit</label>
       <eg-org-select domId="context_library"
         (onChange)="orgChanged($event)" [initialOrgId]="contextOrg">
       </eg-org-select>
