@@ -9,3 +9,11 @@
     bottom: 5px;
 }
 
+#eg-toast-container ol {
+    display: flex;
+    flex-direction: column;
+}
+
+li.alert:not(:last-child) {
+    filter: brightness(0.85);
+}
