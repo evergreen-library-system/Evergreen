@@ -2,5 +2,6 @@
 ** xref:integrations:ezproxy.adoc[EZProxy]
 ** xref:integrations:patron-api.adoc[PatronAPI authentication]
 ** xref:integrations:restful_api.adoc[RESTful API]
+** xref:integrations:quipu_ecard.adoc[Quipu eCARD]
 ** xref:integrations:web_services.adoc[Web Services]
 

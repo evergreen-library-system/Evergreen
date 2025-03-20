@@ -1,0 +1,99 @@
+= Quipu eCARD Integration for Evergreen =
+
+The eCARD integration builds on previous work, and adds a generic method of integrating with Quipu’s eCARD service. This feature creates a location for a new Quipu-provided registration form that can be configured to send information to Quipu for address verification, as well as several library settings related to the integration.
+
+This bypasses the regular Pending Patrons workflow.
+
+Due to the nature of how Quipu configures eCARD on their end, it is strongly recommended that libraries work directly with Quipu to test before implementation.
+
+== eCARD form ==
+
+Activating the _Enable eCard registration feature in the OPAC_ setting described below will enable the eCARD URL, which by default lives at https://<your-evergreen-domain>/eg/opac/ecard/form. This page will load a Quipu-configured eCARD form. This will also update the link on the bottom of the OPAC to point to this form.
+
+The regular (non-eCARD) self-registration form at https://<your-evergreen-domain>/eg/opac/register is still available for libraries that do not use eCARD, but still wish to allow patron self-registration.
+
+The Quipu form is more extensive than the regular self-registration form. Using shapefiles, an Evergreen site can work with Quipu to establish certain patron statistical categories such as Municipality, Taxing District, etc. that can be updated via the eCARD registration process.
+
+Using the Quipu eCard form intentionally skips the Pending Patrons workflow since Quipu is taking on the role of “approving” newly registered patrons.
+
+The eCARD workflow looks like this:
+
+. Patron enters data into the eCARD registration form
+. Quipu validates data according to the parameters the library has set
+. Quipu sends this information back to Evergreen and creates a user in Evergreen
+. Staff can see that the user is correctly assigned to a home library, profile group, stat cat, etc.
+
+If the optional eCard verification setting is enabled (along with email sending), after account creation the patron will receive a confirmation email. Once the patron accepts the confirmation, their profile will be updated according to the library setting _Patron permission profile after verification for Quipu eCard feature_.
+
+The below screenshot is an example taken from a test system. Your form may look different depending on how it is configured with Quipu.
+
+image::images/quipu_ecard/ecard_form_example.png[Example of an eCARD form]
+
+== Library Settings ==
+
+The Quipu eCard implementation involves several new Library Settings, described below. In general, if the Quipu service is to be used globally within an Evergreen installation, it is recommended that all settings be set at the consortial level. The exception to this is the setting _Enable eCard registration feature in the OPAC_, which should explicitly be set to TRUE for all libraries using Quipu eCard.
+
+New settings:
+
+* _Enable eCard registration feature in the OPAC_ - True / False. Default (unset) value is false. Setting this to true will show the Quipu eCard registration form.
+** This will override the extant _Allow Patron Self-Registration_ setting and ensure that appropriate links point to the Quipu form and not the stock Self-Registration form.
+* _Quipu eCard Customer Account_ - Numeric - provided by Quipu. Recommended to set this at the CONS level.
+** This sets the context library to use for retrieving OPAC-related settings, based on domain name, IP address, and other variables. This defaults to the Consortial value when not logged in, and the user’s home library if logged in. This might matter if an existing patron is self-registering someone else.
+** If individual libraries need their own values for this, an administrator will need to adjust the Apache configuration to make sure the catalog is loading the correct form & Organizational Unit setting(s).
+* _Quipu eCard Shared Secret_ - Text - Typically this is provided by Quipu but can be provided by the library; the only caveat is that the value held by Quipu needs to exactly match the value held in this library setting.
+* _Admin organizational unit for Quipu eCard feature_ - Dropdown (select Organizational Unit). The working location of the admin user for Evergreen-Quipu. This is consulted for permissions.
+* _Evergreen Admin username for the Quipu eCard feature_ - Text - enter the username of the admin user for Evergreen-Quipu.
+** **NOTE:** The password for this account cannot be set in the staff client and will require a database administrator to set the password, using a statement like:
++
+[source,postgresql]
+----
+SELECT actor.set_passwd(USER ID HERE, 'ecard_vendor', 'PASSWORD HERE');
+----
++
+* _Patron permission profile for Quipu eCard feature_ - Dropdown (select patron profile group). Incoming eCard registrants will be assigned to this profile.
+* _Barcode length for Quipu eCard feature_ - Numeric - the total length of a patron barcode including prefix and check digit
+* _Barcode prefix for Quipu eCard feature_ - Numeric - the digits prefixing a patron barcode. As a best practice, this should be set for each library system using Quipu.
+* _Calculate barcode checkdigit for Quipu eCard feature_ - True / False. Default (unset) value is false.
+** Barcode settings in Evergreen are honored by Quipu and by default, the username will match the barcode. Quipu may override this when sending data back to Evergreen, if so configured on the Quipu side.
+
+Related settings:
+
+* _Enable eCard verification feature in the OPAC_ - True / False. Default (unset) value is false. Specifies whether an eCard verification service is in use. This is an extant setting and is not specifically related to Quipu, nor is it required for Quipu to function. Enabling this setting will add email validation code insertion into the patron record.
+** There is an Action/Trigger template, _Send Ecard Verification Email_, that will need to be configured in order to send the email. This template is marked as inactive by default.
+* _Patron permission profile after verification for Quipu eCard feature_ - Dropdown (select patron profile group). Incoming eCard registrants will be assigned to this profile when they pass eCard verification. This is only consulted if the setting _Enable eCard verification feature in the OPAC_ is set to TRUE.
+
+This feature does not add any new permissions.
+
+== Reporting and Administrative Interface ==
+
+There is a new table for reporting on the update history of patron records. This is labelled as `actor.usr_delta_history` in the database, and is available in the Reporter under the source _ILS User Change History_. This is disabled by default and will need to be set up by a database administrator to work.
+
+This table also feeds into a new administrative interface, located at **Administration -> Local Administration -> User Change History** (https://<your-evergreen-domain>/eg2/en-US/staff/admin/local/actor/usr_delta_history) where you can see data about user changes. In order for this interface to populate, it needs setup by a database administrator. The trigger needs to be enabled; and then, optionally, columns to track need to be specified, otherwise Last Update Time is the only default.
+
+To enable the trigger:
+
+[source,postgresql]
+----
+ALTER TABLE actor.usr ENABLE TRIGGER record_usr_delta;
+----
+
+Optionally, an administrator can modify this to configure what data is tracked:
+
+[source,postgresql]
+----
+DROP TRIGGER IF EXISTS record_usr_delta ON actor.usr;
+CREATE TRIGGER record_usr_delta
+AFTER UPDATE ON actor.usr
+FOR EACH ROW
+EXECUTE FUNCTION actor.record_usr_delta(last_update_time /* unquoted, literal comma-separated column names to include in the delta */);
+----
+
+To see users changed by Quipu, filter on the staff user associated with the Quipu account.
+
+The User Change History report source and administrative interface can be used for generic user changes and are not specific to the Quipu integration.
+
+=== Note for Early Adopters
+
+Evergreen sites that were early adopters for Quipu integration (i.e., already using a Quipu integration prior to this work) may review Open-ILS/src/sql/Pg/LP1902937-convert-quipu-early-adopt.sql after building Evergreen.
+
+However, this SQL does not completely isolate changes made to support the new integration. Libraries are strongly advised to coordinate with Quipu before actually upgrading to or past this update to Evergreen.
