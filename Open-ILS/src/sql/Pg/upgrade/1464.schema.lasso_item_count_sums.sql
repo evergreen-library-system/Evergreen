@@ -1,6 +1,6 @@
 BEGIN;
 
--- SELECT evergreen.upgrade_deps_block_check('xxxx', :eg_version);
+SELECT evergreen.upgrade_deps_block_check('1464', :eg_version);
 
 -- If you want to know how many items are available in a particular library group,
 -- you can't easily sum the results of, say, asset.staff_lasso_record_copy_count,
