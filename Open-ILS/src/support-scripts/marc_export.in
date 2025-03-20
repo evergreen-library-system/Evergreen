@@ -22,7 +22,6 @@ use MARC::Field;
 use MARC::Record;
 use MARC::File::XML (BinaryEncoding => 'UTF-8');
 use Date::Manip::Date;
-use Encode;
 my $U = 'OpenILS::Application::AppUtils';
 
 binmode(STDERR, ':utf8');
@@ -726,16 +725,16 @@ sub next {
                             my $f852b_option = $Marque::config->option_value('852b');
                             if      ($f852b_option eq 'owning_lib') {
                                 @sfb = (
-                                    b => Encode::decode_utf8($acp->call_number()->owning_lib()->shortname()),
+                                    b => $acp->call_number()->owning_lib()->shortname(),
                                 );
                             } elsif ($f852b_option eq 'circ_lib') {
                                 @sfb = (
-                                    b => Encode::decode_utf8($acp->circ_lib()->shortname()),
+                                    b => $acp->circ_lib()->shortname(),
                                 );
                             } else {
                                 @sfb = (
-                                    b => Encode::decode_utf8($acp->call_number()->owning_lib()->shortname()),
-                                    b => Encode::decode_utf8($acp->circ_lib()->shortname()),
+                                    b => $acp->call_number()->owning_lib()->shortname(),
+                                    b => $acp->circ_lib()->shortname(),
                                 );
                             }
 
@@ -746,14 +745,14 @@ sub next {
                                     '852', '4', ' ',
                                     ($location ? ('a' => $location) : ()),
                                     @sfb,
-                                    c => Encode::decode_utf8($acp->location()->name()),
-                                    ($prefix ? (k => Encode::decode_utf8($prefix)) : ()),
-                                    j => Encode::decode_utf8($acp->call_number()->label()),
-                                    ($suffix ? (m => Encode::decode_utf8($suffix)) : ()),
-                                    ($acp->circ_modifier() ? (g => Encode::decode_utf8($acp->circ_modifier())) : ()),
-                                    p => Encode::decode_utf8($acp->barcode()),
-                                    s => Encode::decode_utf8($status),
-                                    ($price ? (y => Encode::decode_utf8($price)) : ()),
+                                    c => $acp->location()->name(),
+                                    ($prefix ? (k => $prefix) : ()),
+                                    j => $acp->call_number()->label(),
+                                    ($suffix ? (m => $suffix) : ()),
+                                    ($acp->circ_modifier() ? (g => $acp->circ_modifier()) : ()),
+                                    p => $acp->barcode(),
+                                    s => $status,
+                                    ($price ? (y => $price) : ()),
                                     ($acp->copy_number() ? (t => $acp->copy_number()) : ()),
                                     ($U->is_true($acp->ref()) ? (x => 'reference') : ()),
                                     (!$U->is_true($acp->holdable()) ? (x => 'unholdable') : ()),
