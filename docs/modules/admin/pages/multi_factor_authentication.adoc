@@ -3,7 +3,7 @@
 
 Multi Factor Authentication (MFA) is available in Evergreen for staff accounts. The intention is to provide a configurable secondary factor to confirm a staff login in order to provide a higher level of staff login security.
 
-MFA is established on User Permission Groups, and numerous configuration options are available and described in detail in the sections below.
+MFA is established on User Permission Groups, and numerous configuration options are available and described in detail in the sections below. If so enabled, MFA will check both Primary and any Secondary Permission Groups to which a user belongs.
 
 Configuration options include:
 
@@ -114,26 +114,29 @@ A new OpenSRF application, `open-ils.auth_mfa`, must be configured and running, 
 [,xml]
 ----
 <app_settings>
-    <enabled>true</enabled>
-    <factors>
-        <totp>
-         <enabled>true</enabled>
-          <fuzziness>1</fuzziness>
-        </totp>
-        <sms>
-          <enabled>true</enabled>
-        </sms>
-        <email>
-          <enabled>true</enabled>
-        </email>
-        <webauthn>
-          <enabled>true</enabled>
-        </webauthn>
-      </factors>
-    </app_settings>
-----		
+	<!-- 'enabled' is the master switch; set to 'true' to enable MFA -->
+	<enabled>true</enabled>
+	<!-- set 'honor_secondary_groups' to to 'true' allow secondary group membership to act in the same way as profile group for MFA availability and factor list -->
+	<honor_secondary_groups>false</honor_secondary_groups>
+	<factors>
+		<totp>
+			<enabled>true</enabled>
+			<fuzziness>1</fuzziness>
+		</totp>
+		<sms>
+			<enabled>false</enabled>
+		</sms>
+		<email>
+			<enabled>false</enabled>
+		</email>
+		<webauthn>
+			<enabled>true</enabled>
+		</webauthn>
+	</factors>
+</app_settings>
+----	
 
-If the top-level `<enabled/>` element contains true, then MFA will be generally available. Each potential MFA factor must also be enabled separately, with their own `<enabled/>` element containing true. 
+If the top-level `<enabled/>` element contains true, then MFA will be generally available. Each potential MFA factor must also be enabled separately, with their own `<enabled/>` element containing true. The `honor_secondary_groups` element is false by default, and it needs to be set to true if secondary permission groups should be consulted by MFA.
 
 The TOTP, SMS, and email factors can make use of the `<fuzziness/>` element, which tells Evergreen how many timeout periods to look in the past and the future when verifying the one-time code for those factors. This defaults to 1 for all three factors, so that, for instance, a user using the Google Authenticator app for TOTP verification will have up to 90 seconds to enter a code, even though the codes change every 30 seconds. This setting helps account for unsynchronized server and client device clocks, as well as allowing Evergreen to be more forgiving for users that may take more than the average amount of time finding and then entering the one-time code.
 
