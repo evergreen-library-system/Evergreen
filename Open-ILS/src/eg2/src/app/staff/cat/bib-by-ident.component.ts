@@ -16,7 +16,8 @@ export class BibByIdentComponent implements OnInit, AfterViewInit {
     notFound = false;
     multiRecordsFound = false;
     bibIdentGroup: FormGroup;
-    searchInProgress: boolean = null;
+    searchInProgress = false;
+    queryError = false;
 
     constructor(
         private router: Router,
@@ -44,6 +45,7 @@ export class BibByIdentComponent implements OnInit, AfterViewInit {
     search() {
         if (!this.identValue) { return; }
         this.searchInProgress = true;
+        this.queryError = null;
 
         this.notFound = false;
         this.multiRecordsFound = false;
@@ -63,7 +65,16 @@ export class BibByIdentComponent implements OnInit, AfterViewInit {
             } else {
                 this.goToRecord(id);
             }
+        }).catch(err => {
+            this.queryError = true;
+            this.searchInProgress = false;
         });
+    }
+
+    resetQuery() {
+        this.notFound = false;
+        this.queryError = false;
+        this.searchInProgress = false;
     }
 
     getById(): Promise<number> {
