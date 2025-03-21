@@ -14886,6 +14886,14 @@ SELECT  usr,
 	<!-- Simple Reporter classes are currently used only by the SR UI -->
 	<class id="srcirc" controller="simple-reporter.ui" oils_persist:virtual="true" reporter:label="Simple Reporter Circulation">
 		<oils_persist:source_definition><![CDATA[
+			WITH sys_level_orgs AS (
+				SELECT aou.id AS id,
+				  aous.id AS sys_id,
+				  aous.name AS sys_name,
+				  aous.shortname as sys_shortname
+				FROM actor.org_unit aou
+				INNER JOIN actor.org_unit aous ON (COALESCE((actor.org_unit_ancestor_at_depth(aou.id, 1)).id, aou.id) = aous.id)
+			)
 			SELECT
 			  -- Circ id; just for counting
 			  combcirc.id AS circ_id,
@@ -14898,9 +14906,9 @@ SELECT  usr,
 			  combcirc.usr_home_ou AS usr_home_ou_id,
 			  aouuh.shortname AS usr_home_ou_shortname,
 			  aouuh.name AS usr_home_ou_name,
-			  (actor.org_unit_ancestor_at_depth(combcirc.usr_home_ou, 1)).id AS usr_sys_id,
-			  aouus.shortname AS usr_sys_shortname,
-			  aouus.name AS usr_sys_name,
+			  aouus.sys_id AS usr_sys_id,
+			  aouus.sys_shortname AS usr_sys_shortname,
+			  aouus.sys_name AS usr_sys_name,
 
 			  -- Circ info
 			  -- Checkout
@@ -14911,9 +14919,9 @@ SELECT  usr,
 			  combcirc.circ_lib AS circ_lib_id,
 			  aouco.shortname AS circ_lib_shortname,
 			  aouco.name AS circ_lib_name,
-			  (actor.org_unit_ancestor_at_depth(combcirc.circ_lib, 1)).id AS circ_sys_id,
-			  aoucos.shortname AS circ_sys_shortname,
-			  aoucos.name AS circ_sys_name,
+			  aoucos.sys_id AS circ_sys_id,
+			  aoucos.sys_shortname AS circ_sys_shortname,
+			  aoucos.sys_name AS circ_sys_name,
 			  auco.usrname AS circ_staff,
 			  awso.name AS checkout_workstation,
 
@@ -14931,8 +14939,8 @@ SELECT  usr,
 			  aouci.name AS checkin_lib_name,
 			  auci.usrname AS checkin_staff,
 			  awsi.name AS checkin_workstation,
-			  aoucis.shortname AS checkin_sys_shortname,
-			  aoucis.name AS checkin_sys_name,
+			  aoucis.sys_shortname AS checkin_sys_shortname,
+			  aoucis.sys_name AS checkin_sys_name,
 
 			  combcirc.checkin_time AS checkin_time,
 
@@ -14964,9 +14972,9 @@ SELECT  usr,
 			  acpl.name AS location_name,
 			  aoucp.shortname AS copy_circ_lib_shortname,
 			  aoucp.name AS copy_circ_lib_name,
-			  (actor.org_unit_ancestor_at_depth(copy_circ_lib, 1)).id AS copy_sys_id,
-			  aoucps.shortname AS copy_sys_shortname,
-			  aoucps.name AS copy_sys_name,
+			  aoucps.sys_id AS copy_sys_id,
+			  aoucps.sys_shortname AS copy_sys_shortname,
+			  aoucps.sys_name AS copy_sys_name,
 			  combcirc.copy_owning_lib AS copy_owning_lib_id,
 			  aoucpo.shortname AS copy_owning_lib_shortname,
 			  aoucpo.name AS copy_owning_lib_name,
@@ -14994,7 +15002,7 @@ SELECT  usr,
 
 			  -- User
 			  INNER JOIN actor.org_unit aouuh ON (combcirc.usr_home_ou = aouuh.id)
-			  LEFT JOIN actor.org_unit aouus ON ((actor.org_unit_ancestor_at_depth(combcirc.usr_home_ou, 1)).id = aouus.id)
+			  LEFT JOIN sys_level_orgs aouus ON (combcirc.usr_home_ou = aouus.id)
 			  LEFT JOIN permission.grp_tree pgtu ON (combcirc.usr_profile = pgtu.id)
 
 			  -- Circ
@@ -15002,18 +15010,18 @@ SELECT  usr,
 			  LEFT JOIN actor.workstation awsi ON (combcirc.checkin_workstation = awsi.id)
 			  INNER JOIN actor.org_unit aouco ON (combcirc.circ_lib = aouco.id)
 			  LEFT JOIN actor.org_unit aouci ON (combcirc.checkin_lib = aouci.id)
-			  LEFT JOIN actor.org_unit aoucos ON ((actor.org_unit_ancestor_at_depth(combcirc.circ_lib, 1)).id = aoucos.id)
-			  LEFT JOIN actor.org_unit aoucis ON ((actor.org_unit_ancestor_at_depth(combcirc.checkin_lib, 1)).id = aouci.id)
+			  LEFT JOIN sys_level_orgs aoucos ON (combcirc.circ_lib = aoucos.id)
+			  LEFT JOIN sys_level_orgs aoucis ON (combcirc.checkin_lib = aouci.id)
 			  LEFT JOIN actor.usr auco ON (combcirc.circ_staff = auco.id)
 			  LEFT JOIN actor.usr auci ON (combcirc.checkin_staff = auci.id)
 
 			  -- Copy / call / title
 			  INNER JOIN asset.copy acp ON (combcirc.target_copy = acp.id)
-							INNER JOIN asset.copy_location acpl ON (acp.location = acpl.id)
+			  INNER JOIN asset.copy_location acpl ON (acp.location = acpl.id)
 			  INNER JOIN actor.org_unit aoucp ON (acp.circ_lib = aoucp.id)
-			  LEFT JOIN actor.org_unit aoucps ON ((actor.org_unit_ancestor_at_depth(combcirc.copy_circ_lib, 1)).id = aoucps.id)
+			  LEFT JOIN sys_level_orgs aoucps ON (combcirc.copy_circ_lib = aoucps.id)
 			  LEFT JOIN actor.org_unit aoucpo ON (combcirc.copy_owning_lib = aoucpo.id)
-			  LEFT JOIN actor.org_unit aoucpos ON ((actor.org_unit_ancestor_at_depth(combcirc.copy_owning_lib, 1)).id = aoucpos.id)
+			  LEFT JOIN sys_level_orgs aoucpos ON (combcirc.copy_owning_lib = aoucpos.id)
 			  LEFT JOIN config.circ_modifier ccm ON (acp.circ_modifier = ccm.code)
 			  INNER JOIN asset.call_number acn ON (acp.call_number = acn.id)
 			  INNER JOIN asset.call_number_prefix acnp ON (acn.prefix = acnp.id)
@@ -15134,6 +15142,14 @@ SELECT  usr,
 
 	<class id="srusr" controller="simple-reporter.ui" oils_persist:virtual="true" reporter:label="Simple Reporter Patrons">
 		<oils_persist:source_definition><![CDATA[
+			WITH sys_level_orgs AS (
+				SELECT aou.id AS id,
+				  aous.id AS sys_id,
+				  aous.name AS sys_name,
+				  aous.shortname as sys_shortname
+				FROM actor.org_unit aou
+				INNER JOIN actor.org_unit aous ON (COALESCE((actor.org_unit_ancestor_at_depth(aou.id, 1)).id, aou.id) = aous.id)
+			)
 			SELECT
 			  au.home_ou AS home_ou_filter,
 			  au.id AS user_id,
@@ -15184,9 +15200,9 @@ SELECT  usr,
 			  au.home_ou AS home_ou_id,
 			  aouh.shortname AS home_ou_shortname,
 			  aouh.name AS home_ou_name,
-			  (actor.org_unit_ancestor_at_depth(au.home_ou, 1)).id AS home_sys_id,
-			  aous.shortname AS home_sys_shortname,
-			  aous.name AS home_sys_name,
+			  aous.sys_id AS home_sys_id,
+			  aous.sys_shortname AS home_sys_shortname,
+			  aous.sys_name AS home_sys_name,
 			  auam.valid AS mailing_valid,
 			  auam.address_type AS mailing_address_type,
 			  auam.street1 AS mailing_street1,
@@ -15229,7 +15245,7 @@ SELECT  usr,
 			FROM
 			  actor.usr au
 			  INNER JOIN actor.org_unit aouh ON (au.home_ou = aouh.id)
-			  INNER JOIN actor.org_unit aous ON ((actor.org_unit_ancestor_at_depth(au.home_ou, 1)).id = aous.id)
+			  INNER JOIN sys_level_orgs aous ON (au.home_ou = aous.id)
 			  LEFT JOIN actor.card cardp ON (au.card = cardp.id)
 			  LEFT JOIN actor.card carda ON (au.id = carda.usr AND carda.active)
 			  LEFT JOIN actor.card cards ON (au.id = cards.usr)
@@ -15354,6 +15370,14 @@ SELECT  usr,
 
 	<class id="srcp" controller="simple-reporter.ui" oils_persist:virtual="true" reporter:label="Simple Reporter Collections">
 		<oils_persist:source_definition><![CDATA[
+			WITH sys_level_orgs AS (
+				SELECT aou.id AS id,
+				  aous.id AS sys_id,
+				  aous.name AS sys_name,
+				  aous.shortname as sys_shortname
+				FROM actor.org_unit aou
+				INNER JOIN actor.org_unit aous ON (COALESCE((actor.org_unit_ancestor_at_depth(aou.id, 1)).id, aou.id) = aous.id)
+			)
 			SELECT
 			  -- ids
 			  acp.id AS copy_id,
@@ -15363,20 +15387,20 @@ SELECT  usr,
 			  acp.status AS status_id,
 			  acp.location AS location_id,
 			  acp.age_protect AS age_protect_id,
-			  aous.id AS circ_sys_id,
+			  aous.sys_id AS circ_sys_id,
 			  acn.owning_lib AS owning_lib_id,
-			  aouos.id AS owning_sys_id,
+			  aouos.sys_id AS owning_sys_id,
 			  awsi.id AS inv_workstation_id,
 
 			  -- OUs
 			  aou.shortname AS circ_lib_shortname,
 			  aou.name AS circ_lib_name,
-			  aous.shortname AS circ_sys_shortname,
-			  aous.name AS circ_sys_name,
+			  aous.sys_shortname AS circ_sys_shortname,
+			  aous.sys_name AS circ_sys_name,
 			  aouo.shortname AS owning_lib_shortname,
 			  aouo.name AS owning_lib_name,
-			  aouos.shortname AS owning_sys_shortname,
-			  aouos.name AS owning_sys_name,
+			  aouos.sys_shortname AS owning_sys_shortname,
+			  aouos.sys_name AS owning_sys_name,
 
 			  -- dates
 			  acp.create_date AS create_date_time,
@@ -15404,8 +15428,8 @@ SELECT  usr,
 			  acp.barcode AS barcode,
 			  ccs.name AS status,
 			  acpl.name AS location_name,
-							acp.circ_modifier AS copy_circ_modifier_code,
-							ccm.name AS copy_circ_modifier_name,
+			  acp.circ_modifier AS copy_circ_modifier_code,
+			  ccm.name AS copy_circ_modifier_name,
 			  acp.price AS price,
 			  acp.cost AS acq_price,
 			  acp.deleted AS copy_deleted,
@@ -15483,9 +15507,9 @@ SELECT  usr,
 			  LEFT JOIN actor.workstation awsi ON (ali.inventory_workstation = awsi.id)
 			  LEFT JOIN reporter.materialized_simple_record rmsr ON (acn.record = rmsr.id)
 			  INNER JOIN actor.org_unit aou ON (acp.circ_lib = aou.id)
-			  LEFT JOIN actor.org_unit aous ON ((actor.org_unit_ancestor_at_depth(acp.circ_lib, 1)).id = aous.id)
+			  LEFT JOIN sys_level_orgs aous ON (acp.circ_lib = aous.id)
 			  INNER JOIN actor.org_unit aouo ON (acn.owning_lib = aouo.id)
-			  LEFT JOIN actor.org_unit aouos ON ((actor.org_unit_ancestor_at_depth(acn.owning_lib, 1)).id = aouos.id)
+			  LEFT JOIN sys_level_orgs aouos ON (acn.owning_lib = aouos.id)
 			  INNER JOIN biblio.record_entry bre ON (acn.record = bre.id)
 			  LEFT JOIN metabib.flat_display_entry mfde_subj ON (acn.record = mfde_subj.source AND mfde_subj.name = 'subject')
 			  LEFT JOIN action.all_circulation combcirc ON (acp.id = combcirc.target_copy)
@@ -15621,7 +15645,14 @@ SELECT  usr,
 
 	<class id="srwd" controller="simple-reporter.ui" oils_persist:virtual="true" reporter:label="Simple Reporter Weeding">
 		<oils_persist:source_definition><![CDATA[
-
+			WITH sys_level_orgs AS (
+				SELECT aou.id AS id,
+				  aous.id AS sys_id,
+				  aous.name AS sys_name,
+				  aous.shortname as sys_shortname
+				FROM actor.org_unit aou
+				INNER JOIN actor.org_unit aous ON (COALESCE((actor.org_unit_ancestor_at_depth(aou.id, 1)).id, aou.id) = aous.id)
+			)
 			SELECT
 			  -- ids
 			  acp.id AS copy_id,
@@ -15630,20 +15661,20 @@ SELECT  usr,
 			  acp.status AS status_id,
 			  acp.location AS location_id,
 			  acp.age_protect AS age_protect_id,
-			  aous.id AS circ_sys_id,
+			  aous.sys_id AS circ_sys_id,
 			  acn.owning_lib AS owning_lib_id,
-			  aouos.id AS owning_sys_id,
+			  aouos.sys_id AS owning_sys_id,
 			  awsi.id AS inv_workstation_id,
 
 			  -- OUs
 			  aou.shortname AS circ_lib_shortname,
 			  aou.name AS circ_lib_name,
-			  aous.shortname AS circ_sys_shortname,
-			  aous.name AS circ_sys_name,
+			  aous.sys_shortname AS circ_sys_shortname,
+			  aous.sys_name AS circ_sys_name,
 			  aouo.shortname AS owning_lib_shortname,
 			  aouo.name AS owning_lib_name,
-			  aouos.shortname AS owning_sys_shortname,
-			  aouos.name AS owning_sys_name,
+			  aouos.sys_shortname AS owning_sys_shortname,
+			  aouos.sys_name AS owning_sys_name,
 
 			  -- dates
 			  acp.create_date AS create_date_time,
@@ -15779,9 +15810,9 @@ SELECT  usr,
 			  LEFT JOIN actor.workstation awsi ON (ali.inventory_workstation = awsi.id)
 			  LEFT JOIN reporter.materialized_simple_record rmsr ON (acn.record = rmsr.id)
 			  INNER JOIN actor.org_unit aou ON (acp.circ_lib = aou.id)
-			  LEFT JOIN actor.org_unit aous ON ((actor.org_unit_ancestor_at_depth(acp.circ_lib, 1)).id = aous.id)
+			  LEFT JOIN sys_level_orgs aous ON (acp.circ_lib = aous.id)
 			  INNER JOIN actor.org_unit aouo ON (acn.owning_lib = aouo.id)
-			  LEFT JOIN actor.org_unit aouos ON ((actor.org_unit_ancestor_at_depth(acn.owning_lib, 1)).id = aouos.id)
+			  LEFT JOIN sys_level_orgs aouos ON (acn.owning_lib = aouos.id)
 			  INNER JOIN biblio.record_entry bre ON (acn.record = bre.id)
 			  LEFT JOIN metabib.flat_display_entry mfde_subj ON (acn.record = mfde_subj.source AND mfde_subj.name = 'subject')
 			  LEFT JOIN action.all_circulation combcirc ON (acp.id = combcirc.target_copy)
@@ -15948,18 +15979,25 @@ SELECT  usr,
 
 	<class id="srbps" controller="simple-reporter.ui" oils_persist:virtual="true" reporter:label="Simple Reporter Billing and Payments Transaction Summary">
 		<oils_persist:source_definition><![CDATA[
-
+			WITH sys_level_orgs AS (
+				SELECT aou.id AS id,
+				  aous.id AS sys_id,
+				  aous.name AS sys_name,
+				  aous.shortname as sys_shortname
+				FROM actor.org_unit aou
+				INNER JOIN actor.org_unit aous ON (COALESCE((actor.org_unit_ancestor_at_depth(aou.id, 1)).id, aou.id) = aous.id)
+			)
 			SELECT
 			  -- ids
 			  xact.id AS xact_id,
 			  COALESCE(circ.circ_lib, mg.billing_location) AS billing_lib_id,
-			  COALESCE(aoubs.id, aougbs.id) AS billing_sys_id,
+			  COALESCE(aoubs.sys_id, aougbs.sys_id) AS billing_sys_id,
 
 			  -- OUs
 			  COALESCE(aoub.shortname, aougb.shortname) AS billing_lib_shortname,
 			  COALESCE(aoub.name, aougb.shortname) AS billing_lib_name,
-			  COALESCE(aoubs.shortname, aougbs.shortname) AS billing_sys_shortname,
-			  COALESCE(aoubs.name, aougbs.name) AS billing_sys_name,
+			  COALESCE(aoubs.sys_shortname, aougbs.sys_shortname) AS billing_sys_shortname,
+			  COALESCE(aoubs.sys_name, aougbs.sys_name) AS billing_sys_name,
 
 			  -- billings
 			  billings.total_amount AS billing_grand_total,
@@ -16034,8 +16072,8 @@ SELECT  usr,
 			  LEFT JOIN money.grocery mg ON (xact.id = mg.id)
 			  LEFT JOIN actor.org_unit aoub ON (circ.circ_lib = aoub.id)
 			  LEFT JOIN actor.org_unit aougb ON (mg.billing_location = aougb.id)
-			  LEFT JOIN actor.org_unit aoubs ON ((actor.org_unit_ancestor_at_depth(circ.circ_lib, 1)).id = aoubs.id)
-			  LEFT JOIN actor.org_unit aougbs ON ((actor.org_unit_ancestor_at_depth(mg.billing_location, 1)).id = aougbs.id)
+			  LEFT JOIN sys_level_orgs aoubs ON (circ.circ_lib = aoubs.id)
+			  LEFT JOIN sys_level_orgs aougbs ON (mg.billing_location = aougbs.id)
 
 			  -- oohh nooo.... If not done this way you encounter situations
 			  -- like multiplying billing totals x number of payments and
