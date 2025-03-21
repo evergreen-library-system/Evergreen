@@ -16,7 +16,7 @@
     </label>
 
     <select class="form-select w-auto mx-2" id="bib-ident-type" 
-      [(ngModel)]="identType" formControlName="bibIdentType">
+      [(ngModel)]="identType" (ngModelChange)="resetQuery()" formControlName="bibIdentType">
       <option value="id">ID</option>
       <option value="tcn">TCN</option>
     </select>
@@ -29,23 +29,28 @@
       (keyup.enter)="search()" [(ngModel)]="identValue" formControlName="bibIdentValue"
       class="form-control mx-2 w-auto" aria-describedby="bib-ident-status" />
 
-    <button class="btn btn-primary" [disabled]="searchInProgress" (click)="search()" i18n>
-      Search
+    <button class="btn btn-primary" [disabled]="searchInProgress" (click)="search()">
+      <span *ngIf="!searchInProgress" i18n>Search</span>
+      <span *ngIf="searchInProgress" i18n>Searching...</span>
     </button>
 
     <div *ngIf="searchInProgress" role="status">
       <span class="visually-hidden">Searching...</span>
-      <span class="material-icons" aria-hidden="true">pending</span>
     </div>
 
   </div>
 
-  <div class="invalid-feedback d-block fs-4" role="status" id="bib-ident-status">
-    <div *ngIf="notFound && !multiRecordsFound" i18n>
-      Record not found: {{identValue}}
-    </div>
-    <div *ngIf="multiRecordsFound" i18n>
-      More than one Bib Record found with TCN: {{identValue}}
+  <div role="status" id="bib-ident-status">
+    <div class="invalid-feedback d-block fs-4">
+      <div *ngIf="notFound && !multiRecordsFound" i18n>
+        Record not found: {{identValue}}
+      </div>
+      <div *ngIf="multiRecordsFound" i18n>
+        More than one Bib Record found with TCN: {{identValue}}
+      </div>
+      <div *ngIf="queryError" i18n>
+        The server encountered an error. Please try a different search.
+      </div>
     </div>
   </div>
 </form>
