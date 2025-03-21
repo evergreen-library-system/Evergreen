@@ -116,7 +116,13 @@
       </div>
 
     </div><!-- left column -->
-
+    <div class="col-md-6"><!-- right page column -->
+      <div class="row new-entry">
+        <div class="col">
+          <a href="/eg2/staff/catalog/prefs">[% l('Search Preferences in the catalog &rarr;') %]</a>
+        </div>
+      </div>
+    </div><!-- right column -->
   </div><!-- row -->
 
 </div>
