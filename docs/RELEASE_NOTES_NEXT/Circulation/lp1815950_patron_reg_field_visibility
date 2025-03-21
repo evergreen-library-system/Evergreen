@@ -1,0 +1,12 @@
+== Visibilty of Fields in Patron Registration/Edit ==
+
+Enhances the ability to control display of Required, Suggested and All fields on the Patron Registration/Edit Screen.
+
+Given a field with three library settings, .show, .suggest, .require:
+
+.show = FALSE hides the field
+.show = TRUE displays the field in All, Suggested, Required (field is not required)
+.suggest = TRUE displays the field in All, Suggested
+.require = TRUE displays the field in All, Suggested, Required (field is required)
+
+.show, .suggest, .require UNSET displays the field in All, but not Suggested or Required
