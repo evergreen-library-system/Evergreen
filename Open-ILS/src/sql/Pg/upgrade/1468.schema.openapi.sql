@@ -1,5 +1,7 @@
 BEGIN;
 
+SELECT evergreen.upgrade_deps_block_check('1468', :eg_version);
+
 -- Necessary pre-seed data
 
 
