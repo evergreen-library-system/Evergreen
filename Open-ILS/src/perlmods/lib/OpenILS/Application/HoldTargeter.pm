@@ -101,16 +101,22 @@ sub hold_targeter {
             $single->message($msg) unless $single->message;
         }
         else {
-            $hold_ses->request(
-                "open-ils.circ.hold_reset_reason_entry.create",
-                $single->editor()->authtoken,
-                $hold_id,
-                OILS_HOLD_TIMED_OUT,
-                undef,
-                $single->{previous_copy_id}
-            ) unless defined
-                $args->{hold} ||
-                $single->{previous_copy_id} == $single->hold->current_copy;
+            if (defined($args->{hold}) ||
+                ( defined( $single->{previous_copy_id} ) &&
+                  defined( $single->hold->current_copy ) &&
+                  $single->{previous_copy_id} == $single->hold->current_copy )) {
+
+                $logger->info("Targeter could not find a hold or previous copy is the current copy");
+            } else {
+                $hold_ses->request(
+                    "open-ils.circ.hold_reset_reason_entry.create",
+                    $single->editor()->authtoken,
+                    $hold_id,
+                    OILS_HOLD_TIMED_OUT,
+                    undef,
+                    $single->{previous_copy_id}
+                );
+            }
         }
 
         if (($count % $throttle) == 0) { 
