@@ -1,4 +1,0 @@
-== Batch Edit Parts in the Holdings Editor ==
-
-The holdings editor now has an option to batch edit bibliographic parts.
-
