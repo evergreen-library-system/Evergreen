@@ -8,14 +8,14 @@ msgstr ""
 "Project-Id-Version: evergreen\n"
 "Report-Msgid-Bugs-To: FULL NAME <EMAIL@ADDRESS>\n"
 "POT-Creation-Date: 2017-08-15 16:41-0400\n"
-"PO-Revision-Date: 2017-11-01 06:14+0000\n"
+"PO-Revision-Date: 2024-10-03 18:50+0000\n"
 "Last-Translator: fares othman <Unknown>\n"
 "Language-Team: Arabic <ar@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2023-05-05 04:35+0000\n"
-"X-Generator: Launchpad (build 90e2150bef31b411d7bae5c4032c7e320fcaaec8)\n"
+"X-Launchpad-Export-Date: 2024-10-04 07:23+0000\n"
+"X-Generator: Launchpad (build 6341c735b243a0768c3cb66edf85737937cab327)\n"
 
 #: staff.circ.alert
 msgid "Alert"
@@ -2097,21 +2097,3 @@ msgstr "رسالة حالة نسخة النقل"
 #: staff.circ.utils.transit.copy_status_message
 msgid "This item is in status %1$s, additional staff action may be required."
 msgstr "هذه النسخة في حالة %1$s, ربما إجراء الطاقم الإضافي قد يكون مطلوباً."
-
-#~ msgid "Abort Transit then Checkout"
-#~ msgstr "إحباط النقل ثم الإعارة"
-
-#~ msgid "Are you sure you would like to abort transits for copies: %1$s?"
-#~ msgstr "هل انت متأكد مِن أنك تريد إلغاء نقل هذه النسخ: %1$s؟"
-
-#~ msgid "Aborting Transits"
-#~ msgstr "إلغاء النقل"
-
-#~ msgid ""
-#~ "This item was no longer in transit at the time of the abort.  Perhaps this "
-#~ "happened from a stale display?"
-#~ msgstr ""
-#~ "لم تعد هذه النُسخة في النقل خلال وقت الإحباط. ربما حدث هذا من العرض القديم؟"
-
-#~ msgid "Transit not likely aborted."
-#~ msgstr "مِن المحتمل تمّ إلغاء النقل."
