@@ -244,6 +244,7 @@ $( document ).ready(function() {
     });
     $("#total").val(amount);
     $("#selectPay").html('<i class="fas fa-money-bill-wave" aria-hidden="true"></i> [% l('Pay Selected Charges') %] - $' + amount.toFixed(2));
+    $("#selectPay").prop('disabled', (amount == 0));
 });
 });
 
