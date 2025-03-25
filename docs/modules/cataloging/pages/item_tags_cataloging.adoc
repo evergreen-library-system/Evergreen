@@ -1,89 +1,347 @@
-= Item Tags =
+= Item Tags, Notes, and Alerts =
 :toc:
 
 indexterm:[copy tags]
 
-Item Tags allow staff to apply custom, pre-defined labels or tags to items.  Item tags are visible in the public catalog and are searchable in both the staff client and public catalog based on configuration.  This feature was designed to be used for Digital Bookplates to attach donation or memorial information to items, but may be used for broader purposes to tag items.
+TODO: words here
 
-Item tags can be created ahead of time in the Administration module (See the Administration section of this documentation for more information.) and then applied to items or they can be created on the fly during the cataloging process.
+[[item_tags]]
+== Item Tags
 
-== Adding Existing Item Tags to Items ==
+Item Tags allow staff to apply custom, pre-defined labels or tags to items.
 
-Item Tags can be added to existing items or to new items as they are cataloged.  To add an item tag:
+Item tags are visible in the public catalog and are searchable in both the staff client and public catalog based on configuration.
 
-. In the _Holdings Editor_, click on *Item Tags*.  A dialog box called _Manage Item Tags_ will appear.
+This feature was designed to be used for Digital Bookplates to attach donation or memorial information to items, but may be used for broader purposes to tag items.
 
-image::item_tags/item_tag_button.png[Location of Item Tag Button]
+Item tags can be created ahead of time in the Administration and then applied to items or they can be created on the fly during the cataloging process.
 
-. Select the *Tag Type* from the drop down menu and start typing in the Tag field to bring up tag suggestions from the existing item tags.  Select the tag and click *Add Tag*, then click *OK*.
-..    If you are cataloging a new item, make any other changes to the item record.
-. Click *Save & Exit*.  The item tag will now appear in the catalog.
+See the xref:admin:copy_tags_admin.adoc[Item Tags administrative documentation] for more information.
 
-image::item_tags/manage_item_tags.png[Assigning an Item Tag]
+=== Adding Existing Item Tags to Items
 
-image::item_tags/copytags7.PNG[Item Tags in the OPAC]
+Item Tags can be added to existing items or to new items as they are cataloged. To add an item tag:
 
-== Creating and Applying a Item Tag During Cataloging ==
+. In the Holdings Editor, select *Edit Item Tags.* This will open a modal named _Managing tags for item_.
++
+image::item_tags_cataloging/managing_tags.png[Item Tags Modal]
++
+. Select the Tag Type from the drop down menu and start typing in the Tag field to bring up tag suggestions from the existing item tags. Select the tag and click _Add Tag_.
+.. Your tag will display in the Tags grid below. Columns in this grid include:
+... Tag Label and Value - this shows the tag’s label and its text value.
+... Type - this shows the tag’s type
+... Status - this shows if a tag is newly added. If it is blank, the tag already existed on this item.
+... OPAC Visible - this shows whether or not the tag is visible in the public catalog (OPAC)
+... Additional columns are available in this grid and can be accessed by clicking the gear icon in the top-right of the grid.
+.. Repeat this as needed for other tags.
+. If you need to edit or remove a tag that you have added, hover on the tag row to show actions for _Edit Tag_ (which will open the tags administrative interface in a new tab) and _Remove Tag_.
++ TIP: If you need to perform administrative actions on tags, the *Manage Tags* button will also open the tags administrative interface in a new tab.
+. Once you have added your tags and done any other tag work, select *Apply Changes*. The modal will close.
+.. To close without saving, select *Close*.
+. Proceed with the rest of your edits to the item, and then select either *Apply All & Save* or *Apply All, Save & Exit* to finish your edits.
+
+=== Creating and Applying a Item Tag During Cataloging
 
 Item tags can be created in the Holdings Editor on the fly while cataloging or viewing an item:
 
-. In the _Holdings Editor_, click on *Item Tags*.  A dialog box called _Manage Item Tags_ will appear.
-. Select the *Tag Type* from the drop down menu and type in the new Tag you want to apply to the item.  Click *Add Tag*, then click *OK*.  The new tag will be created and attached to the item.  It will be owned by the organization unit your workstation is registered to.  The tag can be modified under *Admin->Local Administration->Item Tags*.
+. In the Holdings Editor, select *Edit Item Tags*. This will open a modal named _Managing tags for Items_.
+. Select the Tag Type from the drop down menu and start typing in the Tag field to create your new tag.
+. Select _Add Tag_, and then _Create New Tag_.
++
+image::item_tags_cataloging/add_new_tag.png[Creating a new tag]
++
+. Your tag will be displayed in the grid below, and will be saved for future use. The tag will be owned at the Organizational Unit of your workstation.
+. Once you have added your tags and done any other tag work, select *Apply Changes*. The modal will close.
+.. To close without saving, select *Close*.
+. Proceed with the rest of your edits to the item, and then select either *Apply All & Save* or *Apply All, Save & Exit* to finish your edits.
 
-
-== Removing Item Tags from Items ==
+=== Removing Item Tags from Items
 
 To remove an item tag from a item:
 
-. In the Holdings Editor, click on *Item Tags*.  A dialog box called _Manage Item Tags_ will appear.
-. Click *Remove* next to the tag you would like to remove, and click *OK*.
-. Click *Save & Exit*.  The item tag will now be removed from the catalog.
+. In the Holdings Editor, select *Edit Item Tags*. This will open a modal named _Managing tags for Items_.
+. Hover on the tag row to show the _Remove Tag_ option.
++
+image::item_tags_cataloging/remove_tag.png[Removing a tag]
++
+. Once you have removed your tags and done any other tag work, select *Apply Changes*. The modal will close.
+.. To close without saving, select *Close*.
+. Proceed with the rest of your edits to the item, and then select either *Apply All & Save* or *Apply All, Save & Exit* to finish your edits.
 
-image::item_tags/remove_item_tag.png[Removing an Item Tag]
+=== Adding Item Tags in Batch
 
+Item tags can be added to multiple items in batch using Item Buckets, Item Status, or via the Holdings Editor.
 
-== Adding Item Tags to Items in Batch ==
+To add tags in batch via an item bucket, open a bucket with your desired items in it or create a new bucket with items in it.
 
-Item tags can be added to multiple items in batch using _Item Buckets_.  After adding the items to a Item Bucket:
+. Navigate to *Cataloging -> Item Buckets -> Bucket View* and select the bucket from the Buckets drop down menu.
+. Select the items to which you want to add the item tag and go to *Actions -> Apply Tags* or right-click and select *Apply Tags*. The Apply Item Tags dialog box will appear.
+. Select the Tag Type and start typing the name of your tag. The dropdown will show you matching tag values.
+. Select _Add Tag_, then _OK_. The item tag will now be attached to the items.
 
-. Go to *Cataloging->Item Buckets->Bucket View* and select the bucket from the Buckets drop down menu.
-. Select the items to which you want to add the item tag and go to *Actions->Apply Tags* or right-click and select *Apply Tags*.  The _Apply Item Tags_ dialog box will appear.
-. Select the *Tag Type* and enter the *Tag*.  Click *Add Tag*, then click *OK*.  The item tag will now be attached to the items.
+To add item tags in batch via the Holdings Editor, open a set of items in the Holdings Editor. You can do this from several entry points, including Item Status, item buckets, or from the bibliographic record in the _Holdings View_ tab.
 
-image::item_tags/copytags9.PNG[Item Bucket View]
+. At whichever entry point, select your set of items and then click *Actions -> Edit Items*.
+.. If you are in the Holdings View tab, you can also select *Actions -> Add / Manage Item Tags*. This will open the tags modal, and you can proceed to step 3.
+. In the Holdings Editor, select *Edit Item Tags.* This will open a modal
+named _Managing tags in common for <number> item(s)_.
+.. *IMPORTANT:* This modal will only show existing tags if they are commonly held among all selected items.
++
+image::item_tags_cataloging/tags_in_batch.png[Tags Modal in batch mode]
++
+. Select the Tag Type from the drop down menu and start typing in the Tag field to bring up tag suggestions from the existing item tags. Select the tag and click _Add Tag_.
+.. Your tag will display in the Tags grid below.
+.. Repeat this as needed for other tags.
+. If you need to edit or remove a tag that you have added, hover on the tag row to show actions for _Edit Tag_ (which will open the tags administrative interface in a new tab) and _Remove Tag_.
++
+TIP: If you need to perform administrative actions on tags, the *Manage Tags* button will also open the tags administrative interface in a new tab.
++
+. Once you have added your tags and done any other tag work, select *Apply Changes*. The modal will close.
+.. If you accessed the modal directly from the holdings view tab, this will save your changes.
+.. To close without saving, select *Close*.
+. Proceed with the rest of your edits to the items, and then select either *Apply All & Save* or *Apply All, Save & Exit* to finish your edits if you are in the Holdings Editor.
 
-NOTE: It is not possible to remove tags using the Item Bucket interface.
+To add tags in batch using the Item Status (List View), scan barcodes or upload a file of barcodes via the interface.
 
-== Searching Item Tags ==
+. Navigate to *Search -> Search for Items by Barcode*.
+. Scan barcodes or upload a file of barcodes in the Item Status interface.
+. Select the items to which you want to add the item tag and go to *Actions -> Edit Items*. The Holdings Editor will open in a new tab with all of your selected items.
+. Follow the instructions above for the Holdings Editor, starting at step 2.
 
-Item Tags can be searched in the public catalog if searching has been enabled via Library Settings.  Item Tags can be searched in the Basic and Advanced Search interfaces by selecting Digital Bookplate as the search field.  Specific item tags can also be searched using a Keyword search and a specific search syntax.
+=== Searching Item Tags ===
 
-=== Digital Bookplate Search Field ===
+Item Tags can be searched as Digital Bookplates in the public catalog if searching has been enabled via the Library Setting _Enable Digital Bookplate Search_. Item Tags can be searched in the Basic and Advanced Search interfaces by selecting Digital Bookplate as the search field. Specific item tags can also be searched using a Keyword search and a specific search syntax.
+
+==== Digital Bookplate Search Field ====
 
 *Basic Search*
 
-image::item_tags/copytags10.png[Digital Bookplates Search Field Location in Basic Search]
+image::item_tags_cataloging/bookplate_basic_search.png[Digital Bookplates Search Field Location in Basic Search]
 
 *Advanced Search*
 
-image::item_tags/copytags11.png[Digital Bookplates Search Field Location in Advanced Search]
+image::item_tags_cataloging/bookplate_advanced_search.png[Digital Bookplates Search Field Location in Advanced Search]
 
+==== Keyword Search ====
 
-=== Keyword Search ===
-
-Item Tags can also be searched by using a Keyword search in the Basic and Advanced search interfaces.  Searches need to be constructed using the following syntax:
-
+Item Tags can also be searched by using a Keyword search in the Basic and Advanced search interfaces. Searches need to be constructed using the following syntax:
 
 copy_tag(item tag type code, search term)
 
-
 For example:
 
-
 copy_tag(bookplate, friends of the library)
-
 
 It is also possible to conduct a wildcard search across all item tag types:
 
 copy_tag(*, smith)
 
+[[item_notes]]
+== Item Notes
+
+Item notes are free text fields that include a note title, note content,
+and checkbox to indicate whether a note is public. Public notes are
+visible in the OPAC, but not searchable.
+
+Neither item note titles nor item note contents are controlled, and
+there is no administrative interface to control notes.
+
+Notes can be added or edited from the Holdings Editor, or directly from
+the holdings view tab.
+
+=== Adding Notes to Items
+
+Item notes can be added to existing items or to new items as they are cataloged. To add an item note:
+
+. In the Holdings Editor, select *Edit Item Notes*. This will open a modal named _Managing notes for item_.
++
+image::item_tags_cataloging/add_new_note.png[Notes Modal]
++
+.. If you are in the holdings view tab, you can also select *Actions -> Add / Manage Item Notes*. This will open the notes modal, and you can proceed to step 2.
+. Enter a title and content for your note. Select the _Public?_ checkbox if you want the note to be visible in the OPAC.
+. Select _Add New_. The new note will appear below, under a heading labeled _Pending Item Notes_.
+.. Repeat this as needed to add other notes.
+.. Notes will remain pending until the item is saved in step #6.
+. You can edit or remove notes before saving. Text entries for note title and content can be edited directly in their respective fields, and you can also change the Public checkbox selection. To remove a note, select _Remove_ on the right side of the note’s line.
+. Once you have added your notes and done any other notes work, select *Apply Changes*. The modal will close.
+.. If you accessed the modal directly from the holdings view tab, this will save your changes.
+.. To close without saving, select *Close*.
+. Proceed with the rest of your edits to the item, and then select either *Apply All & Save* or *Apply All, Save & Exit* to finish your edits.
+
+=== Editing Item Notes
+
+Note titles and content are free text, and can be edited.
+
+. In the Holdings Editor, select *Edit Item Notes*. This will open a modal named _Managing notes for item_.
+.. If you are in the holdings view tab, you can also select *Actions -> Add / Manage Item Notes*. This will open the notes modal, and you can proceed to step 2.
+. Make your desired edits to the note title, content, and public checkbox.
+. Once you have finished, select *Apply Changes*. The modal will close.
+.. To close without saving, select *Close*.
+. Proceed with the rest of your edits to the item, and then select either *Apply All & Save* or *Apply All, Save & Exit* to finish your edits.
+
+=== Removing Item Notes from Items
+
+To remove an item note from a item:
+
+. In the Holdings Editor, select *Edit Item Notes*. This will open a modal named _Managing notes for item_.
+. Select _Remove_ on the right side of the note for the note(s) you want to remove.
++
+image::item_tags_cataloging/remove_note.png[Remove an item note]
++
+.. You can also Undelete a removed note before you close the modal. To do
+this, select _Undelete_ on the right side of the appropriate note.
+. Once you have finished, select *Apply Changes*. The modal will close.
+.. To close without saving, select *Close*.
+. Proceed with the rest of your edits to the item, and then select either *Apply All & Save* or *Apply All, Save & Exit* to finish your edits.
+
+=== Adding Item Notes in Batch
+
+Item notes can be added to multiple items in batch via the Holdings Editor, or directly from the Holdings View tab.
+
+To add item notes in batch via the Holdings Editor, open a set of items in the Holdings Editor. You can do this from several entry points, including item status, item buckets, or from the bibliographic record in the _Holdings View_ tab.
+
+. At whichever entry point, select your set of items and then click *Actions -> Edit Items*.
+.. If you are in the Holdings View tab, you can also select *Actions -> Add / Manage Item Notes*. This will open the tags modal, and you can proceed to step 3.
+. In the Holdings Editor, select *Edit Item Notes.* This will open a modal
+named _Managing notes in common for <number> item(s)_.
+.. *IMPORTANT:* This modal will only show existing note labels that are commonly held among all selected items. Items do note share notes directly.
++
+image::item_tags_cataloging/notes_in_batch.png[Notes Modal in batch mode]
++
+. Enter a title and content for your note. Select the _Public?_ checkbox if you want the note to be visible in the OPAC.
+. Select _Add New_. The new note will appear below, under a heading labeled _Pending Item Notes_.
+.. Repeat this as needed to add other notes.
+.. Notes will remain pending until the item is saved in step #7.
+. You can edit or remove notes before saving. Text entries for note title and content can be edited directly in their respective fields, and you can also change the Public checkbox selection. To remove a note, select _Remove_ on the right side of the note’s line.
+. Once you have added your notes and done any other notes work, select *Apply Changes*. The modal will close.
+.. If you accessed the modal directly from the holdings view tab, this will save your changes.
+.. To close without saving, select *Close*.
+. Proceed with the rest of your edits to the items, and then select either *Apply All & Save* or *Apply All, Save & Exit* to finish your edits.
+
+To add notes in batch using the Item Status (List View) via an item status, scan barcodes or upload a file of barcodes via the interface in the item status interface.
+
+. Navigate to *Search -> Search for Items by Barcode*.
+. Scan barcodes or upload a file of barcodes in the item status interface.
+. Select the items to which you want to add the item note and go to *Actions -> Edit Items*. The Holdings Editor will open in a new tab with all of your selected items.
+. Follow the instructions above for the Holdings Editor, starting at step 2.
+
+[[item_alerts]]
+== Item Alerts
+
+The Item Alerts feature allows library staff to add customized alert messages to items. The item alerts will appear when a specific event takes place, such as when the item is checked in, checked out, or renewed.
+
+Alerts can be temporary or persistent:
+
+* _Temporary alerts_ will be disabled after the initial alert and acknowledgement from staff.
+* _Persistent alerts_ will display each time the alert event takes place.
+
+Item Alerts can be configured to display at the circulating or owning library only or, alternatively, when the library at which the alert event takes place is not the circulating or owning library. Item Alerts at check in can also be configured to provide options for the next item status that should be applied to an item. Library administrators have the ability to create and customize Item Alert Types and to suppress item alerts at specific org units. See the xref:local_admin:item_alerts_administration.adoc[Item Alerts Administration documentation] for more information.
+
+=== Adding an Item Alert 
+
+Item Alerts can be added to new items or existing items using the Holdings Editor. They can also be added directly to items through the Check In, Check Out, Renew, Capture Holds, and Item Status screens; or from the bibliographic record in the _Holdings View_ tab.
+
+To add an Item Alert in the Holdings Editor:
+
+. At whichever entry point, select your item and then select *Actions -> Edit Items*.
+.. If you are in the Holdings View tab, you can also select *Actions -> Add / Manage Item Alerts*. This will open the alerts modal, and you can proceed to step 3.
+. Within the Holdings Editor, scroll to the bottom of the screen and select *Edit Item Alerts*.
+. This will open a modal labeled “Managing alerts for item <barcode>”.
++
+image::item_tags_cataloging/add_new_alert.png[Alerts Modal]
++
+. Select an _Alert Type_ and enter an additional alert message if needed in the _Alert Note_ field.
+.. Select the box next to _Temporary?_ if this alert should not appear after the initial alert is acknowledged.
+.. Leaving the _Temporary?_ box unchecked will create a persistent alert that will appear each time the action to trigger the alert occurs, such as check in or check out.
+. Select *Apply Changes* to save the new Item Alert.
+.. If you accessed the modal directly from the Holdings View tab, Item Status, or Check In / Check Out interfaces, this will save your changes.
+.. To close without saving, select *Close*.
+. After an Item Alert has been added, selecting the *Edit Item Alerts* button in the Holdings Editor will allow you to add another item alert and to view and/or edit existing item alerts.
++
+image::item_tags_cataloging/existing_item_alerts.png[Existing item alerts]
++
+. Proceed with the rest of your edits to the item, and then select either *Apply All & Save* or *Apply All, Save & Exit* to finish your edits.
+
+To add a Item Alert from the Check In, Check Out, Capture Holds, or
+Renewal screens:
+
+. Navigate to the appropriate screen, for example to *Circulation ->Check In*.
+. Scan in the item barcode.
+. Select the item row and go to *Actions -> Add Item Alerts* or right click on the item row and select *Add Item Alerts*.
+. This will open a new tab with a modal labeled “Managing alerts for item <barcode>”.
++
+image::item_tags_cataloging/add_new_alert.png[Alerts Modal]
++
+. Follow the instructions above, starting with step 4.
+. After an Item Alert has been added, selecting the *Manage Item Alerts* action will allow you to add another item alert and to view and/or edit existing item alerts.
++
+image::item_tags_cataloging/existing_item_alerts.png[Existing item alerts]
+
+
+To add a Item Alert from the Item Status list view:
+
+. From the Item Status list view, scan in the item barcode.
+. Select the item row and go to *Actions -> Add Item Alerts* or right click on the item row and select *Add Item Alerts*.
+. This will open a new tab with a modal labeled “Managing alerts for item <barcode>”.
++
+image::item_tags_cataloging/add_new_alert.png[Alerts Modal]
++
+. Follow the instructions above, starting on step 4.
+. After an Item Alert has been added, selecting the *Manage Item Alerts* action will allow you to add another item alert and to view and/or edit existing item alerts.
++
+image::item_tags_cataloging/existing_item_alerts.png[Existing item alerts]
+
+
+Alternatively, you can add or manage alerts from the detail view in Item Status.
+
+. Select the _Detail View_ button in the top-right of the Item Status screen.
+. In the bottom-left corner of this view are two buttons for *Add* and *Manage* Alerts.
++
+image::item_tags_cataloging/manage_alerts_item_status_detail.png[Location of Add and Manage Alerts in Item Status Detail]
++
+. Select *Add Item Alerts*.
+. This will open a new tab with a modal labeled “Managing alerts for item <barcode>”.
++
+image::item_tags_cataloging/add_new_alert.png[Alerts Modal]
++
+. Follow the instructions above, starting on step 4.
+. After an Item Alert has been added, selecting the *Manage* button will allow you to add another item alert and to view and/or edit existing item alerts. 
++
+image::item_tags_cataloging/existing_item_alerts.png[Existing item alerts]
+
+
+=== Removing an Item Alert
+
+Navigate to the Manage Item Alerts modal via one of the routes described above. Under _Existing Item Alerts_, select the checkbox next to _Clear?_ for the alert(s) you want to remove. Select *Apply Changes* to save your changes; or select *Close* to close without saving.
+
+image::item_tags_cataloging/remove_alert.png[Remove an item alert]
+
+=== Adding and Managing Item Alerts in Batch
+
+Item alerts can be added to multiple items in batch via the Holdings Editor, directly from the Holdings View tab, from the Item Status interface, or from circulation interfaces such as Check In, Check Out, Capture Holds, and Renew.
+
+To add item alerts in batch via the Holdings Editor, open a set of items in the Holdings Editor. You can do this from the Item Status interface or from the bibliographic record in the Holdings View tab.
+
+. At whichever entry point, select your set of items and then click *Actions -> Edit Items*.
+.. If you are in the Holdings View tab, you can also select *Actions -> Add / Manage Item Notes*. This will open the tags modal, and you can proceed to step 3.
+.. If you are in a circulation interface, or Item Status list view, you can select Actions -> *Add Item Alerts* or *Actions -> Manage Item Alerts*.
+This will open the tags modal in a new tab, and you can proceed to step 3.
+. In the Holdings Editor, select *Edit Item Alerts.* This will open a modal named _Managing alerts in common for <number> item(s)_.
++
+*IMPORTANT:* This modal will only show existing alert types that are
+commonly held among all selected items. Items do note share alerts
+directly.
++
+image::item_tags_cataloging/alerts_in_batch.png[Alerts modal in batch mode]
++
+. Select an _Alert Type_ and enter an additional alert message if needed in the _Alert Note_ field.
+.. Select the box next to _Temporary?_ if this alert should not appear after the initial alert is acknowledged.
+.. Leaving the _Temporary?_ box unchecked will create a persistent alert that will appear each time the action to trigger the alert occurs, such as check in or check out.
+. Select *Apply Changes* to save the new Item Alert.
+.. If you accessed the modal directly from the holdings view tab, Item Status, or check in / check out interfaces, this will save your changes.
+.. To close without saving, select *Close*.
+. After an Item Alert has been added, selecting the *Item Alerts* button in the Holdings Editor will allow you to add another item alert and to view and/or edit existing item alerts.
++
+image::item_tags_cataloging/existing_item_alerts.png[Existing item alerts]
++
+. Proceed with the rest of your edits to the item, and then select either *Apply All & Save* or *Apply All, Save & Exit* to finish your edits.
