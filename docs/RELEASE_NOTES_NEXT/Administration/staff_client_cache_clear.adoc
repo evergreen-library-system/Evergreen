@@ -1,9 +1,0 @@
-== Global Long-Lived Cache Clearing for Staff Client ==
-
-A new global flag (staff.client_cache_key) has been added that allows
-administrators to clear certain long-lived cache values from all staff clients
-at next login by simply changing the value. Currently only the MARC Tag Tables
-used by the bibliographic and authority record editors are cleared, but the
-list of localStorage items cleared may be expanded in future. This key is
-simply an opaque string - no special format is required - changing the value in
-any way will trigger a wave of cache clearing.
