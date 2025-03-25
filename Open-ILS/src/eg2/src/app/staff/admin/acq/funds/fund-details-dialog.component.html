@@ -2,13 +2,11 @@
 <eg-string #updateFailedString i18n-text text="Fund Update Failed"></eg-string>
 
 <ng-template #summaryField let-field="field" let-value="value" let-rawValue="rawValue">
-  <div class="col-2">
-    <label class="form-label fw-bold" for="fund-{{field}}">{{idlDef.field_map[field].label}}</label>
-  </div>
-  <div class="col-2">
-    <span id="fund-{{field}}" [ngClass]="{'negative-money-amount': checkNegativeAmount(rawValue)}">
+  <div class="border-bottom">
+    <label class="form-label term" for="fund-{{field}}">{{idlDef.field_map[field].label}}</label>
+    <output id="fund-{{field}}" class="def p-0" [ngClass]="{'negative-money-amount': checkNegativeAmount(rawValue)}">
       {{value}}
-    </span>
+    </output>
   </div>
 </ng-template>
 <ng-template #dialogContent>
@@ -18,16 +16,18 @@
       i18n-aria-label aria-label="Close dialog" (click)="close()"></button>
   </div>
   <div class="modal-body">
-    <div class="row row-cols-auto mt-3">
+    <div class="row row-cols-auto my-3">
       <div class="col">
         <button type="button" class="btn btn-primary"
+          (click)="openEditDialog()" i18n>Edit Fund</button>
+        <button type="button" class="btn btn-normal ms-1"
         [disabled]="fund?.active() !== 't'"
           (click)="allocateToFund()" i18n>Create Allocation</button>
-        <button type="button" class="btn btn-primary ms-1"
+        <button type="button" class="btn btn-normal ms-1"
         [disabled]="fund?.active() !== 't'"
           (click)="doTransfer()" i18n>Transfer Money</button>
       </div>
-      <div class="col flex-grow-1 text-end pb-1">
+      <div class="col text-end ms-auto my-3">
         <button type="button" class="btn btn-secondary btn-xs" [disabled]="activeTab === defaultTabType"
           (click)="setDefaultTab()" i18n>Set Default View</button>
       </div>
@@ -36,35 +36,25 @@
       <li role="presentation" [ngbNavItem]="'summary'" *ngIf="fund">
         <a role="tab" ngbNavLink i18n>Summary</a>
         <ng-template ngbNavContent>
-          <div class="mt-2">
-            <div class="row">
-              <button type="button" class="btn btn-info ms-3" (click)="openEditDialog()" i18n>Edit Fund</button>
-            </div>
-            <div class="row">
+          <dl class="dl-grid dl-double-cols dl-label-value p-3">
               <ng-container *ngTemplateOutlet="summaryField;context:{value:fund.code(),field:'code'}"></ng-container>
               <ng-container *ngTemplateOutlet="summaryField;context:{value:fund.name(),field:'name'}"></ng-container>
-            </div>
-            <div class="row">
+
               <ng-container *ngTemplateOutlet="summaryField;context:{value:fund.id(),field:'id'}"></ng-container>
               <ng-container *ngTemplateOutlet="summaryField;context:{value:fund.year(),field:'year'}"></ng-container>
-            </div>
-            <div class="row">
+
               <ng-container *ngTemplateOutlet="summaryField;context:{value:fund.org().shortname(),field:'org'}"></ng-container>
               <ng-container *ngTemplateOutlet="summaryField;context:{value:fund.currency_type().code(),field:'currency_type'}"></ng-container>
-            </div>
-            <div class="row">
+
               <ng-container *ngTemplateOutlet="summaryField;context:{value:formatCurrency(fund.combined_balance()?.amount()),field:'combined_balance',rawValue:fund.combined_balance()?.amount()}"></ng-container>
               <ng-container *ngTemplateOutlet="summaryField;context:{value:formatCurrency(fund.allocation_total()?.amount()),field:'allocation_total',rawValue:fund.allocation_total()?.amount()}"></ng-container>
-            </div>
-            <div class="row">
+
               <ng-container *ngTemplateOutlet="summaryField;context:{value:formatCurrency(fund.spent_balance()?.amount()),field:'spent_balance',rawValue:fund.spent_balance()?.amount()}"></ng-container>
               <ng-container *ngTemplateOutlet="summaryField;context:{value:formatCurrency(fund.debit_total()?.amount()),field:'debit_total',rawValue:fund.debit_total()?.amount()}"></ng-container>
-            </div>
-            <div class="row">
+
               <ng-container *ngTemplateOutlet="summaryField;context:{value:formatCurrency(fund.spent_total()?.amount()),field:'spent_total',rawValue:fund.spent_total()?.amount()}"></ng-container>
               <ng-container *ngTemplateOutlet="summaryField;context:{value:formatCurrency(fund.encumbrance_total()?.amount()),field:'encumbrance_total',rawValue:fund.encumbrance_total()?.amount()}"></ng-container>
-            </div>
-          </div>
+          </dl>
         </ng-template>
       </li>
       <li role="presentation" [ngbNavItem]="'allocations'" *ngIf="fund">

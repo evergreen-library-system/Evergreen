@@ -52,6 +52,15 @@ dl {
   display: grid;
   gap: 0.65rem 1rem;
   grid-template-columns: minmax(min-content, 10rem) 1fr;
+  margin-block: 0;
+}
+
+.dl-grid.dl-label-value {
+  gap: 0.65rem 3rem;
+}
+
+.dl-grid.dl-double-cols {
+  grid-template-columns: repeat(4, max-content);
 }
 
 .dl-grid > div {
@@ -60,20 +69,37 @@ dl {
   grid-template-columns: subgrid;
 }
 
-.dl-grid > :is(dt, div > dt, .term, div > .term) {
+.dl-double-cols > div {
+  gap: 0.65rem 2rem;
+  grid-column: auto / span 2;
+}
+
+.dl-grid:not(.dl-double-cols) > :is(dt, .term),
+.dl-grid:not(.dl-double-cols) > div :is(dt, .term) {
   grid-column: 1;
 }
 
-.dl-grid > :is(dd, div > dd, .def, div > .def) {
+.dl-grid:not(.dl-double-cols) > :is(dd, .def),
+.dl-grid:not(.dl-double-cols) > div > :is(dd, .def) {
   grid-column: 2;
 }
 
 /* align to the right */
-.dl-terms-end > :is(dt, div > dt, .term, div > .term),
-.dl-defs-end > :is(dt, div > dt, .def, div > .def) {
+.dl-terms-end > :is(dt, .term),
+.dl-terms-end > div > :is(dt, .term),
+.dl-defs-end > :is(dd, .def),
+.dl-defs-end > div > :is(dd, .def) {
   text-align: end;
 }
 
+.dl-label-value > :is(dt, .term), 
+.dl-label-value > div > :is(dt, .term) {
+  font-weight: bold;
+  margin: 0;
+}
+
+.dl-label-value > :is(dd, .def), 
+.dl-label-value > div > :is(dd, .def),
 .numeric {
   font-variant-numeric: tabular-nums lining-nums;
   text-align: end;
