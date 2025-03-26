@@ -12,6 +12,11 @@
 # Larger changes with extensive release notes in a separate file
 # and/or documentation updates may ignore the above.
 
+# Additional authors or direct contributors for a commit can be
+#  credited with lines like the followiing:
+## Co-authored-by: <Their Name <address@hostname.tld> >
+
+
 ## Signed-off-by: <Your Name <address@hostname.tld> >
 # Above can be done with -s option to git commit.
 
