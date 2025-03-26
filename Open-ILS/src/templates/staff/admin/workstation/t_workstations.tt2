@@ -71,6 +71,9 @@
         [% l('Remove') %]
       </button>
     </div>
+    <div style="margin-top:50px;margin-left:15px;">
+      <a href="/eg2/staff/selfcheck">[% l('Launch Self-Check') %]</a>
+    </div>
   </div>
 </div>
 
