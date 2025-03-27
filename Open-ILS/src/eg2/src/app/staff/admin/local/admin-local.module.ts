@@ -9,6 +9,7 @@ import {AdminCarouselComponent} from './admin-carousel.component';
 import {ClonePortalEntriesDialogComponent} from './staff_portal_page/clone-portal-entries-dialog.component';
 import {AdminStaffPortalPageComponent} from './staff_portal_page/staff-portal-page.component';
 import {StandingPenaltyComponent} from './standing-penalty.component';
+import { CopyAlertTypesComponent } from './copy-alert-types/copy-alert-types.component';
 
 @NgModule({
     declarations: [
@@ -17,7 +18,8 @@ import {StandingPenaltyComponent} from './standing-penalty.component';
         AdminCarouselComponent,
         StandingPenaltyComponent,
         ClonePortalEntriesDialogComponent,
-        AdminStaffPortalPageComponent
+        AdminStaffPortalPageComponent,
+        CopyAlertTypesComponent
     ],
     imports: [
         AdminCommonModule,

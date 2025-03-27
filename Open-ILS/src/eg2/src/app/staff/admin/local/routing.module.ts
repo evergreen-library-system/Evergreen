@@ -8,6 +8,8 @@ import {AdminCarouselComponent} from './admin-carousel.component';
 import {AdminStaffPortalPageComponent} from './staff_portal_page/staff-portal-page.component';
 import {StandingPenaltyComponent} from './standing-penalty.component';
 import {CourseTermMapComponent} from './course-reserves/course-term-map.component';
+import { CopyAlertTypesComponent } from './copy-alert-types/copy-alert-types.component';
+
 
 const routes: Routes = [{
     path: 'splash',
@@ -190,6 +192,9 @@ const routes: Routes = [{
         recordLabel: $localize `Statistical Category Entry - Patron`,
         hideClearFilters: true,
         fieldOrder: 'stat_cat,value,owner'}]
+}, {
+    path: 'config/copy_alert_type',
+    component: CopyAlertTypesComponent
 }, {
     path: ':schema/:table',
     component: BasicAdminPageComponent
