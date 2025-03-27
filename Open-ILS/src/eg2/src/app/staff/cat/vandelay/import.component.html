@@ -309,7 +309,10 @@
     <div class="d-grid gap-2 col-6 mx-auto">
       <button type="button" class="btn btn-success btn-lg fw-bold"
         [disabled]="isUploading || !hasNeededData()" 
-        (click)="upload()" i18n>Upload</button>
+        (click)="upload()">
+          <span *ngIf="!importSelection()" i18n>Upload</span>
+          <span *ngIf="importSelection()" i18n>Import</span>
+        </button>
     </div>
   </div>
   <!-- hide instead of *ngIf so ViewChild can find the progress bars -->
