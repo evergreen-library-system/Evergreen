@@ -1,0 +1,54 @@
+<eg-staff-banner bannerText="Call Number Classification Administration" i18n-bannerText>
+</eg-staff-banner>
+<eg-title i18n-prefix prefix="Call Number Classification Administration">
+</eg-title>
+
+<!-- idlObject and fieldName applied programmatically -->
+<eg-translate #translator></eg-translate>
+
+<div class="row mt-3">
+  <div class="col-auto pe-0">
+    <ul ngbNav class="nav-tabs flex-column" #cnClassNav="ngbNav"
+        [(activeId)]="activeTab" [keyboard]="true" [roles]="false" role="tablist">
+      @for (class of classes; track class) {
+        <li [ngbNavItem]="'nav'+class.id()" role="presentation">
+          <button type="button" role="tab" ngbNavLink>
+            <span i18n>{{class.id()}}. {{class.name()}}</span>
+          </button>
+
+          <ng-template ngbNavContent>
+            <div class="dl-grid">
+              <label class="form-label h5" i18n>Name</label>
+              <div class="input-group">
+                <input [ngModel]="class.name()" class="form-control form-control-lg w-auto"
+                  id="class{{class.id()}}-name" (ngModelChange)="class.name($event)" required />
+                <button class="input-group-text" type="button" (click)="translate(class)"
+                    title="Translate Name" i18n-title>
+                  <span class="material-icons" aria-hidden="true">translate</span>
+                  <span class="visually-hidden" i18n>Translate call number classification name</span>
+                </button>
+              </div>
+              <label class="form-label term" i18n>Normalizer</label>
+              <select [ngModel]="class.normalizer()" class="form-select def w-auto" required
+                  id="class{{class.id()}}-normalizer" (ngModelChange)="class.normalizer($event)">
+                  <option value="asset.label_normalizer_generic">asset.label_normalizer_generic</option>
+                  <option value="asset.label_normalizer_dewey">asset.label_normalizer_dewey</option>
+                  <option value="asset.label_normalizer_lc">asset.label_normalizer_lc</option>
+              </select>
+
+              <label class="form-label" for="class{{class.id()}}-field" i18n>Tag &amp; Subfield</label>
+              <textarea rows="{{getRowCount(class)}}" class="form-control class-tag-subfield" id="class{{class.id()}}-field" required
+                [ngModel]="splitFields[class.id()]" (change)="saveFields(class, $event)"></textarea>
+
+              <div class="subgrid py-3">
+                <button type="button" (click)="save(class)"
+                  class="btn btn-lg btn-primary fw-bold w-auto" i18n>Save</button>
+              </div>
+            </div>
+          </ng-template>
+        </li>
+      }
+    </ul>
+  </div>
+  <div class="col border-start ps-5" [ngbNavOutlet]="cnClassNav"></div>
+</div>

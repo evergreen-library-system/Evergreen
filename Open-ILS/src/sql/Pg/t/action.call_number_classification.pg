@@ -1,0 +1,24 @@
+BEGIN;
+
+SELECT plan(3);
+
+PREPARE add_classification_with_existing_normalizer_function
+    AS INSERT INTO asset.call_number_class (name, normalizer, field)
+    VALUES ('My first classification', 'asset.label_normalizer_dewey', '099b');
+SELECT lives_ok('add_classification_with_existing_normalizer_function');
+
+PREPARE add_classification_with_nonexistant_normalizer_function
+    AS INSERT INTO asset.call_number_class (name, normalizer, field)
+    VALUES ('My second classification', 'asset.i_do_not_exist', '099c');
+SELECT throws_ok('add_classification_with_nonexistant_normalizer_function');
+
+CREATE FUNCTION asset.label_normalizer_testing_version(input TEXT) RETURNS TEXT AS $$
+    SELECT('delicious normalized call number');
+$$ LANGUAGE SQL IMMUTABLE;
+
+PREPARE add_classification_with_brand_new_normalizer_function
+    AS INSERT INTO asset.call_number_class (name, normalizer, field)
+    VALUES ('My third classification', 'asset.label_normalizer_testing_version', '099e');
+SELECT lives_ok('add_classification_with_brand_new_normalizer_function');
+
+ROLLBACK;

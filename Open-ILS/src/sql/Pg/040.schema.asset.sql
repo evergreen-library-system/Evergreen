@@ -328,6 +328,9 @@ the "field" column for a given classification scheme. Tag/subfield combinations
 are delimited by commas.
 $$;
 
+ALTER TABLE asset.call_number_class ADD CONSTRAINT asset_call_number_class_has_valid_normalizer
+    CHECK (evergreen.function_exists(normalizer));
+
 CREATE OR REPLACE FUNCTION asset.label_normalizer() RETURNS TRIGGER AS $func$
 DECLARE
     sortkey        TEXT := '';
