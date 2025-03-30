@@ -802,8 +802,13 @@ angular.module('egGridMod',
                 }
             }
 
-            $scope.updateSelected = function () { 
-                    return $scope.selected = angular.copy($scope.selected);
+            $scope.updateSelected = function(index) {
+                // values have already been toggled by the checkbox
+                if (!$scope.canMultiSelect && $scope.selected[index]) {
+                    $scope.selected = { [index]: true };
+                }
+                $scope.selected = angular.copy($scope.selected);
+                return $scope.selected;
             };
 
             grid.selectAllItems = function() {
