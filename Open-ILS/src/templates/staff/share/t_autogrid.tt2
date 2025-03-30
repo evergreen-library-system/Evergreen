@@ -235,8 +235,8 @@
     <div class="eg-grid-cell eg-grid-cell-stock" ng-show="showIndex">
       <div title="[% l('Row Number Column') %]">[% l('#') %]</div>
     </div>
-    <div class="eg-grid-cell eg-grid-cell-stock" ng-show="canMultiSelect">
-      <div>
+    <div class="eg-grid-cell eg-grid-cell-stock">
+      <div ng-show="canMultiSelect">
         <input aria-label="[% l('All rows') %]"
           focus-me="gridControls.focusRowSelector"
           type='checkbox' ng-model="selectAll"/> 
@@ -315,12 +315,12 @@
         </a>
         <div ng-hide="gridControls.activateItem">{{$index + offset() + 1}}</div>
       </div>
-      <div class="eg-grid-cell eg-grid-cell-stock" ng-show="canMultiSelect">
+      <div class="eg-grid-cell eg-grid-cell-stock">
         <!-- ng-click=handleRowClick here has unintended 
              consequences and is unnecessary, avoid it -->
         <div>
           <input type='checkbox' aria-label="[% l('Row [_1]','{{$index + offset() + 1}}') %]"
-            ng-change="updateSelected()"
+            ng-change="updateSelected(indexValue(item))"
             ng-model="selected[indexValue(item)]"/>
         </div>
       </div>
