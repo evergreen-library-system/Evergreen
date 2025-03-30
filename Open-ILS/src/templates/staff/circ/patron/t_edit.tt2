@@ -1226,24 +1226,14 @@ within the "form" by name for validation.
   <div class="col-md-6 reg-field-input">
     <div class="row" ng-repeat="question in survey.questions()" 
       style="margin-bottom: 10px;">
-      <div class="col-md-6">{{question.question()}}</div>
+      <label class="col-form-label col-md-6" for="survey_responses-{{question.id()}}">
+        {{question.question()}}
+      </label>
       <div class="col-md-6">
-        <div class="btn-group" uib-dropdown>
-          <button type="button" class="btn btn-default" uib-dropdown-toggle>
-            <span style="padding-right: 5px;">
-              {{survey_responses[question.id()].answer()}}
-            </span>
-            <span class="caret"></span>
-          </button>
-          <ul uib-dropdown-menu>
-            <li ng-repeat="answer in question.answers()">
-              <a href 
-                ng-click="field_modified();survey_responses[question.id()] = answer"> 
-                {{answer.answer()}} 
-              </a>
-            </li>
-          </ul>
-        </div>
+      <select id="survey_responses-{{question.id()}}" class="form-control form-select" 
+        ng-model="survey_responses[question.id()]"
+        ng-options="answer.answer() for answer in question.answers() track by answer.id()" 
+        ng-change="field_modified();survey_responses[question.id()] = answer"></select>
       </div>
     </div>
   </div>
