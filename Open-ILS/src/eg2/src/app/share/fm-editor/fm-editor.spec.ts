@@ -5,8 +5,9 @@ import { FmRecordEditorComponent } from './fm-editor.component';
 import { FormatService } from '@eg/core/format.service';
 import { OrgService } from '@eg/core/org.service';
 import { PcrudService } from '@eg/core/pcrud.service';
-import { waitForAsync } from '@angular/core/testing';
+import { TestBed, waitForAsync } from '@angular/core/testing';
 import { of } from 'rxjs';
+import { NO_ERRORS_SCHEMA } from '@angular/core';
 
 describe('FmRecordEditorComponent', () => {
     let component: FmRecordEditorComponent;
@@ -43,9 +44,18 @@ describe('FmRecordEditorComponent', () => {
             }
         });
 
-        component = new FmRecordEditorComponent(
-            mockModal, mockIdl, mockToast, mockFormat, mockOrg, mockPcrud
-        );
+        TestBed.configureTestingModule({
+            providers: [
+                {provide: NgbModal, useValue: mockModal},
+                {provide: IdlService, useValue: mockIdl},
+                {provide: ToastService, useValue: mockToast},
+                {provide: FormatService, useValue: mockFormat},
+                {provide: OrgService, useValue: mockOrg},
+                {provide: PcrudService, useValue: mockPcrud}
+            ],
+            schemas: [NO_ERRORS_SCHEMA],
+        }).compileComponents();
+        component = TestBed.createComponent(FmRecordEditorComponent).componentInstance;
 
     });
     describe('hidden fields', () => {

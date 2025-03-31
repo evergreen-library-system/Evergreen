@@ -1,18 +1,20 @@
 import { PermService } from '@eg/core/perm.service';
-import { waitForAsync } from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { ToastService } from '@eg/share/toast/toast.service';
 import { CourseService } from '@eg/staff/share/course.service';
 import { AuthService } from '@eg/core/auth.service';
 import { NetService } from '@eg/core/net.service';
 import { PcrudService } from '@eg/core/pcrud.service';
 import { CourseAssociateMaterialComponent } from './course-associate-material.component';
-import {NgbModal} from '@ng-bootstrap/ng-bootstrap';
+import {NgbModal, NgbNav} from '@ng-bootstrap/ng-bootstrap';
 import { of } from 'rxjs';
 import { DialogComponent } from '@eg/share/dialog/dialog.component';
+import { NO_ERRORS_SCHEMA } from '@angular/core';
 
 
 describe('CourseAssociateMaterialComponent', () => {
     let component: CourseAssociateMaterialComponent;
+    let fixture: ComponentFixture<CourseAssociateMaterialComponent>;
 
     const mockLibrary = {
         id: () => 5,
@@ -35,10 +37,10 @@ describe('CourseAssociateMaterialComponent', () => {
         a: [],
         classname: 'acmc',
         _isfieldmapper: true,
-        owning_lib: () => mockLibrary2
+        owning_lib: () => mockLibrary2,
+        course_number: () => 'HIST123'
     };
 
-    const authServiceSpy = jasmine.createSpyObj<AuthService>(['token']);
     const courseServiceSpy = jasmine.createSpyObj<CourseService>(['associateMaterials']);
     courseServiceSpy.associateMaterials.and.returnValue({item: mockItem, material: new Promise(() => {})});
     const netServiceSpy = jasmine.createSpyObj<NetService>(['request']);
@@ -53,10 +55,25 @@ describe('CourseAssociateMaterialComponent', () => {
     const rejectedDialogComponentSpy = jasmine.createSpyObj<DialogComponent>(['open']);
     rejectedDialogComponentSpy.open.and.returnValue(of(false));
 
+    beforeEach(waitForAsync(() => {
+        TestBed.configureTestingModule({
+            providers: [
+                {provide: AuthService, useValue: jasmine.createSpyObj<AuthService>(['token'])},
+                {provide: CourseService, useValue: courseServiceSpy},
+                {provide: NetService, useValue: netServiceSpy},
+                {provide: PcrudService, useValue: pcrudServiceSpy},
+                {provide: ToastService, useValue: toastServiceSpy},
+                {provide: PermService, useValue: permServiceSpy},
+                {provide: NgbModal, useValue: modalSpy},
+            ],
+            schemas: [NO_ERRORS_SCHEMA],
+            imports: [NgbNav]
+        }).compileComponents();
+    }));
+
     beforeEach(() => {
-        component = new CourseAssociateMaterialComponent(authServiceSpy, courseServiceSpy,
-            netServiceSpy, pcrudServiceSpy,
-            toastServiceSpy, permServiceSpy, modalSpy);
+        fixture = TestBed.createComponent(CourseAssociateMaterialComponent);
+        component = fixture.componentInstance;
         component.confirmOtherLibraryDialog = dialogComponentSpy;
         component.currentCourse = mockCourse;
     });

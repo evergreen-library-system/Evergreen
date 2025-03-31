@@ -6,6 +6,13 @@ import { NetService } from '@eg/core/net.service';
 import { of } from 'rxjs';
 import { AuthService } from '@eg/core/auth.service';
 import * as moment from 'moment';
+import { TestBed } from '@angular/core/testing';
+import { OrgService } from '@eg/core/org.service';
+import { PcrudService } from '@eg/core/pcrud.service';
+import { Router } from '@angular/router';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { ToastService } from '@eg/share/toast/toast.service';
+import { NO_ERRORS_SCHEMA } from '@angular/core';
 
 let component: CreateReservationDialogComponent;
 
@@ -24,8 +31,21 @@ describe('CreateReservationDialogComponent', () => {
             'textcode': 'RESOURCE_IN_USE',
             'desc': 'Resource is in use at this time'
         }));
-        component = new CreateReservationDialogComponent(mockAuth, mockFormat,
-            mockNet, null, null, null, null, mockPbv, null);
+        TestBed.configureTestingModule({
+            providers: [
+                {provide: AuthService, useValue: mockAuth},
+                {provide: FormatService, useValue: mockFormat},
+                {provide: NetService, useValue: mockNet},
+                {provide: OrgService, useValue: null},
+                {provide: PcrudService, useValue: null},
+                {provide: Router, useValue: null},
+                {provide: NgbModal, useValue: null},
+                {provide: PatronBarcodeValidator, useValue: mockPbv},
+                {provide: ToastService, useValue: null}
+            ],
+            schemas: [NO_ERRORS_SCHEMA],
+        }).compileComponents();
+        component = TestBed.createComponent(CreateReservationDialogComponent).componentInstance;
         component.ngOnInit();
         component.setDefaultTimes([moment()], 15);
         component.targetResourceType = {id: 10, label: 'Friendly penguin'};
