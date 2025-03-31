@@ -36,7 +36,7 @@ export class ToastComponent implements OnInit {
     show(msg: ToastMessage) {
         this.messages.push(msg);
         console.info($localize`${new Date().toLocaleTimeString()} - ${msg.text}`);
-        
+
         this.timeout = setTimeout(
             () => this.messages.shift(),
             this.duration

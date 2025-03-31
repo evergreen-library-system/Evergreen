@@ -153,7 +153,7 @@ implements OnInit, AfterViewInit, OnDestroy {
     }
 
     selectText(req?: FieldFocusRequest) {
-        if (this.field && typeof this.field == 'object') {
+        if (this.field && typeof this.field === 'object') {
             this.field.hasFocus = true;
             this.field.isDraggable = false;
         }

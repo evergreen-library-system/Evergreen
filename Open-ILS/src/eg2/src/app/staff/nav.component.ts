@@ -188,8 +188,7 @@ export class StaffNavComponent implements OnInit, OnDestroy {
         const staffContainer = document.getElementById('staff-content-container');
         if (disable_links_newtabs) {
             staffContainer.classList.add('user-pref-no-new-tabs');
-        }
-        else {
+        } else {
             staffContainer.classList.remove('user-pref-no-new-tabs');
         }
     }

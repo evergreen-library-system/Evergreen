@@ -604,8 +604,7 @@ export class VolCopyService implements OnDestroy {
                         // convert actual booleans to 't' and 'f'
                         Object.keys(data).forEach(key => {
                             if (this.idl.classes.acp.field_map[key]?.datatype === 'bool') {
-                                if (data[key] === true) { data[key] = 't'; }
-                                else if (data[key] === false) { data[key] = 'f'; }
+                                if (data[key] === true) { data[key] = 't'; } else if (data[key] === false) { data[key] = 'f'; }
                             }
                         });
 
@@ -616,8 +615,7 @@ export class VolCopyService implements OnDestroy {
                                 data[thing].forEach(thingElement => {
                                     Object.keys(thingElement).forEach(key => {
                                         if (this.idl.classes[ant[thing]].field_map[key].datatype === 'bool') {
-                                            if (thingElement[key] === true) { thingElement[key] = 't'; }
-                                            else if (thingElement[key] === false) { thingElement[key] = 'f'; }
+                                            if (thingElement[key] === true) { thingElement[key] = 't'; } else if (thingElement[key] === false) { thingElement[key] = 'f'; }
                                         }
                                     });
                                 });

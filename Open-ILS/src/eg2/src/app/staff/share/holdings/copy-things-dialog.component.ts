@@ -198,7 +198,7 @@ export abstract class CopyThingsDialogComponent<
      */
     protected async initializeCopies(): Promise<void> {
         /*
-        console.debug(`CopyThingsDialog(${this.thingType}): initializeCopies(), this.copies, 
+        console.debug(`CopyThingsDialog(${this.thingType}): initializeCopies(), this.copies,
             this.copyIds`, this.copies, this.copyIds);
         /** */
         if (!this.copies) {
@@ -215,7 +215,7 @@ export abstract class CopyThingsDialogComponent<
         });
 
         /*
-        console.debug(`CopyThingsDialog(${this.thingType}): initializeCopies(); 
+        console.debug(`CopyThingsDialog(${this.thingType}): initializeCopies();
             this.inPlaceCreateMode, this.inBatch()`, this.inPlaceCreateMode, this.inBatch());
         /** */
 
@@ -226,7 +226,7 @@ export abstract class CopyThingsDialogComponent<
         // This is also mucking with our pending changes when the dialog is
         // reinvoked before save; hrmm. clones/new-instances vs references
         /*
-        console.debug(`CopyThingsDialog(${this.thingType}): initializeCopies(); 
+        console.debug(`CopyThingsDialog(${this.thingType}): initializeCopies();
             calling this.getThings`);
         /** */
         await this.getThings();
@@ -234,7 +234,7 @@ export abstract class CopyThingsDialogComponent<
         // Process batch things if needed
         if (this.inBatch()) {
             /*
-            console.debug(`CopyThingsDialog(${this.thingType}): initializeCopies(); 
+            console.debug(`CopyThingsDialog(${this.thingType}): initializeCopies();
                 calling this.processCommonThings`);
             /** */
             await this.processCommonThings();
@@ -352,16 +352,16 @@ export abstract class CopyThingsDialogComponent<
         /*
         console.debug(`CopyThingsDialog(${this.thingType}): removeThing: things`,
             this.idl.clone(things));
-        console.debug(`CopyThingsDialog(${this.thingType}): removeThing: 
+        console.debug(`CopyThingsDialog(${this.thingType}): removeThing:
             incoming this.newThings`, this.newThings.length, this.idl.clone(this.newThings));
-        console.debug(`CopyThingsDialog(${this.thingType}): removeThing: 
+        console.debug(`CopyThingsDialog(${this.thingType}): removeThing:
             incoming this.changedThings`, this.changedThings.length, this.idl.clone(this.changedThings));
-        console.debug(`CopyThingsDialog(${this.thingType}): removeThing: 
+        console.debug(`CopyThingsDialog(${this.thingType}): removeThing:
             incoming this.deletedThings`, this.deletedThings.length, this.idl.clone(this.deletedThings));
         /** */
         things.forEach(thing => {
             /*
-            console.debug(`CopyThingsDialog(${this.thingType}): removeThing: 
+            console.debug(`CopyThingsDialog(${this.thingType}): removeThing:
                 considering thing with id, isnew, ischanged, isdeleted`, this.idl.clone(thing),
                 thing?.id(), thing?.isnew(), thing?.ischanged(), thing?.isdeleted());
             /** */
