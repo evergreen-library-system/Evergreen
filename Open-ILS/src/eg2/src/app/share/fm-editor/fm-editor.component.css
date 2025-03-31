@@ -21,6 +21,15 @@
   line-height: inherit; 
 }
 
+.fm-form-input-and-help:has(.fm-form-unset) .fm-form-input {
+  flex-basis: calc(100% - 2.75rem);
+}
+
+.fm-form-input-and-help .fm-form-unset {
+  margin-inline-start: auto;
+  text-align: end;
+}
+
 /* Extra styling for logical field grouping on specific modals. In the Hold Policies
 example below, chmm is the fieldmapper's class ID and item_owning_ou is the first
 field name in a section that should have special row styling. */

@@ -41,11 +41,8 @@
           <label *ngIf="inputType(field) !== 'template'" class="form-label" for="{{idPrefix}}-{{field.name}}">{{field.label}}</label>
           <label *ngIf="inputType(field) === 'template'" class="form-label" for="{{field.idlClass}}-{{field.name}}">{{field.label}}</label>
           <eg-help-popover placement="end" *ngIf="field.helpText" helpText="{{field.helpTextValue}}"></eg-help-popover>
-          <ng-container *ngIf="isSafeToNull(field)">
-            <br />(<a (click)="setToNull(field)" href='javascript:;'><span i18n>Unset</span></a>)
-          </ng-container>
         </div>
-        <div class="col-lg-9">
+        <div class="col-lg-9 pe-0">
           <div class="fm-form-input-and-help">
             <div class="form-text" id="{{idPrefix}}-{{field.name}}-help" *ngIf="field.helpText">
               {{field.helpTextValue}}
@@ -216,6 +213,13 @@
                   </eg-combobox>
                 </ng-container>
               </ng-container> <!-- switch -->
+            </div>
+            <div class="fm-form-unset" *ngIf="isSafeToNull(field)">
+              <button (click)="setToNull(field)" type="button" 
+                  class="btn btn-destroy px-2" title="Unset value of {{field.label}}" aria-i18n-title>
+                <span class="material-icons" aria-hidden="true">close</span>
+                <span class="visually-hidden" i18n>Unset value of {{field.label}}</span>
+              </button>
             </div>
           </div>
         </div>
