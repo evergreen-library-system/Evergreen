@@ -90,7 +90,7 @@ subtest('with location_group option', sub {
         $org_unit,
         \@record_ids,
         {library_group => 1000001});
-    my @library_group_counts = grep { $_->{lasso} == 1000001 } @{$response->{copy_counts}};
+    my @library_group_counts = grep { $_->{library_group} && $_->{library_group} == 1000001 } @{$response->{copy_counts}};
 
     is($library_group_counts[0]->{available}, 4, 'includes the total items in the specified library group');
 });
