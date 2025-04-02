@@ -123,11 +123,12 @@ a:not(.alert-link):is(:hover, :focus, :focus-visible),
   filter: brightness(1.1);
 }
 
-a[target="_blank"]:after {
+a[target="_blank"]:not(:has(img)):after {
   display: inline;
-  content: "\e89e";
+  content: "open_in_new";
   font-family: "Material Icons";
   line-height: inherit;
+  margin-inline-start: 0.25rem;
 }
 
 /** BS has flex utility classes, but none for specifying flex widths.
