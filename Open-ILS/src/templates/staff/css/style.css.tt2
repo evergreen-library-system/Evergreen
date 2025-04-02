@@ -291,7 +291,7 @@ table.list tr.selected td { /* deprecated? */
 /* background colors are !important because Bootstrap 4 table striping is greedy */
 .overdue-row {
   color: var(--bs-body-color);
-  background-color: rgba(var(--bs-orange-rgb), 0.10);
+  background-color: rgba(var(--bs-orange-rgb), 0.10) !important;
   border-color: rgba(var(--bs-orange-rgb), 0.15);
   border-left: 10px solid var(--bs-orange);
   padding-left: 0;
@@ -325,7 +325,7 @@ table.list tr.selected td { /* deprecated? */
 
 .lost-row {
   color: var(--bs-body-color);
-  background-color: rgba(var(--bs-red-rgb), 0.25);
+  background-color: rgba(var(--bs-red-rgb), 0.25) !important;
   border-color: rgba(var(--bs-red-rgb), 0.30);
   border-left: 2px solid var(--bs-red-600);
   padding-left: 0;
