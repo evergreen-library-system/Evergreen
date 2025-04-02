@@ -213,6 +213,7 @@ export class MarcRichEditorComponent implements OnInit {
 
     onKeyDown(evt: KeyboardEvent, field: MarcField, subfield?: MarcSubfield) {
         switch (evt.key) {
+            case 'ArrowLeft':
             case 'ArrowRight':
                 // console.debug("ArrowRight: ", evt, field, subfield);
                 let el = evt.target as HTMLElement;
@@ -347,6 +348,18 @@ export class MarcRichEditorComponent implements OnInit {
                 break;
         }
         evt.stopPropagation();
+    }
+
+    getSubfieldDomId(field, subfield) {
+        return 'subfield-' + field.tag+subfield[0] + '-' + subfield[2];
+    }
+
+    getSubfieldTabindex(field, subfield) {
+        const subfieldGroupElement = document.getElementById(this.getSubfieldDomId(field, subfield)) as HTMLElement;
+        if (subfieldGroupElement?.contains(document.activeElement)) {
+            return -1;
+        }
+        return 0;
     }
 
     focusSubfieldGroup(field: MarcField, subfield: MarcSubfield) {

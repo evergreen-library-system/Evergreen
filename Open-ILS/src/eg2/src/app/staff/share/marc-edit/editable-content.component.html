@@ -33,6 +33,7 @@ Track their labels here.
 <ng-container *ngIf="!bigText">
 
   <eg-combobox #MARCCombo *ngIf="suggest"
+    trigger="click"
     [domId]="domId"
     [moreClasses]="'fw-bold form-control-sm type-'+fieldType"
     tabindex="{{tabindex}}"
