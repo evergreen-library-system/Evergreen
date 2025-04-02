@@ -9,13 +9,6 @@
   transition: opacity 0.5s ease-in-out;
 }
 
-.tagmap-actions .edit-link:after {
-  display: inline;
-  content: "\e89e"; /* opens in new window icon */
-  font-family: "Material Icons";
-  line-height: inherit;
-}
-
 ::ng-deep .eg-grid-row:not(:has(:hover, :focus, :focus-visible)) .tagmap-actions {
   opacity: 0 !important;
 }
