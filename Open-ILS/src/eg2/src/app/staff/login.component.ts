@@ -56,7 +56,8 @@ export class StaffLoginComponent implements OnInit {
             } else {
                 // Remove /eg2/:locale/ however many times it's been prepended, so it's added back only once in prepareExternalUrl()
                 // Hopefully doesn't scrub locale back to en-US?
-                this.routeTo = this.routeTo.replace(/^(\/eg2\/([a-z]{2}-[A-Z]{2}))+/, '');
+                // eslint-disable-next-line quotes
+                this.routeTo = this.routeTo.replace(/^(\/eg2\/([a-z]{2}-[A-Z]{2}))+/, "");
             }
         }
 
