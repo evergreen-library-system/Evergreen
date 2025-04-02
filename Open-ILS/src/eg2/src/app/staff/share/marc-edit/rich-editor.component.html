@@ -146,7 +146,7 @@
         <li i18n>Copy Current Row Above: Ctrl+Up</li>
         <li i18n>Copy Current Row Below: Ctrl+Down</li>
         <li i18n>Add Subfield: Ctrl+D or Ctrl+I</li>
-        <li i18n>Edit Subfield (when grouped): Right Arrow</li>
+        <li i18n>Edit Subfield (when grouped): Left or Right Arrow</li>
         <li i18n>Remove Row: Ctrl+Del</li>
         <li i18n>Remove Subfield: Shift+Del</li>
         <li i18n>Open Suggestions: Ctrl+Shift+Down</li>
@@ -314,10 +314,10 @@
               'full-width': subfield[1].length > 100 || context.isFullWidth(field.tag, subfield[0]),
               'last': last
             }"
-            tabindex="0"
-            [id]="'subfield-{{subfield[2]}}'"
+            [tabindex]="getSubfieldTabindex(field, subfield)"
+            [id]="getSubfieldDomId(field, subfield)"
             (keydown)="onKeyDown($event, field, subfield)"
-            attr.aria-description="Press right arrow to edit." 
+            [attr.aria-description]="'Press right or left arrow to edit.'" 
             i18n-aria-label i18n-aria-description>
             <ng-container #subfieldContent
               *ngTemplateOutlet="subfieldChunk;context:{field:field,subfield:subfield,tabIndex:context.subfieldHasFocus(field, subfield) ? 0 : -1}">
