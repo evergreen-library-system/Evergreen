@@ -1019,6 +1019,21 @@ button.dropdown-toggle:focus,
   border: none;
 }
 
+/* Use subtle background colors in older interfaces */
+.bg-info {
+  background-color: var(--badge-info-bg);
+}
+
+.bg-success {
+  background-color: var(--badge-success-bg);
+}
+
+pre {
+  color: var(--bs-body-color);
+  background-color: var(--bs-body-bg-alt);
+  border: 1px solid var(--border);
+}
+
 @media (forced-colors: active) or (prefers-contrast: forced) {
   .uib-increment .btn,
   .uib-decrement .btn {

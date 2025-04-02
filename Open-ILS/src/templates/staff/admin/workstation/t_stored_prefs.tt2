@@ -1,7 +1,7 @@
 <style>
   /* TODO */
   #stored-prefs-container .selected {
-    background-color: #F5F5F5;   
+    background-color: var(--bs-body-bg-highlight);   
   }
   #stored-prefs-container .row {
     padding-top: 10px;
