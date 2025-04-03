@@ -6,7 +6,7 @@ content:
   sources:
   - url: ../
 #    - url: git://git.evergreen-ils.org/Evergreen.git
-    branches: [main, rel_3_14, rel_3_13, rel_3_12, rel_3_11, rel_3_10, rel_3_9, rel_3_8, rel_3_7, rel_3_6]
+    branches: [main, rel_3_15, rel_3_14, rel_3_13, rel_3_12, rel_3_11, rel_3_10, rel_3_9, rel_3_8, rel_3_7, rel_3_6]
     start_path: docs
 ui:
   bundle:
