@@ -17,36 +17,16 @@ is associated with a data type. This indicates what kind of information is store
 [options="header"]
 |===
 |Data Type |Description |Notes
-|Boolean |Contains either "true" or "false". |Examples in Evergreen: "deleted"
- in item/patron record, "circulate?" in item record.
-|ID |Unique number assigned by the database to identify a record |IDs look like
- numbers, but the ID 
-data type is treated specially by the software for determining how tables are l
-inked. ID is a good candidate field for counting records.
-|Integer |A number like 1, 2, 3. |Examples in Evergreen: "remaining renewal count"
- in circulation record, "claimed returned count" in patron record.
-|Interval |Time intervals, such as "2 weeks" and "6 months" |Examples in 
-Evergreen: "loan duration" and "grace period" in circulation record,
-|Link |It is similar to the id data type. It is the id of a record in another
- table. |Examples in Evergreen: "user id" and "item id" in a circulation record.
- Link outputs a number that is a meaningful reference for the database but not 
- of much use to a human user. You will usually want to drill further down the 
- tree in the Sources pane and select fields from the linked table. However, in 
- some instances you might want to use a link field. For example, to count the 
- number of patrons who borrowed items, you could do a count on the "user id" in
- the circulation record.
-|Money |Monetary amount |Examples in Evergreen: "price" in item record, "billing
- amount" in billing record.
-|Org_unit |Organizational unit. It is a number. It acts like a link data type. |
-In Evergreen, libraries are organizational units. In some contexts, they are o
-rganized into a tree structure with consortium, library systems, and branches for 
-library systems. To filter on a library, make sure you choose the field having 
-org_unit data type. To display a library, it is a better option to drill down 
-to the org unit record to display the "name" of it.
-|Text |Text field. Usually it takes whatever is typed into the field. |Examples:
- "call number label" in call number record, "patron's names".
-|Timestamp |A very detailed time such as 2018-11-25 17:54:26-07 |Example: checkout
- time in circulation record, last status date in item record.
+|Boolean |Contains either "true" or "false". |Examples in Evergreen: "deleted" in item/patron record, "circulate?" in item record.
+|ID |Unique number assigned by the database to identify a record. |IDs look like numbers, but the ID data type is treated specially by the software for determining how tables are linked. ID is a good candidate field for counting records.
+|Integer |A number like 1, 2, 3. |Examples in Evergreen: "remaining renewal count" in circulation record, "claimed returned count" in patron record.
+|Interval |Time intervals, such as "2 weeks" and "6 months". |Examples in 
+Evergreen: "loan duration" and "grace period" in circulation record.
+|Link |It is similar to the ID data type. It is the ID of a record in another table. |Examples in Evergreen: "user id" and "item id" in a circulation record. Link outputs a number that is a meaningful reference for the database but not of much use to a human user. You will usually want to drill further down the tree in the Sources pane and select fields from the linked table. However, in some instances you might want to use a link field. For example, to count the number of patrons who borrowed items, you could do a count on the "user id" in the circulation record.
+|Money |Monetary amount. |Examples in Evergreen: "price" in item record, "billing amount" in billing record.
+|Org_unit |Organizational unit. It is a number. It acts like a link data type. |In Evergreen, libraries are organizational units. In some contexts, they are organized into a tree structure with consortium, library systems, and branches for library systems. To filter on a library, make sure you choose the field having org_unit data type. To display a library, it is a better option to drill down to the org unit record to display the "name" of it.
+|Text |Text field. Usually it takes whatever is typed into the field. |Examples: "call number label" in call number record, "patron's names".
+|Timestamp |A very detailed time such as 2018-11-25 17:54:26-07. |Example: checkout time in circulation record, last status date in item record.
 |===
 
 [[report_field_transforms]]
@@ -63,41 +43,17 @@ Transforms determine how data is processed when it is retrieved from the databas
 [options="header"]
 |===
 |Transform |Applicable Data Types |Description | Notes
-|Raw Data |All Data Types |To display the data exactly as it is stored in the 
-database. | Most commonly used transform .
-|Date |Timestamps | This transform presents a timestamp as a human-readable 
-date in yyyy-mm-dd format. |For example, timestamp 2018-11-25 17:54:26-07 will
- be displayed as 2018-11-25. 
-|Year \+ Month |Timestamps | Presents a timestamp as the year and month in yyyy-mm
- format. |For example, 2018-11-25 17:54:26-07 will be displayed as 2018-11. If 
- filtering on a timestamp transformed to Year + Month, all days in the calendar 
- month are included.
-|Upper Case |Text | Transforms text to all upper case. |
-|Lower Case |Text | Transforms text to all lower case. |
-|Substring |Text | This transform can be applied to filters, not display fields.
- It matches the given value with a continuous string of characters in the field.
- |For example, if a given value is "123" and the match is with a call number 
- field, call numbers like "123.34", "ANF 123.34", "JNF 233.123", etc. will be in
- the result list.
-|First Continuous Non-space string |Text | The first word (or string of numbers 
-and/or characters until the first spacing) in a field is returned by this transform.
- |For example, this transform will return "E" from text "E DOR", "E 123", etc. 
-|Count |Text, Integer, ID, Money, Timestamp, Org_unit | This transform counts the
- records found. |Though you can count by any field, very often id field is used. 
-|Count Distinct |Text, Integer, ID, Money, Timestamp, Org_unit | This transform 
-counts the number of records  with unique value in the field. If two records have
- the same value in the field, they will be counted once only. |A typical example
- of using Count Distinct is counting the number of active patrons who borrowed 
- items at a library. Each patron can be counted once only but they may borrow 
- multiple items. Transforming the patron id in circulation record with Count 
- Distinct will result in the required number. Since each patron has a unique id,
- they will be counted once only. 
-|Max |Text, Integer, Money, and Timestamp | It compares the values in the field 
-of all result records and then returns the one record with the highest value. 
-For timestamp, the highest value meansthe latest date. |For example, if a checkout
- date is transformed by Max, the returned date is the last checkout date.
-|Min |Text, Integer, Money, and Timestamp | It works the same way as Max except 
-that it returns the lowest value. |
+|Raw Data |All Data Types |To display the data exactly as it is stored in the database. |Most commonly used transform.
+|Date |Timestamps |This transform presents a timestamp as a human-readable date in yyyy-mm-dd format. |For example, timestamp 2018-11-25 17:54:26-07 will be displayed as 2018-11-25.
+|Year \+ Month |Timestamps |Presents a timestamp as the year and month in yyyy-mm format. |For example, 2018-11-25 17:54:26-07 will be displayed as 2018-11. If filtering on a timestamp transformed to Year + Month, all days in the calendar month are included.
+|Upper Case |Text |Transforms text to all upper case. |
+|Lower Case |Text |Transforms text to all lower case. |
+|Substring |Text |This transform can be applied to filters, not display fields. It matches the given value with a continuous string of characters in the field. |For example, if a given value is "123" and the match is with a call number field, call numbers like "123.34", "ANF 123.34", "JNF 233.123", etc. will be in the result list.
+|First Continuous Non-space string |Text |The first word (or string of numbers and/or characters until the first spacing) in a field is returned by this transform. |For example, this transform will return "E" from text "E DOR", "E 123", etc.
+|Count |Text, Integer, ID, Money, Timestamp, Org_unit |This transform counts the records found. |Though you can count by any field, very often ID field is used.
+|Count Distinct |Text, Integer, ID, Money, Timestamp, Org_unit |This transform counts the number of records with unique value in the field. If two records have the same value in the field, they will be counted once only. |A typical example of using Count Distinct is counting the number of active patrons who borrowed items at a library. Each patron can be counted once only but they may borrow multiple items. Transforming the patron ID in circulation record with Count Distinct will result in the required number. Since each patron has a unique ID, they will be counted once only.
+|Max |Text, Integer, Money, and Timestamp |It compares the values in the field of all result records and then returns the one record with the highest value. For timestamp, the highest value means the latest date. |For example, if a checkout date is transformed by Max, the returned date is the last checkout date.
+|Min |Text, Integer, Money, and Timestamp |It works the same way as Max except that it returns the lowest value. |
 |===
 
 [[report_operators]]
@@ -111,46 +67,20 @@ be included in the result. The record is included when the comparison returns
 "TRUE". The possible ways of comparing data are related to data type and data 
 transforms. The available operators are:
 
-[options="header"]
+[options="header",cols="4*"]
 |===
-|Operator |Description |Notes
-|Equals | Compares two operands and returns TRUE if they are exactly the same. |
-|Contains Matching Substring | This operator checks if any part of the field 
-matches the given parameter. |It is case-sensitive.
-|Contains Matching Substring (Ignore Case) | This operator is identical to 
-Contains Matching Substring, except it is not case-sensitive. |
-|Greater Than | This operator returns TRUE if a field is greater than your 
-parameter. | For text fields, the string is compared character by character in
- accordance with the general rule that numerical characters are smaller than 
- alphabetical characters and uppercase alphabeticals are smaller than lowercase
- alphabeticals For timestamps, "Greater Than" can be thought of as "later than"
- or "after".
-|Greater than or equal to |This operator returns TRUE if a field is greater than
- or equal to your parameter. | For text fields, the string is compared character
- by character in accordance with the general rule that numerical characters are
- smaller than alphabetical characters and uppercase alphabeticals are smaller 
- than lower case alphabeticals. For timestamps, "Greater Than or equal to" can
- be thought of as "later than or equal to" or "after or equal to".
-|Less Than | This operator returns TRUE if a field is less than, lower than, 
-earlier than, or smaller than your parameter. |
-|In List| It is similar to Equals, except it allows you to specify multiple 
-parameters and returns "TRUE" if the field is equal to any one of the given 
-values. |
-|Not In List | It is the opposite of In List. Multiple parameters can be specified.
- TRUE will be returned only when none of the parameters is matched with the value 
- in the field. |
-|Between | Two parameters are required by this operator. TRUE is returned when the 
-field value is Greater Than or Equal to the smaller given value and Less Than or 
-Equal to the bigger given value. | The smaller parameter should always come first 
-when filling in a filter with this operator. For example: between 3 and 5 is 
-correct. Between 5 and 3 will return FALSE on the Reports interface. For timestamp,
- the earlier date always comes first.
-|Is NULL | Returns TRUE for fields that contain no data.| For example, an overdue
- report will include a filter for Check In Date/Time is NULL as an item is no 
- longer overdue if there is a value for Check In Date/Time.
-|Is NULL or Blank | Returns TRUE for fields that contain no data or blank string.
- | For most intents and purposes, this operator should be used when there is no 
- visible value in the field. |
+|Operator |Description |Notes |Example
+|Equals |Compares two operands and returns TRUE if they are exactly the same. | |Field value = "123".
+|Contains Matching Substring |This operator checks if any part of the field matches the given parameter. |It is case-sensitive. |Field value contains "abc".
+|Contains Matching Substring (Ignore Case) |This operator is identical to Contains Matching Substring, except it is not case-sensitive. | |Field value contains "ABC" (case-insensitive).
+|Greater Than |This operator returns TRUE if a field is greater than your parameter. |For text fields, the string is compared character by character in accordance with the general rule that numerical characters are smaller than alphabetical characters and uppercase alphabeticals are smaller than lowercase alphabeticals. For timestamps, "Greater Than" can be thought of as "later than" or "after". |Field value > "2023-01-01".
+|Greater than or equal to |This operator returns TRUE if a field is greater than or equal to your parameter. |For text fields, the string is compared character by character in accordance with the general rule that numerical characters are smaller than alphabetical characters and uppercase alphabeticals are smaller than lowercase alphabeticals. For timestamps, "Greater Than or equal to" can be thought of as "later than or equal to" or "after or equal to". |Field value >= "2023-01-01".
+|Less Than |This operator returns TRUE if a field is less than, lower than, earlier than, or smaller than your parameter. | |Field value < "2023-01-01".
+|In List |It is similar to Equals, except it allows you to specify multiple parameters and returns "TRUE" if the field is equal to any one of the given values. | |Field value in ("123", "456").
+|Not In List |It is the opposite of In List. Multiple parameters can be specified. TRUE will be returned only when none of the parameters is matched with the value in the field. | |Field value not in ("123", "456").
+|Between |Two parameters are required by this operator. TRUE is returned when the field value is Greater Than or Equal to the smaller given value and Less Than or Equal to the bigger given value. |The smaller parameter should always come first when filling in a filter with this operator. For example: between 3 and 5 is correct. Between 5 and 3 will return FALSE on the Reports interface. For timestamp, the earlier date always comes first. |Field value between "2023-01-01" and "2023-12-31".
+|Is NULL |Returns TRUE for fields that contain no data. |For example, an overdue report will include a filter for Check In Date/Time is NULL as an item is no longer overdue if there is a value for Check In Date/Time. |Field value is NULL.
+|Is NULL or Blank |Returns TRUE for fields that contain no data or blank string. |For most intents and purposes, this operator should be used when there is no visible value in the field. |Field value is NULL or blank.
 |===
 
 [[report_filter_values]]

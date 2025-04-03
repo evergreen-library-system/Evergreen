@@ -6,7 +6,7 @@
 
 With the *Library Settings Editor* one can optionally customize
 Evergreen's behavior for a particular library or library system. For
-descriptions of available settings see the xref:#settings_overview[Settings Overview] table below.
+descriptions of available settings see the xref:#_settings_overview[Settings Overview] table below.
 
 == Editing Library Settings ==
 
@@ -32,7 +32,7 @@ You can revert back to an old value by clicking *revert*.
 image::library_settings/history_lib_setting.png[Library Setting History]
 
 NOTE: Please note that different settings may require different data
-formats, which are listed in the xref:#settings_overview[Settings Overview] table. Refer to the xref:#data_types[Data Types] table at the
+formats, which are listed in the xref:#_settings_overview[Settings Overview] table. Refer to the xref:#_data_types[Data Types] table at the
 bottom of this page for more information.
 
 == Exporting/Importing Library Settings ==
@@ -53,7 +53,6 @@ contents. Click *Paste* in the pop-up window. Click *Submit*.
 +
 image::library_settings/import_lib_settings.png[Importing Library Settings]
 
-[#settings_overview]
 == Settings Overview ==
 
 The settings are grouped together in separate tables based on functions
@@ -61,7 +60,7 @@ and modules, which are affected by the setting. They are in the same
 sequence as you see in the staff client. Each table describes the
 available settings in the group and shows which can be changed on a
 per-library basis. At the bottom is the table with a list of
- xref:#data_types[data types] with details about acceptable settings
+ xref:#_data_types[data types] with details about acceptable settings
 values.
 
 Jump to a specific table:
@@ -113,7 +112,7 @@ Jump to a specific table:
 |Upload Merge on Single Match by Default|Merge records on single match by default during ACQ file upload|True/False|
 |========
 
-<<settings_overview,Return to Settings Overview>>
+xref:#_settings_overview[Return to Settings Overview]
 
 ((("Booking", "Library Settings Editor")))
 ((("Cataloging", "Library Settings Editor")))
@@ -141,7 +140,7 @@ Jump to a specific table:
 |Spine label maximum lines|Set the default maximum number of lines for spine labels.|Number|
 |======================
 
-<<settings_overview,Return to Settings Overview>>
+xref:#_settings_overview[Return to Settings Overview]
 
 ((("Circulation", "Library Settings Editor")))
 
@@ -215,7 +214,7 @@ Jump to a specific table:
 |Warn when patron account is about to expire|If set, the staff client displays a warning this number of days before the expiry of a patron account. Value is in number of days.|Duration|
 |===========
 
-<<settings_overview,Return to Settings Overview>>
+xref:#_settings_overview[Return to Settings Overview]
 
 ((("Credit Card Processing", "Library Settings Editor")))
 
@@ -246,7 +245,7 @@ Jump to a specific table:
 |Stripe secret key|Secret API key from stripe.|Text|
 |======================
 
-<<settings_overview,Return to Settings Overview>>
+xref:#_settings_overview[Return to Settings Overview]
 
 ((("Finances", "Library Settings Editor")))
 
@@ -277,7 +276,7 @@ Jump to a specific table:
 |Void overdue fines when items are marked lost|If true overdue fines are voided when an item is marked lost|True/False|
 |========
 
-<<settings_overview,Return to Settings Overview>>
+xref:#_settings_overview[Return to Settings Overview]
 
 ((("GUI", "Library Settings Editor")))
 ((("Graphic User Interface", "Library Settings Editor")))
@@ -317,11 +316,11 @@ Jump to a specific table:
 !Record in-house use: # of uses threshold for Are You Sure? dialog.!In the Record In-House Use interface, a submission attempt will warn if the # of uses field exceeds the value of this setting.!Number!
 !Record In-House Use: Maximum # of uses allowed per entry.!The # of uses entry in the Record In-House Use interface may not exceed the value of this setting.!Number!
 !Regex for barcodes on patron registration!The Regular Expression for validation on barcodes in patron registration.!Regular Expression!
-!Regex for Day_phone field on patron registration! The Regular Expression for validation on the Day_phone field in patron registration. Note: The first capture group will be used for the "last 4 digits of phone number" as patron password feature, if enabled. Ex: "+[2-9]\d{2}-\d{3}-(\d{4})( x\d+)?+" will ignore the extension on a NANP number.!Regular expression!
+!Regex for Day_phone field on patron registration! The Regular Expression for validation on the Day_phone field in patron registration. Note: The first capture group will be used for the "last 4 digits of phone number" as patron password feature, if enabled. Ex: `+[2-9]\d\{2\}-\d\{3\}-(\d\{4\})( x\d+)?+` will ignore the extension on a NANP number.!Regular expression!
 !Regex for Email field on patron registration!The Regular Expression on validation on the Email field in patron registration.!Regular expression!
 !Regex for Evening-phone on patron registration!The Regular Expression on validation on the Evening-phone field in patron registration.!Regular expression!
 !Regex for Other-phone on patron registration!The Regular Expression on validation on the Other-phone field in patron registration.!Regular expression!
-!Regex for phone fields on patron registration!The Regular Expression on validation on phone fields in patron registration. Applies to all phone fields without their own setting.!Regular expression!`+^(?:(?:\+?1\s*(?:[.-]\s*)?)?(?:\(\s*([2-9]1[02-9]|[2-9][02-8]1|[2-9][02-8][02-9])\s*\)|([2-9]1[02-9]|[2-9][02-8]1|[2-9][02-8][02-9]))\s*(?:[.-]\s*)?)?([2-9]1[02-9]|[2-9][02-9]1|[2-9][02-9]{2})\s*(?:[.-]\s*)?([0-9]{4})(?:\s*(?:#|x\.?|ext\.?|extension)\s*(\d+))?$+` is a US phone number
+!Regex for phone fields on patron registration!The Regular Expression on validation on phone fields in patron registration. Applies to all phone fields without their own setting.!Regular expression!`+^(?:(?:\+?1\s*(?:[.-]\s*)?)?(?:\(\s*([2-9]1[02-9]|[2-9][02-8]1|[2-9][02-8][02-9])\s*\)|([2-9]1[02-9]|[2-9][02-8]1|[2-9][02-8][02-9]))\s*(?:[.-]\s*)?)?([2-9]1[02-9]|[2-9][02-9]1|[2-9][02-9]\{2\})\s*(?:[.-]\s*)?([0-9]\{4\})(?:\s*(?:#|x\.?|ext\.?|extension)\s*(\d+))?$+` is a US phone number
 !Regex for Postal Code field on patron registration!The Regular Expression on validation on the Postal Code field in patron registration.!Regular expression!
 !Require at least one address for Patron Registration!Enforces a requirement for having at least one address for a patron during registration. If set to False, you need to delete the empty address before saving the record. If set to True, deletion is not allowed.!True/False!
 !Require XXXXX field on patron registration!The XXXXX field will be required on the patron registration screen.!True/False!XXXXX can be Country, State, Day-phone, Evening-phone, Other-phone, DOB, Email, or Prefix.
@@ -340,7 +339,7 @@ Jump to a specific table:
 !Work Log: maximum patrons logged!Maximum entries for "Most Recently Affected Patrons..." section of the Work Log interface.!Number!
 !===========================
 
-<<settings_overview,Return to Settings Overview>>
+xref:#_settings_overview[Return to Settings Overview]
 
 ((("Global", "Library Settings Editor")))
 
@@ -357,7 +356,7 @@ Jump to a specific table:
 |Patron username format|Regular expression defining the patron username format, used for patron registration and self-service username changing only|Regular expression|
 |======
 
-<<settings_overview,Return to Settings Overview>>
+xref:#_settings_overview[Return to Settings Overview]
 
 ((("Holds", "Library Settings Editor")))
 
@@ -399,7 +398,7 @@ For multiple branch libraries
 |Use weight-based hold targeting|Use library weight based hold targeting|True/False|
 |=====
 
-<<settings_overview,Return to Settings Overview>>
+xref:#_settings_overview[Return to Settings Overview]
 
 ((("Library", "Library Settings Editor")))
 
@@ -421,7 +420,7 @@ The default is at midnight each night for items with "Reshelving" status for ove
 |Telephony: Arbitrary line(s) to include in each notice callfile|This overrides lines from opensrf.xml. Line(s) must be valid for your target server and platform (e.g. Asterisk 1.4).|Text|
 |=======
 
-<<settings_overview,Return to Settings Overview>>
+xref:#_settings_overview[Return to Settings Overview]
 
 ((("OPAC", "Library Settings Editor")))
 
@@ -448,7 +447,7 @@ The default is at midnight each night for items with "Reshelving" status for ove
 |Warn patrons when adding to a temporary book list|Present a warning dialogue when a patron adds a book to the temporary book list.|True/False|
 |====
 
-<<settings_overview,Return to Settings Overview>>
+xref:#_settings_overview[Return to Settings Overview]
 
 ((("Offline", "Library Settings Editor")))
 ((("Program", "Library Settings Editor")))
@@ -466,7 +465,7 @@ The default is at midnight each night for items with "Reshelving" status for ove
 |Sending email address for patron notices|This email address is for automatically generated patron notices (e.g. email overdues, email holds notification).  It is good practice to set up a generic account, like info@nameofyourlibrary.org, so that one person’s individual email inbox doesn’t get cluttered with emails that were not delivered.|Text|
 |===================
 
-<<settings_overview,Return to Settings Overview>>
+xref:#_settings_overview[Return to Settings Overview]
 
 ((("Receipt Templates", "Library Settings Editor")))
 ((("SMS Settings", "Library Settings Editor")))
@@ -486,7 +485,7 @@ The default is at midnight each night for items with "Reshelving" status for ove
 |Enable features that send SMS text messages.|Current features that use SMS include hold-ready-for-pickup notifications and a "Send Text" action for call numbers in the OPAC. If this setting is not enabled, the SMS options will not be offered to the user. Unless you are carefully silo-ing patrons and their use of the OPAC, the context organization for this setting should be the top organization in the organizational hierarchy, otherwise patrons can trample their user settings when jumping between organizations.|True/False|
 |======================================
 
-<<settings_overview,Return to Settings Overview>>
+xref:#_settings_overview[Return to Settings Overview]
 
 ((("Security", "Library Settings Editor")))
 
@@ -510,7 +509,7 @@ usernames in addition to barcode. For this setting to work, a barcode format mus
 |Staff login inactivity timeout (in seconds)|Number of seconds of inactivity before staff client prompts for login and password.|Number|
 |========
 
-<<settings_overview,Return to Settings Overview>>
+xref:#_settings_overview[Return to Settings Overview]
 
 ((("Self Check", "Library Settings Editor")))
 
@@ -535,7 +534,7 @@ usernames in addition to barcode. For this setting to work, a barcode format mus
 |Number of seconds to wait between URL test attempts|Throttling mechanism for batch URL verification runs. Each running process will wait this number of seconds after a URL test before performing the next.|Duration|
 |=====================
 
-<<settings_overview,Return to Settings Overview>>
+xref:#_settings_overview[Return to Settings Overview]
 
 ((("Vandelay", "Library Settings Editor")))
 
@@ -553,9 +552,8 @@ usernames in addition to barcode. For this setting to work, a barcode format mus
 |Vandelay Generate Default Call Numbers|Auto-generate default item call numbers when no item call number is present|True/False|These are pulled from the MARC Record.
 |========
 
-<<settings_overview,Return to Settings Overview>>
+xref:#_settings_overview[Return to Settings Overview]
 
-[#data_types]
 === Data Types ===
 
 ((("Data Types", "Library Settings Editor")))
