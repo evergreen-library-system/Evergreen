@@ -18,7 +18,7 @@ describe('CopyAttrsComponent', () => {
     const orgMock = jasmine.createSpyObj<OrgService>(['get']);
     const authServiceMock = jasmine.createSpyObj<AuthService>(['user']);
     const formatServiceMock = jasmine.createSpyObj<FormatService>(['transform']);
-    const storeServiceMock = jasmine.createSpyObj<StoreService>(['setLocalItem']);
+    const storeServiceMock = jasmine.createSpyObj<StoreService>(['setLocalItem', 'getLocalItem']);
     const toastServiceMock = jasmine.createSpyObj<ToastService>(['success']);
     const volCopyServiceMock = jasmine.createSpyObj<VolCopyService>(['copyStatIsMagic', 'saveTemplates']);
 
