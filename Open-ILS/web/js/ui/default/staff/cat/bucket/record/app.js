@@ -760,7 +760,7 @@ function($scope,  $q , $routeParams,  bucketSvc,  egCore,  $window,
                 ).then(function() {
                     if (bChannel) {
                         bChannel.postMessage({success:true});
-                        // $window.open('/eg2/staff/catalog/record/' + args.lead_id);
+                        $window.open('/eg2/staff/catalog/record/' + args.lead_id, '_blank');
                         $window.close(); // called from the Angular bucket UI
                     }
                 });
