@@ -148,8 +148,8 @@ export class CopyAlertsDialogComponent extends
 
     private async getDefaultAlertType(): Promise<void> {
         const defaults = await this.serverStore.getItem('eg.cat.volcopy.defaults');
-        if (defaults?.values?.thing_alert_type) {
-            this.defaultAlertType = defaults.values.thing_alert_type;
+        if (defaults?.values?.item_alert_type) {
+            this.defaultAlertType = defaults.values.item_alert_type;
             if (this.newAlert) {
                 this.newAlert.alert_type(this.defaultAlertType);
             }
