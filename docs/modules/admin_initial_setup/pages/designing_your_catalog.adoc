@@ -48,6 +48,7 @@ template files. For example, the _home.tt2_ template currently involves a number
 of other template files to generate a single HTML file.
 
 Example Template Toolkit file: _opac/home.tt2_.
+[source,tt2]
 ----
 [%  PROCESS "opac/parts/header.tt2";
     WRAPPER "opac/parts/base.tt2";
@@ -166,6 +167,7 @@ bash$ vim /openils/var/templates_custom/opac/parts/topnav_links.tt2
 Finally, edit the link text in _opac/parts/header.tt2_. Content of the
 _opac/parts/header.tt2_ file.
 
+[source, tt2]
 ----
 <div id="gold-links-holder">
     <div id="gold-links">
@@ -261,6 +263,7 @@ template variable for the MARC field to display.
 For example, to display the date of publication code you created in the
 _misc_util.tt2_ file, add these lines:
 
+[source, tt2]
 ----
 [% IF attrs.pubdate; %]
     <span itemprop="datePublished">[% attrs.pubdate | html; %]</span>
@@ -364,12 +367,14 @@ Libraries with same-day circulations may want their patrons to be able to view
 the due *time* as well as due date when they log in to their OPAC account.  To
 accomplish this, go to _opac/myopac/circs.tt2_.  Find the line that reads:
 
+[source, tt2]
 ----
 [% date.format(due_date, DATE_FORMAT) %]
 ----
 
 Replace it with:
 
+[source, tt2]
 ----
 [% date.format(due_date, '%D %I:%M %p') %]
 ----
