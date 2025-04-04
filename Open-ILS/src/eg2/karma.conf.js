@@ -15,6 +15,7 @@ module.exports = function (config) {
       require('@angular-devkit/build-angular/plugins/karma')
     ],
     client:{
+      captureConsole: false,
       clearContext: false // leave Jasmine Spec Runner output visible in browser
     },
     coverageIstanbulReporter: {
@@ -27,8 +28,12 @@ module.exports = function (config) {
     reporters: ['progress', 'kjhtml'],
     port: 9876,
     colors: true,
-    logLevel: config.LOG_INFO,
+    logLevel: config.LOG_ERROR,
     autoWatch: true,
+    concurrency: 5,
+    browserNoActivityTimeout: 30000,
+    browserDisconnectTimeout: 30000,
+    pingTimeout: 100000,
     browsers: ['ChromeHeadless','FirefoxHeadless'],
     customLaunchers: {
         'FirefoxHeadless': {
