@@ -184,10 +184,17 @@ describe('CopyAttrsComponent', () => {
 
                 // Also assume that we have no item fields
                 component.batchAttrs = new QueryList();
-
                 component.saveTemplate(component.volcopy.templates[0]);
 
-                expect(component.volcopy.templates[0].callnumber).toEqual(jasmine.objectContaining({
+                // toHash()
+                let hashedCallNumber = {
+                    ischanged: component.volcopy.templates[0].callnumber.ischanged(),
+                    label_class: component.volcopy.templates[0].callnumber.label_class(),
+                    prefix: component.volcopy.templates[0].callnumber.prefix(),
+                    suffix: component.volcopy.templates[0].callnumber.suffix()
+                };
+
+                expect(hashedCallNumber).toEqual(jasmine.objectContaining({
                     ischanged: ['prefix', 'label_class', 'suffix'],
                     label_class: 1,
                     prefix: 10,
