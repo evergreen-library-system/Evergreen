@@ -707,8 +707,10 @@ input, textarea, select, option,
 .btn-primary.active,
 .show > .btn-primary.dropdown-toggle {
   background-color: var(--primary-hover);
-  border-color: var(--primary-border);
   color: var(--bs-white);
+  outline-color: var(--primary-border);
+  outline-offset: 2px;
+  outline-width: 2px;
 }
 
 .btn-outline-primary {
