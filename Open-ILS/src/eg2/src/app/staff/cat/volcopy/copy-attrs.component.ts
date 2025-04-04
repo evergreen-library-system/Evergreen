@@ -1357,30 +1357,6 @@ export class CopyAttrsComponent implements OnInit, OnDestroy, AfterViewInit {
             console.debug('Building template: set field, value', field, template[field]);
         });
 
-        // Volume attributes that are stored in the template.
-        // prefix, suffix and Classification
-        // Do we actually want to loop through all volumes for this?
-        // No, but this is going the way of the dodo with top-level prefix, suffix, and label_class
-        /* this.context.volNodes().forEach(volNode => {
-            const vol = volNode.target;
-            if(vol.ischanged()){ // Something was changed
-                template.callnumber = {};
-                if(vol.ischanged().includes('prefix')) {
-                    template.callnumber['prefix'] = vol['prefix']();
-                }
-                if(vol.ischanged().includes('suffix')) {
-                    template.callnumber['suffix'] = vol['suffix']();
-                }
-                if(vol.ischanged().includes('label_class')) {
-                    template.callnumber['classification'] = vol['label_class']();
-                }
-            }
-            console.log('Template:',template);
-            // volNode.target.forEach(field=>{
-            //    console.log("Saving Volume info to template",field);
-            // });
-        });*/
-
         // alerts, tags, and notes
         const newAlerts = this.volcopy.currentContext.newAlerts || [];
         console.debug('Building template: found copy alerts',newAlerts);

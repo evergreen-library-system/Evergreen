@@ -168,7 +168,7 @@ describe('IdlService', () => {
         expect(at_event.template_output()._isfieldmapper).toBe(true);
         expect(at_event.template_output().classname).toBe('ateo');
         expect(at_event.template_output().id()).toBe(123);
-        expect(at_event.template_output().is_error()).toBe(false);
+        expect(at_event.template_output().is_error()).toBe('f');
     });
 
     it('should handle flattened object notation', () => {
@@ -205,8 +205,9 @@ describe('IdlService', () => {
     it('should throw error for invalid base class', () => {
         service.parseIdl();
         const hash = { id: 123 };
-        expect(() => service.fromHash(hash, 'not_a_class'))
-            .toThrow('Invalid or missing base class: not_a_class.');
+        const baseClass = 'not_a_class';
+        expect(() => service.fromHash(hash, baseClass))
+            .toThrow(new Error(`Invalid or missing base class: ${baseClass}`));
     });
 
     it('should preserve primitive values', () => {
