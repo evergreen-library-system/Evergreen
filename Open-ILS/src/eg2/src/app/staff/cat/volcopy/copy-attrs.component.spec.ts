@@ -18,7 +18,7 @@ describe('CopyAttrsComponent', () => {
     const orgMock = jasmine.createSpyObj<OrgService>(['get']);
     const authServiceMock = jasmine.createSpyObj<AuthService>(['user']);
     const formatServiceMock = jasmine.createSpyObj<FormatService>(['transform']);
-    const storeServiceMock = jasmine.createSpyObj<StoreService>(['setLocalItem', 'getLocalItem']);
+    const storeServiceMock = jasmine.createSpyObj<StoreService>(['setLocalItem','getLocalItem']);
     const toastServiceMock = jasmine.createSpyObj<ToastService>(['success']);
     const volCopyServiceMock = jasmine.createSpyObj<VolCopyService>(['copyStatIsMagic', 'saveTemplates']);
 
@@ -26,6 +26,25 @@ describe('CopyAttrsComponent', () => {
         component = new CopyAttrsComponent(idlMock, orgMock, authServiceMock,
             null, null, formatServiceMock, storeServiceMock,
             toastServiceMock, volCopyServiceMock);
+        storeServiceMock.getLocalItem.and.returnValue({});
+
+        const contextMock = new VolCopyContext();
+        contextMock.idl = idlMock;
+        contextMock.org = orgMock;
+
+        contextMock.newAlerts = [];
+        contextMock.newTagMaps = [];
+        contextMock.newNotes = [];
+        contextMock.changedAlerts = [];
+        contextMock.changedTagMaps = [];
+        contextMock.changedNotes = [];
+        contextMock.deletedAlerts = [];
+        contextMock.deletedTagMaps = [];
+        contextMock.deletedNotes = [];
+
+        component.context = contextMock;
+        volCopyServiceMock.currentContext = contextMock;
+
         component.copyTemplateCbox = jasmine.createSpyObj<ComboboxComponent>(['entries']);
         component.copyTemplateCbox.selected = {id: 0};
     });
@@ -105,8 +124,13 @@ describe('CopyAttrsComponent', () => {
                 savedString.current.and.returnValue(Promise.resolve('saved'));
                 component.savedHoldingsTemplates = savedString;
 
-                // Assume that there already is a template by this name
                 component.volcopy.templates = {0: {}};
+
+                component.context.newAlerts = [];
+                component.context.newTagMaps = [];
+                component.context.newNotes = [];
+
+                volCopyServiceMock.currentContext = component.context;
 
                 // Assume that we've selected a new prefix in the editor
                 const callNumber = jasmine.createSpyObj<IdlObject>(['ischanged', 'label_class', 'prefix', 'suffix']);
@@ -114,11 +138,11 @@ describe('CopyAttrsComponent', () => {
                 callNumber.label_class.and.returnValue(1);
                 callNumber.prefix.and.returnValue(10);
                 callNumber.suffix.and.returnValue(25);
+
                 const node = new HoldingsTreeNode();
                 node.target = callNumber;
+
                 const contextMock = jasmine.createSpyObj<VolCopyContext>(['volNodes']);
-                contextMock.volNodes.and.returnValue([node]);
-                component.context = contextMock;
 
                 // Also assume that we have no item fields
                 component.batchAttrs = new QueryList();
@@ -126,6 +150,8 @@ describe('CopyAttrsComponent', () => {
                 component.saveTemplate(false);
 
                 expect(component.volcopy.templates[0]).toEqual({callnumber: {prefix: 10}});
+
+                expect(volCopyServiceMock.saveTemplates).toHaveBeenCalled();
             });
         });
         describe('when multiple fields have changed', () => {
@@ -148,7 +174,11 @@ describe('CopyAttrsComponent', () => {
                 node.target = callNumber;
                 const contextMock = jasmine.createSpyObj<VolCopyContext>(['volNodes']);
                 contextMock.volNodes.and.returnValue([node]);
+                contextMock.newAlerts = [];
+                contextMock.newTagMaps = [];
+                contextMock.newNotes = [];
                 component.context = contextMock;
+                volCopyServiceMock.currentContext = contextMock;
 
                 // Also assume that we have no item fields
                 component.batchAttrs = new QueryList();
