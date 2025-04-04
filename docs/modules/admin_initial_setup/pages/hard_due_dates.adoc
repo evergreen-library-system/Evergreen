@@ -1,27 +1,27 @@
 = Hard due dates =
 :toc:
 
-This feature allows you to specify a specific due date within your circulation policies.  This is particularly useful for academic and school libraries, who may wish to make certain items due at the end of a semester or term.
+This feature allows you to specify a specific due date within your circulation policies. This is particularly useful for academic and school libraries, who may wish to make certain items due at the end of a semester or term.
 
 NOTE: To work with hard due dates, you will need the CREATE_CIRC_DURATION, UPDATE_CIRC_DURATION, and DELETE_CIRC_DURATION permissions at the _consortium_ level.
 
 == Creating a hard due date ==
-Setting up hard due dates is a two-step process.  You must first create a hard due date, and then populate it with specific values.
+Setting up hard due dates is a two-step process. You must first create a hard due date, and then populate it with specific values.
 
 To create a hard due date:
 
 . Click *Administration -> Server Administration -> Hard Due Date Changes*.
 . Click *New Hard Due Date*.
-. In the *Name* field, enter a name for your hard due date.  Note that each hard due date can have multiple values, so it's best to use a generic name here, such as "End of semester."
-. In the *Owner* field, select the appropriate org unit for your new hard due date.
-. In the *Current Ceiling Date* field, select any value.  This field is required, but its value will be overwritten in subsequent steps, so you may enter an arbitrary date here.
-. Check the *Always Use?* checkbox if you want items to only receive the due dates you specify, regardless of when they would ordinarily be due.  If you leave this box unchecked, your specified due dates will serve as "ceiling" values that limit, rather than override, other circulation rules.  In other words, with this box checked, items may be due only on the specified dates.  With the box unchecked, items may be due _on or before_ the specified dates, simply not after.
+. In the *Name* field, enter a name for your hard due date. Note that each hard due date can have multiple values, so it's best to use a generic name here, such as "End of semester."
+. In the *Owner* field, select the appropriate organizational unit for your new hard due date.
+. In the *Current Ceiling Date* field, select any value. This field is required, but its value will be overwritten in subsequent steps, so you may enter an arbitrary date here.
+. Check the *Always Use?* checkbox if you want items to only receive the due dates you specify, regardless of when they would ordinarily be due. If you leave this box unchecked, your specified due dates will serve as "ceiling" values that limit, rather than override, other circulation rules. In other words, with this box checked, items may be due only on the specified dates. With the box unchecked, items may be due _on or before_ the specified dates, simply not after.
 . Click *Save*.
 
 To add date values to your hard due date:
 
 . Click the hyperlinked name of the due date you just created.
-. Click on *New Hard Due Date Value*
+. Click on *New Hard Due Date Values*.
 . In the *Ceiling Date* field, enter the specific date you would like items to be due.
 . In the *Active Date* field, enter the date you want this specific due date value to take effect.
 . Click *Save*.
