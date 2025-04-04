@@ -1,5 +1,5 @@
 import {DOCUMENT} from '@angular/common';
-import {Component, Input, OnInit, ViewChild, TemplateRef, EventEmitter, inject, ElementRef} from '@angular/core';
+import {Component, Input, OnInit, ViewChild, TemplateRef, EventEmitter, Inject, ElementRef} from '@angular/core';
 import {Observable, Observer} from 'rxjs';
 import {NgbModal, NgbModalRef, NgbModalOptions} from '@ng-bootstrap/ng-bootstrap';
 
@@ -49,8 +49,6 @@ export class DialogComponent implements OnInit {
 
     identifier: number = DialogComponent.counter++;
     returnFocusTo: any;
-    private _document = inject(DOCUMENT);
-    private _elRef = inject(ElementRef<HTMLElement>);
 
     // Emitted after open() is called on the ngbModal.
     // Note when overriding open(), this will not fire unless also
@@ -62,8 +60,14 @@ export class DialogComponent implements OnInit {
 
     // The modalRef allows direct control of the modal instance.
     protected modalRef: NgbModalRef = null;
+    
+    public focusable: string;
 
-    constructor(private modalService: NgbModal) {}
+    constructor(
+        private modalService: NgbModal,
+        @Inject(DOCUMENT) private _document: any = document,
+        private _elRef: ElementRef<HTMLElement> = null
+    ) {}
 
     // Close all active dialogs
     static closeAll() {
@@ -121,7 +125,7 @@ export class DialogComponent implements OnInit {
     // Look for the first focusable element in .modal-body.
     // Fallbacks are the footer buttons, then (implicitly) the 'X' close button in the dialog header
     private _setFocus() {
-        if (!this.modalRef) {return;}
+        if (!this.modalRef || !this._document || !this._elRef) {return;}
         if (!this._elRef.nativeElement.contains(this._document.activeElement)) {
             const dialogEl = this.modalRef['_windowCmptRef'].instance['_elRef'].nativeElement;
             const dialogBodySelector = `.modal-body ${this.getFocusable()}`;

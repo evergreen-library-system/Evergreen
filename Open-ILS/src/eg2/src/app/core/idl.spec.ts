@@ -104,15 +104,13 @@ describe('IdlService', () => {
         service.parseIdl();
         const hash = {
             id: 123,
-            name: 'AN ORG',
-            active: true
+            name: 'AN ORG'
         };
         const org = service.fromHash(hash, 'aou');
         expect(org._isfieldmapper).toBe(true);
         expect(org.classname).toBe('aou');
         expect(org.id()).toBe(123);
         expect(org.name()).toBe('AN ORG');
-        expect(org.active()).toBe(true);
     });
 
     it('should maintain data integrity through roundtrip conversion', () => {
@@ -121,13 +119,11 @@ describe('IdlService', () => {
         const original = service.create('aou');
         original.id(123);
         original.name('Test Org');
-        original.active(true);
 
         const parent = service.create('aou');
         parent.id(456);
         parent.name('Parent Org');
-        parent.active(false);
-        original.parent(parent);
+        original.parent_ou(parent);
 
         // Convert to hash and back
         const hash = service.toHash(original);
@@ -136,46 +132,43 @@ describe('IdlService', () => {
         // Verify all properties maintained their values
         expect(roundtripped.id()).toBe(original.id());
         expect(roundtripped.name()).toBe(original.name());
-        expect(roundtripped.active()).toBe(original.active());
-        expect(roundtripped.parent().id()).toBe(original.parent().id());
-        expect(roundtripped.parent().name()).toBe(original.parent().name());
-        expect(roundtripped.parent().active()).toBe(original.parent().active());
+        expect(roundtripped.parent_ou().id()).toBe(original.parent_ou().id());
+        expect(roundtripped.parent_ou().name()).toBe(original.parent_ou().name());
 
         // Verify the objects have the same structure
         expect(roundtripped._isfieldmapper).toBe(true);
         expect(roundtripped.classname).toBe(original.classname);
-        expect(roundtripped.parent()._isfieldmapper).toBe(true);
-        expect(roundtripped.parent().classname).toBe(original.parent().classname);
+        expect(roundtripped.parent_ou()._isfieldmapper).toBe(true);
+        expect(roundtripped.parent_ou().classname).toBe(original.parent_ou().classname);
     });
 
     it('should handle boolean conversion when enabled', () => {
         service.parseIdl();
         const hash = {
             id: 123,
-            name: 'AN ORG',
-            active: 't',  // PostgreSQL-style boolean
-            'parent.active': 'f'
+            region: 'A REGION',
+            name: 'A SMS CARRIER',
+            active: 't',
+            email_gateway: 'opensrf+$number@localhost'
         };
-        const org = service.fromHash(hash, 'aou', true);
-        expect(org.active()).toBe(true);
-        expect(org.parent().active()).toBe(false);
+        const carrier = service.fromHash(hash, 'csc', true);
+        expect(carrier.active()).toBe(true);
     });
 
     it('should handle nested IDL objects', () => {
         service.parseIdl();
         const hash = {
             id: 456,
-            name: 'Child Org',
-            parent: {
+            template_output: {
                 id: 123,
-                name: 'Parent Org'
+                is_error: 'f'
             }
         };
-        const org = service.fromHash(hash, 'aou');
-        expect(org.parent()._isfieldmapper).toBe(true);
-        expect(org.parent().classname).toBe('aou');
-        expect(org.parent().id()).toBe(123);
-        expect(org.parent().name()).toBe('Parent Org');
+        const at_event = service.fromHash(hash, 'atev');
+        expect(at_event.template_output()._isfieldmapper).toBe(true);
+        expect(at_event.template_output().classname).toBe('ateo');
+        expect(at_event.template_output().id()).toBe(123);
+        expect(at_event.template_output().is_error()).toBe(false);
     });
 
     it('should handle flattened object notation', () => {
@@ -183,14 +176,14 @@ describe('IdlService', () => {
         const hash = {
             id: 456,
             name: 'Child Org',
-            'parent.id': 123,
-            'parent.name': 'Parent Org'
+            'parent_ou.id': 123,
+            'parent_ou.name': 'Parent Org'
         };
         const org = service.fromHash(hash, 'aou');
-        expect(org.parent()._isfieldmapper).toBe(true);
-        expect(org.parent().classname).toBe('aou');
-        expect(org.parent().id()).toBe(123);
-        expect(org.parent().name()).toBe('Parent Org');
+        expect(org.parent_ou()._isfieldmapper).toBe(true);
+        expect(org.parent_ou().classname).toBe('aou');
+        expect(org.parent_ou().id()).toBe(123);
+        expect(org.parent_ou().name()).toBe('Parent Org');
     });
 
     it('should handle arrays of IDL objects', () => {
@@ -213,7 +206,7 @@ describe('IdlService', () => {
         service.parseIdl();
         const hash = { id: 123 };
         expect(() => service.fromHash(hash, 'not_a_class'))
-            .toThrow('Invalid or missing base class: not_a_class');
+            .toThrow('Invalid or missing base class: not_a_class.');
     });
 
     it('should preserve primitive values', () => {
