@@ -1,5 +1,5 @@
-= Reports Security IDL Configuration =
-:toc:
+= Reports Security IDL
+== Introduction
 
 The new Report Security functionality is primarily configured through the addition of XML attributes to elements in the Fieldmapper XML file, fm_IDL.xml.  These new attributes fall into three categories:
 
@@ -10,7 +10,7 @@ The new Report Security functionality is primarily configured through the additi
 
 These attributes, explained below, are defined within a new XML namespace with the URI `http://open-ils.org/spec/opensrf/IDL/reporter/v1/security` , and the common namespace prefix of `repsec` .  An accompanying XSD is provided to confirm that the locations and values of the attributes, when supplied, do not fall outside their defined scope and that the fm_IDL.xml file remains both well-formed and valid.
 
-= Field value redaction =
+== Field value redaction ==
 
 Fields used in the SELECT and ORDER BY SQL clauses can be redacted, either outputting NULL or, optionally, a data type compatible alternate literal value.  This is configured through the addition of several XML attributes to the fields to which redaction should be applied.
 

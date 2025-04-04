@@ -44,7 +44,7 @@ Variables. From within Template Toolkit templates you can access environment
 variables with the ENV object.
 
 .Template Toolkit ENV example, link library name/url if set
-[source,html]
+[source,tt2]
 ----
 [% IF ENV.eglibname && ENV.egliburl %]<a href="[% ENV.egliburl %]">[% ENV.eglibname %]</a>[% END %]
 ----
