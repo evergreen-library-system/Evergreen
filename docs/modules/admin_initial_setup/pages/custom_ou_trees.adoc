@@ -1,11 +1,11 @@
-= Custom Org Unit Trees =
+= Custom Organizational Unit Trees =
 :toc:
 
 indexterm:[Custom Organizational Unit Trees, Custom OU Trees, OPAC]
 
-The Custom Org Unit Trees interface is available at *Administration -> Server Administration -> Custom Org Unit Trees*.
+The Custom Organizational Unit Trees interface is available at *Administration -> Server Administration -> Custom Org Unit Trees*.
 
-This interface allows you to create a custom display of organizational units that will display in the Library dropdown in the OPAC. You can move org units up or down in the display, nest them under a different unit than their parent unit, or hide an org unit from OPAC display.
+This interface allows you to create a custom display of organizational units that will display in the Library dropdown in the OPAC. You can move organizational units up or down in the display, nest them under a different unit than their parent unit, or hide an organizational unit from the OPAC display.
 
 ====
 NOTE: Your Evergreen System Administrator will need to reload Apache in order for your changes to be reflected in the OPAC.
@@ -13,34 +13,34 @@ NOTE: Your Evergreen System Administrator will need to reload Apache in order fo
 
 image::custom_ou_trees/custom_ou_trees.png[Custom Org Unit Trees interface]
 
-The left side of the interface represents the full organizational tree, and is labeled _Full Org Unit Tree_. The hierarchy of the tree can be thought of as parent-child relationships. In terms of org units, parents can have several children (which would be considered “sibling” org units to each other), but a child can only have one parent. Stock Evergreen contains 4 org unit tree levels:
+The left side of the interface represents the full organizational tree, and is labeled *Full Org Unit Tree*. The hierarchy of the tree can be thought of as parent-child relationships. In terms of organizational units, parents can have several children (which would be considered “sibling” organizational units to each other), but a child can only have one parent. Stock Evergreen contains four (4) organizational unit tree levels:
 
 * CONS - Consortium
 * SYS - System
 * BR - Branch
 * SL / BM - Sub-library / Bookmobile
 
-The right side of the interface represents your custom organizational tree, and is labeled _Custom Org Unit Tree_.
+The right side of the interface represents your custom organizational tree, and is labeled *Custom Org Unit Tree*.
 
-To create a custom org unit tree:
+To create a custom organizational unit tree:
 
-. Select one or several org units from the tree on the left.
-. Select a destination org unit in the tree on the right.
-. Click the button _Copy Selected Org Units to Custom Tree_
+. Select one or several organizational units from the tree on the left.
+. Select a destination organizational unit in the tree on the right.
+. Click the button *Copy Selected Org Units to Custom Tree*.
 +
 .. If you copy a parent/child pair from the tree on the left, this parent/child relationship will persist in the tree on the right.
-. If you click on an org unit on the right-hand tree you will see several icons:
+. If you click on an organizational unit on the right-hand tree, you will see several icons:
 +
 image::custom_ou_trees/custom_ou_trees_options.png[Icons to move Org Units]
 +
-.. Up arrow - this moves the org unit up in the display order, within a set of sibling organizational units. I.e., this action will not move an org unit to a new parent org unit.
-.. Down arrow - this moves the org unit down in the display order, within a set of sibling organizational units. I.e., this action will not move an org unit to a new parent org unit.
-.. Right arrow - this will open a modal _Move Org Unit Elsewhere_
-... Within this modal, select a new parent for the org unit and then click Move Org Unit Here. This will move the org unit and any of its descendants to a new parent org unit.
+.. Up arrow - this moves the organizational unit up in the display order, within a set of sibling organizational units; i.e., this action will not move an organizational unit to a new parent organizational unit.
+.. Down arrow - this moves the organizational unit down in the display order, within a set of sibling organizational units; i.e., this action will not move an organizational unit to a new parent organizational unit.
+.. Right arrow - this will open a modal *Move Org Unit Elsewhere*.
+... Within this modal, select a new parent for the organizational unit and then click *Move Org Unit Here*. This will move the organizational unit and any of its descendants to a new parent organizational unit.
 +
 image::custom_ou_trees/custom_ou_trees_move.png[Moving an Org Unit]
 +
-.. Trashcan - this will delete the selected org unit from the custom org unit tree.
-. Once you have finished making your changes, click _Save Changes_.
+.. Trash can - this will delete the selected organizational unit from the custom organizational unit tree.
+. Once you have finished making your changes, click *Save Changes*.
 
-When you are ready for the tree to be OPAC-visible, select _Activate Tree_ and then _Save Changes_. You will need to notify your System Administrator to reload Apache in order for your changes to be reflected in the OPAC. Only one Custom Org Unit Tree can be active at a time.
+When you are ready for the tree to be OPAC-visible, select *Activate Tree* and then *Save Changes*. You will need to notify your System Administrator to reload Apache in order for your changes to be reflected in the OPAC. Only one custom organizational unit tree can be active at a time.
