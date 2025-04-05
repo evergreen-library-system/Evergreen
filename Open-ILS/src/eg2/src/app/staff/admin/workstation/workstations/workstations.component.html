@@ -12,7 +12,7 @@
 </eg-confirm-dialog>
 
 <div class="row">
-  <div class="col-lg-8 offset-1 mt-3">
+  <div class="col-lg-8 offset-1 mt-3 position-relative" style="min-height: calc(100vh - 4rem)">
     <div class="alert alert-warning" *ngIf="removeWorkstation" i18n>
       Workstation {{removeWorkstation}} is no longer valid.  Removing registration.
     </div>
@@ -96,9 +96,12 @@
         </button>
       </div>
     </div>
-    <div>
-      <a href="/eg2/en-US/staff/selfcheck" i18n>Launch Self-Check</a>
-    </div>
+  </div>
+</div>
+
+<div class="row mt-5 pt-5">
+  <div class="col offset-1">
+    <a class="btn btn-normal text-reset" href="/eg2/en-US/staff/selfcheck" i18n>Launch Self-Check</a>
   </div>
 </div>
 
