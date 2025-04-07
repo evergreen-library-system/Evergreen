@@ -212,7 +212,8 @@ export class MarcRichEditorComponent implements OnInit {
             case 'ArrowLeft':
             case 'ArrowRight':
                 // console.debug("ArrowRight: ", evt, field, subfield);
-                let el = evt.target as HTMLElement;
+                // eslint-disable-next-line no-case-declarations
+                const el = evt.target as HTMLElement;
                 // do nothing if we are in a text input
                 if (el.nodeName && (el.nodeName.toLowerCase() === 'input' || el.nodeName.toLowerCase() === 'textarea')) {
                     return;
