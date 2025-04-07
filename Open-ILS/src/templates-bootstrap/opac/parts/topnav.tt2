@@ -3,9 +3,10 @@
     && ctx.get_org_setting(ctx.physical_loc || ctx.aou_tree.id, 'opac.alert_banner_text')
     && ctx.get_org_setting(ctx.physical_loc || ctx.aou_tree.id, 'opac.alert_banner_type') %]
     <div class="alert alert-[% ctx.get_org_setting(ctx.physical_loc || ctx.aou_tree.id, 'opac.alert_banner_type') | html %]
-    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-        <span aria-hidden="true">&times;</span>
-    </button>
+        alert-dismissible mb-0" role="alert">
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+        </button>
     [% ctx.defang_string(ctx.get_org_setting(ctx.physical_loc || ctx.aou_tree.id, 'opac.alert_banner_text')) %]
 </div>
 [%- END -%]
