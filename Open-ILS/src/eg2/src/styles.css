@@ -626,7 +626,8 @@ button.input-group-text.text-danger {
   color: var(--bs-btn-color);
 }
 
-.input-group .btn {
+.input-group .btn:not([class*="btn-"]),
+.input-group .btn[class*="btn-outline-"] {
   background-color: var(--btn-gray-bg);
 }
 
