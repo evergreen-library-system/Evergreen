@@ -6,20 +6,20 @@
   </div>
   <div class="modal-body accesskey-info">
     <div class="row row-header border-bottom">
-      <div class="col-lg-2 p-1 border-right shortcut-keycombo" i18n>Command</div>
-      <div class="col-lg-6 p-1 border-right shortcut-action" i18n>Action</div>
+      <div class="col-lg-2 p-1 border-end shortcut-keycombo" i18n>Command</div>
+      <div class="col-lg-6 p-1 border-end shortcut-action" i18n>Action</div>
       <div class="col-lg-2 p-1 shortcut-context" i18n>Context</div>
       <div class="col-lg-2 p-1 shortcut-status" i18n>Active?</div>
     </div>
     <div class="row border-bottom" *ngFor="let a of assignments()">
-      <div class="col-lg-2 p-1 border-right shortcut-keycombo">
+      <div class="col-lg-2 p-1 border-end shortcut-keycombo">
         <ng-container *ngFor="let kbd of a.key.split('+'); last as isLastKey">
           <kbd>{{kbd}}</kbd>
           <span *ngIf="!isLastKey">+</span>
         </ng-container>
       </div>
-      <div class="col-lg-6 p-1 border-right shortcut-action">{{a.desc}}</div>
-      <div class="col-lg-2 p-1 border-right shortcut-context">{{a.ctx}}</div>
+      <div class="col-lg-6 p-1 border-end shortcut-action">{{a.desc}}</div>
+      <div class="col-lg-2 p-1 border-end shortcut-context">{{a.ctx}}</div>
       <div class="col-lg-2 p-1 shortcut-status"><eg-bool [value]="!a.shadowed"></eg-bool></div>
     </div>
     <div class="row mt-2 shortcut-info">

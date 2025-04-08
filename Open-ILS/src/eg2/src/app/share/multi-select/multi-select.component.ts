@@ -16,7 +16,7 @@ import { ItemLocationSelectComponent } from '@eg/share/item-location-select/item
     selector: 'eg-multi-select',
     templateUrl: './multi-select.component.html',
     styles: [`
-    .icons {margin-left:-18px}
+    .icons {margin-inline-start:-18px}
     .material-icons {font-size: 16px;font-weight:bold}
   `]
 })

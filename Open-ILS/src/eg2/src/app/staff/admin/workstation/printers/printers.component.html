@@ -55,7 +55,7 @@
     <div class="row mt-4">
       <div class="col-lg-8">
         <div class="input-group">
-          <div class="input-group-prepend">
+          <div class="input-group-text">
             <div ngbDropdown>
               <button type="button" class="btn btn-outline-dark"
                 ngbDropdownToggle i18n>Select Printer</button>
@@ -103,56 +103,56 @@
       <div class="col-lg-12 common-form striped-even">
 
         <div class="row mt-2 pt-2">
-          <div class="col-lg-3 offset-lg-1 font-weight-bold" i18n>Print Color</div>
+          <div class="col-lg-3 offset-lg-1 fw-bold" i18n>Print Color</div>
           <ng-container *ngTemplateOutlet="attrSelect; 
             context: {attr: 'printColor', defAttr: 'defaultPrintColor' }">
           </ng-container>
         </div>
 
         <div class="row mt-2 pt-2">
-          <div class="col-lg-3 offset-lg-1 font-weight-bold" i18n>Paper Source</div>
+          <div class="col-lg-3 offset-lg-1 fw-bold" i18n>Paper Source</div>
           <ng-container *ngTemplateOutlet="attrSelect; 
             context: {attr: 'paperSource', defAttr: 'defaultPaperSource' }">
           </ng-container>
         </div>
 
         <div class="row mt-2 pt-2">
-          <div class="col-lg-3 offset-lg-1 font-weight-bold" i18n>Paper</div>
+          <div class="col-lg-3 offset-lg-1 fw-bold" i18n>Paper</div>
           <ng-container *ngTemplateOutlet="attrSelect; 
             context: {attr: 'paper', defAttr: 'defaultPaper' }">
           </ng-container>
         </div>
 
         <div class="row mt-2 pt-2">
-          <div class="col-lg-3 offset-lg-1 font-weight-bold" i18n>Page Orientation</div>
+          <div class="col-lg-3 offset-lg-1 fw-bold" i18n>Page Orientation</div>
           <ng-container *ngTemplateOutlet="attrSelect; 
             context: {attr: 'pageOrientation', defAttr: 'defaultPageOrientation' }">
           </ng-container>
         </div>
 
         <div class="row mt-2 pt-2">
-          <div class="col-lg-3 offset-lg-1 font-weight-bold" i18n>Collation</div>
+          <div class="col-lg-3 offset-lg-1 fw-bold" i18n>Collation</div>
           <ng-container *ngTemplateOutlet="attrSelect; 
             context: {attr: 'collation', defAttr: 'defaultCollation' }">
           </ng-container>
         </div>
 
         <div class="row mt-2 pt-2">
-          <div class="col-lg-3 offset-lg-1 font-weight-bold" i18n>Print Quality</div>
+          <div class="col-lg-3 offset-lg-1 fw-bold" i18n>Print Quality</div>
           <ng-container *ngTemplateOutlet="attrSelect; 
             context: {attr: 'printQuality', defAttr: 'defaultPrintQuality' }">
           </ng-container>
         </div>
 
         <div class="row mt-2 pt-2">
-          <div class="col-lg-3 offset-lg-1 font-weight-bold" i18n>Print Sides</div>
+          <div class="col-lg-3 offset-lg-1 fw-bold" i18n>Print Sides</div>
           <ng-container *ngTemplateOutlet="attrSelect; 
             context: {attr: 'printSides', defAttr: 'defaultPrintSides' }">
           </ng-container>
         </div>
 
         <div class="row mt-2 pt-2">
-          <div class="col-lg-3 offset-lg-1 font-weight-bold" i18n>Number of Items</div>
+          <div class="col-lg-3 offset-lg-1 fw-bold" i18n>Number of Items</div>
           <div class="col-lg-4">
             <input type="number" min="1" class="form-control" 
               [(ngModel)]="printConfigs[context].copies"/>
@@ -165,7 +165,7 @@
             <input type="radio" class="form-check-input position-static"
               [(ngModel)]="printConfigs[context].autoMargins" name="margins" [value]="true"/>
           </div>
-          <div class="col-lg-3 font-weight-bold" i18n>Automatic Margins</div>
+          <div class="col-lg-3 fw-bold" i18n>Automatic Margins</div>
           <div class="col-lg-4">
             <select class="form-control" [disabled]="!printConfigs[context].autoMargins"
               [(ngModel)]="printConfigs[context].marginType">
@@ -181,14 +181,12 @@
             <input type="radio" class="form-check-input position-static"
               [(ngModel)]="printConfigs[context].autoMargins" name="margins" [value]="false"/>
           </div>
-          <div class="col-lg-3 font-weight-bold" i18n>Manual Margins</div>
+          <div class="col-lg-3 fw-bold" i18n>Manual Margins</div>
           <div class="col-lg-4">
             <div class="d-flex">
               <div class="flex-1 me-1">
                 <div class="input-group">
-                  <div class="input-group-prepend">
-                    <span class="input-group-text" i18n>Left</span>
-                  </div>
+                  <span class="input-group-text" i18n>Left</span>
                   <input type="text" class="form-control" 
                     [disabled]="printConfigs[context].autoMargins" 
                     [(ngModel)]="printConfigs[context].leftMargin"/>
@@ -196,9 +194,7 @@
               </div>
               <div class="flex-1 ms-1">
                 <div class="input-group">
-                  <div class="input-group-prepend">
-                    <span class="input-group-text" i18n>Top</span>
-                  </div>
+                  <span class="input-group-text" i18n>Top</span>
                   <input type="text" class="form-control" 
                     [disabled]="printConfigs[context].autoMargins" 
                     [(ngModel)]="printConfigs[context].topMargin"/>
@@ -208,9 +204,7 @@
             <div class="d-flex mt-2">
               <div class="flex-1 me-1">
                 <div class="input-group">
-                  <div class="input-group-prepend">
-                    <span class="input-group-text" i18n>Right</span>
-                  </div>
+                  <span class="input-group-text" i18n>Right</span>
                   <input type="text" class="form-control" 
                     [disabled]="printConfigs[context].autoMargins" 
                     [(ngModel)]="printConfigs[context].rightMargin"/>
@@ -218,9 +212,7 @@
               </div>
               <div class="flex-1 ms-1">
                 <div class="input-group">
-                  <div class="input-group-prepend">
-                    <span class="input-group-text" i18n>Bottom</span>
-                  </div>
+                  <span class="input-group-text" i18n>Bottom</span>
                   <input type="text" class="form-control" 
                     [disabled]="printConfigs[context].autoMargins" 
                     [(ngModel)]="printConfigs[context].bottomMargin"/>
@@ -231,7 +223,7 @@
         </div>
 
         <div class="row mt-2 pt-2">
-          <div class="col-lg-3 offset-lg-1 font-weight-bold" i18n>Page Ranges</div>
+          <div class="col-lg-3 offset-lg-1 fw-bold" i18n>Page Ranges</div>
           <div class="col-lg-4">
             <div class="d-flex">
               <div class="flex-1 me-1 form-check">
@@ -248,9 +240,7 @@
             <div class="d-flex mt-2">
               <div class="flex-1">
                 <div class="input-group">
-                  <div class="input-group-prepend">
-                    <span class="input-group-text" i18n>Start</span>
-                  </div>
+                  <span class="input-group-text" i18n>Start</span>
                   <input type="text" class="form-control" 
                     [disabled]="printConfigs[context].allPages" 
                     [(ngModel)]="printConfigs[context].pageRanges[0]"/>
@@ -258,9 +248,7 @@
               </div>
               <div class="flex-1 ms-1">
                 <div class="input-group">
-                  <div class="input-group-prepend">
-                    <span class="input-group-text" i18n>End</span>
-                  </div>
+                  <span class="input-group-text" i18n>End</span>
                   <input type="text" class="form-control" 
                     [disabled]="printConfigs[context].allPages" 
                     [(ngModel)]="printConfigs[context].pageRanges[1]"/>

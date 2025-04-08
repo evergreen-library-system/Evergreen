@@ -17,7 +17,7 @@
         </div>
         <div class="flex-3">
           <eg-combobox domId="provider-input" [(ngModel)]="provider" 
-            style="border-left-width: 0px"
+            style="border-inline-start-width: 0px"
             name="provider-input"
             idlIncludeLibraryInLabel="owner"
             [required]="true"
@@ -32,7 +32,7 @@
         </div>
         <div class="flex-3">
           <eg-combobox domId="invoice-input" [(ngModel)]="invoice" 
-            style="border-left-width: 0px"
+            style="border-inline-start-width: 0px"
             [readOnly]="!provider || !provider?.id"
             name="invoice-input"
             [required]="true"
