@@ -9,7 +9,7 @@
 <eg-string #loadMarcOrderTemplateDeletedString i18n-text text="Load MARC Order Record Template Deleted"></eg-string>
 <eg-string #loadMarcOrderTemplateSetAsDefaultString i18n-text text="Load MARC Order Record Template Set As Default"></eg-string>
 
-<eg-alert-dialog #dupeQueueAlert i18n-dialogBody 
+<eg-alert-dialog #dupeQueueAlert i18n-dialogBody
   dialogBody="A queue with the requested name already exists.">
 </eg-alert-dialog>
 
@@ -48,7 +48,7 @@
     <div class="col-lg-3">
       <label class="form-label" for="provider-select" i18n>Provider</label>
     </div>
-  
+
     <div class="col-lg-3">
       <eg-combobox #providerSelector
         domId="provider-select"
@@ -65,7 +65,7 @@
       <label class="form-label" for="create-po" i18n>Create Purchase Order</label>
   </div>
   <div class="col-lg-3">
-    <input class="form-check-input" type="checkbox" 
+    <input class="form-check-input" type="checkbox"
       id="create-po"
       [(ngModel)]="createPurchaseOrder">
   </div>
@@ -86,9 +86,9 @@
       <div class="col-lg-3">
         <label class="form-label" for="activate-po" i18n>Activate Purchase Order</label>
     </div>
-    
+
     <div class="col-lg-3">
-      <input class="form-check-input" type="checkbox" 
+      <input class="form-check-input" type="checkbox"
         id="activate-po"
         [(ngModel)]="activatePurchaseOrder">
     </div>
@@ -134,7 +134,7 @@
     <div class="col-lg-3">
       <eg-combobox #bibSourceSelector
         id="source-select"
-        [entries]="formatEntries('bibSources')" 
+        [entries]="formatEntries('bibSources')"
         (onChange)="selectEntry($event, 'bibSources')"
         [startId]="selectedBibSource">
       </eg-combobox>
@@ -143,12 +143,12 @@
       <label class="form-label" for="import-non-matching" i18n>Import Non-Matching Records</label>
   </div>
   <div class="col-lg-3">
-    <input class="form-check-input" type="checkbox" 
+    <input class="form-check-input" type="checkbox"
       id="import-non-matching"
       [(ngModel)]="importNonMatching">
   </div>
   </div>
- 
+
   <div class="row">
     <div class="col-lg-3">
       <label class="form-label" for="match-set-select" i18n>Record Match Set</label>
@@ -156,7 +156,7 @@
     <div class="col-lg-3">
       <eg-combobox #matchSetSelector
         id="match-set-select"
-        [entries]="formatEntries('matchSets')" 
+        [entries]="formatEntries('matchSets')"
         [disabled]="(selectedQueue && !selectedQueue.freetext) || importSelection()"
         [startId]="selectedMatchSet || defaultMatchSet"
         (onChange)="selectEntry($event, 'matchSets')">
@@ -166,7 +166,7 @@
       <label class="form-label" for="merge-on-exact" i18n>Merge On Exact Match (901c)</label>
   </div>
   <div class="col-lg-3">
-    <input class="form-check-input" type="checkbox" 
+    <input class="form-check-input" type="checkbox"
       id="merge-on-exact" [(ngModel)]="mergeOnExact">
   </div>
  </div>
@@ -187,7 +187,7 @@
         <label class="form-label" for="merge-on-single" i18n>Merge On Single Match</label>
     </div>
     <div class="col-lg-3">
-      <input class="form-check-input" type="checkbox" 
+      <input class="form-check-input" type="checkbox"
         id="merge-on-single" [(ngModel)]="mergeOnSingleMatch">
     </div>
   </div>
@@ -209,7 +209,7 @@
       <label class="form-label" for="merge-on-best" i18n>Merge On Best Match</label>
     </div>
     <div class="col-lg-3">
-      <input class="form-check-input" type="checkbox" 
+      <input class="form-check-input" type="checkbox"
         id="merge-on-best" [(ngModel)]="mergeOnBestMatch">
     </div>
   </div>
@@ -220,7 +220,7 @@
       </label>
     </div>
     <div class="col-lg-3">
-      <input type="number" step="0.1" id="min-quality-ratio" 
+      <input type="number" step="0.1" id="min-quality-ratio"
         class="form-control" [(ngModel)]="minQualityRatio">
     </div>
     <ng-container *ngIf="mode !== 'getImportParams'">
@@ -228,7 +228,7 @@
       <label class="form-label" for="load-items" i18n>Load Items for Imported Records</label>
     </div>
     <div class="col-lg-3">
-      <input class="form-check-input" type="checkbox" 
+      <input class="form-check-input" type="checkbox"
         id="load-items"
         [(ngModel)]="loadItems">
     </div>
@@ -255,7 +255,7 @@
       <label class="form-label" for="upload-file" i18n>File to Upload:</label>
     </div>
     <div class="col-lg-3">
-      <input #fileSelector (change)="fileSelected($event)" 
+      <input #fileSelector (change)="fileSelected($event)"
         id="upload-file" required class="form-control" type="file"/>
     </div>
     <div class="col-lg-3">
@@ -275,9 +275,8 @@
     </div>
     <div class="col-lg-3">
       <input [disabled]="!backgroundImportForUpload"
-        class="form-control" type="text" id="background-import-email"
-        name="background-import-email" i18n-placeholder placeholder="Email address..."
-        [(ngModel)]="backgroundImportEmail">
+        class="form-control" type="email" autocomplete="email" id="background-import-email"
+        name="background-import-email" [(ngModel)]="backgroundImportEmail">
     </div>
   </div>
   <div class="row" *ngIf="importSelection()">
@@ -299,14 +298,14 @@
   <div class="row" *ngIf="mode !== 'getImportParams'">
     <div class="d-grid gap-2 col-6 mx-auto">
       <button type="button" class="btn btn-success btn-lg fw-bold"
-        [disabled]="isUploading || (uploadComplete && !uploadError) || !hasNeededData()" 
+        [disabled]="isUploading || (uploadComplete && !uploadError) || !hasNeededData()"
         (click)="upload()" i18n>Upload</button>
     </div>
   </div>
   <div class="row" *ngIf="mode === 'getImportParams'">
     <div class="d-grid gap-2 col-6 mx-auto">
       <button type="button" class="btn btn-success btn-lg fw-bold"
-        [disabled]="customActionProcessing || !hasNeededData()" 
+        [disabled]="customActionProcessing || !hasNeededData()"
         (click)="performCustomAction()" i18n>Submit</button>
     </div>
   </div>
@@ -318,7 +317,7 @@
       <eg-progress-inline #uploadProgress></eg-progress-inline>
     </div>
   </div>
- 
+
 
   <div class="col-lg-6 offset-lg-3" [hidden]="!uploadProcessing || uploadComplete">
     <h2><label class="form-label" i18n><i>Processing...</i></label></h2>
