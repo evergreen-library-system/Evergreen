@@ -8,22 +8,14 @@ msgstr ""
 "Project-Id-Version: evergreen\n"
 "Report-Msgid-Bugs-To: FULL NAME <EMAIL@ADDRESS>\n"
 "POT-Creation-Date: 2015-02-27 11:41-0400\n"
-"PO-Revision-Date: 2017-07-20 12:44+0000\n"
+"PO-Revision-Date: 2025-03-25 15:00+0000\n"
 "Last-Translator: TZ <tigran@flib.sci.am>\n"
 "Language-Team: Armenian <hy@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2023-05-05 04:47+0000\n"
-"X-Generator: Launchpad (build 90e2150bef31b411d7bae5c4032c7e320fcaaec8)\n"
-
-#: serial.manage_subs.tree_location
-msgid "Location"
-msgstr "Տեղադրությունը"
-
-#: serial.manage_subs.scap_id
-msgid "Caption / Pattern : # %1$s"
-msgstr "Որսում / Ձեւ : # %1$s"
+"X-Launchpad-Export-Date: 2025-03-26 08:44+0000\n"
+"X-Generator: Launchpad (build d61bb8eb9830eb975fb0e8573deec46f2e0bb15b)\n"
 
 #: staff.serial.editor_base.handle_update.error
 msgid "serial update error:"
@@ -705,6 +697,14 @@ msgstr "Տրումներ"
 msgid "Captions/Patterns"
 msgstr "Որսումներ/Ձևեր"
 
+#: serial.manage_subs.tree_location
+msgid "Location"
+msgstr "Տեղադրությունը"
+
+#: serial.manage_subs.scap_id
+msgid "Caption / Pattern : # %1$s"
+msgstr "Որսում / Ձեւ : # %1$s"
+
 #: serial.manage_subs.ssub_id
 msgid "Subscription : # %1$s"
 msgstr "Բաժանորդագրություն : # %1$s"
@@ -712,14 +712,3 @@ msgstr "Բաժանորդագրություն : # %1$s"
 #: serial.manage_subs.subscriptions
 msgid "Subscriptions"
 msgstr "Բաժանորդագրություններ"
-
-#~ msgid ""
-#~ "Override Delete Failure? Doing so will delete all attached items as well!"
-#~ msgstr "Վերագրե՞լ Ձախողման Ջնջումը։ Սա անելով կջնջեք բոլոր կից նյութերը։"
-
-#~ msgid "Successfully predicted %1$s issuance(s) for subscription # %2$s."
-#~ msgstr ""
-#~ "Հաջող կանխատեսումներ %1$s թողարկումներից այս բաժանորդագրության համար # %2$s."
-
-#~ msgid "Number of Predicted Items"
-#~ msgstr "Կանխատեսված նյութերի քանակը։"

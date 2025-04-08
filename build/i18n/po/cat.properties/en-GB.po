@@ -8,14 +8,14 @@ msgstr ""
 "Project-Id-Version: evergreen\n"
 "Report-Msgid-Bugs-To: FULL NAME <EMAIL@ADDRESS>\n"
 "POT-Creation-Date: 2018-08-15 11:29-0400\n"
-"PO-Revision-Date: 2018-01-14 11:19+0000\n"
+"PO-Revision-Date: 2025-03-25 15:00+0000\n"
 "Last-Translator: Andi Chandler <Unknown>\n"
 "Language-Team: English (United Kingdom) <en_GB@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2023-05-05 04:35+0000\n"
-"X-Generator: Launchpad (build 90e2150bef31b411d7bae5c4032c7e320fcaaec8)\n"
+"X-Launchpad-Export-Date: 2025-03-26 07:59+0000\n"
+"X-Generator: Launchpad (build d61bb8eb9830eb975fb0e8573deec46f2e0bb15b)\n"
 
 #: bib.no_marc
 msgid "No MARC Record"
@@ -2408,62 +2408,3 @@ msgstr "Items:"
 #: staff.cat.bib_brief.items.available.tooltip
 msgid "%1$s available"
 msgstr "%1$s available"
-
-#~ msgid "Record ID = %1$s"
-#~ msgstr "Record ID = %1$s"
-
-#~ msgid ""
-#~ "You must delete all the copies on the volume before you may delete the "
-#~ "volume itself."
-#~ msgstr ""
-#~ "You must delete all the copies on the volume before you may delete the "
-#~ "volume itself."
-
-#~ msgid "Volumes deleted."
-#~ msgstr "Volumes deleted."
-
-#~ msgid "Record: %1$s"
-#~ msgstr "Record: %1$s"
-
-#~ msgid "Merge these records? (Select the \"lead\" record first)"
-#~ msgstr "Merge these records? (Select the \"lead\" record first)"
-
-#~ msgid "Merge"
-#~ msgstr "Merge"
-
-#~ msgctxt "staff.cat.record_buckets.merge_records.cancel_button.label"
-#~ msgid "Cancel"
-#~ msgstr "Cancel"
-
-#~ msgctxt "staff.cat.record_buckets.merge_records.cancel_button.accesskey"
-#~ msgid "C"
-#~ msgstr "C"
-
-#~ msgid "Lead Record? # %1$s"
-#~ msgstr "Lead Record? # %1$s"
-
-#~ msgid "Lead"
-#~ msgstr "Lead"
-
-#~ msgid "Merge Aborted"
-#~ msgstr "Merge Aborted"
-
-#~ msgid "Records were successfully merged."
-#~ msgstr "Records were successfully merged."
-
-#~ msgid "Call Numbers"
-#~ msgstr "Class Numbers"
-
-#~ msgctxt "staff.cat.copy_editor.field.floating.yes_or_true"
-#~ msgid "Yes"
-#~ msgstr "Yes"
-
-#~ msgctxt "staff.cat.copy_editor.field.floating.no_or_false"
-#~ msgid "No"
-#~ msgstr "No"
-
-#~ msgid "Holds transferred."
-#~ msgstr "Holds transferred."
-
-#~ msgid "Cancel "
-#~ msgstr "Cancel "
