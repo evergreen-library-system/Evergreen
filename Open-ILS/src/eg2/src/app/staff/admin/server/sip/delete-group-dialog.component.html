@@ -1,7 +1,7 @@
 <ng-template #dialogContent>
   <div class="modal-header">
     <h4 class="modal-title" i18n>Delete Setting Group</h4>
-    <button type="button" class="close" 
+    <button type="button" class="btn-close" 
       i18n-aria-label aria-label="Close" (click)="close()">
       <span aria-hidden="true">&times;</span>
     </button>
@@ -31,7 +31,7 @@
   <div class="modal-footer">
     <button type="button" class="btn btn-success" 
       (click)="doDelete(true)" i18n>Confirm</button>
-    <button type="button" class="btn btn-warning" 
+    <button type="button" class="btn btn-normal" 
       (click)="close(false)" i18n>Cancel</button>
   </div>
 </ng-template>

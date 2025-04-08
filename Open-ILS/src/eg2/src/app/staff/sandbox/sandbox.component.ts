@@ -30,7 +30,7 @@ import {Z3950SearchComponent} from '@eg/staff/share/z3950-search/z3950-search.co
     templateUrl: 'sandbox.component.html',
     styles: ['.date-time-input.ng-invalid {border: 5px purple solid;}',
         '.date-time-input.ng-valid {border: 5px green solid; animation: slide 5s linear 1s infinite alternate;}',
-        '@keyframes slide {0% {margin-left:0px;} 50% {margin-left:200px;}}']
+        '@keyframes slide {0% {margin-inline-start:0px;} 50% {margin-inline-start:200px;}}']
 })
 export class SandboxComponent implements OnInit {
 

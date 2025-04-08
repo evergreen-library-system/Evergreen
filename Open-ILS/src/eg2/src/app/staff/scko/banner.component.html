@@ -75,7 +75,7 @@
       <form (ngSubmit)="submitStaffLogin()" #staffLoginForm="ngForm" class="form-validated">
 
         <div class="form-group row p-0 g-0">
-          <label class="col-lg-4 text-right font-weight-bold" 
+          <label class="col-lg-4 text-end fw-bold" 
             for="staff-username" i18n>Username</label>
           <input 
             type="text" 
@@ -90,14 +90,14 @@
         </div>
 
         <div class="form-group row mt-3">
-          <label class="col-lg-4 text-right font-weight-bold" 
+          <label class="col-lg-4 text-end fw-bold" 
             for="staff-password" i18n>Password</label>
           <eg-credential-input domId="staff-password" name="staff-password"
             [(ngModel)]="staffPassword"></eg-credential-input>
         </div>
 
         <div class="form-group row p-0 g-0 mt-3" *ngIf="workstations && workstations.length">
-          <label class="col-lg-4 text-right font-weight-bold" 
+          <label class="col-lg-4 text-end fw-bold" 
             for="workstation" i18n>Workstation</label>
           <select 
             class="form-control col-lg-8" 
