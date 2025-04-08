@@ -173,6 +173,8 @@ export class ImportComponent implements OnInit, AfterViewInit, OnDestroy {
         this.recordType = 'bib';
         this.bibTrashGroups = [];
         this.formTemplates = {};
+        this.backgroundImportEmail = this.auth.user().email();
+        console.debug('user email is:', this.auth.user().email());
 
         if (this.vandelay.importSelection) {
             // Apply start-id values to our comboboxes based on our

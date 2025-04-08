@@ -206,6 +206,7 @@ export class UploadComponent implements AfterViewInit, OnDestroy {
         this.minQualityRatio = 0;
         this.recordType = 'bib';
         this.formTemplates = {};
+        this.backgroundImportEmail = this.auth.user().email();
         if (this.vlagent.importSelection) {
 
             if (!this.vlagent.importSelection.queue) {

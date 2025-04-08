@@ -285,9 +285,8 @@
     </div>
     <div class="col-lg-3">
       <input [disabled]="!backgroundImportForUpload"
-        class="form-control" type="text" id="background-import-email"
-        name="background-import-email" i18n-placeholder placeholder="Email address..."
-        [(ngModel)]="backgroundImportEmail">
+        class="form-control" type="email" autocomplete="email" id="background-import-email"
+        name="background-import-email" [(ngModel)]="backgroundImportEmail">
     </div>
   </div>
   <div class="row" *ngIf="importSelection()">
