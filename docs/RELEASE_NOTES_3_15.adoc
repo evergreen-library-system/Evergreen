@@ -1,4 +1,4 @@
-= Evergreen 3.15-beta Release Notes =
+= Evergreen 3.15-rc Release Notes =
 :toc:
 :numbered:
 :toclevels: 3
@@ -417,6 +417,32 @@ in the Bootstrap OPAC to two new library settings.
 * Implements an OpenAPI server for Evergreen (https://bugs.launchpad.net/evergreen/+bug/2067414[Bug 2067414])
 * Fix a bug that caused empty search results in the OPAC after changes were made to the organizational unit tree and the autogen script had not yet been run. (https://bugs.launchpad.net/evergreen/+bug/2103630[Bug 2103630])
 * Added a commit message template to the repository to improve the developer experience.  To use the template, run the following command from the root of your Evergreen repostiory: git config commit.template commit-template. (https://bugs.launchpad.net/evergreen/+bug/2051946[Bug 2051946])
+* Fixes a bug where re-applying a shelving location group filter to the pull list fails. (https://bugs.launchpad.net/evergreen/+bug/2098011[Bug 2098011])
+* Sets focus on the first interactive element in dialog body (https://bugs.launchpad.net/evergreen/+bug/1947868[Bug 1947868])
+* Updates MARC Import/Export tab styles to match other tabs (https://bugs.launchpad.net/evergreen/+bug/2102735[Bug 2102735])
+* Allows multiple toast messages to appear at once. (https://bugs.launchpad.net/evergreen/+bug/2103619[Bug 2103619])
+* Prevents blocked accounts from checking out Precats. (https://bugs.launchpad.net/evergreen/+bug/2098898[Bug 2098898])
+* Allow right-click anywhere in grid cells in Chrome (https://bugs.launchpad.net/evergreen/+bug/2080373[Bug 2080373])
+* Right-click menu support for grid utility columns (https://bugs.launchpad.net/evergreen/+bug/2080373[Bug 2080373])
+* Fixes an issue where menu icons appear on printouts. (https://bugs.launchpad.net/evergreen/+bug/2092226[Bug 2092226])
+* Reduce remote connections in EDI file retrieval by connecting only once per account. (https://bugs.launchpad.net/evergreen/+bug/1836908[Bug 1836908])
+* Show template documentation URLs in reports template grids (https://bugs.launchpad.net/evergreen/+bug/2090873[Bug 2090873])
+* Fixes erroneous overdue indication for hourly checkouts. (https://bugs.launchpad.net/evergreen/+bug/1951024[Bug 1951024])
+* Add a default value for max_backlog_queue to opensrf.xml (https://bugs.launchpad.net/evergreen/+bug/2097140[Bug 2097140])
+* Do not show open_in_new icon on links containing images (https://bugs.launchpad.net/evergreen/+bug/2106057[Bug 2106057])
+* Form labels and keyboard support for patron survey answers (https://bugs.launchpad.net/evergreen/+bug/2040183[Bug 2040183])
+* Scroll focused combobox option into view on arrow up/down (https://bugs.launchpad.net/evergreen/+bug/2085844[Bug 2085844])
+* Replicate combobox keyboard, focus features in org-select (https://bugs.launchpad.net/evergreen/+bug/2085844[Bug 2085844])
+* Adds form labels and ARIA status roles to forms in dialogs (https://bugs.launchpad.net/evergreen/+bug/2103567[Bug 2103567])
+* Add 'Overlay' to Z39.50 search results grid actions menu (https://bugs.launchpad.net/evergreen/+bug/2094843[Bug 2094843])
+* Fixes a regression where the count of receivable items on acq invoices was always zero. (https://bugs.launchpad.net/evergreen/+bug/2094859[Bug 2094859])
+* Avoid freetext error when reimporting MARC import queue (https://bugs.launchpad.net/evergreen/+bug/1940867[Bug 1940867])
+* Right arrow in MARC subfield data no longer moves focus (https://bugs.launchpad.net/evergreen/+bug/2101886[Bug 2101886])
+* Edit MARC subfield value in focused group with right or left arrow; do not focus on current group when tabbing into or out of subfield inputs (https://bugs.launchpad.net/evergreen/+bug/2101884[Bug 2101884])
+* Prevents duplicate new MARC rows using Control + Arrow key (https://bugs.launchpad.net/evergreen/+bug/2095532[Bug 2095532])
+* Opens the lead record after merging records from a bucket (https://bugs.launchpad.net/evergreen/+bug/2098712[Bug 2098712])
+* Fixes an issue where freetext null displays in comboboxes. (https://bugs.launchpad.net/evergreen/+bug/2093840[Bug 2093840])
+* Restores dropped line of code in OPAC alert banner. (https://bugs.launchpad.net/evergreen/+bug/2106414[Bug 2106414])
 
 :leveloffset: 0
 
