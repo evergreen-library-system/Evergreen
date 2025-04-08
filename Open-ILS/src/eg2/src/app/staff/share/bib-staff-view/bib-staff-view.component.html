@@ -6,7 +6,7 @@
 
             <!-- Col 1, Title Row -->
             <div class="row">
-                <div class="col-sm-4 font-weight-bold bib-details-title" i18n>Title:</div>
+                <div class="col-sm-4 fw-bold bib-details-title" i18n>Title:</div>
                 <div class="col-sm-8 bib-details">
                     <a *ngIf="summary.display.title" href="/eg2/staff/catalog/search?query={{summary.display.title}}&fieldClass=title&joinOp=&matchOp=contains&dateOp=is">
                         {{summary.display.title}}
@@ -16,7 +16,7 @@
 
             <!-- Col 1, Series Title Row -->
             <div *ngIf="summary.display.series_title" class="row">
-                <div class="col-sm-4 font-weight-bold bib-details-title" i18n>Series Title:</div>
+                <div class="col-sm-4 fw-bold bib-details-title" i18n>Series Title:</div>
                 <div class="col-sm-8 bib-details">
                     <ul>
                         <li *ngFor="let _series of summary.display.series_title">
@@ -30,7 +30,7 @@
 
             <!-- Col 1, Author Row -->
             <div class="row">
-                <div class="col-sm-4 font-weight-bold bib-details-title" i18n>Author:</div>
+                <div class="col-sm-4 fw-bold bib-details-title" i18n>Author:</div>
                 <div class="col-sm-8 bib-details">
                     <a *ngIf="summary.display.author" href="/eg2/staff/catalog/search?query={{summary.display.author}}&fieldClass=author&joinOp=&matchOp=contains&dateOp=is">
                         {{summary.display.author}}
@@ -40,7 +40,7 @@
 
             <!-- Col 1, Performer Row -->
             <div *ngIf="summary.display.performers" class="row">
-                <div class="col-sm-4 font-weight-bold bib-details-title" i18n>Performer:</div>
+                <div class="col-sm-4 fw-bold bib-details-title" i18n>Performer:</div>
                 <div class="col-sm-8 bib-details">
                     <ul>
                         <li *ngFor="let _performer of summary.display.performers">
@@ -52,7 +52,7 @@
 
             <!-- Col 1, Edition Row -->
             <div *ngIf="summary.display.edition" class="row">
-                <div class="col-sm-4 font-weight-bold bib-details-title" i18n>Edition:</div>
+                <div class="col-sm-4 fw-bold bib-details-title" i18n>Edition:</div>
                 <div class="col-sm-8 bib-details">
                     {{summary.display.edition}}
                 </div>
@@ -60,7 +60,7 @@
 
             <!-- Col 1, Publisher Row -->
             <div *ngIf="summary.display.publisher" class="row">
-                <div class="col-sm-4 font-weight-bold bib-details-title" i18n>Publisher:</div>
+                <div class="col-sm-4 fw-bold bib-details-title" i18n>Publisher:</div>
                 <div class="col-sm-8 bib-details">
                     {{summary.display.publisher}}
                 </div>
@@ -68,7 +68,7 @@
 
             <!-- Col 1, Production Credit Row -->
             <div *ngIf="summary.display.production_credits" class="row">
-                <div class="col-sm-4 font-weight-bold bib-details-title" i18n>Production Credit:</div>
+                <div class="col-sm-4 fw-bold bib-details-title" i18n>Production Credit:</div>
                 <div class="col-sm-8 bib-details">
                     <ul>
                         <li *ngFor="let _credit of summary.display.production_credits">
@@ -80,7 +80,7 @@
 
             <!-- Col 1, Type of Resource Row -->
             <div *ngIf="summary.display.type_of_resource" class="row">
-                <div class="col-sm-4 font-weight-bold bib-details-title" i18n>Type of Resource:</div>
+                <div class="col-sm-4 fw-bold bib-details-title" i18n>Type of Resource:</div>
                 <div class="col-sm-8 bib-details">
                     {{summary.display.type_of_resource}}
                 </div>
@@ -88,7 +88,7 @@
 
             <!-- Col 1, Physical Description Row -->
             <div *ngIf="summary.display.physical_description" class="row">
-                <div class="col-sm-4 font-weight-bold bib-details-title" i18n>Physical Description:</div>
+                <div class="col-sm-4 fw-bold bib-details-title" i18n>Physical Description:</div>
                 <div class="col-sm-8 bib-details">
                     <ul>
                         <li *ngFor="let _desc of summary.display.physical_description">
@@ -100,7 +100,7 @@
 
             <!-- Col 1, ISBN Row -->
             <div *ngIf="summary.display.isbn" class="row">
-                <div class="col-sm-4 font-weight-bold bib-details-title" i18n>ISBN:</div>
+                <div class="col-sm-4 fw-bold bib-details-title" i18n>ISBN:</div>
                 <div class="col-sm-8 bib-details">
                     <ul>
                         <li *ngFor="let _isbn of summary.display.isbn">
@@ -114,7 +114,7 @@
 
             <!-- Col 1, ISSN Row -->
             <div *ngIf="summary.display.issn" class="row">
-                <div class="col-sm-4 font-weight-bold bib-details-title" i18n>ISSN:</div>
+                <div class="col-sm-4 fw-bold bib-details-title" i18n>ISSN:</div>
                 <div class="col-sm-8 bib-details">
                     <ul>
                         <li *ngFor="let _issn of summary.display.issn">
@@ -128,7 +128,7 @@
 
             <!-- Col 1, UPC Row -->
             <div *ngIf="summary.display.upc" class="row">
-                <div class="col-sm-4 font-weight-bold bib-details-title" i18n>UPC:</div>
+                <div class="col-sm-4 fw-bold bib-details-title" i18n>UPC:</div>
                 <div class="col-sm-8 bib-details">
                     <ul>
                         <li *ngFor="let _upc of summary.display.upc">
@@ -147,7 +147,7 @@
 
             <!-- Col 2, Abstract Row -->
             <div *ngIf="summary.display.abstract" class="row">
-                <div class="col-sm-4 font-weight-bold bib-details-title" i18n>Summary:</div>
+                <div class="col-sm-4 fw-bold bib-details-title" i18n>Summary:</div>
                 <div class="col-sm-8 bib-details">
                     {{summary.display.abstract}}
                 </div>
@@ -155,7 +155,7 @@
 
             <!-- Col 2, General Note Row -->
             <div *ngIf="summary.display.general_note" class="row">
-                <div class="col-sm-4 font-weight-bold bib-details-title" i18n>General Note:</div>
+                <div class="col-sm-4 fw-bold bib-details-title" i18n>General Note:</div>
                 <div class="col-sm-8 bib-details">
                     <ul>
                         <li *ngFor="let _note of summary.display.general_note">
@@ -167,7 +167,7 @@
 
             <!-- Col 2, Bibliography Row -->
             <div *ngIf="summary.display.bibliography" class="row">
-                <div class="col-sm-4 font-weight-bold bib-details-title" i18n>Bibliography:</div>
+                <div class="col-sm-4 fw-bold bib-details-title" i18n>Bibliography:</div>
                 <div class="col-sm-8 bib-details">
                     <ul>
                         <li *ngFor="let _bibliography of summary.display.bibliography">
@@ -179,7 +179,7 @@
 
             <!-- Col 2, TOC Row -->
             <div *ngIf="summary.display.toc" class="row">
-                <div class="col-sm-4 font-weight-bold bib-details-title" i18n>Table of Contents:</div>
+                <div class="col-sm-4 fw-bold bib-details-title" i18n>Table of Contents:</div>
                 <div class="col-sm-8 bib-details">
                     {{summary.display.toc}}
                 </div>
@@ -187,7 +187,7 @@
 
             <!-- Col 2, Thesis Row -->
             <div *ngIf="summary.display.thesis" class="row">
-                <div class="col-sm-4 font-weight-bold bib-details-title" i18n>Thesis:</div>
+                <div class="col-sm-4 fw-bold bib-details-title" i18n>Thesis:</div>
                 <div class="col-sm-8 bib-details">
                     <ul>
                         <li *ngFor="let _thesis of summary.display.thesis">
@@ -203,7 +203,7 @@
 
             <!-- Col 3, Hold and Copy Counts Row -->
             <div class="row">
-                <div class="col-sm-4 font-weight-bold bib-details-title" i18n>Hold and Copy Counts:</div>
+                <div class="col-sm-4 fw-bold bib-details-title" i18n>Hold and Copy Counts:</div>
                 <div class="col-sm-8 bib-details">
                     <ul>
                         <li><span i18n>{{summary.holdCount}} hold requests</span></li>
@@ -217,7 +217,7 @@
 
             <!-- Col 3, Subject Row -->
             <div *ngIf="summary.display.subject" class="row">
-                <div class="col-sm-4 font-weight-bold bib-details-title" i18n>Subject:</div>
+                <div class="col-sm-4 fw-bold bib-details-title" i18n>Subject:</div>
                 <div class="col-sm-8 bib-details">
                     <ul>
                         <li *ngFor="let _subj of summary.display.subject">
@@ -231,7 +231,7 @@
 
             <!-- Col 3, Genre Row -->
             <div *ngIf="summary.display.genre" class="row">
-                <div class="col-sm-4 font-weight-bold bib-details-title" i18n>Genre:</div>
+                <div class="col-sm-4 fw-bold bib-details-title" i18n>Genre:</div>
                 <div class="col-sm-8 bib-details">
                     <ul>
                         <li *ngFor="let _genre of summary.display.genre">
@@ -245,7 +245,7 @@
 
             <!-- Col 3, Formats and Editions Row -->
             <div class="row">
-                <div class="col-sm-4 font-weight-bold bib-details-title" i18n>Formats and Editions:</div>
+                <div class="col-sm-4 fw-bold bib-details-title" i18n>Formats and Editions:</div>
                 <div class="col-sm-8 bib-details">
                     <ul>
                         <ng-container *ngIf="summary.staffViewMetabibAttributes.icon_format">

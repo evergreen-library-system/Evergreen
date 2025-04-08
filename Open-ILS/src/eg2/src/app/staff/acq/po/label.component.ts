@@ -63,7 +63,7 @@ export class PoLabelComponent implements OnInit {
      *
      * And for lineitems:
      *
-     * <a style='padding-right: 10px;' class='hidden${20}' * target='_top'
+     * <a style='padding-inline-end: 10px;' class='hidden${20}' * target='_top'
      *                                                20 = a classname toggle if a po exists
      *  href='/eg2/en-US/staff/acq/po/${12}#${10}'>&#x2318; ${13} ${18}</a>
      *                                  12 = po id

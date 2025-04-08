@@ -40,7 +40,7 @@ export class IdlClassTemplateDirective {
     selector: 'eg-combobox',
     templateUrl: './combobox.component.html',
     styles: [`
-    .icons {margin-left:-18px}
+    .icons {margin-inline-start:-18px}
     .material-icons {font-size: 16px;font-weight:bold}
   `],
     providers: [{

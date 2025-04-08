@@ -18,7 +18,7 @@
 <!-- Location / Barcode cell template -->
 
 <ng-template #locationTemplate let-row="row" let-userContext="userContext">
-  <div [ngStyle]="{'padding-left': (0.5 * getRowPaddingDepth(row)) + 'rem'}"
+  <div [ngStyle]="{'padding-inline-start': (0.5 * getRowPaddingDepth(row)) + 'rem'}"
     [ngClass]="{'leaf': row.copy || row.treeNode.children.length === 0}">
       <button type="button" class="btn btn-link text-decoration-none label-with-material-icon" (click)="userContext.toggleExpandRow(row)">
         <!--  leave the icons in place for all node types, but make them

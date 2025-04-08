@@ -48,7 +48,7 @@
 
 <ng-template #courseTemplate let-copy="row">
   <div *ngFor="let course of copy._courses">
-    <span class="sr-only" id="course-name-{{course.id()}}">{{course.name()}}</span>
+    <span class="visually-hidden" id="course-name-{{course.id()}}">{{course.name()}}</span>
     <a attr.aria-describedby="course-name-{{course.id()}}"
     routerLink="/staff/admin/local/asset/course_list/{{course.id()}}">
       {{course.course_number()}}

@@ -9,7 +9,7 @@ import {Observable, of, Subject} from 'rxjs';
     selector: 'eg-text-multi-select',
     templateUrl: './text-multi-select.component.html',
     styles: [`
-    .icons {margin-left:-18px}
+    .icons {margin-inline-start:-18px}
     .material-icons {font-size: 16px;font-weight:bold}
     .eg-text-multi-select-row { display: grid; grid-template-columns: 1fr min-content; gap: .75rem; }
   `]
