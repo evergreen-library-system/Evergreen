@@ -514,7 +514,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 			<field reporter:label="Match Bucket" name="match_bucket" reporter:datatype="link"/>
 		</fields>
 		<links>
-			<link field="owner" reltype="has_a" key="id" map="" class="aou"/>
+			<link field="owner" reltype="has_a" key="id" map="" class="au"/>
 			<link field="item_attr_def" reltype="has_a" key="id" map="" class="viiad"/>
 			<link field="match_set" reltype="has_a" key="id" map="" class="vms"/>
 			<link field="match_bucket" reltype="has_a" key="id" map="" class="cbreb"/>
