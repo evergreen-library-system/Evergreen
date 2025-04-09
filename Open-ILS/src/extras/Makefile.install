@@ -19,8 +19,6 @@
 # 	make -f Makefile.install ubuntu-noble
 # 	- or -
 # 	make -f Makefile.install ubuntu-jammy
-# 	- or -
-# 	make -f Makefile.install fedora
 #
 # ---------------------------------------------------------------------
 
@@ -82,8 +80,6 @@ ubuntu-noble:
 	@make -f $(DIR)/Makefile.ubuntu-noble
 ubuntu-jammy:
 	@make -f $(DIR)/Makefile.ubuntu-jammy
-fedora:
-	@make -f $(DIR)/Makefile.fedora
 
 postgres-server-debian-bookworm-13:
 	@make -f $(DIR)/Makefile.debian-bookworm install_postgres_server_13
@@ -135,8 +131,6 @@ postgres-server-ubuntu-jammy-16:
 	@make -f $(DIR)/Makefile.ubuntu-jammy install_postgres_server_16
 postgres-server-ubuntu-jammy-17:
 	@make -f $(DIR)/Makefile.ubuntu-jammy install_postgres_server_17
-postgres-server-fedora:
-	@make -f $(DIR)/Makefile.fedora install_postgres_server
 
 ubuntu-noble-developer:
 	@make -f $(DIR)/Makefile.ubuntu-noble install_developer
