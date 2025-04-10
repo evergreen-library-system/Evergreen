@@ -1,5 +1,9 @@
 :host {
-  --tree-border: light-dark(var(--bs-gray-500), var(--bs-gray-400));
+  --tree-border: var(--bs-gray-500);
+}
+
+[data-bs-theme="dark"] :host {
+  --tree-border: var(--bs-gray-400);
 }
 
 .eg-tree {
@@ -81,13 +85,22 @@
 }
 
 .eg-tree-branch .eg-tree-node.active > .eg-tree-node-wrapper {
-  background-color: light-dark(rgba(var(--box-shadow), .04), rgba(255,255,255, .1));
+  background-color: rgba(var(--box-shadow), .04);
   border: 1px solid var(--tree-border);
+}
+
+[data-bs-theme="dark"] .eg-tree-branch .eg-tree-node.active > .eg-tree-node-wrapper {
+  background-color: rgba(255,255,255, 0.1);
 }
 
 .eg-tree.blurred .eg-tree-node.active > .eg-tree-node-wrapper {
     background-color: transparent;
-    border-color: light-dark(var(--bs-gray-300), var(--bs-gray-600));
+    border-color: var(--bs-gray-300);
+}
+
+[data-bs-theme="dark"] .eg-tree.blurred .eg-tree-node.active > .eg-tree-node-wrapper {
+  background-color: transparent;
+  border-color: var(--bs-gray-600);
 }
 
 .eg-tree-node-wrapper {

@@ -1,10 +1,10 @@
 :host {
   --vol-edit-clear-icons: var(--bs-gray-550);
   --vol-row-bg: var(--bs-row-alt);
-  --vol-row-border: var(--eg-blue-11); 
+  --vol-row-border: rgba(var(--bs-blue-300-rgb), 0.4);
 }
 
-input[type="number"] {
+input[type="number"], input[inputmode="numeric"], input[inputmode="decimal"] {
   /* visually accomodates numbers in the hundreds */
   width: 4.5em;
 }
@@ -17,7 +17,7 @@ input[type="number"] {
 
 .clear-button {
   border: none;
-  background-color:var(--rgba-clear);
+  background-color:var(--bs-body-bg);
   padding-left: .25rem;
   padding-right: .25rem;
   line-height: inherit;

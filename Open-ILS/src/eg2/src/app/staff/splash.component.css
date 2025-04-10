@@ -1,8 +1,13 @@
 :host {
-  --splash-card-header: light-dark(var(--evergreen), var(--bs-gray-400));
-  --splash-card-header-bg: light-dark(#dff0d8, var(--bs-body-bg-alt));
-  --splash-card-header-border: light-dark(#d6e9c6, var(--bs-body-bg-highlight));
+  --splash-card-header: var(--evergreen);
+  --splash-card-header-bg: #dff0d8;
+  --splash-card-header-border: #d6e9c6;
   --bs-card-bg: var(--bs-body-bg);
+}
+[data-bs-theme="dark"] :host {
+  --splash-card-header: var(--bs-gray-400);
+  --splash-card-header-bg: var(--bs-body-bg-alt);
+  --splash-card-header-border: var(--bs-body-bg-highlight);
 }
 
 .eg-logo { 
@@ -16,7 +21,7 @@
 
 .card {
   background-color: var(--bs-card-bg);
-  border-color: light-dark(var(--border), var(--splash-card-header-border));
+  border-color: var(--splash-card-header-border);
   margin-block-end: 2rem;
 }
 

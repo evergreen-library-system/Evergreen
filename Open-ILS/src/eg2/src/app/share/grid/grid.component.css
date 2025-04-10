@@ -36,7 +36,7 @@ table.table.eg-grid {
 
 .eg-grid {
     width: 100%;
-    color: var(--grid);
+    color: var(--bs-body-color);
     caption-side: block-start;
     height: 1px;
     table-layout: auto;
