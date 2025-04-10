@@ -28,8 +28,10 @@
     <link rel="stylesheet" href="[% WEB_BUILD_PATH %]/css/evergreen-staff-client-deps.[% EVERGREEN_VERSION %].min.css" />
     [% END %]
     <link rel="stylesheet" href="[% ctx.base_path %]/staff/css/cat.css" />
-    <link rel="stylesheet" href="[% ctx.base_path %]/staff/css/styles-colors.css" />
     <link rel="stylesheet" href="[% ctx.base_path %]/staff/css/style.css" />
+    <link rel="stylesheet" href="[% ctx.base_path %]/staff/css/styles-colors.css" />
+    <link rel="stylesheet" href="[% ctx.base_path %]/staff/css/light.css" />
+    <link rel="stylesheet" href="[% ctx.base_path %]/staff/css/dark.css" />
     <link rel="stylesheet" href="[% ctx.base_path %]/staff/css/nav.css" />
     <link rel="stylesheet" href="[% ctx.base_path %]/staff/css/grid.css" />
     
