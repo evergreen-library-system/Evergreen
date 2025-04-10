@@ -6732,6 +6732,7 @@ static jsonObject* doFieldmapperSearch( osrfMethodContext* ctx, osrfHash* class_
 		jsonObject* where_hash, jsonObject* query_hash, int* err ) {
 
     char* new_cursor_name = NULL;
+	jsonObject* searching_via_pkey = NULL;
 	const char* tz = _sanitize_tz_name(ctx->session->session_tz);
 
 	// XXX for now...
@@ -6741,6 +6742,9 @@ static jsonObject* doFieldmapperSearch( osrfMethodContext* ctx, osrfHash* class_
 	osrfLogDebug( OSRF_LOG_MARK, "entering doFieldmapperSearch() with core_class %s", core_class );
 
 	char* pkey = osrfHashGet( class_meta, "primarykey" );
+	if (pkey) {
+		searching_via_pkey = jsonObjectGetKeyConst( where_hash, pkey );
+	}
 
 	if (!ctx->session->userData)
 		(void) initSessionCache( ctx );
@@ -6753,11 +6757,12 @@ static jsonObject* doFieldmapperSearch( osrfMethodContext* ctx, osrfHash* class_
 	int flesh_depth = 0;
 	int offset = 0;
 	int limit = 0;
-	int can_get_cursor = 0;
 	int cursor_page_size = 100;
 
-	if (!cursor_name && need_to_verify) can_get_cursor = retail_vis_test; // There is no cursor yet, and we are in PCRUD verify mode, use a cursor in retail check mode.
-	if (*methodtype != 'r' && can_get_cursor) new_cursor_name = cursor_name = random_cursor_name(); /* Use a cursor for all but .retrieve */
+    if (!cursor_name
+        && need_to_verify
+        && (!searching_via_pkey || searching_via_pkey->type <= JSON_ARRAY) // jsonObject.type is an int, JSON_HASH==0, JSON_ARRAY==1, scalar types are larger
+    ) new_cursor_name = cursor_name = random_cursor_name(); // There is no cursor yet, we are in PCRUD verify mode, and we are NOT searching by pkey
 
 	int local_enforce_pcrud = enforce_pcrud;
 	osrfStringArray* various_pcrud_conditions = NULL;
