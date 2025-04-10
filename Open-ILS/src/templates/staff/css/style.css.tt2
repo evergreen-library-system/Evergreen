@@ -512,12 +512,6 @@ input, textarea, select, option,
     color: var(--bs-body-color);
 }
 
-.btn.btn-default:focus,
-.btn.btn-default:active {
-  color: var(--bs-text-highlight);
-  background-color: var(--bs-body-bg-highlight);
-}
-
 .popover-header {
   background-color: var(--popover-header-bg);
   color: var(--bs-body-color);
@@ -857,6 +851,7 @@ input, textarea, select, option,
 }
 
 .btn-normal,
+.btn-default,
 .btn-destroy,
 .btn-outline-normal:is(:active, :hover, :focus, :focus-visible) {
   color: var(--btn-gray-color);
@@ -864,7 +859,8 @@ input, textarea, select, option,
   border: 1px solid var(--btn-gray-border);
 }
 
-.btn-normal:is(:active, :hover, :focus, :focus-visible) {
+.btn-normal:is(:active, :hover, :focus, :focus-visible),
+.btn-default:is(:active, :hover, :focus, :focus-visible) {
   color: var(--btn-gray-color);
   background-color: var(--btn-gray-bg-hover);
   border: 1px solid var(--btn-gray-border);
@@ -884,6 +880,7 @@ input, textarea, select, option,
 }
 
 .btn-normal[disabled],
+.btn-default[disabled],
 .btn-destroy[disabled] {
   color: var(--bs-body-color);
   background-color: var(--btn-gray-bg);
@@ -983,18 +980,6 @@ button.dropdown-toggle:focus,
 .open>button.btn-default.dropdown-toggle:hover{
   color: var(--bs-text-highlight);
   background-color: var(--bs-body-bg-highlight);
-}
-
-.btn.btn-default:active {
-  color: var(--bs-gray-800);
-  background-color: #e6e6e6;
-  border-color: #adadad;
-}
-
-[data-bs-theme="dark"] .btn.btn-default:active {
-  color: var(--bs-gray-150);
-  background-color:  var(--bs-gray-800);
-  border-color: #adadad;
 }
 
 :is(.nav, .nav-pills, .nav-tabs) > li.active > a:is(a, .active, :active) {
