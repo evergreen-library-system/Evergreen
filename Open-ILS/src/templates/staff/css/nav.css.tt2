@@ -4,17 +4,24 @@
  * Mostly matches the styling on the angular navbar
  */
 :root {
-    --nav-link-color: light-dark(white, var(--bs-gray-100));
-    --nav-link-hover: light-dark(white, var(--bs-gray-100));
-    --nav-bg: var(--staff-navbar-b);
-    --nav-border-hover: var(--bs-gray-300); 
-    --nav-hover-bg: light-dark(rgba(var(--success-text-light-rgb), 0.1), rgba(211, 231, 190, 0.1)); 
-    --nav-hover-border-bottom: light-dark(rgba(222, 226, 230, 0.4), rgba(6, 34, 25, 0.2));
-    --nav-dropdown-color: var(--bs-body-color);
-    --nav-dropdown-bg: var(--bs-body-bg-alt);
-    --nav-dropdown-bg-hover: light-dark(rgba(var(--bs-green-rgb), .10), var(--bs-green-800));
-    
-    --divider: 1px solid light-dark(#e5e5e5, #151515);
+  --nav-link-color: white;
+  --nav-link-hover: white;
+  --nav-border-hover: var(--bs-gray-300); 
+  --nav-hover-bg: rgba(var(--success-text-light-rgb), 0.1); 
+  --nav-hover-border-bottom: rgba(222, 226, 230, 0.4);
+  --nav-dropdown-bg-hover: rgba(var(--bs-green-rgb), .10);
+  --nav-dropdown-bg: var(--bs-body-bg);
+  --nav-dropdown-item-color: var(--bs-body-color);
+}
+[data-bs-theme="dark"]:root {
+  --nav-link-color: var(--bs-gray-100);
+  --nav-link-hover: var(--bs-gray-100);
+  --nav-border-hover: var(--bs-gray-300); 
+  --nav-hover-bg: rgba(211, 231, 190, 0.1);
+  --nav-hover-border-bottom: rgba(6, 34, 25, 0.2);
+  --nav-dropdown-bg-hover: var(--bs-green-800);
+  --nav-dropdown-bg: var(--bs-body-bg-alt);
+  --nav-dropdown-item-color: var(--bs-gray-100);
 }
 
 #top-navbar.navbar-default {
@@ -54,7 +61,7 @@
 }
 
 #top-navbar.navbar-default .dropdown-menu a:hover{
-  color: var(--nav-dropdown);
+  color: var(--nav-dropdown-item-color);
   background-color: var(--nav-dropdown-bg-hover);
 }
 #top-navbar.navbar-default .dropdown-menu .divider{

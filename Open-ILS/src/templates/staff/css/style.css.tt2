@@ -496,9 +496,6 @@ input, textarea, select, option,
 .accordion-button:not(.collapsed),
 .alert-info,
 .btn-outline-dark,
-.btn-default,
-.btn-light,
-.btn-light.dropdown-toggle,
 .card-header,
 .eg-grid-header,
 .eg-grid-sticky-header,
@@ -952,7 +949,7 @@ input, textarea, select, option,
 }
 
 .dropdown-menu:has(li>a){
-  background-color: var(--bs-body-bg);
+  background-color: var(--bs-body-bg-alt);
 }
 .dropdown-menu>li>a,
 .dropdown-menu>li>a:hover,
@@ -964,6 +961,14 @@ input, textarea, select, option,
 .dropdown-menu>li>a:focus,
 .dropdown-menu>li>a:hover {
   background-color: var(--bs-body-bg-alt);
+}
+
+.open > .dropdown-menu {
+  box-shadow: 0 0.1em 0.5em rgba(var(--box-shadow), 0.3);
+}
+
+[data-bs-theme="dark"] .open > .dropdown-menu {
+box-shadow: 0 0.1em 1em rgba(var(--box-shadow), 0.7);
 }
 
 .dropdown-menu.uib-datepicker-popup {
