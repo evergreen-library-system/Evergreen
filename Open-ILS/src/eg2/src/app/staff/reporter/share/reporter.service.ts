@@ -1501,6 +1501,9 @@ export class ReporterService {
             	    pathHash += ' -> ';
 	            	if (n.stateFlag) {pathHash += ' [Required]';}
         	    }
+	            if (n.callerData.fmField?.name) {
+	                pathHash += n.callerData.fmField.name + '.';
+	            }
     	        pathHash += n.callerData.fmClass;
         	});
             return Md5.hashStr(pathHash);
