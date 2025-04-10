@@ -26,7 +26,11 @@
 
 .patron-summary-pref-name {
   padding-left: 6px;
-  color: light-dark(var(--bs-green-600), var(--bs-green-400));
+  color: var(--bs-green-600);
+}
+
+[data-bs-theme="dark"] .patron-summary-pref-name {
+  color: var(--bs-green-400);
 }
 
 /* Tag icon used for name keywords shouldn't look like a link */
@@ -233,7 +237,15 @@
 #patron-reg-container .ng-invalid,
 #patron-reg-container .ng-invalid-required,
 #patron-pay-by-credit-form .ng-invalid {
-  background-color: light-dark(var(--badge-warning-bg), rgba(var(--bs-yellow-400-rgba), 0.1));
+  background-color: var(--badge-warning-bg);
+  color: var(--badge-danger-color);
+}
+
+[data-bs-theme="dark"] #patron-notes-container .ng-invalid-required,
+[data-bs-theme="dark"] #patron-reg-container .ng-invalid,
+[data-bs-theme="dark"] #patron-reg-container .ng-invalid-required,
+[data-bs-theme="dark"] #patron-pay-by-credit-form .ng-invalid {
+  background-color: rgba(var(--bs-yellow-400-rgba), 0.1);
   color: var(--badge-danger-color);
 }
 
@@ -243,7 +255,11 @@
 }
 
 .patron-reg-pref-names {
-  background-color: light-dark(var(--bs-gray-200), var(--bs-gray-900));
+  background-color: var(--bs-gray-200);
+}
+
+[data-bs-theme="dark"] .patron-reg-pref-names {
+  background-color: var(--bs-gray-900);
 }
 
 .patron-reg-example-btn {
@@ -252,7 +268,7 @@
 
 .patron-reg-pending-address {
   border:2px dashed var(--border);
-  -moz-border-radius: 10px;
+  border-radius: 10px;
   padding: 10px;
   margin-bottom: 5px;
 }
