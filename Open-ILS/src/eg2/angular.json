@@ -33,7 +33,9 @@
             ],
             "styles": [
               "src/styles.css",
-              "src/styles-colors.css"
+              "src/assets/css/styles-colors.css",
+              "src/assets/css/light.css",
+              "src/assets/css/dark.css"
             ],
             "scripts": [
               "src/assets/js/marcrecord.js"

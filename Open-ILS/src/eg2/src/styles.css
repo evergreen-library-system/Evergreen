@@ -1,6 +1,7 @@
-/* You can add global styles to this file, and also import other style files */
-/* Colors are defined in styles-colors.css */
-
+/* You can add global styles to this file */
+/* Colors are defined in assets/css/styles-colors.css */
+/* Light mode: assets/css/light.css; dark mode: assets/css/dark.css */
+/* These have to be imported to preserve the webpack paths: */
 /* bootstrap CSS only -- JS bits come from ng-bootstrap */
 @import '~bootstrap/dist/css/bootstrap.min.css';
 
