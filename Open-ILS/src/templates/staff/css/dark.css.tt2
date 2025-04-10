@@ -1,0 +1,107 @@
+/* Dark mode */
+:root[data-bs-theme="dark"] {
+  --evergreen: var(--eg-green-200); /* brand color */
+  --black: white;
+  --white: black;
+  --bs-white: black;
+  --bs-light: var(--bs-gray-850);
+  --bs-dark: var(--bs-gray-100);
+  --border: var(--bs-gray-700);
+  --border-thick: var(--bs-gray-600);
+  --inactive: var(--bs-gray-400);
+  --form-control-border: var(--bs-gray-700);
+  --form-check-border: var(--bs-gray-800);
+
+  --bs-body-color: var(--bs-gray-400);
+  --bs-body-color-rgb: 222, 226, 230;
+  --bs-body-bg: var(--bs-gray-925);
+  --bs-body-color-disabled: var(--bs-dropdown-link-disabled-color);
+  --bs-body-bg-alt: var(--bs-gray-900);
+  --bs-body-bg-highlight: var(--bs-gray-850);
+  --bs-text-highlight: var(--bs-gray-500);
+  --bs-card-bg: var(--bs-gray-925);
+
+  --success: #002C1F;
+  --success-color: var(--eg-green-100);
+  --success-hover-color: var(--eg-green-050);
+  --success-border: #157146;
+  --success-hover: #00593d; 
+  --success-disabled: #779788; /* desaturated */
+  --success-disabled-rgb: 68, 135, 104;
+  --success-text-light: #003b35;
+  --success-text-light-rgb: 223, 240, 216;
+  --success-text-dark: #dff0d8;
+  --form-success-bg: var(--eg-green-900);
+
+  /* used in both nav and splash components: */
+  --staff-navbar-a: var(--bs-gray-900);
+  --staff-navbar-b: var(--bs-gray-975);
+
+  --badge-color: var(--bs-blue-200); 
+  --badge-bg: var(--bs-blue-900); 
+
+  --badge-danger-bg: var(--bs-red-800); 
+  --badge-danger-selected-bg: var(--bs-red-700);
+  --badge-danger-color: var(--bs-red-200);
+
+  --badge-info-color: var(--bs-cyan-100); 
+  --badge-info-bg: var(--bs-cyan-900);
+  --badge-info-border: var(--bs-cyan-700);
+
+  --badge-success-color: var(--success-text-dark); 
+  --badge-success-bg: var(--success-text-light);
+
+  --badge-warning-bg: var(--bs-yellow-800); 
+  --badge-warning-hover-bg: var(--bs-yellow-900); 
+  --badge-warning-selected-bg: var(--bs-yellow-700); 
+  --badge-warning-color: var(--bs-yellow-200); 
+
+  --grid-color: var(--bs-body-color);
+  --grid-borders: #292929;
+  --grid-filter-active: var(--bs-gray-900);
+  --grid-header-row: var(--bs-gray-050);
+  --grid-header-button: var(--bs-blue-300);
+  --grid-row-selected: var(--bs-blue-100); 
+  --grid-row-selected-bg: var(--bs-blue-900);
+  --grid-row-selected-border: var(--bs-blue-800);
+  --row-even-bg: var(--bs-body-bg-alt);
+
+  --danger: var(--bs-red-800);
+  --danger-bg-hover: var(--bs-red-700);
+  --danger-color: var(--bs-red-300);
+  --danger-border: var(--bs-red-600);
+  --destroy-color: var(--bs-red-200);
+
+  --info: var(--bs-cyan-300); 
+  --info-border: var(--bs-cyan-700); 
+  --info-disabled: rgba(var(--bs-cyan-700-disabled-rgb), 1);
+  --info-hover: var(--bs-cyan-750);
+ 
+  --primary: var(--bs-blue-300); 
+  --primary-border: var(--bs-blue-400);
+  --primary-focus-outline-rgb: var(--bs-blue-600-rgb);
+  --primary-hover: var(--bs-blue-400);
+  --primary-disabled: rgba(var(--bs-blue-300-rgb), 0.6);
+  
+  --warning-color: var(--bs-yellow-200);
+  --warning-border: var(--bs-yellow-400);
+  --warning-border-hover: var(--bs-yellow-500);
+  --warning-shadow: var(--eg-yellow-2);
+
+  --secondary-bg: var(--bs-gray-700);
+  --btn-gray-bg: var(--bs-gray-900);
+  --btn-gray-bg-hover: var(--bs-gray-800);
+  --btn-gray-color: var(--bs-body-color);
+  --btn-gray-border: var(--bs-gray-800);
+  
+  --modal-header-color: white;
+  --modal-header-bg: var(--bs-cyan-800);
+  --modal-body-bg: var(--bs-body-bg-alt);
+  --popover-menu-hover: var(--bs-gray-900);
+  --popover-header-bg: var(--bs-gray-900);
+  --dropdown-menu-bg: var(--bs-gray-900);
+
+  --batch-item-attr-header-bg: var(--bs-blue-900-desat);
+  --status-archived: var(--bs-gray-500);
+  --star-stroke: transparent;
+}
