@@ -1359,6 +1359,7 @@ sub update_hold_impl {
         } elsif ($hold_status == 2) {
               $logger->info("Pickup location changed and waiting for capture, clear current_copy for hold ".$hold->id);
               $hold->clear_current_copy;
+              $need_retarget = 1;
         }
     }
 
