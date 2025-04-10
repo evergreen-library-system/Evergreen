@@ -1,19 +1,27 @@
 mark {
-  --highlight-bg: light-dark(#B4F8D3, #002C1F);
-  --highlight-border: light-dark(#20C997, #0A3622);
-  --highlight-id-bg: light-dark(#C4F0F8, #031633);
-  --highlight-id-border: light-dark(#3DD5F3, #084298);
+  --highlight-bg-opacity: 1;
+  --highlight-border-opacity: 1;
+  --highlight-bg: 180, 248, 211;
+  --highlight-border: 32, 201, 151;
+  --highlight-id-bg: 196, 240, 248;
+  --highlight-id-border: 61, 213, 243;
+}
+
+[data-bs-theme="dark"] mark {
+  --highlight-bg-opacity: 0.15;
+  --highlight-border-opacity: 0.45;
 }
 
 .oils_SH {
   font-weight: bolder;
-  background: var(--highlight-bg);
-  border-bottom: 1px solid var(--highlight-border);
+  background: rgba(var(--highlight-bg), var(--highlight-bg-opacity));
+  border-block-end: 1px solid rgba(var(--highlight-border), var(--highlight-border-opacity));
   color: inherit;
 }
 
 .oils_SH.identifier {
-  background: var(--highlight-id-bg);
-  border-bottom: 1px solid var(--highlight-id-border);
+  background: rgba(var(--highlight-id-bg), var(--highlight-bg-opacity));
+  border-block-end: 1px solid rgba(var(--highlight-id-border), var(--highlight-border-opacity));
 }
+
 

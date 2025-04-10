@@ -13,7 +13,7 @@
 
 .bg-warning {
     background-color: var(--badge-warning-bg) !important;
-    color: var(--badge-warning);
+    color: var(--badge-warning-color);
     font-weight: bold;
 }
 

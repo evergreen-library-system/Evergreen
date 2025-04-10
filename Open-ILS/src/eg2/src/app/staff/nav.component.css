@@ -1,12 +1,24 @@
 :host {
-    --nav-link-color: light-dark(white, var(--bs-gray-100));
-    --nav-link-hover: light-dark(white, var(--bs-gray-100));
+    --nav-link-color: white;
+    --nav-link-hover: white;
     --nav-border-hover: var(--bs-gray-300); 
-    --nav-hover-bg: light-dark(rgba(var(--success-text-light-rgb), 0.1), rgba(211, 231, 190, 0.1)); 
-    --nav-hover-border-bottom: light-dark(rgba(222, 226, 230, 0.4), rgba(6, 34, 25, 0.2));
-    --nav-dropdown-bg-hover: light-dark(rgba(var(--bs-green-rgb), .10), var(--bs-green-800));
-    --divider: 1px solid light-dark(#e5e5e5, #151515);
-    --nav-dropdown-bg: light-dark(inherit, var(--bs-body-bg-alt)); 
+    --nav-hover-bg: rgba(var(--success-text-light-rgb), 0.1); 
+    --nav-hover-border-bottom: rgba(222, 226, 230, 0.4);
+    --nav-dropdown-bg-hover: rgba(var(--bs-green-rgb), .10);
+    --nav-dropdown-bg: var(--bs-body-bg);
+    --nav-dropdown-item-color: var(--bs-body-color);
+    --kbd-bg: var(--bs-gray-200);
+}
+[data-bs-theme="dark"] :host {
+    --nav-link-color: var(--bs-gray-100);
+    --nav-link-hover: var(--bs-gray-100);
+    --nav-border-hover: var(--bs-gray-300); 
+    --nav-hover-bg: rgba(211, 231, 190, 0.1);
+    --nav-hover-border-bottom: rgba(6, 34, 25, 0.2);
+    --nav-dropdown-bg-hover: var(--bs-green-800);
+    --nav-dropdown-bg: var(--bs-body-bg-alt);
+    --nav-dropdown-item-color: var(--bs-gray-100);
+    --kbd-bg: var(--bs-body-bg-highlight);
 }
 
 .skip-nav {
@@ -38,15 +50,15 @@
     background: -webkit-linear-gradient(var(--staff-navbar-a), var(--staff-navbar-b));
     color: var(--nav-link-hover);
     font-size: 14px;
-    padding: 0 0.5rem;
+    padding: 4px 0.5rem;
 }
 
-#staff-navbar .navbar-nav,
-#staff-navbar .navbar-admin .dropdown-item {
+#staff-navbar .navbar-nav {
     padding: 4px 0;
     margin: 0 1px;
 }
 
+#staff-navbar .navbar-admin .dropdown-item,
 #staff-navbar .navbar-nav .color-mode .dropdown-item {
     padding: 4px 0.75rem;
 }
@@ -64,7 +76,7 @@
 
 /* align top of dropdown w/ bottom of nav */
 #staff-navbar .dropdown-menu {
-    background-color: light-dark(white, var(--bs-body-bg-alt));
+    background-color: var(--nav-dropdown-bg);
     border-top: 0;
     border-top-left-radius: 0;
     border-top-right-radius: 0;
@@ -81,7 +93,7 @@
 }
 
 #staff-navbar .dropdown-item {
-    color: light-dark(var(--bs-body-color), var(--bs-gray-100));
+    color: var(--nav-dropdown-item-color);
     background-color: var(--nav-dropdown-bg);
     font-size: 14px;
     font-weight: 400;
@@ -108,7 +120,7 @@
 }
 
 #staff-navbar .dropdown-item kbd {
-    background-color: light-dark(var(--bs-gray-200), var(--bs-body-bg-highlight));
+    background-color: (--kbd-bg);
     box-shadow: 0 1px 1px rgba(0,0,10,0.2);
     margin-inline-start: auto;
 }

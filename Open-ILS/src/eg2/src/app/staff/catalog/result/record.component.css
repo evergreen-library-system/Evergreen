@@ -20,7 +20,7 @@
 }
 
 [role="region"][aria-labelledby][tabindex]:focus-visible table {
-    outline: 2px solid var(--eg-blue-21);
+    outline: 2px solid var(--bs-primary);
     outline-offset: 5px;
 }
 

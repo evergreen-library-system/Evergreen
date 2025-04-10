@@ -131,6 +131,18 @@ export class StaffNavComponent implements OnInit, OnDestroy {
             }).then(enable => this.showAngularCirc = enable);
         }
 
+        const darkModePreference = window.matchMedia('(prefers-color-scheme: dark)');
+        darkModePreference.addEventListener('change', () => {
+            // Don't change color mode while printing
+            if (!window.matchMedia('print').matches) {
+                this.setColorMode();
+            }
+
+        });
+
+        this.colorMode = this.store.getLocalItem('eg.ui.general.colormode') ?? 'auto';
+        this.setColorMode();
+
         // Wire up our op-change component as the general purpose
         // permission failed handler.
         this.net.permFailedHasHandler = true;

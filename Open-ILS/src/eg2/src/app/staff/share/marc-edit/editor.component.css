@@ -1,49 +1,83 @@
 /* eg-marc-editor background set in parent record.component.css */
 
 .nav-tabs {
-  background: light-dark(var(--gray-125), var(--bs-body-bg-alt));
-  border-color: light-dark(var(--gray-250), var(--border));
+  background: var(--gray-125);
+  border-color: var(--gray-250);
   padding-inline-start: 0.5rem; /* separate active tab from page background */
+}
+[data-bs-theme="dark"] .nav-tabs {
+  background: var(--bs-body-bg-alt);
+  border-color: var(--border);
 }
 
 .nav-tabs .nav-link {
-  background: light-dark(var(--gray-125), var(--bs-body-bg));
-  border-color: light-dark(var(--gray-250), var(--bs-body-bg-highlight));
-  color: light-dark(var(--bs-blue-650), var(--bs-blue-400));
+  background: var(--gray-125);
+  border-color: var(--gray-250);
+  color: var(--bs-blue-650);
+}
+[data-bs-theme="dark"] .nav-tabs .nav-link {
+  background: var(--bs-body-bg);
+  border-color: var(--bs-body-bg-highlight);
+  color: var(--bs-blue-400);
 }
 
 .nav-tabs .nav-link.active {
   background: var(--tab-active-bg);
   color: var(--bs-body-color);
-  /* light-dark() does not work with border shorthand */
-  border-top-color: light-dark(var(--gray-300),var(--bs-gray-800));
-  border-right-color: light-dark(var(--gray-400), var(--bs-gray-700));
-  border-bottom-color: light-dark(var(--gray-100), var(--bs-gray-900));
-  border-left-color: light-dark(var(--gray-400), var(--bs-gray-700));
+  border-top-color: var(--gray-300);
+  border-right-color: var(--gray-400);
+  border-bottom-color: var(--gray-100);
+  border-left-color: var(--gray-400);
+}
+
+[data-bs-theme="dark"] .nav-tabs .nav-link.active {
+  border-top-color: var(--bs-gray-800);
+  border-right-color: var(--bs-gray-700);
+  border-bottom-color: var(--bs-gray-900);
+  border-left-color: var(--bs-gray-700);
 }
 
 .nav-tabs .nav-item:has(.nav-link.active) {
   margin-bottom: -1px;
   position: relative;
-  background: light-dark(var(--gray-125), var(--bs-body-bg-alt));
+  background: var(--gray-125);
+}
+[data-bs-theme="dark"] .nav-tabs .nav-item:has(.nav-link.active) {
+  background: var(--bs-body-bg-alt);
 }
 
 .nav-tabs .nav-link:hover,
 .nav-tabs .nav-link:focus {
-  background-color: light-dark(var(--gray-100), var(--bs-gray-900));
-  border-top-color: light-dark(var(--gray-600),var(--bs-gray-400));
-  border-right-color: light-dark(var(--gray-600), var(--bs-gray-400));
-  border-bottom-color: light-dark(var(--gray-125), var(--bs-gray-900));
-  border-left-color: light-dark(var(--gray-600), var(--bs-gray-400));
+  background-color: var(--gray-100);
+  border-top-color: var(--gray-600);
+  border-right-color: var(--gray-600);
+  border-bottom-color: var(--gray-125);
+  border-left-color: var(--gray-600);
+}
+[data-bs-theme="dark"] .nav-tabs .nav-link:hover,
+[data-bs-theme="dark"] .nav-tabs .nav-link:focus {
+  background-color: var(--bs-gray-900);
+  border-top-color: var(--bs-gray-400);
+  border-right-color: var(--bs-gray-400);
+  border-bottom-color: var(--bs-gray-900);
+  border-left-color: var(--bs-gray-400);
 }
 
 .btn-destroy {
-  background-color: light-dark(var(--gray-550), var(--bs-gray-700));
+  background-color: var(--gray-550);
   color: var(--white);
+}
+[data-bs-theme="dark"] .btn-destroy {
+  background-color: var(--bs-gray-700);
 }
 
 .btn-destroy:hover,
 .btn-destroy:focus {
+  background-color: var(--danger);
+  color: var(--white);
+}
+[data-bs-theme="dark"] .btn-destroy:hover,
+[data-bs-theme="dark"] .btn-destroy:focus {
   background-color: var(--danger);
   color: var(--white);
 }

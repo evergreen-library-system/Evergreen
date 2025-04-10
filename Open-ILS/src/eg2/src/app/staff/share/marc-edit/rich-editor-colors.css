@@ -22,10 +22,13 @@
   --gray-900: hsla(223, 15%, 14%, 1);
   --gray-950: hsla(223, 15%, 9%, 1);
 
-  --border: light-dark(var(--gray-250), var(--gray-750));
-  --form-check-border: light-dark(var(--gray-250), var(--bs-gray-900));
-  --tab-active-bg: light-dark(
-    linear-gradient(var(--gray-050) 35%, var(--gray-125)),
-    linear-gradient(var(--bs-gray-900) 35%, var(--bs-gray-850))
-  );
+  --border: var(--gray-250);
+  --form-check-border: var(--gray-250);
+  --tab-active-bg: linear-gradient(var(--gray-050) 35%, var(--gray-125));
+}
+
+[data-bs-theme="dark"] :host {
+  --border: var(--gray-750);
+  --form-check-border: var(--bs-gray-900);
+  --tab-active-bg: linear-gradient(var(--bs-gray-900) 35%, var(--bs-gray-850));
 }
