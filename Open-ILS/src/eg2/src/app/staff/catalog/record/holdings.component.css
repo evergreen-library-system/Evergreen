@@ -1,8 +1,13 @@
 /* using component selector because of ViewEncapsulation.None */
 eg-holdings-maintenance {
-    --holdings-org-row-color: light-dark(var(--bs-gray-100), var(--bs-gray-200));
-    --holdings-org-row-bg: light-dark(#c9efe4, var(--bs-gray-900));
-    --holdings-call-num-bg: light-dark( #b4f8d3, #151515);
+    --holdings-org-row-color: var(--bs-gray-100);
+    --holdings-org-row-bg: #c9efe4;
+    --holdings-call-num-bg:  #b4f8d3;
+}
+[data-bs-theme="dark"] eg-holdings-maintenance {
+    --holdings-org-row-color: var(--bs-gray-200);
+    --holdings-org-row-bg: var(--bs-gray-900);
+    --holdings-call-num-bg: #151515;
 }
 
 .table.eg-grid > :not(caption) > * > * {

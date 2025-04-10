@@ -1,14 +1,8 @@
-.striped {
-  background-color: var(--bills-striped-bg);
-  border-top: 1px solid var(--border);
-  border-bottom: 1px solid var(--border);
-}
-
 .num-receipts {
   width: 4em;
 }
 
-/* TODO: redo as grid when Chrome/Mac ships subgrid support */
+/* TODO: redo as subgrid when we no longer need to support Windows 7 users */
 
 .patron-bills-summary {
   columns: 4;

@@ -971,11 +971,6 @@ a {
   font-weight: bold;
 }
 
-[data-bs-theme="dark"] .nav-tabs.flex-column .nav-item.show .nav-link,
-[data-bs-theme="dark"] .nav-tabs.flex-column .nav-link.active {
-  background-color: var(--bs-blue-250);
-}
-
 [data-bs-theme="dark"] .nav-tabs:not(.flex-column) .nav-link:hover, 
 [data-bs-theme="dark"] .nav-tabs:not(.flex-column) .nav-link:focus,
 [data-bs-theme="dark"] .nav-tabs:not(.flex-column) .nav-link.active, 

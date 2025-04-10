@@ -3,11 +3,11 @@
 }
 
 .accesskey-info .row:nth-of-type(odd) {
-    background: var(--keyboard-info-row-odd);
+    background: var(--bs-body-bg-alt);
 }
 
 .accesskey-info .row.shortcut-info {
-    background: var(--keyboard-info-row-even);
+    background: var(---bs-body-bg);
     font-style: italic;
 }
 
