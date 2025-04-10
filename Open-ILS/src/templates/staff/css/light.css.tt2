@@ -1,0 +1,112 @@
+/* Light mode */
+:root {
+  --evergreen: var(--eg-green-200); /* brand color */
+  --black: black;
+  --white: white;
+  --bs-white: white;
+  --bs-light: var(--bs-gray-100);
+  --bs-dark: var(--bs-gray-900);
+  --border: var(--bs-gray-300);
+  --border-thick: var(--bs-gray-400);
+  --inactive: var(--bs-gray-800);
+  --form-control-border: var(--bs-gray-500);
+  --form-check-border: var(--bs-gray-300);
+
+  --bs-body-color: var(--bs-gray-900);
+  --bs-body-color-rgb: 33, 37, 41;
+  --bs-body-bg: white;
+  --bs-body-color-disabled: var(--bs-dropdown-link-disabled-color);
+  --bs-body-bg-alt: var(--bs-gray-110);
+  --bs-body-bg-highlight: var(--bs-gray-200);
+  --bs-text-highlight: var(--bs-gray-700);
+  --bs-card-bg: var(--bs-gray-125);
+
+  --success: var(--bs-green-500);
+  --success-color: white;
+  --success-hover-color: var(--eg-green-100);
+  --success-border: #00593d;
+  --success-hover: #157146; 
+  --success-disabled: #448768; /* desaturated */
+  --success-disabled-rgb: 68, 135, 104;
+  --success-text-light: #dff0d8;
+  --success-text-light-rgb: 223, 240, 216;
+  --success-text-dark: #003b35;
+  --form-success-bg: var(--bs-green-100);
+
+  /* used in both nav and splash components: */
+  --staff-navbar-a: var(--eg-green-800);
+  --staff-navbar-b: var(--eg-green-600);
+
+  --badge-color: var(--bs-blue-800);
+  --badge-bg: var(--bs-blue-100); 
+
+  --badge-danger-bg: var(--bs-red-100); 
+  --badge-danger-selected-bg: var(--bs-red-200);
+  --badge-danger-color: var(--bs-red-800);
+
+  --badge-info-color: var(--bs-cyan-900); 
+  --badge-info-bg: var(--bs-cyan-100);
+  --badge-info-border: var(--bs-cyan-300);
+
+  --badge-success-color: var(--success-text-dark); 
+  --badge-success-bg: var(--success-text-light);
+
+  --badge-warning-bg: var(--bs-yellow-200); 
+  --badge-warning-hover-bg: var(--bs-yellow-300); 
+  --badge-warning-selected-bg: var(--bs-yellow-300); 
+  --badge-warning-color: var(--bs-orange-750); 
+
+  --grid-color: var(--bs-body-color);
+  --grid-borders: rgba(0,0,0,0.125);
+  --grid-filter-active: var(--bs-blue-900-desat);
+  --grid-header-row: var(--bs-gray-100);
+  --grid-header-button: var(--bs-blue-700);
+  --grid-row-selected: #004085; 
+  --grid-row-selected-bg: var(--bs-blue-100);
+  --grid-row-selected-border: var(--bs-blue-125);
+  --row-even-bg: var(--bs-body-bg-alt);
+
+  --danger: var(--bs-red-600);
+  --danger-bg-hover: var(--bs-red-700);
+  --danger-color: var(--bs-red-700);
+  --danger-border: var(--bs-red-700);
+  --destroy-color: var(--bs-red-600);
+
+  --info: var(--bs-cyan-700); 
+  --info-border: var(--bs-cyan-300); 
+  --info-disabled: rgba(var(--bs-cyan-700-disabled-rgb), 1);
+  --info-hover: var(--bs-cyan-200);
+
+  --primary: var(--bs-blue-600); 
+  --primary-border: var(--bs-blue-650);
+  --primary-focus-outline-rgb: var(--bs-blue-600-rgb);
+  --primary-hover: var(--bs-blue-650);
+  --primary-disabled: rgba(var(--bs-blue-600-rgb), 1);
+  
+  --warning-color: var(--bs-yellow-500);
+  --warning-border: var(--bs-yellow-625);
+  --warning-border-hover: var(--bs-yellow-500);
+  --warning-shadow: rgba(var(--bs-yellow-400-rgba), 0.5);
+
+  --secondary-bg: var(--bs-gray-300);
+  --btn-gray-bg: var(--bs-gray-200);
+  --btn-gray-bg-hover: var(--bs-gray-300);
+  --btn-gray-color: var(--bs-body-color);
+  --btn-gray-border: var(--bs-gray-400);
+
+  --modal-header-color: white;
+  --modal-header-bg: var(--bs-cyan-800);
+  --modal-body-bg: var(--bs-body-bg);
+  --popover-menu-hover: var(--bs-gray-100);
+  --popover-header-bg: var(--bs-gray-100);
+  --dropdown-menu-bg: white;
+
+  --batch-item-attr-header-bg: var(--bs-blue-100);
+  --status-archived: var(--bs-gray-600);
+  --star-stroke: var(--bs-yellow-700);
+  --bs-row-alt: rgba(var(--bs-black-rgb), 0.03);
+  --bs-tertiary-bg: var(--bs-body-bg-highlight);
+  --bs-border-color: var(--border);
+  --box-shadow: var(--black-rgb);
+  --border-print: #aaa;
+}
