@@ -262,11 +262,11 @@
         <input type="hidden" name="sort" value="[% CGI.param('sort') | uri %]" />
         <div>
         [% IF bbag.items.size %]
-            <div class="my-2">
-                <button name="action" class="btn btn-action btn-sm" type="submit" value="place_hold" id="place_hold">[% l('Place hold') %]</button>
-                <button name="action" class="btn btn-action btn-sm" type="submit" value="print">[% l('Print title details') %]</button>
-                <button name="action" class="btn btn-action btn-sm" type="submit" value="email">[% l('Email title details') %]</button>
-                <button name="action" class="btn btn-action btn-sm" type="submit" value="del_item">[% l('Remove from list') %]</button>
+            <div class="my-2 col-9">
+                <button name="action" class="btn btn-action btn-sm my-2" type="submit" value="place_hold" id="place_hold">[% l('Place hold') %]</button>
+                <button name="action" class="btn btn-action btn-sm my-2" type="submit" value="print">[% l('Print title details') %]</button>
+                <button name="action" class="btn btn-action btn-sm my-2" type="submit" value="email">[% l('Email title details') %]</button>
+                <button name="action" class="btn btn-action btn-sm my-2" type="submit" value="del_item">[% l('Remove from list') %]</button>
             </div>
         [% END %]
 
