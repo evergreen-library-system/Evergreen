@@ -27,28 +27,28 @@ h1.navbar-brand {
 h2, .h2 {
     font-size: [% css_fonts.size_biggest %];
     font-weight: 600;
-    line-height: 1.6rem;
+    line-height: 135%;
 }
 h3, .h3 {
     font-size: [% css_fonts.size_bigger %];
     font-weight: 600;
-    line-height: 1.5rem;
+    line-height: 135%;
 }
 h4, .h4 {
     font-size: [% css_fonts.size_big %];
     font-weight: 600;
-    line-height: 1.5rem;
+    line-height: 135%;
 }
 h5, .h5 {
     font-size: [% css_fonts.size_base %];
     font-weight: 600;
-    line-height: 1.5rem;
+    line-height: 135%;
 }
 h6, .h6 {
     font-size: [% css_fonts.size_base %];
     font-style: italic;
     font-weight: 600;
-    line-height: 1.5rem;
+    line-height: 135%;
 }
 a:not(.btn) {
     text-decoration: revert;

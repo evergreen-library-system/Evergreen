@@ -19,7 +19,7 @@
 
 <div>
     <div class="header_middle">
-        <h3>[% l('Edit Hold') %]</h3>
+        <h2 class="h4">[% l('Edit Hold') %]</h2>
         <a href="[% ctx.opac_root %]/myopac/holds" class="float-right"><i class="fas fa-list"></i> [% l('List all holds') %]</a>
     </div>
     <form method="post">
@@ -30,8 +30,8 @@
                 END
         %]
         <div class="my-4">
-            <h1>[% title | html %]</h1>
-            <h2>[% attrs.author | html %]</h2>
+            <h3 class="h2">[% title | html %]</h3>
+            <h4>[% attrs.author | html %]</h4>
             [% IF attrs.format_icon %]
                 <strong>[% l('Format:') %]</strong>
                 <img src="[% attrs.format_icon %]" alt="[% attrs.format_label | html %]" title="[% attrs.format_label | html %]" />
