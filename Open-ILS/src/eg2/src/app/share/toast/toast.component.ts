@@ -42,6 +42,11 @@ export class ToastComponent implements OnInit {
             this.duration
         );
     }
+
+    // delete a specific toast when user clicks the 'x' button
+    dismiss(index: number) {
+        this.messages[index] = null;
+    }
 }
 
 
