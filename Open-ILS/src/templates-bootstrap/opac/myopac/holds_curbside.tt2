@@ -25,7 +25,7 @@
                     [%- ELSE %]
                 <a href='[% mkurl('holds', {limit => limit, offset => (curpage * limit)}) %]' class="np_nav_link classic_link btn btn-action">[% curpage + 1 %]</a>
                     [%- END; curpage = curpage + 1; END; END %]
-                <span style="padding-left:5px;" class='error'>
+                <span style="padding-inline-start:5px;" class='error'>
                     [%  IF ctx.hold_suspend_post_capture; l('One or more holds could not be suspended because the item is at (or en route to) the pickup library.'); END; %]
                 </span>
 

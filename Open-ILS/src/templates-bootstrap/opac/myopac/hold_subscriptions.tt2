@@ -10,7 +10,7 @@
 
     <h3>[% l("Current Hold Groups") %]</h3>
     <div class="header_middle">
-        <span style="float:right;">
+        <span style="float:inline-end;">
             <a class="hide_me" href="#">[% l('Export List') %]</a>
         </span>
     </div>
