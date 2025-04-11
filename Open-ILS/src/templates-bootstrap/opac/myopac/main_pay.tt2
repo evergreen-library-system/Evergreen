@@ -56,7 +56,7 @@
                 ) | html %]
         </div>
         [% END %]
-        <p><a href="[% ctx.opac_root %]/myopac/main" class="btn btn-confirm"><i class="fas fa-house-user"></i> [% l("Back to My Acccount") %]</a></p>
+        <p><a href="[% ctx.opac_root %]/myopac/main" class="btn btn-confirm"><i class="fas fa-house-user"></i> [% l("Back to My Account") %]</a></p>
     [% END %]
 </div>
 [% END %]
