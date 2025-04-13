@@ -98,7 +98,7 @@ implements ControlValueAccessor, OnInit, AfterViewInit, OnChanges {
     @Input() startsWith = false;
 
     @Input() clearOnAsync = false;
-    @Input() isEditable = false;
+    @Input() isEditable = true;
     @Input() selectOnExact = false;
 
     // Add a 'required' attribute to the input
