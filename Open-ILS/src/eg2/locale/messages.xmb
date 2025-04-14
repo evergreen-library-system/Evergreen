@@ -630,11 +630,11 @@ Error generating print content for template name=&quot;<ph name="INTERPOLATION"/
   <msg id="5604389480985435716"><source>src/app/staff/acq/po/charges.component.html:71,74</source><ph name="START_ITALIC_TEXT"/>Amount expended is <ph name="INTERPOLATION"/><ph name="CLOSE_ITALIC_TEXT"/></msg>
   <msg id="3196992797000716228"><source>src/app/staff/acq/po/create.component.html:5</source>Creating for <ph name="INTERPOLATION"/> line items.</msg>
   <msg id="4968322506636150111"><source>src/app/staff/acq/po/create.component.html:7,10</source> (There were <ph name="INTERPOLATION"/> selected, but not all were in a valid state to be added to a purchase order.) </msg>
-  <msg id="5696578547712505713"><source>src/app/staff/acq/po/create.component.html:19</source>Name (optional)</msg>
-  <msg id="4674138874887623126"><source>src/app/staff/acq/po/create.component.html:25,29</source> This name is already in used by another PO: <ph name="START_LINK"/>View PO<ph name="CLOSE_LINK"/></msg>
-  <msg id="3271915527283513290"><source>src/app/staff/acq/po/create.component.html:40,42</source> Prepayment Required </msg>
-  <msg id="6727497776315786262"><source>src/app/staff/acq/po/create.component.html:47,49</source> Import Bibs and Create Copies </msg>
-  <msg id="5674286808255988565"><source>src/app/staff/acq/po/create.component.html:52</source>Create</msg>
+  <msg id="4836449824125902490"><source>src/app/staff/acq/po/create.component.html:19</source>PO Name (optional)</msg>
+  <msg id="4674138874887623126"><source>src/app/staff/acq/po/create.component.html:30,34</source> This name is already in used by another PO: <ph name="START_LINK"/>View PO<ph name="CLOSE_LINK"/></msg>
+  <msg id="3271915527283513290"><source>src/app/staff/acq/po/create.component.html:45,47</source> Prepayment Required </msg>
+  <msg id="6727497776315786262"><source>src/app/staff/acq/po/create.component.html:52,54</source> Import Bibs and Create Copies </msg>
+  <msg id="5674286808255988565"><source>src/app/staff/acq/po/create.component.html:57</source>Create</msg>
   <msg id="2340524654134685643"><source>src/app/staff/acq/po/label.component.html:1,3</source><ph name="INTERPOLATION"/> <ph name="INTERPOLATION_1"/></msg>
   <msg id="3919827146435528269"><source>src/app/staff/acq/po/label.component.html:3,5</source>Total Estimated Cost: <ph name="INTERPOLATION"/></msg>
   <msg id="8935593426406172212"><source>src/app/staff/acq/po/notes.component.html:14</source>New Note</msg>
@@ -2248,7 +2248,7 @@ Delete Provider</msg>
   <msg id="4561357499037848734"><source>src/app/staff/catalog/browse/results.component.html:51,69</source><ph name="START_TAG_SPAN"/><ph name="START_TAG_NG_CONTAINER"/> See <ph name="CLOSE_TAG_NG_CONTAINER"/><ph name="START_TAG_NG_CONTAINER_1"/> Broader term <ph name="CLOSE_TAG_NG_CONTAINER"/><ph name="START_TAG_NG_CONTAINER_2"/> Narrower term <ph name="CLOSE_TAG_NG_CONTAINER"/><ph name="START_TAG_NG_CONTAINER_3"/> Related term <ph name="CLOSE_TAG_NG_CONTAINER"/><ph name="CLOSE_TAG_SPAN"/><ph name="START_LINK"/> <ph name="INTERPOLATION"/> (<ph name="INTERPOLATION_1"/>) <ph name="CLOSE_LINK"/></msg>
   <msg id="1658771751509448577"><source>src/app/staff/catalog/catalog.component.html:6,13</source> Placing hold for patron <ph name="START_LINK"/> <ph name="INTERPOLATION"/>, <ph name="INTERPOLATION_1"/> <ph name="CLOSE_LINK"/>. </msg>
   <msg id="8700121026680200191"><source>src/app/staff/catalog/catalog.component.html:16</source>Clear</msg>
-  <msg id="6609910156938393525"><source>src/app/staff/catalog/cnbrowse/results.component.html:61</source>Publication Date:</msg>
+  <msg id="6609910156938393525"><source>src/app/staff/catalog/cnbrowse/results.component.html:65</source>Publication Date:</msg>
   <msg id="7525087279616620024"><source>src/app/staff/catalog/content/added-content.component.html:4</source>NoveList</msg>
   <msg id="8767237038940997139"><source>src/app/staff/catalog/content/added-content.component.html:6</source>Loading NoveList...</msg>
   <msg id="4579318828626883599"><source>src/app/staff/catalog/content/added-content.component.html:8</source>NoveList recommendations loaded.</msg>
@@ -3107,6 +3107,7 @@ Delete Provider</msg>
   <msg id="5018745755098606885"><source>src/app/staff/reporter/full/my-reports.component.html:11</source>Enter a new name for the report folder: <ph name="INTERPOLATION"/></msg>
   <msg id="3905731029729362932"><source>src/app/staff/reporter/full/my-reports.component.html:51</source>Rename Report Folder</msg>
   <msg id="6681804235391280196"><source>src/app/staff/reporter/full/my-reports.component.html:57</source>Create a Report Folder</msg>
+  <msg id="2061651587728723866"><source>src/app/staff/reporter/full/my-reports.component.html:62</source><ph name="START_TAG_KBD"/><ph name="INTERPOLATION"/><ph name="CLOSE_TAG_KBD"/></msg>
   <msg id="269679011563696883"><source>src/app/staff/reporter/full/my-reports.component.html:126</source>Output list...</msg>
   <msg id="3466717080499226256"><source>src/app/staff/reporter/full/my-reports.component.html:131</source>Report ID</msg>
   <msg id="7120781274846803553"><source>src/app/staff/reporter/full/my-reports.component.html:135</source>Date Created</msg>
@@ -3864,9 +3865,9 @@ Delete Provider</msg>
   <msg id="2713159344643324913"><source>src/app/staff/share/marc-edit/editable-content.component.html:7</source>Insert Field Before</msg>
   <msg id="3429281710145350758"><source>src/app/staff/share/marc-edit/editable-content.component.html:8</source>Insert Field After</msg>
   <msg id="5220752601423905433"><source>src/app/staff/share/marc-edit/editable-content.component.html:9</source>Delete Field</msg>
-  <msg id="6212211911218055139"><source>src/app/staff/share/marc-edit/editable-content.component.ts:310</source>Input value &quot;<ph name="PH"/>&quot; unknown</msg>
-  <msg id="1061297288634362831"><source>src/app/staff/share/marc-edit/editable-content.component.ts:343</source>Leader</msg>
-  <msg id="8986375116857771401"><source>src/app/staff/share/marc-edit/editable-content.component.ts:345</source>Control Field Data</msg>
+  <msg id="6212211911218055139"><source>src/app/staff/share/marc-edit/editable-content.component.ts:312</source>Input value &quot;<ph name="PH"/>&quot; unknown</msg>
+  <msg id="1061297288634362831"><source>src/app/staff/share/marc-edit/editable-content.component.ts:345</source>Leader</msg>
+  <msg id="8986375116857771401"><source>src/app/staff/share/marc-edit/editable-content.component.ts:347</source>Control Field Data</msg>
   <msg id="1721727322854792098"><source>src/app/staff/share/marc-edit/editor-dialog.component.html:3</source>MARC Editor</msg>
   <msg id="8801228482518898905"><source>src/app/staff/share/marc-edit/editor.component.html:3</source>Delete Record ID <ph name="INTERPOLATION"/>?</msg>
   <msg id="4012154479171438598"><source>src/app/staff/share/marc-edit/editor.component.html:7</source>Confirm Undelete</msg>
@@ -3968,7 +3969,7 @@ Delete Provider</msg>
   <msg id="6403778510009239097"><source>src/app/staff/share/marc-edit/rich-editor.component.html:145</source>Copy Current Row Above: Ctrl+Up</msg>
   <msg id="6700027596337286943"><source>src/app/staff/share/marc-edit/rich-editor.component.html:146</source>Copy Current Row Below: Ctrl+Down</msg>
   <msg id="8332444775404169465"><source>src/app/staff/share/marc-edit/rich-editor.component.html:147</source>Add Subfield: Ctrl+D or Ctrl+I</msg>
-  <msg id="4005816463144326754"><source>src/app/staff/share/marc-edit/rich-editor.component.html:148</source>Edit Subfield (when grouped): Right Arrow</msg>
+  <msg id="8075796456109676934"><source>src/app/staff/share/marc-edit/rich-editor.component.html:148</source>Edit Subfield (when grouped): Left or Right Arrow</msg>
   <msg id="3630200168223766601"><source>src/app/staff/share/marc-edit/rich-editor.component.html:149</source>Remove Row: Ctrl+Del</msg>
   <msg id="5736626426235119754"><source>src/app/staff/share/marc-edit/rich-editor.component.html:150</source>Remove Subfield: Shift+Del</msg>
   <msg id="8619954113965133185"><source>src/app/staff/share/marc-edit/rich-editor.component.html:151</source>Open Suggestions: Ctrl+Shift+Down</msg>

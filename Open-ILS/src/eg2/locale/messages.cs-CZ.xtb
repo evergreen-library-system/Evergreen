@@ -1939,7 +1939,7 @@ Poměr minimální kvalit při prosté/nejlepší shodě
   <translation id="7808756054397155068">Obnovit nastavení</translation>
   <translation id="8700121026680200191">Vyčistit</translation>
   <translation id="2499713841893974782">Typ materiálů</translation>
-  <translation id="6135366680030950269">&lt;Zrušit nastavení&gt;</translation>
+  <translation id="6135366680030950269">&lt;Nenastaveno&gt;</translation>
   <translation id="2947886859813623889"><ph name="INTERPOLATION"><ex>{{entry.id}}</ex>{{entry.id}}</ph>: <ph name="INTERPOLATION_1"><ex>{{entry.label}}</ex>{{entry.label}}</ph></translation>
   <translation id="6823827648744246189">Kód podpole</translation>
   <translation id="1333842008362847646">Hodnota podpole</translation>
@@ -2559,7 +2559,7 @@ limitů se nezdařila</translation>
   <translation id="1359555705269460859">Počet rezervací: <ph name="INTERPOLATION"><ex>{{holdsCount}}</ex>{{holdsCount}}</ph></translation>
   <translation id="214688673752065270">Zobrazit seznam požadavků na rezervace pro:</translation>
   <translation id="3968906850651748799">Vytisknout  seznam</translation>
-  <translation id="1003752325464127902">Označit jako K vyřazení</translation>
+  <translation id="1003752325464127902">Označit K vyřazení</translation>
   <translation id="3125133596878817552">Požadovaná jednotka</translation>
   <translation id="4615727751412958197">ID umístění regálu</translation>
   <translation id="5931608317012920965">Z umístění regálu lze rezervovat</translation>
@@ -4020,7 +4020,7 @@ Vámi provedené úpravy nebyly uloženy; prosím, proveďte je znovu.</translat
   <translation id="6234770488440609143">Registrovat nového člena skupiny klonováním vybraného čtenáře</translation>
   <translation id="5421197292829637268">Odebrat vybrané ze skupiny</translation>
   <translation id="190107746489742282">Přesunout vybrané do jiné skupiny čtenářů</translation>
-  <translation id="508869859691185174">Výpůjčky</translation>
+  <translation id="508869859691185174">Vypůjčeno</translation>
   <translation id="7335532207455509119">Jednotky s uplynulou lhůtou</translation>
   <translation id="5094524139451153680">Upravit nastavení upozornění na rezervaci?</translation>
   <translation id="5855714915405246774"> Jiný operátor než &quot;<ph name="INTERPOLATION"/>&quot; je aktuálně používán  <ph name="INTERPOLATION_1"/> v rezervaci (rezervacích) . Změnit na &quot;<ph name="INTERPOLATION_2"/>&quot;? </translation>
@@ -5230,13 +5230,13 @@ Zadat rezervaci <ph name="START_SMALL_TEXT"/> (<ph name="INTERPOLATION"/>, <ph n
   <translation id="6674582069917987992"> Nic k zobrazení </translation>
   <translation id="8436223332064456837"><ph name="PH"/> - <ph name="PH_1"/></translation>
   <translation id="2152960452087805667">Filter:</translation>
-  <translation id="7039535908805786316">Clear Label Filter</translation>
+  <translation id="7039535908805786316">Odebrat filtry pro štítky</translation>
   <translation id="155919804709264537">I18N: Lokalizované řetězce fieldmapperu</translation>
   <translation id="6644128194299965028">I18N: Lokalizované řetězce UI</translation>
   <translation id="456459348448603118">Je povoleno multifaktorové ověření?: </translation>
   <translation id="6176238046169279106">Je požadováno multifaktorové ověření?: </translation>
   <translation id="6376318070510409612">ID skupiny oprávnění: </translation>
-  <translation id="8723206138880031143">Group MFA Factors</translation>
+  <translation id="8723206138880031143">Seskupit prvky vícefázového ověřování</translation>
   <translation id="8067902180211340259">Faktor</translation>
   <translation id="3955868613858648955">Dostupné</translation>
   <translation id="8543183476126405486">Přímo přidělené</translation>
@@ -5503,9 +5503,9 @@ Zadat rezervaci <ph name="START_SMALL_TEXT"/> (<ph name="INTERPOLATION"/>, <ph n
   <translation id="2840222109678881144">Sdílet skupinu</translation>
   <translation id="2807177176205674255">Nahrát zázanmy</translation>
   <translation id="8252406575392149873">počet položek</translation>
-  <translation id="1758004385057216718"># of org shares</translation>
-  <translation id="8521170560578113090"># of user view shares</translation>
-  <translation id="947989605590213877"># of user edit shares</translation>
+  <translation id="1758004385057216718">Počet organizačních jednotek, které mají skupinu nasdílenou</translation>
+  <translation id="8521170560578113090">Počet uživatelů, kteří mají skupinu přimo nasdílenou k prohlížení </translation>
+  <translation id="947989605590213877">Počet uživatelů, kteří mají skupinu nasdílenou k úpravám</translation>
   <translation id="2234926277620137004">Vlastnická knihovna</translation>
   <translation id="7549703039782147365">Není oblíbená</translation>
   <translation id="5945649836907417625">ID skupiny:</translation>
@@ -5519,85 +5519,915 @@ Zadat rezervaci <ph name="START_SMALL_TEXT"/> (<ph name="INTERPOLATION"/>, <ph n
   <translation id="231920238966427751">Sdíleno se mnou</translation>
   <translation id="6381490568322624964">Smazáno</translation>
   <translation id="7717879184213550703"> Rezervace pro <ph name="INTERPOLATION"/> bibliografický záznam (záznamy) byly úspěšně přesunuty.  </translation>
-  <translation id="5020145734761642513" desc="Patron billing table icon column header">Account Status</translation>
-  <translation id="894248032830512532">Quick Receipt</translation>
-  <translation id="8722855411794759229">Edit Patron</translation>
-  <translation id="8796167046947328291">Note Name</translation>
-  <translation id="6473007953691768313">Archived Notes</translation>
-  <translation id="6765406100565675701">Penalty Name</translation>
-  <translation id="2708901787973487932">Archive the selected notes?</translation>
-  <translation id="5009916261503354117">Unarchive the selected notes?</translation>
-  <translation id="7245615068946146522">Remove the selected notes?</translation>
-  <translation id="4769424787084208009">Account summary</translation>
-  <translation id="5356600339948309735">Account details</translation>
-  <translation id="5261832185548735121">Notes (<ph name="INTERPOLATION"/>)</translation>
-  <translation id="8361677744640929503"> Group Member Details </translation>
-  <translation id="7377938778422660886"> User Permission Editor </translation>
-  <translation id="176890970295699706"> Acquisition Patron Requests </translation>
-  <translation id="9221695039964253554"> Booking: Manage Reservations </translation>
-  <translation id="3671188750168626602"> Booking: Create Reservations </translation>
-  <translation id="4918263893140874875"> Booking: Pick Up Reservations </translation>
-  <translation id="8775883119288963993"> Booking: Return Reservations </translation>
-  <translation id="1800929268259343421">New Search</translation>
-  <translation id="588650900763763564"> Open Note Dialog </translation>
-  <translation id="5064880517080062406">Note Successfully Updated</translation>
-  <translation id="6716407502549785852">Failed To Update Note</translation>
-  <translation id="7986180695361261763">Archived Note</translation>
-  <translation id="9188035601831268941">Create or Edit Note</translation>
-  <translation id="2889344964032942251"> Note for patron <ph name="START_BOLD_TEXT"/><ph name="INTERPOLATION"/>, <ph name="INTERPOLATION_1"/><ph name="CLOSE_BOLD_TEXT"/></translation>
-  <translation id="2544907402390554592">Penalty Type</translation>
-  <translation id="5445155434493211118">Penalty:</translation>
-  <translation id="8950748687781892109">Org Depth</translation>
-  <translation id="4510013877734913501">Location:</translation>
-  <translation id="2304047645241455892"> Read on <ph name="INTERPOLATION"/> </translation>
-  <translation id="1577040968731392680"> Unread </translation>
-  <translation id="8688734915981366911"> Edited on <ph name="INTERPOLATION"/> by <ph name="INTERPOLATION_1"/> </translation>
-  <translation id="4831587701669244745"> Archived on <ph name="INTERPOLATION"/> </translation>
-  <translation id="4329653390172614983"> Deleted </translation>
-  <translation id="NoteDialogComponent.noLabelAvailable">No label available</translation>
-  <translation id="NoteDialogComponent.labelNotFound">Label not found</translation>
-  <translation id="916890855387831747"> Include Inactive </translation>
-  <translation id="6938783266808775735">Advanced search fields:</translation>
-  <translation id="2385071239585089569">Name, Guardian</translation>
-  <translation id="8174024896474769180">Phone, Address</translation>
-  <translation id="2458413883885186523">ID, Email, Date of Birth</translation>
-  <translation id="2228083987016776477">Barcode / Card</translation>
-  <translation id="7890419814061896884">Date of Birth</translation>
-  <translation id="1286983255645370171">Day</translation>
+  <translation id="5020145734761642513" desc="Patron billing table icon column header">Stav účtu</translation>
+  <translation id="894248032830512532">Rychlé potvrzení</translation>
+  <translation id="8722855411794759229">Upravit čtenáře</translation>
+  <translation id="8796167046947328291">Název poznámky</translation>
+  <translation id="6473007953691768313">Název poznámky</translation>
+  <translation id="6765406100565675701">Název pokuty</translation>
+  <translation id="2708901787973487932">Archivovat vybrané poznámky?</translation>
+  <translation id="5009916261503354117">Zrušit archivaci vybraných poznámek?</translation>
+  <translation id="7245615068946146522">Odstranit vybrané poznámky?</translation>
+  <translation id="4769424787084208009">Stav účtu</translation>
+  <translation id="5356600339948309735">Detaily účtu</translation>
+  <translation id="5261832185548735121">Poznámky (<ph name="INTERPOLATION"/>)</translation>
+  <translation id="8361677744640929503"> Podrobnosti o členovi skupiny </translation>
+  <translation id="7377938778422660886"> Editor uživatelských oprávnění </translation>
+  <translation id="176890970295699706"> Akviziční požadavky čtenáře </translation>
+  <translation id="9221695039964253554"> Rezervace zdrojů: Spravovat rezervace </translation>
+  <translation id="3671188750168626602"> Rezervace zdrojů: Vytvořit rezervace </translation>
+  <translation id="4918263893140874875"> Rezervace zdrojů: Vyzvednout rezervace </translation>
+  <translation id="8775883119288963993"> Rezervace zdrojů: Vrátit rezervace </translation>
+  <translation id="1800929268259343421">Nové hledání</translation>
+  <translation id="588650900763763564"> Editovat poznámku </translation>
+  <translation id="5064880517080062406">Poznámka byla úspěšně aktualizována</translation>
+  <translation id="6716407502549785852">Aktualizace poznámky se nezdařila</translation>
+  <translation id="7986180695361261763">Archivovaná poznámka</translation>
+  <translation id="9188035601831268941">Vytvořit nebo upravit poznámku</translation>
+  <translation id="2889344964032942251"> Poznámka pro čtenáře <ph name="START_BOLD_TEXT"/><ph name="INTERPOLATION"/>, <ph name="INTERPOLATION_1"/><ph name="CLOSE_BOLD_TEXT"/></translation>
+  <translation id="2544907402390554592">Typ pokuty</translation>
+  <translation id="5445155434493211118">Pokuta: </translation>
+  <translation id="8950748687781892109">Rozsah uplatnění postihu</translation>
+  <translation id="4510013877734913501">Organizační jednotka</translation>
+  <translation id="2304047645241455892"> Přečteno <ph name="INTERPOLATION"/> </translation>
+  <translation id="1577040968731392680"> Nepřečteno </translation>
+  <translation id="8688734915981366911"> Upraveno  <ph name="INTERPOLATION"/> by <ph name="INTERPOLATION_1"/> </translation>
+  <translation id="4831587701669244745"> Archivováno <ph name="INTERPOLATION"/> </translation>
+  <translation id="4329653390172614983"> Smazáno </translation>
+  <translation id="NoteDialogComponent.noLabelAvailable">Označení není k dispozici</translation>
+  <translation id="NoteDialogComponent.labelNotFound">Označení nebylo nalezeno</translation>
+  <translation id="916890855387831747"> Zahrnout neaktivní </translation>
+  <translation id="6938783266808775735">Pole pro pokročilé vyhledávání:</translation>
+  <translation id="2385071239585089569">Jméno, zákonný zástupce</translation>
+  <translation id="8174024896474769180">Telefon, adresa</translation>
+  <translation id="2458413883885186523">ID, e-mail, datum narození</translation>
+  <translation id="2228083987016776477">Čárový kód / průkaz</translation>
+  <translation id="7890419814061896884">Datum narození</translation>
+  <translation id="1286983255645370171">Den</translation>
   <translation id="3712727397821392880"> <ph name="INTERPOLATION"/>, <ph name="INTERPOLATION_1"/> <ph name="INTERPOLATION_2"/> </translation>
-  <translation id="7448925394627168253" desc="Patron status">Barred</translation>
-  <translation id="4966368557452080717" desc="Patron status">Staff Alert</translation>
-  <translation id="564879861733642592" desc="Patron status">Juvenile</translation>
-  <translation id="464749780222721589" desc="Patron status">Expired</translation>
-  <translation id="1859131936150262113" desc="Patron status">Inactive</translation>
-  <translation id="2425589165785133956" desc="Patron status">Exceeds Checkouts</translation>
-  <translation id="2854961883923730547" desc="Patron status">Exceeds Overdues</translation>
-  <translation id="3353351804103029070" desc="Patron status">Exceeds Long Overdues</translation>
-  <translation id="1827892595518565985" desc="Patron status">Exceeds Lost</translation>
-  <translation id="1447397884970327070" desc="Patron status">Exceeds Fines</translation>
+  <translation id="7448925394627168253" desc="Patron status">Omezení transakcí</translation>
+  <translation id="4966368557452080717" desc="Patron status">Upozornění pro personál</translation>
+  <translation id="564879861733642592" desc="Patron status">Nezletilý</translation>
+  <translation id="464749780222721589" desc="Patron status">Platnost skončila</translation>
+  <translation id="1859131936150262113" desc="Patron status">Neaktivní</translation>
+  <translation id="2425589165785133956" desc="Patron status">Překročen počet výpůjček</translation>
+  <translation id="2854961883923730547" desc="Patron status">Překročn počet výpůjček po lhůtě</translation>
+  <translation id="3353351804103029070" desc="Patron status">Překročen počet dlouhodobě nevrácených</translation>
+  <translation id="1827892595518565985" desc="Patron status">Překročen počet ztracených výpůjček</translation>
+  <translation id="1447397884970327070" desc="Patron status">Překročena výše pokut</translation>
   <translation id="2478765851012886848" desc="Patron status">Penalties (<ph name="INTERPOLATION"/>)</translation>
-  <translation id="2246951275261298996" desc="Patron status">Penalty (1)</translation>
-  <translation id="1887340080061026042" desc="Patron status">No Penalties</translation>
-  <translation id="1088678475945118224" desc="Patron status">Bills (<ph name="INTERPOLATION"/>)</translation>
-  <translation id="1513265000540248221" desc="Patron status">Overdue (<ph name="INTERPOLATION"/>)</translation>
-  <translation id="306051845985580005" desc="Patron status">Lost (<ph name="INTERPOLATION"/>)</translation>
-  <translation id="4209888546103568501" desc="Patron status">Notes (<ph name="INTERPOLATION"/>)</translation>
-  <translation id="6334501665158378656" desc="Patron status">Invalid Address</translation>
-  <translation id="2762478885865197015" desc="Patron status">Invalid Email</translation>
-  <translation id="5435093564567755664" desc="Patron status">Invalid Phone</translation>
-  <translation id="5295198085825830571" desc="Patron status">In Collections</translation>
-  <translation id="6675996456216191950"> Patron account will expire soon. Please renew. </translation>
-  <translation id="2883393531557153290"> Juvenile Account </translation>
-  <translation id="8361525207451734375">Account Summary</translation>
-  <translation id="5732656228455349381">Waivers</translation>
-  <translation id="4246353783828450880">Address is invalid</translation>
-  <translation id="2781535750529150250">Copy <ph name="INTERPOLATION"/> address</translation>
-  <translation id="7822548082002090596"><ph name="START_TAG_SPAN"/>content_copy<ph name="CLOSE_TAG_SPAN"/></translation>
-  <translation id="4203320065138377001">Print <ph name="INTERPOLATION"/> address</translation>
-  <translation id="5206156932788796332"><ph name="START_TAG_SPAN"/>print<ph name="CLOSE_TAG_SPAN"/></translation>
-  <translation id="8838576452464401614">Patron Alias</translation>
-  <translation id="3061862449593971702">Click to Select </translation>
-  <translation id="7938064527262937778">Select join type</translation>
-  <translation id="5999418244609609466">Left Join</translation>
-  <translation id="2434345280107075774">Inner Join</translation>
+  <translation id="2246951275261298996" desc="Patron status">Pokuta (1)</translation>
+  <translation id="1887340080061026042" desc="Patron status">Bez pokut</translation>
+  <translation id="1088678475945118224" desc="Patron status">Poplatky (<ph name="INTERPOLATION"/>)</translation>
+  <translation id="1513265000540248221" desc="Patron status">S uplynulou lhůtou (<ph name="INTERPOLATION"/>)</translation>
+  <translation id="306051845985580005" desc="Patron status">Ztraceno (<ph name="INTERPOLATION"/>)</translation>
+  <translation id="4209888546103568501" desc="Patron status">Poznámky (<ph name="INTERPOLATION"/>)</translation>
+  <translation id="6334501665158378656" desc="Patron status">Neplatná adresa</translation>
+  <translation id="2762478885865197015" desc="Patron status">Neplatný e-mail</translation>
+  <translation id="5435093564567755664" desc="Patron status">Neplatný telefon</translation>
+  <translation id="5295198085825830571" desc="Patron status">Jsou vymáhány pohledávky</translation>
+  <translation id="6675996456216191950"> Blíží se konec platnosti čtenářské registrace. Prodlužte prosím registraci. </translation>
+  <translation id="2883393531557153290"> Účet nezletilého čtenáře </translation>
+  <translation id="8361525207451734375">Stav účtu</translation>
+  <translation id="5732656228455349381">Zřeknutí se ochrany</translation>
+  <translation id="4246353783828450880">Adresa je neplatná</translation>
+  <translation id="2781535750529150250">Kopírovat  <ph name="INTERPOLATION"/> adresu
+</translation>
+  <translation id="7822548082002090596"><ph name="START_TAG_SPAN"/>kopírovat_obsah<ph name="CLOSE_TAG_SPAN"/></translation>
+  <translation id="4203320065138377001">Vytisknout <ph name="INTERPOLATION"/> adresu</translation>
+  <translation id="5206156932788796332"><ph name="START_TAG_SPAN"/>tisk<ph name="CLOSE_TAG_SPAN"/></translation>
+  <translation id="8838576452464401614">Alias čtenáře</translation>
+  <translation id="3061862449593971702">Vyberte kliknutím </translation>
+  <translation id="7938064527262937778">Vyberte typ spojování</translation>
+  <translation id="5999418244609609466">Spojování zleva - left join</translation>
+  <translation id="2434345280107075774">Vnitřní spojování - inner join</translation>
+  <translation id="7531602241051125940">Objekty</translation>
+  <translation id="2193805699094587352">SMS operátor:</translation>
+  <translation id="655023843937287181">
+    <ph name="INTERPOLATION"/>
+  </translation>
+  <translation id="3004296973717433221"> Pozastaveno </translation>
+  <translation id="5248265517504994939"> V přepravě </translation>
+  <translation id="4836449824125902490">Název objednávky (volitelné)</translation>
+  <translation id="3016207217633369386">Editor šablon jednotek (starší verze)</translation>
+  <translation id="1081946065320462600">Pořizovací náklady a stav</translation>
+  <translation id="6846810903700987020">Upozornění, poznámky, tagy, statistiky</translation>
+  <translation id="573413719828428208"> Tagy jednotek </translation>
+  <translation id="2851824479032859257"> Poznámky k jednotkám </translation>
+  <translation id="2508137898205003898">Zrušit změny</translation>
+  <translation id="3387842010231521667"> Nahradit vybrané výše vkladů tímto: </translation>
+  <translation id="2154343167274284252"> Nahradit vybrané ceny: </translation>
+  <translation id="8406119817786167279"> Nahradit vybrané pořizovací náklady: </translation>
+  <translation id="2100571440086597154"> Upozornění </translation>
+  <translation id="8320446586706097339">{VAR_PLURAL, plural, =0 {Žádná upozornění} =1 {1 upozornění} other {<ph name="INTERPOLATION"/> upozornění}}</translation>
+  <translation id="4751641642940714027"><ph name="ICU"/> </translation>
+  <translation id="5763238969133979231">(Upozornění: jsou přítomny neaktivní typy upozornění)</translation>
+  <translation id="5134966822206474687">{VAR_PLURAL, plural, =0 {Žádná odpovídající upozornění} =1 {1 odpovídající upozornění} other {<ph name="INTERPOLATION"/> odpovídající upozornění}}</translation>
+  <translation id="6852408141994086399"><ph name="ICU"/> </translation>
+  <translation id="7403394681587592048">{VAR_PLURAL, plural, =1 {1 nové upozornění} other {<ph name="INTERPOLATION"/> nová upozornění}}</translation>
+  <translation id="4051809472465038072"><ph name="ICU"/> </translation>
+  <translation id="3661700368467903755"> <ph name="ICU"/> </translation>
+  <translation id="76778722598223029">{VAR_PLURAL, plural, =1 {1 upravené upozornění} other {<ph name="INTERPOLATION"/> upravená upozornění}}</translation>
+  <translation id="7422105706687011611"> (<ph name="ICU"/>) </translation>
+  <translation id="6783565233674299330">{VAR_PLURAL, plural, =1 {1 vymazané} other {<ph name="INTERPOLATION"/> vymazaná}}</translation>
+  <translation id="175690809468876232"> <ph name="ICU"/> </translation>
+  <translation id="2681491853833786053">{VAR_PLURAL, plural, =1 {1 smazané upozornění} other {<ph name="INTERPOLATION"/> smazaná upozornění}}</translation>
+  <translation id="1587003067546070903">Upravit upozornění k jednotkám</translation>
+  <translation id="5290580141104218748"> Tagy </translation>
+  <translation id="8027459997507053550"> <ph name="ICU"/> </translation>
+  <translation id="7308698119609332590">{VAR_PLURAL, plural, =0 {Žádné tagy} =1 {1 tag} other {<ph name="INTERPOLATION"/> tagy}}</translation>
+  <translation id="6678944262638833649"> <ph name="ICU"/> </translation>
+  <translation id="8573201193205226332">{VAR_PLURAL, plural, =0 {Žádné odpovídající tagy} =1 {1 odpovídající tag} other {<ph name="INTERPOLATION"/> odpovídající tagy}}</translation>
+  <translation id="8915863152660536032"> <ph name="ICU"/> </translation>
+  <translation id="6254481959763294254">{VAR_PLURAL, plural, =1 {1 tag přidán} other {<ph name="INTERPOLATION"/> tagů přidáno}}</translation>
+  <translation id="357185828795946630"> <ph name="ICU"/> </translation>
+  <translation id="1274197352968559955">{VAR_PLURAL, plural, =1 {1 tag upraven} other {<ph name="INTERPOLATION"/> tagů upraveno}</translation>
+  <translation id="1825770760726643095"> <ph name="ICU"/> </translation>
+  <translation id="881503560521782270">{VAR_PLURAL, plural, =1 {1 tag smazán} other {<ph name="INTERPOLATION"/> tagů smazáno}}</translation>
+  <translation id="5777286666792507777"> Upravit tagy jednotek </translation>
+  <translation id="1010882531422929985"> Poznámky </translation>
+  <translation id="2522216701659904695"> <ph name="ICU"/> </translation>
+  <translation id="1524414730627672106">{VAR_PLURAL, plural, =0 {Žádné poznámky} =1 {1  poznámka} other {<ph name="INTERPOLATION"/> poznámky}}</translation>
+  <translation id="136470159851359279"> <ph name="ICU"/> </translation>
+  <translation id="8497999394383831290">{VAR_PLURAL, plural, =0 {Žádné odpovídající poznámky} =1 {1 odpovídající poznámka} other {<ph name="INTERPOLATION"/> odpovídající poznámky}}</translation>
+  <translation id="5878495040492114978"> <ph name="ICU"/> </translation>
+  <translation id="220252279350682420">{VAR_PLURAL, plural, =1 {1 Nová poznámka} other {<ph name="INTERPOLATION"/> nové poznámky}}</translation>
+  <translation id="8354074640818184469"> <ph name="ICU"/> </translation>
+  <translation id="2711030631045283749">{VAR_PLURAL, plural, =1 {1 upravená poznámka} other {<ph name="INTERPOLATION"/> upravené poznámky}}</translation>
+  <translation id="6725382432648109344"> <ph name="ICU"/> </translation>
+  <translation id="7564508924247266986">{VAR_PLURAL, plural, =1 {1 smazaná poznámka} other {<ph name="INTERPOLATION"/> smazané poznámky}}</translation>
+  <translation id="2029829504928478085"> Upravit poznámky k jednotkám </translation>
+  <translation id="8288992760122212155">Toto upozornění už máte</translation>
+  <translation id="3909636553556257908">Upozornění používán neaktivní typ upozornění. Šablonu je nutné upravit.</translation>
+  <translation id="3324627852305386970">Tagu v šabloně chybí pole ID</translation>
+  <translation id="7540077515421657176">Tag nebyl v šabloně nalezen</translation>
+  <translation id="347094391796649468">Při načtení tagu ze šablony došlo k chybě</translation>
+  <translation id="2433400393827323616">Na tento tag již ukazuje mapa tagů</translation>
+  <translation id="6987573368470552287">V šabloně byl nalezen neplatný tag.</translation>
+  <translation id="145552873430969359">V šabloně byl nalezen neplatný typ tagu.</translation>
+  <translation id="4801644643050420407">Tuto poznámku již máte</translation>
+  <translation id="5857215420591674845">Zadejte jméno šablony</translation>
+  <translation id="5223398057912887066">Šablona s tímto názvem již existuje; nebylo uloženo.</translation>
+  <translation id="7894120192208276685">Tímto uložíte prázdnou šablony. Opravdu to chcete?</translation>
+  <translation id="4832852346659228348">Klasifikace pro signaturu</translation>
+  <translation id="3153085684059554104">Editor šablon pro vlastností jednotek</translation>
+  <translation id="6060482966842708893">Zpráva o importu šablony</translation>
+  <translation id="7997114103867465629">Šablony jednotek</translation>
+  <translation id="215948375369819933">Vytvořit šablonu</translation>
+  <translation id="6906180170635689477">Exportovat vybrané</translation>
+  <translation id="3256419514748037280">Upravit vybrané šablony</translation>
+  <translation id="1535601273522339304">Smazat vybrané šablony</translation>
+  <translation id="4597052916655419138">Půjčovat jako typ</translation>
+  <translation id="1640200557284899996">Výpůjční knihovna</translation>
+  <translation id="4873029395026267450">Statistické kategorie</translation>
+  <translation id="6495751943305846072">Číslo exempláře</translation>
+  <translation id="8733072262403733548">Pohyblivý</translation>
+  <translation id="2890725450431963308">Délka výpůjčky</translation>
+  <translation id="2782879455945627811">V dobrém stavu</translation>
+  <translation id="7084777289157672821">Ladění JSON</translation>
+  <translation id="7620137601628327113">Byly přidány nové šablony</translation>
+  <translation id="8847042715618481840">Byly upraveny existující šablony</translation>
+  <translation id="5968132631442328843">Výsledky</translation>
+  <translation id="4780779559730823393">Nebyly importovány žádné šablony</translation>
+  <translation id="6147435766435918027">Při importu šablon došlo k chybě: <ph name="PH"/></translation>
+  <translation id="3084846539909351331">Smazat vybrané šablony</translation>
+  <translation id="8223624495401066743">Smazat vybranou šablonu?</translation>
+  <translation id="4762105047618113994">Data o jednotce už nejsou k dispozici; možná byly změněny na jiné kartě prohlížeče.</translation>
+  <translation id="7115715518671053153"> Můžete <ph name="START_LINK"/>znovu navštívit stránku záznamu<ph name="CLOSE_LINK"/> a začít úpravy v nové relaci. </translation>
+  <translation id="6067807228415876610">Pro aktuální změny je potřeba alespoň jeden čárový kód.</translation>
+  <translation id="9020225515102020507">Poslední čtenář</translation>
+  <translation id="2499626621029353126"><ph name="INTERPOLATION"/> z <ph name="INTERPOLATION_1"/> exemplářů v knihovně <ph name="INTERPOLATION_2"/>.</translation>
+  <translation id="275969631305515427"> <ph name="INTERPOLATION"/> </translation>
+  <translation id="1624279172539376681"> <ph name="INTERPOLATION"/> </translation>
+  <translation id="2400972040147499352"> Zobrazit vše </translation>
+  <translation id="653972795917837724"> Zobrazit méně </translation>
+  <translation id="3232049279538059439">Přidat upozornění k jednotce</translation>
+  <translation id="7140774497581169418">Typ upozornění</translation>
+  <translation id="5890122442931597641">Typ upozornění je vyžadován</translation>
+  <translation id="217658603858411330">Poznámka k upozornění</translation>
+  <translation id="7064865503835035332"> Dočasné? </translation>
+  <translation id="5264151487236071374"> Přidat </translation>
+  <translation id="2885700524210068527">Nevyřízené upozornění k jednotce</translation>
+  <translation id="4754916636880906230">Nevyřízené upozornění č. <ph name="INTERPOLATION"/></translation>
+  <translation id="1861983252622444457">Tento typ upozornění není aktivní.</translation>
+  <translation id="3031612352941604290">Existující upozornění k jednotce</translation>
+  <translation id="7418488615727657583"> Přidáno: <ph name="INTERPOLATION"/> </translation>
+  <translation id="6924179792430017218"> Dočasné? </translation>
+  <translation id="5862225529424748096"> Odstranit? </translation>
+  <translation id="1559340693689758499">Pamatujte, že jednotky v dávce upozornění přímo nesdílejí. Zobrazená upozornění představují odpovídající skupinu upozornění.</translation>
+  <translation id="7273095149994598138">Nová poznámka k jednotce</translation>
+  <translation id="5642836248241530789">Název je povinný</translation>
+  <translation id="6205355627445317276">Obsah</translation>
+  <translation id="1276411020655575756">Obsah je povinný</translation>
+  <translation id="3436939105807919385"> Veřejná? </translation>
+  <translation id="800202890137518192"> Přidat novou </translation>
+  <translation id="3122710090514804819">Nevyřízené poznámky k jednotce</translation>
+  <translation id="4899780030475642439">Název poznámky...</translation>
+  <translation id="3631964776953253298">Obsah poznámky...</translation>
+  <translation id="4436383133305224294">Existující poznámky k jednotkám</translation>
+  <translation id="6453883428593416832"> Přidáno: <ph name="INTERPOLATION"/> </translation>
+  <translation id="5796820604416021387"> Zrušit smazání </translation>
+  <translation id="6370131699406899097">Pamatujte, že jednotky  v dávce poznámky přímo nesdílejí. Zobrazené poznámky představují odpovídající skupinu poznámek.</translation>
+  <translation id="2838925737303587217">Zadejte hodnotu tagu...</translation>
+  <translation id="2832256729528710703">Vytvořit nový tag</translation>
+  <translation id="3424070300427869719">Nastavení tagů jednotek bylo úspěšně upraveno</translation>
+  <translation id="1319916607408529154">Při úpravě tagů jednotek nastala chyba</translation>
+  <translation id="1613909657966923007">Typ tagu je povinný</translation>
+  <translation id="3231700351227771103">Výběr tagu je povinný</translation>
+  <translation id="2716314679019299400">Správa <ph name="INTERPOLACE"/> pro položku <ph name="INTERPOLACE_1"/></translation>
+  <translation id="3437085031045154598">Správa <ph name="INTERPOLATION"/> společně pro <ph name="INTERPOLATION_1"/> položku(položky)</translation>
+  <translation id="8723138734613671561">Správa tagů</translation>
+  <translation id="4767144758625794267">Správa <ph name="INTERPOLACE"/> pro položku <ph name="INTERPOLACE_1"/></translation>
+  <translation id="7880669478947676673">Správa <ph name="INTERPOLATION"/> společně pro <ph name="INTERPOLATION_1"/> položku(položky)</translation>
+  <translation id="1884913290102746564">Nové nevyřízené <ph name="INTERPOLATION"/></translation>
+  <translation id="265693727367209518">Editovat na administrativní obrazovce tabů</translation>
+  <translation id="5907366774946443183"> Upravit tag </translation>
+  <translation id="4183798141671602635"> Odstranit </translation>
+  <translation id="8671943560986428116"> Obnovit </translation>
+  <translation id="8661954807767756988">ID nastavení tagů (ladění)</translation>
+  <translation id="3660883993767427629">ID tagu</translation>
+  <translation id="5723955424771417252">Označení a hodnota tagu</translation>
+  <translation id="3602291000460825508">Označení tagu</translation>
+  <translation id="9163692744622555630">Hodnota tagu</translation>
+  <translation id="8736488637043996013">Zobrazit v OPACu? (Hodnota)</translation>
+  <translation id="7717512895227402065">Smazáno?</translation>
+  <translation id="1281116982700789553">Nastavení speciálních znaků</translation>
+  <translation id="5463975373819538560">Latinka</translation>
+  <translation id="1912089850880089758">Stisknutím libovolného anglického písmene přejdete na jeho skupinu.</translation>
+  <translation id="3649704190438801147"> Vypnout jednopísmenné klávesové zkratky </translation>
+  <translation id="5399661811241021184">Jednopísmenné klávesové zkratky jsou vypnuty.</translation>
+  <translation id="4398818507253440197"> Jejich zapnutím přejdete na skupiny podle písmene </translation>
+  <translation id="3561531154530061375">Interpunkce</translation>
+  <translation id="8238553255562599261">Kanadské slabičné písmo</translation>
+  <translation id="5539210321304428667">
+Zkopírováno <ph name="INTERPOLATION"/></translation>
+  <translation id="1311254016749354597">Unicode</translation>
+  <translation id="4566026463263931929">U+1400: HYPHEN</translation>
+  <translation id="1086644911924828213">U+1401: E</translation>
+  <translation id="5576314604403201749">U+1402: AAI</translation>
+  <translation id="1598743742757339816">U+1403: I</translation>
+  <translation id="7621264190748975987">U+1404: II</translation>
+  <translation id="1115823929800307839">U+1405: O</translation>
+  <translation id="6727780934618256240">U+1406: OO</translation>
+  <translation id="7974468348598300018">U+1407: Y-CREE OO</translation>
+  <translation id="925692524671645037">U+1408: CARRIER EE</translation>
+  <translation id="7138446388609713091">U+1409: CARRIER I</translation>
+  <translation id="6419713682419170926">U+140A: A</translation>
+  <translation id="4710262265653400275">U+140B: AA</translation>
+  <translation id="8030367628171301343">U+140C: WE</translation>
+  <translation id="1126497049369226002">U+140D: WEST-CREE WE</translation>
+  <translation id="1206933850652522250">U+140E: WI</translation>
+  <translation id="8462897285906601950">U+140F: WEST-CREE WI</translation>
+  <translation id="8845508763025527920">U+1410: WII</translation>
+  <translation id="1905043246818275434">U+1411: WEST-CREE WII</translation>
+  <translation id="2707698288342419099">U+1412: WO</translation>
+  <translation id="1087989744281890200">U+1413: WEST-CREE WO</translation>
+  <translation id="8965658803685596">U+1414: WOO</translation>
+  <translation id="5529947937587109855">U+1415: WEST-CREE WOO</translation>
+  <translation id="3679003483507088695">U+1416: NASKAPI WOO</translation>
+  <translation id="4166033564611913048">U+1417: WA</translation>
+  <translation id="5357170127528237886">U+1418: WEST-CREE WA</translation>
+  <translation id="3796982243110941427">U+1419: WAA</translation>
+  <translation id="5342892893671474078">U+141A: WEST-CREE WAA</translation>
+  <translation id="1733135670129421657">U+141B: NASKAPI WAA</translation>
+  <translation id="7827202684003693881">U+141C: AI</translation>
+  <translation id="6477095455697271903">U+141D: Y-CREE W</translation>
+  <translation id="2664539120045938239">U+141E: GLOTTAL STOP</translation>
+  <translation id="1819121128349813248">U+141F: FINAL ACUTE</translation>
+  <translation id="1744981342933077348">U+1420: FINAL GRAVE</translation>
+  <translation id="3284532006494898270">U+1421: FINAL BOTTOM HALF RING</translation>
+  <translation id="6555785783080332314">U+1422: FINAL TOP HALF RING</translation>
+  <translation id="6885232392818801410">U+1423: FINAL RIGHT HALF RING</translation>
+  <translation id="6648374804617729422">U+1424: FINAL RING</translation>
+  <translation id="3379364283598802181">U+1425: FINAL DOUBLE ACUTE</translation>
+  <translation id="8389981303190463542">U+1426: FINAL DOUBLE SHORT VERTICAL STROKES</translation>
+  <translation id="8258172634644973352">U+1427: FINAL MIDDLE DOT</translation>
+  <translation id="5779390097757822004">U+1428: FINAL SHORT HORIZONTAL STROKE</translation>
+  <translation id="3413802716017004719">U+1429: FINAL PLUS</translation>
+  <translation id="8358947105099392666">U+142A: FINAL DOWN TACK</translation>
+  <translation id="6647593232441813029">U+142B: EN</translation>
+  <translation id="1248173153293803073">U+142C: IN</translation>
+  <translation id="1004420148274484086">U+142D: ON</translation>
+  <translation id="8940036426355434474">U+142E: AN</translation>
+  <translation id="6740118122707604166">U+142F: PE</translation>
+  <translation id="432799631133011575">U+1430: PAAI</translation>
+  <translation id="1425792432584461513">U+1431: PI</translation>
+  <translation id="7502056074535846214">U+1432: PII</translation>
+  <translation id="495716022462534984">U+1433: PO</translation>
+  <translation id="7166447889002185753">U+1434: POO</translation>
+  <translation id="2473512355869806691">U+1435: Y-CREE POO</translation>
+  <translation id="8756447682116544762">U+1436: CARRIER HEE</translation>
+  <translation id="4417703121107120575">U+1437: CARRIER HI</translation>
+  <translation id="6562830948205799233">U+1438: PA</translation>
+  <translation id="4815335662881757110">U+1439: PAA</translation>
+  <translation id="3434442741258550018">U+143A: PWE</translation>
+  <translation id="2739622389615546540">U+143B: WEST-CREE PWE</translation>
+  <translation id="8801728473576825931">U+143C: PWI</translation>
+  <translation id="1644713840305701938">U+143D: WEST-CREE PWI</translation>
+  <translation id="4029271379325511249">U+143E: PWII</translation>
+  <translation id="733682072960258651">U+143F: WEST-CREE PWII</translation>
+  <translation id="2256165432376888731">U+1440: PWO</translation>
+  <translation id="2086172492685571204">U+1440: PWO</translation>
+  <translation id="6472075346535174475">U+1442: PWOO</translation>
+  <translation id="5117999071647720737">U+1443: WEST-CREE PWOO</translation>
+  <translation id="6056100162650588295">U+1444: PWA</translation>
+  <translation id="6233933465691635022">U+1445: WEST-CREE PWA</translation>
+  <translation id="6641152033125682853">U+1446: PWAA</translation>
+  <translation id="7165450374513882724">U+1447: WEST-CREE PWAA</translation>
+  <translation id="2755852675419853847">U+1448: Y-CREE PWAA</translation>
+  <translation id="9101211503198573435">U+1449: P</translation>
+  <translation id="2127660326927421851">U+144A: WEST-CREE P</translation>
+  <translation id="6521134470057889921">U+144B: CARRIER H</translation>
+  <translation id="5710546266014957400">U+144C: TE</translation>
+  <translation id="5430487454459418141">U+144D: TAAI</translation>
+  <translation id="2483990114452496234">U+144E: TI</translation>
+  <translation id="432138610603683506">U+144F: TII</translation>
+  <translation id="7133584478243603325">U+1450: TO</translation>
+  <translation id="5242940293725561781">U+1451: TOO</translation>
+  <translation id="4060816663013507514">U+1452: Y-CREE TOO</translation>
+  <translation id="3312066968675186608">U+1453: CARRIER DEE</translation>
+  <translation id="9211946065957906753">U+1454: CARRIER DI</translation>
+  <translation id="8286212339932284942">U+1455: TA</translation>
+  <translation id="492804760808814004">U+1456: TAA</translation>
+  <translation id="5925415488772432553">U+1457: TWE</translation>
+  <translation id="624517433097682983">U+1458: WEST-CREE TWE</translation>
+  <translation id="2144665934011264304">U+1459: TWI</translation>
+  <translation id="1047441110816058669">U+145A: WEST-CREE TWI</translation>
+  <translation id="7144401246772363313">U+145B: TWII</translation>
+  <translation id="1426966041424708985">U+145C: WEST-CREE TWII</translation>
+  <translation id="6364045587950474497">U+145D: TWO</translation>
+  <translation id="6118558737460435384">U+145E: WEST-CREE TWO</translation>
+  <translation id="4378137053405752497">U+145F: TWOO</translation>
+  <translation id="6294755876269592467">U+1460: WEST-CREE TWOO</translation>
+  <translation id="7841465654703413185">U+1461: TWA</translation>
+  <translation id="5413783151056578804">U+1462: WEST-CREE TWA</translation>
+  <translation id="1690815077420907936">U+1463: TWAA</translation>
+  <translation id="4104078176094491079">U+1464: WEST-CREE TWAA</translation>
+  <translation id="6739442882145216768">U+1465: NASKAPI TWAA</translation>
+  <translation id="6525704600277066569">U+1466: T</translation>
+  <translation id="5167158254424954455">U+1467: TTE</translation>
+  <translation id="5254159195622273804">U+1468: TTI</translation>
+  <translation id="6485124511166181677">U+1469: TTO</translation>
+  <translation id="4080988175789957805">U+146A: TTA</translation>
+  <translation id="6195882385209369207">U+146B: KE</translation>
+  <translation id="7189894686991501200">U+146C: KAAI</translation>
+  <translation id="1041194930818741111">U+146D: KI</translation>
+  <translation id="5831683607061658992">U+146E: KII</translation>
+  <translation id="915800880851128071">U+146F: KO</translation>
+  <translation id="3247809474791025702">U+1470: KOO</translation>
+  <translation id="8384399662327273479">U+1471: Y-CREE KOO</translation>
+  <translation id="5462002398395736259">U+1472: KA</translation>
+  <translation id="5977873511380837976">U+1473: KAA</translation>
+  <translation id="5531052220186272909">U+1474: KWE</translation>
+  <translation id="3861477397113487644">U+1475: WEST-CREE KWE</translation>
+  <translation id="8521243648640044530">U+1476: KWI</translation>
+  <translation id="3914448744693763049">U+1477: WEST-CREE KWI</translation>
+  <translation id="3186327444185867356">U+1478: KWII</translation>
+  <translation id="6985186648772750184">U+1479: WEST-CREE KWII</translation>
+  <translation id="7575919664220873270">U+147A: KWO</translation>
+  <translation id="192736571818886807">U+147B: WEST-CREE KWO</translation>
+  <translation id="2676463050573481032">U+147C: KWOO</translation>
+  <translation id="8032871840584619451">U+147D: WEST-CREE KWOO</translation>
+  <translation id="6640360219629733790">U+147E: KWA</translation>
+  <translation id="385752633359311488">U+147F: WEST-CREE KWA</translation>
+  <translation id="1155841908188540901">U+1480: KWAA</translation>
+  <translation id="375974633002342882">U+1481: WEST-CREE KWAA</translation>
+  <translation id="3717770730288357513">U+1482: NASKAPI KWAA</translation>
+  <translation id="2286875041565578950">U+1483: K</translation>
+  <translation id="956318468658405943">U+1484: KW</translation>
+  <translation id="8858684210859877862">U+1485: SOUTH-SLAVEY KEH</translation>
+  <translation id="717926166090445918">U+1486: SOUTH-SLAVEY KIH</translation>
+  <translation id="7554224673723699511">U+1487: SOUTH-SLAVEY KOH</translation>
+  <translation id="3069472371759154359">U+1488: SOUTH-SLAVEY KAH</translation>
+  <translation id="7277151258622785973">U+1489: CE</translation>
+  <translation id="2397865983414852727">U+148A: CAAI</translation>
+  <translation id="2204485849604929784">U+148B: CI</translation>
+  <translation id="8900687513490014682">U+148C: CII</translation>
+  <translation id="8377026459991890629">U+148D: CO</translation>
+  <translation id="5976011382950284998">U+148E: COO</translation>
+  <translation id="178288530797578387">U+148F: Y-CREE COO</translation>
+  <translation id="4207699620692429737">U+1490: CA</translation>
+  <translation id="2746977123752855334">U+1491: CAA</translation>
+  <translation id="2910617933886018025">U+1492: CWE</translation>
+  <translation id="8978659882607555194">U+1493: WEST-CREE CWE</translation>
+  <translation id="3574349042590033625">U+1494: CWI</translation>
+  <translation id="708876887538617778">U+1495: WEST-CREE CWI</translation>
+  <translation id="1259787557543477923">U+1496: CWII</translation>
+  <translation id="5585352033721009912">U+1497: WEST-CREE CWII</translation>
+  <translation id="5547202772129374364">U+1498: CWO</translation>
+  <translation id="921850614732948766">U+1499: WEST-CREE CWO</translation>
+  <translation id="5065763174229143498">U+149A: CWOO</translation>
+  <translation id="3950155728685588284">U+149B: WEST-CREE CWOO</translation>
+  <translation id="5636077154945641498">U+149C: CWA</translation>
+  <translation id="4900550328593025379">U+149D: WEST-CREE CWA</translation>
+  <translation id="417136105959257480">U+149E: CWAA</translation>
+  <translation id="4170984354890607249">U+149F: WEST-CREE CWAA</translation>
+  <translation id="512920865772891397">U+14A0: NASKAPI CWAA</translation>
+  <translation id="8733505928746222249">U+14A1: C</translation>
+  <translation id="6699846347093660589">U+14A2: SAYISI TH</translation>
+  <translation id="1363855654988861059">U+14A3: ME</translation>
+  <translation id="7549724864645887326">U+14A4: MAAI</translation>
+  <translation id="4236934564173479024">U+14A5: MI</translation>
+  <translation id="1714431121605386289">U+14A6: MII</translation>
+  <translation id="3444330078670064282">U+14A7: MO</translation>
+  <translation id="7463698229887873856">U+14A8: MOO</translation>
+  <translation id="9053878988303278765">U+14A9: Y-CREE MOO</translation>
+  <translation id="4000968560527071573">U+14AA: MA</translation>
+  <translation id="8800561001477349195">U+14AB: MAA</translation>
+  <translation id="959653898991703164">U+14AC: MWE</translation>
+  <translation id="1517788982744829009">U+14AD: WEST-CREE MWE</translation>
+  <translation id="8501453979300051534">U+14AE: MWI</translation>
+  <translation id="8007521927280038502">U+14AF: WEST-CREE MWI</translation>
+  <translation id="2964493013230930501">U+14B0: MWII</translation>
+  <translation id="231968764875189733">U+14B1: WEST-CREE MWII</translation>
+  <translation id="7344488420500180999">U+14B2: MWO</translation>
+  <translation id="5783699603931635258">U+14B3: WEST-CREE MWO</translation>
+  <translation id="6404502160415352216">U+14B4: MWOO</translation>
+  <translation id="2031697884474853165">U+14B5: WEST-CREE MWOO</translation>
+  <translation id="7298766581481636321">U+14B6: MWA</translation>
+  <translation id="4513569007396998361">U+14B7: WEST-CREE MWA</translation>
+  <translation id="9094529853769344798">U+14B8: MWAA</translation>
+  <translation id="269958387939903546">U+14B9: WEST-CREE MWAA</translation>
+  <translation id="720690258322276498">U+14BA: NASKAPI MWAA</translation>
+  <translation id="567205086829319265">U+14BB: M</translation>
+  <translation id="7509557561213580273">U+14BC: WEST-CREE M</translation>
+  <translation id="3269757708965555591">U+14BD: MH</translation>
+  <translation id="4180213538732092938">U+14BE: ATHAPASCAN M</translation>
+  <translation id="4914299385135681833">U+14BF: SAYISI M</translation>
+  <translation id="3956843191738587079">U+14C0: NE</translation>
+  <translation id="7680161235866844939">U+14C1: NAAI</translation>
+  <translation id="2722231546487026188">U+14C2: NI</translation>
+  <translation id="1564746959560007289">U+14C3: NII</translation>
+  <translation id="3939578709512611878">U+14C4: NO</translation>
+  <translation id="6105081104211493816">U+14C5: NOO</translation>
+  <translation id="9221615961226253244">U+14C6: Y-CREE NOO</translation>
+  <translation id="5969040925901220667">U+14C7: NA</translation>
+  <translation id="1898454961922652416">U+14C8: NAA</translation>
+  <translation id="8248756870446031169">U+14C9: NWE</translation>
+  <translation id="3440709871974974233">U+14CA: WEST-CREE NWE</translation>
+  <translation id="5614579599631471041">U+14CB: NWA</translation>
+  <translation id="3066922272480935799">U+14CC: WEST-CREE NWA</translation>
+  <translation id="6174787959673029973">U+14CD: NWAA</translation>
+  <translation id="4951851853052964087">U+14CE: WEST-CREE NWAA</translation>
+  <translation id="5515535186949590537">U+14CF: NASKAPI NWAA</translation>
+  <translation id="7648191402843935855">U+14D0: N</translation>
+  <translation id="6230056264321753885">U+14D1: CARRIER NG</translation>
+  <translation id="4612641729133841948">U+14D2: NH</translation>
+  <translation id="4528321253306262136">U+14D3: LE</translation>
+  <translation id="2353669504149139569">U+14D4: LAAI</translation>
+  <translation id="4592049472090904631">U+14D5: LI</translation>
+  <translation id="4000969984402331502">U+14D6: LII</translation>
+  <translation id="7780471205554449622">U+14D7: LO</translation>
+  <translation id="2395280731982830594">U+14D8: LOO</translation>
+  <translation id="8823103370409196236">U+14D9: Y-CREE LOO</translation>
+  <translation id="644862239542733162">U+14DA: LA</translation>
+  <translation id="3051037866208657845">U+14DB: LAA</translation>
+  <translation id="3107076827090469358">U+14DC: LWE</translation>
+  <translation id="8210986781621520472">U+14DD: WEST-CREE LWE</translation>
+  <translation id="756589672446870684">U+14DE: LWI</translation>
+  <translation id="5792198394233823803">U+14DF: WEST-CREE LWI</translation>
+  <translation id="7951943556027908419">U+14E0: LWII</translation>
+  <translation id="3657954579083996994">U+14E1: WEST-CREE LWII</translation>
+  <translation id="4967705865733297765">U+14E2: LWO</translation>
+  <translation id="4965510827999183353">U+14E3: WEST-CREE LWO</translation>
+  <translation id="371510679922048859">U+14E4: LWOO</translation>
+  <translation id="6452452819917604047">U+14E5: WEST-CREE LWOO</translation>
+  <translation id="4129722141175891858">U+14E6: LWA</translation>
+  <translation id="2569384611109782711">U+14E7: WEST-CREE LWA</translation>
+  <translation id="7047403284941963003">U+14E8: LWAA</translation>
+  <translation id="7137680573363137126">U+14E9: WEST-CREE LWAA</translation>
+  <translation id="421323070037123300">U+14EA: L</translation>
+  <translation id="5858023835346683226">U+14EB: WEST-CREE L</translation>
+  <translation id="8903675458491488637">U+14EC: MEDIAL L</translation>
+  <translation id="252303033226958253">U+14ED: SE</translation>
+  <translation id="5734949553696148863">U+14EE: SAAI</translation>
+  <translation id="2295757919692956214">U+14EF: SI</translation>
+  <translation id="2900277168756414045">U+14F0: SII</translation>
+  <translation id="6384743029397289833">U+14F1: SO</translation>
+  <translation id="6436039004818266588">U+14F2: SOO</translation>
+  <translation id="4443779874134559001">U+14F3: Y-CREE SOO</translation>
+  <translation id="8929979807928410874">U+14F4: SA</translation>
+  <translation id="1069509919935124584">U+14F5: SAA</translation>
+  <translation id="6961432199962217008">U+14F6: SWE</translation>
+  <translation id="1952410016416526632">U+14F7: WEST-CREE SWE</translation>
+  <translation id="7412964636116802038">U+14F8: SWI</translation>
+  <translation id="4810089163476680386">U+14F9: WEST-CREE SWI</translation>
+  <translation id="3742823317259297187">U+14FA: SWII</translation>
+  <translation id="7520200125269060807">U+14FB: WEST-CREE SWII</translation>
+  <translation id="5384162796771873852">U+14FC: SWO</translation>
+  <translation id="2986686472665851874">U+14FD: WEST-CREE SWO</translation>
+  <translation id="753091680598932127">U+14FE: SWOO</translation>
+  <translation id="2034833623221857914">U+14FF: WEST-CREE SWOO</translation>
+  <translation id="8453012355093180441">U+1500: SWA</translation>
+  <translation id="5856712752154622938">U+1501: WEST-CREE SWA</translation>
+  <translation id="8155397487063166597">U+1502: SWAA</translation>
+  <translation id="2633497677785689172">U+1503: WEST-CREE SWAA</translation>
+  <translation id="3980542256548909501">U+1504: NASKAPI SWAA</translation>
+  <translation id="2128271541293933443">U+1505: S</translation>
+  <translation id="6544991011204392955">U+1506: ATHAPASCAN S</translation>
+  <translation id="8092120505848385530">U+1507: SW</translation>
+  <translation id="1400235128916162953">U+1508: BLACKFOOT S</translation>
+  <translation id="1481797587482799206">U+1509: MOOSE-CREE SK</translation>
+  <translation id="1834991233082641361">U+150A: NASKAPI SKW</translation>
+  <translation id="3513925099450871715">U+150B: NASKAPI S-W</translation>
+  <translation id="5073462455140400216">U+150C: NASKAPI SPWA</translation>
+  <translation id="970074094767923559">U+150D: NASKAPI STWA</translation>
+  <translation id="5123570479599879811">U+150E: NASKAPI SKWA</translation>
+  <translation id="3527121969274870844">U+150F: NASKAPI SCWA</translation>
+  <translation id="6167252390410413083">U+1510: SHE</translation>
+  <translation id="3292844976232760387">U+1511: SHI</translation>
+  <translation id="2215575997195271184">U+1512: SHII</translation>
+  <translation id="8179843819296541789">U+1513: SHO</translation>
+  <translation id="4009230204433577759">U+1514: SHOO</translation>
+  <translation id="4541199856567531297">U+1515: SHA</translation>
+  <translation id="1122011821349640221">U+1516: SHAA</translation>
+  <translation id="8681890154406848229">U+1517: SHWE</translation>
+  <translation id="489150620474066310">U+1518: WEST-CREE SHWE</translation>
+  <translation id="6301675140488151130">U+1519: SHWI</translation>
+  <translation id="6760780634129770754">U+151A: WEST-CREE SHW</translation>
+  <translation id="1876722036774025702">U+151B: SHWII</translation>
+  <translation id="1425215100158898799">U+151C: WEST-CREE SHWII</translation>
+  <translation id="786198200022582291">U+151D: SHWO</translation>
+  <translation id="4348749735168092400">U+151E: WEST-CREE SHWO</translation>
+  <translation id="1966911541668959640">U+151F: SHWOO</translation>
+  <translation id="2356222112592397682">U+1520: WEST-CREE SHWOO</translation>
+  <translation id="5441088036737988666">U+1521: SHWA</translation>
+  <translation id="5846344445564821192">U+1522: WEST-CREE SHWA</translation>
+  <translation id="4897528316264607384">U+1523: SHWAA</translation>
+  <translation id="6986367843104035306">U+1524: WEST-CREE SHWAA</translation>
+  <translation id="641145209843983218">U+1525: SH</translation>
+  <translation id="8970283589676786829">U+1526: YE</translation>
+  <translation id="799733066510761859">U+1527: YAAI</translation>
+  <translation id="1718696184697955311">U+1528: YI</translation>
+  <translation id="3072531930229945721">U+1529: YII</translation>
+  <translation id="8072422749354625641">U+152A: YO</translation>
+  <translation id="295112838960323195">U+152B: YOO</translation>
+  <translation id="4414469758885677509">U+152C: Y-CREE YOO</translation>
+  <translation id="8610318415090640855">U+152D: YA</translation>
+  <translation id="8307152316138106107">U+152E: YAA</translation>
+  <translation id="4666506971672160393">U+152F: YWE</translation>
+  <translation id="3154224734776897721">U+1530: WEST-CREE YWE</translation>
+  <translation id="262201749566125332">U+1531: YWI</translation>
+  <translation id="5145922119526150950">U+1532: WEST-CREE YWI</translation>
+  <translation id="6006827285889794830">U+1533: YWII</translation>
+  <translation id="4387671293932154272">U+1534: WEST-CREE YWII</translation>
+  <translation id="5188084023033825169">U+1535: YWO</translation>
+  <translation id="8470424493933927966">U+1536: WEST-CREE YWO</translation>
+  <translation id="3001344446400783370">U+1537: YWOO</translation>
+  <translation id="7993352439603964369">U+1538: WEST-CREE YWOO</translation>
+  <translation id="2839377854032343297">U+1539: YWA</translation>
+  <translation id="8993799882284216794">U+153A: WEST-CREE YWA</translation>
+  <translation id="5626511529537254822">U+153B: YWAA</translation>
+  <translation id="7878976534118777111">U+153C: WEST-CREE YWAA</translation>
+  <translation id="656834284711829329">U+153D: NASKAPI YWAA</translation>
+  <translation id="6812862750254079362">U+153E: Y</translation>
+  <translation id="7238665751451131628">U+153F: BIBLE-CREE Y</translation>
+  <translation id="2126851537090479741">U+1540: WEST-CREE Y</translation>
+  <translation id="7830067720866895084">U+1541: SAYISI YI</translation>
+  <translation id="691744697625378080">U+1542: RE</translation>
+  <translation id="4624787541452180187">U+1543: R-CREE RE</translation>
+  <translation id="120192350822097116">U+1544: WEST-CREE LE</translation>
+  <translation id="7816530814277375026">U+1545: RAAI</translation>
+  <translation id="554096265893941070">U+1546: RI</translation>
+  <translation id="7402390274842170967">U+1547: RII</translation>
+  <translation id="6041253877844902806">U+1548: RO</translation>
+  <translation id="7480333544589911282">U+1549: ROO</translation>
+  <translation id="3540761917033327424">U+154A: WEST-CREE LO</translation>
+  <translation id="7577062697217616048">U+154B: RA</translation>
+  <translation id="3496495284400029923">U+154C: RAA</translation>
+  <translation id="3896737147293069676">U+154D: WEST-CREE LA</translation>
+  <translation id="8270107346937145023">U+154E: RWAA</translation>
+  <translation id="9058427883774004290">U+154F: WEST-CREE RWAA</translation>
+  <translation id="5525372077910889157">U+1550: R</translation>
+  <translation id="9137059932049669319">U+1551: WEST-CREE R</translation>
+  <translation id="7093299803186855497">U+1552: MEDIAL R</translation>
+  <translation id="8249447881880604307">U+1553: FE</translation>
+  <translation id="4911444186451890602">U+1554: FAAI</translation>
+  <translation id="2027334506848219496">U+1555: FI</translation>
+  <translation id="4169265011892254565">U+1556: FII</translation>
+  <translation id="531430053623552572">U+1557: FO</translation>
+  <translation id="816747741678233878">U+1558: FOO</translation>
+  <translation id="445176443125570217">U+1559: FA</translation>
+  <translation id="5605676139067226269">U+155A: FAA</translation>
+  <translation id="4532250589498095435">U+155B: FWAA</translation>
+  <translation id="7971469032331517348">U+155C: WEST-CREE FWAA</translation>
+  <translation id="7496554286086292202">U+155D: F</translation>
+  <translation id="8265606916672932368">U+155E: THE</translation>
+  <translation id="6179317174906954483">U+155F: N-CREE THE</translation>
+  <translation id="7248886082331884602">U+1560: THI</translation>
+  <translation id="8531592876481235147">U+1561: N-CREE THI</translation>
+  <translation id="315742159343704298">U+1562: THII</translation>
+  <translation id="5439876006708644700">U+1563: N-CREE THII</translation>
+  <translation id="558625763580279195">U+1564: THO</translation>
+  <translation id="6280701585994638769">U+1565: THOO</translation>
+  <translation id="6842325194304142292">U+1566: THA</translation>
+  <translation id="5133291239727399308">U+1566: THA</translation>
+  <translation id="8074607672000482251">U+1568: THWAA</translation>
+  <translation id="1281870021906026394">U+1569: WEST-CREE THWAA</translation>
+  <translation id="1857088955607944265">U+156A: TH</translation>
+  <translation id="5926729955129279836">U+156B: TTHE</translation>
+  <translation id="6101230235103172705">U+156C: TTHI</translation>
+  <translation id="2201926658972086576">U+156D: TTHO</translation>
+  <translation id="1543550125127671770">U+156E: TTHA</translation>
+  <translation id="2576386556446923618">U+156F: TTH</translation>
+  <translation id="557430759841940597">U+1570: TYE</translation>
+  <translation id="6134174025640854009">U+1571: TYI</translation>
+  <translation id="1284503628187906547">U+1572: TYO</translation>
+  <translation id="3940627951513624325">U+1573: TYA</translation>
+  <translation id="2736056919835441866">U+1574: NUNAVIK HE</translation>
+  <translation id="1129101465620224583">U+1575: NUNAVIK HI</translation>
+  <translation id="966485516987591344">U+1576: NUNAVIK HII</translation>
+  <translation id="6488043119429518218">U+1577: NUNAVIK HO</translation>
+  <translation id="2334810544978469036">U+1578: NUNAVIK HOO</translation>
+  <translation id="2552489887478117052">U+1579: NUNAVIK HA</translation>
+  <translation id="8162908891193419177">U+157A: NUNAVIK HAA</translation>
+  <translation id="6448143942382631065">U+157B: NUNAVIK H</translation>
+  <translation id="3617147318866549057">U+157C: NUNAVUT H</translation>
+  <translation id="7551433267360756184">U+157D: HK</translation>
+  <translation id="1662598874732030694">U+157E: QAAI</translation>
+  <translation id="37758305254756558">U+157F: QI</translation>
+  <translation id="511858162470228485">U+1580: QII</translation>
+  <translation id="7350588297537937535">U+1581: QO</translation>
+  <translation id="8046225974301637755">U+1582: QOO</translation>
+  <translation id="6415384221370525631">U+1583: QA</translation>
+  <translation id="3313999365827870198">U+1584: QAA</translation>
+  <translation id="1069381913172200856">U+1585: Q</translation>
+  <translation id="427279347867602808">U+1586: TLHE</translation>
+  <translation id="758738856002932737">U+1587: TLHI</translation>
+  <translation id="3610131002541051890">U+1588: TLHO</translation>
+  <translation id="6271087800598638499">U+1589: TLHA</translation>
+  <translation id="4111855827952501747">U+158A: WEST-CREE RE</translation>
+  <translation id="8903700844842400683">U+158B: WEST-CREE RI</translation>
+  <translation id="1433978642558937653">U+158C: WEST-CREE RO</translation>
+  <translation id="3124147685862712075">U+158D: WEST-CREE RA</translation>
+  <translation id="7626339149728624855">U+158E: NGAAI</translation>
+  <translation id="8052326346883919022">U+158F: NGI</translation>
+  <translation id="3575973241498026949">U+1590: NGII</translation>
+  <translation id="8087100938714662368">U+1591: NGO</translation>
+  <translation id="7340962245764229101">U+1592: NGOO</translation>
+  <translation id="6210075405682489871">U+1593: NGA</translation>
+  <translation id="6856492300085131142">U+1594: NGAA</translation>
+  <translation id="7165885803879865701">U+1595: NG</translation>
+  <translation id="8539898531274092248">U+1596: NNG</translation>
+  <translation id="8069730129934359505">U+1597: SAYISI SHE</translation>
+  <translation id="3202120630657596393">U+1598: SAYISI SHI</translation>
+  <translation id="636157190662221967">U+1599: SAYISI SHO</translation>
+  <translation id="9059516299675688199">U+159A: SAYISI SHA</translation>
+  <translation id="4957193988066480351">U+159B: WOODS-CREE THE</translation>
+  <translation id="2161154057772044444">U+159C: WOODS-CREE THI</translation>
+  <translation id="665709628863026249">U+159D: WOODS-CREE THO</translation>
+  <translation id="4506273761426134445">U+159E: WOODS-CREE THA</translation>
+  <translation id="8530169381586243343">U+159F: WOODS-CREE TH</translation>
+  <translation id="3069773873166493783">U+15A0: LHI</translation>
+  <translation id="5183780835433096583">U+15A1: LHII</translation>
+  <translation id="1733073096947544989">U+15A2: LHO</translation>
+  <translation id="2074685785451756423">U+15A3: LHOO</translation>
+  <translation id="5326025263841785172">U+15A4: LHA</translation>
+  <translation id="8758339841561426516">U+15A5: LHAA</translation>
+  <translation id="671307077729987319">U+15A6: LH</translation>
+  <translation id="2092712548028579429">U+15A7: TH-CREE THE</translation>
+  <translation id="5366836015193145500">U+15A8: TH-CREE THI</translation>
+  <translation id="7566886712252003787">U+15A9: TH-CREE THII</translation>
+  <translation id="6029483560062272374">U+15AA: TH-CREE THO</translation>
+  <translation id="7523221108192323399">U+15AB: TH-CREE THOO</translation>
+  <translation id="2757269768588516640">U+15AC: TH-CREE THA</translation>
+  <translation id="5244572658941691166">U+15AD: TH-CREE THAA</translation>
+  <translation id="5917397543387816730">U+15AE: TH-CREE TH</translation>
+  <translation id="8076398403562660428">U+15AF: AIVILIK B</translation>
+  <translation id="1373725352951116644">U+15B0: BLACKFOOT E</translation>
+  <translation id="5617158128942140157">U+15B1: BLACKFOOT I</translation>
+  <translation id="3839926644783463685">U+15B2: BLACKFOOT O</translation>
+  <translation id="5735288368918184930">U+15B3: BLACKFOOT A</translation>
+  <translation id="5515026446974157951">U+15B4: BLACKFOOT WE</translation>
+  <translation id="8401541133076670292">U+15B5: BLACKFOOT WI</translation>
+  <translation id="8767218897430776037">U+15B6: BLACKFOOT WO</translation>
+  <translation id="8938556055522968652">U+15B7: BLACKFOOT WA</translation>
+  <translation id="5652180029858077224">U+15B8: BLACKFOOT NE</translation>
+  <translation id="2282642718069568006">U+15B9: BLACKFOOT NI</translation>
+  <translation id="2354821023542614158">U+15BA: BLACKFOOT NO</translation>
+  <translation id="1498142923740346378">U+15BB: BLACKFOOT NA</translation>
+  <translation id="768214923534698214">U+15BC: BLACKFOOT KE</translation>
+  <translation id="1861061642312025219">U+15BD: BLACKFOOT KI</translation>
+  <translation id="8810278228730593115">U+15BE: BLACKFOOT KO</translation>
+  <translation id="2732707895773969852">U+15BF: BLACKFOOT KA</translation>
+  <translation id="4979078659359289259">U+15C0: SAYISI HE</translation>
+  <translation id="3971028842344551835">U+15C1: SAYISI HI</translation>
+  <translation id="6882242246906955773">U+15C2: SAYISI HO</translation>
+  <translation id="7551238099776004661">U+15C3: SAYISI HA</translation>
+  <translation id="7196797805651258420">U+15C4: CARRIER GHU</translation>
+  <translation id="1715508917116391312">U+15C5: CARRIER GHO</translation>
+  <translation id="1705023329785375164">U+15C6: CARRIER GHE</translation>
+  <translation id="7409669462726047177">U+15C7: CARRIER GHEE</translation>
+  <translation id="6417951117656547738">U+15C8: CARRIER GHI</translation>
+  <translation id="5412200680376803030">U+15C9: CARRIER GHA</translation>
+  <translation id="4255253589931284029">U+15CA: CARRIER RU</translation>
+  <translation id="3964663857205492925">U+15CB: CARRIER RO</translation>
+  <translation id="350729008930076963">U+15CC: CARRIER RE</translation>
+  <translation id="1550132268580696610">U+15CD: CARRIER REE</translation>
+  <translation id="108334111384772200">U+15CE: CARRIER RI</translation>
+  <translation id="4679462725392929660">U+15CF: CARRIER RA</translation>
+  <translation id="1161027281488563526">U+15D0: CARRIER WU</translation>
+  <translation id="1816368183160056504">U+15D1: CARRIER WO</translation>
+  <translation id="9217321717618910470">U+15D2: CARRIER WE</translation>
+  <translation id="3107270722139442255">U+15D3: CARRIER WEE</translation>
+  <translation id="9205790138959384724">U+15D4: CARRIER WI</translation>
+  <translation id="1534854828961052294">U+15D5: CARRIER WA</translation>
+  <translation id="424306170618885247">U+15D6: CARRIER HWU</translation>
+  <translation id="3292966303121939038">U+15D7: CARRIER HWO</translation>
+  <translation id="4154919235678726672">U+15D8: CARRIER HWE</translation>
+  <translation id="4983315614532570003">U+15D9: CARRIER HWEE</translation>
+  <translation id="9112749529060665703">U+15DA: CARRIER HWI</translation>
+  <translation id="8779145918948856205">U+15DB: CARRIER HWA</translation>
+  <translation id="4474914003097924182">U+15DC: CARRIER THU</translation>
+  <translation id="6037856748309756909">U+15DC: CARRIER THU</translation>
+  <translation id="3456174579475142009">U+15DE: CARRIER THE</translation>
+  <translation id="6744851335642337951">U+15DF: CARRIER THEE</translation>
+  <translation id="4002084880599283088">U+15E0: CARRIER THI</translation>
+  <translation id="1075319006359929272">U+15E1: CARRIER THA</translation>
+  <translation id="8171443928319368359">U+15E2: CARRIER TTU</translation>
+  <translation id="465768690941481111">U+15E3: CARRIER TTO</translation>
+  <translation id="2721267256114733830">U+15E4: CARRIER TTE</translation>
+  <translation id="3215822457835588929">U+15E5: CARRIER TTEE</translation>
+  <translation id="5908143569742740507">U+15E6: CARRIER TTI</translation>
+  <translation id="1881613136965297313">U+15E7: CARRIER TTA</translation>
+  <translation id="6600542091987824517">U+15E8: CARRIER PU</translation>
+  <translation id="767771684745018278">U+15E9: CARRIER PO</translation>
+  <translation id="4312008091113342735">U+15EA: CARRIER PE</translation>
+  <translation id="1840084618882945358">U+15EB: CARRIER PEE</translation>
+  <translation id="6480737705269524828">U+15EC: CARRIER PI</translation>
+  <translation id="2217036640885906685">U+15ED: CARRIER PA</translation>
+  <translation id="2532696347569819504">U+15EE: CARRIER P</translation>
+  <translation id="457271441008175064">U+15EF: CARRIER GU</translation>
+  <translation id="5010953589802495978">U+15F0: CARRIER GO</translation>
+  <translation id="2497827936031957560">U+15F1: CARRIER GE</translation>
+  <translation id="6292855338406525606">U+15F2: CARRIER GEE</translation>
+  <translation id="8100326028727114453">U+15F3: CARRIER GI</translation>
+  <translation id="604449264972971341">U+15F4: CARRIER GA</translation>
+  <translation id="1765196949910332185">U+15F5: CARRIER KHU</translation>
+  <translation id="8846640509364722852">U+15F6: CARRIER KHO</translation>
+  <translation id="1849667869767732507">U+15F7: CARRIER KHE</translation>
+  <translation id="1489110323698153118">U+15F8: CARRIER KHEE</translation>
+  <translation id="3823107116247758002">U+15F9: CARRIER KHI</translation>
+  <translation id="6427343202228619557">U+15FA: CARRIER KHA</translation>
+  <translation id="8358631033341500286">U+15FB: CARRIER KKU</translation>
+  <translation id="8165893253987936546">U+15FC: CARRIER KKO</translation>
+  <translation id="6156153854244700245">U+15FD: CARRIER KKE</translation>
+  <translation id="9085492738185998671">U+15FE: CARRIER KKEE</translation>
+  <translation id="7847641818411797711">U+15FF: CARRIER KKI</translation>
+  <translation id="5125176333607003414">U+1600: CARRIER KKA</translation>
+  <translation id="7814322736836765477">U+1601: CARRIER KK</translation>
+  <translation id="3612575698808461537">U+1602: CARRIER NU</translation>
+  <translation id="425921396441140561">U+1603: CARRIER NO</translation>
+  <translation id="850600695479642287">U+1604: CARRIER NE</translation>
+  <translation id="6903464875987297516">U+1605: CARRIER NEE</translation>
+  <translation id="7763373217485212948">U+1606: CARRIER NI</translation>
+  <translation id="2752621787778206339">U+1607: CARRIER NA</translation>
+  <translation id="1042377476778881792">U+1608: CARRIER MU</translation>
+  <translation id="4237137466491787067">U+1609: CARRIER MO</translation>
+  <translation id="5246922098229409445">U+160A: CARRIER ME</translation>
+  <translation id="7039757055067588130">U+160B: CARRIER MEE</translation>
+  <translation id="3064094858452060052">U+160C: CARRIER MI</translation>
+  <translation id="4197988325884731376">U+160D: CARRIER MA</translation>
+  <translation id="3970822259416086005">U+160E: CARRIER YU</translation>
+  <translation id="5164612259023007450">U+160F: CARRIER YO</translation>
+  <translation id="1791369485521031804">U+1610: CARRIER YE</translation>
+  <translation id="8009927268800681488">U+1611: CARRIER YEE</translation>
+  <translation id="2136430606501392937">U+1612: CARRIER YI</translation>
+  <translation id="1468295807671053436">U+1613: CARRIER YA</translation>
+  <translation id="5081851829754341441">U+1614: CARRIER JU</translation>
+  <translation id="8791700934371693503">U+1615: SAYISI JU</translation>
+  <translation id="6182740294817083386">U+1616: CARRIER JO</translation>
+  <translation id="2491211377663390944">U+1617: CARRIER JE</translation>
+  <translation id="700665430843893931">U+1618: CARRIER JEE</translation>
+  <translation id="6459652222482199458">U+1619: CARRIER JI</translation>
+  <translation id="2214692440268702815">U+161A: SAYISI JI</translation>
+  <translation id="720942273702142219">U+161B: CARRIER JA</translation>
+  <translation id="4890076792738956541">U+161C: CARRIER JJU</translation>
+  <translation id="3567395096091469533">U+161D: CARRIER JJO</translation>
+  <translation id="3186529655090733280">U+161E: CARRIER JJE</translation>
+  <translation id="3432953672794991781">U+161F: CARRIER JJEE</translation>
+  <translation id="1921744193657392952">U+1620: CARRIER JJI</translation>
+  <translation id="4930867805373658664">U+1621: CARRIER JJA</translation>
+  <translation id="5643285959240317428">U+1622: CARRIER LU</translation>
+  <translation id="948468128467743804">U+1623: CARRIER LO</translation>
+  <translation id="5671730449855923277">U+1624: CARRIER LE</translation>
+  <translation id="5171035828216178894">U+1625: CARRIER LEE</translation>
+  <translation id="936498905860471824">U+1626: CARRIER LI</translation>
+  <translation id="4199179726288499536">U+1627: CARRIER LA</translation>
+  <translation id="1230687206966315266">U+1628: CARRIER DLU</translation>
+  <translation id="6688777513026862791">U+1629: CARRIER DLO</translation>
+  <translation id="4543525086823107324">U+162A: CARRIER DLE</translation>
+  <translation id="8779788156658087361">U+162B: CARRIER DLEE</translation>
+  <translation id="5240299571132587365">U+162C: CARRIER DLI</translation>
+  <translation id="1363051719959831030">U+162D: CARRIER DLA</translation>
+  <translation id="7794999366427622491">U+162E: CARRIER LHU</translation>
+  <translation id="3897853576832101899">U+162F: CARRIER LHO</translation>
+  <translation id="5083167886552789851">U+1630: CARRIER LHE</translation>
+  <translation id="4735452463615473324">U+1631: CARRIER LHEE</translation>
+  <translation id="8226410733582819970">U+1632: CARRIER LHI</translation>
+  <translation id="104834829862321755">U+1633: CARRIER LHA</translation>
+  <translation id="4479308643796315787">U+1634: CARRIER TLHU</translation>
+  <translation id="4655288004002783186">U+1635: CARRIER TLHO</translation>
+  <translation id="8774794956998446005">U+1636: CARRIER TLHE</translation>
+  <translation id="1086493685656799163">U+1637: CARRIER TLHEE</translation>
+  <translation id="127722838141829308">U+1638: CARRIER TLHI</translation>
+  <translation id="324860496982573031">U+1639: CARRIER TLHA</translation>
+  <translation id="3587542998417650438">U+163A: CARRIER TLU</translation>
+  <translation id="7391702868040341456">U+163B: CARRIER TLO</translation>
+  <translation id="1224615464963282595">U+163C: CARRIER TLE</translation>
+  <translation id="7459352526305985152">U+163D: CARRIER TLEE</translation>
+  <translation id="1398848002790291109">U+163E: CARRIER TLI</translation>
+  <translation id="6297394203476730020">U+163F: CARRIER TLA</translation>
+  <translation id="5408510440408826141">U+1640: CARRIER ZU</translation>
+  <translation id="4656185280537001720">U+1641: CARRIER ZO</translation>
+  <translation id="6227107392767203227">U+1642: CARRIER ZE</translation>
+  <translation id="5384213356866928694">U+1643: CARRIER ZEE</translation>
+  <translation id="1179472474484513336">U+1644: CARRIER ZI</translation>
+  <translation id="2105595132345110239">U+1645: CARRIER ZA</translation>
+  <translation id="2348884244048309908">U+1646: CARRIER Z</translation>
+  <translation id="3166506127442719870">U+1647: CARRIER INITIAL Z</translation>
+  <translation id="2470443998106832221">U+1648: CARRIER DZU</translation>
+  <translation id="7530948480831510087">U+1649: CARRIER DZO</translation>
+  <translation id="1468419827135743440">U+164A: CARRIER DZE</translation>
+  <translation id="6588404835540916971">U+164B: CARRIER DZEE</translation>
+  <translation id="967551745762646137">U+164C: CARRIER DZI</translation>
+  <translation id="7055760444824204151">U+164D: CARRIER DZA</translation>
+  <translation id="3221372086171995918">U+164E: CARRIER SU</translation>
+  <translation id="1286809862121952097">U+164F: CARRIER SO</translation>
+  <translation id="3950896367446878402">U+1650: CARRIER SE</translation>
+  <translation id="2622066716811128303">U+1651: CARRIER SEE</translation>
+  <translation id="7858135374705570804">U+1652: CARRIER SI</translation>
+  <translation id="6276489792575559181">U+1653: CARRIER SA</translation>
+  <translation id="4821221810326396777">U+1654: CARRIER SHU</translation>
+  <translation id="8434884444209679243">U+1655: CARRIER SHO</translation>
+  <translation id="4961364172862423124">U+1656: CARRIER SHE</translation>
+  <translation id="4679901342522185687">U+1657: CARRIER SHEE</translation>
+  <translation id="4421606992819175408">U+1658: CARRIER SHI</translation>
+  <translation id="9000644093621320552">U+1659: CARRIER SHA</translation>
+  <translation id="6984298748561799717">U+165A: CARRIER SH</translation>
+  <translation id="6544860843594622315">U+165B: CARRIER TSU</translation>
+  <translation id="7254951909739627595">U+165C: CARRIER TSO</translation>
+  <translation id="6425775839354482340">U+165D: CARRIER TSE</translation>
+  <translation id="5343012857945693064">U+165E: CARRIER TSEE</translation>
+  <translation id="5180772649635233950">U+165F: CARRIER TSI</translation>
+  <translation id="2946106282404637750">U+1660: CARRIER TSA</translation>
+  <translation id="5064173203989669499">U+1661: CARRIER CHU</translation>
+  <translation id="5293475648651635694">U+1662: CARRIER CHO</translation>
+  <translation id="4540161708409545371">U+1663: CARRIER CHE</translation>
+  <translation id="5738469610747900626">U+1664: CARRIER CHEE</translation>
+  <translation id="7599464210411204832">U+1665: CARRIER CHI</translation>
+  <translation id="4734975804656619672">U+1666: CARRIER CHA</translation>
+  <translation id="979606255414133756">U+1667: CARRIER TTSU</translation>
+  <translation id="3303369114490813603">U+1668: CARRIER TTSO</translation>
+  <translation id="1622739342499982583">U+1669: CARRIER TTSE</translation>
+  <translation id="482976891249515183">U+166A: CARRIER TTSEE</translation>
+  <translation id="2910284011040778714">U+166B: CARRIER TTSI</translation>
+  <translation id="3079940198698927118">U+166C: CARRIER TTSA</translation>
+  <translation id="6960300103611878631">U+166D: CHI SIGN</translation>
+  <translation id="2623425194365665441">U+166E: FULL STOP</translation>
+  <translation id="8649522629232840061">U+166F: QAI</translation>
+  <translation id="2137698277045547025">U+1670: NGAI</translation>
+  <translation id="8703389900796271780">U+1671: NNGI</translation>
+  <translation id="4132459020653661726">U+1672: NNGII</translation>
+  <translation id="316280261529499168">U+1673: NNGO</translation>
+  <translation id="1145368431757447971">U+1674: NNGOO</translation>
+  <translation id="1445389563833377536">U+1675: NNGA</translation>
+  <translation id="421143338216079318">U+1676: NNGAA</translation>
+  <translation id="2927117687961233497">U+1677: WOODS-CREE THWEE</translation>
+  <translation id="1501621828526079686">U+1678: WOODS-CREE THWI</translation>
+  <translation id="6157257619194742554">U+1679: WOODS-CREE THWII</translation>
+  <translation id="2360410855312922564">U+167A: WOODS-CREE THWO</translation>
+  <translation id="1428159071882033108">U+167B: WOODS-CREE THWOO</translation>
+  <translation id="2149719352452279012">U+167C: WOODS-CREE THWA</translation>
+  <translation id="4757955986727210262">U+167D: WOODS-CREE THWAA</translation>
+  <translation id="8452273608813544394">U+167E: WOODS-CREE FINAL TH</translation>
+  <translation id="6819809569003431312">U+167F: BLACKFOOT W</translation>
+  <translation id="3637441213736753922">Symboly</translation>
+  <translation id="1916627394385459257" desc="Symbols section header (interrobang)">‽</translation>
+  <translation id="2592368582911584624">Teplota</translation>
+  <translation id="1341898151776599609" desc="Temperature section header (degree)">°</translation>
+  <translation id="7773254636625730688">Práva</translation>
+  <translation id="8976211236124070326" desc="Reserved rights section header (copyright)">©</translation>
+  <translation id="3080099711511142058">Matematické</translation>
+  <translation id="2152367774196400650" desc="Math symbols section header (plus/minus)">±</translation>
+  <translation id="5987184539927215313">ctrl+s</translation>
+  <translation id="2349286728789981711">Speciální znaky</translation>
+  <translation id="471370508943084009">Otevře se na nové kartě</translation>
+  <translation id="2495670193814259967">Akci nelze dokončit</translation>
+  <translation id="1018957812420893015">Fond:</translation>
+  <translation id="3311889711101233165">Objednávka:</translation>
+  <translation id="6627351144155394356">Přidat</translation>
+  <translation id="2002149299706933425"> Použít <ph name="START_LINK"/>Lokální administrace → Sady výpůjčních limitů<ph name="CLOSE_LINK"/> pro vytvoření odkazu na sadu limitů </translation>
+  <translation id="432504634604606465">Vyberte soubor: </translation>
+  <translation id="4468649507061314225">Použít <ph name="INTERPOLATION"/> jako primární průkaz</translation>
+  <translation id="2061651587728723866">
+    <ph name="START_TAG_KBD"/>
+    <ph name="INTERPOLATION"/>
+    <ph name="CLOSE_TAG_KBD"/>
+  </translation>
+  <translation id="3260180443029325051">Právě se půjčuje</translation>
+  <translation id="7082910928526368483"><ph name="START_TAG_SPAN"/>home<ph name="CLOSE_TAG_SPAN"/> Domů</translation>
+  <translation id="375162872941638932"><ph name="START_TAG_SPAN"/>odhlásit<ph name="CLOSE_TAG_SPAN"/> Odhlásit</translation>
+  <translation id="425596632725634098">Typ potvrzení:</translation>
+  <translation id="8075796456109676934">Editovat podpole (pokud je seskupeno): Levá nebo pravá šipka</translation>
 </translationbundle>
