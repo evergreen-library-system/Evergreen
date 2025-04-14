@@ -3,6 +3,110 @@
 :numbered:
 :toclevels: 3
 
+== Evergreen 3.13.10 ==
+
+This release contains bug fixes and documentation fixes improving on Evergreen 3.13.9.
+
+
+
+=== Acquisitions ===
+
+* Clarifies what the "name" label in create PO form refers to (https://bugs.launchpad.net/evergreen/+bug/2018839[Bug 2018839])
+* Restores acquisitions provider codes in select boxes. (https://bugs.launchpad.net/evergreen/+bug/2091178[Bug 2091178])
+
+=== Administration ===
+
+* Retro-fixes config.coded_value_map (https://bugs.launchpad.net/evergreen/+bug/2073561[Bug 2073561])
+* Fixes handling of diacritics in marc_export items export. (https://bugs.launchpad.net/evergreen/+bug/2103714[Bug 2103714])
+
+=== Catalog ===
+
+* Improves layout of staff catalog shelf browse. (https://bugs.launchpad.net/evergreen/+bug/2067649[Bug 2067649])
+
+=== Cataloging ===
+
+* Fixes undo/redo in MARC rich editor fixed fields and LDR. (https://bugs.launchpad.net/evergreen/+bug/2084929[Bug 2084929])
+* Fixes inputBlurred() console error for MARC fixed fields (https://bugs.launchpad.net/evergreen/+bug/2084929[Bug 2084929])
+* Updates MARC Import/Export tab styles to match other tabs (https://bugs.launchpad.net/evergreen/+bug/2102735[Bug 2102735])
+* Sorts bib record parts by label_sortkey rather than label so that labels such as Vol. 1, Vol. 2, Vol. 3 are sorted as expected. (https://bugs.launchpad.net/evergreen/+bug/2088000[Bug 2088000])
+* Avoids freetext error when reimporting MARC import queue (https://bugs.launchpad.net/evergreen/+bug/1940867[Bug 1940867])
+* Fixes right arrow focus in MARC subfield data (https://bugs.launchpad.net/evergreen/+bug/2101886[Bug 2101886])
+* Adds ability to edit MARC subfield value in focused group with right or left arrow; does not focus on current group when tabbing into or out of subfield inputs (https://bugs.launchpad.net/evergreen/+bug/2101884[Bug 2101884])
+* Prevents duplicate new MARC rows using Control + Arrow key (https://bugs.launchpad.net/evergreen/+bug/2095532[Bug 2095532])
+
+=== Circulation ===
+
+* Fixes inconsistent display of name fields in offline patron registration (https://bugs.launchpad.net/evergreen/+bug/2096865[Bug 2096865])
+* Fixes blank user setting handling in Angular staff catalog place holds. (https://bugs.launchpad.net/evergreen/+bug/2073896[Bug 2073896])
+* Fixes a bug where re-applying a shelving location group filter to the pull list fails. (https://bugs.launchpad.net/evergreen/+bug/2098011[Bug 2098011])
+* Prevents blocked accounts from checking out Precats. (https://bugs.launchpad.net/evergreen/+bug/2098898[Bug 2098898])
+* Adds form labels and keyboard support for patron survey answers (https://bugs.launchpad.net/evergreen/+bug/2040183[Bug 2040183])
+
+=== Developer === 
+
+* Adds a commit message template to the repository to improve the developer experience.  To use the template, run the following command from the root of your Evergreen repostiory: `git config commit.template commit-template`. (https://bugs.launchpad.net/evergreen/+bug/2051946[Bug 2051946])
+
+=== Documentation ===
+
+* Updates the release note extractor so that all lines of a multi-line release notes in a commit message are incuded in the output (https://bugs.launchpad.net/evergreen/+bug/2098814[Bug 2098814])
+
+=== Installation ===
+
+* Adds an automated check that the staff client can build successfully. (https://bugs.launchpad.net/evergreen/+bug/2069646[Bug 2069646])
+
+
+=== OPAC ===
+
+* Fixes a bug that caused empty search results in the OPAC after changes were made to the organizational unit tree and the autogen script had not yet been run. 
+(https://bugs.launchpad.net/evergreen/+bug/2103630[Bug 2103630])
+
+=== Reports ===
+
+* Sets user email as default for report output email option (https://bugs.launchpad.net/evergreen/+bug/2088096[Bug 2088096])
+* Shows template documentation URLs in reports template grids (https://bugs.launchpad.net/evergreen/+bug/2090873[Bug 2090873])
+
+=== Staff Client ===
+
+* Fixes an issue where menu icons appear on printouts. (https://bugs.launchpad.net/evergreen/+bug/2092226[Bug 2092226])
+
+
+
+=== Acknowledgements ===
+
+We would like to thank the following individuals who contributed code, testing, documentation, and patches to the 3.13.10 point release of Evergreen:
+
+* Andrea Buntz Neiman
+* Blake Graham-Henderson
+* Carol Witt
+* Chris Sharp
+* Dan Briem
+* Galen Charlton
+* Gina Monti
+* Ian Skelskey
+* Jane Sandberg
+* Jason Boyer
+* Jason Stephenson
+* John Amundson
+* Josh Stompro
+* Lindsay Stratton
+* Llewellyn Marshall
+* Michele Morgan
+* Mike Rylander
+* Ruth Frasur Davis
+* Stephanie Leary
+* Steven Mayo
+* Susan Morrison
+* Terran McCanna
+* Tiffany Little
+
+
+
+
+
+
+
+
+
 == Evergreen 3.13.9 ==
 
 This release contains bug fixes and documentation fixes improving on Evergreen 3.13.8.
