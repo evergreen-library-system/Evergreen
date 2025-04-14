@@ -154,7 +154,7 @@ msgid "%1 (Default)"
 msgstr ""
 
 #. ("{{dynamic}}", "{{context}}")
-#: ../../Open-ILS/src/templates/staff/base_js.tt2:163
+#: ../../Open-ILS/src/templates/staff/base_js.tt2:164
 msgid "%1 - %2"
 msgstr ""
 
@@ -236,12 +236,12 @@ msgstr ""
 msgid "%1, %2 %3"
 msgstr ""
 
+#. ("{{user.family_name()}}", "{{user.first_given_name()}}", "{{user.second_given_name()}}", "{{user.card().barcode()}}")
+#. ("{{prev_circ_usr.family_name()}}", "{{prev_circ_usr.first_given_name()}}", "{{prev_circ_usr.second_given_name()}}", "{{prev_circ_usr.card().barcode()}}")
+#. ("{{circ.usr().family_name()}}", "{{circ.usr().first_given_name()}}", "{{circ.usr().second_given_name()}}", "{{circ.usr().card().barcode()}}")
 #. ("{{hold.usr().family_name()}}", "{{hold.usr().first_given_name()}}", "{{hold.usr().second_given_name()}}", "{{hold.usr().card().barcode()}}")
 #. ("{{hold.requestor().family_name()}}", "{{hold.requestor().first_given_name()}}", "{{hold.requestor().second_given_name()}}", "{{hold.requestor().card().barcode()}}")
-#. ("{{circ.usr().family_name()}}", "{{circ.usr().first_given_name()}}", "{{circ.usr().second_given_name()}}", "{{circ.usr().card().barcode()}}")
-#. ("{{prev_circ_usr.family_name()}}", "{{prev_circ_usr.first_given_name()}}", "{{prev_circ_usr.second_given_name()}}", "{{prev_circ_usr.card().barcode()}}")
 #. ("{{extra.user_obj.family_name}}", "{{extra.user_obj.first_given_name}}", "{{extra.user_obj.second_given_name}}", "{{extra.user_obj.home_ou.shortname}}")
-#. ("{{user.family_name()}}", "{{user.first_given_name()}}", "{{user.second_given_name()}}", "{{user.card().barcode()}}")
 #: ../../Open-ILS/src/templates/staff/acq/requests/t_edit.tt2:27 ../../Open-ILS/src/templates/staff/cat/item/t_circ_list_pane.tt2:27 ../../Open-ILS/src/templates/staff/cat/item/t_circs_pane.tt2:118 ../../Open-ILS/src/templates/staff/cat/item/t_circs_pane.tt2:18 ../../Open-ILS/src/templates/staff/cat/item/t_holds_pane.tt2:17 ../../Open-ILS/src/templates/staff/cat/item/t_holds_pane.tt2:30 ../../Open-ILS/src/templates/staff/circ/patron/t_move_to_group_dialog.tt2:16
 msgid "%1, %2 %3 : %4"
 msgstr ""
@@ -886,7 +886,7 @@ msgstr ""
 msgid "Annual Circ History"
 msgstr ""
 
-#: ../../Open-ILS/src/templates/staff/base_js.tt2:140
+#: ../../Open-ILS/src/templates/staff/base_js.tt2:141
 msgid "Another staff member with the above permission may authorize this specific action.  Please notify your library administrator if you need this permission.  If you feel you have received this exception in error, please inform your friendly Evergreen developers or helpdesk staff of the above permission."
 msgstr ""
 
@@ -989,7 +989,7 @@ msgstr ""
 msgid "Archived on %1"
 msgstr ""
 
-#: ../../Open-ILS/src/templates/staff/base_js.tt2:159
+#: ../../Open-ILS/src/templates/staff/base_js.tt2:160
 msgid "Are you certain you want to clear these pending offline transactions? This action is irreversible. Transactions cannot be recovered after clearing!"
 msgstr ""
 
@@ -1016,11 +1016,11 @@ msgstr ""
 msgid "Are you sure you want to delete title record %1 from the catalog?"
 msgstr ""
 
-#: ../../Open-ILS/src/templates/staff/base_js.tt2:165
+#: ../../Open-ILS/src/templates/staff/base_js.tt2:166
 msgid "Are you sure you want to load ALL items?"
 msgstr ""
 
-#: ../../Open-ILS/src/templates/staff/base_js.tt2:161
+#: ../../Open-ILS/src/templates/staff/base_js.tt2:162
 msgid "Are you sure you want to record {{num_uses}} uses for this?"
 msgstr ""
 
@@ -1237,11 +1237,11 @@ msgstr ""
 msgid "Bad Barcode"
 msgstr ""
 
-#: ../../Open-ILS/src/templates/staff/base_js.tt2:153
+#: ../../Open-ILS/src/templates/staff/base_js.tt2:154
 msgid "Bad item barcode"
 msgstr ""
 
-#: ../../Open-ILS/src/templates/staff/base_js.tt2:155
+#: ../../Open-ILS/src/templates/staff/base_js.tt2:156
 msgid "Bad patron barcode"
 msgstr ""
 
@@ -1327,8 +1327,8 @@ msgid "Barcode: %1 Checkin date: %2"
 msgstr ""
 
 #. ("{{checkout.copy.barcode}}", "{{checkout.circ.due_date | egDueDate:$root.egDateAndTimeFormat:checkout.circ.circ_lib:checkout.circ.duration}}")
-#. ("{{renewal.copy.barcode}}", "{{renewal.circ.due_date | egDueDate:$root.egDateAndTimeFormat:renewal.circ.circ_lib:renewal.circ.duration}}")
 #. ("{{checkout.barcode}}", "{{checkout.due_date | date:\"short\"}}")
+#. ("{{renewal.copy.barcode}}", "{{renewal.circ.due_date | egDueDate:$root.egDateAndTimeFormat:renewal.circ.circ_lib:renewal.circ.duration}}")
 #: ../../Open-ILS/src/templates/staff/share/print_templates/t_checkout.tt2:47 ../../Open-ILS/src/templates/staff/share/print_templates/t_items_out.tt2:43 ../../Open-ILS/src/templates/staff/share/print_templates/t_offline_renew.tt2:16 ../../Open-ILS/src/templates/staff/share/print_templates/t_renew.tt2:27
 msgid "Barcode: %1 Due: %2"
 msgstr ""
@@ -1394,8 +1394,8 @@ msgstr ""
 msgid "Between"
 msgstr ""
 
-#. ("{{lead_id}}")
 #. ("{{record_id}}")
+#. ("{{lead_id}}")
 #: ../../Open-ILS/src/templates/staff/cat/bucket/record/t_merge_records.tt2:49 ../../Open-ILS/src/templates/staff/cat/catalog/index.tt2:66
 msgid "Bib %1"
 msgstr ""
@@ -1985,7 +1985,7 @@ msgstr ""
 msgid "Cash Drawer"
 msgstr ""
 
-#: ../../Open-ILS/src/templates/staff/base_js.tt2:125
+#: ../../Open-ILS/src/templates/staff/base_js.tt2:126
 msgid "Cash Payment"
 msgstr ""
 
@@ -2073,7 +2073,7 @@ msgstr ""
 msgid "Check All Refunds"
 msgstr ""
 
-#: ../../Open-ILS/src/templates/staff/base_js.tt2:122 ../../Open-ILS/src/templates/staff/circ/checkin/index.tt2:2 ../../Open-ILS/src/templates/staff/circ/patron/t_items_out.tt2:72 ../../Open-ILS/src/templates/staff/navbar.tt2:106 ../../Open-ILS/src/templates/staff/navbar.tt2:108 ../../Open-ILS/src/templates/staff/navbar.tt2:303 ../../Open-ILS/src/templates/staff/navbar.tt2:97 ../../Open-ILS/src/templates/staff/navbar.tt2:99
+#: ../../Open-ILS/src/templates/staff/base_js.tt2:123 ../../Open-ILS/src/templates/staff/circ/checkin/index.tt2:2 ../../Open-ILS/src/templates/staff/circ/patron/t_items_out.tt2:72 ../../Open-ILS/src/templates/staff/navbar.tt2:106 ../../Open-ILS/src/templates/staff/navbar.tt2:108 ../../Open-ILS/src/templates/staff/navbar.tt2:303 ../../Open-ILS/src/templates/staff/navbar.tt2:97 ../../Open-ILS/src/templates/staff/navbar.tt2:99
 msgid "Check In"
 msgstr ""
 
@@ -2093,7 +2093,7 @@ msgstr ""
 msgid "Check Number"
 msgstr ""
 
-#: ../../Open-ILS/src/templates/staff/base_js.tt2:120 ../../Open-ILS/src/templates/staff/circ/patron/index.tt2:147 ../../Open-ILS/src/templates/staff/navbar.tt2:297 ../../Open-ILS/src/templates/staff/navbar.tt2:79 ../../Open-ILS/src/templates/staff/navbar.tt2:81 ../../Open-ILS/src/templates/staff/navbar.tt2:88 ../../Open-ILS/src/templates/staff/navbar.tt2:90
+#: ../../Open-ILS/src/templates/staff/base_js.tt2:121 ../../Open-ILS/src/templates/staff/circ/patron/index.tt2:147 ../../Open-ILS/src/templates/staff/navbar.tt2:297 ../../Open-ILS/src/templates/staff/navbar.tt2:79 ../../Open-ILS/src/templates/staff/navbar.tt2:81 ../../Open-ILS/src/templates/staff/navbar.tt2:88 ../../Open-ILS/src/templates/staff/navbar.tt2:90
 msgid "Check Out"
 msgstr ""
 
@@ -2125,7 +2125,7 @@ msgstr ""
 msgid "Check Out Workstation"
 msgstr ""
 
-#: ../../Open-ILS/src/templates/staff/base_js.tt2:126
+#: ../../Open-ILS/src/templates/staff/base_js.tt2:127
 msgid "Check Payment"
 msgstr ""
 
@@ -2463,7 +2463,7 @@ msgstr ""
 msgid "Clear Transactions"
 msgstr ""
 
-#: ../../Open-ILS/src/templates/staff/base_js.tt2:158
+#: ../../Open-ILS/src/templates/staff/base_js.tt2:159
 msgid "Clear pending transactions"
 msgstr ""
 
@@ -2492,7 +2492,7 @@ msgstr ""
 msgid "Cloned serial subscription"
 msgstr ""
 
-#: ../../Open-ILS/src/templates/staff/admin/serials/t_attr_edit.tt2:39 ../../Open-ILS/src/templates/staff/base_js.tt2:119 ../../Open-ILS/src/templates/staff/share/t_grid_columns.tt2:67
+#: ../../Open-ILS/src/templates/staff/admin/serials/t_attr_edit.tt2:39 ../../Open-ILS/src/templates/staff/base_js.tt2:120 ../../Open-ILS/src/templates/staff/share/t_grid_columns.tt2:67
 msgid "Close"
 msgstr ""
 
@@ -2608,7 +2608,7 @@ msgstr ""
 msgid "Confirm Prediction Pattern Template Deletion"
 msgstr ""
 
-#: ../../Open-ILS/src/templates/staff/base_js.tt2:135
+#: ../../Open-ILS/src/templates/staff/base_js.tt2:136
 msgid "Confirm Record Deletion"
 msgstr ""
 
@@ -3033,11 +3033,11 @@ msgstr ""
 msgid "Credit Card Number"
 msgstr ""
 
-#: ../../Open-ILS/src/templates/staff/base_js.tt2:127
+#: ../../Open-ILS/src/templates/staff/base_js.tt2:128
 msgid "Credit Card Payment"
 msgstr ""
 
-#: ../../Open-ILS/src/templates/staff/base_js.tt2:129
+#: ../../Open-ILS/src/templates/staff/base_js.tt2:130
 msgid "Credit Payment"
 msgstr ""
 
@@ -3238,7 +3238,7 @@ msgstr ""
 msgid "Debit Card"
 msgstr ""
 
-#: ../../Open-ILS/src/templates/staff/base_js.tt2:128
+#: ../../Open-ILS/src/templates/staff/base_js.tt2:129
 msgid "Debit Card Payment"
 msgstr ""
 
@@ -3400,7 +3400,7 @@ msgstr ""
 msgid "Delete prediction pattern?"
 msgstr ""
 
-#: ../../Open-ILS/src/templates/staff/base_js.tt2:136
+#: ../../Open-ILS/src/templates/staff/base_js.tt2:137
 msgid "Delete record {{id}}?"
 msgstr ""
 
@@ -3650,7 +3650,7 @@ msgid "Does Not Equal Any"
 msgstr ""
 
 #. ("{{family_name}}", "{{first_given_name}}", "{{org_name}}", "{{org_shortname}}")
-#: ../../Open-ILS/src/templates/staff/base_js.tt2:145 ../../Open-ILS/src/templates/staff/circ/patron/index.tt2:76
+#: ../../Open-ILS/src/templates/staff/base_js.tt2:146 ../../Open-ILS/src/templates/staff/circ/patron/index.tt2:76
 msgid "Does patron %1, %2 from %3 (%4) consent to having their personal information shared with your library?"
 msgstr ""
 
@@ -3896,7 +3896,7 @@ msgstr ""
 msgid "Edited By"
 msgstr ""
 
-#: ../../Open-ILS/src/templates/staff/base_js.tt2:123
+#: ../../Open-ILS/src/templates/staff/base_js.tt2:124
 msgid "Edited Patron"
 msgstr ""
 
@@ -4077,7 +4077,7 @@ msgstr ""
 msgid "Evergreen Documentation"
 msgstr ""
 
-#: ../../Open-ILS/src/templates/staff/base_js.tt2:162
+#: ../../Open-ILS/src/templates/staff/base_js.tt2:163
 msgid "Evergreen Staff Client"
 msgstr ""
 
@@ -4579,7 +4579,7 @@ msgstr ""
 msgid "Forgive"
 msgstr ""
 
-#: ../../Open-ILS/src/templates/staff/base_js.tt2:131
+#: ../../Open-ILS/src/templates/staff/base_js.tt2:132
 msgid "Forgive Payment"
 msgstr ""
 
@@ -4714,7 +4714,7 @@ msgstr ""
 msgid "Goods"
 msgstr ""
 
-#: ../../Open-ILS/src/templates/staff/base_js.tt2:132
+#: ../../Open-ILS/src/templates/staff/base_js.tt2:133
 msgid "Goods Payment"
 msgstr ""
 
@@ -4876,7 +4876,7 @@ msgstr ""
 msgid "Hold Cancel Date/Time"
 msgstr ""
 
-#: ../../Open-ILS/src/templates/staff/base_js.tt2:134
+#: ../../Open-ILS/src/templates/staff/base_js.tt2:135
 msgid "Hold Cancelation"
 msgstr ""
 
@@ -4940,7 +4940,7 @@ msgstr ""
 msgid "Hold Pull List"
 msgstr ""
 
-#: ../../Open-ILS/src/templates/staff/base_js.tt2:133
+#: ../../Open-ILS/src/templates/staff/base_js.tt2:134
 msgid "Hold Request"
 msgstr ""
 
@@ -5592,7 +5592,7 @@ msgstr ""
 msgid "Item barcode"
 msgstr ""
 
-#: ../../Open-ILS/src/templates/staff/base_js.tt2:154
+#: ../../Open-ILS/src/templates/staff/base_js.tt2:155
 msgid "Item barcode does not have a correct check digit."
 msgstr ""
 
@@ -5616,7 +5616,7 @@ msgstr ""
 msgid "Item is not captured for a hold"
 msgstr ""
 
-#: ../../Open-ILS/src/templates/staff/base_js.tt2:157
+#: ../../Open-ILS/src/templates/staff/base_js.tt2:158
 msgid "Item not found"
 msgstr ""
 
@@ -6854,7 +6854,7 @@ msgstr ""
 msgid "Next to Last"
 msgstr ""
 
-#: ../../Open-ILS/src/templates/staff/admin/serials/t_attr_edit.tt2:114 ../../Open-ILS/src/templates/staff/admin/serials/t_attr_edit.tt2:150 ../../Open-ILS/src/templates/staff/admin/serials/t_attr_edit.tt2:227 ../../Open-ILS/src/templates/staff/admin/serials/t_attr_edit.tt2:257 ../../Open-ILS/src/templates/staff/admin/serials/t_attr_edit.tt2:69 ../../Open-ILS/src/templates/staff/base_js.tt2:170 ../../Open-ILS/src/templates/staff/cat/volcopy/index.tt2:27 ../../Open-ILS/src/templates/staff/cat/volcopy/t_attr_edit.tt2:146 ../../Open-ILS/src/templates/staff/cat/volcopy/t_attr_edit.tt2:203 ../../Open-ILS/src/templates/staff/cat/volcopy/t_attr_edit.tt2:244 ../../Open-ILS/src/templates/staff/cat/volcopy/t_attr_edit.tt2:348 ../../Open-ILS/src/templates/staff/cat/volcopy/t_attr_edit.tt2:372
+#: ../../Open-ILS/src/templates/staff/admin/serials/t_attr_edit.tt2:114 ../../Open-ILS/src/templates/staff/admin/serials/t_attr_edit.tt2:150 ../../Open-ILS/src/templates/staff/admin/serials/t_attr_edit.tt2:227 ../../Open-ILS/src/templates/staff/admin/serials/t_attr_edit.tt2:257 ../../Open-ILS/src/templates/staff/admin/serials/t_attr_edit.tt2:69 ../../Open-ILS/src/templates/staff/base_js.tt2:171 ../../Open-ILS/src/templates/staff/cat/volcopy/index.tt2:27 ../../Open-ILS/src/templates/staff/cat/volcopy/t_attr_edit.tt2:146 ../../Open-ILS/src/templates/staff/cat/volcopy/t_attr_edit.tt2:203 ../../Open-ILS/src/templates/staff/cat/volcopy/t_attr_edit.tt2:244 ../../Open-ILS/src/templates/staff/cat/volcopy/t_attr_edit.tt2:348 ../../Open-ILS/src/templates/staff/cat/volcopy/t_attr_edit.tt2:372
 msgid "No"
 msgstr ""
 
@@ -7240,19 +7240,19 @@ msgstr ""
 msgid "Offline blocklist downloaded"
 msgstr ""
 
-#: ../../Open-ILS/src/templates/staff/base_js.tt2:148
+#: ../../Open-ILS/src/templates/staff/base_js.tt2:149
 msgid "Offline session creation failed"
 msgstr ""
 
-#: ../../Open-ILS/src/templates/staff/base_js.tt2:147
+#: ../../Open-ILS/src/templates/staff/base_js.tt2:148
 msgid "Offline session description"
 msgstr ""
 
-#: ../../Open-ILS/src/templates/staff/base_js.tt2:149
+#: ../../Open-ILS/src/templates/staff/base_js.tt2:150
 msgid "Offline session processing failed"
 msgstr ""
 
-#: ../../Open-ILS/src/templates/staff/base_js.tt2:150
+#: ../../Open-ILS/src/templates/staff/base_js.tt2:151
 msgid "Offline transaction upload failed"
 msgstr ""
 
@@ -7316,15 +7316,15 @@ msgstr ""
 msgid "Operator"
 msgstr ""
 
-#: ../../Open-ILS/src/templates/staff/base_js.tt2:139
+#: ../../Open-ILS/src/templates/staff/base_js.tt2:140
 msgid "Operator Change"
 msgstr ""
 
-#: ../../Open-ILS/src/templates/staff/base_js.tt2:138
+#: ../../Open-ILS/src/templates/staff/base_js.tt2:139
 msgid "Operator Change Failed"
 msgstr ""
 
-#: ../../Open-ILS/src/templates/staff/base_js.tt2:137
+#: ../../Open-ILS/src/templates/staff/base_js.tt2:138
 msgid "Operator Change Succeeded"
 msgstr ""
 
@@ -7696,7 +7696,7 @@ msgstr ""
 msgid "Patron barcode"
 msgstr ""
 
-#: ../../Open-ILS/src/templates/staff/base_js.tt2:156
+#: ../../Open-ILS/src/templates/staff/base_js.tt2:157
 msgid "Patron barcode does not have a correct check digit."
 msgstr ""
 
@@ -7704,7 +7704,7 @@ msgstr ""
 msgid "Patron barcode:"
 msgstr ""
 
-#: ../../Open-ILS/src/templates/staff/base_js.tt2:152
+#: ../../Open-ILS/src/templates/staff/base_js.tt2:153
 msgid "Patron blocked"
 msgstr ""
 
@@ -7729,7 +7729,7 @@ msgstr ""
 msgid "Patron is blocked from checkouts."
 msgstr ""
 
-#: ../../Open-ILS/src/templates/staff/base_js.tt2:151
+#: ../../Open-ILS/src/templates/staff/base_js.tt2:152
 msgid "Patron not found"
 msgstr ""
 
@@ -7868,11 +7868,11 @@ msgstr ""
 msgid "Permission Groups"
 msgstr ""
 
-#: ../../Open-ILS/src/templates/staff/base_js.tt2:142
+#: ../../Open-ILS/src/templates/staff/base_js.tt2:143
 msgid "Permission Override Login Failed"
 msgstr ""
 
-#: ../../Open-ILS/src/templates/staff/base_js.tt2:141
+#: ../../Open-ILS/src/templates/staff/base_js.tt2:142
 msgid "Permission Override Login Succeeded"
 msgstr ""
 
@@ -8440,7 +8440,7 @@ msgstr ""
 msgid "Raw Z39.50 Search"
 msgstr ""
 
-#: ../../Open-ILS/src/templates/staff/base_js.tt2:143
+#: ../../Open-ILS/src/templates/staff/base_js.tt2:144
 msgid "Re-Using Permission Override Login in Batch"
 msgstr ""
 
@@ -8683,7 +8683,7 @@ msgstr ""
 msgid "Register a New Workstation For This Browser"
 msgstr ""
 
-#: ../../Open-ILS/src/templates/staff/base_js.tt2:124
+#: ../../Open-ILS/src/templates/staff/base_js.tt2:125
 msgid "Registered Patron"
 msgstr ""
 
@@ -8807,7 +8807,7 @@ msgstr ""
 msgid "Removed"
 msgstr ""
 
-#: ../../Open-ILS/src/templates/staff/admin/workstation/t_print_templates.tt2:34 ../../Open-ILS/src/templates/staff/base_js.tt2:121 ../../Open-ILS/src/templates/staff/circ/patron/t_items_out.tt2:67 ../../Open-ILS/src/templates/staff/circ/renew/index.tt2:2 ../../Open-ILS/src/templates/staff/circ/share/t_circ_exists_dialog.tt2:36 ../../Open-ILS/src/templates/staff/offline-interface.tt2:374 ../../Open-ILS/src/templates/staff/offline-interface.tt2:430
+#: ../../Open-ILS/src/templates/staff/admin/workstation/t_print_templates.tt2:34 ../../Open-ILS/src/templates/staff/base_js.tt2:122 ../../Open-ILS/src/templates/staff/circ/patron/t_items_out.tt2:67 ../../Open-ILS/src/templates/staff/circ/renew/index.tt2:2 ../../Open-ILS/src/templates/staff/circ/share/t_circ_exists_dialog.tt2:36 ../../Open-ILS/src/templates/staff/offline-interface.tt2:374 ../../Open-ILS/src/templates/staff/offline-interface.tt2:430
 msgid "Renew"
 msgstr ""
 
@@ -10072,15 +10072,15 @@ msgstr ""
 msgid "Status:"
 msgstr ""
 
-#: ../../Open-ILS/src/templates/staff/base_js.tt2:167
+#: ../../Open-ILS/src/templates/staff/base_js.tt2:168
 msgid "Status: Long Overdue"
 msgstr ""
 
-#: ../../Open-ILS/src/templates/staff/base_js.tt2:166
+#: ../../Open-ILS/src/templates/staff/base_js.tt2:167
 msgid "Status: Lost Materials"
 msgstr ""
 
-#: ../../Open-ILS/src/templates/staff/base_js.tt2:168
+#: ../../Open-ILS/src/templates/staff/base_js.tt2:169
 msgid "Status: Overdue"
 msgstr ""
 
@@ -10271,8 +10271,8 @@ msgstr ""
 msgid "TCN"
 msgstr ""
 
-#. ("{{overlay_target_tcn}}")
 #. ("{{local_overlay_target_tcn}}")
+#. ("{{overlay_target_tcn}}")
 #: ../../Open-ILS/src/templates/staff/cat/z3950/t_list.tt2:78 ../../Open-ILS/src/templates/staff/cat/z3950/t_overlay.tt2:21
 msgid "TCN %1"
 msgstr ""
@@ -10489,7 +10489,7 @@ msgstr ""
 msgid "This account is inactive and may not circulate items."
 msgstr ""
 
-#: ../../Open-ILS/src/templates/staff/base_js.tt2:164
+#: ../../Open-ILS/src/templates/staff/base_js.tt2:165
 msgid "This action might take a while to complete. Continue?"
 msgstr ""
 
@@ -10542,15 +10542,15 @@ msgstr ""
 msgid "This item should be routed to the %1Public Holds Shelf%2"
 msgstr ""
 
-#: ../../Open-ILS/src/templates/staff/base_js.tt2:118
+#: ../../Open-ILS/src/templates/staff/base_js.tt2:119
 msgid "This page may have unsaved data."
 msgstr ""
 
-#: ../../Open-ILS/src/templates/staff/base_js.tt2:116
+#: ../../Open-ILS/src/templates/staff/base_js.tt2:117
 msgid "This page may have unsaved data.\\n\\nAre you sure you want to leave this page?"
 msgstr ""
 
-#: ../../Open-ILS/src/templates/staff/base_js.tt2:146 ../../Open-ILS/src/templates/staff/circ/curbside/t_schedule_pickup.tt2:25 ../../Open-ILS/src/templates/staff/circ/patron/t_bcsearch.tt2:22
+#: ../../Open-ILS/src/templates/staff/base_js.tt2:147 ../../Open-ILS/src/templates/staff/circ/curbside/t_schedule_pickup.tt2:25 ../../Open-ILS/src/templates/staff/circ/patron/t_bcsearch.tt2:22
 msgid "This patron's record is not viewable at your library."
 msgstr ""
 
@@ -11314,7 +11314,7 @@ msgstr ""
 msgid "Verify Payment Amount"
 msgstr ""
 
-#: ../../Open-ILS/src/templates/staff/base_js.tt2:144 ../../Open-ILS/src/templates/staff/circ/patron/index.tt2:75
+#: ../../Open-ILS/src/templates/staff/base_js.tt2:145 ../../Open-ILS/src/templates/staff/circ/patron/index.tt2:75
 msgid "Verify Permission to Share Personal Information"
 msgstr ""
 
@@ -11615,7 +11615,7 @@ msgstr ""
 msgid "Work Log"
 msgstr ""
 
-#: ../../Open-ILS/src/templates/staff/base_js.tt2:130
+#: ../../Open-ILS/src/templates/staff/base_js.tt2:131
 msgid "Work Payment"
 msgstr ""
 
@@ -11684,7 +11684,7 @@ msgstr ""
 msgid "Yearly (Annual)"
 msgstr ""
 
-#: ../../Open-ILS/src/templates/staff/admin/serials/t_attr_edit.tt2:108 ../../Open-ILS/src/templates/staff/admin/serials/t_attr_edit.tt2:144 ../../Open-ILS/src/templates/staff/admin/serials/t_attr_edit.tt2:221 ../../Open-ILS/src/templates/staff/admin/serials/t_attr_edit.tt2:251 ../../Open-ILS/src/templates/staff/admin/serials/t_attr_edit.tt2:63 ../../Open-ILS/src/templates/staff/base_js.tt2:169 ../../Open-ILS/src/templates/staff/cat/volcopy/index.tt2:26 ../../Open-ILS/src/templates/staff/cat/volcopy/t_attr_edit.tt2:140 ../../Open-ILS/src/templates/staff/cat/volcopy/t_attr_edit.tt2:197 ../../Open-ILS/src/templates/staff/cat/volcopy/t_attr_edit.tt2:238 ../../Open-ILS/src/templates/staff/cat/volcopy/t_attr_edit.tt2:342 ../../Open-ILS/src/templates/staff/cat/volcopy/t_attr_edit.tt2:366
+#: ../../Open-ILS/src/templates/staff/admin/serials/t_attr_edit.tt2:108 ../../Open-ILS/src/templates/staff/admin/serials/t_attr_edit.tt2:144 ../../Open-ILS/src/templates/staff/admin/serials/t_attr_edit.tt2:221 ../../Open-ILS/src/templates/staff/admin/serials/t_attr_edit.tt2:251 ../../Open-ILS/src/templates/staff/admin/serials/t_attr_edit.tt2:63 ../../Open-ILS/src/templates/staff/base_js.tt2:170 ../../Open-ILS/src/templates/staff/cat/volcopy/index.tt2:26 ../../Open-ILS/src/templates/staff/cat/volcopy/t_attr_edit.tt2:140 ../../Open-ILS/src/templates/staff/cat/volcopy/t_attr_edit.tt2:197 ../../Open-ILS/src/templates/staff/cat/volcopy/t_attr_edit.tt2:238 ../../Open-ILS/src/templates/staff/cat/volcopy/t_attr_edit.tt2:342 ../../Open-ILS/src/templates/staff/cat/volcopy/t_attr_edit.tt2:366
 msgid "Yes"
 msgstr ""
 
@@ -11937,7 +11937,7 @@ msgstr ""
 msgid "week on"
 msgstr ""
 
-#: ../../Open-ILS/src/templates/staff/base_js.tt2:160
+#: ../../Open-ILS/src/templates/staff/base_js.tt2:161
 msgid "{{location_name}} ({{owning_lib_shortname}})"
 msgstr ""
 
