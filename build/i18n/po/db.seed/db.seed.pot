@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Evergreen 1.4\n"
 "Report-Msgid-Bugs-To: open-ils-dev@list.georgialibraries.org\n"
-"POT-Creation-Date: 2024-12-18 21:05:05-0400\n"
+"POT-Creation-Date: 2025-04-14 13:24:27-0400\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -20551,4 +20551,9 @@ msgstr ""
 # id::coust.description__eg.staff.catalog.results.show_sidebar
 #: 950.data.seed-values.sql:24843
 msgid "Show the sidebar in staff catalog search results. Default is true."
+msgstr ""
+
+# id::cwst.label__eg.grid.catalog.record.parts
+#: 950.data.seed-values.sql:24849
+msgid "Grid Config: catalog.record.parts"
 msgstr ""
