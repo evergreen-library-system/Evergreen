@@ -1597,6 +1597,8 @@ sub flatten {
             } elsif ($filter->name eq 'container') {
                 if (@{$filter->args} >= 3) {
                     my ($class, $ctype, $cid, $token) = @{$filter->args};
+                    # trim any non-numeric characters after the ID
+                    $cid =~ s/\D.*//g;
                     my $perm_join = '';
                     my $rec_join = '';
                     my $rec_field = 'ci.target_biblio_record_entry';
