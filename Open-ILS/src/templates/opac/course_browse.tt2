@@ -37,7 +37,7 @@
   <div id="main-content">
     <div id="browse-for-courses">
       <div id="browse-controls" class='searchbar'>
-        <form method="get" onsubmit="$('browse-submit-spinner').className = ''; return true">
+        <form method="get" class="form-inline g-1" onsubmit="$('browse-submit-spinner').className = ''; return true">
           <input type="hidden" name="blimit"
             value="[% blimit | html %]" />
           [% control_qtype = INCLUDE "opac/parts/course_search/qtype_selector.tt2"
