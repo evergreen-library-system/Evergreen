@@ -53,16 +53,16 @@
                          <button type="button" class="btn btn-opac btn-sm" id="myopac_new_global_row" onclick='addSearchRow()'>
                              <i class="fas fa-plus-circle" aria-hidden="true"></i> [% l('Add Search Terms') %]
                          </button>
-                         <div id="adv_search_status" role="status" style="margin-left:1rem">
-                             [% # ARIA live announcements toggled by ariaStatus() in simple.js %]
-                             <div class="m-0 alert alert-warning d-none" id="aria-search-row-removed">
-                                 [% l('Search term logic group removed.'); %]
-                             </div>
-                             <div class="m-0 alert alert-success d-none" id="aria-search-row-added">
-                                 [% l('Search term logic group added.'); %]
-                             </div>
-                         </div>
-                     </div>
+                      </div>
+                      <div id="adv_search_status" role="status" style="margin: 0 auto;">
+                        [% # ARIA live announcements toggled by ariaStatus() in simple.js %]
+                        <div class="m-0 alert alert-warning d-none" id="aria-search-row-removed">
+                            [% l('Search term logic group removed.'); %]
+                        </div>
+                        <div class="m-0 alert alert-success d-none" id="aria-search-row-added">
+                            [% l('Search term logic group added.'); %]
+                        </div>
+                      </div>
                  </div>
             </div>
           </div>
