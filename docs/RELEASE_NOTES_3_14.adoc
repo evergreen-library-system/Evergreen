@@ -7,8 +7,6 @@
 
 This release contains bug fixes and documentation fixes improving on Evergreen 3.14.4.
 
-=== Upgrade Notes === 
-
 === Acquisitions ===
 
 * Displays a "Show Invoice in Legacy Interface" in invoices when configured. (https://bugs.launchpad.net/evergreen/+bug/2099133[Bug 2099133])
