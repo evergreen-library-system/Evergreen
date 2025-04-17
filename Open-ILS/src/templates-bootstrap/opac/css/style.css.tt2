@@ -364,6 +364,28 @@ Novelist Styling
     margin-bottom: 1rem;
 }
 
+.advanced_div { 
+    padding-top: 15px; 
+}
+
+#adv_global_search { 
+    width: 100%; 
+}
+
+#adv_global_input_table { 
+    padding-inline-start: 15px; 
+    width: 100%; 
+}
+
+#adv_global_input_table select, 
+.adv_fieldset_row .col-bool-operator { 
+    width: 7rem; 
+}
+
+.adv_fieldset_row .col-term { 
+    min-width: 30%; 
+}
+
 .adv_search_grid {
     align-items: center;
     display: grid;
@@ -373,11 +395,10 @@ Novelist Styling
 }
 
 .adv_fieldset_row {
-    display: grid;
-    grid-column: 1 / -1;
-    grid-gap: 0.25rem;
-    grid-template-columns: subgrid;
+    display: flex;
+    gap: 0.35rem;
     align-items: center;
+    padding: 0.5rem 0 0;
 }
 
 #adv_global_addrow {
@@ -2431,14 +2452,6 @@ div#facet_sidebar {
     font-weight: bold;
 }
 
-.advanced_div { padding-top: 15px; }
-#adv_global_search { width: 100%; }
-#adv_global_addrow td { padding-top: 7px; }
-[% IF rtl == 't' -%]
-#adv_global_addrow.td-search-left{text-align:right;}
-[% END -%]
-#adv_global_input_table { width: 100%; }
-#adv_global_input_table select { width: 7em; }
 .adv_adv_link {
     font-size: [% css_fonts.size_smaller %];
     color: [% css_colors.text_alert %];
