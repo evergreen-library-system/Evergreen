@@ -35,7 +35,7 @@ END;
                 callnum = callnum  _ " " _ callnum_suffix;
             END;
         -%]
-        <tr>
+        <tr id="row[% loop.count %]">
             <td class="location">
             [%- INCLUDE "opac/parts/library_name_link.tt2"; -%]
             </td>
@@ -72,7 +72,7 @@ END;
             [%- more_copies_limit = 50 %] [%# TODO: config %]
             <td>
             [%- IF  ctx.copy_limit != more_copies_limit AND ctx.copies.size >= ctx.copy_limit %]
-                <a href="[% mkurl('', {copy_limit => more_copies_limit, copy_offset => 0}) %]">[% l('Show more copies') %]</a>
+                <a href="[% mkurl('', {copy_limit => more_copies_limit, copy_offset => 0}, '', 'row' _ (copies.size + 1)) %]">[% l('Show more copies') %]</a>
             [%- ELSIF ctx.copy_limit == more_copies_limit %]
                 <a href="[% mkurl('', {copy_limit => 0, copy_offset => 0}) %]">[% l('Show fewer copies') %]</a>
             [%- END %]
