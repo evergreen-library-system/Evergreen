@@ -371,13 +371,13 @@ END; # FOREACH bib
         [%- END %]
         </tr>
         [% IF NOT serial_holdings -%]
-        <tr>
+        <tr id="row[% loop.count %]">
             <td>
                 [%- more_copies_limit = 50 %] [%# TODO: config %]
                 [%- IF  ctx.copy_limit != more_copies_limit AND copies.size >= ctx.copy_limit AND ctx.copy_limit < total_copies %]
                     <div class="rdetail_show_copies">
                         <img src="[% ctx.media_prefix %]/images/plus_sign.png[% ctx.cache_key %]" alt="[% l('Show more copies icon') %]"/>
-                        <a href="[% mkurl('', {copy_limit => more_copies_limit, copy_offset => 0}) %]">[% l('Show more copies') %]</a>
+                        <a href="[% mkurl('', {copy_limit => more_copies_limit, copy_offset => 0}, '', 'row' _ (copies.size + 1)) %]">[% l('Show more copies') %]</a>
                     </div>
                 [%- ELSIF ctx.copy_limit == more_copies_limit %]
                     <div  class="rdetail_show_copies">
