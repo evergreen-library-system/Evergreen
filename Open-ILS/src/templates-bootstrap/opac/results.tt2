@@ -59,9 +59,10 @@
                 <div class="search-options text-center">
                     <div class="mx-auto">
                         <!-- ===== Drop Down ===== -->
-                        <div class="search-option my-2">
+                        <div class="search-option form-inline my-2">
                         <label for="opac.result.sort">[% l('Sort Results') %]</label>
-                            [% INCLUDE "opac/parts/filtersort.tt2" value=CGI.param('sort') submit_on_change=1 class="form-control form-control-sm" %]
+                            [% INCLUDE "opac/parts/filtersort.tt2" value=CGI.param('sort') submit_on_change=0 class="form-control form-control-sm" %]
+                            <button class="btn btn-sm btn-opac" type="submit">[% l('Update Search Results') %]</button>
                         </div>
                         [%- IF show_more_details.default != 'hide' -%]
 

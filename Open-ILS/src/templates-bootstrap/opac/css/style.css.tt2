@@ -4177,8 +4177,9 @@ label[for*=expert_]
 
 
 .search-option{
-    display: inline-block;
+    display: inline-flex;
     margin: 0px 10px;
+    gap: 0.25rem;
 }
 
 
