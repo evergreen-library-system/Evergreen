@@ -950,7 +950,8 @@
         END %]
         <a href='http://obalkyknih.cz/view?isbn=[% row_isbnissn %]'>
     [% ELSE %]
-        <a href='[% ctx.media_prefix %]/opac/extras/ac/jacket/medium/r/[% row_rec_id | uri %]'>
+    <a href="[% mkurl(ctx.opac_root _ '/record/' _
+        circ.circ.target_copy.call_number.record.id, {}, 1) %]">
     [% END %]
     <img alt="" class='my-2' style="max-width:70px;"
             src='[% ctx.media_prefix %]/opac/extras/ac/jacket/medium/r/[% row_rec_id | uri %]'/>
