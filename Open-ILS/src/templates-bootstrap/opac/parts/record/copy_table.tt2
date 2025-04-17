@@ -156,7 +156,7 @@ END; # FOREACH bib
                 callnum = callnum  _ " " _ callnum_suffix;
             END;
         -%]
-        <tr role="row" property="offers" typeof="Offer" mobile-count="#[% loop.count %]">
+        <tr role="row" id="row[% loop.count %]" property="offers" typeof="Offer" mobile-count="#[% loop.count %]">
             [%- IF serial_holdings %]
             <td role="cell" class='rdetail-issue-issue'>
                 [%- copy_info.holding_label | html; -%]
@@ -379,7 +379,7 @@ END; # FOREACH bib
             [%- more_copies_limit = 50 %] [%# TODO: config %]
             [%- IF  ctx.copy_limit != more_copies_limit AND copies.size >= ctx.copy_limit AND ctx.copy_limit < total_copies %]
                         <div class="rdetail_show_copies">
-                            <a href="[% mkurl('', {copy_limit => more_copies_limit, copy_offset => 0}) %]"><i class="fas fa-plus-square"></i> [% l('Show more copies') %]</a>
+                            <a href="[%  mkurl('', {copy_limit => more_copies_limit, copy_offset => 0}, '', 'row' _ (copies.size + 1)) %]"><i class="fas fa-plus-square"></i> [% l('Show more copies') %]</a>
                         </div>
             [%- ELSIF ctx.copy_limit == more_copies_limit %]
                         <div  class="rdetail_show_copies">
