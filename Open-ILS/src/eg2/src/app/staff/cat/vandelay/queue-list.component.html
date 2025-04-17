@@ -21,11 +21,21 @@
 </div>
 
 <eg-grid *ngIf="queueType==='bib'" #bibQueueGrid
-  persistKey="cat.vandelay.queue.list.bib"
+  persistKey="cat.vandelay.queue.list.bib" filterable="true"
   (onRowActivate)="rowActivated($event)"
   idlClass="vbq" [dataSource]="queueSource">
   <eg-grid-toolbar-action label="Delete Selected" i18n-label 
     [action]="deleteSelected"></eg-grid-toolbar-action>
+
+  <eg-grid-column i18n-label label="Queue ID" path="id" sortable="true"></eg-grid-column>
+  <eg-grid-column i18n-label label="Owner" path="owner" [cellTemplate]="ownerCellTemplate" sortable="true" hidden="true"></eg-grid-column>
+  <eg-grid-column i18n-label label="Name" path="name" sortable="true"></eg-grid-column>
+  <eg-grid-column i18n-label label="Complete" path="complete" sortable="true"></eg-grid-column>
+  <eg-grid-column i18n-label label="Type" path="queue_type" sortable="true"></eg-grid-column>
+  <eg-grid-column i18n-label label="Match Set" path="match_set.name()" sortable="true"></eg-grid-column>
+  <eg-grid-column i18n-label label="Item Import Attribute Definition" path="item_attr_def" sortable="true"></eg-grid-column>
+  <eg-grid-column i18n-label label="Match Bucket" path="match_bucket" sortable="true"></eg-grid-column>
+  <eg-grid-column i18n-label label="Create Time" path="create_time" sortable="true"></eg-grid-column>
 </eg-grid>
 
 <eg-grid *ngIf="queueType==='acq'" #acqQueueGrid
@@ -44,4 +54,6 @@
     [action]="deleteSelected"></eg-grid-toolbar-action>
 </eg-grid>
 
-
+<ng-template #ownerCellTemplate let-row="row">
+  {{getUserName(row.owner())}}
+</ng-template>

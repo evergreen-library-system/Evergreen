@@ -1,14 +1,14 @@
 import {Component, ViewChild} from '@angular/core';
-import {Observable, of} from 'rxjs';
+import {firstValueFrom, Observable, of} from 'rxjs';
 import {Router, ActivatedRoute, ParamMap} from '@angular/router';
 import {Pager} from '@eg/share/util/pager';
 import {IdlObject} from '@eg/core/idl.service';
 import {NetService} from '@eg/core/net.service';
 import {AuthService} from '@eg/core/auth.service';
 import {GridComponent} from '@eg/share/grid/grid.component';
-import {GridDataSource} from '@eg/share/grid/grid';
+import {GridDataSource, GridCellTextGenerator} from '@eg/share/grid/grid';
 import {VandelayService} from './vandelay.service';
-
+import { PcrudService } from '@eg/core/pcrud.service';
 @Component({
     templateUrl: 'queue-list.component.html'
 })
@@ -17,9 +17,11 @@ export class QueueListComponent {
     queueType: string; // bib / auth / bib-acq
     queueSource: GridDataSource;
     deleteSelected: (rows: IdlObject[]) => void;
+    userCache: { [id: number]: string } = {};
 
     // points to the currently active grid.
     queueGrid: GridComponent;
+    cellTextGenerator: GridCellTextGenerator;
 
     @ViewChild('bibQueueGrid', { static: false }) bibQueueGrid: GridComponent;
     @ViewChild('authQueueGrid', { static: false }) authQueueGrid: GridComponent;
@@ -29,10 +31,14 @@ export class QueueListComponent {
         private route: ActivatedRoute,
         private net: NetService,
         private auth: AuthService,
+        private pcrud: PcrudService,
         private vandelay: VandelayService) {
 
         this.queueType = 'bib';
         this.queueSource = new GridDataSource();
+        this.cellTextGenerator = {
+            owner: row => this.getUserName(row.owner())
+        };
 
         // Reset queue grid offset
         this.vandelay.queuePageOffset = 0;
@@ -109,6 +115,15 @@ export class QueueListComponent {
             method, this.auth.token(), null, filter,
             {offset: pager.offset, limit: pager.limit}
         );
+    }
+
+    // Don't bother fetching other usernames right now; you can only see your own queue.
+    // See Vandelay.pm, sub owner_queue_retrieve
+    getUserName(userId: number): string {
+        if (!this.userCache[userId]) {
+            this.userCache[userId] = this.auth.user() && this.auth.user().id() === userId ? this.auth.user().usrname() : userId.toString();
+        }
+        return this.userCache[userId];
     }
 }
 
