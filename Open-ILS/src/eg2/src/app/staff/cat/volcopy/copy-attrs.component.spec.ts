@@ -147,11 +147,11 @@ describe('CopyAttrsComponent', () => {
                 // Also assume that we have no item fields
                 component.batchAttrs = new QueryList();
 
-                //component.saveTemplate(false);
+                // component.saveTemplate(false);
 
-                //expect(component.volcopy.templates[0]).toEqual({callnumber: {prefix: 10}});
+                // expect(component.volcopy.templates[0]).toEqual({callnumber: {prefix: 10}});
 
-                //expect(volCopyServiceMock.saveTemplates).toHaveBeenCalled();
+                // expect(volCopyServiceMock.saveTemplates).toHaveBeenCalled();
             });
         });
         describe('when multiple fields have changed', () => {
@@ -187,7 +187,7 @@ describe('CopyAttrsComponent', () => {
                 component.saveTemplate(component.volcopy.templates[0]);
 
                 // toHash()
-                let hashedCallNumber = {
+                const hashedCallNumber = {
                     ischanged: component.volcopy.templates[0].callnumber.ischanged(),
                     label_class: component.volcopy.templates[0].callnumber.label_class(),
                     prefix: component.volcopy.templates[0].callnumber.prefix(),

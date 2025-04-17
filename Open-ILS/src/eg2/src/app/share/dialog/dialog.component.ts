@@ -60,7 +60,7 @@ export class DialogComponent implements OnInit {
 
     // The modalRef allows direct control of the modal instance.
     protected modalRef: NgbModalRef = null;
-    
+
     public focusable: string;
 
     constructor(
