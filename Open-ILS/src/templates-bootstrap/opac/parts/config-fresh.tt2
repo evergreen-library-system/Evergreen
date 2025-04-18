@@ -159,10 +159,12 @@ search.adv_config = [
 # Set up custom include/exclude subfield lists for various different 880-linked
 # datafields.
 #
+# Example exclusion: '245' => { exclude => 'fghks678' }
 
 search.links_from_880 = {
-    100 => { include => 'ac' },
-    245 => { exclude => 'fghk016789' }
+    '100' => { include => 'ad' },
+    '110' => { include => 'ad' },
+    '111' => { include => 'acd' }
 };
 
 ##############################################################################
