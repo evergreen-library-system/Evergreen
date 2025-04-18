@@ -197,7 +197,7 @@ describe('HoldComponent', () => {
                     notifyEmail: true,
                     notifyPhone: null,
                     notifySms: null,
-                    override: undefined,
+                    override: true,
                     smsCarrier: null,
                     thawDate: null,
                     frozen: false,

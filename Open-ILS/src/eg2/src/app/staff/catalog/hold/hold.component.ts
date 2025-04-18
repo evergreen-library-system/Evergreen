@@ -83,7 +83,7 @@ export class HoldComponent implements OnInit, OnDestroy {
 
     holdGroups: IdlObject[];
     selectedHoldGroup: ComboboxEntry;
-    holdGroupsOverrideAllPossible = false;
+    holdGroupsOverrideAllPossible = true;
 
     smsEnabled: boolean;
 
