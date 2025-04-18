@@ -2124,6 +2124,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 			<field reporter:label="User Permission Group" name="usr_grp" reporter:datatype="link"/>
 			<field reporter:label="Requestor Permission Group" name="requestor_grp" reporter:datatype="link" oils_obj:required="true"/>
 			<field reporter:label="Circulation Modifier" name="circ_modifier" oils_persist:primitive="string" reporter:datatype="link"/>
+			<field reporter:label="Shelving Location" name="copy_location" oils_persist:primitive="int" reporter:datatype="link"/>
 			<field reporter:label="MARC Type" name="marc_type" oils_persist:primitive="string" reporter:datatype="link"/>
 			<field reporter:label="MARC Form" name="marc_form" oils_persist:primitive="string" reporter:datatype="link"/>
 			<field reporter:label="MARC Bib Level" name="marc_bib_level" oils_persist:primitive="string" reporter:datatype="link"/>
@@ -2148,6 +2149,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 			<link field="usr_grp" reltype="has_a" key="id" map="" class="pgt"/>
 			<link field="requestor_grp" reltype="has_a" key="id" map="" class="pgt"/>
 			<link field="circ_modifier" reltype="has_a" key="code" map="" class="ccm"/>
+			<link field="copy_location" reltype="has_a" key="id" map="" class="acpl"/>
 			<link field="marc_type" reltype="has_a" key="code" map="" class="citm"/>
 			<link field="marc_form" reltype="has_a" key="code" map="" class="cifm"/>
 			<link field="marc_bib_level" reltype="has_a" key="code" map="" class="cblvl"/>

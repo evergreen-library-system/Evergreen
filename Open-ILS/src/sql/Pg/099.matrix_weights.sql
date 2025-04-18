@@ -33,6 +33,7 @@ CREATE TABLE config.hold_matrix_weights (
     pickup_ou               NUMERIC(6,2)   NOT NULL,
     item_owning_ou          NUMERIC(6,2)   NOT NULL,
     item_circ_ou            NUMERIC(6,2)   NOT NULL,
+    copy_location           NUMERIC(6,2)   NOT NULL,
     usr_grp                 NUMERIC(6,2)   NOT NULL,
     requestor_grp           NUMERIC(6,2)   NOT NULL,
     circ_modifier           NUMERIC(6,2)   NOT NULL,

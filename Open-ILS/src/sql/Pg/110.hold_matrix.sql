@@ -41,6 +41,7 @@ CREATE TABLE config.hold_matrix_matchpoint (
     usr_grp                 INT        REFERENCES permission.grp_tree (id) DEFERRABLE INITIALLY DEFERRED,    -- Set to the top applicable group from the group tree; will need descendents and prox functions for filtering
     requestor_grp           INT        NOT NULL REFERENCES permission.grp_tree (id) DEFERRABLE INITIALLY DEFERRED,    -- Set to the top applicable group from the group tree; will need descendents and prox functions for filtering
     circ_modifier           TEXT    REFERENCES config.circ_modifier (code) DEFERRABLE INITIALLY DEFERRED,
+    copy_location           INT     REFERENCES asset.copy_location (id) DEFERRABLE INITIALLY DEFERRED,
     marc_type               TEXT,
     marc_form               TEXT,
     marc_bib_level          TEXT,
@@ -60,7 +61,7 @@ CREATE TABLE config.hold_matrix_matchpoint (
 );
 
 -- Nulls don't count for a constraint match, so we have to coalesce them into something that does.
-CREATE UNIQUE INDEX chmm_once_per_paramset ON config.hold_matrix_matchpoint (COALESCE(user_home_ou::TEXT, ''), COALESCE(request_ou::TEXT, ''), COALESCE(pickup_ou::TEXT, ''), COALESCE(item_owning_ou::TEXT, ''), COALESCE(item_circ_ou::TEXT, ''), COALESCE(usr_grp::TEXT, ''), COALESCE(requestor_grp::TEXT, ''), COALESCE(circ_modifier, ''), COALESCE(marc_type, ''), COALESCE(marc_form, ''), COALESCE(marc_bib_level, ''), COALESCE(marc_vr_format, ''), COALESCE(juvenile_flag::TEXT, ''), COALESCE(ref_flag::TEXT, ''), COALESCE(item_age, '0 seconds')) WHERE active;
+CREATE UNIQUE INDEX chmm_once_per_paramset ON config.hold_matrix_matchpoint (COALESCE(user_home_ou::TEXT, ''), COALESCE(request_ou::TEXT, ''), COALESCE(pickup_ou::TEXT, ''), COALESCE(item_owning_ou::TEXT, ''), COALESCE(item_circ_ou::TEXT, ''), COALESCE(usr_grp::TEXT, ''), COALESCE(requestor_grp::TEXT, ''), COALESCE(circ_modifier, ''), COALESCE(copy_location::TEXT, ''), COALESCE(marc_type, ''), COALESCE(marc_form, ''), COALESCE(marc_bib_level, ''), COALESCE(marc_vr_format, ''), COALESCE(juvenile_flag::TEXT, ''), COALESCE(ref_flag::TEXT, ''), COALESCE(item_age, '0 seconds')) WHERE active;
 
 /*
 Figure out which rules apply for a given hold
@@ -129,6 +130,7 @@ BEGIN
         weights.usr_grp         := 7.0;
         weights.requestor_grp   := 8.0;
         weights.circ_modifier   := 4.0;
+        weights.copy_location   := 4.0;
         weights.marc_type       := 3.0;
         weights.marc_form       := 2.0;
         weights.marc_bib_level  := 1.0;
@@ -186,6 +188,7 @@ BEGIN
             AND (m.juvenile_flag        IS NULL OR m.juvenile_flag = user_object.juvenile)
             -- Static Item Checks
             AND (m.circ_modifier        IS NULL OR m.circ_modifier = item_object.circ_modifier)
+            AND (m.copy_location        IS NULL OR m.copy_location = item_object.location)
             AND (m.marc_type            IS NULL OR m.marc_type = COALESCE(item_object.circ_as_type, rec_descriptor.item_type))
             AND (m.marc_form            IS NULL OR m.marc_form = rec_descriptor.item_form)
             AND (m.marc_bib_level       IS NULL OR m.marc_bib_level = rec_descriptor.bib_level)
@@ -206,6 +209,7 @@ BEGIN
             CASE WHEN m.juvenile_flag   IS NOT NULL THEN 4^weights.juvenile_flag ELSE 0.0 END +
             -- Static Item Checks
             CASE WHEN m.circ_modifier   IS NOT NULL THEN 4^weights.circ_modifier ELSE 0.0 END +
+            CASE WHEN m.copy_location   IS NOT NULL THEN 4^weights.copy_location ELSE 0.0 END +
             CASE WHEN m.marc_type       IS NOT NULL THEN 4^weights.marc_type ELSE 0.0 END +
             CASE WHEN m.marc_form       IS NOT NULL THEN 4^weights.marc_form ELSE 0.0 END +
             CASE WHEN m.marc_vr_format  IS NOT NULL THEN 4^weights.marc_vr_format ELSE 0.0 END +
