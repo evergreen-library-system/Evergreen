@@ -127,7 +127,7 @@ When the same information is input for each address type, any edits made to one 
 . Click on the tab of the address you would like to make changes to.
 . Click the *Clone as New Address* button toward the bottom of the screen. 
 +
-image::describing_your_organization/clone as new address.png [Additional button text: This address is used for multiple address types.]]
+image::describing_your_organization/clone as new address.png[Additional button text: This address is used for multiple address types.]
 +
 . Input the address updates.
 . Click *Save*.
