@@ -4,15 +4,16 @@
     # See "Model A" in http://www.loc.gov/marc/bibliographic/ecbdmulti.html
     # and $6 description in http://www.loc.gov/marc/bibliographic/ecbdcntf.html
     MACRO get_graphic_880s BLOCK;
+        # Define subfields to include or exclude in config.tt2 - search.links_from_880
         include_sf = search.links_from_880.$target_field.include;
         exclude_sf = search.links_from_880.$target_field.exclude || 'ew01456789';
         test_sf = '';
 
         IF include_sf.length == 0;
             # we must use an exclusion list, even if it's the default one
-            test_sf = 'not(contains(' _ exclude_sf _ ', @code))';
-        ELSE
-            test_sf = 'contains(' _ include_sf _ ', @code)';
+            test_sf = 'not(contains("' _ exclude_sf _ '", @code))';
+        ELSE;
+            test_sf = 'contains("' _ include_sf _ '", @code)';
         END;
 
         FOR node IN xml.findnodes('//*[@tag="' _ target_field _ '"]');
