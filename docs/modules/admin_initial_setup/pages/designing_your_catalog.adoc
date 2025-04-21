@@ -744,3 +744,10 @@ would create a large, Google-style search bar on the homepage only:
 }
 ----
 
+== Editing displayed subfields ==
+
+You may wish to customize which subfields are displayed in certain areas, such as
+the list view.  You can configure this in your catalog's `config.tt2` file.  Find
+the `search.links_from_880` hash, and add a list of subfields you either wish to
+include or exclude from the display for the given field.
+
