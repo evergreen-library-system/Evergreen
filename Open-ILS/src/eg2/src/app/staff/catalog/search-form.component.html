@@ -131,7 +131,7 @@
           <div class="mt-3 gx-3 row row-cols-auto align-items-end">
               <div class="col form-inline-group">
                 <label i18n class="form-label select-label" for="context-sort">Sort Results</label>
-                <eg-sort-order-select [sortOrder]="sortMethodSetting" (sortOrderChange)="sortOrderChange($event)"></eg-sort-order-select>
+                <eg-sort-order-select [id]="'context-sort'" [sortOrder]="sortMethodSetting" (sortOrderChange)="sortOrderChange($event)"></eg-sort-order-select>
               </div>
               <div class="col form-check form-check-inline ms-2 pt-2">
                   <label class="form-label form-check-label" for="context-termSearch-available">
@@ -284,12 +284,10 @@
               <i i18n>Clear the Library Group or Shelving Location Group selection to choose individual Shelving Locations</i>
             </p>
           </div>
-          <div class="row row-cols-auto mt-3" [hidden]="!showSearchFilters">
+          <fieldset class="row row-cols-auto mt-3" [hidden]="!showSearchFilters">
+            <legend class="form-label col-form-label" i18n>Publication Year</legend>
             <div class="col">
-              <label class="form-label" for="pub-date1-input" i18n>Publication Year is</label>
               <label class="visually-hidden" for="pub-date-operator-select" i18n>compare publication dates using...</label>
-            </div>
-            <div class="col">
               <select id="pub-date-operator-select" class="form-select ms-2" [(ngModel)]="context.termSearch.dateOp">
                 <option value='is' i18n>Is</option>
                 <option value='before' i18n>Before</option>
@@ -302,13 +300,12 @@
               <input class="form-control ms-2" type="number" id="context-termSearch-date1"
                 [(ngModel)]="context.termSearch.date1"  (change)="filtersActive()"/>
             </div>
-            <div class="col">
+            <div class="col" *ngIf="context.termSearch.dateOp === 'between'">
               <label i18n class="visually-hidden" for="context-termSearch-date2">End of year range</label>
-                <input class="form-control ms-2" type="number"
-                *ngIf="context.termSearch.dateOp === 'between'"
+              <input class="form-control ms-2" type="number" id="context-termSearch-date2"
                 [(ngModel)]="context.termSearch.date2"/>
             </div>
-          </div>
+          </fieldset>
         </ng-template>
       </li>
       <li role="presentation" [ngbNavItem]="'ident'">
