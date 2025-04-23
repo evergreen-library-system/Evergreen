@@ -1389,6 +1389,7 @@ export class ReporterService {
         templ: SRTemplate,
         isSimple = false
     ) {
+        const self = this;
         const fmClass = templ.fmClass;
         const localClasses = this.idl.classes;
         const sourceClass = localClasses[fmClass];
@@ -1515,8 +1516,7 @@ export class ReporterService {
         	let pathHash = '';
     	    treeNodeList.forEach((n,i) => {
 	            if (i) {
-            	    pathHash += ' -> ';
-	            	if (n.stateFlag) {pathHash += ' [Required]';}
+            	    pathHash += ' -> [Join Type: ' + self.pickJoinTypeFromTreeNodeStateFlag(n.stateFlag) + ']';
         	    }
 	            if (n.callerData.fmField?.name) {
 	                pathHash += n.callerData.fmField.name + '.';
@@ -1546,14 +1546,14 @@ export class ReporterService {
                     from_branch['join'] ??= {};
                     if (!from_branch['join'][new_join_path_key]) {
                         from_branch['join'][new_join_path_key] = {
-                            type: (step.stateFlag ? 'inner' : 'left'),
+                            type: self.pickJoinTypeFromTreeNodeStateFlag(step.stateFlag),
                             key: step.callerData.fmField.key,
                             alias: step_hash,
                             idlclass: step.callerData.fmField.class,
                             label: el.path_label,
                             table:  step_table.source ?? step_table.table
                         };
-                        console.log('adding '+(step.stateFlag ? 'inner' : 'left')+'-join branch for path key: ' + new_join_path_key);
+                        console.log('adding '+from_branch['join'][new_join_path_key]['type']+'-join branch for path key: ' + new_join_path_key);
                     }
 
                     reportTemplate.relations[step_hash] = from_branch['join'][new_join_path_key];
@@ -1566,7 +1566,22 @@ export class ReporterService {
 
     }
 
+    pickJoinTypeFromTreeNodeStateFlag = function(flag: boolean) {
+        if (flag === null) {
+            return 'right';
+        }
+        return flag ? 'inner' : 'left';
+    }
+
+    pickTreeNodeStateFlagFromJoinType = function(type: string) {
+        if (type === 'right') {
+            return null;
+        }
+        return type === 'inner' ? true : false;
+    }
+
     upgradeAngJSTemplateData = function(template: IdlObject) {
+        const self = this;
         const localIdl = this.idl;
 
         const newSRTempl = new SRTemplate();
@@ -1659,7 +1674,7 @@ export class ReporterService {
             oldCol.path.forEach((old,ind) => {
                 const newPathNode = {
                     label: old.label,
-                    stateFlag: (old.jtype === 'inner') ? true : false,
+                    stateFlag: self.pickTreeNodeStateFlagFromJoinType(old.jtype),
                     callerData: { fmClass: old.classname }
                 };
                 if (old.uplink) {
@@ -1687,8 +1702,7 @@ export class ReporterService {
         	let pathHash = '';
     	    treeNodeList.forEach((n,i) => {
 	            if (i) {
-            	    pathHash += ' -> ';
-	            	if (n.stateFlag) {pathHash += ' [Required]';}
+            	    pathHash += ' -> [Join Type: ' + self.pickJoinTypeFromTreeNodeStateFlag(n.stateFlag) + ']';
         	    }
     	        pathHash += n.callerData.fmClass;
         	});
