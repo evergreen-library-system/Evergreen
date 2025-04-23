@@ -230,10 +230,15 @@ export class ReporterFieldComponent implements OnInit {
         this.pathLabel = '';
         this.field.path.forEach((n,i) => {
             if (i) {
-                this.pathLabel += ' -> ';
+                if (n.stateFlag) {
+                    this.pathLabel += $localize` -> [Both Required] `;
+                } else if (n.stateFlag === null) {
+                    this.pathLabel += $localize` -> [Right Required] `;
+                } else {
+                    this.pathLabel += $localize` -> [Left Required] `;
+                }
             }
             this.pathLabel += n.label;
-            if (n.stateFlag) {this.pathLabel += ' (Required)';}
         });
         this.pathLabel += ' -> ' + (this.field.label || this.field.name);
         this.field.path_label = this.pathLabel;
