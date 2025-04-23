@@ -134,6 +134,7 @@
       <span [ngSwitch]="node.stateFlag" class="material-icons mat-icon-in-button" attr.aria-hidden="true">
         <ng-container *ngSwitchCase="false">join_left</ng-container>
         <ng-container *ngSwitchCase="true">join_inner</ng-container>
+        <ng-container *ngSwitchCase="null">join_right</ng-container>
       </span>
     </button>
     <div class="dropdown-menu" ngbDropdownMenu>
@@ -150,6 +151,13 @@
         (click)="node.stateFlag=true; idlTreeNodeRequired(node)">
         <span class="material-icons" aria-hidden="true">join_inner</span>
         <span class="ms-2" i18n>Inner Join</span>
+      </button>
+      <button type="button" class="dropdown-item label-with-material-icon" ngbDropdownItem 
+        (keyup.space)="node.stateFlag=null; idlTreeNodeRequired(node); currentDropdown.close()"
+        (keyup.enter)="node.stateFlag=null; idlTreeNodeRequired(node); currentDropdown.close()"
+        (click)="node.stateFlag=null; idlTreeNodeRequired(node)">
+        <span class="material-icons" aria-hidden="true">join_right</span>
+        <span class="ms-2" i18n>Right Join</span>
       </button>
     </div>
   </div>
