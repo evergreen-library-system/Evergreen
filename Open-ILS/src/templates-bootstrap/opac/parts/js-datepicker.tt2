@@ -1,0 +1,113 @@
+<script>
+document.addEventListener("DOMContentLoaded", () => {
+    const DATE_LOCALE = "[% ctx.locale | replace('_', '-') %]";
+    const DATE_LANG = DATE_LOCALE.substring(0, 2);
+
+    // Datepicker format conversion
+    // See https://duetds.github.io/date-picker/
+    const DATE_FORMAT_US = /^(\d{1,2})\/(\d{1,2})\/(\d{4})$/
+    document.querySelectorAll("duet-date-picker").forEach(picker => {
+        // date format
+        picker.dateAdapter = {
+            parse(value = "", createDate) {
+                const matches = value.match(DATE_FORMAT_US)
+
+                if (matches) {
+                    return createDate(matches[3], matches[1], matches[2])
+                }
+            },
+            format(date) {
+                return `${date.getMonth() + 1}/${date.getDate()}/${date.getFullYear()}`
+            },
+        }
+
+        // first day of week
+        const IntlLocale = new Intl.Locale(DATE_LOCALE);
+        if (typeof IntlLocale.getWeekInfo === 'function') {
+            picker.firstDayOfWeek = IntlLocale.getWeekInfo().firstDay;
+        }
+        else {
+            picker.firstDayOfWeek = (DATE_LOCALE == 'en-us' || DATE_LOCALE == 'en-ca') ? 0 : 1;
+        }
+
+        // language
+        switch (DATE_LANG) {
+            case 'cs':
+                picker.localization = {
+                    buttonLabel: "Výběr data",
+                    placeholder: "dd/mm/rrrr",  /* dd/mm/yyyy */
+                    selectedDateMessage: "Vybrané datum je",
+                    prevMonthLabel: "předchozí měsíc",
+                    nextMonthLabel: "následující měsíc",
+                    monthSelectLabel: "měsíc",
+                    yearSelectLabel: "rok",
+                    closeLabel: "Zavřít výběr data",
+                    calendarHeading: "Vyberte datum",
+                    dayNames: ["neděle", "pondělí", "úterý", "středa", "čtvrtek", "pátek", "sobota"],
+                    monthNames: ["leden", "únor", "březen", "duben", "květen", "červen", "červenec", "srpen", "září", "říjen", "listopad", "prosinec"],
+                    monthNamesShort: ["led", "úno", "bře", "dub", "kvě", "čvn", "čvc", "srp", "zář", "říj", "lis", "pro"],
+                    locale: DATE_LOCALE,
+                };
+                break;
+
+            case 'en':
+                picker.localization = {
+                    buttonLabel: "Choose date",
+                    placeholder: "dd/mm/yyyy",
+                    selectedDateMessage: "Selected date is",
+                    prevMonthLabel: "Previous month",
+                    nextMonthLabel: "Next month",
+                    monthSelectLabel: "Month",
+                    yearSelectLabel: "Year",
+                    closeLabel: "Close date picker",
+                    calendarHeading: "Choose a date",
+                    dayNames: ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"],
+                    monthNames: ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"],
+                    monthNamesShort: ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"],
+                    locale: DATE_LOCALE,
+                };
+                if (DATE_LOCALE == "en-US" || DATE_LOCALE == "en-us") {
+                    picker.localization.placeholder = "mm/dd/yyyy";
+                }
+                break;
+
+            case 'es':
+                picker.localization = {
+                    buttonLabel: "Elija fecha",
+                    placeholder: "dd/mm/aaaa",  /* dd/mm/yyyy */
+                    selectedDateMessage: "La fecha elegida es",
+                    prevMonthLabel: "Mes anterior",
+                    nextMonthLabel: "Mes próximo",
+                    monthSelectLabel: "Mes",
+                    yearSelectLabel: "Año",
+                    closeLabel: "Cerrar calendario",
+                    calendarHeading: "Elija la fecha",
+                    dayNames: ["domingo", "lunes", "martes", "miércoles", "jueves", "viernes", "viernes"],
+                    monthNames: ["enero", "febrero", "marzo", "abril", "mayo", "junio", "julio", "agosto", "septiembre", "octubre", "noviembre", "diciembre"],
+                    monthNamesShort: ["ene", "feb", "mar", "abr", "may", "jun", "jul", "ago", "sept", "oct", "nov", "dic"],
+                    locale: DATE_LOCALE,
+                };
+                break;
+
+            case 'fr':
+                picker.localization = {
+                    buttonLabel: "Choisir",
+                    placeholder: "jj/mm/aaaa",  /* dd/mm/yyyy */
+                    selectedDateMessage: "La date choisie est",
+                    prevMonthLabel: "Mois précédent",
+                    nextMonthLabel: "Mois prochain",
+                    monthSelectLabel: "Mois",
+                    yearSelectLabel: "Année",
+                    closeLabel: "Fermer le calendrier",
+                    calendarHeading: "Choisir une date",
+                    dayNames: ["dimanche", "lundi", "mardi", "mercredi", "jeudi", "vendredi", "vendredi"],
+                    monthNames: ["janvier", "février", "mars", "avril", "mai", "juin", "juillet", "août", "septembre", "octobre", "novembre", "décembre"],
+                    monthNamesShort: ["janv.", "févr.", "mars", "avr.", "mai", "juin", "juil.", "août", "sept.", "oct.", "nov.", "déc."],
+                    locale: DATE_LOCALE,
+                };
+                break;
+            // no default
+        }
+    });
+});
+</script>
