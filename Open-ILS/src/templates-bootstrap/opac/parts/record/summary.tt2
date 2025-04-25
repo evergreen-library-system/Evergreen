@@ -255,7 +255,7 @@ ctx.metalinks.push('
                             [%- END %]
                         </ul>
 
-
+                        [%- INCLUDE "opac/parts/record/accessibility.tt2" %]
                         [%- INCLUDE "opac/parts/record/contents.tt2" %]
                         [%- INCLUDE "opac/parts/record/subjects.tt2" %]
                         [%- INCLUDE "opac/parts/record/series.tt2" %]

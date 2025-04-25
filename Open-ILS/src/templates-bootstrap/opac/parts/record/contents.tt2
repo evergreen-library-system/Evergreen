@@ -69,6 +69,9 @@ contents =  [
         label => l('Additional Physical Form available Note: '),
         xpath => '//*[@tag="530"]'
     }, {
+        label => l('Accessibility Note: '),
+        xpath => '//*[@tag="532"]'
+    }, {
         label => l('Reproduction Note: '),
         xpath => '//*[@tag="533"]'
     }, {

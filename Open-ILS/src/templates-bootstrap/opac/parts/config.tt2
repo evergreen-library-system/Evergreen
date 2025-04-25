@@ -133,6 +133,7 @@ facet.default_display_count = 4;
 search.adv_config = [
     {adv_label => l("Item Type"), adv_attr => ["mattype", "item_type"], id => 'adv_selector_item_type'},
     {adv_label => l("Item Form"), adv_attr => "item_form", id => 'adv_selector_item_form'},
+    {adv_label => l("Accessibility Features"), adv_attr => ["a11yAccessMode", "a11yTextFeatures", "a11yVisualFeatures", "a11yAuditoryFeatures", "a11yTactileFeatures"], id => 'adv_selector_a11y_features'},
     {adv_label => l("Language"),  adv_attr => "item_lang", id => 'adv_selector_item_lang'},
     {adv_label => l("Audience"),  adv_attr => ["audience_group", "audience"], id => 'adv_selector_audience', adv_break => 1},
     {adv_label => l("Video Format"), adv_attr => "vr_format", id => 'adv_selector_video_format'},

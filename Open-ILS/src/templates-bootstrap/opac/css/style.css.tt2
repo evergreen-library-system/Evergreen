@@ -490,6 +490,12 @@ Novelist Styling
     margin: 0;
 }
 
+.addtl-search-filters fieldset legend {
+    font-size: [% css_fonts.size_big %];
+    font-weight: 600;
+    margin-block: 1rem 0.5rem;
+}
+
 .addtl-search-filters fieldset .adv_filters {
     columns: 2;
     list-style: none;
@@ -1530,6 +1536,13 @@ span.copy_tag_type_label {
     font-weight: bold;
 }
 
+.ally_tag {
+    background-color: [% css_colors.basket_count_bg %];
+    font-size: [% css_fonts.size_base %];
+    font-weight: normal;
+    padding: 0.25rem 0.5rem;
+}
+
 #gbp_extra, #gbp_arrow_down_link {
     display: none;
 }
@@ -2495,9 +2508,18 @@ div#facet_sidebar {
      background-color: [% css_colors.bg_filter_hover %];
 }
 
-.extra_header{
+.extra_header {
      background-color: [% css_colors.bg_extras %];
 }
+.extra_header a span {
+    display: list-item;
+    list-style-position: inside;
+    list-style-type: disclosure-closed;
+}
+.extra_header.active a span {
+    list-style-type: disclosure-open;
+}
+
 .facet_template_selected {
     background-color: [% css_colors.accent_lighter2 %];
     border: 1px solid [% css_colors.accent_medium %];
@@ -4398,7 +4420,8 @@ label[for*=expert_]
     background-color: [% css_colors.rdetails_card_header_bg %];
 }
 
-#rdetail_extras_div .card-header  a {
+#rdetail_extras_div .card-header,
+#rdetail_extras_div .card-header a {
     color: [% css_colors.rdetails_card_header_link %];
 }
 

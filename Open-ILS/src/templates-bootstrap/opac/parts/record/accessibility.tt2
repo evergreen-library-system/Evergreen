@@ -1,0 +1,42 @@
+[%-
+a11y =  [
+    {
+      display_field => 'accessibility',
+      label => l('Accessibility: '),
+      facet => 'identifier|accessibility',
+      joiner => ', ',
+      xpath => '//*[@tag="341"]',
+      subfields => '[abcde]'
+    }
+];
+
+BLOCK render_a11y;
+    xpath = xpath || '//*[@tag="341"]';
+    FOR node IN ctx.marc_xml.findnodes(xpath);
+        all_content = [];
+        FOR subfield IN node.childNodes;
+            NEXT UNLESS subfield.nodeName == "subfield";
+            code = subfield.getAttribute('code');
+            NEXT UNLESS code.match('[a-z]');
+
+            IF code == 'a';
+              '<dt>';
+                subfield.textContent | html;
+              '</dt>';
+            ELSE;
+              '<dd>';
+                subfield.textContent | html;
+              '</dd>';
+            END;
+        END;
+    END;
+END;
+
+content_html = PROCESS render_a11y;
+IF content_html.length > 0;
+%]
+<h3 class='rdetail_a11y'>[% l('Accessibility') %]</h3>
+<dl class='dl-flex dl-flex-wrapped rdetail_a11y'>
+[%- content_html %]
+</dl>
+[%- END %]

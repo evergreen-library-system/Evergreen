@@ -55,7 +55,25 @@
                     <summary class="card-header" id="[% adv_chunk.id %]_card">
                         <h4>[% adv_chunk.adv_label %]</h4>
                     </summary>
-                
+                [% IF adv_chunk.id == 'adv_selector_a11y_features'; %]
+                <div class="card-body" id="adv_selector_a11y_features">
+                    [% FOR attr_class IN adv_chunk.adv_attr; %]
+                        <fieldset>
+                            <legend>
+                            [% 
+                            crad = ctx.get_crad(attr_class);
+                            crad.label;
+                            %]
+                            </legend>
+                            <div class="hstack align-items-baseline">
+                                [% INCLUDE "opac/parts/check_value_selector.tt2"
+                                id=adv_chunk.id
+                                attr=attr_class multiple="multiple" %]
+                            </div>
+                        </fieldset>
+                    [% END; %]
+                </div>
+                [% ELSE %]
                 [% # Note: #adv_copy_location_selector_new is required by web/js/ui/default/opac/copyloc.js %]
                 <fieldset class="card-body" aria-labelledby="[% adv_chunk.id %]_card"
                     id="[% IF adv_chunk.id == 'adv_copy_location_selector'; 'adv_copy_location_selector_new';  ELSE; adv_chunk.id; END; %]">
@@ -71,6 +89,7 @@
                                         size=adv_chunk.adv_size || search.default_adv_select_height || "4";
                         END; %]
                 </fieldset>
+                [% END %]
             </details>
         
         </div>

@@ -467,6 +467,20 @@
                 LAST;
             END;
         END;
+        
+        # MARC Accessibility Features
+        args.a11y_features = [];
+        FOR sub IN xml.findnodes('//*[@tag="341"]/*[@code="a" or @code="b" or @code="c" or @code="d" or @code="e"]');
+            args.a11y_features.push(sub.textContent);
+        END;
+        args.a11y_content = (args.a11y_features.size ) ? args.a11y_features.0 : '';
+
+        # MARC Accessibility Notes
+        args.a11y_notes = [];
+        FOR sub IN xml.findnodes('//*[@tag="532"]/*[@code="a"]');
+            args.a11y_notes.push(sub.textContent);
+        END;
+        args.a11y_note = (args.a11y_notes.size) ? args.a11y_notes.0 : '';
 
         IF ebook_api.overdrive.enabled == 'true';
             FOR marc037 IN xml.findnodes('//*[@tag="037"]');

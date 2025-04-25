@@ -18,6 +18,35 @@
         <div id="gbp_extra_container" class='card-body'></div>
         [%  END %]
 
+        <!-- Accessibility Metadata -->
+        <details class="card" id="rdetail_extras_a11y" open>
+            <summary class="card-header">
+                <h3 class="d-inline text-reset">[% l('Accessibility Features') %]</h3>
+            </summary>
+            <div class="card-body">
+                [%- IF attrs.a11y_content %]
+
+                <ul id="a11y_features" class="list-unstyled hstack flex-wrap g-1">
+                    [% FOR tag IN attrs.a11y_features; %]
+                    <li class="badge ally_tag">
+                        [% tag | html %]
+                    </li>
+                    [%- END %]
+                </ul>
+                [%- END %]
+
+                [%- IF attrs.a11y_note %]
+                <ul id="a11y_notes" class="list-unstyled">
+                    [% FOR note IN attrs.a11y_notes; %]
+                    <li>
+                        [% note | html %]
+                    </li>
+                    [%- END %]
+                </ul>
+                [%- END %]
+            </div>
+         </details>
+
         [%  # Hidden extras are not yet implemented.  Some may require JS
 
         MACRO tab_is_active(tab) BLOCK;
@@ -71,20 +100,20 @@
          [%
                     IF tab_is_active(name);
                         href = mkurl('', {}, ['expand', 'ac']);
-                        arrow = arrow_down;
                     ELSE;
                         IF name == 'addedcontent' AND default_ac;
                             href = mkurl('', {expand => name, ac => default_ac}) _ '#' _ name;
                         ELSE;
                             href = mkurl('', {expand => name}) _ '#' _ name;
                         END;
-                        arrow = arrow_right;
                     END;
                 %]
-            <div class="card-header extra_header">
-              <a id='[% name %]' href='[% href %]' class="text-white" rel="nofollow" vocab="" style="text-decoration:none;">
-                <span>[% arrow %] [% extra.label | html %]</span>
-              </a>
+            <div class="card-header extra_header [% IF tab_is_active(name) %] active [% END %]">
+                <h3 class="d-inline text-reset">
+                    <a id='[% name %]' href='[% href %]' class="text-white" rel="nofollow" vocab="" style="text-decoration:none;">
+                        <span>[% arrow %] [% extra.label | html %]</span>
+                    </a>
+                </h3>
             </div>
             [%  IF tab_is_active(name); %]
             <div class='card-body'>
