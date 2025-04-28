@@ -68,6 +68,16 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 
     </class>
 
+ ###############################################################################
+ #### Rules of thumb for using the @reltype attribute on the <link> element ####
+ ###############################################################################
+
+ * If the field is not virtual, but backed by a real column: use "has_a"
+ * If the field is virtual, but there's only ever going to be, at most, one row on the other end of the join: use "might_have"
+ * If the field is virtual, and there can be any number of rows on the other end of the join: use "has_many"
+ 
+ There are exceptions and deviations from those rules of thumb, especially WRT links through primary keys. Ask on the Evergreen
+ Developer mailing list, or the #evergreen IRC channel on the Libera network, if you are unsure of which to use.
 
 -->
 <IDL xmlns="http://opensrf.org/spec/IDL/base/v1" xmlns:idl="http://opensrf.org/spec/IDL/base/v1" xmlns:oils_persist="http://open-ils.org/spec/opensrf/IDL/persistence/v1" xmlns:oils_obj="http://open-ils.org/spec/opensrf/IDL/objects/v1" xmlns:reporter="http://open-ils.org/spec/opensrf/IDL/reporter/v1" xmlns:sr="http://open-ils.org/spec/opensrf/IDL/simple-reporter/v1" xmlns:permacrud="http://open-ils.org/spec/opensrf/IDL/permacrud/v1" xmlns:repsec="http://open-ils.org/spec/opensrf/IDL/reporter/v1/security">
@@ -3002,7 +3012,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 		</fields>
 		<links>
 			<link field="record" reltype="has_a" key="id" map="" class="are"/>
-			<link field="thesaurus" reltype="might_have" key="code" map="" class="at"/>
+			<link field="thesaurus" reltype="has_a" key="code" map="" class="at"/>
 		</links>
 	</class>
 	<class id="abl" controller="open-ils.cstore open-ils.pcrud" oils_obj:fieldmapper="authority::bib_linking" oils_persist:tablename="authority.bib_linking" reporter:label="Authority-Bibliographic Record Link">
@@ -4251,9 +4261,9 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 			<field name="layout" reporter:label="Layout" reporter:datatype="text" oils_obj:required="true"/>
 		</fields>
 		<links>
-			<link field="usr" reltype="might_have" key="id" map="" class="au"/>
-			<link field="org" reltype="might_have" key="id" map="" class="aou"/>
-			<link field="ws" reltype="might_have" key="id" map="" class="aws"/>
+			<link field="usr" reltype="has_a" key="id" map="" class="au"/>
+			<link field="org" reltype="has_a" key="id" map="" class="aou"/>
+			<link field="ws" reltype="has_a" key="id" map="" class="aws"/>
 		</links>
 		<permacrud xmlns="http://open-ils.org/spec/opensrf/IDL/permacrud/v1">
 			<actions>
@@ -4723,7 +4733,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 			<link field="payment" reltype="might_have" key="id" map="" class="mp"/>
 			<link field="accepting_usr" reltype="has_a" key="id" map="" class="au"/>
 			<link field="xact" reltype="has_a" key="id" map="" class="mbt"/>
-			<link field="billing" reltype="might_have" key="id" map="" class="mb"/>
+			<link field="billing" reltype="has_a" key="id" map="" class="mb"/>
 		</links>
 	</class>
 	<class id="mrd" controller="open-ils.cstore" oils_obj:fieldmapper="metabib::record_descriptor" oils_persist:tablename="metabib.rec_descriptor" reporter:label="Basic Record Descriptor">
@@ -6873,9 +6883,9 @@ SELECT  usr,
 			<link field="reset_entries" reltype="has_many" key="hold" map="" class="ahrrre"/>
 			<link field="eligible_copies" reltype="has_many" key="hold" map="target_copy" class="ahcm"/>
 			<link field="bib_rec" reltype="might_have" key="id" map="" class="rhrr"/>
-			<link field="cancel_cause" reltype="might_have" key="id" map="" class="ahrcc"/>
-			<link field="canceled_by" reltype="might_have" key="id" map="" class="au"/>
-			<link field="canceling_ws" reltype="might_have" key="id" map="" class="aws"/>
+			<link field="cancel_cause" reltype="has_a" key="id" map="" class="ahrcc"/>
+			<link field="canceled_by" reltype="has_a" key="id" map="" class="au"/>
+			<link field="canceling_ws" reltype="has_a" key="id" map="" class="aws"/>
 			<link field="notes" reltype="has_many" key="hold" map="" class="ahrn"/>
 			<link field="current_shelf_lib" reltype="has_a" key="id" map="" class="aou"/>
 			<link field="sms_carrier" reltype="has_a" key="id" map="" class="csc"/>
@@ -7042,7 +7052,7 @@ SELECT  usr,
 			<link field="notifications" reltype="has_many" key="hold" map="" class="ahn"/>
 			<link field="eligible_copies" reltype="has_many" key="hold" map="target_copy" class="ahcm"/>
 			<link field="bib_rec" reltype="might_have" key="id" map="" class="rhrr"/>
-			<link field="cancel_cause" reltype="might_have" key="id" map="" class="ahrcc"/>
+			<link field="cancel_cause" reltype="has_a" key="id" map="" class="ahrcc"/>
 			<link field="notes" reltype="has_many" key="hold" map="" class="ahrn"/>
 			<link field="current_shelf_lib" reltype="has_a" key="id" map="" class="aou"/>
 			<link field="sms_carrier" reltype="has_a" key="id" map="" class="csc"/>
@@ -7114,7 +7124,7 @@ SELECT  usr,
 			<link field="notifications" reltype="has_many" key="hold" map="" class="ahn"/>
 			<link field="eligible_copies" reltype="has_many" key="hold" map="target_copy" class="ahcm"/>
 			<link field="bib_rec" reltype="might_have" key="id" map="" class="rhrr"/>
-			<link field="cancel_cause" reltype="might_have" key="id" map="" class="ahrcc"/>
+			<link field="cancel_cause" reltype="has_a" key="id" map="" class="ahrcc"/>
 			<link field="notes" reltype="has_many" key="hold" map="" class="ahrn"/>
 			<link field="current_shelf_lib" reltype="has_a" key="id" map="" class="aou"/>
 			<link field="acq_request" reltype="has_a" key="id" map="" class="aur"/>
@@ -7192,7 +7202,7 @@ SELECT  usr,
 			<link field="request_lib" reltype="has_a" key="id" map="" class="aou"/>
 			<link field="usr_home_ou" reltype="has_a" key="id" map="" class="aou"/>
 			<link field="bib_rec" reltype="might_have" key="id" map="" class="rhrr"/>
-			<link field="cancel_cause" reltype="might_have" key="id" map="" class="ahrcc"/>
+			<link field="cancel_cause" reltype="has_a" key="id" map="" class="ahrcc"/>
 			<link field="current_shelf_lib" reltype="has_a" key="id" map="" class="aou"/>
 			<link field="usr_profile" reltype="has_a" key="id" map="" class="pgt"/>
 		</links>
@@ -7250,7 +7260,7 @@ SELECT  usr,
 			<link field="request_lib" reltype="has_a" key="id" map="" class="aou"/>
 			<link field="usr_home_ou" reltype="has_a" key="id" map="" class="aou"/>
 			<link field="bib_rec" reltype="might_have" key="id" map="" class="rhrr"/>
-			<link field="cancel_cause" reltype="might_have" key="id" map="" class="ahrcc"/>
+			<link field="cancel_cause" reltype="has_a" key="id" map="" class="ahrcc"/>
 			<link field="current_shelf_lib" reltype="has_a" key="id" map="" class="aou"/>
 			<link field="usr_profile" reltype="has_a" key="id" map="" class="pgt"/>
 		</links>
@@ -15589,7 +15599,7 @@ SELECT  usr,
 			<field reporter:label="All Bibliographic Record Subjects" name="bib_subjects" reporter:datatype="text" sr:suggest_operator="contains"/>
 		</fields>
 		<links>
-			<link field="floating_id" reltype="might_have" key="id" map="" class="cfg"/>
+			<link field="floating_id" reltype="has_a" key="id" map="" class="cfg"/>
 			<link field="status_id" reltype="has_a" key="id" map="" class="ccs"/>
 			<link sr:org_filter_field="owning_lib" field="location_id" reltype="has_a" key="id" map="" class="acpl"/>
 			<link field="copy_circ_modifier_code" reltype="might_have" key="code" map="" class="ccm"/>
@@ -15919,9 +15929,9 @@ SELECT  usr,
 		<links>
 			<link field="status_id" reltype="has_a" key="id" map="" class="ccs"/>
 			<link sr:org_filter_field="owning_lib" field="location_id" reltype="has_a" key="id" map="" class="acpl"/>
-			<link field="circ_modifier_code" reltype="might_have" key="code" map="" class="ccm"/>
-			<link field="age_protect_id" reltype="might_have" key="id" map="" class="crahp"/>
-			<link field="inv_workstation_id" reltype="might_have" key="id" map="" class="aws"/>
+			<link field="circ_modifier_code" reltype="has_a" key="code" map="" class="ccm"/>
+			<link field="age_protect_id" reltype="has_a" key="id" map="" class="crahp"/>
+			<link field="inv_workstation_id" reltype="has_a" key="id" map="" class="aws"/>
 		</links>
 	</class>
 
