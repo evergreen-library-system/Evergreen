@@ -1,7 +1,8 @@
 
 body {
     font-family: Arial, Verdana;
-    font-size: 13px;
+    font-size: 1rem;
+    line-height: 1.6;
 }
 
 #oils-selfck-top-div {
@@ -34,7 +35,7 @@ body {
 }
 
 #oils-selfck-scan-text {
-    font-size: 16px;
+    font-size: 1rem;
     background: none repeat scroll 0 0 #252525;
     color: white;
     padding: 10px;
@@ -213,7 +214,7 @@ A {
 #dijit_form_TextBox_0 {
    padding: 5px;
    height: 28px;
-   font-size: 16px;
+   font-size: 1rem;
    box-shadow:         inset 0 0 8px #ADADB2;
    border-radius: 12px;
 }
