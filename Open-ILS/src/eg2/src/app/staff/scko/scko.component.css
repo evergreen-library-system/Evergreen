@@ -1,6 +1,7 @@
 body {                                                                         
     font-family: Arial, Verdana;                                               
-    font-size: 13px;                                                           
+    font-size: 1rem;
+    line-height: 1.6;
 }                                                                              
 
 a {
@@ -9,6 +10,7 @@ a {
 
 h1 {
     font-size: 1.5rem;
+    line-height: 2;
     color: #00593d;
     display: inline;
 }
@@ -39,14 +41,14 @@ h2 {
 }  
 
 #scko-scan-input-text {                                                       
-  font-size: 16px;                                                           
+  font-size: 1rem;                                                           
   background: none repeat scroll 0 0 #252525;                                
   color: white;                                                              
   padding: 10px;                                                             
 } 
 
 #scko-welcome-message {
-  font-size: 16px;                                                           
+  font-size: 1rem;                                                           
   background: none repeat scroll 0 0 #252525;                                
   color: white;                                                              
   padding: 10px;                                                             
@@ -72,7 +74,7 @@ h2 {
 }
 
 #scko-circ-info-div fieldset legend {
-    font-size: 13px;
+    font-size: 0.825rem;
     color: #00593d;
     background-color: white;
     font-weight: bold;
@@ -194,7 +196,7 @@ label.btn-check-label.active:before {
 }
 
 .scko-status-row {
-    font-size: 20px;
+    font-size: 1.4rem;
 }
 
 input[type="checkbox"] {
