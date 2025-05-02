@@ -3,94 +3,115 @@
 
 indexterm:[Surveys]
 
-Surveys can be created that appear on the patron registration/edit page for a branch or system. Surveys questions can be optional or required. Some examples of survey questions might include: Would you use the library if it were open on a Sunday? Would you like to be contacted by the library to learn about new services? Do you attend library programs? Are you registered to vote?
+Surveys can be created that appear on the patron registration/edit page for a branch or system. Survey questions can be optional or required. Some examples of survey questions might include: Would you use the library if it were open on a Sunday? Would you like to be contacted by the library to learn about new services? Do you attend library programs? Are you registered to vote?
 
 Surveys come up when a patron is first registered. If you would like staff to ask the survey questions when the patron’s library card is renewed, you’ll need to make that part of local procedure.
 
-It is possible to run reports on Surveys, this will allow you to obtain statistical information from the surveys or listing of responses. For example, you could find out how many people say they would use the library if it were open on a Sunday, or you could get a list of patrons who say they would like to receive marketing material from the library. You can also visit individual patron records to see their survey answers.
+It is possible to run reports on surveys, which allows you to obtain statistical information. For example, you could find out how many people say they would use the library if it were open on a Sunday, or you could get a list of patrons who say they would like to receive marketing material from the library. You can also visit individual patron records to see their survey answers.
 
-== To create a new survey ==
+== To Create a New Survey ==
 
 . Go to *Administration* -> *Local Administration* -> *Surveys*.
 +
-image::surveys/survey.png[Surveys]
+image::surveys/survey configuration_3.14[Survey configuration page]
 +
-. Click the Add New Survey button.
+. Click *New Survey*.
++
+image::surveys/new survey_3.14.png[alt=""]
++
 . A popup will appear:
 +
-image::surveys/survey-new.png[New Survey]
+image::surveys/survey form_3.14.png[Survey form]
 +
 . Fill in the form.
-  * _Name_ is the Name of the survey, this shows up in the patron record.
-  * _Description_ is a description of the survey, include anything you want about the survey.
-  * _Owning Library_ sets who gets the survey question. Set at consortitial level for all patrons, set at system level for just a system, set at branch level for just a branch. 
-  * _Start Date_ use the date picker to choose the date the survey is to start.
-  * _End Date_ use the date picker to choose the date you want to end the survey. If you do not want the survey to expire, then set the date way off in the future example 12/31/35.
-  * _OPAC Survey?_ This is to be future development, do not set.
-  * _Poll Style?_ This is to be future development, do not set.
+  * _Name_. (Required) The name of the survey that will show up in the patron record.
+  * _Description_. (Required) The description of the survey; include anything you want about the survey.
+  * _Owning Library_. (Required) This dictates the scope of who gets the survey question. Set at consortium level for all patrons, set at system level for just a system, set at branch level for just a branch. 
+  * _Start Date_. (Required) Use the date picker to choose the date the survey is to start. To add Questions and Answers, surveys must be set to start at least 15 minutes in the future, or in the past.
+  * _End Date_. (Required) Use the date picker to choose the date you want to end the survey. If you do not want the survey to expire, then set the date way off in the future, for example 12/31/35.
+  * _OPAC Survey?_ This is currently not functional and is set for future development. You can leave this unset when first creating a survey, but note that you will not be able to save edits to a survey if an option isn't chosen. 
+  * _Poll Style?_ This is currently not functional and is set for future development. You can leave this unset when first creating a survey, but note that you will not be able to save edits to a survey if an option isn't chosen.
   * _Is Required?_ This sets the Survey as required for patron registration. 
-  * _Display in User Summery?_ This allows the survey questions and answers to show up in the User Summery on the right hand side.
+  * _Display in User Summary_. This allows the survey questions and answers to show up in the User Summary of a patron's account.
 . Click *Save*.
 
-Now to add questions
+Once the survey is saved, you will see a *New Survey Added* alert, and the survey will be listed in the grid.
 
-. Click on the Survey you want to add a question to. 
-  * You can either right click on the survey or select the survey and go to *Actions* and choose *Edit Selected*.
-. Choose the _*Questions and Answers*_ tab to add your questions.
-. In the _New Question_ box type in your question. 
-. Click *Save Question & Add Answer*
-. Enter your answers in the _Add Answer_.  Then click *Add Answer* for each answer. 
+image::surveys/new survey added_3.14.png[New Survey Added]
 
-. The screen will refresh so that you may add a question: 
+=== To Add Questions and Answers to a Survey ===
+
+. Double click on the survey you want to add a question to. 
+  * OR, you can right-click or select the survey and go to *Actions* and choose *Edit Selected*.
 +
-image::surveys/survey-newquestion.png[Add Questions]
+image::surveys/edit survey_3.14.png[Survey form]
 +
-. Enter the survey question and click the *Save Question & Add Answer* button.
+. Choose the *Questions and Answers* tab to add your questions.
+. In the *Question 1.* box, type in your question.
+. Next to the question box, click *Save*. 
 +
-image::surveys/survey-newanswer.png[Add Answers]
+image::surveys/save question_3.14.png[Save question on Question & Answers tab]
 +
-. Enter each option answer and click the *Add Answer* button after each one. Then click the *Save Changes* button. If you do not save your changes, then the answer will not be saved.
+. In the textbox under *Answers for question #1:*, enter the first answer option and click *Add Answer*. Repeat this process for each answer.
 +
-image::surveys/survey_qa.png[Saving Answers]
+image::surveys/add answer_3.14.png[Add Answer]
 +
-. Repeat the steps above to add as many questions and answers as you wish. 
-. Click the Save button when complete. Make sure you use your browsers Back Button to go to the list of surveys.
+. If you want to add more questions, input the question in the textbox next to *New Question* and click *Save Question & Add Answer*.
++
+image::surveys/new question_3.14.png[alt=""]
++
+. Repeat steps 3 and 4 above to add additional answers to the new question.
+. Repeat steps 6 and 7 to add as many questions and answers as you wish.
+. Once all questions and answers have been added, click back on the *Edit Survey* tab and click *Save*. Click the Save button when complete. Make sure you use your browser's back button to go to the list of surveys.
++
+image::surveys/save survey_3.14.png[Save survey on the Edit Survey tab]
++
+
+
+To delete an answer to a question, click *Delete* next to the answer.
+
+image::surveys/delete answer_3.14.png[alt=""]
+
+To delete a question and its associated answers, click *Delete Question & Answers* next to the question.
+
+image::surveys/delete questions and answers_3.14.png[alt=""]
+
+If the survey date is not set at least 15 minutes in the future, an alert will appear when attempting to save questions and answers.
+
+image::surveys/survey date alert_3.14.png[The survey Start Date must be set for the future to add new questions or modify existing questions.]
 
 == To Edit a Survey ==
 
-To edit a survey the survey must be in the future, you cannot edit active surveys. 
+. Double click on the survey you want to add a question to. 
+  * OR, you can right-click or select the survey and go to *Actions* and choose *Edit Selected*.
++
+image::surveys/edit survey_3.14.png[Survey form]
++
+. Make edits to the survey attributes on the *Edit Survey* tab, or repeat the steps in the previous section to add questions and answers.
+. Once changes are complete, click *Save*.
+. Use the browser's back button to go back to the list of surveys.
 
-. Open the survey to edit by clicking on it's _Name_.
-+
-image::surveys/survey.png[Edit Survey]
-+
-. If the survey is an active survey, change the _Survey Start Date/Time_ to a future date.
-. Click *Save*.
-. Use the browser Back Button to go back to your list of surveys, and select your survey again.
-. Now edit the Survey questions, 
-  * Edit the text of any question or answer, making sure your click *Save Changes* after each edit.
-  * Delete a question completely by clicking on *Delete Question & Answers*.
-  * Delete just an answer by clicking on *Delete Answer* for that answer only.
-. Add any additional questions and/or answers at this time.  Remembering to always *Save Changes*.
-. Click *Save* once all your changes are made.
-+
-image::surveys/survey_edit2.png[Edit Survey]
-+
-. Use the browser Back Button to go back to the list of surveys.
-
-TIP: If the survey needs to be active immediately, you can set the _Survey Start Date/Time_ in the past. This is really usefully when editing an existing survey.
+TIP: If the survey needs to be active immediately, you can set the _Survey Start Date/Time_ in the past. This is useful when editing an existing survey. Otherwise, the survey start date must be set to at least 15 minutes in the future if making modifications to the _Questions & Answers_ tab. Additionally, the bottom four attributes (OPAC Survey?, Poll Style?, Is Required?, Display in User Summary) in the _Edit Survey_ tab must be set. If they are not set, you will receive an "Update Failed" alert. 
 
 == To End a Survey ==
 
-If you need to end a survey before the Survey End Date, you can edit the survey and then click on *End Survey Now*. This will set the Survey End Date to today's date.
+If you need to end a survey before the Survey End Date, you can edit the survey and then click on *End Survey Now*. 
 
-== Normal Staff view of Surveys ==
+image::surveys/end survey in form_3.14.png[End survey in survey editor]
 
-This is what the survey looks like in the Patron Registration, the answers appear as a drop down list.
+Or, you can right-click or select the survey in the grid, open the *Actions* menu, and click *End Survey Now*.
+
+image::surveys/end survey in actions_3.14.png[End survey through the Actions menu]
+
+Ending the survey will update the Survey End Date to today's date.
+
+== Normal Staff View of Surveys ==
+
+This is what the survey looks like in the Patron Registration. The answers appear as a dropdown list.
 
 image::surveys/survey_staffview.png[Patron Registration]
 
-To access a patrons answers to a survey, you can view those through the staff client. Once in the patron record go to *Other -> Surveys*.
+To access a patron's answers to a survey, you can view those through the staff client. Once in the patron record, go to *Other -> Surveys*.
 
 image::surveys/survey_patronrecord.png[Access Survey Answers]
 
@@ -107,11 +128,10 @@ There are three Non-core Sources for reporting.
 * *Survey Answer*
 ** This source starts with the answers then goes to the questions.
 * *Survey Response*
-** This sources ties into the Responding Users.  
+** This source ties into the Responding Users.  
 ** Use this source to report user information and counts.
-** This is the source you will use for most of the reporting on the Surveys.
+** This is the source you will use for most of the reporting on Surveys.
 
-In the Core Sources you can use _ILS User_. In the ILS User, there is the source for _Survey Responses_.
+In the Core Sources, you can use _ILS User_. In the ILS User, there is the source for _Survey Responses_.
 
-NOTE: In the _Survey Response_ Source there is a _Response Group ID_. This links all the answers to a specific set of Survey questions, answers, and patron information.
-
+NOTE: In the _Survey Response_ source, there is a _Response Group ID_. This links all the answers to a specific set of Survey questions, answers, and patron information.
