@@ -36,10 +36,14 @@
             FOR p IN ctx.payment_response.payments;
                 print_args.push('payment=' _ p);
             END %]
-        <p>[ <a href="[% ctx.opac_root %]/myopac/receipt_print?[% print_args.join('&amp;') %]"
+        <p> <a href="[% ctx.opac_root %]/myopac/receipt_print?[% print_args.join('&amp;') %]"
             target="_egrecpt"
             class="opac-button"
-            onclick="try { print_node('printable-receipt'); } catch (e) { window.print(); } return false;">[% l('Print receipt') %]</a> ]</p>
+            onclick="try { print_node('printable-receipt'); } catch (e) { window.print(); } return false;">[% l('Print receipt') %]</a> 
+            <a href="[% ctx.opac_root %]/myopac/receipt_email?[% print_args.join('&amp;') %]"
+            target="_egrecpt"
+            class="opac-button"
+            onclick="try { print_node('email-receipt'); } catch (e) return false;">[% l('Email receipt') %]</a> </p>
         <tt id="printable-receipt">
             [% ctx.printable_receipt.template_output.data %]
             <br />
@@ -54,8 +58,8 @@
                 ) | html %]
         </div>
         [% END %]
-        <p>[ <a href="[% ctx.opac_root %]/myopac/main" class="opac-button">[%
-            l("Back to Account Summary") %]</a> ]</p>
+        <p> <a href="[% ctx.opac_root %]/myopac/main" class="opac-button">[%
+            l("Back to Account Summary") %]</a> </p>
     [% END %]
 </div>
 [% END %]

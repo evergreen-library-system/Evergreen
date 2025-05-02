@@ -39,7 +39,11 @@
             <a href="[% ctx.opac_root %]/myopac/receipt_print?[% print_args.join('&amp;') %]"
             target="_egrecpt"
             class="btn-confirm btn btn-sm"
-            onclick="try { print_node('printable-receipt'); } catch (e) { window.print(); } return false;"><i class="fas fa-print"></i> [% l('Print receipt') %]</a></p>
+            onclick="try { print_node('printable-receipt'); } catch (e) { window.print(); } return false;"><i class="fas fa-print"></i> [% l('Print receipt') %]</a>
+            <a href="[% ctx.opac_root %]/myopac/receipt_email?[% print_args.join('&amp;') %]"
+            target="_egrecpt"
+            class="btn-confirm btn btn-sm"
+            onclick="try { print_node('email-receipt'); } catch (e) return false;"> [% l('Email receipt') %]</a></p>
             <hr>
         <tt id="printable-receipt">
             [% ctx.printable_receipt.template_output.data %]

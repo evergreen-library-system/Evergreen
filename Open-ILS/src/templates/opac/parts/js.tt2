@@ -178,8 +178,11 @@ IF authtimeout AND !ctx.is_staff %]
 
 [% INCLUDE "opac/parts/acjs.tt2" IF ctx.page == 'record' %]
 [% IF ctx.page == 'advanced' %]
-<script type="text/javascript" 
-    src="[% ctx.media_prefix %]/js/ui/default/opac/copyloc.js[% ctx.cache_key %]"></script>
+<script type="module">
+  import {apply_adv_copy_locations} from '[% ctx.media_prefix %]/js/ui/default/opac/copyloc.module.js';
+  document.addEventListener('DOMContentLoaded', () => apply_adv_copy_locations(), {once: true});
+  document.getElementById('adv_org_selector').addEventListener('change', () => apply_adv_copy_locations());
+</script>
 [% END %]
 
 [% IF ebook_api.enabled == 'true' %]
@@ -204,6 +207,13 @@ var aou_hash = {
 
 <script type="text/javascript">if ($('client_tz_id')) { $('client_tz_id').value = OpenSRF.tz }</script>
 [%- END; # want_dojo -%]
+
+[% IF eresource_click_track.enabled == "t"; %]
+<script type="module">
+  import {EresourceClickTrack} from '[% ctx.media_prefix %]/js/ui/default/opac/eresource_click_tracker.module.js';
+  new EresourceClickTrack().setup('.uri_link');
+</script>
+[% END; # eresource_click_track %]
 
 [%- IF ctx.max_cart_size; %]
 <script type="text/javascript">var max_cart_size = [% ctx.max_cart_size %];</script>

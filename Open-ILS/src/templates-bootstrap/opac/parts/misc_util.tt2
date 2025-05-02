@@ -4,10 +4,22 @@
     # See "Model A" in http://www.loc.gov/marc/bibliographic/ecbdmulti.html
     # and $6 description in http://www.loc.gov/marc/bibliographic/ecbdcntf.html
     MACRO get_graphic_880s BLOCK;
+        # Define subfields to include or exclude in config.tt2 - search.links_from_880
+        include_sf = search.links_from_880.$target_field.include;
+        exclude_sf = search.links_from_880.$target_field.exclude || 'ew01456789';
+        test_sf = '';
+
+        IF include_sf.length == 0;
+            # we must use an exclusion list, even if it's the default one
+            test_sf = 'not(contains("' _ exclude_sf _ '", @code))';
+        ELSE;
+            test_sf = 'contains("' _ include_sf _ '", @code)';
+        END;
+
         FOR node IN xml.findnodes('//*[@tag="' _ target_field _ '"]');
             raw_vals = [];
             core_val = '';
-            FOR subnode IN node.findnodes('./*[not(contains("e w 0 4 5 6 7 8 9", @code))]');
+            FOR subnode IN node.findnodes('./*[' _ test_sf _ ']');
                 raw_vals.push(subnode.textContent());
             END;
             core_val = raw_vals.join(" ");
@@ -692,7 +704,7 @@
         xpath = '//*[local-name()="counts"]/*[local-name()="count"][@type="' _ count_type _ '"]';
         args.copy_counts = {};
         FOR node IN xml.findnodes(xpath);
-            FOR attr IN ['count', 'available', 'unshadow', 'transcendant', 'org_unit'];
+            FOR attr IN ['count', 'available', 'unshadow', 'transcendant', 'org_unit', 'library_group'];
                 depth = node.getAttribute('depth');
                 count_org_unit = node.getAttribute('org_unit');
                 args.copy_counts.$depth.$attr = node.getAttribute(attr);

@@ -1,12 +1,22 @@
 :host {
-  --lineitem-delayed: light-dark(var(--bs-blue-150), var(--bs-blue-900-desat));
-  --lineitem-new: light-dark(var(--bs-yellow-025), var(--bs-yellow-900)); 
-  --lineitem-on-order: light-dark(var(--bs-gray-200), var(--bs-gray-800)); 
-  --lineitem-order-pending: light-dark(var(--bs-yellow-050), var(--bs-yellow-900)); 
-  --lineitem-order-ready: light-dark(var(--bs-gray-150), var(--bs-gray-900)); 
-  --lineitem-ready: light-dark(var(--bs-gray-100), var(--bs-gray-900)); 
-  --lineitem-received: light-dark(var(--bs-gray-200), var(--bs-gray-800));
-  --invoice-deleted: light-dark(var(--bs-gray-300), var(--bs-gray-700));
+  --lineitem-delayed: var(--bs-blue-150);
+  --lineitem-new: var(--bs-yellow-025); 
+  --lineitem-on-order: var(--bs-red-100); 
+  --lineitem-order-pending: var(--bs-yellow-050); 
+  --lineitem-order-ready: var(--bs-gray-150); 
+  --lineitem-ready: var(--bs-gray-100); 
+  --lineitem-received: var(--bs-gray-200);
+  --invoice-deleted: var(--bs-gray-300);
+}
+[data-bs-theme="dark"] :host {
+  --lineitem-delayed: var(--bs-blue-900-desat);
+  --lineitem-new: var(--bs-yellow-900); 
+  --lineitem-on-order: var(--bs-red-900); 
+  --lineitem-order-pending: var(--bs-yellow-900); 
+  --lineitem-order-ready: var(--bs-gray-900); 
+  --lineitem-ready: var(--bs-gray-900); 
+  --lineitem-received: var(--bs-gray-800);
+  --invoice-deleted: var(--bs-gray-700);
 }
 
 .jacket-wrapper {

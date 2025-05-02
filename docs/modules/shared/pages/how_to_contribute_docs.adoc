@@ -199,6 +199,16 @@ image::how_to_contribute_docs/github_web_create_pull_request.png[Github Web Crea
 . It's nice to see "Able to merge"
 . Confirm that this pull request is compared with *master* on the left and with *your branch* on the right
 . Click on "Create pull request"
+. Github will run a few checks, to make sure that your changes match our style guide
+  and won't cause problems when they are published on docs.evergreen-ils.org.  These checks will take a few minutes.
+    * If everything is good, Github will add a green
+  checkmark icon next to your pull request.
++
+image::how_to_contribute_docs/checkmark_pr.png[A github pull request shows a green checkmark icon immediately after the title of the pull request]
++
+    * If there is an issue, Github will add a red X icon.  You can click the red X
+    icon for more details.  To address the issue, you can adjust your version of
+    the docs locally, commit your changes, and publish your branch again.
 
 == Follow up on Launchpad ==
 

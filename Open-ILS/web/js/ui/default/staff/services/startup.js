@@ -120,7 +120,6 @@ function($q,  $rootScope,  $location,  $window,  egIDL,  egAuth,  egEnv , egOrg 
             }
         }
     }
-    clearHoldTarget();
 
     service.go = function () {
         if (service.promise) {

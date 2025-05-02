@@ -602,7 +602,6 @@ export class Z3950SearchComponent implements OnInit {
     }
 
     performSearch() {
-        this.saveDefaultZ3950Targets(false);
         this.resultGrid.reload();
     }
 
@@ -612,6 +611,12 @@ export class Z3950SearchComponent implements OnInit {
             (e: unknown) => {},
             () => { if (this._fromRaw) {this.performSearch();} }
         );
+    }
+
+    clearForm() {
+        this.currentFields.forEach(f => {
+            f.searchTerms = "";
+        });
     }
 
     selectedRows() {

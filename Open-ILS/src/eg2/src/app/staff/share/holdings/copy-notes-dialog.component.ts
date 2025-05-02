@@ -1,190 +1,283 @@
-import {Component, Input, ViewChild} from '@angular/core';
-import {Observable, throwError, from, empty} from 'rxjs';
-import {switchMap} from 'rxjs/operators';
-import {NetService} from '@eg/core/net.service';
-import {IdlService, IdlObject} from '@eg/core/idl.service';
-import {ToastService} from '@eg/share/toast/toast.service';
-import {AuthService} from '@eg/core/auth.service';
-import {PcrudService} from '@eg/core/pcrud.service';
-import {OrgService} from '@eg/core/org.service';
-import {StringComponent} from '@eg/share/string/string.component';
-import {DialogComponent} from '@eg/share/dialog/dialog.component';
-import {NgbModal, NgbModalOptions} from '@ng-bootstrap/ng-bootstrap';
+/* eslint-disable max-len */
+import { Component, Input } from '@angular/core';
+import { IdlService, IdlObject } from '@eg/core/idl.service';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { ToastService } from '@eg/share/toast/toast.service';
+import { AuthService } from '@eg/core/auth.service';
+import { PcrudService } from '@eg/core/pcrud.service';
+import { OrgService } from '@eg/core/org.service';
+import {VolCopyContext} from '@eg/staff/cat/volcopy/volcopy';
+import {
+    CopyThingsDialogComponent,
+    IThingObject,
+    IThingChanges,
+    IThingConfig
+} from './copy-things-dialog.component';
+import {FormsModule, AbstractControl, NG_VALIDATORS, ValidationErrors, Validator, Validators, ValidatorFn} from '@angular/forms';
 
-/**
- * Dialog for managing copy notes.
- */
+export interface ICopyNote extends IThingObject {
+    title(val?: string): string;
+    value(val?: string): string;
+    pub(val?: boolean): boolean;
+    creator(val?: number): number;
+    create_date(val?: any): any;
+    owning_copy(val?: number): number;
+}
 
-export interface CopyNotesChanges {
-    newNotes: IdlObject[];
-    delNotes: IdlObject[];
+interface ProxyNote extends ICopyNote {
+    originalNoteIds: number[];
+}
+export interface ICopyNoteChanges extends IThingChanges<ICopyNote> {
+    newThings: ICopyNote[];
+    changedThings: ICopyNote[];
+    deletedThings: ICopyNote[];
 }
 
 @Component({
     selector: 'eg-copy-notes-dialog',
-    templateUrl: 'copy-notes-dialog.component.html'
+    templateUrl: 'copy-notes-dialog.component.html',
+    styleUrls: ['./copy-notes-dialog.component.css']
 })
+export class CopyNotesDialogComponent extends
+    CopyThingsDialogComponent<ICopyNote, ICopyNoteChanges> {
 
-export class CopyNotesDialogComponent
-    extends DialogComponent {
+    protected thingType = 'notes';
+    protected successMessage = $localize`Successfully Modified Item Notes`;
+    protected errorMessage = $localize`Failed To Modify Item Notes`;
+    protected batchWarningMessage =
+        $localize`Note that items in batch do not share notes directly. Displayed notes represent matching note groups.`;
 
-    // If there are multiple copyIds, only new notes may be applied.
-    // If there is only one copyId, then notes may be applied or removed.
-    @Input() copyIds: number[] = [];
+    context: VolCopyContext;
 
-    mode: string; // create | manage | edit
+    // Note-specific properties
+    notesInCommon: ICopyNote[] = [];
+    newNote: ICopyNote;
 
-    // If true, no attempt is made to save the new notes to the
-    // database.  It's assumed this takes place in the calling code.
-    @Input() inPlaceCreateMode = false;
-
-    // In 'create' mode, we may be adding notes to multiple copies.
-    copies: IdlObject[] = [];
-
-    // In 'manage' mode we only handle a single copy.
-    copy: IdlObject;
-
-    curNote: string;
-    curNoteTitle: string;
-    curNotePublic = false;
-    newNotes: IdlObject[] = [];
-    delNotes: IdlObject[] = [];
-
-    autoId = -1;
-
-    idToEdit: number;
-
-    @ViewChild('successMsg', { static: true }) private successMsg: StringComponent;
-    @ViewChild('errorMsg', { static: true }) private errorMsg: StringComponent;
+    notes: IdlObject[] = [];
 
     constructor(
-        private modal: NgbModal, // required for passing to parent
-        private toast: ToastService,
-        private net: NetService,
-        private idl: IdlService,
-        private pcrud: PcrudService,
-        private org: OrgService,
-        private auth: AuthService) {
-        super(modal); // required for subclassing
+        modal: NgbModal,
+        toast: ToastService,
+        idl: IdlService,
+        pcrud: PcrudService,
+        org: OrgService,
+        auth: AuthService
+    ) {
+        const config: IThingConfig<ICopyNote> = {
+            idlClass: 'acpn',
+            thingField: 'notes',
+            defaultValues: {
+                creator: auth.user().id(),
+                pub: false
+            }
+        };
+        super(modal, toast, idl, pcrud, org, auth, config);
+        this.newNote = this.createNewThing();
+        this.context = new VolCopyContext();
+        this.context.org = org; // inject
+        this.context.idl = idl; // inject
     }
 
-    /**
-     */
-    open(args: NgbModalOptions): Observable<CopyNotesChanges> {
-        this.copy = null;
-        this.copies = [];
-        this.newNotes = [];
-        this.delNotes = [];
-
-        if (this.copyIds.length === 0 && !this.inPlaceCreateMode) {
-            return throwError('copy ID required');
+    public async initialize(): Promise<void> {
+        if (!this.newNote) {
+            this.newNote = this.createNewThing();
         }
-
-        // In manage mode, we can only manage a single copy.
-        // But in create mode, we can add notes to multiple copies.
-        // We can only manage copies that already exist in the database.
-        if (this.copyIds.length === 1 && this.copyIds[0] > 0) {
-            this.mode = 'manage';
-        } else {
-            this.mode = 'create';
-        }
-
-        // Observify data loading
-        const obs = from(this.getCopies());
-
-        // Return open() observable to caller
-        return obs.pipe(switchMap(_ => super.open(args)));
+        await super.initialize();
     }
 
-    getCopies(): Promise<any> {
-
-        // Avoid fetch if we're only adding notes to isnew copies.
-        const ids = this.copyIds.filter(id => id > 0);
-        if (ids.length === 0) { return Promise.resolve(); }
-
-        return this.pcrud.search('acp', {id: this.copyIds},
-            {flesh: 1, flesh_fields: {acp: ['notes']}},
-            {atomic: true}
-        )
-            .toPromise().then(copies => {
-                this.copies = copies;
-                if (copies.length === 1) {
-                    this.copy = copies[0];
-                }
+    protected async getThings(): Promise<void> {
+        if (this.copyIds.length === 0) { return; }
+        if (this.notes.length > 0) {
+            // console.debug('already have notes, trimming newThings from existing. newThings=', this.newThings);
+            this.copies.forEach( c => {
+                const newThingIds = this.newThings.map( aa => aa.id() );
+                c.notes(
+                    (c.notes() || []).filter( a => !newThingIds.includes(a.id()) )
+                );
             });
-    }
-
-    editNote(note: IdlObject) {
-        this.idToEdit = note.id();
-        this.mode = 'edit';
-    }
-
-    returnToManage() {
-        this.getCopies().then(() => {
-            this.idToEdit = null;
-            this.mode = 'manage';
-        });
-    }
-
-    removeNote(note: IdlObject) {
-        this.newNotes = this.newNotes.filter(t => t.id() !== note.id());
-
-        if (note.isnew() || this.mode === 'create') { return; }
-
-        const existing = this.copy.notes().filter(n => n.id() === note.id())[0];
-        if (!existing) { return; }
-
-        existing.isdeleted(true);
-        this.delNotes.push(existing);
-
-        // Remove from copy for dialog display
-        this.copy.notes(this.copy.notes().filter(n => n.id() !== note.id()));
-    }
-
-    addNew() {
-        if (!this.curNoteTitle || !this.curNote) { return; }
-
-        const note = this.idl.create('acpn');
-        note.isnew(true);
-        note.creator(this.auth.user().id());
-        note.pub(this.curNotePublic ? 't' : 'f');
-        note.title(this.curNoteTitle);
-        note.value(this.curNote);
-        note.id(this.autoId--);
-
-        this.newNotes.push(note);
-
-        this.curNote = '';
-        this.curNoteTitle = '';
-        this.curNotePublic = false;
-    }
-
-    applyChanges() {
-
-        if (this.inPlaceCreateMode) {
-            this.close({ newNotes: this.newNotes, delNotes: this.delNotes });
             return;
-        }
+        } // need to make sure this is cleared after a save. It is; the page reloads
 
-        const notes = [];
-        this.newNotes.forEach(note => {
-            this.copies.forEach(copy => {
-                const n = this.idl.clone(note);
-                n.id(null); // remove temp ID, it will be duped
-                n.owning_copy(copy.id());
-                notes.push(n);
-            });
+        this.notes = await this.pcrud.search('acpn',
+            { owning_copy: this.copyIds },
+            {},
+            { atomic: true }
+        ).toPromise();
+
+        this.copies.forEach(c => c.notes([]));
+        this.notes.forEach(note => {
+            const copy = this.copies.find(c => c.id() === note.owning_copy());
+            copy.notes( copy.notes().concat(note) );
+        });
+    }
+
+    protected async processCommonThings(): Promise<void> {
+        if (!this.inBatch()) { return; }
+
+        let potentialMatches = this.copies[0].notes();
+
+        // Find notes that match across all copies
+        this.copies.slice(1).forEach(copy => {
+            potentialMatches = potentialMatches.filter(noteFromFirstCopy =>
+                copy.notes().some(noteFromCurrentCopy =>
+                    this.compositeMatch(noteFromFirstCopy, noteFromCurrentCopy)
+                )
+            );
         });
 
-        this.pcrud.create(notes).toPromise()
-            .then(_ => {
-                if (this.delNotes.length) {
-                    return this.pcrud.remove(this.delNotes).toPromise();
-                }
-            }).then(_ => {
-                this.successMsg.current().then(msg => this.toast.success(msg));
-                this.close({ newNotes: this.newNotes, delNotes: this.delNotes });
+        this.notesInCommon = potentialMatches.map(match => {
+            const proxy = this.cloneNoteForBatchProxy(match) as ProxyNote;
+            // Collect IDs of all matching notes across all copies
+            proxy.originalNoteIds = [];
+            this.copies.forEach(copy => {
+                copy.notes().forEach(note => {
+                    if (this.compositeMatch(note, match)) {
+                        proxy.originalNoteIds.push(note.id());
+                    }
+                });
             });
+            return proxy;
+        });
+    }
+
+    protected compositeMatch(a: ICopyNote, b: ICopyNote): boolean {
+        return a.title() === b.title() &&
+            a.value() === b.value() &&
+            a.pub() === b.pub();
+    }
+
+    private cloneNoteForBatchProxy(source: ICopyNote): ICopyNote {
+        const target = this.createNewThing();
+        target.id(source.id());
+        target.title(source.title());
+        target.value(source.value());
+        target.pub(source.pub());
+        target.isnew(source.isnew());
+        return target;
+    }
+
+    addNew(): void {
+        if (!this.validate()) { return; }
+
+        this.newNote.id(this.autoId--);
+        this.newNote.isnew(true);
+        this.newThings.push(this.newNote);
+        this.newNote = this.createNewThing();
+        const form = document.getElementById('new-note-form') as HTMLFormElement;
+        // give createNewThing() a moment.
+        /* eslint-disable no-magic-numbers */
+        setTimeout(() => {
+            form.reset();
+            form.elements['new-note-title'].classList.remove('ng-invalid', 'ng-touched');
+            form.elements['new-note-value'].classList.remove('ng-invalid', 'ng-touched');
+            form.elements['new-note-title'].classList.add('ng-pristine', 'ng-untouched');
+            form.elements['new-note-value'].classList.add('ng-pristine', 'ng-untouched');
+        }, 5);
+        /* eslint-enable no-magic-numbers */
+    }
+
+    undeleteNote(note: ICopyNote): void {
+        note.isdeleted( note.isdeleted() ?? false );
+        // console.debug('undeleteNote, note, note.isdeleted()', note, note.isdeleted());
+        super.removeThing([note]); // it's a toggle
+    }
+
+    removeNote(note: ICopyNote): void {
+        note.isdeleted( note.isdeleted() ?? false );
+        // console.debug('removeNote, note, note.isdeleted()', note, note.isdeleted());
+        super.removeThing([note]);
+    }
+
+    protected validate(): boolean {
+        let valid = true;
+        const form = document.getElementById('new-note-form') as HTMLFormElement;
+        const title = document.getElementById('new-note-title') as HTMLFormElement;
+        const value = document.getElementById('new-note-value') as HTMLFormElement;
+        const titleError = document.getElementById('new-note-title-feedback') as HTMLElement;
+        const valueError = document.getElementById('new-note-value-feedback') as HTMLElement;
+
+        form.classList.add('form-validated');
+
+        if (!this.newNote.title()) {
+            title.classList.remove('ng-valid');
+            title.classList.add('ng-invalid');
+            titleError.removeAttribute('hidden');
+            setTimeout(() => title.focus());
+            // this.toast.danger($localize`Note title is required`);
+            valid = false;
+        }
+        if (!this.newNote.value()) {
+            value.classList.remove('ng-valid');
+            value.classList.add('ng-invalid');
+            valueError.removeAttribute('hidden');
+            // if the title was valid but this is not...
+            if (valid) {
+                setTimeout(() => value.focus());
+            }
+            // this.toast.danger($localize`Note content is required`);
+            valid = false;
+        }
+        if (!valid) {return false;}
+
+        titleError.setAttribute('hidden', '');
+        valueError.setAttribute('hidden', '');
+        return true;
+    }
+
+    protected async applyChanges(): Promise<void> {
+        try {
+            // console.debug('CopyNotesDialog, applyChanges, changedThings prior to rebuild', this.changedThings.length, this.changedThings);
+            // console.debug('CopyNotesDialog, applyChanges, deletedThings prior to rebuild', this.deletedThings.length, this.deletedThings);
+            // console.debug('CopyNotesDialog, applyChanges, copies', this.copies);
+            this.changedThings = [];
+            this.deletedThings = [];
+
+            // Find notes that have been modified
+            if (this.inBatch()) {
+                // For batch mode, look at notesInCommon for changes
+                this.changedThings = this.notesInCommon.filter(note => note.ischanged() ?? false);
+                this.deletedThings = this.notesInCommon.filter(note => note.isdeleted() ?? false);
+                // console.debug('CopyNotesDialog, applyChanges, changedThings rebuilt in batch context', this.changedThings.length, this.changedThings);
+                // console.debug('CopyNotesDialog, applyChanges, deletedThings rebuilt in batch context', this.deletedThings.length, this.deletedThings);
+            } else if (this.copies.length) {
+                // For single mode, look at the copy's alerts
+                this.changedThings = this.copies[0].notes()
+                    .filter(note => note.ischanged());
+                this.deletedThings = this.copies[0].notes()
+                    .filter(note => note.isdeleted());
+                // console.debug('CopyNotesDialog, applyChanges, changedThings rebuilt in non-batch context', this.changedThings.length, this.changedThings);
+                // console.debug('CopyNotesDialog, applyChanges, deletedThings rebuilt in non-batch context', this.deletedThings.length, this.deletedThings);
+            } else {
+                // console.debug('CopyNotesDialog, applyChanges, inBatch() == false and this.copies.length == false');
+            }
+
+            if (this.inPlaceCreateMode) {
+                this.close(this.gatherChanges());
+                return;
+            }
+
+            console.log('here', this);
+
+            this.context.newNotes = this.newThings;
+            this.context.changedNotes = this.changedThings;
+            this.context.deletedNotes = this.deletedThings;
+
+            this.copies.forEach( c => this.context.updateInMemoryCopyWithNotes(c) );
+
+            // console.debug('copies', this.copies);
+
+            // Handle persistence ourselves
+            const result = await this.saveChanges();
+            // console.debug('CopyNotesDialogComponent, saveChanges() result', result);
+            if (result) {
+                this.showSuccess();
+                this.notes = []; this.copies = []; this.copyIds = [];
+                this.close(this.gatherChanges());
+            } else {
+                this.showError('saveChanges failed');
+            }
+        } catch (err) {
+            this.showError(err);
+        }
     }
 }
-

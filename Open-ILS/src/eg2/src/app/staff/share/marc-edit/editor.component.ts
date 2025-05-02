@@ -143,11 +143,11 @@ export class MarcEditorComponent implements OnInit {
 
     // Remember the last used tab as the preferred tab.
     tabChange(evt: NgbNavChangeEvent) {
-
         // Avoid undo persistence across tabs since that could result
         // in changes getting lost.
         this.context.resetUndos();
 
+        this.editorTab = evt.nextId;
         if (evt.nextId === 'flat') {
             this.store.setItem('cat.marcedit.flateditor', true);
         } else {

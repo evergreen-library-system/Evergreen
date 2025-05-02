@@ -1,4 +1,5 @@
-import {Component, OnInit, ViewChild, HostListener} from '@angular/core';
+import {DOCUMENT, ViewportScroller} from '@angular/common';
+import {Component, OnInit, ViewChild, HostListener,  inject, NgZone, ElementRef} from '@angular/core';
 import {Router, ActivatedRoute, ParamMap} from '@angular/router';
 import {BehaviorSubject, from, Observable, of} from 'rxjs';
 import {catchError, finalize, switchMap, tap, map} from 'rxjs/operators';
@@ -23,7 +24,7 @@ import {BroadcastService} from '@eg/share/util/broadcast.service';
 import {CopyAttrsComponent} from './copy-attrs.component';
 
 const COPY_FLESH = {
-    flesh: 1,
+    flesh: 3,
     flesh_fields: {
         acp: [
             'call_number', 'location', 'parts', 'tags',
@@ -54,7 +55,8 @@ interface EditSession {
 }
 
 @Component({
-    templateUrl: 'volcopy.component.html'
+    templateUrl: 'volcopy.component.html',
+    styleUrls: ['./volcopy.component.css']
 })
 export class VolCopyComponent implements OnInit {
 
@@ -68,6 +70,7 @@ export class VolCopyComponent implements OnInit {
     tab = 'holdings'; // holdings | attrs | config
     target: string;   // item | callnumber | record | session
     targetId: string; // id value or session string
+    recordId: string; // record ID, for returning after single copy editing session expires
 
     volsCanSave = true;
     attrsCanSave = true;
@@ -87,6 +90,8 @@ export class VolCopyComponent implements OnInit {
 
     @ViewChild('volEditOpChange', {static: false}) volEditOpChange: OpChangeComponent;
 
+    private _document = inject(DOCUMENT);
+
     constructor(
         private router: Router,
         private route: ActivatedRoute,
@@ -101,11 +106,17 @@ export class VolCopyComponent implements OnInit {
         private cache: AnonCacheService,
         private broadcaster: BroadcastService,
         private holdings: HoldingsService,
-        private volcopy: VolCopyService
+        private volcopy: VolCopyService,
+        protected vs: ViewportScroller
     ) { }
 
     ngOnInit() {
-        console.log('VolCopyComponent, this',this);
+        // console.debug('VolCopyComponent, this',this);
+
+        // always scroll up a little because of our fixed navbar
+        const y = this._document.getElementById('staff-navbar').offsetHeight * 2;
+        this.vs.setOffset([0, y]); // [x, y] offset from viewscroll destination
+
         this.route.paramMap.subscribe(
             (params: ParamMap) => this.negotiateRoute(params));
     }
@@ -137,9 +148,9 @@ export class VolCopyComponent implements OnInit {
 
         return modalRef.pipe(
             tap({
-                next: res => console.log('VolCopyComponent, OpChangeComponent emission', res),
+                next: res => console.debug('VolCopyComponent, OpChangeComponent emission', res),
                 error: (err: unknown) => console.error('VolCopyComponent, OpChangeComponent error', err),
-                complete: () => console.log('VolCopyComponent, OpChangeComponent complete')
+                complete: () => console.debug('VolCopyComponent, OpChangeComponent complete')
             }),
             finalize(() => {
                 const opChangeData = { instigated: true, key: this.target + ':' + this.targetId };
@@ -233,6 +244,7 @@ export class VolCopyComponent implements OnInit {
         this.tab = params.get('tab') || 'holdings';
         this.target = params.get('target');
         this.targetId = params.get('target_id');
+        this.recordId = this.route.snapshot.queryParamMap.get('record_id');
 
         if (this.volcopy.currentContext) {
             // Avoid clobbering the context on route change.
@@ -240,6 +252,7 @@ export class VolCopyComponent implements OnInit {
         } else {
             this.context = new VolCopyContext();
             this.context.org = this.org; // inject;
+            this.context.idl = this.idl; // inject;
         }
 
         switch (this.target) {
@@ -332,7 +345,7 @@ export class VolCopyComponent implements OnInit {
             `/staff/cat/volcopy/${this.tab}/${this.target}/${this.targetId}`;
 
         // Retain search parameters
-        this.router.navigate([url], {queryParamsHandling: 'merge'});
+        this.router.navigate([url], {queryParamsHandling: 'merge', queryParams: {record_id: this.recordId}});
     }
 
     fetchSession(session: string): Promise<any> {
@@ -437,6 +450,7 @@ export class VolCopyComponent implements OnInit {
         const ids = [].concat(copyIds);
         if (ids.length === 0) { return Promise.resolve(); }
         return this.pcrud.search('acp', {id: ids}, COPY_FLESH)
+            .pipe(tap(copy => copy.copy_alerts( copy.copy_alerts().filter( a=>!a.ack_time() ) ) ))
             .pipe(tap(copy => this.context.findOrCreateCopyNode(copy)))
             .toPromise();
     }
@@ -476,6 +490,7 @@ export class VolCopyComponent implements OnInit {
     }
 
     save(close?: boolean): Promise<any> {
+        // console.debug('save', this);
         this.loading = true;
 
         if (this.copyAttrs) {
@@ -483,20 +498,27 @@ export class VolCopyComponent implements OnInit {
             this.copyAttrs.applyPendingChanges();
         }
 
+        // this.context.updateInMemoryCopies();
+
         // Volume update API wants volumes fleshed with copies, instead
         // of the other way around, which is what we have here.
         const volumes: IdlObject[] = [];
 
         this.context.volNodes().forEach(volNode => {
-            const newVol = this.idl.clone(volNode.target);
+            console.warn('save, considering volNode', volNode);
+            const newVol = this.idl.clone( this.idl.fromHash(volNode.target, 'acn') );
+            console.warn('save, newVol', newVol);
             const copies: IdlObject[] = [];
 
             volNode.children.forEach(copyNode => {
-                const copy = copyNode.target;
+                console.warn('save, considering copyNode', copyNode);
+                const copy = this.idl.fromHash(copyNode.target, 'acp');
+                console.warn('save, copy', copy);
 
                 if (copy.isnew() && !copy.barcode()) {
                     // A new copy w/ no barcode is a stub copy sitting
                     // on an empty call number.  Ignore it.
+                    console.warn('isnew but no barcode, skipping', copy);
                     return;
                 }
 
@@ -504,12 +526,16 @@ export class VolCopyComponent implements OnInit {
                 // without any changes to the copies.  This ensures the
                 // API knows when we are modifying a subset of the total
                 // copies on a volume, e.g. when changing volume labels
-                if (newVol.ischanged()) { copy.ischanged(true); }
+                if (newVol.ischanged() && !copy.isnew() && !copy.isdeleted()) {
+                    // console.debug('setting ischanged based on newVol.ischanged');
+                    copy.ischanged(true);
+                }
 
                 if (copy.ischanged() || copy.isnew() || copy.isdeleted()) {
                     const copyClone = this.idl.clone(copy);
                     // De-flesh call number
                     copyClone.call_number(copy.call_number().id());
+                    // console.debug('pushing copyClone into newVol.copies', copyClone);
                     copies.push(copyClone);
                 }
             });
@@ -517,12 +543,14 @@ export class VolCopyComponent implements OnInit {
             newVol.copies(copies);
 
             if (newVol.ischanged() || newVol.isnew() || copies.length > 0) {
+                // console.debug('pushing newVol into volumes', newVol);
                 volumes.push(newVol);
             }
         });
 
         this.context.volsToDelete.forEach(vol => {
             const cloneVol = this.idl.clone(vol);
+            // console.debug('volsToDelete, cloneVol', cloneVol);
             // No need to flesh copies -- they'll be force deleted.
             cloneVol.copies([]);
             volumes.push(cloneVol);
@@ -530,6 +558,7 @@ export class VolCopyComponent implements OnInit {
 
         this.context.copiesToDelete.forEach(copy => {
             const cloneCopy = this.idl.clone(copy);
+            // console.debug('copiesToDelete, cloneCopy', cloneCopy);
             const copyVol = cloneCopy.call_number();
             cloneCopy.call_number(copyVol.id()); // de-flesh
 
@@ -550,6 +579,7 @@ export class VolCopyComponent implements OnInit {
             vol.copies().forEach(copy => {
                 ['editor', 'creator', 'location'].forEach(field => {
                     if (typeof copy[field]() === 'object') {
+                        // console.debug('copy[\'' + field + '\']',copy[field]());
                         copy[field](copy[field]().id());
                     }
                 });
@@ -559,10 +589,14 @@ export class VolCopyComponent implements OnInit {
         let promise: Promise<number[]> = Promise.resolve([]);
 
         if (volumes.length > 0) {
+            // console.debug('fleshed volumes getting posted', volumes);
             promise = this.saveApi(volumes, false, close);
+        } else {
+            console.warn('nothing getting saved', this);
         }
 
         return promise.then(copyIds => {
+            // console.debug('save response, copyIds', copyIds);
             // In addition to the copies edited in this update call,
             // reload any other copies that were previously loaded (and permitted).
             const ids: any = {}; // dedupe
@@ -631,6 +665,7 @@ export class VolCopyComponent implements OnInit {
     saveApi(volumes: IdlObject[], override?:
         boolean, close?: boolean): Promise<number[]> {
 
+        // console.debug('saveApi, volumes, override, close', volumes, override, close);
         let method = 'open-ils.cat.asset.volume.fleshed.batch.update';
         if (override) { method += '.override'; }
 
@@ -695,6 +730,7 @@ export class VolCopyComponent implements OnInit {
 
         if (!this.volsCanSave) { return true; }
         if (!this.attrsCanSave) { return true; }
+        if (this.barcodeNeeded()) { return true; }
 
         // This can happen regardless of whether we are modifying
         // volumes vs. copies.
@@ -704,15 +740,54 @@ export class VolCopyComponent implements OnInit {
     }
 
     volsCanSaveChange(can: boolean) {
+        // console.debug('volsCanSaveChange, volsCanSave', can);
         this.volsCanSave = can;
         this.changesPending = true;
         this.changesPendingForStatusBar = true;
     }
 
     attrsCanSaveChange(can: boolean) {
+        // console.debug('attrsCanSaveChange, attrsCanSave', can);
         this.attrsCanSave = can;
         this.changesPending = true;
         this.changesPendingForStatusBar = true;
+    }
+
+    clearChangesReaction(r: any) {
+        // console.debug('clearChangesReaction', r);
+        // trigger a clear changes type action in non-unified volume editor?
+        this.attrsCanSave = false;
+        this.changesPending = false;
+        this.changesPendingForStatusBar = false;
+    }
+
+    barcodeNeeded() {
+        if (!this.changesPendingForStatusBar) { return false; }
+        if (!this.copyAttrs) { return false; }
+        if (!this.copyAttrs.batchAttrs) { return false; }
+        if (!this.context) { return false; }
+        const hasCopyLevelChanges =
+            this.context.newAlerts.length > 0 ||
+            this.context.changedAlerts.length > 0 ||
+            this.context.newNotes.length > 0 ||
+            this.context.deletedNotes.length > 0 ||
+            this.context.changedNotes.length > 0 ||
+            this.context.newTagMaps.length > 0 ||
+            this.context.changedTagMaps.length > 0 ||
+            this.context.deletedTagMaps.length > 0 ||
+            this.copyAttrs.batchAttrs.filter(
+                attr => ! ['label_class', 'prefix', 'suffix'].includes( attr.name )
+            ).filter(
+                attr => attr.hasChanged
+            ).length > 0;
+        let barcodeCount = 0;
+        this.context.copyList().forEach( copy => {
+            if ( typeof copy.barcode() === 'string' && copy.barcode() !== '' ) {
+                barcodeCount++;
+            }
+        });
+        const result = hasCopyLevelChanges && barcodeCount === 0;
+        return result;
     }
 
     @HostListener('window:beforeunload', ['$event'])

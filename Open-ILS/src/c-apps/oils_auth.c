@@ -15,8 +15,12 @@
 
 #define OILS_AUTH_OPAC "opac"
 #define OILS_AUTH_STAFF "staff"
+#define OILS_AUTH_API "api"
 #define OILS_AUTH_TEMP "temp"
 #define OILS_AUTH_PERSIST "persist"
+
+#define OILS_PASSTYPE_MAIN "main"
+#define OILS_PASSTYPE_API "api"
 
 // Default time for extending a persistent session: ten minutes
 #define DEFAULT_RESET_INTERVAL 10 * 60
@@ -178,11 +182,12 @@ int osrfAppChildInit() {
 }
 
 // free() response
-static char* oilsAuthGetSalt(int user_id) {
+static char* oilsAuthGetSalt(int user_id, char* ptype) {
     char* salt_str = NULL;
+    if (!ptype) ptype = OILS_PASSTYPE_MAIN;
 
     jsonObject* params = jsonParseFmt( // free
-        "{\"from\":[\"actor.get_salt\",%d,\"%s\"]}", user_id, "main");
+        "{\"from\":[\"actor.get_salt\",%d,\"%s\"]}", user_id, ptype);
 
     jsonObject* salt_obj = // free
         oilsUtilsCStoreReq("open-ils.cstore.json_query", params);
@@ -209,7 +214,7 @@ static char* oilsAuthGetSalt(int user_id) {
 // ident is either a username or barcode
 // Returns the init seed -> requires free();
 static char* oilsAuthBuildInitCache(
-    int user_id, const char* ident, const char* ident_type, const char* nonce) {
+    int user_id, const char* ident, const char* ident_type, const char* nonce, char* ptype) {
 
     char* cache_key  = va_list_to_string(
         "%s%s%s", OILS_AUTH_CACHE_PRFX, ident, nonce);
@@ -222,7 +227,7 @@ static char* oilsAuthBuildInitCache(
         // user does not exist.  Use a dummy seed
         auth_seed = strdup("x");
     } else {
-        auth_seed = oilsAuthGetSalt(user_id);
+        auth_seed = oilsAuthGetSalt(user_id, ptype);
     }
 
     jsonObject* seed_object = jsonParseFmt(
@@ -254,7 +259,7 @@ static char* oilsAuthBuildInitCache(
 }
 
 static int oilsAuthInitUsernameHandler(
-    osrfMethodContext* ctx, const char* username, const char* nonce) {
+    osrfMethodContext* ctx, const char* username, const char* nonce, char* ptype) {
 
     osrfLogInfo(OSRF_LOG_MARK, 
         "User logging in with username %s", username);
@@ -268,7 +273,7 @@ static int oilsAuthInitUsernameHandler(
 
     jsonObjectFree(user_obj); // NULL OK
 
-    char* seed = oilsAuthBuildInitCache(user_id, username, "username", nonce);
+    char* seed = oilsAuthBuildInitCache(user_id, username, "username", nonce, ptype);
     resp = jsonNewObject(seed);
     free(seed);
 
@@ -285,18 +290,23 @@ int oilsAuthInitUsername(osrfMethodContext* ctx) {
         jsonObjectToSimpleString(jsonObjectGetIndex(ctx->params, 0));
     const char* nonce = 
         jsonObjectGetString(jsonObjectGetIndex(ctx->params, 1));
+    const char* login_type =
+        jsonObjectGetString(jsonObjectGetIndex(ctx->params, 2));
+
+    char* ptype = OILS_PASSTYPE_MAIN;
+    if (login_type && !strcmp(login_type, OILS_AUTH_API)) ptype = OILS_PASSTYPE_API;
 
     if (!nonce) nonce = "";
     if (!username) return -1;
 
-    int resp = oilsAuthInitUsernameHandler(ctx, username, nonce);
+    int resp = oilsAuthInitUsernameHandler(ctx, username, nonce, ptype);
 
     free(username);
     return resp;
 }
 
 static int oilsAuthInitBarcodeHandler(
-    osrfMethodContext* ctx, const char* barcode, const char* nonce) {
+    osrfMethodContext* ctx, const char* barcode, const char* nonce, char* ptype) {
 
     osrfLogInfo(OSRF_LOG_MARK, 
         "User logging in with barcode %s", barcode);
@@ -310,7 +320,7 @@ static int oilsAuthInitBarcodeHandler(
 
     jsonObjectFree(user_obj); // NULL OK
 
-    char* seed = oilsAuthBuildInitCache(user_id, barcode, "barcode", nonce);
+    char* seed = oilsAuthBuildInitCache(user_id, barcode, "barcode", nonce, ptype);
     resp = jsonNewObject(seed);
     free(seed);
 
@@ -328,11 +338,16 @@ int oilsAuthInitBarcode(osrfMethodContext* ctx) {
         jsonObjectToSimpleString(jsonObjectGetIndex(ctx->params, 0));
     const char* nonce = 
         jsonObjectGetString(jsonObjectGetIndex(ctx->params, 1));
+    const char* login_type =
+        jsonObjectGetString(jsonObjectGetIndex(ctx->params, 2));
+
+    char* ptype = OILS_PASSTYPE_MAIN;
+    if (login_type && !strcmp(login_type, OILS_AUTH_API)) ptype = OILS_PASSTYPE_API;
 
     if (!nonce) nonce = "";
     if (!barcode) return -1;
 
-    int resp = oilsAuthInitBarcodeHandler(ctx, barcode, nonce);
+    int resp = oilsAuthInitBarcodeHandler(ctx, barcode, nonce, ptype);
 
     free(barcode);
     return resp;
@@ -403,6 +418,7 @@ static int oilsAuthIdentIsBarcode(const char* identifier, int org_id) {
 		is added to the auth init cache to differentiate between logins
 		using the same username and thus avoiding cache collisions for
 		near-simultaneous logins.
+    - login_type : optional, used to select password type
 
 	Return to client: Intermediate authentication seed.
 */
@@ -414,14 +430,19 @@ int oilsAuthInit(osrfMethodContext* ctx) {
         jsonObjectToSimpleString(jsonObjectGetIndex(ctx->params, 0));
     const char* nonce = 
         jsonObjectGetString(jsonObjectGetIndex(ctx->params, 1));
+    const char* login_type =
+        jsonObjectGetString(jsonObjectGetIndex(ctx->params, 2));
+
+    char* ptype = OILS_PASSTYPE_MAIN;
+    if (login_type && !strcmp(login_type, OILS_AUTH_API)) ptype = OILS_PASSTYPE_API;
 
     if (!nonce) nonce = "";
     if (!identifier) return -1;  // we need an identifier
 
     if (oilsAuthIdentIsBarcode(identifier, 0)) {
-        resp = oilsAuthInitBarcodeHandler(ctx, identifier, nonce);
+        resp = oilsAuthInitBarcodeHandler(ctx, identifier, nonce, ptype);
     } else {
-        resp = oilsAuthInitUsernameHandler(ctx, identifier, nonce);
+        resp = oilsAuthInitUsernameHandler(ctx, identifier, nonce, ptype);
     }
 
     free(identifier);
@@ -454,7 +475,7 @@ int oilsAuthInit(osrfMethodContext* ctx) {
 	method or to receive the seed from the process that did so.
 */
 static int oilsAuthVerifyPassword( const osrfMethodContext* ctx, int user_id, 
-        const char* identifier, const char* password, const char* nonce) {
+        const char* identifier, const char* password, const char* nonce, const char* login_type) {
 
     int verified = 0;
 
@@ -464,11 +485,14 @@ static int oilsAuthVerifyPassword( const osrfMethodContext* ctx, int user_id,
     free(key);
 
     // Ask the DB to verify the user's password.
-    // Here, the password is md5(md5(password) + salt)
+    // Here, the password is md5(salt + md5(password))
+
+    char* ptype = OILS_PASSTYPE_MAIN;
+    if (login_type && !strcmp(login_type, OILS_AUTH_API)) ptype = OILS_PASSTYPE_API;
 
     jsonObject* params = jsonParseFmt( // free
-        "{\"from\":[\"actor.verify_passwd\",%d,\"main\",\"%s\"]}", 
-        user_id, password);
+        "{\"from\":[\"actor.verify_passwd\",%d,\"%s\",\"%s\"]}",
+        user_id, ptype, password);
 
     jsonObject* verify_obj = // free 
         oilsUtilsCStoreReq("open-ils.cstore.json_query", params);
@@ -512,10 +536,11 @@ static int oilsAuthVerifyPassword( const osrfMethodContext* ctx, int user_id,
  * Turn the password into the nested md5 hash required of migrated
  * passwords, then check the password in the DB.
  */
-static int oilsAuthLoginCheckPassword(int user_id, const char* password) {
+static int oilsAuthLoginCheckPassword(int user_id, const char* password, char* ptype) {
+    if (!ptype) ptype = OILS_PASSTYPE_MAIN;
 
     growing_buffer* gb = osrf_buffer_init(33); // free me 1
-    char* salt = oilsAuthGetSalt(user_id); // free me 2
+    char* salt = oilsAuthGetSalt(user_id, ptype); // free me 2
     char* passhash = md5sum(password); // free me 3
 
     osrf_buffer_add(gb, salt); // gb strdup's internally
@@ -533,7 +558,7 @@ static int oilsAuthLoginCheckPassword(int user_id, const char* password) {
     jsonObject *arr = jsonNewObjectType(JSON_ARRAY);
     jsonObjectPush(arr, jsonNewObject("actor.verify_passwd"));
     jsonObjectPush(arr, jsonNewNumberObject((long) user_id));
-    jsonObjectPush(arr, jsonNewObject("main"));
+    jsonObjectPush(arr, jsonNewObject(ptype));
     jsonObjectPush(arr, jsonNewObject(finalpass));
     jsonObject *params = jsonNewObjectType(JSON_HASH); // free me 6
     jsonObjectSetKey(params, "from", arr);
@@ -559,7 +584,9 @@ static int oilsAuthLoginCheckPassword(int user_id, const char* password) {
 }
 
 static int oilsAuthLoginVerifyPassword(const osrfMethodContext* ctx, 
-    int user_id, const char* username, const char* password) {
+    int user_id, const char* username, const char* password, const char* login_type) {
+    char* ptype = OILS_PASSTYPE_MAIN;
+    if (login_type && !strcmp(login_type, OILS_AUTH_API)) ptype = OILS_PASSTYPE_API;
 
     // build the cache key
     growing_buffer* gb = osrf_buffer_init(64); // free me
@@ -587,7 +614,7 @@ static int oilsAuthLoginVerifyPassword(const osrfMethodContext* ctx,
         }
     }
 
-    int verified = oilsAuthLoginCheckPassword(user_id, password);
+    int verified = oilsAuthLoginCheckPassword(user_id, password, ptype);
 
     if (!verified) { // login failed.  increment failure counter.
         failcount++;
@@ -897,7 +924,7 @@ int oilsAuthComplete( osrfMethodContext* ctx ) {
         // User exists and is not barred, etc.  Test the password.
 
         passOK = oilsAuthVerifyPassword(
-            ctx, user_id, identifier, password, nonce);
+            ctx, user_id, identifier, password, nonce, type);
 
         if (!passOK) {
             // Password check failed. Return generic login failure.
@@ -1068,7 +1095,7 @@ int oilsAuthLogin(osrfMethodContext* ctx) {
     }
 
     if (!response && // user exists and is not barred, etc.
-        !oilsAuthLoginVerifyPassword(ctx, user_id, username, password)) {
+        !oilsAuthLoginVerifyPassword(ctx, user_id, username, password, type)) {
         // User provided the wrong password or is blocked from too 
         // many previous login failures.
 

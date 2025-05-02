@@ -1,10 +1,11 @@
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { EditOuSettingDialogComponent } from './edit-org-unit-setting-dialog.component';
-import { TestBed, waitForAsync } from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { AfterViewInit, CUSTOM_ELEMENTS_SCHEMA, ChangeDetectorRef, Component, TemplateRef, ViewChild } from '@angular/core';
 
 const modal = jasmine.createSpyObj<NgbModal>(['open']);
-let component = new EditOuSettingDialogComponent(modal);
+let fixture: ComponentFixture<EditOuSettingDialogComponent>;
+let component: EditOuSettingDialogComponent;
 
 @Component({
     template: `
@@ -25,6 +26,20 @@ class MockModalComponent implements AfterViewInit {
 }
 
 describe('EditOuSettingDialogComponent', () => {
+    beforeEach(() => {
+        TestBed.configureTestingModule({
+            providers: [
+                { provide: NgbModal, useValue: modal}
+            ], declarations: [
+                MockModalComponent,
+                EditOuSettingDialogComponent
+            ], schemas: [
+                CUSTOM_ELEMENTS_SCHEMA
+            ]
+        }).compileComponents();
+        fixture = TestBed.createComponent(EditOuSettingDialogComponent);
+        component = fixture.componentInstance;
+    });
     describe('inputType()', () => {
         describe('when setting name is lib.timezone', () => {
             it('returns timezone', () => {
@@ -48,19 +63,9 @@ describe('EditOuSettingDialogComponent', () => {
     });
     describe('template', () => {
         it(('displays a timezone select if the entry is lib.timezone'), waitForAsync(() => {
-            TestBed.configureTestingModule({
-                providers: [
-                    { provide: NgbModal, useValue: modal}
-                ], declarations: [
-                    MockModalComponent,
-                    EditOuSettingDialogComponent
-                ], schemas: [
-                    CUSTOM_ELEMENTS_SCHEMA
-                ]
-            }).compileComponents();
-            const fixture = TestBed.createComponent(MockModalComponent);
-            const mockModal = fixture.debugElement.componentInstance;
-            fixture.detectChanges();
+            const mockModalFixture = TestBed.createComponent(MockModalComponent);
+            const mockModal = mockModalFixture.debugElement.componentInstance;
+            mockModalFixture.detectChanges();
             mockModal.ngAfterViewInit();
             component = mockModal.componentRef;
             const entry = {
@@ -68,8 +73,8 @@ describe('EditOuSettingDialogComponent', () => {
                 dataType: 'string'
             };
             component.entry = entry;
-            const editElement: HTMLElement = fixture.nativeElement;
-            fixture.detectChanges();
+            const editElement: HTMLElement = mockModalFixture.nativeElement;
+            mockModalFixture.detectChanges();
             expect(editElement.querySelectorAll('eg-timezone-select').length).toEqual(1);
         }));
     });

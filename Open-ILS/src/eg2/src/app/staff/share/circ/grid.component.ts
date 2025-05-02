@@ -262,7 +262,7 @@ export class CircGridComponent implements OnInit {
         if (copyIds.length === 0) { return; }
 
         this.copyAlertsDialog.copyIds = copyIds;
-        this.copyAlertsDialog.mode = mode;
+        // this.copyAlertsDialog.mode = mode;
         this.copyAlertsDialog.open({size: 'lg'}).subscribe(
             modified => {
                 if (modified) {

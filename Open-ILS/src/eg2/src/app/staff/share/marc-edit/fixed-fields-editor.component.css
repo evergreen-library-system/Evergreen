@@ -5,7 +5,12 @@
 .ff-field:hover,
 .ff-field:has(:focus) {
   /* matches tr:nth-child(even):hover [etc] in rich-editor.component.css */
-  background-color: light-dark(var(--bs-yellow-025), var(--bs-blue-900-desat));
+  background-color: var(--bs-yellow-025);
+}
+
+[data-bs-theme="dark"] .ff-field:hover,
+[data-bs-theme="dark"] .ff-field:has(:focus) {
+  background-color: var(--bs-yellow-025);
 }
 
 /* Tighten up fixed field code and value */

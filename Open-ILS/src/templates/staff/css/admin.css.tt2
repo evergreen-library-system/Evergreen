@@ -18,7 +18,11 @@
 .admin-splash-container .new-entry {
   margin-top: 10px;
   padding-top: 10px;
-  border-top: 2px solid light-dark(#F5F5F5, var(--bs-gray-950));
+  border-top: 2px solid #F5F5F5;
+}
+
+[data-bs-theme="dark"] .admin-splash-container .new-entry {
+  border-top: 2px solid var(--bs-gray-950);
 }
 
 #auto-print-container {

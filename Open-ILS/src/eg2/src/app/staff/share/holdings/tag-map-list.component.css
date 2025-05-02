@@ -1,0 +1,18 @@
+.tag-label {
+  font-size: 1rem;
+}
+
+.tagmap-actions {
+  align-items: baseline; 
+  display: flex;
+  gap: 0.75rem;
+  transition: opacity 0.5s ease-in-out;
+}
+
+::ng-deep .eg-grid-row:not(:has(:hover, :focus, :focus-visible)) .tagmap-actions {
+  opacity: 0 !important;
+}
+
+kbd::first-letter {
+  text-transform: none;
+}

@@ -12,6 +12,7 @@ import {PcrudService} from '@eg/core/pcrud.service';
 import {OrgService} from '@eg/core/org.service';
 import {PermService} from '@eg/core/perm.service';
 import {AuthService} from '@eg/core/auth.service';
+import {BroadcastService} from '@eg/share/util/broadcast.service';
 import {NetService} from '@eg/core/net.service';
 import {StringComponent} from '@eg/share/string/string.component';
 import {FundDetailsDialogComponent} from './fund-details-dialog.component';
@@ -47,9 +48,10 @@ export class FundsManagerComponent extends AdminPageComponent implements OnInit,
         private perm2: PermService, // need copy because perm is private to base
         // component
         toast: ToastService,
-        private net: NetService
+        private net: NetService,
+        broadcaster: BroadcastService
     ) {
-        super(route, ngLocation, format, idl, org, auth, pcrud, perm, toast);
+        super(route, ngLocation, format, idl, org, auth, pcrud, perm, toast, broadcaster);
         this.dataSource = new GridDataSource();
     }
 

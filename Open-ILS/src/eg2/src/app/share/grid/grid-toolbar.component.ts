@@ -77,7 +77,9 @@ export class GridToolbarComponent implements OnInit, AfterViewInit {
         // depending on perms.
 
         this.gridContext.saveGridConfig().then(
-            err => console.error(`Error saving columns: ${err}`)
+            res => console.debug('this.gridContext.saveGridConfig', res)
+        ).catch(
+            err => console.error('Error saving columns:', err)
         );
     }
 

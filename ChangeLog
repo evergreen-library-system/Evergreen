@@ -1,3 +1,2 @@
-Evergreen doesn't keep a GNU-style ChangeLog except in release tarballs.
-Those seeking a change log are encouraged to run 'git log -v', or read
-it online at: http://git.evergreen-ils.org/?p=Evergreen.git;a=log
+Release notes can be found in the docs/RELEASE_NOTES_* file for
+the version of Evergreen that you are installing.

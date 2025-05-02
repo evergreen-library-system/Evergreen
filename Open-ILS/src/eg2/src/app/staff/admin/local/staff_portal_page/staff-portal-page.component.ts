@@ -9,6 +9,7 @@ import {PcrudService} from '@eg/core/pcrud.service';
 import {OrgService} from '@eg/core/org.service';
 import {PermService} from '@eg/core/perm.service';
 import {AuthService} from '@eg/core/auth.service';
+import {BroadcastService} from '@eg/share/util/broadcast.service';
 import {NetService} from '@eg/core/net.service';
 import {GridCellTextGenerator} from '@eg/share/grid/grid';
 import {StringComponent} from '@eg/share/string/string.component';
@@ -24,7 +25,7 @@ import {merge, Observable, EMPTY} from 'rxjs';
 export class AdminStaffPortalPageComponent extends AdminPageComponent implements OnInit {
 
     idlClass = 'cusppe';
-    fieldOrder = 'label,entry_type,target_url,entry_text,image_url,page_col,col_pos,owner,id';
+    fieldOrder = 'label,entry_type,target_url,url_newtab,entry_text,image_url,page_col,col_pos,owner,id';
     classLabel: string;
 
     refreshSelected: (idlThings: IdlObject[]) => void;
@@ -48,9 +49,10 @@ export class AdminStaffPortalPageComponent extends AdminPageComponent implements
         pcrud: PcrudService,
         perm: PermService,
         toast: ToastService,
-        private net: NetService
+        private net: NetService,
+        broadcaster: BroadcastService
     ) {
-        super(route, ngLocation, format, idl, org, auth, pcrud, perm, toast);
+        super(route, ngLocation, format, idl, org, auth, pcrud, perm, toast, broadcaster);
     }
 
     ngOnInit() {

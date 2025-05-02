@@ -8,12 +8,14 @@
   <span>{{selected.label}}</span>
 </ng-container>
 
-<ng-container *ngIf="!readOnly">
+<ng-container *ngIf="!readOnly" [formGroup]="orgSelectGroup">
   <input type="text" 
-    class="form-control"
+    class="form-control {{moreClasses}}"
     id="{{domId}}"
     [name]="name"
     [attr.aria-label]="ariaLabel"
+    [attr.aria-describedby]="ariaDescribedby"
+    [attr.ngbAutofocus]="ngbAutofocus"
     [placeholder]="placeholder"
     [disabled]="disabled"
     [required]="required"
@@ -21,11 +23,13 @@
     [ngbTypeahead]="filter"
     [resultTemplate]="displayTemplate"
     [inputFormatter]="formatter"
+    (orgSelectEnter)="onEnter()"
     (blur)="handleBlur()"
     (click)="click$.next($event.target.value)"
     (selectItem)="orgChanged($event)"
     container="body"
     #instance="ngbTypeahead"
+    formControlName="orgSelect"
   />
 
 </ng-container>

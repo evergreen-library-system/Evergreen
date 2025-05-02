@@ -9,7 +9,7 @@
         <div class="row my-2">
             <div class="col-md-6">
                 <div id="adv_expert_rows_here">
-                    <fieldset class="row row-cols-auto align-items-end" id="adv_expert_row">
+                    <fieldset class="row row-cols-auto align-items-end adv_expert_row" id="adv_expert_row">
                         <legend class="visually-hidden">[% l('Expert search term group 1') %]</legend>
             
                         <div class="col-auto col-marc-tag d-inline-block">
@@ -25,7 +25,7 @@
                             <input class="form-control" id="expert_term" type="search" name="term" />
                         </div>
                         <div class="col-auto col-row-remove">
-                            <button type="button" class="btn btn-remove btn-sm row-remover my-1" onclick="removeSearchRows($event)">
+                            <button type="button" class="btn btn-remove btn-sm row-remover my-1" onclick="killRowIfAtLeast(1, event)">
                                 <i class="fas fa-times" aria-hidden="true" title="[% l('Remove search term group 1') %]"></i>
                                 <span class="visually-hidden">[% l('Remove search term group 1') %]</span>
                             </button>
@@ -33,11 +33,21 @@
                     </fieldset>
                 </div>
                 <div class="row mt-2">
-                    <div class="col-md-12">
+                    <div class="col-md-10 d-flex align-items-start justify-content-between">
                         <button type="button" class="btn btn-opac btn-sm my-1" onclick="addExpertRow()">
                             <i class="fas fa-plus-circle" aria-hidden="true"></i> 
                             [% l("Add Search Terms") %]
                         </button>
+                        
+                        <div id="expert_search_status" role="status">
+                            [% # ARIA live announcements toggled by ariaStatus() in simple.js %]
+                            <div class="m-0 alert alert-warning d-none" id="aria-search-row-removed">
+                                [% l('Search term logic group removed.'); %]
+                            </div>
+                            <div class="m-0 alert alert-success d-none" id="aria-search-row-added">
+                                [% l('Search term logic group added.'); %]
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>

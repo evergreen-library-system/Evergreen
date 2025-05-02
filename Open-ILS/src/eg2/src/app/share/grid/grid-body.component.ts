@@ -29,6 +29,11 @@ export class GridBodyComponent {
             return;
         }
 
+        if (['a', 'button', 'input', 'select', 'summary'].includes($event.target.tagName.toLowerCase())) {
+            // avoid interrupting normal interactive elements
+            return;
+        }
+
         const index = this.context.getRowIndex(row);
 
         if (this.context.disableMultiSelect) {
@@ -45,6 +50,14 @@ export class GridBodyComponent {
     }
 
     onRowClick($event: any, row: any, idx: number) {
+        console.debug('GridBodyComponent, onRowClick:', {
+            target: $event.target,
+            currentTarget: $event.currentTarget,
+            clientX: $event.clientX,
+            clientY: $event.clientY,
+            row,
+            idx
+        });
         this.handleRowClick($event, row);
         this.grid.onRowClick.emit(row);
     }

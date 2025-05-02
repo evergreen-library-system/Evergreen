@@ -1,4 +1,5 @@
-import {Component, Input, OnInit, ViewChild, TemplateRef, EventEmitter} from '@angular/core';
+import {DOCUMENT} from '@angular/common';
+import {Component, Input, OnInit, ViewChild, TemplateRef, EventEmitter, Inject, ElementRef} from '@angular/core';
 import {Observable, Observer} from 'rxjs';
 import {NgbModal, NgbModalRef, NgbModalOptions} from '@ng-bootstrap/ng-bootstrap';
 
@@ -47,6 +48,7 @@ export class DialogComponent implements OnInit {
     @ViewChild('dialogContent', {static: false}) dialogContent: TemplateRef<any>;
 
     identifier: number = DialogComponent.counter++;
+    returnFocusTo: any;
 
     // Emitted after open() is called on the ngbModal.
     // Note when overriding open(), this will not fire unless also
@@ -59,7 +61,13 @@ export class DialogComponent implements OnInit {
     // The modalRef allows direct control of the modal instance.
     protected modalRef: NgbModalRef = null;
 
-    constructor(private modalService: NgbModal) {}
+    public focusable: string;
+
+    constructor(
+        private modalService: NgbModal,
+        @Inject(DOCUMENT) private _document: any = document,
+        private _elRef: ElementRef<HTMLElement> = null
+    ) {}
 
     // Close all active dialogs
     static closeAll() {
@@ -87,10 +95,15 @@ export class DialogComponent implements OnInit {
 
         this.modalRef = this.modalService.open(this.dialogContent, options);
         DialogComponent.instances[this.identifier] = this;
+        this.returnFocusTo = this._document.activeElement;
+        // console.debug('this.returnFocusTo', this.returnFocusTo);
 
         if (this.onOpen$) {
             // Let the digest cycle complete
-            setTimeout(() => this.onOpen$.emit(true));
+            setTimeout(() => {
+                this.onOpen$.emit(true);
+                this._setFocus();
+            }, 100);
         }
 
         return new Observable(observer => {
@@ -107,6 +120,56 @@ export class DialogComponent implements OnInit {
                 dismissed => this.finalize()
             );
         });
+    }
+
+    // Look for the first focusable element in .modal-body.
+    // Fallbacks are the footer buttons, then (implicitly) the 'X' close button in the dialog header
+    private _setFocus() {
+        if (!this.modalRef || !this._document || !this._elRef) {return;}
+        if (!this._elRef.nativeElement.contains(this._document.activeElement)) {
+            const dialogEl = this.modalRef['_windowCmptRef'].instance['_elRef'].nativeElement;
+            const dialogBodySelector = `.modal-body ${this.getFocusable()}`;
+            const dialogFooterSelector = `.modal-footer ${this.getFocusable()}`;
+            setTimeout(() => {
+                let elementToFocus = dialogEl.querySelector(dialogBodySelector) as HTMLElement;
+                if (!elementToFocus) {
+                    // if this is an alert dialog, focus the whole body rather than a footer button
+                    if (this.hasOwnProperty('alertType')) {  // eslint-disable-line no-prototype-builtins
+                        elementToFocus = dialogEl.querySelector('.modal-body') as HTMLElement;
+                    } else {
+                        elementToFocus = dialogEl.querySelector(dialogFooterSelector) as HTMLElement;
+                    }
+                }
+                elementToFocus?.focus();
+                console.debug('elementToFocus', elementToFocus);
+            });
+        }
+    }
+
+    private _restoreFocus() {
+        setTimeout(() => this.returnFocusTo.focus());
+    }
+
+    public getFocusable() {
+        const notFocusable = ':is(:disabled, [inert], [inert] *, [hidden], [hidden] *, [tabindex^="-"])';
+        const isFocusable = [
+            '[egAutofocus]',
+            '[ngbAutofocus]',
+            'a[href]',
+            'area[href]',
+            'input:not([type="hidden"]):not(fieldset:disabled *)',
+            'select:not(fieldset:disabled *)',
+            'textarea:not(fieldset:disabled *)',
+            'details > summary:first-of-type:not(details:not([open]) > details summary)',
+            'details:not(:has(> summary)):not(details:not([open]) > details)',
+            'button',
+            'iframe',
+            'audio[controls]',
+            'video[controls]',
+            '[contenteditable]',
+            '[tabindex]'
+        ].join(', ');
+        return `:is(${isFocusable}):not(${notFocusable})`;
     }
 
     // Send a response to the caller without closing the dialog.
@@ -150,8 +213,7 @@ export class DialogComponent implements OnInit {
         }
         this.modalRef = null;
         delete DialogComponent.instances[this.identifier];
+        this._restoreFocus();
     }
-
 }
-
 

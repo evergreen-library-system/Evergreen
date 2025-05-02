@@ -789,11 +789,16 @@ sub patron_search {
         unshift(@usrv, $cv);
     }
 
-    my $phone = '';
-    my @ps;
+    my $phone_cte = '';
+    my $phone_join = '';
     my @phonev;
+
     if ($pv) {
-        for my $p ( qw/day_phone evening_phone other_phone/ ) {
+        $phone_join = 'JOIN has_phone_number hpn ON hpn.id = users.id';
+
+        my @ps;
+
+        for my $p (qw/day_phone evening_phone other_phone/) {
             if ($pv =~ /^\d+$/) {
                 push @ps, "evergreen.lowercase(REGEXP_REPLACE($p, '[^0-9]', '', 'g')) ~ ?";
             } else {
@@ -802,26 +807,27 @@ sub patron_search {
             push @phonev, "^$pv";
         }
 
-        # Also search user settings which may contain phone number values.
+        my $main_where = join(' OR ', @ps);
+
+        my $main_query = "SELECT id FROM actor.usr WHERE $main_where";
+
         my $normalize = ($pv =~ /^\d+$/) ?
             "evergreen.lowercase(REGEXP_REPLACE(value, '[^0-9]', '', 'g')) ~ ?" :
             "evergreen.lowercase(value) ~ ?";
 
-        push @ps, <<"        SQL";
-            EXISTS (
-                SELECT TRUE FROM actor.usr_setting
-                WHERE usr = u.id
-                    AND name IN ('opac.default_phone', 'opac.default_sms_notify')
-                    AND $normalize
-                LIMIT 1
-            )
+        my $setting_query = <<"        SQL";
+            SELECT usr AS id
+            FROM actor.usr_setting
+            WHERE 
+                name IN ('opac.default_phone', 'opac.default_sms_notify')
+                AND $normalize
         SQL
 
         # Prefix the search value with '"?' since user setting phone
         # values may be stored as JSON numbers or (more likely) strings.
         push(@phonev, "^\"?$pv");
 
-        $phone = '(' . join(' OR ', @ps) . ')';
+        $phone_cte = "WITH has_phone_number AS ($main_query UNION $setting_query)"
     }
 
     my $ident = '';
@@ -860,7 +866,7 @@ sub patron_search {
         $profile = '(profile IN (SELECT id FROM permission.grp_descendants(?)))';
         push @profv, $prof;
     }
-    my $usr_where = join ' AND ', grep { $_ } ($usr,$phone,$ident,$name,$profile);
+    my $usr_where = join ' AND ', grep { $_ } ($usr,$ident,$name,$profile);
     my $addr_where = $addr;
 
 
@@ -889,7 +895,7 @@ sub patron_search {
         $select = "$a_select";
     }
 
-    return undef if (!$select && !$card);
+    return undef if (!$select && !$card && !$phone_cte);
 
     my $order_by = join ', ', map { 'evergreen.lowercase(CAST(users.'. (split / /,$_)[0] . ' AS text)) ' . (split / /,$_)[1] } @$sort;
     my $distinct_list = join ', ', map { 'evergreen.lowercase(CAST(users.'. (split / /,$_)[0] . ' AS text))' } @$sort;
@@ -930,9 +936,11 @@ sub patron_search {
 
     $select = "JOIN ($select) AS search ON (search.id = users.id)" if ($select);
     $select = <<"    SQL";
+        $phone_cte
         SELECT  $distinct_list
           FROM  $u_table AS users $card
             JOIN $descendants d ON (d.id = users.home_ou)
+            $phone_join
             $select
             $clone_select
             $penalty_join
@@ -945,7 +953,7 @@ sub patron_search {
           OFFSET $offset
     SQL
 
-    return actor::user->db_Main->selectcol_arrayref($select, {Columns=>[scalar(@$sort)]}, map {lc($_)} (@usrv,@phonev,@identv,@namev,@profv,@addrv));
+    return actor::user->db_Main->selectcol_arrayref($select, {Columns=>[scalar(@$sort)]}, map {lc($_)} (@phonev,@usrv,@identv,@namev,@profv,@addrv));
 }
 __PACKAGE__->register_method(
     api_name    => 'open-ils.storage.actor.user.crazy_search',

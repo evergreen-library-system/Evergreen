@@ -92,7 +92,13 @@ export CPAN_MODULES = \
 	Config::General \
 	Pass::OTP \
 	Authen::WebAuthn \
-	Rose::URI
+	IO::Prompter \
+	Mojolicious \
+	Mojolicious::Lite \
+	Mojolicious::Plugin::OpenAPI \
+	Mojolicious::Plugin::ForwardedFor \
+	Rose::URI \
+	Duadua
 
 export CPAN_MODULES_FORCE = \
 	Business::Stripe \

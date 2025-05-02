@@ -84,6 +84,7 @@ core_scripts =   $(examples)/oils_ctl.sh \
 		 $(supportscr)/pingest.pl \
 		 $(supportscr)/ingest_ctl \
 		 $(supportscr)/background_import_mgr.pl \
+		 $(supportscr)/delete_old_eresource_link_clicks.pl \
 		 $(supportscr)/edi_fetcher.pl \
 		 $(supportscr)/edi_order_pusher.pl \
 		 $(supportscr)/edi_pusher.pl \
@@ -304,7 +305,7 @@ ilscore-install:
 	sed -i 's|SYSCONFDIR|@sysconfdir@|g' '$(DESTDIR)@bindir@/oils_ctl.sh'
 
 reporter-install:
-	sed -i 's|SYSCONFDIR|@sysconfdir@|g' '$(DESTDIR)@bindir@/clark-kent.pl'
+	sed -i -e 's|SYSCONFDIR|@sysconfdir@|g' -e 's|LOCALSTATEDIR|@localstatedir@|g' '$(DESTDIR)@bindir@/clark-kent.pl'
 	sed -i 's|SYSCONFDIR|@sysconfdir@|g' '$(DESTDIR)@bindir@/find_orphaned_reports.pl'
 
 docs-install: gen_docs

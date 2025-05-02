@@ -43,7 +43,6 @@ END;
 [%-
 IF has_copies or ctx.foreign_copies;
   depth = CGI.param('copy_depth').defined ? CGI.param('copy_depth') : CGI.param('depth').defined ? CGI.param('depth') : ctx.copy_summary.last.depth;
-  total_copies = ctx.copy_summary.$depth.count;
 %]
 [% IF ctx.geo_sort %]
 <form method="GET">
@@ -355,8 +354,7 @@ END; # FOREACH bib
 
     </tbody>
 </table>
-
-        [% IF ctx.copy_limit < total_copies AND NOT serial_holdings %]
+        [% IF ctx.copy_limit < ctx.total_copies AND NOT serial_holdings %]
             <div class="row">
             [%- IF ctx.copy_offset > 0;
                 new_offset = ctx.copy_offset - ctx.copy_limit;
@@ -366,7 +364,7 @@ END; # FOREACH bib
                     l('Previous [_1]', ctx.copy_offset - new_offset) %]</a>
                </div>
             [%- END %]
-            [%- IF copies.size >= ctx.copy_limit AND (ctx.copy_offset + ctx.copy_limit < total_copies) %]
+            [%- IF copies.size >= ctx.copy_limit AND (ctx.copy_offset + ctx.copy_limit < ctx.total_copies) %]
                 <div class="col text-right">
                     <a href="[% mkurl('', {copy_offset => ctx.copy_offset + ctx.copy_limit, copy_limit => ctx.copy_limit}) %]">[%
                     l('Next [_1]', ctx.copy_limit) %] &raquo;</a>
@@ -377,7 +375,7 @@ END; # FOREACH bib
 
         [% IF NOT serial_holdings -%]
             [%- more_copies_limit = 50 %] [%# TODO: config %]
-            [%- IF  ctx.copy_limit != more_copies_limit AND copies.size >= ctx.copy_limit AND ctx.copy_limit < total_copies %]
+            [%- IF  ctx.copy_limit != more_copies_limit AND copies.size >= ctx.copy_limit AND ctx.copy_limit < ctx.total_copies %]
                         <div class="rdetail_show_copies">
                             <a href="[% mkurl('', {copy_limit => more_copies_limit, copy_offset => 0}) %]"><i class="fas fa-plus-square"></i> [% l('Show more copies') %]</a>
                         </div>

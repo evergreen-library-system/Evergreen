@@ -1,5 +1,5 @@
 import {Component, OnInit, OnDestroy, Input, ViewChild} from '@angular/core';
-import {Subject, BehaviorSubject, Subscription, lastValueFrom, EMPTY} from 'rxjs';
+import {Subject, BehaviorSubject, Subscription, lastValueFrom, EMPTY, Observable} from 'rxjs';
 import {catchError, takeUntil} from 'rxjs/operators';
 import {Router} from '@angular/router';
 import {OrgService} from '@eg/core/org.service';
@@ -72,7 +72,6 @@ export class ResultRecordComponent implements OnInit, OnDestroy {
             this.isRecordSelected = this.basket.hasRecordId(this.summary.id);
         });
 
-        await this.loadBuckets();
     }
 
     ngOnDestroy() {
@@ -91,6 +90,13 @@ export class ResultRecordComponent implements OnInit, OnDestroy {
         this.recentBuckets$.next(recentBuckets);
     }
 
+    async updateBucketList($event) {
+        if ($event) {
+            // we're opening, so fetch the buckets
+            await this.loadBuckets();
+        }
+    }
+
     loadCourseInformation(recordId) {
         this.course.isOptedIn().then(res => {
             if (res) {
@@ -106,8 +112,8 @@ export class ResultRecordComponent implements OnInit, OnDestroy {
         });
     }
 
-    orgName(orgId: number): string {
-        return this.org.get(orgId)?.shortname();
+    orgName(itemCount: any): Observable<string> {
+        return this.cat.orgOrLassoName(itemCount);
     }
 
     iconFormatLabel(code: string): string {

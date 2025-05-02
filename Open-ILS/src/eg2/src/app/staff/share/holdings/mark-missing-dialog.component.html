@@ -17,12 +17,12 @@
       <div class="row d-flex justify-content-center">
           <h5 i18n>Mark {{copyIds.length}} Item(s) Missing?</h5>
       </div>
-      <div class="row" *ngIf="numSucceeded > 0">
+      <div class="row" *ngIf="numSucceeded > 0" role="status">
         <div class="col-lg-12" i18n>
           {{numSucceeded}} Items(s) Successfully Marked Missing
         </div>
       </div>
-      <div class="row" *ngIf="numFailed > 0">
+      <div class="row" *ngIf="numFailed > 0" role="status">
         <div class="col-lg-12">
           <div class="alert alert-warning" i18n>
             {{numFailed}} Items(s) Failed to be Marked Missing

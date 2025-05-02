@@ -208,6 +208,15 @@ $$;
 
 CREATE INDEX actor_usr_setting_usr_idx ON actor.usr_setting (usr);
 
+-- special indexes for phone number searches
+CREATE INDEX actor_usr_setting_phone_values_idx
+    ON actor.usr_setting (evergreen.lowercase(value))
+    WHERE name IN ('opac.default_phone', 'opac.default_sms_notify');
+
+CREATE INDEX actor_usr_setting_phone_values_numeric_idx
+    ON actor.usr_setting (evergreen.lowercase(REGEXP_REPLACE(value, '[^0-9]', '', 'g')))
+    WHERE name IN ('opac.default_phone', 'opac.default_sms_notify');
+
 CREATE TABLE actor.stat_cat_sip_fields (
     field   CHAR(2) PRIMARY KEY,
     name    TEXT    NOT NULL,
@@ -945,7 +954,7 @@ BEGIN
     SELECT INTO type_row * FROM actor.passwd_type WHERE code = pw_type;
 
     IF NOT FOUND THEN
-        RETURN EXCEPTION 'No such password type: %', pw_type;
+        RAISE EXCEPTION 'No such password type: %', pw_type;
     END IF;
 
     IF type_row.iter_count IS NULL THEN
@@ -1083,45 +1092,6 @@ BEGIN
     RETURN pw_salt;
 END;
 $$ LANGUAGE PLPGSQL;
-
-CREATE OR REPLACE FUNCTION 
-    actor.verify_passwd(pw_usr INTEGER, pw_type TEXT, test_passwd TEXT) 
-    RETURNS BOOLEAN AS $$
-DECLARE
-    pw_salt TEXT;
-BEGIN
-    /* Returns TRUE if the password provided matches the in-db password.  
-     * If the password type is salted, we compare the output of CRYPT().
-     * NOTE: test_passwd is MD5(salt || MD5(password)) for legacy 
-     * 'main' passwords.
-     */
-
-    SELECT INTO pw_salt salt FROM actor.passwd 
-        WHERE usr = pw_usr AND passwd_type = pw_type;
-
-    IF NOT FOUND THEN
-        -- no such password
-        RETURN FALSE;
-    END IF;
-
-    IF pw_salt IS NULL THEN
-        -- Password is unsalted, compare the un-CRYPT'ed values.
-        RETURN EXISTS (
-            SELECT TRUE FROM actor.passwd WHERE 
-                usr = pw_usr AND
-                passwd_type = pw_type AND
-                passwd = test_passwd
-        );
-    END IF;
-
-    RETURN EXISTS (
-        SELECT TRUE FROM actor.passwd WHERE 
-            usr = pw_usr AND
-            passwd_type = pw_type AND
-            passwd = CRYPT(test_passwd, pw_salt)
-    );
-END;
-$$ STRICT LANGUAGE PLPGSQL;
 
 -- Remove all activity entries by activity type, 
 -- except the most recent entry per user. 
@@ -1317,6 +1287,12 @@ CREATE TABLE actor.usr_privacy_waiver (
     checkout_items BOOL DEFAULT FALSE
 );
 CREATE INDEX actor_usr_privacy_waiver_usr_idx ON actor.usr_privacy_waiver (usr);
+
+CREATE TABLE IF NOT EXISTS actor.usr_mfa_exception (
+    id      SERIAL  PRIMARY KEY,
+    usr     BIGINT  NOT NULL REFERENCES actor.usr (id) DEFERRABLE INITIALLY DEFERRED,
+    ingress TEXT    -- disregard MFA requirement for specific ehow (ingress types, like 'sip2'), or NULL for all
+);
 
 CREATE TABLE actor.usr_mfa_factor_map (
     id          SERIAL  PRIMARY KEY,

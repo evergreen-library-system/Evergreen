@@ -687,7 +687,7 @@
         xpath = '//*[local-name()="counts"]/*[local-name()="count"][@type="' _ count_type _ '"]';
         args.copy_counts = {};
         FOR node IN xml.findnodes(xpath);
-            FOR attr IN ['count', 'available', 'unshadow', 'transcendant', 'org_unit']; 
+            FOR attr IN ['count', 'available', 'unshadow', 'transcendant', 'org_unit', 'library_group']; 
                 depth = node.getAttribute('depth');
                 count_org_unit = node.getAttribute('org_unit');
                 args.copy_counts.$depth.$attr = node.getAttribute(attr);

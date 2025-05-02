@@ -5,7 +5,6 @@ import {filter, debounceTime, distinctUntilChanged, map} from 'rxjs/operators';
 import {MarcRecord, MarcField, MarcSubfield} from './marcrecord';
 import {MarcEditContext, FieldFocusRequest, MARC_EDITABLE_FIELD_TYPE,
     TextUndoRedoAction} from './editor-context';
-import {ContextMenuEntry} from '@eg/share/context-menu/context-menu.service';
 import {StringComponent} from '@eg/share/string/string.component';
 import {TagTable} from './tagtable.service';
 import {ComboboxComponent, ComboboxEntry} from '@eg/share/combobox/combobox.component';
@@ -70,9 +69,6 @@ implements OnInit, AfterViewInit, OnDestroy {
 
     // Cache of fixed field menu options
     ffValues: ComboboxEntry[] = [];
-
-    // Cache of context menu entries
-    tagMenuEntries: ContextMenuEntry[] = [];
 
     // Cache of tag combobox entries
     tagComboListEntries: ComboboxEntry[] = [];
@@ -157,8 +153,10 @@ implements OnInit, AfterViewInit, OnDestroy {
     }
 
     selectText(req?: FieldFocusRequest) {
-        this.field.hasFocus = true;
-        this.field.isDraggable = false;
+        if (this.field && typeof this.field === 'object') {
+            this.field.hasFocus = true;
+            this.field.isDraggable = false;
+        }
 
         if (!this.bigText) {
             this.editInput?.select();
@@ -365,66 +363,6 @@ implements OnInit, AfterViewInit, OnDestroy {
         return null;
     }
 
-
-    // These are served dynamically to handle cases where a tag or
-    // subfield is modified in place.
-    contextMenuEntries(): ContextMenuEntry[] {
-        if (this.isLeader) { return; }
-
-        switch (this.fieldType) {
-            case 'tag':
-                return this.tagContextMenuEntries();
-
-            case 'sfc':
-                return this.tt().getSubfieldCodes(this.field.tag);
-
-            case 'sfv':
-                return this.tt().getSubfieldValues(
-                    this.field.tag, this.subfield[0]);
-
-            case 'ind1':
-            case 'ind2':
-                return this.tt().getIndicatorValues(
-                    this.field.tag, this.fieldType);
-
-            case 'ffld':
-                return this.tt().getFfValues(this.fixedFieldCode);
-        }
-
-        return null;
-    }
-
-    tagContextMenuEntries(): ContextMenuEntry[] {
-
-        // string components may not yet be loaded.
-        if (this.tagMenuEntries.length > 0 || !this.add006Str) {
-            return this.tagMenuEntries;
-        }
-
-        this.tagMenuEntries.push(
-            {label: this.add006Str.text, value: '_add006'},
-            {label: this.add007Str.text, value: '_add007'},
-            {label: this.add008Str.text, value: '_add008'}
-        );
-
-        if (!this.field.isCtrlField) {
-            // Only data field tags get these.
-            this.tagMenuEntries.push(
-                {label: this.insertAfterStr.text,  value: '_insertAfter'},
-                {label: this.insertBeforeStr.text, value: '_insertBefore'}
-            );
-        }
-
-        this.tagMenuEntries.push(
-            {label: this.deleteFieldStr.text,  value: '_deleteField'},
-            {divider: true}
-        );
-
-        this.tt().getFieldTags().forEach(e => this.tagMenuEntries.push(e));
-
-        return this.tagMenuEntries;
-    }
-
     getContent(): string {
 
         switch (this.fieldType) {
@@ -530,7 +468,9 @@ implements OnInit, AfterViewInit, OnDestroy {
         // track the new value as the value the next session of
         // text edits should return to upon undo.
         this.undoBackToText = this.getContent();
-        this.field.hasFocus = false;
+        if (this.field && typeof this.field === 'object') {
+            this.field.hasFocus = false;
+        }
     }
 
     // Propagate textarea content into our record
@@ -581,6 +521,7 @@ implements OnInit, AfterViewInit, OnDestroy {
                 if (evt.ctrlKey) { // redo
                     this.context.requestRedo();
                     evt.preventDefault();
+                    evt.stopPropagation();
                 }
                 break;
 
@@ -588,6 +529,7 @@ implements OnInit, AfterViewInit, OnDestroy {
                 if (evt.ctrlKey) { // undo
                     this.context.requestUndo();
                     evt.preventDefault();
+                    evt.stopPropagation();
                 }
                 break;
 
@@ -622,6 +564,8 @@ implements OnInit, AfterViewInit, OnDestroy {
 
                 if (evt.ctrlKey && !evt.shiftKey && !(this.fieldType === 'ldr' || this.fieldType === 'ffld')) {
                     // ctrl+down == copy current field down one
+                    evt.preventDefault();
+                    evt.stopPropagation();
                     this.context.insertField(
                         this.field, this.record.cloneField(this.field));
                 }
@@ -632,8 +576,10 @@ implements OnInit, AfterViewInit, OnDestroy {
                 }
 
                 // down == move focus to tag of next field
-                // but not in a combobox or textarea
-                if (!evt.ctrlKey && !this.suggest && !this.bigText) {
+                // but not in an open combobox or textarea
+                if (!evt.ctrlKey && !this.TagComboBox?.instance.isPopupOpen() && !this.bigText) {
+                    evt.preventDefault();
+                    evt.stopPropagation();
                     // avoid dupe focus requests during copy
                     this.context.focusNextTag(this.field);
                 }
@@ -643,6 +589,8 @@ implements OnInit, AfterViewInit, OnDestroy {
 
                 if (evt.ctrlKey && !evt.shiftKey && !(this.fieldType === 'ldr' || this.fieldType === 'ffld')) {
                     // ctrl+up == copy current field up one
+                    evt.preventDefault();
+                    evt.stopPropagation();
                     this.context.insertField(
                         this.field, this.record.cloneField(this.field), true);
                 }
@@ -652,8 +600,10 @@ implements OnInit, AfterViewInit, OnDestroy {
                 }
 
                 // up == move focus to tag of previous field
-                // but not in a combobox or textarea
-                if (!evt.ctrlKey && !this.suggest && !this.bigText) {
+                // but not in an open combobox or textarea
+                if (!evt.ctrlKey && !this.TagComboBox?.instance.isPopupOpen() && !this.bigText) {
+                    evt.preventDefault();
+                    evt.stopPropagation();
                     // avoid dupe focus requests
                     this.context.focusPreviousTag(this.field);
                 }
@@ -675,6 +625,7 @@ implements OnInit, AfterViewInit, OnDestroy {
                 }
 
                 evt.preventDefault(); // Bare newlines not allowed.
+                evt.stopPropagation();
                 break;
 
             case 'Delete':
@@ -683,6 +634,7 @@ implements OnInit, AfterViewInit, OnDestroy {
                     // ctrl+delete == delete whole field
                     this.context.deleteField(this.field);
                     evt.preventDefault();
+                    evt.stopPropagation();
 
                 } else if (evt.shiftKey) {
 
@@ -694,6 +646,7 @@ implements OnInit, AfterViewInit, OnDestroy {
                     // prevent any shift-delete from bubbling up becuase
                     // unexpected stuff will be deleted.
                     evt.preventDefault();
+                    evt.stopPropagation();
                 }
 
                 break;
@@ -705,6 +658,7 @@ implements OnInit, AfterViewInit, OnDestroy {
                     const pos = this.subfield ? this.subfield[2] + 1 : 0;
                     this.context.insertStubSubfield(this.field, pos);
                     evt.preventDefault();
+                    evt.stopPropagation();
                 }
                 break;
         }
@@ -713,7 +667,7 @@ implements OnInit, AfterViewInit, OnDestroy {
 
     // if the user has added the max number of characters for the field, advance focus to the next input
     // NOT USED
-    // TODO: to use, add (input)="inputEvent(inputSize(), $event)" to eg-combobox
+    // TODO: to use, add (input)="inputEvent(inputSize (), $event)" to eg-combobox
     skipToNext(max: number, $event?: InputEvent) {
         if ($event.data.length === max) {
             switch (this.fieldType) {
@@ -774,25 +728,6 @@ implements OnInit, AfterViewInit, OnDestroy {
         }
 
         this.context.requestFieldFocus(focus);
-    }
-
-    contextMenuChange(value: string) {
-
-        switch (value) {
-            case '_add006': return this.context.add00X('006');
-            case '_add007': return this.context.add00X('007');
-            case '_add008': return this.context.insertReplace008();
-            case '_insertBefore':
-                return this.context.insertStubField(this.field, true);
-            case '_insertAfter':
-                return this.context.insertStubField(this.field);
-            case '_deleteField': return this.context.deleteField(this.field);
-        }
-
-        this.setContent(value, true);
-
-        // Context menus can steal focus.
-        this.context.requestFieldFocus(this.context.lastFocused);
     }
 
     isAuthInvalid(): boolean {

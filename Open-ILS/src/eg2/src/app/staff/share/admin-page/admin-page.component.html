@@ -46,7 +46,7 @@
         </eg-org-family-select>
       </ng-container>
     </div>
-    <div class="col-lg-6 d-flex">
+    <div class="col-lg-6 hstack">
       <div class="flex-1"></div><!-- push right -->
       <ng-container *ngIf="gridFilters">
         <span i18n>Filters Applied: {{gridFilters | json}}</span>
@@ -54,7 +54,7 @@
           [attr.href]="clearGridFiltersUrl()" i18n>Clear Filters</a>
         &nbsp;
         <button class="btn btn-info label-with-material-icon" type="button"
-          (click)="goBack()" [disabled]="hasNoHistory()">
+          (click)="goBack()" [hidden]="hasNoHistory()">
           <span class="material-icons" aria-hidden="true">keyboard_backspace</span>
           <span i18n>Return</span>
         </button>

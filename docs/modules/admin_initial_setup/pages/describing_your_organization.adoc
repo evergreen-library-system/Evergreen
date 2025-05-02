@@ -122,9 +122,19 @@ The *Addresses* tab is broken out into four address types: *Physical Address*, *
 
 image::describing_your_organization/org_unit_addresses.png[Organizational unit addresses]
 
+When the same information is input for each address type, any edits made to one type will carry over to the others. If the addresses differ, for example, if the physical address is not the same as the mailing address, use the *Clone as New Address* function. To do so:
+
+. Click on the tab of the address you would like to make changes to.
+. Click the *Clone as New Address* button toward the bottom of the screen. 
++
+image::describing_your_organization/clone as new address.png[Additional button text: This address is used for multiple address types.]
++
+. Input the address updates.
+. Click *Save*.
+
 If you are offering geographic location service for your catalog, you can also set the longitude and latitude coordinates under any of the addresses screens.
 
-If library settings have geographic location service enabled, then you could type in the address, click *Get Coordinates* for the fields to autofill.  You can also set the coordinates manually.
+If library settings have geographic location service enabled, then you could type in the address, click *Get Coordinates* for the fields to autofill. You can also set the coordinates manually.
 
 image::geo_coordinates.png[Coordinates Screenshot]
 

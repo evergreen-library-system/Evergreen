@@ -13,6 +13,7 @@ import {FmRecordEditorComponent} from '@eg/share/fm-editor/fm-editor.component';
 import {OrgService} from '@eg/core/org.service';
 import {PermService} from '@eg/core/perm.service';
 import {AuthService} from '@eg/core/auth.service';
+import {BroadcastService} from '@eg/share/util/broadcast.service';
 import {NetService} from '@eg/core/net.service';
 import {mergeMap} from 'rxjs/operators';
 import {Observable, forkJoin, of} from 'rxjs';
@@ -53,9 +54,10 @@ export class FundingSourcesComponent extends AdminPageComponent implements OnIni
         pcrud: PcrudService,
         perm: PermService,
         toast: ToastService,
-        private net: NetService
+        private net: NetService,
+        broadcaster: BroadcastService
     ) {
-        super(route, ngLocation, format, idl, org, auth, pcrud, perm, toast);
+        super(route, ngLocation, format, idl, org, auth, pcrud, perm, toast, broadcaster);
         this.dataSource = new GridDataSource();
     }
 

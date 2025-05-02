@@ -9,6 +9,7 @@ import {MarcRecord, MarcField, MarcSubfield} from './marcrecord';
 import {MarcEditContext} from './editor-context';
 import {AuthorityLinkingDialogComponent} from './authority-linking-dialog.component';
 import {PhysCharDialogComponent} from './phys-char-dialog.component';
+import {CharMapDialogComponent} from './charmap/charmap-dialog.component';
 
 
 /**
@@ -41,6 +42,9 @@ export class MarcRichEditorComponent implements OnInit {
 
     @ViewChild('physCharDialog', {static: false})
         physCharDialog: PhysCharDialogComponent;
+
+    @ViewChild('charMapDialog', {static: false})
+        CharMapDialog: CharMapDialogComponent;
 
     constructor(
         private idl: IdlService,
@@ -209,7 +213,16 @@ export class MarcRichEditorComponent implements OnInit {
 
     onKeyDown(evt: KeyboardEvent, field: MarcField, subfield?: MarcSubfield) {
         switch (evt.key) {
+            case 'ArrowLeft':
             case 'ArrowRight':
+                // console.debug("ArrowRight: ", evt, field, subfield);
+                // eslint-disable-next-line no-case-declarations
+                const el = evt.target as HTMLElement;
+                // do nothing if we are in a text input
+                if (el.nodeName && (el.nodeName.toLowerCase() === 'input' || el.nodeName.toLowerCase() === 'textarea')) {
+                    return;
+                }
+                // otherwise, move focus from the group to its first input (the subfield code)
                 evt.preventDefault();
                 evt.stopPropagation();
                 this.context.focusSubfield(field, subfield[2], false);
@@ -221,6 +234,7 @@ export class MarcRichEditorComponent implements OnInit {
                 if (evt.ctrlKey) { // redo
                     this.context.requestRedo();
                     evt.preventDefault();
+                    evt.stopPropagation();
                 }
                 break;
 
@@ -228,6 +242,7 @@ export class MarcRichEditorComponent implements OnInit {
                 if (evt.ctrlKey) { // undo
                     this.context.requestUndo();
                     evt.preventDefault();
+                    evt.stopPropagation();
                 }
                 break;
 
@@ -268,8 +283,7 @@ export class MarcRichEditorComponent implements OnInit {
 
                 // down == move focus to tag of next field
                 // but not in a combobox or textarea
-                if (!evt.ctrlKey) {
-                    // avoid dupe focus requests during copy
+                if (!evt.ctrlKey && !(subfield && this.context.subfieldHasFocus(field, subfield))) {
                     this.context.focusNextTag(field);
                 }
                 break;
@@ -283,9 +297,8 @@ export class MarcRichEditorComponent implements OnInit {
                 }
 
                 // up == move focus to tag of previous field
-                // but not in a combobox or textarea
-                if (!evt.ctrlKey) {
-                    // avoid dupe focus requests
+                // but not in a subfield
+                if (!evt.ctrlKey && !(subfield && this.context.subfieldHasFocus(field, subfield))) {
                     this.context.focusPreviousTag(field);
                 }
                 break;
@@ -308,7 +321,7 @@ export class MarcRichEditorComponent implements OnInit {
                     // ctrl+delete == delete whole field
                     this.context.deleteField(field);
                     evt.preventDefault();
-
+                    evt.stopPropagation();
                 } else if (evt.shiftKey) {
 
                     if (subfield) {
@@ -319,6 +332,7 @@ export class MarcRichEditorComponent implements OnInit {
                     // prevent any shift-delete from bubbling up becuase
                     // unexpected stuff will be deleted.
                     evt.preventDefault();
+                    evt.stopPropagation();
                 }
 
                 break;
@@ -330,10 +344,23 @@ export class MarcRichEditorComponent implements OnInit {
                     const pos = subfield ? subfield[2] + 1 : 0;
                     this.context.insertStubSubfield(field, pos);
                     evt.preventDefault();
+                    evt.stopPropagation();
                 }
                 break;
         }
         evt.stopPropagation();
+    }
+
+    getSubfieldDomId(field, subfield) {
+        return 'subfield-' + field.tag+subfield[0] + '-' + subfield[2];
+    }
+
+    getSubfieldTabindex(field, subfield) {
+        const subfieldGroupElement = document.getElementById(this.getSubfieldDomId(field, subfield)) as HTMLElement;
+        if (subfieldGroupElement?.contains(document.activeElement)) {
+            return -1;
+        }
+        return 0;
     }
 
     focusSubfieldGroup(field: MarcField, subfield: MarcSubfield) {
@@ -451,6 +478,12 @@ export class MarcRichEditorComponent implements OnInit {
                 }
             }
         );
+    }
+
+    showCharMap($event) {
+        // prevent S key from being picked up by the modal's keydown listener
+        $event.preventDefault();
+        this.CharMapDialog.open({size: 'xl'}).subscribe();
     }
 
     showHelp(field) {

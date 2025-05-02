@@ -15,7 +15,14 @@
                 depth = depth + 1;
                 NEXT;
             END;
-            ou_name = cp_org_unit.name;
+            library_group_name = '';
+            FOREACH group IN ctx.lassos;
+                NEXT IF library_group_name;
+                IF group.id == ctx.copy_summary.$depth.library_group;
+                    library_group_name = group.name;
+                END;
+            END;
+            ou_name = cp_org_unit.name || library_group_name;
             displayed_ous.$ou_name = 1;
     %]
     <li>

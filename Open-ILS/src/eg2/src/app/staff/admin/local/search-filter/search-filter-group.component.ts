@@ -11,6 +11,7 @@ import {PcrudService} from '@eg/core/pcrud.service';
 import {OrgService} from '@eg/core/org.service';
 import {PermService} from '@eg/core/perm.service';
 import {AuthService} from '@eg/core/auth.service';
+import {BroadcastService} from '@eg/share/util/broadcast.service';
 import {StringComponent} from '@eg/share/string/string.component';
 import {AdminPageComponent} from '../../../share/admin-page/admin-page.component';
 
@@ -37,9 +38,10 @@ export class SearchFilterGroupComponent extends AdminPageComponent implements On
         pcrud: PcrudService,
         perm: PermService,
         toast: ToastService,
-        private router: Router
+        private router: Router,
+        broadcaster: BroadcastService
     ) {
-        super(route, ngLocation, format, idl, org, auth, pcrud, perm, toast);
+        super(route, ngLocation, format, idl, org, auth, pcrud, perm, toast, broadcaster);
     }
 
     ngOnInit() {

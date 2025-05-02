@@ -2,7 +2,7 @@
 
 use strict; use warnings;
 
-use Test::More tests => 4;
+use Test::More tests => 5;
 use OpenILS::Utils::TestUtils;
 use OpenILS::Utils::CStoreEditor qw/:funcs/;
 
@@ -77,6 +77,22 @@ subtest('metarecord flavor', sub {
     is_deeply($response->{metabib_records}, \@expected_metabib_records,
         'includes a list of bib records in the metarecord');
     is($response->{record_note_count}, '2', 'includes the sum count of notes on all individual records');
+});
+
+subtest('with location_group option', sub {
+    plan tests => 1;
+
+    my $org_unit = 4;
+    my @record_ids = (248);
+    my $response = $apputils->simplereq(
+        'open-ils.search',
+        'open-ils.search.biblio.record.catalog_summary.staff',
+        $org_unit,
+        \@record_ids,
+        {library_group => 1000001});
+    my @library_group_counts = grep { $_->{library_group} && $_->{library_group} == 1000001 } @{$response->{copy_counts}};
+
+    is($library_group_counts[0]->{available}, 4, 'includes the total items in the specified library group');
 });
 
 subtest('cleanup', sub {

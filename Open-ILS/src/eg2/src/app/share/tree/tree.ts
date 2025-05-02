@@ -54,9 +54,8 @@ export class TreeNode {
         if ('stateFlag' in values) { this.stateFlag= values.stateFlag; }
         if ('callerData' in values) { this.callerData = values.callerData; }
 
-        if (this.expanded && this.childrenCB) {
-            this.children = this.childrenCB(this);
-            this.childrenCB = null;
+        if (this.expanded) {
+            this.applyChildrenCB()
         }
     }
 
@@ -66,6 +65,14 @@ export class TreeNode {
 
     toggleStateFlag() {
         this.stateFlag = !this.stateFlag;
+    }
+
+    applyChildrenCB() {
+        if (this.childrenCB) {
+            this.children = this.childrenCB(this);
+            this.children.forEach(child => child.parent = this);
+            this.childrenCB = null;
+        }
     }
 
     clone(overlay?: any): TreeNode {
@@ -82,6 +89,7 @@ export class TreeNode {
         });
 
         clonedNode.children = this.children.map(child => child.clone(overlay));
+        clonedNode.children.forEach(child => child.parent = clonedNode);
         return clonedNode;
     }
 }
@@ -101,9 +109,9 @@ export class Tree {
     }
 
     visibleChildren(node: TreeNode, shallow?: boolean): TreeNode[] {
-        if (!shallow && node.childrenCB) {
-            node.children = node.childrenCB(node);
-            node.childrenCB = null;
+        this.maybeMaintainState(node);
+        if (!shallow) {
+            node.applyChildrenCB();
         }
 
         if (!this.restrictedNodes.length) { // no restriction, return the whole list
@@ -117,6 +125,7 @@ export class Tree {
     }
 
     visibleDescendants(node: TreeNode): TreeNode[] {
+        this.maybeMaintainState(node);
         const nodes = [];
         const recurseTree = (node: TreeNode) => {
             if (node) {
@@ -161,9 +170,8 @@ export class Tree {
             } else {
                 nodes.push(node);
 
-                if (!hidden && node.childrenCB) {
-                    node.children = node.childrenCB(node);
-                    node.childrenCB = null;
+                if (!hidden) {
+                    node.applyChildrenCB();
                 }
 
                 node.children.forEach(n => n.parent = node);
@@ -177,6 +185,12 @@ export class Tree {
 
         recurseTree(node, node.depth, false);
         return nodes;
+    }
+
+    private maybeMaintainState(node: TreeNode) {
+        if (!node.parent && node !== this.rootNode) {
+            this.descendants(this.rootNode);
+        }
     }
 
     findStateFlagNodes(): TreeNode[] {
@@ -202,10 +216,12 @@ export class Tree {
     }
 
     findParentNode(node: TreeNode, findHidden?: boolean) {
+        this.maybeMaintainState(node);
         return node.parent;
     }
 
     pathTo(node: TreeNode): TreeNode[] {
+        this.maybeMaintainState(node);
         let pathNodes = [node];
         let nextNode = node.parent;
         while (nextNode) {
@@ -216,10 +232,12 @@ export class Tree {
     }
 
     expandPathTo(node: TreeNode) {
+        this.maybeMaintainState(node);
         this.pathTo(node).forEach(n => n.expanded = true);
     }
 
     findNodePath(node: TreeNode) {
+        this.maybeMaintainState(node);
         const path = [];
         do {
             const pnode = {...node};
@@ -234,6 +252,7 @@ export class Tree {
     // only work on non-dynamic trees, that is, those with no childrenCB callback function
     removeNode(node: TreeNode) {
         if (!node) { return; }
+        this.maybeMaintainState(node);
         const pnode = node.parent;
         if (pnode) {
             node.parent = null; // to help the GC find blind ref
@@ -260,15 +279,18 @@ export class Tree {
     }
 
     selectNode(node: TreeNode) {
+        this.maybeMaintainState(node);
         this.nodeList().forEach(n => n.selected = false);
         node.selected = true;
     }
 
     unSelectNode(node: TreeNode) {
+        this.maybeMaintainState(node);
         node.selected = false;
     }
 
     toggleNodeSelection(node: TreeNode) {
+        this.maybeMaintainState(node);
         node.selected = !node.selected;
     }
 

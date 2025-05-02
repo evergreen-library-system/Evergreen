@@ -1,6 +1,7 @@
-/* You can add global styles to this file, and also import other style files */
-/* Colors are defined in styles-colors.css */
-
+/* You can add global styles to this file */
+/* Colors are defined in assets/css/styles-colors.css */
+/* Light mode: assets/css/light.css; dark mode: assets/css/dark.css */
+/* These have to be imported to preserve the webpack paths: */
 /* bootstrap CSS only -- JS bits come from ng-bootstrap */
 @import '~bootstrap/dist/css/bootstrap.min.css';
 
@@ -43,6 +44,36 @@ h5 {font-size: .95rem}
 .semibold {font-weight: 600;}
 output {padding: 0.5rem 0;}
 
+dl {
+  margin-block: 1.5rem;
+}
+
+.dl-grid {
+  display: grid;
+  gap: 0.65rem 1rem;
+  grid-template-columns: minmax(min-content, 10rem) 1fr;
+}
+
+.dl-grid > div {
+  display: grid;
+  grid-column: 1 / -1;
+  grid-template-columns: subgrid;
+}
+
+.dl-grid > :is(dt, div > dt, .term, div > .term) {
+  grid-column: 1;
+}
+
+.dl-grid > :is(dd, div > dd, .def, div > .def) {
+  grid-column: 2;
+}
+
+/* align to the right */
+.dl-terms-end > :is(dt, div > dt, .term, div > .term),
+.dl-defs-end > :is(dt, div > dt, .def, div > .def) {
+  text-align: end;
+}
+
 .numeric {
   font-variant-numeric: tabular-nums lining-nums;
   text-align: end;
@@ -67,29 +98,38 @@ a,
   color: var(--primary);
 }
 
-a:focus,
-a:hover,
-.nav-link:focus,
-.nav-link:hover {
+a:not(.alert-link):is(:hover, :focus, :focus-visible),
+.nav-link:is(:hover, :focus, :focus-visible) {
   border-color: var(--primary-hover);
   color: var(--primary-hover);
 }
 
 .btn-link {
+  background-color: transparent;
+  border-width: 0;
   color: var(--primary);
   padding: inherit;
 }
 
-.btn-link:focus,
-.btn-link:hover,
-.nav-link:focus,
-.nav-link:hover {
+.btn-link:is(:hover, :focus, :focus-visible),
+.nav-link:is(:hover, :focus, :focus-visible) {
   color: var(--primary-hover);
 }
 
-.btn-link:focus,
-.btn-link:hover {
-  border-width: 0;
+.alert-link {
+  text-decoration: underline;
+}
+
+.alert-link:is(:hover, :focus, :focus-visible) {
+  filter: brightness(1.1);
+}
+
+a[target="_blank"]:not(:has(img)):after {
+  display: inline;
+  content: "open_in_new";
+  font-family: "Material Icons";
+  line-height: inherit;
+  margin-inline-start: 0.25rem;
 }
 
 /** BS has flex utility classes, but none for specifying flex widths.
@@ -129,7 +169,7 @@ a:hover,
   flex: 1;
   display: flex;
   align-items: center;
-  background-color: light-dark( var(--bs-gray-100), var(--bs-gray-900) );
+  background-color: var(--bs-body-bg-alt);
   border-radius: 5px;
   box-shadow: inset 0 1px 1px rgba(var(--bs-black-rgb), 0.5);
   padding: 4px;
@@ -143,7 +183,8 @@ a:hover,
 
 /* copies color/border/elements from above sans position elements */
 .well-like {
-  background-color: light-dark( var(--bs-gray-100), var(--bs-gray-900) );
+  background-color: var(--bs-light);
+  color: var(--bs-dark);
   border-radius: 5px;
   box-shadow: inset 0 1px 1px rgba(var(--bs-black-rgb), 0.5);
 }
@@ -184,6 +225,18 @@ a:hover,
     display: inline-flex;
     vertical-align: middle;
     align-items: center;
+}
+
+.btn:has(.material-icons) {
+  align-items: center;
+  display: inline-flex;
+  flex-wrap: wrap;
+  gap: 0.25rem;
+  line-height: inherit;
+}
+
+.btn .material-icons {
+  font-size: 1.2rem;
 }
 
 /* dropdown menu link/button with no downward carrot icon */
@@ -231,14 +284,60 @@ a:hover,
  * Required valid fields are left-border styled in green-ish.
  * Invalid fields are left-border styled in red-ish.
  */
-.form-validated .ng-valid[required]:not(eg-combobox):not(eg-date-select), 
-.form-validated .ng-valid.required, input[formcontrolname].ng-valid.required {
+
+.form-validated .ng-valid[required]:not(:is(fieldset, form)),
+.form-validated .ng-valid.required, 
+.form-validated input[formcontrolname].ng-valid.required {
   border-left: 5px solid var(--bs-form-valid-border-color);
+  animation-name: fadeInBorder;
+  animation-iteration-count: 1;
+	animation-timing-function: ease-in;
+	animation-duration: 0.35s;
 }
-.form-validated .ng-invalid:not(form):not(eg-combobox):not(eg-date-select),
-input[formcontrolname].ng-invalid,
-.invalid {
+
+.form-validated .ng-invalid:not(:is(fieldset, form)),
+.form-validated input[formcontrolname].ng-invalid,
+.form-validated .invalid:not(:is(form)) {
   border-left: 5px solid var(--bs-form-invalid-border-color);
+  animation-name: fadeInBorder;
+  animation-iteration-count: 1;
+	animation-timing-function: ease-in;
+	animation-duration: 0.35s;
+}
+
+.form-control.ng-valid.ng-touched ~ .invalid-feedback {
+  display: none;
+}
+
+.valid-feedback,
+.invalid-feedback {
+  display: block;
+  margin: 0;
+	opacity: 1;
+	animation-name: fadeInOpacity;
+	animation-iteration-count: 1;
+	animation-timing-function: ease-in;
+	animation-duration: 0.35s;
+}
+
+@keyframes fadeInOpacity {
+	0% {
+		opacity: 0;
+	}
+	100% {
+		opacity: 1;
+	}
+}
+
+@keyframes fadeInBorder {
+	0% {
+		border-left-color: var(--border);
+    border-left-width: 1px;
+	}
+	100% {
+		border-left-color: var(--bs-form-invalid-border-color);
+    border-left-width: 5px;
+	}
 }
 
 /* Typical form CSS.
@@ -277,12 +376,23 @@ input[formcontrolname].ng-invalid,
 }
 
 option[disabled] {
-  color: light-dark(rgba(0,0,0, 0.3), rgba(255,255,255, 0.6));
+  color: rgba(0,0,0, 0.3);
 }
 
-.form-check-input[type=checkbox] {
-  border-width: 2px;
-  border-color: var(--form-check-border);
+[data-bs-theme="dark"] option[disabled] {
+  color: rgba(255,255,255, 0.6);
+}
+
+input, textarea, select, option, 
+.form-control, .form-control:focus, .form-select {
+  --bs-border-color: var(--form-control-border);
+  background-color: var(--bs-body-bg);
+  color: var(--bs-body-color);
+}
+
+input[type="checkbox"], .form-check-input {
+  --bs-border-color: var(--form-check-border);
+  --bs-border-width: 2px;
   min-width: 1rem;
   min-height: 1rem;
 }
@@ -290,17 +400,20 @@ option[disabled] {
 /* Bootstrap's focus "outline" is a faint box shadow. Buttons have
    color-specific shadows, so let's leave those alone except for
    ones that are dropdown items. */
-:not(button):not(.btn):focus,
-:not(button):not(.btn):focus-visible,
-button.dropdown-item:focus,
-button.dropdown-item:focus-visible {
+:not(button):not(.btn):is(:focus, :focus-visible),
+.btn-link:is(:focus, :focus-visible),
+button.dropdown-item:is(:focus, :focus-visible) {
   outline: 0.25rem solid rgba(var(--primary-focus-outline-rgb), 0.75);
   outline-offset: 0;
   --moz-outline-radius: 0.25rem;
 }
 
 .form-control::placeholder {
-  color: light-dark(var(--bs-gray-500), var(--bs-gray-600));
+  color: var(--bs-gray-500);
+}
+
+[data-bs-theme="dark"] .form-control::placeholder {
+  color: var(--bs-gray-600);
 }
 
 .form-control:focus,
@@ -325,21 +438,17 @@ input[type="checkbox"]:focus {
 }
 @media print {
   head {display: none} /* just to be safe */
-  body div:not([id="eg-print-container"]) {display: none}
-  div {display: none}
+  /* Display ONLY eg-print-container; Hide literally everything that is not above, below, or itself eg-print-container */
+  *:not(:has(#eg-print-container)):not(#eg-print-container *):not(#eg-print-container) {
+    display: none
+  }
   @page {size: auto} /* work around Bootrap 4's default
                         of A3; specifying any paper
                         size stops browsers from letting
                         the user choose portrait or
                         landscape. LP#1986725 */
   #eg-print-container {display: block}
-  #eg-print-container div {display: block}
   #eg-print-container pre {border: none}
-  
-  /* Always print in light mode */
-  :root {
-    color-scheme: light !important;
-  }
 }
 
 /**
@@ -359,7 +468,7 @@ body>.dropdown-menu {z-index: 2100;}
 }
 .ngb-dp-day:not(.disabled) .daterange-day.range, .ngb-dp-day:not(.disabled) .daterange-day:hover {
   background-color: var(--primary);
-  color: light-dark(white, black);
+  color: var(--bs-white);
 }
 .ngb-dp-day:not(.disabled) .daterange-day.faded {
   background-color: var(--bs-body-bg-highlight);
@@ -422,7 +531,7 @@ body>.dropdown-menu {z-index: 2100;}
  *    breaks a lot of styles.
  */
 #acq-search-page ngbNav .nav.nav-tabs {
-  background-color: var(--nav-tab-bg);
+  background-color: var(--bs-body-bg);
 }
 
 /**
@@ -479,30 +588,29 @@ button.input-group-text.text-danger {
   color: var(--bs-body-color);
 }
 
+.btn:is(:hover, :focus, :focus-visible) {
+  box-shadow: 0 0 0 .25rem rgba(var(--bs-blue-600-rgb), .25);
+}
+
 .btn.btn-secondary {
   color: var(--bs-btn-color);
 }
 
-.input-group .btn {
+.input-group .btn:not([class*="btn-"]),
+.input-group .btn[class*="btn-outline-"] {
   background-color: var(--btn-gray-bg);
-}
-
-.btn.btn-link {
-  color: inherit;
-  background-color: transparent;
 }
 
 .btn-light:hover,
 .btn-light:focus,
 .show > .btn-light.dropdown-toggle {
-  background-color: light-dark(var(--bs-gray-100), var(--bs-body-bg-alt));
-  color: light-dark(var(--bs-secondary), var(--bs-gray-100));
-  border-color: light-dark(var(--bs-secondary), var(--bs-gray-100));
+  background-color: var(--bs-body-bg-alt);
+  color: var(--bs-secondary-color);
+  border-color: var(--bs-secondary-color);
 }
 
-.btn-outline-secondary:hover,
-.btn-outline-secondary:focus {
-  color: light-dark(var(--bs-secondary), var(--bs-gray-200));
+.btn-outline-secondary:is(:hover, :focus, :focus-visible) {
+  color: var(--bs-secondary-color);
   background-color: transparent;
 }
 
@@ -515,7 +623,7 @@ button.input-group-text.text-danger {
 
 /* other colors' focus state shadows do not need to change */
 .btn-warning.focus,
-.btn-warning:focus {
+.btn-warning:is(:hover, :focus, :focus-visible) {
   background-color: var(--badge-warning-hover-bg);
   border-color: var(--warning-border-hover);
   box-shadow: 0 0 0 .2rem var(--warning-shadow);
@@ -527,10 +635,7 @@ button.input-group-text.text-danger {
   color: var(--bs-white);
 }
 
-.btn-primary:hover,
-.btn-primary.hover,
-.btn-primary:focus,
-.btn-primary.focus,
+.btn-primary:is(.hover, :hover, .focus, :focus, :focus-visible),
 .btn-check:active + .btn-primary, 
 .btn-check:checked + .btn-primary, 
 .btn-primary.active,
@@ -546,10 +651,7 @@ button.input-group-text.text-danger {
   color: var(--primary-border);
 }
 
-.btn-outline-primary:hover,
-.btn-outline-primary.hover,
-.btn-outline-primary:focus,
-.btn-outline-primary.focus {
+.btn-outline-primary:is(.hover, :hover, .focus, :focus, :focus-visible) {
   background-color: var(--bs-body-bg);
   border-color: var(--primary-border);
   color: var(--primary-border);
@@ -569,21 +671,30 @@ button.input-group-text.text-danger {
 
 .btn-info {
   background-color: var(--bs-cyan-700);
-  border-color: light-dark(var(--bs-cyan-600), var(--bs-cyan-800));
+  border-color: var(--bs-cyan-600);
   color: white;
 }
 
-.btn-info:hover,
-.btn-info.hover,
-.btn-info:focus,
-.btn-info.focus,
+[data-bs-theme="dark"] .btn-info {
+  border-color: var(--bs-cyan-800);
+}
+
+.btn-info:is(.hover, :hover, .focus, :focus, :focus-visible),
 .btn-check:active + .btn-info, 
 .btn-check:checked + .btn-info, 
 .btn-info.active,
 .show > .btn-info.dropdown-toggle {
   background-color: var(--bs-cyan-600);
-  border-color: light-dark(var(--bs-cyan-600), var(--bs-cyan-800));
+  border-color: var(--bs-cyan-600);
   color: white;
+}
+
+[data-bs-theme="dark"] .btn-info:is(.hover, :hover, .focus, :focus, :focus-visible),
+[data-bs-theme="dark"] .btn-check:active + .btn-info, 
+[data-bs-theme="dark"] .btn-check:checked + .btn-info, 
+[data-bs-theme="dark"] .btn-info.active,
+[data-bs-theme="dark"] .show > .btn-info.dropdown-toggle {
+  border-color: var(--bs-cyan-800);
 }
 
 .btn-info.disabled, .btn-info:disabled {
@@ -596,10 +707,7 @@ button.input-group-text.text-danger {
   color: var(--bs-body-color);
 }
 
-.btn-outline-info:hover,
-.btn-outline-info.hover,
-.btn-outline-info:focus,
-.btn-outline-info.focus,
+.btn-outline-info:is(.hover, :hover, .focus, :focus, :focus-visible),
 .btn-check:active+.btn-info,
 .btn-check:checked+.btn-info,
 .btn-info.active,
@@ -630,10 +738,7 @@ button.input-group-text.text-danger {
   color: var(--success-color);
 }
 
-.btn-success:hover,
-.btn-success.hover,
-.btn-success:focus,
-.btn-success.focus, 
+.btn-success:is(.hover, :hover, .focus, :focus, :focus-visible), 
 .btn-check:active + .btn-success, 
 .btn-check:checked + .btn-success, 
 .btn-success.active,
@@ -649,10 +754,7 @@ button.input-group-text.text-danger {
   color: var(--success-color);
 }
 
-.btn-outline-success:hover,
-.btn-outline-success.hover,
-.btn-outline-success:focus,
-.btn-outline-success.focus {
+.btn-outline-success:is(.hover, :hover, .focus, :focus, :focus-visible) {
   background-color: var(--bs-body-bg);
   border-color: var(--success-hover);
   color: var(--success-hover-color);
@@ -678,24 +780,19 @@ button.input-group-text.text-danger {
   color: white;
 }
 
-.btn-danger:hover,
-.btn-danger:focus {
+.btn-danger:is(.hover, :hover, .focus, :focus, :focus-visible) {
   background-color: var(--danger-bg-hover);
 }
 
 .btn-normal,
 .btn-destroy,
-.btn-outline-normal:hover,
-.btn-outline-normal:focus,
-.btn-outline-normal:active {
+.btn-outline-normal:is(:active, :hover, :focus, :focus-visible) {
   color: var(--btn-gray-color);
   background-color: var(--btn-gray-bg);
   border: 1px solid var(--btn-gray-border);
 }
 
-.btn-normal:hover,
-.btn-normal:focus,
-.btn-normal:active {
+.btn-normal:is(:active, :hover, :focus, :focus-visible) {
   color: var(--btn-gray-color);
   background-color: var(--btn-gray-bg-hover);
   border: 1px solid var(--btn-gray-border);
@@ -708,16 +805,7 @@ button.input-group-text.text-danger {
   border: 1px solid var(--btn-gray-border);
 }
 
-.btn-outline-normal:hover,
-.btn-outline-normal:focus,
-.btn-outline-normal:active {
-  color: var(--btn-gray-color);
-  background-color: var(--btn-gray-bg);
-  border: 1px solid var(--btn-gray-border);
-}
-
-.btn-outline-normal:hover,
-.btn-outline-normal:focus {
+.btn-outline-normal:is(:active, :hover, :focus, :focus-visible) {
   color: var(--btn-gray-color);
   background-color: var(--btn-gray-bg);
   border: 1px solid var(--btn-gray-border);
@@ -742,12 +830,10 @@ button.input-group-text.text-danger {
   border-color: transparent;
 }
 
-.btn-destroy:hover,
-.btn-destroy:focus,
-.btn-link.btn-destroy:hover,
-.btn-link.btn-destroy:focus {
-  color: light-dark(var(--bs-red-600),var(--bs-red-200));
-  background-color: light-dark(var(--bs-gray-200), var(--bs-gray-900));
+.btn-destroy:is(:active, :hover, :focus, :focus-visible),
+.btn-link.btn-destroy:is(:active, :hover, :focus, :focus-visible) {
+  color: var(--destroy-color);
+  background-color: var(--bs-body-bg-highlight);
   border: 1px solid var(--danger-border);
   box-shadow: 0 0 0 .25rem rgba(var(--bs-red-rgb), .25);
 }
@@ -764,16 +850,15 @@ button.input-group-text.text-danger {
   border: 1px solid var(--danger-border);
 }
 
-.btn-outline-destroy:hover,
-.btn-outline-destroy:focus {
-  color: var(--danger);
+.btn-outline-destroy:is(:hover, :focus, :focus-visible) {
+  color: var(--destroy-color);
   background-color: transparent;
   border: 1px solid var(--danger-border);
   box-shadow: 0 0 0 .25rem rgba(var(--bs-red-rgb), .25);
 }
 
 .btn-outline-destroy:active {
-  color: var(--danger);
+  color: var(--destroy-color);
   background-color: transparent;
   border: 1px solid var(--danger-border);
 }
@@ -796,22 +881,19 @@ button.focus-border:focus-visible {
   padding-top: .15em;
 }
 
-.alert-primary,
 .badge-primary,
 .badge.text-bg-primary {
   background: var(--badge-bg);
   color: var(--badge-color);
-  border-color: var(---primary-border);
 }
 
 .badge-secondary,
 .badge.text-bg-secondary {
-  background: light-dark(var(--bs-gray-300), var(--bs-gray-700));
+  background: var(--secondary-bg);
   color: var(--bs-body-color);
   border-color: var(--border);
 }
 
-.alert-success,
 .badge-success,
 .badge.text-bg-success {
   background: var(--badge-success-bg);
@@ -819,7 +901,6 @@ button.focus-border:focus-visible {
   border-color: var(--success-border);
 }
 
-.alert-danger,
 .badge-danger,
 .badge.text-bg-danger {
   background: var(--badge-danger-bg);
@@ -827,7 +908,6 @@ button.focus-border:focus-visible {
   border-color: var(--danger-border);
 }
 
-.alert-warning,
 .badge-warning,
 .badge.text-bg-warning {
   background: var(--badge-warning-bg);
@@ -835,7 +915,6 @@ button.focus-border:focus-visible {
   border-color: var(--warning-border);
 }
 
-.alert-info,
 .badge-info,
 .badge.text-bg-info {
   background: var(--badge-info-bg);
@@ -845,16 +924,21 @@ button.focus-border:focus-visible {
 
 .badge-light,
 .badge.text-bg-light {
-  background: var(---bs-body-bg-highlight);
+  background: var(--bs-body-bg-highlight);
   color: var(--bs-body-color);
   border-color: var(--border);
 }
 
 .badge-dark,
 .badge.text-bg-dark {
-  background: light-dark(var(--bs-gray-500), var(--bs-gray-800));
+  background: var(--bs-gray-500);
   color: var(--bs-body-color);
   border-color: var(--border);
+}
+
+[data-bs-theme="dark"] .badge-dark,
+[data-bs-theme="dark"] .badge.text-bg-dark {
+  background:  var(--bs-gray-800);
 }
 
 .badge.border {
@@ -933,12 +1017,17 @@ a {
 
 .nav-tabs.flex-column .nav-item .nav-link:hover, 
 .nav-tabs.flex-column .nav-item .nav-link:focus {
-  background-color: light-dark(rgba(0,0,100,0.075), var(--bs-body-bg-highlight));
+  background-color: rgba(0,0,100,0.075);
+}
+
+[data-bs-theme="dark"] .nav-tabs.flex-column .nav-item .nav-link:hover, 
+[data-bs-theme="dark"] .nav-tabs.flex-column .nav-item .nav-link:focus {
+  background-color: var(--bs-body-bg-highlight);
 }
 
 .nav-tabs.flex-column .nav-item.show .nav-link, 
 .nav-tabs.flex-column .nav-link.active {
-  background-color: light-dark(rgba(var(--bs-blue-rgb),0.1), var(--bs-blue-350));
+  background-color: rgba(var(--bs-blue-600-rgb), 0.1);
   font-weight: bold;
 }
 
@@ -958,8 +1047,12 @@ a {
 
 /* tabs on cards should match the card */
 .nav-tabs.card-nav-tabs:not(.flex-column) .nav-link {
-  background-color: light-dark(var(--bs-gray-200), var(--bs-body-bg));
+  background-color: var(--bs-gray-200);
   border-color: var(--border);
+}
+
+[data-bs-theme="dark"] .nav-tabs.card-nav-tabs:not(.flex-column) .nav-link {
+  background-color: var(--bs-body-bg);
 }
 
 .nav-tabs.card-nav-tabs:not(.flex-column) .nav-link:active, 
@@ -992,6 +1085,10 @@ background/text variables. Crash override. We can remove this in Bootstrap 5.3.
     color: var(--bs-body-color);
 }
 
+.modal-body .list-group-item {
+  background-color: inherit;
+}
+
 .bg-light, .bg-white,
 [data-bs-theme="dark"] .btn-light:active,
 [data-bs-theme="dark"] .btn-outline-dark:active {
@@ -1005,7 +1102,6 @@ legend,
 }
 
 .accordion-button:not(.collapsed),
-.alert-info,
 .btn-light,
 .card-header,
 .eg-grid-header,
@@ -1018,13 +1114,6 @@ legend,
     background: var(--bs-body-bg-alt);
     border-color: var(--border);
     color: var(--bs-body-color);
-}
-
-input, textarea, select, option, 
-.form-control, .form-control:focus, .form-select, .form-check-input {
-  background: var(--bs-body-bg);
-  border-color: light-dark(var(--bs-gray-500), var(--bs-gray-700));
-  color: var(--bs-body-color);
 }
 
 .dropdown-item {
@@ -1050,12 +1139,12 @@ input, textarea, select, option,
 }
 
 .patron-summary-alert, .patron-summary-alert-small {
-    background: inherit;
-    color: light-dark(var(--bs-red-300), var(--bs-red-700));
+  background: inherit;
+  color: var(--bs-red-300);
 }
 
-[data-bs-theme="dark"] .alert {
-  border: none;
+[data-bs-theme="dark"] .patron-summary-alert, .patron-summary-alert-small {
+  color: var(--bs-red-700);
 }
 
 [data-bs-theme="dark"] .text-dark {

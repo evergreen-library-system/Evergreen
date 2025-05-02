@@ -285,7 +285,7 @@
                                     [% END %]
                                     [% FOR uri IN args.uris %]
                                             <dt>[% l('Electronic resource') %]</dt>
-                                            <dd><a href="[% uri.href | html %]" class="uri_link" target="_blank">[% uri.link | html %]</a>
+                                            <dd><a href="[% uri.href | html %]" class="uri_link" data-record-id="[% rec.bre_id %]" target="_blank">[% uri.link | html %]</a>
                                                 [%- IF uri.note -%]
                                                     [%- '- <span property="description">' _ uri.note _ '</span>' %]
                                                 [%- ELSE -%]

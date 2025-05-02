@@ -11,6 +11,8 @@
 
 <eg-phys-char-dialog #physCharDialog></eg-phys-char-dialog>
 
+<eg-charmap-dialog #charMapDialog></eg-charmap-dialog>
+
 <ng-template #subfieldChunk let-field="field" let-subfield="subfield" let-tabIndex="tabIndex">
 
   <!-- move these around depending on whether we are stacking subfields -->
@@ -129,7 +131,9 @@
           </div>
           <!-- Single buttons -->
           <button type="button" class="btn btn-secondary" (click)="validate()" i18n>Validate</button>
-          <button type="button" class="btn btn-secondary" [ngClass]="{active: context.showHelp}" (click)="context.showHelp = !context.showHelp" i18n>Help</button>
+          <button type="button" class="btn btn-secondary" (click)="showCharMap($event)" egAccessKey keyCtx="MARC Editor" i18n-keySpec i18n-keyDesc
+          keySpec="ctrl+s" keyDesc="Special Characters Map" i18n>Special Characters</button>
+          <button type="button" class="btn btn-secondary ms-auto" [ngClass]="{active: context.showHelp}" (click)="context.showHelp = !context.showHelp" i18n>Help</button>
         </div>
       
     </div>
@@ -146,7 +150,7 @@
         <li i18n>Copy Current Row Above: Ctrl+Up</li>
         <li i18n>Copy Current Row Below: Ctrl+Down</li>
         <li i18n>Add Subfield: Ctrl+D or Ctrl+I</li>
-        <li i18n>Edit Subfield (when grouped): Right Arrow</li>
+        <li i18n>Edit Subfield (when grouped): Left or Right Arrow</li>
         <li i18n>Remove Row: Ctrl+Del</li>
         <li i18n>Remove Subfield: Shift+Del</li>
         <li i18n>Open Suggestions: Ctrl+Shift+Down</li>
@@ -314,10 +318,10 @@
               'full-width': subfield[1].length > 100 || context.isFullWidth(field.tag, subfield[0]),
               'last': last
             }"
-            tabindex="0"
-            [id]="'subfield-{{subfield[2]}}'"
+            [tabindex]="getSubfieldTabindex(field, subfield)"
+            [id]="getSubfieldDomId(field, subfield)"
             (keydown)="onKeyDown($event, field, subfield)"
-            attr.aria-description="Press right arrow to edit." 
+            [attr.aria-description]="'Press right or left arrow to edit.'" 
             i18n-aria-label i18n-aria-description>
             <ng-container #subfieldContent
               *ngTemplateOutlet="subfieldChunk;context:{field:field,subfield:subfield,tabIndex:context.subfieldHasFocus(field, subfield) ? 0 : -1}">

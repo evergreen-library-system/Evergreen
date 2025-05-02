@@ -421,6 +421,9 @@ function($scope , $q , $window , $location , $timeout , egCore , egNet , egGridD
         if (!args.barcode) return $q.when();
         $scope.context.itemNotFound = false;
 
+        // reset so the input can be auto-selected after the search
+        $scope.context.selectBarcode = false;
+
         //check to see if there are multiple barcodes in CSV format
         var barcodes = [];
         //split on commas and clean up barcodes

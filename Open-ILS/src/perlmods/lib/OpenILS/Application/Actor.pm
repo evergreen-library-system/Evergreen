@@ -2574,7 +2574,7 @@ sub user_transaction_history {
         $filter->{'total_owed'} = { '<>' => 0 };
     }
 
-    my $options_clause = { order_by => { mbt => 'xact_start DESC' } };
+    my $options_clause = { order_by => { mbt => 'xact_start '.($$options{sort} ? uc($$options{sort}) : 'DESC') } };
     $options_clause->{'limit'} = $options->{'limit'} if $options->{'limit'};
     $options_clause->{'offset'} = $options->{'offset'} if $options->{'offset'};
 
@@ -5401,6 +5401,33 @@ sub filter_group_entry_crud {
         $entry->grp($entry->grp->id); # for consistency
         return $entry;
     }
+}
+
+__PACKAGE__->register_method(
+    method   => "get_staff_client_cache_key",
+    api_name => "open-ils.actor.staff_client_cache_key",
+    signature => {
+        desc => q/
+            Return a key that the staff client can use to
+            determine whether it should purge long-cached objects
+            /,
+        return => {
+            desc => "An opaque cache key",
+            type => "string"
+        }
+    }
+);
+
+sub get_staff_client_cache_key {
+    my $self = shift;
+
+    my $value = $U->get_global_flag('staff.client_cache_key');
+
+    $value = $value->value() if $value;
+    # Undef is an unfriendly "not found"
+    $value = "BleepBloopNoKey" unless $value;
+
+    return $value;
 }
 
 1;

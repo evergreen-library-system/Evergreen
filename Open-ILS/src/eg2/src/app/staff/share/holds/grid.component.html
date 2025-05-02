@@ -100,8 +100,9 @@
               <label for="copy-locations-filter-btn" class="input-group-text"
                 style="cursor: pointer" i18n>Shelving Locations:
               </label>
-              <input type="button" id="copy-locations-filter-btn"
-                class="form-control" (click)="openCopyLocationsDialog()">
+              <button type="button" class="form-control" 
+              (click)="openCopyLocationsDialog()" i18n>Click to Select
+              </button>
               <button type="button" class="btn btn-outline-dark"
                 [ngClass]="{disabled: !this.copyLocationEntries.length}"
                 (click)="clearCopyLocations()" i18n>Clear
@@ -276,7 +277,7 @@
         [cellTemplate]="userBarcodeTmpl" [hidden]="true"></eg-grid-column>
 
       <eg-grid-column i18n-label label="Patron Home Library" path="ul_shortname" [hidden]="true"></eg-grid-column>
-      <eg-grid-column i18n-label label="Patron alias" path="usr_alias"></eg-grid-column>
+      <eg-grid-column i18n-label label="Patron Alias" path="usr_alias"></eg-grid-column>
       <eg-grid-column i18n-label label="Capture Date" path='capture_time'
           datatype="timestamp" [datePlusTime]="true"></eg-grid-column>
       <eg-grid-column i18n-label label="Available Date" path='shelf_time'
@@ -351,6 +352,7 @@
       <eg-grid-column i18n-label label="Requestor Username" path='rusr_usrname' [hidden]="true"></eg-grid-column>
       <eg-grid-column i18n-label label="Item ID" path='cp_id' [hidden]="true"></eg-grid-column>
       <eg-grid-column i18n-label label="Item Number on Call Number" path='cp_copy_number' [hidden]="true"></eg-grid-column>
+      <eg-grid-column i18n-label label="Owning Library" path='ol_shortname' [hidden]="true"></eg-grid-column>
       <eg-grid-column i18n-label label="Item Circulating Library" path='cl_shortname' [hidden]="true"></eg-grid-column>
       <eg-grid-column i18n-label label="Fine Level" path='cp_fine_level' [hidden]="true"></eg-grid-column>
       <eg-grid-column i18n-label label="Can Circulate" path='cp_circulate' datatype="bool" [hidden]="true"></eg-grid-column>

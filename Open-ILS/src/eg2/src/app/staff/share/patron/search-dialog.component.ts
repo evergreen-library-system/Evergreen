@@ -21,6 +21,9 @@ export class PatronSearchDialogComponent
 
     @Input() dialogTitle: string;
 
+    // If set, load a batch of patrons by ID.
+    @Input() patronIds?: number[];
+
     @ViewChild('searchForm', {static: false})
         searchForm: PatronSearchComponent;
 

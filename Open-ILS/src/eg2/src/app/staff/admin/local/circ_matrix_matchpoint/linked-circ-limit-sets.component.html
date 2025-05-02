@@ -1,6 +1,6 @@
 
 <div *ngIf="showLinkLimitSets">
-    <div class="modal-header bg-info"><h4 class="modal-title" i18n>Linked Limit Sets</h4></div>
+    <div class="modal-header"><h2 class="modal-title" i18n>Linked Limit Sets</h2></div>
     <ng-container *ngIf="getObjectKeys().length > 0">
         <ng-container *ngFor="let key of getObjectKeys(); let i = index">
             <div *ngIf="!linkedSetList[i].isDeleted" class="col-lg-15 d-flex justify-content-center">
@@ -36,7 +36,7 @@
                 <div *ngIf="linkedSetList[i].created" class="col-lg-2 mt-3 mb-3 form-group form-check">
                     <button
                         type="button"
-                        class="btn btn-warning"
+                        class="btn btn-destroy"
                         ng-disabled="!linkedSet"
                         (click)="removeLinkedSet(i)"
                         i18n-title title="Remove" i18n>Remove
@@ -46,13 +46,8 @@
         </ng-container>
     </ng-container>
     <div class="form-group mt-3">
-      <label for="limit-set-name" class="col-form-label" i18n>Circ Limit Set Name</label>
-      (<a target="_blank" href="/eg2/staff/admin/local/config/circ_limit_set" class="btn btn-link" i18n>Admin</a>)
-      <eg-help-popover
-        i18n-helpText
-        helpText="Use the Admin link or Local Admin -> Circulation Limit Sets to Create a Link Limit Set"
-      ></eg-help-popover>
-      <div class="input-group">
+    <div class="hstack px-3 pt-2 gap-2">
+      <label for="limit-set-name" class="col-form-label fw-bold" i18n>Circ Limit Set Name</label>
         <eg-combobox
           #combobox
           name="linkedLimitName"
@@ -61,10 +56,9 @@
           idlField="name"
           asyncSupportsEmptyTermClick="true"
           (onChange)="onChange($event)"
-          class="form-control"
+          class="flex-fill"
         >
         </eg-combobox>
-        <div class="input-group-append">
           <button
             type="button"
             class="btn btn-info"
@@ -72,10 +66,12 @@
             i18n-title
             title="Add"
             i18n
-          >
-            Add
+          >Add
           </button>
         </div>
-      </div>
+        <p class="form-text w-100" i18n>
+          Use <a target="_blank" href="/eg2/staff/admin/local/config/circ_limit_set">Local Admin 
+            &rarr; Circulation Limit Sets</a> to create a link limit set
+        </p>
     </div>
 </div>

@@ -6115,14 +6115,14 @@ static jsonObject* doFieldmapperSearch( osrfMethodContext* ctx, osrfHash* class_
 	if (new_cursor_name) {
 		const jsonObject* limit_o = jsonObjectGetKeyConst( query_hash, "limit" );
 		if( limit_o && limit_o->type != JSON_NULL ) {
-			limit = (int) jsonObjectGetNumber( limit_o );
+			limit = atoi( jsonObjectGetString( limit_o ) );
 		} else {
 			limit = -1;
 		}
 
 		const jsonObject* offset_o = jsonObjectGetKeyConst( query_hash, "offset" );
 		if( offset_o && offset_o->type != JSON_NULL ) {
-			offset = (int) jsonObjectGetNumber( offset_o );
+			offset = atoi( jsonObjectGetString( offset_o ) );
 		} else {
 			offset = -1;
 		}

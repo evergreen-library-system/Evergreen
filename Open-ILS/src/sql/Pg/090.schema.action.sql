@@ -592,7 +592,7 @@ CREATE TABLE action.hold_request_reset_reason (
 
 CREATE TABLE action.hold_request_reset_reason_entry (
     id SERIAL NOT NULL PRIMARY KEY,
-    hold INT REFERENCES action.hold_request (id) DEFERRABLE INITIALLY DEFERRED,
+    hold INT REFERENCES action.hold_request (id) ON DELETE CASCADE DEFERRABLE INITIALLY DEFERRED,
     reset_reason INT REFERENCES action.hold_request_reset_reason (id) DEFERRABLE INITIALLY DEFERRED,
     note TEXT,
     reset_time TIMESTAMP WITH TIME ZONE,
@@ -1825,6 +1825,28 @@ CREATE TABLE action.batch_hold_event_map (
     hold                INT     NOT NULL REFERENCES action.hold_request (id) ON UPDATE CASCADE ON DELETE CASCADE
 );
 
+CREATE TABLE action.eresource_link_click (
+    id          BIGSERIAL PRIMARY KEY,
+    clicked_at  TIMESTAMPTZ NOT NULL DEFAULT NOW(),
+    url         TEXT,
+    record      BIGINT NOT NULL REFERENCES biblio.record_entry (id)
+);
+
+CREATE TABLE action.eresource_link_click_course (
+    id            SERIAL      PRIMARY KEY,
+    click         BIGINT NOT NULL REFERENCES action.eresource_link_click (id) ON DELETE CASCADE,
+    course        INT REFERENCES asset.course_module_course (id) ON UPDATE CASCADE ON DELETE SET NULL,
+    course_name   TEXT NOT NULL,
+    course_number TEXT NOT NULL
+);
+
+CREATE FUNCTION action.delete_old_eresource_link_clicks(days integer)
+    RETURNS VOID AS
+    'DELETE FROM action.eresource_link_click
+     WHERE clicked_at < current_timestamp
+               - ($1::text || '' days'')::interval'
+    LANGUAGE SQL
+    VOLATILE;
 
 CREATE TABLE action.ingest_queue (
     id          SERIAL      PRIMARY KEY,

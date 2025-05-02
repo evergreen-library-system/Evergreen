@@ -25,7 +25,7 @@ function addSearchRow() {
     }
 
     var insertPoint = document.getElementById('adv_global_addrow');
-    var newFieldset = tBody.insertBefore(_search_row_template, insertPoint);
+    var newFieldset = tBody.insertBefore(_search_row_template.cloneNode(true), insertPoint);
 
     // clear inputs
     newFieldset.querySelectorAll('input').forEach(input => {
@@ -41,25 +41,30 @@ function addSearchRow() {
 }
 
 function addExpertRow() {
-    const clone = document.getElementById('adv_expert_row').cloneNode(true);
+    // Needs to use class instead of id so you can delete the first row
+    const clone = document.getElementsByClassName('adv_expert_row')[0].cloneNode(true);
     clone.id = '';
+    // Clear input values in the new row
+    clone.getElementsByTagName("input").forEach(input => {
+        input.value = '';
+    });
     const parent = document.getElementById("adv_expert_rows_here");
     parent.appendChild(clone);
+    displayAlert('aria-search-row-added');
     reindexLegends(parent);
 }
 
-function killRowIfAtLeast(min) {
+function killRowIfAtLeast(min, $event) {
     const link = $event.target;
-    //console.debug("Target: ", link);
-    var row = link.parentNode.parentNode;
-    //console.debug("Row: ", row);
-    if (row.parentNode.getElementsByTagName("fieldset").length > min) {
-        row.parentNode.removeChild(row);
+    let row = link.closest("fieldset");
+    let parent = row.parentNode;
+    if (parent.getElementsByTagName("fieldset").length > min) {
+        parent.removeChild(row);
         displayAlert('aria-search-row-removed');
         // re-number the legends 
-        reindexLegends(tBody);
+        reindexLegends(parent);
         // focus on first input in last row
-        row.parentNode.querySelector('input').focus();
+        parent.querySelector('input').focus();
     }
 }
 
@@ -356,4 +361,22 @@ function displayAlert(elementID) {
     el.classList.remove('d-none');
     // fade out after 8 seconds
     setTimeout(() => {document.getElementById(elementID).classList.add('d-none')}, 8000);
+}
+
+function canSubmitPayment(evt){
+   // check that charges are selected in opac for payment
+   // enable the submit payment button if they are
+    var form = document.getElementById('selected_fines');
+    var submit = form.querySelector('input[type="submit"]');
+    if (!form || !submit) return;
+    var els = form.elements;
+    for (i = 0; i < els.length; i++){
+        var e = els[i];
+        if (e.type == "checkbox" && !e.hidden && e.checked){
+            submit.removeAttribute("disabled");
+            return;
+        }
+    }
+
+    submit.setAttribute("disabled","");
 }

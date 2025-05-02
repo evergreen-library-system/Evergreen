@@ -1,255 +1,184 @@
 = Notifications / Action Triggers =
 :toc:
 
-
-== Introduction ==
+== Overview ==
 
 indexterm:[action triggers, event definitions, notifications]
 
-Action Triggers give administrators the ability to set up actions for
-specific events. They are useful for notification events such as hold notifications.
+Action Triggers allow administrators to set up actions for specific events,
+useful for notifications such as hold notifications.
 
-To access the Action Triggers module, select *Administration* -> *Local Administration* ->  *Notifications / Action triggers*.
+=== Accessing the Notifications / Action Triggers Module ===
 
-[NOTE]
-==========
-You must have Local Administrator permissions to access the Action Triggers module.
-==========
+Access the Notifications / Action Triggers from the top menu bar in the staff client
+by navigating to *Administration* -> *Local Administration* ->
+*Notifications / Action triggers*.
 
-You will notice four tabs on this page: <<event_definitions, Event Definitions>>, <<hooks, Hooks>>, <<reactors, Reactors>> and <<validators, Validators>>.
+.Administration Menu Item
+image::actiontriggers/admin-menu-item.png[Administration top menu option.,width=120]
 
+.Administration Submenu
+image::actiontriggers/admin-submenu.png[Administration menu options.,width=240]
 
-[#event_definitions]
-
-== Event Definitions ==
-
-Event Definitions is the main tab and contains the key fields when working with action triggers. These fields include:
-
-=== Table 1: Action Trigger Event Definitions ===
-
-
-|==============================================
-|*Field*                         |*Description*
-| Owning Library                 |The shortname of the library for which the action / trigger / hook is defined.
-| Name                           |The name of the trigger event, that links to a trigger event environment containing a set of fields that will be returned to the <<validators, Validators>> and/or <<reactors, Reactors>> for processing.
-| <<hooks, Hook>>                |The name of the trigger for the trigger event. The underlying `action_trigger.hook` table defines the Fieldmapper class in the core_type column off of which the rest of the field definitions "hang".
-| Enabled                        |Sets the given trigger as enabled or disabled. This must be set to enabled for the Action trigger to run.
-| Processing Delay               |Defines how long after a given trigger / hook event has occurred before the associated action ("Reactor") will be taken.
-| Processing Delay Context Field |Defines the field associated with the event on which the processing delay is calculated. For example, the processing delay context field on the `hold.capture` hook (which has a `core_type` of `ahr`) is _capture_time_.
-| Processing Group Context Field |Used to batch actions based on its associated group.
-| <<reactors, Reactor>>          |Links the action trigger to the Reactor.
-| <<validators, Validator>>      |The subroutines receive the trigger environment as an argument and return either _1_ if the validator is _true_ or _0_ if the validator returns _false_.
-| Event Repeatability Delay      |Allows events to be repeated after this delay interval.
-| Failure Cleanup                |After an event is reacted to and if there is a failure a cleanup module can be run to clean up after the event.
-| Granularity                    |Used to group events by how often they should be run. Options are Hourly, Daily, Weekly, Monthly, Yearly, but you may also create new values.
-| Max Event Validity Delay       |Allows events to have a range of time that they are valid.  This value works with the *Processing Delay* to define a time range.
-| Message Library Path           |Defines the org_unit object for a Patron Message Center message.
-| Message Template               |A Template Toolkit template that can be used to generate output for a Patron Message Center message.  The output may or may not be used by the reactor or another external process.
-| Message Title                  |The title that will display on a Patron Message Center message.
-| Message User Path              |Defines the user object for a Patron Message Center message.
-| Opt-In Settings Type           |Choose which User Setting Type will decide if this event will be valid for a certain user.  Use this to allow users to Opt-In or Opt-Out of certain events.
-| Opt-In User Field              |Set to the name of the field in the selected hook's core type that will link the core type to the actor.usr table. 
-| Success Cleanup                |After an event is reacted to successfully a cleanup module can be run to clean up after the event.
-| Template                       |A Template Toolkit template that can be used to generate output.  The output may or may not be used by the reactor or another external process.
-|==============================================
-
-
-== Creating Action Triggers ==
-
-. From the top menu, select *Administration* -> *Local Administration* ->  *Notifications / Action triggers*.
-. Select the _New Event Definition_ button.
-+
-image::actiontriggers/new_event_def.png[New Event Definition]
-+
-. Select an _Owning Library_.
-. Create a unique _Name_ for your new action trigger.
-. Select the _Hook_.
-. Check the _Enabled_ check box.
-. Set the _Processing Delay_ in the appropriate format. E.g. _7 days_ to run 7 days from the trigger event or _00:01:00_ to run 1 hour after the _Processing Delay Context Field_.
-. Set the _Processing Delay Context Field_ and _Processing Group Context Field_.
-. Select the _Reactor_ and _Validator_.
-. Set the _Event Repeatability Delay_.
-. Select the _Failure Cleanup_ and _Granularity_.
-+
-image::actiontriggers/event_def_details.png[Event Definition Details]
-+
-. Set the _Max Event Validity Delay_.
-. If you wish to send a User Message through the Message Center, set a _Message Library Path_.  Enter text in the _Message Template_.  Enter a title for this message in _Message Title_, and set a value in _Message User Path_.
-. Select the _Opt-In Setting Type_.
-. Set the _Opt-In User Field_.
-. Select the _Success Cleanup_.
-. Enter text in the _Template_ text box if required. These are for email messages. Here is a sample template for sending 90 day overdue notices:
-
-
-  [%- USE date -%]
-  [%- user = target.0.usr -%]
-  To: [%- params.recipient_email || user.email %]
-  From: [%- helpers.get_org_setting(user.home_ou.id, 'org.bounced_emails') || lib.email || params.sender_email || default_sender %]
-  Subject: Overdue Items Marked Lost
-  Auto-Submitted: auto-generated
-
-  Dear [% user.family_name %], [% user.first_given_name %]
-  The following items are 90 days overdue and have been marked LOST.
-  [%- params.recipient_email || user.email %][%- params.sender_email || default_sender %]
-  [% FOR circ IN target %]
-    Title: [% circ.target_copy.call_number.record.simple_record.title %]
-    Barcode: [% circ.target_copy.barcode %]
-    Due: [% date.format(helpers.format_date(circ.due_date), '%Y-%m-%d') %]
-    Item Cost: [% helpers.get_copy_price(circ.target_copy) %]
-    Total Owed For Transaction: [% circ.billable_transaction.summary.total_owed %]
-    Library: [% circ.circ_lib.name %]
-  [% END %]
-
-  [% FOR circ IN target %]
-    Title: [% circ.target_copy.call_number.record.simple_record.title %]
-    Barcode: [% circ.target_copy.barcode %]
-    Due: [% date.format(helpers.format_date(circ.due_date), '%Y-%m-%d') %]
-    Item Cost: [% helpers.get_copy_price(circ.target_copy) %]
-    Total Owed For Transaction: [% circ.billable_transaction.summary.total_owed %]
-    Library: [% circ.circ_lib.name %]
-  [% END %]
-
-. Once you are satisfied with your new event trigger, click the _Save_ button located at the bottom of the form.
-
-
-[TIP]
-=========
-A quick and easy way to create new action triggers is to clone an existing action trigger.
-=========
-
-[[creating_alternate_message_templates]]
-=== Creating Alternate Message Templates ===
-indexterm:[Localization, Notices, Localized Notices]
-
-As of version 3.9 there is the ability to create alternate templates for Action Triggers that will generate locale specific out for Action Triggers.  If you send notices in multiple languages, we recommend putting some words to that effect in your notice templates.  The template, message and message title can all be localized.  To use the feature the following UI elements have been added:
-
-* When you double-click on an Event Definition under Notifications / Action Triggers to edit it there will be a tab option for _Edit Alternate Template_ if the reactor is *ProcessTemplate*, *SendEmail*, or *SendSMS*. Note that this feature does not automatically translate existing templates, and an Evergreen administrator must create new alternate templates for each desired locale.
-* In the Patron Registration and Patron Editor screens staff members may select a locale for a patron and edit it in the _Patron Preferred Language_ field.
-* Patrons may set their own locale in the My Account interface off the OPAC by going to _Preferences --> Personal Information_ and setting the _Preferred Language_ field.
-
-The templates used on the Edit Definition tab are the defaults that are used if there are no alternate templates available that match the preferred language.  If alternate templates are available the system will use a locale that is an exact match and then if failing that use one where the language code matches and then fall back to the default one.
-
-For example, if a patron has a locale of fr-CA and there are templates for both fr-CA and fr-FR it will use the fr-CA.  If the fr-CA template was deleted it would fall back on using the fr-FR for the patron since it at least shares the same base language.
-
-Valid locales are the codes defined in the `i18n_locale` table in the config schema.
-
-
-
-
-=== Cloning Existing Action Triggers ===
-
-. Right click on the line of the action trigger you wish to clone, and choose _Clone Selected_.
-.. You will be asked to confirm whether or not you wish to clone the event definition environment along with the action trigger.
-. An editing window will open. Notice that the fields will be populated with content from the cloned action trigger. Edit as necessary and give the new action trigger a unique Name.
-. Click _Save_.
-
-=== Editing Action Triggers ===
-
-. Double-click on the action trigger you wish to edit or right click on the line of the action trigger you wish to edit, and choose _Edit Event Definition_.
-. The Edit Definition screen will appear. When you are finished editing, click _Save_ at the bottom of the form. Or click _Back to Notification/Action Triggers_ to exit without saving.
-
-
-=== Deleting Action Triggers ===
-
-. Right click on the line of the action trigger you wish to delete.
-. Choose _Delete Selected_ ofrom the action menu.
+.Notification / Action Triggers Item in Local Administration
+image::actiontriggers/local_admin_option.png[Local Administration menu item for Notifications / Action Triggers.,width=300]
 
 [NOTE]
-============
-Before deleting an action trigger, you should consider disabling it through the editing form. This way you can keep it for future use or cloning.
-============
+====
+You must have Local Administrator permissions to access the Notifications /
+Action Triggers Module.
+====
 
-=== Testing Action Triggers ===
+== Main Parts of Action Triggers ==
 
-. Go to the list of action triggers.
-. . Double-click on the action trigger you wish to edit or right click on the line of the action trigger you wish to edit, and choose _Edit Event Definition_.
-. Go to the _Run Tests_ tab.
-. If there is a test available, fill in the required information and click _Go_.
-. View the output of the test.
+Action triggers are composed of four main components: Event Definitions,
+Hooks, Reactors, and Validators.
 
-WARNING: If you are testing an email or SMS notification, use a test account and email as an example. Using the Test feature will actually result in the notification being sent if configured correctly.  Similarly, use a test item or barcode when testing a circulation-based event like Mark Lost since the test will mark the item as lost.
+.Table of Main Parts of Action Triggers
+[cols="1,3"]
+|===
+| *Part*            | *Description*
+| Event Definitions | Define the events and conditions that initiate actions.
+| Hooks             | Specify the Fieldmapper class and link to the IDL class.
+| Reactors          | Connect triggers to the actions to be executed.
+| Validators        | Establish validation tests to determine if actions should be executed.
+|===
 
-[#hooks]
+Each of these components has a corresponding tab in the Notifications /
+Action Triggers module.
+Selecting a tab displays a grid of relevant data with options to add, edit,
+or delete entries.
+
+.Action Trigger Module Tabs
+image::actiontriggers/tabs.png[Action Trigger Module Tabs, width=450]
+
+=== Event Definitions ===
+
+Event Definitions is the main tab and contains the key fields when working
+with action triggers.
+An event definition is a set of fields that will be returned to the
+validators and/or reactors for processing.
+Normally, when you create a new action trigger, you will start here.
+Evergreen comes with a set of predefined hooks, validators, and reactors
+that can be used to create new action triggers.
+
+[[_event_definition_fields]]
+.Event Definition Fields
+[cols="1,3"]
+|===
+| *Field*                         | *Description*
+| Owning Library                 | The shortname of the library for which the action / trigger / hook is defined.
+| Name                           | The name of the trigger event, that links to a trigger event environment containing a set of fields that will be returned to the xref:#_validators[Validators] and/or xref:#_reactors[Reactors] for processing.
+| xref:#hooks[Hook]                           | The name of the trigger for the trigger event. The underlying `action_trigger.hook` table defines the Fieldmapper class in the core_type column off of which the rest of the field definitions "hang".
+| Enabled                        | Sets the given trigger as enabled or disabled. This must be set to enabled for the Action trigger to run.
+| Processing Delay               | Defines how long after a given trigger / hook event has occurred before the associated action ("Reactor") will be taken.
+| Processing Delay Context Field | Defines the field associated with the event on which the processing delay is calculated.
+| Processing Group Context Field | Used to batch actions based on its associated group.
+| Reactor                        | Links the action trigger to the Reactor.
+| xref:#_validator[Validator]                      | The subroutines receive the trigger environment as an argument and return either _1_ if the validator is _true_ or _0_ if the validator returns _false_.
+| Event Repeatability Delay      | Allows events to be repeated after this delay interval.
+| Failure Cleanup                | After an event is reacted to and if there is a failure a cleanup module can be run to clean up after the event.
+| Granularity                    | Used to group events by how often they should be run.
+| Max Event Validity Delay       | Allows events to have a range of time that they are valid.
+| Message Library Path           | Defines the org_unit object for a Patron Message Center message.
+| Message Template               | A Template Toolkit template that can be used to generate output for a Patron Message Center message.
+| Message Title                  | The title that will display on a Patron Message Center message.
+| Message User Path              | Defines the user object for a Patron Message Center message.
+| Opt-In Settings Type           | Choose which User Setting Type will decide if this event will be valid for a certain user.
+| Opt-In User Field              | Set to the name of the field in the selected hook's core type that will link the core type to the actor.usr table.
+| Success Cleanup                | After an event is reacted to successfully a cleanup module can be run to clean up after the event.
+| Template                       | A Template Toolkit template that can be used to generate output.
+|===
 
 === Hooks ===
 
-Hooks define the Fieldmapper class in the core_type column off of which the rest of the field definitions "hang".
+Hooks define the class in the Fieldmapper that an action trigger will listen
+for.
+Essentially, a hook represents an event that may occur in the system.
 
-
-==== Table 2. Hooks ====
-
-
-|=======================
+.Hook Fields
+[cols="1,3"]
+|===
 | *Field*        | *Description*
 | Hook Key       | A unique name given to the hook.
 | Core Type      | Used to link the action trigger to the IDL class in `fm_IDL.xml`
 | Description    | Text to describe the purpose of the hook.
 | Passive        | Indicates whether or not an event is created by direct user action or is circumstantial.
-|=======================
+|===
 
-You may also create, edit and delete Hooks but the Core Type must refer to an IDL class in the `fm_IDL.xml` file.
+==== Passive vs. Active Hooks ====
 
+*Passive Hooks*: These hooks require a periodic check by a cron job to
+determine whether an event has occurred.
+Examples include:
 
-[#reactors]
+* Checking if an item is overdue by a certain number of days.
+* Sending notifications for upcoming due dates.
+
+These hooks rely on background jobs to scan the database and create relevant
+events when conditions are met.
+
+*Active Hooks*: These hooks are triggered automatically when a predefined
+event occurs.
+Examples include:
+
+* A hold becoming available.
+* An item being checked in.
+
+Since these events are already occurring within the system’s normal
+workflow, the action trigger framework can immediately create an event
+without requiring a periodic check.
 
 === Reactors ===
 
 Reactors link the trigger definition to the action to be carried out.
 
-==== Table 3. Action Trigger Reactors ====
-
-
-|=======================
-| Field        | Description
+.Reactor Fields
+[cols="1,3"]
+|===
+| *Field*        | *Description*
 | Module Name  | The name of the Module to run if the action trigger is validated. It must be defined as a subroutine in `/openils/lib/perl5/OpenILS/Application/Trigger/Reactor.pm` or as a module in `/openils/lib/perl5/OpenILS/Application/Trigger/Reactor/*.pm`.
 | Description  | Description of the Action to be carried out.
-|=======================
-
-You may also create, edit and delete Reactors. Just remember that there must be an associated subroutine or module in the Reactor Perl module.
+|===
 
 ==== CallHTTP Reactor ====
 
-This Action/Trigger reactor module allows an Evergreen administrator to
-create event defintions that use HTTP (or HTTPS) to contact external services
-and let them know that something has happened in Evergreen.
-
-For instance, a discovery layer can be informed when a bib record is updated
-or when a user's barcode changes.
+The CallHTTP reactor allows Evergreen to send HTTP or HTTPS requests to an
+external service.
+This is useful for integrations, such as sending push notifications or
+making API calls to external applications.
+The HTTP request is configured using a Template Toolkit template that
+formats the request.
 
 ===== CallHTTP Reactor Template Syntax =====
 
-The new reactor module uses a template to define its behavior.  While the
-template is processed by Template Toolkit, as with any A/T templates, its
-output format is new to Evergreen.
+The template should output data that can be parsed by the Config::General
+Perl module.
+See: https://metacpan.org/pod/Config::General
 
-The template should output data that can be parsed by the Config::General Perl
-module.  See: https://metacpan.org/pod/Config::General
-
-Top level settings should include the HTTP *method* and the *url*.
+Top-level settings should include the HTTP *method* and the *url*.
 
 A block called *Headers* can be used to supply arbitrary HTTP headers.
 
 A block called *Parameters* can be used to append CGI parameters to the URL,
-most useful for GET form submission.  Repeated parameters are allowed.  If
-this block is used, the URL should /not/ contain any parameters, use one or
-the other.
+most useful for GET form submission.
 
-A HEREDOC called *content* can be used with POST or PUT to send an arbitrary block
-of content to the remote server.
+A HEREDOC called *content* can be used with POST or PUT to send an arbitrary
+block of content to the remote server.
 
-If the requested URL requires Basic or Digest authentication, the template can
-include top level configuration parameters to supply a *user*, *password*, *realm*,
-and hostname:port *location*.
+If the requested URL requires Basic or Digest authentication, the template
+can include top-level configuration parameters to supply a *user*,
+*password*, *realm*, and hostname:port *location*.
 
-A default user agent string of "EvergreenReactor/1.0" is used when sending requests.
-This can be overridden using the top level *agent* setting.
+A default user agent string of "EvergreenReactor/1.0" is used when sending
+requests.
+This can be overridden using the top-level *agent* setting.
 
-Here is an example template that could be used by a definition attached to the
-*bib.edit* hook:
+Example template for the *bib.edit* hook:
 
-[source,conf]
+[source,xml]
 ----
-method   post # Valid values are post, get, put, delete, head
+method   post
 url      https://example.com/api/incoming-update
 agent    MySpecialAgent/0.1
 
@@ -272,71 +201,209 @@ content <<MARC
 MARC
 ----
 
-
-
-
-[#validators]
-
 === Validators ===
 
-Validators set the validation test to be preformed to determine whether the action trigger is executed.
+Validators set the validation test to be performed to determine whether the
+action trigger is executed.
 
-==== Table 4. Action Trigger Validators ====
-
-
-|=======================
-| Field         | Description
+.Validator Fields
+[cols="1,3"]
+|===
+| *Field*         | *Description*
 | Module Name   | The name of the subroutine in `/openils/lib/perl5/OpenILS/Application/Trigger/Reactor.pm` to validate the action trigger.
 | Description   | Description of validation test to run.
-|=======================
+|===
 
-You may also create, edit and delete Validators. Just remember that their must be an associated subroutine in the Reactor.pm Perl module.
+A validator function runs when the action trigger executes and returns
+either true or false.
+For example, a validator for overdue notices may check whether the item is
+still checked out before sending the notification.
 
-[#processing_action_triggers]
+== Creating Action Triggers ==
+
+. Make sure you are in the Event Definitions tab of the Notifications / Action Triggers module.
++
+[TIP]
+====
+In most scenarios, you will not need to create new hooks, validators, or
+reactors, but advanced users may find it useful to do so to add custom
+functionality.
+====
++
+. Select the _New Event Definition_ button.
++
+.New Event Definition Button
+image::actiontriggers/new_event_def_btn.png[New Event Definition Button, width=300]
++
+. Fill out all fields for the event definition. Refer to the xref:#_event_definition_fields[Table 2. Event Definition Fields] for details.
++
+Selecting the new event definition button will open the *Record Editor:
+Trigger Event Definition* form.
++
+.The first few fields of the New Event Definition form.
+image::actiontriggers/new_event_def_modal.png[The first few fields of the New Event Definition form.]
++
+Here is an example of a simple event definition for sending a 3 Day Courtesy
+Notice via email:
++
+.Table of Event Definition Configuration
+[cols="1,3"]
+|===
+| *Field*                         | *Value*
+| Owning Library                 | CONS
+| Name                           | 3 Day Courtesy Notice
+| Hook                           | checkout.due
+| Enabled                        | Yes
+| Processing Delay               | -3 days
+| Processing Delay Context Field | due_date
+| Processing Group Context Field | usr
+| Reactor                        | SendEmail
+| Validator                      | CircIsOpen
+| Event Repeatability Delay      | -2 days
+| Definition ID                  | 6
+| Opt-In Setting Type            | circ.default_overdue_notices_enabled
+| Opt-In User Field              | usr
+| Template                       | xref:actiontriggers.adoc#_sample_template_for_sending_a_3_day_courtesy_notice_via_email[See sample template below.]
+|===
++
+Sample Template for Sending a 3 Day Courtesy Notice via Email:
++
+[[_sample_template_for_sending_a_3_day_courtesy_notice_via_email]]
+[source,tt2]
+----
+[%- USE date -%]
+[%- user = target.0.usr -%]
+To: [%- params.recipient_email || user.email %]
+From: [%- params.sender_email || default_sender %]
+Date: [%- date.format(date.now, '%a, %d %b %Y %T -0000', gmt => 1) %]
+Subject: Courtesy Notice
+Auto-Submitted: auto-generated
+
+Dear [% user.family_name %], [% user.first_given_name %]
+As a reminder, the following items are due in 3 days.
+
+[% FOR circ IN target %]
+    [%- copy_details = helpers.get_copy_bib_basics(circ.target_copy.id) -%]
+    Title: [% copy_details.title %]
+    Author: [% copy_details.author %]
+    Barcode: [% circ.target_copy.barcode %] 
+    Due: [% date.format(helpers.format_date(circ.due_date), '%Y-%m-%d') %]
+    Item Cost: [% helpers.get_copy_price(circ.target_copy) %]
+    Library: [% circ.circ_lib.name %]
+    Library Phone: [% circ.circ_lib.phone %]
+
+[% END %]
+----
+
+. Once you are satisfied with your new event trigger, click the _Save_ button located at the bottom of the form.
+
+[TIP]
+====
+A quick and easy way to create new action triggers is to
+xref:admin:actiontriggers.adoc#_cloning_existing_action_triggers[clone an
+existing action trigger].
+====
+
+=== Creating Alternate Message Templates ===
+indexterm:[Localization, Notices, Localized Notices]
+
+As of version 3.9, there is the ability to create alternate templates for
+Action Triggers that will generate locale-specific output for Action
+Triggers.
+
+To use the feature, the following UI elements have been added:
+
+* When you double-click on an Event Definition under Notifications / Action
+  Triggers to edit it, there will be a tab option for _Edit Alternate
+  Template_ if the reactor is *ProcessTemplate*, *SendEmail*, or *SendSMS*.
+* In the Patron Registration and Patron Editor screens, staff members may
+  select a locale for a patron and edit it in the _Patron Preferred
+  Language_ field.
+* Patrons may set their own locale in the My Account interface off the OPAC
+  by going to _Preferences --> Personal Information_ and setting the
+  _Preferred Language_ field.
+
+The templates used on the Edit Definition tab are the defaults that are used
+if there are no alternate templates available that match the preferred
+language.
+
+Valid locales are the codes defined in the `i18n_locale` table in the config
+schema.
+
+=== Cloning Existing Action Triggers ===
+
+. Right-click on the line of the action trigger you wish to clone, and choose _Clone Selected_.
+.. You will be asked to confirm whether or not you wish to clone the event definition environment along with the action trigger.
+. An editing window will open. Notice that the fields will be populated with content from the cloned action trigger. Edit as necessary and give the new action trigger a unique Name.
+. Click _Save_.
+
+== Editing Action Triggers ==
+
+. Double-click on the action trigger you wish to edit or right-click on the line of the action trigger you wish to edit, and choose _Edit Event Definition_.
+. The Edit Definition screen will appear. When you are finished editing, click _Save_ at the bottom of the form. Or click _Back to Notification/Action Triggers_ to exit without saving.
+
+== Deleting Action Triggers ==
+
+. Right-click on the line of the action trigger you wish to delete.
+. Choose _Delete Selected_ from the action menu.
+
+[NOTE]
+====
+Before deleting an action trigger, you should consider disabling it through
+the editing form.
+This way you can keep it for future use or cloning.
+====
+
+== Testing Action Triggers ==
+
+. Go to the list of action triggers.
+. Double-click on the action trigger you wish to edit or right-click on the line of the action trigger you wish to edit, and choose _Edit Event Definition_.
+. Go to the _Run Tests_ tab.
+. If there is a test available, fill in the required information and click _Go_.
+. View the output of the test.
+
+[WARNING]
+====
+If you are testing an email or SMS notification, use a test account and
+email as an example.
+Using the Test feature will actually result in the notification being sent
+if configured correctly.
+Similarly, use a test item or barcode when testing a circulation-based event
+like Mark Lost since the test will mark the item as lost.
+====
+
 == Processing Action Triggers ==
 
-To run action triggers, an Evergreen administrator will need to run the trigger processing script. This should be set up as a cron job to run periodically. To run the script, use this command:
+To run action triggers, an Evergreen administrator will need to run the
+trigger processing script.
+This should be set up as a cron job to run periodically.
+To run the script, use this command:
 
 ----
 /openils/bin/action_trigger_runner.pl --process-hooks --run-pending
 ----
 
-You have several options when running the script:
-
-* --run-pending: Run pending events to send emails or take other actions as
-specified by the reactor in the event definition.
-
-* --process-hooks: Create hook events
-
-* --osrf-config=[config_file]: OpenSRF core config file. Defaults to:
-/openils/conf/opensrf_core.xml
-
-* --custom-filters=[filter_file]: File containing a JSON Object which describes any hooks
-that should use a user-defined filter to find their target objects. Defaults to:
-/openils/conf/action_trigger_filters.json
-
-* --max-sleep=[seconds]: When in process-hooks mode, wait up to [seconds] for the lock file to go
-away. Defaults to 3600 (1 hour).
-
-* --hooks=hook1[,hook2,hook3,...]: Define which hooks to create events for. If none are defined, it
-defaults to the list of hooks defined in the --custom-filters option.
-Requires --process-hooks.
-
-* --granularity=[label]: Limit creating events and running pending events to
-those only with [label] granularity setting.
-
-* --debug-stdout: Print server responses to STDOUT (as JSON) for debugging.
-
-* --lock-file=[file_name]: Sets the lock file for the process.
-
-* --verbose: Show details of script processing.
-
-* --help: Show help information.
+.Table of Script Options
+[cols="1,3"]
+|===
+| *Option* | *Description*
+| --run-pending | Run pending events to send emails or take other actions as specified by the reactor in the event definition.
+| --process-hooks | Create hook events.
+| --osrf-config=[config_file] | OpenSRF core config file. Defaults to: /openils/conf/opensrf_core.xml.
+| --custom-filters=[filter_file] | File containing a JSON Object which describes any hooks that should use a user-defined filter to find their target objects. Defaults to: /openils/conf/action_trigger_filters.json.
+| --max-sleep=[seconds] | When in process-hooks mode, wait up to [seconds] for the lock file to go away. Defaults to 3600 (1 hour).
+| --hooks=hook1[,hook2,hook3,...] | Define which hooks to create events for. If none are defined, it defaults to the list of hooks defined in the --custom-filters option. Requires --process-hooks.
+| --granularity=[label] | Limit creating events and running pending events to those only with [label] granularity setting.
+| --debug-stdout | Print server responses to STDOUT (as JSON) for debugging.
+| --lock-file=[file_name] | Sets the lock file for the process.
+| --verbose | Show details of script processing.
+| --help | Show help information.
+|===
 
 Examples:
 
-* Run all pending events that have no granularity set. This is what you tell
-CRON to run at regular intervals.
+* Run all pending events that have no granularity set.
+  This is what you tell CRON to run at regular intervals.
 +
 ----
 perl action_trigger_runner.pl --run-pending
@@ -348,31 +415,83 @@ perl action_trigger_runner.pl --run-pending
 perl action_trigger_runner.pl --hooks=checkout.due --process-hooks
 ----
 
-* Batch create all events for a specific granularity and to send notices for all
-pending events with that same granularity.
+* Batch create all events for a specific granularity and to send notices for
+  all pending events with that same granularity.
 +
 ----
 perl action_trigger_runner.pl --run-pending --granularity=Hourly --process-hooks
 ----
 
-[[configure_opac_email_print]]
+=== Setting Up Cron Jobs ===
+
+Many action triggers are processed using cron jobs.
+Passive hooks require periodic execution, typically scheduled at intervals
+such as hourly or daily.
+Stock Evergreen runs the action trigger runner every 30 minutes to process
+pending events.
+
+==== Example Cron Job ====
+
+To periodically check for events and execute action triggers, administrators
+can set up a cron job with the following command:
+
+----
+/openils/bin/action_trigger_runner.pl --process-hooks --run-pending
+----
+
+This command:
+
+* Processes hooks (--process-hooks) to create new events.
+* Runs pending events (--run-pending) to execute any triggered actions.
+
+==== Example Cron Job Setup ====
+
+A standard Evergreen setup might include cron jobs like:
+
+----
+0 * * * * perl /openils/bin/action_trigger_runner.pl --run-pending
+30 * * * * perl /openils/bin/action_trigger_runner.pl --process-hooks
+----
+
+This means:
+
+* Every hour on the hour (0 * * * *), Evergreen processes pending actions.
+* Every 30 minutes past the hour (30 * * * *), Evergreen scans for new
+  events.
+
+==== Granularity in Cron Jobs ====
+
+Granularity settings allow different types of events to run at different
+frequencies:
+
+----
+perl action_trigger_runner.pl --run-pending --granularity=Hourly
+----
+
+This ensures that only events tagged with Hourly granularity will be
+executed.
+
 == Configure OPAC Record Email and Print ==
 
-The information displayed in the printout and email is defined and generated by two new Notification/Action Triggers named `biblio.record_entry.print` and `biblio.record_entry.email`.  
+The information displayed in the printout and email is defined and generated
+by two Notification/Action Triggers named `biblio.record_entry.print` and
+`biblio.record_entry.email`.
 
-The printout and email will include the following bibliographic information by default:
+By default, the printout and email will include the following bibliographic
+information:
 
-* Bibliographic Record ID 
-* Title statement 
-* Author 
+* Bibliographic Record ID
+* Title statement
+* Author
 * Item Type
-* Publisher 
-* Publication date 
-* ISBN 
+* Publisher
+* Publication date
+* ISBN
 * ISSN
 * UPC
 
-If *Full display* is selected by the OPAC user, the following holdings information is included in the printout or email, if relevant:
+If the OPAC user selects *Full display*, the following holdings information
+is included in the printout or email, if relevant:
 
 * Circulating Library
 * Item Location
@@ -381,18 +500,31 @@ If *Full display* is selected by the OPAC user, the following holdings informati
 * Item Status
 * Item Barcode
 
-The bibliographic and item information included in the printout or email can be configured by modifying the respective Action Trigger templates.  
+The bibliographic and item information included in the printout or email can
+be configured by modifying the respective Action Trigger templates.
 
-For the Full display, the maximum number of copies to be displayed per record can also be configured in the Action Trigger Event Parameter field.  To set the maximum number of copies for display, go to *Administration -> Local Administration -> Notifications / Action Triggers* and find the print or email notification/action trigger to modify.  
+To configure the maximum number of copies displayed per record for the Full
+display, follow these steps:
 
-. Double click on the action trigger you wish to modify
+1. Go to *Administration -> Local Administration -> Notifications / Action
+   Triggers*.
+2. Find the print or email notification/action trigger you wish to modify.
 +
+.Email and Print Event Definitions
 image::actiontriggers/ope_event_defs.png[Email and Print Event Definitions]
+3. Double-click on the action trigger.
+4. Select the *Edit Parameters* tab.
+5. In the upper left-hand corner, select *New Parameter* to create a new
+   Trigger Event Parameter.
 +
-. Select the *Edit Parameters* tab and in the upper left-hand corner, select *New Parameter* to create a new Trigger Event Parameter.
-. In the _Parameter Name_ field enter holdings_limit.  
-. In the _Parameter Value_ field enter the maximum number of copies to be displayed per record.
-. Select *Save* to save your changes.
-+
+.Email and Print Event Parameters
 image::actiontriggers/ope_event_params.png[Email and Print Event Parameters]
-+
+6. In the _Parameter Name_ field, enter `holdings_limit`.
+7. In the _Parameter Value_ field, enter the maximum number of copies to be
+   displayed per record.
+8. Select *Save* to save your changes.
+
+For more information on how to invoke this functionality from the front end,
+please refer to
+xref:opac:using_the_public_access_catalog.adoc#_printing_and_emailing_records[the
+section on printing and emailing records in the OPAC documentation].

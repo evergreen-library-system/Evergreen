@@ -42,7 +42,7 @@
               </ng-container>
           </ng-container>
           <button
-            [disabled]="btn.disabled" type="button"
+            [disabled]="btn.disabled" type="button" [egButtonStyle]="btn.buttonStyle"
             class="input-group-text" (click)="performButtonAction(btn)">
             {{btn.label}}
           </button>
@@ -54,7 +54,8 @@
         <!-- if no adjacent templates, print the button alone with the usual classes -->
         <button *ngIf="!btn.adjacentPreceedingTemplateRef && !btn.adjacentSubsequentTemplateRef"
           [disabled]="btn.disabled" type="button"
-          class="btn btn-outline-dark btn-sm" (click)="performButtonAction(btn)">
+          class="btn btn-outline-dark btn-sm" [egButtonStyle]="btn.buttonStyle"
+          (click)="performButtonAction(btn)">
           {{btn.label}}
         </button>
 
@@ -148,7 +149,8 @@
 
     <eg-grid-column-config #columnConfDialog [gridContext]="gridContext">
     </eg-grid-column-config>
-    <div ngbDropdown class="btn-group eg-grid-settings" placement="bottom-right">
+    <div ngbDropdown class="btn-group eg-grid-settings" placement="bottom-right" 
+        (openChange)="gridContext.resizeWrapper = !gridContext.resizeWrapper">
       <h2 class="visually-hidden" i18n>Grid Settings</h2>
       <button ngbDropdownToggle class="btn btn-outline-dark btn-sm  no-dropdown-caret" type="button"
         title="Show Grid Options" i18n-title aria-label="Show Grid Options" i18n-aria-label>

@@ -135,7 +135,7 @@ cd $EVERGREEN_ROOT/Open-ILS/web/js/ui/default/staff/
 +
 [source,sh]
 ------------------------------------------------------------------------------
-npm install   # fetch JS dependencies
+npm ci   # fetch JS dependencies
 ------------------------------------------------------------------------------
 +
 3. Run the build script.
@@ -171,7 +171,7 @@ cd $EVERGREEN_ROOT/Open-ILS/src/eg2/
 +
 [source,sh]
 ------------------------------------------------------------------------------
-npm install   # fetch JS dependencies
+npm ci   # fetch JS dependencies
 ------------------------------------------------------------------------------
 +
 3. Run the build script.
@@ -218,7 +218,7 @@ cd $EVERGREEN_ROOT/Open-ILS/web/opac/deps
 +
 [source,sh]
 ------------------------------------------------------------------------------
-npm install   # fetch JS and CSS dependencies
+npm ci   # fetch JS and CSS dependencies
 ------------------------------------------------------------------------------
 +
 Note that there is no build step.
@@ -292,7 +292,7 @@ of Dojo by issuing the following commands as the *opensrf* Linux account:
 
 [source, bash]
 ------------------------------------------------------------------------------
-wget http://download.dojotoolkit.org/release-1.3.3/dojo-release-1.3.3.tar.gz
+wget https://download.dojotoolkit.org/release-1.3.3/dojo-release-1.3.3.tar.gz
 tar -C /openils/var/web/js -xzf dojo-release-1.3.3.tar.gz
 cp -r /openils/var/web/js/dojo-release-1.3.3/* /openils/var/web/js/dojo/.
 ------------------------------------------------------------------------------
@@ -472,7 +472,7 @@ cp -b /openils/conf/action_trigger_filters.json.example /openils/conf/action_tri
 ------------------------------------------------------------------------------
 
 For more information about configuring and running action triggers, see
-xref:admin:actiontriggers_process.adoc#processing_action_triggers[Notifications / Action Triggers].
+xref:admin:actiontriggers.adoc#processing_action_triggers[Notifications / Action Triggers].
 
 [[creating_the_evergreen_database]]
 == Creating the Evergreen database ==
@@ -581,6 +581,28 @@ make -f Open-ILS/src/extras/Makefile.install postgres-server-debian-bullseye-16
 make -f Open-ILS/src/extras/Makefile.install postgres-server-debian-buster-16
 make -f Open-ILS/src/extras/Makefile.install postgres-server-ubuntu-jammy-16
 make -f Open-ILS/src/extras/Makefile.install postgres-server-ubuntu-noble-16
+------------------------------------------------------------------------------
+
+To install PostgreSQL version 17, use the following command for your operating
+system:
+
+[WARNING]
+=========
+PostgreSQL 12+ includes a feature called "JIT" (Just-in-Time compilation).
+Do not turn on Postgres' JIT capabilities. Evergreen's queries, especially complex
+ones used for search, are intentionally tuned for non-JIT execution and JIT has
+been shown to be harmful in some circumstances.
+Recommended minimum tweak to postgresql.conf:
+jit_above_cost = -1
+=========
+
+[source, bash]
+------------------------------------------------------------------------------
+make -f Open-ILS/src/extras/Makefile.install postgres-server-debian-bookworm-17
+make -f Open-ILS/src/extras/Makefile.install postgres-server-debian-bullseye-17
+make -f Open-ILS/src/extras/Makefile.install postgres-server-debian-buster-17
+make -f Open-ILS/src/extras/Makefile.install postgres-server-ubuntu-jammy-17
+make -f Open-ILS/src/extras/Makefile.install postgres-server-ubuntu-noble-17
 ------------------------------------------------------------------------------
 
 .Create the Evergreen PostgreSQL user

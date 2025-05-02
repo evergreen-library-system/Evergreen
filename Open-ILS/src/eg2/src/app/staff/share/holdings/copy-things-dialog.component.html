@@ -1,0 +1,44 @@
+<!--
+<eg-string #successMsg [text]="successMessage" i18n-text></eg-string>
+<eg-string #errorMsg [text]="errorMessage" i18n-text></eg-string>
+-->
+<ng-template #dialogContent>
+  <div class="modal-header">
+    <h4 class="modal-title">
+      <span *ngIf="!inBatch()" i18n>Managing {{thingType}} for item {{copies.length ? copies[0].barcode() : ''}}</span>
+      <span *ngIf="inBatch()" i18n>Managing {{thingType}} in common for {{copyIds.length}} item(s)</span>
+    </h4>
+    <button type="button" class="btn-close btn-close-white" 
+      i18n-aria-label aria-label="Close dialog" (click)="close()">
+    </button>
+  </div>
+
+  <div class="modal-body p-4 form-validated">
+    <!-- Batch warning message if needed -->
+    <div *ngIf="inBatch() && batchWarningMessage" class="alert alert-info">
+      {{batchWarningMessage}}
+    </div>
+
+    <!-- Existing items section -->
+    <ng-container *ngTemplateOutlet="existingThings">
+    </ng-container>
+
+    <!-- Pending new items section -->
+    <h4 class="mt-3" i18n>Pending New {{thingType}}</h4>
+    <ng-container *ngTemplateOutlet="pendingThings">
+    </ng-container>
+
+    <!-- New item form -->
+    <div class="row mt-2">
+      <ng-container *ngTemplateOutlet="newThingForm">
+      </ng-container>
+    </div>
+  </div>
+
+  <div class="modal-footer">
+    <button type="button" class="btn btn-secondary" 
+      (click)="close()" i18n>Close</button>
+    <button type="button" class="btn btn-success me-2" 
+      (click)="applyChanges()" i18n>Apply Changes</button>
+  </div>
+</ng-template>

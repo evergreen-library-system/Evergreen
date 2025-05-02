@@ -110,8 +110,10 @@ export class BibRecordService {
     }
 
     getBibSummary(id: number,
-        orgId?: number, isStaff?: boolean): Observable<BibRecordSummary> {
-        return this.getBibSummaries([id], orgId, isStaff);
+        orgId?: number, isStaff?: boolean,
+        library_group?: number): Observable<BibRecordSummary> {
+        const opts = library_group ? {library_group: library_group} : {};
+        return this.getBibSummaries([id], orgId, isStaff, opts);
     }
 
     getBibSummaries(bibIds: number[], orgId?: number,

@@ -43,15 +43,6 @@ openurl.enabled = 'false';
 openurl.baseurl = 'http://sfx.example.com/instance';
 
 ##############################################################################
-# Google Analytics support
-##############################################################################
-# You can enable Google Analytics support in Evergreen by entering a
-# valid Google Analytics code and changing 'false' to 'true'
-##############################################################################
-google_analytics.enabled = 'false';
-google_analytics.code = 'UA-9999999-99';
-
-##############################################################################
 # Ebook API integration
 ##############################################################################
 ebook_api.enabled = 'false';
@@ -158,6 +149,18 @@ search.adv_config = [
 #search.default_adv_select_height = 4;
 
 ##############################################################################
+# Set up custom include/exclude subfield lists for various different 880-linked
+# datafields.
+#
+# Example exclusion: '245' => { exclude => 'fghks678' }
+
+search.links_from_880 = {
+    '100' => { include => 'ad' },
+    '110' => { include => 'ad' },
+    '111' => { include => 'acd' }
+};
+
+##############################################################################
 # For each search box the default "query type" value can be specified here
 # This is the actual backend value, not the label
 # Also note that including more than the row count entries won't add rows
@@ -191,15 +194,6 @@ search.default_highlight = 1;
 # Show Google Book Previews
 # Set to 1 or 'true' to enable
 ctx.google_books_preview = 0;
-
-##############################################################################
-
-# Set a maintenance message to display in the catalogue
-#ctx.maintenance_message = "<b>This OPAC will be unavailable part of March 15, 2019 for planned upgrades.</b>";
-# Maintenance types follow Bootstrap4 alert options as follows
-# success = green; info = blue; warning = yellow; danger = red
-# Other colors would require re-coding the alert
-#ctx.maintenance_type = l('warning');
 
 ##############################################################################
 # Depth Button/Checkbox

@@ -1,0 +1,44 @@
+\set ECHO none
+\set QUIET 1
+-- Turn off echo and keep things quiet.
+
+-- Format the output for nice TAP.
+\pset format unaligned
+\pset tuples_only true
+\pset pager
+
+-- Revert all changes on failure.
+\set ON_ERROR_ROLLBACK 1
+\set ON_ERROR_STOP true
+\set QUIET 1
+
+-- Load the TAP functions.
+BEGIN;
+
+-- Plan the tests.
+SELECT plan(2);
+
+INSERT INTO action.eresource_link_click (clicked_at, url, record) VALUES
+    ('yesterday'::TIMESTAMP, 'http://yesterday.example.com', 1),
+    (now() - INTERVAL '10 DAYS', 'http://ten-days.example.com', 2),
+    (now() - INTERVAL '8 DAYS', 'http://eight-days.example.com', 2),
+    (now(), 'http://now.example.com', 3);
+
+SELECT results_eq(
+    'SELECT url FROM action.eresource_link_click',
+    $$VALUES ('http://yesterday.example.com'), ('http://ten-days.example.com'), ('http://eight-days.example.com'), ('http://now.example.com')$$,
+    'all four clicks are included in the table'
+);
+
+SELECT * FROM action.delete_old_eresource_link_clicks(2);
+
+SELECT results_eq(
+    'SELECT url FROM action.eresource_link_click',
+    $$VALUES ('http://yesterday.example.com'), ('http://now.example.com')$$,
+    'only two clicks remain in the table'
+);
+
+
+-- Finish the tests and clean up.
+SELECT * FROM finish();
+ROLLBACK;

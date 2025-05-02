@@ -156,6 +156,18 @@ search.adv_config = [
 #search.default_adv_select_height = 4;
 
 ##############################################################################
+# Set up custom include/exclude subfield lists for various different 880-linked
+# datafields.
+#
+# Example exclusion: '245' => { exclude => 'fghks678' }
+
+search.links_from_880 = {
+    '100' => { include => 'ad' },
+    '110' => { include => 'ad' },
+    '111' => { include => 'acd' }
+};
+
+##############################################################################
 # For each search box the default "query type" value can be specified here
 # This is the actual backend value, not the label
 # Also note that including more than the row count entries won't add rows

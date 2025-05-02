@@ -147,6 +147,7 @@ export class GridComponent implements OnInit, AfterViewInit, OnDestroy {
     context: GridContext;
     private static id = 0;
     gridDomId = 'eg-grid-';
+    grid_density = 'normal';
 
     // These events are emitted from our grid-body component.
     // They are defined here for ease of access to the caller.
@@ -247,6 +248,7 @@ export class GridComponent implements OnInit, AfterViewInit, OnDestroy {
 
     ngAfterViewInit() {
         this.context.initData();
+        this.grid_density = this.context.grid_density;
     }
 
     ngOnDestroy() {

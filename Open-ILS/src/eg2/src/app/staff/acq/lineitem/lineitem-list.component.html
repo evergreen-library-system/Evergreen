@@ -185,10 +185,8 @@
 
     <div class="btn-toolbar">
       <button type="button" (click)="toggleExpandAll()"
-        class="btn btn-sm btn-outline-dark me-1"
-        [title]="expandAll ? 'Collapse All' : 'Expand All'" i18n-title 
-        [attr.aria-label]="expandAll ? 'Collapse All' : 'Expand All'" i18n-aria-label>
-        <span class="material-icons mat-icon-in-button" aria-hidden="true">{{expandAll ? 'unfold_less' : 'unfold_more'}}</span>
+        class="btn btn-sm btn-outline-dark me-1">
+        <span i18n>{{expandAll ? 'Collapse All' : 'Expand All'}}</span>
       </button>
       <button [disabled]="pager.isFirstPage()" type="button"
         title="First Page" i18n-title aria-label="First Page" i18n-aria-label
@@ -584,7 +582,7 @@
                     placeholder='#' i18n-placeholder
                     min="0" max="{{(li.lineitem_details()||[]).length}}"
                     [disabled]="li.state() === 'received'"
-                    [(ngModel)]="lineitemDetailCountMap[li.id()]"
+                    [ngModel]="countReceivableItems(li)"
                     (ngModelChange)="adjustSelectedLids(li.id(),$event)"/>
               </div>
             </ng-container>

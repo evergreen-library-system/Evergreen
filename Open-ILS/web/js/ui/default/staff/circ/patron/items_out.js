@@ -91,7 +91,7 @@ function($scope , $q , $routeParams , $timeout , egCore , egUser , patronSvc ,
 
     $scope.colorizeItemsOutList = {
         apply: function(item) {
-            var duedate = item.due_date();
+            var duedate = new Date(item.due_date()).toISOString();
             if (duedate && duedate < new Date().toISOString()) {
                 return 'overdue-row';
             }

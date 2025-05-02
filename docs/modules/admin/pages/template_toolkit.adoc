@@ -71,7 +71,7 @@ template files. For example, the `home.tt2` template currently involves a
 number of other template files to generate a single HTML file:
 
 .Example Template Toolkit file: opac/home.tt2
-[source, html]
+[source, tt2]
 ------------------------------------------------------------------------------
 [%  PROCESS "opac/parts/header.tt2";
     WRAPPER "opac/parts/base.tt2";
@@ -231,7 +231,7 @@ bash$ vim /openils/var/templates_BR1/opac/parts/topnav_links.tt2
 Finally, we edit the link text in `opac/parts/header.tt2`.
 
 .Content of the opac/parts/header.tt2 file
-[source,html]
+[source,tt2]
 ------------------------------------------------------------------------------
 <div id="gold-links-holder">
     <div id="gold-links">

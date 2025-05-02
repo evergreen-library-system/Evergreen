@@ -118,7 +118,13 @@ export CPAN_MODULES = \
 	String::KeyboardDistance \
 	Pass::OTP \
 	Authen::WebAuthn \
-	Text::Levenshtein::Damerau::XS
+	IO::Prompter \
+	Mojolicious \
+	Mojolicious::Lite \
+	Mojolicious::Plugin::OpenAPI \
+	Mojolicious::Plugin::ForwardedFor \
+	Text::Levenshtein::Damerau::XS \
+	Duadua
 
 export CPAN_MODULES_FORCE = \
 	Business::Stripe \
@@ -175,6 +181,12 @@ PGSQL_SERVER_DEBS_16 = \
         postgresql-plperl-16 \
         postgresql-server-dev-16
 
+PGSQL_SERVER_DEBS_17 = \
+        $(DEB_PGSQL_COMMON_MODS) \
+        postgresql-17 \
+        postgresql-plperl-17 \
+        postgresql-server-dev-17
+
 # note: some prereqs are repeated in the developer/packager 
 # sections to support building Evergreen packages on servers
 # where Evergreen and its prereqs are not installed.
@@ -189,7 +201,8 @@ PACKAGER_DEBS = \
 	source-highlight \
 	zip \
 	unzip \
-	nsis
+	nsis \
+	pkg-config
 
 TRANSLATOR_DEBS = \
 	libtemplate-perl \
@@ -234,6 +247,12 @@ install_postgres_server_16:
 	make -f $(DIR)/Makefile.debian DEBS="$(PGSQL_APT_REPO_DEBS)"
 	make -f $(DIR)/Makefile.debian debian_postgresql_repo
 	make -f $(DIR)/Makefile.debian DEBS="$(PGSQL_SERVER_DEBS_16)"
+	make -f $(DIR)/Makefile.common install_cpan_pgsql
+
+install_postgres_server_17:
+	make -f $(DIR)/Makefile.debian DEBS="$(PGSQL_APT_REPO_DEBS)"
+	make -f $(DIR)/Makefile.debian debian_postgresql_repo
+	make -f $(DIR)/Makefile.debian DEBS="$(PGSQL_SERVER_DEBS_17)"
 	make -f $(DIR)/Makefile.common install_cpan_pgsql
 
 # note: if/when grunt-cli is available as a

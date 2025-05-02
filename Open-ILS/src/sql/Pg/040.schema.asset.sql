@@ -633,6 +633,7 @@ BEGIN
                 trans
           FROM  mask,
                 org_list,
+                available_statuses,
                 asset.copy_vis_attr_cache av
                 JOIN asset.copy cp ON (cp.id = av.target_copy AND av.record = rid)
           WHERE cp.circ_lib = ANY (org_list.orgs) AND av.vis_attr_vector @@ mask.c_attrs::query_int
@@ -748,6 +749,7 @@ BEGIN
     RETURN;
 END;
 $f$ LANGUAGE PLPGSQL;
+
 
 CREATE OR REPLACE FUNCTION asset.record_has_holdable_copy ( rid BIGINT, ou INT DEFAULT NULL) RETURNS BOOL AS $f$
 BEGIN
@@ -930,6 +932,105 @@ BEGIN
     RETURN;
 END;
 $f$ LANGUAGE PLPGSQL;
+
+-- If you want to know how many items are available in a particular library group,
+-- you can't easily sum the results of, say, asset.staff_lasso_record_copy_count,
+-- since library groups can theoretically include descendants of other org units
+-- in the library group (for example, the group could include a system and a branch
+-- within that same system), which means that certain items would be counted twice.
+-- The following functions address that problem by providing deduplicated sums that
+-- only count each item once.
+
+CREATE OR REPLACE FUNCTION asset.staff_lasso_record_copy_count_sum(lasso_id INT, record_id BIGINT)
+    RETURNS TABLE (depth INT, org_unit INT, visible BIGINT, available BIGINT, unshadow BIGINT, transcendant INT, library_group INT) AS $$
+    BEGIN
+    IF (lasso_id IS NULL) THEN RETURN; END IF;
+    IF (record_id IS NULL) THEN RETURN; END IF;
+    RETURN QUERY SELECT
+        -1,
+        -1,
+        COUNT(cp.id),
+        SUM( CASE WHEN cp.status IN (SELECT id FROM config.copy_status WHERE holdable AND is_available) THEN 1 ELSE 0 END ),
+        SUM( CASE WHEN cl.opac_visible AND cp.opac_visible THEN 1 ELSE 0 END),
+        0,
+        lasso_id
+    FROM ( SELECT DISTINCT descendants.id FROM actor.org_lasso_map aolmp JOIN LATERAL actor.org_unit_descendants(aolmp.org_unit) AS descendants ON TRUE WHERE aolmp.lasso = lasso_id) d
+        JOIN asset.copy cp ON (cp.circ_lib = d.id AND NOT cp.deleted)
+        JOIN asset.copy_location cl ON (cp.location = cl.id AND NOT cl.deleted)
+        JOIN asset.call_number cn ON (cn.record = record_id AND cn.id = cp.call_number AND NOT cn.deleted);
+    END;
+$$ LANGUAGE PLPGSQL STABLE ROWS 1;
+
+CREATE OR REPLACE FUNCTION asset.opac_lasso_record_copy_count_sum(lasso_id INT, record_id BIGINT)
+    RETURNS TABLE (depth INT, org_unit INT, visible BIGINT, available BIGINT, unshadow BIGINT, transcendant INT, library_group INT) AS $$
+    BEGIN
+    RAISE 'NOT IMPLEMENTED';
+    END;
+$$ LANGUAGE PLPGSQL STABLE ROWS 1;
+
+CREATE OR REPLACE FUNCTION asset.staff_lasso_metarecord_copy_count_sum(lasso_id INT, metarecord_id BIGINT)
+    RETURNS TABLE (depth INT, org_unit INT, visible BIGINT, available BIGINT, unshadow BIGINT, transcendant INT, library_group INT) AS $$
+    SELECT (
+        -1,
+        -1,
+        SUM(sums.visible)::bigint,
+        SUM(sums.available)::bigint,
+        SUM(sums.unshadow)::bigint,
+        MIN(sums.transcendant),
+        lasso_id
+    ) FROM metabib.metarecord_source_map mmsm
+      JOIN LATERAL (SELECT visible, available, unshadow, transcendant FROM asset.staff_lasso_record_copy_count_sum(lasso_id, mmsm.source)) sums ON TRUE
+      WHERE mmsm.metarecord = metarecord_id;
+$$ LANGUAGE SQL STABLE ROWS 1;
+
+CREATE OR REPLACE FUNCTION asset.opac_lasso_metarecord_copy_count_sum(lasso_id INT, metarecord_id BIGINT)
+    RETURNS TABLE (depth INT, org_unit INT, visible BIGINT, available BIGINT, unshadow BIGINT, transcendant INT, library_group INT) AS $$
+    SELECT (
+        -1,
+        -1,
+        SUM(sums.visible)::bigint,
+        SUM(sums.available)::bigint,
+        SUM(sums.unshadow)::bigint,
+        MIN(sums.transcendant),
+        lasso_id
+    ) FROM metabib.metarecord_source_map mmsm
+      JOIN LATERAL (SELECT visible, available, unshadow, transcendant FROM asset.opac_lasso_record_copy_count_sum(lasso_id, mmsm.source)) sums ON TRUE
+      WHERE mmsm.metarecord = metarecord_id;
+$$ LANGUAGE SQL STABLE ROWS 1;
+
+CREATE OR REPLACE FUNCTION asset.copy_org_ids(org_units INT[], depth INT, library_groups INT[])
+RETURNS TABLE (id INT)
+AS $$
+DECLARE
+    ancestor INT;
+BEGIN
+    RETURN QUERY SELECT org_unit FROM actor.org_lasso_map WHERE lasso = ANY(library_groups);
+    FOR ancestor IN SELECT unnest(org_units)
+    LOOP
+        RETURN QUERY
+        SELECT d.id
+        FROM actor.org_unit_descendants(ancestor, depth) d;
+    END LOOP;
+    RETURN;
+END;
+$$ LANGUAGE plpgsql;
+
+CREATE OR REPLACE FUNCTION asset.staff_copy_total(rec_id INT, org_units INT[], depth INT, library_groups INT[])
+RETURNS INT AS $$
+  SELECT COUNT(cp.id) total
+  	FROM asset.copy cp
+  	INNER JOIN asset.call_number cn ON (cn.id = cp.call_number AND NOT cn.deleted AND cn.record = rec_id)
+  	INNER JOIN asset.copy_location cl ON (cp.location = cl.id AND NOT cl.deleted)
+  	WHERE cp.circ_lib = ANY (SELECT asset.copy_org_ids(org_units, depth, library_groups))
+  	AND NOT cp.deleted;
+$$ LANGUAGE SQL;
+
+CREATE OR REPLACE FUNCTION asset.opac_copy_total(rec_id INT, org_units INT[], depth INT, library_groups INT[])
+RETURNS INT AS $$
+BEGIN
+RAISE 'Not implemented';
+END;
+$$ LANGUAGE PLPGSQL;
 
 CREATE OR REPLACE FUNCTION asset.metarecord_has_holdable_copy ( rid BIGINT, ou INT DEFAULT NULL) RETURNS BOOL AS $f$
 BEGIN

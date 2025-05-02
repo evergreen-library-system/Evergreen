@@ -1,6 +1,10 @@
 <output id="eg-toast-container" role="status">
-  <div *ngIf="message" class="alert alert-{{message.style}} alert-dismissible border-2 fade shadow-lg show">
-    {{message.text}}
-    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close alert" (click)="dismiss(message)"></button>
-  </div>
+  <ul *ngIf="messages.length" class="list-unstyled">
+    <ng-container *ngFor="let message of messages; index as i">
+      <li *ngIf="message && message.text" class="alert alert-{{message.style}} alert-dismissible border-2 fade shadow-lg show">
+        {{message.text}}
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close alert" (click)="dismiss(i)"></button>
+      </li>
+    </ng-container>
+  </ul>
 </output>

@@ -8,6 +8,9 @@ npm update
 npm install
 ng lint                              # check code formatting
 npm run test                         # unit tests
+npm run test -- --code-coverage      # unit tests, but show me what
+                                     # code is under test and what is
+                                     # not in the coverage directory.
 
 # run end-to-end tests using Firefox
 ng e2e                               # end-to-end tests, be sure to set

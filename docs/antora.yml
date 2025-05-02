@@ -14,7 +14,7 @@ nav:
 - modules/serials/nav.adoc
 - modules/circulation/nav.adoc
 - modules/reports/nav.adoc
-- modules/course/nav.adoc
+# - modules/course/nav.adoc
 - modules/opac/nav.adoc
 - modules/course_materials/nav.adoc
 - modules/integrations/nav.adoc

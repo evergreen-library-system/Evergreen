@@ -232,6 +232,61 @@ export class IdlService {
         return hash;
     }
 
+    fromHash(hash: any, baseClass: string, convertBooleans = false): any {
+        // Handle primitives
+        if (typeof hash !== 'object' || hash === null || hash._isfieldmapper) {
+            return hash;
+        }
+
+        // Handle arrays
+        if (Array.isArray(hash)) {
+            return hash.map(item => this.fromHash(item, baseClass, convertBooleans));
+        }
+
+        if (!baseClass || !this.classes[baseClass]) {
+            throw new Error(`Invalid or missing base class: ${baseClass}`);
+        }
+
+        // Create and populate IDL object
+        const obj = this.create(baseClass);
+        const fieldMap = this.classes[baseClass].field_map;
+
+        Object.entries(hash).forEach(([key, value]) => {
+            // Handle flattened nested objects (key contains '.')
+            if (key.includes('.')) {
+                const [field, subfield] = key.split('.');
+                if (!obj[field]()) {
+                    // Initialize nested object if needed
+                    const linkedClass = fieldMap[field]?.class;
+                    if (linkedClass) {
+                        obj[field](this.create(linkedClass));
+                    }
+                }
+                if (obj[field]()) {
+                    const fieldValue = convertBooleans && fieldMap[subfield]?.datatype === 'bool'
+                        ? this.toBoolean(value)
+                        : value;
+                    obj[field]()[subfield](fieldValue);
+                }
+            } else {
+                // Handle regular fields and linked objects
+                const fieldDef = fieldMap[key];
+                if (fieldDef?.class) {
+                    // This is a linked field, recursively create the linked object
+                    obj[key](this.fromHash(value, fieldDef.class, convertBooleans));
+                } else if (typeof obj[key] === 'function') {
+                    // Regular field
+                    const fieldValue = convertBooleans && fieldDef?.datatype === 'bool'
+                        ? this.toBoolean(value)
+                        : value;
+                    obj[key](fieldValue);
+                }
+            }
+        });
+
+        return obj;
+    }
+
     // Returns true if both objects have the same IDL class and pkey value.
     pkeyMatches(obj1: IdlObject, obj2: IdlObject) {
         if (!obj1 || !obj2) { return false; }

@@ -365,3 +365,13 @@ Open-ILS/web/opac/deps/node_modules/
 
 # Ignore O/S-specific hidden files
 .DS_Store
+
+# Docker DEV container uses these
+docker-watch.sh
+db_control.txt
+db_switch.log
+eg_restart_go_screenoutput
+eg_restart_go
+eg_rebuild_angular_screenoutput
+eg_rebuild_angular
+watch.LOCK

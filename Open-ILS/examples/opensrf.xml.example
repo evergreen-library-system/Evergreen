@@ -450,6 +450,9 @@ vim:et:ts=4:sw=4:
                     this child before the child is recycled
                     -->
                     <max_requests>100</max_requests>
+                    <!-- maximum number of messages to allow to build up in the
+                    backlog before returning errors to callers -->
+                    <max_backlog_queue>100</max_backlog_queue>
                     <!-- min children to fork -->
                     <min_children>1</min_children>
                     <!-- max possible children to fork -->
@@ -478,6 +481,7 @@ vim:et:ts=4:sw=4:
                 <implementation>liboils_auth.so</implementation>
                 <unix_config>
                     <max_requests>1000</max_requests>
+                    <max_backlog_queue>100</max_backlog_queue>
                     <min_children>1</min_children>
                     <max_children>15</max_children>
                     <min_spare_children>1</min_spare_children>
@@ -501,6 +505,7 @@ vim:et:ts=4:sw=4:
                 <implementation>liboils_auth_internal.so</implementation>
                 <unix_config>
                     <max_requests>1000</max_requests>
+                    <max_backlog_queue>100</max_backlog_queue>
                     <min_children>1</min_children>
                     <max_children>15</max_children>
                     <min_spare_children>1</min_spare_children>
@@ -510,6 +515,7 @@ vim:et:ts=4:sw=4:
                     <!-- defined app-specific settings here -->
                     <default_timeout>
                         <!-- default login timeouts based on login type -->
+                        <api>3600</api>
                         <opac>420</opac>
                         <staff>7200</staff>
                         <temp>300</temp>
@@ -528,6 +534,7 @@ vim:et:ts=4:sw=4:
 
                 <unix_config>
                     <max_requests>1000</max_requests>
+                    <max_backlog_queue>100</max_backlog_queue>
                     <unix_log>open-ils.auth_mfa.log</unix_log>
                     <unix_sock>open-ils.auth_mfa.sock</unix_sock>
                     <unix_pid>open-ils.auth_mfa.pid</unix_pid>
@@ -540,6 +547,8 @@ vim:et:ts=4:sw=4:
                 <app_settings>
                     <!-- 'enabled' is the master switch; set to 'true' to enable MFA -->
                     <enabled>false</enabled>
+                    <!-- set 'honor_secondary_groups' to to 'true' allow secondary group membership to act in the same way as profile group for MFA availability and factor list -->
+                    <honor_secondary_groups>false</honor_secondary_groups>
                     <factors>
                         <totp>
                             <enabled>true</enabled>
@@ -568,6 +577,7 @@ vim:et:ts=4:sw=4:
 
                 <unix_config>
                     <max_requests>1000</max_requests>
+                    <max_backlog_queue>100</max_backlog_queue>
                     <unix_log>open-ils.auth-proxy_unix.log</unix_log>
                     <unix_sock>open-ils.auth-proxy_unix.sock</unix_sock>
                     <unix_pid>open-ils.auth-proxy_unix.pid</unix_pid>
@@ -626,6 +636,7 @@ vim:et:ts=4:sw=4:
                     <unix_log>open-ils.search_unix.log</unix_log>
 
                     <max_requests>1000</max_requests>
+                    <max_backlog_queue>100</max_backlog_queue>
                     <min_children>1</min_children>
                     <max_children>15</max_children>
                     <min_spare_children>1</min_spare_children>
@@ -749,6 +760,7 @@ vim:et:ts=4:sw=4:
                     <unix_sock>open-ils.actor_unix.sock</unix_sock>
                     <unix_pid>open-ils.actor_unix.pid</unix_pid>
                     <max_requests>1000</max_requests>
+                    <max_backlog_queue>100</max_backlog_queue>
                     <unix_log>open-ils.actor_unix.log</unix_log>
                     <min_children>1</min_children>
                     <max_children>15</max_children>
@@ -772,6 +784,7 @@ vim:et:ts=4:sw=4:
                     <unix_sock>open-ils.booking_unix.sock</unix_sock>
                     <unix_pid>open-ils.booking_unix.pid</unix_pid>
                     <max_requests>1000</max_requests>
+                    <max_backlog_queue>100</max_backlog_queue>
                     <unix_log>open-ils.booking_unix.log</unix_log>
                     <min_children>1</min_children>
                     <max_children>15</max_children>
@@ -792,6 +805,7 @@ vim:et:ts=4:sw=4:
                     <unix_sock>open-ils.geo_unix.sock</unix_sock>
                     <unix_pid>open-ils.geo_unix.pid</unix_pid>
                     <max_requests>1000</max_requests>
+                    <max_backlog_queue>100</max_backlog_queue>
                     <unix_log>open-ils.geo_unix.log</unix_log>
                     <min_children>1</min_children>
                     <max_children>15</max_children>
@@ -813,6 +827,7 @@ vim:et:ts=4:sw=4:
                     <unix_sock>open-ils.cat_unix.sock</unix_sock>
                     <unix_pid>open-ils.cat_unix.pid</unix_pid>
                     <max_requests>1000</max_requests>
+                    <max_backlog_queue>100</max_backlog_queue>
                     <unix_log>open-ils.cat_unix.log</unix_log>
                     <min_children>1</min_children>
                     <max_children>15</max_children>
@@ -836,6 +851,7 @@ vim:et:ts=4:sw=4:
                     <unix_sock>open-ils.supercat_unix.sock</unix_sock>
                     <unix_pid>open-ils.supercat_unix.pid</unix_pid>
                     <max_requests>1000</max_requests>
+                    <max_backlog_queue>100</max_backlog_queue>
                     <unix_log>open-ils.supercat_unix.log</unix_log>
                     <min_children>1</min_children>
                     <max_children>15</max_children>
@@ -948,6 +964,7 @@ vim:et:ts=4:sw=4:
                     <unix_sock>open-ils.trigger_unix.sock</unix_sock>
                     <unix_pid>open-ils.trigger_unix.pid</unix_pid>
                     <max_requests>1000</max_requests>
+                    <max_backlog_queue>100</max_backlog_queue>
                     <unix_log>open-ils.trigger_unix.log</unix_log>
                     <min_children>1</min_children>
                     <max_children>15</max_children>
@@ -975,6 +992,7 @@ vim:et:ts=4:sw=4:
                     <unix_sock>open-ils.url_verify_unix.sock</unix_sock>
                     <unix_pid>open-ils.url_verify_unix.pid</unix_pid>
                     <max_requests>1000</max_requests>
+                    <max_backlog_queue>100</max_backlog_queue>
                     <unix_log>open-ils.url_verify_unix.log</unix_log>
                     <min_children>1</min_children>
                     <max_children>15</max_children>
@@ -995,6 +1013,7 @@ vim:et:ts=4:sw=4:
                     <unix_sock>opensrf.math_unix.sock</unix_sock>
                     <unix_pid>opensrf.math_unix.pid</unix_pid>
                     <max_requests>1000</max_requests>
+                    <max_backlog_queue>100</max_backlog_queue>
                     <unix_log>opensrf.math_unix.log</unix_log>
                     <min_children>1</min_children>
                     <max_children>15</max_children>
@@ -1010,6 +1029,7 @@ vim:et:ts=4:sw=4:
                 <implementation>libosrf_dbmath.so</implementation>
                 <unix_config>
                     <max_requests>1000</max_requests>
+                    <max_backlog_queue>100</max_backlog_queue>
                     <unix_log>opensrf.dbmath_unix.log</unix_log>
                     <unix_sock>opensrf.dbmath_unix.sock</unix_sock>
                     <unix_pid>opensrf.dbmath_unix.pid</unix_pid>
@@ -1030,6 +1050,7 @@ vim:et:ts=4:sw=4:
                     <unix_sock>open-ils.justintime_unix.sock</unix_sock>
                     <unix_pid>open-ils.justintime_unix.pid</unix_pid>
                     <max_requests>1000</max_requests>
+                    <max_backlog_queue>100</max_backlog_queue>
                     <unix_log>open-ils.justintime_unix.log</unix_log>
                     <min_children>1</min_children>
                     <max_children>15</max_children>
@@ -1048,6 +1069,7 @@ vim:et:ts=4:sw=4:
                 <max_requests>99</max_requests>
                 <unix_config>
                     <max_requests>1000</max_requests>
+                    <max_backlog_queue>100</max_backlog_queue>
                     <unix_log>open-ils.circ_unix.log</unix_log>
                     <unix_sock>open-ils.circ_unix.sock</unix_sock>
                     <unix_pid>open-ils.circ_unix.pid</unix_pid>
@@ -1070,6 +1092,7 @@ vim:et:ts=4:sw=4:
                 <implementation>OpenILS::Application::Storage</implementation>
                 <unix_config>
                     <max_requests>1000</max_requests>
+                    <max_backlog_queue>100</max_backlog_queue>
                     <unix_log>open-ils.storage_unix.log</unix_log>
                     <unix_sock>open-ils.storage_unix.sock</unix_sock>
                     <unix_pid>open-ils.storage_unix.pid</unix_pid>
@@ -1108,6 +1131,7 @@ vim:et:ts=4:sw=4:
                 <implementation>liboils_cstore.so</implementation>
                 <unix_config>
                     <max_requests>1000</max_requests>
+                    <max_backlog_queue>100</max_backlog_queue>
                     <min_children>1</min_children>
                     <max_children>15</max_children>
                     <min_spare_children>1</min_spare_children>
@@ -1142,6 +1166,7 @@ vim:et:ts=4:sw=4:
                     <unix_sock>open-ils.pcrud.sock</unix_sock>
                     <unix_pid>open-ils.pcrud.pid</unix_pid>
                     <max_requests>1000</max_requests>
+                    <max_backlog_queue>100</max_backlog_queue>
                     <min_children>1</min_children>
                     <max_children>15</max_children>
                     <min_spare_children>1</min_spare_children>
@@ -1172,6 +1197,7 @@ vim:et:ts=4:sw=4:
                 <implementation>liboils_qstore.so</implementation>
                 <unix_config>
                     <max_requests>1000</max_requests>
+                    <max_backlog_queue>100</max_backlog_queue>
                     <min_children>1</min_children>
                     <max_children>15</max_children>
                     <min_spare_children>1</min_spare_children>
@@ -1203,6 +1229,7 @@ vim:et:ts=4:sw=4:
                     <unix_sock>opensrf.settings_unix.sock</unix_sock>
                     <unix_pid>opensrf.settings_unix.pid</unix_pid>
                     <max_requests>300</max_requests>
+                    <max_backlog_queue>100</max_backlog_queue>
                     <unix_log>opensrf.settings_unix.log</unix_log>
                     <min_children>5</min_children>
                     <max_children>15</max_children>
@@ -1221,6 +1248,7 @@ vim:et:ts=4:sw=4:
                     <unix_sock>open-ils.collections_unix.sock</unix_sock>
                     <unix_pid>open-ils.collections_unix.pid</unix_pid>
                     <max_requests>1000</max_requests>
+                    <max_backlog_queue>100</max_backlog_queue>
                     <unix_log>open-ils.collections_unix.log</unix_log>
                     <min_children>1</min_children>
                     <max_children>10</max_children>
@@ -1243,6 +1271,7 @@ vim:et:ts=4:sw=4:
                     <unix_sock>open-ils.reporter_unix.sock</unix_sock>
                     <unix_pid>open-ils.reporter_unix.pid</unix_pid>
                     <max_requests>1000</max_requests>
+                    <max_backlog_queue>100</max_backlog_queue>
                     <unix_log>open-ils.reporter_unix.log</unix_log>
                     <min_children>1</min_children>
                     <max_children>10</max_children>
@@ -1258,6 +1287,7 @@ vim:et:ts=4:sw=4:
                 <implementation>liboils_rstore.so</implementation>
                 <unix_config>
                     <max_requests>400</max_requests>
+                    <max_backlog_queue>100</max_backlog_queue>
                     <min_children>1</min_children>
                     <max_children>10</max_children>
                     <min_spare_children>1</min_spare_children>
@@ -1291,6 +1321,7 @@ vim:et:ts=4:sw=4:
                   <unix_sock>open-ils.resolver_unix.sock</unix_sock>
                   <unix_pid>open-ils.resolver_unix.pid</unix_pid>
                   <max_requests>1000</max_requests>
+                  <max_backlog_queue>100</max_backlog_queue>
                   <unix_log>open-ils.resolver_unix.log</unix_log>
                   <min_children>5</min_children>
                   <max_children>15</max_children>
@@ -1316,6 +1347,7 @@ vim:et:ts=4:sw=4:
                   <unix_sock>open-ils.permacrud_unix.sock</unix_sock>
                   <unix_pid>open-ils.permacrud_unix.pid</unix_pid>
                   <max_requests>1000</max_requests>
+                  <max_backlog_queue>100</max_backlog_queue>
                   <unix_log>open-ils.permacrud_unix.log</unix_log>
                   <min_children>5</min_children>
                   <max_children>15</max_children>
@@ -1334,6 +1366,7 @@ vim:et:ts=4:sw=4:
                   <unix_sock>open-ils.fielder_unix.sock</unix_sock>
                   <unix_pid>open-ils.fielder_unix.pid</unix_pid>
                   <max_requests>1000</max_requests>
+                  <max_backlog_queue>100</max_backlog_queue>
                   <unix_log>open-ils.fielder_unix.log</unix_log>
                   <min_children>5</min_children>
                   <max_children>15</max_children>
@@ -1353,6 +1386,7 @@ vim:et:ts=4:sw=4:
                     <unix_pid>vandelay_unix.pid</unix_pid>
                     <unix_log>vandelay_unix.log</unix_log>
                     <max_requests>100</max_requests>
+                    <max_backlog_queue>100</max_backlog_queue>
                     <min_children>1</min_children>
                     <max_children>15</max_children>
                     <min_spare_children>1</min_spare_children>
@@ -1381,6 +1415,7 @@ vim:et:ts=4:sw=4:
                     <unix_sock>open-ils.serial_unix.sock</unix_sock>
                     <unix_pid>open-ils.serial_unix.pid</unix_pid>
                     <max_requests>1000</max_requests>
+                    <max_backlog_queue>100</max_backlog_queue>
                     <unix_log>open-ils.serial_unix.log</unix_log>
                     <min_children>5</min_children>
                     <max_children>15</max_children>
@@ -1401,6 +1436,7 @@ vim:et:ts=4:sw=4:
                     <unix_sock>open-ils.hold-targeter_unix.sock</unix_sock>
                     <unix_pid>open-ils.hold-targeter_unix.pid</unix_pid>
                     <max_requests>1000</max_requests>
+                    <max_backlog_queue>100</max_backlog_queue>
                     <unix_log>open-ils.hold-targeter_unix.log</unix_log>
                     <min_children>1</min_children>
                     <max_children>15</max_children>
@@ -1422,6 +1458,7 @@ vim:et:ts=4:sw=4:
                     <unix_pid>ebook_api_unix.pid</unix_pid>
                     <unix_log>ebook_api_unix.log</unix_log>
                     <max_requests>100</max_requests>
+                    <max_backlog_queue>100</max_backlog_queue>
                     <min_children>1</min_children>
                     <max_children>15</max_children>
                     <min_spare_children>1</min_spare_children>
@@ -1444,6 +1481,7 @@ vim:et:ts=4:sw=4:
                     <unix_pid>courses_unix.pid</unix_pid>
                     <unix_log>courses_unix.log</unix_log>
                     <max_requests>100</max_requests>
+                    <max_backlog_queue>100</max_backlog_queue>
                     <min_children>1</min_children>
                     <max_children>15</max_children>
                     <min_spare_children>1</min_spare_children>
@@ -1462,6 +1500,7 @@ vim:et:ts=4:sw=4:
                     <unix_pid>sip2_unix.pid</unix_pid>
                     <unix_log>sip2_unix.log</unix_log>
                     <max_requests>1000</max_requests>
+                    <max_backlog_queue>100</max_backlog_queue>
                     <min_children>1</min_children>
                     <max_children>15</max_children>
                     <min_spare_children>1</min_spare_children>
@@ -1482,6 +1521,7 @@ vim:et:ts=4:sw=4:
                     <unix_pid>curbside_unix.pid</unix_pid>
                     <unix_log>curbside_unix.log</unix_log>
                     <max_requests>1000</max_requests>
+                    <max_backlog_queue>100</max_backlog_queue>
                     <min_children>1</min_children>
                     <max_children>15</max_children>
                     <min_spare_children>1</min_spare_children>

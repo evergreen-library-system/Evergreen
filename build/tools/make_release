@@ -3,8 +3,6 @@
 GIT_ABS=`git rev-parse --show-toplevel`
 RELEASE_DIR=$GIT_ABS/../release/
 GIT_BRANCH=`git rev-parse --abbrev-ref HEAD | sed 's|.*/||'`
-HEADURLBASE="http://git.evergreen-ils.org/?p=Evergreen.git;a=shortlog;h=refs/heads/tags/"
-HEADURL="$HEADURLBASE$GIT_BRANCH"
 
 # Drop to the root of the checkout
 cd $GIT_ABS
@@ -246,21 +244,6 @@ if [ "$PREV_BRANCH" != "PACKAGE" ]; then
     echo "AC_INIT and AM_INIT_AUTOMAKE entries"
     sed -i -e "s/^\(AC_INIT(Open-ILS, \)[^,]*,/\1$VERSION,/" -e "s/^\(AM_INIT_AUTOMAKE(\[[^]]*], \[\)[^]]*]/\1$VERSION]/" configure.ac
 
-    echo "Finding/updating old \$HeadURL\$ entries"
-    HEADURLBASE=`echo ${HEADURLBASE} | sed 's/\?/\\?/'`
-    for file in `grep -Rl --exclude=make_release "$HEADURLBASE" $GIT_ABS`
-    do
-        echo $file
-        sed -i "s|${HEADURLBASE}[A-Za-z0-9_]*|$HEADURL|" $file
-    done
-
-    echo "Applying \$HeadURL\$ - $HEADURL"
-    for file in `grep -Rl --exclude=make_release '\\$HeadURL\\$' $GIT_ABS`
-    do
-        echo $file
-        sed -i "s|\\\$HeadURL\\\$|$HEADURL|" $file
-    done
-
     if [ "$PREV_BRANCH" = "TAG" ]; then
         echo "Committing (but not pushing) the lot of it"
         git commit -asm "Tagging version"
@@ -313,18 +296,10 @@ if [ "$PREV_BRANCH" != "PACKAGE" ]; then
         fi
     fi
 
-    grep -i -m 1 Signed-off-by ChangeLog &> /dev/null
-    if [ $? -ne 0 ]; then
-        echo "Building ChangeLog"
-        git log --cherry-pick --right-only --no-merges --pretty --summary --numstat $PREV_BRANCH...HEAD > $GIT_ABS/ChangeLog
-    else
-        echo "Not overwriting existing ChangeLog!"
-    fi
-
     echo "Committing (but not pushing) the lot of it"
-    COMMIT_MESSAGE="Bumping version numbers and adding Changelog"
+    COMMIT_MESSAGE="Bumping version numbers"
     if [ -n "$UPGRADE_FILE" ]; then
-        COMMIT_MESSAGE="Bumping version numbers, adding Upgrade Script and Changelog"
+        COMMIT_MESSAGE="Bumping version numbers and adding Upgrade Script"
     fi
     git commit -asm "$COMMIT_MESSAGE"
     if [ "$PG_HOST" != "NONE" ]; then
@@ -413,9 +388,6 @@ fi
 cd $RELEASE_DIR
 tar czf Evergreen-ILS-$VERSION.tar.gz Evergreen-ILS-$VERSION/
 md5sum Evergreen-ILS-$VERSION.tar.gz > Evergreen-ILS-$VERSION.tar.gz.md5
-if [ $PREV_BRANCH != "PACKAGE" ]; then # We need to have tagged to do this ;)
-    cp Evergreen-ILS-$VERSION/ChangeLog ChangeLog-$PREV_VERSION-$VERSION
-fi
 
 echo "Removing build directory"
 rm -rf Evergreen-ILS-$VERSION/

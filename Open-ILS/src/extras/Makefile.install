@@ -5,7 +5,7 @@
 # Makefile to install prerequisites for OpenSRF and Evergreen
 #
 # Currently supports Debian (bookworm, bullseye, buster),
-# Ubuntu (16.04), Ubuntu (18.04).
+# Ubuntu (22.04), Ubuntu (24.04).
 #
 # Installs Perl prereqs, libdbi, libdbi-drivers, and libyaz
 #
@@ -40,7 +40,7 @@ export LIBDBI_HOST=http://open-ils.org/~denials/evergreen
 
 # some OSes require a newer version of NodeJS
 # NOTE: Using the LTS binaries for NodeJS
-export NODEJS_VERSION=v18.18.0
+export NODEJS_VERSION=v22.11.0
 MACHINE_NAME = $(shell uname -m)
 ifeq ($(MACHINE_NAME),x86_64)
     export NODEJS_ARCHITECTURE=x64
@@ -93,6 +93,8 @@ postgres-server-debian-bookworm-15:
 	@make -f $(DIR)/Makefile.debian-bookworm install_postgres_server_15
 postgres-server-debian-bookworm-16:
 	@make -f $(DIR)/Makefile.debian-bookworm install_postgres_server_16
+postgres-server-debian-bookworm-17:
+	@make -f $(DIR)/Makefile.debian-bookworm install_postgres_server_17
 postgres-server-debian-bullseye-13:
 	@make -f $(DIR)/Makefile.debian-bullseye install_postgres_server_13
 postgres-server-debian-bullseye-14:
@@ -101,6 +103,8 @@ postgres-server-debian-bullseye-15:
 	@make -f $(DIR)/Makefile.debian-bullseye install_postgres_server_15
 postgres-server-debian-bullseye-16:
 	@make -f $(DIR)/Makefile.debian-bullseye install_postgres_server_16
+postgres-server-debian-bullseye-17:
+	@make -f $(DIR)/Makefile.debian-bullseye install_postgres_server_17
 postgres-server-debian-buster-13:
 	@make -f $(DIR)/Makefile.debian-buster install_postgres_server_13
 postgres-server-debian-buster-14:
@@ -109,6 +113,8 @@ postgres-server-debian-buster-15:
 	@make -f $(DIR)/Makefile.debian-buster install_postgres_server_15
 postgres-server-debian-buster-16:
 	@make -f $(DIR)/Makefile.debian-buster install_postgres_server_16
+postgres-server-debian-buster-17:
+	@make -f $(DIR)/Makefile.debian-buster install_postgres_server_17
 postgres-server-ubuntu-noble-13:
 	@make -f $(DIR)/Makefile.ubuntu-noble install_postgres_server_13
 postgres-server-ubuntu-noble-14:
@@ -117,6 +123,8 @@ postgres-server-ubuntu-noble-15:
 	@make -f $(DIR)/Makefile.ubuntu-noble install_postgres_server_15
 postgres-server-ubuntu-noble-16:
 	@make -f $(DIR)/Makefile.ubuntu-noble install_postgres_server_16
+postgres-server-ubuntu-noble-17:
+	@make -f $(DIR)/Makefile.ubuntu-noble install_postgres_server_17
 postgres-server-ubuntu-jammy-13:
 	@make -f $(DIR)/Makefile.ubuntu-jammy install_postgres_server_13
 postgres-server-ubuntu-jammy-14:
@@ -125,6 +133,8 @@ postgres-server-ubuntu-jammy-15:
 	@make -f $(DIR)/Makefile.ubuntu-jammy install_postgres_server_15
 postgres-server-ubuntu-jammy-16:
 	@make -f $(DIR)/Makefile.ubuntu-jammy install_postgres_server_16
+postgres-server-ubuntu-jammy-17:
+	@make -f $(DIR)/Makefile.ubuntu-jammy install_postgres_server_17
 postgres-server-fedora:
 	@make -f $(DIR)/Makefile.fedora install_postgres_server
 

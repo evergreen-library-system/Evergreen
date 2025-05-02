@@ -1,4 +1,6 @@
-<div id="{{gridDomId}}" class="eg-grid-wrapper col-12" role="region" aria-labelledby="eg-grid-caption" tabindex="0">
+<div id="{{gridDomId}}" class="eg-grid-wrapper col-12"
+  [ngClass]="{'eg-grid-resize': context.resizeWrapper}"
+  role="region" aria-labelledby="eg-grid-caption" tabindex="0">
   
   <eg-grid-print #gridPrinter [gridContext]="context">
   </eg-grid-print>
@@ -17,30 +19,32 @@
 
 <div class="row">
   <div class="col">
-
-    <!-- tabindex so the grid can capture keyboard events -->
-    <table #egGrid role="grid" tabindex="0" (keydown)="onGridKeyDown($event)"
-      class="eg-grid table grid-key-{{persistKey ? persistKey.replaceAll('.', '_') : 'none'}}"
-      [ngClass]="{'eg-grid-cell-truncate': context.truncateCells,
-                  'eg-grid-empty': !dataSource.requestingData && !dataSource.retrievalError,
-                  'eg-grid-error': !dataSource.requestingData && dataSource.retrievalError}">
-        <caption id="eg-grid-caption">
-        <ng-container *ngIf="dataSource.data.length === 0">
-          <ng-container *ngIf="dataSource.requestingData">
-            <span>
-              <eg-progress-inline></eg-progress-inline>
-            </span>
-          </ng-container>
-          <ng-container *ngIf="!dataSource.requestingData">
-            <span i18n *ngIf="dataSource.retrievalError">
-              Error Retrieving Results
-            </span>
-            <span i18n *ngIf="!dataSource.retrievalError">
-              Nothing to Display
-            </span>
-          </ng-container>
-        </ng-container>
-        </caption>
+    
+<!-- tabindex so the grid can capture keyboard events -->
+<table #egGrid role="grid" tabindex="0" (keydown)="onGridKeyDown($event)"
+  class="eg-grid table grid-key-{{persistKey ? persistKey.replaceAll('.', '_') : 'none'}}"
+  [ngClass]="{'eg-grid-cell-truncate': context.truncateCells,
+              'eg-grid-empty': dataSource.data.length === 0,
+              'eg-grid-error': !dataSource.requestingData && dataSource.retrievalError,
+              'grid-density-wide': context.grid_density === 'wide',
+              'grid-density-compact': context.grid_density === 'compact' }">
+    <caption id="eg-grid-caption">
+    <ng-container *ngIf="dataSource.data.length === 0">
+      <ng-container *ngIf="dataSource.requestingData">
+        <span>
+          <eg-progress-inline></eg-progress-inline>
+        </span>
+      </ng-container>
+      <ng-container *ngIf="!dataSource.requestingData">
+        <span i18n *ngIf="dataSource.retrievalError">
+          Error Retrieving Results
+        </span>
+        <span i18n *ngIf="!dataSource.retrievalError">
+          Nothing to Display
+        </span>
+      </ng-container>
+    </ng-container>
+    </caption>
 
         <colgroup class="eg-grid-col-utilities">
           <col *ngIf="!context.disableSelect" class="eg-grid-col eg-grid-checkbox-col">

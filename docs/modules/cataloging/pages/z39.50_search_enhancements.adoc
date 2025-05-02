@@ -56,7 +56,7 @@ From this interface, you can rank the quality of incoming search results accordi
 
 . Rank the quality of the records from Z39.50 sources by adding quality metrics for the match set.  Click *MARC Tag and Subfield*, and enter the 901z tag and subfield, specify the Z39.50 source, and enter a quality metric.  Source quality increases as the numeric quality increases.  
 
-image::media/Locate_Z39_50_Matches4.jpg[Locate_Z39.50_Matches4]
+image::z3950/Locate_Z39_50_Matches4.jpg[Locate_Z39.50_Matches4]
 
 
 
@@ -88,15 +88,15 @@ Two new settings control the Z39.50 search enhancements.
 
 . Click *Perform Search*.
 
-image::media/Locate_Z39_50_Matches1.jpg[Locate_Z39.50_Matches1]
+image::z3950/Locate_Z39_50_Matches1.jpg[Locate_Z39.50_Matches1]
 
 . Status information will appear, including the number of records in the bucket that were searched, the matches that were found, and the progress of the search.  When the search is complete, click *Open Queue*.
 
-image::media/Locate_Z39_50_Matches2.jpg[Locate_Z39.50_Matches2]
+image::z3950/Locate_Z39_50_Matches2.jpg[Locate_Z39.50_Matches2]
 
 . The Vandelay Queue will display.  Matching records are identified in the *Matches* column.  From this interface, import records according to your normal procedure.  It is suggested that to merge the incoming records with the catalog records, you should choose an option to import the records.  Next, select either merge option from the drop down menu, click *Merge on Best Match*, and then click *Import*.
 
-image::media/Locate_Z39_50_Matches3.jpg[Locate_Z39.50_Matches3]
+image::z3950/Locate_Z39_50_Matches3.jpg[Locate_Z39.50_Matches3]
 
 . The records from the Z39.50 search will merge with the catalog records. NOTE: A new column has been added to this interface to identify the Z39.50 source.  When records are imported to the Vandelay queue via a record bucket, Evergreen tags the Z39.50 source and enters the data into the $901z.
 

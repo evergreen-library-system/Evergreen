@@ -50,7 +50,7 @@ body {
 }
 
 kbd {
-  background-color: light-dark(var(--bs-gray-200), var(--bs-body-bg-highlight));
+  background-color: var(--bs-body-bg-highlight);
   border-radius: .2rem;
   border: none;
   box-shadow: 1px 1px 1px rgba(var(--box-shadow), 0.2);
@@ -84,7 +84,10 @@ kbd {
 /* Overwrite Bootstrap's definition so the area around hovered buttons doesn't look bad in dark mode */
 .nav>li>a:hover {
   color: var(--primary-hover);
-  background-color: light-dark(var(--bs-gray-200), var(--bs-gray-900));
+  background-color: var(--bs-gray-200);
+}
+[data-bs-theme="dark"] .nav>li>a:hover {
+  background-color: var(--bs-gray-900);
 }
 /*
 .modal {
@@ -118,15 +121,20 @@ kbd {
 /* Form Validation CSS - http://docs.angularjs.org/guide/forms
  * TODO: these colors are harsh and don't fit the EG color scheme
  */
-.form-validated input.ng-invalid.ng-dirty,
-.form-validated textarea.ng-invalid.ng-dirty {
-  background-color: light-dark(var(--bs-red-200), var(--bs-red-900));
-}
-.form-validated input.ng-valid.ng-dirty,
-.form-validated textarea.ng-valid.ng-dirty {
-  background-color: var(--form-success-bg);
-}
 
+ .form-validated .ng-valid.ng-dirty[required]:not(:is(fieldset, form)),
+ .form-validated .ng-valid.ng-dirty.required, 
+ .form-validated input[formcontrolname].ng-valid.required {
+   border-left: 5px solid var(--bs-form-valid-border-color);
+ }
+ 
+ .form-validated .ng-invalid.ng-dirty:not(:is(fieldset, form)),
+ .form-validated input[formcontrolname].ng-invalid.ng-dirty,
+ .form-validated .invalid.ng-dirty:not(:is(form)),
+ :user-invalid {
+   border-left: 5px solid var(--bs-form-invalid-border-color);
+ }
+ 
 /* --------------------------------------------------------------------------
  * Local style
  */
@@ -142,7 +150,7 @@ a {
 a.disabled {
   pointer-events: none;
   cursor: default;
-  color: #888 !important;
+  opacity: 0.8;
 }
 .disabled {
   cursor: not-allowed;
@@ -281,10 +289,9 @@ table.list tr.selected td { /* deprecated? */
 
 /* patron bill row-highlighting */
 /* background colors are !important because Bootstrap 4 table striping is greedy */
-/* background colors are !important because Bootstrap 4 table striping is greedy */
 .overdue-row {
   color: var(--bs-body-color);
-  background-color: rgba(var(--bs-orange-rgb), 0.10);
+  background-color: rgba(var(--bs-orange-rgb), 0.10) !important;
   border-color: rgba(var(--bs-orange-rgb), 0.15);
   border-left: 10px solid var(--bs-orange);
   padding-left: 0;
@@ -306,13 +313,19 @@ table.list tr.selected td { /* deprecated? */
 
 .longoverdue-row a:link, .longoverdue-row a:visited,
 .longoverdue-row .eg-grid-cell-stock-status {
-  color: light-dark(var(--bs-orange-700), var(--bs-yellow-300));
+  color: var(--bs-orange-700);
+  border-color: var(--bs-orange-700);
+}
+
+[data-bs-theme="dark"] .longoverdue-row a:link, .longoverdue-row a:visited,
+[data-bs-theme="dark"] .longoverdue-row .eg-grid-cell-stock-status {
+  color: var(--bs-yellow-300);
   border-color: var(--bs-orange-700);
 }
 
 .lost-row {
   color: var(--bs-body-color);
-  background-color: rgba(var(--bs-red-rgb), 0.25);
+  background-color: rgba(var(--bs-red-rgb), 0.25) !important;
   border-color: rgba(var(--bs-red-rgb), 0.30);
   border-left: 2px solid var(--bs-red-600);
   padding-left: 0;
@@ -483,9 +496,6 @@ input, textarea, select, option,
 .accordion-button:not(.collapsed),
 .alert-info,
 .btn-outline-dark,
-.btn-default,
-.btn-light,
-.btn-light.dropdown-toggle,
 .card-header,
 .eg-grid-header,
 .eg-grid-sticky-header,
@@ -497,15 +507,9 @@ input, textarea, select, option,
 .popover-body .dropdown-item,
 .tooltip-inner,
 .well {
-    background: light-dark(white, var(--bs-gray-950));
+    background: var(--bs-body-bg-highlight);
     border-color: var(--border);
     color: var(--bs-body-color);
-}
-
-.btn.btn-default:focus,
-.btn.btn-default:active {
-  color: var(--bs-text-highlight);
-  background-color: var(--bs-body-bg-highlight);
 }
 
 .popover-header {
@@ -586,9 +590,14 @@ input, textarea, select, option,
 
 .badge-secondary,
 .badge.text-bg-secondary {
-  background: light-dark(var(--bs-gray-300), var(--bs-gray-700));
+  background: var(--bs-gray-300);
   color: var(--bs-body-color);
   border-color: var(--border);
+}
+
+[data-bs-theme="dark"] .badge-secondary,
+[data-bs-theme="dark"] .badge.text-bg-secondary {
+  background: var(--bs-gray-700);
 }
 
 .alert-success,
@@ -632,9 +641,14 @@ input, textarea, select, option,
 
 .badge-dark,
 .badge.text-bg-dark {
-  background: light-dark(var(--bs-gray-500), var(--bs-gray-800));
+  background: var(--bs-gray-500);
   color: var(--bs-body-color);
   border-color: var(--border);
+}
+
+[data-bs-theme="dark"] .badge-dark,
+[data-bs-theme="dark"] .badge.text-bg-dark {
+  background: var(--bs-gray-800);
 }
 
 /* Accessible button colors */
@@ -652,35 +666,30 @@ input, textarea, select, option,
   background-color: transparent;
 }
 
+
 .btn-light:hover,
 .btn-light:focus,
 .show > .btn-light.dropdown-toggle {
-  background-color: light-dark(var(--bs-gray-100), var(--bs-body-bg-alt));
-  color: light-dark(var(--bs-secondary), var(--bs-gray-100));
-  border-color: light-dark(var(--bs-secondary), var(--bs-gray-100));
+  background-color: var(--bs-body-bg-alt);
+  color: var(--bs-secondary-color);
+  border-color: var(--bs-secondary-color);
 }
 
-.btn-outline-secondary:hover,
-.btn-outline-secondary:focus {
-  color: light-dark(var(--bs-secondary), var(--bs-gray-200));
+.btn-outline-secondary:is(:hover, :focus, :focus-visible) {
+  color: var(--bs-secondary-color);
   background-color: transparent;
 }
 
-.btn.btn-warning,
-.btn.btn-outline-warning {
-  background: light-dark(var(--bs-yellow-300), var(--bs-yellow-800));
+.btn-warning,
+.btn-outline-warning {
+  background: var(--badge-warning-bg);
   border-color: var(--warning-border);
   color: var(--bs-body-color);
 }
 
-.btn.btn-warning.hover,
-.btn.btn-warning:hover {
-  background-color: var(--badge-warning-selected-bg);
-}
-
 /* other colors' focus state shadows do not need to change */
-.btn.btn-warning.focus,
-.btn.btn-warning:focus {
+.btn-warning.focus,
+.btn-warning:is(:hover, :focus, :focus-visible) {
   background-color: var(--badge-warning-hover-bg);
   border-color: var(--warning-border-hover);
   box-shadow: 0 0 0 .2rem var(--warning-shadow);
@@ -692,10 +701,7 @@ input, textarea, select, option,
   color: var(--bs-white);
 }
 
-.btn-primary:hover,
-.btn-primary.hover,
-.btn-primary:focus,
-.btn-primary.focus,
+.btn-primary:is(.hover, :hover, .focus, :focus, :focus-visible),
 .btn-check:active + .btn-primary, 
 .btn-check:checked + .btn-primary, 
 .btn-primary.active,
@@ -711,10 +717,7 @@ input, textarea, select, option,
   color: var(--primary-border);
 }
 
-.btn-outline-primary:hover,
-.btn-outline-primary.hover,
-.btn-outline-primary:focus,
-.btn-outline-primary.focus {
+.btn-outline-primary:is(.hover, :hover, .focus, :focus, :focus-visible) {
   background-color: var(--bs-body-bg);
   border-color: var(--primary-border);
   color: var(--primary-border);
@@ -722,17 +725,7 @@ input, textarea, select, option,
 
 .btn-primary.disabled,
 .btn-primary:disabled {
-  /* We actually want white here because black is too low-contrast in dark mode */
   color: var(--bs-white);
-  background-color: var(--primary-disabled);
-  border-color: var(--primary-disabled);
-}
-
-.btn-primary.disabled:hover,
-.btn-primary:disabled:hover {
-  color: var(--primary-disabled);
-  background-color: var(--bs-body-bg);
-  border-color: var(--primary-disabled);
 }
 
 .btn-outline-primary.disabled,
@@ -743,27 +736,34 @@ input, textarea, select, option,
 }
 
 .btn-info {
-  background-color: light-dark(var(--bs-cyan-700), var(--bs-cyan-900));
-  border-color: light-dark(var(--bs-cyan-600), var(--bs-cyan-800));
+  background-color: var(--bs-cyan-700);
+  border-color: var(--bs-cyan-600);
   color: white;
 }
 
-.btn-info:hover,
-.btn-info.hover,
-.btn-info:focus,
-.btn-info.focus,
+[data-bs-theme="dark"] .btn-info {
+  border-color: var(--bs-cyan-800);
+}
+
+.btn-info:is(.hover, :hover, .focus, :focus, :focus-visible),
 .btn-check:active + .btn-info, 
 .btn-check:checked + .btn-info, 
 .btn-info.active,
 .show > .btn-info.dropdown-toggle {
   background-color: var(--bs-cyan-600);
-  border-color: light-dark(var(--bs-cyan-600), var(--bs-cyan-800));
+  border-color: var(--bs-cyan-600);
   color: white;
 }
 
+[data-bs-theme="dark"] .btn-info:is(.hover, :hover, .focus, :focus, :focus-visible),
+[data-bs-theme="dark"] .btn-check:active + .btn-info, 
+[data-bs-theme="dark"] .btn-check:checked + .btn-info, 
+[data-bs-theme="dark"] .btn-info.active,
+[data-bs-theme="dark"] .show > .btn-info.dropdown-toggle {
+  border-color: var(--bs-cyan-800);
+}
+
 .btn-info.disabled, .btn-info:disabled {
-  background-color: rgba(var(--bs-info-rgb), 0.5);
-  border-color: rgba(var(--bs-info-rgb), 0.5);
   color: white !important;
 }
 
@@ -773,10 +773,7 @@ input, textarea, select, option,
   color: var(--bs-body-color);
 }
 
-.btn-outline-info:hover,
-.btn-outline-info.hover,
-.btn-outline-info:focus,
-.btn-outline-info.focus,
+.btn-outline-info:is(.hover, :hover, .focus, :focus, :focus-visible),
 .btn-check:active+.btn-info,
 .btn-check:checked+.btn-info,
 .btn-info.active,
@@ -807,10 +804,7 @@ input, textarea, select, option,
   color: var(--success-color);
 }
 
-.btn-success:hover,
-.btn-success.hover,
-.btn-success:focus,
-.btn-success.focus, 
+.btn-success:is(.hover, :hover, .focus, :focus, :focus-visible), 
 .btn-check:active + .btn-success, 
 .btn-check:checked + .btn-success, 
 .btn-success.active,
@@ -826,24 +820,21 @@ input, textarea, select, option,
   color: var(--success-color);
 }
 
-.btn-outline-success:hover,
-.btn-outline-success.hover,
-.btn-outline-success:focus,
-.btn-outline-success.focus {
+.btn-outline-success:is(.hover, :hover, .focus, :focus, :focus-visible) {
   background-color: var(--bs-body-bg);
   border-color: var(--success-hover);
   color: var(--success-hover-color);
 }
 
 .btn-success.disabled,
-.btn-success:disabled, .btn-success:disabled:hover {
+.btn-success:disabled {
   color: var(--bs-white);
   background-color: var(--success-disabled);
   border-color: var(--success-disabled);
 }
 
 .btn-outline-success.disabled,
-.btn-outline-success:disabled, .btn-outline-success:disabled:hover {
+.btn-outline-success:disabled {
   color: var(--success-disabled);
   background-color: var(--bs-body-bg);
   border-color: var(--success-disabled);
@@ -855,21 +846,107 @@ input, textarea, select, option,
   color: white;
 }
 
-.btn-danger:hover,
-.btn-danger:focus {
+.btn-danger:is(.hover, :hover, .focus, :focus, :focus-visible) {
   background-color: var(--danger-bg-hover);
+}
+
+.btn-normal,
+.btn-default,
+.btn-destroy,
+.btn-outline-normal:is(:active, :hover, :focus, :focus-visible) {
+  color: var(--btn-gray-color);
+  background-color: var(--btn-gray-bg);
+  border: 1px solid var(--btn-gray-border);
+}
+
+.btn-normal:is(:active, :hover, :focus, :focus-visible),
+.btn-default:is(:active, :hover, :focus, :focus-visible) {
+  color: var(--btn-gray-color);
+  background-color: var(--btn-gray-bg-hover);
+  border: 1px solid var(--btn-gray-border);
+}
+
+.btn-outline-normal,
+.btn-outline-destroy {
+  color: var(--btn-gray-color);
+  background-color: transparent;
+  border: 1px solid var(--btn-gray-border);
+}
+
+.btn-outline-normal:is(:active, :hover, :focus, :focus-visible) {
+  color: var(--btn-gray-color);
+  background-color: var(--btn-gray-bg);
+  border: 1px solid var(--btn-gray-border);
+}
+
+.btn-normal[disabled],
+.btn-default[disabled],
+.btn-destroy[disabled] {
+  color: var(--bs-body-color);
+  background-color: var(--btn-gray-bg);
+  border: 1px solid var(--btn-gray-border);
+}
+
+.btn-outline-normal[disabled],
+.btn-outline-destroy[disabled] {
+  color: var(--btn-gray-border);
+  background-color: transparent;
+  border: 1px solid var(--btn-gray-border);
+}
+
+.btn-link.btn-destroy {
+  background-color: transparent;
+  border-color: transparent;
+}
+
+.btn-destroy:is(:active, :hover, :focus, :focus-visible),
+.btn-link.btn-destroy:is(:active, :hover, :focus, :focus-visible) {
+  color: var(--destroy-color);
+  background-color: var(--bs-body-bg-highlight);
+  border: 1px solid var(--danger-border);
+  box-shadow: 0 0 0 .25rem rgba(var(--bs-red-rgb), .25);
+}
+
+.btn-destroy:active {
+  color: white;
+  background-color: var(--danger);
+  border: 1px solid var(--danger-border);
+}
+
+.btn-link.btn-destroy:active {
+  color: var(--danger);
+  background-color: transparent;
+  border: 1px solid var(--danger-border);
+}
+
+.btn-outline-destroy:is(:hover, :focus, :focus-visible) {
+  color: var(--destroy-color);
+  background-color: transparent;
+  border: 1px solid var(--danger-border);
+  box-shadow: 0 0 0 .25rem rgba(var(--bs-red-rgb), .25);
+}
+
+.btn-outline-destroy:active {
+  color: var(--destroy-color);
+  background-color: transparent;
+  border: 1px solid var(--danger-border);
 }
 
 /* Also have to overwrite bootstrap for dark mode for these */
 .form-control::placeholder {
-  color: light-dark(var(--bs-gray-550), var(--bs-gray-600));
+  color: var(--bs-gray-550);
 }
+
+[data-bs-theme="dark"] .form-control::placeholder {
+  color: var(--bs-gray-600);
+}
+
 .form-control[disabled], .form-control[readonly]{
   background-color: var(--bs-body-bg-highlight);
 }
 
 .dropdown-menu:has(li>a){
-  background-color: var(--bs-body-bg);
+  background-color: var(--bs-body-bg-alt);
 }
 .dropdown-menu>li>a,
 .dropdown-menu>li>a:hover,
@@ -881,6 +958,14 @@ input, textarea, select, option,
 .dropdown-menu>li>a:focus,
 .dropdown-menu>li>a:hover {
   background-color: var(--bs-body-bg-alt);
+}
+
+.open > .dropdown-menu {
+  box-shadow: 0 0.1em 0.5em rgba(var(--box-shadow), 0.3);
+}
+
+[data-bs-theme="dark"] .open > .dropdown-menu {
+box-shadow: 0 0.1em 1em rgba(var(--box-shadow), 0.7);
 }
 
 .dropdown-menu.uib-datepicker-popup {
@@ -895,12 +980,6 @@ button.dropdown-toggle:focus,
 .open>button.btn-default.dropdown-toggle:hover{
   color: var(--bs-text-highlight);
   background-color: var(--bs-body-bg-highlight);
-}
-
-.btn.btn-default:active {
-  color: light-dark(var(--bs-gray-800), var(--bs-gray-150));
-  background-color: light-dark(#e6e6e6, var(--bs-gray-800));
-  border-color: #adadad;
 }
 
 :is(.nav, .nav-pills, .nav-tabs) > li.active > a:is(a, .active, :active) {
@@ -923,6 +1002,21 @@ button.dropdown-toggle:focus,
 
 .input-group-addon button {
   border: none;
+}
+
+/* Use subtle background colors in older interfaces */
+.bg-info {
+  background-color: var(--badge-info-bg);
+}
+
+.bg-success {
+  background-color: var(--badge-success-bg);
+}
+
+pre {
+  color: var(--bs-body-color);
+  background-color: var(--bs-body-bg-alt);
+  border: 1px solid var(--border);
 }
 
 @media (forced-colors: active) or (prefers-contrast: forced) {

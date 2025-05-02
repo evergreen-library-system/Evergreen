@@ -1,0 +1,63 @@
+<ng-template #dialogContent>
+
+  <div class="modal-header">
+    <h4 class="modal-title" i18n>Special Characters Map</h4>
+    <button type="button" class="btn-close btn-close-white" i18n-aria-label 
+      aria-label="Close dialog" (click)="close()"></button>
+  </div>
+
+  <div class="modal-body">
+    <div class="row">
+      <div class="col">
+        <ul ngbNav #charMapNav="ngbNav" class="nav-tabs" 
+          [keyboard]="true" [roles]="false" role="tablist"
+          [activeId]="latinTab">
+          <li role="presentation" ngbNavItem="latinTab">
+            <button type="button" role="tab" ngbNavLink i18n>Latin</button>
+            <ng-template ngbNavContent>
+              <p *ngIf="!disableAccessKeys">
+                <span i18n>Press any English letter to jump to its group.</span>
+                <button type="button" class="btn btn-link ms-2" (click)="setAccessKeysPref(true)" i18n>
+                  Disable single-letter keyboard shortcuts
+                </button>
+              </p>
+              <p *ngIf="disableAccessKeys">
+                <span i18n>Single-letter keyboard shortcuts are disabled.</span>
+                <button type="button" class="btn btn-link ms-2" (click)="setAccessKeysPref(false)" i18n>
+                  Turn them on to jump to groups by letter
+                </button>
+              </p>
+              <eg-chars-latin></eg-chars-latin>
+            </ng-template>
+          </li>
+          <li role="presentation" ngbNavItem="punctuationTab">
+            <button type="button" role="tab" ngbNavLink i18n>Punctuation</button>
+            <ng-template ngbNavContent>
+              <eg-chars-punctuation></eg-chars-punctuation>
+            </ng-template>
+          </li>
+          <li role="presentation" ngbNavItem="syllabicsTab">
+            <button type="button" role="tab" ngbNavLink i18n>Canadian syllabics</button>
+            <ng-template ngbNavContent>
+              <eg-chars-canadian></eg-chars-canadian>
+            </ng-template>
+          </li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col">
+        <div [ngbNavOutlet]="charMapNav" class="mt-3"></div>
+      </div>
+    </div>
+
+    <div class="d-none" id="copyAnnouncement" role="status">
+      <span class="d-none" i18n>Copied {{copy}}</span>
+    </div>
+  </div>
+
+  <div class="modal-footer">
+    <button type="button" class="btn btn-normal" (click)="close()" i18n>Close</button>
+  </div>
+</ng-template>

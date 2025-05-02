@@ -15,6 +15,7 @@ import {InvoiceChargesComponent} from './charges.component';
 import {PoService} from '../po/po.service';
 import {LineitemResultsComponent} from '@eg/staff/acq/search/lineitem-results.component';
 import {firstValueFrom, Subscription} from 'rxjs';
+import { ServerStoreService } from '@eg/core/server-store.service';
 
 @Component({
     templateUrl: 'invoice.component.html',
@@ -38,6 +39,7 @@ export class InvoiceComponent implements OnInit, OnDestroy, CanComponentDeactiva
     needs_invoice_create_perm = true;
     needs_invoice_view_perm = true;
     showFmEditor = true;
+    showLegacyLinks = false;
 
     @ViewChildren(LineitemResultsComponent) liResults: QueryList<LineitemResultsComponent>;
     @ViewChild(InvoiceDetailsComponent, { static: false }) invoiceDetails: InvoiceDetailsComponent;
@@ -56,7 +58,8 @@ export class InvoiceComponent implements OnInit, OnDestroy, CanComponentDeactiva
         private perm: PermService,
         private pcrud: PcrudService,
         public  invoiceService: InvoiceService,
-        public  poService: PoService
+        public  poService: PoService,
+        public  store: ServerStoreService
     ) {}
 
     ngOnInit() {
@@ -88,6 +91,11 @@ export class InvoiceComponent implements OnInit, OnDestroy, CanComponentDeactiva
         this.onTabChange = ($event) => {
             this.showFmEditor = $event.nextId === 'main';
         };
+
+        this.store.getItemBatch(['ui.staff.acq.show_deprecated_links'])
+            .then(settings => {
+                this.showLegacyLinks = settings['ui.staff.acq.show_deprecated_links'];
+        });
     }
 
     async loadPerms(): Promise<void> {

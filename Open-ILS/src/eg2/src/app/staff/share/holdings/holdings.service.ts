@@ -63,7 +63,8 @@ export class HoldingsService {
             }
             setTimeout(() => {
                 const tab = hideVols ? 'attrs' : 'holdings';
-                const url = `/eg2/staff/cat/volcopy/${tab}/session/${key}`;
+                let url = `/eg2/staff/cat/volcopy/${tab}/session/${key}`;
+                if (recordId !== null) {url += `?record_id=${recordId}`;}
                 window.open(url, '_blank');
             });
         });

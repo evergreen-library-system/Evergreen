@@ -4,6 +4,7 @@ import {NetService} from './net.service';
 import {EventService, EgEvent} from './event.service';
 import {IdlService, IdlObject} from './idl.service';
 import {StoreService} from './store.service';
+import { lastValueFrom } from 'rxjs';
 
 // Not universally available.
 declare var BroadcastChannel; // eslint-disable-line no-var
@@ -254,7 +255,34 @@ export class AuthService {
             this.store.setLoginSessionItem(`${this.authDomain}.time`, this.authtime());
         }
 
-        return Promise.resolve();
+
+        return lastValueFrom(this.net.request(
+            'open-ils.actor',
+            'open-ils.actor.staff_client_cache_key'
+        )).then(cacheKey => {
+            console.debug('Cache key: ' + cacheKey);
+
+            const currentKey = this.store.getLocalItem('eg.staff_client_cache_key');
+
+            if ( currentKey !== cacheKey ) {
+                const allItems = this.store.getLocalItemNames();
+                const clearItems = [];
+
+                allItems.forEach(aryItem => {
+                    // MARC Tag Tables take a long time to load
+                    if (aryItem.match(/^ff/i)) { clearItems.push(aryItem); }
+                    if (aryItem.match('^current_tag_table')) { clearItems.push(aryItem); }
+                    // Additional RE matches against aryItem can be added here
+                });
+                // Additional static keys can be added here
+                // clearItems.push('eg.some.key.whatevs');
+
+                console.debug('Cache key changed, clearing localStorage items: ' + clearItems.join(', '));
+                this.store.removeLocalItems(clearItems);
+                this.store.setLocalItem('eg.staff_client_cache_key', cacheKey);
+            }
+        });
+
     }
 
     undoOpChange(): Promise<any> {

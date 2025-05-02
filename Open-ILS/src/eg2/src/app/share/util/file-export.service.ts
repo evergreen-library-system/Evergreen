@@ -23,6 +23,7 @@ export class FileExportService {
             // the CSV download attributes / state.
             setTimeout(() => {
                 this.resolver();
+                (window.URL || window.webkitURL).revokeObjectURL(this.safeUrl.toString());
                 this.resolver = null;
                 this.safeUrl = null;
             // eslint-disable-next-line no-magic-numbers

@@ -14,10 +14,10 @@
   <div class="modal-body">
     <h5 i18n>Backdating {{circIds.length}} circulaion(s)</h5>
     <div class="row mt-3">
-      <div class="col-lg-5" i18n>Effective Date:</div>
+      <label class="col-lg-5 col-form-label" for="effectiveDate" i18n>Effective Date:</label>
       <div class="col-lg-7">
         <eg-date-select [required]="true" [initialIso]="backdate" 
-          (onChangeAsIso)="backdate = $event">
+          (onChangeAsIso)="backdate = $event" domId="effectiveDate">
         </eg-date-select>
       </div>
     </div>

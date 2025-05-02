@@ -1,5 +1,5 @@
 /** TODO PORT ME TO <eg-combobox> */
-import {Component, OnInit, Input, Output, ViewChild, EventEmitter} from '@angular/core';
+import {Component, OnInit, Input, Output, ViewChild, EventEmitter, ElementRef, AfterViewInit} from '@angular/core';
 import {Observable, Subject} from 'rxjs';
 import {map, mapTo, debounceTime, distinctUntilChanged, merge, filter} from 'rxjs/operators';
 import {AuthService} from '@eg/core/auth.service';
@@ -9,6 +9,7 @@ import {OrgService} from '@eg/core/org.service';
 import {IdlObject} from '@eg/core/idl.service';
 import {PermService} from '@eg/core/perm.service';
 import {NgbTypeahead, NgbTypeaheadSelectItemEvent} from '@ng-bootstrap/ng-bootstrap';
+import {FormControl, FormGroup} from '@angular/forms';
 
 /** Org unit selector
  *
@@ -38,7 +39,7 @@ interface OrgDisplay {
     selector: 'eg-org-select',
     templateUrl: './org-select.component.html'
 })
-export class OrgSelectComponent implements OnInit {
+export class OrgSelectComponent implements OnInit, AfterViewInit {
     static _domId = 0;
 
     showCombinedNames = false; // Managed via user/workstation setting
@@ -64,6 +65,8 @@ export class OrgSelectComponent implements OnInit {
     click$ = new Subject<string>();
     valueFromSetting: number = null;
     sortedOrgs: IdlObject[] = [];
+    orgSelectGroup: FormGroup;
+    controller: HTMLInputElement;
 
     // Disable the entire input
     @Input() disabled: boolean;
@@ -76,8 +79,18 @@ export class OrgSelectComponent implements OnInit {
     // ARIA label for selector. Required if there is no <label> in the markup.
     @Input() ariaLabel?: string;
 
+    // Optionally provide an aria-labelledby for the input.  This should be one or more
+    // space-delimited ids of elements that describe this combobox.
+    @Input() ariaLabelledby: string;
+
+    // ARIA describedby, for attaching error messages
+    @Input() ariaDescribedby?: string = null;
+
     // ID to display in the DOM for this selector
     @Input() domId = 'eg-org-select-' + OrgSelectComponent._domId++;
+
+    // String containing additional CSS class names, space separated
+    @Input() moreClasses = '';
 
     @Input() name = '';
 
@@ -93,6 +106,8 @@ export class OrgSelectComponent implements OnInit {
     @Input() readOnly = false;
 
     @Input() required = false;
+
+    @Input() ngbAutofocus = null; // passthrough for [ngbAutofocus]
 
     // List of org unit IDs to exclude from the selector
     hidden: number[] = [];
@@ -151,6 +166,14 @@ export class OrgSelectComponent implements OnInit {
     // in the selector.
     @Input() orgClassCallback: (orgId: number) => string;
 
+    // Emitted when the Enter key is pressed in the input and the popup is not open
+    @Output() orgSelectEnter = new EventEmitter<number>();
+
+    // Emitted when a key is pressed in the input and the popup is not open.
+    // A passthrough for keyboard events on the input.
+    // Example: (orgSelectKey)="$event.key === 'Escape' ? cancel() : handleKeydown($event)"
+    @Output() orgSelectKey = new EventEmitter<Event>();
+
     // Emitted when the org unit value is changed via the selector.
     // Does not fire on initialOrg
     @Output() onChange = new EventEmitter<IdlObject>();
@@ -182,9 +205,13 @@ export class OrgSelectComponent implements OnInit {
       private store: StoreService,
       private serverStore: ServerStoreService,
       private org: OrgService,
-      private perm: PermService
+      private perm: PermService,
+      private elm: ElementRef,
     ) {
         this.orgClassCallback = (orgId: number): string => '';
+        this.orgSelectGroup = new FormGroup({
+            orgSelect: new FormControl()
+        });
     }
 
     ngOnInit() {
@@ -246,6 +273,12 @@ export class OrgSelectComponent implements OnInit {
 
             this.markAsLoaded(startupOrg);
         });
+    }
+
+    ngAfterViewInit(): void {
+        document.querySelectorAll('ngb-typeahead-window button[disabled]').forEach(b => b.setAttribute('tabindex', '-1'));
+        this.controller = this.instance['_elementRef'].nativeElement as HTMLInputElement;
+        this.controller.addEventListener('keydown', this.onKeydown.bind(this));
     }
 
     getDisplayLabel(org: IdlObject): string {
@@ -325,17 +358,13 @@ export class OrgSelectComponent implements OnInit {
         }
     }
 
-    // Modifies the classlist of the input to show a visual change.
-    // FIXME I don't think angular forms notice this but I don't understand
-    //       angular forms to do it properly :(
     updateValidity(newOrg: number) {
         if (newOrg && this.required) {
-            const node = document.getElementById(`${this.domId}`);
+            // console.debug('Checking org validity via FormControl', this.orgSelectGroup.controls.orgSelect);
             if (this.isValidOrg(newOrg)) {
-                node.classList.replace('ng-invalid', 'ng-valid');
-            } else {
-                node.classList.replace('ng-valid', 'ng-invalid');
+                return this.orgSelectGroup.controls.orgSelect.valid;
             }
+            return this.orgSelectGroup.controls.orgSelect.invalid;
         }
     }
 
@@ -353,6 +382,62 @@ export class OrgSelectComponent implements OnInit {
     // reset the state of the component
     reset() {
         this.selected = null;
+    }
+
+    onKeydown($event: KeyboardEvent) {
+        // console.debug('Key: ', $event);
+
+        if (this.instance.isPopupOpen()) {
+            if ($event.key === 'ArrowUp' || $event.key === 'ArrowDown') {
+                this.scrollEntries();
+            }
+            return;
+        }
+
+        if ( $event.key === 'ArrowDown' && $event.ctrlKey && $event.shiftKey ) {
+            setTimeout(() => this.openMe($event));
+            return;
+        }
+
+        // a shortcut to the Org ID if Enter is the only key event you're interested in
+        if ( $event.key === 'Enter' ) {
+            this.onEnter();
+        }
+
+        // Pass through to calling component via (orgSelectKey)
+        this.orgSelectKey.emit($event);
+    }
+
+    onEnter() {
+        this.orgSelectEnter.emit(this.selected.id);
+    }
+
+    openMe($event) {
+        // Give the input a chance to focus then fire the click
+        // handler to force open the typeahead
+        document.getElementById(this.domId).focus();
+        setTimeout(() => this.click$.next(''));
+    }
+
+    closeMe($event) {
+        this.instance.dismissPopup();
+    }
+
+    scrollEntries() {
+        // adapted from https://github.com/ng-bootstrap/ng-bootstrap/issues/4789
+        if (!this.controller) {return;}
+
+        const listbox = document.getElementById(this.controller.getAttribute('aria-owns'));
+        // console.debug("Listbox: ", listbox);
+
+        const activeItem = document.getElementById(this.controller.getAttribute('aria-activedescendant'));
+        if (activeItem) {
+            if (activeItem.offsetTop < listbox.scrollTop) {
+                listbox.scrollTo({ top: activeItem.offsetTop });
+            } else if (activeItem.offsetTop + activeItem.offsetHeight > listbox.scrollTop + listbox.clientHeight) {
+                listbox.scrollTo({ top: activeItem.offsetTop + activeItem.offsetHeight - listbox.clientHeight });
+            }
+        }
     }
 
     // NgbTypeahead doesn't offer a way to style the dropdown

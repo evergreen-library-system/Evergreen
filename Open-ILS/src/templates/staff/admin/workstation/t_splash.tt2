@@ -1,4 +1,4 @@
-
+[% # See Open-ILS/web/js/ui/default/staff/admin/workstation/app.js for settings %]
 <div class="container admin-splash-container">
 
   <div class="row">
@@ -77,11 +77,41 @@
         <div class="col-md-12">
           <div class="checkbox">
             <label>
+              <input type="checkbox" ng-model="disable_links_newtabs"
+                  ng-change="apply_disable_links_newtabs()">
+                [% l('Prevent links from opening in new tabs?') %]
+            </label>
+          </div>
+          <p>[% l('Some links open in new tabs or windows. Screen reader users might want to select this option to force all links to open in the same window.') %]</p>
+        </div>
+      </div>
+
+      <div class="row new-entry">
+        <div class="col-md-12">
+          <div class="checkbox">
+            <label>
               <input type="checkbox" ng-model="orgselect_combo_names"
                   ng-change="apply_orgselect_combob_names()">
                 [% l('Include Full Library Names in Library Selector?') %]
             </label>
           </div>
+        </div>
+      </div>
+
+      
+      <div class="row new-entry">
+        <div class="col-md-8">
+          <label for="grid_density">[% l('Table density') %]</label>
+        </div>
+        <div class="col-md-4">
+          <select id="grid_density" class="form-control" ng-model="grid_density" ng-change="apply_grid_density()">
+            <option value="">[% l('Standard') %]</option>
+            <option value="compact">[% l('Compact') %]</option>
+            <option value="wide">[% l('Wide') %]</option>
+          </select>
+        </div>
+        <div class="col-md-8">
+          <p>[% l('Whitespace in grids (data tables). This does not apply to older interfaces such as Circulation or Item and User Buckets.') %]</p>
         </div>
       </div>
 

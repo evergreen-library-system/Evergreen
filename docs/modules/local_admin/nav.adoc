@@ -6,6 +6,7 @@
 ** xref:local_admin:group_penalty_thresholds.adoc[Group Penalty Thresholds]
 ** xref:admin:hold_driven_recalls.adoc[Hold-driven recalls]
 ** xref:admin:hold_groups_admin.adoc[Hold Groups Administration]
+** xref:local_admin:item_alerts_administration.adoc[Item Alerts Administration]
 ** xref:local_admin:multiple_holds_admin.adoc[Placing Multiple Holds]
 ** xref:admin:actiontriggers.adoc[Notifications / Action Triggers]
 ** xref:local_admin:openathens.adoc[OpenAthens]

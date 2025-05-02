@@ -44,7 +44,6 @@ use List::MoreUtils qw(uniq);
 use Encode;
 use Pass::OTP;
 use Pass::OTP::URI;
-use Convert::Base32 qw(decode_base32);
 use Authen::WebAuthn;
 use Email::Valid;
 use MIME::Base64;
@@ -57,13 +56,16 @@ my $factor_configs;
 
 our $cache;
 our $enabled = 'false';
+our $secondary = 'false';
 
 sub initialize {
     my $conf = OpenSRF::Utils::SettingsClient->new;
 
     my $settings = $conf->config_value( qw/apps open-ils.auth_mfa app_settings/ );
     $enabled = $$settings{enabled};
+    $secondary = $$settings{honor_secondary_groups};
     $logger->info("MFA enable: $enabled");
+    $logger->info("MFA honors secondary group membership: $secondary");
 
     $factor_configs = $$settings{factors};
     $factor_configs = {} if ref($factor_configs) ne 'HASH';
@@ -191,6 +193,11 @@ sub enabled {
     _init();
     return 0 unless $enabled eq 'true'; # check the master switch
     return 0 unless scalar(@{enabled_factor_list()}); # no factors? disabled
+    return 1;
+}
+
+sub secondary {
+    return 0 unless $secondary eq 'true';
     return 1;
 }
 
@@ -332,10 +339,13 @@ sub factors_for_token {
     return undef unless $usr; # no session, no MFA
 
     $logger->info("MFA user id: ". $usr->id);
-    my $grp = $e->retrieve_permission_grp_tree($usr->profile); 
+    my $grp_id_list = [$usr->profile];
+    if (secondary()) {
+        push @$grp_id_list, map {$_->grp} @{$e->search_permission_usr_grp_map({usr => $usr->id})};
+    }
 
     # check group factor list against enabled factors, return 0 if no overlap
-    my $grp_ancestors = $U->get_grp_ancestors($usr->profile);
+    my $grp_ancestors = [ uniq map { @$_ } map { $U->get_grp_ancestors($_) } @$grp_id_list ];
     $logger->info("MFA user groups: ". join(' ', @$grp_ancestors));
 
     my $group_factors = $e->search_permission_group_mfa_factor_map({
@@ -477,8 +487,13 @@ sub proceed_for_token {
     return 0 unless $usr; # no session, no MFA
 
     # If MFA is not allowed for the group, say so
-    my $grp = $e->retrieve_permission_grp_tree($usr->profile); 
-    return 0 unless $U->is_true($grp->mfa_allowed);
+    my $grp_id_list = [$usr->profile];
+    if (secondary()) {
+        push @$grp_id_list, map {$_->grp} @{$e->search_permission_usr_grp_map({usr => $usr->id})};
+    }
+
+    my $grps = $e->search_permission_grp_tree({id => $grp_id_list});
+    return 0 unless grep { $U->is_true($_->mfa_allowed) } @$grps;
 
     # check exception list, return 0 if excepted
     return 0 if user_has_exceptions($usr->id);
@@ -486,7 +501,7 @@ sub proceed_for_token {
     # The difference between "required" and "allowed" modes is the recent-activity check,
     # which only matters to "required" mode. If they have recent MFA activity recorded, it
     # is not required.
-    if ($U->is_true($grp->mfa_required) and $self->api_name =~ /required/) {
+    if ( $self->api_name =~ /required/ and grep { $U->is_true($_->mfa_required) } @$grps) {
         # check recent mfa user activity, return 0 if activity age < interval
         # IOW, it's not required /right this moment/.
 
@@ -509,7 +524,7 @@ sub proceed_for_token {
         return 0 if ($usr_activity and scalar(@$usr_activity));
     }
 
-    return $U->is_true($grp->mfa_required) if ($self->api_name =~ /required/);
+    return scalar(grep { $U->is_true($_->mfa_required) } @$grps) if ($self->api_name =~ /required/);
 
     # no activity, so MFA is both allowed and required
     return 1;

@@ -451,7 +451,7 @@ using that subject, author, or series to narrow down your current results. The
 facet filters can be undone by clicking the link a second time, thus returning 
 your original results before the facet was activated. 
 
-image::using_the_public_access_catalog/search_facets.jpg[search facets]
+image::using_the_public_access_catalog/search_facets.png[search facets]
 
 
 === Availability ===
@@ -468,7 +468,7 @@ how many items are available in all branches.
 
 image::using_the_public_access_catalog/branch_search.jpg[branch search]
 
-image::using_the_public_access_catalog/search_result_quantity.jpg[search result quantity]
+image::using_the_public_access_catalog/search_results_quantity.png[search results quantity]
 
 You may also click the _Show More Details_ link at the top of the results page, 
 next to the _Limit to available items_ check box, to view each search result's 

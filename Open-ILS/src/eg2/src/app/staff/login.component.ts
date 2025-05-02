@@ -53,6 +53,11 @@ export class StaffLoginComponent implements OnInit {
                 console.warn(
                     'routeTo must contain only path information: ', this.routeTo);
                 this.routeTo = null;
+            } else {
+                // Remove /eg2/:locale/ however many times it's been prepended, so it's added back only once in prepareExternalUrl()
+                // Hopefully doesn't scrub locale back to en-US?
+                // eslint-disable-next-line quotes
+                this.routeTo = this.routeTo.replace(/^(\/eg2\/([a-z]{2}-[A-Z]{2}))+/, "");
             }
         }
 

@@ -39,6 +39,8 @@ nodeClicked(node: TreeNode) {
 })
 export class TreeComponent {
 
+    static lastClickedTree: TreeComponent;
+
     _nodeList: any = [];
     _tree: Tree;
     _prev_stateFlagClick: TreeNode;
@@ -55,6 +57,7 @@ export class TreeComponent {
     }
 
     @ViewChildren('egTreeNode') visibleNodeList: QueryList<ElementRef>;
+    @ViewChildren('stateFlagContainer') stateFlagContainerList: QueryList<ElementRef>;
 
     get tree(): Tree {
         return this._tree;
@@ -66,6 +69,7 @@ export class TreeComponent {
     @Input() disableStateFlag = false; // Hide all checkboxes
     @Input() disableStateFlagRangeSelect = false; // Disable range selection
     @Input() rowTrailingTemplate: TemplateRef<any>;
+    @Input() stateFlagTemplate: TemplateRef<any>;
 
     @Output() nodeClicked: EventEmitter<TreeNode>;
     @Output() stateFlagClicked: EventEmitter<TreeNode>;
@@ -104,6 +108,7 @@ export class TreeComponent {
         if (!this.disabled) {
             this.tree.selectNode(node);
             this.nodeClicked.emit(node);
+            TreeComponent.lastClickedTree = this;
         }
     }
 
@@ -152,6 +157,9 @@ export class TreeComponent {
         const DOMind = this.displayNodes().indexOf(node);
         const visibleNL = this.visibleNodeList.toArray();
 
+        // Allow the state flag template to control all it's key events
+        if (this.stateFlagContainerList.toArray().find(sfc => sfc.nativeElement === $event.target || sfc.nativeElement.contains($event.target))) {return;}
+
         console.log('Node index: ' + DOMind + '; Key pressed: ', $event.code);
         if (!$event.key || $event.repeat || $event.code == 'Tab') {return;}
 
@@ -160,7 +168,7 @@ export class TreeComponent {
 
         switch ($event.key) {
             case 'Enter':
-            case 'Space':
+            case ' ':
                 this.handleNodeClick(node);
                 $event.stopPropagation();
                 $event.preventDefault();
@@ -246,6 +254,10 @@ export class TreeComponent {
                 }
             });
         }
+    }
+
+    wasLastClicked(): boolean {
+        return TreeComponent.lastClickedTree === this;
     }
 
 }

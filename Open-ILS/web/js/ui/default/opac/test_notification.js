@@ -20,7 +20,7 @@ function sendTestNotification(user_id, hook, authtoken) {
             var resp = r.recv();
             if (resp) {
                 var banner = document.getElementById('test_notification_banner');
-                banner.style.display = 'table-row';
+                banner.style.display = 'block';
             }
         }
     }).send();

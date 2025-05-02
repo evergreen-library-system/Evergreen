@@ -1,0 +1,74 @@
+<ng-template #combinedTemplate let-tagMap="row">
+    <div id="tagmap-{{tagMap.id()}}">
+        <h3 class="tag-label" id="tag-label-{{tagMap.tag().id()}}">{{tagMap.tag().label()}}</h3>
+        <!-- <span class="badge badge-primary" i18n>New</span> -->
+
+        <p class="text-muted">{{tagMap.tag().value()}}</p>
+        <p *ngIf="tagMap.tag().url()" class="mx-0 my-1">
+            <a href="{{tagMap.tag().url()}}" target="_blank"><kbd>{{tagMap.tag().url()}}</kbd></a>
+        </p>
+        <p *ngIf="tagMap.tag().staff_note()" class="alert alert-primary px-2 py-1">{{tagMap.tag().staff_note()}}</p>
+    </div>
+    <div class="tagmap-actions">
+        <a class="btn-link edit-link" target="_blank" routerLink="/staff/admin/local/asset/copy_tag" 
+            [queryParams]='{gridFilters: "{\"id\":" + tagMap.tag().id() + "}" }'
+            [attr.aria-describedby]="'tag-label-' + tagMap.tag().id()" 
+            title="Edit in Tag Administration screen" i18n-title i18n>
+            Edit Tag
+        </a>
+        <button *ngIf="!tagMap.isdeleted()" type="button" class="btn-link btn-destroy"
+            [attr.aria-describedby]="'tag-label-' + tagMap.tag().id()"
+            (click)="removeRow(tagMap, $event)" i18n>
+            Remove
+        </button>
+        <button *ngIf="tagMap.id() && tagMap.isdeleted()" type="button" class="btn-link btn-destroy"
+            [attr.aria-describedby]="'tag-label-' + tagMap.tag().id()"
+            (click)="removeRow(tagMap, $event)" i18n>
+            Restore
+        </button>
+    </div>
+</ng-template>
+
+<ng-template #statusTemplate let-tagMap="row">
+    <span *ngIf="!tagMap.id() || tagMap.id() < 0" class="badge badge-primary" i18n>New</span>
+    <span *ngIf="tagMap.isdeleted()" class="badge badge-danger" i18n>Deleted</span>
+</ng-template>
+
+<ng-template #tagMapIds let-tagMap="row">
+    {{ getTagMapIdsColumn(tagMap) }}
+</ng-template>
+
+<h3 class="mt-4 border-bottom">Tags</h3>
+<!--
+<p>Copies: {{copyIds | json}}</p>
+<p>Existing tag maps: {{maps | json}}</p>
+<p>New things: {{newThingIds | json}}</p>
+<p>All tagMap IDs: {{mapIds | json}}</p>
+<h3 class="mt-4 border-bottom">Tag Maps</h3>
+-->
+<eg-grid #tagMapGrid idlClass="acptcm" persistKey="holdings.copy_tags.tag_map_list"
+    [dataSource]="tagMapSource" [sortable]="true" [filterable]="false"
+    [cellTextGenerator]="tagMapCellTextGenerator">
+    <eg-grid-toolbar-action label="Remove Selected" i18n-label
+        (onClick)="onRemove($event)" [disableOnRows]="noSelectedTagMaps">
+    </eg-grid-toolbar-action>
+
+    <eg-grid-column path="id" i18n-label label="Tag Map ID (debug)" [index]="true" [hidden]="true" 
+        [cellTemplate]="tagMapIds"></eg-grid-column>
+    <eg-grid-column path="tag" i18n-label label="Tag ID" [hidden]="true"></eg-grid-column>
+    <eg-grid-column path="copy" i18n-label label="Item ID" [hidden]="true"></eg-grid-column>
+    <eg-grid-column i18n-label label="Tag Label & Value" name="combined_label_value" 
+      [cellTemplate]="combinedTemplate">
+    </eg-grid-column>
+    <eg-grid-column path="tag.label" i18n-label label="Tag Label" [hidden]="true"></eg-grid-column>
+    <eg-grid-column path="tag.value" i18n-label label="Tag Value" [hidden]="true"></eg-grid-column>
+    <eg-grid-column path="tag.tag_type.label" i18n-label label="Type"></eg-grid-column>
+    <eg-grid-column path="tag.staff_note" [hidden]="true"></eg-grid-column>
+    <eg-grid-column path="tag.url" [hidden]="true"></eg-grid-column>
+    <eg-grid-column path="tag.owner" [hidden]="true"></eg-grid-column>
+    <eg-grid-column i18n-label label="Status" name="tagmap_status" 
+      [cellTemplate]="statusTemplate">
+    </eg-grid-column>
+    <eg-grid-column path="tag.pub" i18n-label label="OPAC Visible? (Value)"></eg-grid-column>
+    <eg-grid-column *ngIf="showIsDeleted" path="isdeleted" i18n-label label="Deleted?" [hidden]="true"></eg-grid-column>
+</eg-grid>

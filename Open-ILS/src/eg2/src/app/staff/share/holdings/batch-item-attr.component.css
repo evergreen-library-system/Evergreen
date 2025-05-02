@@ -1,0 +1,23 @@
+.card:has(.edit-buttons) {
+  background-color: var(--bs-body-bg-highlight);
+  display: block;
+  padding: 0.5rem 1rem;
+}
+
+.card:has(.edit-buttons) .card-header {
+  margin-block-end: 0.5rem;
+}
+
+.card .edit-buttons {
+  display: flex;
+  flex-wrap: wrap;
+  margin-block-start: 0.75rem;
+}
+
+.card-body fieldset label > div {
+  display: inline;
+}
+
+.card-body fieldset {
+  margin-bottom: 0.5rem;
+}

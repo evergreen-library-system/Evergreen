@@ -1,7 +1,6 @@
 import {Component, Input, OnInit, ViewChild} from '@angular/core';
 import {ToastService, ToastMessage} from '@eg/share/toast/toast.service';
 import {ServerStoreService} from '@eg/core/server-store.service';
-import { StoreService } from '@eg/core/store.service';
 
 const EG_TOAST_TIMEOUT = 10000;
 
@@ -12,7 +11,7 @@ const EG_TOAST_TIMEOUT = 10000;
 })
 export class ToastComponent implements OnInit {
 
-    message: ToastMessage;
+    messages: ToastMessage[] = [];
     duration: number = EG_TOAST_TIMEOUT;
 
     // track the most recent timeout event
@@ -26,7 +25,7 @@ export class ToastComponent implements OnInit {
         this.toast.messages$.subscribe(msg => this.show(msg));
     }
 
-    async setDuration() {
+    setDuration() {
         this.store.getItem('ui.toast_duration').then(setting => {
             if (setting) {
                 this.duration = setting * 1000;
@@ -35,21 +34,18 @@ export class ToastComponent implements OnInit {
     }
 
     show(msg: ToastMessage) {
-        this.dismiss(this.message);
-        this.message = msg;
-        console.info($localize`${new Date().toLocaleTimeString()} - ${this.message.text}`);
+        this.messages.push(msg);
+        console.info($localize`${new Date().toLocaleTimeString()} - ${msg.text}`);
+
         this.timeout = setTimeout(
-            () => this.dismiss(this.message),
+            () => this.messages.shift(),
             this.duration
         );
     }
 
-    dismiss(msg: ToastMessage) {
-        this.message = null;
-        if (this.timeout) {
-            clearTimeout(this.timeout);
-            this.timeout = null;
-        }
+    // delete a specific toast when user clicks the 'x' button
+    dismiss(index: number) {
+        this.messages[index] = null;
     }
 }
 

@@ -11,7 +11,11 @@ import {EditableContentComponent} from './editable-content.component';
 import {AuthorityLinkingDialogComponent} from './authority-linking-dialog.component';
 import {MarcEditorDialogComponent} from './editor-dialog.component';
 import {PhysCharDialogComponent} from './phys-char-dialog.component';
+import {CharMapDialogComponent} from './charmap/charmap-dialog.component';
 import {HoldingsModule} from '@eg/staff/share/holdings/holdings.module';
+import { CharsCanadianComponent } from './charmap/chars-canadian.component';
+import { CharsLatinComponent } from './charmap/chars-latin.component';
+import { CharsPunctuationComponent } from './charmap/chars-punctuation.component';
 
 @NgModule({
     declarations: [
@@ -23,6 +27,10 @@ import {HoldingsModule} from '@eg/staff/share/holdings/holdings.module';
         EditableContentComponent,
         MarcEditorDialogComponent,
         PhysCharDialogComponent,
+        CharMapDialogComponent,
+        CharsCanadianComponent,
+        CharsLatinComponent,
+        CharsPunctuationComponent,
         AuthorityLinkingDialogComponent
     ],
     imports: [

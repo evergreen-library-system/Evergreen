@@ -55,6 +55,16 @@
   </div>
 </div>
 
+<div *ngIf="templ && templ.doc_url" class="row">
+  <div class="col-sm-2">
+	  <label class="form-label" i18n>Template Documentation</label>
+	</div>
+	<div class="col-lg-8">
+  	<a *ngIf="templ.doc_url.match('\s*https?:')" id="documentation-link" href="{{templ.doc_url}}">{{templ.doc_url}}</a>
+  	<span *ngIf="!templ.doc_url.match('\s*https?:')" id="documentation-text">{{templ.doc_url}}</span>
+	</div>
+</div>
+
 <div *ngIf="rptType !== ''" class="row mt-2" id="definition-editor-main">
   <div class="col-lg-12">
     <ul ngbNav #srEditorTabs="ngbNav" class="nav-tabs" [keyboard]="true" [roles]="false" role="tablist" [activeId]="selectedTab">

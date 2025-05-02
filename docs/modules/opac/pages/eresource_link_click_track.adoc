@@ -1,0 +1,67 @@
+= Eresource link click tracking =
+:toc:
+
+Evergreen has a feature
+to track user clicks on eresources in the public
+catalog.
+
+This feature provides usage data on eresources in
+the catalog.  One potential use for this feature
+is to provide the equivalent of circulation
+statistics for online course materials.
+
+Data can be accessed via the Evergreen reporter.
+
+== Data collection ==
+
+This feature does not collect any personally
+identifiable data about the user who clicks
+on the link.  The pieces of data that are
+collected are:
+
+* The URL clicked
+* The time it was clicked
+* The bibliographic record that contains the
+URL.
+* The ID, name, and number of any courses
+that use the bibliographic record.
+
+== Enabling the feature ==
+
+The new tables can grow forever, so before
+enabling this feature:
+
+* Ensure that you are monitoring disk space on
+the server(s) that house your postgres database.
+* Decide on a retention period for click data,
+and set up the provided
+``delete_old_eresource_link_clicks``
+script to delete old data regularly.
+
+To enable this feature:
+
+. Set the
+``opac.eresources.link_click_tracking``
+global flag to true.
+. Restart memcached and apache HTTP server.
+
+
+== Accuracy ==
+
+Statistics from this feature are collected
+on a best efforts basis, and have certain
+limitations when it comes to accuracy:
+
+* It does
+not provide any guarantees against somebody
+deliberately inflating the statistics of a
+particular link, either through repeated network
+calls or repeatedly clicking on a link they don't
+actually intend to read.
+* Clicks from certain very old, unsupported browsers
+(notable Microsoft Internet Explorer) will
+not be counted.
+* Major bots are excluded, but uncommon bots and
+bots that set a misleading User Agent header are
+included unless they are blocked at the web server
+or load balancer level.

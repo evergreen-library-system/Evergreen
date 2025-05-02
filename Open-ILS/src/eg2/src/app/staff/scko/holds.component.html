@@ -1,5 +1,7 @@
 <div class="d-flex">
-  <div class="flex-1"></div>
+  <div class="flex-1 section-title">
+    <h1 i18n>Holds</h1>
+  </div>
   <div>
     <button type="button" class="scko-button" (click)="printList()" i18n>Print List</button>
   </div>
@@ -24,7 +26,13 @@
           <ng-container *ngIf="hold.hold_status === 4" i18n>
             Ready for Pickup
           </ng-container>
-          <ng-container *ngIf="hold.hold_status !== 4" i18n>
+          <ng-container *ngIf="hold.hold_status === 7" i18n>
+            Suspended
+          </ng-container>
+          <ng-container *ngIf="hold.hold_status === 3 || hold.hold_status === 8" i18n>
+            In Transit
+          </ng-container>
+          <ng-container *ngIf="hold.hold_status < 3 || hold.hold_status === 5" i18n>
             #{{hold.relative_queue_position}} in line with {{hold.potentials}} copie(s)
           </ng-container>
         </td>

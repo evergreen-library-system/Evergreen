@@ -1,3 +1,26 @@
+:host {
+  --long-overdue-bg-selected: rgba(var(--bs-orange-rgb), 0.30);
+  --long-overdue-bg: rgba(var(--bs-orange-rgb), 0.25);
+  --overdue-bg-selected: rgba(var(--bs-orange-rgb), 0.15);
+  --overdue-bg: rgba(var(--bs-orange-rgb), 0.10);
+  --lost-bg-selected: rgba(var(--bs-red-rgb), 0.30);
+  --lost-bg: rgba(var(--bs-red-rgb), 0.25);
+  --alert-bg-selected: rgba(var(--bs-red-rgb), 0.15);
+  --alert-bg: rgba(var(--bs-red-rgb), 0.10);
+  --overdue-link-color: var(--bs-orange-700);
+}
+[data-bs-theme="dark"] :host {
+  --long-overdue-bg-selected: rgba(var(--bs-orange-rgb), 0.15);
+  --long-overdue-bg: rgba(var(--bs-orange-rgb), 0.12);
+  --overdue-bg-selected: rgba(var(--bs-orange-rgb), 0.08);
+  --overdue-bg: rgba(var(--bs-orange-rgb), 0.05);
+  --lost-bg-selected: rgba(var(--bs-red-rgb), 0.15);
+  --lost-bg: rgba(var(--bs-red-rgb), 0.12);
+  --alert-bg-selected: rgba(var(--bs-red-rgb), 0.08);
+  --alert-bg: rgba(var(--bs-red-rgb), 0.05);
+  --overdue-link-color: var(--bs-yellow-300)
+}
+
 table.table.eg-grid > :not(caption) > * > *,
 table.table.eg-grid > :not(caption) > tbody > tr.eg-grid-row {
   background-color: inherit !important;
@@ -5,7 +28,7 @@ table.table.eg-grid > :not(caption) > tbody > tr.eg-grid-row {
 }
 
 #patron-grid {
-  display: grid;
+  display: grid; /* TODO */
   grid-gap: 1rem;
   grid-template-columns: min-content 2fr;
   grid-template-rows: minmax(0, auto);
@@ -84,7 +107,7 @@ table.table.eg-grid > :not(caption) > tbody > tr.eg-grid-row {
 ::ng-deep .eg-grid-row.less-intense-alert:not(.selected) {
   color: var(--bs-body-color);
   background-color: revert;
-  --bs-table-bg: light-dark(rgba(var(--bs-red-rgb), 0.10), rgba(var(--bs-red-rgb), 0.05));
+  --bs-table-bg: var(--alert-bg);
   border-color: rgba(var(--bs-red-rgb), 0.15);
 }
 
@@ -95,7 +118,7 @@ table.table.eg-grid > :not(caption) > tbody > tr.eg-grid-row {
 ::ng-deep .eg-grid-row.less-intense-alert.selected {
   color: var(--bs-body-color);
   background-color: revert;
-  --bs-table-bg: light-dark(rgba(var(--bs-red-rgb), 0.15), rgba(var(--bs-red-rgb), 0.08));
+  --bs-table-bg: var(--alert-bg-selected);
   border-color: rgba(var(--bs-red-rgb), 0.20);
 }
 
@@ -112,7 +135,7 @@ table.table.eg-grid > :not(caption) > tbody > tr.eg-grid-row {
 ::ng-deep .eg-grid-row.lost-row {
   color: var(--bs-body-color);
   background-color: revert;
-  --bs-table-bg: light-dark(rgba(var(--bs-red-rgb), 0.25), rgba(var(--bs-red-rgb), 0.12));
+  --bs-table-bg: var(--lost-bg);
   border-color: rgba(var(--bs-red-rgb), 0.30);
 }
 
@@ -123,7 +146,7 @@ table.table.eg-grid > :not(caption) > tbody > tr.eg-grid-row {
 ::ng-deep .eg-grid-row.lost-row.selected {
   color: var(--bs-body-color);
   background-color: revert;
-  --grid-row-selected-bg: light-dark(rgba(var(--bs-red-rgb), 0.30), rgba(var(--bs-red-rgb), 0.15));
+  --grid-row-selected-bg: var(--lost-bg-selected);
   border-color: rgba(var(--bs-red-rgb), 0.35);
 }
 
@@ -147,7 +170,7 @@ table.table.eg-grid > :not(caption) > tbody > tr.eg-grid-row {
 ::ng-deep .eg-grid-row.overdue-row {
   color: var(--bs-body-color);
   background-color: revert;
-  --bs-table-bg: light-dark(rgba(var(--bs-orange-rgb), 0.10), rgba(var(--bs-orange-rgb), 0.05));
+  --bs-table-bg: var(--overdue-bg);
   border-color: rgba(var(--bs-orange-rgb), 0.15);
 }
 
@@ -158,7 +181,7 @@ table.table.eg-grid > :not(caption) > tbody > tr.eg-grid-row {
 ::ng-deep .eg-grid-row.overdue-row.selected {
   color: var(--bs-body-color);
   background-color: revert;
-  --grid-row-selected-bg: light-dark(rgba(var(--bs-orange-rgb), 0.15), rgba(var(--bs-orange-rgb), 0.08));
+  --grid-row-selected-bg: var(--overdue-bg-selected);
   border-color: rgba(var(--bs-orange-rgb), 0.20);
 }
 
@@ -169,7 +192,7 @@ table.table.eg-grid > :not(caption) > tbody > tr.eg-grid-row {
 ::ng-deep .eg-grid-row.longoverdue-row {
   color: var(--bs-body-color);
   background-color: revert;
-  --bs-table-bg: light-dark(rgba(var(--bs-orange-rgb), 0.25), rgba(var(--bs-orange-rgb), 0.12));
+  --bs-table-bg: var(--long-overdue-bg);
   border-color: rgba(var(--bs-orange-rgb), 0.30);
 }
 
@@ -180,7 +203,7 @@ table.table.eg-grid > :not(caption) > tbody > tr.eg-grid-row {
 ::ng-deep .eg-grid-row.longoverdue-row.selected {
   color: var(--bs-body-color);
   background-color: revert;
-  --grid-row-selected-bg: light-dark(rgba(var(--bs-orange-rgb), 0.30), rgba(var(--bs-orange-rgb), 0.15));
+  --grid-row-selected-bg: var(--long-overdue-bg-selected); 
   border-color: rgba(var(--bs-orange-rgb), 0.35);
 }
 
@@ -191,7 +214,7 @@ table.table.eg-grid > :not(caption) > tbody > tr.eg-grid-row {
 /* link color for orange alerts */
 ::ng-deep .eg-grid-row.overdue-row a,
 ::ng-deep .eg-grid-row.longoverdue-row a {
-  color: light-dark(var(--bs-orange-700), var(--bs-yellow-300));
+  color: var(--overdue-link-color);
   border-color: var(--bs-orange-700);
 }
 

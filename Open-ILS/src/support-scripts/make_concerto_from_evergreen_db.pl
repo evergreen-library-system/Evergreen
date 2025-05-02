@@ -76,6 +76,7 @@ our @skipTables       = (
     'config.coded_value_map',
     'config.marc_subfield',
     'config.record_attr_definition',
+    'sip.setting',
 );
 
 our @loadOrder = (
@@ -129,6 +130,9 @@ our %tableColumnOverride = (
         'comp' => [ 'name', 'label' ]
     },
     'config.global_flag' => {
+        'comp' => [ 'name' ]
+    },
+    'permission.grp_tree' => {
         'comp' => [ 'name' ]
     },
     # Waiting for the coded value map in 3.13 to be resolved before we decide what to do here.

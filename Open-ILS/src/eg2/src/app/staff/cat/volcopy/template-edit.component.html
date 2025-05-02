@@ -1,0 +1,5 @@
+<eg-staff-banner bannerText="Item Attributes Template Editor" i18n-bannerText>
+</eg-staff-banner>
+
+<eg-copy-attrs [context]="context" [contextChanged]="contextChanged" #copyAttrs
+  [templateOnlyMode]="true" [template]="target" (canSaveChange)="attrsCanSaveChange($event)"></eg-copy-attrs>

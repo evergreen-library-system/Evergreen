@@ -1,3 +1,4 @@
+/* eslint-disable max-len */
 /**
  * Create and consume BroadcastChannel broadcasts
  */
@@ -8,14 +9,19 @@ interface BroadcastSub {
     emitter: EventEmitter<any>;
 }
 
-@Injectable()
+@Injectable({
+    providedIn: 'root'
+})
 export class BroadcastService {
+
+    private instanceId = crypto.randomUUID();
 
     subscriptions: {[key: string]: BroadcastSub} = {};
 
     noOpEmitter = new EventEmitter<any>();
 
     listen(key: string): EventEmitter<any> {
+        console.debug('BroadcastService('+this.instanceId+'), listen: key', key);
         if (typeof BroadcastChannel === 'undefined') {
             return this.noOpEmitter;
         }
@@ -28,7 +34,7 @@ export class BroadcastService {
         const channel = new BroadcastChannel(key);
 
         channel.onmessage = (e) => {
-            console.debug('Broadcast received', e.data);
+            console.debug('BroadcastService('+this.instanceId+'), Broadcast received: key, data', key, e.data);
             emitter.emit(e.data);
         };
 
@@ -41,6 +47,7 @@ export class BroadcastService {
     }
 
     broadcast(key: string, value: any) {
+        console.debug('BroadcastService(' + this.instanceId + '), broadcast: key, value', key, value);
         if (typeof BroadcastChannel === 'undefined') { return; }
 
         if (this.subscriptions[key]) {
@@ -56,6 +63,7 @@ export class BroadcastService {
     }
 
     close(key: string) {
+        console.debug('BroadcastService(' + this.instanceId + '), close: key', key);
         if (typeof BroadcastChannel === 'undefined') { return; }
 
         if (this.subscriptions[key]) {
@@ -63,6 +71,39 @@ export class BroadcastService {
             this.subscriptions[key].emitter.complete();
             delete this.subscriptions[key];
         }
+    }
+
+    listenIgnoreSameSource(key: string): EventEmitter<any> {
+        if (typeof BroadcastChannel === 'undefined') {
+            return this.noOpEmitter;
+        }
+
+        const emitter = new EventEmitter<any>();
+
+        this.listen(key)
+            .subscribe(data => {
+                // Only emit if from different source
+                if (data?.sourceId !== this.instanceId) {
+                    console.debug('BroadcastService(' + this.instanceId + '), Broadcast received from different source: key, data', key, data);
+                    emitter.emit(data);
+                } else {
+                    console.debug('BroadcastService(' + this.instanceId + '), Broadcast received and ignored same source message: key, data', key, data);
+                }
+            });
+
+        return emitter;
+    }
+
+    broadcastWithSource(key: string, value: any) {
+        if (typeof BroadcastChannel === 'undefined') { return; }
+
+        const valueWithSource = {
+            ...value,
+            sourceId: this.instanceId
+        };
+
+        console.debug('broadcastWithSource(' + this.instanceId + '): key, value', key, valueWithSource);
+        this.broadcast(key, valueWithSource);
     }
 }
 

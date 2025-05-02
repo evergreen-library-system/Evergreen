@@ -39,7 +39,7 @@ END;%]
 <li>
 <div class="form-check">
     <label class="form-check-label">
-      <input type="checkbox" class="form-check-input"  name='[% name %]' value='[% o.code | html | replace("'","&#39;") %]'[% values.grep('^' _ o.code _ '$').size ? ' checked' : '' %]>
+      <input type="checkbox" class="form-check-input"  name='[% name %]' value='[% o.code | html | replace("'","&#39;") %]'[% values.grep('^' _ o.code.replace('\|', '\\|') _ '$').size ? ' checked' : '' %]>
       [% o.value | html %]
     </label>
   </div>
@@ -58,7 +58,7 @@ END;%]
 <li>
 <div class="form-check">
     <label class="form-check-label">
-      <input type="checkbox" class="form-check-input"  name='[% name %]' value='[% o.code | html | replace("'","&#39;") %]'[% values.grep('^' _ o.code _ '$').size ? ' checked' : '' %]>
+      <input type="checkbox" class="form-check-input"  name='[% name %]' value='[% o.code | html | replace("'","&#39;") %]'[% values.grep('^' _ o.code.replace('\|', '\\|') _ '$').size ? ' checked' : '' %]>
       [% o.value | html %]
     </label>
   </div>

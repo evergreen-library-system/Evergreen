@@ -57,6 +57,7 @@ implements ControlValueAccessor, OnInit, AfterViewInit, OnChanges {
     selected: ComboboxEntry;
     click$: Subject<string>;
     entrylist: ComboboxEntry[];
+    controller: HTMLInputElement;
 
     @ViewChild('instance', {static: false}) instance: NgbTypeahead;
     @ViewChild('defaultDisplayTemplate', {static: true}) defaultDisplayTemplate: TemplateRef<any>;
@@ -70,6 +71,7 @@ implements ControlValueAccessor, OnInit, AfterViewInit, OnChanges {
     @Input() name: string;
 
     @Input() ariaLabel?: string = null;
+    @Input() ariaDescribedby?: string = null;
 
     // Placeholder text for selector input
     @Input() placeholder = '';
@@ -148,6 +150,7 @@ implements ControlValueAccessor, OnInit, AfterViewInit, OnChanges {
     @Input() readOnly = false;
 
     @Input() focused = false;
+    @Input() ngbAutofocus = null; // passthrough for [ngbAutofocus]
 
     // Allow the selected entry ID to be passed via the template
     // This does NOT not emit onChange events.
@@ -237,6 +240,14 @@ implements ControlValueAccessor, OnInit, AfterViewInit, OnChanges {
     @Output() inputFocused: EventEmitter<void>;
     @Output() inputBlurred: EventEmitter<void>;
 
+    // Emitted when the Enter key is pressed in the input and the popup is not open
+    @Output() comboboxEnter = new EventEmitter<number>();
+
+    // Emitted when a key is pressed in the input and the popup is not open.
+    // A passthrough for keyboard events on the input.
+    // Example: (comboboxKeydown)="$event.key === 'Escape' ? cancel() : handleKeydown($event)"
+    @Output() comboboxKeydown = new EventEmitter<Event>();
+
     // Optionally provide an aria-labelledby for the input.  This should be one or more
     // space-delimited ids of elements that describe this combobox.
     @Input() ariaLabelledby: string;
@@ -302,7 +313,7 @@ implements ControlValueAccessor, OnInit, AfterViewInit, OnChanges {
                     return fm.name() + ' (' + this.getOrgShortname(fm.owning_lib()) + ')';
                     break;
                 case 'acqpro':
-                    return fm.name() + ' (' + this.getOrgShortname(fm.owner()) + ')';
+                    return fm.code() + ' (' + this.getOrgShortname(fm.owner()) + ')';
                     break;
                 default:
                     const field = this.idlField;
@@ -386,6 +397,10 @@ implements ControlValueAccessor, OnInit, AfterViewInit, OnChanges {
             acc[cur.egIdlClass] = cur.template;
             return acc;
         }, {});
+        
+        document.querySelectorAll('ngb-typeahead-window button[disabled]').forEach(b => b.setAttribute('tabindex', '-1'));
+        this.controller = this.instance['_elementRef'].nativeElement as HTMLInputElement;
+        this.controller.addEventListener('keydown', this.onKeydown.bind(this));
     }
 
     ngOnChanges(changes: SimpleChanges) {
@@ -449,6 +464,52 @@ implements ControlValueAccessor, OnInit, AfterViewInit, OnChanges {
             return ou.shortname();
         } else {
             return this.org.get(ou).shortname();
+        }
+    }
+
+    onKeydown($event: KeyboardEvent) {
+        //console.debug('Key: ', $event);
+
+        if (this.instance.isPopupOpen()) {
+            if ($event.key === 'ArrowUp' || $event.key === 'ArrowDown') {
+                this.scrollEntries();
+            }
+            return;
+        }
+
+        if ( $event.key == 'ArrowDown' && $event.ctrlKey && $event.shiftKey ) {
+            setTimeout(() => this.openMe($event));
+            return;
+        }
+
+        // a shortcut if Enter is the only key event you're interested in
+        if ( $event.key == 'Enter' ) {
+            this.onEnter();
+        }
+
+        // Pass through to calling component via (comboboxKeydown)="yourFunction($event)"
+        this.comboboxKeydown.emit($event);
+    }
+
+    onEnter() {
+        this.comboboxEnter.emit(this.selected.id);
+    }
+    
+    scrollEntries() {
+        // adapted from https://github.com/ng-bootstrap/ng-bootstrap/issues/4789
+        if (!this.controller)
+            return;
+
+        const listbox = document.getElementById(this.controller.getAttribute('aria-owns'));
+        // console.debug("Listbox: ", listbox);
+
+        const activeItem = document.getElementById(this.controller.getAttribute('aria-activedescendant'));
+        if (activeItem) {
+            if (activeItem.offsetTop < listbox.scrollTop) {
+                listbox.scrollTo({ top: activeItem.offsetTop });
+            } else if (activeItem.offsetTop + activeItem.offsetHeight > listbox.scrollTop + listbox.clientHeight) {
+                listbox.scrollTo({ top: activeItem.offsetTop + activeItem.offsetHeight - listbox.clientHeight });
+            }
         }
     }
 
@@ -746,8 +807,20 @@ implements ControlValueAccessor, OnInit, AfterViewInit, OnChanges {
     };
 
     writeValue(value: ComboboxEntry) {
-        //console.debug('writeValue: ', value);
-        if (value !== undefined && value !== null) {
+        // only support a ComboboxEntry
+        if (value?.id === undefined) { return; }
+
+        // support a freetext entry
+        if (value.id === null && value.freetext && this.allowFreeText) {
+            const existingFreetext = this.entrylist.find(
+                ({ id, freetext }) => id === null && freetext
+            );
+            if (existingFreetext) {
+                Object.assign(existingFreetext, value);
+            }
+            this.selected = { ...value };
+
+        } else {
             this.selectedId = value.id;
             this.applySelection();
         }

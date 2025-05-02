@@ -11,7 +11,10 @@ import {OrgService} from '@eg/core/org.service';
 
 @Component({
     templateUrl: 'manage.component.html',
-    styles: ['#marcEditor { background: light-dark(hsla(223, 25%, 91%, 1), var(--bs-body-bg-alt)) }']
+    styles: [
+        '#marcEditor { background-color: hsla(223, 25%, 91%, 1) }',
+        '[data-bs-theme="dark"] #marcEditor { background-color: var(--bs-body-bg-alt) }'
+    ]
 })
 export class ManageAuthorityComponent implements OnInit {
 

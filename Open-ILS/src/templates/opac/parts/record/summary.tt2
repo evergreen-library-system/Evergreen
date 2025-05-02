@@ -232,7 +232,7 @@ IF num_uris > 0;
         [%- IF filtered_type.length > 0 -%]
             <strong> [% filtered_type %] </strong>
         [%- END -%]
-        <a href="[% filtered_href %]" class="uri_link" property="url" target="_blank" rel="noopener">
+        <a href="[% filtered_href %]" class="uri_link" property="url" target="_blank" rel="noopener" data-record-id="[% ctx.bre_id %]">
         [%- IF filtered_href != filtered_link;
                 '<span property="description">' _ filtered_link _ '</span>';
             ELSE;

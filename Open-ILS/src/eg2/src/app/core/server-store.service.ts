@@ -1,11 +1,13 @@
 /**
  * Set and get server-stored settings.
  */
-import {Injectable} from '@angular/core';
-import {tap} from 'rxjs/operators';
+import {Injectable,OnDestroy} from '@angular/core';
+import {Subject} from 'rxjs';
+import {tap, takeUntil} from 'rxjs/operators';
 import {AuthService} from './auth.service';
 import {NetService} from './net.service';
 import {DbStoreService} from './db-store.service';
+import {BroadcastService} from '@eg/share/util/broadcast.service';
 
 // Settings summary objects returned by the API
 interface ServerSettingSummary {
@@ -17,15 +19,37 @@ interface ServerSettingSummary {
 }
 
 @Injectable({providedIn: 'root'})
-export class ServerStoreService {
+export class ServerStoreService implements OnDestroy {
 
     cache: {[key: string]: any};
+
+    private destroy$ = new Subject<void>();
+    private cacheCleared = new Subject<void>();
+    cacheCleared$ = this.cacheCleared.asObservable();
 
     constructor(
         private db: DbStoreService,
         private net: NetService,
-        private auth: AuthService) {
+        private auth: AuthService,
+        private broadcaster: BroadcastService) {
         this.cache = {};
+        // Listen for cache invalidation broadcasts
+        this.broadcaster.listen('eg.invalidate_server_store_cache')
+            .pipe(takeUntil(this.destroy$))
+            .subscribe(() => {
+                this.cache = {};
+                this.cacheCleared.next();
+            });
+    }
+
+    ngOnDestroy() {
+        this.destroy$.next();
+        this.destroy$.complete();
+    }
+
+    invalidateAllCaches() {
+        console.debug('ServerStoreService: invalidateAllCaches()');
+        this.broadcaster.broadcast('eg.invalidate_server_store_cache', { updated: true });
     }
 
     setItem(key: string, value: any): Promise<any> {
@@ -163,7 +187,7 @@ export class ServerStoreService {
             table: 'Setting',
             action: 'insertOrReplace',
             rows: rows
-        }).then(_ => values).catch(_ => values);
+        }).then(_ => { this.invalidateAllCaches(); return values;}).catch(_ => values);
     }
 
     getSettingsFromDb(names: string[]): Promise<{[key: string]: any}> {

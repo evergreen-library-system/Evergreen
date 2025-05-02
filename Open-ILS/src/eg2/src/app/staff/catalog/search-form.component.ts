@@ -232,6 +232,15 @@ export class SearchFormComponent implements OnInit, AfterViewInit {
         this.refreshCopyLocations();
     }
 
+    updateFilters(filterName: string, selectElement: any): void {
+        const selectedValues = Array.from(selectElement.options)
+            .filter((option: HTMLOptionElement) => option.selected)
+            .map((option: HTMLOptionElement) => option.value);
+
+        this.context.termSearch.ccvmFilters[filterName] = selectedValues.length  && selectedValues[0] !== '' ? selectedValues : [''];
+        this.filtersActive();
+    }
+
     filtersActive(): number {
         this.activeFiltersCount = 0;
         if (this.context.termSearch.copyLocations[0] !== '') { 

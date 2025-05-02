@@ -574,6 +574,7 @@ sub load_rresults {
             metarecord => $is_meta,
             depth => $depth,
             pref_lib => $ctx->{pref_ou},
+            library_group => $ctx->{search_lasso},
         }
     );
     $self->timelog("Returned from get_records_and_facets()");

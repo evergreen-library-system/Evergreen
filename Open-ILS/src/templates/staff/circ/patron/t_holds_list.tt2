@@ -133,6 +133,8 @@
   <eg-grid-field label="[% l('User Barcode') %]" path='hold.ucard_barcode' hidden></eg-grid-field>
   <eg-grid-field label="[% l('Requestor Username') %]" path='hold.rusr_usrname' hidden></eg-grid-field>
   <eg-grid-field label="[% l('Copy ID') %]" path='hold.cp_id' hidden></eg-grid-field>
+  <eg-grid-field label="[% l('Owning Library') %]" path='hold.ol_shortname' hidden></eg-grid-field>
+  <eg-grid-field label="[% l('Item Circulating Library') %]" path='hold.cl_shortname' hidden></eg-grid-field>
   <eg-grid-field label="[% l('Copy Number on Volume') %]" path='hold.cp_copy_number' hidden></eg-grid-field>
   <eg-grid-field label="[% l('Fine Level') %]" path='hold.cp_fine_level' hidden></eg-grid-field>
   <eg-grid-field label="[% l('Can Circulate') %]" path='hold.cp_circulate' datatype="bool" hidden></eg-grid-field>

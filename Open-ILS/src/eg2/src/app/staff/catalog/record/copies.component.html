@@ -19,7 +19,7 @@
     href="/eg/staff/cat/item/{{copy.id}}" i18n>View</a>
     <ng-container *ngIf="context.editable(copy)">
       | <a class="ps-1" target="_blank"  attr.aria-describedby="copy-barcode-{{copy.id}}"
-        routerLink="/staff/cat/volcopy/attrs/item/{{copy.id}}" i18n>Edit</a>
+        routerLink="/staff/cat/volcopy/attrs/item/{{copy.id}}" [queryParams]="{record_id: recId}" i18n>Edit</a>
     </ng-container>
   </div>
 </ng-template>

@@ -1,0 +1,25 @@
+## LP#<number>: <Title>
+# Add a short, descriptive title preferably beginning with an action verb.
+
+## <body>
+# Please enter descriptive text explaining the change and why it was made.
+
+# In the case of a bug fix, steps to reproduce the bug and test the
+# fix are useful.
+
+## Release-note: <release note text>
+
+# Larger changes with extensive release notes in a separate file
+# and/or documentation updates may ignore the above.
+
+# Additional authors or direct contributors for a commit can be
+#  credited with lines like the followiing:
+## Co-authored-by: <Their Name <address@hostname.tld> >
+
+
+## Signed-off-by: <Your Name <address@hostname.tld> >
+# Above can be done with -s option to git commit.
+
+# See
+# https://wiki.evergreen-ils.org/doku.php?id=dev:git#commit_messages
+# for more information.

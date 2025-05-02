@@ -7,7 +7,7 @@ borrow what types of materials, for how long, and with what overdue fines.
 
 Individual elements of the circulation policies are configured using specific
 interfaces, and should be configured prior to setting up the circulation 
-policies.  
+policies. 
 
 == Data elements that affect your circulation policies ==
 
@@ -22,7 +22,7 @@ circulation of an item.
 * *Circulation modifier* - Circulation modifiers are fields used to control
 circulation policies on specific groups of items. They can be added to items
 during the cataloging process. New circulation modifiers can be created in the
-staff client by navigating to *Administration -> Server Administration ->  Circulation
+staff client by navigating to *Administration -> Server Administration -> Circulation
 Modifiers*.
 * *Circulate?* flag - The circulate? flag in the holdings editor can be set to False
 to disallow an item from circulating.
@@ -55,7 +55,7 @@ image::borrowing_items/copy_locations_editor.png[screenshot of Shelving Location
 === User data ===
 
 Finally, several characteristics of specific patrons can affect circulation
-policies.  You can modify these characteristics in a patron's record (*Search ->
+policies. You can modify these characteristics in a patron's record (*Search ->
 Search for Patrons*, select a patron, choose *Edit* tab) or when registering a
 new patron (*Circulation -> Register Patron*).
 
@@ -113,11 +113,11 @@ modifiers.
 
 * Configure the circulation limit sets by selecting *Administration -> Local
 Administration -> Circulation Limit Sets*.
-* *Items Out* -  The maximum number of items circulated to a patron at the same
+* *Items Out* - The maximum number of items circulated to a patron at the same
 time.
-* *Min Depth* - Enter the minimum depth in the org tree that
+* *Min Depth* - Enter the minimum depth in the organizational unit tree that
 Evergreen will consider as valid circulation libraries for counting items out.
-The min depth is based on org unit type depths. For example, if you want the
+The minimum depth is based on organizational unit type depths. For example, if you want the
 items in all of the circulating libraries in your consortium to be eligible for
 restriction by this limit set when it is applied to a circulation policy, then
 enter a zero (0) in this field. 
@@ -158,9 +158,9 @@ particulars of a given circulation transaction, and 'result' columns, those that
 return the various parameters that are applied to the matching transaction.
 
 * Circulation policies by checkout library or owning library?
-   - If your policies should follow the rules of the library that checks out the
+  - If your policies should follow the rules of the library that checks out the
 item, select the checkout library as the *Org Unit (org_unit)*.
-   - If your policies should follow the rules of the library that owns the item,
+  - If your policies should follow the rules of the library that owns the item,
 select the consortium as the *Org Unit (org_unit)* and select the owning library
 as the *Item Circ Lib (copy_circ_lib)*.
 * Renewal policies can be created by setting *Renewals? (is_renewal)* to True.

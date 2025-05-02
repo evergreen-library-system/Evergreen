@@ -4,8 +4,16 @@
     border-radius: 2px;
     padding: 10px;
     position: fixed;
-    z-index: 1;
+    z-index: 1500; /* ngbModal uses 1055 */
     right: 15px;
     bottom: 5px;
 }
 
+#eg-toast-container ol {
+    display: flex;
+    flex-direction: column;
+}
+
+li.alert:not(:last-child) {
+    filter: brightness(0.85);
+}

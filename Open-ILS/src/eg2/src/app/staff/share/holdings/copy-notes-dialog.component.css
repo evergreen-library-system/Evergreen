@@ -1,0 +1,17 @@
+/*
+.added {
+  border-inline-start: 3px solid var(--success-border);
+  background-color: var(--bs-success-bg-subtle);
+}
+
+.deleted {
+  border-inline-start: 3px solid var(--danger-border);
+  background-color: var(--bs-danger-bg-subtle);
+}
+/**/
+
+/* don't show a valid border; user might have touched this field in passing */
+.form-validated form textarea.ng-valid.required:not(.ng-untouched) {
+  border-left-color: var(--form-control-border) !important;
+  border-left-width: 1px !important;
+}

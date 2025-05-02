@@ -1,6 +1,9 @@
 eg-marc-rich-editor,
 #eg-marc-rich-editor {
-  background-color: light-dark(var(--gray-125), var(--bs-body-bg-alt));
+  background-color: var(--gray-125);
+}
+[data-bs-theme="dark"] #eg-marc-rich-editor {
+  background-color: var(--bs-body-bg-alt);
 }
 
 .fixed-fields-container {
@@ -18,18 +21,31 @@ eg-marc-rich-editor,
 
 .marc-toolbar,
 .marc-toolbar .btn-secondary {
-  background-color: light-dark(var(--gray-550), var(--bs-gray-900));
-  border-color: light-dark(var(--bs-gray-600), var(--bs-gray-900));
+  background-color: var(--gray-550);
+  border-color: var(--bs-gray-600);
+  color: white;
+}
+[data-bs-theme="dark"] .marc-toolbar,
+[data-bs-theme="dark"] .marc-toolbar .btn-secondary {
+  background-color: var(--bs-gray-900);
+  border-color: var(--bs-gray-900);
   color: white;
 }
 
 .marc-toolbar .btn-secondary:focus,
 .marc-toolbar .btn-secondary:hover {
-  background-color: light-dark(var(--gray-650), var(--bs-gray-700));
+  background-color: var(--gray-650);
+}
+[data-bs-theme="dark"] .marc-toolbar .btn-secondary:focus,
+[data-bs-theme="dark"] .marc-toolbar .btn-secondary:hover {
+  background-color: var(--bs-gray-700);
 }
 
 .marc-toolbar .badge-dark {
-  background-color: light-dark(var(--gray-300), var(--bs-gray-700));
+  background-color: var(--gray-300);
+}
+[data-bs-theme="dark"] .marc-toolbar .badge-dark {
+  background-color: var(--bs-gray-700);
 }
 
 .menu-with-accesskeys .dropdown-item {
@@ -55,7 +71,13 @@ eg-marc-rich-editor,
   margin-bottom: 0;
   table-layout: fixed;
   width: 100%;
-  --bs-table-bg: light-dark(var(--gray-125), var(--bs-body-bg-alt));
+  --bs-table-bg: var(--gray-125);
+}
+[data-bs-theme="dark"] .marc-table {
+  margin-bottom: 0;
+  table-layout: fixed;
+  width: 100%;
+  --bs-table-bg: var(--bs-body-bg-alt);
 }
 
 /* remove Bootstrap default styles */
@@ -114,20 +136,33 @@ eg-marc-rich-editor,
 /* col.subfields will take the remaining available space */
 
 .marc-table tr {
-  background-color: light-dark(var(--gray-125), var(--bs-gray-950));
+  background-color: var(--gray-125);
+}
+[data-bs-theme="dark"] .marc-table tr {
+  background-color: var(--bs-gray-950);
 }
 
 .start-even tr:not(.changed):nth-child(odd),
 .marc-table:not(.start-even) tr:not(.changed):nth-child(even) {
-  background-color: light-dark(var(--gray-100), var(--bs-gray-925));
+  background-color: var(--gray-100);
+}
+[data-bs-theme="dark"] .start-even tr:not(.changed):nth-child(odd),
+[data-bs-theme="dark"] .marc-table:not(.start-even) tr:not(.changed):nth-child(even) {
+  background-color: var(--gray-925);
 }
 
 .marc-table tr.changed {
-  background-color: light-dark(var(--gray-200), var(--bs-gray-900));
+  background-color: var(--gray-200);
+}
+[data-bs-theme="dark"] .marc-table tr.changed {
+  background-color: var(--bs-gray-900);
 }
 
 .marc-table tr.changed th.tag {
-  border-left: .2rem dotted light-dark(black, white);
+  border-left: .2rem dotted black;
+}
+[data-bs-theme="dark"] .marc-table tr.changed th.tag {
+  border-left: .2rem dotted white;
 }
 
 tr:nth-child(even):hover,
@@ -135,12 +170,18 @@ tr:nth-child(odd):hover,
 .start-even tr:nth-child(even):hover,
 .start-even tr:nth-child(odd):hover {
   /* matches .ff-field:hover in fixed-fields-editor.component.css */
-  background-color: light-dark(var(--bs-yellow-025), var(--bs-blue-900-desat)) !important;
+  background-color: var(--bs-yellow-025) !important;
   box-shadow: 0 .25em .5em rgba(0, 0, 40, 0.2);
   /* fix bug where shadow is obscured by subsequent row background color: */
   transform: scale(1);
   -webkit-transform: scale(1);
   -moz-transform: scale(1);
+}
+[data-bs-theme="dark"] tr:nth-child(even):hover,
+[data-bs-theme="dark"] tr:nth-child(odd):hover,
+[data-bs-theme="dark"] .start-even tr:nth-child(even):hover,
+[data-bs-theme="dark"] .start-even tr:nth-child(odd):hover {
+  background-color: var(--bs-blue-900-desat) !important;
 }
 
 /* drop zone row does not need alternating background color or hover style */
@@ -149,6 +190,11 @@ tr#marc-tag-END:not(.changed):nth-child(even),
 tr#marc-tag-END:hover {
   background-color: var(--bs-table-bg) !important;
   box-shadow: none;
+}
+[data-bs-theme="dark"] tr#marc-tag-END,
+[data-bs-theme="dark"] tr#marc-tag-END:not(.changed):nth-child(even),
+[data-bs-theme="dark"] tr#marc-tag-END:hover {
+  background-color: var(--bs-table-bg) !important;
 }
 
 .marc-table td,
@@ -262,9 +308,12 @@ tr#marc-tag-END:hover {
 }
 
 .field-hints h5 {
-  border-bottom: 1px solid light-dark(var(--gray-400), var(--border));
+  border-bottom: 1px solid var(--gray-400);
   padding-bottom: 0.25rem;
   font-weight: 600;
+}
+[data-bs-theme="dark"] .field-hints h5 {
+  border-bottom: 1px solid var(--border);
 }
 
 .marc-help b.code {
@@ -302,18 +351,30 @@ tr#marc-tag-END:hover {
 }
 
 button.delete-subfield {
-  color: light-dark(var(--gray-600), var(--bs-gray-400));
-  background-color: light-dark(var(--gray-100), var(--bs-gray-900));
-  border: 1px solid light-dark(var(--gray-200), var(--bs-gray-800));
-  border-left: 1px solid light-dark(var(--gray-150), var(--bs-gray-900));
+  color: var(--gray-600);
+  background-color: var(--gray-100);
+  border: 1px solid var(--gray-200);
+  border-left: 1px solid var(--gray-150);
   border-radius: 0;
+}
+[data-bs-theme="dark"] button.delete-subfield {
+  color: var(--bs-gray-400);
+  background-color: var(--bs-gray-900);
+  border: 1px solid var(--bs-gray-800);
+  border-left: 1px solid var(--bs-gray-900);
 }
 
 button.delete-subfield:focus,
 button.delete-subfield:hover,
 .marc-table tr.marc-field:focus button.delete-subfield,
 .marc-table tr.marc-field:hover button.delete-subfield {
-  color: light-dark(var(--gray-700), var(--bs-gray-300));
+  color: var(--gray-700);
+}
+[data-bs-theme="dark"] button.delete-subfield:focus,
+[data-bs-theme="dark"] button.delete-subfield:hover,
+[data-bs-theme="dark"] .marc-table tr.marc-field:focus button.delete-subfield,
+[data-bs-theme="dark"] .marc-table tr.marc-field:hover button.delete-subfield {
+  color: var(--bs-gray-300);
 }
 
 .move:hover {
@@ -325,8 +386,11 @@ button.delete-subfield:hover,
 }
 
 .btn-tiny:hover {
-  border: 1px solid light-dark(var(--gray-700), var(--bs-gray-300));
+  border: 1px solid var(--gray-700);
   box-shadow: 1px 1px .25rem rgba(0,0,0,0.25);
+}
+[data-bs-theme="dark"] .btn-tiny:hover {
+  border: 1px solid var(--bs-gray-300);
 }
 
 .btn-tiny:focus {

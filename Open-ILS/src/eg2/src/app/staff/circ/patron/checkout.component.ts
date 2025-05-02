@@ -309,10 +309,9 @@ export class CheckoutComponent implements OnInit, AfterViewInit {
         if (copyIds.length === 0) { return; }
 
         this.copyAlertsDialog.copyIds = copyIds;
-        this.copyAlertsDialog.mode = mode;
         this.copyAlertsDialog.open({size: 'lg'}).subscribe(
             modified => {
-                if (modified && modified.newAlerts.length > 0) {
+                if (modified && modified.newThings.length > 0) {
                     rows.forEach(row => row.copyAlertCount++);
                     this.checkoutsGrid.reload();
                 }

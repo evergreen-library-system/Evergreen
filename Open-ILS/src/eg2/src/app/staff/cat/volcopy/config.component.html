@@ -9,7 +9,9 @@
     <div class="row">
       <div class="col-lg-12">
         <div class="card">
-          <div class="card-header" i18n>Holdings Display Preferences</div>
+          <div class="card-header">
+            <h3 i18n>Holdings Display Preferences</h3>
+          </div>
           <ul class="list-group list-group-flush">
             <li class="list-group-item">
               <div class="form-check form-check-inline">
@@ -90,7 +92,7 @@
                   id="volcopy-unified-interface" 
                   [(ngModel)]="volcopy.defaults.values.unified_display">
                 <label class="form-label form-check-label" for="volcopy-unified-interface" i18n>
-                  Unified Holdings, Item Attributes Display, and Item Templates
+                  Unified Holdings and Item Attributes Display
                 </label>
               </div>
             </li>
@@ -103,7 +105,9 @@
     <div class="row">
       <div class="col-lg-12">
         <div class="card">
-          <div class="card-header" i18n>Holdings Creation Defaults</div>
+          <div class="card-header">
+            <h3 i18n>Holdings Creation Defaults</h3>
+          </div>
           <ul class="list-group list-group-flush p-2">
             <li class="list-group-item">
               <div class="row">
@@ -178,7 +182,9 @@
 <div class="row">
   <div class="col-lg-6">
     <div class="card">
-      <div class="card-header" i18n>Item Attributes Behavior</div>
+      <div class="card-header">
+        <h3 i18n>Item Attributes Behavior</h3>
+      </div>
       <ul class="list-group list-group-flush">
         <li class="list-group-item">
           <div class="form-check form-check-inline">
@@ -237,7 +243,9 @@
   <!-- COLUMN 1 -->
   <div class="flex-1 p-1">
     <div class="card">
-      <div class="card-header" i18n>Identification</div>
+      <div class="card-header">
+        <h3 i18n>Identification</h3>
+      </div>
       <ul class="list-group list-group-flush">
         <li class="list-group-item">
           <div class="form-check form-check-inline">
@@ -316,7 +324,9 @@
   <!-- COLUMN 2 -->
   <div class="flex-1 p-1">
     <div class="card">
-      <div class="card-header" i18n>Location</div>
+      <div class="card-header">
+        <h3 i18n>Location</h3>
+      </div>
       <ul class="list-group list-group-flush">
         <li class="list-group-item">
           <div class="form-check form-check-inline">
@@ -366,7 +376,9 @@
 
   <div class="flex-1 p-1">
     <div class="card">
-      <div class="card-header" i18n>Circulation</div>
+      <div class="card-header">
+        <h3 i18n>Circulation</h3>
+      </div>
       <ul class="list-group list-group-flush">
         <li class="list-group-item">
           <div class="form-check form-check-inline">
@@ -448,6 +460,26 @@
             </label>
           </div>
         </li>
+        <li class="list-group-item">
+          <div class="form-check form-check-inline">
+            <input class="form-check-input" type="checkbox" 
+              id="show-opac_visible-attr" 
+              [(ngModel)]="volcopy.defaults.hidden.opac_visible">
+            <label class="form-label form-check-label" for="show-opac_visible-attr" i18n>
+              OPAC Visible
+            </label>
+          </div>
+        </li>
+        <li class="list-group-item">
+          <div class="form-check form-check-inline">
+            <input class="form-check-input" type="checkbox" 
+              id="show-ref-attr" 
+              [(ngModel)]="volcopy.defaults.hidden.ref">
+            <label class="form-label form-check-label" for="show-ref-attr" i18n>
+              Reference
+            </label>
+          </div>
+        </li>
       </ul>
     </div>
   </div>
@@ -456,18 +488,10 @@
 
   <div class="flex-1 p-1">
     <div class="card">
-      <div class="card-header" i18n>Miscellaneous</div>
+      <div class="card-header">
+        <h3 i18n>Cost and Condition</h3>
+      </div>
       <ul class="list-group list-group-flush">
-        <li class="list-group-item">
-          <div class="form-check form-check-inline">
-            <input class="form-check-input" type="checkbox" 
-              id="show-copy_alerts-attr" 
-              [(ngModel)]="volcopy.defaults.hidden.copy_alerts">
-            <label class="form-label form-check-label" for="show-copy_alerts-attr" i18n>
-              Item Alerts
-            </label>
-          </div>
-        </li>
         <li class="list-group-item">
           <div class="form-check form-check-inline">
             <input class="form-check-input" type="checkbox" 
@@ -501,26 +525,6 @@
         <li class="list-group-item">
           <div class="form-check form-check-inline">
             <input class="form-check-input" type="checkbox" 
-              id="show-opac_visible-attr" 
-              [(ngModel)]="volcopy.defaults.hidden.opac_visible">
-            <label class="form-label form-check-label" for="show-opac_visible-attr" i18n>
-              OPAC Visible
-            </label>
-          </div>
-        </li>
-        <li class="list-group-item">
-          <div class="form-check form-check-inline">
-            <input class="form-check-input" type="checkbox" 
-              id="show-ref-attr" 
-              [(ngModel)]="volcopy.defaults.hidden.ref">
-            <label class="form-label form-check-label" for="show-ref-attr" i18n>
-              Reference
-            </label>
-          </div>
-        </li>
-        <li class="list-group-item">
-          <div class="form-check form-check-inline">
-            <input class="form-check-input" type="checkbox" 
               id="show-cost-attr" 
               [(ngModel)]="volcopy.defaults.hidden.cost">
             <label class="form-label form-check-label" for="show-cost-attr" i18n>
@@ -546,15 +550,27 @@
 
   <div class="flex-1 p-1">
     <div class="card">
-      <div class="card-header" i18n>Statistics</div>
+      <div class="card-header">
+        <h3 i18n>Alerts, Notes, Tags, Statistics</h3>
+      </div>
       <ul class="list-group list-group-flush">
+        <li class="list-group-item">
+          <div class="form-check form-check-inline">
+            <input class="form-check-input" type="checkbox" 
+              id="show-copy_alerts-attr" 
+              [(ngModel)]="volcopy.defaults.hidden.copy_alerts">
+            <label class="form-label form-check-label" for="show-copy_alerts-attr" i18n>
+              Item Alerts
+            </label>
+          </div>
+        </li>
         <li class="list-group-item">
           <div class="form-check form-check-inline">
             <input class="form-check-input" type="checkbox" 
               id="show-copy_tags-attr" 
               [(ngModel)]="volcopy.defaults.hidden.copy_tags">
             <label class="form-label form-check-label" for="show-copy_tags-attr" i18n>
-              Add Item Tags
+              Item Tags
             </label>
           </div>
         </li>
@@ -564,7 +580,7 @@
               id="show-copy_notes-attr" 
               [(ngModel)]="volcopy.defaults.hidden.copy_notes">
             <label class="form-label form-check-label" for="show-copy_notes-attr" i18n>
-              Add Item Notes
+              Item Notes
             </label>
           </div>
         </li>

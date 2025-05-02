@@ -85,14 +85,26 @@ sub retrieve_core {
     $e   ||= new_editor();
     $set ||= __PACKAGE__->retrieve_vendors($e);
 
+    # Deduplicate the set based on host, username, password, and
+    # in_dir to eliminate unnecessary connections to the remote host.
+    my @subset = ();
+    foreach my $i (@$set) {
+        unless (@subset) {
+            push @subset, $i;
+        } elsif (! grep {$_->host eq $i->host && $_->username eq $i->username
+                             && $_->password eq $i->password && $_->in_dir eq $i->in_dir} @subset) {
+            push @subset, $i;
+        }
+    }
+
     my @return = ();
     my $vcount = 0;
-    foreach my $account (@$set) {
+    foreach my $account (@subset) {
         my $count = 0;
         my $server;
         $logger->info(
             "EDI check for vendor " .
-            ++$vcount . " of " . scalar(@$set) . ": " . $account->host
+            ++$vcount . " of " . scalar(@subset) . ": " . $account->host
         );
         unless ($server = __PACKAGE__->remote_account($account)) { # assignment
             $logger->err(
@@ -119,7 +131,7 @@ sub retrieve_core {
 
         foreach my $remote_file (@ok_files) {
             my $description = sprintf "%s/%s", $account->host, $remote_file;
-            
+
             # deduplicate vs. acct/filenames already in DB.
             #
             # The reason we match against host/username/password/in_dir

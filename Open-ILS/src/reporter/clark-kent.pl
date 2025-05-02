@@ -28,17 +28,22 @@ use Tie::IxHash;
 use Email::Send;
 use Scalar::Util 'looks_like_number';
 use List::MoreUtils qw/uniq/;
+use sigtrap qw/handler die_signal normal-signals/;
 
 use open ':utf8';
 
 
-my ($config, $sleep_interval, $lockfile, $daemon) = ('SYSCONFDIR/opensrf_core.xml', 10, '/tmp/reporter-LOCK');
+my ($config, $sleep_interval, $lockfile, $daemon) = ('SYSCONFDIR/opensrf_core.xml', 10, 'LOCALSTATEDIR/run/reporter.pid');
 
 my $opt_count;
 my $opt_minimum_repsec_version;
 my $opt_max_rows_for_charts;
 my $opt_statement_timeout;
 my $opt_resultset_limit;
+
+# Process id of the first Clark started.  This is saved so that we can
+# properly cleanup the lock file at the END.
+my $main_pid;
 
 GetOptions(
 	"daemon"	=> \$daemon,
@@ -139,6 +144,7 @@ my ($dbh,$running,$sth,@reports,$run, $current_time);
 
 if ($daemon) {
 	daemonize("Clark Kent, waiting for trouble");
+    $main_pid = $$ unless ($main_pid);
 	open(F, ">$lockfile") or die "Cannot write lockfile '$lockfile'";
 	print F $$;
 	close F;
@@ -1165,3 +1171,12 @@ sub pivot_data {
 }
 
 
+sub die_signal {
+    my $sig = shift;
+    $logger->warn("Reporter received signal $sig");
+    exit(0);
+}
+
+END {
+    unlink $lockfile if ($$ == $main_pid);
+}

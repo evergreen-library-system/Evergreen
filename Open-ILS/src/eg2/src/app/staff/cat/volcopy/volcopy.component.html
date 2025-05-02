@@ -14,10 +14,10 @@
         {{cnPrefixName(node.target.prefix())}}
         {{node.target.label()}}
         {{cnSuffixName(node.target.suffix())}}
-        @ {{orgName(node.target.owning_lib())}}
+        &#64; {{orgName(node.target.owning_lib())}}
       </div>
       <ul>
-        <li *ngFor="let child of node.children">{{ child.target.barcode() }} @ {{orgName(child.target.circ_lib())}}</li>
+        <li *ngFor="let child of node.children">{{ child.target.barcode() }} &#64; {{orgName(child.target.circ_lib())}}</li>
       </ul>
     </li>
   </ul>
@@ -33,8 +33,11 @@
 </eg-op-change>
 
 <div class="row" *ngIf="sessionExpired">
-  <div class="col-lg-6 mt-4 offset-lg-3 alert alert-danger d-flex justify-content-center" i18n>
-    Holdings Editor Session Expired
+  <div class="col-lg-6 mt-4 offset-lg-3 alert alert-danger justify-content-center" role="text">
+    <span i18n>Holdings data is no longer available; it may have changed in another browser tab.</span>
+    <span *ngIf="recordId" i18n>
+      You can <a class="alert-link" href="/staff/catalog/record/{{recordId}}/">revisit the record page</a> to start a new editing session.
+    </span>
   </div>
 </div>
 
@@ -49,6 +52,7 @@
     <li role="presentation" ngbNavItem="holdings">
       <a role="tab" ngbNavLink i18n>Holdings</a>
       <ng-template ngbNavContent>
+        <h3 class="visually-hidden" i18n>Holdings</h3>
         <div class="mt-2">
           <eg-vol-edit [context]="context"
             (canSaveChange)="volsCanSaveChange($event)"></eg-vol-edit>
@@ -56,7 +60,7 @@
         <ng-container *ngIf="volcopy.defaults.values.unified_display">
           <div class="mt-2">
             <eg-copy-attrs [context]="context" [contextChanged]="contextChange.asObservable()" #copyAttrs
-              (canSaveChange)="attrsCanSaveChange($event)"></eg-copy-attrs>
+              (clearChanges)="clearChangesReaction($event)" (canSaveChange)="attrsCanSaveChange($event)"></eg-copy-attrs>
           </div>
         </ng-container>
       </ng-template>
@@ -65,9 +69,10 @@
       <li role="presentation" ngbNavItem="attrs">
         <a role="tab" ngbNavLink i18n>Item Attributes</a>
         <ng-template ngbNavContent>
+          <h3 class="visually-hidden" i18n>Item Attributes</h3>
           <div class="mt-2">
             <eg-copy-attrs [context]="context" [contextChanged]="contextChange.asObservable()" #copyAttrs
-              (canSaveChange)="attrsCanSaveChange($event)"></eg-copy-attrs>
+              (clearChanges)="clearChangesReaction($event)" (canSaveChange)="attrsCanSaveChange($event)"></eg-copy-attrs>
           </div>
         </ng-template>
       </li>
@@ -80,13 +85,25 @@
         </div>
       </ng-template>
     </li>
+    <li role="presentation" ngbNavItem="templates">
+      <a role="tab" ngbNavLink i18n>Administration</a>
+      <ng-template ngbNavContent>
+        <div class="mt-2">
+          <eg-volcopy-template-grid [embedContext]="context"></eg-volcopy-template-grid>
+        </div>
+      </ng-template>
+    </li>
   </ul>
   <div [ngbNavOutlet]="holdingsNav"></div>
 
   <ng-container *ngIf="tab === 'holdings' || tab === 'attrs'">
-    <hr class="m-2"/>                                                          
-    <div class="row m-2 p-2 border border-dark rounded bg-faint">
-      <div class="col-lg-12 d-flex">
+    <hr class="m-2"/>   
+    <div class="row">
+      <p *ngIf="changesPendingForStatusBar" class="col-12 alert alert-warning text-center" i18n>Changes Pending</p>
+      <p *ngIf="barcodeNeeded()" class="col-12 alert alert-warning text-center" i18n>At least one barcoded item needed for current changes.</p>
+    </div>                                                       
+    <div class="row">
+      <div class="col-lg-12 d-flex align-items-start volcopy-actions">
 
         <div class="form-check form-check-inline ms-2">                            
           <input class="form-check-input" id='use-labels-cbox' type="checkbox"     
@@ -121,13 +138,15 @@
         </ng-container>
 
         <div class="flex-1"> </div>
-        <p *ngIf="changesPendingForStatusBar" class="alert alert-warning" i18n>Changes Pending</p>
-        <button type="button" class="btn btn-outline-dark" (click)="save(false, true)" 
-          [ngClass]="{'border-danger': isNotSaveable()}"
-          [disabled]="isNotSaveable()" i18n>Apply All &amp; Save</button>
-        <button type="button" class="btn btn-outline-dark ms-2" (click)="save(true, true)"
-          [ngClass]="{'border-danger': isNotSaveable()}"
-          [disabled]="isNotSaveable()" i18n>Apply All, Save &amp; Exit</button>
+        
+        <button type="button" class="btn btn-outline-primary" (click)="save(false, true)" [disabled]="isNotSaveable()">
+          <span class="material-icons" aria-hidden="true" *ngIf="isNotSaveable()">warning</span>
+          <span i18n>Apply All &amp; Save</span>
+        </button>
+        <button type="button" class="btn btn-primary" (click)="save(true, true)" [disabled]="isNotSaveable()">
+          <span class="material-icons" aria-hidden="true" *ngIf="isNotSaveable()">warning</span>
+          <span i18n>Apply All, Save &amp; Exit</span>
+        </button>
       </div>
     </div>
   </ng-container>

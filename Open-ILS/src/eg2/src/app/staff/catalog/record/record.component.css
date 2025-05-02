@@ -1,5 +1,9 @@
 #marcEditor {
-  background-color: light-dark(hsla(223, 25%, 91%, 1), var(--bs-body-bg-alt));
+  background-color: hsla(223, 25%, 91%, 1);
+}
+
+[data-bs-theme="dark"] #marcEditor {
+  background-color: var(--bs-body-bg-alt);
 }
 
 .nav-tabs li h2 {

@@ -1,88 +1,182 @@
-<eg-string #successMsg text="Successfully Modified Item Notes" i18n-text></eg-string>
-<eg-string #errorMsg text="Failed To Modify Item Notes" i18n-text></eg-string>
+<eg-string #successMsg [text]="successMessage" i18n-text></eg-string>
+<eg-string #errorMsg [text]="errorMessage" i18n-text></eg-string>
 
 <ng-template #dialogContent>
-  <div class="modal-header">
-    <h4 class="modal-title">
-      <ng-container *ngIf="mode === 'create'">
-        <span i18n>Adding notes for {{copyIds.length}} item(s).</span>
-      </ng-container>
-      <ng-container *ngIf="mode === 'manage'">
-        <span i18n>Managing notes for item {{copy.barcode()}}</span>
-      </ng-container>
-      <span i18n></span>
-    </h4>
-    <button type="button" class="btn-close btn-close-white" 
-      i18n-aria-label aria-label="Close dialog" (click)="close()"></button>
-  </div>
-  <div class="modal-body">
-    <ng-container #editDialogContent *ngIf="mode === 'edit' && idToEdit; else manageDialogContent">
-      <eg-copy-notes-edit [recordId]="idToEdit" (doneWithEdits)="returnToManage()">
-      </eg-copy-notes-edit>
-    </ng-container>
-    <ng-template #manageDialogContent>
-      <div class="p-4 form-validated">
-        <ng-container *ngIf="mode === 'manage' && copy.notes().length">
-          <h4 i18n>Existing Notes</h4>
-          <div class="row mt-2 p-2" *ngFor="let note of copy.notes()">
-            <div class="col-lg-3">{{note.title()}}</div>
-            <div class="col-lg-5">{{note.value()}}</div>
-            <div class="col-lg-2">
-              <button type="button" class="btn btn-outline-info" (click)="editNote(note)" i18n>
-                Edit
-              </button>
-            </div>
-            <div class="col-lg-2">
-              <button type="button" class="btn btn-outline-danger"
-                (click)="removeNote(note)" i18n>Remove</button>
-            </div>
-          </div>
-          <hr/>
-        </ng-container>
+<eg-copy-things-dialog
+    [thingType]="thingType"
+    [copies]="copies"
+    [copyIds]="copyIds"
+    [batchWarningMessage]="batchWarningMessage"
+    [inBatch]="inBatch.bind(this)"
+    [onClose]="close.bind(this)"
+    [onApplyChanges]="applyChanges.bind(this)">
 
-        <h4 i18n>New Notes</h4>
-        <div class="row mt-2 p-2" *ngFor="let note of newNotes">
-          <div class="col-lg-3">{{note.title()}}</div>
-          <div class="col-lg-7">{{note.value()}}</div>
-          <div class="col-lg-2">
-            <button type="button" class="btn btn-outline-danger" (click)="removeNote(note)" i18n>
-              Remove
-            </button>
-          </div>
+  <h4 class="mt-4 border-bottom" i18n>New Item Note</h4>
+
+  <!-- New note form -->
+  <form class="row mt-3 px-0" id="new-note-form" ngNativeValidate>
+    <!-- Note Title -->
+    <div class="col-lg-4">
+      <label for="new-note-title" class="form-label" i18n>Title</label>
+      <textarea class="form-control" required rows="1" name="new-note-title"
+        id="new-note-title" aria-describedby="new-note-title-feedback"
+        (ngModelChange)="newNote.title($event)"
+        [ngModel]="newNote.title()" #newNoteTitle="ngModel" ngbAutofocus></textarea>
+        <div hidden id="new-note-title-feedback" class="invalid-feedback">
+          <span class="badge badge-danger" i18n>Title is required</span>
+        </div>
+    </div>
+
+    <!-- Note Content -->
+    <div class="col-lg-5">
+      <label for="new-note-value" class="form-label" i18n>Content</label>
+      <textarea class="form-control" required rows="2" name="new-note-value"
+        id="new-note-value" aria-describedby="new-note-value-feedback"
+        (ngModelChange)="newNote.value($event)"
+        [ngModel]="newNote.value()" #newNoteValue="ngModel"></textarea>
+        <div hidden id="new-note-value-feedback" class="invalid-feedback">
+          <span class="badge badge-danger" i18n>Content is required</span>
+        </div>
+    </div>
+
+    <!-- Note Options -->
+    <div class="col-lg-3 mt-4">
+      <div class="d-flex flex-wrap align-items-baseline justify-content-end">
+        <!-- Public flag -->
+        <div class="form-check mb-2 me-auto">
+          <input class="form-check-input" type="checkbox"
+            [ngModel]="newNote.pub() === 't' || newNote.pub() === true"
+            (ngModelChange)="newNote.pub($event ? 't' : 'f')"
+            id="new-note-pub" name="new-note-pub">
+          <label class="form-label form-check-label"
+            for="new-note-pub" i18n>
+            Public?
+          </label>
         </div>
 
-        <div class="row mt-2 p-2 rounded border border-success">
-          <div class="col-lg-12">
-            <div class="row">
-              <div class="col-lg-6">
-                <input type="text" class="form-control" [(ngModel)]="curNoteTitle"
-                  i18n-placeholder placeholder="Note title..."/>
-              </div>
-              <div class="col-lg-6">
-                <div class="form-check">
-                  <input class="form-check-input" type="checkbox"
-                    [(ngModel)]="curNotePublic" id="pub-check">
-                  <label class="form-label form-check-label" for="pub-check">Public Note</label>
-                </div>
-              </div>
-            </div>
-            <div class="row mt-3">
-              <div class="col-lg-9">
-                <textarea class="form-control" [(ngModel)]="curNote"
-                  i18n-placeholder placeholder="Enter note value..."></textarea>
-              </div>
-              <div class="col-lg-3">
-                <button type="button" class="btn btn-success" (click)="addNew()" i18n>Add Note</button>
-              </div>
-            </div>
-          </div>
-        </div>
+        <!-- Add button -->
+        <button type="button" class="btn btn-success"
+          (click)="addNew()" i18n>
+          Add New
+        </button>
       </div>
-    </ng-template>
-  </div>
+    </div>
+  </form>
 
-  <div class="modal-footer" *ngIf="mode !== 'edit'">
-    <button type="button" class="btn btn-secondary" (click)="close()" i18n>Cancel</button>
-    <button type="button" class="btn btn-success me-2" (click)="applyChanges()" i18n>Apply Changes</button>
+
+  <!-- Pending notes list -->
+<ng-container *ngIf="newThings && newThings.length">
+  <h4 class="mt-4 border-bottom" i18n>Pending Item Notes</h4>
+  <ul class="list-group list-group-flush">
+  <li class="list-group-item px-0 py-3 added" *ngFor="let note of newThings">
+    <div class="row">
+    <!-- Note Title -->
+    <div class="col-lg-4">
+      <textarea class="form-control" rows="1"
+        i18n-placeholder placeholder="Note Title..."
+        (ngModelChange)="note.title($event);"
+        [ngModel]="note.title()">
+      </textarea>
+    </div>
+
+    <!-- Note Content -->
+    <div class="col-lg-5">
+      <textarea class="form-control" rows="2"
+        i18n-placeholder placeholder="Note Content..."
+        (ngModelChange)="note.value($event);"
+        [ngModel]="note.value()">
+      </textarea>
+    </div>
+
+    <!-- Note Options -->
+    <div class="col-lg-3">
+      <div class="d-flex  d-flex flex-wrap align-items-baseline justify-content-end">
+        <!-- Public flag -->
+        <div class="form-check mb-2 me-auto">
+          <input class="form-check-input" type="checkbox"
+            [ngModel]="note.pub() === 't' || note.pub() === true"
+            (ngModelChange)="note.pub($event ? 't' : 'f');"
+            id="note-pub-{{note.id()}}">
+          <label class="form-label form-check-label"
+            for="note-pub-{{note.id()}}" i18n>
+            Public?
+          </label>
+        </div>
+
+        <!-- Remove button -->
+        <button type="button" class="btn-link btn-destroy"
+          (click)="removeNote(note)" i18n>
+          Remove
+        </button>
+      </div>
+    </div>
+    </div>
+  </li>
+</ul>
+</ng-container>
+
+  <ng-container *ngIf="!templateOnlyMode">
+  <h4 class="mt-4 border-bottom" i18n>Existing Item Notes</h4>
+
+  <!-- Existing notes list -->
+  <ul class="list-group list-group-flush">
+
+  <li class="list-group-item px-0 py-3" [ngClass]="note.isdeleted() ? 'deleted' : ''"
+    *ngFor="let note of inBatch() ? notesInCommon : (copies.length ? copies[0].notes() : [])">
+  <div *ngIf="!note.isnew()" class="row"> <!-- filter out pending notes on subsequent dialog opens -->
+    <!-- Note Title -->
+    <div class="col-lg-4">
+      <textarea class="form-control" rows="1"
+        i18n-placeholder placeholder="Note Title..."
+        (ngModelChange)="note.title($event); note.ischanged(true)"
+        [ngModel]="note.title()">
+      </textarea>
+
+      <!-- Creation date - only show in single mode -->
+      <div *ngIf="!inBatch() && !templateOnlyMode" class="ps-2 pt-2 text-muted" i18n>
+        Added: {{note.create_date() | date:'shortDate'}}
+      </div>
+    </div>
+
+    <!-- Note Content -->
+    <div class="col-lg-5">
+      <textarea class="form-control" rows="2"
+        i18n-placeholder placeholder="Note Content..."
+        (ngModelChange)="note.value($event); note.ischanged(true)"
+        [ngModel]="note.value()">
+      </textarea>
+    </div>
+
+    <!-- Note Options -->
+    <div class="col-lg-3">
+      <div class="d-flex flex-wrap align-items-baseline justify-content-end">
+        <!-- Public flag -->
+        <div class="form-check mb-2 me-auto">
+          <input class="form-check-input" type="checkbox"
+            [ngModel]="note.pub() === 't' || note.pub() === true"
+            (ngModelChange)="note.pub($event ? 't' : 'f'); note.ischanged(true)"
+            id="note-pub-{{note.id()}}">
+          <label class="form-label form-check-label"
+            for="note-pub-{{note.id()}}" i18n>
+            Public?
+          </label>
+        </div>
+
+        <!-- Remove button -->
+        <button *ngIf="!note.isdeleted()" type="button" class="btn-link btn-destroy"
+          (click)="removeNote(note)" i18n>
+          Remove
+        </button>
+        <button *ngIf="note.isdeleted()" type="button" class="btn-link btn-destroy"
+          (click)="undeleteNote(note)" i18n>
+          Undelete
+        </button>
+      </div>
+    </div>
   </div>
+  </li>
+  </ul>
+  </ng-container>
+
+</eg-copy-things-dialog>
 </ng-template>

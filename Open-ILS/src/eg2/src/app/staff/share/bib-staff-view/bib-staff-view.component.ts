@@ -5,6 +5,7 @@ import {BibRecordService, BibRecordSummary
 import {ServerStoreService} from '@eg/core/server-store.service';
 import {CatalogService} from '@eg/share/catalog/catalog.service';
 import {StaffCatalogService} from '@eg/staff/catalog/catalog.service';
+import { firstValueFrom, Observable } from 'rxjs';
 
 @Component({
     selector: 'eg-bib-staff-view',
@@ -70,21 +71,23 @@ export class BibStaffViewComponent implements OnInit {
     }
 
     loadSummary(): Promise<any> {
-        return this.bib.getBibSummary(
+        const summaryArgs: [number, number, boolean, number?] = [
             this.recId,
             this.staffCat.searchContext.searchOrg.id(),
-            true // isStaff
-        ).toPromise()
+            true, // isStaff
+        ];
+        if (this.staffCat.searchContext.currentLasso()) {
+            summaryArgs.push(this.staffCat.searchContext.currentLasso());
+        }
+        return firstValueFrom(this.bib.getBibSummary(...summaryArgs))
             .then(summary => {
                 this.summary = summary;
                 return summary.getBibCallNumber();
             });
     }
 
-    orgName(orgId: number): string {
-        if (orgId) {
-            return this.org.get(orgId).shortname();
-        }
+    orgName(itemCount: any): Observable<string> {
+        return this.cat.orgOrLassoName(itemCount);
     }
 
     iconFormatLabel(code: string): string {

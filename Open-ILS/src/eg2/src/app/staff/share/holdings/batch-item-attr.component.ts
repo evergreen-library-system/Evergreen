@@ -17,13 +17,10 @@ export interface BatchChangeSelection {
 @Component({
     selector: 'eg-batch-item-attr',
     templateUrl: 'batch-item-attr.component.html',
-    styles: [
-        '.header { background-color: var(--batch-item-attr-header-bg); }',
-        '.has-changes { background-color: var(--green-light); }'
-    ]
+    styleUrls: ['batch-item-attr.component.css', '../../cat/volcopy/copy-attrs.component.css']
 })
 
-export class BatchItemAttrComponent {
+export class BatchItemAttrComponent implements OnInit {
 
     // Main display label, e.g. "Circulation Modifier"
     @Input() label: string;
@@ -50,8 +47,13 @@ export class BatchItemAttrComponent {
     // Display only
     @Input() readOnly = false;
 
+    // when used in a template admin context; expect to use for styling
+    @Input() templateOnlyMode = false;
+
     // Warn the user when a required field has an empty value
     @Input() valueRequired = false;
+    requiredNotMet = false;
+    aValueIsUnset = false;
 
     // If true, a value of '' is considered unset for display and
     // valueRequired purposes.
@@ -80,21 +82,52 @@ export class BatchItemAttrComponent {
 
     constructor() {}
 
-    save() {
+    ngOnInit() {
+        this.checkValuesForCSS();
+    }
+
+    save($event?: Event) {
+        if ($event) {
+            $event.preventDefault();
+            $event.stopPropagation();
+        }
         this.hasChanged = true;
         this.editing = false;
+        this.checkValuesForCSS();
         this.changesSaved.emit(this.editValues);
+        this.focusLabel();
     }
 
-    cancel() {
+    cancel($event?: Event) {
+        if ($event) {
+            $event.preventDefault();
+            $event.stopPropagation();
+        }
         this.editing = false;
+        this.checkValuesForCSS();
         this.changesCanceled.emit();
+        this.focusLabel();
     }
 
-    clear() {
+    clear($event?: Event) {
+        if ($event) {
+            $event.preventDefault();
+            $event.stopPropagation();
+        }
         this.hasChanged = true;
         this.editing = false;
+        this.checkValuesForCSS();
         this.valueCleared.emit();
+        this.focusLabel();
+    }
+
+    focusLabel() {
+        setTimeout(() => {
+            // fieldset input[type="radio"]:checked for yes/no; label.edit-toggle for all others
+            // eslint-disable-next-line max-len
+            const input = document.querySelector(`.card:has(#label-${this.editInputDomId}) .edit-toggle, .card:has(#label-${this.editInputDomId}) fieldset input[type="radio"]:checked`) as HTMLElement;
+            input?.focus();
+        });
     }
 
     bulky(): boolean {
@@ -105,10 +138,26 @@ export class BatchItemAttrComponent {
         return Object.keys(this.labelCounts).length > 1;
     }
 
-    // True if a value is required and any value exists that's unset.
-    warnOnRequired(): boolean {
-        if (!this.valueRequired) { return false; }
+    checkValuesForCSS() {
+        this.aValueIsUnset = this.testAllValuesForUnset();
+        this.requiredNotMet = !!(this.valueRequired && this.aValueIsUnset && !this.templateOnlyMode);
+        /* console.debug('checkValuesForCSS for ' + this.label, {
+            'has-changes': !!this.hasChanged,
+            'required': !!(this.valueRequired && !this.templateOnlyMode),
+            'required-not-met': !!(this.valueRequired && this.requiredNotMet && !this.templateOnlyMode),
+            'requiredNotMet': !!this.requiredNotMet,
+            'required-met': !!(this.valueRequired && !this.requiredNotMet && !this.templateOnlyMode),
+            'unset': !!this.aValueIsUnset,
+            'templateOnlyMode': !!this.templateOnlyMode
+        });*/
+    }
 
+    warnOnRequired(): boolean {
+        this.checkValuesForCSS();
+        return this.requiredNotMet;
+    }
+
+    testAllValuesForUnset(): boolean {
         return Object.keys(this.labelCounts)
             .filter(key => this.valueIsUnset(key)).length > 0;
     }

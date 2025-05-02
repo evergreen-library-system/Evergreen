@@ -6,6 +6,7 @@ extern "C" {
 #endif
 
 /* Settings ------------------------------------------------------ */
+#define OILS_ORG_SETTING_API_TIMEOUT "auth.api_timeout"
 #define OILS_ORG_SETTING_OPAC_TIMEOUT "auth.opac_timeout"
 #define OILS_ORG_SETTING_STAFF_TIMEOUT "auth.staff_timeout"
 #define OILS_ORG_SETTING_TEMP_TIMEOUT "auth.temp_timeout"

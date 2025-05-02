@@ -1,0 +1,883 @@
+= RESTful API in Evergreen =
+:toc:
+
+== Introduction ==
+
+The below documentation describes the new RESTful API suite for Evergreen.
+
+This is an initial release of the foundation and infrastructure to support early adoption, providing a starting point to encourage further testing and integration. Additional API functionality will be included in a future release.
+
+== Terminology ==
+
+**OpenAPI**
+
+An industry standard https://swagger.io/specification/[API specification] managed by the Linux Foundation.
+
+**JSON Schema**
+
+An industry standard https://json-schema.org/specification[specification] for describing data structures shared between systems using JSON documents.
+
+**Operation ID**
+
+The unique identifier of an OpenAPI method served via a specific HTTP method and path.
+
+**Endpoint**
+
+The term used within the Evergreen OpenAPI Server to describe the functional response handler assigned to an OpenAPI Operation ID.
+
+**Endpoint Parameter**
+
+The description and specification of an OpenAPI input parameter that can be mapped to an internal method endpoint parameter.
+
+**Endpoint Response**
+
+The description and specification of a response structure that is returned from an endpoint.
+
+**Endpoint Set**
+
+A group of endpoints that can be configured with access using a single permission set. Analogous to the tag concept in OpenAPI.
+
+**Permission Set**
+
+A group of permissions that, when all are applied to an Evergreen user that has been configured as an API Integrator, allow access to an endpoint or endpoint set.
+
+**Rate Limit Definition**
+
+A combination of time interval and access attempt count that define the maximum average rate of access attempts allowed by a specific API Integrator, or from an IP address or address range, or globally for the Evergreen OpenAPI Server instance.
+
+**API Integrator**
+
+An Evergreen user that has been configured specifically for use in accessing the OpenAPI endpoints provided by the Evergreen OpenAPI Server.
+
+== Architecture ==
+
+=== Integrators ===
+
+Access is permitted to the OpenAPI server for those Evergreen user accounts that have been promoted to an Integrator account, and have had an additional password with the new api password type associated with them. These accounts do not need to have a known main password, nor do they need to have login type permissions other than API_LOGIN. Such accounts are effectively API-only accounts, and while they may be given some set of staff-like permissions in order to access necessary patron and transaction data, they do not need to have staff client or other elevated access to Evergreen.
+
+Today, promotion of an account to be an Integrator is managed using the `api_ctl` tool. The `api_ctl` command path to add a user as an Integrator is *integrator -> add -> USERNAME* and the command path to set the password for Integrator API login is *integrator -> load -> USERNAME -> password*. This can be accomplished in a single command directly from the command line:
+
+`$ api_ctl --command integrator add USERNAME password`
+
+which will then prompt for the API password to assign to the newly promoted user. A newly added Integrator is enabled by default. However, an Integrator promotion can be disable, re-enabled, or removed similarly:
+
+`$ api_ctl --command integrator disable USERNAME`
+
+`$ api_ctl --command integrator enable USERNAME`
+
+`$ api_ctl --command integrator remove USERNAME`
+
+More details on the integrator control functionality of the `api_ctl` tool can be found below.
+
+While it is possible to use any valid authentication token to request methods through the OpenAPI server, including those created through OPAC and Staff Client login, logging in through the OpenAPI server itself using the `/self/auth` path is additionally protected and the user must meet the following minimum requirements:
+
+* The user must have the API_LOGIN permission 
+* The user must be promoted as an Integrator 
+* That Integrator promotion must be enabled 
+* The Integrator must have an 'api'-type password 
+
+These restrictions are imposed by the open-ils.auth OpenSRF application, and are intended to prevent accidentally allowing OpenAPI access. A caveat to the foregoing is noted below, to facilitate convenient patron access to the OpenAPI server.
+
+=== Rate Limit Definitions ===
+
+Rate of access to each endpoint can be restricted by the use of Rate limit definitions. These simple rules consist of a limit interval and a limit count, where there must be no more than limit count requests over the preceding limit interval time.
+
+Each endpoint request is evaluated in the context of the user making the request and their IP address, the Rate limit definition attached to the endpoint or the default fallback limit, any Rate limit definitions attached to the endpoint set into which the endpoint is placed, and any Rate limit definitions that combine the user and IP address with the endpoint or relevant endpoint set.
+
+If any user or IP address related Rate limit definitions are configured for the request, the most restrictive of those is applied before allowing access. If no user or IP address related Rate limit definitions are configured, the most restrictive of the general endpoint and endpoint Set limits is used.
+
+=== Permission Sets ===
+
+Access to each API method is restricted based on the Evergreen permissions assigned to the user that has been promoted to Integrator. For flexibility and ease of configuration, these access permissions can be grouped into permission sets. These permission sets are then assigned to endpoints and endpoint set, described below, and the
+Integrator must have all of the permissions in at least one of the permission sets in effect for an endpoint in order to successfully call the API method.
+
+For example, there are two stock permission sets associated with the _self_ endpoint set, which includes the primary authentication API method located at the `/self/auth` path and methods that allow user self-service functionality. 
+
+One set, the _Self - standard permissions_ permission set, includes just the OPAC_LOGIN permission. This allows
+normal patron-type users that have been promoted to Integrator and have been given an API password to log into the OpenAPI server using Basic authentication. This user will log in with that separate password to access the self-service methods, or use the URL parameter login to supply a login type of "opac" with their main username and password credentials. Another set, the _Self - API only_ permission set, contains the new API_LOGIN and REST.api permissions and allows login and self-service requests only for Integrator users that have both of those new permission. They do not need to have the OPAC_LOGIN permission.
+
+As a more complicated example, there exists a stock API method at the path `/patron/:userid` which returns detailed user information on the user with an ID specified at the `:userid` placeholder. This method is in the patron-oriented _patron_ endpoint set which is protected by default using two permission sets, one containing the API_LOGIN, REST.api, and REST.api.patrons permissions, and the other containing the STAFF_LOGIN and VIEW_USER permissions. Additionally, an administrator may associate the endpoint with an endpoint-specific permission set, named _Custom patron retrieval_ for this example, containing REST.api and REST.api.patrons.detail.read permissions.
+
+Thus, there are three permission sets in effect for the `/patron/:userid` endpoint:
+
+* _Patrons - standard permissions_: STAFF_LOGIN, VIEW_USER 
+* _Patrons - API only_: API_LOGIN, REST.api, REST.api.patrons 
+* _Custom patron retrieval_: API_LOGIN, REST.api, REST.api.patrons.detail.read 
+
+The first permission set would be congruent with a normal Evergreen staff account accessing the OpenAPI server with a Staff Client authentication token, the second with an Integrator account that has been granted general patron-related API access, and the third with an Integrator account that has been granted specific access to that one API endpoint by having the REST.api.patrons.detail.read permission, but does not have general patron-related REST.api.patrons permission.
+
+NOTE: For convenience, it is possible to pass a login type parameter either using the URL parameter style login, or by adding the desired login type to the end of the Basic authentication string, separated from the username and password by a colon, before base64 encoding the data. This allows non-Integrator accounts to log into the OpenAPI server if they could otherwise log into Evergreen using a login type other than "api".
+
+If an authenticated account accessing this API has all of the permissions in any of those sets, then the API's logic is allowed to execute. Users are assigned permissions in the normal Evergreen way, by having the permission added to their account directly or by being made a member of a primary or secondary permission group which has the permission assigned to it.
+
+Once the permission to execute the API's logic has been established, the requesting account's normal permissions must still be applied to any underlying action. In this example, if the backend method that retrieves patron record detail requires the VIEW_USER permission be granted to the requestor at the home library of the patron record, that must still hold in order for the API to return the requested data.
+
+==== Default Permission Groups ====
+
+The new, additional permission groups meant to support API access for Integrator accounts (that is, via the "api-only" permission sets) look like this:
+
+[width="100%",cols="10%,46%,44%",options="header",]
+|===
+|*id* |*perm_group* |*permissions*
+|25 |API Integrator |API_LOGIN ; REST.api
+|26 |Patron API |REST.api.patrons
+|27 |Organizational Unit API |REST.api.orgs
+|28 |Bib Record API |REST.api.bibs
+|29 |Item Record API |REST.api.items
+|30 |Holds API |REST.api.holds
+|31 |Debt Collection API |REST.api.collections
+|32 |Course Reserves API |REST.api.courses
+|===
+
+=== Endpoints and Endpoint Sets ===
+
+Evergreen's OpenAPI Server exposes specific business logic functions and data access pathways as API endpoints.
+
+Each of these endpoints present a single backend function, usually a way to request particular data or initiate a specific action, by translating OpenAPI paths, HTTP methods, and HTTP headers and parameters to handler functions and their necessary parameters.
+
+These handler functions may be either OpenSRF service and method pairs, or when some amount of pre- or post-processing of an OpenSRF method call is required, a Perl module and optional sub name that supplies any necessary additional logic.
+
+Once the handler has run, the requested output is translated to an OpenAPI response, normally as JSON or XML formatted data. The requests may make use of parameter data passed via HTTP path components or query parameters, HTTP cookies or headers, or the HTTP request body.
+
+Endpoints can be thought of as OpenAPI wrappers to existing Evergreen functionality implemented in OpenSRF.
+
+Structurally, each endpoint consists of the following information:
+
+* _Operation ID_ - The unique identifier for the endpoint. 
+* _Path_ - The HTTP path, which may include contextual information such as placeholders for identifiers or behavioral options, that makes up part of the URL used to address the service through a standard web server. 
+* _HTTP Method_ - The HTTP verb used to signal the type of action being requested; one of `get`, `put`, `post`, `delete`, and `patch`. 
+* _Security method_ - How the OpenAPI server should expect to receive authentication and authorization credentials. 
+** The specialized authentication endpoint can use Basic and Parameter Security. 
+** All other endpoints default to Bearer Authentication, though all of Bearer, Cookie, and Parameter are generally usable for most endpoints. 
+* _Summary_ - A textual description of the purpose of the endpoint. 
+* _Method Source_ - Either an OpenSRF application name, or Perl package name. 
+* _Method Name_ - Either an OpenSRF method from the OpenSRF application, or Perl subroutine from the Perl package. 
+* _Method Parameters_ - A space-separated mapping from the available named OpenAPI parameters and environmental data to the positional parameters of the backend OpenSRF method or Perl subroutine. 
+* _Active flag_ - Controls general access to the configured endpoint; when active, the endpoint is exposed through OpenAPI. 
+* _Default Rate Limit Definition_ - Rate limit definition to apply to the endpoint, unless a context-specific user rate limit or IP address rate limit is configured. 
+** The authentication endpoints use the "100 requests per second" rate limit by default. 
+** All other endpoints default to "1 request per second per user" if the user is known to the server at request time, or to "1 request per second per IP address" if the IP address is available to the server at request time, or "1 request per second globally" if neither are available at the time of the request. 
+
+These endpoints can then be gathered together into logical groups, called endpoint sets, to simplify access configuration and documentation. Endpoint sets can supply permission sets and rate limit definitions for endpoints that they contain. For permission sets, if an endpoint is in more than one endpoint set, all mapped permission sets are applied to the endpoint and successful authorization against any of the permission sets will allow access.
+
+Rate limit definition selection is more complicated, but fully predictable. 
+
+First, all definitions related to the relevant endpoint sets (and the specific endpoint) that are attached with the context of the user or their IP address, if any, are compared and the strictest rate limit definition is applied. If there are no user or IP address contextual rate limit definitions in place, the strictest rate limit definition attached to the endpoint or any of its endpoint set is applied to the request, first against the user for the endpoint if the user is known, then against the IP address for the endpoint if the IP address is known, or finally, globally against the endpoint.
+
+==== Endpoint Parameters ====
+
+Because OpenSRF and OpenAPI have different calling conventions as well as different response format and structure, it is necessary to map between these two programmatic interfaces. Where possible, the OpenAPI server translates between simple JSON Objects and Evergreen fieldmapper objects automatically, validating both input and output for validity and correctness.
+
+Parameter mapping is configured by describing the expected incoming parameter layout in terms of input type, location, and name. Parameters to OpenAPI endpoints can be passed as part of the URL path, as URL query parameters, as HTTP headers, or as cookies.
+
+The datatype of each parameter is specified as either a JSON schema datatype, with the ability to specify an expected element type for arrays or expect semantic format for scalar types, or as an Evergreen fieldmapper class hint.
+
+**Supported JSON schema datatypes**
+
+* object 
+* array 
+* boolean 
+* string 
+* integer 
+* number 
+
+**Supported optional JSON schema scalar semantic format descriptors**
+
+* String formats 
+** date-time 
+** date 
+** time 
+** interval 
+** email 
+** uri 
+** identifier 
+** password 
+* Number formats 
+** money 
+** float 
+* Integer format 
+** int64 
+
+Additionally, all Fieldmapper class hints can be used as parameter types, and the OpenAPI server will validate incoming JSON Objects to confirm that they contain all required properties, and do not contain any that are not defined by the Fieldmapper IDL.
+
+In addition to the location, type, and format configuration, OpenAPI parameters can be marked as required, which will be validated by the OpenAPI server, and can define a default value to be passed when non-required parameters are not supplied by the user.
+
+Once parameters have been described, they are available for mapping into OpenSRF positional parameters. This OpenSRF calling convention mapping is configured at the endpoint level. The named OpenAPI parameters are accessible in two ways:
+
+* Via the `param` namespace, which supplies the last instance of the parameter processed when the parameter is expected to carry one value and a scalar should be passed to the backend method. For example `param.userid` might be the userid value extracted from a URL path placeholder. 
+* Via the `every_param` namespace, if a parameter is expected to be repeatable and all values should be passed to the backend method. For example `every_param.org` might be all values from a repeatable `org` URL query parameter. 
+
+In addition to the named parameters provided directly to the OpenAPI server as described above and accessed through the `param` and `every_param` namespaces, several built-in reserved parameter names are available to all non-authentication methods:
+
+* `eg_auth_token` - The authentication token provided with the HTTP request, usually via the authentication header as a Bearer token. 
+* `eg_user_id` - The user id of the authenticated user. 
+* `eg_user_obj` - The full user object of the authenticated user. 
+* `req.json` - The HTTP request body, parsed as JSON and provided as a Perl data object to the backend method. 
+* `req.text` - The HTTP request body, as plain text. 
+
+Finally, quoted string literals can be used as mapped positional parameters in cases where the backend method requires some value, but there is no need to make the parameter available from end-user input.
+
+Configured OpenAPI parameters are mapped to backend parameters in a space separated list associated with the endpoint, which also defines the type, manner, and location of the backend method. For example, the "/self/me" path that retrieves the user record for the logged in user, and the "/patron/\{userid}" path that attempts to retrieve an arbitrary user record, subject to all API access and Evergreen permission restrictions, use the same backend method, and substantively differ only in their parameter mapping:
+
+* /self/me: `eg_auth_token eg_user_id` 
+* /patron/\{userid}: `eg_auth_token param.userid` 
+
+==== Endpoint Responses ====
+
+Endpoint responses are described in a very similar way to parameters, with optional output validation and optional Fieldmapper class hint or JSON Schema type information. However, they differ in that responses cannot have a default value, and are also described by their HTTP response status code (200, 401, 404, 500, etc) and message, as well as their expected MIME content type. The content type will generally be either `application/json or text/plain`, though, for example, the provided bibliographic record retrieval endpoint also offers both `application/xml` and `application/octet-stream` to support alternate negotiated formats.
+
+In order to support varying response formats, the OpenAPI server investigates the HTTP Accept header for each request and determines the best response type-match to the requested content type; this is called the resolved content format. The resolution of the best content type to respond with based on the Accept header is performed per the HTTP specification, taking into account the "q" weight parameter as well as the completeness (or, use of wildcards) for the types. This is made available to the parameter mapping function with the special reserved name `eg_req_resolved_content_format`, and when using a Perl module and method rather than an OpenSRF service and method, to the handler method via the `stash()` function of the invocant, which is passed as its first method parameter.
+
+The default resolved content format is assumed to be `json` to support JSON Schema and Fieldmapper object output which will be the most common result. The high-level types that can be detected and used are:
+
+* json 
+* text 
+* html 
+* xml 
+* binary 
+
+For those responses that return JSON data, either validated or unvalidated, OpenAPI server supports an `Accept` header extension, provided using the HTTP-standard `Accept` header extension mechanism, which allows an API consumer to request slim responses stripped of all properties that contain a `null` value. As a peer to the normal "q" weight parameter in the `Accept` header, a "filterNulls" parameter with a true value ("t" or "1") will enable this mode.
+
+This "filterNulls" behavioral modifier can also be supplied via a new HTTP header called `X-EG-OpenAPI-Options`.
+
+Adding this option through either header can reduce the size of most responses that contain Fieldmapper objects by more than 50%.
+
+==== Default Endpoint Set ====
+
+The default endpoint set (with endpoints listed for convenience) to permission set mapping is:
+
+[width="100%",cols="18%,37%,45%",options="header",]
+|===
+|*endpoint_set* |*endpoints* |*perm_sets*
+|orgs a|
+retrieveFullOrgTree
+
+retrieveOneOrg
+
+retrieveOrgList
+
+retrievePartialOrgTree
+
+a|
+"Orgs - API only" (API_LOGIN, REST.api, REST.api.orgs)
+
+"Orgs - standard permissions" (OPAC_LOGIN)
+
+|collections a|
+collectionsPatronsOfInterest
+
+collectionsPatronsOfInterestWarning
+
+a|
+"Collections - API only" (API_LOGIN, REST.api, REST.api.collections)
+
+"Collections - standard permissions" (STAFF_LOGIN, VIEW_USER)
+
+|holds a|
+retrieveHold
+
+retrieveHoldPickupLocations
+
+a|
+"Holds - API only" (API_LOGIN, REST.api, REST.api.holds)
+
+"Holds - standard permissions" (STAFF_LOGIN, VIEW_USER)
+
+|self a|
+authenticateUser
+
+cancelSelfHold
+
+checkinSelfCirc
+
+logoutUser
+
+renewSelfCirc
+
+requestSelfCirc
+
+requestSelfHold
+
+retrieveSelfCirc
+
+retrieveSelfCircHistory
+
+retrieveSelfCircs
+
+retrieveSelfHold
+
+retrieveSelfHolds
+
+retrieveSelfProfile
+
+retrieveSelfXact
+
+retrieveSelfXacts
+
+selfActivePenalties
+
+selfPenalty
+
+selfUpdateParts
+
+updateSelfHold
+
+a|
+"Self - API only" (API_LOGIN, REST.api)
+
+"Self - standard permissions" (OPAC_LOGIN)
+
+|courses a|
+activeCourses
+
+activeRoles
+
+retrieveCourse
+
+retrieveCourseMaterials
+
+retrieveCourseUsers
+
+a|
+"Courses - API only" (API_LOGIN, REST.api)
+
+"Courses - standard permissions" (STAFF_LOGIN)
+
+|patrons a|
+cancelPatronHold
+
+checkinPatronCirc
+
+collectionsGetPatronDetail
+
+collectionsPutPatronInCollections
+
+collectionsRemovePatronFromCollections
+
+patronATEvent
+
+patronATEvents
+
+patronActiveMessages
+
+patronActivePenalties
+
+patronActivityLog
+
+patronMessage
+
+patronMessageArchive
+
+patronMessageUpdate
+
+patronPenalty
+
+renewPatronCirc
+
+requestPatronCirc
+
+requestPatronHold
+
+retrievePatronCirc
+
+retrievePatronCircHistory
+
+retrievePatronCircs
+
+retrievePatronHold
+
+retrievePatronHolds
+
+retrievePatronProfile
+
+retrievePatronXact
+
+retrievePatronXacts
+
+searchPatrons
+
+updatePatronHold
+
+verifyUserCredentials
+
+a|
+"Patrons - API only" (API_LOGIN, REST.api, REST.api.patrons)
+
+"Patrons - standard permissions" (STAFF_LOGIN, VIEW_USER)
+
+|items a|
+createItem
+
+deleteItem
+
+newItems
+
+retrieveItem
+
+updateItem
+
+a|
+"Items - API only" (API_LOGIN, REST.api, REST.api.items)
+
+"Items - standard permissions" (OPAC_LOGIN)
+
+|bibs a|
+bibDisplayFields
+
+createOneBib
+
+deleteOneBib
+
+retrieveOneBib
+
+retrieveOneBibHoldings
+
+updateBREParts
+
+updateOneBib
+
+a|
+"Bibs - API only" (API_LOGIN, REST.api, REST.api.bibs)
+
+"Bibs - standard permissions" (OPAC_LOGIN)
+
+|===
+
+== Output Filtering ==
+
+Available properties on Fieldmapper object output can be restricted through the use of several Library and User settings. These settings define whitelisted and blacklisted properties, with blacklisted property removal taking precedence over whitelisted property inclusion, where different settings conflict.
+
+=== API-global property filtering configuration ===
+
+The content of these settings is a comma-separated list of values, which are made up of the Fieldmapper class hint and the specific Fieldmapper property to be addressed. For example, to change the visibility of the
+Date of Birth column from the `actor.usr table`, one would add `au.dob` to the appropriate setting value, where "au" is the Fieldmapper class hint for the class representing the actor.usr table in the database, and "dob" is the Fieldmapper property representing, and column name, which holds the date of birth data.
+
+Whitelisting one or more properties on a Fieldmapper class will cause all other properties to be redacted by setting their values to `null`. Blacklisting one or more properties will cause only those named properties to be redacted in this way.
+
+Library settings are evaluated in the context of the Integrator user's home library, and are inheritable from parent locations in the same manner as all other Library settings. Two Library settings are for
+API-global use:
+
+* REST.api.whitelist_properties - Allow a particular set of properties, and only those properties, to be delivered to the Integrator across all API endpoints. 
+* REST.api.blacklist_properties - Disallow a particular set of properties to be delivered to the Integrator across all API endpoints. 
+
+User settings can also be used to add Integrator-specific whitelist and blacklist rules. To apply API-global, Integrator-specific properties restrictions, two new stock User Setting Types are available, with the same name and function as the Library settings above. Because these are user-specific, administrators can provide specific Integrator accounts access to more data with more whitelisted properties, or further restrict access by adding additional blacklist properties.
+
+=== Endpoint specific property restrictions ===
+
+In addition to the API-global Library and User settings, administrators can create new Organizational Unit Setting Types (AKA Library Setting Types) and User Setting Types through the Server Administration interface. Setting types must be named following a specific pattern. The setting types must start with the string `REST.api.whitelist_properties.` or `REST.api.blacklist_properties.` for whitelisting or blacklisting respectively -- note the period -- and end with the endpoint's Operation ID. For example, if an administrator would like to restrict the output of the `searchPatron` endpoint so that it only returns the idof the patron, and the client is expected to retrieve the full patron record separately, they could configure following:
+
+* Create a new Organizational Unit Setting Type with the name: `REST.api.whitelist_properties.searchPatron`
+* Set the value of the new Library Setting to `au.id` at the top of the Organizational hierarchy in the Library Settings Editor. 
+
+User Setting Types can be created through the Server Administration interface, as well. However, because there is no Staff Client interface for general User Setting maintenance, the `api_ctl` tool, discussed below, must be used to configure Integrator-specific whitelist and blacklist rules. Integrator-specific setting types are created automatically by `api_ctl` if they do not already exist for a particular endpoint, so administrators are not required to create User Setting Types by hand when using the `api_ctl` tool.
+
+=== Applicability and scope ===
+
+Both whitelist and blacklist settings can be used at the same time, though the one primary case for this would be to add a property to a more specific blacklist when it is already present on a general whitelist. This may be useful in the case where general API access should allow retrieval of a particular piece of information, but a specific integration should not provide this information because it is likely to be visible through some third party interface if it is delivered to the client application.
+
+This output property restriction mechanism depends upon Evergreen's knowledge of the Integrator account making the request. In practice this means that all endpoints with the exception of the primary authentication endpoint, which only delivers an authentication token, will be protected using this feature. However, if local, custom endpoints are configured for an Evergreen instance that do not use the built-in security mechanisms, they cannot make use of this property restriction feature.
+
+== OpenAPI server configuration ==
+
+As mentioned above regarding the promotion of normal Evergreen user accounts to API Integrators, a new command line tool, called `api_ctl`, is available to configure and control the OpenAPI backend setup.
+
+This tool presents a text menu-driven interface for administrators to configure the backend. In many situations, the tool can also be used with direct command line parameters when the administrator knows the menu path they would normally take to effect the desired configuration change.
+
+A step-by-step example of this process is given below in the section xref:integrations:restful_api.adoc#adding_endpoints_example[Example: Adding endpoints to Evergreen’s OpenAPI server].
+
+Once the desired configuration changes have been made, all instances of the API server must be restarted in order to load the new configuration.
+
+=== Menu hierarchy ===
+
+There are several standard options available at most levels of the menu hierarchy:
+
+* top - go to the top level of the command hierarchy 
+* back - go "up" one level in the command hierarchy 
+* show - display the details of the currently loaded context configuration objects 
+* details - toggle whether additional information about the objects configured by the current hierarchical command set is shown with the show command 
+* quit - leave the tool 
+
+There are common commands available for many objects that can be controlled through the api_ctl interface. Generally, objects can be listed, added, edited, and removed with menu options that are:
+
+* list - Show a summary list of the objects of the type controlled by the current level of the menu hierarchy. 
+* load - Set the current context object to be configured, based on the current level of the menu hierarchy. 
+* unload - Unset the current context object the type of which is based on the current level of the menu hierarchy. 
+* add - Add a new object of the type controlled by the current level of the menu hierarchy. 
+* edit - Edit the current context object controlled by the current level of the menu hierarchy. 
+* remove - Remove an object controlled by the current level of the menu hierarchy. 
+
+You can see all options available at the current level of the option hierarchy by pressing the tab key.
+
+The layout of the menu hierarchy when started without command line options is as follows:
+
+* api - Control API endpoint configuration 
+** endpoints - Configure endpoints 
+*** list - List all endpoints 
+*** load - Set the current context endpoint 
+*** unload - Unset the current context endpoint 
+*** add 
+*** edit 
+*** remove 
+*** activate - Activate an inactive endpoint 
+*** deactivate - Deactivate an active endpoint 
+*** parameters - Configure the Parameters of the context endpoint 
+**** list - List the OpenAPI Parameters of the context endpoint 
+**** add 
+**** edit 
+**** remove 
+*** responses - Configure the Response structure of the context endpoint 
+**** list - List all Responses configured for the context endpoint 
+**** add 
+**** edit 
+**** remove 
+*** sets - Add and remove endpoint Set mappings for the context endpoint 
+**** list - List the endpoint set to which the endpoint is assigned 
+**** add - Add the context endpoint to an endpoint Set 
+**** remove - Remove the context endpoint from an endpoint Set 
+*** perm_sets - Manage permission sets assigned to the context endpoint 
+**** list - List all permission sets assigned to the context endpoint 
+**** add - Add a permission set to allow access to the context endpoint 
+**** remove - Remove an assigned permission set from the context endpoint 
+*** rate_limits - Used to manage the endpoint-specific rate-limiting configuration for the context endpoint 
+**** ip_address - Manage IP address-based rate limiting 
+***** list 
+***** add 
+***** edit 
+***** remove 
+**** integrator - Manage Integrator-based rate limiting 
+***** list 
+***** add 
+***** edit 
+***** remove 
+** sets - Configure endpoint sets
+*** list - List all endpoint sets
+*** load - Set the current context endpoint set
+*** unload - Unset the current context endpoint set
+*** add 
+*** edit 
+*** remove 
+*** activate - Activate an inactive endpoint set 
+*** deactivate - Deactivate an active endpoint set 
+*** endpoints - Manage endpoints mapped into the current context endpoint set 
+**** list - List all endpoints in the current context endpoint set 
+**** add - Add an endpoint to the current context endpoint set 
+**** remove - Remove an endpoints from the current context endpoint set 
+*** perm_sets - Manage permission sets assigned to the context endpoint set 
+**** list - List all permission sets assigned to the context endpoint set 
+**** add - Add a permission set to allow access to the context endpoint set 
+**** remove - Remove an assigned permission set from the context endpoint set 
+*** rate_limits Used to manage the endpoint set-wide rate-limiting configuration for the context endpoint set 
+**** ip_address - Manage IP address-based rate limiting for the endpoint set 
+***** list 
+***** add 
+***** edit 
+***** remove 
+**** integrator - Manage Integrator-based rate limiting for the endpoint set 
+***** list 
+***** add 
+***** edit 
+***** remove 
+* integrator - Manage Integrator-promoted Evergreen user accounts 
+** list - List all integrators 
+** load - Set the current context Integrator 
+** unload - Unset the current context Integrator 
+** add - Promote an Evergreen user account to an API Integrator account 
+** remove - Remove the Integrator promotion from an Evergreen user account 
+** enable - Enable a disabled Integrator for API login 
+** disable - Disable an enabled Integrator for API login 
+** password - Set the API-specific password for the context integrator 
+** permissions - Manage the user-specific permissions granted to an Integrator 
+*** list - List the permissions granted to the current context Integrator 
+*** add - Add a permission to the Integrator 
+*** remove - Remove a permission from the Integrator 
+** groups - Manage the Secondary Permission Groups to which an Integrator
+belongs 
+*** list - List the current context Integrator's Secondary Permission Groups 
+*** add - Add the Integrator to a Secondary Permission Group 
+*** remove - Remove the Integrator from a Secondary Permission Group 
+** global_property_whitelist - Manage the Integrator-specific, API-global Fieldmapper property whitelist for an Integrator 
+*** list - Show the current Integrator-specific, API-global whitelist 
+*** set - Edit the current Integrator-specific, API-global whitelist 
+*** remove - Remove the current Integrator-specific, API-global whitelist 
+** global_property_blacklist - Manage the Integrator-specific, API-global Fieldmapper property blacklist for an Integrator 
+*** list - Show the current Integrator-specific, API-global blacklist 
+*** set - Edit the current Integrator-specific, API-global blacklist 
+*** remove - Remove the current Integrator-specific, API-global blacklist 
+** endpoint_property_whitelist - Manage the Integrator-specific, endpoint-specific Fieldmapper property whitelists for an Integrator 
+*** list - List the current endpoint-specific whitelist 
+*** add - Add one endpoint-specific whitelist 
+*** edit - Edit one endpoint-specific whitelist 
+*** remove - Remove one endpoint-specific whitelist 
+** endpoint_property_blacklist - Manage the Integrator-specific,
+endpoint-specific Fieldmapper property blacklists for an Integrator 
+*** list - List all current endpoint-specific blacklist 
+*** add - Add one endpoint-specific blacklist 
+*** edit - Edit one endpoint-specific blacklist 
+*** remove - Remove one endpoint-specific blacklist 
+* control 
+** rate_limit - Manage rate limit definitions 
+*** list - List all rate limit definitions 
+*** load - Set the current context rate limit definition 
+*** unload - Unset the current context rate limit definition 
+*** add 
+*** edit 
+*** remove 
+** perm_sets - Manage permission sets 
+*** list - List all permission sets 
+*** load - Set the current context permission set 
+*** unload - Unset the current context permission set 
+*** add 
+*** edit 
+*** remove 
+*** permissions - Manage the permissions attached to the current context
+permission set 
+**** list - List all permissions attached to the current context permission set 
+**** add - Add a permission to the current context permission set 
+**** remove - Remove a permission from the current context permission set 
+
+== Testing and Using the API ==
+
+The Evergreen OpenAPI endpoints are not meant for use by humans directly in a browser URL bar, though it does use the same underlying protocols and mechanisms as a user-oriented interface. Instead, it is meant for programmatic access using standard OpenAPI calling semantics, as described by https://swagger.io/docs/specification/v3_0/about/[https://swagger.io/docs/specification/v3_0/about/].
+
+The way OpenAPI clients and servers work together in Evergreen, through this development specifically, is as follows:
+
+. The server software produces an API specification document in JSON or YAML. This is available at https://<hostname>/openapi3/v0 on any fully installed instance of this development. 
+. The client software consumes that specification document in order to understand what API calls are available, how it should send parameter data to the API calls, and what the format of the output of an API call will look like. 
+
+There are standard tools to automate much of the client-side work, but the result of creating a functioning OpenAPI client will be an application making HTTP requests.
+
+There are many OpenAPI library generators available for use by developers for most common client programming languages. Among them are:
+
+* For general use:
+** https://openapi-generator.tech/[OpenAPI Generator] 
+** https://swagger.io/tools/swagger-codegen/[API Code & Client Generator | Swagger Codegen] 
+** OpenAPIs.org https://tools.openapis.org/categories/sdk.html[SDK] generator listing 
+* Perl client libraries 
+** https://metacpan.org/pod/OpenAPI::Client[OpenAPI::Client - A client for talking to an Open API powered server - metacpan.org] 
+
+=== Authentication and authorization ===
+
+Obtaining an Evergreen auth token is accomplished by sending an HTTP *GET* request to the `/self/auth` path with the appropriate credentials.
+
+The credential parameter names are described in the API specification document. They can be passed using either
+
+. A standard HTTP Basic authorization header (with an optional third component for the login type); or 
+. Through query parameters with the names `u` for username, `p` for password, and `t` for login type. 
+
+Using the standard HTTP content negotiation `Accept` header, the client can ask for the token to be delivered as either plain text, which is useful for tasks like direct testing and high-level shell scripting, or as JSON data, which is the default and is usually better for use by actual client applications.
+
+The output of this request, which is a standard Evergreen auth token used by all authenticated client code in Evergreen, is then used in a standard HTTP Bearer authentication header to identify the session in later requests. For ease of testing and some added flexibility, the auth token may also be passed in the URL as a query parameter called `ses`, or in either of the modern Evergreen-standard cookies called `eg.auth.token` and `ses`, or the new, Evergreen OpenAPI-specific cookie called `eg.api.token`.
+
+=== Other testing tools ===
+
+Administrators can install Swagger-UI visualization tools so that developers can see the list of endpoints. These tools make use of the API specification document to assist with authorization and help the user authenticate with the API.
+
+NOTE: The JSON Schema is very large, and tends to cause the both locally hosted demonstration Swagger-UI visualization tools and the free editor hosted at editor.swagger.io to hang. This development intentionally creates a run-time translation mapping between Evergreen's Fieldmapper data structures that describe Evergreen data layout and standard JSON Schema object definitions, and there are many hundreds of object types that reference each other.
+
+The web-based Swagger-UI editor and visualization tools are not robust or sophisticated enough to handle such a large and complex component schema. This is a limitation of the basic demo Swagger tools. True client applications do not try to render the full JSON Schema, are written to be robust and correct, and are not expected to have these sorts of issues if they are designed well.
+
+=== API Versioning ===
+
+Evergreen's OpenAPI support establishes a framework for clients to access and manipulate Evergreen data as well as a set of predefined endpoints. Consequently, additional endpoints are expected to be added over time. Like any API, the definitions of endpoints are subject to change, especially as the number of clients using the endpoints grows. An API version stamp in the path component of the base URL will be used to signal whether breaking changes have been introduced in the API. The initial release of the API sets the version as `v0` (i.e., `https://<hostname>/openapi3/v0`). This will get incremented whenever backwards-incompatible changes get made to existing endpoint or if changes to core Fieldmapper IDL classes could break clients.
+
+[[adding_endpoints_example]]
+== Example: Adding endpoints to Evergreen's OpenAPI server ==
+
+This demonstration makes use of the https://github.com/EquinoxOpenLibraryInitiative/evg-api-explorer[Evergreen API Explorer], a Vue-based OpenSRF API exploration tool created at Equinox as a replacement for the original docgen.xsl OpenSRF API documentation publishing mechanism.
+
+=== User Id by barcode or username === 
+
+Using the Evergreen API Explorer, we can see that the open-ils.actor application provides several methods that may suit our purpose here.
+
+image::restful_api/api_explorer.png[Evergreen API Explorer]
+
+The parameter documentation is not great for any of these, but we can see where to find the underlying code by expanding the block.
+
+image::restful_api/block_expanded.png[Expand the block to view details]
+
+The implementation for `open-ils.actor.user.retrieve_id_by_barcode_or_username` is in the OpenILS::Application::Actor Perl module, in the sub named `retrieve_usr_id_via_barcode_or_usrname`. Using this information, we can see that the parameters expected by the OpenSRF method are an authentication token, an optional barcode, and an optional username.
+
+image::restful_api/expected_parameters.png[Example of expected parameters]
+
+We also see that the method will return either an numeric user id, or an ILS Event object upon error or permission restriction.
+
+image::restful_api/method_details.png[Example of method details]
+
+Using this information, we can immediately provide RESTful OpenAPI endpoints to return a user id by either barcode or username simply by
+wrapping the OpenSRF method directly. We can either insert the necessary
+endpoint configuration directly into the database, or use the api_ctl
+tool to configure the new endpoints.
+
+.Direct SQL configuration
+[source, postgresql]
+----
+BEGIN;
+
+INSERT INTO openapi.endpoint (
+ operation_id, path, http_method,
+ summary,
+ method_source, method_name,
+ method_params
+) VALUES (
+ 'patronIdByCardBarcode', '/patrons/by_barcode/:barcode/id', 'get',
+ 'Retrieve patron id by barcode',
+ 'open-ils.actor',
+ 'open-ils.actor.user.retrieve_id_by_barcode_or_username',
+'eg_auth_token param.barcode'
+);
+
+INSERT INTO openapi.endpoint_param (endpoint,name,in_part,schema_type,required) VALUES
+('patronIdByCardBarcode','barcode','path','string',TRUE);
+
+INSERT INTO openapi.endpoint_response (endpoint,schema_type) VALUES
+('patronIdByCardBarcode','integer');
+
+INSERT INTO openapi.endpoint (
+ operation_id, path, http_method,
+ summary,
+ method_source, method_name,
+ method_params
+) VALUES (
+ 'patronIdByUsername', '/patrons/by_username/:username/id', 'get',
+ 'Retrieve patron id by username',
+ 'open-ils.actor',
+ 'open-ils.actor.user.retrieve_id_by_barcode_or_username',
+'eg_auth_token "" param.username'
+);
+
+INSERT INTO openapi.endpoint_param (endpoint,name,in_part,schema_type,required) VALUES
+('patronIdByUsername','username','path','string',TRUE);
+
+INSERT INTO openapi.endpoint_response (endpoint,schema_type) VALUES
+('patronIdByUsername','integer');
+
+INSERT INTO openapi.endpoint_set_endpoint_map (endpoint, endpoint_set)
+ SELECT operation_id, 'patrons' FROM openapi.endpoint WHERE operation_id like 'patronIdBy%';
+
+COMMIT;
+----
+
+.api_ctl configuration
+[source, console]
+----
+$ api_ctl -- api endpoints add
+ # ... supply information about patronIdByCardBarcode endpoint, as above
+API Endpoint actions: parameters
+API Endpoint Parameter actions: add
+ # ... supply information about patronIdByCardBarcode path parameter
+API Endpoint Parameter actions: back
+API Endpoint actions: responses
+ # ... supply information about patronIdByCardBarcode success response
+API Endpoint Responses actions: back
+API Endpoint actions: sets
+API Endpoint Assigned Sets actions: add
+API Set: patrons
+API Endpoint Assigned Sets actions: back
+API Endpoint actions: add
+ # ... supply information about patronIdByUsername endpoint
+API Endpoint actions: parameters
+API Endpoint Parameter actions: add
+ # ... supply information about patronIdByUsername path parameter
+API Endpoint Parameter actions: back
+API Endpoint actions: responses
+ # ... supply information about patronIdByUsername success response
+API Endpoint Responses actions: back
+API Endpoint actions: sets
+API Endpoint Assigned Sets actions: add
+API Set: patrons
+API Endpoint Assigned Sets actions: quit
+----
+
+=== User Object by barcode or username ===
+
+Likewise, we can use just a small amount of additional code to create an endpoint to return the full user object in the same format as is returned by the `/patron/:id` endpoint path. As this new method will be a stock endpoint, we will add it to the built-in OpenILS::OpenAPI::Controller::patron Perl module, but it can live anywhere that the Perl interpreter can find modules.
+
+image:restful_api/create_endpoint.png[Creating an endpoint]
+
+The OpenILS::OpenAPI::Controller module namespace contains many endpoint examples and helper methods that are useful for the creation of OpenAPI endpoints.
+
+The parameters passed to the handler functions are exactly those that are defined for the OpenAPI endpoint, via its parameter list, following an invocant passed in the first parameter position. The effective invocant is the active Mojolicious Controller object. Extensive https://docs.mojolicious.org/Mojolicious[[documentation] on the https://docs.mojolicious.org/Mojolicious/Controller[Mojolicious Controller] is available with the Mojolicious Perl module.
+
+And, as before, we can then register the new endpoints with the OpenAPI server either using direct SQL or the api_ctl tool.
+
+.Direct SQL configuration
+[source, postgresql]
+----
+BEGIN;
+
+INSERT INTO openapi.endpoint (
+ operation_id, path, http_method,
+ summary,
+ method_source, method_name,
+ method_params
+) VALUES (
+ 'patronByCardBarcode', '/patrons/by_barcode/:barcode', 'get',
+ 'Retrieve patron id by barcode',
+ 'OpenILS::OpenAPI::Controller::patron','user_by_identifier_string',
+ 'eg_auth_token param.barcode'
+);
+
+INSERT INTO openapi.endpoint_param (endpoint,name,in_part,schema_type,required) VALUES
+('patronByCardBarcode','barcode','path','string',TRUE);
+
+INSERT INTO openapi.endpoint_response (endpoint,fm_type) VALUES
+('patronByCardBarcode','au');
+
+INSERT INTO openapi.endpoint (
+ operation_id, path, http_method,
+ summary,
+ method_source, method_name,
+ method_params
+) VALUES (
+ 'patronByUsername, '/patrons/by_username/:username', 'get',
+ 'Retrieve patron id by username',
+ 'OpenILS::OpenAPI::Controller::patron','user_by_identifier_string',
+ 'eg_auth_token "" param.username'
+);
+
+INSERT INTO openapi.endpoint_param (endpoint,name,in_part,schema_type,required) VALUES
+('patronByUsername','username','path','string',TRUE);
+
+INSERT INTO openapi.endpoint_response (endpoint,fm_type) VALUES
+('patronByUsername','au');
+
+INSERT INTO openapi.endpoint_set_endpoint_map (endpoint, endpoint_set)
+ SELECT operation_id, 'patrons' FROM openapi.endpoint WHERE operation_id like 'patronBy%';
+
+COMMIT;
+----
+
+.api_ctl configuration
+[source, console]
+----
+$ api_ctl -- api endpoints add
+ # ... supply information about patronByCardBarcode endpoint, as above
+API Endpoint actions: parameters
+API Endpoint Parameter actions: add
+ # ... supply information about patronByCardBarcode path parameter
+API Endpoint Parameter actions: back
+API Endpoint actions: responses
+ # ... supply information about patronByCardBarcode success response
+API Endpoint Responses actions: back
+API Endpoint actions: sets
+API Endpoint Assigned Sets actions: add
+API Set: patrons
+API Endpoint Assigned Sets actions: back
+API Endpoint actions: add
+ # ... supply information about patronByUsername endpoint
+API Endpoint actions: parameters
+API Endpoint Parameter actions: add
+ # ... supply information about patronByUsername path parameter
+API Endpoint Parameter actions: back
+API Endpoint actions: responses
+ # ... supply information about patronByUsername success response
+API Endpoint Responses actions: back
+API Endpoint actions: sets
+API Endpoint Assigned Sets actions: add
+API Set: patrons
+API Endpoint Assigned Sets actions: quit
+----
+
+=== Enabling the new endpoints ===
+
+The OpenAPI server must be restarted once any new endpoint configuration is applied. This allows the OpenAPI server to read the new endpoint configuration and add the appropriate routes and handlers.

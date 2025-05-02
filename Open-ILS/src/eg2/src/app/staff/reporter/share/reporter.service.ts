@@ -4,7 +4,7 @@ import {Router, Resolve, RouterStateSnapshot,
     ActivatedRouteSnapshot} from '@angular/router';
 import * as moment from 'moment-timezone';
 import {Md5} from 'ts-md5';
-import {map, switchMap, mergeMap, defaultIfEmpty, last} from 'rxjs/operators';
+import {map, switchMap, mergeMap, concatMap, defaultIfEmpty, last} from 'rxjs/operators';
 import {EMPTY, Observable, of, from} from 'rxjs';
 import {AuthService} from '@eg/core/auth.service';
 import {PermService} from '@eg/core/perm.service';
@@ -1509,6 +1509,9 @@ export class ReporterService {
             	    pathHash += ' -> ';
 	            	if (n.stateFlag) {pathHash += ' [Required]';}
         	    }
+	            if (n.callerData.fmField?.name) {
+	                pathHash += n.callerData.fmField.name + '.';
+	            }
     	        pathHash += n.callerData.fmClass;
         	});
             return Md5.hashStr(pathHash);
@@ -1555,6 +1558,7 @@ export class ReporterService {
     }
 
     upgradeAngJSTemplateData = function(template: IdlObject) {
+        const localIdl = this.idl;
 
         const newSRTempl = new SRTemplate();
         newSRTempl.isNew = false;
@@ -1650,9 +1654,11 @@ export class ReporterService {
                     callerData: { fmClass: old.classname }
                 };
                 if (old.uplink) {
+                    const uplink_from = old.from?.split('.').pop(); // get the last class step in the "from" member, if it exists
                     newPathNode.callerData['fmField'] = {
-                        key: old.uplink.key, // my pkey
-                        name: old.uplink.name, // field from left side of join
+                        key: old.uplink.key, // my (right hand side) join key
+                        name: (uplink_from && ['has_many','might_have'].includes(old.uplink.reltype)) ? // do we have enough information and the reltype conditions to replace the left hand side key?
+                                localIdl.classes[uplink_from].pkey : old.uplink.name, // field from left side of join. see: treeFromRptType() in ../full/editor.component.ts
                         reltype: old.uplink.reltype, // reltype from link from left side of join
                         class: newPathNode.callerData.fmClass // same as fmClass
                     };
@@ -1850,9 +1856,8 @@ export class ReporterService {
             return this.net.request(
                 'open-ils.reporter',
                 'open-ils.reporter.schedule.retrieve_by_folder',
-                this.auth.token(), query, null /* no limit ... cannot offset in the API */, withComplete
+                this.auth.token(), query, {offset: pager.offset, limit: pager.limit} , withComplete
             ).pipe(
-                map((rows: any[]) => rows.slice(pager.offset, pager.offset + pager.limit)),
                 map((rows: any[]) => rows.map(row => {
                     return {
                         template_name: row.report().template().name(),
@@ -2062,7 +2067,13 @@ export class ReporterService {
             const orderBy: any = {};
 
             if (sort.length) {
-                orderBy.rr = sort[0].name + ' ' + sort[0].dir;
+                if (sort[0].name === 'recurring') {
+                    // special case because the grid column path
+                    // does not match the DB column name
+                    orderBy.rr = 'recur' + ' ' + sort[0].dir;
+                } else {
+                    orderBy.rr = sort[0].name + ' ' + sort[0].dir;
+                }
             } else {
                 orderBy.rr = 'name ASC';
             }
@@ -2085,7 +2096,15 @@ export class ReporterService {
             // and add any filters
             Object.keys(gridSource.filters).forEach(key => {
                 Object.keys(gridSource.filters[key]).forEach(key2 => {
-                    query.push(gridSource.filters[key][key2]);
+                    if (key === 'recurring') {
+                        // special case because the grid column path
+                        // does not match the DB column name
+                        query.push({
+                            recur: gridSource.filters[key][key2]['recurring']
+                        });
+                    } else {
+                        query.push(gridSource.filters[key][key2]);
+                    }
                 });
             });
 
@@ -2094,7 +2113,8 @@ export class ReporterService {
                 'open-ils.reporter.folder_data.retrieve.stream',
                 this.auth.token(), 'report', query,
                 pager.limit, pager.offset, orderBy
-            ).pipe(mergeMap(row => {
+            ).pipe(map(row => {
+                // TODO cap the parallelism
                 const rowFolder = this.reportFolderList.find(f => f.id() === row.folder());
 
                 return this.net.request(
@@ -2118,7 +2138,7 @@ export class ReporterService {
                         _rr: row
                     };
                 }));
-            }));
+            }),concatMap(x => x));
         };
 
         return gridSource;

@@ -17,11 +17,11 @@
       <div class="row d-flex justify-content-center">
         <h5>Transfer Holds For {{bibIds.length}} Bib(s) To Record {{transferTarget}}?</h5>
       </div>
-      <div class="row" *ngIf="numSucceeded > 0">
+      <div class="row" *ngIf="numSucceeded > 0" role="status">
         <div class="col-lg-12" i18n>
           Holds for {{numSucceeded}} Bib(s) Successfully Transferred.
         </div>
-        <div class="row" *ngIf="numFailed > 0">
+        <div class="row" *ngIf="numFailed > 0" role="status">
           <div class="col-lg-12">
             <div class="alert alert-warning">
               Holds for {{numFailed}} Bibs(s) Failed to Transfer.

@@ -125,6 +125,7 @@ Search > Numeric search. If you wanted to add a bib call number search option,
 which is different from the item copy call number; you would add the following
 code to `numeric.tt2`.
 +
+[source, tt2]
 ------------------------------------------------------------------------------
 <option value="identifier|bibcn">[% l('Bib Call Number') %]</option>  
 ------------------------------------------------------------------------------

@@ -1,16 +1,19 @@
 import {NgModule} from '@angular/core';
 import {EgCommonModule} from '@eg/common.module';
 import {TreeComponent} from './tree.component';
+import {TreeMultiselectComponent} from './tree-multiselect.component';
 
 @NgModule({
     declarations: [
-        TreeComponent
+        TreeComponent,
+        TreeMultiselectComponent
     ],
     imports: [
         EgCommonModule
     ],
     exports: [
-        TreeComponent
+        TreeComponent,
+        TreeMultiselectComponent
     ],
     providers: [
     ]

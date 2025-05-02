@@ -1,0 +1,496 @@
+= Evergreen 3.15 Release Notes =
+:toc:
+:numbered:
+:toclevels: 3
+
+== Upgrade notes ==
+
+This release includes an import fix to values in the Coded Value Map 
+table. Please refer to the "FIX DB Table config.coded_value_map"
+section further down for important information on whether you need
+to apply the fix and how to do so.
+
+== New Features ==
+
+:leveloffset: +2
+
+
+= Acquisitions =
+
+
+== EDI Attribute Added for Enumerating Lineitems Sequentially ==
+
+Historically, Evergreen's EDI output has used the internal lineitem ID as the
+line sequence number in LIN lines.  Some vendors (e.g. ULS) would prefer LIN to
+use a sequentially assigned number instead.  A new EDI attribute, "Lineitems
+Are Enumerated Sequentially," has been added to support that.  See
+https://bugs.launchpad.net/evergreen/+bug/1949243[Bug 1949243] for further
+discussion.
+
+
+
+
+= Administration =
+
+== IMPORTANT: FIX DB Table config.coded_value_map ==
+
+If your Evergreen database pre-dates version 3.13 and you have executed the DB upgrade (1416) which was included in the Evergreen upgrade files:
+
+* `Open-ILS/src/sql/Pg/version-upgrade/3.12.3-3.13.0-upgrade-db.sql`
+* `Open-ILS/src/sql/Pg/version-upgrade/1416.data.updated_marc_tag_tables.sql`
+
+As described in https://bugs.launchpad.net/evergreen/+bug/2073561[Bug 2073561]
+
+You have two options:
+
+. Use the provided fix SQL script to reset the tables to stock
+. Use a backup database that you may have pre-3.13 upgrade, and restore these two tables:
+.. `config.coded_value_map`
+.. `config.composite_attr_entry_definition`
+
+NOTE: You might prefer option 2 if you have customized the coded_value_map for new/different OPAC Icon/Search Formats.
+
+=== Option 1: Reset the tables to stock
+
+You will need to manually run the provided SQL file:
+
+IMPORTANT: Open-ILS/src/sql/Pg/LP2073561.fix.coded.value.map-post_3.13_upgrade.sql
+
+Example:
+
+[source,bash]
+----
+psql evergreen < Open-ILS/src/sql/Pg/LP2073561.fix.coded.value.map-post_3.13_upgrade.sql
+----
+
+You may need additional options for the psql command depending on your environment.
+
+=== Option 2: Restore from backup
+
+. From the old copy of your database, pre-dating an upgrade to 3.13
++
+[source,bash]
+----
+pg_dump evergreen --data-only --schema config \
+--table config.coded_value_map \
+--table config.composite_attr_entry_definition \
+> ccvm_restore.sql
+----
++
+. Copy `ccvm_restore.sql` to an accessible location on your production database
++
+[source,bash]
+----
+psql evergreen -c "truncate config.coded_value_map CASCADE;"
+psql evergreen < ccvm_restore.sql
+----
+
+You may need additional options for the psql and pg_dump commands
+depending on your environment.
+
+WARNING: We highly recommend testing these steps on a non-production database!
+
+
+NOTE: If your Evergreen database started on version 3.13 and above, then you may ignore these instructions.
+
+== OpenAPI server for Evergreen 
+
+Adds a new, OpenAPI-compliant RESTful API suite for Evergreen, including a set of basic endpoints and several tools for configuring new endpoints depending on the needs of third party developers.
+
+This is an initial release of the foundation and infrastructure to support early adoption, providing a starting point to encourage further testing and integration. Additional API functionality will be included in a future release.
+
+Extensive documentation, examples, and a full list of endpoints are available in the  https://docs.evergreen-ils.org/docs/3.15/integrations/restful_api.html[Evergreen Community Documentation].
+
+(https://bugs.launchpad.net/evergreen/+bug/2067414[Bug 2067414])
+
+
+== Add payment type to OPAC printed payment receipt Action Trigger definition ==
+
+Adds correct payment type to the money.payment_receipt.print action trigger template, replacing the hard-coded "Credit Card".
+
+An upgrade script is include which updates the money.payment_receipt.print action trigger template if it has not been altered from stock.
+
+https://bugs.launchpad.net/evergreen/+bug/1988085[Bug 1988085]
+
+
+== Reporter Lock File Improvements ==
+
+Changes in the location, name, and handling of the reporter's
+(`clark-kent.pl`) lockfile may require adjustments in local management
+scripts.
+
+The lockfile's default location has been moved from
+`/tmp/reporter-LOCK` to `LOCALSTATEDIR/run/reporter.pid`,
+`/openils/var/run/reporter.pid` in a default configuration.  This
+change allows it to fit in better with other Evergeen utilities that
+use a similar location and name for their runtime files: SIPServer,
+the MARC stream importer, etc.
+
+If run as a daemon, the reporter now deletes the lockfile when the
+main process exits.  This is not only good disk hygiene; the user or
+administrator no longer has to manually delete the lockfile before
+starting a new instance of the reporter.
+
+Sites with scripts to start and stop the reporter may wish to review
+them to determine if this update requires any changes to their
+processes.
+
+https://bugs.launchpad.net/evergreen/+bug/2098995[Bug 2098995]
+
+
+== Global Long-Lived Cache Clearing for Staff Client ==
+
+A new global flag (`staff.client_cache_key`) has been added that allows
+administrators to clear certain long-lived cache values from all staff clients
+at next login by simply changing the value. Currently only the MARC Tag Tables
+used by the bibliographic and authority record editors are cleared, but the
+list of localStorage items cleared may be expanded in future. This key is
+simply an opaque string - no special format is required - changing the value in
+any way will trigger a wave of cache clearing.
+
+https://bugs.launchpad.net/evergreen/+bug/2084181[Bug 2084181]
+
+= Architecture =
+
+
+== Evergreen Supports PostgreSQL 17 ==
+
+PostgreSQL 17 can be installed along with Evergreen using the normal
+prerequisite installation process.
+
+https://bugs.launchpad.net/evergreen/+bug/2083856[Bug 2083856]
+
+= Cataloging =
+
+== Item Alerts, Notes, Tags, and Templates Rework ==
+
+This reimplements the holdings editor and includes several bugfixes for item alerts, notes, and tags. This work also reimplements the holdings template editor in Angular. 
+
+
+== Batch Edit Parts in the Holdings Editor ==
+
+The holdings editor now has an option to batch edit bibliographic parts.
+
+https://bugs.launchpad.net/evergreen/+bug/1769988[Bug 1769988]
+
+
+= Circulation =
+
+== Visibilty of Fields in Patron Registration/Edit ==
+
+Enhances the ability to control display of Required, Suggested and All fields on the Patron Registration/Edit Screen.
+
+Given a field with three library settings, .show, .suggest, .require:
+
+.show = FALSE hides the field
+.show = TRUE displays the field in All, Suggested, Required (field is not required)
+.suggest = TRUE displays the field in All, Suggested
+.require = TRUE displays the field in All, Suggested, Required (field is required)
+
+.show, .suggest, .require UNSET displays the field in All, but not Suggested or Required
+
+https://bugs.launchpad.net/evergreen/+bug/1815950[Bug 1815950]
+
+= Client =
+
+
+== Table Density Setting ==
+
+Evergreen staff users can now set their preferred density for
+grids throughout the client.  The three options are: compact
+(not much whitespace), Standard, and Wide (more whitespace).
+
+To select a setting:
+
+. Go to Administration -> Workstation.
+. Select a value from the "Table Density" dropdown.
+. Log out of the staff client and log back in to load the newly
+  selected density setting.
+
+https://bugs.launchpad.net/evergreen/+bug/2087979[Bug 2087979]
+
+= OPAC =
+
+
+== Eresource link click tracking ==
+
+This version of Evergreen introduces the ability
+to track user clicks on eresources in the public
+catalog.
+
+This feature provides usage data on eresources in
+the catalog.  One potential use for this feature
+is to provide the equivalent of circulation
+statistics for online course materials.
+
+Data can be accessed via the Evergreen reporter.
+
+https://bugs.launchpad.net/evergreen/+bug/1895695[Bug 1895695]
+
+=== Data collection
+
+This feature does not collect any personally
+identifiable data about the user who clicks
+on the link.  The pieces of data that are
+collected are:
+
+* The URL clicked
+* The time it was clicked
+* The bibliographic record that contains the
+URL.
+* The ID, name, and number of any courses
+that use the bibliographic record.
+
+=== Enabling the feature
+
+The new tables can grow forever, so before
+enabling this feature:
+
+* Ensure that you are monitoring disk space on
+the server(s) that house your postgres database.
+* Decide on a retention period for click data,
+and set up the provided
+``delete_old_eresource_link_clicks``
+script to delete old data regularly.
+
+To enable this feature:
+
+. Set the
+``opac.eresources.link_click_tracking``
+global flag to true.
+. Restart memcached and apache HTTP server.
+
+
+=== Accuracy
+
+Statistics from this feature are collected
+on a best efforts basis, and have certain
+limitations when it comes to accuracy:
+
+* It does
+not provide any guarantees against somebody
+deliberately inflating the statistics of a
+particular link, either through repeated network
+calls or repeatedly clicking on a link they don't
+actually intend to read.
+* Clicks from certain very old, unsupported browsers
+(notable Microsoft Internet Explorer) will
+not be counted.
+* Major bots are excluded, but uncommon bots and
+bots that set a misleading User Agent header are
+included unless they are blocked at the web server
+or load balancer level.
+
+
+
+== Library Group Item Counts in catalog
+
+When a user selects a library group in the catalog (either the
+public catalog or the staff catalog), the catalog now displays
+the number of items held and available in that group.  This
+information supplements the existing holding statements
+available in the catalog.
+
+If you have customized any of the following files, you will need
+to update them to see the library group item counts.
+
+* `opac/parts/misc_util.tt2`
+* `opac/parts/record/copy_counts.tt2`
+* `opac/parts/result/copy_counts.tt2`
+
+https://bugs.launchpad.net/evergreen/+bug/2019430[Bug 2019430]
+
+== Move the OPAC alert banner to a library setting ==
+
+Moves the Bootstrap OPAC maintenance message alert banner from the config.tt2 file to a trio of new library settings.
+
+. OPAC Alert Banner: Display (true / false)
+. OPAC Alert Banner: Text (the message that will appear)
+. OPAC Alert Banner: Type (success, info, warning, danger)
+
+The alert banner types utilize the existing CSS to determine the color scheme.
+
+https://bugs.launchpad.net/evergreen/+bug/1903873[Bug 1903873]
+
+== Move Google Analytics configuration to library settings ==
+
+Moves the Google Analytics configuration from the config.tt2 file
+in the Bootstrap OPAC to two new library settings.
+
+. Google Analytics: Enable (true/false)
+. Google Analytics: Code (Analytics account code)
+
+https://bugs.launchpad.net/evergreen/+bug/1906699[Bug 1906699]
+
+= Miscellaneous =
+
+
+* Remove deprecated method `open-ils.serial.bib.summary_statements`. As an upgrade note, any site that is still keeping the legacy JSPAC running will experience more degradation of its functionality (https://bugs.launchpad.net/evergreen/+bug/2044628[Bug 2044628]).
+* Fix installation issue in docker containers.
+* Use opensrf chunk/bundle in additional areas of Evergreen (https://bugs.launchpad.net/evergreen/+bug/1710293[Bug 1710293])
+* Removes undefined author links in catalog search results (https://bugs.launchpad.net/evergreen/+bug/2081317[Bug 2081317])
+* Developers no longer get an error message while checking how much of Evergreen's staff client code is covered by automated tests (https://bugs.launchpad.net/evergreen/+bug/2062944[Bug 2062944])
+* Add automated tests and developer documentation for search visibility. (https://bugs.launchpad.net/evergreen/+bug/2067191[Bug 2067191])
+* [Developer] Have Git enforce consistent line endings on Perl and AsciiDoc files. (https://bugs.launchpad.net/evergreen/+bug/2089390[Bug 2089390])
+* Remove deprecated `open-ils.storage.id_list.biblio.record_entry.search.isbn` and `open-ils.storage.id_list.biblio.record_entry.search.issn` methods. (https://bugs.launchpad.net/evergreen/+bug/2067211[Bug 2067211])
+* Remove outdated code from the build process. (https://bugs.launchpad.net/evergreen/+bug/2073532[Bug 2073532])
+* Update booking module documentation with new visuals for better usability.
+* Correct error message in the `actor.create_salt` database function (https://bugs.launchpad.net/evergreen/+bug/2093010[Bug 2093010])
+* Include status and location in marc_export when determining item visibility in the 852 MARC tag. (https://bugs.launchpad.net/evergreen/+bug/2056343[Bug 2056343])
+* Fixes typo in AngularJS Booking > Pick Up Reservation (https://bugs.launchpad.net/evergreen/+bug/2095190[Bug 2095190])
+* Remove noise from the browser developer console. (https://bugs.launchpad.net/evergreen/+bug/2095026[Bug 2095026])
+* Removes the Z39.50 search source autosave to match the previous version of the interface. (https://bugs.launchpad.net/evergreen/+bug/2094284[Bug 2094284])
+* Adds owning and item circulating libraries to hold grids. (https://bugs.launchpad.net/evergreen/+bug/1851721[Bug 1851721])
+* Refactor booking module documentation for clarity and updated visuals
+* Fixes Angular Reports duplicating share/unshare buttons. (https://bugs.launchpad.net/evergreen/+bug/2081883[Bug 2081883])
+* MARC rich editor special characters map feature (https://bugs.launchpad.net/evergreen/+bug/1555766[Bug 1555766])
+* Corrects auto-logout popup button text (https://bugs.launchpad.net/evergreen/+bug/2093903[Bug 2093903])
+* Adds workstation setting for Monograph Parts grid preferences (https://bugs.launchpad.net/evergreen/+bug/1975852[Bug 1975852])
+* Place holds can retrieve recent patrons. (https://bugs.launchpad.net/evergreen/+bug/2009725[Bug 2009725])
+* Fixes whitespace issue with empty list descriptions in the patron's lists in their OPAC account. (https://bugs.launchpad.net/evergreen/+bug/2088180[Bug 2088180])
+* Fix Text/SMS Carrier label type in the Modify Holds dialog box. (https://bugs.launchpad.net/evergreen/+bug/2091111[Bug 2091111])
+* Creates new UPDATE_TOP_OF_QUEUE permission for setting a hold to the top of the queue. (https://bugs.launchpad.net/evergreen/+bug/1949392[Bug 1949392])
+* Fix borders, wrapped button text in org unit settings grid (https://bugs.launchpad.net/evergreen/+bug/2083725[Bug 2083725])
+* Adds an Email Receipt option for patrons when paying by credit card (https://bugs.launchpad.net/evergreen/+bug/1988085[Bug 1988085])
+* Fixes incorrect calculation of the line-item level cost and amount paid that can occur when creating an invoice from a purchase order or a line item. (https://bugs.launchpad.net/evergreen/+bug/2097049[Bug 2097049])
+* Fixes typo in bibliographic record source in IDL. (https://bugs.launchpad.net/evergreen/+bug/2086227[Bug 2086227])
+* Patron barcode file uploads in the User Bucket's Pending User(s) list are now able to retrieve patrons whose barcode value contains embedded spaces. (https://bugs.launchpad.net/evergreen/+bug/2087873[Bug 2087873])
+* Add class name @Input to org unit selector component. (https://bugs.launchpad.net/evergreen/+bug/2083725[Bug 2083725])
+* PCRUD queries for copies can now flesh the open circulation. (https://bugs.launchpad.net/evergreen/+bug/2084694[Bug 2084694])
+* Fix a bug in calculating item counts within a library group. (https://bugs.launchpad.net/evergreen/+bug/2093846[Bug 2093846])
+* Add workstation setting for Angular grid UI whitespace (https://bugs.launchpad.net/evergreen/+bug/2087979[Bug 2087979])
+* Remove outdated dojo dependency from the OPAC shelving location selector. Fix OPAC shelving location selector when user chooses a shelving location group. Makes sure checkboxes are still checked on Refine My Original Search.  (https://bugs.launchpad.net/evergreen/+bug/2060351[Bug 2060351])
+* Prevent hold reset entries from blocking hold aging and and user merges and purges (https://bugs.launchpad.net/evergreen/+bug/2097622[Bug 2097622])
+* Fix an issue that caused MARC editor interface to change unexpectedly when a record is saved. (https://bugs.launchpad.net/evergreen/+bug/2093128[Bug 2093128])
+* Improve and reorganize action triggers documentation in admin module
+* Add a signal handler to the reporter to log the signal and exit. (https://bugs.launchpad.net/evergreen/+bug/2098994[Bug 2098994])
+* Fix inconsistent display of name fields in offline patron registration (https://bugs.launchpad.net/evergreen/+bug/2096865[Bug 2096865])
+* Restores the ability to select charges for payment in the OPAC. (https://bugs.launchpad.net/evergreen/+bug/2090958[Bug 2090958])
+* Fixes blank user setting handling in Angular staff catalog place holds. (https://bugs.launchpad.net/evergreen/+bug/2073896[Bug 2073896])
+* Fix EDI output by adding a field to the FTX line. (https://bugs.launchpad.net/evergreen/+bug/1949243[Bug 1949243])
+* Fixes undo/redo in MARC rich editor fixed fields and LDR. (https://bugs.launchpad.net/evergreen/+bug/2084929[Bug 2084929])
+* Sets user email as default for report output email option (https://bugs.launchpad.net/evergreen/+bug/2088096[Bug 2088096])
+* Retro-fixing `config.coded_value_map` (https://bugs.launchpad.net/evergreen/+bug/2073561[Bug 2073561])
+* Allows basic HTML in OPAC alert banner. (https://bugs.launchpad.net/evergreen/+bug/2103646[Bug 2103646])
+* Fixes inputBlurred() console error for MARC fixed fields (https://bugs.launchpad.net/evergreen/+bug/2084929[Bug 2084929])
+* Fixes blank screen when logging in after timeout. (https://bugs.launchpad.net/evergreen/+bug/2100807[Bug 2100807])
+* A new `opensrf.xml` config file option, `honor_secondary_groups`, allows secondary group membership to add MFA configuration to a user, in addition to the main profile group. This option defaults to "false", i.e., secondary permission groups are not considered. If the option is turned on, if any permission group associated with the user, including the profile, requires MFA, MFA will be required of the user. (https://bugs.launchpad.net/evergreen/+bug/2080572[Bug 2080572])
+* Allows staff portal entry links to open new tabs; styling for links that open in new tabs. Adds workstation setting for opening links in new tabs. (https://bugs.launchpad.net/evergreen/+bug/2015351[Bug 2015351])
+* Clarify what the "name" label in create PO form refers to (https://bugs.launchpad.net/evergreen/+bug/2018839[Bug 2018839])
+* Fix a bug that caused empty search results in the OPAC after changes were made to the organizational unit tree and the autogen script had not yet been run. (https://bugs.launchpad.net/evergreen/+bug/2103630[Bug 2103630])
+* Added a commit message template to the repository to improve the developer experience.  To use the template, run the following command from the root of your Evergreen repository: `git config commit.template commit-template`. (https://bugs.launchpad.net/evergreen/+bug/2051946[Bug 2051946])
+* Fixes a bug where re-applying a shelving location group filter to the pull list fails. (https://bugs.launchpad.net/evergreen/+bug/2098011[Bug 2098011])
+* Sets focus on the first interactive element in dialog body (https://bugs.launchpad.net/evergreen/+bug/1947868[Bug 1947868])
+* Updates MARC Import/Export tab styles to match other tabs (https://bugs.launchpad.net/evergreen/+bug/2102735[Bug 2102735])
+* Allows multiple toast messages to appear at once. (https://bugs.launchpad.net/evergreen/+bug/2103619[Bug 2103619])
+* Prevents blocked accounts from checking out Precats. (https://bugs.launchpad.net/evergreen/+bug/2098898[Bug 2098898])
+* Allow right-click anywhere in grid cells in Chrome (https://bugs.launchpad.net/evergreen/+bug/2080373[Bug 2080373])
+* Right-click menu support for grid utility columns (https://bugs.launchpad.net/evergreen/+bug/2080373[Bug 2080373])
+* Fixes an issue where menu icons appear on printouts. (https://bugs.launchpad.net/evergreen/+bug/2092226[Bug 2092226])
+* Reduce remote connections in EDI file retrieval by connecting only once per account. (https://bugs.launchpad.net/evergreen/+bug/1836908[Bug 1836908])
+* Show template documentation URLs in reports template grids (https://bugs.launchpad.net/evergreen/+bug/2090873[Bug 2090873])
+* Fixes erroneous overdue indication for hourly checkouts. (https://bugs.launchpad.net/evergreen/+bug/1951024[Bug 1951024])
+* Add a default value for max_backlog_queue to opensrf.xml (https://bugs.launchpad.net/evergreen/+bug/2097140[Bug 2097140])
+* Do not show open_in_new icon on links containing images (https://bugs.launchpad.net/evergreen/+bug/2106057[Bug 2106057])
+* Form labels and keyboard support for patron survey answers (https://bugs.launchpad.net/evergreen/+bug/2040183[Bug 2040183])
+* Scroll focused combobox option into view on arrow up/down (https://bugs.launchpad.net/evergreen/+bug/2085844[Bug 2085844])
+* Replicate combobox keyboard, focus features in org-select (https://bugs.launchpad.net/evergreen/+bug/2085844[Bug 2085844])
+* Adds form labels and ARIA status roles to forms in dialogs (https://bugs.launchpad.net/evergreen/+bug/2103567[Bug 2103567])
+* Add 'Overlay' to Z39.50 search results grid actions menu (https://bugs.launchpad.net/evergreen/+bug/2094843[Bug 2094843])
+* Fixes a regression where the count of receivable items on acq invoices was always zero. (https://bugs.launchpad.net/evergreen/+bug/2094859[Bug 2094859])
+* Avoid freetext error when reimporting MARC import queue (https://bugs.launchpad.net/evergreen/+bug/1940867[Bug 1940867])
+* Right arrow in MARC subfield data no longer moves focus (https://bugs.launchpad.net/evergreen/+bug/2101886[Bug 2101886])
+* Edit MARC subfield value in focused group with right or left arrow; do not focus on current group when tabbing into or out of subfield inputs (https://bugs.launchpad.net/evergreen/+bug/2101884[Bug 2101884])
+* Prevents duplicate new MARC rows using Control + Arrow key (https://bugs.launchpad.net/evergreen/+bug/2095532[Bug 2095532])
+* Opens the lead record after merging records from a bucket (https://bugs.launchpad.net/evergreen/+bug/2098712[Bug 2098712])
+* Fixes an issue where freetext null displays in comboboxes. (https://bugs.launchpad.net/evergreen/+bug/2093840[Bug 2093840])
+* Restores dropped line of code in OPAC alert banner. (https://bugs.launchpad.net/evergreen/+bug/2106414[Bug 2106414])
+* Fixes light and dark mode support for Chrome on Windows 7. (https://bugs.launchpad.net/evergreen/+bug/2106666[Bug 2106666])
+
+:leveloffset: 0
+
+
+== Acknowledgments ==
+
+The Evergreen project would like to acknowledge the following
+organizations that commissioned developments in this release of
+Evergreen:
+
+* C/W MARS
+* ECDI
+* NOBLE
+* PaILS
+
+We would also like to thank the following individuals who contributed
+code, translations, documentation, patches, and tests to this release of
+Evergreen:
+
+* a. bellenir
+* Andrea Buntz Neiman
+* Bill Erickson
+* Blake Graham-Henderson
+* Carol Witt
+* Chris Sharp
+* Christine Burns
+* Christine Morgan
+* Chrisy Schroth
+* Dan Briem
+* Dan Guarracino
+* Elizabeth Davis
+* Galen Charlton
+* Garry Collum
+* Gina Monti
+* Ian Skelskey
+* Jane Sandberg
+* Jason Boyer
+* Jason Etheridge
+* Jason Stephenson
+* Jeff Davis
+* Jeff Godin
+* Jennifer Pringle
+* Jennifer Weston
+* John Amundson
+* Joni Paxton
+* Josh Stompro
+* Lindsay Stratton
+* Llewellyn Marshall
+* Mary Llewellyn
+* Michele Morgan
+* Mike Rylander
+* Ruth Frasur Davis
+* Scott Angel
+* Shula Link
+* Stephanie Leary
+* Steven Callender
+* Steven Mayo
+* Susan Morrison
+* Tara Kunesh
+* Terran McCanna
+* Tiffany Little
+
+We also thank the following organizations whose employees contributed
+patches:
+
+* Bibliomation
+* British Columbia Libraries Cooperative
+* C/W MARS
+* Equinox Open Library Initiative
+* Evergreen Collaborative Development Initiative (ECDI)
+* Georgia Public Library Service (GPLS)
+* Greater Clarks Hill Regional Library
+* Kenton County Public Library
+* King County Library Systems
+* Lake Agassiz Regional Library
+* MOBIUS
+* NC Cardinal
+* OWWL
+* North of Boston Library Exchange (NOBLE)
+* PaILS
+* Princeton University
+* Traverse Area District Library
+* Westchester Library System
+
+We regret any omissions.  If a contributor has been inadvertently
+missed, please open a bug at http://bugs.launchpad.net/evergreen/
+with a correction.
+

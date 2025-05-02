@@ -12,6 +12,7 @@ import {PcrudService} from '@eg/core/pcrud.service';
 import {OrgService} from '@eg/core/org.service';
 import {PermService} from '@eg/core/perm.service';
 import {AuthService} from '@eg/core/auth.service';
+import {BroadcastService} from '@eg/share/util/broadcast.service';
 import {NetService} from '@eg/core/net.service';
 import {mergeMap} from 'rxjs/operators';
 import {StringComponent} from '@eg/share/string/string.component';
@@ -46,9 +47,10 @@ export class DistributionFormulasComponent extends AdminPageComponent implements
         pcrud: PcrudService,
         perm: PermService,
         toast: ToastService,
-        private net: NetService
+        private net: NetService,
+        broadcaster: BroadcastService
     ) {
-        super(route, ngLocation, format, idl, org, auth, pcrud, perm, toast);
+        super(route, ngLocation, format, idl, org, auth, pcrud, perm, toast, broadcaster);
         this.dataSource = new GridDataSource();
     }
 

@@ -2,29 +2,39 @@
 <div id="scko-circ-info-div">
 
   <div class="ps-2">
-    <a routerLink="/staff/selfcheck" class="me-1 btn btn-link scko-button" i18n>Home</a>
-    <button type="button" class="btn btn-link scko-button ms-1" (click)="scko.logoutPatron(receiptType)" i18n>Logout</button>
+    <a routerLink="/staff/selfcheck" class="btn scko-button" i18n>
+        <span class="material-icons" aria-label="hidden">home</span>
+        Home
+    </a>
+    <button type="button" class="btn scko-button" (click)="scko.logoutPatron(receiptType)" i18n>
+        <span class="material-icons" aria-label="hidden">logout</span>
+        Logout</button>
   </div>
 
   <div class="ps-2 mt-3" role="region" attr.aria-label="Receipt" i18n-aria-label>
-    <h2 class="me-2 d-inline" i18n>Receipt:</h2>
+    <h2 class="me-2 d-inline" i18n>Type of Receipt:</h2>
+    <div class="receipt-option-wrapper">
+        <div class="receipt-option" *ngIf="showEmailOption">
+          <input class="btn-check" name="receipt-type" type="radio" 
+            [(ngModel)]="receiptType" id="receipt-email" value="email">
+          <label class="btn btn-check-label btn-outline-success m1" for="receipt-email" i18n
+            [ngClass]="{'active': receiptType === 'email'}">Email</label>
+        </div>
 
-    <div *ngIf="showEmailOption">
-      <input class="btn-check" name="receipt-type" type="radio" 
-        [(ngModel)]="receiptType" id="receipt-email" value="email">
-      <label class="btn btn-outline-success m-1" for="receipt-email" i18n
-        [ngClass]="{'active': receiptType === 'email'}">Email</label>
+        <div class="receipt-option">
+          <input class="btn-check" name="receipt-type" type="radio" 
+            [(ngModel)]="receiptType" id="receipt-print" value="print">
+          <label class="btn btn-check-label btn-outline-success m1" for="receipt-print" i18n
+            [ngClass]="{'active': receiptType === 'print'}">Print</label>
+        </div>
+
+        <div class="receipt-option">
+          <input class="btn-check" name="receipt-type" type="radio" 
+            [(ngModel)]="receiptType" id="receipt-none" value="none">
+          <label class="btn btn-check-label btn-outline-success m1" for="receipt-none" i18n
+            [ngClass]="{'active': receiptType === 'none'}">None</label>
+        </div>
     </div>
-
-    <input class="btn-check" name="receipt-type" type="radio" 
-      [(ngModel)]="receiptType" id="receipt-print" value="print">
-    <label class="btn btn-outline-success m-1" for="receipt-print" i18n
-      [ngClass]="{'active': receiptType === 'print'}">Print</label>
-
-    <input class="btn-check" name="receipt-type" type="radio" 
-      [(ngModel)]="receiptType" id="receipt-none" value="none">
-    <label class="btn btn-outline-success m-1" for="receipt-none" i18n
-      [ngClass]="{'active': receiptType === 'none'}">None</label>
   </div>
 
   <fieldset>
@@ -37,7 +47,7 @@
       <span i18n>Total items on account: </span>
       <b>{{scko.accountTotalCheckouts()}}</b>
     </div>
-    <a routerLink="/staff/selfcheck/items" class="mt-2 btn btn-link scko-button" i18n>View Items Out</a>
+    <a routerLink="/staff/selfcheck/items" class="btn scko-button mt-2" i18n>View Items Out</a>
   </fieldset>
   <fieldset>
     <legend i18n>Holds</legend>
@@ -51,7 +61,7 @@
       <b>{{scko.patronSummary.stats.holds.total}}</b>
       total holds.
     </div>
-    <a routerLink="/staff/selfcheck/holds" id="oils-selfck-hold-details-link" class="mt-2 btn btn-link scko-button" i18n>View Holds</a>
+    <a routerLink="/staff/selfcheck/holds" id="oils-selfck-hold-details-link" class="btn scko-button mt-2" i18n>View Holds</a>
   </fieldset>
   <fieldset>
     <legend i18n>Fines</legend>
@@ -59,7 +69,7 @@
       <span i18n>Total fines on account:</span>
       <b>{{scko.patronSummary.stats.fines.balance_owed | currency}}</b>
     </div>
-    <a routerLink="/staff/selfcheck/fines" id="oils-selfck-view-fines-link" class="mt-2 btn btn-link scko-button" i18n>View Details</a>
+    <a routerLink="/staff/selfcheck/fines" id="oils-selfck-view-fines-link" class="btn scko-button mt-2" i18n>View Details</a>
   </fieldset>
 </div>
 

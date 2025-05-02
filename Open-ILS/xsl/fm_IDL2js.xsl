@@ -50,6 +50,7 @@ for (var c in _preload_fieldmapper_IDL) {
         <xsl:if test="oils_persist:source_definition">source:"(<xsl:value-of select="oils_persist:source_definition/text()"/>)",</xsl:if>
         <xsl:if test="idl:fields/@oils_persist:primary">pkey:"<xsl:value-of select="idl:fields/@oils_persist:primary"/>",</xsl:if>
         <xsl:if test="idl:fields/@oils_persist:sequence">pkey_sequence:"<xsl:value-of select="idl:fields/@oils_persist:sequence"/>",</xsl:if>
+        <xsl:if test="@oils_persist:cardinality">cardinality:"<xsl:value-of select="@oils_persist:cardinality"/>",</xsl:if>
         <xsl:apply-templates select="idl:fields"/>
         <xsl:apply-templates select="idl:field_groups"/>
     <xsl:apply-templates select="permacrud:permacrud"/>}</xsl:template>
@@ -99,7 +100,7 @@ for (var c in _preload_fieldmapper_IDL) {
     <xsl:if test="$f/../../idl:links/idl:link[@field=$f/@name]">type:"link",<xsl:apply-templates select="$f/../../idl:links/idl:link[@field=$f/@name]"></xsl:apply-templates>,</xsl:if>
 </xsl:template>
 
-<xsl:template match="idl:link"><xsl:if test="@sr:org_filter_field != ''">org_filter_field:"<xsl:value-of select="@sr:org_filter_field"/>",</xsl:if><xsl:if test="@map != ''">map:"<xsl:value-of select="@map"/>",</xsl:if>key:"<xsl:value-of select="@key"/>","class":"<xsl:value-of select="@class"/>",reltype:"<xsl:value-of select="@reltype"/>"</xsl:template>
+<xsl:template match="idl:link"><xsl:if test="@oils_persist:cardinality">cardinality:"<xsl:value-of select="@oils_persist:cardinality"/>",</xsl:if><xsl:if test="@sr:org_filter_field != ''">org_filter_field:"<xsl:value-of select="@sr:org_filter_field"/>",</xsl:if><xsl:if test="@map != ''">map:"<xsl:value-of select="@map"/>",</xsl:if>key:"<xsl:value-of select="@key"/>","class":"<xsl:value-of select="@class"/>",reltype:"<xsl:value-of select="@reltype"/>"</xsl:template>
 
 <xsl:template name="trueFalse">
     <xsl:param name="tf"/>

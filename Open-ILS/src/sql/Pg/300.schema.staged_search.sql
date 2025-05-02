@@ -105,6 +105,29 @@ CREATE OR REPLACE FUNCTION search.facets_for_metarecord_set(ignore_facet_classes
     WHERE rownum <= (SELECT COALESCE((SELECT value::INT FROM config.global_flag WHERE name = 'search.max_facets_per_field' AND enabled), 1000));
 $$ LANGUAGE SQL;
 
+/*
+search.calculate_visibility_attribute returns a 4-byte (32-bit) integer that
+represents both a visibility attribute and its value. The attribute (for example,
+item status or bib source) is recorded in the 4 leftmost bits.  The value can
+take up the remaining 28 bits.
+
+Bibliographic attributes aka "b" attrs (like bib_source) are not used in the same
+context as item attributes aka "c" attrs (like owning_lib), so it's okay to re-use
+the same number to represent two different attributes, as long as one is a "b" attr
+and one is a "c" attr.
+
+One way to use these integers is to compare them using bitwise operators.  For
+example, if you have the integer 1073741837:
+  * You can shift it right 28 bits to see which attribute it is: 1073741837 >> 28,
+    which is 4: the "location" attr.
+  * You can subtract (4 << 28) from it to see the value: 1073741837 - ( 4 << 28 ) = 13,
+    so the value is 13.
+  * You can also use a bitwise AND operator to check if it is a particular value,
+    without even knowing which attr it is: 1073741837 & 13 = 13, so the value
+    is a match!
+
+For more information, see docs/TechRef/PureSQLSearch.adoc.
+*/
 CREATE OR REPLACE FUNCTION search.calculate_visibility_attribute ( value INT, attr TEXT ) RETURNS INT AS $f$
 SELECT  ((CASE $2
 
@@ -2297,6 +2320,45 @@ BEGIN
     RETURN NULL; -- always fired AFTER
 END;
 $f$ LANGUAGE PLPGSQL;
+
+-- Defined here, rather than 040.asset, because it relies on
+-- asset.patron_default_visibility_mask() being defined
+CREATE OR REPLACE FUNCTION asset.opac_lasso_record_copy_count_sum(lasso_id INT, record_id BIGINT)
+    RETURNS TABLE (depth INT, org_unit INT, visible BIGINT, available BIGINT, unshadow BIGINT, transcendant INT, library_group INT) AS $$
+    BEGIN
+    IF (lasso_id IS NULL) THEN RETURN; END IF;
+    IF (record_id IS NULL) THEN RETURN; END IF;
+
+    RETURN QUERY SELECT
+        -1,
+        -1,
+        COUNT(cp.id),
+        SUM( CASE WHEN cp.status IN (SELECT id FROM config.copy_status WHERE holdable AND is_available) THEN 1 ELSE 0 END ),
+        SUM( CASE WHEN cl.opac_visible AND cp.opac_visible THEN 1 ELSE 0 END),
+        0,
+        lasso_id
+    FROM ( SELECT DISTINCT descendants.id FROM actor.org_lasso_map aolmp JOIN LATERAL actor.org_unit_descendants(aolmp.org_unit) AS descendants ON TRUE WHERE aolmp.lasso = lasso_id) d
+        JOIN asset.copy cp ON (cp.circ_lib = d.id AND NOT cp.deleted)
+        JOIN asset.copy_location cl ON (cp.location = cl.id AND NOT cl.deleted)
+        JOIN asset.call_number cn ON (cn.record = record_id AND cn.id = cp.call_number AND NOT cn.deleted)
+        JOIN asset.copy_vis_attr_cache av ON (cp.id = av.target_copy AND av.record = record_id)
+        JOIN LATERAL (SELECT c_attrs FROM asset.patron_default_visibility_mask()) AS mask ON TRUE
+        WHERE av.vis_attr_vector @@ mask.c_attrs::query_int;
+    END;
+$$ LANGUAGE PLPGSQL STABLE ROWS 1;
+
+CREATE OR REPLACE FUNCTION asset.opac_copy_total(rec_id INT, org_units INT[], depth INT, library_groups INT[])
+RETURNS INT AS $$
+  SELECT COUNT(cp.id) total
+       FROM asset.copy cp
+       INNER JOIN asset.call_number cn ON (cn.id = cp.call_number AND NOT cn.deleted AND cn.record = rec_id)
+       INNER JOIN asset.copy_location cl ON (cp.location = cl.id AND NOT cl.deleted)
+    INNER JOIN asset.copy_vis_attr_cache av ON (cp.id = av.target_copy AND av.record = rec_id)
+    JOIN LATERAL (SELECT c_attrs FROM asset.patron_default_visibility_mask()) AS mask ON TRUE
+    WHERE av.vis_attr_vector @@ mask.c_attrs::query_int
+       AND cp.circ_lib = ANY (SELECT asset.copy_org_ids(org_units, depth, library_groups))
+       AND NOT cp.deleted;
+$$ LANGUAGE SQL;
 
 CREATE TRIGGER maintain_symspell_entries_tgr
     AFTER INSERT OR UPDATE OR DELETE ON metabib.title_field_entry

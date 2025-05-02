@@ -15,6 +15,7 @@ import {PcrudService} from '@eg/core/pcrud.service';
 import {OrgService} from '@eg/core/org.service';
 import {PermService} from '@eg/core/perm.service';
 import {AuthService} from '@eg/core/auth.service';
+import {BroadcastService} from '@eg/share/util/broadcast.service';
 import {FmRecordEditorComponent, FmFieldOptions
 } from '@eg/share/fm-editor/fm-editor.component';
 import {StringComponent} from '@eg/share/string/string.component';
@@ -199,7 +200,8 @@ export class AdminPageComponent implements OnInit {
         public auth: AuthService,
         public pcrud: PcrudService,
         private perm: PermService,
-        public toast: ToastService
+        public toast: ToastService,
+        public broadcaster: BroadcastService
     ) {
         this.translatableFields = [];
         this.configFields = [];
@@ -426,6 +428,7 @@ export class AdminPageComponent implements OnInit {
                     this.successString.current()
                         .then(str => this.toast.success(str));
                     this.grid.reload();
+                    this.broadcaster.broadcast(`eg.${this.idlEditClass || this.idlClass}_updated`, { action: 'edit', result: result });
                     resolve(result);
                 },
                 (error: unknown) => {
@@ -444,7 +447,8 @@ export class AdminPageComponent implements OnInit {
             if (!thing) { return; }
 
             this.showEditDialog(thing).then(
-                () => editOneThing(idlThings.shift()));
+                () => editOneThing(idlThings.shift())
+            );
         };
 
         editOneThing(idlThings.shift());
@@ -473,6 +477,7 @@ export class AdminPageComponent implements OnInit {
             val => {
                 this.undeleteSuccessString.current()
                     .then(str => this.toast.success(str));
+                this.broadcaster.broadcast(`eg.${this.idlEditClass || this.idlClass}_updated`, { action: 'undelete', result: val });
             },
             (err: unknown) => {
                 this.undeleteFailedString.current()
@@ -499,6 +504,7 @@ export class AdminPageComponent implements OnInit {
             val => {
                 this.deleteSuccessString.current()
                     .then(str => this.toast.success(str));
+                this.broadcaster.broadcast(`eg.${this.idlEditClass || this.idlClass}_updated`, { action: 'delete', result: val });
             },
             (err: unknown) => {
                 this.deleteFailedString.current()
@@ -549,6 +555,7 @@ export class AdminPageComponent implements OnInit {
                 this.createString.current()
                     .then(str => this.toast.success(str));
                 this.grid.reload();
+                this.broadcaster.broadcast(`eg.${this.idlEditClass || this.idlClass}_updated`, { action: 'create', result: ok });
             },
             (rejection: any) => {
                 if (!rejection.dismissed) {
@@ -689,7 +696,7 @@ export class AdminPageComponent implements OnInit {
     }
 
     hasNoHistory(): boolean {
-        return history.length === 0;
+        return history.length <= 1;
     }
 
     goBack() {

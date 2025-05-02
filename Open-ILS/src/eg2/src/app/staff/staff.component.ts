@@ -49,7 +49,7 @@ export class StaffComponent implements OnInit {
             }
 
             console.debug('Auth session has expired. Redirecting to login');
-            const url = this.ngLocation.prepareExternalUrl(this.router.url);
+            const url = this.router.url;
 
             // https://github.com/angular/angular/issues/18254
             // When a tab redirects to a login page as a result of

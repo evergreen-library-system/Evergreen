@@ -143,11 +143,10 @@ export class CopyAlertManagerDialogComponent extends DialogComponent {
     openItemAlerts() {
         const copyIds = [ this.alerts[0].copy() ];
         this.copyAlertsDialog.copyIds = copyIds;
-        this.copyAlertsDialog.mode = 'manage';
         this.copyAlertsDialog.open({size: 'lg'}).subscribe(
             changes => {
                 if (!changes) { return; }
-                if (changes.newAlerts.length > 0 || changes.changedAlerts.length > 0) {
+                if (changes.newThings.length > 0 || changes.changedThings.length > 0) {
                     this.newAlertsAdded = true;
                 }
             }

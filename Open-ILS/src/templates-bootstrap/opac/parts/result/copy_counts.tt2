@@ -1,16 +1,23 @@
 [%- depths = attrs.copy_counts.size;
-    depth = 0;
+    depth = -1;
     displayed_ous = {};
     hiding_disabled = ctx.org_hiding_disabled();
     WHILE depth < depths;
         org_unit = ctx.get_aou(attrs.copy_counts.$depth.org_unit);
-        ou_name = org_unit.name;
+        library_group_name = '';
+        FOREACH group IN ctx.lassos;
+            NEXT IF library_group_name;
+            IF group.id == attrs.copy_counts.$depth.library_group;
+                library_group_name = group.name;
+            END;
+        END;
+        ou_name = org_unit.name || library_group_name;
         displayed_ous.$ou_name = 1;
         IF attrs.copy_counts.$depth.count > 0 AND (
             hiding_disabled OR ctx.org_within_hiding_scope(org_unit.id));
 %]
 <div class="result_count">
-[% IF ctx.get_aou(attrs.copy_counts.$depth.org_unit).opac_visible == 't' %]
+[% IF ctx.get_aou(attrs.copy_counts.$depth.org_unit).opac_visible == 't' OR attrs.copy_counts.$depth.library_group %]
     [% l('[_1] of [quant,_2,copy,copies] available at [_3].',
         attrs.copy_counts.$depth.available,
         attrs.copy_counts.$depth.count,

@@ -24,56 +24,13 @@ if [ -z "$DB_VERSION" ] || [ `echo $DB_VERSION | grep -c '[^0-9]'` != 0 ]; then
 * $DB_VERSION
 * which didn't make any sense.  For assistance, please email                   *
 * open-ils-general@list.georgialibraries.org or join #Evergreen on the         *
-* freenode IRC network.                                                        *
+* Libera IRC network.                                                        *
 ********************************************************************************
 EOM
   exit 1
 fi
 
-# ---------------------------------------------------------------------------
-# Validate fts-config file is available for specified DB_VERSION.
-# ---------------------------------------------------------------------------
-if [ -e "000.english.pg$DB_VERSION.fts-config.sql" ]; then
-  fts_config_file="000.english.pg$DB_VERSION.fts-config.sql"
-else
-  # -------------------------------------------------------------------------
-  # Attempt to auto-detect the latest available config file.
-  # -------------------------------------------------------------------------
-  last_ver=""
-  for i in $(seq 80 99 | sort -rn); do
-    if [ -e "000.english.pg$i.fts-config.sql" ]; then
-      last_ver=$i
-      break
-    fi
-  done
-  if [ -z "$last_ver" ]; then
-    cat <<EOM
-********************************************************************************
-* Cannot locate any configuration files for  full text search config.  This    *
-* may indicate a problem with your copy of the source files.  We attempted to  *
-* find files like 000.english.pg83.fts-config.sql in this directory:           *
-* `pwd` 
-* but were unsuccessful.  Aborting.                                            *
-********************************************************************************
-EOM
-    exit 1
-  fi
-
-  a=$DB_VERSION  # preserves the text alignment below, in a cheap fashion
-  b=$last_ver    # assuming of course two character DB_VERSION and last_ver
-cat <<EOM
-********************************************************************************
-* There is no configuration for full text search config, for the database      *
-* version you have installed ($a).  If you're not really sure why, you should  *
-* proabably press 'Control-C' now, and abort.  To continue using the latest    *
-* available version ($b), press enter. For assistance, please email            *
-* open-ils-general@list.georgialibraries.org or join #Evergreen on the         *
-* freenode IRC network.                                                        *
-********************************************************************************
-EOM
-  read unused
-  fts_config_file="000.english.pg$last_ver.fts-config.sql"
-fi
+fts_config_file="000.english.pg.fts-config.sql"
 
 # ---------------------------------------------------------------------------
 # Import files via psql, warn user on error, suggest abort.  SQL scripts

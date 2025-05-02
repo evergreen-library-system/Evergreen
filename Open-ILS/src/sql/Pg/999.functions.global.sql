@@ -14,6 +14,58 @@
  *
  */
 
+CREATE OR REPLACE FUNCTION actor.verify_passwd(pw_usr integer, pw_type text, test_passwd text) RETURNS boolean AS $f$
+DECLARE
+    pw_salt     TEXT;
+    api_enabled BOOL;
+BEGIN
+    /* Returns TRUE if the password provided matches the in-db password.
+     * If the password type is salted, we compare the output of CRYPT().
+     * NOTE: test_passwd is MD5(salt || MD5(password)) for legacy
+     * 'main' passwords.
+     *
+     * Password type 'api' requires that the user be enabled as an
+     * integrator in the openapi.integrator table.
+     */
+
+    IF pw_type = 'api' THEN
+        SELECT  enabled INTO api_enabled
+          FROM  openapi.integrator
+          WHERE id = pw_usr;
+
+        IF NOT FOUND OR api_enabled IS FALSE THEN
+            -- API integrator account not registered
+            RETURN FALSE;
+        END IF;
+    END IF;
+
+    SELECT INTO pw_salt salt FROM actor.passwd
+        WHERE usr = pw_usr AND passwd_type = pw_type;
+
+    IF NOT FOUND THEN
+        -- no such password
+        RETURN FALSE;
+    END IF;
+
+    IF pw_salt IS NULL THEN
+        -- Password is unsalted, compare the un-CRYPT'ed values.
+        RETURN EXISTS (
+            SELECT TRUE FROM actor.passwd WHERE
+                usr = pw_usr AND
+                passwd_type = pw_type AND
+                passwd = test_passwd
+        );
+    END IF;
+
+    RETURN EXISTS (
+        SELECT TRUE FROM actor.passwd WHERE
+            usr = pw_usr AND
+            passwd_type = pw_type AND
+            passwd = CRYPT(test_passwd, pw_salt)
+    );
+END;
+$f$ STRICT LANGUAGE plpgsql;
+
 CREATE OR REPLACE FUNCTION actor.usr_merge_rows( table_name TEXT, col_name TEXT, src_usr INT, dest_usr INT ) RETURNS VOID AS $$
 DECLARE
     sel TEXT;
@@ -220,6 +272,7 @@ BEGIN
     UPDATE action.hold_request SET fulfillment_staff = dest_usr WHERE fulfillment_staff = src_usr;
     UPDATE action.hold_request SET requestor = dest_usr WHERE requestor = src_usr;
     UPDATE action.hold_request SET canceled_by = dest_usr WHERE canceled_by = src_usr;
+	UPDATE action.hold_request_reset_reason_entry SET requestor = dest_usr WHERE requestor = src_usr;
     UPDATE action.hold_notification SET notify_staff = dest_usr WHERE notify_staff = src_usr;
 
     UPDATE action.in_house_use SET staff = dest_usr WHERE staff = src_usr;
@@ -473,6 +526,7 @@ BEGIN
 	UPDATE action.hold_request SET fulfillment_staff = dest_usr WHERE fulfillment_staff = src_usr;
 	UPDATE action.hold_request SET requestor = dest_usr WHERE requestor = src_usr;
 	UPDATE action.hold_request SET canceled_by = dest_usr WHERE canceled_by = src_usr;
+	UPDATE action.hold_request_reset_reason_entry SET requestor = dest_usr WHERE requestor = src_usr;
 	DELETE FROM action.hold_request WHERE usr = src_usr;
 	UPDATE action.in_house_use SET staff = dest_usr WHERE staff = src_usr;
 	UPDATE action.non_cat_in_house_use SET staff = dest_usr WHERE staff = src_usr;

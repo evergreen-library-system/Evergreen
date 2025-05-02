@@ -52,7 +52,7 @@
 
 <ng-template #docURLTmpl let-row="row">
   <div *ngIf="row.documentation?.match('^\s*https?:')">
-    <a href="{{row.documentation}}" target="_blank" i18n>Template Documentation</a>
+    <a href="{{row.documentation}}" target="_blank"><kbd>{{row.documentation}}</kbd></a>
   </div>
   <span *ngIf="!row.documentation?.match('^\s*https?:')">
     {{row.documentation}}
@@ -72,7 +72,7 @@
     [showDeclaredFieldsOnly]="true"
     (onRowActivate)="newReport([$event])">
   
-    <eg-grid-toolbar-button label="New template" i18n-label *ngIf="currentFolder && RSvc.folderIsMine(currentFolder)"
+    <eg-grid-toolbar-button label="New Template" i18n-label *ngIf="currentFolder && RSvc.folderIsMine(currentFolder)"
       (onClick)="newTemplate($event)">
     </eg-grid-toolbar-button>
 
@@ -89,11 +89,11 @@
     </eg-grid-toolbar-button>
   
     <eg-grid-toolbar-button label="Share Folder" i18n-label *ngIf="currentFolder && RSvc.folderIsMine(currentFolder) && currentFolder.shared() === 'f'"
-      (onClick)="shareFolder($event)">
+      #share (onClick)="shareFolder(share)">
     </eg-grid-toolbar-button>
 
     <eg-grid-toolbar-button label="Unshare Folder" i18n-label *ngIf="currentFolder && RSvc.folderIsMine(currentFolder) && currentFolder.shared() === 't'"
-      (onClick)="unshareFolder($event)">
+      #unshare (onClick)="unshareFolder(unshare)">
     </eg-grid-toolbar-button>
 
     <eg-grid-toolbar-action label="New Report" i18n-label
@@ -135,7 +135,7 @@
     <eg-grid-column path="documentation" [cellTemplate]="docURLTmpl" i18n-label label="Documentation"
                     [sortable]="false" [filterable]="false" [disableTooltip]="true"></eg-grid-column>
     <eg-grid-column path="create_time" i18n-label label="Date Created" datatype="timestamp" [datePlusTime]="true"></eg-grid-column>
-    <eg-grid-column path="owner" i18n-label label="Owner"></eg-grid-column>
+    <eg-grid-column path="owner" i18n-label [filterable]="false" [sortable]="false" [disableTooltip]="true" label="Owner"></eg-grid-column>
     <eg-grid-column path="version" i18n-label [hidden]="true" [filterable]="false" [sortable]="false" [disableTooltip]="true" label="Version"></eg-grid-column>
   
   </eg-grid>

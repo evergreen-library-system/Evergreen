@@ -254,17 +254,115 @@ __PACKAGE__->register_method(
     }
 );
 
+__PACKAGE__->register_method(
+    method   => "record_id_to_copy_count",
+    api_name => "open-ils.search.biblio.record.copy_count.lasso",
+    signature => {
+        desc => q/Returns a copy summary for the given record for the context library group/,
+        params => [
+            {desc => 'Context org unit id', type => 'number'},
+            {desc => 'Record ID', type => 'number'},
+            {desc => 'Library Group ID', type => 'number'}
+        ],
+        return => {
+            desc => q/summary object per org unit in the set, where the set
+                includes the context org unit and all parent org units.  
+                Object includes the keys "transcendant", "count", "org_unit", "depth", 
+                "unshadow", "available".  Each is a count, except "org_unit" which is 
+                the context org unit and "depth" which is the depth of the context org unit
+            /,
+            type => 'array'
+        }
+    }
+);
+
+__PACKAGE__->register_method(
+    method        => "record_id_to_copy_count",
+    api_name      => "open-ils.search.biblio.record.copy_count.staff.lasso",
+    authoritative => 1,
+    signature => {
+        desc => q/Returns a copy summary for the given record for the context library group/,
+        params => [
+            {desc => 'Context org unit id', type => 'number'},
+            {desc => 'Record ID', type => 'number'},
+            {desc => 'Library Group ID', type => 'number'}
+        ],
+        return => {
+            desc => q/summary object per org unit in the set, where the set
+                includes the context org unit and all parent org units.  
+                Object includes the keys "transcendant", "count", "org_unit", "depth", 
+                "unshadow", "available".  Each is a count, except "org_unit" which is 
+                the context org unit and "depth" which is the depth of the context org unit
+            /,
+            type => 'array'
+        }
+    }
+);
+
+__PACKAGE__->register_method(
+    method   => "record_id_to_copy_count",
+    api_name => "open-ils.search.biblio.metarecord.copy_count.lasso",
+    signature => {
+        desc => q/Returns a copy summary for the given record for the context library group/,
+        params => [
+            {desc => 'Context org unit id', type => 'number'},
+            {desc => 'Record ID', type => 'number'},
+            {desc => 'Library Group ID', type => 'number'}
+        ],
+        return => {
+            desc => q/summary object per org unit in the set, where the set
+                includes the context org unit and all parent org units.  
+                Object includes the keys "transcendant", "count", "org_unit", "depth", 
+                "unshadow", "available".  Each is a count, except "org_unit" which is 
+                the context org unit and "depth" which is the depth of the context org unit
+            /,
+            type => 'array'
+        }
+    }
+);
+
+__PACKAGE__->register_method(
+    method   => "record_id_to_copy_count",
+    api_name => "open-ils.search.biblio.metarecord.copy_count.staff.lasso",
+    signature => {
+        desc => q/Returns a copy summary for the given record for the context library group/,
+        params => [
+            {desc => 'Context org unit id', type => 'number'},
+            {desc => 'Record ID', type => 'number'},
+            {desc => 'Library Group ID', type => 'number'}
+        ],
+        return => {
+            desc => q/summary object per org unit in the set, where the set
+                includes the context org unit and all parent org units.  
+                Object includes the keys "transcendant", "count", "org_unit", "depth", 
+                "unshadow", "available".  Each is a count, except "org_unit" which is 
+                the context org unit and "depth" which is the depth of the context org
+                unit.  "depth" is always -1 when the count from a lasso search is
+                performed, since depth doesn't mean anything in a lasso context.
+            /,
+            type => 'array'
+        }
+    }
+);
+
 sub record_id_to_copy_count {
-    my( $self, $client, $org_id, $record_id ) = @_;
+    my( $self, $client, $org_id, $record_id, $lasso_id ) = @_;
 
     return [] unless $record_id;
 
     my $key = $self->api_name =~ /metarecord/ ? 'metarecord' : 'record';
     my $staff = $self->api_name =~ /staff/ ? 't' : 'f';
 
+    my $args;
+    if ($lasso_id) {
+        my $scope = $self->api_name =~ /staff/ ? 'staff' : 'opac';
+        $args = ['asset.' . $scope . '_lasso_' . $key  . '_copy_count_sum' => $lasso_id => $record_id];
+    } else {
+        $args = ['asset.' . $key  . '_copy_count' => $org_id => $record_id => $staff];
+    }
     my $data = $U->cstorereq(
         "open-ils.cstore.json_query.atomic",
-        { from => ['asset.' . $key  . '_copy_count' => $org_id => $record_id => $staff] }
+        { from => $args }
     );
 
     my @count;
@@ -274,6 +372,55 @@ sub record_id_to_copy_count {
     }
 
     return [ sort { $a->{depth} <=> $b->{depth} } @count ];
+}
+
+
+__PACKAGE__->register_method(
+    method => 'copy_total',
+    api_name => 'open-ils.search.biblio.record.copy_total',
+    signature => {
+        desc => 'returns a total of all public items on a record at the specified orgs and library groups',
+        params => [
+            {desc => 'Record ID', type => 'number'},
+            {desc => 'Org unit IDs', type => 'arrayref'},
+            {desc => 'Org unit depth', type => 'number'},
+            {desc => 'Library group IDs', type => 'arrayref'},
+        ],
+        return => {
+            desc => 'total of all public items on the record',
+            type => 'bool'
+        }
+    }
+);
+
+__PACKAGE__->register_method(
+    method => 'copy_total',
+    api_name => 'open-ils.search.biblio.record.copy_total.staff',
+    signature => {
+        desc => 'returns a total of all staff-visible items on a record at the specified orgs and library groups',
+        params => [
+            {desc => 'Record ID', type => 'number'},
+            {desc => 'Org unit IDs', type => 'arrayref'},
+            {desc => 'Org unit depth', type => 'number'},
+            {desc => 'Library group IDs', type => 'arrayref'},
+        ],
+        return => {
+            desc => 'total of all staff-visible items on the record',
+            type => 'bool'
+        }
+    }
+);
+
+sub copy_total {
+    my ($self, $client, $record_id, $org_unit_ids, $org_unit_depth, $library_group_ids) = @_;
+    my $total_function = $self->api_name =~ /staff/ ? 'asset.staff_copy_total' : 'asset.opac_copy_total';
+    return new_editor->json_query(
+        {from => [$total_function =>
+            $record_id,
+            '{' . join(',', @$org_unit_ids) . '}',
+            $org_unit_depth,
+            '{' . join(',', @$library_group_ids) . '}']}
+    )->[0]->{$total_function};
 }
 
 __PACKAGE__->register_method(
@@ -1501,14 +1648,21 @@ sub fetch_display_fields {
     }
 
     my $e = new_editor();
+    my $fleshed = 0;
+    my %df_cache;
+
+    if ($self->api_name =~ /fleshed$/) {
+        $fleshed++;
+        %df_cache = map {
+            ($_->id => {%{$_->to_bare_hash}{qw/id field_class name label search_field browse_field facet_field display_field restrict/}})
+        } @{ $e->retrieve_all_config_metabib_field };
+    }
 
     for my $record ( @records ) {
         next unless ($record && $highlight_map);
-        $conn->respond(
-            $e->json_query(
-                {from => ['search.highlight_display_fields', $record, $highlight_map]}
-            )
-        );
+        my $hl = $e->json_query({from => ['search.highlight_display_fields', $record, $highlight_map]});
+        $hl = [ map { $$_{field} = $df_cache{$$_{field}}; $_ } @$hl ] if $fleshed;
+        $conn->respond( $hl );
     }
 
     return undef;
@@ -1516,6 +1670,12 @@ sub fetch_display_fields {
 __PACKAGE__->register_method(
     method    => 'fetch_display_fields',
     api_name  => 'open-ils.search.fetch.metabib.display_field.highlight',
+    stream   => 1
+);
+
+__PACKAGE__->register_method(
+    method    => 'fetch_display_fields',
+    api_name  => 'open-ils.search.fetch.metabib.display_field.highlight.fleshed',
     stream   => 1
 );
 
@@ -2482,9 +2642,7 @@ sub biblio_search_isbn {
     # so we will set our limit very high and let multiclass.query provide any
     # actual limit
     # XXX: if making this unlimited is deemed important, we might consider
-    # reworking 'open-ils.storage.id_list.biblio.record_entry.search.isbn',
-    # which is functionally deprecated at this point, or a custom call to
-    # 'open-ils.storage.biblio.multiclass.search_fts'
+    # a custom call to 'open-ils.storage.biblio.multiclass.search_fts'
 
     my $isbn_method = 'open-ils.search.biblio.multiclass.query';
     if ($self->api_name =~ m/.staff$/) {
@@ -2548,9 +2706,7 @@ sub biblio_search_issn {
     # so we will set our limit very high and let multiclass.query provide any
     # actual limit
     # XXX: if making this unlimited is deemed important, we might consider
-    # reworking 'open-ils.storage.id_list.biblio.record_entry.search.issn',
-    # which is functionally deprecated at this point, or a custom call to
-    # 'open-ils.storage.biblio.multiclass.search_fts'
+    # a custom call to 'open-ils.storage.biblio.multiclass.search_fts'
 
     my $issn_method = 'open-ils.search.biblio.multiclass.query';
     if ($self->api_name =~ m/.staff$/) {
@@ -3149,7 +3305,9 @@ __PACKAGE__->register_method(
         desc   => 'Stream of record data suitable for catalog display',
         params => [
             {desc => 'Context org unit ID', type => 'number'},
-            {desc => 'Array of Record IDs', type => 'array'}
+            {desc => 'Array of Record IDs', type => 'array'},
+            {desc => 'Options hash.  Keys can include pref_ou, flesh_copies, copy_limit, copy_depth, copy_offset, and library_group',
+                type => 'hashref'}
         ],
         return => { 
             desc => q/
@@ -3197,6 +3355,7 @@ sub catalog_record_summary {
     my $e = new_editor();
     $options ||= {};
     my $pref_ou = $options->{pref_ou};
+    my $library_group = $options->{library_group};
 
     my $is_meta = ($self->api_name =~ /metabib/);
     my $is_staff = ($self->api_name =~ /staff/);
@@ -3205,13 +3364,13 @@ sub catalog_record_summary {
         'open-ils.circ.mmr.holds.count' : 
         'open-ils.circ.bre.holds.count';
 
-    my $copy_method = $is_meta ? 
+    my $copy_method_name = $is_meta ? 
         'open-ils.search.biblio.metarecord.copy_count':
         'open-ils.search.biblio.record.copy_count';
 
-    $copy_method .= '.staff' if $is_staff;
+    $copy_method_name .= '.staff' if $is_staff;
 
-    $copy_method = $self->method_lookup($copy_method); # local method
+    my $copy_method = $self->method_lookup($copy_method_name); # local method
 
     my $holdable_method = $is_meta ?
         'open-ils.search.biblio.metarecord.has_holdable_copy':
@@ -3285,6 +3444,11 @@ sub catalog_record_summary {
         }
 
         ($response->{copy_counts}) = $copy_method->run($org_id, $rec_id);
+
+        if ($library_group) {
+            my ($group_counts) = $self->method_lookup("$copy_method_name.lasso")->run($org_id, $rec_id, $library_group);
+            unshift @{$response->{copy_counts}}, $group_counts->[0];
+        }
 
         $response->{first_call_number} = get_first_call_number(
             $e, $rec_id, $org_id, $is_staff, $is_meta, $options);

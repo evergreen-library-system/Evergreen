@@ -490,7 +490,8 @@ sub get_records_and_facets {
         $unapi_args->{site},
         $unapi_args->{depth},
         $unapi_args->{flesh_depth},
-        ($unapi_args->{pref_lib} || '')
+        ($unapi_args->{pref_lib} || ''),
+        ($unapi_args->{library_group} || '')
     );
 
     my %tmp_data;
@@ -537,7 +538,8 @@ sub get_records_and_facets {
                 $unapi_args->{depth}, 
                 $slimit,
                 undef, undef, undef, undef, undef, undef, undef, undef,
-                $unapi_args->{pref_lib}
+                $unapi_args->{pref_lib},
+                $unapi_args->{library_group}
             ]}
         );
     

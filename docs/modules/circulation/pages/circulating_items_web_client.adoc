@@ -196,6 +196,17 @@ These options may be selected simultaneously. The selected option is displayed i
 
 image::circulating_items_web_client/checkinmodifiers-with-inventory2.png[Web client check-in modifiers]
 ===================================================
+
+=== Item Alerts at Checkin
+
+Item Alerts will appear if an action required to trigger the alert occurs. For example, a Normal Checkin Alert will appear when the item is checked in.
+
+If Next Status options have been configured for the Checkin Alert, staff will see a drop down menu that allows then to select the next Status for the item. The example below is for an item that had been marked missing, and shows the option to send the item to Cataloging if needed.
+
+image::circulating_items_web_client/checkin_alert_next_status.png[Item checkin alert for a previously missing item showing the next statuses available]
+
+For more information, see the xref:cataloging:item_tags_cataloging.adoc#item_alerts[item alerts documentation].
+
   
 == Renewal and Editing the Item's Due Date ==
 
@@ -517,9 +528,12 @@ Lost Item Billing
 - The replacement fee and processing fee for lost-then-returned items may be voided if set by local policy. Overdue fines may be reinstated on lost-then-returned items if set by local policy.
 ========================
 
+[[_refunds_for_lost_items]]
 === Refunds for Lost Items ===
 
 If an item is returned after a lost bill has been paid and the library's policy is to void the replacement fee for lost-then-returned items, there will be a negative balance in the bill. A refund needs to be made to close the bill and the circulation record. Once the outstanding amount has been refunded, the bill and circulation record will be closed and the item will disappear from the Items Out screen.
+
+xref:circulation:billing.adoc#void_paid_bill[Click here for instructions on voiding paid bills.]
 
 If you need to balance a bill with a negative amount, you need to add two dummy bills to the existing bills. The first one can be of any amount (e.g. $0.01), while the second should be of the absolute value of the negative amount. Then you need to void the first dummy bill. The reason for using a dummy bill is that Evergreen will check and close the circulation record only when payment is applied or bills are voided.
 
@@ -848,25 +862,7 @@ Depending on the library's policy, when marking an item damaged, bills (cost and
 
 === Item alerts ===
 
-The *Edit Item* function on the *Actions* dropdown list allows you to edit item records. Here, we will show you how to insert item alert messages by this function. See cataloging instructions for more information on item editing.
-
-1) Retrieve record on *Item Status* screen.
-
-2) Once item is displayed, highlight it and select *Actions* -> *Edit* -> *Item*.
-
-3) The item record is displayed in the *Holdings Editor*.
-
-4) Click the *Item Alerts* button in the *Add Item Alerts* box under the *Miscellaneous* column.
-
-image::circulating_items_web_client/holdings_editor_add_item_alert.png[Item Alerts button in the Holdings Editor.]
-
-5) A window appears, where you can select the alert type, i.e., when the alert should appear for staff. Select the *Temporary* checkbox if you would like the alert to be removed after that specific action for the item is complete. Type in the message then click *Apply Changes*. 
-
-image::circulating_items_web_client/item_alert_window.png[Managing item alerts window with examples of alert types shown in dropdown.]
-
-6) Back in the Holdings Editor, click *Apply All & Save* or *Apply, Save & Exit*.
-
-image::circulating_items_web_client/holdings_editor_save_options.png[Item Alerts button in the Holdings Editor.]
+The *Edit Item* function on the *Actions* dropdown list allows you to edit item records. See xref:cataloging:volcopy_editor.adoc[cataloging instructions] for more information on item editing, and xref:cataloging:item_tags_cataloging.adoc[item tags, notes, and alerts documentation] for managing tags, notes, and alerts.
 
 == Long Overdue Items ==
 
@@ -903,6 +899,9 @@ Evergreen has two sample Notification/Action Triggers that are related to markin
 ** 6 Month Auto Mark Long-Overdue—will mark an item long overdue after the configured period of time
 
 ** 6 Month Long Overdue Notice—will send patron notification that an item has been marked long overdue on their account
+
+[TIP]
+LOST reactors for action triggers also react to Long Overdues.  This means that Long Overdue cannot be activated while Mark Lost, for example, is activated.  To use Long Overdue, you would need to deactivate Mark Lost.
 
 [[longoverdue_library_settings]]
 *Library Settings* 

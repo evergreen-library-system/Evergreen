@@ -44,7 +44,8 @@ export class SckoHoldsComponent implements OnInit {
 
         const filters = {
             usr_id: this.scko.patronSummary.id,
-            fulfillment_time: null
+            fulfillment_time: null,
+            cancel_time: null
         };
 
         let first = true;

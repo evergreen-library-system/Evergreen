@@ -7,102 +7,128 @@ indexterm:[volumes,editing]
 indexterm:[holdings editor]
 [[holdings_editor]]
 
-The Holdings Editor is the tool where you can edit all holdings data.
+The Holdings Editor is the tool where you can edit all holdings data, including call number (volume) data as well as item-level data.
 
-== Specific fields ==
+== Notes on specific fields ==
 
 === Acquisitions Cost ===
-indexterm:[acquisitions cost]
 
-This field is populated with the invoiced cost of the originating acquisition.
-This field will be empty until its originating acquisition is connected to an
-invoice.
+This field is populated with the invoiced cost of the originating acquisition. This field will be empty until its originating acquisition is connected to an invoice.
 
 === Item Number ===
-indexterm:[copy number]
-indexterm:[item number]
 
-If you have multiple copies of the same item, you may want to
-assign them item numbers to help distinguish them.  If you do
-not include an item number in this field, Evergreen will assign your
-item a default item number of 1.
+If you have multiple items of the same item, you may want to assign them item numbers to help distinguish them. If you do not include an item number in this field, Evergreen will assign your item a default item
+number of 1.
+
+[[volcopy_item_tags_notes_alerts]]
+=== Item Tags, Notes, and Alerts ===
+
+For information on item tags, notes, and alerts, please see the xref:cataloging:item_tags_cataloging.adoc[specific documentation for item tags, notes, and alerts].
 
 == Accessing the Holdings Editor by barcode ==
 
-. Click *Search -> Search for Items by Barcode*
-. Scan your barcode.
-. Right click on the entry in the grid.
-. Click *Edit -> Call Numbers and Items* on the actions menu that appears.
+Navigate to *Search -> Search for Items by Barcode*.
 
-== Accessing the holdings editor from a catalog record ==
+Scan your barcode or list of barcodes.
 
-The bibliographic record detail page displays library holdings, including the call number, shelving location, and item barcode. Within the
-staff client, the holdings list displays a column next to the item barcode(s) containing two links, *view* and *edit*.
+Right click on the entry in the grid.
 
-image::volcopy_editor/copy_edit_link_1.jpg[Copy Edit Link]
+Select *Edit -> Call Numbers and Items* on the actions menu that appears.
 
-Clicking on the *view* link opens the *Item Status* screen for that specific item.
+== Accessing the Holdings Editor from a catalog record ==
 
-Clicking on the *edit* link opens the *Holdings Editor* screen for that specific item.
+The bibliographic record detail page displays library holdings, including the call number, shelving location, and item barcode. Within the staff client, the holdings list displays a column next to the item barcode(s) containing two links, *View* and *Edit*.
 
-The *edit* link will only be exposed next to copies when the user has the *UPDATE_COPY* permission at the copy owning or circulating library. 
+Selecting the *View* link opens the Item Status screen for that specific item.
 
-== Holdings Details Defaults ==
+Clicking on the *Edit* link opens the Holdings Editor screen for that specific item.
 
-Select the checkboxes or use the drop down menus to set the settings you'd like.
+The Edit link will only be exposed next to items when the user has the UPDATE_COPY permission at the item owning library.
 
-image::volcopy_editor/holdings-editor-defaults-2.png["Holdings Details Defaults settings screen with various options like Always display Holdings Details pane, Classification Scheme, Default Prefix, and more."]
+== Editing attributes in the Holdings Editor ==
 
-The following settings can be set for the Holdings Details:
+image::volcopy_editor/holdings_editor.png[Holdings Editor]
 
+The Holdings Editor is where you can create or edit one or several items and call numbers. Call numbers are owned by an Organizational Unit, and items are individual items associated with a call number and Organizational Unit.
 
-[options="header"]
+To change an item attribute, click on the attribute. Depending on the attribute, you will have a dropdown (which allows typeaheads), a numeric area, a text area, or a modal. Once you have made your edits to the field, click _Apply_. The styling of the field will change to show that edits are pending. Once you have finished making edits, select either _Apply All & Save_ if you wish to make more changes, or _Apply All, Save & Exit_ if you wish to save and close the Holdings Editor.
+
+image::volcopy_editor/holdings_editor_post_edit.png[Styling changes following edits}
+
+If you are editing a batch of items, the Holdings Editor will show all values of your currently selected items, including counts of which items have which attribute level. Any changes you make will be to all item attributes.
+
+NOTE: Certain statuses, such as Checked Out, In Transit, etc. are considered “magical” statuses and cannot be edited from the Holdings Editor. If your batch contains item(s) with these statuses, you will not be able to update any item statuses in the batch.
+
+image::volcopy_editor/holdings_editor_batch_mode.png[Holdings editor in batch mode]
+
+As above, to change an item attribute, click on the attribute. Depending on the attribute, you will have a dropdown (which allows typeaheads), a numeric area, a text area, or a modal. Once you have made your edits to the field, click Apply. The styling of the field will change to show that edits are pending. Once you have finished making edits, select either Apply All & Save if you wish to make more changes, or Apply All, Save & Exit if you wish to save and close the Holdings Editor.
+
+Since you are working in multiple items, you can choose whether to edit some or all items' values. To do this, select an element (in the example below, "Shelving Location") and select the values you wish to change using the checkboxes (in the example below, I unchecked "Display" because I don't want to edit that value). Then enter the new value you wish to apply to the selected items (I chose the new shelving location "New Arrivals"). The result of this workflow is that the Display item will remain in Display, and the two items that were in Audio/Video will be moved to New Arrivals.
+
+image::volcopy_editor/selective_edit.png[Editing in batch]
+
+NOTE: If you do not have permissions to edit an item or items in your set, you will see a warning dialog that informs you of this when you open the editor. You will be given the option to only show items which you can edit, to show all items in read-only mode, or to enter higher credentials via Change Operator. You can also exit the editor to select a different set of items.
+
+image::volcopy_editor/mixed_permissions_warning.png[Holdings Editor permissions warning]
+
+To see how to use templates in the Holdings Editor, please see the xref:cataloging:holdings_templates.adoc[Holdings Templates documentation].
+
+== Holdings Editor Preferences ==
+
+Several groups of settings are available from the *Preferences* tab of the Holdings Editor. These are all saved as server workstation settings. Changes are applied automatically.
+
+=== Holdings Display Preferences ===
+
+There are several display preferences available.
+
+[width="100%",cols="26%,74%",options="header",]
 |===
-| Setting | Description
-| Always display Holdings Details pane | When selected the Holdings Detail section will show 
-when *Add/Edit Items* is selected from the *Actions* menu.
-| Allow Call Number Attribues in Item Templates | When selected Classification scheme, Prefix, and Suffix
-are available options that can be included in Item Templates.
-| Classification Scheme | By default Evergreen will use the classification scheme specified by the library settings
-_Default Classification Scheme_.  Using this setting you can specify Generic, Dewey, Library of Congress.
-| Default Prefix | If your library uses Prefixes select the one you'd like used as a default.
-| Default Suffix | If your library uses Suffixes select the one you'd like used as a default.
-| Auto-generate Barcodes | 
-| Use checkdigit | When checked if a non-codabar barcode is entered the outline of the Barcode field turns red.
-| Print Item Labels on Save & Exit | When checked the Print Items Labels interface will open when you 
-click Save & Close.  This setting is not recommend for libraries printing label sheets.
+|*Display Preference* |*Description*
+|Hide Call Number Classification Column | Select this to hide the call number classification column in the call number editor.
+
+|Hide Call Number Prefix Column | Select this to hide the call number prefix column in the call number editor. It will also hide the call number prefix field from the Item Attributes Editor.
+
+|Hide Call Number Suffix Column | Select this to hide the call number suffix column in the call number editor. It will also hide the call number suffix field from the Item Attributes Editor.
+
+|Hide Generate Barcodes | Select this to hide the Generate Barcodes button at the bottom of the Item Attributes Editor.
+
+If _Generate Barcodes_ is selected in the Item Attributes Editor, barcodes will be automatically generated according to settings established by your Evergreen administrator.
+
+|Hide Use Checkdigit | Select this to hide the Use Checkdigit option at the bottom of the Item Attributes Editor.
+
+If _Use Checkdigit_ is selected in the Item Attributes Editor, a non-Codabar barcode will turn outline of the barcode field red.
+
+|Hide Item Part | Select this to hide the part column in the call number editor.
+
+|Unified Holdings and Item Attributes Display |Select this to show the call number editor and item attributes editor in one unified display.
 |===
 
-== Hiding Fields in the Holdings Editor ==
+=== Holdings Creation Defaults ===
 
+There are three options for Holdings creation in this section.
 
-A user may hide specific fields in the holdings editor if these fields are not used for cataloging in their organization. Hiding fields that are not used by your organization helps to reduce confusion among staff and also declutters the holdings editor screen.
+[width="100%",cols="26%,74%"]
+|===
+|Classification Scheme | By default Evergreen will use the classification scheme specified by the library setting _Default Classification Scheme_.
 
-To hide one or more fields from the holdings editor:
+The holdings creation default lets you specify Generic, Dewey, Library of Congress which will override the library setting.
 
-. Retrieve the record.
-+
-[NOTE]
-===================================================================================
-You can retrieve records in many ways, including:
+|Default Prefix | If your library uses Prefixes select the one you’d like used as a default. All new holdings will be populated with this prefix.
 
-* If you know its database ID, enter it into Cataloging > Retrieve Bib Record by ID.
+|Default Suffix | If your library uses Suffixes select the one you’d like used as a default. All new holdings will be populated with this suffix.
+|===
 
-* If you know its control number, enter it into Cataloging > Retrieve Bib Record by TCN.
+=== Item Attributes Settings ===
 
-* Searching in the catalog.
+There are three Item Attributes Settings in this section.
 
-* Clicking on a link from the Acquisitions or Serials modules.
-===================================================================================
-+
-. Select the *Add Holdings* button. The *Holdings Editor* will display.
+* _Change Circ Lib When Owning Lib Changes_ - selecting this checkbox will automatically update the Circulation Library field if the Owning Library field is changed.
+* _Default Stat Cat Library Filter_ - selecting an Organizational Unit from the dropdown will default the displayed Item Statistical Categories to those owned by the selected Organizational Unit or its ancestors.
+* _Default Item Alert Type_ - selecting an Item Alert Type from the dropdown will default any newly added item alerts to the selected type.
 
-. In the Holdings Editor, select the *Defaults* tab.
-+
-image::volcopy_editor/Holdings_Editor_Defaults_Tab.png[Holdings editor defaults tab]
-+
-. On the Defaults tab, uncheck the boxes for the field(s) that you wish to hide. It is not necessary to save this screen; changes are saved automatically.
-+
-image::volcopy_editor/Holdings_Editor_Hide_Display_Defaults.png[Holdings editor display defaults with deselected fields]
-+
-. Select the *Edit* tab; the de-selected fields no longer appear on the holdings editor.
+=== Hide Item Attributes ===
+
+Selecting the checkbox next to each item attribute will hide it from all invocations of the Holdings Editor at your workstation.
+
+image:volcopy_editor/hide_item_attributes.png[Hide Item Attributes]
+

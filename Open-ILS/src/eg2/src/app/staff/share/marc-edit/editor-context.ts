@@ -301,7 +301,7 @@ export class MarcEditContext {
     }
 
     trackMoveUndo(field: MarcField, prevIndex: number) {
-        const position: FieldFocusRequest = {fieldId: field.fieldId, target: 'move'};
+        const position: FieldFocusRequest = {fieldId: field?.fieldId, target: 'move'};
 
         const action = new StructUndoRedoAction();
         action.field = field;
@@ -439,23 +439,19 @@ export class MarcEditContext {
         this.insertSubfield(field, newSf);
     }
 
-    // Focus the requested subfield by its position.  If its
-    // position is less than zero, focus the field's tag instead.
+    // Focus the requested subfield by its position.
     focusSubfield(field: MarcField, position: number, group?: boolean) {
-
-        const focus: FieldFocusRequest = {fieldId: field.fieldId, target: 'tag'};
-
-        if (position >= 0) {
-            // Focus the code instead of the value, because attempting to
-            // focus an empty (editable) div results in nothing getting focus.
-            focus.target = 'sfc';
-            focus.sfOffset = position;
-        }
+        // console.debug("focusSubfield()", field, position, group);
+        const focus: FieldFocusRequest = {fieldId: field.fieldId, target: 'sfv'};
 
         if (group) {
             focus.target = 'group';
-            focus.sfOffset = position;
+        } else if (position < 0) {
+            // Focus the code instead of the value
+            focus.target = 'sfc';
         }
+
+        focus.sfOffset = position;
 
         this.requestFieldFocus(focus);
     }

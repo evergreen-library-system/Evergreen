@@ -25,10 +25,10 @@
         <div class="col-log-8">
           <input type="text" class="form-control" [required]="true"
             [(ngModel)]="newBarcode" (keyup)="barcodeExists=false" 
-            id="new-barcode-input"/>
+            id="new-barcode-input" aria-describedby="barcodeExists-error" />
         </div>
       </div>
-      <div class="row d-flex pt-2 justify-content-center" *ngIf="barcodeExists">
+      <div class="row d-flex pt-2 justify-content-center" *ngIf="barcodeExists" id="barcodeExists-error">
         <div class="alert alert-danger" i18n>
           Barcode <span class="fw-bold">{{newBarcode}}</span> is already in use.
         </div>

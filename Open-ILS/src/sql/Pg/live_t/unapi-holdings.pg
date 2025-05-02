@@ -1,0 +1,47 @@
+BEGIN;
+
+SELECT plan(4);
+
+SELECT is(
+    (XPATH(
+        '//ns:count[@type="staff" and @org_unit="4"]/@count',
+        unapi.holdings_xml(243, 4, 'BR1', 2),
+        '{{ns,http://open-ils.org/spec/holdings/v1}}'
+    ))[1]::TEXT,
+    '10',
+    'unapi.holdings_xml includes the staff count for the branch BR1'
+);
+
+SELECT is(
+    XPATH_EXISTS(
+        '//ns:count[@type="staff" and @library_group="1000002"]/@count',
+        unapi.holdings_xml(243, 4, 'BR1', 2),
+        '{{ns,http://open-ils.org/spec/holdings/v1}}'
+    ),
+    FALSE,
+    'unapi.holdings_xml does not include item counts for library groups if not requested'
+);
+
+
+SELECT is(
+    (XPATH(
+        '//ns:count[@type="staff" and @org_unit="4"]/@count',
+        unapi.holdings_xml(243, 4, 'BR1', 2, NULL::TEXT[], NULL, NULL, TRUE, NULL, 1000002),
+        '{{ns,http://open-ils.org/spec/holdings/v1}}'
+    ))[1]::TEXT,
+    '10',
+    'unapi.holdings_xml includes the staff count for the branch BR1 when lasso is passed'
+);
+
+SELECT is(
+    (XPATH(
+        '//ns:count[@type="staff" and @library_group="1000002"]/@count',
+        unapi.holdings_xml(243, 4, 'BR1', 2, NULL::TEXT[], NULL, NULL, TRUE, NULL, 1000002),
+        '{{ns,http://open-ils.org/spec/holdings/v1}}'
+    ))[1]::TEXT,
+    '2',
+    'unapi.holdings_xml includes the staff count for the library_group 1000002 when lasso is passed'
+);
+
+
+ROLLBACK;

@@ -6,7 +6,7 @@
       i18n-aria-label aria-label="Close dialog" (click)="close()"></button>
   </div>
   <div class="modal-body">
-    <h4 i18n>Selection list name:</h4>
+    <label for="create-picklist-name" class="form-label" i18n>Selection list name:</label>
     <input type="text" id="create-picklist-name" required
       [ngModelOptions]="{standalone: true}"
       class="form-control" [(ngModel)]="selectionListName">

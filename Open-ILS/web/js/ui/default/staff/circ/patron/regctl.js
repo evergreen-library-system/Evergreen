@@ -1513,6 +1513,23 @@ function($scope , $routeParams , $q , $uibModal , $window , egCore ,
         if ($scope.org_settings['ui.patron.edit.guardian_required_for_juv']) {
             add_juv_watcher();
         }
+
+        // Check for duplicate values in staged users.
+        if (prs.stage_user) {
+            if (patron.first_given_name) { $scope.dupe_value_changed('name', patron.first_given_name); }
+            if (patron.family_name) { $scope.dupe_value_changed('name', patron.familiy_name); }
+            if (patron.email) { $scope.dupe_value_changed('email', patron.email); }
+            if (patron.day_phone) { $scope.dupe_value_changed('day_phone', patron.day_phone); }
+            if (patron.evening_phone) { $scope.dupe_value_changed('evening_phone', patron.evening_phone); }
+
+            patron.addresses.forEach(function (addr) {
+                $scope.dupe_value_changed('address', addr);
+                address_alert(addr);
+            });
+            if (patron.usrname) {
+                prs.check_dupe_username(patron.usrname).then((result) => $scope.dupe_username = Boolean(result));
+            }
+        }
     });
 
     function add_date_watchers() {
@@ -1662,6 +1679,14 @@ function($scope , $routeParams , $q , $uibModal , $window , egCore ,
 
             } else if ($scope.org_settings[sug_set]) {
                 field_visibility[field_key] = 1;
+
+            } else if ($scope.org_settings[sho_set] === false){
+                // hide the field if the 'show' setting is explicitly false (not undefined)
+                if (default_field_visibility[field_key] === undefined
+                    || default_field_visibility[field_key] < 3) {
+                    // Only hide if not a database-required field
+                    field_visibility[field_key] = -1;
+                }
             }
         }
 
