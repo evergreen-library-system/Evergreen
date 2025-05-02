@@ -66,7 +66,7 @@ values.
 
 Jump to a specific table:
 
-* <<lse-acq,Acqusitions Settings>>
+* <<lse-acq,Acquisitions Settings>>
 * <<lse-cataloging,Booking and Cataloging Settings>>
 * <<lse-circulation,Circulation Settings>>
 * <<lse-credit-cards,Credit Card Processing Settings>>
