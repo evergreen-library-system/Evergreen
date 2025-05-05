@@ -106,6 +106,9 @@ sub _set_ecard_context {
     $ctx->{ecard}->{enabled} = $U->is_true($U->ou_ancestor_setting_value(
         $ctx_org, 'opac.ecard_registration_enabled'
     ));
+    $ctx->{ecard}->{renew_enabled} = $U->is_true($U->ou_ancestor_setting_value(
+        $ctx_org, 'opac.ecard_renewal_enabled'
+    ));
     $ctx->{ecard}->{quipu_id} = $U->ou_ancestor_setting_value(
         $ctx_org, 'vendor.quipu.ecard.account_id'
     ) || 0;

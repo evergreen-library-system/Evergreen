@@ -403,6 +403,14 @@ VALUES
         'Enable access to the eCard verification form in the OPAC',
         'coust', 'description'),
     'bool', null)
+,( 'opac.ecard_renewal_enabled', 'opac',
+    oils_i18n_gettext('opac.ecard_renewal_enabled',
+        'Enable eCard request renewal feature in the OPAC',
+        'coust', 'label'),
+    oils_i18n_gettext('opac.ecard_renewal_enabled',
+        'Enable access to the eCard request renewal form in the OPAC',
+        'coust', 'description'),
+    'bool', null)
 ,( 'vendor.quipu.ecard.account_id', 'lib',
     oils_i18n_gettext('vendor.quipu.ecard.account_id',
         'Quipu eCard Customer Account',
