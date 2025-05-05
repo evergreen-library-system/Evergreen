@@ -37,6 +37,7 @@ CREATE TABLE permission.grp_tree (
 	parent			INT	REFERENCES permission.grp_tree (id) ON DELETE RESTRICT DEFERRABLE INITIALLY DEFERRED,
 	usergroup		BOOL	NOT NULL DEFAULT TRUE,
 	perm_interval		INTERVAL DEFAULT '3 years'::interval NOT NULL,
+    temporary_perm_interval INTERVAL,
 	description		TEXT,
 	application_perm	TEXT,
 	hold_priority       INT   NOT NULL DEFAULT 0,

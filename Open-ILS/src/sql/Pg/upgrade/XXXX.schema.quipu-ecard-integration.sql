@@ -82,6 +82,7 @@ CREATE TRIGGER record_usr_delta
     EXECUTE FUNCTION actor.record_usr_delta(last_update_time /* unquoted, literal comma-separated column names to include in the delta */);
 ALTER TABLE actor.usr DISABLE TRIGGER record_usr_delta;
 ALTER TABLE permission.grp_tree ADD COLUMN erenew BOOL NOT NULL DEFAULT FALSE;
+ALTER TABLE permission.grp_tree ADD COLUMN temporary_perm_interval INTERVAL;
 ALTER TABLE actor.usr ADD COLUMN guardian_email TEXT;
 
 SELECT auditor.update_auditors(); 

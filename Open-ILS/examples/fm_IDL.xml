@@ -8578,6 +8578,7 @@ SELECT  usr,
 			<field reporter:label="Group Name" name="name" reporter:datatype="text" oils_persist:i18n="true" oils_obj:required="true"/>
 			<field reporter:label="Parent Group" name="parent" reporter:datatype="link"/>
 			<field reporter:label="User Expiration Interval" name="perm_interval" reporter:datatype="interval"/>
+			<field reporter:label="User Expiration Temporary Interval" name="temporary_perm_interval" reporter:datatype="interval"/>
 			<field reporter:label="Required Permission" name="application_perm" reporter:datatype="text"/>
 			<field reporter:label="Is User Group" name="usergroup" reporter:datatype="bool"/>
 			<field reporter:label="Hold Priority" name="hold_priority" reporter:datatype="int"/>
