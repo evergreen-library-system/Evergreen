@@ -150,7 +150,7 @@ VALUES (currval('action_trigger.event_definition_id_seq'), 'home_ou'),
 -- ID has to be under 100 in order to prevent it from appearing as a dropdown in the patron editor.
 INSERT INTO config.standing_penalty (id, name, label, staff_alert, org_depth) 
 VALUES (90, 'PATRON_TEMP_RENEWAL',
-	'Patron was given a 30-day temporary account renewal. 
+	'Patron was given a temporary account renewal. 
 	Please archive this message after the account is fully renewed.', TRUE, 0
 	);
 

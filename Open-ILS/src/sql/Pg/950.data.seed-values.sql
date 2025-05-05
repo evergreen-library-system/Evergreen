@@ -92,7 +92,7 @@ INSERT INTO config.standing_penalty (id, name, label, staff_alert, org_depth) VA
         0
     );
 -- Temp renewal penalty must be under 100 to prevent staff from manually adding it through client interface
-INSERT INTO config.standing_penalty (id, name, label, staff_alert, org_depth) VALUES (90, 'PATRON_TEMP_RENEWAL', 'Patron was given a 30-day temporary account renewal. Please archive this message after the account is fully renewed.', TRUE, 0);
+INSERT INTO config.standing_penalty (id, name, label, staff_alert, org_depth) VALUES (90, 'PATRON_TEMP_RENEWAL', 'Patron was given a temporary account renewal. Please archive this message after the account is fully renewed.', TRUE, 0);
 
 SELECT SETVAL('config.standing_penalty_id_seq', 100);
 
