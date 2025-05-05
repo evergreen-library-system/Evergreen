@@ -3779,50 +3779,21 @@ sub has_penalties {
     my $user = $self->ctx->{user};
     my $e = new_editor(xact => 1);
     
-    #I'm sure there is a way to combine the following standing penalty checks, but this is working for now
-
-    #check for INVALID_PATRON_ADDRESS
-    my $findpenalty_address = $e->search_config_standing_penalty({name => 'INVALID_PATRON_ADDRESS'})->[0];
-    my $searchpenalty_address = $e->search_actor_user_standing_penalty({
+    my $erenew_blocking_penalties = $e->search_actor_user_standing_penalty({
         usr => $user->id,
-        standing_penalty => $findpenalty_address->id,
         '-or' => [
             {stop_date => undef},
             {stop_date => {'>' => 'now'}}
-        ]
-    });
-
-    #check for INVALID_PATRON_DAY_PHONE
-    my $findpenalty_phone = $e->search_config_standing_penalty({name => 'INVALID_PATRON_DAY_PHONE'})->[0];
-    my $searchpenalty_phone = $e->search_actor_user_standing_penalty({
-        usr => $user->id,
-        standing_penalty => $findpenalty_phone->id,
-        '-or' => [
-            {stop_date => undef},
-            {stop_date => {'>' => 'now'}}
-        ]
-    });
-
-    #check for PATRON_IN_COLLECTIONS
-    my $findpenalty_coll = $e->search_config_standing_penalty({name => 'PATRON_IN_COLLECTIONS'})->[0];
-    my $searchpenalty_coll = $e->search_actor_user_standing_penalty({
-        usr => $user->id,
-        standing_penalty => $findpenalty_coll->id,
-        '-or' => [
-            {stop_date => undef},
-            {stop_date => {'>' => 'now'}}
-        ]
-    });
-
-    #check for alerting block
-    my $findpenalty_alertblock = $e->search_config_standing_penalty({name => 'STAFF_CHR'})->[0];
-    my $searchpenalty_alertblock = $e->search_actor_user_standing_penalty({
-        usr => $user->id,
-        standing_penalty => $findpenalty_alertblock->id,
-        '-or' => [
-            {stop_date => undef},
-            {stop_date => {'>' => 'now'}}
-        ]
+        ],
+        standing_penalty => {
+            in => {
+                select => {csp => ['id']},
+                from => 'csp',
+                where => {
+                    block_list => ['E-RENEW']
+                }
+            }
+        }
     });
 
     #check for PATRON_TEMP_RENEWAL
@@ -3836,7 +3807,7 @@ sub has_penalties {
         ]
     });
 
-    if (@$searchpenalty_address || @$searchpenalty_coll || @$searchpenalty_phone || @$searchpenalty_alertblock) {
+    if (@$erenew_blocking_penalties) {
         $ctx->{haspenalty} = 1;
     } else {
         $ctx->{haspenalty} = 0;
