@@ -4792,6 +4792,14 @@ INSERT into config.org_unit_setting_type
         'Enable access to the eCard request renewal form in the OPAC',
         'coust', 'description'),
     'bool', null)
+,( 'opac.ecard_renewal_offer_interval', 'opac',
+    oils_i18n_gettext('opac.ecard_renewal_offer_interval',
+        'Number of days before account expiration in which to offer an e-renewal.',
+        'coust', 'label'),
+    oils_i18n_gettext('opac.ecard_renewal_offer_interval',
+        'Number of days before account expiration in which to offer an e-renewal.',
+        'coust', 'description'),
+    'interval', null)
 ,( 'vendor.quipu.ecard.account_id', 'lib',
     oils_i18n_gettext('vendor.quipu.ecard.account_id',
         'Quipu eCard Customer Account',
