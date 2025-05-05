@@ -180,7 +180,7 @@
             [% IF ctx.account_renew_message %]
             <div class="row">
                 <div class='col-md-12 color_4 light_border'>
-                        [% ctx.account_renew_message %]
+                        [% PROCESS "opac/parts/erenew.tt2"; %]
                 </div>
             </div>
             [% END %]

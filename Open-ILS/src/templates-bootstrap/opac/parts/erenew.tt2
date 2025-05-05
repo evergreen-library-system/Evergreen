@@ -1,0 +1,31 @@
+[% BLOCK account_renew_message %]
+    [%
+        account_renew_message = 'Hello Universe';
+
+        IF ctx.hastemprenew == 1
+            account_renew_message = '<div style="border:2px solid green;padding:5px;">' +
+                l("Your account could only be temporarily renewed. Please contact your library for more information.") +
+                                    '</div>';
+        ELSIF (DateTime.today.add(days=ctx.renewal_offer_window) < ctx.user.expire_date)
+            account_renew_message = 'Hello World';
+        ELSIF ctx.hasproblem == 1 OR ctx.eligible_permgroup == 0
+            account_renew_message = '<div style="border:2px solid green;padding:5px;">' +
+                l("Your account is due for renewal, but it cannot be renewed online. Please contact your library for more information.") +
+                                    '</div>';
+        ELSIF ctx.user_stats.fines.balance_owed > 0
+            account_renew_message = '<div style="border:2px solid green;padding:5px;">' +
+                l("Your account is due for renewal. Please pay your outstanding fines in order to renew your account.") +
+                                    '</div>';
+        ELSE
+            account_renew_message = '<span class="light_border"><a class="btn btn-sm btn-action" href="/eg/opac/ecard/renew"><i class="fas fa-user-cog"></i>' +
+                l("Click here to renew your account") +
+                                    '</a></span>';
+            ctx.cache.put_cache('account_renew_ok', 'true', 3600);
+        END;
+    %]
+
+    [% IF account_renew_message != '' %]
+        [% account_renew_message | html %]
+    [% END %]
+[% END %]
+
