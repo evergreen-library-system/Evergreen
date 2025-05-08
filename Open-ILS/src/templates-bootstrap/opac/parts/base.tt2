@@ -70,9 +70,10 @@
         </div>
 
         [% INCLUDE 'opac/parts/footer.tt2' %]
-        
+
         [% IF ctx.page != "login" ;%]
         [% INCLUDE 'opac/parts/login/login_modal.tt2' %]
+        [% INCLUDE 'opac/parts/login/timeout_dialog.tt2' %]
         [% END;%]
 
         [% INCLUDE 'opac/parts/js.tt2' %]
