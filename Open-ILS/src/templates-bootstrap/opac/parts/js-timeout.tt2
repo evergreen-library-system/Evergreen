@@ -1,0 +1,144 @@
+<!-- Accessible session timeout -->
+[% # auth.opac_timeout is the number of seconds
+IF ctx.user AND ctx.page != 'login' AND !ctx.is_staff;
+
+IF ctx.page == 'register';
+    authtimeout = ctx.get_org_setting(ctx.physical_loc || ctx.aou_tree.id, 'opac.self_register.timeout'); 
+ELSE;
+    authtimeout = ctx.get_org_setting(ctx.physical_loc || ctx.aou_tree.id, 'auth.opac_timeout');
+END;
+
+IF authtimeout %]
+<script>
+const opac_logout_url = "[% mkurl(ctx.opac_root _ '/logout', {active_logout => 1}, 1) %]";
+// confirmation dialog appears 3 minutes before the limit (which must be at least 4 minutes)
+const authTimeout = Math.max([% authtimeout %], (4 * 60 * 1000));
+const authTimeoutInMinutes = Math.floor(authTimeout / 60 / 1000);
+const dialogPopupInMinutes = Math.max((authTimeoutInMinutes - 3), 1);
+const dialogPopup = Math.floor(dialogPopupInMinutes * 60 * 1000);
+const timerDialog = document.getElementById('timerDialog');
+
+resetTimedSession();
+
+window.addEventListener('click', (e) => registerActivity(e));
+window.addEventListener('keydown', (e) => registerActivity(e));
+
+function registerActivity(e) {
+    if (timerDialog.open) {
+        //console.debug('Timer dialog is open; discarding user activity');
+        return;
+    }
+  
+    resetTimedSession();
+}
+
+function resetTimedSession() {
+    if (this.timerID) 
+        clearTimeout(this.timerID);
+    if (this.dialogID) 
+        clearTimeout(this.dialogID);
+    this.dialogDeadline = null;
+    this.timerDeadline = null;
+    this.timerClock = null;
+
+    // time to logout: new Date() + authTimeout
+    // time to dialog: new Date() + dialogPopup
+    this.timerID = setTimeout(endSession, authTimeout);
+    this.dialogID = setTimeout(showCountdownDialog, dialogPopup);
+    //console.debug('New TimerID:', this.timerID);
+    //console.debug('New dialogID:', this.dialogID);
+
+    this.timerDeadline = Date.now() + authTimeout;
+    this.dialogDeadline = Date.now() + dialogPopup;
+    console.debug('You will be redirected to the home page at', new Date(this.timerDeadline).toLocaleTimeString());
+    console.debug('You will see a redirect warning countdown at', new Date(this.dialogDeadline).toLocaleTimeString());
+
+    initializeClock();
+}
+
+function showCountdownDialog() {
+    const endBtn = document.getElementById('endBtn');
+    const continueBtn = document.getElementById('continueBtn');
+    const returnToElement = document.activeElement;
+  
+    timerDialog.showModal();
+    timerDialog.addEventListener('close', (e) => {
+        resetTimedSession();
+    });
+
+    continueBtn.focus();
+    continueBtn.addEventListener('click', (e) => {
+        timerDialog.close();
+        returnToElement.focus();
+    });
+    
+    endBtn.addEventListener('click', (e) => {
+    	timerDialog.close();
+        window.location = opac_logout_url;
+	});
+}
+
+function endSession() {
+    timerDialog.close();
+
+    const logoutDialog = document.getElementById('logoutDialog');
+
+    logoutDialog.showModal();
+    setTimeout(() => {
+        logoutDialog.close();
+        window.location = opac_logout_url;
+    }, 5000);
+}
+
+function getTimeRemaining(endtime) {
+    const date = new Date();
+    if (date > endtime) {
+        return;
+    }
+
+    const total = endtime - date;
+    const seconds = Math.floor((total / 1000) % 60);
+    const minutes = Math.floor((total / 1000 / 60) % 60);
+
+    return {total, minutes, seconds};
+}
+
+function initializeClock() {
+    const clock = document.getElementById('timerClock');
+    clock.innerHTML = '';
+    updateClock();
+    const timeinterval = setInterval(updateClock, 1000);
+}
+
+function updateClock() {
+    const t = getTimeRemaining(this.timerDeadline);
+    if (!t) {
+        return;
+    }
+    
+    let time = String(Math.floor(t.minutes, 0)).padStart(2, '0') + ':' + String(Math.floor(t.seconds, 0)).padStart(2, '0');
+    
+    const clock = document.getElementById('timerClock');
+    clock.innerHTML = time;
+
+    const timeStringMinutes = document.getElementById('timeStringMinutes');
+    timeStringMinutes.innerHTML = t.minutes;
+
+    const timeStringSeconds = document.getElementById('timeStringSeconds');
+    timeStringSeconds.innerHTML = t.seconds;
+
+    if (t.total <= 0) {
+        clearInterval(timeinterval);
+    }
+
+    // Change role from 'timer' to 'alert' to trigger ARIA announcements periodically
+    if (t.total > 0 && t.total < dialogPopup && Math.floor((t.total / 1000) % 45) == 0) {
+        const alertText = document.getElementById('alertText');
+        alertText.setAttribute('role', 'alert');
+        // reset until the next announcement
+        setTimeout(() => alertText.setAttribute('role', 'timer'), 10);
+    }
+}
+</script>
+[% END # authtimeout  %]
+[% END # ctx.user AND... %]
