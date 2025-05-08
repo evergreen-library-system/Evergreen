@@ -64,12 +64,11 @@
        <div class="mb-3">
         [% content %]
         </div>
+
+        [% INCLUDE 'opac/parts/login/timeout_dialog.tt2' %]
         [% INCLUDE 'opac/parts/js.tt2' %]
         [%- IF ENV.OILS_CHILIFRESH_ACCOUNT %]
             [%- INCLUDE 'opac/parts/chilifresh.tt2' %]
         [%- END %]
-
-
-
     </body>
 </html>

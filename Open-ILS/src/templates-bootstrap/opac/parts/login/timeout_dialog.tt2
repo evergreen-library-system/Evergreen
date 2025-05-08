@@ -1,0 +1,37 @@
+<dialog id="timerDialog" role="alertdialog" aria-labelledby="alertHeading" aria-describedby="alertText">
+  <h1 id="alertHeading">[% l('Session Timeout'); %]</h1>
+
+  [% # role will be changed to "alert" periodically by updateClock() in js-timeout.tt2 %]
+  <div id="alertText" role="timer" aria-atomic="true">
+    <p> 
+      <span role="text">
+        [% l('Your session will expire in '); %]
+    
+        <span id="timerClock" aria-hidden="true">
+          [% # clock will be filled in by updateClock() in js-timeout.tt2 %]
+        </span>
+
+        <span id="timerString" class="sr-only visually-hidden">
+          <!-- For screen readers, to avoid having 3:00 time remaining read as "three o'clock."
+            <span> tags will be filled in by updateClock() in js-timeout.tt2.
+            Translators: please preserve the empty <span> tags, but you can rearrange them as needed. -->
+          [% l('<span id="timeStringMinutes"></span> minutes and <span id="timeStringSeconds"></span> seconds.'); %]
+        </span>
+      </span>
+    </p>
+    <p>
+      [% l('If you need more time, please click "Continue Session."'); %]
+    </p>
+  </div>
+  <div class="hstack justify-content-around flex-row-reverse">
+    <button id="continueBtn" class="btn btn-confirm">[% l('Continue Session'); %]</button>
+    <button id="endBtn" class="btn btn-secondary">[% l('End Session'); %]</button>
+  </div>
+</dialog>
+
+<dialog id="logoutDialog" role="alertdialog" aria-labelledby="logoutHeading" aria-describedby="logoutText">
+  <h1 id="logoutHeading">[% l('Session Ended'); %]</h1>
+  <div id="logoutText">
+    <p>[% l('Your session has ended. Redirecting to the home page...'); %]</p>
+  </div>
+</dialog>
