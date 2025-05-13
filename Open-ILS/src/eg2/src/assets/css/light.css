@@ -1,6 +1,6 @@
 /* Light mode */
 :root {
-  --evergreen: var(--eg-green-200); /* brand color */
+  --evergreen: var(--eg-green-600); /* brand color */
   --black: black;
   --white: white;
   --bs-white: white;
