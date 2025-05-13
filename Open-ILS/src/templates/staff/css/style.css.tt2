@@ -493,13 +493,18 @@ legend,
 }
 
 input, textarea, select, option,
+.form-control, .form-control:focus, .form-select, .form-check-input {
+  background: var(--bs-body-bg);
+  border-color: var(--border);
+  color: var(--bs-body-color);
+}
+
 .accordion-button:not(.collapsed),
 .alert-info,
 .btn-outline-dark,
 .card-header,
 .eg-grid-header,
 .eg-grid-sticky-header,
-.form-control, .form-control:focus, .form-select, .form-check-input,
 .panel-header,
 #patron-summary-grid div.row:nth-child(2n+1),
 .popover, 
@@ -667,8 +672,24 @@ input, textarea, select, option,
 }
 
 
-.btn-light:hover,
-.btn-light:focus,
+.btn-default {
+  color: var(--btn-gray-color);
+  background-color: var(--bs-body-bg);
+  border: 1px solid var(--btn-gray-border);
+}
+
+.btn-default[disabled] {
+  opacity: 0.7;
+}
+
+.btn-default:is(:active, :hover, :focus, :focus-visible) {
+  color: var(--btn-gray-color);
+  background-color: var(--bs-body-bg-highlight);
+  border: 1px solid var(--btn-gray-border);
+}
+
+.btn-light:is(:hover, :focus, .focus-visible),
+.btn-light.dropdown-toggle:is(:hover, :focus, .focus-visible),
 .show > .btn-light.dropdown-toggle {
   background-color: var(--bs-body-bg-alt);
   color: var(--bs-secondary-color);
@@ -689,7 +710,9 @@ input, textarea, select, option,
 
 /* other colors' focus state shadows do not need to change */
 .btn-warning.focus,
-.btn-warning:is(:hover, :focus, :focus-visible) {
+.btn-warning:is(:hover, :focus, :focus-visible),
+.btn-warning.dropdown-toggle:is(:hover, :focus, :focus-visible),
+.show > .btn-warning.dropdown-toggle {
   background-color: var(--badge-warning-hover-bg);
   border-color: var(--warning-border-hover);
   box-shadow: 0 0 0 .2rem var(--warning-shadow);
@@ -702,6 +725,7 @@ input, textarea, select, option,
 }
 
 .btn-primary:is(.hover, :hover, .focus, :focus, :focus-visible),
+.btn-primary.dropdown-toggle:is(.hover, :hover, .focus, :focus, :focus-visible),
 .btn-check:active + .btn-primary, 
 .btn-check:checked + .btn-primary, 
 .btn-primary.active,
@@ -748,6 +772,7 @@ input, textarea, select, option,
 }
 
 .btn-info:is(.hover, :hover, .focus, :focus, :focus-visible),
+.btn-info.dropdown-toggle:is(.hover, :hover, .focus, :focus, :focus-visible),
 .btn-check:active + .btn-info, 
 .btn-check:checked + .btn-info, 
 .btn-info.active,
@@ -776,6 +801,7 @@ input, textarea, select, option,
 }
 
 .btn-outline-info:is(.hover, :hover, .focus, :focus, :focus-visible),
+.btn-outline-info.dropdown-toggle:is(.hover, :hover, .focus, :focus, :focus-visible),
 .btn-check:active+.btn-info,
 .btn-check:checked+.btn-info,
 .btn-info.active,
@@ -806,7 +832,8 @@ input, textarea, select, option,
   color: var(--success-color);
 }
 
-.btn-success:is(.hover, :hover, .focus, :focus, :focus-visible), 
+.btn-success:is(.hover, :hover, .focus, :focus, :focus-visible),
+.btn-success.dropdown-toggle:is(.hover, :hover, .focus, :focus, :focus-visible), 
 .btn-check:active + .btn-success, 
 .btn-check:checked + .btn-success, 
 .btn-success.active,
@@ -853,7 +880,6 @@ input, textarea, select, option,
 }
 
 .btn-normal,
-.btn-default,
 .btn-destroy,
 .btn-outline-normal:is(:active, :hover, :focus, :focus-visible) {
   color: var(--btn-gray-color);
@@ -861,8 +887,7 @@ input, textarea, select, option,
   border: 1px solid var(--btn-gray-border);
 }
 
-.btn-normal:is(:active, :hover, :focus, :focus-visible),
-.btn-default:is(:active, :hover, :focus, :focus-visible) {
+.btn-normal:is(:active, :hover, :focus, :focus-visible) {
   color: var(--btn-gray-color);
   background-color: var(--btn-gray-bg-hover);
   border: 1px solid var(--btn-gray-border);
@@ -882,7 +907,6 @@ input, textarea, select, option,
 }
 
 .btn-normal[disabled],
-.btn-default[disabled],
 .btn-destroy[disabled] {
   color: var(--bs-body-color);
   background-color: var(--btn-gray-bg);
@@ -948,7 +972,7 @@ input, textarea, select, option,
 }
 
 .dropdown-menu:has(li>a){
-  background-color: var(--bs-body-bg-alt);
+  background-color: var(--bs-body-bg);
 }
 .dropdown-menu>li>a,
 .dropdown-menu>li>a:hover,
@@ -985,13 +1009,21 @@ button.dropdown-toggle:focus,
 }
 
 :is(.nav, .nav-pills, .nav-tabs) > li.active > a:is(a, .active, :active) {
-  background-color: var(--bs-body-bg);
+  background-color: var(--bs-body-bg-highlight);
   color: var(--primary);
 }
 
 :is(.nav, .nav-pills, .nav-tabs) > li.active > a:is(a, :focus, :focus-visible, :hover) {
-  background-color: var(--bs-body-bg-highlight);
+  background-color: var(--bs-body-bg-alt);
   color: var(--primary-hover);
+  border: 1px solid var(--border);
+  border-width: 1px 1px 0;
+  border-radius: 4px 4px 0 0;
+}
+
+.nav-tabs > li.active > a:is(a, :focus, :focus-visible, :hover) {
+  border-width: 1px 1px 0;
+  border-radius: 4px 4px 0 0;
 }
 
 .input-group-addon,
