@@ -956,13 +956,6 @@ export class ReporterService {
     }
 
     _initSRFolders(): Promise<any[]> {
-        if (this.templateFolder &&
-            this.reportFolder &&
-            this.outputFolder
-        ) {
-            return Promise.resolve([]);
-        }
-
         return Promise.all([
             new Promise<void>((resolve, reject) => {
                 // Verify folders exist, create if not
