@@ -298,15 +298,15 @@ BEGIN
     END IF;
 
     IF def_i_rl.id IS NOT NULL THEN
-        SELECT  CEIL(EXTRACT(EPOCH FROM (x.attempt_time + def_u_rl.limit_interval) - NOW())) INTO i_wait
+        SELECT  CEIL(EXTRACT(EPOCH FROM (x.attempt_time + def_i_rl.limit_interval) - NOW())) INTO i_wait
           FROM  (SELECT l.attempt_time,
                         COUNT(*) OVER (PARTITION BY l.ip_addr ORDER BY l.attempt_time DESC) AS running_count
                   FROM  openapi.endpoint_access_attempt_log l
                   WHERE l.endpoint = target_endpoint
                         AND l.ip_addr = from_ip_addr
-                        AND l.attempt_time > NOW() - def_u_rl.limit_interval
+                        AND l.attempt_time > NOW() - def_i_rl.limit_interval
                 ) x
-          WHERE running_count = def_u_rl.limit_count;
+          WHERE running_count = def_i_rl.limit_count;
     END IF;
 
     -- If there are no user-specific or IP-based limit
@@ -390,14 +390,14 @@ BEGIN
     END IF;
 
     IF def_i_rl.id IS NOT NULL THEN
-        SELECT  CEIL(EXTRACT(EPOCH FROM (x.attempt_time + def_u_rl.limit_interval) - NOW())) INTO i_wait
+        SELECT  CEIL(EXTRACT(EPOCH FROM (x.attempt_time + def_i_rl.limit_interval) - NOW())) INTO i_wait
           FROM  (SELECT l.attempt_time,
                         COUNT(*) OVER (PARTITION BY l.ip_addr ORDER BY l.attempt_time DESC) AS running_count
                   FROM  openapi.authen_attempt_log l
                   WHERE l.ip_addr = from_ip_addr
-                        AND l.attempt_time > NOW() - def_u_rl.limit_interval
+                        AND l.attempt_time > NOW() - def_i_rl.limit_interval
                 ) x
-          WHERE running_count = def_u_rl.limit_count;
+          WHERE running_count = def_i_rl.limit_count;
     END IF;
 
     -- If there are no user-specific or IP-based limit

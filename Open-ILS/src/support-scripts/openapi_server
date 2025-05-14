@@ -882,6 +882,7 @@ sub to_bare_mixed_ref {
     my $thing = shift;
     my $c = shift;
 
+    my $filter_cache = $c->stash('filterCache');
     my $filter_nulls = ref($c) ? 0 : $c;
 
     if ($c and ref($c)) {
@@ -895,23 +896,33 @@ sub to_bare_mixed_ref {
 
             if ($op and $user_obj) {
 
-                # First, gather user settings applied to integrators
-                my $usettings = new_editor()->search_actor_user_setting({
-                    usr => $user_obj->id,
-                    name => ["REST.api.whitelist_properties.$op","REST.api.whitelist_properties",
-                             "REST.api.blacklist_properties.$op","REST.api.blacklist_properties"]
-                });
-                my @whitelist_settings = map { OpenSRF::Utils::JSON->JSON2perl($_->value) } grep { $_->name =~ /^REST.api.whitelist_properties/ } @$usettings;
-                my @blacklist_settings = map { OpenSRF::Utils::JSON->JSON2perl($_->value) } grep { $_->name =~ /^REST.api.blacklist_properties/ } @$usettings;
+                my @whitelist_settings;
+                my @blacklist_settings;
 
-                # Then add YAOUSen to the list
-                my %YAOUSen = $U->ou_ancestor_setting_batch_insecure(
-                    $user_obj->home_ou,
-                    ["REST.api.whitelist_properties.$op","REST.api.whitelist_properties",
-                     "REST.api.blacklist_properties.$op","REST.api.blacklist_properties"]
-                );
-                push @whitelist_settings, grep {defined and /\w+/} map { defined($YAOUSen{$_}) ? $YAOUSen{$_}{value} : undef } grep {/^REST.api.whitelist_properties/} keys %YAOUSen;
-                push @blacklist_settings, grep {defined and /\w+/} map { defined($YAOUSen{$_}) ? $YAOUSen{$_}{value} : undef } grep {/^REST.api.blacklist_properties/} keys %YAOUSen;
+                if ($filter_cache) {
+                    @whitelist_settings = @{$$filter_cache{wl}};
+                    @blacklist_settings = @{$$filter_cache{bl}};
+                } else {
+                    # First, gather user settings applied to integrators
+                    my $usettings = new_editor()->search_actor_user_setting({
+                        usr => $user_obj->id,
+                        name => ["REST.api.whitelist_properties.$op","REST.api.whitelist_properties",
+                                 "REST.api.blacklist_properties.$op","REST.api.blacklist_properties"]
+                    });
+                    @whitelist_settings = map { OpenSRF::Utils::JSON->JSON2perl($_->value) } grep { $_->name =~ /^REST.api.whitelist_properties/ } @$usettings;
+                    @blacklist_settings = map { OpenSRF::Utils::JSON->JSON2perl($_->value) } grep { $_->name =~ /^REST.api.blacklist_properties/ } @$usettings;
+
+                    # Then add YAOUSen to the list
+                    my %YAOUSen = $U->ou_ancestor_setting_batch_insecure(
+                        $user_obj->home_ou,
+                        ["REST.api.whitelist_properties.$op","REST.api.whitelist_properties",
+                         "REST.api.blacklist_properties.$op","REST.api.blacklist_properties"]
+                    );
+                    push @whitelist_settings, grep {defined and /\w+/} map { defined($YAOUSen{$_}) ? $YAOUSen{$_}{value} : undef } grep {/^REST.api.whitelist_properties/} keys %YAOUSen;
+                    push @blacklist_settings, grep {defined and /\w+/} map { defined($YAOUSen{$_}) ? $YAOUSen{$_}{value} : undef } grep {/^REST.api.blacklist_properties/} keys %YAOUSen;
+
+                    $c->stash(filterCache => {wl => \@whitelist_settings, bl => \@blacklist_settings});
+                }
 
                 do {
                     $filter_nulls++; # force filtering of nulls because some properties can't be null but are allowed to not exist at all
