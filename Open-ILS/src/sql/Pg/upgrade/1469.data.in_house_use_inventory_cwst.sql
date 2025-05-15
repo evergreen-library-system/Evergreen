@@ -1,6 +1,6 @@
 BEGIN;
 
-SELECT evergreen.upgrade_deps_block_check('xxxx', :eg_version);
+SELECT evergreen.upgrade_deps_block_check('1469', :eg_version);
 
 INSERT INTO config.workstation_setting_type (name, grp, datatype, label)
 VALUES ('eg.circ.in_house.do_inventory_update', 'circ', 'bool',
