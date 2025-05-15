@@ -1,6 +1,5 @@
 import {Component, AfterViewInit, ViewChild, Renderer2, OnInit} from '@angular/core';
 import {ActivatedRoute} from '@angular/router';
-import {NgbPanelChangeEvent} from '@ng-bootstrap/ng-bootstrap';
 import {HttpClient, HttpRequest, HttpEventType,
     HttpResponse, HttpErrorResponse} from '@angular/common/http';
 import {saveAs} from 'file-saver';
@@ -64,24 +63,6 @@ export class ExportComponent implements AfterViewInit, OnInit {
             return; // no source to focus
         }
         //this.renderer.selectRootElement('#csv-input').focus();
-    }
-
-    sourceChange($event: NgbPanelChangeEvent) {
-        this.recordSource = $event.panelId;
-
-        if (this.exportingBasket) {
-            return; // no source to focus
-        }
-        /*
-        if ($event.nextState) { // panel opened
-
-            // give the panel a chance to render before focusing input
-            setTimeout(() => {
-                this.renderer.selectRootElement(
-                    `#${this.recordSource}-input`).focus();
-            });
-        }
-        /***/
     }
 
     fileSelected($event) {

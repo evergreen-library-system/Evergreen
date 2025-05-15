@@ -68,7 +68,7 @@ export class AcqSearchComponent implements OnInit, OnDestroy {
             });
         });
         this.router.events.pipe(
-            filter((event: RouterEvent) => event instanceof NavigationEnd),
+            filter((event): event is NavigationEnd => event instanceof NavigationEnd),
             takeUntil(this.destroyed)
         ).subscribe(routeEvent => {
             if (routeEvent instanceof NavigationEnd) {
