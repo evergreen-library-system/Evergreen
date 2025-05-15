@@ -291,23 +291,27 @@
 </div>
 <br/><br/>
 
-<div>
-  <details class="card">
-    <summary class="card-header">
-      <h3 i18n>Open me for comboboxes</h3>
-    </summary>
-    <div class="card-body">
-      <eg-org-select ariaLabel="Org Unit" i18n-ariaLabel></eg-org-select>
-      <eg-combobox>
-        <eg-combobox-entry entryId="bib" entryLabel="Bibliographic Records"
-          i18n-entryLabel></eg-combobox-entry>
-        <eg-combobox-entry entryId="auth" entryLabel="Authority Records"
-          i18n-entryLabel></eg-combobox-entry>
-        <eg-combobox-entry entryId="bib-acq" entryLabel="Acquisitions Records"
-          i18n-entryLabel></eg-combobox-entry>
-      </eg-combobox>
+<div ngbAccordion>
+  <div ngbAccordionItem>
+    <h2 ngbAccordionHeader>
+      <button ngbAccordionButton i18n>Open me for comboboxes</button>
+    </h2>
+    <div ngbAccordionCollapse>
+      <div ngbAccordionBody>
+        <ng-template>
+          <eg-org-select ariaLabel="Org Unit" i18n-ariaLabel></eg-org-select>
+          <eg-combobox>
+            <eg-combobox-entry entryId="bib" entryLabel="Bibliographic Records"
+              i18n-entryLabel></eg-combobox-entry>
+            <eg-combobox-entry entryId="auth" entryLabel="Authority Records"
+              i18n-entryLabel></eg-combobox-entry>
+            <eg-combobox-entry entryId="bib-acq" entryLabel="Acquisitions Records"
+              i18n-entryLabel></eg-combobox-entry>
+          </eg-combobox>
+        </ng-template>
+      </div>
     </div>
-  </details>
+  </div>
 </div>
 
 <!-- grid stuff -->

@@ -1,121 +1,144 @@
 <div class="chooser-row">
 
-<div *ngIf="editorMode !== 'definition'">
-  <details *ngIf="fieldType === 'filter' && hasFilterSuggestions()" id="suggested_filters" class="card">
-    <summary class="card-header">
-      <h3 class="d-inline" i18n>Suggested Filters</h3>
-    </summary>
-    <div class="card-body">
-      <ng-container *ngFor="let f of allFields">
-        <eg-reporter-field
-          *ngIf="f.suggest_filter"
-          [field]=f
-          [withSelect]=true
-          [selected]="fieldIsSelected(f)"
-          (selectEvent)="toggleSelect(f)"
-        >
-        </eg-reporter-field>
-      </ng-container>
-    </div>
-  </details>
-
-  <details *ngFor="let g of fieldGroups" id="{{g.name}}" class="card">
-    <summary class="card-header">
-      <h3 class="d-inline">{{g.label}}</h3>
-    </summary>
-    <div class="card-body">
-      <ng-container *ngFor="let f of g.members">
-        <eg-reporter-field
-          *ngIf="!hideField(f)"
-          [field]=f
-          [editorMode]="'none'"
-          [withSelect]=true
-          [selected]="fieldIsSelected(f)"
-          (selectEvent)="toggleSelect(f)"
-        >
-        </eg-reporter-field>
-      </ng-container>
-    </div>
-  </details>
-
-  <details *ngIf="allFields.length > 0" id="all" class="card">
-    <summary class="card-header">
-      <h3 i18n>All Fields</h3>
-    </summary>
-    <div class="card-body">
-      <ng-container *ngFor="let f of allFields">
-        <eg-reporter-field
-          *ngIf="!hideField(f) && !f.virtual"
-          [field]=f
-          [editorMode]="'none'"
-          [withHint]=false
-          [withSelect]=true
-          [selected]="fieldIsSelected(f)"
-          (selectEvent)="toggleSelect(f)"
-        >
-        </eg-reporter-field>
-      </ng-container>
-    </div>
-  </details>
-</div>
-
-<div class="col-md-9">
-  <details class="card" id="display-field-list" *ngIf="fieldType === 'filter' && listFields.length > 0" open>
-    <summary class="card-header">
-      <h3 i18n>Fields Selected for Display</h3>
-    </summary>
-    <div class="card-body">
-      <span *ngFor="let f of listFields; index as idx" class="reporter-chooser-display-list">
-        {{f.alias}}{{f.field_doc ? ' (' + f.field_doc + ')' : ''}}{{idx === (listFields.length - 1) ? '' : ', '}}
-      </span>
-    </div>
-  </details>
-  <details class="card" id="sort-field-list" open>
-    <summary class="card-header">
-      <h3 class="d-inline" *ngIf="fieldType === 'display'" i18n>Field Display Order</h3>
-      <h3 class="d-inline" *ngIf="fieldType === 'filter'" i18n>Filter Fields and Values</h3>
-    </summary>
-    <div class="card-body">
-      <div *ngIf="fieldType === 'display'" id="field-display">
-        <ng-container *ngFor="let f of selectedFields; index as idx">
-          <eg-reporter-field
-            *ngIf="!hideField(f)"
-            [field]=f
-            [editorMode]="'none'"
-            [withDeselect]=true
-            [withAlias]=true
-            [withTransforms]=true
-            [withUpDown]=true
-            [disableUp]="idx === 0"
-            [disableDown]="idx === (selectedFields.length - 1)"
-            (fieldChange)="updateField($event)"
-            (deselectEvent)="toggleSelect(f)"
-            (upEvent)="moveUp(idx)"
-            (downEvent)="moveDown(idx)"
-          >
-          </eg-reporter-field>
-        </ng-container>
+  <div ngbAccordion *ngIf="editorMode !== 'definition'">
+    <div ngbAccordionItem *ngIf="fieldType === 'filter' && hasFilterSuggestions()" id="suggested_filters" [collapsed]="false">
+      <h3 ngbAccordionHeader>
+        <button ngbAccordionButton i18n>Suggested Filters</button>
+      </h3>
+      <div ngbAccordionCollapse>
+        <div ngbAccordionBody>
+          <ng-template>
+            <ng-container *ngFor="let f of allFields">
+              <eg-reporter-field
+                *ngIf="f.suggest_filter"
+                [field]=f
+                [withSelect]=true
+                [selected]="fieldIsSelected(f)"
+                (selectEvent)="toggleSelect(f)"
+              >
+              </eg-reporter-field>
+            </ng-container>
+          </ng-template>
+        </div>
       </div>
-
-      <div *ngIf="fieldType === 'filter'" id="field-filters">
-        <ng-container *ngFor="let f of selectedFields; index as idx">
-          <eg-reporter-field
-            *ngIf="!hideField(f)"
-            [field]=f
-            [editorMode]="editorMode"
-            [withDeselect]=true
-            [withTransforms]=true
-            [withOperators]=true
-            [withValueInput]="editorMode === 'report'"
-            (fieldChange)="updateField($event)"
-            (deselectEvent)="toggleSelect(f)"
-          >
-          </eg-reporter-field>
-        </ng-container>
-      </div>
-
     </div>
-  </details>
+
+    <div ngbAccordionItem *ngFor="let g of fieldGroups" id="{{g.name}}">
+      <h3 ngbAccordionHeader>
+        <button ngbAccordionButton>{{g.label}}</button>
+      </h3>
+      <div ngbAccordionCollapse>
+        <div ngbAccordionBody>
+          <ng-template>
+            <ng-container *ngFor="let f of g.members">
+              <eg-reporter-field
+                *ngIf="!hideField(f)"
+                [field]=f
+                [editorMode]="'none'"
+                [withSelect]=true
+                [selected]="fieldIsSelected(f)"
+                (selectEvent)="toggleSelect(f)"
+              >
+              </eg-reporter-field>
+            </ng-container>
+          </ng-template>
+        </div>
+      </div>
+    </div>
+
+    <div ngbAccordionItem *ngIf="allFields.length > 0" id="all">
+      <h3 ngbAccordionHeader>
+        <button ngbAccordionButton i18n>All Fields</button>
+      </h3>
+      <div ngbAccordionCollapse>
+        <div ngbAccordionBody>
+          <ng-template>
+            <ng-container *ngFor="let f of allFields">
+              <eg-reporter-field
+                *ngIf="!hideField(f) && !f.virtual"
+                [field]=f
+                [editorMode]="'none'"
+                [withHint]=false
+                [withSelect]=true
+                [selected]="fieldIsSelected(f)"
+                (selectEvent)="toggleSelect(f)"
+              >
+              </eg-reporter-field>
+            </ng-container>
+          </ng-template>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+<div ngbAccordion class="col-md-9">
+  <div ngbAccordionItem id="display-field-list" *ngIf="fieldType === 'filter' && listFields.length > 0">
+    <h3 ngbAccordionHeader>
+      <button ngbAccordionButton i18n>Fields Selected for Display</button>
+    </h3>
+    <div ngbAccordionCollapse>
+      <div ngbAccordionBody>
+        <ng-template>
+          <span *ngFor="let f of listFields; index as idx" class="reporter-chooser-display-list">
+            {{f.alias}}{{f.field_doc ? ' (' + f.field_doc + ')' : ''}}{{idx === (listFields.length - 1) ? '' : ', '}}
+          </span>
+        </ng-template>
+      </div>
+    </div>
+  </div>
+
+  <div ngbAccordionItem id="sort-field-list">
+    <h3 ngbAccordionHeader>
+      <button ngbAccordionButton>
+        <span *ngIf="fieldType === 'display'" i18n>Field Display Order</span>
+        <span *ngIf="fieldType === 'filter'" i18n>Filter Fields and Values</span>
+      </button>
+    </h3>
+    <div ngbAccordionCollapse>
+      <div ngbAccordionBody>
+        <ng-template>
+          <div *ngIf="fieldType === 'display'" id="field-display">
+            <ng-container *ngFor="let f of selectedFields; index as idx">
+              <eg-reporter-field
+                *ngIf="!hideField(f)"
+                [field]=f
+                [editorMode]="'none'"
+                [withDeselect]=true
+                [withAlias]=true
+                [withTransforms]=true
+                [withUpDown]=true
+                [disableUp]="idx === 0"
+                [disableDown]="idx === (selectedFields.length - 1)"
+                (fieldChange)="updateField($event)"
+                (deselectEvent)="toggleSelect(f)"
+                (upEvent)="moveUp(idx)"
+                (downEvent)="moveDown(idx)"
+              >
+              </eg-reporter-field>
+            </ng-container>
+          </div>
+    
+          <div *ngIf="fieldType === 'filter'" id="field-filters">
+            <ng-container *ngFor="let f of selectedFields; index as idx">
+              <eg-reporter-field
+                *ngIf="!hideField(f)"
+                [field]=f
+                [editorMode]="editorMode"
+                [withDeselect]=true
+                [withTransforms]=true
+                [withOperators]=true
+                [withValueInput]="editorMode === 'report'"
+                (fieldChange)="updateField($event)"
+                (deselectEvent)="toggleSelect(f)"
+              >
+              </eg-reporter-field>
+            </ng-container>
+          </div>
+        </ng-template>
+      </div>
+    </div>
+  </div>
 </div>
 
 </div>

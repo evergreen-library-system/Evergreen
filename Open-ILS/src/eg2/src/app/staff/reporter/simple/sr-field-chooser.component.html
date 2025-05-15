@@ -1,112 +1,135 @@
 <div class="chooser-row">
 
-<div class="col-md-4">
-  <details class="card" *ngIf="fieldType === 'filter'" id="suggested_filters" open>
-    <summary class="card-header">
-      <h3 class="d-inline" i18n>Suggested Filters</h3>
-    </summary>
-    <div class="card-body">
-      <ng-container *ngFor="let f of allFields">
-        <eg-sr-field
-          *ngIf="f.suggest_filter"
-          [field]=f
-          [withSelect]=true
-          [selected]="fieldIsSelected(f)"
-          (selectEvent)="toggleSelect(f)"
-        >
-        </eg-sr-field>
-      </ng-container>
+  <div ngbAccordion class="col-md-4">
+    <div ngbAccordionItem *ngIf="fieldType === 'filter'" id="suggested_filters">
+      <h3 ngbAccordionHeader>
+        <button ngbAccordionButton i18n>Suggested Filters</button>
+      </h2>
+      <div ngbAccordionCollapse>
+        <div ngbAccordionBody>
+          <ng-template>
+            <ng-container *ngFor="let f of allFields">
+              <eg-sr-field
+                *ngIf="f.suggest_filter"
+                [field]=f
+                [withSelect]=true
+                [selected]="fieldIsSelected(f)"
+                (selectEvent)="toggleSelect(f)"
+              >
+              </eg-sr-field>
+            </ng-container>
+          </ng-template>
+        </div>
+      </div>
     </div>
-  </details>
-  <details class="card" *ngFor="let g of fieldGroups" id="{{g.name}}">
-    <summary class="card-header">
-      <h3>{{g.label}}</h3>
-    </summary>
-    <div class="card-body">
-      <ng-container *ngFor="let f of g.members">
-        <eg-sr-field
-          *ngIf="!hideField(f)"
-          [field]=f
-          [withSelect]=true
-          [selected]="fieldIsSelected(f)"
-          (selectEvent)="toggleSelect(f)"
-        >
-        </eg-sr-field>
-      </ng-container>
-    </div>
-  </details>
-  <details class="card" *ngIf="allFields.length > 0" id="all">
-    <summary class="card-header">
-      <h3 i18n>All Fields</h3>
-    </summary>
-    <div class="card-body">
-      <ng-container *ngFor="let f of allFields">
-        <eg-sr-field
-          *ngIf="!hideField(f) && !f.virtual"
-          [field]=f
-          [withSelect]=true
-          [selected]="fieldIsSelected(f)"
-          (selectEvent)="toggleSelect(f)"
-        >
-        </eg-sr-field>
-      </ng-container>
-    </div>
-  </details>
-</div>
 
-<div class="col-md-8">
-  <details class="card" id="display-field-list" *ngIf="fieldType === 'filter' && listFields.length > 0" open>
-    <summary class="card-header">
-        <h5 class="d-inline" i18n>Fields Selected for Display</h5>
-    </summary>
-    <div class="card-body">
-      <span *ngFor="let f of listFields; index as idx" class="sr-chooser-display-list">{{f.alias}}{{idx === (listFields.length - 1) ? '' : ', '}}</span>
+    <div ngbAccordionItem *ngFor="let g of fieldGroups" id="{{g.name}}">
+      <h3 ngbAccordionHeader>
+        <button ngbAccordionButton>{{g.label}}</button>
+      </h3>
+      <div ngbAccordionCollapse>
+        <div ngbAccordionBody>
+          <ng-template>
+            <ng-container *ngFor="let f of g.members">
+              <eg-sr-field
+                *ngIf="!hideField(f)"
+                [field]=f
+                [withSelect]=true
+                [selected]="fieldIsSelected(f)"
+                (selectEvent)="toggleSelect(f)"
+              >
+              </eg-sr-field>
+            </ng-container>
+          </ng-template>
+        </div>
+      </div>
     </div>
-  </details>
-  <details class="card" id="sort-field-list" open>
-    <summary class="card-header">
-        <h5 *ngIf="fieldType === 'display'" class="d-inline" i18n>Field Display Order</h5>
-        <h5 *ngIf="fieldType === 'filter'" class="d-inline" i18n>Filter Fields and Values</h5>
-    </summary>
-    <div class="card-body">
-      <ng-container *ngIf="fieldType === 'display'">
-        <ng-container *ngFor="let f of selectedFields; index as idx">
-          <eg-sr-field
-            *ngIf="!hideField(f)"
-            [field]=f
-            [withDeselect]=true
-            [withAlias]=true
-            [withTransforms]=true
-            [withUpDown]=true
-            [disableUp]="idx === 0"
-            [disableDown]="idx === (selectedFields.length - 1)"
-            (fieldChange)="updateField($event)"
-            (deselectEvent)="toggleSelect(f)"
-            (upEvent)="moveUp(idx)"
-            (downEvent)="moveDown(idx)"
-          >
-          </eg-sr-field>
-        </ng-container>
-      </ng-container>
 
-      <ng-container *ngIf="fieldType === 'filter'">
-        <ng-container *ngFor="let f of selectedFields; index as idx">
-          <eg-sr-field
-            *ngIf="!hideField(f)"
-            [field]=f
-            [withDeselect]=true
-            [withTransforms]=true
-            [withOperators]=true
-            [withValueInput]=true
-            (fieldChange)="updateField($event)"
-            (deselectEvent)="toggleSelect(f)"
-          >
-          </eg-sr-field>
-        </ng-container>
-      </ng-container>
-
+    <div ngbAccordionItem *ngIf="allFields.length > 0" id="all">
+      <h3 ngbAccordionHeader>
+        <button ngbAccordionButton i18n>All Fields</button>
+      </h2>
+      <div ngbAccordionCollapse>
+        <div ngbAccordionBody>
+          <ng-template>
+            <ng-container *ngFor="let f of allFields">
+              <eg-sr-field
+                *ngIf="!hideField(f) && !f.virtual"
+                [field]=f
+                [withSelect]=true
+                [selected]="fieldIsSelected(f)"
+                (selectEvent)="toggleSelect(f)"
+              >
+              </eg-sr-field>
+            </ng-container>
+          </ng-template>
+        </div>
+      </div>
     </div>
-  </details>
-</div>
+  </div>
+
+  <div ngbAccordion class="col-md-8">
+    <div ngbAccordionItem id="display-field-list" *ngIf="fieldType === 'filter' && listFields.length > 0" [collapsed]="false">
+      <h3 ngbAccordionHeader>
+        <button ngbAccordionButton i18n>Fields Selected for Display</button>
+      </h2>
+      <div ngbAccordionCollapse>
+        <div ngbAccordionBody>
+          <ng-template>
+            <span *ngFor="let f of listFields; index as idx" class="sr-chooser-display-list">{{f.alias}}{{idx === (listFields.length - 1) ? '' : ', '}}</span>
+          </ng-template>
+        </div>
+      </div>
+    </div>
+    <div ngbAccordionItem id="sort-field-list" [collapsed]="false">
+      <h3 ngbAccordionHeader>
+        <button ngbAccordionButton>
+          <span *ngIf="fieldType === 'display'" i18n>Field Display Order</sp>
+          <span *ngIf="fieldType === 'filter'" i18n>Filter Fields and Values</span>
+        </button>
+      </h3>
+      <div ngbAccordionCollapse>
+        <div ngbAccordionBody>
+          <ng-template>
+            <ng-container *ngIf="fieldType === 'display'">
+              <ng-container *ngFor="let f of selectedFields; index as idx">
+                <eg-sr-field
+                  *ngIf="!hideField(f)"
+                  [field]=f
+                  [withDeselect]=true
+                  [withAlias]=true
+                  [withTransforms]=true
+                  [withUpDown]=true
+                  [disableUp]="idx === 0"
+                  [disableDown]="idx === (selectedFields.length - 1)"
+                  (fieldChange)="updateField($event)"
+                  (deselectEvent)="toggleSelect(f)"
+                  (upEvent)="moveUp(idx)"
+                  (downEvent)="moveDown(idx)"
+                >
+                </eg-sr-field>
+              </ng-container>
+            </ng-container>
+      
+            <ng-container *ngIf="fieldType === 'filter'">
+              <ng-container *ngFor="let f of selectedFields; index as idx">
+                <eg-sr-field
+                  *ngIf="!hideField(f)"
+                  [field]=f
+                  [withDeselect]=true
+                  [withTransforms]=true
+                  [withOperators]=true
+                  [withValueInput]=true
+                  (fieldChange)="updateField($event)"
+                  (deselectEvent)="toggleSelect(f)"
+                >
+                </eg-sr-field>
+              </ng-container>
+            </ng-container>
+          </ng-template>
+        </div>
+      </div>
+    </div>
+  </div>
 
 </div>

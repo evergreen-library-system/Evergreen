@@ -53,72 +53,83 @@
     <ng-template ngbNavContent>
       <h2 class="visually-hidden" i18n="Staff catalog search results sidebar tabs">Buckets</h2>
       <div class="row g-0">
-        <details id="favorite_buckets_sidebar" class="card" open>
-            <summary class="card-header">
-              <h3 class="d-inline" i18n>Favorite</h3>
-              <span class="material-icons user-favorite ms-1" aria-hidden="true">star</span>
-            </summary>
-            <div class="card-body">
-              <ul class="list-group list-group-flush">
-                <li class="list-group-item bucket-favorite m-0 px-0 py-2" *ngFor="let bundle of (favoriteBuckets$ | async)">
-                  <div class="bucket-metadata">
-                    <div class="flex-grow-1">
-                      <h4 class="d-inline fs-6 m-0">
-                        <a routerLink="/staff/cat/bucket/record/content/{{bundle.bucket.id}}" class="card-link semibold me-2">{{bundle.bucket.name}}</a>
-                      </h4>
-                      <span *ngIf="bundle.bucket.pub === 't'" class="badge badge-success" i18n="Bucket public status">Public</span>
-                      <p class="m-0" *ngIf="bundle.bucket.owning_lib">
-                        <span>{{orgName(bundle.bucket.owning_lib)}}</span>
-                      </p>
-                      <p class="m-0 text-secondary">
-                        <i i18n="Bucket owner @ home library">{{bundle.bucket.owner.usrname}} &#64; {{orgName(bundle.bucket.owner.home_ou)}}</i>
-                      </p>
-                    </div>
-                    <div class="bucket-count numeric">
-                      <div title="{{bundle.item_count}} records" i18n-title="Bucket count">{{bundle.item_count}}</div>
-                      <button type="button" class="btn btn-link btn-sm small-text-1 basket-add" 
-                        (click)="addBasketToBucket(bundle.bucket.id)" attr.aria-describedby="bucket-name-{{bundle.bucket.id}}" i18n>
-                        Add {{getBasketCount()}}
-                      </button>
-                    </div>
-                  </div>
-                </li>
-              </ul>
+        <div ngbAccordion>
+          <div ngbAccordionItem id="favorite_buckets_sidebar" [collapsed]="false">
+            <h2 ngbAccordionHeader>
+              <button ngbAccordionButton>
+                <span i18n>Favorite</span>
+                <span class="material-icons user-favorite ms-1" aria-hidden="true">star</span>
+              </button>
+            </h2>
+            <div ngbAccordionCollapse>
+              <div ngbAccordionBody>
+                <ng-template>
+                  <ul class="list-group list-group-flush">
+                    <li class="list-group-item bucket-favorite m-0 px-0 py-2" *ngFor="let bundle of (favoriteBuckets$ | async)">
+                      <div class="bucket-metadata">
+                        <div class="flex-grow-1">
+                          <h3 class="d-inline fs-6 m-0">
+                            <a routerLink="/staff/cat/bucket/record/content/{{bundle.bucket.id}}" class="card-link semibold me-2">{{bundle.bucket.name}}</a>
+                          </h3>
+                          <span *ngIf="bundle.bucket.pub === 't'" class="badge badge-success" i18n="Bucket public status">Public</span>
+                          <p class="m-0" *ngIf="bundle.bucket.owning_lib">
+                            <span>{{orgName(bundle.bucket.owning_lib)}}</span>
+                          </p>
+                          <p class="m-0 text-secondary">
+                            <i i18n="Bucket owner @ home library">{{bundle.bucket.owner.usrname}} &#64; {{orgName(bundle.bucket.owner.home_ou)}}</i>
+                          </p>
+                        </div>
+                        <div class="bucket-count numeric">
+                          <div title="{{bundle.item_count}} records" i18n-title="Bucket count">{{bundle.item_count}}</div>
+                          <button type="button" class="btn btn-link btn-sm small-text-1 basket-add" 
+                            (click)="addBasketToBucket(bundle.bucket.id)" attr.aria-describedby="bucket-name-{{bundle.bucket.id}}" i18n>
+                            Add {{getBasketCount()}}
+                          </button>
+                        </div>
+                      </div>
+                    </li>
+                  </ul>
+                </ng-template>
+              </div>
             </div>
-          </details>
-        
-          <details id="recent_buckets_sidebar" class="card" open>
-            <summary class="card-header">
-              <h3 class="d-inline" i18n>Recent</h3>
-            </summary>
-            <div class="card-body">
-              <ul class="list-group list-group-flush">
-                <li class="list-group-item bucket-recent m-0 px-0 py-2" *ngFor="let bundle of (recentBuckets$ | async)">
-                  <div class="bucket-metadata">
-                    <div class="flex-grow-1">
-                      <h4 class="d-inline fs-6 m-0">
-                        <a routerLink="/staff/cat/bucket/record/content/{{bundle.bucket.id}}" class="card-link semibold me-2" id="bucket-name-{{bundle.bucket.id}}">{{bundle.bucket.name}}</a>
-                      </h4>
-                      <span *ngIf="bundle.bucket.pub === 't'" class="badge badge-success" i18n="Bucket public status">Public</span>
-                      <p class="m-0" *ngIf="bundle.bucket.owning_lib">
-                        <span>{{orgName(bundle.bucket.owning_lib)}}</span>
-                      </p>
-                      <p class="m-0 text-secondary">
-                        <i i18n="Bucket owner @ home library">{{bundle.bucket.owner.usrname}} &#64; {{orgName(bundle.bucket.owner.home_ou)}}</i>
-                      </p>
-                    </div>
-                    <div class="bucket-count numeric">
-                      <div title="{{bundle.item_count}} records" i18n-title="Bucket count">{{bundle.item_count}}</div>
-                      <button type="button" class="btn btn-link btn-sm small-text-1 basket-add" 
-                        (click)="addBasketToBucket(bundle.bucket.id)" attr.aria-describedby="bucket-name-{{bundle.bucket.id}}" i18n>
-                        Add {{getBasketCount()}}
-                      </button>
-                    </div>
-                  </div>
-                </li>
-              </ul>
+          </div>
+          <div ngbAccordionItem id="recent_buckets_sidebar" [collapsed]="false">
+            <h2 ngbAccordionHeader>
+              <button ngbAccordionButton i18n>Recent</button>
+            </h2>
+            <div ngbAccordionCollapse>
+              <div ngbAccordionBody>
+                <ng-template>
+                  <ul class="list-group list-group-flush">
+                    <li class="list-group-item bucket-recent m-0 px-0 py-2" *ngFor="let bundle of (recentBuckets$ | async)">
+                      <div class="bucket-metadata">
+                        <div class="flex-grow-1">
+                          <h4 class="d-inline fs-6 m-0">
+                            <a routerLink="/staff/cat/bucket/record/content/{{bundle.bucket.id}}" class="card-link semibold me-2" id="bucket-name-{{bundle.bucket.id}}">{{bundle.bucket.name}}</a>
+                          </h4>
+                          <span *ngIf="bundle.bucket.pub === 't'" class="badge badge-success" i18n="Bucket public status">Public</span>
+                          <p class="m-0" *ngIf="bundle.bucket.owning_lib">
+                            <span>{{orgName(bundle.bucket.owning_lib)}}</span>
+                          </p>
+                          <p class="m-0 text-secondary">
+                            <i i18n="Bucket owner @ home library">{{bundle.bucket.owner.usrname}} &#64; {{orgName(bundle.bucket.owner.home_ou)}}</i>
+                          </p>
+                        </div>
+                        <div class="bucket-count numeric">
+                          <div title="{{bundle.item_count}} records" i18n-title="Bucket count">{{bundle.item_count}}</div>
+                          <button type="button" class="btn btn-link btn-sm small-text-1 basket-add" 
+                            (click)="addBasketToBucket(bundle.bucket.id)" attr.aria-describedby="bucket-name-{{bundle.bucket.id}}" i18n>
+                            Add {{getBasketCount()}}
+                          </button>
+                        </div>
+                      </div>
+                    </li>
+                  </ul>
+                </ng-template>
+              </div>
             </div>
-          </details>
+          </div>
+        </div>
         
     </div>
     </ng-template> <!-- Buckets tab panel -->

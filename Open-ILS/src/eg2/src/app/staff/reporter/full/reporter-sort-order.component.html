@@ -1,63 +1,68 @@
 <div class="order-row">
 
-<div class="col-md-6">
-
-  <details class="card" id="display-field-list" open>
-    <summary class="card-header">
-      <h3 class="d-inline" i18n>Field Display Order</h3>
-    </summary>
-    <div class="card-body">
-      <div id="field-sorter-display-fields">
-      <ng-container *ngFor="let f of fields; index as idx">
-        <eg-reporter-field
-          [field]=f
-          [editorMode]="'none'"
-          [editHint]=false
-          [withAlias]=true
-          [withTransforms]=true
-          [withUpDown]=true
-          [disableUp]="idx === 0"
-          [disableDown]="idx === (fields.length - 1)"
-          (fieldChange)="updateField($event)"
-          (upEvent)="moveDisplayUp(idx)"
-          (downEvent)="moveDisplayDown(idx)"
-        >
-        </eg-reporter-field>
-      </ng-container>
+  <div ngbAccordion class="col-md-6">
+    <div ngbAccordionItem id="display-field-list" [collapsed]="false">
+      <h3 ngbAccordionHeader>
+        <button ngbAccordionButton i18n>Field Display Order</button>
+      </h3>
+      <div ngbAccordionCollapse>
+        <div ngbAccordionBody>
+          <ng-template>
+            <div id="field-sorter-display-fields">
+              <ng-container *ngFor="let f of fields; index as idx">
+                <eg-reporter-field
+                  [field]=f
+                  [editorMode]="'none'"
+                  [editHint]=false
+                  [withAlias]=true
+                  [withTransforms]=true
+                  [withUpDown]=true
+                  [disableUp]="idx === 0"
+                  [disableDown]="idx === (fields.length - 1)"
+                  (fieldChange)="updateField($event)"
+                  (upEvent)="moveDisplayUp(idx)"
+                  (downEvent)="moveDisplayDown(idx)"
+                >
+                </eg-reporter-field>
+              </ng-container>
+            </div>
+          </ng-template>
+        </div>
       </div>
     </div>
-  </details>
+  </div>
 
-</div>
-
-<div class="col-md-6">
-  <details class="card" id="order-field-list" open>
-    <summary class="card-header">
-      <h3 class="d-inline" i18n>Field Sort Order</h3>
-    </summary>
-    <div class="card-body">
-      <div id="field-sorter-sort-order">
-      <ng-container *ngFor="let f of fieldsInOrderByOrder(); index as idx">
-        <eg-reporter-field
-          [field]=f
-          [editorMode]="'none'"
-          [withAlias]=true
-          [editAlias]=false
-          [editHint]=false
-          [withUpDown]=true
-          [withSortDirection]=true
-          [disableUp]="idx === 0"
-          [disableDown]="idx === (fields.length - 1)"
-          (fieldChange)="updateField($event)"
-          (upEvent)="moveOrderUp(idx)"
-          (downEvent)="moveOrderDown(idx)"
-        >
-        </eg-reporter-field>
-      </ng-container>
+  <div ngbAccordion class="col-md-6">
+    <div ngbAccordionItem id="order-field-list" [collapsed]="false">
+      <h3 ngbAccordionHeader>
+        <button ngbAccordionButton i18n>Field Sort Order</button>
+      </h3>
+      <div ngbAccordionCollapse>
+        <div ngbAccordionBody>
+          <ng-template>
+            <div id="field-sorter-sort-order">
+              <ng-container *ngFor="let f of fieldsInOrderByOrder(); index as idx">
+                <eg-reporter-field
+                  [field]=f
+                  [editorMode]="'none'"
+                  [withAlias]=true
+                  [editAlias]=false
+                  [editHint]=false
+                  [withUpDown]=true
+                  [withSortDirection]=true
+                  [disableUp]="idx === 0"
+                  [disableDown]="idx === (fields.length - 1)"
+                  (fieldChange)="updateField($event)"
+                  (upEvent)="moveOrderUp(idx)"
+                  (downEvent)="moveOrderDown(idx)"
+                >
+                </eg-reporter-field>
+              </ng-container>
+            </div>
+          </ng-template>
+        </div>
       </div>
     </div>
-  </details>
-
-</div>
+  </div>
 
 </div>

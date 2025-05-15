@@ -1,59 +1,60 @@
 <div class="order-row">
 
-<div class="col-md-6">
-
-  <details class="card" id="display-field-list" open>
-    <summary class="card-header">
-      <h5 class="d-inline" i18n>Field Display Order</h5>
-    </summary>
-    <div class="card-body">
-
-      <ng-container *ngFor="let f of fields; index as idx">
-        <eg-sr-field
-          [field]=f
-          [withAlias]=true
-          [withTransforms]=true
-          [withUpDown]=true
-          [disableUp]="idx === 0"
-          [disableDown]="idx === (fields.length - 1)"
-          (fieldChange)="updateField($event)"
-          (upEvent)="moveDisplayUp(idx)"
-          (downEvent)="moveDisplayDown(idx)"
-        >
-        </eg-sr-field>
-      </ng-container>
-
+  <div ngbAccordion class="col-md-6">
+    <div ngbAccordionItem>
+      <h5 ngbAccordionHeader>
+        <button ngbAccordionButton i18n>Field Display Order</button>
+      </h2>
+      <div ngbAccordionCollapse>
+        <div ngbAccordionBody>
+          <ng-template>
+            <ng-container *ngFor="let f of fields; index as idx">
+              <eg-sr-field
+                [field]=f
+                [withAlias]=true
+                [withTransforms]=true
+                [withUpDown]=true
+                [disableUp]="idx === 0"
+                [disableDown]="idx === (fields.length - 1)"
+                (fieldChange)="updateField($event)"
+                (upEvent)="moveDisplayUp(idx)"
+                (downEvent)="moveDisplayDown(idx)"
+              >
+              </eg-sr-field>
+            </ng-container>
+          </ng-template>
+        </div>
+      </div>
     </div>
-  </details>
+  </div>
 
-</div>
-
-<div class="col-md-6">
-  <details class="card" id="order-field-list" open>
-    <summary class="card-header">
-      <h5 class="d-inline" i18n>Field Sort Order</h5>
-    </summary>
-    <div class="card-body">
-
-      <ng-container *ngFor="let f of fieldsInOrderByOrder(); index as idx">
-        <eg-sr-field
-          [field]=f
-          [withAlias]=true
-          [editAlias]=false
-          [withUpDown]=true
-          [withSortDirection]=true
-          [disableUp]="idx === 0"
-          [disableDown]="idx === (fields.length - 1)"
-          (fieldChange)="updateField($event)"
-          (upEvent)="moveOrderUp(idx)"
-          (downEvent)="moveOrderDown(idx)"
-        >
-        </eg-sr-field>
-      </ng-container>
-
+  <div ngbAccordion class="col-md-6">
+    <div ngbAccordionItem>
+      <h5 ngbAccordionHeader>
+        <button ngbAccordionButton i18n>Field Sort Order</button>
+      </h5>
+      <div ngbAccordionCollapse>
+        <div ngbAccordionBody>
+          <ng-template>
+            <ng-container *ngFor="let f of fieldsInOrderByOrder(); index as idx">
+              <eg-sr-field
+                [field]=f
+                [withAlias]=true
+                [editAlias]=false
+                [withUpDown]=true
+                [withSortDirection]=true
+                [disableUp]="idx === 0"
+                [disableDown]="idx === (fields.length - 1)"
+                (fieldChange)="updateField($event)"
+                (upEvent)="moveOrderUp(idx)"
+                (downEvent)="moveOrderDown(idx)"
+              >
+              </eg-sr-field>
+            </ng-container>
+          </ng-template>
+        </div>
+      </div>
     </div>
-  </details>
-
-</div>
+  </div>
 
 </div>
