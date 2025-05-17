@@ -3,7 +3,9 @@
 
 This feature allows you to specify a specific due date within your circulation policies. This is particularly useful for academic and school libraries, who may wish to make certain items due at the end of a semester or term.
 
-NOTE: To work with hard due dates, you will need the CREATE_CIRC_DURATION, UPDATE_CIRC_DURATION, and DELETE_CIRC_DURATION permissions at the _consortium_ level.
+NOTE: To work with hard due dates, you will need the CREATE_HARD_DUE_DATE, UPDATE_HARD_DUE_DATE, and DELETE_HARD_DUE_DATE permissions for your branch/system or consortium.
+
+NOTE: To work with hard due date _values_, you will need the CREATE_HARD_DUE_DATE_VALUE, UPDATE_HARD_DUE_DATE_VALUE, and DELETE_HARD_DUE_DATE_VALUE permissions for your branch/system or consortium.
 
 == Creating a hard due date ==
 Setting up hard due dates is a two-step process. You must first create a hard due date, and then populate it with specific values.
@@ -15,7 +17,7 @@ To create a hard due date:
 . In the *Name* field, enter a name for your hard due date. Note that each hard due date can have multiple values, so it's best to use a generic name here, such as "End of semester."
 . In the *Owner* field, select the appropriate organizational unit for your new hard due date.
 . In the *Current Ceiling Date* field, select any value. This field is required, but its value will be overwritten in subsequent steps, so you may enter an arbitrary date here.
-. Check the *Always Use?* checkbox if you want items to only receive the due dates you specify, regardless of when they would ordinarily be due. If you leave this box unchecked, your specified due dates will serve as "ceiling" values that limit, rather than override, other circulation rules. In other words, with this box checked, items may be due only on the specified dates. With the box unchecked, items may be due _on or before_ the specified dates, simply not after.
+. Choose "Yes" for *Always Use?* if you want items to only receive the due dates you specify, regardless of when they would ordinarily be due. "Yes" means items will be due on the specified dates. "No" means items may be due _on or before_ the specified dates, not after. Choosing neither or choosing "No" have the same meaning.
 . Click *Save*.
 
 To add date values to your hard due date:

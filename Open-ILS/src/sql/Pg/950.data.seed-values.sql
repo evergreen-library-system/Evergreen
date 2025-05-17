@@ -2044,7 +2044,19 @@ INSERT INTO permission.perm_list ( id, code, description ) VALUES
  ( 675, 'VIEW_CONTAINER_USER_ORG_SHARE', oils_i18n_gettext(675,
      'Allow viewing of user bucket user shares', 'ppl', 'description')),
  ( 676, 'UPDATE_TOP_OF_QUEUE', oils_i18n_gettext(676,
-     'Allow setting and unsetting hold from top of hold queue (cut in line)', 'ppl', 'description'))
+     'Allow setting and unsetting hold from top of hold queue (cut in line)', 'ppl', 'description')),
+ ( 688, 'UPDATE_HARD_DUE_DATE', oils_i18n_gettext(688,
+     'Allow update hard due dates', 'ppl', 'description')),
+ ( 689, 'CREATE_HARD_DUE_DATE', oils_i18n_gettext(689,
+     'Allow create hard due dates', 'ppl', 'description')),
+ ( 690, 'DELETE_HARD_DUE_DATE', oils_i18n_gettext(690,
+     'Allow delete hard due dates', 'ppl', 'description')),
+ ( 691, 'UPDATE_HARD_DUE_DATE_VALUE', oils_i18n_gettext(691,
+     'Allow update hard due date values', 'ppl', 'description')),
+ ( 692, 'CREATE_HARD_DUE_DATE_VALUE', oils_i18n_gettext(692,
+     'Allow create hard due date values', 'ppl', 'description')),
+ ( 693, 'DELETE_HARD_DUE_DATE_VALUE', oils_i18n_gettext(693,
+     'Allow delete hard due date values', 'ppl', 'description'))
 ;
 
 INSERT INTO permission.perm_list (id,code) VALUES
@@ -2658,6 +2670,8 @@ INSERT INTO permission.grp_perm_map (grp, perm, depth, grantable)
 			'COPY_TRANSIT_RECEIVE',
 			'CREATE_BILL',
 			'CREATE_BILLING_TYPE',
+			'CREATE_HARD_DUE_DATE',
+			'CREATE_HARD_DUE_DATE_VALUE',
 			'CREATE_NON_CAT_TYPE',
 			'CREATE_PATRON_STAT_CAT',
 			'CREATE_PATRON_STAT_CAT_ENTRY',
@@ -2665,6 +2679,8 @@ INSERT INTO permission.grp_perm_map (grp, perm, depth, grantable)
 			'CREATE_PATRON_STAT_CAT_ENTRY_MAP',
 			'CREATE_USER_GROUP_LINK',
 			'DELETE_BILLING_TYPE',
+			'DELETE_HARD_DUE_DATE',
+			'DELETE_HARD_DUE_DATE_VALUE',
 			'DELETE_NON_CAT_TYPE',
 			'DELETE_PATRON_STAT_CAT',
 			'DELETE_PATRON_STAT_CAT_ENTRY',
@@ -2696,6 +2712,8 @@ INSERT INTO permission.grp_perm_map (grp, perm, depth, grantable)
 			'SET_CIRC_LOST',
 			'UNBAR_PATRON',
 			'UPDATE_BILL_NOTE',
+			'UPDATE_HARD_DUE_DATE',
+			'UPDATE_HARD_DUE_DATE_VALUE',
 			'UPDATE_NON_CAT_TYPE',
 			'UPDATE_PATRON_CLAIM_NEVER_CHECKED_OUT_COUNT',
 			'UPDATE_PATRON_CLAIM_RETURN_COUNT',

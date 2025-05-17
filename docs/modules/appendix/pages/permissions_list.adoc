@@ -495,6 +495,10 @@ allocations
 
 *CREATE_FUNDING_SOURCE.* Allows an acquisitions user to create funding sources
 
+*CREATE_HARD_DUE_DATE.* Allows a user to create hard due dates
+
+*CREATE_HARD_DUE_DATE_VALUE.* Allows a user to create hard due date values
+
 *CREATE_HOLD_NOTIFICATION.* Allows a user to create new hold
 notifications
 
@@ -739,6 +743,10 @@ statistical category entry maps
 allocations
 
 *DELETE_FUNDING_SOURCE.* Allows a user to delete funding sources
+
+*DELETE_HARD_DUE_DATE.* Allows a user to delete hard due dates
+
+*DELETE_HARD_DUE_DATE_VALUE.* Allows a user to delete hard due date values
 
 *DELETE_HOLDS.* Allows a user to delete holds
 
@@ -1201,6 +1209,10 @@ sources
 
 *UPDATE_GROUP_PERM.* Allows a user to edit permission depth and
 grantability
+
+*UPDATE_HARD_DUE_DATE.* Allows a user to update hard due dates
+
+*UPDATE_HARD_DUE_DATE_VALUE.* Allows a user to update hard due date values
 
 *UPDATE_HOLD.* Allows a user to edit another user's holds
 
