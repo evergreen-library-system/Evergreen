@@ -29,7 +29,7 @@
       (keyup.enter)="search()" [(ngModel)]="identValue" formControlName="bibIdentValue"
       class="form-control mx-2 w-auto" aria-describedby="bib-ident-status" />
 
-    <button class="btn btn-primary" [disabled]="searchInProgress" (click)="search()">
+    <button class="btn btn-primary" [disabled]="searchInProgress" (click)="search()" type="submit">
       <span *ngIf="!searchInProgress" i18n>Search</span>
       <span *ngIf="searchInProgress" i18n>Searching...</span>
     </button>
