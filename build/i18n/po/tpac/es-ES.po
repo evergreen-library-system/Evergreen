@@ -7,15 +7,15 @@ msgid ""
 msgstr ""
 "Project-Id-Version: evergreen\n"
 "Report-Msgid-Bugs-To: FULL NAME <EMAIL@ADDRESS>\n"
-"POT-Creation-Date: 2025-03-25 15:47+0000\n"
+"POT-Creation-Date: 2025-04-15 00:28+0000\n"
 "PO-Revision-Date: 2024-10-03 18:50+0000\n"
 "Last-Translator: Gina Monti <Unknown>\n"
 "Language-Team: Spanish <es@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2025-03-26 07:46+0000\n"
-"X-Generator: Launchpad (build d61bb8eb9830eb975fb0e8573deec46f2e0bb15b)\n"
+"X-Launchpad-Export-Date: 2025-04-15 06:34+0000\n"
+"X-Generator: Launchpad (build e76edd883483c71c468bb038e98836435de44530)\n"
 
 #: ../../Open-ILS/src/templates/opac/register.tt2:66
 msgid ""
@@ -140,7 +140,7 @@ msgstr ""
 #. (attrs.copy_counts.$depth.available, attrs.copy_counts.$depth.count, ou_name)
 #. (attrs.plib_copy_counts.$depth.available, attrs.plib_copy_counts.$depth.count, ou_name)
 #. (ou_avail, ou_count, ou_name)
-#: ../../Open-ILS/src/templates/opac/parts/record/copy_counts.tt2:29 ../../Open-ILS/src/templates/opac/parts/record/copy_counts.tt2:48 ../../Open-ILS/src/templates/opac/parts/result/copy_counts.tt2:21 ../../Open-ILS/src/templates/opac/parts/result/copy_counts.tt2:41
+#: ../../Open-ILS/src/templates/opac/parts/record/copy_counts.tt2:22 ../../Open-ILS/src/templates/opac/parts/record/copy_counts.tt2:41 ../../Open-ILS/src/templates/opac/parts/result/copy_counts.tt2:14 ../../Open-ILS/src/templates/opac/parts/result/copy_counts.tt2:34
 msgid "%1 of %quant(%2,copy,copies) available at %3."
 msgstr "%1 de %quant(%2,copia,copias) disponibles a %3."
 
@@ -189,11 +189,11 @@ msgstr ""
 msgid "(Example: %1)"
 msgstr "(Ejemplo: %1)"
 
-#: ../../Open-ILS/src/templates/opac/parts/record/copy_counts.tt2:54
+#: ../../Open-ILS/src/templates/opac/parts/record/copy_counts.tt2:47
 msgid "(Show preferred library)"
 msgstr "(Mostrar biblioteca preferida)"
 
-#: ../../Open-ILS/src/templates/opac/parts/record/copy_counts.tt2:34
+#: ../../Open-ILS/src/templates/opac/parts/record/copy_counts.tt2:27
 msgid "(Show)"
 msgstr "Mostrar"
 
@@ -770,7 +770,7 @@ msgstr "Premios, Revistas y Libros Sugeridos"
 msgid "Back"
 msgstr "Atras"
 
-#: ../../Open-ILS/src/templates/opac/myopac/main_pay.tt2:62
+#: ../../Open-ILS/src/templates/opac/myopac/main_pay.tt2:58
 msgid "Back to Account Summary"
 msgstr "Volver al Resumen de la Cuenta"
 
@@ -2076,7 +2076,7 @@ msgid "Entity and Attribute Information Note: "
 msgstr "Entidad y la información de atributos "
 
 #. ((ctx.printable_receipt.textcode ? ctx.printable_receipt.textcode _ ' / ' _ ctx.printable_receipt.desc : 0) || ctx.printable_receipt.error_output.data || l("No receipt data returned from server"))
-#: ../../Open-ILS/src/templates/opac/myopac/main_pay.tt2:53
+#: ../../Open-ILS/src/templates/opac/myopac/main_pay.tt2:49
 msgid "Error creating receipt: %1"
 msgstr "Ocurrió un error al crear el recibo: %1"
 
@@ -3385,7 +3385,7 @@ msgstr "Ningún articulo fue seleccionado"
 msgid "No messages found."
 msgstr "No hay mensajes encontrados."
 
-#: ../../Open-ILS/src/templates/opac/myopac/main_pay.tt2:53 ../../Open-ILS/src/templates/opac/myopac/receipt_print.tt2:14
+#: ../../Open-ILS/src/templates/opac/myopac/main_pay.tt2:49 ../../Open-ILS/src/templates/opac/myopac/receipt_print.tt2:14
 msgid "No receipt data returned from server"
 msgstr "No hay datos de recibos devueltos desde el servidor"
 
@@ -4956,7 +4956,7 @@ msgstr ""
 "Mostrar todos los resultados , no sólo las que corresponden a este término"
 
 #. (ou_name)
-#: ../../Open-ILS/src/templates/opac/parts/record/copy_counts.tt2:33 ../../Open-ILS/src/templates/opac/parts/record/copy_counts.tt2:53
+#: ../../Open-ILS/src/templates/opac/parts/record/copy_counts.tt2:26 ../../Open-ILS/src/templates/opac/parts/record/copy_counts.tt2:46
 msgid "Show copies at %1"
 msgstr "Mostrar copias en %1"
 
