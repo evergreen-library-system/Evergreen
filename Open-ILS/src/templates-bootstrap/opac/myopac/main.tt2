@@ -21,7 +21,7 @@
                         </span>
                     </div>
                     <div class="col-12" style="padding-bottom:20px;padding-top:20px;">
-                        [% PROCESS "opac/parts/erenew.tt2"; %]
+                        [% INCLUDE "opac/parts/erenew.tt2"; %]
                     </div>
                     <div class="col-12">
                      <a href="[% mkurl(ctx.opac_root _ '/myopac/circs') %]"

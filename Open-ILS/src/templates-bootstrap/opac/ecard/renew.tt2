@@ -24,7 +24,7 @@
 </p>
 </noscript>
 [% ELSE %]
-<h2 styl="color:red;">[% l("You must be logged in to use this feature.") %]</h2>
+<h2 style="color:red;">[% l("You must be logged in to use this feature.") %]</h2>
 [% END %]
 [% ELSE %]
 <p>

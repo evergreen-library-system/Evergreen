@@ -378,14 +378,14 @@ sub load_ecard_submit {
         "ECARD: update_type = $update_type");
 
     #If this is a renewal, double-check that they are eligible to renew
-    #my $cache = OpenSRF::Utils::Cache->new('global');
-    #if ($update_type eq 'renew') {
-    #    if ($cache->get_cache("account_renew_ok") && $cache->get_cache("account_renew_ok") eq 'true') {
-    #    } else {
-    #        $logger->error("ERENEW - User not in correct status to renew account");
-    #        return $self->compile_response;
-    #    }
-    #}
+    my $cache = OpenSRF::Utils::Cache->new('global');
+    if ($update_type eq 'renew') {
+        if ($ctx->{ecard}->{renew_enabled} && $cache->get_cache("account_renew_ok") && $cache->get_cache("account_renew_ok") eq 'true') {
+        } else {
+            $logger->error("ERENEW - User not in correct status to renew account");
+            return $self->compile_response;
+        }
+    }
 
     $self->log_params;
 

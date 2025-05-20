@@ -3866,11 +3866,12 @@ sub check_account_exp {
     # TODO: This needs to be refactored so that the messages can be
     # translated, and the HTML needs to go in a template not hardcoded
     # in strings handed out by Perl.
+    my $expire_date = DateTime::Format::ISO8601->parse_datetime(clean_ISO8601($ctx->{user}->expire_date));
     if ($ctx->{hastemprenew} eq 1) { #user already has active temp renewal
         $ctx->{account_renew_message} = '<div style="border:2px solid green;padding:5px;">Your account
         could only be temporarily renewed because your address changed. Please visit your
         library with proof of identity and curreent address to complete your account renewal.</div>';
-    } elsif (DateTime->today->add(days=>$renewal_offer_window) lt $ctx->{user}->expire_date) {
+    } elsif (DateTime->today->add(days=>$erenewal_offer_window) < $expire_date) {
         #expiration date is too far in future - don't show message
         $ctx->{account_renew_message} = '';
     } elsif ($ctx->{hasproblem} eq 1 or $ctx->{eligible_permgroup} eq 0) { #see other problems above
