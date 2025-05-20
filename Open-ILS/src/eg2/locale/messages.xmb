@@ -1719,6 +1719,7 @@ Delete Provider</msg>
   <msg id="1380688330048661041"><source>src/app/staff/admin/workstation/workstations/workstations.component.html:84,87</source> Use Now </msg>
   <msg id="8279112284155000833"><source>src/app/staff/admin/workstation/workstations/workstations.component.html:88,91</source> Mark As Default </msg>
   <msg id="3354652787858636348"><source>src/app/staff/admin/workstation/workstations/workstations.component.html:93,96</source> Remove </msg>
+  <msg id="5959131859017841195"><source>src/app/staff/admin/workstation/workstations/workstations.component.html:103</source>Launch Self-Check</msg>
   <msg id="1272605907958035192"><source>src/app/staff/booking/cancel-reservation-dialog.component.ts:12</source>Confirm Cancelation</msg>
   <msg id="5318380763021940082"><source>src/app/staff/booking/cancel-reservation-dialog.component.ts:16,20</source> Are you sure you want to cancel <ph name="ICU"/>? </msg>
   <msg id="6392678350521948481"><source>src/app/staff/booking/cancel-reservation-dialog.component.ts:18</source>{VAR_PLURAL, plural, =1 {this reservation} other {these <ph name="INTERPOLATION"/> reservations}}</msg>
@@ -1863,10 +1864,12 @@ Delete Provider</msg>
   <msg id="6452845999276583763"><source>src/app/staff/cat/authority/merge-dialog.component.html:34</source>Merge Records</msg>
   <msg id="1331280243980641989"><source>src/app/staff/cat/bib-by-ident.component.html:1</source>Search by Record ID</msg>
   <msg id="3500234523705536586"><source>src/app/staff/cat/bib-by-ident.component.html:6</source>Search by Record TCN</msg>
-  <msg id="1850989483542863190"><source>src/app/staff/cat/bib-by-ident.component.html:15</source>Record ID:</msg>
-  <msg id="5458877376721064142"><source>src/app/staff/cat/bib-by-ident.component.html:16</source>Record TCN:</msg>
-  <msg id="2551441955574056386"><source>src/app/staff/cat/bib-by-ident.component.html:28,31</source> Record not found: <ph name="INTERPOLATION"/> </msg>
-  <msg id="3440078217943098024"><source>src/app/staff/cat/bib-by-ident.component.html:31,34</source> More than one Bib Record found with TCN: <ph name="INTERPOLATION"/> </msg>
+  <msg id="1074038423230804155"><source>src/app/staff/cat/bib-by-ident.component.html:24</source>ID:</msg>
+  <msg id="827908232148558337"><source>src/app/staff/cat/bib-by-ident.component.html:25</source>TCN:</msg>
+  <msg id="8162787379579842000"><source>src/app/staff/cat/bib-by-ident.component.html:33</source>Searching...</msg>
+  <msg id="8684646320844580912"><source>src/app/staff/cat/bib-by-ident.component.html:44,47</source> Record not found: <ph name="INTERPOLATION"/> </msg>
+  <msg id="7333108368858028030"><source>src/app/staff/cat/bib-by-ident.component.html:47,50</source> More than one Bib Record found with TCN: <ph name="INTERPOLATION"/> </msg>
+  <msg id="1720909217045418517"><source>src/app/staff/cat/bib-by-ident.component.html:50,53</source> The server encountered an error. Please try a different search. </msg>
   <msg id="4345580939645597591"><source>src/app/staff/cat/item/missing-pieces.component.html:0</source>Mark Item Missing Pieces</msg>
   <msg id="2224609992551286941"><source>src/app/staff/cat/item/missing-pieces.component.html:20</source>Title: </msg>
   <msg id="9204999595398374370"><source>src/app/staff/cat/item/missing-pieces.component.html:24</source>Author: </msg>
@@ -3549,7 +3552,6 @@ Delete Provider</msg>
   <msg id="4025342692805696273"><source>src/app/staff/share/bib-summary/bib-summary.component.html:4</source>Record Summary</msg>
   <msg id="8279858216477066574"><source>src/app/staff/share/bib-summary/bib-summary.component.html:21</source>Show More</msg>
   <msg id="7224064517561854142"><source>src/app/staff/share/bib-summary/bib-summary.component.html:26</source>Show Less</msg>
-  <msg id="827908232148558337"><source>src/app/staff/share/bib-summary/bib-summary.component.html:59</source>TCN:</msg>
   <msg id="7702074589615088207"><source>src/app/staff/share/bib-summary/bib-summary.component.html:61</source>Created By:</msg>
   <msg id="1453493249242543082"><source>src/app/staff/share/bib-summary/bib-summary.component.html:73</source>Pubdate:</msg>
   <msg id="8754059927923500678"><source>src/app/staff/share/bib-summary/bib-summary.component.html:75</source>Database ID:</msg>
