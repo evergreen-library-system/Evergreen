@@ -8,14 +8,14 @@ msgstr ""
 "Project-Id-Version: evergreen\n"
 "Report-Msgid-Bugs-To: FULL NAME <EMAIL@ADDRESS>\n"
 "POT-Creation-Date: 2023-05-04 09:23-0400\n"
-"PO-Revision-Date: 2018-08-31 18:41+0000\n"
+"PO-Revision-Date: 2025-03-25 15:00+0000\n"
 "Last-Translator: Jennifer Pringle <Unknown>\n"
 "Language-Team: French <fr@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2023-05-05 04:48+0000\n"
-"X-Generator: Launchpad (build 90e2150bef31b411d7bae5c4032c7e320fcaaec8)\n"
+"X-Launchpad-Export-Date: 2025-03-26 08:43+0000\n"
+"X-Generator: Launchpad (build d61bb8eb9830eb975fb0e8573deec46f2e0bb15b)\n"
 
 #: selfcheck.js:TOTAL_ITEMS_SESSION
 msgid "Total items this session: ${0}."
@@ -234,18 +234,3 @@ msgstr ""
 "jour à partir d’un autre endroit. Veuillez actualiser l’interface ou vous "
 "déconnecter et vous connecter à nouveau pour obtenir les informations les "
 "plus récentes liées à votre compte."
-
-#~ msgid "Total fines on account: <b>$${0}</b>."
-#~ msgstr "Montant des amendes associées au compte :"
-
-#~ msgid "Total items on account:  <b>${0}</b>."
-#~ msgstr "Nombre de documents associés au compte : <b>${0}</b>."
-
-#~ msgid "You have <b>${0}</b> total holds."
-#~ msgstr "Vous avez un total de <b>${0}</b> réservés."
-
-#~ msgid "You have <b>${0}</b> item(s) ready for pickup."
-#~ msgstr "Vous avez <b>${0}</b> document(s) prêt(s) pour la collecte."
-
-#~ msgid "Total items this session: <b>${0}</b>."
-#~ msgstr "Nombre de documents enregistrés lors de la session : <b>${0}</b>."

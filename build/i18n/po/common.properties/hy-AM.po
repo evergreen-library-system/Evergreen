@@ -4,31 +4,15 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2018-08-15 11:29-0400\n"
-"PO-Revision-Date: 2017-07-20 12:48+0000\n"
+"PO-Revision-Date: 2025-03-25 15:00+0000\n"
 "Last-Translator: TZ <tigran@flib.sci.am>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2023-05-05 04:36+0000\n"
-"X-Generator: Launchpad (build 90e2150bef31b411d7bae5c4032c7e320fcaaec8)\n"
+"X-Launchpad-Export-Date: 2025-03-26 08:01+0000\n"
+"X-Generator: Launchpad (build d61bb8eb9830eb975fb0e8573deec46f2e0bb15b)\n"
 "X-Accelerator-Marker: &\n"
-
-#: staff.z39_50.search_class.item_type.all
-msgid "All Formats"
-msgstr "Բոլոր ձեւաչափերը"
-
-#: staff.z39_50.search_class.item_type.art
-msgid "Papers/Articles"
-msgstr "Թղթեր/Հոդվածներ"
-
-#: staff.z39_50.search_class.item_type.bks
-msgid "Books"
-msgstr "Գրքեր"
-
-#: staff.z39_50.search_class.item_type.com
-msgid "Computer files"
-msgstr "Համակարգչային նշոցներ"
 
 #: common.exception
 msgid ""
@@ -751,6 +735,22 @@ msgstr "ISSN"
 msgid "Item Type"
 msgstr "Նյութի տեսակ"
 
+#: staff.z39_50.search_class.item_type.all
+msgid "All Formats"
+msgstr "Բոլոր ձեւաչափերը"
+
+#: staff.z39_50.search_class.item_type.art
+msgid "Papers/Articles"
+msgstr "Թղթեր/Հոդվածներ"
+
+#: staff.z39_50.search_class.item_type.bks
+msgid "Books"
+msgstr "Գրքեր"
+
+#: staff.z39_50.search_class.item_type.com
+msgid "Computer files"
+msgstr "Համակարգչային նշոցներ"
+
 #: staff.z39_50.search_class.item_type.map
 msgid "Maps"
 msgstr "Քարտեզներ"
@@ -855,9 +855,3 @@ msgstr "Այսօրը արգելված է"
 #: tab.label.triggered_events_for_copy
 msgid "Triggered Events: %1$s"
 msgstr "Սկիզբ առնող գործողություններ: %1$s"
-
-#~ msgid "Prefix"
-#~ msgstr "Նախածանց"
-
-#~ msgid "Suffix"
-#~ msgstr "Վերջածանց"

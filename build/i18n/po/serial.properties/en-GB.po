@@ -8,14 +8,14 @@ msgstr ""
 "Project-Id-Version: evergreen\n"
 "Report-Msgid-Bugs-To: FULL NAME <EMAIL@ADDRESS>\n"
 "POT-Creation-Date: 2015-02-27 11:41-0400\n"
-"PO-Revision-Date: 2015-03-25 16:23+0000\n"
+"PO-Revision-Date: 2025-03-25 15:00+0000\n"
 "Last-Translator: Andi Chandler <Unknown>\n"
 "Language-Team: English (United Kingdom) <en_GB@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2023-05-05 04:47+0000\n"
-"X-Generator: Launchpad (build 90e2150bef31b411d7bae5c4032c7e320fcaaec8)\n"
+"X-Launchpad-Export-Date: 2025-03-26 08:44+0000\n"
+"X-Generator: Launchpad (build d61bb8eb9830eb975fb0e8573deec46f2e0bb15b)\n"
 
 #: staff.serial.editor_base.handle_update.error
 msgid "serial update error:"
@@ -715,14 +715,3 @@ msgstr "Subscription : # %1$s"
 #: serial.manage_subs.subscriptions
 msgid "Subscriptions"
 msgstr "Subscriptions"
-
-#~ msgid ""
-#~ "Override Delete Failure? Doing so will delete all attached items as well!"
-#~ msgstr ""
-#~ "Override Delete Failure? Doing so will delete all attached items as well!"
-
-#~ msgid "Successfully predicted %1$s issuance(s) for subscription # %2$s."
-#~ msgstr "Successfully predicted %1$s issuance(s) for subscription # %2$s."
-
-#~ msgid "Number of Predicted Items"
-#~ msgstr "Number of Predicted Items"
