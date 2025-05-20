@@ -136,7 +136,7 @@
 	<event code='1226' textcode='REFUND_EXCEEDS_DESK_PAYMENTS'>
 		<desc xml:lang="en-US">
 			This refund amount is not allowed because it exceeds
-			the total amount of desk payments for this transaction.
+			the total amount of refundable desk payments for this transaction.
 		</desc>
 	</event>
 

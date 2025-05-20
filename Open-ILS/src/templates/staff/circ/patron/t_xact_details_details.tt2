@@ -46,6 +46,7 @@
   <eg-grid-field path="payment_type"></eg-grid-field>
   <eg-grid-field path="xact"></eg-grid-field>
   <eg-grid-field path="voided"></eg-grid-field>
+  <eg-grid-field path="refundable"></eg-grid-field>
 
   <eg-grid-field path="accepting_usr.family_name" name="staff_name"
     label="[% l('Staff Last Name') %]" hidden required></eg-grid-field>

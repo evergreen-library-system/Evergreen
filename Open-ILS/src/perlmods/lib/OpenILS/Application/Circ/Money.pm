@@ -425,10 +425,10 @@ sub make_payments {
                 return OpenILS::Event->new('REFUND_EXCEEDS_BALANCE');
             }
 
-            # Otherwise, make sure the refund does not exceed desk payments
-            # This is also not allowed
+            # Otherwise, make sure the refund does not exceed
+            # REFUNDABLE desk payments. This is also not allowed.
             my $desk_total = 0;
-            my $desk_payments = $e->search_money_desk_payment({xact => $transid, voided => 'f'});
+            my $desk_payments = $e->search_money_desk_payment({xact => $transid, voided => 'f', refundable => 't'});
             $desk_total += $_->amount for @$desk_payments;
 
             if( (-$amount) > $desk_total ) {
@@ -671,9 +671,11 @@ sub retrieve_payments2 {
     my $pmnts = $e->search_money_payment({ xact => $transid });
     for( @$pmnts ) {
         my $type = $_->payment_type;
+        my $refundable = $_->refundable;
         my $meth = "retrieve_money_$type";
         my $p = $e->$meth($_->id) or return $e->event;
         $p->payment_type($type);
+        $p->refundable($refundable);
         $p->cash_drawer($e->retrieve_actor_workstation($p->cash_drawer))
             if $p->has_field('cash_drawer');
         push( @payments, $p );
@@ -1018,7 +1020,7 @@ sub _is_fully_adjusted {
     my ($billing) = @_;
 
     my $amount_adj = 0;
-    map { $amount_adj = $U->fpsum($amount_adj, $_->amount) } @{$billing->adjustments};
+    map { $amount_adj = $U->fpsum($amount_adj, $_->amount) } @{$billing->adjustments}; # XXX Looks like a bug, should be += instead of = ?
 
     return $billing->amount == $amount_adj;
 }
@@ -1405,13 +1407,17 @@ sub retrieve_statement {
         billing => 0,
         payment => 0,
         account_adjustment => 0,
-        void => 0
+        void => 0,
+        nonrefundable => 0
     );
     foreach my $line (@lines) {
         $totals{$line->{type}} += $line->{amount};
         if ($line->{type} eq 'billing') {
             $running_balance += $line->{amount};
         } else { # not a billing; balance goes down for everything else
+            if ($line->{type} eq 'payment') {
+                $totals{nonrefundable} += $_->amount for grep {!$U->is_true($_->refundable)} @{$line->{details}};
+            }
             $running_balance -= $line->{amount};
         }
         $line->{running_balance} = $running_balance;
@@ -1450,6 +1456,15 @@ sub retrieve_statement {
         $title = $xact->grocery->note;
     }
 
+    my $balance_due = $totals{billing} - ($totals{payment} + $totals{account_adjustment} + $totals{void});
+    if ($balance_due < 0) { # make sure we don't refund non-refundables
+        if ($balance_due + $totals{nonrefundable} < 0) {
+            $balance_due += $totals{nonrefundable};
+        } else {
+            $balance_due = 0;
+        }
+    }
+
     return {
         xact_id => $xact_id,
         xact => $xact,
@@ -1457,11 +1472,12 @@ sub retrieve_statement {
         title_id => $title_id,
         billing_location => $billing_location,
         summary => {
-            balance_due => $totals{billing} - ($totals{payment} + $totals{account_adjustment} + $totals{void}),
+            balance_due => $balance_due,
             billing_total => $totals{billing},
             credit_total => $totals{payment} + $totals{account_adjustment},
             payment_total => $totals{payment},
             account_adjustment_total => $totals{account_adjustment},
+            nonrefundable_total => $totals{nonrefundable},
             void_total => $totals{void}
         },
         lines => \@lines

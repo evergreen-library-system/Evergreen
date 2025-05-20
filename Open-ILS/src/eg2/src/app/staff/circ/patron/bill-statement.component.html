@@ -182,6 +182,10 @@
             <div class="col-lg-2 offset-lg-8" i18n>Total Payments</div>
             <div class="col-lg-2">{{statement.summary.payment_total | currency}}</div>
           </div>
+          <div class="row">
+            <div class="col-lg-2 offset-lg-8" i18n>Total Nonrefundable</div>
+            <div class="col-lg-2">{{statement.summary.nonrefundable_total | currency}}</div>
+          </div>
           <div class="row" *ngIf="statement.summary.account_adjustment_total > 0">
             <div class="col-lg-2 offset-lg-8" i18n>Total Adjustements</div>
             <div class="col-lg-2">{{statement.summary.account_adjustment_total | currency}}</div>

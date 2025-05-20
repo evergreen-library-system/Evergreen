@@ -3102,6 +3102,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 			<field name="xact" reporter:datatype="link" oils_obj:required="true"/>
 			<field name="payment_type" oils_persist:virtual="true" reporter:datatype="text"/>
 			<field name="payment" oils_persist:virtual="true" reporter:datatype="link"/>
+			<field reporter:label="Refundable?" name="refundable" oils_persist:virtual="true" reporter:datatype="bool"/>
 		</fields>
 		<links>
 			<link field="payment" reltype="might_have" key="id" map="" class="mp"/>
@@ -4684,6 +4685,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 			<field name="xact" reporter:datatype="link" oils_obj:required="true"/>
 			<field name="payment_type" oils_persist:virtual="true" reporter:datatype="text"/>
 			<field name="payment" oils_persist:virtual="true" reporter:datatype="link"/>
+			<field reporter:label="Refundable?" name="refundable" oils_persist:virtual="true" reporter:datatype="bool"/>
 		</fields>
 		<links>
 			<link field="payment" reltype="might_have" key="id" map="" class="mp"/>
@@ -4710,6 +4712,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 			<field name="xact" reporter:datatype="link" oils_obj:required="true"/>
 			<field name="payment_type" oils_persist:virtual="true" reporter:datatype="text"/>
 			<field name="payment" oils_persist:virtual="true" reporter:datatype="link"/>
+			<field reporter:label="Refundable?" name="refundable" oils_persist:virtual="true" reporter:datatype="bool"/>
 		</fields>
 		<links>
 			<link field="payment" reltype="might_have" key="id" map="" class="mp"/>
@@ -7657,6 +7660,7 @@ SELECT  usr,
 			<field reporter:label="Transaction" name="xact" reporter:datatype="link" oils_obj:required="true"/>
 			<field reporter:label="Payment Type" name="payment_type" oils_persist:virtual="true" reporter:datatype="text"/>
 			<field reporter:label="Payment link" name="payment" oils_persist:virtual="true" reporter:datatype="link"/>
+			<field reporter:label="Refundable?" name="refundable" oils_persist:virtual="true" reporter:datatype="bool"/>
 		</fields>
 		<links>
 			<link field="payment" reltype="might_have" key="id" map="" class="mp"/>
@@ -8020,6 +8024,7 @@ SELECT  usr,
 			<field reporter:label="Transaction ID" name="xact" reporter:datatype="link" oils_obj:required="true"/>
 			<field reporter:label="Payment link" name="payment" oils_persist:virtual="true" reporter:datatype="link"/>
 			<field reporter:label="Payment Type" name="payment_type" oils_persist:virtual="true" reporter:datatype="text"/>
+			<field reporter:label="Refundable?" name="refundable" oils_persist:virtual="true" reporter:datatype="bool"/>
 		</fields>
 		<links>
 			<link field="payment" reltype="might_have" key="id" map="" class="mp"/>
@@ -8045,6 +8050,7 @@ SELECT  usr,
 			<field reporter:label="Transaction ID" name="xact" reporter:datatype="link" oils_obj:required="true"/>
 			<field reporter:label="Payment link" name="payment" oils_persist:virtual="true" reporter:datatype="link"/>
 			<field reporter:label="Payment Type" name="payment_type" oils_persist:virtual="true" reporter:datatype="text"/>
+			<field reporter:label="Refundable?" name="refundable" oils_persist:virtual="true" reporter:datatype="bool"/>
 		</fields>
 		<links>
 			<link field="payment" reltype="might_have" key="id" map="" class="mp"/>
@@ -8148,6 +8154,7 @@ SELECT  usr,
 			<field reporter:label="Transaction link" name="xact" reporter:datatype="link" oils_obj:required="true"/>
 			<field reporter:label="Payment link" name="payment" oils_persist:virtual="true" reporter:datatype="link"/>
 			<field reporter:label="Payment Type" name="payment_type" oils_persist:virtual="true" reporter:datatype="text"/>
+			<field reporter:label="Refundable?" name="refundable" oils_persist:virtual="true" reporter:datatype="bool"/>
 		</fields>
 		<links>
 			<link field="payment" reltype="might_have" key="id" map="" class="mp"/>
@@ -8175,6 +8182,7 @@ SELECT  usr,
 			<field reporter:label="Transaction link" name="xact" reporter:datatype="link" oils_obj:required="true"/>
 			<field reporter:label="Payment link" name="payment" oils_persist:virtual="true" reporter:datatype="link"/>
 			<field reporter:label="Payment Type" name="payment_type" oils_persist:virtual="true" reporter:datatype="text"/>
+			<field reporter:label="Refundable?" name="refundable" oils_persist:virtual="true" reporter:datatype="bool"/>
 		</fields>
 		<links>
 			<link field="payment" reltype="might_have" key="id" map="" class="mp"/>
@@ -8822,6 +8830,7 @@ SELECT  usr,
 			<field reporter:label="Payment Type" name="payment_type" reporter:datatype="text"/>
 			<field reporter:label="Billable Transaction" name="xact" reporter:datatype="link"/>
 			<field reporter:label="Voided?" name="voided" reporter:datatype="bool"/>
+			<field reporter:label="Refundable?" name="refundable" reporter:datatype="bool"/>
 			<field reporter:label="Cash Payment Detail" name="cash_payment" oils_persist:virtual="true" reporter:datatype="link"/>
 			<field reporter:label="Credit Card Payment Detail" name="credit_card_payment" oils_persist:virtual="true" reporter:datatype="link"/>
 			<field reporter:label="Credit Payment Detail" name="credit_payment" oils_persist:virtual="true" reporter:datatype="link"/>
@@ -8861,6 +8870,7 @@ SELECT  usr,
 			<field reporter:label="Payment Type" name="payment_type" reporter:datatype="text" oils_obj:required="true"/>
 			<field reporter:label="Transaction" name="xact" reporter:datatype="link" oils_obj:required="true"/>
 			<field reporter:label="Voided?" name="voided" reporter:datatype="bool" oils_obj:required="true"/>
+			<field reporter:label="Refundable?" name="refundable" reporter:datatype="bool"/>
 			<field reporter:label="Accepting User" name="accepting_usr" reporter:datatype="link"/>
 			<field reporter:label="Cash Drawer" name="cash_drawer" reporter:datatype="link"/>
 			<field name="billing" reporter:datatype="link"/>
@@ -8888,6 +8898,7 @@ SELECT  usr,
 			<field reporter:label="Payment Type" name="payment_type" reporter:datatype="text"/>
 			<field reporter:label="Billable Transaction" name="xact" reporter:datatype="link"/>
 			<field reporter:label="Voided?" name="voided" reporter:datatype="bool"/>
+			<field reporter:label="Refundable?" name="refundable" reporter:datatype="bool"/>
 			<field reporter:label="Accepting User" name="accepting_usr" reporter:datatype="link"/>
 			<field reporter:label="Cash Drawer" name="cash_drawer" reporter:datatype="link"/>
 			<field name="billing" reporter:datatype="link"/>
@@ -8910,6 +8921,7 @@ SELECT  usr,
 			<field reporter:label="Billable Transaction" name="xact" reporter:datatype="link"/>
 			<field reporter:label="Accepting User" name="accepting_usr" reporter:datatype="link"/>
 			<field reporter:label="Voided?" name="voided" reporter:datatype="bool"/>
+			<field reporter:label="Refundable?" name="refundable" reporter:datatype="bool"/>
 			<field reporter:label="Cash Payment Detail" name="cash_payment" oils_persist:virtual="true" reporter:datatype="link"/>
 			<field reporter:label="Credit Card Payment Detail" name="credit_card_payment" oils_persist:virtual="true" reporter:datatype="link"/>
 			<field reporter:label="Credit Payment Detail" name="credit_payment" oils_persist:virtual="true" reporter:datatype="link"/>
@@ -8950,6 +8962,7 @@ SELECT  usr,
 			<field reporter:label="Payment Type" name="payment_type" reporter:datatype="text"/>
 			<field reporter:label="Billable Transaction" name="xact" reporter:datatype="link"/>
 			<field reporter:label="Voided?" name="voided" reporter:datatype="bool"/>
+			<field reporter:label="Refundable?" name="refundable" reporter:datatype="bool"/>
 			<field reporter:label="Work Payment Detail" name="work_payment" oils_persist:virtual="true" reporter:datatype="link"/>
 			<field reporter:label="Forgive Payment Detail" name="forgive_payment" oils_persist:virtual="true" reporter:datatype="link"/>
 			<field reporter:label="Goods Payment Detail" name="goods_payment" oils_persist:virtual="true" reporter:datatype="link"/>
@@ -8976,6 +8989,7 @@ SELECT  usr,
 			<field reporter:label="Accepting User" name="accepting_usr" reporter:datatype="link"/>
 			<field reporter:label="Cash Drawer" name="cash_drawer" reporter:datatype="link"/>
 			<field reporter:label="Voided?" name="voided" reporter:datatype="bool"/>
+			<field reporter:label="Refundable?" name="refundable" reporter:datatype="bool"/>
 			<field reporter:label="Cash Payment" name="cash_payment" oils_persist:virtual="true" reporter:datatype="link"/>
 			<field reporter:label="Credit Card Payment" name="credit_card_payment" oils_persist:virtual="true" reporter:datatype="link"/>
 			<field reporter:label="Check Payment" name="check_payment" oils_persist:virtual="true" reporter:datatype="link"/>

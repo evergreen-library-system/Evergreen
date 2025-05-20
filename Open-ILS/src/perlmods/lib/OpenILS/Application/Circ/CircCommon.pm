@@ -727,7 +727,7 @@ sub generate_fines {
 }
 
 # -----------------------------------------------------------------
-# Given an editor and a xact, return a reference to an array of
+# Given an editor and a xact (or id), return a reference to an array of
 # hashrefs that map billing objects to payment objects.  Returns undef
 # if no bills are found for the given transaction.
 #
@@ -747,6 +747,10 @@ sub generate_fines {
 # adjustments => an arrayref of account adjustments that apply directly
 #                to the bill
 # payments => an arrayref of payment objects applied to the bill
+# refundable_payments => an arrayref of payment objects applied to the
+#                        bill that can be refunded
+# non_refundable_payments => an arrayref of payment objects applied to
+#                            the bill that CANNOT be refunded
 # bill_amount => original amount from the billing object
 # adjustment_amount => total of the account adjustments that apply
 #                      directly to the bill
@@ -765,6 +769,7 @@ sub generate_fines {
 # -----------------------------------------------------------------
 sub bill_payment_map_for_xact {
     my ($class, $e, $xact) = @_;
+    $xact = $xact->id if ref($xact);
 
     # Check for CStoreEditor and make a new one if we have to. This
     # allows one-off calls to this subroutine to pass undef as the
@@ -773,7 +778,7 @@ sub bill_payment_map_for_xact {
 
     # find all bills in order
     my $bill_search = [
-        { xact => $xact->id(), voided => 'f' },
+        { xact => $xact, voided => 'f' },
         { order_by => { mb => { billing_ts => { direction => 'asc' } } } },
     ];
 
@@ -809,7 +814,7 @@ sub bill_payment_map_for_xact {
     # so that we don't have to retrieve them later.
     my $payments = $e->search_money_payment(
         [
-            { xact => $xact->id, voided=>'f' },
+            { xact => $xact, voided=>'f' },
             {
                 order_by => { mp => { payment_ts => { direction => 'asc' } } },
                 flesh => 1,
@@ -910,6 +915,9 @@ sub bill_payment_map_for_xact {
                 }
             }
         }
+
+        $entry->{refundable_payments} = [ grep {$U->is_true($_->refundable)} @{$entry->{payments}} ];
+        $entry->{non_refundable_payments} = [ grep {!$U->is_true($_->refundable)} @{$entry->{payments}} ];
     }
 
     return \@entries;
@@ -1096,7 +1104,9 @@ sub _has_refundable_payments {
     my $last_payment = $e->search_money_payment(
         {
             xact => $xactid,
-            payment_type => {"!=" => 'account_adjustment'}
+            refundable => 't',
+            # NOTE: now handled via refundable global flag
+            # payment_type => {"!=" => 'account_adjustment'}
         },{
             limit => 1,
             order_by => { mp => "payment_ts DESC" }

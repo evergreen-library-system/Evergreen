@@ -19,6 +19,7 @@
     <eg-grid-field path="xact.summary.last_billing_type" label="[% l('Last Billing Type') %]"></eg-grid-field>
 
     <eg-grid-field path="payment_type" label="Payment Type"></eg-grid-field>
+    <eg-grid-field path="refundable" label="[% l('Refundable?') %]"></eg-grid-field>
     <eg-grid-field label="[% l('Title') %]" name="title" 
       path="xact.circulation.target_copy.call_number.record.simple_record.title">
       <a href="/eg2/staff/catalog/record/{{item.record_id}}">{{item.title}}</a>

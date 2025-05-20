@@ -45,6 +45,12 @@
                       -{{statement_data.summary.payment_total || 0 | currency}}
                     </div>
                 </div>
+                <div class="row">
+                    <div class="col-md-6 strong-text">[% l('Total Nonrefundable') %]</div>
+                    <div class="col-md-6 text-right" style="color:red">
+                      {{statement_data.summary.nonrefundable_total || 0 | currency}}
+                    </div>
+                </div>
                 <div ng-if="statement_data.summary.account_adjustment_total > 0" class="row">
                     <div class="col-md-6 strong-text">[% l('Total Adjustments') %]</div>
                     <div class="col-md-6 text-right" style="color:red">

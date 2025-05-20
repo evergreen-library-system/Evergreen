@@ -12681,6 +12681,36 @@ INSERT INTO acq.cancel_reason (org_unit, keep_debits, id, label, description) VA
 (1, 'f',( 85+1200), oils_i18n_gettext(1285, 'Canceled: By Vendor', 'acqcr', 'label'),
     oils_i18n_gettext(1285, 'Line item canceled by vendor', 'acqcr', 'description'));
 
+INSERT INTO config.global_flag (name, label, enabled) VALUES
+( 'money.account_adjustment.is_refundable',
+  oils_i18n_gettext( 'money.account_adjustment.is_refundable', 'Money: Enable to allow account adjustments to be refundable to patrons', 'cgf', 'label'),
+  FALSE ),
+( 'money.forgive_payment.is_refundable',
+  oils_i18n_gettext( 'money.forgive_payment.is_refundable', 'Money: Enable to allow forgive payments to be refundable to patrons', 'cgf', 'label'),
+  FALSE ),
+( 'money.work_payment.is_refundable',
+  oils_i18n_gettext( 'money.work_payment.is_refundable', 'Money: Enable to allow work payments to be refundable to patrons', 'cgf', 'label'),
+  FALSE ),
+( 'money.credit_payment.is_refundable',
+  oils_i18n_gettext( 'money.credit_payment.is_refundable', 'Money: Enable to allow credit payments to be refundable to patrons', 'cgf', 'label'),
+  FALSE ),
+( 'money.goods_payment.is_refundable',
+  oils_i18n_gettext( 'money.goods_payment.is_refundable', 'Money: Enable to allow goods payments to be refundable to patrons', 'cgf', 'label'),
+  FALSE ),
+( 'money.credit_card_payment.is_refundable',
+  oils_i18n_gettext( 'money.credit_card_payment.is_refundable', 'Money: Enable to allow credit card payments to be refundable to patrons', 'cgf', 'label'),
+  TRUE ),
+( 'money.cash_payment.is_refundable',
+  oils_i18n_gettext( 'money.cash_payment.is_refundable', 'Money: Enable to allow cash payments to be refundable to patrons', 'cgf', 'label'),
+  TRUE ),
+( 'money.check_payment.is_refundable',
+  oils_i18n_gettext( 'money.check_payment.is_refundable', 'Money: Enable to allow check payments to be refundable to patrons', 'cgf', 'label'),
+  TRUE ),
+( 'money.debit_card_payment.is_refundable',
+  oils_i18n_gettext( 'money.debit_card_payment.is_refundable', 'Money: Enable to allow debit card payments to be refundable to patrons', 'cgf', 'label'),
+  TRUE )
+;
+
 INSERT INTO config.global_flag (name, label, enabled)
     VALUES (
         'circ.holds.usr_not_requestor',

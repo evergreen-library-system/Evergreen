@@ -89,9 +89,10 @@ CREATE INDEX m_p_xact_idx ON money.payment (xact);
 CREATE INDEX m_p_time_idx ON money.payment (payment_ts);
 
 CREATE OR REPLACE VIEW money.payment_view AS
-	SELECT	p.*,c.relname AS payment_type
+	SELECT	p.*,c.relname AS payment_type,COALESCE(f.enabled, TRUE) AS refundable
 	  FROM	money.payment p
-	  	JOIN pg_class c ON (p.tableoid = c.oid);
+	  	JOIN pg_class c ON (p.tableoid = c.oid)
+        LEFT JOIN config.global_flag f ON ( f.name = p.tableoid::regclass||'.is_refundable');
 
 CREATE OR REPLACE RULE money_payment_view_update AS ON UPDATE TO money.payment_view DO INSTEAD 
     UPDATE money.payment SET xact = NEW.xact, payment_ts = NEW.payment_ts, voided = NEW.voided, amount = NEW.amount, note = NEW.note WHERE id = NEW.id;
@@ -410,10 +411,33 @@ CREATE TRIGGER mat_summary_add_tgr AFTER INSERT ON money.billing FOR EACH ROW EX
 CREATE TRIGGER mat_summary_upd_tgr AFTER UPDATE ON money.billing FOR EACH ROW EXECUTE PROCEDURE money.materialized_summary_billing_update ();
 CREATE TRIGGER mat_summary_del_tgr BEFORE DELETE ON money.billing FOR EACH ROW EXECUTE PROCEDURE money.materialized_summary_billing_del ();
 
+CREATE OR REPLACE FUNCTION money.mbts_refundable_balance_check () RETURNS TRIGGER AS $$
+BEGIN
+    -- Check if the raw xact balance has gone negative (balance_owed may be adjusted by this very trigger!)
+    IF NEW.total_owed - NEW.total_paid < 0.0 THEN
+
+        -- If negative (a refund), we increase it by the non-refundable payment total, but only up to 0.0
+        SELECT  LEAST(
+                    COALESCE(SUM(amount),0.0) -- non-refundable payment total
+                      + (NEW.total_owed - NEW.total_paid), -- raw balance
+                    0.0
+                ) INTO NEW.balance_owed -- update the NEW record
+          FROM  money.payment_view
+          WHERE NOT refundable
+                AND xact = NEW.id
+                AND NOT voided;
+    END IF;
+
+    RETURN NEW;
+END;
+$$ LANGUAGE PLPGSQL;
+
+CREATE TRIGGER mat_summary_refund_balance_check_tgr BEFORE UPDATE ON money.materialized_billable_xact_summary FOR EACH ROW EXECUTE PROCEDURE money.mbts_refundable_balance_check ();
 
 /* BEFORE or AFTER trigger */
 CREATE OR REPLACE FUNCTION money.materialized_summary_payment_add () RETURNS TRIGGER AS $$
 BEGIN
+
 	IF NOT NEW.voided THEN
 		UPDATE	money.materialized_billable_xact_summary
 		  SET	total_paid = COALESCE(total_paid, 0.0::numeric) + NEW.amount,
@@ -613,14 +637,16 @@ CREATE TRIGGER mat_summary_del_tgr BEFORE DELETE ON money.bnm_desk_payment FOR E
 
 
 CREATE OR REPLACE VIEW money.desk_payment_view AS
-	SELECT	p.*,c.relname AS payment_type
+	SELECT	p.*,c.relname AS payment_type,COALESCE(f.enabled, TRUE) AS refundable
 	  FROM	money.bnm_desk_payment p
-	  	JOIN pg_class c ON (p.tableoid = c.oid);
+	  	JOIN pg_class c ON (p.tableoid = c.oid)
+        LEFT JOIN config.global_flag f ON ( f.name = p.tableoid::regclass||'.is_refundable');
 
 CREATE OR REPLACE VIEW money.bnm_payment_view AS
-	SELECT	p.*,c.relname AS payment_type
+	SELECT	p.*,c.relname AS payment_type,COALESCE(f.enabled, TRUE) AS refundable
 	  FROM	money.bnm_payment p
-	  	JOIN pg_class c ON (p.tableoid = c.oid);
+	  	JOIN pg_class c ON (p.tableoid = c.oid)
+        LEFT JOIN config.global_flag f ON ( f.name = p.tableoid::regclass||'.is_refundable');
 
 CREATE TABLE money.cash_payment () INHERITS (money.bnm_desk_payment);
 ALTER TABLE money.cash_payment ADD PRIMARY KEY (id);
@@ -682,9 +708,10 @@ CREATE TRIGGER mat_summary_del_tgr BEFORE DELETE ON money.debit_card_payment FOR
 
 
 CREATE OR REPLACE VIEW money.non_drawer_payment_view AS
-	SELECT	p.*, c.relname AS payment_type
+	SELECT	p.*, c.relname AS payment_type, COALESCE(f.enabled, TRUE) AS refundable
 	  FROM	money.bnm_payment p         
 			JOIN pg_class c ON p.tableoid = c.oid
+            LEFT JOIN config.global_flag f ON ( f.name = p.tableoid::regclass||'.is_refundable')
 	  WHERE	c.relname NOT IN ('cash_payment','check_payment','credit_card_payment','debit_card_payment');
 
 CREATE OR REPLACE VIEW money.cashdrawer_payment_view AS
@@ -694,7 +721,8 @@ CREATE OR REPLACE VIEW money.cashdrawer_payment_view AS
 		p.payment_ts AS payment_ts,
 		p.amount AS amount,
 		p.voided AS voided,
-		p.note AS note
+		p.note AS note,
+        t.refundable AS refundable
 	  FROM	actor.org_unit ou
 		JOIN actor.workstation ws ON (ou.id = ws.owning_lib)
 		LEFT JOIN money.bnm_desk_payment p ON (ws.id = p.cash_drawer)
@@ -715,6 +743,7 @@ CREATE OR REPLACE VIEW money.payment_view_for_aging AS
 CREATE TABLE money.aged_payment (LIKE money.payment INCLUDING INDEXES);
 ALTER TABLE money.aged_payment 
     ADD COLUMN payment_type TEXT NOT NULL,
+    ADD COLUMN refundable BOOL NOT NULL,
     ADD COLUMN accepting_usr INTEGER,
     ADD COLUMN cash_drawer INTEGER,
     ADD COLUMN billing BIGINT;
