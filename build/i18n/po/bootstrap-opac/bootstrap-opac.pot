@@ -86,10 +86,10 @@ msgstr ""
 msgid "%1 "
 msgstr ""
 
+#. (title, hold.hold.part.label)
 #. (copy.label, copy_org.name)
 #. (title, part.label)
 #. (lang.label, lang.source_bibs.size)
-#. (title, hold.hold.part.label)
 #: ../../Open-ILS/src/templates-bootstrap/opac/myopac/holds.tt2:171 ../../Open-ILS/src/templates-bootstrap/opac/myopac/holds/edit.tt2:27 ../../Open-ILS/src/templates-bootstrap/opac/myopac/lists.tt2:359 ../../Open-ILS/src/templates-bootstrap/opac/parts/anon_list.tt2:83 ../../Open-ILS/src/templates-bootstrap/opac/parts/place_hold_result.tt2:56 ../../Open-ILS/src/templates-bootstrap/opac/parts/record/summary.tt2:316
 msgid "%1 (%2)"
 msgstr ""
@@ -120,9 +120,9 @@ msgstr ""
 msgid "%1 mi"
 msgstr ""
 
-#. (attrs.copy_counts.$depth.available, attrs.copy_counts.$depth.count, ou_name)
-#. (attrs.plib_copy_counts.$depth.available, attrs.plib_copy_counts.$depth.count, ou_name)
 #. (ou_avail, ou_count, ou_name)
+#. (attrs.plib_copy_counts.$depth.available, attrs.plib_copy_counts.$depth.count, ou_name)
+#. (attrs.copy_counts.$depth.available, attrs.copy_counts.$depth.count, ou_name)
 #: ../../Open-ILS/src/templates-bootstrap/opac/parts/record/copy_counts.tt2:30 ../../Open-ILS/src/templates-bootstrap/opac/parts/record/copy_counts.tt2:49 ../../Open-ILS/src/templates-bootstrap/opac/parts/result/copy_counts.tt2:21 ../../Open-ILS/src/templates-bootstrap/opac/parts/result/copy_counts.tt2:41
 msgid "%1 of %quant(%2,copy,copies) available at %3."
 msgstr ""
@@ -355,7 +355,7 @@ msgstr ""
 msgid "A suspended hold will retain its place in the queue, but will not be fulfilled until it has been activated."
 msgstr ""
 
-#: ../../Open-ILS/src/templates-bootstrap/opac/parts/advanced/search.tt2:118
+#: ../../Open-ILS/src/templates-bootstrap/opac/parts/advanced/search.tt2:120
 msgid "AND"
 msgstr ""
 
@@ -458,11 +458,7 @@ msgstr ""
 msgid "Add Basket to Saved List"
 msgstr ""
 
-#: ../../Open-ILS/src/templates-bootstrap/opac/course_search.tt2:54
-msgid "Add Search Row"
-msgstr ""
-
-#: ../../Open-ILS/src/templates-bootstrap/opac/parts/advanced/expert.tt2:39 ../../Open-ILS/src/templates-bootstrap/opac/parts/advanced/search.tt2:19
+#: ../../Open-ILS/src/templates-bootstrap/opac/course_search.tt2:54 ../../Open-ILS/src/templates-bootstrap/opac/parts/advanced/expert.tt2:39 ../../Open-ILS/src/templates-bootstrap/opac/parts/advanced/search.tt2:19
 msgid "Add Search Terms"
 msgstr ""
 
@@ -542,7 +538,7 @@ msgstr ""
 msgid "Affected Holds"
 msgstr ""
 
-#: ../../Open-ILS/src/templates-bootstrap/opac/parts/advanced/search.tt2:103
+#: ../../Open-ILS/src/templates-bootstrap/opac/parts/advanced/search.tt2:105
 msgid "After"
 msgstr ""
 
@@ -615,7 +611,7 @@ msgstr ""
 msgid "Announcer"
 msgstr ""
 
-#: ../../Open-ILS/src/templates-bootstrap/opac/parts/advanced/search.tt2:167
+#: ../../Open-ILS/src/templates-bootstrap/opac/parts/advanced/search.tt2:169
 msgid "Any items"
 msgstr ""
 
@@ -863,7 +859,7 @@ msgstr ""
 msgid "Basket is empty"
 msgstr ""
 
-#: ../../Open-ILS/src/templates-bootstrap/opac/parts/advanced/search.tt2:103
+#: ../../Open-ILS/src/templates-bootstrap/opac/parts/advanced/search.tt2:105
 msgid "Before"
 msgstr ""
 
@@ -872,7 +868,7 @@ msgstr ""
 msgid "Before %1"
 msgstr ""
 
-#: ../../Open-ILS/src/templates-bootstrap/opac/parts/advanced/search.tt2:103
+#: ../../Open-ILS/src/templates-bootstrap/opac/parts/advanced/search.tt2:105
 msgid "Between"
 msgstr ""
 
@@ -942,7 +938,7 @@ msgstr ""
 msgid "Book artist"
 msgstr ""
 
-#: ../../Open-ILS/src/templates-bootstrap/opac/parts/misc_util.tt2:872
+#: ../../Open-ILS/src/templates-bootstrap/opac/parts/misc_util.tt2:884
 msgid "Book cover"
 msgstr ""
 
@@ -1237,7 +1233,7 @@ msgstr ""
 msgid "Clear Basket"
 msgstr ""
 
-#: ../../Open-ILS/src/templates-bootstrap/opac/course_search.tt2:76 ../../Open-ILS/src/templates-bootstrap/opac/parts/advanced/search.tt2:183
+#: ../../Open-ILS/src/templates-bootstrap/opac/course_search.tt2:80 ../../Open-ILS/src/templates-bootstrap/opac/parts/advanced/search.tt2:192 ../../Open-ILS/src/templates-bootstrap/opac/parts/advanced/search.tt2:47
 msgid "Clear Form"
 msgstr ""
 
@@ -1507,7 +1503,7 @@ msgstr ""
 msgid "Course Search"
 msgstr ""
 
-#: ../../Open-ILS/src/templates-bootstrap/opac/parts/advanced/search.tt2:165
+#: ../../Open-ILS/src/templates-bootstrap/opac/parts/advanced/search.tt2:167
 msgid "Course reserve materials"
 msgstr ""
 
@@ -1635,11 +1631,11 @@ msgstr ""
 msgid "Date of Birth"
 msgstr ""
 
-#: ../../Open-ILS/src/templates-bootstrap/opac/parts/advanced/search.tt2:101
+#: ../../Open-ILS/src/templates-bootstrap/opac/parts/advanced/search.tt2:103
 msgid "Date operator"
 msgstr ""
 
-#: ../../Open-ILS/src/templates-bootstrap/opac/parts/advanced/search.tt2:122
+#: ../../Open-ILS/src/templates-bootstrap/opac/parts/advanced/search.tt2:124
 msgid "Date range end"
 msgstr ""
 
@@ -2023,7 +2019,7 @@ msgstr ""
 msgid "Enacting jurisdiction"
 msgstr ""
 
-#: ../../Open-ILS/src/templates-bootstrap/opac/parts/advanced/search.tt2:123
+#: ../../Open-ILS/src/templates-bootstrap/opac/parts/advanced/search.tt2:125
 msgid "End"
 msgstr ""
 
@@ -2131,7 +2127,7 @@ msgstr ""
 msgid "Excerpt"
 msgstr ""
 
-#: ../../Open-ILS/src/templates-bootstrap/opac/parts/advanced/search.tt2:140 ../../Open-ILS/src/templates-bootstrap/opac/results.tt2:149
+#: ../../Open-ILS/src/templates-bootstrap/opac/parts/advanced/search.tt2:142 ../../Open-ILS/src/templates-bootstrap/opac/results.tt2:149
 msgid "Exclude Electronic Resources"
 msgstr ""
 
@@ -2372,7 +2368,7 @@ msgstr ""
 msgid "Group By Formats and Editions"
 msgstr ""
 
-#: ../../Open-ILS/src/templates-bootstrap/opac/parts/advanced/search.tt2:152
+#: ../../Open-ILS/src/templates-bootstrap/opac/parts/advanced/search.tt2:154
 msgid "Group Formats and Editions"
 msgstr ""
 
@@ -2610,7 +2606,7 @@ msgstr ""
 msgid "Inventor"
 msgstr ""
 
-#: ../../Open-ILS/src/templates-bootstrap/opac/parts/advanced/search.tt2:103
+#: ../../Open-ILS/src/templates-bootstrap/opac/parts/advanced/search.tt2:105
 msgid "Is"
 msgstr ""
 
@@ -2668,7 +2664,7 @@ msgstr ""
 msgid "Items Ready for Pickup (%1)"
 msgstr ""
 
-#: ../../Open-ILS/src/templates-bootstrap/opac/parts/advanced/search.tt2:168
+#: ../../Open-ILS/src/templates-bootstrap/opac/parts/advanced/search.tt2:170
 msgid "Items attached to a course"
 msgstr ""
 
@@ -2862,7 +2858,7 @@ msgstr ""
 msgid "Lighting designer"
 msgstr ""
 
-#: ../../Open-ILS/src/templates-bootstrap/opac/parts/advanced/search.tt2:160
+#: ../../Open-ILS/src/templates-bootstrap/opac/parts/advanced/search.tt2:162
 msgid "Limit to Available"
 msgstr ""
 
@@ -3252,7 +3248,7 @@ msgstr ""
 msgid "News anchor"
 msgstr ""
 
-#: ../../Open-ILS/src/templates-bootstrap/opac/browse.tt2:95 ../../Open-ILS/src/templates-bootstrap/opac/course_browse.tt2:81 ../../Open-ILS/src/templates-bootstrap/opac/myopac/circ_history.tt2:40 ../../Open-ILS/src/templates-bootstrap/opac/myopac/generic_payment_form.tt2:125 ../../Open-ILS/src/templates-bootstrap/opac/myopac/hold_history.tt2:30 ../../Open-ILS/src/templates-bootstrap/opac/myopac/holds.tt2:60 ../../Open-ILS/src/templates-bootstrap/opac/myopac/holds_curbside.tt2:33 ../../Open-ILS/src/templates-bootstrap/opac/myopac/lists.tt2:124 ../../Open-ILS/src/templates-bootstrap/opac/myopac/lists.tt2:458 ../../Open-ILS/src/templates-bootstrap/opac/myopac/main_payments.tt2:26 ../../Open-ILS/src/templates-bootstrap/opac/myopac/messages/list.tt2:30 ../../Open-ILS/src/templates-bootstrap/opac/parts/misc_util.tt2:890 ../../Open-ILS/src/templates-bootstrap/opac/parts/record/issues-db.tt2:197 ../../Open-ILS/src/templates-bootstrap/opac/parts/record/navigation.tt2:50 ../../Open-ILS/src/templates-bootstrap/opac/parts/result/paginate.tt2:73
+#: ../../Open-ILS/src/templates-bootstrap/opac/browse.tt2:95 ../../Open-ILS/src/templates-bootstrap/opac/course_browse.tt2:81 ../../Open-ILS/src/templates-bootstrap/opac/myopac/circ_history.tt2:40 ../../Open-ILS/src/templates-bootstrap/opac/myopac/generic_payment_form.tt2:125 ../../Open-ILS/src/templates-bootstrap/opac/myopac/hold_history.tt2:30 ../../Open-ILS/src/templates-bootstrap/opac/myopac/holds.tt2:60 ../../Open-ILS/src/templates-bootstrap/opac/myopac/holds_curbside.tt2:33 ../../Open-ILS/src/templates-bootstrap/opac/myopac/lists.tt2:124 ../../Open-ILS/src/templates-bootstrap/opac/myopac/lists.tt2:458 ../../Open-ILS/src/templates-bootstrap/opac/myopac/main_payments.tt2:26 ../../Open-ILS/src/templates-bootstrap/opac/myopac/messages/list.tt2:30 ../../Open-ILS/src/templates-bootstrap/opac/parts/misc_util.tt2:902 ../../Open-ILS/src/templates-bootstrap/opac/parts/record/issues-db.tt2:197 ../../Open-ILS/src/templates-bootstrap/opac/parts/record/navigation.tt2:50 ../../Open-ILS/src/templates-bootstrap/opac/parts/result/paginate.tt2:73
 msgid "Next"
 msgstr ""
 
@@ -3301,7 +3297,7 @@ msgstr ""
 msgid "No holds found."
 msgstr ""
 
-#: ../../Open-ILS/src/templates-bootstrap/opac/parts/advanced/search.tt2:169
+#: ../../Open-ILS/src/templates-bootstrap/opac/parts/advanced/search.tt2:171
 msgid "No items attached to a course"
 msgstr ""
 
@@ -3934,7 +3930,7 @@ msgstr ""
 msgid "Press down arrow for autocomplete"
 msgstr ""
 
-#: ../../Open-ILS/src/templates-bootstrap/opac/parts/misc_util.tt2:889
+#: ../../Open-ILS/src/templates-bootstrap/opac/parts/misc_util.tt2:901
 msgid "Prev"
 msgstr ""
 
@@ -4485,7 +4481,7 @@ msgstr ""
 msgid "Sculptor"
 msgstr ""
 
-#: ../../Open-ILS/src/templates-bootstrap/opac/course_search.tt2:70 ../../Open-ILS/src/templates-bootstrap/opac/parts/advanced/expert.tt2:73 ../../Open-ILS/src/templates-bootstrap/opac/parts/advanced/numeric.tt2:35 ../../Open-ILS/src/templates-bootstrap/opac/parts/searchbar.tt2:114
+#: ../../Open-ILS/src/templates-bootstrap/opac/course_search.tt2:74 ../../Open-ILS/src/templates-bootstrap/opac/parts/advanced/expert.tt2:73 ../../Open-ILS/src/templates-bootstrap/opac/parts/advanced/numeric.tt2:35 ../../Open-ILS/src/templates-bootstrap/opac/parts/searchbar.tt2:114
 msgid "Search"
 msgstr ""
 
@@ -4497,7 +4493,7 @@ msgstr ""
 msgid "Search Courses"
 msgstr ""
 
-#: ../../Open-ILS/src/templates-bootstrap/opac/parts/advanced/search.tt2:49
+#: ../../Open-ILS/src/templates-bootstrap/opac/parts/advanced/search.tt2:51
 msgid "Search Filters"
 msgstr ""
 
@@ -4549,7 +4545,7 @@ msgstr ""
 msgid "Search by a field and numeric identifier."
 msgstr ""
 
-#: ../../Open-ILS/src/templates-bootstrap/opac/parts/advanced/search.tt2:113
+#: ../../Open-ILS/src/templates-bootstrap/opac/parts/advanced/search.tt2:115
 msgid "Search date"
 msgstr ""
 
@@ -4569,7 +4565,7 @@ msgstr ""
 msgid "Search in progress"
 msgstr ""
 
-#: ../../Open-ILS/src/templates-bootstrap/opac/browse.tt2:68 ../../Open-ILS/src/templates-bootstrap/opac/course_browse.tt2:46 ../../Open-ILS/src/templates-bootstrap/opac/course_browse.tt2:86 ../../Open-ILS/src/templates-bootstrap/opac/course_search.tt2:73 ../../Open-ILS/src/templates-bootstrap/opac/parts/advanced/search.tt2:189 ../../Open-ILS/src/templates-bootstrap/opac/parts/advanced/search.tt2:45
+#: ../../Open-ILS/src/templates-bootstrap/opac/browse.tt2:68 ../../Open-ILS/src/templates-bootstrap/opac/course_browse.tt2:46 ../../Open-ILS/src/templates-bootstrap/opac/course_browse.tt2:86 ../../Open-ILS/src/templates-bootstrap/opac/course_search.tt2:77 ../../Open-ILS/src/templates-bootstrap/opac/parts/advanced/search.tt2:188 ../../Open-ILS/src/templates-bootstrap/opac/parts/advanced/search.tt2:45
 msgid "Search in progress icon"
 msgstr ""
 
@@ -4599,11 +4595,11 @@ msgstr ""
 msgid "Search term group %1"
 msgstr ""
 
-#: ../../Open-ILS/src/templates-bootstrap/opac/parts/advanced/expert.tt2:48 ../../Open-ILS/src/templates-bootstrap/opac/parts/advanced/search.tt2:28
+#: ../../Open-ILS/src/templates-bootstrap/opac/course_search.tt2:63 ../../Open-ILS/src/templates-bootstrap/opac/parts/advanced/expert.tt2:48 ../../Open-ILS/src/templates-bootstrap/opac/parts/advanced/search.tt2:28
 msgid "Search term logic group added."
 msgstr ""
 
-#: ../../Open-ILS/src/templates-bootstrap/opac/parts/advanced/expert.tt2:45 ../../Open-ILS/src/templates-bootstrap/opac/parts/advanced/search.tt2:25
+#: ../../Open-ILS/src/templates-bootstrap/opac/course_search.tt2:60 ../../Open-ILS/src/templates-bootstrap/opac/parts/advanced/expert.tt2:45 ../../Open-ILS/src/templates-bootstrap/opac/parts/advanced/search.tt2:25
 msgid "Search term logic group removed."
 msgstr ""
 
@@ -4639,8 +4635,8 @@ msgstr ""
 msgid "See all of my lists"
 msgstr ""
 
-#. (attrs.title)
 #. (row_title)
+#. (attrs.title)
 #: ../../Open-ILS/src/templates-bootstrap/opac/myopac/circ_history.tt2:152 ../../Open-ILS/src/templates-bootstrap/opac/myopac/circs.tt2:144 ../../Open-ILS/src/templates-bootstrap/opac/myopac/holds.tt2:167 ../../Open-ILS/src/templates-bootstrap/opac/myopac/lists.tt2:335 ../../Open-ILS/src/templates-bootstrap/opac/parts/anon_list.tt2:70
 msgid "Select %1"
 msgstr ""
@@ -4991,7 +4987,7 @@ msgstr ""
 msgid "Standards body"
 msgstr ""
 
-#: ../../Open-ILS/src/templates-bootstrap/opac/parts/advanced/search.tt2:116
+#: ../../Open-ILS/src/templates-bootstrap/opac/parts/advanced/search.tt2:118
 msgid "Start"
 msgstr ""
 
@@ -5059,7 +5055,7 @@ msgstr ""
 msgid "Subjects"
 msgstr ""
 
-#: ../../Open-ILS/src/templates-bootstrap/opac/myopac/smartpay_payment_form.tt2:2 ../../Open-ILS/src/templates-bootstrap/opac/parts/advanced/search.tt2:187 ../../Open-ILS/src/templates-bootstrap/opac/parts/advanced/search.tt2:43 ../../Open-ILS/src/templates-bootstrap/opac/parts/place_hold.tt2:391 ../../Open-ILS/src/templates-bootstrap/opac/parts/place_hold_result.tt2:147 ../../Open-ILS/src/templates-bootstrap/opac/password_reset.tt2:46 ../../Open-ILS/src/templates-bootstrap/opac/password_reset.tt2:70 ../../Open-ILS/src/templates-bootstrap/opac/sms_cn.tt2:38 ../../Open-ILS/src/templates-bootstrap/opac/sms_cn.tt2:39 ../../Open-ILS/src/templates-bootstrap/opac/sms_cn.tt2:40
+#: ../../Open-ILS/src/templates-bootstrap/opac/myopac/smartpay_payment_form.tt2:2 ../../Open-ILS/src/templates-bootstrap/opac/parts/advanced/search.tt2:186 ../../Open-ILS/src/templates-bootstrap/opac/parts/advanced/search.tt2:43 ../../Open-ILS/src/templates-bootstrap/opac/parts/place_hold.tt2:391 ../../Open-ILS/src/templates-bootstrap/opac/parts/place_hold_result.tt2:147 ../../Open-ILS/src/templates-bootstrap/opac/password_reset.tt2:46 ../../Open-ILS/src/templates-bootstrap/opac/password_reset.tt2:70 ../../Open-ILS/src/templates-bootstrap/opac/sms_cn.tt2:38 ../../Open-ILS/src/templates-bootstrap/opac/sms_cn.tt2:39 ../../Open-ILS/src/templates-bootstrap/opac/sms_cn.tt2:40
 msgid "Submit"
 msgstr ""
 
