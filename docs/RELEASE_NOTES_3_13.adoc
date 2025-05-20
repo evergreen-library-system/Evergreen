@@ -3,6 +3,36 @@
 :numbered:
 :toclevels: 3
 
+
+== Evergreen 3.13.11 ==
+
+This release contains bug fixes and documentation fixes improving on Evergreen 3.13.10.
+
+=== OPAC ===
+
+* Makes patron self-registration aware of org unit tree. (https://bugs.launchpad.net/evergreen/+bug/1890629[Bug 1890629])
+
+=== Reports === 
+
+* Fixes report table alias calculation for joins (https://bugs.launchpad.net/evergreen/+bug/2092695[Bug 2092695])
+
+=== Acknowledgements ===
+
+We would like to thank the following individuals who contributed code, testing, documentation, and patches to the 3.13.11 point release of Evergreen:
+
+* Andrea Buntz Neiman
+* Blake Graham-Henderson
+* Galen Charlton
+* Jason Stephenson
+* Llewellyn Marshall
+* Martha Driscoll
+* Michele Morgan
+* Mike Rylander
+* Ruth Frasur Davis
+* Terran McCanna
+
+
+
 == Evergreen 3.13.10 ==
 
 This release contains bug fixes and documentation fixes improving on Evergreen 3.13.9.
