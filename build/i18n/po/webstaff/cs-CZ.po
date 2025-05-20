@@ -7,15 +7,15 @@ msgid ""
 msgstr ""
 "Project-Id-Version: evergreen\n"
 "Report-Msgid-Bugs-To: FULL NAME <EMAIL@ADDRESS>\n"
-"POT-Creation-Date: 2025-02-19 22:27+0000\n"
+"POT-Creation-Date: 2025-04-15 00:44+0000\n"
 "PO-Revision-Date: 2024-05-29 00:50+0000\n"
 "Last-Translator: Eva Cerninakova <Unknown>\n"
 "Language-Team: Czech <cs@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2025-02-20 05:34+0000\n"
-"X-Generator: Launchpad (build 78860d903de6d6d7dd5a0ade63efaca45d3467e2)\n"
+"X-Launchpad-Export-Date: 2025-04-16 14:48+0000\n"
+"X-Generator: Launchpad (build e76edd883483c71c468bb038e98836435de44530)\n"
 
 #. ("{{pendingXacts | date:\"short\"}}")
 #: ../../Open-ILS/src/templates/staff/t_login.tt2:62
@@ -275,12 +275,12 @@ msgstr "%1, %2"
 msgid "%1, %2 %3"
 msgstr "%1, %2 %3"
 
-#. ("{{extra.user_obj.family_name}}", "{{extra.user_obj.first_given_name}}", "{{extra.user_obj.second_given_name}}", "{{extra.user_obj.home_ou.shortname}}")
+#. ("{{user.family_name()}}", "{{user.first_given_name()}}", "{{user.second_given_name()}}", "{{user.card().barcode()}}")
 #. ("{{prev_circ_usr.family_name()}}", "{{prev_circ_usr.first_given_name()}}", "{{prev_circ_usr.second_given_name()}}", "{{prev_circ_usr.card().barcode()}}")
 #. ("{{circ.usr().family_name()}}", "{{circ.usr().first_given_name()}}", "{{circ.usr().second_given_name()}}", "{{circ.usr().card().barcode()}}")
 #. ("{{hold.usr().family_name()}}", "{{hold.usr().first_given_name()}}", "{{hold.usr().second_given_name()}}", "{{hold.usr().card().barcode()}}")
 #. ("{{hold.requestor().family_name()}}", "{{hold.requestor().first_given_name()}}", "{{hold.requestor().second_given_name()}}", "{{hold.requestor().card().barcode()}}")
-#. ("{{user.family_name()}}", "{{user.first_given_name()}}", "{{user.second_given_name()}}", "{{user.card().barcode()}}")
+#. ("{{extra.user_obj.family_name}}", "{{extra.user_obj.first_given_name}}", "{{extra.user_obj.second_given_name}}", "{{extra.user_obj.home_ou.shortname}}")
 #: ../../Open-ILS/src/templates/staff/acq/requests/t_edit.tt2:27 ../../Open-ILS/src/templates/staff/cat/item/t_circ_list_pane.tt2:27 ../../Open-ILS/src/templates/staff/cat/item/t_circs_pane.tt2:118 ../../Open-ILS/src/templates/staff/cat/item/t_circs_pane.tt2:18 ../../Open-ILS/src/templates/staff/cat/item/t_holds_pane.tt2:17 ../../Open-ILS/src/templates/staff/cat/item/t_holds_pane.tt2:30 ../../Open-ILS/src/templates/staff/circ/patron/t_move_to_group_dialog.tt2:16
 msgid "%1, %2 %3 : %4"
 msgstr "%1, %2 %3 : %4"
@@ -1433,8 +1433,8 @@ msgstr "Čárový kód: %1"
 msgid "Barcode: %1 Checkin date: %2"
 msgstr "Čárový kód: %1 datum vrácení: %2"
 
-#. ("{{checkout.barcode}}", "{{checkout.due_date | date:\"short\"}}")
 #. ("{{checkout.copy.barcode}}", "{{checkout.circ.due_date | egDueDate:$root.egDateAndTimeFormat:checkout.circ.circ_lib:checkout.circ.duration}}")
+#. ("{{checkout.barcode}}", "{{checkout.due_date | date:\"short\"}}")
 #. ("{{renewal.copy.barcode}}", "{{renewal.circ.due_date | egDueDate:$root.egDateAndTimeFormat:renewal.circ.circ_lib:renewal.circ.duration}}")
 #: ../../Open-ILS/src/templates/staff/share/print_templates/t_checkout.tt2:47 ../../Open-ILS/src/templates/staff/share/print_templates/t_items_out.tt2:43 ../../Open-ILS/src/templates/staff/share/print_templates/t_offline_renew.tt2:16 ../../Open-ILS/src/templates/staff/share/print_templates/t_renew.tt2:27
 msgid "Barcode: %1 Due: %2"
@@ -1754,7 +1754,7 @@ msgstr "Skupina"
 #. ("{{bucket().id()}}", "{{bucket().name()}}")
 #: ../../Open-ILS/src/templates/staff/circ/patron/bucket/t_bucket_info.tt2:3
 msgid "Bucket #%1: %2"
-msgstr "skupina #%1: %2"
+msgstr "Skupina č. %1: %2"
 
 #: ../../Open-ILS/src/templates/staff/cat/bucket/share/t_bucket_info.tt2:3
 msgid "Bucket #{{bucket().id()}}: {{bucket().name()}}"
@@ -2235,7 +2235,7 @@ msgstr "Výpůjční pracovní stanice"
 
 #: ../../Open-ILS/src/templates/staff/base_js.tt2:123
 msgid "Check Payment"
-msgstr "Platba šekem"
+msgstr "Platba šekem nebo převodem"
 
 #: ../../Open-ILS/src/templates/staff/circ/curbside/t_holds_list.tt2:9
 msgid "Check item; came in after appointment was staged."
@@ -2283,7 +2283,7 @@ msgstr "Datum skutečného vrácení"
 
 #: ../../Open-ILS/src/templates/staff/cat/item/t_circs_pane.tt2:187 ../../Open-ILS/src/templates/staff/cat/item/t_circs_pane.tt2:84 ../../Open-ILS/src/templates/staff/cat/item/t_summary_pane.tt2:180
 msgid "Checkin Scan Time"
-msgstr "Přijato k vrácení"
+msgstr "Čas skutečného  vrácení"
 
 #: ../../Open-ILS/src/templates/staff/cat/catalog/t_holds.tt2:105 ../../Open-ILS/src/templates/staff/cat/item/t_circ_list_pane.tt2:52 ../../Open-ILS/src/templates/staff/cat/item/t_circs_pane.tt2:180 ../../Open-ILS/src/templates/staff/cat/item/t_circs_pane.tt2:78 ../../Open-ILS/src/templates/staff/cat/item/t_summary_pane.tt2:163 ../../Open-ILS/src/templates/staff/circ/holds/t_shelf_list.tt2:80 ../../Open-ILS/src/templates/staff/circ/patron/t_holds_list.tt2:80
 msgid "Checkin Time"
@@ -2319,7 +2319,7 @@ msgstr "Výpůjční pracovní stanice"
 
 #: ../../Open-ILS/src/templates/staff/circ/patron/t_bill_history_payments.tt2:41 ../../Open-ILS/src/templates/staff/circ/patron/t_bill_history_xacts.tt2:51
 msgid "Checkout or Renewal Library"
-msgstr "Knihovna kde proběhla výpůjčka nebo prodloužení"
+msgstr "Vypůjčeno nebo prodlouženo v knihovně"
 
 #: ../../Open-ILS/src/templates/staff/cat/item/t_list.tt2:110
 msgid "Checkout/Renewal Library"
