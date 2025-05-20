@@ -3,16 +3,122 @@
 :numbered:
 :toclevels: 3
 
-== Upgrade notes ==
+== Evergreen 3.15.1 ==
+
+This release contains bug fixes and documentation fixes improving on Evergreen 3.15.0.
+
+=== Administration ===
+
+* Fix spacing on Shelving Location Order interface. (https://bugs.launchpad.net/evergreen/+bug/2103535[Bug 2103535])
+
+
+=== Cataloging ===
+
+
+* Changes holdings view sort order to push sublibrary nodes below call number nodes. (https://bugs.launchpad.net/evergreen/+bug/2102217[Bug 2102217])
+* Fixes color of Holdings View rows when selected. (https://bugs.launchpad.net/evergreen/+bug/2098718[Bug 2098718])
+
+=== Circulation ===
+
+* Filters out unholdable parts from part hold list. (https://bugs.launchpad.net/evergreen/+bug/1911063[Bug 1911063])
+* Corrects the circ billing grid background color for selected rows with overdue and lost items. (https://bugs.launchpad.net/evergreen/+bug/2092293[Bug 2092293])
+
+=== Developer ===
+
+* Run Perl Unit Tests automatically. (https://bugs.launchpad.net/evergreen/+bug/2089184[Bug 2089184])
+
+=== Documentation ===
+
+* Updates to "org unit" terminology on several docs pages based on Vale reports.
+* Updates to Clone as New Address docs. (https://bugs.launchpad.net/evergreen/+bug/2078341[Bug 2078341])
+* Updates to Closed Dates Editor docs. (https://bugs.launchpad.net/evergreen/+bug/2063846[Bug 2063846])
+
+
+=== OPAC ===
+
+* Disables the Pay Selected Charges button when none are selected. (https://bugs.launchpad.net/evergreen/+bug/2080899[Bug 2080899])
+* Makes patron self-registration aware of org unit tree. (https://bugs.launchpad.net/evergreen/+bug/1890629[Bug 1890629])
+* Adds label to "Allow others to use my account" name input (https://bugs.launchpad.net/evergreen/+bug/2078713[Bug 2078713])
+* Aligns OPAC course search layout with advanced search form (https://bugs.launchpad.net/evergreen/+bug/2096790[Bug 2096790])
+* Fixes broken author links when additional subfields exist in the MARC record. (https://bugs.launchpad.net/evergreen/+bug/2107209[Bug 2107209])
+
+=== Reports ===
+
+* Fixes report table alias calculation for joins (https://bugs.launchpad.net/evergreen/+bug/2092695[Bug 2092695])
+
+
+=== Self Checkout ===
+
+* Respect browser default font size for self checkout (https://bugs.launchpad.net/evergreen/+bug/2109643[Bug 2109643])
+* Adjusts self-check links to accommodate use by remotely managed ChromeOS kiosks. (https://bugs.launchpad.net/evergreen/+bug/2104272[Bug 2104272])
+
+
+=== Staff Client ===
+
+* Offsets the focus outline on primary buttons in AngularJS (https://bugs.launchpad.net/evergreen/+bug/1819068[Bug 1819068])
+* Fixes checkbox border contrast and missing check marks (https://bugs.launchpad.net/evergreen/+bug/2099938[Bug 2099938])
+* Adds a missing button type attribute to satisfy lint rules (https://bugs.launchpad.net/evergreen/+bug/2111283[Bug 2111283])
+* Restores ability to dismiss toasts by clicking 'X' button (https://bugs.launchpad.net/evergreen/+bug/2107116[Bug 2107116])
+* Fixes the H2 green color for staff screens in light mode (https://bugs.launchpad.net/evergreen/+bug/2109745[Bug 2109745])
+* Fixes display and accessibility bugs in Retrieve Bib by ID/TCN form (https://bugs.launchpad.net/evergreen/+bug/2037689[Bug 2037689])
+* Adds a backup script changing color mode from local storage to the heads
+of Angular and AngularJS. (https://bugs.launchpad.net/evergreen/+bug/2080887[Bug 2080887])
+
+=== Acknowledgements ===
+
+We would like to thank the following individuals who contributed code, testing, documentation, and patches to the 3.15.1 point release of Evergreen:
+
+* Andrea Buntz Neiman
+* Bill Erickson
+* Blake Graham-Henderson
+* Brian Kennedy
+* Christine Morgan
+* Dan Briem
+* Dan Guarracino
+* Elizabeth Davis
+* Eva Cerniňáková
+* Galen Charlton
+* Gina Monti
+* Jane Sandberg
+* Jason Etheridge
+* Jason Stephenson
+* Jennifer Pringle
+* John Amundson
+* Lindsay Stratton
+* Llewellyn Marshall
+* Martha Driscoll
+* Mary Llewellyn
+* Michele Morgan
+* Mike Rylander
+* Ruth Frasur Davis
+* Stephanie Leary
+* Steven Mayo
+* Susan Morrison
+* Terran McCanna
+* Tiffany Little
+
+
+
+
+
+
+
+
+
+
+
+== Evergreen 3.15.0 ==
+
+=== Upgrade notes ===
 
 This release includes an import fix to values in the Coded Value Map 
 table. Please refer to the "FIX DB Table config.coded_value_map"
 section further down for important information on whether you need
 to apply the fix and how to do so.
 
-== New Features ==
+=== New Features ===
 
-:leveloffset: +2
+:leveloffset: +3
 
 
 = Acquisitions =
