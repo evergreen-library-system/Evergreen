@@ -6430,4 +6430,10 @@ Zkopírováno <ph name="INTERPOLATION"/></translation>
   <translation id="375162872941638932"><ph name="START_TAG_SPAN"/>odhlásit<ph name="CLOSE_TAG_SPAN"/> Odhlásit</translation>
   <translation id="425596632725634098">Typ potvrzení:</translation>
   <translation id="8075796456109676934">Editovat podpole (pokud je seskupeno): Levá nebo pravá šipka</translation>
+  <translation id="5959131859017841195">Launch Self-Check</translation>
+  <translation id="1074038423230804155">ID:</translation>
+  <translation id="8162787379579842000">Searching...</translation>
+  <translation id="8684646320844580912"> Record not found: <ph name="INTERPOLATION"/> </translation>
+  <translation id="7333108368858028030"> More than one Bib Record found with TCN: <ph name="INTERPOLATION"/> </translation>
+  <translation id="1720909217045418517"> The server encountered an error. Please try a different search. </translation>
 </translationbundle>
