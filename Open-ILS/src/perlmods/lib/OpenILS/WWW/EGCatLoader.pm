@@ -189,6 +189,9 @@ sub load {
 
     $self->load_simple("myopac") if $path =~ m:opac/myopac:; # A default page for myopac parts
 
+    $self->_set_ecard_context(); # need to set enough of the context to
+                                 # determine on account preferences
+                                 # and the account home page whether to offer e-renewal
     return $self->load_ecard_form if $path =~ m|opac/ecard/form|;
     # PINES - online account registration
     return $self->load_ecard_submit if $path =~ m|opac/ecard/submit|;

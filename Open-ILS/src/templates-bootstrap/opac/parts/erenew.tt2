@@ -7,7 +7,7 @@
         account_renew_message = '<div style="border:2px solid green;padding:5px;">';
         account_renew_message = account_renew_message _ l("Your account could only be temporarily renewed. Please contact your library for more information.");
         account_renew_message = account_renew_message _ '</div>';
-    ELSIF (DateTime.today.add(days=ctx.renewal_offer_window) < ctx.user.expire_date);
+    ELSIF !ctx.within_renewal_offer_period;
         account_renew_message = '';
     ELSIF ctx.hasproblem == 1 OR ctx.eligible_permgroup == 0;
         account_renew_message = '<div style="border:2px solid green;padding:5px;">';
@@ -26,5 +26,5 @@
 %]
 
 [% IF account_renew_message != '' %]
-    [% account_renew_message | html %]
+    [% account_renew_message %]
 [% END %]

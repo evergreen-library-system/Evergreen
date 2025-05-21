@@ -3859,14 +3859,21 @@ sub check_account_exp {
     my $cache = OpenSRF::Utils::Cache->new('global');
     $cache->put_cache('account_renew_ok','false',3600);
 
+    my $home_ou = $ctx->{user}->home_ou;
+    $home_ou = ref($home_ou) ? $home_ou->id : $home_ou; # this is not consistently fleshed
     my $erenewal_offer_window = $self->ctx->{get_org_setting}->(
-        $ctx->{user}->home_ou, "opac.ecard_renewal_offer_interval"
+        $home_ou, "opac.ecard_renewal_offer_interval"
     ) || 29;
-
-    # TODO: This needs to be refactored so that the messages can be
-    # translated, and the HTML needs to go in a template not hardcoded
-    # in strings handed out by Perl.
+    $ctx->{renewal_offer_window} = $erenewal_offer_window;
     my $expire_date = DateTime::Format::ISO8601->parse_datetime(clean_ISO8601($ctx->{user}->expire_date));
+    if (DateTime->today->add(days=>$erenewal_offer_window) < $expire_date) {
+        $ctx->{within_renewal_offer_period} = 0;
+    } else {
+        $ctx->{within_renewal_offer_period} = 1;
+    }
+
+    # TODO: while the intended logic is now in the template opac/parts/erenew.tt2
+    #       more testing is likely needed
     if ($ctx->{hastemprenew} eq 1) { #user already has active temp renewal
         $ctx->{account_renew_message} = '<div style="border:2px solid green;padding:5px;">Your account
         could only be temporarily renewed because your address changed. Please visit your
