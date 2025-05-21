@@ -112,6 +112,9 @@ sub _set_ecard_context {
     $ctx->{ecard}->{quipu_id} = $U->ou_ancestor_setting_value(
         $ctx_org, 'vendor.quipu.ecard.account_id'
     ) || 0;
+    $ctx->{ecard}->{hostname} = $U->ou_ancestor_setting_value(
+        $ctx_org, 'vendor.quipu.ecard.hostname'
+    ) || 'ecard.quipugroup.net';
     $logger->debug(
         "ECARD: context = " . OpenSRF::Utils::JSON->perl2JSON( $ctx->{ecard} ));
 }
@@ -712,18 +715,17 @@ sub update_user {
         $au->name_keywords("quipu_renew_$dty$dtm");
     }
 
-    # Temp renewal is only 30 days, otherwise use perm_interval
-    # If perm group is Homebound or GLS, allow full renewal
     my $temp_renewal = $self->cgi->param('temp_renewal');
     my $grp = new_editor()->retrieve_permission_grp_tree($au->profile);
 
-    if ($temp_renewal eq '1' && $grp->name ne 'GLS' && $grp->name ne 'Homebound') {
-        $au->expire_date(
-            DateTime->now(time_zone => 'local')->add(
-                seconds => interval_to_seconds('30 days'))->iso8601()
-        );
+    if ($temp_renewal eq '1') {
         # Add temp renewal standing penalty to account
         $self->apply_temp_renewal_penalty;
+
+        $au->expire_date(
+            DateTime->now(time_zone => 'local')->add(
+                seconds => interval_to_seconds($grp->temporary_perm_interval || '30 days'))->iso8601()
+        );
     } else {
         $au->expire_date(
             DateTime->now(time_zone => 'local')->add(

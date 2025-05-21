@@ -4808,6 +4808,14 @@ INSERT into config.org_unit_setting_type
         'Quipu Customer Account ID to be used for eCard registration',
         'coust', 'description'),
     'integer', null)
+,( 'vendor.quipu.ecard.hostname', 'lib',
+    oils_i18n_gettext('vendor.quipu.ecard.hostname',
+        'Quipu eCard/eRenew Fully Qualified Domain Name',
+        'coust', 'label'),
+    oils_i18n_gettext('vendor.quipu.ecard.hostname',
+        'Quipu ecard/eRenew Fully Qualified Domain Name is the external hostname for the Quipu server. Defaults to ecard.quipugroup.net',
+        'coust', 'description'),
+    'string', null)
 ,( 'vendor.quipu.ecard.shared_secret', 'lib',
     oils_i18n_gettext('vendor.quipu.ecard.shared_secret',
         'Quipu eCard Shared Secret',

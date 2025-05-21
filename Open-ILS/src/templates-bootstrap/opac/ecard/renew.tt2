@@ -12,7 +12,7 @@
 [% IF ctx.ecard.enabled && ctx.ecard.quipu_id %]
 [% IF ctx.user %]
 <!-- eCARD scripts here -->
-<script id="eRenewServer" src="https://ecard.quipugroup.net/js/eRenewEmbed.js"></script>
+<script id="eRenewServer" src="https://[% ctx.ecard.hostname %]/js/eRenewEmbed.js"></script>
 <script>loadQGeRenew([% ctx.ecard.quipu_id %])</script>
 <input type="hidden" id="patronID" value="[% ctx.user.id %]" />
 <div id="eRenew" data-language="en" data-branchid="[% cts_org %]"></div>

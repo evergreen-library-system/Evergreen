@@ -11,7 +11,7 @@
 [% IF ctx.ecard.enabled && ctx.ecard.quipu_id %]
 <div id="ecard-intro">
 <!-- The following script tags can be placed in the library's <head> or <body> tag -->
-<script src="https://ecard-us2.quipugroup.net/js/eCARDEmbed.js"></script>
+<script src="https://[% ctx.ecard.hostname %[/js/eCARDEmbed.js"></script>
 <script>loadQGeCARD([% ctx.ecard.quipu_id %])</script>
 <p>
 [% l('Fill out the application below to get immediate access to electronic services, such as e-books, audiobooks, magazines, and databases, provided by your local library.') %]
