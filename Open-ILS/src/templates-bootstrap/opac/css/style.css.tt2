@@ -4589,7 +4589,7 @@ padding: 15px;
 .pointer {
     cursor: pointer;
 }
-#loginModal #show_password {
+.show-password-toggle {
     border-top: 1px solid [% css_colors.show_password_border %];
     border-right: 1px solid [% css_colors.show_password_border %];
     border-bottom: 1px solid [% css_colors.show_password_border %];

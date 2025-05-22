@@ -222,24 +222,25 @@ var aou_hash = {
             $(this).find('#username_field').focus();
         });
         // password visibility eye
-        let btn = document.getElementById('show_password');
-        let input = document.getElementById('password_field');
-        let icon = btn.querySelector('i');
-        btn.addEventListener('click', () => {
-            if(input.type == 'password'){
-                input.type = 'text';
-                icon.setAttribute('class', 'fas fa-eye');
-                btn.setAttribute('aria-checked', 'true');
-            }else {
-                input.type = 'password';
-                icon.setAttribute('class', 'fas fa-eye-slash');
-                btn.setAttribute('aria-checked', 'false');
-            }
-            input.focus();
-        });
-        let loginForm = document.getElementById('login_form');
-        loginForm.addEventListener('submit', ()=>{
-            input.type = 'password';
+        Array.from(document.getElementsByClassName('show-password-toggle')).forEach(btn => {
+            let input = btn.previousElementSibling;
+            let icon = btn.querySelector('i');
+            btn.addEventListener('click', () => {
+                if(input.type == 'password'){
+                    input.type = 'text';
+                    icon.setAttribute('class', 'fas fa-eye');
+                    btn.setAttribute('aria-checked', 'true');
+                }else {
+                    input.type = 'password';
+                    icon.setAttribute('class', 'fas fa-eye-slash');
+                    btn.setAttribute('aria-checked', 'false');
+                }
+                input.focus();
+                let loginForm = input.closest('form');
+                loginForm.addEventListener('submit', ()=>{
+                    input.type = 'password';
+                });
+            });
         });
     });
 </script>
