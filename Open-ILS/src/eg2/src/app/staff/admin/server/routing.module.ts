@@ -38,7 +38,8 @@ const routes: Routes = [{
     data: [{
         schema: 'config',
         table: 'hard_due_date',
-        fieldOrder: 'name,owner,ceiling_date,forceto'
+        fieldOrder: 'name,owner,ceiling_date,forceto',
+        orgFieldsDefaultingToContextOrg: 'owner'
     }]
 }, {
     path: 'config/print_template',
