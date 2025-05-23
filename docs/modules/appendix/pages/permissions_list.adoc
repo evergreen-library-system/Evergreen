@@ -1,6 +1,6 @@
 = Permissions List =
 
-_The following list includes permissions available in the Evergreen database as of 3.11._
+_The following list includes permissions available in the Evergreen database as of 3.15._
 
 
 *ABORT_REMOTE_TRANSIT.* Allows a user to cancel an item transit if the user is not at the transit destination or source
@@ -18,6 +18,8 @@ with status of Missing
 
 *ACQ_ADD_LINEITEM_IDENTIFIER.* Allows an acquisitions user to add new
 lineitem identifiers to linked bib records when a linkage exists
+
+*ACQ_ALLOW_OVERSPEND.* Allow a user to ignore a fund's stop percentage.
 
 *ACQ_INVOICE_REOPEN.* Allows an acquisitions user to reopen an invoice
 
@@ -72,6 +74,8 @@ protection rules
 *ADMIN_ASSET_COPY_TEMPLATE.* Allows a user to create/edit/delete serial
 item templates
 
+*ADMIN_BIB_BUCKET.* Administer bibliographic record buckets
+
 *ADMIN_BOOKING_RESERVATION.* Allows a user to create/edit/delete booking
 reservations
 
@@ -117,6 +121,30 @@ attribute (MARC) coded value maps
 
 *ADMIN_CONFIG_REMOTE_ACCOUNT.* Allows a user to create/edit/delete
 remote (third-party) accounts
+
+*ADMIN_CONTAINER_BIBLIO_RECORD_ENTRY_ORG_SHARE.* Allow sharing of record
+buckets with specific orgs
+
+*ADMIN_CONTAINER_BIBLIO_RECORD_ENTRY_USER_SHARE.* Allow sharing of record
+buckets with specific users
+
+*ADMIN_CONTAINER_CALL_NUMBER_ORG_SHARE.* Allow sharing of call number
+buckets with specific orgs
+
+*ADMIN_CONTAINER_CALL_NUMBER_USER_SHARE.* Allow sharing of call number
+buckets with specific users
+
+*ADMIN_CONTAINER_COPY_ORG_SHARE.* Allow sharing of copy buckets with
+specific orgs
+
+*ADMIN_CONTAINER_COPY_USER_SHARE.* Allow sharing of copy buckets with
+specific users
+
+*ADMIN_CONTAINER_USER_ORG_SHARE.* Allow sharing of user buckets with
+specific orgs
+
+*ADMIN_CONTAINER_USER_USER_SHARE.* Allow sharing of user buckets with
+specific users
 
 *ADMIN_COPY_ALERT.* Allows a user to create/edit/delete item alerts
 
@@ -208,6 +236,10 @@ max fine rules
 
 *ADMIN_MERGE_PROFILE.* Allows a user to create/edit/delete bib import
 merge profiles
+
+*ADMIN_MFA.* Configure Multi-factor Authentication
+
+*ADMIN_OPENAPI.* ADMIN_OPENAPI
 
 *ADMIN_OPENATHENS.* Allows a user to administer the OpenAthens
 authentication service
@@ -305,6 +337,8 @@ trigger validators
 *ADMIN_USER_ACTIVITY_TYPE.* Allows a user to create/edit/delete user
 activity types
 
+*ADMIN_USER_BUCKET.* Allows a user to administer User Buckets
+
 *ADMIN_USER_REQUEST_TYPE.* Allows a user to create/edit/delete user
 purchase request types
 
@@ -319,6 +353,8 @@ and index field maps
 
 *ALLOW_ALT_TCN.* Allows a user to import a record using an alternate TCN
 to avoid conflicts
+
+*API_LOGIN.* API_LOGIN
 
 *APPLY_WORKSTATION_SETTING.* Allows a user to apply values to
 workstation settings
@@ -422,8 +458,12 @@ importing authority records
 *CREATE_AUTHORITY_RECORD_NOTE.* Allows a user to create notes on
 authority records
 
+*CREATE_BACKGROUND_IMPORT.* Allows a user to create background record import jobs
+
 *CREATE_BIB_BTYPE.* Allows a user to create bibliographic record bucket
 types
+
+*CREATE_BIB_BUCKET.* Allows a user to create bibliographic record buckets
 
 *CREATE_BIB_IMPORT_FIELD_DEF.* Allows a user to create queued bib record
 attribute definitions
@@ -635,6 +675,8 @@ definitions
 *CREATE_USER.* Allows a user to create (register) user accounts
 
 *CREATE_USER_BTYPE.* Allows a user to create user bucket types
+
+*CREATE_USER_BUCKET.* Allow a user to create a User Bucket
 
 *CREATE_USER_GROUP_LINK.* Allows a user to assign secondary permission
 groups to a user
@@ -952,6 +994,8 @@ a provider
 *MANAGE_RESERVES.* Allows a user to manage courses and course materials
 and associate users with courses
 
+*MANAGE_SHIPMENT_NOTIFICATION.* Manage shipment notifications
+
 *MAP_MONOGRAPH_PART.* Allows a user to create/edit/delete item monograph
 part maps
 
@@ -1028,6 +1072,8 @@ batch
 *OVERRIDE_HOLD_HAS_LOCAL_COPY.* Allows a user to override the
 circ.holds.hold_has_copy_at.block setting
 
+*PATRON_BARRED.override.* Override the PATRON_BARRED event
+
 *PATRON_EXCEEDS_CHECKOUT_COUNT.override.* Allows a user to override the
 alert when a user has the maximum number of items checked out
 
@@ -1064,6 +1110,8 @@ permission group
 *REMOVE_USER_GROUP_LINK.* Allows a user to remove secondary permission
 groups from a user
 
+*REMOVE_USER_MFA.* Allows a user to remove configured MFA factors for another user
+
 *RENEW_CIRC.* Allows a user to renew an item's circulation on another
 user's account
 
@@ -1073,6 +1121,22 @@ if it is required for a hold
 *REQUEST_HOLDS.* Allows a user to create holds for another user
 
 *REQUEST_HOLDS_OVERRIDE.* _(no longer applicable)_
+
+*REST.api.* REST.api
+
+*REST.api.bibs.* REST.api.bibs
+
+*REST.api.collections.* REST.api.collections
+
+*REST.api.courses.* REST.api.courses
+
+*REST.api.holds.* REST.api.holds
+
+*REST.api.items.* REST.api.items
+
+*REST.api.orgs.* REST.api.orgs
+
+*REST.api.patrons.* REST.api.patrons
 
 *RETRIEVE_RESERVATION_PULL_LIST.* Allows a user to retrieve the booking
 reservation pull list
@@ -1107,6 +1171,8 @@ unit settings
 *TOTAL_HOLD_COPY_RATIO_EXCEEDED.override.* Allows a user to override the
 TOTAL_HOLD_COPY_RATIO_EXCEEDED event 
 
+*TRANSFER_CONTAINER.* Allow for transferring ownership of a bucket.
+
 *TRANSIT_CHECKIN_INTERVAL_BLOCK.override.* Allows a user to override the
 TRANSIT_CHECKIN_INTERVAL_BLOCK event
 
@@ -1132,6 +1198,8 @@ queues
 
 *UPDATE_AUTHORITY_RECORD_NOTE.* Allows a user to edit notes on authority
 records
+
+*UPDATE_BACKGROUND_IMPORT.* Update background record import jobs
 
 *UPDATE_BATCH_COPY.* Allows a user to batch edit item records
 
@@ -1375,6 +1443,9 @@ Editor
 edit the ui.hide_copy_editor_fields setting in the Library Settings
 Editor
 
+*UPDATE_ORG_UNIT_SETTING_ALL.* Allows a user to manage Barcode completion
+definitions
+
 *UPDATE_PATRON_ACTIVE_CARD.* Allows a user to manually adjust another
 user's active cards
 
@@ -1491,6 +1562,8 @@ sources
 *VIEW_AUTHORITY_RECORD_NOTES.* Allows a user to view authority record
 notes
 
+*VIEW_BACKGROUND_IMPORT.* Allows a user to view background record import jobs
+
 *VIEW_BILLING_TYPE.* Allows a user to view billing types
 
 *VIEW_BOOKING_RESERVATION.* Allows a user to view booking reservations
@@ -1513,6 +1586,22 @@ out
 type events
 
 *VIEW_CONTAINER.* Allows a user to view another user's (shared) buckets
+
+*VIEW_CONTAINER_BIBLIO_RECORD_ENTRY_ORG_SHARE.* Allow viewing of record bucket user shares
+
+*VIEW_CONTAINER_BIBLIO_RECORD_ENTRY_USER_SHARE.* Allow viewing of record bucket user shares
+
+*VIEW_CONTAINER_CALL_NUMBER_ORG_SHARE.* Allow viewing of call number bucket user shares
+
+*VIEW_CONTAINER_CALL_NUMBER_USER_SHARE.* Allow viewing of call number bucket user shares
+
+*VIEW_CONTAINER_COPY_ORG_SHARE.* Allow viewing of copy bucket user shares
+
+*VIEW_CONTAINER_COPY_USER_SHARE.* Allow viewing of copy bucket user shares
+
+*VIEW_CONTAINER_USER_ORG_SHARE.* Allow viewing of user bucket user shares
+
+*VIEW_CONTAINER_USER_USER_SHARE.* Allow viewing of user bucket user shares
 
 *VIEW_COPY_ALERT.* Allows a user to view item alerts
 
@@ -1585,6 +1674,8 @@ orders
 and entries
 
 *VIEW_SERIAL_SUBSCRIPTION.* Allows a user to view serial subscriptions
+
+*VIEW_SHIPMENT_NOTIFICATION.* Allows a user to view shipment notifications
 
 *VIEW_TITLE_NOTES.* Allows a user to view all notes attached to a title
 
