@@ -44,7 +44,7 @@ describe('HoldComponent', () => {
                 { provide: CatalogService, useValue: {} },
                 { provide: StaffCatalogService, useValue: {} },
                 { provide: HoldsService, useValue: MockGenerators.holdsService() },
-                { provide: PatronService, useValue: {} },
+                { provide: PatronService, useValue: MockGenerators.patronService() },
                 { provide: WorkLogService, useValue: jasmine.createSpyObj<WorkLogService>(['record']) },
                 { provide: StoreService, useValue: {} }
             ],
@@ -166,6 +166,17 @@ describe('HoldComponent', () => {
         it('greys out Override all hold-blocking conditions possible? by default', () => {
             const checkbox = fixture.nativeElement.querySelector('#override-many');
             expect(checkbox.disabled).toBeTrue();
+        });
+        it('greys out the Place Hold button if a group is not selected', () => {
+            component.holdFor = 'group';
+            component.holdForChanged();
+            expect(component.readyToPlaceHolds()).toBeFalse();
+        });
+        it('allows users to click the Place Hold button if a group is selected', () => {
+            component.holdFor = 'group';
+            component.selectedHoldGroup = {id: 777, label: 'Excellent book club'};
+            component.holdForChanged();
+            expect(component.readyToPlaceHolds()).toBeTrue();
         });
         describe('when the user wants to place a hold for a hold group', () => {
             beforeEach(() => {

@@ -9,7 +9,8 @@ import { CatalogSearchContext } from '@eg/share/catalog/search-context';
 import { StaffCatalogService } from '@eg/staff/catalog/catalog.service';
 import { SerialsService } from '@eg/staff/serials/serials.service';
 import { HoldsService } from '@eg/staff/share/holds/holds.service';
-import { from, of } from 'rxjs';
+import { PatronService } from '@eg/staff/share/patron/patron.service';
+import { EMPTY, from, of } from 'rxjs';
 
 // Convenience functions that generate mock data for use in automated tests
 export class MockGenerators {
@@ -30,7 +31,7 @@ export class MockGenerators {
     }
 
     static holdsService() {
-        const service = jasmine.createSpyObj<HoldsService>(['placeHold']);
+        const service = jasmine.createSpyObj<HoldsService>(['getHoldTargetMeta', 'placeHold']);
         service.placeHold.and.returnValue(of({
             holdType: 'B',
             holdTarget: 1,
@@ -39,6 +40,7 @@ export class MockGenerators {
             pickupLib: 4,
             result: { success: true, holdId: 303 }
         }));
+        service.getHoldTargetMeta.and.returnValue(EMPTY);
         return service;
     }
 
@@ -75,6 +77,12 @@ export class MockGenerators {
             return of(`OpenSRF method ${method} has not been mocked, returning this string instead`);
         });
         return net;
+    }
+
+    static patronService() {
+        const patron = jasmine.createSpyObj<PatronService>(['getById']);
+        patron.getById.and.resolveTo(this.idlObject({id: 1, day_phone: '555-1234', settings: [], email: null, home_ou: 1}));
+        return patron;
     }
 
     static permService(permissions_result: {}) {

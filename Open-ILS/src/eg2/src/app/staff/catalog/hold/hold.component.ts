@@ -60,7 +60,7 @@ export class HoldComponent implements OnInit, OnDestroy {
     user: IdlObject; //
     userBarcode: string;
     requestor: IdlObject;
-    holdFor: string;
+    holdFor: 'patron'|'staff'|'group';
     pickupLib: number;
     notifyEmail: boolean;
     notifyPhone: boolean;
@@ -357,7 +357,7 @@ export class HoldComponent implements OnInit, OnDestroy {
             if (this.userBarcode) {
                 this.userBarcodeChanged();
             }
-        } else {
+        } else if (this.holdFor === 'staff') {
             this.userBarcode = null;
             this.currentUserBarcode = null;
             this.getUser(this.requestor.id());
@@ -561,10 +561,16 @@ export class HoldComponent implements OnInit, OnDestroy {
     }
 
     readyToPlaceHolds(): boolean {
-        if (!this.user || this.placeHoldsClicked || this.activeDateInvalid) {
+        if (this.placeHoldsClicked || this.activeDateInvalid) {
             return false;
         }
         if (!this.pickupLib || this.disableOrgs.includes(this.pickupLib)) {
+            return false;
+        }
+        if (this.holdFor === 'patron' && !this.user) {
+            return false;
+        }
+        if (this.holdFor === 'group' && !this.selectedHoldGroup) {
             return false;
         }
         if (this.smsEnabled && this.notifySms) {
@@ -664,7 +670,7 @@ export class HoldComponent implements OnInit, OnDestroy {
         return this.holds.placeHold({
             holdTarget: hTarget,
             holdType: hType,
-            recipient: this.user.id(),
+            recipient: this.user?.id(),
             requestor: this.requestor.id(),
             pickupLib: this.pickupLib,
             override: override,
