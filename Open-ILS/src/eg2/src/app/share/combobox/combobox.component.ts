@@ -399,7 +399,7 @@ implements ControlValueAccessor, OnInit, AfterViewInit, OnChanges {
         }, {});
         
         document.querySelectorAll('ngb-typeahead-window button[disabled]').forEach(b => b.setAttribute('tabindex', '-1'));
-        this.controller = this.instance['_elementRef'].nativeElement as HTMLInputElement;
+        this.controller = this.instance['_nativeElement'] as HTMLInputElement;
         this.controller.addEventListener('keydown', this.onKeydown.bind(this));
     }
 
