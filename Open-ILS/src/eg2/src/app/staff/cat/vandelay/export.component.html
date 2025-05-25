@@ -13,7 +13,7 @@
       </ng-container>
       <ng-container *ngIf="!exportingBasket">
           <h3 i18n>Select a Record Source</h3>
-          <div ngbAccordion>
+          <div ngbAccordion [closeOthers]="true">
             <div ngbAccordionItem [collapsed]="false"> 
               <h4 ngbAccordionHeader><button ngbAccordionButton i18n>CSV File</button></h4>
               <div ngbAccordionCollapse>
