@@ -4,7 +4,7 @@
     <div ngbAccordionItem *ngIf="fieldType === 'filter'" id="suggested_filters">
       <h3 ngbAccordionHeader>
         <button ngbAccordionButton i18n>Suggested Filters</button>
-      </h2>
+      </h3>
       <div ngbAccordionCollapse>
         <div ngbAccordionBody>
           <ng-template>
@@ -48,7 +48,7 @@
     <div ngbAccordionItem *ngIf="allFields.length > 0" id="all">
       <h3 ngbAccordionHeader>
         <button ngbAccordionButton i18n>All Fields</button>
-      </h2>
+      </h3>
       <div ngbAccordionCollapse>
         <div ngbAccordionBody>
           <ng-template>
@@ -72,7 +72,7 @@
     <div ngbAccordionItem id="display-field-list" *ngIf="fieldType === 'filter' && listFields.length > 0" [collapsed]="false">
       <h3 ngbAccordionHeader>
         <button ngbAccordionButton i18n>Fields Selected for Display</button>
-      </h2>
+      </h3>
       <div ngbAccordionCollapse>
         <div ngbAccordionBody>
           <ng-template>
@@ -84,7 +84,7 @@
     <div ngbAccordionItem id="sort-field-list" [collapsed]="false">
       <h3 ngbAccordionHeader>
         <button ngbAccordionButton>
-          <span *ngIf="fieldType === 'display'" i18n>Field Display Order</sp>
+          <span *ngIf="fieldType === 'display'" i18n>Field Display Order</span>
           <span *ngIf="fieldType === 'filter'" i18n>Filter Fields and Values</span>
         </button>
       </h3>
